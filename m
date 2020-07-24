@@ -2,50 +2,45 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8363422C0B2
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 24 Jul 2020 10:33:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 81DAA22C0E5
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 24 Jul 2020 10:35:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726863AbgGXIdl (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S1726887AbgGXIdl (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Fri, 24 Jul 2020 04:33:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47878 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726861AbgGXIdl (ORCPT
+Received: from Galois.linutronix.de ([193.142.43.55]:36370 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726692AbgGXIdl (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Fri, 24 Jul 2020 04:33:41 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4F3AC0619D3;
-        Fri, 24 Jul 2020 01:33:40 -0700 (PDT)
-Date:   Fri, 24 Jul 2020 08:33:37 -0000
+Date:   Fri, 24 Jul 2020 08:33:38 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1595579619;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=IGW+7RnTRcW+DWd0UWS51KRGrN8/LUwdiWEm8cxWDJQ=;
-        b=ULWS32i+TlDouJaJU9OyvzX0Ttab49EsmSls1RjaVOGgTDTKFtpm3+wzHDzp3GSc5sRZlo
-        l8L0w6JG2r501QZA8rz7OXzmHTZj8ARnLK3If1Ynms/krLdiAWwatr1gAOfBP0qq7b9WGW
-        G9x07AchUoxyZ02+DGyaemBNL3daIqwmpMmhY1idj9ezM747fILLJG0Cq1FYOXC+pOrsvu
-        wPu2s1vqYI67vHxRlaI9xCNjGT8Fwn+Fii0NTmCgEzf3farAa6c6SOhs+f0XJzDgNXqNUT
-        pJH4Rb+RpTcgjotjAdnGyFXnWTNYl0gHj1iYjgW7ObJKccMg1pnh72dqPXK5ug==
+        bh=m6Edkp5FBuAdovy3WyQMTLkLFvlqav69MN4qwipEjBM=;
+        b=Yy8gCai44vaBbM1Vz9ZkLYUxyY+jibf8u+G6iT+wkEoic/O3gYvyooeE8iJnYsE/zhIcRT
+        GjvnuKZF0ySpvi4KFRnlUG6354aWduzx2sxWJxpG4Ocmk1+N6TlpIxtiVNpB+TMJTT89YE
+        /VAS5bRsGzXZaakyQcrbprMdnIpVAvK7zsGtfzXl++dzygsyEKm72s1nthVt2EllgzRFzg
+        KDCDioOAEc0NamElx1mNBwmfRxY1P2eybxFJBz1odBkdj+eSl4DR+bUDfT26gUGP79LtHZ
+        Gy+/DDpg2we5emNz6Is8M3nh3+O31MPncAoYCGItyONH9aU2JRPMxzRmrm/d7A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1595579619;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=IGW+7RnTRcW+DWd0UWS51KRGrN8/LUwdiWEm8cxWDJQ=;
-        b=i4FZg/SC12cQ+rjS2UoqFh+SyUtt4fcG/NwXPIMu/tUDFhPA1rb6aFuyAUcEeTkMCK/WRh
-        D55Ka+CWTqHpzxDg==
+        bh=m6Edkp5FBuAdovy3WyQMTLkLFvlqav69MN4qwipEjBM=;
+        b=53aniql/EwpS++1YZE1+OHcu7Iq8X6MjWXYb9tPOzdl/F7ZqGocpd0a8IzpaH131aBK3Vf
+        JR9DQVU+kkRNEECg==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/fifo] sched: Remove sched_set_*() return value
-Cc:     axboe@kernel.dk, daniel.lezcano@linaro.org, sudeep.holla@arm.com,
-        airlied@redhat.com, broonie@kernel.org, paulmck@kernel.org,
-        Ingo Molnar <mingo@kernel.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+Subject: [tip: sched/fifo] sched: Remove sched_setscheduler*() EXPORTs
+Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <159557961798.4006.15689979081053412317.tip-bot2@tip-bot2>
+Message-ID: <159557961866.4006.6136834931450240430.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -57,172 +52,47 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/fifo branch of tip:
 
-Commit-ID:     8b700983de82f79e05b2c1136d6513ea4c9b22c4
-Gitweb:        https://git.kernel.org/tip/8b700983de82f79e05b2c1136d6513ea4c9b22c4
+Commit-ID:     616d91b68cd56bcb1954b6a5af7d542401fde772
+Gitweb:        https://git.kernel.org/tip/616d91b68cd56bcb1954b6a5af7d542401fde772
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Wed, 22 Apr 2020 13:10:04 +02:00
+AuthorDate:    Tue, 21 Apr 2020 12:09:13 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Mon, 15 Jun 2020 14:10:26 +02:00
+CommitterDate: Mon, 15 Jun 2020 14:10:25 +02:00
 
-sched: Remove sched_set_*() return value
+sched: Remove sched_setscheduler*() EXPORTs
 
-Ingo suggested that since the new sched_set_*() functions are
-implemented using the 'nocheck' variants, they really shouldn't ever
-fail, so remove the return value.
+Now that nothing (modular) still uses sched_setscheduler(), remove the
+exports.
 
-Cc: axboe@kernel.dk
-Cc: daniel.lezcano@linaro.org
-Cc: sudeep.holla@arm.com
-Cc: airlied@redhat.com
-Cc: broonie@kernel.org
-Cc: paulmck@kernel.org
-Suggested-by: Ingo Molnar <mingo@kernel.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Ingo Molnar <mingo@kernel.org>
 ---
- drivers/block/drbd/drbd_receiver.c    |  4 +---
- drivers/firmware/psci/psci_checker.c  |  3 +--
- drivers/gpu/drm/msm/msm_drv.c         |  5 +----
- drivers/platform/chrome/cros_ec_spi.c |  7 +++----
- include/linux/sched.h                 |  6 +++---
- kernel/rcu/rcutorture.c               |  5 +----
- kernel/sched/core.c                   | 12 ++++++------
- 7 files changed, 16 insertions(+), 26 deletions(-)
+ kernel/sched/core.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/block/drbd/drbd_receiver.c b/drivers/block/drbd/drbd_receiver.c
-index 140fd98..280615e 100644
---- a/drivers/block/drbd/drbd_receiver.c
-+++ b/drivers/block/drbd/drbd_receiver.c
-@@ -6020,9 +6020,7 @@ int drbd_ack_receiver(struct drbd_thread *thi)
- 	int expect   = header_size;
- 	bool ping_timeout_active = false;
- 
--	rv = sched_set_fifo_low(current);
--	if (rv < 0)
--		drbd_err(connection, "drbd_ack_receiver: ERROR set priority, ret=%d\n", rv);
-+	sched_set_fifo_low(current);
- 
- 	while (get_t_state(thi) == RUNNING) {
- 		drbd_thread_current_set_cpu(thi);
-diff --git a/drivers/firmware/psci/psci_checker.c b/drivers/firmware/psci/psci_checker.c
-index a5279a4..6fff482 100644
---- a/drivers/firmware/psci/psci_checker.c
-+++ b/drivers/firmware/psci/psci_checker.c
-@@ -281,8 +281,7 @@ static int suspend_test_thread(void *arg)
- 	wait_for_completion(&suspend_threads_started);
- 
- 	/* Set maximum priority to preempt all other threads on this CPU. */
--	if (sched_set_fifo(current))
--		pr_warn("Failed to set suspend thread scheduler on CPU %d\n", cpu);
-+	sched_set_fifo(current);
- 
- 	dev = this_cpu_read(cpuidle_devices);
- 	drv = cpuidle_get_cpu_driver(dev);
-diff --git a/drivers/gpu/drm/msm/msm_drv.c b/drivers/gpu/drm/msm/msm_drv.c
-index 89a8b9c..556cca3 100644
---- a/drivers/gpu/drm/msm/msm_drv.c
-+++ b/drivers/gpu/drm/msm/msm_drv.c
-@@ -509,10 +509,7 @@ static int msm_drm_init(struct device *dev, struct drm_driver *drv)
- 			goto err_msm_uninit;
- 		}
- 
--		ret = sched_set_fifo(priv->event_thread[i].thread);
--		if (ret)
--			dev_warn(dev, "event_thread set priority failed:%d\n",
--				 ret);
-+		sched_set_fifo(priv->event_thread[i].thread);
- 	}
- 
- 	ret = drm_vblank_init(ddev, priv->num_crtcs);
-diff --git a/drivers/platform/chrome/cros_ec_spi.c b/drivers/platform/chrome/cros_ec_spi.c
-index c20a43a..d092603 100644
---- a/drivers/platform/chrome/cros_ec_spi.c
-+++ b/drivers/platform/chrome/cros_ec_spi.c
-@@ -725,10 +725,9 @@ static int cros_ec_spi_devm_high_pri_alloc(struct device *dev,
- 	if (err)
- 		return err;
- 
--	err = sched_set_fifo(ec_spi->high_pri_worker->task);
--	if (err)
--		dev_err(dev, "Can't set cros_ec high pri priority: %d\n", err);
--	return err;
-+	sched_set_fifo(ec_spi->high_pri_worker->task);
-+
-+	return 0;
- }
- 
- static int cros_ec_spi_probe(struct spi_device *spi)
-diff --git a/include/linux/sched.h b/include/linux/sched.h
-index b792b8f..ae76644 100644
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -1653,9 +1653,9 @@ extern int idle_cpu(int cpu);
- extern int available_idle_cpu(int cpu);
- extern int sched_setscheduler(struct task_struct *, int, const struct sched_param *);
- extern int sched_setscheduler_nocheck(struct task_struct *, int, const struct sched_param *);
--extern int sched_set_fifo(struct task_struct *p);
--extern int sched_set_fifo_low(struct task_struct *p);
--extern int sched_set_normal(struct task_struct *p, int nice);
-+extern void sched_set_fifo(struct task_struct *p);
-+extern void sched_set_fifo_low(struct task_struct *p);
-+extern void sched_set_normal(struct task_struct *p, int nice);
- extern int sched_setattr(struct task_struct *, const struct sched_attr *);
- extern int sched_setattr_nocheck(struct task_struct *, const struct sched_attr *);
- extern struct task_struct *idle_task(int cpu);
-diff --git a/kernel/rcu/rcutorture.c b/kernel/rcu/rcutorture.c
-index bbc3c8a..b4c1146 100644
---- a/kernel/rcu/rcutorture.c
-+++ b/kernel/rcu/rcutorture.c
-@@ -893,10 +893,7 @@ static int rcu_torture_boost(void *arg)
- 	VERBOSE_TOROUT_STRING("rcu_torture_boost started");
- 
- 	/* Set real-time priority. */
--	if (sched_set_fifo_low(current) < 0) {
--		VERBOSE_TOROUT_STRING("rcu_torture_boost RT prio failed!");
--		n_rcu_torture_boost_rterror++;
--	}
-+	sched_set_fifo_low(current);
- 
- 	init_rcu_head_on_stack(&rbi.rcu);
- 	/* Each pass through the following loop does one boost-test cycle. */
 diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index f882d3d..41d3778 100644
+index 40d3939..f882d3d 100644
 --- a/kernel/sched/core.c
 +++ b/kernel/sched/core.c
-@@ -5183,30 +5183,30 @@ int sched_setscheduler_nocheck(struct task_struct *p, int policy,
-  * The administrator _MUST_ configure the system, the kernel simply doesn't
-  * know enough information to make a sensible choice.
-  */
--int sched_set_fifo(struct task_struct *p)
-+void sched_set_fifo(struct task_struct *p)
+@@ -5135,13 +5135,11 @@ int sched_setscheduler(struct task_struct *p, int policy,
  {
- 	struct sched_param sp = { .sched_priority = MAX_RT_PRIO / 2 };
--	return sched_setscheduler_nocheck(p, SCHED_FIFO, &sp);
-+	WARN_ON_ONCE(sched_setscheduler_nocheck(p, SCHED_FIFO, &sp) != 0);
+ 	return _sched_setscheduler(p, policy, param, true);
  }
- EXPORT_SYMBOL_GPL(sched_set_fifo);
+-EXPORT_SYMBOL_GPL(sched_setscheduler);
+ 
+ int sched_setattr(struct task_struct *p, const struct sched_attr *attr)
+ {
+ 	return __sched_setscheduler(p, attr, true, true);
+ }
+-EXPORT_SYMBOL_GPL(sched_setattr);
+ 
+ int sched_setattr_nocheck(struct task_struct *p, const struct sched_attr *attr)
+ {
+@@ -5166,7 +5164,6 @@ int sched_setscheduler_nocheck(struct task_struct *p, int policy,
+ {
+ 	return _sched_setscheduler(p, policy, param, false);
+ }
+-EXPORT_SYMBOL_GPL(sched_setscheduler_nocheck);
  
  /*
-  * For when you don't much care about FIFO, but want to be above SCHED_NORMAL.
-  */
--int sched_set_fifo_low(struct task_struct *p)
-+void sched_set_fifo_low(struct task_struct *p)
- {
- 	struct sched_param sp = { .sched_priority = 1 };
--	return sched_setscheduler_nocheck(p, SCHED_FIFO, &sp);
-+	WARN_ON_ONCE(sched_setscheduler_nocheck(p, SCHED_FIFO, &sp) != 0);
- }
- EXPORT_SYMBOL_GPL(sched_set_fifo_low);
- 
--int sched_set_normal(struct task_struct *p, int nice)
-+void sched_set_normal(struct task_struct *p, int nice)
- {
- 	struct sched_attr attr = {
- 		.sched_policy = SCHED_NORMAL,
- 		.sched_nice = nice,
- 	};
--	return sched_setattr_nocheck(p, &attr);
-+	WARN_ON_ONCE(sched_setattr_nocheck(p, &attr) != 0);
- }
- EXPORT_SYMBOL_GPL(sched_set_normal);
- 
+  * SCHED_FIFO is a broken scheduler model; that is, it is fundamentally
