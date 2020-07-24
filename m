@@ -2,52 +2,51 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FEF822B67F
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 23 Jul 2020 21:10:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 07C6722C03F
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 24 Jul 2020 09:56:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728458AbgGWTJv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 23 Jul 2020 15:09:51 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:60504 "EHLO
+        id S1726573AbgGXH45 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 24 Jul 2020 03:56:57 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:36184 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728427AbgGWTJu (ORCPT
+        with ESMTP id S1726543AbgGXH44 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 23 Jul 2020 15:09:50 -0400
-Date:   Thu, 23 Jul 2020 19:09:47 -0000
+        Fri, 24 Jul 2020 03:56:56 -0400
+Date:   Fri, 24 Jul 2020 07:56:53 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1595531387;
+        s=2020; t=1595577414;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=QwU4vXoPimkfCGJ/tULJY9PczcvLGkj2BGbca0p16TA=;
-        b=QUnGvZx4x+huc0MfCq+b9BvHIRiAi78xL5V+w2ZynVKXvAVMK8RDxN8G+0Mfgkgt/V6xkm
-        FG0Xjrudvr73jOzeWUJWvgrnwfgDqOVzAm6dG2+a3nttR+r+u+7ygvqHl/f4BGbdEDY8XF
-        Sv8BFPrUjii494HaF32KlPdwV2V7g2PrPo1vqFiKRsIiMxbkMvG/9o5L7nNEPv8dosRHLS
-        9fUVNXiNSx/JQIqROB/g+OnXFO0WKTJirx9tt/CX/4B9PipDbYjyeJzfCfzONPihiCBkiL
-        PeSLAusbGNmVZ/iF+w37EOm5ucDHUIOJXF0RX5I4pdjlH7bWgiyvN36mCCg3XQ==
+        bh=4SIg3/SYrGlu5FpEqesZYPYgojA1f2D2OGjki95TLKw=;
+        b=va7aB1yxMW15tsDKQFVecBf70B/wUHAsP+1T0NCD1gggE9heF10Jz0DdrWFYoCGsggfMiP
+        CWKyP5bi6QM9UC4KGjZBCjYZkHIJkyp10TRfaaxqM0IiTIQmJZhEaavNpov95fugt7nj9o
+        zOZX3i7ujeiLuEU2RDrsxtXgpW/+AaX7xuktED1mMESE81/DYJVl4oAw30+0Na8fwt3EUy
+        YW7tVTmpt2to3deF9qT/wcNgCcatqO0059/esUV5L0O1dYDqDumcaNHIg5mOnM6wII7Zwm
+        t6wMYtfU37D1lvfN8B1P3bNXA/tE106jBcT4RY6sn9sKi36oUzRe7RgfmEautQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1595531387;
+        s=2020e; t=1595577414;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=QwU4vXoPimkfCGJ/tULJY9PczcvLGkj2BGbca0p16TA=;
-        b=7+aLKRxGzJPz677G5N1KldNhIlUMcmr6Q04oqDeq/tVEGLkEmcZxdwmvoBO68BL2FdjgRy
-        lOfvD0VGdxgplhBQ==
-From:   "tip-bot2 for Alexandre Belloni" <tip-bot2@linutronix.de>
+        bh=4SIg3/SYrGlu5FpEqesZYPYgojA1f2D2OGjki95TLKw=;
+        b=Ozkt+gD15AL70cyR2PLbBgSKsCV8kROc+oaslZGEg5eDL7GgMahfq50nrwtyUlLUOxapla
+        cbxC35rvKHLzJ6AQ==
+From:   "tip-bot2 for Arvind Sankar" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] dt-bindings: atmel-tcb: convert bindings to json-schema
-Cc:     Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Rob Herring <robh@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200710230813.1005150-2-alexandre.belloni@bootlin.com>
-References: <20200710230813.1005150-2-alexandre.belloni@bootlin.com>
+Subject: [tip: x86/cleanups] x86/mm: Drop unused MAX_PHYSADDR_BITS
+Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
+        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200723231544.17274-2-nivedita@alum.mit.edu>
+References: <20200723231544.17274-2-nivedita@alum.mit.edu>
 MIME-Version: 1.0
-Message-ID: <159553138717.4006.17315732968766226240.tip-bot2@tip-bot2>
+Message-ID: <159557741311.4006.10642517822235710788.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -57,229 +56,58 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/core branch of tip:
+The following commit has been merged into the x86/cleanups branch of tip:
 
-Commit-ID:     8be8e7de604f8e51cf5d02afdcd28e1e49d3646b
-Gitweb:        https://git.kernel.org/tip/8be8e7de604f8e51cf5d02afdcd28e1e49d3646b
-Author:        Alexandre Belloni <alexandre.belloni@bootlin.com>
-AuthorDate:    Sat, 11 Jul 2020 01:08:05 +02:00
-Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
-CommitterDate: Sat, 11 Jul 2020 18:57:02 +02:00
+Commit-ID:     0a787b28b7a375ad9d5c77bc3922ae1a8305239e
+Gitweb:        https://git.kernel.org/tip/0a787b28b7a375ad9d5c77bc3922ae1a8305239e
+Author:        Arvind Sankar <nivedita@alum.mit.edu>
+AuthorDate:    Thu, 23 Jul 2020 19:15:42 -04:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Fri, 24 Jul 2020 09:53:06 +02:00
 
-dt-bindings: atmel-tcb: convert bindings to json-schema
+x86/mm: Drop unused MAX_PHYSADDR_BITS
 
-Convert Atmel Timer Counter Blocks bindings to DT schema format using
-json-schema.
+The macro is not used anywhere, and has an incorrect value (going by the
+comment) on x86_64 since commit c898faf91b3e ("x86: 46 bit physical address
+support on 64 bits")
 
-Also move it out of mfd as it is not and has never been related to mfd.
+To avoid confusion, just remove the definition.
 
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Reviewed-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20200710230813.1005150-2-alexandre.belloni@bootlin.com
+Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lkml.kernel.org/r/20200723231544.17274-2-nivedita@alum.mit.edu
+
 ---
- Documentation/devicetree/bindings/mfd/atmel-tcb.txt                       |  56 +------------------------------
- Documentation/devicetree/bindings/soc/microchip/atmel,at91rm9200-tcb.yaml | 131 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-
- 2 files changed, 131 insertions(+), 56 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/mfd/atmel-tcb.txt
- create mode 100644 Documentation/devicetree/bindings/soc/microchip/atmel,at91rm9200-tcb.yaml
+ arch/x86/include/asm/sparsemem.h | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/mfd/atmel-tcb.txt b/Documentation/devicetree/bindings/mfd/atmel-tcb.txt
-deleted file mode 100644
-index c4a83e3..0000000
---- a/Documentation/devicetree/bindings/mfd/atmel-tcb.txt
-+++ /dev/null
-@@ -1,56 +0,0 @@
--* Device tree bindings for Atmel Timer Counter Blocks
--- compatible: Should be "atmel,<chip>-tcb", "simple-mfd", "syscon".
--  <chip> can be "at91rm9200" or "at91sam9x5"
--- reg: Should contain registers location and length
--- #address-cells: has to be 1
--- #size-cells: has to be 0
--- interrupts: Should contain all interrupts for the TC block
--  Note that you can specify several interrupt cells if the TC
--  block has one interrupt per channel.
--- clock-names: tuple listing input clock names.
--	Required elements: "t0_clk", "slow_clk"
--	Optional elements: "t1_clk", "t2_clk"
--- clocks: phandles to input clocks.
--
--The TCB can expose multiple subdevices:
-- * a timer
--   - compatible: Should be "atmel,tcb-timer"
--   - reg: Should contain the TCB channels to be used. If the
--     counter width is 16 bits (at91rm9200-tcb), two consecutive
--     channels are needed. Else, only one channel will be used.
--
--Examples:
--
--One interrupt per TC block:
--	tcb0: timer@fff7c000 {
--		compatible = "atmel,at91rm9200-tcb", "simple-mfd", "syscon";
--		#address-cells = <1>;
--		#size-cells = <0>;
--		reg = <0xfff7c000 0x100>;
--		interrupts = <18 4>;
--		clocks = <&tcb0_clk>, <&clk32k>;
--		clock-names = "t0_clk", "slow_clk";
--
--		timer@0 {
--			compatible = "atmel,tcb-timer";
--			reg = <0>, <1>;
--		};
--
--		timer@2 {
--			compatible = "atmel,tcb-timer";
--			reg = <2>;
--		};
--	};
--
--One interrupt per TC channel in a TC block:
--	tcb1: timer@fffdc000 {
--		compatible = "atmel,at91rm9200-tcb", "simple-mfd", "syscon";
--		#address-cells = <1>;
--		#size-cells = <0>;
--		reg = <0xfffdc000 0x100>;
--		interrupts = <26 4>, <27 4>, <28 4>;
--		clocks = <&tcb1_clk>, <&clk32k>;
--		clock-names = "t0_clk", "slow_clk";
--	};
--
--
-diff --git a/Documentation/devicetree/bindings/soc/microchip/atmel,at91rm9200-tcb.yaml b/Documentation/devicetree/bindings/soc/microchip/atmel,at91rm9200-tcb.yaml
-new file mode 100644
-index 0000000..9d680e0
---- /dev/null
-+++ b/Documentation/devicetree/bindings/soc/microchip/atmel,at91rm9200-tcb.yaml
-@@ -0,0 +1,131 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: "http://devicetree.org/schemas/soc/microchip/atmel,at91rm9200-tcb.yaml#"
-+$schema: "http://devicetree.org/meta-schemas/core.yaml#"
-+
-+title: Atmel Timer Counter Block
-+
-+maintainers:
-+  - Alexandre Belloni <alexandre.belloni@bootlin.com>
-+
-+description: |
-+  The Atmel (now Microchip) SoCs have timers named Timer Counter Block. Each
-+  timer has three channels with two counters each.
-+
-+properties:
-+  compatible:
-+    items:
-+      - enum:
-+          - atmel,at91rm9200-tcb
-+          - atmel,at91sam9x5-tcb
-+      - const: simple-mfd
-+      - const: syscon
-+
-+  reg:
-+    maxItems: 1
-+
-+  interrupts:
-+    description:
-+      List of interrupts. One interrupt per TCB channel if available or one
-+      interrupt for the TC block
-+    minItems: 1
-+    maxItems: 3
-+
-+  clock-names:
-+    description:
-+      List of clock names. Always includes t0_clk and slow clk. Also includes
-+      t1_clk and t2_clk if a clock per channel is available.
-+    oneOf:
-+      - items:
-+        - const: t0_clk
-+        - const: slow_clk
-+      - items:
-+        - const: t0_clk
-+        - const: t1_clk
-+        - const: t2_clk
-+        - const: slow_clk
-+    minItems: 2
-+    maxItems: 4
-+
-+  clocks:
-+    minItems: 2
-+    maxItems: 4
-+
-+  '#address-cells':
-+    const: 1
-+
-+  '#size-cells':
-+    const: 0
-+
-+patternProperties:
-+  "^timer@[0-2]$":
-+    description: The timer block channels that are used as timers.
-+    type: object
-+    properties:
-+      compatible:
-+        const: atmel,tcb-timer
-+      reg:
-+        description:
-+          List of channels to use for this particular timer.
-+        minItems: 1
-+        maxItems: 3
-+
-+    required:
-+      - compatible
-+      - reg
-+
-+required:
-+  - compatible
-+  - reg
-+  - interrupts
-+  - clocks
-+  - clock-names
-+  - '#address-cells'
-+  - '#size-cells'
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    /* One interrupt per TC block: */
-+        tcb0: timer@fff7c000 {
-+                compatible = "atmel,at91rm9200-tcb", "simple-mfd", "syscon";
-+                #address-cells = <1>;
-+                #size-cells = <0>;
-+                reg = <0xfff7c000 0x100>;
-+                interrupts = <18 4>;
-+                clocks = <&tcb0_clk>, <&clk32k>;
-+                clock-names = "t0_clk", "slow_clk";
-+
-+                timer@0 {
-+                        compatible = "atmel,tcb-timer";
-+                        reg = <0>, <1>;
-+                };
-+
-+                timer@2 {
-+                        compatible = "atmel,tcb-timer";
-+                        reg = <2>;
-+                };
-+        };
-+
-+    /* One interrupt per TC channel in a TC block: */
-+        tcb1: timer@fffdc000 {
-+                compatible = "atmel,at91rm9200-tcb", "simple-mfd", "syscon";
-+                #address-cells = <1>;
-+                #size-cells = <0>;
-+                reg = <0xfffdc000 0x100>;
-+                interrupts = <26 4>, <27 4>, <28 4>;
-+                clocks = <&tcb1_clk>, <&clk32k>;
-+                clock-names = "t0_clk", "slow_clk";
-+
-+                timer@0 {
-+                        compatible = "atmel,tcb-timer";
-+                        reg = <0>;
-+                };
-+
-+                timer@1 {
-+                        compatible = "atmel,tcb-timer";
-+                        reg = <1>;
-+                };
-+        };
+diff --git a/arch/x86/include/asm/sparsemem.h b/arch/x86/include/asm/sparsemem.h
+index 1992187..6bfc878 100644
+--- a/arch/x86/include/asm/sparsemem.h
++++ b/arch/x86/include/asm/sparsemem.h
+@@ -10,24 +10,20 @@
+  *    field of the struct page
+  *
+  * SECTION_SIZE_BITS		2^n: size of each section
+- * MAX_PHYSADDR_BITS		2^n: max size of physical address space
+- * MAX_PHYSMEM_BITS		2^n: how much memory we can have in that space
++ * MAX_PHYSMEM_BITS		2^n: max size of physical address space
+  *
+  */
+ 
+ #ifdef CONFIG_X86_32
+ # ifdef CONFIG_X86_PAE
+ #  define SECTION_SIZE_BITS	29
+-#  define MAX_PHYSADDR_BITS	36
+ #  define MAX_PHYSMEM_BITS	36
+ # else
+ #  define SECTION_SIZE_BITS	26
+-#  define MAX_PHYSADDR_BITS	32
+ #  define MAX_PHYSMEM_BITS	32
+ # endif
+ #else /* CONFIG_X86_32 */
+ # define SECTION_SIZE_BITS	27 /* matt - 128 is convenient right now */
+-# define MAX_PHYSADDR_BITS	(pgtable_l5_enabled() ? 52 : 44)
+ # define MAX_PHYSMEM_BITS	(pgtable_l5_enabled() ? 52 : 46)
+ #endif
+ 
