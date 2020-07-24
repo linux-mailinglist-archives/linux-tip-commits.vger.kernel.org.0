@@ -2,54 +2,51 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FE6422C85D
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 24 Jul 2020 16:49:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E3E922CE76
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 24 Jul 2020 21:09:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726567AbgGXOtf (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 24 Jul 2020 10:49:35 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:38630 "EHLO
+        id S1726973AbgGXTI7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 24 Jul 2020 15:08:59 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:39880 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726366AbgGXOtf (ORCPT
+        with ESMTP id S1726381AbgGXTI6 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 24 Jul 2020 10:49:35 -0400
-Date:   Fri, 24 Jul 2020 14:49:31 -0000
+        Fri, 24 Jul 2020 15:08:58 -0400
+Date:   Fri, 24 Jul 2020 19:08:54 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1595602172;
+        s=2020; t=1595617735;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ATbl/u2dQd6EcdjMgMGONSkJ4CS692XiOwgztKaON3M=;
-        b=clbtUx0hlCrQdk2PKdbJClsolg1tHf/VXG1GdlIUgSQAx7UdiiFmcnDRklCBd5uTQSJNQn
-        HsiggVHuxqg+nc/iUJDVER5fMS1kJKCJP73rddogUxYZdo+imIRo0ZHaWREGu14/yUfcde
-        qTFlDacWnEQ/rf74NrWF2veBvopWkF9QTIcl+MDOhu01Xk4UcTahVTPCWsUWF0AVcJbMW4
-        Py1zfH7TEZqTvJW9UxS9HozJMozXC6P3naDNIXgpuJcwHiFadlPrUqwo/xU9wJoHJXnMFO
-        WH/+7MEeNwSKukSjBB45y3uGwAptxwwiwydwXXDXFdclPKDpifr9a9LD/Pah/w==
+        bh=xb7gkOw79hTP+VUseD+J3vUtjmg9zwEsI6NtW/Q9tlM=;
+        b=yvqkxOjsvYzog+g5FrZ3olWQ4k9WjhMi/Jgz82wfNmaw5oGtxqesJWB1DHHKTmQwjObNc4
+        v03BZn92cYqPz9Y7NflwA1ZCNCDgklxpUBuUnuQQ92QdYw3SU5lYwFfXM0M0gAblXHAclW
+        YJjumJ0wluqg0UdME05DetWdbQ6CIuDePxdumJW4uGj9UdUpvIwD8sYn1jvPiFL2T15eUR
+        6W6t4YWiADQq5Z7FceOOW/flnhcEda7BMYdR+6M67lID/M5yyaJ+7/0efI0Ox1xd0+KVfU
+        Tjde7NEKt0S/kDDlyXwsNJ3Tq5iSN3TsHnSF4uc+NXBSCIqj07v8P62H9DkVlg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1595602172;
+        s=2020e; t=1595617735;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ATbl/u2dQd6EcdjMgMGONSkJ4CS692XiOwgztKaON3M=;
-        b=WajytSjcaoah4Enu+w4hrunUlJay7XOAHGhMBcn8OR3Ou4sYABUgLYcUUhTPLYOurt0Z3J
-        DAFMaTKxc7IharAg==
-From:   "tip-bot2 for Arvind Sankar" <tip-bot2@linutronix.de>
+        bh=xb7gkOw79hTP+VUseD+J3vUtjmg9zwEsI6NtW/Q9tlM=;
+        b=ilOWMxXdQG44kkEnfHIrpfCdLbxFjFZk4cdSBVIVpkgc2KLnaTdB8+M+J0suwium1Ut0Bh
+        2cyywGX2p5IEuMBw==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/build] x86/build: Move max-page-size option to LDFLAGS_vmlinux
-Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
-        Ingo Molnar <mingo@kernel.org>,
-        Sedat Dilek <sedat.dilek@gmail.com>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Michal Marek <michal.lkml@markovi.net>, x86 <x86@kernel.org>,
+Subject: [tip: core/entry] entry: Provide infrastructure for work before
+ transitioning to guest mode
+Cc:     Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200722184334.3785418-1-nivedita@alum.mit.edu>
-References: <20200722184334.3785418-1-nivedita@alum.mit.edu>
+In-Reply-To: <20200722220519.833296398@linutronix.de>
+References: <20200722220519.833296398@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <159560217177.4006.6819251464761042205.tip-bot2@tip-bot2>
+Message-ID: <159561773439.4006.6664021782988649777.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,93 +56,232 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/build branch of tip:
+The following commit has been merged into the core/entry branch of tip:
 
-Commit-ID:     587af649bcc04eb016822f209a975005c0092151
-Gitweb:        https://git.kernel.org/tip/587af649bcc04eb016822f209a975005c0092151
-Author:        Arvind Sankar <nivedita@alum.mit.edu>
-AuthorDate:    Wed, 22 Jul 2020 14:43:34 -04:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 24 Jul 2020 16:39:27 +02:00
+Commit-ID:     935ace2fb5cc49ae88bd1f1735ddc51cdc2ebfb3
+Gitweb:        https://git.kernel.org/tip/935ace2fb5cc49ae88bd1f1735ddc51cdc2ebfb3
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Wed, 22 Jul 2020 23:59:59 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Fri, 24 Jul 2020 15:03:42 +02:00
 
-x86/build: Move max-page-size option to LDFLAGS_vmlinux
+entry: Provide infrastructure for work before transitioning to guest mode
 
-This option is only required for vmlinux on 64-bit, to enforce 2MiB
-alignment, so set it in LDFLAGS_vmlinux instead of KBUILD_LDFLAGS. Also
-drop the ld-option check: this option was added in binutils-2.18 and all
-the other places that use it already don't have the check.
+Entering a guest is similar to exiting to user space. Pending work like
+handling signals, rescheduling, task work etc. needs to be handled before
+that.
 
-This reduces the size of the intermediate ELF files
-arch/x86/boot/setup.elf and arch/x86/realmode/rm/realmode.elf by about
-2MiB each. The binary versions are unchanged.
+Provide generic infrastructure to avoid duplication of the same handling
+code all over the place.
 
-Move the LDFLAGS settings to all be together and just after CFLAGS
-settings are done.
+The transfer to guest mode handling is different from the exit to usermode
+handling, e.g. vs. rseq and live patching, so a separate function is used.
 
-Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: Sedat Dilek <sedat.dilek@gmail.com>
-Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
-Cc: Michal Marek <michal.lkml@markovi.net>
-Link: https://lore.kernel.org/r/20200722184334.3785418-1-nivedita@alum.mit.edu
+The initial list of work items handled is:
+
+    TIF_SIGPENDING, TIF_NEED_RESCHED, TIF_NOTIFY_RESUME
+
+Architecture specific TIF flags can be added via defines in the
+architecture specific include files.
+
+The calling convention is also different from the syscall/interrupt entry
+functions as KVM invokes this from the outer vcpu_run() loop with
+interrupts and preemption enabled. To prevent missing a pending work item
+it invokes a check for pending TIF work from interrupt disabled code right
+before transitioning to guest mode. The lockdep, RCU and tracing state
+handling is also done directly around the switch to and from guest mode.
+
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lkml.kernel.org/r/20200722220519.833296398@linutronix.de
 ---
- arch/x86/Makefile | 32 +++++++++++++++++---------------
- 1 file changed, 17 insertions(+), 15 deletions(-)
+ include/linux/entry-kvm.h | 80 ++++++++++++++++++++++++++++++++++++++-
+ include/linux/kvm_host.h  |  8 ++++-
+ kernel/entry/Makefile     |  3 +-
+ kernel/entry/kvm.c        | 51 ++++++++++++++++++++++++-
+ virt/kvm/Kconfig          |  3 +-
+ 5 files changed, 144 insertions(+), 1 deletion(-)
+ create mode 100644 include/linux/entry-kvm.h
+ create mode 100644 kernel/entry/kvm.c
 
-diff --git a/arch/x86/Makefile b/arch/x86/Makefile
-index 00e378d..1e634d7 100644
---- a/arch/x86/Makefile
-+++ b/arch/x86/Makefile
-@@ -47,10 +47,6 @@ export REALMODE_CFLAGS
- # e.g.: obj-y += foo_$(BITS).o
- export BITS
- 
--ifdef CONFIG_X86_NEED_RELOCS
--        LDFLAGS_vmlinux := --emit-relocs --discard-none
--endif
--
- #
- # Prevent GCC from generating any FP code by mistake.
- #
-@@ -177,17 +173,6 @@ ifeq ($(ACCUMULATE_OUTGOING_ARGS), 1)
- 	KBUILD_CFLAGS += $(call cc-option,-maccumulate-outgoing-args,)
- endif
- 
--KBUILD_LDFLAGS := -m elf_$(UTS_MACHINE)
--
--#
--# The 64-bit kernel must be aligned to 2MB.  Pass -z max-page-size=0x200000 to
--# the linker to force 2MB page size regardless of the default page size used
--# by the linker.
--#
--ifdef CONFIG_X86_64
--KBUILD_LDFLAGS += $(call ld-option, -z max-page-size=0x200000)
--endif
--
- # Workaround for a gcc prelease that unfortunately was shipped in a suse release
- KBUILD_CFLAGS += -Wno-sign-compare
- #
-@@ -207,6 +192,23 @@ ifdef CONFIG_RETPOLINE
-   endif
- endif
- 
-+KBUILD_LDFLAGS := -m elf_$(UTS_MACHINE)
+diff --git a/include/linux/entry-kvm.h b/include/linux/entry-kvm.h
+new file mode 100644
+index 0000000..0cef17a
+--- /dev/null
++++ b/include/linux/entry-kvm.h
+@@ -0,0 +1,80 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef __LINUX_ENTRYKVM_H
++#define __LINUX_ENTRYKVM_H
 +
-+ifdef CONFIG_X86_NEED_RELOCS
-+LDFLAGS_vmlinux := --emit-relocs --discard-none
-+else
-+LDFLAGS_vmlinux :=
-+endif
++#include <linux/entry-common.h>
 +
-+#
-+# The 64-bit kernel must be aligned to 2MB.  Pass -z max-page-size=0x200000 to
-+# the linker to force 2MB page size regardless of the default page size used
-+# by the linker.
-+#
-+ifdef CONFIG_X86_64
-+LDFLAGS_vmlinux += -z max-page-size=0x200000
-+endif
++/* Transfer to guest mode work */
++#ifdef CONFIG_KVM_XFER_TO_GUEST_WORK
 +
- archscripts: scripts_basic
- 	$(Q)$(MAKE) $(build)=arch/x86/tools relocs
++#ifndef ARCH_XFER_TO_GUEST_MODE_WORK
++# define ARCH_XFER_TO_GUEST_MODE_WORK	(0)
++#endif
++
++#define XFER_TO_GUEST_MODE_WORK					\
++	(_TIF_NEED_RESCHED | _TIF_SIGPENDING |			\
++	 _TIF_NOTIFY_RESUME | ARCH_XFER_TO_GUEST_MODE_WORK)
++
++struct kvm_vcpu;
++
++/**
++ * arch_xfer_to_guest_mode_handle_work - Architecture specific xfer to guest
++ *					 mode work handling function.
++ * @vcpu:	Pointer to current's VCPU data
++ * @ti_work:	Cached TIF flags gathered in xfer_to_guest_mode_handle_work()
++ *
++ * Invoked from xfer_to_guest_mode_handle_work(). Defaults to NOOP. Can be
++ * replaced by architecture specific code.
++ */
++static inline int arch_xfer_to_guest_mode_handle_work(struct kvm_vcpu *vcpu,
++						      unsigned long ti_work);
++
++#ifndef arch_xfer_to_guest_mode_work
++static inline int arch_xfer_to_guest_mode_handle_work(struct kvm_vcpu *vcpu,
++						      unsigned long ti_work)
++{
++	return 0;
++}
++#endif
++
++/**
++ * xfer_to_guest_mode_handle_work - Check and handle pending work which needs
++ *				    to be handled before going to guest mode
++ * @vcpu:	Pointer to current's VCPU data
++ *
++ * Returns: 0 or an error code
++ */
++int xfer_to_guest_mode_handle_work(struct kvm_vcpu *vcpu);
++
++/**
++ * __xfer_to_guest_mode_work_pending - Check if work is pending
++ *
++ * Returns: True if work pending, False otherwise.
++ *
++ * Bare variant of xfer_to_guest_mode_work_pending(). Can be called from
++ * interrupt enabled code for racy quick checks with care.
++ */
++static inline bool __xfer_to_guest_mode_work_pending(void)
++{
++	unsigned long ti_work = READ_ONCE(current_thread_info()->flags);
++
++	return !!(ti_work & XFER_TO_GUEST_MODE_WORK);
++}
++
++/**
++ * xfer_to_guest_mode_work_pending - Check if work is pending which needs to be
++ *				     handled before returning to guest mode
++ *
++ * Returns: True if work pending, False otherwise.
++ *
++ * Has to be invoked with interrupts disabled before the transition to
++ * guest mode.
++ */
++static inline bool xfer_to_guest_mode_work_pending(void)
++{
++	lockdep_assert_irqs_disabled();
++	return __xfer_to_guest_mode_work_pending();
++}
++#endif /* CONFIG_KVM_XFER_TO_GUEST_WORK */
++
++#endif
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index d564855..ac83e9c 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -1439,4 +1439,12 @@ int kvm_vm_create_worker_thread(struct kvm *kvm, kvm_vm_thread_fn_t thread_fn,
+ 				uintptr_t data, const char *name,
+ 				struct task_struct **thread_ptr);
  
++#ifdef CONFIG_KVM_XFER_TO_GUEST_WORK
++static inline void kvm_handle_signal_exit(struct kvm_vcpu *vcpu)
++{
++	vcpu->run->exit_reason = KVM_EXIT_INTR;
++	vcpu->stat.signal_exits++;
++}
++#endif /* CONFIG_KVM_XFER_TO_GUEST_WORK */
++
+ #endif
+diff --git a/kernel/entry/Makefile b/kernel/entry/Makefile
+index c207d20..34c8a3f 100644
+--- a/kernel/entry/Makefile
++++ b/kernel/entry/Makefile
+@@ -9,4 +9,5 @@ KCOV_INSTRUMENT := n
+ CFLAGS_REMOVE_common.o	 = -fstack-protector -fstack-protector-strong
+ CFLAGS_common.o		+= -fno-stack-protector
+ 
+-obj-$(CONFIG_GENERIC_ENTRY) += common.o
++obj-$(CONFIG_GENERIC_ENTRY) 		+= common.o
++obj-$(CONFIG_KVM_XFER_TO_GUEST_WORK)	+= kvm.o
+diff --git a/kernel/entry/kvm.c b/kernel/entry/kvm.c
+new file mode 100644
+index 0000000..eb1a8a4
+--- /dev/null
++++ b/kernel/entry/kvm.c
+@@ -0,0 +1,51 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include <linux/entry-kvm.h>
++#include <linux/kvm_host.h>
++
++static int xfer_to_guest_mode_work(struct kvm_vcpu *vcpu, unsigned long ti_work)
++{
++	do {
++		int ret;
++
++		if (ti_work & _TIF_SIGPENDING) {
++			kvm_handle_signal_exit(vcpu);
++			return -EINTR;
++		}
++
++		if (ti_work & _TIF_NEED_RESCHED)
++			schedule();
++
++		if (ti_work & _TIF_NOTIFY_RESUME) {
++			clear_thread_flag(TIF_NOTIFY_RESUME);
++			tracehook_notify_resume(NULL);
++		}
++
++		ret = arch_xfer_to_guest_mode_handle_work(vcpu, ti_work);
++		if (ret)
++			return ret;
++
++		ti_work = READ_ONCE(current_thread_info()->flags);
++	} while (ti_work & XFER_TO_GUEST_MODE_WORK || need_resched());
++	return 0;
++}
++
++int xfer_to_guest_mode_handle_work(struct kvm_vcpu *vcpu)
++{
++	unsigned long ti_work;
++
++	/*
++	 * This is invoked from the outer guest loop with interrupts and
++	 * preemption enabled.
++	 *
++	 * KVM invokes xfer_to_guest_mode_work_pending() with interrupts
++	 * disabled in the inner loop before going into guest mode. No need
++	 * to disable interrupts here.
++	 */
++	ti_work = READ_ONCE(current_thread_info()->flags);
++	if (!(ti_work & XFER_TO_GUEST_MODE_WORK))
++		return 0;
++
++	return xfer_to_guest_mode_work(vcpu, ti_work);
++}
++EXPORT_SYMBOL_GPL(xfer_to_guest_mode_handle_work);
+diff --git a/virt/kvm/Kconfig b/virt/kvm/Kconfig
+index aad9284..1c37ccd 100644
+--- a/virt/kvm/Kconfig
++++ b/virt/kvm/Kconfig
+@@ -60,3 +60,6 @@ config HAVE_KVM_VCPU_RUN_PID_CHANGE
+ 
+ config HAVE_KVM_NO_POLL
+        bool
++
++config KVM_XFER_TO_GUEST_WORK
++       bool
