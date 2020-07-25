@@ -2,50 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 80CC622D6A1
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 25 Jul 2020 12:14:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7BB2122D6A3
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 25 Jul 2020 12:14:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726973AbgGYKNo (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 25 Jul 2020 06:13:44 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:43650 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726839AbgGYKNn (ORCPT
+        id S1726839AbgGYKNt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 25 Jul 2020 06:13:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33486 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726938AbgGYKNm (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 25 Jul 2020 06:13:43 -0400
+        Sat, 25 Jul 2020 06:13:42 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C3DAC0619D3;
+        Sat, 25 Jul 2020 03:13:42 -0700 (PDT)
 Date:   Sat, 25 Jul 2020 10:13:40 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1595672021;
+        s=2020; t=1595672020;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=20DnNp5cze1/ylzfbRoAtBpyfJOVVlM56wdmug10pm8=;
-        b=EFAI8hiRkOYEU/pIsKJ8HXv1zmytq23TOrQBZAFxPuPDX97qP0RLKdXuvALRlQVCmCJ6Pq
-        aOcqdF33ZxmK7iFxPJcgjNJEpOCqCkMUzVbLCUX02i7AVv72sWE+R4+Yi0sOwojCECpMX/
-        dPc2YzVfIc9CP5JgBqpE+lRja1g60l3mEPi4bJx1wGdJGLbP98uXdWqTMVR8S3d1oMXo7y
-        RcP0fkpp6tnGcB3pesqs8Nb2sjU3RVpzF0LFG6hjQrydQ12eCoGqz+f0gBRSyMMwco96rA
-        vwlzk6MTAunvQLrX07SzkMzP5zERBVz3SVNryAx+RzDRJxJgXM6sCsV92fxeZQ==
+        bh=Qwu/iZaf7EOvYkm7ogUMnahRsySRRaJFOiD0v/N0Q4o=;
+        b=cT3KOa4gdJ/pJvw9ILHq5nHj2Qs0ojmumBHqcvFkNESytfd/48FQAJAZhneGnEZ7O8yozt
+        Jazs4fGI2FFH62HRF4unksTTr7ZIUZ1r01NbdN4C9+vGQcFHmXC5Sg6mL7zDx+JzMhV3YC
+        mSkxll4jRiA7Q9ndEustpKK4/rCSzjAwkanmZ3QbGhUZPQyHDwQpv03fJwX/SpctowwN/S
+        xFbiOKNMJ/9ugg2xtAjCCSXViXuzgo54L34rS1m0ravwXNFSYQxUsalVwBQRqfpW9GdSmS
+        BcrXGSXXw3RgfvHer/2ksR0Oe7xDWcwNhgSPPNdtz8z5bACAiSIDmQLFqwhzjg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1595672021;
+        s=2020e; t=1595672020;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=20DnNp5cze1/ylzfbRoAtBpyfJOVVlM56wdmug10pm8=;
-        b=ayEWGy4cfMCxXjviVo8hvCHlifgU+aIXU0K1KdJFz2OU2x/H4RNNHpG+/zkX2nuomUBH1h
-        6tsKJpc2j/3oB7CQ==
+        bh=Qwu/iZaf7EOvYkm7ogUMnahRsySRRaJFOiD0v/N0Q4o=;
+        b=HiIRxt+T5brj7graxC8ETkYFdTnox1Mff/RyBwywMEfiOe6V5nMu+4jZ3oltzVwuKbHkaR
+        qYXFZrZ7naj8e1BQ==
 From:   "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cleanups] x86/ioapic: Remove unused "IOAPIC_AUTO" define
+Subject: [tip: x86/cleanups] x86/tsc: Remove unused "US_SCALE" and "NS_SCALE"
+ leftover macros
 Cc:     Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200724114418.629021-2-mingo@kernel.org>
-References: <20200724114418.629021-2-mingo@kernel.org>
+In-Reply-To: <20200724114418.629021-3-mingo@kernel.org>
+References: <20200724114418.629021-3-mingo@kernel.org>
 MIME-Version: 1.0
-Message-ID: <159567202093.4006.10042539580438472603.tip-bot2@tip-bot2>
+Message-ID: <159567202032.4006.6639431900725796846.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -57,34 +61,43 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/cleanups branch of tip:
 
-Commit-ID:     8cd591aeb1d650f79a49d8704c35a78bf18f5de9
-Gitweb:        https://git.kernel.org/tip/8cd591aeb1d650f79a49d8704c35a78bf18f5de9
+Commit-ID:     161449bad5053d66f2310744ba8498158ab12c89
+Gitweb:        https://git.kernel.org/tip/161449bad5053d66f2310744ba8498158ab12c89
 Author:        Ingo Molnar <mingo@kernel.org>
-AuthorDate:    Fri, 24 Jul 2020 13:44:16 +02:00
+AuthorDate:    Fri, 24 Jul 2020 13:44:17 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sat, 25 Jul 2020 12:00:56 +02:00
+CommitterDate: Sat, 25 Jul 2020 12:00:57 +02:00
 
-x86/ioapic: Remove unused "IOAPIC_AUTO" define
+x86/tsc: Remove unused "US_SCALE" and "NS_SCALE" leftover macros
 
-Last use was removed more than 5 years ago, in:
+Last use of them was removed 13 years ago, when the code was converted
+to use CYC2NS_SCALE_FACTOR:
 
-   5ad274d41c1b: ("x86/irq: Remove unused old IOAPIC irqdomain interfaces")
+  53d517cdbaac: ("x86: scale cyc_2_nsec according to CPU frequency")
+
+The current TSC code uses the 'struct cyc2ns_data' scaling abstraction,
+the old fixed scaling approach is long gone.
+
+This cleanup also removes the 'arbitralrily' typo from the comment,
+so win-win. ;-)
 
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20200724114418.629021-2-mingo@kernel.org
+Link: https://lore.kernel.org/r/20200724114418.629021-3-mingo@kernel.org
 ---
- arch/x86/include/asm/io_apic.h | 1 -
- 1 file changed, 1 deletion(-)
+ arch/x86/include/asm/tsc.h | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/arch/x86/include/asm/io_apic.h b/arch/x86/include/asm/io_apic.h
-index fd20a23..a1a26f6 100644
---- a/arch/x86/include/asm/io_apic.h
-+++ b/arch/x86/include/asm/io_apic.h
-@@ -99,7 +99,6 @@ struct IR_IO_APIC_route_entry {
- struct irq_alloc_info;
- struct ioapic_domain_cfg;
+diff --git a/arch/x86/include/asm/tsc.h b/arch/x86/include/asm/tsc.h
+index 8a0c25c..b7b2624 100644
+--- a/arch/x86/include/asm/tsc.h
++++ b/arch/x86/include/asm/tsc.h
+@@ -7,9 +7,6 @@
  
--#define IOAPIC_AUTO			-1
- #define IOAPIC_EDGE			0
- #define IOAPIC_LEVEL			1
+ #include <asm/processor.h>
  
+-#define NS_SCALE	10 /* 2^10, carefully chosen */
+-#define US_SCALE	32 /* 2^32, arbitralrily chosen */
+-
+ /*
+  * Standard way to access the cycle counter.
+  */
