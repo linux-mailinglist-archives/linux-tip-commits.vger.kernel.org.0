@@ -2,55 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4EFE022D7EE
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 25 Jul 2020 15:53:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B17B422D9A9
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 25 Jul 2020 21:51:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727091AbgGYNxk (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 25 Jul 2020 09:53:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39098 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726639AbgGYNxk (ORCPT
+        id S1728005AbgGYTvs (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 25 Jul 2020 15:51:48 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:45680 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727997AbgGYTvs (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 25 Jul 2020 09:53:40 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1328FC08C5C0;
-        Sat, 25 Jul 2020 06:53:40 -0700 (PDT)
-Date:   Sat, 25 Jul 2020 13:53:36 -0000
+        Sat, 25 Jul 2020 15:51:48 -0400
+Date:   Sat, 25 Jul 2020 19:51:44 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1595685218;
+        s=2020; t=1595706705;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=i7L5Uokminw2hb/ot5HyS/DIJKPw+2NAd2RMYA9W+u0=;
-        b=avbKNi5LD7FIeafHqpn/AAejrYmW8v9oK5uhbDi8Pk4qgKLQEo3q8Dxxu2x1DM/NNW5vsg
-        AEJBXKcGHTR3DLsGe5SIEJZ4II0tr4dFbvQR8sYtXfK7pW7YBB1oQ4sGEsFP0zpwzYeybz
-        238NZubAjyFk3cTJ+eLX+t0qk1Sm2E1KdtVcmnlE22nbt0w5EAQglF2gLBQGBiFmrKvExx
-        bkrvaWV0MRzkhGbzNJxCfrG02iDMdpbun/T8AtWoV6ZP+0LBK27RXEeN/Y+4BxNEnNT/qv
-        X8cNw5w6wk+k+BlWKrEOuACSFUVotSbqXsZU4d5B3dSFFslYTDAYCCu+zT2pdg==
+        bh=Tzxo93bNci/t1uZYtvQ3Ar3hGAVig7CHbrWhhDAfsqY=;
+        b=lbmvNhTjFrTQdZiGARR6IGzqB1LWkSoNRDpVrhZt2bB1FFBGOOUTnVpUGIryK+iJciFyjS
+        msF7RTY5j/X97c4e9XMM3hGsBfy7YEAK4xZ1oF44STwv2oJyrN5QW5bxSZ7l2xTOloArbh
+        /JBi7MIsWZaSMdGMf6zIIcAbqoDkH3z+jNKKUYBgQgrsNfc1GCRjnYMTXS5Bn+hiLO4f30
+        DK4br4nqbXIwX+HrSZafCWR2iXg+n5sKvG7050aOHRmpl5SOwREXb0Wuqhrvxa1pkujmvL
+        Y4j75l/I5gsn64sqGRCXYZe/eMx70R+lhp4gd8XHhFbFL4nYt8RLCYCD8gXHPA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1595685218;
+        s=2020e; t=1595706705;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=i7L5Uokminw2hb/ot5HyS/DIJKPw+2NAd2RMYA9W+u0=;
-        b=EobXRciR5eYl+jDPtleNmNlRI3O2xUGSAfF7IwOeOoLqbaTuoAkcrkz3YAYU0mgu4BSgq/
-        mr3HUz9Ul6uW/tBg==
-From:   "tip-bot2 for Hayato Ohhashi" <tip-bot2@linutronix.de>
+        bh=Tzxo93bNci/t1uZYtvQ3Ar3hGAVig7CHbrWhhDAfsqY=;
+        b=wL5Ag34OfV7jeHwdAivtw2nBIBoFIPhU+jPVQh77NIEyQskG4iES5OE3HmNHGcHAlS7Rue
+        BQCs3IR8jGQnERDA==
+From:   "tip-bot2 for Chris Wilson" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/timers] x86/xen/time: Set the X86_FEATURE_TSC_KNOWN_FREQ
- flag in xen_tsc_khz()
-Cc:     Hayato Ohhashi <o8@vmm.dev>, Ingo Molnar <mingo@kernel.org>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200721161231.6019-1-o8@vmm.dev>
-References: <20200721161231.6019-1-o8@vmm.dev>
+Subject: [tip: locking/urgent] locking/lockdep: Fix overflow in presentation
+ of average lock-time
+Cc:     Chris Wilson <chris@chris-wilson.co.uk>,
+        Ingo Molnar <mingo@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200725185110.11588-1-chris@chris-wilson.co.uk>
+References: <20200725185110.11588-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Message-ID: <159568521657.4006.636725222719551278.tip-bot2@tip-bot2>
+Message-ID: <159570670466.4006.5604761972444184961.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,39 +58,43 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/timers branch of tip:
+The following commit has been merged into the locking/urgent branch of tip:
 
-Commit-ID:     898ec52d2ba05915aaedcdb21bff2e944c883cb8
-Gitweb:        https://git.kernel.org/tip/898ec52d2ba05915aaedcdb21bff2e944c883cb8
-Author:        Hayato Ohhashi <o8@vmm.dev>
-AuthorDate:    Tue, 21 Jul 2020 16:12:31 
+Commit-ID:     a7ef9b28aa8d72a1656fa6f0a01bbd1493886317
+Gitweb:        https://git.kernel.org/tip/a7ef9b28aa8d72a1656fa6f0a01bbd1493886317
+Author:        Chris Wilson <chris@chris-wilson.co.uk>
+AuthorDate:    Sat, 25 Jul 2020 19:51:10 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sat, 25 Jul 2020 15:49:41 +02:00
+CommitterDate: Sat, 25 Jul 2020 21:47:42 +02:00
 
-x86/xen/time: Set the X86_FEATURE_TSC_KNOWN_FREQ flag in xen_tsc_khz()
+locking/lockdep: Fix overflow in presentation of average lock-time
 
-If the TSC frequency is known from the pvclock page,
-the TSC frequency does not need to be recalibrated.
+Though the number of lock-acquisitions is tracked as unsigned long, this
+is passed as the divisor to div_s64() which interprets it as a s32,
+giving nonsense values with more than 2 billion acquisitons. E.g.
 
-We can avoid recalibration by setting X86_FEATURE_TSC_KNOWN_FREQ.
+  acquisitions   holdtime-min   holdtime-max holdtime-total   holdtime-avg
+  -------------------------------------------------------------------------
+    2350439395           0.07         353.38   649647067.36          0.-32
 
-Signed-off-by: Hayato Ohhashi <o8@vmm.dev>
+Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Boris Ostrovsky <boris.ostrovsky@oracle.com>
-Link: https://lore.kernel.org/r/20200721161231.6019-1-o8@vmm.dev
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20200725185110.11588-1-chris@chris-wilson.co.uk
 ---
- arch/x86/xen/time.c | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/locking/lockdep_proc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/xen/time.c b/arch/x86/xen/time.c
-index c8897aa..91f5b33 100644
---- a/arch/x86/xen/time.c
-+++ b/arch/x86/xen/time.c
-@@ -39,6 +39,7 @@ static unsigned long xen_tsc_khz(void)
- 	struct pvclock_vcpu_time_info *info =
- 		&HYPERVISOR_shared_info->vcpu_info[0].time;
- 
-+	setup_force_cpu_cap(X86_FEATURE_TSC_KNOWN_FREQ);
- 	return pvclock_tsc_khz(info);
+diff --git a/kernel/locking/lockdep_proc.c b/kernel/locking/lockdep_proc.c
+index 5525cd3..02ef87f 100644
+--- a/kernel/locking/lockdep_proc.c
++++ b/kernel/locking/lockdep_proc.c
+@@ -423,7 +423,7 @@ static void seq_lock_time(struct seq_file *m, struct lock_time *lt)
+ 	seq_time(m, lt->min);
+ 	seq_time(m, lt->max);
+ 	seq_time(m, lt->total);
+-	seq_time(m, lt->nr ? div_s64(lt->total, lt->nr) : 0);
++	seq_time(m, lt->nr ? div64_u64(lt->total, lt->nr) : 0);
  }
  
+ static void seq_stats(struct seq_file *m, struct lock_stat_data *data)
