@@ -2,53 +2,50 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A65FF22D69D
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 25 Jul 2020 12:13:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B21B22D69F
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 25 Jul 2020 12:14:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726854AbgGYKNl (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 25 Jul 2020 06:13:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33484 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726839AbgGYKNl (ORCPT
+        id S1726944AbgGYKNm (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 25 Jul 2020 06:13:42 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:43642 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726572AbgGYKNl (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Sat, 25 Jul 2020 06:13:41 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF1A8C0619D3;
-        Sat, 25 Jul 2020 03:13:40 -0700 (PDT)
-Date:   Sat, 25 Jul 2020 10:13:38 -0000
+Date:   Sat, 25 Jul 2020 10:13:39 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1595672019;
+        s=2020; t=1595672020;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=MmDOaKnjLRNWEPhtCqHEjZI1q1nbh960+iyXr6Dyz+k=;
-        b=rsQvPp4By/uHrAZoNe1HxzeDoErhVw5X30KoU8FesB/UKfHnGrId16kB8RjItDwZsT00Y3
-        m3MNW/l+thLhahTV1pzzkppwoncyervuz9O8ljNOPMxsII6XGGR4WPYMJ/qiNIKPJ3qVQW
-        MgZDSEnhA9lY3w0pKq/59DiCIuhrSjsxqTKgabGTRuAZUi0WUvlNT0o+OZroQI2fEAIPWv
-        NLaT5GCS0rv7SU2yWayx4jvXIo5GWrpc8A5Hl7/pWubFqvN3TOcLUnNg22i3bf8ZCuhRZT
-        565s91i4OOTYeDTkQG370t/3gUny6z2fb3+Wcro+aMSUq/yJq4ETl5uwc5gXbQ==
+        bh=qMrAlyOGIn738wM0N0xR3lzjSDszTSHPdqD5zD669Ww=;
+        b=S/NEFGrUKpNWLEFFTe3oI0dY2QBivzlIqAAX63K9e+Tl74jgNw0hVZ7vH0Zjpe04yCULU3
+        oj+F5IYF22xpRdWvPnvA6yUQJag0whPuuVOjLz69T28+9dtru0Oaji6tNLDuHpX+WqnU3m
+        N2gV0XxSYxdQvhIPRDIRo7uzJpPdzGhdPUCSvLe81HCQpA94ifteLORRbxTHqPzyrczKjj
+        5Im649U9R3qlURXK9jphh0ZtNYqsKEaasvmkQScPJ4S2Qg8g7vNCB/8ffDK/CjtHSkvMr4
+        H1xpEP0ELrnAqT8MB7SlDnt5mXdxXHgvw2rtJtrqpmO5eIqxyuiYnC4EyqCtGQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1595672019;
+        s=2020e; t=1595672020;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=MmDOaKnjLRNWEPhtCqHEjZI1q1nbh960+iyXr6Dyz+k=;
-        b=/Y0MtG0zOVdddLZRPIPVSxLLaGDRhKu3qEjOPHQnf7iERTfqXrre7q7EUBMC7SALnJw/JV
-        IKZyUO4wC1WqfQDQ==
+        bh=qMrAlyOGIn738wM0N0xR3lzjSDszTSHPdqD5zD669Ww=;
+        b=nPTL2EZBqoXoG68jewYmP+olzeS7loOkhg6w0jGcBXYfycn35a9XPFygAMcIIiBv0oQ52s
+        bnJ/gvE3hXMulRAA==
 From:   "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/build] x86/defconfigs: Refresh defconfig files
+Subject: [tip: x86/cleanups] x86/mm: Remove the unused mk_kernel_pgd() #define
 Cc:     Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200724130638.645844-2-mingo@kernel.org>
-References: <20200724130638.645844-2-mingo@kernel.org>
+In-Reply-To: <20200724114418.629021-4-mingo@kernel.org>
+References: <20200724114418.629021-4-mingo@kernel.org>
 MIME-Version: 1.0
-Message-ID: <159567201874.4006.9695998194395641108.tip-bot2@tip-bot2>
+Message-ID: <159567201969.4006.15220161067207214829.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,505 +55,56 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/build branch of tip:
+The following commit has been merged into the x86/cleanups branch of tip:
 
-Commit-ID:     1d0e12fd3a848199f973d42677cde423b76cafaf
-Gitweb:        https://git.kernel.org/tip/1d0e12fd3a848199f973d42677cde423b76cafaf
+Commit-ID:     4b8e0328e56e177663645a96ea4c5c0401ecd78f
+Gitweb:        https://git.kernel.org/tip/4b8e0328e56e177663645a96ea4c5c0401ecd78f
 Author:        Ingo Molnar <mingo@kernel.org>
-AuthorDate:    Fri, 24 Jul 2020 15:06:38 +02:00
+AuthorDate:    Fri, 24 Jul 2020 13:44:18 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sat, 25 Jul 2020 12:02:14 +02:00
+CommitterDate: Sat, 25 Jul 2020 12:00:57 +02:00
 
-x86/defconfigs: Refresh defconfig files
+x86/mm: Remove the unused mk_kernel_pgd() #define
 
-Perform a 'make savedefconfig' pass over our main defconfig files,
-which keeps the defconfig result the same, but compresses
-the file where defaults were changed, options removed or
-reordered.
+AFAICS the last uses of directly 'making' kernel PGDs was removed 7 years ago:
+
+  8b78c21d72d9: ("x86, 64bit, mm: hibernate use generic mapping_init")
+
+Where the explicit PGD walking loop was replaced with kernel_ident_mapping_init()
+calls. This was then (unnecessarily) carried over through the 5-level paging conversion.
+
+Also clean up the 'level' comments a bit, to convey the original, meanwhile somewhat
+bit-rotten notion, that these are empty comment blocks with no methods to handle any
+of the levels except the PTE level.
 
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20200724130638.645844-2-mingo@kernel.org
+Link: https://lore.kernel.org/r/20200724114418.629021-4-mingo@kernel.org
 ---
- arch/x86/configs/i386_defconfig   | 91 +++++++++--------------------
- arch/x86/configs/x86_64_defconfig | 93 ++++++++++--------------------
- 2 files changed, 62 insertions(+), 122 deletions(-)
+ arch/x86/include/asm/pgtable_64.h | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/arch/x86/configs/i386_defconfig b/arch/x86/configs/i386_defconfig
-index 3a2a898..d7577fe 100644
---- a/arch/x86/configs/i386_defconfig
-+++ b/arch/x86/configs/i386_defconfig
-@@ -1,39 +1,29 @@
--# CONFIG_64BIT is not set
- # CONFIG_LOCALVERSION_AUTO is not set
- CONFIG_SYSVIPC=y
- CONFIG_POSIX_MQUEUE=y
-+CONFIG_AUDIT=y
-+CONFIG_NO_HZ=y
-+CONFIG_HIGH_RES_TIMERS=y
-+CONFIG_PREEMPT_VOLUNTARY=y
- CONFIG_BSD_PROCESS_ACCT=y
- CONFIG_TASKSTATS=y
- CONFIG_TASK_DELAY_ACCT=y
- CONFIG_TASK_XACCT=y
- CONFIG_TASK_IO_ACCOUNTING=y
--CONFIG_FHANDLE=y
--CONFIG_AUDIT=y
--CONFIG_NO_HZ=y
--CONFIG_HIGH_RES_TIMERS=y
- CONFIG_LOG_BUF_SHIFT=18
- CONFIG_CGROUPS=y
-+CONFIG_CGROUP_SCHED=y
- CONFIG_CGROUP_FREEZER=y
- CONFIG_CPUSETS=y
- CONFIG_CGROUP_CPUACCT=y
--CONFIG_CGROUP_SCHED=y
- CONFIG_BLK_DEV_INITRD=y
- # CONFIG_COMPAT_BRK is not set
- CONFIG_PROFILING=y
--CONFIG_KPROBES=y
--CONFIG_JUMP_LABEL=y
--CONFIG_MODULES=y
--CONFIG_MODULE_UNLOAD=y
--CONFIG_MODULE_FORCE_UNLOAD=y
- CONFIG_SMP=y
- CONFIG_X86_GENERIC=y
- CONFIG_HPET_TIMER=y
--CONFIG_SCHED_SMT=y
--CONFIG_PREEMPT_VOLUNTARY=y
- CONFIG_X86_REROUTE_FOR_BROKEN_BOOT_IRQS=y
--CONFIG_X86_MCE=y
- CONFIG_X86_REBOOTFIXUPS=y
--CONFIG_MICROCODE=y
- CONFIG_MICROCODE_AMD=y
- CONFIG_X86_MSR=y
- CONFIG_X86_CPUID=y
-@@ -41,28 +31,25 @@ CONFIG_HIGHPTE=y
- CONFIG_X86_CHECK_BIOS_CORRUPTION=y
- # CONFIG_MTRR_SANITIZER is not set
- CONFIG_EFI=y
-+CONFIG_EFI_STUB=y
- CONFIG_HZ_1000=y
- CONFIG_KEXEC=y
- CONFIG_CRASH_DUMP=y
--CONFIG_RANDOMIZE_BASE=y
--CONFIG_RANDOMIZE_MEMORY=y
--# CONFIG_COMPAT_VDSO is not set
- CONFIG_HIBERNATION=y
- CONFIG_PM_DEBUG=y
- CONFIG_PM_TRACE_RTC=y
- CONFIG_ACPI_DOCK=y
--CONFIG_CPU_FREQ=y
--# CONFIG_CPU_FREQ_STAT is not set
-+CONFIG_ACPI_BGRT=y
- CONFIG_CPU_FREQ_DEFAULT_GOV_USERSPACE=y
--CONFIG_CPU_FREQ_GOV_PERFORMANCE=y
- CONFIG_CPU_FREQ_GOV_ONDEMAND=y
- CONFIG_X86_ACPI_CPUFREQ=y
--CONFIG_PCI=y
--CONFIG_PCIEPORTBUS=y
--CONFIG_PCI_MSI=y
--CONFIG_PCCARD=y
--CONFIG_YENTA=y
--CONFIG_HOTPLUG_PCI=y
-+CONFIG_EFI_VARS=y
-+CONFIG_KPROBES=y
-+CONFIG_JUMP_LABEL=y
-+CONFIG_MODULES=y
-+CONFIG_MODULE_UNLOAD=y
-+CONFIG_MODULE_FORCE_UNLOAD=y
-+# CONFIG_UNUSED_SYMBOLS is not set
- CONFIG_BINFMT_MISC=y
- CONFIG_NET=y
- CONFIG_PACKET=y
-@@ -82,16 +69,12 @@ CONFIG_IP_MROUTE=y
- CONFIG_IP_PIMSM_V1=y
- CONFIG_IP_PIMSM_V2=y
- CONFIG_SYN_COOKIES=y
--# CONFIG_INET_XFRM_MODE_TRANSPORT is not set
--# CONFIG_INET_XFRM_MODE_TUNNEL is not set
--# CONFIG_INET_XFRM_MODE_BEET is not set
- # CONFIG_INET_DIAG is not set
- CONFIG_TCP_CONG_ADVANCED=y
- # CONFIG_TCP_CONG_BIC is not set
- # CONFIG_TCP_CONG_WESTWOOD is not set
- # CONFIG_TCP_CONG_HTCP is not set
- CONFIG_TCP_MD5SIG=y
--CONFIG_IPV6=y
- CONFIG_INET6_AH=y
- CONFIG_INET6_ESP=y
- CONFIG_NETLABEL=y
-@@ -102,6 +85,7 @@ CONFIG_NF_CONNTRACK_FTP=y
- CONFIG_NF_CONNTRACK_IRC=y
- CONFIG_NF_CONNTRACK_SIP=y
- CONFIG_NF_CT_NETLINK=y
-+CONFIG_NF_NAT=y
- CONFIG_NETFILTER_XT_TARGET_CONNSECMARK=y
- CONFIG_NETFILTER_XT_TARGET_NFLOG=y
- CONFIG_NETFILTER_XT_TARGET_SECMARK=y
-@@ -109,14 +93,11 @@ CONFIG_NETFILTER_XT_TARGET_TCPMSS=y
- CONFIG_NETFILTER_XT_MATCH_CONNTRACK=y
- CONFIG_NETFILTER_XT_MATCH_POLICY=y
- CONFIG_NETFILTER_XT_MATCH_STATE=y
--CONFIG_NF_CONNTRACK_IPV4=y
- CONFIG_IP_NF_IPTABLES=y
- CONFIG_IP_NF_FILTER=y
- CONFIG_IP_NF_TARGET_REJECT=y
--CONFIG_NF_NAT=y
--CONFIG_IP_NF_TARGET_MASQUERADE=y
-+CONFIG_IP_NF_TARGET_MASQUERADE=m
- CONFIG_IP_NF_MANGLE=y
--CONFIG_NF_CONNTRACK_IPV6=y
- CONFIG_IP6_NF_IPTABLES=y
- CONFIG_IP6_NF_MATCH_IPV6HEADER=y
- CONFIG_IP6_NF_FILTER=y
-@@ -129,6 +110,12 @@ CONFIG_CFG80211=y
- CONFIG_MAC80211=y
- CONFIG_MAC80211_LEDS=y
- CONFIG_RFKILL=y
-+CONFIG_PCI=y
-+CONFIG_PCIEPORTBUS=y
-+CONFIG_PCI_MSI=y
-+CONFIG_HOTPLUG_PCI=y
-+CONFIG_PCCARD=y
-+CONFIG_YENTA=y
- CONFIG_DEVTMPFS=y
- CONFIG_DEVTMPFS_MOUNT=y
- CONFIG_DEBUG_DEVRES=y
-@@ -170,15 +157,12 @@ CONFIG_8139TOO=y
- # CONFIG_8139TOO_PIO is not set
- CONFIG_R8169=y
- CONFIG_INPUT_POLLDEV=y
--# CONFIG_INPUT_MOUSEDEV_PSAUX is not set
- CONFIG_INPUT_EVDEV=y
- CONFIG_INPUT_JOYSTICK=y
- CONFIG_INPUT_TABLET=y
- CONFIG_INPUT_TOUCHSCREEN=y
- CONFIG_INPUT_MISC=y
--CONFIG_VT_HW_CONSOLE_BINDING=y
- # CONFIG_LEGACY_PTYS is not set
--CONFIG_SERIAL_NONSTANDARD=y
- CONFIG_SERIAL_8250=y
- CONFIG_SERIAL_8250_CONSOLE=y
- CONFIG_SERIAL_8250_NR_UARTS=32
-@@ -187,6 +171,7 @@ CONFIG_SERIAL_8250_MANY_PORTS=y
- CONFIG_SERIAL_8250_SHARE_IRQ=y
- CONFIG_SERIAL_8250_DETECT_IRQ=y
- CONFIG_SERIAL_8250_RSA=y
-+CONFIG_SERIAL_NONSTANDARD=y
- CONFIG_HW_RANDOM=y
- CONFIG_NVRAM=y
- CONFIG_HPET=y
-@@ -201,19 +186,15 @@ CONFIG_DRM_I915=y
- CONFIG_FB_MODE_HELPERS=y
- CONFIG_FB_TILEBLITTING=y
- CONFIG_FB_EFI=y
--# CONFIG_LCD_CLASS_DEVICE is not set
- CONFIG_VGACON_SOFT_SCROLLBACK=y
- CONFIG_LOGO=y
- # CONFIG_LOGO_LINUX_MONO is not set
- # CONFIG_LOGO_LINUX_VGA16 is not set
- CONFIG_SOUND=y
- CONFIG_SND=y
-+CONFIG_SND_HRTIMER=y
- CONFIG_SND_SEQUENCER=y
- CONFIG_SND_SEQ_DUMMY=y
--CONFIG_SND_MIXER_OSS=y
--CONFIG_SND_PCM_OSS=y
--CONFIG_SND_SEQUENCER_OSS=y
--CONFIG_SND_HRTIMER=y
- CONFIG_SND_HDA_INTEL=y
- CONFIG_SND_HDA_HWDEP=y
- CONFIG_HIDRAW=y
-@@ -234,17 +215,14 @@ CONFIG_USB_ANNOUNCE_NEW_DEVICES=y
- CONFIG_USB_MON=y
- CONFIG_USB_XHCI_HCD=y
- CONFIG_USB_EHCI_HCD=y
--CONFIG_USB_EHCI_TT_NEWSCHED=y
- CONFIG_USB_OHCI_HCD=y
- CONFIG_USB_UHCI_HCD=y
- CONFIG_USB_PRINTER=y
- CONFIG_USB_STORAGE=y
--CONFIG_EDAC=y
- CONFIG_RTC_CLASS=y
- # CONFIG_RTC_HCTOSYS is not set
- CONFIG_DMADEVICES=y
- CONFIG_EEEPC_LAPTOP=y
--CONFIG_EFI_VARS=y
- CONFIG_EXT4_FS=y
- CONFIG_EXT4_FS_POSIX_ACL=y
- CONFIG_EXT4_FS_SECURITY=y
-@@ -270,26 +248,19 @@ CONFIG_NLS_CODEPAGE_437=y
- CONFIG_NLS_ASCII=y
- CONFIG_NLS_ISO8859_1=y
- CONFIG_NLS_UTF8=y
-+CONFIG_SECURITY=y
-+CONFIG_SECURITY_NETWORK=y
-+CONFIG_SECURITY_SELINUX=y
-+CONFIG_SECURITY_SELINUX_BOOTPARAM=y
-+CONFIG_SECURITY_SELINUX_DISABLE=y
- CONFIG_PRINTK_TIME=y
--CONFIG_FRAME_WARN=1024
- CONFIG_MAGIC_SYSRQ=y
--# CONFIG_UNUSED_SYMBOLS is not set
- CONFIG_DEBUG_KERNEL=y
-+CONFIG_DEBUG_STACK_USAGE=y
-+CONFIG_DEBUG_STACKOVERFLOW=y
- # CONFIG_SCHED_DEBUG is not set
- CONFIG_SCHEDSTATS=y
--CONFIG_TIMER_STATS=y
--CONFIG_DEBUG_STACK_USAGE=y
- CONFIG_BLK_DEV_IO_TRACE=y
- CONFIG_PROVIDE_OHCI1394_DMA_INIT=y
- CONFIG_EARLY_PRINTK_DBGP=y
--CONFIG_DEBUG_STACKOVERFLOW=y
--# CONFIG_DEBUG_RODATA_TEST is not set
- CONFIG_DEBUG_BOOT_PARAMS=y
--CONFIG_SECURITY=y
--CONFIG_SECURITY_NETWORK=y
--CONFIG_SECURITY_SELINUX=y
--CONFIG_SECURITY_SELINUX_BOOTPARAM=y
--CONFIG_SECURITY_SELINUX_DISABLE=y
--# CONFIG_CRYPTO_ANSI_CPRNG is not set
--CONFIG_EFI_STUB=y
--CONFIG_ACPI_BGRT=y
-diff --git a/arch/x86/configs/x86_64_defconfig b/arch/x86/configs/x86_64_defconfig
-index 6149610..f856001 100644
---- a/arch/x86/configs/x86_64_defconfig
-+++ b/arch/x86/configs/x86_64_defconfig
-@@ -1,36 +1,26 @@
- # CONFIG_LOCALVERSION_AUTO is not set
- CONFIG_SYSVIPC=y
- CONFIG_POSIX_MQUEUE=y
-+CONFIG_AUDIT=y
-+CONFIG_NO_HZ=y
-+CONFIG_HIGH_RES_TIMERS=y
-+CONFIG_PREEMPT_VOLUNTARY=y
- CONFIG_BSD_PROCESS_ACCT=y
- CONFIG_TASKSTATS=y
- CONFIG_TASK_DELAY_ACCT=y
- CONFIG_TASK_XACCT=y
- CONFIG_TASK_IO_ACCOUNTING=y
--CONFIG_FHANDLE=y
--CONFIG_AUDIT=y
--CONFIG_NO_HZ=y
--CONFIG_HIGH_RES_TIMERS=y
- CONFIG_LOG_BUF_SHIFT=18
- CONFIG_CGROUPS=y
-+CONFIG_CGROUP_SCHED=y
- CONFIG_CGROUP_FREEZER=y
- CONFIG_CPUSETS=y
- CONFIG_CGROUP_CPUACCT=y
--CONFIG_CGROUP_SCHED=y
- CONFIG_BLK_DEV_INITRD=y
- # CONFIG_COMPAT_BRK is not set
- CONFIG_PROFILING=y
--CONFIG_KPROBES=y
--CONFIG_JUMP_LABEL=y
--CONFIG_MODULES=y
--CONFIG_MODULE_UNLOAD=y
--CONFIG_MODULE_FORCE_UNLOAD=y
- CONFIG_SMP=y
--CONFIG_NR_CPUS=64
--CONFIG_SCHED_SMT=y
--CONFIG_PREEMPT_VOLUNTARY=y
- CONFIG_X86_REROUTE_FOR_BROKEN_BOOT_IRQS=y
--CONFIG_X86_MCE=y
--CONFIG_MICROCODE=y
- CONFIG_MICROCODE_AMD=y
- CONFIG_X86_MSR=y
- CONFIG_X86_CPUID=y
-@@ -38,30 +28,28 @@ CONFIG_NUMA=y
- CONFIG_X86_CHECK_BIOS_CORRUPTION=y
- # CONFIG_MTRR_SANITIZER is not set
- CONFIG_EFI=y
-+CONFIG_EFI_STUB=y
-+CONFIG_EFI_MIXED=y
- CONFIG_HZ_1000=y
- CONFIG_KEXEC=y
- CONFIG_CRASH_DUMP=y
--CONFIG_RANDOMIZE_BASE=y
--CONFIG_RANDOMIZE_MEMORY=y
--# CONFIG_COMPAT_VDSO is not set
- CONFIG_HIBERNATION=y
- CONFIG_PM_DEBUG=y
- CONFIG_PM_TRACE_RTC=y
- CONFIG_ACPI_DOCK=y
--CONFIG_CPU_FREQ=y
--# CONFIG_CPU_FREQ_STAT is not set
-+CONFIG_ACPI_BGRT=y
- CONFIG_CPU_FREQ_DEFAULT_GOV_USERSPACE=y
--CONFIG_CPU_FREQ_GOV_PERFORMANCE=y
- CONFIG_CPU_FREQ_GOV_ONDEMAND=y
- CONFIG_X86_ACPI_CPUFREQ=y
--CONFIG_PCI=y
--CONFIG_PCI_MMCONFIG=y
--CONFIG_PCIEPORTBUS=y
--CONFIG_PCCARD=y
--CONFIG_YENTA=y
--CONFIG_HOTPLUG_PCI=y
--CONFIG_BINFMT_MISC=y
- CONFIG_IA32_EMULATION=y
-+CONFIG_EFI_VARS=y
-+CONFIG_KPROBES=y
-+CONFIG_JUMP_LABEL=y
-+CONFIG_MODULES=y
-+CONFIG_MODULE_UNLOAD=y
-+CONFIG_MODULE_FORCE_UNLOAD=y
-+# CONFIG_UNUSED_SYMBOLS is not set
-+CONFIG_BINFMT_MISC=y
- CONFIG_NET=y
- CONFIG_PACKET=y
- CONFIG_UNIX=y
-@@ -80,16 +68,12 @@ CONFIG_IP_MROUTE=y
- CONFIG_IP_PIMSM_V1=y
- CONFIG_IP_PIMSM_V2=y
- CONFIG_SYN_COOKIES=y
--# CONFIG_INET_XFRM_MODE_TRANSPORT is not set
--# CONFIG_INET_XFRM_MODE_TUNNEL is not set
--# CONFIG_INET_XFRM_MODE_BEET is not set
- # CONFIG_INET_DIAG is not set
- CONFIG_TCP_CONG_ADVANCED=y
- # CONFIG_TCP_CONG_BIC is not set
- # CONFIG_TCP_CONG_WESTWOOD is not set
- # CONFIG_TCP_CONG_HTCP is not set
- CONFIG_TCP_MD5SIG=y
--CONFIG_IPV6=y
- CONFIG_INET6_AH=y
- CONFIG_INET6_ESP=y
- CONFIG_NETLABEL=y
-@@ -100,6 +84,7 @@ CONFIG_NF_CONNTRACK_FTP=y
- CONFIG_NF_CONNTRACK_IRC=y
- CONFIG_NF_CONNTRACK_SIP=y
- CONFIG_NF_CT_NETLINK=y
-+CONFIG_NF_NAT=y
- CONFIG_NETFILTER_XT_TARGET_CONNSECMARK=y
- CONFIG_NETFILTER_XT_TARGET_NFLOG=y
- CONFIG_NETFILTER_XT_TARGET_SECMARK=y
-@@ -107,14 +92,11 @@ CONFIG_NETFILTER_XT_TARGET_TCPMSS=y
- CONFIG_NETFILTER_XT_MATCH_CONNTRACK=y
- CONFIG_NETFILTER_XT_MATCH_POLICY=y
- CONFIG_NETFILTER_XT_MATCH_STATE=y
--CONFIG_NF_CONNTRACK_IPV4=y
- CONFIG_IP_NF_IPTABLES=y
- CONFIG_IP_NF_FILTER=y
- CONFIG_IP_NF_TARGET_REJECT=y
--CONFIG_NF_NAT=y
--CONFIG_IP_NF_TARGET_MASQUERADE=y
-+CONFIG_IP_NF_TARGET_MASQUERADE=m
- CONFIG_IP_NF_MANGLE=y
--CONFIG_NF_CONNTRACK_IPV6=y
- CONFIG_IP6_NF_IPTABLES=y
- CONFIG_IP6_NF_MATCH_IPV6HEADER=y
- CONFIG_IP6_NF_FILTER=y
-@@ -127,6 +109,11 @@ CONFIG_CFG80211=y
- CONFIG_MAC80211=y
- CONFIG_MAC80211_LEDS=y
- CONFIG_RFKILL=y
-+CONFIG_PCI=y
-+CONFIG_PCIEPORTBUS=y
-+CONFIG_HOTPLUG_PCI=y
-+CONFIG_PCCARD=y
-+CONFIG_YENTA=y
- CONFIG_DEVTMPFS=y
- CONFIG_DEVTMPFS_MOUNT=y
- CONFIG_DEBUG_DEVRES=y
-@@ -163,15 +150,12 @@ CONFIG_FORCEDETH=y
- CONFIG_8139TOO=y
- CONFIG_R8169=y
- CONFIG_INPUT_POLLDEV=y
--# CONFIG_INPUT_MOUSEDEV_PSAUX is not set
- CONFIG_INPUT_EVDEV=y
- CONFIG_INPUT_JOYSTICK=y
- CONFIG_INPUT_TABLET=y
- CONFIG_INPUT_TOUCHSCREEN=y
- CONFIG_INPUT_MISC=y
--CONFIG_VT_HW_CONSOLE_BINDING=y
- # CONFIG_LEGACY_PTYS is not set
--CONFIG_SERIAL_NONSTANDARD=y
- CONFIG_SERIAL_8250=y
- CONFIG_SERIAL_8250_CONSOLE=y
- CONFIG_SERIAL_8250_NR_UARTS=32
-@@ -180,6 +164,7 @@ CONFIG_SERIAL_8250_MANY_PORTS=y
- CONFIG_SERIAL_8250_SHARE_IRQ=y
- CONFIG_SERIAL_8250_DETECT_IRQ=y
- CONFIG_SERIAL_8250_RSA=y
-+CONFIG_SERIAL_NONSTANDARD=y
- CONFIG_HW_RANDOM=y
- # CONFIG_HW_RANDOM_INTEL is not set
- # CONFIG_HW_RANDOM_AMD is not set
-@@ -196,19 +181,15 @@ CONFIG_DRM_I915=y
- CONFIG_FB_MODE_HELPERS=y
- CONFIG_FB_TILEBLITTING=y
- CONFIG_FB_EFI=y
--# CONFIG_LCD_CLASS_DEVICE is not set
- CONFIG_VGACON_SOFT_SCROLLBACK=y
- CONFIG_LOGO=y
- # CONFIG_LOGO_LINUX_MONO is not set
- # CONFIG_LOGO_LINUX_VGA16 is not set
- CONFIG_SOUND=y
- CONFIG_SND=y
-+CONFIG_SND_HRTIMER=y
- CONFIG_SND_SEQUENCER=y
- CONFIG_SND_SEQ_DUMMY=y
--CONFIG_SND_MIXER_OSS=y
--CONFIG_SND_PCM_OSS=y
--CONFIG_SND_SEQUENCER_OSS=y
--CONFIG_SND_HRTIMER=y
- CONFIG_SND_HDA_INTEL=y
- CONFIG_SND_HDA_HWDEP=y
- CONFIG_HIDRAW=y
-@@ -229,12 +210,10 @@ CONFIG_USB_ANNOUNCE_NEW_DEVICES=y
- CONFIG_USB_MON=y
- CONFIG_USB_XHCI_HCD=y
- CONFIG_USB_EHCI_HCD=y
--CONFIG_USB_EHCI_TT_NEWSCHED=y
- CONFIG_USB_OHCI_HCD=y
- CONFIG_USB_UHCI_HCD=y
- CONFIG_USB_PRINTER=y
- CONFIG_USB_STORAGE=y
--CONFIG_EDAC=y
- CONFIG_RTC_CLASS=y
- # CONFIG_RTC_HCTOSYS is not set
- CONFIG_DMADEVICES=y
-@@ -242,7 +221,6 @@ CONFIG_EEEPC_LAPTOP=y
- CONFIG_AMD_IOMMU=y
- CONFIG_INTEL_IOMMU=y
- # CONFIG_INTEL_IOMMU_DEFAULT_ON is not set
--CONFIG_EFI_VARS=y
- CONFIG_EXT4_FS=y
- CONFIG_EXT4_FS_POSIX_ACL=y
- CONFIG_EXT4_FS_SECURITY=y
-@@ -268,27 +246,18 @@ CONFIG_NLS_CODEPAGE_437=y
- CONFIG_NLS_ASCII=y
- CONFIG_NLS_ISO8859_1=y
- CONFIG_NLS_UTF8=y
-+CONFIG_SECURITY=y
-+CONFIG_SECURITY_NETWORK=y
-+CONFIG_SECURITY_SELINUX=y
-+CONFIG_SECURITY_SELINUX_BOOTPARAM=y
-+CONFIG_SECURITY_SELINUX_DISABLE=y
- CONFIG_PRINTK_TIME=y
- CONFIG_MAGIC_SYSRQ=y
--# CONFIG_UNUSED_SYMBOLS is not set
- CONFIG_DEBUG_KERNEL=y
-+CONFIG_DEBUG_STACK_USAGE=y
- # CONFIG_SCHED_DEBUG is not set
- CONFIG_SCHEDSTATS=y
--CONFIG_TIMER_STATS=y
--CONFIG_DEBUG_STACK_USAGE=y
- CONFIG_BLK_DEV_IO_TRACE=y
- CONFIG_PROVIDE_OHCI1394_DMA_INIT=y
- CONFIG_EARLY_PRINTK_DBGP=y
--CONFIG_DEBUG_STACKOVERFLOW=y
--# CONFIG_DEBUG_RODATA_TEST is not set
- CONFIG_DEBUG_BOOT_PARAMS=y
--CONFIG_UNWINDER_ORC=y
--CONFIG_SECURITY=y
--CONFIG_SECURITY_NETWORK=y
--CONFIG_SECURITY_SELINUX=y
--CONFIG_SECURITY_SELINUX_BOOTPARAM=y
--CONFIG_SECURITY_SELINUX_DISABLE=y
--# CONFIG_CRYPTO_ANSI_CPRNG is not set
--CONFIG_EFI_STUB=y
--CONFIG_EFI_MIXED=y
--CONFIG_ACPI_BGRT=y
+diff --git a/arch/x86/include/asm/pgtable_64.h b/arch/x86/include/asm/pgtable_64.h
+index 1b68d24..d2af8c4 100644
+--- a/arch/x86/include/asm/pgtable_64.h
++++ b/arch/x86/include/asm/pgtable_64.h
+@@ -175,16 +175,13 @@ extern void sync_global_pgds(unsigned long start, unsigned long end);
+  * and a page entry and page directory to the page they refer to.
+  */
+ 
+-/*
+- * Level 4 access.
+- */
+-#define mk_kernel_pgd(address) __pgd((address) | _KERNPG_TABLE)
++/* PGD - Level 4 access */
+ 
+-/* PUD - Level3 access */
++/* PUD - Level 3 access */
+ 
+-/* PMD  - Level 2 access */
++/* PMD - Level 2 access */
+ 
+-/* PTE - Level 1 access. */
++/* PTE - Level 1 access */
+ 
+ /*
+  * Encode and de-code a swap entry
