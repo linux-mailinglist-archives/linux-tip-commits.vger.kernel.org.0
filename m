@@ -2,54 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0408722CF27
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 24 Jul 2020 22:12:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E636C22D69B
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 25 Jul 2020 12:13:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726983AbgGXULw (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 24 Jul 2020 16:11:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44494 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726992AbgGXULq (ORCPT
+        id S1726639AbgGYKNh (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 25 Jul 2020 06:13:37 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:43626 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726572AbgGYKNg (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 24 Jul 2020 16:11:46 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1150FC0619D3;
-        Fri, 24 Jul 2020 13:11:46 -0700 (PDT)
-Date:   Fri, 24 Jul 2020 20:11:43 -0000
+        Sat, 25 Jul 2020 06:13:36 -0400
+Date:   Sat, 25 Jul 2020 10:13:33 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1595621504;
+        s=2020; t=1595672014;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=z150dKpBqAjDmluNwFwDPx+9ho6AAnp0vEZHmBCE3Ck=;
-        b=zEFRqOM/HCdK2ifuEfE7k9fEC50fK2Q9/0Xmr7haIp4RZkCPyL/RgkkGBqqHcOAg/ludRg
-        7esCTSPI+4ZTpnWpwkGM0KUERU+aST98LAnqOEK0SUTqqYIHPX07NsaD8iGm6VbWwOJyX7
-        63Gs3NgsMyHiaBvEJ53mmtMIxKfn9cOys/98p373wpn0TSIDDicVh4zsxI7yzJ5hLcfHKo
-        Zfm+9/oJGkjv92rf4a98oyJOuVIy+GX2xN0HoaeNFkbAKSAVR+zHwd/JlRiSK+qrRY0G0K
-        6MEcuXnhgzW2VXhFWfg7qTESb6ihoRQp1Tf/C9zwTWdt8olPPj8ijKk5UjfADg==
+        bh=dYoF8hY7myky2pnc6JSt8kEeqXo7a7WL/ip8dCcLkjA=;
+        b=Uph/QBYf+1WaWraTBk8zRHcYFUjwZGHA4ud41oKNGbh5z7sZd1+vzPKNdQpaMradGjmkGR
+        yUgOqd7ZviZSsVEYCIFSpbVf1ij02YAqyAkFHDALsUG38GWirHVkXMeopZlKix+J0DIFno
+        ZVfWw6mzdOTbntZzpIgwVkF2W0LJDaEuy1hYAVhnE4w9yRTXC4VFGZhmCRT0x9bfDDPUs2
+        08d9uGWxfn3F1ILb3qP+bDaM9+1HpsTo8ok4K/dbI6cAgM9QN5m+FZkNsfDGx/0lpXLwBO
+        MicmexzZYwJtNA5XYM2FnJRDRXIlPDm1IAT97MLg4W4hZTq/jlEYhtt3sxUKbg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1595621504;
+        s=2020e; t=1595672014;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=z150dKpBqAjDmluNwFwDPx+9ho6AAnp0vEZHmBCE3Ck=;
-        b=B4rDe8blpz6JoxAqoKtqFV+Oix4UzHJclhNHrjyvYdbirSdZfTmGOTPjtu+RvZLvbmwiTL
-        6kwBCYyFcvN/8KBA==
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+        bh=dYoF8hY7myky2pnc6JSt8kEeqXo7a7WL/ip8dCcLkjA=;
+        b=/4TXYni+zFp2xKXUPaGtUfn9K33yUJdg3KY8x+ljEq/AbepvgWGD6fCMR5A/EwZ+6cBPyI
+        QhHsNzjUmncTSaAw==
+From:   "tip-bot2 for Qinglang Miao" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/entry] x86/entry: Consolidate check_user_regs()
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Kees Cook <keescook@chromium.org>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200722220519.943016204@linutronix.de>
-References: <20200722220519.943016204@linutronix.de>
+Subject: [tip: sched/core] sched/uclamp: Remove unnecessary mutex_init()
+Cc:     Qinglang Miao <miaoqinglang@huawei.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        Patrick Bellasi <patrick.bellasi@arm.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200725085629.98292-1-miaoqinglang@huawei.com>
+References: <20200725085629.98292-1-miaoqinglang@huawei.com>
 MIME-Version: 1.0
-Message-ID: <159562150324.4006.3990914186367201441.tip-bot2@tip-bot2>
+Message-ID: <159567201333.4006.12551438170876994206.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,114 +60,41 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/entry branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     8d5ea35c5e9139dbd19a3d73985d008d36c9968f
-Gitweb:        https://git.kernel.org/tip/8d5ea35c5e9139dbd19a3d73985d008d36c9968f
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Thu, 23 Jul 2020 00:00:00 +02:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 24 Jul 2020 15:04:57 +02:00
+Commit-ID:     13efa616124f7eec7d6a58adeeef31864aa03879
+Gitweb:        https://git.kernel.org/tip/13efa616124f7eec7d6a58adeeef31864aa03879
+Author:        Qinglang Miao <miaoqinglang@huawei.com>
+AuthorDate:    Sat, 25 Jul 2020 16:56:29 +08:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Sat, 25 Jul 2020 12:10:36 +02:00
 
-x86/entry: Consolidate check_user_regs()
+sched/uclamp: Remove unnecessary mutex_init()
 
-The user register sanity check is sprinkled all over the place. Move it
-into enter_from_user_mode().
+The uclamp_mutex lock is initialized statically via DEFINE_MUTEX(),
+it is unnecessary to initialize it runtime via mutex_init().
 
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Link: https://lkml.kernel.org/r/20200722220519.943016204@linutronix.de
-
-
+Signed-off-by: Qinglang Miao <miaoqinglang@huawei.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Patrick Bellasi <patrick.bellasi@arm.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Vincent Guittot <vincent.guittot@linaro.org>
+Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Link: https://lore.kernel.org/r/20200725085629.98292-1-miaoqinglang@huawei.com
 ---
- arch/x86/entry/common.c | 24 +++++++++---------------
- 1 file changed, 9 insertions(+), 15 deletions(-)
+ kernel/sched/core.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/arch/x86/entry/common.c b/arch/x86/entry/common.c
-index 4eae4c1..ab6cb86 100644
---- a/arch/x86/entry/common.c
-+++ b/arch/x86/entry/common.c
-@@ -82,10 +82,11 @@ static noinstr void check_user_regs(struct pt_regs *regs)
-  * 2) Invoke context tracking if enabled to reactivate RCU
-  * 3) Trace interrupts off state
-  */
--static noinstr void enter_from_user_mode(void)
-+static noinstr void enter_from_user_mode(struct pt_regs *regs)
- {
- 	enum ctx_state state = ct_state();
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index bd8e521..6782534 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -1425,8 +1425,6 @@ static void __init init_uclamp(void)
+ 	enum uclamp_id clamp_id;
+ 	int cpu;
  
-+	check_user_regs(regs);
- 	lockdep_hardirqs_off(CALLER_ADDR0);
- 	user_exit_irqoff();
- 
-@@ -95,8 +96,9 @@ static noinstr void enter_from_user_mode(void)
- 	instrumentation_end();
- }
- #else
--static __always_inline void enter_from_user_mode(void)
-+static __always_inline void enter_from_user_mode(struct pt_regs *regs)
- {
-+	check_user_regs(regs);
- 	lockdep_hardirqs_off(CALLER_ADDR0);
- 	instrumentation_begin();
- 	trace_hardirqs_off_finish();
-@@ -369,9 +371,7 @@ __visible noinstr void do_syscall_64(unsigned long nr, struct pt_regs *regs)
- {
- 	struct thread_info *ti;
- 
--	check_user_regs(regs);
+-	mutex_init(&uclamp_mutex);
 -
--	enter_from_user_mode();
-+	enter_from_user_mode(regs);
- 	instrumentation_begin();
+ 	for_each_possible_cpu(cpu)
+ 		init_uclamp_rq(cpu_rq(cpu));
  
- 	local_irq_enable();
-@@ -434,9 +434,7 @@ static void do_syscall_32_irqs_on(struct pt_regs *regs)
- /* Handles int $0x80 */
- __visible noinstr void do_int80_syscall_32(struct pt_regs *regs)
- {
--	check_user_regs(regs);
--
--	enter_from_user_mode();
-+	enter_from_user_mode(regs);
- 	instrumentation_begin();
- 
- 	local_irq_enable();
-@@ -487,8 +485,6 @@ __visible noinstr long do_fast_syscall_32(struct pt_regs *regs)
- 					vdso_image_32.sym_int80_landing_pad;
- 	bool success;
- 
--	check_user_regs(regs);
--
- 	/*
- 	 * SYSENTER loses EIP, and even SYSCALL32 needs us to skip forward
- 	 * so that 'regs->ip -= 2' lands back on an int $0x80 instruction.
-@@ -496,7 +492,7 @@ __visible noinstr long do_fast_syscall_32(struct pt_regs *regs)
- 	 */
- 	regs->ip = landing_pad;
- 
--	enter_from_user_mode();
-+	enter_from_user_mode(regs);
- 	instrumentation_begin();
- 
- 	local_irq_enable();
-@@ -599,8 +595,7 @@ idtentry_state_t noinstr idtentry_enter(struct pt_regs *regs)
- 	};
- 
- 	if (user_mode(regs)) {
--		check_user_regs(regs);
--		enter_from_user_mode();
-+		enter_from_user_mode(regs);
- 		return ret;
- 	}
- 
-@@ -733,8 +728,7 @@ void noinstr idtentry_exit(struct pt_regs *regs, idtentry_state_t state)
-  */
- void noinstr idtentry_enter_user(struct pt_regs *regs)
- {
--	check_user_regs(regs);
--	enter_from_user_mode();
-+	enter_from_user_mode(regs);
- }
- 
- /**
