@@ -2,50 +2,50 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B21B22D69F
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 25 Jul 2020 12:14:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 80CC622D6A1
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 25 Jul 2020 12:14:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726944AbgGYKNm (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 25 Jul 2020 06:13:42 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:43642 "EHLO
+        id S1726973AbgGYKNo (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 25 Jul 2020 06:13:44 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:43650 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726572AbgGYKNl (ORCPT
+        with ESMTP id S1726839AbgGYKNn (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 25 Jul 2020 06:13:41 -0400
-Date:   Sat, 25 Jul 2020 10:13:39 -0000
+        Sat, 25 Jul 2020 06:13:43 -0400
+Date:   Sat, 25 Jul 2020 10:13:40 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1595672020;
+        s=2020; t=1595672021;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=qMrAlyOGIn738wM0N0xR3lzjSDszTSHPdqD5zD669Ww=;
-        b=S/NEFGrUKpNWLEFFTe3oI0dY2QBivzlIqAAX63K9e+Tl74jgNw0hVZ7vH0Zjpe04yCULU3
-        oj+F5IYF22xpRdWvPnvA6yUQJag0whPuuVOjLz69T28+9dtru0Oaji6tNLDuHpX+WqnU3m
-        N2gV0XxSYxdQvhIPRDIRo7uzJpPdzGhdPUCSvLe81HCQpA94ifteLORRbxTHqPzyrczKjj
-        5Im649U9R3qlURXK9jphh0ZtNYqsKEaasvmkQScPJ4S2Qg8g7vNCB/8ffDK/CjtHSkvMr4
-        H1xpEP0ELrnAqT8MB7SlDnt5mXdxXHgvw2rtJtrqpmO5eIqxyuiYnC4EyqCtGQ==
+        bh=20DnNp5cze1/ylzfbRoAtBpyfJOVVlM56wdmug10pm8=;
+        b=EFAI8hiRkOYEU/pIsKJ8HXv1zmytq23TOrQBZAFxPuPDX97qP0RLKdXuvALRlQVCmCJ6Pq
+        aOcqdF33ZxmK7iFxPJcgjNJEpOCqCkMUzVbLCUX02i7AVv72sWE+R4+Yi0sOwojCECpMX/
+        dPc2YzVfIc9CP5JgBqpE+lRja1g60l3mEPi4bJx1wGdJGLbP98uXdWqTMVR8S3d1oMXo7y
+        RcP0fkpp6tnGcB3pesqs8Nb2sjU3RVpzF0LFG6hjQrydQ12eCoGqz+f0gBRSyMMwco96rA
+        vwlzk6MTAunvQLrX07SzkMzP5zERBVz3SVNryAx+RzDRJxJgXM6sCsV92fxeZQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1595672020;
+        s=2020e; t=1595672021;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=qMrAlyOGIn738wM0N0xR3lzjSDszTSHPdqD5zD669Ww=;
-        b=nPTL2EZBqoXoG68jewYmP+olzeS7loOkhg6w0jGcBXYfycn35a9XPFygAMcIIiBv0oQ52s
-        bnJ/gvE3hXMulRAA==
+        bh=20DnNp5cze1/ylzfbRoAtBpyfJOVVlM56wdmug10pm8=;
+        b=ayEWGy4cfMCxXjviVo8hvCHlifgU+aIXU0K1KdJFz2OU2x/H4RNNHpG+/zkX2nuomUBH1h
+        6tsKJpc2j/3oB7CQ==
 From:   "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cleanups] x86/mm: Remove the unused mk_kernel_pgd() #define
+Subject: [tip: x86/cleanups] x86/ioapic: Remove unused "IOAPIC_AUTO" define
 Cc:     Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200724114418.629021-4-mingo@kernel.org>
-References: <20200724114418.629021-4-mingo@kernel.org>
+In-Reply-To: <20200724114418.629021-2-mingo@kernel.org>
+References: <20200724114418.629021-2-mingo@kernel.org>
 MIME-Version: 1.0
-Message-ID: <159567201969.4006.15220161067207214829.tip-bot2@tip-bot2>
+Message-ID: <159567202093.4006.10042539580438472603.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -57,54 +57,34 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/cleanups branch of tip:
 
-Commit-ID:     4b8e0328e56e177663645a96ea4c5c0401ecd78f
-Gitweb:        https://git.kernel.org/tip/4b8e0328e56e177663645a96ea4c5c0401ecd78f
+Commit-ID:     8cd591aeb1d650f79a49d8704c35a78bf18f5de9
+Gitweb:        https://git.kernel.org/tip/8cd591aeb1d650f79a49d8704c35a78bf18f5de9
 Author:        Ingo Molnar <mingo@kernel.org>
-AuthorDate:    Fri, 24 Jul 2020 13:44:18 +02:00
+AuthorDate:    Fri, 24 Jul 2020 13:44:16 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sat, 25 Jul 2020 12:00:57 +02:00
+CommitterDate: Sat, 25 Jul 2020 12:00:56 +02:00
 
-x86/mm: Remove the unused mk_kernel_pgd() #define
+x86/ioapic: Remove unused "IOAPIC_AUTO" define
 
-AFAICS the last uses of directly 'making' kernel PGDs was removed 7 years ago:
+Last use was removed more than 5 years ago, in:
 
-  8b78c21d72d9: ("x86, 64bit, mm: hibernate use generic mapping_init")
-
-Where the explicit PGD walking loop was replaced with kernel_ident_mapping_init()
-calls. This was then (unnecessarily) carried over through the 5-level paging conversion.
-
-Also clean up the 'level' comments a bit, to convey the original, meanwhile somewhat
-bit-rotten notion, that these are empty comment blocks with no methods to handle any
-of the levels except the PTE level.
+   5ad274d41c1b: ("x86/irq: Remove unused old IOAPIC irqdomain interfaces")
 
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20200724114418.629021-4-mingo@kernel.org
+Link: https://lore.kernel.org/r/20200724114418.629021-2-mingo@kernel.org
 ---
- arch/x86/include/asm/pgtable_64.h | 11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+ arch/x86/include/asm/io_apic.h | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/pgtable_64.h b/arch/x86/include/asm/pgtable_64.h
-index 1b68d24..d2af8c4 100644
---- a/arch/x86/include/asm/pgtable_64.h
-+++ b/arch/x86/include/asm/pgtable_64.h
-@@ -175,16 +175,13 @@ extern void sync_global_pgds(unsigned long start, unsigned long end);
-  * and a page entry and page directory to the page they refer to.
-  */
+diff --git a/arch/x86/include/asm/io_apic.h b/arch/x86/include/asm/io_apic.h
+index fd20a23..a1a26f6 100644
+--- a/arch/x86/include/asm/io_apic.h
++++ b/arch/x86/include/asm/io_apic.h
+@@ -99,7 +99,6 @@ struct IR_IO_APIC_route_entry {
+ struct irq_alloc_info;
+ struct ioapic_domain_cfg;
  
--/*
-- * Level 4 access.
-- */
--#define mk_kernel_pgd(address) __pgd((address) | _KERNPG_TABLE)
-+/* PGD - Level 4 access */
+-#define IOAPIC_AUTO			-1
+ #define IOAPIC_EDGE			0
+ #define IOAPIC_LEVEL			1
  
--/* PUD - Level3 access */
-+/* PUD - Level 3 access */
- 
--/* PMD  - Level 2 access */
-+/* PMD - Level 2 access */
- 
--/* PTE - Level 1 access. */
-+/* PTE - Level 1 access */
- 
- /*
-  * Encode and de-code a swap entry
