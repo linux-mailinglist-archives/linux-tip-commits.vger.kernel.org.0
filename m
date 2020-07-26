@@ -2,98 +2,206 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 58FA622E1C9
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 26 Jul 2020 19:58:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B4D6E22E1FC
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 26 Jul 2020 20:33:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726636AbgGZR6s (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 26 Jul 2020 13:58:48 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:50196 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725972AbgGZR6s (ORCPT
+        id S1726072AbgGZSdc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 26 Jul 2020 14:33:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51408 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726043AbgGZSdc (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 26 Jul 2020 13:58:48 -0400
-Date:   Sun, 26 Jul 2020 17:58:45 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1595786326;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=AhCDp1OdajCS7pW/CKgwrZGQtmI83gENbkTinXvtEHY=;
-        b=4elTZsJhe0bWPVvkeRNLm56naMdhBYACSJRSBqbngQptdrARJP/rsLPRrkDeMi0KAd1HWm
-        ypFF3L9wkyPmyupNdUpd31mWMu3e2ck7eTB27wBjn6I6hjiEcVvRlx55sLtooLk1H8eVla
-        zqByIIuNdk+1YsT7PuDSbotY9tLTcynf8X4KHPF/yEsYALMFNMZ1VMHpIk41HJiwr3oH+c
-        b2yJjBSKGxpq4OQVEq6h5THbqUKzypszgM1L+Z/rXep9O3T0TpSw+5RzCzjj1whzHiU/AE
-        Sm4XJLft5JOZQsBGPaZEhayqRL1cVl0Vfuea8rTuwNjnj1alQvGbA11PRiRzXw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1595786326;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=AhCDp1OdajCS7pW/CKgwrZGQtmI83gENbkTinXvtEHY=;
-        b=+k18nHk+mMAlRT7OYurYVT2KyYmzMXi3cFtb1la7zWBzY4C6diToWsROo1p6KRcZKvQCVs
-        fFYIn/vPWF4ArbAQ==
-From:   "tip-bot2 for Colin Ian King" <tip-bot2@linutronix.de>
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cleanups] x86/ioperm: Initialize pointer bitmap with NULL
- rather than 0
-Cc:     Colin Ian King <colin.king@canonical.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        Juergen Gross <jgross@suse.com>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200721100217.407975-1-colin.king@canonical.com>
-References: <20200721100217.407975-1-colin.king@canonical.com>
+        Sun, 26 Jul 2020 14:33:32 -0400
+Received: from mail-il1-x144.google.com (mail-il1-x144.google.com [IPv6:2607:f8b0:4864:20::144])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68676C0619D2;
+        Sun, 26 Jul 2020 11:33:32 -0700 (PDT)
+Received: by mail-il1-x144.google.com with SMTP id b18so6057455ilo.12;
+        Sun, 26 Jul 2020 11:33:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=JjG7ZoYlTIlU86cx3B03lhQ3nQqrfFEpaGS9K3Q6ArU=;
+        b=XOqK9Udgi1RcHDYkb5Lc5J6ccoEOeVxHwmqMaf45E7oWVRi5K8qH6Va0CW+Lyu/jqt
+         NdhHW8EazqYMHTAmMGLmhepPswk6BYHr9KddZxu04t8KUGL21QIjxpfIvDMwllsh2E1w
+         p3gSTe1ziK+8TrbxaSOI6Tpbpv0seHofvm5fQp2a5HOb3JBEFMaIVPiaVkOp8zuwFnKv
+         Ax0+SMKLOgoqu7BTO4FSIqf5RrXZQmQknb/MgvznUBiP0TT03vA1Vax80/ZoXJQDqBkn
+         cko3oER9r0pEb7MIQLvs1enJGOadJrcGuSff8ozVx2KcYFc+1cHEqs9fipLtf1AOcKyk
+         WnCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=JjG7ZoYlTIlU86cx3B03lhQ3nQqrfFEpaGS9K3Q6ArU=;
+        b=oBgGBF2N7wwoJMyX4o0BKOLyMpqhJO7mOdAJJOHwkQZjKlcsrNRYERhI9loex+58A/
+         /3d59SkHSc8LQcLXArHXoaECYMVCHaPDhGEMpVUdfr61saKY7M/fMO2bSRp7nZgItxL0
+         573tEhJxT+/LCtpqvypDB8TVoIDCGo9t9BVYcgqxXUZz9AyZqEo7zvUTWxrG3b1QtcDa
+         ei/7gs/FNaKKHFH409MFb5QHPCDmZki/deundsGBJe9aMdwtqwum+ifSYzekawfNUKNk
+         otyEV18PmjHoUBAdcfuqFYHZRXbyebhsnifLlJCoismhQEaxdnAKCtrb5KoG4CoOhtIj
+         TcNA==
+X-Gm-Message-State: AOAM530WOAh5BFuupX3/nX4Dw/8oNPHiDqvr8nZY6XVMneyH7kT1F8O2
+        8HO+GBi8VmvF8PavkqPV56SB4gYmqdgqz3wxNzyfwbU=
+X-Google-Smtp-Source: ABdhPJwZ78Ret661pOnPu9acx4lFJWN7fHXGU3s9HQMQj393fTZdEDKU8RoNSZ9LLsSXDFF1IYwqF1nS72wDxWMYEqg=
+X-Received: by 2002:a92:b112:: with SMTP id t18mr11662345ilh.172.1595788411185;
+ Sun, 26 Jul 2020 11:33:31 -0700 (PDT)
 MIME-Version: 1.0
-Message-ID: <159578632503.4006.1661941536167538433.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2.linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+References: <20200722220520.051234096@linutronix.de> <159562150262.4006.11750463088671474026.tip-bot2@tip-bot2>
+In-Reply-To: <159562150262.4006.11750463088671474026.tip-bot2@tip-bot2>
+From:   Brian Gerst <brgerst@gmail.com>
+Date:   Sun, 26 Jul 2020 14:33:20 -0400
+Message-ID: <CAMzpN2ipn3tK7hg4njCG-svtbYSP_nmzr0mWHZCrkaJFYMuXWw@mail.gmail.com>
+Subject: Re: [tip: x86/entry] x86/entry: Consolidate 32/64 bit syscall entry
+To:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc:     linux-tip-commits@vger.kernel.org,
+        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cleanups branch of tip:
+On Fri, Jul 24, 2020 at 4:14 PM tip-bot2 for Thomas Gleixner
+<tip-bot2@linutronix.de> wrote:
+>
+> The following commit has been merged into the x86/entry branch of tip:
+>
+> Commit-ID:     0b085e68f4072024ecaa3889aeeaab5f6c8eba5c
+> Gitweb:        https://git.kernel.org/tip/0b085e68f4072024ecaa3889aeeaab5f6c8eba5c
+> Author:        Thomas Gleixner <tglx@linutronix.de>
+> AuthorDate:    Thu, 23 Jul 2020 00:00:01 +02:00
+> Committer:     Thomas Gleixner <tglx@linutronix.de>
+> CommitterDate: Fri, 24 Jul 2020 15:04:58 +02:00
+>
+> x86/entry: Consolidate 32/64 bit syscall entry
+>
+> 64bit and 32bit entry code have the same open coded syscall entry handling
+> after the bitwidth specific bits.
+>
+> Move it to a helper function and share the code.
+>
+> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+> Link: https://lkml.kernel.org/r/20200722220520.051234096@linutronix.de
+>
+>
+> ---
+>  arch/x86/entry/common.c | 93 +++++++++++++++++-----------------------
+>  1 file changed, 41 insertions(+), 52 deletions(-)
+>
+> diff --git a/arch/x86/entry/common.c b/arch/x86/entry/common.c
+> index ab6cb86..68d5c86 100644
+> --- a/arch/x86/entry/common.c
+> +++ b/arch/x86/entry/common.c
+> @@ -366,8 +366,7 @@ __visible noinstr void syscall_return_slowpath(struct pt_regs *regs)
+>         exit_to_user_mode();
+>  }
+>
+> -#ifdef CONFIG_X86_64
+> -__visible noinstr void do_syscall_64(unsigned long nr, struct pt_regs *regs)
+> +static noinstr long syscall_enter(struct pt_regs *regs, unsigned long nr)
+>  {
+>         struct thread_info *ti;
+>
+> @@ -379,6 +378,16 @@ __visible noinstr void do_syscall_64(unsigned long nr, struct pt_regs *regs)
+>         if (READ_ONCE(ti->flags) & _TIF_WORK_SYSCALL_ENTRY)
+>                 nr = syscall_trace_enter(regs);
+>
+> +       instrumentation_end();
+> +       return nr;
+> +}
+> +
+> +#ifdef CONFIG_X86_64
+> +__visible noinstr void do_syscall_64(unsigned long nr, struct pt_regs *regs)
+> +{
+> +       nr = syscall_enter(regs, nr);
+> +
+> +       instrumentation_begin();
+>         if (likely(nr < NR_syscalls)) {
+>                 nr = array_index_nospec(nr, NR_syscalls);
+>                 regs->ax = sys_call_table[nr](regs);
+> @@ -390,64 +399,53 @@ __visible noinstr void do_syscall_64(unsigned long nr, struct pt_regs *regs)
+>                 regs->ax = x32_sys_call_table[nr](regs);
+>  #endif
+>         }
+> -       __syscall_return_slowpath(regs);
+> -
+>         instrumentation_end();
+> -       exit_to_user_mode();
+> +       syscall_return_slowpath(regs);
+>  }
+>  #endif
+>
+>  #if defined(CONFIG_X86_32) || defined(CONFIG_IA32_EMULATION)
+> +static __always_inline unsigned int syscall_32_enter(struct pt_regs *regs)
+> +{
+> +       if (IS_ENABLED(CONFIG_IA32_EMULATION))
+> +               current_thread_info()->status |= TS_COMPAT;
+> +       /*
+> +        * Subtlety here: if ptrace pokes something larger than 2^32-1 into
+> +        * orig_ax, the unsigned int return value truncates it.  This may
+> +        * or may not be necessary, but it matches the old asm behavior.
+> +        */
+> +       return syscall_enter(regs, (unsigned int)regs->orig_ax);
+> +}
+> +
+>  /*
+> - * Does a 32-bit syscall.  Called with IRQs on in CONTEXT_KERNEL.  Does
+> - * all entry and exit work and returns with IRQs off.  This function is
+> - * extremely hot in workloads that use it, and it's usually called from
+> - * do_fast_syscall_32, so forcibly inline it to improve performance.
+> + * Invoke a 32-bit syscall.  Called with IRQs on in CONTEXT_KERNEL.
+>   */
+> -static void do_syscall_32_irqs_on(struct pt_regs *regs)
+> +static __always_inline void do_syscall_32_irqs_on(struct pt_regs *regs,
+> +                                                 unsigned int nr)
+>  {
+> -       struct thread_info *ti = current_thread_info();
+> -       unsigned int nr = (unsigned int)regs->orig_ax;
+> -
+> -#ifdef CONFIG_IA32_EMULATION
+> -       ti->status |= TS_COMPAT;
+> -#endif
+> -
+> -       if (READ_ONCE(ti->flags) & _TIF_WORK_SYSCALL_ENTRY) {
+> -               /*
+> -                * Subtlety here: if ptrace pokes something larger than
+> -                * 2^32-1 into orig_ax, this truncates it.  This may or
+> -                * may not be necessary, but it matches the old asm
+> -                * behavior.
+> -                */
+> -               nr = syscall_trace_enter(regs);
+> -       }
+> -
+>         if (likely(nr < IA32_NR_syscalls)) {
+> +               instrumentation_begin();
+>                 nr = array_index_nospec(nr, IA32_NR_syscalls);
+>                 regs->ax = ia32_sys_call_table[nr](regs);
+> +               instrumentation_end();
+>         }
+> -
+> -       __syscall_return_slowpath(regs);
+>  }
+>
+>  /* Handles int $0x80 */
+>  __visible noinstr void do_int80_syscall_32(struct pt_regs *regs)
+>  {
+> -       enter_from_user_mode(regs);
+> -       instrumentation_begin();
+> +       unsigned int nr = syscall_32_enter(regs);
+>
+> -       local_irq_enable();
+> -       do_syscall_32_irqs_on(regs);
+> -
+> -       instrumentation_end();
+> -       exit_to_user_mode();
+> +       do_syscall_32_irqs_on(regs, nr);
+> +       syscall_return_slowpath(regs);
+>  }
+>
+> -static bool __do_fast_syscall_32(struct pt_regs *regs)
+> +static noinstr bool __do_fast_syscall_32(struct pt_regs *regs)
 
-Commit-ID:     90fc73928fec2f62bbee1476781754c7392a7b61
-Gitweb:        https://git.kernel.org/tip/90fc73928fec2f62bbee1476781754c7392a7b61
-Author:        Colin Ian King <colin.king@canonical.com>
-AuthorDate:    Tue, 21 Jul 2020 11:02:17 +01:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sun, 26 Jul 2020 19:52:55 +02:00
+Can __do_fast_syscall_32() be merged back into do_fast_syscall_32()
+now that both are marked noinstr?
 
-x86/ioperm: Initialize pointer bitmap with NULL rather than 0
-
-The pointer bitmap is being initialized with a plain integer 0,
-fix this by initializing it with a NULL instead.
-
-Cleans up sparse warning:
-arch/x86/xen/enlighten_pv.c:876:27: warning: Using plain integer
-as NULL pointer
-
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Link: https://lore.kernel.org/r/20200721100217.407975-1-colin.king@canonical.com
----
- arch/x86/xen/enlighten_pv.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/x86/xen/enlighten_pv.c b/arch/x86/xen/enlighten_pv.c
-index c46b9f2..2aab43a 100644
---- a/arch/x86/xen/enlighten_pv.c
-+++ b/arch/x86/xen/enlighten_pv.c
-@@ -873,7 +873,7 @@ static void xen_load_sp0(unsigned long sp0)
- static void xen_invalidate_io_bitmap(void)
- {
- 	struct physdev_set_iobitmap iobitmap = {
--		.bitmap = 0,
-+		.bitmap = NULL,
- 		.nr_ports = 0,
- 	};
- 
+--
+Brian Gerst
