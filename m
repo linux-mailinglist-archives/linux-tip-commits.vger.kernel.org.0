@@ -2,45 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 53B9D22E14D
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 26 Jul 2020 18:29:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 58FA622E1C9
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 26 Jul 2020 19:58:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727029AbgGZQ34 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 26 Jul 2020 12:29:56 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:49796 "EHLO
+        id S1726636AbgGZR6s (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 26 Jul 2020 13:58:48 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:50196 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726817AbgGZQ3z (ORCPT
+        with ESMTP id S1725972AbgGZR6s (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 26 Jul 2020 12:29:55 -0400
-Date:   Sun, 26 Jul 2020 16:29:52 -0000
+        Sun, 26 Jul 2020 13:58:48 -0400
+Date:   Sun, 26 Jul 2020 17:58:45 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1595780993;
+        s=2020; t=1595786326;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=lKt0EFknrv4loToQvabpAEaWdgdQ8W7fCEUFKVi0/Lk=;
-        b=1PsORa6eWtA4aQtnG0XXqnbTgMOisgM70C+c7HG1BwDnzplNXgUicu3Z4d5fpN2GNFiQJC
-        w9CE7O5bdokEgEZHSvdtksDHaobD3uGle/ySmYt9oP5OHyx98eQ5sbCTC8AuMvMk9EVEC5
-        aH/2jcjSLvbezYkToPcaQyo7WXv7AFfQ4lLp4Iz9WdbYhKG905Mx9L+OBnD2GuSOqM2nP9
-        e+dInAwvXMflez3+jRC8klIjl0p0NAMymzqf5jGUmdyqnhJokaDtZvIQQGeNi9Uga0rR1e
-        Qeb/d6rBgcbPqupsyGK8ZcPcr5ceipiyhbGDzVTNumjrYQ73gIzCVemSSSF1fQ==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=AhCDp1OdajCS7pW/CKgwrZGQtmI83gENbkTinXvtEHY=;
+        b=4elTZsJhe0bWPVvkeRNLm56naMdhBYACSJRSBqbngQptdrARJP/rsLPRrkDeMi0KAd1HWm
+        ypFF3L9wkyPmyupNdUpd31mWMu3e2ck7eTB27wBjn6I6hjiEcVvRlx55sLtooLk1H8eVla
+        zqByIIuNdk+1YsT7PuDSbotY9tLTcynf8X4KHPF/yEsYALMFNMZ1VMHpIk41HJiwr3oH+c
+        b2yJjBSKGxpq4OQVEq6h5THbqUKzypszgM1L+Z/rXep9O3T0TpSw+5RzCzjj1whzHiU/AE
+        Sm4XJLft5JOZQsBGPaZEhayqRL1cVl0Vfuea8rTuwNjnj1alQvGbA11PRiRzXw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1595780993;
+        s=2020e; t=1595786326;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=lKt0EFknrv4loToQvabpAEaWdgdQ8W7fCEUFKVi0/Lk=;
-        b=NYlFvW67GtL6OmxXH1zJkuXN9qtaBiDAYfnI7CtJjKfGx34pfwkPLN0In0ypb8Ng605xyA
-        VwtBwwOV1usrLjCQ==
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=AhCDp1OdajCS7pW/CKgwrZGQtmI83gENbkTinXvtEHY=;
+        b=+k18nHk+mMAlRT7OYurYVT2KyYmzMXi3cFtb1la7zWBzY4C6diToWsROo1p6KRcZKvQCVs
+        fFYIn/vPWF4ArbAQ==
+From:   "tip-bot2 for Colin Ian King" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/entry] entry: Correct __secure_computing() stub
-Cc:     Ingo Molnar <mingo@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
+Subject: [tip: x86/cleanups] x86/ioperm: Initialize pointer bitmap with NULL
+ rather than 0
+Cc:     Colin Ian King <colin.king@canonical.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        Juergen Gross <jgross@suse.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200721100217.407975-1-colin.king@canonical.com>
+References: <20200721100217.407975-1-colin.king@canonical.com>
 MIME-Version: 1.0
-Message-ID: <159578099290.4006.9697621810385218017.tip-bot2@tip-bot2>
+Message-ID: <159578632503.4006.1661941536167538433.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -50,45 +58,42 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the core/entry branch of tip:
+The following commit has been merged into the x86/cleanups branch of tip:
 
-Commit-ID:     3135f5b73592988af0eb1b11ccbb72a8667be201
-Gitweb:        https://git.kernel.org/tip/3135f5b73592988af0eb1b11ccbb72a8667be201
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Sun, 26 Jul 2020 18:14:43 +02:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sun, 26 Jul 2020 18:22:27 +02:00
+Commit-ID:     90fc73928fec2f62bbee1476781754c7392a7b61
+Gitweb:        https://git.kernel.org/tip/90fc73928fec2f62bbee1476781754c7392a7b61
+Author:        Colin Ian King <colin.king@canonical.com>
+AuthorDate:    Tue, 21 Jul 2020 11:02:17 +01:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Sun, 26 Jul 2020 19:52:55 +02:00
 
-entry: Correct __secure_computing() stub
+x86/ioperm: Initialize pointer bitmap with NULL rather than 0
 
-The original version of that used secure_computing() which has no
-arguments. Review requested to switch to __secure_computing() which has
-one. The function name was correct, but no argument added and of course
-compiling without SECCOMP was deemed overrated.
+The pointer bitmap is being initialized with a plain integer 0,
+fix this by initializing it with a NULL instead.
 
-Add the missing function argument.
+Cleans up sparse warning:
+arch/x86/xen/enlighten_pv.c:876:27: warning: Using plain integer
+as NULL pointer
 
-Fixes: 6823ecabf030 ("seccomp: Provide stub for __secure_computing()")
-Reported-by: Ingo Molnar <mingo@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Link: https://lore.kernel.org/r/20200721100217.407975-1-colin.king@canonical.com
 ---
- include/linux/seccomp.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/x86/xen/enlighten_pv.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/seccomp.h b/include/linux/seccomp.h
-index 03d28c3..51f234b 100644
---- a/include/linux/seccomp.h
-+++ b/include/linux/seccomp.h
-@@ -58,10 +58,11 @@ static inline int seccomp_mode(struct seccomp *s)
+diff --git a/arch/x86/xen/enlighten_pv.c b/arch/x86/xen/enlighten_pv.c
+index c46b9f2..2aab43a 100644
+--- a/arch/x86/xen/enlighten_pv.c
++++ b/arch/x86/xen/enlighten_pv.c
+@@ -873,7 +873,7 @@ static void xen_load_sp0(unsigned long sp0)
+ static void xen_invalidate_io_bitmap(void)
+ {
+ 	struct physdev_set_iobitmap iobitmap = {
+-		.bitmap = 0,
++		.bitmap = NULL,
+ 		.nr_ports = 0,
+ 	};
  
- struct seccomp { };
- struct seccomp_filter { };
-+struct seccomp_data;
- 
- #ifdef CONFIG_HAVE_ARCH_SECCOMP_FILTER
- static inline int secure_computing(void) { return 0; }
--static inline int __secure_computing(void) { return 0; }
-+static inline int __secure_computing(const struct seccomp_data *sd) { return 0; }
- #else
- static inline void secure_computing_strict(int this_syscall) { return; }
- #endif
