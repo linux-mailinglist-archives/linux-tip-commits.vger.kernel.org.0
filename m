@@ -2,53 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B17B422D9A9
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 25 Jul 2020 21:51:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E8D4D22DE0B
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 26 Jul 2020 12:50:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728005AbgGYTvs (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 25 Jul 2020 15:51:48 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:45680 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727997AbgGYTvs (ORCPT
+        id S1727880AbgGZKun (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 26 Jul 2020 06:50:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36646 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725794AbgGZKul (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 25 Jul 2020 15:51:48 -0400
-Date:   Sat, 25 Jul 2020 19:51:44 -0000
+        Sun, 26 Jul 2020 06:50:41 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8865CC0619D2;
+        Sun, 26 Jul 2020 03:50:41 -0700 (PDT)
+Date:   Sun, 26 Jul 2020 10:50:36 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1595706705;
+        s=2020; t=1595760637;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Tzxo93bNci/t1uZYtvQ3Ar3hGAVig7CHbrWhhDAfsqY=;
-        b=lbmvNhTjFrTQdZiGARR6IGzqB1LWkSoNRDpVrhZt2bB1FFBGOOUTnVpUGIryK+iJciFyjS
-        msF7RTY5j/X97c4e9XMM3hGsBfy7YEAK4xZ1oF44STwv2oJyrN5QW5bxSZ7l2xTOloArbh
-        /JBi7MIsWZaSMdGMf6zIIcAbqoDkH3z+jNKKUYBgQgrsNfc1GCRjnYMTXS5Bn+hiLO4f30
-        DK4br4nqbXIwX+HrSZafCWR2iXg+n5sKvG7050aOHRmpl5SOwREXb0Wuqhrvxa1pkujmvL
-        Y4j75l/I5gsn64sqGRCXYZe/eMx70R+lhp4gd8XHhFbFL4nYt8RLCYCD8gXHPA==
+        bh=u7o0z+KHReNHyOszAW2M4Z2lGfMlRi1Kc1LJ6E0Cd0c=;
+        b=2m2LF0wIzbLrtvReDJI+6xOFTmik0bOvSG+8gtpMkn4OoOHcDS5GBIS09GeMs02eACMGJ4
+        fgotAymhqGSGa5BrFNKDG6J5nGJo5ks/yXlWsxXiwYY/6GqwUH1YKtlzvn2aaLsqkAgWMA
+        6zDnQCWKpYAoEYln2o6dbCw7evjYpui4uwILzkiJ0D8qFmY77PttrMRDGjjvQFjb7sJUUA
+        vQGtgdTEpFh12wmA1FL9qu+a/nTWPAgjpXMCbGCvf/2igpD4x8U01g5r7WPPlN15NZJEQ5
+        qROZYtS3rRNlVp0PloOC+fllWupbC/88lWMT92DF75NuC//DFHZx69uBYG2hYA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1595706705;
+        s=2020e; t=1595760637;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Tzxo93bNci/t1uZYtvQ3Ar3hGAVig7CHbrWhhDAfsqY=;
-        b=wL5Ag34OfV7jeHwdAivtw2nBIBoFIPhU+jPVQh77NIEyQskG4iES5OE3HmNHGcHAlS7Rue
-        BQCs3IR8jGQnERDA==
-From:   "tip-bot2 for Chris Wilson" <tip-bot2@linutronix.de>
+        bh=u7o0z+KHReNHyOszAW2M4Z2lGfMlRi1Kc1LJ6E0Cd0c=;
+        b=s8v+a5Y0kRuwgrCwvw6VagRc4ZAHxsjGJZlQBXX5IKZ3i9qtdGH0n9kAtGxIDXyZx5y6qe
+        05FCVPVXZ64HlTDQ==
+From:   "tip-bot2 for Randy Dunlap" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/urgent] locking/lockdep: Fix overflow in presentation
- of average lock-time
-Cc:     Chris Wilson <chris@chris-wilson.co.uk>,
-        Ingo Molnar <mingo@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>, x86 <x86@kernel.org>,
+Subject: [tip: x86/cleanups] x86: uv: uv_hub.h: Delete duplicated word
+Cc:     Randy Dunlap <rdunlap@infradead.org>,
+        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200725185110.11588-1-chris@chris-wilson.co.uk>
-References: <20200725185110.11588-1-chris@chris-wilson.co.uk>
+In-Reply-To: <20200726004124.20618-4-rdunlap@infradead.org>
+References: <20200726004124.20618-4-rdunlap@infradead.org>
 MIME-Version: 1.0
-Message-ID: <159570670466.4006.5604761972444184961.tip-bot2@tip-bot2>
+Message-ID: <159576063629.4006.9768537728578352299.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,43 +59,38 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the locking/urgent branch of tip:
+The following commit has been merged into the x86/cleanups branch of tip:
 
-Commit-ID:     a7ef9b28aa8d72a1656fa6f0a01bbd1493886317
-Gitweb:        https://git.kernel.org/tip/a7ef9b28aa8d72a1656fa6f0a01bbd1493886317
-Author:        Chris Wilson <chris@chris-wilson.co.uk>
-AuthorDate:    Sat, 25 Jul 2020 19:51:10 +01:00
+Commit-ID:     de0038bfaf53af0e8bc4961b7aacdcb79f43bf08
+Gitweb:        https://git.kernel.org/tip/de0038bfaf53af0e8bc4961b7aacdcb79f43bf08
+Author:        Randy Dunlap <rdunlap@infradead.org>
+AuthorDate:    Sat, 25 Jul 2020 17:41:24 -07:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sat, 25 Jul 2020 21:47:42 +02:00
+CommitterDate: Sun, 26 Jul 2020 12:47:22 +02:00
 
-locking/lockdep: Fix overflow in presentation of average lock-time
+x86: uv: uv_hub.h: Delete duplicated word
 
-Though the number of lock-acquisitions is tracked as unsigned long, this
-is passed as the divisor to div_s64() which interprets it as a s32,
-giving nonsense values with more than 2 billion acquisitons. E.g.
+Delete the repeated word "the".
 
-  acquisitions   holdtime-min   holdtime-max holdtime-total   holdtime-avg
-  -------------------------------------------------------------------------
-    2350439395           0.07         353.38   649647067.36          0.-32
+[ mingo: While at it, also capitalize CPU properly. ]
 
-Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20200725185110.11588-1-chris@chris-wilson.co.uk
+Link: https://lore.kernel.org/r/20200726004124.20618-4-rdunlap@infradead.org
 ---
- kernel/locking/lockdep_proc.c | 2 +-
+ arch/x86/include/asm/uv/uv_hub.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/locking/lockdep_proc.c b/kernel/locking/lockdep_proc.c
-index 5525cd3..02ef87f 100644
---- a/kernel/locking/lockdep_proc.c
-+++ b/kernel/locking/lockdep_proc.c
-@@ -423,7 +423,7 @@ static void seq_lock_time(struct seq_file *m, struct lock_time *lt)
- 	seq_time(m, lt->min);
- 	seq_time(m, lt->max);
- 	seq_time(m, lt->total);
--	seq_time(m, lt->nr ? div_s64(lt->total, lt->nr) : 0);
-+	seq_time(m, lt->nr ? div64_u64(lt->total, lt->nr) : 0);
+diff --git a/arch/x86/include/asm/uv/uv_hub.h b/arch/x86/include/asm/uv/uv_hub.h
+index 60ca0af..5738c36 100644
+--- a/arch/x86/include/asm/uv/uv_hub.h
++++ b/arch/x86/include/asm/uv/uv_hub.h
+@@ -682,7 +682,7 @@ static inline int uv_node_to_blade_id(int nid)
+ 	return nid;
  }
  
- static void seq_stats(struct seq_file *m, struct lock_stat_data *data)
+-/* Convert a cpu number to the the UV blade number */
++/* Convert a CPU number to the UV blade number */
+ static inline int uv_cpu_to_blade_id(int cpu)
+ {
+ 	return uv_node_to_blade_id(cpu_to_node(cpu));
