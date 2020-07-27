@@ -2,61 +2,106 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 18CE022ED8A
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 27 Jul 2020 15:38:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BAE922F0D7
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 27 Jul 2020 16:28:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728959AbgG0Ni3 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 27 Jul 2020 09:38:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58132 "EHLO
+        id S1732395AbgG0OZP (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 27 Jul 2020 10:25:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37524 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726298AbgG0Ni2 (ORCPT
+        with ESMTP id S1732389AbgG0OZN (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 27 Jul 2020 09:38:28 -0400
+        Mon, 27 Jul 2020 10:25:13 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98F4FC061794;
-        Mon, 27 Jul 2020 06:38:28 -0700 (PDT)
-From:   Thomas Gleixner <tglx@linutronix.de>
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 500DCC0619D2;
+        Mon, 27 Jul 2020 07:25:13 -0700 (PDT)
+Date:   Mon, 27 Jul 2020 14:25:10 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1595857107;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+        s=2020; t=1595859911;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=z2BEpkI5vpGjWsm2oiyzPGU1NItFEGOQoSzuPNAbSWY=;
-        b=WHZ+kc1LDZiycuwM8s1HhaC7PR6hPF8kId0KV438qsfbahmYdlB1EHRMOw8FKUziuZ7ufU
-        oYbMnXW+YniqQgr1eq9gGzKdDGKTbE8afv3rBCtU8G1nkGvu8Ff3d3i6B00WBbArQR0k5S
-        OOWG8/4hycdACA4hIkn8gt9KMNm7Dz3PrAKgn0rSTJHMLxZMS28XlaNwiNylOWKhFWANqP
-        nHdi2+UHeBRlIfo/jJmuwDFY2k67h07lCWxmsatYOyc3hHLRbPZR1oleepzj3/J2ptgjBJ
-        KpxprlL77nmkaWJHd5CbMYZ2iuj6Rsw7X3B54JEjukGbD+ToJveZxdOolK5gzA==
+        bh=uMD+An+yRJFnhJevzCpA9ASEr2Q20FpshnheoKFP3lk=;
+        b=vLbPGjbDu2xic82PJEQ82vZLPeFAmFqYivgCm3yc34Cj16gmBHbwTTTHFiqTA1WMuXH/QX
+        gXkpT0pMoEUlUucqKl1a/NiojyhBygGLmFH6kQoRvjPiK89gCtrztGXI7sXsaTZQqOKd3m
+        Lofu5ZC0RjLd/7/vn4d/bQwvuMd1gQrRHsVagm55eQbUW0yR0E3y5lATi0gCJf/yPRvNGm
+        GT/Jt9wfAUlz1WBEnZMD247e/B0Mow2VjDM3efkG527VkUUOig648RuYH68STzFOWUAmB2
+        9RWMkmd4R30aCPVBgMf1gjMdhHeQQU8+bxWy2vybPWhCocfM1hCNgsegsnHKhw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1595857107;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+        s=2020e; t=1595859911;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=z2BEpkI5vpGjWsm2oiyzPGU1NItFEGOQoSzuPNAbSWY=;
-        b=Z+f4ULUl2G2uBKiIkvf9zO71cFu/N2rXkClyOFy2z8kTKjHimuyTzpbTTi2ZCcFY+kC4Me
-        cV4tkZcCohMkq7Bw==
-To:     Brian Gerst <brgerst@gmail.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Cc:     linux-tip-commits@vger.kernel.org, x86 <x86@kernel.org>
-Subject: Re: [tip: x86/entry] x86/entry: Consolidate 32/64 bit syscall entry
-In-Reply-To: <CAMzpN2ipn3tK7hg4njCG-svtbYSP_nmzr0mWHZCrkaJFYMuXWw@mail.gmail.com>
-References: <20200722220520.051234096@linutronix.de> <159562150262.4006.11750463088671474026.tip-bot2@tip-bot2> <CAMzpN2ipn3tK7hg4njCG-svtbYSP_nmzr0mWHZCrkaJFYMuXWw@mail.gmail.com>
-Date:   Mon, 27 Jul 2020 15:38:26 +0200
-Message-ID: <871rkxcc31.fsf@nanos.tec.linutronix.de>
+        bh=uMD+An+yRJFnhJevzCpA9ASEr2Q20FpshnheoKFP3lk=;
+        b=IOBF3Bohu/1/UggaMobfJVuRHvPh1liRAcuGVDP/hHcgLq3VqJMpBOdUPgworZ3sud2/a5
+        JngDew5W/0T70ECA==
+From:   "tip-bot2 for Marc Zyngier" <tip-bot2@linutronix.de>
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: irq/urgent] genirq/debugfs: Add missing irqchip flags
+Cc:     Marc Zyngier <maz@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <874kpvydxc.wl-maz@kernel.org>
+References: <874kpvydxc.wl-maz@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Message-ID: <159585991070.4006.15343271710137526648.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2.linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-Brian Gerst <brgerst@gmail.com> writes:
-> On Fri, Jul 24, 2020 at 4:14 PM tip-bot2 for Thomas Gleixner
->>
->> -static bool __do_fast_syscall_32(struct pt_regs *regs)
->> +static noinstr bool __do_fast_syscall_32(struct pt_regs *regs)
->
-> Can __do_fast_syscall_32() be merged back into do_fast_syscall_32()
-> now that both are marked noinstr?
+The following commit has been merged into the irq/urgent branch of tip:
 
-It could.
+Commit-ID:     aa251fc5b936d3ddb4b4c4b36427eb9aa3347c82
+Gitweb:        https://git.kernel.org/tip/aa251fc5b936d3ddb4b4c4b36427eb9aa3347c82
+Author:        Marc Zyngier <maz@kernel.org>
+AuthorDate:    Sat, 25 Jul 2020 13:30:55 +01:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Mon, 27 Jul 2020 16:20:40 +02:00
+
+genirq/debugfs: Add missing irqchip flags
+
+Recently introduced irqchip flags lack the corresponding printouts in
+debugfs. Add them.
+
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lkml.kernel.org/r/874kpvydxc.wl-maz@kernel.org
+
+
+---
+ kernel/irq/debugfs.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/kernel/irq/debugfs.c b/kernel/irq/debugfs.c
+index 4f9f844..b95ff5d 100644
+--- a/kernel/irq/debugfs.c
++++ b/kernel/irq/debugfs.c
+@@ -112,6 +112,7 @@ static const struct irq_bit_descr irqdata_states[] = {
+ 	BIT_MASK_DESCR(IRQD_AFFINITY_SET),
+ 	BIT_MASK_DESCR(IRQD_SETAFFINITY_PENDING),
+ 	BIT_MASK_DESCR(IRQD_AFFINITY_MANAGED),
++	BIT_MASK_DESCR(IRQD_AFFINITY_ON_ACTIVATE),
+ 	BIT_MASK_DESCR(IRQD_MANAGED_SHUTDOWN),
+ 	BIT_MASK_DESCR(IRQD_CAN_RESERVE),
+ 	BIT_MASK_DESCR(IRQD_MSI_NOMASK_QUIRK),
+@@ -120,6 +121,10 @@ static const struct irq_bit_descr irqdata_states[] = {
+ 
+ 	BIT_MASK_DESCR(IRQD_WAKEUP_STATE),
+ 	BIT_MASK_DESCR(IRQD_WAKEUP_ARMED),
++
++	BIT_MASK_DESCR(IRQD_DEFAULT_TRIGGER_SET),
++
++	BIT_MASK_DESCR(IRQD_HANDLE_ENFORCE_IRQCTX),
+ };
+ 
+ static const struct irq_bit_descr irqdesc_states[] = {
