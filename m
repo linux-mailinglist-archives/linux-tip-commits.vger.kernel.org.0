@@ -2,155 +2,61 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A4E5922EC7A
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 27 Jul 2020 14:46:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18CE022ED8A
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 27 Jul 2020 15:38:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728537AbgG0Mq3 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 27 Jul 2020 08:46:29 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:55190 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728484AbgG0MqZ (ORCPT
+        id S1728959AbgG0Ni3 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 27 Jul 2020 09:38:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58132 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726298AbgG0Ni2 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 27 Jul 2020 08:46:25 -0400
-Date:   Mon, 27 Jul 2020 12:46:20 -0000
+        Mon, 27 Jul 2020 09:38:28 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98F4FC061794;
+        Mon, 27 Jul 2020 06:38:28 -0700 (PDT)
+From:   Thomas Gleixner <tglx@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1595853981;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
+        s=2020; t=1595857107;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=3qk9rcqcVnAajuP5XyiCDtBaj/43af4bgVnKd+Dq+9Q=;
-        b=LTGHdzxLIPZSqwU49kvPG+eoOGumsu2vkjOHPr8RArPaPPqzIsplTWwsahBvywkDQaMBD/
-        uT20E7oSNd3zB6e05uitLIyfUTJts5zCpR8NcmnKNGXTaUbcBwois5awly+mH/ptR34DGg
-        RVVm37rhHUCn2Rm4Tqabc0tDY5RM2deOHXK1n02nTNo5sfaxaCZFKfPJqAuf3tuSvnnFCg
-        Kqn8An1DN1B+a8AlOLDNklDnTyHC9Amh69GqyTDyjuVCThcYUNwLEWwLUvf4vlkQYPsHHE
-        Xdf8cFoflsiXGmSs8UYjASehfWNrnTZtT9Kwdx1eHwMVpXrXcbfIBz2pY7y6Uw==
+        bh=z2BEpkI5vpGjWsm2oiyzPGU1NItFEGOQoSzuPNAbSWY=;
+        b=WHZ+kc1LDZiycuwM8s1HhaC7PR6hPF8kId0KV438qsfbahmYdlB1EHRMOw8FKUziuZ7ufU
+        oYbMnXW+YniqQgr1eq9gGzKdDGKTbE8afv3rBCtU8G1nkGvu8Ff3d3i6B00WBbArQR0k5S
+        OOWG8/4hycdACA4hIkn8gt9KMNm7Dz3PrAKgn0rSTJHMLxZMS28XlaNwiNylOWKhFWANqP
+        nHdi2+UHeBRlIfo/jJmuwDFY2k67h07lCWxmsatYOyc3hHLRbPZR1oleepzj3/J2ptgjBJ
+        KpxprlL77nmkaWJHd5CbMYZ2iuj6Rsw7X3B54JEjukGbD+ToJveZxdOolK5gzA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1595853981;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
+        s=2020e; t=1595857107;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=3qk9rcqcVnAajuP5XyiCDtBaj/43af4bgVnKd+Dq+9Q=;
-        b=OtNjSuNu8rOp/HiNOvPg/isb14Uoha5R90dySmrPcyUfm6BAyVIz+P0YFltTxV7cdJdlpU
-        9PXwXWhXlg0rGMAA==
-From:   "tip-bot2 for Joerg Roedel" <tip-bot2@linutronix.de>
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/mm] x86/mm: Pre-allocate P4D/PUD pages for vmalloc area
-Cc:     Joerg Roedel <jroedel@suse.de>, Ingo Molnar <mingo@kernel.org>,
-        Mike Rapoport <rppt@linux.ibm.com>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200721095953.6218-2-joro@8bytes.org>
-References: <20200721095953.6218-2-joro@8bytes.org>
+        bh=z2BEpkI5vpGjWsm2oiyzPGU1NItFEGOQoSzuPNAbSWY=;
+        b=Z+f4ULUl2G2uBKiIkvf9zO71cFu/N2rXkClyOFy2z8kTKjHimuyTzpbTTi2ZCcFY+kC4Me
+        cV4tkZcCohMkq7Bw==
+To:     Brian Gerst <brgerst@gmail.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc:     linux-tip-commits@vger.kernel.org, x86 <x86@kernel.org>
+Subject: Re: [tip: x86/entry] x86/entry: Consolidate 32/64 bit syscall entry
+In-Reply-To: <CAMzpN2ipn3tK7hg4njCG-svtbYSP_nmzr0mWHZCrkaJFYMuXWw@mail.gmail.com>
+References: <20200722220520.051234096@linutronix.de> <159562150262.4006.11750463088671474026.tip-bot2@tip-bot2> <CAMzpN2ipn3tK7hg4njCG-svtbYSP_nmzr0mWHZCrkaJFYMuXWw@mail.gmail.com>
+Date:   Mon, 27 Jul 2020 15:38:26 +0200
+Message-ID: <871rkxcc31.fsf@nanos.tec.linutronix.de>
 MIME-Version: 1.0
-Message-ID: <159585398074.4006.9712719046633654602.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2.linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/mm branch of tip:
+Brian Gerst <brgerst@gmail.com> writes:
+> On Fri, Jul 24, 2020 at 4:14 PM tip-bot2 for Thomas Gleixner
+>>
+>> -static bool __do_fast_syscall_32(struct pt_regs *regs)
+>> +static noinstr bool __do_fast_syscall_32(struct pt_regs *regs)
+>
+> Can __do_fast_syscall_32() be merged back into do_fast_syscall_32()
+> now that both are marked noinstr?
 
-Commit-ID:     6eb82f9940267d3af260989d077a2833f588beae
-Gitweb:        https://git.kernel.org/tip/6eb82f9940267d3af260989d077a2833f588beae
-Author:        Joerg Roedel <jroedel@suse.de>
-AuthorDate:    Tue, 21 Jul 2020 11:59:51 +02:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Mon, 27 Jul 2020 12:32:29 +02:00
-
-x86/mm: Pre-allocate P4D/PUD pages for vmalloc area
-
-Pre-allocate the page-table pages for the vmalloc area at the level
-which needs synchronization on x86-64, which is P4D for 5-level and
-PUD for 4-level paging.
-
-Doing this at boot makes sure no synchronization of that area is
-necessary at runtime. The synchronization takes the pgd_lock and
-iterates over all page-tables in the system, so it can take quite long
-and is better avoided.
-
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Mike Rapoport <rppt@linux.ibm.com>
-Link: https://lore.kernel.org/r/20200721095953.6218-2-joro@8bytes.org
----
- arch/x86/mm/init_64.c | 52 ++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 52 insertions(+)
-
-diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
-index dbae185..e76bdb0 100644
---- a/arch/x86/mm/init_64.c
-+++ b/arch/x86/mm/init_64.c
-@@ -1238,6 +1238,56 @@ static void __init register_page_bootmem_info(void)
- #endif
- }
- 
-+/*
-+ * Pre-allocates page-table pages for the vmalloc area in the kernel page-table.
-+ * Only the level which needs to be synchronized between all page-tables is
-+ * allocated because the synchronization can be expensive.
-+ */
-+static void __init preallocate_vmalloc_pages(void)
-+{
-+	unsigned long addr;
-+	const char *lvl;
-+
-+	for (addr = VMALLOC_START; addr <= VMALLOC_END; addr = ALIGN(addr + 1, PGDIR_SIZE)) {
-+		pgd_t *pgd = pgd_offset_k(addr);
-+		p4d_t *p4d;
-+		pud_t *pud;
-+
-+		p4d = p4d_offset(pgd, addr);
-+		if (p4d_none(*p4d)) {
-+			/* Can only happen with 5-level paging */
-+			p4d = p4d_alloc(&init_mm, pgd, addr);
-+			if (!p4d) {
-+				lvl = "p4d";
-+				goto failed;
-+			}
-+		}
-+
-+		if (pgtable_l5_enabled())
-+			continue;
-+
-+		pud = pud_offset(p4d, addr);
-+		if (pud_none(*pud)) {
-+			/* Ends up here only with 4-level paging */
-+			pud = pud_alloc(&init_mm, p4d, addr);
-+			if (!pud) {
-+				lvl = "pud";
-+				goto failed;
-+			}
-+		}
-+	}
-+
-+	return;
-+
-+failed:
-+
-+	/*
-+	 * The pages have to be there now or they will be missing in
-+	 * process page-tables later.
-+	 */
-+	panic("Failed to pre-allocate %s pages for vmalloc area\n", lvl);
-+}
-+
- void __init mem_init(void)
- {
- 	pci_iommu_alloc();
-@@ -1261,6 +1311,8 @@ void __init mem_init(void)
- 	if (get_gate_vma(&init_mm))
- 		kclist_add(&kcore_vsyscall, (void *)VSYSCALL_ADDR, PAGE_SIZE, KCORE_USER);
- 
-+	preallocate_vmalloc_pages();
-+
- 	mem_init_print_info(NULL);
- }
- 
+It could.
