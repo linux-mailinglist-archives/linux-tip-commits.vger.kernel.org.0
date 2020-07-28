@@ -2,56 +2,50 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 858C2230A0B
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 28 Jul 2020 14:29:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A5D63230A08
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 28 Jul 2020 14:29:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729587AbgG1M3J (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 28 Jul 2020 08:29:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45272 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729399AbgG1M3I (ORCPT
+        id S1729399AbgG1M3L (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 28 Jul 2020 08:29:11 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:34326 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729299AbgG1M3J (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 28 Jul 2020 08:29:08 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9867C061794;
-        Tue, 28 Jul 2020 05:29:08 -0700 (PDT)
-Date:   Tue, 28 Jul 2020 12:29:06 -0000
+        Tue, 28 Jul 2020 08:29:09 -0400
+Date:   Tue, 28 Jul 2020 12:29:07 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1595939346;
+        s=2020; t=1595939347;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=rI4p+p7PY7+lEZb3eDxP0kJaacGlY/NLIZWz8rMV/U0=;
-        b=pxHNeRZMrsEPfLylenuhN1fExrnCQ0qPz3SaOsEsOZegNt41iewnDDt8ho2OHEYlUn413o
-        k1OUpgqsVaIO0hpVh+PArT0lm2WxdLUuLpx2ZBbMAwIOqkQ7DRCCDI8BahhZ4fXEVlJHou
-        CSw4/VZDrmW2aNYgDi5fhM9JeYrmkeqFVx5yu1NkMEGUsfg0/hbwDP1GQpK99sXjNIZtPw
-        +qR71ssImI9rzvvoxCPjkDyBSCuK/YYHRbC5H0KJnJ2KFSQxT2FLQI9ehvwPuB5OsBuXeZ
-        QJzNkn61Cwdc+IMbUwXJ4+PvWEiSRE90HQJewEe1xJENlR+blz+oohLY8dguFQ==
+        bh=k+c/cFf7HdBuEHY51YUiB7FeFng8roSM3NNyIgKHNSY=;
+        b=yQ/T/rubqHHj0YHyL8ACAVPSXuMR5MONZkufXtOlfFHGucdQsGdwEWLYuPtQaaOIFXdyc9
+        fOlxqGoMywwhvJg6199It7gMBJsQwioNiKWpCWueKSdGO0gmkl6+2lbjRdE3xK5uLi9klt
+        x90l9QSCMMM1JYUUChHbfJjBkRexEXv/ryoeiEGMkIirptiy/VFYf2SP/hlHNkVuYnt8eH
+        evGZk6kHWcMz+OMvMcOlpsd7Y5SZOfCVN6YfPwZGA/ybC6Gp4BAt3f+JTuGcZomCWtH1xe
+        XHH0nKwW2BE1QLnfw/5GAOAi51mQa7toobTPFtVq/Yb4bTZSOpA3lZ0wDwmtKw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1595939346;
+        s=2020e; t=1595939347;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=rI4p+p7PY7+lEZb3eDxP0kJaacGlY/NLIZWz8rMV/U0=;
-        b=1/iTDsNn4RKNat2rjRmQFmA+grMMFd6i9da5lBH++p+yMnDeKLH4xGv3LarMjIXRIW0JLk
-        C2vJZpMRT0cSs+DA==
-From:   "tip-bot2 for Masami Hiramatsu" <tip-bot2@linutronix.de>
+        bh=k+c/cFf7HdBuEHY51YUiB7FeFng8roSM3NNyIgKHNSY=;
+        b=Z6TLcGAxYJPgLI80lnKOCojcQx1vI6UiCkpvqrd+EOwUi0s+ib+R5aXVhbdU6FQ5OBW2dQ
+        1WPk5ncwEyANkSBw==
+From:   "tip-bot2 for Miaohe Lin" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] kprobes: Remove unnecessary module_mutex locking
- from kprobe_optimizer()
-Cc:     Ingo Molnar <mingo@kernel.org>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+Subject: [tip: sched/core] sched: Remove duplicated tick_nohz_full_enabled() check
+Cc:     Miaohe Lin <linmiaohe@huawei.com>, Ingo Molnar <mingo@kernel.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200728163400.e00b09c594763349f99ce6cb@kernel.org>
-References: <20200728163400.e00b09c594763349f99ce6cb@kernel.org>
+In-Reply-To: <1595935075-14223-1-git-send-email-linmiaohe@huawei.com>
+References: <1595935075-14223-1-git-send-email-linmiaohe@huawei.com>
 MIME-Version: 1.0
-Message-ID: <159593934624.4006.4213436208654596958.tip-bot2@tip-bot2>
+Message-ID: <159593934725.4006.6683440940945012306.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,61 +55,47 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/core branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     112a0e4171e111e963aada3fe790c71accf4d705
-Gitweb:        https://git.kernel.org/tip/112a0e4171e111e963aada3fe790c71accf4d705
-Author:        Masami Hiramatsu <mhiramat@kernel.org>
-AuthorDate:    Tue, 28 Jul 2020 16:34:00 +09:00
+Commit-ID:     21a6ee14a8f277766618ef07154432b46528113e
+Gitweb:        https://git.kernel.org/tip/21a6ee14a8f277766618ef07154432b46528113e
+Author:        Miaohe Lin <linmiaohe@huawei.com>
+AuthorDate:    Tue, 28 Jul 2020 19:17:55 +08:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 28 Jul 2020 13:19:05 +02:00
+CommitterDate: Tue, 28 Jul 2020 13:27:54 +02:00
 
-kprobes: Remove unnecessary module_mutex locking from kprobe_optimizer()
+sched: Remove duplicated tick_nohz_full_enabled() check
 
-Since we already lock both kprobe_mutex and text_mutex in the optimizer,
-text will not be changed and the module unloading will be stopped
-inside kprobes_module_callback().
+In sched_update_tick_dependency() there's two calls that check
+whether nohz_full is enabled: tick_nohz_full_cpu() does it
+implicitly, while there's also an explicit call to tick_nohz_full_enabled().
 
-The mutex_lock() has originally been introduced to avoid conflict with text modification,
-at that point we didn't hold text_mutex.
-
-But after:
-
-  f1c6ece23729 ("kprobes: Fix potential deadlock in kprobe_optimizer()")
-
-We started holding the text_mutex and don't need the modules mutex anyway.
-
-So remove the module_mutex locking.
+Remove the duplicated, open coded check.
 
 [ mingo: Amended the changelog. ]
 
-Suggested-by: Ingo Molnar <mingo@kernel.org>
-Signed-off-by: Masami Hiramatsu <mhiramat@kernel.org>
+Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-Link: https://lore.kernel.org/r/20200728163400.e00b09c594763349f99ce6cb@kernel.org
+Link: https://lore.kernel.org/r/1595935075-14223-1-git-send-email-linmiaohe@huawei.com
 ---
- kernel/kprobes.c | 3 ---
- 1 file changed, 3 deletions(-)
+ kernel/sched/sched.h | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-diff --git a/kernel/kprobes.c b/kernel/kprobes.c
-index 146c648..e87679a 100644
---- a/kernel/kprobes.c
-+++ b/kernel/kprobes.c
-@@ -598,8 +598,6 @@ static void kprobe_optimizer(struct work_struct *work)
- 	mutex_lock(&kprobe_mutex);
- 	cpus_read_lock();
- 	mutex_lock(&text_mutex);
--	/* Lock modules while optimizing kprobes */
--	mutex_lock(&module_mutex);
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index 9f33c77..296efd3 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -1961,12 +1961,7 @@ extern int __init sched_tick_offload_init(void);
+  */
+ static inline void sched_update_tick_dependency(struct rq *rq)
+ {
+-	int cpu;
+-
+-	if (!tick_nohz_full_enabled())
+-		return;
+-
+-	cpu = cpu_of(rq);
++	int cpu = cpu_of(rq);
  
- 	/*
- 	 * Step 1: Unoptimize kprobes and collect cleaned (unused and disarmed)
-@@ -624,7 +622,6 @@ static void kprobe_optimizer(struct work_struct *work)
- 	/* Step 4: Free cleaned kprobes after quiesence period */
- 	do_free_cleaned_kprobes();
- 
--	mutex_unlock(&module_mutex);
- 	mutex_unlock(&text_mutex);
- 	cpus_read_unlock();
- 
+ 	if (!tick_nohz_full_cpu(cpu))
+ 		return;
