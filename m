@@ -2,54 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F89B230A0F
+	by mail.lfdr.de (Postfix) with ESMTP id BC309230A10
 	for <lists+linux-tip-commits@lfdr.de>; Tue, 28 Jul 2020 14:29:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729619AbgG1M3S (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 28 Jul 2020 08:29:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45296 "EHLO
+        id S1729626AbgG1M3T (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 28 Jul 2020 08:29:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45300 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729614AbgG1M3R (ORCPT
+        with ESMTP id S1729620AbgG1M3S (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 28 Jul 2020 08:29:17 -0400
+        Tue, 28 Jul 2020 08:29:18 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3395CC061794;
-        Tue, 28 Jul 2020 05:29:17 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A921C061794;
+        Tue, 28 Jul 2020 05:29:18 -0700 (PDT)
 Date:   Tue, 28 Jul 2020 12:29:15 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1595939355;
+        s=2020; t=1595939356;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=7YdZ/axXCwm5XLxxjQO1zY7IIzjjaE8o/vGu+HswV80=;
-        b=dH8tROJOv5vjYJgzWMafFdY/lsmhhOQ/gZ6CCVcdeS0RXPzVxNBG91+B++8EytuJGlc4fU
-        L3sfQ6mlzzTjW9DHTpo2P2D4IQKYURRK9yjq0FJzUTjBhrN0Nnq9H5FlQXKDeLZhsCHD5E
-        vLTerRL7avkl1b5dX4aXUqYBtc6InfHASl/kcTSHj8SxrkCftIXvhQe9uQ8jAV5HAOAFZj
-        IQjLXNtm/rOENV4ZBBfbYwnt1QUbJ6qseXY2j/VxK7yMTmR3J6IL5K2uCKdb5g/1v+6WGW
-        pUIwWbX5QmQVODFs2IkEva6aIHtyl2J0jV7UcUOEr1wnUo2BkCc4878wpTfeNA==
+        bh=/S0GPeOT575VDIu9dVFjsNOq+UDoG7rnlQNeDEnhF38=;
+        b=gBB9GmPiODnYJRU3B9dYhjS6KCpEm69Aw5JE94RNyxIQCf5TDQIrZ85tvulEL1W0bY8FF7
+        aAyHDfBTuRFUq0N5r+7oF4FMAxiL4gxANsAI5BJC9AS+kFJj+IXTWcJ5a8egV8O2SJ7qWw
+        M8PoAkJu5pfHUWGKgBpzkKFtnPiit/+pga3nWFba3oIA9EgQjFBYSYcHvQDse/t4MfL/mF
+        GusD3C82yU6rtV4FubYKFd7fpGmObTJy6a1ZkyENRgURKWz6RyDiR6T3LwrG4VJjp+zv08
+        KSXxpjWd5Ak1VXvIUQ6Hi9ll12gjAmpFf0yQe6wVJFRjnQR8PTCPyW2oQ0vsvw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1595939355;
+        s=2020e; t=1595939356;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=7YdZ/axXCwm5XLxxjQO1zY7IIzjjaE8o/vGu+HswV80=;
-        b=ZPl0kblootfNSOyfVkLc775LwHAsmZXdljwDmeWMMQd92NzieEeZC99S/jnXuZpK+BCjKe
-        im+W8hZqG3PVwhCA==
+        bh=/S0GPeOT575VDIu9dVFjsNOq+UDoG7rnlQNeDEnhF38=;
+        b=5Iz87Nq6MnoH0JxXNLX03HL2dtfaAIV7DhP3cwMrcMPmSBYoVF26Dv8cilpm2/2Ts3k0SN
+        3SzSl9Jh+GqKPPCw==
 From:   "tip-bot2 for Arvind Sankar" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/kaslr] x86/kaslr: Remove bogus warning and unnecessary goto
+Subject: [tip: x86/kaslr] x86/kaslr: Make command line handling safer
 Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
         Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200727230801.3468620-3-nivedita@alum.mit.edu>
-References: <20200727230801.3468620-3-nivedita@alum.mit.edu>
+In-Reply-To: <20200727230801.3468620-2-nivedita@alum.mit.edu>
+References: <20200727230801.3468620-2-nivedita@alum.mit.edu>
 MIME-Version: 1.0
-Message-ID: <159593935504.4006.12364452342763685270.tip-bot2@tip-bot2>
+Message-ID: <159593935568.4006.12876607482586309970.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,59 +61,74 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/kaslr branch of tip:
 
-Commit-ID:     237069512d18f0f20b230680f067a2c070a7903a
-Gitweb:        https://git.kernel.org/tip/237069512d18f0f20b230680f067a2c070a7903a
+Commit-ID:     c8465b03acf9d4bb43b9714b6cfb99442defe664
+Gitweb:        https://git.kernel.org/tip/c8465b03acf9d4bb43b9714b6cfb99442defe664
 Author:        Arvind Sankar <nivedita@alum.mit.edu>
-AuthorDate:    Mon, 27 Jul 2020 19:07:55 -04:00
+AuthorDate:    Mon, 27 Jul 2020 19:07:54 -04:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Tue, 28 Jul 2020 12:54:42 +02:00
 
-x86/kaslr: Remove bogus warning and unnecessary goto
+x86/kaslr: Make command line handling safer
 
-Drop the warning on seeing "--" in handle_mem_options(). This will trigger
-whenever one of the memory options is present in the command line
-together with "--", but there's no problem if that is the case.
+Handle the possibility that the command line is NULL.
 
-Replace goto with break.
+Replace open-coded strlen with a function call.
 
 Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20200727230801.3468620-3-nivedita@alum.mit.edu
+Link: https://lore.kernel.org/r/20200727230801.3468620-2-nivedita@alum.mit.edu
 ---
- arch/x86/boot/compressed/kaslr.c |  9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ arch/x86/boot/compressed/kaslr.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
 diff --git a/arch/x86/boot/compressed/kaslr.c b/arch/x86/boot/compressed/kaslr.c
-index a4af896..21cd9e0 100644
+index d7408af..a4af896 100644
 --- a/arch/x86/boot/compressed/kaslr.c
 +++ b/arch/x86/boot/compressed/kaslr.c
-@@ -295,10 +295,8 @@ static void handle_mem_options(void)
- 	while (*args) {
- 		args = next_arg(args, &param, &val);
- 		/* Stop at -- */
--		if (!val && strcmp(param, "--") == 0) {
--			warn("Only '--' specified in cmdline");
--			goto out;
--		}
-+		if (!val && strcmp(param, "--") == 0)
-+			break;
+@@ -268,15 +268,19 @@ static void parse_gb_huge_pages(char *param, char *val)
+ static void handle_mem_options(void)
+ {
+ 	char *args = (char *)get_cmd_line_ptr();
+-	size_t len = strlen((char *)args);
++	size_t len;
+ 	char *tmp_cmdline;
+ 	char *param, *val;
+ 	u64 mem_size;
  
- 		if (!strcmp(param, "memmap")) {
- 			mem_avoid_memmap(PARSE_MEMMAP, val);
-@@ -311,7 +309,7 @@ static void handle_mem_options(void)
- 				continue;
- 			mem_size = memparse(p, &p);
- 			if (mem_size == 0)
--				goto out;
-+				break;
++	if (!args)
++		return;
++
+ 	if (!strstr(args, "memmap=") && !strstr(args, "mem=") &&
+ 		!strstr(args, "hugepages"))
+ 		return;
  
- 			mem_limit = mem_size;
- 		} else if (!strcmp(param, "efi_fake_mem")) {
-@@ -319,7 +317,6 @@ static void handle_mem_options(void)
- 		}
- 	}
++	len = strlen(args);
+ 	tmp_cmdline = malloc(len + 1);
+ 	if (!tmp_cmdline)
+ 		error("Failed to allocate space for tmp_cmdline");
+@@ -399,8 +403,7 @@ static void mem_avoid_init(unsigned long input, unsigned long input_size,
+ {
+ 	unsigned long init_size = boot_params->hdr.init_size;
+ 	u64 initrd_start, initrd_size;
+-	u64 cmd_line, cmd_line_size;
+-	char *ptr;
++	unsigned long cmd_line, cmd_line_size = 0;
  
--out:
- 	free(tmp_cmdline);
- 	return;
- }
+ 	/*
+ 	 * Avoid the region that is unsafe to overlap during
+@@ -421,12 +424,10 @@ static void mem_avoid_init(unsigned long input, unsigned long input_size,
+ 	/* No need to set mapping for initrd, it will be handled in VO. */
+ 
+ 	/* Avoid kernel command line. */
+-	cmd_line  = (u64)boot_params->ext_cmd_line_ptr << 32;
+-	cmd_line |= boot_params->hdr.cmd_line_ptr;
++	cmd_line = get_cmd_line_ptr();
+ 	/* Calculate size of cmd_line. */
+-	ptr = (char *)(unsigned long)cmd_line;
+-	for (cmd_line_size = 0; ptr[cmd_line_size++];)
+-		;
++	if (cmd_line)
++		cmd_line_size = strlen((char *)cmd_line);
+ 	mem_avoid[MEM_AVOID_CMDLINE].start = cmd_line;
+ 	mem_avoid[MEM_AVOID_CMDLINE].size = cmd_line_size;
+ 	add_identity_map(mem_avoid[MEM_AVOID_CMDLINE].start,
