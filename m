@@ -2,97 +2,98 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C17E230818
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 28 Jul 2020 12:50:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C0877230A06
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 28 Jul 2020 14:29:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728821AbgG1KuP (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 28 Jul 2020 06:50:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58226 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728509AbgG1KuO (ORCPT
+        id S1729543AbgG1M3J (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 28 Jul 2020 08:29:09 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:34314 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728300AbgG1M3I (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 28 Jul 2020 06:50:14 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E9F3C061794;
-        Tue, 28 Jul 2020 03:50:14 -0700 (PDT)
-Date:   Tue, 28 Jul 2020 10:50:11 -0000
+        Tue, 28 Jul 2020 08:29:08 -0400
+Date:   Tue, 28 Jul 2020 12:29:05 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1595933411;
+        s=2020; t=1595939346;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=dimlmuFieJ1EpplWo3JrvmutEpWN5OaldTsfxRyNdgg=;
-        b=VxeiPiCrzgnSn2lG0yJc61nNg4+JWv9C6CFf+98PvpIg74hPEej/0Rns25D8KavyibOSbu
-        jGDtRfBmUBhff0gtkvWTblHu405RXfSva3Kf3+u942EOIIBpEn6tpB7y5g7n//v2rVn/+W
-        eMyOnJm8cpf7w0SiIW0Jh9CyqYbZcoTUYd25GsxwIVvAOHYRAUVmC6/3IUzFmLoWHdjVP5
-        G36TXRZKZMvxIrfl4D0/L8HXREeTFRQLKk4zOA+FlOdRFLxOZWhjZ5I4KvpxjrvzS6wSAl
-        QxUY9gmJVevrYYDrPwU/ea+e8Isj9vPdjLktWyCi3i/vKEYlIayRpAx1UTiVmA==
+        bh=2dW8clZS1g94ais6wvu0XRIVao5VKKeDyjpkytvs4Dg=;
+        b=OxEfyRKtUS1FC5b88Zrl0qpiezf6Sb/JovXzrPadDt6AsyEcaflX4w5L44Fq+diRiA02fh
+        QVkc27WReGuynkSjHIQZRRqoUslqZTjdmLNZjkvLRAbmz4dzLfT5Gq7xEhh3ZQngdIPN4b
+        s+Kwi3TcTLdJFmIw9ZaK49hC8jxhXIokePHcdPxMOI0EyI3k8lzGVrbEU5QE5xk4hL1f1e
+        52WqRPdAZ37oCQ79OtBXJL1jjsZz3o98G6ydkKqUHoLXkyFxpiStvOvUMGJauCMjRUqWvU
+        gXTnyUZuR43/JdGqzi+XYQIJY6VFuLGlESak+xC9W0pfv1VL6rK9FoHHlnNaSQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1595933411;
+        s=2020e; t=1595939346;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=dimlmuFieJ1EpplWo3JrvmutEpWN5OaldTsfxRyNdgg=;
-        b=qblETHe6v98T8LK4aU8POeFrBdrsbm9kjTMhF1NUaOJwE7aeL8qbFucJzpLSQN7gIdHmz/
-        QDD/iL/NDY6b0FDA==
-From:   tip-bot2 for =?utf-8?b?546L5paH6JmO?= <tip-bot2@linutronix.de>
+        bh=2dW8clZS1g94ais6wvu0XRIVao5VKKeDyjpkytvs4Dg=;
+        b=7B+2pdI5hveWCFLKxfOWln4BOSIfwBlez5AYD8KD6ByX7vwj/AYgUhMMpudX+rfMd+VH0U
+        s0a/j0qmHPkOtoAw==
+From:   "tip-bot2 for Pu Wen" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched: Fix a typo in a comment
-Cc:     Wang Wenhu <wenhu.wang@vivo.com>, Ingo Molnar <mingo@kernel.org>,
+Subject: [tip: perf/core] perf/x86/rapl: Add Hygon Fam18h RAPL support
+Cc:     Pu Wen <puwen@hygon.cn>, Ingo Molnar <mingo@kernel.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <AAcAXwBTDSpsKN-5iyIOtaqk.1.1595857191899.Hmail.wenhu.wang@vivo.com>
-References: <AAcAXwBTDSpsKN-5iyIOtaqk.1.1595857191899.Hmail.wenhu.wang@vivo.com>
+In-Reply-To: <20200720082205.1307-1-puwen@hygon.cn>
+References: <20200720082205.1307-1-puwen@hygon.cn>
 MIME-Version: 1.0
-Message-ID: <159593341116.4006.140505713819704674.tip-bot2@tip-bot2>
+Message-ID: <159593934554.4006.16034988515761128072.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     c1b7b8d42b5422627b0a8268416a60748f8d000f
-Gitweb:        https://git.kernel.org/tip/c1b7b8d42b5422627b0a8268416a60748f8=
-d000f
-Author:        =E7=8E=8B=E6=96=87=E8=99=8E <wenhu.wang@vivo.com>
-AuthorDate:    Mon, 27 Jul 2020 21:39:51 +08:00
+Commit-ID:     d903b6d029d66e6478562d75ea18d89098f7b7e8
+Gitweb:        https://git.kernel.org/tip/d903b6d029d66e6478562d75ea18d89098f7b7e8
+Author:        Pu Wen <puwen@hygon.cn>
+AuthorDate:    Mon, 20 Jul 2020 16:22:05 +08:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Mon, 27 Jul 2020 23:37:53 +02:00
+CommitterDate: Tue, 28 Jul 2020 13:34:20 +02:00
 
-sched: Fix a typo in a comment
+perf/x86/rapl: Add Hygon Fam18h RAPL support
 
-Change the comment typo: "direcly" -> "directly".
+Hygon Family 18h(Dhyana) support RAPL in bit 14 of CPUID 0x80000007 EDX,
+and has MSRs RAPL_PWR_UNIT/CORE_ENERGY_STAT/PKG_ENERGY_STAT. So add Hygon
+Dhyana Family 18h support for RAPL.
 
-Signed-off-by: Wang Wenhu <wenhu.wang@vivo.com>
+The output is available via the energy-pkg pseudo event:
+
+  $ perf stat -a -I 1000 --per-socket -e power/energy-pkg/
+
+[ mingo: Tidied up the initializers. ]
+
+Signed-off-by: Pu Wen <puwen@hygon.cn>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/AAcAXwBTDSpsKN-5iyIOtaqk.1.1595857191899.Hmai=
-l.wenhu.wang@vivo.com
+Link: https://lore.kernel.org/r/20200720082205.1307-1-puwen@hygon.cn
 ---
- include/linux/sched.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/events/rapl.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/sched.h b/include/linux/sched.h
-index 5033813..adf0125 100644
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -374,7 +374,7 @@ struct util_est {
-  * For cfs_rq, they are the aggregated values of all runnable and blocked
-  * sched_entities.
-  *
-- * The load/runnable/util_avg doesn't direcly factor frequency scaling and C=
-PU
-+ * The load/runnable/util_avg doesn't directly factor frequency scaling and =
-CPU
-  * capacity scaling. The scaling is done through the rq_clock_pelt that is u=
-sed
-  * for computing those signals (see update_rq_clock_pelt())
-  *
+diff --git a/arch/x86/events/rapl.c b/arch/x86/events/rapl.c
+index 0f2bf59..68b3882 100644
+--- a/arch/x86/events/rapl.c
++++ b/arch/x86/events/rapl.c
+@@ -787,7 +787,8 @@ static const struct x86_cpu_id rapl_model_match[] __initconst = {
+ 	X86_MATCH_INTEL_FAM6_MODEL(ICELAKE_X,		&model_hsx),
+ 	X86_MATCH_INTEL_FAM6_MODEL(COMETLAKE_L,		&model_skl),
+ 	X86_MATCH_INTEL_FAM6_MODEL(COMETLAKE,		&model_skl),
+-	X86_MATCH_VENDOR_FAM(AMD, 0x17, &model_amd_fam17h),
++	X86_MATCH_VENDOR_FAM(AMD,	0x17,		&model_amd_fam17h),
++	X86_MATCH_VENDOR_FAM(HYGON,	0x18,		&model_amd_fam17h),
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(x86cpu, rapl_model_match);
