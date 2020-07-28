@@ -2,17 +2,20 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 91EAA230A14
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 28 Jul 2020 14:30:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F89B230A0F
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 28 Jul 2020 14:29:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729620AbgG1M31 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 28 Jul 2020 08:29:27 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:34340 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729267AbgG1M3Q (ORCPT
+        id S1729619AbgG1M3S (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 28 Jul 2020 08:29:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45296 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729614AbgG1M3R (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 28 Jul 2020 08:29:16 -0400
-Date:   Tue, 28 Jul 2020 12:29:14 -0000
+        Tue, 28 Jul 2020 08:29:17 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3395CC061794;
+        Tue, 28 Jul 2020 05:29:17 -0700 (PDT)
+Date:   Tue, 28 Jul 2020 12:29:15 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1595939355;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -20,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=iiX8FF++DrdJ7/RxhyDj5URL8ZYx7pcohzaiY9bEL+0=;
-        b=YaG1BR6OB4OXNZdWlemxVz7vxd9Sq+Fv1lOWaNReCL+FYpl3o/In9aNi8GdzqPY+v71Xob
-        guD2NH7LVYqhjQIyV2VhXeWC0375TP/EdmWnRIS+FzK7vwSKjp6buB/7MZEdU/4wGWifAC
-        fwtVHbXnUNlG1x16xm/CXNgvNJLw9Y3l+Yryp21oNi4GAoo+vSvK7TR2EU7dRBujkafauF
-        KgXXEjZMnFFmTQGRScbSsWSVjOHo5B0hy3jkwW2OMcaa+YpxbMWSnSv20/ayXHtlVzBuZA
-        HJpTNti9ZvslkiHLBAcnBOEyHtCYi3CQi8z0tVJ0cMO47XNiaI1XvAhtPcMW6g==
+        bh=7YdZ/axXCwm5XLxxjQO1zY7IIzjjaE8o/vGu+HswV80=;
+        b=dH8tROJOv5vjYJgzWMafFdY/lsmhhOQ/gZ6CCVcdeS0RXPzVxNBG91+B++8EytuJGlc4fU
+        L3sfQ6mlzzTjW9DHTpo2P2D4IQKYURRK9yjq0FJzUTjBhrN0Nnq9H5FlQXKDeLZhsCHD5E
+        vLTerRL7avkl1b5dX4aXUqYBtc6InfHASl/kcTSHj8SxrkCftIXvhQe9uQ8jAV5HAOAFZj
+        IQjLXNtm/rOENV4ZBBfbYwnt1QUbJ6qseXY2j/VxK7yMTmR3J6IL5K2uCKdb5g/1v+6WGW
+        pUIwWbX5QmQVODFs2IkEva6aIHtyl2J0jV7UcUOEr1wnUo2BkCc4878wpTfeNA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1595939355;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -33,20 +36,20 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=iiX8FF++DrdJ7/RxhyDj5URL8ZYx7pcohzaiY9bEL+0=;
-        b=aei4F2kDtuo26bNBAq2cV/ptf9eHJZwT6xS7TmxUKwqDsFRKczO0eMDz5Kmr7VPk2V/mNe
-        zS7vCwWo9aGnicBg==
+        bh=7YdZ/axXCwm5XLxxjQO1zY7IIzjjaE8o/vGu+HswV80=;
+        b=ZPl0kblootfNSOyfVkLc775LwHAsmZXdljwDmeWMMQd92NzieEeZC99S/jnXuZpK+BCjKe
+        im+W8hZqG3PVwhCA==
 From:   "tip-bot2 for Arvind Sankar" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/kaslr] x86/kaslr: Fix process_efi_entries comment
+Subject: [tip: x86/kaslr] x86/kaslr: Remove bogus warning and unnecessary goto
 Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
         Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200727230801.3468620-4-nivedita@alum.mit.edu>
-References: <20200727230801.3468620-4-nivedita@alum.mit.edu>
+In-Reply-To: <20200727230801.3468620-3-nivedita@alum.mit.edu>
+References: <20200727230801.3468620-3-nivedita@alum.mit.edu>
 MIME-Version: 1.0
-Message-ID: <159593935441.4006.4834681494121268317.tip-bot2@tip-bot2>
+Message-ID: <159593935504.4006.12364452342763685270.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,41 +61,59 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/kaslr branch of tip:
 
-Commit-ID:     a68bcea591a040cce5e08615c829a316beb3e4b4
-Gitweb:        https://git.kernel.org/tip/a68bcea591a040cce5e08615c829a316beb3e4b4
+Commit-ID:     237069512d18f0f20b230680f067a2c070a7903a
+Gitweb:        https://git.kernel.org/tip/237069512d18f0f20b230680f067a2c070a7903a
 Author:        Arvind Sankar <nivedita@alum.mit.edu>
-AuthorDate:    Mon, 27 Jul 2020 19:07:56 -04:00
+AuthorDate:    Mon, 27 Jul 2020 19:07:55 -04:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 28 Jul 2020 12:54:43 +02:00
+CommitterDate: Tue, 28 Jul 2020 12:54:42 +02:00
 
-x86/kaslr: Fix process_efi_entries comment
+x86/kaslr: Remove bogus warning and unnecessary goto
 
-Since commit:
+Drop the warning on seeing "--" in handle_mem_options(). This will trigger
+whenever one of the memory options is present in the command line
+together with "--", but there's no problem if that is the case.
 
-  0982adc74673 ("x86/boot/KASLR: Work around firmware bugs by excluding EFI_BOOT_SERVICES_* and EFI_LOADER_* from KASLR's choice")
-
-process_efi_entries() will return true if we have an EFI memmap, not just
-if it contained EFI_MEMORY_MORE_RELIABLE regions.
+Replace goto with break.
 
 Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20200727230801.3468620-4-nivedita@alum.mit.edu
+Link: https://lore.kernel.org/r/20200727230801.3468620-3-nivedita@alum.mit.edu
 ---
- arch/x86/boot/compressed/kaslr.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/boot/compressed/kaslr.c |  9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
 diff --git a/arch/x86/boot/compressed/kaslr.c b/arch/x86/boot/compressed/kaslr.c
-index 21cd9e0..207fcb7 100644
+index a4af896..21cd9e0 100644
 --- a/arch/x86/boot/compressed/kaslr.c
 +++ b/arch/x86/boot/compressed/kaslr.c
-@@ -741,8 +741,8 @@ static bool process_mem_region(struct mem_vector *region,
+@@ -295,10 +295,8 @@ static void handle_mem_options(void)
+ 	while (*args) {
+ 		args = next_arg(args, &param, &val);
+ 		/* Stop at -- */
+-		if (!val && strcmp(param, "--") == 0) {
+-			warn("Only '--' specified in cmdline");
+-			goto out;
+-		}
++		if (!val && strcmp(param, "--") == 0)
++			break;
  
- #ifdef CONFIG_EFI
- /*
-- * Returns true if mirror region found (and must have been processed
-- * for slots adding)
-+ * Returns true if we processed the EFI memmap, which we prefer over the E820
-+ * table if it is available.
-  */
- static bool
- process_efi_entries(unsigned long minimum, unsigned long image_size)
+ 		if (!strcmp(param, "memmap")) {
+ 			mem_avoid_memmap(PARSE_MEMMAP, val);
+@@ -311,7 +309,7 @@ static void handle_mem_options(void)
+ 				continue;
+ 			mem_size = memparse(p, &p);
+ 			if (mem_size == 0)
+-				goto out;
++				break;
+ 
+ 			mem_limit = mem_size;
+ 		} else if (!strcmp(param, "efi_fake_mem")) {
+@@ -319,7 +317,6 @@ static void handle_mem_options(void)
+ 		}
+ 	}
+ 
+-out:
+ 	free(tmp_cmdline);
+ 	return;
+ }
