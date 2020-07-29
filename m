@@ -2,47 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E2AC2320B1
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 29 Jul 2020 16:35:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DD662320AC
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 29 Jul 2020 16:35:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727918AbgG2OfN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 29 Jul 2020 10:35:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60224 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726899AbgG2Od2 (ORCPT
+        id S1728040AbgG2OfB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 29 Jul 2020 10:35:01 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:42938 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726916AbgG2Odb (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 29 Jul 2020 10:33:28 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B455C061794;
-        Wed, 29 Jul 2020 07:33:28 -0700 (PDT)
-Date:   Wed, 29 Jul 2020 14:33:26 -0000
+        Wed, 29 Jul 2020 10:33:31 -0400
+Date:   Wed, 29 Jul 2020 14:33:27 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1596033207;
+        s=2020; t=1596033208;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=W+LO8S02e6ATM8Kauoun2lP4TdXfzKA5Qwi6t91T4tU=;
-        b=EPvgIDG4UlYhD8bu+eiOJM27Mp8RojPjb2dZpt9kiV6Yw8rL4At2PkFe8pXS8QtxRI7NtZ
-        k7AU0lcW4JpnJ4jflb08wqzM0ZbnZGbfuImCo5UL6RT2GV00dV5eN0JrFHymZjhPrMZQMg
-        vJV1LaR86mztM+jKBDYJDe9rTLAfTVe/zqlVXlHaQEaeRenRtUz+Nzh5dqhnWjfZXKdhSW
-        9KHS5KJUnB/2flHjwNc0CQYT6GNXZYC3r1oYo8hGA2pHzfTVndjGlEusXjdQ6Xh4/NBter
-        lnWxdLORAaF1beZ8DBtVvkfvyZDo/graNLAZLR0Mmx9kYDFZXEAZvdhBQT3FyA==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=TfEec54oaiWxDKtGoCTQPjFnBswneSzn0ldCkFiuN8Y=;
+        b=pk0yGCMa2/MiPKAjiKr8+h76fIdBReea1gbd6uxsa91KOsd9Wf/56YYLXdaaUTAtatcxQ/
+        Iu88KRS11KyQKrb7E4C7TXZ7H288TKrFT4TAmf0OURQZ6Rjs4/URKy/huoFNfwmyek04om
+        vKsT/D7WrnskXn3PFh1mlN1/izpvvzPHgXamcq7cwT7tIYpIf2+uVd1I240xOXH/UG6SvM
+        qktQ+b3bwHxm+yGJOCs+AW7qvBbfF0QYii1YNJ59gkeHLu13gnemYXjKS0E6JajJGgAqno
+        W7ojUsbIpNCDQjg9UaTPlYX5N3nAF+4vYjb2XlJlAkFIh8gHST7ZfJlR2TyPXQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1596033207;
+        s=2020e; t=1596033208;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=W+LO8S02e6ATM8Kauoun2lP4TdXfzKA5Qwi6t91T4tU=;
-        b=E+EEEr90NSHOfp30P0TO1comVPOuJKjv1bvZ5Ll+gggUgPzIDBx9a5K61cQThjU+x1aJPu
-        PdMj7ngp6uK+0jBQ==
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=TfEec54oaiWxDKtGoCTQPjFnBswneSzn0ldCkFiuN8Y=;
+        b=rhSYbYzzgTmnUBPFIsQi6v1VDbSPoQy8qGcnbY4LSTSd2oDsDuj1o6KeqjCIFNLaeLbV49
+        1KpaRuhFzdpMNHCQ==
+From:   "tip-bot2 for Ahmed S. Darwish" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] seqlock: s/__SEQ_LOCKDEP/__SEQ_LOCK/g
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+Subject: [tip: locking/core] kvm/eventfd: Use sequence counter with associated
+ spinlock
+Cc:     "Ahmed S. Darwish" <a.darwish@linutronix.de>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Paolo Bonzini <pbonzini@redhat.com>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200720155530.1173732-24-a.darwish@linutronix.de>
+References: <20200720155530.1173732-24-a.darwish@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <159603320649.4006.16915985526825590187.tip-bot2@tip-bot2>
+Message-ID: <159603320780.4006.2176719373366704021.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -54,107 +60,60 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     e55687fe5c1e4849e5559a0a49199c9ca3fff36e
-Gitweb:        https://git.kernel.org/tip/e55687fe5c1e4849e5559a0a49199c9ca3fff36e
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Thu, 23 Jul 2020 11:56:22 +02:00
+Commit-ID:     5c73b9a2b1b4ecc809a914aa64970157b3d8c936
+Gitweb:        https://git.kernel.org/tip/5c73b9a2b1b4ecc809a914aa64970157b3d8c936
+Author:        Ahmed S. Darwish <a.darwish@linutronix.de>
+AuthorDate:    Mon, 20 Jul 2020 17:55:29 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Wed, 29 Jul 2020 16:14:29 +02:00
 
-seqlock: s/__SEQ_LOCKDEP/__SEQ_LOCK/g
+kvm/eventfd: Use sequence counter with associated spinlock
 
-__SEQ_LOCKDEP() is an expression gate for the
-seqcount_LOCKNAME_t::lock member. Rename it to be about the member,
-not the gate condition.
+A sequence counter write side critical section must be protected by some
+form of locking to serialize writers. A plain seqcount_t does not
+contain the information of which lock must be held when entering a write
+side critical section.
 
-Later (PREEMPT_RT) patches will make the member available for !LOCKDEP
-configs.
+Use the new seqcount_spinlock_t data type, which allows to associate a
+spinlock with the sequence counter. This enables lockdep to verify that
+the spinlock used for writer serialization is held when the write side
+critical section is entered.
 
+If lockdep is disabled this lock association is compiled out and has
+neither storage size nor runtime overhead.
+
+Signed-off-by: Ahmed S. Darwish <a.darwish@linutronix.de>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Paolo Bonzini <pbonzini@redhat.com>
+Link: https://lkml.kernel.org/r/20200720155530.1173732-24-a.darwish@linutronix.de
 ---
- include/linux/seqlock.h | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ include/linux/kvm_irqfd.h | 2 +-
+ virt/kvm/eventfd.c        | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/seqlock.h b/include/linux/seqlock.h
-index b487299..c689aba 100644
---- a/include/linux/seqlock.h
-+++ b/include/linux/seqlock.h
-@@ -133,20 +133,20 @@ static inline void seqcount_lockdep_reader_access(const seqcount_t *s)
-  */
+diff --git a/include/linux/kvm_irqfd.h b/include/linux/kvm_irqfd.h
+index dc1da02..dac047a 100644
+--- a/include/linux/kvm_irqfd.h
++++ b/include/linux/kvm_irqfd.h
+@@ -42,7 +42,7 @@ struct kvm_kernel_irqfd {
+ 	wait_queue_entry_t wait;
+ 	/* Update side is protected by irqfds.lock */
+ 	struct kvm_kernel_irq_routing_entry irq_entry;
+-	seqcount_t irq_entry_sc;
++	seqcount_spinlock_t irq_entry_sc;
+ 	/* Used for level IRQ fast-path */
+ 	int gsi;
+ 	struct work_struct inject;
+diff --git a/virt/kvm/eventfd.c b/virt/kvm/eventfd.c
+index ef7ed91..d6408bb 100644
+--- a/virt/kvm/eventfd.c
++++ b/virt/kvm/eventfd.c
+@@ -303,7 +303,7 @@ kvm_irqfd_assign(struct kvm *kvm, struct kvm_irqfd *args)
+ 	INIT_LIST_HEAD(&irqfd->list);
+ 	INIT_WORK(&irqfd->inject, irqfd_inject);
+ 	INIT_WORK(&irqfd->shutdown, irqfd_shutdown);
+-	seqcount_init(&irqfd->irq_entry_sc);
++	seqcount_spinlock_init(&irqfd->irq_entry_sc, &kvm->irqfds.lock);
  
- #ifdef CONFIG_LOCKDEP
--#define __SEQ_LOCKDEP(expr)	expr
-+#define __SEQ_LOCK(expr)	expr
- #else
--#define __SEQ_LOCKDEP(expr)
-+#define __SEQ_LOCK(expr)
- #endif
- 
- #define SEQCOUNT_LOCKTYPE_ZERO(seq_name, assoc_lock) {			\
- 	.seqcount		= SEQCNT_ZERO(seq_name.seqcount),	\
--	__SEQ_LOCKDEP(.lock	= (assoc_lock))				\
-+	__SEQ_LOCK(.lock	= (assoc_lock))				\
- }
- 
- #define seqcount_locktype_init(s, assoc_lock)				\
- do {									\
- 	seqcount_init(&(s)->seqcount);					\
--	__SEQ_LOCKDEP((s)->lock = (assoc_lock));			\
-+	__SEQ_LOCK((s)->lock = (assoc_lock));				\
- } while (0)
- 
- /**
-@@ -161,7 +161,7 @@ do {									\
-  */
- typedef struct seqcount_spinlock {
- 	seqcount_t	seqcount;
--	__SEQ_LOCKDEP(spinlock_t	*lock);
-+	__SEQ_LOCK(spinlock_t	*lock);
- } seqcount_spinlock_t;
- 
- /**
-@@ -192,7 +192,7 @@ typedef struct seqcount_spinlock {
-  */
- typedef struct seqcount_raw_spinlock {
- 	seqcount_t      seqcount;
--	__SEQ_LOCKDEP(raw_spinlock_t	*lock);
-+	__SEQ_LOCK(raw_spinlock_t	*lock);
- } seqcount_raw_spinlock_t;
- 
- /**
-@@ -223,7 +223,7 @@ typedef struct seqcount_raw_spinlock {
-  */
- typedef struct seqcount_rwlock {
- 	seqcount_t      seqcount;
--	__SEQ_LOCKDEP(rwlock_t		*lock);
-+	__SEQ_LOCK(rwlock_t		*lock);
- } seqcount_rwlock_t;
- 
- /**
-@@ -257,7 +257,7 @@ typedef struct seqcount_rwlock {
-  */
- typedef struct seqcount_mutex {
- 	seqcount_t      seqcount;
--	__SEQ_LOCKDEP(struct mutex	*lock);
-+	__SEQ_LOCK(struct mutex	*lock);
- } seqcount_mutex_t;
- 
- /**
-@@ -291,7 +291,7 @@ typedef struct seqcount_mutex {
-  */
- typedef struct seqcount_ww_mutex {
- 	seqcount_t      seqcount;
--	__SEQ_LOCKDEP(struct ww_mutex	*lock);
-+	__SEQ_LOCK(struct ww_mutex	*lock);
- } seqcount_ww_mutex_t;
- 
- /**
-@@ -329,7 +329,7 @@ __seqcount_##locktype##_preemptible(seqcount_##locktype##_t *s)		\
- static inline void							\
- __seqcount_##locktype##_assert(seqcount_##locktype##_t *s)		\
- {									\
--	__SEQ_LOCKDEP(lockdep_assert_held(lockmember));			\
-+	__SEQ_LOCK(lockdep_assert_held(lockmember));			\
- }
- 
- /*
+ 	f = fdget(args->fd);
+ 	if (!f.file) {
