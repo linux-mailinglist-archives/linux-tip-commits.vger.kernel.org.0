@@ -2,55 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E249223207C
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 29 Jul 2020 16:33:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE88B23207E
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 29 Jul 2020 16:33:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727816AbgG2Odu (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 29 Jul 2020 10:33:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60290 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727806AbgG2Ods (ORCPT
+        id S1727843AbgG2Odx (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 29 Jul 2020 10:33:53 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:43178 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727820AbgG2Odx (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 29 Jul 2020 10:33:48 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36B0FC061794;
-        Wed, 29 Jul 2020 07:33:48 -0700 (PDT)
-Date:   Wed, 29 Jul 2020 14:33:45 -0000
+        Wed, 29 Jul 2020 10:33:53 -0400
+Date:   Wed, 29 Jul 2020 14:33:50 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1596033226;
+        s=2020; t=1596033231;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=sF3y32fO59mgE9yZ4XLGwaIGcOuJpfXCy6t2yt3pwGo=;
-        b=EOGN3WdTOnOXvk1ERtt5RVSb1IJxDImBlgbtXkEMEaiok5ySca5G9/Dw9czRIYGikvyUPb
-        LqX4w5sxQ7Zm9lvV9IdofYBMAhWUhp1Whn4Ni5J8VzLY8CdUjioUpsrdf0WnE7GLqDjRap
-        gSUOxcHod7ijZQlXG6UGDW6onush/yOvG4qqHitb9L8gGfyIuOTEmJvT2HvQCz9kBrASwt
-        lrOwoLQY8LwY+h+m07MtNnOBolq2Yql2nWn8p+GdQItSyFKaiay8khUo55D0MrZZYG1LTV
-        AhoDR0AK1NZaR3FTQGlUM9IzDVecci/kjcoy2QPtWZ25+RkbyKoWESxQ1TMfjg==
+        bh=COUuUxl24BIY1YJMew8yKejsblD7TbzIN2or9F3NwOY=;
+        b=AsfZqcFNo6rXWFWzMj0FfaEXpYa41v0kTZ0PpF24kFn7TVNrB+1gjx2qljV6lAGZGRhGsq
+        MWlPQqLZBaoihjYLL5THCHa8wquImt0UfP/BAFlh+I80iGVEyONiySjI6fRTnVd0DtJrQ6
+        YmqJtMyR/+nWoSqXuv/Uw2OJ6GiUe3IgDmGxq5Mzm1dZlR9k5Lgj8i3sji41cNqzHn8LWU
+        d3V8wnziO8U1y2K1IYH6NH7/oonWH9kiw02Ve6czizaxyCe0+tRBhOiuJW8xtHZhodFgpu
+        hPqlC7yM1nstIs3ztUBZQFy5MSXy98DTRWXtrxuH1i/CR9wKvXf4xIXZKeE+BA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1596033226;
+        s=2020e; t=1596033231;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=sF3y32fO59mgE9yZ4XLGwaIGcOuJpfXCy6t2yt3pwGo=;
-        b=ddfbKBhSsLwt+0DBbwLHgXy3tYG7/KCMezCGUKEGwQKXNthqaGpm3r6mPa3tO/pyTHwVPO
-        Z81ArTxA4bSvAoAg==
-From:   "tip-bot2 for Valentin Schneider" <tip-bot2@linutronix.de>
+        bh=COUuUxl24BIY1YJMew8yKejsblD7TbzIN2or9F3NwOY=;
+        b=yGSpx2EIWqf29hFflRP/KXdHapWsMb+ynugCh9oyGCVibxKUvKNt33pkMgPKZIN7b8EijI
+        31wJhzdIab62BABQ==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] arm, arm64: Fix selection of CONFIG_SCHED_THERMAL_PRESSURE
-Cc:     Qian Cai <cai@lca.pw>,
-        Valentin Schneider <valentin.schneider@arm.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+Subject: [tip: x86/urgent] x86/i8259: Use printk_deferred() to prevent deadlock
+Cc:     kernel test robot <lkp@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@kernel.org>, stable@vger.kernel.org,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200729135718.1871-1-valentin.schneider@arm.com>
-References: <20200729135718.1871-1-valentin.schneider@arm.com>
+In-Reply-To: <87365abt2v.fsf@nanos.tec.linutronix.de>
+References: <87365abt2v.fsf@nanos.tec.linutronix.de>
 MIME-Version: 1.0
-Message-ID: <159603322570.4006.15235615372892935766.tip-bot2@tip-bot2>
+Message-ID: <159603323059.4006.16549997854103286756.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,78 +57,56 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     fcd7c9c3c35aed58aba2eea6d375f0e5b03bd6d6
-Gitweb:        https://git.kernel.org/tip/fcd7c9c3c35aed58aba2eea6d375f0e5b03bd6d6
-Author:        Valentin Schneider <valentin.schneider@arm.com>
-AuthorDate:    Wed, 29 Jul 2020 14:57:18 +01:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 29 Jul 2020 16:14:16 +02:00
+Commit-ID:     bdd65589593edd79b6a12ce86b3b7a7c6dae5208
+Gitweb:        https://git.kernel.org/tip/bdd65589593edd79b6a12ce86b3b7a7c6dae5208
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Wed, 29 Jul 2020 10:53:28 +02:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Wed, 29 Jul 2020 16:27:16 +02:00
 
-arm, arm64: Fix selection of CONFIG_SCHED_THERMAL_PRESSURE
+x86/i8259: Use printk_deferred() to prevent deadlock
 
-Qian reported that the current setup forgoes the Kconfig dependencies and
-results in warnings such as:
+0day reported a possible circular locking dependency:
 
-  WARNING: unmet direct dependencies detected for SCHED_THERMAL_PRESSURE
-    Depends on [n]: SMP [=y] && CPU_FREQ_THERMAL [=n]
-    Selected by [y]:
-    - ARM64 [=y]
+Chain exists of:
+  &irq_desc_lock_class --> console_owner --> &port_lock_key
 
-Revert commit
+ Possible unsafe locking scenario:
 
-  e17ae7fea871 ("arm, arm64: Select CONFIG_SCHED_THERMAL_PRESSURE")
+       CPU0                    CPU1
+       ----                    ----
+  lock(&port_lock_key);
+                               lock(console_owner);
+                               lock(&port_lock_key);
+  lock(&irq_desc_lock_class);
 
-and re-implement it by making the option default to 'y' for arm64 and arm,
-which respects Kconfig dependencies (i.e. will remain 'n' if
-CPU_FREQ_THERMAL=n).
+The reason for this is a printk() in the i8259 interrupt chip driver
+which is invoked with the irq descriptor lock held, which reverses the
+lock operations vs. printk() from arbitrary contexts.
 
-Fixes: e17ae7fea871 ("arm, arm64: Select CONFIG_SCHED_THERMAL_PRESSURE")
-Reported-by: Qian Cai <cai@lca.pw>
-Signed-off-by: Valentin Schneider <valentin.schneider@arm.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20200729135718.1871-1-valentin.schneider@arm.com
+Switch the printk() to printk_deferred() to avoid that.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/87365abt2v.fsf@nanos.tec.linutronix.de
 ---
- arch/arm/Kconfig   | 1 -
- arch/arm64/Kconfig | 1 -
- init/Kconfig       | 2 ++
- 3 files changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/kernel/i8259.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 939c4d6..2ac7490 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -46,7 +46,6 @@ config ARM
- 	select EDAC_ATOMIC_SCRUB
- 	select GENERIC_ALLOCATOR
- 	select GENERIC_ARCH_TOPOLOGY if ARM_CPU_TOPOLOGY
--	select SCHED_THERMAL_PRESSURE if ARM_CPU_TOPOLOGY
- 	select GENERIC_ATOMIC64 if CPU_V7M || CPU_V6 || !CPU_32v6K || !AEABI
- 	select GENERIC_CLOCKEVENTS_BROADCAST if SMP
- 	select GENERIC_CPU_AUTOPROBE
-diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index c403e6f..66dc41f 100644
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -192,7 +192,6 @@ config ARM64
- 	select PCI_SYSCALL if PCI
- 	select POWER_RESET
- 	select POWER_SUPPLY
--	select SCHED_THERMAL_PRESSURE
- 	select SPARSE_IRQ
- 	select SWIOTLB
- 	select SYSCTL_EXCEPTION_TRACE
-diff --git a/init/Kconfig b/init/Kconfig
-index 0a97d85..9f7f249 100644
---- a/init/Kconfig
-+++ b/init/Kconfig
-@@ -493,6 +493,8 @@ config HAVE_SCHED_AVG_IRQ
- 
- config SCHED_THERMAL_PRESSURE
- 	bool
-+	default y if ARM && ARM_CPU_TOPOLOGY
-+	default y if ARM64
- 	depends on SMP
- 	depends on CPU_FREQ_THERMAL
- 	help
+diff --git a/arch/x86/kernel/i8259.c b/arch/x86/kernel/i8259.c
+index f3c7625..282b4ee 100644
+--- a/arch/x86/kernel/i8259.c
++++ b/arch/x86/kernel/i8259.c
+@@ -207,7 +207,7 @@ spurious_8259A_irq:
+ 		 * lets ACK and report it. [once per IRQ]
+ 		 */
+ 		if (!(spurious_irq_mask & irqmask)) {
+-			printk(KERN_DEBUG
++			printk_deferred(KERN_DEBUG
+ 			       "spurious 8259A interrupt: IRQ%d.\n", irq);
+ 			spurious_irq_mask |= irqmask;
+ 		}
