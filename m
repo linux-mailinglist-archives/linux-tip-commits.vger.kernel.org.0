@@ -2,51 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D89F2232090
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 29 Jul 2020 16:34:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B91E232079
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 29 Jul 2020 16:33:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727915AbgG2OeR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 29 Jul 2020 10:34:17 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:43114 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727772AbgG2Odp (ORCPT
-        <rfc822;linux-tip-commits@vger.kernel.org>);
+        id S1727792AbgG2Odp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Wed, 29 Jul 2020 10:33:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60274 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727776AbgG2Odn (ORCPT
+        <rfc822;linux-tip-commits@vger.kernel.org>);
+        Wed, 29 Jul 2020 10:33:43 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6938EC061794;
+        Wed, 29 Jul 2020 07:33:43 -0700 (PDT)
 Date:   Wed, 29 Jul 2020 14:33:41 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1596033222;
+        s=2020; t=1596033221;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=pKZyPfylgBNuuFURrJgJg3ENrenqZcFEcbvg7YtWPWI=;
-        b=OeIi67fuoc+lSXcnoltXwKKYR6HrH3FjjyyWN8vIjHOT0A/xPqBb8SvN6k+EmMeaUqzSgz
-        6cvV6VzO8pVV9BlnnKAPBzRcSJdu7Qp+epKxfJQhlhRj6++1hUFXup3wgCuYXBADTa3vD0
-        +sV0n9YH1iA+4gAHpHtFYhAG2fUMQv46RCypH36NVERz5KWaHg4CtICnoUUPiNgTJNEIqt
-        z91n9UMJ2fK2r2Rjxq+fTgKacYINrTEWrDMLDN5u/AMCm/ftxPMDV4BgiavvtWp4ZY4/7l
-        TPx7OpgulVV02W0zmFNg30ShyuIY9MxS38FiiHClfsYcypIwZgE1/yKLBv4ULQ==
+        bh=eavMHgip/DHaHggfrx1dCSEAdMJyMOGJhJ6uWsf22qU=;
+        b=06PEpfIme3OvXSDYlVjzE10HU8jH63PqJQxdWZ7yt9dhKFiY8igESKvzBZ24nSjLqwq92X
+        yrrOtrD9EVbxJyXYoiIGw4aC15hkHYrGCjPfRbwX8hjr6Zz7J/dPfpxn7yhVSEt7H6XQzA
+        67KPFmTumdZCUfb3vHZ57TpMSF06IDCVSpYO4CK/4Gu61D3/uFg9G2qkqt0IQIZ3L4ddeg
+        WU6bLM4y8jYk3SMkHimr0iKo+kz+Dw7tCrfHp3/FPvnYW4foTTH+O7SiuqTCkPMFb0NVD7
+        FXYG+snuWovzB4pWNgO7xOif13Yqv0bmnV7ilnS3RwsvhziOPdqv+NE+4SAEjg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1596033222;
+        s=2020e; t=1596033221;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=pKZyPfylgBNuuFURrJgJg3ENrenqZcFEcbvg7YtWPWI=;
-        b=e4eRxc0dvvWzLOMgjrZStKcsr8srIy0Jg6Kh8XrF5LJkwKlT0ysFX9CnFLmDharoLFZQoa
-        DazHn+9cR5VPdYCA==
+        bh=eavMHgip/DHaHggfrx1dCSEAdMJyMOGJhJ6uWsf22qU=;
+        b=OnBFmy8VC1vX/VoCGIRkJzjk112PYWyeEH/dvd/o4d0rl+R2VFT8FvSbEr+65EUIApmfxh
+        10aVgUjORGFAkKDA==
 From:   "tip-bot2 for Ahmed S. Darwish" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] seqlock: Properly format kernel-doc code samples
+Subject: [tip: locking/core] seqlock: seqcount_t latch: End read sections with
+ read_seqcount_retry()
 Cc:     "Ahmed S. Darwish" <a.darwish@linutronix.de>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200720155530.1173732-3-a.darwish@linutronix.de>
-References: <20200720155530.1173732-3-a.darwish@linutronix.de>
+In-Reply-To: <20200720155530.1173732-4-a.darwish@linutronix.de>
+References: <20200720155530.1173732-4-a.darwish@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <159603322198.4006.14903341074510380226.tip-bot2@tip-bot2>
+Message-ID: <159603322133.4006.2775605538857308036.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,181 +62,44 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     15cbe67bbd3adeb4854c42713dbeaf2ff876beee
-Gitweb:        https://git.kernel.org/tip/15cbe67bbd3adeb4854c42713dbeaf2ff876beee
+Commit-ID:     d3b35b87f436c1b226a8061bee9c8875ba6658bd
+Gitweb:        https://git.kernel.org/tip/d3b35b87f436c1b226a8061bee9c8875ba6658bd
 Author:        Ahmed S. Darwish <a.darwish@linutronix.de>
-AuthorDate:    Mon, 20 Jul 2020 17:55:08 +02:00
+AuthorDate:    Mon, 20 Jul 2020 17:55:09 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Wed, 29 Jul 2020 16:14:23 +02:00
 
-seqlock: Properly format kernel-doc code samples
+seqlock: seqcount_t latch: End read sections with read_seqcount_retry()
 
-Align the code samples and note sections inside kernel-doc comments with
-tabs. This way they can be properly parsed and rendered by Sphinx. It
-also makes the code samples easier to read from text editors.
+The seqcount_t latch reader example at the raw_write_seqcount_latch()
+kernel-doc comment ends the latch read section with a manual smp memory
+barrier and sequence counter comparison.
+
+This is technically correct, but it is suboptimal: read_seqcount_retry()
+already contains the same logic of an smp memory barrier and sequence
+counter comparison.
+
+End the latch read critical section example with read_seqcount_retry().
 
 Signed-off-by: Ahmed S. Darwish <a.darwish@linutronix.de>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20200720155530.1173732-3-a.darwish@linutronix.de
+Link: https://lkml.kernel.org/r/20200720155530.1173732-4-a.darwish@linutronix.de
 ---
- include/linux/seqlock.h | 108 ++++++++++++++++++++-------------------
- 1 file changed, 56 insertions(+), 52 deletions(-)
+ include/linux/seqlock.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/include/linux/seqlock.h b/include/linux/seqlock.h
-index 299d68f..6c4f68e 100644
+index 6c4f68e..d724b5e 100644
 --- a/include/linux/seqlock.h
 +++ b/include/linux/seqlock.h
-@@ -263,32 +263,32 @@ static inline void raw_write_seqcount_end(seqcount_t *s)
-  * atomically, avoiding compiler optimizations; b) to document which writes are
-  * meant to propagate to the reader critical section. This is necessary because
-  * neither writes before and after the barrier are enclosed in a seq-writer
-- * critical section that would ensure readers are aware of ongoing writes.
-+ * critical section that would ensure readers are aware of ongoing writes::
+@@ -363,8 +363,8 @@ static inline int raw_read_seqcount_latch(seqcount_t *s)
+  *			idx = seq & 0x01;
+  *			entry = data_query(latch->data[idx], ...);
   *
-- *      seqcount_t seq;
-- *      bool X = true, Y = false;
-+ *	seqcount_t seq;
-+ *	bool X = true, Y = false;
+- *			smp_rmb();
+- *		} while (seq != latch->seq);
++ *		// read_seqcount_retry() includes needed smp_rmb()
++ *		} while (read_seqcount_retry(&latch->seq, seq));
   *
-- *      void read(void)
-- *      {
-- *              bool x, y;
-+ *	void read(void)
-+ *	{
-+ *		bool x, y;
-  *
-- *              do {
-- *                      int s = read_seqcount_begin(&seq);
-+ *		do {
-+ *			int s = read_seqcount_begin(&seq);
-  *
-- *                      x = X; y = Y;
-+ *			x = X; y = Y;
-  *
-- *              } while (read_seqcount_retry(&seq, s));
-+ *		} while (read_seqcount_retry(&seq, s));
-  *
-- *              BUG_ON(!x && !y);
-+ *		BUG_ON(!x && !y);
-  *      }
-  *
-  *      void write(void)
-  *      {
-- *              WRITE_ONCE(Y, true);
-+ *		WRITE_ONCE(Y, true);
-  *
-- *              raw_write_seqcount_barrier(seq);
-+ *		raw_write_seqcount_barrier(seq);
-  *
-- *              WRITE_ONCE(X, false);
-+ *		WRITE_ONCE(X, false);
-  *      }
-  */
- static inline void raw_write_seqcount_barrier(seqcount_t *s)
-@@ -325,64 +325,68 @@ static inline int raw_read_seqcount_latch(seqcount_t *s)
-  * Very simply put: we first modify one copy and then the other. This ensures
-  * there is always one copy in a stable state, ready to give us an answer.
-  *
-- * The basic form is a data structure like:
-+ * The basic form is a data structure like::
-  *
-- * struct latch_struct {
-- *	seqcount_t		seq;
-- *	struct data_struct	data[2];
-- * };
-+ *	struct latch_struct {
-+ *		seqcount_t		seq;
-+ *		struct data_struct	data[2];
-+ *	};
-  *
-  * Where a modification, which is assumed to be externally serialized, does the
-- * following:
-+ * following::
-  *
-- * void latch_modify(struct latch_struct *latch, ...)
-- * {
-- *	smp_wmb();	<- Ensure that the last data[1] update is visible
-- *	latch->seq++;
-- *	smp_wmb();	<- Ensure that the seqcount update is visible
-+ *	void latch_modify(struct latch_struct *latch, ...)
-+ *	{
-+ *		smp_wmb();	// Ensure that the last data[1] update is visible
-+ *		latch->seq++;
-+ *		smp_wmb();	// Ensure that the seqcount update is visible
-  *
-- *	modify(latch->data[0], ...);
-+ *		modify(latch->data[0], ...);
-  *
-- *	smp_wmb();	<- Ensure that the data[0] update is visible
-- *	latch->seq++;
-- *	smp_wmb();	<- Ensure that the seqcount update is visible
-+ *		smp_wmb();	// Ensure that the data[0] update is visible
-+ *		latch->seq++;
-+ *		smp_wmb();	// Ensure that the seqcount update is visible
-  *
-- *	modify(latch->data[1], ...);
-- * }
-+ *		modify(latch->data[1], ...);
-+ *	}
-  *
-- * The query will have a form like:
-+ * The query will have a form like::
-  *
-- * struct entry *latch_query(struct latch_struct *latch, ...)
-- * {
-- *	struct entry *entry;
-- *	unsigned seq, idx;
-+ *	struct entry *latch_query(struct latch_struct *latch, ...)
-+ *	{
-+ *		struct entry *entry;
-+ *		unsigned seq, idx;
-  *
-- *	do {
-- *		seq = raw_read_seqcount_latch(&latch->seq);
-+ *		do {
-+ *			seq = raw_read_seqcount_latch(&latch->seq);
-  *
-- *		idx = seq & 0x01;
-- *		entry = data_query(latch->data[idx], ...);
-+ *			idx = seq & 0x01;
-+ *			entry = data_query(latch->data[idx], ...);
-  *
-- *		smp_rmb();
-- *	} while (seq != latch->seq);
-+ *			smp_rmb();
-+ *		} while (seq != latch->seq);
-  *
-- *	return entry;
-- * }
-+ *		return entry;
-+ *	}
-  *
-  * So during the modification, queries are first redirected to data[1]. Then we
-  * modify data[0]. When that is complete, we redirect queries back to data[0]
-  * and we can modify data[1].
-  *
-- * NOTE: The non-requirement for atomic modifications does _NOT_ include
-- *       the publishing of new entries in the case where data is a dynamic
-- *       data structure.
-+ * NOTE:
-+ *
-+ *	The non-requirement for atomic modifications does _NOT_ include
-+ *	the publishing of new entries in the case where data is a dynamic
-+ *	data structure.
-+ *
-+ *	An iteration might start in data[0] and get suspended long enough
-+ *	to miss an entire modification sequence, once it resumes it might
-+ *	observe the new entry.
-  *
-- *       An iteration might start in data[0] and get suspended long enough
-- *       to miss an entire modification sequence, once it resumes it might
-- *       observe the new entry.
-+ * NOTE:
-  *
-- * NOTE: When data is a dynamic data structure; one should use regular RCU
-- *       patterns to manage the lifetimes of the objects within.
-+ *	When data is a dynamic data structure; one should use regular RCU
-+ *	patterns to manage the lifetimes of the objects within.
-  */
- static inline void raw_write_seqcount_latch(seqcount_t *s)
- {
+  *		return entry;
+  *	}
