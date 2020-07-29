@@ -2,17 +2,17 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B7C4223209D
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 29 Jul 2020 16:34:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0AB1F232097
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 29 Jul 2020 16:34:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726391AbgG2Oeo (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 29 Jul 2020 10:34:44 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:42978 "EHLO
+        id S1726615AbgG2Oeb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 29 Jul 2020 10:34:31 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:43030 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727008AbgG2Odh (ORCPT
+        with ESMTP id S1727032AbgG2Odj (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 29 Jul 2020 10:33:37 -0400
-Date:   Wed, 29 Jul 2020 14:33:34 -0000
+        Wed, 29 Jul 2020 10:33:39 -0400
+Date:   Wed, 29 Jul 2020 14:33:35 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1596033215;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -20,12 +20,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=2dRDorUfyV/KRIEq+O8dv02Q2snf8zdn1hjan/viXNg=;
-        b=cSouXzg9GD6vG1QY7CALh6IIRvXP1MGhV68R63+JpmfCIRL43TloCHeFlFEiM4G0+98oZc
-        fBOb+VY08EJDi+95ocrP0B/kIzPAWC85hWHPNZWCWcHfEgZ7LYM+E8lgtkVBKLDNSUYigF
-        N14C03/locq0AoxCIyS32dlCeJR+30h5wsim7F9QJfc8MxbKRoZHnAm6VLP3d3zYDSqlS/
-        nCMWvJYP+KSYLOrx96y7XImD/a/7Yu+v+hGSGloCu7WO4hNlGPK2Vj5WitOL6YlxhmC92E
-        48VMqnK5K7/WsR8wDIikoMzLSjPN6u4ywAtZhHLPlzEi0gHXDMC939AfwuekNw==
+        bh=KopvyF/JDXG9p8fKYXdexCesCEv+QMbEs4lnjnJSQ0c=;
+        b=iI2TrOLvfPwoDrt/59Uc7RlEHQ3Cqb6D431ET4X4wJwO1ASTjlyX5d6mv3Ir0l96mph0mr
+        yIReOeEtC1twCSFEQhZOhvOnfmnC4OxxV1pHG0HmicUAMdCCOHoBnlB4NKQPHjNANE6TmX
+        GwiKW8K9PunUFYFeThTeb2U9DVGncYfiRV9ROfmlaqF1/AZ52s+1CoBTedw1iaakUF1TPB
+        WEtSO9zYitnpfbxCTN5eZExgTo3Nwrkz/J6vHhjgGqVYG9d6LqDvNJ48FGIav9sfQrd/bO
+        kx0XZej9o4jrdRtUk0SAa9vc5ErIX55ftwcRoYHB/Hs9pq7GcqfONKAZyYYEZw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1596033215;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -33,21 +33,22 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=2dRDorUfyV/KRIEq+O8dv02Q2snf8zdn1hjan/viXNg=;
-        b=NoK9eVhLNX89C6j0C9j3GYsOKqew45ZQM1JP60/lXOU8Pk3c85eiWLm15cz8TsfkB+zZrp
-        d8SbfZsQ0AjgxKBw==
+        bh=KopvyF/JDXG9p8fKYXdexCesCEv+QMbEs4lnjnJSQ0c=;
+        b=FlUuzQ2ZN4SBp15HLJ4CjFNwfDFQ/x5QQAFTHAAqmJ59AGroYFd3YAiV+cEvt8aSnauKR/
+        8W5eKh9nVH609pAQ==
 From:   "tip-bot2 for Ahmed S. Darwish" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] sched: tasks: Use sequence counter with
- associated spinlock
+Subject: [tip: locking/core] dma-buf: Use sequence counter with associated
+ wound/wait mutex
 Cc:     "Ahmed S. Darwish" <a.darwish@linutronix.de>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200720155530.1173732-14-a.darwish@linutronix.de>
-References: <20200720155530.1173732-14-a.darwish@linutronix.de>
+        Daniel Vetter <daniel.vetter@ffwll.ch>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200720155530.1173732-13-a.darwish@linutronix.de>
+References: <20200720155530.1173732-13-a.darwish@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <159603321449.4006.5978945704177028355.tip-bot2@tip-bot2>
+Message-ID: <159603321521.4006.14335079451565543001.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,74 +60,135 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     b75058614fdd3140074a640b514f6a0b4d485a2d
-Gitweb:        https://git.kernel.org/tip/b75058614fdd3140074a640b514f6a0b4d485a2d
+Commit-ID:     cd29f22019ec4ab998d2e1e8c831c7c42db4aa7d
+Gitweb:        https://git.kernel.org/tip/cd29f22019ec4ab998d2e1e8c831c7c42db4aa7d
 Author:        Ahmed S. Darwish <a.darwish@linutronix.de>
-AuthorDate:    Mon, 20 Jul 2020 17:55:19 +02:00
+AuthorDate:    Mon, 20 Jul 2020 17:55:18 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 29 Jul 2020 16:14:26 +02:00
+CommitterDate: Wed, 29 Jul 2020 16:14:25 +02:00
 
-sched: tasks: Use sequence counter with associated spinlock
+dma-buf: Use sequence counter with associated wound/wait mutex
 
 A sequence counter write side critical section must be protected by some
-form of locking to serialize writers. A plain seqcount_t does not
-contain the information of which lock must be held when entering a write
-side critical section.
+form of locking to serialize writers. If the serialization primitive is
+not disabling preemption implicitly, preemption has to be explicitly
+disabled before entering the sequence counter write side critical
+section.
 
-Use the new seqcount_spinlock_t data type, which allows to associate a
-spinlock with the sequence counter. This enables lockdep to verify that
-the spinlock used for writer serialization is held when the write side
-critical section is entered.
+The dma-buf reservation subsystem uses plain sequence counters to manage
+updates to reservations. Writer serialization is accomplished through a
+wound/wait mutex.
 
-If lockdep is disabled this lock association is compiled out and has
-neither storage size nor runtime overhead.
+Acquiring a wound/wait mutex does not disable preemption, so this needs
+to be done manually before and after the write side critical section.
+
+Use the newly-added seqcount_ww_mutex_t instead:
+
+  - It associates the ww_mutex with the sequence count, which enables
+    lockdep to validate that the write side critical section is properly
+    serialized.
+
+  - It removes the need to explicitly add preempt_disable/enable()
+    around the write side critical section because the write_begin/end()
+    functions for this new data type automatically do this.
+
+If lockdep is disabled this ww_mutex lock association is compiled out
+and has neither storage size nor runtime overhead.
 
 Signed-off-by: Ahmed S. Darwish <a.darwish@linutronix.de>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20200720155530.1173732-14-a.darwish@linutronix.de
+Acked-by: Daniel Vetter <daniel.vetter@ffwll.ch>
+Link: https://lkml.kernel.org/r/20200720155530.1173732-13-a.darwish@linutronix.de
 ---
- include/linux/sched.h | 2 +-
- init/init_task.c      | 3 ++-
- kernel/fork.c         | 2 +-
- 3 files changed, 4 insertions(+), 3 deletions(-)
+ drivers/dma-buf/dma-resv.c                       | 8 +-------
+ drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c | 2 --
+ include/linux/dma-resv.h                         | 2 +-
+ 3 files changed, 2 insertions(+), 10 deletions(-)
 
-diff --git a/include/linux/sched.h b/include/linux/sched.h
-index 8d1de02..9a9d826 100644
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -1050,7 +1050,7 @@ struct task_struct {
- 	/* Protected by ->alloc_lock: */
- 	nodemask_t			mems_allowed;
- 	/* Seqence number to catch updates: */
--	seqcount_t			mems_allowed_seq;
-+	seqcount_spinlock_t		mems_allowed_seq;
- 	int				cpuset_mem_spread_rotor;
- 	int				cpuset_slab_spread_rotor;
- #endif
-diff --git a/init/init_task.c b/init/init_task.c
-index 15089d1..94fe3ba 100644
---- a/init/init_task.c
-+++ b/init/init_task.c
-@@ -154,7 +154,8 @@ struct task_struct init_task
- 	.trc_holdout_list = LIST_HEAD_INIT(init_task.trc_holdout_list),
- #endif
- #ifdef CONFIG_CPUSETS
--	.mems_allowed_seq = SEQCNT_ZERO(init_task.mems_allowed_seq),
-+	.mems_allowed_seq = SEQCNT_SPINLOCK_ZERO(init_task.mems_allowed_seq,
-+						 &init_task.alloc_lock),
- #endif
- #ifdef CONFIG_RT_MUTEXES
- 	.pi_waiters	= RB_ROOT_CACHED,
-diff --git a/kernel/fork.c b/kernel/fork.c
-index 70d9d0a..fc72f09 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -2032,7 +2032,7 @@ static __latent_entropy struct task_struct *copy_process(
- #ifdef CONFIG_CPUSETS
- 	p->cpuset_mem_spread_rotor = NUMA_NO_NODE;
- 	p->cpuset_slab_spread_rotor = NUMA_NO_NODE;
--	seqcount_init(&p->mems_allowed_seq);
-+	seqcount_spinlock_init(&p->mems_allowed_seq, &p->alloc_lock);
- #endif
- #ifdef CONFIG_TRACE_IRQFLAGS
- 	p->irq_events = 0;
+diff --git a/drivers/dma-buf/dma-resv.c b/drivers/dma-buf/dma-resv.c
+index 15efa0c..a763135 100644
+--- a/drivers/dma-buf/dma-resv.c
++++ b/drivers/dma-buf/dma-resv.c
+@@ -129,7 +129,7 @@ subsys_initcall(dma_resv_lockdep);
+ void dma_resv_init(struct dma_resv *obj)
+ {
+ 	ww_mutex_init(&obj->lock, &reservation_ww_class);
+-	seqcount_init(&obj->seq);
++	seqcount_ww_mutex_init(&obj->seq, &obj->lock);
+ 
+ 	RCU_INIT_POINTER(obj->fence, NULL);
+ 	RCU_INIT_POINTER(obj->fence_excl, NULL);
+@@ -260,7 +260,6 @@ void dma_resv_add_shared_fence(struct dma_resv *obj, struct dma_fence *fence)
+ 	fobj = dma_resv_get_list(obj);
+ 	count = fobj->shared_count;
+ 
+-	preempt_disable();
+ 	write_seqcount_begin(&obj->seq);
+ 
+ 	for (i = 0; i < count; ++i) {
+@@ -282,7 +281,6 @@ replace:
+ 	smp_store_mb(fobj->shared_count, count);
+ 
+ 	write_seqcount_end(&obj->seq);
+-	preempt_enable();
+ 	dma_fence_put(old);
+ }
+ EXPORT_SYMBOL(dma_resv_add_shared_fence);
+@@ -309,14 +307,12 @@ void dma_resv_add_excl_fence(struct dma_resv *obj, struct dma_fence *fence)
+ 	if (fence)
+ 		dma_fence_get(fence);
+ 
+-	preempt_disable();
+ 	write_seqcount_begin(&obj->seq);
+ 	/* write_seqcount_begin provides the necessary memory barrier */
+ 	RCU_INIT_POINTER(obj->fence_excl, fence);
+ 	if (old)
+ 		old->shared_count = 0;
+ 	write_seqcount_end(&obj->seq);
+-	preempt_enable();
+ 
+ 	/* inplace update, no shared fences */
+ 	while (i--)
+@@ -394,13 +390,11 @@ retry:
+ 	src_list = dma_resv_get_list(dst);
+ 	old = dma_resv_get_excl(dst);
+ 
+-	preempt_disable();
+ 	write_seqcount_begin(&dst->seq);
+ 	/* write_seqcount_begin provides the necessary memory barrier */
+ 	RCU_INIT_POINTER(dst->fence_excl, new);
+ 	RCU_INIT_POINTER(dst->fence, dst_list);
+ 	write_seqcount_end(&dst->seq);
+-	preempt_enable();
+ 
+ 	dma_resv_list_free(src_list);
+ 	dma_fence_put(old);
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
+index b91b517..ff4b583 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
+@@ -258,11 +258,9 @@ static int amdgpu_amdkfd_remove_eviction_fence(struct amdgpu_bo *bo,
+ 	new->shared_count = k;
+ 
+ 	/* Install the new fence list, seqcount provides the barriers */
+-	preempt_disable();
+ 	write_seqcount_begin(&resv->seq);
+ 	RCU_INIT_POINTER(resv->fence, new);
+ 	write_seqcount_end(&resv->seq);
+-	preempt_enable();
+ 
+ 	/* Drop the references to the removed fences or move them to ef_list */
+ 	for (i = j, k = 0; i < old->shared_count; ++i) {
+diff --git a/include/linux/dma-resv.h b/include/linux/dma-resv.h
+index a6538ae..d44a77e 100644
+--- a/include/linux/dma-resv.h
++++ b/include/linux/dma-resv.h
+@@ -69,7 +69,7 @@ struct dma_resv_list {
+  */
+ struct dma_resv {
+ 	struct ww_mutex lock;
+-	seqcount_t seq;
++	seqcount_ww_mutex_t seq;
+ 
+ 	struct dma_fence __rcu *fence_excl;
+ 	struct dma_resv_list __rcu *fence;
