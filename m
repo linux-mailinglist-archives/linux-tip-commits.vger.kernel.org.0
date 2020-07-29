@@ -2,47 +2,44 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BF92D23206C
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 29 Jul 2020 16:33:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D0F7232071
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 29 Jul 2020 16:33:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726839AbgG2Od1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 29 Jul 2020 10:33:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60216 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726820AbgG2Od0 (ORCPT
+        id S1726975AbgG2Odd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 29 Jul 2020 10:33:33 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:42918 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726880AbgG2Oda (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 29 Jul 2020 10:33:26 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A75B0C061794;
-        Wed, 29 Jul 2020 07:33:26 -0700 (PDT)
-Date:   Wed, 29 Jul 2020 14:33:24 -0000
+        Wed, 29 Jul 2020 10:33:30 -0400
+Date:   Wed, 29 Jul 2020 14:33:25 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1596033205;
+        s=2020; t=1596033206;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=XuDY3hYX886DHhEPf/c48l1PDk3msnewxEipZjXo9NE=;
-        b=I72VUFoUEsx4vVng91NzWvvUSf4a5LenAQnxjRNsQlpS7ZN9hakcvIZLz2beZP23K68u4J
-        SiNFmOy4Vf96TavtH/lcBJ1IASBecrHea5FVhZ88kmcKvrvLG44tSpyRUk4WX95AkDfhmW
-        uQ3EG5CxyJc8jjZRWXaHpcwyCrbGVY475Twq+7Pg8K/PiXwAhLM20kUmaP4YSMm7Q+w2IP
-        GyZHmHR3dxQOvdhJenYTj3BML2wsDa+tEBAjJSedHMa8iOjsrQeq6cS8zc1IHKWqVEWNY+
-        TnhuPjL8vlONxWV/ogiezTRQpxZMvguc9fYMZqMYVfHy4q7i6a4ltlxDnLh9LA==
+        bh=hvHoUWwkSstgIOL6+VpKRpRx4x3nuNQBiOscZhSx2ic=;
+        b=DjPYyTs1kaglGkoEb30KsOEEPIrsyBe6OqPxvC/pYKqL+8PQpyaprq8Y7hc1K5JUzhlS3t
+        B8LWSRQDS2w3RUSMsUve9Zx0xvY2jmP4gs2OsGnaWILhos+bEn1Ry/UoHGV0AzLNN/Z5o6
+        tBjvLfnlNtLsWci+0AAdLONmVua4uyDT14cPZfKPapCxbHX6bGmSgIIY39VJVPd5fRmIeE
+        5ePaYvMMr59GTgHtfb+TE/jS5jG3Uh213v2s7BmkFMo+uwZq86mWbxpsy1h8TxHFLHOQEe
+        86teNWQ6EaceYpkcSBT8QBGGQHZOH7Z7pC6qFTcj5X8tCiELYtYoTm4m0W7Fqw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1596033205;
+        s=2020e; t=1596033206;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=XuDY3hYX886DHhEPf/c48l1PDk3msnewxEipZjXo9NE=;
-        b=wNfvxVGik0/jGoo/djFH7kuUhgnVwAxJwyMx8iO8322u1sJE0wEYI+MhdysUayfIHa8W6t
-        EWkaeo68PprKXNDA==
+        bh=hvHoUWwkSstgIOL6+VpKRpRx4x3nuNQBiOscZhSx2ic=;
+        b=hHwqk6LxQeXlVw2dCF6eI06qfa6vY/plYfik//yuZOWCdQ19TUvVkhC0WgFFoIGU7MhGSE
+        TxNhaQibNguYLtAg==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] seqcount: Compress SEQCNT_LOCKNAME_ZERO()
+Subject: [tip: locking/core] seqlock: Fold seqcount_LOCKNAME_t definition
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <159603320456.4006.7818916218148482555.tip-bot2@tip-bot2>
+Message-ID: <159603320585.4006.1051434149678320527.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -54,100 +51,227 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     0efc94c5d15c3da0a69543d86ad2180f39256ed6
-Gitweb:        https://git.kernel.org/tip/0efc94c5d15c3da0a69543d86ad2180f39256ed6
+Commit-ID:     a8772dccb2ec7b139db1b3ba782ecb12ed92d7c3
+Gitweb:        https://git.kernel.org/tip/a8772dccb2ec7b139db1b3ba782ecb12ed92d7c3
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Thu, 23 Jul 2020 12:03:13 +02:00
+AuthorDate:    Thu, 23 Jul 2020 11:56:49 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Wed, 29 Jul 2020 16:14:30 +02:00
 
-seqcount: Compress SEQCNT_LOCKNAME_ZERO()
+seqlock: Fold seqcount_LOCKNAME_t definition
 
-Less is more.
+Manual repetition is boring and error prone.
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 ---
- include/linux/seqlock.h | 63 +++++++++++-----------------------------
- 1 file changed, 18 insertions(+), 45 deletions(-)
+ include/linux/seqlock.h | 142 ++++++++++-----------------------------
+ 1 file changed, 39 insertions(+), 103 deletions(-)
 
 diff --git a/include/linux/seqlock.h b/include/linux/seqlock.h
-index 501ff47..251dcd6 100644
+index c689aba..4b259bb 100644
 --- a/include/linux/seqlock.h
 +++ b/include/linux/seqlock.h
-@@ -138,51 +138,6 @@ static inline void seqcount_lockdep_reader_access(const seqcount_t *s)
- #define __SEQ_LOCK(expr)
- #endif
+@@ -150,21 +150,6 @@ do {									\
+ } while (0)
  
--#define SEQCOUNT_LOCKTYPE_ZERO(seq_name, assoc_lock) {			\
--	.seqcount		= SEQCNT_ZERO(seq_name.seqcount),	\
--	__SEQ_LOCK(.lock	= (assoc_lock))				\
--}
--
--/**
-- * SEQCNT_SPINLOCK_ZERO - static initializer for seqcount_spinlock_t
-- * @name:	Name of the seqcount_spinlock_t instance
-- * @lock:	Pointer to the associated spinlock
-- */
--#define SEQCNT_SPINLOCK_ZERO(name, lock)				\
--	SEQCOUNT_LOCKTYPE_ZERO(name, lock)
--
--/**
-- * SEQCNT_RAW_SPINLOCK_ZERO - static initializer for seqcount_raw_spinlock_t
-- * @name:	Name of the seqcount_raw_spinlock_t instance
-- * @lock:	Pointer to the associated raw_spinlock
-- */
--#define SEQCNT_RAW_SPINLOCK_ZERO(name, lock)				\
--	SEQCOUNT_LOCKTYPE_ZERO(name, lock)
--
--/**
-- * SEQCNT_RWLOCK_ZERO - static initializer for seqcount_rwlock_t
-- * @name:	Name of the seqcount_rwlock_t instance
-- * @lock:	Pointer to the associated rwlock
-- */
--#define SEQCNT_RWLOCK_ZERO(name, lock)					\
--	SEQCOUNT_LOCKTYPE_ZERO(name, lock)
--
--/**
-- * SEQCNT_MUTEX_ZERO - static initializer for seqcount_mutex_t
-- * @name:	Name of the seqcount_mutex_t instance
-- * @lock:	Pointer to the associated mutex
-- */
--#define SEQCNT_MUTEX_ZERO(name, lock)					\
--	SEQCOUNT_LOCKTYPE_ZERO(name, lock)
--
--/**
-- * SEQCNT_WW_MUTEX_ZERO - static initializer for seqcount_ww_mutex_t
-- * @name:	Name of the seqcount_ww_mutex_t instance
-- * @lock:	Pointer to the associated ww_mutex
-- */
--#define SEQCNT_WW_MUTEX_ZERO(name, lock)				\
--	SEQCOUNT_LOCKTYPE_ZERO(name, lock)
--
  /**
-  * typedef seqcount_LOCKNAME_t - sequence counter with LOCKTYPR associated
-  * @seqcount:	The real sequence counter
-@@ -263,6 +218,24 @@ SEQCOUNT_LOCKTYPE(rwlock_t,		rwlock,		false,	s->lock)
- SEQCOUNT_LOCKTYPE(struct mutex,		mutex,		true,	s->lock)
- SEQCOUNT_LOCKTYPE(struct ww_mutex,	ww_mutex,	true,	&s->lock->base)
+- * typedef seqcount_spinlock_t - sequence counter with spinlock associated
+- * @seqcount:	The real sequence counter
+- * @lock:	Pointer to the associated spinlock
+- *
+- * A plain sequence counter with external writer synchronization by a
+- * spinlock. The spinlock is associated to the sequence count in the
+- * static initializer or init function. This enables lockdep to validate
+- * that the write side critical section is properly serialized.
+- */
+-typedef struct seqcount_spinlock {
+-	seqcount_t	seqcount;
+-	__SEQ_LOCK(spinlock_t	*lock);
+-} seqcount_spinlock_t;
+-
+-/**
+  * SEQCNT_SPINLOCK_ZERO - static initializer for seqcount_spinlock_t
+  * @name:	Name of the seqcount_spinlock_t instance
+  * @lock:	Pointer to the associated spinlock
+@@ -181,21 +166,6 @@ typedef struct seqcount_spinlock {
+ 	seqcount_locktype_init(s, lock)
  
+ /**
+- * typedef seqcount_raw_spinlock_t - sequence count with raw spinlock associated
+- * @seqcount:	The real sequence counter
+- * @lock:	Pointer to the associated raw spinlock
+- *
+- * A plain sequence counter with external writer synchronization by a
+- * raw spinlock. The raw spinlock is associated to the sequence count in
+- * the static initializer or init function. This enables lockdep to
+- * validate that the write side critical section is properly serialized.
+- */
+-typedef struct seqcount_raw_spinlock {
+-	seqcount_t      seqcount;
+-	__SEQ_LOCK(raw_spinlock_t	*lock);
+-} seqcount_raw_spinlock_t;
+-
+-/**
+  * SEQCNT_RAW_SPINLOCK_ZERO - static initializer for seqcount_raw_spinlock_t
+  * @name:	Name of the seqcount_raw_spinlock_t instance
+  * @lock:	Pointer to the associated raw_spinlock
+@@ -212,21 +182,6 @@ typedef struct seqcount_raw_spinlock {
+ 	seqcount_locktype_init(s, lock)
+ 
+ /**
+- * typedef seqcount_rwlock_t - sequence count with rwlock associated
+- * @seqcount:	The real sequence counter
+- * @lock:	Pointer to the associated rwlock
+- *
+- * A plain sequence counter with external writer synchronization by a
+- * rwlock. The rwlock is associated to the sequence count in the static
+- * initializer or init function. This enables lockdep to validate that
+- * the write side critical section is properly serialized.
+- */
+-typedef struct seqcount_rwlock {
+-	seqcount_t      seqcount;
+-	__SEQ_LOCK(rwlock_t		*lock);
+-} seqcount_rwlock_t;
+-
+-/**
+  * SEQCNT_RWLOCK_ZERO - static initializer for seqcount_rwlock_t
+  * @name:	Name of the seqcount_rwlock_t instance
+  * @lock:	Pointer to the associated rwlock
+@@ -243,24 +198,6 @@ typedef struct seqcount_rwlock {
+ 	seqcount_locktype_init(s, lock)
+ 
+ /**
+- * typedef seqcount_mutex_t - sequence count with mutex associated
+- * @seqcount:	The real sequence counter
+- * @lock:	Pointer to the associated mutex
+- *
+- * A plain sequence counter with external writer synchronization by a
+- * mutex. The mutex is associated to the sequence counter in the static
+- * initializer or init function. This enables lockdep to validate that
+- * the write side critical section is properly serialized.
+- *
+- * The write side API functions write_seqcount_begin()/end() automatically
+- * disable and enable preemption when used with seqcount_mutex_t.
+- */
+-typedef struct seqcount_mutex {
+-	seqcount_t      seqcount;
+-	__SEQ_LOCK(struct mutex	*lock);
+-} seqcount_mutex_t;
+-
+-/**
+  * SEQCNT_MUTEX_ZERO - static initializer for seqcount_mutex_t
+  * @name:	Name of the seqcount_mutex_t instance
+  * @lock:	Pointer to the associated mutex
+@@ -277,24 +214,6 @@ typedef struct seqcount_mutex {
+ 	seqcount_locktype_init(s, lock)
+ 
+ /**
+- * typedef seqcount_ww_mutex_t - sequence count with ww_mutex associated
+- * @seqcount:	The real sequence counter
+- * @lock:	Pointer to the associated ww_mutex
+- *
+- * A plain sequence counter with external writer synchronization by a
+- * ww_mutex. The ww_mutex is associated to the sequence counter in the static
+- * initializer or init function. This enables lockdep to validate that
+- * the write side critical section is properly serialized.
+- *
+- * The write side API functions write_seqcount_begin()/end() automatically
+- * disable and enable preemption when used with seqcount_ww_mutex_t.
+- */
+-typedef struct seqcount_ww_mutex {
+-	seqcount_t      seqcount;
+-	__SEQ_LOCK(struct ww_mutex	*lock);
+-} seqcount_ww_mutex_t;
+-
+-/**
+  * SEQCNT_WW_MUTEX_ZERO - static initializer for seqcount_ww_mutex_t
+  * @name:	Name of the seqcount_ww_mutex_t instance
+  * @lock:	Pointer to the associated ww_mutex
+@@ -310,30 +229,50 @@ typedef struct seqcount_ww_mutex {
+ #define seqcount_ww_mutex_init(s, lock)					\
+ 	seqcount_locktype_init(s, lock)
+ 
+-/*
+- * @preempt: Is the associated write serialization lock preemtpible?
 +/**
-+ * SEQCNT_LOCKNAME_ZERO - static initializer for seqcount_LOCKNAME_t
-+ * @name:	Name of the seqcount_LOCKNAME_t instance
-+ * @lock:	Pointer to the associated LOCKTYPE
++ * typedef seqcount_LOCKNAME_t - sequence counter with spinlock associated
++ * @seqcount:	The real sequence counter
++ * @lock:	Pointer to the associated spinlock
++ *
++ * A plain sequence counter with external writer synchronization by a
++ * spinlock. The spinlock is associated to the sequence count in the
++ * static initializer or init function. This enables lockdep to validate
++ * that the write side critical section is properly serialized.
+  */
+-#define SEQCOUNT_LOCKTYPE(locktype, preempt, lockmember)		\
+-static inline seqcount_t *						\
+-__seqcount_##locktype##_ptr(seqcount_##locktype##_t *s)			\
++
++/*
++ * SEQCOUNT_LOCKTYPE() - Instantiate seqcount_LOCKNAME_t and helpers
++ * @locktype:		actual typename
++ * @lockname:		name
++ * @preemptible:	preemptibility of above locktype
++ * @lockmember:		argument for lockdep_assert_held()
 + */
-+
-+#define SEQCOUNT_LOCKTYPE_ZERO(seq_name, assoc_lock) {			\
-+	.seqcount		= SEQCNT_ZERO(seq_name.seqcount),	\
-+	__SEQ_LOCK(.lock	= (assoc_lock))				\
-+}
-+
-+#define SEQCNT_SPINLOCK_ZERO(name, lock)	SEQCOUNT_LOCKTYPE_ZERO(name, lock)
-+#define SEQCNT_RAW_SPINLOCK_ZERO(name, lock)	SEQCOUNT_LOCKTYPE_ZERO(name, lock)
-+#define SEQCNT_RWLOCK_ZERO(name, lock)		SEQCOUNT_LOCKTYPE_ZERO(name, lock)
-+#define SEQCNT_MUTEX_ZERO(name, lock)		SEQCOUNT_LOCKTYPE_ZERO(name, lock)
-+#define SEQCNT_WW_MUTEX_ZERO(name, lock) 	SEQCOUNT_LOCKTYPE_ZERO(name, lock)
-+
-+
- #define __seqprop_case(s, lockname, prop)				\
- 	seqcount_##lockname##_t: __seqcount_##lockname##_##prop((void *)(s))
++#define SEQCOUNT_LOCKTYPE(locktype, lockname, preemptible, lockmember)	\
++typedef struct seqcount_##lockname {					\
++	seqcount_t		seqcount;				\
++	__SEQ_LOCK(locktype	*lock);					\
++} seqcount_##lockname##_t;						\
++									\
++static __always_inline seqcount_t *					\
++__seqcount_##lockname##_ptr(seqcount_##lockname##_t *s)			\
+ {									\
+ 	return &s->seqcount;						\
+ }									\
+ 									\
+-static inline bool							\
+-__seqcount_##locktype##_preemptible(seqcount_##locktype##_t *s)		\
++static __always_inline bool						\
++__seqcount_##lockname##_preemptible(seqcount_##lockname##_t *s)		\
+ {									\
+-	return preempt;							\
++	return preemptible;						\
+ }									\
+ 									\
+-static inline void							\
+-__seqcount_##locktype##_assert(seqcount_##locktype##_t *s)		\
++static __always_inline void						\
++__seqcount_##lockname##_assert(seqcount_##lockname##_t *s)		\
+ {									\
+ 	__SEQ_LOCK(lockdep_assert_held(lockmember));			\
+ }
  
+ /*
+- * Similar hooks, but for plain seqcount_t
++ * __seqprop() for seqcount_t
+  */
+ 
+ static inline seqcount_t *__seqcount_ptr(seqcount_t *s)
+@@ -351,17 +290,14 @@ static inline void __seqcount_assert(seqcount_t *s)
+ 	lockdep_assert_preemption_disabled();
+ }
+ 
+-/*
+- * @s: Pointer to seqcount_locktype_t, generated hooks first parameter.
+- */
+-SEQCOUNT_LOCKTYPE(raw_spinlock,	false,	s->lock)
+-SEQCOUNT_LOCKTYPE(spinlock,	false,	s->lock)
+-SEQCOUNT_LOCKTYPE(rwlock,	false,	s->lock)
+-SEQCOUNT_LOCKTYPE(mutex,	true,	s->lock)
+-SEQCOUNT_LOCKTYPE(ww_mutex,	true,	&s->lock->base)
+-
+-#define __seqprop_case(s, locktype, prop)				\
+-	seqcount_##locktype##_t: __seqcount_##locktype##_##prop((void *)(s))
++SEQCOUNT_LOCKTYPE(raw_spinlock_t,	raw_spinlock,	false,	s->lock)
++SEQCOUNT_LOCKTYPE(spinlock_t,		spinlock,	false,	s->lock)
++SEQCOUNT_LOCKTYPE(rwlock_t,		rwlock,		false,	s->lock)
++SEQCOUNT_LOCKTYPE(struct mutex,		mutex,		true,	s->lock)
++SEQCOUNT_LOCKTYPE(struct ww_mutex,	ww_mutex,	true,	&s->lock->base)
++
++#define __seqprop_case(s, lockname, prop)				\
++	seqcount_##lockname##_t: __seqcount_##lockname##_##prop((void *)(s))
+ 
+ #define __seqprop(s, prop) _Generic(*(s),				\
+ 	seqcount_t:		__seqcount_##prop((void *)(s)),		\
