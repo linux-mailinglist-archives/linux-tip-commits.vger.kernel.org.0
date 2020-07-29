@@ -2,55 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C6ABD2320B0
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 29 Jul 2020 16:35:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB07A232072
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 29 Jul 2020 16:33:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726979AbgG2OfM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 29 Jul 2020 10:35:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60230 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726913AbgG2Od3 (ORCPT
+        id S1726984AbgG2Ode (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 29 Jul 2020 10:33:34 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:42948 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726942AbgG2Odb (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 29 Jul 2020 10:33:29 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9AAB8C0619D2;
-        Wed, 29 Jul 2020 07:33:29 -0700 (PDT)
-Date:   Wed, 29 Jul 2020 14:33:27 -0000
+        Wed, 29 Jul 2020 10:33:31 -0400
+Date:   Wed, 29 Jul 2020 14:33:28 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1596033207;
+        s=2020; t=1596033209;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=iojurnLlFuOH+G6spO2lXW1oO32Pn7dx0k9FOweQP24=;
-        b=RFNMBsMgSNWftxKHxtKzicwxze/lCTBt2rwN9h+WZMVVanbelzc6NkMLGMMqT+U4GWYo3q
-        jpX9yjDXnLEFFbqYDXWjb7Qnht5wBuACskHzoT+cZSb5VJtaHYn6EC14D3QEnOkeryDYcy
-        Y0pmne+Q1N4O00gWYrIlBfDnVGGzSiDouJPve2CtW/Y11YvzXrVcaCijUmPOICC8j+ogPj
-        DJKEVeAtVRmbh+mRRe5i8FHUkpaLkOqrorr+K/10ZopWm8wL1yDhHIrpnVOmMcd/P1yJgh
-        q8yTBd702sTzQiqBVsdbeRQSH3XrBmef+FodBaE3alaC8sUR9N5TP+8Raj/ZbQ==
+        bh=TqKXNngZiFhVq+awtR9H3dRKe/CDQ0+Hgwc+V7U2sRA=;
+        b=3njZXrv6Fb168eepwlb5iSDmz2S0PLrPC8fSS5LHJmqzILRiW8pOM+ncWgQuN8iAAql9/y
+        kSPdVThAjTMb/aY+cbloWQncb+YeT61mFQOnY01ymFGN+Qqv2CKJI13Ahc8FXYox1Y7hM2
+        h6bjrY0hb7qmXzOCob+zYbLgcqgG940q2+eekHQFp5xKaGb70MWN2X6Fq10kapvVACEgKK
+        g+LAu8ERvCfLGK5qZvI5T3V/yOiJSXsjhc6YTx5h/O0gz2cV6PwvkbM6pf9AymQQV+gY8a
+        zqz4Q2WDEG/+n+8uFrAgYgAtEVXIhVmpScs1sQKQWFAKGmdExnD+50Bru8oCcA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1596033207;
+        s=2020e; t=1596033209;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=iojurnLlFuOH+G6spO2lXW1oO32Pn7dx0k9FOweQP24=;
-        b=Ns2JRnNb9x3BkWBgTZNVz/SfeVHbK+jnglJRdshDjCwYpv7JRBOktjwsWHRgRk7swjoNca
-        e+6ZsZ77nhKq/JAg==
+        bh=TqKXNngZiFhVq+awtR9H3dRKe/CDQ0+Hgwc+V7U2sRA=;
+        b=VB3PtjyKXgmMJLfnmiIyny7lS89vUQRUvdXkGoKQHWR+mId9Hzle7bT+f1lcFy809L2Mn4
+        cKB/iHeHqgRzKZBw==
 From:   "tip-bot2 for Ahmed S. Darwish" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] hrtimer: Use sequence counter with associated raw
+Subject: [tip: locking/core] userfaultfd: Use sequence counter with associated
  spinlock
 Cc:     "Ahmed S. Darwish" <a.darwish@linutronix.de>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200720155530.1173732-25-a.darwish@linutronix.de>
-References: <20200720155530.1173732-25-a.darwish@linutronix.de>
+In-Reply-To: <20200720155530.1173732-23-a.darwish@linutronix.de>
+References: <20200720155530.1173732-23-a.darwish@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <159603320717.4006.4556629002081823174.tip-bot2@tip-bot2>
+Message-ID: <159603320856.4006.8977304185444747615.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -62,77 +59,54 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     af5a06b582ec3d7b0160b4faaa65f73d8dcf989f
-Gitweb:        https://git.kernel.org/tip/af5a06b582ec3d7b0160b4faaa65f73d8dcf989f
+Commit-ID:     2ca97ac8bdcc31fdc868f40c73c017f0a648dc07
+Gitweb:        https://git.kernel.org/tip/2ca97ac8bdcc31fdc868f40c73c017f0a648dc07
 Author:        Ahmed S. Darwish <a.darwish@linutronix.de>
-AuthorDate:    Mon, 20 Jul 2020 17:55:30 +02:00
+AuthorDate:    Mon, 20 Jul 2020 17:55:28 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 29 Jul 2020 16:14:29 +02:00
+CommitterDate: Wed, 29 Jul 2020 16:14:28 +02:00
 
-hrtimer: Use sequence counter with associated raw spinlock
+userfaultfd: Use sequence counter with associated spinlock
 
 A sequence counter write side critical section must be protected by some
 form of locking to serialize writers. A plain seqcount_t does not
 contain the information of which lock must be held when entering a write
 side critical section.
 
-Use the new seqcount_raw_spinlock_t data type, which allows to associate
-a raw spinlock with the sequence counter. This enables lockdep to verify
-that the raw spinlock used for writer serialization is held when the
-write side critical section is entered.
+Use the new seqcount_spinlock_t data type, which allows to associate a
+spinlock with the sequence counter. This enables lockdep to verify that
+the spinlock used for writer serialization is held when the write side
+critical section is entered.
 
 If lockdep is disabled this lock association is compiled out and has
 neither storage size nor runtime overhead.
 
 Signed-off-by: Ahmed S. Darwish <a.darwish@linutronix.de>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20200720155530.1173732-25-a.darwish@linutronix.de
+Link: https://lkml.kernel.org/r/20200720155530.1173732-23-a.darwish@linutronix.de
 ---
- include/linux/hrtimer.h |  2 +-
- kernel/time/hrtimer.c   | 13 ++++++++++---
- 2 files changed, 11 insertions(+), 4 deletions(-)
+ fs/userfaultfd.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/hrtimer.h b/include/linux/hrtimer.h
-index 15c8ac3..25993b8 100644
---- a/include/linux/hrtimer.h
-+++ b/include/linux/hrtimer.h
-@@ -159,7 +159,7 @@ struct hrtimer_clock_base {
- 	struct hrtimer_cpu_base	*cpu_base;
- 	unsigned int		index;
- 	clockid_t		clockid;
--	seqcount_t		seq;
-+	seqcount_raw_spinlock_t	seq;
- 	struct hrtimer		*running;
- 	struct timerqueue_head	active;
- 	ktime_t			(*get_time)(void);
-diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
-index d89da1c..c403851 100644
---- a/kernel/time/hrtimer.c
-+++ b/kernel/time/hrtimer.c
-@@ -135,7 +135,11 @@ static const int hrtimer_clock_to_base_table[MAX_CLOCKS] = {
-  * timer->base->cpu_base
-  */
- static struct hrtimer_cpu_base migration_cpu_base = {
--	.clock_base = { { .cpu_base = &migration_cpu_base, }, },
-+	.clock_base = { {
-+		.cpu_base = &migration_cpu_base,
-+		.seq      = SEQCNT_RAW_SPINLOCK_ZERO(migration_cpu_base.seq,
-+						     &migration_cpu_base.lock),
-+	}, },
- };
+diff --git a/fs/userfaultfd.c b/fs/userfaultfd.c
+index 52de290..26e8b23 100644
+--- a/fs/userfaultfd.c
++++ b/fs/userfaultfd.c
+@@ -61,7 +61,7 @@ struct userfaultfd_ctx {
+ 	/* waitqueue head for events */
+ 	wait_queue_head_t event_wqh;
+ 	/* a refile sequence protected by fault_pending_wqh lock */
+-	struct seqcount refile_seq;
++	seqcount_spinlock_t refile_seq;
+ 	/* pseudo fd refcounting */
+ 	refcount_t refcount;
+ 	/* userfaultfd syscall flags */
+@@ -1998,7 +1998,7 @@ static void init_once_userfaultfd_ctx(void *mem)
+ 	init_waitqueue_head(&ctx->fault_wqh);
+ 	init_waitqueue_head(&ctx->event_wqh);
+ 	init_waitqueue_head(&ctx->fd_wqh);
+-	seqcount_init(&ctx->refile_seq);
++	seqcount_spinlock_init(&ctx->refile_seq, &ctx->fault_pending_wqh.lock);
+ }
  
- #define migration_base	migration_cpu_base.clock_base[0]
-@@ -1998,8 +2002,11 @@ int hrtimers_prepare_cpu(unsigned int cpu)
- 	int i;
- 
- 	for (i = 0; i < HRTIMER_MAX_CLOCK_BASES; i++) {
--		cpu_base->clock_base[i].cpu_base = cpu_base;
--		timerqueue_init_head(&cpu_base->clock_base[i].active);
-+		struct hrtimer_clock_base *clock_b = &cpu_base->clock_base[i];
-+
-+		clock_b->cpu_base = cpu_base;
-+		seqcount_raw_spinlock_init(&clock_b->seq, &cpu_base->lock);
-+		timerqueue_init_head(&clock_b->active);
- 	}
- 
- 	cpu_base->cpu = cpu;
+ SYSCALL_DEFINE1(userfaultfd, int, flags)
