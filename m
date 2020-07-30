@@ -2,207 +2,109 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 712AE2322AC
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 29 Jul 2020 18:28:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D26923306E
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 30 Jul 2020 12:34:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727006AbgG2Q2a (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 29 Jul 2020 12:28:30 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:43830 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726449AbgG2Q23 (ORCPT
+        id S1726799AbgG3Ker (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 30 Jul 2020 06:34:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47262 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725892AbgG3Keq (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 29 Jul 2020 12:28:29 -0400
-Date:   Wed, 29 Jul 2020 16:28:24 -0000
+        Thu, 30 Jul 2020 06:34:46 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 292D3C061794;
+        Thu, 30 Jul 2020 03:34:46 -0700 (PDT)
+Date:   Thu, 30 Jul 2020 10:34:43 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1596040105;
+        s=2020; t=1596105284;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=3la9JaCMrV7rKV2iGWV1u2gThhcd3blJgMIGHQC1f7k=;
-        b=O/dNqINIDT0Ij+6w+UycNcEb3VtGBZAbNfKuE49O4qNDGod8uxOtj+MhKLRGCFzV+vVvNB
-        mwj2f/WyRHFfIBFM+fpyJ6vGzhTIrhKHrf3tjGWzeS4qLHIsk3TyTI+7znPE2OcK/IdaIu
-        V3cC9mg+M5RvtJkLtjs/cUsi5bmMnzN9EPCUFbcftjJKfBvPeCDQIAvvzVSfMVc3gq2TqS
-        I92eq67J3bFNONAnRm6dmRjBMsK06QzkCGozjkgKW0DckGvFe+AFzzahV2fTdN6sUKOpuR
-        3Cr52pBce8drKxIiLy6n06LqzU76mENH9UoidoFQCMrMAgKWIJ/sAL3nEZG2Fw==
+        bh=hu8K0lEmTpVCuDSPeCbbvbJVVrXge13M0xm2T41HKKM=;
+        b=jwFK2UoaHNwl+c8ZfFIcX9uXFSWTZ77gw9Lna9tyS7NekiC6KsOWi0IV2UKYaXfBwhhi7X
+        5VKrJchsxaf/2+NGchh28zVF2n7HsqiE7rxm3ZIYkf1YupOngn4C5frsVh2kumurhleIVy
+        BUz14LIzSYIBge0RbJxfuzUGnacEU80nWly5BiR292q6lQVnc+nhQW0thHJEDiqi2JqC/+
+        AA1PMPITDiFKq6ud0rzD1LoB/dvkJS5dMsUcvCQSw8LnsuVSu4zCoUm2ylnUdos1aBmn4U
+        swJ+/F5rkKecJEYo3sQnilO0/PGZ+AydpWhQAoIFNrjmx/LaakYqzDjroytd6g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1596040105;
+        s=2020e; t=1596105284;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=3la9JaCMrV7rKV2iGWV1u2gThhcd3blJgMIGHQC1f7k=;
-        b=eB9DEYMIdh4qv3Q2BwChULIKFjbigL6Gxh4rrFHw8ogcdk7EViHaKWXwaV6MYnA2/NynWA
-        OHvsiNO08Rh8EECQ==
-From:   "tip-bot2 for Marco Elver" <tip-bot2@linutronix.de>
+        bh=hu8K0lEmTpVCuDSPeCbbvbJVVrXge13M0xm2T41HKKM=;
+        b=ihc2FyucQ1Ypbr/v0/RGzH9FPwfKqlQ1upNiTYAReiEyZ88lQGq8Lgjg6rInmc/+6Fbbwd
+        bERiJGPYcRPZDBDQ==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] kcsan: Improve IRQ state trace reporting
-Cc:     Marco Elver <elver@google.com>, Ingo Molnar <mingo@kernel.org>,
+Subject: [tip: x86/entry] x86/kvm: Use __xfer_to_guest_mode_work_pending() in
+ kvm_run_vcpu()
+Cc:     Qian Cai <cai@lca.pw>, Thomas Gleixner <tglx@linutronix.de>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200729110916.3920464-2-elver@google.com>
-References: <20200729110916.3920464-2-elver@google.com>
+In-Reply-To: <87bljxa2sa.fsf@nanos.tec.linutronix.de>
+References: <87bljxa2sa.fsf@nanos.tec.linutronix.de>
 MIME-Version: 1.0
-Message-ID: <159604010417.4006.4002892974399715730.tip-bot2@tip-bot2>
+Message-ID: <159610528353.4006.8299813904303562704.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-Spam: Yes
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the locking/core branch of tip:
+The following commit has been merged into the x86/entry branch of tip:
 
-Commit-ID:     47490fdd411675707624fdfbf7bcfcd5f6a5e706
-Gitweb:        https://git.kernel.org/tip/47490fdd411675707624fdfbf7bcfcd5f6a5e706
-Author:        Marco Elver <elver@google.com>
-AuthorDate:    Wed, 29 Jul 2020 13:09:16 +02:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 29 Jul 2020 16:30:41 +02:00
+Commit-ID:     f3020b8891b890b48d9e1a83241e3cce518427c1
+Gitweb:        https://git.kernel.org/tip/f3020b8891b890b48d9e1a83241e3cce518427c1
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Thu, 30 Jul 2020 09:19:01 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Thu, 30 Jul 2020 12:31:47 +02:00
 
-kcsan: Improve IRQ state trace reporting
+x86/kvm: Use __xfer_to_guest_mode_work_pending() in kvm_run_vcpu()
 
-To improve the general usefulness of the IRQ state trace events with
-KCSAN enabled, save and restore the trace information when entering and
-exiting the KCSAN runtime as well as when generating a KCSAN report.
+The comments explicitely explain that the work flags check and handling in
+kvm_run_vcpu() is done with preemption and interrupts enabled as KVM
+invokes the check again right before entering guest mode with interrupts
+disabled which guarantees that the work flags are observed and handled
+before VMENTER.
 
-Without this, reporting the IRQ trace events (whether via a KCSAN report
-or outside of KCSAN via a lockdep report) is rather useless due to
-continuously being touched by KCSAN. This is because if KCSAN is
-enabled, every instrumented memory access causes changes to IRQ trace
-events (either by KCSAN disabling/enabling interrupts or taking
-report_lock when generating a report).
+Nevertheless the flag pending check in kvm_run_vcpu() uses the helper
+variant which requires interrupts to be disabled triggering an instant
+lockdep splat. This was caught in testing before and then not fixed up in
+the patch before applying. :(
 
-Before "lockdep: Prepare for NMI IRQ state tracking", KCSAN avoided
-touching the IRQ trace events via raw_local_irq_save/restore() and
-lockdep_off/on().
+Use the relaxed and intentionally racy __xfer_to_guest_mode_work_pending()
+instead.
 
-Fixes: 248591f5d257 ("kcsan: Make KCSAN compatible with new IRQ state tracking")
-Signed-off-by: Marco Elver <elver@google.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20200729110916.3920464-2-elver@google.com
+Fixes: 72c3c0fe54a3 ("x86/kvm: Use generic xfer to guest work function")
+Reported-by: Qian Cai <cai@lca.pw> writes:
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lkml.kernel.org/r/87bljxa2sa.fsf@nanos.tec.linutronix.de
+
+
 ---
- include/linux/sched.h |  4 ++++
- kernel/kcsan/core.c   | 23 +++++++++++++++++++++++
- kernel/kcsan/kcsan.h  |  7 +++++++
- kernel/kcsan/report.c |  3 +++
- 4 files changed, 37 insertions(+)
+ arch/x86/kvm/x86.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/sched.h b/include/linux/sched.h
-index 26adabe..2ede13a 100644
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -1184,8 +1184,12 @@ struct task_struct {
- #ifdef CONFIG_KASAN
- 	unsigned int			kasan_depth;
- #endif
-+
- #ifdef CONFIG_KCSAN
- 	struct kcsan_ctx		kcsan_ctx;
-+#ifdef CONFIG_TRACE_IRQFLAGS
-+	struct irqtrace_events		kcsan_save_irqtrace;
-+#endif
- #endif
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 82d4a9e..5325972 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -8682,7 +8682,7 @@ static int vcpu_run(struct kvm_vcpu *vcpu)
+ 			break;
+ 		}
  
- #ifdef CONFIG_FUNCTION_GRAPH_TRACER
-diff --git a/kernel/kcsan/core.c b/kernel/kcsan/core.c
-index 732623c..0fe0681 100644
---- a/kernel/kcsan/core.c
-+++ b/kernel/kcsan/core.c
-@@ -291,6 +291,20 @@ static inline unsigned int get_delay(void)
- 				0);
- }
- 
-+void kcsan_save_irqtrace(struct task_struct *task)
-+{
-+#ifdef CONFIG_TRACE_IRQFLAGS
-+	task->kcsan_save_irqtrace = task->irqtrace;
-+#endif
-+}
-+
-+void kcsan_restore_irqtrace(struct task_struct *task)
-+{
-+#ifdef CONFIG_TRACE_IRQFLAGS
-+	task->irqtrace = task->kcsan_save_irqtrace;
-+#endif
-+}
-+
- /*
-  * Pull everything together: check_access() below contains the performance
-  * critical operations; the fast-path (including check_access) functions should
-@@ -336,9 +350,11 @@ static noinline void kcsan_found_watchpoint(const volatile void *ptr,
- 	flags = user_access_save();
- 
- 	if (consumed) {
-+		kcsan_save_irqtrace(current);
- 		kcsan_report(ptr, size, type, KCSAN_VALUE_CHANGE_MAYBE,
- 			     KCSAN_REPORT_CONSUMED_WATCHPOINT,
- 			     watchpoint - watchpoints);
-+		kcsan_restore_irqtrace(current);
- 	} else {
- 		/*
- 		 * The other thread may not print any diagnostics, as it has
-@@ -396,6 +412,12 @@ kcsan_setup_watchpoint(const volatile void *ptr, size_t size, int type)
- 		goto out;
- 	}
- 
-+	/*
-+	 * Save and restore the IRQ state trace touched by KCSAN, since KCSAN's
-+	 * runtime is entered for every memory access, and potentially useful
-+	 * information is lost if dirtied by KCSAN.
-+	 */
-+	kcsan_save_irqtrace(current);
- 	if (!kcsan_interrupt_watcher)
- 		local_irq_save(irq_flags);
- 
-@@ -539,6 +561,7 @@ kcsan_setup_watchpoint(const volatile void *ptr, size_t size, int type)
- out_unlock:
- 	if (!kcsan_interrupt_watcher)
- 		local_irq_restore(irq_flags);
-+	kcsan_restore_irqtrace(current);
- out:
- 	user_access_restore(ua_flags);
- }
-diff --git a/kernel/kcsan/kcsan.h b/kernel/kcsan/kcsan.h
-index 763d6d0..2948001 100644
---- a/kernel/kcsan/kcsan.h
-+++ b/kernel/kcsan/kcsan.h
-@@ -9,6 +9,7 @@
- #define _KERNEL_KCSAN_KCSAN_H
- 
- #include <linux/kcsan.h>
-+#include <linux/sched.h>
- 
- /* The number of adjacent watchpoints to check. */
- #define KCSAN_CHECK_ADJACENT 1
-@@ -23,6 +24,12 @@ extern unsigned int kcsan_udelay_interrupt;
- extern bool kcsan_enabled;
- 
- /*
-+ * Save/restore IRQ flags state trace dirtied by KCSAN.
-+ */
-+void kcsan_save_irqtrace(struct task_struct *task);
-+void kcsan_restore_irqtrace(struct task_struct *task);
-+
-+/*
-  * Initialize debugfs file.
-  */
- void kcsan_debugfs_init(void);
-diff --git a/kernel/kcsan/report.c b/kernel/kcsan/report.c
-index 6b2fb1a..9d07e17 100644
---- a/kernel/kcsan/report.c
-+++ b/kernel/kcsan/report.c
-@@ -308,6 +308,9 @@ static void print_verbose_info(struct task_struct *task)
- 	if (!task)
- 		return;
- 
-+	/* Restore IRQ state trace for printing. */
-+	kcsan_restore_irqtrace(task);
-+
- 	pr_err("\n");
- 	debug_show_held_locks(task);
- 	print_irqtrace_events(task);
+-		if (xfer_to_guest_mode_work_pending()) {
++		if (__xfer_to_guest_mode_work_pending()) {
+ 			srcu_read_unlock(&kvm->srcu, vcpu->srcu_idx);
+ 			r = xfer_to_guest_mode_handle_work(vcpu);
+ 			if (r)
