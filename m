@@ -2,109 +2,69 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D26923306E
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 30 Jul 2020 12:34:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D74A0233359
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 30 Jul 2020 15:48:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726799AbgG3Ker (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 30 Jul 2020 06:34:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47262 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725892AbgG3Keq (ORCPT
+        id S1726281AbgG3NsO (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 30 Jul 2020 09:48:14 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33314 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728442AbgG3NsN (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 30 Jul 2020 06:34:46 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 292D3C061794;
-        Thu, 30 Jul 2020 03:34:46 -0700 (PDT)
-Date:   Thu, 30 Jul 2020 10:34:43 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1596105284;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=hu8K0lEmTpVCuDSPeCbbvbJVVrXge13M0xm2T41HKKM=;
-        b=jwFK2UoaHNwl+c8ZfFIcX9uXFSWTZ77gw9Lna9tyS7NekiC6KsOWi0IV2UKYaXfBwhhi7X
-        5VKrJchsxaf/2+NGchh28zVF2n7HsqiE7rxm3ZIYkf1YupOngn4C5frsVh2kumurhleIVy
-        BUz14LIzSYIBge0RbJxfuzUGnacEU80nWly5BiR292q6lQVnc+nhQW0thHJEDiqi2JqC/+
-        AA1PMPITDiFKq6ud0rzD1LoB/dvkJS5dMsUcvCQSw8LnsuVSu4zCoUm2ylnUdos1aBmn4U
-        swJ+/F5rkKecJEYo3sQnilO0/PGZ+AydpWhQAoIFNrjmx/LaakYqzDjroytd6g==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1596105284;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=hu8K0lEmTpVCuDSPeCbbvbJVVrXge13M0xm2T41HKKM=;
-        b=ihc2FyucQ1Ypbr/v0/RGzH9FPwfKqlQ1upNiTYAReiEyZ88lQGq8Lgjg6rInmc/+6Fbbwd
-        bERiJGPYcRPZDBDQ==
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
-Reply-to: linux-kernel@vger.kernel.org
+        Thu, 30 Jul 2020 09:48:13 -0400
+Received: from localhost (unknown [70.37.104.77])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 0D02C21D95;
+        Thu, 30 Jul 2020 13:48:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1596116893;
+        bh=Mn72VU+8uk3Y766iO1dWxYnvmxO5GSYOQLE23IyXWik=;
+        h=Date:From:To:To:To:Cc:Cc:Cc:Subject:In-Reply-To:References:From;
+        b=nKYYmI4OPZAkayMyuquoNHXOFimlLLTg9CFz1E8jT4KSVe5pdmMzZ0ESN8GskIDvA
+         ioA9i0/FTzi/jSn66vQvfd875PDKPBq2giUHf8bCjCk8ZxhZFF1xjdv1tFI7FS59bg
+         21fEskqkA32LwW/SXBU3TP0kLHYAM0QdH3yUnrok=
+Date:   Thu, 30 Jul 2020 13:48:12 +0000
+From:   Sasha Levin <sashal@kernel.org>
+To:     Sasha Levin <sashal@kernel.org>
+To:     "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/entry] x86/kvm: Use __xfer_to_guest_mode_work_pending() in
- kvm_run_vcpu()
-Cc:     Qian Cai <cai@lca.pw>, Thomas Gleixner <tglx@linutronix.de>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <87bljxa2sa.fsf@nanos.tec.linutronix.de>
-References: <87bljxa2sa.fsf@nanos.tec.linutronix.de>
-MIME-Version: 1.0
-Message-ID: <159610528353.4006.8299813904303562704.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2.linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Spam: Yes
+Cc:     John Keeping <john@metanate.com>
+Cc:     stable@vger.kernel.org
+Cc:     stable@vger.kernel.org
+Subject: Re: [tip: irq/urgent] genirq/affinity: Make affinity setting if activated opt-in
+In-Reply-To: <159585991142.4006.928637752238313572.tip-bot2@tip-bot2>
+References: <159585991142.4006.928637752238313572.tip-bot2@tip-bot2>
+Message-Id: <20200730134813.0D02C21D95@mail.kernel.org>
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/entry branch of tip:
+Hi
 
-Commit-ID:     f3020b8891b890b48d9e1a83241e3cce518427c1
-Gitweb:        https://git.kernel.org/tip/f3020b8891b890b48d9e1a83241e3cce518427c1
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Thu, 30 Jul 2020 09:19:01 +02:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 30 Jul 2020 12:31:47 +02:00
+[This is an automated email]
 
-x86/kvm: Use __xfer_to_guest_mode_work_pending() in kvm_run_vcpu()
+This commit has been processed because it contains a "Fixes:" tag
+fixing commit: baedb87d1b53 ("genirq/affinity: Handle affinity setting on inactive interrupts correctly").
 
-The comments explicitely explain that the work flags check and handling in
-kvm_run_vcpu() is done with preemption and interrupts enabled as KVM
-invokes the check again right before entering guest mode with interrupts
-disabled which guarantees that the work flags are observed and handled
-before VMENTER.
+The bot has tested the following trees: v5.7.11, v5.4.54, v4.19.135.
 
-Nevertheless the flag pending check in kvm_run_vcpu() uses the helper
-variant which requires interrupts to be disabled triggering an instant
-lockdep splat. This was caught in testing before and then not fixed up in
-the patch before applying. :(
+v5.7.11: Build OK!
+v5.4.54: Failed to apply! Possible dependencies:
+    008f1d60fe25 ("x86/apic/vector: Force interupt handler invocation to irq context")
+    c16816acd086 ("genirq: Add protection against unsafe usage of generic_handle_irq()")
 
-Use the relaxed and intentionally racy __xfer_to_guest_mode_work_pending()
-instead.
-
-Fixes: 72c3c0fe54a3 ("x86/kvm: Use generic xfer to guest work function")
-Reported-by: Qian Cai <cai@lca.pw> writes:
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/87bljxa2sa.fsf@nanos.tec.linutronix.de
+v4.19.135: Failed to apply! Possible dependencies:
+    008f1d60fe25 ("x86/apic/vector: Force interupt handler invocation to irq context")
+    35ae7df21be0 ("irqchip/gic-v3-its: Don't map the MSI page in its_irq_compose_msi_msg()")
+    c16816acd086 ("genirq: Add protection against unsafe usage of generic_handle_irq()")
 
 
----
- arch/x86/kvm/x86.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+NOTE: The patch will not be queued to stable trees until it is upstream.
 
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 82d4a9e..5325972 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -8682,7 +8682,7 @@ static int vcpu_run(struct kvm_vcpu *vcpu)
- 			break;
- 		}
- 
--		if (xfer_to_guest_mode_work_pending()) {
-+		if (__xfer_to_guest_mode_work_pending()) {
- 			srcu_read_unlock(&kvm->srcu, vcpu->srcu_idx);
- 			r = xfer_to_guest_mode_handle_work(vcpu);
- 			if (r)
+How should we proceed with this patch?
+
+-- 
+Thanks
+Sasha
