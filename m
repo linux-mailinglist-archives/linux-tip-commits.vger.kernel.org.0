@@ -2,45 +2,45 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A86E823430E
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 31 Jul 2020 11:28:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 57CF8234300
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 31 Jul 2020 11:27:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732327AbgGaJ1y (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 31 Jul 2020 05:27:54 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:56434 "EHLO
+        id S1732345AbgGaJXF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 31 Jul 2020 05:23:05 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:56410 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732323AbgGaJXD (ORCPT
+        with ESMTP id S1732333AbgGaJXE (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 31 Jul 2020 05:23:03 -0400
-Date:   Fri, 31 Jul 2020 09:23:01 -0000
+        Fri, 31 Jul 2020 05:23:04 -0400
+Date:   Fri, 31 Jul 2020 09:23:02 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1596187381;
+        s=2020; t=1596187383;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=p3qtbIjLpunaHmK7TDw9hkmJuKk63MnYBiXMc3g1CEE=;
-        b=cmrwkBAnHN5DibwQbddiI2v3EUIJfhOIKagcGxcYC70D3VZhkj4eyC2q6YASAKM0uR+Jso
-        Y7oo/lsJMAtWkJtCwJ356Ln2BkCgRLCXOkPzjuZbfqtqe1/B5PjxJlClGfWrbV7HQluyzK
-        qqnE0PBTDU1hqFI8cX4CgJAwXQy30H0fRQeEAcfcI5+gtnHIM649oCKeunOV6Y4658VX1G
-        8tgF5QKRBz3Rm/eGtVxhYdsYcDn1V90p7UKOWY3Hkrdq2whIwvlboPwY8T7DR/3zSSLWS8
-        VGZ90gCWnQGxwhaze1J29wJ0p/NbVlW2eqLeaLao/bBtOWQAFA3UkrvWOKgXxA==
+        bh=mi9zTcmttHJ0P6cjHhXxuHD5Qxkz3MpJ0pgh0GZKNa8=;
+        b=SdUcGqbiaPO4YAbP+hR9aFUIvYNzEnwLH+g7BJHWY0xCs7FMhhPlBDQ+rxhWf1OE8HndKm
+        tfL42LDPa9EbQNqKqmmnvshBQ5njCB1uiLQLgCxmJz6VjAO238tmB0a7hf42ZvelxwZcV6
+        y9p49Ky6Exq+nlzGPYmUJ+jen6xeY/k9CNNBU1gI8DDNMA+dIUcjDiHa1wyFjLpad85Xpr
+        3MFHHE1LMkwIadFD/sNwqhn8Rk7bR4TQutV0Swt/ULzW+RajVJnju4Sa7Tt6DWZzq/P0lL
+        ZWSVGTrB8ScpM1tdj+UTDn5SsLu5XTm/lp/mdSisWwzz/iTOTeku4syUYyPZ1A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1596187381;
+        s=2020e; t=1596187383;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=p3qtbIjLpunaHmK7TDw9hkmJuKk63MnYBiXMc3g1CEE=;
-        b=WCytlpIhY7mozlY83tIuHKWCF+K9r/oUxUJsoWvyD0UmbO/mJylcdt5lp9dY1nuCrmiDdf
-        eYW8g7wdkoT/+mDg==
+        bh=mi9zTcmttHJ0P6cjHhXxuHD5Qxkz3MpJ0pgh0GZKNa8=;
+        b=Z3Jqso4N2gpChExxV1WNQv7Oah8S75ZeIh/mHHRUnG/M+1wYSG+h5swYfco4sTZvme4mpw
+        riGn7lQP2lLZoQBw==
 From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] refperf: More closely synchronize reader start times
+Subject: [tip: core/rcu] refperf: Tune reader measurement interval
 Cc:     "Joel Fernandes (Google)" <joel@joelfernandes.org>,
         "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <159618738111.4006.1578218464216543931.tip-bot2@tip-bot2>
+Message-ID: <159618738237.4006.14483338208842342834.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -52,59 +52,66 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     86e0da2bb8ed934d3dce5a337895f1118f59c087
-Gitweb:        https://git.kernel.org/tip/86e0da2bb8ed934d3dce5a337895f1118f59c087
+Commit-ID:     b864f89ff61492f56b4e8c6713a5efec6540a0e2
+Gitweb:        https://git.kernel.org/tip/b864f89ff61492f56b4e8c6713a5efec6540a0e2
 Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Tue, 26 May 2020 11:40:52 -07:00
+AuthorDate:    Tue, 26 May 2020 10:57:34 -07:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Mon, 29 Jun 2020 12:00:45 -07:00
 
-refperf: More closely synchronize reader start times
+refperf: Tune reader measurement interval
 
-Currently, readers are awakened individually.  On most systems, this
-results in significant wakeup delay from one reader to the next, which
-can result in the first and last reader having sole access to the
-synchronization primitive in question.  If that synchronization primitive
-involves shared memory, those readers will rack up a huge number of
-operations in a very short time, causing large perturbations in the
-results.
-
-This commit therefore has the readers busy-wait after being awakened,
-and uses a new n_started variable to synchronize their start times.
+This commit moves a printk() out of the measurement interval, converts
+a atomic_dec()/atomic_read() pair to atomic_dec_and_test(), and adds
+a smp_mb__before_atomic() to avoid potential wake/wait hangs.  These
+changes have the added benefit of reducing the number of loops required
+for amortizing loop overhead for CONFIG_PREEMPT=n RCU measurements from
+1,000,000 to 10,000.  This reduction in turn shortens the test, reducing
+the probability of interference.
 
 Cc: Joel Fernandes (Google) <joel@joelfernandes.org>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/rcu/refperf.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ kernel/rcu/refperf.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
 diff --git a/kernel/rcu/refperf.c b/kernel/rcu/refperf.c
-index 2fd3ed1..234bb0e 100644
+index 0a900f3..8815ccf 100644
 --- a/kernel/rcu/refperf.c
 +++ b/kernel/rcu/refperf.c
-@@ -99,6 +99,7 @@ static atomic_t nreaders_exp;
- 
- // Use to wait for all threads to start.
- static atomic_t n_init;
-+static atomic_t n_started;
- 
- // Track which experiment is currently running.
- static int exp_idx;
-@@ -253,6 +254,9 @@ repeat:
+@@ -252,15 +252,16 @@ repeat:
+ 	// Make sure that the CPU is affinitized appropriately during testing.
  	WARN_ON_ONCE(smp_processor_id() != me);
  
- 	WRITE_ONCE(rt->start_reader, 0);
-+	if (!atomic_dec_return(&n_started))
-+		while (atomic_read_acquire(&n_started))
-+			cpu_relax();
++	smp_mb__before_atomic();
+ 	atomic_dec(&rt->start);
  
- 	VERBOSE_PERFOUT("ref_perf_reader %ld: experiment %d started", me, exp_idx);
++	VERBOSE_PERFOUT("ref_perf_reader %ld: experiment %d started", me, exp_idx);
++
+ 	// To prevent noise, keep interrupts disabled. This also has the
+ 	// effect of preventing entries into slow path for rcu_read_unlock().
+ 	local_irq_save(flags);
+ 	start = ktime_get_mono_fast_ns();
  
-@@ -367,6 +371,7 @@ static int main_func(void *arg)
+-	VERBOSE_PERFOUT("ref_perf_reader %ld: experiment %d started", me, exp_idx);
+-
+ 	cur_ops->readsection(loops);
  
- 		reset_readers();
- 		atomic_set(&nreaders_exp, nreaders);
-+		atomic_set(&n_started, nreaders);
+ 	duration = ktime_get_mono_fast_ns() - start;
+@@ -268,14 +269,12 @@ repeat:
  
- 		exp_idx = exp;
+ 	rt->last_duration_ns = WARN_ON_ONCE(duration < 0) ? 0 : duration;
  
+-	atomic_dec(&nreaders_exp);
++	if (atomic_dec_and_test(&nreaders_exp))
++		wake_up(&main_wq);
+ 
+ 	VERBOSE_PERFOUT("ref_perf_reader %ld: experiment %d ended, (readers remaining=%d)",
+ 			me, exp_idx, atomic_read(&nreaders_exp));
+ 
+-	if (!atomic_read(&nreaders_exp))
+-		wake_up(&main_wq);
+-
+ 	if (!torture_must_stop())
+ 		goto repeat;
+ end:
