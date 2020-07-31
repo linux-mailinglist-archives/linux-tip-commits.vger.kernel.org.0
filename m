@@ -2,51 +2,46 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1857E2342E0
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 31 Jul 2020 11:26:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EE692342C5
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 31 Jul 2020 11:26:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732541AbgGaJ0g (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 31 Jul 2020 05:26:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60092 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732426AbgGaJXT (ORCPT
+        id S1732443AbgGaJXY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 31 Jul 2020 05:23:24 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:56410 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732425AbgGaJXU (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 31 Jul 2020 05:23:19 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EA62C061756;
-        Fri, 31 Jul 2020 02:23:19 -0700 (PDT)
-Date:   Fri, 31 Jul 2020 09:23:17 -0000
+        Fri, 31 Jul 2020 05:23:20 -0400
+Date:   Fri, 31 Jul 2020 09:23:18 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1596187397;
+        s=2020; t=1596187399;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=HZWh39Uk1L/X4wpTGFztx5DG+DzEB+s/H5b6WbGsrXo=;
-        b=o4VSCVtKtrK1aQzyIlF0dXpytiTJemrqD1bRwysO8g4lcNNpCPJ8LSRSbqTEI0UHhp8UyA
-        YMyMFKZvdtnGoPUTqhNyrwNQ196NiQaRIHzFjc/FVmnjlB2JHzeQrypGmelk7ksy7Hmin2
-        DVGEd2QTu79CBckDy2jB/7vb/8ZlRyqTHtG7SkpcorFb1DAK6fYzJLbRHfdjnM1j3lfCbk
-        /N9G+syQTvOxFWkyi5XLleX4korA5iVnGvEt9Lo1jh0omnJbUJoE0r4/+/NVBEn3jZVLlY
-        YFpGLlvMe2mWAo25Mc7NxjSUbEwXoF3hnmA6B2AwU90dLgmw1r+MuifSo+2ITA==
+        bh=Vgwh3ZjjxoW02xVCuM08ArWybeNvNYs6uTnUfCIOxMc=;
+        b=VYEycOsjx11viQJWa0c52WilBOIoaadKWo5tBNlIAeoG2qtIi+BmFnZ5uWH2xv2Z1Lj9VR
+        K3Ep12S0eYL/ePAhQEeKft9NJnHrdfRTQdO0x+oG0WJnEJ00+GAlA7bXwClflNUphW5A3Q
+        C0//DX9jgIoDJS5XpsiabrVyXQocXbENVnFXbB0/cVCiY1+X4WiALD3hYtOgWA9y2AWTGy
+        izU0V7P75LIxQr2P1OWzu0zdzfds9TafiCrJq9clkWCeApR/TdjVO1QbpiJ2QTel+sueXM
+        gS/odQCTzIr8olfZBM49OYy/EVK2SHvOXIv9pl91tr9+vsLGIi62VIC4QJL7Yg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1596187397;
+        s=2020e; t=1596187399;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=HZWh39Uk1L/X4wpTGFztx5DG+DzEB+s/H5b6WbGsrXo=;
-        b=8P7v+5UfA379eVyTnrnSfRyqGuuYwONqINTexgeO98Ue516TQTIixg8esz09CpBXisb6xC
-        njws5q6tujGIIICw==
+        bh=Vgwh3ZjjxoW02xVCuM08ArWybeNvNYs6uTnUfCIOxMc=;
+        b=rufF4nK2xozWBir+x/Pce9++VFnT0+me9q6fgBLuPXCPseYD+i21mmTXjqACrYyc/BLq/v
+        nB3AFHwWm+2O/YBw==
 From:   "tip-bot2 for Uladzislau Rezki (Sony)" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] mm/list_lru.c: Rename kvfree_rcu() to local variant
-Cc:     linux-mm@kvack.org, rcu@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
+Subject: [tip: core/rcu] rcu/tiny: support vmalloc in tiny-RCU
+Cc:     "Joel Fernandes (Google)" <joel@joelfernandes.org>,
         "Uladzislau Rezki (Sony)" <urezki@gmail.com>,
-        "Joel Fernandes (Google)" <joel@joelfernandes.org>,
         "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <159618739718.4006.7426500496143396787.tip-bot2@tip-bot2>
+Message-ID: <159618739853.4006.8750094199097034951.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,58 +53,44 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     e0feed08ab41df0fedc38d35938891ef5715c1d3
-Gitweb:        https://git.kernel.org/tip/e0feed08ab41df0fedc38d35938891ef5715c1d3
+Commit-ID:     64d1d06ccb1b7de245ccf781b91517f328bebd9f
+Gitweb:        https://git.kernel.org/tip/64d1d06ccb1b7de245ccf781b91517f328bebd9f
 Author:        Uladzislau Rezki (Sony) <urezki@gmail.com>
-AuthorDate:    Mon, 25 May 2020 23:47:56 +02:00
+AuthorDate:    Mon, 25 May 2020 23:47:54 +02:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Mon, 29 Jun 2020 11:59:25 -07:00
 
-mm/list_lru.c: Rename kvfree_rcu() to local variant
+rcu/tiny: support vmalloc in tiny-RCU
 
-Rename kvfree_rcu() function to the kvfree_rcu_local() one.
-The purpose is to prevent a conflict of two same function
-declarations. The kvfree_rcu() will be globally visible
-what would lead to a build error. No functional change.
+Replace kfree() with kvfree() in rcu_reclaim_tiny().
+This makes it possible to release either SLAB or vmalloc
+objects after a GP.
 
-Cc: linux-mm@kvack.org
-Cc: rcu@vger.kernel.org
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
 Reviewed-by: Joel Fernandes (Google) <joel@joelfernandes.org>
-Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- mm/list_lru.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ kernel/rcu/tiny.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/mm/list_lru.c b/mm/list_lru.c
-index 9222910..e825804 100644
---- a/mm/list_lru.c
-+++ b/mm/list_lru.c
-@@ -373,14 +373,14 @@ static void memcg_destroy_list_lru_node(struct list_lru_node *nlru)
- 	struct list_lru_memcg *memcg_lrus;
- 	/*
- 	 * This is called when shrinker has already been unregistered,
--	 * and nobody can use it. So, there is no need to use kvfree_rcu().
-+	 * and nobody can use it. So, there is no need to use kvfree_rcu_local().
- 	 */
- 	memcg_lrus = rcu_dereference_protected(nlru->memcg_lrus, true);
- 	__memcg_destroy_list_lru_node(memcg_lrus, 0, memcg_nr_cache_ids);
- 	kvfree(memcg_lrus);
- }
+diff --git a/kernel/rcu/tiny.c b/kernel/rcu/tiny.c
+index dd572ce..4b99f7b 100644
+--- a/kernel/rcu/tiny.c
++++ b/kernel/rcu/tiny.c
+@@ -23,6 +23,7 @@
+ #include <linux/cpu.h>
+ #include <linux/prefetch.h>
+ #include <linux/slab.h>
++#include <linux/mm.h>
  
--static void kvfree_rcu(struct rcu_head *head)
-+static void kvfree_rcu_local(struct rcu_head *head)
- {
- 	struct list_lru_memcg *mlru;
+ #include "rcu.h"
  
-@@ -419,7 +419,7 @@ static int memcg_update_list_lru_node(struct list_lru_node *nlru,
- 	rcu_assign_pointer(nlru->memcg_lrus, new);
- 	spin_unlock_irq(&nlru->lock);
- 
--	call_rcu(&old->rcu, kvfree_rcu);
-+	call_rcu(&old->rcu, kvfree_rcu_local);
- 	return 0;
- }
- 
+@@ -86,7 +87,7 @@ static inline bool rcu_reclaim_tiny(struct rcu_head *head)
+ 	rcu_lock_acquire(&rcu_callback_map);
+ 	if (__is_kfree_rcu_offset(offset)) {
+ 		trace_rcu_invoke_kfree_callback("", head, offset);
+-		kfree((void *)head - offset);
++		kvfree((void *)head - offset);
+ 		rcu_lock_release(&rcu_callback_map);
+ 		return true;
+ 	}
