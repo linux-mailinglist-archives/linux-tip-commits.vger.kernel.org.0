@@ -2,45 +2,46 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0BB9E2342DC
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 31 Jul 2020 11:26:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B0E7E2342D5
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 31 Jul 2020 11:26:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732498AbgGaJ0S (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 31 Jul 2020 05:26:18 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:56338 "EHLO
+        id S1732439AbgGaJ0R (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 31 Jul 2020 05:26:17 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:56542 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732171AbgGaJXW (ORCPT
+        with ESMTP id S1732430AbgGaJXX (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 31 Jul 2020 05:23:22 -0400
+        Fri, 31 Jul 2020 05:23:23 -0400
 Date:   Fri, 31 Jul 2020 09:23:19 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1596187400;
+        s=2020; t=1596187399;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=vMU98mrio06oBlrMZvW2NF+u4EawOkAHerOr1v7CZ5A=;
-        b=iklceCrrW8rwZBRL0nBA+lTaBZ2nwBSYQHPIp4W+uLwVo4Vbl0fTduFH9eULi5CWl3Kh53
-        UMymSmDXIuZgwyzIAcW2AwMSk+xEsMmafzqOCuZUBzlcL6nH6hiNMENqki08knmMTkvjyj
-        UcI/aYyLYQ+y2+l+xKXthUVqxogGVTOmfti0ROopIV5Gtux6W6ihH2JxmdEbLLfOiyKhZX
-        7Qi+aij3tm+BX5w4uQ4d95KTZ/xk18u6gNZ8LMkh9q5idrTVZSGkY6QVH1ZacGKr5470zo
-        jdMXRvgDrsE9QqmpQ5uBX2Tl/iUU1l3aeiqqkJMvVtkTFINH/H6smhE7TnlBOA==
+        bh=ozsZ5sv4mPAuYAveQN19/AWAxqU1GxEBOzSxdLd8DSk=;
+        b=UycYC49LwUVa5cDL3Yku09f7Gn8+xcUl1XPKrd1x8gSjyh25rG64ppOsdoOmqnP25io4ju
+        f+76I0MwnBQ8BFFTsUXS6kVmT7DWB7KiOCPX6xNIEXhzZ7Vjr5xfggfggrOA0i5VNJ5+TK
+        JwdSFNIYT8ZX8ogf2P3xZrErIS+37U1u3VarbfYElFkItRNn1oCr3x9Ir2utvidlVyyugT
+        SAgJi6Pggy/XglXuy362CbfwgNIPAzvD1nV+XNMj5XbByMo1UuWeVse32pR5eUuD9zFlC9
+        8NV4Q+YxIk9VUIlllsvf630S4bFCAWqSsrTrX5vJbSajpXSuQwCNXD15CG9+VQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1596187400;
+        s=2020e; t=1596187399;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=vMU98mrio06oBlrMZvW2NF+u4EawOkAHerOr1v7CZ5A=;
-        b=I3PYVtszZH33pP7nAObx5A0jeFK60MJB9A839vFX7xS0CpF11v984p968xn6OHaZjbGZop
-        OTcvj4gyuGCV5hDw==
+        bh=ozsZ5sv4mPAuYAveQN19/AWAxqU1GxEBOzSxdLd8DSk=;
+        b=5DkvuxytQ5o4C3If7aPar7kr3/KUm9rbCgIGagunthB2l+9xjXnD6VrNSnwW4NLOMmRCop
+        u2hNfEhCcTPg0zDQ==
 From:   "tip-bot2 for Uladzislau Rezki (Sony)" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcu/tree: cache specified number of objects
+Subject: [tip: core/rcu] rcu/tree: Maintain separate array for vmalloc ptrs
 Cc:     "Uladzislau Rezki (Sony)" <urezki@gmail.com>,
+        "Joel Fernandes (Google)" <joel@joelfernandes.org>,
         "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <159618739986.4006.546510754110087404.tip-bot2@tip-bot2>
+Message-ID: <159618739921.4006.13956119084091010650.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -52,183 +53,415 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     53c72b590b3a0afd6747d6f7957e6838003e90a4
-Gitweb:        https://git.kernel.org/tip/53c72b590b3a0afd6747d6f7957e6838003e90a4
+Commit-ID:     5f3c8d620447d509e534962e23f7edfb85f4e533
+Gitweb:        https://git.kernel.org/tip/5f3c8d620447d509e534962e23f7edfb85f4e533
 Author:        Uladzislau Rezki (Sony) <urezki@gmail.com>
-AuthorDate:    Mon, 25 May 2020 23:47:52 +02:00
+AuthorDate:    Mon, 25 May 2020 23:47:53 +02:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Mon, 29 Jun 2020 11:59:25 -07:00
 
-rcu/tree: cache specified number of objects
+rcu/tree: Maintain separate array for vmalloc ptrs
 
-In order to reduce the dynamic need for pages in kfree_rcu(),
-pre-allocate a configurable number of pages per CPU and link
-them in a list. When kfree_rcu() reclaims objects, the object's
-container page is cached into a list instead of being released
-to the low-level page allocator.
+To do so, we use an array of kvfree_rcu_bulk_data structures.
+It consists of two elements:
+ - index number 0 corresponds to slab pointers.
+ - index number 1 corresponds to vmalloc pointers.
 
-Such an approach provides O(1) access to free pages while also
-reducing the number of requests to the page allocator. It also
-makes the kfree_rcu() code to have free pages available during
-a low memory condition.
+Keeping vmalloc pointers separated from slab pointers makes
+it possible to invoke the right freeing API for the right
+kind of pointer.
 
-A read-only sysfs parameter (rcu_min_cached_objs) reflects the
-minimum number of allowed cached pages per CPU.
+It also prepares us for future headless support for vmalloc
+and SLAB objects. Such objects cannot be queued on a linked
+list and are instead directly into an array.
 
 Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+Reviewed-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+Co-developed-by: Joel Fernandes (Google) <joel@joelfernandes.org>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- Documentation/admin-guide/kernel-parameters.txt |  8 ++-
- kernel/rcu/tree.c                               | 66 +++++++++++++++-
- 2 files changed, 70 insertions(+), 4 deletions(-)
+ kernel/rcu/tree.c | 173 ++++++++++++++++++++++++++-------------------
+ 1 file changed, 100 insertions(+), 73 deletions(-)
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index fb95fad..befaa63 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -4038,6 +4038,14 @@
- 			latencies, which will choose a value aligned
- 			with the appropriate hardware boundaries.
- 
-+	rcutree.rcu_min_cached_objs= [KNL]
-+			Minimum number of objects which are cached and
-+			maintained per one CPU. Object size is equal
-+			to PAGE_SIZE. The cache allows to reduce the
-+			pressure to page allocator, also it makes the
-+			whole algorithm to behave better in low memory
-+			condition.
-+
- 	rcutree.jiffies_till_first_fqs= [KNL]
- 			Set delay from grace-period initialization to
- 			first attempt to force quiescent states.
 diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
-index a42a469..37c0cd0 100644
+index 37c0cd0..67c4b98 100644
 --- a/kernel/rcu/tree.c
 +++ b/kernel/rcu/tree.c
-@@ -175,6 +175,15 @@ module_param(gp_init_delay, int, 0444);
- static int gp_cleanup_delay;
- module_param(gp_cleanup_delay, int, 0444);
+@@ -57,6 +57,8 @@
+ #include <linux/slab.h>
+ #include <linux/sched/isolation.h>
+ #include <linux/sched/clock.h>
++#include <linux/vmalloc.h>
++#include <linux/mm.h>
+ #include "../time/tick-internal.h"
  
-+/*
-+ * This rcu parameter is runtime-read-only. It reflects
-+ * a minimum allowed number of objects which can be cached
-+ * per-CPU. Object size is equal to one page. This value
-+ * can be changed at boot time.
-+ */
-+static int rcu_min_cached_objs = 2;
-+module_param(rcu_min_cached_objs, int, 0444);
-+
- /* Retrieve RCU kthreads priority for rcutorture */
- int rcu_get_gp_kthreads_prio(void)
- {
-@@ -2997,7 +3006,6 @@ struct kfree_rcu_cpu_work {
+ #include "tree.h"
+@@ -2966,46 +2968,47 @@ EXPORT_SYMBOL_GPL(call_rcu);
+ /* Maximum number of jiffies to wait before draining a batch. */
+ #define KFREE_DRAIN_JIFFIES (HZ / 50)
+ #define KFREE_N_BATCHES 2
++#define FREE_N_CHANNELS 2
+ 
+ /**
+- * struct kfree_rcu_bulk_data - single block to store kfree_rcu() pointers
++ * struct kvfree_rcu_bulk_data - single block to store kvfree_rcu() pointers
+  * @nr_records: Number of active pointers in the array
+- * @records: Array of the kfree_rcu() pointers
+  * @next: Next bulk object in the block chain
++ * @records: Array of the kvfree_rcu() pointers
+  */
+-struct kfree_rcu_bulk_data {
++struct kvfree_rcu_bulk_data {
+ 	unsigned long nr_records;
+-	struct kfree_rcu_bulk_data *next;
++	struct kvfree_rcu_bulk_data *next;
+ 	void *records[];
+ };
+ 
+ /*
+  * This macro defines how many entries the "records" array
+  * will contain. It is based on the fact that the size of
+- * kfree_rcu_bulk_data structure becomes exactly one page.
++ * kvfree_rcu_bulk_data structure becomes exactly one page.
+  */
+-#define KFREE_BULK_MAX_ENTR \
+-	((PAGE_SIZE - sizeof(struct kfree_rcu_bulk_data)) / sizeof(void *))
++#define KVFREE_BULK_MAX_ENTR \
++	((PAGE_SIZE - sizeof(struct kvfree_rcu_bulk_data)) / sizeof(void *))
+ 
+ /**
+  * struct kfree_rcu_cpu_work - single batch of kfree_rcu() requests
+  * @rcu_work: Let queue_rcu_work() invoke workqueue handler after grace period
+  * @head_free: List of kfree_rcu() objects waiting for a grace period
+- * @bhead_free: Bulk-List of kfree_rcu() objects waiting for a grace period
++ * @bkvhead_free: Bulk-List of kvfree_rcu() objects waiting for a grace period
+  * @krcp: Pointer to @kfree_rcu_cpu structure
+  */
+ 
+ struct kfree_rcu_cpu_work {
+ 	struct rcu_work rcu_work;
+ 	struct rcu_head *head_free;
+-	struct kfree_rcu_bulk_data *bhead_free;
++	struct kvfree_rcu_bulk_data *bkvhead_free[FREE_N_CHANNELS];
+ 	struct kfree_rcu_cpu *krcp;
+ };
+ 
+ /**
   * struct kfree_rcu_cpu - batch up kfree_rcu() requests for RCU grace period
   * @head: List of kfree_rcu() objects not yet waiting for a grace period
-  * @bhead: Bulk-List of kfree_rcu() objects not yet waiting for a grace period
-- * @bcached: Keeps at most one object for later reuse when build chain blocks
+- * @bhead: Bulk-List of kfree_rcu() objects not yet waiting for a grace period
++ * @bkvhead: Bulk-List of kvfree_rcu() objects not yet waiting for a grace period
   * @krw_arr: Array of batches of kfree_rcu() objects waiting for a grace period
   * @lock: Synchronize access to this structure
   * @monitor_work: Promote @head to @head_free after KFREE_DRAIN_JIFFIES
-@@ -3013,13 +3021,22 @@ struct kfree_rcu_cpu_work {
+@@ -3020,7 +3023,7 @@ struct kfree_rcu_cpu_work {
+  */
  struct kfree_rcu_cpu {
  	struct rcu_head *head;
- 	struct kfree_rcu_bulk_data *bhead;
--	struct kfree_rcu_bulk_data *bcached;
+-	struct kfree_rcu_bulk_data *bhead;
++	struct kvfree_rcu_bulk_data *bkvhead[FREE_N_CHANNELS];
  	struct kfree_rcu_cpu_work krw_arr[KFREE_N_BATCHES];
  	raw_spinlock_t lock;
  	struct delayed_work monitor_work;
- 	bool monitor_todo;
- 	bool initialized;
- 	int count;
-+
-+	/*
-+	 * A simple cache list that contains objects for
-+	 * reuse purpose. In order to save some per-cpu
-+	 * space the list is singular. Even though it is
-+	 * lockless an access has to be protected by the
-+	 * per-cpu lock.
-+	 */
-+	struct llist_head bkvcache;
-+	int nr_bkv_objs;
+@@ -3044,7 +3047,7 @@ static DEFINE_PER_CPU(struct kfree_rcu_cpu, krc) = {
  };
  
- static DEFINE_PER_CPU(struct kfree_rcu_cpu, krc) = {
-@@ -3056,6 +3073,31 @@ krc_this_cpu_unlock(struct kfree_rcu_cpu *krcp, unsigned long flags)
+ static __always_inline void
+-debug_rcu_bhead_unqueue(struct kfree_rcu_bulk_data *bhead)
++debug_rcu_bhead_unqueue(struct kvfree_rcu_bulk_data *bhead)
+ {
+ #ifdef CONFIG_DEBUG_OBJECTS_RCU_HEAD
+ 	int i;
+@@ -3073,20 +3076,20 @@ krc_this_cpu_unlock(struct kfree_rcu_cpu *krcp, unsigned long flags)
  	local_irq_restore(flags);
  }
  
-+static inline struct kfree_rcu_bulk_data *
-+get_cached_bnode(struct kfree_rcu_cpu *krcp)
-+{
-+	if (!krcp->nr_bkv_objs)
-+		return NULL;
+-static inline struct kfree_rcu_bulk_data *
++static inline struct kvfree_rcu_bulk_data *
+ get_cached_bnode(struct kfree_rcu_cpu *krcp)
+ {
+ 	if (!krcp->nr_bkv_objs)
+ 		return NULL;
+ 
+ 	krcp->nr_bkv_objs--;
+-	return (struct kfree_rcu_bulk_data *)
++	return (struct kvfree_rcu_bulk_data *)
+ 		llist_del_first(&krcp->bkvcache);
+ }
+ 
+ static inline bool
+ put_cached_bnode(struct kfree_rcu_cpu *krcp,
+-	struct kfree_rcu_bulk_data *bnode)
++	struct kvfree_rcu_bulk_data *bnode)
+ {
+ 	// Check the limit.
+ 	if (krcp->nr_bkv_objs >= rcu_min_cached_objs)
+@@ -3105,43 +3108,63 @@ put_cached_bnode(struct kfree_rcu_cpu *krcp,
+ static void kfree_rcu_work(struct work_struct *work)
+ {
+ 	unsigned long flags;
++	struct kvfree_rcu_bulk_data *bkvhead[FREE_N_CHANNELS], *bnext;
+ 	struct rcu_head *head, *next;
+-	struct kfree_rcu_bulk_data *bhead, *bnext;
+ 	struct kfree_rcu_cpu *krcp;
+ 	struct kfree_rcu_cpu_work *krwp;
++	int i, j;
+ 
+ 	krwp = container_of(to_rcu_work(work),
+ 			    struct kfree_rcu_cpu_work, rcu_work);
+ 	krcp = krwp->krcp;
 +
-+	krcp->nr_bkv_objs--;
-+	return (struct kfree_rcu_bulk_data *)
-+		llist_del_first(&krcp->bkvcache);
-+}
+ 	raw_spin_lock_irqsave(&krcp->lock, flags);
++	// Channels 1 and 2.
++	for (i = 0; i < FREE_N_CHANNELS; i++) {
++		bkvhead[i] = krwp->bkvhead_free[i];
++		krwp->bkvhead_free[i] = NULL;
++	}
 +
-+static inline bool
-+put_cached_bnode(struct kfree_rcu_cpu *krcp,
-+	struct kfree_rcu_bulk_data *bnode)
-+{
-+	// Check the limit.
-+	if (krcp->nr_bkv_objs >= rcu_min_cached_objs)
-+		return false;
++	// Channel 3.
+ 	head = krwp->head_free;
+ 	krwp->head_free = NULL;
+-	bhead = krwp->bhead_free;
+-	krwp->bhead_free = NULL;
+ 	raw_spin_unlock_irqrestore(&krcp->lock, flags);
+ 
+-	/* "bhead" is now private, so traverse locklessly. */
+-	for (; bhead; bhead = bnext) {
+-		bnext = bhead->next;
+-
+-		debug_rcu_bhead_unqueue(bhead);
+-
+-		rcu_lock_acquire(&rcu_callback_map);
+-		trace_rcu_invoke_kfree_bulk_callback(rcu_state.name,
+-			bhead->nr_records, bhead->records);
+-
+-		kfree_bulk(bhead->nr_records, bhead->records);
+-		rcu_lock_release(&rcu_callback_map);
++	// Handle two first channels.
++	for (i = 0; i < FREE_N_CHANNELS; i++) {
++		for (; bkvhead[i]; bkvhead[i] = bnext) {
++			bnext = bkvhead[i]->next;
++			debug_rcu_bhead_unqueue(bkvhead[i]);
 +
-+	llist_add((struct llist_node *) bnode, &krcp->bkvcache);
-+	krcp->nr_bkv_objs++;
-+	return true;
++			rcu_lock_acquire(&rcu_callback_map);
++			if (i == 0) { // kmalloc() / kfree().
++				trace_rcu_invoke_kfree_bulk_callback(
++					rcu_state.name, bkvhead[i]->nr_records,
++					bkvhead[i]->records);
 +
-+}
++				kfree_bulk(bkvhead[i]->nr_records,
++					bkvhead[i]->records);
++			} else { // vmalloc() / vfree().
++				for (j = 0; j < bkvhead[i]->nr_records; j++) {
++					trace_rcu_invoke_kfree_callback(
++						rcu_state.name,
++						bkvhead[i]->records[j], 0);
 +
- /*
-  * This function is invoked in workqueue context after a grace period.
-  * It frees all the objects queued on ->bhead_free or ->head_free.
-@@ -3091,7 +3133,12 @@ static void kfree_rcu_work(struct work_struct *work)
- 		kfree_bulk(bhead->nr_records, bhead->records);
++					vfree(bkvhead[i]->records[j]);
++				}
++			}
++			rcu_lock_release(&rcu_callback_map);
+ 
+-		krcp = krc_this_cpu_lock(&flags);
+-		if (put_cached_bnode(krcp, bhead))
+-			bhead = NULL;
+-		krc_this_cpu_unlock(krcp, flags);
++			krcp = krc_this_cpu_lock(&flags);
++			if (put_cached_bnode(krcp, bkvhead[i]))
++				bkvhead[i] = NULL;
++			krc_this_cpu_unlock(krcp, flags);
+ 
+-		if (bhead)
+-			free_page((unsigned long) bhead);
++			if (bkvhead[i])
++				free_page((unsigned long) bkvhead[i]);
+ 
+-		cond_resched_tasks_rcu_qs();
++			cond_resched_tasks_rcu_qs();
++		}
+ 	}
+ 
+ 	/*
+@@ -3159,7 +3182,7 @@ static void kfree_rcu_work(struct work_struct *work)
+ 		trace_rcu_invoke_kfree_callback(rcu_state.name, head, offset);
+ 
+ 		if (!WARN_ON_ONCE(!__is_kfree_rcu_offset(offset)))
+-			kfree(ptr);
++			kvfree(ptr);
+ 
  		rcu_lock_release(&rcu_callback_map);
- 
--		if (cmpxchg(&krcp->bcached, NULL, bhead))
-+		krcp = krc_this_cpu_lock(&flags);
-+		if (put_cached_bnode(krcp, bhead))
-+			bhead = NULL;
-+		krc_this_cpu_unlock(krcp, flags);
-+
-+		if (bhead)
- 			free_page((unsigned long) bhead);
- 
  		cond_resched_tasks_rcu_qs();
-@@ -3224,7 +3271,7 @@ kfree_call_rcu_add_ptr_to_bulk(struct kfree_rcu_cpu *krcp,
- 	/* Check if a new block is required. */
- 	if (!krcp->bhead ||
- 			krcp->bhead->nr_records == KFREE_BULK_MAX_ENTR) {
--		bnode = xchg(&krcp->bcached, NULL);
-+		bnode = get_cached_bnode(krcp);
- 		if (!bnode) {
- 			WARN_ON_ONCE(sizeof(struct kfree_rcu_bulk_data) > PAGE_SIZE);
+@@ -3176,7 +3199,7 @@ static inline bool queue_kfree_rcu_work(struct kfree_rcu_cpu *krcp)
+ {
+ 	struct kfree_rcu_cpu_work *krwp;
+ 	bool repeat = false;
+-	int i;
++	int i, j;
  
-@@ -4277,12 +4324,23 @@ static void __init kfree_rcu_batch_init(void)
+ 	lockdep_assert_held(&krcp->lock);
+ 
+@@ -3184,21 +3207,25 @@ static inline bool queue_kfree_rcu_work(struct kfree_rcu_cpu *krcp)
+ 		krwp = &(krcp->krw_arr[i]);
+ 
+ 		/*
+-		 * Try to detach bhead or head and attach it over any
++		 * Try to detach bkvhead or head and attach it over any
+ 		 * available corresponding free channel. It can be that
+ 		 * a previous RCU batch is in progress, it means that
+ 		 * immediately to queue another one is not possible so
+ 		 * return false to tell caller to retry.
+ 		 */
+-		if ((krcp->bhead && !krwp->bhead_free) ||
++		if ((krcp->bkvhead[0] && !krwp->bkvhead_free[0]) ||
++			(krcp->bkvhead[1] && !krwp->bkvhead_free[1]) ||
+ 				(krcp->head && !krwp->head_free)) {
+-			/* Channel 1. */
+-			if (!krwp->bhead_free) {
+-				krwp->bhead_free = krcp->bhead;
+-				krcp->bhead = NULL;
++			// Channel 1 corresponds to SLAB ptrs.
++			// Channel 2 corresponds to vmalloc ptrs.
++			for (j = 0; j < FREE_N_CHANNELS; j++) {
++				if (!krwp->bkvhead_free[j]) {
++					krwp->bkvhead_free[j] = krcp->bkvhead[j];
++					krcp->bkvhead[j] = NULL;
++				}
+ 			}
+ 
+-			/* Channel 2. */
++			// Channel 3 corresponds to emergency path.
+ 			if (!krwp->head_free) {
+ 				krwp->head_free = krcp->head;
+ 				krcp->head = NULL;
+@@ -3207,16 +3234,17 @@ static inline bool queue_kfree_rcu_work(struct kfree_rcu_cpu *krcp)
+ 			WRITE_ONCE(krcp->count, 0);
+ 
+ 			/*
+-			 * One work is per one batch, so there are two "free channels",
+-			 * "bhead_free" and "head_free" the batch can handle. It can be
+-			 * that the work is in the pending state when two channels have
+-			 * been detached following each other, one by one.
++			 * One work is per one batch, so there are three
++			 * "free channels", the batch can handle. It can
++			 * be that the work is in the pending state when
++			 * channels have been detached following by each
++			 * other.
+ 			 */
+ 			queue_rcu_work(system_wq, &krwp->rcu_work);
+ 		}
+ 
+-		/* Repeat if any "free" corresponding channel is still busy. */
+-		if (krcp->bhead || krcp->head)
++		// Repeat if any "free" corresponding channel is still busy.
++		if (krcp->bkvhead[0] || krcp->bkvhead[1] || krcp->head)
+ 			repeat = true;
+ 	}
+ 
+@@ -3258,23 +3286,22 @@ static void kfree_rcu_monitor(struct work_struct *work)
+ }
+ 
+ static inline bool
+-kfree_call_rcu_add_ptr_to_bulk(struct kfree_rcu_cpu *krcp,
+-	struct rcu_head *head, rcu_callback_t func)
++kvfree_call_rcu_add_ptr_to_bulk(struct kfree_rcu_cpu *krcp, void *ptr)
+ {
+-	struct kfree_rcu_bulk_data *bnode;
++	struct kvfree_rcu_bulk_data *bnode;
++	int idx;
+ 
+ 	if (unlikely(!krcp->initialized))
+ 		return false;
+ 
+ 	lockdep_assert_held(&krcp->lock);
++	idx = !!is_vmalloc_addr(ptr);
+ 
+ 	/* Check if a new block is required. */
+-	if (!krcp->bhead ||
+-			krcp->bhead->nr_records == KFREE_BULK_MAX_ENTR) {
++	if (!krcp->bkvhead[idx] ||
++			krcp->bkvhead[idx]->nr_records == KVFREE_BULK_MAX_ENTR) {
+ 		bnode = get_cached_bnode(krcp);
+ 		if (!bnode) {
+-			WARN_ON_ONCE(sizeof(struct kfree_rcu_bulk_data) > PAGE_SIZE);
+-
+ 			/*
+ 			 * To keep this path working on raw non-preemptible
+ 			 * sections, prevent the optional entry into the
+@@ -3287,7 +3314,7 @@ kfree_call_rcu_add_ptr_to_bulk(struct kfree_rcu_cpu *krcp,
+ 			if (IS_ENABLED(CONFIG_PREEMPT_RT))
+ 				return false;
+ 
+-			bnode = (struct kfree_rcu_bulk_data *)
++			bnode = (struct kvfree_rcu_bulk_data *)
+ 				__get_free_page(GFP_NOWAIT | __GFP_NOWARN);
+ 		}
+ 
+@@ -3297,30 +3324,30 @@ kfree_call_rcu_add_ptr_to_bulk(struct kfree_rcu_cpu *krcp,
+ 
+ 		/* Initialize the new block. */
+ 		bnode->nr_records = 0;
+-		bnode->next = krcp->bhead;
++		bnode->next = krcp->bkvhead[idx];
+ 
+ 		/* Attach it to the head. */
+-		krcp->bhead = bnode;
++		krcp->bkvhead[idx] = bnode;
+ 	}
+ 
+ 	/* Finally insert. */
+-	krcp->bhead->records[krcp->bhead->nr_records++] =
+-		(void *) head - (unsigned long) func;
++	krcp->bkvhead[idx]->records
++		[krcp->bkvhead[idx]->nr_records++] = ptr;
+ 
+ 	return true;
+ }
+ 
+ /*
+- * Queue a request for lazy invocation of kfree_bulk()/kfree() after a grace
+- * period. Please note there are two paths are maintained, one is the main one
+- * that uses kfree_bulk() interface and second one is emergency one, that is
+- * used only when the main path can not be maintained temporary, due to memory
+- * pressure.
++ * Queue a request for lazy invocation of appropriate free routine after a
++ * grace period. Please note there are three paths are maintained, two are the
++ * main ones that use array of pointers interface and third one is emergency
++ * one, that is used only when the main path can not be maintained temporary,
++ * due to memory pressure.
+  *
+  * Each kfree_call_rcu() request is added to a batch. The batch will be drained
+  * every KFREE_DRAIN_JIFFIES number of jiffies. All the objects in the batch will
+  * be free'd in workqueue context. This allows us to: batch requests together to
+- * reduce the number of grace periods during heavy kfree_rcu() load.
++ * reduce the number of grace periods during heavy kfree_rcu()/kvfree_rcu() load.
+  */
+ void kfree_call_rcu(struct rcu_head *head, rcu_callback_t func)
+ {
+@@ -3343,7 +3370,7 @@ void kfree_call_rcu(struct rcu_head *head, rcu_callback_t func)
+ 	 * Under high memory pressure GFP_NOWAIT can fail,
+ 	 * in that case the emergency path is maintained.
+ 	 */
+-	if (unlikely(!kfree_call_rcu_add_ptr_to_bulk(krcp, head, func))) {
++	if (unlikely(!kvfree_call_rcu_add_ptr_to_bulk(krcp, ptr))) {
+ 		head->func = func;
+ 		head->next = krcp->head;
+ 		krcp->head = head;
+@@ -4324,7 +4351,7 @@ static void __init kfree_rcu_batch_init(void)
  
  	for_each_possible_cpu(cpu) {
  		struct kfree_rcu_cpu *krcp = per_cpu_ptr(&krc, cpu);
-+		struct kfree_rcu_bulk_data *bnode;
+-		struct kfree_rcu_bulk_data *bnode;
++		struct kvfree_rcu_bulk_data *bnode;
  
  		for (i = 0; i < KFREE_N_BATCHES; i++) {
  			INIT_RCU_WORK(&krcp->krw_arr[i].rcu_work, kfree_rcu_work);
- 			krcp->krw_arr[i].krcp = krcp;
+@@ -4332,7 +4359,7 @@ static void __init kfree_rcu_batch_init(void)
  		}
  
-+		for (i = 0; i < rcu_min_cached_objs; i++) {
-+			bnode = (struct kfree_rcu_bulk_data *)
-+				__get_free_page(GFP_NOWAIT | __GFP_NOWARN);
-+
-+			if (bnode)
-+				put_cached_bnode(krcp, bnode);
-+			else
-+				pr_err("Failed to preallocate for %d CPU!\n", cpu);
-+		}
-+
- 		INIT_DELAYED_WORK(&krcp->monitor_work, kfree_rcu_monitor);
- 		krcp->initialized = true;
- 	}
+ 		for (i = 0; i < rcu_min_cached_objs; i++) {
+-			bnode = (struct kfree_rcu_bulk_data *)
++			bnode = (struct kvfree_rcu_bulk_data *)
+ 				__get_free_page(GFP_NOWAIT | __GFP_NOWARN);
+ 
+ 			if (bnode)
