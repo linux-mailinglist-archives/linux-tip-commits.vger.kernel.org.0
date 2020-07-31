@@ -2,45 +2,44 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 22DF6234341
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 31 Jul 2020 11:29:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 095DD234340
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 31 Jul 2020 11:29:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732637AbgGaJ3P (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 31 Jul 2020 05:29:15 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:56344 "EHLO
+        id S1732177AbgGaJWl (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 31 Jul 2020 05:22:41 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:56338 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732154AbgGaJWm (ORCPT
+        with ESMTP id S1732083AbgGaJWk (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 31 Jul 2020 05:22:42 -0400
+        Fri, 31 Jul 2020 05:22:40 -0400
 Date:   Fri, 31 Jul 2020 09:22:38 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1596187359;
+        s=2020; t=1596187358;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=fu66TyA1dYXuLUOCo/8m0OO2+QQ9CFKDHM/TlCFA4ek=;
-        b=B3KBwR+Vn85pssKblKC7UZO97O25EgN2OORjrygmYEHzohAjuPVuVeG72tNcQbku2b4Lmu
-        5YG8qPUtZVeQXuVyaYx8NyS2yG9RCHyrk82KK9t6zAijvAVQSEGWfj+oIDR8gSdEqPHwaE
-        0jL3Mll2XNgKzYtmoaVfwZQJ1gvBGOQSDV+ThwRip33YDdIf6FZHZogI3fHfnIVg//e4Xx
-        Q0Iij9IMeJYWuBHOOMYn4UM09EUtCPWWD5bbWB7xMzTHo9yNhyyZ81RxdIrbw6k5VgeYoD
-        C9YVbz7fUOEfQzA6GX1Yy9t7qrhMtrFkg7nvRLJSJL7BsnNiGb5h0Q5KaflGUw==
+        bh=NNCeDoN6ksX+5EL8iE2AHqZrfS7RJ3bRGy9oCrYKoRU=;
+        b=Le+u6q1IsV23jGfw8DxtZ7xVuFB8mflZNQmwwFiUEjeOCclcgFoahck8OuvjOwFGSBdL82
+        IbG/Rut7TYVdMsu19PGYcDbZAZvfv5otoHtr0/ZD+LZUxhrEBFehqmP9U4mKBxPLTp2h/J
+        HRyvPlbldk+l0DGjruPL8Ijdki0FdYoQmT7fjGEahAeRCl9zvaVYsTiQ9zTQO4zEP92isU
+        hceHVlOYvMhQfPlQo3PJn0owWKNt3aQlrtKozLD8f1CXseS3/sG9f/ENbn8iGvCLwXZij6
+        UstEu1rFLPLhUSRqut0CpRPb51tVA1BlfKvftFNIWm35HNccQbEmepOP1ch/aA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1596187359;
+        s=2020e; t=1596187358;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=fu66TyA1dYXuLUOCo/8m0OO2+QQ9CFKDHM/TlCFA4ek=;
-        b=iKWLMfXntdBXq9u+50cmvG/ndPTxxzNSuHql0vREczZsvpfpxCRYpYwBhOOp+QBTwr0iaD
-        mAdGhyyA0ge2IPCg==
+        bh=NNCeDoN6ksX+5EL8iE2AHqZrfS7RJ3bRGy9oCrYKoRU=;
+        b=Uag0zI9x5g7GhBDSrvy9FyA4h1Y71R1YHVZpJMwHLMrIsD+68RJ/6yq68icdu6zLxBzbui
+        ENPHv92JGSOeaaDQ==
 From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] torture: Improve diagnostic for KCSAN-incapable compilers
-Cc:     Marco Elver <elver@google.com>,
-        "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
+Subject: [tip: core/rcu] torture: Add more tracing crib notes to kvm.sh
+Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <159618735883.4006.6144823697055482816.tip-bot2@tip-bot2>
+Message-ID: <159618735818.4006.13892640783693161073.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -52,63 +51,32 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     61b77be09e29e6dc152b1984691e5b1708e8a6ac
-Gitweb:        https://git.kernel.org/tip/61b77be09e29e6dc152b1984691e5b1708e8a6ac
+Commit-ID:     9ccba350bd824ecacbfd8965f4f3ac980b96f951
+Gitweb:        https://git.kernel.org/tip/9ccba350bd824ecacbfd8965f4f3ac980b96f951
 Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Tue, 16 Jun 2020 10:38:57 -07:00
+AuthorDate:    Tue, 16 Jun 2020 11:16:18 -07:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Mon, 29 Jun 2020 12:01:45 -07:00
 
-torture: Improve diagnostic for KCSAN-incapable compilers
+torture: Add more tracing crib notes to kvm.sh
 
-Using --kcsan when the compiler does not support KCSAN results in this:
+This commit adds a few more hints about how to use tracing as comments
+at the end of kvm.sh.
 
-:CONFIG_KCSAN=y: improperly set
-:CONFIG_KCSAN_REPORT_ONCE_IN_MS=100000: improperly set
-:CONFIG_KCSAN_VERBOSE=y: improperly set
-:CONFIG_KCSAN_INTERRUPT_WATCHER=y: improperly set
-Clean KCSAN run in /home/git/linux-rcu/tools/testing/selftests/rcutorture/res/2020.06.16-09.53.16
-
-This is a bit obtuse, so this commit adds checks resulting in this:
-
-:CONFIG_KCSAN=y: improperly set
-:CONFIG_KCSAN_REPORT_ONCE_IN_MS=100000: improperly set
-:CONFIG_KCSAN_VERBOSE=y: improperly set
-:CONFIG_KCSAN_INTERRUPT_WATCHER=y: improperly set
-Compiler or architecture does not support KCSAN!
-Did you forget to switch your compiler with --kmake-arg CC=<cc-that-supports-kcsan>?
-
-Suggested-by: Marco Elver <elver@google.com>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Acked-by: Marco Elver <elver@google.com>
 ---
- tools/testing/selftests/rcutorture/bin/kvm-recheck.sh |  9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ tools/testing/selftests/rcutorture/bin/kvm.sh | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/tools/testing/selftests/rcutorture/bin/kvm-recheck.sh b/tools/testing/selftests/rcutorture/bin/kvm-recheck.sh
-index 357899c..840a467 100755
---- a/tools/testing/selftests/rcutorture/bin/kvm-recheck.sh
-+++ b/tools/testing/selftests/rcutorture/bin/kvm-recheck.sh
-@@ -44,7 +44,8 @@ do
- 			then
- 				echo QEMU killed
- 			fi
--			configcheck.sh $i/.config $i/ConfigFragment
-+			configcheck.sh $i/.config $i/ConfigFragment > $T 2>&1
-+			cat $T
- 			if test -r $i/Make.oldconfig.err
- 			then
- 				cat $i/Make.oldconfig.err
-@@ -73,7 +74,11 @@ do
- 	done
- 	if test -f "$rd/kcsan.sum"
- 	then
--		if test -s "$rd/kcsan.sum"
-+		if grep -q CONFIG_KCSAN=y $T
-+		then
-+			echo "Compiler or architecture does not support KCSAN!"
-+			echo Did you forget to switch your compiler with '--kmake-arg CC=<cc-that-supports-kcsan>'?
-+		elif test -s "$rd/kcsan.sum"
- 		then
- 			echo KCSAN summary in $rd/kcsan.sum
- 		else
+diff --git a/tools/testing/selftests/rcutorture/bin/kvm.sh b/tools/testing/selftests/rcutorture/bin/kvm.sh
+index 3578c85..bdfa0c0 100755
+--- a/tools/testing/selftests/rcutorture/bin/kvm.sh
++++ b/tools/testing/selftests/rcutorture/bin/kvm.sh
+@@ -503,3 +503,7 @@ fi
+ # Tracing: trace_event=rcu:rcu_grace_period,rcu:rcu_future_grace_period,rcu:rcu_grace_period_init,rcu:rcu_nocb_wake,rcu:rcu_preempt_task,rcu:rcu_unlock_preempted_task,rcu:rcu_quiescent_state_report,rcu:rcu_fqs,rcu:rcu_callback,rcu:rcu_kfree_callback,rcu:rcu_batch_start,rcu:rcu_invoke_callback,rcu:rcu_invoke_kfree_callback,rcu:rcu_batch_end,rcu:rcu_torture_read,rcu:rcu_barrier
+ # Function-graph tracing: ftrace=function_graph ftrace_graph_filter=sched_setaffinity,migration_cpu_stop
+ # Also --kconfig "CONFIG_FUNCTION_TRACER=y CONFIG_FUNCTION_GRAPH_TRACER=y"
++# Control buffer size: --bootargs trace_buf_size=3k
++# Get trace-buffer dumps on all oopses: --bootargs ftrace_dump_on_oops
++# Ditto, but dump only the oopsing CPU: --bootargs ftrace_dump_on_oops=orig_cpu
++# Heavy-handed way to also dump on warnings: --bootargs panic_on_warn
