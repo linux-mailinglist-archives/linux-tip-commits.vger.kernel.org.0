@@ -2,44 +2,44 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CDE9923426C
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 31 Jul 2020 11:22:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B8DD323432D
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 31 Jul 2020 11:28:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732249AbgGaJWu (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 31 Jul 2020 05:22:50 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:56344 "EHLO
+        id S1732162AbgGaJ2u (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 31 Jul 2020 05:28:50 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:56338 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732235AbgGaJWs (ORCPT
+        with ESMTP id S1732229AbgGaJWr (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 31 Jul 2020 05:22:48 -0400
+        Fri, 31 Jul 2020 05:22:47 -0400
 Date:   Fri, 31 Jul 2020 09:22:46 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1596187367;
+        s=2020; t=1596187366;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=jBoOhsEWZoLYOhA8Q7IrkGTmWoGwlT/jzq9cCnTUnDQ=;
-        b=WoSq6Ify/ORF/ebLcYT8pwSU4jh2aX7esytsLYTYnFTn2KZibnOuEfXfBJoR1xm3XxTZ8L
-        VRonMjFEf2ATyzIOUF7QfoOCVIoQeUrb9yVZKbSnDFhj/s+Pa2141eFBHqu3WNVMVoG/Vk
-        e2m66iuWT0u6Agc1JDlL4GzM5VZevaOZxm9/UWb1757s+3dwPhgaQR5gqhFVzGEW+IeF47
-        J+jIyd6EUkSWhYCcjBm5yDOiKVwFeK7dlGa67DGg5uw7BPHEtu78f0hYzkIgvh6ME+N6pd
-        x6dpSz/qrgJdoFswQt6/GxsQM6qafpa/My3CfJe+xPJCwlR5HHrOHYMmHOb3Bg==
+        bh=c1nTJxzfdlyR5JTw/77icm0HMbfDF04j5JS9acG0NOs=;
+        b=uSTWzTuqRlcRwplU49inB8rQYUld9i6d00/wQwJk0NIWAhkH5+Vplq+PfmRCkh48yItaDu
+        J0nkTl3/SS4OX4mApGaO2y5rNZk69riqwhJexVewPyLbFOzbolwIKMkb6cU3g3JGFva8V9
+        bTzEUayrj9GKs8rN0A3p0iwvWKoZe3qnQT+eE+KIzw6bwLa5T5K+/rONtYgutt8mFTujjp
+        8+eVHAUYykOVn25DzoHyZHF0ldZ1tqXcMZnKtGfjirmNDYR98kXoVwl73/P9l9Q9MlKnrt
+        xTFVCiaj6zDdw17swbQzUDyrjYgBBDK67nXnZmx9062bx/mT3G7+srL9CrKxWw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1596187367;
+        s=2020e; t=1596187366;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=jBoOhsEWZoLYOhA8Q7IrkGTmWoGwlT/jzq9cCnTUnDQ=;
-        b=S5AsXXPgf4bGvq3zab1A8dVTEoOPqSbEfI/BPm/6qzzgOL2YfgyUEWkj4u3lqnYVZpcCWB
-        2SKyAIOt6a7Uj7Cg==
+        bh=c1nTJxzfdlyR5JTw/77icm0HMbfDF04j5JS9acG0NOs=;
+        b=MUwH1V8Q2aBJ/4WUEci/Qiq+rQ9Tq3JjvfFUYsvY90gMG9PofpdFFXdXLUdbkO86VO8+y1
+        Wb112vyBBMX8t7Aw==
 From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] torture: Set configfile variable to current scenario
+Subject: [tip: core/rcu] rcutorture: Handle non-statistic bang-string error messages
 Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <159618736668.4006.10295126204104607934.tip-bot2@tip-bot2>
+Message-ID: <159618736606.4006.1828842255788439902.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -51,36 +51,54 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     61251d6899803594a108c3165aeb072c73e09cc8
-Gitweb:        https://git.kernel.org/tip/61251d6899803594a108c3165aeb072c73e09cc8
+Commit-ID:     59359e4f2a0906920389ec1e33296ac9a19178ba
+Gitweb:        https://git.kernel.org/tip/59359e4f2a0906920389ec1e33296ac9a19178ba
 Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Sun, 26 Apr 2020 16:48:46 -07:00
+AuthorDate:    Sun, 26 Apr 2020 16:51:56 -07:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Mon, 29 Jun 2020 12:01:44 -07:00
 
-torture: Set configfile variable to current scenario
+rcutorture: Handle non-statistic bang-string error messages
 
-The torture-test recheck logic fails to set the configfile variable to
-the current scenario, so this commit properly initializes this variable.
-This change isn't critical given that all errors for a given scenario
-follow that scenario's heading, but it is easier on the eyes to repeat it.
-And this repetition also prevents confusion as to whether a given message
-goes with the previous heading or the next one.
+The current console parsing assumes that console lines containing "!!!"
+are statistics lines from which it can parse the number of rcutorture
+too-short grace-period failures.  This prints confusing output for
+other problems, including memory exhaustion.  This commit therefore
+differentiates between these cases and prints an appropriate error string.
 
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- tools/testing/selftests/rcutorture/bin/kvm-recheck.sh | 1 +
- 1 file changed, 1 insertion(+)
+ tools/testing/selftests/rcutorture/bin/parse-console.sh | 18 ++++++--
+ 1 file changed, 15 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/rcutorture/bin/kvm-recheck.sh b/tools/testing/selftests/rcutorture/bin/kvm-recheck.sh
-index 736f047..2261aa6 100755
---- a/tools/testing/selftests/rcutorture/bin/kvm-recheck.sh
-+++ b/tools/testing/selftests/rcutorture/bin/kvm-recheck.sh
-@@ -31,6 +31,7 @@ do
- 			head -1 $resdir/log
- 		fi
- 		TORTURE_SUITE="`cat $i/../TORTURE_SUITE`"
-+		configfile=`echo $i | sed -e 's,^.*/,,'`
- 		rm -f $i/console.log.*.diags
- 		kvm-recheck-${TORTURE_SUITE}.sh $i
- 		if test -f "$i/qemu-retval" && test "`cat $i/qemu-retval`" -ne 0 && test "`cat $i/qemu-retval`" -ne 137
+diff --git a/tools/testing/selftests/rcutorture/bin/parse-console.sh b/tools/testing/selftests/rcutorture/bin/parse-console.sh
+index 4bf62d7..1c64ca8 100755
+--- a/tools/testing/selftests/rcutorture/bin/parse-console.sh
++++ b/tools/testing/selftests/rcutorture/bin/parse-console.sh
+@@ -44,11 +44,23 @@ then
+ 		tail -1 |
+ 		awk '
+ 		{
+-			for (i=NF-8;i<=NF;i++)
++			normalexit = 1;
++			for (i=NF-8;i<=NF;i++) {
++				if (i <= 0 || i !~ /^[0-9]*$/) {
++					bangstring = $0;
++					gsub(/^\[[^]]*] /, "", bangstring);
++					print bangstring;
++					normalexit = 0;
++					exit 0;
++				}
+ 				sum+=$i;
++			}
+ 		}
+-		END { print sum }'`
+-		print_bug $title FAILURE, $nerrs instances
++		END {
++			if (normalexit)
++				print sum " instances"
++		}'`
++		print_bug $title FAILURE, $nerrs
+ 		exit
+ 	fi
+ 
