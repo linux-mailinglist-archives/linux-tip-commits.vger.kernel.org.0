@@ -2,47 +2,47 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C2925234267
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 31 Jul 2020 11:22:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 01407234347
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 31 Jul 2020 11:29:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732172AbgGaJWl (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 31 Jul 2020 05:22:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59964 "EHLO
+        id S1732768AbgGaJ31 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 31 Jul 2020 05:29:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59966 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732160AbgGaJWk (ORCPT
+        with ESMTP id S1732037AbgGaJWk (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Fri, 31 Jul 2020 05:22:40 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26BA2C061574;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28F49C061575;
         Fri, 31 Jul 2020 02:22:40 -0700 (PDT)
 Date:   Fri, 31 Jul 2020 09:22:36 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1596187357;
+        s=2020; t=1596187356;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=/uZsYkHVT4l3QqFIAVT0CBAkiHxCXbKQJau+svWt4BI=;
-        b=TD0wLr1VFx3SCndtUUmMvGPNVZ9Maoyk3qCfM2BhurOSNFjSXXfNaHrzg7778zMuqGZ13d
-        wMQHuSm3qxwUkWfZs9JccfBh2hUTURK+9OaoG1DLlxHg3y/KEwsjVFc9aAHtAXTROd9Mfo
-        Gn5R3lsb+Je/FT5i8Az+8ZO2bBMOKEiWXOxt61/cqho0yyHHfIa23P/M9eCuMk0WieSv4t
-        T3swSR7gpI/jtNUDqEl+PPigPCXZtTE6Eh7VH1tM2EVobQ+aR8+A6rPm6m85/r2wP7MOOP
-        8UdTlgKdsXNYfEJDqA+ARMn/rgaEyD6Q0BCEeNAjArex6Az0gVQeGjeLXFm1iQ==
+        bh=W2R/2nhQqlKxPQ/KugUhAAIpxwe8SZycjkXsRmoBVuQ=;
+        b=MWTbwHEtD6hszFiICcoiN+L2CG+cMCoWusr4C63Pvh3uSLz0tqq3coEKMfHZ9o55Q/WU/I
+        PZjpYFuBtZ4HdOE8D0Hajclljqv2Ifllm43jKEVpPYLOVNSlNg96YnDUwNo1hx0zSyyuLh
+        TrC2vtE2CKt7tei1zA/pAZy0vv6bVWg7AqzoGuMU2gnkTJcAa688ga2Kdipqn1H8Hl4+41
+        yOrRbpWmRitKlOIhjSX5pTxdXtkaibFbH5zCBYKiPHzL7QTIbBVRPRFC66rhPgKtEIp98e
+        Tr7K8wrmhkRF9l1gCMmXyL/HIQ6Gnh12Ir/i/OUMTzJIKvtm+0X78b3cy2Li/w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1596187357;
+        s=2020e; t=1596187356;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=/uZsYkHVT4l3QqFIAVT0CBAkiHxCXbKQJau+svWt4BI=;
-        b=R/MiIarF/mf8Jv3hEtj4+DC+ORKeoe2h9KcZbpK8G/Btqz/tVfKQYDZda4kFgsGFLuq/oe
-        3p9C3y2ovx93PWDA==
+        bh=W2R/2nhQqlKxPQ/KugUhAAIpxwe8SZycjkXsRmoBVuQ=;
+        b=8Ofqga1XwA428riEGom4lnD9TDIdbSdZK/xY3eGzfaWLnd59PJJC2lkgpjWQOPFAT8XxqA
+        IDHJ/qRg5J3MeNBA==
 From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] torture: Dump ftrace at shutdown only if requested
+Subject: [tip: core/rcu] torture: Avoid duplicate specification of qemu command
 Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <159618735684.4006.13046716104227374531.tip-bot2@tip-bot2>
+Message-ID: <159618735622.4006.16663033341164320411.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -54,67 +54,48 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     2102ad290af06119ccfb56ddc3a0e5011a91537e
-Gitweb:        https://git.kernel.org/tip/2102ad290af06119ccfb56ddc3a0e5011a91537e
+Commit-ID:     316db5897ee5d7408f2adea4d5992ed380316928
+Gitweb:        https://git.kernel.org/tip/316db5897ee5d7408f2adea4d5992ed380316928
 Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Tue, 16 Jun 2020 15:38:24 -07:00
+AuthorDate:    Tue, 16 Jun 2020 16:34:52 -07:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Mon, 29 Jun 2020 12:01:45 -07:00
 
-torture: Dump ftrace at shutdown only if requested
+torture: Avoid duplicate specification of qemu command
 
-If there is a large number of torture tests running concurrently,
-all of which are dumping large ftrace buffers at shutdown time, the
-resulting dumping can take a very long time, particularly on systems
-with rotating-rust storage.  This commit therefore adds a default-off
-torture.ftrace_dump_at_shutdown module parameter that enables
-shutdown-time ftrace-buffer dumping.
+Currently, the qemu command is constructed twice, once to dump it
+to the qemu-cmd file and again to execute it.  This is of course an
+accident waiting to happen, but is done to ensure that the remainder
+of the script has an accurate idea of the running qemu command's PID.
+This commit therefore places both the qemu command and the PID capture
+into a new temporary file and sources that temporary file.  Thus the
+single construction of the qemu command into the qemu-cmd file suffices
+for both purposes.
 
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- Documentation/admin-guide/kernel-parameters.txt | 7 +++++++
- kernel/torture.c                                | 6 +++++-
- 2 files changed, 12 insertions(+), 1 deletion(-)
+ tools/testing/selftests/rcutorture/bin/kvm-test-1-run.sh | 10 ++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index a0dcc92..9f11ff8 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -5096,6 +5096,13 @@
- 			Prevent the CPU-hotplug component of torturing
- 			until after init has spawned.
- 
-+	torture.ftrace_dump_at_shutdown= [KNL]
-+			Dump the ftrace buffer at torture-test shutdown,
-+			even if there were no errors.  This can be a
-+			very costly operation when many torture tests
-+			are running concurrently, especially on systems
-+			with rotating-rust storage.
+diff --git a/tools/testing/selftests/rcutorture/bin/kvm-test-1-run.sh b/tools/testing/selftests/rcutorture/bin/kvm-test-1-run.sh
+index 5ec095d..484445b 100755
+--- a/tools/testing/selftests/rcutorture/bin/kvm-test-1-run.sh
++++ b/tools/testing/selftests/rcutorture/bin/kvm-test-1-run.sh
+@@ -161,8 +161,16 @@ then
+ 	touch $resdir/buildonly
+ 	exit 0
+ fi
 +
- 	tp720=		[HW,PS2]
- 
- 	tpm_suspend_pcr=[HW,TPM]
-diff --git a/kernel/torture.c b/kernel/torture.c
-index a1a4148..1061492 100644
---- a/kernel/torture.c
-+++ b/kernel/torture.c
-@@ -45,6 +45,9 @@ MODULE_AUTHOR("Paul E. McKenney <paulmck@linux.ibm.com>");
- static bool disable_onoff_at_boot;
- module_param(disable_onoff_at_boot, bool, 0444);
- 
-+static bool ftrace_dump_at_shutdown;
-+module_param(ftrace_dump_at_shutdown, bool, 0444);
++# Decorate qemu-cmd with redirection, backgrounding, and PID capture
++sed -e 's/$/ 2>\&1 \&/' < $resdir/qemu-cmd > $T/qemu-cmd
++echo 'echo $! > $resdir/qemu_pid' >> $T/qemu-cmd
 +
- static char *torture_type;
- static int verbose;
- 
-@@ -527,7 +530,8 @@ static int torture_shutdown(void *arg)
- 		torture_shutdown_hook();
- 	else
- 		VERBOSE_TOROUT_STRING("No torture_shutdown_hook(), skipping.");
--	rcu_ftrace_dump(DUMP_ALL);
-+	if (ftrace_dump_at_shutdown)
-+		rcu_ftrace_dump(DUMP_ALL);
- 	kernel_power_off();	/* Shut down the system. */
- 	return 0;
- }
++# In case qemu refuses to run...
+ echo "NOTE: $QEMU either did not run or was interactive" > $resdir/console.log
+-( $QEMU $qemu_args -m $TORTURE_QEMU_MEM -kernel $KERNEL -append "$qemu_append $boot_args" > $resdir/qemu-output 2>&1 & echo $! > $resdir/qemu_pid; wait `cat  $resdir/qemu_pid`; echo $? > $resdir/qemu-retval ) &
++
++# Attempt to run qemu
++( . $T/qemu-cmd; wait `cat  $resdir/qemu_pid`; echo $? > $resdir/qemu-retval ) &
+ commandcompleted=0
+ sleep 10 # Give qemu's pid a chance to reach the file
+ if test -s "$resdir/qemu_pid"
