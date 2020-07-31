@@ -2,46 +2,47 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D07723429D
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 31 Jul 2020 11:25:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F3C9D2342A2
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 31 Jul 2020 11:25:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732546AbgGaJXo (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 31 Jul 2020 05:23:44 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:56642 "EHLO
+        id S1732104AbgGaJYn (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 31 Jul 2020 05:24:43 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:56564 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732533AbgGaJXm (ORCPT
+        with ESMTP id S1731981AbgGaJXm (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Fri, 31 Jul 2020 05:23:42 -0400
 Date:   Fri, 31 Jul 2020 09:23:40 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1596187421;
+        s=2020; t=1596187420;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=9qWS5pWhc3a8udLuVtW5FvcOUvcP3JoDnfC2vjPUg2s=;
-        b=iisX2wSomoWY30p4MJohASt8XHWIcDBLHKeqnhfKKR40OmCif3IewpmsudbjKsdKD/AEkl
-        eRdht/THXFIlh8zp3Z7wKJMMqP0uEdRi5Q1tVrIvaStwC+e1NmRzvFQBD+QDqGU8+TJ6RQ
-        r6zBRaQIDfXTuZMp0CPMRcgLauZafEMvq/m7SkYqkt7p+TaqfR3rRk8Rr15I/YF/16KSwF
-        6/r8Pw8u9A2QA2s/q1/qiaHrvAmV1Llm7MAHxCuDmXuvqt3ufzzrmXiEWjOrCH7YXdAIJm
-        +3/gKfaC1Cc0i/97bNUDGUGP+a96b3bOonYG7qGtGmFlnLY4h2P3Dsg9pnK7lw==
+        bh=XKcDjqjHZyOxGmKCkMgX7OQbESulfd4mhAB4oHFRsj8=;
+        b=UxLI31FWcBWZ0fTRpQXLwx7VnXkltTNJZeJRnOa5ZksTzxoD7ympcTPcIAjYsddVMLT1tU
+        m22WW9uTAIpURkmGbXJL2JzLa1EZ7sDLKu3lvybt8fRhc6bVo8+YHvSFdXVtZb8Wop0oH/
+        2eQAM1/1ZQ36p650KBXyCg9Xa1yjnTKt6ErkK6QDkV1aUlSmWA7HO/5Mnm9J+W+lbqO5Wr
+        iXOwqkyIJk4yovgC475OcH03ZV1G10afsT0AwYmlzL/OBWHVcWx3w1DfPMVBByCZxAzthm
+        86wP2zkkrwdd3+f5l5EcQyu4ac7MpD46Wfri/Z3hBCZHFbdiw1B3WitU6jNkEg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1596187421;
+        s=2020e; t=1596187420;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=9qWS5pWhc3a8udLuVtW5FvcOUvcP3JoDnfC2vjPUg2s=;
-        b=5JiSe5PmX3etTai278Y9V4e7hkNhHmp4hZtEyk0CTxaezR8gpMpcY2QSJxpY7/Ezf0KJMO
-        roStEkG+xhU0naDQ==
-From:   "tip-bot2 for Wei Yang" <tip-bot2@linutronix.de>
+        bh=XKcDjqjHZyOxGmKCkMgX7OQbESulfd4mhAB4oHFRsj8=;
+        b=iOPgoDTRj9rxOs0wKQvA1T5hhvav9gzX0D22/Rj83Ny/kkac7xuO3sx/4GWFZxk0N7mo32
+        eNudEzfn3kgW+pAg==
+From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcu: Initialize and destroy rcu_synchronize only when
- necessary
-Cc:     Wei Yang <richard.weiyang@gmail.com>,
+Subject: [tip: core/rcu] mm/mmap.c: Add cond_resched() for exit_mmap() CPU stalls
+Cc:     Andrew Morton <akpm@linux-foundation.org>, <linux-mm@kvack.org>,
+        Shakeel Butt <shakeelb@google.com>,
+        "Joel Fernandes (Google)" <joel@joelfernandes.org>,
         "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <159618742069.4006.16122222312681884202.tip-bot2@tip-bot2>
+Message-ID: <159618742007.4006.11207886326021221931.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -53,58 +54,82 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     7ee880b7bf1dea88d0a472b775aebdb4fb6bf860
-Gitweb:        https://git.kernel.org/tip/7ee880b7bf1dea88d0a472b775aebdb4fb6bf860
-Author:        Wei Yang <richard.weiyang@gmail.com>
-AuthorDate:    Wed, 15 Apr 2020 22:26:55 
+Commit-ID:     0a3b3c253a1eb2c7fe7f34086d46660c909abeb3
+Gitweb:        https://git.kernel.org/tip/0a3b3c253a1eb2c7fe7f34086d46660c909abeb3
+Author:        Paul E. McKenney <paulmck@kernel.org>
+AuthorDate:    Thu, 16 Apr 2020 16:46:10 -07:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Mon, 29 Jun 2020 11:58:49 -07:00
 
-rcu: Initialize and destroy rcu_synchronize only when necessary
+mm/mmap.c: Add cond_resched() for exit_mmap() CPU stalls
 
-The __wait_rcu_gp() function unconditionally initializes and cleans up
-each element of rs_array[], whether used or not.  This is slightly
-wasteful and rather confusing, so this commit skips both initialization
-and cleanup for duplicate callback functions.
+A large process running on a heavily loaded system can encounter the
+following RCU CPU stall warning:
 
-Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+  rcu: INFO: rcu_sched self-detected stall on CPU
+  rcu: 	3-....: (20998 ticks this GP) idle=4ea/1/0x4000000000000002 softirq=556558/556558 fqs=5190
+  	(t=21013 jiffies g=1005461 q=132576)
+  NMI backtrace for cpu 3
+  CPU: 3 PID: 501900 Comm: aio-free-ring-w Kdump: loaded Not tainted 5.2.9-108_fbk12_rc3_3858_gb83b75af7909 #1
+  Hardware name: Wiwynn   HoneyBadger/PantherPlus, BIOS HBM6.71 02/03/2016
+  Call Trace:
+   <IRQ>
+   dump_stack+0x46/0x60
+   nmi_cpu_backtrace.cold.3+0x13/0x50
+   ? lapic_can_unplug_cpu.cold.27+0x34/0x34
+   nmi_trigger_cpumask_backtrace+0xba/0xca
+   rcu_dump_cpu_stacks+0x99/0xc7
+   rcu_sched_clock_irq.cold.87+0x1aa/0x397
+   ? tick_sched_do_timer+0x60/0x60
+   update_process_times+0x28/0x60
+   tick_sched_timer+0x37/0x70
+   __hrtimer_run_queues+0xfe/0x270
+   hrtimer_interrupt+0xf4/0x210
+   smp_apic_timer_interrupt+0x5e/0x120
+   apic_timer_interrupt+0xf/0x20
+   </IRQ>
+  RIP: 0010:kmem_cache_free+0x223/0x300
+  Code: 88 00 00 00 0f 85 ca 00 00 00 41 8b 55 18 31 f6 f7 da 41 f6 45 0a 02 40 0f 94 c6 83 c6 05 9c 41 5e fa e8 a0 a7 01 00 41 56 9d <49> 8b 47 08 a8 03 0f 85 87 00 00 00 65 48 ff 08 e9 3d fe ff ff 65
+  RSP: 0018:ffffc9000e8e3da8 EFLAGS: 00000206 ORIG_RAX: ffffffffffffff13
+  RAX: 0000000000020000 RBX: ffff88861b9de960 RCX: 0000000000000030
+  RDX: fffffffffffe41e8 RSI: 000060777fe3a100 RDI: 000000000001be18
+  RBP: ffffea00186e7780 R08: ffffffffffffffff R09: ffffffffffffffff
+  R10: ffff88861b9dea28 R11: ffff88887ffde000 R12: ffffffff81230a1f
+  R13: ffff888854684dc0 R14: 0000000000000206 R15: ffff8888547dbc00
+   ? remove_vma+0x4f/0x60
+   remove_vma+0x4f/0x60
+   exit_mmap+0xd6/0x160
+   mmput+0x4a/0x110
+   do_exit+0x278/0xae0
+   ? syscall_trace_enter+0x1d3/0x2b0
+   ? handle_mm_fault+0xaa/0x1c0
+   do_group_exit+0x3a/0xa0
+   __x64_sys_exit_group+0x14/0x20
+   do_syscall_64+0x42/0x100
+   entry_SYSCALL_64_after_hwframe+0x44/0xa9
+
+And on a PREEMPT=n kernel, the "while (vma)" loop in exit_mmap() can run
+for a very long time given a large process.  This commit therefore adds
+a cond_resched() to this loop, providing RCU any needed quiescent states.
+
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: <linux-mm@kvack.org>
+Reviewed-by: Shakeel Butt <shakeelb@google.com>
+Reviewed-by: Joel Fernandes (Google) <joel@joelfernandes.org>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/rcu/update.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ mm/mmap.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/kernel/rcu/update.c b/kernel/rcu/update.c
-index 84843ad..f5a82e1 100644
---- a/kernel/rcu/update.c
-+++ b/kernel/rcu/update.c
-@@ -390,13 +390,14 @@ void __wait_rcu_gp(bool checktiny, int n, call_rcu_func_t *crcu_array,
- 			might_sleep();
- 			continue;
- 		}
--		init_rcu_head_on_stack(&rs_array[i].head);
--		init_completion(&rs_array[i].completion);
- 		for (j = 0; j < i; j++)
- 			if (crcu_array[j] == crcu_array[i])
- 				break;
--		if (j == i)
-+		if (j == i) {
-+			init_rcu_head_on_stack(&rs_array[i].head);
-+			init_completion(&rs_array[i].completion);
- 			(crcu_array[i])(&rs_array[i].head, wakeme_after_rcu);
-+		}
+diff --git a/mm/mmap.c b/mm/mmap.c
+index 59a4682..972f839 100644
+--- a/mm/mmap.c
++++ b/mm/mmap.c
+@@ -3159,6 +3159,7 @@ void exit_mmap(struct mm_struct *mm)
+ 		if (vma->vm_flags & VM_ACCOUNT)
+ 			nr_accounted += vma_pages(vma);
+ 		vma = remove_vma(vma);
++		cond_resched();
  	}
- 
- 	/* Wait for all callbacks to be invoked. */
-@@ -407,9 +408,10 @@ void __wait_rcu_gp(bool checktiny, int n, call_rcu_func_t *crcu_array,
- 		for (j = 0; j < i; j++)
- 			if (crcu_array[j] == crcu_array[i])
- 				break;
--		if (j == i)
-+		if (j == i) {
- 			wait_for_completion(&rs_array[i].completion);
--		destroy_rcu_head_on_stack(&rs_array[i].head);
-+			destroy_rcu_head_on_stack(&rs_array[i].head);
-+		}
- 	}
+ 	vm_unacct_memory(nr_accounted);
  }
- EXPORT_SYMBOL_GPL(__wait_rcu_gp);
