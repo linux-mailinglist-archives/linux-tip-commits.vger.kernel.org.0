@@ -2,45 +2,44 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6BDC5234316
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 31 Jul 2020 11:28:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC887234321
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 31 Jul 2020 11:28:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732290AbgGaJW5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 31 Jul 2020 05:22:57 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:56344 "EHLO
+        id S1732628AbgGaJ2R (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 31 Jul 2020 05:28:17 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:56390 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732266AbgGaJWz (ORCPT
+        with ESMTP id S1732277AbgGaJW4 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 31 Jul 2020 05:22:55 -0400
-Date:   Fri, 31 Jul 2020 09:22:52 -0000
+        Fri, 31 Jul 2020 05:22:56 -0400
+Date:   Fri, 31 Jul 2020 09:22:53 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1596187373;
+        s=2020; t=1596187374;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=GPpffx2Bkt27uZ657mrb56I8xaNfqiApprib8yY0JqU=;
-        b=lBx3cTcpocIv14cOGLQe3ao9jMN2jLPEhuN0A8xe8cPoygBnHUB1CrvMewCEEhn05ECTHz
-        TKlXszFXiJ/z5GKj4npbWExRS8MjxCiNJumLgw+wPALHTgjqBNOHILzFYprSnyLTglH+a0
-        paU7O4Rt2szDqM338VCOI+diH/lmHDKAo6SiRutkFeSwRVwkVGscOoUdJkUdpj+N29Z0DH
-        r/3lLEUJaMj/EC2pRFCZZeJdaIRxuSMPQzT1bad9VsaQn8BVfYlBIQjOt/YRjLp4kKwW/5
-        +fDsMZyJsATJ1JCiTs9nZBv9wrwJ2NjITrcR6ONkvdAwRW2YlrN8al6PAtq9gA==
+        bh=zkISJ9r3nlJQXx+yjwv77/zQvu/bCClKJInmSQpEtj0=;
+        b=CLkHXTCXEZVyfm/4ff4TiC4Vuy3xzQxCF8rBiVz2Mq7lF49kpVDDMy7EjeyxYlm2Y+JoyH
+        zj14mCzqqYRJkIooP6hI+/G/FW+sE0zGJo5fFh34pFosgSL2p9IE/O61UVeTp5v4aTffB+
+        TmLJya8hlwLjbCgXxACNQg62tHIAoPaKF1dzA5yrxY/q3Ab5yEnW8mpMx8UWDw15uTjLfE
+        4xBeZn6f4UKMFRfqW7r+Muy9uJLL9OO4BQjB32+okjBj4YW8AJc1Ec08PCKPYVHK2MqP5h
+        FNAJzjeEfn0sk5etl1KzlFMecbOCrJlJMcETr7P/Si9XGoZGpRo/Z7DSUUfaLw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1596187373;
+        s=2020e; t=1596187374;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=GPpffx2Bkt27uZ657mrb56I8xaNfqiApprib8yY0JqU=;
-        b=dZH5tGcTcDxiATpxh70ZPXwGTStmuk9FghuEAcvPVQGW1V9j8rp+ZZIwsrOaVKxaCH7wv6
-        J1sOLHfeCtosk+Dw==
+        bh=zkISJ9r3nlJQXx+yjwv77/zQvu/bCClKJInmSQpEtj0=;
+        b=cWV3LShizFUWF2YNs7NYPDc4vAmQSdF2T66lQE2NnuyNCjOw9IiRNfj8NvSkW5o1R0W8wr
+        A6wUPOaM8UATMRDw==
 From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] refperf: Rename RCU_REF_PERF_TEST to RCU_REF_SCALE_TEST
-Cc:     Ingo Molnar <mingo@kernel.org>,
-        "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
+Subject: [tip: core/rcu] refperf: Add test for RCU Tasks readers
+Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <159618737259.4006.16274882036768270688.tip-bot2@tip-bot2>
+Message-ID: <159618737390.4006.3908578018562144708.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -52,91 +51,67 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     8e4ec3d02b549a731c94b4bcddff212bb92cdbaf
-Gitweb:        https://git.kernel.org/tip/8e4ec3d02b549a731c94b4bcddff212bb92cdbaf
+Commit-ID:     e13ef442fe522fa1f604efec8c899a0e1fc3d426
+Gitweb:        https://git.kernel.org/tip/e13ef442fe522fa1f604efec8c899a0e1fc3d426
 Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Wed, 17 Jun 2020 11:33:54 -07:00
+AuthorDate:    Wed, 03 Jun 2020 11:56:34 -07:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Mon, 29 Jun 2020 12:00:46 -07:00
 
-refperf: Rename RCU_REF_PERF_TEST to RCU_REF_SCALE_TEST
+refperf: Add test for RCU Tasks readers
 
-The old Kconfig option name is all too easy to conflate with the
-unrelated "perf" feature, so this commit renames RCU_REF_PERF_TEST to
-RCU_REF_SCALE_TEST.
+This commit adds testing for RCU Tasks readers to the refperf module.
+This also applies to RCU Rude readers, as both flavors have empty
+(as in non-existent) read-side markers.
 
-Reported-by: Ingo Molnar <mingo@kernel.org>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/rcu/Kconfig.debug                                    | 4 ++--
- kernel/rcu/Makefile                                         | 2 +-
- kernel/rcu/refperf.c                                        | 6 +++---
- tools/testing/selftests/rcutorture/configs/refperf/CFcommon | 2 +-
- 4 files changed, 7 insertions(+), 7 deletions(-)
+ kernel/rcu/refperf.c | 28 +++++++++++++++++++++++++++-
+ 1 file changed, 27 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/rcu/Kconfig.debug b/kernel/rcu/Kconfig.debug
-index 858765b..3cf6132 100644
---- a/kernel/rcu/Kconfig.debug
-+++ b/kernel/rcu/Kconfig.debug
-@@ -61,8 +61,8 @@ config RCU_TORTURE_TEST
- 	  Say M if you want the RCU torture tests to build as a module.
- 	  Say N if you are unsure.
- 
--config RCU_REF_PERF_TEST
--	tristate "Performance tests for read-side synchronization (RCU and others)"
-+config RCU_REF_SCALE_TEST
-+	tristate "Scalability tests for read-side synchronization (RCU and others)"
- 	depends on DEBUG_KERNEL
- 	select TORTURE_TEST
- 	select SRCU
-diff --git a/kernel/rcu/Makefile b/kernel/rcu/Makefile
-index ba7d826..45d562d 100644
---- a/kernel/rcu/Makefile
-+++ b/kernel/rcu/Makefile
-@@ -12,7 +12,7 @@ obj-$(CONFIG_TREE_SRCU) += srcutree.o
- obj-$(CONFIG_TINY_SRCU) += srcutiny.o
- obj-$(CONFIG_RCU_TORTURE_TEST) += rcutorture.o
- obj-$(CONFIG_RCU_PERF_TEST) += rcuperf.o
--obj-$(CONFIG_RCU_REF_PERF_TEST) += refperf.o
-+obj-$(CONFIG_RCU_REF_SCALE_TEST) += refperf.o
- obj-$(CONFIG_TREE_RCU) += tree.o
- obj-$(CONFIG_TINY_RCU) += tiny.o
- obj-$(CONFIG_RCU_NEED_SEGCBLIST) += rcu_segcblist.o
 diff --git a/kernel/rcu/refperf.c b/kernel/rcu/refperf.c
-index 2bfdcdc..7c98057 100644
+index da7de9a..2bfdcdc 100644
 --- a/kernel/rcu/refperf.c
 +++ b/kernel/rcu/refperf.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0+
- //
--// Performance test comparing RCU vs other mechanisms
-+// Scalability test comparing RCU vs other mechanisms
- // for acquiring references on objects.
- //
- // Copyright (C) Google, 2020.
-@@ -59,7 +59,7 @@ MODULE_PARM_DESC(perf_type, "Type of test (rcu, srcu, refcnt, rwsem, rwlock.");
- torture_param(int, verbose, 0, "Enable verbose debugging printk()s");
+@@ -192,6 +192,31 @@ static struct ref_perf_ops srcu_ops = {
+ 	.name		= "srcu"
+ };
  
- // Wait until there are multiple CPUs before starting test.
--torture_param(int, holdoff, IS_BUILTIN(CONFIG_RCU_REF_PERF_TEST) ? 10 : 0,
-+torture_param(int, holdoff, IS_BUILTIN(CONFIG_RCU_REF_SCALE_TEST) ? 10 : 0,
- 	      "Holdoff time before test start (s)");
- // Number of loops per experiment, all readers execute operations concurrently.
- torture_param(long, loops, 10000, "Number of loops per experiment.");
-@@ -656,7 +656,7 @@ ref_perf_init(void)
- 		for (i = 0; i < ARRAY_SIZE(perf_ops); i++)
- 			pr_cont(" %s", perf_ops[i]->name);
- 		pr_cont("\n");
--		WARN_ON(!IS_MODULE(CONFIG_RCU_REF_PERF_TEST));
-+		WARN_ON(!IS_MODULE(CONFIG_RCU_REF_SCALE_TEST));
- 		firsterr = -EINVAL;
- 		cur_ops = NULL;
- 		goto unwind;
-diff --git a/tools/testing/selftests/rcutorture/configs/refperf/CFcommon b/tools/testing/selftests/rcutorture/configs/refperf/CFcommon
-index 8ba5ba2..a98b58b 100644
---- a/tools/testing/selftests/rcutorture/configs/refperf/CFcommon
-+++ b/tools/testing/selftests/rcutorture/configs/refperf/CFcommon
-@@ -1,2 +1,2 @@
--CONFIG_RCU_REF_PERF_TEST=y
-+CONFIG_RCU_REF_SCALE_TEST=y
- CONFIG_PRINTK_TIME=y
++// Definitions for RCU Tasks ref perf testing: Empty read markers.
++// These definitions also work for RCU Rude readers.
++static void rcu_tasks_ref_perf_read_section(const int nloops)
++{
++	int i;
++
++	for (i = nloops; i >= 0; i--)
++		continue;
++}
++
++static void rcu_tasks_ref_perf_delay_section(const int nloops, const int udl, const int ndl)
++{
++	int i;
++
++	for (i = nloops; i >= 0; i--)
++		un_delay(udl, ndl);
++}
++
++static struct ref_perf_ops rcu_tasks_ops = {
++	.init		= rcu_sync_perf_init,
++	.readsection	= rcu_tasks_ref_perf_read_section,
++	.delaysection	= rcu_tasks_ref_perf_delay_section,
++	.name		= "rcu-tasks"
++};
++
+ // Definitions for RCU Tasks Trace ref perf testing.
+ static void rcu_trace_ref_perf_read_section(const int nloops)
+ {
+@@ -613,7 +638,8 @@ ref_perf_init(void)
+ 	long i;
+ 	int firsterr = 0;
+ 	static struct ref_perf_ops *perf_ops[] = {
+-		&rcu_ops, &srcu_ops, &rcu_trace_ops, &refcnt_ops, &rwlock_ops, &rwsem_ops,
++		&rcu_ops, &srcu_ops, &rcu_trace_ops, &rcu_tasks_ops,
++		&refcnt_ops, &rwlock_ops, &rwsem_ops,
+ 	};
+ 
+ 	if (!torture_init_begin(perf_type, verbose))
