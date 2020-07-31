@@ -2,45 +2,45 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FF54234312
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 31 Jul 2020 11:28:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A1F6234276
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 31 Jul 2020 11:23:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732454AbgGaJ2G (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 31 Jul 2020 05:28:06 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:56344 "EHLO
+        id S1732344AbgGaJXE (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 31 Jul 2020 05:23:04 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:56476 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732312AbgGaJXB (ORCPT
+        with ESMTP id S1732320AbgGaJXE (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 31 Jul 2020 05:23:01 -0400
-Date:   Fri, 31 Jul 2020 09:22:59 -0000
+        Fri, 31 Jul 2020 05:23:04 -0400
+Date:   Fri, 31 Jul 2020 09:23:00 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1596187379;
+        s=2020; t=1596187381;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=f7ChyWmzjtGHWTBJqykJAkMe3qM+j7lvLMPgG+XZM64=;
-        b=cfrkpNESbPISCUjCkPgJRIrRK9lMp3r0HwAFwp9sh7EQVwKaA1ro1+vmgVlMuJstfw3jt3
-        0Ch2HrnApxW021XMfUNWarkxQDOlJHsbHM5uNHmoFAIBAEWHBcgZhpGatIi5UT3aikohps
-        aftvLIBdtILA2ipfTpv9qRxJxe1sLoKr35X/YPkINFa6bHcepxLmFkdFi0s3pCdh3xkfu6
-        EOmkVdTB0S6K3oIyjYU0mlU3n/rhggNWpBvb+FPHevwUOM5S/wQIPB6Ko2Lbh5f+n2r0uo
-        ErBAIlbsd7jSVe7JIIDfduvi96sv1HvFcfCSM/GxDRVHktjKTLx6ZmhhgdmIww==
+        bh=VeKui5SC6W5V0dmXk4nOrzyMUmUCEv1bAJxbgITkPRM=;
+        b=0fE532LMszCMmdcFlCrbs8C3Z1cN8kgoODgb7NjToGSY89eZWmF2idyTVS0OXhRJ9hTXMg
+        Zc4N5nKTEz6rT2WdvIBe1uA6/M6qMAy7J1wuK+oZ/Ys1hl242CtBsnGl1cJNrJs7HCNEK8
+        oQxJR0XRX16IrEc0jbGN6vPYCL6hkj/WO4DZDYrvmVQCObWPjlee9nW8a8CNnGxon+RbaM
+        xqud4IslMyItQ8WkGgrAp1bBbf3wxelcdzWl1pqvRRhQHi6fNxoiOI31tG3EelwcPsPqa6
+        etu7PgcTNorcehe8lYHRX/fujRgsRnwDIRNNlHiy7MieWUZycgfefoavELGtuw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1596187379;
+        s=2020e; t=1596187381;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=f7ChyWmzjtGHWTBJqykJAkMe3qM+j7lvLMPgG+XZM64=;
-        b=a0/TOL09Pzwxcdn7JZNZJ5jIq2B4sYmLO4sm7kJiy4fFwuIfcOV+euGeottLoUNiO5kxll
-        iGr9SXTHlnQ85qBg==
+        bh=VeKui5SC6W5V0dmXk4nOrzyMUmUCEv1bAJxbgITkPRM=;
+        b=/Ij9d8OTgqHzgey7s+PPWcjoa60MzCrggadgoPwUmz4r2yu6jzpmLPPQSeOL9qkMNSGCcJ
+        a0EH2PguGrxLAIDA==
 From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] refperf: Output per-experiment data points
+Subject: [tip: core/rcu] refperf: Add warmup and cooldown processing phases
 Cc:     "Joel Fernandes (Google)" <joel@joelfernandes.org>,
         "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <159618737921.4006.4069593394527425749.tip-bot2@tip-bot2>
+Message-ID: <159618738049.4006.16848409473620043188.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -52,39 +52,76 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     9d1914d34cebe111a23ab1670633900fd770cec3
-Gitweb:        https://git.kernel.org/tip/9d1914d34cebe111a23ab1670633900fd770cec3
+Commit-ID:     2db0bda38453f472640f4ece1e2a495cbd44f892
+Gitweb:        https://git.kernel.org/tip/2db0bda38453f472640f4ece1e2a495cbd44f892
 Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Tue, 26 May 2020 15:30:09 -07:00
+AuthorDate:    Tue, 26 May 2020 12:34:57 -07:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Mon, 29 Jun 2020 12:00:45 -07:00
 
-refperf: Output per-experiment data points
+refperf: Add warmup and cooldown processing phases
 
-Currently, it is necessary to manually edit the console output to see
-anything more than statistics, and sometimes the statistics can indicate
-outliers that need more investigation.  This commit therefore dumps out
-the per-experiment measurements, sorted in ascending order, just before
-dumping out the statistics.
+This commit causes all the readers to start running unmeasured load
+until all readers have done at least one such run (thus having warmed
+up), then run the measured load, and then run unmeasured load until all
+readers have completed their measured load.  This approach avoids any
+thread running measured load while other readers are idle.
 
 Cc: Joel Fernandes (Google) <joel@joelfernandes.org>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- tools/testing/selftests/rcutorture/bin/kvm-recheck-refperf.sh | 4 ++++
- 1 file changed, 4 insertions(+)
+ kernel/rcu/refperf.c | 20 ++++++++++++++++++--
+ 1 file changed, 18 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/rcutorture/bin/kvm-recheck-refperf.sh b/tools/testing/selftests/rcutorture/bin/kvm-recheck-refperf.sh
-index 0660f3f..0e29cfd 100755
---- a/tools/testing/selftests/rcutorture/bin/kvm-recheck-refperf.sh
-+++ b/tools/testing/selftests/rcutorture/bin/kvm-recheck-refperf.sh
-@@ -59,6 +59,10 @@ END {
- 		medianvalue = (readertimes[medianidx - 1] + readertimes[medianidx]) / 2;
- 	else
- 		medianvalue = readertimes[medianidx];
-+	points = "Points:";
-+	for (i = 1; i <= newNR; i++)
-+		points = points " " readertimes[i];
-+	print points;
- 	print "Average reader duration: " sum / newNR " nanoseconds";
- 	print "Minimum reader duration: " readertimes[1];
- 	print "Median reader duration: " medianvalue;
+diff --git a/kernel/rcu/refperf.c b/kernel/rcu/refperf.c
+index 234bb0e..445190b 100644
+--- a/kernel/rcu/refperf.c
++++ b/kernel/rcu/refperf.c
+@@ -100,6 +100,8 @@ static atomic_t nreaders_exp;
+ // Use to wait for all threads to start.
+ static atomic_t n_init;
+ static atomic_t n_started;
++static atomic_t n_warmedup;
++static atomic_t n_cooleddown;
+ 
+ // Track which experiment is currently running.
+ static int exp_idx;
+@@ -260,8 +262,15 @@ repeat:
+ 
+ 	VERBOSE_PERFOUT("ref_perf_reader %ld: experiment %d started", me, exp_idx);
+ 
+-	// To prevent noise, keep interrupts disabled. This also has the
+-	// effect of preventing entries into slow path for rcu_read_unlock().
++
++	// To reduce noise, do an initial cache-warming invocation, check
++	// in, and then keep warming until everyone has checked in.
++	cur_ops->readsection(loops);
++	if (!atomic_dec_return(&n_warmedup))
++		while (atomic_read_acquire(&n_warmedup))
++			cur_ops->readsection(loops);
++	// Also keep interrupts disabled.  This also has the effect
++	// of preventing entries into slow path for rcu_read_unlock().
+ 	local_irq_save(flags);
+ 	start = ktime_get_mono_fast_ns();
+ 
+@@ -271,6 +280,11 @@ repeat:
+ 	local_irq_restore(flags);
+ 
+ 	rt->last_duration_ns = WARN_ON_ONCE(duration < 0) ? 0 : duration;
++	// To reduce runtime-skew noise, do maintain-load invocations until
++	// everyone is done.
++	if (!atomic_dec_return(&n_cooleddown))
++		while (atomic_read_acquire(&n_cooleddown))
++			cur_ops->readsection(loops);
+ 
+ 	if (atomic_dec_and_test(&nreaders_exp))
+ 		wake_up(&main_wq);
+@@ -372,6 +386,8 @@ static int main_func(void *arg)
+ 		reset_readers();
+ 		atomic_set(&nreaders_exp, nreaders);
+ 		atomic_set(&n_started, nreaders);
++		atomic_set(&n_warmedup, nreaders);
++		atomic_set(&n_cooleddown, nreaders);
+ 
+ 		exp_idx = exp;
+ 
