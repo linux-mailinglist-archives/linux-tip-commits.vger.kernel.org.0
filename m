@@ -2,44 +2,45 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B8DD323432D
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 31 Jul 2020 11:28:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C8E1F234329
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 31 Jul 2020 11:28:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732162AbgGaJ2u (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 31 Jul 2020 05:28:50 -0400
+        id S1732253AbgGaJWu (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 31 Jul 2020 05:22:50 -0400
 Received: from Galois.linutronix.de ([193.142.43.55]:56338 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732229AbgGaJWr (ORCPT
+        with ESMTP id S1732246AbgGaJWu (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 31 Jul 2020 05:22:47 -0400
-Date:   Fri, 31 Jul 2020 09:22:46 -0000
+        Fri, 31 Jul 2020 05:22:50 -0400
+Date:   Fri, 31 Jul 2020 09:22:47 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1596187366;
+        s=2020; t=1596187368;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=c1nTJxzfdlyR5JTw/77icm0HMbfDF04j5JS9acG0NOs=;
-        b=uSTWzTuqRlcRwplU49inB8rQYUld9i6d00/wQwJk0NIWAhkH5+Vplq+PfmRCkh48yItaDu
-        J0nkTl3/SS4OX4mApGaO2y5rNZk69riqwhJexVewPyLbFOzbolwIKMkb6cU3g3JGFva8V9
-        bTzEUayrj9GKs8rN0A3p0iwvWKoZe3qnQT+eE+KIzw6bwLa5T5K+/rONtYgutt8mFTujjp
-        8+eVHAUYykOVn25DzoHyZHF0ldZ1tqXcMZnKtGfjirmNDYR98kXoVwl73/P9l9Q9MlKnrt
-        xTFVCiaj6zDdw17swbQzUDyrjYgBBDK67nXnZmx9062bx/mT3G7+srL9CrKxWw==
+        bh=e/q7g8603tY2wciC0otrbc2M6DYeXdjCjpcxJZy7Cuk=;
+        b=ulU7+gJ8KAGJac9vLP10ODRmLe6Uz4w0JNXU9biaGBmivZRJOSyFKsYRzy06McrXGw4IeK
+        pXj+M4eRNSud9jHBc9tEDNgMGUdllCkqNKQZrwRJOCQox92q/vNE5OR3abxrPPj5++kkwO
+        fObkkCscsRBjpABmULVnARMm0vMf0arV5RHJz2RSJeZ/6L/84IaE76WC2WRpD5dZktzWKl
+        QJW/T4wpljZiTHNWDxJOAZultKC0LFFM/6XSnV/2yDdg26gUyl+wQEvmjRjMriRF7tSxFT
+        JUXPr/qEUmw0okEeY3iRIWkGIe/ru5BNRK73XqsTZ5dXDzPCBSSKwff1NHW+xQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1596187366;
+        s=2020e; t=1596187368;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=c1nTJxzfdlyR5JTw/77icm0HMbfDF04j5JS9acG0NOs=;
-        b=MUwH1V8Q2aBJ/4WUEci/Qiq+rQ9Tq3JjvfFUYsvY90gMG9PofpdFFXdXLUdbkO86VO8+y1
-        Wb112vyBBMX8t7Aw==
-From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
+        bh=e/q7g8603tY2wciC0otrbc2M6DYeXdjCjpcxJZy7Cuk=;
+        b=aEVSuc6eZmYJHu+PPGghXJe7Q1EbSMowFH6zcjkeCwH4ObA8G/27CVxyUMEdC519lJP3CI
+        AXKcIsEQrbl9G3Dw==
+From:   "tip-bot2 for Zou Wei" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcutorture: Handle non-statistic bang-string error messages
-Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
+Subject: [tip: core/rcu] locktorture: Use true and false to assign to bool variables
+Cc:     Hulk Robot <hulkci@huawei.com>, Zou Wei <zou_wei@huawei.com>,
+        "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <159618736606.4006.1828842255788439902.tip-bot2@tip-bot2>
+Message-ID: <159618736800.4006.15688152842342004291.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -51,54 +52,92 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     59359e4f2a0906920389ec1e33296ac9a19178ba
-Gitweb:        https://git.kernel.org/tip/59359e4f2a0906920389ec1e33296ac9a19178ba
-Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Sun, 26 Apr 2020 16:51:56 -07:00
+Commit-ID:     d02c6b52d12fa30eeabfaf5aefe12078eacb94b2
+Gitweb:        https://git.kernel.org/tip/d02c6b52d12fa30eeabfaf5aefe12078eacb94b2
+Author:        Zou Wei <zou_wei@huawei.com>
+AuthorDate:    Mon, 13 Apr 2020 20:02:59 +08:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Mon, 29 Jun 2020 12:01:44 -07:00
 
-rcutorture: Handle non-statistic bang-string error messages
+locktorture: Use true and false to assign to bool variables
 
-The current console parsing assumes that console lines containing "!!!"
-are statistics lines from which it can parse the number of rcutorture
-too-short grace-period failures.  This prints confusing output for
-other problems, including memory exhaustion.  This commit therefore
-differentiates between these cases and prints an appropriate error string.
+This commit fixes the following coccicheck warnings:
 
+kernel/locking/locktorture.c:689:6-10: WARNING: Assignment of 0/1 to bool variable
+kernel/locking/locktorture.c:907:2-20: WARNING: Assignment of 0/1 to bool variable
+kernel/locking/locktorture.c:938:3-20: WARNING: Assignment of 0/1 to bool variable
+kernel/locking/locktorture.c:668:2-19: WARNING: Assignment of 0/1 to bool variable
+kernel/locking/locktorture.c:674:2-19: WARNING: Assignment of 0/1 to bool variable
+kernel/locking/locktorture.c:634:2-20: WARNING: Assignment of 0/1 to bool variable
+kernel/locking/locktorture.c:640:2-20: WARNING: Assignment of 0/1 to bool variable
+
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: Zou Wei <zou_wei@huawei.com>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- tools/testing/selftests/rcutorture/bin/parse-console.sh | 18 ++++++--
- 1 file changed, 15 insertions(+), 3 deletions(-)
+ kernel/locking/locktorture.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/tools/testing/selftests/rcutorture/bin/parse-console.sh b/tools/testing/selftests/rcutorture/bin/parse-console.sh
-index 4bf62d7..1c64ca8 100755
---- a/tools/testing/selftests/rcutorture/bin/parse-console.sh
-+++ b/tools/testing/selftests/rcutorture/bin/parse-console.sh
-@@ -44,11 +44,23 @@ then
- 		tail -1 |
- 		awk '
- 		{
--			for (i=NF-8;i<=NF;i++)
-+			normalexit = 1;
-+			for (i=NF-8;i<=NF;i++) {
-+				if (i <= 0 || i !~ /^[0-9]*$/) {
-+					bangstring = $0;
-+					gsub(/^\[[^]]*] /, "", bangstring);
-+					print bangstring;
-+					normalexit = 0;
-+					exit 0;
-+				}
- 				sum+=$i;
-+			}
- 		}
--		END { print sum }'`
--		print_bug $title FAILURE, $nerrs instances
-+		END {
-+			if (normalexit)
-+				print sum " instances"
-+		}'`
-+		print_bug $title FAILURE, $nerrs
- 		exit
- 	fi
+diff --git a/kernel/locking/locktorture.c b/kernel/locking/locktorture.c
+index 5efbfc6..8ff6f50 100644
+--- a/kernel/locking/locktorture.c
++++ b/kernel/locking/locktorture.c
+@@ -631,13 +631,13 @@ static int lock_torture_writer(void *arg)
+ 		cxt.cur_ops->writelock();
+ 		if (WARN_ON_ONCE(lock_is_write_held))
+ 			lwsp->n_lock_fail++;
+-		lock_is_write_held = 1;
++		lock_is_write_held = true;
+ 		if (WARN_ON_ONCE(lock_is_read_held))
+ 			lwsp->n_lock_fail++; /* rare, but... */
  
+ 		lwsp->n_lock_acquired++;
+ 		cxt.cur_ops->write_delay(&rand);
+-		lock_is_write_held = 0;
++		lock_is_write_held = false;
+ 		cxt.cur_ops->writeunlock();
+ 
+ 		stutter_wait("lock_torture_writer");
+@@ -665,13 +665,13 @@ static int lock_torture_reader(void *arg)
+ 			schedule_timeout_uninterruptible(1);
+ 
+ 		cxt.cur_ops->readlock();
+-		lock_is_read_held = 1;
++		lock_is_read_held = true;
+ 		if (WARN_ON_ONCE(lock_is_write_held))
+ 			lrsp->n_lock_fail++; /* rare, but... */
+ 
+ 		lrsp->n_lock_acquired++;
+ 		cxt.cur_ops->read_delay(&rand);
+-		lock_is_read_held = 0;
++		lock_is_read_held = false;
+ 		cxt.cur_ops->readunlock();
+ 
+ 		stutter_wait("lock_torture_reader");
+@@ -686,7 +686,7 @@ static int lock_torture_reader(void *arg)
+ static void __torture_print_stats(char *page,
+ 				  struct lock_stress_stats *statp, bool write)
+ {
+-	bool fail = 0;
++	bool fail = false;
+ 	int i, n_stress;
+ 	long max = 0, min = statp ? statp[0].n_lock_acquired : 0;
+ 	long long sum = 0;
+@@ -904,7 +904,7 @@ static int __init lock_torture_init(void)
+ 
+ 	/* Initialize the statistics so that each run gets its own numbers. */
+ 	if (nwriters_stress) {
+-		lock_is_write_held = 0;
++		lock_is_write_held = false;
+ 		cxt.lwsa = kmalloc_array(cxt.nrealwriters_stress,
+ 					 sizeof(*cxt.lwsa),
+ 					 GFP_KERNEL);
+@@ -935,7 +935,7 @@ static int __init lock_torture_init(void)
+ 		}
+ 
+ 		if (nreaders_stress) {
+-			lock_is_read_held = 0;
++			lock_is_read_held = false;
+ 			cxt.lrsa = kmalloc_array(cxt.nrealreaders_stress,
+ 						 sizeof(*cxt.lrsa),
+ 						 GFP_KERNEL);
