@@ -2,45 +2,44 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6116923427B
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 31 Jul 2020 11:23:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 737FA2342F6
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 31 Jul 2020 11:27:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732396AbgGaJXN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 31 Jul 2020 05:23:13 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:56434 "EHLO
+        id S1732382AbgGaJ1Y (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 31 Jul 2020 05:27:24 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:56338 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732370AbgGaJXL (ORCPT
+        with ESMTP id S1732375AbgGaJXL (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Fri, 31 Jul 2020 05:23:11 -0400
-Date:   Fri, 31 Jul 2020 09:23:08 -0000
+Date:   Fri, 31 Jul 2020 09:23:09 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1596187389;
+        s=2020; t=1596187390;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=du+bjahcCVlxmOV/4dtz5CRu2FCjrvNyujjwtvzvglM=;
-        b=iHv/KHXAlBVoMG9v7RKl+danDhJhn79vXYLr43rGG1b1t3r0VU4Nf9JkjXB2TMg9081i1y
-        YO3z/ECHGT8D01NtN14stRnG3W3wOUJWXItBiZ330M2uuuabB+guzmvOedPG7Vj8Q068T5
-        ztD1lFg6Rxvbp7Gfg0B9ugLV/Kf8IEyxOtVoTAtwv424TTFVs4Sw8JASZ7BT6i9+Hdu0P5
-        7bXzSlzI3ZiQm85YWg0Dc+cYmRXklbKdkcq+LXK4tgzrfhhhIE2g5XdoUK8Rwpo/s6dwve
-        dw+s8jgCuPhiOzY53Dqn/qukeX2TdTVJ5O/Aw9jeLOOFY0uYXWe/JhF5/GTGNQ==
+        bh=Q/UJ+x0Bjyl2/JWTgI1+3ScpG6M5r153+oSlUAkUQTU=;
+        b=fawarhuyI6+60GkadKSwxXULCQw3X1lbg4bB00y3v+mzmA6TH338/ZQpk5O5e0Wnz5EaSM
+        g5SX4CTL9aKjYDTA7+mFp7pInpXpkX+0SxxKXHkZ6xhwq/WDMdMQDGHUug7EQ1uC8rpEWH
+        cEk9z9b8zHVCMjqpcGiaf4MJHs+P9pCZknCVOe8mdiB120eCNuvkZkoLNIl90RfCzUdT/C
+        YfsYqnYEtsh7VDpJP8wrjzv45N/rF0laZMc1KP3nn8n0aiBavajzpmSUygD49z1NaPvwHe
+        g5gfWs8/K+9wo+gEIP5w2t3V64cEfmM0jD7m2MqAXkuopf+/92YdaL/TGUDbfQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1596187389;
+        s=2020e; t=1596187390;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=du+bjahcCVlxmOV/4dtz5CRu2FCjrvNyujjwtvzvglM=;
-        b=7+UsRiq1P0WchGrv8oA5l0XF7qNDqzyhjIpIEGGusjiHDhr0Cxx8Aga9c9xo7RRKwpMa8p
-        vSTnQrcnf90/UmBg==
+        bh=Q/UJ+x0Bjyl2/JWTgI1+3ScpG6M5r153+oSlUAkUQTU=;
+        b=pPWlLF/rKkfq9jSwdU9WT6QxznwnoK7odHBaZxlYwXLf97WtjjyIZjNgaAqmLRVgTKm+7n
+        M6jM4jtXcOK7xrDw==
 From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] torture: Add refperf to the rcutorture scripting
-Cc:     "Joel Fernandes (Google)" <joel@joelfernandes.org>,
-        "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
+Subject: [tip: core/rcu] rcuperf: Add comments explaining the high reader overhead
+Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <159618738841.4006.10499662185548018800.tip-bot2@tip-bot2>
+Message-ID: <159618738930.4006.13348759385369896937.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -52,231 +51,51 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     f8b4bb23ec014a5d16663ad70b45d9f46c456ec4
-Gitweb:        https://git.kernel.org/tip/f8b4bb23ec014a5d16663ad70b45d9f46c456ec4
+Commit-ID:     708cda31652c02e64adaeafafe7b996e4e14c3eb
+Gitweb:        https://git.kernel.org/tip/708cda31652c02e64adaeafafe7b996e4e14c3eb
 Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Mon, 25 May 2020 14:07:52 -07:00
+AuthorDate:    Mon, 25 May 2020 09:22:24 -07:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Mon, 29 Jun 2020 12:00:44 -07:00
 
-torture: Add refperf to the rcutorture scripting
+rcuperf: Add comments explaining the high reader overhead
 
-This commit updates the rcutorture scripting to include the new refperf
-torture-test module.
+This commit adds comments explaining why the readers have otherwise insane
+levels of measurement overhead, namely that they are intended as a test
+load for update-side performance measurements, not as a straight-up
+read-side performance test.
 
-Cc: Joel Fernandes (Google) <joel@joelfernandes.org>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- tools/testing/selftests/rcutorture/bin/kvm-recheck-refperf.sh       | 67 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- tools/testing/selftests/rcutorture/bin/kvm.sh                       |  9 +++++----
- tools/testing/selftests/rcutorture/bin/parse-console.sh             |  4 ++--
- tools/testing/selftests/rcutorture/configs/refperf/CFLIST           |  2 ++
- tools/testing/selftests/rcutorture/configs/refperf/CFcommon         |  2 ++
- tools/testing/selftests/rcutorture/configs/refperf/NOPREEMPT        | 18 ++++++++++++++++++
- tools/testing/selftests/rcutorture/configs/refperf/PREEMPT          | 18 ++++++++++++++++++
- tools/testing/selftests/rcutorture/configs/refperf/ver_functions.sh | 16 ++++++++++++++++
- 8 files changed, 130 insertions(+), 6 deletions(-)
- create mode 100755 tools/testing/selftests/rcutorture/bin/kvm-recheck-refperf.sh
- create mode 100644 tools/testing/selftests/rcutorture/configs/refperf/CFLIST
- create mode 100644 tools/testing/selftests/rcutorture/configs/refperf/CFcommon
- create mode 100644 tools/testing/selftests/rcutorture/configs/refperf/NOPREEMPT
- create mode 100644 tools/testing/selftests/rcutorture/configs/refperf/PREEMPT
- create mode 100644 tools/testing/selftests/rcutorture/configs/refperf/ver_functions.sh
+ kernel/rcu/rcuperf.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/rcutorture/bin/kvm-recheck-refperf.sh b/tools/testing/selftests/rcutorture/bin/kvm-recheck-refperf.sh
-new file mode 100755
-index 0000000..6fc06cd
---- /dev/null
-+++ b/tools/testing/selftests/rcutorture/bin/kvm-recheck-refperf.sh
-@@ -0,0 +1,67 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0+
-+#
-+# Analyze a given results directory for refperf performance measurements.
-+#
-+# Usage: kvm-recheck-refperf.sh resdir
-+#
-+# Copyright (C) IBM Corporation, 2016
-+#
-+# Authors: Paul E. McKenney <paulmck@linux.ibm.com>
-+
-+i="$1"
-+if test -d "$i" -a -r "$i"
-+then
-+	:
-+else
-+	echo Unreadable results directory: $i
-+	exit 1
-+fi
-+PATH=`pwd`/tools/testing/selftests/rcutorture/bin:$PATH; export PATH
-+. functions.sh
-+
-+configfile=`echo $i | sed -e 's/^.*\///'`
-+
-+sed -e 's/^\[[^]]*]//' < $i/console.log | tr -d '\015' |
-+awk -v configfile="$configfile" '
-+/^[ 	]*Threads	Time\(ns\) *$/ {
-+	if (dataphase + 0 == 0) {
-+		dataphase = 1;
-+		# print configfile, $0;
-+	}
-+	next;
-+}
-+
-+/[^ 	]*[0-9][0-9]*	[0-9][0-9]*\.[0-9][0-9]*$/ {
-+	if (dataphase == 1) {
-+		# print $0;
-+		readertimes[++n] = $2;
-+		sum += $2;
-+	}
-+	next;
-+}
-+
-+{
-+	if (dataphase == 1)
-+		dataphase == 2;
-+	next;
-+}
-+
-+END {
-+	print configfile " results:";
-+	newNR = asort(readertimes);
-+	if (newNR <= 0) {
-+		print "No refperf records found???"
-+		exit;
-+	}
-+	medianidx = int(newNR / 2);
-+	if (newNR == medianidx * 2)
-+		medianvalue = (readertimes[medianidx - 1] + readertimes[medianidx]) / 2;
-+	else
-+		medianvalue = readertimes[medianidx];
-+	print "Average reader duration: " sum / newNR " nanoseconds";
-+	print "Minimum reader duration: " readertimes[1];
-+	print "Median reader duration: " medianvalue;
-+	print "Maximum reader duration: " readertimes[newNR];
-+	print "Computed from refperf printk output.";
-+}'
-diff --git a/tools/testing/selftests/rcutorture/bin/kvm.sh b/tools/testing/selftests/rcutorture/bin/kvm.sh
-index c279cf9..48b6a72 100755
---- a/tools/testing/selftests/rcutorture/bin/kvm.sh
-+++ b/tools/testing/selftests/rcutorture/bin/kvm.sh
-@@ -180,13 +180,14 @@ do
- 		shift
- 		;;
- 	--torture)
--		checkarg --torture "(suite name)" "$#" "$2" '^\(lock\|rcu\|rcuperf\)$' '^--'
-+		checkarg --torture "(suite name)" "$#" "$2" '^\(lock\|rcu\|rcuperf\|refperf\)$' '^--'
- 		TORTURE_SUITE=$2
- 		shift
--		if test "$TORTURE_SUITE" = rcuperf
-+		if test "$TORTURE_SUITE" = rcuperf || test "$TORTURE_SUITE" = refperf
- 		then
--			# If you really want jitter for rcuperf, specify
--			# it after specifying rcuperf.  (But why?)
-+			# If you really want jitter for refperf or
-+			# rcuperf, specify it after specifying the rcuperf
-+			# or the refperf.  (But why jitter in these cases?)
- 			jitter=0
- 		fi
- 		;;
-diff --git a/tools/testing/selftests/rcutorture/bin/parse-console.sh b/tools/testing/selftests/rcutorture/bin/parse-console.sh
-index 4bf62d7..85af11d 100755
---- a/tools/testing/selftests/rcutorture/bin/parse-console.sh
-+++ b/tools/testing/selftests/rcutorture/bin/parse-console.sh
-@@ -33,8 +33,8 @@ then
- fi
- cat /dev/null > $file.diags
+diff --git a/kernel/rcu/rcuperf.c b/kernel/rcu/rcuperf.c
+index 246da8f..d906ca9 100644
+--- a/kernel/rcu/rcuperf.c
++++ b/kernel/rcu/rcuperf.c
+@@ -69,6 +69,11 @@ MODULE_AUTHOR("Paul E. McKenney <paulmck@linux.ibm.com>");
+  *	value specified by nr_cpus for a read-only test.
+  *
+  * Various other use cases may of course be specified.
++ *
++ * Note that this test's readers are intended only as a test load for
++ * the writers.  The reader performance statistics will be overly
++ * pessimistic due to the per-critical-section interrupt disabling,
++ * test-end checks, and the pair of calls through pointers.
+  */
  
--# Check for proper termination, except that rcuperf runs don't indicate this.
--if test "$TORTURE_SUITE" != rcuperf
-+# Check for proper termination, except for rcuperf and refperf.
-+if test "$TORTURE_SUITE" != rcuperf && test "$TORTURE_SUITE" != refperf
- then
- 	# check for abject failure
+ #ifdef MODULE
+@@ -309,8 +314,10 @@ static void rcu_perf_wait_shutdown(void)
+ }
  
-diff --git a/tools/testing/selftests/rcutorture/configs/refperf/CFLIST b/tools/testing/selftests/rcutorture/configs/refperf/CFLIST
-new file mode 100644
-index 0000000..4d62eb4
---- /dev/null
-+++ b/tools/testing/selftests/rcutorture/configs/refperf/CFLIST
-@@ -0,0 +1,2 @@
-+NOPREEMPT
-+PREEMPT
-diff --git a/tools/testing/selftests/rcutorture/configs/refperf/CFcommon b/tools/testing/selftests/rcutorture/configs/refperf/CFcommon
-new file mode 100644
-index 0000000..8ba5ba2
---- /dev/null
-+++ b/tools/testing/selftests/rcutorture/configs/refperf/CFcommon
-@@ -0,0 +1,2 @@
-+CONFIG_RCU_REF_PERF_TEST=y
-+CONFIG_PRINTK_TIME=y
-diff --git a/tools/testing/selftests/rcutorture/configs/refperf/NOPREEMPT b/tools/testing/selftests/rcutorture/configs/refperf/NOPREEMPT
-new file mode 100644
-index 0000000..1cd25b7
---- /dev/null
-+++ b/tools/testing/selftests/rcutorture/configs/refperf/NOPREEMPT
-@@ -0,0 +1,18 @@
-+CONFIG_SMP=y
-+CONFIG_PREEMPT_NONE=y
-+CONFIG_PREEMPT_VOLUNTARY=n
-+CONFIG_PREEMPT=n
-+#CHECK#CONFIG_PREEMPT_RCU=n
-+CONFIG_HZ_PERIODIC=n
-+CONFIG_NO_HZ_IDLE=y
-+CONFIG_NO_HZ_FULL=n
-+CONFIG_RCU_FAST_NO_HZ=n
-+CONFIG_HOTPLUG_CPU=n
-+CONFIG_SUSPEND=n
-+CONFIG_HIBERNATION=n
-+CONFIG_RCU_NOCB_CPU=n
-+CONFIG_DEBUG_LOCK_ALLOC=n
-+CONFIG_PROVE_LOCKING=n
-+CONFIG_RCU_BOOST=n
-+CONFIG_DEBUG_OBJECTS_RCU_HEAD=n
-+CONFIG_RCU_EXPERT=y
-diff --git a/tools/testing/selftests/rcutorture/configs/refperf/PREEMPT b/tools/testing/selftests/rcutorture/configs/refperf/PREEMPT
-new file mode 100644
-index 0000000..d10bc69
---- /dev/null
-+++ b/tools/testing/selftests/rcutorture/configs/refperf/PREEMPT
-@@ -0,0 +1,18 @@
-+CONFIG_SMP=y
-+CONFIG_PREEMPT_NONE=n
-+CONFIG_PREEMPT_VOLUNTARY=n
-+CONFIG_PREEMPT=y
-+#CHECK#CONFIG_PREEMPT_RCU=y
-+CONFIG_HZ_PERIODIC=n
-+CONFIG_NO_HZ_IDLE=y
-+CONFIG_NO_HZ_FULL=n
-+CONFIG_RCU_FAST_NO_HZ=n
-+CONFIG_HOTPLUG_CPU=n
-+CONFIG_SUSPEND=n
-+CONFIG_HIBERNATION=n
-+CONFIG_RCU_NOCB_CPU=n
-+CONFIG_DEBUG_LOCK_ALLOC=n
-+CONFIG_PROVE_LOCKING=n
-+CONFIG_RCU_BOOST=n
-+CONFIG_DEBUG_OBJECTS_RCU_HEAD=n
-+CONFIG_RCU_EXPERT=y
-diff --git a/tools/testing/selftests/rcutorture/configs/refperf/ver_functions.sh b/tools/testing/selftests/rcutorture/configs/refperf/ver_functions.sh
-new file mode 100644
-index 0000000..489f05d
---- /dev/null
-+++ b/tools/testing/selftests/rcutorture/configs/refperf/ver_functions.sh
-@@ -0,0 +1,16 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0+
-+#
-+# Torture-suite-dependent shell functions for the rest of the scripts.
-+#
-+# Copyright (C) IBM Corporation, 2015
-+#
-+# Authors: Paul E. McKenney <paulmck@linux.ibm.com>
-+
-+# per_version_boot_params bootparam-string config-file seconds
-+#
-+# Adds per-version torture-module parameters to kernels supporting them.
-+per_version_boot_params () {
-+	echo $1 refperf.shutdown=1 \
-+		refperf.verbose=1
-+}
+ /*
+- * RCU perf reader kthread.  Repeatedly does empty RCU read-side
+- * critical section, minimizing update-side interference.
++ * RCU perf reader kthread.  Repeatedly does empty RCU read-side critical
++ * section, minimizing update-side interference.  However, the point of
++ * this test is not to evaluate reader performance, but instead to serve
++ * as a test load for update-side performance testing.
+  */
+ static int
+ rcu_perf_reader(void *arg)
