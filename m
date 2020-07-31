@@ -2,69 +2,83 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D74A0233359
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 30 Jul 2020 15:48:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 85E42234265
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 31 Jul 2020 11:22:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726281AbgG3NsO (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 30 Jul 2020 09:48:14 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33314 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728442AbgG3NsN (ORCPT
+        id S1732124AbgGaJWi (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 31 Jul 2020 05:22:38 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:56324 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732037AbgGaJWi (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 30 Jul 2020 09:48:13 -0400
-Received: from localhost (unknown [70.37.104.77])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0D02C21D95;
-        Thu, 30 Jul 2020 13:48:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1596116893;
-        bh=Mn72VU+8uk3Y766iO1dWxYnvmxO5GSYOQLE23IyXWik=;
-        h=Date:From:To:To:To:Cc:Cc:Cc:Subject:In-Reply-To:References:From;
-        b=nKYYmI4OPZAkayMyuquoNHXOFimlLLTg9CFz1E8jT4KSVe5pdmMzZ0ESN8GskIDvA
-         ioA9i0/FTzi/jSn66vQvfd875PDKPBq2giUHf8bCjCk8ZxhZFF1xjdv1tFI7FS59bg
-         21fEskqkA32LwW/SXBU3TP0kLHYAM0QdH3yUnrok=
-Date:   Thu, 30 Jul 2020 13:48:12 +0000
-From:   Sasha Levin <sashal@kernel.org>
-To:     Sasha Levin <sashal@kernel.org>
-To:     "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+        Fri, 31 Jul 2020 05:22:38 -0400
+Date:   Fri, 31 Jul 2020 09:22:35 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1596187356;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=ZTo8q74qq1GjbZg40Xm1FxIkjnUJrsnWtKytdKzob3U=;
+        b=2Ge69nBkAEVYNrgkhCa0XfkAtkyaVN4bK9UWbuYaPdOjXRZ7N+vT4KHWENO9VPJZ6dRKFz
+        nB9gA3Gwtk+BaI5QKZWFEpQFUyQkJ9Whl1IPhzHg1Lt4pbDkj0Zr49s4qxz/dVs6D6dvLm
+        dSy8+eFNeHt13OQD3gpUxL294BrP8gERKc0bfI7OoKgwPCjcaYRB7XiSyy3d+H+NFKx06u
+        plSo8P18nNGW4xIyprm1YiTtItp4czvm0Z5o2e28arFbvVDdPaESLg4+Z0M77AY4Ou8ltm
+        oODGXjoiruQNYLL9AKLkLB6fTyqABMBP79OsGkhsuc91eXIiBdvlPx3I5dcy/w==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1596187356;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=ZTo8q74qq1GjbZg40Xm1FxIkjnUJrsnWtKytdKzob3U=;
+        b=et5m62g++KQ9Uuo8cWpttIJddz7ZLlNJEOeqoakLB03f2bfoMVHXo4JVHMKOl6XHBH4W4c
+        5ocCr2yN+EokxVCA==
+From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
+Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Cc:     John Keeping <john@metanate.com>
-Cc:     stable@vger.kernel.org
-Cc:     stable@vger.kernel.org
-Subject: Re: [tip: irq/urgent] genirq/affinity: Make affinity setting if activated opt-in
-In-Reply-To: <159585991142.4006.928637752238313572.tip-bot2@tip-bot2>
-References: <159585991142.4006.928637752238313572.tip-bot2@tip-bot2>
-Message-Id: <20200730134813.0D02C21D95@mail.kernel.org>
+Subject: [tip: core/rcu] torture: Remove obsolete "cd $KVM"
+Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+MIME-Version: 1.0
+Message-ID: <159618735551.4006.18104740019852856686.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2.linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-Hi
+The following commit has been merged into the core/rcu branch of tip:
 
-[This is an automated email]
+Commit-ID:     7a6bbeaa01f71af2722fd775a4a4ff9593d12838
+Gitweb:        https://git.kernel.org/tip/7a6bbeaa01f71af2722fd775a4a4ff9593d12838
+Author:        Paul E. McKenney <paulmck@kernel.org>
+AuthorDate:    Tue, 16 Jun 2020 17:07:15 -07:00
+Committer:     Paul E. McKenney <paulmck@kernel.org>
+CommitterDate: Mon, 29 Jun 2020 12:01:45 -07:00
 
-This commit has been processed because it contains a "Fixes:" tag
-fixing commit: baedb87d1b53 ("genirq/affinity: Handle affinity setting on inactive interrupts correctly").
+torture: Remove obsolete "cd $KVM"
 
-The bot has tested the following trees: v5.7.11, v5.4.54, v4.19.135.
+In the dim distant past, qemu commands needed to be run from the
+rcutorture directory, but this is no longer the case.  This commit
+therefore removes the now-useless "cd $KVM" from the kvm-test-1-run.sh
+script.
 
-v5.7.11: Build OK!
-v5.4.54: Failed to apply! Possible dependencies:
-    008f1d60fe25 ("x86/apic/vector: Force interupt handler invocation to irq context")
-    c16816acd086 ("genirq: Add protection against unsafe usage of generic_handle_irq()")
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+---
+ tools/testing/selftests/rcutorture/bin/kvm-test-1-run.sh | 1 -
+ 1 file changed, 1 deletion(-)
 
-v4.19.135: Failed to apply! Possible dependencies:
-    008f1d60fe25 ("x86/apic/vector: Force interupt handler invocation to irq context")
-    35ae7df21be0 ("irqchip/gic-v3-its: Don't map the MSI page in its_irq_compose_msi_msg()")
-    c16816acd086 ("genirq: Add protection against unsafe usage of generic_handle_irq()")
-
-
-NOTE: The patch will not be queued to stable trees until it is upstream.
-
-How should we proceed with this patch?
-
--- 
-Thanks
-Sasha
+diff --git a/tools/testing/selftests/rcutorture/bin/kvm-test-1-run.sh b/tools/testing/selftests/rcutorture/bin/kvm-test-1-run.sh
+index 484445b..e07779a 100755
+--- a/tools/testing/selftests/rcutorture/bin/kvm-test-1-run.sh
++++ b/tools/testing/selftests/rcutorture/bin/kvm-test-1-run.sh
+@@ -124,7 +124,6 @@ seconds=$4
+ qemu_args=$5
+ boot_args=$6
+ 
+-cd $KVM
+ kstarttime=`gawk 'BEGIN { print systime() }' < /dev/null`
+ if test -z "$TORTURE_BUILDONLY"
+ then
