@@ -2,47 +2,45 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 286BE234322
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 31 Jul 2020 11:28:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 597A0234270
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 31 Jul 2020 11:23:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732094AbgGaJ2R (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 31 Jul 2020 05:28:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60022 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732288AbgGaJW4 (ORCPT
+        id S1732304AbgGaJW7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 31 Jul 2020 05:22:59 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:56434 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732286AbgGaJW6 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 31 Jul 2020 05:22:56 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5097C061575;
-        Fri, 31 Jul 2020 02:22:56 -0700 (PDT)
-Date:   Fri, 31 Jul 2020 09:22:54 -0000
+        Fri, 31 Jul 2020 05:22:58 -0400
+Date:   Fri, 31 Jul 2020 09:22:55 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1596187375;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=jMKxphsfuVkPBvCEYM3UlEvRxEtBbKtBk4gYcglfmlc=;
-        b=2ABfW7lo+UcRTH8MFwM/jX12oC/sr7UHE835Ze0zSs0mWaX2eR01t3Qvg0UKZkammyAs4u
-        SNk01fupSXOs06MTxaPscJBLlAmm/ofDK0bLZ8ccUmdcwctxue9sIlwq4sitrKo94gkz1a
-        XwBvM3qB0qxH8zNYxbvQr1TaXkqt79J7JKM8PcJlZ8fjFzYHnqZT7joOqdxmkBCC1Eu2bJ
-        uqTTsWMH4mCxdeQBAaaAZCYJRJlbNxuu+aQhqV0kOyBPyuoEtzHdLECMlYTL+7iDdST/fF
-        EbN5v+RJK2W/mYTxgH//byv8eqmUjkmRKQcvmglJTzdahMK91fPRTnOpytvlHg==
+        bh=sbYCIUsOAV3704u7mcpiRX1NVlpsC2ejS56Gb5y4xeM=;
+        b=RAz0FjDt84ztKHlGp4GW+DRDtq349r634pEG/kTXGSGHa6eUVm5oCxO68bkwMZ0Nazcda4
+        0E1Kxy5vMBc2Wyur9tFvazOjEj9V136rPeBngivpoYxtj2pIgWkW16JYqG/XJ7PGKOrzmE
+        rXd59PB6shEj/LVTW+xKw3/fIK8rWPOPRHjAwrLk16FpUFAeSHny8yzP4NUT16Fr8kaPAU
+        LqqNNWjPzVoP4xi8JEvpKfhdIXg5mrB8/ls7x+jD2pYDH8CkcXL4+dXPiBXNAAC0pO1Nme
+        36OyBhHH9UIy6M60xUo2pBoA5Ec6Ktt/eV8t22eLRfjgQfyWLaSCSMnYreL0/g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1596187375;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=jMKxphsfuVkPBvCEYM3UlEvRxEtBbKtBk4gYcglfmlc=;
-        b=wxH2T/bUYw2bgAwazfok2yRJTEdq4j94tpELPrPdOyaqHAodSTIudLfnuyoIZTMh7v6GU2
-        lL7kwNRwRQQAO4Bw==
+        bh=sbYCIUsOAV3704u7mcpiRX1NVlpsC2ejS56Gb5y4xeM=;
+        b=RJJldY2CB1qY/8s/WfNF8BxNZNLNXwqoKvC6iOZ/j8e56P/BnvGCq2W/Zz4gxXgd6fIgPu
+        /IfvTkAP0PHMf1Dw==
 From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] refperf: Add test for RCU Tasks Trace readers.
-Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
+Subject: [tip: core/rcu] refperf: Change readdelay module parameter to nanoseconds
+Cc:     Akira Yokosawa <akiyks@gmail.com>,
+        "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <159618737459.4006.18036105655591171728.tip-bot2@tip-bot2>
+Message-ID: <159618737528.4006.7436673446115115268.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -54,84 +52,153 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     72bb749e7048d0a8d7663b59ec1a33bd56c51083
-Gitweb:        https://git.kernel.org/tip/72bb749e7048d0a8d7663b59ec1a33bd56c51083
+Commit-ID:     918b351d965560c7902ad482cf87049517843ff2
+Gitweb:        https://git.kernel.org/tip/918b351d965560c7902ad482cf87049517843ff2
 Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Tue, 02 Jun 2020 08:34:41 -07:00
+AuthorDate:    Sun, 31 May 2020 18:14:57 -07:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Mon, 29 Jun 2020 12:00:45 -07:00
 
-refperf: Add test for RCU Tasks Trace readers.
+refperf: Change readdelay module parameter to nanoseconds
 
-This commit adds testing for RCU Tasks Trace readers to the refperf module.
+The current units of microseconds are too coarse, so this commit
+changes the units to nanoseconds.  However, ndelay is used only for the
+nanoseconds with udelay being used for whole microseconds.  For example,
+setting refperf.readdelay=1500 results in a udelay(1) followed by an
+ndelay(500).
 
+Suggested-by: Akira Yokosawa <akiyks@gmail.com>
+[ paulmck: Abstracted delay per Akira feedback and move from 80 to 100 lines. ]
+[ paulmck: Fix names as suggested by kbuild test robot. ]
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/rcu/refperf.c | 33 +++++++++++++++++++++++++++++++--
- 1 file changed, 31 insertions(+), 2 deletions(-)
+ kernel/rcu/refperf.c | 36 ++++++++++++++++++++++--------------
+ 1 file changed, 22 insertions(+), 14 deletions(-)
 
 diff --git a/kernel/rcu/refperf.c b/kernel/rcu/refperf.c
-index 49fffb9..da7de9a 100644
+index 80d4490..49fffb9 100644
 --- a/kernel/rcu/refperf.c
 +++ b/kernel/rcu/refperf.c
-@@ -25,6 +25,7 @@
- #include <linux/notifier.h>
- #include <linux/percpu.h>
- #include <linux/rcupdate.h>
-+#include <linux/rcupdate_trace.h>
- #include <linux/reboot.h>
- #include <linux/sched.h>
- #include <linux/spinlock.h>
-@@ -157,7 +158,6 @@ static struct ref_perf_ops rcu_ops = {
- 	.name		= "rcu"
+@@ -66,8 +66,8 @@ torture_param(long, loops, 10000, "Number of loops per experiment.");
+ torture_param(int, nreaders, -1, "Number of readers, -1 for 75% of CPUs.");
+ // Number of runs.
+ torture_param(int, nruns, 30, "Number of experiments to run.");
+-// Reader delay in microseconds, 0 for no delay.
+-torture_param(int, readdelay, 0, "Read-side delay in microseconds.");
++// Reader delay in nanoseconds, 0 for no delay.
++torture_param(int, readdelay, 0, "Read-side delay in nanoseconds.");
+ 
+ #ifdef MODULE
+ # define REFPERF_SHUTDOWN 0
+@@ -111,12 +111,20 @@ struct ref_perf_ops {
+ 	void (*init)(void);
+ 	void (*cleanup)(void);
+ 	void (*readsection)(const int nloops);
+-	void (*delaysection)(const int nloops, const int ndelay);
++	void (*delaysection)(const int nloops, const int udl, const int ndl);
+ 	const char *name;
  };
  
--
- // Definitions for SRCU ref perf testing.
- DEFINE_STATIC_SRCU(srcu_refctl_perf);
- static struct srcu_struct *srcu_ctlp = &srcu_refctl_perf;
-@@ -192,6 +192,35 @@ static struct ref_perf_ops srcu_ops = {
- 	.name		= "srcu"
- };
+ static struct ref_perf_ops *cur_ops;
  
-+// Definitions for RCU Tasks Trace ref perf testing.
-+static void rcu_trace_ref_perf_read_section(const int nloops)
++static void un_delay(const int udl, const int ndl)
 +{
-+	int i;
-+
-+	for (i = nloops; i >= 0; i--) {
-+		rcu_read_lock_trace();
-+		rcu_read_unlock_trace();
-+	}
++	if (udl)
++		udelay(udl);
++	if (ndl)
++		ndelay(ndl);
 +}
 +
-+static void rcu_trace_ref_perf_delay_section(const int nloops, const int udl, const int ndl)
-+{
-+	int i;
-+
-+	for (i = nloops; i >= 0; i--) {
-+		rcu_read_lock_trace();
+ static void ref_rcu_read_section(const int nloops)
+ {
+ 	int i;
+@@ -127,13 +135,13 @@ static void ref_rcu_read_section(const int nloops)
+ 	}
+ }
+ 
+-static void ref_rcu_delay_section(const int nloops, const int ndelay)
++static void ref_rcu_delay_section(const int nloops, const int udl, const int ndl)
+ {
+ 	int i;
+ 
+ 	for (i = nloops; i >= 0; i--) {
+ 		rcu_read_lock();
+-		udelay(ndelay);
 +		un_delay(udl, ndl);
-+		rcu_read_unlock_trace();
-+	}
-+}
-+
-+static struct ref_perf_ops rcu_trace_ops = {
-+	.init		= rcu_sync_perf_init,
-+	.readsection	= rcu_trace_ref_perf_read_section,
-+	.delaysection	= rcu_trace_ref_perf_delay_section,
-+	.name		= "rcu-trace"
-+};
-+
- // Definitions for reference count
- static atomic_t refcnt;
+ 		rcu_read_unlock();
+ 	}
+ }
+@@ -165,14 +173,14 @@ static void srcu_ref_perf_read_section(const int nloops)
+ 	}
+ }
  
-@@ -584,7 +613,7 @@ ref_perf_init(void)
- 	long i;
- 	int firsterr = 0;
- 	static struct ref_perf_ops *perf_ops[] = {
--		&rcu_ops, &srcu_ops, &refcnt_ops, &rwlock_ops, &rwsem_ops,
-+		&rcu_ops, &srcu_ops, &rcu_trace_ops, &refcnt_ops, &rwlock_ops, &rwsem_ops,
- 	};
+-static void srcu_ref_perf_delay_section(const int nloops, const int ndelay)
++static void srcu_ref_perf_delay_section(const int nloops, const int udl, const int ndl)
+ {
+ 	int i;
+ 	int idx;
  
- 	if (!torture_init_begin(perf_type, verbose))
+ 	for (i = nloops; i >= 0; i--) {
+ 		idx = srcu_read_lock(srcu_ctlp);
+-		udelay(ndelay);
++		un_delay(udl, ndl);
+ 		srcu_read_unlock(srcu_ctlp, idx);
+ 	}
+ }
+@@ -197,13 +205,13 @@ static void ref_refcnt_section(const int nloops)
+ 	}
+ }
+ 
+-static void ref_refcnt_delay_section(const int nloops, const int ndelay)
++static void ref_refcnt_delay_section(const int nloops, const int udl, const int ndl)
+ {
+ 	int i;
+ 
+ 	for (i = nloops; i >= 0; i--) {
+ 		atomic_inc(&refcnt);
+-		udelay(ndelay);
++		un_delay(udl, ndl);
+ 		atomic_dec(&refcnt);
+ 	}
+ }
+@@ -233,13 +241,13 @@ static void ref_rwlock_section(const int nloops)
+ 	}
+ }
+ 
+-static void ref_rwlock_delay_section(const int nloops, const int ndelay)
++static void ref_rwlock_delay_section(const int nloops, const int udl, const int ndl)
+ {
+ 	int i;
+ 
+ 	for (i = nloops; i >= 0; i--) {
+ 		read_lock(&test_rwlock);
+-		udelay(ndelay);
++		un_delay(udl, ndl);
+ 		read_unlock(&test_rwlock);
+ 	}
+ }
+@@ -269,13 +277,13 @@ static void ref_rwsem_section(const int nloops)
+ 	}
+ }
+ 
+-static void ref_rwsem_delay_section(const int nloops, const int ndelay)
++static void ref_rwsem_delay_section(const int nloops, const int udl, const int ndl)
+ {
+ 	int i;
+ 
+ 	for (i = nloops; i >= 0; i--) {
+ 		down_read(&test_rwsem);
+-		udelay(ndelay);
++		un_delay(udl, ndl);
+ 		up_read(&test_rwsem);
+ 	}
+ }
+@@ -292,7 +300,7 @@ static void rcu_perf_one_reader(void)
+ 	if (readdelay <= 0)
+ 		cur_ops->readsection(loops);
+ 	else
+-		cur_ops->delaysection(loops, readdelay);
++		cur_ops->delaysection(loops, readdelay / 1000, readdelay % 1000);
+ }
+ 
+ // Reader kthread.  Repeatedly does empty RCU read-side
