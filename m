@@ -2,45 +2,45 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A1F6234276
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 31 Jul 2020 11:23:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EB49234308
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 31 Jul 2020 11:27:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732344AbgGaJXE (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 31 Jul 2020 05:23:04 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:56476 "EHLO
+        id S1731981AbgGaJ1u (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 31 Jul 2020 05:27:50 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:56338 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732320AbgGaJXE (ORCPT
+        with ESMTP id S1732327AbgGaJXD (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 31 Jul 2020 05:23:04 -0400
-Date:   Fri, 31 Jul 2020 09:23:00 -0000
+        Fri, 31 Jul 2020 05:23:03 -0400
+Date:   Fri, 31 Jul 2020 09:23:01 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1596187381;
+        s=2020; t=1596187382;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=VeKui5SC6W5V0dmXk4nOrzyMUmUCEv1bAJxbgITkPRM=;
-        b=0fE532LMszCMmdcFlCrbs8C3Z1cN8kgoODgb7NjToGSY89eZWmF2idyTVS0OXhRJ9hTXMg
-        Zc4N5nKTEz6rT2WdvIBe1uA6/M6qMAy7J1wuK+oZ/Ys1hl242CtBsnGl1cJNrJs7HCNEK8
-        oQxJR0XRX16IrEc0jbGN6vPYCL6hkj/WO4DZDYrvmVQCObWPjlee9nW8a8CNnGxon+RbaM
-        xqud4IslMyItQ8WkGgrAp1bBbf3wxelcdzWl1pqvRRhQHi6fNxoiOI31tG3EelwcPsPqa6
-        etu7PgcTNorcehe8lYHRX/fujRgsRnwDIRNNlHiy7MieWUZycgfefoavELGtuw==
+        bh=zrpGvZKM1tQegdpmgKQPrlybx4PTppNxw8pHVGku/TA=;
+        b=jFnyFRjk7ZvogheB8qtrIL6BpHsW6HJpnROypZ7olnY0LYkb71HTbg5ho1hzimw0DtpxW3
+        wK4s/68uaG07SXJZBO2RSSe7je0OUk/36U/ugsQqti9fHZhsdMpVlRwR2vn0Q6fdK3z8TO
+        eAaOuK2c0RObTCfprOvKEOk1X7vqJVSxkb20ZX94FXYMNp4jw8YjsQbzCfm+cV5kUmEPDe
+        4NatH2quxctaJxvVq4KGzsi9sGpmDNB2ga8S0nfvQuuRByDBY80J4rrTtNMQ415H+50H+f
+        yhe+Xs0M6Xtl93sQaqhpfHGJUWfzKREmGT9ODvKzDWo5YdmrxmX5G78sL2HnwA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1596187381;
+        s=2020e; t=1596187382;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=VeKui5SC6W5V0dmXk4nOrzyMUmUCEv1bAJxbgITkPRM=;
-        b=/Ij9d8OTgqHzgey7s+PPWcjoa60MzCrggadgoPwUmz4r2yu6jzpmLPPQSeOL9qkMNSGCcJ
-        a0EH2PguGrxLAIDA==
+        bh=zrpGvZKM1tQegdpmgKQPrlybx4PTppNxw8pHVGku/TA=;
+        b=fesh6YZLwKC4FXe7JV6lgPNEwg+7r6nzFknHknJqxLjcZk4sDn1o4OMQlUgNaWH3BvyrJD
+        M155H2ozWVs6u9Aw==
 From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] refperf: Add warmup and cooldown processing phases
+Subject: [tip: core/rcu] refperf: Convert reader_task structure's "start" field to int
 Cc:     "Joel Fernandes (Google)" <joel@joelfernandes.org>,
         "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <159618738049.4006.16848409473620043188.tip-bot2@tip-bot2>
+Message-ID: <159618738172.4006.3842250807190896491.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -52,76 +52,68 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     2db0bda38453f472640f4ece1e2a495cbd44f892
-Gitweb:        https://git.kernel.org/tip/2db0bda38453f472640f4ece1e2a495cbd44f892
+Commit-ID:     af2789db13b8dc38d16e969f8c11b9468be42d46
+Gitweb:        https://git.kernel.org/tip/af2789db13b8dc38d16e969f8c11b9468be42d46
 Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Tue, 26 May 2020 12:34:57 -07:00
+AuthorDate:    Tue, 26 May 2020 11:22:03 -07:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Mon, 29 Jun 2020 12:00:45 -07:00
 
-refperf: Add warmup and cooldown processing phases
+refperf: Convert reader_task structure's "start" field to int
 
-This commit causes all the readers to start running unmeasured load
-until all readers have done at least one such run (thus having warmed
-up), then run the measured load, and then run unmeasured load until all
-readers have completed their measured load.  This approach avoids any
-thread running measured load while other readers are idle.
+This commit converts the reader_task structure's "start" field to int
+in order to demote a full barrier to an smp_load_acquire() and also to
+simplify the code a bit.  While in the area, and to enlist the compiler's
+help in ensuring that nothing was missed, the field's name was changed
+to start_reader.
+
+Also while in the area, change the main_func() store to use
+smp_store_release() to further fortify against wait/wake races.
 
 Cc: Joel Fernandes (Google) <joel@joelfernandes.org>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/rcu/refperf.c | 20 ++++++++++++++++++--
- 1 file changed, 18 insertions(+), 2 deletions(-)
+ kernel/rcu/refperf.c |  9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
 diff --git a/kernel/rcu/refperf.c b/kernel/rcu/refperf.c
-index 234bb0e..445190b 100644
+index 8815ccf..2fd3ed1 100644
 --- a/kernel/rcu/refperf.c
 +++ b/kernel/rcu/refperf.c
-@@ -100,6 +100,8 @@ static atomic_t nreaders_exp;
- // Use to wait for all threads to start.
- static atomic_t n_init;
- static atomic_t n_started;
-+static atomic_t n_warmedup;
-+static atomic_t n_cooleddown;
+@@ -80,7 +80,7 @@ torture_param(bool, shutdown, REFPERF_SHUTDOWN,
  
- // Track which experiment is currently running.
- static int exp_idx;
-@@ -260,8 +262,15 @@ repeat:
+ struct reader_task {
+ 	struct task_struct *task;
+-	atomic_t start;
++	int start_reader;
+ 	wait_queue_head_t wq;
+ 	u64 last_duration_ns;
+ };
+@@ -243,7 +243,7 @@ repeat:
+ 	VERBOSE_PERFOUT("ref_perf_reader %ld: waiting to start next experiment on cpu %d", me, smp_processor_id());
+ 
+ 	// Wait for signal that this reader can start.
+-	wait_event(rt->wq, (atomic_read(&nreaders_exp) && atomic_read(&rt->start)) ||
++	wait_event(rt->wq, (atomic_read(&nreaders_exp) && smp_load_acquire(&rt->start_reader)) ||
+ 			   torture_must_stop());
+ 
+ 	if (torture_must_stop())
+@@ -252,8 +252,7 @@ repeat:
+ 	// Make sure that the CPU is affinitized appropriately during testing.
+ 	WARN_ON_ONCE(smp_processor_id() != me);
+ 
+-	smp_mb__before_atomic();
+-	atomic_dec(&rt->start);
++	WRITE_ONCE(rt->start_reader, 0);
  
  	VERBOSE_PERFOUT("ref_perf_reader %ld: experiment %d started", me, exp_idx);
  
--	// To prevent noise, keep interrupts disabled. This also has the
--	// effect of preventing entries into slow path for rcu_read_unlock().
-+
-+	// To reduce noise, do an initial cache-warming invocation, check
-+	// in, and then keep warming until everyone has checked in.
-+	cur_ops->readsection(loops);
-+	if (!atomic_dec_return(&n_warmedup))
-+		while (atomic_read_acquire(&n_warmedup))
-+			cur_ops->readsection(loops);
-+	// Also keep interrupts disabled.  This also has the effect
-+	// of preventing entries into slow path for rcu_read_unlock().
- 	local_irq_save(flags);
- 	start = ktime_get_mono_fast_ns();
- 
-@@ -271,6 +280,11 @@ repeat:
- 	local_irq_restore(flags);
- 
- 	rt->last_duration_ns = WARN_ON_ONCE(duration < 0) ? 0 : duration;
-+	// To reduce runtime-skew noise, do maintain-load invocations until
-+	// everyone is done.
-+	if (!atomic_dec_return(&n_cooleddown))
-+		while (atomic_read_acquire(&n_cooleddown))
-+			cur_ops->readsection(loops);
- 
- 	if (atomic_dec_and_test(&nreaders_exp))
- 		wake_up(&main_wq);
-@@ -372,6 +386,8 @@ static int main_func(void *arg)
- 		reset_readers();
- 		atomic_set(&nreaders_exp, nreaders);
- 		atomic_set(&n_started, nreaders);
-+		atomic_set(&n_warmedup, nreaders);
-+		atomic_set(&n_cooleddown, nreaders);
- 
+@@ -372,7 +371,7 @@ static int main_func(void *arg)
  		exp_idx = exp;
+ 
+ 		for (r = 0; r < nreaders; r++) {
+-			atomic_set(&reader_tasks[r].start, 1);
++			smp_store_release(&reader_tasks[r].start_reader, 1);
+ 			wake_up(&reader_tasks[r].wq);
+ 		}
  
