@@ -2,47 +2,44 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D8600234269
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 31 Jul 2020 11:22:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D3CC234333
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 31 Jul 2020 11:29:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732216AbgGaJWo (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 31 Jul 2020 05:22:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59982 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732211AbgGaJWn (ORCPT
+        id S1732221AbgGaJWq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 31 Jul 2020 05:22:46 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:56350 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732203AbgGaJWp (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 31 Jul 2020 05:22:43 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FCA0C061574;
-        Fri, 31 Jul 2020 02:22:43 -0700 (PDT)
-Date:   Fri, 31 Jul 2020 09:22:41 -0000
+        Fri, 31 Jul 2020 05:22:45 -0400
+Date:   Fri, 31 Jul 2020 09:22:42 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1596187362;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=L3ZKqzP4EDmwQ+Z3IDCkj9GRb+lwRh9HrZQGAWXrZGQ=;
-        b=cNgzTS3MW0e/wMQUZrqjQJtCZHcj0weppVRoeGI2AM7frCg0hrBRQ9MySDE0A1mx8baluq
-        WjBPjqa+EnLsry514tPlIFSMcBX3ep+sA/gZi9J0UNCF8sG0yRBI+EzYOK781gb1mlrDwN
-        f68S0TyI5Hu5tiHuBOjIMTROXs4z6CY/BUGIC1pdQZAhLyyVY9+Sz5jfPaeBACot1TjmIS
-        SSsd4PycjjxeHceacPzAHub3plNNtRSFpFdPIeqiWuQ6tCh20F3eCweaw0PzminFHH7ucF
-        pUfqW4/gp/sdcsfvGonVLUHghl7sOCsHQb1RuywrnZz+AtXdwgG202FG72XNoQ==
+        bh=VeHuDFMynotDWeSNuN4YXwHrCoEpYwVTPw8qWP0mkCs=;
+        b=S1WwOmV27+eydDN/IJNJx69oHSBLMZMh0Qj03wsG+Y4NX6MCX++250EJFZ1L9eOES4SZf2
+        sxTIVNcVpwDqIi+Jqft1m5BxHps6qD2W2m8kClUHx1oljXu6nCqLLpj6G4Ii8yA0d35gou
+        PUE90exyCnLHKIbuemldYFP78MzsQynJTXSeKqx+Vx/ZstlmRaLJQlvcd2T2K1Rt5STZNc
+        0vBUtYyhL/U1OSKvOqAvOpgt4RhUxgqgXWyleV5/OBGD5GoWbjLCDVaOJAoPky5gX5zjAz
+        47NjC6SjcwJAPa+Q1aBZ+EtqvueOCCxgZ/SAHfn9fkbYoGRfR8PlfXg+BRj/Og==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1596187362;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=L3ZKqzP4EDmwQ+Z3IDCkj9GRb+lwRh9HrZQGAWXrZGQ=;
-        b=VjA1SmQirV8RvSwAp8tSiabDE2vpFVxTiDL7+8n2WxAMzw8Fgr5OW9MPiQsnslXQu4GZxV
-        skYmAx8zLJOX9xCg==
+        bh=VeHuDFMynotDWeSNuN4YXwHrCoEpYwVTPw8qWP0mkCs=;
+        b=AgPVrEo/ay8xHAi9lAGktnIlyXjP0JbuB2LxIOjCtR7LvhW1gUHlzhH7fn7KOQ+SCRk9oU
+        4J26SuKA6y6WzGBQ==
 From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] torture: Abstract out console-log error detection
+Subject: [tip: core/rcu] torture: Add a stop-run capability
 Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <159618736149.4006.2645746856112464460.tip-bot2@tip-bot2>
+Message-ID: <159618736213.4006.10051552224753843943.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -54,61 +51,114 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     bc77a72cd188d44881ee1b9d0a9d65ca8108b508
-Gitweb:        https://git.kernel.org/tip/bc77a72cd188d44881ee1b9d0a9d65ca8108b508
+Commit-ID:     6387ecbc94bf5ac07239104b84d2304da6e79b51
+Gitweb:        https://git.kernel.org/tip/6387ecbc94bf5ac07239104b84d2304da6e79b51
 Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Wed, 10 Jun 2020 14:08:19 -07:00
+AuthorDate:    Tue, 09 Jun 2020 17:58:30 -07:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Mon, 29 Jun 2020 12:01:44 -07:00
 
-torture: Abstract out console-log error detection
+torture: Add a stop-run capability
 
-This commit pulls the simple pattern-based error detection from the
-console log into a new console-badness.sh file.  This will enable future
-commits to end a run on the first error.
+When bisecting RCU issues, it is often the case that the first error in
+an unsuccessful run will happen quickly, but that a successful run must
+go on for some time in order to obtain a sufficiently low false-negative
+error rate.  In many cases, a bisection requires multiple concurrent
+runs, in which case the first failure in any run indicates failure,
+pure and simple.  In such cases, it would speed things up greatly if
+the first failure terminated all runs.
+
+This commit therefore adds scripting that checks for a file named "STOP"
+in the top-level results directory, terminating the run when it appears.
+Note that in-progress builds will continue until completion, but future
+builds and all runs will be cut short.
 
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- tools/testing/selftests/rcutorture/bin/console-badness.sh | 16 +++++++-
- tools/testing/selftests/rcutorture/bin/parse-console.sh   |  5 +--
- 2 files changed, 17 insertions(+), 4 deletions(-)
- create mode 100755 tools/testing/selftests/rcutorture/bin/console-badness.sh
+ tools/testing/selftests/rcutorture/bin/jitter.sh         |  6 +++-
+ tools/testing/selftests/rcutorture/bin/kvm-build.sh      |  6 +++-
+ tools/testing/selftests/rcutorture/bin/kvm-test-1-run.sh | 13 +++++--
+ tools/testing/selftests/rcutorture/bin/kvm.sh            |  2 +-
+ 4 files changed, 25 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/rcutorture/bin/console-badness.sh b/tools/testing/selftests/rcutorture/bin/console-badness.sh
-new file mode 100755
-index 0000000..0e4c0b2
---- /dev/null
-+++ b/tools/testing/selftests/rcutorture/bin/console-badness.sh
-@@ -0,0 +1,16 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0+
-+#
-+# Scan standard input for error messages, dumping any found to standard
-+# output.
-+#
-+# Usage: console-badness.sh
-+#
-+# Copyright (C) 2020 Facebook, Inc.
-+#
-+# Authors: Paul E. McKenney <paulmck@kernel.org>
-+
-+egrep 'Badness|WARNING:|Warn|BUG|===========|Call Trace:|Oops:|detected stalls on CPUs/tasks:|self-detected stall on CPU|Stall ended before state dump start|\?\?\? Writer stall state|rcu_.*kthread starved for|!!!' |
-+grep -v 'ODEBUG: ' |
-+grep -v 'This means that this is a DEBUG kernel and it is' |
-+grep -v 'Warning: unable to open an initial console'
-diff --git a/tools/testing/selftests/rcutorture/bin/parse-console.sh b/tools/testing/selftests/rcutorture/bin/parse-console.sh
-index 1c64ca8..98478e1 100755
---- a/tools/testing/selftests/rcutorture/bin/parse-console.sh
-+++ b/tools/testing/selftests/rcutorture/bin/parse-console.sh
-@@ -116,10 +116,7 @@ then
+diff --git a/tools/testing/selftests/rcutorture/bin/jitter.sh b/tools/testing/selftests/rcutorture/bin/jitter.sh
+index 30cb5b2..188b864 100755
+--- a/tools/testing/selftests/rcutorture/bin/jitter.sh
++++ b/tools/testing/selftests/rcutorture/bin/jitter.sh
+@@ -46,6 +46,12 @@ do
+ 		exit 0;
  	fi
- fi | tee -a $file.diags
  
--egrep 'Badness|WARNING:|Warn|BUG|===========|Call Trace:|Oops:|detected stalls on CPUs/tasks:|self-detected stall on CPU|Stall ended before state dump start|\?\?\? Writer stall state|rcu_.*kthread starved for' < $file |
--grep -v 'ODEBUG: ' |
--grep -v 'This means that this is a DEBUG kernel and it is' |
--grep -v 'Warning: unable to open an initial console' > $T.diags
-+console-badness.sh < $file > $T.diags
- if test -s $T.diags
++	# Check for stop request.
++	if test -f "$TORTURE_STOPFILE"
++	then
++		exit 1;
++	fi
++
+ 	# Set affinity to randomly selected online CPU
+ 	if cpus=`grep 1 /sys/devices/system/cpu/*/online 2>&1 |
+ 		 sed -e 's,/[^/]*$,,' -e 's/^[^0-9]*//'`
+diff --git a/tools/testing/selftests/rcutorture/bin/kvm-build.sh b/tools/testing/selftests/rcutorture/bin/kvm-build.sh
+index 18d6518..115e182 100755
+--- a/tools/testing/selftests/rcutorture/bin/kvm-build.sh
++++ b/tools/testing/selftests/rcutorture/bin/kvm-build.sh
+@@ -9,6 +9,12 @@
+ #
+ # Authors: Paul E. McKenney <paulmck@linux.ibm.com>
+ 
++if test -f "$TORTURE_STOPFILE"
++then
++	echo "kvm-build.sh early exit due to run STOP request"
++	exit 1
++fi
++
+ config_template=${1}
+ if test -z "$config_template" -o ! -f "$config_template" -o ! -r "$config_template"
  then
- 	print_warning "Assertion failure in $file $title"
+diff --git a/tools/testing/selftests/rcutorture/bin/kvm-test-1-run.sh b/tools/testing/selftests/rcutorture/bin/kvm-test-1-run.sh
+index 064dd73..5ec095d 100755
+--- a/tools/testing/selftests/rcutorture/bin/kvm-test-1-run.sh
++++ b/tools/testing/selftests/rcutorture/bin/kvm-test-1-run.sh
+@@ -182,7 +182,7 @@ do
+ 	kruntime=`gawk 'BEGIN { print systime() - '"$kstarttime"' }' < /dev/null`
+ 	if test -z "$qemu_pid" || kill -0 "$qemu_pid" > /dev/null 2>&1
+ 	then
+-		if test $kruntime -ge $seconds
++		if test $kruntime -ge $seconds -o -f "$TORTURE_STOPFILE"
+ 		then
+ 			break;
+ 		fi
+@@ -211,10 +211,19 @@ then
+ fi
+ if test $commandcompleted -eq 0 -a -n "$qemu_pid"
+ then
+-	echo Grace period for qemu job at pid $qemu_pid
++	if ! test -f "$TORTURE_STOPFILE"
++	then
++		echo Grace period for qemu job at pid $qemu_pid
++	fi
+ 	oldline="`tail $resdir/console.log`"
+ 	while :
+ 	do
++		if test -f "$TORTURE_STOPFILE"
++		then
++			echo "PID $qemu_pid killed due to run STOP request" >> $resdir/Warnings 2>&1
++			kill -KILL $qemu_pid
++			break
++		fi
+ 		kruntime=`gawk 'BEGIN { print systime() - '"$kstarttime"' }' < /dev/null`
+ 		if kill -0 $qemu_pid > /dev/null 2>&1
+ 		then
+diff --git a/tools/testing/selftests/rcutorture/bin/kvm.sh b/tools/testing/selftests/rcutorture/bin/kvm.sh
+index 7dbce7a..3578c85 100755
+--- a/tools/testing/selftests/rcutorture/bin/kvm.sh
++++ b/tools/testing/selftests/rcutorture/bin/kvm.sh
+@@ -337,6 +337,8 @@ then
+ 	mkdir -p "$resdir" || :
+ fi
+ mkdir $resdir/$ds
++TORTURE_RESDIR="$resdir/$ds"; export TORTURE_RESDIR
++TORTURE_STOPFILE="$resdir/$ds/STOP"; export TORTURE_STOPFILE
+ echo Results directory: $resdir/$ds
+ echo $scriptname $args
+ touch $resdir/$ds/log
