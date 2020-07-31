@@ -2,52 +2,44 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C09C323432B
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 31 Jul 2020 11:28:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 510C323431E
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 31 Jul 2020 11:28:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732241AbgGaJ2n (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 31 Jul 2020 05:28:43 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:56344 "EHLO
+        id S1732274AbgGaJWy (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 31 Jul 2020 05:22:54 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:56350 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732203AbgGaJWv (ORCPT
+        with ESMTP id S1732261AbgGaJWw (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 31 Jul 2020 05:22:51 -0400
-Date:   Fri, 31 Jul 2020 09:22:49 -0000
+        Fri, 31 Jul 2020 05:22:52 -0400
+Date:   Fri, 31 Jul 2020 09:22:50 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1596187369;
+        s=2020; t=1596187371;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=zkvscX6ZdSWmORe/q9F52pVi9blxgznm8DDxOMkFxDg=;
-        b=plyQet7f738U5yUtIUVSBEmZ4LCxUa1ctVxl5RWgR9DhvCIp9yz6r60MNI3i4wMgChDBF+
-        sWCLhK2lwAz7w8ZFiubgKZghkYTfzvS0h8034UU/s8g1Y/Bkk/GETb+Cpv+0PoSfCQ208w
-        drIvaLp92qOgA7AK4gLfZtVbvvcyTiuXxELgQECkDFoE7Ilzu/tHauPW7xKNlmRpR8QSAT
-        a5gHaYLha1WDsafCqa00se49O/MrgXZ2ptXbbkB++abluw4BWac8BjJSBFwr7SxM5GBTBP
-        zr8xrcQDdrgOZ6WsqUramdjiZ5r2vJYpoGn/7sK4/iPTKwtMua41f37mCH+ayQ==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=fYSCTLOskcFaf1QqHBSI9+EiG25nPncE/g+OlbowEWs=;
+        b=4mq2pjV9GKJCPTuPoHvLPviXSUYcLWo8qrdhba+GoD0arBJwhlQqQ+8KOdGCyZlzdzmgTb
+        27d1PMBTBRwt3y4rqlN4mZaXv8p3SdP3nmmV5VNBifLcHxf4D2ZcDtMrYfE4/VFCBLMtGu
+        aVvPV95uB8FcF/uo1lBAsn/A1flsNhQoOc0W2Q6TU87mcL4zfTD8Uv5Q0WIjoxl6w0/98A
+        DP6saxQFh4Tr97gpvn4Mj/4rdLui7ZKGukCHn9rTsgi4yJjzm+rcQxu0JW0u0S0ojK6lzr
+        5nuqW4dLYcAWqr0iEfCYDNrIb7MfmKG6nKQbC7Aq3Kl4+S+0ThZ1v20G5LOY5Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1596187369;
+        s=2020e; t=1596187371;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=zkvscX6ZdSWmORe/q9F52pVi9blxgznm8DDxOMkFxDg=;
-        b=D7Mg+3wEKL/aAEV6pZMvZOx0AUhLTY54GwjmohTG3R+WYJymaVjqI4y1tPGyVWyCcsvXra
-        xxygoxvbURDZViCw==
-From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=fYSCTLOskcFaf1QqHBSI9+EiG25nPncE/g+OlbowEWs=;
+        b=xxbaIFoV86Ibum1bqagqwuwbIQWzyriybPZoeSxWGLzvtsz9cmMie+d+RavVDjX2lFSES4
+        fzwhBcqxPX6MH5CQ==
+From:   "tip-bot2 for Ethon Paul" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] torture: Remove qemu dependency on EFI firmware
-Cc:     Joel Fernandes <joel@joelfernandes.org>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+Subject: [tip: core/rcu] srcu: Fix a typo in comment "amoritized"->"amortized"
+Cc:     Ethon Paul <ethp@qq.com>, "Paul E. McKenney" <paulmck@kernel.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20190701141403.GA246562@google.com>
-References: <20190701141403.GA246562@google.com>
 MIME-Version: 1.0
-Message-ID: <159618736927.4006.11288693239254927787.tip-bot2@tip-bot2>
+Message-ID: <159618737065.4006.9118760174636133381.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,83 +51,33 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     88513ae533756d10358e406743c21e8cf61fb72a
-Gitweb:        https://git.kernel.org/tip/88513ae533756d10358e406743c21e8cf61fb72a
-Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Tue, 28 Apr 2020 14:41:48 -07:00
+Commit-ID:     7fef6cff8f2814bf8eb632e2bb8f0a987ffd9ece
+Gitweb:        https://git.kernel.org/tip/7fef6cff8f2814bf8eb632e2bb8f0a987ffd9ece
+Author:        Ethon Paul <ethp@qq.com>
+AuthorDate:    Sat, 18 Apr 2020 19:46:47 +08:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Mon, 29 Jun 2020 12:01:43 -07:00
+CommitterDate: Mon, 29 Jun 2020 12:01:22 -07:00
 
-torture:  Remove qemu dependency on EFI firmware
+srcu: Fix a typo in comment "amoritized"->"amortized"
 
-On some (probably misconfigured) systems, the torture-test scripting
-will cause qemu to complain about missing EFI firmware, often because
-qemu is trying to traverse broken symbolic links to find that firmware.
-Which is a bit silly given that the default torture-test guest OS has
-but a single binary for its userspace, and thus is unlikely to do much
-in the way of networking in any case.
+This commit fixes a typo in a comment.
 
-This commit therefore avoids such problems by specifying "-net none"
-to qemu unless the TORTURE_QEMU_INTERACTIVE environment variable is set
-(for example, by having specified "--interactive" to kvm.sh), in which
-case "-net nic -net user" is specified to qemu instead.  Either choice
-may be overridden by specifying the "-net" argument of your choice to
-the kvm.sh "--qemu-args" parameter.
-
-Link: https://lore.kernel.org/lkml/20190701141403.GA246562@google.com
-Reported-by: Joel Fernandes <joel@joelfernandes.org>
+Signed-off-by: Ethon Paul <ethp@qq.com>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 ---
- tools/testing/selftests/rcutorture/bin/functions.sh      | 21 ++++++-
- tools/testing/selftests/rcutorture/bin/kvm-test-1-run.sh |  1 +-
- 2 files changed, 19 insertions(+), 3 deletions(-)
+ kernel/rcu/srcutree.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/rcutorture/bin/functions.sh b/tools/testing/selftests/rcutorture/bin/functions.sh
-index 1281022..436b154 100644
---- a/tools/testing/selftests/rcutorture/bin/functions.sh
-+++ b/tools/testing/selftests/rcutorture/bin/functions.sh
-@@ -215,9 +215,6 @@ identify_qemu_args () {
- 		then
- 			echo -device spapr-vlan,netdev=net0,mac=$TORTURE_QEMU_MAC
- 			echo -netdev bridge,br=br0,id=net0
--		elif test -n "$TORTURE_QEMU_INTERACTIVE"
--		then
--			echo -net nic -net user
- 		fi
- 		;;
- 	esac
-@@ -275,3 +272,21 @@ specify_qemu_cpus () {
- 		esac
- 	fi
- }
-+
-+# specify_qemu_net qemu-args
-+#
-+# Appends a string containing "-net none" to qemu-args, unless the incoming
-+# qemu-args already contains "-smp" or unless the TORTURE_QEMU_INTERACTIVE
-+# environment variable is set, in which case the string that is be added is
-+# instead "-net nic -net user".
-+specify_qemu_net () {
-+	if echo $1 | grep -q -e -net
-+	then
-+		echo $1
-+	elif test -n "$TORTURE_QEMU_INTERACTIVE"
-+	then
-+		echo $1 -net nic -net user
-+	else
-+		echo $1 -net none
-+	fi
-+}
-diff --git a/tools/testing/selftests/rcutorture/bin/kvm-test-1-run.sh b/tools/testing/selftests/rcutorture/bin/kvm-test-1-run.sh
-index 6ff611c..1b9aebd 100755
---- a/tools/testing/selftests/rcutorture/bin/kvm-test-1-run.sh
-+++ b/tools/testing/selftests/rcutorture/bin/kvm-test-1-run.sh
-@@ -141,6 +141,7 @@ then
- 	cpu_count=$TORTURE_ALLOTED_CPUS
- fi
- qemu_args="`specify_qemu_cpus "$QEMU" "$qemu_args" "$cpu_count"`"
-+qemu_args="`specify_qemu_net "$qemu_args"`"
- 
- # Generate architecture-specific and interaction-specific qemu arguments
- qemu_args="$qemu_args `identify_qemu_args "$QEMU" "$resdir/console.log"`"
+diff --git a/kernel/rcu/srcutree.c b/kernel/rcu/srcutree.c
+index 6d3ef70..8ff71e5 100644
+--- a/kernel/rcu/srcutree.c
++++ b/kernel/rcu/srcutree.c
+@@ -766,7 +766,7 @@ static void srcu_flip(struct srcu_struct *ssp)
+  * it, if this function was preempted for enough time for the counters
+  * to wrap, it really doesn't matter whether or not we expedite the grace
+  * period.  The extra overhead of a needlessly expedited grace period is
+- * negligible when amoritized over that time period, and the extra latency
++ * negligible when amortized over that time period, and the extra latency
+  * of a needlessly non-expedited grace period is similarly negligible.
+  */
+ static bool srcu_might_be_idle(struct srcu_struct *ssp)
