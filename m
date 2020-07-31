@@ -2,44 +2,48 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 16335234343
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 31 Jul 2020 11:29:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 00320234339
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 31 Jul 2020 11:29:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732469AbgGaJ3X (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 31 Jul 2020 05:29:23 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:56350 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732168AbgGaJWl (ORCPT
+        id S1732477AbgGaJ3I (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 31 Jul 2020 05:29:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59974 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732197AbgGaJWm (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 31 Jul 2020 05:22:41 -0400
-Date:   Fri, 31 Jul 2020 09:22:39 -0000
+        Fri, 31 Jul 2020 05:22:42 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47604C061574;
+        Fri, 31 Jul 2020 02:22:42 -0700 (PDT)
+Date:   Fri, 31 Jul 2020 09:22:40 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1596187360;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=MWAxGCueX1FQdbJ7JSi9wuo+tqOZpsiCZBaHv5+iEYs=;
-        b=VrdBZsZkxl32mq87IbzyFnIxtPZH3yQjeyYkHfiG5VXU9nraQZF/UIQBkFiJJafjBogMlA
-        M/2IDf/6c4ZvMfet1t3oHAWMqFkxiUaE1wYlQS2H181mtsJltVn9BSewd6xsbS/BpRoAEU
-        NltabNC7Yzq1TyHUrJi2Ys5P8P4QUpfcJ0F0aogAUfdo97Rat6xnqFdVpRocuhI9U5nk8u
-        1SSgWkxaUJXsTMqnQHEr0teNrBM2sHBukQ0HW850r7/10Z2L9feILAq23yZbykexZd+uSE
-        L3BYGUrzlO1uXWNA+tvXsThN3XFExLVnrHU+lFoR+ufSVfZ58fPpdNJm3PSc1g==
+        bh=6XLOrayGCAI11qeVwIJBhVh/WJrR5AIHkxFc9qq7f/o=;
+        b=TSEDiv4OH07TcFAtwGy4oag3AbCaA9HqN87Y90K6+a+7QrS3VmO62IMOilsAt+rAf6Zsbx
+        /y8MEdJ77foZ73CFZ20898lNggBj3yxIDroOSscVDE8DGDpWqKDnPikN7bsE2dRFSt16k3
+        ytvEf1XmCwTdEtVaR3jlpNzLz3rx6+Bc/C78kYUZxaFEqX8JXXu7EPRaleEOG1JcQgY2DM
+        1AlzEZYrO1FHVhOAtvXqMyTcosFIrc6AYMnOzh8WtIS9YxtnuiUprefpiH2HNudK0pyBTr
+        pNcu92CDF1M1Q8HdGqMHOWjtqC3giM3KiFSpuXPjqNXWQjEGBMMxwZJJZMxcPg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1596187360;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=MWAxGCueX1FQdbJ7JSi9wuo+tqOZpsiCZBaHv5+iEYs=;
-        b=5WE72D1nxifz/rVRzPXejsUUv+OAYBQubttWVdqw5XbIzuRN63RltgdKqfHGBUyrMllkVM
-        DPyJw4cadx67nlBg==
-From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
+        bh=6XLOrayGCAI11qeVwIJBhVh/WJrR5AIHkxFc9qq7f/o=;
+        b=KpYfMWXXpqyOe2ysPt9KRoySxzHvw9Fn/SCJSfiNlCCbTT8U20xvCX0CzurDRlPoLsA3KL
+        8I6xdenx0YlMXkAA==
+From:   "tip-bot2 for Marco Elver" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] torture: Correctly summarize build-only runs
-Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
+Subject: [tip: core/rcu] torture: Pass --kmake-arg to all make invocations
+Cc:     Marco Elver <elver@google.com>,
+        "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <159618735949.4006.1360754623608472870.tip-bot2@tip-bot2>
+Message-ID: <159618736016.4006.571280411245483359.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -51,48 +55,45 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     6bcaf2a0876633b6a7c5e70ee88801e16280210a
-Gitweb:        https://git.kernel.org/tip/6bcaf2a0876633b6a7c5e70ee88801e16280210a
-Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Tue, 16 Jun 2020 10:02:54 -07:00
+Commit-ID:     603d11ad6976e1289f19c2a19e2f75a83d0dc296
+Gitweb:        https://git.kernel.org/tip/603d11ad6976e1289f19c2a19e2f75a83d0dc296
+Author:        Marco Elver <elver@google.com>
+AuthorDate:    Tue, 16 Jun 2020 11:49:24 +02:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Mon, 29 Jun 2020 12:01:44 -07:00
 
-torture: Correctly summarize build-only runs
+torture: Pass --kmake-arg to all make invocations
 
-Currently, kvm-recheck.sh complains that qemu failed for --buildonly
-runs, which is sort of true given that qemu can hardly succeed if not
-invoked in the first place.  Nevertheless, this commit swaps the order
-of checks in kvm-recheck.sh so that --buildonly runs will be summarized
-more straightforwardly.
+We need to pass the arguments provided to --kmake-arg to all make
+invocations. In particular, the make invocations generating the configs
+need to see the final make arguments, e.g. if config variables depend on
+particular variables that are passed to make.
 
+For example, when using '--kcsan --kmake-arg CC=clang-11', we would lose
+CONFIG_KCSAN=y due to 'make oldconfig' not seeing that we want to use a
+compiler that supports KCSAN.
+
+Signed-off-by: Marco Elver <elver@google.com>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- tools/testing/selftests/rcutorture/bin/kvm-recheck.sh | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ tools/testing/selftests/rcutorture/bin/configinit.sh | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/rcutorture/bin/kvm-recheck.sh b/tools/testing/selftests/rcutorture/bin/kvm-recheck.sh
-index 2261aa6..357899c 100755
---- a/tools/testing/selftests/rcutorture/bin/kvm-recheck.sh
-+++ b/tools/testing/selftests/rcutorture/bin/kvm-recheck.sh
-@@ -56,15 +56,15 @@ do
- 				cat $i/Warnings
- 			fi
- 		else
--			if test -f "$i/qemu-cmd"
--			then
--				print_bug qemu failed
--				echo "   $i"
--			elif test -f "$i/buildonly"
-+			if test -f "$i/buildonly"
- 			then
- 				echo Build-only run, no boot/test
- 				configcheck.sh $i/.config $i/ConfigFragment
- 				parse-build.sh $i/Make.out $configfile
-+			elif test -f "$i/qemu-cmd"
-+			then
-+				print_bug qemu failed
-+				echo "   $i"
- 			else
- 				print_bug Build failed
- 				echo "   $i"
+diff --git a/tools/testing/selftests/rcutorture/bin/configinit.sh b/tools/testing/selftests/rcutorture/bin/configinit.sh
+index 93e80a4..d6e5ce0 100755
+--- a/tools/testing/selftests/rcutorture/bin/configinit.sh
++++ b/tools/testing/selftests/rcutorture/bin/configinit.sh
+@@ -32,11 +32,11 @@ if test -z "$TORTURE_TRUST_MAKE"
+ then
+ 	make clean > $resdir/Make.clean 2>&1
+ fi
+-make $TORTURE_DEFCONFIG > $resdir/Make.defconfig.out 2>&1
++make $TORTURE_KMAKE_ARG $TORTURE_DEFCONFIG > $resdir/Make.defconfig.out 2>&1
+ mv .config .config.sav
+ sh $T/upd.sh < .config.sav > .config
+ cp .config .config.new
+-yes '' | make oldconfig > $resdir/Make.oldconfig.out 2> $resdir/Make.oldconfig.err
++yes '' | make $TORTURE_KMAKE_ARG oldconfig > $resdir/Make.oldconfig.out 2> $resdir/Make.oldconfig.err
+ 
+ # verify new config matches specification.
+ configcheck.sh .config $c
