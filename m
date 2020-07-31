@@ -2,46 +2,45 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6EE692342C5
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 31 Jul 2020 11:26:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BB9E2342DC
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 31 Jul 2020 11:26:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732443AbgGaJXY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 31 Jul 2020 05:23:24 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:56410 "EHLO
+        id S1732498AbgGaJ0S (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 31 Jul 2020 05:26:18 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:56338 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732425AbgGaJXU (ORCPT
+        with ESMTP id S1732171AbgGaJXW (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 31 Jul 2020 05:23:20 -0400
-Date:   Fri, 31 Jul 2020 09:23:18 -0000
+        Fri, 31 Jul 2020 05:23:22 -0400
+Date:   Fri, 31 Jul 2020 09:23:19 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1596187399;
+        s=2020; t=1596187400;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=Vgwh3ZjjxoW02xVCuM08ArWybeNvNYs6uTnUfCIOxMc=;
-        b=VYEycOsjx11viQJWa0c52WilBOIoaadKWo5tBNlIAeoG2qtIi+BmFnZ5uWH2xv2Z1Lj9VR
-        K3Ep12S0eYL/ePAhQEeKft9NJnHrdfRTQdO0x+oG0WJnEJ00+GAlA7bXwClflNUphW5A3Q
-        C0//DX9jgIoDJS5XpsiabrVyXQocXbENVnFXbB0/cVCiY1+X4WiALD3hYtOgWA9y2AWTGy
-        izU0V7P75LIxQr2P1OWzu0zdzfds9TafiCrJq9clkWCeApR/TdjVO1QbpiJ2QTel+sueXM
-        gS/odQCTzIr8olfZBM49OYy/EVK2SHvOXIv9pl91tr9+vsLGIi62VIC4QJL7Yg==
+        bh=vMU98mrio06oBlrMZvW2NF+u4EawOkAHerOr1v7CZ5A=;
+        b=iklceCrrW8rwZBRL0nBA+lTaBZ2nwBSYQHPIp4W+uLwVo4Vbl0fTduFH9eULi5CWl3Kh53
+        UMymSmDXIuZgwyzIAcW2AwMSk+xEsMmafzqOCuZUBzlcL6nH6hiNMENqki08knmMTkvjyj
+        UcI/aYyLYQ+y2+l+xKXthUVqxogGVTOmfti0ROopIV5Gtux6W6ihH2JxmdEbLLfOiyKhZX
+        7Qi+aij3tm+BX5w4uQ4d95KTZ/xk18u6gNZ8LMkh9q5idrTVZSGkY6QVH1ZacGKr5470zo
+        jdMXRvgDrsE9QqmpQ5uBX2Tl/iUU1l3aeiqqkJMvVtkTFINH/H6smhE7TnlBOA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1596187399;
+        s=2020e; t=1596187400;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=Vgwh3ZjjxoW02xVCuM08ArWybeNvNYs6uTnUfCIOxMc=;
-        b=rufF4nK2xozWBir+x/Pce9++VFnT0+me9q6fgBLuPXCPseYD+i21mmTXjqACrYyc/BLq/v
-        nB3AFHwWm+2O/YBw==
+        bh=vMU98mrio06oBlrMZvW2NF+u4EawOkAHerOr1v7CZ5A=;
+        b=I3PYVtszZH33pP7nAObx5A0jeFK60MJB9A839vFX7xS0CpF11v984p968xn6OHaZjbGZop
+        OTcvj4gyuGCV5hDw==
 From:   "tip-bot2 for Uladzislau Rezki (Sony)" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcu/tiny: support vmalloc in tiny-RCU
-Cc:     "Joel Fernandes (Google)" <joel@joelfernandes.org>,
-        "Uladzislau Rezki (Sony)" <urezki@gmail.com>,
+Subject: [tip: core/rcu] rcu/tree: cache specified number of objects
+Cc:     "Uladzislau Rezki (Sony)" <urezki@gmail.com>,
         "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <159618739853.4006.8750094199097034951.tip-bot2@tip-bot2>
+Message-ID: <159618739986.4006.546510754110087404.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -53,44 +52,183 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     64d1d06ccb1b7de245ccf781b91517f328bebd9f
-Gitweb:        https://git.kernel.org/tip/64d1d06ccb1b7de245ccf781b91517f328bebd9f
+Commit-ID:     53c72b590b3a0afd6747d6f7957e6838003e90a4
+Gitweb:        https://git.kernel.org/tip/53c72b590b3a0afd6747d6f7957e6838003e90a4
 Author:        Uladzislau Rezki (Sony) <urezki@gmail.com>
-AuthorDate:    Mon, 25 May 2020 23:47:54 +02:00
+AuthorDate:    Mon, 25 May 2020 23:47:52 +02:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Mon, 29 Jun 2020 11:59:25 -07:00
 
-rcu/tiny: support vmalloc in tiny-RCU
+rcu/tree: cache specified number of objects
 
-Replace kfree() with kvfree() in rcu_reclaim_tiny().
-This makes it possible to release either SLAB or vmalloc
-objects after a GP.
+In order to reduce the dynamic need for pages in kfree_rcu(),
+pre-allocate a configurable number of pages per CPU and link
+them in a list. When kfree_rcu() reclaims objects, the object's
+container page is cached into a list instead of being released
+to the low-level page allocator.
 
-Reviewed-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+Such an approach provides O(1) access to free pages while also
+reducing the number of requests to the page allocator. It also
+makes the kfree_rcu() code to have free pages available during
+a low memory condition.
+
+A read-only sysfs parameter (rcu_min_cached_objs) reflects the
+minimum number of allowed cached pages per CPU.
+
 Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/rcu/tiny.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ Documentation/admin-guide/kernel-parameters.txt |  8 ++-
+ kernel/rcu/tree.c                               | 66 +++++++++++++++-
+ 2 files changed, 70 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/rcu/tiny.c b/kernel/rcu/tiny.c
-index dd572ce..4b99f7b 100644
---- a/kernel/rcu/tiny.c
-+++ b/kernel/rcu/tiny.c
-@@ -23,6 +23,7 @@
- #include <linux/cpu.h>
- #include <linux/prefetch.h>
- #include <linux/slab.h>
-+#include <linux/mm.h>
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index fb95fad..befaa63 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -4038,6 +4038,14 @@
+ 			latencies, which will choose a value aligned
+ 			with the appropriate hardware boundaries.
  
- #include "rcu.h"
++	rcutree.rcu_min_cached_objs= [KNL]
++			Minimum number of objects which are cached and
++			maintained per one CPU. Object size is equal
++			to PAGE_SIZE. The cache allows to reduce the
++			pressure to page allocator, also it makes the
++			whole algorithm to behave better in low memory
++			condition.
++
+ 	rcutree.jiffies_till_first_fqs= [KNL]
+ 			Set delay from grace-period initialization to
+ 			first attempt to force quiescent states.
+diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
+index a42a469..37c0cd0 100644
+--- a/kernel/rcu/tree.c
++++ b/kernel/rcu/tree.c
+@@ -175,6 +175,15 @@ module_param(gp_init_delay, int, 0444);
+ static int gp_cleanup_delay;
+ module_param(gp_cleanup_delay, int, 0444);
  
-@@ -86,7 +87,7 @@ static inline bool rcu_reclaim_tiny(struct rcu_head *head)
- 	rcu_lock_acquire(&rcu_callback_map);
- 	if (__is_kfree_rcu_offset(offset)) {
- 		trace_rcu_invoke_kfree_callback("", head, offset);
--		kfree((void *)head - offset);
-+		kvfree((void *)head - offset);
++/*
++ * This rcu parameter is runtime-read-only. It reflects
++ * a minimum allowed number of objects which can be cached
++ * per-CPU. Object size is equal to one page. This value
++ * can be changed at boot time.
++ */
++static int rcu_min_cached_objs = 2;
++module_param(rcu_min_cached_objs, int, 0444);
++
+ /* Retrieve RCU kthreads priority for rcutorture */
+ int rcu_get_gp_kthreads_prio(void)
+ {
+@@ -2997,7 +3006,6 @@ struct kfree_rcu_cpu_work {
+  * struct kfree_rcu_cpu - batch up kfree_rcu() requests for RCU grace period
+  * @head: List of kfree_rcu() objects not yet waiting for a grace period
+  * @bhead: Bulk-List of kfree_rcu() objects not yet waiting for a grace period
+- * @bcached: Keeps at most one object for later reuse when build chain blocks
+  * @krw_arr: Array of batches of kfree_rcu() objects waiting for a grace period
+  * @lock: Synchronize access to this structure
+  * @monitor_work: Promote @head to @head_free after KFREE_DRAIN_JIFFIES
+@@ -3013,13 +3021,22 @@ struct kfree_rcu_cpu_work {
+ struct kfree_rcu_cpu {
+ 	struct rcu_head *head;
+ 	struct kfree_rcu_bulk_data *bhead;
+-	struct kfree_rcu_bulk_data *bcached;
+ 	struct kfree_rcu_cpu_work krw_arr[KFREE_N_BATCHES];
+ 	raw_spinlock_t lock;
+ 	struct delayed_work monitor_work;
+ 	bool monitor_todo;
+ 	bool initialized;
+ 	int count;
++
++	/*
++	 * A simple cache list that contains objects for
++	 * reuse purpose. In order to save some per-cpu
++	 * space the list is singular. Even though it is
++	 * lockless an access has to be protected by the
++	 * per-cpu lock.
++	 */
++	struct llist_head bkvcache;
++	int nr_bkv_objs;
+ };
+ 
+ static DEFINE_PER_CPU(struct kfree_rcu_cpu, krc) = {
+@@ -3056,6 +3073,31 @@ krc_this_cpu_unlock(struct kfree_rcu_cpu *krcp, unsigned long flags)
+ 	local_irq_restore(flags);
+ }
+ 
++static inline struct kfree_rcu_bulk_data *
++get_cached_bnode(struct kfree_rcu_cpu *krcp)
++{
++	if (!krcp->nr_bkv_objs)
++		return NULL;
++
++	krcp->nr_bkv_objs--;
++	return (struct kfree_rcu_bulk_data *)
++		llist_del_first(&krcp->bkvcache);
++}
++
++static inline bool
++put_cached_bnode(struct kfree_rcu_cpu *krcp,
++	struct kfree_rcu_bulk_data *bnode)
++{
++	// Check the limit.
++	if (krcp->nr_bkv_objs >= rcu_min_cached_objs)
++		return false;
++
++	llist_add((struct llist_node *) bnode, &krcp->bkvcache);
++	krcp->nr_bkv_objs++;
++	return true;
++
++}
++
+ /*
+  * This function is invoked in workqueue context after a grace period.
+  * It frees all the objects queued on ->bhead_free or ->head_free.
+@@ -3091,7 +3133,12 @@ static void kfree_rcu_work(struct work_struct *work)
+ 		kfree_bulk(bhead->nr_records, bhead->records);
  		rcu_lock_release(&rcu_callback_map);
- 		return true;
+ 
+-		if (cmpxchg(&krcp->bcached, NULL, bhead))
++		krcp = krc_this_cpu_lock(&flags);
++		if (put_cached_bnode(krcp, bhead))
++			bhead = NULL;
++		krc_this_cpu_unlock(krcp, flags);
++
++		if (bhead)
+ 			free_page((unsigned long) bhead);
+ 
+ 		cond_resched_tasks_rcu_qs();
+@@ -3224,7 +3271,7 @@ kfree_call_rcu_add_ptr_to_bulk(struct kfree_rcu_cpu *krcp,
+ 	/* Check if a new block is required. */
+ 	if (!krcp->bhead ||
+ 			krcp->bhead->nr_records == KFREE_BULK_MAX_ENTR) {
+-		bnode = xchg(&krcp->bcached, NULL);
++		bnode = get_cached_bnode(krcp);
+ 		if (!bnode) {
+ 			WARN_ON_ONCE(sizeof(struct kfree_rcu_bulk_data) > PAGE_SIZE);
+ 
+@@ -4277,12 +4324,23 @@ static void __init kfree_rcu_batch_init(void)
+ 
+ 	for_each_possible_cpu(cpu) {
+ 		struct kfree_rcu_cpu *krcp = per_cpu_ptr(&krc, cpu);
++		struct kfree_rcu_bulk_data *bnode;
+ 
+ 		for (i = 0; i < KFREE_N_BATCHES; i++) {
+ 			INIT_RCU_WORK(&krcp->krw_arr[i].rcu_work, kfree_rcu_work);
+ 			krcp->krw_arr[i].krcp = krcp;
+ 		}
+ 
++		for (i = 0; i < rcu_min_cached_objs; i++) {
++			bnode = (struct kfree_rcu_bulk_data *)
++				__get_free_page(GFP_NOWAIT | __GFP_NOWARN);
++
++			if (bnode)
++				put_cached_bnode(krcp, bnode);
++			else
++				pr_err("Failed to preallocate for %d CPU!\n", cpu);
++		}
++
+ 		INIT_DELAYED_WORK(&krcp->monitor_work, kfree_rcu_monitor);
+ 		krcp->initialized = true;
  	}
