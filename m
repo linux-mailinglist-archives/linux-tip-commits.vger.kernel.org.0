@@ -2,52 +2,58 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 927F023E4A7
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  7 Aug 2020 01:40:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E97FC23E4AA
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  7 Aug 2020 01:40:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726481AbgHFXit (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 6 Aug 2020 19:38:49 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:60886 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726394AbgHFXis (ORCPT
+        id S1727118AbgHFXke (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 6 Aug 2020 19:40:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49948 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726399AbgHFXir (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 6 Aug 2020 19:38:48 -0400
+        Thu, 6 Aug 2020 19:38:47 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D436C061574;
+        Thu,  6 Aug 2020 16:38:46 -0700 (PDT)
 Date:   Thu, 06 Aug 2020 23:38:44 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1596757125;
+        s=2020; t=1596757124;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=euZjanT6kjbBMt9mOI93vtI7+GhGL3QWOcr5yXnKhJE=;
-        b=kf8WYWyISqdKVTZ2qXYD+2hk0lxkEAf+0v7bHBofb9N6u/IN9As1dksbij1WiFHTuMHx0i
-        JnG6omaFV+bWcpepWA+dbQKGxAWn5kWosViZh5T1vxP9h0mmVrlS9ORuGqW4DzEiY1lpUW
-        S0XVHhmES4n7JyBVBjTApCeB3ZFzvMlF3TvmveX5Pf5Nza81UBsd8jOcUypwKTUnJxzpp3
-        A3qasIokbrzDO4+LdB3acJof5yrhxDHORRJygcXO4/IhuFWrj6egSOCO0QWjH6FZkmW7Z4
-        SeKcZQcpJbHXkeSIyFufSm2h/a+fisK50ku/K/F5nk6mzKDb478nR8SR8xbzCw==
+        bh=a/6bN2W+sbKqoMQVXc/N208gzWCrayhuS/+kjHFDvAY=;
+        b=BrhbW8WoN8ZgoiwRKN+ELUA/12D+PrqobcQScAwW2lL69y5LLa+0pJ5EIR0nPp2U+pP/4n
+        WjEnPC3244L5cIqW0TwV6JPoBa7w2k+cvjiOfhiapgukFC2pxZfNxEfQdMHxnGHIwninM3
+        GW+5536t4lZFeaJaRARq5nBfOvCLzeXFosporpf6GNpiES+mBRepGR5U0TtXdBJ7xeWxNQ
+        6jYu6BjxQf+42QqNhfiGTG5QUTfkKqlX2Oy7lE8DK8ag+ICfvihTDW6TxFzvBgduYKWOPa
+        AYHmqxi/qI8ick9nDu5FYggO/ws6aNaF6gYJuI0WCQNpFp0sIBDd3+pIRmigzA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1596757125;
+        s=2020e; t=1596757124;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=euZjanT6kjbBMt9mOI93vtI7+GhGL3QWOcr5yXnKhJE=;
-        b=KquSmEdCMCevjaYuCZf7g405FtdyyEiKXlwb78NUmQVxW/tl7EznntXVr7GE3yVGKEIOjE
-        ZD9n7vsmuZxzyeDw==
-From:   "tip-bot2 for Lianbo Jiang" <tip-bot2@linutronix.de>
+        bh=a/6bN2W+sbKqoMQVXc/N208gzWCrayhuS/+kjHFDvAY=;
+        b=4IsK0bVOvHegUuLCzCxTf5W0k/Oy211XSWpZNnZpU+C1hbFS6aZRurFGSHTZrqBd1Lpi0k
+        uZEQc6mYtkEmZ2BQ==
+From:   "tip-bot2 for Dilip Kota" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] kexec_file: Correctly output debugging information
- for the PT_LOAD ELF header
-Cc:     Lianbo Jiang <lijiang@redhat.com>, Ingo Molnar <mingo@kernel.org>,
-        Dave Young <dyoung@redhat.com>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200804044933.1973-4-lijiang@redhat.com>
-References: <20200804044933.1973-4-lijiang@redhat.com>
+Subject: [tip: x86/urgent] x86/tsr: Fix tsc frequency enumeration bug on
+ Lightning Mountain SoC
+Cc:     Dilip Kota <eswara.kota@linux.intel.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: =?utf-8?q?=3C211c643ae217604b46cbec43a2c0423946dc7d2d=2E15964?=
+ =?utf-8?q?40057=2Egit=2Eeswara=2Ekota=40linux=2Eintel=2Ecom=3E?=
+References: =?utf-8?q?=3C211c643ae217604b46cbec43a2c0423946dc7d2d=2E159644?=
+ =?utf-8?q?0057=2Egit=2Eeswara=2Ekota=40linux=2Eintel=2Ecom=3E?=
 MIME-Version: 1.0
-Message-ID: <159675712489.3192.10936858740810441552.tip-bot2@tip-bot2>
+Message-ID: <159675712426.3192.11461805237843153362.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,81 +65,53 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     475f63ae63b5102ae6423d1712333929d04d6ecc
-Gitweb:        https://git.kernel.org/tip/475f63ae63b5102ae6423d1712333929d04d6ecc
-Author:        Lianbo Jiang <lijiang@redhat.com>
-AuthorDate:    Tue, 04 Aug 2020 12:49:33 +08:00
+Commit-ID:     7d98585860d845e36ee612832a5ff021f201dbaf
+Gitweb:        https://git.kernel.org/tip/7d98585860d845e36ee612832a5ff021f201dbaf
+Author:        Dilip Kota <eswara.kota@linux.intel.com>
+AuthorDate:    Mon, 03 Aug 2020 15:56:36 +08:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Fri, 07 Aug 2020 01:32:00 +02:00
 
-kexec_file: Correctly output debugging information for the PT_LOAD ELF header
+x86/tsr: Fix tsc frequency enumeration bug on Lightning Mountain SoC
 
-Currently, when we enable the debugging switch to debug kexec_file,
-we always get the following incorrect results:
+Frequency descriptor of Lightning Mountain SoC doesn't have all the
+frequency entries so resulting in the below failure causing a kernel hang:
 
-  kexec_file: Crash PT_LOAD elf header. phdr=00000000c988639b vaddr=0x0, paddr=0x0, sz=0x0 e_phnum=51 p_offset=0x0
-  kexec_file: Crash PT_LOAD elf header. phdr=000000003cca69a0 vaddr=0x0, paddr=0x0, sz=0x0 e_phnum=52 p_offset=0x0
-  kexec_file: Crash PT_LOAD elf header. phdr=00000000c584cb9f vaddr=0x0, paddr=0x0, sz=0x0 e_phnum=53 p_offset=0x0
-  kexec_file: Crash PT_LOAD elf header. phdr=00000000cf85d57f vaddr=0x0, paddr=0x0, sz=0x0 e_phnum=54 p_offset=0x0
-  kexec_file: Crash PT_LOAD elf header. phdr=00000000a4a8f847 vaddr=0x0, paddr=0x0, sz=0x0 e_phnum=55 p_offset=0x0
-  kexec_file: Crash PT_LOAD elf header. phdr=00000000272ec49f vaddr=0x0, paddr=0x0, sz=0x0 e_phnum=56 p_offset=0x0
-  kexec_file: Crash PT_LOAD elf header. phdr=00000000ea0b65de vaddr=0x0, paddr=0x0, sz=0x0 e_phnum=57 p_offset=0x0
-  kexec_file: Crash PT_LOAD elf header. phdr=000000001f5e490c vaddr=0x0, paddr=0x0, sz=0x0 e_phnum=58 p_offset=0x0
-  kexec_file: Crash PT_LOAD elf header. phdr=00000000dfe4109e vaddr=0x0, paddr=0x0, sz=0x0 e_phnum=59 p_offset=0x0
-  kexec_file: Crash PT_LOAD elf header. phdr=00000000480ed2b6 vaddr=0x0, paddr=0x0, sz=0x0 e_phnum=60 p_offset=0x0
-  kexec_file: Crash PT_LOAD elf header. phdr=0000000080b65151 vaddr=0x0, paddr=0x0, sz=0x0 e_phnum=61 p_offset=0x0
-  kexec_file: Crash PT_LOAD elf header. phdr=0000000024e31c5e vaddr=0x0, paddr=0x0, sz=0x0 e_phnum=62 p_offset=0x0
-  kexec_file: Crash PT_LOAD elf header. phdr=00000000332e0385 vaddr=0x0, paddr=0x0, sz=0x0 e_phnum=63 p_offset=0x0
-  kexec_file: Crash PT_LOAD elf header. phdr=000000002754d5da vaddr=0x0, paddr=0x0, sz=0x0 e_phnum=64 p_offset=0x0
-  kexec_file: Crash PT_LOAD elf header. phdr=00000000783320dd vaddr=0x0, paddr=0x0, sz=0x0 e_phnum=65 p_offset=0x0
-  kexec_file: Crash PT_LOAD elf header. phdr=0000000076fe5b64 vaddr=0x0, paddr=0x0, sz=0x0 e_phnum=66 p_offset=0x0
+    Error MSR_FSB_FREQ index 15 is unknown
+    tsc: Fast TSC calibration failed
 
-The reason is that kernel always prints the values of the next PT_LOAD
-instead of the current PT_LOAD. Change it to ensure that we can get the
-correct debugging information.
+So, add all the frequency entries in the Lightning Mountain SoC frequency
+descriptor.
 
-[ mingo: Amended changelog, capitalized "ELF". ]
-
-Signed-off-by: Lianbo Jiang <lijiang@redhat.com>
+Fixes: 0cc5359d8fd45 ("x86/cpu: Update init data for new Airmont CPU model")
+Fixes: 812c2d7506fd ("x86/tsc_msr: Use named struct initializers")
+Signed-off-by: Dilip Kota <eswara.kota@linux.intel.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Dave Young <dyoung@redhat.com>
-Link: https://lore.kernel.org/r/20200804044933.1973-4-lijiang@redhat.com
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Link: https://lore.kernel.org/r/211c643ae217604b46cbec43a2c0423946dc7d2d.1596440057.git.eswara.kota@linux.intel.com
 ---
- kernel/kexec_file.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/x86/kernel/tsc_msr.c |  9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/kexec_file.c b/kernel/kexec_file.c
-index 97fa682..3f7867c 100644
---- a/kernel/kexec_file.c
-+++ b/kernel/kexec_file.c
-@@ -1246,7 +1246,7 @@ int crash_prepare_elf64_headers(struct crash_mem *mem, int kernel_map,
- 	unsigned long long notes_addr;
- 	unsigned long mstart, mend;
+diff --git a/arch/x86/kernel/tsc_msr.c b/arch/x86/kernel/tsc_msr.c
+index 4fec6f3..a654a9b 100644
+--- a/arch/x86/kernel/tsc_msr.c
++++ b/arch/x86/kernel/tsc_msr.c
+@@ -133,10 +133,15 @@ static const struct freq_desc freq_desc_ann = {
+ 	.mask = 0x0f,
+ };
  
--	/* extra phdr for vmcoreinfo elf note */
-+	/* extra phdr for vmcoreinfo ELF note */
- 	nr_phdr = nr_cpus + 1;
- 	nr_phdr += mem->nr_ranges;
+-/* 24 MHz crystal? : 24 * 13 / 4 = 78 MHz */
++/*
++ * 24 MHz crystal? : 24 * 13 / 4 = 78 MHz
++ * Frequency step for Lightning Mountain SoC is fixed to 78 MHz,
++ * so all the frequency entries are 78000.
++ */
+ static const struct freq_desc freq_desc_lgm = {
+ 	.use_msr_plat = true,
+-	.freqs = { 78000, 78000, 78000, 78000, 78000, 78000, 78000, 78000 },
++	.freqs = { 78000, 78000, 78000, 78000, 78000, 78000, 78000, 78000,
++		   78000, 78000, 78000, 78000, 78000, 78000, 78000, 78000 },
+ 	.mask = 0x0f,
+ };
  
-@@ -1254,7 +1254,7 @@ int crash_prepare_elf64_headers(struct crash_mem *mem, int kernel_map,
- 	 * kexec-tools creates an extra PT_LOAD phdr for kernel text mapping
- 	 * area (for example, ffffffff80000000 - ffffffffa0000000 on x86_64).
- 	 * I think this is required by tools like gdb. So same physical
--	 * memory will be mapped in two elf  headers. One will contain kernel
-+	 * memory will be mapped in two ELF headers. One will contain kernel
- 	 * text virtual addresses and other will have __va(physical) addresses.
- 	 */
- 
-@@ -1323,10 +1323,10 @@ int crash_prepare_elf64_headers(struct crash_mem *mem, int kernel_map,
- 		phdr->p_filesz = phdr->p_memsz = mend - mstart + 1;
- 		phdr->p_align = 0;
- 		ehdr->e_phnum++;
--		phdr++;
--		pr_debug("Crash PT_LOAD elf header. phdr=%p vaddr=0x%llx, paddr=0x%llx, sz=0x%llx e_phnum=%d p_offset=0x%llx\n",
-+		pr_debug("Crash PT_LOAD ELF header. phdr=%p vaddr=0x%llx, paddr=0x%llx, sz=0x%llx e_phnum=%d p_offset=0x%llx\n",
- 			phdr, phdr->p_vaddr, phdr->p_paddr, phdr->p_filesz,
- 			ehdr->e_phnum, phdr->p_offset);
-+		phdr++;
- 	}
- 
- 	*addr = buf;
