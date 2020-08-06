@@ -2,52 +2,51 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F4FE23E474
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  7 Aug 2020 01:39:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 431D523E48F
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  7 Aug 2020 01:39:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726624AbgHFXi7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 6 Aug 2020 19:38:59 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:60972 "EHLO
+        id S1726983AbgHFXjt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 6 Aug 2020 19:39:49 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:60984 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726585AbgHFXi6 (ORCPT
+        with ESMTP id S1726604AbgHFXi7 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 6 Aug 2020 19:38:58 -0400
-Date:   Thu, 06 Aug 2020 23:38:55 -0000
+        Thu, 6 Aug 2020 19:38:59 -0400
+Date:   Thu, 06 Aug 2020 23:38:56 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1596757136;
+        s=2020; t=1596757137;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=NRy200Kpf4NnYVl0QfDk0nBUrm1f1yuZ/hbZQNG/7+8=;
-        b=3bOdP1wCSXP5PR74QgDyZXOaaAQCI/dI4r2jrs2ZYLirjz3iicbceIO0zuvrPIDI0UTXLW
-        qTaEMAypwr6AHH0nQYv7pSQflEUGb/25cRwfcQeYiZLWG+pSm0uiUvdcphqHyVUc9KB6Mq
-        D7vE0VIvnZ2gnzoTlRq5wglhCEJggYCQTMZGvS5VMuHmiaIYIHdZqn8bUTx8VHJgni3g1a
-        94xW2KtUoEYqdUySgdIy3ak5BPXTHVn3dr0vHsoe1mTdmMSuCQ7JRqzcqufHiI+8wMw0rf
-        ZvgFbaW7vdhZnstofVFRuGkIuOEToYCQtCZajn341mS5ACgrsVJrPMRsYCpF+A==
+        bh=eXjoTKFCZ+Y/MWw/mqSyAJJ5aTDFDN/BMU0AUdWPDUk=;
+        b=k+Qg19D2vX5oaDEgRrOSK9NMYreIk6OVDc8NeaUEf5DiBpLL0D3/XcbPQPrOD91URIVQit
+        mrwJwwDkb69/Rk//43DnjEY/UhZk+4yL3n3QDBkBdrkB7OzZZxkmM1uXWce+TG2w0WigEn
+        EM7qdA028b+1f5QucJj9Jz42gd+gBOA0vxxjzmVtbnQiqcEjjJeZ1WzBMtFiIOth67jEyh
+        EBYSlIVYBdHlIsIvG5rOV9ogGyC7082wsjbaHOpEeHt7+Yfc6cK881wiS4Bd3no8uPtX0f
+        VDgohjJ36GVPuroLTFsB8ZYxVexZi4vmV1FSYxSkgEFO4asnTDUECoqz7V3bnA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1596757136;
+        s=2020e; t=1596757137;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=NRy200Kpf4NnYVl0QfDk0nBUrm1f1yuZ/hbZQNG/7+8=;
-        b=K/4LXZD4NVHsIRsLV0wJs37hluvA0y43fA6p1db1Ar5nmRjTX/v2HQZa/V7mPTWH6BLvLF
-        7cEKLJF9xO5goqCg==
+        bh=eXjoTKFCZ+Y/MWw/mqSyAJJ5aTDFDN/BMU0AUdWPDUk=;
+        b=3aR/53vW0DM1zbIj0V74y4mbzn17eC144fQQ0+OiE/6qmo5RVTjBfyYjmP/bzyiHroQ8+Z
+        egSYxKbqCwTtJHAg==
 From:   "tip-bot2 for Arvind Sankar" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/kaslr] x86/kaslr: Drop test for command-line parameters
- before parsing
+Subject: [tip: x86/kaslr] x86/kaslr: Short-circuit gb_huge_pages on x86-32
 Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
         Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200728225722.67457-14-nivedita@alum.mit.edu>
-References: <20200728225722.67457-14-nivedita@alum.mit.edu>
+In-Reply-To: <20200728225722.67457-12-nivedita@alum.mit.edu>
+References: <20200728225722.67457-12-nivedita@alum.mit.edu>
 MIME-Version: 1.0
-Message-ID: <159675713575.3192.10750788728765458633.tip-bot2@tip-bot2>
+Message-ID: <159675713698.3192.5462555690750286629.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,41 +58,45 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/kaslr branch of tip:
 
-Commit-ID:     3870d971791f13df88a7a656e3fd6e2df8686097
-Gitweb:        https://git.kernel.org/tip/3870d971791f13df88a7a656e3fd6e2df8686097
+Commit-ID:     50def2693a900dfb1d91872056dc8164245820fc
+Gitweb:        https://git.kernel.org/tip/50def2693a900dfb1d91872056dc8164245820fc
 Author:        Arvind Sankar <nivedita@alum.mit.edu>
-AuthorDate:    Tue, 28 Jul 2020 18:57:14 -04:00
+AuthorDate:    Tue, 28 Jul 2020 18:57:12 -04:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Fri, 31 Jul 2020 11:08:17 +02:00
 
-x86/kaslr: Drop test for command-line parameters before parsing
+x86/kaslr: Short-circuit gb_huge_pages on x86-32
 
-This check doesn't save anything. In the case when none of the
-parameters are present, each strstr will scan args twice (once to find
-the length and then for searching), six scans in total. Just going ahead
-and parsing the arguments only requires three scans: strlen, memcpy, and
-parsing. This will be the first malloc, so free will actually free up
-the memory, so the check doesn't save heap space either.
+32-bit does not have GB pages, so don't bother checking for them. Using
+the IS_ENABLED() macro allows the compiler to completely remove the
+gb_huge_pages code.
 
 Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20200728225722.67457-14-nivedita@alum.mit.edu
+Link: https://lore.kernel.org/r/20200728225722.67457-12-nivedita@alum.mit.edu
 ---
- arch/x86/boot/compressed/kaslr.c | 4 ----
- 1 file changed, 4 deletions(-)
+ arch/x86/boot/compressed/kaslr.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/arch/x86/boot/compressed/kaslr.c b/arch/x86/boot/compressed/kaslr.c
-index 00ef84b..bd13dc5 100644
+index 0df513e..3727e97 100644
 --- a/arch/x86/boot/compressed/kaslr.c
 +++ b/arch/x86/boot/compressed/kaslr.c
-@@ -279,10 +279,6 @@ static void handle_mem_options(void)
- 	if (!args)
- 		return;
+@@ -303,7 +303,7 @@ static void handle_mem_options(void)
  
--	if (!strstr(args, "memmap=") && !strstr(args, "mem=") &&
--		!strstr(args, "hugepages"))
--		return;
--
- 	len = strlen(args);
- 	tmp_cmdline = malloc(len + 1);
- 	if (!tmp_cmdline)
+ 		if (!strcmp(param, "memmap")) {
+ 			mem_avoid_memmap(PARSE_MEMMAP, val);
+-		} else if (strstr(param, "hugepages")) {
++		} else if (IS_ENABLED(CONFIG_X86_64) && strstr(param, "hugepages")) {
+ 			parse_gb_huge_pages(param, val);
+ 		} else if (!strcmp(param, "mem")) {
+ 			char *p = val;
+@@ -551,7 +551,7 @@ process_gb_huge_pages(struct mem_vector *region, unsigned long image_size)
+ 	struct mem_vector tmp;
+ 	int i = 0;
+ 
+-	if (!max_gb_huge_pages) {
++	if (!IS_ENABLED(CONFIG_X86_64) || !max_gb_huge_pages) {
+ 		store_slot_info(region, image_size);
+ 		return;
+ 	}
