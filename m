@@ -2,53 +2,51 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E368A23DDAD
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  6 Aug 2020 19:12:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B02C23DDC0
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  6 Aug 2020 19:14:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730402AbgHFRMs (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 6 Aug 2020 13:12:48 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:58908 "EHLO
+        id S1730400AbgHFRMr (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 6 Aug 2020 13:12:47 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:58912 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728618AbgHFRKC (ORCPT
+        with ESMTP id S1730213AbgHFRKD (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 6 Aug 2020 13:10:02 -0400
-Date:   Thu, 06 Aug 2020 17:09:59 -0000
+        Thu, 6 Aug 2020 13:10:03 -0400
+Date:   Thu, 06 Aug 2020 17:10:00 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1596733800;
+        s=2020; t=1596733801;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=WhBBokSrF82ZbtYUJtgHD6hRn4a5Q1lGUgPRNYgGxaY=;
-        b=QlI0bZD7UqOf7F4mJ/iXBonlcM7WVGludLM5Bo4k2eeDaSQXZzH5vQgrDNKbtv02udM6gf
-        +hbw/QxF5J0aR/+Lvvj+C0LLVY/TIXxxhSFOUTf1pFJHda/lwdboqIdfEY7sySnkAlr0+9
-        TjJNIy5yUeVTJkDrQvBgN385RyJGuratHEYbwFWhIKKr7l2a9vbB2NGZJguI1SEInlvDSZ
-        cGwzKv4WVrXA7Jk0IOyvsB2RwrBJTlJPNb6FVoWX22FG6wYjic0ZkvxCAsb7xaaftEoovW
-        /CZV6nT2cM8woBckuWsU1lJCAEmrxNU9rl3AqAgaMCDWONWZsav7Jy/3xFB12w==
+        bh=s/zdo6N3kr6DwXPfg4F5UGxVXyrpPOOGwsHDs97g2I4=;
+        b=2+mFfU3njFmL3l5dT7cX2MUSyLPXOwaND6Pn93DWxCr4BNfKd/8pU6PEcTdParl9Bd4vfN
+        fweYOIajGt6fL4fAU2eCAicyxdOwcAE8Esi0JX16LfAb1vjVQCJ0zYpq+XldJwQEG2bY13
+        v1fxmkR+az/QkBUVG/CfRkVyGuCH3VDtVVAMBoS15qrHxpSjHIcd976YxPK3tmA4wqfrvf
+        3s00/b+/cbudVTAj5I5yKhDfyf1UJF05cidP+KHkuOijPnwoFBs6FffJKm3+7CyShy5aOj
+        nKdGJiPNxjn22XWeawNScwApbiOsyb4XQbOGGm1SMzKvapgY67E7j/DmhdDX6A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1596733800;
+        s=2020e; t=1596733801;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=WhBBokSrF82ZbtYUJtgHD6hRn4a5Q1lGUgPRNYgGxaY=;
-        b=+oNYnKJt2YMCi46UVL3Gp0IrESwEl9dtwRoGF1+/pFPph45UK6+R5IqHN6zCaC6jUHqJAQ
-        99jKyR4ZOzMbC5DQ==
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+        bh=s/zdo6N3kr6DwXPfg4F5UGxVXyrpPOOGwsHDs97g2I4=;
+        b=TosHXgtWzY4CxwZWNRoZnAvUVfxakvzK0R70YJhLD717j/YklCEArBcWaLkK8VvAZAgsuS
+        pwMuYZCnfaLZhKDA==
+From:   "tip-bot2 for Sven Schnelle" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] posix-cpu-timers: Split run_posix_cpu_timers()
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@kernel.org>,
-        Oleg Nesterov <oleg@redhat.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200730102337.677439437@linutronix.de>
-References: <20200730102337.677439437@linutronix.de>
+Subject: [tip: timers/urgent] lib/vdso: Allow to add architecture-specific vdso data
+Cc:     Sven Schnelle <svens@linux.ibm.com>,
+        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200804150124.41692-2-svens@linux.ibm.com>
+References: <20200804150124.41692-2-svens@linux.ibm.com>
 MIME-Version: 1.0
-Message-ID: <159673379934.3192.4700870784395015756.tip-bot2@tip-bot2>
+Message-ID: <159673380055.3192.7751211345799683003.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,94 +56,81 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/core branch of tip:
+The following commit has been merged into the timers/urgent branch of tip:
 
-Commit-ID:     820903c784a01bf6e143253418508da4f5790cff
-Gitweb:        https://git.kernel.org/tip/820903c784a01bf6e143253418508da4f5790cff
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Thu, 30 Jul 2020 12:14:05 +02:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 06 Aug 2020 16:50:59 +02:00
+Commit-ID:     d60d7de3e16d7cea998bad17d87366a359625894
+Gitweb:        https://git.kernel.org/tip/d60d7de3e16d7cea998bad17d87366a359625894
+Author:        Sven Schnelle <svens@linux.ibm.com>
+AuthorDate:    Tue, 04 Aug 2020 17:01:22 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Thu, 06 Aug 2020 10:57:30 +02:00
 
-posix-cpu-timers: Split run_posix_cpu_timers()
+lib/vdso: Allow to add architecture-specific vdso data
 
-Split it up as a preparatory step to move the heavy lifting out of
-interrupt context.
+The initial assumption that all VDSO related data can be completely generic
+does not hold. S390 needs architecture specific storage to access the clock
+steering information.
 
+Add struct arch_vdso_data to the vdso data struct. For architectures which
+do not need extra data this defaults to an empty struct. Architectures
+which require it, enable CONFIG_ARCH_HAS_VDSO_DATA and provide their
+specific struct in asm/vdso/data.h.
+
+Signed-off-by: Sven Schnelle <svens@linux.ibm.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Oleg Nesterov <oleg@redhat.com>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20200730102337.677439437@linutronix.de
----
- kernel/time/posix-cpu-timers.c | 43 ++++++++++++++++++---------------
- 1 file changed, 24 insertions(+), 19 deletions(-)
+Link: https://lkml.kernel.org/r/20200804150124.41692-2-svens@linux.ibm.com
 
-diff --git a/kernel/time/posix-cpu-timers.c b/kernel/time/posix-cpu-timers.c
-index 1651179..e5ad873 100644
---- a/kernel/time/posix-cpu-timers.c
-+++ b/kernel/time/posix-cpu-timers.c
-@@ -1080,32 +1080,15 @@ static inline bool fastpath_timer_check(struct task_struct *tsk)
- 	return false;
- }
+---
+ arch/Kconfig            |  3 +++
+ include/vdso/datapage.h | 10 ++++++++++
+ 2 files changed, 13 insertions(+)
+
+diff --git a/arch/Kconfig b/arch/Kconfig
+index a112448..b44dd6b 100644
+--- a/arch/Kconfig
++++ b/arch/Kconfig
+@@ -975,6 +975,9 @@ config HAVE_SPARSE_SYSCALL_NR
+ 	  entries at 4000, 5000 and 6000 locations. This option turns on syscall
+ 	  related optimizations for a given architecture.
  
--/*
-- * This is called from the timer interrupt handler.  The irq handler has
-- * already updated our counts.  We need to check if any timers fire now.
-- * Interrupts are disabled.
-- */
--void run_posix_cpu_timers(void)
-+static void __run_posix_cpu_timers(struct task_struct *tsk)
- {
--	struct task_struct *tsk = current;
- 	struct k_itimer *timer, *next;
- 	unsigned long flags;
- 	LIST_HEAD(firing);
++config ARCH_HAS_VDSO_DATA
++	bool
++
+ source "kernel/gcov/Kconfig"
  
--	lockdep_assert_irqs_disabled();
--
--	/*
--	 * The fast path checks that there are no expired thread or thread
--	 * group timers.  If that's so, just return.
--	 */
--	if (!fastpath_timer_check(tsk))
-+	if (!lock_task_sighand(tsk, &flags))
- 		return;
+ source "scripts/gcc-plugins/Kconfig"
+diff --git a/include/vdso/datapage.h b/include/vdso/datapage.h
+index ee810ca..73eb622 100644
+--- a/include/vdso/datapage.h
++++ b/include/vdso/datapage.h
+@@ -19,6 +19,12 @@
+ #include <vdso/time32.h>
+ #include <vdso/time64.h>
  
--	lockdep_posixtimer_enter();
--	if (!lock_task_sighand(tsk, &flags)) {
--		lockdep_posixtimer_exit();
--		return;
--	}
- 	/*
- 	 * Here we take off tsk->signal->cpu_timers[N] and
- 	 * tsk->cpu_timers[N] all the timers that are firing, and
-@@ -1147,6 +1130,28 @@ void run_posix_cpu_timers(void)
- 			cpu_timer_fire(timer);
- 		spin_unlock(&timer->it_lock);
- 	}
-+}
++#ifdef CONFIG_ARCH_HAS_VDSO_DATA
++#include <asm/vdso/data.h>
++#else
++struct arch_vdso_data {};
++#endif
 +
-+/*
-+ * This is called from the timer interrupt handler.  The irq handler has
-+ * already updated our counts.  We need to check if any timers fire now.
-+ * Interrupts are disabled.
-+ */
-+void run_posix_cpu_timers(void)
-+{
-+	struct task_struct *tsk = current;
+ #define VDSO_BASES	(CLOCK_TAI + 1)
+ #define VDSO_HRES	(BIT(CLOCK_REALTIME)		| \
+ 			 BIT(CLOCK_MONOTONIC)		| \
+@@ -64,6 +70,8 @@ struct vdso_timestamp {
+  * @tz_dsttime:		type of DST correction
+  * @hrtimer_res:	hrtimer resolution
+  * @__unused:		unused
++ * @arch_data:		architecture specific data (optional, defaults
++ *			to an empty struct)
+  *
+  * vdso_data will be accessed by 64 bit and compat code at the same time
+  * so we should be careful before modifying this structure.
+@@ -97,6 +105,8 @@ struct vdso_data {
+ 	s32			tz_dsttime;
+ 	u32			hrtimer_res;
+ 	u32			__unused;
 +
-+	lockdep_assert_irqs_disabled();
-+
-+	/*
-+	 * The fast path checks that there are no expired thread or thread
-+	 * group timers.  If that's so, just return.
-+	 */
-+	if (!fastpath_timer_check(tsk))
-+		return;
-+
-+	lockdep_posixtimer_enter();
-+	__run_posix_cpu_timers(tsk);
- 	lockdep_posixtimer_exit();
- }
++	struct arch_vdso_data	arch_data;
+ };
  
+ /*
