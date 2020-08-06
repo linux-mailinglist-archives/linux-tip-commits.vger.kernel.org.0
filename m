@@ -2,58 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E97FC23E4AA
+	by mail.lfdr.de (Postfix) with ESMTP id 0A96E23E4A8
 	for <lists+linux-tip-commits@lfdr.de>; Fri,  7 Aug 2020 01:40:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727118AbgHFXke (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 6 Aug 2020 19:40:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49948 "EHLO
+        id S1726360AbgHFXit (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 6 Aug 2020 19:38:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49956 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726399AbgHFXir (ORCPT
+        with ESMTP id S1726446AbgHFXis (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 6 Aug 2020 19:38:47 -0400
+        Thu, 6 Aug 2020 19:38:48 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D436C061574;
-        Thu,  6 Aug 2020 16:38:46 -0700 (PDT)
-Date:   Thu, 06 Aug 2020 23:38:44 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0288C061575;
+        Thu,  6 Aug 2020 16:38:47 -0700 (PDT)
+Date:   Thu, 06 Aug 2020 23:38:45 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1596757124;
+        s=2020; t=1596757126;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=a/6bN2W+sbKqoMQVXc/N208gzWCrayhuS/+kjHFDvAY=;
-        b=BrhbW8WoN8ZgoiwRKN+ELUA/12D+PrqobcQScAwW2lL69y5LLa+0pJ5EIR0nPp2U+pP/4n
-        WjEnPC3244L5cIqW0TwV6JPoBa7w2k+cvjiOfhiapgukFC2pxZfNxEfQdMHxnGHIwninM3
-        GW+5536t4lZFeaJaRARq5nBfOvCLzeXFosporpf6GNpiES+mBRepGR5U0TtXdBJ7xeWxNQ
-        6jYu6BjxQf+42QqNhfiGTG5QUTfkKqlX2Oy7lE8DK8ag+ICfvihTDW6TxFzvBgduYKWOPa
-        AYHmqxi/qI8ick9nDu5FYggO/ws6aNaF6gYJuI0WCQNpFp0sIBDd3+pIRmigzA==
+        bh=z9Ue43woZ8D4rqkM2savDZbJ72Y/T7d229UG6PhY8aY=;
+        b=xalOR3qjDzjU+60DE5Ncb/hcpCmycT0hCQBYUiylwKqYf4oYOL/3pNNStaHtJzkgbwADhb
+        rdt4BW049AYzFOKW9Q+/s5i9wSh03ukVAlS7Vq6mXkztvn0hSiCyu+ellF6Ym/1d+akVGR
+        cQP5F69uD6CA741/m1Nttcchd/AV+m8SIzBXL6OFQQLB+MHS6/aN+6xp3/t8OVBpqs7cOz
+        cN/kCz4WKseh6dNwPDJD+mN4LkeumVY5UneUaw6sKIyhuv921D2SCxjDCDePi6h1PjOybV
+        7VgzbkN5l7IVedCvMnYEwpCmuQh9SNkQ9tbJcXKH9sDXy/I29Xuk0j9pS04w0w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1596757124;
+        s=2020e; t=1596757126;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=a/6bN2W+sbKqoMQVXc/N208gzWCrayhuS/+kjHFDvAY=;
-        b=4IsK0bVOvHegUuLCzCxTf5W0k/Oy211XSWpZNnZpU+C1hbFS6aZRurFGSHTZrqBd1Lpi0k
-        uZEQc6mYtkEmZ2BQ==
-From:   "tip-bot2 for Dilip Kota" <tip-bot2@linutronix.de>
+        bh=z9Ue43woZ8D4rqkM2savDZbJ72Y/T7d229UG6PhY8aY=;
+        b=KWKnFpe0c1kiJbTDbX2ofVQQa9mtcGVmTTPgz2iMEBGUwd/UQupCYYg5AaaWLwurM5hm03
+        L5EffIyKZqqa2UCQ==
+From:   "tip-bot2 for Lianbo Jiang" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/tsr: Fix tsc frequency enumeration bug on
- Lightning Mountain SoC
-Cc:     Dilip Kota <eswara.kota@linux.intel.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: =?utf-8?q?=3C211c643ae217604b46cbec43a2c0423946dc7d2d=2E15964?=
- =?utf-8?q?40057=2Egit=2Eeswara=2Ekota=40linux=2Eintel=2Ecom=3E?=
-References: =?utf-8?q?=3C211c643ae217604b46cbec43a2c0423946dc7d2d=2E159644?=
- =?utf-8?q?0057=2Egit=2Eeswara=2Ekota=40linux=2Eintel=2Ecom=3E?=
+Subject: [tip: x86/urgent] kexec: Improve & fix crash_exclude_mem_range() to
+ handle overlapping ranges
+Cc:     Lianbo Jiang <lijiang@redhat.com>, Ingo Molnar <mingo@kernel.org>,
+        Dave Young <dyoung@redhat.com>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200804044933.1973-3-lijiang@redhat.com>
+References: <20200804044933.1973-3-lijiang@redhat.com>
 MIME-Version: 1.0
-Message-ID: <159675712426.3192.11461805237843153362.tip-bot2@tip-bot2>
+Message-ID: <159675712551.3192.12580323295700287639.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,53 +62,139 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     7d98585860d845e36ee612832a5ff021f201dbaf
-Gitweb:        https://git.kernel.org/tip/7d98585860d845e36ee612832a5ff021f201dbaf
-Author:        Dilip Kota <eswara.kota@linux.intel.com>
-AuthorDate:    Mon, 03 Aug 2020 15:56:36 +08:00
+Commit-ID:     a2e9a95d2190ef55bf0724ecdf8a466d393a86b6
+Gitweb:        https://git.kernel.org/tip/a2e9a95d2190ef55bf0724ecdf8a466d393a86b6
+Author:        Lianbo Jiang <lijiang@redhat.com>
+AuthorDate:    Tue, 04 Aug 2020 12:49:32 +08:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Fri, 07 Aug 2020 01:32:00 +02:00
 
-x86/tsr: Fix tsc frequency enumeration bug on Lightning Mountain SoC
+kexec: Improve & fix crash_exclude_mem_range() to handle overlapping ranges
 
-Frequency descriptor of Lightning Mountain SoC doesn't have all the
-frequency entries so resulting in the below failure causing a kernel hang:
+The crash_exclude_mem_range() function can only handle one memory region a time.
 
-    Error MSR_FSB_FREQ index 15 is unknown
-    tsc: Fast TSC calibration failed
+It will fail in the case in which the passed in area covers several memory
+regions. In this case, it will only exclude the first region, then return,
+but leave the later regions unsolved.
 
-So, add all the frequency entries in the Lightning Mountain SoC frequency
-descriptor.
+E.g in a NEC system with two usable RAM regions inside the low 1M:
 
-Fixes: 0cc5359d8fd45 ("x86/cpu: Update init data for new Airmont CPU model")
-Fixes: 812c2d7506fd ("x86/tsc_msr: Use named struct initializers")
-Signed-off-by: Dilip Kota <eswara.kota@linux.intel.com>
+  ...
+  BIOS-e820: [mem 0x0000000000000000-0x000000000003efff] usable
+  BIOS-e820: [mem 0x000000000003f000-0x000000000003ffff] reserved
+  BIOS-e820: [mem 0x0000000000040000-0x000000000009ffff] usable
+
+It will only exclude the memory region [0, 0x3efff], the memory region
+[0x40000, 0x9ffff] will still be added into /proc/vmcore, which may cause
+the following failure when dumping vmcore:
+
+ ioremap on RAM at 0x0000000000040000 - 0x0000000000040fff
+ WARNING: CPU: 0 PID: 665 at arch/x86/mm/ioremap.c:186 __ioremap_caller+0x2c7/0x2e0
+ ...
+ RIP: 0010:__ioremap_caller+0x2c7/0x2e0
+ ...
+ cp: error reading '/proc/vmcore': Cannot allocate memory
+ kdump: saving vmcore failed
+
+In order to fix this bug, let's extend the crash_exclude_mem_range()
+to handle the overlapping ranges.
+
+[ mingo: Amended the changelog. ]
+
+Signed-off-by: Lianbo Jiang <lijiang@redhat.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Link: https://lore.kernel.org/r/211c643ae217604b46cbec43a2c0423946dc7d2d.1596440057.git.eswara.kota@linux.intel.com
+Acked-by: Dave Young <dyoung@redhat.com>
+Link: https://lore.kernel.org/r/20200804044933.1973-3-lijiang@redhat.com
 ---
- arch/x86/kernel/tsc_msr.c |  9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ kernel/kexec_file.c | 35 +++++++++++++++++++++++------------
+ 1 file changed, 23 insertions(+), 12 deletions(-)
 
-diff --git a/arch/x86/kernel/tsc_msr.c b/arch/x86/kernel/tsc_msr.c
-index 4fec6f3..a654a9b 100644
---- a/arch/x86/kernel/tsc_msr.c
-+++ b/arch/x86/kernel/tsc_msr.c
-@@ -133,10 +133,15 @@ static const struct freq_desc freq_desc_ann = {
- 	.mask = 0x0f,
- };
+diff --git a/kernel/kexec_file.c b/kernel/kexec_file.c
+index 94661d2..97fa682 100644
+--- a/kernel/kexec_file.c
++++ b/kernel/kexec_file.c
+@@ -1157,24 +1157,26 @@ int crash_exclude_mem_range(struct crash_mem *mem,
+ 			    unsigned long long mstart, unsigned long long mend)
+ {
+ 	int i, j;
+-	unsigned long long start, end;
++	unsigned long long start, end, p_start, p_end;
+ 	struct crash_mem_range temp_range = {0, 0};
  
--/* 24 MHz crystal? : 24 * 13 / 4 = 78 MHz */
-+/*
-+ * 24 MHz crystal? : 24 * 13 / 4 = 78 MHz
-+ * Frequency step for Lightning Mountain SoC is fixed to 78 MHz,
-+ * so all the frequency entries are 78000.
-+ */
- static const struct freq_desc freq_desc_lgm = {
- 	.use_msr_plat = true,
--	.freqs = { 78000, 78000, 78000, 78000, 78000, 78000, 78000, 78000 },
-+	.freqs = { 78000, 78000, 78000, 78000, 78000, 78000, 78000, 78000,
-+		   78000, 78000, 78000, 78000, 78000, 78000, 78000, 78000 },
- 	.mask = 0x0f,
- };
+ 	for (i = 0; i < mem->nr_ranges; i++) {
+ 		start = mem->ranges[i].start;
+ 		end = mem->ranges[i].end;
++		p_start = mstart;
++		p_end = mend;
  
+ 		if (mstart > end || mend < start)
+ 			continue;
+ 
+ 		/* Truncate any area outside of range */
+ 		if (mstart < start)
+-			mstart = start;
++			p_start = start;
+ 		if (mend > end)
+-			mend = end;
++			p_end = end;
+ 
+ 		/* Found completely overlapping range */
+-		if (mstart == start && mend == end) {
++		if (p_start == start && p_end == end) {
+ 			mem->ranges[i].start = 0;
+ 			mem->ranges[i].end = 0;
+ 			if (i < mem->nr_ranges - 1) {
+@@ -1185,20 +1187,29 @@ int crash_exclude_mem_range(struct crash_mem *mem,
+ 					mem->ranges[j].end =
+ 							mem->ranges[j+1].end;
+ 				}
++
++				/*
++				 * Continue to check if there are another overlapping ranges
++				 * from the current position because of shifting the above
++				 * mem ranges.
++				 */
++				i--;
++				mem->nr_ranges--;
++				continue;
+ 			}
+ 			mem->nr_ranges--;
+ 			return 0;
+ 		}
+ 
+-		if (mstart > start && mend < end) {
++		if (p_start > start && p_end < end) {
+ 			/* Split original range */
+-			mem->ranges[i].end = mstart - 1;
+-			temp_range.start = mend + 1;
++			mem->ranges[i].end = p_start - 1;
++			temp_range.start = p_end + 1;
+ 			temp_range.end = end;
+-		} else if (mstart != start)
+-			mem->ranges[i].end = mstart - 1;
++		} else if (p_start != start)
++			mem->ranges[i].end = p_start - 1;
+ 		else
+-			mem->ranges[i].start = mend + 1;
++			mem->ranges[i].start = p_end + 1;
+ 		break;
+ 	}
+ 
+@@ -1243,7 +1254,7 @@ int crash_prepare_elf64_headers(struct crash_mem *mem, int kernel_map,
+ 	 * kexec-tools creates an extra PT_LOAD phdr for kernel text mapping
+ 	 * area (for example, ffffffff80000000 - ffffffffa0000000 on x86_64).
+ 	 * I think this is required by tools like gdb. So same physical
+-	 * memory will be mapped in two elf headers. One will contain kernel
++	 * memory will be mapped in two elf  headers. One will contain kernel
+ 	 * text virtual addresses and other will have __va(physical) addresses.
+ 	 */
+ 
+@@ -1270,7 +1281,7 @@ int crash_prepare_elf64_headers(struct crash_mem *mem, int kernel_map,
+ 	ehdr->e_ehsize = sizeof(Elf64_Ehdr);
+ 	ehdr->e_phentsize = sizeof(Elf64_Phdr);
+ 
+-	/* Prepare one phdr of type PT_NOTE for each present cpu */
++	/* Prepare one phdr of type PT_NOTE for each present CPU */
+ 	for_each_present_cpu(cpu) {
+ 		phdr->p_type = PT_NOTE;
+ 		notes_addr = per_cpu_ptr_to_phys(per_cpu_ptr(crash_notes, cpu));
