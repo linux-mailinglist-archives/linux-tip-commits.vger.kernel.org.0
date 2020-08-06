@@ -2,52 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3729023E484
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  7 Aug 2020 01:39:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC26823E478
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  7 Aug 2020 01:39:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726128AbgHFXjc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 6 Aug 2020 19:39:32 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:60966 "EHLO
+        id S1726776AbgHFXjH (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 6 Aug 2020 19:39:07 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:60990 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726718AbgHFXjE (ORCPT
+        with ESMTP id S1726733AbgHFXjG (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 6 Aug 2020 19:39:04 -0400
-Date:   Thu, 06 Aug 2020 23:39:02 -0000
+        Thu, 6 Aug 2020 19:39:06 -0400
+Date:   Thu, 06 Aug 2020 23:39:03 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1596757142;
+        s=2020; t=1596757144;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=965pAqaMzTYAjEnNgooelFyKKV0yVuFCat0tV7lH4Y4=;
-        b=WUO1ltbdFI5+BHWlBEZVNAwWhK/L1K8LI/uddn6T3L49hu3uoVPAlQDacqyjQj8aYlPr6D
-        nNcr6k7+vEdoBKrKiYOrnBdwbJU0TL1wPxX2RADaCgXf/HVwOpJzteESvphF0VFpHm0Slm
-        AjvACtHcnp1esXVIqrPwB33Z4BLbxPB6oeP52oYrnnbC5wK8FYQrFt5ll/Lf4C2NOkLh+B
-        mO+yFcGEqGHxQzpF9ByBztAFwfsm3fUSD0cxSNkmG1IHz2cgkn5IJlA50AIDW6K0ssw5UG
-        VqUiV41LG79+/V2svNqqvfoSOL4OjnAICAkZ7Go7t6ky6UuZ9gPleY4IjYptEQ==
+        bh=mRN6QvitSIvL/somoMlX60NzPXdS9FzFfalaag+UTxM=;
+        b=RKNOVCYPvKU5dgrAcJfXJpCLw6QDFJPr4TunVyd4NhVKNBz6XJ8bM0oS6ooFywRTkFZHO6
+        wBaTDxU3O73ZQ9Z7OaxGP0BRiYG8tuYFcNLkt+zKed7u46svRn4z7UYdURcMlK/1YcbYnG
+        ObX84yg/34OJh9KUPAv5IpMdRGKrAa3GGPsEOR/CoSDVOeBTKZQ72wcSZ60NNiFCdE56AJ
+        notzgDwlPx6MV05FjllQXeqquQJrUd2DTpomUc6fClv9ELqUFcyi4j0qncOidlbd1d4V9A
+        tagDrtS3hNmHdXpcFcpnm4Mx5i/eeyefLCztQUEorZIG1UrY3XRbBLBsLRX+kA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1596757142;
+        s=2020e; t=1596757144;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=965pAqaMzTYAjEnNgooelFyKKV0yVuFCat0tV7lH4Y4=;
-        b=27kD3CyMqToLhGWd7PPeiJBCWj5/6QO4M8+VLufrk6AdvR4X006T08upP1wLAiYTkOLVvh
-        PxqF8c7hz+k2raDA==
+        bh=mRN6QvitSIvL/somoMlX60NzPXdS9FzFfalaag+UTxM=;
+        b=K4LXh0Sduu8HHbfoGYV1qPVQUXXTWMeY+kN0WHJpn0oLPUFJOdBsaVExwpvnA9IzmjoaeP
+        fQR8FVpHyX3H/lAQ==
 From:   "tip-bot2 for Arvind Sankar" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/kaslr] x86/kaslr: Fix process_efi_entries comment
+Subject: [tip: x86/kaslr] x86/kaslr: Make command line handling safer
 Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
         Ingo Molnar <mingo@kernel.org>,
         Kees Cook <keescook@chromium.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200727230801.3468620-4-nivedita@alum.mit.edu>
-References: <20200727230801.3468620-4-nivedita@alum.mit.edu>
+In-Reply-To: <20200727230801.3468620-2-nivedita@alum.mit.edu>
+References: <20200727230801.3468620-2-nivedita@alum.mit.edu>
 MIME-Version: 1.0
-Message-ID: <159675714219.3192.7212574474867061776.tip-bot2@tip-bot2>
+Message-ID: <159675714346.3192.17629244064214120082.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,42 +59,84 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/kaslr branch of tip:
 
-Commit-ID:     08705365560a352d3f5b4f1f52270b4d4ff7911e
-Gitweb:        https://git.kernel.org/tip/08705365560a352d3f5b4f1f52270b4d4ff7911e
+Commit-ID:     709709ac6410f4a14ded158a4b23b979e33e10fb
+Gitweb:        https://git.kernel.org/tip/709709ac6410f4a14ded158a4b23b979e33e10fb
 Author:        Arvind Sankar <nivedita@alum.mit.edu>
-AuthorDate:    Mon, 27 Jul 2020 19:07:56 -04:00
+AuthorDate:    Mon, 27 Jul 2020 19:07:54 -04:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 31 Jul 2020 11:08:12 +02:00
+CommitterDate: Fri, 31 Jul 2020 11:07:51 +02:00
 
-x86/kaslr: Fix process_efi_entries comment
+x86/kaslr: Make command line handling safer
 
-Since commit:
+Handle the possibility that the command line is NULL.
 
-  0982adc74673 ("x86/boot/KASLR: Work around firmware bugs by excluding EFI_BOOT_SERVICES_* and EFI_LOADER_* from KASLR's choice")
-
-process_efi_entries() will return true if we have an EFI memmap, not just
-if it contained EFI_MEMORY_MORE_RELIABLE regions.
+Replace open-coded strlen with a function call.
 
 Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Reviewed-by: Kees Cook <keescook@chromium.org>
-Link: https://lore.kernel.org/r/20200727230801.3468620-4-nivedita@alum.mit.edu
+Link: https://lore.kernel.org/r/20200727230801.3468620-2-nivedita@alum.mit.edu
 ---
- arch/x86/boot/compressed/kaslr.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/boot/compressed/kaslr.c | 26 ++++++++++++++------------
+ 1 file changed, 14 insertions(+), 12 deletions(-)
 
 diff --git a/arch/x86/boot/compressed/kaslr.c b/arch/x86/boot/compressed/kaslr.c
-index c31f3a5..1ab67a8 100644
+index d7408af..e0f69f3 100644
 --- a/arch/x86/boot/compressed/kaslr.c
 +++ b/arch/x86/boot/compressed/kaslr.c
-@@ -742,8 +742,8 @@ static bool process_mem_region(struct mem_vector *region,
+@@ -268,15 +268,19 @@ static void parse_gb_huge_pages(char *param, char *val)
+ static void handle_mem_options(void)
+ {
+ 	char *args = (char *)get_cmd_line_ptr();
+-	size_t len = strlen((char *)args);
++	size_t len;
+ 	char *tmp_cmdline;
+ 	char *param, *val;
+ 	u64 mem_size;
  
- #ifdef CONFIG_EFI
- /*
-- * Returns true if mirror region found (and must have been processed
-- * for slots adding)
-+ * Returns true if we processed the EFI memmap, which we prefer over the E820
-+ * table if it is available.
-  */
- static bool
- process_efi_entries(unsigned long minimum, unsigned long image_size)
++	if (!args)
++		return;
++
+ 	if (!strstr(args, "memmap=") && !strstr(args, "mem=") &&
+ 		!strstr(args, "hugepages"))
+ 		return;
+ 
++	len = strlen(args);
+ 	tmp_cmdline = malloc(len + 1);
+ 	if (!tmp_cmdline)
+ 		error("Failed to allocate space for tmp_cmdline");
+@@ -399,8 +403,7 @@ static void mem_avoid_init(unsigned long input, unsigned long input_size,
+ {
+ 	unsigned long init_size = boot_params->hdr.init_size;
+ 	u64 initrd_start, initrd_size;
+-	u64 cmd_line, cmd_line_size;
+-	char *ptr;
++	unsigned long cmd_line, cmd_line_size;
+ 
+ 	/*
+ 	 * Avoid the region that is unsafe to overlap during
+@@ -421,16 +424,15 @@ static void mem_avoid_init(unsigned long input, unsigned long input_size,
+ 	/* No need to set mapping for initrd, it will be handled in VO. */
+ 
+ 	/* Avoid kernel command line. */
+-	cmd_line  = (u64)boot_params->ext_cmd_line_ptr << 32;
+-	cmd_line |= boot_params->hdr.cmd_line_ptr;
++	cmd_line = get_cmd_line_ptr();
+ 	/* Calculate size of cmd_line. */
+-	ptr = (char *)(unsigned long)cmd_line;
+-	for (cmd_line_size = 0; ptr[cmd_line_size++];)
+-		;
+-	mem_avoid[MEM_AVOID_CMDLINE].start = cmd_line;
+-	mem_avoid[MEM_AVOID_CMDLINE].size = cmd_line_size;
+-	add_identity_map(mem_avoid[MEM_AVOID_CMDLINE].start,
+-			 mem_avoid[MEM_AVOID_CMDLINE].size);
++	if (cmd_line) {
++		cmd_line_size = strlen((char *)cmd_line) + 1;
++		mem_avoid[MEM_AVOID_CMDLINE].start = cmd_line;
++		mem_avoid[MEM_AVOID_CMDLINE].size = cmd_line_size;
++		add_identity_map(mem_avoid[MEM_AVOID_CMDLINE].start,
++				 mem_avoid[MEM_AVOID_CMDLINE].size);
++	}
+ 
+ 	/* Avoid boot parameters. */
+ 	mem_avoid[MEM_AVOID_BOOTPARAMS].start = (unsigned long)boot_params;
