@@ -2,14 +2,14 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 431D523E48F
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  7 Aug 2020 01:39:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F4E823E496
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  7 Aug 2020 01:40:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726983AbgHFXjt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 6 Aug 2020 19:39:49 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:60984 "EHLO
+        id S1727006AbgHFXj4 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 6 Aug 2020 19:39:56 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:60936 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726604AbgHFXi7 (ORCPT
+        with ESMTP id S1726595AbgHFXi7 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Thu, 6 Aug 2020 19:38:59 -0400
 Date:   Thu, 06 Aug 2020 23:38:56 -0000
@@ -20,12 +20,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=eXjoTKFCZ+Y/MWw/mqSyAJJ5aTDFDN/BMU0AUdWPDUk=;
-        b=k+Qg19D2vX5oaDEgRrOSK9NMYreIk6OVDc8NeaUEf5DiBpLL0D3/XcbPQPrOD91URIVQit
-        mrwJwwDkb69/Rk//43DnjEY/UhZk+4yL3n3QDBkBdrkB7OzZZxkmM1uXWce+TG2w0WigEn
-        EM7qdA028b+1f5QucJj9Jz42gd+gBOA0vxxjzmVtbnQiqcEjjJeZ1WzBMtFiIOth67jEyh
-        EBYSlIVYBdHlIsIvG5rOV9ogGyC7082wsjbaHOpEeHt7+Yfc6cK881wiS4Bd3no8uPtX0f
-        VDgohjJ36GVPuroLTFsB8ZYxVexZi4vmV1FSYxSkgEFO4asnTDUECoqz7V3bnA==
+        bh=INTq0XLsB267sE8Ey06szv6/TkBzi3zrOmLj6qcppWs=;
+        b=v+KIdBQSCRWqk34IF/6S/HxLXs57UwGXHbH7eeepVMhoWGhBCYGyw+yX5TsrxWZ0CatWLe
+        7tGOpUw121hSbJr8Rcy1cliemNwqmMqIV/ZLDRtUN49avonGpv+2lCuD24BSGVSIGJpc70
+        uBLmZQK88tBhRxeEgjujPjihgof/lA9Vrvfl+dGLlk+L8PdR7N8homLaA0e6ehhocYCsx4
+        lmQvK1RaGN70JSb5x6zmF5NMtSgpcufiBfHA06ZUCo8SRuL5l9mBScVXWFV4bE83lvHG3u
+        g7bMcSt9UWkjaZ1UndvVodQhgq0e92yW15fSpsSBKpvsCi8/gXhABeGr1IJgqQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1596757137;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -33,20 +33,20 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=eXjoTKFCZ+Y/MWw/mqSyAJJ5aTDFDN/BMU0AUdWPDUk=;
-        b=3aR/53vW0DM1zbIj0V74y4mbzn17eC144fQQ0+OiE/6qmo5RVTjBfyYjmP/bzyiHroQ8+Z
-        egSYxKbqCwTtJHAg==
+        bh=INTq0XLsB267sE8Ey06szv6/TkBzi3zrOmLj6qcppWs=;
+        b=orYR0jLZwgAVhC5m4tqayPKUDbHBxAySbdwf0DbuIUErgUo8RnZCcXA7w5CiR0SIKsSZig
+        WB1PCQqm3p0lmmDQ==
 From:   "tip-bot2 for Arvind Sankar" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/kaslr] x86/kaslr: Short-circuit gb_huge_pages on x86-32
+Subject: [tip: x86/kaslr] x86/kaslr: Simplify process_gb_huge_pages()
 Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
         Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200728225722.67457-12-nivedita@alum.mit.edu>
-References: <20200728225722.67457-12-nivedita@alum.mit.edu>
+In-Reply-To: <20200728225722.67457-13-nivedita@alum.mit.edu>
+References: <20200728225722.67457-13-nivedita@alum.mit.edu>
 MIME-Version: 1.0
-Message-ID: <159675713698.3192.5462555690750286629.tip-bot2@tip-bot2>
+Message-ID: <159675713636.3192.8550558633124756003.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,45 +58,96 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/kaslr branch of tip:
 
-Commit-ID:     50def2693a900dfb1d91872056dc8164245820fc
-Gitweb:        https://git.kernel.org/tip/50def2693a900dfb1d91872056dc8164245820fc
+Commit-ID:     be9e8d9541a95bdfac1c13d112cc032ea7fc745f
+Gitweb:        https://git.kernel.org/tip/be9e8d9541a95bdfac1c13d112cc032ea7fc745f
 Author:        Arvind Sankar <nivedita@alum.mit.edu>
-AuthorDate:    Tue, 28 Jul 2020 18:57:12 -04:00
+AuthorDate:    Tue, 28 Jul 2020 18:57:13 -04:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Fri, 31 Jul 2020 11:08:17 +02:00
 
-x86/kaslr: Short-circuit gb_huge_pages on x86-32
+x86/kaslr: Simplify process_gb_huge_pages()
 
-32-bit does not have GB pages, so don't bother checking for them. Using
-the IS_ENABLED() macro allows the compiler to completely remove the
-gb_huge_pages code.
+Replace the loop to determine the number of 1Gb pages with arithmetic.
 
 Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20200728225722.67457-12-nivedita@alum.mit.edu
+Link: https://lore.kernel.org/r/20200728225722.67457-13-nivedita@alum.mit.edu
 ---
- arch/x86/boot/compressed/kaslr.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/boot/compressed/kaslr.c | 47 +++++++++++++------------------
+ 1 file changed, 21 insertions(+), 26 deletions(-)
 
 diff --git a/arch/x86/boot/compressed/kaslr.c b/arch/x86/boot/compressed/kaslr.c
-index 0df513e..3727e97 100644
+index 3727e97..00ef84b 100644
 --- a/arch/x86/boot/compressed/kaslr.c
 +++ b/arch/x86/boot/compressed/kaslr.c
-@@ -303,7 +303,7 @@ static void handle_mem_options(void)
- 
- 		if (!strcmp(param, "memmap")) {
- 			mem_avoid_memmap(PARSE_MEMMAP, val);
--		} else if (strstr(param, "hugepages")) {
-+		} else if (IS_ENABLED(CONFIG_X86_64) && strstr(param, "hugepages")) {
- 			parse_gb_huge_pages(param, val);
- 		} else if (!strcmp(param, "mem")) {
- 			char *p = val;
-@@ -551,7 +551,7 @@ process_gb_huge_pages(struct mem_vector *region, unsigned long image_size)
+@@ -547,49 +547,44 @@ static void store_slot_info(struct mem_vector *region, unsigned long image_size)
+ static void
+ process_gb_huge_pages(struct mem_vector *region, unsigned long image_size)
+ {
+-	unsigned long addr, size = 0;
++	unsigned long pud_start, pud_end, gb_huge_pages;
  	struct mem_vector tmp;
- 	int i = 0;
+-	int i = 0;
  
--	if (!max_gb_huge_pages) {
-+	if (!IS_ENABLED(CONFIG_X86_64) || !max_gb_huge_pages) {
+ 	if (!IS_ENABLED(CONFIG_X86_64) || !max_gb_huge_pages) {
  		store_slot_info(region, image_size);
  		return;
  	}
+ 
+-	addr = ALIGN(region->start, PUD_SIZE);
+-	/* Did we raise the address above the passed in memory entry? */
+-	if (addr < region->start + region->size)
+-		size = region->size - (addr - region->start);
+-
+-	/* Check how many 1GB huge pages can be filtered out: */
+-	while (size >= PUD_SIZE && max_gb_huge_pages) {
+-		size -= PUD_SIZE;
+-		max_gb_huge_pages--;
+-		i++;
+-	}
++	/* Are there any 1GB pages in the region? */
++	pud_start = ALIGN(region->start, PUD_SIZE);
++	pud_end = ALIGN_DOWN(region->start + region->size, PUD_SIZE);
+ 
+ 	/* No good 1GB huge pages found: */
+-	if (!i) {
++	if (pud_start >= pud_end) {
+ 		store_slot_info(region, image_size);
+ 		return;
+ 	}
+ 
+-	/*
+-	 * Skip those 'i'*1GB good huge pages, and continue checking and
+-	 * processing the remaining head or tail part of the passed region
+-	 * if available.
+-	 */
+-
+-	if (addr >= region->start + image_size) {
++	/* Check if the head part of the region is usable. */
++	if (pud_start >= region->start + image_size) {
+ 		tmp.start = region->start;
+-		tmp.size = addr - region->start;
++		tmp.size = pud_start - region->start;
+ 		store_slot_info(&tmp, image_size);
+ 	}
+ 
+-	size  = region->size - (addr - region->start) - i * PUD_SIZE;
+-	if (size >= image_size) {
+-		tmp.start = addr + i * PUD_SIZE;
+-		tmp.size = size;
++	/* Skip the good 1GB pages. */
++	gb_huge_pages = (pud_end - pud_start) >> PUD_SHIFT;
++	if (gb_huge_pages > max_gb_huge_pages) {
++		pud_end = pud_start + (max_gb_huge_pages << PUD_SHIFT);
++		max_gb_huge_pages = 0;
++	} else {
++		max_gb_huge_pages -= gb_huge_pages;
++	}
++
++	/* Check if the tail part of the region is usable. */
++	if (region->start + region->size >= pud_end + image_size) {
++		tmp.start = pud_end;
++		tmp.size = region->start + region->size - pud_end;
+ 		store_slot_info(&tmp, image_size);
+ 	}
+ }
