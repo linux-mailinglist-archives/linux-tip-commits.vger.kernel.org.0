@@ -2,52 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A4E5123DD9B
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  6 Aug 2020 19:12:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BAD523DD83
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  6 Aug 2020 19:11:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729819AbgHFRLr (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 6 Aug 2020 13:11:47 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:58886 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730218AbgHFRKJ (ORCPT
+        id S1730238AbgHFRKS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 6 Aug 2020 13:10:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46492 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730224AbgHFRKJ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Thu, 6 Aug 2020 13:10:09 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11CF9C061574;
+        Thu,  6 Aug 2020 10:10:09 -0700 (PDT)
 Date:   Thu, 06 Aug 2020 17:10:06 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1596733806;
+        s=2020; t=1596733807;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=zR/Ebw0TqrcppD6Z47kh84qypzshyc9lcKZ+o+8oKHw=;
-        b=nBkk2GYLc99v98lBfLaONS1H+aEWgeC2CfnHRxKo3USagd2I7FNgqsOQ4Qb4HiWBB7YaHt
-        gr1pRywAJXewAGVWd481f0HR+pYwukfeSO3pcqrp2rBwrdITM4Oh65klnmZoDgqKgkwC6d
-        up0jfVvmmnvbAYyfPUq1y/6Cgs/5k+iEJLsGyAp/olfg2DxUrJB/H5uZGm4cRvYHqDs1XF
-        HIwb44A+/k4IS2v9ui6Nlbzg6QhkpqxNkZAQuPAmv3U5O/C+/TVsOZvFxCgBJbRQcXJ9j5
-        8BoDZ2lKaH8OtuH0xrq/aCr///ZdUDQO0Y6M8Uz35YTX8/hqEKgiin7zQfeBHg==
+        bh=86mczRWqEs3jdentO74wVd8eG11njrwgMiO5ym6RDSo=;
+        b=yWJ7blUfakNJChOlS7S+NMPzx89Opw8aiCjTycbxt3Or0tg883CZ536WsTkNPMfJUCKtwR
+        0gm56xu/chI0hcIxBHcEMM6il3qX65YKQfyE4xMPoI+ttkui2g5c7N3O8tWovyyGLHF8n0
+        QmSBelUbcoyYSTQ5M1XpeJmdKx1HJQrRgRwviJBoQy1SNlgIl68Gq/dB6HqsCbaqooDS/v
+        w33SkGWpLDL2vCGn08xPCPRXXBJISVV5p++hFy+Zim8VNTVPs1crLWJmL1bWTt8l5U6T7m
+        eE07W1buuQPZNhertQU/if9VBwS1FU2g4ftNVzM3vwIo18S3Nm9keWvYILl9AA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1596733806;
+        s=2020e; t=1596733807;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=zR/Ebw0TqrcppD6Z47kh84qypzshyc9lcKZ+o+8oKHw=;
-        b=azH0o9MFxsOk1/5gejD9Ez8ATUaAsqatNGTU9JosjknCTs11ZzhoNObZNHzCPekpbFOhP6
-        eMIJ3JUQCx4YG8Cw==
+        bh=86mczRWqEs3jdentO74wVd8eG11njrwgMiO5ym6RDSo=;
+        b=i8BPkqJpWYMyMJv+JvWIV6hZegrmcff66znzk2VqL5WVQKeXaFPbsjlvVr15bc3dKF9OWQ
+        1x5DPk7r+5TOwXAg==
 From:   "tip-bot2 for Lianbo Jiang" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] kexec_file: Correctly output debugging information
- for the PT_LOAD ELF header
+Subject: [tip: x86/urgent] kexec: Improve & fix crash_exclude_mem_range() to
+ handle overlapping ranges
 Cc:     Lianbo Jiang <lijiang@redhat.com>, Ingo Molnar <mingo@kernel.org>,
         Dave Young <dyoung@redhat.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200804044933.1973-4-lijiang@redhat.com>
-References: <20200804044933.1973-4-lijiang@redhat.com>
+In-Reply-To: <20200804044933.1973-3-lijiang@redhat.com>
+References: <20200804044933.1973-3-lijiang@redhat.com>
 MIME-Version: 1.0
-Message-ID: <159673380619.3192.11473438230376411789.tip-bot2@tip-bot2>
+Message-ID: <159673380690.3192.7724116309741101054.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,81 +62,139 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     8ca346039f70cf92dbada6c06048efde165b191f
-Gitweb:        https://git.kernel.org/tip/8ca346039f70cf92dbada6c06048efde165b191f
+Commit-ID:     12e4e432ac4d65020ba85037da06f2c886188e4f
+Gitweb:        https://git.kernel.org/tip/12e4e432ac4d65020ba85037da06f2c886188e4f
 Author:        Lianbo Jiang <lijiang@redhat.com>
-AuthorDate:    Tue, 04 Aug 2020 12:49:33 +08:00
+AuthorDate:    Tue, 04 Aug 2020 12:49:32 +08:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 06 Aug 2020 15:26:09 +02:00
+CommitterDate: Thu, 06 Aug 2020 15:25:58 +02:00
 
-kexec_file: Correctly output debugging information for the PT_LOAD ELF header
+kexec: Improve & fix crash_exclude_mem_range() to handle overlapping ranges
 
-Currently, when we enable the debugging switch to debug kexec_file,
-we always get the following incorrect results:
+The crash_exclude_mem_range() function can only handle one memory region a time.
 
-  kexec_file: Crash PT_LOAD elf header. phdr=00000000c988639b vaddr=0x0, paddr=0x0, sz=0x0 e_phnum=51 p_offset=0x0
-  kexec_file: Crash PT_LOAD elf header. phdr=000000003cca69a0 vaddr=0x0, paddr=0x0, sz=0x0 e_phnum=52 p_offset=0x0
-  kexec_file: Crash PT_LOAD elf header. phdr=00000000c584cb9f vaddr=0x0, paddr=0x0, sz=0x0 e_phnum=53 p_offset=0x0
-  kexec_file: Crash PT_LOAD elf header. phdr=00000000cf85d57f vaddr=0x0, paddr=0x0, sz=0x0 e_phnum=54 p_offset=0x0
-  kexec_file: Crash PT_LOAD elf header. phdr=00000000a4a8f847 vaddr=0x0, paddr=0x0, sz=0x0 e_phnum=55 p_offset=0x0
-  kexec_file: Crash PT_LOAD elf header. phdr=00000000272ec49f vaddr=0x0, paddr=0x0, sz=0x0 e_phnum=56 p_offset=0x0
-  kexec_file: Crash PT_LOAD elf header. phdr=00000000ea0b65de vaddr=0x0, paddr=0x0, sz=0x0 e_phnum=57 p_offset=0x0
-  kexec_file: Crash PT_LOAD elf header. phdr=000000001f5e490c vaddr=0x0, paddr=0x0, sz=0x0 e_phnum=58 p_offset=0x0
-  kexec_file: Crash PT_LOAD elf header. phdr=00000000dfe4109e vaddr=0x0, paddr=0x0, sz=0x0 e_phnum=59 p_offset=0x0
-  kexec_file: Crash PT_LOAD elf header. phdr=00000000480ed2b6 vaddr=0x0, paddr=0x0, sz=0x0 e_phnum=60 p_offset=0x0
-  kexec_file: Crash PT_LOAD elf header. phdr=0000000080b65151 vaddr=0x0, paddr=0x0, sz=0x0 e_phnum=61 p_offset=0x0
-  kexec_file: Crash PT_LOAD elf header. phdr=0000000024e31c5e vaddr=0x0, paddr=0x0, sz=0x0 e_phnum=62 p_offset=0x0
-  kexec_file: Crash PT_LOAD elf header. phdr=00000000332e0385 vaddr=0x0, paddr=0x0, sz=0x0 e_phnum=63 p_offset=0x0
-  kexec_file: Crash PT_LOAD elf header. phdr=000000002754d5da vaddr=0x0, paddr=0x0, sz=0x0 e_phnum=64 p_offset=0x0
-  kexec_file: Crash PT_LOAD elf header. phdr=00000000783320dd vaddr=0x0, paddr=0x0, sz=0x0 e_phnum=65 p_offset=0x0
-  kexec_file: Crash PT_LOAD elf header. phdr=0000000076fe5b64 vaddr=0x0, paddr=0x0, sz=0x0 e_phnum=66 p_offset=0x0
+It will fail in the case in which the passed in area covers several memory
+regions. In this case, it will only exclude the first region, then return,
+but leave the later regions unsolved.
 
-The reason is that kernel always prints the values of the next PT_LOAD
-instead of the current PT_LOAD. Change it to ensure that we can get the
-correct debugging information.
+E.g in a NEC system with two usable RAM regions inside the low 1M:
 
-[ mingo: Amended changelog, capitalized "ELF". ]
+  ...
+  BIOS-e820: [mem 0x0000000000000000-0x000000000003efff] usable
+  BIOS-e820: [mem 0x000000000003f000-0x000000000003ffff] reserved
+  BIOS-e820: [mem 0x0000000000040000-0x000000000009ffff] usable
+
+It will only exclude the memory region [0, 0x3efff], the memory region
+[0x40000, 0x9ffff] will still be added into /proc/vmcore, which may cause
+the following failure when dumping vmcore:
+
+ ioremap on RAM at 0x0000000000040000 - 0x0000000000040fff
+ WARNING: CPU: 0 PID: 665 at arch/x86/mm/ioremap.c:186 __ioremap_caller+0x2c7/0x2e0
+ ...
+ RIP: 0010:__ioremap_caller+0x2c7/0x2e0
+ ...
+ cp: error reading '/proc/vmcore': Cannot allocate memory
+ kdump: saving vmcore failed
+
+In order to fix this bug, let's extend the crash_exclude_mem_range()
+to handle the overlapping ranges.
+
+[ mingo: Amended the changelog. ]
 
 Signed-off-by: Lianbo Jiang <lijiang@redhat.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Acked-by: Dave Young <dyoung@redhat.com>
-Link: https://lore.kernel.org/r/20200804044933.1973-4-lijiang@redhat.com
+Link: https://lore.kernel.org/r/20200804044933.1973-3-lijiang@redhat.com
 ---
- kernel/kexec_file.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ kernel/kexec_file.c | 35 +++++++++++++++++++++++------------
+ 1 file changed, 23 insertions(+), 12 deletions(-)
 
 diff --git a/kernel/kexec_file.c b/kernel/kexec_file.c
-index 5cc2c47..f1f4009 100644
+index 09cc78d..5cc2c47 100644
 --- a/kernel/kexec_file.c
 +++ b/kernel/kexec_file.c
-@@ -1246,7 +1246,7 @@ int crash_prepare_elf64_headers(struct crash_mem *mem, int kernel_map,
- 	unsigned long long notes_addr;
- 	unsigned long mstart, mend;
+@@ -1157,24 +1157,26 @@ int crash_exclude_mem_range(struct crash_mem *mem,
+ 			    unsigned long long mstart, unsigned long long mend)
+ {
+ 	int i, j;
+-	unsigned long long start, end;
++	unsigned long long start, end, p_start, p_end;
+ 	struct crash_mem_range temp_range = {0, 0};
  
--	/* extra phdr for vmcoreinfo elf note */
-+	/* extra phdr for vmcoreinfo ELF note */
- 	nr_phdr = nr_cpus + 1;
- 	nr_phdr += mem->nr_ranges;
+ 	for (i = 0; i < mem->nr_ranges; i++) {
+ 		start = mem->ranges[i].start;
+ 		end = mem->ranges[i].end;
++		p_start = mstart;
++		p_end = mend;
  
-@@ -1254,7 +1254,7 @@ int crash_prepare_elf64_headers(struct crash_mem *mem, int kernel_map,
+ 		if (mstart > end || mend < start)
+ 			continue;
+ 
+ 		/* Truncate any area outside of range */
+ 		if (mstart < start)
+-			mstart = start;
++			p_start = start;
+ 		if (mend > end)
+-			mend = end;
++			p_end = end;
+ 
+ 		/* Found completely overlapping range */
+-		if (mstart == start && mend == end) {
++		if (p_start == start && p_end == end) {
+ 			mem->ranges[i].start = 0;
+ 			mem->ranges[i].end = 0;
+ 			if (i < mem->nr_ranges - 1) {
+@@ -1185,20 +1187,29 @@ int crash_exclude_mem_range(struct crash_mem *mem,
+ 					mem->ranges[j].end =
+ 							mem->ranges[j+1].end;
+ 				}
++
++				/*
++				 * Continue to check if there are another overlapping ranges
++				 * from the current position because of shifting the above
++				 * mem ranges.
++				 */
++				i--;
++				mem->nr_ranges--;
++				continue;
+ 			}
+ 			mem->nr_ranges--;
+ 			return 0;
+ 		}
+ 
+-		if (mstart > start && mend < end) {
++		if (p_start > start && p_end < end) {
+ 			/* Split original range */
+-			mem->ranges[i].end = mstart - 1;
+-			temp_range.start = mend + 1;
++			mem->ranges[i].end = p_start - 1;
++			temp_range.start = p_end + 1;
+ 			temp_range.end = end;
+-		} else if (mstart != start)
+-			mem->ranges[i].end = mstart - 1;
++		} else if (p_start != start)
++			mem->ranges[i].end = p_start - 1;
+ 		else
+-			mem->ranges[i].start = mend + 1;
++			mem->ranges[i].start = p_end + 1;
+ 		break;
+ 	}
+ 
+@@ -1243,7 +1254,7 @@ int crash_prepare_elf64_headers(struct crash_mem *mem, int kernel_map,
  	 * kexec-tools creates an extra PT_LOAD phdr for kernel text mapping
  	 * area (for example, ffffffff80000000 - ffffffffa0000000 on x86_64).
  	 * I think this is required by tools like gdb. So same physical
--	 * memory will be mapped in two elf  headers. One will contain kernel
-+	 * memory will be mapped in two ELF headers. One will contain kernel
+-	 * memory will be mapped in two elf headers. One will contain kernel
++	 * memory will be mapped in two elf  headers. One will contain kernel
  	 * text virtual addresses and other will have __va(physical) addresses.
  	 */
  
-@@ -1323,10 +1323,10 @@ int crash_prepare_elf64_headers(struct crash_mem *mem, int kernel_map,
- 		phdr->p_filesz = phdr->p_memsz = mend - mstart + 1;
- 		phdr->p_align = 0;
- 		ehdr->e_phnum++;
--		phdr++;
--		pr_debug("Crash PT_LOAD elf header. phdr=%p vaddr=0x%llx, paddr=0x%llx, sz=0x%llx e_phnum=%d p_offset=0x%llx\n",
-+		pr_debug("Crash PT_LOAD ELF header. phdr=%p vaddr=0x%llx, paddr=0x%llx, sz=0x%llx e_phnum=%d p_offset=0x%llx\n",
- 			phdr, phdr->p_vaddr, phdr->p_paddr, phdr->p_filesz,
- 			ehdr->e_phnum, phdr->p_offset);
-+		phdr++;
- 	}
+@@ -1270,7 +1281,7 @@ int crash_prepare_elf64_headers(struct crash_mem *mem, int kernel_map,
+ 	ehdr->e_ehsize = sizeof(Elf64_Ehdr);
+ 	ehdr->e_phentsize = sizeof(Elf64_Phdr);
  
- 	*addr = buf;
+-	/* Prepare one phdr of type PT_NOTE for each present cpu */
++	/* Prepare one phdr of type PT_NOTE for each present CPU */
+ 	for_each_present_cpu(cpu) {
+ 		phdr->p_type = PT_NOTE;
+ 		notes_addr = per_cpu_ptr_to_phys(per_cpu_ptr(crash_notes, cpu));
