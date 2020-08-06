@@ -2,51 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 144B923DDC1
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  6 Aug 2020 19:14:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC30023DD9D
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  6 Aug 2020 19:12:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730021AbgHFRMr (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 6 Aug 2020 13:12:47 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:58924 "EHLO
+        id S1729503AbgHFRMI (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 6 Aug 2020 13:12:08 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:58930 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730216AbgHFRKG (ORCPT
+        with ESMTP id S1729559AbgHFRKI (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 6 Aug 2020 13:10:06 -0400
-Date:   Thu, 06 Aug 2020 17:10:01 -0000
+        Thu, 6 Aug 2020 13:10:08 -0400
+Date:   Thu, 06 Aug 2020 17:10:04 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1596733802;
+        s=2020; t=1596733804;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Gd5AfIYXFdlRNvNYPKomq5pISASI7cUerV9XrD7j7bA=;
-        b=gEI+zt9go5T3ru+v5NAAIyzbtcyGRLeS2LsFXngbDvuIJ2CE7MyZcOWBfBzxgKzDPNmClv
-        eCTIhRidCMtP2FEYxKJUaz0tbxLsmf4hV0X83zcOPwjrciWBbMUsyshVO3n76/jHN9kPJn
-        7P7rb9OF1lbdMX6wfeR3/44gS8XY0S/6wCogYSW4pqHDdLBMmfwhEtgksfsSlzVGqlUdDO
-        gkEluGJNKaTztCI6UflVdI42f38pwDDA+R1vVASx2LJgmCn7ZAcR8rI/9lj35/zVoXtD8/
-        iVsKxrWl8EhJihJEGisiQjSgLi/m6tIn1OQFW9gFJnprv6E1VpxSx237szrSLQ==
+        bh=QWuB12Tkvbyicpk4HqqE975tqqLrqqA2GtHdwKepYjo=;
+        b=QfqsPOEOuq/aq1ITtHegz8YmBFGYtHXcdBiGvmxqSHZaBmarzUZIbpnAFvOGFy+0pvSub3
+        T41thEACUaWHusglQP5Ru94L7ZGf7N6nHWL0y2vnfB44fuxOPUXVl1pQNb1VV8jbQHqWUi
+        z912oEu1DkPBqJfmxnLfoq3+FDYixIcarxGLW9UhrNofDL72ITfSrMIohqZf2Wgqi9RiHa
+        9iPhYX4hoH+l7ccJp7uRquqSP9s4OyR3TKYx68YV4lZOnFekDbjnte+rtoKyfVyD47ntv2
+        hNQHgXpBBrkrCEzWK/lz56oEsKUXaQ1qOfXwk8PK1N7h/zrIuSPSEXhlJsxnSA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1596733802;
+        s=2020e; t=1596733804;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Gd5AfIYXFdlRNvNYPKomq5pISASI7cUerV9XrD7j7bA=;
-        b=Gb01PpxBYOdqzJHFtA46wdH9W58WwOjMmkf+zzIw91P2WkpwQjqksdVjbHv+9vsfMWfCSC
-        H8WquW6F1HvmIqCQ==
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+        bh=QWuB12Tkvbyicpk4HqqE975tqqLrqqA2GtHdwKepYjo=;
+        b=7/PjSq2q2reY32Iav6+xO/yFy4EUiO2rLi0gqFiz+rYhr0mbg8MN1qYs1q8Z77StQnjCtb
+        EuOtYvmz71qI4SDw==
+From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/urgent] vdso/treewide: Add vdso_data pointer argument to
- __arch_get_hw_counter()
-Cc:     Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
+Subject: [tip: x86/urgent] x86/fpu/xstate: Fix an xstate size check warning
+ with architectural LBRs
+Cc:     "Chang S. Bae" <chang.seok.bae@intel.com>,
+        Kan Liang <kan.liang@linux.intel.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        Dave Hansen <dave.hansen@intel.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <draft-87wo2ekuzn.fsf@nanos.tec.linutronix.de>
-References: <draft-87wo2ekuzn.fsf@nanos.tec.linutronix.de>
+In-Reply-To: <1595253051-75374-1-git-send-email-kan.liang@linux.intel.com>
+References: <1595253051-75374-1-git-send-email-kan.liang@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <159673380184.3192.11397705484145709278.tip-bot2@tip-bot2>
+Message-ID: <159673380407.3192.2479353729110712986.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -56,163 +59,131 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/urgent branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     4c5a116ada953b86125ab7c70a57c57463a55a55
-Gitweb:        https://git.kernel.org/tip/4c5a116ada953b86125ab7c70a57c57463a55a55
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Tue, 04 Aug 2020 22:37:48 +02:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 06 Aug 2020 10:57:30 +02:00
+Commit-ID:     ec8602b79088b0f3556d9c7a3a05313bc4e4a96f
+Gitweb:        https://git.kernel.org/tip/ec8602b79088b0f3556d9c7a3a05313bc4e4a96f
+Author:        Kan Liang <kan.liang@linux.intel.com>
+AuthorDate:    Mon, 20 Jul 2020 06:50:51 -07:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Thu, 06 Aug 2020 17:11:59 +02:00
 
-vdso/treewide: Add vdso_data pointer argument to __arch_get_hw_counter()
+x86/fpu/xstate: Fix an xstate size check warning with architectural LBRs
 
-MIPS already uses and S390 will need the vdso data pointer in
-__arch_get_hw_counter().
+An xstate size check warning is triggered on machines which support
+Architectural LBRs.
 
-This works nicely as long as the architecture does not support time
-namespaces in the VDSO. With time namespaces enabled the regular
-accessor to the vdso data pointer __arch_get_vdso_data() will return the
-namespace specific VDSO data page for tasks which are part of a
-non-root time namespace. This would cause the architectures which need
-the vdso data pointer in __arch_get_hw_counter() to access the wrong
-vdso data page.
+    XSAVE consistency problem, dumping leaves
+    WARNING: CPU: 0 PID: 0 at arch/x86/kernel/fpu/xstate.c:649 fpu__init_system_xstate+0x4d4/0xd0e
+    Modules linked in:
+    CPU: 0 PID: 0 Comm: swapper Not tainted intel-arch_lbr+
+    RIP: 0010:fpu__init_system_xstate+0x4d4/0xd0e
 
-Add a vdso_data pointer argument to __arch_get_hw_counter() and hand it in
-from the call sites in the core code. For architectures which do not need
-the data pointer in their counter accessor function the compiler will just
-optimize it out.
+The xstate size check routine, init_xstate_size(), compares the size
+retrieved from the hardware with the size of task->fpu, which is
+calculated by the software.
 
-Fix up all existing architecture implementations and make MIPS utilize the
-pointer instead of invoking the accessor function.
+The size from the hardware is the total size of the enabled xstates in
+XCR0 | IA32_XSS. Architectural LBR state is a dynamic supervisor
+feature, which sets the corresponding bit in the IA32_XSS at boot time.
+The size from the hardware includes the size of the Architectural LBR
+state.
 
-No functional change and no change in the resulting object code (except
-MIPS).
+However, a dynamic supervisor feature doesn't allocate a buffer in the
+task->fpu. The size of task->fpu doesn't include the size of the
+Architectural LBR state. The mismatch will trigger the warning.
 
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/draft-87wo2ekuzn.fsf@nanos.tec.linutronix.de
+Three options as below were considered to fix the issue:
+
+- Correct the size from the hardware by subtracting the size of the
+  dynamic supervisor features.
+  The purpose of the check is to compare the size CPU told with the size
+  of the XSAVE buffer, which is calculated by the software. If the
+  software mucks with the number from hardware, it removes the value of
+  the check.
+  This option is not a good option.
+
+- Prevent the hardware from counting the size of the dynamic supervisor
+  feature by temporarily removing the corresponding bits in IA32_XSS.
+  Two extra MSR writes are required to flip the IA32_XSS. The option is
+  not pretty, but it is workable. The check is only called once at early
+  boot time. The synchronization or context-switching doesn't need to be
+  worried.
+  This option is implemented here.
+
+- Remove the check entirely, because the check hasn't found any real
+  problems. The option may be an alternative as option 2.
+  This option is not implemented here.
+
+Add a new function, get_xsaves_size_no_dynamic(), which retrieves the
+total size without the dynamic supervisor features from the hardware.
+The size will be used to compare with the size of task->fpu.
+
+Fixes: f0dccc9da4c0 ("x86/fpu/xstate: Support dynamic supervisor feature for LBR")
+Reported-by: Chang S. Bae <chang.seok.bae@intel.com>
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Dave Hansen <dave.hansen@intel.com>
+Link: https://lore.kernel.org/r/1595253051-75374-1-git-send-email-kan.liang@linux.intel.com
 ---
- arch/arm/include/asm/vdso/gettimeofday.h          | 3 ++-
- arch/arm64/include/asm/vdso/compat_gettimeofday.h | 3 ++-
- arch/arm64/include/asm/vdso/gettimeofday.h        | 3 ++-
- arch/mips/include/asm/vdso/gettimeofday.h         | 5 +++--
- arch/riscv/include/asm/vdso/gettimeofday.h        | 3 ++-
- arch/x86/include/asm/vdso/gettimeofday.h          | 3 ++-
- lib/vdso/gettimeofday.c                           | 4 ++--
- 7 files changed, 15 insertions(+), 9 deletions(-)
+ arch/x86/kernel/fpu/xstate.c | 33 ++++++++++++++++++++++++++++++++-
+ 1 file changed, 32 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/include/asm/vdso/gettimeofday.h b/arch/arm/include/asm/vdso/gettimeofday.h
-index 1b207cf..2134cbd 100644
---- a/arch/arm/include/asm/vdso/gettimeofday.h
-+++ b/arch/arm/include/asm/vdso/gettimeofday.h
-@@ -113,7 +113,8 @@ static inline bool arm_vdso_hres_capable(void)
- }
- #define __arch_vdso_hres_capable arm_vdso_hres_capable
- 
--static __always_inline u64 __arch_get_hw_counter(int clock_mode)
-+static __always_inline u64 __arch_get_hw_counter(int clock_mode,
-+						 const struct vdso_data *vd)
+diff --git a/arch/x86/kernel/fpu/xstate.c b/arch/x86/kernel/fpu/xstate.c
+index be2a68a..6073e34 100644
+--- a/arch/x86/kernel/fpu/xstate.c
++++ b/arch/x86/kernel/fpu/xstate.c
+@@ -611,6 +611,10 @@ static void check_xstate_against_struct(int nr)
+  * This essentially double-checks what the cpu told us about
+  * how large the XSAVE buffer needs to be.  We are recalculating
+  * it to be safe.
++ *
++ * Dynamic XSAVE features allocate their own buffers and are not
++ * covered by these checks. Only the size of the buffer for task->fpu
++ * is checked here.
+  */
+ static void do_extra_xstate_size_checks(void)
  {
- #ifdef CONFIG_ARM_ARCH_TIMER
- 	u64 cycle_now;
-diff --git a/arch/arm64/include/asm/vdso/compat_gettimeofday.h b/arch/arm64/include/asm/vdso/compat_gettimeofday.h
-index 75cbae6..7508b0a 100644
---- a/arch/arm64/include/asm/vdso/compat_gettimeofday.h
-+++ b/arch/arm64/include/asm/vdso/compat_gettimeofday.h
-@@ -103,7 +103,8 @@ int clock_getres32_fallback(clockid_t _clkid, struct old_timespec32 *_ts)
- 	return ret;
+@@ -673,6 +677,33 @@ static unsigned int __init get_xsaves_size(void)
+ 	return ebx;
  }
  
--static __always_inline u64 __arch_get_hw_counter(s32 clock_mode)
-+static __always_inline u64 __arch_get_hw_counter(s32 clock_mode,
-+						 const struct vdso_data *vd)
++/*
++ * Get the total size of the enabled xstates without the dynamic supervisor
++ * features.
++ */
++static unsigned int __init get_xsaves_size_no_dynamic(void)
++{
++	u64 mask = xfeatures_mask_dynamic();
++	unsigned int size;
++
++	if (!mask)
++		return get_xsaves_size();
++
++	/* Disable dynamic features. */
++	wrmsrl(MSR_IA32_XSS, xfeatures_mask_supervisor());
++
++	/*
++	 * Ask the hardware what size is required of the buffer.
++	 * This is the size required for the task->fpu buffer.
++	 */
++	size = get_xsaves_size();
++
++	/* Re-enable dynamic features so XSAVES will work on them again. */
++	wrmsrl(MSR_IA32_XSS, xfeatures_mask_supervisor() | mask);
++
++	return size;
++}
++
+ static unsigned int __init get_xsave_size(void)
  {
- 	u64 res;
+ 	unsigned int eax, ebx, ecx, edx;
+@@ -710,7 +741,7 @@ static int __init init_xstate_size(void)
+ 	xsave_size = get_xsave_size();
  
-diff --git a/arch/arm64/include/asm/vdso/gettimeofday.h b/arch/arm64/include/asm/vdso/gettimeofday.h
-index 9c29ad3..631ab12 100644
---- a/arch/arm64/include/asm/vdso/gettimeofday.h
-+++ b/arch/arm64/include/asm/vdso/gettimeofday.h
-@@ -64,7 +64,8 @@ int clock_getres_fallback(clockid_t _clkid, struct __kernel_timespec *_ts)
- 	return ret;
- }
+ 	if (boot_cpu_has(X86_FEATURE_XSAVES))
+-		possible_xstate_size = get_xsaves_size();
++		possible_xstate_size = get_xsaves_size_no_dynamic();
+ 	else
+ 		possible_xstate_size = xsave_size;
  
--static __always_inline u64 __arch_get_hw_counter(s32 clock_mode)
-+static __always_inline u64 __arch_get_hw_counter(s32 clock_mode,
-+						 const struct vdso_data *vd)
- {
- 	u64 res;
- 
-diff --git a/arch/mips/include/asm/vdso/gettimeofday.h b/arch/mips/include/asm/vdso/gettimeofday.h
-index c63ddca..2203e2d 100644
---- a/arch/mips/include/asm/vdso/gettimeofday.h
-+++ b/arch/mips/include/asm/vdso/gettimeofday.h
-@@ -167,7 +167,8 @@ static __always_inline u64 read_gic_count(const struct vdso_data *data)
- 
- #endif
- 
--static __always_inline u64 __arch_get_hw_counter(s32 clock_mode)
-+static __always_inline u64 __arch_get_hw_counter(s32 clock_mode,
-+						 const struct vdso_data *vd)
- {
- #ifdef CONFIG_CSRC_R4K
- 	if (clock_mode == VDSO_CLOCKMODE_R4K)
-@@ -175,7 +176,7 @@ static __always_inline u64 __arch_get_hw_counter(s32 clock_mode)
- #endif
- #ifdef CONFIG_CLKSRC_MIPS_GIC
- 	if (clock_mode == VDSO_CLOCKMODE_GIC)
--		return read_gic_count(get_vdso_data());
-+		return read_gic_count(vd);
- #endif
- 	/*
- 	 * Core checks mode already. So this raced against a concurrent
-diff --git a/arch/riscv/include/asm/vdso/gettimeofday.h b/arch/riscv/include/asm/vdso/gettimeofday.h
-index 3099362..f839f16 100644
---- a/arch/riscv/include/asm/vdso/gettimeofday.h
-+++ b/arch/riscv/include/asm/vdso/gettimeofday.h
-@@ -60,7 +60,8 @@ int clock_getres_fallback(clockid_t _clkid, struct __kernel_timespec *_ts)
- 	return ret;
- }
- 
--static __always_inline u64 __arch_get_hw_counter(s32 clock_mode)
-+static __always_inline u64 __arch_get_hw_counter(s32 clock_mode,
-+						 const struct vdso_data *vd)
- {
- 	/*
- 	 * The purpose of csr_read(CSR_TIME) is to trap the system into
-diff --git a/arch/x86/include/asm/vdso/gettimeofday.h b/arch/x86/include/asm/vdso/gettimeofday.h
-index fb81fea..df01d73 100644
---- a/arch/x86/include/asm/vdso/gettimeofday.h
-+++ b/arch/x86/include/asm/vdso/gettimeofday.h
-@@ -241,7 +241,8 @@ static u64 vread_hvclock(void)
- }
- #endif
- 
--static inline u64 __arch_get_hw_counter(s32 clock_mode)
-+static inline u64 __arch_get_hw_counter(s32 clock_mode,
-+					const struct vdso_data *vd)
- {
- 	if (likely(clock_mode == VDSO_CLOCKMODE_TSC))
- 		return (u64)rdtsc_ordered();
-diff --git a/lib/vdso/gettimeofday.c b/lib/vdso/gettimeofday.c
-index bcc9a98..2919f16 100644
---- a/lib/vdso/gettimeofday.c
-+++ b/lib/vdso/gettimeofday.c
-@@ -68,7 +68,7 @@ static int do_hres_timens(const struct vdso_data *vdns, clockid_t clk,
- 		if (unlikely(!vdso_clocksource_ok(vd)))
- 			return -1;
- 
--		cycles = __arch_get_hw_counter(vd->clock_mode);
-+		cycles = __arch_get_hw_counter(vd->clock_mode, vd);
- 		if (unlikely(!vdso_cycles_ok(cycles)))
- 			return -1;
- 		ns = vdso_ts->nsec;
-@@ -138,7 +138,7 @@ static __always_inline int do_hres(const struct vdso_data *vd, clockid_t clk,
- 		if (unlikely(!vdso_clocksource_ok(vd)))
- 			return -1;
- 
--		cycles = __arch_get_hw_counter(vd->clock_mode);
-+		cycles = __arch_get_hw_counter(vd->clock_mode, vd);
- 		if (unlikely(!vdso_cycles_ok(cycles)))
- 			return -1;
- 		ns = vdso_ts->nsec;
