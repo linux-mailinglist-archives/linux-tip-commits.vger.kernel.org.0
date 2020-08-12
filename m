@@ -2,55 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CFF3E241191
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 10 Aug 2020 22:15:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A36C242742
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 12 Aug 2020 11:13:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726510AbgHJUP4 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 10 Aug 2020 16:15:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52102 "EHLO
+        id S1726722AbgHLJNd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 12 Aug 2020 05:13:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54386 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726068AbgHJUPz (ORCPT
+        with ESMTP id S1726601AbgHLJNd (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 10 Aug 2020 16:15:55 -0400
+        Wed, 12 Aug 2020 05:13:33 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE4B5C061756;
-        Mon, 10 Aug 2020 13:15:55 -0700 (PDT)
-Date:   Mon, 10 Aug 2020 20:15:52 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F13AC06174A;
+        Wed, 12 Aug 2020 02:13:33 -0700 (PDT)
+Date:   Wed, 12 Aug 2020 09:13:29 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1597090554;
+        s=2020; t=1597223610;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=irUkFqykKqMti+lm3cLQmGnnfwNNE0XtxTsoUxBK10g=;
-        b=ntarJ+UCeX6sTDJbBOcJqc5CNRdCvnUcQ3v10XE3SQJKQgEKj4nmcl+13p6NhL/kYhOuiy
-        2Q14tsYTIOyq86sUEFrlXCHWfMNqLyO7sIAYMYuMRhr4Ko7qpIEAut2R7eYJgWO0hbWXIQ
-        pfqyG32aFm+aaQuo+3ELIRc6nI1BlQB3sbqdkX28jVXJunnYMuQIs7K97XGZzwE+eVl7Tm
-        WvzspUxgvuOjIHzR/jO3ngdmQdA8BaJEMaHhhu6rYLQ/y5cODgrVwlyR7PLlv33AXseuHO
-        Z7MgsIuIJ7cS2ykHL3oUnCOJH7TsfVq2gSumQ3i7GXlDi6RiX0hF0E0joP+v/w==
+        bh=YtQguOBpLy+ZK3wfcPbucBpUN9YGIesOWZl+59cOgmA=;
+        b=XDYJH3L/fJTg0uZURUWOUU+FVEp4y9Q5horXSNMatMdefHd1jv+UgT8Le2M/w/RfOP9MSJ
+        SI1rfnZJTuHqhu5fIU4MXl2rOgPuwrqj2g9V7BcODpkjuC6lYhX2mgMO2XujCjMJBzV3WZ
+        wOhRNZ0i7aqJMhdrZ9PO5UXsTxvaMQDmd9E71ytH6nTqRSYbFlXctNMYfPlw44HsxA37YQ
+        b1YZXQwb9RNZidSjbQ2t/onmpxzv8YxhawVjc8nrm/n2elte8y1UR7JK2rF4vjb//chuDJ
+        cacpm0uABDmad0SoVanJHuYST8qezvU621x3Ge+jZ7USxpOq+jGxD4y3aNUFNg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1597090554;
+        s=2020e; t=1597223610;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=irUkFqykKqMti+lm3cLQmGnnfwNNE0XtxTsoUxBK10g=;
-        b=k/bbFjhxY08pvA0bhNlkbppEzZe2YWirL0DoItV4Kyr7+tsXGIMuY07YGfa+hdD3hcvRc2
-        c9VqaZ0pxQxSuQBw==
-From:   "tip-bot2 for Randy Dunlap" <tip-bot2@linutronix.de>
+        bh=YtQguOBpLy+ZK3wfcPbucBpUN9YGIesOWZl+59cOgmA=;
+        b=AyPrIXC4Sk8jefmqeGtnO19FKendAy/6eDAGN/BqMdNGtcNNVfBVkUiiP2Lia3qO3Xustq
+        7Sa1+e0IWXKs6MDA==
+From:   "tip-bot2 for Guenter Roeck" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/urgent] time: Delete repeated words in comments
-Cc:     Randy Dunlap <rdunlap@infradead.org>,
+Subject: [tip: irq/urgent] genirq/PM: Always unlock IRQ descriptor in rearm_wake_irq()
+Cc:     Guenter Roeck <linux@roeck-us.net>,
         Thomas Gleixner <tglx@linutronix.de>,
-        John Stultz <john.stultz@linaro.org>, x86 <x86@kernel.org>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        stable@vger.kernel.org, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200807033248.8452-1-rdunlap@infradead.org>
-References: <20200807033248.8452-1-rdunlap@infradead.org>
+In-Reply-To: <20200811180001.80203-1-linux@roeck-us.net>
+References: <20200811180001.80203-1-linux@roeck-us.net>
 MIME-Version: 1.0
-Message-ID: <159709055286.3192.1189188445404949142.tip-bot2@tip-bot2>
+Message-ID: <159722360956.3192.16144465573431608980.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,65 +61,55 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/urgent branch of tip:
+The following commit has been merged into the irq/urgent branch of tip:
 
-Commit-ID:     b0294f30256bb6023b2044fd607855123863d98f
-Gitweb:        https://git.kernel.org/tip/b0294f30256bb6023b2044fd607855123863d98f
-Author:        Randy Dunlap <rdunlap@infradead.org>
-AuthorDate:    Thu, 06 Aug 2020 20:32:48 -07:00
+Commit-ID:     e27b1636e9337d1a1d174b191e53d0f86421a822
+Gitweb:        https://git.kernel.org/tip/e27b1636e9337d1a1d174b191e53d0f86421a822
+Author:        Guenter Roeck <linux@roeck-us.net>
+AuthorDate:    Tue, 11 Aug 2020 11:00:01 -07:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 10 Aug 2020 22:14:07 +02:00
+CommitterDate: Wed, 12 Aug 2020 11:04:05 +02:00
 
-time: Delete repeated words in comments
+genirq/PM: Always unlock IRQ descriptor in rearm_wake_irq()
 
-Drop repeated words in kernel/time/.  {when, one, into}
+rearm_wake_irq() does not unlock the irq descriptor if the interrupt
+is not suspended or if wakeup is not enabled on it.
 
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Restucture the exit conditions so the unlock is always ensured.
+
+Fixes: 3a79bc63d9075 ("PCI: irq: Introduce rearm_wake_irq()")
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: John Stultz <john.stultz@linaro.org>
-Link: https://lore.kernel.org/r/20200807033248.8452-1-rdunlap@infradead.org
----
- kernel/time/alarmtimer.c  | 2 +-
- kernel/time/sched_clock.c | 2 +-
- kernel/time/timekeeping.c | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20200811180001.80203-1-linux@roeck-us.net
 
-diff --git a/kernel/time/alarmtimer.c b/kernel/time/alarmtimer.c
-index 2ffb466..ca223a8 100644
---- a/kernel/time/alarmtimer.c
-+++ b/kernel/time/alarmtimer.c
-@@ -192,7 +192,7 @@ static void alarmtimer_dequeue(struct alarm_base *base, struct alarm *alarm)
-  * When a alarm timer fires, this runs through the timerqueue to
-  * see which alarms expired, and runs those. If there are more alarm
-  * timers queued for the future, we set the hrtimer to fire when
-- * when the next future alarm timer expires.
-+ * the next future alarm timer expires.
-  */
- static enum hrtimer_restart alarmtimer_fired(struct hrtimer *timer)
- {
-diff --git a/kernel/time/sched_clock.c b/kernel/time/sched_clock.c
-index 0deaf4b..1c03eec 100644
---- a/kernel/time/sched_clock.c
-+++ b/kernel/time/sched_clock.c
-@@ -229,7 +229,7 @@ void __init generic_sched_clock_init(void)
- {
- 	/*
- 	 * If no sched_clock() function has been provided at that point,
--	 * make it the final one one.
-+	 * make it the final one.
- 	 */
- 	if (cd.actual_read_sched_clock == jiffy_sched_clock_read)
- 		sched_clock_register(jiffy_sched_clock_read, BITS_PER_LONG, HZ);
-diff --git a/kernel/time/timekeeping.c b/kernel/time/timekeeping.c
-index 4c7212f..35cd10f 100644
---- a/kernel/time/timekeeping.c
-+++ b/kernel/time/timekeeping.c
-@@ -2001,7 +2001,7 @@ static inline unsigned int accumulate_nsecs_to_secs(struct timekeeper *tk)
-  * logarithmic_accumulation - shifted accumulation of cycles
-  *
-  * This functions accumulates a shifted interval of cycles into
-- * into a shifted interval nanoseconds. Allows for O(log) accumulation
-+ * a shifted interval nanoseconds. Allows for O(log) accumulation
-  * loop.
-  *
-  * Returns the unconsumed cycles.
+---
+ kernel/irq/pm.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/kernel/irq/pm.c b/kernel/irq/pm.c
+index 8f557fa..c6c7e18 100644
+--- a/kernel/irq/pm.c
++++ b/kernel/irq/pm.c
+@@ -185,14 +185,18 @@ void rearm_wake_irq(unsigned int irq)
+ 	unsigned long flags;
+ 	struct irq_desc *desc = irq_get_desc_buslock(irq, &flags, IRQ_GET_DESC_CHECK_GLOBAL);
+ 
+-	if (!desc || !(desc->istate & IRQS_SUSPENDED) ||
+-	    !irqd_is_wakeup_set(&desc->irq_data))
++	if (!desc)
+ 		return;
+ 
++	if (!(desc->istate & IRQS_SUSPENDED) ||
++	    !irqd_is_wakeup_set(&desc->irq_data))
++		goto unlock;
++
+ 	desc->istate &= ~IRQS_SUSPENDED;
+ 	irqd_set(&desc->irq_data, IRQD_WAKEUP_ARMED);
+ 	__enable_irq(desc);
+ 
++unlock:
+ 	irq_put_desc_busunlock(desc, flags);
+ }
+ 
