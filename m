@@ -2,56 +2,51 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A36C242742
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 12 Aug 2020 11:13:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D180824351A
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 13 Aug 2020 09:42:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726722AbgHLJNd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 12 Aug 2020 05:13:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54386 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726601AbgHLJNd (ORCPT
+        id S1726082AbgHMHmR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 13 Aug 2020 03:42:17 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:56816 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726044AbgHMHmQ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 12 Aug 2020 05:13:33 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F13AC06174A;
-        Wed, 12 Aug 2020 02:13:33 -0700 (PDT)
-Date:   Wed, 12 Aug 2020 09:13:29 -0000
+        Thu, 13 Aug 2020 03:42:16 -0400
+Date:   Thu, 13 Aug 2020 07:42:13 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1597223610;
+        s=2020; t=1597304534;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=YtQguOBpLy+ZK3wfcPbucBpUN9YGIesOWZl+59cOgmA=;
-        b=XDYJH3L/fJTg0uZURUWOUU+FVEp4y9Q5horXSNMatMdefHd1jv+UgT8Le2M/w/RfOP9MSJ
-        SI1rfnZJTuHqhu5fIU4MXl2rOgPuwrqj2g9V7BcODpkjuC6lYhX2mgMO2XujCjMJBzV3WZ
-        wOhRNZ0i7aqJMhdrZ9PO5UXsTxvaMQDmd9E71ytH6nTqRSYbFlXctNMYfPlw44HsxA37YQ
-        b1YZXQwb9RNZidSjbQ2t/onmpxzv8YxhawVjc8nrm/n2elte8y1UR7JK2rF4vjb//chuDJ
-        cacpm0uABDmad0SoVanJHuYST8qezvU621x3Ge+jZ7USxpOq+jGxD4y3aNUFNg==
+        bh=Vsb5e4EQ9u+z+sC8gTRvPpseAUCaW35aJB4LNMO0ENU=;
+        b=DVnf+T73VACu9U9Jx+0nft/Zze1O1dRqSSY0Iu2IKfBvX6sh07GjBBBsp4LQFNOHH2OgDX
+        zCZFh0H3MIf4izYbyDPMhB9XfDcMbqeYLNUjLlfW12hf+K4Uj5hW50rU0kLcGPIV7g0ep8
+        JgnDKUpSw794Ljp+XACEBYCQa2rQ2SIyIJTuCYOtn3hrek1DRKOoFSdrgVEtzh8RPKDiFM
+        MknmHiZ/yRA1jLoXGO1cus/akpL8dsj/qI6y/ys62hc2y9gz+Qp9glSDCan6YQEo2o+vwC
+        SyaOZNKgIxqrPZLuEfZobh7K0sumu0lfU68b7g4At8j1RjOvKLoymJKhVsj7zQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1597223610;
+        s=2020e; t=1597304534;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=YtQguOBpLy+ZK3wfcPbucBpUN9YGIesOWZl+59cOgmA=;
-        b=AyPrIXC4Sk8jefmqeGtnO19FKendAy/6eDAGN/BqMdNGtcNNVfBVkUiiP2Lia3qO3Xustq
-        7Sa1+e0IWXKs6MDA==
+        bh=Vsb5e4EQ9u+z+sC8gTRvPpseAUCaW35aJB4LNMO0ENU=;
+        b=MmqNY99fL9J7qmHzcirGdgLBSPNg0aLA3zq5Z7Mo40vvMfGgoWQCjzIK8RBcxgjb8sIH1r
+        QVon0kP+tM8lNoAw==
 From:   "tip-bot2 for Guenter Roeck" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/urgent] genirq/PM: Always unlock IRQ descriptor in rearm_wake_irq()
+Subject: [tip: irq/urgent] genirq: Unlock irq descriptor after errors
 Cc:     Guenter Roeck <linux@roeck-us.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        stable@vger.kernel.org, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200811180001.80203-1-linux@roeck-us.net>
-References: <20200811180001.80203-1-linux@roeck-us.net>
+        Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200811180012.80269-1-linux@roeck-us.net>
+References: <20200811180012.80269-1-linux@roeck-us.net>
 MIME-Version: 1.0
-Message-ID: <159722360956.3192.16144465573431608980.tip-bot2@tip-bot2>
+Message-ID: <159730453302.3192.18071918978987971140.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -63,53 +58,51 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/urgent branch of tip:
 
-Commit-ID:     e27b1636e9337d1a1d174b191e53d0f86421a822
-Gitweb:        https://git.kernel.org/tip/e27b1636e9337d1a1d174b191e53d0f86421a822
+Commit-ID:     f107cee94ba4d2c7357fde59a1d84346c73d4958
+Gitweb:        https://git.kernel.org/tip/f107cee94ba4d2c7357fde59a1d84346c73d4958
 Author:        Guenter Roeck <linux@roeck-us.net>
-AuthorDate:    Tue, 11 Aug 2020 11:00:01 -07:00
+AuthorDate:    Tue, 11 Aug 2020 11:00:12 -07:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 12 Aug 2020 11:04:05 +02:00
+CommitterDate: Thu, 13 Aug 2020 09:35:59 +02:00
 
-genirq/PM: Always unlock IRQ descriptor in rearm_wake_irq()
+genirq: Unlock irq descriptor after errors
 
-rearm_wake_irq() does not unlock the irq descriptor if the interrupt
-is not suspended or if wakeup is not enabled on it.
+In irq_set_irqchip_state(), the irq descriptor is not unlocked after an
+error is encountered. While that should never happen in practice, a buggy
+driver may trigger it. This would result in a lockup, so fix it.
 
-Restucture the exit conditions so the unlock is always ensured.
-
-Fixes: 3a79bc63d9075 ("PCI: irq: Introduce rearm_wake_irq()")
+Fixes: 1d0326f352bb ("genirq: Check irq_data_get_irq_chip() return value before use")
 Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20200811180001.80203-1-linux@roeck-us.net
+Link: https://lore.kernel.org/r/20200811180012.80269-1-linux@roeck-us.net
 
 ---
- kernel/irq/pm.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ kernel/irq/manage.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/irq/pm.c b/kernel/irq/pm.c
-index 8f557fa..c6c7e18 100644
---- a/kernel/irq/pm.c
-+++ b/kernel/irq/pm.c
-@@ -185,14 +185,18 @@ void rearm_wake_irq(unsigned int irq)
- 	unsigned long flags;
- 	struct irq_desc *desc = irq_get_desc_buslock(irq, &flags, IRQ_GET_DESC_CHECK_GLOBAL);
+diff --git a/kernel/irq/manage.c b/kernel/irq/manage.c
+index d55ba62..52ac539 100644
+--- a/kernel/irq/manage.c
++++ b/kernel/irq/manage.c
+@@ -2731,8 +2731,10 @@ int irq_set_irqchip_state(unsigned int irq, enum irqchip_irq_state which,
  
--	if (!desc || !(desc->istate & IRQS_SUSPENDED) ||
--	    !irqd_is_wakeup_set(&desc->irq_data))
-+	if (!desc)
- 		return;
+ 	do {
+ 		chip = irq_data_get_irq_chip(data);
+-		if (WARN_ON_ONCE(!chip))
+-			return -ENODEV;
++		if (WARN_ON_ONCE(!chip)) {
++			err = -ENODEV;
++			goto out_unlock;
++		}
+ 		if (chip->irq_set_irqchip_state)
+ 			break;
+ #ifdef CONFIG_IRQ_DOMAIN_HIERARCHY
+@@ -2745,6 +2747,7 @@ int irq_set_irqchip_state(unsigned int irq, enum irqchip_irq_state which,
+ 	if (data)
+ 		err = chip->irq_set_irqchip_state(data, which, val);
  
-+	if (!(desc->istate & IRQS_SUSPENDED) ||
-+	    !irqd_is_wakeup_set(&desc->irq_data))
-+		goto unlock;
-+
- 	desc->istate &= ~IRQS_SUSPENDED;
- 	irqd_set(&desc->irq_data, IRQD_WAKEUP_ARMED);
- 	__enable_irq(desc);
- 
-+unlock:
++out_unlock:
  	irq_put_desc_busunlock(desc, flags);
+ 	return err;
  }
- 
