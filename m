@@ -2,51 +2,51 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D180824351A
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 13 Aug 2020 09:42:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 01EE92439AD
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 13 Aug 2020 14:15:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726082AbgHMHmR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 13 Aug 2020 03:42:17 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:56816 "EHLO
+        id S1726224AbgHMMPT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 13 Aug 2020 08:15:19 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:58334 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726044AbgHMHmQ (ORCPT
+        with ESMTP id S1726053AbgHMMPS (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 13 Aug 2020 03:42:16 -0400
-Date:   Thu, 13 Aug 2020 07:42:13 -0000
+        Thu, 13 Aug 2020 08:15:18 -0400
+Date:   Thu, 13 Aug 2020 12:15:15 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1597304534;
+        s=2020; t=1597320916;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Vsb5e4EQ9u+z+sC8gTRvPpseAUCaW35aJB4LNMO0ENU=;
-        b=DVnf+T73VACu9U9Jx+0nft/Zze1O1dRqSSY0Iu2IKfBvX6sh07GjBBBsp4LQFNOHH2OgDX
-        zCZFh0H3MIf4izYbyDPMhB9XfDcMbqeYLNUjLlfW12hf+K4Uj5hW50rU0kLcGPIV7g0ep8
-        JgnDKUpSw794Ljp+XACEBYCQa2rQ2SIyIJTuCYOtn3hrek1DRKOoFSdrgVEtzh8RPKDiFM
-        MknmHiZ/yRA1jLoXGO1cus/akpL8dsj/qI6y/ys62hc2y9gz+Qp9glSDCan6YQEo2o+vwC
-        SyaOZNKgIxqrPZLuEfZobh7K0sumu0lfU68b7g4At8j1RjOvKLoymJKhVsj7zQ==
+        bh=MKkEG/5K5y7F2Yw2IcGjRVzdQIU/oD6i7aVmBszFYnA=;
+        b=xCWRXRnXiOoWcHAZcgC3/FjAuA1dycfTMIhZasTk/qcBKwmMxH7nI1DZXkefX3QX/TdCXZ
+        2IMmjMZ5aZzMP5qr6jCzy6f+207Yk/97fhZTuSqo+To2FSKrwkAOYvwCPfPvdT7X1DWMNs
+        r+UZBGfWpBPKLpSfmSBcvlqUEjEBfRXw+tsKw6z/HG1CZtLmbShA68BEjrj8idBI6DGbU2
+        j1g2qQaaY/WcnhT8MaPW2bvAaFJsixNWjKmzdnIjwaBBztn2y7xeZchqXUCZ4B390cZbys
+        tpKh4si6sQ+GoKXjkbb1Z2pxEFRka2z6ZUU0pG94nYLT6NEmJDPfb1MN95Q6TQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1597304534;
+        s=2020e; t=1597320916;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Vsb5e4EQ9u+z+sC8gTRvPpseAUCaW35aJB4LNMO0ENU=;
-        b=MmqNY99fL9J7qmHzcirGdgLBSPNg0aLA3zq5Z7Mo40vvMfGgoWQCjzIK8RBcxgjb8sIH1r
-        QVon0kP+tM8lNoAw==
-From:   "tip-bot2 for Guenter Roeck" <tip-bot2@linutronix.de>
+        bh=MKkEG/5K5y7F2Yw2IcGjRVzdQIU/oD6i7aVmBszFYnA=;
+        b=q2GiVcQNMFken73bLIu8FQGR6L9R1cSiqjRyel5CyzEUDzb1HDaMhyJeqJqej35ZZSF6eu
+        OaM5nwrNmy2MxADQ==
+From:   "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/urgent] genirq: Unlock irq descriptor after errors
-Cc:     Guenter Roeck <linux@roeck-us.net>,
-        Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200811180012.80269-1-linux@roeck-us.net>
-References: <20200811180012.80269-1-linux@roeck-us.net>
+Subject: [tip: x86/urgent] x86/alternatives: Acquire pte lock with interrupts enabled
+Cc:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200813105026.bvugytmsso6muljw@linutronix.de>
+References: <20200813105026.bvugytmsso6muljw@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <159730453302.3192.18071918978987971140.tip-bot2@tip-bot2>
+Message-ID: <159732091559.3192.7404769548939834518.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -56,53 +56,68 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the irq/urgent branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     f107cee94ba4d2c7357fde59a1d84346c73d4958
-Gitweb:        https://git.kernel.org/tip/f107cee94ba4d2c7357fde59a1d84346c73d4958
-Author:        Guenter Roeck <linux@roeck-us.net>
-AuthorDate:    Tue, 11 Aug 2020 11:00:12 -07:00
+Commit-ID:     a6d996cbd38b42341ad3fce74506b9fdc280e395
+Gitweb:        https://git.kernel.org/tip/a6d996cbd38b42341ad3fce74506b9fdc280e395
+Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+AuthorDate:    Thu, 13 Aug 2020 12:50:26 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 13 Aug 2020 09:35:59 +02:00
+CommitterDate: Thu, 13 Aug 2020 14:11:54 +02:00
 
-genirq: Unlock irq descriptor after errors
+x86/alternatives: Acquire pte lock with interrupts enabled
 
-In irq_set_irqchip_state(), the irq descriptor is not unlocked after an
-error is encountered. While that should never happen in practice, a buggy
-driver may trigger it. This would result in a lockup, so fix it.
+pte lock is never acquired in-IRQ context so it does not require interrupts
+to be disabled. The lock is a regular spinlock which cannot be acquired
+with interrupts disabled on RT.
 
-Fixes: 1d0326f352bb ("genirq: Check irq_data_get_irq_chip() return value before use")
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+RT complains about pte_lock() in __text_poke() because it's invoked after
+disabling interrupts.
+
+__text_poke() has to disable interrupts as use_temporary_mm() expects
+interrupts to be off because it invokes switch_mm_irqs_off() and uses
+per-CPU (current active mm) data.
+
+Move the PTE lock handling outside the interrupt disabled region.
+
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20200811180012.80269-1-linux@roeck-us.net
+Acked-by; Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20200813105026.bvugytmsso6muljw@linutronix.de
 
 ---
- kernel/irq/manage.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ arch/x86/kernel/alternative.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/irq/manage.c b/kernel/irq/manage.c
-index d55ba62..52ac539 100644
---- a/kernel/irq/manage.c
-+++ b/kernel/irq/manage.c
-@@ -2731,8 +2731,10 @@ int irq_set_irqchip_state(unsigned int irq, enum irqchip_irq_state which,
+diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
+index c826cdd..34a1b85 100644
+--- a/arch/x86/kernel/alternative.c
++++ b/arch/x86/kernel/alternative.c
+@@ -874,8 +874,6 @@ static void *__text_poke(void *addr, const void *opcode, size_t len)
+ 	 */
+ 	BUG_ON(!pages[0] || (cross_page_boundary && !pages[1]));
  
- 	do {
- 		chip = irq_data_get_irq_chip(data);
--		if (WARN_ON_ONCE(!chip))
--			return -ENODEV;
-+		if (WARN_ON_ONCE(!chip)) {
-+			err = -ENODEV;
-+			goto out_unlock;
-+		}
- 		if (chip->irq_set_irqchip_state)
- 			break;
- #ifdef CONFIG_IRQ_DOMAIN_HIERARCHY
-@@ -2745,6 +2747,7 @@ int irq_set_irqchip_state(unsigned int irq, enum irqchip_irq_state which,
- 	if (data)
- 		err = chip->irq_set_irqchip_state(data, which, val);
+-	local_irq_save(flags);
+-
+ 	/*
+ 	 * Map the page without the global bit, as TLB flushing is done with
+ 	 * flush_tlb_mm_range(), which is intended for non-global PTEs.
+@@ -892,6 +890,8 @@ static void *__text_poke(void *addr, const void *opcode, size_t len)
+ 	 */
+ 	VM_BUG_ON(!ptep);
  
-+out_unlock:
- 	irq_put_desc_busunlock(desc, flags);
- 	return err;
++	local_irq_save(flags);
++
+ 	pte = mk_pte(pages[0], pgprot);
+ 	set_pte_at(poking_mm, poking_addr, ptep, pte);
+ 
+@@ -941,8 +941,8 @@ static void *__text_poke(void *addr, const void *opcode, size_t len)
+ 	 */
+ 	BUG_ON(memcmp(addr, opcode, len));
+ 
+-	pte_unmap_unlock(ptep, ptl);
+ 	local_irq_restore(flags);
++	pte_unmap_unlock(ptep, ptl);
+ 	return addr;
  }
+ 
