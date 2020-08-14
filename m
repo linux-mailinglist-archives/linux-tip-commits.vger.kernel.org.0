@@ -2,56 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EBB07244BF4
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 14 Aug 2020 17:23:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 14B28244BFB
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 14 Aug 2020 17:24:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727981AbgHNPXr (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S1727963AbgHNPXr (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Fri, 14 Aug 2020 11:23:47 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:37442 "EHLO
+Received: from Galois.linutronix.de ([193.142.43.55]:37456 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727890AbgHNPXm (ORCPT
+        with ESMTP id S1727909AbgHNPXn (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 14 Aug 2020 11:23:42 -0400
-Date:   Fri, 14 Aug 2020 15:23:39 -0000
+        Fri, 14 Aug 2020 11:23:43 -0400
+Date:   Fri, 14 Aug 2020 15:23:40 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1597418620;
+        s=2020; t=1597418621;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=6vLJ7TelhyywHQuMOIEtO5DZQcPxefGeRPZ74uJTr4E=;
-        b=oI/Ymv4bGnustLAd5Ig/xh/42I7jnrNRCSJ58XG5DYXWbs50nk7uEv7CiL0nIGnhy27VL7
-        JxDPWtSKVftQ7BhNO7KcUB/pEorhAfkfISU5yPBDb0F5DsUnz/Ix0nfe2o6lTwGzRlszZS
-        WEySxo57POXohNlQaO36j/zVi3ZDkPXCCZV8J/ekIG+EGQa8C5MVab0N8JqLMT58L3YgkP
-        e4lxRsDXCXnLoddfEs0lTom4QRhR/jtRWr4D5Orlz6me9xIVNwv+3Gj+gW7tEn5NNGeLUm
-        YpMPx0u6EJLxn+JBdr3G2zB4XvX4M3qDOp/JaxGp8suDZ1aHjmTpnVj2GmRD8A==
+        bh=+S/QZFCVS3Li9qsFuSlTf5u5lS7GoLVdaRUIdLgwwrM=;
+        b=LqQeVNYCB75dS85cR73/ELfO8I58RWwVoJBcUGmxceDUtCalw8UwQ5htO1dqczw60fb3SL
+        KO40d3NpXtIx6GRE2gMdu7fBjjxRktv0ttouJB2cJQAkRxvRpEIFAsczN2g1YbMQCLlhTh
+        BMJWuIB29aJeorDMs0ashtxxDG5zEcTq6dYzBo9sQulFMd7B2OPSnIUu0T63hmzVAJ9glg
+        FShZZDcOSeOSCrBnMcgsoOAmXsJYNgyUFJSPDLntAhaEfim0fe6i6SQfiR66Qcsg2E3aHY
+        7R19ZIinemyx3j8QY0Jcvy6DxZTjeUKBuRZ3EkW+4QKeblxOfnEPFtP0cqHEsQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1597418620;
+        s=2020e; t=1597418621;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=6vLJ7TelhyywHQuMOIEtO5DZQcPxefGeRPZ74uJTr4E=;
-        b=93BZZ0MHd8xu4PKP/zQUHvM84Citagq0GjGubeY7B21PIIe0RuiNvMMQHpTeXwdB2s6m8M
-        R1SfY3DTCbUPtbCg==
-From:   "tip-bot2 for Arvind Sankar" <tip-bot2@linutronix.de>
+        bh=+S/QZFCVS3Li9qsFuSlTf5u5lS7GoLVdaRUIdLgwwrM=;
+        b=LxBE1+2NCRmoDruel3oZV3J4FFm6cKebhU11qQiYfBbnJdjiIJDm064H8XF2dVibDcs2Px
+        laelGdMcAvFvnDCA==
+From:   "tip-bot2 for Ard Biesheuvel" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/boot] x86/boot: Add .text.* to setup.ld
-Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
+Subject: [tip: x86/boot] x86/boot/compressed: Get rid of GOT fixup code
+Cc:     Ard Biesheuvel <ardb@kernel.org>,
+        Arvind Sankar <nivedita@alum.mit.edu>,
         Kees Cook <keescook@chromium.org>,
         Ingo Molnar <mingo@kernel.org>,
         Nick Desaulniers <ndesaulniers@google.com>,
-        Sedat Dilek <sedat.dilek@gmail.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Fangrui Song <maskray@google.com>, x86 <x86@kernel.org>,
+        Sedat Dilek <sedat.dilek@gmail.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200731230820.1742553-5-keescook@chromium.org>
-References: <20200731230820.1742553-5-keescook@chromium.org>
+In-Reply-To: <20200731230820.1742553-4-keescook@chromium.org>
+References: <20200731230820.1742553-4-keescook@chromium.org>
 MIME-Version: 1.0
-Message-ID: <159741861953.3192.3137984902389145756.tip-bot2@tip-bot2>
+Message-ID: <159741862017.3192.5772162309097866591.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -63,98 +62,184 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/boot branch of tip:
 
-Commit-ID:     2e7a858ba843d2e6ceab1ba996805411de51b340
-Gitweb:        https://git.kernel.org/tip/2e7a858ba843d2e6ceab1ba996805411de51b340
-Author:        Arvind Sankar <nivedita@alum.mit.edu>
-AuthorDate:    Fri, 31 Jul 2020 16:07:48 -07:00
+Commit-ID:     423e4d198a036689de73fd6b073fc4349c4fa1ee
+Gitweb:        https://git.kernel.org/tip/423e4d198a036689de73fd6b073fc4349c4fa1ee
+Author:        Ard Biesheuvel <ardb@kernel.org>
+AuthorDate:    Fri, 31 Jul 2020 16:07:47 -07:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Fri, 14 Aug 2020 12:52:35 +02:00
 
-x86/boot: Add .text.* to setup.ld
+x86/boot/compressed: Get rid of GOT fixup code
 
-GCC puts the main function into .text.startup when compiled with -Os (or
--O2). This results in arch/x86/boot/main.c having a .text.startup
-section which is currently not included explicitly in the linker script
-setup.ld in the same directory.
+In a previous patch, we have eliminated GOT entries from the decompressor
+binary and added an assertion that the .got section is empty. This means
+that the GOT fixup routines that exist in both the 32-bit and 64-bit
+startup routines have become dead code, and can be removed.
 
-The BFD linker places this orphan section immediately after .text, so
-this still works. However, LLD git, since [1], is choosing to place it
-immediately after the .bstext section instead (this is the first code
-section). This plays havoc with the section layout that setup.elf
-requires to create the setup header, for eg on 64-bit:
+While at it, drop the KEEP() from the linker script, as it has no effect
+on the contents of output sections that are created by the linker itself.
 
-    LD      arch/x86/boot/setup.elf
-  ld.lld: error: section .text.startup file range overlaps with .header
-  >>> .text.startup range is [0x200040, 0x2001FE]
-  >>> .header range is [0x2001EF, 0x20026B]
-
-  ld.lld: error: section .header file range overlaps with .bsdata
-  >>> .header range is [0x2001EF, 0x20026B]
-  >>> .bsdata range is [0x2001FF, 0x200398]
-
-  ld.lld: error: section .bsdata file range overlaps with .entrytext
-  >>> .bsdata range is [0x2001FF, 0x200398]
-  >>> .entrytext range is [0x20026C, 0x2002D3]
-
-  ld.lld: error: section .text.startup virtual address range overlaps
-  with .header
-  >>> .text.startup range is [0x40, 0x1FE]
-  >>> .header range is [0x1EF, 0x26B]
-
-  ld.lld: error: section .header virtual address range overlaps with
-  .bsdata
-  >>> .header range is [0x1EF, 0x26B]
-  >>> .bsdata range is [0x1FF, 0x398]
-
-  ld.lld: error: section .bsdata virtual address range overlaps with
-  .entrytext
-  >>> .bsdata range is [0x1FF, 0x398]
-  >>> .entrytext range is [0x26C, 0x2D3]
-
-  ld.lld: error: section .text.startup load address range overlaps with
-  .header
-  >>> .text.startup range is [0x40, 0x1FE]
-  >>> .header range is [0x1EF, 0x26B]
-
-  ld.lld: error: section .header load address range overlaps with
-  .bsdata
-  >>> .header range is [0x1EF, 0x26B]
-  >>> .bsdata range is [0x1FF, 0x398]
-
-  ld.lld: error: section .bsdata load address range overlaps with
-  .entrytext
-  >>> .bsdata range is [0x1FF, 0x398]
-  >>> .entrytext range is [0x26C, 0x2D3]
-
-Add .text.* to the .text output section to fix this, and also prevent
-any future surprises if the compiler decides to create other such
-sections.
-
-[1] https://reviews.llvm.org/D75225
-
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
 Signed-off-by: Kees Cook <keescook@chromium.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Tested-by: Nick Desaulniers <ndesaulniers@google.com>
 Tested-by: Sedat Dilek <sedat.dilek@gmail.com>
 Reviewed-by: Kees Cook <keescook@chromium.org>
-Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
-Reviewed-by: Fangrui Song <maskray@google.com>
-Link: https://lore.kernel.org/r/20200731230820.1742553-5-keescook@chromium.org
+Acked-by: Arvind Sankar <nivedita@alum.mit.edu>
+Link: https://lore.kernel.org/r/20200731230820.1742553-4-keescook@chromium.org
 ---
- arch/x86/boot/setup.ld | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/boot/compressed/head_32.S     | 24 +----------
+ arch/x86/boot/compressed/head_64.S     | 57 +-------------------------
+ arch/x86/boot/compressed/vmlinux.lds.S |  4 +--
+ 3 files changed, 5 insertions(+), 80 deletions(-)
 
-diff --git a/arch/x86/boot/setup.ld b/arch/x86/boot/setup.ld
-index 24c9552..49546c2 100644
---- a/arch/x86/boot/setup.ld
-+++ b/arch/x86/boot/setup.ld
-@@ -20,7 +20,7 @@ SECTIONS
- 	.initdata	: { *(.initdata) }
- 	__end_init = .;
+diff --git a/arch/x86/boot/compressed/head_32.S b/arch/x86/boot/compressed/head_32.S
+index 03557f2..39f0bb4 100644
+--- a/arch/x86/boot/compressed/head_32.S
++++ b/arch/x86/boot/compressed/head_32.S
+@@ -49,16 +49,13 @@
+  * Position Independent Executable (PIE) so that linker won't optimize
+  * R_386_GOT32X relocation to its fixed symbol address.  Older
+  * linkers generate R_386_32 relocations against locally defined symbols,
+- * _bss, _ebss, _got, _egot and _end, in PIE.  It isn't wrong, just less
+- * optimal than R_386_RELATIVE.  But the x86 kernel fails to properly handle
+- * R_386_32 relocations when relocating the kernel.  To generate
+- * R_386_RELATIVE relocations, we mark _bss, _ebss, _got, _egot and _end as
+- * hidden:
++ * _bss, _ebss and _end, in PIE.  It isn't wrong, just less optimal than
++ * R_386_RELATIVE.  But the x86 kernel fails to properly handle R_386_32
++ * relocations when relocating the kernel.  To generate R_386_RELATIVE
++ * relocations, we mark _bss, _ebss and _end as hidden:
+  */
+ 	.hidden _bss
+ 	.hidden _ebss
+-	.hidden _got
+-	.hidden _egot
+ 	.hidden _end
  
--	.text		: { *(.text) }
-+	.text		: { *(.text .text.*) }
- 	.text32		: { *(.text32) }
+ 	__HEAD
+@@ -193,19 +190,6 @@ SYM_FUNC_START_LOCAL_NOALIGN(.Lrelocated)
+ 	rep	stosl
  
- 	. = ALIGN(16);
+ /*
+- * Adjust our own GOT
+- */
+-	leal	_got(%ebx), %edx
+-	leal	_egot(%ebx), %ecx
+-1:
+-	cmpl	%ecx, %edx
+-	jae	2f
+-	addl	%ebx, (%edx)
+-	addl	$4, %edx
+-	jmp	1b
+-2:
+-
+-/*
+  * Do the extraction, and jump to the new kernel..
+  */
+ 				/* push arguments for extract_kernel: */
+diff --git a/arch/x86/boot/compressed/head_64.S b/arch/x86/boot/compressed/head_64.S
+index 97d37f0..bf1ab30 100644
+--- a/arch/x86/boot/compressed/head_64.S
++++ b/arch/x86/boot/compressed/head_64.S
+@@ -40,8 +40,6 @@
+  */
+ 	.hidden _bss
+ 	.hidden _ebss
+-	.hidden _got
+-	.hidden _egot
+ 	.hidden _end
+ 
+ 	__HEAD
+@@ -354,25 +352,6 @@ SYM_CODE_START(startup_64)
+ 	leaq	boot_stack_end(%rbx), %rsp
+ 
+ 	/*
+-	 * paging_prepare() and cleanup_trampoline() below can have GOT
+-	 * references. Adjust the table with address we are running at.
+-	 *
+-	 * Zero RAX for adjust_got: the GOT was not adjusted before;
+-	 * there's no adjustment to undo.
+-	 */
+-	xorq	%rax, %rax
+-
+-	/*
+-	 * Calculate the address the binary is loaded at and use it as
+-	 * a GOT adjustment.
+-	 */
+-	call	1f
+-1:	popq	%rdi
+-	subq	$1b, %rdi
+-
+-	call	.Ladjust_got
+-
+-	/*
+ 	 * At this point we are in long mode with 4-level paging enabled,
+ 	 * but we might want to enable 5-level paging or vice versa.
+ 	 *
+@@ -464,21 +443,6 @@ trampoline_return:
+ 	pushq	$0
+ 	popfq
+ 
+-	/*
+-	 * Previously we've adjusted the GOT with address the binary was
+-	 * loaded at. Now we need to re-adjust for relocation address.
+-	 *
+-	 * Calculate the address the binary is loaded at, so that we can
+-	 * undo the previous GOT adjustment.
+-	 */
+-	call	1f
+-1:	popq	%rax
+-	subq	$1b, %rax
+-
+-	/* The new adjustment is the relocation address */
+-	movq	%rbx, %rdi
+-	call	.Ladjust_got
+-
+ /*
+  * Copy the compressed kernel to the end of our buffer
+  * where decompression in place becomes safe.
+@@ -556,27 +520,6 @@ SYM_FUNC_START_LOCAL_NOALIGN(.Lrelocated)
+ 	jmp	*%rax
+ SYM_FUNC_END(.Lrelocated)
+ 
+-/*
+- * Adjust the global offset table
+- *
+- * RAX is the previous adjustment of the table to undo (use 0 if it's the
+- * first time we touch GOT).
+- * RDI is the new adjustment to apply.
+- */
+-.Ladjust_got:
+-	/* Walk through the GOT adding the address to the entries */
+-	leaq	_got(%rip), %rdx
+-	leaq	_egot(%rip), %rcx
+-1:
+-	cmpq	%rcx, %rdx
+-	jae	2f
+-	subq	%rax, (%rdx)	/* Undo previous adjustment */
+-	addq	%rdi, (%rdx)	/* Apply the new adjustment */
+-	addq	$8, %rdx
+-	jmp	1b
+-2:
+-	ret
+-
+ 	.code32
+ /*
+  * This is the 32-bit trampoline that will be copied over to low memory.
+diff --git a/arch/x86/boot/compressed/vmlinux.lds.S b/arch/x86/boot/compressed/vmlinux.lds.S
+index 4bcc943..a4a4a59 100644
+--- a/arch/x86/boot/compressed/vmlinux.lds.S
++++ b/arch/x86/boot/compressed/vmlinux.lds.S
+@@ -43,9 +43,7 @@ SECTIONS
+ 		_erodata = . ;
+ 	}
+ 	.got : {
+-		_got = .;
+-		KEEP(*(.got))
+-		_egot = .;
++		*(.got)
+ 	}
+ 	.got.plt : {
+ 		*(.got.plt)
