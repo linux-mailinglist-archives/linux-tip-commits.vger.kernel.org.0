@@ -2,44 +2,44 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A08F244BF9
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 14 Aug 2020 17:24:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EBB07244BF4
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 14 Aug 2020 17:23:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727920AbgHNPXm (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 14 Aug 2020 11:23:42 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:37412 "EHLO
+        id S1727981AbgHNPXr (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 14 Aug 2020 11:23:47 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:37442 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727879AbgHNPXl (ORCPT
+        with ESMTP id S1727890AbgHNPXm (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 14 Aug 2020 11:23:41 -0400
-Date:   Fri, 14 Aug 2020 15:23:38 -0000
+        Fri, 14 Aug 2020 11:23:42 -0400
+Date:   Fri, 14 Aug 2020 15:23:39 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1597418618;
+        s=2020; t=1597418620;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=nmtdFfauGiznSlg8o2ZnjV2IVRXngrz1eioIF3iGN7U=;
-        b=O8v/a9gZP+3KWJVABUsIXl5eghmXJZDHckOkvQOoreBbC5vLjGipQe3tmC+SzhbwIJR46c
-        EOfHpt9TeZxp+NLF5F1hW9QbkZRuaWAonNY4EsEOymC6nLvU5UIQkswpg8hVst9RURrRx7
-        UVS0beX4usmMaPfIabWRhHoE+PWUnO4s5kGDCoPoHOjJFEaaOo7fxfBYhpzFa8T+ZPoQNZ
-        1oDIQaeVVUWKeM40RoZDNoEWa/X0kRNm4G68bSD/XsBwXHu6WTD+u06FmwKeaYZrovnsnq
-        8mh7hftQ5cgP+XpTRl1TSZRICKLu7UU3b7oO7nPJKXHyvy5wpqrMEUdG5/QRtg==
+        bh=6vLJ7TelhyywHQuMOIEtO5DZQcPxefGeRPZ74uJTr4E=;
+        b=oI/Ymv4bGnustLAd5Ig/xh/42I7jnrNRCSJ58XG5DYXWbs50nk7uEv7CiL0nIGnhy27VL7
+        JxDPWtSKVftQ7BhNO7KcUB/pEorhAfkfISU5yPBDb0F5DsUnz/Ix0nfe2o6lTwGzRlszZS
+        WEySxo57POXohNlQaO36j/zVi3ZDkPXCCZV8J/ekIG+EGQa8C5MVab0N8JqLMT58L3YgkP
+        e4lxRsDXCXnLoddfEs0lTom4QRhR/jtRWr4D5Orlz6me9xIVNwv+3Gj+gW7tEn5NNGeLUm
+        YpMPx0u6EJLxn+JBdr3G2zB4XvX4M3qDOp/JaxGp8suDZ1aHjmTpnVj2GmRD8A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1597418618;
+        s=2020e; t=1597418620;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=nmtdFfauGiznSlg8o2ZnjV2IVRXngrz1eioIF3iGN7U=;
-        b=J+aw+GAn3J/+pMr9D0zHCaNthX5JsPnPHkMxscLtcBT+gMhfuYAwOS7urwwdUvCZ92PXg3
-        QRr65BW+Er6DZHBQ==
+        bh=6vLJ7TelhyywHQuMOIEtO5DZQcPxefGeRPZ74uJTr4E=;
+        b=93BZZ0MHd8xu4PKP/zQUHvM84Citagq0GjGubeY7B21PIIe0RuiNvMMQHpTeXwdB2s6m8M
+        R1SfY3DTCbUPtbCg==
 From:   "tip-bot2 for Arvind Sankar" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/boot] x86/boot: Remove run-time relocations from head_{32,64}.S
+Subject: [tip: x86/boot] x86/boot: Add .text.* to setup.ld
 Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
         Kees Cook <keescook@chromium.org>,
         Ingo Molnar <mingo@kernel.org>,
@@ -48,10 +48,10 @@ Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
         Ard Biesheuvel <ardb@kernel.org>,
         Fangrui Song <maskray@google.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200731230820.1742553-7-keescook@chromium.org>
-References: <20200731230820.1742553-7-keescook@chromium.org>
+In-Reply-To: <20200731230820.1742553-5-keescook@chromium.org>
+References: <20200731230820.1742553-5-keescook@chromium.org>
 MIME-Version: 1.0
-Message-ID: <159741861819.3192.15659330144869548929.tip-bot2@tip-bot2>
+Message-ID: <159741861953.3192.3137984902389145756.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -63,32 +63,74 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/boot branch of tip:
 
-Commit-ID:     3f086189cd3641d212949ff044d8e4486c93d55e
-Gitweb:        https://git.kernel.org/tip/3f086189cd3641d212949ff044d8e4486c93d55e
+Commit-ID:     2e7a858ba843d2e6ceab1ba996805411de51b340
+Gitweb:        https://git.kernel.org/tip/2e7a858ba843d2e6ceab1ba996805411de51b340
 Author:        Arvind Sankar <nivedita@alum.mit.edu>
-AuthorDate:    Fri, 31 Jul 2020 16:07:50 -07:00
+AuthorDate:    Fri, 31 Jul 2020 16:07:48 -07:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Fri, 14 Aug 2020 12:52:35 +02:00
 
-x86/boot: Remove run-time relocations from head_{32,64}.S
+x86/boot: Add .text.* to setup.ld
 
-The BFD linker generates run-time relocations for z_input_len and
-z_output_len, even though they are absolute symbols.
+GCC puts the main function into .text.startup when compiled with -Os (or
+-O2). This results in arch/x86/boot/main.c having a .text.startup
+section which is currently not included explicitly in the linker script
+setup.ld in the same directory.
 
-This is fixed for binutils-2.35 [1]. Work around this for earlier
-versions by defining two variables input_len and output_len in addition
-to the symbols, and use them via position-independent references.
+The BFD linker places this orphan section immediately after .text, so
+this still works. However, LLD git, since [1], is choosing to place it
+immediately after the .bstext section instead (this is the first code
+section). This plays havoc with the section layout that setup.elf
+requires to create the setup header, for eg on 64-bit:
 
-This eliminates the last two run-time relocations in the head code and
-allows us to drop the -z noreloc-overflow flag to the linker.
+    LD      arch/x86/boot/setup.elf
+  ld.lld: error: section .text.startup file range overlaps with .header
+  >>> .text.startup range is [0x200040, 0x2001FE]
+  >>> .header range is [0x2001EF, 0x20026B]
 
-Move the -pie and --no-dynamic-linker LDFLAGS to LDFLAGS_vmlinux instead
-of KBUILD_LDFLAGS. There shouldn't be anything else getting linked, but
-this is the more logical location for these flags, and modversions might
-call the linker if an EXPORT_SYMBOL is left over accidentally in one of
-the decompressors.
+  ld.lld: error: section .header file range overlaps with .bsdata
+  >>> .header range is [0x2001EF, 0x20026B]
+  >>> .bsdata range is [0x2001FF, 0x200398]
 
-[1] https://sourceware.org/bugzilla/show_bug.cgi?id=25754
+  ld.lld: error: section .bsdata file range overlaps with .entrytext
+  >>> .bsdata range is [0x2001FF, 0x200398]
+  >>> .entrytext range is [0x20026C, 0x2002D3]
+
+  ld.lld: error: section .text.startup virtual address range overlaps
+  with .header
+  >>> .text.startup range is [0x40, 0x1FE]
+  >>> .header range is [0x1EF, 0x26B]
+
+  ld.lld: error: section .header virtual address range overlaps with
+  .bsdata
+  >>> .header range is [0x1EF, 0x26B]
+  >>> .bsdata range is [0x1FF, 0x398]
+
+  ld.lld: error: section .bsdata virtual address range overlaps with
+  .entrytext
+  >>> .bsdata range is [0x1FF, 0x398]
+  >>> .entrytext range is [0x26C, 0x2D3]
+
+  ld.lld: error: section .text.startup load address range overlaps with
+  .header
+  >>> .text.startup range is [0x40, 0x1FE]
+  >>> .header range is [0x1EF, 0x26B]
+
+  ld.lld: error: section .header load address range overlaps with
+  .bsdata
+  >>> .header range is [0x1EF, 0x26B]
+  >>> .bsdata range is [0x1FF, 0x398]
+
+  ld.lld: error: section .bsdata load address range overlaps with
+  .entrytext
+  >>> .bsdata range is [0x1FF, 0x398]
+  >>> .entrytext range is [0x26C, 0x2D3]
+
+Add .text.* to the .text output section to fix this, and also prevent
+any future surprises if the compiler decides to create other such
+sections.
+
+[1] https://reviews.llvm.org/D75225
 
 Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
 Signed-off-by: Kees Cook <keescook@chromium.org>
@@ -98,98 +140,21 @@ Tested-by: Sedat Dilek <sedat.dilek@gmail.com>
 Reviewed-by: Kees Cook <keescook@chromium.org>
 Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
 Reviewed-by: Fangrui Song <maskray@google.com>
-Link: https://lore.kernel.org/r/20200731230820.1742553-7-keescook@chromium.org
+Link: https://lore.kernel.org/r/20200731230820.1742553-5-keescook@chromium.org
 ---
- arch/x86/boot/compressed/Makefile  | 12 ++----------
- arch/x86/boot/compressed/head_32.S | 17 ++++++++---------
- arch/x86/boot/compressed/head_64.S |  4 ++--
- arch/x86/boot/compressed/mkpiggy.c |  6 ++++++
- 4 files changed, 18 insertions(+), 21 deletions(-)
+ arch/x86/boot/setup.ld | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefile
-index 7c687a7..7d25089 100644
---- a/arch/x86/boot/compressed/Makefile
-+++ b/arch/x86/boot/compressed/Makefile
-@@ -52,16 +52,8 @@ UBSAN_SANITIZE :=n
- KBUILD_LDFLAGS := -m elf_$(UTS_MACHINE)
- # Compressed kernel should be built as PIE since it may be loaded at any
- # address by the bootloader.
--ifeq ($(CONFIG_X86_32),y)
--KBUILD_LDFLAGS += $(call ld-option, -pie) $(call ld-option, --no-dynamic-linker)
--else
--# To build 64-bit compressed kernel as PIE, we disable relocation
--# overflow check to avoid relocation overflow error with a new linker
--# command-line option, -z noreloc-overflow.
--KBUILD_LDFLAGS += $(shell $(LD) --help 2>&1 | grep -q "\-z noreloc-overflow" \
--	&& echo "-z noreloc-overflow -pie --no-dynamic-linker")
--endif
--LDFLAGS_vmlinux := -T
-+LDFLAGS_vmlinux := $(call ld-option, -pie) $(call ld-option, --no-dynamic-linker)
-+LDFLAGS_vmlinux += -T
+diff --git a/arch/x86/boot/setup.ld b/arch/x86/boot/setup.ld
+index 24c9552..49546c2 100644
+--- a/arch/x86/boot/setup.ld
++++ b/arch/x86/boot/setup.ld
+@@ -20,7 +20,7 @@ SECTIONS
+ 	.initdata	: { *(.initdata) }
+ 	__end_init = .;
  
- hostprogs	:= mkpiggy
- HOST_EXTRACFLAGS += -I$(srctree)/tools/include
-diff --git a/arch/x86/boot/compressed/head_32.S b/arch/x86/boot/compressed/head_32.S
-index 8c1a4f5..659fad5 100644
---- a/arch/x86/boot/compressed/head_32.S
-+++ b/arch/x86/boot/compressed/head_32.S
-@@ -178,18 +178,17 @@ SYM_FUNC_START_LOCAL_NOALIGN(.Lrelocated)
- /*
-  * Do the extraction, and jump to the new kernel..
-  */
--				/* push arguments for extract_kernel: */
--	pushl	$z_output_len	/* decompressed length, end of relocs */
-+	/* push arguments for extract_kernel: */
+-	.text		: { *(.text) }
++	.text		: { *(.text .text.*) }
+ 	.text32		: { *(.text32) }
  
--	pushl	%ebp		/* output address */
--
--	pushl	$z_input_len	/* input_len */
-+	pushl	output_len@GOTOFF(%ebx)	/* decompressed length, end of relocs */
-+	pushl	%ebp			/* output address */
-+	pushl	input_len@GOTOFF(%ebx)	/* input_len */
- 	leal	input_data@GOTOFF(%ebx), %eax
--	pushl	%eax		/* input_data */
-+	pushl	%eax			/* input_data */
- 	leal	boot_heap@GOTOFF(%ebx), %eax
--	pushl	%eax		/* heap area */
--	pushl	%esi		/* real mode pointer */
--	call	extract_kernel	/* returns kernel location in %eax */
-+	pushl	%eax			/* heap area */
-+	pushl	%esi			/* real mode pointer */
-+	call	extract_kernel		/* returns kernel location in %eax */
- 	addl	$24, %esp
- 
- /*
-diff --git a/arch/x86/boot/compressed/head_64.S b/arch/x86/boot/compressed/head_64.S
-index 1142909..9e46729 100644
---- a/arch/x86/boot/compressed/head_64.S
-+++ b/arch/x86/boot/compressed/head_64.S
-@@ -534,9 +534,9 @@ SYM_FUNC_START_LOCAL_NOALIGN(.Lrelocated)
- 	movq	%rsi, %rdi		/* real mode address */
- 	leaq	boot_heap(%rip), %rsi	/* malloc area for uncompression */
- 	leaq	input_data(%rip), %rdx  /* input_data */
--	movl	$z_input_len, %ecx	/* input_len */
-+	movl	input_len(%rip), %ecx	/* input_len */
- 	movq	%rbp, %r8		/* output target address */
--	movl	$z_output_len, %r9d	/* decompressed length, end of relocs */
-+	movl	output_len(%rip), %r9d	/* decompressed length, end of relocs */
- 	call	extract_kernel		/* returns kernel location in %rax */
- 	popq	%rsi
- 
-diff --git a/arch/x86/boot/compressed/mkpiggy.c b/arch/x86/boot/compressed/mkpiggy.c
-index 7e01248..52aa56c 100644
---- a/arch/x86/boot/compressed/mkpiggy.c
-+++ b/arch/x86/boot/compressed/mkpiggy.c
-@@ -60,6 +60,12 @@ int main(int argc, char *argv[])
- 	printf(".incbin \"%s\"\n", argv[1]);
- 	printf("input_data_end:\n");
- 
-+	printf(".section \".rodata\",\"a\",@progbits\n");
-+	printf(".globl input_len\n");
-+	printf("input_len:\n\t.long %lu\n", ilen);
-+	printf(".globl output_len\n");
-+	printf("output_len:\n\t.long %lu\n", (unsigned long)olen);
-+
- 	retval = 0;
- bail:
- 	if (f)
+ 	. = ALIGN(16);
