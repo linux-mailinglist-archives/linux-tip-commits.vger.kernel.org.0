@@ -2,53 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5993124531A
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 15 Aug 2020 23:58:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C158B24526E
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 15 Aug 2020 23:51:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729480AbgHOV6B (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 15 Aug 2020 17:58:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45642 "EHLO
+        id S1728602AbgHOVvE (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 15 Aug 2020 17:51:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45658 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728959AbgHOVwA (ORCPT
+        with ESMTP id S1728488AbgHOVuy (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 15 Aug 2020 17:52:00 -0400
+        Sat, 15 Aug 2020 17:50:54 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37F47C09B04E;
-        Sat, 15 Aug 2020 08:47:01 -0700 (PDT)
-Date:   Sat, 15 Aug 2020 15:46:51 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9392DC09B051;
+        Sat, 15 Aug 2020 08:47:04 -0700 (PDT)
+Date:   Sat, 15 Aug 2020 15:46:52 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1597506411;
+        s=2020; t=1597506413;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=chcjr83BJGvHqcyPSbJuu69hZ3Bzn+h+dT5NU8PJR0c=;
-        b=NoYHWaXlFP4iFWYRJGFkDqBUjeLtr5mgFIldN6XjTTF/dPlof8kCNH3P78AaV0axSpy0ZX
-        4gDxPQ/Gk44z9EhQt6wDvUwGyhPYlgxWaNiQFPP2b9E98APU2hMVAPSYbvsuhJTMP6jvOE
-        S7bg6keL4LpZUnXZCEgHZkfMDy+JijtKYCRcH8JLeK5sK3BltADUU5EzO1N/MhYqg8xFp+
-        KQHSJ9SmxmmpGFeZ7YSEvedopArYy///Jd/XIJvMrGNp5vDwh8kKzWOjBf0MGrDluDKVh5
-        yFDWj8oCAgtCQliFRZ2i1IR16ng0peY3kWUvoREIwfimPRnliBRmEwD9rGrQ3A==
+        bh=3fXszv2APHcKmDolqgtZdsS0ielnNdMvQ+ezIc2uA40=;
+        b=IyRmSqiLFCP1mofhwaH84KcBX8X+ngd1JIQ+ZsAPHgXnq++DKTT84IucIgxS116pB4K+qq
+        zRfqWqZsinI7kM+yZKZ4tzwRole9fXlxjUfqp4pmtCxU5CGFSntPQmob44d/8qJcfP+Jso
+        baeL7NPTgKtxKQQSfrzRxKJq2iXAxpilVHbhT9dSjS8TX9Mizjzojqb5kP4+dyHf+j78aI
+        meNjqZhnfyMHejvSQxS7KVHwSv3c0GahDAlb6PVwPwuOfHOKQRw14lK5XSQOr060eLG93h
+        HKvrLdVvKOwCrFSbZGbops/Yw/CVIe6GhqK/23GjKH656SiF5z3RsZXULn6yww==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1597506411;
+        s=2020e; t=1597506413;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=chcjr83BJGvHqcyPSbJuu69hZ3Bzn+h+dT5NU8PJR0c=;
-        b=+JH2Id1qxdAFWM9Xrx7zBAq20yXhG34rI/zk4FgSpkK2Q+6DwyPgTO/n/hBxUJIVb8mO2L
-        8n26YfdRoQ6GSCBg==
+        bh=3fXszv2APHcKmDolqgtZdsS0ielnNdMvQ+ezIc2uA40=;
+        b=nN7XWbQHARIUtV1aKk/8mYaUtrUJPNwW3MAiDTmZpbfu0dElQCLnVI6FqUZb2mLx9W1aZB
+        g0q9uQ7c94F07qDQ==
 From:   "tip-bot2 for Juergen Gross" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/paravirt] x86/entry/32: Simplify CONFIG_XEN_PV build dependency
+Subject: [tip: x86/paravirt] x86/paravirt: Clean up paravirt macros
 Cc:     Juergen Gross <jgross@suse.com>, Ingo Molnar <mingo@kernel.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200815100641.26362-5-jgross@suse.com>
-References: <20200815100641.26362-5-jgross@suse.com>
+In-Reply-To: <20200815100641.26362-3-jgross@suse.com>
+References: <20200815100641.26362-3-jgross@suse.com>
 MIME-Version: 1.0
-Message-ID: <159750641102.3192.11180286110321491044.tip-bot2@tip-bot2>
+Message-ID: <159750641236.3192.13754710785295850229.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,46 +60,57 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/paravirt branch of tip:
 
-Commit-ID:     76fdb041c1f02311e6e05211c895e932af08b041
-Gitweb:        https://git.kernel.org/tip/76fdb041c1f02311e6e05211c895e932af08b041
+Commit-ID:     94b827becc6a87c905ab30b398e12a266518acbb
+Gitweb:        https://git.kernel.org/tip/94b827becc6a87c905ab30b398e12a266518acbb
 Author:        Juergen Gross <jgross@suse.com>
-AuthorDate:    Sat, 15 Aug 2020 12:06:39 +02:00
+AuthorDate:    Sat, 15 Aug 2020 12:06:37 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sat, 15 Aug 2020 13:52:12 +02:00
+CommitterDate: Sat, 15 Aug 2020 13:52:11 +02:00
 
-x86/entry/32: Simplify CONFIG_XEN_PV build dependency
+x86/paravirt: Clean up paravirt macros
 
-With 32-bit Xen PV support gone, the following commit is not needed
-anymore:
-
-  a4c0e91d1d65bc58 ("x86/entry/32: Fix XEN_PV build dependency")
+Some paravirt macros are no longer used, delete them.
 
 Signed-off-by: Juergen Gross <jgross@suse.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20200815100641.26362-5-jgross@suse.com
+Link: https://lore.kernel.org/r/20200815100641.26362-3-jgross@suse.com
 ---
- arch/x86/include/asm/idtentry.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/include/asm/paravirt.h | 15 ---------------
+ 1 file changed, 15 deletions(-)
 
-diff --git a/arch/x86/include/asm/idtentry.h b/arch/x86/include/asm/idtentry.h
-index a433661..337dcfd 100644
---- a/arch/x86/include/asm/idtentry.h
-+++ b/arch/x86/include/asm/idtentry.h
-@@ -547,7 +547,7 @@ DECLARE_IDTENTRY_RAW(X86_TRAP_MC,	exc_machine_check);
+diff --git a/arch/x86/include/asm/paravirt.h b/arch/x86/include/asm/paravirt.h
+index 25c7a73..e02c409 100644
+--- a/arch/x86/include/asm/paravirt.h
++++ b/arch/x86/include/asm/paravirt.h
+@@ -586,16 +586,9 @@ bool __raw_callee_save___native_vcpu_is_preempted(long cpu);
+ #endif /* SMP && PARAVIRT_SPINLOCKS */
  
- /* NMI */
- DECLARE_IDTENTRY_NMI(X86_TRAP_NMI,	exc_nmi);
--#if defined(CONFIG_XEN_PV) && defined(CONFIG_X86_64)
-+#ifdef CONFIG_XEN_PV
- DECLARE_IDTENTRY_RAW(X86_TRAP_NMI,	xenpv_exc_nmi);
- #endif
- 
-@@ -557,7 +557,7 @@ DECLARE_IDTENTRY_DEBUG(X86_TRAP_DB,	exc_debug);
+ #ifdef CONFIG_X86_32
+-#define PV_SAVE_REGS "pushl %ecx; pushl %edx;"
+-#define PV_RESTORE_REGS "popl %edx; popl %ecx;"
+-
+ /* save and restore all caller-save registers, except return value */
+ #define PV_SAVE_ALL_CALLER_REGS		"pushl %ecx;"
+ #define PV_RESTORE_ALL_CALLER_REGS	"popl  %ecx;"
+-
+-#define PV_FLAGS_ARG "0"
+-#define PV_EXTRA_CLOBBERS
+-#define PV_VEXTRA_CLOBBERS
  #else
- DECLARE_IDTENTRY_RAW(X86_TRAP_DB,	exc_debug);
- #endif
--#if defined(CONFIG_XEN_PV) && defined(CONFIG_X86_64)
-+#ifdef CONFIG_XEN_PV
- DECLARE_IDTENTRY_RAW(X86_TRAP_DB,	xenpv_exc_debug);
+ /* save and restore all caller-save registers, except return value */
+ #define PV_SAVE_ALL_CALLER_REGS						\
+@@ -616,14 +609,6 @@ bool __raw_callee_save___native_vcpu_is_preempted(long cpu);
+ 	"pop %rsi;"							\
+ 	"pop %rdx;"							\
+ 	"pop %rcx;"
+-
+-/* We save some registers, but all of them, that's too much. We clobber all
+- * caller saved registers but the argument parameter */
+-#define PV_SAVE_REGS "pushq %%rdi;"
+-#define PV_RESTORE_REGS "popq %%rdi;"
+-#define PV_EXTRA_CLOBBERS EXTRA_CLOBBERS, "rcx" , "rdx", "rsi"
+-#define PV_VEXTRA_CLOBBERS EXTRA_CLOBBERS, "rdi", "rcx" , "rdx", "rsi"
+-#define PV_FLAGS_ARG "D"
  #endif
  
+ /*
