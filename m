@@ -2,53 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BB4FC245397
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 16 Aug 2020 00:03:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0253F245487
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 16 Aug 2020 00:27:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728678AbgHOWDe (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 15 Aug 2020 18:03:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45652 "EHLO
+        id S1728120AbgHOW1E (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 15 Aug 2020 18:27:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51714 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728580AbgHOVvL (ORCPT
+        with ESMTP id S1728091AbgHOW1E (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 15 Aug 2020 17:51:11 -0400
+        Sat, 15 Aug 2020 18:27:04 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29D2EC09B04C;
-        Sat, 15 Aug 2020 08:47:01 -0700 (PDT)
-Date:   Sat, 15 Aug 2020 15:46:50 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9743C061786;
+        Sat, 15 Aug 2020 15:27:03 -0700 (PDT)
+Date:   Sat, 15 Aug 2020 22:26:58 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1597506411;
+        s=2020; t=1597530421;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=gvXsFKLYgG9imtnvQkz/GI8BrWBV6j9tKKoEh7WUZi8=;
-        b=3fCpAH8aOpeyZ6g5tLVl+0CF+ZWK4dgcai6C3dUgOMAGR93MAaZutDwT5e5PbZkg17+bga
-        NO/c460egX7I40+HH3qzaJtWHk24Y/7qfjKu/wqjrw42yDtrxErETIOyMIOsvDG942+3RX
-        +x8N2ODSD/tfpPU4wMGJ3L1BKGSlTzCZqwU7h3kloWPij5vkbYZVFnm3i4QItcD/9iqL6Y
-        vA1iu/NBnHDwme2RkfGvrNTE2sBwh2fHoHEoLigTjN+jaLIpLcpy0szilKJHUrl/4HC5b8
-        Qs13VQpoT8K0wd3+C0leRpmhGOyE0uORi+Jmyxz+U7cwWx08NAD17WuKsiBWrw==
+        bh=wypv7MENFaReKZ9UbFiYXOK6G1uQ5RrEzeXJG9GwfNc=;
+        b=hVfUEGnXH1Vx+e9LSsuRyD5aNi2ePl5cXr7NaKCHO3vyMPqnXb0RfWVw1cAi73oZJBRe0z
+        B1ZUbcRsOq/g8tBRVwV5leJumdmZh7UEmJU044l4UPgNu9YwuFDg1BHuPS+nHdjZZuWoue
+        XWy0m7l8L/bP+B/Lv1u9aNP7UM7Jf5JzlKrTXH/Udt94hXrmeh8iEDvzAkdKiJPxqxGWsn
+        WYj+fZMCHYEq4LoskH33kDaMg7NXL3KYN6+Qk/v7hY1XeP/jyuMinUd6Md6f4Dl4LhyIS1
+        w1nAii5/mM0ZguwJBGY7vJxD96aANOenAWZf5qR1u3iqJR7gOV91TUH4s/878g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1597506411;
+        s=2020e; t=1597530421;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=gvXsFKLYgG9imtnvQkz/GI8BrWBV6j9tKKoEh7WUZi8=;
-        b=31mXZuxZXQDFE6MgKHpLllUTXBgBBI8flbw/drdHe/egma1mS8y40jS3O9aLCfWr561lVB
-        r64rdccOFyBNLtDw==
-From:   "tip-bot2 for Juergen Gross" <tip-bot2@linutronix.de>
+        bh=wypv7MENFaReKZ9UbFiYXOK6G1uQ5RrEzeXJG9GwfNc=;
+        b=I0M6NcjPBU+YGkqeeSR9P9QzXWWi4V/Ji8XERV4JuauQKoGx2GDIvrjiHWUWIkN3zbD8u9
+        PjNwayXtFDhlvxCA==
+From:   "tip-bot2 for Vaibhav Shankar" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/paravirt] x86/paravirt: Remove set_pte_at() pv-op
-Cc:     Juergen Gross <jgross@suse.com>, Ingo Molnar <mingo@kernel.org>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200815100641.26362-6-jgross@suse.com>
-References: <20200815100641.26362-6-jgross@suse.com>
+Subject: [tip: perf/urgent] perf/x86/intel/uncore: Add BW counters for GT, IA
+ and IO breakdown
+Cc:     Vaibhav Shankar <vaibhav.shankar@intel.com>,
+        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200814022234.23605-1-vaibhav.shankar@intel.com>
+References: <20200814022234.23605-1-vaibhav.shankar@intel.com>
 MIME-Version: 1.0
-Message-ID: <159750641040.3192.3040793846858713127.tip-bot2@tip-bot2>
+Message-ID: <159753041851.3192.7787654120960182179.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,165 +60,129 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/paravirt branch of tip:
+The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     e1ac3e66d301e57472f31ebee81b916e9fa8b35b
-Gitweb:        https://git.kernel.org/tip/e1ac3e66d301e57472f31ebee81b916e9fa8b35b
-Author:        Juergen Gross <jgross@suse.com>
-AuthorDate:    Sat, 15 Aug 2020 12:06:40 +02:00
+Commit-ID:     24633d901ea44fe99bc9a2d01a3881fa097b78b3
+Gitweb:        https://git.kernel.org/tip/24633d901ea44fe99bc9a2d01a3881fa097b78b3
+Author:        Vaibhav Shankar <vaibhav.shankar@intel.com>
+AuthorDate:    Thu, 13 Aug 2020 19:22:34 -07:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sat, 15 Aug 2020 13:52:12 +02:00
+CommitterDate: Sat, 15 Aug 2020 20:24:18 +02:00
 
-x86/paravirt: Remove set_pte_at() pv-op
+perf/x86/intel/uncore: Add BW counters for GT, IA and IO breakdown
 
-On x86 set_pte_at() is now always falling back to set_pte(). So instead
-of having this fallback after the paravirt maze just drop the
-set_pte_at paravirt operation and let set_pte_at() use the set_pte()
-function directly.
+Linux only has support to read total DDR reads and writes. Here we
+add support to enable bandwidth breakdown-GT, IA and IO. Breakdown
+of BW is important to debug and optimize memory access. This can also
+be used for telemetry and improving the system software.The offsets for
+GT, IA and IO are added and these free running counters can be accessed
+via MMIO space.
 
-Signed-off-by: Juergen Gross <jgross@suse.com>
+The BW breakdown can be measured using the following cmd:
+
+  perf stat -e uncore_imc/gt_requests/,uncore_imc/ia_requests/,uncore_imc/io_requests/
+
+             30.57 MiB  uncore_imc/gt_requests/
+           1346.13 MiB  uncore_imc/ia_requests/
+            190.97 MiB  uncore_imc/io_requests/
+
+       5.984572733 seconds time elapsed
+
+     BW/s = <gt,ia,io>_requests/time elapsed
+
+Signed-off-by: Vaibhav Shankar <vaibhav.shankar@intel.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20200815100641.26362-6-jgross@suse.com
+Link: https://lore.kernel.org/r/20200814022234.23605-1-vaibhav.shankar@intel.com
 ---
- arch/x86/include/asm/paravirt.h       |  8 +-------
- arch/x86/include/asm/paravirt_types.h |  2 --
- arch/x86/include/asm/pgtable.h        |  7 +++----
- arch/x86/kernel/paravirt.c            |  1 -
- arch/x86/xen/mmu_pv.c                 |  8 --------
- include/trace/events/xen.h            | 20 --------------------
- 6 files changed, 4 insertions(+), 42 deletions(-)
+ arch/x86/events/intel/uncore_snb.c | 52 +++++++++++++++++++++++++++--
+ 1 file changed, 49 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/include/asm/paravirt.h b/arch/x86/include/asm/paravirt.h
-index e02c409..f0464b8 100644
---- a/arch/x86/include/asm/paravirt.h
-+++ b/arch/x86/include/asm/paravirt.h
-@@ -412,12 +412,6 @@ static inline void set_pte(pte_t *ptep, pte_t pte)
- 	PVOP_VCALL2(mmu.set_pte, ptep, pte.pte);
- }
+diff --git a/arch/x86/events/intel/uncore_snb.c b/arch/x86/events/intel/uncore_snb.c
+index cb94ba8..6a4ca27 100644
+--- a/arch/x86/events/intel/uncore_snb.c
++++ b/arch/x86/events/intel/uncore_snb.c
+@@ -390,6 +390,18 @@ static struct uncore_event_desc snb_uncore_imc_events[] = {
+ 	INTEL_UNCORE_EVENT_DESC(data_writes.scale, "6.103515625e-5"),
+ 	INTEL_UNCORE_EVENT_DESC(data_writes.unit, "MiB"),
  
--static inline void set_pte_at(struct mm_struct *mm, unsigned long addr,
--			      pte_t *ptep, pte_t pte)
--{
--	PVOP_VCALL4(mmu.set_pte_at, mm, addr, ptep, pte.pte);
--}
--
- static inline void set_pmd(pmd_t *pmdp, pmd_t pmd)
- {
- 	PVOP_VCALL2(mmu.set_pmd, pmdp, native_pmd_val(pmd));
-@@ -510,7 +504,7 @@ static inline void set_pte_atomic(pte_t *ptep, pte_t pte)
- static inline void pte_clear(struct mm_struct *mm, unsigned long addr,
- 			     pte_t *ptep)
- {
--	set_pte_at(mm, addr, ptep, __pte(0));
-+	set_pte(ptep, __pte(0));
- }
++	INTEL_UNCORE_EVENT_DESC(gt_requests, "event=0x03"),
++	INTEL_UNCORE_EVENT_DESC(gt_requests.scale, "6.103515625e-5"),
++	INTEL_UNCORE_EVENT_DESC(gt_requests.unit, "MiB"),
++
++	INTEL_UNCORE_EVENT_DESC(ia_requests, "event=0x04"),
++	INTEL_UNCORE_EVENT_DESC(ia_requests.scale, "6.103515625e-5"),
++	INTEL_UNCORE_EVENT_DESC(ia_requests.unit, "MiB"),
++
++	INTEL_UNCORE_EVENT_DESC(io_requests, "event=0x05"),
++	INTEL_UNCORE_EVENT_DESC(io_requests.scale, "6.103515625e-5"),
++	INTEL_UNCORE_EVENT_DESC(io_requests.unit, "MiB"),
++
+ 	{ /* end: all zeroes */ },
+ };
  
- static inline void pmd_clear(pmd_t *pmdp)
-diff --git a/arch/x86/include/asm/paravirt_types.h b/arch/x86/include/asm/paravirt_types.h
-index f27c3fe..0fad9f6 100644
---- a/arch/x86/include/asm/paravirt_types.h
-+++ b/arch/x86/include/asm/paravirt_types.h
-@@ -242,8 +242,6 @@ struct pv_mmu_ops {
+@@ -405,13 +417,35 @@ static struct uncore_event_desc snb_uncore_imc_events[] = {
+ #define SNB_UNCORE_PCI_IMC_DATA_WRITES_BASE	0x5054
+ #define SNB_UNCORE_PCI_IMC_CTR_BASE		SNB_UNCORE_PCI_IMC_DATA_READS_BASE
  
- 	/* Pagetable manipulation functions */
- 	void (*set_pte)(pte_t *ptep, pte_t pteval);
--	void (*set_pte_at)(struct mm_struct *mm, unsigned long addr,
--			   pte_t *ptep, pte_t pteval);
- 	void (*set_pmd)(pmd_t *pmdp, pmd_t pmdval);
++/* BW break down- legacy counters */
++#define SNB_UNCORE_PCI_IMC_GT_REQUESTS		0x3
++#define SNB_UNCORE_PCI_IMC_GT_REQUESTS_BASE	0x5040
++#define SNB_UNCORE_PCI_IMC_IA_REQUESTS		0x4
++#define SNB_UNCORE_PCI_IMC_IA_REQUESTS_BASE	0x5044
++#define SNB_UNCORE_PCI_IMC_IO_REQUESTS		0x5
++#define SNB_UNCORE_PCI_IMC_IO_REQUESTS_BASE	0x5048
++
+ enum perf_snb_uncore_imc_freerunning_types {
+-	SNB_PCI_UNCORE_IMC_DATA		= 0,
++	SNB_PCI_UNCORE_IMC_DATA_READS		= 0,
++	SNB_PCI_UNCORE_IMC_DATA_WRITES,
++	SNB_PCI_UNCORE_IMC_GT_REQUESTS,
++	SNB_PCI_UNCORE_IMC_IA_REQUESTS,
++	SNB_PCI_UNCORE_IMC_IO_REQUESTS,
++
+ 	SNB_PCI_UNCORE_IMC_FREERUNNING_TYPE_MAX,
+ };
  
- 	pte_t (*ptep_modify_prot_start)(struct vm_area_struct *vma, unsigned long addr,
-diff --git a/arch/x86/include/asm/pgtable.h b/arch/x86/include/asm/pgtable.h
-index b836138..5e0dcc2 100644
---- a/arch/x86/include/asm/pgtable.h
-+++ b/arch/x86/include/asm/pgtable.h
-@@ -63,7 +63,6 @@ extern pmdval_t early_pmd_flags;
- #include <asm/paravirt.h>
- #else  /* !CONFIG_PARAVIRT_XXL */
- #define set_pte(ptep, pte)		native_set_pte(ptep, pte)
--#define set_pte_at(mm, addr, ptep, pte)	native_set_pte_at(mm, addr, ptep, pte)
+ static struct freerunning_counters snb_uncore_imc_freerunning[] = {
+-	[SNB_PCI_UNCORE_IMC_DATA]     = { SNB_UNCORE_PCI_IMC_DATA_READS_BASE, 0x4, 0x0, 2, 32 },
++	[SNB_PCI_UNCORE_IMC_DATA_READS]		= { SNB_UNCORE_PCI_IMC_DATA_READS_BASE,
++							0x0, 0x0, 1, 32 },
++	[SNB_PCI_UNCORE_IMC_DATA_READS]		= { SNB_UNCORE_PCI_IMC_DATA_WRITES_BASE,
++							0x0, 0x0, 1, 32 },
++	[SNB_PCI_UNCORE_IMC_GT_REQUESTS]	= { SNB_UNCORE_PCI_IMC_GT_REQUESTS_BASE,
++							0x0, 0x0, 1, 32 },
++	[SNB_PCI_UNCORE_IMC_IA_REQUESTS]	= { SNB_UNCORE_PCI_IMC_IA_REQUESTS_BASE,
++							0x0, 0x0, 1, 32 },
++	[SNB_PCI_UNCORE_IMC_IO_REQUESTS]	= { SNB_UNCORE_PCI_IMC_IO_REQUESTS_BASE,
++							0x0, 0x0, 1, 32 },
+ };
  
- #define set_pte_atomic(ptep, pte)					\
- 	native_set_pte_atomic(ptep, pte)
-@@ -1033,10 +1032,10 @@ static inline pud_t native_local_pudp_get_and_clear(pud_t *pudp)
- 	return res;
- }
+ static struct attribute *snb_uncore_imc_formats_attr[] = {
+@@ -525,6 +559,18 @@ static int snb_uncore_imc_event_init(struct perf_event *event)
+ 		base = SNB_UNCORE_PCI_IMC_DATA_WRITES_BASE;
+ 		idx = UNCORE_PMC_IDX_FREERUNNING;
+ 		break;
++	case SNB_UNCORE_PCI_IMC_GT_REQUESTS:
++		base = SNB_UNCORE_PCI_IMC_GT_REQUESTS_BASE;
++		idx = UNCORE_PMC_IDX_FREERUNNING;
++		break;
++	case SNB_UNCORE_PCI_IMC_IA_REQUESTS:
++		base = SNB_UNCORE_PCI_IMC_IA_REQUESTS_BASE;
++		idx = UNCORE_PMC_IDX_FREERUNNING;
++		break;
++	case SNB_UNCORE_PCI_IMC_IO_REQUESTS:
++		base = SNB_UNCORE_PCI_IMC_IO_REQUESTS_BASE;
++		idx = UNCORE_PMC_IDX_FREERUNNING;
++		break;
+ 	default:
+ 		return -EINVAL;
+ 	}
+@@ -598,7 +644,7 @@ static struct intel_uncore_ops snb_uncore_imc_ops = {
  
--static inline void native_set_pte_at(struct mm_struct *mm, unsigned long addr,
--				     pte_t *ptep , pte_t pte)
-+static inline void set_pte_at(struct mm_struct *mm, unsigned long addr,
-+			      pte_t *ptep, pte_t pte)
- {
--	native_set_pte(ptep, pte);
-+	set_pte(ptep, pte);
- }
- 
- static inline void set_pmd_at(struct mm_struct *mm, unsigned long addr,
-diff --git a/arch/x86/kernel/paravirt.c b/arch/x86/kernel/paravirt.c
-index e56a144..6c3407b 100644
---- a/arch/x86/kernel/paravirt.c
-+++ b/arch/x86/kernel/paravirt.c
-@@ -360,7 +360,6 @@ struct paravirt_patch_template pv_ops = {
- 	.mmu.release_p4d	= paravirt_nop,
- 
- 	.mmu.set_pte		= native_set_pte,
--	.mmu.set_pte_at		= native_set_pte_at,
- 	.mmu.set_pmd		= native_set_pmd,
- 
- 	.mmu.ptep_modify_prot_start	= __ptep_modify_prot_start,
-diff --git a/arch/x86/xen/mmu_pv.c b/arch/x86/xen/mmu_pv.c
-index 3273c98..eda7814 100644
---- a/arch/x86/xen/mmu_pv.c
-+++ b/arch/x86/xen/mmu_pv.c
-@@ -285,13 +285,6 @@ static void xen_set_pte(pte_t *ptep, pte_t pteval)
- 	__xen_set_pte(ptep, pteval);
- }
- 
--static void xen_set_pte_at(struct mm_struct *mm, unsigned long addr,
--		    pte_t *ptep, pte_t pteval)
--{
--	trace_xen_mmu_set_pte_at(mm, addr, ptep, pteval);
--	__xen_set_pte(ptep, pteval);
--}
--
- pte_t xen_ptep_modify_prot_start(struct vm_area_struct *vma,
- 				 unsigned long addr, pte_t *ptep)
- {
-@@ -2105,7 +2098,6 @@ static const struct pv_mmu_ops xen_mmu_ops __initconst = {
- 	.release_pmd = xen_release_pmd_init,
- 
- 	.set_pte = xen_set_pte_init,
--	.set_pte_at = xen_set_pte_at,
- 	.set_pmd = xen_set_pmd_hyper,
- 
- 	.ptep_modify_prot_start = __ptep_modify_prot_start,
-diff --git a/include/trace/events/xen.h b/include/trace/events/xen.h
-index a5ccfa6..3b61b58 100644
---- a/include/trace/events/xen.h
-+++ b/include/trace/events/xen.h
-@@ -153,26 +153,6 @@ DECLARE_EVENT_CLASS(xen_mmu__set_pte,
- 
- DEFINE_XEN_MMU_SET_PTE(xen_mmu_set_pte);
- 
--TRACE_EVENT(xen_mmu_set_pte_at,
--	    TP_PROTO(struct mm_struct *mm, unsigned long addr,
--		     pte_t *ptep, pte_t pteval),
--	    TP_ARGS(mm, addr, ptep, pteval),
--	    TP_STRUCT__entry(
--		    __field(struct mm_struct *, mm)
--		    __field(unsigned long, addr)
--		    __field(pte_t *, ptep)
--		    __field(pteval_t, pteval)
--		    ),
--	    TP_fast_assign(__entry->mm = mm;
--			   __entry->addr = addr;
--			   __entry->ptep = ptep;
--			   __entry->pteval = pteval.pte),
--	    TP_printk("mm %p addr %lx ptep %p pteval %0*llx (raw %0*llx)",
--		      __entry->mm, __entry->addr, __entry->ptep,
--		      (int)sizeof(pteval_t) * 2, (unsigned long long)pte_val(native_make_pte(__entry->pteval)),
--		      (int)sizeof(pteval_t) * 2, (unsigned long long)__entry->pteval)
--	);
--
- TRACE_DEFINE_SIZEOF(pmdval_t);
- 
- TRACE_EVENT(xen_mmu_set_pmd,
+ static struct intel_uncore_type snb_uncore_imc = {
+ 	.name		= "imc",
+-	.num_counters   = 2,
++	.num_counters   = 5,
+ 	.num_boxes	= 1,
+ 	.num_freerunning_types	= SNB_PCI_UNCORE_IMC_FREERUNNING_TYPE_MAX,
+ 	.mmio_map_size	= SNB_UNCORE_PCI_IMC_MAP_SIZE,
