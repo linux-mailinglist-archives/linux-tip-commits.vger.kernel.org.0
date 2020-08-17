@@ -2,55 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0253F245487
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 16 Aug 2020 00:27:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 087B02473C9
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Aug 2020 21:01:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728120AbgHOW1E (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 15 Aug 2020 18:27:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51714 "EHLO
+        id S2391884AbgHQTBQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 17 Aug 2020 15:01:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36672 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728091AbgHOW1E (ORCPT
+        with ESMTP id S1730830AbgHQPsA (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 15 Aug 2020 18:27:04 -0400
+        Mon, 17 Aug 2020 11:48:00 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9743C061786;
-        Sat, 15 Aug 2020 15:27:03 -0700 (PDT)
-Date:   Sat, 15 Aug 2020 22:26:58 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AB43C061342;
+        Mon, 17 Aug 2020 08:47:59 -0700 (PDT)
+Date:   Mon, 17 Aug 2020 15:47:54 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1597530421;
+        s=2020; t=1597679275;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=wypv7MENFaReKZ9UbFiYXOK6G1uQ5RrEzeXJG9GwfNc=;
-        b=hVfUEGnXH1Vx+e9LSsuRyD5aNi2ePl5cXr7NaKCHO3vyMPqnXb0RfWVw1cAi73oZJBRe0z
-        B1ZUbcRsOq/g8tBRVwV5leJumdmZh7UEmJU044l4UPgNu9YwuFDg1BHuPS+nHdjZZuWoue
-        XWy0m7l8L/bP+B/Lv1u9aNP7UM7Jf5JzlKrTXH/Udt94hXrmeh8iEDvzAkdKiJPxqxGWsn
-        WYj+fZMCHYEq4LoskH33kDaMg7NXL3KYN6+Qk/v7hY1XeP/jyuMinUd6Md6f4Dl4LhyIS1
-        w1nAii5/mM0ZguwJBGY7vJxD96aANOenAWZf5qR1u3iqJR7gOV91TUH4s/878g==
+        bh=sfG3NSVBr4paNKgfERRH/ehgelvWsFkUr80BrGwy6Mk=;
+        b=GriPZrfjKricvBzBPPikY9JufpHNUhjPnKW95ucWZr0Tq1MAmPl0CfUtulN/6Kw5eoYcoh
+        51cphJnSkjFeM9h8RKbBeKkSVMqAUCwyd/ZwvCS/J839eQAxU47rr4/PU3Jk2wceVb5Ude
+        c4GUlgHrXikLqtMOb9yycGwhicW2Xb17f0ToyrdJDc6OAlv7GujU8M7HQAU0VPSQpcYgCB
+        N6cQXZ4J7ZyPBpdkrKkvPUOkJdDWujAQPm/U9wcghdDxyddFDI2aW7Faa0fCQvyFq77Ynx
+        unN5btYEgPUXrvquG2vUjYPm6JGdLyht5XPkKGSUxBd87R81Hj94vA96x0rFVA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1597530421;
+        s=2020e; t=1597679275;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=wypv7MENFaReKZ9UbFiYXOK6G1uQ5RrEzeXJG9GwfNc=;
-        b=I0M6NcjPBU+YGkqeeSR9P9QzXWWi4V/Ji8XERV4JuauQKoGx2GDIvrjiHWUWIkN3zbD8u9
-        PjNwayXtFDhlvxCA==
-From:   "tip-bot2 for Vaibhav Shankar" <tip-bot2@linutronix.de>
+        bh=sfG3NSVBr4paNKgfERRH/ehgelvWsFkUr80BrGwy6Mk=;
+        b=Dwl1bGKO6ziVqSvaMG15cK6cRr8FtGdDfzQ8Gl3Ls3Vpf7D+F2hCrgFdkoEhtpj/YWMSyL
+        xWMSxnCiWNwu12Ag==
+From:   "tip-bot2 for Ricardo Neri" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf/x86/intel/uncore: Add BW counters for GT, IA
- and IO breakdown
-Cc:     Vaibhav Shankar <vaibhav.shankar@intel.com>,
-        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200814022234.23605-1-vaibhav.shankar@intel.com>
-References: <20200814022234.23605-1-vaibhav.shankar@intel.com>
+Subject: [tip: x86/cpu] x86/cpu: Use SERIALIZE in sync_core() when available
+Cc:     Andy Lutomirski <luto@kernel.org>,
+        Ricardo Neri <ricardo.neri-calderon@linux.intel.com>,
+        Borislav Petkov <bp@suse.de>, Tony Luck <tony.luck@intel.com>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200807032833.17484-1-ricardo.neri-calderon@linux.intel.com>
+References: <20200807032833.17484-1-ricardo.neri-calderon@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <159753041851.3192.7787654120960182179.tip-bot2@tip-bot2>
+Message-ID: <159767927411.3192.1923111080573965673.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,129 +60,91 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/urgent branch of tip:
+The following commit has been merged into the x86/cpu branch of tip:
 
-Commit-ID:     24633d901ea44fe99bc9a2d01a3881fa097b78b3
-Gitweb:        https://git.kernel.org/tip/24633d901ea44fe99bc9a2d01a3881fa097b78b3
-Author:        Vaibhav Shankar <vaibhav.shankar@intel.com>
-AuthorDate:    Thu, 13 Aug 2020 19:22:34 -07:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sat, 15 Aug 2020 20:24:18 +02:00
+Commit-ID:     bf9c912f9a649776c2d741310486a6984edaac72
+Gitweb:        https://git.kernel.org/tip/bf9c912f9a649776c2d741310486a6984edaac72
+Author:        Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+AuthorDate:    Thu, 06 Aug 2020 20:28:33 -07:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Mon, 17 Aug 2020 17:23:04 +02:00
 
-perf/x86/intel/uncore: Add BW counters for GT, IA and IO breakdown
+x86/cpu: Use SERIALIZE in sync_core() when available
 
-Linux only has support to read total DDR reads and writes. Here we
-add support to enable bandwidth breakdown-GT, IA and IO. Breakdown
-of BW is important to debug and optimize memory access. This can also
-be used for telemetry and improving the system software.The offsets for
-GT, IA and IO are added and these free running counters can be accessed
-via MMIO space.
+The SERIALIZE instruction gives software a way to force the processor to
+complete all modifications to flags, registers and memory from previous
+instructions and drain all buffered writes to memory before the next
+instruction is fetched and executed. Thus, it serves the purpose of
+sync_core(). Use it when available.
 
-The BW breakdown can be measured using the following cmd:
-
-  perf stat -e uncore_imc/gt_requests/,uncore_imc/ia_requests/,uncore_imc/io_requests/
-
-             30.57 MiB  uncore_imc/gt_requests/
-           1346.13 MiB  uncore_imc/ia_requests/
-            190.97 MiB  uncore_imc/io_requests/
-
-       5.984572733 seconds time elapsed
-
-     BW/s = <gt,ia,io>_requests/time elapsed
-
-Signed-off-by: Vaibhav Shankar <vaibhav.shankar@intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20200814022234.23605-1-vaibhav.shankar@intel.com
+Suggested-by: Andy Lutomirski <luto@kernel.org>
+Signed-off-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Reviewed-by: Tony Luck <tony.luck@intel.com>
+Link: https://lkml.kernel.org/r/20200807032833.17484-1-ricardo.neri-calderon@linux.intel.com
 ---
- arch/x86/events/intel/uncore_snb.c | 52 +++++++++++++++++++++++++++--
- 1 file changed, 49 insertions(+), 3 deletions(-)
+ arch/x86/include/asm/special_insns.h |  6 ++++++
+ arch/x86/include/asm/sync_core.h     | 26 ++++++++++++++++++--------
+ 2 files changed, 24 insertions(+), 8 deletions(-)
 
-diff --git a/arch/x86/events/intel/uncore_snb.c b/arch/x86/events/intel/uncore_snb.c
-index cb94ba8..6a4ca27 100644
---- a/arch/x86/events/intel/uncore_snb.c
-+++ b/arch/x86/events/intel/uncore_snb.c
-@@ -390,6 +390,18 @@ static struct uncore_event_desc snb_uncore_imc_events[] = {
- 	INTEL_UNCORE_EVENT_DESC(data_writes.scale, "6.103515625e-5"),
- 	INTEL_UNCORE_EVENT_DESC(data_writes.unit, "MiB"),
+diff --git a/arch/x86/include/asm/special_insns.h b/arch/x86/include/asm/special_insns.h
+index 59a3e13..5999b0b 100644
+--- a/arch/x86/include/asm/special_insns.h
++++ b/arch/x86/include/asm/special_insns.h
+@@ -234,6 +234,12 @@ static inline void clwb(volatile void *__p)
  
-+	INTEL_UNCORE_EVENT_DESC(gt_requests, "event=0x03"),
-+	INTEL_UNCORE_EVENT_DESC(gt_requests.scale, "6.103515625e-5"),
-+	INTEL_UNCORE_EVENT_DESC(gt_requests.unit, "MiB"),
+ #define nop() asm volatile ("nop")
+ 
++static inline void serialize(void)
++{
++	/* Instruction opcode for SERIALIZE; supported in binutils >= 2.35. */
++	asm volatile(".byte 0xf, 0x1, 0xe8" ::: "memory");
++}
 +
-+	INTEL_UNCORE_EVENT_DESC(ia_requests, "event=0x04"),
-+	INTEL_UNCORE_EVENT_DESC(ia_requests.scale, "6.103515625e-5"),
-+	INTEL_UNCORE_EVENT_DESC(ia_requests.unit, "MiB"),
+ #endif /* __KERNEL__ */
+ 
+ #endif /* _ASM_X86_SPECIAL_INSNS_H */
+diff --git a/arch/x86/include/asm/sync_core.h b/arch/x86/include/asm/sync_core.h
+index fdb5b35..4631c0f 100644
+--- a/arch/x86/include/asm/sync_core.h
++++ b/arch/x86/include/asm/sync_core.h
+@@ -5,6 +5,7 @@
+ #include <linux/preempt.h>
+ #include <asm/processor.h>
+ #include <asm/cpufeature.h>
++#include <asm/special_insns.h>
+ 
+ #ifdef CONFIG_X86_32
+ static inline void iret_to_self(void)
+@@ -54,14 +55,23 @@ static inline void iret_to_self(void)
+ static inline void sync_core(void)
+ {
+ 	/*
+-	 * There are quite a few ways to do this.  IRET-to-self is nice
+-	 * because it works on every CPU, at any CPL (so it's compatible
+-	 * with paravirtualization), and it never exits to a hypervisor.
+-	 * The only down sides are that it's a bit slow (it seems to be
+-	 * a bit more than 2x slower than the fastest options) and that
+-	 * it unmasks NMIs.  The "push %cs" is needed because, in
+-	 * paravirtual environments, __KERNEL_CS may not be a valid CS
+-	 * value when we do IRET directly.
++	 * The SERIALIZE instruction is the most straightforward way to
++	 * do this but it not universally available.
++	 */
++	if (static_cpu_has(X86_FEATURE_SERIALIZE)) {
++		serialize();
++		return;
++	}
 +
-+	INTEL_UNCORE_EVENT_DESC(io_requests, "event=0x05"),
-+	INTEL_UNCORE_EVENT_DESC(io_requests.scale, "6.103515625e-5"),
-+	INTEL_UNCORE_EVENT_DESC(io_requests.unit, "MiB"),
-+
- 	{ /* end: all zeroes */ },
- };
- 
-@@ -405,13 +417,35 @@ static struct uncore_event_desc snb_uncore_imc_events[] = {
- #define SNB_UNCORE_PCI_IMC_DATA_WRITES_BASE	0x5054
- #define SNB_UNCORE_PCI_IMC_CTR_BASE		SNB_UNCORE_PCI_IMC_DATA_READS_BASE
- 
-+/* BW break down- legacy counters */
-+#define SNB_UNCORE_PCI_IMC_GT_REQUESTS		0x3
-+#define SNB_UNCORE_PCI_IMC_GT_REQUESTS_BASE	0x5040
-+#define SNB_UNCORE_PCI_IMC_IA_REQUESTS		0x4
-+#define SNB_UNCORE_PCI_IMC_IA_REQUESTS_BASE	0x5044
-+#define SNB_UNCORE_PCI_IMC_IO_REQUESTS		0x5
-+#define SNB_UNCORE_PCI_IMC_IO_REQUESTS_BASE	0x5048
-+
- enum perf_snb_uncore_imc_freerunning_types {
--	SNB_PCI_UNCORE_IMC_DATA		= 0,
-+	SNB_PCI_UNCORE_IMC_DATA_READS		= 0,
-+	SNB_PCI_UNCORE_IMC_DATA_WRITES,
-+	SNB_PCI_UNCORE_IMC_GT_REQUESTS,
-+	SNB_PCI_UNCORE_IMC_IA_REQUESTS,
-+	SNB_PCI_UNCORE_IMC_IO_REQUESTS,
-+
- 	SNB_PCI_UNCORE_IMC_FREERUNNING_TYPE_MAX,
- };
- 
- static struct freerunning_counters snb_uncore_imc_freerunning[] = {
--	[SNB_PCI_UNCORE_IMC_DATA]     = { SNB_UNCORE_PCI_IMC_DATA_READS_BASE, 0x4, 0x0, 2, 32 },
-+	[SNB_PCI_UNCORE_IMC_DATA_READS]		= { SNB_UNCORE_PCI_IMC_DATA_READS_BASE,
-+							0x0, 0x0, 1, 32 },
-+	[SNB_PCI_UNCORE_IMC_DATA_READS]		= { SNB_UNCORE_PCI_IMC_DATA_WRITES_BASE,
-+							0x0, 0x0, 1, 32 },
-+	[SNB_PCI_UNCORE_IMC_GT_REQUESTS]	= { SNB_UNCORE_PCI_IMC_GT_REQUESTS_BASE,
-+							0x0, 0x0, 1, 32 },
-+	[SNB_PCI_UNCORE_IMC_IA_REQUESTS]	= { SNB_UNCORE_PCI_IMC_IA_REQUESTS_BASE,
-+							0x0, 0x0, 1, 32 },
-+	[SNB_PCI_UNCORE_IMC_IO_REQUESTS]	= { SNB_UNCORE_PCI_IMC_IO_REQUESTS_BASE,
-+							0x0, 0x0, 1, 32 },
- };
- 
- static struct attribute *snb_uncore_imc_formats_attr[] = {
-@@ -525,6 +559,18 @@ static int snb_uncore_imc_event_init(struct perf_event *event)
- 		base = SNB_UNCORE_PCI_IMC_DATA_WRITES_BASE;
- 		idx = UNCORE_PMC_IDX_FREERUNNING;
- 		break;
-+	case SNB_UNCORE_PCI_IMC_GT_REQUESTS:
-+		base = SNB_UNCORE_PCI_IMC_GT_REQUESTS_BASE;
-+		idx = UNCORE_PMC_IDX_FREERUNNING;
-+		break;
-+	case SNB_UNCORE_PCI_IMC_IA_REQUESTS:
-+		base = SNB_UNCORE_PCI_IMC_IA_REQUESTS_BASE;
-+		idx = UNCORE_PMC_IDX_FREERUNNING;
-+		break;
-+	case SNB_UNCORE_PCI_IMC_IO_REQUESTS:
-+		base = SNB_UNCORE_PCI_IMC_IO_REQUESTS_BASE;
-+		idx = UNCORE_PMC_IDX_FREERUNNING;
-+		break;
- 	default:
- 		return -EINVAL;
- 	}
-@@ -598,7 +644,7 @@ static struct intel_uncore_ops snb_uncore_imc_ops = {
- 
- static struct intel_uncore_type snb_uncore_imc = {
- 	.name		= "imc",
--	.num_counters   = 2,
-+	.num_counters   = 5,
- 	.num_boxes	= 1,
- 	.num_freerunning_types	= SNB_PCI_UNCORE_IMC_FREERUNNING_TYPE_MAX,
- 	.mmio_map_size	= SNB_UNCORE_PCI_IMC_MAP_SIZE,
++	/*
++	 * For all other processors, there are quite a few ways to do this.
++	 * IRET-to-self is nice because it works on every CPU, at any CPL
++	 * (so it's compatible with paravirtualization), and it never exits
++	 * to a hypervisor. The only down sides are that it's a bit slow
++	 * (it seems to be a bit more than 2x slower than the fastest
++	 * options) and that it unmasks NMIs.  The "push %cs" is needed
++	 * because, in paravirtual environments, __KERNEL_CS may not be a
++	 * valid CS value when we do IRET directly.
+ 	 *
+ 	 * In case NMI unmasking or performance ever becomes a problem,
+ 	 * the next best option appears to be MOV-to-CR2 and an
