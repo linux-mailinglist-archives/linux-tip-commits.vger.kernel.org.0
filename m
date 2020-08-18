@@ -2,149 +2,185 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 087B02473C9
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Aug 2020 21:01:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B6B55247DE0
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 18 Aug 2020 07:31:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391884AbgHQTBQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 17 Aug 2020 15:01:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36672 "EHLO
+        id S1726343AbgHRFbg (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 18 Aug 2020 01:31:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51380 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730830AbgHQPsA (ORCPT
+        with ESMTP id S1726228AbgHRFbf (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 17 Aug 2020 11:48:00 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AB43C061342;
-        Mon, 17 Aug 2020 08:47:59 -0700 (PDT)
-Date:   Mon, 17 Aug 2020 15:47:54 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1597679275;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=sfG3NSVBr4paNKgfERRH/ehgelvWsFkUr80BrGwy6Mk=;
-        b=GriPZrfjKricvBzBPPikY9JufpHNUhjPnKW95ucWZr0Tq1MAmPl0CfUtulN/6Kw5eoYcoh
-        51cphJnSkjFeM9h8RKbBeKkSVMqAUCwyd/ZwvCS/J839eQAxU47rr4/PU3Jk2wceVb5Ude
-        c4GUlgHrXikLqtMOb9yycGwhicW2Xb17f0ToyrdJDc6OAlv7GujU8M7HQAU0VPSQpcYgCB
-        N6cQXZ4J7ZyPBpdkrKkvPUOkJdDWujAQPm/U9wcghdDxyddFDI2aW7Faa0fCQvyFq77Ynx
-        unN5btYEgPUXrvquG2vUjYPm6JGdLyht5XPkKGSUxBd87R81Hj94vA96x0rFVA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1597679275;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=sfG3NSVBr4paNKgfERRH/ehgelvWsFkUr80BrGwy6Mk=;
-        b=Dwl1bGKO6ziVqSvaMG15cK6cRr8FtGdDfzQ8Gl3Ls3Vpf7D+F2hCrgFdkoEhtpj/YWMSyL
-        xWMSxnCiWNwu12Ag==
-From:   "tip-bot2 for Ricardo Neri" <tip-bot2@linutronix.de>
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cpu] x86/cpu: Use SERIALIZE in sync_core() when available
-Cc:     Andy Lutomirski <luto@kernel.org>,
+        Tue, 18 Aug 2020 01:31:35 -0400
+Received: from mail-ej1-x644.google.com (mail-ej1-x644.google.com [IPv6:2a00:1450:4864:20::644])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD4A8C061389;
+        Mon, 17 Aug 2020 22:31:34 -0700 (PDT)
+Received: by mail-ej1-x644.google.com with SMTP id jp10so20587920ejb.0;
+        Mon, 17 Aug 2020 22:31:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=ChmhumhWJU1XQvt57mk+v+sw0rrMe14Xi0/RZhUp6hU=;
+        b=X97+snzQcS/KUjTBcIjGcFrtPtkarbXeWX31ymjYaEYuUW4LUcTV4fXOzFTBIzsxr7
+         L/huM9JBOXzVKuTLCMHGsJjXS0B8chr0aMZdeleegPK+osn4krecxiHD5dWZL92wE/dm
+         0shGB0dpsDSBf7wQAutaIpq6Ep5m4YVn7UrnklRNzqLEgW217ardQoSt2iEiupHXvJjH
+         a0c/rKl29mB27HFtQqu7Y+QYDSa7s3KuWUveI2cSWjzOmk5OPdQRBPKrt9E9BxoMJ1Ut
+         lPET24VzydtKUAwOvenAMFdJODBdVDEonO4Ji6kT1rMNd1EEnGNHfulwkBfwm5xB7i2y
+         qvIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to;
+        bh=ChmhumhWJU1XQvt57mk+v+sw0rrMe14Xi0/RZhUp6hU=;
+        b=QTvjrwA72oKdxkqnyefji8tJK5P5y9gea9AOT45yXkagiMnjungZBVuwnAqxgxNLQS
+         QsMNdvDvme32QxEmyMvldX+m8OukgjLTWZBUkzjJ/H24JL++822HgofxTN/IRW/DqrTn
+         8e1QC3cyCpB0zjjESp6i2hadGgDW8vPYt1E6RH8z5EUPsSEAXrl5wkKUt4jPLVoehdqU
+         xMc4uSHMBkJjjOq74TvvZiwOD7bH16sl7h6X60VyQ6crD+EgsdxiPL62/zGYspwfnMBb
+         uG20J52k5XSIf1MZe5Bixq17yeiM1vPftelo4TIxLmSvI7QpfS51Fj7wWEnVHCDCho1P
+         x5AQ==
+X-Gm-Message-State: AOAM532aOsZ8riubQ6rbbW3Hxi7J/C0EZyQeu+nSghzATn2H6fID/YH8
+        o9g62evh5mgkB4Z0ujtCTnRVBf5qnxI=
+X-Google-Smtp-Source: ABdhPJx3JLYhoUan01ju2xlfkyp1/L54Wo8wK2Lc4WK0ROMclsqaffqRP6SXyzUAYFWA35FPm9t2+A==
+X-Received: by 2002:a17:906:1d56:: with SMTP id o22mr10980122ejh.530.1597728692911;
+        Mon, 17 Aug 2020 22:31:32 -0700 (PDT)
+Received: from gmail.com (54033286.catv.pool.telekom.hu. [84.3.50.134])
+        by smtp.gmail.com with ESMTPSA id a26sm15470368eju.83.2020.08.17.22.31.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 17 Aug 2020 22:31:32 -0700 (PDT)
+Date:   Tue, 18 Aug 2020 07:31:30 +0200
+From:   Ingo Molnar <mingo@kernel.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-tip-commits@vger.kernel.org,
+        Andy Lutomirski <luto@kernel.org>,
         Ricardo Neri <ricardo.neri-calderon@linux.intel.com>,
         Borislav Petkov <bp@suse.de>, Tony Luck <tony.luck@intel.com>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200807032833.17484-1-ricardo.neri-calderon@linux.intel.com>
+        x86 <x86@kernel.org>
+Subject: [PATCH] x86/cpu: Fix typos and improve the comments in sync_core()
+Message-ID: <20200818053130.GA3161093@gmail.com>
 References: <20200807032833.17484-1-ricardo.neri-calderon@linux.intel.com>
+ <159767927411.3192.1923111080573965673.tip-bot2@tip-bot2>
 MIME-Version: 1.0
-Message-ID: <159767927411.3192.1923111080573965673.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2.linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <159767927411.3192.1923111080573965673.tip-bot2@tip-bot2>
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cpu branch of tip:
 
-Commit-ID:     bf9c912f9a649776c2d741310486a6984edaac72
-Gitweb:        https://git.kernel.org/tip/bf9c912f9a649776c2d741310486a6984edaac72
-Author:        Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-AuthorDate:    Thu, 06 Aug 2020 20:28:33 -07:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Mon, 17 Aug 2020 17:23:04 +02:00
+* tip-bot2 for Ricardo Neri <tip-bot2@linutronix.de> wrote:
 
-x86/cpu: Use SERIALIZE in sync_core() when available
+> --- a/arch/x86/include/asm/sync_core.h
+> +++ b/arch/x86/include/asm/sync_core.h
+> @@ -5,6 +5,7 @@
+>  #include <linux/preempt.h>
+>  #include <asm/processor.h>
+>  #include <asm/cpufeature.h>
+> +#include <asm/special_insns.h>
+>  
+>  #ifdef CONFIG_X86_32
+>  static inline void iret_to_self(void)
+> @@ -54,14 +55,23 @@ static inline void iret_to_self(void)
+>  static inline void sync_core(void)
+>  {
+>  	/*
+> +	 * The SERIALIZE instruction is the most straightforward way to
+> +	 * do this but it not universally available.
+> +	 */
+> +	if (static_cpu_has(X86_FEATURE_SERIALIZE)) {
+> +		serialize();
+> +		return;
+> +	}
+> +
+> +	/*
+> +	 * For all other processors, there are quite a few ways to do this.
+> +	 * IRET-to-self is nice because it works on every CPU, at any CPL
+> +	 * (so it's compatible with paravirtualization), and it never exits
+> +	 * to a hypervisor. The only down sides are that it's a bit slow
+> +	 * (it seems to be a bit more than 2x slower than the fastest
+> +	 * options) and that it unmasks NMIs.  The "push %cs" is needed
+> +	 * because, in paravirtual environments, __KERNEL_CS may not be a
+> +	 * valid CS value when we do IRET directly.
 
-The SERIALIZE instruction gives software a way to force the processor to
-complete all modifications to flags, registers and memory from previous
-instructions and drain all buffered writes to memory before the next
-instruction is fetched and executed. Thus, it serves the purpose of
-sync_core(). Use it when available.
+So there's two typos in the new comments, there are at least two 
+misapplied commas, it departs from existing style, and there's a typo 
+in the existing comments as well.
 
-Suggested-by: Andy Lutomirski <luto@kernel.org>
-Signed-off-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Tony Luck <tony.luck@intel.com>
-Link: https://lkml.kernel.org/r/20200807032833.17484-1-ricardo.neri-calderon@linux.intel.com
+Also, before this patch the 'compiler barrier' comment was valid for 
+the whole function (there was no branching), but after this patch it 
+reads of it was only valid for the legacy IRET-to-self branch.
+
+Which together broke my detector and triggered a bit of compulsive 
+bike-shed painting. ;-) See the resulting patch below.
+
+Thanks,
+
+	Ingo
+
+================>
+From: Ingo Molnar <mingo@kernel.org>
+Date: Tue, 18 Aug 2020 07:24:05 +0200
+Subject: [PATCH] x86/cpu: Fix typos and improve the comments in sync_core()
+
+- Fix typos.
+
+- Move the compiler barrier comment to the top, because it's valid for the
+  whole function, not just the legacy branch.
+
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- arch/x86/include/asm/special_insns.h |  6 ++++++
- arch/x86/include/asm/sync_core.h     | 26 ++++++++++++++++++--------
- 2 files changed, 24 insertions(+), 8 deletions(-)
+ arch/x86/include/asm/sync_core.h | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/arch/x86/include/asm/special_insns.h b/arch/x86/include/asm/special_insns.h
-index 59a3e13..5999b0b 100644
---- a/arch/x86/include/asm/special_insns.h
-+++ b/arch/x86/include/asm/special_insns.h
-@@ -234,6 +234,12 @@ static inline void clwb(volatile void *__p)
- 
- #define nop() asm volatile ("nop")
- 
-+static inline void serialize(void)
-+{
-+	/* Instruction opcode for SERIALIZE; supported in binutils >= 2.35. */
-+	asm volatile(".byte 0xf, 0x1, 0xe8" ::: "memory");
-+}
-+
- #endif /* __KERNEL__ */
- 
- #endif /* _ASM_X86_SPECIAL_INSNS_H */
 diff --git a/arch/x86/include/asm/sync_core.h b/arch/x86/include/asm/sync_core.h
-index fdb5b35..4631c0f 100644
+index 4631c0f969d4..0fd4a9dfb29c 100644
 --- a/arch/x86/include/asm/sync_core.h
 +++ b/arch/x86/include/asm/sync_core.h
-@@ -5,6 +5,7 @@
- #include <linux/preempt.h>
- #include <asm/processor.h>
- #include <asm/cpufeature.h>
-+#include <asm/special_insns.h>
- 
- #ifdef CONFIG_X86_32
- static inline void iret_to_self(void)
-@@ -54,14 +55,23 @@ static inline void iret_to_self(void)
+@@ -47,16 +47,19 @@ static inline void iret_to_self(void)
+  *
+  *  b) Text was modified on a different CPU, may subsequently be
+  *     executed on this CPU, and you want to make sure the new version
+- *     gets executed.  This generally means you're calling this in a IPI.
++ *     gets executed.  This generally means you're calling this in an IPI.
+  *
+  * If you're calling this for a different reason, you're probably doing
+  * it wrong.
++ *
++ * Like all of Linux's memory ordering operations, this is a
++ * compiler barrier as well.
+  */
  static inline void sync_core(void)
  {
  	/*
--	 * There are quite a few ways to do this.  IRET-to-self is nice
--	 * because it works on every CPU, at any CPL (so it's compatible
--	 * with paravirtualization), and it never exits to a hypervisor.
--	 * The only down sides are that it's a bit slow (it seems to be
--	 * a bit more than 2x slower than the fastest options) and that
--	 * it unmasks NMIs.  The "push %cs" is needed because, in
--	 * paravirtual environments, __KERNEL_CS may not be a valid CS
--	 * value when we do IRET directly.
-+	 * The SERIALIZE instruction is the most straightforward way to
-+	 * do this but it not universally available.
-+	 */
-+	if (static_cpu_has(X86_FEATURE_SERIALIZE)) {
-+		serialize();
-+		return;
-+	}
-+
-+	/*
-+	 * For all other processors, there are quite a few ways to do this.
-+	 * IRET-to-self is nice because it works on every CPU, at any CPL
-+	 * (so it's compatible with paravirtualization), and it never exits
-+	 * to a hypervisor. The only down sides are that it's a bit slow
-+	 * (it seems to be a bit more than 2x slower than the fastest
-+	 * options) and that it unmasks NMIs.  The "push %cs" is needed
-+	 * because, in paravirtual environments, __KERNEL_CS may not be a
-+	 * valid CS value when we do IRET directly.
+ 	 * The SERIALIZE instruction is the most straightforward way to
+-	 * do this but it not universally available.
++	 * do this, but it is not universally available.
+ 	 */
+ 	if (static_cpu_has(X86_FEATURE_SERIALIZE)) {
+ 		serialize();
+@@ -67,10 +70,10 @@ static inline void sync_core(void)
+ 	 * For all other processors, there are quite a few ways to do this.
+ 	 * IRET-to-self is nice because it works on every CPU, at any CPL
+ 	 * (so it's compatible with paravirtualization), and it never exits
+-	 * to a hypervisor. The only down sides are that it's a bit slow
++	 * to a hypervisor.  The only downsides are that it's a bit slow
+ 	 * (it seems to be a bit more than 2x slower than the fastest
+-	 * options) and that it unmasks NMIs.  The "push %cs" is needed
+-	 * because, in paravirtual environments, __KERNEL_CS may not be a
++	 * options) and that it unmasks NMIs.  The "push %cs" is needed,
++	 * because in paravirtual environments __KERNEL_CS may not be a
+ 	 * valid CS value when we do IRET directly.
  	 *
  	 * In case NMI unmasking or performance ever becomes a problem,
- 	 * the next best option appears to be MOV-to-CR2 and an
+@@ -81,9 +84,6 @@ static inline void sync_core(void)
+ 	 * CPUID is the conventional way, but it's nasty: it doesn't
+ 	 * exist on some 486-like CPUs, and it usually exits to a
+ 	 * hypervisor.
+-	 *
+-	 * Like all of Linux's memory ordering operations, this is a
+-	 * compiler barrier as well.
+ 	 */
+ 	iret_to_self();
+ }
