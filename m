@@ -2,54 +2,51 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CD8EA249DFA
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 19 Aug 2020 14:33:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 95651249E0C
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 19 Aug 2020 14:34:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728282AbgHSMdr (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 19 Aug 2020 08:33:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60340 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728226AbgHSMdU (ORCPT
+        id S1727018AbgHSMei (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 19 Aug 2020 08:34:38 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:39074 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728230AbgHSMdX (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 19 Aug 2020 08:33:20 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 842C1C061344;
-        Wed, 19 Aug 2020 05:33:19 -0700 (PDT)
+        Wed, 19 Aug 2020 08:33:23 -0400
 Date:   Wed, 19 Aug 2020 12:33:13 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1597840393;
+        s=2020; t=1597840394;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=dtoTID8EnlXgOhbcaoVmq0CgWHupHYcnvxqbDb720g4=;
-        b=gs/QVnsjnkfn2HLabVtp4HWqUjI02BuJa12/n5oB6jzrn1rUyP7LXd5CUavkH2EnbX3OuN
-        dZYAuCGoSIUyW3us/5Edy1ypwB+UQxPPIq9Jt2ZWehdlHHpgppogRADPT2+pnd9iS1aNC4
-        WMI3G7jWRxOob89GmjUONtOnicQkLtkCPIEkrESkvnEstqDd7U0D3XNPZBWhTeDaa4pC+R
-        kmicSAaX7qDo7jAa7UVSDN4jcpzQZ8cgswPD60YejNSYmXBszoLJ6jE5ag5RTASt3AcIr9
-        qdPN86WlfRwYFcesu8ECY+/SBwISx+OL0830VIytHUJDR09cx/7Q+eqwWVD6hQ==
+        bh=TsI/rhy/8f4Hvtj1f9EJtnH1VWuaJfzJEaYXJUkvKPw=;
+        b=NabiQ+mutOIdWwZYVlexpiQIXKL82EaRWGC6ACY/+bDi5k43x6U1cZuJvXjHb58s3uNNgA
+        bFpDFU0/qgju//r9zJoN9I/cSewRvyvhhGRZNFmkGNKQO/3QqVFCiNkFm7Ch/PVTQXEjTe
+        hR6cX/1UhB7frc/HDcS+bKvINnHIKh2tVNP1AQNox+omW1P6zUAXGghvD48yMkBiOkmCct
+        wsufShjpPW3DeZ3arW57ImZrJhmZGYd76EKdW5FIWx9p1slIZbhZpX23ZrSNxBQtbCxqfl
+        NxaheJw7dr5t4HNZxb7x8bi7Fp0L4GpsT4L6fI03CqQvSa0BTgncdMwx4CmnfQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1597840393;
+        s=2020e; t=1597840394;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=dtoTID8EnlXgOhbcaoVmq0CgWHupHYcnvxqbDb720g4=;
-        b=kz9wYDXyU/JdGS+3Bw2a4ar/QvqGNAd+Cum2BRZGFu8ZMI/svWV6QVJRarXgvJI0/LS1hO
-        1in8mOBZ8ZYqXwAw==
+        bh=TsI/rhy/8f4Hvtj1f9EJtnH1VWuaJfzJEaYXJUkvKPw=;
+        b=3FoGRte/stjjlzf/Wq5z24QlYjz4m2Qc5HfEV1iJKaXFQE9RaE0O3eKlHFgUeju2mtCA40
+        +QQBushohXN9pFBg==
 From:   "tip-bot2 for James Morse" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cache] x86/resctrl: Remove struct rdt_membw::max_delay
+Subject: [tip: x86/cache] x86/resctrl: Remove unused struct mbm_state::chunks_bw
 Cc:     James Morse <james.morse@arm.com>, Borislav Petkov <bp@suse.de>,
         Reinette Chatre <reinette.chatre@intel.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200708163929.2783-3-james.morse@arm.com>
-References: <20200708163929.2783-3-james.morse@arm.com>
+In-Reply-To: <20200708163929.2783-2-james.morse@arm.com>
+References: <20200708163929.2783-2-james.morse@arm.com>
 MIME-Version: 1.0
-Message-ID: <159784039302.3192.3471663986483240927.tip-bot2@tip-bot2>
+Message-ID: <159784039364.3192.17266951701377723520.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,70 +58,58 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/cache branch of tip:
 
-Commit-ID:     e89f85b9171665c917dca59920884f3d4fe0b1ef
-Gitweb:        https://git.kernel.org/tip/e89f85b9171665c917dca59920884f3d4fe0b1ef
+Commit-ID:     abe8f12b44250d02937665033a8b750c1bfeb26e
+Gitweb:        https://git.kernel.org/tip/abe8f12b44250d02937665033a8b750c1bfeb26e
 Author:        James Morse <james.morse@arm.com>
-AuthorDate:    Wed, 08 Jul 2020 16:39:21 
+AuthorDate:    Wed, 08 Jul 2020 16:39:20 
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 18 Aug 2020 17:01:23 +02:00
+CommitterDate: Tue, 18 Aug 2020 16:51:55 +02:00
 
-x86/resctrl: Remove struct rdt_membw::max_delay
+x86/resctrl: Remove unused struct mbm_state::chunks_bw
 
-max_delay is used by x86's __get_mem_config_intel() as a local variable.
-Remove it, replacing it with a local variable.
+Nothing reads struct mbm_states's chunks_bw value, its a copy of
+chunks. Remove it.
 
 Signed-off-by: James Morse <james.morse@arm.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
 Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
-Link: https://lkml.kernel.org/r/20200708163929.2783-3-james.morse@arm.com
+Link: https://lkml.kernel.org/r/20200708163929.2783-2-james.morse@arm.com
 ---
- arch/x86/kernel/cpu/resctrl/core.c     | 8 ++++----
- arch/x86/kernel/cpu/resctrl/internal.h | 3 ---
- 2 files changed, 4 insertions(+), 7 deletions(-)
+ arch/x86/kernel/cpu/resctrl/internal.h | 2 --
+ arch/x86/kernel/cpu/resctrl/monitor.c  | 3 +--
+ 2 files changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/resctrl/core.c b/arch/x86/kernel/cpu/resctrl/core.c
-index 6a9df71..9225ee5 100644
---- a/arch/x86/kernel/cpu/resctrl/core.c
-+++ b/arch/x86/kernel/cpu/resctrl/core.c
-@@ -254,16 +254,16 @@ static bool __get_mem_config_intel(struct rdt_resource *r)
- {
- 	union cpuid_0x10_3_eax eax;
- 	union cpuid_0x10_x_edx edx;
--	u32 ebx, ecx;
-+	u32 ebx, ecx, max_delay;
- 
- 	cpuid_count(0x00000010, 3, &eax.full, &ebx, &ecx, &edx.full);
- 	r->num_closid = edx.split.cos_max + 1;
--	r->membw.max_delay = eax.split.max_delay + 1;
-+	max_delay = eax.split.max_delay + 1;
- 	r->default_ctrl = MAX_MBA_BW;
- 	if (ecx & MBA_IS_LINEAR) {
- 		r->membw.delay_linear = true;
--		r->membw.min_bw = MAX_MBA_BW - r->membw.max_delay;
--		r->membw.bw_gran = MAX_MBA_BW - r->membw.max_delay;
-+		r->membw.min_bw = MAX_MBA_BW - max_delay;
-+		r->membw.bw_gran = MAX_MBA_BW - max_delay;
- 	} else {
- 		if (!rdt_get_mb_table(r))
- 			return false;
 diff --git a/arch/x86/kernel/cpu/resctrl/internal.h b/arch/x86/kernel/cpu/resctrl/internal.h
-index 72bb210..1eb39bd 100644
+index 5ffa322..72bb210 100644
 --- a/arch/x86/kernel/cpu/resctrl/internal.h
 +++ b/arch/x86/kernel/cpu/resctrl/internal.h
-@@ -369,8 +369,6 @@ struct rdt_cache {
+@@ -283,7 +283,6 @@ struct rftype {
+  * struct mbm_state - status for each MBM counter in each domain
+  * @chunks:	Total data moved (multiply by rdt_group.mon_scale to get bytes)
+  * @prev_msr	Value of IA32_QM_CTR for this RMID last time we read it
+- * @chunks_bw	Total local data moved. Used for bandwidth calculation
+  * @prev_bw_msr:Value of previous IA32_QM_CTR for bandwidth counting
+  * @prev_bw	The most recent bandwidth in MBps
+  * @delta_bw	Difference between the current and previous bandwidth
+@@ -292,7 +291,6 @@ struct rftype {
+ struct mbm_state {
+ 	u64	chunks;
+ 	u64	prev_msr;
+-	u64	chunks_bw;
+ 	u64	prev_bw_msr;
+ 	u32	prev_bw;
+ 	u32	delta_bw;
+diff --git a/arch/x86/kernel/cpu/resctrl/monitor.c b/arch/x86/kernel/cpu/resctrl/monitor.c
+index 837d7d0..d6b92d7 100644
+--- a/arch/x86/kernel/cpu/resctrl/monitor.c
++++ b/arch/x86/kernel/cpu/resctrl/monitor.c
+@@ -279,8 +279,7 @@ static void mbm_bw_count(u32 rmid, struct rmid_read *rr)
+ 		return;
  
- /**
-  * struct rdt_membw - Memory bandwidth allocation related data
-- * @max_delay:		Max throttle delay. Delay is the hardware
-- *			representation for memory bandwidth.
-  * @min_bw:		Minimum memory bandwidth percentage user can request
-  * @bw_gran:		Granularity at which the memory bandwidth is allocated
-  * @delay_linear:	True if memory B/W delay is in linear scale
-@@ -378,7 +376,6 @@ struct rdt_cache {
-  * @mb_map:		Mapping of memory B/W percentage to memory B/W delay
-  */
- struct rdt_membw {
--	u32		max_delay;
- 	u32		min_bw;
- 	u32		bw_gran;
- 	u32		delay_linear;
+ 	chunks = mbm_overflow_count(m->prev_bw_msr, tval, rr->r->mbm_width);
+-	m->chunks_bw += chunks;
+-	m->chunks = m->chunks_bw;
++	m->chunks += chunks;
+ 	cur_bw = (chunks * r->mon_scale) >> 20;
+ 
+ 	if (m->delta_comp)
