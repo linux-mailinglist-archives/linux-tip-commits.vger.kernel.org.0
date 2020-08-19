@@ -2,51 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EB6EB2498C2
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 19 Aug 2020 10:54:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 872B42498D8
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 19 Aug 2020 10:56:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727076AbgHSIyy (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 19 Aug 2020 04:54:54 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:37160 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727055AbgHSIwN (ORCPT
+        id S1727064AbgHSI4h (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 19 Aug 2020 04:56:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54778 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726923AbgHSIyJ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 19 Aug 2020 04:52:13 -0400
-Date:   Wed, 19 Aug 2020 08:52:10 -0000
+        Wed, 19 Aug 2020 04:54:09 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA8D3C061348;
+        Wed, 19 Aug 2020 01:52:13 -0700 (PDT)
+Date:   Wed, 19 Aug 2020 08:52:11 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1597827130;
+        s=2020; t=1597827132;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=OydP4AsVDVkP8DZxQlDMyQ28reXrT/7uTIhNrCu6WJ4=;
-        b=J7vMRphOx9EUoVbs8QOBGHnVgY3nabXgFtdYMxA8wlv1AuRMdX55f9k8TAiTK5OHONGcxV
-        srUoRK5L1iJiQoDPuXiKE8bOWlKWFh3sGW2EaPaAXyC3+xhMowG0V8nEbDAoeHK5zW/s5u
-        XxiesW0E2iGu1GLkz2AHj7EX8sSu4W7jSG4xA/uIbk1Mua3ggPiYbEzmr6lIdpSGVGgey3
-        gbgDuZXnBKqEl5+P2SiXxKRj8OX+oh8XnwM7cuHDdkqXaVo+t99Pu2acrHc8aXeQ/Y+nnw
-        EHldfvknRAPhPZJgw6zhXdw++7K5QIDlr37DTle8ni106oMzkEntaTzSTldIcg==
+        bh=LPnU8pyPddQW19gBJ+YOIgmFLzT1mk9Ey7bGquTkdic=;
+        b=YzcEbgADRPpimgEa+z4D7MTQ9pGCKuWnwVbKpBTuKzlPiknk+NNXEkpKFQWnUswpDaxYZ0
+        +mimsHvDyJ7ClStC2wm6pcdAFduq3a7qgvWSFWZNh2JkyGAhUiIXRduv6ujV0/lwO+3xtL
+        iccp/plZw00yvf4Gdi3JPNhPOwmlQJ0mGnHFFXQHtOGG9pXtHG2gaYKzS0gnHuU9gXqr3R
+        XiG9L5dEXe9XHaoF3zvuHSSgNalKiq/m1AzsoXRi4OwiCldgvbWNDo0Ia165A2HWiVK0zK
+        +/oeGhcQ6KCj4dsUL3wOQiwrmzDN4Lj/vu7Vz2tyq1kwZZg7Fh3H9bfwyxQs4w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1597827130;
+        s=2020e; t=1597827132;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=OydP4AsVDVkP8DZxQlDMyQ28reXrT/7uTIhNrCu6WJ4=;
-        b=Dhrh4JO7+yl9Rp3YaUO66TrHJq7yLb6QawkCxNx8rSeW+H0VCZdf33DR7DykSgIz6u1X2A
-        XQd/24T+bV8gr8CA==
+        bh=LPnU8pyPddQW19gBJ+YOIgmFLzT1mk9Ey7bGquTkdic=;
+        b=MhUitKgByxj53KSjiUovfzgTJpl0DSRFcAbM4uvfM8yYLb1YkQ8KcvkRHzvlGnkZy0WAZb
+        kDIqWqd7pZ+o86AA==
 From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/x86/intel: Introduce the fourth fixed counter
-Cc:     Kan Liang <kan.liang@linux.intel.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200723171117.9918-4-kan.liang@linux.intel.com>
-References: <20200723171117.9918-4-kan.liang@linux.intel.com>
+Subject: [tip: perf/core] perf/x86: Use event_base_rdpmc for the RDPMC
+ userspace support
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        Kan Liang <kan.liang@linux.intel.com>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200723171117.9918-2-kan.liang@linux.intel.com>
+References: <20200723171117.9918-2-kan.liang@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <159782713022.3192.7440422907426444873.tip-bot2@tip-bot2>
+Message-ID: <159782713157.3192.4240252060821627383.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,76 +62,51 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     6f7225099d5f3ec3019f380a0da2b456b7796cb0
-Gitweb:        https://git.kernel.org/tip/6f7225099d5f3ec3019f380a0da2b456b7796cb0
+Commit-ID:     75608cb02ea5dd997990e2998eca3670cb71a18c
+Gitweb:        https://git.kernel.org/tip/75608cb02ea5dd997990e2998eca3670cb71a18c
 Author:        Kan Liang <kan.liang@linux.intel.com>
-AuthorDate:    Thu, 23 Jul 2020 10:11:06 -07:00
+AuthorDate:    Thu, 23 Jul 2020 10:11:04 -07:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 18 Aug 2020 16:34:35 +02:00
+CommitterDate: Tue, 18 Aug 2020 16:34:34 +02:00
 
-perf/x86/intel: Introduce the fourth fixed counter
+perf/x86: Use event_base_rdpmc for the RDPMC userspace support
 
-The fourth fixed counter, TOPDOWN.SLOTS, is introduced in Ice Lake to
-measure the level 1 TopDown events.
+The RDPMC index is always re-calculated for the RDPMC userspace support,
+which is unnecessary.
 
-Add MSR address and macros for the new fixed counter, which will be used
-in a later patch.
+The RDPMC index value is stored in the variable event_base_rdpmc for
+the kernel usage, which can be used for RDPMC userspace support as well.
 
-Add comments to explain the event encoding rules for the fixed counters.
-
+Suggested-by: Peter Zijlstra <peterz@infradead.org>
 Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20200723171117.9918-4-kan.liang@linux.intel.com
+Link: https://lkml.kernel.org/r/20200723171117.9918-2-kan.liang@linux.intel.com
 ---
- arch/x86/include/asm/perf_event.h | 23 ++++++++++++++++++++---
- 1 file changed, 20 insertions(+), 3 deletions(-)
+ arch/x86/events/core.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
-diff --git a/arch/x86/include/asm/perf_event.h b/arch/x86/include/asm/perf_event.h
-index fd3eba6..fe8110a 100644
---- a/arch/x86/include/asm/perf_event.h
-+++ b/arch/x86/include/asm/perf_event.h
-@@ -197,12 +197,24 @@ struct x86_pmu_capability {
-  */
+diff --git a/arch/x86/events/core.c b/arch/x86/events/core.c
+index 1cbf57d..8e108ea 100644
+--- a/arch/x86/events/core.c
++++ b/arch/x86/events/core.c
+@@ -2208,17 +2208,12 @@ static void x86_pmu_event_unmapped(struct perf_event *event, struct mm_struct *m
  
- /*
-- * All 3 fixed-mode PMCs are configured via this single MSR:
-+ * All the fixed-mode PMCs are configured via this single MSR:
-  */
- #define MSR_ARCH_PERFMON_FIXED_CTR_CTRL	0x38d
+ static int x86_pmu_event_idx(struct perf_event *event)
+ {
+-	int idx = event->hw.idx;
++	struct hw_perf_event *hwc = &event->hw;
  
- /*
-- * The counts are available in three separate MSRs:
-+ * There is no event-code assigned to the fixed-mode PMCs.
-+ *
-+ * For a fixed-mode PMC, which has an equivalent event on a general-purpose
-+ * PMC, the event-code of the equivalent event is used for the fixed-mode PMC,
-+ * e.g., Instr_Retired.Any and CPU_CLK_Unhalted.Core.
-+ *
-+ * For a fixed-mode PMC, which doesn't have an equivalent event, a
-+ * pseudo-encoding is used, e.g., CPU_CLK_Unhalted.Ref and TOPDOWN.SLOTS.
-+ * The pseudo event-code for a fixed-mode PMC must be 0x00.
-+ * The pseudo umask-code is 0xX. The X equals the index of the fixed
-+ * counter + 1, e.g., the fixed counter 2 has the pseudo-encoding 0x0300.
-+ *
-+ * The counts are available in separate MSRs:
-  */
+-	if (!(event->hw.flags & PERF_X86_EVENT_RDPMC_ALLOWED))
++	if (!(hwc->flags & PERF_X86_EVENT_RDPMC_ALLOWED))
+ 		return 0;
  
- /* Instr_Retired.Any: */
-@@ -213,11 +225,16 @@ struct x86_pmu_capability {
- #define MSR_ARCH_PERFMON_FIXED_CTR1	0x30a
- #define INTEL_PMC_IDX_FIXED_CPU_CYCLES	(INTEL_PMC_IDX_FIXED + 1)
+-	if (x86_pmu.num_counters_fixed && idx >= INTEL_PMC_IDX_FIXED) {
+-		idx -= INTEL_PMC_IDX_FIXED;
+-		idx |= 1 << 30;
+-	}
+-
+-	return idx + 1;
++	return hwc->event_base_rdpmc + 1;
+ }
  
--/* CPU_CLK_Unhalted.Ref: */
-+/* CPU_CLK_Unhalted.Ref: event=0x00,umask=0x3 (pseudo-encoding) */
- #define MSR_ARCH_PERFMON_FIXED_CTR2	0x30b
- #define INTEL_PMC_IDX_FIXED_REF_CYCLES	(INTEL_PMC_IDX_FIXED + 2)
- #define INTEL_PMC_MSK_FIXED_REF_CYCLES	(1ULL << INTEL_PMC_IDX_FIXED_REF_CYCLES)
- 
-+/* TOPDOWN.SLOTS: event=0x00,umask=0x4 (pseudo-encoding) */
-+#define MSR_ARCH_PERFMON_FIXED_CTR3	0x30c
-+#define INTEL_PMC_IDX_FIXED_SLOTS	(INTEL_PMC_IDX_FIXED + 3)
-+#define INTEL_PMC_MSK_FIXED_SLOTS	(1ULL << INTEL_PMC_IDX_FIXED_SLOTS)
-+
- /*
-  * We model BTS tracing as another fixed-mode PMC.
-  *
+ static ssize_t get_attr_rdpmc(struct device *cdev,
