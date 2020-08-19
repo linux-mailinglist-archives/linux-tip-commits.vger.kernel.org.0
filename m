@@ -2,54 +2,51 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6112F249DFB
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 19 Aug 2020 14:33:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BEF78249E12
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 19 Aug 2020 14:36:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728289AbgHSMdt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 19 Aug 2020 08:33:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60338 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728223AbgHSMdU (ORCPT
+        id S1728393AbgHSMek (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 19 Aug 2020 08:34:40 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:39072 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728147AbgHSMdT (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 19 Aug 2020 08:33:20 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79EB3C061343;
-        Wed, 19 Aug 2020 05:33:19 -0700 (PDT)
-Date:   Wed, 19 Aug 2020 12:33:11 -0000
+        Wed, 19 Aug 2020 08:33:19 -0400
+Date:   Wed, 19 Aug 2020 12:33:12 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1597840392;
+        s=2020; t=1597840393;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=gz8UFoO9G0Yh9/6TrSb8u8gXd0brblx69nGkW5rqEoU=;
-        b=K1/KzMTQL5QedjJaPE1qJurZ3ueisJbFZQm/iFt9B2tMYHzEUALU1DIXZWAyMa7g0Rb3uq
-        sfgmoMyjVK6ooA8U0zwwUw/lEYwj/7/U/oCgI4mBmDiF7gu9qnowBREkUHs2PKABXPBy6L
-        7cxg4xyEIPwEaznrcMt9qibwDb7ZFzvlIHru11tQ6scVwC9e+9hnNU6ff7p9AjiKQ9sT3M
-        WuUKSpR0hACcOMbR4RrC0u+UgXftr6jkxgMPQPgfKqT5CKEnFQ7X7yLwq1/gKwtQxKzjkF
-        BrEGJLMUV8CUsqDsfkHJMGSTPGKvDA89nRaUYWyGNSDLCp1kp4b85vV75hmcfA==
+        bh=qnBhuarp0jMz9NnCOKW9rf6t+I1ZpLqevmTEs+xmh1M=;
+        b=be2lYuaBSFv31Elw9d2QOudtY6LeF7jTMNNBO+d+w0oz9wboppLqaxCiUUbKfdHy1zFYE1
+        Usc4cKQNsVRGAfoZ69o6Rlum11N0xloQYFFOSV30rzf/Xq945Z5SF29qbomjAQuCbvxh7P
+        UivmsU7JmX7eCd7JGz+kfeZDZbd/j52bMAiS8sB4Qg/nt2UUQqh2Q4DAjJap1W1J1M0cXV
+        nD0kJ8cUUv1oNtapAtPm7jDdHRPr2noxJ7nU8k1Srk2BND97hM15WIzj8zlPSx8uaEusHO
+        TNuM7Bbfk392mZG3AMw37LfMrQcHFaFbGpuksi5+c/KiaLhgUuQc8DeAwYfy2g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1597840392;
+        s=2020e; t=1597840393;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=gz8UFoO9G0Yh9/6TrSb8u8gXd0brblx69nGkW5rqEoU=;
-        b=WnqpwVgbMoH8q+8fa5O9Kx5r5wibtprfQU43ctxpdyGVSTNPS+GfkC+49Anj7qLMwbiEv6
-        /M++KnRQFG+5b4Cw==
+        bh=qnBhuarp0jMz9NnCOKW9rf6t+I1ZpLqevmTEs+xmh1M=;
+        b=hLc6AXKA0BvZiEreDlaT9ajUWlx7/QIP3yKPvQ4t8xIIVRMBVTf4Za/YWNyrAxgV0R++ot
+        rofV69rKqFpWaoBg==
 From:   "tip-bot2 for James Morse" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cache] x86/resctrl: Use container_of() in delayed_work handlers
+Subject: [tip: x86/cache] x86/resctrl: Fix stale comment
 Cc:     James Morse <james.morse@arm.com>, Borislav Petkov <bp@suse.de>,
         Reinette Chatre <reinette.chatre@intel.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200708163929.2783-5-james.morse@arm.com>
-References: <20200708163929.2783-5-james.morse@arm.com>
+In-Reply-To: <20200708163929.2783-4-james.morse@arm.com>
+References: <20200708163929.2783-4-james.morse@arm.com>
 MIME-Version: 1.0
-Message-ID: <159784039176.3192.15237802095890922512.tip-bot2@tip-bot2>
+Message-ID: <159784039239.3192.17068659462211591340.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,64 +58,37 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/cache branch of tip:
 
-Commit-ID:     f995801ba3a0660cb352c8beb794379c82781ca3
-Gitweb:        https://git.kernel.org/tip/f995801ba3a0660cb352c8beb794379c82781ca3
+Commit-ID:     ae0fbedd2a18cd82a2c0c5605a0a60865bc54576
+Gitweb:        https://git.kernel.org/tip/ae0fbedd2a18cd82a2c0c5605a0a60865bc54576
 Author:        James Morse <james.morse@arm.com>
-AuthorDate:    Wed, 08 Jul 2020 16:39:23 
+AuthorDate:    Wed, 08 Jul 2020 16:39:22 
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 18 Aug 2020 17:05:08 +02:00
+CommitterDate: Tue, 18 Aug 2020 17:02:24 +02:00
 
-x86/resctrl: Use container_of() in delayed_work handlers
+x86/resctrl: Fix stale comment
 
-mbm_handle_overflow() and cqm_handle_limbo() are both provided with
-the domain's work_struct when called, but use get_domain_from_cpu()
-to find the domain, along with the appropriate error handling.
-
-container_of() saves some list walking and bitmap testing, use that
-instead.
+The comment in rdtgroup_init() refers to the non existent function
+rdt_mount(), which has now been renamed rdt_get_tree(). Fix the
+comment.
 
 Signed-off-by: James Morse <james.morse@arm.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
 Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
-Link: https://lkml.kernel.org/r/20200708163929.2783-5-james.morse@arm.com
+Link: https://lkml.kernel.org/r/20200708163929.2783-4-james.morse@arm.com
 ---
- arch/x86/kernel/cpu/resctrl/monitor.c | 13 ++-----------
- 1 file changed, 2 insertions(+), 11 deletions(-)
+ arch/x86/kernel/cpu/resctrl/rdtgroup.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/cpu/resctrl/monitor.c b/arch/x86/kernel/cpu/resctrl/monitor.c
-index d6b92d7..54dffe5 100644
---- a/arch/x86/kernel/cpu/resctrl/monitor.c
-+++ b/arch/x86/kernel/cpu/resctrl/monitor.c
-@@ -477,19 +477,13 @@ void cqm_handle_limbo(struct work_struct *work)
- 	mutex_lock(&rdtgroup_mutex);
- 
- 	r = &rdt_resources_all[RDT_RESOURCE_L3];
--	d = get_domain_from_cpu(cpu, r);
--
--	if (!d) {
--		pr_warn_once("Failure to get domain for limbo worker\n");
--		goto out_unlock;
--	}
-+	d = container_of(work, struct rdt_domain, cqm_limbo.work);
- 
- 	__check_limbo(d, false);
- 
- 	if (has_busy_rmid(r, d))
- 		schedule_delayed_work_on(cpu, &d->cqm_limbo, delay);
- 
--out_unlock:
- 	mutex_unlock(&rdtgroup_mutex);
- }
- 
-@@ -519,10 +513,7 @@ void mbm_handle_overflow(struct work_struct *work)
- 		goto out_unlock;
- 
- 	r = &rdt_resources_all[RDT_RESOURCE_L3];
--
--	d = get_domain_from_cpu(cpu, r);
--	if (!d)
--		goto out_unlock;
-+	d = container_of(work, struct rdt_domain, mbm_over.work);
- 
- 	list_for_each_entry(prgrp, &rdt_all_groups, rdtgroup_list) {
- 		mbm_update(r, d, prgrp->mon.rmid);
+diff --git a/arch/x86/kernel/cpu/resctrl/rdtgroup.c b/arch/x86/kernel/cpu/resctrl/rdtgroup.c
+index 3f844f1..b044617 100644
+--- a/arch/x86/kernel/cpu/resctrl/rdtgroup.c
++++ b/arch/x86/kernel/cpu/resctrl/rdtgroup.c
+@@ -3196,7 +3196,7 @@ int __init rdtgroup_init(void)
+ 	 * It may also be ok since that would enable debugging of RDT before
+ 	 * resctrl is mounted.
+ 	 * The reason why the debugfs directory is created here and not in
+-	 * rdt_mount() is because rdt_mount() takes rdtgroup_mutex and
++	 * rdt_get_tree() is because rdt_get_tree() takes rdtgroup_mutex and
+ 	 * during the debugfs directory creation also &sb->s_type->i_mutex_key
+ 	 * (the lockdep class of inode->i_rwsem). Other filesystem
+ 	 * interactions (eg. SyS_getdents) have the lock ordering:
