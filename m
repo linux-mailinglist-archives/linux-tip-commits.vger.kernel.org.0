@@ -2,55 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D41524A125
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 19 Aug 2020 16:05:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D048824A11C
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 19 Aug 2020 16:05:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726209AbgHSOFx (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 19 Aug 2020 10:05:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46172 "EHLO
+        id S1728504AbgHSOFH (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 19 Aug 2020 10:05:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46174 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728312AbgHSOCy (ORCPT
+        with ESMTP id S1728335AbgHSOCy (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Wed, 19 Aug 2020 10:02:54 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 872FDC061346;
-        Wed, 19 Aug 2020 07:02:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12309C061347;
+        Wed, 19 Aug 2020 07:02:52 -0700 (PDT)
 Date:   Wed, 19 Aug 2020 14:02:48 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1597845768;
+        s=2020; t=1597845769;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=6TjGySHKnltSS9pFao0dnMdxOAaO+vzMhuW0sa7+0fw=;
-        b=z8TzPdxp4xVvVXzGSVdgsm/wp0jOnRwn08MPT46yKskt3y43fjMVf2VyRK50521FzlsKWa
-        A4doM7RXLpOJ1qQRkjFMAxPWeSG3S3VrCpuVs3ugZJKUVb6Iu8Wlhr6rh3rxkSLHhALV+F
-        Oa84Vc+YdzR9d/KquUO5Z3GFFqowsmltoAW9v1n/vhUOuvZcPx/bAcmU6TlkhKZSGnUyul
-        V6ikAcoys5GiY7QgrOqtDcpP6z5B21lT6lRpnnBrRH0uNcMi4PoyQosD+JdD+iKtDgI5HB
-        FgCHTX3Mv+/CEIGAf5bmX1NKVRqs3eBrrlhSAvDRBRU0nFAQvhGoDVmNBiQ8rA==
+        bh=v6fuaozmURtS2UQqFRVBArpk4tmBTGcUb0cHk2rZVWc=;
+        b=f0/DRJCq5/vLdlqOcCu/gB3w57rm+5+6rsEG3JaHGggGzzc62AcRWxd8hpfkuZaNlUv0WY
+        w+HAO3vEAFfQ+YUPXaSoKDL6WL3mZZU+7O7tGVIpEzL4ovOsmRbfuwOnV5uQwyDMeSDDOC
+        SZPzc7EAVX9JBno6r0TjOENEe5mQ6FcIoXd2ywVE6MloYqNKFHrYRw8GJOCRC10gQRbWYH
+        HNSMur5FAFi62niYHZzx++3LGJHR9VPORUhh/dKR8KtRQK6QxQ6b6+WDuqBUuszT/+c8XM
+        /yE1YI7q3Jm4TYK2qNIyNrx69Ed7cEajg3Vxt6inRE3yPRWM+0RQuYDLI/8d+A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1597845768;
+        s=2020e; t=1597845769;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=6TjGySHKnltSS9pFao0dnMdxOAaO+vzMhuW0sa7+0fw=;
-        b=ZQpiSCSQHPj1kVXQebmIe6tBVwHwpYeOeNIEXJ3m0el7UuYh7B0QTGiX1nVOf3Ig2mRU9U
-        Iohz/aRrJbgg8zCw==
+        bh=v6fuaozmURtS2UQqFRVBArpk4tmBTGcUb0cHk2rZVWc=;
+        b=wr/iuh4oW87ZzwHiSFS0ywQf095nPryy7KILt0lsNPFDARrDLiDcovNGn19/2VSiOLqcfY
+        yCJVCRRU4ne2UFDQ==
 From:   "tip-bot2 for Valentin Schneider" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/debug: Output SD flag names rather than their values
+Subject: [tip: sched/core] sched/topology: Verify SD_* flags setup when
+ sched_debug is on
 Cc:     Valentin Schneider <valentin.schneider@arm.com>,
         Ingo Molnar <mingo@kernel.org>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
         Peter Zijlstra <a.p.zijlstra@chello.nl>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200817113003.20802-7-valentin.schneider@arm.com>
-References: <20200817113003.20802-7-valentin.schneider@arm.com>
+In-Reply-To: <20200817113003.20802-6-valentin.schneider@arm.com>
+References: <20200817113003.20802-6-valentin.schneider@arm.com>
 MIME-Version: 1.0
-Message-ID: <159784576823.3192.8427103203948194710.tip-bot2@tip-bot2>
+Message-ID: <159784576893.3192.14095927002561810967.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -62,105 +64,59 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     5b9f8ff7b320a34af3dbcf04edb40d9b04f22f4a
-Gitweb:        https://git.kernel.org/tip/5b9f8ff7b320a34af3dbcf04edb40d9b04f22f4a
+Commit-ID:     65c5e253168dbbb52c20026b0c5b7a2f344b9197
+Gitweb:        https://git.kernel.org/tip/65c5e253168dbbb52c20026b0c5b7a2f344b9197
 Author:        Valentin Schneider <valentin.schneider@arm.com>
-AuthorDate:    Mon, 17 Aug 2020 12:29:52 +01:00
+AuthorDate:    Mon, 17 Aug 2020 12:29:51 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Wed, 19 Aug 2020 10:49:48 +02:00
 
-sched/debug: Output SD flag names rather than their values
+sched/topology: Verify SD_* flags setup when sched_debug is on
 
-Decoding the output of /proc/sys/kernel/sched_domain/cpu*/domain*/flags has
-always been somewhat annoying, as one needs to go fetch the bit -> name
-mapping from the source code itself. This encoding can be saved in a script
-somewhere, but that isn't safe from flags being added, removed or even
-shuffled around.
-
-What matters for debugging purposes is to get *which* flags are set in a
-given domain, their associated value is pretty much meaningless.
-
-Make the sd flags debug file output flag names.
+Now that we have some description of what we expect the flags layout to
+be, we can use that to assert at runtime that the actual layout is sane.
 
 Signed-off-by: Valentin Schneider <valentin.schneider@arm.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
 Acked-by: Peter Zijlstra <a.p.zijlstra@chello.nl>
-Link: https://lore.kernel.org/r/20200817113003.20802-7-valentin.schneider@arm.com
+Link: https://lore.kernel.org/r/20200817113003.20802-6-valentin.schneider@arm.com
 ---
- kernel/sched/debug.c | 56 ++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 55 insertions(+), 1 deletion(-)
+ kernel/sched/topology.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/kernel/sched/debug.c b/kernel/sched/debug.c
-index 36c5426..0655524 100644
---- a/kernel/sched/debug.c
-+++ b/kernel/sched/debug.c
-@@ -245,6 +245,60 @@ set_table_entry(struct ctl_table *entry,
- 	entry->proc_handler = proc_handler;
- }
- 
-+static int sd_ctl_doflags(struct ctl_table *table, int write,
-+			  void *buffer, size_t *lenp, loff_t *ppos)
-+{
-+	unsigned long flags = *(unsigned long *)table->data;
-+	size_t data_size = 0;
-+	size_t len = 0;
-+	char *tmp;
-+	int idx;
-+
-+	if (write)
-+		return 0;
-+
-+	for_each_set_bit(idx, &flags, __SD_FLAG_CNT) {
-+		char *name = sd_flag_debug[idx].name;
-+
-+		/* Name plus whitespace */
-+		data_size += strlen(name) + 1;
-+	}
-+
-+	if (*ppos > data_size) {
-+		*lenp = 0;
-+		return 0;
-+	}
-+
-+	tmp = kcalloc(data_size + 1, sizeof(*tmp), GFP_KERNEL);
-+	if (!tmp)
-+		return -ENOMEM;
-+
-+	for_each_set_bit(idx, &flags, __SD_FLAG_CNT) {
-+		char *name = sd_flag_debug[idx].name;
-+
-+		len += snprintf(tmp + len, strlen(name) + 2, "%s ", name);
-+	}
-+
-+	tmp += *ppos;
-+	len -= *ppos;
-+
-+	if (len > *lenp)
-+		len = *lenp;
-+	if (len)
-+		memcpy(buffer, tmp, len);
-+	if (len < *lenp) {
-+		((char *)buffer)[len] = '\n';
-+		len++;
-+	}
-+
-+	*lenp = len;
-+	*ppos += len;
-+
-+	kfree(tmp);
-+
-+	return 0;
-+}
-+
- static struct ctl_table *
- sd_alloc_ctl_domain_table(struct sched_domain *sd)
+diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
+index fe03969..cbdaf08 100644
+--- a/kernel/sched/topology.c
++++ b/kernel/sched/topology.c
+@@ -29,6 +29,8 @@ static int sched_domain_debug_one(struct sched_domain *sd, int cpu, int level,
+ 				  struct cpumask *groupmask)
  {
-@@ -258,7 +312,7 @@ sd_alloc_ctl_domain_table(struct sched_domain *sd)
- 	set_table_entry(&table[2], "busy_factor",	  &sd->busy_factor,	    sizeof(int),  0644, proc_dointvec_minmax);
- 	set_table_entry(&table[3], "imbalance_pct",	  &sd->imbalance_pct,	    sizeof(int),  0644, proc_dointvec_minmax);
- 	set_table_entry(&table[4], "cache_nice_tries",	  &sd->cache_nice_tries,    sizeof(int),  0644, proc_dointvec_minmax);
--	set_table_entry(&table[5], "flags",		  &sd->flags,		    sizeof(int),  0444, proc_dointvec_minmax);
-+	set_table_entry(&table[5], "flags",		  &sd->flags,		    sizeof(int),  0444, sd_ctl_doflags);
- 	set_table_entry(&table[6], "max_newidle_lb_cost", &sd->max_newidle_lb_cost, sizeof(long), 0644, proc_doulongvec_minmax);
- 	set_table_entry(&table[7], "name",		  sd->name,	       CORENAME_MAX_SIZE, 0444, proc_dostring);
- 	/* &table[8] is terminator */
+ 	struct sched_group *group = sd->groups;
++	unsigned long flags = sd->flags;
++	unsigned int idx;
+ 
+ 	cpumask_clear(groupmask);
+ 
+@@ -43,6 +45,21 @@ static int sched_domain_debug_one(struct sched_domain *sd, int cpu, int level,
+ 		printk(KERN_ERR "ERROR: domain->groups does not contain CPU%d\n", cpu);
+ 	}
+ 
++	for_each_set_bit(idx, &flags, __SD_FLAG_CNT) {
++		unsigned int flag = BIT(idx);
++		unsigned int meta_flags = sd_flag_debug[idx].meta_flags;
++
++		if ((meta_flags & SDF_SHARED_CHILD) && sd->child &&
++		    !(sd->child->flags & flag))
++			printk(KERN_ERR "ERROR: flag %s set here but not in child\n",
++			       sd_flag_debug[idx].name);
++
++		if ((meta_flags & SDF_SHARED_PARENT) && sd->parent &&
++		    !(sd->parent->flags & flag))
++			printk(KERN_ERR "ERROR: flag %s set here but not in parent\n",
++			       sd_flag_debug[idx].name);
++	}
++
+ 	printk(KERN_DEBUG "%*s groups:", level + 1, "");
+ 	do {
+ 		if (!group) {
