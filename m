@@ -2,17 +2,20 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DF0224A13E
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 19 Aug 2020 16:08:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D41524A125
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 19 Aug 2020 16:05:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728374AbgHSOFx (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S1726209AbgHSOFx (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Wed, 19 Aug 2020 10:05:53 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:39594 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728192AbgHSOCv (ORCPT
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46172 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728312AbgHSOCy (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 19 Aug 2020 10:02:51 -0400
-Date:   Wed, 19 Aug 2020 14:02:47 -0000
+        Wed, 19 Aug 2020 10:02:54 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 872FDC061346;
+        Wed, 19 Aug 2020 07:02:50 -0700 (PDT)
+Date:   Wed, 19 Aug 2020 14:02:48 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1597845768;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -20,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=gCFQCll81+xGY9kK9qg0Qa9r7fDQY1OnzjtSox0/cOk=;
-        b=nclwdakFL+x97wq5mmsYuzQl1HVKQXJKYizdYrY61V9NGMWQ+080KD8OewU3iQIqH4+rcR
-        kxAOZGU7rwrnjGfqzA2TjtK5CbIGFoKaPhCqSRgyyxjAHCQzodqwWCL6wj4rkWS8W13+/z
-        JmW+sN4tLC0GFWqF7TG0GTVsZAOdVGayu42Shvgome931SoXBUGAsdNj3/I/IDydPtL5Ac
-        Vj//QNXTQ2uiw76C9jmGIJMHr4rN+koT5DNIAq3wA7KbDOCs+IMKpd4AjHfEV9nJV8Wk2C
-        dM0dZE5FrtnTXWTn3pYcLyuNhb78tmRMPcCXYEBeed1kNfhlHIl/lKTEd0ZQ1g==
+        bh=6TjGySHKnltSS9pFao0dnMdxOAaO+vzMhuW0sa7+0fw=;
+        b=z8TzPdxp4xVvVXzGSVdgsm/wp0jOnRwn08MPT46yKskt3y43fjMVf2VyRK50521FzlsKWa
+        A4doM7RXLpOJ1qQRkjFMAxPWeSG3S3VrCpuVs3ugZJKUVb6Iu8Wlhr6rh3rxkSLHhALV+F
+        Oa84Vc+YdzR9d/KquUO5Z3GFFqowsmltoAW9v1n/vhUOuvZcPx/bAcmU6TlkhKZSGnUyul
+        V6ikAcoys5GiY7QgrOqtDcpP6z5B21lT6lRpnnBrRH0uNcMi4PoyQosD+JdD+iKtDgI5HB
+        FgCHTX3Mv+/CEIGAf5bmX1NKVRqs3eBrrlhSAvDRBRU0nFAQvhGoDVmNBiQ8rA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1597845768;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -33,24 +36,21 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=gCFQCll81+xGY9kK9qg0Qa9r7fDQY1OnzjtSox0/cOk=;
-        b=HGXtKA6T3tTNeFze0aTL1G16PDYmzGjY+jK80FkE05bSUNEkJdwJMgKCXDCxN8/umDbKRL
-        pS2+DGFu2dSZoJCA==
+        bh=6TjGySHKnltSS9pFao0dnMdxOAaO+vzMhuW0sa7+0fw=;
+        b=ZQpiSCSQHPj1kVXQebmIe6tBVwHwpYeOeNIEXJ3m0el7UuYh7B0QTGiX1nVOf3Ig2mRU9U
+        Iohz/aRrJbgg8zCw==
 From:   "tip-bot2 for Valentin Schneider" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/topology: Introduce SD metaflag for flags
- needing > 1 groups
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        Valentin Schneider <valentin.schneider@arm.com>,
+Subject: [tip: sched/core] sched/debug: Output SD flag names rather than their values
+Cc:     Valentin Schneider <valentin.schneider@arm.com>,
         Ingo Molnar <mingo@kernel.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
         Peter Zijlstra <a.p.zijlstra@chello.nl>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200817113003.20802-8-valentin.schneider@arm.com>
-References: <20200817113003.20802-8-valentin.schneider@arm.com>
+In-Reply-To: <20200817113003.20802-7-valentin.schneider@arm.com>
+References: <20200817113003.20802-7-valentin.schneider@arm.com>
 MIME-Version: 1.0
-Message-ID: <159784576761.3192.1970483124883229508.tip-bot2@tip-bot2>
+Message-ID: <159784576823.3192.8427103203948194710.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -62,143 +62,105 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     4ee4ea443a5dc3fc4d8ae338199676eae9d8ef02
-Gitweb:        https://git.kernel.org/tip/4ee4ea443a5dc3fc4d8ae338199676eae9d8ef02
+Commit-ID:     5b9f8ff7b320a34af3dbcf04edb40d9b04f22f4a
+Gitweb:        https://git.kernel.org/tip/5b9f8ff7b320a34af3dbcf04edb40d9b04f22f4a
 Author:        Valentin Schneider <valentin.schneider@arm.com>
-AuthorDate:    Mon, 17 Aug 2020 12:29:53 +01:00
+AuthorDate:    Mon, 17 Aug 2020 12:29:52 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Wed, 19 Aug 2020 10:49:48 +02:00
 
-sched/topology: Introduce SD metaflag for flags needing > 1 groups
+sched/debug: Output SD flag names rather than their values
 
-In preparation of cleaning up the sd_degenerate*() functions, mark flags
-used in sd_degenerate() with the new SDF_NEEDS_GROUPS flag. With this,
-build a compile-time mask of those SD flags.
+Decoding the output of /proc/sys/kernel/sched_domain/cpu*/domain*/flags has
+always been somewhat annoying, as one needs to go fetch the bit -> name
+mapping from the source code itself. This encoding can be saved in a script
+somewhere, but that isn't safe from flags being added, removed or even
+shuffled around.
 
-Note that sd_parent_degenerate() uses an extra flag in its mask,
-SD_PREFER_SIBLING, which remains singled out for now.
+What matters for debugging purposes is to get *which* flags are set in a
+given domain, their associated value is pretty much meaningless.
 
-Suggested-by: Peter Zijlstra <peterz@infradead.org>
+Make the sd flags debug file output flag names.
+
 Signed-off-by: Valentin Schneider <valentin.schneider@arm.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
 Acked-by: Peter Zijlstra <a.p.zijlstra@chello.nl>
-Link: https://lore.kernel.org/r/20200817113003.20802-8-valentin.schneider@arm.com
+Link: https://lore.kernel.org/r/20200817113003.20802-7-valentin.schneider@arm.com
 ---
- include/linux/sched/sd_flags.h | 39 +++++++++++++++++++++++----------
- include/linux/sched/topology.h |  7 ++++++-
- 2 files changed, 35 insertions(+), 11 deletions(-)
+ kernel/sched/debug.c | 56 ++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 55 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/sched/sd_flags.h b/include/linux/sched/sd_flags.h
-index c24a45b..ee5cbfc 100644
---- a/include/linux/sched/sd_flags.h
-+++ b/include/linux/sched/sd_flags.h
-@@ -8,7 +8,7 @@
- #endif
+diff --git a/kernel/sched/debug.c b/kernel/sched/debug.c
+index 36c5426..0655524 100644
+--- a/kernel/sched/debug.c
++++ b/kernel/sched/debug.c
+@@ -245,6 +245,60 @@ set_table_entry(struct ctl_table *entry,
+ 	entry->proc_handler = proc_handler;
+ }
  
- /*
-- * Expected flag uses
-+ * Hierarchical metaflags
-  *
-  * SHARED_CHILD: These flags are meant to be set from the base domain upwards.
-  * If a domain has this flag set, all of its children should have it set. This
-@@ -29,29 +29,42 @@
-  * certain level (e.g. domain starts spanning CPUs outside of the base CPU's
-  * socket).
-  */
--#define SDF_SHARED_CHILD 0x1
--#define SDF_SHARED_PARENT 0x2
-+#define SDF_SHARED_CHILD       0x1
-+#define SDF_SHARED_PARENT      0x2
++static int sd_ctl_doflags(struct ctl_table *table, int write,
++			  void *buffer, size_t *lenp, loff_t *ppos)
++{
++	unsigned long flags = *(unsigned long *)table->data;
++	size_t data_size = 0;
++	size_t len = 0;
++	char *tmp;
++	int idx;
 +
-+/*
-+ * Behavioural metaflags
-+ *
-+ * NEEDS_GROUPS: These flags are only relevant if the domain they are set on has
-+ * more than one group. This is usually for balancing flags (load balancing
-+ * involves equalizing a metric between groups), or for flags describing some
-+ * shared resource (which would be shared between groups).
-+ */
-+#define SDF_NEEDS_GROUPS       0x4
- 
- /*
-  * Balance when about to become idle
-  *
-  * SHARED_CHILD: Set from the base domain up to cpuset.sched_relax_domain_level.
-+ * NEEDS_GROUPS: Load balancing flag.
-  */
--SD_FLAG(SD_BALANCE_NEWIDLE, SDF_SHARED_CHILD)
-+SD_FLAG(SD_BALANCE_NEWIDLE, SDF_SHARED_CHILD | SDF_NEEDS_GROUPS)
- 
- /*
-  * Balance on exec
-  *
-  * SHARED_CHILD: Set from the base domain up to the NUMA reclaim level.
-+ * NEEDS_GROUPS: Load balancing flag.
-  */
--SD_FLAG(SD_BALANCE_EXEC, SDF_SHARED_CHILD)
-+SD_FLAG(SD_BALANCE_EXEC, SDF_SHARED_CHILD | SDF_NEEDS_GROUPS)
- 
- /*
-  * Balance on fork, clone
-  *
-  * SHARED_CHILD: Set from the base domain up to the NUMA reclaim level.
-+ * NEEDS_GROUPS: Load balancing flag.
-  */
--SD_FLAG(SD_BALANCE_FORK, SDF_SHARED_CHILD)
-+SD_FLAG(SD_BALANCE_FORK, SDF_SHARED_CHILD | SDF_NEEDS_GROUPS)
- 
- /*
-  * Balance on wakeup
-@@ -69,24 +82,28 @@ SD_FLAG(SD_WAKE_AFFINE, SDF_SHARED_CHILD)
- 
- /*
-  * Domain members have different CPU capacities
-+ *
-+ * NEEDS_GROUPS: Per-CPU capacity is asymmetric between groups.
-  */
--SD_FLAG(SD_ASYM_CPUCAPACITY, 0)
-+SD_FLAG(SD_ASYM_CPUCAPACITY, SDF_NEEDS_GROUPS)
- 
- /*
-  * Domain members share CPU capacity (i.e. SMT)
-  *
-  * SHARED_CHILD: Set from the base domain up until spanned CPUs no longer share
-- * CPU capacity.
-+ *               CPU capacity.
-+ * NEEDS_GROUPS: Capacity is shared between groups.
-  */
--SD_FLAG(SD_SHARE_CPUCAPACITY, SDF_SHARED_CHILD)
-+SD_FLAG(SD_SHARE_CPUCAPACITY, SDF_SHARED_CHILD | SDF_NEEDS_GROUPS)
- 
- /*
-  * Domain members share CPU package resources (i.e. caches)
-  *
-  * SHARED_CHILD: Set from the base domain up until spanned CPUs no longer share
-- * the same cache(s).
-+ *               the same cache(s).
-+ * NEEDS_GROUPS: Caches are shared between groups.
-  */
--SD_FLAG(SD_SHARE_PKG_RESOURCES, SDF_SHARED_CHILD)
-+SD_FLAG(SD_SHARE_PKG_RESOURCES, SDF_SHARED_CHILD | SDF_NEEDS_GROUPS)
- 
- /*
-  * Only a single load balancing instance
-diff --git a/include/linux/sched/topology.h b/include/linux/sched/topology.h
-index 32f602f..2d59ca7 100644
---- a/include/linux/sched/topology.h
-+++ b/include/linux/sched/topology.h
-@@ -25,6 +25,13 @@ enum {
- };
- #undef SD_FLAG
- 
-+/* Generate a mask of SD flags with the SDF_NEEDS_GROUPS metaflag */
-+#define SD_FLAG(name, mflags) (name * !!((mflags) & SDF_NEEDS_GROUPS)) |
-+static const unsigned int SD_DEGENERATE_GROUPS_MASK =
-+#include <linux/sched/sd_flags.h>
-+0;
-+#undef SD_FLAG
++	if (write)
++		return 0;
 +
- #ifdef CONFIG_SCHED_DEBUG
- #define SD_FLAG(_name, mflags) [__##_name] = { .meta_flags = mflags, .name = #_name },
- static const struct {
++	for_each_set_bit(idx, &flags, __SD_FLAG_CNT) {
++		char *name = sd_flag_debug[idx].name;
++
++		/* Name plus whitespace */
++		data_size += strlen(name) + 1;
++	}
++
++	if (*ppos > data_size) {
++		*lenp = 0;
++		return 0;
++	}
++
++	tmp = kcalloc(data_size + 1, sizeof(*tmp), GFP_KERNEL);
++	if (!tmp)
++		return -ENOMEM;
++
++	for_each_set_bit(idx, &flags, __SD_FLAG_CNT) {
++		char *name = sd_flag_debug[idx].name;
++
++		len += snprintf(tmp + len, strlen(name) + 2, "%s ", name);
++	}
++
++	tmp += *ppos;
++	len -= *ppos;
++
++	if (len > *lenp)
++		len = *lenp;
++	if (len)
++		memcpy(buffer, tmp, len);
++	if (len < *lenp) {
++		((char *)buffer)[len] = '\n';
++		len++;
++	}
++
++	*lenp = len;
++	*ppos += len;
++
++	kfree(tmp);
++
++	return 0;
++}
++
+ static struct ctl_table *
+ sd_alloc_ctl_domain_table(struct sched_domain *sd)
+ {
+@@ -258,7 +312,7 @@ sd_alloc_ctl_domain_table(struct sched_domain *sd)
+ 	set_table_entry(&table[2], "busy_factor",	  &sd->busy_factor,	    sizeof(int),  0644, proc_dointvec_minmax);
+ 	set_table_entry(&table[3], "imbalance_pct",	  &sd->imbalance_pct,	    sizeof(int),  0644, proc_dointvec_minmax);
+ 	set_table_entry(&table[4], "cache_nice_tries",	  &sd->cache_nice_tries,    sizeof(int),  0644, proc_dointvec_minmax);
+-	set_table_entry(&table[5], "flags",		  &sd->flags,		    sizeof(int),  0444, proc_dointvec_minmax);
++	set_table_entry(&table[5], "flags",		  &sd->flags,		    sizeof(int),  0444, sd_ctl_doflags);
+ 	set_table_entry(&table[6], "max_newidle_lb_cost", &sd->max_newidle_lb_cost, sizeof(long), 0644, proc_doulongvec_minmax);
+ 	set_table_entry(&table[7], "name",		  sd->name,	       CORENAME_MAX_SIZE, 0444, proc_dostring);
+ 	/* &table[8] is terminator */
