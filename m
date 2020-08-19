@@ -2,51 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 95651249E0C
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 19 Aug 2020 14:34:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2150424A107
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 19 Aug 2020 16:03:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727018AbgHSMei (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 19 Aug 2020 08:34:38 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:39074 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728230AbgHSMdX (ORCPT
+        id S1728343AbgHSOC4 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 19 Aug 2020 10:02:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46142 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728060AbgHSOCr (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 19 Aug 2020 08:33:23 -0400
-Date:   Wed, 19 Aug 2020 12:33:13 -0000
+        Wed, 19 Aug 2020 10:02:47 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C76DC061383;
+        Wed, 19 Aug 2020 07:02:46 -0700 (PDT)
+Date:   Wed, 19 Aug 2020 14:02:41 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1597840394;
+        s=2020; t=1597845762;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=TsI/rhy/8f4Hvtj1f9EJtnH1VWuaJfzJEaYXJUkvKPw=;
-        b=NabiQ+mutOIdWwZYVlexpiQIXKL82EaRWGC6ACY/+bDi5k43x6U1cZuJvXjHb58s3uNNgA
-        bFpDFU0/qgju//r9zJoN9I/cSewRvyvhhGRZNFmkGNKQO/3QqVFCiNkFm7Ch/PVTQXEjTe
-        hR6cX/1UhB7frc/HDcS+bKvINnHIKh2tVNP1AQNox+omW1P6zUAXGghvD48yMkBiOkmCct
-        wsufShjpPW3DeZ3arW57ImZrJhmZGYd76EKdW5FIWx9p1slIZbhZpX23ZrSNxBQtbCxqfl
-        NxaheJw7dr5t4HNZxb7x8bi7Fp0L4GpsT4L6fI03CqQvSa0BTgncdMwx4CmnfQ==
+        bh=1ckJeiS/DWXHXyS8NzN3xiQGdTAKjAdTUNsWAa4Smc4=;
+        b=F9KtcfA+U7ABojo1+QaSBTOvfbljwPjrU3zmUejWaNXilwzCznU0RW+Jl6sAU3ho+zAEfv
+        K3gjHfQVCIyZxmIcjGwn/1iF4F/wUvmcvkzYDhxkY98F+6rE8RNiIpMC6WacAelEF/mYMS
+        sMOc/ZARp8YVcIXX0lRIA9dbFgB53O+O18EvAQl1pvCIB03AhUzZhM0ND0v9hFaw3y4Xf2
+        v08w4WGKu8ea6XwKcSOW5/hwlu41DurJqAnJ7JUd2mF9DYWlniIwI6M8gYn+t6L0c3quMB
+        i1XP002ZgXEwU83HzgAJ6CwXvAhXeBRNertculuEf95eBbzV7G8iii90GJjmMg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1597840394;
+        s=2020e; t=1597845762;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=TsI/rhy/8f4Hvtj1f9EJtnH1VWuaJfzJEaYXJUkvKPw=;
-        b=3FoGRte/stjjlzf/Wq5z24QlYjz4m2Qc5HfEV1iJKaXFQE9RaE0O3eKlHFgUeju2mtCA40
-        +QQBushohXN9pFBg==
-From:   "tip-bot2 for James Morse" <tip-bot2@linutronix.de>
+        bh=1ckJeiS/DWXHXyS8NzN3xiQGdTAKjAdTUNsWAa4Smc4=;
+        b=DyQ12eXkc3sE7lKU1IgRyjsCRv3EGw7P+Wkp42P/YrXjPBLKhY52mikuBWWGXMOwmEdFeb
+        Xs8YvpWK2sXs6PCA==
+From:   "tip-bot2 for Valentin Schneider" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cache] x86/resctrl: Remove unused struct mbm_state::chunks_bw
-Cc:     James Morse <james.morse@arm.com>, Borislav Petkov <bp@suse.de>,
-        Reinette Chatre <reinette.chatre@intel.com>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200708163929.2783-2-james.morse@arm.com>
-References: <20200708163929.2783-2-james.morse@arm.com>
+Subject: [tip: sched/core] sched/topology: Mark SD_NUMA as SDF_NEEDS_GROUPS
+Cc:     Valentin Schneider <valentin.schneider@arm.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        Peter Zijlstra <a.p.zijlstra@chello.nl>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200817113003.20802-17-valentin.schneider@arm.com>
+References: <20200817113003.20802-17-valentin.schneider@arm.com>
 MIME-Version: 1.0
-Message-ID: <159784039364.3192.17266951701377723520.tip-bot2@tip-bot2>
+Message-ID: <159784576167.3192.9507446083732831397.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -56,60 +60,37 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cache branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     abe8f12b44250d02937665033a8b750c1bfeb26e
-Gitweb:        https://git.kernel.org/tip/abe8f12b44250d02937665033a8b750c1bfeb26e
-Author:        James Morse <james.morse@arm.com>
-AuthorDate:    Wed, 08 Jul 2020 16:39:20 
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 18 Aug 2020 16:51:55 +02:00
+Commit-ID:     5f4a1c4ea44728aa80be21dbf3a0469b5ca81d88
+Gitweb:        https://git.kernel.org/tip/5f4a1c4ea44728aa80be21dbf3a0469b5ca81d88
+Author:        Valentin Schneider <valentin.schneider@arm.com>
+AuthorDate:    Mon, 17 Aug 2020 12:30:02 +01:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Wed, 19 Aug 2020 10:49:50 +02:00
 
-x86/resctrl: Remove unused struct mbm_state::chunks_bw
+sched/topology: Mark SD_NUMA as SDF_NEEDS_GROUPS
 
-Nothing reads struct mbm_states's chunks_bw value, its a copy of
-chunks. Remove it.
+There would be no point in preserving a sched_domain with a single group
+just because it has this flag set. Add it to SD_DEGENERATE_GROUPS_MASK.
 
-Signed-off-by: James Morse <james.morse@arm.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
-Link: https://lkml.kernel.org/r/20200708163929.2783-2-james.morse@arm.com
+Signed-off-by: Valentin Schneider <valentin.schneider@arm.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: Peter Zijlstra <a.p.zijlstra@chello.nl>
+Link: https://lore.kernel.org/r/20200817113003.20802-17-valentin.schneider@arm.com
 ---
- arch/x86/kernel/cpu/resctrl/internal.h | 2 --
- arch/x86/kernel/cpu/resctrl/monitor.c  | 3 +--
- 2 files changed, 1 insertion(+), 4 deletions(-)
+ include/linux/sched/sd_flags.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/cpu/resctrl/internal.h b/arch/x86/kernel/cpu/resctrl/internal.h
-index 5ffa322..72bb210 100644
---- a/arch/x86/kernel/cpu/resctrl/internal.h
-+++ b/arch/x86/kernel/cpu/resctrl/internal.h
-@@ -283,7 +283,6 @@ struct rftype {
-  * struct mbm_state - status for each MBM counter in each domain
-  * @chunks:	Total data moved (multiply by rdt_group.mon_scale to get bytes)
-  * @prev_msr	Value of IA32_QM_CTR for this RMID last time we read it
-- * @chunks_bw	Total local data moved. Used for bandwidth calculation
-  * @prev_bw_msr:Value of previous IA32_QM_CTR for bandwidth counting
-  * @prev_bw	The most recent bandwidth in MBps
-  * @delta_bw	Difference between the current and previous bandwidth
-@@ -292,7 +291,6 @@ struct rftype {
- struct mbm_state {
- 	u64	chunks;
- 	u64	prev_msr;
--	u64	chunks_bw;
- 	u64	prev_bw_msr;
- 	u32	prev_bw;
- 	u32	delta_bw;
-diff --git a/arch/x86/kernel/cpu/resctrl/monitor.c b/arch/x86/kernel/cpu/resctrl/monitor.c
-index 837d7d0..d6b92d7 100644
---- a/arch/x86/kernel/cpu/resctrl/monitor.c
-+++ b/arch/x86/kernel/cpu/resctrl/monitor.c
-@@ -279,8 +279,7 @@ static void mbm_bw_count(u32 rmid, struct rmid_read *rr)
- 		return;
- 
- 	chunks = mbm_overflow_count(m->prev_bw_msr, tval, rr->r->mbm_width);
--	m->chunks_bw += chunks;
--	m->chunks = m->chunks_bw;
-+	m->chunks += chunks;
- 	cur_bw = (chunks * r->mon_scale) >> 20;
- 
- 	if (m->delta_comp)
+diff --git a/include/linux/sched/sd_flags.h b/include/linux/sched/sd_flags.h
+index 29af5f0..34b21e9 100644
+--- a/include/linux/sched/sd_flags.h
++++ b/include/linux/sched/sd_flags.h
+@@ -151,5 +151,6 @@ SD_FLAG(SD_OVERLAP, SDF_SHARED_PARENT | SDF_NEEDS_GROUPS)
+  * Cross-node balancing
+  *
+  * SHARED_PARENT: Set for all NUMA levels above NODE.
++ * NEEDS_GROUPS: No point in preserving domain if it has a single group.
+  */
+-SD_FLAG(SD_NUMA, SDF_SHARED_PARENT)
++SD_FLAG(SD_NUMA, SDF_SHARED_PARENT | SDF_NEEDS_GROUPS)
