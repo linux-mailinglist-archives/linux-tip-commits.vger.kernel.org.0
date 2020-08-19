@@ -2,16 +2,19 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1430824A10C
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 19 Aug 2020 16:03:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 692EF24A127
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 19 Aug 2020 16:05:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727859AbgHSODh (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 19 Aug 2020 10:03:37 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:39572 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728160AbgHSOCt (ORCPT
+        id S1728626AbgHSOF4 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 19 Aug 2020 10:05:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46156 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728212AbgHSOCt (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Wed, 19 Aug 2020 10:02:49 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F4E5C061757;
+        Wed, 19 Aug 2020 07:02:50 -0700 (PDT)
 Date:   Wed, 19 Aug 2020 14:02:46 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1597845767;
@@ -20,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=llQb2frl0t3QALWrupXqVAU9xpefRqbgivvPTvQsMbQ=;
-        b=H/7S94U2gvB2Qm8S8g80AZYcSKYnHoEDFV+hzmjtf7uZr6PHVsghSOfymfeyAZtWOdBeFO
-        +vKQeZ27sT89PiLleJTIfueCVqcK/R42yOB2FB6i36L2ZnS8KzefKJbZo9oZErZzPsm3gD
-        GNQPWRHIzsQ5ki6tLQBUPBiv2jlhlEKMsAhW/D/3kVdiaSFYqWFPoMcEB7VLRrK6huaNrX
-        tPJr7v04T836GB+OJSfEbadesZrIZ3hZEObHRHQ65T9kzazHC902Fb8GzqgpawDrkaMdsH
-        xf6ft4APE715uYhHpCKRa3uyjagMBXWZqQq84y3Vbxnlyo+b6ntB22nFyJ2hPg==
+        bh=fduUs2llT1q1Xx3qiiobcLkR9jqkNHnZPxzfLXB5oxw=;
+        b=0g7/SVporcjlPY/43UB6iiM7WsMZacKIEkOZB2tRSEsfLhPgpFBYMVmTty94VOsqZEYK0f
+        ny9uPVrolykELmYw+kwTprQMcqr14hgC7Q9ew/ECAUD6VUsE2JATn3SMd4++qVO3b7recQ
+        xkaiwNojVaTPe5P0lbIJXJkuvA/Vj95ZKGxH4cLX9Ru7BDSjXyAx0X1n37esr6Aj6wP/xi
+        rPT0ggQCheRLvvdJLW8hE/o5h/vcjz47nCBmXFlZ8rsCmrfBqAipOxAP5kdu4m/5ZA7mKP
+        vS8mN2xK9gTJVX4mbzYotyeEsjdbsHuqfAsvY4xHrb7sH6eOQeJD+U6qursNRA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1597845767;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -33,24 +36,22 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=llQb2frl0t3QALWrupXqVAU9xpefRqbgivvPTvQsMbQ=;
-        b=thAPeY5ENnUji31xtnr+6IVFXrzcSimFRQINELm8Hnlub9o+nqCvYIDqzbV1E29kc6vOuB
-        fexQ6bJo6SB78aDQ==
+        bh=fduUs2llT1q1Xx3qiiobcLkR9jqkNHnZPxzfLXB5oxw=;
+        b=Ep91QEHm6JnBtL1sz142ElHWO/aCq/Lr0+5RVHZjOmcaG4hJI0UFhswfzgd/aX2pI1OLKg
+        /NKEz2UQTAQL27Ag==
 From:   "tip-bot2 for Valentin Schneider" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/topology: Remove SD_SERIALIZE degeneration
- special case
+Subject: [tip: sched/core] sched/topology: Use prebuilt SD flag degeneration mask
 Cc:     Peter Zijlstra <peterz@infradead.org>,
         Valentin Schneider <valentin.schneider@arm.com>,
         Ingo Molnar <mingo@kernel.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
         Peter Zijlstra <a.p.zijlstra@chello.nl>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200817113003.20802-10-valentin.schneider@arm.com>
-References: <20200817113003.20802-10-valentin.schneider@arm.com>
+In-Reply-To: <20200817113003.20802-9-valentin.schneider@arm.com>
+References: <20200817113003.20802-9-valentin.schneider@arm.com>
 MIME-Version: 1.0
-Message-ID: <159784576630.3192.4985078690584482914.tip-bot2@tip-bot2>
+Message-ID: <159784576699.3192.17019412360260680450.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -62,47 +63,62 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     ab65afb094c7b2e954e8d56ffbc7df843211c2c8
-Gitweb:        https://git.kernel.org/tip/ab65afb094c7b2e954e8d56ffbc7df843211c2c8
+Commit-ID:     6f349818621dff364fc000909135d0065e9756c9
+Gitweb:        https://git.kernel.org/tip/6f349818621dff364fc000909135d0065e9756c9
 Author:        Valentin Schneider <valentin.schneider@arm.com>
-AuthorDate:    Mon, 17 Aug 2020 12:29:55 +01:00
+AuthorDate:    Mon, 17 Aug 2020 12:29:54 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Wed, 19 Aug 2020 10:49:48 +02:00
 
-sched/topology: Remove SD_SERIALIZE degeneration special case
+sched/topology: Use prebuilt SD flag degeneration mask
 
-If there is only a single NUMA node in the system, the only NUMA topology
-level that will be generated will be NODE (identity distance), which
-doesn't have SD_SERIALIZE.
-
-This means we don't need this special case in sd_parent_degenerate(), as
-having the NODE level "naturally" covers it. Thus, remove it.
+Leverage SD_DEGENERATE_GROUPS_MASK in sd_degenerate() and
+sd_parent_degenerate().
 
 Suggested-by: Peter Zijlstra <peterz@infradead.org>
 Signed-off-by: Valentin Schneider <valentin.schneider@arm.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
 Acked-by: Peter Zijlstra <a.p.zijlstra@chello.nl>
-Link: https://lore.kernel.org/r/20200817113003.20802-10-valentin.schneider@arm.com
+Link: https://lore.kernel.org/r/20200817113003.20802-9-valentin.schneider@arm.com
 ---
- kernel/sched/topology.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ kernel/sched/topology.c | 20 ++++----------------
+ 1 file changed, 4 insertions(+), 16 deletions(-)
 
 diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
-index 38e6671..c662c53 100644
+index cbdaf08..38e6671 100644
 --- a/kernel/sched/topology.c
 +++ b/kernel/sched/topology.c
-@@ -183,11 +183,9 @@ sd_parent_degenerate(struct sched_domain *sd, struct sched_domain *parent)
- 		return 0;
+@@ -160,15 +160,9 @@ static int sd_degenerate(struct sched_domain *sd)
+ 		return 1;
+ 
+ 	/* Following flags need at least 2 groups */
+-	if (sd->flags & (SD_BALANCE_NEWIDLE |
+-			 SD_BALANCE_FORK |
+-			 SD_BALANCE_EXEC |
+-			 SD_SHARE_CPUCAPACITY |
+-			 SD_ASYM_CPUCAPACITY |
+-			 SD_SHARE_PKG_RESOURCES)) {
+-		if (sd->groups != sd->groups->next)
+-			return 0;
+-	}
++	if ((sd->flags & SD_DEGENERATE_GROUPS_MASK) &&
++	    (sd->groups != sd->groups->next))
++		return 0;
+ 
+ 	/* Following flags don't use groups */
+ 	if (sd->flags & (SD_WAKE_AFFINE))
+@@ -190,13 +184,7 @@ sd_parent_degenerate(struct sched_domain *sd, struct sched_domain *parent)
  
  	/* Flags needing groups don't count if only 1 group in parent */
--	if (parent->groups == parent->groups->next) {
-+	if (parent->groups == parent->groups->next)
- 		pflags &= ~(SD_DEGENERATE_GROUPS_MASK | SD_PREFER_SIBLING);
--		if (nr_node_ids == 1)
--			pflags &= ~SD_SERIALIZE;
--	}
-+
- 	if (~cflags & pflags)
- 		return 0;
- 
+ 	if (parent->groups == parent->groups->next) {
+-		pflags &= ~(SD_BALANCE_NEWIDLE |
+-			    SD_BALANCE_FORK |
+-			    SD_BALANCE_EXEC |
+-			    SD_ASYM_CPUCAPACITY |
+-			    SD_SHARE_CPUCAPACITY |
+-			    SD_SHARE_PKG_RESOURCES |
+-			    SD_PREFER_SIBLING);
++		pflags &= ~(SD_DEGENERATE_GROUPS_MASK | SD_PREFER_SIBLING);
+ 		if (nr_node_ids == 1)
+ 			pflags &= ~SD_SERIALIZE;
+ 	}
