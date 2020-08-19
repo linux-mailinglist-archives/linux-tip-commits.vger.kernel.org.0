@@ -2,56 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 692EF24A127
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 19 Aug 2020 16:05:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DF0224A13E
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 19 Aug 2020 16:08:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728626AbgHSOF4 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 19 Aug 2020 10:05:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46156 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728212AbgHSOCt (ORCPT
+        id S1728374AbgHSOFx (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 19 Aug 2020 10:05:53 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:39594 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728192AbgHSOCv (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 19 Aug 2020 10:02:49 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F4E5C061757;
-        Wed, 19 Aug 2020 07:02:50 -0700 (PDT)
-Date:   Wed, 19 Aug 2020 14:02:46 -0000
+        Wed, 19 Aug 2020 10:02:51 -0400
+Date:   Wed, 19 Aug 2020 14:02:47 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1597845767;
+        s=2020; t=1597845768;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=fduUs2llT1q1Xx3qiiobcLkR9jqkNHnZPxzfLXB5oxw=;
-        b=0g7/SVporcjlPY/43UB6iiM7WsMZacKIEkOZB2tRSEsfLhPgpFBYMVmTty94VOsqZEYK0f
-        ny9uPVrolykELmYw+kwTprQMcqr14hgC7Q9ew/ECAUD6VUsE2JATn3SMd4++qVO3b7recQ
-        xkaiwNojVaTPe5P0lbIJXJkuvA/Vj95ZKGxH4cLX9Ru7BDSjXyAx0X1n37esr6Aj6wP/xi
-        rPT0ggQCheRLvvdJLW8hE/o5h/vcjz47nCBmXFlZ8rsCmrfBqAipOxAP5kdu4m/5ZA7mKP
-        vS8mN2xK9gTJVX4mbzYotyeEsjdbsHuqfAsvY4xHrb7sH6eOQeJD+U6qursNRA==
+        bh=gCFQCll81+xGY9kK9qg0Qa9r7fDQY1OnzjtSox0/cOk=;
+        b=nclwdakFL+x97wq5mmsYuzQl1HVKQXJKYizdYrY61V9NGMWQ+080KD8OewU3iQIqH4+rcR
+        kxAOZGU7rwrnjGfqzA2TjtK5CbIGFoKaPhCqSRgyyxjAHCQzodqwWCL6wj4rkWS8W13+/z
+        JmW+sN4tLC0GFWqF7TG0GTVsZAOdVGayu42Shvgome931SoXBUGAsdNj3/I/IDydPtL5Ac
+        Vj//QNXTQ2uiw76C9jmGIJMHr4rN+koT5DNIAq3wA7KbDOCs+IMKpd4AjHfEV9nJV8Wk2C
+        dM0dZE5FrtnTXWTn3pYcLyuNhb78tmRMPcCXYEBeed1kNfhlHIl/lKTEd0ZQ1g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1597845767;
+        s=2020e; t=1597845768;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=fduUs2llT1q1Xx3qiiobcLkR9jqkNHnZPxzfLXB5oxw=;
-        b=Ep91QEHm6JnBtL1sz142ElHWO/aCq/Lr0+5RVHZjOmcaG4hJI0UFhswfzgd/aX2pI1OLKg
-        /NKEz2UQTAQL27Ag==
+        bh=gCFQCll81+xGY9kK9qg0Qa9r7fDQY1OnzjtSox0/cOk=;
+        b=HGXtKA6T3tTNeFze0aTL1G16PDYmzGjY+jK80FkE05bSUNEkJdwJMgKCXDCxN8/umDbKRL
+        pS2+DGFu2dSZoJCA==
 From:   "tip-bot2 for Valentin Schneider" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/topology: Use prebuilt SD flag degeneration mask
+Subject: [tip: sched/core] sched/topology: Introduce SD metaflag for flags
+ needing > 1 groups
 Cc:     Peter Zijlstra <peterz@infradead.org>,
         Valentin Schneider <valentin.schneider@arm.com>,
         Ingo Molnar <mingo@kernel.org>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
         Peter Zijlstra <a.p.zijlstra@chello.nl>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200817113003.20802-9-valentin.schneider@arm.com>
-References: <20200817113003.20802-9-valentin.schneider@arm.com>
+In-Reply-To: <20200817113003.20802-8-valentin.schneider@arm.com>
+References: <20200817113003.20802-8-valentin.schneider@arm.com>
 MIME-Version: 1.0
-Message-ID: <159784576699.3192.17019412360260680450.tip-bot2@tip-bot2>
+Message-ID: <159784576761.3192.1970483124883229508.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -63,62 +62,143 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     6f349818621dff364fc000909135d0065e9756c9
-Gitweb:        https://git.kernel.org/tip/6f349818621dff364fc000909135d0065e9756c9
+Commit-ID:     4ee4ea443a5dc3fc4d8ae338199676eae9d8ef02
+Gitweb:        https://git.kernel.org/tip/4ee4ea443a5dc3fc4d8ae338199676eae9d8ef02
 Author:        Valentin Schneider <valentin.schneider@arm.com>
-AuthorDate:    Mon, 17 Aug 2020 12:29:54 +01:00
+AuthorDate:    Mon, 17 Aug 2020 12:29:53 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Wed, 19 Aug 2020 10:49:48 +02:00
 
-sched/topology: Use prebuilt SD flag degeneration mask
+sched/topology: Introduce SD metaflag for flags needing > 1 groups
 
-Leverage SD_DEGENERATE_GROUPS_MASK in sd_degenerate() and
-sd_parent_degenerate().
+In preparation of cleaning up the sd_degenerate*() functions, mark flags
+used in sd_degenerate() with the new SDF_NEEDS_GROUPS flag. With this,
+build a compile-time mask of those SD flags.
+
+Note that sd_parent_degenerate() uses an extra flag in its mask,
+SD_PREFER_SIBLING, which remains singled out for now.
 
 Suggested-by: Peter Zijlstra <peterz@infradead.org>
 Signed-off-by: Valentin Schneider <valentin.schneider@arm.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
 Acked-by: Peter Zijlstra <a.p.zijlstra@chello.nl>
-Link: https://lore.kernel.org/r/20200817113003.20802-9-valentin.schneider@arm.com
+Link: https://lore.kernel.org/r/20200817113003.20802-8-valentin.schneider@arm.com
 ---
- kernel/sched/topology.c | 20 ++++----------------
- 1 file changed, 4 insertions(+), 16 deletions(-)
+ include/linux/sched/sd_flags.h | 39 +++++++++++++++++++++++----------
+ include/linux/sched/topology.h |  7 ++++++-
+ 2 files changed, 35 insertions(+), 11 deletions(-)
 
-diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
-index cbdaf08..38e6671 100644
---- a/kernel/sched/topology.c
-+++ b/kernel/sched/topology.c
-@@ -160,15 +160,9 @@ static int sd_degenerate(struct sched_domain *sd)
- 		return 1;
+diff --git a/include/linux/sched/sd_flags.h b/include/linux/sched/sd_flags.h
+index c24a45b..ee5cbfc 100644
+--- a/include/linux/sched/sd_flags.h
++++ b/include/linux/sched/sd_flags.h
+@@ -8,7 +8,7 @@
+ #endif
  
- 	/* Following flags need at least 2 groups */
--	if (sd->flags & (SD_BALANCE_NEWIDLE |
--			 SD_BALANCE_FORK |
--			 SD_BALANCE_EXEC |
--			 SD_SHARE_CPUCAPACITY |
--			 SD_ASYM_CPUCAPACITY |
--			 SD_SHARE_PKG_RESOURCES)) {
--		if (sd->groups != sd->groups->next)
--			return 0;
--	}
-+	if ((sd->flags & SD_DEGENERATE_GROUPS_MASK) &&
-+	    (sd->groups != sd->groups->next))
-+		return 0;
+ /*
+- * Expected flag uses
++ * Hierarchical metaflags
+  *
+  * SHARED_CHILD: These flags are meant to be set from the base domain upwards.
+  * If a domain has this flag set, all of its children should have it set. This
+@@ -29,29 +29,42 @@
+  * certain level (e.g. domain starts spanning CPUs outside of the base CPU's
+  * socket).
+  */
+-#define SDF_SHARED_CHILD 0x1
+-#define SDF_SHARED_PARENT 0x2
++#define SDF_SHARED_CHILD       0x1
++#define SDF_SHARED_PARENT      0x2
++
++/*
++ * Behavioural metaflags
++ *
++ * NEEDS_GROUPS: These flags are only relevant if the domain they are set on has
++ * more than one group. This is usually for balancing flags (load balancing
++ * involves equalizing a metric between groups), or for flags describing some
++ * shared resource (which would be shared between groups).
++ */
++#define SDF_NEEDS_GROUPS       0x4
  
- 	/* Following flags don't use groups */
- 	if (sd->flags & (SD_WAKE_AFFINE))
-@@ -190,13 +184,7 @@ sd_parent_degenerate(struct sched_domain *sd, struct sched_domain *parent)
+ /*
+  * Balance when about to become idle
+  *
+  * SHARED_CHILD: Set from the base domain up to cpuset.sched_relax_domain_level.
++ * NEEDS_GROUPS: Load balancing flag.
+  */
+-SD_FLAG(SD_BALANCE_NEWIDLE, SDF_SHARED_CHILD)
++SD_FLAG(SD_BALANCE_NEWIDLE, SDF_SHARED_CHILD | SDF_NEEDS_GROUPS)
  
- 	/* Flags needing groups don't count if only 1 group in parent */
- 	if (parent->groups == parent->groups->next) {
--		pflags &= ~(SD_BALANCE_NEWIDLE |
--			    SD_BALANCE_FORK |
--			    SD_BALANCE_EXEC |
--			    SD_ASYM_CPUCAPACITY |
--			    SD_SHARE_CPUCAPACITY |
--			    SD_SHARE_PKG_RESOURCES |
--			    SD_PREFER_SIBLING);
-+		pflags &= ~(SD_DEGENERATE_GROUPS_MASK | SD_PREFER_SIBLING);
- 		if (nr_node_ids == 1)
- 			pflags &= ~SD_SERIALIZE;
- 	}
+ /*
+  * Balance on exec
+  *
+  * SHARED_CHILD: Set from the base domain up to the NUMA reclaim level.
++ * NEEDS_GROUPS: Load balancing flag.
+  */
+-SD_FLAG(SD_BALANCE_EXEC, SDF_SHARED_CHILD)
++SD_FLAG(SD_BALANCE_EXEC, SDF_SHARED_CHILD | SDF_NEEDS_GROUPS)
+ 
+ /*
+  * Balance on fork, clone
+  *
+  * SHARED_CHILD: Set from the base domain up to the NUMA reclaim level.
++ * NEEDS_GROUPS: Load balancing flag.
+  */
+-SD_FLAG(SD_BALANCE_FORK, SDF_SHARED_CHILD)
++SD_FLAG(SD_BALANCE_FORK, SDF_SHARED_CHILD | SDF_NEEDS_GROUPS)
+ 
+ /*
+  * Balance on wakeup
+@@ -69,24 +82,28 @@ SD_FLAG(SD_WAKE_AFFINE, SDF_SHARED_CHILD)
+ 
+ /*
+  * Domain members have different CPU capacities
++ *
++ * NEEDS_GROUPS: Per-CPU capacity is asymmetric between groups.
+  */
+-SD_FLAG(SD_ASYM_CPUCAPACITY, 0)
++SD_FLAG(SD_ASYM_CPUCAPACITY, SDF_NEEDS_GROUPS)
+ 
+ /*
+  * Domain members share CPU capacity (i.e. SMT)
+  *
+  * SHARED_CHILD: Set from the base domain up until spanned CPUs no longer share
+- * CPU capacity.
++ *               CPU capacity.
++ * NEEDS_GROUPS: Capacity is shared between groups.
+  */
+-SD_FLAG(SD_SHARE_CPUCAPACITY, SDF_SHARED_CHILD)
++SD_FLAG(SD_SHARE_CPUCAPACITY, SDF_SHARED_CHILD | SDF_NEEDS_GROUPS)
+ 
+ /*
+  * Domain members share CPU package resources (i.e. caches)
+  *
+  * SHARED_CHILD: Set from the base domain up until spanned CPUs no longer share
+- * the same cache(s).
++ *               the same cache(s).
++ * NEEDS_GROUPS: Caches are shared between groups.
+  */
+-SD_FLAG(SD_SHARE_PKG_RESOURCES, SDF_SHARED_CHILD)
++SD_FLAG(SD_SHARE_PKG_RESOURCES, SDF_SHARED_CHILD | SDF_NEEDS_GROUPS)
+ 
+ /*
+  * Only a single load balancing instance
+diff --git a/include/linux/sched/topology.h b/include/linux/sched/topology.h
+index 32f602f..2d59ca7 100644
+--- a/include/linux/sched/topology.h
++++ b/include/linux/sched/topology.h
+@@ -25,6 +25,13 @@ enum {
+ };
+ #undef SD_FLAG
+ 
++/* Generate a mask of SD flags with the SDF_NEEDS_GROUPS metaflag */
++#define SD_FLAG(name, mflags) (name * !!((mflags) & SDF_NEEDS_GROUPS)) |
++static const unsigned int SD_DEGENERATE_GROUPS_MASK =
++#include <linux/sched/sd_flags.h>
++0;
++#undef SD_FLAG
++
+ #ifdef CONFIG_SCHED_DEBUG
+ #define SD_FLAG(_name, mflags) [__##_name] = { .meta_flags = mflags, .name = #_name },
+ static const struct {
