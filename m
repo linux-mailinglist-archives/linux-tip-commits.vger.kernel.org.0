@@ -2,53 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B9B3249DF3
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 19 Aug 2020 14:33:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D4CF1249E10
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 19 Aug 2020 14:36:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728236AbgHSMdi (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 19 Aug 2020 08:33:38 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:39014 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728022AbgHSMdO (ORCPT
+        id S1728305AbgHSMei (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 19 Aug 2020 08:34:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60336 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728218AbgHSMdU (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 19 Aug 2020 08:33:14 -0400
-Date:   Wed, 19 Aug 2020 12:33:09 -0000
+        Wed, 19 Aug 2020 08:33:20 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78AF0C061342;
+        Wed, 19 Aug 2020 05:33:19 -0700 (PDT)
+Date:   Wed, 19 Aug 2020 12:33:10 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1597840390;
+        s=2020; t=1597840391;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=3u3kLp4sAK5g6kqOKqttRQub8cj8+jsysGqclBHbZ14=;
-        b=oEydEtGuJ+4hmvtngmlwjmoqrdrkgHUZLrMzdGA20lOcYv56NcN/mwieSZVMkTT7ub7ZJ0
-        KBgGkwcBCQAyP3jiAO/CaWS+Jet0gXJ2iRoRQ7Yl7E/J75sqkbalkNj7Mn7hvwJVvcA1FT
-        ekKryLS790nWWO9AzM5qsX6UB8VHb7MuYY9be2D8SiwAcklRVI3Om9do5+JAI6zpjdQwWI
-        bPvmSAo1uXKcgcyHv9ldC0/mds04dnrAY3VREh9oyAfwx33nxi2hbr5ALQcyPdA9jNWWNO
-        LjqW69CtJ/EHprqGWVutMrYW7VjX+gUuBLzNnFGTcKRAVk6qk/GLquQDhU5New==
+        bh=T9fPHyYxK2WJXfENDHSTUTGjWlR73RDUiFY+SA8qYu8=;
+        b=LSG+aO4hozDo7IIGk1j2XBfPrntsWAfZp18ORi52xU4mz3+MeqiyVld8rI4rSM/k26FUqu
+        HA/iQt2TH3sXtWumyclzMmfR3meJEEeY5sXQrqT5XkUqMsbrXYe1D1TDUZnUgSAOVA3f1H
+        4vsVTeaOkIQS2CZrgjb8EUsCGMJEO408jMCSrwsTK7FLb3tkNVgnenBXYZpG2cJF6IB0YV
+        2NKzbeOxZq8FGdc7WCaIBYQ/lD1xJ5lg38K64ZbZYjXJaBz6BZFVnZzNUeTCaspoSFDOXS
+        4H+2srLg/3ENf0MpN5T83sYHjoJC2wDsEI0b+YJ6JjLjzE2PsflHC03Ny6csFw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1597840390;
+        s=2020e; t=1597840391;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=3u3kLp4sAK5g6kqOKqttRQub8cj8+jsysGqclBHbZ14=;
-        b=fDlGQij27xnrzZgpeSXFMJRMLUdUK8SEPFKKxj4KDstIgBfrKQKofuDfP62IPKwCWq38G1
-        x/Vin/3yVNs/jqCA==
+        bh=T9fPHyYxK2WJXfENDHSTUTGjWlR73RDUiFY+SA8qYu8=;
+        b=Jw82X8mN4hHVqJjCbV124GUHYXRHdAfURd21lgsE7ZW9lylhhrvM03egY80AKMdJl8oLxb
+        2DRm1LIauvcSc7AQ==
 From:   "tip-bot2 for James Morse" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cache] x86/resctrl: Add struct rdt_membw::arch_needs_linear
- to explain AMD/Intel MBA difference
+Subject: [tip: x86/cache] x86/resctrl: Use is_closid_match() in more places
 Cc:     James Morse <james.morse@arm.com>, Borislav Petkov <bp@suse.de>,
         Reinette Chatre <reinette.chatre@intel.com>,
-        Babu Moger <babu.moger@amd.com>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200708163929.2783-8-james.morse@arm.com>
-References: <20200708163929.2783-8-james.morse@arm.com>
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200708163929.2783-7-james.morse@arm.com>
+References: <20200708163929.2783-7-james.morse@arm.com>
 MIME-Version: 1.0
-Message-ID: <159784038975.3192.16283518251900554647.tip-bot2@tip-bot2>
+Message-ID: <159784039041.3192.5381309474151543574.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,119 +61,91 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/cache branch of tip:
 
-Commit-ID:     41215b7947f1b1b86fd77a7bebd2320599aea7bd
-Gitweb:        https://git.kernel.org/tip/41215b7947f1b1b86fd77a7bebd2320599aea7bd
+Commit-ID:     e6b2fac36fcc0b73cbef063d700a9841850e37a0
+Gitweb:        https://git.kernel.org/tip/e6b2fac36fcc0b73cbef063d700a9841850e37a0
 Author:        James Morse <james.morse@arm.com>
-AuthorDate:    Wed, 08 Jul 2020 16:39:26 
+AuthorDate:    Wed, 08 Jul 2020 16:39:25 
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Wed, 19 Aug 2020 09:34:51 +02:00
+CommitterDate: Wed, 19 Aug 2020 09:08:36 +02:00
 
-x86/resctrl: Add struct rdt_membw::arch_needs_linear to explain AMD/Intel MBA difference
+x86/resctrl: Use is_closid_match() in more places
 
-The configuration values user-space provides to the resctrl filesystem
-are ABI. To make this work on another architecture, all the ABI bits
-should be moved out of /arch/x86 and under /fs.
+rdtgroup_tasks_assigned() and show_rdt_tasks() loop over threads testing
+for a CTRL/MON group match by closid/rmid with the provided rdtgrp.
+Further down the file are helpers to do this, move these further up and
+make use of them here.
 
-To do this, the differences between AMD and Intel CPUs needs to be
-explained to resctrl via resource properties, instead of function
-pointers that let the arch code accept subtly different values on
-different platforms/architectures.
-
-For MBA, Intel CPUs reject configuration attempts for non-linear
-resources, whereas AMD ignore this field as its MBA resource is never
-linear. To merge the parse/validate functions, this difference needs to
-be explained.
-
-Add struct rdt_membw::arch_needs_linear to indicate the arch code needs
-the linear property to be true to configure this resource. AMD can set
-this and delay_linear to false. Intel can set arch_needs_linear to
-true to keep the existing "No support for non-linear MB domains" error
-message for affected platforms.
-
- [ bp: convert "we" etc to passive voice. ]
+These helpers additionally check for alloc/mon capable. This is harmless
+as rdtgroup_mkdir() tests these capable flags before allowing the config
+directories to be created.
 
 Signed-off-by: James Morse <james.morse@arm.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
 Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
-Reviewed-by: Babu Moger <babu.moger@amd.com>
-Link: https://lkml.kernel.org/r/20200708163929.2783-8-james.morse@arm.com
+Link: https://lkml.kernel.org/r/20200708163929.2783-7-james.morse@arm.com
 ---
- arch/x86/kernel/cpu/resctrl/core.c        | 3 +++
- arch/x86/kernel/cpu/resctrl/ctrlmondata.c | 8 +++++++-
- arch/x86/kernel/cpu/resctrl/internal.h    | 2 ++
- 3 files changed, 12 insertions(+), 1 deletion(-)
+ arch/x86/kernel/cpu/resctrl/rdtgroup.c | 30 +++++++++++--------------
+ 1 file changed, 14 insertions(+), 16 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/resctrl/core.c b/arch/x86/kernel/cpu/resctrl/core.c
-index 9225ee5..52b8991 100644
---- a/arch/x86/kernel/cpu/resctrl/core.c
-+++ b/arch/x86/kernel/cpu/resctrl/core.c
-@@ -260,6 +260,7 @@ static bool __get_mem_config_intel(struct rdt_resource *r)
- 	r->num_closid = edx.split.cos_max + 1;
- 	max_delay = eax.split.max_delay + 1;
- 	r->default_ctrl = MAX_MBA_BW;
-+	r->membw.arch_needs_linear = true;
- 	if (ecx & MBA_IS_LINEAR) {
- 		r->membw.delay_linear = true;
- 		r->membw.min_bw = MAX_MBA_BW - max_delay;
-@@ -267,6 +268,7 @@ static bool __get_mem_config_intel(struct rdt_resource *r)
- 	} else {
- 		if (!rdt_get_mb_table(r))
- 			return false;
-+		r->membw.arch_needs_linear = false;
- 	}
- 	r->data_width = 3;
+diff --git a/arch/x86/kernel/cpu/resctrl/rdtgroup.c b/arch/x86/kernel/cpu/resctrl/rdtgroup.c
+index b044617..78f3be1 100644
+--- a/arch/x86/kernel/cpu/resctrl/rdtgroup.c
++++ b/arch/x86/kernel/cpu/resctrl/rdtgroup.c
+@@ -592,6 +592,18 @@ static int __rdtgroup_move_task(struct task_struct *tsk,
+ 	return ret;
+ }
  
-@@ -288,6 +290,7 @@ static bool __rdt_get_mem_config_amd(struct rdt_resource *r)
- 
- 	/* AMD does not use delay */
- 	r->membw.delay_linear = false;
-+	r->membw.arch_needs_linear = false;
- 
- 	r->membw.min_bw = 0;
- 	r->membw.bw_gran = 1;
-diff --git a/arch/x86/kernel/cpu/resctrl/ctrlmondata.c b/arch/x86/kernel/cpu/resctrl/ctrlmondata.c
-index 934c8fb..e3bcd77 100644
---- a/arch/x86/kernel/cpu/resctrl/ctrlmondata.c
-+++ b/arch/x86/kernel/cpu/resctrl/ctrlmondata.c
-@@ -33,6 +33,12 @@ static bool bw_validate_amd(char *buf, unsigned long *data,
- 	unsigned long bw;
- 	int ret;
- 
-+	/* temporary: always false on AMD */
-+	if (!r->membw.delay_linear && r->membw.arch_needs_linear) {
-+		rdt_last_cmd_puts("No support for non-linear MB domains\n");
-+		return false;
-+	}
++static bool is_closid_match(struct task_struct *t, struct rdtgroup *r)
++{
++	return (rdt_alloc_capable &&
++	       (r->type == RDTCTRL_GROUP) && (t->closid == r->closid));
++}
 +
- 	ret = kstrtoul(buf, 10, &bw);
- 	if (ret) {
- 		rdt_last_cmd_printf("Non-decimal digit in MB value %s\n", buf);
-@@ -82,7 +88,7 @@ static bool bw_validate(char *buf, unsigned long *data, struct rdt_resource *r)
- 	/*
- 	 * Only linear delay values is supported for current Intel SKUs.
- 	 */
--	if (!r->membw.delay_linear) {
-+	if (!r->membw.delay_linear && r->membw.arch_needs_linear) {
- 		rdt_last_cmd_puts("No support for non-linear MB domains\n");
- 		return false;
++static bool is_rmid_match(struct task_struct *t, struct rdtgroup *r)
++{
++	return (rdt_mon_capable &&
++	       (r->type == RDTMON_GROUP) && (t->rmid == r->mon.rmid));
++}
++
+ /**
+  * rdtgroup_tasks_assigned - Test if tasks have been assigned to resource group
+  * @r: Resource group
+@@ -607,8 +619,7 @@ int rdtgroup_tasks_assigned(struct rdtgroup *r)
+ 
+ 	rcu_read_lock();
+ 	for_each_process_thread(p, t) {
+-		if ((r->type == RDTCTRL_GROUP && t->closid == r->closid) ||
+-		    (r->type == RDTMON_GROUP && t->rmid == r->mon.rmid)) {
++		if (is_closid_match(t, r) || is_rmid_match(t, r)) {
+ 			ret = 1;
+ 			break;
+ 		}
+@@ -706,8 +717,7 @@ static void show_rdt_tasks(struct rdtgroup *r, struct seq_file *s)
+ 
+ 	rcu_read_lock();
+ 	for_each_process_thread(p, t) {
+-		if ((r->type == RDTCTRL_GROUP && t->closid == r->closid) ||
+-		    (r->type == RDTMON_GROUP && t->rmid == r->mon.rmid))
++		if (is_closid_match(t, r) || is_rmid_match(t, r))
+ 			seq_printf(s, "%d\n", t->pid);
  	}
-diff --git a/arch/x86/kernel/cpu/resctrl/internal.h b/arch/x86/kernel/cpu/resctrl/internal.h
-index 1eb39bd..7b00723 100644
---- a/arch/x86/kernel/cpu/resctrl/internal.h
-+++ b/arch/x86/kernel/cpu/resctrl/internal.h
-@@ -372,6 +372,7 @@ struct rdt_cache {
-  * @min_bw:		Minimum memory bandwidth percentage user can request
-  * @bw_gran:		Granularity at which the memory bandwidth is allocated
-  * @delay_linear:	True if memory B/W delay is in linear scale
-+ * @arch_needs_linear:	True if we can't configure non-linear resources
-  * @mba_sc:		True if MBA software controller(mba_sc) is enabled
-  * @mb_map:		Mapping of memory B/W percentage to memory B/W delay
-  */
-@@ -379,6 +380,7 @@ struct rdt_membw {
- 	u32		min_bw;
- 	u32		bw_gran;
- 	u32		delay_linear;
-+	bool		arch_needs_linear;
- 	bool		mba_sc;
- 	u32		*mb_map;
- };
+ 	rcu_read_unlock();
+@@ -2245,18 +2255,6 @@ static int reset_all_ctrls(struct rdt_resource *r)
+ 	return 0;
+ }
+ 
+-static bool is_closid_match(struct task_struct *t, struct rdtgroup *r)
+-{
+-	return (rdt_alloc_capable &&
+-		(r->type == RDTCTRL_GROUP) && (t->closid == r->closid));
+-}
+-
+-static bool is_rmid_match(struct task_struct *t, struct rdtgroup *r)
+-{
+-	return (rdt_mon_capable &&
+-		(r->type == RDTMON_GROUP) && (t->rmid == r->mon.rmid));
+-}
+-
+ /*
+  * Move tasks from one to the other group. If @from is NULL, then all tasks
+  * in the systems are moved unconditionally (used for teardown).
