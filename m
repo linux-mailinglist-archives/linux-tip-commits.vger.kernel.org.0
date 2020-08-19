@@ -2,17 +2,20 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BEF78249E12
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 19 Aug 2020 14:36:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD8EA249DFA
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 19 Aug 2020 14:33:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728393AbgHSMek (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 19 Aug 2020 08:34:40 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:39072 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728147AbgHSMdT (ORCPT
+        id S1728282AbgHSMdr (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 19 Aug 2020 08:33:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60340 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728226AbgHSMdU (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 19 Aug 2020 08:33:19 -0400
-Date:   Wed, 19 Aug 2020 12:33:12 -0000
+        Wed, 19 Aug 2020 08:33:20 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 842C1C061344;
+        Wed, 19 Aug 2020 05:33:19 -0700 (PDT)
+Date:   Wed, 19 Aug 2020 12:33:13 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1597840393;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -20,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=qnBhuarp0jMz9NnCOKW9rf6t+I1ZpLqevmTEs+xmh1M=;
-        b=be2lYuaBSFv31Elw9d2QOudtY6LeF7jTMNNBO+d+w0oz9wboppLqaxCiUUbKfdHy1zFYE1
-        Usc4cKQNsVRGAfoZ69o6Rlum11N0xloQYFFOSV30rzf/Xq945Z5SF29qbomjAQuCbvxh7P
-        UivmsU7JmX7eCd7JGz+kfeZDZbd/j52bMAiS8sB4Qg/nt2UUQqh2Q4DAjJap1W1J1M0cXV
-        nD0kJ8cUUv1oNtapAtPm7jDdHRPr2noxJ7nU8k1Srk2BND97hM15WIzj8zlPSx8uaEusHO
-        TNuM7Bbfk392mZG3AMw37LfMrQcHFaFbGpuksi5+c/KiaLhgUuQc8DeAwYfy2g==
+        bh=dtoTID8EnlXgOhbcaoVmq0CgWHupHYcnvxqbDb720g4=;
+        b=gs/QVnsjnkfn2HLabVtp4HWqUjI02BuJa12/n5oB6jzrn1rUyP7LXd5CUavkH2EnbX3OuN
+        dZYAuCGoSIUyW3us/5Edy1ypwB+UQxPPIq9Jt2ZWehdlHHpgppogRADPT2+pnd9iS1aNC4
+        WMI3G7jWRxOob89GmjUONtOnicQkLtkCPIEkrESkvnEstqDd7U0D3XNPZBWhTeDaa4pC+R
+        kmicSAaX7qDo7jAa7UVSDN4jcpzQZ8cgswPD60YejNSYmXBszoLJ6jE5ag5RTASt3AcIr9
+        qdPN86WlfRwYFcesu8ECY+/SBwISx+OL0830VIytHUJDR09cx/7Q+eqwWVD6hQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1597840393;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -33,20 +36,20 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=qnBhuarp0jMz9NnCOKW9rf6t+I1ZpLqevmTEs+xmh1M=;
-        b=hLc6AXKA0BvZiEreDlaT9ajUWlx7/QIP3yKPvQ4t8xIIVRMBVTf4Za/YWNyrAxgV0R++ot
-        rofV69rKqFpWaoBg==
+        bh=dtoTID8EnlXgOhbcaoVmq0CgWHupHYcnvxqbDb720g4=;
+        b=kz9wYDXyU/JdGS+3Bw2a4ar/QvqGNAd+Cum2BRZGFu8ZMI/svWV6QVJRarXgvJI0/LS1hO
+        1in8mOBZ8ZYqXwAw==
 From:   "tip-bot2 for James Morse" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cache] x86/resctrl: Fix stale comment
+Subject: [tip: x86/cache] x86/resctrl: Remove struct rdt_membw::max_delay
 Cc:     James Morse <james.morse@arm.com>, Borislav Petkov <bp@suse.de>,
         Reinette Chatre <reinette.chatre@intel.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200708163929.2783-4-james.morse@arm.com>
-References: <20200708163929.2783-4-james.morse@arm.com>
+In-Reply-To: <20200708163929.2783-3-james.morse@arm.com>
+References: <20200708163929.2783-3-james.morse@arm.com>
 MIME-Version: 1.0
-Message-ID: <159784039239.3192.17068659462211591340.tip-bot2@tip-bot2>
+Message-ID: <159784039302.3192.3471663986483240927.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,37 +61,70 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/cache branch of tip:
 
-Commit-ID:     ae0fbedd2a18cd82a2c0c5605a0a60865bc54576
-Gitweb:        https://git.kernel.org/tip/ae0fbedd2a18cd82a2c0c5605a0a60865bc54576
+Commit-ID:     e89f85b9171665c917dca59920884f3d4fe0b1ef
+Gitweb:        https://git.kernel.org/tip/e89f85b9171665c917dca59920884f3d4fe0b1ef
 Author:        James Morse <james.morse@arm.com>
-AuthorDate:    Wed, 08 Jul 2020 16:39:22 
+AuthorDate:    Wed, 08 Jul 2020 16:39:21 
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 18 Aug 2020 17:02:24 +02:00
+CommitterDate: Tue, 18 Aug 2020 17:01:23 +02:00
 
-x86/resctrl: Fix stale comment
+x86/resctrl: Remove struct rdt_membw::max_delay
 
-The comment in rdtgroup_init() refers to the non existent function
-rdt_mount(), which has now been renamed rdt_get_tree(). Fix the
-comment.
+max_delay is used by x86's __get_mem_config_intel() as a local variable.
+Remove it, replacing it with a local variable.
 
 Signed-off-by: James Morse <james.morse@arm.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
 Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
-Link: https://lkml.kernel.org/r/20200708163929.2783-4-james.morse@arm.com
+Link: https://lkml.kernel.org/r/20200708163929.2783-3-james.morse@arm.com
 ---
- arch/x86/kernel/cpu/resctrl/rdtgroup.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/cpu/resctrl/core.c     | 8 ++++----
+ arch/x86/kernel/cpu/resctrl/internal.h | 3 ---
+ 2 files changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/resctrl/rdtgroup.c b/arch/x86/kernel/cpu/resctrl/rdtgroup.c
-index 3f844f1..b044617 100644
---- a/arch/x86/kernel/cpu/resctrl/rdtgroup.c
-+++ b/arch/x86/kernel/cpu/resctrl/rdtgroup.c
-@@ -3196,7 +3196,7 @@ int __init rdtgroup_init(void)
- 	 * It may also be ok since that would enable debugging of RDT before
- 	 * resctrl is mounted.
- 	 * The reason why the debugfs directory is created here and not in
--	 * rdt_mount() is because rdt_mount() takes rdtgroup_mutex and
-+	 * rdt_get_tree() is because rdt_get_tree() takes rdtgroup_mutex and
- 	 * during the debugfs directory creation also &sb->s_type->i_mutex_key
- 	 * (the lockdep class of inode->i_rwsem). Other filesystem
- 	 * interactions (eg. SyS_getdents) have the lock ordering:
+diff --git a/arch/x86/kernel/cpu/resctrl/core.c b/arch/x86/kernel/cpu/resctrl/core.c
+index 6a9df71..9225ee5 100644
+--- a/arch/x86/kernel/cpu/resctrl/core.c
++++ b/arch/x86/kernel/cpu/resctrl/core.c
+@@ -254,16 +254,16 @@ static bool __get_mem_config_intel(struct rdt_resource *r)
+ {
+ 	union cpuid_0x10_3_eax eax;
+ 	union cpuid_0x10_x_edx edx;
+-	u32 ebx, ecx;
++	u32 ebx, ecx, max_delay;
+ 
+ 	cpuid_count(0x00000010, 3, &eax.full, &ebx, &ecx, &edx.full);
+ 	r->num_closid = edx.split.cos_max + 1;
+-	r->membw.max_delay = eax.split.max_delay + 1;
++	max_delay = eax.split.max_delay + 1;
+ 	r->default_ctrl = MAX_MBA_BW;
+ 	if (ecx & MBA_IS_LINEAR) {
+ 		r->membw.delay_linear = true;
+-		r->membw.min_bw = MAX_MBA_BW - r->membw.max_delay;
+-		r->membw.bw_gran = MAX_MBA_BW - r->membw.max_delay;
++		r->membw.min_bw = MAX_MBA_BW - max_delay;
++		r->membw.bw_gran = MAX_MBA_BW - max_delay;
+ 	} else {
+ 		if (!rdt_get_mb_table(r))
+ 			return false;
+diff --git a/arch/x86/kernel/cpu/resctrl/internal.h b/arch/x86/kernel/cpu/resctrl/internal.h
+index 72bb210..1eb39bd 100644
+--- a/arch/x86/kernel/cpu/resctrl/internal.h
++++ b/arch/x86/kernel/cpu/resctrl/internal.h
+@@ -369,8 +369,6 @@ struct rdt_cache {
+ 
+ /**
+  * struct rdt_membw - Memory bandwidth allocation related data
+- * @max_delay:		Max throttle delay. Delay is the hardware
+- *			representation for memory bandwidth.
+  * @min_bw:		Minimum memory bandwidth percentage user can request
+  * @bw_gran:		Granularity at which the memory bandwidth is allocated
+  * @delay_linear:	True if memory B/W delay is in linear scale
+@@ -378,7 +376,6 @@ struct rdt_cache {
+  * @mb_map:		Mapping of memory B/W percentage to memory B/W delay
+  */
+ struct rdt_membw {
+-	u32		max_delay;
+ 	u32		min_bw;
+ 	u32		bw_gran;
+ 	u32		delay_linear;
