@@ -2,165 +2,129 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 500B724920E
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 19 Aug 2020 02:58:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6BDF12497CA
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 19 Aug 2020 09:55:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726367AbgHSA6a (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 18 Aug 2020 20:58:30 -0400
-Received: from mga09.intel.com ([134.134.136.24]:24920 "EHLO mga09.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725554AbgHSA63 (ORCPT
+        id S1726342AbgHSHzm (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 19 Aug 2020 03:55:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45774 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726211AbgHSHzl (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 18 Aug 2020 20:58:29 -0400
-IronPort-SDR: zL93azRjQxXWuHMBXudIO16Tgu6ukyIDDoTT53Y6BEtcwagTA/dKwfPeFqPC2h0qeGLitp//mg
- qCAfQub8XRXA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9717"; a="156100347"
-X-IronPort-AV: E=Sophos;i="5.76,329,1592895600"; 
-   d="scan'208";a="156100347"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2020 17:58:28 -0700
-IronPort-SDR: wlO/uBnVpHem/P2UcCaELNv/WywFQxBYmZh7Hi8juyQVPQKnNcOUubfirWTqWZWpNXyW6Vbzv9
- /SqTKGvo7F2w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.76,329,1592895600"; 
-   d="scan'208";a="320290486"
-Received: from ranerica-svr.sc.intel.com ([172.25.110.23])
-  by fmsmga004.fm.intel.com with ESMTP; 18 Aug 2020 17:58:28 -0700
-Date:   Tue, 18 Aug 2020 18:00:19 -0700
-From:   Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-To:     Ingo Molnar <mingo@kernel.org>
+        Wed, 19 Aug 2020 03:55:41 -0400
+Received: from mail-ej1-x642.google.com (mail-ej1-x642.google.com [IPv6:2a00:1450:4864:20::642])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47E9FC061389;
+        Wed, 19 Aug 2020 00:55:41 -0700 (PDT)
+Received: by mail-ej1-x642.google.com with SMTP id g19so25144072ejc.9;
+        Wed, 19 Aug 2020 00:55:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=wg9MrSyy6obfy6oGrt6RtQrj1lX25v4GJApVBQKEDg0=;
+        b=FEh5nj5vUybDsbLbZwuomz5/3Sg/csU/fpmYlySqDFYepTFGqt4ifw4axEV9Jo9msh
+         tTGzfS17FifS23Yi4Lj3diBTuOKdeWfvRm7OH92fYTq78n8crItm7di1y26eNW3xflyi
+         ZyW6mqgdjSQh4w9B3tLVtur2Kh54zpvoaViAs3Y9HtHIeJw/LpCZD27pIsJXDwMcIMaM
+         KZvBY4FjSqWjCvoh3YlHI6JI22FIIco1JQj3W6L4OjmbCEm6uSpQ26Q4F9iIF3ZJM10N
+         mc8v6MIkCh19CRK1/tALllkCKbB03A+abqUXkM4aD8M8uAeBMBgNhs4pXJ0MYqrAFwNO
+         OExw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to;
+        bh=wg9MrSyy6obfy6oGrt6RtQrj1lX25v4GJApVBQKEDg0=;
+        b=gXsuva93e6hLBYoSKSmiCrFfxkpiAjyeOHXEcpH0YywPo+zgZfWHwwj+LiRFvQfGTn
+         RASDEKqC8jf5wUjSRcjqhTgHI4H2QhOsEh1cZaTuN5WSH00t2h5Jv9RC4IYsmaaKg07T
+         7smkd/PWVUJrqdlLiOhngAmXZkFsWWhkKOXOOmNxDOT3sTINCmOTCXyfj+exk2e+er7R
+         l7aYScIG59CrhlN7U6TzreBxOn1Smdzk5C4YipXF7P3taSB5xcsSczMurEyIqxyw9/jF
+         Se+iav4hKRhsM3zUF3ZgNtCr09UgDvChGcSzy7dZCwcw8yf95y9TohHEE6VMMKEAHFkS
+         qyow==
+X-Gm-Message-State: AOAM530EkJiGMUrdUpSzJdwKadw8NHnv1xDlcFuvvrUFJ1/0AREc/QNI
+        dk+bFhk/nOwW7kwP2To/MZg=
+X-Google-Smtp-Source: ABdhPJwUq3oBGOAOblaj/Y2HArL7xs6/VYy52/5rZX7VXUYFjqr4CTKsPweIBoy96OSgP4UC/r1UDw==
+X-Received: by 2002:a17:906:260c:: with SMTP id h12mr25237852ejc.457.1597823739987;
+        Wed, 19 Aug 2020 00:55:39 -0700 (PDT)
+Received: from gmail.com (54033286.catv.pool.telekom.hu. [84.3.50.134])
+        by smtp.gmail.com with ESMTPSA id m13sm17450359edi.89.2020.08.19.00.55.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Aug 2020 00:55:39 -0700 (PDT)
+Date:   Wed, 19 Aug 2020 09:55:37 +0200
+From:   Ingo Molnar <mingo@kernel.org>
+To:     Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
 Cc:     linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
         Andy Lutomirski <luto@kernel.org>,
         Borislav Petkov <bp@suse.de>, Tony Luck <tony.luck@intel.com>,
         x86 <x86@kernel.org>
 Subject: Re: [PATCH] x86/cpu: Fix typos and improve the comments in
  sync_core()
-Message-ID: <20200819010019.GA7074@ranerica-svr.sc.intel.com>
+Message-ID: <20200819075537.GA3188399@gmail.com>
 References: <20200807032833.17484-1-ricardo.neri-calderon@linux.intel.com>
  <159767927411.3192.1923111080573965673.tip-bot2@tip-bot2>
  <20200818053130.GA3161093@gmail.com>
+ <20200819010019.GA7074@ranerica-svr.sc.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200818053130.GA3161093@gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <20200819010019.GA7074@ranerica-svr.sc.intel.com>
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Tue, Aug 18, 2020 at 07:31:30AM +0200, Ingo Molnar wrote:
-> 
-> * tip-bot2 for Ricardo Neri <tip-bot2@linutronix.de> wrote:
-> 
-> > --- a/arch/x86/include/asm/sync_core.h
-> > +++ b/arch/x86/include/asm/sync_core.h
-> > @@ -5,6 +5,7 @@
-> >  #include <linux/preempt.h>
-> >  #include <asm/processor.h>
-> >  #include <asm/cpufeature.h>
-> > +#include <asm/special_insns.h>
-> >  
-> >  #ifdef CONFIG_X86_32
-> >  static inline void iret_to_self(void)
-> > @@ -54,14 +55,23 @@ static inline void iret_to_self(void)
+
+* Ricardo Neri <ricardo.neri-calderon@linux.intel.com> wrote:
+
+> > @@ -47,16 +47,19 @@ static inline void iret_to_self(void)
+> >   *
+> >   *  b) Text was modified on a different CPU, may subsequently be
+> >   *     executed on this CPU, and you want to make sure the new version
+> > - *     gets executed.  This generally means you're calling this in a IPI.
+> > + *     gets executed.  This generally means you're calling this in an IPI.
+> >   *
+> >   * If you're calling this for a different reason, you're probably doing
+> >   * it wrong.
+> > + *
+> > + * Like all of Linux's memory ordering operations, this is a
+> > + * compiler barrier as well.
+> >   */
 > >  static inline void sync_core(void)
 > >  {
 > >  	/*
-> > +	 * The SERIALIZE instruction is the most straightforward way to
-> > +	 * do this but it not universally available.
-> > +	 */
-> > +	if (static_cpu_has(X86_FEATURE_SERIALIZE)) {
-> > +		serialize();
-> > +		return;
-> > +	}
-> > +
-> > +	/*
-> > +	 * For all other processors, there are quite a few ways to do this.
-> > +	 * IRET-to-self is nice because it works on every CPU, at any CPL
-> > +	 * (so it's compatible with paravirtualization), and it never exits
-> > +	 * to a hypervisor. The only down sides are that it's a bit slow
-> > +	 * (it seems to be a bit more than 2x slower than the fastest
-> > +	 * options) and that it unmasks NMIs.  The "push %cs" is needed
-> > +	 * because, in paravirtual environments, __KERNEL_CS may not be a
-> > +	 * valid CS value when we do IRET directly.
+> >  	 * The SERIALIZE instruction is the most straightforward way to
+> > -	 * do this but it not universally available.
+> > +	 * do this, but it is not universally available.
 > 
-> So there's two typos in the new comments, there are at least two 
-> misapplied commas, it departs from existing style, and there's a typo 
-> in the existing comments as well.
+> Indeed, I missed this grammar error.
 > 
-> Also, before this patch the 'compiler barrier' comment was valid for 
-> the whole function (there was no branching), but after this patch it 
-> reads of it was only valid for the legacy IRET-to-self branch.
-> 
-> Which together broke my detector and triggered a bit of compulsive 
-> bike-shed painting. ;-) See the resulting patch below.
-> 
-> Thanks,
-> 
-> 	Ingo
-> 
-> ================>
-> From: Ingo Molnar <mingo@kernel.org>
-> Date: Tue, 18 Aug 2020 07:24:05 +0200
-> Subject: [PATCH] x86/cpu: Fix typos and improve the comments in sync_core()
-> 
-> - Fix typos.
-> 
-> - Move the compiler barrier comment to the top, because it's valid for the
->   whole function, not just the legacy branch.
-> 
-> Signed-off-by: Ingo Molnar <mingo@kernel.org>
-> ---
->  arch/x86/include/asm/sync_core.h | 16 ++++++++--------
->  1 file changed, 8 insertions(+), 8 deletions(-)
-> 
-> diff --git a/arch/x86/include/asm/sync_core.h b/arch/x86/include/asm/sync_core.h
-> index 4631c0f969d4..0fd4a9dfb29c 100644
-> --- a/arch/x86/include/asm/sync_core.h
-> +++ b/arch/x86/include/asm/sync_core.h
-> @@ -47,16 +47,19 @@ static inline void iret_to_self(void)
->   *
->   *  b) Text was modified on a different CPU, may subsequently be
->   *     executed on this CPU, and you want to make sure the new version
-> - *     gets executed.  This generally means you're calling this in a IPI.
-> + *     gets executed.  This generally means you're calling this in an IPI.
->   *
->   * If you're calling this for a different reason, you're probably doing
->   * it wrong.
-> + *
-> + * Like all of Linux's memory ordering operations, this is a
-> + * compiler barrier as well.
->   */
->  static inline void sync_core(void)
->  {
->  	/*
->  	 * The SERIALIZE instruction is the most straightforward way to
-> -	 * do this but it not universally available.
-> +	 * do this, but it is not universally available.
+> >  	 */
+> >  	if (static_cpu_has(X86_FEATURE_SERIALIZE)) {
+> >  		serialize();
+> > @@ -67,10 +70,10 @@ static inline void sync_core(void)
+> >  	 * For all other processors, there are quite a few ways to do this.
+> >  	 * IRET-to-self is nice because it works on every CPU, at any CPL
+> >  	 * (so it's compatible with paravirtualization), and it never exits
+> > -	 * to a hypervisor. The only down sides are that it's a bit slow
+> > +	 * to a hypervisor.  The only downsides are that it's a bit slow
 
-Indeed, I missed this grammar error.
+And this one - it's "downsides" not "down sides".
 
->  	 */
->  	if (static_cpu_has(X86_FEATURE_SERIALIZE)) {
->  		serialize();
-> @@ -67,10 +70,10 @@ static inline void sync_core(void)
->  	 * For all other processors, there are quite a few ways to do this.
->  	 * IRET-to-self is nice because it works on every CPU, at any CPL
->  	 * (so it's compatible with paravirtualization), and it never exits
-> -	 * to a hypervisor. The only down sides are that it's a bit slow
-> +	 * to a hypervisor.  The only downsides are that it's a bit slow
->  	 * (it seems to be a bit more than 2x slower than the fastest
-> -	 * options) and that it unmasks NMIs.  The "push %cs" is needed
-> -	 * because, in paravirtual environments, __KERNEL_CS may not be a
-> +	 * options) and that it unmasks NMIs.  The "push %cs" is needed,
-> +	 * because in paravirtual environments __KERNEL_CS may not be a
+> >  	 * (it seems to be a bit more than 2x slower than the fastest
+> > -	 * options) and that it unmasks NMIs.  The "push %cs" is needed
+> > -	 * because, in paravirtual environments, __KERNEL_CS may not be a
+> > +	 * options) and that it unmasks NMIs.  The "push %cs" is needed,
+> > +	 * because in paravirtual environments __KERNEL_CS may not be a
+> 
+> I didn't realize that the double spaces after the period were part of the
+> style.
 
-I didn't realize that the double spaces after the period were part of the
-style.
+They are not, but *consistent* use of typographic details is part of 
+the style, and here we were mixing two styles within the same comment 
+block.
 
-FWIW,
+> FWIW,
+> 
+> Reviewed-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
 
-Reviewed-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+Thanks,
+
+	Ingo
