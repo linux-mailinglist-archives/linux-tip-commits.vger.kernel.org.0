@@ -2,54 +2,51 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E8AA52498CF
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 19 Aug 2020 10:56:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB6EB2498C2
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 19 Aug 2020 10:54:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727097AbgHSI4B (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 19 Aug 2020 04:56:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54734 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727783AbgHSIxv (ORCPT
+        id S1727076AbgHSIyy (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 19 Aug 2020 04:54:54 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:37160 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727055AbgHSIwN (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 19 Aug 2020 04:53:51 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 130BDC061347;
-        Wed, 19 Aug 2020 01:52:13 -0700 (PDT)
+        Wed, 19 Aug 2020 04:52:13 -0400
 Date:   Wed, 19 Aug 2020 08:52:10 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1597827131;
+        s=2020; t=1597827130;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=xB62ipU3c36GDRZN7Srlw0bVi4SwB21C4BFlAs5SHvk=;
-        b=rRkzvlI3XGao8swR9/Z+VrwU/lKGCM2kLoZ7JIl7Aswt906xE6B9lTyhM6T+xNkCLchYgx
-        avOUCnNf0Aine9gRVG9yu8HtWZT0VD+K5LJ2G2OqWG2uJSUOoEIkBi9xG2wC+TR01G2KAK
-        /bQzMms6SuLz9D281L2QRFWIcF6CxoM1NN2kLTODpzyNadsITy2wb0Dfh1tOiXuisTtUgH
-        hDZIizEUPENknXOA7YMfmkcT7IIAFqg0pCdggaGVJa4jFohPzSm6KU7piCnPAT2FUFVyTt
-        6MDEDbiqJ/Gr+pOZEtPpv1ckU1hsOb9gpfvkl/aAatZngt6JmwM+aGLoGQfpAA==
+        bh=OydP4AsVDVkP8DZxQlDMyQ28reXrT/7uTIhNrCu6WJ4=;
+        b=J7vMRphOx9EUoVbs8QOBGHnVgY3nabXgFtdYMxA8wlv1AuRMdX55f9k8TAiTK5OHONGcxV
+        srUoRK5L1iJiQoDPuXiKE8bOWlKWFh3sGW2EaPaAXyC3+xhMowG0V8nEbDAoeHK5zW/s5u
+        XxiesW0E2iGu1GLkz2AHj7EX8sSu4W7jSG4xA/uIbk1Mua3ggPiYbEzmr6lIdpSGVGgey3
+        gbgDuZXnBKqEl5+P2SiXxKRj8OX+oh8XnwM7cuHDdkqXaVo+t99Pu2acrHc8aXeQ/Y+nnw
+        EHldfvknRAPhPZJgw6zhXdw++7K5QIDlr37DTle8ni106oMzkEntaTzSTldIcg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1597827131;
+        s=2020e; t=1597827130;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=xB62ipU3c36GDRZN7Srlw0bVi4SwB21C4BFlAs5SHvk=;
-        b=mIs7IXEDUmifJtmZOSJeoxHcqGhYAnSuiV0IqTBpX8VY/kE1INkfPY7qNS5dTJ9ZuZDEsA
-        JoZenpk90FaDTdDQ==
+        bh=OydP4AsVDVkP8DZxQlDMyQ28reXrT/7uTIhNrCu6WJ4=;
+        b=Dhrh4JO7+yl9Rp3YaUO66TrHJq7yLb6QawkCxNx8rSeW+H0VCZdf33DR7DykSgIz6u1X2A
+        XQd/24T+bV8gr8CA==
 From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/x86/intel: Name the global status bit in NMI handler
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        Kan Liang <kan.liang@linux.intel.com>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200723171117.9918-3-kan.liang@linux.intel.com>
-References: <20200723171117.9918-3-kan.liang@linux.intel.com>
+Subject: [tip: perf/core] perf/x86/intel: Introduce the fourth fixed counter
+Cc:     Kan Liang <kan.liang@linux.intel.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200723171117.9918-4-kan.liang@linux.intel.com>
+References: <20200723171117.9918-4-kan.liang@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <159782713093.3192.8180456930454502423.tip-bot2@tip-bot2>
+Message-ID: <159782713022.3192.7440422907426444873.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,83 +58,76 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     60a2a271cf05cf046c522e1d7f62116b4bcb32a2
-Gitweb:        https://git.kernel.org/tip/60a2a271cf05cf046c522e1d7f62116b4bcb32a2
+Commit-ID:     6f7225099d5f3ec3019f380a0da2b456b7796cb0
+Gitweb:        https://git.kernel.org/tip/6f7225099d5f3ec3019f380a0da2b456b7796cb0
 Author:        Kan Liang <kan.liang@linux.intel.com>
-AuthorDate:    Thu, 23 Jul 2020 10:11:05 -07:00
+AuthorDate:    Thu, 23 Jul 2020 10:11:06 -07:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 18 Aug 2020 16:34:34 +02:00
+CommitterDate: Tue, 18 Aug 2020 16:34:35 +02:00
 
-perf/x86/intel: Name the global status bit in NMI handler
+perf/x86/intel: Introduce the fourth fixed counter
 
-Magic numbers are used in the current NMI handler for the global status
-bit. Use a meaningful name to replace the magic numbers to improve the
-readability of the code.
+The fourth fixed counter, TOPDOWN.SLOTS, is introduced in Ice Lake to
+measure the level 1 TopDown events.
 
-Remove a Tab for all GLOBAL_STATUS_* and INTEL_PMC_IDX_FIXED_BTS macros
-to reduce the length of the line.
+Add MSR address and macros for the new fixed counter, which will be used
+in a later patch.
 
-Suggested-by: Peter Zijlstra <peterz@infradead.org>
+Add comments to explain the event encoding rules for the fixed counters.
+
 Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20200723171117.9918-3-kan.liang@linux.intel.com
+Link: https://lkml.kernel.org/r/20200723171117.9918-4-kan.liang@linux.intel.com
 ---
- arch/x86/events/intel/core.c      |  4 ++--
- arch/x86/include/asm/perf_event.h | 22 ++++++++++++----------
- 2 files changed, 14 insertions(+), 12 deletions(-)
+ arch/x86/include/asm/perf_event.h | 23 ++++++++++++++++++++---
+ 1 file changed, 20 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-index 5096347..ac1408f 100644
---- a/arch/x86/events/intel/core.c
-+++ b/arch/x86/events/intel/core.c
-@@ -2389,7 +2389,7 @@ static int handle_pmi_common(struct pt_regs *regs, u64 status)
- 	/*
- 	 * PEBS overflow sets bit 62 in the global status register
- 	 */
--	if (__test_and_clear_bit(62, (unsigned long *)&status)) {
-+	if (__test_and_clear_bit(GLOBAL_STATUS_BUFFER_OVF_BIT, (unsigned long *)&status)) {
- 		u64 pebs_enabled = cpuc->pebs_enabled;
- 
- 		handled++;
-@@ -2410,7 +2410,7 @@ static int handle_pmi_common(struct pt_regs *regs, u64 status)
- 	/*
- 	 * Intel PT
- 	 */
--	if (__test_and_clear_bit(55, (unsigned long *)&status)) {
-+	if (__test_and_clear_bit(GLOBAL_STATUS_TRACE_TOPAPMI_BIT, (unsigned long *)&status)) {
- 		handled++;
- 		if (unlikely(perf_guest_cbs && perf_guest_cbs->is_in_guest() &&
- 			perf_guest_cbs->handle_intel_pt_intr))
 diff --git a/arch/x86/include/asm/perf_event.h b/arch/x86/include/asm/perf_event.h
-index 0c1b137..fd3eba6 100644
+index fd3eba6..fe8110a 100644
 --- a/arch/x86/include/asm/perf_event.h
 +++ b/arch/x86/include/asm/perf_event.h
-@@ -225,16 +225,18 @@ struct x86_pmu_capability {
-  * values are used by actual fixed events and higher values are used
-  * to indicate other overflow conditions in the PERF_GLOBAL_STATUS msr.
+@@ -197,12 +197,24 @@ struct x86_pmu_capability {
   */
--#define INTEL_PMC_IDX_FIXED_BTS				(INTEL_PMC_IDX_FIXED + 16)
--
--#define GLOBAL_STATUS_COND_CHG				BIT_ULL(63)
--#define GLOBAL_STATUS_BUFFER_OVF			BIT_ULL(62)
--#define GLOBAL_STATUS_UNC_OVF				BIT_ULL(61)
--#define GLOBAL_STATUS_ASIF				BIT_ULL(60)
--#define GLOBAL_STATUS_COUNTERS_FROZEN			BIT_ULL(59)
--#define GLOBAL_STATUS_LBRS_FROZEN_BIT			58
--#define GLOBAL_STATUS_LBRS_FROZEN			BIT_ULL(GLOBAL_STATUS_LBRS_FROZEN_BIT)
--#define GLOBAL_STATUS_TRACE_TOPAPMI			BIT_ULL(55)
-+#define INTEL_PMC_IDX_FIXED_BTS			(INTEL_PMC_IDX_FIXED + 16)
-+
-+#define GLOBAL_STATUS_COND_CHG			BIT_ULL(63)
-+#define GLOBAL_STATUS_BUFFER_OVF_BIT		62
-+#define GLOBAL_STATUS_BUFFER_OVF		BIT_ULL(GLOBAL_STATUS_BUFFER_OVF_BIT)
-+#define GLOBAL_STATUS_UNC_OVF			BIT_ULL(61)
-+#define GLOBAL_STATUS_ASIF			BIT_ULL(60)
-+#define GLOBAL_STATUS_COUNTERS_FROZEN		BIT_ULL(59)
-+#define GLOBAL_STATUS_LBRS_FROZEN_BIT		58
-+#define GLOBAL_STATUS_LBRS_FROZEN		BIT_ULL(GLOBAL_STATUS_LBRS_FROZEN_BIT)
-+#define GLOBAL_STATUS_TRACE_TOPAPMI_BIT		55
-+#define GLOBAL_STATUS_TRACE_TOPAPMI		BIT_ULL(GLOBAL_STATUS_TRACE_TOPAPMI_BIT)
  
  /*
-  * We model guest LBR event tracing as another fixed-mode PMC like BTS.
+- * All 3 fixed-mode PMCs are configured via this single MSR:
++ * All the fixed-mode PMCs are configured via this single MSR:
+  */
+ #define MSR_ARCH_PERFMON_FIXED_CTR_CTRL	0x38d
+ 
+ /*
+- * The counts are available in three separate MSRs:
++ * There is no event-code assigned to the fixed-mode PMCs.
++ *
++ * For a fixed-mode PMC, which has an equivalent event on a general-purpose
++ * PMC, the event-code of the equivalent event is used for the fixed-mode PMC,
++ * e.g., Instr_Retired.Any and CPU_CLK_Unhalted.Core.
++ *
++ * For a fixed-mode PMC, which doesn't have an equivalent event, a
++ * pseudo-encoding is used, e.g., CPU_CLK_Unhalted.Ref and TOPDOWN.SLOTS.
++ * The pseudo event-code for a fixed-mode PMC must be 0x00.
++ * The pseudo umask-code is 0xX. The X equals the index of the fixed
++ * counter + 1, e.g., the fixed counter 2 has the pseudo-encoding 0x0300.
++ *
++ * The counts are available in separate MSRs:
+  */
+ 
+ /* Instr_Retired.Any: */
+@@ -213,11 +225,16 @@ struct x86_pmu_capability {
+ #define MSR_ARCH_PERFMON_FIXED_CTR1	0x30a
+ #define INTEL_PMC_IDX_FIXED_CPU_CYCLES	(INTEL_PMC_IDX_FIXED + 1)
+ 
+-/* CPU_CLK_Unhalted.Ref: */
++/* CPU_CLK_Unhalted.Ref: event=0x00,umask=0x3 (pseudo-encoding) */
+ #define MSR_ARCH_PERFMON_FIXED_CTR2	0x30b
+ #define INTEL_PMC_IDX_FIXED_REF_CYCLES	(INTEL_PMC_IDX_FIXED + 2)
+ #define INTEL_PMC_MSK_FIXED_REF_CYCLES	(1ULL << INTEL_PMC_IDX_FIXED_REF_CYCLES)
+ 
++/* TOPDOWN.SLOTS: event=0x00,umask=0x4 (pseudo-encoding) */
++#define MSR_ARCH_PERFMON_FIXED_CTR3	0x30c
++#define INTEL_PMC_IDX_FIXED_SLOTS	(INTEL_PMC_IDX_FIXED + 3)
++#define INTEL_PMC_MSK_FIXED_SLOTS	(1ULL << INTEL_PMC_IDX_FIXED_SLOTS)
++
+ /*
+  * We model BTS tracing as another fixed-mode PMC.
+  *
