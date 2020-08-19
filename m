@@ -2,55 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 215A4249E15
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 19 Aug 2020 14:36:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B9B3249DF3
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 19 Aug 2020 14:33:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728135AbgHSMex (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 19 Aug 2020 08:34:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60330 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728207AbgHSMdS (ORCPT
+        id S1728236AbgHSMdi (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 19 Aug 2020 08:33:38 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:39014 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728022AbgHSMdO (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 19 Aug 2020 08:33:18 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6AD8C061383;
-        Wed, 19 Aug 2020 05:33:17 -0700 (PDT)
+        Wed, 19 Aug 2020 08:33:14 -0400
 Date:   Wed, 19 Aug 2020 12:33:09 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1597840389;
+        s=2020; t=1597840390;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=/HnM0Cp/Yczm9dS+IPIhZH2yi01rE2zx6EwV3mXSdOM=;
-        b=kcZN+0zYuAh4iSOGzi2/GYVq5kwyJxwpAPrIazI3h+naT7XhUa1SCvxbHD9i6URcD39Kpn
-        GEdHYeDb3tDbUTKiYasRsAghgFAx85xBPwIW6QSAPzxRU6/rHUlPPI3qo4BYIkMlG8mC8+
-        EoaP6tFMl7SHTz3TFfdnqlbHtG+i0It7jNWhMU7aoXIjW5RljuWDcVj537IqY2lTa0DQzc
-        2LYsAgt0j+ciyHAmPwpaMPD3Tr+5KYqORc2SizOlFEs5BKp1P2odgFXQ+yfPyD7+JYmvMK
-        LOIawUx5Y1pnOJ3IrQsXr4U817W7SIU697thSLSJxl56nltc5N+OKJWeoAPQcA==
+        bh=3u3kLp4sAK5g6kqOKqttRQub8cj8+jsysGqclBHbZ14=;
+        b=oEydEtGuJ+4hmvtngmlwjmoqrdrkgHUZLrMzdGA20lOcYv56NcN/mwieSZVMkTT7ub7ZJ0
+        KBgGkwcBCQAyP3jiAO/CaWS+Jet0gXJ2iRoRQ7Yl7E/J75sqkbalkNj7Mn7hvwJVvcA1FT
+        ekKryLS790nWWO9AzM5qsX6UB8VHb7MuYY9be2D8SiwAcklRVI3Om9do5+JAI6zpjdQwWI
+        bPvmSAo1uXKcgcyHv9ldC0/mds04dnrAY3VREh9oyAfwx33nxi2hbr5ALQcyPdA9jNWWNO
+        LjqW69CtJ/EHprqGWVutMrYW7VjX+gUuBLzNnFGTcKRAVk6qk/GLquQDhU5New==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1597840389;
+        s=2020e; t=1597840390;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=/HnM0Cp/Yczm9dS+IPIhZH2yi01rE2zx6EwV3mXSdOM=;
-        b=PN3AjjWy0PXqiytZ4Qi4pfZG72Pd10LR24n9+TdRTByMT/hWU6Kg7d4t7du2Q4js7/r3g2
-        4NsByEGcqjC3QzAA==
+        bh=3u3kLp4sAK5g6kqOKqttRQub8cj8+jsysGqclBHbZ14=;
+        b=fDlGQij27xnrzZgpeSXFMJRMLUdUK8SEPFKKxj4KDstIgBfrKQKofuDfP62IPKwCWq38G1
+        x/Vin/3yVNs/jqCA==
 From:   "tip-bot2 for James Morse" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cache] x86/resctrl: Merge AMD/Intel parse_bw() calls
-Cc:     Babu Moger <babu.moger@amd.com>, James Morse <james.morse@arm.com>,
-        Borislav Petkov <bp@suse.de>,
+Subject: [tip: x86/cache] x86/resctrl: Add struct rdt_membw::arch_needs_linear
+ to explain AMD/Intel MBA difference
+Cc:     James Morse <james.morse@arm.com>, Borislav Petkov <bp@suse.de>,
         Reinette Chatre <reinette.chatre@intel.com>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200708163929.2783-9-james.morse@arm.com>
-References: <20200708163929.2783-9-james.morse@arm.com>
+        Babu Moger <babu.moger@amd.com>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200708163929.2783-8-james.morse@arm.com>
+References: <20200708163929.2783-8-james.morse@arm.com>
 MIME-Version: 1.0
-Message-ID: <159784038909.3192.1172396415139935224.tip-bot2@tip-bot2>
+Message-ID: <159784038975.3192.16283518251900554647.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -62,153 +60,119 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/cache branch of tip:
 
-Commit-ID:     5df3ca9334d5603e4afbb95953d0affb37dcf86b
-Gitweb:        https://git.kernel.org/tip/5df3ca9334d5603e4afbb95953d0affb37dcf86b
+Commit-ID:     41215b7947f1b1b86fd77a7bebd2320599aea7bd
+Gitweb:        https://git.kernel.org/tip/41215b7947f1b1b86fd77a7bebd2320599aea7bd
 Author:        James Morse <james.morse@arm.com>
-AuthorDate:    Wed, 08 Jul 2020 16:39:27 
+AuthorDate:    Wed, 08 Jul 2020 16:39:26 
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Wed, 19 Aug 2020 09:38:57 +02:00
+CommitterDate: Wed, 19 Aug 2020 09:34:51 +02:00
 
-x86/resctrl: Merge AMD/Intel parse_bw() calls
+x86/resctrl: Add struct rdt_membw::arch_needs_linear to explain AMD/Intel MBA difference
 
-Now after arch_needs_linear has been added, the parse_bw() calls are
-almost the same between AMD and Intel.
+The configuration values user-space provides to the resctrl filesystem
+are ABI. To make this work on another architecture, all the ABI bits
+should be moved out of /arch/x86 and under /fs.
 
-The difference is '!is_mba_sc()', which is not checked on AMD. This
-will always be true on AMD CPUs as mba_sc cannot be enabled as
-is_mba_linear() is false.
+To do this, the differences between AMD and Intel CPUs needs to be
+explained to resctrl via resource properties, instead of function
+pointers that let the arch code accept subtly different values on
+different platforms/architectures.
 
-Removing this duplication means user-space visible behaviour and
-error messages are not validated or generated in different places.
+For MBA, Intel CPUs reject configuration attempts for non-linear
+resources, whereas AMD ignore this field as its MBA resource is never
+linear. To merge the parse/validate functions, this difference needs to
+be explained.
 
-Reviewed-by : Babu Moger <babu.moger@amd.com>
+Add struct rdt_membw::arch_needs_linear to indicate the arch code needs
+the linear property to be true to configure this resource. AMD can set
+this and delay_linear to false. Intel can set arch_needs_linear to
+true to keep the existing "No support for non-linear MB domains" error
+message for affected platforms.
+
+ [ bp: convert "we" etc to passive voice. ]
+
 Signed-off-by: James Morse <james.morse@arm.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
 Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
-Link: https://lkml.kernel.org/r/20200708163929.2783-9-james.morse@arm.com
+Reviewed-by: Babu Moger <babu.moger@amd.com>
+Link: https://lkml.kernel.org/r/20200708163929.2783-8-james.morse@arm.com
 ---
- arch/x86/kernel/cpu/resctrl/core.c        |  3 +-
- arch/x86/kernel/cpu/resctrl/ctrlmondata.c | 57 +----------------------
- arch/x86/kernel/cpu/resctrl/internal.h    |  6 +--
- 3 files changed, 5 insertions(+), 61 deletions(-)
+ arch/x86/kernel/cpu/resctrl/core.c        | 3 +++
+ arch/x86/kernel/cpu/resctrl/ctrlmondata.c | 8 +++++++-
+ arch/x86/kernel/cpu/resctrl/internal.h    | 2 ++
+ 3 files changed, 12 insertions(+), 1 deletion(-)
 
 diff --git a/arch/x86/kernel/cpu/resctrl/core.c b/arch/x86/kernel/cpu/resctrl/core.c
-index 52b8991..10a52d1 100644
+index 9225ee5..52b8991 100644
 --- a/arch/x86/kernel/cpu/resctrl/core.c
 +++ b/arch/x86/kernel/cpu/resctrl/core.c
-@@ -168,6 +168,7 @@ struct rdt_resource rdt_resources_all[] = {
- 		.name			= "MB",
- 		.domains		= domain_init(RDT_RESOURCE_MBA),
- 		.cache_level		= 3,
-+		.parse_ctrlval		= parse_bw,
- 		.format_str		= "%d=%*u",
- 		.fflags			= RFTYPE_RES_MB,
- 	},
-@@ -926,7 +927,6 @@ static __init void rdt_init_res_defs_intel(void)
- 		else if (r->rid == RDT_RESOURCE_MBA) {
- 			r->msr_base = MSR_IA32_MBA_THRTL_BASE;
- 			r->msr_update = mba_wrmsr_intel;
--			r->parse_ctrlval = parse_bw_intel;
- 		}
+@@ -260,6 +260,7 @@ static bool __get_mem_config_intel(struct rdt_resource *r)
+ 	r->num_closid = edx.split.cos_max + 1;
+ 	max_delay = eax.split.max_delay + 1;
+ 	r->default_ctrl = MAX_MBA_BW;
++	r->membw.arch_needs_linear = true;
+ 	if (ecx & MBA_IS_LINEAR) {
+ 		r->membw.delay_linear = true;
+ 		r->membw.min_bw = MAX_MBA_BW - max_delay;
+@@ -267,6 +268,7 @@ static bool __get_mem_config_intel(struct rdt_resource *r)
+ 	} else {
+ 		if (!rdt_get_mb_table(r))
+ 			return false;
++		r->membw.arch_needs_linear = false;
  	}
- }
-@@ -946,7 +946,6 @@ static __init void rdt_init_res_defs_amd(void)
- 		else if (r->rid == RDT_RESOURCE_MBA) {
- 			r->msr_base = MSR_IA32_MBA_BW_BASE;
- 			r->msr_update = mba_wrmsr_amd;
--			r->parse_ctrlval = parse_bw_amd;
- 		}
- 	}
- }
+ 	r->data_width = 3;
+ 
+@@ -288,6 +290,7 @@ static bool __rdt_get_mem_config_amd(struct rdt_resource *r)
+ 
+ 	/* AMD does not use delay */
+ 	r->membw.delay_linear = false;
++	r->membw.arch_needs_linear = false;
+ 
+ 	r->membw.min_bw = 0;
+ 	r->membw.bw_gran = 1;
 diff --git a/arch/x86/kernel/cpu/resctrl/ctrlmondata.c b/arch/x86/kernel/cpu/resctrl/ctrlmondata.c
-index e3bcd77..b0e24cb 100644
+index 934c8fb..e3bcd77 100644
 --- a/arch/x86/kernel/cpu/resctrl/ctrlmondata.c
 +++ b/arch/x86/kernel/cpu/resctrl/ctrlmondata.c
-@@ -23,59 +23,6 @@
+@@ -33,6 +33,12 @@ static bool bw_validate_amd(char *buf, unsigned long *data,
+ 	unsigned long bw;
+ 	int ret;
  
- /*
-  * Check whether MBA bandwidth percentage value is correct. The value is
-- * checked against the minimum and maximum bandwidth values specified by
-- * the hardware. The allocated bandwidth percentage is rounded to the next
-- * control step available on the hardware.
-- */
--static bool bw_validate_amd(char *buf, unsigned long *data,
--			    struct rdt_resource *r)
--{
--	unsigned long bw;
--	int ret;
--
--	/* temporary: always false on AMD */
--	if (!r->membw.delay_linear && r->membw.arch_needs_linear) {
--		rdt_last_cmd_puts("No support for non-linear MB domains\n");
--		return false;
--	}
--
--	ret = kstrtoul(buf, 10, &bw);
--	if (ret) {
--		rdt_last_cmd_printf("Non-decimal digit in MB value %s\n", buf);
--		return false;
--	}
--
--	if (bw < r->membw.min_bw || bw > r->default_ctrl) {
--		rdt_last_cmd_printf("MB value %ld out of range [%d,%d]\n", bw,
--				    r->membw.min_bw, r->default_ctrl);
--		return false;
--	}
--
--	*data = roundup(bw, (unsigned long)r->membw.bw_gran);
--	return true;
--}
--
--int parse_bw_amd(struct rdt_parse_data *data, struct rdt_resource *r,
--		 struct rdt_domain *d)
--{
--	unsigned long bw_val;
--
--	if (d->have_new_ctrl) {
--		rdt_last_cmd_printf("Duplicate domain %d\n", d->id);
--		return -EINVAL;
--	}
--
--	if (!bw_validate_amd(data->buf, &bw_val, r))
--		return -EINVAL;
--
--	d->new_ctrl = bw_val;
--	d->have_new_ctrl = true;
--
--	return 0;
--}
--
--/*
-- * Check whether MBA bandwidth percentage value is correct. The value is
-  * checked against the minimum and max bandwidth values specified by the
-  * hardware. The allocated bandwidth percentage is rounded to the next
-  * control step available on the hardware.
-@@ -110,8 +57,8 @@ static bool bw_validate(char *buf, unsigned long *data, struct rdt_resource *r)
- 	return true;
- }
- 
--int parse_bw_intel(struct rdt_parse_data *data, struct rdt_resource *r,
--		   struct rdt_domain *d)
-+int parse_bw(struct rdt_parse_data *data, struct rdt_resource *r,
-+	     struct rdt_domain *d)
- {
- 	unsigned long bw_val;
- 
++	/* temporary: always false on AMD */
++	if (!r->membw.delay_linear && r->membw.arch_needs_linear) {
++		rdt_last_cmd_puts("No support for non-linear MB domains\n");
++		return false;
++	}
++
+ 	ret = kstrtoul(buf, 10, &bw);
+ 	if (ret) {
+ 		rdt_last_cmd_printf("Non-decimal digit in MB value %s\n", buf);
+@@ -82,7 +88,7 @@ static bool bw_validate(char *buf, unsigned long *data, struct rdt_resource *r)
+ 	/*
+ 	 * Only linear delay values is supported for current Intel SKUs.
+ 	 */
+-	if (!r->membw.delay_linear) {
++	if (!r->membw.delay_linear && r->membw.arch_needs_linear) {
+ 		rdt_last_cmd_puts("No support for non-linear MB domains\n");
+ 		return false;
+ 	}
 diff --git a/arch/x86/kernel/cpu/resctrl/internal.h b/arch/x86/kernel/cpu/resctrl/internal.h
-index 7b00723..21f4399 100644
+index 1eb39bd..7b00723 100644
 --- a/arch/x86/kernel/cpu/resctrl/internal.h
 +++ b/arch/x86/kernel/cpu/resctrl/internal.h
-@@ -471,10 +471,8 @@ struct rdt_resource {
- 
- int parse_cbm(struct rdt_parse_data *data, struct rdt_resource *r,
- 	      struct rdt_domain *d);
--int parse_bw_intel(struct rdt_parse_data *data, struct rdt_resource *r,
--		   struct rdt_domain *d);
--int parse_bw_amd(struct rdt_parse_data *data, struct rdt_resource *r,
--		 struct rdt_domain *d);
-+int parse_bw(struct rdt_parse_data *data, struct rdt_resource *r,
-+	     struct rdt_domain *d);
- 
- extern struct mutex rdtgroup_mutex;
- 
+@@ -372,6 +372,7 @@ struct rdt_cache {
+  * @min_bw:		Minimum memory bandwidth percentage user can request
+  * @bw_gran:		Granularity at which the memory bandwidth is allocated
+  * @delay_linear:	True if memory B/W delay is in linear scale
++ * @arch_needs_linear:	True if we can't configure non-linear resources
+  * @mba_sc:		True if MBA software controller(mba_sc) is enabled
+  * @mb_map:		Mapping of memory B/W percentage to memory B/W delay
+  */
+@@ -379,6 +380,7 @@ struct rdt_membw {
+ 	u32		min_bw;
+ 	u32		bw_gran;
+ 	u32		delay_linear;
++	bool		arch_needs_linear;
+ 	bool		mba_sc;
+ 	u32		*mb_map;
+ };
