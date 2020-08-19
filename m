@@ -2,55 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 872B42498D8
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 19 Aug 2020 10:56:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F489249E16
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 19 Aug 2020 14:36:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727064AbgHSI4h (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 19 Aug 2020 04:56:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54778 "EHLO
+        id S1728377AbgHSMey (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 19 Aug 2020 08:34:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60328 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726923AbgHSIyJ (ORCPT
+        with ESMTP id S1728200AbgHSMdS (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 19 Aug 2020 04:54:09 -0400
+        Wed, 19 Aug 2020 08:33:18 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA8D3C061348;
-        Wed, 19 Aug 2020 01:52:13 -0700 (PDT)
-Date:   Wed, 19 Aug 2020 08:52:11 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFD32C061757;
+        Wed, 19 Aug 2020 05:33:17 -0700 (PDT)
+Date:   Wed, 19 Aug 2020 12:33:07 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1597827132;
+        s=2020; t=1597840389;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=LPnU8pyPddQW19gBJ+YOIgmFLzT1mk9Ey7bGquTkdic=;
-        b=YzcEbgADRPpimgEa+z4D7MTQ9pGCKuWnwVbKpBTuKzlPiknk+NNXEkpKFQWnUswpDaxYZ0
-        +mimsHvDyJ7ClStC2wm6pcdAFduq3a7qgvWSFWZNh2JkyGAhUiIXRduv6ujV0/lwO+3xtL
-        iccp/plZw00yvf4Gdi3JPNhPOwmlQJ0mGnHFFXQHtOGG9pXtHG2gaYKzS0gnHuU9gXqr3R
-        XiG9L5dEXe9XHaoF3zvuHSSgNalKiq/m1AzsoXRi4OwiCldgvbWNDo0Ia165A2HWiVK0zK
-        +/oeGhcQ6KCj4dsUL3wOQiwrmzDN4Lj/vu7Vz2tyq1kwZZg7Fh3H9bfwyxQs4w==
+        bh=W3Jehl3a35aN5/4/NwUd3jBqhG6snxRKGpdWrkVAGSI=;
+        b=0EtSvtsEwCBOsrzwAXUHO8XbpNKitMzc7CnPZlUlhKKrc2Ht3nBXvnNC53GfE4PrD6/sM3
+        76ZrWIoj2ZU2OHMc+ATQ3Y0v9GlQndDb2qHHXg+0UL7t0UbGuug/Zh9ajWqt6aU9SmB+ip
+        7+4hfhxjLXB5XnbNKaOXatc/wzAVH8OszDe6dLat0gAK6C8wqmW2U/J+LS4RNh/K52mW6u
+        PIUIMMIdcQ2vKmM4NFpp3WClnCvpw6KbNrjvPm8YqgDv/mNUvQrCbJZER3iH+txYk1cCNk
+        Bq5h+aRQkeP56AFuq0lnICjJnSTpm2hhHihSXTBhPEYRtjO/BHtHND/TIVMWBw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1597827132;
+        s=2020e; t=1597840389;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=LPnU8pyPddQW19gBJ+YOIgmFLzT1mk9Ey7bGquTkdic=;
-        b=MhUitKgByxj53KSjiUovfzgTJpl0DSRFcAbM4uvfM8yYLb1YkQ8KcvkRHzvlGnkZy0WAZb
-        kDIqWqd7pZ+o86AA==
-From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
+        bh=W3Jehl3a35aN5/4/NwUd3jBqhG6snxRKGpdWrkVAGSI=;
+        b=OFTJhTvgAqv1nFAuvab/WHjOl3YtSUQfpCIm7ymO1TmCdejOjU/9o6ZNOy9IPLiQl6StR3
+        4fXB7ImTRjeu0ZAg==
+From:   "tip-bot2 for James Morse" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/x86: Use event_base_rdpmc for the RDPMC
- userspace support
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        Kan Liang <kan.liang@linux.intel.com>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200723171117.9918-2-kan.liang@linux.intel.com>
-References: <20200723171117.9918-2-kan.liang@linux.intel.com>
+Subject: [tip: x86/cache] cacheinfo: Move resctrl's get_cache_id() to the
+ cacheinfo header file
+Cc:     James Morse <james.morse@arm.com>, Borislav Petkov <bp@suse.de>,
+        Babu Moger <babu.moger@amd.com>,
+        Reinette Chatre <reinette.chatre@intel.com>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200708163929.2783-11-james.morse@arm.com>
+References: <20200708163929.2783-11-james.morse@arm.com>
 MIME-Version: 1.0
-Message-ID: <159782713157.3192.4240252060821627383.tip-bot2@tip-bot2>
+Message-ID: <159784038771.3192.628898918222476271.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,53 +61,117 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/core branch of tip:
+The following commit has been merged into the x86/cache branch of tip:
 
-Commit-ID:     75608cb02ea5dd997990e2998eca3670cb71a18c
-Gitweb:        https://git.kernel.org/tip/75608cb02ea5dd997990e2998eca3670cb71a18c
-Author:        Kan Liang <kan.liang@linux.intel.com>
-AuthorDate:    Thu, 23 Jul 2020 10:11:04 -07:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 18 Aug 2020 16:34:34 +02:00
+Commit-ID:     709c4362725abb5fa1e36fd94893a9b0d049df82
+Gitweb:        https://git.kernel.org/tip/709c4362725abb5fa1e36fd94893a9b0d049df82
+Author:        James Morse <james.morse@arm.com>
+AuthorDate:    Wed, 08 Jul 2020 16:39:29 
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Wed, 19 Aug 2020 11:04:23 +02:00
 
-perf/x86: Use event_base_rdpmc for the RDPMC userspace support
+cacheinfo: Move resctrl's get_cache_id() to the cacheinfo header file
 
-The RDPMC index is always re-calculated for the RDPMC userspace support,
-which is unnecessary.
+resctrl/core.c defines get_cache_id() for use in its cpu-hotplug
+callbacks. This gets the id attribute of the cache at the corresponding
+level of a CPU.
 
-The RDPMC index value is stored in the variable event_base_rdpmc for
-the kernel usage, which can be used for RDPMC userspace support as well.
+Later rework means this private function needs to be shared. Move
+it to the header file.
 
-Suggested-by: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20200723171117.9918-2-kan.liang@linux.intel.com
+The name conflicts with a different definition in intel_cacheinfo.c,
+name it get_cpu_cacheinfo_id() to show its relation with
+get_cpu_cacheinfo().
+
+Now this is visible on other architectures, check the id attribute
+has actually been set.
+
+Signed-off-by: James Morse <james.morse@arm.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Reviewed-by: Babu Moger <babu.moger@amd.com>
+Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
+Link: https://lkml.kernel.org/r/20200708163929.2783-11-james.morse@arm.com
 ---
- arch/x86/events/core.c | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ arch/x86/kernel/cpu/resctrl/core.c | 17 ++---------------
+ include/linux/cacheinfo.h          | 21 +++++++++++++++++++++
+ 2 files changed, 23 insertions(+), 15 deletions(-)
 
-diff --git a/arch/x86/events/core.c b/arch/x86/events/core.c
-index 1cbf57d..8e108ea 100644
---- a/arch/x86/events/core.c
-+++ b/arch/x86/events/core.c
-@@ -2208,17 +2208,12 @@ static void x86_pmu_event_unmapped(struct perf_event *event, struct mm_struct *m
- 
- static int x86_pmu_event_idx(struct perf_event *event)
- {
--	int idx = event->hw.idx;
-+	struct hw_perf_event *hwc = &event->hw;
- 
--	if (!(event->hw.flags & PERF_X86_EVENT_RDPMC_ALLOWED))
-+	if (!(hwc->flags & PERF_X86_EVENT_RDPMC_ALLOWED))
- 		return 0;
- 
--	if (x86_pmu.num_counters_fixed && idx >= INTEL_PMC_IDX_FIXED) {
--		idx -= INTEL_PMC_IDX_FIXED;
--		idx |= 1 << 30;
--	}
--
--	return idx + 1;
-+	return hwc->event_base_rdpmc + 1;
+diff --git a/arch/x86/kernel/cpu/resctrl/core.c b/arch/x86/kernel/cpu/resctrl/core.c
+index cbbd751..1c00f2f 100644
+--- a/arch/x86/kernel/cpu/resctrl/core.c
++++ b/arch/x86/kernel/cpu/resctrl/core.c
+@@ -350,19 +350,6 @@ static void rdt_get_cdp_l2_config(void)
+ 	rdt_get_cdp_config(RDT_RESOURCE_L2, RDT_RESOURCE_L2CODE);
  }
  
- static ssize_t get_attr_rdpmc(struct device *cdev,
+-static int get_cache_id(int cpu, int level)
+-{
+-	struct cpu_cacheinfo *ci = get_cpu_cacheinfo(cpu);
+-	int i;
+-
+-	for (i = 0; i < ci->num_leaves; i++) {
+-		if (ci->info_list[i].level == level)
+-			return ci->info_list[i].id;
+-	}
+-
+-	return -1;
+-}
+-
+ static void
+ mba_wrmsr_amd(struct rdt_domain *d, struct msr_param *m, struct rdt_resource *r)
+ {
+@@ -560,7 +547,7 @@ static int domain_setup_mon_state(struct rdt_resource *r, struct rdt_domain *d)
+  */
+ static void domain_add_cpu(int cpu, struct rdt_resource *r)
+ {
+-	int id = get_cache_id(cpu, r->cache_level);
++	int id = get_cpu_cacheinfo_id(cpu, r->cache_level);
+ 	struct list_head *add_pos = NULL;
+ 	struct rdt_domain *d;
+ 
+@@ -606,7 +593,7 @@ static void domain_add_cpu(int cpu, struct rdt_resource *r)
+ 
+ static void domain_remove_cpu(int cpu, struct rdt_resource *r)
+ {
+-	int id = get_cache_id(cpu, r->cache_level);
++	int id = get_cpu_cacheinfo_id(cpu, r->cache_level);
+ 	struct rdt_domain *d;
+ 
+ 	d = rdt_find_domain(r, id, NULL);
+diff --git a/include/linux/cacheinfo.h b/include/linux/cacheinfo.h
+index 46b92cd..4f72b47 100644
+--- a/include/linux/cacheinfo.h
++++ b/include/linux/cacheinfo.h
+@@ -3,6 +3,7 @@
+ #define _LINUX_CACHEINFO_H
+ 
+ #include <linux/bitops.h>
++#include <linux/cpu.h>
+ #include <linux/cpumask.h>
+ #include <linux/smp.h>
+ 
+@@ -119,4 +120,24 @@ int acpi_find_last_cache_level(unsigned int cpu);
+ 
+ const struct attribute_group *cache_get_priv_group(struct cacheinfo *this_leaf);
+ 
++/*
++ * Get the id of the cache associated with @cpu at level @level.
++ * cpuhp lock must be held.
++ */
++static inline int get_cpu_cacheinfo_id(int cpu, int level)
++{
++	struct cpu_cacheinfo *ci = get_cpu_cacheinfo(cpu);
++	int i;
++
++	for (i = 0; i < ci->num_leaves; i++) {
++		if (ci->info_list[i].level == level) {
++			if (ci->info_list[i].attributes & CACHE_ID)
++				return ci->info_list[i].id;
++			return -1;
++		}
++	}
++
++	return -1;
++}
++
+ #endif /* _LINUX_CACHEINFO_H */
