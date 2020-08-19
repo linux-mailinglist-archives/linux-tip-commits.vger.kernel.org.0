@@ -2,57 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A7BF924A112
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 19 Aug 2020 16:04:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CADB24A126
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 19 Aug 2020 16:05:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728510AbgHSOEI (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 19 Aug 2020 10:04:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46250 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727773AbgHSODX (ORCPT
+        id S1728146AbgHSOFx (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 19 Aug 2020 10:05:53 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:39640 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728285AbgHSOCx (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 19 Aug 2020 10:03:23 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6245BC061348;
-        Wed, 19 Aug 2020 07:02:52 -0700 (PDT)
+        Wed, 19 Aug 2020 10:02:53 -0400
 Date:   Wed, 19 Aug 2020 14:02:50 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1597845770;
+        s=2020; t=1597845771;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=pQZOW0j4/RdzM1divCEavCZuXsVIoOqyikm/qS44wK8=;
-        b=x0M8887KRqa+3oZhKLipuAh6YH3dX5AlqUqfhKlDAXh45F+RnAu/712jbFxmzKdOvw4Rvo
-        A1+wkBh4kYpUnpk+a3x0feqS7O/9c6vl0wJsKXMFa95e0EaohFZavSTx4w3SRqJ8COm8pQ
-        PiGx4DJvRDJrZIAtOukwyiDR4IlL6tXvm98tWQi03gZMP06Lny4/Ixn5rTHbHIrlhdBYTg
-        zdCvfxNPl4W1zKX+/BOdV7wxT96cSK2ag0YsUZ+ni6ByhUOcbkyT39PygJEdNFkUwwuS1M
-        wkDruf1J1OmC2jST9hMMxUNFbqaBo7YnnY82rVl52/FpCkQfYHhH5YVafc7Udw==
+        bh=/0qXOPz6mLQ9JBhFivYYTZiimIEhBmW58IHHR/ei91c=;
+        b=SGf9XniGVvKN3uMPK71oNxyEbnIMFQ0v+iKP6r+lGlwvTRkJQBa0NVvL9Ea1vCIdJUbQ6F
+        vDvhxItaZATWVkJKWlsIDhhjcu6VPef/sqM+WoJj9B24alm9cr+H+Qv2JgXlqaqQ4PU5Ku
+        pxD+W52xIOjS1435VApPprcdgs5YLETN4Q164W466A8tCu+r/tcr/5Owzddut6yYuAMqMp
+        EvwiRwDfA+1A4HmdRLbI/IxCw1s7ryN1Iso1Ri56iAJ26UY6ma4fDWbweOuVQYrT/KAn7h
+        TGQo56ITQXpMQMtO10eTqKeEAVtcwKLqUEPZPNQnqZtfkWyvdIa0YxkPjSmG+g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1597845770;
+        s=2020e; t=1597845771;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=pQZOW0j4/RdzM1divCEavCZuXsVIoOqyikm/qS44wK8=;
-        b=yK2bE2k6WjSPt62Ixp/Gaupoeoxq93rHZcNXRp8w9wtVS5rJzkMMGhAR6Cmm23kaJW4Jmw
-        r3/ir2VXcQcYTBAQ==
+        bh=/0qXOPz6mLQ9JBhFivYYTZiimIEhBmW58IHHR/ei91c=;
+        b=lfyJji4aPBFqgM7Qm6OQP007WF98W/XeWMkB1AI9mGJdEMTVqeZ6TlVX+6fQayWznpU3oa
+        uIIwfigYR7RRnKDg==
 From:   "tip-bot2 for Valentin Schneider" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/topology: Split out SD_* flags declaration to
- its own file
-Cc:     Valentin Schneider <valentin.schneider@arm.com>,
+Subject: [tip: sched/core] ARM, sched/topology: Revert back to default
+ scheduler topology
+Cc:     Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Valentin Schneider <valentin.schneider@arm.com>,
         Ingo Molnar <mingo@kernel.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
         Peter Zijlstra <a.p.zijlstra@chello.nl>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200817113003.20802-4-valentin.schneider@arm.com>
-References: <20200817113003.20802-4-valentin.schneider@arm.com>
+In-Reply-To: <20200817113003.20802-3-valentin.schneider@arm.com>
+References: <20200817113003.20802-3-valentin.schneider@arm.com>
 MIME-Version: 1.0
-Message-ID: <159784577024.3192.10076591546813969390.tip-bot2@tip-bot2>
+Message-ID: <159784577092.3192.9588870511768297238.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -64,112 +61,84 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     d54a9658a75633b839af7a2c6c758807678b8064
-Gitweb:        https://git.kernel.org/tip/d54a9658a75633b839af7a2c6c758807678b8064
+Commit-ID:     d23b3bf8e43faa54a6839aafd6fedc15a3c4174f
+Gitweb:        https://git.kernel.org/tip/d23b3bf8e43faa54a6839aafd6fedc15a3c4174f
 Author:        Valentin Schneider <valentin.schneider@arm.com>
-AuthorDate:    Mon, 17 Aug 2020 12:29:49 +01:00
+AuthorDate:    Mon, 17 Aug 2020 12:29:48 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Wed, 19 Aug 2020 10:49:47 +02:00
 
-sched/topology: Split out SD_* flags declaration to its own file
+ARM, sched/topology: Revert back to default scheduler topology
 
-To associate the SD flags with some metadata, we need some more structure
-in the way they are declared.
+The ARM-specific GMC level is meant to be built using the thread sibling
+mask, but no devicetree in arch/arm/boot/dts uses the 'thread' cpu-map
+binding. With SD_SHARE_POWERDOMAIN gone, this topology level can be
+removed, at which point ARM no longer benefits from having a custom defined
+topology table.
 
-Rather than shove that in a free-standing macro list, move the declaration
-in a separate file that can be re-imported with different SD_FLAG
-definitions. This is inspired by what is done with the syscall
-table (see uapi/asm/unistd.h and sys_call_table).
+Delete the GMC topology level by making ARM use the default scheduler
+topology table. This essentially reverts commit:
 
-The value assigned to a given SD flag now depends on the order it appears
-in sd_flags.h. No change in functionality.
+  fb2aa85564f4 ("sched, ARM: Create a dedicated scheduler topology table")
 
+No change in functionality is expected.
+
+Suggested-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
 Signed-off-by: Valentin Schneider <valentin.schneider@arm.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Reviewed-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
 Acked-by: Peter Zijlstra <a.p.zijlstra@chello.nl>
-Link: https://lore.kernel.org/r/20200817113003.20802-4-valentin.schneider@arm.com
+Link: https://lore.kernel.org/r/20200817113003.20802-3-valentin.schneider@arm.com
 ---
- include/linux/sched/sd_flags.h | 35 +++++++++++++++++++++++++++++++++-
- include/linux/sched/topology.h | 26 ++++++++++++-------------
- 2 files changed, 48 insertions(+), 13 deletions(-)
- create mode 100644 include/linux/sched/sd_flags.h
+ arch/arm/kernel/topology.c | 26 --------------------------
+ 1 file changed, 26 deletions(-)
 
-diff --git a/include/linux/sched/sd_flags.h b/include/linux/sched/sd_flags.h
-new file mode 100644
-index 0000000..373dc45
---- /dev/null
-+++ b/include/linux/sched/sd_flags.h
-@@ -0,0 +1,35 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * sched-domains (multiprocessor balancing) flag declarations.
-+ */
-+
-+#ifndef SD_FLAG
-+# error "Incorrect import of SD flags definitions"
-+#endif
-+
-+/* Balance when about to become idle */
-+SD_FLAG(SD_BALANCE_NEWIDLE)
-+/* Balance on exec */
-+SD_FLAG(SD_BALANCE_EXEC)
-+/* Balance on fork, clone */
-+SD_FLAG(SD_BALANCE_FORK)
-+/* Balance on wakeup */
-+SD_FLAG(SD_BALANCE_WAKE)
-+/* Wake task to waking CPU */
-+SD_FLAG(SD_WAKE_AFFINE)
-+/* Domain members have different CPU capacities */
-+SD_FLAG(SD_ASYM_CPUCAPACITY)
-+/* Domain members share CPU capacity */
-+SD_FLAG(SD_SHARE_CPUCAPACITY)
-+/* Domain members share CPU pkg resources */
-+SD_FLAG(SD_SHARE_PKG_RESOURCES)
-+/* Only a single load balancing instance */
-+SD_FLAG(SD_SERIALIZE)
-+/* Place busy groups earlier in the domain */
-+SD_FLAG(SD_ASYM_PACKING)
-+/* Prefer to place tasks in a sibling domain */
-+SD_FLAG(SD_PREFER_SIBLING)
-+/* sched_domains of this level overlap */
-+SD_FLAG(SD_OVERLAP)
-+/* cross-node balancing */
-+SD_FLAG(SD_NUMA)
-diff --git a/include/linux/sched/topology.h b/include/linux/sched/topology.h
-index 6ec7d7c..3e41c04 100644
---- a/include/linux/sched/topology.h
-+++ b/include/linux/sched/topology.h
-@@ -11,19 +11,19 @@
-  */
- #ifdef CONFIG_SMP
+diff --git a/arch/arm/kernel/topology.c b/arch/arm/kernel/topology.c
+index 353f3ee..ef0058d 100644
+--- a/arch/arm/kernel/topology.c
++++ b/arch/arm/kernel/topology.c
+@@ -178,15 +178,6 @@ static inline void update_cpu_capacity(unsigned int cpuid) {}
+ #endif
  
--#define SD_BALANCE_NEWIDLE	0x0001	/* Balance when about to become idle */
--#define SD_BALANCE_EXEC		0x0002	/* Balance on exec */
--#define SD_BALANCE_FORK		0x0004	/* Balance on fork, clone */
--#define SD_BALANCE_WAKE		0x0008  /* Balance on wakeup */
--#define SD_WAKE_AFFINE		0x0010	/* Wake task to waking CPU */
--#define SD_ASYM_CPUCAPACITY	0x0020  /* Domain members have different CPU capacities */
--#define SD_SHARE_CPUCAPACITY	0x0040	/* Domain members share CPU capacity */
--#define SD_SHARE_PKG_RESOURCES	0x0080	/* Domain members share CPU pkg resources */
--#define SD_SERIALIZE		0x0100	/* Only a single load balancing instance */
--#define SD_ASYM_PACKING		0x0200  /* Place busy groups earlier in the domain */
--#define SD_PREFER_SIBLING	0x0400	/* Prefer to place tasks in a sibling domain */
--#define SD_OVERLAP		0x0800	/* sched_domains of this level overlap */
--#define SD_NUMA			0x1000	/* cross-node balancing */
-+/* Generate SD flag indexes */
-+#define SD_FLAG(name) __##name,
-+enum {
-+	#include <linux/sched/sd_flags.h>
-+	__SD_FLAG_CNT,
-+};
-+#undef SD_FLAG
-+/* Generate SD flag bits */
-+#define SD_FLAG(name) name = 1 << __##name,
-+enum {
-+	#include <linux/sched/sd_flags.h>
-+};
-+#undef SD_FLAG
+ /*
+- * The current assumption is that we can power gate each core independently.
+- * This will be superseded by DT binding once available.
+- */
+-const struct cpumask *cpu_corepower_mask(int cpu)
+-{
+-	return &cpu_topology[cpu].thread_sibling;
+-}
+-
+-/*
+  * store_cpu_topology is called at boot when only one cpu is running
+  * and with the mutex cpu_hotplug.lock locked, when several cpus have booted,
+  * which prevents simultaneous write access to cpu_topology array
+@@ -241,20 +232,6 @@ topology_populated:
+ 	update_siblings_masks(cpuid);
+ }
  
- #ifdef CONFIG_SCHED_SMT
- static inline int cpu_smt_flags(void)
+-static inline int cpu_corepower_flags(void)
+-{
+-	return SD_SHARE_PKG_RESOURCES;
+-}
+-
+-static struct sched_domain_topology_level arm_topology[] = {
+-#ifdef CONFIG_SCHED_MC
+-	{ cpu_corepower_mask, cpu_corepower_flags, SD_INIT_NAME(GMC) },
+-	{ cpu_coregroup_mask, cpu_core_flags, SD_INIT_NAME(MC) },
+-#endif
+-	{ cpu_cpu_mask, SD_INIT_NAME(DIE) },
+-	{ NULL, },
+-};
+-
+ /*
+  * init_cpu_topology is called at boot when only one cpu is running
+  * which prevent simultaneous write access to cpu_topology array
+@@ -265,7 +242,4 @@ void __init init_cpu_topology(void)
+ 	smp_wmb();
+ 
+ 	parse_dt_topology();
+-
+-	/* Set scheduler topology descriptor */
+-	set_sched_topology(arm_topology);
+ }
