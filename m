@@ -2,121 +2,101 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2154724B12E
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 20 Aug 2020 10:36:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6507C24B574
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 20 Aug 2020 12:24:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726863AbgHTIgw (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 20 Aug 2020 04:36:52 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:45566 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726852AbgHTIgt (ORCPT
+        id S1731230AbgHTKYF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 20 Aug 2020 06:24:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37026 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731809AbgHTKYC (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 20 Aug 2020 04:36:49 -0400
-Date:   Thu, 20 Aug 2020 08:36:46 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1597912607;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=WPQJ7JrZ5CqhutwMz/C3oOY0pZOyWqVbytGXXAMpzag=;
-        b=QVTFmZERZoCIU0TxvjF+Y8dooP3OYwR2l8gX1nlklLGhlDzaVoBv0xBwQgNhWQhvyPS8xt
-        u+i+W89uJGWzYmWmHC2uQBQF+pS42ygAUK7bwPNzx1J/G888Jqata4pk17pFK/NLYcFQFN
-        KxGBb9MbAqwGkIsjfhS2765bsw5nW1N/+ObuzoMykSROg6mOhaeSGcqVV37Mq+lYvQbscF
-        8WcJIZHhn1o6ErJzQCUu6R7GobkDHZnEI/EytekXPKeWlqHUj4YFQsXVCzDNZuDi0TWyJB
-        krwJEFN7TMFo7y4iX5gCr9Zq8GA2KzywK7RQcADXukSv8FbWlZOz4tljyk7ZmA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1597912607;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=WPQJ7JrZ5CqhutwMz/C3oOY0pZOyWqVbytGXXAMpzag=;
-        b=cyjiHUF9WBN1ClWM8l5G6XyCY3FAckUPYv/BqHwLSYDK3W7EbnhL/Cm3ITmj0VOS30D+zj
-        IEs46C8cXKVLBnBw==
-From:   "tip-bot2 for Luca Stefani" <tip-bot2@linutronix.de>
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: ras/core] RAS/CEC: Fix cec_init() prototype
-Cc:     Luca Stefani <luca.stefani.ge1@gmail.com>,
-        Borislav Petkov <bp@suse.de>,
-        Sami Tolvanen <samitolvanen@google.com>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200805095708.83939-1-luca.stefani.ge1@gmail.com>
-References: <20200805095708.83939-1-luca.stefani.ge1@gmail.com>
+        Thu, 20 Aug 2020 06:24:02 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24642C061757;
+        Thu, 20 Aug 2020 03:24:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=qdnfNm3IUzTMwmlQEg5cRLJ7F7h28cIGXcZ5YJRE3sU=; b=gtubPbuXkk4dOz+fGtiw5/nuXj
+        8DQU8y8NymTK/NQey14TfABLazVfI+wLeUuyp9U76iCTN4a8XSbHT0snK5IwEmrSJhLVUso8D8RlF
+        pw9la++GvNu2tBpQYVhnvnglAUTWDH2YYuuVW691JsUFvlAZX9dmjLoNaaGbWBhaK0zGVM38912E/
+        Yl1jQuTPnZpEzUqv+Cgc8Oc/FT5hqFo6TiDzHVbfPIv0eCsgKTK5clHJ5c0vLk2ipNtNlmGj43J1s
+        yFpaWoWouEqs7CKciXZHWJfUEuX2ti5XXLaBCv5A8jl31/7ui9Juhqpr64jchD3RYLCNUXMPNC2/n
+        lnfl1GKw==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
+        by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1k8hjW-0004sh-38; Thu, 20 Aug 2020 10:23:51 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 833B6302526;
+        Thu, 20 Aug 2020 12:23:44 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 73D8928B7E826; Thu, 20 Aug 2020 12:23:44 +0200 (CEST)
+Date:   Thu, 20 Aug 2020 12:23:44 +0200
+From:   peterz@infradead.org
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-tip-commits@vger.kernel.org,
+        Andy Lutomirski <luto@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>
+Subject: Re: [tip: x86/urgent] x86/entry, selftests: Further improve user
+ entry sanity checks
+Message-ID: <20200820102344.GP2674@hirez.programming.kicks-ass.net>
+References: <881de09e786ab93ce56ee4a2437ba2c308afe7a9.1593795633.git.luto@kernel.org>
+ <159388495037.4006.7851835406474127743.tip-bot2@tip-bot2>
 MIME-Version: 1.0
-Message-ID: <159791260687.3192.7735800847323223994.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2.linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <159388495037.4006.7851835406474127743.tip-bot2@tip-bot2>
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the ras/core branch of tip:
+On Sat, Jul 04, 2020 at 05:49:10PM -0000, tip-bot2 for Andy Lutomirski wrote:
 
-Commit-ID:     85e6084e0b436cabe9c909e679937998ffbf9c9d
-Gitweb:        https://git.kernel.org/tip/85e6084e0b436cabe9c909e679937998ffbf9c9d
-Author:        Luca Stefani <luca.stefani.ge1@gmail.com>
-AuthorDate:    Wed, 05 Aug 2020 11:57:08 +02:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Thu, 20 Aug 2020 10:33:33 +02:00
+> diff --git a/arch/x86/entry/common.c b/arch/x86/entry/common.c
+> index f392a8b..e83b3f1 100644
+> --- a/arch/x86/entry/common.c
+> +++ b/arch/x86/entry/common.c
+> @@ -49,6 +49,23 @@
+>  static void check_user_regs(struct pt_regs *regs)
+>  {
+>  	if (IS_ENABLED(CONFIG_DEBUG_ENTRY)) {
+> +		/*
+> +		 * Make sure that the entry code gave us a sensible EFLAGS
+> +		 * register.  Native because we want to check the actual CPU
+> +		 * state, not the interrupt state as imagined by Xen.
+> +		 */
+> +		unsigned long flags = native_save_fl();
+> +		WARN_ON_ONCE(flags & (X86_EFLAGS_AC | X86_EFLAGS_DF |
+> +				      X86_EFLAGS_NT));
 
-RAS/CEC: Fix cec_init() prototype
+This triggers with AC|TF on my !SMAP enabled machine.
 
-late_initcall() expects a function that returns an integer. Update the
-function signature to match.
+something like so then?
 
- [ bp: Massage commit message into proper sentences. ]
-
-Fixes: 9554bfe403bd ("x86/mce: Convert the CEC to use the MCE notifier")
-Signed-off-by: Luca Stefani <luca.stefani.ge1@gmail.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
-Tested-by: Sami Tolvanen <samitolvanen@google.com>
-Link: https://lkml.kernel.org/r/20200805095708.83939-1-luca.stefani.ge1@gmail.com
----
- drivers/ras/cec.c |  9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/ras/cec.c b/drivers/ras/cec.c
-index 569d9ad..6939aa5 100644
---- a/drivers/ras/cec.c
-+++ b/drivers/ras/cec.c
-@@ -553,20 +553,20 @@ static struct notifier_block cec_nb = {
- 	.priority	= MCE_PRIO_CEC,
- };
+diff --git a/arch/x86/include/asm/entry-common.h b/arch/x86/include/asm/entry-common.h
+index a8f9315b9eae..76410964585f 100644
+--- a/arch/x86/include/asm/entry-common.h
++++ b/arch/x86/include/asm/entry-common.h
+@@ -18,8 +18,15 @@ static __always_inline void arch_check_user_regs(struct pt_regs *regs)
+ 		 * state, not the interrupt state as imagined by Xen.
+ 		 */
+ 		unsigned long flags = native_save_fl();
+-		WARN_ON_ONCE(flags & (X86_EFLAGS_AC | X86_EFLAGS_DF |
+-				      X86_EFLAGS_NT));
++		unsigned long mask = X86_EFLAGS_DF | X86_EFLAGS_NT;
++
++		/*
++		 * For !SMAP hardware we patch out CLAC on entry.
++		 */
++		if (boot_cpu_has(X86_FEATURE_SMAP))
++			mask |= X86_EFLAGS_AC;
++
++		WARN_ON_ONCE(flags & mask);
  
--static void __init cec_init(void)
-+static int __init cec_init(void)
- {
- 	if (ce_arr.disabled)
--		return;
-+		return -ENODEV;
- 
- 	ce_arr.array = (void *)get_zeroed_page(GFP_KERNEL);
- 	if (!ce_arr.array) {
- 		pr_err("Error allocating CE array page!\n");
--		return;
-+		return -ENOMEM;
- 	}
- 
- 	if (create_debugfs_nodes()) {
- 		free_page((unsigned long)ce_arr.array);
--		return;
-+		return -ENOMEM;
- 	}
- 
- 	INIT_DELAYED_WORK(&cec_work, cec_work_fn);
-@@ -575,6 +575,7 @@ static void __init cec_init(void)
- 	mce_register_decode_chain(&cec_nb);
- 
- 	pr_info("Correctable Errors collector initialized.\n");
-+	return 0;
- }
- late_initcall(cec_init);
- 
+ 		/* We think we came from user mode. Make sure pt_regs agrees. */
+ 		WARN_ON_ONCE(!user_mode(regs));
