@@ -2,47 +2,51 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CEF1B24AF37
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 20 Aug 2020 08:25:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 47E2D24B12F
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 20 Aug 2020 10:36:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725819AbgHTGZP (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 20 Aug 2020 02:25:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56752 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725778AbgHTGZO (ORCPT
+        id S1726852AbgHTIg6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 20 Aug 2020 04:36:58 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:45558 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726347AbgHTIgu (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 20 Aug 2020 02:25:14 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 776E2C061757;
-        Wed, 19 Aug 2020 23:25:14 -0700 (PDT)
-Date:   Thu, 20 Aug 2020 06:25:11 -0000
+        Thu, 20 Aug 2020 04:36:50 -0400
+Date:   Thu, 20 Aug 2020 08:36:46 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1597904712;
+        s=2020; t=1597912607;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=yWX5ssX1k5opQq0Q0AOc6iPkThMUuzgITW4vyDf02GI=;
-        b=xoWcFp02RSUs9NIGDLQ8LaKQL0u+7WXVEN4HIaHDrUsl5s0hcIZb3Fmw5yQaVEXjFjpOp5
-        LflPuW+vE8soi7hp58lJnIUuNTxn1+FUqO2Bkj77xN3nDcs2wecROQLuqPvsemssbexhk6
-        1MF7d0Vv5txg3uFVNogLFAe1ID8qxCXrVQYWCplfN5mIvlD0A2blGQMYCPs30YUDCuvX+R
-        n9W2TvMpIrDhjhvmqVxoXmn27+izEQSAE6Nstg/UFzyFx4BTdAHCHr2hYOtpWEIShCiKPD
-        hvOxmpdDaHz+pX7oXwREmKq6HPt3z97kBUo6MOrqZZGliq3EwH4i1PvKfqpBgQ==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=rxiFZ88cdDuMggCWLh0tFCrSR07PJLB8m8525tLeOM4=;
+        b=1YOoHlD5BU59rb1K8mI7fQ+JeQvD5XtELtf62RCIVC7fKldKwrcbn8izhZ4xNqgipf02+g
+        3ggxw2mHQZWKEsUaAGPDYdTSdSGosONqmSb6pqwtWZCp/WJ3QPh1X6ZpGwP3so2BRZBg4m
+        CJbGik1qPk0RuOyB0czhw4odNHU7GcbIfjalAAZAoI6Pk+H9hSqswaXKJ2yiTYTAeojtt+
+        CRdrAp/rX4f3H7tXef/IrH5FsIRFrq4IoCII/f7L7TGnCIpnMGxXyfF8x3vZJFcKjGEgXe
+        48qlACxUp3GalnzTk5gK2qMSxNJwaQBMczMlq2S07Zwjj+L+LT8NKOHWQ4Jpfg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1597904712;
+        s=2020e; t=1597912607;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=yWX5ssX1k5opQq0Q0AOc6iPkThMUuzgITW4vyDf02GI=;
-        b=8KqvayEHDJQ8yL2aypNLDR5/1oNxkDoJSn4D3ULvO8+geRgIqrP5Xdy/bab7hXpk3xsMDw
-        pwxNBwe1tAeYYrBQ==
-From:   "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=rxiFZ88cdDuMggCWLh0tFCrSR07PJLB8m8525tLeOM4=;
+        b=/G+MS7m8QbLSlqyV9dBfnAwZtjH2zFE1DgexQCmXuSmXRw+VZnoH5LPe8wrZcveFejIpJC
+        TcuH+CN693uBX2AA==
+From:   "tip-bot2 for Yazen Ghannam" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/build] x86/build: Declutter the build output
-Cc:     Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org,
-        x86@kernel.org
+Subject: [tip: ras/core] x86/MCE/AMD, EDAC/mce_amd: Remove struct smca_hwid.xec_bitmap
+Cc:     Yazen Ghannam <yazen.ghannam@amd.com>,
+        Borislav Petkov <bp@suse.de>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200720145353.43924-1-Yazen.Ghannam@amd.com>
+References: <20200720145353.43924-1-Yazen.Ghannam@amd.com>
 MIME-Version: 1.0
-Message-ID: <159790471143.3192.7295132555252528512.tip-bot2@tip-bot2>
+Message-ID: <159791260608.3192.6917808025380283740.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -52,68 +56,135 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/build branch of tip:
+The following commit has been merged into the ras/core branch of tip:
 
-Commit-ID:     642d94cf336fe57675e63a91d11f53d74b9a3f9f
-Gitweb:        https://git.kernel.org/tip/642d94cf336fe57675e63a91d11f53d74b9a3f9f
-Author:        Ingo Molnar <mingo@kernel.org>
-AuthorDate:    Thu, 20 Aug 2020 08:17:40 +02:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 20 Aug 2020 08:17:40 +02:00
+Commit-ID:     368d1887200d68075c064a62a9aa191168cf1eed
+Gitweb:        https://git.kernel.org/tip/368d1887200d68075c064a62a9aa191168cf1eed
+Author:        Yazen Ghannam <yazen.ghannam@amd.com>
+AuthorDate:    Mon, 20 Jul 2020 14:53:53 
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Thu, 20 Aug 2020 10:34:38 +02:00
 
-x86/build: Declutter the build output
+x86/MCE/AMD, EDAC/mce_amd: Remove struct smca_hwid.xec_bitmap
 
-We have some really ancient debug printouts in the x86 boot image build code:
+The Extended Error Code Bitmap (xec_bitmap) for a Scalable MCA bank type
+was intended to be used by the kernel to filter out invalid error codes
+on a system. However, this is unnecessary after a few product releases
+because the hardware will only report valid error codes. Thus, there's
+no need for it with future systems.
 
-  Setup is 14108 bytes (padded to 14336 bytes).
-  System is 8802 kB
-  CRC 27e909d4
+Remove the xec_bitmap field and all references to it.
 
-None of these ever helped debug any sort of breakage that I know of, and they
-clutter the build output.
-
-Remove them - if anyone needs the see the various interim stages of this to
-debug an obscure bug, they can add these printfs and more.
-
-We still keep this one:
-
-  Kernel: arch/x86/boot/bzImage is ready  (#19)
-
-As a sentimental leftover, plus the '#19' build count tag is mildly useful.
-
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: linux-kernel@vger.kernel.org
-Cc: x86@kernel.org
+Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lkml.kernel.org/r/20200720145353.43924-1-Yazen.Ghannam@amd.com
 ---
- arch/x86/boot/tools/build.c | 4 ----
- 1 file changed, 4 deletions(-)
+ arch/x86/include/asm/mce.h    |  1 +-
+ arch/x86/kernel/cpu/mce/amd.c | 44 +++++++++++++++++-----------------
+ drivers/edac/mce_amd.c        |  4 +---
+ 3 files changed, 23 insertions(+), 26 deletions(-)
 
-diff --git a/arch/x86/boot/tools/build.c b/arch/x86/boot/tools/build.c
-index c8b8c1a..a3725ad 100644
---- a/arch/x86/boot/tools/build.c
-+++ b/arch/x86/boot/tools/build.c
-@@ -416,8 +416,6 @@ int main(int argc, char ** argv)
- 	/* Set the default root device */
- 	put_unaligned_le16(DEFAULT_ROOT_DEV, &buf[508]);
+diff --git a/arch/x86/include/asm/mce.h b/arch/x86/include/asm/mce.h
+index cf50382..6adced6 100644
+--- a/arch/x86/include/asm/mce.h
++++ b/arch/x86/include/asm/mce.h
+@@ -328,7 +328,6 @@ enum smca_bank_types {
+ struct smca_hwid {
+ 	unsigned int bank_type;	/* Use with smca_bank_types for easy indexing. */
+ 	u32 hwid_mcatype;	/* (hwid,mcatype) tuple */
+-	u32 xec_bitmap;		/* Bitmap of valid ExtErrorCodes; current max is 21. */
+ 	u8 count;		/* Number of instances. */
+ };
  
--	printf("Setup is %d bytes (padded to %d bytes).\n", c, i);
--
- 	/* Open and stat the kernel file */
- 	fd = open(argv[2], O_RDONLY);
- 	if (fd < 0)
-@@ -425,7 +423,6 @@ int main(int argc, char ** argv)
- 	if (fstat(fd, &sb))
- 		die("Unable to stat `%s': %m", argv[2]);
- 	sz = sb.st_size;
--	printf("System is %d kB\n", (sz+1023)/1024);
- 	kernel = mmap(NULL, sz, PROT_READ, MAP_SHARED, fd, 0);
- 	if (kernel == MAP_FAILED)
- 		die("Unable to mmap '%s': %m", argv[2]);
-@@ -488,7 +485,6 @@ int main(int argc, char ** argv)
- 	}
+diff --git a/arch/x86/kernel/cpu/mce/amd.c b/arch/x86/kernel/cpu/mce/amd.c
+index 99be063..0c6b02d 100644
+--- a/arch/x86/kernel/cpu/mce/amd.c
++++ b/arch/x86/kernel/cpu/mce/amd.c
+@@ -132,49 +132,49 @@ static enum smca_bank_types smca_get_bank_type(unsigned int bank)
+ }
  
- 	/* Write the CRC */
--	printf("CRC %x\n", crc);
- 	put_unaligned_le32(crc, buf);
- 	if (fwrite(buf, 1, 4, dest) != 4)
- 		die("Writing CRC failed");
+ static struct smca_hwid smca_hwid_mcatypes[] = {
+-	/* { bank_type, hwid_mcatype, xec_bitmap } */
++	/* { bank_type, hwid_mcatype } */
+ 
+ 	/* Reserved type */
+-	{ SMCA_RESERVED, HWID_MCATYPE(0x00, 0x0), 0x0 },
++	{ SMCA_RESERVED, HWID_MCATYPE(0x00, 0x0)	},
+ 
+ 	/* ZN Core (HWID=0xB0) MCA types */
+-	{ SMCA_LS,	 HWID_MCATYPE(0xB0, 0x0), 0x1FFFFF },
+-	{ SMCA_LS_V2,	 HWID_MCATYPE(0xB0, 0x10), 0xFFFFFF },
+-	{ SMCA_IF,	 HWID_MCATYPE(0xB0, 0x1), 0x3FFF },
+-	{ SMCA_L2_CACHE, HWID_MCATYPE(0xB0, 0x2), 0xF },
+-	{ SMCA_DE,	 HWID_MCATYPE(0xB0, 0x3), 0x1FF },
++	{ SMCA_LS,	 HWID_MCATYPE(0xB0, 0x0)	},
++	{ SMCA_LS_V2,	 HWID_MCATYPE(0xB0, 0x10)	},
++	{ SMCA_IF,	 HWID_MCATYPE(0xB0, 0x1)	},
++	{ SMCA_L2_CACHE, HWID_MCATYPE(0xB0, 0x2)	},
++	{ SMCA_DE,	 HWID_MCATYPE(0xB0, 0x3)	},
+ 	/* HWID 0xB0 MCATYPE 0x4 is Reserved */
+-	{ SMCA_EX,	 HWID_MCATYPE(0xB0, 0x5), 0xFFF },
+-	{ SMCA_FP,	 HWID_MCATYPE(0xB0, 0x6), 0x7F },
+-	{ SMCA_L3_CACHE, HWID_MCATYPE(0xB0, 0x7), 0xFF },
++	{ SMCA_EX,	 HWID_MCATYPE(0xB0, 0x5)	},
++	{ SMCA_FP,	 HWID_MCATYPE(0xB0, 0x6)	},
++	{ SMCA_L3_CACHE, HWID_MCATYPE(0xB0, 0x7)	},
+ 
+ 	/* Data Fabric MCA types */
+-	{ SMCA_CS,	 HWID_MCATYPE(0x2E, 0x0), 0x1FF },
+-	{ SMCA_PIE,	 HWID_MCATYPE(0x2E, 0x1), 0x1F },
+-	{ SMCA_CS_V2,	 HWID_MCATYPE(0x2E, 0x2), 0x3FFF },
++	{ SMCA_CS,	 HWID_MCATYPE(0x2E, 0x0)	},
++	{ SMCA_PIE,	 HWID_MCATYPE(0x2E, 0x1)	},
++	{ SMCA_CS_V2,	 HWID_MCATYPE(0x2E, 0x2)	},
+ 
+ 	/* Unified Memory Controller MCA type */
+-	{ SMCA_UMC,	 HWID_MCATYPE(0x96, 0x0), 0xFF },
++	{ SMCA_UMC,	 HWID_MCATYPE(0x96, 0x0)	},
+ 
+ 	/* Parameter Block MCA type */
+-	{ SMCA_PB,	 HWID_MCATYPE(0x05, 0x0), 0x1 },
++	{ SMCA_PB,	 HWID_MCATYPE(0x05, 0x0)	},
+ 
+ 	/* Platform Security Processor MCA type */
+-	{ SMCA_PSP,	 HWID_MCATYPE(0xFF, 0x0), 0x1 },
+-	{ SMCA_PSP_V2,	 HWID_MCATYPE(0xFF, 0x1), 0x3FFFF },
++	{ SMCA_PSP,	 HWID_MCATYPE(0xFF, 0x0)	},
++	{ SMCA_PSP_V2,	 HWID_MCATYPE(0xFF, 0x1)	},
+ 
+ 	/* System Management Unit MCA type */
+-	{ SMCA_SMU,	 HWID_MCATYPE(0x01, 0x0), 0x1 },
+-	{ SMCA_SMU_V2,	 HWID_MCATYPE(0x01, 0x1), 0x7FF },
++	{ SMCA_SMU,	 HWID_MCATYPE(0x01, 0x0)	},
++	{ SMCA_SMU_V2,	 HWID_MCATYPE(0x01, 0x1)	},
+ 
+ 	/* Microprocessor 5 Unit MCA type */
+-	{ SMCA_MP5,	 HWID_MCATYPE(0x01, 0x2), 0x3FF },
++	{ SMCA_MP5,	 HWID_MCATYPE(0x01, 0x2)	},
+ 
+ 	/* Northbridge IO Unit MCA type */
+-	{ SMCA_NBIO,	 HWID_MCATYPE(0x18, 0x0), 0x1F },
++	{ SMCA_NBIO,	 HWID_MCATYPE(0x18, 0x0)	},
+ 
+ 	/* PCI Express Unit MCA type */
+-	{ SMCA_PCIE,	 HWID_MCATYPE(0x46, 0x0), 0x1F },
++	{ SMCA_PCIE,	 HWID_MCATYPE(0x46, 0x0)	},
+ };
+ 
+ struct smca_bank smca_banks[MAX_NR_BANKS];
+diff --git a/drivers/edac/mce_amd.c b/drivers/edac/mce_amd.c
+index 325aedf..d4168c4 100644
+--- a/drivers/edac/mce_amd.c
++++ b/drivers/edac/mce_amd.c
+@@ -990,10 +990,8 @@ static void decode_smca_error(struct mce *m)
+ 	pr_emerg(HW_ERR "%s Ext. Error Code: %d", ip_name, xec);
+ 
+ 	/* Only print the decode of valid error codes */
+-	if (xec < smca_mce_descs[bank_type].num_descs &&
+-			(hwid->xec_bitmap & BIT_ULL(xec))) {
++	if (xec < smca_mce_descs[bank_type].num_descs)
+ 		pr_cont(", %s.\n", smca_mce_descs[bank_type].descs[xec]);
+-	}
+ 
+ 	if (bank_type == SMCA_UMC && xec == 0 && decode_dram_ecc)
+ 		decode_dram_ecc(cpu_to_node(m->extcpu), m);
