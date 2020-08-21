@@ -2,57 +2,51 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4465924C47F
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 20 Aug 2020 19:27:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 130F124D739
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 21 Aug 2020 16:21:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730514AbgHTR1p (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 20 Aug 2020 13:27:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46244 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729448AbgHTR1n (ORCPT
+        id S1726946AbgHUOVs (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 21 Aug 2020 10:21:48 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:56900 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726440AbgHUOVq (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 20 Aug 2020 13:27:43 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3639FC061385;
-        Thu, 20 Aug 2020 10:27:43 -0700 (PDT)
-Date:   Thu, 20 Aug 2020 17:27:37 -0000
+        Fri, 21 Aug 2020 10:21:46 -0400
+Date:   Fri, 21 Aug 2020 14:21:41 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1597944460;
+        s=2020; t=1598019702;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=EneEtsyJ/gl6AXrGRnO0QcF3H1K2WoJHKidgfUg0wQM=;
-        b=JO2qFpcLfaw2e7CQG8qBpIU5ajkaIH7TSbjiWeWBVe16AhmbqN5ygzDsIBuO21RANeE3kH
-        hntYaWntVq4YcaxksqwiDP7uq59HXmD8/sesbOX0GJkyeeIqotkjSTyBhC/+Y5fuq4P6zE
-        RAfC25kkZocEI3FWWZv5AB2pP57apm5+XvG9AQvwQBBW0BUFJOaTAegc4qCbARjlOxoRbI
-        eTX9VfIKVtLm/f/BiLhFeuclDvdcszt2kg67M18SCnSV/hlpqt8OePaZFXoa9S8umsLEpq
-        LW16MwV7FhczcSVoOZm3rsEUnYsykVbPwTZ7ppqNpNYWJblB6NvPNKt320tS8w==
+        bh=vkk7rIzyXZ0DDTl4UGE9i/qxlnCMtf14eN/AENzJM3k=;
+        b=26vl0fo8WsBWmQZEeNqjKjFeg8gND8S4rFZgk8W8piUj0VWHy90y6DYR01A7VFlrCFT7pm
+        anM7wQTAkNR1H0HmHpwOV17aRTckJ6j4o9wAhuzEht4ucJkUt6iLkgpQxr+e9MZYF2gN9o
+        mzH5LMHN38rHs+sanj8LnaqvgHdJK+y7wJJSuADg7t8pud54GrRFtDWrtSL0gm5ZuApXCn
+        2UeZo53yobF31IOiO4/EerTPkFQZSIBGtMDI0IiPm9Gkg0x4UZ5vd+cFhGXfUX9ficGWof
+        S3bZQC0QYXGqch/m0vPlobLTncaqFqBSw8MRKcHIub/wP3yb0lMwtNP4LPZo6w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1597944460;
+        s=2020e; t=1598019702;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=EneEtsyJ/gl6AXrGRnO0QcF3H1K2WoJHKidgfUg0wQM=;
-        b=kaDmGAGYnIJwVEYgwYd4NkSIeiGxZJoIR7LazPueHUMVkgLa6qxFq6ES2Fhm1O20EtgEvu
-        Xz8YDVq3EWEXjrDg==
-From:   "tip-bot2 for Brendan Shanks" <tip-bot2@linutronix.de>
+        bh=vkk7rIzyXZ0DDTl4UGE9i/qxlnCMtf14eN/AENzJM3k=;
+        b=MAdTJuUtCO1XK2g47qbI7ZhWxv1ILz60fvc1c9Bf8Ee64+WngE/AjURijtgkls5IAh7KnW
+        tSUjVM5TOoPQGsCA==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cpu] x86/umip: Add emulation/spoofing for SLDT and STR instructions
-Cc:     Ricardo Neri <ricardo.neri-calderon@linux.intel.com>,
-        Andreas Rammhold <andi@notmuch.email>,
-        Brendan Shanks <bshanks@codeweavers.com>,
-        Borislav Petkov <bp@suse.de>,
-        Andy Lutomirski <luto@kernel.org>, x86 <x86@kernel.org>,
+Subject: [tip: core/urgent] core/entry: Respect syscall number rewrites
+Cc:     Kyle Huey <me@kylehuey.com>, Thomas Gleixner <tglx@linutronix.de>,
+        Kees Cook <keescook@chromium.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200710224525.21966-1-bshanks@codeweavers.com>
-References: <20200710224525.21966-1-bshanks@codeweavers.com>
+In-Reply-To: <87blj6ifo8.fsf@nanos.tec.linutronix.de>
+References: <87blj6ifo8.fsf@nanos.tec.linutronix.de>
 MIME-Version: 1.0
-Message-ID: <159794445764.3192.12431631641611015648.tip-bot2@tip-bot2>
+Message-ID: <159801970100.3192.5947326764367261896.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -62,111 +56,47 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cpu branch of tip:
+The following commit has been merged into the core/urgent branch of tip:
 
-Commit-ID:     b91e7089ae70d2f7c81a4456e5b78fef498663d9
-Gitweb:        https://git.kernel.org/tip/b91e7089ae70d2f7c81a4456e5b78fef498663d9
-Author:        Brendan Shanks <bshanks@codeweavers.com>
-AuthorDate:    Fri, 10 Jul 2020 15:45:25 -07:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Thu, 20 Aug 2020 19:10:26 +02:00
+Commit-ID:     d88d59b64ca35abae208e2781fdb45e69cbed56c
+Gitweb:        https://git.kernel.org/tip/d88d59b64ca35abae208e2781fdb45e69cbed56c
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Wed, 19 Aug 2020 21:44:39 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Fri, 21 Aug 2020 16:17:29 +02:00
 
-x86/umip: Add emulation/spoofing for SLDT and STR instructions
+core/entry: Respect syscall number rewrites
 
-Add emulation/spoofing of SLDT and STR for both 32- and 64-bit
-processes.
+The transcript of the x86 entry code to the generic version failed to
+reload the syscall number from ptregs after ptrace and seccomp have run,
+which both can modify the syscall number in ptregs. It returns the original
+syscall number instead which is obviously not the right thing to do.
 
-Wine users have found a small number of Windows apps using SLDT that
-were crashing when run on UMIP-enabled systems.
+Reload the syscall number to fix that.
 
-Originally-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-Reported-by: Andreas Rammhold <andi@notmuch.email>
-Signed-off-by: Brendan Shanks <bshanks@codeweavers.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Acked-by: Andy Lutomirski <luto@kernel.org>
-Reviewed-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-Tested-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-Link: https://lkml.kernel.org/r/20200710224525.21966-1-bshanks@codeweavers.com
+Fixes: 142781e108b1 ("entry: Provide generic syscall entry functionality")
+Reported-by: Kyle Huey <me@kylehuey.com> 
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Kyle Huey <me@kylehuey.com> 
+Tested-by: Kees Cook <keescook@chromium.org>
+Acked-by: Kees Cook <keescook@chromium.org>
+Link: https://lore.kernel.org/r/87blj6ifo8.fsf@nanos.tec.linutronix.de
+
 ---
- arch/x86/kernel/umip.c | 40 +++++++++++++++++++++++++++-------------
- 1 file changed, 27 insertions(+), 13 deletions(-)
+ kernel/entry/common.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/umip.c b/arch/x86/kernel/umip.c
-index 8d5cbe1..2c304fd 100644
---- a/arch/x86/kernel/umip.c
-+++ b/arch/x86/kernel/umip.c
-@@ -45,11 +45,12 @@
-  * value that, lies close to the top of the kernel memory. The limit for the GDT
-  * and the IDT are set to zero.
-  *
-- * Given that SLDT and STR are not commonly used in programs that run on WineHQ
-- * or DOSEMU2, they are not emulated.
-- *
-- * The instruction smsw is emulated to return the value that the register CR0
-+ * The instruction SMSW is emulated to return the value that the register CR0
-  * has at boot time as set in the head_32.
-+ * SLDT and STR are emulated to return the values that the kernel programmatically
-+ * assigns:
-+ * - SLDT returns (GDT_ENTRY_LDT * 8) if an LDT has been set, 0 if not.
-+ * - STR returns (GDT_ENTRY_TSS * 8).
-  *
-  * Emulation is provided for both 32-bit and 64-bit processes.
-  *
-@@ -244,16 +245,34 @@ static int emulate_umip_insn(struct insn *insn, int umip_inst,
- 		*data_size += UMIP_GDT_IDT_LIMIT_SIZE;
- 		memcpy(data, &dummy_limit, UMIP_GDT_IDT_LIMIT_SIZE);
+diff --git a/kernel/entry/common.c b/kernel/entry/common.c
+index 9852e0d..fcae019 100644
+--- a/kernel/entry/common.c
++++ b/kernel/entry/common.c
+@@ -65,7 +65,8 @@ static long syscall_trace_enter(struct pt_regs *regs, long syscall,
  
--	} else if (umip_inst == UMIP_INST_SMSW) {
--		unsigned long dummy_value = CR0_STATE;
-+	} else if (umip_inst == UMIP_INST_SMSW || umip_inst == UMIP_INST_SLDT ||
-+		   umip_inst == UMIP_INST_STR) {
-+		unsigned long dummy_value;
-+
-+		if (umip_inst == UMIP_INST_SMSW) {
-+			dummy_value = CR0_STATE;
-+		} else if (umip_inst == UMIP_INST_STR) {
-+			dummy_value = GDT_ENTRY_TSS * 8;
-+		} else if (umip_inst == UMIP_INST_SLDT) {
-+#ifdef CONFIG_MODIFY_LDT_SYSCALL
-+			down_read(&current->mm->context.ldt_usr_sem);
-+			if (current->mm->context.ldt)
-+				dummy_value = GDT_ENTRY_LDT * 8;
-+			else
-+				dummy_value = 0;
-+			up_read(&current->mm->context.ldt_usr_sem);
-+#else
-+			dummy_value = 0;
-+#endif
-+		}
+ 	syscall_enter_audit(regs, syscall);
  
- 		/*
--		 * Even though the CR0 register has 4 bytes, the number
-+		 * For these 3 instructions, the number
- 		 * of bytes to be copied in the result buffer is determined
- 		 * by whether the operand is a register or a memory location.
- 		 * If operand is a register, return as many bytes as the operand
- 		 * size. If operand is memory, return only the two least
--		 * siginificant bytes of CR0.
-+		 * siginificant bytes.
- 		 */
- 		if (X86_MODRM_MOD(insn->modrm.value) == 3)
- 			*data_size = insn->opnd_bytes;
-@@ -261,7 +280,6 @@ static int emulate_umip_insn(struct insn *insn, int umip_inst,
- 			*data_size = 2;
+-	return ret ? : syscall;
++	/* The above might have changed the syscall number */
++	return ret ? : syscall_get_nr(current, regs);
+ }
  
- 		memcpy(data, &dummy_value, *data_size);
--	/* STR and SLDT  are not emulated */
- 	} else {
- 		return -EINVAL;
- 	}
-@@ -383,10 +401,6 @@ bool fixup_umip_exception(struct pt_regs *regs)
- 	umip_pr_warn(regs, "%s instruction cannot be used by applications.\n",
- 			umip_insns[umip_inst]);
- 
--	/* Do not emulate (spoof) SLDT or STR. */
--	if (umip_inst == UMIP_INST_STR || umip_inst == UMIP_INST_SLDT)
--		return false;
--
- 	umip_pr_warn(regs, "For now, expensive software emulation returns the result.\n");
- 
- 	if (emulate_umip_insn(&insn, umip_inst, dummy_data, &dummy_data_size,
+ noinstr long syscall_enter_from_user_mode(struct pt_regs *regs, long syscall)
