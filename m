@@ -2,96 +2,104 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A68A124E7A7
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 22 Aug 2020 15:39:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 78ACC24EA0A
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 22 Aug 2020 23:59:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728116AbgHVNjH (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 22 Aug 2020 09:39:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60896 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728104AbgHVNjE (ORCPT
+        id S1727792AbgHVV7w (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 22 Aug 2020 17:59:52 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41562 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726750AbgHVV7v (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 22 Aug 2020 09:39:04 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9217FC061575;
-        Sat, 22 Aug 2020 06:39:03 -0700 (PDT)
-Date:   Sat, 22 Aug 2020 13:39:01 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1598103542;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=7zd678ZKKZ255D+lweXntG7O+/mmZ8NMsjf48ukNw5I=;
-        b=UGQ9y/Ebi31TXEKWekiQvM4QooQqc4O/CNs1IOJFEra4X1DVYEWR9SUOVMwEpcp6DG3252
-        EyTo+0kesYSxU087uXVVw0/X5f1HXe22lDGOe9Ajk6Iln+7D5BePXhmePUv1an2jj6mab6
-        iDFAOIYJ7twI2Gj37yUmljYNrMscrlZ5NxCRKZ2x990KabmYGAx+ECTOGzdLTa9yJ1jPWV
-        yvuFhmFaXI6+/Rh40kWmFYl/wGbgOqmPxyDim/w0yRPsuh0d1wPt3rZ4QlOUksbbP4HmWi
-        9Wf4bT0pikpTPhTO8R6M1PptWtHXGvScIKCved2jkqb/8pP1KDrjdMDMrjBykg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1598103542;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=7zd678ZKKZ255D+lweXntG7O+/mmZ8NMsjf48ukNw5I=;
-        b=w/Gyd2vd2/vTrVonUimC9cbtmBzNaUoEi8zM6omyfK9dQF3nPXLF26K9S+Q8cfV5tnhRBh
-        R3GoxGaFLLn5vUDg==
-From:   "tip-bot2 for Arvind Sankar" <tip-bot2@linutronix.de>
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: efi/urgent] efi/x86: Mark kernel rodata non-executable for mixed mode
-Cc:     <stable@vger.kernel.org>, Arvind Sankar <nivedita@alum.mit.edu>,
-        Ard Biesheuvel <ardb@kernel.org>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200717194526.3452089-1-nivedita@alum.mit.edu>
-References: <20200717194526.3452089-1-nivedita@alum.mit.edu>
+        Sat, 22 Aug 2020 17:59:51 -0400
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 5B72920FC3
+        for <linux-tip-commits@vger.kernel.org>; Sat, 22 Aug 2020 21:59:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1598133590;
+        bh=26/N8+mvdu6vlbNFTien1WtTQ3gb3dU7NGk55H9qbcg=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=XqoYxwF1bwXh/iSy5GpGXceIJHdU3M6lfgzq0M1F6S1AzgrK+fMdw8yLVzBtisc5x
+         e6lsVvnJMZOER4PR+5pNh1ARBTvU4q7mQsEANhNkEm/vkpA9s2mgGHGbWxNwke6z0L
+         +dlKJyuQBeyj/BC6RLr2VbPRTlnxcJr/poHOeBYs=
+Received: by mail-wm1-f52.google.com with SMTP id u18so4990077wmc.3
+        for <linux-tip-commits@vger.kernel.org>; Sat, 22 Aug 2020 14:59:50 -0700 (PDT)
+X-Gm-Message-State: AOAM5318pJibRkZ+hF7gkavvziLeg7VVDjCKkWk8p4iyx19WB2sDFb2f
+        SDAiRjOqN+s1hwrEkAwCywGljt/QAStckoV2np3o3g==
+X-Google-Smtp-Source: ABdhPJx8zYLtQI9PtVOSnI3R8T+8esNH3luXDKza2exG6DLlTSdqFPsxQ/yBNmt1hQvaBDz7uJ7L04rqy528U7jIwUk=
+X-Received: by 2002:a7b:ca48:: with SMTP id m8mr127503wml.36.1598133588918;
+ Sat, 22 Aug 2020 14:59:48 -0700 (PDT)
 MIME-Version: 1.0
-Message-ID: <159810354148.3192.13677289427486753048.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2.linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+References: <881de09e786ab93ce56ee4a2437ba2c308afe7a9.1593795633.git.luto@kernel.org>
+ <159388495037.4006.7851835406474127743.tip-bot2@tip-bot2> <20200820102344.GP2674@hirez.programming.kicks-ass.net>
+In-Reply-To: <20200820102344.GP2674@hirez.programming.kicks-ass.net>
+From:   Andy Lutomirski <luto@kernel.org>
+Date:   Sat, 22 Aug 2020 14:59:37 -0700
+X-Gmail-Original-Message-ID: <CALCETrVFQuMcUgfDkREGFHSSF9UW5yy4UuNZSpjw1962eSvLyw@mail.gmail.com>
+Message-ID: <CALCETrVFQuMcUgfDkREGFHSSF9UW5yy4UuNZSpjw1962eSvLyw@mail.gmail.com>
+Subject: Re: [tip: x86/urgent] x86/entry, selftests: Further improve user
+ entry sanity checks
+To:     Peter Zijlstra <peterz@infradead.org>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        linux-tip-commits@vger.kernel.org,
+        Andy Lutomirski <luto@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the efi/urgent branch of tip:
+On Thu, Aug 20, 2020 at 3:24 AM <peterz@infradead.org> wrote:
+>
+> On Sat, Jul 04, 2020 at 05:49:10PM -0000, tip-bot2 for Andy Lutomirski wrote:
+>
+> > diff --git a/arch/x86/entry/common.c b/arch/x86/entry/common.c
+> > index f392a8b..e83b3f1 100644
+> > --- a/arch/x86/entry/common.c
+> > +++ b/arch/x86/entry/common.c
+> > @@ -49,6 +49,23 @@
+> >  static void check_user_regs(struct pt_regs *regs)
+> >  {
+> >       if (IS_ENABLED(CONFIG_DEBUG_ENTRY)) {
+> > +             /*
+> > +              * Make sure that the entry code gave us a sensible EFLAGS
+> > +              * register.  Native because we want to check the actual CPU
+> > +              * state, not the interrupt state as imagined by Xen.
+> > +              */
+> > +             unsigned long flags = native_save_fl();
+> > +             WARN_ON_ONCE(flags & (X86_EFLAGS_AC | X86_EFLAGS_DF |
+> > +                                   X86_EFLAGS_NT));
+>
+> This triggers with AC|TF on my !SMAP enabled machine.
+>
+> something like so then?
+>
+> diff --git a/arch/x86/include/asm/entry-common.h b/arch/x86/include/asm/entry-common.h
+> index a8f9315b9eae..76410964585f 100644
+> --- a/arch/x86/include/asm/entry-common.h
+> +++ b/arch/x86/include/asm/entry-common.h
+> @@ -18,8 +18,15 @@ static __always_inline void arch_check_user_regs(struct pt_regs *regs)
+>                  * state, not the interrupt state as imagined by Xen.
+>                  */
+>                 unsigned long flags = native_save_fl();
+> -               WARN_ON_ONCE(flags & (X86_EFLAGS_AC | X86_EFLAGS_DF |
+> -                                     X86_EFLAGS_NT));
+> +               unsigned long mask = X86_EFLAGS_DF | X86_EFLAGS_NT;
+> +
+> +               /*
+> +                * For !SMAP hardware we patch out CLAC on entry.
+> +                */
+> +               if (boot_cpu_has(X86_FEATURE_SMAP))
+> +                       mask |= X86_EFLAGS_AC;
+> +
+> +               WARN_ON_ONCE(flags & mask);
+>
+>                 /* We think we came from user mode. Make sure pt_regs agrees. */
+>                 WARN_ON_ONCE(!user_mode(regs));
 
-Commit-ID:     c8502eb2d43b6b9b1dc382299a4d37031be63876
-Gitweb:        https://git.kernel.org/tip/c8502eb2d43b6b9b1dc382299a4d37031be63876
-Author:        Arvind Sankar <nivedita@alum.mit.edu>
-AuthorDate:    Fri, 17 Jul 2020 15:45:26 -04:00
-Committer:     Ard Biesheuvel <ardb@kernel.org>
-CommitterDate: Thu, 20 Aug 2020 11:18:36 +02:00
+LGTM.
 
-efi/x86: Mark kernel rodata non-executable for mixed mode
-
-When remapping the kernel rodata section RO in the EFI pagetables, the
-protection flags that were used for the text section are being reused,
-but the rodata section should not be marked executable.
-
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
-Link: https://lore.kernel.org/r/20200717194526.3452089-1-nivedita@alum.mit.edu
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
- arch/x86/platform/efi/efi_64.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/arch/x86/platform/efi/efi_64.c b/arch/x86/platform/efi/efi_64.c
-index 413583f..6af4da1 100644
---- a/arch/x86/platform/efi/efi_64.c
-+++ b/arch/x86/platform/efi/efi_64.c
-@@ -259,6 +259,8 @@ int __init efi_setup_page_tables(unsigned long pa_memmap, unsigned num_pages)
- 	npages = (__end_rodata - __start_rodata) >> PAGE_SHIFT;
- 	rodata = __pa(__start_rodata);
- 	pfn = rodata >> PAGE_SHIFT;
-+
-+	pf = _PAGE_NX | _PAGE_ENC;
- 	if (kernel_map_pages_in_pgd(pgd, pfn, rodata, npages, pf)) {
- 		pr_err("Failed to map kernel rodata 1:1\n");
- 		return 1;
+Acked-by: Andy Lutomirski <luto@kernel.org>
