@@ -2,59 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 80B5624D73B
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 21 Aug 2020 16:21:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D95BA24E6BF
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 22 Aug 2020 11:42:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727824AbgHUOV5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 21 Aug 2020 10:21:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43184 "EHLO
+        id S1727125AbgHVJmq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 22 Aug 2020 05:42:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52808 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726946AbgHUOVz (ORCPT
+        with ESMTP id S1725864AbgHVJmq (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 21 Aug 2020 10:21:55 -0400
+        Sat, 22 Aug 2020 05:42:46 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E91AC061573;
-        Fri, 21 Aug 2020 07:21:55 -0700 (PDT)
-Date:   Fri, 21 Aug 2020 14:21:49 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBB1FC061573;
+        Sat, 22 Aug 2020 02:42:45 -0700 (PDT)
+Date:   Sat, 22 Aug 2020 09:42:41 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1598019710;
+        s=2020; t=1598089363;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Y2DFeXJNPuolDylpb3isSZwbqmOXxlSF3hwLU1zC9DM=;
-        b=pcyjF1S6TrWlazAe6CDtL5jdgrKb6+wE7Go/S1TOIZk5cINZDoYPtXfSy+8oY1l/BrGeIF
-        F0xkXoi3I22g2XOcH4AFmKRISZWZ4mcJLtESKGs9V4FA6FgCHzHHHAbK/pauGvzSQS7Ztv
-        Ncd/kUgfiaVnXxazkqk2MolUNc0Ol0VUqIMEWZjcE3IIyw+779IdCQhgYLOd2hc7hfXn85
-        87/wyQI/KD3mWnK8S184Qo6jpIwNq9mQ0v3KIdtqSpexTU85WTQGmBh7vMpK3BnHB6M0yx
-        fVuAqiCIFtTwiYdlT9QLUEvW7WvFLlYf8uM+MwTpyrTt+SH9CLJ2LmUR9xUSNQ==
+        bh=tpRCCzDjfro++Pmy0tIrOIDrvnAFjfGxvLuvwi730fk=;
+        b=BtIlCb9S7MAAU7LbAhBKCacujbBTWcR8Ekchjl0dMpWQ36WMbVwkdNkcSplbxp/dJNHXN7
+        GK6WrsV/t0eROfpodYIGfXWHXvmJjj8ymbG6IMQ/JX3Hl3dkkSK1KtRI79nlX2gVJSxw81
+        N5rP2IuwahWMXKP2CORpufyApbSPwomKMeEFhFw8WRtfpSRZRActwMqVMiPYajsvuyHxX/
+        bEnJ2lH/un1gszPKxZR6SuBr94r0iTeS5tZeIaupN1i0hHxmHuIZINVayfh0zobxo99qBA
+        NMaV3Dsc3VbpfSJW6jWS56YBEmmHBeyjzysFYmaNthtZq9BMkHE1t/z7qzECyA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1598019710;
+        s=2020e; t=1598089363;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Y2DFeXJNPuolDylpb3isSZwbqmOXxlSF3hwLU1zC9DM=;
-        b=DjxMqSSfcFUTtU/YDCocR6utWvQKs2cn2N0MMIVEJxffTDTnIcP6ApJ9Yp5+0Rkr1G17DW
-        4/nJY2UVboehkCDA==
-From:   "tip-bot2 for Sean Christopherson" <tip-bot2@linutronix.de>
+        bh=tpRCCzDjfro++Pmy0tIrOIDrvnAFjfGxvLuvwi730fk=;
+        b=gk4xtRkNl0QwcqGZwfmq+lWwYHxloVjtYLgWEeYatc33irn0U5oWEne5Ke1Xd1jD8j4du9
+        7jaCKMiy0PPqXgDA==
+From:   "tip-bot2 for Chris Down" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/entry/64: Do not use RDPID in paranoid entry to
- accomodate KVM
-Cc:     Tom Lendacky <thomas.lendacky@amd.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Sean Christopherson <sean.j.christopherson@intel.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200821105229.18938-1-pbonzini@redhat.com>
-References: <20200821105229.18938-1-pbonzini@redhat.com>
+Subject: [tip: x86/misc] x86/msr: Make source of unrecognised MSR writes unambiguous
+Cc:     Chris Down <chris@chrisdown.name>, Borislav Petkov <bp@suse.de>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: =?utf-8?q?=3C6f6fbd0ee6c99bc5e47910db700a6642159db01b=2E15980?=
+ =?utf-8?q?11595=2Egit=2Echris=40chrisdown=2Ename=3E?=
+References: =?utf-8?q?=3C6f6fbd0ee6c99bc5e47910db700a6642159db01b=2E159801?=
+ =?utf-8?q?1595=2Egit=2Echris=40chrisdown=2Ename=3E?=
 MIME-Version: 1.0
-Message-ID: <159801970916.3192.4141400413119808645.tip-bot2@tip-bot2>
+Message-ID: <159808936198.3192.9491971431453881525.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -64,82 +60,42 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the x86/misc branch of tip:
 
-Commit-ID:     6a3ea3e68b8a8a26c4aaac03432ed92269c9a14e
-Gitweb:        https://git.kernel.org/tip/6a3ea3e68b8a8a26c4aaac03432ed92269c9a14e
-Author:        Sean Christopherson <sean.j.christopherson@intel.com>
-AuthorDate:    Fri, 21 Aug 2020 06:52:29 -04:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 21 Aug 2020 16:15:27 +02:00
+Commit-ID:     c31feed8461fb8648075ba9b53d9e527d530972f
+Gitweb:        https://git.kernel.org/tip/c31feed8461fb8648075ba9b53d9e527d530972f
+Author:        Chris Down <chris@chrisdown.name>
+AuthorDate:    Fri, 21 Aug 2020 13:10:35 +01:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Sat, 22 Aug 2020 11:40:38 +02:00
 
-x86/entry/64: Do not use RDPID in paranoid entry to accomodate KVM
+x86/msr: Make source of unrecognised MSR writes unambiguous
 
-KVM has an optmization to avoid expensive MRS read/writes on
-VMENTER/EXIT. It caches the MSR values and restores them either when
-leaving the run loop, on preemption or when going out to user space.
+In many cases, task_struct.comm isn't enough to distinguish the
+offender, since for interpreted languages it's likely just going to be
+"python3" or whatever. Add the pid to make it unambiguous.
 
-The affected MSRs are not required for kernel context operations. This
-changed with the recently introduced mechanism to handle FSGSBASE in the
-paranoid entry code which has to retrieve the kernel GSBASE value by
-accessing per CPU memory. The mechanism needs to retrieve the CPU number
-and uses either LSL or RDPID if the processor supports it.
+ [ bp: Make the printk string a single line for easier grepping. ]
 
-Unfortunately RDPID uses MSR_TSC_AUX which is in the list of cached and
-lazily restored MSRs, which means between the point where the guest value
-is written and the point of restore, MSR_TSC_AUX contains a random number.
-
-If an NMI or any other exception which uses the paranoid entry path happens
-in such a context, then RDPID returns the random guest MSR_TSC_AUX value.
-
-As a consequence this reads from the wrong memory location to retrieve the
-kernel GSBASE value. Kernel GS is used to for all regular this_cpu_*()
-operations. If the GSBASE in the exception handler points to the per CPU
-memory of a different CPU then this has the obvious consequences of data
-corruption and crashes.
-
-As the paranoid entry path is the only place which accesses MSR_TSX_AUX
-(via RDPID) and the fallback via LSL is not significantly slower, remove
-the RDPID alternative from the entry path and always use LSL.
-
-The alternative would be to write MSR_TSC_AUX on every VMENTER and VMEXIT
-which would be inflicting massive overhead on that code path.
-
-[ tglx: Rewrote changelog ]
-
-Fixes: eaad981291ee3 ("x86/entry/64: Introduce the FIND_PERCPU_BASE macro")
-Reported-by: Tom Lendacky <thomas.lendacky@amd.com>
-Debugged-by: Tom Lendacky <thomas.lendacky@amd.com>
-Suggested-by: Andy Lutomirski <luto@kernel.org>
-Suggested-by: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Sean Christopherson <sean.j.christopherson@intel.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20200821105229.18938-1-pbonzini@redhat.com
+Signed-off-by: Chris Down <chris@chrisdown.name>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lkml.kernel.org/r/6f6fbd0ee6c99bc5e47910db700a6642159db01b.1598011595.git.chris@chrisdown.name
 ---
- arch/x86/entry/calling.h | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ arch/x86/kernel/msr.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/entry/calling.h b/arch/x86/entry/calling.h
-index 98e4d88..ae9b0d4 100644
---- a/arch/x86/entry/calling.h
-+++ b/arch/x86/entry/calling.h
-@@ -374,12 +374,14 @@ For 32-bit we have the following conventions - kernel is built with
-  * Fetch the per-CPU GSBASE value for this processor and put it in @reg.
-  * We normally use %gs for accessing per-CPU data, but we are setting up
-  * %gs here and obviously can not use %gs itself to access per-CPU data.
-+ *
-+ * Do not use RDPID, because KVM loads guest's TSC_AUX on vm-entry and
-+ * may not restore the host's value until the CPU returns to userspace.
-+ * Thus the kernel would consume a guest's TSC_AUX if an NMI arrives
-+ * while running KVM's run loop.
-  */
- .macro GET_PERCPU_BASE reg:req
--	ALTERNATIVE \
--		"LOAD_CPU_AND_NODE_SEG_LIMIT \reg", \
--		"RDPID	\reg", \
--		X86_FEATURE_RDPID
-+	LOAD_CPU_AND_NODE_SEG_LIMIT \reg
- 	andq	$VDSO_CPUNODE_MASK, \reg
- 	movq	__per_cpu_offset(, \reg, 8), \reg
- .endm
+diff --git a/arch/x86/kernel/msr.c b/arch/x86/kernel/msr.c
+index b03001d..c0d4098 100644
+--- a/arch/x86/kernel/msr.c
++++ b/arch/x86/kernel/msr.c
+@@ -102,8 +102,8 @@ static int filter_write(u32 reg)
+ 	if (reg == MSR_IA32_ENERGY_PERF_BIAS)
+ 		return 0;
+ 
+-	pr_err("Write to unrecognized MSR 0x%x by %s\n"
+-	       "Please report to x86@kernel.org\n", reg, current->comm);
++	pr_err("Write to unrecognized MSR 0x%x by %s (pid: %d). Please report to x86@kernel.org.\n",
++	       reg, current->comm, current->pid);
+ 
+ 	return 0;
+ }
