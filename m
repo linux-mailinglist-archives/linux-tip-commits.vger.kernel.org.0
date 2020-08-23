@@ -2,104 +2,276 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 78ACC24EA0A
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 22 Aug 2020 23:59:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA51F24EC33
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 23 Aug 2020 10:41:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727792AbgHVV7w (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 22 Aug 2020 17:59:52 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41562 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726750AbgHVV7v (ORCPT
+        id S1726303AbgHWIlA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 23 Aug 2020 04:41:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39528 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726231AbgHWIk7 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 22 Aug 2020 17:59:51 -0400
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5B72920FC3
-        for <linux-tip-commits@vger.kernel.org>; Sat, 22 Aug 2020 21:59:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1598133590;
-        bh=26/N8+mvdu6vlbNFTien1WtTQ3gb3dU7NGk55H9qbcg=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=XqoYxwF1bwXh/iSy5GpGXceIJHdU3M6lfgzq0M1F6S1AzgrK+fMdw8yLVzBtisc5x
-         e6lsVvnJMZOER4PR+5pNh1ARBTvU4q7mQsEANhNkEm/vkpA9s2mgGHGbWxNwke6z0L
-         +dlKJyuQBeyj/BC6RLr2VbPRTlnxcJr/poHOeBYs=
-Received: by mail-wm1-f52.google.com with SMTP id u18so4990077wmc.3
-        for <linux-tip-commits@vger.kernel.org>; Sat, 22 Aug 2020 14:59:50 -0700 (PDT)
-X-Gm-Message-State: AOAM5318pJibRkZ+hF7gkavvziLeg7VVDjCKkWk8p4iyx19WB2sDFb2f
-        SDAiRjOqN+s1hwrEkAwCywGljt/QAStckoV2np3o3g==
-X-Google-Smtp-Source: ABdhPJx8zYLtQI9PtVOSnI3R8T+8esNH3luXDKza2exG6DLlTSdqFPsxQ/yBNmt1hQvaBDz7uJ7L04rqy528U7jIwUk=
-X-Received: by 2002:a7b:ca48:: with SMTP id m8mr127503wml.36.1598133588918;
- Sat, 22 Aug 2020 14:59:48 -0700 (PDT)
+        Sun, 23 Aug 2020 04:40:59 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AC92C061573;
+        Sun, 23 Aug 2020 01:40:59 -0700 (PDT)
+Date:   Sun, 23 Aug 2020 08:40:55 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1598172057;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=HvVqG99cnpZd2Kn++fSn80JuL9/AT14bR315w9zAXPw=;
+        b=uMcFssr8JGmznpcOnRtMmoVNVpeRuNDAV19Wj2MP2w9sYt1FbSTgmRcN5VReKsJQA4wncM
+        UQdc59/SXmv/gXHpo3xSDkbIMgFaffwe56LyyOB95i1YMmWFTGhg9L4T2Jy73TMYpv5TTu
+        lDes3g+SzhIcqxv54CfSJBb1pyf8ExSsfQ8MeO4FrFQGpF4rcfBQEFTnwx2Io3gB40uSwW
+        InmeOd7rqGsAxRpabzZENGJ57Fy3WtOE8RqRv/PkcANElWAVtKIz2ZGJVHt0vFr4Xf5ri1
+        WG2JUKNunFq2Y18sZm8PCTH+r0CIqULPsyz8CWhtC5dtmw41uX8jx6VmMk6gcg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1598172057;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=HvVqG99cnpZd2Kn++fSn80JuL9/AT14bR315w9zAXPw=;
+        b=N5oYoQ4FARbTZrF+j7TfNtlVoNL3UZxh5gV9mtbVonMtDcjTYq68Lw1y72RrqjorEz5YFP
+        oQlI6qfvHyzgWGBw==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: timers/core] timekeeping: Provide multi-timestamp accessor to
+ NMI safe timekeeper
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Petr Mladek <pmladek@suse.com>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200814115512.159981360@linutronix.de>
+References: <20200814115512.159981360@linutronix.de>
 MIME-Version: 1.0
-References: <881de09e786ab93ce56ee4a2437ba2c308afe7a9.1593795633.git.luto@kernel.org>
- <159388495037.4006.7851835406474127743.tip-bot2@tip-bot2> <20200820102344.GP2674@hirez.programming.kicks-ass.net>
-In-Reply-To: <20200820102344.GP2674@hirez.programming.kicks-ass.net>
-From:   Andy Lutomirski <luto@kernel.org>
-Date:   Sat, 22 Aug 2020 14:59:37 -0700
-X-Gmail-Original-Message-ID: <CALCETrVFQuMcUgfDkREGFHSSF9UW5yy4UuNZSpjw1962eSvLyw@mail.gmail.com>
-Message-ID: <CALCETrVFQuMcUgfDkREGFHSSF9UW5yy4UuNZSpjw1962eSvLyw@mail.gmail.com>
-Subject: Re: [tip: x86/urgent] x86/entry, selftests: Further improve user
- entry sanity checks
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        linux-tip-commits@vger.kernel.org,
-        Andy Lutomirski <luto@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Message-ID: <159817205568.389.4403103773258550373.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2.linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Thu, Aug 20, 2020 at 3:24 AM <peterz@infradead.org> wrote:
->
-> On Sat, Jul 04, 2020 at 05:49:10PM -0000, tip-bot2 for Andy Lutomirski wrote:
->
-> > diff --git a/arch/x86/entry/common.c b/arch/x86/entry/common.c
-> > index f392a8b..e83b3f1 100644
-> > --- a/arch/x86/entry/common.c
-> > +++ b/arch/x86/entry/common.c
-> > @@ -49,6 +49,23 @@
-> >  static void check_user_regs(struct pt_regs *regs)
-> >  {
-> >       if (IS_ENABLED(CONFIG_DEBUG_ENTRY)) {
-> > +             /*
-> > +              * Make sure that the entry code gave us a sensible EFLAGS
-> > +              * register.  Native because we want to check the actual CPU
-> > +              * state, not the interrupt state as imagined by Xen.
-> > +              */
-> > +             unsigned long flags = native_save_fl();
-> > +             WARN_ON_ONCE(flags & (X86_EFLAGS_AC | X86_EFLAGS_DF |
-> > +                                   X86_EFLAGS_NT));
->
-> This triggers with AC|TF on my !SMAP enabled machine.
->
-> something like so then?
->
-> diff --git a/arch/x86/include/asm/entry-common.h b/arch/x86/include/asm/entry-common.h
-> index a8f9315b9eae..76410964585f 100644
-> --- a/arch/x86/include/asm/entry-common.h
-> +++ b/arch/x86/include/asm/entry-common.h
-> @@ -18,8 +18,15 @@ static __always_inline void arch_check_user_regs(struct pt_regs *regs)
->                  * state, not the interrupt state as imagined by Xen.
->                  */
->                 unsigned long flags = native_save_fl();
-> -               WARN_ON_ONCE(flags & (X86_EFLAGS_AC | X86_EFLAGS_DF |
-> -                                     X86_EFLAGS_NT));
-> +               unsigned long mask = X86_EFLAGS_DF | X86_EFLAGS_NT;
-> +
-> +               /*
-> +                * For !SMAP hardware we patch out CLAC on entry.
-> +                */
-> +               if (boot_cpu_has(X86_FEATURE_SMAP))
-> +                       mask |= X86_EFLAGS_AC;
-> +
-> +               WARN_ON_ONCE(flags & mask);
->
->                 /* We think we came from user mode. Make sure pt_regs agrees. */
->                 WARN_ON_ONCE(!user_mode(regs));
+The following commit has been merged into the timers/core branch of tip:
 
-LGTM.
+Commit-ID:     e2d977c9f1abd1d199b412f8f83c1727808b794d
+Gitweb:        https://git.kernel.org/tip/e2d977c9f1abd1d199b412f8f83c1727808b794d
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Fri, 14 Aug 2020 12:19:35 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Sun, 23 Aug 2020 10:38:24 +02:00
 
-Acked-by: Andy Lutomirski <luto@kernel.org>
+timekeeping: Provide multi-timestamp accessor to NMI safe timekeeper
+
+printk wants to store various timestamps (MONOTONIC, REALTIME, BOOTTIME) to
+make correlation of dmesg from several systems easier.
+
+Provide an interface to retrieve all three timestamps in one go.
+
+There are some caveats:
+
+1) Boot time and late sleep time injection
+
+  Boot time is a racy access on 32bit systems if the sleep time injection
+  happens late during resume and not in timekeeping_resume(). That could be
+  avoided by expanding struct tk_read_base with boot offset for 32bit and
+  adding more overhead to the update. As this is a hard to observe once per
+  resume event which can be filtered with reasonable effort using the
+  accurate mono/real timestamps, it's probably not worth the trouble.
+
+  Aside of that it might be possible on 32 and 64 bit to observe the
+  following when the sleep time injection happens late:
+
+  CPU 0				         CPU 1
+  timekeeping_resume()
+  ktime_get_fast_timestamps()
+    mono, real = __ktime_get_real_fast()
+  					 inject_sleep_time()
+  					   update boot offset
+  	boot = mono + bootoffset;
+  
+  That means that boot time already has the sleep time adjustment, but
+  real time does not. On the next readout both are in sync again.
+  
+  Preventing this for 64bit is not really feasible without destroying the
+  careful cache layout of the timekeeper because the sequence count and
+  struct tk_read_base would then need two cache lines instead of one.
+
+2) Suspend/resume timestamps
+
+   Access to the time keeper clock source is disabled accross the innermost
+   steps of suspend/resume. The accessors still work, but the timestamps
+   are frozen until time keeping is resumed which happens very early.
+
+   For regular suspend/resume there is no observable difference vs. sched
+   clock, but it might affect some of the nasty low level debug printks.
+
+   OTOH, access to sched clock is not guaranteed accross suspend/resume on
+   all systems either so it depends on the hardware in use.
+
+   If that turns out to be a real problem then this could be mitigated by
+   using sched clock in a similar way as during early boot. But it's not as
+   trivial as on early boot because it needs some careful protection
+   against the clock monotonic timestamp jumping backwards on resume.
+
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Petr Mladek <pmladek@suse.com>                                                                                                                                                                                                                                      
+Link: https://lore.kernel.org/r/20200814115512.159981360@linutronix.de
+
+---
+ include/linux/timekeeping.h | 15 +++++++-
+ kernel/time/timekeeping.c   | 76 ++++++++++++++++++++++++++++++------
+ 2 files changed, 80 insertions(+), 11 deletions(-)
+
+diff --git a/include/linux/timekeeping.h b/include/linux/timekeeping.h
+index d5471d6..7f7e4a3 100644
+--- a/include/linux/timekeeping.h
++++ b/include/linux/timekeeping.h
+@@ -222,6 +222,18 @@ extern bool timekeeping_rtc_skipresume(void);
+ 
+ extern void timekeeping_inject_sleeptime64(const struct timespec64 *delta);
+ 
++/*
++ * struct ktime_timestanps - Simultaneous mono/boot/real timestamps
++ * @mono:	Monotonic timestamp
++ * @boot:	Boottime timestamp
++ * @real:	Realtime timestamp
++ */
++struct ktime_timestamps {
++	u64		mono;
++	u64		boot;
++	u64		real;
++};
++
+ /**
+  * struct system_time_snapshot - simultaneous raw/real time capture with
+  *				 counter value
+@@ -280,6 +292,9 @@ extern int get_device_system_crosststamp(
+  */
+ extern void ktime_get_snapshot(struct system_time_snapshot *systime_snapshot);
+ 
++/* NMI safe mono/boot/realtime timestamps */
++extern void ktime_get_fast_timestamps(struct ktime_timestamps *snap);
++
+ /*
+  * Persistent clock related interfaces
+  */
+diff --git a/kernel/time/timekeeping.c b/kernel/time/timekeeping.c
+index 57d064d..ba76576 100644
+--- a/kernel/time/timekeeping.c
++++ b/kernel/time/timekeeping.c
+@@ -530,29 +530,29 @@ u64 notrace ktime_get_boot_fast_ns(void)
+ }
+ EXPORT_SYMBOL_GPL(ktime_get_boot_fast_ns);
+ 
+-
+ /*
+  * See comment for __ktime_get_fast_ns() vs. timestamp ordering
+  */
+-static __always_inline u64 __ktime_get_real_fast_ns(struct tk_fast *tkf)
++static __always_inline u64 __ktime_get_real_fast(struct tk_fast *tkf, u64 *mono)
+ {
+ 	struct tk_read_base *tkr;
++	u64 basem, baser, delta;
+ 	unsigned int seq;
+-	u64 now;
+ 
+ 	do {
+ 		seq = raw_read_seqcount_latch(&tkf->seq);
+ 		tkr = tkf->base + (seq & 0x01);
+-		now = ktime_to_ns(tkr->base_real);
++		basem = ktime_to_ns(tkr->base);
++		baser = ktime_to_ns(tkr->base_real);
+ 
+-		now += timekeeping_delta_to_ns(tkr,
+-				clocksource_delta(
+-					tk_clock_read(tkr),
+-					tkr->cycle_last,
+-					tkr->mask));
++		delta = timekeeping_delta_to_ns(tkr,
++				clocksource_delta(tk_clock_read(tkr),
++				tkr->cycle_last, tkr->mask));
+ 	} while (read_seqcount_retry(&tkf->seq, seq));
+ 
+-	return now;
++	if (mono)
++		*mono = basem + delta;
++	return baser + delta;
+ }
+ 
+ /**
+@@ -560,11 +560,65 @@ static __always_inline u64 __ktime_get_real_fast_ns(struct tk_fast *tkf)
+  */
+ u64 ktime_get_real_fast_ns(void)
+ {
+-	return __ktime_get_real_fast_ns(&tk_fast_mono);
++	return __ktime_get_real_fast(&tk_fast_mono, NULL);
+ }
+ EXPORT_SYMBOL_GPL(ktime_get_real_fast_ns);
+ 
+ /**
++ * ktime_get_fast_timestamps: - NMI safe timestamps
++ * @snapshot:	Pointer to timestamp storage
++ *
++ * Stores clock monotonic, boottime and realtime timestamps.
++ *
++ * Boot time is a racy access on 32bit systems if the sleep time injection
++ * happens late during resume and not in timekeeping_resume(). That could
++ * be avoided by expanding struct tk_read_base with boot offset for 32bit
++ * and adding more overhead to the update. As this is a hard to observe
++ * once per resume event which can be filtered with reasonable effort using
++ * the accurate mono/real timestamps, it's probably not worth the trouble.
++ *
++ * Aside of that it might be possible on 32 and 64 bit to observe the
++ * following when the sleep time injection happens late:
++ *
++ * CPU 0				CPU 1
++ * timekeeping_resume()
++ * ktime_get_fast_timestamps()
++ *	mono, real = __ktime_get_real_fast()
++ *					inject_sleep_time()
++ *					   update boot offset
++ *	boot = mono + bootoffset;
++ *
++ * That means that boot time already has the sleep time adjustment, but
++ * real time does not. On the next readout both are in sync again.
++ *
++ * Preventing this for 64bit is not really feasible without destroying the
++ * careful cache layout of the timekeeper because the sequence count and
++ * struct tk_read_base would then need two cache lines instead of one.
++ *
++ * Access to the time keeper clock source is disabled accross the innermost
++ * steps of suspend/resume. The accessors still work, but the timestamps
++ * are frozen until time keeping is resumed which happens very early.
++ *
++ * For regular suspend/resume there is no observable difference vs. sched
++ * clock, but it might affect some of the nasty low level debug printks.
++ *
++ * OTOH, access to sched clock is not guaranteed accross suspend/resume on
++ * all systems either so it depends on the hardware in use.
++ *
++ * If that turns out to be a real problem then this could be mitigated by
++ * using sched clock in a similar way as during early boot. But it's not as
++ * trivial as on early boot because it needs some careful protection
++ * against the clock monotonic timestamp jumping backwards on resume.
++ */
++void ktime_get_fast_timestamps(struct ktime_timestamps *snapshot)
++{
++	struct timekeeper *tk = &tk_core.timekeeper;
++
++	snapshot->real = __ktime_get_real_fast(&tk_fast_mono, &snapshot->mono);
++	snapshot->boot = snapshot->mono + ktime_to_ns(data_race(tk->offs_boot));
++}
++
++/**
+  * halt_fast_timekeeper - Prevent fast timekeeper from accessing clocksource.
+  * @tk: Timekeeper to snapshot.
+  *
