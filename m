@@ -2,54 +2,51 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9549524F9B0
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 24 Aug 2020 11:48:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E26B2501E6
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 24 Aug 2020 18:22:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728440AbgHXJse (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 24 Aug 2020 05:48:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35066 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728763AbgHXIkl (ORCPT
+        id S1725947AbgHXQWb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 24 Aug 2020 12:22:31 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:43672 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725780AbgHXQWb (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 24 Aug 2020 04:40:41 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4E49C061573;
-        Mon, 24 Aug 2020 01:40:40 -0700 (PDT)
-Date:   Mon, 24 Aug 2020 08:40:30 -0000
+        Mon, 24 Aug 2020 12:22:31 -0400
+Date:   Mon, 24 Aug 2020 16:22:27 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1598258431;
+        s=2020; t=1598286148;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=oi/gwlF9UK0Dj6KRXzgzltwh1bdA+sQUViRUrZHY+us=;
-        b=e+FZ645cd6LWZaO7VwD/zzo7QB6pxc2qPdp59/DCjgQbWRy01pZhvh6HRG26aXG8wA0y1Y
-        dh4UzG9XZB/bfbPpNpos0BW0yt70tpew2rRK7goJrJKV/hUuj1JxkCENj0HTqNVib0c4Au
-        qW6MjqHX4Dm6jtFhgkEwKDLpPRMjVoPsv1Xpx9iObrfaBdOMpYuqQouUqWgrgVuaJ6zCS1
-        Gpg8F5Jhc3h4nhC9ShjlkihdgGpPuO7dTrCVlXraf0w2b9UZHALom3+bCs4Yhxiv6l5Rg8
-        jUkd43dsXtKdhuX2a4cXYiaCnGfSjoEABMZF7v5hfntidl179bFhJS7RjLB/ZQ==
+        bh=aU6nrsbVrPhbNwxpDNiAxzaxHk6gDD++MMmQJ8cUbSQ=;
+        b=pV2tIk2iklR1jXVfeC0cJPcqoh1DbiCmdDMkq853UpTeZoAZ2VW5oxCf3ixo2M4iT6BkB5
+        8UZH7wSYedxoe23fUtdR9C0uvdncxF2mt732o1wpZH0yGogJmRSQAT7VRqQWhGRjX3ydkr
+        u9eQU5FXWcM4AoQmQE99gNbeezk2pwNf+udnY6RkY8imp99ycBpL5SO9eQjN+Vwong60Hz
+        UGYb81FG7W5LUxkSgfgqcrxbXyCvWVkU0NP03Xfipc4iHjx6ioCYPKtCrzLn7r5nKUW0nx
+        vO4vXDJniyAUKUn3v8pfjsXKIb3LZh8bQEMBWRIauDyz/No6Y7LjpEEtMHJG1A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1598258431;
+        s=2020e; t=1598286148;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=oi/gwlF9UK0Dj6KRXzgzltwh1bdA+sQUViRUrZHY+us=;
-        b=LeesnAIKOWqiZTpc1slbnxt20lb2DgEyxCGdI7DlF6wLeYyoebq8gowR8XUeF/crZggwoT
-        4TIT3dkWg0XgyWCg==
+        bh=aU6nrsbVrPhbNwxpDNiAxzaxHk6gDD++MMmQJ8cUbSQ=;
+        b=eLV4a7ucMRouolD/LwYXGZF0plZGEDY50gaIb3sWaNKKQflu8FqiDunFvDxD12ItGVl3PL
+        0mTSWL7XxlSPELBA==
 From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/fsgsbase] x86/entry/64: Correct the comment over
- SAVE_AND_SET_GSBASE
+Subject: [tip: x86/fsgsbase] x86/fsgsbase: Replace static_cpu_has() with
+ boot_cpu_has()
 Cc:     Borislav Petkov <bp@suse.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200821090710.GE12181@zn.tnic>
-References: <20200821090710.GE12181@zn.tnic>
+In-Reply-To: <20200818103715.32736-1-bp@alien8.de>
+References: <20200818103715.32736-1-bp@alien8.de>
 MIME-Version: 1.0
-Message-ID: <159825843012.389.11997668879998573740.tip-bot2@tip-bot2>
+Message-ID: <159828614748.389.3888049416727618189.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,38 +58,87 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/fsgsbase branch of tip:
 
-Commit-ID:     0b2c605fa4ee3117c00b97b7af67791576b28f88
-Gitweb:        https://git.kernel.org/tip/0b2c605fa4ee3117c00b97b7af67791576b28f88
+Commit-ID:     5f1dd4dda5c8796c405e856aaa11e187f6885924
+Gitweb:        https://git.kernel.org/tip/5f1dd4dda5c8796c405e856aaa11e187f6885924
 Author:        Borislav Petkov <bp@suse.de>
-AuthorDate:    Thu, 20 Aug 2020 11:10:15 +02:00
+AuthorDate:    Tue, 18 Aug 2020 12:28:31 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Mon, 24 Aug 2020 10:23:40 +02:00
+CommitterDate: Mon, 24 Aug 2020 18:18:32 +02:00
 
-x86/entry/64: Correct the comment over SAVE_AND_SET_GSBASE
+x86/fsgsbase: Replace static_cpu_has() with boot_cpu_has()
 
-Add the proper explanation why an LFENCE is not needed in the FSGSBASE
-case.
+ptrace and prctl() are not really fast paths to warrant the use of
+static_cpu_has() and cause alternatives patching for no good reason.
+Replace with boot_cpu_has() which is simple and fast enough.
 
-Fixes: c82965f9e530 ("x86/entry/64: Handle FSGSBASE enabled paranoid entry/exit")
+No functional changes.
+
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20200821090710.GE12181@zn.tnic
+Link: https://lkml.kernel.org/r/20200818103715.32736-1-bp@alien8.de
 ---
- arch/x86/entry/entry_64.S | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/x86/include/asm/fsgsbase.h | 4 ++--
+ arch/x86/kernel/process_64.c    | 8 ++++----
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/entry/entry_64.S b/arch/x86/entry/entry_64.S
-index 70dea93..bf78de4 100644
---- a/arch/x86/entry/entry_64.S
-+++ b/arch/x86/entry/entry_64.S
-@@ -840,8 +840,9 @@ SYM_CODE_START_LOCAL(paranoid_entry)
- 	 * retrieve and set the current CPUs kernel GSBASE. The stored value
- 	 * has to be restored in paranoid_exit unconditionally.
- 	 *
--	 * The MSR write ensures that no subsequent load is based on a
--	 * mispredicted GSBASE. No extra FENCE required.
-+	 * The unconditional write to GS base below ensures that no subsequent
-+	 * loads based on a mispredicted GS base can happen, therefore no LFENCE
-+	 * is needed here.
- 	 */
- 	SAVE_AND_SET_GSBASE scratch_reg=%rax save_reg=%rbx
- 	ret
+diff --git a/arch/x86/include/asm/fsgsbase.h b/arch/x86/include/asm/fsgsbase.h
+index d552646..35cff5f 100644
+--- a/arch/x86/include/asm/fsgsbase.h
++++ b/arch/x86/include/asm/fsgsbase.h
+@@ -57,7 +57,7 @@ static inline unsigned long x86_fsbase_read_cpu(void)
+ {
+ 	unsigned long fsbase;
+ 
+-	if (static_cpu_has(X86_FEATURE_FSGSBASE))
++	if (boot_cpu_has(X86_FEATURE_FSGSBASE))
+ 		fsbase = rdfsbase();
+ 	else
+ 		rdmsrl(MSR_FS_BASE, fsbase);
+@@ -67,7 +67,7 @@ static inline unsigned long x86_fsbase_read_cpu(void)
+ 
+ static inline void x86_fsbase_write_cpu(unsigned long fsbase)
+ {
+-	if (static_cpu_has(X86_FEATURE_FSGSBASE))
++	if (boot_cpu_has(X86_FEATURE_FSGSBASE))
+ 		wrfsbase(fsbase);
+ 	else
+ 		wrmsrl(MSR_FS_BASE, fsbase);
+diff --git a/arch/x86/kernel/process_64.c b/arch/x86/kernel/process_64.c
+index 9afefe3..df342be 100644
+--- a/arch/x86/kernel/process_64.c
++++ b/arch/x86/kernel/process_64.c
+@@ -407,7 +407,7 @@ unsigned long x86_gsbase_read_cpu_inactive(void)
+ {
+ 	unsigned long gsbase;
+ 
+-	if (static_cpu_has(X86_FEATURE_FSGSBASE)) {
++	if (boot_cpu_has(X86_FEATURE_FSGSBASE)) {
+ 		unsigned long flags;
+ 
+ 		local_irq_save(flags);
+@@ -422,7 +422,7 @@ unsigned long x86_gsbase_read_cpu_inactive(void)
+ 
+ void x86_gsbase_write_cpu_inactive(unsigned long gsbase)
+ {
+-	if (static_cpu_has(X86_FEATURE_FSGSBASE)) {
++	if (boot_cpu_has(X86_FEATURE_FSGSBASE)) {
+ 		unsigned long flags;
+ 
+ 		local_irq_save(flags);
+@@ -439,7 +439,7 @@ unsigned long x86_fsbase_read_task(struct task_struct *task)
+ 
+ 	if (task == current)
+ 		fsbase = x86_fsbase_read_cpu();
+-	else if (static_cpu_has(X86_FEATURE_FSGSBASE) ||
++	else if (boot_cpu_has(X86_FEATURE_FSGSBASE) ||
+ 		 (task->thread.fsindex == 0))
+ 		fsbase = task->thread.fsbase;
+ 	else
+@@ -454,7 +454,7 @@ unsigned long x86_gsbase_read_task(struct task_struct *task)
+ 
+ 	if (task == current)
+ 		gsbase = x86_gsbase_read_cpu_inactive();
+-	else if (static_cpu_has(X86_FEATURE_FSGSBASE) ||
++	else if (boot_cpu_has(X86_FEATURE_FSGSBASE) ||
+ 		 (task->thread.gsindex == 0))
+ 		gsbase = task->thread.gsbase;
+ 	else
