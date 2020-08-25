@@ -2,52 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 29A4125244D
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 26 Aug 2020 01:41:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7FFF8252444
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 26 Aug 2020 01:41:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726752AbgHYXlE (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 25 Aug 2020 19:41:04 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:53388 "EHLO
+        id S1726766AbgHYXlG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 25 Aug 2020 19:41:06 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:53344 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726707AbgHYXlD (ORCPT
+        with ESMTP id S1726716AbgHYXlE (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 25 Aug 2020 19:41:03 -0400
+        Tue, 25 Aug 2020 19:41:04 -0400
 Date:   Tue, 25 Aug 2020 23:41:00 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1598398860;
+        s=2020; t=1598398861;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=i1D60flZDHTBd1k3w4UXmzsFR+k0Cqj8UhH0pbB1+p8=;
-        b=pmEmNCJpKHnWRwVdpAQUOSw5yx+KESTNnIJ4j5zYBChKQ/ARAQ1ZwwmtVeRnB6IED4K1zG
-        cFEAKYd7is4gjABN05AKNGS9GOZ6LKVe8pNB5RZ5YBef6mkg8LiR16OO7OavHiqOvQavIa
-        MEyLlp03RwrCegNDpZaUErAhfvXOr/O7OwK08Oy1mgPY92RCFHWNI+AviYg2WiJQsz/4gC
-        fDqFVaxqHxY6GyaR3mZTTAwXeKnQxCBAAogYXRan9livnKXqy0yWogfcd6aUJxo1bCw+Hi
-        eF7irhXoK9QQPlEMf4epKhStoxCxJ0PWVoCjEsfZwUuNSMPu6GZ2VelTK4HemA==
+        bh=5d0rZjjLD6YrMkU2gRRY1vpdmhlu4a+3pjDuv6cH2vc=;
+        b=W7CSCc6H3KZeE68JNi5+bPIPHFqTox/CaSg0DfxIzygz8YJJWELNiUXfsbWjbeL/XajTLu
+        l4EXqghtfrYH0wna9mU178PTtiZwkd8SuXNY4V5DjCHsD8lDranpi7CmDoqEOuRJuHsS+f
+        JNEitIdJIm6igz07sFeWisDQeytIr5FcVag8qSmuzCWwPp25xTxzWyt0NWhqQPWnSkuei7
+        bQtELF7V8VeZVnotYx5iYE0Os1iRiVoXbwSBOTtqD/IcoJ3bZyb/B29MHVaZ0ttllMSPXm
+        2wHzMTyVGLHXrleWL1IkDtWxbv+QN8r3FrKmVnijnsBg5CCJFoT39ffCZiVtfQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1598398860;
+        s=2020e; t=1598398861;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=i1D60flZDHTBd1k3w4UXmzsFR+k0Cqj8UhH0pbB1+p8=;
-        b=cVuANNXoz16PIZ/q2IbroGLU2M70fshOO643GPSAbvTJwEZYtEOrbRZMSb+lBi7Pf6wztb
-        OEEH9BnkQ1DNZYCg==
+        bh=5d0rZjjLD6YrMkU2gRRY1vpdmhlu4a+3pjDuv6cH2vc=;
+        b=rrn/MWmg/r6vc5i4h0aWysO2m2xWuBHfsSo1ATtnoeAI/Mg0QV/uT9kJoSDA2OdtOZHaPE
+        AqSOz8w6A6SiVTAg==
 From:   "tip-bot2 for Lokesh Vutla" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/urgent] dt-bindings: irqchip: ti, sci-intr: Update bindings
- to drop the usage of gic as parent
+Subject: [tip: irq/urgent] firmware: ti_sci: Add support for getting resource
+ with subtype
 Cc:     Lokesh Vutla <lokeshvutla@ti.com>, Marc Zyngier <maz@kernel.org>,
-        Rob Herring <robh@kernel.org>, x86 <x86@kernel.org>,
+        Nishanth Menon <nm@ti.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200806074826.24607-5-lokeshvutla@ti.com>
-References: <20200806074826.24607-5-lokeshvutla@ti.com>
+In-Reply-To: <20200806074826.24607-4-lokeshvutla@ti.com>
+References: <20200806074826.24607-4-lokeshvutla@ti.com>
 MIME-Version: 1.0
-Message-ID: <159839886011.389.16638562925658744191.tip-bot2@tip-bot2>
+Message-ID: <159839886071.389.11629547785320042606.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,82 +59,204 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/urgent branch of tip:
 
-Commit-ID:     9a8e2ae71f3553f1b6cd4e3681f04e5d0f147387
-Gitweb:        https://git.kernel.org/tip/9a8e2ae71f3553f1b6cd4e3681f04e5d0f147387
+Commit-ID:     53bf2b0e4e4c1ff0a957474237f9dcd20036ca54
+Gitweb:        https://git.kernel.org/tip/53bf2b0e4e4c1ff0a957474237f9dcd20036ca54
 Author:        Lokesh Vutla <lokeshvutla@ti.com>
-AuthorDate:    Thu, 06 Aug 2020 13:18:17 +05:30
+AuthorDate:    Thu, 06 Aug 2020 13:18:16 +05:30
 Committer:     Marc Zyngier <maz@kernel.org>
-CommitterDate: Sun, 16 Aug 2020 22:00:23 +01:00
+CommitterDate: Sun, 16 Aug 2020 22:00:22 +01:00
 
-dt-bindings: irqchip: ti, sci-intr: Update bindings to drop the usage of gic as parent
+firmware: ti_sci: Add support for getting resource with subtype
 
-Drop the firmware related dt-bindings and use the hardware specified
-interrupt numbers within Interrupt Router. This ensures interrupt router
-DT node need not assume any interrupt parent type.
+With SYSFW ABI 3.0 changes, interrupts coming out of an interrupt
+controller is identified by a type and it is consistent across SoCs.
+Similarly global events for Interrupt aggregator. So add an API to get
+resource range using a resource type.
 
 Signed-off-by: Lokesh Vutla <lokeshvutla@ti.com>
 Signed-off-by: Marc Zyngier <maz@kernel.org>
-Reviewed-by: Rob Herring <robh@kernel.org>
-Link: https://lore.kernel.org/r/20200806074826.24607-5-lokeshvutla@ti.com
+Acked-by: Nishanth Menon <nm@ti.com>
+Link: https://lore.kernel.org/r/20200806074826.24607-4-lokeshvutla@ti.com
 ---
- Documentation/devicetree/bindings/interrupt-controller/ti,sci-intr.txt | 31 ++++++++++++++++---------------
- 1 file changed, 16 insertions(+), 15 deletions(-)
+ drivers/firmware/ti_sci.c              | 89 ++++++++++++++++++-------
+ include/linux/soc/ti/ti_sci_protocol.h | 13 ++++-
+ 2 files changed, 80 insertions(+), 22 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/interrupt-controller/ti,sci-intr.txt b/Documentation/devicetree/bindings/interrupt-controller/ti,sci-intr.txt
-index 178fca0..c7046f3 100644
---- a/Documentation/devicetree/bindings/interrupt-controller/ti,sci-intr.txt
-+++ b/Documentation/devicetree/bindings/interrupt-controller/ti,sci-intr.txt
-@@ -44,15 +44,17 @@ Required Properties:
- 			4: If intr supports level triggered interrupts.
- - interrupt-controller:	Identifies the node as an interrupt controller
- - #interrupt-cells:	Specifies the number of cells needed to encode an
--			interrupt source. The value should be 2.
--			First cell should contain the TISCI device ID of source
--			Second cell should contain the interrupt source offset
--			within the device.
-+			interrupt source. The value should be 1.
-+			First cell should contain interrupt router input number
-+			as specified by hardware.
- - ti,sci:		Phandle to TI-SCI compatible System controller node.
--- ti,sci-dst-id:	TISCI device ID of the destination IRQ controller.
--- ti,sci-rm-range-girq:	Array of TISCI subtype ids representing the host irqs
--			assigned to this interrupt router. Each subtype id
--			corresponds to a range of host irqs.
-+- ti,sci-dev-id:	TISCI device id of interrupt controller.
-+- ti,interrupt-ranges:	Set of triplets containing ranges that convert
-+			the INTR output interrupt numbers to parent's
-+			interrupt number. Each triplet has following entries:
-+			- First entry specifies the base for intr output irq
-+			- Second entry specifies the base for parent irqs
-+			- Third entry specifies the limit
+diff --git a/drivers/firmware/ti_sci.c b/drivers/firmware/ti_sci.c
+index 03bd01b..722af9e 100644
+--- a/drivers/firmware/ti_sci.c
++++ b/drivers/firmware/ti_sci.c
+@@ -3208,61 +3208,50 @@ u32 ti_sci_get_num_resources(struct ti_sci_resource *res)
+ EXPORT_SYMBOL_GPL(ti_sci_get_num_resources);
  
- For more details on TISCI IRQ resource management refer:
- https://downloads.ti.com/tisci/esd/latest/2_tisci_msgs/rm/rm_irq.html
-@@ -62,21 +64,20 @@ Example:
- The following example demonstrates both interrupt router node and the consumer
- node(main gpio) on the AM654 SoC:
+ /**
+- * devm_ti_sci_get_of_resource() - Get a TISCI resource assigned to a device
++ * devm_ti_sci_get_resource_sets() - Get a TISCI resources assigned to a device
+  * @handle:	TISCI handle
+  * @dev:	Device pointer to which the resource is assigned
+  * @dev_id:	TISCI device id to which the resource is assigned
+- * @of_prop:	property name by which the resource are represented
++ * @sub_types:	Array of sub_types assigned corresponding to device
++ * @sets:	Number of sub_types
+  *
+  * Return: Pointer to ti_sci_resource if all went well else appropriate
+  *	   error pointer.
+  */
+-struct ti_sci_resource *
+-devm_ti_sci_get_of_resource(const struct ti_sci_handle *handle,
+-			    struct device *dev, u32 dev_id, char *of_prop)
++static struct ti_sci_resource *
++devm_ti_sci_get_resource_sets(const struct ti_sci_handle *handle,
++			      struct device *dev, u32 dev_id, u32 *sub_types,
++			      u32 sets)
+ {
+ 	struct ti_sci_resource *res;
+ 	bool valid_set = false;
+-	u32 resource_subtype;
+ 	int i, ret;
  
--main_intr: interrupt-controller0 {
-+main_gpio_intr: interrupt-controller0 {
- 	compatible = "ti,sci-intr";
- 	ti,intr-trigger-type = <1>;
- 	interrupt-controller;
- 	interrupt-parent = <&gic500>;
--	#interrupt-cells = <2>;
-+	#interrupt-cells = <1>;
- 	ti,sci = <&dmsc>;
--	ti,sci-dst-id = <56>;
--	ti,sci-rm-range-girq = <0x1>;
-+	ti,sci-dev-id = <131>;
-+	ti,interrupt-ranges = <0 360 32>;
+ 	res = devm_kzalloc(dev, sizeof(*res), GFP_KERNEL);
+ 	if (!res)
+ 		return ERR_PTR(-ENOMEM);
+ 
+-	ret = of_property_count_elems_of_size(dev_of_node(dev), of_prop,
+-					      sizeof(u32));
+-	if (ret < 0) {
+-		dev_err(dev, "%s resource type ids not available\n", of_prop);
+-		return ERR_PTR(ret);
+-	}
+-	res->sets = ret;
+-
++	res->sets = sets;
+ 	res->desc = devm_kcalloc(dev, res->sets, sizeof(*res->desc),
+ 				 GFP_KERNEL);
+ 	if (!res->desc)
+ 		return ERR_PTR(-ENOMEM);
+ 
+ 	for (i = 0; i < res->sets; i++) {
+-		ret = of_property_read_u32_index(dev_of_node(dev), of_prop, i,
+-						 &resource_subtype);
+-		if (ret)
+-			return ERR_PTR(-EINVAL);
+-
+ 		ret = handle->ops.rm_core_ops.get_range(handle, dev_id,
+-							resource_subtype,
++							sub_types[i],
+ 							&res->desc[i].start,
+ 							&res->desc[i].num);
+ 		if (ret) {
+ 			dev_dbg(dev, "dev = %d subtype %d not allocated for this host\n",
+-				dev_id, resource_subtype);
++				dev_id, sub_types[i]);
+ 			res->desc[i].start = 0;
+ 			res->desc[i].num = 0;
+ 			continue;
+ 		}
+ 
+ 		dev_dbg(dev, "dev = %d, subtype = %d, start = %d, num = %d\n",
+-			dev_id, resource_subtype, res->desc[i].start,
++			dev_id, sub_types[i], res->desc[i].start,
+ 			res->desc[i].num);
+ 
+ 		valid_set = true;
+@@ -3280,6 +3269,62 @@ devm_ti_sci_get_of_resource(const struct ti_sci_handle *handle,
+ 	return ERR_PTR(-EINVAL);
+ }
+ 
++/**
++ * devm_ti_sci_get_of_resource() - Get a TISCI resource assigned to a device
++ * @handle:	TISCI handle
++ * @dev:	Device pointer to which the resource is assigned
++ * @dev_id:	TISCI device id to which the resource is assigned
++ * @of_prop:	property name by which the resource are represented
++ *
++ * Return: Pointer to ti_sci_resource if all went well else appropriate
++ *	   error pointer.
++ */
++struct ti_sci_resource *
++devm_ti_sci_get_of_resource(const struct ti_sci_handle *handle,
++			    struct device *dev, u32 dev_id, char *of_prop)
++{
++	struct ti_sci_resource *res;
++	u32 *sub_types;
++	int sets;
++
++	sets = of_property_count_elems_of_size(dev_of_node(dev), of_prop,
++					       sizeof(u32));
++	if (sets < 0) {
++		dev_err(dev, "%s resource type ids not available\n", of_prop);
++		return ERR_PTR(sets);
++	}
++
++	sub_types = kcalloc(sets, sizeof(*sub_types), GFP_KERNEL);
++	if (!sub_types)
++		return ERR_PTR(-ENOMEM);
++
++	of_property_read_u32_array(dev_of_node(dev), of_prop, sub_types, sets);
++	res = devm_ti_sci_get_resource_sets(handle, dev, dev_id, sub_types,
++					    sets);
++
++	kfree(sub_types);
++	return res;
++}
++EXPORT_SYMBOL_GPL(devm_ti_sci_get_of_resource);
++
++/**
++ * devm_ti_sci_get_resource() - Get a resource range assigned to the device
++ * @handle:	TISCI handle
++ * @dev:	Device pointer to which the resource is assigned
++ * @dev_id:	TISCI device id to which the resource is assigned
++ * @suub_type:	TISCI resource subytpe representing the resource.
++ *
++ * Return: Pointer to ti_sci_resource if all went well else appropriate
++ *	   error pointer.
++ */
++struct ti_sci_resource *
++devm_ti_sci_get_resource(const struct ti_sci_handle *handle, struct device *dev,
++			 u32 dev_id, u32 sub_type)
++{
++	return devm_ti_sci_get_resource_sets(handle, dev, dev_id, &sub_type, 1);
++}
++EXPORT_SYMBOL_GPL(devm_ti_sci_get_resource);
++
+ static int tisci_reboot_handler(struct notifier_block *nb, unsigned long mode,
+ 				void *cmd)
+ {
+diff --git a/include/linux/soc/ti/ti_sci_protocol.h b/include/linux/soc/ti/ti_sci_protocol.h
+index 49c5d29..cf27b08 100644
+--- a/include/linux/soc/ti/ti_sci_protocol.h
++++ b/include/linux/soc/ti/ti_sci_protocol.h
+@@ -220,6 +220,9 @@ struct ti_sci_rm_core_ops {
+ 				    u16 *range_start, u16 *range_num);
  };
  
- main_gpio0: gpio@600000 {
- 	...
--	interrupt-parent = <&main_intr>;
--	interrupts = <57 256>, <57 257>, <57 258>,
--		     <57 259>, <57 260>, <57 261>;
-+	interrupt-parent = <&main_gpio_intr>;
-+	interrupts = <192>, <193>, <194>, <195>, <196>, <197>;
- 	...
- };
++#define TI_SCI_RESASG_SUBTYPE_IR_OUTPUT		0
++#define TI_SCI_RESASG_SUBTYPE_IA_VINT		0xa
++#define TI_SCI_RESASG_SUBTYPE_GLOBAL_EVENT_SEVT	0xd
+ /**
+  * struct ti_sci_rm_irq_ops: IRQ management operations
+  * @set_irq:		Set an IRQ route between the requested source
+@@ -556,6 +559,9 @@ u32 ti_sci_get_num_resources(struct ti_sci_resource *res);
+ struct ti_sci_resource *
+ devm_ti_sci_get_of_resource(const struct ti_sci_handle *handle,
+ 			    struct device *dev, u32 dev_id, char *of_prop);
++struct ti_sci_resource *
++devm_ti_sci_get_resource(const struct ti_sci_handle *handle, struct device *dev,
++			 u32 dev_id, u32 sub_type);
+ 
+ #else	/* CONFIG_TI_SCI_PROTOCOL */
+ 
+@@ -609,6 +615,13 @@ devm_ti_sci_get_of_resource(const struct ti_sci_handle *handle,
+ {
+ 	return ERR_PTR(-EINVAL);
+ }
++
++static inline struct ti_sci_resource *
++devm_ti_sci_get_resource(const struct ti_sci_handle *handle, struct device *dev,
++			 u32 dev_id, u32 sub_type);
++{
++	return ERR_PTR(-EINVAL);
++}
+ #endif	/* CONFIG_TI_SCI_PROTOCOL */
+ 
+ #endif	/* __TISCI_PROTOCOL_H */
