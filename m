@@ -2,20 +2,17 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 54418252451
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 26 Aug 2020 01:41:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 29A4125244D
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 26 Aug 2020 01:41:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726910AbgHYXll (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 25 Aug 2020 19:41:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34402 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726734AbgHYXlC (ORCPT
+        id S1726752AbgHYXlE (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 25 Aug 2020 19:41:04 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:53388 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726707AbgHYXlD (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 25 Aug 2020 19:41:02 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7271C061574;
-        Tue, 25 Aug 2020 16:41:01 -0700 (PDT)
-Date:   Tue, 25 Aug 2020 23:40:59 -0000
+        Tue, 25 Aug 2020 19:41:03 -0400
+Date:   Tue, 25 Aug 2020 23:41:00 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1598398860;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -23,12 +20,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=/6jt49mtRtmBX98XztCTKcMumRXB3SNOf775opjJVt8=;
-        b=NTNmS8swJBl12vFthTYEoIhVrRes84y/9cEFMJq1SjtOv+0VDwh9lABzXLUtDFOGK57S81
-        ZcQyqeZECW9xvROSluzQNkofuf3JT/DJPNUKG7vKjjG6w5xqrJkB0TUhUyJ/8naJB/bRZd
-        q7o8McfrvdzSzRNWsktFziRYUleDO1QvhXH3lcN3xcI3IvPDltLmugUb3w38aoqNscrP0F
-        +hjitZBhDFwdyZuYaTy0jDjOt2KU0IeXY1VPIKNDZfUVoPbV5anYhI/lBTZN3nqfLKsIdz
-        19RzUcBwpBscvqkeMqhJPUEhC51wNkRR3U3Tnf5BISZ54pwdXet47v2p0xZJ6g==
+        bh=i1D60flZDHTBd1k3w4UXmzsFR+k0Cqj8UhH0pbB1+p8=;
+        b=pmEmNCJpKHnWRwVdpAQUOSw5yx+KESTNnIJ4j5zYBChKQ/ARAQ1ZwwmtVeRnB6IED4K1zG
+        cFEAKYd7is4gjABN05AKNGS9GOZ6LKVe8pNB5RZ5YBef6mkg8LiR16OO7OavHiqOvQavIa
+        MEyLlp03RwrCegNDpZaUErAhfvXOr/O7OwK08Oy1mgPY92RCFHWNI+AviYg2WiJQsz/4gC
+        fDqFVaxqHxY6GyaR3mZTTAwXeKnQxCBAAogYXRan9livnKXqy0yWogfcd6aUJxo1bCw+Hi
+        eF7irhXoK9QQPlEMf4epKhStoxCxJ0PWVoCjEsfZwUuNSMPu6GZ2VelTK4HemA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1598398860;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,20 +33,21 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=/6jt49mtRtmBX98XztCTKcMumRXB3SNOf775opjJVt8=;
-        b=zWj8SKhQGAzEIioI/TizILqWnxwhZo22UUPxWPecl185wR54L/XW2dBLEN2Q3U8nq4u2vH
-        pDMZf3enT1aieODw==
+        bh=i1D60flZDHTBd1k3w4UXmzsFR+k0Cqj8UhH0pbB1+p8=;
+        b=cVuANNXoz16PIZ/q2IbroGLU2M70fshOO643GPSAbvTJwEZYtEOrbRZMSb+lBi7Pf6wztb
+        OEEH9BnkQ1DNZYCg==
 From:   "tip-bot2 for Lokesh Vutla" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/urgent] dt-bindings: irqchip: Convert ti, sci-intr bindings to yaml
+Subject: [tip: irq/urgent] dt-bindings: irqchip: ti, sci-intr: Update bindings
+ to drop the usage of gic as parent
 Cc:     Lokesh Vutla <lokeshvutla@ti.com>, Marc Zyngier <maz@kernel.org>,
         Rob Herring <robh@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200806074826.24607-6-lokeshvutla@ti.com>
-References: <20200806074826.24607-6-lokeshvutla@ti.com>
+In-Reply-To: <20200806074826.24607-5-lokeshvutla@ti.com>
+References: <20200806074826.24607-5-lokeshvutla@ti.com>
 MIME-Version: 1.0
-Message-ID: <159839885947.389.3028206427734527720.tip-bot2@tip-bot2>
+Message-ID: <159839886011.389.16638562925658744191.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,237 +59,82 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/urgent branch of tip:
 
-Commit-ID:     b8713af858997c3df5bc5b48e66ac1f1bfe19779
-Gitweb:        https://git.kernel.org/tip/b8713af858997c3df5bc5b48e66ac1f1bfe19779
+Commit-ID:     9a8e2ae71f3553f1b6cd4e3681f04e5d0f147387
+Gitweb:        https://git.kernel.org/tip/9a8e2ae71f3553f1b6cd4e3681f04e5d0f147387
 Author:        Lokesh Vutla <lokeshvutla@ti.com>
-AuthorDate:    Thu, 06 Aug 2020 13:18:18 +05:30
+AuthorDate:    Thu, 06 Aug 2020 13:18:17 +05:30
 Committer:     Marc Zyngier <maz@kernel.org>
 CommitterDate: Sun, 16 Aug 2020 22:00:23 +01:00
 
-dt-bindings: irqchip: Convert ti, sci-intr bindings to yaml
+dt-bindings: irqchip: ti, sci-intr: Update bindings to drop the usage of gic as parent
 
-In order to automate the verification of DT nodes convert
-ti,sci-intr.txt ti,sci-intr.yaml.
+Drop the firmware related dt-bindings and use the hardware specified
+interrupt numbers within Interrupt Router. This ensures interrupt router
+DT node need not assume any interrupt parent type.
 
 Signed-off-by: Lokesh Vutla <lokeshvutla@ti.com>
 Signed-off-by: Marc Zyngier <maz@kernel.org>
 Reviewed-by: Rob Herring <robh@kernel.org>
-Link: https://lore.kernel.org/r/20200806074826.24607-6-lokeshvutla@ti.com
+Link: https://lore.kernel.org/r/20200806074826.24607-5-lokeshvutla@ti.com
 ---
- Documentation/devicetree/bindings/interrupt-controller/ti,sci-intr.txt  |  83 +---------------------------------------------------------
- Documentation/devicetree/bindings/interrupt-controller/ti,sci-intr.yaml | 102 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-
- MAINTAINERS                                                             |   2 +-
- 3 files changed, 103 insertions(+), 84 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/interrupt-controller/ti,sci-intr.txt
- create mode 100644 Documentation/devicetree/bindings/interrupt-controller/ti,sci-intr.yaml
+ Documentation/devicetree/bindings/interrupt-controller/ti,sci-intr.txt | 31 ++++++++++++++++---------------
+ 1 file changed, 16 insertions(+), 15 deletions(-)
 
 diff --git a/Documentation/devicetree/bindings/interrupt-controller/ti,sci-intr.txt b/Documentation/devicetree/bindings/interrupt-controller/ti,sci-intr.txt
-deleted file mode 100644
-index c7046f3..0000000
+index 178fca0..c7046f3 100644
 --- a/Documentation/devicetree/bindings/interrupt-controller/ti,sci-intr.txt
-+++ /dev/null
-@@ -1,83 +0,0 @@
--Texas Instruments K3 Interrupt Router
--=====================================
--
--The Interrupt Router (INTR) module provides a mechanism to mux M
--interrupt inputs to N interrupt outputs, where all M inputs are selectable
--to be driven per N output. An Interrupt Router can either handle edge triggered
--or level triggered interrupts and that is fixed in hardware.
--
--                                 Interrupt Router
--                             +----------------------+
--                             |  Inputs     Outputs  |
--        +-------+            | +------+    +-----+  |
--        | GPIO  |----------->| | irq0 |    |  0  |  |       Host IRQ
--        +-------+            | +------+    +-----+  |      controller
--                             |    .           .     |      +-------+
--        +-------+            |    .           .     |----->|  IRQ  |
--        | INTA  |----------->|    .           .     |      +-------+
--        +-------+            |    .        +-----+  |
--                             | +------+    |  N  |  |
--                             | | irqM |    +-----+  |
--                             | +------+             |
--                             |                      |
--                             +----------------------+
--
--There is one register per output (MUXCNTL_N) that controls the selection.
--Configuration of these MUXCNTL_N registers is done by a system controller
--(like the Device Memory and Security Controller on K3 AM654 SoC). System
--controller will keep track of the used and unused registers within the Router.
--Driver should request the system controller to get the range of GIC IRQs
--assigned to the requesting hosts. It is the drivers responsibility to keep
--track of Host IRQs.
--
--Communication between the host processor running an OS and the system
--controller happens through a protocol called TI System Control Interface
--(TISCI protocol). For more details refer:
--Documentation/devicetree/bindings/arm/keystone/ti,sci.txt
--
--TISCI Interrupt Router Node:
------------------------------
--Required Properties:
--- compatible:		Must be "ti,sci-intr".
--- ti,intr-trigger-type:	Should be one of the following:
--			1: If intr supports edge triggered interrupts.
--			4: If intr supports level triggered interrupts.
--- interrupt-controller:	Identifies the node as an interrupt controller
--- #interrupt-cells:	Specifies the number of cells needed to encode an
--			interrupt source. The value should be 1.
--			First cell should contain interrupt router input number
--			as specified by hardware.
--- ti,sci:		Phandle to TI-SCI compatible System controller node.
--- ti,sci-dev-id:	TISCI device id of interrupt controller.
--- ti,interrupt-ranges:	Set of triplets containing ranges that convert
--			the INTR output interrupt numbers to parent's
--			interrupt number. Each triplet has following entries:
--			- First entry specifies the base for intr output irq
--			- Second entry specifies the base for parent irqs
--			- Third entry specifies the limit
--
--For more details on TISCI IRQ resource management refer:
--https://downloads.ti.com/tisci/esd/latest/2_tisci_msgs/rm/rm_irq.html
--
--Example:
----------
--The following example demonstrates both interrupt router node and the consumer
--node(main gpio) on the AM654 SoC:
--
--main_gpio_intr: interrupt-controller0 {
--	compatible = "ti,sci-intr";
--	ti,intr-trigger-type = <1>;
--	interrupt-controller;
--	interrupt-parent = <&gic500>;
--	#interrupt-cells = <1>;
--	ti,sci = <&dmsc>;
--	ti,sci-dev-id = <131>;
--	ti,interrupt-ranges = <0 360 32>;
--};
--
--main_gpio0: gpio@600000 {
--	...
--	interrupt-parent = <&main_gpio_intr>;
--	interrupts = <192>, <193>, <194>, <195>, <196>, <197>;
--	...
--};
-diff --git a/Documentation/devicetree/bindings/interrupt-controller/ti,sci-intr.yaml b/Documentation/devicetree/bindings/interrupt-controller/ti,sci-intr.yaml
-new file mode 100644
-index 0000000..cff6a95
---- /dev/null
-+++ b/Documentation/devicetree/bindings/interrupt-controller/ti,sci-intr.yaml
-@@ -0,0 +1,102 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/interrupt-controller/ti,sci-intr.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Texas Instruments K3 Interrupt Router
-+
-+maintainers:
-+  - Lokesh Vutla <lokeshvutla@ti.com>
-+
-+allOf:
-+  - $ref: /schemas/arm/keystone/ti,k3-sci-common.yaml#
-+
-+description: |
-+  The Interrupt Router (INTR) module provides a mechanism to mux M
-+  interrupt inputs to N interrupt outputs, where all M inputs are selectable
-+  to be driven per N output. An Interrupt Router can either handle edge
-+  triggered or level triggered interrupts and that is fixed in hardware.
-+
-+                                   Interrupt Router
-+                               +----------------------+
-+                               |  Inputs     Outputs  |
-+          +-------+            | +------+    +-----+  |
-+          | GPIO  |----------->| | irq0 |    |  0  |  |       Host IRQ
-+          +-------+            | +------+    +-----+  |      controller
-+                               |    .           .     |      +-------+
-+          +-------+            |    .           .     |----->|  IRQ  |
-+          | INTA  |----------->|    .           .     |      +-------+
-+          +-------+            |    .        +-----+  |
-+                               | +------+    |  N  |  |
-+                               | | irqM |    +-----+  |
-+                               | +------+             |
-+                               |                      |
-+                               +----------------------+
-+
-+  There is one register per output (MUXCNTL_N) that controls the selection.
-+  Configuration of these MUXCNTL_N registers is done by a system controller
-+  (like the Device Memory and Security Controller on K3 AM654 SoC). System
-+  controller will keep track of the used and unused registers within the Router.
-+  Driver should request the system controller to get the range of GIC IRQs
-+  assigned to the requesting hosts. It is the drivers responsibility to keep
-+  track of Host IRQs.
-+
-+  Communication between the host processor running an OS and the system
-+  controller happens through a protocol called TI System Control Interface
-+  (TISCI protocol).
-+
-+properties:
-+  compatible:
-+    const: ti,sci-intr
-+
-+  ti,intr-trigger-type:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    enum: [1, 4]
-+    description: |
-+      Should be one of the following.
-+        1 = If intr supports edge triggered interrupts.
-+        4 = If intr supports level triggered interrupts.
-+
-+  interrupt-controller: true
-+
-+  '#interrupt-cells':
-+    const: 1
-+    description: |
-+      The 1st cell should contain interrupt router input hw number.
-+
-+  ti,interrupt-ranges:
-+    $ref: /schemas/types.yaml#/definitions/uint32-matrix
-+    description: |
-+      Interrupt ranges that converts the INTR output hw irq numbers
-+      to parents's input interrupt numbers.
-+    items:
-+      items:
-+        - description: |
-+            "output_irq" specifies the base for intr output irq
-+        - description: |
-+            "parent's input irq" specifies the base for parent irq
-+        - description: |
-+            "limit" specifies the limit for translation
-+
-+required:
-+  - compatible
-+  - ti,intr-trigger-type
-+  - interrupt-controller
-+  - '#interrupt-cells'
-+  - ti,sci
-+  - ti,sci-dev-id
-+  - ti,interrupt-ranges
-+
-+examples:
-+  - |
-+    main_gpio_intr: interrupt-controller0 {
-+        compatible = "ti,sci-intr";
-+        ti,intr-trigger-type = <1>;
-+        interrupt-controller;
-+        interrupt-parent = <&gic500>;
-+        #interrupt-cells = <1>;
-+        ti,sci = <&dmsc>;
-+        ti,sci-dev-id = <131>;
-+        ti,interrupt-ranges = <0 360 32>;
-+    };
-diff --git a/MAINTAINERS b/MAINTAINERS
-index deaafb6..e08405c 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -17117,7 +17117,7 @@ F:	Documentation/devicetree/bindings/arm/keystone/ti,k3-sci-common.yaml
- F:	Documentation/devicetree/bindings/arm/keystone/ti,sci.txt
- F:	Documentation/devicetree/bindings/clock/ti,sci-clk.txt
- F:	Documentation/devicetree/bindings/interrupt-controller/ti,sci-inta.txt
--F:	Documentation/devicetree/bindings/interrupt-controller/ti,sci-intr.txt
-+F:	Documentation/devicetree/bindings/interrupt-controller/ti,sci-intr.yaml
- F:	Documentation/devicetree/bindings/reset/ti,sci-reset.txt
- F:	Documentation/devicetree/bindings/soc/ti/sci-pm-domain.txt
- F:	drivers/clk/keystone/sci-clk.c
++++ b/Documentation/devicetree/bindings/interrupt-controller/ti,sci-intr.txt
+@@ -44,15 +44,17 @@ Required Properties:
+ 			4: If intr supports level triggered interrupts.
+ - interrupt-controller:	Identifies the node as an interrupt controller
+ - #interrupt-cells:	Specifies the number of cells needed to encode an
+-			interrupt source. The value should be 2.
+-			First cell should contain the TISCI device ID of source
+-			Second cell should contain the interrupt source offset
+-			within the device.
++			interrupt source. The value should be 1.
++			First cell should contain interrupt router input number
++			as specified by hardware.
+ - ti,sci:		Phandle to TI-SCI compatible System controller node.
+-- ti,sci-dst-id:	TISCI device ID of the destination IRQ controller.
+-- ti,sci-rm-range-girq:	Array of TISCI subtype ids representing the host irqs
+-			assigned to this interrupt router. Each subtype id
+-			corresponds to a range of host irqs.
++- ti,sci-dev-id:	TISCI device id of interrupt controller.
++- ti,interrupt-ranges:	Set of triplets containing ranges that convert
++			the INTR output interrupt numbers to parent's
++			interrupt number. Each triplet has following entries:
++			- First entry specifies the base for intr output irq
++			- Second entry specifies the base for parent irqs
++			- Third entry specifies the limit
+ 
+ For more details on TISCI IRQ resource management refer:
+ https://downloads.ti.com/tisci/esd/latest/2_tisci_msgs/rm/rm_irq.html
+@@ -62,21 +64,20 @@ Example:
+ The following example demonstrates both interrupt router node and the consumer
+ node(main gpio) on the AM654 SoC:
+ 
+-main_intr: interrupt-controller0 {
++main_gpio_intr: interrupt-controller0 {
+ 	compatible = "ti,sci-intr";
+ 	ti,intr-trigger-type = <1>;
+ 	interrupt-controller;
+ 	interrupt-parent = <&gic500>;
+-	#interrupt-cells = <2>;
++	#interrupt-cells = <1>;
+ 	ti,sci = <&dmsc>;
+-	ti,sci-dst-id = <56>;
+-	ti,sci-rm-range-girq = <0x1>;
++	ti,sci-dev-id = <131>;
++	ti,interrupt-ranges = <0 360 32>;
+ };
+ 
+ main_gpio0: gpio@600000 {
+ 	...
+-	interrupt-parent = <&main_intr>;
+-	interrupts = <57 256>, <57 257>, <57 258>,
+-		     <57 259>, <57 260>, <57 261>;
++	interrupt-parent = <&main_gpio_intr>;
++	interrupts = <192>, <193>, <194>, <195>, <196>, <197>;
+ 	...
+ };
