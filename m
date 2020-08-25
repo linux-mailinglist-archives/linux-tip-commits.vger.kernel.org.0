@@ -2,54 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BCD952516E2
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 25 Aug 2020 12:50:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E5DC25245D
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 26 Aug 2020 01:42:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729789AbgHYKuz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 25 Aug 2020 06:50:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55046 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729458AbgHYKux (ORCPT
+        id S1726570AbgHYXk5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 25 Aug 2020 19:40:57 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:53304 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726548AbgHYXkz (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 25 Aug 2020 06:50:53 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B611C061574;
-        Tue, 25 Aug 2020 03:50:53 -0700 (PDT)
-Date:   Tue, 25 Aug 2020 10:50:49 -0000
+        Tue, 25 Aug 2020 19:40:55 -0400
+Date:   Tue, 25 Aug 2020 23:40:51 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1598352650;
+        s=2020; t=1598398852;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ED1azcYB2bOCp+uGW26ISv+HcMQc4w7N8XVMWmOZdus=;
-        b=lTWHY8n74kWp+FHXndblMS7QFJrSQ3ooZ5wKtiFnaWvJmmQ3zxKBGXmczXoKFJU+6P3gat
-        82mfXNVkaGDMIjT8tcwC5TmL9f+21nFveTJn1bU3w60gQQ02Pvfh/8ce7chFTI4kyb0QLM
-        6vg3v230d+hOmCF6KCLMY9IH7o7rvbUx7IOdrsbLhaq2+CzS7ZY/n7STqUxnrFfxnqOxdF
-        S7DjRgbDNk2DnpmlvH3JccFAqyAhEeIMzrIG7KOwhASJBh3tF50VeckqybZ8pCNpfWAlMX
-        cPLPLiuBm2IBbqc0IXmf5fsjyDlwmboT7XGKRo62OwmhF2lh8F/iGAV3/tzbMg==
+        bh=DPofC/mNiI2Z9O9R2vvD27OIixjj0OZ26R+kQL5kuWI=;
+        b=rZj8U1DjSc8cdX1izZjQhEAzjkOHXk29+Nu1mYo97v+/81JDhSyCr+/7PZUbn2Ehpze2Lb
+        8xVVpusjr98Ee3TG7AQDm0VZa6Qly9uxxIEpqSLO5+F7UXe4zi/gof3VBJOUDzI28w0leG
+        PqfSrnmFY7236eq0/CPYUzW7P37m+ARDR/JHwf11d9OmH6YYPml70cGPBo0Vy2tu4d791t
+        vfJmPQIcdFJAD3KFPu6jAuJ3KtYryfJ9tBe4QtjKqUuqCsfNp9ojCQu2sL1ipD2cB/+kCw
+        NDtzr2/w0AgcHX8G36EWAOH6N7t7Y+hCCvwZYPim8Ci6qosJ+S/kAbAL6e9iEA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1598352650;
+        s=2020e; t=1598398852;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ED1azcYB2bOCp+uGW26ISv+HcMQc4w7N8XVMWmOZdus=;
-        b=w5qVkUqMb53mwlIrMZSsvru6WgYGK/44q87/q4rikG/UqaKhCT0j2OGr0kivvc0tWAkVtK
-        lzCGLQ3bx25uVKBQ==
-From:   "tip-bot2 for Xu Wang" <tip-bot2@linutronix.de>
+        bh=DPofC/mNiI2Z9O9R2vvD27OIixjj0OZ26R+kQL5kuWI=;
+        b=X6O3vuxykxKwrRkuHySdIbp38ur5hcehEjoEdqOWMaN0k6a35pbPzJc93CCRxM1K/LeXcL
+        gBEFao74rfSO6kDA==
+From:   "tip-bot2 for qiuguorui1" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] alarmtimer: Convert comma to semicolon
-Cc:     Xu Wang <vulab@iscas.ac.cn>, Thomas Gleixner <tglx@linutronix.de>,
-        Stephen Boyd <sboyd@kernel.org>, x86 <x86@kernel.org>,
+Subject: [tip: irq/urgent] irqchip/stm32-exti: Avoid losing interrupts due to
+ clearing pending bits by mistake
+Cc:     qiuguorui1 <qiuguorui1@huawei.com>, Marc Zyngier <maz@kernel.org>,
+        stable@vger.kernel.org, #@tip-bot2.tec.linutronix.de,
+        v4.18+@tip-bot2.tec.linutronix.de, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200818062651.21680-1-vulab@iscas.ac.cn>
-References: <20200818062651.21680-1-vulab@iscas.ac.cn>
+In-Reply-To: <20200820031629.15582-1-qiuguorui1@huawei.com>
+References: <20200820031629.15582-1-qiuguorui1@huawei.com>
 MIME-Version: 1.0
-Message-ID: <159835264988.389.5627891620040384998.tip-bot2@tip-bot2>
+Message-ID: <159839885185.389.17904618428201059406.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,38 +58,77 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/core branch of tip:
+The following commit has been merged into the irq/urgent branch of tip:
 
-Commit-ID:     ec02821c1d35f93b821bc9fdfa83a5f3e9d7275d
-Gitweb:        https://git.kernel.org/tip/ec02821c1d35f93b821bc9fdfa83a5f3e9d7275d
-Author:        Xu Wang <vulab@iscas.ac.cn>
-AuthorDate:    Tue, 18 Aug 2020 06:26:51 
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 25 Aug 2020 12:45:53 +02:00
+Commit-ID:     e579076ac0a3bebb440fab101aef3c42c9f4c709
+Gitweb:        https://git.kernel.org/tip/e579076ac0a3bebb440fab101aef3c42c9f4c709
+Author:        qiuguorui1 <qiuguorui1@huawei.com>
+AuthorDate:    Thu, 20 Aug 2020 11:16:29 +08:00
+Committer:     Marc Zyngier <maz@kernel.org>
+CommitterDate: Tue, 25 Aug 2020 10:57:05 +01:00
 
-alarmtimer: Convert comma to semicolon
+irqchip/stm32-exti: Avoid losing interrupts due to clearing pending bits by mistake
 
-Replace a comma between expression statements by a semicolon.
+In the current code, when the eoi callback of the exti clears the pending
+bit of the current interrupt, it will first read the values of fpr and
+rpr, then logically OR the corresponding bit of the interrupt number,
+and finally write back to fpr and rpr.
 
-Signed-off-by: Xu Wang <vulab@iscas.ac.cn>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Stephen Boyd <sboyd@kernel.org>
-Link: https://lore.kernel.org/r/20200818062651.21680-1-vulab@iscas.ac.cn
+We found through experiments that if two exti interrupts,
+we call them int1/int2, arrive almost at the same time. in our scenario,
+the time difference is 30 microseconds, assuming int1 is triggered first.
 
+there will be an extreme scenario: both int's pending bit are set to 1,
+the irq handle of int1 is executed first, and eoi handle is then executed,
+at this moment, all pending bits are cleared, but the int 2 has not
+finally been reported to the cpu yet, which eventually lost int2.
+
+According to stm32's TRM description about rpr and fpr: Writing a 1 to this
+bit will trigger a rising edge event on event x, Writing 0 has no
+effect.
+
+Therefore, when clearing the pending bit, we only need to clear the
+pending bit of the irq.
+
+Fixes: 927abfc4461e7 ("irqchip/stm32: Add stm32mp1 support with hierarchy domain")
+Signed-off-by: qiuguorui1 <qiuguorui1@huawei.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Cc: stable@vger.kernel.org # v4.18+
+Link: https://lore.kernel.org/r/20200820031629.15582-1-qiuguorui1@huawei.com
 ---
- kernel/time/alarmtimer.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/irqchip/irq-stm32-exti.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/time/alarmtimer.c b/kernel/time/alarmtimer.c
-index ca223a8..f4ace1b 100644
---- a/kernel/time/alarmtimer.c
-+++ b/kernel/time/alarmtimer.c
-@@ -908,7 +908,7 @@ static int __init alarmtimer_init(void)
- 	/* Initialize alarm bases */
- 	alarm_bases[ALARM_REALTIME].base_clockid = CLOCK_REALTIME;
- 	alarm_bases[ALARM_REALTIME].get_ktime = &ktime_get_real;
--	alarm_bases[ALARM_REALTIME].get_timespec = ktime_get_real_ts64,
-+	alarm_bases[ALARM_REALTIME].get_timespec = ktime_get_real_ts64;
- 	alarm_bases[ALARM_BOOTTIME].base_clockid = CLOCK_BOOTTIME;
- 	alarm_bases[ALARM_BOOTTIME].get_ktime = &ktime_get_boottime;
- 	alarm_bases[ALARM_BOOTTIME].get_timespec = get_boottime_timespec;
+diff --git a/drivers/irqchip/irq-stm32-exti.c b/drivers/irqchip/irq-stm32-exti.c
+index 03a36be..0c2c61d 100644
+--- a/drivers/irqchip/irq-stm32-exti.c
++++ b/drivers/irqchip/irq-stm32-exti.c
+@@ -416,6 +416,16 @@ static void stm32_irq_ack(struct irq_data *d)
+ 	irq_gc_unlock(gc);
+ }
+ 
++/* directly set the target bit without reading first. */
++static inline void stm32_exti_write_bit(struct irq_data *d, u32 reg)
++{
++	struct stm32_exti_chip_data *chip_data = irq_data_get_irq_chip_data(d);
++	void __iomem *base = chip_data->host_data->base;
++	u32 val = BIT(d->hwirq % IRQS_PER_BANK);
++
++	writel_relaxed(val, base + reg);
++}
++
+ static inline u32 stm32_exti_set_bit(struct irq_data *d, u32 reg)
+ {
+ 	struct stm32_exti_chip_data *chip_data = irq_data_get_irq_chip_data(d);
+@@ -449,9 +459,9 @@ static void stm32_exti_h_eoi(struct irq_data *d)
+ 
+ 	raw_spin_lock(&chip_data->rlock);
+ 
+-	stm32_exti_set_bit(d, stm32_bank->rpr_ofst);
++	stm32_exti_write_bit(d, stm32_bank->rpr_ofst);
+ 	if (stm32_bank->fpr_ofst != UNDEF_REG)
+-		stm32_exti_set_bit(d, stm32_bank->fpr_ofst);
++		stm32_exti_write_bit(d, stm32_bank->fpr_ofst);
+ 
+ 	raw_spin_unlock(&chip_data->rlock);
+ 
