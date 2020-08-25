@@ -2,51 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E26B2501E6
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 24 Aug 2020 18:22:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BCD952516E2
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 25 Aug 2020 12:50:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725947AbgHXQWb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 24 Aug 2020 12:22:31 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:43672 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725780AbgHXQWb (ORCPT
+        id S1729789AbgHYKuz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 25 Aug 2020 06:50:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55046 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729458AbgHYKux (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 24 Aug 2020 12:22:31 -0400
-Date:   Mon, 24 Aug 2020 16:22:27 -0000
+        Tue, 25 Aug 2020 06:50:53 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B611C061574;
+        Tue, 25 Aug 2020 03:50:53 -0700 (PDT)
+Date:   Tue, 25 Aug 2020 10:50:49 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1598286148;
+        s=2020; t=1598352650;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=aU6nrsbVrPhbNwxpDNiAxzaxHk6gDD++MMmQJ8cUbSQ=;
-        b=pV2tIk2iklR1jXVfeC0cJPcqoh1DbiCmdDMkq853UpTeZoAZ2VW5oxCf3ixo2M4iT6BkB5
-        8UZH7wSYedxoe23fUtdR9C0uvdncxF2mt732o1wpZH0yGogJmRSQAT7VRqQWhGRjX3ydkr
-        u9eQU5FXWcM4AoQmQE99gNbeezk2pwNf+udnY6RkY8imp99ycBpL5SO9eQjN+Vwong60Hz
-        UGYb81FG7W5LUxkSgfgqcrxbXyCvWVkU0NP03Xfipc4iHjx6ioCYPKtCrzLn7r5nKUW0nx
-        vO4vXDJniyAUKUn3v8pfjsXKIb3LZh8bQEMBWRIauDyz/No6Y7LjpEEtMHJG1A==
+        bh=ED1azcYB2bOCp+uGW26ISv+HcMQc4w7N8XVMWmOZdus=;
+        b=lTWHY8n74kWp+FHXndblMS7QFJrSQ3ooZ5wKtiFnaWvJmmQ3zxKBGXmczXoKFJU+6P3gat
+        82mfXNVkaGDMIjT8tcwC5TmL9f+21nFveTJn1bU3w60gQQ02Pvfh/8ce7chFTI4kyb0QLM
+        6vg3v230d+hOmCF6KCLMY9IH7o7rvbUx7IOdrsbLhaq2+CzS7ZY/n7STqUxnrFfxnqOxdF
+        S7DjRgbDNk2DnpmlvH3JccFAqyAhEeIMzrIG7KOwhASJBh3tF50VeckqybZ8pCNpfWAlMX
+        cPLPLiuBm2IBbqc0IXmf5fsjyDlwmboT7XGKRo62OwmhF2lh8F/iGAV3/tzbMg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1598286148;
+        s=2020e; t=1598352650;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=aU6nrsbVrPhbNwxpDNiAxzaxHk6gDD++MMmQJ8cUbSQ=;
-        b=eLV4a7ucMRouolD/LwYXGZF0plZGEDY50gaIb3sWaNKKQflu8FqiDunFvDxD12ItGVl3PL
-        0mTSWL7XxlSPELBA==
-From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
+        bh=ED1azcYB2bOCp+uGW26ISv+HcMQc4w7N8XVMWmOZdus=;
+        b=w5qVkUqMb53mwlIrMZSsvru6WgYGK/44q87/q4rikG/UqaKhCT0j2OGr0kivvc0tWAkVtK
+        lzCGLQ3bx25uVKBQ==
+From:   "tip-bot2 for Xu Wang" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/fsgsbase] x86/fsgsbase: Replace static_cpu_has() with
- boot_cpu_has()
-Cc:     Borislav Petkov <bp@suse.de>, x86 <x86@kernel.org>,
+Subject: [tip: timers/core] alarmtimer: Convert comma to semicolon
+Cc:     Xu Wang <vulab@iscas.ac.cn>, Thomas Gleixner <tglx@linutronix.de>,
+        Stephen Boyd <sboyd@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200818103715.32736-1-bp@alien8.de>
-References: <20200818103715.32736-1-bp@alien8.de>
+In-Reply-To: <20200818062651.21680-1-vulab@iscas.ac.cn>
+References: <20200818062651.21680-1-vulab@iscas.ac.cn>
 MIME-Version: 1.0
-Message-ID: <159828614748.389.3888049416727618189.tip-bot2@tip-bot2>
+Message-ID: <159835264988.389.5627891620040384998.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -56,89 +59,38 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/fsgsbase branch of tip:
+The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     5f1dd4dda5c8796c405e856aaa11e187f6885924
-Gitweb:        https://git.kernel.org/tip/5f1dd4dda5c8796c405e856aaa11e187f6885924
-Author:        Borislav Petkov <bp@suse.de>
-AuthorDate:    Tue, 18 Aug 2020 12:28:31 +02:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Mon, 24 Aug 2020 18:18:32 +02:00
+Commit-ID:     ec02821c1d35f93b821bc9fdfa83a5f3e9d7275d
+Gitweb:        https://git.kernel.org/tip/ec02821c1d35f93b821bc9fdfa83a5f3e9d7275d
+Author:        Xu Wang <vulab@iscas.ac.cn>
+AuthorDate:    Tue, 18 Aug 2020 06:26:51 
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Tue, 25 Aug 2020 12:45:53 +02:00
 
-x86/fsgsbase: Replace static_cpu_has() with boot_cpu_has()
+alarmtimer: Convert comma to semicolon
 
-ptrace and prctl() are not really fast paths to warrant the use of
-static_cpu_has() and cause alternatives patching for no good reason.
-Replace with boot_cpu_has() which is simple and fast enough.
+Replace a comma between expression statements by a semicolon.
 
-No functional changes.
+Signed-off-by: Xu Wang <vulab@iscas.ac.cn>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Stephen Boyd <sboyd@kernel.org>
+Link: https://lore.kernel.org/r/20200818062651.21680-1-vulab@iscas.ac.cn
 
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20200818103715.32736-1-bp@alien8.de
 ---
- arch/x86/include/asm/fsgsbase.h | 4 ++--
- arch/x86/kernel/process_64.c    | 8 ++++----
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ kernel/time/alarmtimer.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/fsgsbase.h b/arch/x86/include/asm/fsgsbase.h
-index d552646..35cff5f 100644
---- a/arch/x86/include/asm/fsgsbase.h
-+++ b/arch/x86/include/asm/fsgsbase.h
-@@ -57,7 +57,7 @@ static inline unsigned long x86_fsbase_read_cpu(void)
- {
- 	unsigned long fsbase;
- 
--	if (static_cpu_has(X86_FEATURE_FSGSBASE))
-+	if (boot_cpu_has(X86_FEATURE_FSGSBASE))
- 		fsbase = rdfsbase();
- 	else
- 		rdmsrl(MSR_FS_BASE, fsbase);
-@@ -67,7 +67,7 @@ static inline unsigned long x86_fsbase_read_cpu(void)
- 
- static inline void x86_fsbase_write_cpu(unsigned long fsbase)
- {
--	if (static_cpu_has(X86_FEATURE_FSGSBASE))
-+	if (boot_cpu_has(X86_FEATURE_FSGSBASE))
- 		wrfsbase(fsbase);
- 	else
- 		wrmsrl(MSR_FS_BASE, fsbase);
-diff --git a/arch/x86/kernel/process_64.c b/arch/x86/kernel/process_64.c
-index 9afefe3..df342be 100644
---- a/arch/x86/kernel/process_64.c
-+++ b/arch/x86/kernel/process_64.c
-@@ -407,7 +407,7 @@ unsigned long x86_gsbase_read_cpu_inactive(void)
- {
- 	unsigned long gsbase;
- 
--	if (static_cpu_has(X86_FEATURE_FSGSBASE)) {
-+	if (boot_cpu_has(X86_FEATURE_FSGSBASE)) {
- 		unsigned long flags;
- 
- 		local_irq_save(flags);
-@@ -422,7 +422,7 @@ unsigned long x86_gsbase_read_cpu_inactive(void)
- 
- void x86_gsbase_write_cpu_inactive(unsigned long gsbase)
- {
--	if (static_cpu_has(X86_FEATURE_FSGSBASE)) {
-+	if (boot_cpu_has(X86_FEATURE_FSGSBASE)) {
- 		unsigned long flags;
- 
- 		local_irq_save(flags);
-@@ -439,7 +439,7 @@ unsigned long x86_fsbase_read_task(struct task_struct *task)
- 
- 	if (task == current)
- 		fsbase = x86_fsbase_read_cpu();
--	else if (static_cpu_has(X86_FEATURE_FSGSBASE) ||
-+	else if (boot_cpu_has(X86_FEATURE_FSGSBASE) ||
- 		 (task->thread.fsindex == 0))
- 		fsbase = task->thread.fsbase;
- 	else
-@@ -454,7 +454,7 @@ unsigned long x86_gsbase_read_task(struct task_struct *task)
- 
- 	if (task == current)
- 		gsbase = x86_gsbase_read_cpu_inactive();
--	else if (static_cpu_has(X86_FEATURE_FSGSBASE) ||
-+	else if (boot_cpu_has(X86_FEATURE_FSGSBASE) ||
- 		 (task->thread.gsindex == 0))
- 		gsbase = task->thread.gsbase;
- 	else
+diff --git a/kernel/time/alarmtimer.c b/kernel/time/alarmtimer.c
+index ca223a8..f4ace1b 100644
+--- a/kernel/time/alarmtimer.c
++++ b/kernel/time/alarmtimer.c
+@@ -908,7 +908,7 @@ static int __init alarmtimer_init(void)
+ 	/* Initialize alarm bases */
+ 	alarm_bases[ALARM_REALTIME].base_clockid = CLOCK_REALTIME;
+ 	alarm_bases[ALARM_REALTIME].get_ktime = &ktime_get_real;
+-	alarm_bases[ALARM_REALTIME].get_timespec = ktime_get_real_ts64,
++	alarm_bases[ALARM_REALTIME].get_timespec = ktime_get_real_ts64;
+ 	alarm_bases[ALARM_BOOTTIME].base_clockid = CLOCK_BOOTTIME;
+ 	alarm_bases[ALARM_BOOTTIME].get_ktime = &ktime_get_boottime;
+ 	alarm_bases[ALARM_BOOTTIME].get_timespec = get_boottime_timespec;
