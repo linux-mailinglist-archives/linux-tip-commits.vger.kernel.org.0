@@ -2,52 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B0DAF25354D
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 26 Aug 2020 18:48:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 293F62537C9
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 26 Aug 2020 21:03:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727001AbgHZQsS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 26 Aug 2020 12:48:18 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:60130 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728053AbgHZQpp (ORCPT
+        id S1726851AbgHZTDB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 26 Aug 2020 15:03:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45304 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726734AbgHZTDA (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 26 Aug 2020 12:45:45 -0400
-Date:   Wed, 26 Aug 2020 16:45:40 -0000
+        Wed, 26 Aug 2020 15:03:00 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B2ADC061574;
+        Wed, 26 Aug 2020 12:03:00 -0700 (PDT)
+Date:   Wed, 26 Aug 2020 19:02:57 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1598460341;
+        s=2020; t=1598468578;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=BGR++If+ribQsSohR3lDNpsMbmtIOW7a12l0f+wL3x8=;
-        b=pPrMAdUd1HWhSg20H3ldNLIZTsOpMGT2bMfphmdZWq1VrN+LXngA2iSxQyJqg3oLZqQ1iP
-        RSvg00C2v1hKYEsG2ABt2m1ysHfQLGC66ogk8cmyKgQyb7NjRiiLGCXTdBVHax7FpQe6uL
-        g04BJpSI39IFG0nsQWmSq+NP3V6futr8MkHcS5I59xGX+WOD//GYX/0/fGbPKNR4NdR+FO
-        34xWe2cuKBtW0gfvPG2Oa3wRSSvZxURVTSgOq1dURrGqE77BadFkqkVuRfGrueZ9y/o7Wl
-        i1/kMJeWmxOgZniQzw3W4HMrb2f7HTodeBTaFQmNwPo4vwwFJtiS0dRH3GyBrA==
+        bh=RJrpPCcKjLqXf0wZytcbv1zXOaX1uadoyDCrO/SFY7s=;
+        b=EVNqWmfYyP1DpYc8OYUX3Nn+5GF65B4vOmk3SOtTZIkfnClQZCdDErOz1E6lVFtdSPt3/y
+        mhORedqVLTIeGUWAYUMxi/nZp75xYSWUycmc3DZgeK0rLFpkjxZ+aPEytFmGr5zsNiuYbs
+        oL/8LPg2uSemZXQloZZ+RBVTZAYqSd7gFIa1cYVy2j94qM9Q1jivgXojuXpf61Ik1jtEbk
+        eTkVqKi/pS4zzmzxT9dXPhCGoXnRrU/f+b4zEUKajUol7txjlmIfRjRxZ0LvXKqxAORO4n
+        BvIzcr6xm0e9bdPt+XHImeeqAR5lowDU0Hti5FhK83VX0FzoFrS7oE76eNUV9w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1598460341;
+        s=2020e; t=1598468578;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=BGR++If+ribQsSohR3lDNpsMbmtIOW7a12l0f+wL3x8=;
-        b=4ugEezBHGk5JKZoQWuLSWbPftXQWcYTN3bDcuXHuzpSPxsHjLYbcpo47lSSSiegnYw5KFr
-        /XXvBrEL27xhaJCw==
-From:   "tip-bot2 for Tony Luck" <tip-bot2@linutronix.de>
+        bh=RJrpPCcKjLqXf0wZytcbv1zXOaX1uadoyDCrO/SFY7s=;
+        b=EzDtDF0/AQsKODFiw32RLnCa6D1VN8prUgwkjl8nI620ELnxnk5GXzLDabg/I8HeKroVKc
+        N0RxL6wAhJBF4dCg==
+From:   "tip-bot2 for Andy Lutomirski" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: ras/core] x86/mce: Delay clearing IA32_MCG_STATUS to the end of
- do_machine_check()
-Cc:     Gabriele Paoloni <gabriele.paoloni@intel.com>,
-        Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@suse.de>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200824221237.5397-1-tony.luck@intel.com>
-References: <20200824221237.5397-1-tony.luck@intel.com>
+Subject: [tip: x86/fsgsbase] selftests/x86/fsgsbase: Test PTRACE_PEEKUSER for
+ GSBASE with invalid LDT GS
+Cc:     Andy Lutomirski <luto@kernel.org>, Ingo Molnar <mingo@kernel.org>,
+        stable@vger.kernel.org, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <c618ae86d1f757e01b1a8e79869f553cb88acf9a.1598461151.git.luto@kernel.org>
+References: <c618ae86d1f757e01b1a8e79869f553cb88acf9a.1598461151.git.luto@kernel.org>
 MIME-Version: 1.0
-Message-ID: <159846034062.389.5520610330060261726.tip-bot2@tip-bot2>
+Message-ID: <159846857768.389.6578227698972431779.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -57,87 +60,111 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the ras/core branch of tip:
+The following commit has been merged into the x86/fsgsbase branch of tip:
 
-Commit-ID:     1e36d9c6886849c6f3d3c836370563e6bc1a6ddd
-Gitweb:        https://git.kernel.org/tip/1e36d9c6886849c6f3d3c836370563e6bc1a6ddd
-Author:        Tony Luck <tony.luck@intel.com>
-AuthorDate:    Mon, 24 Aug 2020 15:12:37 -07:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Wed, 26 Aug 2020 18:40:18 +02:00
+Commit-ID:     1b9abd1755ad947d7c9913e92e7837b533124c90
+Gitweb:        https://git.kernel.org/tip/1b9abd1755ad947d7c9913e92e7837b533124c90
+Author:        Andy Lutomirski <luto@kernel.org>
+AuthorDate:    Wed, 26 Aug 2020 10:00:46 -07:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Wed, 26 Aug 2020 20:54:18 +02:00
 
-x86/mce: Delay clearing IA32_MCG_STATUS to the end of do_machine_check()
+selftests/x86/fsgsbase: Test PTRACE_PEEKUSER for GSBASE with invalid LDT GS
 
-A long time ago, Linux cleared IA32_MCG_STATUS at the very end of machine
-check processing.
+This tests commit:
 
-Then, some fancy recovery and IST manipulation was added in:
+  8ab49526b53d ("x86/fsgsbase/64: Fix NULL deref in 86_fsgsbase_read_task")
 
-  d4812e169de4 ("x86, mce: Get rid of TIF_MCE_NOTIFY and associated mce tricks")
+Unpatched kernels will OOPS.
 
-and clearing IA32_MCG_STATUS was pulled earlier in the function.
-
-Next change moved the actual recovery out of do_machine_check() and
-just used task_work_add() to schedule it later (before returning to the
-user):
-
-  5567d11c21a1 ("x86/mce: Send #MC singal from task work")
-
-Most recently the fancy IST footwork was removed as no longer needed:
-
-  b052df3da821 ("x86/entry: Get rid of ist_begin/end_non_atomic()")
-
-At this point there is no reason remaining to clear IA32_MCG_STATUS early.
-It can move back to the very end of the function.
-
-Also move sync_core(). The comments for this function say that it should
-only be called when instructions have been changed/re-mapped. Recovery
-for an instruction fetch may change the physical address. But that
-doesn't happen until the scheduled work runs (which could be on another
-CPU).
-
- [ bp: Massage commit message. ]
-
-Reported-by: Gabriele Paoloni <gabriele.paoloni@intel.com>
-Signed-off-by: Tony Luck <tony.luck@intel.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20200824221237.5397-1-tony.luck@intel.com
+Signed-off-by: Andy Lutomirski <luto@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/c618ae86d1f757e01b1a8e79869f553cb88acf9a.1598461151.git.luto@kernel.org
 ---
- arch/x86/kernel/cpu/mce/core.c |  9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ tools/testing/selftests/x86/fsgsbase.c | 65 +++++++++++++++++++++++++-
+ 1 file changed, 65 insertions(+)
 
-diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
-index f43a78b..0ba24df 100644
---- a/arch/x86/kernel/cpu/mce/core.c
-+++ b/arch/x86/kernel/cpu/mce/core.c
-@@ -1190,6 +1190,7 @@ static void kill_me_maybe(struct callback_head *cb)
+diff --git a/tools/testing/selftests/x86/fsgsbase.c b/tools/testing/selftests/x86/fsgsbase.c
+index 0056e25..7161cfc 100644
+--- a/tools/testing/selftests/x86/fsgsbase.c
++++ b/tools/testing/selftests/x86/fsgsbase.c
+@@ -443,6 +443,68 @@ static void test_unexpected_base(void)
  
- 	if (!memory_failure(p->mce_addr >> PAGE_SHIFT, flags)) {
- 		set_mce_nospec(p->mce_addr >> PAGE_SHIFT, p->mce_whole_page);
-+		sync_core();
- 		return;
- 	}
+ #define USER_REGS_OFFSET(r) offsetof(struct user_regs_struct, r)
  
-@@ -1330,12 +1331,8 @@ noinstr void do_machine_check(struct pt_regs *regs)
- 	if (worst > 0)
- 		irq_work_queue(&mce_irq_work);
++static void test_ptrace_write_gs_read_base(void)
++{
++	int status;
++	pid_t child = fork();
++
++	if (child < 0)
++		err(1, "fork");
++
++	if (child == 0) {
++		printf("[RUN]\tPTRACE_POKE GS, read GSBASE back\n");
++
++		printf("[RUN]\tARCH_SET_GS to 1\n");
++		if (syscall(SYS_arch_prctl, ARCH_SET_GS, 1) != 0)
++			err(1, "ARCH_SET_GS");
++
++		if (ptrace(PTRACE_TRACEME, 0, NULL, NULL) != 0)
++			err(1, "PTRACE_TRACEME");
++
++		raise(SIGTRAP);
++		_exit(0);
++	}
++
++	wait(&status);
++
++	if (WSTOPSIG(status) == SIGTRAP) {
++		unsigned long base;
++		unsigned long gs_offset = USER_REGS_OFFSET(gs);
++		unsigned long base_offset = USER_REGS_OFFSET(gs_base);
++
++		/* Read the initial base.  It should be 1. */
++		base = ptrace(PTRACE_PEEKUSER, child, base_offset, NULL);
++		if (base == 1) {
++			printf("[OK]\tGSBASE started at 1\n");
++		} else {
++			nerrs++;
++			printf("[FAIL]\tGSBASE started at 0x%lx\n", base);
++		}
++
++		printf("[RUN]\tSet GS = 0x7, read GSBASE\n");
++
++		/* Poke an LDT selector into GS. */
++		if (ptrace(PTRACE_POKEUSER, child, gs_offset, 0x7) != 0)
++			err(1, "PTRACE_POKEUSER");
++
++		/* And read the base. */
++		base = ptrace(PTRACE_PEEKUSER, child, base_offset, NULL);
++
++		if (base == 0 || base == 1) {
++			printf("[OK]\tGSBASE reads as 0x%lx with invalid GS\n", base);
++		} else {
++			nerrs++;
++			printf("[FAIL]\tGSBASE=0x%lx (should be 0 or 1)\n", base);
++		}
++	}
++
++	ptrace(PTRACE_CONT, child, NULL, NULL);
++
++	wait(&status);
++	if (!WIFEXITED(status))
++		printf("[WARN]\tChild didn't exit cleanly.\n");
++}
++
+ static void test_ptrace_write_gsbase(void)
+ {
+ 	int status;
+@@ -529,6 +591,9 @@ int main()
+ 	shared_scratch = mmap(NULL, 4096, PROT_READ | PROT_WRITE,
+ 			      MAP_ANONYMOUS | MAP_SHARED, -1, 0);
  
--	mce_wrmsrl(MSR_IA32_MCG_STATUS, 0);
--
--	sync_core();
--
- 	if (worst != MCE_AR_SEVERITY && !kill_it)
--		return;
-+		goto out;
- 
- 	/* Fault was in user mode and we need to take some action */
- 	if ((m.cs & 3) == 3) {
-@@ -1364,6 +1361,8 @@ noinstr void do_machine_check(struct pt_regs *regs)
- 				mce_panic("Failed kernel mode recovery", &m, msg);
- 		}
- 	}
-+out:
-+	mce_wrmsrl(MSR_IA32_MCG_STATUS, 0);
- }
- EXPORT_SYMBOL_GPL(do_machine_check);
- 
++	/* Do these tests before we have an LDT. */
++	test_ptrace_write_gs_read_base();
++
+ 	/* Probe FSGSBASE */
+ 	sethandler(SIGILL, sigill, 0);
+ 	if (sigsetjmp(jmpbuf, 1) == 0) {
