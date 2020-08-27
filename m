@@ -2,16 +2,16 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F10F253FB6
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Aug 2020 09:55:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CD20253FAD
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Aug 2020 09:54:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728365AbgH0Hyt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 27 Aug 2020 03:54:49 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:36668 "EHLO
+        id S1728452AbgH0Hyu (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 27 Aug 2020 03:54:50 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:36582 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728439AbgH0Hyc (ORCPT
+        with ESMTP id S1728088AbgH0Hyd (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 27 Aug 2020 03:54:32 -0400
+        Thu, 27 Aug 2020 03:54:33 -0400
 Date:   Thu, 27 Aug 2020 07:54:30 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1598514871;
@@ -20,12 +20,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=BInk0uHR7DRXZQUP0QywiS82w6J6yCk+1OCKGg5qNlc=;
-        b=GOpTIw4WTxQIz+dxx0KMvi+/ZGTTwyH5emfSrYx+Kmx5IjjneKEJYVb9+GWU70dCYgWbHq
-        2mc9BsJbncgDy46SDZoVFLwnZPymAQ0yAzd9iXijJK19//GrMS4+TtJ3R9nYeHC2n6v35C
-        htEhzt0H64IrQ67yXFXnr8z0+S0fhAVIiZ+a5IFKvoBfFHd5ugvu/Nx5GmnNUYTPNlLp/a
-        rzApxCeakxapKCb1Bb3Kdb9sG3fs8x50QSj4a3HQROZybiLRXzmNLvrp9UolQST+4zCiFr
-        LwSspFgfJpK7PZCSXavNXS2pqGX5bn0XeXjIXhgrN2gI37YVs6uXwkmEpBPrNw==
+        bh=mTmvlE5zdtLocGp68LdVg1HRKyqOz2s6aWOVET36LjE=;
+        b=fp3jGDPeoh8tGcd0+3xWUGnd3M8IZBNgknszw2HbaDWXUs9IPEI0NDnzrAFDpOAlUg7Py8
+        DEU/wlmb56t5vxTlS1f4smt4zRI6zhGRKJAqex+1DkNB4t467sLYLpW+FOdzYpYu4pgGv8
+        QXUbyyw0EEat0qBBBJTu3VtfxzOS8n1a3TlV+VBlJQQX6mXeX+hgbFvDUPyoh0Qj4Lug/7
+        8q7ycqDhKBQY5qwYoPSDv7KAmCtSn88M8SQE4gEXH7REHT8fOqdn6uQKDgUdX5Jy3naW6O
+        Hsx3WKmFnjmucIuoUGJsCnshvIpCFZX9EwBUYPwSp9DcynRAXMdCvwWYpF2Gbw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1598514871;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -33,22 +33,22 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=BInk0uHR7DRXZQUP0QywiS82w6J6yCk+1OCKGg5qNlc=;
-        b=7c4jKZ9y6IgPP/J5CMSULjGQbimzZ3irdty9Rx51OUT04XoBWM4fUyQBH8ypbASq4V9D1w
-        YUvK4TDeOYzbIWCw==
+        bh=mTmvlE5zdtLocGp68LdVg1HRKyqOz2s6aWOVET36LjE=;
+        b=DMsSb1PiJffJm2A599B2fGxH2SgWS2h264W5OjCuJoP+JfGd+1/y7XodfGeO2QIJcOl4Vc
+        cPbzWNhe5tfdpNCg==
 From:   "tip-bot2 for Valentin Schneider" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/topology: Move SD_DEGENERATE_GROUPS_MASK out
- of linux/sched/topology.h
+Subject: [tip: sched/core] sched/topology: Move sd_flag_debug out of
+ linux/sched/topology.h
 Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Valentin Schneider <valentin.schneider@arm.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200825133216.9163-2-valentin.schneider@arm.com>
-References: <20200825133216.9163-2-valentin.schneider@arm.com>
+In-Reply-To: <20200825133216.9163-1-valentin.schneider@arm.com>
+References: <20200825133216.9163-1-valentin.schneider@arm.com>
 MIME-Version: 1.0
-Message-ID: <159851487046.20229.3637647119977247598.tip-bot2@tip-bot2>
+Message-ID: <159851487090.20229.14835640470330793284.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,65 +60,68 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     4fc472f1214ef75e5450f207e23ff13af6eecad4
-Gitweb:        https://git.kernel.org/tip/4fc472f1214ef75e5450f207e23ff13af6eecad4
+Commit-ID:     8fca9494d4b4d6b57b1398cd473feb308df656db
+Gitweb:        https://git.kernel.org/tip/8fca9494d4b4d6b57b1398cd473feb308df656db
 Author:        Valentin Schneider <valentin.schneider@arm.com>
-AuthorDate:    Tue, 25 Aug 2020 14:32:16 +01:00
+AuthorDate:    Tue, 25 Aug 2020 14:32:15 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Wed, 26 Aug 2020 12:41:59 +02:00
 
-sched/topology: Move SD_DEGENERATE_GROUPS_MASK out of linux/sched/topology.h
+sched/topology: Move sd_flag_debug out of linux/sched/topology.h
 
-SD_DEGENERATE_GROUPS_MASK is only useful for sched/topology.c, but still
-gets defined for anyone who imports topology.h, leading to a flurry of
-unused variable warnings.
+Defining an array in a header imported all over the place clearly is a daft
+idea, that still didn't stop me from doing it.
 
-Move it out of the header and place it next to the SD degeneration
-functions in sched/topology.c.
+Leave a declaration of sd_flag_debug in topology.h and move its definition
+to sched/debug.c.
 
-Fixes: 4ee4ea443a5d ("sched/topology: Introduce SD metaflag for flags needing > 1 groups")
+Fixes: b6e862f38672 ("sched/topology: Define and assign sched_domain flag metadata")
 Reported-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Signed-off-by: Valentin Schneider <valentin.schneider@arm.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20200825133216.9163-2-valentin.schneider@arm.com
+Link: https://lkml.kernel.org/r/20200825133216.9163-1-valentin.schneider@arm.com
 ---
- include/linux/sched/topology.h | 7 -------
- kernel/sched/topology.c        | 7 +++++++
- 2 files changed, 7 insertions(+), 7 deletions(-)
+ include/linux/sched/topology.h |  9 ++++-----
+ kernel/sched/debug.c           |  6 ++++++
+ 2 files changed, 10 insertions(+), 5 deletions(-)
 
 diff --git a/include/linux/sched/topology.h b/include/linux/sched/topology.h
-index b9b0dab..9ef7bf6 100644
+index 2d59ca7..b9b0dab 100644
 --- a/include/linux/sched/topology.h
 +++ b/include/linux/sched/topology.h
-@@ -25,13 +25,6 @@ enum {
- };
+@@ -33,14 +33,13 @@ static const unsigned int SD_DEGENERATE_GROUPS_MASK =
  #undef SD_FLAG
  
--/* Generate a mask of SD flags with the SDF_NEEDS_GROUPS metaflag */
--#define SD_FLAG(name, mflags) (name * !!((mflags) & SDF_NEEDS_GROUPS)) |
--static const unsigned int SD_DEGENERATE_GROUPS_MASK =
--#include <linux/sched/sd_flags.h>
--0;
--#undef SD_FLAG
--
  #ifdef CONFIG_SCHED_DEBUG
+-#define SD_FLAG(_name, mflags) [__##_name] = { .meta_flags = mflags, .name = #_name },
+-static const struct {
++
++struct sd_flag_debug {
+ 	unsigned int meta_flags;
+ 	char *name;
+-} sd_flag_debug[] = {
+-#include <linux/sched/sd_flags.h>
+ };
+-#undef SD_FLAG
++extern const struct sd_flag_debug sd_flag_debug[];
++
+ #endif
  
- struct sd_flag_debug {
-diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
-index c674aaa..aa1676a 100644
---- a/kernel/sched/topology.c
-+++ b/kernel/sched/topology.c
-@@ -154,6 +154,13 @@ static inline bool sched_debug(void)
+ #ifdef CONFIG_SCHED_SMT
+diff --git a/kernel/sched/debug.c b/kernel/sched/debug.c
+index 0655524..0d7896d 100644
+--- a/kernel/sched/debug.c
++++ b/kernel/sched/debug.c
+@@ -245,6 +245,12 @@ set_table_entry(struct ctl_table *entry,
+ 	entry->proc_handler = proc_handler;
  }
- #endif /* CONFIG_SCHED_DEBUG */
  
-+/* Generate a mask of SD flags with the SDF_NEEDS_GROUPS metaflag */
-+#define SD_FLAG(name, mflags) (name * !!((mflags) & SDF_NEEDS_GROUPS)) |
-+static const unsigned int SD_DEGENERATE_GROUPS_MASK =
++#define SD_FLAG(_name, mflags) [__##_name] = { .meta_flags = mflags, .name = #_name },
++const struct sd_flag_debug sd_flag_debug[] = {
 +#include <linux/sched/sd_flags.h>
-+0;
++};
 +#undef SD_FLAG
 +
- static int sd_degenerate(struct sched_domain *sd)
+ static int sd_ctl_doflags(struct ctl_table *table, int write,
+ 			  void *buffer, size_t *lenp, loff_t *ppos)
  {
- 	if (cpumask_weight(sched_domain_span(sd)) == 1)
