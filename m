@@ -2,52 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 06192253FDD
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Aug 2020 09:57:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DF51253FDC
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Aug 2020 09:57:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728680AbgH0H4u (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S1728407AbgH0H4u (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Thu, 27 Aug 2020 03:56:50 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:36668 "EHLO
+Received: from Galois.linutronix.de ([193.142.43.55]:36664 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728403AbgH0Hy1 (ORCPT
+        with ESMTP id S1728394AbgH0Hy0 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 27 Aug 2020 03:54:27 -0400
+        Thu, 27 Aug 2020 03:54:26 -0400
 Date:   Thu, 27 Aug 2020 07:54:23 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1598514864;
+        s=2020; t=1598514863;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=oYQQtXOFwo/FnJTzFjXfsGesTri4WbONWXo8+yKYZ7o=;
-        b=skE3NEePSFLxg1Tl6mpcMoGye3q2YLnglgpSUIMMjHklq6mjc61+RQ/NNJO+kKh7BUcX89
-        rck00zku+Di7syyaEPdF/dC7oE7A9sQUKAtr5y5svKQV1nsqGOYifpWlimirk6XX5k7c/u
-        Bt4PDu6pMJO43fpsH2CttQRqWxgHL9hHSz2HUxXcL2FoTTOkAZY9HjYCURj7CSvSvQtvlQ
-        YS3ZqPAWogr2xx82uouSfw4Ml9e6qxe0/yNNysjrQwB12uPeI+Mfe3+sbgwU9HIU8W0Grv
-        /Jq/qw+4IoemW7nszGCv02X8dvDJGja1/vnpSeKtez4bIi4togQrRh+pqlqT+w==
+        bh=Az18AKM6BT8dn3vLckngVOwJYbF7d4EKE80ICkYF9xk=;
+        b=Y5MRA59w9Y5BXsMDUMM4gd0HGr0OdtEV+Yty6SGej+oVMEuGS+iQzsZjns1FtlqMLbzeJz
+        SFbieKXh0dTeFu4FZjjueiju0tkw4gr6wk3tuwTjxg56CgF5STDqu109BQcSV+ONxCYn2N
+        R0x4O7zCUCy/FWwK8F6JYp4Bye7nLz/iBYozWyNbqjTPV1C1zTVt4cHDKcE8Dn40Sfn0J8
+        +WoHf/l0HAbjUSmwXnrqGTG7zoyEbU4jYJ+yW2u7zMNTMz/WTH5MoJS4nHVeJnXoO87e7c
+        lBLt9nAay5wEezNk62M64eWmQ+o1FXtPn9EuG9QyuvXiL/ZDcmTeL3opkDXRPw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1598514864;
+        s=2020e; t=1598514863;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=oYQQtXOFwo/FnJTzFjXfsGesTri4WbONWXo8+yKYZ7o=;
-        b=3AvQcN9bM4lYM77cUKPHKp+6ToUzX6X6m+TGVm9i/3Ga/vszcTd+KMFMXLFim6O1Tiyx7p
-        eHqSLv/+gzau0NAQ==
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+        bh=Az18AKM6BT8dn3vLckngVOwJYbF7d4EKE80ICkYF9xk=;
+        b=DQXb9cwE/EVZ+CnBWsWbyU9vp8zzYk8xe5uURy65EX4yNUvkLjUbr5kBG5hwN5Ap4uDp8r
+        FA+u/i9pHokPUWBw==
+From:   "tip-bot2 for Randy Dunlap" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] locking/refcount: Provide __refcount API to
- obtain the old value
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Kees Cook <keescook@chromium.org>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200729111120.GA2638@hirez.programming.kicks-ass.net>
-References: <20200729111120.GA2638@hirez.programming.kicks-ass.net>
+Subject: [tip: locking/core] seqlock: Fix multiple kernel-doc warnings
+Cc:     kernel test robot <lkp@intel.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200817000200.20993-1-rdunlap@infradead.org>
+References: <20200817000200.20993-1-rdunlap@infradead.org>
 MIME-Version: 1.0
-Message-ID: <159851486357.20229.16363998255260125178.tip-bot2@tip-bot2>
+Message-ID: <159851486318.20229.14949275173019468028.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,186 +59,86 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     a435b9a14356587cf512ea6473368a579373c74c
-Gitweb:        https://git.kernel.org/tip/a435b9a14356587cf512ea6473368a579373c74c
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Wed, 29 Jul 2020 13:00:57 +02:00
+Commit-ID:     a28e884b966e713da29caefbb347efea77367d22
+Gitweb:        https://git.kernel.org/tip/a28e884b966e713da29caefbb347efea77367d22
+Author:        Randy Dunlap <rdunlap@infradead.org>
+AuthorDate:    Sun, 16 Aug 2020 17:02:00 -07:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Wed, 26 Aug 2020 12:42:02 +02:00
 
-locking/refcount: Provide __refcount API to obtain the old value
+seqlock: Fix multiple kernel-doc warnings
 
-David requested means to obtain the old/previous value from the
-refcount API for tracing purposes.
+Fix kernel-doc warnings in <linux/seqlock.h>.
 
-Duplicate (most of) the API as __refcount*() with an additional
-'int *' argument into which, if !NULL, the old value will be stored.
+../include/linux/seqlock.h:152: warning: Incorrect use of kernel-doc format:  * seqcount_LOCKNAME_init() - runtime initializer for seqcount_LOCKNAME_t
+../include/linux/seqlock.h:164: warning: Incorrect use of kernel-doc format:  * SEQCOUNT_LOCKTYPE() - Instantiate seqcount_LOCKNAME_t and helpers
+../include/linux/seqlock.h:229: warning: Function parameter or member 'seq_name' not described in 'SEQCOUNT_LOCKTYPE_ZERO'
+../include/linux/seqlock.h:229: warning: Function parameter or member 'assoc_lock' not described in 'SEQCOUNT_LOCKTYPE_ZERO'
+../include/linux/seqlock.h:229: warning: Excess function parameter 'name' description in 'SEQCOUNT_LOCKTYPE_ZERO'
+../include/linux/seqlock.h:229: warning: Excess function parameter 'lock' description in 'SEQCOUNT_LOCKTYPE_ZERO'
+../include/linux/seqlock.h:695: warning: duplicate section name 'NOTE'
 
-Requested-by: David Howells <dhowells@redhat.com>
+Demote kernel-doc notation for the macros "seqcount_LOCKNAME_init()" and
+"SEQCOUNT_LOCKTYPE()"; scripts/kernel-doc does not handle them correctly.
+
+Rename function parameters in SEQCNT_LOCKNAME_ZERO() documentation
+to match the macro's argument names. Change the macro name in the
+documentation to SEQCOUNT_LOCKTYPE_ZERO() to match the macro's name.
+
+For raw_write_seqcount_latch(), rename the second NOTE: to NOTE2:
+to prevent a kernel-doc warning. However, the generated output is not
+quite as nice as it could be for this.
+
+Fix a typo: s/LOCKTYPR/LOCKTYPE/
+
+Fixes: 0efc94c5d15c ("seqcount: Compress SEQCNT_LOCKNAME_ZERO()")
+Fixes: e4e9ab3f9f91 ("seqlock: Fold seqcount_LOCKNAME_init() definition")
+Fixes: a8772dccb2ec ("seqlock: Fold seqcount_LOCKNAME_t definition")
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Link: https://lkml.kernel.org/r/20200729111120.GA2638@hirez.programming.kicks-ass.net
+Link: https://lkml.kernel.org/r/20200817000200.20993-1-rdunlap@infradead.org
 ---
- include/linux/refcount.h | 65 ++++++++++++++++++++++++++++++++++-----
- 1 file changed, 57 insertions(+), 8 deletions(-)
+ include/linux/seqlock.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/refcount.h b/include/linux/refcount.h
-index 0e3ee25..7fabb1a 100644
---- a/include/linux/refcount.h
-+++ b/include/linux/refcount.h
-@@ -165,7 +165,7 @@ static inline unsigned int refcount_read(const refcount_t *r)
+diff --git a/include/linux/seqlock.h b/include/linux/seqlock.h
+index 962d976..300cbf3 100644
+--- a/include/linux/seqlock.h
++++ b/include/linux/seqlock.h
+@@ -138,7 +138,7 @@ static inline void seqcount_lockdep_reader_access(const seqcount_t *s)
+ #endif
+ 
+ /**
+- * typedef seqcount_LOCKNAME_t - sequence counter with LOCKTYPR associated
++ * typedef seqcount_LOCKNAME_t - sequence counter with LOCKTYPE associated
+  * @seqcount:	The real sequence counter
+  * @lock:	Pointer to the associated spinlock
   *
-  * Return: false if the passed refcount is 0, true otherwise
+@@ -148,7 +148,7 @@ static inline void seqcount_lockdep_reader_access(const seqcount_t *s)
+  * that the write side critical section is properly serialized.
   */
--static inline __must_check bool refcount_add_not_zero(int i, refcount_t *r)
-+static inline __must_check bool __refcount_add_not_zero(int i, refcount_t *r, int *oldp)
- {
- 	int old = refcount_read(r);
  
-@@ -174,12 +174,20 @@ static inline __must_check bool refcount_add_not_zero(int i, refcount_t *r)
- 			break;
- 	} while (!atomic_try_cmpxchg_relaxed(&r->refs, &old, old + i));
+-/**
++/*
+  * seqcount_LOCKNAME_init() - runtime initializer for seqcount_LOCKNAME_t
+  * @s:		Pointer to the seqcount_LOCKNAME_t instance
+  * @lock:	Pointer to the associated LOCKTYPE
+@@ -217,7 +217,7 @@ SEQCOUNT_LOCKTYPE(rwlock_t,		rwlock,		false,	s->lock)
+ SEQCOUNT_LOCKTYPE(struct mutex,		mutex,		true,	s->lock)
+ SEQCOUNT_LOCKTYPE(struct ww_mutex,	ww_mutex,	true,	&s->lock->base)
  
-+	if (oldp)
-+		*oldp = old;
-+
- 	if (unlikely(old < 0 || old + i < 0))
- 		refcount_warn_saturate(r, REFCOUNT_ADD_NOT_ZERO_OVF);
- 
- 	return old;
- }
- 
-+static inline __must_check bool refcount_add_not_zero(int i, refcount_t *r)
-+{
-+	return __refcount_add_not_zero(i, r, NULL);
-+}
-+
- /**
-  * refcount_add - add a value to a refcount
-  * @i: the value to add to the refcount
-@@ -196,16 +204,24 @@ static inline __must_check bool refcount_add_not_zero(int i, refcount_t *r)
-  * cases, refcount_inc(), or one of its variants, should instead be used to
-  * increment a reference count.
-  */
--static inline void refcount_add(int i, refcount_t *r)
-+static inline void __refcount_add(int i, refcount_t *r, int *oldp)
- {
- 	int old = atomic_fetch_add_relaxed(i, &r->refs);
- 
-+	if (oldp)
-+		*oldp = old;
-+
- 	if (unlikely(!old))
- 		refcount_warn_saturate(r, REFCOUNT_ADD_UAF);
- 	else if (unlikely(old < 0 || old + i < 0))
- 		refcount_warn_saturate(r, REFCOUNT_ADD_OVF);
- }
- 
-+static inline void refcount_add(int i, refcount_t *r)
-+{
-+	__refcount_add(i, r, NULL);
-+}
-+
- /**
-  * refcount_inc_not_zero - increment a refcount unless it is 0
-  * @r: the refcount to increment
-@@ -219,9 +235,14 @@ static inline void refcount_add(int i, refcount_t *r)
+-/**
++/*
+  * SEQCNT_LOCKNAME_ZERO - static initializer for seqcount_LOCKNAME_t
+  * @name:	Name of the seqcount_LOCKNAME_t instance
+  * @lock:	Pointer to the associated LOCKTYPE
+@@ -688,7 +688,7 @@ static inline int raw_read_seqcount_t_latch(seqcount_t *s)
+  *	to miss an entire modification sequence, once it resumes it might
+  *	observe the new entry.
   *
-  * Return: true if the increment was successful, false otherwise
-  */
-+static inline __must_check bool __refcount_inc_not_zero(refcount_t *r, int *oldp)
-+{
-+	return __refcount_add_not_zero(1, r, oldp);
-+}
-+
- static inline __must_check bool refcount_inc_not_zero(refcount_t *r)
- {
--	return refcount_add_not_zero(1, r);
-+	return __refcount_inc_not_zero(r, NULL);
- }
- 
- /**
-@@ -236,9 +257,14 @@ static inline __must_check bool refcount_inc_not_zero(refcount_t *r)
-  * Will WARN if the refcount is 0, as this represents a possible use-after-free
-  * condition.
-  */
-+static inline void __refcount_inc(refcount_t *r, int *oldp)
-+{
-+	__refcount_add(1, r, oldp);
-+}
-+
- static inline void refcount_inc(refcount_t *r)
- {
--	refcount_add(1, r);
-+	__refcount_inc(r, NULL);
- }
- 
- /**
-@@ -261,10 +287,13 @@ static inline void refcount_inc(refcount_t *r)
+- * NOTE:
++ * NOTE2:
   *
-  * Return: true if the resulting refcount is 0, false otherwise
-  */
--static inline __must_check bool refcount_sub_and_test(int i, refcount_t *r)
-+static inline __must_check bool __refcount_sub_and_test(int i, refcount_t *r, int *oldp)
- {
- 	int old = atomic_fetch_sub_release(i, &r->refs);
- 
-+	if (oldp)
-+		*oldp = old;
-+
- 	if (old == i) {
- 		smp_acquire__after_ctrl_dep();
- 		return true;
-@@ -276,6 +305,11 @@ static inline __must_check bool refcount_sub_and_test(int i, refcount_t *r)
- 	return false;
- }
- 
-+static inline __must_check bool refcount_sub_and_test(int i, refcount_t *r)
-+{
-+	return __refcount_sub_and_test(i, r, NULL);
-+}
-+
- /**
-  * refcount_dec_and_test - decrement a refcount and test if it is 0
-  * @r: the refcount
-@@ -289,9 +323,14 @@ static inline __must_check bool refcount_sub_and_test(int i, refcount_t *r)
-  *
-  * Return: true if the resulting refcount is 0, false otherwise
-  */
-+static inline __must_check bool __refcount_dec_and_test(refcount_t *r, int *oldp)
-+{
-+	return __refcount_sub_and_test(1, r, oldp);
-+}
-+
- static inline __must_check bool refcount_dec_and_test(refcount_t *r)
- {
--	return refcount_sub_and_test(1, r);
-+	return __refcount_dec_and_test(r, NULL);
- }
- 
- /**
-@@ -304,12 +343,22 @@ static inline __must_check bool refcount_dec_and_test(refcount_t *r)
-  * Provides release memory ordering, such that prior loads and stores are done
-  * before.
-  */
--static inline void refcount_dec(refcount_t *r)
-+static inline void __refcount_dec(refcount_t *r, int *oldp)
- {
--	if (unlikely(atomic_fetch_sub_release(1, &r->refs) <= 1))
-+	int old = atomic_fetch_sub_release(1, &r->refs);
-+
-+	if (oldp)
-+		*oldp = old;
-+
-+	if (unlikely(old <= 1))
- 		refcount_warn_saturate(r, REFCOUNT_DEC_LEAK);
- }
- 
-+static inline void refcount_dec(refcount_t *r)
-+{
-+	__refcount_dec(r, NULL);
-+}
-+
- extern __must_check bool refcount_dec_if_one(refcount_t *r);
- extern __must_check bool refcount_dec_not_one(refcount_t *r);
- extern __must_check bool refcount_dec_and_mutex_lock(refcount_t *r, struct mutex *lock);
+  *	When data is a dynamic data structure; one should use regular RCU
+  *	patterns to manage the lifetimes of the objects within.
