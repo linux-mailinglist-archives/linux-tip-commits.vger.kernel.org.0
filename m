@@ -2,56 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3AB27253F34
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Aug 2020 09:33:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE741253FA1
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Aug 2020 09:54:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727048AbgH0HdC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 27 Aug 2020 03:33:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49166 "EHLO
+        id S1728120AbgH0HyR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 27 Aug 2020 03:54:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52470 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726851AbgH0HdB (ORCPT
+        with ESMTP id S1727048AbgH0HyR (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 27 Aug 2020 03:33:01 -0400
+        Thu, 27 Aug 2020 03:54:17 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B693C061264;
-        Thu, 27 Aug 2020 00:33:01 -0700 (PDT)
-Date:   Thu, 27 Aug 2020 07:32:58 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D57EC061264;
+        Thu, 27 Aug 2020 00:54:17 -0700 (PDT)
+Date:   Thu, 27 Aug 2020 07:54:14 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1598513579;
+        s=2020; t=1598514855;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=P36oEIEW26lLr8KitaGaEAxdQfOhpK7tlWZ1uAmlAPg=;
-        b=R4kppq6gCarrgv4Wj/1bsmaT8bWSKuRsJAzjqOiAwxDY2+iId+a45xo/aXd591FMBH6jLJ
-        BD8wd4YRD8+Im+QiyGLhYSkB4ONGfD14k7q77dyXJGnJUbYaz70YDjVKZ/9QESpywClu7f
-        V3q6OxS9mkQblibpAcKk6YIAQ/mHPpZ2Hz2KHu8QoevJ/8pANGLlCIoILd254bhaJi/sdV
-        pme0jlAjss/gU/9Q7w/ps12NmQ7urTVnbbsvdlXXce5EPntNUe7JEH0jZvHypljq4g5uO3
-        isLFuCYqSGjM8N3gR8BO9XeFBVly5cVIbP1xsd3KV/K0lG9bFgboGjRo83LWqw==
+        bh=BmdgD8aRx+NkXrffxySXTl0IhoJmFxLLR11F0fHAfoA=;
+        b=WCV1mi5cLPrURoLGTJZWjt3waIVtqs512M1B3jNDZrIownPEQSWlH6bLcpZkoCHsx1qPiM
+        T9aCs498D6YKp68mP/3eW5sFCk3ns8CRRvRLMYrfkDz/KFbMbCOeAy6BOmZWM3q0OefHLO
+        H092AzHn0SzbhGcqF5G5pEvuB4FHujGF7Q9cdXbXPKjKl7guXwPbKhxjAQvPPDEA8Ciueh
+        UjyGA0unV4T00KdnjRsQFfu71okHylwiKUshiRsCnNE6wETTdsakHNgTqWnNQrp+kMqqPh
+        Dj+ypOqfyPOyJYNCyRzP/oyDknnmHLS4M/38sMaXXcAQ01ue2TD5iHKA56UX2A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1598513579;
+        s=2020e; t=1598514855;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=P36oEIEW26lLr8KitaGaEAxdQfOhpK7tlWZ1uAmlAPg=;
-        b=dPQi7FZ2pLqoOmbUJIhXAeyNjpe3EX3TVQ6m9ARpyv3LdqdegWbDSA8MuP3Q8IlmsyFS6l
-        EB81OGIsvX3HzxCg==
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+        bh=BmdgD8aRx+NkXrffxySXTl0IhoJmFxLLR11F0fHAfoA=;
+        b=cXOXNSJyG94rIBCrdoqG5I0PxzOXkkuCLJNS4TnYHsYqzbVbAO2+8rJHQVgghkdJSPTLO0
+        IRKJ4/hmWo1Jx2Dg==
+From:   "tip-bot2 for Boqun Feng" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/irq: Unbreak interrupt affinity setting
-Cc:     Alex bykov <alex.bykov@scylladb.com>,
-        Avi Kivity <avi@scylladb.com>,
-        Alexander Graf <graf@amazon.com>,
-        Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org,
+Subject: [tip: locking/core] lockdep/selftest: Introduce recursion3
+Cc:     Boqun Feng <boqun.feng@gmail.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <87wo1ltaxz.fsf@nanos.tec.linutronix.de>
-References: <87wo1ltaxz.fsf@nanos.tec.linutronix.de>
+In-Reply-To: <20200807074238.1632519-20-boqun.feng@gmail.com>
+References: <20200807074238.1632519-20-boqun.feng@gmail.com>
 MIME-Version: 1.0
-Message-ID: <159851357826.20229.12114410199815745845.tip-bot2@tip-bot2>
+Message-ID: <159851485457.20229.17439142206591711184.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,130 +59,97 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     e027fffff799cdd70400c5485b1a54f482255985
-Gitweb:        https://git.kernel.org/tip/e027fffff799cdd70400c5485b1a54f482255985
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Wed, 26 Aug 2020 22:21:44 +02:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 27 Aug 2020 09:29:23 +02:00
+Commit-ID:     96a16f45aed89cf024606a11679b0609d09552c7
+Gitweb:        https://git.kernel.org/tip/96a16f45aed89cf024606a11679b0609d09552c7
+Author:        Boqun Feng <boqun.feng@gmail.com>
+AuthorDate:    Fri, 07 Aug 2020 15:42:38 +08:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Wed, 26 Aug 2020 12:42:08 +02:00
 
-x86/irq: Unbreak interrupt affinity setting
+lockdep/selftest: Introduce recursion3
 
-Several people reported that 5.8 broke the interrupt affinity setting
-mechanism.
+Add a test case shows that USED_IN_*_READ and ENABLE_*_READ can cause
+deadlock too.
 
-The consolidation of the entry code reused the regular exception entry code
-for device interrupts and changed the way how the vector number is conveyed
-from ptregs->orig_ax to a function argument.
-
-The low level entry uses the hardware error code slot to push the vector
-number onto the stack which is retrieved from there into a function
-argument and the slot on stack is set to -1.
-
-The reason for setting it to -1 is that the error code slot is at the
-position where pt_regs::orig_ax is. A positive value in pt_regs::orig_ax
-indicates that the entry came via a syscall. If it's not set to a negative
-value then a signal delivery on return to userspace would try to restart a
-syscall. But there are other places which rely on pt_regs::orig_ax being a
-valid indicator for syscall entry.
-
-But setting pt_regs::orig_ax to -1 has a nasty side effect vs. the
-interrupt affinity setting mechanism, which was overlooked when this change
-was made.
-
-Moving interrupts on x86 happens in several steps. A new vector on a
-different CPU is allocated and the relevant interrupt source is
-reprogrammed to that. But that's racy and there might be an interrupt
-already in flight to the old vector. So the old vector is preserved until
-the first interrupt arrives on the new vector and the new target CPU. Once
-that happens the old vector is cleaned up, but this cleanup still depends
-on the vector number being stored in pt_regs::orig_ax, which is now -1.
-
-That -1 makes the check for cleanup: pt_regs::orig_ax == new_vector
-always false. As a consequence the interrupt is moved once, but then it
-cannot be moved anymore because the cleanup of the old vector never
-happens.
-
-There would be several ways to convey the vector information to that place
-in the guts of the interrupt handling, but on deeper inspection it turned
-out that this check is pointless and a leftover from the old affinity model
-of X86 which supported multi-CPU affinities. Under this model it was
-possible that an interrupt had an old and a new vector on the same CPU, so
-the vector match was required.
-
-Under the new model the effective affinity of an interrupt is always a
-single CPU from the requested affinity mask. If the affinity mask changes
-then either the interrupt stays on the CPU and on the same vector when that
-CPU is still in the new affinity mask or it is moved to a different CPU, but
-it is never moved to a different vector on the same CPU.
-
-Ergo the cleanup check for the matching vector number is not required and
-can be removed which makes the dependency on pt_regs:orig_ax go away.
-
-The remaining check for new_cpu == smp_processsor_id() is completely
-sufficient. If it matches then the interrupt was successfully migrated and
-the cleanup can proceed.
-
-For paranoia sake add a warning into the vector assignment code to
-validate that the assumption of never moving to a different vector on
-the same CPU holds.
-
-Fixes: 633260fa143 ("x86/irq: Convey vector as argument and not in ptregs")
-Reported-by: Alex bykov <alex.bykov@scylladb.com>
-Reported-by: Avi Kivity <avi@scylladb.com>
-Reported-by: Alexander Graf <graf@amazon.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Alexander Graf <graf@amazon.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/87wo1ltaxz.fsf@nanos.tec.linutronix.de
-
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20200807074238.1632519-20-boqun.feng@gmail.com
 ---
- arch/x86/kernel/apic/vector.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ lib/locking-selftest.c | 55 +++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 55 insertions(+)
 
-diff --git a/arch/x86/kernel/apic/vector.c b/arch/x86/kernel/apic/vector.c
-index dae32d9..f8a56b5 100644
---- a/arch/x86/kernel/apic/vector.c
-+++ b/arch/x86/kernel/apic/vector.c
-@@ -161,6 +161,7 @@ static void apic_update_vector(struct irq_data *irqd, unsigned int newvec,
- 		apicd->move_in_progress = true;
- 		apicd->prev_vector = apicd->vector;
- 		apicd->prev_cpu = apicd->cpu;
-+		WARN_ON_ONCE(apicd->cpu == newcpu);
- 	} else {
- 		irq_matrix_free(vector_matrix, apicd->cpu, apicd->vector,
- 				managed);
-@@ -910,7 +911,7 @@ void send_cleanup_vector(struct irq_cfg *cfg)
- 		__send_cleanup_vector(apicd);
- }
+diff --git a/lib/locking-selftest.c b/lib/locking-selftest.c
+index 17f8f6f..a899b3f 100644
+--- a/lib/locking-selftest.c
++++ b/lib/locking-selftest.c
+@@ -1249,6 +1249,60 @@ GENERATE_PERMUTATIONS_3_EVENTS(irq_read_recursion2_soft_rlock)
+ #include "locking-selftest-wlock.h"
+ GENERATE_PERMUTATIONS_3_EVENTS(irq_read_recursion2_soft_wlock)
  
--static void __irq_complete_move(struct irq_cfg *cfg, unsigned vector)
-+void irq_complete_move(struct irq_cfg *cfg)
- {
- 	struct apic_chip_data *apicd;
++#undef E1
++#undef E2
++#undef E3
++/*
++ * read-lock / write-lock recursion that is unsafe.
++ *
++ * A is a ENABLED_*_READ lock
++ * B is a USED_IN_*_READ lock
++ *
++ * read_lock(A);
++ *			write_lock(B);
++ * <interrupt>
++ * read_lock(B);
++ * 			write_lock(A); // if this one is read_lock(), no deadlock
++ */
++
++#define E1()				\
++					\
++	IRQ_DISABLE();			\
++	WL(B);				\
++	LOCK(A);			\
++	UNLOCK(A);			\
++	WU(B);				\
++	IRQ_ENABLE();
++
++#define E2()				\
++					\
++	RL(A);				\
++	RU(A);				\
++
++#define E3()				\
++					\
++	IRQ_ENTER();			\
++	RL(B);				\
++	RU(B);				\
++	IRQ_EXIT();
++
++/*
++ * Generate 24 testcases:
++ */
++#include "locking-selftest-hardirq.h"
++#include "locking-selftest-rlock.h"
++GENERATE_PERMUTATIONS_3_EVENTS(irq_read_recursion3_hard_rlock)
++
++#include "locking-selftest-wlock.h"
++GENERATE_PERMUTATIONS_3_EVENTS(irq_read_recursion3_hard_wlock)
++
++#include "locking-selftest-softirq.h"
++#include "locking-selftest-rlock.h"
++GENERATE_PERMUTATIONS_3_EVENTS(irq_read_recursion3_soft_rlock)
++
++#include "locking-selftest-wlock.h"
++GENERATE_PERMUTATIONS_3_EVENTS(irq_read_recursion3_soft_wlock)
++
+ #ifdef CONFIG_DEBUG_LOCK_ALLOC
+ # define I_SPINLOCK(x)	lockdep_reset_lock(&lock_##x.dep_map)
+ # define I_RWLOCK(x)	lockdep_reset_lock(&rwlock_##x.dep_map)
+@@ -2413,6 +2467,7 @@ void locking_selftest(void)
  
-@@ -918,15 +919,16 @@ static void __irq_complete_move(struct irq_cfg *cfg, unsigned vector)
- 	if (likely(!apicd->move_in_progress))
- 		return;
+ 	DO_TESTCASE_6x2x2RW("irq read-recursion", irq_read_recursion);
+ 	DO_TESTCASE_6x2x2RW("irq read-recursion #2", irq_read_recursion2);
++	DO_TESTCASE_6x2x2RW("irq read-recursion #3", irq_read_recursion3);
  
--	if (vector == apicd->vector && apicd->cpu == smp_processor_id())
-+	/*
-+	 * If the interrupt arrived on the new target CPU, cleanup the
-+	 * vector on the old target CPU. A vector check is not required
-+	 * because an interrupt can never move from one vector to another
-+	 * on the same CPU.
-+	 */
-+	if (apicd->cpu == smp_processor_id())
- 		__send_cleanup_vector(apicd);
- }
+ 	ww_tests();
  
--void irq_complete_move(struct irq_cfg *cfg)
--{
--	__irq_complete_move(cfg, ~get_irq_regs()->orig_ax);
--}
--
- /*
-  * Called from fixup_irqs() with @desc->lock held and interrupts disabled.
-  */
