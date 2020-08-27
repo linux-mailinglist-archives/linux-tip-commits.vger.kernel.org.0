@@ -2,57 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 199D3253FC7
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Aug 2020 09:56:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F10F253FB6
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Aug 2020 09:55:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728539AbgH0H4L (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 27 Aug 2020 03:56:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52528 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728435AbgH0Hyb (ORCPT
+        id S1728365AbgH0Hyt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 27 Aug 2020 03:54:49 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:36668 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728439AbgH0Hyc (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 27 Aug 2020 03:54:31 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94081C061264;
-        Thu, 27 Aug 2020 00:54:30 -0700 (PDT)
-Date:   Thu, 27 Aug 2020 07:54:28 -0000
+        Thu, 27 Aug 2020 03:54:32 -0400
+Date:   Thu, 27 Aug 2020 07:54:30 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1598514869;
+        s=2020; t=1598514871;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=yj6hitLGgH97TCU3MzZRcCuH/06F7hXMifwYh8hnFhA=;
-        b=wyBvHWxfU6XjmQSYgdWgGYuc7br1bo9CIAWq3pOFL3Yyo0O1eep8rV9B70EfUG+Nw+5bEi
-        x3V2ycCteIo6InpQR4iwIYhWgWmDxpsDuA7zZwJySKOKPxI9fFdCqFqZJ9x9sjipfKZW30
-        qRYf6D4S4zvh37w0cfmbzYvNK+BQL8SKUriD/8A335FFRu39X7sBds1aLvzYwF09AH1Jsp
-        69zDcw5INY4OTTDh84KJWFwqUV/0wgLSzTUiB9gtM6cg6YO1UPdF0bhq0j3nF/83LUksRr
-        YoZrFx3k12h0stlMzqP/gwAFbyxvYzNSpwlBP0bm+45uHY+oTtwcvU0b/pvBXA==
+        bh=BInk0uHR7DRXZQUP0QywiS82w6J6yCk+1OCKGg5qNlc=;
+        b=GOpTIw4WTxQIz+dxx0KMvi+/ZGTTwyH5emfSrYx+Kmx5IjjneKEJYVb9+GWU70dCYgWbHq
+        2mc9BsJbncgDy46SDZoVFLwnZPymAQ0yAzd9iXijJK19//GrMS4+TtJ3R9nYeHC2n6v35C
+        htEhzt0H64IrQ67yXFXnr8z0+S0fhAVIiZ+a5IFKvoBfFHd5ugvu/Nx5GmnNUYTPNlLp/a
+        rzApxCeakxapKCb1Bb3Kdb9sG3fs8x50QSj4a3HQROZybiLRXzmNLvrp9UolQST+4zCiFr
+        LwSspFgfJpK7PZCSXavNXS2pqGX5bn0XeXjIXhgrN2gI37YVs6uXwkmEpBPrNw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1598514869;
+        s=2020e; t=1598514871;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=yj6hitLGgH97TCU3MzZRcCuH/06F7hXMifwYh8hnFhA=;
-        b=1yahYWhVDmg1dlaH33pbEtKjxVsEZKJBD1nu3JfWzdbPznuxj1uiuQ5wp7zm1NBg3uNwN+
-        9bNrygnn1V1Wk3Bw==
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+        bh=BInk0uHR7DRXZQUP0QywiS82w6J6yCk+1OCKGg5qNlc=;
+        b=7c4jKZ9y6IgPP/J5CMSULjGQbimzZ3irdty9Rx51OUT04XoBWM4fUyQBH8ypbASq4V9D1w
+        YUvK4TDeOYzbIWCw==
+From:   "tip-bot2 for Valentin Schneider" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] cpuidle: Fixup IRQ state
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Marco Elver <elver@google.com>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200821085348.251340558@infradead.org>
-References: <20200821085348.251340558@infradead.org>
+Subject: [tip: sched/core] sched/topology: Move SD_DEGENERATE_GROUPS_MASK out
+ of linux/sched/topology.h
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Valentin Schneider <valentin.schneider@arm.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200825133216.9163-2-valentin.schneider@arm.com>
+References: <20200825133216.9163-2-valentin.schneider@arm.com>
 MIME-Version: 1.0
-Message-ID: <159851486844.20229.10979787038687285429.tip-bot2@tip-bot2>
+Message-ID: <159851487046.20229.3637647119977247598.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -62,40 +58,67 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the locking/core branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     49d9c5936314e44d314c605c39cce0fd947f9c3a
-Gitweb:        https://git.kernel.org/tip/49d9c5936314e44d314c605c39cce0fd947f9c3a
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Thu, 20 Aug 2020 16:47:24 +02:00
+Commit-ID:     4fc472f1214ef75e5450f207e23ff13af6eecad4
+Gitweb:        https://git.kernel.org/tip/4fc472f1214ef75e5450f207e23ff13af6eecad4
+Author:        Valentin Schneider <valentin.schneider@arm.com>
+AuthorDate:    Tue, 25 Aug 2020 14:32:16 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 26 Aug 2020 12:41:53 +02:00
+CommitterDate: Wed, 26 Aug 2020 12:41:59 +02:00
 
-cpuidle: Fixup IRQ state
+sched/topology: Move SD_DEGENERATE_GROUPS_MASK out of linux/sched/topology.h
 
-Match the pattern elsewhere in this file.
+SD_DEGENERATE_GROUPS_MASK is only useful for sched/topology.c, but still
+gets defined for anyone who imports topology.h, leading to a flurry of
+unused variable warnings.
 
+Move it out of the header and place it next to the SD degeneration
+functions in sched/topology.c.
+
+Fixes: 4ee4ea443a5d ("sched/topology: Introduce SD metaflag for flags needing > 1 groups")
+Reported-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Valentin Schneider <valentin.schneider@arm.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Tested-by: Marco Elver <elver@google.com>
-Link: https://lkml.kernel.org/r/20200821085348.251340558@infradead.org
+Link: https://lkml.kernel.org/r/20200825133216.9163-2-valentin.schneider@arm.com
 ---
- drivers/cpuidle/cpuidle.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/linux/sched/topology.h | 7 -------
+ kernel/sched/topology.c        | 7 +++++++
+ 2 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/cpuidle/cpuidle.c b/drivers/cpuidle/cpuidle.c
-index 8719731..2fe4f3c 100644
---- a/drivers/cpuidle/cpuidle.c
-+++ b/drivers/cpuidle/cpuidle.c
-@@ -153,7 +153,8 @@ static void enter_s2idle_proper(struct cpuidle_driver *drv,
- 	 */
- 	stop_critical_timings();
- 	drv->states[index].enter_s2idle(dev, drv, index);
--	WARN_ON(!irqs_disabled());
-+	if (WARN_ON_ONCE(!irqs_disabled()))
-+		local_irq_disable();
- 	/*
- 	 * timekeeping_resume() that will be called by tick_unfreeze() for the
- 	 * first CPU executing it calls functions containing RCU read-side
+diff --git a/include/linux/sched/topology.h b/include/linux/sched/topology.h
+index b9b0dab..9ef7bf6 100644
+--- a/include/linux/sched/topology.h
++++ b/include/linux/sched/topology.h
+@@ -25,13 +25,6 @@ enum {
+ };
+ #undef SD_FLAG
+ 
+-/* Generate a mask of SD flags with the SDF_NEEDS_GROUPS metaflag */
+-#define SD_FLAG(name, mflags) (name * !!((mflags) & SDF_NEEDS_GROUPS)) |
+-static const unsigned int SD_DEGENERATE_GROUPS_MASK =
+-#include <linux/sched/sd_flags.h>
+-0;
+-#undef SD_FLAG
+-
+ #ifdef CONFIG_SCHED_DEBUG
+ 
+ struct sd_flag_debug {
+diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
+index c674aaa..aa1676a 100644
+--- a/kernel/sched/topology.c
++++ b/kernel/sched/topology.c
+@@ -154,6 +154,13 @@ static inline bool sched_debug(void)
+ }
+ #endif /* CONFIG_SCHED_DEBUG */
+ 
++/* Generate a mask of SD flags with the SDF_NEEDS_GROUPS metaflag */
++#define SD_FLAG(name, mflags) (name * !!((mflags) & SDF_NEEDS_GROUPS)) |
++static const unsigned int SD_DEGENERATE_GROUPS_MASK =
++#include <linux/sched/sd_flags.h>
++0;
++#undef SD_FLAG
++
+ static int sd_degenerate(struct sched_domain *sd)
+ {
+ 	if (cpumask_weight(sched_domain_span(sd)) == 1)
