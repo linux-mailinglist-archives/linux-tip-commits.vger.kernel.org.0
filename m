@@ -2,52 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A8DD7253FA3
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Aug 2020 09:54:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A5DA25400B
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Aug 2020 10:00:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728382AbgH0HyW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 27 Aug 2020 03:54:22 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:36528 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728088AbgH0HyS (ORCPT
+        id S1728778AbgH0IAE (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 27 Aug 2020 04:00:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52480 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728363AbgH0HyT (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 27 Aug 2020 03:54:18 -0400
-Date:   Thu, 27 Aug 2020 07:54:15 -0000
+        Thu, 27 Aug 2020 03:54:19 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3B19C06121A;
+        Thu, 27 Aug 2020 00:54:18 -0700 (PDT)
+Date:   Thu, 27 Aug 2020 07:54:16 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1598514856;
+        s=2020; t=1598514857;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=wVa/HO7M3IDLARyhmD+ozLl5NmQVSWQTbpR0Fs8sY4M=;
-        b=RbVkEOYnDfD6FPa7xJfV7yIL0+ce8HwK9GbEY7P2Tfz8UmSO1FU1qsyxcVGCO7rsYJRafF
-        GqFgi1ZCzImdXORMc4e0Fp2KL1a5bUX0c8drwaDp/i6p6S8NVKh+AfCJoz9+sZfTQJZ2xI
-        js2czr+B0AO91uyb0wc+mzi1nB+zDM+u/aQyIdFPTfQupgaJfC1ZDpggLOF2fGDn9Sqytf
-        ZFNIZHAG7V8eo7AEfbIe+71pUTidrdRFhEz3neS/C/t06aoZMnV8IwexGosIzw6QyR/GVV
-        CZLN6cReDpUK1Hx25RKm2DJ7M6GU8Dxct3gE8+3KG5HLV25L3nItfEkjzvUvnw==
+        bh=AkfGLaoqIHqktw//Exf8qq5VjMD1cnxZzW2R3O5WBtw=;
+        b=kUg9e0SyDL7+EaO2Fho0u/ATWoOf/v4x3l86RnzWm+3QN2TWOJr5LDfiGZJQ+5BqwcSlwd
+        POz9lp8OSNAgIluA0cJu6p+sc7+FtSiTZEGkQsJBkJWPuAYSgFacfSVjz1YBwAvjNUjSlM
+        Nn9WvDF8FAnVzz6Whe8JUh3A4k3A5cDzNywDOuIAOheZMaMld85Tv5YC4FRC449Qzpbavt
+        qX1pu/pKpAXloebGS2woX2BNwdcWxe0NyfiQ7sjFQvOVY0xGyEz/oUYIPX5Yzb5FZpA9yI
+        QS4qkUGXumCKt/jeWqf3p+MHylNJgwOruwXLskl0eFSvRGWmqwTFGrPZ4Z5U/g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1598514856;
+        s=2020e; t=1598514857;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=wVa/HO7M3IDLARyhmD+ozLl5NmQVSWQTbpR0Fs8sY4M=;
-        b=06JZkA48JYZ+KI/4D1MJggKR7RM2cZPqs4zKKYdTGm9rJI4T/pA26BTNihEjhvNd7D5x8X
-        o2B9WzZ1lz999XAw==
+        bh=AkfGLaoqIHqktw//Exf8qq5VjMD1cnxZzW2R3O5WBtw=;
+        b=MN54I43CBO4d4eDySfyMDTEycmN/pACLPHNBn5hznmx3JzdgTJIbosVubh0zGS6ruNGqMV
+        Ujo6P9Xso3pdEbCA==
 From:   "tip-bot2 for Boqun Feng" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] lockdep/selftest: Add more recursive read related
- test cases
+Subject: [tip: locking/core] lockdep: Take read/write status in consideration
+ when generate chainkey
 Cc:     Boqun Feng <boqun.feng@gmail.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200807074238.1632519-17-boqun.feng@gmail.com>
-References: <20200807074238.1632519-17-boqun.feng@gmail.com>
+In-Reply-To: <20200807074238.1632519-15-boqun.feng@gmail.com>
+References: <20200807074238.1632519-15-boqun.feng@gmail.com>
 MIME-Version: 1.0
-Message-ID: <159851485592.20229.16708438089906327060.tip-bot2@tip-bot2>
+Message-ID: <159851485675.20229.7430053417111193715.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,225 +62,203 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     8ef7ca75120a39167def40f41daefee013c4b5af
-Gitweb:        https://git.kernel.org/tip/8ef7ca75120a39167def40f41daefee013c4b5af
+Commit-ID:     f611e8cf98ec908b9c2c0da6064a660fc6022487
+Gitweb:        https://git.kernel.org/tip/f611e8cf98ec908b9c2c0da6064a660fc6022487
 Author:        Boqun Feng <boqun.feng@gmail.com>
-AuthorDate:    Fri, 07 Aug 2020 15:42:35 +08:00
+AuthorDate:    Fri, 07 Aug 2020 15:42:33 +08:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 26 Aug 2020 12:42:07 +02:00
+CommitterDate: Wed, 26 Aug 2020 12:42:06 +02:00
 
-lockdep/selftest: Add more recursive read related test cases
+lockdep: Take read/write status in consideration when generate chainkey
 
-Add those four test cases:
+Currently, the chainkey of a lock chain is a hash sum of the class_idx
+of all the held locks, the read/write status are not taken in to
+consideration while generating the chainkey. This could result into a
+problem, if we have:
 
-1.	X --(ER)--> Y --(ER)--> Z --(ER)--> X is deadlock.
+	P1()
+	{
+		read_lock(B);
+		lock(A);
+	}
 
-2.	X --(EN)--> Y --(SR)--> Z --(ER)--> X is deadlock.
+	P2()
+	{
+		lock(A);
+		read_lock(B);
+	}
 
-3.	X --(EN)--> Y --(SR)--> Z --(SN)--> X is not deadlock.
+	P3()
+	{
+		lock(A);
+		write_lock(B);
+	}
 
-4.	X --(ER)--> Y --(SR)--> Z --(EN)--> X is not deadlock.
+, and P1(), P2(), P3() run one by one. And when running P2(), lockdep
+detects such a lock chain A -> B is not a deadlock, then it's added in
+the chain cache, and then when running P3(), even if it's a deadlock, we
+could miss it because of the hit of chain cache. This could be confirmed
+by self testcase "chain cached mixed R-L/L-W ".
 
-Those self testcases are valuable for the development of supporting
-recursive read related deadlock detection.
+To resolve this, we use concept "hlock_id" to generate the chainkey, the
+hlock_id is a tuple (hlock->class_idx, hlock->read), which fits in a u16
+type. With this, the chainkeys are different is the lock sequences have
+the same locks but different read/write status.
+
+Besides, since we use "hlock_id" to generate chainkeys, the chain_hlocks
+array now store the "hlock_id"s rather than lock_class indexes.
 
 Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20200807074238.1632519-17-boqun.feng@gmail.com
+Link: https://lkml.kernel.org/r/20200807074238.1632519-15-boqun.feng@gmail.com
 ---
- lib/locking-selftest.c | 161 ++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 161 insertions(+)
+ kernel/locking/lockdep.c | 53 +++++++++++++++++++++++++--------------
+ 1 file changed, 35 insertions(+), 18 deletions(-)
 
-diff --git a/lib/locking-selftest.c b/lib/locking-selftest.c
-index f65a658..76c314a 100644
---- a/lib/locking-selftest.c
-+++ b/lib/locking-selftest.c
-@@ -1035,6 +1035,133 @@ GENERATE_PERMUTATIONS_3_EVENTS(irq_inversion_soft_wlock)
- #undef E3
+diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
+index b87766e..cccf4bc 100644
+--- a/kernel/locking/lockdep.c
++++ b/kernel/locking/lockdep.c
+@@ -372,6 +372,21 @@ static struct hlist_head classhash_table[CLASSHASH_SIZE];
+ static struct hlist_head chainhash_table[CHAINHASH_SIZE];
  
  /*
-+ * write-read / write-read / write-read deadlock even if read is recursive
++ * the id of held_lock
 + */
++static inline u16 hlock_id(struct held_lock *hlock)
++{
++	BUILD_BUG_ON(MAX_LOCKDEP_KEYS_BITS + 2 > 16);
 +
-+#define E1()				\
-+					\
-+	WL(X1);				\
-+	RL(Y1);				\
-+	RU(Y1);				\
-+	WU(X1);
++	return (hlock->class_idx | (hlock->read << MAX_LOCKDEP_KEYS_BITS));
++}
 +
-+#define E2()				\
-+					\
-+	WL(Y1);				\
-+	RL(Z1);				\
-+	RU(Z1);				\
-+	WU(Y1);
-+
-+#define E3()				\
-+					\
-+	WL(Z1);				\
-+	RL(X1);				\
-+	RU(X1);				\
-+	WU(Z1);
-+
-+#include "locking-selftest-rlock.h"
-+GENERATE_PERMUTATIONS_3_EVENTS(W1R2_W2R3_W3R1)
-+
-+#undef E1
-+#undef E2
-+#undef E3
++static inline unsigned int chain_hlock_class_idx(u16 hlock_id)
++{
++	return hlock_id & (MAX_LOCKDEP_KEYS - 1);
++}
 +
 +/*
-+ * write-write / read-read / write-read deadlock even if read is recursive
-+ */
+  * The hash key of the lock dependency chains is a hash itself too:
+  * it's a hash of all locks taken up to that lock, including that lock.
+  * It's a 64-bit hash, because it's important for the keys to be
+@@ -3202,7 +3217,10 @@ static inline void free_chain_hlocks(int base, int size)
+ 
+ struct lock_class *lock_chain_get_class(struct lock_chain *chain, int i)
+ {
+-	return lock_classes + chain_hlocks[chain->base + i];
++	u16 chain_hlock = chain_hlocks[chain->base + i];
++	unsigned int class_idx = chain_hlock_class_idx(chain_hlock);
 +
-+#define E1()				\
-+					\
-+	WL(X1);				\
-+	WL(Y1);				\
-+	WU(Y1);				\
-+	WU(X1);
-+
-+#define E2()				\
-+					\
-+	RL(Y1);				\
-+	RL(Z1);				\
-+	RU(Z1);				\
-+	RU(Y1);
-+
-+#define E3()				\
-+					\
-+	WL(Z1);				\
-+	RL(X1);				\
-+	RU(X1);				\
-+	WU(Z1);
-+
-+#include "locking-selftest-rlock.h"
-+GENERATE_PERMUTATIONS_3_EVENTS(W1W2_R2R3_W3R1)
-+
-+#undef E1
-+#undef E2
-+#undef E3
-+
-+/*
-+ * write-write / read-read / read-write is not deadlock when read is recursive
-+ */
-+
-+#define E1()				\
-+					\
-+	WL(X1);				\
-+	WL(Y1);				\
-+	WU(Y1);				\
-+	WU(X1);
-+
-+#define E2()				\
-+					\
-+	RL(Y1);				\
-+	RL(Z1);				\
-+	RU(Z1);				\
-+	RU(Y1);
-+
-+#define E3()				\
-+					\
-+	RL(Z1);				\
-+	WL(X1);				\
-+	WU(X1);				\
-+	RU(Z1);
-+
-+#include "locking-selftest-rlock.h"
-+GENERATE_PERMUTATIONS_3_EVENTS(W1R2_R2R3_W3W1)
-+
-+#undef E1
-+#undef E2
-+#undef E3
-+
-+/*
-+ * write-read / read-read / write-write is not deadlock when read is recursive
-+ */
-+
-+#define E1()				\
-+					\
-+	WL(X1);				\
-+	RL(Y1);				\
-+	RU(Y1);				\
-+	WU(X1);
-+
-+#define E2()				\
-+					\
-+	RL(Y1);				\
-+	RL(Z1);				\
-+	RU(Z1);				\
-+	RU(Y1);
-+
-+#define E3()				\
-+					\
-+	WL(Z1);				\
-+	WL(X1);				\
-+	WU(X1);				\
-+	WU(Z1);
-+
-+#include "locking-selftest-rlock.h"
-+GENERATE_PERMUTATIONS_3_EVENTS(W1W2_R2R3_R3W1)
-+
-+#undef E1
-+#undef E2
-+#undef E3
-+/*
-  * read-lock / write-lock recursion that is actually safe.
++	return lock_classes + class_idx - 1;
+ }
+ 
+ /*
+@@ -3228,12 +3246,12 @@ static inline int get_first_held_lock(struct task_struct *curr,
+ /*
+  * Returns the next chain_key iteration
   */
+-static u64 print_chain_key_iteration(int class_idx, u64 chain_key)
++static u64 print_chain_key_iteration(u16 hlock_id, u64 chain_key)
+ {
+-	u64 new_chain_key = iterate_chain_key(chain_key, class_idx);
++	u64 new_chain_key = iterate_chain_key(chain_key, hlock_id);
  
-@@ -1259,6 +1386,19 @@ static inline void print_testname(const char *testname)
- 	dotest(name##_##nr, FAILURE, LOCKTYPE_RWLOCK);		\
- 	pr_cont("\n");
+-	printk(" class_idx:%d -> chain_key:%016Lx",
+-		class_idx,
++	printk(" hlock_id:%d -> chain_key:%016Lx",
++		(unsigned int)hlock_id,
+ 		(unsigned long long)new_chain_key);
+ 	return new_chain_key;
+ }
+@@ -3250,12 +3268,12 @@ print_chain_keys_held_locks(struct task_struct *curr, struct held_lock *hlock_ne
+ 		hlock_next->irq_context);
+ 	for (; i < depth; i++) {
+ 		hlock = curr->held_locks + i;
+-		chain_key = print_chain_key_iteration(hlock->class_idx, chain_key);
++		chain_key = print_chain_key_iteration(hlock_id(hlock), chain_key);
  
-+#define DO_TESTCASE_1RR(desc, name, nr)				\
-+	print_testname(desc"/"#nr);				\
-+	pr_cont("             |");				\
-+	dotest(name##_##nr, SUCCESS, LOCKTYPE_RWLOCK);		\
-+	pr_cont("\n");
-+
-+#define DO_TESTCASE_1RRB(desc, name, nr)			\
-+	print_testname(desc"/"#nr);				\
-+	pr_cont("             |");				\
-+	dotest(name##_##nr, FAILURE, LOCKTYPE_RWLOCK);		\
-+	pr_cont("\n");
-+
-+
- #define DO_TESTCASE_3(desc, name, nr)				\
- 	print_testname(desc"/"#nr);				\
- 	dotest(name##_spin_##nr, FAILURE, LOCKTYPE_SPIN);	\
-@@ -1368,6 +1508,22 @@ static inline void print_testname(const char *testname)
- 	DO_TESTCASE_2IB(desc, name, 312);			\
- 	DO_TESTCASE_2IB(desc, name, 321);
+ 		print_lock(hlock);
+ 	}
  
-+#define DO_TESTCASE_6x1RR(desc, name)				\
-+	DO_TESTCASE_1RR(desc, name, 123);			\
-+	DO_TESTCASE_1RR(desc, name, 132);			\
-+	DO_TESTCASE_1RR(desc, name, 213);			\
-+	DO_TESTCASE_1RR(desc, name, 231);			\
-+	DO_TESTCASE_1RR(desc, name, 312);			\
-+	DO_TESTCASE_1RR(desc, name, 321);
-+
-+#define DO_TESTCASE_6x1RRB(desc, name)				\
-+	DO_TESTCASE_1RRB(desc, name, 123);			\
-+	DO_TESTCASE_1RRB(desc, name, 132);			\
-+	DO_TESTCASE_1RRB(desc, name, 213);			\
-+	DO_TESTCASE_1RRB(desc, name, 231);			\
-+	DO_TESTCASE_1RRB(desc, name, 312);			\
-+	DO_TESTCASE_1RRB(desc, name, 321);
-+
- #define DO_TESTCASE_6x6(desc, name)				\
- 	DO_TESTCASE_6I(desc, name, 123);			\
- 	DO_TESTCASE_6I(desc, name, 132);			\
-@@ -2144,6 +2300,11 @@ void locking_selftest(void)
- 	pr_cont("             |");
- 	dotest(rlock_chaincache_ABBA1, FAILURE, LOCKTYPE_RWLOCK);
+-	print_chain_key_iteration(hlock_next->class_idx, chain_key);
++	print_chain_key_iteration(hlock_id(hlock_next), chain_key);
+ 	print_lock(hlock_next);
+ }
  
-+	DO_TESTCASE_6x1RRB("rlock W1R2/W2R3/W3R1", W1R2_W2R3_W3R1);
-+	DO_TESTCASE_6x1RRB("rlock W1W2/R2R3/W3R1", W1W2_R2R3_W3R1);
-+	DO_TESTCASE_6x1RR("rlock W1W2/R2R3/R3W1", W1W2_R2R3_R3W1);
-+	DO_TESTCASE_6x1RR("rlock W1R2/R2R3/W3W1", W1R2_R2R3_W3W1);
-+
- 	printk("  --------------------------------------------------------------------------\n");
+@@ -3263,14 +3281,14 @@ static void print_chain_keys_chain(struct lock_chain *chain)
+ {
+ 	int i;
+ 	u64 chain_key = INITIAL_CHAIN_KEY;
+-	int class_id;
++	u16 hlock_id;
  
- 	/*
+ 	printk("depth: %u\n", chain->depth);
+ 	for (i = 0; i < chain->depth; i++) {
+-		class_id = chain_hlocks[chain->base + i];
+-		chain_key = print_chain_key_iteration(class_id, chain_key);
++		hlock_id = chain_hlocks[chain->base + i];
++		chain_key = print_chain_key_iteration(hlock_id, chain_key);
+ 
+-		print_lock_name(lock_classes + class_id);
++		print_lock_name(lock_classes + chain_hlock_class_idx(hlock_id) - 1);
+ 		printk("\n");
+ 	}
+ }
+@@ -3319,7 +3337,7 @@ static int check_no_collision(struct task_struct *curr,
+ 	}
+ 
+ 	for (j = 0; j < chain->depth - 1; j++, i++) {
+-		id = curr->held_locks[i].class_idx;
++		id = hlock_id(&curr->held_locks[i]);
+ 
+ 		if (DEBUG_LOCKS_WARN_ON(chain_hlocks[chain->base + j] != id)) {
+ 			print_collision(curr, hlock, chain);
+@@ -3368,7 +3386,6 @@ static inline int add_chain_cache(struct task_struct *curr,
+ 				  struct held_lock *hlock,
+ 				  u64 chain_key)
+ {
+-	struct lock_class *class = hlock_class(hlock);
+ 	struct hlist_head *hash_head = chainhashentry(chain_key);
+ 	struct lock_chain *chain;
+ 	int i, j;
+@@ -3411,11 +3428,11 @@ static inline int add_chain_cache(struct task_struct *curr,
+ 
+ 	chain->base = j;
+ 	for (j = 0; j < chain->depth - 1; j++, i++) {
+-		int lock_id = curr->held_locks[i].class_idx;
++		int lock_id = hlock_id(curr->held_locks + i);
+ 
+ 		chain_hlocks[chain->base + j] = lock_id;
+ 	}
+-	chain_hlocks[chain->base + j] = class - lock_classes;
++	chain_hlocks[chain->base + j] = hlock_id(hlock);
+ 	hlist_add_head_rcu(&chain->entry, hash_head);
+ 	debug_atomic_inc(chain_lookup_misses);
+ 	inc_chains(chain->irq_context);
+@@ -3602,7 +3619,7 @@ static void check_chain_key(struct task_struct *curr)
+ 		if (prev_hlock && (prev_hlock->irq_context !=
+ 							hlock->irq_context))
+ 			chain_key = INITIAL_CHAIN_KEY;
+-		chain_key = iterate_chain_key(chain_key, hlock->class_idx);
++		chain_key = iterate_chain_key(chain_key, hlock_id(hlock));
+ 		prev_hlock = hlock;
+ 	}
+ 	if (chain_key != curr->curr_chain_key) {
+@@ -4749,7 +4766,7 @@ static int __lock_acquire(struct lockdep_map *lock, unsigned int subclass,
+ 		chain_key = INITIAL_CHAIN_KEY;
+ 		chain_head = 1;
+ 	}
+-	chain_key = iterate_chain_key(chain_key, class_idx);
++	chain_key = iterate_chain_key(chain_key, hlock_id(hlock));
+ 
+ 	if (nest_lock && !__lock_is_held(nest_lock, -1)) {
+ 		print_lock_nested_lock_not_held(curr, hlock, ip);
+@@ -5648,7 +5665,7 @@ static void remove_class_from_lock_chain(struct pending_free *pf,
+ 	int i;
+ 
+ 	for (i = chain->base; i < chain->base + chain->depth; i++) {
+-		if (chain_hlocks[i] != class - lock_classes)
++		if (chain_hlock_class_idx(chain_hlocks[i]) != class - lock_classes)
+ 			continue;
+ 		/*
+ 		 * Each lock class occurs at most once in a lock chain so once
