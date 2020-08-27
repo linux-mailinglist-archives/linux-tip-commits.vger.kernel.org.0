@@ -2,51 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 738B3253FD4
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Aug 2020 09:56:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EEEBB253FED
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Aug 2020 09:58:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728409AbgH0Hy0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 27 Aug 2020 03:54:26 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:36582 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728369AbgH0HyW (ORCPT
+        id S1728746AbgH0H56 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 27 Aug 2020 03:57:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52500 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728384AbgH0HyX (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 27 Aug 2020 03:54:22 -0400
-Date:   Thu, 27 Aug 2020 07:54:19 -0000
+        Thu, 27 Aug 2020 03:54:23 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA6DDC06121A;
+        Thu, 27 Aug 2020 00:54:22 -0700 (PDT)
+Date:   Thu, 27 Aug 2020 07:54:20 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1598514859;
+        s=2020; t=1598514861;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=JMaCkBRf2g+ayYANtGgYVsSQhnMYQyNvj1YOJgXDtvk=;
-        b=Oq2qxSjwq4m4R7jtFJbb4nQxoUDkXP2KO2CS6htTMgeysdVwYreQE9z/IrdILm9WD+/LMh
-        K9p70mU6gsqCGIaVmSCkU49QIxkFmgV1y+7FoEPA3REg4bLHLqqRIxmZlxL4Ytfz0SIBzV
-        2hGCxqY/7cSvJEQQtm5RFaoaytvC2jAcGBwAeM9o5vBvDOdY1g9TsNvuFNu7DurljA221H
-        s5XnAPMNNbbvPR/5P2GuPd+rxcDWEMaicJ1RI6E6JGQvh0vH9WiJhNPaR5Za8rzlfwon8F
-        KwcJHCA0CRyB/gEno6k8RXEyG64q5Zkdeum7S7QgFSnexgJ8tIz3vhkTAPG/xw==
+        bh=l3YkGOPEQgwIky67ipFw2aeIOYSOatdnKx07RKeNUrI=;
+        b=EFRmWYKto8JizkRdGPCONVhvd1j+z2hrEckuB9dYgEbUEk7MsYhpwy8Bkbpf/+ROrNy46/
+        agdRupTXNDKaSTbzgfD3KKnOhU5mP8IDx72ol8jHJxnRzvXBioJzbgm6Y2wsPNcC7wMOdV
+        d+N3Eh5BN7F2FT/dIZhyOcqxvnmguoaAjF1tJRrBfmIKfXPNCMBeXY4oWTHNIZzZmdx3xk
+        FBld43DGjO5iASkKp9jB+Zg/+x24/23KCj8hwdckOwOUY+HUhUYPla4esi0L2XRoFItEkc
+        48ZsxgFxyZ/Pf0JjzSFtrWL6WtCFzeJw94pr2K/e7EF9ou9Ytvb1ZMYm+nQ3dA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1598514859;
+        s=2020e; t=1598514861;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=JMaCkBRf2g+ayYANtGgYVsSQhnMYQyNvj1YOJgXDtvk=;
-        b=wB72AhobnsIRaVbXBP9eg+7bKXf3F9NMisibiDFtM5eNsw4TWbTakLqVRL9YVA472f9ZTR
-        IUBlFWmyDdp8gSAw==
+        bh=l3YkGOPEQgwIky67ipFw2aeIOYSOatdnKx07RKeNUrI=;
+        b=oDiPxqQDd9Ro3rFF0wmIRZtplbw/YDVCFILuVh69XdU6bI22eFXo2Vs2lDG5GH1mkemY/3
+        6rvBbBXkYMSeIOBg==
 From:   "tip-bot2 for Boqun Feng" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] lockdep: Make __bfs(.match) return bool
+Subject: [tip: locking/core] lockdep: Reduce the size of lock_list::distance
 Cc:     Peter Zijlstra <peterz@infradead.org>,
         Boqun Feng <boqun.feng@gmail.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200807074238.1632519-9-boqun.feng@gmail.com>
-References: <20200807074238.1632519-9-boqun.feng@gmail.com>
+In-Reply-To: <20200807074238.1632519-6-boqun.feng@gmail.com>
+References: <20200807074238.1632519-6-boqun.feng@gmail.com>
 MIME-Version: 1.0
-Message-ID: <159851485926.20229.14104571007024271963.tip-bot2@tip-bot2>
+Message-ID: <159851486062.20229.11037063852084225523.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,106 +61,71 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     61775ed243433ff0556c4f76905929fe01e92922
-Gitweb:        https://git.kernel.org/tip/61775ed243433ff0556c4f76905929fe01e92922
+Commit-ID:     bd76eca10de2eb9998d5125b08e8997cbf5508d5
+Gitweb:        https://git.kernel.org/tip/bd76eca10de2eb9998d5125b08e8997cbf5508d5
 Author:        Boqun Feng <boqun.feng@gmail.com>
-AuthorDate:    Fri, 07 Aug 2020 15:42:27 +08:00
+AuthorDate:    Fri, 07 Aug 2020 15:42:24 +08:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 26 Aug 2020 12:42:05 +02:00
+CommitterDate: Wed, 26 Aug 2020 12:42:04 +02:00
 
-lockdep: Make __bfs(.match) return bool
+lockdep: Reduce the size of lock_list::distance
 
-The "match" parameter of __bfs() is used for checking whether we hit a
-match in the search, therefore it should return a boolean value rather
-than an integer for better readability.
-
-This patch then changes the return type of the function parameter and the
-match functions to bool.
+lock_list::distance is always not greater than MAX_LOCK_DEPTH (which
+is 48 right now), so a u16 will fit. This patch reduces the size of
+lock_list::distance to save space, so that we can introduce other fields
+to help detect recursive read lock deadlocks without increasing the size
+of lock_list structure.
 
 Suggested-by: Peter Zijlstra <peterz@infradead.org>
 Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20200807074238.1632519-9-boqun.feng@gmail.com
+Link: https://lkml.kernel.org/r/20200807074238.1632519-6-boqun.feng@gmail.com
 ---
- kernel/locking/lockdep.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ include/linux/lockdep.h  | 2 +-
+ kernel/locking/lockdep.c | 6 +++---
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
+diff --git a/include/linux/lockdep.h b/include/linux/lockdep.h
+index 7cae5ea..2275010 100644
+--- a/include/linux/lockdep.h
++++ b/include/linux/lockdep.h
+@@ -54,7 +54,7 @@ struct lock_list {
+ 	struct lock_class		*class;
+ 	struct lock_class		*links_to;
+ 	const struct lock_trace		*trace;
+-	int				distance;
++	u16				distance;
+ 
+ 	/*
+ 	 * The parent field is used to implement breadth-first search, and the
 diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
-index 5abc227..78cd74d 100644
+index 150686a..668a983 100644
 --- a/kernel/locking/lockdep.c
 +++ b/kernel/locking/lockdep.c
-@@ -1620,7 +1620,7 @@ static inline void bfs_init_rootb(struct lock_list *lock,
+@@ -1320,7 +1320,7 @@ static struct lock_list *alloc_list_entry(void)
   */
- static enum bfs_result __bfs(struct lock_list *source_entry,
- 			     void *data,
--			     int (*match)(struct lock_list *entry, void *data),
-+			     bool (*match)(struct lock_list *entry, void *data),
- 			     struct lock_list **target_entry,
- 			     int offset)
+ static int add_lock_to_list(struct lock_class *this,
+ 			    struct lock_class *links_to, struct list_head *head,
+-			    unsigned long ip, int distance,
++			    unsigned long ip, u16 distance,
+ 			    const struct lock_trace *trace)
  {
-@@ -1711,7 +1711,7 @@ exit:
- static inline enum bfs_result
- __bfs_forwards(struct lock_list *src_entry,
- 	       void *data,
--	       int (*match)(struct lock_list *entry, void *data),
-+	       bool (*match)(struct lock_list *entry, void *data),
- 	       struct lock_list **target_entry)
- {
- 	return __bfs(src_entry, data, match, target_entry,
-@@ -1722,7 +1722,7 @@ __bfs_forwards(struct lock_list *src_entry,
- static inline enum bfs_result
- __bfs_backwards(struct lock_list *src_entry,
- 		void *data,
--		int (*match)(struct lock_list *entry, void *data),
-+		bool (*match)(struct lock_list *entry, void *data),
- 		struct lock_list **target_entry)
- {
- 	return __bfs(src_entry, data, match, target_entry,
-@@ -1833,7 +1833,7 @@ print_circular_bug_header(struct lock_list *entry, unsigned int depth,
- 	print_circular_bug_entry(entry, depth);
- }
- 
--static inline int class_equal(struct lock_list *entry, void *data)
-+static inline bool class_equal(struct lock_list *entry, void *data)
- {
- 	return entry->class == data;
- }
-@@ -1888,10 +1888,10 @@ static noinline void print_bfs_bug(int ret)
- 	WARN(1, "lockdep bfs error:%d\n", ret);
- }
- 
--static int noop_count(struct lock_list *entry, void *data)
-+static bool noop_count(struct lock_list *entry, void *data)
- {
- 	(*(unsigned long *)data)++;
--	return 0;
-+	return false;
- }
- 
- static unsigned long __lockdep_count_forward_deps(struct lock_list *this)
-@@ -2032,11 +2032,11 @@ check_redundant(struct held_lock *src, struct held_lock *target)
- 
- #ifdef CONFIG_TRACE_IRQFLAGS
- 
--static inline int usage_accumulate(struct lock_list *entry, void *mask)
-+static inline bool usage_accumulate(struct lock_list *entry, void *mask)
- {
- 	*(unsigned long *)mask |= entry->class->usage_mask;
- 
--	return 0;
-+	return false;
- }
- 
- /*
-@@ -2045,9 +2045,9 @@ static inline int usage_accumulate(struct lock_list *entry, void *mask)
-  * without creating any illegal irq-safe -> irq-unsafe lock dependency.
+ 	struct lock_list *entry;
+@@ -2489,7 +2489,7 @@ check_deadlock(struct task_struct *curr, struct held_lock *next)
   */
- 
--static inline int usage_match(struct lock_list *entry, void *mask)
-+static inline bool usage_match(struct lock_list *entry, void *mask)
+ static int
+ check_prev_add(struct task_struct *curr, struct held_lock *prev,
+-	       struct held_lock *next, int distance,
++	       struct held_lock *next, u16 distance,
+ 	       struct lock_trace **const trace)
  {
--	return entry->class->usage_mask & *(unsigned long *)mask;
-+	return !!(entry->class->usage_mask & *(unsigned long *)mask);
- }
+ 	struct lock_list *entry;
+@@ -2622,7 +2622,7 @@ check_prevs_add(struct task_struct *curr, struct held_lock *next)
+ 		goto out_bug;
  
- /*
+ 	for (;;) {
+-		int distance = curr->lockdep_depth - depth + 1;
++		u16 distance = curr->lockdep_depth - depth + 1;
+ 		hlock = curr->held_locks + depth - 1;
+ 
+ 		/*
