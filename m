@@ -2,95 +2,81 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 499E5253FB7
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Aug 2020 09:55:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5FA425412C
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Aug 2020 10:50:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728116AbgH0Hzc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 27 Aug 2020 03:55:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52550 "EHLO
+        id S1727793AbgH0IuY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 27 Aug 2020 04:50:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33054 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728369AbgH0Hyh (ORCPT
+        with ESMTP id S1726157AbgH0IuY (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 27 Aug 2020 03:54:37 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F27D5C061236;
-        Thu, 27 Aug 2020 00:54:36 -0700 (PDT)
-Date:   Thu, 27 Aug 2020 07:54:34 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1598514875;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=ECyvMDbs1VNX+l7QtCYIDcO9pJJ9+CjzvFCuz5jGHrw=;
-        b=TfbrukHR4Vyp8jaKjTvKpxiO4BwaQbFK6LyjFViDWnIu8KjWAeSwCx/DYhvpwMFPfG8jrp
-        OARoXeUJIiJ1DvMe1Nm0UFxpOlS59PwCzlLHoGiRST+EsTK8eJrhO3tAIuaN/GvlwhxMUJ
-        /6PKfsefMMjJ4PXP111j4QKiY/B8d71SkY6TqHQE1Viki/zN87iHaURJgeWWU0OQrvSF0k
-        QwZR29o1iA0t+oNNzQHKmtF3LU+8V1H4MbCpOZCFaspjirFGS1PMZa7hlS/a2yowN3SYk3
-        shAG1y2aoIUM2Iyrf3bpak/9vMiIiusx5WrQaLY1C42vkLn0cbnnjzSMz5wvMA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1598514875;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=ECyvMDbs1VNX+l7QtCYIDcO9pJJ9+CjzvFCuz5jGHrw=;
-        b=OGW95xQyiTZ/fFRQbv5B+vi6q9Do/BCzkp1IdIRqo1DZn4apXPSkWZG8Y4SS/ceGGakUgx
-        Jmf7OMLMFUIzrgDQ==
-From:   "tip-bot2 for Marco Elver" <tip-bot2@linutronix.de>
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] sched: Use __always_inline on is_idle_task()
-Cc:     Marco Elver <elver@google.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200820172046.GA177701@elver.google.com>
-References: <20200820172046.GA177701@elver.google.com>
+        Thu, 27 Aug 2020 04:50:24 -0400
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com [IPv6:2607:f8b0:4864:20::541])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D6E7C061264;
+        Thu, 27 Aug 2020 01:50:24 -0700 (PDT)
+Received: by mail-pg1-x541.google.com with SMTP id m34so2851439pgl.11;
+        Thu, 27 Aug 2020 01:50:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=HrNuCDj4eeY3Gt0lR5aH+iOHvrk1h2wIReFPr2GJWg8=;
+        b=e3zZxERIuuUx3PGrF81pU/4X+c2wV6hZMC1+ZOMXUSoGRCbvjFxMIKK/iZooSZ9qTa
+         B2adxyQx8HkVHhbWr2iYrTaIXV0mVhPpeDR1uhaHulGi7zcPuUN5XnjW29aHcgdnyFT+
+         ll6/mOu2f4OKWvGP38xp9pmti9U6KqMngr+XHLct87tqig1YnXLMe6kzJpWcYykgfqjb
+         IH6R0F6hTdnZ5I33Bth2YfAk3weoG/CzrA1XE/HcyvOWnAmTXAdU+lHPR/+yU0BIKxiG
+         T2ZFbHNdGYvhomWyTKTcYwJoiMxRbrozZSjgPsg8AOAaBeLhHtuiZGxOc6Nf6FNX0mkS
+         jidw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=HrNuCDj4eeY3Gt0lR5aH+iOHvrk1h2wIReFPr2GJWg8=;
+        b=YxMs+F+XuHCBTVMyDyeYaSf2OntKQd8OFjJbA+24BYeEazCIHD2Cp2x+zgXRxUoa0b
+         jd1iEYh2veNa8JtdCWbghBBhvUEzhTc+LvF7tj4htmrx6uD6G3JT7ZVv9bP1xBa+haHd
+         oIWb5ooxL84fZQJYri6EmPPnzCvljT+3lNUuILNkoV51726rxdB07RJ1qDqZD9HWX9NZ
+         gvjbo7A/gcPf4SU/WAXbOuJgV0lRc5GXIRxkSGggwaefvBfrII9gzKx7QUQ5r6JkzpjP
+         yTk2YNjmXfMTxGMBUQr8l1t3iIrTkVuKq8vsEbYC+R3FWQlN0xuMcviBp6ZFskWonhqL
+         pVCA==
+X-Gm-Message-State: AOAM531IR4bXjjkC5R1Mmxowpj1xpWpr6GwfnKDozdwYfbSAFsMUMkLu
+        4zXM0EMImJpHaZ42r6RybjEMUItgvmZ62pRv/C1EUVk8OR7tKg==
+X-Google-Smtp-Source: ABdhPJwaxPlgvM3l0aEl6pPRV5nMux3/djL0qCuROkyJLN2bzDOwRCsRKSuXRFAFxKGbVqMawBQUdolbAsHi0l4x9fk=
+X-Received: by 2002:a17:902:8208:: with SMTP id x8mr4039738pln.65.1598518223339;
+ Thu, 27 Aug 2020 01:50:23 -0700 (PDT)
 MIME-Version: 1.0
-Message-ID: <159851487420.20229.1106109799847028466.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2.linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+References: <20200825133216.9163-1-valentin.schneider@arm.com> <159851487090.20229.14835640470330793284.tip-bot2@tip-bot2>
+In-Reply-To: <159851487090.20229.14835640470330793284.tip-bot2@tip-bot2>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Thu, 27 Aug 2020 11:50:07 +0300
+Message-ID: <CAHp75VfJumPP=wKuU=OjFB11RUhPp0_5_+ogupQLFeEWKfbybA@mail.gmail.com>
+Subject: Re: [tip: sched/core] sched/topology: Move sd_flag_debug out of linux/sched/topology.h
+To:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc:     linux-tip-commits@vger.kernel.org,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Valentin Schneider <valentin.schneider@arm.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        x86 <x86@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/urgent branch of tip:
+On Thu, Aug 27, 2020 at 10:57 AM tip-bot2 for Valentin Schneider
+<tip-bot2@linutronix.de> wrote:
+>
+> The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     c94a88f341c9b8f05d8639f62bb5d95936f881cd
-Gitweb:        https://git.kernel.org/tip/c94a88f341c9b8f05d8639f62bb5d95936f881cd
-Author:        Marco Elver <elver@google.com>
-AuthorDate:    Thu, 20 Aug 2020 19:20:46 +02:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 26 Aug 2020 12:41:51 +02:00
+> Fixes: b6e862f38672 ("sched/topology: Define and assign sched_domain flag metadata")
+> Reported-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Signed-off-by: Valentin Schneider <valentin.schneider@arm.com>
+> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> Link: https://lkml.kernel.org/r/20200825133216.9163-1-valentin.schneider@arm.com
 
-sched: Use __always_inline on is_idle_task()
+Hmm... I'm wondering if this bot is aware of tags given afterwards in
+the thread?
 
-is_idle_task() may be used from noinstr functions such as
-irqentry_enter(). Since the compiler is free to not inline regular
-inline functions, switch to using __always_inline.
-
-Signed-off-by: Marco Elver <elver@google.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20200820172046.GA177701@elver.google.com
----
- include/linux/sched.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/include/linux/sched.h b/include/linux/sched.h
-index 93ecd93..afe01e2 100644
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -1666,7 +1666,7 @@ extern struct task_struct *idle_task(int cpu);
-  *
-  * Return: 1 if @p is an idle task. 0 otherwise.
-  */
--static inline bool is_idle_task(const struct task_struct *p)
-+static __always_inline bool is_idle_task(const struct task_struct *p)
- {
- 	return !!(p->flags & PF_IDLE);
- }
+-- 
+With Best Regards,
+Andy Shevchenko
