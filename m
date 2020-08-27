@@ -2,19 +2,19 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C6F8254003
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Aug 2020 09:59:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B20D253FA5
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Aug 2020 09:54:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728689AbgH0H7k (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 27 Aug 2020 03:59:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52490 "EHLO
+        id S1728405AbgH0HyZ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 27 Aug 2020 03:54:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52488 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728375AbgH0HyV (ORCPT
+        with ESMTP id S1728373AbgH0HyV (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Thu, 27 Aug 2020 03:54:21 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24669C061264;
-        Thu, 27 Aug 2020 00:54:21 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFC3AC061232;
+        Thu, 27 Aug 2020 00:54:20 -0700 (PDT)
 Date:   Thu, 27 Aug 2020 07:54:18 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1598514859;
@@ -23,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=m8Ciqs3YM2g+c8NPG6PBkKuWuAFXhMXbrMXHn1msgxo=;
-        b=02K9v/Ea0CLcbCRE4mWjcI7bXOjJMyoe/R6z8vE4WnBsiVd3qJBCXdqrmT3eGXhj/CtQxj
-        Q5Wvdpu2Jk+eOa3iRZIiCSNwPR7QvljTQ0DaFcLuNSdmVnSLZn7NhP0YpC95/wHHl6/An3
-        X2g18xbokxMhRfl6pBb8mkI+q5hMDRbvB+KOmW278+BIa39FuJh1HFQFIkOyI9g9whecW+
-        1Svv9YpuUkcGadvMrJhKYiVxoRuRDS2TcCGrTt8Hle28HkNukESCasouPeXiDQvMo7j+kH
-        lkkamJPlz0MpidDnyFLipfqfsTmUwqnhKQIGwpiJWU9ZtN/Wx8J1Jt9klveZPQ==
+        bh=dYMNlMJwEyKddcIih+qKrMbxMV/KJLEv7mwreRYwRGE=;
+        b=MiRPdREmUJw/gp8yzMIC/tGUTQcOsUYXqzk3rl/Dme2ASk+rzxaFP1rxWiRhmnsJNVn689
+        Pml7L4rLf4S0xqQZGZw0HKlQHDIbu/6sL42VNNnunTsVMqp4Znn8pXyVLm2Braq3mBRKBh
+        h17zfm5kK+2Qj7iK/2ZDm+jntlVSAwNYA59DJI2NCN7LSC4s/i1TTz7SSPG/jJOQzY47gU
+        GSEuXPARFY6vIq6EufWsA6c9Tp//REhu2bVOgYyGOyAyT6B7CPrGlVsMdkmYXuX2rZhux8
+        mm2il3oID/9RbCHFm10COW7TPTEj09BPFfFPJUFEAURT9IS0F3MCOVPTK8S6IQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1598514859;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,21 +36,21 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=m8Ciqs3YM2g+c8NPG6PBkKuWuAFXhMXbrMXHn1msgxo=;
-        b=psnWegaYfW/gT3mykIbuwKdBqLhTojfkg28tgrgGXNGDrtKz6IUvICqeGt83IQTXoDp3vC
-        eOr4Z6z415esaGCw==
+        bh=dYMNlMJwEyKddcIih+qKrMbxMV/KJLEv7mwreRYwRGE=;
+        b=UQLkDy8F5G6boOPHjWiHYzRnLZMoQEvRRa13iGjCNEzBC3Hfr2liLxiQcrG17eo5fa8V2j
+        MEFYr6ZamCa89JCQ==
 From:   "tip-bot2 for Boqun Feng" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] lockdep: Support deadlock detection for recursive
- read locks in check_noncircular()
+Subject: [tip: locking/core] lockdep: Adjust check_redundant() for recursive
+ read change
 Cc:     Boqun Feng <boqun.feng@gmail.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200807074238.1632519-10-boqun.feng@gmail.com>
-References: <20200807074238.1632519-10-boqun.feng@gmail.com>
+In-Reply-To: <20200807074238.1632519-11-boqun.feng@gmail.com>
+References: <20200807074238.1632519-11-boqun.feng@gmail.com>
 MIME-Version: 1.0
-Message-ID: <159851485875.20229.3863601787426044121.tip-bot2@tip-bot2>
+Message-ID: <159851485838.20229.17873973008590975666.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -62,120 +62,120 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     9de0c9bbcedf752e762c67f105bff342e30f9105
-Gitweb:        https://git.kernel.org/tip/9de0c9bbcedf752e762c67f105bff342e30f9105
+Commit-ID:     68e305678583f13a67e2ce22088c2520bd4f97b4
+Gitweb:        https://git.kernel.org/tip/68e305678583f13a67e2ce22088c2520bd4f97b4
 Author:        Boqun Feng <boqun.feng@gmail.com>
-AuthorDate:    Fri, 07 Aug 2020 15:42:28 +08:00
+AuthorDate:    Fri, 07 Aug 2020 15:42:29 +08:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Wed, 26 Aug 2020 12:42:05 +02:00
 
-lockdep: Support deadlock detection for recursive read locks in check_noncircular()
+lockdep: Adjust check_redundant() for recursive read change
 
-Currently, lockdep only has limit support for deadlock detection for
-recursive read locks.
+check_redundant() will report redundancy if it finds a path could
+replace the about-to-add dependency in the BFS search. With recursive
+read lock changes, we certainly need to change the match function for
+the check_redundant(), because the path needs to match not only the lock
+class but also the dependency kinds. For example, if the about-to-add
+dependency @prev -> @next is A -(SN)-> B, and we find a path A -(S*)->
+.. -(*R)->B in the dependency graph with __bfs() (for simplicity, we can
+also say we find an -(SR)-> path from A to B), we can not replace the
+dependency with that path in the BFS search. Because the -(SN)->
+dependency can make a strong path with a following -(S*)-> dependency,
+however an -(SR)-> path cannot.
 
-This patch support deadlock detection for recursive read locks. The
-basic idea is:
+Further, we can replace an -(SN)-> dependency with a -(EN)-> path, that
+means if we find a path which is stronger than or equal to the
+about-to-add dependency, we can report the redundancy. By "stronger", it
+means both the start and the end of the path are not weaker than the
+start and the end of the dependency (E is "stronger" than S and N is
+"stronger" than R), so that we can replace the dependency with that
+path.
 
-We are about to add dependency B -> A in to the dependency graph, we use
-check_noncircular() to find whether we have a strong dependency path
-A -> .. -> B so that we have a strong dependency circle (a closed strong
-dependency path):
+To make sure we find a path whose start point is not weaker than the
+about-to-add dependency, we use a trick: the ->only_xr of the root
+(start point) of __bfs() is initialized as @prev-> == 0, therefore if
+@prev is E, __bfs() will pick only -(E*)-> for the first dependency,
+otherwise, __bfs() can pick -(E*)-> or -(S*)-> for the first dependency.
 
-	 A -> .. -> B -> A
-
-, which doesn't have two adjacent dependencies as -(*R)-> L -(S*)->.
-
-Since A -> .. -> B is already a strong dependency path, so if either
-B -> A is -(E*)-> or A -> .. -> B is -(*N)->, the circle A -> .. -> B ->
-A is strong, otherwise not. So we introduce a new match function
-hlock_conflict() to replace the class_equal() for the deadlock check in
-check_noncircular().
+To make sure we find a path whose end point is not weaker than the
+about-to-add dependency, we replace the match function for __bfs()
+check_redundant(), we check for the case that either @next is R
+(anything is not weaker than it) or the end point of the path is N
+(which is not weaker than anything).
 
 Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20200807074238.1632519-10-boqun.feng@gmail.com
+Link: https://lkml.kernel.org/r/20200807074238.1632519-11-boqun.feng@gmail.com
 ---
- kernel/locking/lockdep.c | 43 +++++++++++++++++++++++++++++++--------
- 1 file changed, 35 insertions(+), 8 deletions(-)
+ kernel/locking/lockdep.c | 47 ++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 44 insertions(+), 3 deletions(-)
 
 diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
-index 78cd74d..9160f1d 100644
+index 9160f1d..42e2f1f 100644
 --- a/kernel/locking/lockdep.c
 +++ b/kernel/locking/lockdep.c
-@@ -1838,10 +1838,37 @@ static inline bool class_equal(struct lock_list *entry, void *data)
- 	return entry->class == data;
+@@ -1833,9 +1833,39 @@ print_circular_bug_header(struct lock_list *entry, unsigned int depth,
+ 	print_circular_bug_entry(entry, depth);
  }
  
+-static inline bool class_equal(struct lock_list *entry, void *data)
 +/*
-+ * We are about to add B -> A into the dependency graph, and in __bfs() a
++ * We are about to add A -> B into the dependency graph, and in __bfs() a
 + * strong dependency path A -> .. -> B is found: hlock_class equals
 + * entry->class.
 + *
-+ * We will have a deadlock case (conflict) if A -> .. -> B -> A is a strong
-+ * dependency cycle, that means:
++ * If A -> .. -> B can replace A -> B in any __bfs() search (means the former
++ * is _stronger_ than or equal to the latter), we consider A -> B as redundant.
++ * For example if A -> .. -> B is -(EN)-> (i.e. A -(E*)-> .. -(*N)-> B), and A
++ * -> B is -(ER)-> or -(EN)->, then we don't need to add A -> B into the
++ * dependency graph, as any strong path ..-> A -> B ->.. we can get with
++ * having dependency A -> B, we could already get a equivalent path ..-> A ->
++ * .. -> B -> .. with A -> .. -> B. Therefore A -> B is reduntant.
++ *
++ * We need to make sure both the start and the end of A -> .. -> B is not
++ * weaker than A -> B. For the start part, please see the comment in
++ * check_redundant(). For the end part, we need:
 + *
 + * Either
 + *
-+ *     a) B -> A is -(E*)->
++ *     a) A -> B is -(*R)-> (everything is not weaker than that)
 + *
 + * or
 + *
-+ *     b) A -> .. -> B is -(*N)-> (i.e. A -> .. -(*N)-> B)
++ *     b) A -> .. -> B is -(*N)-> (nothing is stronger than this)
 + *
-+ * as then we don't have -(*R)-> -(S*)-> in the cycle.
 + */
-+static inline bool hlock_conflict(struct lock_list *entry, void *data)
-+{
++static inline bool hlock_equal(struct lock_list *entry, void *data)
+ {
+-	return entry->class == data;
 +	struct held_lock *hlock = (struct held_lock *)data;
 +
 +	return hlock_class(hlock) == entry->class && /* Found A -> .. -> B */
-+	       (hlock->read == 0 || /* B -> A is -(E*)-> */
++	       (hlock->read == 2 ||  /* A -> B is -(*R)-> */
 +		!entry->only_xr); /* A -> .. -> B is -(*N)-> */
-+}
-+
- static noinline void print_circular_bug(struct lock_list *this,
--					struct lock_list *target,
--					struct held_lock *check_src,
--					struct held_lock *check_tgt)
-+				struct lock_list *target,
-+				struct held_lock *check_src,
-+				struct held_lock *check_tgt)
- {
- 	struct task_struct *curr = current;
- 	struct lock_list *parent;
-@@ -1950,13 +1977,13 @@ unsigned long lockdep_count_backward_deps(struct lock_class *class)
-  * <target> or not.
-  */
- static noinline enum bfs_result
--check_path(struct lock_class *target, struct lock_list *src_entry,
-+check_path(struct held_lock *target, struct lock_list *src_entry,
-+	   bool (*match)(struct lock_list *entry, void *data),
- 	   struct lock_list **target_entry)
- {
- 	enum bfs_result ret;
+ }
  
--	ret = __bfs_forwards(src_entry, (void *)target, class_equal,
--			     target_entry);
-+	ret = __bfs_forwards(src_entry, target, match, target_entry);
+ /*
+@@ -2045,10 +2075,21 @@ check_redundant(struct held_lock *src, struct held_lock *target)
+ 	struct lock_list src_entry;
  
- 	if (unlikely(bfs_error(ret)))
- 		print_bfs_bug(ret);
-@@ -1983,7 +2010,7 @@ check_noncircular(struct held_lock *src, struct held_lock *target,
- 
- 	debug_atomic_inc(nr_cyclic_checks);
- 
--	ret = check_path(hlock_class(target), &src_entry, &target_entry);
-+	ret = check_path(target, &src_entry, hlock_conflict, &target_entry);
- 
- 	if (unlikely(ret == BFS_RMATCH)) {
- 		if (!*trace) {
-@@ -2021,7 +2048,7 @@ check_redundant(struct held_lock *src, struct held_lock *target)
+ 	bfs_init_root(&src_entry, src);
++	/*
++	 * Special setup for check_redundant().
++	 *
++	 * To report redundant, we need to find a strong dependency path that
++	 * is equal to or stronger than <src> -> <target>. So if <src> is E,
++	 * we need to let __bfs() only search for a path starting at a -(E*)->,
++	 * we achieve this by setting the initial node's ->only_xr to true in
++	 * that case. And if <prev> is S, we set initial ->only_xr to false
++	 * because both -(S*)-> (equal) and -(E*)-> (stronger) are redundant.
++	 */
++	src_entry.only_xr = src->read == 0;
  
  	debug_atomic_inc(nr_redundant_checks);
  
--	ret = check_path(hlock_class(target), &src_entry, &target_entry);
-+	ret = check_path(target, &src_entry, class_equal, &target_entry);
+-	ret = check_path(target, &src_entry, class_equal, &target_entry);
++	ret = check_path(target, &src_entry, hlock_equal, &target_entry);
  
  	if (ret == BFS_RMATCH)
  		debug_atomic_inc(nr_redundant);
