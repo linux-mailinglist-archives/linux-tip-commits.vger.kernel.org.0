@@ -2,54 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BA95253FB8
+	by mail.lfdr.de (Postfix) with ESMTP id 499E5253FB7
 	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Aug 2020 09:55:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728521AbgH0Hzf (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 27 Aug 2020 03:55:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52544 "EHLO
+        id S1728116AbgH0Hzc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 27 Aug 2020 03:55:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52550 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728473AbgH0Hyf (ORCPT
+        with ESMTP id S1728369AbgH0Hyh (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 27 Aug 2020 03:54:35 -0400
+        Thu, 27 Aug 2020 03:54:37 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20B1FC061235;
-        Thu, 27 Aug 2020 00:54:35 -0700 (PDT)
-Date:   Thu, 27 Aug 2020 07:54:33 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F27D5C061236;
+        Thu, 27 Aug 2020 00:54:36 -0700 (PDT)
+Date:   Thu, 27 Aug 2020 07:54:34 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1598514873;
+        s=2020; t=1598514875;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=/VwYgaI1w5KIG9TIKMB+coCvWg7uRAM5MhyfKNZYobg=;
-        b=oYE7POQD8TXKXyayktnlYP7mPHjrO+OAyUmZT2NpByB5Zs2oqmL21ZmxDlEXlkdmZLnn+Z
-        IkPVSXzLkyfqf8Hubs05FKGDwENaDInOrklIS+tMEY9ypxi0r9BhzxlQGOaH7KGx9uFLwx
-        wSx/8DKa6lx9ehTfdXAyyyujwIFJlackpzqVpq9NzDCD+yFdAGfS3cfx3BLqUqIrp7ZaQt
-        DHAO+vxs8hvaRRFrHFv/1BA0taGfSrRQnTbPT/PQgDdn2IXxmx4dPGOixkKArgJUoq0yWX
-        Gp/5TUHg4LWkvx2nT7FUXF46r3qmepWO52qB+dGk08s1R/IdUC2Lak9+ztxkQw==
+        bh=ECyvMDbs1VNX+l7QtCYIDcO9pJJ9+CjzvFCuz5jGHrw=;
+        b=TfbrukHR4Vyp8jaKjTvKpxiO4BwaQbFK6LyjFViDWnIu8KjWAeSwCx/DYhvpwMFPfG8jrp
+        OARoXeUJIiJ1DvMe1Nm0UFxpOlS59PwCzlLHoGiRST+EsTK8eJrhO3tAIuaN/GvlwhxMUJ
+        /6PKfsefMMjJ4PXP111j4QKiY/B8d71SkY6TqHQE1Viki/zN87iHaURJgeWWU0OQrvSF0k
+        QwZR29o1iA0t+oNNzQHKmtF3LU+8V1H4MbCpOZCFaspjirFGS1PMZa7hlS/a2yowN3SYk3
+        shAG1y2aoIUM2Iyrf3bpak/9vMiIiusx5WrQaLY1C42vkLn0cbnnjzSMz5wvMA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1598514873;
+        s=2020e; t=1598514875;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=/VwYgaI1w5KIG9TIKMB+coCvWg7uRAM5MhyfKNZYobg=;
-        b=KVHrmND1r9ZvEHgmqVv7rJb7kSc11xYrcsBv59Nj3lrOvnu6vc6JnwxEDVxUkn1ejn640F
-        j5auGE64UCMRmkAA==
-From:   "tip-bot2 for Josh Don" <tip-bot2@linutronix.de>
+        bh=ECyvMDbs1VNX+l7QtCYIDcO9pJJ9+CjzvFCuz5jGHrw=;
+        b=OGW95xQyiTZ/fFRQbv5B+vi6q9Do/BCzkp1IdIRqo1DZn4apXPSkWZG8Y4SS/ceGGakUgx
+        Jmf7OMLMFUIzrgDQ==
+From:   "tip-bot2 for Marco Elver" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/fair: Ignore cache hotness for SMT migration
-Cc:     Josh Don <joshdon@google.com>,
+Subject: [tip: sched/urgent] sched: Use __always_inline on is_idle_task()
+Cc:     Marco Elver <elver@google.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200804193413.510651-1-joshdon@google.com>
-References: <20200804193413.510651-1-joshdon@google.com>
+In-Reply-To: <20200820172046.GA177701@elver.google.com>
+References: <20200820172046.GA177701@elver.google.com>
 MIME-Version: 1.0
-Message-ID: <159851487304.20229.3769539649490715619.tip-bot2@tip-bot2>
+Message-ID: <159851487420.20229.1106109799847028466.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,40 +59,38 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     ec73240b1627cddfd7cef018c7fa1c32e64a721e
-Gitweb:        https://git.kernel.org/tip/ec73240b1627cddfd7cef018c7fa1c32e64a721e
-Author:        Josh Don <joshdon@google.com>
-AuthorDate:    Tue, 04 Aug 2020 12:34:13 -07:00
+Commit-ID:     c94a88f341c9b8f05d8639f62bb5d95936f881cd
+Gitweb:        https://git.kernel.org/tip/c94a88f341c9b8f05d8639f62bb5d95936f881cd
+Author:        Marco Elver <elver@google.com>
+AuthorDate:    Thu, 20 Aug 2020 19:20:46 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 26 Aug 2020 12:41:57 +02:00
+CommitterDate: Wed, 26 Aug 2020 12:41:51 +02:00
 
-sched/fair: Ignore cache hotness for SMT migration
+sched: Use __always_inline on is_idle_task()
 
-SMT siblings share caches, so cache hotness should be irrelevant for
-cross-sibling migration.
+is_idle_task() may be used from noinstr functions such as
+irqentry_enter(). Since the compiler is free to not inline regular
+inline functions, switch to using __always_inline.
 
-Signed-off-by: Josh Don <joshdon@google.com>
-Proposed-by: Venkatesh Pallipadi <venki@google.com>
+Signed-off-by: Marco Elver <elver@google.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20200804193413.510651-1-joshdon@google.com
+Link: https://lkml.kernel.org/r/20200820172046.GA177701@elver.google.com
 ---
- kernel/sched/fair.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ include/linux/sched.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 1a68a05..abdb54e 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -7402,6 +7402,10 @@ static int task_hot(struct task_struct *p, struct lb_env *env)
- 	if (unlikely(task_has_idle_policy(p)))
- 		return 0;
- 
-+	/* SMT siblings share cache */
-+	if (env->sd->flags & SD_SHARE_CPUCAPACITY)
-+		return 0;
-+
- 	/*
- 	 * Buddy candidates are cache hot:
- 	 */
+diff --git a/include/linux/sched.h b/include/linux/sched.h
+index 93ecd93..afe01e2 100644
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -1666,7 +1666,7 @@ extern struct task_struct *idle_task(int cpu);
+  *
+  * Return: 1 if @p is an idle task. 0 otherwise.
+  */
+-static inline bool is_idle_task(const struct task_struct *p)
++static __always_inline bool is_idle_task(const struct task_struct *p)
+ {
+ 	return !!(p->flags & PF_IDLE);
+ }
