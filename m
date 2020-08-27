@@ -2,16 +2,19 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 39BB6253FE3
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Aug 2020 09:57:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ADACE253FE6
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Aug 2020 09:57:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728428AbgH0H5b (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 27 Aug 2020 03:57:31 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:36550 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728387AbgH0HyZ (ORCPT
+        id S1728719AbgH0H5d (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 27 Aug 2020 03:57:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52488 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728393AbgH0HyY (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 27 Aug 2020 03:54:25 -0400
+        Thu, 27 Aug 2020 03:54:24 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A58A8C061232;
+        Thu, 27 Aug 2020 00:54:23 -0700 (PDT)
 Date:   Thu, 27 Aug 2020 07:54:21 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1598514862;
@@ -20,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=AaJf4vzeb8lp3ebQQLlqfjkj7mAEZZA0/yhMp64P4jc=;
-        b=J7VIbabl2X9PmCff69MJKh/iHk/3NsPHWbiDXQ1/VWW1rF2negIppKECS3GsrrT6Nr3uXX
-        Wv66Yjp3v+yrQAgok+Cj3D6wVjdwNHxvq7e7coco38b47flu1fsfS3xfiPU5vsdHSkoHzK
-        gvRwU+KL14PJFRWXB1F7EXNGBza6acQ/CFczQy6iBdF/K5v2M5AyAwtYU0Z6pbJTsD+eRA
-        6/SzZKnnLahEPE/HQJW1sM21SM4Ev1oiWcFDC0Fkqfh2SsAa0t7x/eNW9UJkgMemmWyNz6
-        oyVLVW/Y1I+c0M6aowoB+RMVcktOzX9Ldas4IrMPWb2Nji842NCy3Wdn2sSbwQ==
+        bh=5lPVRcN+5N84AigHgyoDwZ9Yp99WeUYG5wZVeYttW9Y=;
+        b=MtlN490fdcsX55sWrAkVcbmF+aWAoomir0QUfT6u1zfNxHNzMGnOETvfYXxwDg/VfL+MNq
+        bqfwpsiTAi9KFBMQMmuqLAmprVhzi5HflahI1xIXfLeuwYIqjYAbDRmkqhxODrxaljE7ak
+        Jdyc2hVyGTyMTnynu4AztSWHiDWLEVEhRHBS6aEysCBJOQ0sPmEpd6w4uIgLqBaVUSp7PX
+        p6C5lbZ+SmW5Njef9dTXOk6eee8qgdSon+Da4SB/illAJ6i7qoqbwLU8jd6z64RRWYcGDK
+        P/YEQ9IsQsGWg7VCvpuBOsUcoya6/ixeZvuRXfEt+vMWuhkIgqMk46yvonQAJA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1598514862;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -33,21 +36,20 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=AaJf4vzeb8lp3ebQQLlqfjkj7mAEZZA0/yhMp64P4jc=;
-        b=bL49tc/V1oLDj5juHInbljZI0Nydjpt35MndocV19SKF21JNjb67lH8UFCADyUBMDYcmc1
-        iU/iwN3mkQRT4pCQ==
+        bh=5lPVRcN+5N84AigHgyoDwZ9Yp99WeUYG5wZVeYttW9Y=;
+        b=G81WDPBBqp4A9hpmZyRe7HvVp7ady7jWu7eyGkOt1Zlm6/by/gTxL1W1WLAUDKVLrTc+9n
+        yXPBnl2JPZfMaLCA==
 From:   "tip-bot2 for Boqun Feng" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] lockdep/Documention: Recursive read lock
- detection reasoning
+Subject: [tip: locking/core] lockdep: Demagic the return value of BFS
 Cc:     Boqun Feng <boqun.feng@gmail.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200807074238.1632519-3-boqun.feng@gmail.com>
-References: <20200807074238.1632519-3-boqun.feng@gmail.com>
+In-Reply-To: <20200807074238.1632519-4-boqun.feng@gmail.com>
+References: <20200807074238.1632519-4-boqun.feng@gmail.com>
 MIME-Version: 1.0
-Message-ID: <159851486191.20229.8841390715473332296.tip-bot2@tip-bot2>
+Message-ID: <159851486148.20229.16260642445080351596.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,299 +61,403 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     224ec489d3cdb0af6794e257eeee39d98dc9c5b2
-Gitweb:        https://git.kernel.org/tip/224ec489d3cdb0af6794e257eeee39d98dc9c5b2
+Commit-ID:     b11be024de164213f6338973d76ab9ab139120cd
+Gitweb:        https://git.kernel.org/tip/b11be024de164213f6338973d76ab9ab139120cd
 Author:        Boqun Feng <boqun.feng@gmail.com>
-AuthorDate:    Fri, 07 Aug 2020 15:42:21 +08:00
+AuthorDate:    Fri, 07 Aug 2020 15:42:22 +08:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Wed, 26 Aug 2020 12:42:03 +02:00
 
-lockdep/Documention: Recursive read lock detection reasoning
+lockdep: Demagic the return value of BFS
 
-This patch add the documentation piece for the reasoning of deadlock
-detection related to recursive read lock. The following sections are
-added:
+__bfs() could return four magic numbers:
 
-*	Explain what is a recursive read lock, and what deadlock cases
-	they could introduce.
+	1: search succeeds, but none match.
+	0: search succeeds, find one match.
+	-1: search fails because of the cq is full.
+	-2: search fails because a invalid node is found.
 
-*	Introduce the notations for different types of dependencies, and
-	the definition of strong paths.
-
-*	Proof for a closed strong path is both sufficient and necessary
-	for deadlock detections with recursive read locks involved. The
-	proof could also explain why we call the path "strong"
+This patch cleans things up by using a enum type for the return value
+of __bfs() and its friends, this improves the code readability of the
+code, and further, could help if we want to extend the BFS.
 
 Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20200807074238.1632519-3-boqun.feng@gmail.com
+Link: https://lkml.kernel.org/r/20200807074238.1632519-4-boqun.feng@gmail.com
 ---
- Documentation/locking/lockdep-design.rst | 258 ++++++++++++++++++++++-
- 1 file changed, 258 insertions(+)
+ kernel/locking/lockdep.c | 155 +++++++++++++++++++++-----------------
+ 1 file changed, 89 insertions(+), 66 deletions(-)
 
-diff --git a/Documentation/locking/lockdep-design.rst b/Documentation/locking/lockdep-design.rst
-index 23fcbc4..cec03bd 100644
---- a/Documentation/locking/lockdep-design.rst
-+++ b/Documentation/locking/lockdep-design.rst
-@@ -392,3 +392,261 @@ Run the command and save the output, then compare against the output from
- a later run of this command to identify the leakers.  This same output
- can also help you find situations where runtime lock initialization has
- been omitted.
-+
-+Recursive read locks:
-+---------------------
-+The whole of the rest document tries to prove a certain type of cycle is equivalent
-+to deadlock possibility.
-+
-+There are three types of lockers: writers (i.e. exclusive lockers, like
-+spin_lock() or write_lock()), non-recursive readers (i.e. shared lockers, like
-+down_read()) and recursive readers (recursive shared lockers, like rcu_read_lock()).
-+And we use the following notations of those lockers in the rest of the document:
-+
-+	W or E:	stands for writers (exclusive lockers).
-+	r:	stands for non-recursive readers.
-+	R:	stands for recursive readers.
-+	S:	stands for all readers (non-recursive + recursive), as both are shared lockers.
-+	N:	stands for writers and non-recursive readers, as both are not recursive.
-+
-+Obviously, N is "r or W" and S is "r or R".
-+
-+Recursive readers, as their name indicates, are the lockers allowed to acquire
-+even inside the critical section of another reader of the same lock instance,
-+in other words, allowing nested read-side critical sections of one lock instance.
-+
-+While non-recursive readers will cause a self deadlock if trying to acquire inside
-+the critical section of another reader of the same lock instance.
-+
-+The difference between recursive readers and non-recursive readers is because:
-+recursive readers get blocked only by a write lock *holder*, while non-recursive
-+readers could get blocked by a write lock *waiter*. Considering the follow example:
-+
-+	TASK A:			TASK B:
-+
-+	read_lock(X);
-+				write_lock(X);
-+	read_lock_2(X);
-+
-+Task A gets the reader (no matter whether recursive or non-recursive) on X via
-+read_lock() first. And when task B tries to acquire writer on X, it will block
-+and become a waiter for writer on X. Now if read_lock_2() is recursive readers,
-+task A will make progress, because writer waiters don't block recursive readers,
-+and there is no deadlock. However, if read_lock_2() is non-recursive readers,
-+it will get blocked by writer waiter B, and cause a self deadlock.
-+
-+Block conditions on readers/writers of the same lock instance:
-+--------------------------------------------------------------
-+There are simply four block conditions:
-+
-+1.	Writers block other writers.
-+2.	Readers block writers.
-+3.	Writers block both recursive readers and non-recursive readers.
-+4.	And readers (recursive or not) don't block other recursive readers but
-+	may block non-recursive readers (because of the potential co-existing
-+	writer waiters)
-+
-+Block condition matrix, Y means the row blocks the column, and N means otherwise.
-+
-+	    | E | r | R |
-+	+---+---+---+---+
-+	  E | Y | Y | Y |
-+	+---+---+---+---+
-+	  r | Y | Y | N |
-+	+---+---+---+---+
-+	  R | Y | Y | N |
-+
-+	(W: writers, r: non-recursive readers, R: recursive readers)
-+
-+
-+acquired recursively. Unlike non-recursive read locks, recursive read locks
-+only get blocked by current write lock *holders* other than write lock
-+*waiters*, for example:
-+
-+	TASK A:			TASK B:
-+
-+	read_lock(X);
-+
-+				write_lock(X);
-+
-+	read_lock(X);
-+
-+is not a deadlock for recursive read locks, as while the task B is waiting for
-+the lock X, the second read_lock() doesn't need to wait because it's a recursive
-+read lock. However if the read_lock() is non-recursive read lock, then the above
-+case is a deadlock, because even if the write_lock() in TASK B cannot get the
-+lock, but it can block the second read_lock() in TASK A.
-+
-+Note that a lock can be a write lock (exclusive lock), a non-recursive read
-+lock (non-recursive shared lock) or a recursive read lock (recursive shared
-+lock), depending on the lock operations used to acquire it (more specifically,
-+the value of the 'read' parameter for lock_acquire()). In other words, a single
-+lock instance has three types of acquisition depending on the acquisition
-+functions: exclusive, non-recursive read, and recursive read.
-+
-+To be concise, we call that write locks and non-recursive read locks as
-+"non-recursive" locks and recursive read locks as "recursive" locks.
-+
-+Recursive locks don't block each other, while non-recursive locks do (this is
-+even true for two non-recursive read locks). A non-recursive lock can block the
-+corresponding recursive lock, and vice versa.
-+
-+A deadlock case with recursive locks involved is as follow:
-+
-+	TASK A:			TASK B:
-+
-+	read_lock(X);
-+				read_lock(Y);
-+	write_lock(Y);
-+				write_lock(X);
-+
-+Task A is waiting for task B to read_unlock() Y and task B is waiting for task
-+A to read_unlock() X.
-+
-+Dependency types and strong dependency paths:
-+---------------------------------------------
-+Lock dependencies record the orders of the acquisitions of a pair of locks, and
-+because there are 3 types for lockers, there are, in theory, 9 types of lock
-+dependencies, but we can show that 4 types of lock dependencies are enough for
-+deadlock detection.
-+
-+For each lock dependency:
-+
-+	L1 -> L2
-+
-+, which means lockdep has seen L1 held before L2 held in the same context at runtime.
-+And in deadlock detection, we care whether we could get blocked on L2 with L1 held,
-+IOW, whether there is a locker L3 that L1 blocks L3 and L2 gets blocked by L3. So
-+we only care about 1) what L1 blocks and 2) what blocks L2. As a result, we can combine
-+recursive readers and non-recursive readers for L1 (as they block the same types) and
-+we can combine writers and non-recursive readers for L2 (as they get blocked by the
-+same types).
-+
-+With the above combination for simplification, there are 4 types of dependency edges
-+in the lockdep graph:
-+
-+1) -(ER)->: exclusive writer to recursive reader dependency, "X -(ER)-> Y" means
-+	    X -> Y and X is a writer and Y is a recursive reader.
-+
-+2) -(EN)->: exclusive writer to non-recursive locker dependency, "X -(EN)-> Y" means
-+	    X -> Y and X is a writer and Y is either a writer or non-recursive reader.
-+
-+3) -(SR)->: shared reader to recursive reader dependency, "X -(SR)-> Y" means
-+	    X -> Y and X is a reader (recursive or not) and Y is a recursive reader.
-+
-+4) -(SN)->: shared reader to non-recursive locker dependency, "X -(SN)-> Y" means
-+	    X -> Y and X is a reader (recursive or not) and Y is either a writer or
-+	    non-recursive reader.
-+
-+Note that given two locks, they may have multiple dependencies between them, for example:
-+
-+	TASK A:
-+
-+	read_lock(X);
-+	write_lock(Y);
-+	...
-+
-+	TASK B:
-+
-+	write_lock(X);
-+	write_lock(Y);
-+
-+, we have both X -(SN)-> Y and X -(EN)-> Y in the dependency graph.
-+
-+We use -(xN)-> to represent edges that are either -(EN)-> or -(SN)->, the
-+similar for -(Ex)->, -(xR)-> and -(Sx)->
-+
-+A "path" is a series of conjunct dependency edges in the graph. And we define a
-+"strong" path, which indicates the strong dependency throughout each dependency
-+in the path, as the path that doesn't have two conjunct edges (dependencies) as
-+-(xR)-> and -(Sx)->. In other words, a "strong" path is a path from a lock
-+walking to another through the lock dependencies, and if X -> Y -> Z is in the
-+path (where X, Y, Z are locks), and the walk from X to Y is through a -(SR)-> or
-+-(ER)-> dependency, the walk from Y to Z must not be through a -(SN)-> or
-+-(SR)-> dependency.
-+
-+We will see why the path is called "strong" in next section.
-+
-+Recursive Read Deadlock Detection:
-+----------------------------------
-+
-+We now prove two things:
-+
-+Lemma 1:
-+
-+If there is a closed strong path (i.e. a strong circle), then there is a
-+combination of locking sequences that causes deadlock. I.e. a strong circle is
-+sufficient for deadlock detection.
-+
-+Lemma 2:
-+
-+If there is no closed strong path (i.e. strong circle), then there is no
-+combination of locking sequences that could cause deadlock. I.e.  strong
-+circles are necessary for deadlock detection.
-+
-+With these two Lemmas, we can easily say a closed strong path is both sufficient
-+and necessary for deadlocks, therefore a closed strong path is equivalent to
-+deadlock possibility. As a closed strong path stands for a dependency chain that
-+could cause deadlocks, so we call it "strong", considering there are dependency
-+circles that won't cause deadlocks.
-+
-+Proof for sufficiency (Lemma 1):
-+
-+Let's say we have a strong circle:
-+
-+	L1 -> L2 ... -> Ln -> L1
-+
-+, which means we have dependencies:
-+
-+	L1 -> L2
-+	L2 -> L3
-+	...
-+	Ln-1 -> Ln
-+	Ln -> L1
-+
-+We now can construct a combination of locking sequences that cause deadlock:
-+
-+Firstly let's make one CPU/task get the L1 in L1 -> L2, and then another get
-+the L2 in L2 -> L3, and so on. After this, all of the Lx in Lx -> Lx+1 are
-+held by different CPU/tasks.
-+
-+And then because we have L1 -> L2, so the holder of L1 is going to acquire L2
-+in L1 -> L2, however since L2 is already held by another CPU/task, plus L1 ->
-+L2 and L2 -> L3 are not -(xR)-> and -(Sx)-> (the definition of strong), which
-+means either L2 in L1 -> L2 is a non-recursive locker (blocked by anyone) or
-+the L2 in L2 -> L3, is writer (blocking anyone), therefore the holder of L1
-+cannot get L2, it has to wait L2's holder to release.
-+
-+Moreover, we can have a similar conclusion for L2's holder: it has to wait L3's
-+holder to release, and so on. We now can prove that Lx's holder has to wait for
-+Lx+1's holder to release, and note that Ln+1 is L1, so we have a circular
-+waiting scenario and nobody can get progress, therefore a deadlock.
-+
-+Proof for necessary (Lemma 2):
-+
-+Lemma 2 is equivalent to: If there is a deadlock scenario, then there must be a
-+strong circle in the dependency graph.
-+
-+According to Wikipedia[1], if there is a deadlock, then there must be a circular
-+waiting scenario, means there are N CPU/tasks, where CPU/task P1 is waiting for
-+a lock held by P2, and P2 is waiting for a lock held by P3, ... and Pn is waiting
-+for a lock held by P1. Let's name the lock Px is waiting as Lx, so since P1 is waiting
-+for L1 and holding Ln, so we will have Ln -> L1 in the dependency graph. Similarly,
-+we have L1 -> L2, L2 -> L3, ..., Ln-1 -> Ln in the dependency graph, which means we
-+have a circle:
-+
-+	Ln -> L1 -> L2 -> ... -> Ln
-+
-+, and now let's prove the circle is strong:
-+
-+For a lock Lx, Px contributes the dependency Lx-1 -> Lx and Px+1 contributes
-+the dependency Lx -> Lx+1, and since Px is waiting for Px+1 to release Lx,
-+so it's impossible that Lx on Px+1 is a reader and Lx on Px is a recursive
-+reader, because readers (no matter recursive or not) don't block recursive
-+readers, therefore Lx-1 -> Lx and Lx -> Lx+1 cannot be a -(xR)-> -(Sx)-> pair,
-+and this is true for any lock in the circle, therefore, the circle is strong.
-+
-+References:
-+-----------
-+[1]: https://en.wikipedia.org/wiki/Deadlock
-+[2]: Shibu, K. (2009). Intro To Embedded Systems (1st ed.). Tata McGraw-Hill
+diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
+index 77cd9e6..462c68c 100644
+--- a/kernel/locking/lockdep.c
++++ b/kernel/locking/lockdep.c
+@@ -1471,28 +1471,58 @@ static inline struct list_head *get_dep_list(struct lock_list *lock, int offset)
+ 
+ 	return lock_class + offset;
+ }
++/*
++ * Return values of a bfs search:
++ *
++ * BFS_E* indicates an error
++ * BFS_R* indicates a result (match or not)
++ *
++ * BFS_EINVALIDNODE: Find a invalid node in the graph.
++ *
++ * BFS_EQUEUEFULL: The queue is full while doing the bfs.
++ *
++ * BFS_RMATCH: Find the matched node in the graph, and put that node into
++ *             *@target_entry.
++ *
++ * BFS_RNOMATCH: Haven't found the matched node and keep *@target_entry
++ *               _unchanged_.
++ */
++enum bfs_result {
++	BFS_EINVALIDNODE = -2,
++	BFS_EQUEUEFULL = -1,
++	BFS_RMATCH = 0,
++	BFS_RNOMATCH = 1,
++};
++
++/*
++ * bfs_result < 0 means error
++ */
++static inline bool bfs_error(enum bfs_result res)
++{
++	return res < 0;
++}
+ 
+ /*
+  * Forward- or backward-dependency search, used for both circular dependency
+  * checking and hardirq-unsafe/softirq-unsafe checking.
+  */
+-static int __bfs(struct lock_list *source_entry,
+-		 void *data,
+-		 int (*match)(struct lock_list *entry, void *data),
+-		 struct lock_list **target_entry,
+-		 int offset)
++static enum bfs_result __bfs(struct lock_list *source_entry,
++			     void *data,
++			     int (*match)(struct lock_list *entry, void *data),
++			     struct lock_list **target_entry,
++			     int offset)
+ {
+ 	struct lock_list *entry;
+ 	struct lock_list *lock;
+ 	struct list_head *head;
+ 	struct circular_queue *cq = &lock_cq;
+-	int ret = 1;
++	enum bfs_result ret = BFS_RNOMATCH;
+ 
+ 	lockdep_assert_locked();
+ 
+ 	if (match(source_entry, data)) {
+ 		*target_entry = source_entry;
+-		ret = 0;
++		ret = BFS_RMATCH;
+ 		goto exit;
+ 	}
+ 
+@@ -1506,7 +1536,7 @@ static int __bfs(struct lock_list *source_entry,
+ 	while ((lock = __cq_dequeue(cq))) {
+ 
+ 		if (!lock->class) {
+-			ret = -2;
++			ret = BFS_EINVALIDNODE;
+ 			goto exit;
+ 		}
+ 
+@@ -1518,12 +1548,12 @@ static int __bfs(struct lock_list *source_entry,
+ 				mark_lock_accessed(entry, lock);
+ 				if (match(entry, data)) {
+ 					*target_entry = entry;
+-					ret = 0;
++					ret = BFS_RMATCH;
+ 					goto exit;
+ 				}
+ 
+ 				if (__cq_enqueue(cq, entry)) {
+-					ret = -1;
++					ret = BFS_EQUEUEFULL;
+ 					goto exit;
+ 				}
+ 				cq_depth = __cq_get_elem_count(cq);
+@@ -1536,20 +1566,22 @@ exit:
+ 	return ret;
+ }
+ 
+-static inline int __bfs_forwards(struct lock_list *src_entry,
+-			void *data,
+-			int (*match)(struct lock_list *entry, void *data),
+-			struct lock_list **target_entry)
++static inline enum bfs_result
++__bfs_forwards(struct lock_list *src_entry,
++	       void *data,
++	       int (*match)(struct lock_list *entry, void *data),
++	       struct lock_list **target_entry)
+ {
+ 	return __bfs(src_entry, data, match, target_entry,
+ 		     offsetof(struct lock_class, locks_after));
+ 
+ }
+ 
+-static inline int __bfs_backwards(struct lock_list *src_entry,
+-			void *data,
+-			int (*match)(struct lock_list *entry, void *data),
+-			struct lock_list **target_entry)
++static inline enum bfs_result
++__bfs_backwards(struct lock_list *src_entry,
++		void *data,
++		int (*match)(struct lock_list *entry, void *data),
++		struct lock_list **target_entry)
+ {
+ 	return __bfs(src_entry, data, match, target_entry,
+ 		     offsetof(struct lock_class, locks_before));
+@@ -1775,18 +1807,18 @@ unsigned long lockdep_count_backward_deps(struct lock_class *class)
+ 
+ /*
+  * Check that the dependency graph starting at <src> can lead to
+- * <target> or not. Print an error and return 0 if it does.
++ * <target> or not.
+  */
+-static noinline int
++static noinline enum bfs_result
+ check_path(struct lock_class *target, struct lock_list *src_entry,
+ 	   struct lock_list **target_entry)
+ {
+-	int ret;
++	enum bfs_result ret;
+ 
+ 	ret = __bfs_forwards(src_entry, (void *)target, class_equal,
+ 			     target_entry);
+ 
+-	if (unlikely(ret < 0))
++	if (unlikely(bfs_error(ret)))
+ 		print_bfs_bug(ret);
+ 
+ 	return ret;
+@@ -1797,13 +1829,13 @@ check_path(struct lock_class *target, struct lock_list *src_entry,
+  * lead to <target>. If it can, there is a circle when adding
+  * <target> -> <src> dependency.
+  *
+- * Print an error and return 0 if it does.
++ * Print an error and return BFS_RMATCH if it does.
+  */
+-static noinline int
++static noinline enum bfs_result
+ check_noncircular(struct held_lock *src, struct held_lock *target,
+ 		  struct lock_trace **const trace)
+ {
+-	int ret;
++	enum bfs_result ret;
+ 	struct lock_list *target_entry;
+ 	struct lock_list src_entry = {
+ 		.class = hlock_class(src),
+@@ -1814,7 +1846,7 @@ check_noncircular(struct held_lock *src, struct held_lock *target,
+ 
+ 	ret = check_path(hlock_class(target), &src_entry, &target_entry);
+ 
+-	if (unlikely(!ret)) {
++	if (unlikely(ret == BFS_RMATCH)) {
+ 		if (!*trace) {
+ 			/*
+ 			 * If save_trace fails here, the printing might
+@@ -1836,12 +1868,13 @@ check_noncircular(struct held_lock *src, struct held_lock *target,
+  * <target> or not. If it can, <src> -> <target> dependency is already
+  * in the graph.
+  *
+- * Print an error and return 2 if it does or 1 if it does not.
++ * Return BFS_RMATCH if it does, or BFS_RMATCH if it does not, return BFS_E* if
++ * any error appears in the bfs search.
+  */
+-static noinline int
++static noinline enum bfs_result
+ check_redundant(struct held_lock *src, struct held_lock *target)
+ {
+-	int ret;
++	enum bfs_result ret;
+ 	struct lock_list *target_entry;
+ 	struct lock_list src_entry = {
+ 		.class = hlock_class(src),
+@@ -1852,11 +1885,8 @@ check_redundant(struct held_lock *src, struct held_lock *target)
+ 
+ 	ret = check_path(hlock_class(target), &src_entry, &target_entry);
+ 
+-	if (!ret) {
++	if (ret == BFS_RMATCH)
+ 		debug_atomic_inc(nr_redundant);
+-		ret = 2;
+-	} else if (ret < 0)
+-		ret = 0;
+ 
+ 	return ret;
+ }
+@@ -1886,17 +1916,14 @@ static inline int usage_match(struct lock_list *entry, void *mask)
+  * Find a node in the forwards-direction dependency sub-graph starting
+  * at @root->class that matches @bit.
+  *
+- * Return 0 if such a node exists in the subgraph, and put that node
++ * Return BFS_MATCH if such a node exists in the subgraph, and put that node
+  * into *@target_entry.
+- *
+- * Return 1 otherwise and keep *@target_entry unchanged.
+- * Return <0 on error.
+  */
+-static int
++static enum bfs_result
+ find_usage_forwards(struct lock_list *root, unsigned long usage_mask,
+ 			struct lock_list **target_entry)
+ {
+-	int result;
++	enum bfs_result result;
+ 
+ 	debug_atomic_inc(nr_find_usage_forwards_checks);
+ 
+@@ -1908,18 +1935,12 @@ find_usage_forwards(struct lock_list *root, unsigned long usage_mask,
+ /*
+  * Find a node in the backwards-direction dependency sub-graph starting
+  * at @root->class that matches @bit.
+- *
+- * Return 0 if such a node exists in the subgraph, and put that node
+- * into *@target_entry.
+- *
+- * Return 1 otherwise and keep *@target_entry unchanged.
+- * Return <0 on error.
+  */
+-static int
++static enum bfs_result
+ find_usage_backwards(struct lock_list *root, unsigned long usage_mask,
+ 			struct lock_list **target_entry)
+ {
+-	int result;
++	enum bfs_result result;
+ 
+ 	debug_atomic_inc(nr_find_usage_backwards_checks);
+ 
+@@ -2247,7 +2268,7 @@ static int check_irq_usage(struct task_struct *curr, struct held_lock *prev,
+ 	struct lock_list *target_entry1;
+ 	struct lock_list *target_entry;
+ 	struct lock_list this, that;
+-	int ret;
++	enum bfs_result ret;
+ 
+ 	/*
+ 	 * Step 1: gather all hard/soft IRQs usages backward in an
+@@ -2257,7 +2278,7 @@ static int check_irq_usage(struct task_struct *curr, struct held_lock *prev,
+ 	this.class = hlock_class(prev);
+ 
+ 	ret = __bfs_backwards(&this, &usage_mask, usage_accumulate, NULL);
+-	if (ret < 0) {
++	if (bfs_error(ret)) {
+ 		print_bfs_bug(ret);
+ 		return 0;
+ 	}
+@@ -2276,12 +2297,12 @@ static int check_irq_usage(struct task_struct *curr, struct held_lock *prev,
+ 	that.class = hlock_class(next);
+ 
+ 	ret = find_usage_forwards(&that, forward_mask, &target_entry1);
+-	if (ret < 0) {
++	if (bfs_error(ret)) {
+ 		print_bfs_bug(ret);
+ 		return 0;
+ 	}
+-	if (ret == 1)
+-		return ret;
++	if (ret == BFS_RNOMATCH)
++		return 1;
+ 
+ 	/*
+ 	 * Step 3: we found a bad match! Now retrieve a lock from the backward
+@@ -2291,11 +2312,11 @@ static int check_irq_usage(struct task_struct *curr, struct held_lock *prev,
+ 	backward_mask = original_mask(target_entry1->class->usage_mask);
+ 
+ 	ret = find_usage_backwards(&this, backward_mask, &target_entry);
+-	if (ret < 0) {
++	if (bfs_error(ret)) {
+ 		print_bfs_bug(ret);
+ 		return 0;
+ 	}
+-	if (DEBUG_LOCKS_WARN_ON(ret == 1))
++	if (DEBUG_LOCKS_WARN_ON(ret == BFS_RNOMATCH))
+ 		return 1;
+ 
+ 	/*
+@@ -2463,7 +2484,7 @@ check_prev_add(struct task_struct *curr, struct held_lock *prev,
+ 	       struct lock_trace **const trace)
+ {
+ 	struct lock_list *entry;
+-	int ret;
++	enum bfs_result ret;
+ 
+ 	if (!hlock_class(prev)->key || !hlock_class(next)->key) {
+ 		/*
+@@ -2494,7 +2515,7 @@ check_prev_add(struct task_struct *curr, struct held_lock *prev,
+ 	 * in the graph whose neighbours are to be checked.
+ 	 */
+ 	ret = check_noncircular(next, prev, trace);
+-	if (unlikely(ret <= 0))
++	if (unlikely(bfs_error(ret) || ret == BFS_RMATCH))
+ 		return 0;
+ 
+ 	if (!check_irq_usage(curr, prev, next))
+@@ -2531,8 +2552,10 @@ check_prev_add(struct task_struct *curr, struct held_lock *prev,
+ 	 * Is the <prev> -> <next> link redundant?
+ 	 */
+ 	ret = check_redundant(prev, next);
+-	if (ret != 1)
+-		return ret;
++	if (bfs_error(ret))
++		return 0;
++	else if (ret == BFS_RMATCH)
++		return 2;
+ #endif
+ 
+ 	if (!*trace) {
+@@ -3436,19 +3459,19 @@ static int
+ check_usage_forwards(struct task_struct *curr, struct held_lock *this,
+ 		     enum lock_usage_bit bit, const char *irqclass)
+ {
+-	int ret;
++	enum bfs_result ret;
+ 	struct lock_list root;
+ 	struct lock_list *target_entry;
+ 
+ 	root.parent = NULL;
+ 	root.class = hlock_class(this);
+ 	ret = find_usage_forwards(&root, lock_flag(bit), &target_entry);
+-	if (ret < 0) {
++	if (bfs_error(ret)) {
+ 		print_bfs_bug(ret);
+ 		return 0;
+ 	}
+-	if (ret == 1)
+-		return ret;
++	if (ret == BFS_RNOMATCH)
++		return 1;
+ 
+ 	print_irq_inversion_bug(curr, &root, target_entry,
+ 				this, 1, irqclass);
+@@ -3463,19 +3486,19 @@ static int
+ check_usage_backwards(struct task_struct *curr, struct held_lock *this,
+ 		      enum lock_usage_bit bit, const char *irqclass)
+ {
+-	int ret;
++	enum bfs_result ret;
+ 	struct lock_list root;
+ 	struct lock_list *target_entry;
+ 
+ 	root.parent = NULL;
+ 	root.class = hlock_class(this);
+ 	ret = find_usage_backwards(&root, lock_flag(bit), &target_entry);
+-	if (ret < 0) {
++	if (bfs_error(ret)) {
+ 		print_bfs_bug(ret);
+ 		return 0;
+ 	}
+-	if (ret == 1)
+-		return ret;
++	if (ret == BFS_RNOMATCH)
++		return 1;
+ 
+ 	print_irq_inversion_bug(curr, &root, target_entry,
+ 				this, 0, irqclass);
