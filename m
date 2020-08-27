@@ -2,50 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A4B8E2537CA
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 26 Aug 2020 21:03:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A7A8F253F37
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Aug 2020 09:33:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727042AbgHZTDG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 26 Aug 2020 15:03:06 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:60952 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726191AbgHZTDB (ORCPT
+        id S1727084AbgH0HdC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 27 Aug 2020 03:33:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49168 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726803AbgH0HdB (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 26 Aug 2020 15:03:01 -0400
-Date:   Wed, 26 Aug 2020 19:02:58 -0000
+        Thu, 27 Aug 2020 03:33:01 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66DE1C06121A;
+        Thu, 27 Aug 2020 00:33:01 -0700 (PDT)
+Date:   Thu, 27 Aug 2020 07:32:58 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1598468579;
+        s=2020; t=1598513579;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Rh3Fopmqrv0gUWnOzPVmUZGvvt1WTGWCWjoL0FOQD4U=;
-        b=Qv+6OHYsJHH6wbJKCgu49hEsDfQL7FKrB04snApdOErKazDkzAl5ca37m/oKw1f7J/PuWf
-        NgeY2S/CKwpzYmJCBfMGOoAan6A8pzQxnTIoMX0le39c8RCZKfju2ps8DJy+b7euTtFduc
-        PprnFCqruPfKBwfMmDmU8Sb/Fx6vxHgSG0kRSHnO871miozM+hPQO38Jp5DlLI0JvoOD9v
-        gyGEadW6obWggVejbjDsTTNAsrgW7Erj2B3efB0BaeIIQJjfZU5G+pjCU8Qm40RiEGGl8a
-        tRH+VIonq/9INv6KvwzHhIcCAk+a1uwstH+Nn/2wEpcNCN0VQZ9v45od1ISWBw==
+        bh=UTONwIWoakdM5Pm9p8xV8RpgnRMktI5rvR+YK01cji4=;
+        b=Xw/X1P54/Ws/lJPaLZqXCG7qNeA6TqIuaEEFh8PhUuOOgQgwMQOzEwQVLubSco2sNyKR49
+        4iemuCj0U6FodOKuU34QAO1/eGbkXaI6L8RE6Ice/gACc7nxzg9h7jC5MvcMgENl0Rr5j5
+        oNX+By5dtr7Drf0TkIS3B+we0MTMynFHd3w9RnqzXZJpZsaz1ESncOqjGAgznwFrBbLPLg
+        TBa1zaNWiTRAN27iOB6tBLxna4RhB/N9M0imZ9ueYWKEtVEiG4vPx6ToZDyUEuB6OdmRZz
+        Fvn6sb6m0s/4/8Kqu0zMsa4nIDMfk1QiZkYBdmfE+JwCpGPx/gPM9k6XWhYVIw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1598468579;
+        s=2020e; t=1598513579;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Rh3Fopmqrv0gUWnOzPVmUZGvvt1WTGWCWjoL0FOQD4U=;
-        b=JOst60nvuzm3evgCk42mznWrImnFMaaQaF5JQY1Hig5NjBGT2wZ6RONnl/6TpWPTyXUyaY
-        DUNamBiChICIA0BA==
-From:   "tip-bot2 for Andy Lutomirski" <tip-bot2@linutronix.de>
+        bh=UTONwIWoakdM5Pm9p8xV8RpgnRMktI5rvR+YK01cji4=;
+        b=ttROVVxHcBBxzg8jJUqGYPKkGsZKNN9IYFQN6pS4JoVzxrmtwTSfLo+QQgAtY7DpUJ27Ju
+        SBT1StbyU5hhhuAQ==
+From:   "tip-bot2 for Ashok Raj" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/fsgsbase] selftests/x86/fsgsbase: Reap a forgotten child
-Cc:     Andy Lutomirski <luto@kernel.org>, Ingo Molnar <mingo@kernel.org>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <e7700a503f30e79ab35a63103938a19893dbeff2.1598461151.git.luto@kernel.org>
-References: <e7700a503f30e79ab35a63103938a19893dbeff2.1598461151.git.luto@kernel.org>
+Subject: [tip: x86/urgent] x86/hotplug: Silence APIC only after all interrupts
+ are migrated
+Cc:     Evan Green <evgreen@chromium.org>, Ashok Raj <ashok.raj@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Mathias Nyman <mathias.nyman@linux.intel.com>,
+        stable@vger.kernel.org, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <1598501530-45821-1-git-send-email-ashok.raj@intel.com>
+References: <1598501530-45821-1-git-send-email-ashok.raj@intel.com>
 MIME-Version: 1.0
-Message-ID: <159846857840.389.4609772271418366087.tip-bot2@tip-bot2>
+Message-ID: <159851357878.20229.13413295812887979769.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -55,37 +62,98 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/fsgsbase branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     ab2dd173330a3f07142e68cd65682205036cd00f
-Gitweb:        https://git.kernel.org/tip/ab2dd173330a3f07142e68cd65682205036cd00f
-Author:        Andy Lutomirski <luto@kernel.org>
-AuthorDate:    Wed, 26 Aug 2020 10:00:45 -07:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 26 Aug 2020 20:54:17 +02:00
+Commit-ID:     52d6b926aabc47643cd910c85edb262b7f44c168
+Gitweb:        https://git.kernel.org/tip/52d6b926aabc47643cd910c85edb262b7f44c168
+Author:        Ashok Raj <ashok.raj@intel.com>
+AuthorDate:    Wed, 26 Aug 2020 21:12:10 -07:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Thu, 27 Aug 2020 09:29:23 +02:00
 
-selftests/x86/fsgsbase: Reap a forgotten child
+x86/hotplug: Silence APIC only after all interrupts are migrated
 
-The ptrace() test forgot to reap its child.  Reap it.
+There is a race when taking a CPU offline. Current code looks like this:
 
-Signed-off-by: Andy Lutomirski <luto@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/e7700a503f30e79ab35a63103938a19893dbeff2.1598461151.git.luto@kernel.org
+native_cpu_disable()
+{
+	...
+	apic_soft_disable();
+	/*
+	 * Any existing set bits for pending interrupt to
+	 * this CPU are preserved and will be sent via IPI
+	 * to another CPU by fixup_irqs().
+	 */
+	cpu_disable_common();
+	{
+		....
+		/*
+		 * Race window happens here. Once local APIC has been
+		 * disabled any new interrupts from the device to
+		 * the old CPU are lost
+		 */
+		fixup_irqs(); // Too late to capture anything in IRR.
+		...
+	}
+}
+
+The fix is to disable the APIC *after* cpu_disable_common().
+
+Testing was done with a USB NIC that provided a source of frequent
+interrupts. A script migrated interrupts to a specific CPU and
+then took that CPU offline.
+
+Fixes: 60dcaad5736f ("x86/hotplug: Silence APIC and NMI when CPU is dead")
+Reported-by: Evan Green <evgreen@chromium.org>
+Signed-off-by: Ashok Raj <ashok.raj@intel.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Tested-by: Evan Green <evgreen@chromium.org>
+Reviewed-by: Evan Green <evgreen@chromium.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/lkml/875zdarr4h.fsf@nanos.tec.linutronix.de/
+Link: https://lore.kernel.org/r/1598501530-45821-1-git-send-email-ashok.raj@intel.com
+
 ---
- tools/testing/selftests/x86/fsgsbase.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/x86/kernel/smpboot.c | 26 ++++++++++++++++++++------
+ 1 file changed, 20 insertions(+), 6 deletions(-)
 
-diff --git a/tools/testing/selftests/x86/fsgsbase.c b/tools/testing/selftests/x86/fsgsbase.c
-index 9983195..0056e25 100644
---- a/tools/testing/selftests/x86/fsgsbase.c
-+++ b/tools/testing/selftests/x86/fsgsbase.c
-@@ -517,6 +517,9 @@ static void test_ptrace_write_gsbase(void)
+diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
+index 27aa04a..f5ef689 100644
+--- a/arch/x86/kernel/smpboot.c
++++ b/arch/x86/kernel/smpboot.c
+@@ -1594,14 +1594,28 @@ int native_cpu_disable(void)
+ 	if (ret)
+ 		return ret;
  
- END:
- 	ptrace(PTRACE_CONT, child, NULL, NULL);
-+	wait(&status);
-+	if (!WIFEXITED(status))
-+		printf("[WARN]\tChild didn't exit cleanly.\n");
+-	/*
+-	 * Disable the local APIC. Otherwise IPI broadcasts will reach
+-	 * it. It still responds normally to INIT, NMI, SMI, and SIPI
+-	 * messages.
+-	 */
+-	apic_soft_disable();
+ 	cpu_disable_common();
+ 
++        /*
++         * Disable the local APIC. Otherwise IPI broadcasts will reach
++         * it. It still responds normally to INIT, NMI, SMI, and SIPI
++         * messages.
++         *
++         * Disabling the APIC must happen after cpu_disable_common()
++         * which invokes fixup_irqs().
++         *
++         * Disabling the APIC preserves already set bits in IRR, but
++         * an interrupt arriving after disabling the local APIC does not
++         * set the corresponding IRR bit.
++         *
++         * fixup_irqs() scans IRR for set bits so it can raise a not
++         * yet handled interrupt on the new destination CPU via an IPI
++         * but obviously it can't do so for IRR bits which are not set.
++         * IOW, interrupts arriving after disabling the local APIC will
++         * be lost.
++         */
++	apic_soft_disable();
++
+ 	return 0;
  }
  
- int main()
