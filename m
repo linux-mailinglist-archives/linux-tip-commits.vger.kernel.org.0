@@ -2,55 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B20D253FA5
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Aug 2020 09:54:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB6BB253FFB
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Aug 2020 09:59:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728405AbgH0HyZ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 27 Aug 2020 03:54:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52488 "EHLO
+        id S1728545AbgH0H6P (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 27 Aug 2020 03:58:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52492 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728373AbgH0HyV (ORCPT
+        with ESMTP id S1728378AbgH0HyW (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 27 Aug 2020 03:54:21 -0400
+        Thu, 27 Aug 2020 03:54:22 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFC3AC061232;
-        Thu, 27 Aug 2020 00:54:20 -0700 (PDT)
-Date:   Thu, 27 Aug 2020 07:54:18 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE58FC061233;
+        Thu, 27 Aug 2020 00:54:21 -0700 (PDT)
+Date:   Thu, 27 Aug 2020 07:54:19 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1598514859;
+        s=2020; t=1598514860;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=dYMNlMJwEyKddcIih+qKrMbxMV/KJLEv7mwreRYwRGE=;
-        b=MiRPdREmUJw/gp8yzMIC/tGUTQcOsUYXqzk3rl/Dme2ASk+rzxaFP1rxWiRhmnsJNVn689
-        Pml7L4rLf4S0xqQZGZw0HKlQHDIbu/6sL42VNNnunTsVMqp4Znn8pXyVLm2Braq3mBRKBh
-        h17zfm5kK+2Qj7iK/2ZDm+jntlVSAwNYA59DJI2NCN7LSC4s/i1TTz7SSPG/jJOQzY47gU
-        GSEuXPARFY6vIq6EufWsA6c9Tp//REhu2bVOgYyGOyAyT6B7CPrGlVsMdkmYXuX2rZhux8
-        mm2il3oID/9RbCHFm10COW7TPTEj09BPFfFPJUFEAURT9IS0F3MCOVPTK8S6IQ==
+        bh=1IAsJwXAtxR10SvvujO/TxVsBMgI4VZEygzqUTq7TQo=;
+        b=uOEiMz58S1FclAQlcIavK2/6L7cuQy6zWq2M70yxH1ICaqqHnOMeQ5dQmjIS2EEs7wC+NZ
+        LVC2XdOt8T1jerRv4MNDEbO39wuVOW9QZMYqPaKLl1HH4RgVt/CChR3x534Brs4U+5Jmvt
+        N0Z6gQoKuWYZC71+wf+K8yfbWTBVvCSt7C6QpUUwn/KcYKQU6pOpEpyYejWhr//UcJ6PWS
+        V8bwf3ogZS81rz1DIy3SkV+NEGzdQXwhuYLwo/LMxBIQwEVXs0KARUg0GzWoQmw2latmcv
+        PUmRQKjkawwsbYwW9uaSfrbzbdADO1ayigt+/DXWPXFHgmdYp1ttcXbugZ4RLQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1598514859;
+        s=2020e; t=1598514860;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=dYMNlMJwEyKddcIih+qKrMbxMV/KJLEv7mwreRYwRGE=;
-        b=UQLkDy8F5G6boOPHjWiHYzRnLZMoQEvRRa13iGjCNEzBC3Hfr2liLxiQcrG17eo5fa8V2j
-        MEFYr6ZamCa89JCQ==
+        bh=1IAsJwXAtxR10SvvujO/TxVsBMgI4VZEygzqUTq7TQo=;
+        b=BMRsOCOwTDOeixaGAOBQZVuhQF9nHnSkeC+Ih+K6EmZoXwWQTY56eYBV6sMBo2Bn289A9f
+        5iFi1Y4geT/ed4CA==
 From:   "tip-bot2 for Boqun Feng" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] lockdep: Adjust check_redundant() for recursive
- read change
+Subject: [tip: locking/core] lockdep: Extend __bfs() to work with multiple
+ types of dependencies
 Cc:     Boqun Feng <boqun.feng@gmail.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200807074238.1632519-11-boqun.feng@gmail.com>
-References: <20200807074238.1632519-11-boqun.feng@gmail.com>
+In-Reply-To: <20200807074238.1632519-8-boqun.feng@gmail.com>
+References: <20200807074238.1632519-8-boqun.feng@gmail.com>
 MIME-Version: 1.0
-Message-ID: <159851485838.20229.17873973008590975666.tip-bot2@tip-bot2>
+Message-ID: <159851485971.20229.16683302872240308936.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -62,120 +62,258 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     68e305678583f13a67e2ce22088c2520bd4f97b4
-Gitweb:        https://git.kernel.org/tip/68e305678583f13a67e2ce22088c2520bd4f97b4
+Commit-ID:     6971c0f345620aae5e6172207a57b7524603a34e
+Gitweb:        https://git.kernel.org/tip/6971c0f345620aae5e6172207a57b7524603a34e
 Author:        Boqun Feng <boqun.feng@gmail.com>
-AuthorDate:    Fri, 07 Aug 2020 15:42:29 +08:00
+AuthorDate:    Fri, 07 Aug 2020 15:42:26 +08:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 26 Aug 2020 12:42:05 +02:00
+CommitterDate: Wed, 26 Aug 2020 12:42:04 +02:00
 
-lockdep: Adjust check_redundant() for recursive read change
+lockdep: Extend __bfs() to work with multiple types of dependencies
 
-check_redundant() will report redundancy if it finds a path could
-replace the about-to-add dependency in the BFS search. With recursive
-read lock changes, we certainly need to change the match function for
-the check_redundant(), because the path needs to match not only the lock
-class but also the dependency kinds. For example, if the about-to-add
-dependency @prev -> @next is A -(SN)-> B, and we find a path A -(S*)->
-.. -(*R)->B in the dependency graph with __bfs() (for simplicity, we can
-also say we find an -(SR)-> path from A to B), we can not replace the
-dependency with that path in the BFS search. Because the -(SN)->
-dependency can make a strong path with a following -(S*)-> dependency,
-however an -(SR)-> path cannot.
+Now we have four types of dependencies in the dependency graph, and not
+all the pathes carry real dependencies (the dependencies that may cause
+a deadlock), for example:
 
-Further, we can replace an -(SN)-> dependency with a -(EN)-> path, that
-means if we find a path which is stronger than or equal to the
-about-to-add dependency, we can report the redundancy. By "stronger", it
-means both the start and the end of the path are not weaker than the
-start and the end of the dependency (E is "stronger" than S and N is
-"stronger" than R), so that we can replace the dependency with that
-path.
+	Given lock A and B, if we have:
 
-To make sure we find a path whose start point is not weaker than the
-about-to-add dependency, we use a trick: the ->only_xr of the root
-(start point) of __bfs() is initialized as @prev-> == 0, therefore if
-@prev is E, __bfs() will pick only -(E*)-> for the first dependency,
-otherwise, __bfs() can pick -(E*)-> or -(S*)-> for the first dependency.
+	CPU1			CPU2
+	=============		==============
+	write_lock(A);		read_lock(B);
+	read_lock(B);		write_lock(A);
 
-To make sure we find a path whose end point is not weaker than the
-about-to-add dependency, we replace the match function for __bfs()
-check_redundant(), we check for the case that either @next is R
-(anything is not weaker than it) or the end point of the path is N
-(which is not weaker than anything).
+	(assuming read_lock(B) is a recursive reader)
+
+	then we have dependencies A -(ER)-> B, and B -(SN)-> A, and a
+	dependency path A -(ER)-> B -(SN)-> A.
+
+	In lockdep w/o recursive locks, a dependency path from A to A
+	means a deadlock. However, the above case is obviously not a
+	deadlock, because no one holds B exclusively, therefore no one
+	waits for the other to release B, so who get A first in CPU1 and
+	CPU2 will run non-blockingly.
+
+	As a result, dependency path A -(ER)-> B -(SN)-> A is not a
+	real/strong dependency that could cause a deadlock.
+
+>From the observation above, we know that for a dependency path to be
+real/strong, no two adjacent dependencies can be as -(*R)-> -(S*)->.
+
+Now our mission is to make __bfs() traverse only the strong dependency
+paths, which is simple: we record whether we only have -(*R)-> for the
+previous lock_list of the path in lock_list::only_xr, and when we pick a
+dependency in the traverse, we 1) filter out -(S*)-> dependency if the
+previous lock_list only has -(*R)-> dependency (i.e. ->only_xr is true)
+and 2) set the next lock_list::only_xr to true if we only have -(*R)->
+left after we filter out dependencies based on 1), otherwise, set it to
+false.
+
+With this extension for __bfs(), we now need to initialize the root of
+__bfs() properly (with a correct ->only_xr), to do so, we introduce some
+helper functions, which also cleans up a little bit for the __bfs() root
+initialization code.
 
 Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20200807074238.1632519-11-boqun.feng@gmail.com
+Link: https://lkml.kernel.org/r/20200807074238.1632519-8-boqun.feng@gmail.com
 ---
- kernel/locking/lockdep.c | 47 ++++++++++++++++++++++++++++++++++++---
- 1 file changed, 44 insertions(+), 3 deletions(-)
+ include/linux/lockdep.h  |   2 +-
+ kernel/locking/lockdep.c | 113 +++++++++++++++++++++++++++++++-------
+ 2 files changed, 96 insertions(+), 19 deletions(-)
 
+diff --git a/include/linux/lockdep.h b/include/linux/lockdep.h
+index 35c8bb0..57d642d 100644
+--- a/include/linux/lockdep.h
++++ b/include/linux/lockdep.h
+@@ -57,6 +57,8 @@ struct lock_list {
+ 	u16				distance;
+ 	/* bitmap of different dependencies from head to this */
+ 	u8				dep;
++	/* used by BFS to record whether "prev -> this" only has -(*R)-> */
++	u8				only_xr;
+ 
+ 	/*
+ 	 * The parent field is used to implement breadth-first search, and the
 diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
-index 9160f1d..42e2f1f 100644
+index 16ad1b7..5abc227 100644
 --- a/kernel/locking/lockdep.c
 +++ b/kernel/locking/lockdep.c
-@@ -1833,9 +1833,39 @@ print_circular_bug_header(struct lock_list *entry, unsigned int depth,
- 	print_circular_bug_entry(entry, depth);
- }
- 
--static inline bool class_equal(struct lock_list *entry, void *data)
-+/*
-+ * We are about to add A -> B into the dependency graph, and in __bfs() a
-+ * strong dependency path A -> .. -> B is found: hlock_class equals
-+ * entry->class.
-+ *
-+ * If A -> .. -> B can replace A -> B in any __bfs() search (means the former
-+ * is _stronger_ than or equal to the latter), we consider A -> B as redundant.
-+ * For example if A -> .. -> B is -(EN)-> (i.e. A -(E*)-> .. -(*N)-> B), and A
-+ * -> B is -(ER)-> or -(EN)->, then we don't need to add A -> B into the
-+ * dependency graph, as any strong path ..-> A -> B ->.. we can get with
-+ * having dependency A -> B, we could already get a equivalent path ..-> A ->
-+ * .. -> B -> .. with A -> .. -> B. Therefore A -> B is reduntant.
-+ *
-+ * We need to make sure both the start and the end of A -> .. -> B is not
-+ * weaker than A -> B. For the start part, please see the comment in
-+ * check_redundant(). For the end part, we need:
-+ *
-+ * Either
-+ *
-+ *     a) A -> B is -(*R)-> (everything is not weaker than that)
-+ *
-+ * or
-+ *
-+ *     b) A -> .. -> B is -(*N)-> (nothing is stronger than this)
-+ *
-+ */
-+static inline bool hlock_equal(struct lock_list *entry, void *data)
- {
--	return entry->class == data;
-+	struct held_lock *hlock = (struct held_lock *)data;
-+
-+	return hlock_class(hlock) == entry->class && /* Found A -> .. -> B */
-+	       (hlock->read == 2 ||  /* A -> B is -(*R)-> */
-+		!entry->only_xr); /* A -> .. -> B is -(*N)-> */
+@@ -1551,8 +1551,72 @@ static inline u8 calc_depb(struct held_lock *prev, struct held_lock *next)
  }
  
  /*
-@@ -2045,10 +2075,21 @@ check_redundant(struct held_lock *src, struct held_lock *target)
- 	struct lock_list src_entry;
+- * Forward- or backward-dependency search, used for both circular dependency
+- * checking and hardirq-unsafe/softirq-unsafe checking.
++ * Initialize a lock_list entry @lock belonging to @class as the root for a BFS
++ * search.
++ */
++static inline void __bfs_init_root(struct lock_list *lock,
++				   struct lock_class *class)
++{
++	lock->class = class;
++	lock->parent = NULL;
++	lock->only_xr = 0;
++}
++
++/*
++ * Initialize a lock_list entry @lock based on a lock acquisition @hlock as the
++ * root for a BFS search.
++ *
++ * ->only_xr of the initial lock node is set to @hlock->read == 2, to make sure
++ * that <prev> -> @hlock and @hlock -> <whatever __bfs() found> is not -(*R)->
++ * and -(S*)->.
++ */
++static inline void bfs_init_root(struct lock_list *lock,
++				 struct held_lock *hlock)
++{
++	__bfs_init_root(lock, hlock_class(hlock));
++	lock->only_xr = (hlock->read == 2);
++}
++
++/*
++ * Similar to bfs_init_root() but initialize the root for backwards BFS.
++ *
++ * ->only_xr of the initial lock node is set to @hlock->read != 0, to make sure
++ * that <next> -> @hlock and @hlock -> <whatever backwards BFS found> is not
++ * -(*S)-> and -(R*)-> (reverse order of -(*R)-> and -(S*)->).
++ */
++static inline void bfs_init_rootb(struct lock_list *lock,
++				  struct held_lock *hlock)
++{
++	__bfs_init_root(lock, hlock_class(hlock));
++	lock->only_xr = (hlock->read != 0);
++}
++
++/*
++ * Breadth-First Search to find a strong path in the dependency graph.
++ *
++ * @source_entry: the source of the path we are searching for.
++ * @data: data used for the second parameter of @match function
++ * @match: match function for the search
++ * @target_entry: pointer to the target of a matched path
++ * @offset: the offset to struct lock_class to determine whether it is
++ *          locks_after or locks_before
++ *
++ * We may have multiple edges (considering different kinds of dependencies,
++ * e.g. ER and SN) between two nodes in the dependency graph. But
++ * only the strong dependency path in the graph is relevant to deadlocks. A
++ * strong dependency path is a dependency path that doesn't have two adjacent
++ * dependencies as -(*R)-> -(S*)->, please see:
++ *
++ *         Documentation/locking/lockdep-design.rst
++ *
++ * for more explanation of the definition of strong dependency paths
++ *
++ * In __bfs(), we only traverse in the strong dependency path:
++ *
++ *     In lock_list::only_xr, we record whether the previous dependency only
++ *     has -(*R)-> in the search, and if it does (prev only has -(*R)->), we
++ *     filter out any -(S*)-> in the current dependency and after that, the
++ *     ->only_xr is set according to whether we only have -(*R)-> left.
+  */
+ static enum bfs_result __bfs(struct lock_list *source_entry,
+ 			     void *data,
+@@ -1582,6 +1646,7 @@ static enum bfs_result __bfs(struct lock_list *source_entry,
+ 	__cq_enqueue(cq, source_entry);
  
- 	bfs_init_root(&src_entry, src);
-+	/*
-+	 * Special setup for check_redundant().
-+	 *
-+	 * To report redundant, we need to find a strong dependency path that
-+	 * is equal to or stronger than <src> -> <target>. So if <src> is E,
-+	 * we need to let __bfs() only search for a path starting at a -(E*)->,
-+	 * we achieve this by setting the initial node's ->only_xr to true in
-+	 * that case. And if <prev> is S, we set initial ->only_xr to false
-+	 * because both -(S*)-> (equal) and -(E*)-> (stronger) are redundant.
-+	 */
-+	src_entry.only_xr = src->read == 0;
+ 	while ((lock = __cq_dequeue(cq))) {
++		bool prev_only_xr;
+ 
+ 		if (!lock->class) {
+ 			ret = BFS_EINVALIDNODE;
+@@ -1602,10 +1667,26 @@ static enum bfs_result __bfs(struct lock_list *source_entry,
+ 
+ 		head = get_dep_list(lock, offset);
+ 
+-		DEBUG_LOCKS_WARN_ON(!irqs_disabled());
++		prev_only_xr = lock->only_xr;
+ 
+ 		list_for_each_entry_rcu(entry, head, entry) {
+ 			unsigned int cq_depth;
++			u8 dep = entry->dep;
++
++			/*
++			 * Mask out all -(S*)-> if we only have *R in previous
++			 * step, because -(*R)-> -(S*)-> don't make up a strong
++			 * dependency.
++			 */
++			if (prev_only_xr)
++				dep &= ~(DEP_SR_MASK | DEP_SN_MASK);
++
++			/* If nothing left, we skip */
++			if (!dep)
++				continue;
++
++			/* If there are only -(*R)-> left, set that for the next step */
++			entry->only_xr = !(dep & (DEP_SN_MASK | DEP_EN_MASK));
+ 
+ 			visit_lock_entry(entry, lock);
+ 			if (match(entry, data)) {
+@@ -1827,8 +1908,7 @@ unsigned long lockdep_count_forward_deps(struct lock_class *class)
+ 	unsigned long ret, flags;
+ 	struct lock_list this;
+ 
+-	this.parent = NULL;
+-	this.class = class;
++	__bfs_init_root(&this, class);
+ 
+ 	raw_local_irq_save(flags);
+ 	lockdep_lock();
+@@ -1854,8 +1934,7 @@ unsigned long lockdep_count_backward_deps(struct lock_class *class)
+ 	unsigned long ret, flags;
+ 	struct lock_list this;
+ 
+-	this.parent = NULL;
+-	this.class = class;
++	__bfs_init_root(&this, class);
+ 
+ 	raw_local_irq_save(flags);
+ 	lockdep_lock();
+@@ -1898,10 +1977,9 @@ check_noncircular(struct held_lock *src, struct held_lock *target,
+ {
+ 	enum bfs_result ret;
+ 	struct lock_list *target_entry;
+-	struct lock_list src_entry = {
+-		.class = hlock_class(src),
+-		.parent = NULL,
+-	};
++	struct lock_list src_entry;
++
++	bfs_init_root(&src_entry, src);
+ 
+ 	debug_atomic_inc(nr_cyclic_checks);
+ 
+@@ -1937,10 +2015,9 @@ check_redundant(struct held_lock *src, struct held_lock *target)
+ {
+ 	enum bfs_result ret;
+ 	struct lock_list *target_entry;
+-	struct lock_list src_entry = {
+-		.class = hlock_class(src),
+-		.parent = NULL,
+-	};
++	struct lock_list src_entry;
++
++	bfs_init_root(&src_entry, src);
  
  	debug_atomic_inc(nr_redundant_checks);
  
--	ret = check_path(target, &src_entry, class_equal, &target_entry);
-+	ret = check_path(target, &src_entry, hlock_equal, &target_entry);
+@@ -3556,8 +3633,7 @@ check_usage_forwards(struct task_struct *curr, struct held_lock *this,
+ 	struct lock_list root;
+ 	struct lock_list *target_entry;
  
- 	if (ret == BFS_RMATCH)
- 		debug_atomic_inc(nr_redundant);
+-	root.parent = NULL;
+-	root.class = hlock_class(this);
++	bfs_init_root(&root, this);
+ 	ret = find_usage_forwards(&root, lock_flag(bit), &target_entry);
+ 	if (bfs_error(ret)) {
+ 		print_bfs_bug(ret);
+@@ -3583,8 +3659,7 @@ check_usage_backwards(struct task_struct *curr, struct held_lock *this,
+ 	struct lock_list root;
+ 	struct lock_list *target_entry;
+ 
+-	root.parent = NULL;
+-	root.class = hlock_class(this);
++	bfs_init_rootb(&root, this);
+ 	ret = find_usage_backwards(&root, lock_flag(bit), &target_entry);
+ 	if (bfs_error(ret)) {
+ 		print_bfs_bug(ret);
