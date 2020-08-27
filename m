@@ -2,16 +2,16 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3652E253FC5
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Aug 2020 09:56:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 13218253FD3
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Aug 2020 09:56:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728333AbgH0H4L (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 27 Aug 2020 03:56:11 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:36776 "EHLO
+        id S1728630AbgH0H4Y (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 27 Aug 2020 03:56:24 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:36592 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728424AbgH0Hyb (ORCPT
+        with ESMTP id S1728419AbgH0Hya (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 27 Aug 2020 03:54:31 -0400
+        Thu, 27 Aug 2020 03:54:30 -0400
 Date:   Thu, 27 Aug 2020 07:54:27 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1598514868;
@@ -20,12 +20,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=VwNDj4exCKcgi5b6FbBTzc0tc0/z7gQN+SMC+eABkek=;
-        b=g+k8o1Eh36LskHP/WK36boWbU/5de9dqGElNELhLvXOq+vbIpZMTSq32QbCjLVD7mjjmi6
-        sYDuPckUz9QgRh3/sfLluLv/mq0RRlUuVYMCzXgKZ/m6rhENeX2n2geardALkt5gDO8Urt
-        VhLoC7dtY2ofydBI4k3wSqcJOWP309rxE/V8ux8Y3LPTZ1mslPtuJNEBXkp8rfA6RoZeK2
-        vwd59KkGGAiXubO4bGe1Wp7Sf5NcpYNFvtYWhCHA/XRNiY6OwVPg0vniMFddR23xTwMFd6
-        Ub27tYAVptXgHXJagjM1VNIMo1kWshiMTrDAJEAQg5oakLA3mfj/smVrR4Dtkw==
+        bh=YWOu4hP2h1wGfItCLjMQCdGhGH+38NihvXknOuOLnjQ=;
+        b=BIQ2GTEgmmeS/Y6jRfhAFyDSapZyedS4UYOBVje50wUqZ3NadDaBOEbr9eIX7ThXzFPJFB
+        j0tImToGqBsxSot90Z4dsl7Lsyrbeshw4wVWiU988dFXuJYOhJIE9hhtlVm2Tx/gFKQUXb
+        2X1wxJWkOyYkKE6ds7eukiRQXzahWZoZBX0XTvioyScH8UCht6LU0VRqiNo2DE65sg3bUG
+        9MQjJ8UaluhUfY2nJD4V8vpppb0bsK5b/FQ4dRZc6AbgQZI0wauFv8tDkguWuACr631gOE
+        0QeJHO4J69F9ldBdxxhnoLNz072uzTCNcFOjbaPPGMXq5DNyk8iQMtJ7/Bnwtw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1598514868;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -33,23 +33,23 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=VwNDj4exCKcgi5b6FbBTzc0tc0/z7gQN+SMC+eABkek=;
-        b=0Rod2lJBJUAv9rfU3yZ4m7Z8r412tbJRBv1yBU6NXEwkXYpssHOgwacHRaLCG45rwWh9RE
-        /ET66hGZ2XgczuBw==
+        bh=YWOu4hP2h1wGfItCLjMQCdGhGH+38NihvXknOuOLnjQ=;
+        b=5cntnkre53U4hXct43waSgrYN2aJLC5ZADFZ3ulDQarXPpJGkN/CfIEC2o2JUiV4Tt1jYu
+        pk0YTuT7W4BLIBBA==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] cpuidle: Make CPUIDLE_FLAG_TLB_FLUSHED generic
+Subject: [tip: locking/core] cpuidle: Move trace_cpu_idle() into generic code
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         Marco Elver <elver@google.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200821085348.369441600@infradead.org>
-References: <20200821085348.369441600@infradead.org>
+In-Reply-To: <20200821085348.428433395@infradead.org>
+References: <20200821085348.428433395@infradead.org>
 MIME-Version: 1.0
-Message-ID: <159851486767.20229.4562609465121962731.tip-bot2@tip-bot2>
+Message-ID: <159851486723.20229.13788902080977664669.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,169 +61,130 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     bf9282dc26e7fe2a0736edc568762f0f05d12416
-Gitweb:        https://git.kernel.org/tip/bf9282dc26e7fe2a0736edc568762f0f05d12416
+Commit-ID:     9864f5b5943ab0f1f835f21dc3f9f068d06f5b52
+Gitweb:        https://git.kernel.org/tip/9864f5b5943ab0f1f835f21dc3f9f068d06f5b52
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Wed, 12 Aug 2020 12:22:17 +02:00
+AuthorDate:    Wed, 12 Aug 2020 12:27:10 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 26 Aug 2020 12:41:53 +02:00
+CommitterDate: Wed, 26 Aug 2020 12:41:54 +02:00
 
-cpuidle: Make CPUIDLE_FLAG_TLB_FLUSHED generic
+cpuidle: Move trace_cpu_idle() into generic code
 
-This allows moving the leave_mm() call into generic code before
-rcu_idle_enter(). Gets rid of more trace_*_rcuidle() users.
+Remove trace_cpu_idle() from the arch_cpu_idle() implementations and
+put it in the generic code, right before disabling RCU. Gets rid of
+more trace_*_rcuidle() users.
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
 Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
 Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Tested-by: Marco Elver <elver@google.com>
-Link: https://lkml.kernel.org/r/20200821085348.369441600@infradead.org
+Link: https://lkml.kernel.org/r/20200821085348.428433395@infradead.org
 ---
- arch/x86/include/asm/mmu.h  |  1 +
- arch/x86/mm/tlb.c           | 13 ++-----------
- drivers/cpuidle/cpuidle.c   |  4 ++++
- drivers/idle/intel_idle.c   | 16 ----------------
- include/linux/cpuidle.h     | 13 +++++++------
- include/linux/mmu_context.h |  5 +++++
- 6 files changed, 19 insertions(+), 33 deletions(-)
+ arch/arm/mach-omap2/pm34xx.c | 4 ----
+ arch/arm64/kernel/process.c  | 2 --
+ arch/s390/kernel/idle.c      | 3 +--
+ arch/x86/kernel/process.c    | 4 ----
+ kernel/sched/idle.c          | 3 +++
+ 5 files changed, 4 insertions(+), 12 deletions(-)
 
-diff --git a/arch/x86/include/asm/mmu.h b/arch/x86/include/asm/mmu.h
-index 0a301ad..9257667 100644
---- a/arch/x86/include/asm/mmu.h
-+++ b/arch/x86/include/asm/mmu.h
-@@ -59,5 +59,6 @@ typedef struct {
- 	}
+diff --git a/arch/arm/mach-omap2/pm34xx.c b/arch/arm/mach-omap2/pm34xx.c
+index 6df395f..f5dfddf 100644
+--- a/arch/arm/mach-omap2/pm34xx.c
++++ b/arch/arm/mach-omap2/pm34xx.c
+@@ -298,11 +298,7 @@ static void omap3_pm_idle(void)
+ 	if (omap_irq_pending())
+ 		return;
  
- void leave_mm(int cpu);
-+#define leave_mm leave_mm
+-	trace_cpu_idle_rcuidle(1, smp_processor_id());
+-
+ 	omap_sram_idle();
+-
+-	trace_cpu_idle_rcuidle(PWR_EVENT_EXIT, smp_processor_id());
+ }
  
- #endif /* _ASM_X86_MMU_H */
-diff --git a/arch/x86/mm/tlb.c b/arch/x86/mm/tlb.c
-index 1a3569b..0951b47 100644
---- a/arch/x86/mm/tlb.c
-+++ b/arch/x86/mm/tlb.c
-@@ -555,21 +555,12 @@ void switch_mm_irqs_off(struct mm_struct *prev, struct mm_struct *next,
- 		this_cpu_write(cpu_tlbstate.ctxs[new_asid].tlb_gen, next_tlb_gen);
- 		load_new_mm_cr3(next->pgd, new_asid, true);
+ #ifdef CONFIG_SUSPEND
+diff --git a/arch/arm64/kernel/process.c b/arch/arm64/kernel/process.c
+index b63ce4c..f180449 100644
+--- a/arch/arm64/kernel/process.c
++++ b/arch/arm64/kernel/process.c
+@@ -123,10 +123,8 @@ void arch_cpu_idle(void)
+ 	 * This should do all the clock switching and wait for interrupt
+ 	 * tricks
+ 	 */
+-	trace_cpu_idle_rcuidle(1, smp_processor_id());
+ 	cpu_do_idle();
+ 	local_irq_enable();
+-	trace_cpu_idle_rcuidle(PWR_EVENT_EXIT, smp_processor_id());
+ }
  
--		/*
--		 * NB: This gets called via leave_mm() in the idle path
--		 * where RCU functions differently.  Tracing normally
--		 * uses RCU, so we need to use the _rcuidle variant.
--		 *
--		 * (There is no good reason for this.  The idle code should
--		 *  be rearranged to call this before rcu_idle_enter().)
--		 */
--		trace_tlb_flush_rcuidle(TLB_FLUSH_ON_TASK_SWITCH, TLB_FLUSH_ALL);
-+		trace_tlb_flush(TLB_FLUSH_ON_TASK_SWITCH, TLB_FLUSH_ALL);
+ #ifdef CONFIG_HOTPLUG_CPU
+diff --git a/arch/s390/kernel/idle.c b/arch/s390/kernel/idle.c
+index 88bb42c..c73f506 100644
+--- a/arch/s390/kernel/idle.c
++++ b/arch/s390/kernel/idle.c
+@@ -33,14 +33,13 @@ void enabled_wait(void)
+ 		PSW_MASK_IO | PSW_MASK_EXT | PSW_MASK_MCHECK;
+ 	clear_cpu_flag(CIF_NOHZ_DELAY);
+ 
+-	trace_cpu_idle_rcuidle(1, smp_processor_id());
+ 	local_irq_save(flags);
+ 	/* Call the assembler magic in entry.S */
+ 	psw_idle(idle, psw_mask);
+ 	local_irq_restore(flags);
+-	trace_cpu_idle_rcuidle(PWR_EVENT_EXIT, smp_processor_id());
+ 
+ 	/* Account time spent with enabled wait psw loaded as idle time. */
++	/* XXX seqcount has tracepoints that require RCU */
+ 	write_seqcount_begin(&idle->seqcount);
+ 	idle_time = idle->clock_idle_exit - idle->clock_idle_enter;
+ 	idle->clock_idle_enter = idle->clock_idle_exit = 0ULL;
+diff --git a/arch/x86/kernel/process.c b/arch/x86/kernel/process.c
+index 994d839..13ce616 100644
+--- a/arch/x86/kernel/process.c
++++ b/arch/x86/kernel/process.c
+@@ -684,9 +684,7 @@ void arch_cpu_idle(void)
+  */
+ void __cpuidle default_idle(void)
+ {
+-	trace_cpu_idle_rcuidle(1, smp_processor_id());
+ 	safe_halt();
+-	trace_cpu_idle_rcuidle(PWR_EVENT_EXIT, smp_processor_id());
+ }
+ #if defined(CONFIG_APM_MODULE) || defined(CONFIG_HALTPOLL_CPUIDLE_MODULE)
+ EXPORT_SYMBOL(default_idle);
+@@ -792,7 +790,6 @@ static int prefer_mwait_c1_over_halt(const struct cpuinfo_x86 *c)
+ static __cpuidle void mwait_idle(void)
+ {
+ 	if (!current_set_polling_and_test()) {
+-		trace_cpu_idle_rcuidle(1, smp_processor_id());
+ 		if (this_cpu_has(X86_BUG_CLFLUSH_MONITOR)) {
+ 			mb(); /* quirk */
+ 			clflush((void *)&current_thread_info()->flags);
+@@ -804,7 +801,6 @@ static __cpuidle void mwait_idle(void)
+ 			__sti_mwait(0, 0);
+ 		else
+ 			local_irq_enable();
+-		trace_cpu_idle_rcuidle(PWR_EVENT_EXIT, smp_processor_id());
  	} else {
- 		/* The new ASID is already up to date. */
- 		load_new_mm_cr3(next->pgd, new_asid, false);
- 
--		/* See above wrt _rcuidle. */
--		trace_tlb_flush_rcuidle(TLB_FLUSH_ON_TASK_SWITCH, 0);
-+		trace_tlb_flush(TLB_FLUSH_ON_TASK_SWITCH, 0);
+ 		local_irq_enable();
  	}
- 
- 	/* Make sure we write CR3 before loaded_mm. */
-diff --git a/drivers/cpuidle/cpuidle.c b/drivers/cpuidle/cpuidle.c
-index 9bcda41..04becd7 100644
---- a/drivers/cpuidle/cpuidle.c
-+++ b/drivers/cpuidle/cpuidle.c
-@@ -22,6 +22,7 @@
- #include <linux/module.h>
- #include <linux/suspend.h>
- #include <linux/tick.h>
-+#include <linux/mmu_context.h>
- #include <trace/events/power.h>
- 
- #include "cpuidle.h"
-@@ -228,6 +229,9 @@ int cpuidle_enter_state(struct cpuidle_device *dev, struct cpuidle_driver *drv,
- 		broadcast = false;
+diff --git a/kernel/sched/idle.c b/kernel/sched/idle.c
+index ea3a098..f324dc3 100644
+--- a/kernel/sched/idle.c
++++ b/kernel/sched/idle.c
+@@ -91,11 +91,14 @@ void __cpuidle default_idle_call(void)
+ 	if (current_clr_polling_and_test()) {
+ 		local_irq_enable();
+ 	} else {
++
++		trace_cpu_idle(1, smp_processor_id());
+ 		stop_critical_timings();
+ 		rcu_idle_enter();
+ 		arch_cpu_idle();
+ 		rcu_idle_exit();
+ 		start_critical_timings();
++		trace_cpu_idle(PWR_EVENT_EXIT, smp_processor_id());
  	}
+ }
  
-+	if (target_state->flags & CPUIDLE_FLAG_TLB_FLUSHED)
-+		leave_mm(dev->cpu);
-+
- 	/* Take note of the planned idle state. */
- 	sched_idle_set_state(target_state);
- 
-diff --git a/drivers/idle/intel_idle.c b/drivers/idle/intel_idle.c
-index 8e0fb1a..9a810e4 100644
---- a/drivers/idle/intel_idle.c
-+++ b/drivers/idle/intel_idle.c
-@@ -90,14 +90,6 @@ static unsigned int mwait_substates __initdata;
- #define CPUIDLE_FLAG_ALWAYS_ENABLE	BIT(15)
- 
- /*
-- * Set this flag for states where the HW flushes the TLB for us
-- * and so we don't need cross-calls to keep it consistent.
-- * If this flag is set, SW flushes the TLB, so even if the
-- * HW doesn't do the flushing, this flag is safe to use.
-- */
--#define CPUIDLE_FLAG_TLB_FLUSHED	BIT(16)
--
--/*
-  * MWAIT takes an 8-bit "hint" in EAX "suggesting"
-  * the C-state (top nibble) and sub-state (bottom nibble)
-  * 0x00 means "MWAIT(C1)", 0x10 means "MWAIT(C2)" etc.
-@@ -131,14 +123,6 @@ static __cpuidle int intel_idle(struct cpuidle_device *dev,
- 	unsigned long eax = flg2MWAIT(state->flags);
- 	unsigned long ecx = 1; /* break on interrupt flag */
- 	bool tick;
--	int cpu = smp_processor_id();
--
--	/*
--	 * leave_mm() to avoid costly and often unnecessary wakeups
--	 * for flushing the user TLB's associated with the active mm.
--	 */
--	if (state->flags & CPUIDLE_FLAG_TLB_FLUSHED)
--		leave_mm(cpu);
- 
- 	if (!static_cpu_has(X86_FEATURE_ARAT)) {
- 		/*
-diff --git a/include/linux/cpuidle.h b/include/linux/cpuidle.h
-index b65909a..75895e6 100644
---- a/include/linux/cpuidle.h
-+++ b/include/linux/cpuidle.h
-@@ -75,12 +75,13 @@ struct cpuidle_state {
- };
- 
- /* Idle State Flags */
--#define CPUIDLE_FLAG_NONE       (0x00)
--#define CPUIDLE_FLAG_POLLING	BIT(0) /* polling state */
--#define CPUIDLE_FLAG_COUPLED	BIT(1) /* state applies to multiple cpus */
--#define CPUIDLE_FLAG_TIMER_STOP BIT(2) /* timer is stopped on this state */
--#define CPUIDLE_FLAG_UNUSABLE	BIT(3) /* avoid using this state */
--#define CPUIDLE_FLAG_OFF	BIT(4) /* disable this state by default */
-+#define CPUIDLE_FLAG_NONE       	(0x00)
-+#define CPUIDLE_FLAG_POLLING		BIT(0) /* polling state */
-+#define CPUIDLE_FLAG_COUPLED		BIT(1) /* state applies to multiple cpus */
-+#define CPUIDLE_FLAG_TIMER_STOP 	BIT(2) /* timer is stopped on this state */
-+#define CPUIDLE_FLAG_UNUSABLE		BIT(3) /* avoid using this state */
-+#define CPUIDLE_FLAG_OFF		BIT(4) /* disable this state by default */
-+#define CPUIDLE_FLAG_TLB_FLUSHED	BIT(5) /* idle-state flushes TLBs */
- 
- struct cpuidle_device_kobj;
- struct cpuidle_state_kobj;
-diff --git a/include/linux/mmu_context.h b/include/linux/mmu_context.h
-index c51a841..03dee12 100644
---- a/include/linux/mmu_context.h
-+++ b/include/linux/mmu_context.h
-@@ -3,10 +3,15 @@
- #define _LINUX_MMU_CONTEXT_H
- 
- #include <asm/mmu_context.h>
-+#include <asm/mmu.h>
- 
- /* Architectures that care about IRQ state in switch_mm can override this. */
- #ifndef switch_mm_irqs_off
- # define switch_mm_irqs_off switch_mm
- #endif
- 
-+#ifndef leave_mm
-+static inline void leave_mm(int cpu) { }
-+#endif
-+
- #endif
