@@ -2,91 +2,92 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A28582542D6
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Aug 2020 11:58:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 33DA3254334
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Aug 2020 12:11:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726826AbgH0J6K (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 27 Aug 2020 05:58:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43740 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726093AbgH0J6J (ORCPT
+        id S1726938AbgH0KLn (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 27 Aug 2020 06:11:43 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:37720 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726157AbgH0KLm (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 27 Aug 2020 05:58:09 -0400
-Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com [IPv6:2607:f8b0:4864:20::1044])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 587D0C061264;
-        Thu, 27 Aug 2020 02:58:09 -0700 (PDT)
-Received: by mail-pj1-x1044.google.com with SMTP id i13so2358397pjv.0;
-        Thu, 27 Aug 2020 02:58:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=tsSPi3tJV6tt9MRH9X9IRqMWBLmb6vhjP03IMQT77sE=;
-        b=WjXHtlufRYtaf/khSMswHWqVqBQduDN9Kgb+Bw4FEZc6pvPVLEGceIvBAlBGwuSLbe
-         MNcSvM+j39nJ2sNxBc3evDkzN/I86r5/Py16Vz3wgLQ/tAcVDpwQe5limKNH9RVpnXwS
-         mg5cgS1yWRSeQMb/9F+Z8cHUjsOAhBuE69X8sTqEDx8O/OHzS4xH32afcL+XZB9aQ02+
-         qIlNYWrzy8KZ7+Ly2FDDuYie8fw2SeZ7/F+0BI3hjqD+jxdjGsLiwqypJiCxKqG74TvQ
-         urqW5930WoJm3kvgGcyRxUaIeK8N+tTMqGNY3GbukxlfhZXfsN3QygqLwL2EHbZcdpcY
-         V3Cw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=tsSPi3tJV6tt9MRH9X9IRqMWBLmb6vhjP03IMQT77sE=;
-        b=dQ2TOpCZ67z7HItodcdFMfo4XUt9UopI9WQS/4ATY65cPv6dF0l0je8S6C1xi8QSZu
-         ee1B3P2QznE9+WnYTNqRTjnSfqkZq2Nh8HyQwj1nf9uIZSNnbDZKvyoUX8pheUjF4k8B
-         YBdgTCNdVhgX9+y5rYkA0oobOfujRGJhRhA7R8zWe4KWaS/m+8R0Ril/Q1d5LS78zzt5
-         4Uc8f5ChZ7ABLM+hTDLvhMbUZp6ePBlhgWhIJM+gZY9UcE79hv9+pVANhmR1fE/wgXJN
-         r0xDBheoISamjwyyrHR3KFKex4UOTrPf+LU+jS8S1ED7sVdjsHLzUXUf1Tl38s/CDYAp
-         C7mQ==
-X-Gm-Message-State: AOAM530lXdJGyqsdvQwRt4W2Sdv9kdWEJSHvmZHaWRQFja/KRtWYsIFG
-        R8WQgTW1mmqc16Jy0Q/uKhhKfE6bIXWdQ68X/FA=
-X-Google-Smtp-Source: ABdhPJxBnaQ1cbucAx/3wJaRhRAn0tdxu0ryrc6qcTtQjsQSGuSpLTIErgLrborEu41xqWA6kPRlcAuseuhhubTXuRQ=
-X-Received: by 2002:a17:90a:2c06:: with SMTP id m6mr10266874pjd.129.1598522287969;
- Thu, 27 Aug 2020 02:58:07 -0700 (PDT)
+        Thu, 27 Aug 2020 06:11:42 -0400
+Date:   Thu, 27 Aug 2020 10:11:39 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1598523100;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=ludH0QWLBk1PhghpnaF6s/D+fY9xJ/+IYS/8HOOkWP8=;
+        b=tU4plJvC5JVsLweEow0+7j42LNnHb60W+s0YOGaDARHTgnwMXVmQdgvbrj15WHBjplBUvK
+        8sBNDTBTgz+m7pVxh7i7Iv2vmDkYu5283XF13O0kBizDRZ6ScAuWfB+WtaLRhrCK7FRVL8
+        CE8hUx9Hk6VECYaIFRI1/gzbl/Jkmk3SCjWOQGjmTyKRRtL+UyeHplC4uYFbkeIinFLH6F
+        0hBn0R/WZNXk6kUdpPFuQHuMl27qEFzBRi8Qzrw+vkjAimJQSecOEbA+EQCuo//XhUewv+
+        wrtQypqTlzVYmqTst+9kSR571iLOWiDjG/lg+Yz2Nzcuas+31+0kCE26CTMmCQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1598523100;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=ludH0QWLBk1PhghpnaF6s/D+fY9xJ/+IYS/8HOOkWP8=;
+        b=amH7MCmjU3eShZpNaocsgSsEIL1gmDslwjtvpNMxfA3GyM46iPW+wtyOfV4LMuvJeBp4uR
+        KOJtToNRLLSUhUBg==
+From:   "tip-bot2 for Wang Hai" <tip-bot2@linutronix.de>
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/cleanups] x86/mpparse: Remove duplicate io_apic.h include
+Cc:     Hulk Robot <hulkci@huawei.com>, Wang Hai <wanghai38@huawei.com>,
+        Borislav Petkov <bp@suse.de>,
+        Pekka Enberg <penberg@kernel.org>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200819112910.7629-1-wanghai38@huawei.com>
+References: <20200819112910.7629-1-wanghai38@huawei.com>
 MIME-Version: 1.0
-References: <20200825133216.9163-1-valentin.schneider@arm.com>
- <159851487090.20229.14835640470330793284.tip-bot2@tip-bot2>
- <CAHp75VfJumPP=wKuU=OjFB11RUhPp0_5_+ogupQLFeEWKfbybA@mail.gmail.com> <20200827092730.GI1362448@hirez.programming.kicks-ass.net>
-In-Reply-To: <20200827092730.GI1362448@hirez.programming.kicks-ass.net>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Thu, 27 Aug 2020 12:57:51 +0300
-Message-ID: <CAHp75VdK-FMC10utfVO3+7J+UevPKDqrs+w_6XM6MsrC3CPe3g@mail.gmail.com>
-Subject: Re: [tip: sched/core] sched/topology: Move sd_flag_debug out of linux/sched/topology.h
-To:     "Peter Zijlstra (Intel)" <peterz@infradead.org>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-tip-commits@vger.kernel.org,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Valentin Schneider <valentin.schneider@arm.com>,
-        x86 <x86@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Message-ID: <159852309922.20229.10538355167500670511.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2.linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Thu, Aug 27, 2020 at 12:27 PM <peterz@infradead.org> wrote:
->
-> On Thu, Aug 27, 2020 at 11:50:07AM +0300, Andy Shevchenko wrote:
-> > On Thu, Aug 27, 2020 at 10:57 AM tip-bot2 for Valentin Schneider
-> > <tip-bot2@linutronix.de> wrote:
-> > >
-> > > The following commit has been merged into the sched/core branch of tip:
-> >
-> > > Fixes: b6e862f38672 ("sched/topology: Define and assign sched_domain flag metadata")
-> > > Reported-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > > Signed-off-by: Valentin Schneider <valentin.schneider@arm.com>
-> > > Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> > > Link: https://lkml.kernel.org/r/20200825133216.9163-1-valentin.schneider@arm.com
-> >
-> > Hmm... I'm wondering if this bot is aware of tags given afterwards in
-> > the thread?
->
-> Sorry, your tag came in after I'd already queued the lot.
+The following commit has been merged into the x86/cleanups branch of tip:
 
-No problem, just was wondering!
+Commit-ID:     e33ab2064836600603289ad2ed0ca3424f395fa8
+Gitweb:        https://git.kernel.org/tip/e33ab2064836600603289ad2ed0ca3424f395fa8
+Author:        Wang Hai <wanghai38@huawei.com>
+AuthorDate:    Wed, 19 Aug 2020 19:29:10 +08:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Thu, 27 Aug 2020 12:00:28 +02:00
 
+x86/mpparse: Remove duplicate io_apic.h include
 
--- 
-With Best Regards,
-Andy Shevchenko
+Remove asm/io_apic.h which is included more than once.
+
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: Wang Hai <wanghai38@huawei.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Reviewed-by: Pekka Enberg <penberg@kernel.org>
+Link: https://lkml.kernel.org/r/20200819112910.7629-1-wanghai38@huawei.com
+---
+ arch/x86/kernel/mpparse.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/arch/x86/kernel/mpparse.c b/arch/x86/kernel/mpparse.c
+index 411af4a..00e5162 100644
+--- a/arch/x86/kernel/mpparse.c
++++ b/arch/x86/kernel/mpparse.c
+@@ -24,7 +24,6 @@
+ #include <asm/irqdomain.h>
+ #include <asm/mtrr.h>
+ #include <asm/mpspec.h>
+-#include <asm/io_apic.h>
+ #include <asm/proto.h>
+ #include <asm/bios_ebda.h>
+ #include <asm/e820/api.h>
