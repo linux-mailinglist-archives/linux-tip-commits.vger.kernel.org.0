@@ -2,49 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2FA5D256F7B
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 30 Aug 2020 19:22:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D8EA25702F
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 30 Aug 2020 21:40:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726150AbgH3RWM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 30 Aug 2020 13:22:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47222 "EHLO
+        id S1726350AbgH3TkR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 30 Aug 2020 15:40:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40242 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725934AbgH3RWL (ORCPT
+        with ESMTP id S1726155AbgH3TkP (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 30 Aug 2020 13:22:11 -0400
+        Sun, 30 Aug 2020 15:40:15 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1C4BC061573;
-        Sun, 30 Aug 2020 10:22:10 -0700 (PDT)
-Date:   Sun, 30 Aug 2020 17:21:55 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF93BC061573;
+        Sun, 30 Aug 2020 12:40:14 -0700 (PDT)
+Date:   Sun, 30 Aug 2020 19:40:11 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1598808116;
+        s=2020; t=1598816412;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=kxjzaFHv2FrCYmgeO7dK+Bq6890QjPkWk7t2pW/woHg=;
-        b=jlr40h3smz45wYwGUBsah83bWF2mophW6S/CQm1FZTlEZsXWQnIYkhv7+AIeX6T9FRTjwc
-        mU8TxEAjd7e4mFCoe6x/36RVJ6p54V9daOl28lTjss7NdA9m86l6j/iRRESHhO91CJwn7t
-        e6EjCtNRKNtl0W12GAN4NdJ1Adzg/ck6/9YJKKET/FvbDvoe5o780b4Yuk/HwD6t//RWIV
-        PPonBV+E56ORARADx9u6gwsjYoXLIQPf/XcTLVeRHnSeY62jshRh8on8bzxEqTKSfbhCuL
-        4zBYHLXjVF8IAuECAGvQlaNCBeCEKNQy/0MlIsOr849lBEwvHlG8NzwwsXrUmA==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=P+QkKGJqi66MJvVsgqogvBcjvDMtj7fL4LKp25gqKqU=;
+        b=z319s3C2oq2y18ZxGXttdkUKyXeRiIcbkJ/tcSCcBuymOWY2NgRLpAcR3ZkeTIKjYoMMp4
+        hw3Gnt+O8pcuJK8oRSsGRw/PKgwtSFv6h+5BLtq0Aa54+x3HNLmuU/bBderY0cFNb7zO4R
+        09yElgtOi3eH8b+Tna+AEziuwoZ3jiHjaHX7UXK9NWW787ZibPOtAGMwAbiU/MT39YhERd
+        qdAs8WWeVOBW+KyFBoRBIUNqjwnu5RYaj8xurxIljuwoNv50tUEATk8FRj5uPDCXF1A2Zb
+        ayfPAAJfXJTNU/NwaLBOC/J9D01yk4SSax6TcBdR3xVMS8ZFzjQ3PD9vJBCTYw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1598808116;
+        s=2020e; t=1598816412;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=kxjzaFHv2FrCYmgeO7dK+Bq6890QjPkWk7t2pW/woHg=;
-        b=YYMqeDlRw+ImYZGZDNm2fN/IN0p3yV3hFKvTC3i0hV+FJDPAQZlOI/LLn5uD8h9ARcQH4a
-        f6R9unvG10QB/yDw==
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=P+QkKGJqi66MJvVsgqogvBcjvDMtj7fL4LKp25gqKqU=;
+        b=Tgq1aTVk4135cAgihD9ASk4JZuVsSjtUdxzEl+Pj22b14lQ+ebvai567WZkhZsSGTyn5zx
+        w2OxFf+UeFk/pvDA==
+From:   "tip-bot2 for Kyung Min Park" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] genirq/matrix: Deal with the sillyness of
- for_each_cpu() on UP
-Cc:     kernel test robot <rong.a.chen@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org,
+Subject: [tip: x86/cpu] x86/cpufeatures: Enumerate TSX suspend load address
+ tracking instructions
+Cc:     Kyung Min Park <kyung.min.park@intel.com>,
+        Cathy Zhang <cathy.zhang@intel.com>,
+        Borislav Petkov <bp@suse.de>, Tony Luck <tony.luck@intel.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <1598316478-23337-2-git-send-email-cathy.zhang@intel.com>
+References: <1598316478-23337-2-git-send-email-cathy.zhang@intel.com>
 MIME-Version: 1.0
-Message-ID: <159880811534.20229.17365970881693987724.tip-bot2@tip-bot2>
+Message-ID: <159881641150.20229.2207709091919187438.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -54,53 +61,45 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the x86/cpu branch of tip:
 
-Commit-ID:     784a0830377d0761834e385975bc46861fea9fa0
-Gitweb:        https://git.kernel.org/tip/784a0830377d0761834e385975bc46861fea9fa0
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Sun, 30 Aug 2020 19:07:53 +02:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sun, 30 Aug 2020 19:17:28 +02:00
+Commit-ID:     18ec63faefb3fd311822556cd9b949f66b1eecee
+Gitweb:        https://git.kernel.org/tip/18ec63faefb3fd311822556cd9b949f66b1eecee
+Author:        Kyung Min Park <kyung.min.park@intel.com>
+AuthorDate:    Tue, 25 Aug 2020 08:47:57 +08:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Sun, 30 Aug 2020 17:43:40 +02:00
 
-genirq/matrix: Deal with the sillyness of for_each_cpu() on UP
+x86/cpufeatures: Enumerate TSX suspend load address tracking instructions
 
-Most of the CPU mask operations behave the same way, but for_each_cpu() and
-it's variants ignore the cpumask argument and claim that CPU0 is always in
-the mask. This is historical, inconsistent and annoying behaviour.
+Intel TSX suspend load tracking instructions aim to give a way to choose
+which memory accesses do not need to be tracked in the TSX read set. Add
+TSX suspend load tracking CPUID feature flag TSXLDTRK for enumeration.
 
-The matrix allocator uses for_each_cpu() and can be called on UP with an
-empty cpumask. The calling code does not expect that this succeeds but
-until commit e027fffff799 ("x86/irq: Unbreak interrupt affinity setting")
-this went unnoticed. That commit added a WARN_ON() to catch cases which
-move an interrupt from one vector to another on the same CPU. The warning
-triggers on UP.
+A processor supports Intel TSX suspend load address tracking if
+CPUID.0x07.0x0:EDX[16] is present. Two instructions XSUSLDTRK, XRESLDTRK
+are available when this feature is present.
 
-Add a check for the cpumask being empty to prevent this.
+The CPU feature flag is shown as "tsxldtrk" in /proc/cpuinfo.
 
-Fixes: 2f75d9e1c905 ("genirq: Implement bitmap matrix allocator")
-Reported-by: kernel test robot <rong.a.chen@intel.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
+Signed-off-by: Kyung Min Park <kyung.min.park@intel.com>
+Signed-off-by: Cathy Zhang <cathy.zhang@intel.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Reviewed-by: Tony Luck <tony.luck@intel.com>
+Link: https://lkml.kernel.org/r/1598316478-23337-2-git-send-email-cathy.zhang@intel.com
 ---
- kernel/irq/matrix.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/x86/include/asm/cpufeatures.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/kernel/irq/matrix.c b/kernel/irq/matrix.c
-index 30cc217..651a4ad 100644
---- a/kernel/irq/matrix.c
-+++ b/kernel/irq/matrix.c
-@@ -380,6 +380,13 @@ int irq_matrix_alloc(struct irq_matrix *m, const struct cpumask *msk,
- 	unsigned int cpu, bit;
- 	struct cpumap *cm;
- 
-+	/*
-+	 * Not required in theory, but matrix_find_best_cpu() uses
-+	 * for_each_cpu() which ignores the cpumask on UP .
-+	 */
-+	if (cpumask_empty(msk))
-+		return -EINVAL;
-+
- 	cpu = matrix_find_best_cpu(m, msk);
- 	if (cpu == UINT_MAX)
- 		return -ENOSPC;
+diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
+index 2901d5d..83fc9d3 100644
+--- a/arch/x86/include/asm/cpufeatures.h
++++ b/arch/x86/include/asm/cpufeatures.h
+@@ -368,6 +368,7 @@
+ #define X86_FEATURE_MD_CLEAR		(18*32+10) /* VERW clears CPU buffers */
+ #define X86_FEATURE_TSX_FORCE_ABORT	(18*32+13) /* "" TSX_FORCE_ABORT */
+ #define X86_FEATURE_SERIALIZE		(18*32+14) /* SERIALIZE instruction */
++#define X86_FEATURE_TSXLDTRK		(18*32+16) /* TSX Suspend Load Address Tracking */
+ #define X86_FEATURE_PCONFIG		(18*32+18) /* Intel PCONFIG */
+ #define X86_FEATURE_ARCH_LBR		(18*32+19) /* Intel ARCH LBR */
+ #define X86_FEATURE_SPEC_CTRL		(18*32+26) /* "" Speculation Control (IBRS + IBPB) */
