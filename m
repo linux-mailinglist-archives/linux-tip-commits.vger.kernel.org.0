@@ -2,17 +2,17 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B6A7258DB2
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  1 Sep 2020 13:53:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F7BC258DA8
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  1 Sep 2020 13:52:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727933AbgIALxh (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 1 Sep 2020 07:53:37 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:39440 "EHLO
+        id S1727119AbgIALvk (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 1 Sep 2020 07:51:40 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:39610 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727894AbgIALtd (ORCPT
+        with ESMTP id S1727903AbgIALtg (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 1 Sep 2020 07:49:33 -0400
-Date:   Tue, 01 Sep 2020 11:48:07 -0000
+        Tue, 1 Sep 2020 07:49:36 -0400
+Date:   Tue, 01 Sep 2020 11:48:08 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1598960888;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -20,12 +20,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=A9m4anUz0N5vIPvPFBVZIXdNWULcKGTjX1fUebtN+IY=;
-        b=q5v+iQL4YC4pEPHqE403FWVC5itrBNdJNsrGSVLxYw7J/jQzUnKbRoRsK4wyNTBGWV6NgJ
-        iCcnfUCIAlESm8iwwX+rYsAUZeh9cWHjcACz7ga8w9rMtn9MjqtRsqygCKDotYjy+2sPjc
-        jxRcdPdk6/mL9calWkuGxQBw/g+Nl7ig36c7gdt82Ep2vfgNZ4ho+Ic1XVNHJILKEthy27
-        8USKxXGygE/T7BDJrf6Yk3twWiFRdiQcA4zKNiEzQN0xL6BZa9N8MvcuZID3QaysjX8nTL
-        JLXgv1ovmr+IkeYgmbyiTPoEzAFsckSUjMGUp9rhREUlI0Ee8nCvIv7K6cC4Jg==
+        bh=4HNpBAv9JX5N0pVmM5MRhlxRxkukNmZW4s9cCYdSkaI=;
+        b=dpyoAxppVun632I5kW6gpCN+5tqnuHA4NzSlykcuwUQujZEfh6L2X8Dm50cX3rT1O0x2fc
+        7ktRHF0e9m4eN90/Zb/dBBc8ck2/JQ2t9y4tOTjymahhPbsOScySf1XV9Mtkn5Py553cwq
+        76yVkpnTHcvJdCf7Auvs9fiasrufa39xBhRPNHk/vv0uFPgucb2NCiyQmPm4ZAFoyNZM9K
+        htXkICC/DcX6OJTO18T2IYq7OI+MYuCyD4lRr8iJjFl+yKagW3jkwm+4bRwOz/mUc4qJFn
+        90MURysx5RXNsJZ2q7vCMWzh7M7EKeuvnmusv50X3AnFUN0vx2iPV+9TndEaZw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1598960888;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -33,22 +33,23 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=A9m4anUz0N5vIPvPFBVZIXdNWULcKGTjX1fUebtN+IY=;
-        b=4npmoOZTR/YdWg7xfYb/vmcvQ+6DnJQmHlud3k6U5qVmlqkOYe3PWjtSyvRRap8RS16+sq
-        uN8wMYd27HX+rbCg==
-From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
+        bh=4HNpBAv9JX5N0pVmM5MRhlxRxkukNmZW4s9cCYdSkaI=;
+        b=BLyLx/rjO8DMo7pCluzYeMPV3edAxdIwrk/T4sSYSF/wtFmeJn1+JLBdaeHejdmILq3YG8
+        WdWk7+NWabpOjSAQ==
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/static_call] compiler.h: Make __ADDRESSABLE() symbol truly unique
-Cc:     Josh Poimboeuf <jpoimboe@redhat.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+Subject: [tip: core/static_call] module: Properly propagate
+ MODULE_STATE_COMING failure
+Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Ingo Molnar <mingo@kernel.org>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200818135804.564436253@infradead.org>
-References: <20200818135804.564436253@infradead.org>
+        Miroslav Benes <mbenes@suse.cz>, Jessica Yu <jeyu@kernel.org>,
+        Josh Poimboeuf <jpoimboe@redhat.com>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200818135804.444372853@infradead.org>
+References: <20200818135804.444372853@infradead.org>
 MIME-Version: 1.0
-Message-ID: <159896088740.20229.7656713937908382909.tip-bot2@tip-bot2>
+Message-ID: <159896088820.20229.8665357366832877434.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,42 +61,54 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/static_call branch of tip:
 
-Commit-ID:     563a02b0c9704f69c0364befedd451f57fe88092
-Gitweb:        https://git.kernel.org/tip/563a02b0c9704f69c0364befedd451f57fe88092
-Author:        Josh Poimboeuf <jpoimboe@redhat.com>
-AuthorDate:    Tue, 18 Aug 2020 15:57:40 +02:00
+Commit-ID:     59cc8e0a906ea23190922e5e0252e5b5a60d70c2
+Gitweb:        https://git.kernel.org/tip/59cc8e0a906ea23190922e5e0252e5b5a60d70c2
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Tue, 18 Aug 2020 15:57:38 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Tue, 01 Sep 2020 09:58:04 +02:00
 
-compiler.h: Make __ADDRESSABLE() symbol truly unique
+module: Properly propagate MODULE_STATE_COMING failure
 
-The __ADDRESSABLE() macro uses the __LINE__ macro to create a temporary
-symbol which has a unique name.  However, if the macro is used multiple
-times from within another macro, the line number will always be the
-same, resulting in duplicate symbols.
+Now that notifiers got unbroken; use the proper interface to handle
+notifier errors and propagate them.
 
-Make the temporary symbols truly unique by using __UNIQUE_ID instead of
-__LINE__.
+There were already MODULE_STATE_COMING notifiers that failed; notably:
 
-Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
+ - jump_label_module_notifier()
+ - tracepoint_module_notify()
+ - bpf_event_notify()
+
+By propagating this error, we fix those users.
+
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Link: https://lore.kernel.org/r/20200818135804.564436253@infradead.org
+Reviewed-by: Miroslav Benes <mbenes@suse.cz>
+Acked-by: Jessica Yu <jeyu@kernel.org>
+Acked-by: Josh Poimboeuf <jpoimboe@redhat.com>
+Link: https://lore.kernel.org/r/20200818135804.444372853@infradead.org
 ---
- include/linux/compiler.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/module.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/compiler.h b/include/linux/compiler.h
-index 6810d80..92ef163 100644
---- a/include/linux/compiler.h
-+++ b/include/linux/compiler.h
-@@ -207,7 +207,7 @@ void ftrace_likely_update(struct ftrace_likely_data *f, int val,
-  */
- #define __ADDRESSABLE(sym) \
- 	static void * __section(.discard.addressable) __used \
--		__PASTE(__addressable_##sym, __LINE__) = (void *)&sym;
-+		__UNIQUE_ID(__PASTE(__addressable_,sym)) = (void *)&sym;
+diff --git a/kernel/module.c b/kernel/module.c
+index 1c5cff3..3c465cf 100644
+--- a/kernel/module.c
++++ b/kernel/module.c
+@@ -3792,9 +3792,13 @@ static int prepare_coming_module(struct module *mod)
+ 	if (err)
+ 		return err;
  
- /**
-  * offset_to_ptr - convert a relative memory offset to an absolute pointer
+-	blocking_notifier_call_chain(&module_notify_list,
+-				     MODULE_STATE_COMING, mod);
+-	return 0;
++	err = blocking_notifier_call_chain_robust(&module_notify_list,
++			MODULE_STATE_COMING, MODULE_STATE_GOING, mod);
++	err = notifier_to_errno(err);
++	if (err)
++		klp_module_going(mod);
++
++	return err;
+ }
+ 
+ static int unknown_module_param_cb(char *param, char *val, const char *modname,
