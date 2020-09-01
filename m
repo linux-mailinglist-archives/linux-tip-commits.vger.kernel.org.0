@@ -2,17 +2,17 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C2702591C1
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  1 Sep 2020 16:55:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E61BB259158
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  1 Sep 2020 16:50:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728768AbgIAOyz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 1 Sep 2020 10:54:55 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:39608 "EHLO
+        id S1728627AbgIAOts (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 1 Sep 2020 10:49:48 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:39610 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727839AbgIALs1 (ORCPT
+        with ESMTP id S1727842AbgIALs1 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Tue, 1 Sep 2020 07:48:27 -0400
-Date:   Tue, 01 Sep 2020 11:48:00 -0000
+Date:   Tue, 01 Sep 2020 11:48:01 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1598960881;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -20,12 +20,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=4pUta5Zk4FfoDx/NGPIBXT5qYhHCXO0PxXNn6+h/JFg=;
-        b=NhtVVS7iynWFb+nPXvI/P9XVnUKRnH1SZA+UFbA6fs2TjAuTnphLpRyl3I0/GX9NsY8pVr
-        5FqW0bh96K4hASmqf/k1PL7HVPw8YmtZk7wAvNW/k6IhPuxuSk+8dtAzCupkpmfauJbZbS
-        rTg+bY5IRqI/MqYAA0gtQZJ+gg3QDCAwRDT7xjcr7WobqDC5H7SIKHHbzZuOwREc4W4naf
-        XnoQioAJNDWCrN7+aBW89aXcpYy51QBbxdbSf1SeRGTm5+CfXX6acD6M6Rg1vOSdaRXBxB
-        2A0ew7MD1vF5Szfcb6njqGnG7nwr89IvTDjgHn68tpwDzZFxkIWR9q3nfDFFFw==
+        bh=I57UAO7P51ZgEM8V4T+HRPcJdptqpQjfQLS6YRa1cI4=;
+        b=VlVvTAPLi7Nw0Yu4X9ZXsuM4K+FFQiNyLuczRHjtBSXnrkYbcRswTaNooiiZaisX8wUvlU
+        fEuvuhOVzGIts7P9jRDIO6NiRcF/tIgwsaWOyGejdAYqDWoiQ9fZI9aMr+E8ckDY/MIX3G
+        VENVsJw7NBD+f8P+BJDDA9ch50uDzA+Aj9WjpzIiyERMG3l9ZpFZMQPHlAzbI2I6s9tX8Y
+        sAGs864SiP2we2KCaSIDmNKEXMDHpuBGWJoWhxeXS7PMC8OV+clVB7pJQ7UbrajOkGIZJP
+        nRQqIhYpyE5Zxnnsoq+hTFcg0kbsn8T2H7NHKSA+JhjP1lBe91W4v6SqVGWyAQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1598960881;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -33,20 +33,20 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=4pUta5Zk4FfoDx/NGPIBXT5qYhHCXO0PxXNn6+h/JFg=;
-        b=IXxC7ghcoXOMkFsdiVCLXuv302cyIZ84U2uCR/fMI4ssPXTwPX7MTp3aLkHB4PK8kgWarx
-        uxdASpMgK3ApyPCg==
+        bh=I57UAO7P51ZgEM8V4T+HRPcJdptqpQjfQLS6YRa1cI4=;
+        b=u/qewu0bFU1EFGP/qYZhZlt5wkAOHemY4DIxlSXTZvEHEoGpyRX/xW04S+jsa3MMiIqIJ9
+        WqMV5PlwCQgCu1Cw==
 From:   "tip-bot2 for Kees Cook" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/build] vmlinux.lds.h: Avoid KASAN and KCSAN's unwanted sections
+Subject: [tip: core/build] vmlinux.lds.h: Add .gnu.version* to COMMON_DISCARDS
 Cc:     Kees Cook <keescook@chromium.org>, Ingo Molnar <mingo@kernel.org>,
-        Marco Elver <elver@google.com>, linux-arch@vger.kernel.org,
+        Fangrui Song <maskray@google.com>, linux-arch@vger.kernel.org,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200821194310.3089815-4-keescook@chromium.org>
-References: <20200821194310.3089815-4-keescook@chromium.org>
+In-Reply-To: <20200821194310.3089815-3-keescook@chromium.org>
+References: <20200821194310.3089815-3-keescook@chromium.org>
 MIME-Version: 1.0
-Message-ID: <159896088072.20229.9345391960421718006.tip-bot2@tip-bot2>
+Message-ID: <159896088111.20229.8673241506137481803.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,60 +58,46 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/build branch of tip:
 
-Commit-ID:     d812db78288d76d1e8c6df3a840c41a8875f6468
-Gitweb:        https://git.kernel.org/tip/d812db78288d76d1e8c6df3a840c41a8875f6468
+Commit-ID:     dfbe69689b4dee19021d8c315a5137b4790b5634
+Gitweb:        https://git.kernel.org/tip/dfbe69689b4dee19021d8c315a5137b4790b5634
 Author:        Kees Cook <keescook@chromium.org>
-AuthorDate:    Fri, 21 Aug 2020 12:42:44 -07:00
+AuthorDate:    Fri, 21 Aug 2020 12:42:43 -07:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Tue, 01 Sep 2020 09:50:35 +02:00
 
-vmlinux.lds.h: Avoid KASAN and KCSAN's unwanted sections
+vmlinux.lds.h: Add .gnu.version* to COMMON_DISCARDS
 
-KASAN (-fsanitize=kernel-address) and KCSAN (-fsanitize=thread)
-produce unwanted[1] .eh_frame and .init_array.* sections. Add them to
-COMMON_DISCARDS, except with CONFIG_CONSTRUCTORS, which wants to keep
-.init_array.* sections.
+For vmlinux linking, no architecture uses the .gnu.version* sections,
+so remove it via the COMMON_DISCARDS macro in preparation for adding
+--orphan-handling=warn more widely. This is a work-around for what
+appears to be a bug[1] in ld.bfd which warns for this synthetic section
+even when none is found in input objects, and even when no section is
+emitted for an output object[2].
 
-[1] https://bugs.llvm.org/show_bug.cgi?id=46478
+[1] https://sourceware.org/bugzilla/show_bug.cgi?id=26153
+[2] https://lore.kernel.org/lkml/202006221524.CEB86E036B@keescook/
 
 Signed-off-by: Kees Cook <keescook@chromium.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: Marco Elver <elver@google.com>
+Reviewed-by: Fangrui Song <maskray@google.com>
 Cc: linux-arch@vger.kernel.org
-Link: https://lore.kernel.org/r/20200821194310.3089815-4-keescook@chromium.org
+Link: https://lore.kernel.org/r/20200821194310.3089815-3-keescook@chromium.org
 ---
- include/asm-generic/vmlinux.lds.h | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ include/asm-generic/vmlinux.lds.h | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
-index f1f02a2..6b89a03 100644
+index 184b23d..f1f02a2 100644
 --- a/include/asm-generic/vmlinux.lds.h
 +++ b/include/asm-generic/vmlinux.lds.h
-@@ -954,7 +954,27 @@
- 	EXIT_DATA
- #endif
- 
-+/*
-+ * Clang's -fsanitize=kernel-address and -fsanitize=thread produce
-+ * unwanted sections (.eh_frame and .init_array.*), but
-+ * CONFIG_CONSTRUCTORS wants to keep any .init_array.* sections.
-+ * https://bugs.llvm.org/show_bug.cgi?id=46478
-+ */
-+#if defined(CONFIG_KASAN_GENERIC) || defined(CONFIG_KCSAN)
-+# ifdef CONFIG_CONSTRUCTORS
-+#  define SANITIZER_DISCARDS						\
-+	*(.eh_frame)
-+# else
-+#  define SANITIZER_DISCARDS						\
-+	*(.init_array) *(.init_array.*)					\
-+	*(.eh_frame)
-+# endif
-+#else
-+# define SANITIZER_DISCARDS
-+#endif
-+
+@@ -957,7 +957,9 @@
  #define COMMON_DISCARDS							\
-+	SANITIZER_DISCARDS						\
  	*(.discard)							\
  	*(.discard.*)							\
- 	*(.modinfo)							\
+-	*(.modinfo)
++	*(.modinfo)							\
++	/* ld.bfd warns about .gnu.version* even when not emitted */	\
++	*(.gnu.version*)						\
+ 
+ #define DISCARDS							\
+ 	/DISCARD/ : {							\
