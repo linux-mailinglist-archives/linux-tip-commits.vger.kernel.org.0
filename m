@@ -2,53 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DD6252591E8
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  1 Sep 2020 16:57:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 35D382591E0
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  1 Sep 2020 16:57:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728411AbgIAOyw (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 1 Sep 2020 10:54:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48052 "EHLO
+        id S1728861AbgIAOy6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 1 Sep 2020 10:54:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48062 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727801AbgIALs0 (ORCPT
+        with ESMTP id S1727815AbgIALs0 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Tue, 1 Sep 2020 07:48:26 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BBADC061244;
-        Tue,  1 Sep 2020 04:47:56 -0700 (PDT)
-Date:   Tue, 01 Sep 2020 11:47:53 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFBB9C061246;
+        Tue,  1 Sep 2020 04:47:57 -0700 (PDT)
+Date:   Tue, 01 Sep 2020 11:47:54 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1598960873;
+        s=2020; t=1598960875;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=fnzrFDElcMIXBmmpWISTaHQffUOMdRcuKTQGE2TGxh4=;
-        b=XWfkwZDq+m2Jt+Vn7Leuxr8ybTKozfJkOJt3VdfN4cF9mR+U3miFsBkdW5eyfCiPv9WK83
-        Ig4M7P6jBYgO5ZKFfGidAEHLvtdeow5lA/PtKIe5Lfj1mlLSLDnGitGaLen76JrLr0pECn
-        aY0p8z+SP8oSK/kOFPC8hEhBhGC5wlzu7RRhfveZJxKhpq91dDbcfpkQPyWOcc5GMolNc1
-        OkCrpW8Yb+uP5IL2JI+DiOZgkjqL4elaEICNxWLIUWQqNxQ4IT9VK3w5E8wUCxrLDVdSNl
-        U5Fihzo7+76ZKkjEw2QIRRK/ClO4wdrKkXzFK3yr3zlbsaJU1ojYpZgnYEimsQ==
+        bh=FbqG1YikYHiBLEwEfDbLhy4c0U3oUUcvXguN9MUeGqc=;
+        b=U7k2lYKQLOTziFb+QWRmZSh6MTv/uP1eTiJJdQzi6Q/JCocH0i1vKREsWFu1eTlS5+W2pm
+        XdzS4JObGtFpok7TwpLPjc/IpKAn8NgYngHGhXPab7tB0fAQIIuAcU/qbnSQJDMUfeqZ2f
+        ZbsVkUemaFnJgfUxBgJz+qKpbL327XulLIqgSrVWe//NqKWlYyBQ5P7Iqz2BqzvYunP0h0
+        r/SoTVnKXmyt8kzz09iT6GnqB2AQRY2coOEj9qlQyxFrNPkedexaNLZ23hpItuuOuCe0x4
+        Zq1RKbSkseMz+ZhFJYeaGpQO0uYcP4VnpTCeTS7nNUFshJEkSdqbQPpVhbiqBw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1598960873;
+        s=2020e; t=1598960875;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=fnzrFDElcMIXBmmpWISTaHQffUOMdRcuKTQGE2TGxh4=;
-        b=IbiWpHiuW7sCLWhmHGv7GJ+uaKnGKdcCjZnkTbIJwVzPVz1f6CQDZZO/A+GyLcyF4nel70
-        59NVgKBfDmg79gDQ==
+        bh=FbqG1YikYHiBLEwEfDbLhy4c0U3oUUcvXguN9MUeGqc=;
+        b=aAIn8IoOT1nUcj6WHCzTch2bQkYEtf6PgdOW6eyAKCh/bPBT4jrfwlOlbNmfDcdOBs1Hjp
+        FnkoQgaxAQB1LjCQ==
 From:   "tip-bot2 for Kees Cook" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/build] x86/boot/compressed: Reorganize zero-size section asserts
+Subject: [tip: core/build] arm/boot: Handle all sections explicitly
 Cc:     Kees Cook <keescook@chromium.org>, Ingo Molnar <mingo@kernel.org>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200821194310.3089815-27-keescook@chromium.org>
-References: <20200821194310.3089815-27-keescook@chromium.org>
+        Russell King <linux@armlinux.org.uk>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200821194310.3089815-21-keescook@chromium.org>
+References: <20200821194310.3089815-21-keescook@chromium.org>
 MIME-Version: 1.0
-Message-ID: <159896087310.20229.16110579156173953333.tip-bot2@tip-bot2>
+Message-ID: <159896087466.20229.9387629554145292260.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,85 +61,77 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/build branch of tip:
 
-Commit-ID:     7cf891a40057f851af74e68bacb01b90bd775b5d
-Gitweb:        https://git.kernel.org/tip/7cf891a40057f851af74e68bacb01b90bd775b5d
+Commit-ID:     7e8c4ed2638d08a1604c87b60ed7161bf92e6f86
+Gitweb:        https://git.kernel.org/tip/7e8c4ed2638d08a1604c87b60ed7161bf92e6f86
 Author:        Kees Cook <keescook@chromium.org>
-AuthorDate:    Fri, 21 Aug 2020 12:43:07 -07:00
+AuthorDate:    Fri, 21 Aug 2020 12:43:01 -07:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Tue, 01 Sep 2020 10:03:18 +02:00
 
-x86/boot/compressed: Reorganize zero-size section asserts
+arm/boot: Handle all sections explicitly
 
-For readability, move the zero-sized sections to the end after DISCARDS.
+In preparation for warning on orphan sections, use common macros for
+debug sections, discards, and text stubs. Add discards for unwanted .note,
+and .rel sections.
 
 Signed-off-by: Kees Cook <keescook@chromium.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20200821194310.3089815-27-keescook@chromium.org
+Cc: Russell King <linux@armlinux.org.uk>
+Link: https://lore.kernel.org/r/20200821194310.3089815-21-keescook@chromium.org
 ---
- arch/x86/boot/compressed/vmlinux.lds.S | 44 ++++++++++++++-----------
- 1 file changed, 26 insertions(+), 18 deletions(-)
+ arch/arm/boot/compressed/vmlinux.lds.S | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/arch/x86/boot/compressed/vmlinux.lds.S b/arch/x86/boot/compressed/vmlinux.lds.S
-index 3c2ee9a..ca544a1 100644
---- a/arch/x86/boot/compressed/vmlinux.lds.S
-+++ b/arch/x86/boot/compressed/vmlinux.lds.S
-@@ -42,19 +42,6 @@ SECTIONS
- 		*(.rodata.*)
- 		_erodata = . ;
- 	}
--	.rel.dyn : {
--		*(.rel.*)
--	}
--	.rela.dyn : {
--		*(.rela.*)
--	}
--	.got : {
--		*(.got)
--	}
--	.got.plt : {
--		*(.got.plt)
--	}
--
- 	.data :	{
- 		_data = . ;
- 		*(.data)
-@@ -85,13 +72,34 @@ SECTIONS
- 	ELF_DETAILS
+diff --git a/arch/arm/boot/compressed/vmlinux.lds.S b/arch/arm/boot/compressed/vmlinux.lds.S
+index 09ac33f..b914be3 100644
+--- a/arch/arm/boot/compressed/vmlinux.lds.S
++++ b/arch/arm/boot/compressed/vmlinux.lds.S
+@@ -2,6 +2,7 @@
+ /*
+  *  Copyright (C) 2000 Russell King
+  */
++#include <asm/vmlinux.lds.h>
  
- 	DISCARDS
--}
+ #ifdef CONFIG_CPU_ENDIAN_BE8
+ #define ZIMAGE_MAGIC(x) ( (((x) >> 24) & 0x000000ff) | \
+@@ -17,8 +18,11 @@ ENTRY(_start)
+ SECTIONS
+ {
+   /DISCARD/ : {
++    COMMON_DISCARDS
+     *(.ARM.exidx*)
+     *(.ARM.extab*)
++    *(.note.*)
++    *(.rel.*)
+     /*
+      * Discard any r/w data - this produces a link error if we have any,
+      * which is required for PIC decompression.  Local data generates
+@@ -36,9 +40,7 @@ SECTIONS
+     *(.start)
+     *(.text)
+     *(.text.*)
+-    *(.gnu.warning)
+-    *(.glue_7t)
+-    *(.glue_7)
++    ARM_STUBS_TEXT
+   }
+   .table : ALIGN(4) {
+     _table_start = .;
+@@ -128,12 +130,10 @@ SECTIONS
+   PROVIDE(__pecoff_data_size = ALIGN(512) - ADDR(.data));
+   PROVIDE(__pecoff_end = ALIGN(512));
  
--ASSERT(SIZEOF(.got) == 0, "Unexpected GOT entries detected!")
-+	.got.plt (INFO) : {
-+		*(.got.plt)
-+	}
-+	ASSERT(SIZEOF(.got.plt) == 0 ||
- #ifdef CONFIG_X86_64
--ASSERT(SIZEOF(.got.plt) == 0 || SIZEOF(.got.plt) == 0x18, "Unexpected GOT/PLT entries detected!")
-+	       SIZEOF(.got.plt) == 0x18,
- #else
--ASSERT(SIZEOF(.got.plt) == 0 || SIZEOF(.got.plt) == 0xc, "Unexpected GOT/PLT entries detected!")
-+	       SIZEOF(.got.plt) == 0xc,
- #endif
-+	       "Unexpected GOT/PLT entries detected!")
+-  .stab 0		: { *(.stab) }
+-  .stabstr 0		: { *(.stabstr) }
+-  .stab.excl 0		: { *(.stab.excl) }
+-  .stab.exclstr 0	: { *(.stab.exclstr) }
+-  .stab.index 0		: { *(.stab.index) }
+-  .stab.indexstr 0	: { *(.stab.indexstr) }
+-  .comment 0		: { *(.comment) }
++  STABS_DEBUG
++  DWARF_DEBUG
++  ARM_DETAILS
 +
-+	/*
-+	 * Sections that should stay zero sized, which is safer to
-+	 * explicitly check instead of blindly discarding.
-+	 */
-+	.got : {
-+		*(.got)
-+	}
-+	ASSERT(SIZEOF(.got) == 0, "Unexpected GOT entries detected!")
-+
-+	.rel.dyn : {
-+		*(.rel.*)
-+	}
-+	ASSERT(SIZEOF(.rel.dyn) == 0, "Unexpected run-time relocations (.rel) detected!")
- 
--ASSERT(SIZEOF(.rel.dyn) == 0 && SIZEOF(.rela.dyn) == 0, "Unexpected run-time relocations detected!")
-+	.rela.dyn : {
-+		*(.rela.*)
-+	}
-+	ASSERT(SIZEOF(.rela.dyn) == 0, "Unexpected run-time relocations (.rela) detected!")
-+}
++  ARM_ASSERTS
+ }
+ ASSERT(_edata_real == _edata, "error: zImage file size is incorrect");
