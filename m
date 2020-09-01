@@ -2,55 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C211F259010
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  1 Sep 2020 16:15:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CEB125900E
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  1 Sep 2020 16:15:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727089AbgIAOPX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 1 Sep 2020 10:15:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48298 "EHLO
+        id S1727930AbgIAOPT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 1 Sep 2020 10:15:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48300 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727864AbgIALt0 (ORCPT
+        with ESMTP id S1727865AbgIALt0 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Tue, 1 Sep 2020 07:49:26 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFD70C06125E;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3ACD9C06125F;
         Tue,  1 Sep 2020 04:48:04 -0700 (PDT)
 Date:   Tue, 01 Sep 2020 11:47:59 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1598960879;
+        s=2020; t=1598960880;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=H8Ycih3xgzcgJQspbDDbXUib9SIihncv3hUNubEFde8=;
-        b=KuNtZiYbVuV2awUtAsN2XutyunVGF5+aHPZpMUdOJ8R3NLUzRQ44k4o1Al5oEd7QWdMvBJ
-        C0e7N6ppCbWXason9evNq1q3zpHOEN01YRMbNQ+ekJyXl/Vizgvdfg/oc4h/TrRRkpa3Ww
-        eCvPy6E0W1QTZ91x2uQi4lHe/sfQnXnDhajBWu4FqPKGuX+rCJfbtLg1WCrQ1e4v/ul5ve
-        Vc4eMrnJLovyDZa77ZMzKVkojCGgr3MQtS4H4wKThslx96/1WWM8nPhamSCldWNwRcSLdr
-        K8FDbY46YsdH/qtELiWTyKs/Z0ncBtCySM93BnYn7A1XwT0ZqOUtgIka6ZfeFQ==
+        bh=7TF5bffiWAtpwidWPHVFUAUsl9G1rNNk8HDTdIk9Zc8=;
+        b=Wxn4BsDgMiaUqZXOUMySyb+eX8zXhNWuNCqked+7Arzb+1dryuQ6rYt/iBQPAWIhTTjZ+u
+        udECah+aIJ/Xk4glN7HPbbDMLNbQuZhleuvrK+BdjKRyGWTOkyXANwTdnxw3NZeab5OtV2
+        /0ptOyQYcf+y2Z30o+EMcFrfXFUN5p+ICBaUI6O1xVq6JeJmiixbILvE9R2Y6kzZzi6ACi
+        uaC6xb3u9RGnDknTA0QCo5hdCGuk4NTFO0nQCR28ciCHzq4+/xy6XnKQ3cWPjU0Xybv3fI
+        7mBySEvVwCFJb3HycoQjSZVnCE8nzffCRI8zTAvpAcpmQdTqCCxMVJTLIF1Ugw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1598960879;
+        s=2020e; t=1598960880;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=H8Ycih3xgzcgJQspbDDbXUib9SIihncv3hUNubEFde8=;
-        b=0hGlyC+QqkJUY8QJ4XatLzC3HUPCONqgu5ILz/PIGV+7TVVk2Qsy0H9Fjg5oQAPjP1O2zS
-        cZm3D0pBKxjbM5BQ==
+        bh=7TF5bffiWAtpwidWPHVFUAUsl9G1rNNk8HDTdIk9Zc8=;
+        b=i9+Jf1zj+gmAnvKliv4krRKO8ak6SLcJj2K3O/M0lkx28IrN7uNRWiJj6GybK8uIrp4H1P
+        eNtBdsww2zbHiIAQ==
 From:   "tip-bot2 for Kees Cook" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/build] efi/libstub: Disable -mbranch-protection
-Cc:     Kees Cook <keescook@chromium.org>, Ingo Molnar <mingo@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Ard Biesheuvel <ardb@kernel.org>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200821194310.3089815-8-keescook@chromium.org>
-References: <20200821194310.3089815-8-keescook@chromium.org>
+Subject: [tip: core/build] vmlinux.lds.h: Add .symtab, .strtab, and .shstrtab
+ to ELF_DETAILS
+Cc:     Fangrui Song <maskray@google.com>,
+        Kees Cook <keescook@chromium.org>,
+        Ingo Molnar <mingo@kernel.org>, linux-arch@vger.kernel.org,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200821194310.3089815-6-keescook@chromium.org>
+References: <20200821194310.3089815-6-keescook@chromium.org>
 MIME-Version: 1.0
-Message-ID: <159896087901.20229.9435314794227577667.tip-bot2@tip-bot2>
+Message-ID: <159896087977.20229.5184709626139315991.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -62,60 +63,49 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/build branch of tip:
 
-Commit-ID:     e2179a09ab089d3423751bd2b0c884ddb3eabe84
-Gitweb:        https://git.kernel.org/tip/e2179a09ab089d3423751bd2b0c884ddb3eabe84
+Commit-ID:     a840c4de569f610bc5ee043b613c35b779d23186
+Gitweb:        https://git.kernel.org/tip/a840c4de569f610bc5ee043b613c35b779d23186
 Author:        Kees Cook <keescook@chromium.org>
-AuthorDate:    Fri, 21 Aug 2020 12:42:48 -07:00
+AuthorDate:    Fri, 21 Aug 2020 12:42:46 -07:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 01 Sep 2020 09:50:36 +02:00
+CommitterDate: Tue, 01 Sep 2020 09:50:35 +02:00
 
-efi/libstub: Disable -mbranch-protection
+vmlinux.lds.h: Add .symtab, .strtab, and .shstrtab to ELF_DETAILS
 
-In preparation for adding --orphan-handling=warn to more architectures,
-disable -mbranch-protection, as EFI does not yet support it[1].  This was
-noticed due to it producing unwanted .note.gnu.property sections (prefixed
-with .init due to the objcopy build step).
+When linking vmlinux with LLD, the synthetic sections .symtab, .strtab,
+and .shstrtab are listed as orphaned. Add them to the ELF_DETAILS section
+so there will be no warnings when --orphan-handling=warn is used more
+widely. (They are added above comment as it is the more common
+order[1].)
 
-However, we must also work around a bug in Clang where the section is
-still emitted for code-less object files[2], so also remove the section
-during the objcopy.
+ld.lld: warning: <internal>:(.symtab) is being placed in '.symtab'
+ld.lld: warning: <internal>:(.shstrtab) is being placed in '.shstrtab'
+ld.lld: warning: <internal>:(.strtab) is being placed in '.strtab'
 
-[1] https://lore.kernel.org/lkml/CAMj1kXHck12juGi=E=P4hWP_8vQhQ+-x3vBMc3TGeRWdQ-XkxQ@mail.gmail.com
-[2] https://bugs.llvm.org/show_bug.cgi?id=46480
+[1] https://lore.kernel.org/lkml/20200622224928.o2a7jkq33guxfci4@google.com/
 
+Reported-by: Fangrui Song <maskray@google.com>
 Signed-off-by: Kees Cook <keescook@chromium.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Link: https://lore.kernel.org/r/20200821194310.3089815-8-keescook@chromium.org
+Cc: linux-arch@vger.kernel.org
+Link: https://lore.kernel.org/r/20200821194310.3089815-6-keescook@chromium.org
 ---
- drivers/firmware/efi/libstub/Makefile |  9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ include/asm-generic/vmlinux.lds.h | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
-index 5eefd60..0c911e3 100644
---- a/drivers/firmware/efi/libstub/Makefile
-+++ b/drivers/firmware/efi/libstub/Makefile
-@@ -18,7 +18,8 @@ cflags-$(CONFIG_X86)		+= -m$(BITS) -D__KERNEL__ \
- # arm64 uses the full KBUILD_CFLAGS so it's necessary to explicitly
- # disable the stackleak plugin
- cflags-$(CONFIG_ARM64)		:= $(subst $(CC_FLAGS_FTRACE),,$(KBUILD_CFLAGS)) \
--				   -fpie $(DISABLE_STACKLEAK_PLUGIN)
-+				   -fpie $(DISABLE_STACKLEAK_PLUGIN) \
-+				   $(call cc-option,-mbranch-protection=none)
- cflags-$(CONFIG_ARM)		:= $(subst $(CC_FLAGS_FTRACE),,$(KBUILD_CFLAGS)) \
- 				   -fno-builtin -fpic \
- 				   $(call cc-option,-mno-single-pic-base)
-@@ -66,6 +67,12 @@ lib-$(CONFIG_X86)		+= x86-stub.o
- CFLAGS_arm32-stub.o		:= -DTEXT_OFFSET=$(TEXT_OFFSET)
- CFLAGS_arm64-stub.o		:= -DTEXT_OFFSET=$(TEXT_OFFSET)
+diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
+index cadcbc3..98d013d 100644
+--- a/include/asm-generic/vmlinux.lds.h
++++ b/include/asm-generic/vmlinux.lds.h
+@@ -823,7 +823,10 @@
  
-+# Even when -mbranch-protection=none is set, Clang will generate a
-+# .note.gnu.property for code-less object files (like lib/ctype.c),
-+# so work around this by explicitly removing the unwanted section.
-+# https://bugs.llvm.org/show_bug.cgi?id=46480
-+STUBCOPY_FLAGS-y		+= --remove-section=.note.gnu.property
-+
- #
- # For x86, bootloaders like systemd-boot or grub-efi do not zero-initialize the
- # .bss section, so the .bss section of the EFI stub needs to be included in the
+ /* Required sections not related to debugging. */
+ #define ELF_DETAILS							\
+-		.comment 0 : { *(.comment) }
++		.comment 0 : { *(.comment) }				\
++		.symtab 0 : { *(.symtab) }				\
++		.strtab 0 : { *(.strtab) }				\
++		.shstrtab 0 : { *(.shstrtab) }
+ 
+ #ifdef CONFIG_GENERIC_BUG
+ #define BUG_TABLE							\
