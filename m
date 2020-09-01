@@ -2,51 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A0A0258D9B
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  1 Sep 2020 13:49:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E046D258D9E
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  1 Sep 2020 13:51:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727910AbgIALtx (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 1 Sep 2020 07:49:53 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:39500 "EHLO
+        id S1726537AbgIALuH (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 1 Sep 2020 07:50:07 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:39616 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727819AbgIALs2 (ORCPT
+        with ESMTP id S1727846AbgIALs2 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Tue, 1 Sep 2020 07:48:28 -0400
-Date:   Tue, 01 Sep 2020 11:47:56 -0000
+Date:   Tue, 01 Sep 2020 11:48:02 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1598960877;
+        s=2020; t=1598960883;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=1W+gzF2dq+sPfQDcm02M/X9bFttVx4TQ8CW7z+ylRc8=;
-        b=E2XsYAc/ZK28pJCqZRiwRlbs+GBiIBax8Td6qbRFQ7UUtJHwy4AyPtyYGX6PiqE0H2M69O
-        7GURC8XG/oif8c8U6dbo7g/iYwJIfo8LzsDGQ18apOjzl7PlSNStif/DkRPVSp2AdQyJsO
-        nlcivXpfmZ8Kg8dYqUqS6KVsekIZBUrAy9l9zjKOZFMDYFZEkHewiNt9+tNGnJIHMOYOX/
-        hQDLOb879RJe/8jlB7g2IqJywDL8yl7d+7g/8dKhEbr/fX9ViXGuXLmNhq9kybC0N1KefO
-        E1Y9Nm6b0Wa5YAPlz1d0/rd21QSWAAAZ10sSe52PgpiS6CR3/Kvwjiw63Ktnyg==
+        bh=KFHR+ta88NnmCU84iaUrVoWbZ58Nhek/uundEV0X+mo=;
+        b=unGvG35LKmS4904Uj2hBMbcx06qxVoPUZzCaYDceBlvfIjjUTcWucB0DhFJWhRombewBW5
+        ++sZBdNeXTctV+Y9r2h0XzfsIWSoub1BtV9YeiAXmgSgBmyPcqP7j7MHOFRNInd5d4nJYV
+        SA6UkK8pEXJVJR86tjlHIWVsJW0BjFXFp6YugIsU2MgurW8rxwNgN3+mtdqIbiQxB33eev
+        Gkleok8J0VTh0q9QgbxLc91XqTCMATiJV29FHEpjigtVrfx8+J+0NRp7KDq90lVXn7by+h
+        TyAEc2g1ylXyKuP1DPCRDnXx2CC3iQYEu+bYURqG+VxU9SJwdw0csb2zDQh/SA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1598960877;
+        s=2020e; t=1598960883;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=1W+gzF2dq+sPfQDcm02M/X9bFttVx4TQ8CW7z+ylRc8=;
-        b=BCl3MeSDOIM8UkujLtMewZdacvmca6NNCfEbiLsv6/FHLpNxof29Di7+uwhYEgMgBgZ9PV
-        dmVeQYwL+L/ljxBQ==
-From:   "tip-bot2 for Kees Cook" <tip-bot2@linutronix.de>
+        bh=KFHR+ta88NnmCU84iaUrVoWbZ58Nhek/uundEV0X+mo=;
+        b=YaIsotXcdyRvfVMXRg0s0US3HkjIoVGFanKI9S42QrIcBhTzEDHycOWlVvQZM1HRbF7A62
+        n8L/tL+9GeP1CwCg==
+From:   "tip-bot2 for Steven Rostedt (VMware)" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/build] arm/build: Refactor linker script headers
-Cc:     Kees Cook <keescook@chromium.org>, Ingo Molnar <mingo@kernel.org>,
-        Russell King <linux@armlinux.org.uk>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200821194310.3089815-16-keescook@chromium.org>
-References: <20200821194310.3089815-16-keescook@chromium.org>
+Subject: [tip: core/static_call] tracepoint: Optimize using static_call()
+Cc:     "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Ingo Molnar <mingo@kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200818135805.279421092@infradead.org>
+References: <20200818135805.279421092@infradead.org>
 MIME-Version: 1.0
-Message-ID: <159896087633.20229.2621632057594945460.tip-bot2@tip-bot2>
+Message-ID: <159896088242.20229.6639521579536854409.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -56,341 +58,334 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the core/build branch of tip:
+The following commit has been merged into the core/static_call branch of tip:
 
-Commit-ID:     d7e3b065dc98e95f2dae6d2da031dd4c243bd7be
-Gitweb:        https://git.kernel.org/tip/d7e3b065dc98e95f2dae6d2da031dd4c243bd7be
-Author:        Kees Cook <keescook@chromium.org>
-AuthorDate:    Fri, 21 Aug 2020 12:42:56 -07:00
+Commit-ID:     d25e37d89dd2f41d7acae0429039d2f0ae8b4a07
+Gitweb:        https://git.kernel.org/tip/d25e37d89dd2f41d7acae0429039d2f0ae8b4a07
+Author:        Steven Rostedt (VMware) <rostedt@goodmis.org>
+AuthorDate:    Tue, 18 Aug 2020 15:57:52 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 01 Sep 2020 10:03:17 +02:00
+CommitterDate: Tue, 01 Sep 2020 09:58:06 +02:00
 
-arm/build: Refactor linker script headers
+tracepoint: Optimize using static_call()
 
-In preparation for adding --orphan-handling=warn, refactor the linker
-script header includes, and extract common macros.
+Currently the tracepoint site will iterate a vector and issue indirect
+calls to however many handlers are registered (ie. the vector is
+long).
 
-Signed-off-by: Kees Cook <keescook@chromium.org>
+Using static_call() it is possible to optimize this for the common
+case of only having a single handler registered. In this case the
+static_call() can directly call this handler. Otherwise, if the vector
+is longer than 1, call a function that iterates the whole vector like
+the current code.
+
+[peterz: updated to new interface]
+
+Signed-off-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Russell King <linux@armlinux.org.uk>
-Link: https://lore.kernel.org/r/20200821194310.3089815-16-keescook@chromium.org
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/20200818135805.279421092@infradead.org
 ---
- arch/arm/include/asm/vmlinux.lds.h | 130 ++++++++++++++++++++++++++++-
- arch/arm/kernel/vmlinux-xip.lds.S  |   4 +-
- arch/arm/kernel/vmlinux.lds.S      |   4 +-
- arch/arm/kernel/vmlinux.lds.h      | 127 +---------------------------
- 4 files changed, 132 insertions(+), 133 deletions(-)
- create mode 100644 arch/arm/include/asm/vmlinux.lds.h
- delete mode 100644 arch/arm/kernel/vmlinux.lds.h
+ include/linux/tracepoint-defs.h |  5 ++-
+ include/linux/tracepoint.h      | 86 ++++++++++++++++++++++----------
+ include/trace/define_trace.h    | 14 ++---
+ kernel/tracepoint.c             | 25 +++++++--
+ 4 files changed, 94 insertions(+), 36 deletions(-)
 
-diff --git a/arch/arm/include/asm/vmlinux.lds.h b/arch/arm/include/asm/vmlinux.lds.h
-new file mode 100644
-index 0000000..a08f430
---- /dev/null
-+++ b/arch/arm/include/asm/vmlinux.lds.h
-@@ -0,0 +1,130 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#include <asm-generic/vmlinux.lds.h>
+diff --git a/include/linux/tracepoint-defs.h b/include/linux/tracepoint-defs.h
+index b29950a..de97450 100644
+--- a/include/linux/tracepoint-defs.h
++++ b/include/linux/tracepoint-defs.h
+@@ -11,6 +11,8 @@
+ #include <linux/atomic.h>
+ #include <linux/static_key.h>
+ 
++struct static_call_key;
 +
-+#ifdef CONFIG_HOTPLUG_CPU
-+#define ARM_CPU_DISCARD(x)
-+#define ARM_CPU_KEEP(x)		x
-+#else
-+#define ARM_CPU_DISCARD(x)	x
-+#define ARM_CPU_KEEP(x)
+ struct trace_print_flags {
+ 	unsigned long		mask;
+ 	const char		*name;
+@@ -30,6 +32,9 @@ struct tracepoint_func {
+ struct tracepoint {
+ 	const char *name;		/* Tracepoint name */
+ 	struct static_key key;
++	struct static_call_key *static_call_key;
++	void *static_call_tramp;
++	void *iterator;
+ 	int (*regfunc)(void);
+ 	void (*unregfunc)(void);
+ 	struct tracepoint_func __rcu *funcs;
+diff --git a/include/linux/tracepoint.h b/include/linux/tracepoint.h
+index 598fec9..3722a10 100644
+--- a/include/linux/tracepoint.h
++++ b/include/linux/tracepoint.h
+@@ -19,6 +19,7 @@
+ #include <linux/cpumask.h>
+ #include <linux/rcupdate.h>
+ #include <linux/tracepoint-defs.h>
++#include <linux/static_call.h>
+ 
+ struct module;
+ struct tracepoint;
+@@ -92,7 +93,9 @@ extern int syscall_regfunc(void);
+ extern void syscall_unregfunc(void);
+ #endif /* CONFIG_HAVE_SYSCALL_TRACEPOINTS */
+ 
++#ifndef PARAMS
+ #define PARAMS(args...) args
 +#endif
-+
-+#if (defined(CONFIG_SMP_ON_UP) && !defined(CONFIG_DEBUG_SPINLOCK)) || \
-+	defined(CONFIG_GENERIC_BUG) || defined(CONFIG_JUMP_LABEL)
-+#define ARM_EXIT_KEEP(x)	x
-+#define ARM_EXIT_DISCARD(x)
+ 
+ #define TRACE_DEFINE_ENUM(x)
+ #define TRACE_DEFINE_SIZEOF(x)
+@@ -148,6 +151,12 @@ static inline struct tracepoint *tracepoint_ptr_deref(tracepoint_ptr_t *p)
+ 
+ #ifdef TRACEPOINTS_ENABLED
+ 
++#ifdef CONFIG_HAVE_STATIC_CALL
++#define __DO_TRACE_CALL(name)	static_call(tp_func_##name)
 +#else
-+#define ARM_EXIT_KEEP(x)
-+#define ARM_EXIT_DISCARD(x)	x
-+#endif
++#define __DO_TRACE_CALL(name)	__tracepoint_iter_##name
++#endif /* CONFIG_HAVE_STATIC_CALL */
 +
-+#ifdef CONFIG_MMU
-+#define ARM_MMU_KEEP(x)		x
-+#define ARM_MMU_DISCARD(x)
-+#else
-+#define ARM_MMU_KEEP(x)
-+#define ARM_MMU_DISCARD(x)	x
-+#endif
-+
-+#define PROC_INFO							\
-+		. = ALIGN(4);						\
-+		__proc_info_begin = .;					\
-+		*(.proc.info.init)					\
-+		__proc_info_end = .;
-+
-+#define IDMAP_TEXT							\
-+		ALIGN_FUNCTION();					\
-+		__idmap_text_start = .;					\
-+		*(.idmap.text)						\
-+		__idmap_text_end = .;					\
-+
-+#define ARM_DISCARD							\
-+		*(.ARM.exidx.exit.text)					\
-+		*(.ARM.extab.exit.text)					\
-+		*(.ARM.exidx.text.exit)					\
-+		*(.ARM.extab.text.exit)					\
-+		ARM_CPU_DISCARD(*(.ARM.exidx.cpuexit.text))		\
-+		ARM_CPU_DISCARD(*(.ARM.extab.cpuexit.text))		\
-+		ARM_EXIT_DISCARD(EXIT_TEXT)				\
-+		ARM_EXIT_DISCARD(EXIT_DATA)				\
-+		EXIT_CALL						\
-+		ARM_MMU_DISCARD(*(.text.fixup))				\
-+		ARM_MMU_DISCARD(*(__ex_table))				\
-+		COMMON_DISCARDS
-+
-+#define ARM_STUBS_TEXT							\
-+		*(.gnu.warning)						\
-+		*(.glue_7)						\
-+		*(.glue_7t)
-+
-+#define ARM_TEXT							\
-+		IDMAP_TEXT						\
-+		__entry_text_start = .;					\
-+		*(.entry.text)						\
-+		__entry_text_end = .;					\
-+		IRQENTRY_TEXT						\
-+		SOFTIRQENTRY_TEXT					\
-+		TEXT_TEXT						\
-+		SCHED_TEXT						\
-+		CPUIDLE_TEXT						\
-+		LOCK_TEXT						\
-+		KPROBES_TEXT						\
-+		ARM_STUBS_TEXT						\
-+		. = ALIGN(4);						\
-+		*(.got)			/* Global offset table */	\
-+		ARM_CPU_KEEP(PROC_INFO)
-+
-+/* Stack unwinding tables */
-+#define ARM_UNWIND_SECTIONS						\
-+	. = ALIGN(8);							\
-+	.ARM.unwind_idx : {						\
-+		__start_unwind_idx = .;					\
-+		*(.ARM.exidx*)						\
-+		__stop_unwind_idx = .;					\
-+	}								\
-+	.ARM.unwind_tab : {						\
-+		__start_unwind_tab = .;					\
-+		*(.ARM.extab*)						\
-+		__stop_unwind_tab = .;					\
-+	}
-+
-+/*
-+ * The vectors and stubs are relocatable code, and the
-+ * only thing that matters is their relative offsets
-+ */
-+#define ARM_VECTORS							\
-+	__vectors_start = .;						\
-+	.vectors 0xffff0000 : AT(__vectors_start) {			\
-+		*(.vectors)						\
-+	}								\
-+	. = __vectors_start + SIZEOF(.vectors);				\
-+	__vectors_end = .;						\
-+									\
-+	__stubs_start = .;						\
-+	.stubs ADDR(.vectors) + 0x1000 : AT(__stubs_start) {		\
-+		*(.stubs)						\
-+	}								\
-+	. = __stubs_start + SIZEOF(.stubs);				\
-+	__stubs_end = .;						\
-+									\
-+	PROVIDE(vector_fiq_offset = vector_fiq - ADDR(.vectors));
-+
-+#define ARM_TCM								\
-+	__itcm_start = ALIGN(4);					\
-+	.text_itcm ITCM_OFFSET : AT(__itcm_start - LOAD_OFFSET) {	\
-+		__sitcm_text = .;					\
-+		*(.tcm.text)						\
-+		*(.tcm.rodata)						\
-+		. = ALIGN(4);						\
-+		__eitcm_text = .;					\
-+	}								\
-+	. = __itcm_start + SIZEOF(.text_itcm);				\
-+									\
-+	__dtcm_start = .;						\
-+	.data_dtcm DTCM_OFFSET : AT(__dtcm_start - LOAD_OFFSET) {	\
-+		__sdtcm_data = .;					\
-+		*(.tcm.data)						\
-+		. = ALIGN(4);						\
-+		__edtcm_data = .;					\
-+	}								\
-+	. = __dtcm_start + SIZEOF(.data_dtcm);
-diff --git a/arch/arm/kernel/vmlinux-xip.lds.S b/arch/arm/kernel/vmlinux-xip.lds.S
-index 3d4e88f..904c31f 100644
---- a/arch/arm/kernel/vmlinux-xip.lds.S
-+++ b/arch/arm/kernel/vmlinux-xip.lds.S
-@@ -9,15 +9,13 @@
- 
- #include <linux/sizes.h>
- 
--#include <asm-generic/vmlinux.lds.h>
-+#include <asm/vmlinux.lds.h>
- #include <asm/cache.h>
- #include <asm/thread_info.h>
- #include <asm/memory.h>
- #include <asm/mpu.h>
- #include <asm/page.h>
- 
--#include "vmlinux.lds.h"
--
- OUTPUT_ARCH(arm)
- ENTRY(stext)
- 
-diff --git a/arch/arm/kernel/vmlinux.lds.S b/arch/arm/kernel/vmlinux.lds.S
-index 5592f14..bb950c8 100644
---- a/arch/arm/kernel/vmlinux.lds.S
-+++ b/arch/arm/kernel/vmlinux.lds.S
-@@ -9,15 +9,13 @@
- #else
- 
- #include <linux/pgtable.h>
--#include <asm-generic/vmlinux.lds.h>
-+#include <asm/vmlinux.lds.h>
- #include <asm/cache.h>
- #include <asm/thread_info.h>
- #include <asm/memory.h>
- #include <asm/mpu.h>
- #include <asm/page.h>
- 
--#include "vmlinux.lds.h"
--
- OUTPUT_ARCH(arm)
- ENTRY(stext)
- 
-diff --git a/arch/arm/kernel/vmlinux.lds.h b/arch/arm/kernel/vmlinux.lds.h
-deleted file mode 100644
-index 381a8e1..0000000
---- a/arch/arm/kernel/vmlinux.lds.h
-+++ /dev/null
-@@ -1,127 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0 */
--
--#ifdef CONFIG_HOTPLUG_CPU
--#define ARM_CPU_DISCARD(x)
--#define ARM_CPU_KEEP(x)		x
--#else
--#define ARM_CPU_DISCARD(x)	x
--#define ARM_CPU_KEEP(x)
--#endif
--
--#if (defined(CONFIG_SMP_ON_UP) && !defined(CONFIG_DEBUG_SPINLOCK)) || \
--	defined(CONFIG_GENERIC_BUG) || defined(CONFIG_JUMP_LABEL)
--#define ARM_EXIT_KEEP(x)	x
--#define ARM_EXIT_DISCARD(x)
--#else
--#define ARM_EXIT_KEEP(x)
--#define ARM_EXIT_DISCARD(x)	x
--#endif
--
--#ifdef CONFIG_MMU
--#define ARM_MMU_KEEP(x)		x
--#define ARM_MMU_DISCARD(x)
--#else
--#define ARM_MMU_KEEP(x)
--#define ARM_MMU_DISCARD(x)	x
--#endif
--
--#define PROC_INFO							\
--		. = ALIGN(4);						\
--		__proc_info_begin = .;					\
--		*(.proc.info.init)					\
--		__proc_info_end = .;
--
--#define IDMAP_TEXT							\
--		ALIGN_FUNCTION();					\
--		__idmap_text_start = .;					\
--		*(.idmap.text)						\
--		__idmap_text_end = .;					\
--
--#define ARM_DISCARD							\
--		*(.ARM.exidx.exit.text)					\
--		*(.ARM.extab.exit.text)					\
--		*(.ARM.exidx.text.exit)					\
--		*(.ARM.extab.text.exit)					\
--		ARM_CPU_DISCARD(*(.ARM.exidx.cpuexit.text))		\
--		ARM_CPU_DISCARD(*(.ARM.extab.cpuexit.text))		\
--		ARM_EXIT_DISCARD(EXIT_TEXT)				\
--		ARM_EXIT_DISCARD(EXIT_DATA)				\
--		EXIT_CALL						\
--		ARM_MMU_DISCARD(*(.text.fixup))				\
--		ARM_MMU_DISCARD(*(__ex_table))				\
--		*(.discard)						\
--		*(.discard.*)
--
--#define ARM_TEXT							\
--		IDMAP_TEXT						\
--		__entry_text_start = .;					\
--		*(.entry.text)						\
--		__entry_text_end = .;					\
--		IRQENTRY_TEXT						\
--		SOFTIRQENTRY_TEXT					\
--		TEXT_TEXT						\
--		SCHED_TEXT						\
--		CPUIDLE_TEXT						\
--		LOCK_TEXT						\
--		KPROBES_TEXT						\
--		*(.gnu.warning)						\
--		*(.glue_7)						\
--		*(.glue_7t)						\
--		. = ALIGN(4);						\
--		*(.got)			/* Global offset table */	\
--		ARM_CPU_KEEP(PROC_INFO)
--
--/* Stack unwinding tables */
--#define ARM_UNWIND_SECTIONS						\
--	. = ALIGN(8);							\
--	.ARM.unwind_idx : {						\
--		__start_unwind_idx = .;					\
--		*(.ARM.exidx*)						\
--		__stop_unwind_idx = .;					\
--	}								\
--	.ARM.unwind_tab : {						\
--		__start_unwind_tab = .;					\
--		*(.ARM.extab*)						\
--		__stop_unwind_tab = .;					\
--	}
--
--/*
-- * The vectors and stubs are relocatable code, and the
-- * only thing that matters is their relative offsets
-- */
--#define ARM_VECTORS							\
--	__vectors_start = .;						\
--	.vectors 0xffff0000 : AT(__vectors_start) {			\
--		*(.vectors)						\
--	}								\
--	. = __vectors_start + SIZEOF(.vectors);				\
--	__vectors_end = .;						\
+ /*
+  * it_func[0] is never NULL because there is at least one element in the array
+  * when the array itself is non NULL.
+@@ -157,12 +166,11 @@ static inline struct tracepoint *tracepoint_ptr_deref(tracepoint_ptr_t *p)
+  * has a "void" prototype, then it is invalid to declare a function
+  * as "(void *, void)".
+  */
+-#define __DO_TRACE(tp, proto, args, cond, rcuidle)			\
++#define __DO_TRACE(name, proto, args, cond, rcuidle)			\
+ 	do {								\
+ 		struct tracepoint_func *it_func_ptr;			\
+-		void *it_func;						\
+-		void *__data;						\
+ 		int __maybe_unused __idx = 0;				\
++		void *__data;						\
+ 									\
+ 		if (!(cond))						\
+ 			return;						\
+@@ -182,14 +190,11 @@ static inline struct tracepoint *tracepoint_ptr_deref(tracepoint_ptr_t *p)
+ 			rcu_irq_enter_irqson();				\
+ 		}							\
+ 									\
+-		it_func_ptr = rcu_dereference_raw((tp)->funcs);		\
 -									\
--	__stubs_start = .;						\
--	.stubs ADDR(.vectors) + 0x1000 : AT(__stubs_start) {		\
--		*(.stubs)						\
--	}								\
--	. = __stubs_start + SIZEOF(.stubs);				\
--	__stubs_end = .;						\
--									\
--	PROVIDE(vector_fiq_offset = vector_fiq - ADDR(.vectors));
--
--#define ARM_TCM								\
--	__itcm_start = ALIGN(4);					\
--	.text_itcm ITCM_OFFSET : AT(__itcm_start - LOAD_OFFSET) {	\
--		__sitcm_text = .;					\
--		*(.tcm.text)						\
--		*(.tcm.rodata)						\
--		. = ALIGN(4);						\
--		__eitcm_text = .;					\
--	}								\
--	. = __itcm_start + SIZEOF(.text_itcm);				\
--									\
--	__dtcm_start = .;						\
--	.data_dtcm DTCM_OFFSET : AT(__dtcm_start - LOAD_OFFSET) {	\
--		__sdtcm_data = .;					\
--		*(.tcm.data)						\
--		. = ALIGN(4);						\
--		__edtcm_data = .;					\
--	}								\
--	. = __dtcm_start + SIZEOF(.data_dtcm);
++		it_func_ptr =						\
++			rcu_dereference_raw((&__tracepoint_##name)->funcs); \
+ 		if (it_func_ptr) {					\
+-			do {						\
+-				it_func = (it_func_ptr)->func;		\
+-				__data = (it_func_ptr)->data;		\
+-				((void(*)(proto))(it_func))(args);	\
+-			} while ((++it_func_ptr)->func);		\
++			__data = (it_func_ptr)->data;			\
++			__DO_TRACE_CALL(name)(args);			\
+ 		}							\
+ 									\
+ 		if (rcuidle) {						\
+@@ -205,7 +210,7 @@ static inline struct tracepoint *tracepoint_ptr_deref(tracepoint_ptr_t *p)
+ 	static inline void trace_##name##_rcuidle(proto)		\
+ 	{								\
+ 		if (static_key_false(&__tracepoint_##name.key))		\
+-			__DO_TRACE(&__tracepoint_##name,		\
++			__DO_TRACE(name,				\
+ 				TP_PROTO(data_proto),			\
+ 				TP_ARGS(data_args),			\
+ 				TP_CONDITION(cond), 1);			\
+@@ -227,11 +232,13 @@ static inline struct tracepoint *tracepoint_ptr_deref(tracepoint_ptr_t *p)
+  * poking RCU a bit.
+  */
+ #define __DECLARE_TRACE(name, proto, args, cond, data_proto, data_args) \
++	extern int __tracepoint_iter_##name(data_proto);		\
++	DECLARE_STATIC_CALL(tp_func_##name, __tracepoint_iter_##name); \
+ 	extern struct tracepoint __tracepoint_##name;			\
+ 	static inline void trace_##name(proto)				\
+ 	{								\
+ 		if (static_key_false(&__tracepoint_##name.key))		\
+-			__DO_TRACE(&__tracepoint_##name,		\
++			__DO_TRACE(name,				\
+ 				TP_PROTO(data_proto),			\
+ 				TP_ARGS(data_args),			\
+ 				TP_CONDITION(cond), 0);			\
+@@ -277,21 +284,50 @@ static inline struct tracepoint *tracepoint_ptr_deref(tracepoint_ptr_t *p)
+  * structures, so we create an array of pointers that will be used for iteration
+  * on the tracepoints.
+  */
+-#define DEFINE_TRACE_FN(name, reg, unreg)				 \
+-	static const char __tpstrtab_##name[]				 \
+-	__section(__tracepoints_strings) = #name;			 \
+-	struct tracepoint __tracepoint_##name __used			 \
+-	__section(__tracepoints) =					 \
+-		{ __tpstrtab_##name, STATIC_KEY_INIT_FALSE, reg, unreg, NULL };\
+-	__TRACEPOINT_ENTRY(name);
++#define DEFINE_TRACE_FN(_name, _reg, _unreg, proto, args)		\
++	static const char __tpstrtab_##_name[]				\
++	__section(__tracepoints_strings) = #_name;			\
++	extern struct static_call_key STATIC_CALL_KEY(tp_func_##_name);	\
++	int __tracepoint_iter_##_name(void *__data, proto);		\
++	struct tracepoint __tracepoint_##_name	__used			\
++	__section(__tracepoints) = {					\
++		.name = __tpstrtab_##_name,				\
++		.key = STATIC_KEY_INIT_FALSE,				\
++		.static_call_key = &STATIC_CALL_KEY(tp_func_##_name),	\
++		.static_call_tramp = STATIC_CALL_TRAMP_ADDR(tp_func_##_name), \
++		.iterator = &__tracepoint_iter_##_name,			\
++		.regfunc = _reg,					\
++		.unregfunc = _unreg,					\
++		.funcs = NULL };					\
++	__TRACEPOINT_ENTRY(_name);					\
++	int __tracepoint_iter_##_name(void *__data, proto)		\
++	{								\
++		struct tracepoint_func *it_func_ptr;			\
++		void *it_func;						\
++									\
++		it_func_ptr =						\
++			rcu_dereference_raw((&__tracepoint_##_name)->funcs); \
++		do {							\
++			it_func = (it_func_ptr)->func;			\
++			__data = (it_func_ptr)->data;			\
++			((void(*)(void *, proto))(it_func))(__data, args); \
++		} while ((++it_func_ptr)->func);			\
++		return 0;						\
++	}								\
++	DEFINE_STATIC_CALL(tp_func_##_name, __tracepoint_iter_##_name);
+ 
+-#define DEFINE_TRACE(name)						\
+-	DEFINE_TRACE_FN(name, NULL, NULL);
++#define DEFINE_TRACE(name, proto, args)		\
++	DEFINE_TRACE_FN(name, NULL, NULL, PARAMS(proto), PARAMS(args));
+ 
+ #define EXPORT_TRACEPOINT_SYMBOL_GPL(name)				\
+-	EXPORT_SYMBOL_GPL(__tracepoint_##name)
++	EXPORT_SYMBOL_GPL(__tracepoint_##name);				\
++	EXPORT_SYMBOL_GPL(__tracepoint_iter_##name);			\
++	EXPORT_STATIC_CALL_GPL(tp_func_##name)
+ #define EXPORT_TRACEPOINT_SYMBOL(name)					\
+-	EXPORT_SYMBOL(__tracepoint_##name)
++	EXPORT_SYMBOL(__tracepoint_##name);				\
++	EXPORT_SYMBOL(__tracepoint_iter_##name);			\
++	EXPORT_STATIC_CALL(tp_func_##name)
++
+ 
+ #else /* !TRACEPOINTS_ENABLED */
+ #define __DECLARE_TRACE(name, proto, args, cond, data_proto, data_args) \
+@@ -320,8 +356,8 @@ static inline struct tracepoint *tracepoint_ptr_deref(tracepoint_ptr_t *p)
+ 		return false;						\
+ 	}
+ 
+-#define DEFINE_TRACE_FN(name, reg, unreg)
+-#define DEFINE_TRACE(name)
++#define DEFINE_TRACE_FN(name, reg, unreg, proto, args)
++#define DEFINE_TRACE(name, proto, args)
+ #define EXPORT_TRACEPOINT_SYMBOL_GPL(name)
+ #define EXPORT_TRACEPOINT_SYMBOL(name)
+ 
+diff --git a/include/trace/define_trace.h b/include/trace/define_trace.h
+index bd75f97..0072393 100644
+--- a/include/trace/define_trace.h
++++ b/include/trace/define_trace.h
+@@ -25,7 +25,7 @@
+ 
+ #undef TRACE_EVENT
+ #define TRACE_EVENT(name, proto, args, tstruct, assign, print)	\
+-	DEFINE_TRACE(name)
++	DEFINE_TRACE(name, PARAMS(proto), PARAMS(args))
+ 
+ #undef TRACE_EVENT_CONDITION
+ #define TRACE_EVENT_CONDITION(name, proto, args, cond, tstruct, assign, print) \
+@@ -39,12 +39,12 @@
+ #undef TRACE_EVENT_FN
+ #define TRACE_EVENT_FN(name, proto, args, tstruct,		\
+ 		assign, print, reg, unreg)			\
+-	DEFINE_TRACE_FN(name, reg, unreg)
++	DEFINE_TRACE_FN(name, reg, unreg, PARAMS(proto), PARAMS(args))
+ 
+ #undef TRACE_EVENT_FN_COND
+ #define TRACE_EVENT_FN_COND(name, proto, args, cond, tstruct,		\
+ 		assign, print, reg, unreg)			\
+-	DEFINE_TRACE_FN(name, reg, unreg)
++	DEFINE_TRACE_FN(name, reg, unreg, PARAMS(proto), PARAMS(args))
+ 
+ #undef TRACE_EVENT_NOP
+ #define TRACE_EVENT_NOP(name, proto, args, struct, assign, print)
+@@ -54,15 +54,15 @@
+ 
+ #undef DEFINE_EVENT
+ #define DEFINE_EVENT(template, name, proto, args) \
+-	DEFINE_TRACE(name)
++	DEFINE_TRACE(name, PARAMS(proto), PARAMS(args))
+ 
+ #undef DEFINE_EVENT_FN
+ #define DEFINE_EVENT_FN(template, name, proto, args, reg, unreg) \
+-	DEFINE_TRACE_FN(name, reg, unreg)
++	DEFINE_TRACE_FN(name, reg, unreg, PARAMS(proto), PARAMS(args))
+ 
+ #undef DEFINE_EVENT_PRINT
+ #define DEFINE_EVENT_PRINT(template, name, proto, args, print)	\
+-	DEFINE_TRACE(name)
++	DEFINE_TRACE(name, PARAMS(proto), PARAMS(args))
+ 
+ #undef DEFINE_EVENT_CONDITION
+ #define DEFINE_EVENT_CONDITION(template, name, proto, args, cond) \
+@@ -70,7 +70,7 @@
+ 
+ #undef DECLARE_TRACE
+ #define DECLARE_TRACE(name, proto, args)	\
+-	DEFINE_TRACE(name)
++	DEFINE_TRACE(name, PARAMS(proto), PARAMS(args))
+ 
+ #undef TRACE_INCLUDE
+ #undef __TRACE_INCLUDE
+diff --git a/kernel/tracepoint.c b/kernel/tracepoint.c
+index 8e05ed2..e92f3fb 100644
+--- a/kernel/tracepoint.c
++++ b/kernel/tracepoint.c
+@@ -221,6 +221,20 @@ static void *func_remove(struct tracepoint_func **funcs,
+ 	return old;
+ }
+ 
++static void tracepoint_update_call(struct tracepoint *tp, struct tracepoint_func *tp_funcs)
++{
++	void *func = tp->iterator;
++
++	/* Synthetic events do not have static call sites */
++	if (!tp->static_call_key)
++		return;
++
++	if (!tp_funcs[1].func)
++		func = tp_funcs[0].func;
++
++	__static_call_update(tp->static_call_key, tp->static_call_tramp, func);
++}
++
+ /*
+  * Add the probe function to a tracepoint.
+  */
+@@ -251,8 +265,9 @@ static int tracepoint_add_func(struct tracepoint *tp,
+ 	 * include/linux/tracepoint.h using rcu_dereference_sched().
+ 	 */
+ 	rcu_assign_pointer(tp->funcs, tp_funcs);
+-	if (!static_key_enabled(&tp->key))
+-		static_key_slow_inc(&tp->key);
++	tracepoint_update_call(tp, tp_funcs);
++	static_key_enable(&tp->key);
++
+ 	release_probes(old);
+ 	return 0;
+ }
+@@ -281,9 +296,11 @@ static int tracepoint_remove_func(struct tracepoint *tp,
+ 		if (tp->unregfunc && static_key_enabled(&tp->key))
+ 			tp->unregfunc();
+ 
+-		if (static_key_enabled(&tp->key))
+-			static_key_slow_dec(&tp->key);
++		static_key_disable(&tp->key);
++	} else {
++		tracepoint_update_call(tp, tp_funcs);
+ 	}
++
+ 	rcu_assign_pointer(tp->funcs, tp_funcs);
+ 	release_probes(old);
+ 	return 0;
