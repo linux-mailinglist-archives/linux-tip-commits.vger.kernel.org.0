@@ -2,51 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AA5DA259153
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  1 Sep 2020 16:50:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 888E125914A
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  1 Sep 2020 16:49:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727804AbgIAOtp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 1 Sep 2020 10:49:45 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:39636 "EHLO
+        id S1728358AbgIAOtX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 1 Sep 2020 10:49:23 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:39678 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727853AbgIALs2 (ORCPT
+        with ESMTP id S1727855AbgIALs2 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Tue, 1 Sep 2020 07:48:28 -0400
-Date:   Tue, 01 Sep 2020 11:48:03 -0000
+Date:   Tue, 01 Sep 2020 11:48:04 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1598960884;
+        s=2020; t=1598960885;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=5aGYOHRifoJZFNp/O/ZmUynNyAjOKW6Um5BGi2nxFP0=;
-        b=nqooTdcp87WwRWfVcAPXN/wFEFEZJuhx0lAd75WzCjCguliO8gNTAEbZ5CPhOhlk1NzBMo
-        RQc316ivUVNucuZGx1rJNlwVbw9RPI9y5nrL1V1IVLO36RTWP/7jNWJbJGxc5AuZRxMj+g
-        HhC4tnPBMEKoC62FTpilxv8LgsjJzgYfIqcVX3HWUFDC6jtB98nGzhj35uBUH+1tk4FQ1V
-        B0lI//dRxF/05uH2opVhoLWvkIi6Kk4CF/QSovZJVR+fIrE9a78cjOmP2XUTekl5aX+ssU
-        8rK+E0uMvEAxCavZPF1O/ntacnwd+4n2ks0V02FTvORIpO27bugtqu4v01qphg==
+        bh=pjltpei6Tq9wjnxVqrhYpDj8TfZWi5wPzkttyxE+o6A=;
+        b=psg1OveAWTfiWuxHyaCbBCClD8nrxBLH+BxdPn9yMfx+6i5dnjpJtxzZzED+tLrd8lo5bv
+        kNPXhlKw1M6qryG2Rr08G/vFw8ji7HbwWAvERP/uMg6ED9zdXigPri8FyV0aWbalVfMTGl
+        m5fjDmaqEIwvKMcNnGmGEgE660scjehgZSoPV3yQVat8vpl9/MSLy8f4C3PYg5xljdFFdt
+        A5e3l34lHQP/uaB4ZcTKkmWQRfZv15LD4Cy1xq/dg4p+rWgi0Yq5x1nLNMf0hz4km8Rsaf
+        mpKzQpFUbs/eNropHZKeq6m6ci0RGDhu7Hr7kHkJZz4zoUAY79rzye+w1bn1TQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1598960884;
+        s=2020e; t=1598960885;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=5aGYOHRifoJZFNp/O/ZmUynNyAjOKW6Um5BGi2nxFP0=;
-        b=YQOcAe3svXPZidaT94VkdPCVe4waEV6cJEH58ygn6Fj2zrdBaipGSwupqHJfb8oCP55HJ7
-        QcnBERM5vhmJjfBg==
+        bh=pjltpei6Tq9wjnxVqrhYpDj8TfZWi5wPzkttyxE+o6A=;
+        b=w4tiHiGw2EMHigQ+ao1/RmWPTN7WpYnuVWDxh02PsiSbhdvDsblxAI7kR3i5keHF5MZHO3
+        Lr2C3OiR6FV7enCg==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/static_call] static_call: Add some validation
+Subject: [tip: core/static_call] x86/alternatives: Teach text_poke_bp() to emulate RET
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
+        Ingo Molnar <mingo@kernel.org>,
+        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200818135805.161974981@infradead.org>
-References: <20200818135805.161974981@infradead.org>
+In-Reply-To: <20200818135804.982214828@infradead.org>
+References: <20200818135804.982214828@infradead.org>
 MIME-Version: 1.0
-Message-ID: <159896088327.20229.3930725558389959830.tip-bot2@tip-bot2>
+Message-ID: <159896088450.20229.9636072765757896045.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,72 +60,97 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/static_call branch of tip:
 
-Commit-ID:     6c3fce794e9d2a5ce3a948962d0808a459c40a84
-Gitweb:        https://git.kernel.org/tip/6c3fce794e9d2a5ce3a948962d0808a459c40a84
+Commit-ID:     c43a43e439e00ad2a4d98716895d961ade6bbbfc
+Gitweb:        https://git.kernel.org/tip/c43a43e439e00ad2a4d98716895d961ade6bbbfc
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Tue, 18 Aug 2020 15:57:50 +02:00
+AuthorDate:    Tue, 18 Aug 2020 15:57:47 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 01 Sep 2020 09:58:06 +02:00
+CommitterDate: Tue, 01 Sep 2020 09:58:05 +02:00
 
-static_call: Add some validation
+x86/alternatives: Teach text_poke_bp() to emulate RET
 
-Verify the text we're about to change is as we expect it to be.
-
-Requested-by: Steven Rostedt <rostedt@goodmis.org>
+Future patches will need to poke a RET instruction, provide the
+infrastructure required for this.
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20200818135805.161974981@infradead.org
+Reviewed-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Link: https://lore.kernel.org/r/20200818135804.982214828@infradead.org
 ---
- arch/x86/kernel/static_call.c | 28 ++++++++++++++++++++++++++--
- 1 file changed, 26 insertions(+), 2 deletions(-)
+ arch/x86/include/asm/text-patching.h | 19 +++++++++++++++++++
+ arch/x86/kernel/alternative.c        |  5 +++++
+ 2 files changed, 24 insertions(+)
 
-diff --git a/arch/x86/kernel/static_call.c b/arch/x86/kernel/static_call.c
-index 60a325c..55140d8 100644
---- a/arch/x86/kernel/static_call.c
-+++ b/arch/x86/kernel/static_call.c
-@@ -41,6 +41,26 @@ static void __static_call_transform(void *insn, enum insn_type type, void *func)
- 	text_poke_bp(insn, code, size, NULL);
+diff --git a/arch/x86/include/asm/text-patching.h b/arch/x86/include/asm/text-patching.h
+index 6593b42..b742178 100644
+--- a/arch/x86/include/asm/text-patching.h
++++ b/arch/x86/include/asm/text-patching.h
+@@ -53,6 +53,9 @@ extern void text_poke_finish(void);
+ #define INT3_INSN_SIZE		1
+ #define INT3_INSN_OPCODE	0xCC
+ 
++#define RET_INSN_SIZE		1
++#define RET_INSN_OPCODE		0xC3
++
+ #define CALL_INSN_SIZE		5
+ #define CALL_INSN_OPCODE	0xE8
+ 
+@@ -73,6 +76,7 @@ static __always_inline int text_opcode_size(u8 opcode)
+ 
+ 	switch(opcode) {
+ 	__CASE(INT3);
++	__CASE(RET);
+ 	__CASE(CALL);
+ 	__CASE(JMP32);
+ 	__CASE(JMP8);
+@@ -141,11 +145,26 @@ void int3_emulate_push(struct pt_regs *regs, unsigned long val)
  }
  
-+static void __static_call_validate(void *insn, bool tail)
+ static __always_inline
++unsigned long int3_emulate_pop(struct pt_regs *regs)
 +{
-+	u8 opcode = *(u8 *)insn;
-+
-+	if (tail) {
-+		if (opcode == JMP32_INSN_OPCODE ||
-+		    opcode == RET_INSN_OPCODE)
-+			return;
-+	} else {
-+		if (opcode == CALL_INSN_OPCODE ||
-+		    !memcmp(insn, ideal_nops[NOP_ATOMIC5], 5))
-+			return;
-+	}
-+
-+	/*
-+	 * If we ever trigger this, our text is corrupt, we'll probably not live long.
-+	 */
-+	WARN_ONCE(1, "unexpected static_call insn opcode 0x%x at %pS\n", opcode, insn);
++	unsigned long val = *(unsigned long *)regs->sp;
++	regs->sp += sizeof(unsigned long);
++	return val;
 +}
 +
- static inline enum insn_type __sc_insn(bool null, bool tail)
++static __always_inline
+ void int3_emulate_call(struct pt_regs *regs, unsigned long func)
  {
- 	/*
-@@ -60,11 +80,15 @@ void arch_static_call_transform(void *site, void *tramp, void *func, bool tail)
- {
- 	mutex_lock(&text_mutex);
- 
--	if (tramp)
-+	if (tramp) {
-+		__static_call_validate(tramp, true);
- 		__static_call_transform(tramp, __sc_insn(!func, true), func);
-+	}
- 
--	if (IS_ENABLED(CONFIG_HAVE_STATIC_CALL_INLINE) && site)
-+	if (IS_ENABLED(CONFIG_HAVE_STATIC_CALL_INLINE) && site) {
-+		__static_call_validate(site, tail);
- 		__static_call_transform(site, __sc_insn(!func, tail), func);
-+	}
- 
- 	mutex_unlock(&text_mutex);
+ 	int3_emulate_push(regs, regs->ip - INT3_INSN_SIZE + CALL_INSN_SIZE);
+ 	int3_emulate_jmp(regs, func);
  }
++
++static __always_inline
++void int3_emulate_ret(struct pt_regs *regs)
++{
++	unsigned long ip = int3_emulate_pop(regs);
++	int3_emulate_jmp(regs, ip);
++}
+ #endif /* !CONFIG_UML_X86 */
+ 
+ #endif /* _ASM_X86_TEXT_PATCHING_H */
+diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
+index cdaab30..4adbe65 100644
+--- a/arch/x86/kernel/alternative.c
++++ b/arch/x86/kernel/alternative.c
+@@ -1103,6 +1103,10 @@ noinstr int poke_int3_handler(struct pt_regs *regs)
+ 		 */
+ 		goto out_put;
+ 
++	case RET_INSN_OPCODE:
++		int3_emulate_ret(regs);
++		break;
++
+ 	case CALL_INSN_OPCODE:
+ 		int3_emulate_call(regs, (long)ip + tp->rel32);
+ 		break;
+@@ -1277,6 +1281,7 @@ static void text_poke_loc_init(struct text_poke_loc *tp, void *addr,
+ 
+ 	switch (tp->opcode) {
+ 	case INT3_INSN_OPCODE:
++	case RET_INSN_OPCODE:
+ 		break;
+ 
+ 	case CALL_INSN_OPCODE:
