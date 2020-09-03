@@ -2,54 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D0E0925BDFF
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  3 Sep 2020 11:00:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 56C0C25BEA5
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  3 Sep 2020 11:53:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726467AbgICJA2 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 3 Sep 2020 05:00:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41780 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726268AbgICJA0 (ORCPT
+        id S1726406AbgICJxH (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 3 Sep 2020 05:53:07 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:53202 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726025AbgICJxG (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 3 Sep 2020 05:00:26 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE6D0C061244;
-        Thu,  3 Sep 2020 02:00:25 -0700 (PDT)
-Date:   Thu, 03 Sep 2020 09:00:22 -0000
+        Thu, 3 Sep 2020 05:53:06 -0400
+Date:   Thu, 03 Sep 2020 09:53:02 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1599123623;
+        s=2020; t=1599126783;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=rEmG++bixu9W7TmmdOMxnU6Msdk80tG/JOFts20Mdh0=;
-        b=W2LChxv12wTghU9ex5WnuJjEMgybMoy4d+kM8Tf5h0U7Z8K9U5Za8NnGugFoeo10hJtNSN
-        mdGDqAogPXcpBBXzZ+mvFWmfbJDQRRCrrF+PNKbUl5CEBXfsAOddKo3jIs46BObD65so+0
-        PtFBeTDmp8kpkmskhFp8QpEtDe57Xv1pwLl78RY9+sXFloeHYZJC/asANANBFYJ1cAPmW7
-        dQo+M6AIVwRrI/L7KESwuf59r+Scg7OFQ8Tf/xz38F2anZ7b5hMerDPh95aDwMYB6MtxTI
-        C6shn7/yEVRUKfI60Sf2Z/Z7ik2lE8AzvqEm4q5dsB5PWoqE05IfmxDl8EZ2HQ==
+        bh=W/kD0C2ce/PG0VaecIEgH1SPucWeW3p3tVJLCyotnaM=;
+        b=WFmCzD4NjT+oFM2ZRJ1uDWZlT4s+tTuZ1ikizT1PccE6Fl0Kv2xuvkgIwnnhzyUHMkaLAD
+        nfnDAzOsNdlVQvWFAvGIvhg8j6Pdkr9eatmJQS0+Z/CS/hAmNQGzzejQfj734WfkytcK+K
+        87zciz/+5fDHFvK15ik+kZffmjiVJ8CyMNgNqZB4VHMcnIhOaqk31hI50A7mlin1m4XyqM
+        Ocst2lW+2UGl+9j3bJKCadySr7iYv6BYYQLYTbplns12eKagQLqaTCB4ngfxEYkMbkKIRO
+        YqU0Kf2jqOXpHoFXF6mwo00IS06Se6pZWJD8QgBjFNwe6o6cPLJbIco4wtjZmw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1599123623;
+        s=2020e; t=1599126783;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=rEmG++bixu9W7TmmdOMxnU6Msdk80tG/JOFts20Mdh0=;
-        b=sliHzsWTQQkcsGbcYS5iDuIwBVCljhXgpJp6XUlBtacYlOCuFLgd0UeZMOIOjcOeqwLPls
-        dnYPk/nUO1BCLeCA==
-From:   "tip-bot2 for Arvind Sankar" <tip-bot2@linutronix.de>
+        bh=W/kD0C2ce/PG0VaecIEgH1SPucWeW3p3tVJLCyotnaM=;
+        b=OfqRvd0v6Lo5895QArcnF/tQtQYUsr/778vQX5nqEGgOdxGffeX6tHGA0I1UErAFCTyI1H
+        w8Wlw+2qxPCfJdDw==
+From:   "tip-bot2 for peterz@infradead.org" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/cmdline: Disable jump tables for cmdline.c
-Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
-        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
+Subject: [tip: locking/urgent] locking/lockdep: Fix "USED" <- "IN-NMI" inversions
+Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Ingo Molnar <mingo@kernel.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200903023056.3914690-1-nivedita@alum.mit.edu>
-References: <20200903023056.3914690-1-nivedita@alum.mit.edu>
+In-Reply-To: <20200902160323.GK1362448@hirez.programming.kicks-ass.net>
+References: <20200902160323.GK1362448@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-Message-ID: <159912362248.20229.4425613326323772481.tip-bot2@tip-bot2>
+Message-ID: <159912678267.20229.6272648886640686007.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,44 +58,152 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the locking/urgent branch of tip:
 
-Commit-ID:     aef0148f3606117352053c015cb33734e9ee7397
-Gitweb:        https://git.kernel.org/tip/aef0148f3606117352053c015cb33734e9ee7397
-Author:        Arvind Sankar <nivedita@alum.mit.edu>
-AuthorDate:    Wed, 02 Sep 2020 22:30:56 -04:00
+Commit-ID:     23870f1227680d2aacff6f79c3ab2222bd04e86e
+Gitweb:        https://git.kernel.org/tip/23870f1227680d2aacff6f79c3ab2222bd04e86e
+Author:        peterz@infradead.org <peterz@infradead.org>
+AuthorDate:    Wed, 02 Sep 2020 18:03:23 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 03 Sep 2020 10:59:16 +02:00
+CommitterDate: Thu, 03 Sep 2020 11:19:42 +02:00
 
-x86/cmdline: Disable jump tables for cmdline.c
+locking/lockdep: Fix "USED" <- "IN-NMI" inversions
 
-When CONFIG_RETPOLINE is disabled, Clang uses a jump table for the
-switch statement in cmdline_find_option (jump tables are disabled when
-CONFIG_RETPOLINE is enabled). This function is called very early in boot
-from sme_enable() if CONFIG_AMD_MEM_ENCRYPT is enabled. At this time,
-the kernel is still executing out of the identity mapping, but the jump
-table will contain virtual addresses.
+During the LPC RCU BoF Paul asked how come the "USED" <- "IN-NMI"
+detector doesn't trip over rcu_read_lock()'s lockdep annotation.
 
-Fix this by disabling jump tables for cmdline.c when AMD_MEM_ENCRYPT is
-enabled.
+Looking into this I found a very embarrasing typo in
+verify_lock_unused():
 
-Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
+	-	if (!(class->usage_mask & LOCK_USED))
+	+	if (!(class->usage_mask & LOCKF_USED))
+
+fixing that will indeed cause rcu_read_lock() to insta-splat :/
+
+The above typo means that instead of testing for: 0x100 (1 <<
+LOCK_USED), we test for 8 (LOCK_USED), which corresponds to (1 <<
+LOCK_ENABLED_HARDIRQ).
+
+So instead of testing for _any_ used lock, it will only match any lock
+used with interrupts enabled.
+
+The rcu_read_lock() annotation uses .check=0, which means it will not
+set any of the interrupt bits and will thus never match.
+
+In order to properly fix the situation and allow rcu_read_lock() to
+correctly work, split LOCK_USED into LOCK_USED and LOCK_USED_READ and by
+having .read users set USED_READ and test USED, pure read-recursive
+locks are permitted.
+
+Fixes: f6f48e180404 ("lockdep: Teach lockdep about "USED" <- "IN-NMI" inversions")
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20200903023056.3914690-1-nivedita@alum.mit.edu
+Tested-by: Masami Hiramatsu <mhiramat@kernel.org>
+Acked-by: Paul E. McKenney <paulmck@kernel.org>
+Link: https://lore.kernel.org/r/20200902160323.GK1362448@hirez.programming.kicks-ass.net
 ---
- arch/x86/lib/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/locking/lockdep.c           | 35 ++++++++++++++++++++++++-----
+ kernel/locking/lockdep_internals.h |  2 ++-
+ 2 files changed, 31 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/lib/Makefile b/arch/x86/lib/Makefile
-index d46fff1..aa06785 100644
---- a/arch/x86/lib/Makefile
-+++ b/arch/x86/lib/Makefile
-@@ -24,7 +24,7 @@ ifdef CONFIG_FUNCTION_TRACER
- CFLAGS_REMOVE_cmdline.o = -pg
- endif
+diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
+index 54b74fa..2facbbd 100644
+--- a/kernel/locking/lockdep.c
++++ b/kernel/locking/lockdep.c
+@@ -3969,13 +3969,18 @@ static int separate_irq_context(struct task_struct *curr,
+ static int mark_lock(struct task_struct *curr, struct held_lock *this,
+ 			     enum lock_usage_bit new_bit)
+ {
+-	unsigned int new_mask = 1 << new_bit, ret = 1;
++	unsigned int old_mask, new_mask, ret = 1;
  
--CFLAGS_cmdline.o := -fno-stack-protector
-+CFLAGS_cmdline.o := -fno-stack-protector -fno-jump-tables
- endif
+ 	if (new_bit >= LOCK_USAGE_STATES) {
+ 		DEBUG_LOCKS_WARN_ON(1);
+ 		return 0;
+ 	}
  
- inat_tables_script = $(srctree)/arch/x86/tools/gen-insn-attr-x86.awk
++	if (new_bit == LOCK_USED && this->read)
++		new_bit = LOCK_USED_READ;
++
++	new_mask = 1 << new_bit;
++
+ 	/*
+ 	 * If already set then do not dirty the cacheline,
+ 	 * nor do any checks:
+@@ -3988,13 +3993,22 @@ static int mark_lock(struct task_struct *curr, struct held_lock *this,
+ 	/*
+ 	 * Make sure we didn't race:
+ 	 */
+-	if (unlikely(hlock_class(this)->usage_mask & new_mask)) {
+-		graph_unlock();
+-		return 1;
+-	}
++	if (unlikely(hlock_class(this)->usage_mask & new_mask))
++		goto unlock;
+ 
++	old_mask = hlock_class(this)->usage_mask;
+ 	hlock_class(this)->usage_mask |= new_mask;
+ 
++	/*
++	 * Save one usage_traces[] entry and map both LOCK_USED and
++	 * LOCK_USED_READ onto the same entry.
++	 */
++	if (new_bit == LOCK_USED || new_bit == LOCK_USED_READ) {
++		if (old_mask & (LOCKF_USED | LOCKF_USED_READ))
++			goto unlock;
++		new_bit = LOCK_USED;
++	}
++
+ 	if (!(hlock_class(this)->usage_traces[new_bit] = save_trace()))
+ 		return 0;
+ 
+@@ -4008,6 +4022,7 @@ static int mark_lock(struct task_struct *curr, struct held_lock *this,
+ 			return 0;
+ 	}
+ 
++unlock:
+ 	graph_unlock();
+ 
+ 	/*
+@@ -4942,12 +4957,20 @@ static void verify_lock_unused(struct lockdep_map *lock, struct held_lock *hlock
+ {
+ #ifdef CONFIG_PROVE_LOCKING
+ 	struct lock_class *class = look_up_lock_class(lock, subclass);
++	unsigned long mask = LOCKF_USED;
+ 
+ 	/* if it doesn't have a class (yet), it certainly hasn't been used yet */
+ 	if (!class)
+ 		return;
+ 
+-	if (!(class->usage_mask & LOCK_USED))
++	/*
++	 * READ locks only conflict with USED, such that if we only ever use
++	 * READ locks, there is no deadlock possible -- RCU.
++	 */
++	if (!hlock->read)
++		mask |= LOCKF_USED_READ;
++
++	if (!(class->usage_mask & mask))
+ 		return;
+ 
+ 	hlock->class_idx = class - lock_classes;
+diff --git a/kernel/locking/lockdep_internals.h b/kernel/locking/lockdep_internals.h
+index baca699..b0be156 100644
+--- a/kernel/locking/lockdep_internals.h
++++ b/kernel/locking/lockdep_internals.h
+@@ -19,6 +19,7 @@ enum lock_usage_bit {
+ #include "lockdep_states.h"
+ #undef LOCKDEP_STATE
+ 	LOCK_USED,
++	LOCK_USED_READ,
+ 	LOCK_USAGE_STATES
+ };
+ 
+@@ -40,6 +41,7 @@ enum {
+ #include "lockdep_states.h"
+ #undef LOCKDEP_STATE
+ 	__LOCKF(USED)
++	__LOCKF(USED_READ)
+ };
+ 
+ #define LOCKDEP_STATE(__STATE)	LOCKF_ENABLED_##__STATE |
