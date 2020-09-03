@@ -2,54 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 36C1025BEA7
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  3 Sep 2020 11:53:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0524625CB94
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  3 Sep 2020 22:58:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727938AbgICJxO (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 3 Sep 2020 05:53:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49846 "EHLO
+        id S1728061AbgICU57 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 3 Sep 2020 16:57:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39648 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726025AbgICJxJ (ORCPT
+        with ESMTP id S1726088AbgICU56 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 3 Sep 2020 05:53:09 -0400
+        Thu, 3 Sep 2020 16:57:58 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E1B3C061244;
-        Thu,  3 Sep 2020 02:53:09 -0700 (PDT)
-Date:   Thu, 03 Sep 2020 09:53:06 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9664C061244;
+        Thu,  3 Sep 2020 13:57:57 -0700 (PDT)
+Date:   Thu, 03 Sep 2020 20:57:53 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1599126787;
+        s=2020; t=1599166674;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=sR04Y4IpiX64/MhLdtGb3m3Fr95dmhVOP7w/M40vkn8=;
-        b=gdJD32nwrWxw3DNG3jc9zm4gbZqu3IMlV5qYawA+sOpuKjCKASWFevs/0JOURAGVyUIDxz
-        C3jjk77m6VqM3N2qD/GZrvK/LUvYSF6BZCBslIxn6D+aVlLWR2A1Qwxp2ciCR9cc2m2091
-        U0P0/K7GUs5hkhicAmp+9Xvh4VN406BY27/B//yhuUWZy6xoQtqvW7x9WjDleFeX/2SFvh
-        Zikpdm5d3YoBeOEw42pnBAslJib6NK7Xi5ezwTOftE38CjXzr0r4IpuIo84584Tl6p0yI5
-        qLuzHpnkkLJDwepT5eeO3+yDVqi8pVErn3+VQ7NPgn+KacNqM6JN3G/JrY22iA==
+        bh=rJ20J1YSqOfNWFeT2d2mdgWk7Y+euLW9UaUt0BBj1Ps=;
+        b=hPf9J6SSh/ic0F+Nv+pNMkyRTgsm2/xC9DmJ4N99inQArqfIWn9FGIkbOvfSNyI1RAM5DR
+        YO7yrLz6ncrHEU0k5S4P4SHvjcEgjaeId+/r+uoi9ThxmmUp0y44dCUM3Ejdjs4Tl/49hO
+        +muywDPpbGhZTbRSir/Z08BQH3KKYvx2DXT175r9zz3vp24rpR2qvy1X41p8NtfBxEE2c6
+        roI7UFtS8zOW/2ESBlbrUNvY+oe/nWO0eST7egUpc4tFgHgECU7/G7GPxdVRjehdZMp56I
+        ovgvMK5/4xFzpcJW22RG4QROftqViiZFA/KfICZU9rfb1ncuwlsuc9+pfG2rcw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1599126787;
+        s=2020e; t=1599166674;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=sR04Y4IpiX64/MhLdtGb3m3Fr95dmhVOP7w/M40vkn8=;
-        b=N7Mf58JITBVRGT0yK4VqcfW5gdeaPuJkTdpLcH/GKWsR1RWdoYmECmq0bRE6rpPfNxB1vm
-        CrCcr0tER5eZCDBw==
-From:   "tip-bot2 for Joerg Roedel" <tip-bot2@linutronix.de>
+        bh=rJ20J1YSqOfNWFeT2d2mdgWk7Y+euLW9UaUt0BBj1Ps=;
+        b=39at3G12Rg5PBDmWl306lDRgzDBXpFiKaviJxvhuQZzWOUG8g9EyeRE8inoYqpmxttP8+1
+        +Dhfd9sr5WBx95Ag==
+From:   "tip-bot2 for Uros Bizjak" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/mm/32: Bring back vmalloc faulting on x86_32
-Cc:     Naresh Kamboju <naresh.kamboju@linaro.org>,
-        Joerg Roedel <jroedel@suse.de>, Ingo Molnar <mingo@kernel.org>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200902155904.17544-1-joro@8bytes.org>
-References: <20200902155904.17544-1-joro@8bytes.org>
+Subject: [tip: x86/asm] x86/uaccess: Use XORL %0,%0 in __get_user_asm()
+Cc:     Uros Bizjak <ubizjak@gmail.com>, Borislav Petkov <bp@suse.de>,
+        "H. Peter Anvin (Intel)" <hpa@zytor.com>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200827180904.96399-1-ubizjak@gmail.com>
+References: <20200827180904.96399-1-ubizjak@gmail.com>
 MIME-Version: 1.0
-Message-ID: <159912678646.20229.14512202252477216460.tip-bot2@tip-bot2>
+Message-ID: <159916667349.20229.3414153735244091368.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,172 +59,46 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the x86/asm branch of tip:
 
-Commit-ID:     4819e15f740ec884a50bdc431d7f1e7638b6f7d9
-Gitweb:        https://git.kernel.org/tip/4819e15f740ec884a50bdc431d7f1e7638b6f7d9
-Author:        Joerg Roedel <jroedel@suse.de>
-AuthorDate:    Wed, 02 Sep 2020 17:59:04 +02:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 03 Sep 2020 11:23:35 +02:00
+Commit-ID:     767ec7289e83721fee205a13b459f12fb2cf922f
+Gitweb:        https://git.kernel.org/tip/767ec7289e83721fee205a13b459f12fb2cf922f
+Author:        Uros Bizjak <ubizjak@gmail.com>
+AuthorDate:    Thu, 27 Aug 2020 20:09:04 +02:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Thu, 03 Sep 2020 22:49:03 +02:00
 
-x86/mm/32: Bring back vmalloc faulting on x86_32
+x86/uaccess: Use XORL %0,%0 in __get_user_asm()
 
-One can not simply remove vmalloc faulting on x86-32. Upstream
+XORL %0,%0 is equivalent to XORQ %0,%0 as both will zero the entire
+register. Use XORL %0,%0 for all operand sizes to avoid REX prefix byte
+when legacy registers are used and to avoid size prefix byte when 16bit
+registers are used.
 
-	commit: 7f0a002b5a21 ("x86/mm: remove vmalloc faulting")
+Zeroing the full register is OK in this use case.
 
-removed it on x86 alltogether because previously the
-arch_sync_kernel_mappings() interface was introduced. This interface
-added synchronization of vmalloc/ioremap page-table updates to all
-page-tables in the system at creation time and was thought to make
-vmalloc faulting obsolete.
+As a result, the size of the .fixup section decreases by 20 bytes.
 
-But that assumption was incredibly naive.
+ [ bp: Massage commit message. ]
 
-It turned out that there is a race window between the time the vmalloc
-or ioremap code establishes a mapping and the time it synchronizes
-this change to other page-tables in the system.
-
-During this race window another CPU or thread can establish a vmalloc
-mapping which uses the same intermediate page-table entries (e.g. PMD
-or PUD) and does no synchronization in the end, because it found all
-necessary mappings already present in the kernel reference page-table.
-
-But when these intermediate page-table entries are not yet
-synchronized, the other CPU or thread will continue with a vmalloc
-address that is not yet mapped in the page-table it currently uses,
-causing an unhandled page fault and oops like below:
-
-	BUG: unable to handle page fault for address: fe80c000
-	#PF: supervisor write access in kernel mode
-	#PF: error_code(0x0002) - not-present page
-	*pde = 33183067 *pte = a8648163
-	Oops: 0002 [#1] SMP
-	CPU: 1 PID: 13514 Comm: cve-2017-17053 Tainted: G
-	...
-	Call Trace:
-	 ldt_dup_context+0x66/0x80
-	 dup_mm+0x2b3/0x480
-	 copy_process+0x133b/0x15c0
-	 _do_fork+0x94/0x3e0
-	 __ia32_sys_clone+0x67/0x80
-	 __do_fast_syscall_32+0x3f/0x70
-	 do_fast_syscall_32+0x29/0x60
-	 do_SYSENTER_32+0x15/0x20
-	 entry_SYSENTER_32+0x9f/0xf2
-	EIP: 0xb7eef549
-
-So the arch_sync_kernel_mappings() interface is racy, but removing it
-would mean to re-introduce the vmalloc_sync_all() interface, which is
-even more awful. Keep arch_sync_kernel_mappings() in place and catch
-the race condition in the page-fault handler instead.
-
-Do a partial revert of above commit to get vmalloc faulting on x86-32
-back in place.
-
-Fixes: 7f0a002b5a21 ("x86/mm: remove vmalloc faulting")
-Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20200902155904.17544-1-joro@8bytes.org
+Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Reviewed-by: H. Peter Anvin (Intel) <hpa@zytor.com>
+Link: https://lkml.kernel.org/r/20200827180904.96399-1-ubizjak@gmail.com
 ---
- arch/x86/mm/fault.c | 78 ++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 78 insertions(+)
+ arch/x86/include/asm/uaccess.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
-index 35f1498..6e3e8a1 100644
---- a/arch/x86/mm/fault.c
-+++ b/arch/x86/mm/fault.c
-@@ -190,6 +190,53 @@ static inline pmd_t *vmalloc_sync_one(pgd_t *pgd, unsigned long address)
- 	return pmd_k;
- }
- 
-+/*
-+ *   Handle a fault on the vmalloc or module mapping area
-+ *
-+ *   This is needed because there is a race condition between the time
-+ *   when the vmalloc mapping code updates the PMD to the point in time
-+ *   where it synchronizes this update with the other page-tables in the
-+ *   system.
-+ *
-+ *   In this race window another thread/CPU can map an area on the same
-+ *   PMD, finds it already present and does not synchronize it with the
-+ *   rest of the system yet. As a result v[mz]alloc might return areas
-+ *   which are not mapped in every page-table in the system, causing an
-+ *   unhandled page-fault when they are accessed.
-+ */
-+static noinline int vmalloc_fault(unsigned long address)
-+{
-+	unsigned long pgd_paddr;
-+	pmd_t *pmd_k;
-+	pte_t *pte_k;
-+
-+	/* Make sure we are in vmalloc area: */
-+	if (!(address >= VMALLOC_START && address < VMALLOC_END))
-+		return -1;
-+
-+	/*
-+	 * Synchronize this task's top level page-table
-+	 * with the 'reference' page table.
-+	 *
-+	 * Do _not_ use "current" here. We might be inside
-+	 * an interrupt in the middle of a task switch..
-+	 */
-+	pgd_paddr = read_cr3_pa();
-+	pmd_k = vmalloc_sync_one(__va(pgd_paddr), address);
-+	if (!pmd_k)
-+		return -1;
-+
-+	if (pmd_large(*pmd_k))
-+		return 0;
-+
-+	pte_k = pte_offset_kernel(pmd_k, address);
-+	if (!pte_present(*pte_k))
-+		return -1;
-+
-+	return 0;
-+}
-+NOKPROBE_SYMBOL(vmalloc_fault);
-+
- void arch_sync_kernel_mappings(unsigned long start, unsigned long end)
- {
- 	unsigned long addr;
-@@ -1110,6 +1157,37 @@ do_kern_addr_fault(struct pt_regs *regs, unsigned long hw_error_code,
- 	 */
- 	WARN_ON_ONCE(hw_error_code & X86_PF_PK);
- 
-+#ifdef CONFIG_X86_32
-+	/*
-+	 * We can fault-in kernel-space virtual memory on-demand. The
-+	 * 'reference' page table is init_mm.pgd.
-+	 *
-+	 * NOTE! We MUST NOT take any locks for this case. We may
-+	 * be in an interrupt or a critical region, and should
-+	 * only copy the information from the master page table,
-+	 * nothing more.
-+	 *
-+	 * Before doing this on-demand faulting, ensure that the
-+	 * fault is not any of the following:
-+	 * 1. A fault on a PTE with a reserved bit set.
-+	 * 2. A fault caused by a user-mode access.  (Do not demand-
-+	 *    fault kernel memory due to user-mode accesses).
-+	 * 3. A fault caused by a page-level protection violation.
-+	 *    (A demand fault would be on a non-present page which
-+	 *     would have X86_PF_PROT==0).
-+	 *
-+	 * This is only needed to close a race condition on x86-32 in
-+	 * the vmalloc mapping/unmapping code. See the comment above
-+	 * vmalloc_fault() for details. On x86-64 the race does not
-+	 * exist as the vmalloc mappings don't need to be synchronized
-+	 * there.
-+	 */
-+	if (!(hw_error_code & (X86_PF_RSVD | X86_PF_USER | X86_PF_PROT))) {
-+		if (vmalloc_fault(address) >= 0)
-+			return;
-+	}
-+#endif
-+
- 	/* Was the fault spurious, caused by lazy TLB invalidation? */
- 	if (spurious_kernel_fault(hw_error_code, address))
- 		return;
+diff --git a/arch/x86/include/asm/uaccess.h b/arch/x86/include/asm/uaccess.h
+index ecefaff..2bffba2 100644
+--- a/arch/x86/include/asm/uaccess.h
++++ b/arch/x86/include/asm/uaccess.h
+@@ -343,7 +343,7 @@ do {									\
+ 		     "2:\n"						\
+ 		     ".section .fixup,\"ax\"\n"				\
+ 		     "3:	mov %[efault],%[errout]\n"		\
+-		     "	xor"itype" %[output],%[output]\n"		\
++		     "	xorl %k[output],%k[output]\n"			\
+ 		     "	jmp 2b\n"					\
+ 		     ".previous\n"					\
+ 		     _ASM_EXTABLE_UA(1b, 3b)				\
