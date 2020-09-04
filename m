@@ -2,50 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 386AA25D42E
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  4 Sep 2020 11:04:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C3A5025D8BC
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  4 Sep 2020 14:39:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726575AbgIDJEt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 4 Sep 2020 05:04:49 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:59728 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728588AbgIDJEs (ORCPT
+        id S1730206AbgIDMjB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 4 Sep 2020 08:39:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43162 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729977AbgIDMi5 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 4 Sep 2020 05:04:48 -0400
-Date:   Fri, 04 Sep 2020 09:04:45 -0000
+        Fri, 4 Sep 2020 08:38:57 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28374C061244;
+        Fri,  4 Sep 2020 05:38:57 -0700 (PDT)
+Date:   Fri, 04 Sep 2020 12:38:53 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1599210286;
+        s=2020; t=1599223134;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=3pXhkGE/5YJ/Y/c1n9+hliktj5eiIH9x3Kz+uL2J5Dg=;
-        b=SdTflJSr/USF0WFd7zpzgpkBsW4wizFldlirmwjwv4L1gNQ3YNy8eRUdqw1cWxDDgAoDVs
-        xiYwgpGJm+/io8a1HaegYPxfEu6MO3Dp0AgsneJSQ4A6FSgFt2rpAzDr4S8DOOWUaLTwT7
-        LFqHYpRhlm+U7GbdqRInaO26QbOrxIVlxC/0bKVO59Gul1vlD6ppwJJ9yTFAdVeqcwoOc8
-        9XiZETRqSuHKCY75gxBOWkO93Q5FgLkoQnf28DHoO+gXmdIVyEy1bn1yWeo81UVAGFbo6/
-        oQ/3So6zKWdxA+lYrnWMIcyE+jHJ/l2MxKxAyumZM7hnQyT713fqKbjWGb6hdA==
+        bh=2BtwCFAPeIXzjXcS32i88wEyUjEx2NjSefEqQEE7hVQ=;
+        b=B6NcvCBR/B0Harbi8qrbNhSbAa5U6ajDgeLVBhqaxY+83QDXsWX+3qK5MTJNqd9wRrBEwu
+        Uqev3FDBAj+TBmW+L4N8oVXhWUambGbDJJ1WtsQ2MYCDa9cGhHQSU3EMGUBIwcxQneYpHG
+        s4vZRj3hUjCv/QxVhuNGGTdemEpwEAH0A5hGjRa/Klyqwim3MIN84bk04UgpT+dW+qXR6l
+        dpxV+LMi9VdB6izpE/Oqd6S84Ba6E6vfyDGZHwxwwl6akEXmniWrgHkb9+ayesleIQcvGd
+        fhR1VYID2fMwFjfmb7CgxRhpe53C5DLM4JOd0jB/jQCBiucal6PrsU6sOyliLw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1599210286;
+        s=2020e; t=1599223134;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=3pXhkGE/5YJ/Y/c1n9+hliktj5eiIH9x3Kz+uL2J5Dg=;
-        b=32sDY8bvnYXnTuhsM+CVl+qV80Q454fIaRV6PtrcjZN80/lDGwcXKeSD271TT5iEgalKz4
-        Jq4V3l24CzxNzIDA==
-From:   "tip-bot2 for Uros Bizjak" <tip-bot2@linutronix.de>
+        bh=2BtwCFAPeIXzjXcS32i88wEyUjEx2NjSefEqQEE7hVQ=;
+        b=fweQi5FWg3TQrkSMAwm8PBYdB/YUfjtBNRoLNOcG31wyuad/soV7sHgyQDIrSSq2xI/gDR
+        ljnIa8UmmD/nlsCg==
+From:   "tip-bot2 for Daniel Bristot de Oliveira" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cleanups] x86/entry/64: Do not include inst.h in calling.h
-Cc:     Uros Bizjak <ubizjak@gmail.com>, Borislav Petkov <bp@suse.de>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200827171735.93825-1-ubizjak@gmail.com>
-References: <20200827171735.93825-1-ubizjak@gmail.com>
+Subject: [tip: sched/core] MAINTAINERS: Add myself as SCHED_DEADLINE reviewer
+Cc:     Daniel Bristot de Oliveira <bristot@redhat.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        Peter Zijlstra <a.p.zijlstra@chello.nl>,
+        Juri Lelli <juri.lelli@redhat.com>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <4476a6da70949913a59dab9aacfbd12162c1fbd7.1599146667.git.bristot@redhat.com>
+References: <4476a6da70949913a59dab9aacfbd12162c1fbd7.1599146667.git.bristot@redhat.com>
 MIME-Version: 1.0
-Message-ID: <159921028558.20229.1866185910671534802.tip-bot2@tip-bot2>
+Message-ID: <159922313318.20229.15806981631955100999.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -55,41 +61,37 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cleanups branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     eb3621798bcdd34ba480109bac357ba6a784d3e2
-Gitweb:        https://git.kernel.org/tip/eb3621798bcdd34ba480109bac357ba6a784d3e2
-Author:        Uros Bizjak <ubizjak@gmail.com>
-AuthorDate:    Thu, 27 Aug 2020 19:17:35 +02:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Fri, 04 Sep 2020 10:59:21 +02:00
+Commit-ID:     153908ebc8b5721658c4aba92779fc6e3e2d5a61
+Gitweb:        https://git.kernel.org/tip/153908ebc8b5721658c4aba92779fc6e3e2d5a61
+Author:        Daniel Bristot de Oliveira <bristot@redhat.com>
+AuthorDate:    Fri, 04 Sep 2020 11:26:23 +02:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Fri, 04 Sep 2020 14:35:40 +02:00
 
-x86/entry/64: Do not include inst.h in calling.h
+MAINTAINERS: Add myself as SCHED_DEADLINE reviewer
 
-inst.h was included in calling.h solely to instantiate the RDPID macro.
-The usage of RDPID was removed in
+As discussed with Juri and Peter.
 
-  6a3ea3e68b8a ("x86/entry/64: Do not use RDPID in paranoid entry to accomodate KVM")
-
-so remove the include.
-
-Fixes: 6a3ea3e68b8a ("x86/entry/64: Do not use RDPID in paranoid entry to accomodate KVM")
-Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20200827171735.93825-1-ubizjak@gmail.com
+Signed-off-by: Daniel Bristot de Oliveira <bristot@redhat.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: Peter Zijlstra <a.p.zijlstra@chello.nl>
+Acked-by: Juri Lelli <juri.lelli@redhat.com>
+Link: https://lore.kernel.org/r/4476a6da70949913a59dab9aacfbd12162c1fbd7.1599146667.git.bristot@redhat.com
 ---
- arch/x86/entry/calling.h | 1 -
- 1 file changed, 1 deletion(-)
+ MAINTAINERS | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/entry/calling.h b/arch/x86/entry/calling.h
-index ae9b0d4..07a9331 100644
---- a/arch/x86/entry/calling.h
-+++ b/arch/x86/entry/calling.h
-@@ -6,7 +6,6 @@
- #include <asm/percpu.h>
- #include <asm/asm-offsets.h>
- #include <asm/processor-flags.h>
--#include <asm/inst.h>
- 
- /*
- 
+diff --git a/MAINTAINERS b/MAINTAINERS
+index deaafb6..713f82b 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -15355,6 +15355,7 @@ R:	Dietmar Eggemann <dietmar.eggemann@arm.com> (SCHED_NORMAL)
+ R:	Steven Rostedt <rostedt@goodmis.org> (SCHED_FIFO/SCHED_RR)
+ R:	Ben Segall <bsegall@google.com> (CONFIG_CFS_BANDWIDTH)
+ R:	Mel Gorman <mgorman@suse.de> (CONFIG_NUMA_BALANCING)
++R:	Daniel Bristot de Oliveira <bristot@redhat.com> (SCHED_DEADLINE)
+ L:	linux-kernel@vger.kernel.org
+ S:	Maintained
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git sched/core
