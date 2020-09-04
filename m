@@ -2,51 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D024625DA82
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  4 Sep 2020 15:53:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A90B25DD1B
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  4 Sep 2020 17:22:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730686AbgIDNxJ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 4 Sep 2020 09:53:09 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:33272 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730683AbgIDNxE (ORCPT
+        id S1730878AbgIDPWX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 4 Sep 2020 11:22:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40100 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730160AbgIDPV7 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 4 Sep 2020 09:53:04 -0400
-Date:   Fri, 04 Sep 2020 13:52:59 -0000
+        Fri, 4 Sep 2020 11:21:59 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BB5BC061244;
+        Fri,  4 Sep 2020 08:21:59 -0700 (PDT)
+Date:   Fri, 04 Sep 2020 15:21:54 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1599227580;
+        s=2020; t=1599232915;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=vkr/HLIUaEn11wmrkQXWUzeWfLZT8iGVmKjEtG27FxE=;
-        b=UoFttgUellNkojHltJAC9vwplQQG0ztWz07G2ZJh0Ez+TuDB+4Fc8EuxzWiYkdEVX8W6yQ
-        N164fsHMVRS9y58AMpgZMfMltMCUsCDgWL5uDVqFPaezSivV1ye3mEneaMuLMiDRcnlbIm
-        7AFWsG4Xthx/4s5q8iNC+oOkyp16DuNUw/unJsXyaAAOyYXEd+H9Ez3Jtwq0+U0+EZq88c
-        jLZM8GPaBA+uRzdddHrmXqllBlbp9chOBEglMEELITFiVENcX5i+b+oZVPsJiIOKI+oFTF
-        mKCGjr+qUPgfoXNQFONXj/DpbjfZuRx4172/VSxbslfxKZx9COHd99B32joxnQ==
+        bh=LaX8mwKBi/XAJYbEflwlLJF4Sx6k1YhDQbEOGqO2B2U=;
+        b=SyjR3aW8eL3UhKO08YYBRO1cqRRerjvSHPkcjV2QX7aKIVDo3hTaTc2xQSdudd8Q4guAqT
+        ChlgJGqzGeA1qaVLz+l4uHm0gLkaHg7iXw32xtKQ1HjSWXlwbXdVvqZKcYyiP7l8FvDJh9
+        oGIxsnPotxXLn5dZW3K0ZrA+veAScWGyrQFyXAMnJmlwtPKigD9X7mo/euOmBuRMJDzOlJ
+        H4VyUnkcnwVwO3JKXJVWDHfz97px+91bdRZ9beEX0O2AZ5ZFdzuZeVmZxAKtHXxqn9mXn4
+        WltVkuzEGq0F7CJWbU5U18UVMG3pI2BDX9CrtjETLvj/J1299itr1otZaCgJNw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1599227580;
+        s=2020e; t=1599232915;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=vkr/HLIUaEn11wmrkQXWUzeWfLZT8iGVmKjEtG27FxE=;
-        b=PkK8n1ULq+emneJrCYLZPYZ9g0lj9/WUwquEnWqhTL3KQ2wfQy8Tu0GBcmfHj7b97WD/5y
-        EHPTeCRS3kYIl1AA==
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+        bh=LaX8mwKBi/XAJYbEflwlLJF4Sx6k1YhDQbEOGqO2B2U=;
+        b=N/2YWXu3cC8cyAeel8JYKDuSEuIML+9C15GQPYaJa8gZQaLAWwIH3oU8vO8fqIpMNWGpAe
+        01pb02D81fIUmzDw==
+From:   "tip-bot2 for Akshay Gupta" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/entry: Unbreak 32bit fast syscall
-Cc:     Andy Lutomirski <luto@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
+Subject: [tip: ras/core] x86/mce: Increase maximum number of banks to 64
+Cc:     Akshay Gupta <Akshay.Gupta@amd.com>,
+        Yazen Ghannam <yazen.ghannam@amd.com>,
+        Borislav Petkov <bp@suse.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <87k0xdjbtt.fsf@nanos.tec.linutronix.de>
-References: <87k0xdjbtt.fsf@nanos.tec.linutronix.de>
+In-Reply-To: <20200828192412.320052-1-Yazen.Ghannam@amd.com>
+References: <20200828192412.320052-1-Yazen.Ghannam@amd.com>
 MIME-Version: 1.0
-Message-ID: <159922757926.20229.18276989692142979100.tip-bot2@tip-bot2>
+Message-ID: <159923291431.20229.1749748339999502192.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -56,244 +60,91 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the ras/core branch of tip:
 
-Commit-ID:     4facb95b7adaf77e2da73aafb9ba60996fe42a12
-Gitweb:        https://git.kernel.org/tip/4facb95b7adaf77e2da73aafb9ba60996fe42a12
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Wed, 02 Sep 2020 01:50:54 +02:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 04 Sep 2020 15:50:14 +02:00
+Commit-ID:     a0bc32b3cacf194dc479b342f006203fd1e1941a
+Gitweb:        https://git.kernel.org/tip/a0bc32b3cacf194dc479b342f006203fd1e1941a
+Author:        Akshay Gupta <Akshay.Gupta@amd.com>
+AuthorDate:    Fri, 28 Aug 2020 19:24:12 
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Fri, 04 Sep 2020 17:17:27 +02:00
 
-x86/entry: Unbreak 32bit fast syscall
+x86/mce: Increase maximum number of banks to 64
 
-Andy reported that the syscall treacing for 32bit fast syscall fails:
+...because future AMD systems will support up to 64 MCA banks per CPU.
 
-# ./tools/testing/selftests/x86/ptrace_syscall_32
-...
-[RUN] SYSEMU
-[FAIL] Initial args are wrong (nr=224, args=10 11 12 13 14 4289172732)
-...
-[RUN] SYSCALL
-[FAIL] Initial args are wrong (nr=29, args=0 0 0 0 0 4289172732)
- 
-The eason is that the conversion to generic entry code moved the retrieval
-of the sixth argument (EBP) after the point where the syscall entry work
-runs, i.e. ptrace, seccomp, audit...
+MAX_NR_BANKS is used to allocate a number of data structures, and it is
+used as a ceiling for values read from MCG_CAP[Count]. Therefore, this
+change will have no functional effect on existing systems with 32 or
+fewer MCA banks per CPU.
 
-Unbreak it by providing a split up version of syscall_enter_from_user_mode().
+However, this will increase the size of the following structures:
 
-- syscall_enter_from_user_mode_prepare() establishes state and enables
-  interrupts
+Global bitmaps:
+- core.c / mce_banks_ce_disabled
+- core.c / all_banks
+- core.c / valid_banks
+- core.c / toclear
+- Total: 32 new bits * 4 bitmaps = 16 new bytes
 
-- syscall_enter_from_user_mode_work() runs the entry work
+Per-CPU bitmaps:
+- core.c / mce_poll_banks
+- intel.c / mce_banks_owned
+- Total: 32 new bits * 2 bitmaps = 8 new bytes
 
-Replace the call to syscall_enter_from_user_mode() in the 32bit fast
-syscall C-entry with the split functions and stick the EBP retrieval
-between them.
+The bitmaps are arrays of longs. So this change will only affect 32-bit
+execution, since there will be one additional long used. There will be
+no additional memory use on 64-bit execution, because the size of long
+is 64 bits.
 
-Fixes: 27d6b4d14f5c ("x86/entry: Use generic syscall entry function")
-Reported-by: Andy Lutomirski <luto@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/87k0xdjbtt.fsf@nanos.tec.linutronix.de
+Global structs:
+- amd.c / struct smca_bank smca_banks[]: 16 bytes per bank
+- core.c / struct mce_bank_dev mce_bank_devs[]: 56 bytes per bank
+- Total: 32 new banks * (16 + 56) bytes = 2304 new bytes
+
+Per-CPU structs:
+- core.c / struct mce_bank mce_banks_array[]: 16 bytes per bank
+- Total: 32 new banks * 16 bytes = 512 new bytes
+
+32-bit
+Total global size increase: 2320 bytes
+Total per-CPU size increase: 520 bytes
+
+64-bit
+Total global size increase: 2304 bytes
+Total per-CPU size increase: 512 bytes
+
+This additional memory should still fit within the existing .data
+section of the kernel binary. However, in the case where it doesn't
+fit, an additional page (4kB) of memory will be added to the binary to
+accommodate the extra data which will be the maximum size increase of
+vmlinux.
+
+Signed-off-by: Akshay Gupta <Akshay.Gupta@amd.com>
+[ Adjust commit message and code comment. ]
+Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lkml.kernel.org/r/20200828192412.320052-1-Yazen.Ghannam@amd.com
 ---
- arch/x86/entry/common.c      | 29 +++++++++++++-------
- include/linux/entry-common.h | 51 ++++++++++++++++++++++++++++-------
- kernel/entry/common.c        | 35 +++++++++++++++++++-----
- 3 files changed, 91 insertions(+), 24 deletions(-)
+ arch/x86/include/asm/mce.h | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/entry/common.c b/arch/x86/entry/common.c
-index 48512c7..2f84c7c 100644
---- a/arch/x86/entry/common.c
-+++ b/arch/x86/entry/common.c
-@@ -60,16 +60,10 @@ __visible noinstr void do_syscall_64(unsigned long nr, struct pt_regs *regs)
- #if defined(CONFIG_X86_32) || defined(CONFIG_IA32_EMULATION)
- static __always_inline unsigned int syscall_32_enter(struct pt_regs *regs)
- {
--	unsigned int nr = (unsigned int)regs->orig_ax;
--
- 	if (IS_ENABLED(CONFIG_IA32_EMULATION))
- 		current_thread_info()->status |= TS_COMPAT;
--	/*
--	 * Subtlety here: if ptrace pokes something larger than 2^32-1 into
--	 * orig_ax, the unsigned int return value truncates it.  This may
--	 * or may not be necessary, but it matches the old asm behavior.
--	 */
--	return (unsigned int)syscall_enter_from_user_mode(regs, nr);
-+
-+	return (unsigned int)regs->orig_ax;
- }
+diff --git a/arch/x86/include/asm/mce.h b/arch/x86/include/asm/mce.h
+index 6adced6..109af5c 100644
+--- a/arch/x86/include/asm/mce.h
++++ b/arch/x86/include/asm/mce.h
+@@ -200,12 +200,8 @@ void mce_setup(struct mce *m);
+ void mce_log(struct mce *m);
+ DECLARE_PER_CPU(struct device *, mce_device);
  
- /*
-@@ -91,15 +85,29 @@ __visible noinstr void do_int80_syscall_32(struct pt_regs *regs)
- {
- 	unsigned int nr = syscall_32_enter(regs);
+-/*
+- * Maximum banks number.
+- * This is the limit of the current register layout on
+- * Intel CPUs.
+- */
+-#define MAX_NR_BANKS 32
++/* Maximum number of MCA banks per CPU. */
++#define MAX_NR_BANKS 64
  
-+	/*
-+	 * Subtlety here: if ptrace pokes something larger than 2^32-1 into
-+	 * orig_ax, the unsigned int return value truncates it.  This may
-+	 * or may not be necessary, but it matches the old asm behavior.
-+	 */
-+	nr = (unsigned int)syscall_enter_from_user_mode(regs, nr);
-+
- 	do_syscall_32_irqs_on(regs, nr);
- 	syscall_exit_to_user_mode(regs);
- }
- 
- static noinstr bool __do_fast_syscall_32(struct pt_regs *regs)
- {
--	unsigned int nr	= syscall_32_enter(regs);
-+	unsigned int nr = syscall_32_enter(regs);
- 	int res;
- 
-+	/*
-+	 * This cannot use syscall_enter_from_user_mode() as it has to
-+	 * fetch EBP before invoking any of the syscall entry work
-+	 * functions.
-+	 */
-+	syscall_enter_from_user_mode_prepare(regs);
-+
- 	instrumentation_begin();
- 	/* Fetch EBP from where the vDSO stashed it. */
- 	if (IS_ENABLED(CONFIG_X86_64)) {
-@@ -122,6 +130,9 @@ static noinstr bool __do_fast_syscall_32(struct pt_regs *regs)
- 		return false;
- 	}
- 
-+	/* The case truncates any ptrace induced syscall nr > 2^32 -1 */
-+	nr = (unsigned int)syscall_enter_from_user_mode_work(regs, nr);
-+
- 	/* Now this is just like a normal syscall. */
- 	do_syscall_32_irqs_on(regs, nr);
- 	syscall_exit_to_user_mode(regs);
-diff --git a/include/linux/entry-common.h b/include/linux/entry-common.h
-index efebbff..159c747 100644
---- a/include/linux/entry-common.h
-+++ b/include/linux/entry-common.h
-@@ -110,15 +110,30 @@ static inline __must_check int arch_syscall_enter_tracehook(struct pt_regs *regs
- #endif
- 
- /**
-- * syscall_enter_from_user_mode - Check and handle work before invoking
-- *				 a syscall
-+ * syscall_enter_from_user_mode_prepare - Establish state and enable interrupts
-  * @regs:	Pointer to currents pt_regs
-- * @syscall:	The syscall number
-  *
-  * Invoked from architecture specific syscall entry code with interrupts
-  * disabled. The calling code has to be non-instrumentable. When the
-- * function returns all state is correct and the subsequent functions can be
-- * instrumented.
-+ * function returns all state is correct, interrupts are enabled and the
-+ * subsequent functions can be instrumented.
-+ *
-+ * This handles lockdep, RCU (context tracking) and tracing state.
-+ *
-+ * This is invoked when there is extra architecture specific functionality
-+ * to be done between establishing state and handling user mode entry work.
-+ */
-+void syscall_enter_from_user_mode_prepare(struct pt_regs *regs);
-+
-+/**
-+ * syscall_enter_from_user_mode_work - Check and handle work before invoking
-+ *				       a syscall
-+ * @regs:	Pointer to currents pt_regs
-+ * @syscall:	The syscall number
-+ *
-+ * Invoked from architecture specific syscall entry code with interrupts
-+ * enabled after invoking syscall_enter_from_user_mode_prepare() and extra
-+ * architecture specific work.
-  *
-  * Returns: The original or a modified syscall number
-  *
-@@ -127,12 +142,30 @@ static inline __must_check int arch_syscall_enter_tracehook(struct pt_regs *regs
-  * syscall_set_return_value() first.  If neither of those are called and -1
-  * is returned, then the syscall will fail with ENOSYS.
-  *
-- * The following functionality is handled here:
-+ * It handles the following work items:
-  *
-- *  1) Establish state (lockdep, RCU (context tracking), tracing)
-- *  2) TIF flag dependent invocations of arch_syscall_enter_tracehook(),
-+ *  1) TIF flag dependent invocations of arch_syscall_enter_tracehook(),
-  *     __secure_computing(), trace_sys_enter()
-- *  3) Invocation of audit_syscall_entry()
-+ *  2) Invocation of audit_syscall_entry()
-+ */
-+long syscall_enter_from_user_mode_work(struct pt_regs *regs, long syscall);
-+
-+/**
-+ * syscall_enter_from_user_mode - Establish state and check and handle work
-+ *				  before invoking a syscall
-+ * @regs:	Pointer to currents pt_regs
-+ * @syscall:	The syscall number
-+ *
-+ * Invoked from architecture specific syscall entry code with interrupts
-+ * disabled. The calling code has to be non-instrumentable. When the
-+ * function returns all state is correct, interrupts are enabled and the
-+ * subsequent functions can be instrumented.
-+ *
-+ * This is combination of syscall_enter_from_user_mode_prepare() and
-+ * syscall_enter_from_user_mode_work().
-+ *
-+ * Returns: The original or a modified syscall number. See
-+ * syscall_enter_from_user_mode_work() for further explanation.
-  */
- long syscall_enter_from_user_mode(struct pt_regs *regs, long syscall);
- 
-diff --git a/kernel/entry/common.c b/kernel/entry/common.c
-index fcae019..1868359 100644
---- a/kernel/entry/common.c
-+++ b/kernel/entry/common.c
-@@ -69,22 +69,45 @@ static long syscall_trace_enter(struct pt_regs *regs, long syscall,
- 	return ret ? : syscall_get_nr(current, regs);
- }
- 
--noinstr long syscall_enter_from_user_mode(struct pt_regs *regs, long syscall)
-+static __always_inline long
-+__syscall_enter_from_user_work(struct pt_regs *regs, long syscall)
- {
- 	unsigned long ti_work;
- 
--	enter_from_user_mode(regs);
--	instrumentation_begin();
--
--	local_irq_enable();
- 	ti_work = READ_ONCE(current_thread_info()->flags);
- 	if (ti_work & SYSCALL_ENTER_WORK)
- 		syscall = syscall_trace_enter(regs, syscall, ti_work);
--	instrumentation_end();
- 
- 	return syscall;
- }
- 
-+long syscall_enter_from_user_mode_work(struct pt_regs *regs, long syscall)
-+{
-+	return __syscall_enter_from_user_work(regs, syscall);
-+}
-+
-+noinstr long syscall_enter_from_user_mode(struct pt_regs *regs, long syscall)
-+{
-+	long ret;
-+
-+	enter_from_user_mode(regs);
-+
-+	instrumentation_begin();
-+	local_irq_enable();
-+	ret = __syscall_enter_from_user_work(regs, syscall);
-+	instrumentation_end();
-+
-+	return ret;
-+}
-+
-+noinstr void syscall_enter_from_user_mode_prepare(struct pt_regs *regs)
-+{
-+	enter_from_user_mode(regs);
-+	instrumentation_begin();
-+	local_irq_enable();
-+	instrumentation_end();
-+}
-+
- /**
-  * exit_to_user_mode - Fixup state when exiting to user mode
-  *
+ #ifdef CONFIG_X86_MCE_INTEL
+ void mce_intel_feature_init(struct cpuinfo_x86 *c);
