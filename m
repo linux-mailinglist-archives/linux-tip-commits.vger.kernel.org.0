@@ -2,54 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0524625CB94
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  3 Sep 2020 22:58:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DEFD925D1B6
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  4 Sep 2020 08:59:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728061AbgICU57 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 3 Sep 2020 16:57:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39648 "EHLO
+        id S1726114AbgIDG7T (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 4 Sep 2020 02:59:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47152 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726088AbgICU56 (ORCPT
+        with ESMTP id S1726089AbgIDG7S (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 3 Sep 2020 16:57:58 -0400
+        Fri, 4 Sep 2020 02:59:18 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9664C061244;
-        Thu,  3 Sep 2020 13:57:57 -0700 (PDT)
-Date:   Thu, 03 Sep 2020 20:57:53 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4CAA8C061244;
+        Thu,  3 Sep 2020 23:59:18 -0700 (PDT)
+Date:   Fri, 04 Sep 2020 06:59:14 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1599166674;
+        s=2020; t=1599202756;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=rJ20J1YSqOfNWFeT2d2mdgWk7Y+euLW9UaUt0BBj1Ps=;
-        b=hPf9J6SSh/ic0F+Nv+pNMkyRTgsm2/xC9DmJ4N99inQArqfIWn9FGIkbOvfSNyI1RAM5DR
-        YO7yrLz6ncrHEU0k5S4P4SHvjcEgjaeId+/r+uoi9ThxmmUp0y44dCUM3Ejdjs4Tl/49hO
-        +muywDPpbGhZTbRSir/Z08BQH3KKYvx2DXT175r9zz3vp24rpR2qvy1X41p8NtfBxEE2c6
-        roI7UFtS8zOW/2ESBlbrUNvY+oe/nWO0eST7egUpc4tFgHgECU7/G7GPxdVRjehdZMp56I
-        ovgvMK5/4xFzpcJW22RG4QROftqViiZFA/KfICZU9rfb1ncuwlsuc9+pfG2rcw==
+        bh=DQfHpPgYmXHjke7UnAkKo5tbCxBXGR0oKw4pe7S8E2E=;
+        b=4xBBL6TEQyyNhoeIOUipHkUT56W1iONCba4TR1iZXiypSdQmS+7TpBLgaUL+p6PoNORQGa
+        shmXtM9j/9EyJjDao/suykQixEmFv4LcmB5Z2DXw08SiMViuFTww1P++lDtDg0F3+vN2pB
+        VEV5vz8o0M+3tY3vPvFQbVNsfK9W4PsoFUfos2goWbWBNh4q+ulnyyPI3jw2OXw5WQwhAX
+        pa1i1B3lBEvKPv2GDOQ/9mDffjykSPCjLqihpq/wMRIfFSX9STSxd4NQIcUwWfKL34wgTr
+        YzmgFTx/DzWAebQhUofcPJkS97QsKSQozKjU/NTz1EHn/KaapQD0jlDRpHqhwQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1599166674;
+        s=2020e; t=1599202756;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=rJ20J1YSqOfNWFeT2d2mdgWk7Y+euLW9UaUt0BBj1Ps=;
-        b=39at3G12Rg5PBDmWl306lDRgzDBXpFiKaviJxvhuQZzWOUG8g9EyeRE8inoYqpmxttP8+1
-        +Dhfd9sr5WBx95Ag==
-From:   "tip-bot2 for Uros Bizjak" <tip-bot2@linutronix.de>
+        bh=DQfHpPgYmXHjke7UnAkKo5tbCxBXGR0oKw4pe7S8E2E=;
+        b=u/Fav/eZDrqjcyWksy7MiKH0RCm8fXkz/hy3kXNKXc2OJin3rWbofePMa+k95lBM1YDeVV
+        AZ7g0N9aO7BGtMDQ==
+From:   "tip-bot2 for Huang Ying" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/asm] x86/uaccess: Use XORL %0,%0 in __get_user_asm()
-Cc:     Uros Bizjak <ubizjak@gmail.com>, Borislav Petkov <bp@suse.de>,
-        "H. Peter Anvin (Intel)" <hpa@zytor.com>, x86 <x86@kernel.org>,
+Subject: [tip: x86/urgent] x86, fakenuma: Fix invalid starting node ID
+Cc:     "Huang, Ying" <ying.huang@intel.com>,
+        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200827180904.96399-1-ubizjak@gmail.com>
-References: <20200827180904.96399-1-ubizjak@gmail.com>
+In-Reply-To: <20200904061047.612950-1-ying.huang@intel.com>
+References: <20200904061047.612950-1-ying.huang@intel.com>
 MIME-Version: 1.0
-Message-ID: <159916667349.20229.3414153735244091368.tip-bot2@tip-bot2>
+Message-ID: <159920275466.20229.58684697289932367.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,46 +59,75 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/asm branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     767ec7289e83721fee205a13b459f12fb2cf922f
-Gitweb:        https://git.kernel.org/tip/767ec7289e83721fee205a13b459f12fb2cf922f
-Author:        Uros Bizjak <ubizjak@gmail.com>
-AuthorDate:    Thu, 27 Aug 2020 20:09:04 +02:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Thu, 03 Sep 2020 22:49:03 +02:00
+Commit-ID:     ccae0f36d500aef727f98acd8d0601e6b262a513
+Gitweb:        https://git.kernel.org/tip/ccae0f36d500aef727f98acd8d0601e6b262a513
+Author:        Huang Ying <ying.huang@intel.com>
+AuthorDate:    Fri, 04 Sep 2020 14:10:47 +08:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Fri, 04 Sep 2020 08:56:13 +02:00
 
-x86/uaccess: Use XORL %0,%0 in __get_user_asm()
+x86, fakenuma: Fix invalid starting node ID
 
-XORL %0,%0 is equivalent to XORQ %0,%0 as both will zero the entire
-register. Use XORL %0,%0 for all operand sizes to avoid REX prefix byte
-when legacy registers are used and to avoid size prefix byte when 16bit
-registers are used.
+Commit:
 
-Zeroing the full register is OK in this use case.
+  cc9aec03e58f ("x86/numa_emulation: Introduce uniform split capability")
 
-As a result, the size of the .fixup section decreases by 20 bytes.
+uses "-1" as the starting node ID, which causes the strange kernel log as
+follows, when "numa=fake=32G" is added to the kernel command line:
 
- [ bp: Massage commit message. ]
+    Faking node -1 at [mem 0x0000000000000000-0x0000000893ffffff] (35136MB)
+    Faking node 0 at [mem 0x0000001840000000-0x000000203fffffff] (32768MB)
+    Faking node 1 at [mem 0x0000000894000000-0x000000183fffffff] (64192MB)
+    Faking node 2 at [mem 0x0000002040000000-0x000000283fffffff] (32768MB)
+    Faking node 3 at [mem 0x0000002840000000-0x000000303fffffff] (32768MB)
 
-Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: H. Peter Anvin (Intel) <hpa@zytor.com>
-Link: https://lkml.kernel.org/r/20200827180904.96399-1-ubizjak@gmail.com
+And finally the kernel crashes:
+
+    BUG: Bad page state in process swapper  pfn:00011
+    page:(____ptrval____) refcount:0 mapcount:1 mapping:(____ptrval____) index:0x55cd7e44b270 pfn:0x11
+    failed to read mapping contents, not a valid kernel address?
+    flags: 0x5(locked|uptodate)
+    raw: 0000000000000005 000055cd7e44af30 000055cd7e44af50 0000000100000006
+    raw: 000055cd7e44b270 000055cd7e44b290 0000000000000000 000055cd7e44b510
+    page dumped because: page still charged to cgroup
+    page->mem_cgroup:000055cd7e44b510
+    Modules linked in:
+    CPU: 0 PID: 0 Comm: swapper Not tainted 5.9.0-rc2 #1
+    Hardware name: Intel Corporation S2600WFT/S2600WFT, BIOS SE5C620.86B.02.01.0008.031920191559 03/19/2019
+    Call Trace:
+     dump_stack+0x57/0x80
+     bad_page.cold+0x63/0x94
+     __free_pages_ok+0x33f/0x360
+     memblock_free_all+0x127/0x195
+     mem_init+0x23/0x1f5
+     start_kernel+0x219/0x4f5
+     secondary_startup_64+0xb6/0xc0
+
+Fix this bug via using 0 as the starting node ID.  This restores the
+original behavior before cc9aec03e58f.
+
+[ mingo: Massaged the changelog. ]
+
+Fixes: cc9aec03e58f ("x86/numa_emulation: Introduce uniform split capability")
+Signed-off-by: "Huang, Ying" <ying.huang@intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20200904061047.612950-1-ying.huang@intel.com
 ---
- arch/x86/include/asm/uaccess.h | 2 +-
+ arch/x86/mm/numa_emulation.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/uaccess.h b/arch/x86/include/asm/uaccess.h
-index ecefaff..2bffba2 100644
---- a/arch/x86/include/asm/uaccess.h
-+++ b/arch/x86/include/asm/uaccess.h
-@@ -343,7 +343,7 @@ do {									\
- 		     "2:\n"						\
- 		     ".section .fixup,\"ax\"\n"				\
- 		     "3:	mov %[efault],%[errout]\n"		\
--		     "	xor"itype" %[output],%[output]\n"		\
-+		     "	xorl %k[output],%k[output]\n"			\
- 		     "	jmp 2b\n"					\
- 		     ".previous\n"					\
- 		     _ASM_EXTABLE_UA(1b, 3b)				\
+diff --git a/arch/x86/mm/numa_emulation.c b/arch/x86/mm/numa_emulation.c
+index c5174b4..683cd12 100644
+--- a/arch/x86/mm/numa_emulation.c
++++ b/arch/x86/mm/numa_emulation.c
+@@ -321,7 +321,7 @@ static int __init split_nodes_size_interleave(struct numa_meminfo *ei,
+ 					      u64 addr, u64 max_addr, u64 size)
+ {
+ 	return split_nodes_size_interleave_uniform(ei, pi, addr, max_addr, size,
+-			0, NULL, NUMA_NO_NODE);
++			0, NULL, 0);
+ }
+ 
+ static int __init setup_emu2phys_nid(int *dfl_phys_nid)
