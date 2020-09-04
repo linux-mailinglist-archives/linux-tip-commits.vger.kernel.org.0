@@ -2,56 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D93D25D97B
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  4 Sep 2020 15:19:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C2F8D25D96A
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  4 Sep 2020 15:17:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730304AbgIDNTM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 4 Sep 2020 09:19:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48880 "EHLO
+        id S1730402AbgIDNR0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 4 Sep 2020 09:17:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48882 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730329AbgIDNQP (ORCPT
+        with ESMTP id S1730331AbgIDNQP (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Fri, 4 Sep 2020 09:16:15 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC5FDC061244;
-        Fri,  4 Sep 2020 06:16:13 -0700 (PDT)
-Date:   Fri, 04 Sep 2020 13:16:04 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 004F2C061245;
+        Fri,  4 Sep 2020 06:16:14 -0700 (PDT)
+Date:   Fri, 04 Sep 2020 13:16:06 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1599225365;
+        s=2020; t=1599225367;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=FYo4oWPndmPH1VpAsfPaaX5l0/5q804nP45ekBNCsvE=;
-        b=CXWxcJSwBfNNl7/uWWf2cFw/XH3j/xrEb7IRNn2ww5+xzVxble3MmlvuoqNg/pITFTYRx7
-        rvtFsmi6YkDgln7ZXjDcfLBSJD74wjgaXOmUPNPkzO3llg/wisUPXGt8NZqbke9S6+FH5V
-        /5a/r0AAZ5K0CvkWNMXKmvruZxYxeMwudWsdDO2Gf7WIh/xWXbXJJwzHailgHrJxoabVfu
-        3UU3zmkhs03RnHZIkLb6SwAGVDQj6eMt/NUxSNhcs6hYPh/IT5Cf8yt/QKvOTT/U4x4C+j
-        cZ7U6URIJKmA6DKJk0SZqoql7cFVBvbLWm5w430G5aUeZZagIRVdkPUJujRLJw==
+        bh=jPurnusEvbb6GiM/Ja09Ig3drGdcyoC1dTl+SUfGJzk=;
+        b=kJOTDoZ61nvDeD9kEdG8b2DDWCqT5BgpeOB+axWUnfWXij/UOWdheTBRPDblWOgcVnk3ib
+        y73zQlAm2zXsQ15QVJ3EpuzmCvmgqSu84gkvyTri1DdVEdmh0Aw2P/nhmX3P60jHK+BMcY
+        sVSW5aV+nFx9tDgBudb84y3YR2/DUeG40E7WbTy3d9caEWnG+i/ctuRf3OQI3P4ppSKJ8g
+        zgprqBo+IF7R3AhHDjC5zy2omGqF8JnxwecjZxxtcc1BAKwrD6f4777iGhUBKyzkdAr+hA
+        OGmVy+0s1/c/J09qnoITIHKAWynWFdsQo80ULx7J5KgcdATAOjoo6uPTuMFBgg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1599225365;
+        s=2020e; t=1599225367;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=FYo4oWPndmPH1VpAsfPaaX5l0/5q804nP45ekBNCsvE=;
-        b=Lt0gZDkN5FP0WS3HroUN40FXymZBsCp+UjC0KJvIQLtU5U4ejFHdHUSn5/HTuv5NY26KyG
-        0DyRfiQqmSjo3yCg==
+        bh=jPurnusEvbb6GiM/Ja09Ig3drGdcyoC1dTl+SUfGJzk=;
+        b=hZBIrOrPIM5YG7EZgB/2K8a7/EcpbOLxVE03XXz9co1jSWoutFfwTijC623kKAJJ7K6QeI
+        O1hVG+XnxrIGI5Aw==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/entry: Fix AC assertion
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+Subject: [tip: x86/entry] x86/debug: Support negative polarity DR6 bits
+Cc:     Andrew Cooper <Andrew.Cooper3@citrix.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         Daniel Thompson <daniel.thompson@linaro.org>,
-        Andy Lutomirski <luto@kernel.org>, stable@vger.kernel.org,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200902133200.666781610@infradead.org>
-References: <20200902133200.666781610@infradead.org>
+In-Reply-To: <20200902133201.354220797@infradead.org>
+References: <20200902133201.354220797@infradead.org>
 MIME-Version: 1.0
-Message-ID: <159922536478.20229.11152935257298904584.tip-bot2@tip-bot2>
+Message-ID: <159922536683.20229.14204270773798170350.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,56 +61,98 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the x86/entry branch of tip:
 
-Commit-ID:     662a0221893a3d58aa72719671844264306f6e4b
-Gitweb:        https://git.kernel.org/tip/662a0221893a3d58aa72719671844264306f6e4b
+Commit-ID:     f4956cf83ed12271bdbd5b547f3378add72bbffb
+Gitweb:        https://git.kernel.org/tip/f4956cf83ed12271bdbd5b547f3378add72bbffb
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Wed, 02 Sep 2020 15:25:50 +02:00
+AuthorDate:    Wed, 02 Sep 2020 15:26:01 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 04 Sep 2020 15:09:29 +02:00
+CommitterDate: Fri, 04 Sep 2020 15:12:57 +02:00
 
-x86/entry: Fix AC assertion
+x86/debug: Support negative polarity DR6 bits
 
-The WARN added in commit 3c73b81a9164 ("x86/entry, selftests: Further
-improve user entry sanity checks") unconditionally triggers on a IVB
-machine because it does not support SMAP.
+DR6 has a whole bunch of bits that have negative polarity; they were
+architecturally reserved and defined to be 1 and are now getting used.
+Since they're 1 by default, 0 becomes the signal value.
 
-For !SMAP hardware the CLAC/STAC instructions are patched out and thus if
-userspace sets AC, it is still have set after entry.
+Handle this by xor'ing the read DR6 value by the reserved mask, this
+will flip them around such that 1 is the signal value (positive
+polarity).
 
-Fixes: 3c73b81a9164 ("x86/entry, selftests: Further improve user entry sanity checks")
+Current Linux doesn't yet support any of these bits, but there's two
+defined:
+
+ - DR6[11] Bus Lock Debug Exception		(ISEr39)
+ - DR6[16] Restricted Transactional Memory	(SDM)
+
+Update ptrace_{set,get}_debugreg() to provide/consume the value in
+architectural polarity. Although afaict ptrace_set_debugreg(6) is
+pointless, the value is not consumed anywhere.
+
+Change hw_breakpoint_restore() to alway write the DR6_RESERVED value
+to DR6, again, no consumer for that write.
+
+Suggested-by: Andrew Cooper <Andrew.Cooper3@citrix.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Tested-by: Daniel Thompson <daniel.thompson@linaro.org>
-Acked-by: Andy Lutomirski <luto@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20200902133200.666781610@infradead.org
+Link: https://lore.kernel.org/r/20200902133201.354220797@infradead.org
 
 ---
- arch/x86/include/asm/entry-common.h | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ arch/x86/kernel/hw_breakpoint.c | 2 +-
+ arch/x86/kernel/ptrace.c        | 4 ++--
+ arch/x86/kernel/traps.c         | 5 ++---
+ 3 files changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/include/asm/entry-common.h b/arch/x86/include/asm/entry-common.h
-index a8f9315..6fe54b2 100644
---- a/arch/x86/include/asm/entry-common.h
-+++ b/arch/x86/include/asm/entry-common.h
-@@ -18,8 +18,16 @@ static __always_inline void arch_check_user_regs(struct pt_regs *regs)
- 		 * state, not the interrupt state as imagined by Xen.
- 		 */
- 		unsigned long flags = native_save_fl();
--		WARN_ON_ONCE(flags & (X86_EFLAGS_AC | X86_EFLAGS_DF |
--				      X86_EFLAGS_NT));
-+		unsigned long mask = X86_EFLAGS_DF | X86_EFLAGS_NT;
-+
-+		/*
-+		 * For !SMAP hardware we patch out CLAC on entry.
-+		 */
-+		if (boot_cpu_has(X86_FEATURE_SMAP) ||
-+		    (IS_ENABLED(CONFIG_64_BIT) && boot_cpu_has(X86_FEATURE_XENPV)))
-+			mask |= X86_EFLAGS_AC;
-+
-+		WARN_ON_ONCE(flags & mask);
+diff --git a/arch/x86/kernel/hw_breakpoint.c b/arch/x86/kernel/hw_breakpoint.c
+index 7b7d9f2..d17a1da 100644
+--- a/arch/x86/kernel/hw_breakpoint.c
++++ b/arch/x86/kernel/hw_breakpoint.c
+@@ -464,7 +464,7 @@ void hw_breakpoint_restore(void)
+ 	set_debugreg(__this_cpu_read(cpu_debugreg[1]), 1);
+ 	set_debugreg(__this_cpu_read(cpu_debugreg[2]), 2);
+ 	set_debugreg(__this_cpu_read(cpu_debugreg[3]), 3);
+-	set_debugreg(current->thread.debugreg6, 6);
++	set_debugreg(DR6_RESERVED, 6);
+ 	set_debugreg(__this_cpu_read(cpu_dr7), 7);
+ }
+ EXPORT_SYMBOL_GPL(hw_breakpoint_restore);
+diff --git a/arch/x86/kernel/ptrace.c b/arch/x86/kernel/ptrace.c
+index e7537c5..5f98289 100644
+--- a/arch/x86/kernel/ptrace.c
++++ b/arch/x86/kernel/ptrace.c
+@@ -601,7 +601,7 @@ static unsigned long ptrace_get_debugreg(struct task_struct *tsk, int n)
+ 		if (bp)
+ 			val = bp->hw.info.address;
+ 	} else if (n == 6) {
+-		val = thread->debugreg6;
++		val = thread->debugreg6 ^ DR6_RESERVED; /* Flip back to arch polarity */
+ 	} else if (n == 7) {
+ 		val = thread->ptrace_dr7;
+ 	}
+@@ -657,7 +657,7 @@ static int ptrace_set_debugreg(struct task_struct *tsk, int n,
+ 	if (n < HBP_NUM) {
+ 		rc = ptrace_set_breakpoint_addr(tsk, n, val);
+ 	} else if (n == 6) {
+-		thread->debugreg6 = val;
++		thread->debugreg6 = val ^ DR6_RESERVED; /* Flip to positive polarity */
+ 		rc = 0;
+ 	} else if (n == 7) {
+ 		rc = ptrace_write_dr7(tsk, val);
+diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
+index 1e89001..114515b 100644
+--- a/arch/x86/kernel/traps.c
++++ b/arch/x86/kernel/traps.c
+@@ -745,9 +745,8 @@ static __always_inline unsigned long debug_read_clear_dr6(void)
+ 	 * Keep it simple: clear DR6 immediately.
+ 	 */
+ 	get_debugreg(dr6, 6);
+-	set_debugreg(0, 6);
+-	/* Filter out all the reserved bits which are preset to 1 */
+-	dr6 &= ~DR6_RESERVED;
++	set_debugreg(DR6_RESERVED, 6);
++	dr6 ^= DR6_RESERVED; /* Flip to positive polarity */
  
- 		/* We think we came from user mode. Make sure pt_regs agrees. */
- 		WARN_ON_ONCE(!user_mode(regs));
+ 	/*
+ 	 * The SDM says "The processor clears the BTF flag when it
