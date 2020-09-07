@@ -2,55 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B29C25E434
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  5 Sep 2020 01:33:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DCCB25F2F4
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  7 Sep 2020 08:06:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726833AbgIDXdM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 4 Sep 2020 19:33:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59450 "EHLO
+        id S1726807AbgIGGGK (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 7 Sep 2020 02:06:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50180 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726770AbgIDXdK (ORCPT
+        with ESMTP id S1725823AbgIGGGE (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 4 Sep 2020 19:33:10 -0400
+        Mon, 7 Sep 2020 02:06:04 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 126CAC061244;
-        Fri,  4 Sep 2020 16:33:10 -0700 (PDT)
-Date:   Fri, 04 Sep 2020 23:33:07 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05811C061574;
+        Sun,  6 Sep 2020 23:06:03 -0700 (PDT)
+Date:   Mon, 07 Sep 2020 06:05:50 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1599262388;
+        s=2020; t=1599458751;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=T+APnNSye1kJjw9olDELRnc3+FWK++0UzgXwBMBFY2k=;
-        b=K+rNvidzdBzbmmZtm4supmHy2Ysh/Fe+yZLe0kqY6cE5YBbXTuXiOkAmVLT1n5OE5yDaA4
-        HI9z8I6RQ4fOlraleUZEg+04sneaDJ2o0IdbGviBCKY/v3ENfUCAMjZ76N3UPT8Uwb/u4L
-        Eiqw6pINqNtRcFw4ajG1vSnlEdWhFxVBMWUqtnEluasBlGEvOKv0Pqq4YMuTaXXcBQr8+q
-        Eaf8aOisXMtx1DauCxXgUVUOB3ok9dIKwBXReBLHmXG8Xkp/mrPTLiSKlMF3QoWYrENUNZ
-        0Xp8uYT0df34qVU1m4L4hphaM2SRm9Y7MsZ1tdAzlaxqATHy7DoKkclktn5BEw==
+        bh=yPT9oQPC21g6xntCJxn95T6nJT9qkoIKzRBPckz2sAo=;
+        b=KgUgUtcHunPYvjQC133vlThRdEQ31cM92foL2z0ffrVa7vBZSz9S9lR1GpPop/UbX2+kOw
+        ObLUOq19rEX+Wb04Xngyx6vrRRz6AECFeM5diaoePty+bUzWH8l8XqfwnzM6ZOcvBv3TJw
+        2Wh6LhPqkRggZkxh8FNDUDr3D4SJtwPaEYcNvEynhgTl92wkqQvJtUuZ/jQTlAhuktJNvR
+        ZAKxqMPfL5Zjdh47Bp1UMRbUdABnGAtfrKK5tczCykm9Kx1QZGvQYPLuIKv2XTG7hkU1ax
+        Mau8dW+8ZiBIfWjuOMZtd0ToptXRUr/a28VbQFXPI/KfJ2TYtJHgtBNxpAL1Jw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1599262388;
+        s=2020e; t=1599458751;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=T+APnNSye1kJjw9olDELRnc3+FWK++0UzgXwBMBFY2k=;
-        b=lAqUJ/9aeS9DKSzPUQ90warCqDzVfV3mf5Kj/MpuLAz7U9lsueHZ8lHRfTYCbTTl+Q+uoE
-        KwA+CBcQt6ZgfUCw==
-From:   "tip-bot2 for Colin Ian King" <tip-bot2@linutronix.de>
+        bh=yPT9oQPC21g6xntCJxn95T6nJT9qkoIKzRBPckz2sAo=;
+        b=tCcM3bYiSzG4sSOji7VRR/Zjq/LgOY4BpXMfqvT3umyG6BUzfCpNzx8dOpu2mGn7Z69Ws4
+        fFRA+N3R0YiGe4Dg==
+From:   "tip-bot2 for Kees Cook" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cleanups] x86/resctrl: Fix spelling in user-visible warning
- messages
-Cc:     Colin Ian King <colin.king@canonical.com>,
-        Borislav Petkov <bp@suse.de>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200810075508.46490-1-colin.king@canonical.com>
-References: <20200810075508.46490-1-colin.king@canonical.com>
+Subject: [tip: core/build] x86/build: Warn on orphan section placement
+Cc:     Kees Cook <keescook@chromium.org>, Ingo Molnar <mingo@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200902025347.2504702-5-keescook@chromium.org>
+References: <20200902025347.2504702-5-keescook@chromium.org>
 MIME-Version: 1.0
-Message-ID: <159926238705.20229.16169849403685136300.tip-bot2@tip-bot2>
+Message-ID: <159945875070.20229.5266595565501285727.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,48 +59,44 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cleanups branch of tip:
+The following commit has been merged into the core/build branch of tip:
 
-Commit-ID:     93921baa3f6ff77e57d7e772165aa7bd709b5387
-Gitweb:        https://git.kernel.org/tip/93921baa3f6ff77e57d7e772165aa7bd709b5387
-Author:        Colin Ian King <colin.king@canonical.com>
-AuthorDate:    Mon, 10 Aug 2020 08:55:08 +01:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Sat, 05 Sep 2020 01:24:17 +02:00
+Commit-ID:     83109d5d5fba7abf362f5a443c9f4c4ea10bbc8d
+Gitweb:        https://git.kernel.org/tip/83109d5d5fba7abf362f5a443c9f4c4ea10bbc8d
+Author:        Kees Cook <keescook@chromium.org>
+AuthorDate:    Tue, 01 Sep 2020 19:53:46 -07:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Thu, 03 Sep 2020 10:28:36 +02:00
 
-x86/resctrl: Fix spelling in user-visible warning messages
+x86/build: Warn on orphan section placement
 
-Fix spelling mistake "Could't" -> "Couldn't" in user-visible warning
-messages.
+We don't want to depend on the linker's orphan section placement
+heuristics as these can vary between linkers, and may change between
+versions. All sections need to be explicitly handled in the linker script.
 
- [ bp: Massage commit message; s/cpu/CPU/g ]
+Now that all sections are explicitly handled, enable orphan section
+warnings.
 
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20200810075508.46490-1-colin.king@canonical.com
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
+Link: https://lore.kernel.org/r/20200902025347.2504702-5-keescook@chromium.org
 ---
- arch/x86/kernel/cpu/resctrl/core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/Makefile | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/x86/kernel/cpu/resctrl/core.c b/arch/x86/kernel/cpu/resctrl/core.c
-index 6a9df71..9cceee6 100644
---- a/arch/x86/kernel/cpu/resctrl/core.c
-+++ b/arch/x86/kernel/cpu/resctrl/core.c
-@@ -562,7 +562,7 @@ static void domain_add_cpu(int cpu, struct rdt_resource *r)
+diff --git a/arch/x86/Makefile b/arch/x86/Makefile
+index 4346ffb..154259f 100644
+--- a/arch/x86/Makefile
++++ b/arch/x86/Makefile
+@@ -209,6 +209,10 @@ ifdef CONFIG_X86_64
+ LDFLAGS_vmlinux += -z max-page-size=0x200000
+ endif
  
- 	d = rdt_find_domain(r, id, &add_pos);
- 	if (IS_ERR(d)) {
--		pr_warn("Could't find cache id for cpu %d\n", cpu);
-+		pr_warn("Couldn't find cache id for CPU %d\n", cpu);
- 		return;
- 	}
- 
-@@ -607,7 +607,7 @@ static void domain_remove_cpu(int cpu, struct rdt_resource *r)
- 
- 	d = rdt_find_domain(r, id, NULL);
- 	if (IS_ERR_OR_NULL(d)) {
--		pr_warn("Could't find cache id for cpu %d\n", cpu);
-+		pr_warn("Couldn't find cache id for CPU %d\n", cpu);
- 		return;
- 	}
++# We never want expected sections to be placed heuristically by the
++# linker. All sections should be explicitly named in the linker script.
++LDFLAGS_vmlinux += $(call ld-option, --orphan-handling=warn)
++
+ archscripts: scripts_basic
+ 	$(Q)$(MAKE) $(build)=arch/x86/tools relocs
  
