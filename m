@@ -2,158 +2,115 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6ADCD2617D2
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  8 Sep 2020 19:43:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6371B262981
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Sep 2020 10:05:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731725AbgIHRmK (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 8 Sep 2020 13:42:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56694 "EHLO
+        id S1727820AbgIIIFh (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 9 Sep 2020 04:05:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34804 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731660AbgIHQOE (ORCPT
+        with ESMTP id S1730187AbgIIIE5 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 8 Sep 2020 12:14:04 -0400
+        Wed, 9 Sep 2020 04:04:57 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DF4AC061383;
-        Tue,  8 Sep 2020 05:18:13 -0700 (PDT)
-Date:   Tue, 08 Sep 2020 12:13:08 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0D00C061573;
+        Wed,  9 Sep 2020 01:04:56 -0700 (PDT)
+Date:   Wed, 09 Sep 2020 08:04:46 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1599567190;
+        s=2020; t=1599638687;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=DB6ES7hSkk/mpQh9A6SXST0ZjAghkapEmOy8PiLFuHE=;
-        b=V6h7jQlf39pcKu8jw6Joj5JY5PmKEt3fWRyCr2ghOoRtF1uFd50CjolCpSyhl1svf2as47
-        PuCktBLbLh7+OXiUMd83Tt5rU9ewRaizm5FEsqAMx+XnwtF/YgJetbwdmFWLrouCyzjqvW
-        MAvJMgibo5NlAvkF3iFJREuEzWzaG5OUYLLXw8gWTIElizNv8gzbPn7mHFXXunBoOefeDe
-        Uvm3od6RRkq/vaAqpI+n+/8UvCjV9Zn9GH8t+RFRN1xKLlyGGMSvttSPack4xKBl9Zbdpr
-        RfUIJhchoDhSWGJJRV7OTkg7du8A9akLNYSTXxHVCiKrUnKuPa+xsxxaleYoAw==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=d+ioUACl2XogbtfbKmzPVujemO1Zy7dQACxcaLLfuHE=;
+        b=bNc1fjqSypKX2/WRZqvNYRmVr8MvcA4cfDbmDHJRUQuleKz4yiYS8ZL8yCTicMeM+O6Gt7
+        kAgRplNl8YWr+qjg0O+R89egRIRQdteBIie1X0t0wOXsW1KGm2vGlN1UrzYx0WsDgLmsuI
+        8t/ApdZYlID4Bp0iUQY33hIzauWIwGevBpHMV6RyMv0Z2YyfrdOVVkwV1L1iYq11WTVWC+
+        CICf6TFHWlgq5QRR5JbR5QfsoXPXBQRRLr3bQDSFvhR/cH0m3ANHVyS1i82daNq8+EswHg
+        tADNRLPyItC06nS8pHjsVh0t+MaO8s7YnjzAtiz7DhbUOHXvwfVQrPFEHQ0+2A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1599567190;
+        s=2020e; t=1599638687;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=DB6ES7hSkk/mpQh9A6SXST0ZjAghkapEmOy8PiLFuHE=;
-        b=mzZH0W5XRcqSaj8BChN8h4rA25qus3hcHLB3tmgOYRXST/687NLLzFeFXHZHGHAq/0NZP/
-        8yY8o2s6MbNnzCBA==
-From:   "tip-bot2 for peterz@infradead.org" <tip-bot2@linutronix.de>
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=d+ioUACl2XogbtfbKmzPVujemO1Zy7dQACxcaLLfuHE=;
+        b=xbHWXfm3mj5a0l1V+WEw+QWsTBQjZWwQtN0pplBi+3wMpz21lHH7UWLW4dObLpJnqXTzu1
+        ntmJwxNK41+aZdAg==
+From:   tip-bot2 for Daniel =?utf-8?q?D=C3=ADaz?= <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/static_call] tracepoint: Fix overly long tracepoint names
-Cc:     Stephen Rothwell <sfr@canb.auug.org.au>,
-        Peter Zijlstra <peterz@infradead.org>,
+Subject: [tip: x86/urgent] x86/defconfigs: Explicitly unset CONFIG_64BIT in
+ i386_defconfig
+Cc:     Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Sedat Dilek <sedat.dilek@gmail.com>, daniel.diaz@linaro.org,
         Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200908105743.GW2674@hirez.programming.kicks-ass.net>
-References: <20200908105743.GW2674@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-Message-ID: <159956718882.20229.3629672356074809317.tip-bot2@tip-bot2>
+Message-ID: <159963868645.20229.13058746616816561936.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the core/static_call branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     de394e7568ce2cdb4643ed230169f484f25f9442
-Gitweb:        https://git.kernel.org/tip/de394e7568ce2cdb4643ed230169f484f25f9442
-Author:        peterz@infradead.org <peterz@infradead.org>
-AuthorDate:    Tue, 08 Sep 2020 12:57:43 +02:00
+Commit-ID:     76366050eb1b3151c4b4110c76538ff14dffb74c
+Gitweb:        https://git.kernel.org/tip/76366050eb1b3151c4b4110c76538ff14df=
+fb74c
+Author:        Daniel D=C3=ADaz <daniel.diaz@linaro.org>
+AuthorDate:    Wed, 19 Aug 2020 12:32:24 -05:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 08 Sep 2020 14:10:59 +02:00
+CommitterDate: Wed, 09 Sep 2020 10:03:37 +02:00
 
-tracepoint: Fix overly long tracepoint names
+x86/defconfigs: Explicitly unset CONFIG_64BIT in i386_defconfig
 
-Stephen Rothwell reported:
+A recent refresh of the defconfigs got rid of the following
+(unset) config:
 
-> Exported symbols need to be <= (64 - sizeof(Elf_Addr)) long.  This is
-> presumably 56 on 64 bit arches and the above symbol (including the '.')
-> is 56 characters long.
+  # CONFIG_64BIT is not set
 
-Shorten the tracepoint symbol name.
+Innocuous as it seems, when the config file is saved again the
+behavior is changed so that CONFIG_64BIT=3Dy.
 
-Fixes: d25e37d89dd2 ("tracepoint: Optimize using static_call()")
-Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Signed-off-by: Peter Zijlstra <peterz@infradead.org>
+Currently,
+
+  $ make i386_defconfig
+  $ grep CONFIG_64BIT .config
+  CONFIG_64BIT=3Dy
+
+whereas previously (and with this patch):
+
+  $ make i386_defconfig
+  $ grep CONFIG_64BIT .config
+  # CONFIG_64BIT is not set
+
+( This was found with weird compiler errors on OpenEmbedded
+  builds, as the compiler was unable to cope with 64-bits data
+  types. )
+
+Fixes: 1d0e12fd3a84 ("x86/defconfigs: Refresh defconfig files")
+Reported-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Reported-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Tested-by: Sedat Dilek <sedat.dilek@gmail.com>
+Signed-off-by: Daniel D=C3=ADaz <daniel.diaz@linaro.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20200908105743.GW2674@hirez.programming.kicks-ass.net
 ---
- include/linux/tracepoint.h | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ arch/x86/configs/i386_defconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/linux/tracepoint.h b/include/linux/tracepoint.h
-index 3722a10..81fa0b2 100644
---- a/include/linux/tracepoint.h
-+++ b/include/linux/tracepoint.h
-@@ -154,7 +154,7 @@ static inline struct tracepoint *tracepoint_ptr_deref(tracepoint_ptr_t *p)
- #ifdef CONFIG_HAVE_STATIC_CALL
- #define __DO_TRACE_CALL(name)	static_call(tp_func_##name)
- #else
--#define __DO_TRACE_CALL(name)	__tracepoint_iter_##name
-+#define __DO_TRACE_CALL(name)	__traceiter_##name
- #endif /* CONFIG_HAVE_STATIC_CALL */
- 
- /*
-@@ -232,8 +232,8 @@ static inline struct tracepoint *tracepoint_ptr_deref(tracepoint_ptr_t *p)
-  * poking RCU a bit.
-  */
- #define __DECLARE_TRACE(name, proto, args, cond, data_proto, data_args) \
--	extern int __tracepoint_iter_##name(data_proto);		\
--	DECLARE_STATIC_CALL(tp_func_##name, __tracepoint_iter_##name); \
-+	extern int __traceiter_##name(data_proto);			\
-+	DECLARE_STATIC_CALL(tp_func_##name, __traceiter_##name);	\
- 	extern struct tracepoint __tracepoint_##name;			\
- 	static inline void trace_##name(proto)				\
- 	{								\
-@@ -288,19 +288,19 @@ static inline struct tracepoint *tracepoint_ptr_deref(tracepoint_ptr_t *p)
- 	static const char __tpstrtab_##_name[]				\
- 	__section(__tracepoints_strings) = #_name;			\
- 	extern struct static_call_key STATIC_CALL_KEY(tp_func_##_name);	\
--	int __tracepoint_iter_##_name(void *__data, proto);		\
-+	int __traceiter_##_name(void *__data, proto);			\
- 	struct tracepoint __tracepoint_##_name	__used			\
- 	__section(__tracepoints) = {					\
- 		.name = __tpstrtab_##_name,				\
- 		.key = STATIC_KEY_INIT_FALSE,				\
- 		.static_call_key = &STATIC_CALL_KEY(tp_func_##_name),	\
- 		.static_call_tramp = STATIC_CALL_TRAMP_ADDR(tp_func_##_name), \
--		.iterator = &__tracepoint_iter_##_name,			\
-+		.iterator = &__traceiter_##_name,			\
- 		.regfunc = _reg,					\
- 		.unregfunc = _unreg,					\
- 		.funcs = NULL };					\
- 	__TRACEPOINT_ENTRY(_name);					\
--	int __tracepoint_iter_##_name(void *__data, proto)		\
-+	int __traceiter_##_name(void *__data, proto)			\
- 	{								\
- 		struct tracepoint_func *it_func_ptr;			\
- 		void *it_func;						\
-@@ -314,18 +314,18 @@ static inline struct tracepoint *tracepoint_ptr_deref(tracepoint_ptr_t *p)
- 		} while ((++it_func_ptr)->func);			\
- 		return 0;						\
- 	}								\
--	DEFINE_STATIC_CALL(tp_func_##_name, __tracepoint_iter_##_name);
-+	DEFINE_STATIC_CALL(tp_func_##_name, __traceiter_##_name);
- 
- #define DEFINE_TRACE(name, proto, args)		\
- 	DEFINE_TRACE_FN(name, NULL, NULL, PARAMS(proto), PARAMS(args));
- 
- #define EXPORT_TRACEPOINT_SYMBOL_GPL(name)				\
- 	EXPORT_SYMBOL_GPL(__tracepoint_##name);				\
--	EXPORT_SYMBOL_GPL(__tracepoint_iter_##name);			\
-+	EXPORT_SYMBOL_GPL(__traceiter_##name);				\
- 	EXPORT_STATIC_CALL_GPL(tp_func_##name)
- #define EXPORT_TRACEPOINT_SYMBOL(name)					\
- 	EXPORT_SYMBOL(__tracepoint_##name);				\
--	EXPORT_SYMBOL(__tracepoint_iter_##name);			\
-+	EXPORT_SYMBOL(__traceiter_##name);				\
- 	EXPORT_STATIC_CALL(tp_func_##name)
- 
- 
+diff --git a/arch/x86/configs/i386_defconfig b/arch/x86/configs/i386_defconfig
+index d7577fe..4cfdf57 100644
+--- a/arch/x86/configs/i386_defconfig
++++ b/arch/x86/configs/i386_defconfig
+@@ -19,6 +19,7 @@ CONFIG_CGROUP_CPUACCT=3Dy
+ CONFIG_BLK_DEV_INITRD=3Dy
+ # CONFIG_COMPAT_BRK is not set
+ CONFIG_PROFILING=3Dy
++# CONFIG_64BIT is not set
+ CONFIG_SMP=3Dy
+ CONFIG_X86_GENERIC=3Dy
+ CONFIG_HPET_TIMER=3Dy
