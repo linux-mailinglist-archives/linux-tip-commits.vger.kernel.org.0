@@ -2,17 +2,17 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4548A264222
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Sep 2020 11:33:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A4C326421A
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Sep 2020 11:33:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730450AbgIJJd1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 10 Sep 2020 05:33:27 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:38826 "EHLO
+        id S1730082AbgIJJcb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 10 Sep 2020 05:32:31 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:38878 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730256AbgIJJXo (ORCPT
+        with ESMTP id S1730455AbgIJJX4 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 10 Sep 2020 05:23:44 -0400
-Date:   Thu, 10 Sep 2020 09:22:29 -0000
+        Thu, 10 Sep 2020 05:23:56 -0400
+Date:   Thu, 10 Sep 2020 09:22:30 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1599729750;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -20,12 +20,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=leeCEjaB7aJ1Cvey5jbaTdNXiMKqJcyaELi4cIzDVrw=;
-        b=GlX4dzjxjlLxicG3rdbuDP1hqbwknYBYM1aIVK/1q7gf/dnggnfErUhY1IFdv40a8kEbzZ
-        4Q27Pf9vMSwsKbrp43qmBPR7OHGoP3Ox3QiAT/QBSUlhAuGAi3czzj5H/jTeazP3bNw3uV
-        6tP5FNHD92Bh9a3pqQs/j4kGEv8HQIy6dRMRGjD4R5rKmF2vcb13iwENIejU7tMs0ra4WK
-        HguG0lEnWqBKncmOgSpZA/5sPFIyYAS3OyFLbU4MBf0AdPHn9FdneLiMdnINGz+uycmTHi
-        EXJ8uUr+0+89YXqHkv6qn4W/v7I2twsXhLdh14pgBFx/8EPi7FfDFfu46fvtJw==
+        bh=559eYn0+zGFrJgaT6n4suexnrRJnXvuMct+n0omTPzE=;
+        b=hDVrIMFKl+85Mi1nS5WTzmEF8sVgv7vXxnPoQlToRhVGKrNyXyxw2Z43huKjkPZvqKjdrq
+        3RQYEpKPVgrEGEckypJc/3Gx63Igjq3eCwyzJt0Is+xK6QmX50+QZYpjJDkWrzOCoYZYl9
+        DyEH3QyGvwfbZzHnntQqbXJReP1Zfpz5bUgiZVP4nZBfp+bk3FjoGLBH5SQiSNS0ybf8Yq
+        MWpfUY0dbM3whcBD62MJPLRq3VVURF59d1GO4DCD2uL8HeVXnwsfix2UozomseXfV7rCMc
+        d2lIXRILr3AdS98aUr3yyPSITBlR6OF113V4sasTr1G23grGzqu1XDf7WRUNjQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1599729750;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -33,19 +33,19 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=leeCEjaB7aJ1Cvey5jbaTdNXiMKqJcyaELi4cIzDVrw=;
-        b=7iesgdjaiwlDBoDKrGRlu5pboKvumPvH9OCgsiardQVMDl17nQ1ze/Q+q1hVq4u9v1xikU
-        BicSaejPomBnfeCQ==
+        bh=559eYn0+zGFrJgaT6n4suexnrRJnXvuMct+n0omTPzE=;
+        b=6EcgC3A5MQ/L3vAPpMeohqTg8joNblCSLKuw2Ubil9ou6Rxb+Rxz3cnVAArLpF5/udu3Te
+        7yipl89hidgD77Ag==
 From:   "tip-bot2 for Joerg Roedel" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/seves] x86/umip: Factor out instruction fetch
+Subject: [tip: x86/seves] x86/traps: Move pf error codes to <asm/trap_pf.h>
 Cc:     Joerg Roedel <jroedel@suse.de>, Borislav Petkov <bp@suse.de>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200907131613.12703-9-joro@8bytes.org>
-References: <20200907131613.12703-9-joro@8bytes.org>
+In-Reply-To: <20200907131613.12703-7-joro@8bytes.org>
+References: <20200907131613.12703-7-joro@8bytes.org>
 MIME-Version: 1.0
-Message-ID: <159972974945.20229.15602712338870098983.tip-bot2@tip-bot2>
+Message-ID: <159972975027.20229.5656739170408401125.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -57,133 +57,90 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/seves branch of tip:
 
-Commit-ID:     172b75e56b08846e6fb07a88e5685ce4e24f4620
-Gitweb:        https://git.kernel.org/tip/172b75e56b08846e6fb07a88e5685ce4e24f4620
+Commit-ID:     05a2fdf3230306daee1def019b8f52cd06bd2e48
+Gitweb:        https://git.kernel.org/tip/05a2fdf3230306daee1def019b8f52cd06bd2e48
 Author:        Joerg Roedel <jroedel@suse.de>
-AuthorDate:    Mon, 07 Sep 2020 15:15:09 +02:00
+AuthorDate:    Mon, 07 Sep 2020 15:15:07 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
 CommitterDate: Mon, 07 Sep 2020 19:45:24 +02:00
 
-x86/umip: Factor out instruction fetch
+x86/traps: Move pf error codes to <asm/trap_pf.h>
 
-Factor out the code to fetch the instruction from user-space to a helper
-function.
-
-No functional changes.
+Move the definition of the x86 page-fault error code bits to a new
+header file asm/trap_pf.h. This makes it easier to include them into
+pre-decompression boot code. No functional changes.
 
 Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20200907131613.12703-9-joro@8bytes.org
+Link: https://lkml.kernel.org/r/20200907131613.12703-7-joro@8bytes.org
 ---
- arch/x86/include/asm/insn-eval.h |  2 ++-
- arch/x86/kernel/umip.c           | 26 ++++-----------------
- arch/x86/lib/insn-eval.c         | 38 +++++++++++++++++++++++++++++++-
- 3 files changed, 46 insertions(+), 20 deletions(-)
+ arch/x86/include/asm/trap_pf.h | 24 ++++++++++++++++++++++++
+ arch/x86/include/asm/traps.h   | 19 +------------------
+ 2 files changed, 25 insertions(+), 18 deletions(-)
+ create mode 100644 arch/x86/include/asm/trap_pf.h
 
-diff --git a/arch/x86/include/asm/insn-eval.h b/arch/x86/include/asm/insn-eval.h
-index 2b6ccf2..b8b9ef1 100644
---- a/arch/x86/include/asm/insn-eval.h
-+++ b/arch/x86/include/asm/insn-eval.h
-@@ -19,5 +19,7 @@ void __user *insn_get_addr_ref(struct insn *insn, struct pt_regs *regs);
- int insn_get_modrm_rm_off(struct insn *insn, struct pt_regs *regs);
- unsigned long insn_get_seg_base(struct pt_regs *regs, int seg_reg_idx);
- int insn_get_code_seg_params(struct pt_regs *regs);
-+int insn_fetch_from_user(struct pt_regs *regs,
-+			 unsigned char buf[MAX_INSN_SIZE]);
- 
- #endif /* _ASM_X86_INSN_EVAL_H */
-diff --git a/arch/x86/kernel/umip.c b/arch/x86/kernel/umip.c
-index 2c304fd..ad135be 100644
---- a/arch/x86/kernel/umip.c
-+++ b/arch/x86/kernel/umip.c
-@@ -335,11 +335,11 @@ static void force_sig_info_umip_fault(void __user *addr, struct pt_regs *regs)
-  */
- bool fixup_umip_exception(struct pt_regs *regs)
- {
--	int not_copied, nr_copied, reg_offset, dummy_data_size, umip_inst;
--	unsigned long seg_base = 0, *reg_addr;
-+	int nr_copied, reg_offset, dummy_data_size, umip_inst;
- 	/* 10 bytes is the maximum size of the result of UMIP instructions */
- 	unsigned char dummy_data[10] = { 0 };
- 	unsigned char buf[MAX_INSN_SIZE];
-+	unsigned long *reg_addr;
- 	void __user *uaddr;
- 	struct insn insn;
- 	int seg_defs;
-@@ -347,26 +347,12 @@ bool fixup_umip_exception(struct pt_regs *regs)
- 	if (!regs)
- 		return false;
- 
--	/*
--	 * If not in user-space long mode, a custom code segment could be in
--	 * use. This is true in protected mode (if the process defined a local
--	 * descriptor table), or virtual-8086 mode. In most of the cases
--	 * seg_base will be zero as in USER_CS.
--	 */
--	if (!user_64bit_mode(regs))
--		seg_base = insn_get_seg_base(regs, INAT_SEG_REG_CS);
--
--	if (seg_base == -1L)
--		return false;
--
--	not_copied = copy_from_user(buf, (void __user *)(seg_base + regs->ip),
--				    sizeof(buf));
--	nr_copied = sizeof(buf) - not_copied;
-+	nr_copied = insn_fetch_from_user(regs, buf);
- 
- 	/*
--	 * The copy_from_user above could have failed if user code is protected
--	 * by a memory protection key. Give up on emulation in such a case.
--	 * Should we issue a page fault?
-+	 * The insn_fetch_from_user above could have failed if user code
-+	 * is protected by a memory protection key. Give up on emulation
-+	 * in such a case.  Should we issue a page fault?
- 	 */
- 	if (!nr_copied)
- 		return false;
-diff --git a/arch/x86/lib/insn-eval.c b/arch/x86/lib/insn-eval.c
-index 5e69603..947b7f1 100644
---- a/arch/x86/lib/insn-eval.c
-+++ b/arch/x86/lib/insn-eval.c
-@@ -1367,3 +1367,41 @@ void __user *insn_get_addr_ref(struct insn *insn, struct pt_regs *regs)
- 		return (void __user *)-1L;
- 	}
- }
+diff --git a/arch/x86/include/asm/trap_pf.h b/arch/x86/include/asm/trap_pf.h
+new file mode 100644
+index 0000000..305bc12
+--- /dev/null
++++ b/arch/x86/include/asm/trap_pf.h
+@@ -0,0 +1,24 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _ASM_X86_TRAP_PF_H
++#define _ASM_X86_TRAP_PF_H
 +
-+/**
-+ * insn_fetch_from_user() - Copy instruction bytes from user-space memory
-+ * @regs:	Structure with register values as seen when entering kernel mode
-+ * @buf:	Array to store the fetched instruction
++/*
++ * Page fault error code bits:
 + *
-+ * Gets the linear address of the instruction and copies the instruction bytes
-+ * to the buf.
-+ *
-+ * Returns:
-+ *
-+ * Number of instruction bytes copied.
-+ *
-+ * 0 if nothing was copied.
++ *   bit 0 ==	 0: no page found	1: protection fault
++ *   bit 1 ==	 0: read access		1: write access
++ *   bit 2 ==	 0: kernel-mode access	1: user-mode access
++ *   bit 3 ==				1: use of reserved bit detected
++ *   bit 4 ==				1: fault was an instruction fetch
++ *   bit 5 ==				1: protection keys block access
 + */
-+int insn_fetch_from_user(struct pt_regs *regs, unsigned char buf[MAX_INSN_SIZE])
-+{
-+	unsigned long seg_base = 0;
-+	int not_copied;
++enum x86_pf_error_code {
++	X86_PF_PROT	=		1 << 0,
++	X86_PF_WRITE	=		1 << 1,
++	X86_PF_USER	=		1 << 2,
++	X86_PF_RSVD	=		1 << 3,
++	X86_PF_INSTR	=		1 << 4,
++	X86_PF_PK	=		1 << 5,
++};
 +
-+	/*
-+	 * If not in user-space long mode, a custom code segment could be in
-+	 * use. This is true in protected mode (if the process defined a local
-+	 * descriptor table), or virtual-8086 mode. In most of the cases
-+	 * seg_base will be zero as in USER_CS.
-+	 */
-+	if (!user_64bit_mode(regs)) {
-+		seg_base = insn_get_seg_base(regs, INAT_SEG_REG_CS);
-+		if (seg_base == -1L)
-+			return 0;
-+	}
-+
-+
-+	not_copied = copy_from_user(buf, (void __user *)(seg_base + regs->ip),
-+				    MAX_INSN_SIZE);
-+
-+	return MAX_INSN_SIZE - not_copied;
-+}
++#endif /* _ASM_X86_TRAP_PF_H */
+diff --git a/arch/x86/include/asm/traps.h b/arch/x86/include/asm/traps.h
+index 714b1a3..6a30835 100644
+--- a/arch/x86/include/asm/traps.h
++++ b/arch/x86/include/asm/traps.h
+@@ -8,6 +8,7 @@
+ #include <asm/debugreg.h>
+ #include <asm/idtentry.h>
+ #include <asm/siginfo.h>			/* TRAP_TRACE, ... */
++#include <asm/trap_pf.h>
+ 
+ #ifdef CONFIG_X86_64
+ asmlinkage __visible notrace struct pt_regs *sync_regs(struct pt_regs *eregs);
+@@ -41,22 +42,4 @@ void __noreturn handle_stack_overflow(const char *message,
+ 				      unsigned long fault_address);
+ #endif
+ 
+-/*
+- * Page fault error code bits:
+- *
+- *   bit 0 ==	 0: no page found	1: protection fault
+- *   bit 1 ==	 0: read access		1: write access
+- *   bit 2 ==	 0: kernel-mode access	1: user-mode access
+- *   bit 3 ==				1: use of reserved bit detected
+- *   bit 4 ==				1: fault was an instruction fetch
+- *   bit 5 ==				1: protection keys block access
+- */
+-enum x86_pf_error_code {
+-	X86_PF_PROT	=		1 << 0,
+-	X86_PF_WRITE	=		1 << 1,
+-	X86_PF_USER	=		1 << 2,
+-	X86_PF_RSVD	=		1 << 3,
+-	X86_PF_INSTR	=		1 << 4,
+-	X86_PF_PK	=		1 << 5,
+-};
+ #endif /* _ASM_X86_TRAPS_H */
