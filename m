@@ -2,54 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C1533264ED4
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Sep 2020 21:27:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 35EF3264ED7
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Sep 2020 21:27:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726942AbgIJTZa (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 10 Sep 2020 15:25:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39982 "EHLO
+        id S1726957AbgIJT1L (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 10 Sep 2020 15:27:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39986 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731432AbgIJPtc (ORCPT
+        with ESMTP id S1731411AbgIJPsR (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 10 Sep 2020 11:49:32 -0400
+        Thu, 10 Sep 2020 11:48:17 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 172DEC061359;
-        Thu, 10 Sep 2020 08:08:30 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9163EC06135B;
+        Thu, 10 Sep 2020 08:08:31 -0700 (PDT)
 Date:   Thu, 10 Sep 2020 15:08:28 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1599750508;
+        s=2020; t=1599750509;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=+jjvgvg8v7X9x4JwflR3nMK+NU2SOxAmY9V8+lUvIog=;
-        b=Us9wDE0wIYvubUecgDtJ3SBUydhgIo0S0Ge2e15G12wHLWyKGGsQypL82gbYOTeyDp0bEy
-        fVvuyVgE4P6d1yX8+4rHP6grGToQnwz4DKkiFcV/56D3mzGzbFuMRjB9A49WCSSjkrYOZf
-        JeiDcPfcXygjbG1SowPQzhlbqcOXv7xYg1brK/X5bv+5f/JifyY+KaCcFK/xlbbxixDeAq
-        hkB1xZnaCIaszJXqZpVVPRfnG0HlCM4aVkJ+geyXzmkBUP1rX3F8kh/PBVlg8VL60k0drM
-        NeVAmER8q+nI45lu7j2cyvCvpWkiPun2QLEgw3oqvaWADX/fTmLs7a1g/f/92Q==
+        bh=FCurwOkbo5AoczvL3xuGbBKL9eeVyxXTS5Nyvj202ok=;
+        b=xwISuiDi1sPiik7upOitVxCZnCrtUXtPkl0OifZ6AqdPFS3EpBA3E2EsljCG9t/vs5HVuG
+        aj72LMu2PrQ9KJoe6FJipmWAdieKySeyt3KHcq4MsWFCJbW+sjTQbbHF4tibweY+dG3F5n
+        eBAgYiajXDsnHUlr0irrq7tDAGtA8EifAVyQzrRWuegpYOSGAHb/8c/EEfoi6CpreYOrIc
+        ufej1aGPceXkL3+tWaaaRe2in3cwmGaL2oa+veMi4E9sXr4eY6mwpFOId4l83w35AX6aZc
+        Zk8fRDXDBasLK4+UtLZjGMwE8chInEGDJLDGnc1MZRvJjir0WoptCj2exWXbsQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1599750508;
+        s=2020e; t=1599750509;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=+jjvgvg8v7X9x4JwflR3nMK+NU2SOxAmY9V8+lUvIog=;
-        b=o4p89Ldr9hqj5978rJSnSDZ91TDvcraJp8mbotMBDbTtFHcdZ9pZ1rkTYdgFUsTw3g6KfJ
-        jX4Y1sM4uf+em2Cw==
+        bh=FCurwOkbo5AoczvL3xuGbBKL9eeVyxXTS5Nyvj202ok=;
+        b=3aGRWhvnxY9HfKDAuvdR31y+PbjCa6C+AlEEKCuoiv8ZPnENVNtHwJlmcbbqW/nCr/Wz//
+        Ye4UA/d3Y/SGO0DA==
 From:   "tip-bot2 for Ahmed S. Darwish" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] seqlock: Introduce seqcount_latch_t
+Subject: [tip: locking/core] mm/swap: Do not abuse the seqcount_t latching API
 Cc:     "Ahmed S. Darwish" <a.darwish@linutronix.de>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200827114044.11173-4-a.darwish@linutronix.de>
-References: <20200827114044.11173-4-a.darwish@linutronix.de>
+In-Reply-To: <87y2pg9erj.fsf@vostro.fn.ogness.net>
+References: <87y2pg9erj.fsf@vostro.fn.ogness.net>
 MIME-Version: 1.0
-Message-ID: <159975050825.20229.5708039330860036478.tip-bot2@tip-bot2>
+Message-ID: <159975050868.20229.18166886647511885303.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,236 +61,160 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     80793c3471d90d4dc2b48deadb6413bdfe39500f
-Gitweb:        https://git.kernel.org/tip/80793c3471d90d4dc2b48deadb6413bdfe39500f
+Commit-ID:     6446a5131e24a834606c15a965fa920041581c2c
+Gitweb:        https://git.kernel.org/tip/6446a5131e24a834606c15a965fa920041581c2c
 Author:        Ahmed S. Darwish <a.darwish@linutronix.de>
-AuthorDate:    Thu, 27 Aug 2020 13:40:39 +02:00
+AuthorDate:    Thu, 27 Aug 2020 13:40:38 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Thu, 10 Sep 2020 11:19:28 +02:00
 
-seqlock: Introduce seqcount_latch_t
+mm/swap: Do not abuse the seqcount_t latching API
 
-Latch sequence counters are a multiversion concurrency control mechanism
-where the seqcount_t counter even/odd value is used to switch between
-two copies of protected data. This allows the seqcount_t read path to
-safely interrupt its write side critical section (e.g. from NMIs).
+Commit eef1a429f234 ("mm/swap.c: piggyback lru_add_drain_all() calls")
+implemented an optimization mechanism to exit the to-be-started LRU
+drain operation (name it A) if another drain operation *started and
+finished* while (A) was blocked on the LRU draining mutex.
 
-Initially, latch sequence counters were implemented as a single write
-function above plain seqcount_t: raw_write_seqcount_latch(). The read
-side was expected to use plain seqcount_t raw_read_seqcount().
+This was done through a seqcount_t latch, which is an abuse of its
+semantics:
 
-A specialized latch read function, raw_read_seqcount_latch(), was later
-added. It became the standardized way for latch read paths.  Due to the
-dependent load, it has one read memory barrier less than the plain
-seqcount_t raw_read_seqcount() API.
+  1. seqcount_t latching should be used for the purpose of switching
+     between two storage places with sequence protection to allow
+     interruptible, preemptible, writer sections. The referenced
+     optimization mechanism has absolutely nothing to do with that.
 
-Only raw_write_seqcount_latch() and raw_read_seqcount_latch() should be
-used with latch sequence counters. Having *unique* read and write path
-APIs means that latch sequence counters are actually a data type of
-their own -- just inappropriately overloading plain seqcount_t.
+  2. The used raw_write_seqcount_latch() has two SMP write memory
+     barriers to insure one consistent storage place out of the two
+     storage places available. A full memory barrier is required
+     instead: to guarantee that the pagevec counter stores visible by
+     local CPU are visible to other CPUs -- before loading the current
+     drain generation.
 
-Introduce seqcount_latch_t. This adds type-safety and ensures that only
-the correct latch-safe APIs are to be used.
+Beside the seqcount_t API abuse, the semantics of a latch sequence
+counter was force-fitted into the referenced optimization. What was
+meant is to track "generations" of LRU draining operations, where
+"global lru draining generation = x" implies that all generations
+0 < n <= x are already *scheduled* for draining -- thus nothing needs
+to be done if the current generation number n <= x.
 
-Not to break bisection, let the latch APIs also accept plain seqcount_t
-or seqcount_raw_spinlock_t. After converting all call sites to
-seqcount_latch_t, only that new data type will be allowed.
+Remove the conceptually-inappropriate seqcount_t latch usage. Manually
+implement the referenced optimization using a counter and SMP memory
+barriers.
 
-References: 9b0fd802e8c0 ("seqcount: Add raw_write_seqcount_latch()")
-References: 7fc26327b756 ("seqlock: Introduce raw_read_seqcount_latch()")
-References: aadd6e5caaac ("time/sched_clock: Use raw_read_seqcount_latch()")
+Note, while at it, use the non-atomic variant of cpumask_set_cpu(),
+__cpumask_set_cpu(), due to the already existing mutex protection.
+
 Signed-off-by: Ahmed S. Darwish <a.darwish@linutronix.de>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20200827114044.11173-4-a.darwish@linutronix.de
+Link: https://lkml.kernel.org/r/87y2pg9erj.fsf@vostro.fn.ogness.net
 ---
- Documentation/locking/seqlock.rst |  18 +++++-
- include/linux/seqlock.h           | 104 ++++++++++++++++++++---------
- 2 files changed, 91 insertions(+), 31 deletions(-)
+ mm/swap.c | 65 ++++++++++++++++++++++++++++++++++++++++++++----------
+ 1 file changed, 54 insertions(+), 11 deletions(-)
 
-diff --git a/Documentation/locking/seqlock.rst b/Documentation/locking/seqlock.rst
-index 62c5ad9..a334b58 100644
---- a/Documentation/locking/seqlock.rst
-+++ b/Documentation/locking/seqlock.rst
-@@ -139,6 +139,24 @@ with the associated LOCKTYPE lock acquired.
- 
- Read path: same as in :ref:`seqcount_t`.
- 
-+
-+.. _seqcount_latch_t:
-+
-+Latch sequence counters (``seqcount_latch_t``)
-+----------------------------------------------
-+
-+Latch sequence counters are a multiversion concurrency control mechanism
-+where the embedded seqcount_t counter even/odd value is used to switch
-+between two copies of protected data. This allows the sequence counter
-+read path to safely interrupt its own write side critical section.
-+
-+Use seqcount_latch_t when the write side sections cannot be protected
-+from interruption by readers. This is typically the case when the read
-+side can be invoked from NMI handlers.
-+
-+Check `raw_write_seqcount_latch()` for more information.
-+
-+
- .. _seqlock_t:
- 
- Sequential locks (``seqlock_t``)
-diff --git a/include/linux/seqlock.h b/include/linux/seqlock.h
-index 300cbf3..88b917d 100644
---- a/include/linux/seqlock.h
-+++ b/include/linux/seqlock.h
-@@ -587,34 +587,76 @@ static inline void write_seqcount_t_invalidate(seqcount_t *s)
- 	kcsan_nestable_atomic_end();
- }
- 
--/**
-- * raw_read_seqcount_latch() - pick even/odd seqcount_t latch data copy
-- * @s: Pointer to seqcount_t or any of the seqcount_locktype_t variants
-+/*
-+ * Latch sequence counters (seqcount_latch_t)
-  *
-- * Use seqcount_t latching to switch between two storage places protected
-- * by a sequence counter. Doing so allows having interruptible, preemptible,
-- * seqcount_t write side critical sections.
-+ * A sequence counter variant where the counter even/odd value is used to
-+ * switch between two copies of protected data. This allows the read path,
-+ * typically NMIs, to safely interrupt the write side critical section.
-  *
-- * Check raw_write_seqcount_latch() for more details and a full reader and
-- * writer usage example.
-+ * As the write sections are fully preemptible, no special handling for
-+ * PREEMPT_RT is needed.
-+ */
-+typedef struct {
-+	seqcount_t seqcount;
-+} seqcount_latch_t;
-+
-+/**
-+ * SEQCNT_LATCH_ZERO() - static initializer for seqcount_latch_t
-+ * @seq_name: Name of the seqcount_latch_t instance
-+ */
-+#define SEQCNT_LATCH_ZERO(seq_name) {					\
-+	.seqcount		= SEQCNT_ZERO(seq_name.seqcount),	\
-+}
-+
-+/**
-+ * seqcount_latch_init() - runtime initializer for seqcount_latch_t
-+ * @s: Pointer to the seqcount_latch_t instance
-+ */
-+static inline void seqcount_latch_init(seqcount_latch_t *s)
-+{
-+	seqcount_init(&s->seqcount);
-+}
-+
-+/**
-+ * raw_read_seqcount_latch() - pick even/odd latch data copy
-+ * @s: Pointer to seqcount_t, seqcount_raw_spinlock_t, or seqcount_latch_t
-+ *
-+ * See raw_write_seqcount_latch() for details and a full reader/writer
-+ * usage example.
-  *
-  * Return: sequence counter raw value. Use the lowest bit as an index for
-- * picking which data copy to read. The full counter value must then be
-- * checked with read_seqcount_retry().
-+ * picking which data copy to read. The full counter must then be checked
-+ * with read_seqcount_latch_retry().
+diff --git a/mm/swap.c b/mm/swap.c
+index d16d65d..a1ec807 100644
+--- a/mm/swap.c
++++ b/mm/swap.c
+@@ -763,10 +763,20 @@ static void lru_add_drain_per_cpu(struct work_struct *dummy)
   */
--#define raw_read_seqcount_latch(s)					\
--	raw_read_seqcount_t_latch(__seqcount_ptr(s))
-+#define raw_read_seqcount_latch(s)						\
-+({										\
-+	/*									\
-+	 * Pairs with the first smp_wmb() in raw_write_seqcount_latch().	\
-+	 * Due to the dependent load, a full smp_rmb() is not needed.		\
-+	 */									\
-+	_Generic(*(s),								\
-+		 seqcount_t:		  READ_ONCE(((seqcount_t *)s)->sequence),			\
-+		 seqcount_raw_spinlock_t: READ_ONCE(((seqcount_raw_spinlock_t *)s)->seqcount.sequence),	\
-+		 seqcount_latch_t:	  READ_ONCE(((seqcount_latch_t *)s)->seqcount.sequence));	\
-+})
- 
--static inline int raw_read_seqcount_t_latch(seqcount_t *s)
-+/**
-+ * read_seqcount_latch_retry() - end a seqcount_latch_t read section
-+ * @s:		Pointer to seqcount_latch_t
-+ * @start:	count, from raw_read_seqcount_latch()
-+ *
-+ * Return: true if a read section retry is required, else false
-+ */
-+static inline int
-+read_seqcount_latch_retry(const seqcount_latch_t *s, unsigned start)
+ void lru_add_drain_all(void)
  {
--	/* Pairs with the first smp_wmb() in raw_write_seqcount_latch() */
--	int seq = READ_ONCE(s->sequence); /* ^^^ */
--	return seq;
-+	return read_seqcount_retry(&s->seqcount, start);
+-	static seqcount_t seqcount = SEQCNT_ZERO(seqcount);
+-	static DEFINE_MUTEX(lock);
++	/*
++	 * lru_drain_gen - Global pages generation number
++	 *
++	 * (A) Definition: global lru_drain_gen = x implies that all generations
++	 *     0 < n <= x are already *scheduled* for draining.
++	 *
++	 * This is an optimization for the highly-contended use case where a
++	 * user space workload keeps constantly generating a flow of pages for
++	 * each CPU.
++	 */
++	static unsigned int lru_drain_gen;
+ 	static struct cpumask has_work;
+-	int cpu, seq;
++	static DEFINE_MUTEX(lock);
++	unsigned cpu, this_gen;
+ 
+ 	/*
+ 	 * Make sure nobody triggers this path before mm_percpu_wq is fully
+@@ -775,21 +785,54 @@ void lru_add_drain_all(void)
+ 	if (WARN_ON(!mm_percpu_wq))
+ 		return;
+ 
+-	seq = raw_read_seqcount_latch(&seqcount);
++	/*
++	 * Guarantee pagevec counter stores visible by this CPU are visible to
++	 * other CPUs before loading the current drain generation.
++	 */
++	smp_mb();
++
++	/*
++	 * (B) Locally cache global LRU draining generation number
++	 *
++	 * The read barrier ensures that the counter is loaded before the mutex
++	 * is taken. It pairs with smp_mb() inside the mutex critical section
++	 * at (D).
++	 */
++	this_gen = smp_load_acquire(&lru_drain_gen);
+ 
+ 	mutex_lock(&lock);
+ 
+ 	/*
+-	 * Piggyback on drain started and finished while we waited for lock:
+-	 * all pages pended at the time of our enter were drained from vectors.
++	 * (C) Exit the draining operation if a newer generation, from another
++	 * lru_add_drain_all(), was already scheduled for draining. Check (A).
+ 	 */
+-	if (__read_seqcount_retry(&seqcount, seq))
++	if (unlikely(this_gen != lru_drain_gen))
+ 		goto done;
+ 
+-	raw_write_seqcount_latch(&seqcount);
++	/*
++	 * (D) Increment global generation number
++	 *
++	 * Pairs with smp_load_acquire() at (B), outside of the critical
++	 * section. Use a full memory barrier to guarantee that the new global
++	 * drain generation number is stored before loading pagevec counters.
++	 *
++	 * This pairing must be done here, before the for_each_online_cpu loop
++	 * below which drains the page vectors.
++	 *
++	 * Let x, y, and z represent some system CPU numbers, where x < y < z.
++	 * Assume CPU #z is is in the middle of the for_each_online_cpu loop
++	 * below and has already reached CPU #y's per-cpu data. CPU #x comes
++	 * along, adds some pages to its per-cpu vectors, then calls
++	 * lru_add_drain_all().
++	 *
++	 * If the paired barrier is done at any later step, e.g. after the
++	 * loop, CPU #x will just exit at (C) and miss flushing out all of its
++	 * added pages.
++	 */
++	WRITE_ONCE(lru_drain_gen, lru_drain_gen + 1);
++	smp_mb();
+ 
+ 	cpumask_clear(&has_work);
+-
+ 	for_each_online_cpu(cpu) {
+ 		struct work_struct *work = &per_cpu(lru_add_drain_work, cpu);
+ 
+@@ -801,7 +844,7 @@ void lru_add_drain_all(void)
+ 		    need_activate_page_drain(cpu)) {
+ 			INIT_WORK(work, lru_add_drain_per_cpu);
+ 			queue_work_on(cpu, mm_percpu_wq, work);
+-			cpumask_set_cpu(cpu, &has_work);
++			__cpumask_set_cpu(cpu, &has_work);
+ 		}
+ 	}
+ 
+@@ -816,7 +859,7 @@ void lru_add_drain_all(void)
+ {
+ 	lru_add_drain();
  }
+-#endif
++#endif /* CONFIG_SMP */
  
  /**
-- * raw_write_seqcount_latch() - redirect readers to even/odd copy
-- * @s: Pointer to seqcount_t or any of the seqcount_locktype_t variants
-+ * raw_write_seqcount_latch() - redirect latch readers to even/odd copy
-+ * @s: Pointer to seqcount_t, seqcount_raw_spinlock_t, or seqcount_latch_t
-  *
-  * The latch technique is a multiversion concurrency control method that allows
-  * queries during non-atomic modifications. If you can guarantee queries never
-@@ -633,7 +675,7 @@ static inline int raw_read_seqcount_t_latch(seqcount_t *s)
-  * The basic form is a data structure like::
-  *
-  *	struct latch_struct {
-- *		seqcount_t		seq;
-+ *		seqcount_latch_t	seq;
-  *		struct data_struct	data[2];
-  *	};
-  *
-@@ -643,13 +685,13 @@ static inline int raw_read_seqcount_t_latch(seqcount_t *s)
-  *	void latch_modify(struct latch_struct *latch, ...)
-  *	{
-  *		smp_wmb();	// Ensure that the last data[1] update is visible
-- *		latch->seq++;
-+ *		latch->seq.sequence++;
-  *		smp_wmb();	// Ensure that the seqcount update is visible
-  *
-  *		modify(latch->data[0], ...);
-  *
-  *		smp_wmb();	// Ensure that the data[0] update is visible
-- *		latch->seq++;
-+ *		latch->seq.sequence++;
-  *		smp_wmb();	// Ensure that the seqcount update is visible
-  *
-  *		modify(latch->data[1], ...);
-@@ -668,8 +710,8 @@ static inline int raw_read_seqcount_t_latch(seqcount_t *s)
-  *			idx = seq & 0x01;
-  *			entry = data_query(latch->data[idx], ...);
-  *
-- *		// read_seqcount_retry() includes needed smp_rmb()
-- *		} while (read_seqcount_retry(&latch->seq, seq));
-+ *		// This includes needed smp_rmb()
-+ *		} while (read_seqcount_latch_retry(&latch->seq, seq));
-  *
-  *		return entry;
-  *	}
-@@ -693,14 +735,14 @@ static inline int raw_read_seqcount_t_latch(seqcount_t *s)
-  *	When data is a dynamic data structure; one should use regular RCU
-  *	patterns to manage the lifetimes of the objects within.
-  */
--#define raw_write_seqcount_latch(s)					\
--	raw_write_seqcount_t_latch(__seqcount_ptr(s))
--
--static inline void raw_write_seqcount_t_latch(seqcount_t *s)
--{
--       smp_wmb();      /* prior stores before incrementing "sequence" */
--       s->sequence++;
--       smp_wmb();      /* increment "sequence" before following stores */
-+#define raw_write_seqcount_latch(s)						\
-+{										\
-+       smp_wmb();      /* prior stores before incrementing "sequence" */	\
-+       _Generic(*(s),								\
-+		seqcount_t:		((seqcount_t *)s)->sequence++,		\
-+		seqcount_raw_spinlock_t:((seqcount_raw_spinlock_t *)s)->seqcount.sequence++, \
-+		seqcount_latch_t:	((seqcount_latch_t *)s)->seqcount.sequence++); \
-+       smp_wmb();      /* increment "sequence" before following stores */	\
- }
- 
- /*
+  * release_pages - batched put_page()
