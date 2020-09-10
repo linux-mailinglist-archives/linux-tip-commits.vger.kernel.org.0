@@ -2,55 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 707F5264F14
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Sep 2020 21:34:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 49704264FE0
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Sep 2020 21:54:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727856AbgIJT3B (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 10 Sep 2020 15:29:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39964 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731380AbgIJPsR (ORCPT
+        id S1726847AbgIJTyS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 10 Sep 2020 15:54:18 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:42172 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726794AbgIJTwg (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 10 Sep 2020 11:48:17 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E85B7C06134D;
-        Thu, 10 Sep 2020 08:08:27 -0700 (PDT)
-Date:   Thu, 10 Sep 2020 15:08:25 -0000
+        Thu, 10 Sep 2020 15:52:36 -0400
+Date:   Thu, 10 Sep 2020 19:52:33 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1599750506;
+        s=2020; t=1599767554;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=LXkNgR15KoVsXX1rbejrVwc9XQ+pCCMPvkqDCDGAejU=;
-        b=AfkVNFlxbP8pJP7Wlmt1id4FYHINXxdDcJTBTO/KCCDSSTVwJploHPruLPALa1MIxD8U08
-        JlHsjpj8Toi/PXepwg6kg0FySX4+hN5Yoo5D+vaAlDhNGHHE0H8t1NwCiHk2B3Hk8cd76j
-        t3cUYsR4xusUs0wIArEjcgmU+19Kw+jrkgN7UMfGQPTCJprYpmLb4cFGGos63aWRu8DU7l
-        JRmaUVdSkGGxNkBTBU4Kk0zVyM+Bi2QJmoBL7FhhQVhkIjkIQ3hIJVuBoZ7ukyTiDsh8p7
-        hjG+wEDDz069pH8mLEmduQizan98rG2jMyVZXiOhDnWLSTdJVv+0xHSzWX3ldw==
+        bh=dhBA5DB3uM3jz6b3+VK8IjWpmv4Aa40MZCnMXEBoZuw=;
+        b=RB3TPVf8PntijWABrEv+XIuvVRnI6OB5ZNqbYq8qqZNyuFRXgW2NSQUuVfxVtxkEGyUHNr
+        cfvQ4DVHCJli45Mo5pO6xlUpNHbpJgR6nAXL14FYaz1k8jWO+Ok8cucpNQ3k8AcKPwsnF0
+        vf+bg6nKeMvlnY/B8pqRWDrZIobpZ+wbsG7tvSUcBznjANZvZC370fQ6lXMXUO1PHAEC4W
+        BMmNVG4byBvN1NEN67cK+TdIgAIR1SxRb+d2Mz5OrnFwXMHDSVmIUuX+bc63EgCOysmqCV
+        DmM1k1e4DViMZEflni4VcEjY45MKv4SUyWCQcOI6oJ+GyW0g+arKkSoLe/KEvA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1599750506;
+        s=2020e; t=1599767554;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=LXkNgR15KoVsXX1rbejrVwc9XQ+pCCMPvkqDCDGAejU=;
-        b=bm5PkQ57WVdYehphQ0/URqfRsYDiip/GGPixUcRNr8ghHG/ft8/Ugwwa2bLCwqbFdUf8os
-        DEcRnZagIIzc5+Dw==
-From:   "tip-bot2 for Ahmed S. Darwish" <tip-bot2@linutronix.de>
+        bh=dhBA5DB3uM3jz6b3+VK8IjWpmv4Aa40MZCnMXEBoZuw=;
+        b=pUeJ1MNSBlgV9thU2wkOhXbfk2ehvKBNMupfRnCQShy4VLiuuG4V7gvLaAjr30d8scxT1v
+        tLOxKV23Y52emQCQ==
+From:   "tip-bot2 for Martin Radev" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] seqlock: seqcount_LOCKNAME_t: Standardize naming
- convention
-Cc:     "Ahmed S. Darwish" <a.darwish@linutronix.de>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200904153231.11994-2-a.darwish@linutronix.de>
-References: <20200904153231.11994-2-a.darwish@linutronix.de>
+Subject: [tip: x86/seves] x86/sev-es: Check required CPU features for SEV-ES
+Cc:     Martin Radev <martin.b.radev@gmail.com>,
+        Joerg Roedel <jroedel@suse.de>, Borislav Petkov <bp@suse.de>,
+        Kees Cook <keescook@chromium.org>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200907131613.12703-73-joro@8bytes.org>
+References: <20200907131613.12703-73-joro@8bytes.org>
 MIME-Version: 1.0
-Message-ID: <159975050559.20229.7547255102795734456.tip-bot2@tip-bot2>
+Message-ID: <159976755355.20229.4941386595177142074.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,260 +57,127 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the locking/core branch of tip:
+The following commit has been merged into the x86/seves branch of tip:
 
-Commit-ID:     6dd699b13d53f26a7603702d8bada3482312df74
-Gitweb:        https://git.kernel.org/tip/6dd699b13d53f26a7603702d8bada3482312df74
-Author:        Ahmed S. Darwish <a.darwish@linutronix.de>
-AuthorDate:    Fri, 04 Sep 2020 17:32:27 +02:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Thu, 10 Sep 2020 11:19:30 +02:00
+Commit-ID:     f5ed777586e08e09c4b6f1e87161a145ee1431cf
+Gitweb:        https://git.kernel.org/tip/f5ed777586e08e09c4b6f1e87161a145ee1431cf
+Author:        Martin Radev <martin.b.radev@gmail.com>
+AuthorDate:    Mon, 07 Sep 2020 15:16:13 +02:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Thu, 10 Sep 2020 21:49:25 +02:00
 
-seqlock: seqcount_LOCKNAME_t: Standardize naming convention
+x86/sev-es: Check required CPU features for SEV-ES
 
-At seqlock.h, sequence counters with associated locks are either called
-seqcount_LOCKNAME_t, seqcount_LOCKTYPE_t, or seqcount_locktype_t.
+Make sure the machine supports RDRAND, otherwise there is no trusted
+source of randomness in the system.
 
-Standardize on seqcount_LOCKNAME_t for all instances in comments,
-kernel-doc, and SEQCOUNT_LOCKNAME() generative macro paramters.
+To also check this in the pre-decompression stage, make has_cpuflag()
+not depend on CONFIG_RANDOMIZE_BASE anymore.
 
-Signed-off-by: Ahmed S. Darwish <a.darwish@linutronix.de>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20200904153231.11994-2-a.darwish@linutronix.de
+Signed-off-by: Martin Radev <martin.b.radev@gmail.com>
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Link: https://lkml.kernel.org/r/20200907131613.12703-73-joro@8bytes.org
 ---
- include/linux/seqlock.h | 79 ++++++++++++++++++++--------------------
- 1 file changed, 40 insertions(+), 39 deletions(-)
+ arch/x86/boot/compressed/cpuflags.c |  4 ----
+ arch/x86/boot/compressed/misc.h     |  5 +++--
+ arch/x86/boot/compressed/sev-es.c   |  3 +++
+ arch/x86/kernel/sev-es-shared.c     | 15 +++++++++++++++
+ arch/x86/kernel/sev-es.c            |  3 +++
+ 5 files changed, 24 insertions(+), 6 deletions(-)
 
-diff --git a/include/linux/seqlock.h b/include/linux/seqlock.h
-index f2a7a46..820ace2 100644
---- a/include/linux/seqlock.h
-+++ b/include/linux/seqlock.h
-@@ -53,7 +53,7 @@
-  *
-  * If the write serialization mechanism is one of the common kernel
-  * locking primitives, use a sequence counter with associated lock
-- * (seqcount_LOCKTYPE_t) instead.
-+ * (seqcount_LOCKNAME_t) instead.
-  *
-  * If it's desired to automatically handle the sequence counter writer
-  * serialization and non-preemptibility requirements, use a sequential
-@@ -117,7 +117,7 @@ static inline void seqcount_lockdep_reader_access(const seqcount_t *s)
- #define SEQCNT_ZERO(name) { .sequence = 0, SEQCOUNT_DEP_MAP_INIT(name) }
+diff --git a/arch/x86/boot/compressed/cpuflags.c b/arch/x86/boot/compressed/cpuflags.c
+index 6448a81..0cc1323 100644
+--- a/arch/x86/boot/compressed/cpuflags.c
++++ b/arch/x86/boot/compressed/cpuflags.c
+@@ -1,6 +1,4 @@
+ // SPDX-License-Identifier: GPL-2.0
+-#ifdef CONFIG_RANDOMIZE_BASE
+-
+ #include "../cpuflags.c"
  
- /*
-- * Sequence counters with associated locks (seqcount_LOCKTYPE_t)
-+ * Sequence counters with associated locks (seqcount_LOCKNAME_t)
-  *
-  * A sequence counter which associates the lock used for writer
-  * serialization at initialization time. This enables lockdep to validate
-@@ -138,30 +138,32 @@ static inline void seqcount_lockdep_reader_access(const seqcount_t *s)
+ bool has_cpuflag(int flag)
+@@ -9,5 +7,3 @@ bool has_cpuflag(int flag)
+ 
+ 	return test_bit(flag, cpu.flags);
+ }
+-
+-#endif
+diff --git a/arch/x86/boot/compressed/misc.h b/arch/x86/boot/compressed/misc.h
+index c0e0ffe..6d31f1b 100644
+--- a/arch/x86/boot/compressed/misc.h
++++ b/arch/x86/boot/compressed/misc.h
+@@ -85,8 +85,6 @@ void choose_random_location(unsigned long input,
+ 			    unsigned long *output,
+ 			    unsigned long output_size,
+ 			    unsigned long *virt_addr);
+-/* cpuflags.c */
+-bool has_cpuflag(int flag);
+ #else
+ static inline void choose_random_location(unsigned long input,
+ 					  unsigned long input_size,
+@@ -97,6 +95,9 @@ static inline void choose_random_location(unsigned long input,
+ }
  #endif
  
- /**
-- * typedef seqcount_LOCKNAME_t - sequence counter with LOCKTYPE associated
-+ * typedef seqcount_LOCKNAME_t - sequence counter with LOCKNAME associated
-  * @seqcount:	The real sequence counter
-- * @lock:	Pointer to the associated spinlock
-+ * @lock:	Pointer to the associated lock
-  *
-- * A plain sequence counter with external writer synchronization by a
-- * spinlock. The spinlock is associated to the sequence count in the
-+ * A plain sequence counter with external writer synchronization by
-+ * LOCKNAME @lock. The lock is associated to the sequence counter in the
-  * static initializer or init function. This enables lockdep to validate
-  * that the write side critical section is properly serialized.
-+ *
-+ * LOCKNAME:	raw_spinlock, spinlock, rwlock, mutex, or ww_mutex.
++/* cpuflags.c */
++bool has_cpuflag(int flag);
++
+ #ifdef CONFIG_X86_64
+ extern int set_page_decrypted(unsigned long address);
+ extern int set_page_encrypted(unsigned long address);
+diff --git a/arch/x86/boot/compressed/sev-es.c b/arch/x86/boot/compressed/sev-es.c
+index 2a6c7c3..954cb27 100644
+--- a/arch/x86/boot/compressed/sev-es.c
++++ b/arch/x86/boot/compressed/sev-es.c
+@@ -145,6 +145,9 @@ void sev_es_shutdown_ghcb(void)
+ 	if (!boot_ghcb)
+ 		return;
+ 
++	if (!sev_es_check_cpu_features())
++		error("SEV-ES CPU Features missing.");
++
+ 	/*
+ 	 * GHCB Page must be flushed from the cache and mapped encrypted again.
+ 	 * Otherwise the running kernel will see strange cache effects when
+diff --git a/arch/x86/kernel/sev-es-shared.c b/arch/x86/kernel/sev-es-shared.c
+index 4be8af2..5f83cca 100644
+--- a/arch/x86/kernel/sev-es-shared.c
++++ b/arch/x86/kernel/sev-es-shared.c
+@@ -9,6 +9,21 @@
+  * and is included directly into both code-bases.
   */
  
- /*
-  * seqcount_LOCKNAME_init() - runtime initializer for seqcount_LOCKNAME_t
-  * @s:		Pointer to the seqcount_LOCKNAME_t instance
-- * @lock:	Pointer to the associated LOCKTYPE
-+ * @lock:	Pointer to the associated lock
-  */
++#ifndef __BOOT_COMPRESSED
++#define error(v)	pr_err(v)
++#define has_cpuflag(f)	boot_cpu_has(f)
++#endif
++
++static bool __init sev_es_check_cpu_features(void)
++{
++	if (!has_cpuflag(X86_FEATURE_RDRAND)) {
++		error("RDRAND instruction not supported - no trusted source of randomness available\n");
++		return false;
++	}
++
++	return true;
++}
++
+ static void sev_es_terminate(unsigned int reason)
+ {
+ 	u64 val = GHCB_SEV_TERMINATE;
+diff --git a/arch/x86/kernel/sev-es.c b/arch/x86/kernel/sev-es.c
+index 8cac9f8..6fcfdd3 100644
+--- a/arch/x86/kernel/sev-es.c
++++ b/arch/x86/kernel/sev-es.c
+@@ -665,6 +665,9 @@ void __init sev_es_init_vc_handling(void)
+ 	if (!sev_es_active())
+ 		return;
  
- /*
-- * SEQCOUNT_LOCKTYPE() - Instantiate seqcount_LOCKNAME_t and helpers
-- * @locktype:		actual typename
-- * @lockname:		name
-- * @preemptible:	preemptibility of above locktype
-+ * SEQCOUNT_LOCKNAME() - Instantiate seqcount_LOCKNAME_t and helpers
-+ * @lockname:		"LOCKNAME" part of seqcount_LOCKNAME_t
-+ * @locktype:		LOCKNAME canonical C data type
-+ * @preemptible:	preemptibility of above lockname
-  * @lockmember:		argument for lockdep_assert_held()
-  */
--#define SEQCOUNT_LOCKTYPE(locktype, lockname, preemptible, lockmember)	\
-+#define SEQCOUNT_LOCKNAME(lockname, locktype, preemptible, lockmember)	\
- typedef struct seqcount_##lockname {					\
- 	seqcount_t		seqcount;				\
- 	__SEQ_LOCK(locktype	*lock);					\
-@@ -211,29 +213,28 @@ static inline void __seqcount_assert(seqcount_t *s)
- 	lockdep_assert_preemption_disabled();
- }
++	if (!sev_es_check_cpu_features())
++		panic("SEV-ES CPU Features missing");
++
+ 	/* Enable SEV-ES special handling */
+ 	static_branch_enable(&sev_es_enable_key);
  
--SEQCOUNT_LOCKTYPE(raw_spinlock_t,	raw_spinlock,	false,	s->lock)
--SEQCOUNT_LOCKTYPE(spinlock_t,		spinlock,	false,	s->lock)
--SEQCOUNT_LOCKTYPE(rwlock_t,		rwlock,		false,	s->lock)
--SEQCOUNT_LOCKTYPE(struct mutex,		mutex,		true,	s->lock)
--SEQCOUNT_LOCKTYPE(struct ww_mutex,	ww_mutex,	true,	&s->lock->base)
-+SEQCOUNT_LOCKNAME(raw_spinlock,	raw_spinlock_t,		false,	s->lock)
-+SEQCOUNT_LOCKNAME(spinlock,	spinlock_t,		false,	s->lock)
-+SEQCOUNT_LOCKNAME(rwlock,	rwlock_t,		false,	s->lock)
-+SEQCOUNT_LOCKNAME(mutex,	struct mutex,		true,	s->lock)
-+SEQCOUNT_LOCKNAME(ww_mutex,	struct ww_mutex,	true,	&s->lock->base)
- 
- /*
-  * SEQCNT_LOCKNAME_ZERO - static initializer for seqcount_LOCKNAME_t
-  * @name:	Name of the seqcount_LOCKNAME_t instance
-- * @lock:	Pointer to the associated LOCKTYPE
-+ * @lock:	Pointer to the associated LOCKNAME
-  */
- 
--#define SEQCOUNT_LOCKTYPE_ZERO(seq_name, assoc_lock) {			\
-+#define SEQCOUNT_LOCKNAME_ZERO(seq_name, assoc_lock) {			\
- 	.seqcount		= SEQCNT_ZERO(seq_name.seqcount),	\
- 	__SEQ_LOCK(.lock	= (assoc_lock))				\
- }
- 
--#define SEQCNT_SPINLOCK_ZERO(name, lock)	SEQCOUNT_LOCKTYPE_ZERO(name, lock)
--#define SEQCNT_RAW_SPINLOCK_ZERO(name, lock)	SEQCOUNT_LOCKTYPE_ZERO(name, lock)
--#define SEQCNT_RWLOCK_ZERO(name, lock)		SEQCOUNT_LOCKTYPE_ZERO(name, lock)
--#define SEQCNT_MUTEX_ZERO(name, lock)		SEQCOUNT_LOCKTYPE_ZERO(name, lock)
--#define SEQCNT_WW_MUTEX_ZERO(name, lock) 	SEQCOUNT_LOCKTYPE_ZERO(name, lock)
--
-+#define SEQCNT_SPINLOCK_ZERO(name, lock)	SEQCOUNT_LOCKNAME_ZERO(name, lock)
-+#define SEQCNT_RAW_SPINLOCK_ZERO(name, lock)	SEQCOUNT_LOCKNAME_ZERO(name, lock)
-+#define SEQCNT_RWLOCK_ZERO(name, lock)		SEQCOUNT_LOCKNAME_ZERO(name, lock)
-+#define SEQCNT_MUTEX_ZERO(name, lock)		SEQCOUNT_LOCKNAME_ZERO(name, lock)
-+#define SEQCNT_WW_MUTEX_ZERO(name, lock) 	SEQCOUNT_LOCKNAME_ZERO(name, lock)
- 
- #define __seqprop_case(s, lockname, prop)				\
- 	seqcount_##lockname##_t: __seqcount_##lockname##_##prop((void *)(s))
-@@ -252,7 +253,7 @@ SEQCOUNT_LOCKTYPE(struct ww_mutex,	ww_mutex,	true,	&s->lock->base)
- 
- /**
-  * __read_seqcount_begin() - begin a seqcount_t read section w/o barrier
-- * @s: Pointer to seqcount_t or any of the seqcount_locktype_t variants
-+ * @s: Pointer to seqcount_t or any of the seqcount_LOCKNAME_t variants
-  *
-  * __read_seqcount_begin is like read_seqcount_begin, but has no smp_rmb()
-  * barrier. Callers should ensure that smp_rmb() or equivalent ordering is
-@@ -283,7 +284,7 @@ repeat:
- 
- /**
-  * raw_read_seqcount_begin() - begin a seqcount_t read section w/o lockdep
-- * @s: Pointer to seqcount_t or any of the seqcount_locktype_t variants
-+ * @s: Pointer to seqcount_t or any of the seqcount_LOCKNAME_t variants
-  *
-  * Return: count to be passed to read_seqcount_retry()
-  */
-@@ -299,7 +300,7 @@ static inline unsigned raw_read_seqcount_t_begin(const seqcount_t *s)
- 
- /**
-  * read_seqcount_begin() - begin a seqcount_t read critical section
-- * @s: Pointer to seqcount_t or any of the seqcount_locktype_t variants
-+ * @s: Pointer to seqcount_t or any of the seqcount_LOCKNAME_t variants
-  *
-  * Return: count to be passed to read_seqcount_retry()
-  */
-@@ -314,7 +315,7 @@ static inline unsigned read_seqcount_t_begin(const seqcount_t *s)
- 
- /**
-  * raw_read_seqcount() - read the raw seqcount_t counter value
-- * @s: Pointer to seqcount_t or any of the seqcount_locktype_t variants
-+ * @s: Pointer to seqcount_t or any of the seqcount_LOCKNAME_t variants
-  *
-  * raw_read_seqcount opens a read critical section of the given
-  * seqcount_t, without any lockdep checking, and without checking or
-@@ -337,7 +338,7 @@ static inline unsigned raw_read_seqcount_t(const seqcount_t *s)
- /**
-  * raw_seqcount_begin() - begin a seqcount_t read critical section w/o
-  *                        lockdep and w/o counter stabilization
-- * @s: Pointer to seqcount_t or any of the seqcount_locktype_t variants
-+ * @s: Pointer to seqcount_t or any of the seqcount_LOCKNAME_t variants
-  *
-  * raw_seqcount_begin opens a read critical section of the given
-  * seqcount_t. Unlike read_seqcount_begin(), this function will not wait
-@@ -365,7 +366,7 @@ static inline unsigned raw_seqcount_t_begin(const seqcount_t *s)
- 
- /**
-  * __read_seqcount_retry() - end a seqcount_t read section w/o barrier
-- * @s: Pointer to seqcount_t or any of the seqcount_locktype_t variants
-+ * @s: Pointer to seqcount_t or any of the seqcount_LOCKNAME_t variants
-  * @start: count, from read_seqcount_begin()
-  *
-  * __read_seqcount_retry is like read_seqcount_retry, but has no smp_rmb()
-@@ -389,7 +390,7 @@ static inline int __read_seqcount_t_retry(const seqcount_t *s, unsigned start)
- 
- /**
-  * read_seqcount_retry() - end a seqcount_t read critical section
-- * @s: Pointer to seqcount_t or any of the seqcount_locktype_t variants
-+ * @s: Pointer to seqcount_t or any of the seqcount_LOCKNAME_t variants
-  * @start: count, from read_seqcount_begin()
-  *
-  * read_seqcount_retry closes the read critical section of given
-@@ -409,7 +410,7 @@ static inline int read_seqcount_t_retry(const seqcount_t *s, unsigned start)
- 
- /**
-  * raw_write_seqcount_begin() - start a seqcount_t write section w/o lockdep
-- * @s: Pointer to seqcount_t or any of the seqcount_locktype_t variants
-+ * @s: Pointer to seqcount_t or any of the seqcount_LOCKNAME_t variants
-  */
- #define raw_write_seqcount_begin(s)					\
- do {									\
-@@ -428,7 +429,7 @@ static inline void raw_write_seqcount_t_begin(seqcount_t *s)
- 
- /**
-  * raw_write_seqcount_end() - end a seqcount_t write section w/o lockdep
-- * @s: Pointer to seqcount_t or any of the seqcount_locktype_t variants
-+ * @s: Pointer to seqcount_t or any of the seqcount_LOCKNAME_t variants
-  */
- #define raw_write_seqcount_end(s)					\
- do {									\
-@@ -448,7 +449,7 @@ static inline void raw_write_seqcount_t_end(seqcount_t *s)
- /**
-  * write_seqcount_begin_nested() - start a seqcount_t write section with
-  *                                 custom lockdep nesting level
-- * @s: Pointer to seqcount_t or any of the seqcount_locktype_t variants
-+ * @s: Pointer to seqcount_t or any of the seqcount_LOCKNAME_t variants
-  * @subclass: lockdep nesting level
-  *
-  * See Documentation/locking/lockdep-design.rst
-@@ -471,7 +472,7 @@ static inline void write_seqcount_t_begin_nested(seqcount_t *s, int subclass)
- 
- /**
-  * write_seqcount_begin() - start a seqcount_t write side critical section
-- * @s: Pointer to seqcount_t or any of the seqcount_locktype_t variants
-+ * @s: Pointer to seqcount_t or any of the seqcount_LOCKNAME_t variants
-  *
-  * write_seqcount_begin opens a write side critical section of the given
-  * seqcount_t.
-@@ -497,7 +498,7 @@ static inline void write_seqcount_t_begin(seqcount_t *s)
- 
- /**
-  * write_seqcount_end() - end a seqcount_t write side critical section
-- * @s: Pointer to seqcount_t or any of the seqcount_locktype_t variants
-+ * @s: Pointer to seqcount_t or any of the seqcount_LOCKNAME_t variants
-  *
-  * The write section must've been opened with write_seqcount_begin().
-  */
-@@ -517,7 +518,7 @@ static inline void write_seqcount_t_end(seqcount_t *s)
- 
- /**
-  * raw_write_seqcount_barrier() - do a seqcount_t write barrier
-- * @s: Pointer to seqcount_t or any of the seqcount_locktype_t variants
-+ * @s: Pointer to seqcount_t or any of the seqcount_LOCKNAME_t variants
-  *
-  * This can be used to provide an ordering guarantee instead of the usual
-  * consistency guarantee. It is one wmb cheaper, because it can collapse
-@@ -571,7 +572,7 @@ static inline void raw_write_seqcount_t_barrier(seqcount_t *s)
- /**
-  * write_seqcount_invalidate() - invalidate in-progress seqcount_t read
-  *                               side operations
-- * @s: Pointer to seqcount_t or any of the seqcount_locktype_t variants
-+ * @s: Pointer to seqcount_t or any of the seqcount_LOCKNAME_t variants
-  *
-  * After write_seqcount_invalidate, no seqcount_t read side operations
-  * will complete successfully and see data older than this.
