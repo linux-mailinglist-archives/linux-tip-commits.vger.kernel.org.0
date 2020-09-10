@@ -2,50 +2,51 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AFD43264239
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Sep 2020 11:34:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A0AD26423D
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Sep 2020 11:34:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730526AbgIJJel (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 10 Sep 2020 05:34:41 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:38782 "EHLO
+        id S1730140AbgIJJeq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 10 Sep 2020 05:34:46 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:38768 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730336AbgIJJW7 (ORCPT
+        with ESMTP id S1730136AbgIJJW6 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 10 Sep 2020 05:22:59 -0400
-Date:   Thu, 10 Sep 2020 09:22:24 -0000
+        Thu, 10 Sep 2020 05:22:58 -0400
+Date:   Thu, 10 Sep 2020 09:22:25 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1599729745;
+        s=2020; t=1599729746;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Fgi09CCV36O0mnU0TttqOMy1b4GREEMIAXQvB2jc5KA=;
-        b=ly3QVYODVuVHYwY6orRNqHzU0loOSEMYNJiIrU71vUsONVhIEo05bWVGE3w518mQ5tBOFx
-        5ImM1zu1eTmRkVeWSZLyqJ2WSXXP0hGQUb4XFxPOnrezsYx6VHQ6ofYPvReEitm/JGQ9dX
-        SH5U+jYo/RivHOWyNo08FaB5ocHK3dier6s/bHajRAgve+nLnOA0ujCzOEg9vsm/FT/5fA
-        v4NMY8+6eDibWTFvIaUMq4uQaghTTSseMkSX2PTcH+yVUWQ/5MnygaKncbUcSa4AUpyqP8
-        e/2VpRO4A0quVh8Pw0bGoY6+IiPgO6hhAhwP3kdZMfxbr8RRubb9O9Tnl2goRw==
+        bh=gJjYcqsckT6+vW42p3bICGLzydehGxynGVCYwIg/Azc=;
+        b=g7CJem3EqVKibzvVj90nVO6VZZFlKOkKTK+lpZ8y/GOfk21630hLPmF48YmeeF6mc2d7CM
+        PQcC328IA54oofBjayKVvbcByxzdxrl0qnPxs8LesvUVdL2BZOBxiOKBXq4fLHffkSeU8G
+        YyvJoWq0/xFqRsTWszG1rIbpcjXox8D42kDdNVO4PX2ykESTYac9OlCyvlvhwSg8mMmuDf
+        YpJmE9nVPps8fbYv+G6bKjk/Z/NfAucdZ6MaptmI131+Q52mqg4T3GAo7quge0UmWnlhBp
+        sIcmnt6MQqNPElqOMs9CEYJQxeKNlAJIj1vGi3YFXDXA/ffhEqVYUL4ds427DA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1599729745;
+        s=2020e; t=1599729746;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Fgi09CCV36O0mnU0TttqOMy1b4GREEMIAXQvB2jc5KA=;
-        b=oaFqhs7aNqj5VPOF0moNmNj58X9lK7AbShLk2OM3SBdOfYh7hQP3PNnDHU1/AO6zV0LNxI
-        CLB3H1K9NBRnlJBQ==
+        bh=gJjYcqsckT6+vW42p3bICGLzydehGxynGVCYwIg/Azc=;
+        b=w8caVlwo53Qrr7zmie/e9ll095pQzpt8doY6XZ8F2fzb2xsf31LVdVUGnSGRYbijcZzA58
+        x8GAqxUEmbgZ8aDA==
 From:   "tip-bot2 for Joerg Roedel" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/seves] x86/boot/compressed/64: Add stage1 #VC handler
+Subject: [tip: x86/seves] x86/boot/compressed/64: Don't pre-map memory in KASLR code
 Cc:     Joerg Roedel <jroedel@suse.de>, Borislav Petkov <bp@suse.de>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200907131613.12703-20-joro@8bytes.org>
-References: <20200907131613.12703-20-joro@8bytes.org>
+        Kees Cook <keescook@chromium.org>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200907131613.12703-18-joro@8bytes.org>
+References: <20200907131613.12703-18-joro@8bytes.org>
 MIME-Version: 1.0
-Message-ID: <159972974476.20229.7969430969031957239.tip-bot2@tip-bot2>
+Message-ID: <159972974561.20229.17749457811513210209.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -57,279 +58,128 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/seves branch of tip:
 
-Commit-ID:     29dcc60f6a19fb0aaee97bd1ae2ed8a7dc6f0cfe
-Gitweb:        https://git.kernel.org/tip/29dcc60f6a19fb0aaee97bd1ae2ed8a7dc6f0cfe
+Commit-ID:     8570978ea030757839747aa9944ea576708be3d4
+Gitweb:        https://git.kernel.org/tip/8570978ea030757839747aa9944ea576708be3d4
 Author:        Joerg Roedel <jroedel@suse.de>
-AuthorDate:    Mon, 07 Sep 2020 15:15:20 +02:00
+AuthorDate:    Mon, 07 Sep 2020 15:15:18 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
 CommitterDate: Mon, 07 Sep 2020 19:45:25 +02:00
 
-x86/boot/compressed/64: Add stage1 #VC handler
+x86/boot/compressed/64: Don't pre-map memory in KASLR code
 
-Add the first handler for #VC exceptions. At stage 1 there is no GHCB
-yet because the kernel might still be running on the EFI page table.
-
-The stage 1 handler is limited to the MSR-based protocol to talk to the
-hypervisor and can only support CPUID exit-codes, but that is enough to
-get to stage 2.
-
- [ bp: Zap superfluous newlines after rd/wrmsr instruction mnemonics. ]
+With the page-fault handler in place, he identity mapping can be built
+on-demand. So remove the code which manually creates the mappings and
+unexport/remove the functions used for it.
 
 Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20200907131613.12703-20-joro@8bytes.org
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Link: https://lkml.kernel.org/r/20200907131613.12703-18-joro@8bytes.org
 ---
- arch/x86/boot/compressed/Makefile          |  1 +-
- arch/x86/boot/compressed/idt_64.c          |  4 +-
- arch/x86/boot/compressed/idt_handlers_64.S |  4 +-
- arch/x86/boot/compressed/misc.h            |  1 +-
- arch/x86/boot/compressed/sev-es.c          | 45 ++++++++++++++-
- arch/x86/include/asm/msr-index.h           |  1 +-
- arch/x86/include/asm/sev-es.h              | 37 ++++++++++++-
- arch/x86/include/asm/trapnr.h              |  1 +-
- arch/x86/kernel/sev-es-shared.c            | 66 +++++++++++++++++++++-
- 9 files changed, 160 insertions(+)
- create mode 100644 arch/x86/boot/compressed/sev-es.c
- create mode 100644 arch/x86/include/asm/sev-es.h
- create mode 100644 arch/x86/kernel/sev-es-shared.c
+ arch/x86/boot/compressed/ident_map_64.c |  6 ++----
+ arch/x86/boot/compressed/kaslr.c        | 24 +-----------------------
+ arch/x86/boot/compressed/misc.h         | 10 +----------
+ 3 files changed, 3 insertions(+), 37 deletions(-)
 
-diff --git a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefile
-index e7f3eba..38f4a52 100644
---- a/arch/x86/boot/compressed/Makefile
-+++ b/arch/x86/boot/compressed/Makefile
-@@ -88,6 +88,7 @@ ifdef CONFIG_X86_64
- 	vmlinux-objs-y += $(obj)/idt_64.o $(obj)/idt_handlers_64.o
- 	vmlinux-objs-y += $(obj)/mem_encrypt.o
- 	vmlinux-objs-y += $(obj)/pgtable_64.o
-+	vmlinux-objs-$(CONFIG_AMD_MEM_ENCRYPT) += $(obj)/sev-es.o
- endif
+diff --git a/arch/x86/boot/compressed/ident_map_64.c b/arch/x86/boot/compressed/ident_map_64.c
+index ecf9353..c63257b 100644
+--- a/arch/x86/boot/compressed/ident_map_64.c
++++ b/arch/x86/boot/compressed/ident_map_64.c
+@@ -87,11 +87,9 @@ phys_addr_t physical_mask = (1ULL << __PHYSICAL_MASK_SHIFT) - 1;
+ static struct x86_mapping_info mapping_info;
  
- vmlinux-objs-$(CONFIG_ACPI) += $(obj)/acpi.o
-diff --git a/arch/x86/boot/compressed/idt_64.c b/arch/x86/boot/compressed/idt_64.c
-index 5f08309..f3ca732 100644
---- a/arch/x86/boot/compressed/idt_64.c
-+++ b/arch/x86/boot/compressed/idt_64.c
-@@ -32,6 +32,10 @@ void load_stage1_idt(void)
+ /*
+- * Adds the specified range to what will become the new identity mappings.
+- * Once all ranges have been added, the new mapping is activated by calling
+- * finalize_identity_maps() below.
++ * Adds the specified range to the identity mappings.
+  */
+-void add_identity_map(unsigned long start, unsigned long size)
++static void add_identity_map(unsigned long start, unsigned long size)
  {
- 	boot_idt_desc.address = (unsigned long)boot_idt;
+ 	unsigned long end = start + size;
  
-+
-+	if (IS_ENABLED(CONFIG_AMD_MEM_ENCRYPT))
-+		set_idt_entry(X86_TRAP_VC, boot_stage1_vc);
-+
- 	load_boot_idt(&boot_idt_desc);
+diff --git a/arch/x86/boot/compressed/kaslr.c b/arch/x86/boot/compressed/kaslr.c
+index 8266286..b59547c 100644
+--- a/arch/x86/boot/compressed/kaslr.c
++++ b/arch/x86/boot/compressed/kaslr.c
+@@ -397,8 +397,6 @@ static void mem_avoid_init(unsigned long input, unsigned long input_size,
+ 	 */
+ 	mem_avoid[MEM_AVOID_ZO_RANGE].start = input;
+ 	mem_avoid[MEM_AVOID_ZO_RANGE].size = (output + init_size) - input;
+-	add_identity_map(mem_avoid[MEM_AVOID_ZO_RANGE].start,
+-			 mem_avoid[MEM_AVOID_ZO_RANGE].size);
+ 
+ 	/* Avoid initrd. */
+ 	initrd_start  = (u64)boot_params->ext_ramdisk_image << 32;
+@@ -416,15 +414,11 @@ static void mem_avoid_init(unsigned long input, unsigned long input_size,
+ 		cmd_line_size = strnlen((char *)cmd_line, COMMAND_LINE_SIZE-1) + 1;
+ 		mem_avoid[MEM_AVOID_CMDLINE].start = cmd_line;
+ 		mem_avoid[MEM_AVOID_CMDLINE].size = cmd_line_size;
+-		add_identity_map(mem_avoid[MEM_AVOID_CMDLINE].start,
+-				 mem_avoid[MEM_AVOID_CMDLINE].size);
+ 	}
+ 
+ 	/* Avoid boot parameters. */
+ 	mem_avoid[MEM_AVOID_BOOTPARAMS].start = (unsigned long)boot_params;
+ 	mem_avoid[MEM_AVOID_BOOTPARAMS].size = sizeof(*boot_params);
+-	add_identity_map(mem_avoid[MEM_AVOID_BOOTPARAMS].start,
+-			 mem_avoid[MEM_AVOID_BOOTPARAMS].size);
+ 
+ 	/* We don't need to set a mapping for setup_data. */
+ 
+@@ -433,11 +427,6 @@ static void mem_avoid_init(unsigned long input, unsigned long input_size,
+ 
+ 	/* Enumerate the immovable memory regions */
+ 	num_immovable_mem = count_immovable_mem_regions();
+-
+-#ifdef CONFIG_X86_VERBOSE_BOOTUP
+-	/* Make sure video RAM can be used. */
+-	add_identity_map(0, PMD_SIZE);
+-#endif
  }
  
-diff --git a/arch/x86/boot/compressed/idt_handlers_64.S b/arch/x86/boot/compressed/idt_handlers_64.S
-index b20e575..92eb4df 100644
---- a/arch/x86/boot/compressed/idt_handlers_64.S
-+++ b/arch/x86/boot/compressed/idt_handlers_64.S
-@@ -70,3 +70,7 @@ SYM_FUNC_END(\name)
- 	.code64
+ /*
+@@ -884,19 +873,8 @@ void choose_random_location(unsigned long input,
+ 		warn("Physical KASLR disabled: no suitable memory region!");
+ 	} else {
+ 		/* Update the new physical address location. */
+-		if (*output != random_addr) {
+-			add_identity_map(random_addr, output_size);
++		if (*output != random_addr)
+ 			*output = random_addr;
+-		}
+-
+-		/*
+-		 * This loads the identity mapping page table.
+-		 * This should only be done if a new physical address
+-		 * is found for the kernel, otherwise we should keep
+-		 * the old page table to make it be like the "nokaslr"
+-		 * case.
+-		 */
+-		finalize_identity_maps();
+ 	}
  
- EXCEPTION_HANDLER	boot_page_fault do_boot_page_fault error_code=1
-+
-+#ifdef CONFIG_AMD_MEM_ENCRYPT
-+EXCEPTION_HANDLER	boot_stage1_vc do_vc_no_ghcb error_code=1
-+#endif
+ 
 diff --git a/arch/x86/boot/compressed/misc.h b/arch/x86/boot/compressed/misc.h
-index 9840c82..eaa8b45 100644
+index f0e1991..9840c82 100644
 --- a/arch/x86/boot/compressed/misc.h
 +++ b/arch/x86/boot/compressed/misc.h
-@@ -141,5 +141,6 @@ extern struct desc_ptr boot_idt_desc;
- 
- /* IDT Entry Points */
- void boot_page_fault(void);
-+void boot_stage1_vc(void);
- 
- #endif /* BOOT_COMPRESSED_MISC_H */
-diff --git a/arch/x86/boot/compressed/sev-es.c b/arch/x86/boot/compressed/sev-es.c
-new file mode 100644
-index 0000000..99c3bcd
---- /dev/null
-+++ b/arch/x86/boot/compressed/sev-es.c
-@@ -0,0 +1,45 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * AMD Encrypted Register State Support
-+ *
-+ * Author: Joerg Roedel <jroedel@suse.de>
-+ */
-+
-+/*
-+ * misc.h needs to be first because it knows how to include the other kernel
-+ * headers in the pre-decompression code in a way that does not break
-+ * compilation.
-+ */
-+#include "misc.h"
-+
-+#include <asm/sev-es.h>
-+#include <asm/msr-index.h>
-+#include <asm/ptrace.h>
-+#include <asm/svm.h>
-+
-+static inline u64 sev_es_rd_ghcb_msr(void)
-+{
-+	unsigned long low, high;
-+
-+	asm volatile("rdmsr" : "=a" (low), "=d" (high) :
-+			"c" (MSR_AMD64_SEV_ES_GHCB));
-+
-+	return ((high << 32) | low);
-+}
-+
-+static inline void sev_es_wr_ghcb_msr(u64 val)
-+{
-+	u32 low, high;
-+
-+	low  = val & 0xffffffffUL;
-+	high = val >> 32;
-+
-+	asm volatile("wrmsr" : : "c" (MSR_AMD64_SEV_ES_GHCB),
-+			"a"(low), "d" (high) : "memory");
-+}
-+
-+#undef __init
-+#define __init
-+
-+/* Include code for early handlers */
-+#include "../../kernel/sev-es-shared.c"
-diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-index.h
-index 2859ee4..da34fdb 100644
---- a/arch/x86/include/asm/msr-index.h
-+++ b/arch/x86/include/asm/msr-index.h
-@@ -466,6 +466,7 @@
- #define MSR_AMD64_IBSBRTARGET		0xc001103b
- #define MSR_AMD64_IBSOPDATA4		0xc001103d
- #define MSR_AMD64_IBS_REG_COUNT_MAX	8 /* includes MSR_AMD64_IBSBRTARGET */
-+#define MSR_AMD64_SEV_ES_GHCB		0xc0010130
- #define MSR_AMD64_SEV			0xc0010131
- #define MSR_AMD64_SEV_ENABLED_BIT	0
- #define MSR_AMD64_SEV_ENABLED		BIT_ULL(MSR_AMD64_SEV_ENABLED_BIT)
-diff --git a/arch/x86/include/asm/sev-es.h b/arch/x86/include/asm/sev-es.h
-new file mode 100644
-index 0000000..48a4403
---- /dev/null
-+++ b/arch/x86/include/asm/sev-es.h
-@@ -0,0 +1,37 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * AMD Encrypted Register State Support
-+ *
-+ * Author: Joerg Roedel <jroedel@suse.de>
-+ */
-+
-+#ifndef __ASM_ENCRYPTED_STATE_H
-+#define __ASM_ENCRYPTED_STATE_H
-+
-+#include <linux/types.h>
-+
-+#define GHCB_SEV_CPUID_REQ	0x004UL
-+#define		GHCB_CPUID_REQ_EAX	0
-+#define		GHCB_CPUID_REQ_EBX	1
-+#define		GHCB_CPUID_REQ_ECX	2
-+#define		GHCB_CPUID_REQ_EDX	3
-+#define		GHCB_CPUID_REQ(fn, reg) (GHCB_SEV_CPUID_REQ | \
-+					(((unsigned long)reg & 3) << 30) | \
-+					(((unsigned long)fn) << 32))
-+
-+#define GHCB_SEV_CPUID_RESP	0x005UL
-+#define GHCB_SEV_TERMINATE	0x100UL
-+
-+#define	GHCB_SEV_GHCB_RESP_CODE(v)	((v) & 0xfff)
-+#define	VMGEXIT()			{ asm volatile("rep; vmmcall\n\r"); }
-+
-+void do_vc_no_ghcb(struct pt_regs *regs, unsigned long exit_code);
-+
-+static inline u64 lower_bits(u64 val, unsigned int bits)
-+{
-+	u64 mask = (1ULL << bits) - 1;
-+
-+	return (val & mask);
-+}
-+
-+#endif
-diff --git a/arch/x86/include/asm/trapnr.h b/arch/x86/include/asm/trapnr.h
-index 082f456..f5d2325 100644
---- a/arch/x86/include/asm/trapnr.h
-+++ b/arch/x86/include/asm/trapnr.h
-@@ -26,6 +26,7 @@
- #define X86_TRAP_XF		19	/* SIMD Floating-Point Exception */
- #define X86_TRAP_VE		20	/* Virtualization Exception */
- #define X86_TRAP_CP		21	/* Control Protection Exception */
-+#define X86_TRAP_VC		29	/* VMM Communication Exception */
- #define X86_TRAP_IRET		32	/* IRET Exception */
- 
+@@ -98,17 +98,7 @@ static inline void choose_random_location(unsigned long input,
  #endif
-diff --git a/arch/x86/kernel/sev-es-shared.c b/arch/x86/kernel/sev-es-shared.c
-new file mode 100644
-index 0000000..0bea323
---- /dev/null
-+++ b/arch/x86/kernel/sev-es-shared.c
-@@ -0,0 +1,66 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * AMD Encrypted Register State Support
-+ *
-+ * Author: Joerg Roedel <jroedel@suse.de>
-+ *
-+ * This file is not compiled stand-alone. It contains code shared
-+ * between the pre-decompression boot code and the running Linux kernel
-+ * and is included directly into both code-bases.
-+ */
-+
-+/*
-+ * Boot VC Handler - This is the first VC handler during boot, there is no GHCB
-+ * page yet, so it only supports the MSR based communication with the
-+ * hypervisor and only the CPUID exit-code.
-+ */
-+void __init do_vc_no_ghcb(struct pt_regs *regs, unsigned long exit_code)
-+{
-+	unsigned int fn = lower_bits(regs->ax, 32);
-+	unsigned long val;
-+
-+	/* Only CPUID is supported via MSR protocol */
-+	if (exit_code != SVM_EXIT_CPUID)
-+		goto fail;
-+
-+	sev_es_wr_ghcb_msr(GHCB_CPUID_REQ(fn, GHCB_CPUID_REQ_EAX));
-+	VMGEXIT();
-+	val = sev_es_rd_ghcb_msr();
-+	if (GHCB_SEV_GHCB_RESP_CODE(val) != GHCB_SEV_CPUID_RESP)
-+		goto fail;
-+	regs->ax = val >> 32;
-+
-+	sev_es_wr_ghcb_msr(GHCB_CPUID_REQ(fn, GHCB_CPUID_REQ_EBX));
-+	VMGEXIT();
-+	val = sev_es_rd_ghcb_msr();
-+	if (GHCB_SEV_GHCB_RESP_CODE(val) != GHCB_SEV_CPUID_RESP)
-+		goto fail;
-+	regs->bx = val >> 32;
-+
-+	sev_es_wr_ghcb_msr(GHCB_CPUID_REQ(fn, GHCB_CPUID_REQ_ECX));
-+	VMGEXIT();
-+	val = sev_es_rd_ghcb_msr();
-+	if (GHCB_SEV_GHCB_RESP_CODE(val) != GHCB_SEV_CPUID_RESP)
-+		goto fail;
-+	regs->cx = val >> 32;
-+
-+	sev_es_wr_ghcb_msr(GHCB_CPUID_REQ(fn, GHCB_CPUID_REQ_EDX));
-+	VMGEXIT();
-+	val = sev_es_rd_ghcb_msr();
-+	if (GHCB_SEV_GHCB_RESP_CODE(val) != GHCB_SEV_CPUID_RESP)
-+		goto fail;
-+	regs->dx = val >> 32;
-+
-+	/* Skip over the CPUID two-byte opcode */
-+	regs->ip += 2;
-+
-+	return;
-+
-+fail:
-+	sev_es_wr_ghcb_msr(GHCB_SEV_TERMINATE);
-+	VMGEXIT();
-+
-+	/* Shouldn't get here - if we do halt the machine */
-+	while (true)
-+		asm volatile("hlt\n");
-+}
+ 
+ #ifdef CONFIG_X86_64
+-void initialize_identity_maps(void);
+-void add_identity_map(unsigned long start, unsigned long size);
+-void finalize_identity_maps(void);
+ extern unsigned char _pgtable[];
+-#else
+-static inline void initialize_identity_maps(void)
+-{ }
+-static inline void add_identity_map(unsigned long start, unsigned long size)
+-{ }
+-static inline void finalize_identity_maps(void)
+-{ }
+ #endif
+ 
+ #ifdef CONFIG_EARLY_PRINTK
