@@ -2,53 +2,50 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B0B6264214
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Sep 2020 11:32:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C1C1626427E
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Sep 2020 11:38:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730526AbgIJJca (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 10 Sep 2020 05:32:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36218 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730486AbgIJJYT (ORCPT
+        id S1730465AbgIJJiB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 10 Sep 2020 05:38:01 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:38812 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730312AbgIJJWU (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 10 Sep 2020 05:24:19 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AA07C0617A2;
-        Thu, 10 Sep 2020 02:22:18 -0700 (PDT)
-Date:   Thu, 10 Sep 2020 09:22:13 -0000
+        Thu, 10 Sep 2020 05:22:20 -0400
+Date:   Thu, 10 Sep 2020 09:22:14 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1599729734;
+        s=2020; t=1599729735;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=i8IRabgbO35oYdn90duYdWsNVWKMZWZ5E7cWyrVVsng=;
-        b=YP4z2hbTFR7i013k7DgrKJi4uIAOREPVNvBcLG/UvliGV5O86fVPn1LTVkITCVnItAzB6o
-        A+tUN6WznyndUAFomIkoP42cdnH9taEq9cva7RTswmUapVZOAzzkqMb0Ga1jBqCPcVRR/R
-        sKm5tZ5E1LpFdF+snGTdXhTo6Aft2C8cSHUimU15kHGrDsHP8csfrRPCN8kAnoKbP4qQtD
-        uijwo2VHI8Qi10MEKVmK7VHXSkhLl0w83i0+3rCzVMoJ9qWaT5LFpMc94itBjKGSl85UKL
-        qkNo3z+EJOCOWrsvy/11bT5Y9zrgSXpWzHEmQmpSCxDjL3YU/PpXyRTkX7kmzA==
+        bh=KGqEr272DO0zbhqeem7s2KCQ+3LfEE88fEDMVWlEoTg=;
+        b=hM2yYI/hNv/3cQfgAxJHWnDn6Ry6nHfqVxoJDNiCQO73kK7pFvGUYExSKGWZ+sq+r/5g8z
+        fRFA37aY8vm+rGEXUZRGreexv2UWi4f3HjIAHOoIlPF5/2qKLmmmV0DBDiMUJxS7BxhfG0
+        +OAtdj/RIMvOBcoimt+DOpAOACjSWSabQcATawKu6dxsSs0QBee+yLSIEdi148oIU1Lhcj
+        JyhIUsMyh6iNZfH/fQSrenONJ90gUxjuHURUngMNRhOhkeyrsGYrWkBKydGb0rL3qkOkBL
+        h3iW59J/bMu7LgjvpIleiZozaHwK4EmfxWbj4IOqTckj8ci6QkbB4OCXoUc7fg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1599729734;
+        s=2020e; t=1599729735;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=i8IRabgbO35oYdn90duYdWsNVWKMZWZ5E7cWyrVVsng=;
-        b=4Ptbjgvf+3G157yHgro9CeW4BkZxIbSxs24Poq0CuX02YCUPXosIXk1DMaasdRzfBD00Qx
-        E3OmpHKASyQUM4DQ==
+        bh=KGqEr272DO0zbhqeem7s2KCQ+3LfEE88fEDMVWlEoTg=;
+        b=iDtREUXtmz9Gds3N8qyGjc0PSGbnFPs/3kxCmKtE+kDERFxPRoTumPoItI8vYeg5DmVkUr
+        XVVotZUo0vJd6EDA==
 From:   "tip-bot2 for Joerg Roedel" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/seves] x86/entry/64: Add entry code for #VC handler
+Subject: [tip: x86/seves] x86/sev-es: Adjust #VC IST Stack on entering NMI handler
 Cc:     Joerg Roedel <jroedel@suse.de>, Borislav Petkov <bp@suse.de>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200907131613.12703-46-joro@8bytes.org>
-References: <20200907131613.12703-46-joro@8bytes.org>
+In-Reply-To: <20200907131613.12703-44-joro@8bytes.org>
+References: <20200907131613.12703-44-joro@8bytes.org>
 MIME-Version: 1.0
-Message-ID: <159972973354.20229.4929553890417935062.tip-bot2@tip-bot2>
+Message-ID: <159972973434.20229.7691205060608983396.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,293 +57,170 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/seves branch of tip:
 
-Commit-ID:     a13644f3a53de4e95a7bce6459f834e832ea44c5
-Gitweb:        https://git.kernel.org/tip/a13644f3a53de4e95a7bce6459f834e832ea44c5
+Commit-ID:     315562c9af3d583502b35c4b223a08d95ce69864
+Gitweb:        https://git.kernel.org/tip/315562c9af3d583502b35c4b223a08d95ce69864
 Author:        Joerg Roedel <jroedel@suse.de>
-AuthorDate:    Mon, 07 Sep 2020 15:15:46 +02:00
+AuthorDate:    Mon, 07 Sep 2020 15:15:44 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
 CommitterDate: Wed, 09 Sep 2020 11:33:19 +02:00
 
-x86/entry/64: Add entry code for #VC handler
+x86/sev-es: Adjust #VC IST Stack on entering NMI handler
 
-The #VC handler needs special entry code because:
+When an NMI hits in the #VC handler entry code before it has switched to
+another stack, any subsequent #VC exception in the NMI code-path will
+overwrite the interrupted #VC handler's stack.
 
-	1. It runs on an IST stack
+Make sure this doesn't happen by explicitly adjusting the #VC IST entry
+in the NMI handler for the time it can cause #VC exceptions.
 
-	2. It needs to be able to handle nested #VC exceptions
-
-To make this work, the entry code is implemented to pretend it doesn't
-use an IST stack. When entered from user-mode or early SYSCALL entry
-path it switches to the task stack. If entered from kernel-mode it tries
-to switch back to the previous stack in the IRET frame.
-
-The stack found in the IRET frame is validated first, and if it is not
-safe to use it for the #VC handler, the code will switch to a
-fall-back stack (the #VC2 IST stack). From there, it can cause nested
-exceptions again.
+ [ bp: Touchups, spelling fixes. ]
 
 Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20200907131613.12703-46-joro@8bytes.org
+Link: https://lkml.kernel.org/r/20200907131613.12703-44-joro@8bytes.org
 ---
- arch/x86/entry/entry_64.S       | 80 ++++++++++++++++++++++++++++++++-
- arch/x86/include/asm/idtentry.h | 44 ++++++++++++++++++-
- arch/x86/include/asm/proto.h    |  1 +-
- arch/x86/include/asm/traps.h    |  1 +-
- arch/x86/kernel/traps.c         | 45 ++++++++++++++++++-
- 5 files changed, 171 insertions(+)
+ arch/x86/include/asm/sev-es.h | 19 ++++++++++++-
+ arch/x86/kernel/nmi.c         |  9 ++++++-
+ arch/x86/kernel/sev-es.c      | 53 ++++++++++++++++++++++++++++++++++-
+ 3 files changed, 81 insertions(+)
 
-diff --git a/arch/x86/entry/entry_64.S b/arch/x86/entry/entry_64.S
-index 70dea93..15aa189 100644
---- a/arch/x86/entry/entry_64.S
-+++ b/arch/x86/entry/entry_64.S
-@@ -101,6 +101,8 @@ SYM_CODE_START(entry_SYSCALL_64)
- 	SWITCH_TO_KERNEL_CR3 scratch_reg=%rsp
- 	movq	PER_CPU_VAR(cpu_current_top_of_stack), %rsp
- 
-+SYM_INNER_LABEL(entry_SYSCALL_64_safe_stack, SYM_L_GLOBAL)
-+
- 	/* Construct struct pt_regs on stack */
- 	pushq	$__USER_DS				/* pt_regs->ss */
- 	pushq	PER_CPU_VAR(cpu_tss_rw + TSS_sp2)	/* pt_regs->sp */
-@@ -446,6 +448,84 @@ _ASM_NOKPROBE(\asmsym)
- SYM_CODE_END(\asmsym)
- .endm
+diff --git a/arch/x86/include/asm/sev-es.h b/arch/x86/include/asm/sev-es.h
+index 9fbeeda..59176e8 100644
+--- a/arch/x86/include/asm/sev-es.h
++++ b/arch/x86/include/asm/sev-es.h
+@@ -78,4 +78,23 @@ extern void vc_no_ghcb(void);
+ extern void vc_boot_ghcb(void);
+ extern bool handle_vc_boot_ghcb(struct pt_regs *regs);
  
 +#ifdef CONFIG_AMD_MEM_ENCRYPT
-+/**
-+ * idtentry_vc - Macro to generate entry stub for #VC
-+ * @vector:		Vector number
-+ * @asmsym:		ASM symbol for the entry point
-+ * @cfunc:		C function to be called
-+ *
-+ * The macro emits code to set up the kernel context for #VC. The #VC handler
-+ * runs on an IST stack and needs to be able to cause nested #VC exceptions.
-+ *
-+ * To make this work the #VC entry code tries its best to pretend it doesn't use
-+ * an IST stack by switching to the task stack if coming from user-space (which
-+ * includes early SYSCALL entry path) or back to the stack in the IRET frame if
-+ * entered from kernel-mode.
-+ *
-+ * If entered from kernel-mode the return stack is validated first, and if it is
-+ * not safe to use (e.g. because it points to the entry stack) the #VC handler
-+ * will switch to a fall-back stack (VC2) and call a special handler function.
-+ *
-+ * The macro is only used for one vector, but it is planned to be extended in
-+ * the future for the #HV exception.
-+ */
-+.macro idtentry_vc vector asmsym cfunc
-+SYM_CODE_START(\asmsym)
-+	UNWIND_HINT_IRET_REGS
-+	ASM_CLAC
-+
-+	/*
-+	 * If the entry is from userspace, switch stacks and treat it as
-+	 * a normal entry.
-+	 */
-+	testb	$3, CS-ORIG_RAX(%rsp)
-+	jnz	.Lfrom_usermode_switch_stack_\@
-+
-+	/*
-+	 * paranoid_entry returns SWAPGS flag for paranoid_exit in EBX.
-+	 * EBX == 0 -> SWAPGS, EBX == 1 -> no SWAPGS
-+	 */
-+	call	paranoid_entry
-+
-+	UNWIND_HINT_REGS
-+
-+	/*
-+	 * Switch off the IST stack to make it free for nested exceptions. The
-+	 * vc_switch_off_ist() function will switch back to the interrupted
-+	 * stack if it is safe to do so. If not it switches to the VC fall-back
-+	 * stack.
-+	 */
-+	movq	%rsp, %rdi		/* pt_regs pointer */
-+	call	vc_switch_off_ist
-+	movq	%rax, %rsp		/* Switch to new stack */
-+
-+	UNWIND_HINT_REGS
-+
-+	/* Update pt_regs */
-+	movq	ORIG_RAX(%rsp), %rsi	/* get error code into 2nd argument*/
-+	movq	$-1, ORIG_RAX(%rsp)	/* no syscall to restart */
-+
-+	movq	%rsp, %rdi		/* pt_regs pointer */
-+
-+	call	\cfunc
-+
-+	/*
-+	 * No need to switch back to the IST stack. The current stack is either
-+	 * identical to the stack in the IRET frame or the VC fall-back stack,
-+	 * so it is definitly mapped even with PTI enabled.
-+	 */
-+	jmp	paranoid_exit
-+
-+	/* Switch to the regular task stack */
-+.Lfrom_usermode_switch_stack_\@:
-+	idtentry_body safe_stack_\cfunc, has_error_code=1
-+
-+_ASM_NOKPROBE(\asmsym)
-+SYM_CODE_END(\asmsym)
-+.endm
++extern struct static_key_false sev_es_enable_key;
++extern void __sev_es_ist_enter(struct pt_regs *regs);
++extern void __sev_es_ist_exit(void);
++static __always_inline void sev_es_ist_enter(struct pt_regs *regs)
++{
++	if (static_branch_unlikely(&sev_es_enable_key))
++		__sev_es_ist_enter(regs);
++}
++static __always_inline void sev_es_ist_exit(void)
++{
++	if (static_branch_unlikely(&sev_es_enable_key))
++		__sev_es_ist_exit();
++}
++#else
++static inline void sev_es_ist_enter(struct pt_regs *regs) { }
++static inline void sev_es_ist_exit(void) { }
 +#endif
 +
- /*
-  * Double fault entry. Straight paranoid. No checks from which context
-  * this comes because for the espfix induced #DF this would do the wrong
-diff --git a/arch/x86/include/asm/idtentry.h b/arch/x86/include/asm/idtentry.h
-index a433661..840faaf 100644
---- a/arch/x86/include/asm/idtentry.h
-+++ b/arch/x86/include/asm/idtentry.h
-@@ -309,6 +309,18 @@ static __always_inline void __##func(struct pt_regs *regs)
- 	__visible void noist_##func(struct pt_regs *regs)
- 
- /**
-+ * DECLARE_IDTENTRY_VC - Declare functions for the VC entry point
-+ * @vector:	Vector number (ignored for C)
-+ * @func:	Function name of the entry point
-+ *
-+ * Maps to DECLARE_IDTENTRY_RAW_ERRORCODE, but declares also the
-+ * safe_stack C handler.
-+ */
-+#define DECLARE_IDTENTRY_VC(vector, func)				\
-+	DECLARE_IDTENTRY_RAW_ERRORCODE(vector, func);			\
-+	__visible noinstr void safe_stack_##func(struct pt_regs *regs, unsigned long error_code)
-+
-+/**
-  * DEFINE_IDTENTRY_IST - Emit code for IST entry points
-  * @func:	Function name of the entry point
-  *
-@@ -347,6 +359,35 @@ static __always_inline void __##func(struct pt_regs *regs)
- #define DEFINE_IDTENTRY_DF(func)					\
- 	DEFINE_IDTENTRY_RAW_ERRORCODE(func)
- 
-+/**
-+ * DEFINE_IDTENTRY_VC_SAFE_STACK - Emit code for VMM communication handler
-+				   which runs on a safe stack.
-+ * @func:	Function name of the entry point
-+ *
-+ * Maps to DEFINE_IDTENTRY_RAW_ERRORCODE
-+ */
-+#define DEFINE_IDTENTRY_VC_SAFE_STACK(func)				\
-+	DEFINE_IDTENTRY_RAW_ERRORCODE(safe_stack_##func)
-+
-+/**
-+ * DEFINE_IDTENTRY_VC_IST - Emit code for VMM communication handler
-+			    which runs on the VC fall-back stack
-+ * @func:	Function name of the entry point
-+ *
-+ * Maps to DEFINE_IDTENTRY_RAW_ERRORCODE
-+ */
-+#define DEFINE_IDTENTRY_VC_IST(func)				\
-+	DEFINE_IDTENTRY_RAW_ERRORCODE(ist_##func)
-+
-+/**
-+ * DEFINE_IDTENTRY_VC - Emit code for VMM communication handler
-+ * @func:	Function name of the entry point
-+ *
-+ * Maps to DEFINE_IDTENTRY_RAW_ERRORCODE
-+ */
-+#define DEFINE_IDTENTRY_VC(func)					\
-+	DEFINE_IDTENTRY_RAW_ERRORCODE(func)
-+
- #else	/* CONFIG_X86_64 */
- 
- /**
-@@ -433,6 +474,9 @@ __visible noinstr void func(struct pt_regs *regs,			\
- # define DECLARE_IDTENTRY_XENCB(vector, func)				\
- 	DECLARE_IDTENTRY(vector, func)
- 
-+# define DECLARE_IDTENTRY_VC(vector, func)				\
-+	idtentry_vc vector asm_##func func
-+
- #else
- # define DECLARE_IDTENTRY_MCE(vector, func)				\
- 	DECLARE_IDTENTRY(vector, func)
-diff --git a/arch/x86/include/asm/proto.h b/arch/x86/include/asm/proto.h
-index 28996fe..2c35f1c 100644
---- a/arch/x86/include/asm/proto.h
-+++ b/arch/x86/include/asm/proto.h
-@@ -10,6 +10,7 @@ void syscall_init(void);
- 
- #ifdef CONFIG_X86_64
- void entry_SYSCALL_64(void);
-+void entry_SYSCALL_64_safe_stack(void);
- long do_arch_prctl_64(struct task_struct *task, int option, unsigned long arg2);
  #endif
+diff --git a/arch/x86/kernel/nmi.c b/arch/x86/kernel/nmi.c
+index 4fc9954..4c89c4d 100644
+--- a/arch/x86/kernel/nmi.c
++++ b/arch/x86/kernel/nmi.c
+@@ -33,6 +33,7 @@
+ #include <asm/reboot.h>
+ #include <asm/cache.h>
+ #include <asm/nospec-branch.h>
++#include <asm/sev-es.h>
  
-diff --git a/arch/x86/include/asm/traps.h b/arch/x86/include/asm/traps.h
-index 6a30835..1b86bb3 100644
---- a/arch/x86/include/asm/traps.h
-+++ b/arch/x86/include/asm/traps.h
-@@ -15,6 +15,7 @@ asmlinkage __visible notrace struct pt_regs *sync_regs(struct pt_regs *eregs);
- asmlinkage __visible notrace
- struct bad_iret_stack *fixup_bad_iret(struct bad_iret_stack *s);
- void __init trap_init(void);
-+asmlinkage __visible noinstr struct pt_regs *vc_switch_off_ist(struct pt_regs *eregs);
- #endif
+ #define CREATE_TRACE_POINTS
+ #include <trace/events/nmi.h>
+@@ -488,6 +489,12 @@ DEFINE_IDTENTRY_RAW(exc_nmi)
+ 	this_cpu_write(nmi_cr2, read_cr2());
+ nmi_restart:
  
- #ifdef CONFIG_X86_F00F_BUG
-diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
-index 2dc32b0..fc1ed40 100644
---- a/arch/x86/kernel/traps.c
-+++ b/arch/x86/kernel/traps.c
-@@ -43,6 +43,7 @@
- #include <asm/stacktrace.h>
- #include <asm/processor.h>
- #include <asm/debugreg.h>
-+#include <asm/realmode.h>
- #include <asm/text-patching.h>
- #include <asm/ftrace.h>
- #include <asm/traps.h>
-@@ -673,6 +674,50 @@ asmlinkage __visible noinstr struct pt_regs *sync_regs(struct pt_regs *eregs)
- 	return regs;
++	/*
++	 * Needs to happen before DR7 is accessed, because the hypervisor can
++	 * intercept DR7 reads/writes, turning those into #VC exceptions.
++	 */
++	sev_es_ist_enter(regs);
++
+ 	this_cpu_write(nmi_dr7, local_db_save());
+ 
+ 	irq_state = idtentry_enter_nmi(regs);
+@@ -501,6 +508,8 @@ nmi_restart:
+ 
+ 	local_db_restore(this_cpu_read(nmi_dr7));
+ 
++	sev_es_ist_exit();
++
+ 	if (unlikely(this_cpu_read(nmi_cr2) != read_cr2()))
+ 		write_cr2(this_cpu_read(nmi_cr2));
+ 	if (this_cpu_dec_return(nmi_state))
+diff --git a/arch/x86/kernel/sev-es.c b/arch/x86/kernel/sev-es.c
+index fae8145..39ebb2d 100644
+--- a/arch/x86/kernel/sev-es.c
++++ b/arch/x86/kernel/sev-es.c
+@@ -51,6 +51,7 @@ struct sev_es_runtime_data {
+ };
+ 
+ static DEFINE_PER_CPU(struct sev_es_runtime_data*, runtime_data);
++DEFINE_STATIC_KEY_FALSE(sev_es_enable_key);
+ 
+ static void __init setup_vc_stacks(int cpu)
+ {
+@@ -73,6 +74,55 @@ static void __init setup_vc_stacks(int cpu)
+ 	cea_set_pte((void *)vaddr, pa, PAGE_KERNEL);
  }
  
-+#ifdef CONFIG_AMD_MEM_ENCRYPT
-+asmlinkage __visible noinstr struct pt_regs *vc_switch_off_ist(struct pt_regs *regs)
++static __always_inline bool on_vc_stack(unsigned long sp)
 +{
-+	unsigned long sp, *stack;
-+	struct stack_info info;
-+	struct pt_regs *regs_ret;
-+
-+	/*
-+	 * In the SYSCALL entry path the RSP value comes from user-space - don't
-+	 * trust it and switch to the current kernel stack
-+	 */
-+	if (regs->ip >= (unsigned long)entry_SYSCALL_64 &&
-+	    regs->ip <  (unsigned long)entry_SYSCALL_64_safe_stack) {
-+		sp = this_cpu_read(cpu_current_top_of_stack);
-+		goto sync;
-+	}
-+
-+	/*
-+	 * From here on the RSP value is trusted. Now check whether entry
-+	 * happened from a safe stack. Not safe are the entry or unknown stacks,
-+	 * use the fall-back stack instead in this case.
-+	 */
-+	sp    = regs->sp;
-+	stack = (unsigned long *)sp;
-+
-+	if (!get_stack_info_noinstr(stack, current, &info) || info.type == STACK_TYPE_ENTRY ||
-+	    info.type >= STACK_TYPE_EXCEPTION_LAST)
-+		sp = __this_cpu_ist_top_va(VC2);
-+
-+sync:
-+	/*
-+	 * Found a safe stack - switch to it as if the entry didn't happen via
-+	 * IST stack. The code below only copies pt_regs, the real switch happens
-+	 * in assembly code.
-+	 */
-+	sp = ALIGN_DOWN(sp, 8) - sizeof(*regs_ret);
-+
-+	regs_ret = (struct pt_regs *)sp;
-+	*regs_ret = *regs;
-+
-+	return regs_ret;
++	return ((sp >= __this_cpu_ist_bottom_va(VC)) && (sp < __this_cpu_ist_top_va(VC)));
 +}
-+#endif
 +
- struct bad_iret_stack {
- 	void *error_entry_ret;
- 	struct pt_regs regs;
++/*
++ * This function handles the case when an NMI is raised in the #VC exception
++ * handler entry code. In this case, the IST entry for #VC must be adjusted, so
++ * that any subsequent #VC exception will not overwrite the stack contents of the
++ * interrupted #VC handler.
++ *
++ * The IST entry is adjusted unconditionally so that it can be also be
++ * unconditionally adjusted back in sev_es_ist_exit(). Otherwise a nested
++ * sev_es_ist_exit() call may adjust back the IST entry too early.
++ */
++void noinstr __sev_es_ist_enter(struct pt_regs *regs)
++{
++	unsigned long old_ist, new_ist;
++
++	/* Read old IST entry */
++	old_ist = __this_cpu_read(cpu_tss_rw.x86_tss.ist[IST_INDEX_VC]);
++
++	/* Make room on the IST stack */
++	if (on_vc_stack(regs->sp))
++		new_ist = ALIGN_DOWN(regs->sp, 8) - sizeof(old_ist);
++	else
++		new_ist = old_ist - sizeof(old_ist);
++
++	/* Store old IST entry */
++	*(unsigned long *)new_ist = old_ist;
++
++	/* Set new IST entry */
++	this_cpu_write(cpu_tss_rw.x86_tss.ist[IST_INDEX_VC], new_ist);
++}
++
++void noinstr __sev_es_ist_exit(void)
++{
++	unsigned long ist;
++
++	/* Read IST entry */
++	ist = __this_cpu_read(cpu_tss_rw.x86_tss.ist[IST_INDEX_VC]);
++
++	if (WARN_ON(ist == __this_cpu_ist_top_va(VC)))
++		return;
++
++	/* Read back old IST entry and write it to the TSS */
++	this_cpu_write(cpu_tss_rw.x86_tss.ist[IST_INDEX_VC], *(unsigned long *)ist);
++}
++
+ /* Needed in vc_early_forward_exception */
+ void do_early_exception(struct pt_regs *regs, int trapnr);
+ 
+@@ -277,6 +327,9 @@ void __init sev_es_init_vc_handling(void)
+ 	if (!sev_es_active())
+ 		return;
+ 
++	/* Enable SEV-ES special handling */
++	static_branch_enable(&sev_es_enable_key);
++
+ 	/* Initialize per-cpu GHCB pages */
+ 	for_each_possible_cpu(cpu) {
+ 		alloc_runtime_data(cpu);
