@@ -2,53 +2,51 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D222326420A
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Sep 2020 11:31:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A90A1264271
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Sep 2020 11:38:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728207AbgIJJbw (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 10 Sep 2020 05:31:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36232 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730509AbgIJJYe (ORCPT
+        id S1728631AbgIJJiA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 10 Sep 2020 05:38:00 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:38842 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730259AbgIJJWU (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 10 Sep 2020 05:24:34 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA17EC0617AA;
-        Thu, 10 Sep 2020 02:22:19 -0700 (PDT)
+        Thu, 10 Sep 2020 05:22:20 -0400
 Date:   Thu, 10 Sep 2020 09:22:17 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1599729738;
+        s=2020; t=1599729737;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=SrcMYv8uNpPGoQYgmAkKa2O1+w5fJZwc1/WU9lgubwM=;
-        b=EQ9Lwn/YQn7jrg7AiHyHeIhbt4RqzZ+zyQSi6TQoVYDSBVjv3ydvCIZfI4qMGAgSNWI9eQ
-        7Lj31GOAPXOxYa551b96+W1NMZhHllsBIgExWp26AeZKQIf0wUvy6Degstw/7832Nuw2Jr
-        H4xvPjezruHfNfsAgxraHm+YNeXSuiWfA6v2ROmwuunChJKjwsW+Nc3HOe34fPUmo3WMv1
-        7Db6Z+0NwEUIt7tUZdLerWFZQbsMrIvd179xADgXoEI1WQoJ/8sCWvzMnXkN2zjREleOUh
-        RvGX6nzhWm/ZTt28ZwSCsOZza62bcyISHheyg5jLFxmmS0Gdz/eWoLmziCW7bQ==
+        bh=r6aPnzNgCPl75LPP9i2pcCTPnrsIX5K+D4UisQtH4yo=;
+        b=gAju1UVY56AsruHCOKkW9Zj7zTOgP8P5BBGeQnXR15ClpH67Y2CdFp72UPi5STog8W5f5z
+        za4AJnUzgBwk9jwBoXHqLaWXh7IOM8WyG9WIbyjAgHwctjXKPuJKny8Mx1VBy100Qps4Os
+        h+myZ6+SOlXp+tDDPC6PPg2g5RQrbHH/BEKHmw1btZOCUF4jUUJXib0+y0kT5GwqEfRujn
+        Azeerh3dwabN8+8VtQM+MM0qpY0p/7qKE+5Jw05J86rtNQ5/SDKfos95hSEPBcgayN//rN
+        ENdMT7RuHUCTIdBsm6DTMD+NjrEzRjTWUGKbqwR9bC7vMvP72AOg86LZ/XPUKQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1599729738;
+        s=2020e; t=1599729737;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=SrcMYv8uNpPGoQYgmAkKa2O1+w5fJZwc1/WU9lgubwM=;
-        b=jF8skJ7hJibEwZ5gRTSsQjYGMzOH4pX6wTN8Ud4Y+SLiKxdPQKuWvw9deWB6u+HHgULRSa
-        PSBKVPRdePIXTyCA==
+        bh=r6aPnzNgCPl75LPP9i2pcCTPnrsIX5K+D4UisQtH4yo=;
+        b=N8r9WJs8ay/yeexncEUFADjAS3IvW3Xt4W3I54X4vBjfSfcMx2cftzwqfKXZUjLDjjIvn2
+        EmgcVZL811dDMFDw==
 From:   "tip-bot2 for Joerg Roedel" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/seves] x86/head/64: Move early exception dispatch to C code
+Subject: [tip: x86/seves] x86/sev-es: Add SEV-ES Feature Detection
 Cc:     Joerg Roedel <jroedel@suse.de>, Borislav Petkov <bp@suse.de>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200907131613.12703-36-joro@8bytes.org>
-References: <20200907131613.12703-36-joro@8bytes.org>
+        Kees Cook <keescook@chromium.org>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200907131613.12703-37-joro@8bytes.org>
+References: <20200907131613.12703-37-joro@8bytes.org>
 MIME-Version: 1.0
-Message-ID: <159972973769.20229.14679873688706409863.tip-bot2@tip-bot2>
+Message-ID: <159972973726.20229.4326936704104004217.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,148 +58,112 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/seves branch of tip:
 
-Commit-ID:     4b47cdbda6f1ad73b08dc7d497bac12b8f26ae0d
-Gitweb:        https://git.kernel.org/tip/4b47cdbda6f1ad73b08dc7d497bac12b8f26ae0d
+Commit-ID:     b57de6cd16395be1ebdaa9b489ffbf462bb585c4
+Gitweb:        https://git.kernel.org/tip/b57de6cd16395be1ebdaa9b489ffbf462bb585c4
 Author:        Joerg Roedel <jroedel@suse.de>
-AuthorDate:    Mon, 07 Sep 2020 15:15:36 +02:00
+AuthorDate:    Mon, 07 Sep 2020 15:15:37 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Mon, 07 Sep 2020 22:49:18 +02:00
+CommitterDate: Mon, 07 Sep 2020 23:00:20 +02:00
 
-x86/head/64: Move early exception dispatch to C code
+x86/sev-es: Add SEV-ES Feature Detection
 
-Move the assembly coded dispatch between page-faults and all other
-exceptions to C code to make it easier to maintain and extend.
+Add a sev_es_active() function for checking whether SEV-ES is enabled.
+Also cache the value of MSR_AMD64_SEV at boot to speed up the feature
+checking in the running code.
 
-Also change the return-type of early_make_pgtable() to bool and make it
-static.
+ [ bp: Remove "!!" in sev_active() too. ]
 
 Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20200907131613.12703-36-joro@8bytes.org
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Link: https://lkml.kernel.org/r/20200907131613.12703-37-joro@8bytes.org
 ---
- arch/x86/include/asm/pgtable.h |  2 +-
- arch/x86/include/asm/setup.h   |  4 +++-
- arch/x86/kernel/head64.c       | 19 +++++++++++++++----
- arch/x86/kernel/head_64.S      | 11 +----------
- 4 files changed, 20 insertions(+), 16 deletions(-)
+ arch/x86/include/asm/mem_encrypt.h |  3 +++
+ arch/x86/include/asm/msr-index.h   |  2 ++
+ arch/x86/mm/mem_encrypt.c          |  9 ++++++++-
+ arch/x86/mm/mem_encrypt_identity.c |  3 +++
+ 4 files changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/pgtable.h b/arch/x86/include/asm/pgtable.h
-index b836138..7b8f212 100644
---- a/arch/x86/include/asm/pgtable.h
-+++ b/arch/x86/include/asm/pgtable.h
-@@ -28,7 +28,7 @@
- #include <asm-generic/pgtable_uffd.h>
+diff --git a/arch/x86/include/asm/mem_encrypt.h b/arch/x86/include/asm/mem_encrypt.h
+index 5049f6c..4e72b73 100644
+--- a/arch/x86/include/asm/mem_encrypt.h
++++ b/arch/x86/include/asm/mem_encrypt.h
+@@ -19,6 +19,7 @@
+ #ifdef CONFIG_AMD_MEM_ENCRYPT
  
- extern pgd_t early_top_pgt[PTRS_PER_PGD];
--int __init __early_make_pgtable(unsigned long address, pmdval_t pmd);
-+bool __init __early_make_pgtable(unsigned long address, pmdval_t pmd);
+ extern u64 sme_me_mask;
++extern u64 sev_status;
+ extern bool sev_enabled;
  
- void ptdump_walk_pgd_level(struct seq_file *m, struct mm_struct *mm);
- void ptdump_walk_pgd_level_debugfs(struct seq_file *m, struct mm_struct *mm,
-diff --git a/arch/x86/include/asm/setup.h b/arch/x86/include/asm/setup.h
-index 4b3ca5a..7d7a064 100644
---- a/arch/x86/include/asm/setup.h
-+++ b/arch/x86/include/asm/setup.h
-@@ -39,6 +39,8 @@ void vsmp_init(void);
- static inline void vsmp_init(void) { }
- #endif
+ void sme_encrypt_execute(unsigned long encrypted_kernel_vaddr,
+@@ -50,6 +51,7 @@ void __init mem_encrypt_init(void);
  
-+struct pt_regs;
-+
- void setup_bios_corruption_check(void);
- void early_platform_quirks(void);
+ bool sme_active(void);
+ bool sev_active(void);
++bool sev_es_active(void);
  
-@@ -49,8 +51,8 @@ extern void i386_reserve_resources(void);
- extern unsigned long __startup_64(unsigned long physaddr, struct boot_params *bp);
- extern unsigned long __startup_secondary_64(void);
- extern void startup_64_setup_env(unsigned long physbase);
--extern int early_make_pgtable(unsigned long address);
- extern void early_setup_idt(void);
-+extern void __init do_early_exception(struct pt_regs *regs, int trapnr);
+ #define __bss_decrypted __attribute__((__section__(".bss..decrypted")))
  
- #ifdef CONFIG_X86_INTEL_MID
- extern void x86_intel_mid_early_setup(void);
-diff --git a/arch/x86/kernel/head64.c b/arch/x86/kernel/head64.c
-index 7bfd5c2..4282dac 100644
---- a/arch/x86/kernel/head64.c
-+++ b/arch/x86/kernel/head64.c
-@@ -38,6 +38,8 @@
- #include <asm/fixmap.h>
- #include <asm/realmode.h>
- #include <asm/desc.h>
-+#include <asm/extable.h>
-+#include <asm/trapnr.h>
+@@ -72,6 +74,7 @@ static inline void __init sme_enable(struct boot_params *bp) { }
  
- /*
-  * Manage page tables very early on.
-@@ -317,7 +319,7 @@ static void __init reset_early_page_tables(void)
- }
+ static inline bool sme_active(void) { return false; }
+ static inline bool sev_active(void) { return false; }
++static inline bool sev_es_active(void) { return false; }
  
- /* Create a new PMD entry */
--int __init __early_make_pgtable(unsigned long address, pmdval_t pmd)
-+bool __init __early_make_pgtable(unsigned long address, pmdval_t pmd)
+ static inline int __init
+ early_set_memory_decrypted(unsigned long vaddr, unsigned long size) { return 0; }
+diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-index.h
+index da34fdb..249a414 100644
+--- a/arch/x86/include/asm/msr-index.h
++++ b/arch/x86/include/asm/msr-index.h
+@@ -469,7 +469,9 @@
+ #define MSR_AMD64_SEV_ES_GHCB		0xc0010130
+ #define MSR_AMD64_SEV			0xc0010131
+ #define MSR_AMD64_SEV_ENABLED_BIT	0
++#define MSR_AMD64_SEV_ES_ENABLED_BIT	1
+ #define MSR_AMD64_SEV_ENABLED		BIT_ULL(MSR_AMD64_SEV_ENABLED_BIT)
++#define MSR_AMD64_SEV_ES_ENABLED	BIT_ULL(MSR_AMD64_SEV_ES_ENABLED_BIT)
+ 
+ #define MSR_AMD64_VIRT_SPEC_CTRL	0xc001011f
+ 
+diff --git a/arch/x86/mm/mem_encrypt.c b/arch/x86/mm/mem_encrypt.c
+index 9f1177e..a38f556 100644
+--- a/arch/x86/mm/mem_encrypt.c
++++ b/arch/x86/mm/mem_encrypt.c
+@@ -38,6 +38,7 @@
+  * section is later cleared.
+  */
+ u64 sme_me_mask __section(.data) = 0;
++u64 sev_status __section(.data) = 0;
+ EXPORT_SYMBOL(sme_me_mask);
+ DEFINE_STATIC_KEY_FALSE(sev_enable_key);
+ EXPORT_SYMBOL_GPL(sev_enable_key);
+@@ -347,7 +348,13 @@ bool sme_active(void)
+ 
+ bool sev_active(void)
  {
- 	unsigned long physaddr = address - __PAGE_OFFSET;
- 	pgdval_t pgd, *pgd_p;
-@@ -327,7 +329,7 @@ int __init __early_make_pgtable(unsigned long address, pmdval_t pmd)
- 
- 	/* Invalid address or early pgt is done ?  */
- 	if (physaddr >= MAXMEM || read_cr3_pa() != __pa_nodebug(early_top_pgt))
--		return -1;
-+		return false;
- 
- again:
- 	pgd_p = &early_top_pgt[pgd_index(address)].pgd;
-@@ -384,10 +386,10 @@ again:
- 	}
- 	pmd_p[pmd_index(address)] = pmd;
- 
--	return 0;
-+	return true;
- }
- 
--int __init early_make_pgtable(unsigned long address)
-+static bool __init early_make_pgtable(unsigned long address)
- {
- 	unsigned long physaddr = address - __PAGE_OFFSET;
- 	pmdval_t pmd;
-@@ -397,6 +399,15 @@ int __init early_make_pgtable(unsigned long address)
- 	return __early_make_pgtable(address, pmd);
- }
- 
-+void __init do_early_exception(struct pt_regs *regs, int trapnr)
-+{
-+	if (trapnr == X86_TRAP_PF &&
-+	    early_make_pgtable(native_read_cr2()))
-+		return;
-+
-+	early_fixup_exception(regs, trapnr);
+-	return sme_me_mask && sev_enabled;
++	return sev_status & MSR_AMD64_SEV_ENABLED;
 +}
 +
- /* Don't add a printk in there. printk relies on the PDA which is not initialized 
-    yet. */
- static void __init clear_bss(void)
-diff --git a/arch/x86/kernel/head_64.S b/arch/x86/kernel/head_64.S
-index 1de09b5..3b40ec4 100644
---- a/arch/x86/kernel/head_64.S
-+++ b/arch/x86/kernel/head_64.S
-@@ -341,18 +341,9 @@ SYM_CODE_START_LOCAL(early_idt_handler_common)
- 	pushq %r15				/* pt_regs->r15 */
- 	UNWIND_HINT_REGS
++/* Needs to be called from non-instrumentable code */
++bool noinstr sev_es_active(void)
++{
++	return sev_status & MSR_AMD64_SEV_ES_ENABLED;
+ }
  
--	cmpq $14,%rsi		/* Page fault? */
--	jnz 10f
--	GET_CR2_INTO(%rdi)	/* can clobber %rax if pv */
--	call early_make_pgtable
--	andl %eax,%eax
--	jz 20f			/* All good */
--
--10:
- 	movq %rsp,%rdi		/* RDI = pt_regs; RSI is already trapnr */
--	call early_fixup_exception
-+	call do_early_exception
+ /* Override for DMA direct allocation check - ARCH_HAS_FORCE_DMA_UNENCRYPTED */
+diff --git a/arch/x86/mm/mem_encrypt_identity.c b/arch/x86/mm/mem_encrypt_identity.c
+index e2b0e2a..68d7537 100644
+--- a/arch/x86/mm/mem_encrypt_identity.c
++++ b/arch/x86/mm/mem_encrypt_identity.c
+@@ -540,6 +540,9 @@ void __init sme_enable(struct boot_params *bp)
+ 		if (!(msr & MSR_AMD64_SEV_ENABLED))
+ 			return;
  
--20:
- 	decl early_recursion_flag(%rip)
- 	jmp restore_regs_and_return_to_kernel
- SYM_CODE_END(early_idt_handler_common)
++		/* Save SEV_STATUS to avoid reading MSR again */
++		sev_status = msr;
++
+ 		/* SEV state cannot be controlled by a command line option */
+ 		sme_me_mask = me_mask;
+ 		sev_enabled = true;
