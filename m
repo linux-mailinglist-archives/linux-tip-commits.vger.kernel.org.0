@@ -2,51 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 17FAE26426D
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Sep 2020 11:37:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 951E7264202
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Sep 2020 11:31:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730678AbgIJJg4 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 10 Sep 2020 05:36:56 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:38868 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730340AbgIJJWV (ORCPT
+        id S1726738AbgIJJb1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 10 Sep 2020 05:31:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36242 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730294AbgIJJYf (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 10 Sep 2020 05:22:21 -0400
-Date:   Thu, 10 Sep 2020 09:22:19 -0000
+        Thu, 10 Sep 2020 05:24:35 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79A84C0617B9;
+        Thu, 10 Sep 2020 02:22:23 -0700 (PDT)
+Date:   Thu, 10 Sep 2020 09:22:20 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1599729739;
+        s=2020; t=1599729741;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=7QD1v8bsZImEeiNSDgX6Ze2YQSeBDgl0KHzGM1X9wHA=;
-        b=lnsq3jEFXayscGrg3a6BT8ZJUNgrcMG1TKHZslj/WBziSbqiW4aCox7XGiuve0k0HLu//F
-        9EGMndoWb0JYdcjM76uquztqDPgtlO+A5m2M7KK/L6i2fAMf1wQNQyEtc4pGy0RUtZavoD
-        sWwE3vInh1RHRtxoRQRRth3XEyAuezqheoKf36+IsNHa0h/WqAHmIQf3/vuJW7ZcdTlvRu
-        smJwzgh9onoBttTW7wP7ZAO13NSx680jXKjiUxOXOu7Xri6CcMAwD+NVB/B04hAFhxscrn
-        afyPrqGxcgMmbXt67nMJ/eiqhhk8jUau09f0qL8MIDDENMP15jnh2IfFHgL/zA==
+        bh=jSiPco/+lObsRy62LQTlSq9kgIMoUnKK6810pAuwPt0=;
+        b=UdiYxFO7OhaMgc5xvh7eKZI/+fX/OHWzCLUTPW/a+n9WEQBPbZNfpSxNhs/rKHE/Xd4qH0
+        bhcoonKRl/+tC8CJTVe/fSjbI8XSt8cSbGaR5ZQKz6+RYtjuCWDLzbxe9wXBbAlCPio6xd
+        AO2oDk038FZ3xF3sD9TKjW4dsu5rV4keZGzIWDuDykCqIArlthFT8TqK8fEXBd28jjhVgR
+        1ciitap527f0Z/3IjqW/WONxROGT3qh+Wt9FG6znmVvhLpamT1pJI1EmnwHqJTLBL3Idm5
+        QiwUM5lPYkv7SmKydifIafBpcLgnrgNgAyQLnIBZxjIA3JlqghbQmGoFBtbMQg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1599729739;
+        s=2020e; t=1599729741;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=7QD1v8bsZImEeiNSDgX6Ze2YQSeBDgl0KHzGM1X9wHA=;
-        b=+vdysP987g2ZMweL7dvG/rDbgnvZOqxiCTv/qcg9sf+7xeUgo9A/NK06eEP2sVFyBTAXcb
-        OEaUON76m+Fo1xBg==
+        bh=jSiPco/+lObsRy62LQTlSq9kgIMoUnKK6810pAuwPt0=;
+        b=xYRLDUt/YdR4xjk44Nn4wbrpVF0Th+cndsM4qF9bGr/Oa4Or+7K89vgjUUrqZi/3OES1TN
+        PnMjQIeHX0fM5cBA==
 From:   "tip-bot2 for Joerg Roedel" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/seves] x86/head/64: Switch to initial stack earlier
+Subject: [tip: x86/seves] x86/idt: Split idt_data setup out of set_intr_gate()
 Cc:     Joerg Roedel <jroedel@suse.de>, Borislav Petkov <bp@suse.de>,
         Kees Cook <keescook@chromium.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200907131613.12703-33-joro@8bytes.org>
-References: <20200907131613.12703-33-joro@8bytes.org>
+In-Reply-To: <20200907131613.12703-29-joro@8bytes.org>
+References: <20200907131613.12703-29-joro@8bytes.org>
 MIME-Version: 1.0
-Message-ID: <159972973918.20229.8742099836749431075.tip-bot2@tip-bot2>
+Message-ID: <159972974091.20229.13226944353253845318.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,55 +61,64 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/seves branch of tip:
 
-Commit-ID:     3add38cb96a1ae7d152db69ab4329e809c2af2d4
-Gitweb:        https://git.kernel.org/tip/3add38cb96a1ae7d152db69ab4329e809c2af2d4
+Commit-ID:     4bed2266cc6f9c3f6cd91378ea4fc76edde674cf
+Gitweb:        https://git.kernel.org/tip/4bed2266cc6f9c3f6cd91378ea4fc76edde674cf
 Author:        Joerg Roedel <jroedel@suse.de>
-AuthorDate:    Mon, 07 Sep 2020 15:15:33 +02:00
+AuthorDate:    Mon, 07 Sep 2020 15:15:29 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Mon, 07 Sep 2020 21:44:01 +02:00
+CommitterDate: Mon, 07 Sep 2020 21:30:38 +02:00
 
-x86/head/64: Switch to initial stack earlier
+x86/idt: Split idt_data setup out of set_intr_gate()
 
-Make sure there is a stack once the kernel runs from virtual addresses.
-At this stage any secondary CPU which boots will have lost its stack
-because the kernel switched to a new page-table which does not map the
-real-mode stack anymore.
+The code to setup idt_data is needed for early exception handling, but
+set_intr_gate() can't be used that early because it has pv-ops in its
+code path which don't work that early.
 
-This is needed for handling early #VC exceptions caused by instructions
-like CPUID.
+Split out the idt_data initialization part from set_intr_gate() so
+that it can be used separately.
 
 Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Borislav Petkov <bp@suse.de>
 Reviewed-by: Kees Cook <keescook@chromium.org>
-Link: https://lkml.kernel.org/r/20200907131613.12703-33-joro@8bytes.org
+Link: https://lkml.kernel.org/r/20200907131613.12703-29-joro@8bytes.org
 ---
- arch/x86/kernel/head_64.S |  9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ arch/x86/kernel/idt.c | 22 ++++++++++++++--------
+ 1 file changed, 14 insertions(+), 8 deletions(-)
 
-diff --git a/arch/x86/kernel/head_64.S b/arch/x86/kernel/head_64.S
-index f402087..83050c9 100644
---- a/arch/x86/kernel/head_64.S
-+++ b/arch/x86/kernel/head_64.S
-@@ -192,6 +192,12 @@ SYM_CODE_START(secondary_startup_64)
- 	movl	initial_gs+4(%rip),%edx
- 	wrmsr
+diff --git a/arch/x86/kernel/idt.c b/arch/x86/kernel/idt.c
+index 7ecf9ba..53946c1 100644
+--- a/arch/x86/kernel/idt.c
++++ b/arch/x86/kernel/idt.c
+@@ -205,18 +205,24 @@ idt_setup_from_table(gate_desc *idt, const struct idt_data *t, int size, bool sy
+ 	}
+ }
  
-+	/*
-+	 * Setup a boot time stack - Any secondary CPU will have lost its stack
-+	 * by now because the cr3-switch above unmaps the real-mode stack
-+	 */
-+	movq initial_stack(%rip), %rsp
++static void init_idt_data(struct idt_data *data, unsigned int n,
++			  const void *addr)
++{
++	BUG_ON(n > 0xFF);
 +
- 	/* Check if nx is implemented */
- 	movl	$0x80000001, %eax
- 	cpuid
-@@ -212,9 +218,6 @@ SYM_CODE_START(secondary_startup_64)
- 	/* Make changes effective */
- 	movq	%rax, %cr0
++	memset(data, 0, sizeof(*data));
++	data->vector	= n;
++	data->addr	= addr;
++	data->segment	= __KERNEL_CS;
++	data->bits.type	= GATE_INTERRUPT;
++	data->bits.p	= 1;
++}
++
+ static __init void set_intr_gate(unsigned int n, const void *addr)
+ {
+ 	struct idt_data data;
  
--	/* Setup a boot time stack */
--	movq initial_stack(%rip), %rsp
+-	BUG_ON(n > 0xFF);
 -
- 	/* zero EFLAGS after setting rsp */
- 	pushq $0
- 	popfq
+-	memset(&data, 0, sizeof(data));
+-	data.vector	= n;
+-	data.addr	= addr;
+-	data.segment	= __KERNEL_CS;
+-	data.bits.type	= GATE_INTERRUPT;
+-	data.bits.p	= 1;
++	init_idt_data(&data, n, addr);
+ 
+ 	idt_setup_from_table(idt_table, &data, 1, false);
+ }
