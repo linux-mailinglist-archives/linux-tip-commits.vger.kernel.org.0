@@ -2,20 +2,17 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 05E76264252
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Sep 2020 11:36:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 38B8C264274
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Sep 2020 11:38:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730622AbgIJJg1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 10 Sep 2020 05:36:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36234 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730378AbgIJJWc (ORCPT
+        id S1730902AbgIJJiB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 10 Sep 2020 05:38:01 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:38774 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730273AbgIJJWT (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 10 Sep 2020 05:22:32 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4545C061799;
-        Thu, 10 Sep 2020 02:22:16 -0700 (PDT)
-Date:   Thu, 10 Sep 2020 09:22:09 -0000
+        Thu, 10 Sep 2020 05:22:19 -0400
+Date:   Thu, 10 Sep 2020 09:22:10 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1599729730;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -23,12 +20,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=rJk3MYLbFbSfPhJZF4bSYd6z3TZoLOoRN1THYmZyuo0=;
-        b=iB0PrJIAEPHGOVvXpW6SO0i5j3ncHIqLCDnUZNBk4og3RrFeUNShqV/PqYwzX2r/wLE1rV
-        S+rds0YQ89EzYION0K4UOonjwdRjIMTpALaOzLzcSudeqLsfRcMywPS6Rs1g6ONFBpGtAR
-        ZPxFSaoNyxwd35XCNaPAVKI5kDRrGU3lEzNaXhSnz8ygkkPJo8EQk/k5EBziL3pjKNdXFn
-        leAxq7u5Kv5CH6BYHJ1N4/tjE4uMrlCvY2UgXm0IyCNUetpALZXOmlEfsxnraI6+X2VuvD
-        uKN10d5bGylPifrZLt3p8xW7EI87a3aVAHdtDq5pfH1aDjsiwf3+xtMa3Nu5ww==
+        bh=QXlVFfGsQ5R86vMSL2nzI4Yw1P09A2UcGYbS31L9EmI=;
+        b=u3AeO1EbV9j7cACwHJ727k+FRaaAR/r+0NSoINbG72MfJzFW0WhdEEwZaJdyMZCONssVWs
+        IUAV9gkmshK1+DcrGPNO5wx3/ewWgm+rsFWoufEfADn5NMOw2fwCjfnnZt34Z0vA4mRoxO
+        EcdoRatmwH89r54iC/rxTdFCBjf4TW6S7Qb968ILaiOIAoQ/2tz2xjpATLtSFS6M0og2Bb
+        a1krhsZfQoo1Pe5p8TGq5uVY7WEwdURvGtJlmFIbkXYMbJ8V74TGNnzO5dB1CJPJm0gmIz
+        P8dQfSJH+BDnwV+KtBjS80VHeXEFVkzpQn4RTY4s+29GsrudPGmHgTPaUStPMw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1599729730;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,20 +33,20 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=rJk3MYLbFbSfPhJZF4bSYd6z3TZoLOoRN1THYmZyuo0=;
-        b=VKQeoA6kSOPnX9NkJ76BjxEgsFrrJsFMTfYPg08DUSR7z2JC15oMsjmdZNO631ex2ZlzN6
-        qaeOK/xG7rVVcGBA==
+        bh=QXlVFfGsQ5R86vMSL2nzI4Yw1P09A2UcGYbS31L9EmI=;
+        b=LntWGCDdWSRC9OtvtePSICHxsTxkxHkYpMEa+EImaMIeToq3yUHP16E+lm4zkoJCPDd6/2
+        YHMDPPjcdnOHhTBA==
 From:   "tip-bot2 for Tom Lendacky" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/seves] x86/sev-es: Handle RDTSC(P) Events
+Subject: [tip: x86/seves] x86/sev-es: Handle WBINVD Events
 Cc:     Tom Lendacky <thomas.lendacky@amd.com>,
         Joerg Roedel <jroedel@suse.de>, Borislav Petkov <bp@suse.de>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200907131613.12703-55-joro@8bytes.org>
-References: <20200907131613.12703-55-joro@8bytes.org>
+In-Reply-To: <20200907131613.12703-54-joro@8bytes.org>
+References: <20200907131613.12703-54-joro@8bytes.org>
 MIME-Version: 1.0
-Message-ID: <159972972968.20229.4360332624550491069.tip-bot2@tip-bot2>
+Message-ID: <159972973018.20229.4628171075961862587.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,91 +58,51 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/seves branch of tip:
 
-Commit-ID:     4711e7acaa125d8cc242f06e1f4d6c74e177454b
-Gitweb:        https://git.kernel.org/tip/4711e7acaa125d8cc242f06e1f4d6c74e177454b
+Commit-ID:     a14a92fc4b420ae6713800a8ae8c3686c1a1fa20
+Gitweb:        https://git.kernel.org/tip/a14a92fc4b420ae6713800a8ae8c3686c1a1fa20
 Author:        Tom Lendacky <thomas.lendacky@amd.com>
-AuthorDate:    Mon, 07 Sep 2020 15:15:55 +02:00
+AuthorDate:    Mon, 07 Sep 2020 15:15:54 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
 CommitterDate: Wed, 09 Sep 2020 11:33:20 +02:00
 
-x86/sev-es: Handle RDTSC(P) Events
+x86/sev-es: Handle WBINVD Events
 
-Implement a handler for #VC exceptions caused by RDTSC and RDTSCP
-instructions. Also make it available in the pre-decompression stage
-because the KASLR code uses RDTSC/RDTSCP to gather entropy and some
-hypervisors intercept these instructions.
+Implement a handler for #VC exceptions caused by WBINVD instructions.
 
 Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
-[ jroedel@suse.de: - Adapt to #VC handling infrastructure
-                   - Make it available early ]
+[ jroedel@suse.de: Adapt to #VC handling framework ]
 Co-developed-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20200907131613.12703-55-joro@8bytes.org
+Link: https://lkml.kernel.org/r/20200907131613.12703-54-joro@8bytes.org
 ---
- arch/x86/boot/compressed/sev-es.c |  4 ++++
- arch/x86/kernel/sev-es-shared.c   | 23 +++++++++++++++++++++++
- arch/x86/kernel/sev-es.c          |  4 ++++
- 3 files changed, 31 insertions(+)
+ arch/x86/kernel/sev-es.c |  9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/arch/x86/boot/compressed/sev-es.c b/arch/x86/boot/compressed/sev-es.c
-index b1790f4..5f15e58 100644
---- a/arch/x86/boot/compressed/sev-es.c
-+++ b/arch/x86/boot/compressed/sev-es.c
-@@ -181,6 +181,10 @@ void do_boot_stage2_vc(struct pt_regs *regs, unsigned long exit_code)
- 		goto finish;
- 
- 	switch (exit_code) {
-+	case SVM_EXIT_RDTSC:
-+	case SVM_EXIT_RDTSCP:
-+		result = vc_handle_rdtsc(boot_ghcb, &ctxt, exit_code);
-+		break;
- 	case SVM_EXIT_IOIO:
- 		result = vc_handle_ioio(boot_ghcb, &ctxt);
- 		break;
-diff --git a/arch/x86/kernel/sev-es-shared.c b/arch/x86/kernel/sev-es-shared.c
-index 491b557..4be8af2 100644
---- a/arch/x86/kernel/sev-es-shared.c
-+++ b/arch/x86/kernel/sev-es-shared.c
-@@ -467,3 +467,26 @@ static enum es_result vc_handle_cpuid(struct ghcb *ghcb,
- 
- 	return ES_OK;
- }
-+
-+static enum es_result vc_handle_rdtsc(struct ghcb *ghcb,
-+				      struct es_em_ctxt *ctxt,
-+				      unsigned long exit_code)
-+{
-+	bool rdtscp = (exit_code == SVM_EXIT_RDTSCP);
-+	enum es_result ret;
-+
-+	ret = sev_es_ghcb_hv_call(ghcb, ctxt, exit_code, 0, 0);
-+	if (ret != ES_OK)
-+		return ret;
-+
-+	if (!(ghcb_rax_is_valid(ghcb) && ghcb_rdx_is_valid(ghcb) &&
-+	     (!rdtscp || ghcb_rcx_is_valid(ghcb))))
-+		return ES_VMM_ERROR;
-+
-+	ctxt->regs->ax = ghcb->save.rax;
-+	ctxt->regs->dx = ghcb->save.rdx;
-+	if (rdtscp)
-+		ctxt->regs->cx = ghcb->save.rcx;
-+
-+	return ES_OK;
-+}
 diff --git a/arch/x86/kernel/sev-es.c b/arch/x86/kernel/sev-es.c
-index aba27c3..4d468ec 100644
+index 391b9c7..aba27c3 100644
 --- a/arch/x86/kernel/sev-es.c
 +++ b/arch/x86/kernel/sev-es.c
-@@ -866,6 +866,10 @@ static enum es_result vc_handle_exitcode(struct es_em_ctxt *ctxt,
- 	case SVM_EXIT_WRITE_DR7:
- 		result = vc_handle_dr7_write(ghcb, ctxt);
+@@ -847,6 +847,12 @@ static enum es_result vc_handle_dr7_read(struct ghcb *ghcb,
+ 	return ES_OK;
+ }
+ 
++static enum es_result vc_handle_wbinvd(struct ghcb *ghcb,
++				       struct es_em_ctxt *ctxt)
++{
++	return sev_es_ghcb_hv_call(ghcb, ctxt, SVM_EXIT_WBINVD, 0, 0);
++}
++
+ static enum es_result vc_handle_exitcode(struct es_em_ctxt *ctxt,
+ 					 struct ghcb *ghcb,
+ 					 unsigned long exit_code)
+@@ -869,6 +875,9 @@ static enum es_result vc_handle_exitcode(struct es_em_ctxt *ctxt,
+ 	case SVM_EXIT_MSR:
+ 		result = vc_handle_msr(ghcb, ctxt);
  		break;
-+	case SVM_EXIT_RDTSC:
-+	case SVM_EXIT_RDTSCP:
-+		result = vc_handle_rdtsc(ghcb, ctxt, exit_code);
++	case SVM_EXIT_WBINVD:
++		result = vc_handle_wbinvd(ghcb, ctxt);
 +		break;
- 	case SVM_EXIT_CPUID:
- 		result = vc_handle_cpuid(ghcb, ctxt);
+ 	case SVM_EXIT_NPF:
+ 		result = vc_handle_mmio(ghcb, ctxt);
  		break;
