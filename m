@@ -2,51 +2,50 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6AD8D2641AA
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Sep 2020 11:27:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 525EB2641CB
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Sep 2020 11:29:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729971AbgIJJ0F (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 10 Sep 2020 05:26:05 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:38932 "EHLO
+        id S1730464AbgIJJ2Z (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 10 Sep 2020 05:28:25 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:38770 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730474AbgIJJYE (ORCPT
+        with ESMTP id S1726760AbgIJJYu (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 10 Sep 2020 05:24:04 -0400
-Date:   Thu, 10 Sep 2020 09:22:31 -0000
+        Thu, 10 Sep 2020 05:24:50 -0400
+Date:   Thu, 10 Sep 2020 09:22:32 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1599729751;
+        s=2020; t=1599729753;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=g7Qqx4dE4zh12ve8Ky5Zt1rD0JToonxUriEmpHiwUTk=;
-        b=IlmtGOd8H3B+h0QkvMDR8A5MkTR9zevfZHkh0CFOzUfpXoRbY+To99Nh2YKelszMKKYKs1
-        tKdyzhIUdJJqtlb1HPzC888jZ6NVrZCv7WDwrmN3hHPMmPZRglif+UpDbMFSQCXnCvux5J
-        19GQd0ZhYQq9Kyj1cSbUpS5JI3m3ax0bEl4h7drIu995Cfln13OvhGYHJh4sn461yJUf0N
-        kPigaQepWNmO2lW61y+EbHqZwQVJRIxRbuP6RJD2c5ND3IPhNGEAiXgCdKXPm2nX8gQazR
-        ey6f+3fdutOcRa0EeI37gjZaO6UjnewbZGZ+zMzSXPGraJXX/IaRVFpiYyCszg==
+        bh=waOhnApw4DEgx9hr87nH7NORcVbk0UNIN1hhdaafTEg=;
+        b=eJYy6KcJrGBpLfL1+7SnHMEixSfUy1uYu6CfxPuWxTu5UrbtKUfTP1F9iNQN8T/ToIQE++
+        02NdEkEY73J2pJWFAmfFjMlojU15zbb96XMwttdurlvJ4JwZN+Zuy2OiPZOm7QHDn4xST0
+        7jpbHBcjw6rul9XGuik64MjCqP/4LXCJhc2OwfgL2gcWF+iwFvEhMyk3eLPKSXP6O16V1c
+        MUL1cB3nbPl+LOj7kvbuUBWQjjVqS8RQiDB048TA/gTnpWBkEaPF+ZXhefJSROyUsCxc8W
+        g6GjqjclmDu/iOXZ5Tl5iGsSIzL3tDzZurnf01mVItgUdHFA2VeY89B/MqFvBg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1599729751;
+        s=2020e; t=1599729753;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=g7Qqx4dE4zh12ve8Ky5Zt1rD0JToonxUriEmpHiwUTk=;
-        b=kX0rImp0o3Wf2G9ZfoEBPu2wLw6vXgwaFVLKpJtN6q7INIoMQTITnyKqBMngZdBg4ymHfR
-        L6n+WYrIkue4MDCQ==
-From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
+        bh=waOhnApw4DEgx9hr87nH7NORcVbk0UNIN1hhdaafTEg=;
+        b=4cOWEQB8fQ5YvBt4eku0bHJAy8pqYZ8j+N4edPCf4McfZMoUZ35hDD+MRuEHAWzYLR2lkj
+        5FbinB7lZbcdMQBQ==
+From:   "tip-bot2 for Joerg Roedel" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/seves] KVM: SVM: Use __packed shorthand
-Cc:     Borislav Petkov <bp@alien8.de>, Joerg Roedel <jroedel@suse.de>,
-        Borislav Petkov <bp@suse.de>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200907131613.12703-5-joro@8bytes.org>
-References: <20200907131613.12703-5-joro@8bytes.org>
+Subject: [tip: x86/seves] KVM: SVM: nested: Don't allocate VMCB structures on stack
+Cc:     Joerg Roedel <jroedel@suse.de>, Borislav Petkov <bp@suse.de>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200907131613.12703-2-joro@8bytes.org>
+References: <20200907131613.12703-2-joro@8bytes.org>
 MIME-Version: 1.0
-Message-ID: <159972975112.20229.14792909728772392256.tip-bot2@tip-bot2>
+Message-ID: <159972975236.20229.18110270119211940448.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,69 +57,118 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/seves branch of tip:
 
-Commit-ID:     976bc5e2aceedef13e0ba1f0e6e372a22164aa0c
-Gitweb:        https://git.kernel.org/tip/976bc5e2aceedef13e0ba1f0e6e372a22164aa0c
-Author:        Borislav Petkov <bp@alien8.de>
-AuthorDate:    Mon, 07 Sep 2020 15:15:05 +02:00
+Commit-ID:     6ccbd29ade0d159ee1be398dc9defaae567c253d
+Gitweb:        https://git.kernel.org/tip/6ccbd29ade0d159ee1be398dc9defaae567c253d
+Author:        Joerg Roedel <jroedel@suse.de>
+AuthorDate:    Mon, 07 Sep 2020 15:15:02 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
 CommitterDate: Mon, 07 Sep 2020 19:45:24 +02:00
 
-KVM: SVM: Use __packed shorthand
+KVM: SVM: nested: Don't allocate VMCB structures on stack
 
-Use the shorthand to make it more readable.
+Do not allocate a vmcb_control_area and a vmcb_save_area on the stack,
+as these structures will become larger with future extenstions of
+SVM and thus the svm_set_nested_state() function will become a too large
+stack frame.
 
-No functional changes.
-
-Signed-off-by: Borislav Petkov <bp@alien8.de>
 Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20200907131613.12703-5-joro@8bytes.org
+Link: https://lkml.kernel.org/r/20200907131613.12703-2-joro@8bytes.org
 ---
- arch/x86/include/asm/svm.h | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ arch/x86/kvm/svm/nested.c | 47 ++++++++++++++++++++++++++------------
+ 1 file changed, 33 insertions(+), 14 deletions(-)
 
-diff --git a/arch/x86/include/asm/svm.h b/arch/x86/include/asm/svm.h
-index 06e5258..cf13f9e 100644
---- a/arch/x86/include/asm/svm.h
-+++ b/arch/x86/include/asm/svm.h
-@@ -150,14 +150,14 @@ struct __attribute__ ((__packed__)) vmcb_control_area {
- #define SVM_NESTED_CTL_NP_ENABLE	BIT(0)
- #define SVM_NESTED_CTL_SEV_ENABLE	BIT(1)
+diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+index fb68467..2803662 100644
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -1060,10 +1060,14 @@ static int svm_set_nested_state(struct kvm_vcpu *vcpu,
+ 	struct vmcb *hsave = svm->nested.hsave;
+ 	struct vmcb __user *user_vmcb = (struct vmcb __user *)
+ 		&user_kvm_nested_state->data.svm[0];
+-	struct vmcb_control_area ctl;
+-	struct vmcb_save_area save;
++	struct vmcb_control_area *ctl;
++	struct vmcb_save_area *save;
++	int ret;
+ 	u32 cr0;
  
--struct __attribute__ ((__packed__)) vmcb_seg {
-+struct vmcb_seg {
- 	u16 selector;
- 	u16 attrib;
- 	u32 limit;
- 	u64 base;
--};
-+} __packed;
++	BUILD_BUG_ON(sizeof(struct vmcb_control_area) + sizeof(struct vmcb_save_area) >
++		     KVM_STATE_NESTED_SVM_VMCB_SIZE);
++
+ 	if (kvm_state->format != KVM_STATE_NESTED_FORMAT_SVM)
+ 		return -EINVAL;
  
--struct __attribute__ ((__packed__)) vmcb_save_area {
-+struct vmcb_save_area {
- 	struct vmcb_seg es;
- 	struct vmcb_seg cs;
- 	struct vmcb_seg ss;
-@@ -231,7 +231,7 @@ struct __attribute__ ((__packed__)) vmcb_save_area {
- 	u64 xcr0;
- 	u8 valid_bitmap[16];
- 	u64 x87_state_gpa;
--};
-+} __packed;
+@@ -1095,13 +1099,22 @@ static int svm_set_nested_state(struct kvm_vcpu *vcpu,
+ 		return -EINVAL;
+ 	if (kvm_state->size < sizeof(*kvm_state) + KVM_STATE_NESTED_SVM_VMCB_SIZE)
+ 		return -EINVAL;
+-	if (copy_from_user(&ctl, &user_vmcb->control, sizeof(ctl)))
+-		return -EFAULT;
+-	if (copy_from_user(&save, &user_vmcb->save, sizeof(save)))
+-		return -EFAULT;
  
- struct ghcb {
- 	struct vmcb_save_area save;
-@@ -256,11 +256,11 @@ static inline void __unused_size_checks(void)
- 	BUILD_BUG_ON(sizeof(struct ghcb)		!= EXPECTED_GHCB_SIZE);
+-	if (!nested_vmcb_check_controls(&ctl))
+-		return -EINVAL;
++	ret  = -ENOMEM;
++	ctl  = kzalloc(sizeof(*ctl),  GFP_KERNEL);
++	save = kzalloc(sizeof(*save), GFP_KERNEL);
++	if (!ctl || !save)
++		goto out_free;
++
++	ret = -EFAULT;
++	if (copy_from_user(ctl, &user_vmcb->control, sizeof(*ctl)))
++		goto out_free;
++	if (copy_from_user(save, &user_vmcb->save, sizeof(*save)))
++		goto out_free;
++
++	ret = -EINVAL;
++	if (!nested_vmcb_check_controls(ctl))
++		goto out_free;
+ 
+ 	/*
+ 	 * Processor state contains L2 state.  Check that it is
+@@ -1109,15 +1122,15 @@ static int svm_set_nested_state(struct kvm_vcpu *vcpu,
+ 	 */
+ 	cr0 = kvm_read_cr0(vcpu);
+         if (((cr0 & X86_CR0_CD) == 0) && (cr0 & X86_CR0_NW))
+-                return -EINVAL;
++		goto out_free;
+ 
+ 	/*
+ 	 * Validate host state saved from before VMRUN (see
+ 	 * nested_svm_check_permissions).
+ 	 * TODO: validate reserved bits for all saved state.
+ 	 */
+-	if (!(save.cr0 & X86_CR0_PG))
+-		return -EINVAL;
++	if (!(save->cr0 & X86_CR0_PG))
++		goto out_free;
+ 
+ 	/*
+ 	 * All checks done, we can enter guest mode.  L1 control fields
+@@ -1126,15 +1139,21 @@ static int svm_set_nested_state(struct kvm_vcpu *vcpu,
+ 	 * contains saved L1 state.
+ 	 */
+ 	copy_vmcb_control_area(&hsave->control, &svm->vmcb->control);
+-	hsave->save = save;
++	hsave->save = *save;
+ 
+ 	svm->nested.vmcb = kvm_state->hdr.svm.vmcb_pa;
+-	load_nested_vmcb_control(svm, &ctl);
++	load_nested_vmcb_control(svm, ctl);
+ 	nested_prepare_vmcb_control(svm);
+ 
+ out_set_gif:
+ 	svm_set_gif(svm, !!(kvm_state->flags & KVM_STATE_NESTED_GIF_SET));
+-	return 0;
++
++	ret = 0;
++out_free:
++	kfree(save);
++	kfree(ctl);
++
++	return ret;
  }
  
--struct __attribute__ ((__packed__)) vmcb {
-+struct vmcb {
- 	struct vmcb_control_area control;
- 	u8 reserved_control[1024 - sizeof(struct vmcb_control_area)];
- 	struct vmcb_save_area save;
--};
-+} __packed;
- 
- #define SVM_CPUID_FUNC 0x8000000a
- 
+ struct kvm_x86_nested_ops svm_nested_ops = {
