@@ -2,54 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 25FF0264EE1
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Sep 2020 21:28:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05B0E264ED5
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Sep 2020 21:27:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726267AbgIJT2K (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 10 Sep 2020 15:28:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39990 "EHLO
+        id S1726683AbgIJT1I (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 10 Sep 2020 15:27:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39970 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731413AbgIJPsR (ORCPT
+        with ESMTP id S1731351AbgIJPsR (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Thu, 10 Sep 2020 11:48:17 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 091C3C06134F;
-        Thu, 10 Sep 2020 08:08:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FEA5C06134E;
+        Thu, 10 Sep 2020 08:08:28 -0700 (PDT)
 Date:   Thu, 10 Sep 2020 15:08:26 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1599750507;
+        s=2020; t=1599750506;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=HIqSlBM5m5tgXp5bs0+fPyqW4eg6ui/UC5UO14epl3s=;
-        b=nbDL8HtnCHJ9RwqMV1du7VKQKsuDeWwJf4Y2OR3XGJdSBZ8vaBP/4BxBPSw9XnFV0LI4F7
-        LDyfG6aCjJEVYqVR180R/p9oCiaNvXegZepP8DyUZyBcmfmaI08NCCw9sAh4j8PnL9STIu
-        AKWt80DqM8wy4yxVIx9XFiWEriVbaQO78akWYjeOvQ8Sn1w5KQKaqm40UhZ5RQUqY/cGvZ
-        DcT6l0cu+fkvHzz8F6pxBspCQDVK74RbnEHiu9YlajDgh+ZIsvA87NC8tx9eeEAVx5oFV2
-        WNm7kU01+5mowueM9stobrEHwb6ETyLiWQsFE3/Fkg1TzO1oZ76bx3B5cWGfAw==
+        bh=Nxy1DHpcw4NzFK3ktRgxyoEl9LnzftlIXEEZObm4SdE=;
+        b=KMkqAsWFJlF3Hvw0ytOBueMi+rAuY1Qidu9TRR1KzAATkOkcjlRIfwNR2Y+GbDLjsr8iR6
+        Iz0sSpGOqSNIKwCOX7/KLtHviA5WQ7n+DBgfk1KXMr2Qb9puGHuUHAbfEA4d0fFo1KON2H
+        lwnHrV8A2uaXjiLfNDGC/ZmwT3imu/EbiGtjlkwzRBnAE96S3u49AV/prCJvEsJVpIj1Sx
+        fD+/LbZqEnFEg9Ti2Nfzqm8VJjwlLQ3BOhc0F1UK56uDxNNQgt+5T7QYrnZXYLqOb2qawm
+        mBFolJMbWdfXztxGEGNa2AL5FhOHjiepbo7eHIBmbubykxCe6ySEYM/PGKcNpg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1599750507;
+        s=2020e; t=1599750506;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=HIqSlBM5m5tgXp5bs0+fPyqW4eg6ui/UC5UO14epl3s=;
-        b=THZq6iK77vEbIteolIsWT3+Q2L/dBN8GPR7HaRLnI2Qgf+HSTgDqWWXDTfl60GdLypDAI9
-        ZxfBcmPqhTFEa5DA==
+        bh=Nxy1DHpcw4NzFK3ktRgxyoEl9LnzftlIXEEZObm4SdE=;
+        b=SRNhO+Y2qINVHNZLVvIZrwsgDdl3woNvIqAS44dIK8b/kd8qFPwTxtaMVdPwOeVfXixA4B
+        B48I6NsdI9k2IKAA==
 From:   "tip-bot2 for Ahmed S. Darwish" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] rbtree_latch: Use seqcount_latch_t
+Subject: [tip: locking/core] seqlock: seqcount latch APIs: Only allow seqcount_latch_t
 Cc:     "Ahmed S. Darwish" <a.darwish@linutronix.de>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200827114044.11173-8-a.darwish@linutronix.de>
-References: <20200827114044.11173-8-a.darwish@linutronix.de>
+In-Reply-To: <20200827114044.11173-9-a.darwish@linutronix.de>
+References: <20200827114044.11173-9-a.darwish@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <159975050648.20229.11045619138069270549.tip-bot2@tip-bot2>
+Message-ID: <159975050603.20229.9844172785774718591.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,50 +61,93 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     24bf401cebfd630cc9e2c3746e43945e836626f9
-Gitweb:        https://git.kernel.org/tip/24bf401cebfd630cc9e2c3746e43945e836626f9
+Commit-ID:     0c9794c8b6781eb7dad8e19b78c5d4557790597a
+Gitweb:        https://git.kernel.org/tip/0c9794c8b6781eb7dad8e19b78c5d4557790597a
 Author:        Ahmed S. Darwish <a.darwish@linutronix.de>
-AuthorDate:    Thu, 27 Aug 2020 13:40:43 +02:00
+AuthorDate:    Thu, 27 Aug 2020 13:40:44 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Thu, 10 Sep 2020 11:19:29 +02:00
+CommitterDate: Thu, 10 Sep 2020 11:19:30 +02:00
 
-rbtree_latch: Use seqcount_latch_t
+seqlock: seqcount latch APIs: Only allow seqcount_latch_t
 
-Latch sequence counters have unique read and write APIs, and thus
-seqcount_latch_t was recently introduced at seqlock.h.
+All latch sequence counter call-sites have now been converted from plain
+seqcount_t to the new seqcount_latch_t data type.
 
-Use that new data type instead of plain seqcount_t. This adds the
-necessary type-safety and ensures that only latching-safe seqcount APIs
-are to be used.
+Enforce type-safety by modifying seqlock.h latch APIs to only accept
+seqcount_latch_t.
 
 Signed-off-by: Ahmed S. Darwish <a.darwish@linutronix.de>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20200827114044.11173-8-a.darwish@linutronix.de
+Link: https://lkml.kernel.org/r/20200827114044.11173-9-a.darwish@linutronix.de
 ---
- include/linux/rbtree_latch.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ include/linux/seqlock.h | 36 +++++++++++++++---------------------
+ 1 file changed, 15 insertions(+), 21 deletions(-)
 
-diff --git a/include/linux/rbtree_latch.h b/include/linux/rbtree_latch.h
-index 7d012fa..3d1a9e7 100644
---- a/include/linux/rbtree_latch.h
-+++ b/include/linux/rbtree_latch.h
-@@ -42,8 +42,8 @@ struct latch_tree_node {
- };
- 
- struct latch_tree_root {
--	seqcount_t	seq;
--	struct rb_root	tree[2];
-+	seqcount_latch_t	seq;
-+	struct rb_root		tree[2];
- };
+diff --git a/include/linux/seqlock.h b/include/linux/seqlock.h
+index 88b917d..f2a7a46 100644
+--- a/include/linux/seqlock.h
++++ b/include/linux/seqlock.h
+@@ -620,7 +620,7 @@ static inline void seqcount_latch_init(seqcount_latch_t *s)
  
  /**
-@@ -206,7 +206,7 @@ latch_tree_find(void *key, struct latch_tree_root *root,
- 	do {
- 		seq = raw_read_seqcount_latch(&root->seq);
- 		node = __lt_find(key, root, seq & 1, ops->comp);
--	} while (read_seqcount_retry(&root->seq, seq));
-+	} while (read_seqcount_latch_retry(&root->seq, seq));
+  * raw_read_seqcount_latch() - pick even/odd latch data copy
+- * @s: Pointer to seqcount_t, seqcount_raw_spinlock_t, or seqcount_latch_t
++ * @s: Pointer to seqcount_latch_t
+  *
+  * See raw_write_seqcount_latch() for details and a full reader/writer
+  * usage example.
+@@ -629,17 +629,14 @@ static inline void seqcount_latch_init(seqcount_latch_t *s)
+  * picking which data copy to read. The full counter must then be checked
+  * with read_seqcount_latch_retry().
+  */
+-#define raw_read_seqcount_latch(s)						\
+-({										\
+-	/*									\
+-	 * Pairs with the first smp_wmb() in raw_write_seqcount_latch().	\
+-	 * Due to the dependent load, a full smp_rmb() is not needed.		\
+-	 */									\
+-	_Generic(*(s),								\
+-		 seqcount_t:		  READ_ONCE(((seqcount_t *)s)->sequence),			\
+-		 seqcount_raw_spinlock_t: READ_ONCE(((seqcount_raw_spinlock_t *)s)->seqcount.sequence),	\
+-		 seqcount_latch_t:	  READ_ONCE(((seqcount_latch_t *)s)->seqcount.sequence));	\
+-})
++static inline unsigned raw_read_seqcount_latch(const seqcount_latch_t *s)
++{
++	/*
++	 * Pairs with the first smp_wmb() in raw_write_seqcount_latch().
++	 * Due to the dependent load, a full smp_rmb() is not needed.
++	 */
++	return READ_ONCE(s->seqcount.sequence);
++}
  
- 	return node;
+ /**
+  * read_seqcount_latch_retry() - end a seqcount_latch_t read section
+@@ -656,7 +653,7 @@ read_seqcount_latch_retry(const seqcount_latch_t *s, unsigned start)
+ 
+ /**
+  * raw_write_seqcount_latch() - redirect latch readers to even/odd copy
+- * @s: Pointer to seqcount_t, seqcount_raw_spinlock_t, or seqcount_latch_t
++ * @s: Pointer to seqcount_latch_t
+  *
+  * The latch technique is a multiversion concurrency control method that allows
+  * queries during non-atomic modifications. If you can guarantee queries never
+@@ -735,14 +732,11 @@ read_seqcount_latch_retry(const seqcount_latch_t *s, unsigned start)
+  *	When data is a dynamic data structure; one should use regular RCU
+  *	patterns to manage the lifetimes of the objects within.
+  */
+-#define raw_write_seqcount_latch(s)						\
+-{										\
+-       smp_wmb();      /* prior stores before incrementing "sequence" */	\
+-       _Generic(*(s),								\
+-		seqcount_t:		((seqcount_t *)s)->sequence++,		\
+-		seqcount_raw_spinlock_t:((seqcount_raw_spinlock_t *)s)->seqcount.sequence++, \
+-		seqcount_latch_t:	((seqcount_latch_t *)s)->seqcount.sequence++); \
+-       smp_wmb();      /* increment "sequence" before following stores */	\
++static inline void raw_write_seqcount_latch(seqcount_latch_t *s)
++{
++	smp_wmb();	/* prior stores before incrementing "sequence" */
++	s->seqcount.sequence++;
++	smp_wmb();      /* increment "sequence" before following stores */
  }
+ 
+ /*
