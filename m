@@ -2,50 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 525EB2641CB
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Sep 2020 11:29:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 434F9264288
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Sep 2020 11:39:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730464AbgIJJ2Z (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 10 Sep 2020 05:28:25 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:38770 "EHLO
+        id S1730136AbgIJJjR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 10 Sep 2020 05:39:17 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:38578 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726760AbgIJJYu (ORCPT
+        with ESMTP id S1728971AbgIJJWH (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 10 Sep 2020 05:24:50 -0400
-Date:   Thu, 10 Sep 2020 09:22:32 -0000
+        Thu, 10 Sep 2020 05:22:07 -0400
+Date:   Thu, 10 Sep 2020 09:22:02 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1599729753;
+        s=2020; t=1599729723;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=waOhnApw4DEgx9hr87nH7NORcVbk0UNIN1hhdaafTEg=;
-        b=eJYy6KcJrGBpLfL1+7SnHMEixSfUy1uYu6CfxPuWxTu5UrbtKUfTP1F9iNQN8T/ToIQE++
-        02NdEkEY73J2pJWFAmfFjMlojU15zbb96XMwttdurlvJ4JwZN+Zuy2OiPZOm7QHDn4xST0
-        7jpbHBcjw6rul9XGuik64MjCqP/4LXCJhc2OwfgL2gcWF+iwFvEhMyk3eLPKSXP6O16V1c
-        MUL1cB3nbPl+LOj7kvbuUBWQjjVqS8RQiDB048TA/gTnpWBkEaPF+ZXhefJSROyUsCxc8W
-        g6GjqjclmDu/iOXZ5Tl5iGsSIzL3tDzZurnf01mVItgUdHFA2VeY89B/MqFvBg==
+        bh=a25V2E+wAE7dX5+wwOu3rkr4Vai48wnbBAxgmbtRXVs=;
+        b=hgVHzqZdOdPrBZJYGGu1JUfDaE3z/CnwUxa0Uf6tdLwc13LKaLN5ORam7TeXe4WRf+bRRB
+        AKszmMO232Gb/7VRYwLDL6D+y0BBiqoSalIjGaciSrd9/8aTDPBc8GUbRw8Jt7+T9Lc3iS
+        oC2V3KpLFK6ddmPy/AU/D6fwQAskR82AdALRAemzsINbpdY+VKwZi73Ql9w5m9fGiPx5zQ
+        HAJQ45NOEaFutdIAyMGzVqldL26ZJoZLb2ahwLX1AKsBTaK9/6J9kIo6PXnmXnCNNKkNDw
+        Xd0ozSQZEaCmJ6XRJpvipK7nOZmzmQjQObhoPx+D1cS2dF28Z1A8APAk6rGB4Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1599729753;
+        s=2020e; t=1599729723;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=waOhnApw4DEgx9hr87nH7NORcVbk0UNIN1hhdaafTEg=;
-        b=4cOWEQB8fQ5YvBt4eku0bHJAy8pqYZ8j+N4edPCf4McfZMoUZ35hDD+MRuEHAWzYLR2lkj
-        5FbinB7lZbcdMQBQ==
-From:   "tip-bot2 for Joerg Roedel" <tip-bot2@linutronix.de>
+        bh=a25V2E+wAE7dX5+wwOu3rkr4Vai48wnbBAxgmbtRXVs=;
+        b=32goGh+6k6CcU2iKY86EAJbdZHoi8VC41sZtBatdXK2iIWXoR3eidGUqTEL4z6JLHke83f
+        d2z79w16GmHU4cBA==
+From:   "tip-bot2 for Martin Radev" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/seves] KVM: SVM: nested: Don't allocate VMCB structures on stack
-Cc:     Joerg Roedel <jroedel@suse.de>, Borislav Petkov <bp@suse.de>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200907131613.12703-2-joro@8bytes.org>
-References: <20200907131613.12703-2-joro@8bytes.org>
+Subject: [tip: x86/seves] x86/sev-es: Check required CPU features for SEV-ES
+Cc:     Martin Radev <martin.b.radev@gmail.com>,
+        Joerg Roedel <jroedel@suse.de>, Borislav Petkov <bp@suse.de>,
+        Kees Cook <keescook@chromium.org>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200907131613.12703-73-joro@8bytes.org>
+References: <20200907131613.12703-73-joro@8bytes.org>
 MIME-Version: 1.0
-Message-ID: <159972975236.20229.18110270119211940448.tip-bot2@tip-bot2>
+Message-ID: <159972972230.20229.13856025450251640816.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -57,118 +59,125 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/seves branch of tip:
 
-Commit-ID:     6ccbd29ade0d159ee1be398dc9defaae567c253d
-Gitweb:        https://git.kernel.org/tip/6ccbd29ade0d159ee1be398dc9defaae567c253d
-Author:        Joerg Roedel <jroedel@suse.de>
-AuthorDate:    Mon, 07 Sep 2020 15:15:02 +02:00
+Commit-ID:     1ac0dc494a9796d6f94ff392f16e0c9a8cea7021
+Gitweb:        https://git.kernel.org/tip/1ac0dc494a9796d6f94ff392f16e0c9a8cea7021
+Author:        Martin Radev <martin.b.radev@gmail.com>
+AuthorDate:    Mon, 07 Sep 2020 15:16:13 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Mon, 07 Sep 2020 19:45:24 +02:00
+CommitterDate: Wed, 09 Sep 2020 18:03:48 +02:00
 
-KVM: SVM: nested: Don't allocate VMCB structures on stack
+x86/sev-es: Check required CPU features for SEV-ES
 
-Do not allocate a vmcb_control_area and a vmcb_save_area on the stack,
-as these structures will become larger with future extenstions of
-SVM and thus the svm_set_nested_state() function will become a too large
-stack frame.
+Make sure the machine supports RDRAND, otherwise there is no trusted
+source of randomness in the system.
 
+To also check this in the pre-decompression stage, make has_cpuflag()
+not depend on CONFIG_RANDOMIZE_BASE anymore.
+
+Signed-off-by: Martin Radev <martin.b.radev@gmail.com>
 Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20200907131613.12703-2-joro@8bytes.org
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Link: https://lkml.kernel.org/r/20200907131613.12703-73-joro@8bytes.org
 ---
- arch/x86/kvm/svm/nested.c | 47 ++++++++++++++++++++++++++------------
- 1 file changed, 33 insertions(+), 14 deletions(-)
+ arch/x86/boot/compressed/cpuflags.c |  4 ----
+ arch/x86/boot/compressed/misc.h     |  5 +++--
+ arch/x86/boot/compressed/sev-es.c   |  3 +++
+ arch/x86/kernel/sev-es-shared.c     | 15 +++++++++++++++
+ arch/x86/kernel/sev-es.c            |  3 +++
+ 5 files changed, 24 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-index fb68467..2803662 100644
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -1060,10 +1060,14 @@ static int svm_set_nested_state(struct kvm_vcpu *vcpu,
- 	struct vmcb *hsave = svm->nested.hsave;
- 	struct vmcb __user *user_vmcb = (struct vmcb __user *)
- 		&user_kvm_nested_state->data.svm[0];
--	struct vmcb_control_area ctl;
--	struct vmcb_save_area save;
-+	struct vmcb_control_area *ctl;
-+	struct vmcb_save_area *save;
-+	int ret;
- 	u32 cr0;
+diff --git a/arch/x86/boot/compressed/cpuflags.c b/arch/x86/boot/compressed/cpuflags.c
+index 6448a81..0cc1323 100644
+--- a/arch/x86/boot/compressed/cpuflags.c
++++ b/arch/x86/boot/compressed/cpuflags.c
+@@ -1,6 +1,4 @@
+ // SPDX-License-Identifier: GPL-2.0
+-#ifdef CONFIG_RANDOMIZE_BASE
+-
+ #include "../cpuflags.c"
  
-+	BUILD_BUG_ON(sizeof(struct vmcb_control_area) + sizeof(struct vmcb_save_area) >
-+		     KVM_STATE_NESTED_SVM_VMCB_SIZE);
-+
- 	if (kvm_state->format != KVM_STATE_NESTED_FORMAT_SVM)
- 		return -EINVAL;
+ bool has_cpuflag(int flag)
+@@ -9,5 +7,3 @@ bool has_cpuflag(int flag)
  
-@@ -1095,13 +1099,22 @@ static int svm_set_nested_state(struct kvm_vcpu *vcpu,
- 		return -EINVAL;
- 	if (kvm_state->size < sizeof(*kvm_state) + KVM_STATE_NESTED_SVM_VMCB_SIZE)
- 		return -EINVAL;
--	if (copy_from_user(&ctl, &user_vmcb->control, sizeof(ctl)))
--		return -EFAULT;
--	if (copy_from_user(&save, &user_vmcb->save, sizeof(save)))
--		return -EFAULT;
- 
--	if (!nested_vmcb_check_controls(&ctl))
--		return -EINVAL;
-+	ret  = -ENOMEM;
-+	ctl  = kzalloc(sizeof(*ctl),  GFP_KERNEL);
-+	save = kzalloc(sizeof(*save), GFP_KERNEL);
-+	if (!ctl || !save)
-+		goto out_free;
-+
-+	ret = -EFAULT;
-+	if (copy_from_user(ctl, &user_vmcb->control, sizeof(*ctl)))
-+		goto out_free;
-+	if (copy_from_user(save, &user_vmcb->save, sizeof(*save)))
-+		goto out_free;
-+
-+	ret = -EINVAL;
-+	if (!nested_vmcb_check_controls(ctl))
-+		goto out_free;
- 
- 	/*
- 	 * Processor state contains L2 state.  Check that it is
-@@ -1109,15 +1122,15 @@ static int svm_set_nested_state(struct kvm_vcpu *vcpu,
- 	 */
- 	cr0 = kvm_read_cr0(vcpu);
-         if (((cr0 & X86_CR0_CD) == 0) && (cr0 & X86_CR0_NW))
--                return -EINVAL;
-+		goto out_free;
- 
- 	/*
- 	 * Validate host state saved from before VMRUN (see
- 	 * nested_svm_check_permissions).
- 	 * TODO: validate reserved bits for all saved state.
- 	 */
--	if (!(save.cr0 & X86_CR0_PG))
--		return -EINVAL;
-+	if (!(save->cr0 & X86_CR0_PG))
-+		goto out_free;
- 
- 	/*
- 	 * All checks done, we can enter guest mode.  L1 control fields
-@@ -1126,15 +1139,21 @@ static int svm_set_nested_state(struct kvm_vcpu *vcpu,
- 	 * contains saved L1 state.
- 	 */
- 	copy_vmcb_control_area(&hsave->control, &svm->vmcb->control);
--	hsave->save = save;
-+	hsave->save = *save;
- 
- 	svm->nested.vmcb = kvm_state->hdr.svm.vmcb_pa;
--	load_nested_vmcb_control(svm, &ctl);
-+	load_nested_vmcb_control(svm, ctl);
- 	nested_prepare_vmcb_control(svm);
- 
- out_set_gif:
- 	svm_set_gif(svm, !!(kvm_state->flags & KVM_STATE_NESTED_GIF_SET));
--	return 0;
-+
-+	ret = 0;
-+out_free:
-+	kfree(save);
-+	kfree(ctl);
-+
-+	return ret;
+ 	return test_bit(flag, cpu.flags);
  }
+-
+-#endif
+diff --git a/arch/x86/boot/compressed/misc.h b/arch/x86/boot/compressed/misc.h
+index c0e0ffe..6d31f1b 100644
+--- a/arch/x86/boot/compressed/misc.h
++++ b/arch/x86/boot/compressed/misc.h
+@@ -85,8 +85,6 @@ void choose_random_location(unsigned long input,
+ 			    unsigned long *output,
+ 			    unsigned long output_size,
+ 			    unsigned long *virt_addr);
+-/* cpuflags.c */
+-bool has_cpuflag(int flag);
+ #else
+ static inline void choose_random_location(unsigned long input,
+ 					  unsigned long input_size,
+@@ -97,6 +95,9 @@ static inline void choose_random_location(unsigned long input,
+ }
+ #endif
  
- struct kvm_x86_nested_ops svm_nested_ops = {
++/* cpuflags.c */
++bool has_cpuflag(int flag);
++
+ #ifdef CONFIG_X86_64
+ extern int set_page_decrypted(unsigned long address);
+ extern int set_page_encrypted(unsigned long address);
+diff --git a/arch/x86/boot/compressed/sev-es.c b/arch/x86/boot/compressed/sev-es.c
+index 2a6c7c3..954cb27 100644
+--- a/arch/x86/boot/compressed/sev-es.c
++++ b/arch/x86/boot/compressed/sev-es.c
+@@ -145,6 +145,9 @@ void sev_es_shutdown_ghcb(void)
+ 	if (!boot_ghcb)
+ 		return;
+ 
++	if (!sev_es_check_cpu_features())
++		error("SEV-ES CPU Features missing.");
++
+ 	/*
+ 	 * GHCB Page must be flushed from the cache and mapped encrypted again.
+ 	 * Otherwise the running kernel will see strange cache effects when
+diff --git a/arch/x86/kernel/sev-es-shared.c b/arch/x86/kernel/sev-es-shared.c
+index 4be8af2..5f83cca 100644
+--- a/arch/x86/kernel/sev-es-shared.c
++++ b/arch/x86/kernel/sev-es-shared.c
+@@ -9,6 +9,21 @@
+  * and is included directly into both code-bases.
+  */
+ 
++#ifndef __BOOT_COMPRESSED
++#define error(v)	pr_err(v)
++#define has_cpuflag(f)	boot_cpu_has(f)
++#endif
++
++static bool __init sev_es_check_cpu_features(void)
++{
++	if (!has_cpuflag(X86_FEATURE_RDRAND)) {
++		error("RDRAND instruction not supported - no trusted source of randomness available\n");
++		return false;
++	}
++
++	return true;
++}
++
+ static void sev_es_terminate(unsigned int reason)
+ {
+ 	u64 val = GHCB_SEV_TERMINATE;
+diff --git a/arch/x86/kernel/sev-es.c b/arch/x86/kernel/sev-es.c
+index 8cac9f8..6fcfdd3 100644
+--- a/arch/x86/kernel/sev-es.c
++++ b/arch/x86/kernel/sev-es.c
+@@ -665,6 +665,9 @@ void __init sev_es_init_vc_handling(void)
+ 	if (!sev_es_active())
+ 		return;
+ 
++	if (!sev_es_check_cpu_features())
++		panic("SEV-ES CPU Features missing");
++
+ 	/* Enable SEV-ES special handling */
+ 	static_branch_enable(&sev_es_enable_key);
+ 
