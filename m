@@ -2,50 +2,51 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A4C326421A
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Sep 2020 11:33:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8D442641FA
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Sep 2020 11:30:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730082AbgIJJcb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 10 Sep 2020 05:32:31 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:38878 "EHLO
+        id S1730460AbgIJJay (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 10 Sep 2020 05:30:54 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:38970 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730455AbgIJJX4 (ORCPT
+        with ESMTP id S1730401AbgIJJYf (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 10 Sep 2020 05:23:56 -0400
-Date:   Thu, 10 Sep 2020 09:22:30 -0000
+        Thu, 10 Sep 2020 05:24:35 -0400
+Date:   Thu, 10 Sep 2020 09:22:31 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1599729750;
+        s=2020; t=1599729752;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=559eYn0+zGFrJgaT6n4suexnrRJnXvuMct+n0omTPzE=;
-        b=hDVrIMFKl+85Mi1nS5WTzmEF8sVgv7vXxnPoQlToRhVGKrNyXyxw2Z43huKjkPZvqKjdrq
-        3RQYEpKPVgrEGEckypJc/3Gx63Igjq3eCwyzJt0Is+xK6QmX50+QZYpjJDkWrzOCoYZYl9
-        DyEH3QyGvwfbZzHnntQqbXJReP1Zfpz5bUgiZVP4nZBfp+bk3FjoGLBH5SQiSNS0ybf8Yq
-        MWpfUY0dbM3whcBD62MJPLRq3VVURF59d1GO4DCD2uL8HeVXnwsfix2UozomseXfV7rCMc
-        d2lIXRILr3AdS98aUr3yyPSITBlR6OF113V4sasTr1G23grGzqu1XDf7WRUNjQ==
+        bh=1uwb+6C4Y109KlNB2Aw0X0SoRhS6c6ZFvINH5OGcDx4=;
+        b=trCYcFbzgtRHPPaPOwSEk8vno5QLY2+EcXN6RlyphWFboSIUevMSSRTysyzS+nt0itsG5C
+        RV55OwcEItLKnOJMW2K6Lw2MtKDYCYjAniQOXALqiv2r23oKU27rbmPaDFKcX700unMvv6
+        FchYq8oYXtwD9focxC6V1TCfnU17F1d+HJYkgcM53bt1J5BrdL3B8QxLMV7b1bVB9rb6oP
+        SWe7BXYcIKD0ioJrpc5BXzCp/JgAtTxg869N4NjU2QFB8lZTpfPo5ILIx66r71K5nsFzNz
+        ME+dKcu2hmyzaHeVUaXdPAbyhSEIKKKer41tDwRmGUDbKgck6NT+/M6GlvWbOA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1599729750;
+        s=2020e; t=1599729752;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=559eYn0+zGFrJgaT6n4suexnrRJnXvuMct+n0omTPzE=;
-        b=6EcgC3A5MQ/L3vAPpMeohqTg8joNblCSLKuw2Ubil9ou6Rxb+Rxz3cnVAArLpF5/udu3Te
-        7yipl89hidgD77Ag==
-From:   "tip-bot2 for Joerg Roedel" <tip-bot2@linutronix.de>
+        bh=1uwb+6C4Y109KlNB2Aw0X0SoRhS6c6ZFvINH5OGcDx4=;
+        b=5U9bKwlGQ+arvVnxbIbGthljUopjwENTkWQOcZVOjh0xbCmm9q2rfImjjTI9pxQZIjraX0
+        3bmLSfpO+gqo7DBw==
+From:   "tip-bot2 for Tom Lendacky" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/seves] x86/traps: Move pf error codes to <asm/trap_pf.h>
-Cc:     Joerg Roedel <jroedel@suse.de>, Borislav Petkov <bp@suse.de>,
+Subject: [tip: x86/seves] KVM: SVM: Add GHCB definitions
+Cc:     Tom Lendacky <thomas.lendacky@amd.com>,
+        Joerg Roedel <jroedel@suse.de>, Borislav Petkov <bp@suse.de>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200907131613.12703-7-joro@8bytes.org>
-References: <20200907131613.12703-7-joro@8bytes.org>
+In-Reply-To: <20200907131613.12703-3-joro@8bytes.org>
+References: <20200907131613.12703-3-joro@8bytes.org>
 MIME-Version: 1.0
-Message-ID: <159972975027.20229.5656739170408401125.tip-bot2@tip-bot2>
+Message-ID: <159972975196.20229.1038177390621739891.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -57,90 +58,104 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/seves branch of tip:
 
-Commit-ID:     05a2fdf3230306daee1def019b8f52cd06bd2e48
-Gitweb:        https://git.kernel.org/tip/05a2fdf3230306daee1def019b8f52cd06bd2e48
-Author:        Joerg Roedel <jroedel@suse.de>
-AuthorDate:    Mon, 07 Sep 2020 15:15:07 +02:00
+Commit-ID:     d07f46f9f51afc7fc9f021eae19eba3c2e7870ac
+Gitweb:        https://git.kernel.org/tip/d07f46f9f51afc7fc9f021eae19eba3c2e7870ac
+Author:        Tom Lendacky <thomas.lendacky@amd.com>
+AuthorDate:    Mon, 07 Sep 2020 15:15:03 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
 CommitterDate: Mon, 07 Sep 2020 19:45:24 +02:00
 
-x86/traps: Move pf error codes to <asm/trap_pf.h>
+KVM: SVM: Add GHCB definitions
 
-Move the definition of the x86 page-fault error code bits to a new
-header file asm/trap_pf.h. This makes it easier to include them into
-pre-decompression boot code. No functional changes.
+Extend the vmcb_safe_area with SEV-ES fields and add a new
+'struct ghcb' which will be used for guest-hypervisor communication.
 
+Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
 Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20200907131613.12703-7-joro@8bytes.org
+Link: https://lkml.kernel.org/r/20200907131613.12703-3-joro@8bytes.org
 ---
- arch/x86/include/asm/trap_pf.h | 24 ++++++++++++++++++++++++
- arch/x86/include/asm/traps.h   | 19 +------------------
- 2 files changed, 25 insertions(+), 18 deletions(-)
- create mode 100644 arch/x86/include/asm/trap_pf.h
+ arch/x86/include/asm/svm.h | 51 +++++++++++++++++++++++++++++++++++--
+ arch/x86/kvm/svm/svm.c     |  2 +-
+ 2 files changed, 51 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/include/asm/trap_pf.h b/arch/x86/include/asm/trap_pf.h
-new file mode 100644
-index 0000000..305bc12
---- /dev/null
-+++ b/arch/x86/include/asm/trap_pf.h
-@@ -0,0 +1,24 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _ASM_X86_TRAP_PF_H
-+#define _ASM_X86_TRAP_PF_H
+diff --git a/arch/x86/include/asm/svm.h b/arch/x86/include/asm/svm.h
+index 8a1f538..acac55d 100644
+--- a/arch/x86/include/asm/svm.h
++++ b/arch/x86/include/asm/svm.h
+@@ -200,13 +200,60 @@ struct __attribute__ ((__packed__)) vmcb_save_area {
+ 	u64 br_to;
+ 	u64 last_excp_from;
+ 	u64 last_excp_to;
 +
-+/*
-+ * Page fault error code bits:
-+ *
-+ *   bit 0 ==	 0: no page found	1: protection fault
-+ *   bit 1 ==	 0: read access		1: write access
-+ *   bit 2 ==	 0: kernel-mode access	1: user-mode access
-+ *   bit 3 ==				1: use of reserved bit detected
-+ *   bit 4 ==				1: fault was an instruction fetch
-+ *   bit 5 ==				1: protection keys block access
-+ */
-+enum x86_pf_error_code {
-+	X86_PF_PROT	=		1 << 0,
-+	X86_PF_WRITE	=		1 << 1,
-+	X86_PF_USER	=		1 << 2,
-+	X86_PF_RSVD	=		1 << 3,
-+	X86_PF_INSTR	=		1 << 4,
-+	X86_PF_PK	=		1 << 5,
-+};
++	/*
++	 * The following part of the save area is valid only for
++	 * SEV-ES guests when referenced through the GHCB.
++	 */
++	u8 reserved_7[104];
++	u64 reserved_8;		/* rax already available at 0x01f8 */
++	u64 rcx;
++	u64 rdx;
++	u64 rbx;
++	u64 reserved_9;		/* rsp already available at 0x01d8 */
++	u64 rbp;
++	u64 rsi;
++	u64 rdi;
++	u64 r8;
++	u64 r9;
++	u64 r10;
++	u64 r11;
++	u64 r12;
++	u64 r13;
++	u64 r14;
++	u64 r15;
++	u8 reserved_10[16];
++	u64 sw_exit_code;
++	u64 sw_exit_info_1;
++	u64 sw_exit_info_2;
++	u64 sw_scratch;
++	u8 reserved_11[56];
++	u64 xcr0;
++	u8 valid_bitmap[16];
++	u64 x87_state_gpa;
+ };
+ 
++struct ghcb {
++	struct vmcb_save_area save;
++	u8 reserved_save[2048 - sizeof(struct vmcb_save_area)];
 +
-+#endif /* _ASM_X86_TRAP_PF_H */
-diff --git a/arch/x86/include/asm/traps.h b/arch/x86/include/asm/traps.h
-index 714b1a3..6a30835 100644
---- a/arch/x86/include/asm/traps.h
-+++ b/arch/x86/include/asm/traps.h
-@@ -8,6 +8,7 @@
- #include <asm/debugreg.h>
- #include <asm/idtentry.h>
- #include <asm/siginfo.h>			/* TRAP_TRACE, ... */
-+#include <asm/trap_pf.h>
++	u8 shared_buffer[2032];
++
++	u8 reserved_1[10];
++	u16 protocol_version;	/* negotiated SEV-ES/GHCB protocol version */
++	u32 ghcb_usage;
++} __packed;
++
++
++#define EXPECTED_VMCB_SAVE_AREA_SIZE		1032
++#define EXPECTED_VMCB_CONTROL_AREA_SIZE		256
++#define EXPECTED_GHCB_SIZE			PAGE_SIZE
  
- #ifdef CONFIG_X86_64
- asmlinkage __visible notrace struct pt_regs *sync_regs(struct pt_regs *eregs);
-@@ -41,22 +42,4 @@ void __noreturn handle_stack_overflow(const char *message,
- 				      unsigned long fault_address);
- #endif
+ static inline void __unused_size_checks(void)
+ {
+-	BUILD_BUG_ON(sizeof(struct vmcb_save_area) != 0x298);
+-	BUILD_BUG_ON(sizeof(struct vmcb_control_area) != 256);
++	BUILD_BUG_ON(sizeof(struct vmcb_save_area)	!= EXPECTED_VMCB_SAVE_AREA_SIZE);
++	BUILD_BUG_ON(sizeof(struct vmcb_control_area)	!= EXPECTED_VMCB_CONTROL_AREA_SIZE);
++	BUILD_BUG_ON(sizeof(struct ghcb)		!= EXPECTED_GHCB_SIZE);
+ }
  
--/*
-- * Page fault error code bits:
-- *
-- *   bit 0 ==	 0: no page found	1: protection fault
-- *   bit 1 ==	 0: read access		1: write access
-- *   bit 2 ==	 0: kernel-mode access	1: user-mode access
-- *   bit 3 ==				1: use of reserved bit detected
-- *   bit 4 ==				1: fault was an instruction fetch
-- *   bit 5 ==				1: protection keys block access
-- */
--enum x86_pf_error_code {
--	X86_PF_PROT	=		1 << 0,
--	X86_PF_WRITE	=		1 << 1,
--	X86_PF_USER	=		1 << 2,
--	X86_PF_RSVD	=		1 << 3,
--	X86_PF_INSTR	=		1 << 4,
--	X86_PF_PK	=		1 << 5,
--};
- #endif /* _ASM_X86_TRAPS_H */
+ struct __attribute__ ((__packed__)) vmcb {
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index 0194336..1db4fdc 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -4164,6 +4164,8 @@ static struct kvm_x86_init_ops svm_init_ops __initdata = {
+ 
+ static int __init svm_init(void)
+ {
++	__unused_size_checks();
++
+ 	return kvm_init(&svm_init_ops, sizeof(struct vcpu_svm),
+ 			__alignof__(struct vcpu_svm), THIS_MODULE);
+ }
