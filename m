@@ -2,14 +2,14 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C1C1626427E
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Sep 2020 11:38:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E661E264260
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Sep 2020 11:36:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730465AbgIJJiB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 10 Sep 2020 05:38:01 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:38812 "EHLO
+        id S1730690AbgIJJg4 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 10 Sep 2020 05:36:56 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:38814 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730312AbgIJJWU (ORCPT
+        with ESMTP id S1730315AbgIJJWU (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Thu, 10 Sep 2020 05:22:20 -0400
 Date:   Thu, 10 Sep 2020 09:22:14 -0000
@@ -20,12 +20,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=KGqEr272DO0zbhqeem7s2KCQ+3LfEE88fEDMVWlEoTg=;
-        b=hM2yYI/hNv/3cQfgAxJHWnDn6Ry6nHfqVxoJDNiCQO73kK7pFvGUYExSKGWZ+sq+r/5g8z
-        fRFA37aY8vm+rGEXUZRGreexv2UWi4f3HjIAHOoIlPF5/2qKLmmmV0DBDiMUJxS7BxhfG0
-        +OAtdj/RIMvOBcoimt+DOpAOACjSWSabQcATawKu6dxsSs0QBee+yLSIEdi148oIU1Lhcj
-        JyhIUsMyh6iNZfH/fQSrenONJ90gUxjuHURUngMNRhOhkeyrsGYrWkBKydGb0rL3qkOkBL
-        h3iW59J/bMu7LgjvpIleiZozaHwK4EmfxWbj4IOqTckj8ci6QkbB4OCXoUc7fg==
+        bh=+70YWtja6WPMVg/d2lG2PVX2t6THV+3luU+Y6CfzNko=;
+        b=1aI9dYC/fLWdDSfEr89kwhXiDnT4y1/lRctb7ZSoumDc0k9FYjVKIf6Gqje3pZOD7Ectgx
+        nw7FrxQnv7WudrwCKBaX21Y6I+depJm+EXq7WnGs1gdAqxe8IrH79O/SeUIBBct07SlIAH
+        drlPKDkC1FJI/lgRCEISnD2KdLXbUh88tV2SI8T6713M2VyIYPB6CeeL1s+V4f/5NaBP4V
+        TkAtVzBvWxbjaTNyWDqif3kt+hv4kSDdTszXV0XCVI7QThVXue9+Klb+AcnytGg4f0vX3I
+        CRSfRPuSx+jwGXLkslotDG3TqzCmNH0uQWfhtQ8QMGNh6CF99bPWJDuRjLau2g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1599729735;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -33,19 +33,19 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=KGqEr272DO0zbhqeem7s2KCQ+3LfEE88fEDMVWlEoTg=;
-        b=iDtREUXtmz9Gds3N8qyGjc0PSGbnFPs/3kxCmKtE+kDERFxPRoTumPoItI8vYeg5DmVkUr
-        XVVotZUo0vJd6EDA==
+        bh=+70YWtja6WPMVg/d2lG2PVX2t6THV+3luU+Y6CfzNko=;
+        b=do972AqbgmoOcvwQH+oinIpTk+NXXqXY0VhBK8CkLWiHuquZIA9DCISMx9LWwdSlBJjF+X
+        MdHnj559g75An/Dg==
 From:   "tip-bot2 for Joerg Roedel" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/seves] x86/sev-es: Adjust #VC IST Stack on entering NMI handler
+Subject: [tip: x86/seves] x86/sev-es: Allocate and map an IST stack for #VC handler
 Cc:     Joerg Roedel <jroedel@suse.de>, Borislav Petkov <bp@suse.de>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200907131613.12703-44-joro@8bytes.org>
-References: <20200907131613.12703-44-joro@8bytes.org>
+In-Reply-To: <20200907131613.12703-43-joro@8bytes.org>
+References: <20200907131613.12703-43-joro@8bytes.org>
 MIME-Version: 1.0
-Message-ID: <159972973434.20229.7691205060608983396.tip-bot2@tip-bot2>
+Message-ID: <159972973476.20229.9157533137509962211.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -57,170 +57,222 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/seves branch of tip:
 
-Commit-ID:     315562c9af3d583502b35c4b223a08d95ce69864
-Gitweb:        https://git.kernel.org/tip/315562c9af3d583502b35c4b223a08d95ce69864
+Commit-ID:     02772fb9b68e6a72a5e17f994048df832fe2b15e
+Gitweb:        https://git.kernel.org/tip/02772fb9b68e6a72a5e17f994048df832fe2b15e
 Author:        Joerg Roedel <jroedel@suse.de>
-AuthorDate:    Mon, 07 Sep 2020 15:15:44 +02:00
+AuthorDate:    Mon, 07 Sep 2020 15:15:43 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
 CommitterDate: Wed, 09 Sep 2020 11:33:19 +02:00
 
-x86/sev-es: Adjust #VC IST Stack on entering NMI handler
+x86/sev-es: Allocate and map an IST stack for #VC handler
 
-When an NMI hits in the #VC handler entry code before it has switched to
-another stack, any subsequent #VC exception in the NMI code-path will
-overwrite the interrupted #VC handler's stack.
+Allocate and map an IST stack and an additional fall-back stack for
+the #VC handler.  The memory for the stacks is allocated only when
+SEV-ES is active.
 
-Make sure this doesn't happen by explicitly adjusting the #VC IST entry
-in the NMI handler for the time it can cause #VC exceptions.
+The #VC handler needs to use an IST stack because a #VC exception can be
+raised from kernel space with unsafe stack, e.g. in the SYSCALL entry
+path.
 
- [ bp: Touchups, spelling fixes. ]
+Since the #VC exception can be nested, the #VC handler switches back to
+the interrupted stack when entered from kernel space. If switching back
+is not possible, the fall-back stack is used.
 
 Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20200907131613.12703-44-joro@8bytes.org
+Link: https://lkml.kernel.org/r/20200907131613.12703-43-joro@8bytes.org
 ---
- arch/x86/include/asm/sev-es.h | 19 ++++++++++++-
- arch/x86/kernel/nmi.c         |  9 ++++++-
- arch/x86/kernel/sev-es.c      | 53 ++++++++++++++++++++++++++++++++++-
- 3 files changed, 81 insertions(+)
+ arch/x86/include/asm/cpu_entry_area.h | 33 ++++++++++++++++----------
+ arch/x86/include/asm/page_64_types.h  |  1 +-
+ arch/x86/kernel/cpu/common.c          |  2 ++-
+ arch/x86/kernel/dumpstack_64.c        |  8 ++++--
+ arch/x86/kernel/sev-es.c              | 33 ++++++++++++++++++++++++++-
+ 5 files changed, 63 insertions(+), 14 deletions(-)
 
-diff --git a/arch/x86/include/asm/sev-es.h b/arch/x86/include/asm/sev-es.h
-index 9fbeeda..59176e8 100644
---- a/arch/x86/include/asm/sev-es.h
-+++ b/arch/x86/include/asm/sev-es.h
-@@ -78,4 +78,23 @@ extern void vc_no_ghcb(void);
- extern void vc_boot_ghcb(void);
- extern bool handle_vc_boot_ghcb(struct pt_regs *regs);
+diff --git a/arch/x86/include/asm/cpu_entry_area.h b/arch/x86/include/asm/cpu_entry_area.h
+index 8902fdb..3d52b09 100644
+--- a/arch/x86/include/asm/cpu_entry_area.h
++++ b/arch/x86/include/asm/cpu_entry_area.h
+@@ -11,25 +11,29 @@
+ #ifdef CONFIG_X86_64
  
-+#ifdef CONFIG_AMD_MEM_ENCRYPT
-+extern struct static_key_false sev_es_enable_key;
-+extern void __sev_es_ist_enter(struct pt_regs *regs);
-+extern void __sev_es_ist_exit(void);
-+static __always_inline void sev_es_ist_enter(struct pt_regs *regs)
-+{
-+	if (static_branch_unlikely(&sev_es_enable_key))
-+		__sev_es_ist_enter(regs);
-+}
-+static __always_inline void sev_es_ist_exit(void)
-+{
-+	if (static_branch_unlikely(&sev_es_enable_key))
-+		__sev_es_ist_exit();
-+}
-+#else
-+static inline void sev_es_ist_enter(struct pt_regs *regs) { }
-+static inline void sev_es_ist_exit(void) { }
-+#endif
+ /* Macro to enforce the same ordering and stack sizes */
+-#define ESTACKS_MEMBERS(guardsize)		\
+-	char	DF_stack_guard[guardsize];	\
+-	char	DF_stack[EXCEPTION_STKSZ];	\
+-	char	NMI_stack_guard[guardsize];	\
+-	char	NMI_stack[EXCEPTION_STKSZ];	\
+-	char	DB_stack_guard[guardsize];	\
+-	char	DB_stack[EXCEPTION_STKSZ];	\
+-	char	MCE_stack_guard[guardsize];	\
+-	char	MCE_stack[EXCEPTION_STKSZ];	\
+-	char	IST_top_guard[guardsize];	\
++#define ESTACKS_MEMBERS(guardsize, optional_stack_size)		\
++	char	DF_stack_guard[guardsize];			\
++	char	DF_stack[EXCEPTION_STKSZ];			\
++	char	NMI_stack_guard[guardsize];			\
++	char	NMI_stack[EXCEPTION_STKSZ];			\
++	char	DB_stack_guard[guardsize];			\
++	char	DB_stack[EXCEPTION_STKSZ];			\
++	char	MCE_stack_guard[guardsize];			\
++	char	MCE_stack[EXCEPTION_STKSZ];			\
++	char	VC_stack_guard[guardsize];			\
++	char	VC_stack[optional_stack_size];			\
++	char	VC2_stack_guard[guardsize];			\
++	char	VC2_stack[optional_stack_size];			\
++	char	IST_top_guard[guardsize];			\
+ 
+ /* The exception stacks' physical storage. No guard pages required */
+ struct exception_stacks {
+-	ESTACKS_MEMBERS(0)
++	ESTACKS_MEMBERS(0, 0)
+ };
+ 
+ /* The effective cpu entry area mapping with guard pages. */
+ struct cea_exception_stacks {
+-	ESTACKS_MEMBERS(PAGE_SIZE)
++	ESTACKS_MEMBERS(PAGE_SIZE, EXCEPTION_STKSZ)
+ };
+ 
+ /*
+@@ -40,6 +44,8 @@ enum exception_stack_ordering {
+ 	ESTACK_NMI,
+ 	ESTACK_DB,
+ 	ESTACK_MCE,
++	ESTACK_VC,
++	ESTACK_VC2,
+ 	N_EXCEPTION_STACKS
+ };
+ 
+@@ -139,4 +145,7 @@ static inline struct entry_stack *cpu_entry_stack(int cpu)
+ #define __this_cpu_ist_top_va(name)					\
+ 	CEA_ESTACK_TOP(__this_cpu_read(cea_exception_stacks), name)
+ 
++#define __this_cpu_ist_bottom_va(name)					\
++	CEA_ESTACK_BOT(__this_cpu_read(cea_exception_stacks), name)
 +
  #endif
-diff --git a/arch/x86/kernel/nmi.c b/arch/x86/kernel/nmi.c
-index 4fc9954..4c89c4d 100644
---- a/arch/x86/kernel/nmi.c
-+++ b/arch/x86/kernel/nmi.c
-@@ -33,6 +33,7 @@
- #include <asm/reboot.h>
- #include <asm/cache.h>
- #include <asm/nospec-branch.h>
-+#include <asm/sev-es.h>
+diff --git a/arch/x86/include/asm/page_64_types.h b/arch/x86/include/asm/page_64_types.h
+index 288b065..d0c6c10 100644
+--- a/arch/x86/include/asm/page_64_types.h
++++ b/arch/x86/include/asm/page_64_types.h
+@@ -28,6 +28,7 @@
+ #define	IST_INDEX_NMI		1
+ #define	IST_INDEX_DB		2
+ #define	IST_INDEX_MCE		3
++#define	IST_INDEX_VC		4
  
- #define CREATE_TRACE_POINTS
- #include <trace/events/nmi.h>
-@@ -488,6 +489,12 @@ DEFINE_IDTENTRY_RAW(exc_nmi)
- 	this_cpu_write(nmi_cr2, read_cr2());
- nmi_restart:
+ /*
+  * Set __PAGE_OFFSET to the most negative possible address +
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index c5d6f17..81fba4d 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -1829,6 +1829,8 @@ static inline void tss_setup_ist(struct tss_struct *tss)
+ 	tss->x86_tss.ist[IST_INDEX_NMI] = __this_cpu_ist_top_va(NMI);
+ 	tss->x86_tss.ist[IST_INDEX_DB] = __this_cpu_ist_top_va(DB);
+ 	tss->x86_tss.ist[IST_INDEX_MCE] = __this_cpu_ist_top_va(MCE);
++	/* Only mapped when SEV-ES is active */
++	tss->x86_tss.ist[IST_INDEX_VC] = __this_cpu_ist_top_va(VC);
+ }
  
-+	/*
-+	 * Needs to happen before DR7 is accessed, because the hypervisor can
-+	 * intercept DR7 reads/writes, turning those into #VC exceptions.
-+	 */
-+	sev_es_ist_enter(regs);
-+
- 	this_cpu_write(nmi_dr7, local_db_save());
+ #else /* CONFIG_X86_64 */
+diff --git a/arch/x86/kernel/dumpstack_64.c b/arch/x86/kernel/dumpstack_64.c
+index 4a94d38..c49cf59 100644
+--- a/arch/x86/kernel/dumpstack_64.c
++++ b/arch/x86/kernel/dumpstack_64.c
+@@ -24,11 +24,13 @@ static const char * const exception_stack_names[] = {
+ 		[ ESTACK_NMI	]	= "NMI",
+ 		[ ESTACK_DB	]	= "#DB",
+ 		[ ESTACK_MCE	]	= "#MC",
++		[ ESTACK_VC	]	= "#VC",
++		[ ESTACK_VC2	]	= "#VC2",
+ };
  
- 	irq_state = idtentry_enter_nmi(regs);
-@@ -501,6 +508,8 @@ nmi_restart:
+ const char *stack_type_name(enum stack_type type)
+ {
+-	BUILD_BUG_ON(N_EXCEPTION_STACKS != 4);
++	BUILD_BUG_ON(N_EXCEPTION_STACKS != 6);
  
- 	local_db_restore(this_cpu_read(nmi_dr7));
+ 	if (type == STACK_TYPE_IRQ)
+ 		return "IRQ";
+@@ -79,6 +81,8 @@ struct estack_pages estack_pages[CEA_ESTACK_PAGES] ____cacheline_aligned = {
+ 	EPAGERANGE(NMI),
+ 	EPAGERANGE(DB),
+ 	EPAGERANGE(MCE),
++	EPAGERANGE(VC),
++	EPAGERANGE(VC2),
+ };
  
-+	sev_es_ist_exit();
-+
- 	if (unlikely(this_cpu_read(nmi_cr2) != read_cr2()))
- 		write_cr2(this_cpu_read(nmi_cr2));
- 	if (this_cpu_dec_return(nmi_state))
+ static bool in_exception_stack(unsigned long *stack, struct stack_info *info)
+@@ -88,7 +92,7 @@ static bool in_exception_stack(unsigned long *stack, struct stack_info *info)
+ 	struct pt_regs *regs;
+ 	unsigned int k;
+ 
+-	BUILD_BUG_ON(N_EXCEPTION_STACKS != 4);
++	BUILD_BUG_ON(N_EXCEPTION_STACKS != 6);
+ 
+ 	begin = (unsigned long)__this_cpu_read(cea_exception_stacks);
+ 	/*
 diff --git a/arch/x86/kernel/sev-es.c b/arch/x86/kernel/sev-es.c
-index fae8145..39ebb2d 100644
+index 720b1b6..fae8145 100644
 --- a/arch/x86/kernel/sev-es.c
 +++ b/arch/x86/kernel/sev-es.c
-@@ -51,6 +51,7 @@ struct sev_es_runtime_data {
+@@ -17,6 +17,7 @@
+ #include <linux/kernel.h>
+ #include <linux/mm.h>
+ 
++#include <asm/cpu_entry_area.h>
+ #include <asm/sev-es.h>
+ #include <asm/insn-eval.h>
+ #include <asm/fpu/internal.h>
+@@ -37,10 +38,41 @@ static struct ghcb __initdata *boot_ghcb;
+ /* #VC handler runtime per-CPU data */
+ struct sev_es_runtime_data {
+ 	struct ghcb ghcb_page;
++
++	/* Physical storage for the per-CPU IST stack of the #VC handler */
++	char ist_stack[EXCEPTION_STKSZ] __aligned(PAGE_SIZE);
++
++	/*
++	 * Physical storage for the per-CPU fall-back stack of the #VC handler.
++	 * The fall-back stack is used when it is not safe to switch back to the
++	 * interrupted stack in the #VC entry code.
++	 */
++	char fallback_stack[EXCEPTION_STKSZ] __aligned(PAGE_SIZE);
  };
  
  static DEFINE_PER_CPU(struct sev_es_runtime_data*, runtime_data);
-+DEFINE_STATIC_KEY_FALSE(sev_es_enable_key);
  
- static void __init setup_vc_stacks(int cpu)
- {
-@@ -73,6 +74,55 @@ static void __init setup_vc_stacks(int cpu)
- 	cea_set_pte((void *)vaddr, pa, PAGE_KERNEL);
- }
- 
-+static __always_inline bool on_vc_stack(unsigned long sp)
++static void __init setup_vc_stacks(int cpu)
 +{
-+	return ((sp >= __this_cpu_ist_bottom_va(VC)) && (sp < __this_cpu_ist_top_va(VC)));
-+}
++	struct sev_es_runtime_data *data;
++	struct cpu_entry_area *cea;
++	unsigned long vaddr;
++	phys_addr_t pa;
 +
-+/*
-+ * This function handles the case when an NMI is raised in the #VC exception
-+ * handler entry code. In this case, the IST entry for #VC must be adjusted, so
-+ * that any subsequent #VC exception will not overwrite the stack contents of the
-+ * interrupted #VC handler.
-+ *
-+ * The IST entry is adjusted unconditionally so that it can be also be
-+ * unconditionally adjusted back in sev_es_ist_exit(). Otherwise a nested
-+ * sev_es_ist_exit() call may adjust back the IST entry too early.
-+ */
-+void noinstr __sev_es_ist_enter(struct pt_regs *regs)
-+{
-+	unsigned long old_ist, new_ist;
++	data = per_cpu(runtime_data, cpu);
++	cea  = get_cpu_entry_area(cpu);
 +
-+	/* Read old IST entry */
-+	old_ist = __this_cpu_read(cpu_tss_rw.x86_tss.ist[IST_INDEX_VC]);
++	/* Map #VC IST stack */
++	vaddr = CEA_ESTACK_BOT(&cea->estacks, VC);
++	pa    = __pa(data->ist_stack);
++	cea_set_pte((void *)vaddr, pa, PAGE_KERNEL);
 +
-+	/* Make room on the IST stack */
-+	if (on_vc_stack(regs->sp))
-+		new_ist = ALIGN_DOWN(regs->sp, 8) - sizeof(old_ist);
-+	else
-+		new_ist = old_ist - sizeof(old_ist);
-+
-+	/* Store old IST entry */
-+	*(unsigned long *)new_ist = old_ist;
-+
-+	/* Set new IST entry */
-+	this_cpu_write(cpu_tss_rw.x86_tss.ist[IST_INDEX_VC], new_ist);
-+}
-+
-+void noinstr __sev_es_ist_exit(void)
-+{
-+	unsigned long ist;
-+
-+	/* Read IST entry */
-+	ist = __this_cpu_read(cpu_tss_rw.x86_tss.ist[IST_INDEX_VC]);
-+
-+	if (WARN_ON(ist == __this_cpu_ist_top_va(VC)))
-+		return;
-+
-+	/* Read back old IST entry and write it to the TSS */
-+	this_cpu_write(cpu_tss_rw.x86_tss.ist[IST_INDEX_VC], *(unsigned long *)ist);
++	/* Map VC fall-back stack */
++	vaddr = CEA_ESTACK_BOT(&cea->estacks, VC2);
++	pa    = __pa(data->fallback_stack);
++	cea_set_pte((void *)vaddr, pa, PAGE_KERNEL);
 +}
 +
  /* Needed in vc_early_forward_exception */
  void do_early_exception(struct pt_regs *regs, int trapnr);
  
-@@ -277,6 +327,9 @@ void __init sev_es_init_vc_handling(void)
- 	if (!sev_es_active())
- 		return;
- 
-+	/* Enable SEV-ES special handling */
-+	static_branch_enable(&sev_es_enable_key);
-+
- 	/* Initialize per-cpu GHCB pages */
+@@ -249,6 +281,7 @@ void __init sev_es_init_vc_handling(void)
  	for_each_possible_cpu(cpu) {
  		alloc_runtime_data(cpu);
+ 		init_ghcb(cpu);
++		setup_vc_stacks(cpu);
+ 	}
+ }
+ 
