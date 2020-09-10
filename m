@@ -2,54 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 21537264285
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Sep 2020 11:39:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 69862264287
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Sep 2020 11:39:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730302AbgIJJis (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S1730140AbgIJJis (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Thu, 10 Sep 2020 05:38:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36174 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730257AbgIJJWS (ORCPT
+        with ESMTP id S1730261AbgIJJWS (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Thu, 10 Sep 2020 05:22:18 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32168C061756;
-        Thu, 10 Sep 2020 02:22:13 -0700 (PDT)
-Date:   Thu, 10 Sep 2020 09:22:02 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26D69C061757;
+        Thu, 10 Sep 2020 02:22:14 -0700 (PDT)
+Date:   Thu, 10 Sep 2020 09:22:04 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1599729723;
+        s=2020; t=1599729725;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=rv60TchzHNQdOowK5CxgnUAqjF0Kea8BxfhIjKBuDjU=;
-        b=fdlVzRNMJIMTThMwj/IQJir8RwnaSpILhUVNAIj6mKr+mJrgUAuYynKX52cIieG8uy5GWK
-        GXJYuN8bQHA1YlMf146QAUGY6KMlkcVCFj/Ki9UURnlnDWxjsdNn4tfOEj76vZYUd7ZJlf
-        4KyzFWKrRU2rm6GDC7p0Uk8tat3h1tIt75HX/X2SEQRqf51w9lVaPoRcUJ/SefqcJ9GMAb
-        LKKkkFN67ju3yMDHkD8n0VZLTQ/kTWCXflXTwsALmybyHp2fHO0B2MzSAA3EYxB4YJPZJV
-        kq9s9eKLy5FQ3I9WbTUJuziprStEGId/hY+egXrkjNahx4Gca41fUthlJlwxnw==
+        bh=JoPNXNLBsyEhUtHUT6JCTfcPaPR55B+KvWTtgjELRNo=;
+        b=fYGRSAMRecM89JjXnxIlHEoYQAm+ry93aGFj4kuBzxKq8UBr1W/mWM2h8PeUiNeafO9H/7
+        4YICcNqsmvn2iNUHUEfrMcXfh1sp1sUe2QEU9SBQxOOn9eu2wFwnDACEMg6BAbjf3tNWGW
+        lNwjBcBXVgzdf6NAYQCwH+DUsCLxfDh8WrNN8N7uSCuL9AH7OLyg91RyyYHtfFjaiCaGin
+        BQYrDJJ6XALz6mxcf/HuysBBCI5Avg73e3q/4GjXNNj9tg/uJu/5mjXQk9HXMUn4ldYK6X
+        ZxB4YuAxCRIz454qC8QxkrDcxmW0lQvKx1tmoy0Ih1GSETD8VwyT/QhYwJn0FQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1599729723;
+        s=2020e; t=1599729725;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=rv60TchzHNQdOowK5CxgnUAqjF0Kea8BxfhIjKBuDjU=;
-        b=ZmqbueD/xOn4soJWBxlpnsTG+4rhZtqmApzZRwubqu0MJ21jdx2sPT5wiA63LEyauDqg21
-        sbG/8UypDI1bIxDQ==
-From:   "tip-bot2 for Tom Lendacky" <tip-bot2@linutronix.de>
+        bh=JoPNXNLBsyEhUtHUT6JCTfcPaPR55B+KvWTtgjELRNo=;
+        b=j8miQl2qX4Sj+Xbb7olJPd/fGrzHNTBbXUHKG92iz3DxwYN1kfJwZA+7tJZsxop7jA0xcb
+        UhCEwjCa5LA/TuAA==
+From:   "tip-bot2 for Joerg Roedel" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/seves] x86/efi: Add GHCB mappings when SEV-ES is active
-Cc:     Tom Lendacky <thomas.lendacky@amd.com>,
-        Joerg Roedel <jroedel@suse.de>, Borislav Petkov <bp@suse.de>,
+Subject: [tip: x86/seves] x86/smpboot: Load TSS and getcpu GDT entry before
+ loading IDT
+Cc:     Joerg Roedel <jroedel@suse.de>, Borislav Petkov <bp@suse.de>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200907131613.12703-72-joro@8bytes.org>
-References: <20200907131613.12703-72-joro@8bytes.org>
+In-Reply-To: <20200907131613.12703-68-joro@8bytes.org>
+References: <20200907131613.12703-68-joro@8bytes.org>
 MIME-Version: 1.0
-Message-ID: <159972972276.20229.9771081725021832528.tip-bot2@tip-bot2>
+Message-ID: <159972972435.20229.954025378215732104.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,129 +61,84 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/seves branch of tip:
 
-Commit-ID:     35dcb1ebaf43230637abd2428b9d1fe6c915a78b
-Gitweb:        https://git.kernel.org/tip/35dcb1ebaf43230637abd2428b9d1fe6c915a78b
-Author:        Tom Lendacky <thomas.lendacky@amd.com>
-AuthorDate:    Mon, 07 Sep 2020 15:16:12 +02:00
+Commit-ID:     520d030852b4c9babfce9a79d8b5320b6b5545e6
+Gitweb:        https://git.kernel.org/tip/520d030852b4c9babfce9a79d8b5320b6b5545e6
+Author:        Joerg Roedel <jroedel@suse.de>
+AuthorDate:    Mon, 07 Sep 2020 15:16:08 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Wed, 09 Sep 2020 18:03:48 +02:00
+CommitterDate: Wed, 09 Sep 2020 11:33:20 +02:00
 
-x86/efi: Add GHCB mappings when SEV-ES is active
+x86/smpboot: Load TSS and getcpu GDT entry before loading IDT
 
-Calling down to EFI runtime services can result in the firmware
-performing VMGEXIT calls. The firmware is likely to use the GHCB of the
-OS (e.g., for setting EFI variables), so each GHCB in the system needs
-to be identity-mapped in the EFI page tables, as unencrypted, to avoid
-page faults.
+The IDT on 64-bit contains vectors which use paranoid_entry() and/or IST
+stacks. To make these vectors work, the TSS and the getcpu GDT entry need
+to be set up before the IDT is loaded.
 
-Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
-[ jroedel@suse.de: Moved GHCB mapping loop to sev-es.c ]
 Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20200907131613.12703-72-joro@8bytes.org
+Link: https://lkml.kernel.org/r/20200907131613.12703-68-joro@8bytes.org
 ---
- arch/x86/boot/compressed/sev-es.c |  1 +-
- arch/x86/include/asm/sev-es.h     |  2 ++-
- arch/x86/kernel/sev-es.c          | 30 ++++++++++++++++++++++++++++++-
- arch/x86/platform/efi/efi_64.c    | 10 ++++++++++-
- 4 files changed, 43 insertions(+)
+ arch/x86/include/asm/processor.h |  1 +
+ arch/x86/kernel/cpu/common.c     | 23 +++++++++++++++++++++++
+ arch/x86/kernel/smpboot.c        |  2 +-
+ 3 files changed, 25 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/boot/compressed/sev-es.c b/arch/x86/boot/compressed/sev-es.c
-index 5f15e58..2a6c7c3 100644
---- a/arch/x86/boot/compressed/sev-es.c
-+++ b/arch/x86/boot/compressed/sev-es.c
-@@ -12,6 +12,7 @@
-  */
- #include "misc.h"
+diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
+index 97143d8..615dd44 100644
+--- a/arch/x86/include/asm/processor.h
++++ b/arch/x86/include/asm/processor.h
+@@ -696,6 +696,7 @@ extern void load_direct_gdt(int);
+ extern void load_fixmap_gdt(int);
+ extern void load_percpu_segment(int);
+ extern void cpu_init(void);
++extern void cpu_init_exception_handling(void);
+ extern void cr4_init(void);
  
-+#include <asm/pgtable_types.h>
- #include <asm/sev-es.h>
- #include <asm/trapnr.h>
- #include <asm/trap_pf.h>
-diff --git a/arch/x86/include/asm/sev-es.h b/arch/x86/include/asm/sev-es.h
-index e919f09..cf1d957 100644
---- a/arch/x86/include/asm/sev-es.h
-+++ b/arch/x86/include/asm/sev-es.h
-@@ -102,11 +102,13 @@ static __always_inline void sev_es_nmi_complete(void)
- 	if (static_branch_unlikely(&sev_es_enable_key))
- 		__sev_es_nmi_complete();
+ static inline unsigned long get_debugctlmsr(void)
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index 81fba4d..beffea2 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -1863,6 +1863,29 @@ static inline void tss_setup_io_bitmap(struct tss_struct *tss)
  }
-+extern int __init sev_es_efi_map_ghcbs(pgd_t *pgd);
- #else
- static inline void sev_es_ist_enter(struct pt_regs *regs) { }
- static inline void sev_es_ist_exit(void) { }
- static inline int sev_es_setup_ap_jump_table(struct real_mode_header *rmh) { return 0; }
- static inline void sev_es_nmi_complete(void) { }
-+static inline int sev_es_efi_map_ghcbs(pgd_t *pgd) { return 0; }
- #endif
- 
- #endif
-diff --git a/arch/x86/kernel/sev-es.c b/arch/x86/kernel/sev-es.c
-index b6518e9..8cac9f8 100644
---- a/arch/x86/kernel/sev-es.c
-+++ b/arch/x86/kernel/sev-es.c
-@@ -491,6 +491,36 @@ int sev_es_setup_ap_jump_table(struct real_mode_header *rmh)
- 	return 0;
- }
- 
-+/*
-+ * This is needed by the OVMF UEFI firmware which will use whatever it finds in
-+ * the GHCB MSR as its GHCB to talk to the hypervisor. So make sure the per-cpu
-+ * runtime GHCBs used by the kernel are also mapped in the EFI page-table.
-+ */
-+int __init sev_es_efi_map_ghcbs(pgd_t *pgd)
-+{
-+	struct sev_es_runtime_data *data;
-+	unsigned long address, pflags;
-+	int cpu;
-+	u64 pfn;
-+
-+	if (!sev_es_active())
-+		return 0;
-+
-+	pflags = _PAGE_NX | _PAGE_RW;
-+
-+	for_each_possible_cpu(cpu) {
-+		data = per_cpu(runtime_data, cpu);
-+
-+		address = __pa(&data->ghcb_page);
-+		pfn = address >> PAGE_SHIFT;
-+
-+		if (kernel_map_pages_in_pgd(pgd, pfn, address, 1, pflags))
-+			return 1;
-+	}
-+
-+	return 0;
-+}
-+
- static enum es_result vc_handle_msr(struct ghcb *ghcb, struct es_em_ctxt *ctxt)
- {
- 	struct pt_regs *regs = ctxt->regs;
-diff --git a/arch/x86/platform/efi/efi_64.c b/arch/x86/platform/efi/efi_64.c
-index 6af4da1..8f5759d 100644
---- a/arch/x86/platform/efi/efi_64.c
-+++ b/arch/x86/platform/efi/efi_64.c
-@@ -47,6 +47,7 @@
- #include <asm/realmode.h>
- #include <asm/time.h>
- #include <asm/pgalloc.h>
-+#include <asm/sev-es.h>
  
  /*
-  * We allocate runtime services regions top-down, starting from -4G, i.e.
-@@ -230,6 +231,15 @@ int __init efi_setup_page_tables(unsigned long pa_memmap, unsigned num_pages)
- 	}
- 
- 	/*
-+	 * When SEV-ES is active, the GHCB as set by the kernel will be used
-+	 * by firmware. Create a 1:1 unencrypted mapping for each GHCB.
-+	 */
-+	if (sev_es_efi_map_ghcbs(pgd)) {
-+		pr_err("Failed to create 1:1 mapping for the GHCBs!\n");
-+		return 1;
-+	}
++ * Setup everything needed to handle exceptions from the IDT, including the IST
++ * exceptions which use paranoid_entry().
++ */
++void cpu_init_exception_handling(void)
++{
++	struct tss_struct *tss = this_cpu_ptr(&cpu_tss_rw);
++	int cpu = raw_smp_processor_id();
 +
-+	/*
- 	 * When making calls to the firmware everything needs to be 1:1
- 	 * mapped and addressable with 32-bit pointers. Map the kernel
- 	 * text and allocate a new stack because we can't rely on the
++	/* paranoid_entry() gets the CPU number from the GDT */
++	setup_getcpu(cpu);
++
++	/* IST vectors need TSS to be set up. */
++	tss_setup_ist(tss);
++	tss_setup_io_bitmap(tss);
++	set_tss_desc(cpu, &get_cpu_entry_area(cpu)->tss.x86_tss);
++
++	load_TR_desc();
++
++	/* Finally load the IDT */
++	load_current_idt();
++}
++
++/*
+  * cpu_init() initializes state that is per-CPU. Some data is already
+  * initialized (naturally) in the bootstrap process, such as the GDT
+  * and IDT. We reload them nevertheless, this function acts as a
+diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
+index f5ef689..de776b2 100644
+--- a/arch/x86/kernel/smpboot.c
++++ b/arch/x86/kernel/smpboot.c
+@@ -227,7 +227,7 @@ static void notrace start_secondary(void *unused)
+ 	load_cr3(swapper_pg_dir);
+ 	__flush_tlb_all();
+ #endif
+-	load_current_idt();
++	cpu_init_exception_handling();
+ 	cpu_init();
+ 	x86_cpuinit.early_percpu_clock_init();
+ 	preempt_disable();
