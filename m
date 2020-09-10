@@ -2,51 +2,51 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A90A1264271
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Sep 2020 11:38:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 300B7264261
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Sep 2020 11:37:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728631AbgIJJiA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 10 Sep 2020 05:38:00 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:38842 "EHLO
+        id S1730771AbgIJJg5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 10 Sep 2020 05:36:57 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:38852 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730259AbgIJJWU (ORCPT
+        with ESMTP id S1730337AbgIJJWU (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Thu, 10 Sep 2020 05:22:20 -0400
-Date:   Thu, 10 Sep 2020 09:22:17 -0000
+Date:   Thu, 10 Sep 2020 09:22:18 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1599729737;
+        s=2020; t=1599729738;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=r6aPnzNgCPl75LPP9i2pcCTPnrsIX5K+D4UisQtH4yo=;
-        b=gAju1UVY56AsruHCOKkW9Zj7zTOgP8P5BBGeQnXR15ClpH67Y2CdFp72UPi5STog8W5f5z
-        za4AJnUzgBwk9jwBoXHqLaWXh7IOM8WyG9WIbyjAgHwctjXKPuJKny8Mx1VBy100Qps4Os
-        h+myZ6+SOlXp+tDDPC6PPg2g5RQrbHH/BEKHmw1btZOCUF4jUUJXib0+y0kT5GwqEfRujn
-        Azeerh3dwabN8+8VtQM+MM0qpY0p/7qKE+5Jw05J86rtNQ5/SDKfos95hSEPBcgayN//rN
-        ENdMT7RuHUCTIdBsm6DTMD+NjrEzRjTWUGKbqwR9bC7vMvP72AOg86LZ/XPUKQ==
+        bh=eLZVk4wwmDK99pv2MFEB0N0/z+YYV00n6FSRFFtgyps=;
+        b=L11mjZoXBQHjrK/7txrrHQnYdoKHzbGt+oIrxwGqVU75oPcBiogid1VQUK3auQ5eLaE2VE
+        DOH7uk72zUtZaK8Z8jq0RF3TCgAzZwjIVewkZ/nB2aynQFjI1hjrX80qG/SMmqRH4/zoKw
+        ZoaGrD3sQA9nPVfer6quhKqAomxxIzo/jP1+oq3rSOMSGGGRM+tSN+YLQ97FmpaI/p0W2a
+        DjesiOp3b5PUF3ZpL+k1LyYuYSsWAscNm8lQvnFMJdeNTw4g1w4/RSAsW6O/TjdTT8oY2J
+        v+2xvy/E9XxzBfh/a7ZKWWQEXxHMFnjxHlGqXXP5BWQaNlBUCnkszdreEl8wHA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1599729737;
+        s=2020e; t=1599729738;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=r6aPnzNgCPl75LPP9i2pcCTPnrsIX5K+D4UisQtH4yo=;
-        b=N8r9WJs8ay/yeexncEUFADjAS3IvW3Xt4W3I54X4vBjfSfcMx2cftzwqfKXZUjLDjjIvn2
-        EmgcVZL811dDMFDw==
+        bh=eLZVk4wwmDK99pv2MFEB0N0/z+YYV00n6FSRFFtgyps=;
+        b=RnnE/Yh3qB3BYYu4KvKAE8+/Qo1uYBjEeCoxB6FIRpJpo/b5S7rzNiTZptbwIUQ7ggMdc4
+        +aChz+ojobkTqpCg==
 From:   "tip-bot2 for Joerg Roedel" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/seves] x86/sev-es: Add SEV-ES Feature Detection
+Subject: [tip: x86/seves] x86/idt: Make IDT init functions static inlines
 Cc:     Joerg Roedel <jroedel@suse.de>, Borislav Petkov <bp@suse.de>,
         Kees Cook <keescook@chromium.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200907131613.12703-37-joro@8bytes.org>
-References: <20200907131613.12703-37-joro@8bytes.org>
+In-Reply-To: <20200907131613.12703-35-joro@8bytes.org>
+References: <20200907131613.12703-35-joro@8bytes.org>
 MIME-Version: 1.0
-Message-ID: <159972973726.20229.4326936704104004217.tip-bot2@tip-bot2>
+Message-ID: <159972973819.20229.11540788227149046823.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,112 +58,151 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/seves branch of tip:
 
-Commit-ID:     b57de6cd16395be1ebdaa9b489ffbf462bb585c4
-Gitweb:        https://git.kernel.org/tip/b57de6cd16395be1ebdaa9b489ffbf462bb585c4
+Commit-ID:     097ee5b778b8970e1c2ed3ca1631b297d90acd61
+Gitweb:        https://git.kernel.org/tip/097ee5b778b8970e1c2ed3ca1631b297d90acd61
 Author:        Joerg Roedel <jroedel@suse.de>
-AuthorDate:    Mon, 07 Sep 2020 15:15:37 +02:00
+AuthorDate:    Mon, 07 Sep 2020 15:15:35 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Mon, 07 Sep 2020 23:00:20 +02:00
+CommitterDate: Mon, 07 Sep 2020 22:44:43 +02:00
 
-x86/sev-es: Add SEV-ES Feature Detection
+x86/idt: Make IDT init functions static inlines
 
-Add a sev_es_active() function for checking whether SEV-ES is enabled.
-Also cache the value of MSR_AMD64_SEV at boot to speed up the feature
-checking in the running code.
+Move these two functions from kernel/idt.c to include/asm/desc.h:
 
- [ bp: Remove "!!" in sev_active() too. ]
+	* init_idt_data()
+	* idt_init_desc()
+
+These functions are needed to setup IDT entries very early and need to
+be called from head64.c. To be usable this early, these functions need
+to be compiled without instrumentation and the stack-protector feature.
+
+These features need to be kept enabled for kernel/idt.c, so head64.c
+must use its own versions.
+
+ [ bp: Take Kees' suggested patch title and add his Rev-by. ]
 
 Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Borislav Petkov <bp@suse.de>
 Reviewed-by: Kees Cook <keescook@chromium.org>
-Link: https://lkml.kernel.org/r/20200907131613.12703-37-joro@8bytes.org
+Link: https://lkml.kernel.org/r/20200907131613.12703-35-joro@8bytes.org
 ---
- arch/x86/include/asm/mem_encrypt.h |  3 +++
- arch/x86/include/asm/msr-index.h   |  2 ++
- arch/x86/mm/mem_encrypt.c          |  9 ++++++++-
- arch/x86/mm/mem_encrypt_identity.c |  3 +++
- 4 files changed, 16 insertions(+), 1 deletion(-)
+ arch/x86/include/asm/desc.h      | 27 +++++++++++++++++++++++++-
+ arch/x86/include/asm/desc_defs.h |  7 ++++++-
+ arch/x86/kernel/idt.c            | 34 +-------------------------------
+ 3 files changed, 34 insertions(+), 34 deletions(-)
 
-diff --git a/arch/x86/include/asm/mem_encrypt.h b/arch/x86/include/asm/mem_encrypt.h
-index 5049f6c..4e72b73 100644
---- a/arch/x86/include/asm/mem_encrypt.h
-+++ b/arch/x86/include/asm/mem_encrypt.h
-@@ -19,6 +19,7 @@
- #ifdef CONFIG_AMD_MEM_ENCRYPT
+diff --git a/arch/x86/include/asm/desc.h b/arch/x86/include/asm/desc.h
+index 1ced11d..476082a 100644
+--- a/arch/x86/include/asm/desc.h
++++ b/arch/x86/include/asm/desc.h
+@@ -383,6 +383,33 @@ static inline void set_desc_limit(struct desc_struct *desc, unsigned long limit)
  
- extern u64 sme_me_mask;
-+extern u64 sev_status;
- extern bool sev_enabled;
+ void alloc_intr_gate(unsigned int n, const void *addr);
  
- void sme_encrypt_execute(unsigned long encrypted_kernel_vaddr,
-@@ -50,6 +51,7 @@ void __init mem_encrypt_init(void);
- 
- bool sme_active(void);
- bool sev_active(void);
-+bool sev_es_active(void);
- 
- #define __bss_decrypted __attribute__((__section__(".bss..decrypted")))
- 
-@@ -72,6 +74,7 @@ static inline void __init sme_enable(struct boot_params *bp) { }
- 
- static inline bool sme_active(void) { return false; }
- static inline bool sev_active(void) { return false; }
-+static inline bool sev_es_active(void) { return false; }
- 
- static inline int __init
- early_set_memory_decrypted(unsigned long vaddr, unsigned long size) { return 0; }
-diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-index.h
-index da34fdb..249a414 100644
---- a/arch/x86/include/asm/msr-index.h
-+++ b/arch/x86/include/asm/msr-index.h
-@@ -469,7 +469,9 @@
- #define MSR_AMD64_SEV_ES_GHCB		0xc0010130
- #define MSR_AMD64_SEV			0xc0010131
- #define MSR_AMD64_SEV_ENABLED_BIT	0
-+#define MSR_AMD64_SEV_ES_ENABLED_BIT	1
- #define MSR_AMD64_SEV_ENABLED		BIT_ULL(MSR_AMD64_SEV_ENABLED_BIT)
-+#define MSR_AMD64_SEV_ES_ENABLED	BIT_ULL(MSR_AMD64_SEV_ES_ENABLED_BIT)
- 
- #define MSR_AMD64_VIRT_SPEC_CTRL	0xc001011f
- 
-diff --git a/arch/x86/mm/mem_encrypt.c b/arch/x86/mm/mem_encrypt.c
-index 9f1177e..a38f556 100644
---- a/arch/x86/mm/mem_encrypt.c
-+++ b/arch/x86/mm/mem_encrypt.c
-@@ -38,6 +38,7 @@
-  * section is later cleared.
-  */
- u64 sme_me_mask __section(.data) = 0;
-+u64 sev_status __section(.data) = 0;
- EXPORT_SYMBOL(sme_me_mask);
- DEFINE_STATIC_KEY_FALSE(sev_enable_key);
- EXPORT_SYMBOL_GPL(sev_enable_key);
-@@ -347,7 +348,13 @@ bool sme_active(void)
- 
- bool sev_active(void)
- {
--	return sme_me_mask && sev_enabled;
-+	return sev_status & MSR_AMD64_SEV_ENABLED;
++static inline void init_idt_data(struct idt_data *data, unsigned int n,
++				 const void *addr)
++{
++	BUG_ON(n > 0xFF);
++
++	memset(data, 0, sizeof(*data));
++	data->vector	= n;
++	data->addr	= addr;
++	data->segment	= __KERNEL_CS;
++	data->bits.type	= GATE_INTERRUPT;
++	data->bits.p	= 1;
 +}
 +
-+/* Needs to be called from non-instrumentable code */
-+bool noinstr sev_es_active(void)
++static inline void idt_init_desc(gate_desc *gate, const struct idt_data *d)
 +{
-+	return sev_status & MSR_AMD64_SEV_ES_ENABLED;
++	unsigned long addr = (unsigned long) d->addr;
++
++	gate->offset_low	= (u16) addr;
++	gate->segment		= (u16) d->segment;
++	gate->bits		= d->bits;
++	gate->offset_middle	= (u16) (addr >> 16);
++#ifdef CONFIG_X86_64
++	gate->offset_high	= (u32) (addr >> 32);
++	gate->reserved		= 0;
++#endif
++}
++
+ extern unsigned long system_vectors[];
+ 
+ extern void load_current_idt(void);
+diff --git a/arch/x86/include/asm/desc_defs.h b/arch/x86/include/asm/desc_defs.h
+index 5621fb3..f7e7099 100644
+--- a/arch/x86/include/asm/desc_defs.h
++++ b/arch/x86/include/asm/desc_defs.h
+@@ -74,6 +74,13 @@ struct idt_bits {
+ 			p	: 1;
+ } __attribute__((packed));
+ 
++struct idt_data {
++	unsigned int	vector;
++	unsigned int	segment;
++	struct idt_bits	bits;
++	const void	*addr;
++};
++
+ struct gate_struct {
+ 	u16		offset_low;
+ 	u16		segment;
+diff --git a/arch/x86/kernel/idt.c b/arch/x86/kernel/idt.c
+index 53946c1..4bb4e3d 100644
+--- a/arch/x86/kernel/idt.c
++++ b/arch/x86/kernel/idt.c
+@@ -11,13 +11,6 @@
+ #include <asm/desc.h>
+ #include <asm/hw_irq.h>
+ 
+-struct idt_data {
+-	unsigned int	vector;
+-	unsigned int	segment;
+-	struct idt_bits	bits;
+-	const void	*addr;
+-};
+-
+ #define DPL0		0x0
+ #define DPL3		0x3
+ 
+@@ -178,20 +171,6 @@ bool idt_is_f00f_address(unsigned long address)
+ }
+ #endif
+ 
+-static inline void idt_init_desc(gate_desc *gate, const struct idt_data *d)
+-{
+-	unsigned long addr = (unsigned long) d->addr;
+-
+-	gate->offset_low	= (u16) addr;
+-	gate->segment		= (u16) d->segment;
+-	gate->bits		= d->bits;
+-	gate->offset_middle	= (u16) (addr >> 16);
+-#ifdef CONFIG_X86_64
+-	gate->offset_high	= (u32) (addr >> 32);
+-	gate->reserved		= 0;
+-#endif
+-}
+-
+ static __init void
+ idt_setup_from_table(gate_desc *idt, const struct idt_data *t, int size, bool sys)
+ {
+@@ -205,19 +184,6 @@ idt_setup_from_table(gate_desc *idt, const struct idt_data *t, int size, bool sy
+ 	}
  }
  
- /* Override for DMA direct allocation check - ARCH_HAS_FORCE_DMA_UNENCRYPTED */
-diff --git a/arch/x86/mm/mem_encrypt_identity.c b/arch/x86/mm/mem_encrypt_identity.c
-index e2b0e2a..68d7537 100644
---- a/arch/x86/mm/mem_encrypt_identity.c
-+++ b/arch/x86/mm/mem_encrypt_identity.c
-@@ -540,6 +540,9 @@ void __init sme_enable(struct boot_params *bp)
- 		if (!(msr & MSR_AMD64_SEV_ENABLED))
- 			return;
- 
-+		/* Save SEV_STATUS to avoid reading MSR again */
-+		sev_status = msr;
-+
- 		/* SEV state cannot be controlled by a command line option */
- 		sme_me_mask = me_mask;
- 		sev_enabled = true;
+-static void init_idt_data(struct idt_data *data, unsigned int n,
+-			  const void *addr)
+-{
+-	BUG_ON(n > 0xFF);
+-
+-	memset(data, 0, sizeof(*data));
+-	data->vector	= n;
+-	data->addr	= addr;
+-	data->segment	= __KERNEL_CS;
+-	data->bits.type	= GATE_INTERRUPT;
+-	data->bits.p	= 1;
+-}
+-
+ static __init void set_intr_gate(unsigned int n, const void *addr)
+ {
+ 	struct idt_data data;
