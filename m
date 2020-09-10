@@ -2,53 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B0B41264247
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Sep 2020 11:35:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 43C30264211
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Sep 2020 11:32:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730401AbgIJJfl (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 10 Sep 2020 05:35:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36250 "EHLO
+        id S1730631AbgIJJbx (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 10 Sep 2020 05:31:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36512 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730408AbgIJJWh (ORCPT
+        with ESMTP id S1730493AbgIJJYT (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 10 Sep 2020 05:22:37 -0400
+        Thu, 10 Sep 2020 05:24:19 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85782C06179F;
-        Thu, 10 Sep 2020 02:22:17 -0700 (PDT)
-Date:   Thu, 10 Sep 2020 09:22:12 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4132CC0617A3;
+        Thu, 10 Sep 2020 02:22:18 -0700 (PDT)
+Date:   Thu, 10 Sep 2020 09:22:13 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1599729733;
+        s=2020; t=1599729734;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=odBe+hsn5smopQlsclW6Pk83LjFC5FJmfNaQ+36jlFw=;
-        b=mdS2eI19MKEWlUOvf0E0K8RcVIqrG71kdMuFc7KCIb6yt878H14SZIcKK3Kyl7JSP208uB
-        TDyfxVZQr52kVcfroKkHuuhbvXZlVf40qfbkF60KnyycpwICFV1zuo1fEe7D3T5xuCc6/8
-        GB8YrkxjcNAHj4XCEFIT0+YfxKNiFja8kTor1p0GO1aXFTnEzGVqUQUUrv3Sdtup7R/VuE
-        Y8zVV6pqedmQ3pb7HplIrJBMHlhnBoSQJ4ANc+128UKr2tWz1g6aetIlk+WUeKlUs53Lti
-        xBb6VX+5pb0h2raeAV0UWS0qKPk3e/nPiOWZ40ZYiXR4qZBlwTWxBqFTYMEsHA==
+        bh=CZJz1Y6M5PqMAlDrDRPUbV+0BJlWMteh6oW10ZkxtQU=;
+        b=Pmk0wK5G5jmddpwn+jiidAe8oeEG/m9TuaFM4Swq+HFJV3MkA9BQ6Iy2l6kxSIiE0Gpd/N
+        B3Q4LYMSE/S0r1nM2pY/0k385fAMPnivqQIOh9S4ZN4NMkq/b4q+4jZ0I3bC53xBQ3N7zt
+        pU04obwYpGAa0K+vQZ1S6UnXpK4iwvT1Fq86bLkTTNZa2XMb1bv6bUOhBXw0jl1hqrXtxa
+        5GbuOBWara/N8vJqG5zXUaE6s8VByO8OuPaZ8R/yPOPsA4zDocTy6+/0q/Ik2ukKJRfCDq
+        UJ25gglMFElvxeenXJVkAzbR/WTy3XD3HBQKyTRsWMaiLUPIjXcvHKlUkebF9w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1599729733;
+        s=2020e; t=1599729734;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=odBe+hsn5smopQlsclW6Pk83LjFC5FJmfNaQ+36jlFw=;
-        b=RdlZWBZ/4NeQ/z9OaF6SqXvba4e3lb33IvUgU4DSDrNY+9FfgWHy929xn4ld8X6sHV/g9x
-        b/VKQpXlzwgZ+yDg==
+        bh=CZJz1Y6M5PqMAlDrDRPUbV+0BJlWMteh6oW10ZkxtQU=;
+        b=fDLfw5cbNAptVG3SqigErv4AtCppFrEcepLzSKKEWrkmV8MZQrDedjqLazhLsktFNQkB7M
+        eezy87JVeqYKdsCA==
 From:   "tip-bot2 for Joerg Roedel" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/seves] x86/sev-es: Handle instruction fetches from user-space
+Subject: [tip: x86/seves] x86/dumpstack/64: Add noinstr version of get_stack_info()
 Cc:     Joerg Roedel <jroedel@suse.de>, Borislav Petkov <bp@suse.de>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200907131613.12703-49-joro@8bytes.org>
-References: <20200907131613.12703-49-joro@8bytes.org>
+In-Reply-To: <20200907131613.12703-45-joro@8bytes.org>
+References: <20200907131613.12703-45-joro@8bytes.org>
 MIME-Version: 1.0
-Message-ID: <159972973220.20229.16614295207021809730.tip-bot2@tip-bot2>
+Message-ID: <159972973395.20229.434586447788491195.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,67 +60,153 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/seves branch of tip:
 
-Commit-ID:     5e3427a7bc432ed2e5de394ac30f160cc6c37a1f
-Gitweb:        https://git.kernel.org/tip/5e3427a7bc432ed2e5de394ac30f160cc6c37a1f
+Commit-ID:     6b27edd74a5e9669120f7bd0ae1f475d124c1042
+Gitweb:        https://git.kernel.org/tip/6b27edd74a5e9669120f7bd0ae1f475d124c1042
 Author:        Joerg Roedel <jroedel@suse.de>
-AuthorDate:    Mon, 07 Sep 2020 15:15:49 +02:00
+AuthorDate:    Mon, 07 Sep 2020 15:15:45 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
 CommitterDate: Wed, 09 Sep 2020 11:33:19 +02:00
 
-x86/sev-es: Handle instruction fetches from user-space
+x86/dumpstack/64: Add noinstr version of get_stack_info()
 
-When a #VC exception is triggered by user-space, the instruction decoder
-needs to read the instruction bytes from user addresses. Enhance
-vc_decode_insn() to safely fetch kernel and user instructions.
+The get_stack_info() functionality is needed in the entry code for the
+#VC exception handler. Provide a version of it in the .text.noinstr
+section which can be called safely from there.
 
 Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20200907131613.12703-49-joro@8bytes.org
+Link: https://lkml.kernel.org/r/20200907131613.12703-45-joro@8bytes.org
 ---
- arch/x86/kernel/sev-es.c | 31 ++++++++++++++++++++++---------
- 1 file changed, 22 insertions(+), 9 deletions(-)
+ arch/x86/include/asm/stacktrace.h |  2 ++-
+ arch/x86/kernel/dumpstack.c       |  7 +++---
+ arch/x86/kernel/dumpstack_64.c    | 38 +++++++++++++++++-------------
+ arch/x86/mm/cpu_entry_area.c      |  3 +-
+ 4 files changed, 30 insertions(+), 20 deletions(-)
 
-diff --git a/arch/x86/kernel/sev-es.c b/arch/x86/kernel/sev-es.c
-index b10a62a..6c30dbc 100644
---- a/arch/x86/kernel/sev-es.c
-+++ b/arch/x86/kernel/sev-es.c
-@@ -232,17 +232,30 @@ static enum es_result vc_decode_insn(struct es_em_ctxt *ctxt)
- 	enum es_result ret;
- 	int res;
+diff --git a/arch/x86/include/asm/stacktrace.h b/arch/x86/include/asm/stacktrace.h
+index 5ae5a68..4960064 100644
+--- a/arch/x86/include/asm/stacktrace.h
++++ b/arch/x86/include/asm/stacktrace.h
+@@ -35,6 +35,8 @@ bool in_entry_stack(unsigned long *stack, struct stack_info *info);
  
--	res = vc_fetch_insn_kernel(ctxt, buffer);
--	if (unlikely(res == -EFAULT)) {
--		ctxt->fi.vector     = X86_TRAP_PF;
--		ctxt->fi.error_code = 0;
--		ctxt->fi.cr2        = ctxt->regs->ip;
--		return ES_EXCEPTION;
-+	if (user_mode(ctxt->regs)) {
-+		res = insn_fetch_from_user(ctxt->regs, buffer);
-+		if (!res) {
-+			ctxt->fi.vector     = X86_TRAP_PF;
-+			ctxt->fi.error_code = X86_PF_INSTR | X86_PF_USER;
-+			ctxt->fi.cr2        = ctxt->regs->ip;
-+			return ES_EXCEPTION;
-+		}
-+
-+		if (!insn_decode(&ctxt->insn, ctxt->regs, buffer, res))
-+			return ES_DECODE_FAILED;
-+	} else {
-+		res = vc_fetch_insn_kernel(ctxt, buffer);
-+		if (res) {
-+			ctxt->fi.vector     = X86_TRAP_PF;
-+			ctxt->fi.error_code = X86_PF_INSTR;
-+			ctxt->fi.cr2        = ctxt->regs->ip;
-+			return ES_EXCEPTION;
-+		}
-+
-+		insn_init(&ctxt->insn, buffer, MAX_INSN_SIZE - res, 1);
-+		insn_get_length(&ctxt->insn);
- 	}
+ int get_stack_info(unsigned long *stack, struct task_struct *task,
+ 		   struct stack_info *info, unsigned long *visit_mask);
++bool get_stack_info_noinstr(unsigned long *stack, struct task_struct *task,
++			    struct stack_info *info);
  
--	insn_init(&ctxt->insn, buffer, MAX_INSN_SIZE - res, 1);
--	insn_get_length(&ctxt->insn);
+ const char *stack_type_name(enum stack_type type);
+ 
+diff --git a/arch/x86/kernel/dumpstack.c b/arch/x86/kernel/dumpstack.c
+index 48ce445..74147f7 100644
+--- a/arch/x86/kernel/dumpstack.c
++++ b/arch/x86/kernel/dumpstack.c
+@@ -29,8 +29,8 @@ static int die_counter;
+ 
+ static struct pt_regs exec_summary_regs;
+ 
+-bool in_task_stack(unsigned long *stack, struct task_struct *task,
+-		   struct stack_info *info)
++bool noinstr in_task_stack(unsigned long *stack, struct task_struct *task,
++			   struct stack_info *info)
+ {
+ 	unsigned long *begin = task_stack_page(task);
+ 	unsigned long *end   = task_stack_page(task) + THREAD_SIZE;
+@@ -46,7 +46,8 @@ bool in_task_stack(unsigned long *stack, struct task_struct *task,
+ 	return true;
+ }
+ 
+-bool in_entry_stack(unsigned long *stack, struct stack_info *info)
++/* Called from get_stack_info_noinstr - so must be noinstr too */
++bool noinstr in_entry_stack(unsigned long *stack, struct stack_info *info)
+ {
+ 	struct entry_stack *ss = cpu_entry_stack(smp_processor_id());
+ 
+diff --git a/arch/x86/kernel/dumpstack_64.c b/arch/x86/kernel/dumpstack_64.c
+index c49cf59..1dd8513 100644
+--- a/arch/x86/kernel/dumpstack_64.c
++++ b/arch/x86/kernel/dumpstack_64.c
+@@ -85,7 +85,7 @@ struct estack_pages estack_pages[CEA_ESTACK_PAGES] ____cacheline_aligned = {
+ 	EPAGERANGE(VC2),
+ };
+ 
+-static bool in_exception_stack(unsigned long *stack, struct stack_info *info)
++static __always_inline bool in_exception_stack(unsigned long *stack, struct stack_info *info)
+ {
+ 	unsigned long begin, end, stk = (unsigned long)stack;
+ 	const struct estack_pages *ep;
+@@ -126,7 +126,7 @@ static bool in_exception_stack(unsigned long *stack, struct stack_info *info)
+ 	return true;
+ }
+ 
+-static bool in_irq_stack(unsigned long *stack, struct stack_info *info)
++static __always_inline bool in_irq_stack(unsigned long *stack, struct stack_info *info)
+ {
+ 	unsigned long *end   = (unsigned long *)this_cpu_read(hardirq_stack_ptr);
+ 	unsigned long *begin = end - (IRQ_STACK_SIZE / sizeof(long));
+@@ -151,32 +151,38 @@ static bool in_irq_stack(unsigned long *stack, struct stack_info *info)
+ 	return true;
+ }
+ 
+-int get_stack_info(unsigned long *stack, struct task_struct *task,
+-		   struct stack_info *info, unsigned long *visit_mask)
++bool noinstr get_stack_info_noinstr(unsigned long *stack, struct task_struct *task,
++				    struct stack_info *info)
+ {
+-	if (!stack)
+-		goto unknown;
 -
- 	ret = ctxt->insn.immediate.got ? ES_OK : ES_DECODE_FAILED;
+-	task = task ? : current;
+-
+ 	if (in_task_stack(stack, task, info))
+-		goto recursion_check;
++		return true;
  
- 	return ret;
+ 	if (task != current)
+-		goto unknown;
++		return false;
+ 
+ 	if (in_exception_stack(stack, info))
+-		goto recursion_check;
++		return true;
+ 
+ 	if (in_irq_stack(stack, info))
+-		goto recursion_check;
++		return true;
+ 
+ 	if (in_entry_stack(stack, info))
+-		goto recursion_check;
++		return true;
++
++	return false;
++}
++
++int get_stack_info(unsigned long *stack, struct task_struct *task,
++		   struct stack_info *info, unsigned long *visit_mask)
++{
++	task = task ? : current;
+ 
+-	goto unknown;
++	if (!stack)
++		goto unknown;
++
++	if (!get_stack_info_noinstr(stack, task, info))
++		goto unknown;
+ 
+-recursion_check:
+ 	/*
+ 	 * Make sure we don't iterate through any given stack more than once.
+ 	 * If it comes up a second time then there's something wrong going on:
+diff --git a/arch/x86/mm/cpu_entry_area.c b/arch/x86/mm/cpu_entry_area.c
+index 770b613..f5e1e60 100644
+--- a/arch/x86/mm/cpu_entry_area.c
++++ b/arch/x86/mm/cpu_entry_area.c
+@@ -21,7 +21,8 @@ DEFINE_PER_CPU(struct cea_exception_stacks*, cea_exception_stacks);
+ DECLARE_PER_CPU_PAGE_ALIGNED(struct doublefault_stack, doublefault_stack);
+ #endif
+ 
+-struct cpu_entry_area *get_cpu_entry_area(int cpu)
++/* Is called from entry code, so must be noinstr */
++noinstr struct cpu_entry_area *get_cpu_entry_area(int cpu)
+ {
+ 	unsigned long va = CPU_ENTRY_AREA_PER_CPU + cpu * CPU_ENTRY_AREA_SIZE;
+ 	BUILD_BUG_ON(sizeof(struct cpu_entry_area) % PAGE_SIZE != 0);
