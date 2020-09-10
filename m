@@ -2,52 +2,50 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 127FC264215
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Sep 2020 11:32:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5919F264231
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Sep 2020 11:34:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730477AbgIJJcb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 10 Sep 2020 05:32:31 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:38868 "EHLO
+        id S1730740AbgIJJd1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 10 Sep 2020 05:33:27 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:38814 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730431AbgIJJXv (ORCPT
+        with ESMTP id S1730491AbgIJJXj (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 10 Sep 2020 05:23:51 -0400
+        Thu, 10 Sep 2020 05:23:39 -0400
 Date:   Thu, 10 Sep 2020 09:22:29 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1599729750;
+        s=2020; t=1599729749;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=D8mHQn+MHBX4QG6qDh53zC1rH1GfD5Puwkvi7Q4TzRQ=;
-        b=zePiRr3Ud7vEBLNrNklViKpbqU458gFDuiIdgQyiTa5inabJWdQ8Yj8wxNqboBAg1IHD3e
-        C56vxYEAVBdpM/1SbbuwNTbniBaecfYDbWkCqy0t3IHGqkMC7i7U9RZfNmsXl4C7fw+b5j
-        zyIoWQ9x+9utHGgflS0g494kYGCHwABz7lgr9Lh39VtL+ztROsquH+83SZCYmbgWJCxg+Z
-        9cKs/XJu+idW6NM39rzx68H0frUYX/G0lFJRrfhE2Wwf2hShrJP3ynvUBiup7nl43vEqPG
-        tWL85AiOVprMaFVACRZ25woOqMvFUt6QD8c/Ds6HpKntrRXQB4z6LtCV1o4KeQ==
+        bh=0z4NpRGD1bECiaobf9juIPXYFQfvc62Y4tejTBpZgB0=;
+        b=xY3vq+pwEcwJDWVSLpmm2NOQmmHQOaunjjuE5r+NhHrG64ax/wYEFBGhUG+5xqSB5kOPdb
+        sH2lrdG6cuL3tR9moQygbPDquMpvm5M+q7JkOTC4H2+ap4DnhCifEWH1F9DQ7ipjAcM7pH
+        v5r96kQn+usl2nINjPInOlI3YOp3MOMfToOS1Lmm9E6F3AflF4K4IELuQTXYCFR9otxuKO
+        W683y+dNTk9wCj55VElSU48D5xxSJY+EIAjE7U+bBWwODFjw/id31vsMSQXNpneLV0Rgi+
+        omOaHbJlDb8bh5DXyEC5LgPnKidIZQZ2LXjxTYYbozKfnZ7ZD3RMZafX0LzD5Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1599729750;
+        s=2020e; t=1599729749;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=D8mHQn+MHBX4QG6qDh53zC1rH1GfD5Puwkvi7Q4TzRQ=;
-        b=FzIotaTH5rdgs82XgagStQth6DMyEs4ALnO8NsH7e4wJjXyBa9jDXlJex4Qcb5OqVQqDWe
-        zF3/i4w8HTxFJPBw==
+        bh=0z4NpRGD1bECiaobf9juIPXYFQfvc62Y4tejTBpZgB0=;
+        b=WD3g9cha+6zT7t0Unt+vMhEIEIhrFlSLGeC/kYW7ZQD7iJl9cOKesYMV5YtYWxw0OG4TAl
+        PgCbKJuXuG7DiVCA==
 From:   "tip-bot2 for Joerg Roedel" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/seves] x86/insn: Make inat-tables.c suitable for
- pre-decompression code
+Subject: [tip: x86/seves] x86/umip: Factor out instruction decoding
 Cc:     Joerg Roedel <jroedel@suse.de>, Borislav Petkov <bp@suse.de>,
-        Masami Hiramatsu <mhiramat@kernel.org>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200907131613.12703-8-joro@8bytes.org>
-References: <20200907131613.12703-8-joro@8bytes.org>
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200907131613.12703-10-joro@8bytes.org>
+References: <20200907131613.12703-10-joro@8bytes.org>
 MIME-Version: 1.0
-Message-ID: <159972974988.20229.12368644005924575172.tip-bot2@tip-bot2>
+Message-ID: <159972974905.20229.12387788721975405235.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,164 +57,132 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/seves branch of tip:
 
-Commit-ID:     05a2ae7c033ee30f25fbed3ceed549a5cac398a9
-Gitweb:        https://git.kernel.org/tip/05a2ae7c033ee30f25fbed3ceed549a5cac398a9
+Commit-ID:     172639d79977ca7b5ce6f84f6606262f4081718f
+Gitweb:        https://git.kernel.org/tip/172639d79977ca7b5ce6f84f6606262f4081718f
 Author:        Joerg Roedel <jroedel@suse.de>
-AuthorDate:    Mon, 07 Sep 2020 15:15:08 +02:00
+AuthorDate:    Mon, 07 Sep 2020 15:15:10 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
 CommitterDate: Mon, 07 Sep 2020 19:45:24 +02:00
 
-x86/insn: Make inat-tables.c suitable for pre-decompression code
+x86/umip: Factor out instruction decoding
 
-The inat-tables.c file has some arrays in it that contain pointers to
-other arrays. These pointers need to be relocated when the kernel
-image is moved to a different location.
+Factor out the code used to decode an instruction with the correct
+address and operand sizes to a helper function.
 
-The pre-decompression boot-code has no support for applying ELF
-relocations, so initialize these arrays at runtime in the
-pre-decompression code to make sure all pointers are correctly
-initialized.
+No functional changes.
 
 Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Acked-by: Masami Hiramatsu <mhiramat@kernel.org>
-Link: https://lkml.kernel.org/r/20200907131613.12703-8-joro@8bytes.org
+Link: https://lkml.kernel.org/r/20200907131613.12703-10-joro@8bytes.org
 ---
- arch/x86/tools/gen-insn-attr-x86.awk       | 50 ++++++++++++++++++++-
- tools/arch/x86/tools/gen-insn-attr-x86.awk | 50 ++++++++++++++++++++-
- 2 files changed, 98 insertions(+), 2 deletions(-)
+ arch/x86/include/asm/insn-eval.h |  2 +-
+ arch/x86/kernel/umip.c           | 23 +----------------
+ arch/x86/lib/insn-eval.c         | 45 +++++++++++++++++++++++++++++++-
+ 3 files changed, 48 insertions(+), 22 deletions(-)
 
-diff --git a/arch/x86/tools/gen-insn-attr-x86.awk b/arch/x86/tools/gen-insn-attr-x86.awk
-index a42015b..af38469 100644
---- a/arch/x86/tools/gen-insn-attr-x86.awk
-+++ b/arch/x86/tools/gen-insn-attr-x86.awk
-@@ -362,6 +362,9 @@ function convert_operands(count,opnd,       i,j,imm,mod)
- END {
- 	if (awkchecked != "")
- 		exit 1
-+
-+	print "#ifndef __BOOT_COMPRESSED\n"
-+
- 	# print escape opcode map's array
- 	print "/* Escape opcode map array */"
- 	print "const insn_attr_t * const inat_escape_tables[INAT_ESC_MAX + 1]" \
-@@ -388,6 +391,51 @@ END {
- 		for (j = 0; j < max_lprefix; j++)
- 			if (atable[i,j])
- 				print "	["i"]["j"] = "atable[i,j]","
--	print "};"
-+	print "};\n"
-+
-+	print "#else /* !__BOOT_COMPRESSED */\n"
-+
-+	print "/* Escape opcode map array */"
-+	print "static const insn_attr_t *inat_escape_tables[INAT_ESC_MAX + 1]" \
-+	      "[INAT_LSTPFX_MAX + 1];"
-+	print ""
-+
-+	print "/* Group opcode map array */"
-+	print "static const insn_attr_t *inat_group_tables[INAT_GRP_MAX + 1]"\
-+	      "[INAT_LSTPFX_MAX + 1];"
-+	print ""
-+
-+	print "/* AVX opcode map array */"
-+	print "static const insn_attr_t *inat_avx_tables[X86_VEX_M_MAX + 1]"\
-+	      "[INAT_LSTPFX_MAX + 1];"
-+	print ""
-+
-+	print "static void inat_init_tables(void)"
-+	print "{"
-+
-+	# print escape opcode map's array
-+	print "\t/* Print Escape opcode map array */"
-+	for (i = 0; i < geid; i++)
-+		for (j = 0; j < max_lprefix; j++)
-+			if (etable[i,j])
-+				print "\tinat_escape_tables["i"]["j"] = "etable[i,j]";"
-+	print ""
-+
-+	# print group opcode map's array
-+	print "\t/* Print Group opcode map array */"
-+	for (i = 0; i < ggid; i++)
-+		for (j = 0; j < max_lprefix; j++)
-+			if (gtable[i,j])
-+				print "\tinat_group_tables["i"]["j"] = "gtable[i,j]";"
-+	print ""
-+	# print AVX opcode map's array
-+	print "\t/* Print AVX opcode map array */"
-+	for (i = 0; i < gaid; i++)
-+		for (j = 0; j < max_lprefix; j++)
-+			if (atable[i,j])
-+				print "\tinat_avx_tables["i"]["j"] = "atable[i,j]";"
-+
-+	print "}"
-+	print "#endif"
- }
+diff --git a/arch/x86/include/asm/insn-eval.h b/arch/x86/include/asm/insn-eval.h
+index b8b9ef1..392b4fe 100644
+--- a/arch/x86/include/asm/insn-eval.h
++++ b/arch/x86/include/asm/insn-eval.h
+@@ -21,5 +21,7 @@ unsigned long insn_get_seg_base(struct pt_regs *regs, int seg_reg_idx);
+ int insn_get_code_seg_params(struct pt_regs *regs);
+ int insn_fetch_from_user(struct pt_regs *regs,
+ 			 unsigned char buf[MAX_INSN_SIZE]);
++bool insn_decode(struct insn *insn, struct pt_regs *regs,
++		 unsigned char buf[MAX_INSN_SIZE], int buf_size);
  
-diff --git a/tools/arch/x86/tools/gen-insn-attr-x86.awk b/tools/arch/x86/tools/gen-insn-attr-x86.awk
-index a42015b..af38469 100644
---- a/tools/arch/x86/tools/gen-insn-attr-x86.awk
-+++ b/tools/arch/x86/tools/gen-insn-attr-x86.awk
-@@ -362,6 +362,9 @@ function convert_operands(count,opnd,       i,j,imm,mod)
- END {
- 	if (awkchecked != "")
- 		exit 1
-+
-+	print "#ifndef __BOOT_COMPRESSED\n"
-+
- 	# print escape opcode map's array
- 	print "/* Escape opcode map array */"
- 	print "const insn_attr_t * const inat_escape_tables[INAT_ESC_MAX + 1]" \
-@@ -388,6 +391,51 @@ END {
- 		for (j = 0; j < max_lprefix; j++)
- 			if (atable[i,j])
- 				print "	["i"]["j"] = "atable[i,j]","
--	print "};"
-+	print "};\n"
-+
-+	print "#else /* !__BOOT_COMPRESSED */\n"
-+
-+	print "/* Escape opcode map array */"
-+	print "static const insn_attr_t *inat_escape_tables[INAT_ESC_MAX + 1]" \
-+	      "[INAT_LSTPFX_MAX + 1];"
-+	print ""
-+
-+	print "/* Group opcode map array */"
-+	print "static const insn_attr_t *inat_group_tables[INAT_GRP_MAX + 1]"\
-+	      "[INAT_LSTPFX_MAX + 1];"
-+	print ""
-+
-+	print "/* AVX opcode map array */"
-+	print "static const insn_attr_t *inat_avx_tables[X86_VEX_M_MAX + 1]"\
-+	      "[INAT_LSTPFX_MAX + 1];"
-+	print ""
-+
-+	print "static void inat_init_tables(void)"
-+	print "{"
-+
-+	# print escape opcode map's array
-+	print "\t/* Print Escape opcode map array */"
-+	for (i = 0; i < geid; i++)
-+		for (j = 0; j < max_lprefix; j++)
-+			if (etable[i,j])
-+				print "\tinat_escape_tables["i"]["j"] = "etable[i,j]";"
-+	print ""
-+
-+	# print group opcode map's array
-+	print "\t/* Print Group opcode map array */"
-+	for (i = 0; i < ggid; i++)
-+		for (j = 0; j < max_lprefix; j++)
-+			if (gtable[i,j])
-+				print "\tinat_group_tables["i"]["j"] = "gtable[i,j]";"
-+	print ""
-+	# print AVX opcode map's array
-+	print "\t/* Print AVX opcode map array */"
-+	for (i = 0; i < gaid; i++)
-+		for (j = 0; j < max_lprefix; j++)
-+			if (atable[i,j])
-+				print "\tinat_avx_tables["i"]["j"] = "atable[i,j]";"
-+
-+	print "}"
-+	print "#endif"
- }
+ #endif /* _ASM_X86_INSN_EVAL_H */
+diff --git a/arch/x86/kernel/umip.c b/arch/x86/kernel/umip.c
+index ad135be..f6225bf 100644
+--- a/arch/x86/kernel/umip.c
++++ b/arch/x86/kernel/umip.c
+@@ -342,7 +342,6 @@ bool fixup_umip_exception(struct pt_regs *regs)
+ 	unsigned long *reg_addr;
+ 	void __user *uaddr;
+ 	struct insn insn;
+-	int seg_defs;
  
+ 	if (!regs)
+ 		return false;
+@@ -357,27 +356,7 @@ bool fixup_umip_exception(struct pt_regs *regs)
+ 	if (!nr_copied)
+ 		return false;
+ 
+-	insn_init(&insn, buf, nr_copied, user_64bit_mode(regs));
+-
+-	/*
+-	 * Override the default operand and address sizes with what is specified
+-	 * in the code segment descriptor. The instruction decoder only sets
+-	 * the address size it to either 4 or 8 address bytes and does nothing
+-	 * for the operand bytes. This OK for most of the cases, but we could
+-	 * have special cases where, for instance, a 16-bit code segment
+-	 * descriptor is used.
+-	 * If there is an address override prefix, the instruction decoder
+-	 * correctly updates these values, even for 16-bit defaults.
+-	 */
+-	seg_defs = insn_get_code_seg_params(regs);
+-	if (seg_defs == -EINVAL)
+-		return false;
+-
+-	insn.addr_bytes = INSN_CODE_SEG_ADDR_SZ(seg_defs);
+-	insn.opnd_bytes = INSN_CODE_SEG_OPND_SZ(seg_defs);
+-
+-	insn_get_length(&insn);
+-	if (nr_copied < insn.length)
++	if (!insn_decode(&insn, regs, buf, nr_copied))
+ 		return false;
+ 
+ 	umip_inst = identify_insn(&insn);
+diff --git a/arch/x86/lib/insn-eval.c b/arch/x86/lib/insn-eval.c
+index 947b7f1..2323c85 100644
+--- a/arch/x86/lib/insn-eval.c
++++ b/arch/x86/lib/insn-eval.c
+@@ -1405,3 +1405,48 @@ int insn_fetch_from_user(struct pt_regs *regs, unsigned char buf[MAX_INSN_SIZE])
+ 
+ 	return MAX_INSN_SIZE - not_copied;
+ }
++
++/**
++ * insn_decode() - Decode an instruction
++ * @insn:	Structure to store decoded instruction
++ * @regs:	Structure with register values as seen when entering kernel mode
++ * @buf:	Buffer containing the instruction bytes
++ * @buf_size:   Number of instruction bytes available in buf
++ *
++ * Decodes the instruction provided in buf and stores the decoding results in
++ * insn. Also determines the correct address and operand sizes.
++ *
++ * Returns:
++ *
++ * True if instruction was decoded, False otherwise.
++ */
++bool insn_decode(struct insn *insn, struct pt_regs *regs,
++		 unsigned char buf[MAX_INSN_SIZE], int buf_size)
++{
++	int seg_defs;
++
++	insn_init(insn, buf, buf_size, user_64bit_mode(regs));
++
++	/*
++	 * Override the default operand and address sizes with what is specified
++	 * in the code segment descriptor. The instruction decoder only sets
++	 * the address size it to either 4 or 8 address bytes and does nothing
++	 * for the operand bytes. This OK for most of the cases, but we could
++	 * have special cases where, for instance, a 16-bit code segment
++	 * descriptor is used.
++	 * If there is an address override prefix, the instruction decoder
++	 * correctly updates these values, even for 16-bit defaults.
++	 */
++	seg_defs = insn_get_code_seg_params(regs);
++	if (seg_defs == -EINVAL)
++		return false;
++
++	insn->addr_bytes = INSN_CODE_SEG_ADDR_SZ(seg_defs);
++	insn->opnd_bytes = INSN_CODE_SEG_OPND_SZ(seg_defs);
++
++	insn_get_length(insn);
++	if (buf_size < insn->length)
++		return false;
++
++	return true;
++}
