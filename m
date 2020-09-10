@@ -2,16 +2,16 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D8D442641FA
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Sep 2020 11:30:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B180264213
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Sep 2020 11:32:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730460AbgIJJay (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 10 Sep 2020 05:30:54 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:38970 "EHLO
+        id S1730449AbgIJJbw (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 10 Sep 2020 05:31:52 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:38690 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730401AbgIJJYf (ORCPT
+        with ESMTP id S1730501AbgIJJYW (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 10 Sep 2020 05:24:35 -0400
+        Thu, 10 Sep 2020 05:24:22 -0400
 Date:   Thu, 10 Sep 2020 09:22:31 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1599729752;
@@ -20,12 +20,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=1uwb+6C4Y109KlNB2Aw0X0SoRhS6c6ZFvINH5OGcDx4=;
-        b=trCYcFbzgtRHPPaPOwSEk8vno5QLY2+EcXN6RlyphWFboSIUevMSSRTysyzS+nt0itsG5C
-        RV55OwcEItLKnOJMW2K6Lw2MtKDYCYjAniQOXALqiv2r23oKU27rbmPaDFKcX700unMvv6
-        FchYq8oYXtwD9focxC6V1TCfnU17F1d+HJYkgcM53bt1J5BrdL3B8QxLMV7b1bVB9rb6oP
-        SWe7BXYcIKD0ioJrpc5BXzCp/JgAtTxg869N4NjU2QFB8lZTpfPo5ILIx66r71K5nsFzNz
-        ME+dKcu2hmyzaHeVUaXdPAbyhSEIKKKer41tDwRmGUDbKgck6NT+/M6GlvWbOA==
+        bh=IR+FsQQLtHSmJ/UQhW5PuQNEOuR3TC/sP9YZdKQZ9s4=;
+        b=1jwRBYtApAPMYrIRhNFIbRGxu0Q13xivS2JJSRvL6NVrgONWHy0mT117I/0FbaxxV9TN2t
+        uDaId7f5cBUDoylJ6+CZ7LU4f8Dl7n44YvWLLBYYKOoxWI/mKPR/QMuOTx1jg2+niuIzjz
+        leXKBH3u/wz1IM1ogSSs4tFN95EwpRYdsVnxQseD1yN1zbH7G/yL7GGMmc9sg/BZnDNObW
+        JtQ0uQX8AI7LCZjPfS2KO4Y5McD8qhB3BHB0jcrjH0/ZDisi4KzsVkW7J6oe+K5Dthjf8X
+        iZ5ZdxE1ww2+2fkJqHMDSFwWZPdtHXusmNBygG6liAQ3hg+zVbZhpNE3X7DPBg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1599729752;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -33,20 +33,19 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=1uwb+6C4Y109KlNB2Aw0X0SoRhS6c6ZFvINH5OGcDx4=;
-        b=5U9bKwlGQ+arvVnxbIbGthljUopjwENTkWQOcZVOjh0xbCmm9q2rfImjjTI9pxQZIjraX0
-        3bmLSfpO+gqo7DBw==
-From:   "tip-bot2 for Tom Lendacky" <tip-bot2@linutronix.de>
+        bh=IR+FsQQLtHSmJ/UQhW5PuQNEOuR3TC/sP9YZdKQZ9s4=;
+        b=IHHh9z1a3NXEgsHOcLGcYE+/UPoMUrxtCBqWI/sIoyfdI1ZVfZttRmxpPCBfqy+qJUPKlN
+        9sY7O2ffPVFss5DA==
+From:   "tip-bot2 for Joerg Roedel" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/seves] KVM: SVM: Add GHCB definitions
-Cc:     Tom Lendacky <thomas.lendacky@amd.com>,
-        Joerg Roedel <jroedel@suse.de>, Borislav Petkov <bp@suse.de>,
+Subject: [tip: x86/seves] KVM: SVM: Add GHCB Accessor functions
+Cc:     Joerg Roedel <jroedel@suse.de>, Borislav Petkov <bp@suse.de>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200907131613.12703-3-joro@8bytes.org>
-References: <20200907131613.12703-3-joro@8bytes.org>
+In-Reply-To: <20200907131613.12703-4-joro@8bytes.org>
+References: <20200907131613.12703-4-joro@8bytes.org>
 MIME-Version: 1.0
-Message-ID: <159972975196.20229.1038177390621739891.tip-bot2@tip-bot2>
+Message-ID: <159972975153.20229.10355565376930931364.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,104 +57,76 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/seves branch of tip:
 
-Commit-ID:     d07f46f9f51afc7fc9f021eae19eba3c2e7870ac
-Gitweb:        https://git.kernel.org/tip/d07f46f9f51afc7fc9f021eae19eba3c2e7870ac
-Author:        Tom Lendacky <thomas.lendacky@amd.com>
-AuthorDate:    Mon, 07 Sep 2020 15:15:03 +02:00
+Commit-ID:     3702c2f4eed2188440f65ecdfc89165106fe565d
+Gitweb:        https://git.kernel.org/tip/3702c2f4eed2188440f65ecdfc89165106fe565d
+Author:        Joerg Roedel <jroedel@suse.de>
+AuthorDate:    Mon, 07 Sep 2020 15:15:04 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
 CommitterDate: Mon, 07 Sep 2020 19:45:24 +02:00
 
-KVM: SVM: Add GHCB definitions
+KVM: SVM: Add GHCB Accessor functions
 
-Extend the vmcb_safe_area with SEV-ES fields and add a new
-'struct ghcb' which will be used for guest-hypervisor communication.
+Building a correct GHCB for the hypervisor requires setting valid bits
+in the GHCB. Simplify that process by providing accessor functions to
+set values and to update the valid bitmap and to check the valid bitmap
+in KVM.
 
-Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
 Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20200907131613.12703-3-joro@8bytes.org
+Link: https://lkml.kernel.org/r/20200907131613.12703-4-joro@8bytes.org
 ---
- arch/x86/include/asm/svm.h | 51 +++++++++++++++++++++++++++++++++++--
- arch/x86/kvm/svm/svm.c     |  2 +-
- 2 files changed, 51 insertions(+), 2 deletions(-)
+ arch/x86/include/asm/svm.h | 43 +++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 43 insertions(+)
 
 diff --git a/arch/x86/include/asm/svm.h b/arch/x86/include/asm/svm.h
-index 8a1f538..acac55d 100644
+index acac55d..06e5258 100644
 --- a/arch/x86/include/asm/svm.h
 +++ b/arch/x86/include/asm/svm.h
-@@ -200,13 +200,60 @@ struct __attribute__ ((__packed__)) vmcb_save_area {
- 	u64 br_to;
- 	u64 last_excp_from;
- 	u64 last_excp_to;
-+
-+	/*
-+	 * The following part of the save area is valid only for
-+	 * SEV-ES guests when referenced through the GHCB.
-+	 */
-+	u8 reserved_7[104];
-+	u64 reserved_8;		/* rax already available at 0x01f8 */
-+	u64 rcx;
-+	u64 rdx;
-+	u64 rbx;
-+	u64 reserved_9;		/* rsp already available at 0x01d8 */
-+	u64 rbp;
-+	u64 rsi;
-+	u64 rdi;
-+	u64 r8;
-+	u64 r9;
-+	u64 r10;
-+	u64 r11;
-+	u64 r12;
-+	u64 r13;
-+	u64 r14;
-+	u64 r15;
-+	u8 reserved_10[16];
-+	u64 sw_exit_code;
-+	u64 sw_exit_info_1;
-+	u64 sw_exit_info_2;
-+	u64 sw_scratch;
-+	u8 reserved_11[56];
-+	u64 xcr0;
-+	u8 valid_bitmap[16];
-+	u64 x87_state_gpa;
- };
+@@ -345,4 +345,47 @@ struct __attribute__ ((__packed__)) vmcb {
  
-+struct ghcb {
-+	struct vmcb_save_area save;
-+	u8 reserved_save[2048 - sizeof(struct vmcb_save_area)];
-+
-+	u8 shared_buffer[2032];
-+
-+	u8 reserved_1[10];
-+	u16 protocol_version;	/* negotiated SEV-ES/GHCB protocol version */
-+	u32 ghcb_usage;
-+} __packed;
-+
-+
-+#define EXPECTED_VMCB_SAVE_AREA_SIZE		1032
-+#define EXPECTED_VMCB_CONTROL_AREA_SIZE		256
-+#define EXPECTED_GHCB_SIZE			PAGE_SIZE
+ #define SVM_CR0_SELECTIVE_MASK (X86_CR0_TS | X86_CR0_MP)
  
- static inline void __unused_size_checks(void)
- {
--	BUILD_BUG_ON(sizeof(struct vmcb_save_area) != 0x298);
--	BUILD_BUG_ON(sizeof(struct vmcb_control_area) != 256);
-+	BUILD_BUG_ON(sizeof(struct vmcb_save_area)	!= EXPECTED_VMCB_SAVE_AREA_SIZE);
-+	BUILD_BUG_ON(sizeof(struct vmcb_control_area)	!= EXPECTED_VMCB_CONTROL_AREA_SIZE);
-+	BUILD_BUG_ON(sizeof(struct ghcb)		!= EXPECTED_GHCB_SIZE);
- }
- 
- struct __attribute__ ((__packed__)) vmcb {
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index 0194336..1db4fdc 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -4164,6 +4164,8 @@ static struct kvm_x86_init_ops svm_init_ops __initdata = {
- 
- static int __init svm_init(void)
- {
-+	__unused_size_checks();
++/* GHCB Accessor functions */
 +
- 	return kvm_init(&svm_init_ops, sizeof(struct vcpu_svm),
- 			__alignof__(struct vcpu_svm), THIS_MODULE);
- }
++#define GHCB_BITMAP_IDX(field)							\
++	(offsetof(struct vmcb_save_area, field) / sizeof(u64))
++
++#define DEFINE_GHCB_ACCESSORS(field)						\
++	static inline bool ghcb_##field##_is_valid(const struct ghcb *ghcb)	\
++	{									\
++		return test_bit(GHCB_BITMAP_IDX(field),				\
++				(unsigned long *)&ghcb->save.valid_bitmap);	\
++	}									\
++										\
++	static inline void ghcb_set_##field(struct ghcb *ghcb, u64 value)	\
++	{									\
++		__set_bit(GHCB_BITMAP_IDX(field),				\
++			  (unsigned long *)&ghcb->save.valid_bitmap);		\
++		ghcb->save.field = value;					\
++	}
++
++DEFINE_GHCB_ACCESSORS(cpl)
++DEFINE_GHCB_ACCESSORS(rip)
++DEFINE_GHCB_ACCESSORS(rsp)
++DEFINE_GHCB_ACCESSORS(rax)
++DEFINE_GHCB_ACCESSORS(rcx)
++DEFINE_GHCB_ACCESSORS(rdx)
++DEFINE_GHCB_ACCESSORS(rbx)
++DEFINE_GHCB_ACCESSORS(rbp)
++DEFINE_GHCB_ACCESSORS(rsi)
++DEFINE_GHCB_ACCESSORS(rdi)
++DEFINE_GHCB_ACCESSORS(r8)
++DEFINE_GHCB_ACCESSORS(r9)
++DEFINE_GHCB_ACCESSORS(r10)
++DEFINE_GHCB_ACCESSORS(r11)
++DEFINE_GHCB_ACCESSORS(r12)
++DEFINE_GHCB_ACCESSORS(r13)
++DEFINE_GHCB_ACCESSORS(r14)
++DEFINE_GHCB_ACCESSORS(r15)
++DEFINE_GHCB_ACCESSORS(sw_exit_code)
++DEFINE_GHCB_ACCESSORS(sw_exit_info_1)
++DEFINE_GHCB_ACCESSORS(sw_exit_info_2)
++DEFINE_GHCB_ACCESSORS(sw_scratch)
++DEFINE_GHCB_ACCESSORS(xcr0)
++
+ #endif
