@@ -2,20 +2,20 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 35EF3264ED7
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Sep 2020 21:27:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 697C8264EDC
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Sep 2020 21:28:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726957AbgIJT1L (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 10 Sep 2020 15:27:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39986 "EHLO
+        id S1726675AbgIJT2R (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 10 Sep 2020 15:28:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39972 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731411AbgIJPsR (ORCPT
+        with ESMTP id S1731382AbgIJPsR (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Thu, 10 Sep 2020 11:48:17 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9163EC06135B;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FD95C06135A;
         Thu, 10 Sep 2020 08:08:31 -0700 (PDT)
-Date:   Thu, 10 Sep 2020 15:08:28 -0000
+Date:   Thu, 10 Sep 2020 15:08:29 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1599750509;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -23,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=FCurwOkbo5AoczvL3xuGbBKL9eeVyxXTS5Nyvj202ok=;
-        b=xwISuiDi1sPiik7upOitVxCZnCrtUXtPkl0OifZ6AqdPFS3EpBA3E2EsljCG9t/vs5HVuG
-        aj72LMu2PrQ9KJoe6FJipmWAdieKySeyt3KHcq4MsWFCJbW+sjTQbbHF4tibweY+dG3F5n
-        eBAgYiajXDsnHUlr0irrq7tDAGtA8EifAVyQzrRWuegpYOSGAHb/8c/EEfoi6CpreYOrIc
-        ufej1aGPceXkL3+tWaaaRe2in3cwmGaL2oa+veMi4E9sXr4eY6mwpFOId4l83w35AX6aZc
-        Zk8fRDXDBasLK4+UtLZjGMwE8chInEGDJLDGnc1MZRvJjir0WoptCj2exWXbsQ==
+        bh=XBHuPonnkskzksJG6Zbiq3X3NoXaFg2IEQhNB0u44dk=;
+        b=1zpVDFbwqSwixWiiVhhZI9t3RrgtIOywgCrOxNBfeviKrWTWsk1jo6mADVIvSTplGNbU9i
+        YbfwDnfAmBbGPgvOMQ8c3ntupfkKGofT+SQY08GD1kwj20aKt+cU1JCVX39+N9lHSdAKHW
+        1QBvQSfUnPSacb1eBGmVlGw8H7ld7FMbuYJX5CbjRziSKm4p9Mri1fcG8SgbFga4ZC3c18
+        3bgiEu1jqmwRZVT2a0qup6Ry5VF1RWG6JC8X1lrQzFmKdfODKTA0nfzWNWDaOsiFxz39N2
+        0m2GK+YK3EBh6TT2zqzqkFA+S/KeIfr/f54EfQ9nItMrb+maWfoX0NFu1xbMEA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1599750509;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,20 +36,21 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=FCurwOkbo5AoczvL3xuGbBKL9eeVyxXTS5Nyvj202ok=;
-        b=3aGRWhvnxY9HfKDAuvdR31y+PbjCa6C+AlEEKCuoiv8ZPnENVNtHwJlmcbbqW/nCr/Wz//
-        Ye4UA/d3Y/SGO0DA==
+        bh=XBHuPonnkskzksJG6Zbiq3X3NoXaFg2IEQhNB0u44dk=;
+        b=sqP/YqnopEtz6aJO018G34feZX0oIUi8GTM5XxcUh0qeuOv2gWFJcSn77AZlTuNSeUpK5u
+        hRSjavqHqbSwnEAg==
 From:   "tip-bot2 for Ahmed S. Darwish" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] mm/swap: Do not abuse the seqcount_t latching API
+Subject: [tip: locking/core] time/sched_clock: Use raw_read_seqcount_latch()
+ during suspend
 Cc:     "Ahmed S. Darwish" <a.darwish@linutronix.de>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <87y2pg9erj.fsf@vostro.fn.ogness.net>
-References: <87y2pg9erj.fsf@vostro.fn.ogness.net>
+In-Reply-To: <20200715092345.GA231464@debian-buster-darwi.lab.linutronix.de>
+References: <20200715092345.GA231464@debian-buster-darwi.lab.linutronix.de>
 MIME-Version: 1.0
-Message-ID: <159975050868.20229.18166886647511885303.tip-bot2@tip-bot2>
+Message-ID: <159975050909.20229.15551175096840400557.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,160 +62,47 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     6446a5131e24a834606c15a965fa920041581c2c
-Gitweb:        https://git.kernel.org/tip/6446a5131e24a834606c15a965fa920041581c2c
+Commit-ID:     58faf20a086bd34f91983609e26eac3d5fe76be3
+Gitweb:        https://git.kernel.org/tip/58faf20a086bd34f91983609e26eac3d5fe76be3
 Author:        Ahmed S. Darwish <a.darwish@linutronix.de>
-AuthorDate:    Thu, 27 Aug 2020 13:40:38 +02:00
+AuthorDate:    Thu, 27 Aug 2020 13:40:37 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Thu, 10 Sep 2020 11:19:28 +02:00
 
-mm/swap: Do not abuse the seqcount_t latching API
+time/sched_clock: Use raw_read_seqcount_latch() during suspend
 
-Commit eef1a429f234 ("mm/swap.c: piggyback lru_add_drain_all() calls")
-implemented an optimization mechanism to exit the to-be-started LRU
-drain operation (name it A) if another drain operation *started and
-finished* while (A) was blocked on the LRU draining mutex.
+sched_clock uses seqcount_t latching to switch between two storage
+places protected by the sequence counter. This allows it to have
+interruptible, NMI-safe, seqcount_t write side critical sections.
 
-This was done through a seqcount_t latch, which is an abuse of its
-semantics:
+Since 7fc26327b756 ("seqlock: Introduce raw_read_seqcount_latch()"),
+raw_read_seqcount_latch() became the standardized way for seqcount_t
+latch read paths. Due to the dependent load, it has one read memory
+barrier less than the currently used raw_read_seqcount() API.
 
-  1. seqcount_t latching should be used for the purpose of switching
-     between two storage places with sequence protection to allow
-     interruptible, preemptible, writer sections. The referenced
-     optimization mechanism has absolutely nothing to do with that.
+Use raw_read_seqcount_latch() for the suspend path.
 
-  2. The used raw_write_seqcount_latch() has two SMP write memory
-     barriers to insure one consistent storage place out of the two
-     storage places available. A full memory barrier is required
-     instead: to guarantee that the pagevec counter stores visible by
-     local CPU are visible to other CPUs -- before loading the current
-     drain generation.
+Commit aadd6e5caaac ("time/sched_clock: Use raw_read_seqcount_latch()")
+missed changing that instance of raw_read_seqcount().
 
-Beside the seqcount_t API abuse, the semantics of a latch sequence
-counter was force-fitted into the referenced optimization. What was
-meant is to track "generations" of LRU draining operations, where
-"global lru draining generation = x" implies that all generations
-0 < n <= x are already *scheduled* for draining -- thus nothing needs
-to be done if the current generation number n <= x.
-
-Remove the conceptually-inappropriate seqcount_t latch usage. Manually
-implement the referenced optimization using a counter and SMP memory
-barriers.
-
-Note, while at it, use the non-atomic variant of cpumask_set_cpu(),
-__cpumask_set_cpu(), due to the already existing mutex protection.
-
+References: 1809bfa44e10 ("timers, sched/clock: Avoid deadlock during read from NMI")
 Signed-off-by: Ahmed S. Darwish <a.darwish@linutronix.de>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/87y2pg9erj.fsf@vostro.fn.ogness.net
+Link: https://lkml.kernel.org/r/20200715092345.GA231464@debian-buster-darwi.lab.linutronix.de
 ---
- mm/swap.c | 65 ++++++++++++++++++++++++++++++++++++++++++++----------
- 1 file changed, 54 insertions(+), 11 deletions(-)
+ kernel/time/sched_clock.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/mm/swap.c b/mm/swap.c
-index d16d65d..a1ec807 100644
---- a/mm/swap.c
-+++ b/mm/swap.c
-@@ -763,10 +763,20 @@ static void lru_add_drain_per_cpu(struct work_struct *dummy)
+diff --git a/kernel/time/sched_clock.c b/kernel/time/sched_clock.c
+index 1c03eec..8c6b5fe 100644
+--- a/kernel/time/sched_clock.c
++++ b/kernel/time/sched_clock.c
+@@ -258,7 +258,7 @@ void __init generic_sched_clock_init(void)
   */
- void lru_add_drain_all(void)
+ static u64 notrace suspended_sched_clock_read(void)
  {
--	static seqcount_t seqcount = SEQCNT_ZERO(seqcount);
--	static DEFINE_MUTEX(lock);
-+	/*
-+	 * lru_drain_gen - Global pages generation number
-+	 *
-+	 * (A) Definition: global lru_drain_gen = x implies that all generations
-+	 *     0 < n <= x are already *scheduled* for draining.
-+	 *
-+	 * This is an optimization for the highly-contended use case where a
-+	 * user space workload keeps constantly generating a flow of pages for
-+	 * each CPU.
-+	 */
-+	static unsigned int lru_drain_gen;
- 	static struct cpumask has_work;
--	int cpu, seq;
-+	static DEFINE_MUTEX(lock);
-+	unsigned cpu, this_gen;
+-	unsigned int seq = raw_read_seqcount(&cd.seq);
++	unsigned int seq = raw_read_seqcount_latch(&cd.seq);
  
- 	/*
- 	 * Make sure nobody triggers this path before mm_percpu_wq is fully
-@@ -775,21 +785,54 @@ void lru_add_drain_all(void)
- 	if (WARN_ON(!mm_percpu_wq))
- 		return;
- 
--	seq = raw_read_seqcount_latch(&seqcount);
-+	/*
-+	 * Guarantee pagevec counter stores visible by this CPU are visible to
-+	 * other CPUs before loading the current drain generation.
-+	 */
-+	smp_mb();
-+
-+	/*
-+	 * (B) Locally cache global LRU draining generation number
-+	 *
-+	 * The read barrier ensures that the counter is loaded before the mutex
-+	 * is taken. It pairs with smp_mb() inside the mutex critical section
-+	 * at (D).
-+	 */
-+	this_gen = smp_load_acquire(&lru_drain_gen);
- 
- 	mutex_lock(&lock);
- 
- 	/*
--	 * Piggyback on drain started and finished while we waited for lock:
--	 * all pages pended at the time of our enter were drained from vectors.
-+	 * (C) Exit the draining operation if a newer generation, from another
-+	 * lru_add_drain_all(), was already scheduled for draining. Check (A).
- 	 */
--	if (__read_seqcount_retry(&seqcount, seq))
-+	if (unlikely(this_gen != lru_drain_gen))
- 		goto done;
- 
--	raw_write_seqcount_latch(&seqcount);
-+	/*
-+	 * (D) Increment global generation number
-+	 *
-+	 * Pairs with smp_load_acquire() at (B), outside of the critical
-+	 * section. Use a full memory barrier to guarantee that the new global
-+	 * drain generation number is stored before loading pagevec counters.
-+	 *
-+	 * This pairing must be done here, before the for_each_online_cpu loop
-+	 * below which drains the page vectors.
-+	 *
-+	 * Let x, y, and z represent some system CPU numbers, where x < y < z.
-+	 * Assume CPU #z is is in the middle of the for_each_online_cpu loop
-+	 * below and has already reached CPU #y's per-cpu data. CPU #x comes
-+	 * along, adds some pages to its per-cpu vectors, then calls
-+	 * lru_add_drain_all().
-+	 *
-+	 * If the paired barrier is done at any later step, e.g. after the
-+	 * loop, CPU #x will just exit at (C) and miss flushing out all of its
-+	 * added pages.
-+	 */
-+	WRITE_ONCE(lru_drain_gen, lru_drain_gen + 1);
-+	smp_mb();
- 
- 	cpumask_clear(&has_work);
--
- 	for_each_online_cpu(cpu) {
- 		struct work_struct *work = &per_cpu(lru_add_drain_work, cpu);
- 
-@@ -801,7 +844,7 @@ void lru_add_drain_all(void)
- 		    need_activate_page_drain(cpu)) {
- 			INIT_WORK(work, lru_add_drain_per_cpu);
- 			queue_work_on(cpu, mm_percpu_wq, work);
--			cpumask_set_cpu(cpu, &has_work);
-+			__cpumask_set_cpu(cpu, &has_work);
- 		}
- 	}
- 
-@@ -816,7 +859,7 @@ void lru_add_drain_all(void)
- {
- 	lru_add_drain();
+ 	return cd.read_data[seq & 1].epoch_cyc;
  }
--#endif
-+#endif /* CONFIG_SMP */
- 
- /**
-  * release_pages - batched put_page()
