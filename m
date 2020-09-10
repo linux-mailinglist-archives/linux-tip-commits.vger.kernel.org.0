@@ -2,50 +2,51 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B180264213
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Sep 2020 11:32:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 106F6264A59
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Sep 2020 18:54:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730449AbgIJJbw (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 10 Sep 2020 05:31:52 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:38690 "EHLO
+        id S1726899AbgIJQyP (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 10 Sep 2020 12:54:15 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:41162 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730501AbgIJJYW (ORCPT
+        with ESMTP id S1726591AbgIJQiR (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 10 Sep 2020 05:24:22 -0400
-Date:   Thu, 10 Sep 2020 09:22:31 -0000
+        Thu, 10 Sep 2020 12:38:17 -0400
+Date:   Thu, 10 Sep 2020 16:37:43 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1599729752;
+        s=2020; t=1599755865;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=IR+FsQQLtHSmJ/UQhW5PuQNEOuR3TC/sP9YZdKQZ9s4=;
-        b=1jwRBYtApAPMYrIRhNFIbRGxu0Q13xivS2JJSRvL6NVrgONWHy0mT117I/0FbaxxV9TN2t
-        uDaId7f5cBUDoylJ6+CZ7LU4f8Dl7n44YvWLLBYYKOoxWI/mKPR/QMuOTx1jg2+niuIzjz
-        leXKBH3u/wz1IM1ogSSs4tFN95EwpRYdsVnxQseD1yN1zbH7G/yL7GGMmc9sg/BZnDNObW
-        JtQ0uQX8AI7LCZjPfS2KO4Y5McD8qhB3BHB0jcrjH0/ZDisi4KzsVkW7J6oe+K5Dthjf8X
-        iZ5ZdxE1ww2+2fkJqHMDSFwWZPdtHXusmNBygG6liAQ3hg+zVbZhpNE3X7DPBg==
+        bh=swb/GFKEUcMl6eydIdfu3mru6VX/JUoaSCA+xSouJ7s=;
+        b=S9mE3rMrc8Z3kBHoiyH7BoB8Zk88rtZHKQZ3a15WutxsLGhNIpuz3GUAawtoE8XVn8kErc
+        mNUaDeNQPyvqKThFGIs5AUK/OxtPp9DtWZ7S5LrWI2hAtfsOdQnqbgkSg1zTZfCV1ic5Rv
+        36DIao8oSl5nUoBxlqTaY6vgsPCHG+BBTHo12AzRKlUKH4p6eygnVb/Qfp4RiV8O02ozRB
+        KXqpsYRG2V3rX5C8ilyrgOQgU7TFgeH7g1QwLG8SmuCfCK3F8H8Izclvl9+gHs/9gPHViI
+        7UcjwMsE3tPiXAeT53qvqI84jSaTMivaGuWudtIsyw2lYK96RHZia0RcS7NecQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1599729752;
+        s=2020e; t=1599755865;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=IR+FsQQLtHSmJ/UQhW5PuQNEOuR3TC/sP9YZdKQZ9s4=;
-        b=IHHh9z1a3NXEgsHOcLGcYE+/UPoMUrxtCBqWI/sIoyfdI1ZVfZttRmxpPCBfqy+qJUPKlN
-        9sY7O2ffPVFss5DA==
-From:   "tip-bot2 for Joerg Roedel" <tip-bot2@linutronix.de>
+        bh=swb/GFKEUcMl6eydIdfu3mru6VX/JUoaSCA+xSouJ7s=;
+        b=5CY65HomqyX89UGxBYP8iJh8OmbmlITyl+hJRf88LcTDg71O/mzotiq//KZiTBPqgkf9AC
+        68jcz3hacJbNdIAw==
+From:   "tip-bot2 for Arvind Sankar" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/seves] KVM: SVM: Add GHCB Accessor functions
-Cc:     Joerg Roedel <jroedel@suse.de>, Borislav Petkov <bp@suse.de>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200907131613.12703-4-joro@8bytes.org>
-References: <20200907131613.12703-4-joro@8bytes.org>
+Subject: [tip: x86/fpu] x86/fpu: Allow multiple bits in clearcpuid= parameter
+Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
+        Borislav Petkov <bp@suse.de>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200907213919.2423441-1-nivedita@alum.mit.edu>
+References: <20200907213919.2423441-1-nivedita@alum.mit.edu>
 MIME-Version: 1.0
-Message-ID: <159972975153.20229.10355565376930931364.tip-bot2@tip-bot2>
+Message-ID: <159975586380.20229.16836491177743031748.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -55,78 +56,103 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/seves branch of tip:
+The following commit has been merged into the x86/fpu branch of tip:
 
-Commit-ID:     3702c2f4eed2188440f65ecdfc89165106fe565d
-Gitweb:        https://git.kernel.org/tip/3702c2f4eed2188440f65ecdfc89165106fe565d
-Author:        Joerg Roedel <jroedel@suse.de>
-AuthorDate:    Mon, 07 Sep 2020 15:15:04 +02:00
+Commit-ID:     0a4bb5e5507a585532cc413125b921c8546fc39f
+Gitweb:        https://git.kernel.org/tip/0a4bb5e5507a585532cc413125b921c8546fc39f
+Author:        Arvind Sankar <nivedita@alum.mit.edu>
+AuthorDate:    Mon, 07 Sep 2020 17:39:19 -04:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Mon, 07 Sep 2020 19:45:24 +02:00
+CommitterDate: Thu, 10 Sep 2020 18:32:05 +02:00
 
-KVM: SVM: Add GHCB Accessor functions
+x86/fpu: Allow multiple bits in clearcpuid= parameter
 
-Building a correct GHCB for the hypervisor requires setting valid bits
-in the GHCB. Simplify that process by providing accessor functions to
-set values and to update the valid bitmap and to check the valid bitmap
-in KVM.
+Commit
 
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+  0c2a3913d6f5 ("x86/fpu: Parse clearcpuid= as early XSAVE argument")
+
+changed clearcpuid parsing from __setup() to cmdline_find_option().
+While the __setup() function would have been called for each clearcpuid=
+parameter on the command line, cmdline_find_option() will only return
+the last one, so the change effectively made it impossible to disable
+more than one bit.
+
+Allow a comma-separated list of bit numbers as the argument for
+clearcpuid to allow multiple bits to be disabled again. Log the bits
+being disabled for informational purposes.
+
+Also fix the check on the return value of cmdline_find_option(). It
+returns -1 when the option is not found, so testing as a boolean is
+incorrect.
+
+Fixes: 0c2a3913d6f5 ("x86/fpu: Parse clearcpuid= as early XSAVE argument")
+Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20200907131613.12703-4-joro@8bytes.org
+Link: https://lkml.kernel.org/r/20200907213919.2423441-1-nivedita@alum.mit.edu
 ---
- arch/x86/include/asm/svm.h | 43 +++++++++++++++++++++++++++++++++++++-
- 1 file changed, 43 insertions(+)
+ Documentation/admin-guide/kernel-parameters.txt |  2 +-
+ arch/x86/kernel/fpu/init.c                      | 30 +++++++++++-----
+ 2 files changed, 23 insertions(+), 9 deletions(-)
 
-diff --git a/arch/x86/include/asm/svm.h b/arch/x86/include/asm/svm.h
-index acac55d..06e5258 100644
---- a/arch/x86/include/asm/svm.h
-+++ b/arch/x86/include/asm/svm.h
-@@ -345,4 +345,47 @@ struct __attribute__ ((__packed__)) vmcb {
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index a106874..ffe8643 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -577,7 +577,7 @@
+ 			loops can be debugged more effectively on production
+ 			systems.
  
- #define SVM_CR0_SELECTIVE_MASK (X86_CR0_TS | X86_CR0_MP)
+-	clearcpuid=BITNUM [X86]
++	clearcpuid=BITNUM[,BITNUM...] [X86]
+ 			Disable CPUID feature X for the kernel. See
+ 			arch/x86/include/asm/cpufeatures.h for the valid bit
+ 			numbers. Note the Linux specific bits are not necessarily
+diff --git a/arch/x86/kernel/fpu/init.c b/arch/x86/kernel/fpu/init.c
+index 61ddc3a..f8ff895 100644
+--- a/arch/x86/kernel/fpu/init.c
++++ b/arch/x86/kernel/fpu/init.c
+@@ -243,9 +243,9 @@ static void __init fpu__init_system_ctx_switch(void)
+  */
+ static void __init fpu__init_parse_early_param(void)
+ {
+-	char arg[32];
++	char arg[128];
+ 	char *argptr = arg;
+-	int bit;
++	int arglen, res, bit;
  
-+/* GHCB Accessor functions */
+ #ifdef CONFIG_X86_32
+ 	if (cmdline_find_option_bool(boot_command_line, "no387"))
+@@ -268,12 +268,26 @@ static void __init fpu__init_parse_early_param(void)
+ 	if (cmdline_find_option_bool(boot_command_line, "noxsaves"))
+ 		setup_clear_cpu_cap(X86_FEATURE_XSAVES);
+ 
+-	if (cmdline_find_option(boot_command_line, "clearcpuid", arg,
+-				sizeof(arg)) &&
+-	    get_option(&argptr, &bit) &&
+-	    bit >= 0 &&
+-	    bit < NCAPINTS * 32)
+-		setup_clear_cpu_cap(bit);
++	arglen = cmdline_find_option(boot_command_line, "clearcpuid", arg, sizeof(arg));
++	if (arglen <= 0)
++		return;
 +
-+#define GHCB_BITMAP_IDX(field)							\
-+	(offsetof(struct vmcb_save_area, field) / sizeof(u64))
++	pr_info("Clearing CPUID bits:");
++	do {
++		res = get_option(&argptr, &bit);
++		if (res == 0 || res == 3)
++			break;
 +
-+#define DEFINE_GHCB_ACCESSORS(field)						\
-+	static inline bool ghcb_##field##_is_valid(const struct ghcb *ghcb)	\
-+	{									\
-+		return test_bit(GHCB_BITMAP_IDX(field),				\
-+				(unsigned long *)&ghcb->save.valid_bitmap);	\
-+	}									\
-+										\
-+	static inline void ghcb_set_##field(struct ghcb *ghcb, u64 value)	\
-+	{									\
-+		__set_bit(GHCB_BITMAP_IDX(field),				\
-+			  (unsigned long *)&ghcb->save.valid_bitmap);		\
-+		ghcb->save.field = value;					\
-+	}
++		/* If the argument was too long, the last bit may be cut off */
++		if (res == 1 && arglen >= sizeof(arg))
++			break;
 +
-+DEFINE_GHCB_ACCESSORS(cpl)
-+DEFINE_GHCB_ACCESSORS(rip)
-+DEFINE_GHCB_ACCESSORS(rsp)
-+DEFINE_GHCB_ACCESSORS(rax)
-+DEFINE_GHCB_ACCESSORS(rcx)
-+DEFINE_GHCB_ACCESSORS(rdx)
-+DEFINE_GHCB_ACCESSORS(rbx)
-+DEFINE_GHCB_ACCESSORS(rbp)
-+DEFINE_GHCB_ACCESSORS(rsi)
-+DEFINE_GHCB_ACCESSORS(rdi)
-+DEFINE_GHCB_ACCESSORS(r8)
-+DEFINE_GHCB_ACCESSORS(r9)
-+DEFINE_GHCB_ACCESSORS(r10)
-+DEFINE_GHCB_ACCESSORS(r11)
-+DEFINE_GHCB_ACCESSORS(r12)
-+DEFINE_GHCB_ACCESSORS(r13)
-+DEFINE_GHCB_ACCESSORS(r14)
-+DEFINE_GHCB_ACCESSORS(r15)
-+DEFINE_GHCB_ACCESSORS(sw_exit_code)
-+DEFINE_GHCB_ACCESSORS(sw_exit_info_1)
-+DEFINE_GHCB_ACCESSORS(sw_exit_info_2)
-+DEFINE_GHCB_ACCESSORS(sw_scratch)
-+DEFINE_GHCB_ACCESSORS(xcr0)
-+
- #endif
++		if (bit >= 0 && bit < NCAPINTS * 32) {
++			pr_cont(" " X86_CAP_FMT, x86_cap_flag(bit));
++			setup_clear_cpu_cap(bit);
++		}
++	} while (res == 2);
++	pr_cont("\n");
+ }
+ 
+ /*
