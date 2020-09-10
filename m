@@ -2,20 +2,20 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F8B0264EE4
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Sep 2020 21:29:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 184D2264EE5
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Sep 2020 21:29:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727842AbgIJT27 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 10 Sep 2020 15:28:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39988 "EHLO
+        id S1727900AbgIJT3C (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 10 Sep 2020 15:29:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39984 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731412AbgIJPsR (ORCPT
+        with ESMTP id S1731409AbgIJPsR (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Thu, 10 Sep 2020 11:48:17 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91B34C061349;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9ABBCC06134A;
         Thu, 10 Sep 2020 08:08:26 -0700 (PDT)
-Date:   Thu, 10 Sep 2020 15:08:23 -0000
+Date:   Thu, 10 Sep 2020 15:08:24 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1599750504;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -23,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=13k2MSnx0nJmSLqX5FucJWOQB6CkTBmHPvBZIFgl7Go=;
-        b=mqMECgUwWnxjs8nY8ADe2vrYGwxmhpKkUv71STpJm/esuEiW78v79a4OKgbBGuQWw2kH6e
-        0xbZm/irkuTSeVhHSpwZYbor0na6/okBJO8+FmJrMeT5FPLu85TH6Qg1or0xHB5nL4RGuo
-        TbeFkK/JmWbt7oSJoqpGR77OKmBqv7ldwXnhM45zgtMi/b06YxN1wpHPR6wah1yynLH8qo
-        9ArQFooGy6gU155nNB2nvjWzukyToqr7to1+WvrfmoZzQzrDhLr+psua81kqiHOEy7FHJ+
-        IdYysmIQbbAipAyW8xGkT33yvrRyqfz2jVHFFjQEU7tvuhH/lepjnksUzbpLCA==
+        bh=sIInR5wlnZ0uM2CwiFxFRLaAPmFK9WKvzv7GezjqOKY=;
+        b=rd7YcCMW5XP1Je7kgyVfhhCQIzvR0w/NY4C81nIucHnZTTq3fRfdb5RjO5gjtlHl2tjKMO
+        ya86Ihr8TcuBRmzff72z4xJwBhFZRlKv9Q2MfRztodQML/CdaUam/At1CNFFT3BzgbEyQH
+        MrSSWLwCdh2HY7GeCaw2Ov+qXkSpCX9TpFrXm34RiMu8Pl6tnm92sdw56ynqLM9Ls06Su0
+        +EEQjk+Z5GIHfHvTA50UPjOrgXDSnH7p1ryH9E2mai9w9u6+sVq04KWnkgOhXUUPZWRMVT
+        K8XfXnessz1EJD4rArf2PJfWLFMwfrFt3thXZrmqv3GTcKhT/bPruozJmJwg/A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1599750504;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,20 +36,21 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=13k2MSnx0nJmSLqX5FucJWOQB6CkTBmHPvBZIFgl7Go=;
-        b=WObvpuEpXLlfnkw9Xp11EBmKNWmYoVW8psuG84HsMGisn/nmyJNdGrfTSVuIiumrNSObet
-        Tf0uuXINfvReLfDA==
+        bh=sIInR5wlnZ0uM2CwiFxFRLaAPmFK9WKvzv7GezjqOKY=;
+        b=q8R0ICbKjA16v6lxK0jbkR4OMXRjn0mHjIY3qLPSLqr8AwQ5acxMd5KJAwXc4/93Wdzxmx
+        VhNqNYETSI77RHDA==
 From:   "tip-bot2 for Ahmed S. Darwish" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] seqlock: PREEMPT_RT: Do not starve seqlock_t writers
+Subject: [tip: locking/core] seqlock: seqcount_LOCKNAME_t: Introduce
+ PREEMPT_RT support
 Cc:     "Ahmed S. Darwish" <a.darwish@linutronix.de>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200904153231.11994-6-a.darwish@linutronix.de>
-References: <20200904153231.11994-6-a.darwish@linutronix.de>
+In-Reply-To: <20200519214547.352050-1-a.darwish@linutronix.de>
+References: <20200519214547.352050-1-a.darwish@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <159975050367.20229.11965021456342644474.tip-bot2@tip-bot2>
+Message-ID: <159975050414.20229.15047242407953588716.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,151 +62,147 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     1909760f5fc3f123e47b4e24e0ccdc0fc8f3f106
-Gitweb:        https://git.kernel.org/tip/1909760f5fc3f123e47b4e24e0ccdc0fc8f3f106
+Commit-ID:     8117ab508f9c476e0a10b9db7f4818f784cf3176
+Gitweb:        https://git.kernel.org/tip/8117ab508f9c476e0a10b9db7f4818f784cf3176
 Author:        Ahmed S. Darwish <a.darwish@linutronix.de>
-AuthorDate:    Fri, 04 Sep 2020 17:32:31 +02:00
+AuthorDate:    Fri, 04 Sep 2020 17:32:30 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Thu, 10 Sep 2020 11:19:31 +02:00
 
-seqlock: PREEMPT_RT: Do not starve seqlock_t writers
+seqlock: seqcount_LOCKNAME_t: Introduce PREEMPT_RT support
 
-On PREEMPT_RT, seqlock_t is transformed to a sleeping lock that do not
-disable preemption. A seqlock_t reader can thus preempt its write side
-section and spin for the enter scheduler tick. If that reader belongs to
-a real-time scheduling class, it can spin forever and the kernel will
-livelock.
+Preemption must be disabled before entering a sequence counter write
+side critical section.  Otherwise the read side section can preempt the
+write side section and spin for the entire scheduler tick.  If that
+reader belongs to a real-time scheduling class, it can spin forever and
+the kernel will livelock.
 
-To break this livelock possibility on PREEMPT_RT, implement seqlock_t in
-terms of "seqcount_spinlock_t" instead of plain "seqcount_t".
+Disabling preemption cannot be done for PREEMPT_RT though: it can lead
+to higher latencies, and the write side sections will not be able to
+acquire locks which become sleeping locks (e.g. spinlock_t).
 
-Beside its pure annotational value, this will leverage the existing
-seqcount_LOCKNAME_T PREEMPT_RT anti-livelock mechanisms, without adding
-any extra code.
+To remain preemptible, while avoiding a possible livelock caused by the
+reader preempting the writer, use a different technique: let the reader
+detect if a seqcount_LOCKNAME_t writer is in progress. If that's the
+case, acquire then release the associated LOCKNAME writer serialization
+lock. This will allow any possibly-preempted writer to make progress
+until the end of its writer serialization lock critical section.
 
+Implement this lock-unlock technique for all seqcount_LOCKNAME_t with
+an associated (PREEMPT_RT) sleeping lock.
+
+References: 55f3560df975 ("seqlock: Extend seqcount API with associated locks")
 Signed-off-by: Ahmed S. Darwish <a.darwish@linutronix.de>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20200904153231.11994-6-a.darwish@linutronix.de
+Link: https://lkml.kernel.org/r/20200519214547.352050-1-a.darwish@linutronix.de
 ---
- include/linux/seqlock.h | 32 +++++++++++++++++++++-----------
- 1 file changed, 21 insertions(+), 11 deletions(-)
+ include/linux/seqlock.h | 61 +++++++++++++++++++++++++++++++++-------
+ 1 file changed, 51 insertions(+), 10 deletions(-)
 
 diff --git a/include/linux/seqlock.h b/include/linux/seqlock.h
-index 2bc9510..f73c7eb 100644
+index f3b7827..2bc9510 100644
 --- a/include/linux/seqlock.h
 +++ b/include/linux/seqlock.h
-@@ -790,13 +790,17 @@ static inline void raw_write_seqcount_latch(seqcount_latch_t *s)
-  *    - Documentation/locking/seqlock.rst
+@@ -17,6 +17,7 @@
+ #include <linux/kcsan-checks.h>
+ #include <linux/lockdep.h>
+ #include <linux/mutex.h>
++#include <linux/ww_mutex.h>
+ #include <linux/preempt.h>
+ #include <linux/spinlock.h>
+ 
+@@ -131,7 +132,23 @@ static inline void seqcount_lockdep_reader_access(const seqcount_t *s)
+  * See Documentation/locking/seqlock.rst
   */
- typedef struct {
--	struct seqcount seqcount;
-+	/*
-+	 * Make sure that readers don't starve writers on PREEMPT_RT: use
-+	 * seqcount_spinlock_t instead of seqcount_t. Check __SEQ_LOCK().
-+	 */
-+	seqcount_spinlock_t seqcount;
- 	spinlock_t lock;
- } seqlock_t;
  
- #define __SEQLOCK_UNLOCKED(lockname)					\
- 	{								\
--		.seqcount = SEQCNT_ZERO(lockname),			\
-+		.seqcount = SEQCNT_SPINLOCK_ZERO(lockname, &(lockname).lock), \
- 		.lock =	__SPIN_LOCK_UNLOCKED(lockname)			\
- 	}
- 
-@@ -806,8 +810,8 @@ typedef struct {
-  */
- #define seqlock_init(sl)						\
- 	do {								\
--		seqcount_init(&(sl)->seqcount);				\
- 		spin_lock_init(&(sl)->lock);				\
-+		seqcount_spinlock_init(&(sl)->seqcount, &(sl)->lock);	\
- 	} while (0)
- 
- /**
-@@ -854,6 +858,12 @@ static inline unsigned read_seqretry(const seqlock_t *sl, unsigned start)
- 	return read_seqcount_retry(&sl->seqcount, start);
- }
- 
+-#ifdef CONFIG_LOCKDEP
 +/*
-+ * For all seqlock_t write side functions, use write_seqcount_*t*_begin()
-+ * instead of the generic write_seqcount_begin(). This way, no redundant
-+ * lockdep_assert_held() checks are added.
++ * For PREEMPT_RT, seqcount_LOCKNAME_t write side critical sections cannot
++ * disable preemption. It can lead to higher latencies, and the write side
++ * sections will not be able to acquire locks which become sleeping locks
++ * (e.g. spinlock_t).
++ *
++ * To remain preemptible while avoiding a possible livelock caused by the
++ * reader preempting the writer, use a different technique: let the reader
++ * detect if a seqcount_LOCKNAME_t writer is in progress. If that is the
++ * case, acquire then release the associated LOCKNAME writer serialization
++ * lock. This will allow any possibly-preempted writer to make progress
++ * until the end of its writer serialization lock critical section.
++ *
++ * This lock-unlock technique must be implemented for all of PREEMPT_RT
++ * sleeping locks.  See Documentation/locking/locktypes.rst
 + */
++#if defined(CONFIG_LOCKDEP) || defined(CONFIG_PREEMPT_RT)
+ #define __SEQ_LOCK(expr)	expr
+ #else
+ #define __SEQ_LOCK(expr)
+@@ -162,10 +179,12 @@ static inline void seqcount_lockdep_reader_access(const seqcount_t *s)
+  *
+  * @lockname:		"LOCKNAME" part of seqcount_LOCKNAME_t
+  * @locktype:		LOCKNAME canonical C data type
+- * @preemptible:	preemptibility of above lockname
++ * @preemptible:	preemptibility of above locktype
+  * @lockmember:		argument for lockdep_assert_held()
++ * @lockbase:		associated lock release function (prefix only)
++ * @lock_acquire:	associated lock acquisition function (full call)
+  */
+-#define SEQCOUNT_LOCKNAME(lockname, locktype, preemptible, lockmember)	\
++#define SEQCOUNT_LOCKNAME(lockname, locktype, preemptible, lockmember, lockbase, lock_acquire) \
+ typedef struct seqcount_##lockname {					\
+ 	seqcount_t		seqcount;				\
+ 	__SEQ_LOCK(locktype	*lock);					\
+@@ -187,13 +206,33 @@ __seqprop_##lockname##_ptr(seqcount_##lockname##_t *s)			\
+ static __always_inline unsigned						\
+ __seqprop_##lockname##_sequence(const seqcount_##lockname##_t *s)	\
+ {									\
+-	return READ_ONCE(s->seqcount.sequence);				\
++	unsigned seq = READ_ONCE(s->seqcount.sequence);			\
++									\
++	if (!IS_ENABLED(CONFIG_PREEMPT_RT))				\
++		return seq;						\
++									\
++	if (preemptible && unlikely(seq & 1)) {				\
++		__SEQ_LOCK(lock_acquire);				\
++		__SEQ_LOCK(lockbase##_unlock(s->lock));			\
++									\
++		/*							\
++		 * Re-read the sequence counter since the (possibly	\
++		 * preempted) writer made progress.			\
++		 */							\
++		seq = READ_ONCE(s->seqcount.sequence);			\
++	}								\
++									\
++	return seq;							\
+ }									\
+ 									\
+ static __always_inline bool						\
+ __seqprop_##lockname##_preemptible(const seqcount_##lockname##_t *s)	\
+ {									\
+-	return preemptible;						\
++	if (!IS_ENABLED(CONFIG_PREEMPT_RT))				\
++		return preemptible;					\
++									\
++	/* PREEMPT_RT relies on the above LOCK+UNLOCK */		\
++	return false;							\
+ }									\
+ 									\
+ static __always_inline void						\
+@@ -226,11 +265,13 @@ static inline void __seqprop_assert(const seqcount_t *s)
+ 	lockdep_assert_preemption_disabled();
+ }
+ 
+-SEQCOUNT_LOCKNAME(raw_spinlock,	raw_spinlock_t,		false,	s->lock)
+-SEQCOUNT_LOCKNAME(spinlock,	spinlock_t,		false,	s->lock)
+-SEQCOUNT_LOCKNAME(rwlock,	rwlock_t,		false,	s->lock)
+-SEQCOUNT_LOCKNAME(mutex,	struct mutex,		true,	s->lock)
+-SEQCOUNT_LOCKNAME(ww_mutex,	struct ww_mutex,	true,	&s->lock->base)
++#define __SEQ_RT	IS_ENABLED(CONFIG_PREEMPT_RT)
 +
- /**
-  * write_seqlock() - start a seqlock_t write side critical section
-  * @sl: Pointer to seqlock_t
-@@ -870,7 +880,7 @@ static inline unsigned read_seqretry(const seqlock_t *sl, unsigned start)
- static inline void write_seqlock(seqlock_t *sl)
- {
- 	spin_lock(&sl->lock);
--	write_seqcount_t_begin(&sl->seqcount);
-+	write_seqcount_t_begin(&sl->seqcount.seqcount);
- }
++SEQCOUNT_LOCKNAME(raw_spinlock, raw_spinlock_t,  false,    s->lock,        raw_spin, raw_spin_lock(s->lock))
++SEQCOUNT_LOCKNAME(spinlock,     spinlock_t,      __SEQ_RT, s->lock,        spin,     spin_lock(s->lock))
++SEQCOUNT_LOCKNAME(rwlock,       rwlock_t,        __SEQ_RT, s->lock,        read,     read_lock(s->lock))
++SEQCOUNT_LOCKNAME(mutex,        struct mutex,    true,     s->lock,        mutex,    mutex_lock(s->lock))
++SEQCOUNT_LOCKNAME(ww_mutex,     struct ww_mutex, true,     &s->lock->base, ww_mutex, ww_mutex_lock(s->lock, NULL))
  
- /**
-@@ -882,7 +892,7 @@ static inline void write_seqlock(seqlock_t *sl)
-  */
- static inline void write_sequnlock(seqlock_t *sl)
- {
--	write_seqcount_t_end(&sl->seqcount);
-+	write_seqcount_t_end(&sl->seqcount.seqcount);
- 	spin_unlock(&sl->lock);
- }
- 
-@@ -896,7 +906,7 @@ static inline void write_sequnlock(seqlock_t *sl)
- static inline void write_seqlock_bh(seqlock_t *sl)
- {
- 	spin_lock_bh(&sl->lock);
--	write_seqcount_t_begin(&sl->seqcount);
-+	write_seqcount_t_begin(&sl->seqcount.seqcount);
- }
- 
- /**
-@@ -909,7 +919,7 @@ static inline void write_seqlock_bh(seqlock_t *sl)
-  */
- static inline void write_sequnlock_bh(seqlock_t *sl)
- {
--	write_seqcount_t_end(&sl->seqcount);
-+	write_seqcount_t_end(&sl->seqcount.seqcount);
- 	spin_unlock_bh(&sl->lock);
- }
- 
-@@ -923,7 +933,7 @@ static inline void write_sequnlock_bh(seqlock_t *sl)
- static inline void write_seqlock_irq(seqlock_t *sl)
- {
- 	spin_lock_irq(&sl->lock);
--	write_seqcount_t_begin(&sl->seqcount);
-+	write_seqcount_t_begin(&sl->seqcount.seqcount);
- }
- 
- /**
-@@ -935,7 +945,7 @@ static inline void write_seqlock_irq(seqlock_t *sl)
-  */
- static inline void write_sequnlock_irq(seqlock_t *sl)
- {
--	write_seqcount_t_end(&sl->seqcount);
-+	write_seqcount_t_end(&sl->seqcount.seqcount);
- 	spin_unlock_irq(&sl->lock);
- }
- 
-@@ -944,7 +954,7 @@ static inline unsigned long __write_seqlock_irqsave(seqlock_t *sl)
- 	unsigned long flags;
- 
- 	spin_lock_irqsave(&sl->lock, flags);
--	write_seqcount_t_begin(&sl->seqcount);
-+	write_seqcount_t_begin(&sl->seqcount.seqcount);
- 	return flags;
- }
- 
-@@ -973,7 +983,7 @@ static inline unsigned long __write_seqlock_irqsave(seqlock_t *sl)
- static inline void
- write_sequnlock_irqrestore(seqlock_t *sl, unsigned long flags)
- {
--	write_seqcount_t_end(&sl->seqcount);
-+	write_seqcount_t_end(&sl->seqcount.seqcount);
- 	spin_unlock_irqrestore(&sl->lock, flags);
- }
- 
+ /*
+  * SEQCNT_LOCKNAME_ZERO - static initializer for seqcount_LOCKNAME_t
