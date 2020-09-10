@@ -2,49 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E7366264E17
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Sep 2020 21:00:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F8B0264EE4
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Sep 2020 21:29:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725974AbgIJTAS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 10 Sep 2020 15:00:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41394 "EHLO
+        id S1727842AbgIJT27 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 10 Sep 2020 15:28:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39988 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727028AbgIJSzr (ORCPT
+        with ESMTP id S1731412AbgIJPsR (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 10 Sep 2020 14:55:47 -0400
+        Thu, 10 Sep 2020 11:48:17 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 753ABC06179B;
-        Thu, 10 Sep 2020 11:54:42 -0700 (PDT)
-Date:   Thu, 10 Sep 2020 18:54:40 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91B34C061349;
+        Thu, 10 Sep 2020 08:08:26 -0700 (PDT)
+Date:   Thu, 10 Sep 2020 15:08:23 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1599764080;
+        s=2020; t=1599750504;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=cmBUa79ZL4WJl5jNgzdooZslXx0/ZBdAe4JG9csV4A0=;
-        b=orOlJXPx1s0qMhZgTjmKJnJxparJuQEZwkBqQnR9Y8nU9NHe51+ChrBZfozAgbwS0Wef83
-        adK+chGnMbkAyyg3YTBf/ilQMuj/NnUVSSmOHkvxgbQqlCNEsL+Qw4gdvdVyyWy4KPhd++
-        2eduue939fT2kMcyRX5DjO0GYUD/NInSHDnleovjCfGB5+pO3ZdOHvDqG+t5MuLzSctX3t
-        zZnrYNRCH339DKyj0f455mddI5crPDPI/zCgQHFQMuuFfgG2c/C2VA3W+5/iEUWsczMIWQ
-        3ZKxsRXyzekr5fjugnskFwdJtiCXjadOHievhO9VkYmk/CMZPO1EW+OU1qvzJw==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=13k2MSnx0nJmSLqX5FucJWOQB6CkTBmHPvBZIFgl7Go=;
+        b=mqMECgUwWnxjs8nY8ADe2vrYGwxmhpKkUv71STpJm/esuEiW78v79a4OKgbBGuQWw2kH6e
+        0xbZm/irkuTSeVhHSpwZYbor0na6/okBJO8+FmJrMeT5FPLu85TH6Qg1or0xHB5nL4RGuo
+        TbeFkK/JmWbt7oSJoqpGR77OKmBqv7ldwXnhM45zgtMi/b06YxN1wpHPR6wah1yynLH8qo
+        9ArQFooGy6gU155nNB2nvjWzukyToqr7to1+WvrfmoZzQzrDhLr+psua81kqiHOEy7FHJ+
+        IdYysmIQbbAipAyW8xGkT33yvrRyqfz2jVHFFjQEU7tvuhH/lepjnksUzbpLCA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1599764080;
+        s=2020e; t=1599750504;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=cmBUa79ZL4WJl5jNgzdooZslXx0/ZBdAe4JG9csV4A0=;
-        b=av4Bj7z1B69ennepX60dMJLnUBg6hjbqGsCzR74NShQ74j4w2ncSarj4/3yLZCK3pJOlsu
-        Ufnw9My32VDlu/Cg==
-From:   "tip-bot2 for Julien Thierry" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=13k2MSnx0nJmSLqX5FucJWOQB6CkTBmHPvBZIFgl7Go=;
+        b=WObvpuEpXLlfnkw9Xp11EBmKNWmYoVW8psuG84HsMGisn/nmyJNdGrfTSVuIiumrNSObet
+        Tf0uuXINfvReLfDA==
+From:   "tip-bot2 for Ahmed S. Darwish" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] objtool: Move ORC logic out of check()
-Cc:     Julien Thierry <jthierry@redhat.com>,
-        Miroslav Benes <mbenes@suse.cz>,
-        Josh Poimboeuf <jpoimboe@redhat.com>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
+Subject: [tip: locking/core] seqlock: PREEMPT_RT: Do not starve seqlock_t writers
+Cc:     "Ahmed S. Darwish" <a.darwish@linutronix.de>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200904153231.11994-6-a.darwish@linutronix.de>
+References: <20200904153231.11994-6-a.darwish@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <159976408016.20229.4845386271122861472.tip-bot2@tip-bot2>
+Message-ID: <159975050367.20229.11965021456342644474.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -54,156 +59,153 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the objtool/core branch of tip:
+The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     d44becb9decf4438d1e555b1428634964d2e5764
-Gitweb:        https://git.kernel.org/tip/d44becb9decf4438d1e555b1428634964d2e5764
-Author:        Julien Thierry <jthierry@redhat.com>
-AuthorDate:    Tue, 25 Aug 2020 13:47:40 +01:00
-Committer:     Josh Poimboeuf <jpoimboe@redhat.com>
-CommitterDate: Tue, 01 Sep 2020 17:19:11 -05:00
+Commit-ID:     1909760f5fc3f123e47b4e24e0ccdc0fc8f3f106
+Gitweb:        https://git.kernel.org/tip/1909760f5fc3f123e47b4e24e0ccdc0fc8f3f106
+Author:        Ahmed S. Darwish <a.darwish@linutronix.de>
+AuthorDate:    Fri, 04 Sep 2020 17:32:31 +02:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Thu, 10 Sep 2020 11:19:31 +02:00
 
-objtool: Move ORC logic out of check()
+seqlock: PREEMPT_RT: Do not starve seqlock_t writers
 
-Now that the objtool_file can be obtained outside of the check function,
-orc generation builtin no longer requires check to explicitly call its
-orc related functions.
+On PREEMPT_RT, seqlock_t is transformed to a sleeping lock that do not
+disable preemption. A seqlock_t reader can thus preempt its write side
+section and spin for the enter scheduler tick. If that reader belongs to
+a real-time scheduling class, it can spin forever and the kernel will
+livelock.
 
-Signed-off-by: Julien Thierry <jthierry@redhat.com>
-Reviewed-by: Miroslav Benes <mbenes@suse.cz>
-Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
+To break this livelock possibility on PREEMPT_RT, implement seqlock_t in
+terms of "seqcount_spinlock_t" instead of plain "seqcount_t".
+
+Beside its pure annotational value, this will leverage the existing
+seqcount_LOCKNAME_T PREEMPT_RT anti-livelock mechanisms, without adding
+any extra code.
+
+Signed-off-by: Ahmed S. Darwish <a.darwish@linutronix.de>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20200904153231.11994-6-a.darwish@linutronix.de
 ---
- tools/objtool/builtin-check.c | 10 +++++++++-
- tools/objtool/builtin-orc.c   | 21 ++++++++++++++++++++-
- tools/objtool/check.c         | 18 +-----------------
- tools/objtool/objtool.h       |  2 +-
- tools/objtool/weak.c          |  2 +-
- 5 files changed, 32 insertions(+), 21 deletions(-)
+ include/linux/seqlock.h | 32 +++++++++++++++++++++-----------
+ 1 file changed, 21 insertions(+), 11 deletions(-)
 
-diff --git a/tools/objtool/builtin-check.c b/tools/objtool/builtin-check.c
-index 0126ec3..c6d199b 100644
---- a/tools/objtool/builtin-check.c
-+++ b/tools/objtool/builtin-check.c
-@@ -42,6 +42,7 @@ int cmd_check(int argc, const char **argv)
- {
- 	const char *objname, *s;
- 	struct objtool_file *file;
-+	int ret;
+diff --git a/include/linux/seqlock.h b/include/linux/seqlock.h
+index 2bc9510..f73c7eb 100644
+--- a/include/linux/seqlock.h
++++ b/include/linux/seqlock.h
+@@ -790,13 +790,17 @@ static inline void raw_write_seqcount_latch(seqcount_latch_t *s)
+  *    - Documentation/locking/seqlock.rst
+  */
+ typedef struct {
+-	struct seqcount seqcount;
++	/*
++	 * Make sure that readers don't starve writers on PREEMPT_RT: use
++	 * seqcount_spinlock_t instead of seqcount_t. Check __SEQ_LOCK().
++	 */
++	seqcount_spinlock_t seqcount;
+ 	spinlock_t lock;
+ } seqlock_t;
  
- 	argc = parse_options(argc, argv, check_options, check_usage, 0);
- 
-@@ -58,5 +59,12 @@ int cmd_check(int argc, const char **argv)
- 	if (!file)
- 		return 1;
- 
--	return check(file, false);
-+	ret = check(file);
-+	if (ret)
-+		return ret;
-+
-+	if (file->elf->changed)
-+		return elf_write(file->elf);
-+
-+	return 0;
- }
-diff --git a/tools/objtool/builtin-orc.c b/tools/objtool/builtin-orc.c
-index 3979f27..7b31121 100644
---- a/tools/objtool/builtin-orc.c
-+++ b/tools/objtool/builtin-orc.c
-@@ -32,6 +32,7 @@ int cmd_orc(int argc, const char **argv)
- 
- 	if (!strncmp(argv[0], "gen", 3)) {
- 		struct objtool_file *file;
-+		int ret;
- 
- 		argc = parse_options(argc, argv, check_options, orc_usage, 0);
- 		if (argc != 1)
-@@ -43,7 +44,25 @@ int cmd_orc(int argc, const char **argv)
- 		if (!file)
- 			return 1;
- 
--		return check(file, true);
-+		ret = check(file);
-+		if (ret)
-+			return ret;
-+
-+		if (list_empty(&file->insn_list))
-+			return 0;
-+
-+		ret = create_orc(file);
-+		if (ret)
-+			return ret;
-+
-+		ret = create_orc_sections(file);
-+		if (ret)
-+			return ret;
-+
-+		if (!file->elf->changed)
-+			return 0;
-+
-+		return elf_write(file->elf);
+ #define __SEQLOCK_UNLOCKED(lockname)					\
+ 	{								\
+-		.seqcount = SEQCNT_ZERO(lockname),			\
++		.seqcount = SEQCNT_SPINLOCK_ZERO(lockname, &(lockname).lock), \
+ 		.lock =	__SPIN_LOCK_UNLOCKED(lockname)			\
  	}
  
- 	if (!strcmp(argv[0], "dump")) {
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 9d4efa3..4afc2d5 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -2908,7 +2908,7 @@ static int validate_reachable_instructions(struct objtool_file *file)
- 	return 0;
+@@ -806,8 +810,8 @@ typedef struct {
+  */
+ #define seqlock_init(sl)						\
+ 	do {								\
+-		seqcount_init(&(sl)->seqcount);				\
+ 		spin_lock_init(&(sl)->lock);				\
++		seqcount_spinlock_init(&(sl)->seqcount, &(sl)->lock);	\
+ 	} while (0)
+ 
+ /**
+@@ -854,6 +858,12 @@ static inline unsigned read_seqretry(const seqlock_t *sl, unsigned start)
+ 	return read_seqcount_retry(&sl->seqcount, start);
  }
  
--int check(struct objtool_file *file, bool orc)
-+int check(struct objtool_file *file)
++/*
++ * For all seqlock_t write side functions, use write_seqcount_*t*_begin()
++ * instead of the generic write_seqcount_begin(). This way, no redundant
++ * lockdep_assert_held() checks are added.
++ */
++
+ /**
+  * write_seqlock() - start a seqlock_t write side critical section
+  * @sl: Pointer to seqlock_t
+@@ -870,7 +880,7 @@ static inline unsigned read_seqretry(const seqlock_t *sl, unsigned start)
+ static inline void write_seqlock(seqlock_t *sl)
  {
- 	int ret, warnings = 0;
- 
-@@ -2960,22 +2960,6 @@ int check(struct objtool_file *file, bool orc)
- 		goto out;
- 	warnings += ret;
- 
--	if (orc) {
--		ret = create_orc(file);
--		if (ret < 0)
--			goto out;
--
--		ret = create_orc_sections(file);
--		if (ret < 0)
--			goto out;
--	}
--
--	if (file->elf->changed) {
--		ret = elf_write(file->elf);
--		if (ret < 0)
--			goto out;
--	}
--
- out:
- 	if (ret < 0) {
- 		/*
-diff --git a/tools/objtool/objtool.h b/tools/objtool/objtool.h
-index 7efc43f..a635f68 100644
---- a/tools/objtool/objtool.h
-+++ b/tools/objtool/objtool.h
-@@ -22,7 +22,7 @@ struct objtool_file {
- 
- struct objtool_file *objtool_open_read(const char *_objname);
- 
--int check(struct objtool_file *file, bool orc);
-+int check(struct objtool_file *file);
- int orc_dump(const char *objname);
- int create_orc(struct objtool_file *file);
- int create_orc_sections(struct objtool_file *file);
-diff --git a/tools/objtool/weak.c b/tools/objtool/weak.c
-index 8269831..29180d5 100644
---- a/tools/objtool/weak.c
-+++ b/tools/objtool/weak.c
-@@ -17,7 +17,7 @@
- 	return ENOSYS;							\
- })
- 
--int __weak check(struct objtool_file *file, bool orc)
-+int __weak check(struct objtool_file *file)
- {
- 	UNSUPPORTED("check subcommand");
+ 	spin_lock(&sl->lock);
+-	write_seqcount_t_begin(&sl->seqcount);
++	write_seqcount_t_begin(&sl->seqcount.seqcount);
  }
+ 
+ /**
+@@ -882,7 +892,7 @@ static inline void write_seqlock(seqlock_t *sl)
+  */
+ static inline void write_sequnlock(seqlock_t *sl)
+ {
+-	write_seqcount_t_end(&sl->seqcount);
++	write_seqcount_t_end(&sl->seqcount.seqcount);
+ 	spin_unlock(&sl->lock);
+ }
+ 
+@@ -896,7 +906,7 @@ static inline void write_sequnlock(seqlock_t *sl)
+ static inline void write_seqlock_bh(seqlock_t *sl)
+ {
+ 	spin_lock_bh(&sl->lock);
+-	write_seqcount_t_begin(&sl->seqcount);
++	write_seqcount_t_begin(&sl->seqcount.seqcount);
+ }
+ 
+ /**
+@@ -909,7 +919,7 @@ static inline void write_seqlock_bh(seqlock_t *sl)
+  */
+ static inline void write_sequnlock_bh(seqlock_t *sl)
+ {
+-	write_seqcount_t_end(&sl->seqcount);
++	write_seqcount_t_end(&sl->seqcount.seqcount);
+ 	spin_unlock_bh(&sl->lock);
+ }
+ 
+@@ -923,7 +933,7 @@ static inline void write_sequnlock_bh(seqlock_t *sl)
+ static inline void write_seqlock_irq(seqlock_t *sl)
+ {
+ 	spin_lock_irq(&sl->lock);
+-	write_seqcount_t_begin(&sl->seqcount);
++	write_seqcount_t_begin(&sl->seqcount.seqcount);
+ }
+ 
+ /**
+@@ -935,7 +945,7 @@ static inline void write_seqlock_irq(seqlock_t *sl)
+  */
+ static inline void write_sequnlock_irq(seqlock_t *sl)
+ {
+-	write_seqcount_t_end(&sl->seqcount);
++	write_seqcount_t_end(&sl->seqcount.seqcount);
+ 	spin_unlock_irq(&sl->lock);
+ }
+ 
+@@ -944,7 +954,7 @@ static inline unsigned long __write_seqlock_irqsave(seqlock_t *sl)
+ 	unsigned long flags;
+ 
+ 	spin_lock_irqsave(&sl->lock, flags);
+-	write_seqcount_t_begin(&sl->seqcount);
++	write_seqcount_t_begin(&sl->seqcount.seqcount);
+ 	return flags;
+ }
+ 
+@@ -973,7 +983,7 @@ static inline unsigned long __write_seqlock_irqsave(seqlock_t *sl)
+ static inline void
+ write_sequnlock_irqrestore(seqlock_t *sl, unsigned long flags)
+ {
+-	write_seqcount_t_end(&sl->seqcount);
++	write_seqcount_t_end(&sl->seqcount.seqcount);
+ 	spin_unlock_irqrestore(&sl->lock, flags);
+ }
+ 
