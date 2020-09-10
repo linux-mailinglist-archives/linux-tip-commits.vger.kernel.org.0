@@ -2,46 +2,49 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 620EB264E18
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Sep 2020 21:00:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E7366264E17
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Sep 2020 21:00:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726984AbgIJTAS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S1725974AbgIJTAS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Thu, 10 Sep 2020 15:00:18 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:41908 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727797AbgIJSzG (ORCPT
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41394 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727028AbgIJSzr (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 10 Sep 2020 14:55:06 -0400
+        Thu, 10 Sep 2020 14:55:47 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 753ABC06179B;
+        Thu, 10 Sep 2020 11:54:42 -0700 (PDT)
 Date:   Thu, 10 Sep 2020 18:54:40 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1599764081;
+        s=2020; t=1599764080;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=AD3QDzszcDz/BrtlXxGdM6Rtg+hx9N9dG2jNiT9uvbQ=;
-        b=icSIOhZrddRsRdEw4xFTlIvkzsKS+d4MeOZE/NVR6eYHzRCt2PFPjmUwYejH53h1k7uiZE
-        W01LID/1pc5yzoLfxickYT7xVwddKEVcq0vMONAhmcLgF0YvrgOs22DiKZc/HWWRVdeTk1
-        7oYd/BXtqgJn+2znXil/y5MGct6VldrrcxVYfaiM6lZx052KPrUXMp5TrQFCJCSmN0ui0/
-        HupJE00p/sCKJz+ScgjHs2Roiua+KXHYyyXKY21ZFKOFxMXlJO0Y+rfs6u+Tr2Bj7KBIRU
-        t7AuWSBx+C2ObJCe+A8NbLDmAdiqq6RjiSt9eLm/2smQKFAvDEzHdJTnIS+S1w==
+        bh=cmBUa79ZL4WJl5jNgzdooZslXx0/ZBdAe4JG9csV4A0=;
+        b=orOlJXPx1s0qMhZgTjmKJnJxparJuQEZwkBqQnR9Y8nU9NHe51+ChrBZfozAgbwS0Wef83
+        adK+chGnMbkAyyg3YTBf/ilQMuj/NnUVSSmOHkvxgbQqlCNEsL+Qw4gdvdVyyWy4KPhd++
+        2eduue939fT2kMcyRX5DjO0GYUD/NInSHDnleovjCfGB5+pO3ZdOHvDqG+t5MuLzSctX3t
+        zZnrYNRCH339DKyj0f455mddI5crPDPI/zCgQHFQMuuFfgG2c/C2VA3W+5/iEUWsczMIWQ
+        3ZKxsRXyzekr5fjugnskFwdJtiCXjadOHievhO9VkYmk/CMZPO1EW+OU1qvzJw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1599764081;
+        s=2020e; t=1599764080;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=AD3QDzszcDz/BrtlXxGdM6Rtg+hx9N9dG2jNiT9uvbQ=;
-        b=EMtXWh0OxmFUhHG7wtW+SIyluql/atOnAl/TAMwUqpTaf9+dJfB/3iiblOx1AjkTS4gELJ
-        Wi4UtXFKDFIZLHBA==
+        bh=cmBUa79ZL4WJl5jNgzdooZslXx0/ZBdAe4JG9csV4A0=;
+        b=av4Bj7z1B69ennepX60dMJLnUBg6hjbqGsCzR74NShQ74j4w2ncSarj4/3yLZCK3pJOlsu
+        Ufnw9My32VDlu/Cg==
 From:   "tip-bot2 for Julien Thierry" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] objtool: Move object file loading out of check()
-Cc:     Miroslav Benes <mbenes@suse.cz>,
-        Julien Thierry <jthierry@redhat.com>,
+Subject: [tip: objtool/core] objtool: Move ORC logic out of check()
+Cc:     Julien Thierry <jthierry@redhat.com>,
+        Miroslav Benes <mbenes@suse.cz>,
         Josh Poimboeuf <jpoimboe@redhat.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <159976408065.20229.17940088831403600351.tip-bot2@tip-bot2>
+Message-ID: <159976408016.20229.4845386271122861472.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -53,267 +56,154 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     6545eb030e6f14cef8793a86312483c788eaee46
-Gitweb:        https://git.kernel.org/tip/6545eb030e6f14cef8793a86312483c788eaee46
+Commit-ID:     d44becb9decf4438d1e555b1428634964d2e5764
+Gitweb:        https://git.kernel.org/tip/d44becb9decf4438d1e555b1428634964d2e5764
 Author:        Julien Thierry <jthierry@redhat.com>
-AuthorDate:    Tue, 25 Aug 2020 13:47:39 +01:00
+AuthorDate:    Tue, 25 Aug 2020 13:47:40 +01:00
 Committer:     Josh Poimboeuf <jpoimboe@redhat.com>
-CommitterDate: Tue, 01 Sep 2020 17:19:07 -05:00
+CommitterDate: Tue, 01 Sep 2020 17:19:11 -05:00
 
-objtool: Move object file loading out of check()
+objtool: Move ORC logic out of check()
 
-Structure objtool_file can be used by different subcommands. In fact
-it already is, by check and orc.
+Now that the objtool_file can be obtained outside of the check function,
+orc generation builtin no longer requires check to explicitly call its
+orc related functions.
 
-Provide a function that allows to initialize objtool_file, that builtin
-can call, without relying on check to do the correct setup for them and
-explicitly hand the objtool_file to them.
-
-Reviewed-by: Miroslav Benes <mbenes@suse.cz>
 Signed-off-by: Julien Thierry <jthierry@redhat.com>
+Reviewed-by: Miroslav Benes <mbenes@suse.cz>
 Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
 ---
- tools/objtool/builtin-check.c |  7 +++++-
- tools/objtool/builtin-orc.c   |  8 +++++-
- tools/objtool/check.c         | 42 ++++++++++------------------------
- tools/objtool/objtool.c       | 30 ++++++++++++++++++++++++-
- tools/objtool/objtool.h       |  4 ++-
- tools/objtool/weak.c          |  4 +---
- 6 files changed, 60 insertions(+), 35 deletions(-)
+ tools/objtool/builtin-check.c | 10 +++++++++-
+ tools/objtool/builtin-orc.c   | 21 ++++++++++++++++++++-
+ tools/objtool/check.c         | 18 +-----------------
+ tools/objtool/objtool.h       |  2 +-
+ tools/objtool/weak.c          |  2 +-
+ 5 files changed, 32 insertions(+), 21 deletions(-)
 
 diff --git a/tools/objtool/builtin-check.c b/tools/objtool/builtin-check.c
-index 7a44174..0126ec3 100644
+index 0126ec3..c6d199b 100644
 --- a/tools/objtool/builtin-check.c
 +++ b/tools/objtool/builtin-check.c
-@@ -41,6 +41,7 @@ const struct option check_options[] = {
- int cmd_check(int argc, const char **argv)
+@@ -42,6 +42,7 @@ int cmd_check(int argc, const char **argv)
  {
  	const char *objname, *s;
-+	struct objtool_file *file;
+ 	struct objtool_file *file;
++	int ret;
  
  	argc = parse_options(argc, argv, check_options, check_usage, 0);
  
-@@ -53,5 +54,9 @@ int cmd_check(int argc, const char **argv)
- 	if (s && !s[9])
- 		vmlinux = true;
+@@ -58,5 +59,12 @@ int cmd_check(int argc, const char **argv)
+ 	if (!file)
+ 		return 1;
  
--	return check(objname, false);
-+	file = objtool_open_read(objname);
-+	if (!file)
-+		return 1;
+-	return check(file, false);
++	ret = check(file);
++	if (ret)
++		return ret;
 +
-+	return check(file, false);
++	if (file->elf->changed)
++		return elf_write(file->elf);
++
++	return 0;
  }
 diff --git a/tools/objtool/builtin-orc.c b/tools/objtool/builtin-orc.c
-index b1dfe20..3979f27 100644
+index 3979f27..7b31121 100644
 --- a/tools/objtool/builtin-orc.c
 +++ b/tools/objtool/builtin-orc.c
-@@ -31,13 +31,19 @@ int cmd_orc(int argc, const char **argv)
- 		usage_with_options(orc_usage, check_options);
+@@ -32,6 +32,7 @@ int cmd_orc(int argc, const char **argv)
  
  	if (!strncmp(argv[0], "gen", 3)) {
-+		struct objtool_file *file;
-+
+ 		struct objtool_file *file;
++		int ret;
+ 
  		argc = parse_options(argc, argv, check_options, orc_usage, 0);
  		if (argc != 1)
- 			usage_with_options(orc_usage, check_options);
+@@ -43,7 +44,25 @@ int cmd_orc(int argc, const char **argv)
+ 		if (!file)
+ 			return 1;
  
- 		objname = argv[0];
- 
--		return check(objname, true);
-+		file = objtool_open_read(objname);
-+		if (!file)
-+			return 1;
+-		return check(file, true);
++		ret = check(file);
++		if (ret)
++			return ret;
 +
-+		return check(file, true);
++		if (list_empty(&file->insn_list))
++			return 0;
++
++		ret = create_orc(file);
++		if (ret)
++			return ret;
++
++		ret = create_orc_sections(file);
++		if (ret)
++			return ret;
++
++		if (!file->elf->changed)
++			return 0;
++
++		return elf_write(file->elf);
  	}
  
  	if (!strcmp(argv[0], "dump")) {
 diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 75d0cd2..9d4efa3 100644
+index 9d4efa3..4afc2d5 100644
 --- a/tools/objtool/check.c
 +++ b/tools/objtool/check.c
-@@ -28,7 +28,6 @@ struct alternative {
- 	bool skip_orig;
- };
- 
--const char *objname;
- struct cfi_init_state initial_func_cfi;
- 
- struct instruction *find_insn(struct objtool_file *file,
-@@ -2909,37 +2908,22 @@ static int validate_reachable_instructions(struct objtool_file *file)
+@@ -2908,7 +2908,7 @@ static int validate_reachable_instructions(struct objtool_file *file)
  	return 0;
  }
  
--static struct objtool_file file;
--
--int check(const char *_objname, bool orc)
-+int check(struct objtool_file *file, bool orc)
+-int check(struct objtool_file *file, bool orc)
++int check(struct objtool_file *file)
  {
  	int ret, warnings = 0;
  
--	objname = _objname;
+@@ -2960,22 +2960,6 @@ int check(struct objtool_file *file, bool orc)
+ 		goto out;
+ 	warnings += ret;
+ 
+-	if (orc) {
+-		ret = create_orc(file);
+-		if (ret < 0)
+-			goto out;
 -
--	file.elf = elf_open_read(objname, O_RDWR);
--	if (!file.elf)
--		return 1;
+-		ret = create_orc_sections(file);
+-		if (ret < 0)
+-			goto out;
+-	}
 -
--	INIT_LIST_HEAD(&file.insn_list);
--	hash_init(file.insn_hash);
--	INIT_LIST_HEAD(&file.static_call_list);
--	file.c_file = !vmlinux && find_section_by_name(file.elf, ".comment");
--	file.ignore_unreachables = no_unreachable;
--	file.hints = false;
+-	if (file->elf->changed) {
+-		ret = elf_write(file->elf);
+-		if (ret < 0)
+-			goto out;
+-	}
 -
- 	arch_initial_func_cfi_state(&initial_func_cfi);
- 
--	ret = decode_sections(&file);
-+	ret = decode_sections(file);
- 	if (ret < 0)
- 		goto out;
- 	warnings += ret;
- 
--	if (list_empty(&file.insn_list))
-+	if (list_empty(&file->insn_list))
- 		goto out;
- 
- 	if (vmlinux && !validate_dup) {
--		ret = validate_vmlinux_functions(&file);
-+		ret = validate_vmlinux_functions(file);
- 		if (ret < 0)
- 			goto out;
- 
-@@ -2948,46 +2932,46 @@ int check(const char *_objname, bool orc)
- 	}
- 
- 	if (retpoline) {
--		ret = validate_retpoline(&file);
-+		ret = validate_retpoline(file);
- 		if (ret < 0)
- 			return ret;
- 		warnings += ret;
- 	}
- 
--	ret = validate_functions(&file);
-+	ret = validate_functions(file);
- 	if (ret < 0)
- 		goto out;
- 	warnings += ret;
- 
--	ret = validate_unwind_hints(&file, NULL);
-+	ret = validate_unwind_hints(file, NULL);
- 	if (ret < 0)
- 		goto out;
- 	warnings += ret;
- 
- 	if (!warnings) {
--		ret = validate_reachable_instructions(&file);
-+		ret = validate_reachable_instructions(file);
- 		if (ret < 0)
- 			goto out;
- 		warnings += ret;
- 	}
- 
--	ret = create_static_call_sections(&file);
-+	ret = create_static_call_sections(file);
- 	if (ret < 0)
- 		goto out;
- 	warnings += ret;
- 
- 	if (orc) {
--		ret = create_orc(&file);
-+		ret = create_orc(file);
- 		if (ret < 0)
- 			goto out;
- 
--		ret = create_orc_sections(&file);
-+		ret = create_orc_sections(file);
- 		if (ret < 0)
- 			goto out;
- 	}
- 
--	if (file.elf->changed) {
--		ret = elf_write(file.elf);
-+	if (file->elf->changed) {
-+		ret = elf_write(file->elf);
- 		if (ret < 0)
- 			goto out;
- 	}
-diff --git a/tools/objtool/objtool.c b/tools/objtool/objtool.c
-index 58fdda5..9df0cd8 100644
---- a/tools/objtool/objtool.c
-+++ b/tools/objtool/objtool.c
-@@ -22,6 +22,8 @@
- #include <linux/kernel.h>
- 
- #include "builtin.h"
-+#include "objtool.h"
-+#include "warn.h"
- 
- struct cmd_struct {
- 	const char *name;
-@@ -39,6 +41,34 @@ static struct cmd_struct objtool_cmds[] = {
- 
- bool help;
- 
-+const char *objname;
-+static struct objtool_file file;
-+
-+struct objtool_file *objtool_open_read(const char *_objname)
-+{
-+	if (objname) {
-+		if (strcmp(objname, _objname)) {
-+			WARN("won't handle more than one file at a time");
-+			return NULL;
-+		}
-+		return &file;
-+	}
-+	objname = _objname;
-+
-+	file.elf = elf_open_read(objname, O_RDWR);
-+	if (!file.elf)
-+		return NULL;
-+
-+	INIT_LIST_HEAD(&file.insn_list);
-+	hash_init(file.insn_hash);
-+	INIT_LIST_HEAD(&file.static_call_list);
-+	file.c_file = !vmlinux && find_section_by_name(file.elf, ".comment");
-+	file.ignore_unreachables = no_unreachable;
-+	file.hints = false;
-+
-+	return &file;
-+}
-+
- static void cmd_usage(void)
- {
- 	unsigned int i, longest = 0;
+ out:
+ 	if (ret < 0) {
+ 		/*
 diff --git a/tools/objtool/objtool.h b/tools/objtool/objtool.h
-index 9a7cd0b..7efc43f 100644
+index 7efc43f..a635f68 100644
 --- a/tools/objtool/objtool.h
 +++ b/tools/objtool/objtool.h
-@@ -20,7 +20,9 @@ struct objtool_file {
- 	bool ignore_unreachables, c_file, hints, rodata;
- };
+@@ -22,7 +22,7 @@ struct objtool_file {
  
--int check(const char *objname, bool orc);
-+struct objtool_file *objtool_open_read(const char *_objname);
-+
-+int check(struct objtool_file *file, bool orc);
+ struct objtool_file *objtool_open_read(const char *_objname);
+ 
+-int check(struct objtool_file *file, bool orc);
++int check(struct objtool_file *file);
  int orc_dump(const char *objname);
  int create_orc(struct objtool_file *file);
  int create_orc_sections(struct objtool_file *file);
 diff --git a/tools/objtool/weak.c b/tools/objtool/weak.c
-index 942ea5e..8269831 100644
+index 8269831..29180d5 100644
 --- a/tools/objtool/weak.c
 +++ b/tools/objtool/weak.c
-@@ -17,9 +17,7 @@
+@@ -17,7 +17,7 @@
  	return ENOSYS;							\
  })
  
--const char __weak *objname;
--
--int __weak check(const char *_objname, bool orc)
-+int __weak check(struct objtool_file *file, bool orc)
+-int __weak check(struct objtool_file *file, bool orc)
++int __weak check(struct objtool_file *file)
  {
  	UNSUPPORTED("check subcommand");
  }
