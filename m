@@ -2,50 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 93AF626426F
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Sep 2020 11:38:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BB282641F9
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Sep 2020 11:30:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730455AbgIJJgz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 10 Sep 2020 05:36:55 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:38890 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730349AbgIJJWX (ORCPT
+        id S1730248AbgIJJaw (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 10 Sep 2020 05:30:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36566 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730518AbgIJJYf (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 10 Sep 2020 05:22:23 -0400
-Date:   Thu, 10 Sep 2020 09:22:20 -0000
+        Thu, 10 Sep 2020 05:24:35 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC975C0617BA;
+        Thu, 10 Sep 2020 02:22:23 -0700 (PDT)
+Date:   Thu, 10 Sep 2020 09:22:21 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1599729741;
+        s=2020; t=1599729742;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=HLldjXTZlNMc1/hrmZhqBL6bfRJ44I8hUYuC803rP44=;
-        b=Ci8TgWlrij/RT6a7vJZBXS4mxH/fzLgP2FGaSD1LbVBKLlhhe4QGKEOF37kxQgpVeOVjU2
-        T4VEwDkL/RkQOtnTcScKUIyCkhTIKsUeT3+SUTAT+0I6zuEkhoroMUpUScr5KzgJG0jI95
-        PADY569wiVvq//ii0NfBaayxsMYhIBQP32acfq/ocBEE0D1UfzXDsUgf0ijfOnTCAVigi5
-        h1vRxAveyhNOoKe1y8nA5YKIOMmZMIPLyjnq7Xq8Kh7yGxwzr+jjP3XFYk/rY/ozsTR0w7
-        YXKgs4VTOZ/sMGgnQaOmOZ0OW83Bb5yXdhSslxdtExuFSah5I0k7S350LYAmaw==
+        bh=9g7bm+cdXI5Vmo4l5RBC13hzSXc1ind1ejHSFFKubVs=;
+        b=iE30cmYjRlF41I/bJeTehbqK77gd8b+zfoMZac4wQRItGZ1VmkTU1ouzy6dWEzV/0S73FK
+        KTFxSnhaMYkYHKH6XNLFcFbKil6RbYKVK5ARlrX1866tAKZ8MlV0BJDytmCXNm8Jpg/n/b
+        D6BzRUs5959lcFd+elM1EYfYZ7dEK7OBNWjtRHH5A1wYUlBKDvsMs5b1AvgyWxwT8tn4lJ
+        akYwBrLv+Cvb11eOQOYvcLSRhjKOQjBUK/v1hbpJ0RwArdnrt0ny+OnM6J4lghyBYpjARQ
+        lJtVB/LSKH9ykNvE62BeizqV7Y4nQkM01SWLD0tQ5CHRajIFFDdMkoFAv5YvAg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1599729741;
+        s=2020e; t=1599729742;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=HLldjXTZlNMc1/hrmZhqBL6bfRJ44I8hUYuC803rP44=;
-        b=YO8n7JPQ1AFZL3dSVZigNmYAAtcPyqg9jW2WIOkKUbgsZpmGBe6lRoiMH4wD1+2tMt57Zo
-        BpF41oeI/WWUTFCA==
-From:   "tip-bot2 for Joerg Roedel" <tip-bot2@linutronix.de>
+        bh=9g7bm+cdXI5Vmo4l5RBC13hzSXc1ind1ejHSFFKubVs=;
+        b=9g9fhrZpj3bb7r44tRdMAhYpznGT6ve1jlV6NtvcOX7/H0Pgd5u16ixVclgfDMZOsdzfOI
+        Sm1Es6zdeAl1KhAw==
+From:   "tip-bot2 for Tom Lendacky" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/seves] x86/head/64: Install startup GDT
-Cc:     Joerg Roedel <jroedel@suse.de>, Borislav Petkov <bp@suse.de>,
+Subject: [tip: x86/seves] x86/sev-es: Add CPUID handling to #VC handler
+Cc:     Tom Lendacky <thomas.lendacky@amd.com>,
+        Joerg Roedel <jroedel@suse.de>, Borislav Petkov <bp@suse.de>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200907131613.12703-30-joro@8bytes.org>
-References: <20200907131613.12703-30-joro@8bytes.org>
+In-Reply-To: <20200907131613.12703-28-joro@8bytes.org>
+References: <20200907131613.12703-28-joro@8bytes.org>
 MIME-Version: 1.0
-Message-ID: <159972974047.20229.226807625576268915.tip-bot2@tip-bot2>
+Message-ID: <159972974133.20229.5160639798798149324.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -57,110 +61,91 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/seves branch of tip:
 
-Commit-ID:     866b556efa1295934ed0bc20c2f208c93a873fb0
-Gitweb:        https://git.kernel.org/tip/866b556efa1295934ed0bc20c2f208c93a873fb0
-Author:        Joerg Roedel <jroedel@suse.de>
-AuthorDate:    Mon, 07 Sep 2020 15:15:30 +02:00
+Commit-ID:     a7de15d489d956217b47671705ac2218ca50eaae
+Gitweb:        https://git.kernel.org/tip/a7de15d489d956217b47671705ac2218ca50eaae
+Author:        Tom Lendacky <thomas.lendacky@amd.com>
+AuthorDate:    Mon, 07 Sep 2020 15:15:28 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Mon, 07 Sep 2020 21:33:17 +02:00
+CommitterDate: Mon, 07 Sep 2020 20:15:51 +02:00
 
-x86/head/64: Install startup GDT
+x86/sev-es: Add CPUID handling to #VC handler
 
-Handling exceptions during boot requires a working GDT. The kernel GDT
-can't be used on the direct mapping, so load a startup GDT and setup
-segments.
+Handle #VC exceptions caused by CPUID instructions. These happen in
+early boot code when the KASLR code checks for RDTSC.
 
+Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
+[ jroedel@suse.de: Adapt to #VC handling framework ]
+Co-developed-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20200907131613.12703-30-joro@8bytes.org
+Link: https://lkml.kernel.org/r/20200907131613.12703-28-joro@8bytes.org
 ---
- arch/x86/include/asm/setup.h |  1 +
- arch/x86/kernel/head64.c     | 33 +++++++++++++++++++++++++++++++++
- arch/x86/kernel/head_64.S    | 14 ++++++++++++++
- 3 files changed, 48 insertions(+)
+ arch/x86/boot/compressed/sev-es.c |  4 +++-
+ arch/x86/kernel/sev-es-shared.c   | 35 ++++++++++++++++++++++++++++++-
+ 2 files changed, 39 insertions(+)
 
-diff --git a/arch/x86/include/asm/setup.h b/arch/x86/include/asm/setup.h
-index 84b645c..5c2fd05 100644
---- a/arch/x86/include/asm/setup.h
-+++ b/arch/x86/include/asm/setup.h
-@@ -48,6 +48,7 @@ extern void reserve_standard_io_resources(void);
- extern void i386_reserve_resources(void);
- extern unsigned long __startup_64(unsigned long physaddr, struct boot_params *bp);
- extern unsigned long __startup_secondary_64(void);
-+extern void startup_64_setup_env(unsigned long physbase);
- extern int early_make_pgtable(unsigned long address);
+diff --git a/arch/x86/boot/compressed/sev-es.c b/arch/x86/boot/compressed/sev-es.c
+index 61504eb..b1790f4 100644
+--- a/arch/x86/boot/compressed/sev-es.c
++++ b/arch/x86/boot/compressed/sev-es.c
+@@ -16,6 +16,7 @@
+ #include <asm/trapnr.h>
+ #include <asm/trap_pf.h>
+ #include <asm/msr-index.h>
++#include <asm/fpu/xcr.h>
+ #include <asm/ptrace.h>
+ #include <asm/svm.h>
  
- #ifdef CONFIG_X86_INTEL_MID
-diff --git a/arch/x86/kernel/head64.c b/arch/x86/kernel/head64.c
-index cbb71c1..8c82be4 100644
---- a/arch/x86/kernel/head64.c
-+++ b/arch/x86/kernel/head64.c
-@@ -61,6 +61,24 @@ unsigned long vmemmap_base __ro_after_init = __VMEMMAP_BASE_L4;
- EXPORT_SYMBOL(vmemmap_base);
- #endif
+@@ -183,6 +184,9 @@ void do_boot_stage2_vc(struct pt_regs *regs, unsigned long exit_code)
+ 	case SVM_EXIT_IOIO:
+ 		result = vc_handle_ioio(boot_ghcb, &ctxt);
+ 		break;
++	case SVM_EXIT_CPUID:
++		result = vc_handle_cpuid(boot_ghcb, &ctxt);
++		break;
+ 	default:
+ 		result = ES_UNSUPPORTED;
+ 		break;
+diff --git a/arch/x86/kernel/sev-es-shared.c b/arch/x86/kernel/sev-es-shared.c
+index bae7cf2..a6b4191 100644
+--- a/arch/x86/kernel/sev-es-shared.c
++++ b/arch/x86/kernel/sev-es-shared.c
+@@ -432,3 +432,38 @@ static enum es_result vc_handle_ioio(struct ghcb *ghcb, struct es_em_ctxt *ctxt)
  
-+/*
-+ * GDT used on the boot CPU before switching to virtual addresses.
-+ */
-+static struct desc_struct startup_gdt[GDT_ENTRIES] = {
-+	[GDT_ENTRY_KERNEL32_CS]         = GDT_ENTRY_INIT(0xc09b, 0, 0xfffff),
-+	[GDT_ENTRY_KERNEL_CS]           = GDT_ENTRY_INIT(0xa09b, 0, 0xfffff),
-+	[GDT_ENTRY_KERNEL_DS]           = GDT_ENTRY_INIT(0xc093, 0, 0xfffff),
-+};
-+
-+/*
-+ * Address needs to be set at runtime because it references the startup_gdt
-+ * while the kernel still uses a direct mapping.
-+ */
-+static struct desc_ptr startup_gdt_descr = {
-+	.size = sizeof(startup_gdt),
-+	.address = 0,
-+};
-+
- #define __head	__section(.head.text)
- 
- static void __head *fixup_pointer(void *ptr, unsigned long physaddr)
-@@ -489,3 +507,18 @@ void __init x86_64_start_reservations(char *real_mode_data)
- 
- 	start_kernel();
+ 	return ret;
  }
 +
-+/*
-+ * Setup boot CPU state needed before kernel switches to virtual addresses.
-+ */
-+void __head startup_64_setup_env(unsigned long physbase)
++static enum es_result vc_handle_cpuid(struct ghcb *ghcb,
++				      struct es_em_ctxt *ctxt)
 +{
-+	/* Load GDT */
-+	startup_gdt_descr.address = (unsigned long)fixup_pointer(startup_gdt, physbase);
-+	native_load_gdt(&startup_gdt_descr);
++	struct pt_regs *regs = ctxt->regs;
++	u32 cr4 = native_read_cr4();
++	enum es_result ret;
 +
-+	/* New GDT is live - reload data segment registers */
-+	asm volatile("movl %%eax, %%ds\n"
-+		     "movl %%eax, %%ss\n"
-+		     "movl %%eax, %%es\n" : : "a"(__KERNEL_DS) : "memory");
++	ghcb_set_rax(ghcb, regs->ax);
++	ghcb_set_rcx(ghcb, regs->cx);
++
++	if (cr4 & X86_CR4_OSXSAVE)
++		/* Safe to read xcr0 */
++		ghcb_set_xcr0(ghcb, xgetbv(XCR_XFEATURE_ENABLED_MASK));
++	else
++		/* xgetbv will cause #GP - use reset value for xcr0 */
++		ghcb_set_xcr0(ghcb, 1);
++
++	ret = sev_es_ghcb_hv_call(ghcb, ctxt, SVM_EXIT_CPUID, 0, 0);
++	if (ret != ES_OK)
++		return ret;
++
++	if (!(ghcb_rax_is_valid(ghcb) &&
++	      ghcb_rbx_is_valid(ghcb) &&
++	      ghcb_rcx_is_valid(ghcb) &&
++	      ghcb_rdx_is_valid(ghcb)))
++		return ES_VMM_ERROR;
++
++	regs->ax = ghcb->save.rax;
++	regs->bx = ghcb->save.rbx;
++	regs->cx = ghcb->save.rcx;
++	regs->dx = ghcb->save.rdx;
++
++	return ES_OK;
 +}
-diff --git a/arch/x86/kernel/head_64.S b/arch/x86/kernel/head_64.S
-index 16da4ac..2b2e916 100644
---- a/arch/x86/kernel/head_64.S
-+++ b/arch/x86/kernel/head_64.S
-@@ -73,6 +73,20 @@ SYM_CODE_START_NOALIGN(startup_64)
- 	/* Set up the stack for verify_cpu(), similar to initial_stack below */
- 	leaq	(__end_init_task - SIZEOF_PTREGS)(%rip), %rsp
- 
-+	leaq	_text(%rip), %rdi
-+	pushq	%rsi
-+	call	startup_64_setup_env
-+	popq	%rsi
-+
-+	/* Now switch to __KERNEL_CS so IRET works reliably */
-+	pushq	$__KERNEL_CS
-+	leaq	.Lon_kernel_cs(%rip), %rax
-+	pushq	%rax
-+	lretq
-+
-+.Lon_kernel_cs:
-+	UNWIND_HINT_EMPTY
-+
- 	/* Sanitize CPU configuration */
- 	call verify_cpu
- 
