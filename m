@@ -2,17 +2,17 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 289AF264188
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Sep 2020 11:22:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 16A4D26418E
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Sep 2020 11:23:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730373AbgIJJW3 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 10 Sep 2020 05:22:29 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:38690 "EHLO
+        id S1730425AbgIJJXC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 10 Sep 2020 05:23:02 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:38734 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729860AbgIJJWO (ORCPT
+        with ESMTP id S1730223AbgIJJWT (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 10 Sep 2020 05:22:14 -0400
-Date:   Thu, 10 Sep 2020 09:22:04 -0000
+        Thu, 10 Sep 2020 05:22:19 -0400
+Date:   Thu, 10 Sep 2020 09:22:05 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1599729725;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -20,12 +20,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ZvQnQfh9Bo3ltrX7QyNNcZwy6fdepNogXP0tysz4lic=;
-        b=PiKnazAHcvDBv9sF94e983uCAZDjydt3C8irq8UZiuyRZTrlEiMjbbCRdHWmhp8jO8CQYk
-        PaU1C4ozEKbb2NH9r1/v4W8YV6HhiRX8DZryRJTG7cZGSCfJyBTQxOQadhax7EEgAoVBUb
-        qyxEiBYqpztBeQ8xxfXcP97xe2mCrWIIIpRG7Nd3jHXAb2P+MlPk8iZ011eqzhHDkFxPAj
-        Jr6nOIy5iMvfxps5GW18tAIXo/wQiqWgmXnrD6NUsiLQiANdKRRtEoHH2cwADzpURb0x46
-        cCOLqlGjzCVo8G00WbIDVVdxF1yqdJ2zZJCZLI0x5RKlpVtnZXghPn+lChwzKg==
+        bh=kkC3Uo7XNJDg4jGF18WR5gMyrzBCb+gzMY+iUOcwdrU=;
+        b=f+fvQKgZeyhs40MxGig4XVMYT5m31x3jVkutEbiY9g+wqzuD9kV4SDAXXtcUqHjMOb3Tdt
+        6aSf3jFSloZV1wVYW8MehAe/W6W99Hrjk0bDbpPsEWgsJVbfsyZdWzVpIbllIKqZdkDtXI
+        buUifT8/fpVnLV41r1BNDGo71GoHDTq9rJrf9/GnltZFiqBQ2sOr3WXnSYIZNHStdoknO5
+        t3vy9/kW3ds9aoZH7ASasGkFs7iQRmmRiP63kSSIvT3EaOOTUQJ8oB7Soaao3aT49IJj59
+        nrtrcQCl6ybcDpCGC7b+3uflygMmUu35ZI6k1nRNWU6yqwHfVsAuwS2VFboezQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1599729725;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -33,20 +33,19 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ZvQnQfh9Bo3ltrX7QyNNcZwy6fdepNogXP0tysz4lic=;
-        b=DROpx82l/iv7Y/ur4GNG+XF8KS2oM2/w2EqKILqCV2YeJX1jPLj8ZG+KiFABFuq0xxQbIq
-        qetNkwV6A8DJofAw==
-From:   "tip-bot2 for Tom Lendacky" <tip-bot2@linutronix.de>
+        bh=kkC3Uo7XNJDg4jGF18WR5gMyrzBCb+gzMY+iUOcwdrU=;
+        b=wqWYfqNzkJbCglRFEA7iAD07kHDOBdvoTcoAUCcb0N4log0YmmjsCgH1pS2LdOEc35iHBc
+        OkHasef3kLQeZ4CA==
+From:   "tip-bot2 for Joerg Roedel" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/seves] x86/realmode: Setup AP jump table
-Cc:     Tom Lendacky <thomas.lendacky@amd.com>,
-        Joerg Roedel <jroedel@suse.de>, Borislav Petkov <bp@suse.de>,
+Subject: [tip: x86/seves] x86/realmode: Add SEV-ES specific trampoline entry point
+Cc:     Joerg Roedel <jroedel@suse.de>, Borislav Petkov <bp@suse.de>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200907131613.12703-67-joro@8bytes.org>
-References: <20200907131613.12703-67-joro@8bytes.org>
+In-Reply-To: <20200907131613.12703-66-joro@8bytes.org>
+References: <20200907131613.12703-66-joro@8bytes.org>
 MIME-Version: 1.0
-Message-ID: <159972972474.20229.3672512084927619910.tip-bot2@tip-bot2>
+Message-ID: <159972972517.20229.2323269831339763947.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,222 +57,95 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/seves branch of tip:
 
-Commit-ID:     8940ac9ced8bc1c48c4e28b0784e3234c9d14469
-Gitweb:        https://git.kernel.org/tip/8940ac9ced8bc1c48c4e28b0784e3234c9d14469
-Author:        Tom Lendacky <thomas.lendacky@amd.com>
-AuthorDate:    Mon, 07 Sep 2020 15:16:07 +02:00
+Commit-ID:     bf5ff276448f64f1f9ef9ffc9e231026e3887d3d
+Gitweb:        https://git.kernel.org/tip/bf5ff276448f64f1f9ef9ffc9e231026e3887d3d
+Author:        Joerg Roedel <jroedel@suse.de>
+AuthorDate:    Mon, 07 Sep 2020 15:16:06 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
 CommitterDate: Wed, 09 Sep 2020 11:33:20 +02:00
 
-x86/realmode: Setup AP jump table
+x86/realmode: Add SEV-ES specific trampoline entry point
 
-As part of the GHCB specification, the booting of APs under SEV-ES
-requires an AP jump table when transitioning from one layer of code to
-another (e.g. when going from UEFI to the OS). As a result, each layer
-that parks an AP must provide the physical address of an AP jump table
-to the next layer via the hypervisor.
+The code at the trampoline entry point is executed in real-mode. In
+real-mode, #VC exceptions can't be handled so anything that might cause
+such an exception must be avoided.
 
-Upon booting of the kernel, read the AP jump table address from the
-hypervisor. Under SEV-ES, APs are started using the INIT-SIPI-SIPI
-sequence. Before issuing the first SIPI request for an AP, the start
-CS and IP is programmed into the AP jump table. Upon issuing the SIPI
-request, the AP will awaken and jump to that start CS:IP address.
+In the standard trampoline entry code this is the WBINVD instruction and
+the call to verify_cpu(), which are both not needed anyway when running
+as an SEV-ES guest.
 
-Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
-[ jroedel@suse.de: - Adapted to different code base
-                   - Moved AP table setup from SIPI sending path to
-		     real-mode setup code
-		   - Fix sparse warnings ]
-Co-developed-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20200907131613.12703-67-joro@8bytes.org
+Link: https://lkml.kernel.org/r/20200907131613.12703-66-joro@8bytes.org
 ---
- arch/x86/include/asm/sev-es.h   |  5 ++-
- arch/x86/include/uapi/asm/svm.h |  3 +-
- arch/x86/kernel/sev-es.c        | 69 ++++++++++++++++++++++++++++++++-
- arch/x86/realmode/init.c        | 18 +++++++-
- 4 files changed, 93 insertions(+), 2 deletions(-)
+ arch/x86/include/asm/realmode.h      |  3 +++
+ arch/x86/realmode/rm/header.S        |  3 +++
+ arch/x86/realmode/rm/trampoline_64.S | 20 ++++++++++++++++++++
+ 3 files changed, 26 insertions(+)
 
-diff --git a/arch/x86/include/asm/sev-es.h b/arch/x86/include/asm/sev-es.h
-index 59176e8..db88e1c 100644
---- a/arch/x86/include/asm/sev-es.h
-+++ b/arch/x86/include/asm/sev-es.h
-@@ -73,6 +73,9 @@ static inline u64 lower_bits(u64 val, unsigned int bits)
- 	return (val & mask);
- }
- 
-+struct real_mode_header;
-+enum stack_type;
-+
- /* Early IDT entry points for #VC handler */
- extern void vc_no_ghcb(void);
- extern void vc_boot_ghcb(void);
-@@ -92,9 +95,11 @@ static __always_inline void sev_es_ist_exit(void)
- 	if (static_branch_unlikely(&sev_es_enable_key))
- 		__sev_es_ist_exit();
- }
-+extern int sev_es_setup_ap_jump_table(struct real_mode_header *rmh);
- #else
- static inline void sev_es_ist_enter(struct pt_regs *regs) { }
- static inline void sev_es_ist_exit(void) { }
-+static inline int sev_es_setup_ap_jump_table(struct real_mode_header *rmh) { return 0; }
- #endif
- 
- #endif
-diff --git a/arch/x86/include/uapi/asm/svm.h b/arch/x86/include/uapi/asm/svm.h
-index 8f36ae0..346b8a7 100644
---- a/arch/x86/include/uapi/asm/svm.h
-+++ b/arch/x86/include/uapi/asm/svm.h
-@@ -84,6 +84,9 @@
- /* SEV-ES software-defined VMGEXIT events */
- #define SVM_VMGEXIT_MMIO_READ			0x80000001
- #define SVM_VMGEXIT_MMIO_WRITE			0x80000002
-+#define SVM_VMGEXIT_AP_JUMP_TABLE		0x80000005
-+#define SVM_VMGEXIT_SET_AP_JUMP_TABLE		0
-+#define SVM_VMGEXIT_GET_AP_JUMP_TABLE		1
- #define SVM_VMGEXIT_UNSUPPORTED_EVENT		0x8000ffff
- 
- #define SVM_EXIT_ERR           -1
-diff --git a/arch/x86/kernel/sev-es.c b/arch/x86/kernel/sev-es.c
-index 6d89df9..9ad36ce 100644
---- a/arch/x86/kernel/sev-es.c
-+++ b/arch/x86/kernel/sev-es.c
-@@ -21,6 +21,7 @@
- #include <linux/mm.h>
- 
- #include <asm/cpu_entry_area.h>
-+#include <asm/stacktrace.h>
- #include <asm/sev-es.h>
- #include <asm/insn-eval.h>
- #include <asm/fpu/internal.h>
-@@ -214,6 +215,9 @@ static __always_inline void sev_es_put_ghcb(struct ghcb_state *state)
- 	}
- }
- 
-+/* Needed in vc_early_forward_exception */
-+void do_early_exception(struct pt_regs *regs, int trapnr);
-+
- static inline u64 sev_es_rd_ghcb_msr(void)
- {
- 	return __rdmsr(MSR_AMD64_SEV_ES_GHCB);
-@@ -402,6 +406,71 @@ static bool vc_slow_virt_to_phys(struct ghcb *ghcb, struct es_em_ctxt *ctxt,
- /* Include code shared with pre-decompression boot stage */
- #include "sev-es-shared.c"
- 
-+static u64 get_jump_table_addr(void)
-+{
-+	struct ghcb_state state;
-+	unsigned long flags;
-+	struct ghcb *ghcb;
-+	u64 ret = 0;
-+
-+	local_irq_save(flags);
-+
-+	ghcb = sev_es_get_ghcb(&state);
-+
-+	vc_ghcb_invalidate(ghcb);
-+	ghcb_set_sw_exit_code(ghcb, SVM_VMGEXIT_AP_JUMP_TABLE);
-+	ghcb_set_sw_exit_info_1(ghcb, SVM_VMGEXIT_GET_AP_JUMP_TABLE);
-+	ghcb_set_sw_exit_info_2(ghcb, 0);
-+
-+	sev_es_wr_ghcb_msr(__pa(ghcb));
-+	VMGEXIT();
-+
-+	if (ghcb_sw_exit_info_1_is_valid(ghcb) &&
-+	    ghcb_sw_exit_info_2_is_valid(ghcb))
-+		ret = ghcb->save.sw_exit_info_2;
-+
-+	sev_es_put_ghcb(&state);
-+
-+	local_irq_restore(flags);
-+
-+	return ret;
-+}
-+
-+int sev_es_setup_ap_jump_table(struct real_mode_header *rmh)
-+{
-+	u16 startup_cs, startup_ip;
-+	phys_addr_t jump_table_pa;
-+	u64 jump_table_addr;
-+	u16 __iomem *jump_table;
-+
-+	jump_table_addr = get_jump_table_addr();
-+
-+	/* On UP guests there is no jump table so this is not a failure */
-+	if (!jump_table_addr)
-+		return 0;
-+
-+	/* Check if AP Jump Table is page-aligned */
-+	if (jump_table_addr & ~PAGE_MASK)
-+		return -EINVAL;
-+
-+	jump_table_pa = jump_table_addr & PAGE_MASK;
-+
-+	startup_cs = (u16)(rmh->trampoline_start >> 4);
-+	startup_ip = (u16)(rmh->sev_es_trampoline_start -
-+			   rmh->trampoline_start);
-+
-+	jump_table = ioremap_encrypted(jump_table_pa, PAGE_SIZE);
-+	if (!jump_table)
-+		return -EIO;
-+
-+	writew(startup_ip, &jump_table[0]);
-+	writew(startup_cs, &jump_table[1]);
-+
-+	iounmap(jump_table);
-+
-+	return 0;
-+}
-+
- static enum es_result vc_handle_msr(struct ghcb *ghcb, struct es_em_ctxt *ctxt)
- {
- 	struct pt_regs *regs = ctxt->regs;
-diff --git a/arch/x86/realmode/init.c b/arch/x86/realmode/init.c
-index 1ed1208..3fb9b60 100644
---- a/arch/x86/realmode/init.c
-+++ b/arch/x86/realmode/init.c
-@@ -9,6 +9,7 @@
- #include <asm/realmode.h>
- #include <asm/tlbflush.h>
- #include <asm/crash.h>
-+#include <asm/sev-es.h>
- 
- struct real_mode_header *real_mode_header;
- u32 *trampoline_cr4_features;
-@@ -38,6 +39,19 @@ void __init reserve_real_mode(void)
- 	crash_reserve_low_1M();
- }
- 
-+static void sme_sev_setup_real_mode(struct trampoline_header *th)
-+{
+diff --git a/arch/x86/include/asm/realmode.h b/arch/x86/include/asm/realmode.h
+index 96118fb..4d4d853 100644
+--- a/arch/x86/include/asm/realmode.h
++++ b/arch/x86/include/asm/realmode.h
+@@ -21,6 +21,9 @@ struct real_mode_header {
+ 	/* SMP trampoline */
+ 	u32	trampoline_start;
+ 	u32	trampoline_header;
 +#ifdef CONFIG_AMD_MEM_ENCRYPT
-+	if (sme_active())
-+		th->flags |= TH_FLAGS_SME_ACTIVE;
-+
-+	if (sev_es_active()) {
-+		if (sev_es_setup_ap_jump_table(real_mode_header))
-+			panic("Failed to get/update SEV-ES AP Jump Table");
-+	}
++	u32	sev_es_trampoline_start;
 +#endif
-+}
-+
- static void __init setup_real_mode(void)
- {
- 	u16 real_mode_seg;
-@@ -104,13 +118,13 @@ static void __init setup_real_mode(void)
- 	*trampoline_cr4_features = mmu_cr4_features;
- 
- 	trampoline_header->flags = 0;
--	if (sme_active())
--		trampoline_header->flags |= TH_FLAGS_SME_ACTIVE;
- 
- 	trampoline_pgd = (u64 *) __va(real_mode_header->trampoline_pgd);
- 	trampoline_pgd[0] = trampoline_pgd_entry.pgd;
- 	trampoline_pgd[511] = init_top_pgt[511].pgd;
+ #ifdef CONFIG_X86_64
+ 	u32	trampoline_pgd;
  #endif
-+
-+	sme_sev_setup_real_mode(trampoline_header);
- }
+diff --git a/arch/x86/realmode/rm/header.S b/arch/x86/realmode/rm/header.S
+index af04512..8c1db5b 100644
+--- a/arch/x86/realmode/rm/header.S
++++ b/arch/x86/realmode/rm/header.S
+@@ -20,6 +20,9 @@ SYM_DATA_START(real_mode_header)
+ 	/* SMP trampoline */
+ 	.long	pa_trampoline_start
+ 	.long	pa_trampoline_header
++#ifdef CONFIG_AMD_MEM_ENCRYPT
++	.long	pa_sev_es_trampoline_start
++#endif
+ #ifdef CONFIG_X86_64
+ 	.long	pa_trampoline_pgd;
+ #endif
+diff --git a/arch/x86/realmode/rm/trampoline_64.S b/arch/x86/realmode/rm/trampoline_64.S
+index 251758e..84c5d1b 100644
+--- a/arch/x86/realmode/rm/trampoline_64.S
++++ b/arch/x86/realmode/rm/trampoline_64.S
+@@ -56,6 +56,7 @@ SYM_CODE_START(trampoline_start)
+ 	testl   %eax, %eax		# Check for return code
+ 	jnz	no_longmode
  
- /*
++.Lswitch_to_protected:
+ 	/*
+ 	 * GDT tables in non default location kernel can be beyond 16MB and
+ 	 * lgdt will not be able to load the address as in real mode default
+@@ -80,6 +81,25 @@ no_longmode:
+ 	jmp no_longmode
+ SYM_CODE_END(trampoline_start)
+ 
++#ifdef CONFIG_AMD_MEM_ENCRYPT
++/* SEV-ES supports non-zero IP for entry points - no alignment needed */
++SYM_CODE_START(sev_es_trampoline_start)
++	cli			# We should be safe anyway
++
++	LJMPW_RM(1f)
++1:
++	mov	%cs, %ax	# Code and data in the same place
++	mov	%ax, %ds
++	mov	%ax, %es
++	mov	%ax, %ss
++
++	# Setup stack
++	movl	$rm_stack_end, %esp
++
++	jmp	.Lswitch_to_protected
++SYM_CODE_END(sev_es_trampoline_start)
++#endif	/* CONFIG_AMD_MEM_ENCRYPT */
++
+ #include "../kernel/verify_cpu.S"
+ 
+ 	.section ".text32","ax"
