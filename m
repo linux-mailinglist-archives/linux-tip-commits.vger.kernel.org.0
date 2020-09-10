@@ -2,46 +2,51 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C7058264DF1
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Sep 2020 20:56:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E9518264DF4
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Sep 2020 20:57:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726539AbgIJS4u (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 10 Sep 2020 14:56:50 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:41844 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727792AbgIJSzG (ORCPT
+        id S1726789AbgIJS5P (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 10 Sep 2020 14:57:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41330 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726385AbgIJSz0 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 10 Sep 2020 14:55:06 -0400
+        Thu, 10 Sep 2020 14:55:26 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07F7CC061795;
+        Thu, 10 Sep 2020 11:54:40 -0700 (PDT)
 Date:   Thu, 10 Sep 2020 18:54:37 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1599764078;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=9JrUiWLo4xgc7Nm46o/qAOj/I8jdZXgmm6feeC2d7qE=;
-        b=wI7hGuHw5346uoA8vN1JeT5EpTuzsY3INZCNjtzGAN3Rm1RyKrw5ceEZEE1pK/2+fx+0lN
-        BrtY4H8IW/p73zGLM3zZ8mqe3QQrBCF0uhQjlpcssUsK+yd4H4p7TCB5murPhJquKsWVuP
-        a4QM+bKVtsuh0dVEBZqGhy/Wxw6IyvzOCwYYPNMdcz39isj6R7/+7tOQRt72rHCcD9uwK0
-        g+/tOmzvbTdjP3NejB8ZWe9Wp7bZhbX9MM80puK+qZcC23P1kyafI60yhAoZev6B6adXQh
-        H+cqMJq7WoICtW3yhbVibVVNxNnlaQoHg4kc1j5Bibeq9C84sRdzfgMXVPIHIQ==
+        bh=wGd6R3ZPOWzhOS3BtH72XGkKG64L4s9kAITb9yYdpBM=;
+        b=c/zJmgzxzd/wihTFBzp6k3i6ZuVYwztSo3mHwzEKB7p0rDR6zFrjJCN/bzW0RW0dq7Qu+Y
+        eZj9k/laDciGeThJvkxWMDFTtRWnWmtAqILenSbq+URDotSOhIOoZnkGEEK53qXo2tbV9B
+        PooUWPkpreKOtOHK2pCjcqNtk0gHC/qU8WM4MxWLMR9rpCpUoChoa+xp0iYtiSCyffliTX
+        BPcguA74Y5+iTWnXxg6cfFdMs0ty7nmFhGAX8YqRGW1FxtXib4s5wURAmiZMX9Yxcs8Dqo
+        B04qAfZi+NZJdc2fpwE0GtuAXULYm3qej68GFPKt7vmv9ivqZK/fSzB22itUYw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1599764078;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=9JrUiWLo4xgc7Nm46o/qAOj/I8jdZXgmm6feeC2d7qE=;
-        b=S+cJd3Dq+8Qvj9kMWvVCQypJH5/teBK1yr2+Ts0VYgIPTapFw+X3jDBNsZVuNEPm8gc0cC
-        gWBZdoJjxdgR8/Dw==
+        bh=wGd6R3ZPOWzhOS3BtH72XGkKG64L4s9kAITb9yYdpBM=;
+        b=vHWw2cmktinIUurB8q+urcZhV2ILiC5hjmb9iba8+j3+VCID1VY1H35eMTTe3m/6lHRWPF
+        RS0RmOM3k9mItvAg==
 From:   "tip-bot2 for Julien Thierry" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] objtool: Abstract alternative special case handling
-Cc:     Miroslav Benes <mbenes@suse.cz>,
+Subject: [tip: objtool/core] objtool: Move macros describing structures to
+ arch-dependent code
+Cc:     Raphael Gault <raphael.gault@arm.com>,
+        Miroslav Benes <mbenes@suse.cz>,
         Julien Thierry <jthierry@redhat.com>,
         Josh Poimboeuf <jpoimboe@redhat.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <159976407738.20229.15097756239524250564.tip-bot2@tip-bot2>
+Message-ID: <159976407782.20229.3037188886359540244.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -53,176 +58,81 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     eda3dc905834dc9c99132f987f77b68cf53a8682
-Gitweb:        https://git.kernel.org/tip/eda3dc905834dc9c99132f987f77b68cf53a8682
+Commit-ID:     c8ea0d672521ef663f0f9a77faa94d0d47102d77
+Gitweb:        https://git.kernel.org/tip/c8ea0d672521ef663f0f9a77faa94d0d47102d77
 Author:        Julien Thierry <jthierry@redhat.com>
-AuthorDate:    Fri, 04 Sep 2020 16:30:22 +01:00
+AuthorDate:    Fri, 04 Sep 2020 16:30:21 +01:00
 Committer:     Josh Poimboeuf <jpoimboe@redhat.com>
 CommitterDate: Thu, 10 Sep 2020 10:43:13 -05:00
 
-objtool: Abstract alternative special case handling
+objtool: Move macros describing structures to arch-dependent code
 
-Some alternatives associated with a specific feature need to be treated
-in a special way. Since the features and how to treat them vary from one
-architecture to another, move the special case handling to arch specific
-code.
+Some macros are defined to describe the size and layout of structures
+exception_table_entry, jump_entry and alt_instr. These values can vary
+from one architecture to another.
 
+Have the values be defined by arch specific code.
+
+Suggested-by: Raphael Gault <raphael.gault@arm.com>
 Reviewed-by: Miroslav Benes <mbenes@suse.cz>
 Signed-off-by: Julien Thierry <jthierry@redhat.com>
 Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
 ---
- tools/objtool/arch/x86/Build     |  1 +-
- tools/objtool/arch/x86/special.c | 37 +++++++++++++++++++++++++++++++-
- tools/objtool/objtool.h          |  2 ++-
- tools/objtool/special.c          | 32 ++++-----------------------
- tools/objtool/special.h          |  2 ++-
- tools/objtool/weak.c             |  2 +--
- 6 files changed, 47 insertions(+), 29 deletions(-)
- create mode 100644 tools/objtool/arch/x86/special.c
+ tools/objtool/arch/x86/include/arch_special.h | 20 ++++++++++++++++++-
+ tools/objtool/special.c                       | 16 +--------------
+ 2 files changed, 21 insertions(+), 15 deletions(-)
+ create mode 100644 tools/objtool/arch/x86/include/arch_special.h
 
-diff --git a/tools/objtool/arch/x86/Build b/tools/objtool/arch/x86/Build
-index 7c50040..9f7869b 100644
---- a/tools/objtool/arch/x86/Build
-+++ b/tools/objtool/arch/x86/Build
-@@ -1,3 +1,4 @@
-+objtool-y += special.o
- objtool-y += decode.o
- 
- inat_tables_script = ../arch/x86/tools/gen-insn-attr-x86.awk
-diff --git a/tools/objtool/arch/x86/special.c b/tools/objtool/arch/x86/special.c
+diff --git a/tools/objtool/arch/x86/include/arch_special.h b/tools/objtool/arch/x86/include/arch_special.h
 new file mode 100644
-index 0000000..823561e
+index 0000000..d818b2b
 --- /dev/null
-+++ b/tools/objtool/arch/x86/special.c
-@@ -0,0 +1,37 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+#include "../../special.h"
-+#include "../../builtin.h"
++++ b/tools/objtool/arch/x86/include/arch_special.h
+@@ -0,0 +1,20 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++#ifndef _X86_ARCH_SPECIAL_H
++#define _X86_ARCH_SPECIAL_H
 +
-+#define X86_FEATURE_POPCNT (4 * 32 + 23)
-+#define X86_FEATURE_SMAP   (9 * 32 + 20)
++#define EX_ENTRY_SIZE		12
++#define EX_ORIG_OFFSET		0
++#define EX_NEW_OFFSET		4
 +
-+void arch_handle_alternative(unsigned short feature, struct special_alt *alt)
-+{
-+	switch (feature) {
-+	case X86_FEATURE_SMAP:
-+		/*
-+		 * If UACCESS validation is enabled; force that alternative;
-+		 * otherwise force it the other way.
-+		 *
-+		 * What we want to avoid is having both the original and the
-+		 * alternative code flow at the same time, in that case we can
-+		 * find paths that see the STAC but take the NOP instead of
-+		 * CLAC and the other way around.
-+		 */
-+		if (uaccess)
-+			alt->skip_orig = true;
-+		else
-+			alt->skip_alt = true;
-+		break;
-+	case X86_FEATURE_POPCNT:
-+		/*
-+		 * It has been requested that we don't validate the !POPCNT
-+		 * feature path which is a "very very small percentage of
-+		 * machines".
-+		 */
-+		alt->skip_orig = true;
-+		break;
-+	default:
-+		break;
-+	}
-+}
-diff --git a/tools/objtool/objtool.h b/tools/objtool/objtool.h
-index a635f68..4125d45 100644
---- a/tools/objtool/objtool.h
-+++ b/tools/objtool/objtool.h
-@@ -12,6 +12,8 @@
- 
- #include "elf.h"
- 
-+#define __weak __attribute__((weak))
++#define JUMP_ENTRY_SIZE		16
++#define JUMP_ORIG_OFFSET	0
++#define JUMP_NEW_OFFSET		4
 +
- struct objtool_file {
- 	struct elf *elf;
- 	struct list_head insn_list;
++#define ALT_ENTRY_SIZE		13
++#define ALT_ORIG_OFFSET		0
++#define ALT_NEW_OFFSET		4
++#define ALT_FEATURE_OFFSET	8
++#define ALT_ORIG_LEN_OFFSET	10
++#define ALT_NEW_LEN_OFFSET	11
++
++#endif /* _X86_ARCH_SPECIAL_H */
 diff --git a/tools/objtool/special.c b/tools/objtool/special.c
-index b04f395..1a2420f 100644
+index e893f1e..b04f395 100644
 --- a/tools/objtool/special.c
 +++ b/tools/objtool/special.c
-@@ -16,9 +16,6 @@
+@@ -14,21 +14,7 @@
+ #include "builtin.h"
+ #include "special.h"
  #include "warn.h"
- #include "arch_special.h"
- 
--#define X86_FEATURE_POPCNT (4*32+23)
--#define X86_FEATURE_SMAP   (9*32+20)
 -
- struct special_entry {
- 	const char *sec;
- 	bool group, jump_or_nop;
-@@ -54,6 +51,10 @@ struct special_entry entries[] = {
- 	{},
- };
- 
-+void __weak arch_handle_alternative(unsigned short feature, struct special_alt *alt)
-+{
-+}
-+
- static int get_alt_entry(struct elf *elf, struct special_entry *entry,
- 			 struct section *sec, int idx,
- 			 struct special_alt *alt)
-@@ -78,30 +79,7 @@ static int get_alt_entry(struct elf *elf, struct special_entry *entry,
- 
- 		feature = *(unsigned short *)(sec->data->d_buf + offset +
- 					      entry->feature);
+-#define EX_ENTRY_SIZE		12
+-#define EX_ORIG_OFFSET		0
+-#define EX_NEW_OFFSET		4
 -
--		/*
--		 * It has been requested that we don't validate the !POPCNT
--		 * feature path which is a "very very small percentage of
--		 * machines".
--		 */
--		if (feature == X86_FEATURE_POPCNT)
--			alt->skip_orig = true;
+-#define JUMP_ENTRY_SIZE		16
+-#define JUMP_ORIG_OFFSET	0
+-#define JUMP_NEW_OFFSET		4
 -
--		/*
--		 * If UACCESS validation is enabled; force that alternative;
--		 * otherwise force it the other way.
--		 *
--		 * What we want to avoid is having both the original and the
--		 * alternative code flow at the same time, in that case we can
--		 * find paths that see the STAC but take the NOP instead of
--		 * CLAC and the other way around.
--		 */
--		if (feature == X86_FEATURE_SMAP) {
--			if (uaccess)
--				alt->skip_orig = true;
--			else
--				alt->skip_alt = true;
--		}
-+		arch_handle_alternative(feature, alt);
- 	}
+-#define ALT_ENTRY_SIZE		13
+-#define ALT_ORIG_OFFSET		0
+-#define ALT_NEW_OFFSET		4
+-#define ALT_FEATURE_OFFSET	8
+-#define ALT_ORIG_LEN_OFFSET	10
+-#define ALT_NEW_LEN_OFFSET	11
++#include "arch_special.h"
  
- 	orig_reloc = find_reloc_by_dest(elf, sec, offset + entry->orig);
-diff --git a/tools/objtool/special.h b/tools/objtool/special.h
-index 3506153..44da89a 100644
---- a/tools/objtool/special.h
-+++ b/tools/objtool/special.h
-@@ -28,4 +28,6 @@ struct special_alt {
- 
- int special_get_alts(struct elf *elf, struct list_head *alts);
- 
-+void arch_handle_alternative(unsigned short feature, struct special_alt *alt);
-+
- #endif /* _SPECIAL_H */
-diff --git a/tools/objtool/weak.c b/tools/objtool/weak.c
-index 29180d5..7843e9a 100644
---- a/tools/objtool/weak.c
-+++ b/tools/objtool/weak.c
-@@ -9,8 +9,6 @@
- #include <errno.h>
- #include "objtool.h"
- 
--#define __weak __attribute__((weak))
--
- #define UNSUPPORTED(name)						\
- ({									\
- 	fprintf(stderr, "error: objtool: " name " not implemented\n");	\
+ #define X86_FEATURE_POPCNT (4*32+23)
+ #define X86_FEATURE_SMAP   (9*32+20)
