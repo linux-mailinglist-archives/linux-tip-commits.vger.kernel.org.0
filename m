@@ -2,53 +2,50 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 665A8262A30
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Sep 2020 10:26:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E9AE3264186
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Sep 2020 11:22:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725984AbgIII0R (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 9 Sep 2020 04:26:17 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:60122 "EHLO
+        id S1730335AbgIJJWS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 10 Sep 2020 05:22:18 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:38592 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725975AbgIII0Q (ORCPT
+        with ESMTP id S1726847AbgIJJWH (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 9 Sep 2020 04:26:16 -0400
-Date:   Wed, 09 Sep 2020 08:26:12 -0000
+        Thu, 10 Sep 2020 05:22:07 -0400
+Date:   Thu, 10 Sep 2020 09:22:03 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1599639973;
+        s=2020; t=1599729723;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=QoDD1UDHTlJFMLx9+RNng8Fd9vf19kX3LXI/EPptrC0=;
-        b=PC3VAOwVybDTf8GPzx8pjT6Y/hC7lBII2+oTwXXS/3Ehgdj2VOAS203Y0qp18f+uyqD+hS
-        /thKbVSHFJ4X5OsTGTlGbZlXYJEC0jXKd+9liwaZ0AFgq+brAkGPVb9/wr1+M9jW+CcPpg
-        WXK3W+YA05iI8OoBcbHUB6Wg/e5iq2iTjOq0rJ180pN/LsMbXbAcp/Y9X0V1cKVxEdX7vk
-        +vyJIx/v9xT1n5BAbnDml4nNPhuXWaOAZIVlo1XEY7FraaBQvqxOb4NJEuxRdnGBhYzM1C
-        +SxLI0epwGnk+RBxSnnpmWcbbzMb8Zdai1x7dFUccF6czktXYZEn8p70gRmk9A==
+        bh=frpSjncJLU9SXbHKTKLo6vQ6DaBpk51FY2szvnht8Mo=;
+        b=HQjmajbLcG8BobZZfs3ly1EPsSM0y/45qfJtBAciU3+NGOZdE6JxFQY5RICMRR2pENzOTM
+        GL6qn5E0/Zj0STsgpkBlTDk++RuVhvRIXbFRnWYti/05L5D6ELn8CMUp9QKITGB4CLhdYg
+        MJYRCALCDTb0Fh++vABOdmUlocszg3CW66dB+GRQz+2fnJZxA1GpouvGh0tQ/MEwUX4gVJ
+        wzJ6IilrQYapFiJwEZcAWBeBDeBmW3xkPHk6h8Od8pAT+F7RBj9I1kJsUsAUauW/8RXiRK
+        uGtb5yXfWSy0EbUIVWl2BBCPO1jcHvuI8ndF4mHt3YLqRPwCPwOJVOAQWqo3Vw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1599639973;
+        s=2020e; t=1599729723;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=QoDD1UDHTlJFMLx9+RNng8Fd9vf19kX3LXI/EPptrC0=;
-        b=iMBqAbWC2jRtBf0RHg2K8mr94DRlCVOcQK7RMU+RjhAzyd64Io5HaSCFxS9m0NnGCfbezI
-        uvgtqkfj/kqjeWBg==
-From:   "tip-bot2 for Valentin Schneider" <tip-bot2@linutronix.de>
+        bh=frpSjncJLU9SXbHKTKLo6vQ6DaBpk51FY2szvnht8Mo=;
+        b=I/Soq6Vr26gA053qqd52vrgGBZzDTLiUu09ku7vpNubMjTggxIqVwdNrERJnsb3ZZ/wgVQ
+        /hr3Tt3dkKm1MECA==
+From:   "tip-bot2 for Joerg Roedel" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/topology: Move sd_flag_debug out of #ifdef
- CONFIG_SYSCTL
-Cc:     Randy Dunlap <rdunlap@infradead.org>,
-        Valentin Schneider <valentin.schneider@arm.com>,
-        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200908184956.23369-1-valentin.schneider@arm.com>
-References: <20200908184956.23369-1-valentin.schneider@arm.com>
+Subject: [tip: x86/seves] x86/sev-es: Handle NMI State
+Cc:     Joerg Roedel <jroedel@suse.de>, Borislav Petkov <bp@suse.de>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200907131613.12703-71-joro@8bytes.org>
+References: <20200907131613.12703-71-joro@8bytes.org>
 MIME-Version: 1.0
-Message-ID: <159963997277.20229.10716555225789484968.tip-bot2@tip-bot2>
+Message-ID: <159972972316.20229.16608188045012606373.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,78 +55,119 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the x86/seves branch of tip:
 
-Commit-ID:     848785df48835eefebe0c4eb5da7690690b0a8b7
-Gitweb:        https://git.kernel.org/tip/848785df48835eefebe0c4eb5da7690690b0a8b7
-Author:        Valentin Schneider <valentin.schneider@arm.com>
-AuthorDate:    Tue, 08 Sep 2020 19:49:56 +01:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 09 Sep 2020 10:09:03 +02:00
+Commit-ID:     4ca68e023b11e4d5908bf9ee326fab01111d77d5
+Gitweb:        https://git.kernel.org/tip/4ca68e023b11e4d5908bf9ee326fab01111d77d5
+Author:        Joerg Roedel <jroedel@suse.de>
+AuthorDate:    Mon, 07 Sep 2020 15:16:11 +02:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Wed, 09 Sep 2020 18:02:35 +02:00
 
-sched/topology: Move sd_flag_debug out of #ifdef CONFIG_SYSCTL
+x86/sev-es: Handle NMI State
 
-The last sd_flag_debug shuffle inadvertently moved its definition within
-an #ifdef CONFIG_SYSCTL region. While CONFIG_SYSCTL is indeed required to
-produce the sched domain ctl interface (which uses sd_flag_debug to output
-flag names), it isn't required to run any assertion on the sched_domain
-hierarchy itself.
+When running under SEV-ES, the kernel has to tell the hypervisor when to
+open the NMI window again after an NMI was injected. This is done with
+an NMI-complete message to the hypervisor.
 
-Move the definition of sd_flag_debug to a CONFIG_SCHED_DEBUG region of
-topology.c.
+Add code to the kernel's NMI handler to send this message right at the
+beginning of do_nmi(). This always allows nesting NMIs.
 
-Now at long last we have:
+ [ bp: Mark __sev_es_nmi_complete() noinstr:
+   vmlinux.o: warning: objtool: exc_nmi()+0x17: call to __sev_es_nmi_complete()
+	leaves .noinstr.text section
+   While at it, use __pa_nodebug() for the same reason due to
+   CONFIG_DEBUG_VIRTUAL=y:
+   vmlinux.o: warning: objtool: __sev_es_nmi_complete()+0xd9: call to __phys_addr()
+   	leaves .noinstr.text section ]
 
-- sd_flag_debug declared in include/linux/sched/topology.h iff
-  CONFIG_SCHED_DEBUG=y
-- sd_flag_debug defined in kernel/sched/topology.c, conditioned by:
-  - CONFIG_SCHED_DEBUG, with an explicit #ifdef block
-  - CONFIG_SMP, as a requirement to compile topology.c
-
-With this change, all symbols pertaining to SD flag metadata (with the
-exception of __SD_FLAG_CNT) are now defined exclusively within topology.c
-
-Fixes: 8fca9494d4b4 ("sched/topology: Move sd_flag_debug out of linux/sched/topology.h")
-Reported-by: Randy Dunlap <rdunlap@infradead.org>
-Signed-off-by: Valentin Schneider <valentin.schneider@arm.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20200908184956.23369-1-valentin.schneider@arm.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lkml.kernel.org/r/20200907131613.12703-71-joro@8bytes.org
 ---
- kernel/sched/debug.c    | 6 ------
- kernel/sched/topology.c | 6 ++++++
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ arch/x86/include/asm/sev-es.h   |  7 +++++++
+ arch/x86/include/uapi/asm/svm.h |  1 +
+ arch/x86/kernel/nmi.c           |  6 ++++++
+ arch/x86/kernel/sev-es.c        | 18 ++++++++++++++++++
+ 4 files changed, 32 insertions(+)
 
-diff --git a/kernel/sched/debug.c b/kernel/sched/debug.c
-index 0d7896d..0655524 100644
---- a/kernel/sched/debug.c
-+++ b/kernel/sched/debug.c
-@@ -245,12 +245,6 @@ set_table_entry(struct ctl_table *entry,
- 	entry->proc_handler = proc_handler;
+diff --git a/arch/x86/include/asm/sev-es.h b/arch/x86/include/asm/sev-es.h
+index db88e1c..e919f09 100644
+--- a/arch/x86/include/asm/sev-es.h
++++ b/arch/x86/include/asm/sev-es.h
+@@ -96,10 +96,17 @@ static __always_inline void sev_es_ist_exit(void)
+ 		__sev_es_ist_exit();
  }
+ extern int sev_es_setup_ap_jump_table(struct real_mode_header *rmh);
++extern void __sev_es_nmi_complete(void);
++static __always_inline void sev_es_nmi_complete(void)
++{
++	if (static_branch_unlikely(&sev_es_enable_key))
++		__sev_es_nmi_complete();
++}
+ #else
+ static inline void sev_es_ist_enter(struct pt_regs *regs) { }
+ static inline void sev_es_ist_exit(void) { }
+ static inline int sev_es_setup_ap_jump_table(struct real_mode_header *rmh) { return 0; }
++static inline void sev_es_nmi_complete(void) { }
+ #endif
  
--#define SD_FLAG(_name, mflags) [__##_name] = { .meta_flags = mflags, .name = #_name },
--const struct sd_flag_debug sd_flag_debug[] = {
--#include <linux/sched/sd_flags.h>
--};
--#undef SD_FLAG
--
- static int sd_ctl_doflags(struct ctl_table *table, int write,
- 			  void *buffer, size_t *lenp, loff_t *ppos)
+ #endif
+diff --git a/arch/x86/include/uapi/asm/svm.h b/arch/x86/include/uapi/asm/svm.h
+index c1dcf3e..a7a3403 100644
+--- a/arch/x86/include/uapi/asm/svm.h
++++ b/arch/x86/include/uapi/asm/svm.h
+@@ -84,6 +84,7 @@
+ /* SEV-ES software-defined VMGEXIT events */
+ #define SVM_VMGEXIT_MMIO_READ			0x80000001
+ #define SVM_VMGEXIT_MMIO_WRITE			0x80000002
++#define SVM_VMGEXIT_NMI_COMPLETE		0x80000003
+ #define SVM_VMGEXIT_AP_HLT_LOOP			0x80000004
+ #define SVM_VMGEXIT_AP_JUMP_TABLE		0x80000005
+ #define SVM_VMGEXIT_SET_AP_JUMP_TABLE		0
+diff --git a/arch/x86/kernel/nmi.c b/arch/x86/kernel/nmi.c
+index 4c89c4d..56b64d7 100644
+--- a/arch/x86/kernel/nmi.c
++++ b/arch/x86/kernel/nmi.c
+@@ -478,6 +478,12 @@ DEFINE_IDTENTRY_RAW(exc_nmi)
  {
-diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
-index aa1676a..249bec7 100644
---- a/kernel/sched/topology.c
-+++ b/kernel/sched/topology.c
-@@ -25,6 +25,12 @@ static inline bool sched_debug(void)
- 	return sched_debug_enabled;
- }
+ 	bool irq_state;
  
-+#define SD_FLAG(_name, mflags) [__##_name] = { .meta_flags = mflags, .name = #_name },
-+const struct sd_flag_debug sd_flag_debug[] = {
-+#include <linux/sched/sd_flags.h>
-+};
-+#undef SD_FLAG
++	/*
++	 * Re-enable NMIs right here when running as an SEV-ES guest. This might
++	 * cause nested NMIs, but those can be handled safely.
++	 */
++	sev_es_nmi_complete();
 +
- static int sched_domain_debug_one(struct sched_domain *sd, int cpu, int level,
- 				  struct cpumask *groupmask)
+ 	if (IS_ENABLED(CONFIG_SMP) && arch_cpu_is_offline(smp_processor_id()))
+ 		return;
+ 
+diff --git a/arch/x86/kernel/sev-es.c b/arch/x86/kernel/sev-es.c
+index d1bcd0d..b6518e9 100644
+--- a/arch/x86/kernel/sev-es.c
++++ b/arch/x86/kernel/sev-es.c
+@@ -408,6 +408,24 @@ static bool vc_slow_virt_to_phys(struct ghcb *ghcb, struct es_em_ctxt *ctxt,
+ /* Include code shared with pre-decompression boot stage */
+ #include "sev-es-shared.c"
+ 
++void noinstr __sev_es_nmi_complete(void)
++{
++	struct ghcb_state state;
++	struct ghcb *ghcb;
++
++	ghcb = sev_es_get_ghcb(&state);
++
++	vc_ghcb_invalidate(ghcb);
++	ghcb_set_sw_exit_code(ghcb, SVM_VMGEXIT_NMI_COMPLETE);
++	ghcb_set_sw_exit_info_1(ghcb, 0);
++	ghcb_set_sw_exit_info_2(ghcb, 0);
++
++	sev_es_wr_ghcb_msr(__pa_nodebug(ghcb));
++	VMGEXIT();
++
++	sev_es_put_ghcb(&state);
++}
++
+ static u64 get_jump_table_addr(void)
  {
+ 	struct ghcb_state state;
