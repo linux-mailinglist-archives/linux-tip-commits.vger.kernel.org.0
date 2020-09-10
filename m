@@ -2,58 +2,58 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 616F4264EE3
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Sep 2020 21:29:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 58C22264EC6
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Sep 2020 21:25:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726534AbgIJT26 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 10 Sep 2020 15:28:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39228 "EHLO
+        id S1727821AbgIJTZc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 10 Sep 2020 15:25:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39966 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731424AbgIJPsR (ORCPT
+        with ESMTP id S1730408AbgIJPs1 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 10 Sep 2020 11:48:17 -0400
+        Thu, 10 Sep 2020 11:48:27 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42846C061350;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 772ECC061357;
         Thu, 10 Sep 2020 08:08:29 -0700 (PDT)
-Date:   Thu, 10 Sep 2020 15:08:26 -0000
+Date:   Thu, 10 Sep 2020 15:08:27 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1599750507;
+        s=2020; t=1599750508;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=W6+IFj5KsRwEgGxJPZulh3HA62DooTbJIv60Z+9sE10=;
-        b=m4qSHDnZcxNODEKHI7R7I0n8RVi7blwJ2zeUg3y2wWzvD16qluHu2Vm2nu0htWUIfqsN19
-        N3OlV+FuGAXOxfOl6ZEMkQFVQT9cMixcWmZTv0Hii/WXCm6PkRl6SYhGzRnVwbdG9+Y3Qv
-        Q94oVCmU5W/bp0GkfBtB4U0zTg85kZgSZwfBiG6CMiFuu5rHnzqn5itAi8FpxVkSY4HqtF
-        kIH28Wt5TXFLr5jwGkXLuGLDv3gi/w5MDkFp3Ry+WWlTXUtNFuH3Vc0MyGxvZGVhIvPMQI
-        vxsheCwiy/0wZrNNLDkALHjhsrIo5F8xQLns9CY7vYalRfBsWShpucmII2Ongg==
+        bh=L0m5hkB+ccYH+x0REmVy1EbpacF/uWU6RknxT4dz2eE=;
+        b=VMz6dL4yUiRiwUrxthpgSI5eAS1bzOnTA9DTFdL8ZV6ImIbQQh3RbFK9FhQM4FlOpqJfMK
+        pZzcPO3U3Mjt1cGe9TREoX8fPdd9Zs21VMowg3EPtgRHCB5Tncf/yAAeA8DPJFtigrFo3R
+        FELoOJxNQivl3UI5W0ly/oMY2bOriIfMRo5uVMkLXI1Ycb49XcsHeAuTZ8qPiLPHl6jQE4
+        v2BuPFw3ZUWyDeepVf3e9fog4eQf0BfZIbw88nDg9N+S8DEhlHdc+2w4Xff/Z+wmMGnUSr
+        vFivSpI9NKo/R/8QFZaciclCSs4U9relzbCoVth+fArJ0JULxev3S6H/rVuqPw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1599750507;
+        s=2020e; t=1599750508;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=W6+IFj5KsRwEgGxJPZulh3HA62DooTbJIv60Z+9sE10=;
-        b=BirEK82JlKkzGqHVY8zlyFWNLAkEzIUmAPLA5eCyiyj6b/XltzeEwVTwRLVmwY4pCrri/Y
-        e2xv/lwZzia0UiCg==
+        bh=L0m5hkB+ccYH+x0REmVy1EbpacF/uWU6RknxT4dz2eE=;
+        b=wwB99IscBcsPFeUbKjxInZFJd2XZmmWU+4G8MG+3lq181I1M5i2fZKWOzo1yhfa2eB5K7B
+        wl+UVK1dOE6viOBA==
 From:   "tip-bot2 for Ahmed S. Darwish" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] x86/tsc: Use seqcount_latch_t
+Subject: [tip: locking/core] timekeeping: Use seqcount_latch_t
 Cc:     "Ahmed S. Darwish" <a.darwish@linutronix.de>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200827114044.11173-7-a.darwish@linutronix.de>
-References: <20200827114044.11173-7-a.darwish@linutronix.de>
+In-Reply-To: <20200827114044.11173-6-a.darwish@linutronix.de>
+References: <20200827114044.11173-6-a.darwish@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <159975050696.20229.10208989556997350425.tip-bot2@tip-bot2>
+Message-ID: <159975050740.20229.1073373223572014594.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-tip-commits-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
@@ -61,75 +61,96 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     a1f1066133d85d5f42217cc72a2490bb7aa889c5
-Gitweb:        https://git.kernel.org/tip/a1f1066133d85d5f42217cc72a2490bb7aa889c5
+Commit-ID:     249d053835320cb3e7c00066cf085a6ba9b1f126
+Gitweb:        https://git.kernel.org/tip/249d053835320cb3e7c00066cf085a6ba9b=
+1f126
 Author:        Ahmed S. Darwish <a.darwish@linutronix.de>
-AuthorDate:    Thu, 27 Aug 2020 13:40:42 +02:00
+AuthorDate:    Thu, 27 Aug 2020 13:40:41 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Thu, 10 Sep 2020 11:19:29 +02:00
 
-x86/tsc: Use seqcount_latch_t
+timekeeping: Use seqcount_latch_t
 
-Latch sequence counters have unique read and write APIs, and thus
-seqcount_latch_t was recently introduced at seqlock.h.
+Latch sequence counters are a multiversion concurrency control mechanism
+where the seqcount_t counter even/odd value is used to switch between
+two data storage copies. This allows the seqcount_t read path to safely
+interrupt its write side critical section (e.g. from NMIs).
 
-Use that new data type instead of plain seqcount_t. This adds the
-necessary type-safety and ensures that only latching-safe seqcount APIs
-are to be used.
+Initially, latch sequence counters were implemented as a single write
+function, raw_write_seqcount_latch(), above plain seqcount_t. The read
+path was expected to use plain seqcount_t raw_read_seqcount().
 
+A specialized read function was later added, raw_read_seqcount_latch(),
+and became the standardized way for latch read paths. Having unique read
+and write APIs meant that latch sequence counters are basically a data
+type of their own -- just inappropriately overloading plain seqcount_t.
+The seqcount_latch_t data type was thus introduced at seqlock.h.
+
+Use that new data type instead of seqcount_raw_spinlock_t. This ensures
+that only latch-safe APIs are to be used with the sequence counter.
+
+Note that the use of seqcount_raw_spinlock_t was not very useful in the
+first place. Only the "raw_" subset of seqcount_t APIs were used at
+timekeeping.c. This subset was created for contexts where lockdep cannot
+be used. seqcount_LOCKTYPE_t's raison d'=C3=AAtre -- verifying that the
+seqcount_t writer serialization lock is held -- cannot thus be done.
+
+References: 0c3351d451ae ("seqlock: Use raw_ prefix instead of _no_lockdep")
+References: 55f3560df975 ("seqlock: Extend seqcount API with associated locks=
+")
 Signed-off-by: Ahmed S. Darwish <a.darwish@linutronix.de>
-[peterz: unwreck cyc2ns_read_begin()]
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20200827114044.11173-7-a.darwish@linutronix.de
+Link: https://lkml.kernel.org/r/20200827114044.11173-6-a.darwish@linutronix.de
 ---
- arch/x86/kernel/tsc.c | 10 +++++-----
+ kernel/time/timekeeping.c | 10 +++++-----
  1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/kernel/tsc.c b/arch/x86/kernel/tsc.c
-index 49d9250..f70dffc 100644
---- a/arch/x86/kernel/tsc.c
-+++ b/arch/x86/kernel/tsc.c
-@@ -54,7 +54,7 @@ struct clocksource *art_related_clocksource;
- 
- struct cyc2ns {
- 	struct cyc2ns_data data[2];	/*  0 + 2*16 = 32 */
--	seqcount_t	   seq;		/* 32 + 4    = 36 */
-+	seqcount_latch_t   seq;		/* 32 + 4    = 36 */
- 
- }; /* fits one cacheline */
- 
-@@ -73,14 +73,14 @@ __always_inline void cyc2ns_read_begin(struct cyc2ns_data *data)
- 	preempt_disable_notrace();
- 
- 	do {
--		seq = this_cpu_read(cyc2ns.seq.sequence);
-+		seq = this_cpu_read(cyc2ns.seq.seqcount.sequence);
- 		idx = seq & 1;
- 
- 		data->cyc2ns_offset = this_cpu_read(cyc2ns.data[idx].cyc2ns_offset);
- 		data->cyc2ns_mul    = this_cpu_read(cyc2ns.data[idx].cyc2ns_mul);
- 		data->cyc2ns_shift  = this_cpu_read(cyc2ns.data[idx].cyc2ns_shift);
- 
--	} while (unlikely(seq != this_cpu_read(cyc2ns.seq.sequence)));
-+	} while (unlikely(seq != this_cpu_read(cyc2ns.seq.seqcount.sequence)));
+diff --git a/kernel/time/timekeeping.c b/kernel/time/timekeeping.c
+index 4c47f38..999c981 100644
+--- a/kernel/time/timekeeping.c
++++ b/kernel/time/timekeeping.c
+@@ -64,7 +64,7 @@ static struct timekeeper shadow_timekeeper;
+  * See @update_fast_timekeeper() below.
+  */
+ struct tk_fast {
+-	seqcount_raw_spinlock_t	seq;
++	seqcount_latch_t	seq;
+ 	struct tk_read_base	base[2];
+ };
+=20
+@@ -81,13 +81,13 @@ static struct clocksource dummy_clock =3D {
+ };
+=20
+ static struct tk_fast tk_fast_mono ____cacheline_aligned =3D {
+-	.seq     =3D SEQCNT_RAW_SPINLOCK_ZERO(tk_fast_mono.seq, &timekeeper_lock),
++	.seq     =3D SEQCNT_LATCH_ZERO(tk_fast_mono.seq),
+ 	.base[0] =3D { .clock =3D &dummy_clock, },
+ 	.base[1] =3D { .clock =3D &dummy_clock, },
+ };
+=20
+ static struct tk_fast tk_fast_raw  ____cacheline_aligned =3D {
+-	.seq     =3D SEQCNT_RAW_SPINLOCK_ZERO(tk_fast_raw.seq, &timekeeper_lock),
++	.seq     =3D SEQCNT_LATCH_ZERO(tk_fast_raw.seq),
+ 	.base[0] =3D { .clock =3D &dummy_clock, },
+ 	.base[1] =3D { .clock =3D &dummy_clock, },
+ };
+@@ -467,7 +467,7 @@ static __always_inline u64 __ktime_get_fast_ns(struct tk_=
+fast *tkf)
+ 					tk_clock_read(tkr),
+ 					tkr->cycle_last,
+ 					tkr->mask));
+-	} while (read_seqcount_retry(&tkf->seq, seq));
++	} while (read_seqcount_latch_retry(&tkf->seq, seq));
+=20
+ 	return now;
  }
- 
- __always_inline void cyc2ns_read_end(void)
-@@ -186,7 +186,7 @@ static void __init cyc2ns_init_boot_cpu(void)
- {
- 	struct cyc2ns *c2n = this_cpu_ptr(&cyc2ns);
- 
--	seqcount_init(&c2n->seq);
-+	seqcount_latch_init(&c2n->seq);
- 	__set_cyc2ns_scale(tsc_khz, smp_processor_id(), rdtsc());
+@@ -533,7 +533,7 @@ static __always_inline u64 __ktime_get_real_fast_ns(struc=
+t tk_fast *tkf)
+ 					tk_clock_read(tkr),
+ 					tkr->cycle_last,
+ 					tkr->mask));
+-	} while (read_seqcount_retry(&tkf->seq, seq));
++	} while (read_seqcount_latch_retry(&tkf->seq, seq));
+=20
+ 	return now;
  }
- 
-@@ -203,7 +203,7 @@ static void __init cyc2ns_init_secondary_cpus(void)
- 
- 	for_each_possible_cpu(cpu) {
- 		if (cpu != this_cpu) {
--			seqcount_init(&c2n->seq);
-+			seqcount_latch_init(&c2n->seq);
- 			c2n = per_cpu_ptr(&cyc2ns, cpu);
- 			c2n->data[0] = data[0];
- 			c2n->data[1] = data[1];
