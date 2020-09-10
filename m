@@ -2,51 +2,46 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 106F6264A59
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Sep 2020 18:54:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 327D9264E1A
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Sep 2020 21:00:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726899AbgIJQyP (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 10 Sep 2020 12:54:15 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:41162 "EHLO
+        id S1727930AbgIJTA0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 10 Sep 2020 15:00:26 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:41784 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726591AbgIJQiR (ORCPT
+        with ESMTP id S1726688AbgIJSyr (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 10 Sep 2020 12:38:17 -0400
-Date:   Thu, 10 Sep 2020 16:37:43 -0000
+        Thu, 10 Sep 2020 14:54:47 -0400
+Date:   Thu, 10 Sep 2020 18:54:34 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1599755865;
+        s=2020; t=1599764075;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=swb/GFKEUcMl6eydIdfu3mru6VX/JUoaSCA+xSouJ7s=;
-        b=S9mE3rMrc8Z3kBHoiyH7BoB8Zk88rtZHKQZ3a15WutxsLGhNIpuz3GUAawtoE8XVn8kErc
-        mNUaDeNQPyvqKThFGIs5AUK/OxtPp9DtWZ7S5LrWI2hAtfsOdQnqbgkSg1zTZfCV1ic5Rv
-        36DIao8oSl5nUoBxlqTaY6vgsPCHG+BBTHo12AzRKlUKH4p6eygnVb/Qfp4RiV8O02ozRB
-        KXqpsYRG2V3rX5C8ilyrgOQgU7TFgeH7g1QwLG8SmuCfCK3F8H8Izclvl9+gHs/9gPHViI
-        7UcjwMsE3tPiXAeT53qvqI84jSaTMivaGuWudtIsyw2lYK96RHZia0RcS7NecQ==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=L3SZZFRPUnHcIHVodRamdf0L5LfD+h08IWUNNnV6fF4=;
+        b=31sXwdLmjes405/3vEOkXQyPs9RjzZ383TQby9neFl9B7VGxb0S8VXVN8JYV56830zf96l
+        FoH4iEczP4pZOXQXhuwike+PJ1b93iCtBWMImREpHZBT90Pngl3D5qS3ona/fD+9i/naNc
+        NvP1+AtJNysJGJcXV4kvINJsdMWlMLxk/V4ToM9imaJt94ek7N3f7qEtP5R0yWdtiXIji0
+        +wtxRYF40RXKiPZjvQv82hlIjTO5FFcmNMWiMECueuuM3mtRng77fq9eQFgaVGgavfWTZu
+        tjdmsDNde5QWszNMXcEF2G93qpB9EnT9zas9ewoY6LqYEHhrkX/pV9COcQKvxQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1599755865;
+        s=2020e; t=1599764075;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=swb/GFKEUcMl6eydIdfu3mru6VX/JUoaSCA+xSouJ7s=;
-        b=5CY65HomqyX89UGxBYP8iJh8OmbmlITyl+hJRf88LcTDg71O/mzotiq//KZiTBPqgkf9AC
-        68jcz3hacJbNdIAw==
-From:   "tip-bot2 for Arvind Sankar" <tip-bot2@linutronix.de>
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=L3SZZFRPUnHcIHVodRamdf0L5LfD+h08IWUNNnV6fF4=;
+        b=fPiTbZdo9J6Ch1hjtIlrHfNGSaVZt8Zp4HX3IAaXWpN77kknEDt4IqoLe/nSeIzjU+GsDQ
+        cYRkFKLL+fn/AVCw==
+From:   "tip-bot2 for Julien Thierry" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/fpu] x86/fpu: Allow multiple bits in clearcpuid= parameter
-Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
-        Borislav Petkov <bp@suse.de>, x86 <x86@kernel.org>,
+Subject: [tip: objtool/core] objtool: Decode unwind hint register depending on
+ architecture
+Cc:     Julien Thierry <jthierry@redhat.com>,
+        Josh Poimboeuf <jpoimboe@redhat.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200907213919.2423441-1-nivedita@alum.mit.edu>
-References: <20200907213919.2423441-1-nivedita@alum.mit.edu>
 MIME-Version: 1.0
-Message-ID: <159975586380.20229.16836491177743031748.tip-bot2@tip-bot2>
+Message-ID: <159976407436.20229.15130486625259199732.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -56,103 +51,127 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/fpu branch of tip:
+The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     0a4bb5e5507a585532cc413125b921c8546fc39f
-Gitweb:        https://git.kernel.org/tip/0a4bb5e5507a585532cc413125b921c8546fc39f
-Author:        Arvind Sankar <nivedita@alum.mit.edu>
-AuthorDate:    Mon, 07 Sep 2020 17:39:19 -04:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Thu, 10 Sep 2020 18:32:05 +02:00
+Commit-ID:     edea9e6bcbeaa41718b022a8b99ffddef2330bbc
+Gitweb:        https://git.kernel.org/tip/edea9e6bcbeaa41718b022a8b99ffddef2330bbc
+Author:        Julien Thierry <jthierry@redhat.com>
+AuthorDate:    Fri, 04 Sep 2020 16:30:28 +01:00
+Committer:     Josh Poimboeuf <jpoimboe@redhat.com>
+CommitterDate: Thu, 10 Sep 2020 10:43:13 -05:00
 
-x86/fpu: Allow multiple bits in clearcpuid= parameter
+objtool: Decode unwind hint register depending on architecture
 
-Commit
+The set of registers that can be included in an unwind hint and their
+encoding will depend on the architecture. Have arch specific code to
+decode that register.
 
-  0c2a3913d6f5 ("x86/fpu: Parse clearcpuid= as early XSAVE argument")
-
-changed clearcpuid parsing from __setup() to cmdline_find_option().
-While the __setup() function would have been called for each clearcpuid=
-parameter on the command line, cmdline_find_option() will only return
-the last one, so the change effectively made it impossible to disable
-more than one bit.
-
-Allow a comma-separated list of bit numbers as the argument for
-clearcpuid to allow multiple bits to be disabled again. Log the bits
-being disabled for informational purposes.
-
-Also fix the check on the return value of cmdline_find_option(). It
-returns -1 when the option is not found, so testing as a boolean is
-incorrect.
-
-Fixes: 0c2a3913d6f5 ("x86/fpu: Parse clearcpuid= as early XSAVE argument")
-Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20200907213919.2423441-1-nivedita@alum.mit.edu
+Signed-off-by: Julien Thierry <jthierry@redhat.com>
+Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
 ---
- Documentation/admin-guide/kernel-parameters.txt |  2 +-
- arch/x86/kernel/fpu/init.c                      | 30 +++++++++++-----
- 2 files changed, 23 insertions(+), 9 deletions(-)
+ tools/objtool/arch.h            |  2 ++-
+ tools/objtool/arch/x86/decode.c | 37 ++++++++++++++++++++++++++++++++-
+ tools/objtool/check.c           | 27 +-----------------------
+ 3 files changed, 40 insertions(+), 26 deletions(-)
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index a106874..ffe8643 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -577,7 +577,7 @@
- 			loops can be debugged more effectively on production
- 			systems.
+diff --git a/tools/objtool/arch.h b/tools/objtool/arch.h
+index b18c5f6..4a84c30 100644
+--- a/tools/objtool/arch.h
++++ b/tools/objtool/arch.h
+@@ -88,4 +88,6 @@ unsigned long arch_dest_reloc_offset(int addend);
  
--	clearcpuid=BITNUM [X86]
-+	clearcpuid=BITNUM[,BITNUM...] [X86]
- 			Disable CPUID feature X for the kernel. See
- 			arch/x86/include/asm/cpufeatures.h for the valid bit
- 			numbers. Note the Linux specific bits are not necessarily
-diff --git a/arch/x86/kernel/fpu/init.c b/arch/x86/kernel/fpu/init.c
-index 61ddc3a..f8ff895 100644
---- a/arch/x86/kernel/fpu/init.c
-+++ b/arch/x86/kernel/fpu/init.c
-@@ -243,9 +243,9 @@ static void __init fpu__init_system_ctx_switch(void)
-  */
- static void __init fpu__init_parse_early_param(void)
- {
--	char arg[32];
-+	char arg[128];
- 	char *argptr = arg;
--	int bit;
-+	int arglen, res, bit;
+ const char *arch_nop_insn(int len);
  
- #ifdef CONFIG_X86_32
- 	if (cmdline_find_option_bool(boot_command_line, "no387"))
-@@ -268,12 +268,26 @@ static void __init fpu__init_parse_early_param(void)
- 	if (cmdline_find_option_bool(boot_command_line, "noxsaves"))
- 		setup_clear_cpu_cap(X86_FEATURE_XSAVES);
++int arch_decode_hint_reg(struct instruction *insn, u8 sp_reg);
++
+ #endif /* _ARCH_H */
+diff --git a/tools/objtool/arch/x86/decode.c b/tools/objtool/arch/x86/decode.c
+index 1967370..cde9c36 100644
+--- a/tools/objtool/arch/x86/decode.c
++++ b/tools/objtool/arch/x86/decode.c
+@@ -15,6 +15,7 @@
+ #include "../../elf.h"
+ #include "../../arch.h"
+ #include "../../warn.h"
++#include <asm/orc_types.h>
  
--	if (cmdline_find_option(boot_command_line, "clearcpuid", arg,
--				sizeof(arg)) &&
--	    get_option(&argptr, &bit) &&
--	    bit >= 0 &&
--	    bit < NCAPINTS * 32)
--		setup_clear_cpu_cap(bit);
-+	arglen = cmdline_find_option(boot_command_line, "clearcpuid", arg, sizeof(arg));
-+	if (arglen <= 0)
-+		return;
-+
-+	pr_info("Clearing CPUID bits:");
-+	do {
-+		res = get_option(&argptr, &bit);
-+		if (res == 0 || res == 3)
-+			break;
-+
-+		/* If the argument was too long, the last bit may be cut off */
-+		if (res == 1 && arglen >= sizeof(arg))
-+			break;
-+
-+		if (bit >= 0 && bit < NCAPINTS * 32) {
-+			pr_cont(" " X86_CAP_FMT, x86_cap_flag(bit));
-+			setup_clear_cpu_cap(bit);
-+		}
-+	} while (res == 2);
-+	pr_cont("\n");
+ static unsigned char op_to_cfi_reg[][2] = {
+ 	{CFI_AX, CFI_R8},
+@@ -583,3 +584,39 @@ const char *arch_nop_insn(int len)
+ 
+ 	return nops[len-1];
  }
++
++int arch_decode_hint_reg(struct instruction *insn, u8 sp_reg)
++{
++	struct cfi_reg *cfa = &insn->cfi.cfa;
++
++	switch (sp_reg) {
++	case ORC_REG_UNDEFINED:
++		cfa->base = CFI_UNDEFINED;
++		break;
++	case ORC_REG_SP:
++		cfa->base = CFI_SP;
++		break;
++	case ORC_REG_BP:
++		cfa->base = CFI_BP;
++		break;
++	case ORC_REG_SP_INDIRECT:
++		cfa->base = CFI_SP_INDIRECT;
++		break;
++	case ORC_REG_R10:
++		cfa->base = CFI_R10;
++		break;
++	case ORC_REG_R13:
++		cfa->base = CFI_R13;
++		break;
++	case ORC_REG_DI:
++		cfa->base = CFI_DI;
++		break;
++	case ORC_REG_DX:
++		cfa->base = CFI_DX;
++		break;
++	default:
++		return -1;
++	}
++
++	return 0;
++}
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index 95c6e0d..4e2f703 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -1367,32 +1367,7 @@ static int read_unwind_hints(struct objtool_file *file)
  
- /*
+ 		insn->hint = true;
+ 
+-		switch (hint->sp_reg) {
+-		case ORC_REG_UNDEFINED:
+-			cfa->base = CFI_UNDEFINED;
+-			break;
+-		case ORC_REG_SP:
+-			cfa->base = CFI_SP;
+-			break;
+-		case ORC_REG_BP:
+-			cfa->base = CFI_BP;
+-			break;
+-		case ORC_REG_SP_INDIRECT:
+-			cfa->base = CFI_SP_INDIRECT;
+-			break;
+-		case ORC_REG_R10:
+-			cfa->base = CFI_R10;
+-			break;
+-		case ORC_REG_R13:
+-			cfa->base = CFI_R13;
+-			break;
+-		case ORC_REG_DI:
+-			cfa->base = CFI_DI;
+-			break;
+-		case ORC_REG_DX:
+-			cfa->base = CFI_DX;
+-			break;
+-		default:
++		if (arch_decode_hint_reg(insn, hint->sp_reg)) {
+ 			WARN_FUNC("unsupported unwind_hint sp base reg %d",
+ 				  insn->sec, insn->offset, hint->sp_reg);
+ 			return -1;
