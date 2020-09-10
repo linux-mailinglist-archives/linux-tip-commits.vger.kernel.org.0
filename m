@@ -2,53 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 43C30264211
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Sep 2020 11:32:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E4CF4264244
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Sep 2020 11:35:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730631AbgIJJbx (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 10 Sep 2020 05:31:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36512 "EHLO
+        id S1726847AbgIJJfk (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 10 Sep 2020 05:35:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36300 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730493AbgIJJYT (ORCPT
+        with ESMTP id S1730255AbgIJJW5 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 10 Sep 2020 05:24:19 -0400
+        Thu, 10 Sep 2020 05:22:57 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4132CC0617A3;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B9F6C0617A1;
         Thu, 10 Sep 2020 02:22:18 -0700 (PDT)
 Date:   Thu, 10 Sep 2020 09:22:13 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1599729734;
+        s=2020; t=1599729733;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=CZJz1Y6M5PqMAlDrDRPUbV+0BJlWMteh6oW10ZkxtQU=;
-        b=Pmk0wK5G5jmddpwn+jiidAe8oeEG/m9TuaFM4Swq+HFJV3MkA9BQ6Iy2l6kxSIiE0Gpd/N
-        B3Q4LYMSE/S0r1nM2pY/0k385fAMPnivqQIOh9S4ZN4NMkq/b4q+4jZ0I3bC53xBQ3N7zt
-        pU04obwYpGAa0K+vQZ1S6UnXpK4iwvT1Fq86bLkTTNZa2XMb1bv6bUOhBXw0jl1hqrXtxa
-        5GbuOBWara/N8vJqG5zXUaE6s8VByO8OuPaZ8R/yPOPsA4zDocTy6+/0q/Ik2ukKJRfCDq
-        UJ25gglMFElvxeenXJVkAzbR/WTy3XD3HBQKyTRsWMaiLUPIjXcvHKlUkebF9w==
+        bh=eAAsIdJFP8VdYSaM/bhqP6opEf5cX6S90HKUoz3CoFQ=;
+        b=pwz/smPWvkzNvf6yKkbBIgxGNcjbeR3uf59lfW/iMqdb7XKyxt3eqwSoKaDLW5cbarsb7D
+        f2Zr4Ayf2rli7SC1jSC8lx4925osrIJ/mM60lYPjDMnL7ESJ/Hg4tQcE48Pi4YmBzP1PzO
+        3m1/A8Gg8k4TSC3WtI7bTTP2DKSzvUru0wXO6LY9IQV7YNKtqpJPZE8KyR6HQLXV2tzDSN
+        rEuflhBGsSnScvMG2jTCT4dMQMu+NUQysrmcNGG1fwjyLaufe09G1l4wT2/y6zrH/SuElG
+        OORVMcSXRNUf5APwUTyG2JLB2o8vRi0+hb0YRMQ0Ke5vbjTj5fx6XchLWga47w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1599729734;
+        s=2020e; t=1599729733;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=CZJz1Y6M5PqMAlDrDRPUbV+0BJlWMteh6oW10ZkxtQU=;
-        b=fDLfw5cbNAptVG3SqigErv4AtCppFrEcepLzSKKEWrkmV8MZQrDedjqLazhLsktFNQkB7M
-        eezy87JVeqYKdsCA==
-From:   "tip-bot2 for Joerg Roedel" <tip-bot2@linutronix.de>
+        bh=eAAsIdJFP8VdYSaM/bhqP6opEf5cX6S90HKUoz3CoFQ=;
+        b=oI98QoBG/C/aOkq0OjcV1RyLmRk9E5AOomoPubxhX4wuvq9h7PCuLHdzt4+isMWUNFFLMb
+        ed38/2PPTqzPoOAQ==
+From:   "tip-bot2 for Tom Lendacky" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/seves] x86/dumpstack/64: Add noinstr version of get_stack_info()
-Cc:     Joerg Roedel <jroedel@suse.de>, Borislav Petkov <bp@suse.de>,
+Subject: [tip: x86/seves] x86/sev-es: Add a Runtime #VC Exception Handler
+Cc:     Tom Lendacky <thomas.lendacky@amd.com>,
+        Joerg Roedel <jroedel@suse.de>, Borislav Petkov <bp@suse.de>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200907131613.12703-45-joro@8bytes.org>
-References: <20200907131613.12703-45-joro@8bytes.org>
+In-Reply-To: <20200907131613.12703-47-joro@8bytes.org>
+References: <20200907131613.12703-47-joro@8bytes.org>
 MIME-Version: 1.0
-Message-ID: <159972973395.20229.434586447788491195.tip-bot2@tip-bot2>
+Message-ID: <159972973310.20229.6060960385529425279.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,153 +61,378 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/seves branch of tip:
 
-Commit-ID:     6b27edd74a5e9669120f7bd0ae1f475d124c1042
-Gitweb:        https://git.kernel.org/tip/6b27edd74a5e9669120f7bd0ae1f475d124c1042
-Author:        Joerg Roedel <jroedel@suse.de>
-AuthorDate:    Mon, 07 Sep 2020 15:15:45 +02:00
+Commit-ID:     0786138c78e79343c7b015d77507cbf9d5f15d00
+Gitweb:        https://git.kernel.org/tip/0786138c78e79343c7b015d77507cbf9d5f15d00
+Author:        Tom Lendacky <thomas.lendacky@amd.com>
+AuthorDate:    Mon, 07 Sep 2020 15:15:47 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
 CommitterDate: Wed, 09 Sep 2020 11:33:19 +02:00
 
-x86/dumpstack/64: Add noinstr version of get_stack_info()
+x86/sev-es: Add a Runtime #VC Exception Handler
 
-The get_stack_info() functionality is needed in the entry code for the
-#VC exception handler. Provide a version of it in the .text.noinstr
-section which can be called safely from there.
+Add the handlers for #VC exceptions invoked at runtime.
 
+Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
 Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20200907131613.12703-45-joro@8bytes.org
+Link: https://lkml.kernel.org/r/20200907131613.12703-47-joro@8bytes.org
 ---
- arch/x86/include/asm/stacktrace.h |  2 ++-
- arch/x86/kernel/dumpstack.c       |  7 +++---
- arch/x86/kernel/dumpstack_64.c    | 38 +++++++++++++++++-------------
- arch/x86/mm/cpu_entry_area.c      |  3 +-
- 4 files changed, 30 insertions(+), 20 deletions(-)
+ arch/x86/include/asm/idtentry.h |   6 +-
+ arch/x86/kernel/idt.c           |  11 +-
+ arch/x86/kernel/sev-es.c        | 246 ++++++++++++++++++++++++++++++-
+ 3 files changed, 255 insertions(+), 8 deletions(-)
 
-diff --git a/arch/x86/include/asm/stacktrace.h b/arch/x86/include/asm/stacktrace.h
-index 5ae5a68..4960064 100644
---- a/arch/x86/include/asm/stacktrace.h
-+++ b/arch/x86/include/asm/stacktrace.h
-@@ -35,6 +35,8 @@ bool in_entry_stack(unsigned long *stack, struct stack_info *info);
+diff --git a/arch/x86/include/asm/idtentry.h b/arch/x86/include/asm/idtentry.h
+index 840faaf..58a793b 100644
+--- a/arch/x86/include/asm/idtentry.h
++++ b/arch/x86/include/asm/idtentry.h
+@@ -318,6 +318,7 @@ static __always_inline void __##func(struct pt_regs *regs)
+  */
+ #define DECLARE_IDTENTRY_VC(vector, func)				\
+ 	DECLARE_IDTENTRY_RAW_ERRORCODE(vector, func);			\
++	__visible noinstr void ist_##func(struct pt_regs *regs, unsigned long error_code);	\
+ 	__visible noinstr void safe_stack_##func(struct pt_regs *regs, unsigned long error_code)
  
- int get_stack_info(unsigned long *stack, struct task_struct *task,
- 		   struct stack_info *info, unsigned long *visit_mask);
-+bool get_stack_info_noinstr(unsigned long *stack, struct task_struct *task,
-+			    struct stack_info *info);
+ /**
+@@ -608,6 +609,11 @@ DECLARE_IDTENTRY_RAW(X86_TRAP_DB,	xenpv_exc_debug);
+ /* #DF */
+ DECLARE_IDTENTRY_DF(X86_TRAP_DF,	exc_double_fault);
  
- const char *stack_type_name(enum stack_type type);
- 
-diff --git a/arch/x86/kernel/dumpstack.c b/arch/x86/kernel/dumpstack.c
-index 48ce445..74147f7 100644
---- a/arch/x86/kernel/dumpstack.c
-+++ b/arch/x86/kernel/dumpstack.c
-@@ -29,8 +29,8 @@ static int die_counter;
- 
- static struct pt_regs exec_summary_regs;
- 
--bool in_task_stack(unsigned long *stack, struct task_struct *task,
--		   struct stack_info *info)
-+bool noinstr in_task_stack(unsigned long *stack, struct task_struct *task,
-+			   struct stack_info *info)
- {
- 	unsigned long *begin = task_stack_page(task);
- 	unsigned long *end   = task_stack_page(task) + THREAD_SIZE;
-@@ -46,7 +46,8 @@ bool in_task_stack(unsigned long *stack, struct task_struct *task,
- 	return true;
- }
- 
--bool in_entry_stack(unsigned long *stack, struct stack_info *info)
-+/* Called from get_stack_info_noinstr - so must be noinstr too */
-+bool noinstr in_entry_stack(unsigned long *stack, struct stack_info *info)
- {
- 	struct entry_stack *ss = cpu_entry_stack(smp_processor_id());
- 
-diff --git a/arch/x86/kernel/dumpstack_64.c b/arch/x86/kernel/dumpstack_64.c
-index c49cf59..1dd8513 100644
---- a/arch/x86/kernel/dumpstack_64.c
-+++ b/arch/x86/kernel/dumpstack_64.c
-@@ -85,7 +85,7 @@ struct estack_pages estack_pages[CEA_ESTACK_PAGES] ____cacheline_aligned = {
- 	EPAGERANGE(VC2),
++/* #VC */
++#ifdef CONFIG_AMD_MEM_ENCRYPT
++DECLARE_IDTENTRY_VC(X86_TRAP_VC,	exc_vmm_communication);
++#endif
++
+ #ifdef CONFIG_XEN_PV
+ DECLARE_IDTENTRY_XENCB(X86_TRAP_OTHER,	exc_xen_hypervisor_callback);
+ #endif
+diff --git a/arch/x86/kernel/idt.c b/arch/x86/kernel/idt.c
+index 4bb4e3d..e29a6c7 100644
+--- a/arch/x86/kernel/idt.c
++++ b/arch/x86/kernel/idt.c
+@@ -229,11 +229,14 @@ static const __initconst struct idt_data early_pf_idts[] = {
+  * cpu_init() when the TSS has been initialized.
+  */
+ static const __initconst struct idt_data ist_idts[] = {
+-	ISTG(X86_TRAP_DB,	asm_exc_debug,		IST_INDEX_DB),
+-	ISTG(X86_TRAP_NMI,	asm_exc_nmi,		IST_INDEX_NMI),
+-	ISTG(X86_TRAP_DF,	asm_exc_double_fault,	IST_INDEX_DF),
++	ISTG(X86_TRAP_DB,	asm_exc_debug,			IST_INDEX_DB),
++	ISTG(X86_TRAP_NMI,	asm_exc_nmi,			IST_INDEX_NMI),
++	ISTG(X86_TRAP_DF,	asm_exc_double_fault,		IST_INDEX_DF),
+ #ifdef CONFIG_X86_MCE
+-	ISTG(X86_TRAP_MC,	asm_exc_machine_check,	IST_INDEX_MCE),
++	ISTG(X86_TRAP_MC,	asm_exc_machine_check,		IST_INDEX_MCE),
++#endif
++#ifdef CONFIG_AMD_MEM_ENCRYPT
++	ISTG(X86_TRAP_VC,	asm_exc_vmm_communication,	IST_INDEX_VC),
+ #endif
  };
  
--static bool in_exception_stack(unsigned long *stack, struct stack_info *info)
-+static __always_inline bool in_exception_stack(unsigned long *stack, struct stack_info *info)
- {
- 	unsigned long begin, end, stk = (unsigned long)stack;
- 	const struct estack_pages *ep;
-@@ -126,7 +126,7 @@ static bool in_exception_stack(unsigned long *stack, struct stack_info *info)
- 	return true;
- }
+diff --git a/arch/x86/kernel/sev-es.c b/arch/x86/kernel/sev-es.c
+index 39ebb2d..0d6b66e 100644
+--- a/arch/x86/kernel/sev-es.c
++++ b/arch/x86/kernel/sev-es.c
+@@ -7,9 +7,12 @@
+  * Author: Joerg Roedel <jroedel@suse.de>
+  */
  
--static bool in_irq_stack(unsigned long *stack, struct stack_info *info)
-+static __always_inline bool in_irq_stack(unsigned long *stack, struct stack_info *info)
- {
- 	unsigned long *end   = (unsigned long *)this_cpu_read(hardirq_stack_ptr);
- 	unsigned long *begin = end - (IRQ_STACK_SIZE / sizeof(long));
-@@ -151,32 +151,38 @@ static bool in_irq_stack(unsigned long *stack, struct stack_info *info)
- 	return true;
- }
- 
--int get_stack_info(unsigned long *stack, struct task_struct *task,
--		   struct stack_info *info, unsigned long *visit_mask)
-+bool noinstr get_stack_info_noinstr(unsigned long *stack, struct task_struct *task,
-+				    struct stack_info *info)
- {
--	if (!stack)
--		goto unknown;
--
--	task = task ? : current;
--
- 	if (in_task_stack(stack, task, info))
--		goto recursion_check;
-+		return true;
- 
- 	if (task != current)
--		goto unknown;
-+		return false;
- 
- 	if (in_exception_stack(stack, info))
--		goto recursion_check;
-+		return true;
- 
- 	if (in_irq_stack(stack, info))
--		goto recursion_check;
-+		return true;
- 
- 	if (in_entry_stack(stack, info))
--		goto recursion_check;
-+		return true;
++#define pr_fmt(fmt)	"SEV-ES: " fmt
 +
-+	return false;
+ #include <linux/sched/debug.h>	/* For show_regs() */
+ #include <linux/percpu-defs.h>
+ #include <linux/mem_encrypt.h>
++#include <linux/lockdep.h>
+ #include <linux/printk.h>
+ #include <linux/mm_types.h>
+ #include <linux/set_memory.h>
+@@ -22,8 +25,8 @@
+ #include <asm/insn-eval.h>
+ #include <asm/fpu/internal.h>
+ #include <asm/processor.h>
+-#include <asm/trap_pf.h>
+-#include <asm/trapnr.h>
++#include <asm/realmode.h>
++#include <asm/traps.h>
+ #include <asm/svm.h>
+ 
+ /* For early boot hypervisor communication in SEV-ES enabled guests */
+@@ -48,11 +51,43 @@ struct sev_es_runtime_data {
+ 	 * interrupted stack in the #VC entry code.
+ 	 */
+ 	char fallback_stack[EXCEPTION_STKSZ] __aligned(PAGE_SIZE);
++
++	/*
++	 * Reserve one page per CPU as backup storage for the unencrypted GHCB.
++	 * It is needed when an NMI happens while the #VC handler uses the real
++	 * GHCB, and the NMI handler itself is causing another #VC exception. In
++	 * that case the GHCB content of the first handler needs to be backed up
++	 * and restored.
++	 */
++	struct ghcb backup_ghcb;
++
++	/*
++	 * Mark the per-cpu GHCBs as in-use to detect nested #VC exceptions.
++	 * There is no need for it to be atomic, because nothing is written to
++	 * the GHCB between the read and the write of ghcb_active. So it is safe
++	 * to use it when a nested #VC exception happens before the write.
++	 *
++	 * This is necessary for example in the #VC->NMI->#VC case when the NMI
++	 * happens while the first #VC handler uses the GHCB. When the NMI code
++	 * raises a second #VC handler it might overwrite the contents of the
++	 * GHCB written by the first handler. To avoid this the content of the
++	 * GHCB is saved and restored when the GHCB is detected to be in use
++	 * already.
++	 */
++	bool ghcb_active;
++	bool backup_ghcb_active;
++};
++
++struct ghcb_state {
++	struct ghcb *ghcb;
+ };
+ 
+ static DEFINE_PER_CPU(struct sev_es_runtime_data*, runtime_data);
+ DEFINE_STATIC_KEY_FALSE(sev_es_enable_key);
+ 
++/* Needed in vc_early_forward_exception */
++void do_early_exception(struct pt_regs *regs, int trapnr);
++
+ static void __init setup_vc_stacks(int cpu)
+ {
+ 	struct sev_es_runtime_data *data;
+@@ -123,8 +158,52 @@ void noinstr __sev_es_ist_exit(void)
+ 	this_cpu_write(cpu_tss_rw.x86_tss.ist[IST_INDEX_VC], *(unsigned long *)ist);
+ }
+ 
+-/* Needed in vc_early_forward_exception */
+-void do_early_exception(struct pt_regs *regs, int trapnr);
++static __always_inline struct ghcb *sev_es_get_ghcb(struct ghcb_state *state)
++{
++	struct sev_es_runtime_data *data;
++	struct ghcb *ghcb;
++
++	data = this_cpu_read(runtime_data);
++	ghcb = &data->ghcb_page;
++
++	if (unlikely(data->ghcb_active)) {
++		/* GHCB is already in use - save its contents */
++
++		if (unlikely(data->backup_ghcb_active))
++			return NULL;
++
++		/* Mark backup_ghcb active before writing to it */
++		data->backup_ghcb_active = true;
++
++		state->ghcb = &data->backup_ghcb;
++
++		/* Backup GHCB content */
++		*state->ghcb = *ghcb;
++	} else {
++		state->ghcb = NULL;
++		data->ghcb_active = true;
++	}
++
++	return ghcb;
 +}
 +
-+int get_stack_info(unsigned long *stack, struct task_struct *task,
-+		   struct stack_info *info, unsigned long *visit_mask)
++static __always_inline void sev_es_put_ghcb(struct ghcb_state *state)
 +{
-+	task = task ? : current;
- 
--	goto unknown;
-+	if (!stack)
-+		goto unknown;
++	struct sev_es_runtime_data *data;
++	struct ghcb *ghcb;
 +
-+	if (!get_stack_info_noinstr(stack, task, info))
-+		goto unknown;
++	data = this_cpu_read(runtime_data);
++	ghcb = &data->ghcb_page;
++
++	if (state->ghcb) {
++		/* Restore GHCB from Backup */
++		*ghcb = *state->ghcb;
++		data->backup_ghcb_active = false;
++		state->ghcb = NULL;
++	} else {
++		data->ghcb_active = false;
++	}
++}
  
--recursion_check:
- 	/*
- 	 * Make sure we don't iterate through any given stack more than once.
- 	 * If it comes up a second time then there's something wrong going on:
-diff --git a/arch/x86/mm/cpu_entry_area.c b/arch/x86/mm/cpu_entry_area.c
-index 770b613..f5e1e60 100644
---- a/arch/x86/mm/cpu_entry_area.c
-+++ b/arch/x86/mm/cpu_entry_area.c
-@@ -21,7 +21,8 @@ DEFINE_PER_CPU(struct cea_exception_stacks*, cea_exception_stacks);
- DECLARE_PER_CPU_PAGE_ALIGNED(struct doublefault_stack, doublefault_stack);
- #endif
- 
--struct cpu_entry_area *get_cpu_entry_area(int cpu)
-+/* Is called from entry code, so must be noinstr */
-+noinstr struct cpu_entry_area *get_cpu_entry_area(int cpu)
+ static inline u64 sev_es_rd_ghcb_msr(void)
  {
- 	unsigned long va = CPU_ENTRY_AREA_PER_CPU + cpu * CPU_ENTRY_AREA_SIZE;
- 	BUILD_BUG_ON(sizeof(struct cpu_entry_area) % PAGE_SIZE != 0);
+@@ -316,6 +395,9 @@ static void __init init_ghcb(int cpu)
+ 		panic("Can't map GHCBs unencrypted");
+ 
+ 	memset(&data->ghcb_page, 0, sizeof(data->ghcb_page));
++
++	data->ghcb_active = false;
++	data->backup_ghcb_active = false;
+ }
+ 
+ void __init sev_es_init_vc_handling(void)
+@@ -336,6 +418,9 @@ void __init sev_es_init_vc_handling(void)
+ 		init_ghcb(cpu);
+ 		setup_vc_stacks(cpu);
+ 	}
++
++	/* Secondary CPUs use the runtime #VC handler */
++	initial_vc_handler = (unsigned long)safe_stack_exc_vmm_communication;
+ }
+ 
+ static void __init vc_early_forward_exception(struct es_em_ctxt *ctxt)
+@@ -366,6 +451,159 @@ static enum es_result vc_handle_exitcode(struct es_em_ctxt *ctxt,
+ 	return result;
+ }
+ 
++static __always_inline void vc_forward_exception(struct es_em_ctxt *ctxt)
++{
++	long error_code = ctxt->fi.error_code;
++	int trapnr = ctxt->fi.vector;
++
++	ctxt->regs->orig_ax = ctxt->fi.error_code;
++
++	switch (trapnr) {
++	case X86_TRAP_GP:
++		exc_general_protection(ctxt->regs, error_code);
++		break;
++	case X86_TRAP_UD:
++		exc_invalid_op(ctxt->regs);
++		break;
++	default:
++		pr_emerg("Unsupported exception in #VC instruction emulation - can't continue\n");
++		BUG();
++	}
++}
++
++static __always_inline bool on_vc_fallback_stack(struct pt_regs *regs)
++{
++	unsigned long sp = (unsigned long)regs;
++
++	return (sp >= __this_cpu_ist_bottom_va(VC2) && sp < __this_cpu_ist_top_va(VC2));
++}
++
++/*
++ * Main #VC exception handler. It is called when the entry code was able to
++ * switch off the IST to a safe kernel stack.
++ *
++ * With the current implementation it is always possible to switch to a safe
++ * stack because #VC exceptions only happen at known places, like intercepted
++ * instructions or accesses to MMIO areas/IO ports. They can also happen with
++ * code instrumentation when the hypervisor intercepts #DB, but the critical
++ * paths are forbidden to be instrumented, so #DB exceptions currently also
++ * only happen in safe places.
++ */
++DEFINE_IDTENTRY_VC_SAFE_STACK(exc_vmm_communication)
++{
++	struct sev_es_runtime_data *data = this_cpu_read(runtime_data);
++	struct ghcb_state state;
++	struct es_em_ctxt ctxt;
++	enum es_result result;
++	struct ghcb *ghcb;
++
++	lockdep_assert_irqs_disabled();
++	instrumentation_begin();
++
++	/*
++	 * This is invoked through an interrupt gate, so IRQs are disabled. The
++	 * code below might walk page-tables for user or kernel addresses, so
++	 * keep the IRQs disabled to protect us against concurrent TLB flushes.
++	 */
++
++	ghcb = sev_es_get_ghcb(&state);
++	if (!ghcb) {
++		/*
++		 * Mark GHCBs inactive so that panic() is able to print the
++		 * message.
++		 */
++		data->ghcb_active        = false;
++		data->backup_ghcb_active = false;
++
++		panic("Unable to handle #VC exception! GHCB and Backup GHCB are already in use");
++	}
++
++	vc_ghcb_invalidate(ghcb);
++	result = vc_init_em_ctxt(&ctxt, regs, error_code);
++
++	if (result == ES_OK)
++		result = vc_handle_exitcode(&ctxt, ghcb, error_code);
++
++	sev_es_put_ghcb(&state);
++
++	/* Done - now check the result */
++	switch (result) {
++	case ES_OK:
++		vc_finish_insn(&ctxt);
++		break;
++	case ES_UNSUPPORTED:
++		pr_err_ratelimited("Unsupported exit-code 0x%02lx in early #VC exception (IP: 0x%lx)\n",
++				   error_code, regs->ip);
++		goto fail;
++	case ES_VMM_ERROR:
++		pr_err_ratelimited("Failure in communication with VMM (exit-code 0x%02lx IP: 0x%lx)\n",
++				   error_code, regs->ip);
++		goto fail;
++	case ES_DECODE_FAILED:
++		pr_err_ratelimited("Failed to decode instruction (exit-code 0x%02lx IP: 0x%lx)\n",
++				   error_code, regs->ip);
++		goto fail;
++	case ES_EXCEPTION:
++		vc_forward_exception(&ctxt);
++		break;
++	case ES_RETRY:
++		/* Nothing to do */
++		break;
++	default:
++		pr_emerg("Unknown result in %s():%d\n", __func__, result);
++		/*
++		 * Emulating the instruction which caused the #VC exception
++		 * failed - can't continue so print debug information
++		 */
++		BUG();
++	}
++
++out:
++	instrumentation_end();
++
++	return;
++
++fail:
++	if (user_mode(regs)) {
++		/*
++		 * Do not kill the machine if user-space triggered the
++		 * exception. Send SIGBUS instead and let user-space deal with
++		 * it.
++		 */
++		force_sig_fault(SIGBUS, BUS_OBJERR, (void __user *)0);
++	} else {
++		pr_emerg("PANIC: Unhandled #VC exception in kernel space (result=%d)\n",
++			 result);
++
++		/* Show some debug info */
++		show_regs(regs);
++
++		/* Ask hypervisor to sev_es_terminate */
++		sev_es_terminate(GHCB_SEV_ES_REASON_GENERAL_REQUEST);
++
++		/* If that fails and we get here - just panic */
++		panic("Returned from Terminate-Request to Hypervisor\n");
++	}
++
++	goto out;
++}
++
++/* This handler runs on the #VC fall-back stack. It can cause further #VC exceptions */
++DEFINE_IDTENTRY_VC_IST(exc_vmm_communication)
++{
++	instrumentation_begin();
++	panic("Can't handle #VC exception from unsupported context\n");
++	instrumentation_end();
++}
++
++DEFINE_IDTENTRY_VC(exc_vmm_communication)
++{
++	if (likely(!on_vc_fallback_stack(regs)))
++		safe_stack_exc_vmm_communication(regs, error_code);
++	else
++		ist_exc_vmm_communication(regs, error_code);
++}
++
+ bool __init handle_vc_boot_ghcb(struct pt_regs *regs)
+ {
+ 	unsigned long exit_code = regs->orig_ax;
