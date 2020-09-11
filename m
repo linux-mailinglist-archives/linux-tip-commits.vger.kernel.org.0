@@ -2,52 +2,50 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BA456264FE1
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Sep 2020 21:54:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D77BA2659F1
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 11 Sep 2020 09:04:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726920AbgIJTyT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 10 Sep 2020 15:54:19 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:42186 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727114AbgIJTwh (ORCPT
+        id S1725770AbgIKHEd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 11 Sep 2020 03:04:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40440 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725779AbgIKHCb (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 10 Sep 2020 15:52:37 -0400
-Date:   Thu, 10 Sep 2020 19:52:34 -0000
+        Fri, 11 Sep 2020 03:02:31 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE814C061756;
+        Fri, 11 Sep 2020 00:02:29 -0700 (PDT)
+Date:   Fri, 11 Sep 2020 07:02:25 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1599767554;
+        s=2020; t=1599807747;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=txick5ALC6qL2ykJRTautBk8DbO3VkbKX42YfmaBpbM=;
-        b=kZmnTX3FFcCbCG+L3BrefarI3tkpGuUt+FhVbdKNmgb5/lmdZ8d+ktnhK7gul0E8eSZeLm
-        Ld+VB4FKE7qq3p0vL/39zhh6geLpQ7yO8+kDGah/UPW3zPokRNgYNO/+bgL70WyRrinLJA
-        1ICHdUbSkR2bi/qKLeGOZv4eILYCWwqqzY/lJ5l3cgXBpmKMRkG3oW2GMnKFCovQ60BOtA
-        b51wkIltXr13IA3Jkn9BIy/GaszjyKMQshnE8cNqjY/YEBENdrnKKbaxf1PYxA8Mkhb0xZ
-        MT2Tap9Fw9+4hHZ73+9n+tzfRW1W4AHlae2eIaXomQ1PeS3JteJWgHT5HAosKQ==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=fiItmY//vlU7KtX1mrQMS+7R4kiDx8bE8Aq1XKN98rU=;
+        b=WlydLXCIWRRKVxnqvhtkmarD+RsWPUcpgZH7zp3p7CzR5wblIkWnNZjImHy6sjr2jYwKvH
+        5ImST5+Ix6istO0w7WJWGBnlfKmDqJiqbMSdGgRdksCIXqtQcNMlHNEEAI2LGeow3kRxVf
+        IU7+mWdj1jQSQTM/ZFUHzgNAqIx3JLtYC22Wkw/iXvAy8wETh738OgtBVucsN1BcGAIwBd
+        l7yWHA4OlvmHHgdKa1OL8wchA6fL9DrHaci9FfCPPCbVO00vzSk9sPkD/nFVcs0UZnx4nD
+        7tJJCjatay+cNR7EGt84HY+91T/McOUrJOJ61j2iIHtNenJOEdalbpy1jP1MiQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1599767554;
+        s=2020e; t=1599807747;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=txick5ALC6qL2ykJRTautBk8DbO3VkbKX42YfmaBpbM=;
-        b=GQL9apK209A/3+foBWH6zTET29SRNIcKfgEZLm/ZeaKR0bZkiD0BPWSGTuOtm9NCO6SQKo
-        ZXGyrS8LPUlcbxCg==
-From:   "tip-bot2 for Tom Lendacky" <tip-bot2@linutronix.de>
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=fiItmY//vlU7KtX1mrQMS+7R4kiDx8bE8Aq1XKN98rU=;
+        b=d4gsMa6hGazxesQRaA/3HMmcAK/ksgW8nqcwBN2JBhrK2K0Lo4IBAgjPdFACfBjAcnzuq7
+        YRahyINvpEYe2WCg==
+From:   "tip-bot2 for Kim Phillips" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/seves] x86/efi: Add GHCB mappings when SEV-ES is active
-Cc:     Tom Lendacky <thomas.lendacky@amd.com>,
-        Joerg Roedel <jroedel@suse.de>, Borislav Petkov <bp@suse.de>,
-        Ard Biesheuvel <ardb@kernel.org>, x86 <x86@kernel.org>,
+Subject: [tip: perf/core] arch/x86/amd/ibs: Fix re-arming IBS Fetch
+Cc:     Stephane Eranian <stephane.eranian@google.com>,
+        Kim Phillips <kim.phillips@amd.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        stable@vger.kernel.org, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200907131613.12703-72-joro@8bytes.org>
-References: <20200907131613.12703-72-joro@8bytes.org>
 MIME-Version: 1.0
-Message-ID: <159976755405.20229.8190086156867136296.tip-bot2@tip-bot2>
+Message-ID: <159980774597.20229.8759755692830085791.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -57,132 +55,81 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/seves branch of tip:
+The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     39336f4ffb2478ad384075cf4ba7ef2e5db2bbd7
-Gitweb:        https://git.kernel.org/tip/39336f4ffb2478ad384075cf4ba7ef2e5db2bbd7
-Author:        Tom Lendacky <thomas.lendacky@amd.com>
-AuthorDate:    Mon, 07 Sep 2020 15:16:12 +02:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Thu, 10 Sep 2020 21:48:50 +02:00
+Commit-ID:     221bfce5ebbdf72ff08b3bf2510ae81058ee568b
+Gitweb:        https://git.kernel.org/tip/221bfce5ebbdf72ff08b3bf2510ae81058ee568b
+Author:        Kim Phillips <kim.phillips@amd.com>
+AuthorDate:    Tue, 08 Sep 2020 16:47:36 -05:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Thu, 10 Sep 2020 11:19:36 +02:00
 
-x86/efi: Add GHCB mappings when SEV-ES is active
+arch/x86/amd/ibs: Fix re-arming IBS Fetch
 
-Calling down to EFI runtime services can result in the firmware
-performing VMGEXIT calls. The firmware is likely to use the GHCB of the
-OS (e.g., for setting EFI variables), so each GHCB in the system needs
-to be identity-mapped in the EFI page tables, as unencrypted, to avoid
-page faults.
+Stephane Eranian found a bug in that IBS' current Fetch counter was not
+being reset when the driver would write the new value to clear it along
+with the enable bit set, and found that adding an MSR write that would
+first disable IBS Fetch would make IBS Fetch reset its current count.
 
-Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
-[ jroedel@suse.de: Moved GHCB mapping loop to sev-es.c ]
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Link: https://lkml.kernel.org/r/20200907131613.12703-72-joro@8bytes.org
+Indeed, the PPR for AMD Family 17h Model 31h B0 55803 Rev 0.54 - Sep 12,
+2019 states "The periodic fetch counter is set to IbsFetchCnt [...] when
+IbsFetchEn is changed from 0 to 1."
+
+Explicitly set IbsFetchEn to 0 and then to 1 when re-enabling IBS Fetch,
+so the driver properly resets the internal counter to 0 and IBS
+Fetch starts counting again.
+
+A family 15h machine tested does not have this problem, and the extra
+wrmsr is also not needed on Family 19h, so only do the extra wrmsr on
+families 16h through 18h.
+
+Reported-by: Stephane Eranian <stephane.eranian@google.com>
+Signed-off-by: Kim Phillips <kim.phillips@amd.com>
+[peterz: optimized]
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: stable@vger.kernel.org
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=206537
 ---
- arch/x86/boot/compressed/sev-es.c |  1 +-
- arch/x86/include/asm/sev-es.h     |  2 ++-
- arch/x86/kernel/sev-es.c          | 30 ++++++++++++++++++++++++++++++-
- arch/x86/platform/efi/efi_64.c    | 10 ++++++++++-
- 4 files changed, 43 insertions(+)
+ arch/x86/events/amd/ibs.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/boot/compressed/sev-es.c b/arch/x86/boot/compressed/sev-es.c
-index 5f15e58..2a6c7c3 100644
---- a/arch/x86/boot/compressed/sev-es.c
-+++ b/arch/x86/boot/compressed/sev-es.c
-@@ -12,6 +12,7 @@
-  */
- #include "misc.h"
+diff --git a/arch/x86/events/amd/ibs.c b/arch/x86/events/amd/ibs.c
+index ea323dc..40669ea 100644
+--- a/arch/x86/events/amd/ibs.c
++++ b/arch/x86/events/amd/ibs.c
+@@ -89,6 +89,7 @@ struct perf_ibs {
+ 	u64				max_period;
+ 	unsigned long			offset_mask[1];
+ 	int				offset_max;
++	unsigned int			fetch_count_reset_broken : 1;
+ 	struct cpu_perf_ibs __percpu	*pcpu;
  
-+#include <asm/pgtable_types.h>
- #include <asm/sev-es.h>
- #include <asm/trapnr.h>
- #include <asm/trap_pf.h>
-diff --git a/arch/x86/include/asm/sev-es.h b/arch/x86/include/asm/sev-es.h
-index e919f09..cf1d957 100644
---- a/arch/x86/include/asm/sev-es.h
-+++ b/arch/x86/include/asm/sev-es.h
-@@ -102,11 +102,13 @@ static __always_inline void sev_es_nmi_complete(void)
- 	if (static_branch_unlikely(&sev_es_enable_key))
- 		__sev_es_nmi_complete();
- }
-+extern int __init sev_es_efi_map_ghcbs(pgd_t *pgd);
- #else
- static inline void sev_es_ist_enter(struct pt_regs *regs) { }
- static inline void sev_es_ist_exit(void) { }
- static inline int sev_es_setup_ap_jump_table(struct real_mode_header *rmh) { return 0; }
- static inline void sev_es_nmi_complete(void) { }
-+static inline int sev_es_efi_map_ghcbs(pgd_t *pgd) { return 0; }
- #endif
- 
- #endif
-diff --git a/arch/x86/kernel/sev-es.c b/arch/x86/kernel/sev-es.c
-index b6518e9..8cac9f8 100644
---- a/arch/x86/kernel/sev-es.c
-+++ b/arch/x86/kernel/sev-es.c
-@@ -491,6 +491,36 @@ int sev_es_setup_ap_jump_table(struct real_mode_header *rmh)
- 	return 0;
- }
- 
-+/*
-+ * This is needed by the OVMF UEFI firmware which will use whatever it finds in
-+ * the GHCB MSR as its GHCB to talk to the hypervisor. So make sure the per-cpu
-+ * runtime GHCBs used by the kernel are also mapped in the EFI page-table.
-+ */
-+int __init sev_es_efi_map_ghcbs(pgd_t *pgd)
-+{
-+	struct sev_es_runtime_data *data;
-+	unsigned long address, pflags;
-+	int cpu;
-+	u64 pfn;
-+
-+	if (!sev_es_active())
-+		return 0;
-+
-+	pflags = _PAGE_NX | _PAGE_RW;
-+
-+	for_each_possible_cpu(cpu) {
-+		data = per_cpu(runtime_data, cpu);
-+
-+		address = __pa(&data->ghcb_page);
-+		pfn = address >> PAGE_SHIFT;
-+
-+		if (kernel_map_pages_in_pgd(pgd, pfn, address, 1, pflags))
-+			return 1;
-+	}
-+
-+	return 0;
-+}
-+
- static enum es_result vc_handle_msr(struct ghcb *ghcb, struct es_em_ctxt *ctxt)
+ 	struct attribute		**format_attrs;
+@@ -370,7 +371,12 @@ perf_ibs_event_update(struct perf_ibs *perf_ibs, struct perf_event *event,
+ static inline void perf_ibs_enable_event(struct perf_ibs *perf_ibs,
+ 					 struct hw_perf_event *hwc, u64 config)
  {
- 	struct pt_regs *regs = ctxt->regs;
-diff --git a/arch/x86/platform/efi/efi_64.c b/arch/x86/platform/efi/efi_64.c
-index 6af4da1..8f5759d 100644
---- a/arch/x86/platform/efi/efi_64.c
-+++ b/arch/x86/platform/efi/efi_64.c
-@@ -47,6 +47,7 @@
- #include <asm/realmode.h>
- #include <asm/time.h>
- #include <asm/pgalloc.h>
-+#include <asm/sev-es.h>
+-	wrmsrl(hwc->config_base, hwc->config | config | perf_ibs->enable_mask);
++	u64 tmp = hwc->config | config;
++
++	if (perf_ibs->fetch_count_reset_broken)
++		wrmsrl(hwc->config_base, tmp & ~perf_ibs->enable_mask);
++
++	wrmsrl(hwc->config_base, tmp | perf_ibs->enable_mask);
+ }
  
  /*
-  * We allocate runtime services regions top-down, starting from -4G, i.e.
-@@ -230,6 +231,15 @@ int __init efi_setup_page_tables(unsigned long pa_memmap, unsigned num_pages)
- 	}
+@@ -756,6 +762,13 @@ static __init void perf_event_ibs_init(void)
+ {
+ 	struct attribute **attr = ibs_op_format_attrs;
  
- 	/*
-+	 * When SEV-ES is active, the GHCB as set by the kernel will be used
-+	 * by firmware. Create a 1:1 unencrypted mapping for each GHCB.
-+	 */
-+	if (sev_es_efi_map_ghcbs(pgd)) {
-+		pr_err("Failed to create 1:1 mapping for the GHCBs!\n");
-+		return 1;
-+	}
-+
 +	/*
- 	 * When making calls to the firmware everything needs to be 1:1
- 	 * mapped and addressable with 32-bit pointers. Map the kernel
- 	 * text and allocate a new stack because we can't rely on the
++	 * Some chips fail to reset the fetch count when it is written; instead
++	 * they need a 0-1 transition of IbsFetchEn.
++	 */
++	if (boot_cpu_data.x86 >= 0x16 && boot_cpu_data.x86 <= 0x18)
++		perf_ibs_fetch.fetch_count_reset_broken = 1;
++
+ 	perf_ibs_pmu_init(&perf_ibs_fetch, "ibs_fetch");
+ 
+ 	if (ibs_caps & IBS_CAPS_OPCNT) {
