@@ -2,52 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AA3902659E6
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 11 Sep 2020 09:04:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E7867265CC0
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 11 Sep 2020 11:47:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725810AbgIKHDt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 11 Sep 2020 03:03:49 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:45120 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725788AbgIKHCd (ORCPT
+        id S1725835AbgIKJrm (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 11 Sep 2020 05:47:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37638 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725783AbgIKJrl (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 11 Sep 2020 03:02:33 -0400
-Date:   Fri, 11 Sep 2020 07:02:30 -0000
+        Fri, 11 Sep 2020 05:47:41 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7307CC061573;
+        Fri, 11 Sep 2020 02:47:40 -0700 (PDT)
+Date:   Fri, 11 Sep 2020 09:47:28 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1599807750;
+        s=2020; t=1599817649;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Dez5WtCz8F/GZpNNa2ctZ64kCc8NF5qw3P5LIg3ei68=;
-        b=kl6NBTD9H2c8cLxMxiSW9Cz01Ppc8QrdeLlAhC3oote2pjnA1u65Sti53VTOYF1rQuvEvk
-        evD5ATrSBI5NYOpB+j7jF+rfMY8ddhrGz1wsoxcHYkVTWufmZHtVHwN0wYURpVEd7cemX7
-        EYmadpW+m1EJZbv5QY/6zW1sKQl3rmwRfKF1Phwuf+/PbGWZgBJeLXZWWL0cUS2FuKh6ut
-        JydYOK2inIRjJIfRTPoDDj5dH5PmUMdz0wsCTdd5O3AsHx0frkqp4zWpjjABPmpvpGBCIZ
-        xJgl2AG5N90wadjJ9YfFKUsDS9y6r9gDCn6Mc3lA/l62L4h5oj0iE2/xOX2VKw==
+        bh=PVKv2QhlpPZOFuzgKjwcq03D7evNR6wB5bcvEJU/SB0=;
+        b=U3E663e4Lnu8TwNkTNC4lC8r6ltwASHnD84+tiY1cJ8Ci21I7MqaGf9r9OZ48mlAHoiRKM
+        pJbWgOUKZr5XMCBV3jZb8sFmEFw8QGnLRo+Y/YOZ8fWL9rOlW+mOxf3hpIjTZJUyYxZ/wn
+        QG8LsDhP+723A7JoZuack3XI958VtCMJEoZPFJBXLVGuYs+NJs9LmYIVAwDKES98j87i4j
+        kggup7PvvGp333T3Yw1wJCNcl0Oj+FcynlSQX71GzpafOblwU22WhUIphjy/jfYQQxFIEB
+        QFmtOMa4++lUCuiS1j2uHMDvDR8fHAPMKcvquKgT6RqFojhRiDGpCzpSeipQ3g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1599807750;
+        s=2020e; t=1599817649;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Dez5WtCz8F/GZpNNa2ctZ64kCc8NF5qw3P5LIg3ei68=;
-        b=XGT16Nc2Yxdr0IlUtZyLlhfXTZgZw96AwGtxi9orQs/n55lxaq7vX6sWMkB0/uleFht2Ht
-        K92ogfLxXcvsR2Cg==
-From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
+        bh=PVKv2QhlpPZOFuzgKjwcq03D7evNR6wB5bcvEJU/SB0=;
+        b=Kp20XhM4umXcQotmY3akh1lqKz9UBRpF5xN7wqjUlJKak4wFV12WKdJpqdHO14MNpEOGPH
+        7Noq7Ofumf1qdBBQ==
+From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/x86/intel/ds: Fix x86_pmu_stop warning for large PEBS
-Cc:     Like Xu <like.xu@linux.intel.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Kan Liang <kan.liang@linux.intel.com>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200902210649.2743-1-kan.liang@linux.intel.com>
-References: <20200902210649.2743-1-kan.liang@linux.intel.com>
+Subject: [tip: ras/core] x86/mce: Make mce_rdmsrl() panic on an inaccessible MSR
+Cc:     Andy Lutomirski <luto@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        kernel test robot <lkp@intel.com>,
+        Borislav Petkov <bp@suse.de>, Tony Luck <tony.luck@intel.com>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200906212130.GA28456@zn.tnic>
+References: <20200906212130.GA28456@zn.tnic>
 MIME-Version: 1.0
-Message-ID: <159980775008.20229.8204795134271478943.tip-bot2@tip-bot2>
+Message-ID: <159981764812.4289.4399405549568254826.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -57,162 +61,179 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/core branch of tip:
+The following commit has been merged into the ras/core branch of tip:
 
-Commit-ID:     35d1ce6bec133679ff16325d335217f108b84871
-Gitweb:        https://git.kernel.org/tip/35d1ce6bec133679ff16325d335217f108b84871
-Author:        Kan Liang <kan.liang@linux.intel.com>
-AuthorDate:    Wed, 02 Sep 2020 14:06:49 -07:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Thu, 10 Sep 2020 11:19:33 +02:00
+Commit-ID:     e2def7d49d0812ea40a224161b2001b2e815dce2
+Gitweb:        https://git.kernel.org/tip/e2def7d49d0812ea40a224161b2001b2e815dce2
+Author:        Borislav Petkov <bp@suse.de>
+AuthorDate:    Sun, 06 Sep 2020 23:02:52 +02:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Fri, 11 Sep 2020 08:25:43 +02:00
 
-perf/x86/intel/ds: Fix x86_pmu_stop warning for large PEBS
+x86/mce: Make mce_rdmsrl() panic on an inaccessible MSR
 
-A warning as below may be triggered when sampling with large PEBS.
+If an exception needs to be handled while reading an MSR - which is in
+most of the cases caused by a #GP on a non-existent MSR - then this
+is most likely the incarnation of a BIOS or a hardware bug. Such bug
+violates the architectural guarantee that MCA banks are present with all
+MSRs belonging to them.
 
-[  410.411250] perf: interrupt took too long (72145 > 71975), lowering
-kernel.perf_event_max_sample_rate to 2000
-[  410.724923] ------------[ cut here ]------------
-[  410.729822] WARNING: CPU: 0 PID: 16397 at arch/x86/events/core.c:1422
-x86_pmu_stop+0x95/0xa0
-[  410.933811]  x86_pmu_del+0x50/0x150
-[  410.937304]  event_sched_out.isra.0+0xbc/0x210
-[  410.941751]  group_sched_out.part.0+0x53/0xd0
-[  410.946111]  ctx_sched_out+0x193/0x270
-[  410.949862]  __perf_event_task_sched_out+0x32c/0x890
-[  410.954827]  ? set_next_entity+0x98/0x2d0
-[  410.958841]  __schedule+0x592/0x9c0
-[  410.962332]  schedule+0x5f/0xd0
-[  410.965477]  exit_to_usermode_loop+0x73/0x120
-[  410.969837]  prepare_exit_to_usermode+0xcd/0xf0
-[  410.974369]  ret_from_intr+0x2a/0x3a
-[  410.977946] RIP: 0033:0x40123c
-[  411.079661] ---[ end trace bc83adaea7bb664a ]---
+The proper fix belongs in the hardware/firmware - not in the kernel.
 
-In the non-overflow context, e.g., context switch, with large PEBS, perf
-may stop an event twice. An example is below.
+Handling an #MC exception which is raised while an NMI is being handled
+would cause the nasty NMI nesting issue because of the shortcoming of
+IRET of reenabling NMIs when executed. And the machine is in an #MC
+context already so <Deity> be at its side.
 
-  //max_samples_per_tick is adjusted to 2
-  //NMI is triggered
-  intel_pmu_handle_irq()
-     handle_pmi_common()
-       drain_pebs()
-         __intel_pmu_pebs_event()
-           perf_event_overflow()
-             __perf_event_account_interrupt()
-               hwc->interrupts = 1
-               return 0
-  //A context switch happens right after the NMI.
-  //In the same tick, the perf_throttled_seq is not changed.
-  perf_event_task_sched_out()
-     perf_pmu_sched_task()
-       intel_pmu_drain_pebs_buffer()
-         __intel_pmu_pebs_event()
-           perf_event_overflow()
-             __perf_event_account_interrupt()
-               ++hwc->interrupts >= max_samples_per_tick
-               return 1
-           x86_pmu_stop();  # First stop
-     perf_event_context_sched_out()
-       task_ctx_sched_out()
-         ctx_sched_out()
-           event_sched_out()
-             x86_pmu_del()
-               x86_pmu_stop();  # Second stop and trigger the warning
+Tracing MSR accesses while in #MC is another no-no due to tracing being
+inherently a bad idea in atomic context:
 
-Perf should only invoke the perf_event_overflow() in the overflow
-context.
+  vmlinux.o: warning: objtool: do_machine_check()+0x4a: call to mce_rdmsrl() leaves .noinstr.text section
 
-Current drain_pebs() is called from:
-- handle_pmi_common()			-- overflow context
-- intel_pmu_pebs_sched_task()		-- non-overflow context
-- intel_pmu_pebs_disable()		-- non-overflow context
-- intel_pmu_auto_reload_read()		-- possible overflow context
-  With PERF_SAMPLE_READ + PERF_FORMAT_GROUP, the function may be
-  invoked in the NMI handler. But, before calling the function, the
-  PEBS buffer has already been drained. The __intel_pmu_pebs_event()
-  will not be called in the possible overflow context.
+so remove all that "additional" functionality from mce_rdmsrl() and
+provide it with a special exception handler which panics the machine
+when that MSR is not accessible.
 
-To fix the issue, an indicator is required to distinguish between the
-overflow context aka handle_pmi_common() and other cases.
-The dummy regs pointer can be used as the indicator.
+The exception handler prints a human-readable message explaining what
+the panic reason is but, what is more, it panics while in the #GP
+handler and latter won't have executed an IRET, thus opening the NMI
+nesting issue in the case when the #MC has happened while handling
+an NMI. (#MC itself won't be reenabled until MCG_STATUS hasn't been
+cleared).
 
-In the non-overflow context, perf should treat the last record the same
-as other PEBS records, and doesn't invoke the generic overflow handler.
-
-Fixes: 21509084f999 ("perf/x86/intel: Handle multiple records in the PEBS buffer")
-Reported-by: Like Xu <like.xu@linux.intel.com>
-Suggested-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: Like Xu <like.xu@linux.intel.com>
-Link: https://lkml.kernel.org/r/20200902210649.2743-1-kan.liang@linux.intel.com
+Suggested-by: Andy Lutomirski <luto@kernel.org>
+Suggested-by: Peter Zijlstra <peterz@infradead.org>
+[ Add missing prototypes for ex_handler_* ]
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Reviewed-by: Tony Luck <tony.luck@intel.com>
+Link: https://lkml.kernel.org/r/20200906212130.GA28456@zn.tnic
 ---
- arch/x86/events/intel/ds.c | 32 ++++++++++++++++++++------------
- 1 file changed, 20 insertions(+), 12 deletions(-)
+ arch/x86/kernel/cpu/mce/core.c     | 72 ++++++++++++++++++++++++-----
+ arch/x86/kernel/cpu/mce/internal.h | 10 ++++-
+ 2 files changed, 70 insertions(+), 12 deletions(-)
 
-diff --git a/arch/x86/events/intel/ds.c b/arch/x86/events/intel/ds.c
-index 86848c5..404315d 100644
---- a/arch/x86/events/intel/ds.c
-+++ b/arch/x86/events/intel/ds.c
-@@ -670,9 +670,7 @@ unlock:
+diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
+index 0ba24df..a697bae 100644
+--- a/arch/x86/kernel/cpu/mce/core.c
++++ b/arch/x86/kernel/cpu/mce/core.c
+@@ -373,10 +373,28 @@ static int msr_to_offset(u32 msr)
+ 	return -1;
+ }
  
- static inline void intel_pmu_drain_pebs_buffer(void)
++__visible bool ex_handler_rdmsr_fault(const struct exception_table_entry *fixup,
++				      struct pt_regs *regs, int trapnr,
++				      unsigned long error_code,
++				      unsigned long fault_addr)
++{
++	pr_emerg("MSR access error: RDMSR from 0x%x at rIP: 0x%lx (%pS)\n",
++		 (unsigned int)regs->cx, regs->ip, (void *)regs->ip);
++
++	show_stack_regs(regs);
++
++	panic("MCA architectural violation!\n");
++
++	while (true)
++		cpu_relax();
++
++	return true;
++}
++
+ /* MSR access wrappers used for error injection */
+ static u64 mce_rdmsrl(u32 msr)
  {
--	struct pt_regs regs;
--
--	x86_pmu.drain_pebs(&regs);
-+	x86_pmu.drain_pebs(NULL);
+-	u64 v;
++	DECLARE_ARGS(val, low, high);
+ 
+ 	if (__this_cpu_read(injectm.finished)) {
+ 		int offset = msr_to_offset(msr);
+@@ -386,21 +404,43 @@ static u64 mce_rdmsrl(u32 msr)
+ 		return *(u64 *)((char *)this_cpu_ptr(&injectm) + offset);
+ 	}
+ 
+-	if (rdmsrl_safe(msr, &v)) {
+-		WARN_ONCE(1, "mce: Unable to read MSR 0x%x!\n", msr);
+-		/*
+-		 * Return zero in case the access faulted. This should
+-		 * not happen normally but can happen if the CPU does
+-		 * something weird, or if the code is buggy.
+-		 */
+-		v = 0;
+-	}
++	/*
++	 * RDMSR on MCA MSRs should not fault. If they do, this is very much an
++	 * architectural violation and needs to be reported to hw vendor. Panic
++	 * the box to not allow any further progress.
++	 */
++	asm volatile("1: rdmsr\n"
++		     "2:\n"
++		     _ASM_EXTABLE_HANDLE(1b, 2b, ex_handler_rdmsr_fault)
++		     : EAX_EDX_RET(val, low, high) : "c" (msr));
+ 
+-	return v;
++
++	return EAX_EDX_VAL(val, low, high);
++}
++
++__visible bool ex_handler_wrmsr_fault(const struct exception_table_entry *fixup,
++				      struct pt_regs *regs, int trapnr,
++				      unsigned long error_code,
++				      unsigned long fault_addr)
++{
++	pr_emerg("MSR access error: WRMSR to 0x%x (tried to write 0x%08x%08x) at rIP: 0x%lx (%pS)\n",
++		 (unsigned int)regs->cx, (unsigned int)regs->dx, (unsigned int)regs->ax,
++		  regs->ip, (void *)regs->ip);
++
++	show_stack_regs(regs);
++
++	panic("MCA architectural violation!\n");
++
++	while (true)
++		cpu_relax();
++
++	return true;
+ }
+ 
+ static void mce_wrmsrl(u32 msr, u64 v)
+ {
++	u32 low, high;
++
+ 	if (__this_cpu_read(injectm.finished)) {
+ 		int offset = msr_to_offset(msr);
+ 
+@@ -408,7 +448,15 @@ static void mce_wrmsrl(u32 msr, u64 v)
+ 			*(u64 *)((char *)this_cpu_ptr(&injectm) + offset) = v;
+ 		return;
+ 	}
+-	wrmsrl(msr, v);
++
++	low  = (u32)v;
++	high = (u32)(v >> 32);
++
++	/* See comment in mce_rdmsrl() */
++	asm volatile("1: wrmsr\n"
++		     "2:\n"
++		     _ASM_EXTABLE_HANDLE(1b, 2b, ex_handler_wrmsr_fault)
++		     : : "c" (msr), "a"(low), "d" (high) : "memory");
  }
  
  /*
-@@ -1737,6 +1735,7 @@ static void __intel_pmu_pebs_event(struct perf_event *event,
- 	struct x86_perf_regs perf_regs;
- 	struct pt_regs *regs = &perf_regs.regs;
- 	void *at = get_next_pebs_record_by_bit(base, top, bit);
-+	struct pt_regs dummy_iregs;
+diff --git a/arch/x86/kernel/cpu/mce/internal.h b/arch/x86/kernel/cpu/mce/internal.h
+index 6473070..b122610 100644
+--- a/arch/x86/kernel/cpu/mce/internal.h
++++ b/arch/x86/kernel/cpu/mce/internal.h
+@@ -185,4 +185,14 @@ extern bool amd_filter_mce(struct mce *m);
+ static inline bool amd_filter_mce(struct mce *m)			{ return false; };
+ #endif
  
- 	if (hwc->flags & PERF_X86_EVENT_AUTO_RELOAD) {
- 		/*
-@@ -1749,6 +1748,9 @@ static void __intel_pmu_pebs_event(struct perf_event *event,
- 	} else if (!intel_pmu_save_and_restart(event))
- 		return;
- 
-+	if (!iregs)
-+		iregs = &dummy_iregs;
++__visible bool ex_handler_rdmsr_fault(const struct exception_table_entry *fixup,
++				      struct pt_regs *regs, int trapnr,
++				      unsigned long error_code,
++				      unsigned long fault_addr);
 +
- 	while (count > 1) {
- 		setup_sample(event, iregs, at, &data, regs);
- 		perf_event_output(event, &data, regs);
-@@ -1758,16 +1760,22 @@ static void __intel_pmu_pebs_event(struct perf_event *event,
- 	}
- 
- 	setup_sample(event, iregs, at, &data, regs);
--
--	/*
--	 * All but the last records are processed.
--	 * The last one is left to be able to call the overflow handler.
--	 */
--	if (perf_event_overflow(event, &data, regs)) {
--		x86_pmu_stop(event, 0);
--		return;
-+	if (iregs == &dummy_iregs) {
-+		/*
-+		 * The PEBS records may be drained in the non-overflow context,
-+		 * e.g., large PEBS + context switch. Perf should treat the
-+		 * last record the same as other PEBS records, and doesn't
-+		 * invoke the generic overflow handler.
-+		 */
-+		perf_event_output(event, &data, regs);
-+	} else {
-+		/*
-+		 * All but the last records are processed.
-+		 * The last one is left to be able to call the overflow handler.
-+		 */
-+		if (perf_event_overflow(event, &data, regs))
-+			x86_pmu_stop(event, 0);
- 	}
--
- }
- 
- static void intel_pmu_drain_pebs_core(struct pt_regs *iregs)
++__visible bool ex_handler_wrmsr_fault(const struct exception_table_entry *fixup,
++				      struct pt_regs *regs, int trapnr,
++				      unsigned long error_code,
++				      unsigned long fault_addr);
++
+ #endif /* __X86_MCE_INTERNAL_H__ */
