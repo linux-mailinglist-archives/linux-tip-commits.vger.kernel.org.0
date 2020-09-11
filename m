@@ -2,47 +2,49 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 889942659F3
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 11 Sep 2020 09:04:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DBD22659E5
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 11 Sep 2020 09:03:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725778AbgIKHEu (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 11 Sep 2020 03:04:50 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:45086 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725766AbgIKHCa (ORCPT
+        id S1725826AbgIKHDx (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 11 Sep 2020 03:03:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40442 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725780AbgIKHCb (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 11 Sep 2020 03:02:30 -0400
-Date:   Fri, 11 Sep 2020 07:02:27 -0000
+        Fri, 11 Sep 2020 03:02:31 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6004C061757;
+        Fri, 11 Sep 2020 00:02:30 -0700 (PDT)
+Date:   Fri, 11 Sep 2020 07:02:28 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1599807748;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=+XSspCwQvh0J2ooBYP6QFotf1pi6VYTApeBPfzxv4qI=;
-        b=sZ8iSV5urF6SRCMpkQLSq/+zUlVnwuLBuhaPwP0aC/dEB5vXYZNftFb7Hy8YdynG+PmWRG
-        FBFcE2Z3nlX2uYgSpNSeicfbvt6k0CjBdBHgeXCSXDKhwnrWBiPyPdeDQAvfm1K01kOOJo
-        P21FjTjF/STmIeEsdSLZMr/YYtDhQBzejhIcdNFT710MZFf0qmKc7kI4Kmh90GMwuKcSVG
-        dEepmfP6ciJsPdkuTXTteFWGCVJLXNB/Ydgft7iF4YcFrVugaxMc9WwFQ6vFA2TIAb2Mlx
-        w+WUut/KB5ok7EGd2JCejcvh+0C0c67IGvd6xeXoUgX1VNGH28EDuZtdwZpqRg==
+        bh=5d9fe4eytXUd+WWgl53CTGZ6C41OK0l4pfyvLMLPzBM=;
+        b=4TWbKgyRoZNfR5l/x3w4Rbu6kLx/7nZbRQDIX/2K8IU16HKyyid7/pRWNedHLRzGXaEZQv
+        FU6LvZIATgXUAfG/adezZs9wa9JH9uXnxDgQws83e+Vfhxj2rzzYU6lq245Dq30QoQozHG
+        5zcrMoP8EX/DGa3G6u5kyoFCy935HJ0lUz5zWp+ixCJHT1x87S0ZiMBzj1xUfdSXoN8OhK
+        jR8snlgvG6ngcKj+unlZMAfNtp83NHmyArAmA98rWEBnL3WHS10ZndnIz3Dr91AOmrMGbh
+        +3+a8P7xEksMu6q4G9LYrIJgLzR1NyLsCect0i2RWEdgvFhj+PNx00ytj03y4Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1599807748;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=+XSspCwQvh0J2ooBYP6QFotf1pi6VYTApeBPfzxv4qI=;
-        b=rgI3PhM9ncHeZ9fpm2o8ZRqyTIe50MN/kX9QF0y9ixsa2i2OP2GN7IERni8v7M2UHVPcXB
-        AoVacRJHNdJoWdCA==
+        bh=5d9fe4eytXUd+WWgl53CTGZ6C41OK0l4pfyvLMLPzBM=;
+        b=0AbQ0w3TMfUVq71qvyxszMHlmJPLSV2Boh5q2uchp9g2xYKxpNoGpG/AIqoF0t7pz4hH4T
+        PIW5N55gXM23oNDA==
 From:   "tip-bot2 for Kim Phillips" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/x86/amd/ibs: Don't include randomized bits in
- get_ibs_op_count()
+Subject: [tip: perf/core] perf/x86/amd: Fix sampling Large Increment per Cycle events
 Cc:     Kim Phillips <kim.phillips@amd.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         stable@vger.kernel.org, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <159980774779.20229.6843050151606547108.tip-bot2@tip-bot2>
+Message-ID: <159980774821.20229.7720841504258329146.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -54,54 +56,51 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     680d69635005ba0e58fe3f4c52fc162b8fc743b0
-Gitweb:        https://git.kernel.org/tip/680d69635005ba0e58fe3f4c52fc162b8fc743b0
+Commit-ID:     26e52558ead4b39c0e0fe7bf08f82f5a9777a412
+Gitweb:        https://git.kernel.org/tip/26e52558ead4b39c0e0fe7bf08f82f5a9777a412
 Author:        Kim Phillips <kim.phillips@amd.com>
-AuthorDate:    Tue, 08 Sep 2020 16:47:37 -05:00
+AuthorDate:    Tue, 08 Sep 2020 16:47:35 -05:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Thu, 10 Sep 2020 11:19:35 +02:00
 
-perf/x86/amd/ibs: Don't include randomized bits in get_ibs_op_count()
+perf/x86/amd: Fix sampling Large Increment per Cycle events
 
-get_ibs_op_count() adds hardware's current count (IbsOpCurCnt) bits
-to its count regardless of hardware's valid status.
+Commit 5738891229a2 ("perf/x86/amd: Add support for Large Increment
+per Cycle Events") mistakenly zeroes the upper 16 bits of the count
+in set_period().  That's fine for counting with perf stat, but not
+sampling with perf record when only Large Increment events are being
+sampled.  To enable sampling, we sign extend the upper 16 bits of the
+merged counter pair as described in the Family 17h PPRs:
 
-According to the PPR for AMD Family 17h Model 31h B0 55803 Rev 0.54,
-if the counter rolls over, valid status is set, and the lower 7 bits
-of IbsOpCurCnt are randomized by hardware.
+"Software wanting to preload a value to a merged counter pair writes the
+high-order 16-bit value to the low-order 16 bits of the odd counter and
+then writes the low-order 48-bit value to the even counter. Reading the
+even counter of the merged counter pair returns the full 64-bit value."
 
-Don't include those bits in the driver's event count.
-
-Fixes: 8b1e13638d46 ("perf/x86-ibs: Fix usage of IBS op current count")
+Fixes: 5738891229a2 ("perf/x86/amd: Add support for Large Increment per Cycle Events")
 Signed-off-by: Kim Phillips <kim.phillips@amd.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Cc: stable@vger.kernel.org
 Link: https://bugzilla.kernel.org/show_bug.cgi?id=206537
 ---
- arch/x86/events/amd/ibs.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ arch/x86/events/core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/events/amd/ibs.c b/arch/x86/events/amd/ibs.c
-index 26c3635..863174a 100644
---- a/arch/x86/events/amd/ibs.c
-+++ b/arch/x86/events/amd/ibs.c
-@@ -334,11 +334,15 @@ static u64 get_ibs_op_count(u64 config)
- {
- 	u64 count = 0;
+diff --git a/arch/x86/events/core.c b/arch/x86/events/core.c
+index 0f3d015..cb5cfef 100644
+--- a/arch/x86/events/core.c
++++ b/arch/x86/events/core.c
+@@ -1326,11 +1326,11 @@ int x86_perf_event_set_period(struct perf_event *event)
+ 	wrmsrl(hwc->event_base, (u64)(-left) & x86_pmu.cntval_mask);
  
-+	/*
-+	 * If the internal 27-bit counter rolled over, the count is MaxCnt
-+	 * and the lower 7 bits of CurCnt are randomized.
-+	 * Otherwise CurCnt has the full 27-bit current counter value.
-+	 */
- 	if (config & IBS_OP_VAL)
--		count += (config & IBS_OP_MAX_CNT) << 4; /* cnt rolled over */
--
--	if (ibs_caps & IBS_CAPS_RDWROPCNT)
--		count += (config & IBS_OP_CUR_CNT) >> 32;
-+		count = (config & IBS_OP_MAX_CNT) << 4;
-+	else if (ibs_caps & IBS_CAPS_RDWROPCNT)
-+		count = (config & IBS_OP_CUR_CNT) >> 32;
+ 	/*
+-	 * Clear the Merge event counter's upper 16 bits since
++	 * Sign extend the Merge event counter's upper 16 bits since
+ 	 * we currently declare a 48-bit counter width
+ 	 */
+ 	if (is_counter_pair(hwc))
+-		wrmsrl(x86_pmu_event_addr(idx + 1), 0);
++		wrmsrl(x86_pmu_event_addr(idx + 1), 0xffff);
  
- 	return count;
- }
+ 	/*
+ 	 * Due to erratum on certan cpu we need
