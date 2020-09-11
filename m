@@ -2,52 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D9A7C2659E3
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 11 Sep 2020 09:03:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA3902659E6
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 11 Sep 2020 09:04:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725822AbgIKHDv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 11 Sep 2020 03:03:51 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:45110 "EHLO
+        id S1725810AbgIKHDt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 11 Sep 2020 03:03:49 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:45120 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725786AbgIKHCd (ORCPT
+        with ESMTP id S1725788AbgIKHCd (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Fri, 11 Sep 2020 03:02:33 -0400
-Date:   Fri, 11 Sep 2020 07:02:29 -0000
+Date:   Fri, 11 Sep 2020 07:02:30 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1599807749;
+        s=2020; t=1599807750;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=daWq2XO2fjGJ3kJ6pYkaVRIuo6C4pUxuCjADseWC16s=;
-        b=MIYF9bXY/bj+VO1C4hSnS8X3bX44zZ+gkS/NVJTDCKDl5+wEkTfmLbJKSnE+eh7wP0mDzE
-        oAapFkLHPp0+i2fTALa9SfebXQIw/XfddjK6ecdudSOUvSt79y/gff72X4cBLrCE9cBvq9
-        ecI16ePH/qE/Fij9BRC7DVv5+Uqtk5efWrDPBv4bLmFGpeXFWl+9o8X6VxwsuAwYyOCMec
-        puI/ExNlaiTBlpkYv2H7UUdGW2Trhw1xUI4P2eK2LNfGeU4pAJCy7YKxLp9LZyrKsUS95U
-        CLu/E/KnALO+12mlT8fRmbHUQ/FtO8okLwPQAVxJ9eOlN5ehGR779t/nQo+dkg==
+        bh=Dez5WtCz8F/GZpNNa2ctZ64kCc8NF5qw3P5LIg3ei68=;
+        b=kl6NBTD9H2c8cLxMxiSW9Cz01Ppc8QrdeLlAhC3oote2pjnA1u65Sti53VTOYF1rQuvEvk
+        evD5ATrSBI5NYOpB+j7jF+rfMY8ddhrGz1wsoxcHYkVTWufmZHtVHwN0wYURpVEd7cemX7
+        EYmadpW+m1EJZbv5QY/6zW1sKQl3rmwRfKF1Phwuf+/PbGWZgBJeLXZWWL0cUS2FuKh6ut
+        JydYOK2inIRjJIfRTPoDDj5dH5PmUMdz0wsCTdd5O3AsHx0frkqp4zWpjjABPmpvpGBCIZ
+        xJgl2AG5N90wadjJ9YfFKUsDS9y6r9gDCn6Mc3lA/l62L4h5oj0iE2/xOX2VKw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1599807749;
+        s=2020e; t=1599807750;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=daWq2XO2fjGJ3kJ6pYkaVRIuo6C4pUxuCjADseWC16s=;
-        b=uMUcAMuJcsY3nvh6oDZmJrJHdfd3fsP3Ta1IdKitQOelMVuerq7WRpgm363vID3Bmuq3Ji
-        P0KDfsvN1TcnJLDQ==
+        bh=Dez5WtCz8F/GZpNNa2ctZ64kCc8NF5qw3P5LIg3ei68=;
+        b=XGT16Nc2Yxdr0IlUtZyLlhfXTZgZw96AwGtxi9orQs/n55lxaq7vX6sWMkB0/uleFht2Ht
+        K92ogfLxXcvsR2Cg==
 From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/core: Pull pmu::sched_task() into
- perf_event_context_sched_out()
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+Subject: [tip: perf/core] perf/x86/intel/ds: Fix x86_pmu_stop warning for large PEBS
+Cc:     Like Xu <like.xu@linux.intel.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Kan Liang <kan.liang@linux.intel.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200821195754.20159-2-kan.liang@linux.intel.com>
-References: <20200821195754.20159-2-kan.liang@linux.intel.com>
+In-Reply-To: <20200902210649.2743-1-kan.liang@linux.intel.com>
+References: <20200902210649.2743-1-kan.liang@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <159980774909.20229.18111367837276580444.tip-bot2@tip-bot2>
+Message-ID: <159980775008.20229.8204795134271478943.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,185 +59,160 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     44fae179ce73a26733d9e2d346da4e1a1cb94647
-Gitweb:        https://git.kernel.org/tip/44fae179ce73a26733d9e2d346da4e1a1cb94647
+Commit-ID:     35d1ce6bec133679ff16325d335217f108b84871
+Gitweb:        https://git.kernel.org/tip/35d1ce6bec133679ff16325d335217f108b84871
 Author:        Kan Liang <kan.liang@linux.intel.com>
-AuthorDate:    Fri, 21 Aug 2020 12:57:53 -07:00
+AuthorDate:    Wed, 02 Sep 2020 14:06:49 -07:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Thu, 10 Sep 2020 11:19:34 +02:00
+CommitterDate: Thu, 10 Sep 2020 11:19:33 +02:00
 
-perf/core: Pull pmu::sched_task() into perf_event_context_sched_out()
+perf/x86/intel/ds: Fix x86_pmu_stop warning for large PEBS
 
-The pmu::sched_task() is a context switch callback. It passes the
-cpuctx->task_ctx as a parameter to the lower code. To find the
-cpuctx->task_ctx, the current code iterates a cpuctx list.
-The same context will iterated in perf_event_context_sched_out() soon.
-Share the cpuctx->task_ctx can avoid the unnecessary iteration of the
-cpuctx list.
+A warning as below may be triggered when sampling with large PEBS.
 
-The pmu::sched_task() is also required for the optimization case for
-equivalent contexts.
+[  410.411250] perf: interrupt took too long (72145 > 71975), lowering
+kernel.perf_event_max_sample_rate to 2000
+[  410.724923] ------------[ cut here ]------------
+[  410.729822] WARNING: CPU: 0 PID: 16397 at arch/x86/events/core.c:1422
+x86_pmu_stop+0x95/0xa0
+[  410.933811]  x86_pmu_del+0x50/0x150
+[  410.937304]  event_sched_out.isra.0+0xbc/0x210
+[  410.941751]  group_sched_out.part.0+0x53/0xd0
+[  410.946111]  ctx_sched_out+0x193/0x270
+[  410.949862]  __perf_event_task_sched_out+0x32c/0x890
+[  410.954827]  ? set_next_entity+0x98/0x2d0
+[  410.958841]  __schedule+0x592/0x9c0
+[  410.962332]  schedule+0x5f/0xd0
+[  410.965477]  exit_to_usermode_loop+0x73/0x120
+[  410.969837]  prepare_exit_to_usermode+0xcd/0xf0
+[  410.974369]  ret_from_intr+0x2a/0x3a
+[  410.977946] RIP: 0033:0x40123c
+[  411.079661] ---[ end trace bc83adaea7bb664a ]---
 
-The task_ctx_sched_out() will eventually disable and reenable the PMU
-when schedule out events. Add perf_pmu_disable() and perf_pmu_enable()
-around task_ctx_sched_out() don't break anything.
+In the non-overflow context, e.g., context switch, with large PEBS, perf
+may stop an event twice. An example is below.
 
-Drop the cpuctx->ctx.lock for the pmu::sched_task(). The lock is for
-per-CPU context, which is not necessary for the per-task context
-schedule.
+  //max_samples_per_tick is adjusted to 2
+  //NMI is triggered
+  intel_pmu_handle_irq()
+     handle_pmi_common()
+       drain_pebs()
+         __intel_pmu_pebs_event()
+           perf_event_overflow()
+             __perf_event_account_interrupt()
+               hwc->interrupts = 1
+               return 0
+  //A context switch happens right after the NMI.
+  //In the same tick, the perf_throttled_seq is not changed.
+  perf_event_task_sched_out()
+     perf_pmu_sched_task()
+       intel_pmu_drain_pebs_buffer()
+         __intel_pmu_pebs_event()
+           perf_event_overflow()
+             __perf_event_account_interrupt()
+               ++hwc->interrupts >= max_samples_per_tick
+               return 1
+           x86_pmu_stop();  # First stop
+     perf_event_context_sched_out()
+       task_ctx_sched_out()
+         ctx_sched_out()
+           event_sched_out()
+             x86_pmu_del()
+               x86_pmu_stop();  # Second stop and trigger the warning
 
-No one uses sched_cb_entry, perf_sched_cb_usages, sched_cb_list, and
-perf_pmu_sched_task() any more.
+Perf should only invoke the perf_event_overflow() in the overflow
+context.
 
+Current drain_pebs() is called from:
+- handle_pmi_common()			-- overflow context
+- intel_pmu_pebs_sched_task()		-- non-overflow context
+- intel_pmu_pebs_disable()		-- non-overflow context
+- intel_pmu_auto_reload_read()		-- possible overflow context
+  With PERF_SAMPLE_READ + PERF_FORMAT_GROUP, the function may be
+  invoked in the NMI handler. But, before calling the function, the
+  PEBS buffer has already been drained. The __intel_pmu_pebs_event()
+  will not be called in the possible overflow context.
+
+To fix the issue, an indicator is required to distinguish between the
+overflow context aka handle_pmi_common() and other cases.
+The dummy regs pointer can be used as the indicator.
+
+In the non-overflow context, perf should treat the last record the same
+as other PEBS records, and doesn't invoke the generic overflow handler.
+
+Fixes: 21509084f999 ("perf/x86/intel: Handle multiple records in the PEBS buffer")
+Reported-by: Like Xu <like.xu@linux.intel.com>
 Suggested-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20200821195754.20159-2-kan.liang@linux.intel.com
+Tested-by: Like Xu <like.xu@linux.intel.com>
+Link: https://lkml.kernel.org/r/20200902210649.2743-1-kan.liang@linux.intel.com
 ---
- include/linux/perf_event.h |  1 +-
- kernel/events/core.c       | 47 +++++++++++++------------------------
- 2 files changed, 17 insertions(+), 31 deletions(-)
+ arch/x86/events/intel/ds.c | 32 ++++++++++++++++++++------------
+ 1 file changed, 20 insertions(+), 12 deletions(-)
 
-diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
-index 46a3974..0c19d27 100644
---- a/include/linux/perf_event.h
-+++ b/include/linux/perf_event.h
-@@ -872,7 +872,6 @@ struct perf_cpu_context {
- 	struct list_head		cgrp_cpuctx_entry;
- #endif
+diff --git a/arch/x86/events/intel/ds.c b/arch/x86/events/intel/ds.c
+index 86848c5..404315d 100644
+--- a/arch/x86/events/intel/ds.c
++++ b/arch/x86/events/intel/ds.c
+@@ -670,9 +670,7 @@ unlock:
  
--	struct list_head		sched_cb_entry;
- 	int				sched_cb_usage;
- 
- 	int				online;
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 3f5fec4..45edb85 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -382,7 +382,6 @@ static DEFINE_MUTEX(perf_sched_mutex);
- static atomic_t perf_sched_count;
- 
- static DEFINE_PER_CPU(atomic_t, perf_cgroup_events);
--static DEFINE_PER_CPU(int, perf_sched_cb_usages);
- static DEFINE_PER_CPU(struct pmu_event_list, pmu_sb_events);
- 
- static atomic_t nr_mmap_events __read_mostly;
-@@ -3384,10 +3383,12 @@ static void perf_event_context_sched_out(struct task_struct *task, int ctxn,
- 	struct perf_event_context *parent, *next_parent;
- 	struct perf_cpu_context *cpuctx;
- 	int do_switch = 1;
-+	struct pmu *pmu;
- 
- 	if (likely(!ctx))
- 		return;
- 
-+	pmu = ctx->pmu;
- 	cpuctx = __get_cpu_context(ctx);
- 	if (!cpuctx->task_ctx)
- 		return;
-@@ -3417,11 +3418,15 @@ static void perf_event_context_sched_out(struct task_struct *task, int ctxn,
- 		raw_spin_lock(&ctx->lock);
- 		raw_spin_lock_nested(&next_ctx->lock, SINGLE_DEPTH_NESTING);
- 		if (context_equiv(ctx, next_ctx)) {
--			struct pmu *pmu = ctx->pmu;
- 
- 			WRITE_ONCE(ctx->task, next);
- 			WRITE_ONCE(next_ctx->task, task);
- 
-+			perf_pmu_disable(pmu);
-+
-+			if (cpuctx->sched_cb_usage && pmu->sched_task)
-+				pmu->sched_task(ctx, false);
-+
- 			/*
- 			 * PMU specific parts of task perf context can require
- 			 * additional synchronization. As an example of such
-@@ -3433,6 +3438,8 @@ static void perf_event_context_sched_out(struct task_struct *task, int ctxn,
- 			else
- 				swap(ctx->task_ctx_data, next_ctx->task_ctx_data);
- 
-+			perf_pmu_enable(pmu);
-+
- 			/*
- 			 * RCU_INIT_POINTER here is safe because we've not
- 			 * modified the ctx and the above modification of
-@@ -3455,21 +3462,22 @@ unlock:
- 
- 	if (do_switch) {
- 		raw_spin_lock(&ctx->lock);
-+		perf_pmu_disable(pmu);
-+
-+		if (cpuctx->sched_cb_usage && pmu->sched_task)
-+			pmu->sched_task(ctx, false);
- 		task_ctx_sched_out(cpuctx, ctx, EVENT_ALL);
-+
-+		perf_pmu_enable(pmu);
- 		raw_spin_unlock(&ctx->lock);
- 	}
- }
- 
--static DEFINE_PER_CPU(struct list_head, sched_cb_list);
--
- void perf_sched_cb_dec(struct pmu *pmu)
+ static inline void intel_pmu_drain_pebs_buffer(void)
  {
- 	struct perf_cpu_context *cpuctx = this_cpu_ptr(pmu->pmu_cpu_context);
- 
--	this_cpu_dec(perf_sched_cb_usages);
+-	struct pt_regs regs;
 -
--	if (!--cpuctx->sched_cb_usage)
--		list_del(&cpuctx->sched_cb_entry);
-+	--cpuctx->sched_cb_usage;
- }
- 
- 
-@@ -3477,10 +3485,7 @@ void perf_sched_cb_inc(struct pmu *pmu)
- {
- 	struct perf_cpu_context *cpuctx = this_cpu_ptr(pmu->pmu_cpu_context);
- 
--	if (!cpuctx->sched_cb_usage++)
--		list_add(&cpuctx->sched_cb_entry, this_cpu_ptr(&sched_cb_list));
--
--	this_cpu_inc(perf_sched_cb_usages);
-+	cpuctx->sched_cb_usage++;
+-	x86_pmu.drain_pebs(&regs);
++	x86_pmu.drain_pebs(NULL);
  }
  
  /*
-@@ -3509,20 +3514,6 @@ static void __perf_pmu_sched_task(struct perf_cpu_context *cpuctx, bool sched_in
- 	perf_ctx_unlock(cpuctx, cpuctx->task_ctx);
- }
+@@ -1737,6 +1735,7 @@ static void __intel_pmu_pebs_event(struct perf_event *event,
+ 	struct x86_perf_regs perf_regs;
+ 	struct pt_regs *regs = &perf_regs.regs;
+ 	void *at = get_next_pebs_record_by_bit(base, top, bit);
++	struct pt_regs dummy_iregs;
  
--static void perf_pmu_sched_task(struct task_struct *prev,
--				struct task_struct *next,
--				bool sched_in)
--{
--	struct perf_cpu_context *cpuctx;
--
--	if (prev == next)
--		return;
--
--	list_for_each_entry(cpuctx, this_cpu_ptr(&sched_cb_list), sched_cb_entry)
--		__perf_pmu_sched_task(cpuctx, sched_in);
--
--}
--
- static void perf_event_switch(struct task_struct *task,
- 			      struct task_struct *next_prev, bool sched_in);
+ 	if (hwc->flags & PERF_X86_EVENT_AUTO_RELOAD) {
+ 		/*
+@@ -1749,6 +1748,9 @@ static void __intel_pmu_pebs_event(struct perf_event *event,
+ 	} else if (!intel_pmu_save_and_restart(event))
+ 		return;
  
-@@ -3545,9 +3536,6 @@ void __perf_event_task_sched_out(struct task_struct *task,
- {
- 	int ctxn;
- 
--	if (__this_cpu_read(perf_sched_cb_usages))
--		perf_pmu_sched_task(task, next, false);
--
- 	if (atomic_read(&nr_switch_events))
- 		perf_event_switch(task, next, false);
- 
-@@ -12867,7 +12855,6 @@ static void __init perf_event_init_all_cpus(void)
- #ifdef CONFIG_CGROUP_PERF
- 		INIT_LIST_HEAD(&per_cpu(cgrp_cpuctx_list, cpu));
- #endif
--		INIT_LIST_HEAD(&per_cpu(sched_cb_list, cpu));
++	if (!iregs)
++		iregs = &dummy_iregs;
++
+ 	while (count > 1) {
+ 		setup_sample(event, iregs, at, &data, regs);
+ 		perf_event_output(event, &data, regs);
+@@ -1758,16 +1760,22 @@ static void __intel_pmu_pebs_event(struct perf_event *event,
  	}
+ 
+ 	setup_sample(event, iregs, at, &data, regs);
+-
+-	/*
+-	 * All but the last records are processed.
+-	 * The last one is left to be able to call the overflow handler.
+-	 */
+-	if (perf_event_overflow(event, &data, regs)) {
+-		x86_pmu_stop(event, 0);
+-		return;
++	if (iregs == &dummy_iregs) {
++		/*
++		 * The PEBS records may be drained in the non-overflow context,
++		 * e.g., large PEBS + context switch. Perf should treat the
++		 * last record the same as other PEBS records, and doesn't
++		 * invoke the generic overflow handler.
++		 */
++		perf_event_output(event, &data, regs);
++	} else {
++		/*
++		 * All but the last records are processed.
++		 * The last one is left to be able to call the overflow handler.
++		 */
++		if (perf_event_overflow(event, &data, regs))
++			x86_pmu_stop(event, 0);
+ 	}
+-
  }
  
+ static void intel_pmu_drain_pebs_core(struct pt_regs *iregs)
