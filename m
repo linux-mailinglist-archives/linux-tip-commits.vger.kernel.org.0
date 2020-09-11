@@ -2,16 +2,16 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D653265CC3
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 11 Sep 2020 11:47:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE3F9265CBE
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 11 Sep 2020 11:47:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725822AbgIKJrj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S1725803AbgIKJrj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Fri, 11 Sep 2020 05:47:39 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:45932 "EHLO
+Received: from Galois.linutronix.de ([193.142.43.55]:45924 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725783AbgIKJri (ORCPT
+        with ESMTP id S1725554AbgIKJrh (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 11 Sep 2020 05:47:38 -0400
+        Fri, 11 Sep 2020 05:47:37 -0400
 Date:   Fri, 11 Sep 2020 09:47:34 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1599817655;
@@ -20,12 +20,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=EoOdcw0nRDi+MO1u6dQUcRv24XIvpeGDZkOA9fR5tSg=;
-        b=Zkm/Pv7K3NZgA/mzcCzSptQgIZxeCbUCO3x+s61foLQnL2zdichA+c/Oqrq9Tm/SeOgTTy
-        3hfP2xdnjG/Y6dEdv1da0vntB/035npBIeTsb2gCEdEdpKFlJuChfBov9+4kwfIJTlmTDq
-        Zo4Sov9ubvXST69WMFQRanf3QNNywpleUpCD9PC1W7qDUhk+5jcdEkMSFw/SU8V+sca7SS
-        2RSN7ZxuQwDZ4KguE5NCz6NK49AibMYTQrsEJBv1Hy/6XE/sP+ojUQNgEwy4gcNPwfdxlh
-        aa+V6sc5FVyBFZoBo8mBCeEtRAy95/JrLMe1Q24e8901m6uL5txMNkOod6Urzg==
+        bh=oTZalsZXjUqJZx49YZ1BHYFN6O49FTtm+F6xL4dmM9A=;
+        b=tOXsTOXS4oXwERYtEVbI18z+kKyidcfl6OjYPdhv6cy6+7UiodyDNbYHcSQkMg+hXQDCBX
+        7jOxtmvVQoxyU/N+9pQV7VxQmLEsNP1z4M9U2aS/A++maa3T/Y/R8gxwDWbXt+NlpHSEB/
+        MHy6DzL8EyEK1hxk2J03bCaTed40WkCbmAckkWjuzQhvPZjOuDvRe3I8xZjU98rr75Hpi2
+        dU4oxjF0uESQNo76UhGhp+MQoMrCxzKEIAl38pAk+pWjKJ9yLsFw/gZ5tedoIw5Jsa2cAu
+        lfd32fnS6Qc+KM36pDVyInoj7IHaghLSmXenRFvx5mmcPvlfaEtk1ME5pWQ8QQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1599817655;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -33,21 +33,21 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=EoOdcw0nRDi+MO1u6dQUcRv24XIvpeGDZkOA9fR5tSg=;
-        b=Su8t3uIdds1He1ADkhS23APFTDR3PPldafIKlU9dq8oqM25Pw880zVMa+oEqSD75MTflie
-        GPnKYNyROLrJJ2Ag==
+        bh=oTZalsZXjUqJZx49YZ1BHYFN6O49FTtm+F6xL4dmM9A=;
+        b=8EjZXSM4u4zID4rkQJz4BguDisYMUdXkH2oL8Tu7IMzIQCkWmGy6jgTTPCO6BcGEZRDDqb
+        m+DQzVcKnBbt4rBA==
 From:   "tip-bot2 for Tony W Wang-oc" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cpu] x86/cpu/centaur: Replace two-condition switch-case
- with an if statement
+Subject: [tip: x86/cpu] x86/cpu/centaur: Add Centaur family >=7 CPUs
+ initialization support
 Cc:     "Tony W Wang-oc" <TonyWWang-oc@zhaoxin.com>,
         Borislav Petkov <bp@suse.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <1599562666-31351-2-git-send-email-TonyWWang-oc@zhaoxin.com>
-References: <1599562666-31351-2-git-send-email-TonyWWang-oc@zhaoxin.com>
+In-Reply-To: <1599562666-31351-3-git-send-email-TonyWWang-oc@zhaoxin.com>
+References: <1599562666-31351-3-git-send-email-TonyWWang-oc@zhaoxin.com>
 MIME-Version: 1.0
-Message-ID: <159981765495.4289.653078167108642899.tip-bot2@tip-bot2>
+Message-ID: <159981765454.4289.4295139362994948061.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,77 +59,54 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/cpu branch of tip:
 
-Commit-ID:     8687bdc04128b2bd16faaae11db10128ad0da7b8
-Gitweb:        https://git.kernel.org/tip/8687bdc04128b2bd16faaae11db10128ad0da7b8
+Commit-ID:     33b4711df4c1b3aec7c267c60fc24abccfadd40c
+Gitweb:        https://git.kernel.org/tip/33b4711df4c1b3aec7c267c60fc24abccfadd40c
 Author:        Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>
-AuthorDate:    Tue, 08 Sep 2020 18:57:45 +08:00
+AuthorDate:    Tue, 08 Sep 2020 18:57:46 +08:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Fri, 11 Sep 2020 10:50:01 +02:00
+CommitterDate: Fri, 11 Sep 2020 10:53:19 +02:00
 
-x86/cpu/centaur: Replace two-condition switch-case with an if statement
+x86/cpu/centaur: Add Centaur family >=7 CPUs initialization support
 
-Use a normal if statements instead of a two-condition switch-case.
-
- [ bp: Massage commit message. ]
+Add Centaur family >=7 CPUs specific initialization support.
 
 Signed-off-by: Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/1599562666-31351-2-git-send-email-TonyWWang-oc@zhaoxin.com
+Link: https://lkml.kernel.org/r/1599562666-31351-3-git-send-email-TonyWWang-oc@zhaoxin.com
 ---
- arch/x86/kernel/cpu/centaur.c | 23 ++++++++---------------
- 1 file changed, 8 insertions(+), 15 deletions(-)
+ arch/x86/kernel/cpu/centaur.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/arch/x86/kernel/cpu/centaur.c b/arch/x86/kernel/cpu/centaur.c
-index c5cf336..5f81158 100644
+index 5f81158..345f7d9 100644
 --- a/arch/x86/kernel/cpu/centaur.c
 +++ b/arch/x86/kernel/cpu/centaur.c
-@@ -90,18 +90,14 @@ enum {
- 
- static void early_init_centaur(struct cpuinfo_x86 *c)
- {
--	switch (c->x86) {
- #ifdef CONFIG_X86_32
--	case 5:
--		/* Emulate MTRRs using Centaur's MCR. */
-+	/* Emulate MTRRs using Centaur's MCR. */
-+	if (c->x86 == 5)
- 		set_cpu_cap(c, X86_FEATURE_CENTAUR_MCR);
--		break;
- #endif
--	case 6:
--		if (c->x86_model >= 0xf)
--			set_cpu_cap(c, X86_FEATURE_CONSTANT_TSC);
--		break;
--	}
-+	if (c->x86 == 6 && c->x86_model >= 0xf)
-+		set_cpu_cap(c, X86_FEATURE_CONSTANT_TSC);
-+
- #ifdef CONFIG_X86_64
- 	set_cpu_cap(c, X86_FEATURE_SYSENTER32);
- #endif
-@@ -145,9 +141,8 @@ static void init_centaur(struct cpuinfo_x86 *c)
- 			set_cpu_cap(c, X86_FEATURE_ARCH_PERFMON);
+@@ -65,6 +65,9 @@ static void init_c3(struct cpuinfo_x86 *c)
+ 		c->x86_cache_alignment = c->x86_clflush_size * 2;
+ 		set_cpu_cap(c, X86_FEATURE_REP_GOOD);
  	}
++
++	if (c->x86 >= 7)
++		set_cpu_cap(c, X86_FEATURE_REP_GOOD);
+ }
  
--	switch (c->x86) {
- #ifdef CONFIG_X86_32
--	case 5:
-+	if (c->x86 == 5) {
- 		switch (c->x86_model) {
- 		case 4:
- 			name = "C6";
-@@ -207,12 +202,10 @@ static void init_centaur(struct cpuinfo_x86 *c)
- 			c->x86_cache_size = (cc>>24)+(dd>>24);
- 		}
- 		sprintf(c->x86_model_id, "WinChip %s", name);
--		break;
-+	}
+ enum {
+@@ -95,7 +98,8 @@ static void early_init_centaur(struct cpuinfo_x86 *c)
+ 	if (c->x86 == 5)
+ 		set_cpu_cap(c, X86_FEATURE_CENTAUR_MCR);
  #endif
--	case 6:
-+	if (c->x86 == 6)
+-	if (c->x86 == 6 && c->x86_model >= 0xf)
++	if ((c->x86 == 6 && c->x86_model >= 0xf) ||
++	    (c->x86 >= 7))
+ 		set_cpu_cap(c, X86_FEATURE_CONSTANT_TSC);
+ 
+ #ifdef CONFIG_X86_64
+@@ -204,7 +208,7 @@ static void init_centaur(struct cpuinfo_x86 *c)
+ 		sprintf(c->x86_model_id, "WinChip %s", name);
+ 	}
+ #endif
+-	if (c->x86 == 6)
++	if (c->x86 == 6 || c->x86 >= 7)
  		init_c3(c);
--		break;
--	}
  #ifdef CONFIG_X86_64
  	set_cpu_cap(c, X86_FEATURE_LFENCE_RDTSC);
- #endif
