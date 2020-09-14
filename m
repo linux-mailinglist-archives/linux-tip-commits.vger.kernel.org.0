@@ -2,16 +2,16 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 841C52692D1
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 14 Sep 2020 19:17:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF1612692EC
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 14 Sep 2020 19:20:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726372AbgINRQo (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 14 Sep 2020 13:16:44 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:34800 "EHLO
+        id S1726347AbgINRTt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 14 Sep 2020 13:19:49 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:34804 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726269AbgINRQZ (ORCPT
+        with ESMTP id S1725967AbgINRQ0 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 14 Sep 2020 13:16:25 -0400
+        Mon, 14 Sep 2020 13:16:26 -0400
 Date:   Mon, 14 Sep 2020 17:16:12 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1600103773;
@@ -20,12 +20,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=fLSnEgwh8ujg7fMrevLvBVnoQboiRoJVpphwkpSLwRA=;
-        b=gnt3Uw/PnJ1o6+nxEJqPT51LubGOhzH+U8/jVgv8Be6UEymN3eiBy5+3uuZ4TcD/NzFV6g
-        WLgDdSXLlhC/vVA0vtAujPWUCEW0rezNBF6eQcHtHUD48JL02qZHFdtGeLT8YLShYQcO1n
-        IN6MpntSGcMSg4Sh8b96hnBV6rF5Uxvpw+haxTuumgXAEt8RotcOFRAhhIBW9+GfIpWtzM
-        0mZ9q9+51hmmfzi+PrMNNRnQ2hS9HYbrmB+NkC7E3aXTeZyTCT4nYFRjhC69625jRmleGe
-        zUwnwWFh/yRnoLIYU8FfWQ/vG6VXKh1ZkHPvvHKruS2CgWI78kGNgtD9OjwGww==
+        bh=t/BVLfPodmkKSyyuqcU0WOv7FRo4wNdBeEErB837QcI=;
+        b=yyMWsr4xAm0h6Ba7JQ5cxUaAmPI0YK7Z4IbBn9pSrqMoOycq7YQaSq1X11PzKkgwii8gRR
+        jJCFt40+fS+pG+xmXCun4EG2aQV+2UDD52LYA2j3tKrUzO7wPl5K+oM9ondnEmySR59/yL
+        ZWt4JR4fm5dvzmraujRFr3LNfSrIF35ryOJ4am0DqNlfzMAsA/y4AvcvoJmtkAIlj5uZ1b
+        QBc8eLy6xwrMNhEoLr2IyedLTs2YrIFyTRrHeeIMkzjgTJOywgeVYUMw529Ht4OgCJpkyF
+        BEUYAES1y/2rqE7FPPsVsVvhVcgbkUqDC6wTtPwxNueEH2TECqaGadbRxYmE4g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1600103773;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -33,21 +33,20 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=fLSnEgwh8ujg7fMrevLvBVnoQboiRoJVpphwkpSLwRA=;
-        b=0376xdLIFdOkV3n23pHqNypL+On0ZO9B0iO+VVBXNSP0ilEt9ycCFYSv+X9/SQzaysQ9yR
-        fNvw/d//VTtsefCQ==
+        bh=t/BVLfPodmkKSyyuqcU0WOv7FRo4wNdBeEErB837QcI=;
+        b=odOS1JxO/nM7ZUYX78wwc892T08dHfLB90upjJw/SORqHEqvymswHtzUyz8LAuuSOaC59D
+        6ddQKDtcGfxERTDA==
 From:   "tip-bot2 for Masami Hiramatsu" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/kprobes] kprobes: Fix to check probe enabled before
- disarm_kprobe_ftrace()
+Subject: [tip: perf/kprobes] kprobes: Make local functions static
 Cc:     Masami Hiramatsu <mhiramat@kernel.org>,
-        Ingo Molnar <mingo@kernel.org>, stable@vger.kernel.org,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <159888672694.1411785.5987998076694782591.stgit@devnote2>
-References: <159888672694.1411785.5987998076694782591.stgit@devnote2>
+        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <159870618256.1229682.8692046612635810882.stgit@devnote2>
+References: <159870618256.1229682.8692046612635810882.stgit@devnote2>
 MIME-Version: 1.0
-Message-ID: <160010377221.15536.8797457304463305492.tip-bot2@tip-bot2>
+Message-ID: <160010377297.15536.8276526796144935467.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,61 +58,104 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/kprobes branch of tip:
 
-Commit-ID:     bcb53209be5cb32d485507452edda19b78f31d84
-Gitweb:        https://git.kernel.org/tip/bcb53209be5cb32d485507452edda19b78f31d84
+Commit-ID:     319f0ce284fff8e4f95167cb144acc905d0584c7
+Gitweb:        https://git.kernel.org/tip/319f0ce284fff8e4f95167cb144acc905d0584c7
 Author:        Masami Hiramatsu <mhiramat@kernel.org>
-AuthorDate:    Tue, 01 Sep 2020 00:12:07 +09:00
+AuthorDate:    Sat, 29 Aug 2020 22:03:02 +09:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Mon, 14 Sep 2020 11:20:03 +02:00
+CommitterDate: Tue, 08 Sep 2020 11:52:42 +02:00
 
-kprobes: Fix to check probe enabled before disarm_kprobe_ftrace()
+kprobes: Make local functions static
 
-Commit:
+Since we unified the kretprobe trampoline handler from arch/* code,
+some functions and objects do not need to be exported anymore.
 
-  0cb2f1372baa ("kprobes: Fix NULL pointer dereference at kprobe_ftrace_handler")
-
-fixed one bug but the underlying bugs are not completely fixed yet.
-
-If we run a kprobe_module.tc of ftracetest, a warning triggers:
-
-  # ./ftracetest test.d/kprobe/kprobe_module.tc
-  === Ftrace unit tests ===
-  [1] Kprobe dynamic event - probing module
-  ...
-   ------------[ cut here ]------------
-   Failed to disarm kprobe-ftrace at trace_printk_irq_work+0x0/0x7e [trace_printk] (-2)
-   WARNING: CPU: 7 PID: 200 at kernel/kprobes.c:1091 __disarm_kprobe_ftrace.isra.0+0x7e/0xa0
-
-This is because the kill_kprobe() calls disarm_kprobe_ftrace() even
-if the given probe is not enabled. In that case, ftrace_set_filter_ip()
-fails because the given probe point is not registered to ftrace.
-
-Fix to check the given (going) probe is enabled before invoking
-disarm_kprobe_ftrace().
-
-Fixes: 0cb2f1372baa ("kprobes: Fix NULL pointer dereference at kprobe_ftrace_handler")
 Signed-off-by: Masami Hiramatsu <mhiramat@kernel.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/159888672694.1411785.5987998076694782591.stgit@devnote2
+Link: https://lore.kernel.org/r/159870618256.1229682.8692046612635810882.stgit@devnote2
 ---
- kernel/kprobes.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ include/linux/kprobes.h | 15 ---------------
+ kernel/kprobes.c        |  9 ++++-----
+ 2 files changed, 4 insertions(+), 20 deletions(-)
 
-diff --git a/kernel/kprobes.c b/kernel/kprobes.c
-index 732a701..3b61ae8 100644
---- a/kernel/kprobes.c
-+++ b/kernel/kprobes.c
-@@ -2235,9 +2235,10 @@ static void kill_kprobe(struct kprobe *p)
- 
- 	/*
- 	 * The module is going away. We should disarm the kprobe which
--	 * is using ftrace.
-+	 * is using ftrace, because ftrace framework is still available at
-+	 * MODULE_STATE_GOING notification.
- 	 */
--	if (kprobe_ftrace(p))
-+	if (kprobe_ftrace(p) && !kprobe_disabled(p) && !kprobes_all_disarmed)
- 		disarm_kprobe_ftrace(p);
+diff --git a/include/linux/kprobes.h b/include/linux/kprobes.h
+index 3389067..5c8c271 100644
+--- a/include/linux/kprobes.h
++++ b/include/linux/kprobes.h
+@@ -190,7 +190,6 @@ static inline int kprobes_built_in(void)
+ 	return 1;
  }
  
+-extern struct kprobe kprobe_busy;
+ extern void kprobe_busy_begin(void);
+ extern void kprobe_busy_end(void);
+ 
+@@ -235,16 +234,6 @@ static inline int arch_trampoline_kprobe(struct kprobe *p)
+ 
+ extern struct kretprobe_blackpoint kretprobe_blacklist[];
+ 
+-static inline void kretprobe_assert(struct kretprobe_instance *ri,
+-	unsigned long orig_ret_address, unsigned long trampoline_address)
+-{
+-	if (!orig_ret_address || (orig_ret_address == trampoline_address)) {
+-		printk("kretprobe BUG!: Processing kretprobe %p @ %p\n",
+-				ri->rp, ri->rp->kp.addr);
+-		BUG();
+-	}
+-}
+-
+ #ifdef CONFIG_KPROBES_SANITY_TEST
+ extern int init_test_probes(void);
+ #else
+@@ -364,10 +353,6 @@ int arch_check_ftrace_location(struct kprobe *p);
+ 
+ /* Get the kprobe at this addr (if any) - called with preemption disabled */
+ struct kprobe *get_kprobe(void *addr);
+-void kretprobe_hash_lock(struct task_struct *tsk,
+-			 struct hlist_head **head, unsigned long *flags);
+-void kretprobe_hash_unlock(struct task_struct *tsk, unsigned long *flags);
+-struct hlist_head * kretprobe_inst_table_head(struct task_struct *tsk);
+ 
+ /* kprobe_running() will just return the current_kprobe on this CPU */
+ static inline struct kprobe *kprobe_running(void)
+diff --git a/kernel/kprobes.c b/kernel/kprobes.c
+index 0676868..732a701 100644
+--- a/kernel/kprobes.c
++++ b/kernel/kprobes.c
+@@ -1239,7 +1239,7 @@ static void recycle_rp_inst(struct kretprobe_instance *ri)
+ }
+ NOKPROBE_SYMBOL(recycle_rp_inst);
+ 
+-void kretprobe_hash_lock(struct task_struct *tsk,
++static void kretprobe_hash_lock(struct task_struct *tsk,
+ 			 struct hlist_head **head, unsigned long *flags)
+ __acquires(hlist_lock)
+ {
+@@ -1261,7 +1261,7 @@ __acquires(hlist_lock)
+ }
+ NOKPROBE_SYMBOL(kretprobe_table_lock);
+ 
+-void kretprobe_hash_unlock(struct task_struct *tsk,
++static void kretprobe_hash_unlock(struct task_struct *tsk,
+ 			   unsigned long *flags)
+ __releases(hlist_lock)
+ {
+@@ -1282,7 +1282,7 @@ __releases(hlist_lock)
+ }
+ NOKPROBE_SYMBOL(kretprobe_table_unlock);
+ 
+-struct kprobe kprobe_busy = {
++static struct kprobe kprobe_busy = {
+ 	.addr = (void *) get_kprobe,
+ };
+ 
+@@ -1983,8 +1983,7 @@ unsigned long __kretprobe_trampoline_handler(struct pt_regs *regs,
+ 			break;
+ 	}
+ 
+-	kretprobe_assert(ri, (unsigned long)correct_ret_addr,
+-			     (unsigned long)trampoline_address);
++	BUG_ON(!correct_ret_addr || (correct_ret_addr == trampoline_address));
+ 	last = ri;
+ 
+ 	hlist_for_each_entry_safe(ri, tmp, head, hlist) {
