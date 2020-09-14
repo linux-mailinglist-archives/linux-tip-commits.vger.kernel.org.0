@@ -2,54 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 280CC2692D0
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 14 Sep 2020 19:16:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8784E2692F4
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 14 Sep 2020 19:20:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726362AbgINRQ2 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 14 Sep 2020 13:16:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35606 "EHLO
+        id S1726373AbgINRUN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 14 Sep 2020 13:20:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35610 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726168AbgINRQY (ORCPT
+        with ESMTP id S1726094AbgINRQY (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Mon, 14 Sep 2020 13:16:24 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CDBEC06178A;
-        Mon, 14 Sep 2020 10:16:17 -0700 (PDT)
-Date:   Mon, 14 Sep 2020 17:16:15 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFDECC06178C;
+        Mon, 14 Sep 2020 10:16:18 -0700 (PDT)
+Date:   Mon, 14 Sep 2020 17:16:16 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1600103775;
+        s=2020; t=1600103777;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=xnC0BBRdLpDkoDJDIHbRO7vMU4/ABMUnokc3JMyDZjU=;
-        b=cMvoL7wfqfbbnukra0gcViZdMoQy8tVcdFGOWlJajx4XzbcRwsQV1f+cYsWsF+Wq0X2RFw
-        N7BybqGnbvthVV6btHNOPxxpH8bpTTYYnBPW1HyYtK6uFrhsj31hb+39vOuDvDOu+7RoIV
-        WOw0YxHWLBeHXPQblTvhI4ZbGrQE60KrvOqzO/gG/PuEYlXgfRosFKDspaUeb05qtGem+I
-        XplzT4Mj4iG79xJhDnON0Fq0xnw7We3WMXkJCkicEfzD3MOR/ETWn8wBlNqMAY+u+pNbQB
-        Q2BoITwPJ74WnvcyCbNzRYHoCG5lH/GgzQ/hlYiohvKalaXCArZ3/wErBrmbvw==
+        bh=uOdK4WUx+PFRUf54PjmY35K8rG9zaF84eY43sLsjwM8=;
+        b=nzeJ0q3ueBOwmaPSrv0GHBNgW/0QjKW73Fkz85IJtyTh3b7E7lvJ2B/Q/kBgnNRJY/FhDy
+        IkJ4d+RuZD6F18vPFqMrc3vwyguAiLBq1U84SI1c1QqqCmH9If0s1x5zXn3U3l5An2VBHn
+        ZLMFNp5DMAZMsW8MN94xhJfM27fYllfYdZSs8Jn3fBZDt8k7FRJ96Qt3nER+Tv9j7RentJ
+        O2rWxxliQxGA4bIE2Y4p6MchYwnWQN/l37pc23EFyF9ROM040TUy9FStiN/Za0rfocrBHe
+        1rpbC7W2HY/5kqgWqwkMZ+RgwPfAUnLg/kRfgVOBb8ktSOkHwvukETcQgZ7v9Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1600103775;
+        s=2020e; t=1600103777;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=xnC0BBRdLpDkoDJDIHbRO7vMU4/ABMUnokc3JMyDZjU=;
-        b=+czFiAFKm6+unWsDAdFHvqQPt+SLuTzE4nPH6HTaqvVXSDGWG7bydHYx2x1YuI6IFW6PBZ
-        dML1spW/bdPd7jCA==
+        bh=uOdK4WUx+PFRUf54PjmY35K8rG9zaF84eY43sLsjwM8=;
+        b=9VXjHmHEK9KfqDlYUobJePkbBMEqadPxj0YJ6QfC6XsVgrNn5VSV/OcHpmpNqWsnWQzP1L
+        xra+fo40jba5Y5Cg==
 From:   "tip-bot2 for Masami Hiramatsu" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/kprobes] sparc: kprobes: Use generic kretprobe trampoline handler
+Subject: [tip: perf/kprobes] s390: kprobes: Use generic kretprobe trampoline handler
 Cc:     Masami Hiramatsu <mhiramat@kernel.org>,
         Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <159870614572.1229682.2273450776108579676.stgit@devnote2>
-References: <159870614572.1229682.2273450776108579676.stgit@devnote2>
+In-Reply-To: <159870612453.1229682.15950927742606892302.stgit@devnote2>
+References: <159870612453.1229682.15950927742606892302.stgit@devnote2>
 MIME-Version: 1.0
-Message-ID: <160010377523.15536.175221749531504584.tip-bot2@tip-bot2>
+Message-ID: <160010377663.15536.642471850976104031.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,48 +61,48 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/kprobes branch of tip:
 
-Commit-ID:     5e96ce8ae5b1428e6f4953be5fb1daf0a6d18426
-Gitweb:        https://git.kernel.org/tip/5e96ce8ae5b1428e6f4953be5fb1daf0a6d18426
+Commit-ID:     26a24a6b43d51c6fc70bef9b9016d81e4cf75e6e
+Gitweb:        https://git.kernel.org/tip/26a24a6b43d51c6fc70bef9b9016d81e4cf75e6e
 Author:        Masami Hiramatsu <mhiramat@kernel.org>
-AuthorDate:    Sat, 29 Aug 2020 22:02:25 +09:00
+AuthorDate:    Sat, 29 Aug 2020 22:02:04 +09:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 08 Sep 2020 11:52:35 +02:00
+CommitterDate: Tue, 08 Sep 2020 11:52:34 +02:00
 
-sparc: kprobes: Use generic kretprobe trampoline handler
+s390: kprobes: Use generic kretprobe trampoline handler
 
 Use the generic kretprobe trampoline handler. Don't use
 framepointer verification.
 
 Signed-off-by: Masami Hiramatsu <mhiramat@kernel.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/159870614572.1229682.2273450776108579676.stgit@devnote2
+Link: https://lore.kernel.org/r/159870612453.1229682.15950927742606892302.stgit@devnote2
 ---
- arch/sparc/kernel/kprobes.c | 51 ++----------------------------------
- 1 file changed, 3 insertions(+), 48 deletions(-)
+ arch/s390/kernel/kprobes.c | 79 +-------------------------------------
+ 1 file changed, 2 insertions(+), 77 deletions(-)
 
-diff --git a/arch/sparc/kernel/kprobes.c b/arch/sparc/kernel/kprobes.c
-index dfbca24..217c21a 100644
---- a/arch/sparc/kernel/kprobes.c
-+++ b/arch/sparc/kernel/kprobes.c
-@@ -453,6 +453,7 @@ void __kprobes arch_prepare_kretprobe(struct kretprobe_instance *ri,
- 				      struct pt_regs *regs)
+diff --git a/arch/s390/kernel/kprobes.c b/arch/s390/kernel/kprobes.c
+index d2a71d8..fc30e79 100644
+--- a/arch/s390/kernel/kprobes.c
++++ b/arch/s390/kernel/kprobes.c
+@@ -228,6 +228,7 @@ NOKPROBE_SYMBOL(pop_kprobe);
+ void arch_prepare_kretprobe(struct kretprobe_instance *ri, struct pt_regs *regs)
  {
- 	ri->ret_addr = (kprobe_opcode_t *)(regs->u_regs[UREG_RETPC] + 8);
+ 	ri->ret_addr = (kprobe_opcode_t *) regs->gprs[14];
 +	ri->fp = NULL;
  
  	/* Replace the return addr with trampoline addr */
- 	regs->u_regs[UREG_RETPC] =
-@@ -465,58 +466,12 @@ void __kprobes arch_prepare_kretprobe(struct kretprobe_instance *ri,
- static int __kprobes trampoline_probe_handler(struct kprobe *p,
- 					      struct pt_regs *regs)
+ 	regs->gprs[14] = (unsigned long) &kretprobe_trampoline;
+@@ -331,83 +332,7 @@ static void __used kretprobe_trampoline_holder(void)
+  */
+ static int trampoline_probe_handler(struct kprobe *p, struct pt_regs *regs)
  {
--	struct kretprobe_instance *ri = NULL;
+-	struct kretprobe_instance *ri;
 -	struct hlist_head *head, empty_rp;
 -	struct hlist_node *tmp;
--	unsigned long flags, orig_ret_address = 0;
--	unsigned long trampoline_address =(unsigned long)&kretprobe_trampoline;
-+	unsigned long orig_ret_address = 0;
- 
+-	unsigned long flags, orig_ret_address;
+-	unsigned long trampoline_address;
+-	kprobe_opcode_t *correct_ret_addr;
+-
 -	INIT_HLIST_HEAD(&empty_rp);
 -	kretprobe_hash_lock(current, &head, &flags);
 -
@@ -115,20 +115,20 @@ index dfbca24..217c21a 100644
 -	 * We can handle this because:
 -	 *     - instances are always inserted at the head of the list
 -	 *     - when multiple return probes are registered for the same
--	 *       function, the first instance's ret_addr will point to the
--	 *       real return address, and all the rest will point to
--	 *       kretprobe_trampoline
+-	 *	 function, the first instance's ret_addr will point to the
+-	 *	 real return address, and all the rest will point to
+-	 *	 kretprobe_trampoline
 -	 */
+-	ri = NULL;
+-	orig_ret_address = 0;
+-	correct_ret_addr = NULL;
+-	trampoline_address = (unsigned long) &kretprobe_trampoline;
 -	hlist_for_each_entry_safe(ri, tmp, head, hlist) {
 -		if (ri->task != current)
 -			/* another task is sharing our hash bucket */
 -			continue;
 -
--		if (ri->rp && ri->rp->handler)
--			ri->rp->handler(ri, regs);
--
--		orig_ret_address = (unsigned long)ri->ret_addr;
--		recycle_rp_inst(ri, &empty_rp);
+-		orig_ret_address = (unsigned long) ri->ret_addr;
 -
 -		if (orig_ret_address != trampoline_address)
 -			/*
@@ -140,16 +140,40 @@ index dfbca24..217c21a 100644
 -	}
 -
 -	kretprobe_assert(ri, orig_ret_address, trampoline_address);
-+	orig_ret_address = __kretprobe_trampoline_handler(regs, &kretprobe_trampoline, NULL);
- 	regs->tpc = orig_ret_address;
- 	regs->tnpc = orig_ret_address + 4;
- 
+-
+-	correct_ret_addr = ri->ret_addr;
+-	hlist_for_each_entry_safe(ri, tmp, head, hlist) {
+-		if (ri->task != current)
+-			/* another task is sharing our hash bucket */
+-			continue;
+-
+-		orig_ret_address = (unsigned long) ri->ret_addr;
+-
+-		if (ri->rp && ri->rp->handler) {
+-			ri->ret_addr = correct_ret_addr;
+-			ri->rp->handler(ri, regs);
+-		}
+-
+-		recycle_rp_inst(ri, &empty_rp);
+-
+-		if (orig_ret_address != trampoline_address)
+-			/*
+-			 * This is the real return address. Any other
+-			 * instances associated with this task are for
+-			 * other calls deeper on the call stack
+-			 */
+-			break;
+-	}
+-
+-	regs->psw.addr = orig_ret_address;
+-
 -	kretprobe_hash_unlock(current, &flags);
 -
 -	hlist_for_each_entry_safe(ri, tmp, &empty_rp, hlist) {
 -		hlist_del(&ri->hlist);
 -		kfree(ri);
 -	}
++	regs->psw.addr = __kretprobe_trampoline_handler(regs, &kretprobe_trampoline, NULL);
  	/*
  	 * By returning a non-zero value, we are telling
  	 * kprobe_handler() that we don't want the post_handler
