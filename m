@@ -2,55 +2,51 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4195F269714
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 14 Sep 2020 22:52:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4546826A065
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 15 Sep 2020 10:09:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726137AbgINUwA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 14 Sep 2020 16:52:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40852 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726004AbgINUvz (ORCPT
+        id S1726189AbgIOIJI (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 15 Sep 2020 04:09:08 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:40320 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726122AbgIOIHy (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 14 Sep 2020 16:51:55 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4839C06174A;
-        Mon, 14 Sep 2020 13:51:54 -0700 (PDT)
-Date:   Mon, 14 Sep 2020 20:51:51 -0000
+        Tue, 15 Sep 2020 04:07:54 -0400
+Date:   Tue, 15 Sep 2020 08:07:51 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1600116713;
+        s=2020; t=1600157272;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ydzS4LjDHHuUQo7y+TMVzF9Spgu4/8ruP1ZAuxKKJ4U=;
-        b=GMztMAEAMqlzffkpCTI2elIHG6Egg7omz1FDsK4r684ySHnti5IvuGKTOZeaI4VnH024GB
-        oC3bMMskdVBAgb3ZbQ39H2YU+cBhYiEz5GOMMKtupLCucHL/faE8Vy7XvL/YIUxS+jECQz
-        twWZUbypVX+SthCi55jpKhWg1Zp+SYG3PyzKb1sA+YPAy2yrxb9rU2HG5bGdqB6GhgTtYv
-        UiXlhgy/dx1KheyeIDa7pwI0a0APJIsY1ykGpUdGl3KDpQSYVuaodQ/Lhi/UGg8OSourAA
-        5NLTBuTOBi3m/wruVXHU11ztOFGmtrYqYvwFGobqPe9llXWkSQ1oNI4JjXdAeA==
+        bh=0tAluLr+hpcUW2KTiV7mUpAEJ4g/emUKb1LOH131BW0=;
+        b=MwlNkD4I5JhQqf/0psL3bq1bCr5hjazHBcHm0PLo4urMkhVc+KpbqSnY5XXMvkOR7TwESJ
+        R/J0bG96hMoIshetnp5qoA7UtxgZ6eFoGKqPWbGLZu7/8tpH47RIKlPMapiG9FVWyI1RKv
+        DNPhj5BasIEM2bioVKOmR9TRJEVF1fl8NXjDX2h8G+I2jHFsMiyCfjNPXP7Tfj9O7aksVc
+        /kP+qiJ96kda9SGjgDL2fvn6QKBm/Z8orPeIpDt0buIguerBqgncyzZb6rEfIii/jg/CTh
+        IryDvI4BZVMqsMKRO2jp8JlqDlN+gJy4RwCEzgPimxU1vdAvPEulsGWkGQpD+Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1600116713;
+        s=2020e; t=1600157272;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ydzS4LjDHHuUQo7y+TMVzF9Spgu4/8ruP1ZAuxKKJ4U=;
-        b=I1W2F+DThpQRC7FJcwSbAgVZu+7A+giwZtiXR9K/u/vLAbC4ed1jAGOgXPUIe/Np5OJTuU
-        BSCNSQNX1YkEkZAg==
-From:   "tip-bot2 for Kees Cook" <tip-bot2@linutronix.de>
+        bh=0tAluLr+hpcUW2KTiV7mUpAEJ4g/emUKb1LOH131BW0=;
+        b=HUB6mMNPfG+UhllbD5asGr/MXLztplujnjcJN4NH/vMzAvsBGGBmC8VIRNRa3RzpEWDvAW
+        6ZX7v7AXupEoY8CA==
+From:   "tip-bot2 for Smita Koralahalli" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/urgent] core/entry: Report syscall correctly for trace and audit
-Cc:     Michael Ellerman <mpe@ellerman.id.au>,
-        Kees Cook <keescook@chromium.org>,
-        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
+Subject: [tip: ras/core] x86/mce/dev-mcelog: Do not update kflags on AMD systems
+Cc:     Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>,
+        Borislav Petkov <bp@suse.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200912005826.586171-1-keescook@chromium.org>
-References: <20200912005826.586171-1-keescook@chromium.org>
+In-Reply-To: <20200903234531.162484-3-Smita.KoralahalliChannabasappa@amd.com>
+References: <20200903234531.162484-3-Smita.KoralahalliChannabasappa@amd.com>
 MIME-Version: 1.0
-Message-ID: <160011671176.15536.7429378178023419747.tip-bot2@tip-bot2>
+Message-ID: <160015727115.15536.4953630545422945759.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,63 +56,47 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the core/urgent branch of tip:
+The following commit has been merged into the ras/core branch of tip:
 
-Commit-ID:     b6ec413461034d49f9e586845825adb35ba308f6
-Gitweb:        https://git.kernel.org/tip/b6ec413461034d49f9e586845825adb35ba308f6
-Author:        Kees Cook <keescook@chromium.org>
-AuthorDate:    Fri, 11 Sep 2020 17:58:26 -07:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 14 Sep 2020 22:49:51 +02:00
+Commit-ID:     dc0592b73715c8e84ad8ebbc50c6057d5e203aac
+Gitweb:        https://git.kernel.org/tip/dc0592b73715c8e84ad8ebbc50c6057d5e203aac
+Author:        Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
+AuthorDate:    Thu, 03 Sep 2020 18:45:31 -05:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Tue, 15 Sep 2020 10:04:51 +02:00
 
-core/entry: Report syscall correctly for trace and audit
+x86/mce/dev-mcelog: Do not update kflags on AMD systems
 
-On v5.8 when doing seccomp syscall rewrites (e.g. getpid into getppid
-as seen in the seccomp selftests), trace (and audit) correctly see the
-rewritten syscall on entry and exit:
+The mcelog utility is not commonly used on AMD systems. Therefore,
+errors logged only by the dev_mce_log() notifier will be missed. This
+may occur if the EDAC modules are not loaded, in which case it's
+preferable to print the error record by the default notifier.
 
-	seccomp_bpf-1307  [000] .... 22974.874393: sys_enter: NR 110 (...
-	seccomp_bpf-1307  [000] .N.. 22974.874401: sys_exit: NR 110 = 1304
+However, the mce->kflags set by dev_mce_log() notifier makes the
+default notifier skip over the errors assuming they are processed by
+dev_mce_log().
 
-With mainline we see a mismatched enter and exit (the original syscall
-is incorrectly visible on entry):
+Do not update kflags in the dev_mce_log() notifier on AMD systems.
 
-	seccomp_bpf-1030  [000] ....    21.806766: sys_enter: NR 39 (...
-	seccomp_bpf-1030  [000] ....    21.806767: sys_exit: NR 110 = 1027
-
-When ptrace or seccomp change the syscall, this needs to be visible to
-trace and audit at that time as well. Update the syscall earlier so they
-see the correct value.
-
-Fixes: d88d59b64ca3 ("core/entry: Respect syscall number rewrites")
-Reported-by: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20200912005826.586171-1-keescook@chromium.org
-
+Signed-off-by: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lkml.kernel.org/r/20200903234531.162484-3-Smita.KoralahalliChannabasappa@amd.com
 ---
- kernel/entry/common.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/x86/kernel/cpu/mce/dev-mcelog.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/entry/common.c b/kernel/entry/common.c
-index 1868359..6fdb610 100644
---- a/kernel/entry/common.c
-+++ b/kernel/entry/common.c
-@@ -60,13 +60,15 @@ static long syscall_trace_enter(struct pt_regs *regs, long syscall,
- 			return ret;
- 	}
+diff --git a/arch/x86/kernel/cpu/mce/dev-mcelog.c b/arch/x86/kernel/cpu/mce/dev-mcelog.c
+index 03e5105..100fbee 100644
+--- a/arch/x86/kernel/cpu/mce/dev-mcelog.c
++++ b/arch/x86/kernel/cpu/mce/dev-mcelog.c
+@@ -67,7 +67,9 @@ static int dev_mce_log(struct notifier_block *nb, unsigned long val,
+ unlock:
+ 	mutex_unlock(&mce_chrdev_read_mutex);
  
-+	/* Either of the above might have changed the syscall number */
-+	syscall = syscall_get_nr(current, regs);
+-	mce->kflags |= MCE_HANDLED_MCELOG;
++	if (boot_cpu_data.x86_vendor != X86_VENDOR_AMD)
++		mce->kflags |= MCE_HANDLED_MCELOG;
 +
- 	if (unlikely(ti_work & _TIF_SYSCALL_TRACEPOINT))
- 		trace_sys_enter(regs, syscall);
- 
- 	syscall_enter_audit(regs, syscall);
- 
--	/* The above might have changed the syscall number */
--	return ret ? : syscall_get_nr(current, regs);
-+	return ret ? : syscall;
+ 	return NOTIFY_OK;
  }
  
- static __always_inline long
