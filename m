@@ -2,54 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CAA026C394
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 16 Sep 2020 16:20:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 35DFE26C42C
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 16 Sep 2020 17:27:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726442AbgIPOSg (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 16 Sep 2020 10:18:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50478 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726620AbgIPNcn (ORCPT
+        id S1726331AbgIPPY0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 16 Sep 2020 11:24:26 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:49570 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726371AbgIPPUg (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 16 Sep 2020 09:32:43 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9468C014DA1;
-        Wed, 16 Sep 2020 06:16:43 -0700 (PDT)
-Date:   Wed, 16 Sep 2020 13:11:18 -0000
+        Wed, 16 Sep 2020 11:20:36 -0400
+Date:   Wed, 16 Sep 2020 15:12:25 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1600261879;
+        s=2020; t=1600269146;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=nEtD8RnQ7ym+xkai86OWicaRhtPBMHP7gde0ZIGcFvE=;
-        b=T4owpgQc2BQvLiNMoQ4NiBMFFI4cdZPmhTTB91O8343O/y6BPcbYRV0Hk2UWT9uFq1ugOE
-        wpUsQbsrvv0h/wnCTkO158GA/QES6DfWzBI6gljR+QVjASYLT/UbDK71LIoXckod7FU75X
-        PesbBYh5rDE/5dF6KCtiB1MD/dTHS+e5VeD07RS/zpXVGWUlo0edMy7zkPwfZjl9wlFTmC
-        u02r1oIwAkawo5xVEVUbKKqiIx4Qa/xMT1E4vBADwWiZphoSrhfsUNsqGNjyXuhZkAv0fC
-        SZU/7G7yP4fDQzWadW+4wI3fXqqYCU9Xlc2oRXiZWX59RLhjCMMLI2fWiqtX1g==
+        bh=1fKx577JqjqH7CTxIBwMt0y8m2ttxXin5mrFYhUSCqQ=;
+        b=wfzU6CuQgwDIoPekD5Pn4FsO+eFzzZHfe9rzQ18pe7bzajnNDbyafDvttprkTt3FNXnjxq
+        29anhUC+VhItcjyHJuxdUTpEKW/+XL0/i75U8ZfNONNWl/wNyJJHwFrUO6ST/+Htsf9LUn
+        dMoQpO2OugkEphHZF3ozYH4XX/umskBEpnTloGrobbLkGrddS5TcTdoa939xELTUXuCb9S
+        wbYLTRa/RYLaMyY0Y9JxVFz2YvrLnVZ1YKTJRFiIWVejf6nRyR5tmPohJltYeBLK7EShn8
+        800bh5eOdlPColZGq+ML8//LEgUuCZ5Y4BfZWQc09qgC/Q21dGIHP3h3M7VM2w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1600261879;
+        s=2020e; t=1600269146;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=nEtD8RnQ7ym+xkai86OWicaRhtPBMHP7gde0ZIGcFvE=;
-        b=P7ACa/njV5j5hSrzk8JMynkC18zqgmTJ0bt0H9+NXnhm2GoH8JoE+6IKWcoPiBH5pVhJt2
-        UFUvZcNBvmrw13CA==
-From:   "tip-bot2 for Balbir Singh" <tip-bot2@linutronix.de>
+        bh=1fKx577JqjqH7CTxIBwMt0y8m2ttxXin5mrFYhUSCqQ=;
+        b=jNu7PvfD4I5eOGmZkZzgxrG5WfxyX7uXaxMmh0u5Syc0A22+g8SEGvLGlc/RIMG3/zsVaI
+        Gxfd6rt9p1g8yLCQ==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/pti] prctl: Hook L1D flushing in via prctl
-Cc:     Balbir Singh <sblbir@amazon.com>,
-        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
+Subject: [tip: x86/irq]
+ x86_irq_Rename_X86_IRQ_ALLOC_TYPE_MSI_to_reflect_PCI_dependency
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Joerg Roedel <jroedel@suse.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200729001103.6450-5-sblbir@amazon.com>
-References: <20200729001103.6450-5-sblbir@amazon.com>
+In-Reply-To: <20200826112331.343103175@linutronix.de>
+References: <20200826112331.343103175@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <160026187842.15536.285514864386042510.tip-bot2@tip-bot2>
+Message-ID: <160026914526.15536.17524400052014409045.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,179 +57,191 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/pti branch of tip:
+The following commit has been merged into the x86/irq branch of tip:
 
-Commit-ID:     b6724f118d44606fddde391ba7527526b3cad211
-Gitweb:        https://git.kernel.org/tip/b6724f118d44606fddde391ba7527526b3cad211
-Author:        Balbir Singh <sblbir@amazon.com>
-AuthorDate:    Wed, 29 Jul 2020 10:11:02 +10:00
+Commit-ID:     801b5e4c4eec7b6c7f968d4bbce43da7cacffae4
+Gitweb:        https://git.kernel.org/tip/801b5e4c4eec7b6c7f968d4bbce43da7cacffae4
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Wed, 26 Aug 2020 13:16:35 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 16 Sep 2020 15:08:03 +02:00
+CommitterDate: Wed, 16 Sep 2020 16:52:29 +02:00
 
-prctl: Hook L1D flushing in via prctl
+x86_irq_Rename_X86_IRQ_ALLOC_TYPE_MSI_to_reflect_PCI_dependency
 
-Use the existing PR_GET/SET_SPECULATION_CTRL API to expose the L1D
-flush capability. For L1D flushing PR_SPEC_FORCE_DISABLE and
-PR_SPEC_DISABLE_NOEXEC are not supported.
+No functional change.
 
-There is also no seccomp integration for the feature.
-
-Signed-off-by: Balbir Singh <sblbir@amazon.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20200729001103.6450-5-sblbir@amazon.com
-
+Acked-by: Joerg Roedel <jroedel@suse.de>
+Link: https://lore.kernel.org/r/20200826112331.343103175@linutronix.de
 ---
- arch/x86/kernel/cpu/bugs.c | 54 +++++++++++++++++++++++++++++++++++++-
- arch/x86/mm/tlb.c          | 25 ++++++++++++++++-
- include/uapi/linux/prctl.h |  1 +-
- 3 files changed, 79 insertions(+), 1 deletion(-)
+ arch/x86/include/asm/hw_irq.h       |  4 ++--
+ arch/x86/kernel/apic/msi.c          |  6 +++---
+ drivers/iommu/amd/iommu.c           | 24 ++++++++++++------------
+ drivers/iommu/intel/irq_remapping.c | 18 +++++++++---------
+ 4 files changed, 26 insertions(+), 26 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index d3f0db4..3923e48 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -296,6 +296,13 @@ enum taa_mitigations {
- 	TAA_MITIGATION_TSX_DISABLED,
+diff --git a/arch/x86/include/asm/hw_irq.h b/arch/x86/include/asm/hw_irq.h
+index 74c1243..3982a1e 100644
+--- a/arch/x86/include/asm/hw_irq.h
++++ b/arch/x86/include/asm/hw_irq.h
+@@ -36,8 +36,8 @@ struct msi_desc;
+ enum irq_alloc_type {
+ 	X86_IRQ_ALLOC_TYPE_IOAPIC = 1,
+ 	X86_IRQ_ALLOC_TYPE_HPET,
+-	X86_IRQ_ALLOC_TYPE_MSI,
+-	X86_IRQ_ALLOC_TYPE_MSIX,
++	X86_IRQ_ALLOC_TYPE_PCI_MSI,
++	X86_IRQ_ALLOC_TYPE_PCI_MSIX,
+ 	X86_IRQ_ALLOC_TYPE_DMAR,
+ 	X86_IRQ_ALLOC_TYPE_UV,
  };
+diff --git a/arch/x86/kernel/apic/msi.c b/arch/x86/kernel/apic/msi.c
+index f4ed814..7410d34 100644
+--- a/arch/x86/kernel/apic/msi.c
++++ b/arch/x86/kernel/apic/msi.c
+@@ -187,7 +187,7 @@ int native_setup_msi_irqs(struct pci_dev *dev, int nvec, int type)
+ 	struct irq_alloc_info info;
  
-+enum l1d_flush_out_mitigations {
-+	L1D_FLUSH_OUT_OFF,
-+	L1D_FLUSH_OUT_ON,
-+};
-+
-+static enum l1d_flush_out_mitigations l1d_flush_out_mitigation __ro_after_init = L1D_FLUSH_OUT_ON;
-+
- /* Default mitigation for TAA-affected CPUs */
- static enum taa_mitigations taa_mitigation __ro_after_init = TAA_MITIGATION_VERW;
- static bool taa_nosmt __ro_after_init;
-@@ -379,6 +386,18 @@ out:
- 	pr_info("%s\n", taa_strings[taa_mitigation]);
- }
+ 	init_irq_alloc_info(&info, NULL);
+-	info.type = X86_IRQ_ALLOC_TYPE_MSI;
++	info.type = X86_IRQ_ALLOC_TYPE_PCI_MSI;
+ 	info.msi_dev = dev;
  
-+static int __init l1d_flush_out_parse_cmdline(char *str)
-+{
-+	if (!boot_cpu_has_bug(X86_BUG_L1TF))
-+		return 0;
-+
-+	if (!strcmp(str, "off"))
-+		l1d_flush_out_mitigation = L1D_FLUSH_OUT_OFF;
-+
-+	return 0;
-+}
-+early_param("l1d_flush_out", l1d_flush_out_parse_cmdline);
-+
- static int __init tsx_async_abort_parse_cmdline(char *str)
- {
- 	if (!boot_cpu_has_bug(X86_BUG_TAA))
-@@ -1215,6 +1234,23 @@ static void task_update_spec_tif(struct task_struct *tsk)
- 		speculation_ctrl_update_current();
- }
- 
-+static int l1d_flush_out_prctl_set(struct task_struct *task, unsigned long ctrl)
-+{
-+
-+	if (l1d_flush_out_mitigation == L1D_FLUSH_OUT_OFF)
-+		return -EPERM;
-+
-+	switch (ctrl) {
-+	case PR_SPEC_ENABLE:
-+		return enable_l1d_flush_for_task(task);
-+	case PR_SPEC_DISABLE:
-+		return disable_l1d_flush_for_task(task);
-+	default:
-+		return -ERANGE;
-+	}
-+	return 0;
-+}
-+
- static int ssb_prctl_set(struct task_struct *task, unsigned long ctrl)
- {
- 	if (ssb_mode != SPEC_STORE_BYPASS_PRCTL &&
-@@ -1306,6 +1342,8 @@ int arch_prctl_spec_ctrl_set(struct task_struct *task, unsigned long which,
- 		return ssb_prctl_set(task, ctrl);
- 	case PR_SPEC_INDIRECT_BRANCH:
- 		return ib_prctl_set(task, ctrl);
-+	case PR_SPEC_L1D_FLUSH_OUT:
-+		return l1d_flush_out_prctl_set(task, ctrl);
- 	default:
- 		return -ENODEV;
+ 	domain = irq_remapping_get_irq_domain(&info);
+@@ -219,9 +219,9 @@ int pci_msi_prepare(struct irq_domain *domain, struct device *dev, int nvec,
+ 	init_irq_alloc_info(arg, NULL);
+ 	arg->msi_dev = pdev;
+ 	if (desc->msi_attrib.is_msix) {
+-		arg->type = X86_IRQ_ALLOC_TYPE_MSIX;
++		arg->type = X86_IRQ_ALLOC_TYPE_PCI_MSIX;
+ 	} else {
+-		arg->type = X86_IRQ_ALLOC_TYPE_MSI;
++		arg->type = X86_IRQ_ALLOC_TYPE_PCI_MSI;
+ 		arg->flags |= X86_IRQ_ALLOC_CONTIGUOUS_VECTORS;
  	}
-@@ -1322,6 +1360,20 @@ void arch_seccomp_spec_mitigate(struct task_struct *task)
- }
- #endif
  
-+static int l1d_flush_out_prctl_get(struct task_struct *task)
-+{
-+	int ret;
-+
-+	if (l1d_flush_out_mitigation == L1D_FLUSH_OUT_OFF)
-+		return PR_SPEC_FORCE_DISABLE;
-+
-+	ret = test_ti_thread_flag(&task->thread_info, TIF_SPEC_L1D_FLUSH);
-+	if (ret)
-+		return PR_SPEC_PRCTL | PR_SPEC_ENABLE;
-+	else
-+		return PR_SPEC_PRCTL | PR_SPEC_DISABLE;
-+}
-+
- static int ssb_prctl_get(struct task_struct *task)
- {
- 	switch (ssb_mode) {
-@@ -1375,6 +1427,8 @@ int arch_prctl_spec_ctrl_get(struct task_struct *task, unsigned long which)
- 		return ssb_prctl_get(task);
- 	case PR_SPEC_INDIRECT_BRANCH:
- 		return ib_prctl_get(task);
-+	case PR_SPEC_L1D_FLUSH_OUT:
-+		return l1d_flush_out_prctl_get(task);
+diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
+index db44ce6..cf26b73 100644
+--- a/drivers/iommu/amd/iommu.c
++++ b/drivers/iommu/amd/iommu.c
+@@ -3528,8 +3528,8 @@ static int get_devid(struct irq_alloc_info *info)
+ 	case X86_IRQ_ALLOC_TYPE_HPET:
+ 		devid     = get_hpet_devid(info->hpet_id);
+ 		break;
+-	case X86_IRQ_ALLOC_TYPE_MSI:
+-	case X86_IRQ_ALLOC_TYPE_MSIX:
++	case X86_IRQ_ALLOC_TYPE_PCI_MSI:
++	case X86_IRQ_ALLOC_TYPE_PCI_MSIX:
+ 		devid = get_device_id(&info->msi_dev->dev);
+ 		break;
  	default:
- 		return -ENODEV;
- 	}
-diff --git a/arch/x86/mm/tlb.c b/arch/x86/mm/tlb.c
-index 6369a54..6b0f4c8 100644
---- a/arch/x86/mm/tlb.c
-+++ b/arch/x86/mm/tlb.c
-@@ -316,8 +316,31 @@ EXPORT_SYMBOL_GPL(leave_mm);
+@@ -3567,8 +3567,8 @@ static struct irq_domain *get_irq_domain(struct irq_alloc_info *info)
+ 		return NULL;
  
- int enable_l1d_flush_for_task(struct task_struct *tsk)
- {
-+	int cpu, ret = 0, i;
-+
-+	/*
-+	 * Do not enable L1D_FLUSH_OUT if
-+	 * b. The CPU is not affected by the L1TF bug
-+	 * c. The CPU does not have L1D FLUSH feature support
-+	 * c. The task's affinity is on cores with SMT on.
-+	 */
-+
-+	if (!boot_cpu_has_bug(X86_BUG_L1TF) ||
-+			!static_cpu_has(X86_FEATURE_FLUSH_L1D))
-+		return -EINVAL;
-+
-+	cpu = get_cpu();
-+
-+	for_each_cpu(i, &tsk->cpus_mask) {
-+		if (cpu_data(i).smt_active == true) {
-+			put_cpu();
-+			return -EINVAL;
-+		}
-+	}
-+
- 	set_ti_thread_flag(&tsk->thread_info, TIF_SPEC_L1D_FLUSH);
--	return 0;
-+	put_cpu();
-+	return ret;
- }
+ 	switch (info->type) {
+-	case X86_IRQ_ALLOC_TYPE_MSI:
+-	case X86_IRQ_ALLOC_TYPE_MSIX:
++	case X86_IRQ_ALLOC_TYPE_PCI_MSI:
++	case X86_IRQ_ALLOC_TYPE_PCI_MSIX:
+ 		devid = get_device_id(&info->msi_dev->dev);
+ 		if (devid < 0)
+ 			return NULL;
+@@ -3629,8 +3629,8 @@ static void irq_remapping_prepare_irte(struct amd_ir_data *data,
+ 		break;
  
- int disable_l1d_flush_for_task(struct task_struct *tsk)
-diff --git a/include/uapi/linux/prctl.h b/include/uapi/linux/prctl.h
-index 07b4f81..1e86486 100644
---- a/include/uapi/linux/prctl.h
-+++ b/include/uapi/linux/prctl.h
-@@ -213,6 +213,7 @@ struct prctl_mm_map {
- /* Speculation control variants */
- # define PR_SPEC_STORE_BYPASS		0
- # define PR_SPEC_INDIRECT_BRANCH	1
-+# define PR_SPEC_L1D_FLUSH_OUT		2
- /* Return and control values for PR_SET/GET_SPECULATION_CTRL */
- # define PR_SPEC_NOT_AFFECTED		0
- # define PR_SPEC_PRCTL			(1UL << 0)
+ 	case X86_IRQ_ALLOC_TYPE_HPET:
+-	case X86_IRQ_ALLOC_TYPE_MSI:
+-	case X86_IRQ_ALLOC_TYPE_MSIX:
++	case X86_IRQ_ALLOC_TYPE_PCI_MSI:
++	case X86_IRQ_ALLOC_TYPE_PCI_MSIX:
+ 		msg->address_hi = MSI_ADDR_BASE_HI;
+ 		msg->address_lo = MSI_ADDR_BASE_LO;
+ 		msg->data = irte_info->index;
+@@ -3674,15 +3674,15 @@ static int irq_remapping_alloc(struct irq_domain *domain, unsigned int virq,
+ 
+ 	if (!info)
+ 		return -EINVAL;
+-	if (nr_irqs > 1 && info->type != X86_IRQ_ALLOC_TYPE_MSI &&
+-	    info->type != X86_IRQ_ALLOC_TYPE_MSIX)
++	if (nr_irqs > 1 && info->type != X86_IRQ_ALLOC_TYPE_PCI_MSI &&
++	    info->type != X86_IRQ_ALLOC_TYPE_PCI_MSIX)
+ 		return -EINVAL;
+ 
+ 	/*
+ 	 * With IRQ remapping enabled, don't need contiguous CPU vectors
+ 	 * to support multiple MSI interrupts.
+ 	 */
+-	if (info->type == X86_IRQ_ALLOC_TYPE_MSI)
++	if (info->type == X86_IRQ_ALLOC_TYPE_PCI_MSI)
+ 		info->flags &= ~X86_IRQ_ALLOC_CONTIGUOUS_VECTORS;
+ 
+ 	devid = get_devid(info);
+@@ -3714,9 +3714,9 @@ static int irq_remapping_alloc(struct irq_domain *domain, unsigned int virq,
+ 		} else {
+ 			index = -ENOMEM;
+ 		}
+-	} else if (info->type == X86_IRQ_ALLOC_TYPE_MSI ||
+-		   info->type == X86_IRQ_ALLOC_TYPE_MSIX) {
+-		bool align = (info->type == X86_IRQ_ALLOC_TYPE_MSI);
++	} else if (info->type == X86_IRQ_ALLOC_TYPE_PCI_MSI ||
++		   info->type == X86_IRQ_ALLOC_TYPE_PCI_MSIX) {
++		bool align = (info->type == X86_IRQ_ALLOC_TYPE_PCI_MSI);
+ 
+ 		index = alloc_irq_index(devid, nr_irqs, align, info->msi_dev);
+ 	} else {
+diff --git a/drivers/iommu/intel/irq_remapping.c b/drivers/iommu/intel/irq_remapping.c
+index 8f4ce72..33c4389 100644
+--- a/drivers/iommu/intel/irq_remapping.c
++++ b/drivers/iommu/intel/irq_remapping.c
+@@ -1121,8 +1121,8 @@ static struct irq_domain *intel_get_ir_irq_domain(struct irq_alloc_info *info)
+ 	case X86_IRQ_ALLOC_TYPE_HPET:
+ 		iommu = map_hpet_to_ir(info->hpet_id);
+ 		break;
+-	case X86_IRQ_ALLOC_TYPE_MSI:
+-	case X86_IRQ_ALLOC_TYPE_MSIX:
++	case X86_IRQ_ALLOC_TYPE_PCI_MSI:
++	case X86_IRQ_ALLOC_TYPE_PCI_MSIX:
+ 		iommu = map_dev_to_ir(info->msi_dev);
+ 		break;
+ 	default:
+@@ -1141,8 +1141,8 @@ static struct irq_domain *intel_get_irq_domain(struct irq_alloc_info *info)
+ 		return NULL;
+ 
+ 	switch (info->type) {
+-	case X86_IRQ_ALLOC_TYPE_MSI:
+-	case X86_IRQ_ALLOC_TYPE_MSIX:
++	case X86_IRQ_ALLOC_TYPE_PCI_MSI:
++	case X86_IRQ_ALLOC_TYPE_PCI_MSIX:
+ 		iommu = map_dev_to_ir(info->msi_dev);
+ 		if (iommu)
+ 			return iommu->ir_msi_domain;
+@@ -1312,8 +1312,8 @@ static void intel_irq_remapping_prepare_irte(struct intel_ir_data *data,
+ 		break;
+ 
+ 	case X86_IRQ_ALLOC_TYPE_HPET:
+-	case X86_IRQ_ALLOC_TYPE_MSI:
+-	case X86_IRQ_ALLOC_TYPE_MSIX:
++	case X86_IRQ_ALLOC_TYPE_PCI_MSI:
++	case X86_IRQ_ALLOC_TYPE_PCI_MSIX:
+ 		if (info->type == X86_IRQ_ALLOC_TYPE_HPET)
+ 			set_hpet_sid(irte, info->hpet_id);
+ 		else
+@@ -1368,15 +1368,15 @@ static int intel_irq_remapping_alloc(struct irq_domain *domain,
+ 
+ 	if (!info || !iommu)
+ 		return -EINVAL;
+-	if (nr_irqs > 1 && info->type != X86_IRQ_ALLOC_TYPE_MSI &&
+-	    info->type != X86_IRQ_ALLOC_TYPE_MSIX)
++	if (nr_irqs > 1 && info->type != X86_IRQ_ALLOC_TYPE_PCI_MSI &&
++	    info->type != X86_IRQ_ALLOC_TYPE_PCI_MSIX)
+ 		return -EINVAL;
+ 
+ 	/*
+ 	 * With IRQ remapping enabled, don't need contiguous CPU vectors
+ 	 * to support multiple MSI interrupts.
+ 	 */
+-	if (info->type == X86_IRQ_ALLOC_TYPE_MSI)
++	if (info->type == X86_IRQ_ALLOC_TYPE_PCI_MSI)
+ 		info->flags &= ~X86_IRQ_ALLOC_CONTIGUOUS_VECTORS;
+ 
+ 	ret = irq_domain_alloc_irqs_parent(domain, virq, nr_irqs, arg);
