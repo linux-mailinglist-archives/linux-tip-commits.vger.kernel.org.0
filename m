@@ -2,45 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A2E7626C415
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 16 Sep 2020 17:22:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9023626C45A
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 16 Sep 2020 17:39:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726281AbgIPPWi (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 16 Sep 2020 11:22:38 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:49582 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726331AbgIPPUf (ORCPT
+        id S1726169AbgIPPhz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 16 Sep 2020 11:37:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41116 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726249AbgIPPa3 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 16 Sep 2020 11:20:35 -0400
-Date:   Wed, 16 Sep 2020 15:12:29 -0000
+        Wed, 16 Sep 2020 11:30:29 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63AECC02C296;
+        Wed, 16 Sep 2020 08:20:16 -0700 (PDT)
+Date:   Wed, 16 Sep 2020 15:12:09 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1600269150;
+        s=2020; t=1600269130;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=aGsFh/euLVJTpFe64sDHpwkI+UN4e/dj4KxLmmR37ko=;
-        b=yN0X3PdVW67rDtWG25uGobkSYxtExAcN0T5d/V0Ue+xoCl0BP3E7m+1QA0EFUkVFcYOwUT
-        NnumLJEvHzOxZv3HfX2KF7eOzu4/anYjv2+cfRcZpDDaNRV9QW2KK4g9Vc6ak1giFs/JLZ
-        pQBxAzrHU6fSf9sYITx0E237wbOOkC5Vcd759e+yuZ9iywhnabgYuQ5fItbhuvmMjZ505R
-        S8aiNcUeMpL/RFNvnZvHO+ICvzBJ2Sp9P54t2rgFAvz6l6VBZo4KCE1s+QmZGZ99gG0cE7
-        wi9qlDkrdBphZDLdcujp00JiV18IlylpAVTAyT+kaQHaka074SM+InZ/2/u3kA==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=KVsfMZTeqSjARJ/XVlg9BJdUpB8racC0MiPYscIPL1I=;
+        b=ZnTcgrZRnWIorQfGCnczZEeSy/37FreST6T6jGxx1X2qJ4OO6YmvcQjXrYOYg5D/7nAiis
+        ZRUHkLSeYPSAy1l+cbESxYjKQUaDqtZ+AIhb9jHcXzdyCrRbszSqOgRabwJ0VSPjHcVD6H
+        BStGVQHM5mEelmlzJiZkawtbbo5rRGskBrpP5LjY86kcsdC9kDz0qW2xeBaVFokDVtOSjC
+        QjGsF76MapmNW1KS7iq7FVk8gWYURS+BnNh860bQ7Gw137kZ2aBGGSEHJHoKIVCgn8TXsz
+        GKOicRnka6r/FGLnh88iqjRb8xqNlKo6pXE+E7vI6YGa1J/z6FMIWbdBt0sFXA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1600269150;
+        s=2020e; t=1600269130;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=aGsFh/euLVJTpFe64sDHpwkI+UN4e/dj4KxLmmR37ko=;
-        b=1kkfR/TbWwj2QemsJ1mCKAjzrKdyChd6oRcsbaFhyejIjed4C8yE7OBALreQQsb9X7KA3Z
-        yTN/z0tniXGui5CA==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=KVsfMZTeqSjARJ/XVlg9BJdUpB8racC0MiPYscIPL1I=;
+        b=D9s8y6/z0zfRl0tDEnn5Mg+cNSm0Pf6d5OQ8jmMFpaTneka1xCTxPwjV+yviSNWdKZkXg2
+        vfoOHcJmxDXj0hCQ==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/irq] iommu/amd: Prevent NULL pointer dereference
+Subject: [tip: x86/irq] x86/xen: Consolidate XEN-MSI init
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Joerg Roedel <jroedel@suse.de>, x86 <x86@kernel.org>,
+        Juergen Gross <jgross@suse.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200826112333.420224092@linutronix.de>
+References: <20200826112333.420224092@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <160026914966.15536.6087229780481843966.tip-bot2@tip-bot2>
+Message-ID: <160026912988.15536.10846869358266400219.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -52,36 +61,118 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/irq branch of tip:
 
-Commit-ID:     23357b61f8062a8a8c9c84c0252056cd6d849ec8
-Gitweb:        https://git.kernel.org/tip/23357b61f8062a8a8c9c84c0252056cd6d849ec8
+Commit-ID:     70b59379efc3c818f48b8037e574654fb29f907c
+Gitweb:        https://git.kernel.org/tip/70b59379efc3c818f48b8037e574654fb29f907c
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Wed, 26 Aug 2020 13:16:29 +02:00
+AuthorDate:    Wed, 26 Aug 2020 13:16:56 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 16 Sep 2020 16:52:25 +02:00
+CommitterDate: Wed, 16 Sep 2020 16:52:36 +02:00
 
-iommu/amd: Prevent NULL pointer dereference
+x86/xen: Consolidate XEN-MSI init
 
-Dereferencing irq_data before checking it for NULL is suboptimal.
+X86 cannot store the irq domain pointer in struct device without breaking
+XEN because the irq domain pointer takes precedence over arch_*_msi_irqs()
+fallbacks.
+
+To achieve this XEN MSI interrupt management needs to be wrapped into an
+irq domain.
+
+Move the x86_msi ops setup into a single function to prepare for this.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Joerg Roedel <jroedel@suse.de>
-
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Link: https://lore.kernel.org/r/20200826112333.420224092@linutronix.de
 ---
- drivers/iommu/amd/iommu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/pci/xen.c | 51 ++++++++++++++++++++++++++++-----------------
+ 1 file changed, 32 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
-index 07ae8b9..db44ce6 100644
---- a/drivers/iommu/amd/iommu.c
-+++ b/drivers/iommu/amd/iommu.c
-@@ -3731,8 +3731,8 @@ static int irq_remapping_alloc(struct irq_domain *domain, unsigned int virq,
+diff --git a/arch/x86/pci/xen.c b/arch/x86/pci/xen.c
+index 6a2debe..3a5611b 100644
+--- a/arch/x86/pci/xen.c
++++ b/arch/x86/pci/xen.c
+@@ -372,7 +372,10 @@ static void xen_initdom_restore_msi_irqs(struct pci_dev *dev)
+ 		WARN(ret && ret != -ENOSYS, "restore_msi -> %d\n", ret);
+ 	}
+ }
+-#endif
++#else /* CONFIG_XEN_DOM0 */
++#define xen_initdom_setup_msi_irqs	NULL
++#define xen_initdom_restore_msi_irqs	NULL
++#endif /* !CONFIG_XEN_DOM0 */
  
- 	for (i = 0; i < nr_irqs; i++) {
- 		irq_data = irq_domain_get_irq_data(domain, virq + i);
--		cfg = irqd_cfg(irq_data);
--		if (!irq_data || !cfg) {
-+		cfg = irq_data ? irqd_cfg(irq_data) : NULL;
-+		if (!cfg) {
- 			ret = -EINVAL;
- 			goto out_free_data;
- 		}
+ static void xen_teardown_msi_irqs(struct pci_dev *dev)
+ {
+@@ -404,7 +407,31 @@ static void xen_teardown_msi_irq(unsigned int irq)
+ 	WARN_ON_ONCE(1);
+ }
+ 
+-#endif
++static __init void xen_setup_pci_msi(void)
++{
++	if (xen_pv_domain()) {
++		if (xen_initial_domain()) {
++			x86_msi.setup_msi_irqs = xen_initdom_setup_msi_irqs;
++			x86_msi.restore_msi_irqs = xen_initdom_restore_msi_irqs;
++		} else {
++			x86_msi.setup_msi_irqs = xen_setup_msi_irqs;
++		}
++		x86_msi.teardown_msi_irqs = xen_pv_teardown_msi_irqs;
++		pci_msi_ignore_mask = 1;
++	} else if (xen_hvm_domain()) {
++		x86_msi.setup_msi_irqs = xen_hvm_setup_msi_irqs;
++		x86_msi.teardown_msi_irqs = xen_teardown_msi_irqs;
++	} else {
++		WARN_ON_ONCE(1);
++		return;
++	}
++
++	x86_msi.teardown_msi_irq = xen_teardown_msi_irq;
++}
++
++#else /* CONFIG_PCI_MSI */
++static inline void xen_setup_pci_msi(void) { }
++#endif /* CONFIG_PCI_MSI */
+ 
+ int __init pci_xen_init(void)
+ {
+@@ -421,12 +448,7 @@ int __init pci_xen_init(void)
+ 	/* Keep ACPI out of the picture */
+ 	acpi_noirq_set();
+ 
+-#ifdef CONFIG_PCI_MSI
+-	x86_msi.setup_msi_irqs = xen_setup_msi_irqs;
+-	x86_msi.teardown_msi_irq = xen_teardown_msi_irq;
+-	x86_msi.teardown_msi_irqs = xen_pv_teardown_msi_irqs;
+-	pci_msi_ignore_mask = 1;
+-#endif
++	xen_setup_pci_msi();
+ 	return 0;
+ }
+ 
+@@ -446,10 +468,7 @@ static void __init xen_hvm_msi_init(void)
+ 		    ((eax & XEN_HVM_CPUID_APIC_ACCESS_VIRT) && boot_cpu_has(X86_FEATURE_APIC)))
+ 			return;
+ 	}
+-
+-	x86_msi.setup_msi_irqs = xen_hvm_setup_msi_irqs;
+-	x86_msi.teardown_msi_irqs = xen_teardown_msi_irqs;
+-	x86_msi.teardown_msi_irq = xen_teardown_msi_irq;
++	xen_setup_pci_msi();
+ }
+ #endif
+ 
+@@ -482,13 +501,7 @@ int __init pci_xen_initial_domain(void)
+ {
+ 	int irq;
+ 
+-#ifdef CONFIG_PCI_MSI
+-	x86_msi.setup_msi_irqs = xen_initdom_setup_msi_irqs;
+-	x86_msi.teardown_msi_irq = xen_teardown_msi_irq;
+-	x86_msi.teardown_msi_irqs = xen_teardown_pv_msi_irqs;
+-	x86_msi.restore_msi_irqs = xen_initdom_restore_msi_irqs;
+-	pci_msi_ignore_mask = 1;
+-#endif
++	xen_setup_pci_msi();
+ 	__acpi_register_gsi = acpi_register_gsi_xen;
+ 	__acpi_unregister_gsi = NULL;
+ 	/*
