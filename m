@@ -2,52 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AA25726F83D
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 18 Sep 2020 10:31:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2527B26F86F
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 18 Sep 2020 10:36:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726511AbgIRIbQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 18 Sep 2020 04:31:16 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:32840 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726552AbgIRIbC (ORCPT
+        id S1726388AbgIRIgh (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 18 Sep 2020 04:36:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57806 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726109AbgIRIgh (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 18 Sep 2020 04:31:02 -0400
-Date:   Fri, 18 Sep 2020 08:30:59 -0000
+        Fri, 18 Sep 2020 04:36:37 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0013AC06174A;
+        Fri, 18 Sep 2020 01:36:36 -0700 (PDT)
+Date:   Fri, 18 Sep 2020 08:36:34 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1600417860;
+        s=2020; t=1600418195;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=5/lIViaoHLNUxC0C4//BMN+h9Q6KReEAfsk7sUvBHgc=;
-        b=jHBSvPZzDbjJxLOLBASg8kXYDkXAFWxjEnCh43+tiy65Z9Dqocsvli/lGDVXqliDoHP67X
-        fLLcCKf3FqKv1m+xTPnwZs4uLyB6kwZwrFg/HIv5IPV8UrmNiu1+33pzGLzoEiX1wpglLO
-        Y8F5A5Bj+CRypFjuGKkI76mMFDxSTLh7vroXkZx7e25Avz/Af8hsqGD09JT0j93a8eSVx9
-        MFvn0QGTGp7CvpnKAcuqWE5mCrM3WyZF2Tj/7tX5kE10skn61BTIEWJ3kV2tBrKOwXmi/F
-        Vl7hJrYr2V/qK7VN40DjRoyW4oEd3CAT+bqUCu7IJElUbptRE5IY85e9tUJApw==
+        bh=+Qm1htnKsvz8zTpt2XsYk232RHrbCVjmVseH61BDccI=;
+        b=rMXsujxLx3RLAGL0BdsECac4MW9toHVn7W1mBPiwB+JEmW3kYLb/SNdTJ/XbZLJNFWTBjV
+        HNZdJubRQGHUIzibl152yd+KeKLu4NyNWA6/ctThByyPLAo5MahnNpVLuWC8A/JyGtQDQc
+        xmg6c5e/bfhLdm0dpbE44+6u9B9ovn+1xQRkiZB7BWBOxerO4r3P4ojMAovESf/1L8Qs97
+        qHZ+5VC0KQDVMPEWhMIF8IxWF7HrVb8wU5tKJdmez9EUKDR33Aia0TnpY+Ccqcm9imPkK8
+        tPnBD98KZetPx8R0K8pGV5aXU8Kekgr+wXay34uWUvRmG9eo5MPfzT8MEbRqyw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1600417860;
+        s=2020e; t=1600418195;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=5/lIViaoHLNUxC0C4//BMN+h9Q6KReEAfsk7sUvBHgc=;
-        b=YRbDE3xJkaHKT/oQueyzgPQyCYTbd7pI6djw/VMvXeOgESzhTZgYlSfPpvVSdGNQYwvWhv
-        JFgC912Lv4X3WBAg==
-From:   "tip-bot2 for Atish Patra" <tip-bot2@linutronix.de>
+        bh=+Qm1htnKsvz8zTpt2XsYk232RHrbCVjmVseH61BDccI=;
+        b=WrYdHJuOBEvm+u1qw6GgTo033lwVjfjl9txOY6ssZcLlnG/Gkh5wwG4nQU2cAeEXw52h/z
+        nt3F0o1uq1bJyDBA==
+From:   "tip-bot2 for Hou Tao" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: efi/core] include: pe.h: Add RISC-V related PE definition
-Cc:     Atish Patra <atish.patra@wdc.com>,
-        Palmer Dabbelt <palmerdabbelt@google.com>,
-        Ard Biesheuvel <ardb@kernel.org>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200415195422.19866-3-atish.patra@wdc.com>
-References: <20200415195422.19866-3-atish.patra@wdc.com>
+Subject: [tip: locking/urgent] locking/percpu-rwsem: Use this_cpu_{inc,dec}()
+ for read_count
+Cc:     Hou Tao <houtao1@huawei.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Will Deacon <will@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200915140750.137881-1-houtao1@huawei.com>
+References: <20200915140750.137881-1-houtao1@huawei.com>
 MIME-Version: 1.0
-Message-ID: <160041785944.15536.6458913813753159065.tip-bot2@tip-bot2>
+Message-ID: <160041819402.15536.17324618125529434873.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -56,38 +60,101 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the efi/core branch of tip:
+The following commit has been merged into the locking/urgent branch of tip:
 
-Commit-ID:     6d0fd536183034953bf84826fecb37e47779d24b
-Gitweb:        https://git.kernel.org/tip/6d0fd536183034953bf84826fecb37e47779d24b
-Author:        Atish Patra <atish.patra@wdc.com>
-AuthorDate:    Fri, 28 Aug 2020 10:20:31 -07:00
-Committer:     Ard Biesheuvel <ardb@kernel.org>
-CommitterDate: Fri, 11 Sep 2020 09:30:01 +03:00
+Commit-ID:     e6b1a44eccfcab5e5e280be376f65478c3b2c7a2
+Gitweb:        https://git.kernel.org/tip/e6b1a44eccfcab5e5e280be376f65478c3b2c7a2
+Author:        Hou Tao <houtao1@huawei.com>
+AuthorDate:    Tue, 15 Sep 2020 22:07:50 +08:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Wed, 16 Sep 2020 16:26:56 +02:00
 
-include: pe.h: Add RISC-V related PE definition
+locking/percpu-rwsem: Use this_cpu_{inc,dec}() for read_count
 
-Define RISC-V related machine types.
+The __this_cpu*() accessors are (in general) IRQ-unsafe which, given
+that percpu-rwsem is a blocking primitive, should be just fine.
 
-Signed-off-by: Atish Patra <atish.patra@wdc.com>
-Reviewed-by: Palmer Dabbelt <palmerdabbelt@google.com>
-Link: https://lore.kernel.org/r/20200415195422.19866-3-atish.patra@wdc.com
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+However, file_end_write() is used from IRQ context and will cause
+load-store issues on architectures where the per-cpu accessors are not
+natively irq-safe.
+
+Fix it by using the IRQ-safe this_cpu_*() for operations on
+read_count. This will generate more expensive code on a number of
+platforms, which might cause a performance regression for some of the
+other percpu-rwsem users.
+
+If any such is reported, we can consider alternative solutions.
+
+Fixes: 70fe2f48152e ("aio: fix freeze protection of aio writes")
+Signed-off-by: Hou Tao <houtao1@huawei.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Will Deacon <will@kernel.org>
+Acked-by: Oleg Nesterov <oleg@redhat.com>
+Link: https://lkml.kernel.org/r/20200915140750.137881-1-houtao1@huawei.com
 ---
- include/linux/pe.h | 3 +++
- 1 file changed, 3 insertions(+)
+ include/linux/percpu-rwsem.h  | 8 ++++----
+ kernel/locking/percpu-rwsem.c | 4 ++--
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/include/linux/pe.h b/include/linux/pe.h
-index 8ad71d7..daf09ff 100644
---- a/include/linux/pe.h
-+++ b/include/linux/pe.h
-@@ -55,6 +55,9 @@
- #define	IMAGE_FILE_MACHINE_POWERPC	0x01f0
- #define	IMAGE_FILE_MACHINE_POWERPCFP	0x01f1
- #define	IMAGE_FILE_MACHINE_R4000	0x0166
-+#define	IMAGE_FILE_MACHINE_RISCV32	0x5032
-+#define	IMAGE_FILE_MACHINE_RISCV64	0x5064
-+#define	IMAGE_FILE_MACHINE_RISCV128	0x5128
- #define	IMAGE_FILE_MACHINE_SH3		0x01a2
- #define	IMAGE_FILE_MACHINE_SH3DSP	0x01a3
- #define	IMAGE_FILE_MACHINE_SH3E		0x01a4
+diff --git a/include/linux/percpu-rwsem.h b/include/linux/percpu-rwsem.h
+index 5e033fe..5fda40f 100644
+--- a/include/linux/percpu-rwsem.h
++++ b/include/linux/percpu-rwsem.h
+@@ -60,7 +60,7 @@ static inline void percpu_down_read(struct percpu_rw_semaphore *sem)
+ 	 * anything we did within this RCU-sched read-size critical section.
+ 	 */
+ 	if (likely(rcu_sync_is_idle(&sem->rss)))
+-		__this_cpu_inc(*sem->read_count);
++		this_cpu_inc(*sem->read_count);
+ 	else
+ 		__percpu_down_read(sem, false); /* Unconditional memory barrier */
+ 	/*
+@@ -79,7 +79,7 @@ static inline bool percpu_down_read_trylock(struct percpu_rw_semaphore *sem)
+ 	 * Same as in percpu_down_read().
+ 	 */
+ 	if (likely(rcu_sync_is_idle(&sem->rss)))
+-		__this_cpu_inc(*sem->read_count);
++		this_cpu_inc(*sem->read_count);
+ 	else
+ 		ret = __percpu_down_read(sem, true); /* Unconditional memory barrier */
+ 	preempt_enable();
+@@ -103,7 +103,7 @@ static inline void percpu_up_read(struct percpu_rw_semaphore *sem)
+ 	 * Same as in percpu_down_read().
+ 	 */
+ 	if (likely(rcu_sync_is_idle(&sem->rss))) {
+-		__this_cpu_dec(*sem->read_count);
++		this_cpu_dec(*sem->read_count);
+ 	} else {
+ 		/*
+ 		 * slowpath; reader will only ever wake a single blocked
+@@ -115,7 +115,7 @@ static inline void percpu_up_read(struct percpu_rw_semaphore *sem)
+ 		 * aggregate zero, as that is the only time it matters) they
+ 		 * will also see our critical section.
+ 		 */
+-		__this_cpu_dec(*sem->read_count);
++		this_cpu_dec(*sem->read_count);
+ 		rcuwait_wake_up(&sem->writer);
+ 	}
+ 	preempt_enable();
+diff --git a/kernel/locking/percpu-rwsem.c b/kernel/locking/percpu-rwsem.c
+index 8bbafe3..70a32a5 100644
+--- a/kernel/locking/percpu-rwsem.c
++++ b/kernel/locking/percpu-rwsem.c
+@@ -45,7 +45,7 @@ EXPORT_SYMBOL_GPL(percpu_free_rwsem);
+ 
+ static bool __percpu_down_read_trylock(struct percpu_rw_semaphore *sem)
+ {
+-	__this_cpu_inc(*sem->read_count);
++	this_cpu_inc(*sem->read_count);
+ 
+ 	/*
+ 	 * Due to having preemption disabled the decrement happens on
+@@ -71,7 +71,7 @@ static bool __percpu_down_read_trylock(struct percpu_rw_semaphore *sem)
+ 	if (likely(!atomic_read_acquire(&sem->block)))
+ 		return true;
+ 
+-	__this_cpu_dec(*sem->read_count);
++	this_cpu_dec(*sem->read_count);
+ 
+ 	/* Prod writer to re-evaluate readers_active_check() */
+ 	rcuwait_wake_up(&sem->writer);
