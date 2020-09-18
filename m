@@ -2,50 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C42526FEA6
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 18 Sep 2020 15:37:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DFDBA270380
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 18 Sep 2020 19:46:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726864AbgIRNfQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 18 Sep 2020 09:35:16 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:34462 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726126AbgIRNfQ (ORCPT
+        id S1726118AbgIRRqT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 18 Sep 2020 13:46:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58072 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726007AbgIRRqT (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 18 Sep 2020 09:35:16 -0400
-Date:   Fri, 18 Sep 2020 13:35:13 -0000
+        Fri, 18 Sep 2020 13:46:19 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C11BAC0613CE;
+        Fri, 18 Sep 2020 10:46:18 -0700 (PDT)
+Date:   Fri, 18 Sep 2020 17:46:13 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1600436114;
+        s=2020; t=1600451175;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=rK3lS4IY7ZktPpReXIKTgyey3lWUsewgdHql5ETQv6A=;
-        b=nZu0WCPtiIXMJVowo3FeGpxhAgzSGnjDN540F8N5mimVRCWspYE00bOzTsa40g4MltY6IM
-        1Lg1V4F/LSVtLnaUnbXAsbb5iLMzxJnF1PSyh6Sj/JM9U+FwCRXsj9SwmscCa0WpN8Xsxy
-        T8JIlqDWXW4/Kl95vK0iCOg2HH9viwIlDyrX8Eo9cOBSSrOlItPQDnvD2os0FgFaBVlUgm
-        pm5wq8vwEeGzRPvD0pd4uZy+g5kQDIBCV/+Dyp6rvVho4MOc9Obhv2Qzo/2t5qFx13njOU
-        dtzzWsBJyH7VpwpPbMYqw6PAse+Araj439rW2oANy+5AniAJ61MAOHKjbtQb3g==
+        bh=IhB0NcX0HOm3WMSDpWGptMP1AutOeAlQCpBK85KN/zE=;
+        b=ytLnUvCkOEXDpwqRWEtzejMS/URwkOfqjZwgjh93rXAXkaUVSiJiD1QT2yhipnY+U3KPdN
+        ckXANTB+4w6N+qpXlaH8lGwTNTUk+jZNqZ2aU2yy8HJgPs+6dN222rECQf+dXitV218PEy
+        mHbvroT933qQhvUylp3OTCupu7Cc/IfDysBDxXIiah9bwpAn4RUq5fRNrafLNymsr5HbeV
+        wJUGvRTljYTHxsuY3Gmj/E1B/jDjNFNZZEtcpvy8Jbpo70MU42oqYuXohJlB7qd6/72xVA
+        W8ERDsRVRGT4zNFRsUJwlUDoMhBJ+N++U2MNSVLpdXaWJLNzdyj+tgMtsFYgiw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1600436114;
+        s=2020e; t=1600451175;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=rK3lS4IY7ZktPpReXIKTgyey3lWUsewgdHql5ETQv6A=;
-        b=Gr6wJLqNzQl4jvv+BPjyMU72j7/sUc8KAf6Fu3R/vIvVpmJn/4PUX25up02T5ohc8V2zrL
-        PSr8CAiIWeNDOVCA==
-From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
+        bh=IhB0NcX0HOm3WMSDpWGptMP1AutOeAlQCpBK85KN/zE=;
+        b=llc8pe7KuyQCQJNibu4oe/gSU2C+nQou6p5fOCrwgz/rVjy69Y9WmkfIPX1Q8YG7H0Gbdt
+        1ooaUaFAi8UKTWCw==
+From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: ras/core] x86/mce: Annotate mce_rd/wrmsrl() with noinstr
-Cc:     Borislav Petkov <bp@suse.de>, x86 <x86@kernel.org>,
+Subject: [tip: objtool/urgent] objtool: Fix noreturn detection for ignored functions
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        Borislav Petkov <bp@suse.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200915194020.28807-1-bp@alien8.de>
-References: <20200915194020.28807-1-bp@alien8.de>
+In-Reply-To: <5b1e2536cdbaa5246b60d7791b76130a74082c62.1599751464.git.jpoimboe@redhat.com>
+References: <5b1e2536cdbaa5246b60d7791b76130a74082c62.1599751464.git.jpoimboe@redhat.com>
 MIME-Version: 1.0
-Message-ID: <160043611320.15536.8690718726101063839.tip-bot2@tip-bot2>
+Message-ID: <160045117381.15536.17047493759448999988.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -54,90 +59,58 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the ras/core branch of tip:
+The following commit has been merged into the objtool/urgent branch of tip:
 
-Commit-ID:     e100777016fdf6ec3a9d7c1773b15a2b5eca6c55
-Gitweb:        https://git.kernel.org/tip/e100777016fdf6ec3a9d7c1773b15a2b5eca6c55
-Author:        Borislav Petkov <bp@suse.de>
-AuthorDate:    Mon, 14 Sep 2020 19:21:28 +02:00
+Commit-ID:     db6c6a0df840e3f52c84cc302cc1a08ba11a4416
+Gitweb:        https://git.kernel.org/tip/db6c6a0df840e3f52c84cc302cc1a08ba11a4416
+Author:        Josh Poimboeuf <jpoimboe@redhat.com>
+AuthorDate:    Thu, 10 Sep 2020 10:24:57 -05:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Fri, 18 Sep 2020 15:21:11 +02:00
+CommitterDate: Fri, 18 Sep 2020 19:37:51 +02:00
 
-x86/mce: Annotate mce_rd/wrmsrl() with noinstr
+objtool: Fix noreturn detection for ignored functions
 
-They do get called from the #MC handler which is already marked
-"noinstr".
+When a function is annotated with STACK_FRAME_NON_STANDARD, objtool
+doesn't validate its code paths.  It also skips sibling call detection
+within the function.
 
-Commit
+But sibling call detection is actually needed for the case where the
+ignored function doesn't have any return instructions.  Otherwise
+objtool naively marks the function as implicit static noreturn, which
+affects the reachability of its callers, resulting in "unreachable
+instruction" warnings.
 
-  e2def7d49d08 ("x86/mce: Make mce_rdmsrl() panic on an inaccessible MSR")
+Fix it by just enabling sibling call detection for ignored functions.
+The 'insn->ignore' check in add_jump_destinations() is no longer needed
+after
 
-already got rid of the instrumentation in the MSR accessors, fix the
-annotation now too, in order to get rid of:
+  e6da9567959e ("objtool: Don't use ignore flag for fake jumps").
 
-  vmlinux.o: warning: objtool: do_machine_check()+0x4a: call to mce_rdmsrl() leaves .noinstr.text section
+Fixes the following warning:
 
+  arch/x86/kvm/vmx/vmx.o: warning: objtool: vmx_handle_exit_irqoff()+0x142: unreachable instruction
+
+which triggers on an allmodconfig with CONFIG_GCOV_KERNEL unset.
+
+Reported-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20200915194020.28807-1-bp@alien8.de
+Acked-by: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lkml.kernel.org/r/5b1e2536cdbaa5246b60d7791b76130a74082c62.1599751464.git.jpoimboe@redhat.com
 ---
- arch/x86/kernel/cpu/mce/core.c | 27 +++++++++++++++++++++------
- 1 file changed, 21 insertions(+), 6 deletions(-)
+ tools/objtool/check.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
-index 5b1d5f3..11b6697 100644
---- a/arch/x86/kernel/cpu/mce/core.c
-+++ b/arch/x86/kernel/cpu/mce/core.c
-@@ -392,16 +392,25 @@ __visible bool ex_handler_rdmsr_fault(const struct exception_table_entry *fixup,
- }
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index e034a8f..90a6689 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -619,7 +619,7 @@ static int add_jump_destinations(struct objtool_file *file)
+ 		if (!is_static_jump(insn))
+ 			continue;
  
- /* MSR access wrappers used for error injection */
--static u64 mce_rdmsrl(u32 msr)
-+static noinstr u64 mce_rdmsrl(u32 msr)
- {
- 	DECLARE_ARGS(val, low, high);
+-		if (insn->ignore || insn->offset == FAKE_JUMP_OFFSET)
++		if (insn->offset == FAKE_JUMP_OFFSET)
+ 			continue;
  
- 	if (__this_cpu_read(injectm.finished)) {
--		int offset = msr_to_offset(msr);
-+		int offset;
-+		u64 ret;
- 
-+		instrumentation_begin();
-+
-+		offset = msr_to_offset(msr);
- 		if (offset < 0)
--			return 0;
--		return *(u64 *)((char *)this_cpu_ptr(&injectm) + offset);
-+			ret = 0;
-+		else
-+			ret = *(u64 *)((char *)this_cpu_ptr(&injectm) + offset);
-+
-+		instrumentation_end();
-+
-+		return ret;
- 	}
- 
- 	/*
-@@ -437,15 +446,21 @@ __visible bool ex_handler_wrmsr_fault(const struct exception_table_entry *fixup,
- 	return true;
- }
- 
--static void mce_wrmsrl(u32 msr, u64 v)
-+static noinstr void mce_wrmsrl(u32 msr, u64 v)
- {
- 	u32 low, high;
- 
- 	if (__this_cpu_read(injectm.finished)) {
--		int offset = msr_to_offset(msr);
-+		int offset;
- 
-+		instrumentation_begin();
-+
-+		offset = msr_to_offset(msr);
- 		if (offset >= 0)
- 			*(u64 *)((char *)this_cpu_ptr(&injectm) + offset) = v;
-+
-+		instrumentation_end();
-+
- 		return;
- 	}
- 
+ 		reloc = find_reloc_by_dest_range(file->elf, insn->sec,
