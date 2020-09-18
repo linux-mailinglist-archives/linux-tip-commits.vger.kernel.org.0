@@ -2,55 +2,45 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CF83426F7FC
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 18 Sep 2020 10:21:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 48D5B26F81F
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 18 Sep 2020 10:25:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726354AbgIRITx (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 18 Sep 2020 04:19:53 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:60932 "EHLO
+        id S1726148AbgIRIZT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 18 Sep 2020 04:25:19 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:60990 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726109AbgIRITx (ORCPT
+        with ESMTP id S1726139AbgIRIZT (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 18 Sep 2020 04:19:53 -0400
-Date:   Fri, 18 Sep 2020 08:19:49 -0000
+        Fri, 18 Sep 2020 04:25:19 -0400
+Date:   Fri, 18 Sep 2020 08:25:16 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1600417190;
+        s=2020; t=1600417517;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=4dw99OjleOPqUN3QggAPJrNX40sLG3KUrNIRbmz5Rjg=;
-        b=OWhi05WBstVtE+CXo3CSXBxac2vrSHeS5UZYyOWXcqi28CnG1s+bOZx6fOFLjbISXHf3wW
-        u0ukN4eQXXkGlzaWaJ9NQwuEEauY+lSWPdnhwq2DP79pdMGg+AOktclN+WyJOGf3Bf7EqO
-        ZKvHfGS7ZVMCmIMM/6TKk2nlqPDL6qiAcvv8UJ2Mlm3oOPb386hBfgTk9+obPupl+Pyznw
-        ovPx/TUL1iymcTweI04eNn3TKDfUzsvmPS62JmsDfNYGBx9NPqLfSwzoxYqAXAV6jpfQF1
-        IDYmYiDeyXcNDXrWKrZorgdJM2OgLVCoC0rfzu4/KERVhYSJp1yS7Ctk3vFJEg==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=cxeE9nj6jiMEYBAV4jpKNZRYbtK+gozwPjxpUu8t6CU=;
+        b=LaGzN+xZkbZtYH/Wn37dznlH+5ZoGVPnI29B+fdpMbBaRSRRMne/nmTK3cWghcNr6zUPxn
+        xSL/L+JwvVNrhYOmVFDLef+ZOfRczpLKkIiMVq4vJvlK/qe3Nbq3fF6opW8tWNgDQlUjXl
+        55E5hIMgH1ojQTEkNT3UFVdngj4btdcpR/gm0I9RvZCKa7PZiIAT0IpNyu7XT2eG9yP8I0
+        WP6zSo2fq5OURytx/sQyJKIKZOL2BLpMm1HKvSyoT5Et51xnLvts2O/a8GY94txiPIB1Zu
+        wL4zfJSAaXimbss6VAU2+/0M0Mg3lAyWtV729jHkxLeSQnzYhbP8lgEIzLJiAg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1600417190;
+        s=2020e; t=1600417517;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=4dw99OjleOPqUN3QggAPJrNX40sLG3KUrNIRbmz5Rjg=;
-        b=wLGPjceIesBopBoEVauKhqC3cC/5KB9tRwaJvDv87w3TkBj96N8qspexAnLb14ox2YfKeI
-        Dedcx2HLjB5CEdDA==
-From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=cxeE9nj6jiMEYBAV4jpKNZRYbtK+gozwPjxpUu8t6CU=;
+        b=KpZfGrTA12SxwVc8B8G6QN+3UbV1k4oArpYJ8en6CqoXJVhgQzRsSjZ2BVkD7RWU0kzfUP
+        Mh+JpQrtQnVitgCA==
+From:   "tip-bot2 for Ard Biesheuvel" <tip-bot2@linutronix.de>
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/unwind/fp: Fix FP unwinding in ret_from_fork
-Cc:     Naresh Kamboju <naresh.kamboju@linaro.org>,
-        Logan Gunthorpe <logang@deltatee.com>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Borislav Petkov <bp@suse.de>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
+Subject: [tip: efi/urgent] efi: efibc: check for efivars write capability
+Cc:     Branden Sherrell <sherrellbc@gmail.com>,
+        Ard Biesheuvel <ardb@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <f366bbf5a8d02e2318ee312f738112d0af74d16f.1600103007.git.jpoimboe@redhat.com>
-References: <f366bbf5a8d02e2318ee312f738112d0af74d16f.1600103007.git.jpoimboe@redhat.com>
 MIME-Version: 1.0
-Message-ID: <160041718943.15536.685517727562060677.tip-bot2@tip-bot2>
+Message-ID: <160041751676.15536.3076413657111561677.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,113 +49,47 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the efi/urgent branch of tip:
 
-Commit-ID:     6f9885a36c006d798319661fa849f9c2922223b9
-Gitweb:        https://git.kernel.org/tip/6f9885a36c006d798319661fa849f9c2922223b9
-Author:        Josh Poimboeuf <jpoimboe@redhat.com>
-AuthorDate:    Mon, 14 Sep 2020 12:04:22 -05:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Fri, 18 Sep 2020 09:59:40 +02:00
+Commit-ID:     46908326c6b801201f1e46f5ed0db6e85bef74ae
+Gitweb:        https://git.kernel.org/tip/46908326c6b801201f1e46f5ed0db6e85bef74ae
+Author:        Ard Biesheuvel <ardb@kernel.org>
+AuthorDate:    Tue, 15 Sep 2020 18:12:09 +03:00
+Committer:     Ard Biesheuvel <ardb@kernel.org>
+CommitterDate: Tue, 15 Sep 2020 18:22:47 +03:00
 
-x86/unwind/fp: Fix FP unwinding in ret_from_fork
+efi: efibc: check for efivars write capability
 
-There have been some reports of "bad bp value" warnings printed by the
-frame pointer unwinder:
+Branden reports that commit
 
-  WARNING: kernel stack regs at 000000005bac7112 in sh:1014 has bad 'bp' value 0000000000000000
+  f88814cc2578c1 ("efi/efivars: Expose RT service availability via efivars abstraction")
 
-This warning happens when unwinding from an interrupt in
-ret_from_fork(). If entry code gets interrupted, the state of the
-frame pointer (rbp) may be undefined, which can confuse the unwinder,
-resulting in warnings like the above.
+regresses UEFI platforms that implement GetVariable but not SetVariable
+when booting kernels that have EFIBC (bootloader control) enabled.
 
-There's an in_entry_code() check which normally silences such
-warnings for entry code. But in this case, ret_from_fork() is getting
-interrupted. It recently got moved out of .entry.text, so the
-in_entry_code() check no longer works.
+The reason is that EFIBC is a user of the efivars abstraction, which was
+updated to permit users that rely only on the read capability, but not on
+the write capability. EFIBC is in the latter category, so it has to check
+explicitly whether efivars supports writes.
 
-It could be moved back into .entry.text, but that would break the
-noinstr validation because of the call to schedule_tail().
-
-Instead, initialize each new task's RBP to point to the task's entry
-regs via an encoded frame pointer.  That will allow the unwinder to
-reach the end of the stack gracefully.
-
-Fixes: b9f6976bfb94 ("x86/entry/64: Move non entry code into .text section")
-Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
-Reported-by: Logan Gunthorpe <logang@deltatee.com>
-Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/f366bbf5a8d02e2318ee312f738112d0af74d16f.1600103007.git.jpoimboe@redhat.com
+Fixes: f88814cc2578c1 ("efi/efivars: Expose RT service availability via efivars abstraction")
+Tested-by: Branden Sherrell <sherrellbc@gmail.com>
+Link: https://lore.kernel.org/linux-efi/AE217103-C96F-4AFC-8417-83EC11962004@gmail.com/
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/x86/include/asm/frame.h | 19 +++++++++++++++++++
- arch/x86/kernel/process.c    |  3 ++-
- 2 files changed, 21 insertions(+), 1 deletion(-)
+ drivers/firmware/efi/efibc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/frame.h b/arch/x86/include/asm/frame.h
-index 296b346..fb42659 100644
---- a/arch/x86/include/asm/frame.h
-+++ b/arch/x86/include/asm/frame.h
-@@ -60,12 +60,26 @@
- #define FRAME_END "pop %" _ASM_BP "\n"
+diff --git a/drivers/firmware/efi/efibc.c b/drivers/firmware/efi/efibc.c
+index 35dccc8..15a4753 100644
+--- a/drivers/firmware/efi/efibc.c
++++ b/drivers/firmware/efi/efibc.c
+@@ -84,7 +84,7 @@ static int __init efibc_init(void)
+ {
+ 	int ret;
  
- #ifdef CONFIG_X86_64
-+
- #define ENCODE_FRAME_POINTER			\
- 	"lea 1(%rsp), %rbp\n\t"
-+
-+static inline unsigned long encode_frame_pointer(struct pt_regs *regs)
-+{
-+	return (unsigned long)regs + 1;
-+}
-+
- #else /* !CONFIG_X86_64 */
-+
- #define ENCODE_FRAME_POINTER			\
- 	"movl %esp, %ebp\n\t"			\
- 	"andl $0x7fffffff, %ebp\n\t"
-+
-+static inline unsigned long encode_frame_pointer(struct pt_regs *regs)
-+{
-+	return (unsigned long)regs & 0x7fffffff;
-+}
-+
- #endif /* CONFIG_X86_64 */
+-	if (!efi_enabled(EFI_RUNTIME_SERVICES))
++	if (!efivars_kobject() || !efivar_supports_writes())
+ 		return -ENODEV;
  
- #endif /* __ASSEMBLY__ */
-@@ -83,6 +97,11 @@
- 
- #define ENCODE_FRAME_POINTER
- 
-+static inline unsigned long encode_frame_pointer(struct pt_regs *regs)
-+{
-+	return 0;
-+}
-+
- #endif
- 
- #define FRAME_BEGIN
-diff --git a/arch/x86/kernel/process.c b/arch/x86/kernel/process.c
-index 13ce616..ba4593a 100644
---- a/arch/x86/kernel/process.c
-+++ b/arch/x86/kernel/process.c
-@@ -42,6 +42,7 @@
- #include <asm/spec-ctrl.h>
- #include <asm/io_bitmap.h>
- #include <asm/proto.h>
-+#include <asm/frame.h>
- 
- #include "process.h"
- 
-@@ -133,7 +134,7 @@ int copy_thread(unsigned long clone_flags, unsigned long sp, unsigned long arg,
- 	fork_frame = container_of(childregs, struct fork_frame, regs);
- 	frame = &fork_frame->frame;
- 
--	frame->bp = 0;
-+	frame->bp = encode_frame_pointer(childregs);
- 	frame->ret_addr = (unsigned long) ret_from_fork;
- 	p->thread.sp = (unsigned long) fork_frame;
- 	p->thread.io_bitmap = NULL;
+ 	ret = register_reboot_notifier(&efibc_reboot_notifier);
