@@ -2,139 +2,147 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2314E272AD2
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 21 Sep 2020 17:56:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 01658272EAC
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 21 Sep 2020 18:51:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727131AbgIUP4B (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 21 Sep 2020 11:56:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54862 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726749AbgIUP4B (ORCPT
+        id S1730085AbgIUQvP (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 21 Sep 2020 12:51:15 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:52704 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730074AbgIUQvP (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 21 Sep 2020 11:56:01 -0400
-Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04B5DC061755;
-        Mon, 21 Sep 2020 08:56:01 -0700 (PDT)
-Received: from zn.tnic (p200300ec2f07e300d04ad4772eb9dd3d.dip0.t-ipconnect.de [IPv6:2003:ec:2f07:e300:d04a:d477:2eb9:dd3d])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 64C2B1EC03CE;
-        Mon, 21 Sep 2020 17:55:59 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1600703759;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+        Mon, 21 Sep 2020 12:51:15 -0400
+Date:   Mon, 21 Sep 2020 16:51:11 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1600707072;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=+mYlp3QXOc9MHktEVG8kmImHxYUpQiLAHdcsfxrlWjQ=;
-        b=nI/Xtt6pXswMgkG+QfbeaKEpzOhcW9L7ZuGwtgan3jJ69k6uknNrxKrGYC05iziyFfKroE
-        HM08a1lb+++bf0UNAAaph7wRJXfxLZqaTkt01+LuMu5qwbsO2mwtbVQkxI+lYsusUycwgN
-        J2D1/FPcXfyXuIMX1eso8ZhC23+HlmM=
-Date:   Mon, 21 Sep 2020 17:55:51 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     Lenny Szubowicz <lszubowi@redhat.com>
-Cc:     linux-tip-commits@vger.kernel.org,
-        Lenny Szubowicz <lszubowi@redhat.com>,
-        Ard Biesheuvel <ardb@kernel.org>, x86 <x86@kernel.org>,
+        bh=gVfzDlgm3AjlhLPfD/PKu06jc0A49KijvnhM+NCvAtE=;
+        b=lA42DkUts5sGVQjJ9hli9afXyjP6AyShGvDFmxY40yI4uiUF3LiwsJcyWADUvyglJxqYBX
+        O1T/ZPkNVUWWT+sSW7rg99p96PXYVBCVzAHAp4BDQWkXiIJ8t4259X3KDTi9uhzd/9/Hyz
+        aGw/OuKO+tMHNDylVyjKLmJnlP53pu2ZXT1oOZ8yfzLKtq4EvZOAsfRHfRTIc7NStD3kLn
+        luEVfHherWJz9nL5855uRU1xG8/dNTvopVkynFgDtgEdEbcTIDP+eoP07ASK5/FrbAEOm0
+        j+VfVI30IKO2zCGzswLXCZUSW7OCBcQkdhOL/Kc4TQJpwG1wAbdmSRQytJrVjw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1600707072;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=gVfzDlgm3AjlhLPfD/PKu06jc0A49KijvnhM+NCvAtE=;
+        b=rPGj3exW2Dhoz0IZpgLvk7sfYpVIILlwL7wmucTl7btJpa8QgCxx0KH1xHV8x1xQu3N3D7
+        vlOPZwa/+j/uIPDg==
+From:   "tip-bot2 for Ilie Halip" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: objtool/core] objtool: Ignore unreachable trap after call to
+ noreturn functions
+Cc:     Nick Desaulniers <ndesaulniers@google.com>,
+        Rong Chen <rong.a.chen@intel.com>,
+        Marco Elver <elver@google.com>,
+        Philip Li <philip.li@intel.com>,
+        Borislav Petkov <bp@alien8.de>, kasan-dev@googlegroups.com,
+        x86@kernel.org, clang-built-linux@googlegroups.com,
+        kbuild test robot <lkp@intel.com>,
+        Ilie Halip <ilie.halip@gmail.com>,
+        Sedat Dilek <sedat.dilek@gmail.com>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
         LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [tip: efi/core] efi: Support for MOK variable config table
-Message-ID: <20200921155551.GA1470@zn.tnic>
-References: <20200905013107.10457-2-lszubowi@redhat.com>
- <160041785494.15536.5659054027150173595.tip-bot2@tip-bot2>
+In-Reply-To: <CAKwvOdmptEpi8fiOyWUo=AiZJiX+Z+VHJOM2buLPrWsMTwLnyw@mail.gmail.com>
+References: <CAKwvOdmptEpi8fiOyWUo=AiZJiX+Z+VHJOM2buLPrWsMTwLnyw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <160041785494.15536.5659054027150173595.tip-bot2@tip-bot2>
+Message-ID: <160070707105.15536.14094674309505985856.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2.linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Fri, Sep 18, 2020 at 08:30:54AM -0000, tip-bot2 for Lenny Szubowicz wrote:
-> +void __init efi_mokvar_table_init(void)
-> +{
-> +	efi_memory_desc_t md;
-> +	u64 end_pa;
-> +	void *va = NULL;
-> +	size_t cur_offset = 0;
-> +	size_t offset_limit;
-> +	size_t map_size = 0;
-> +	size_t map_size_needed = 0;
-> +	size_t size;
-> +	struct efi_mokvar_table_entry *mokvar_entry;
-> +	int err = -EINVAL;
-> +
-> +	if (!efi_enabled(EFI_MEMMAP))
-> +		return;
-> +
-> +	if (efi.mokvar_table == EFI_INVALID_TABLE_ADDR)
-> +		return;
-> +	/*
-> +	 * The EFI MOK config table must fit within a single EFI memory
-> +	 * descriptor range.
-> +	 */
-> +	err = efi_mem_desc_lookup(efi.mokvar_table, &md);
-> +	if (err) {
-> +		pr_warn("EFI MOKvar config table is not within the EFI memory map\n");
-> +		return;
-> +	}
-> +	end_pa = efi_mem_desc_end(&md);
-> +	if (efi.mokvar_table >= end_pa) {
-> +		pr_err("EFI memory descriptor containing MOKvar config table is invalid\n");
-> +		return;
-> +	}
-> +	offset_limit = end_pa - efi.mokvar_table;
-> +	/*
-> +	 * Validate the MOK config table. Since there is no table header
-> +	 * from which we could get the total size of the MOK config table,
-> +	 * we compute the total size as we validate each variably sized
-> +	 * entry, remapping as necessary.
-> +	 */
-> +	while (cur_offset + sizeof(*mokvar_entry) <= offset_limit) {
-> +		mokvar_entry = va + cur_offset;
-> +		map_size_needed = cur_offset + sizeof(*mokvar_entry);
-> +		if (map_size_needed > map_size) {
-> +			if (va)
-> +				early_memunmap(va, map_size);
-> +			/*
-> +			 * Map a little more than the fixed size entry
-> +			 * header, anticipating some data. It's safe to
-> +			 * do so as long as we stay within current memory
-> +			 * descriptor.
-> +			 */
-> +			map_size = min(map_size_needed + 2*EFI_PAGE_SIZE,
-> +				       offset_limit);
+The following commit has been merged into the objtool/core branch of tip:
 
-i386 allmodconfig build gives here:
+Commit-ID:     14db1f0a93331d0958e90da522c429ff0890d2d6
+Gitweb:        https://git.kernel.org/tip/14db1f0a93331d0958e90da522c429ff0890d2d6
+Author:        Ilie Halip <ilie.halip@gmail.com>
+AuthorDate:    Sat, 19 Sep 2020 09:41:18 +03:00
+Committer:     Josh Poimboeuf <jpoimboe@redhat.com>
+CommitterDate: Mon, 21 Sep 2020 10:20:10 -05:00
 
-In file included from ./arch/x86/include/asm/percpu.h:27:0,
-                 from ./arch/x86/include/asm/current.h:6,
-                 from ./arch/x86/include/asm/processor.h:17,
-                 from ./arch/x86/include/asm/timex.h:5,
-                 from ./include/linux/timex.h:65,
-                 from ./include/linux/time32.h:13,
-                 from ./include/linux/time.h:73,
-                 from ./include/linux/efi.h:17,
-                 from drivers/firmware/efi/mokvar-table.c:35:
-drivers/firmware/efi/mokvar-table.c: In function ‘efi_mokvar_table_init’:
-./include/linux/kernel.h:850:29: warning: comparison of distinct pointer types lacks a cast
-   (!!(sizeof((typeof(x) *)1 == (typeof(y) *)1)))
-                             ^
-./include/linux/kernel.h:864:4: note: in expansion of macro ‘__typecheck’
-   (__typecheck(x, y) && __no_side_effects(x, y))
-    ^~~~~~~~~~~
-./include/linux/kernel.h:874:24: note: in expansion of macro ‘__safe_cmp’
-  __builtin_choose_expr(__safe_cmp(x, y), \
-                        ^~~~~~~~~~
-./include/linux/kernel.h:883:19: note: in expansion of macro ‘__careful_cmp’
- #define min(x, y) __careful_cmp(x, y, <)
-                   ^~~~~~~~~~~~~
-drivers/firmware/efi/mokvar-table.c:149:15: note: in expansion of macro ‘min’
-    map_size = min(map_size_needed + 2*EFI_PAGE_SIZE,
-               ^~~
+objtool: Ignore unreachable trap after call to noreturn functions
 
--- 
-Regards/Gruss,
-    Boris.
+With CONFIG_UBSAN_TRAP enabled, the compiler may insert a trap
+instruction after a call to a noreturn function. In this case, objtool
+warns that the UD2 instruction is unreachable.
 
-https://people.kernel.org/tglx/notes-about-netiquette
+This is a behavior seen with Clang, from the oldest version capable of
+building the mainline x64_64 kernel (9.0), to the latest experimental
+version (12.0).
+
+Objtool silences similar warnings (trap after dead end instructions), so
+so expand that check to include dead end functions.
+
+Cc: Nick Desaulniers <ndesaulniers@google.com>
+Cc: Rong Chen <rong.a.chen@intel.com>
+Cc: Marco Elver <elver@google.com>
+Cc: Philip Li <philip.li@intel.com>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: kasan-dev@googlegroups.com
+Cc: x86@kernel.org
+Cc: clang-built-linux@googlegroups.com
+BugLink: https://github.com/ClangBuiltLinux/linux/issues/1148
+Link: https://lore.kernel.org/lkml/CAKwvOdmptEpi8fiOyWUo=AiZJiX+Z+VHJOM2buLPrWsMTwLnyw@mail.gmail.com
+Suggested-by: Nick Desaulniers <ndesaulniers@google.com>
+Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
+Tested-by: Nick Desaulniers <ndesaulniers@google.com>
+Reported-by: kbuild test robot <lkp@intel.com>
+Signed-off-by: Ilie Halip <ilie.halip@gmail.com>
+Tested-by: Sedat Dilek <sedat.dilek@gmail.com>
+Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
+---
+ tools/objtool/check.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
+
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index a4796e3..2df9f76 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -2638,9 +2638,10 @@ static bool is_ubsan_insn(struct instruction *insn)
+ 			"__ubsan_handle_builtin_unreachable"));
+ }
+ 
+-static bool ignore_unreachable_insn(struct instruction *insn)
++static bool ignore_unreachable_insn(struct objtool_file *file, struct instruction *insn)
+ {
+ 	int i;
++	struct instruction *prev_insn;
+ 
+ 	if (insn->ignore || insn->type == INSN_NOP)
+ 		return true;
+@@ -2668,8 +2669,11 @@ static bool ignore_unreachable_insn(struct instruction *insn)
+ 	 * __builtin_unreachable().  The BUG() macro has an unreachable() after
+ 	 * the UD2, which causes GCC's undefined trap logic to emit another UD2
+ 	 * (or occasionally a JMP to UD2).
++	 *
++	 * It may also insert a UD2 after calling a __noreturn function.
+ 	 */
+-	if (list_prev_entry(insn, list)->dead_end &&
++	prev_insn = list_prev_entry(insn, list);
++	if ((prev_insn->dead_end || dead_end_function(file, prev_insn->call_dest)) &&
+ 	    (insn->type == INSN_BUG ||
+ 	     (insn->type == INSN_JUMP_UNCONDITIONAL &&
+ 	      insn->jump_dest && insn->jump_dest->type == INSN_BUG)))
+@@ -2796,7 +2800,7 @@ static int validate_reachable_instructions(struct objtool_file *file)
+ 		return 0;
+ 
+ 	for_each_insn(file, insn) {
+-		if (insn->visited || ignore_unreachable_insn(insn))
++		if (insn->visited || ignore_unreachable_insn(file, insn))
+ 			continue;
+ 
+ 		WARN_FUNC("unreachable instruction", insn->sec, insn->offset);
