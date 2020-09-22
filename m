@@ -2,46 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D34A272EAF
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 21 Sep 2020 18:51:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 57F81273E81
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 22 Sep 2020 11:25:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729022AbgIUQvY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 21 Sep 2020 12:51:24 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:52732 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730080AbgIUQvQ (ORCPT
+        id S1726522AbgIVJZ6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 22 Sep 2020 05:25:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47320 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726424AbgIVJZ5 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 21 Sep 2020 12:51:16 -0400
-Date:   Mon, 21 Sep 2020 16:51:13 -0000
+        Tue, 22 Sep 2020 05:25:57 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AA8FC061755;
+        Tue, 22 Sep 2020 02:25:57 -0700 (PDT)
+Date:   Tue, 22 Sep 2020 09:25:54 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1600707074;
+        s=2020; t=1600766755;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=Sgm2yn0v6HlarYRAA1wq4cFuSB25RZdNG4aFpDVvtug=;
-        b=3uqz6yd7s5xG/+rT4dK48m/86EJxwQ77Y2KWTDDvu0OTWuZrWWuOcNLxUz6Qtrqh51QFb1
-        h8S6092t6ucpxU/YZ+H8p7pOLPXGsJjNux4flC8qozy2D6LiB2G8XIiN6uf1exVP4RvSC3
-        /LA8GLqvX7UdpcKgvvRWJtsaprWR3q0r9FKqL5KWiSaaEVZvI9hzJ8sqzXNdlf18r0sH4s
-        pY9jGFNSFpUADO66uaMAp58l6YdOjC4tLMC8hgrSqE54AiaLjM8d6I2fQ1O6pJTQcccdzT
-        sbw06qigHv7/IeT107ph9RpnjCH5ojN07l+YTK3PRdAMyIdPnZcJ6dLjukq6DQ==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=ixjuw1XFDPLcizWawh34SFjvcPywEDOscfH4W7tXDl8=;
+        b=BeZg3vpch3xrhWaIeoQ425qBfQSaOQLJpqARWSh9DEHK3f6tSYgMrS4ccQUOxx3Rr2nBTN
+        oG8G1lrx9xcUB8FP9Hdy1YB4Lfalr9lgOpLkxq1vgMEfHREtjTbojDDX3gGMXzewukB89a
+        zdRTj8YrzOlmIPAkDw2M0z/eNk8P3K2acqxoBGVMZhUppY1xEFVbbW8kn94YXpssKPcrir
+        +iCOGZv2WSscCICyt3EP+oDidW8O9S+htuIS0URng07q1KaOJlP9XF5/rJh705eg4KFDZV
+        9iFc2MHNnMRPKZ72a2XG6As8YSkemCGH/mMrvIIklXtOYHYuxhpY/kYN1A1DtQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1600707074;
+        s=2020e; t=1600766755;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=Sgm2yn0v6HlarYRAA1wq4cFuSB25RZdNG4aFpDVvtug=;
-        b=W7kDNY0lVaPpxwZehNCXzTOnaxPl7ljoYXZ0CZZWoSQpk/UBp8BIBRDjFCHSVLz0u3IPMD
-        SxZoJ2+I5bUZZ7BA==
-From:   "tip-bot2 for Julien Thierry" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=ixjuw1XFDPLcizWawh34SFjvcPywEDOscfH4W7tXDl8=;
+        b=c/IXmH15Gs5DFJ1tLHnFyAD0keVSzXKdcgvV2smvuL3jgw+dqCJO02kAmy6GKCb4fknQWJ
+        4aFj0lZ8FyfJpVDw==
+From:   "tip-bot2 for Mike Hommey" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] objtool: Remove useless tests before save_reg()
-Cc:     Julien Thierry <jthierry@redhat.com>,
-        Josh Poimboeuf <jpoimboe@redhat.com>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
+Subject: [tip: x86/fpu] x86/fpu: Handle FPU-related and clearcpuid command
+ line arguments earlier
+Cc:     Mike Hommey <mh@glandium.org>, Borislav Petkov <bp@suse.de>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200921215638.37980-1-mh@glandium.org>
+References: <20200921215638.37980-1-mh@glandium.org>
 MIME-Version: 1.0
-Message-ID: <160070707332.15536.770642380870729185.tip-bot2@tip-bot2>
+Message-ID: <160076675453.15536.12823133077636708676.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -50,49 +59,186 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the objtool/core branch of tip:
+The following commit has been merged into the x86/fpu branch of tip:
 
-Commit-ID:     f4f803984c3685f416a74e9e2fa7d39bdafbe02b
-Gitweb:        https://git.kernel.org/tip/f4f803984c3685f416a74e9e2fa7d39bdafbe02b
-Author:        Julien Thierry <jthierry@redhat.com>
-AuthorDate:    Tue, 15 Sep 2020 08:53:16 +01:00
-Committer:     Josh Poimboeuf <jpoimboe@redhat.com>
-CommitterDate: Fri, 18 Sep 2020 12:02:27 -05:00
+Commit-ID:     1ef5423a55c2ac6f1361811efe75b6e46d1023ed
+Gitweb:        https://git.kernel.org/tip/1ef5423a55c2ac6f1361811efe75b6e46d1023ed
+Author:        Mike Hommey <mh@glandium.org>
+AuthorDate:    Tue, 22 Sep 2020 06:56:38 +09:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Tue, 22 Sep 2020 00:24:27 +02:00
 
-objtool: Remove useless tests before save_reg()
+x86/fpu: Handle FPU-related and clearcpuid command line arguments earlier
 
-save_reg already checks that the register being saved does not already
-have a saved state.
+FPU initialization handles them currently. However, in the case
+of clearcpuid=, some other early initialization code may check for
+features before the FPU initialization code is called. Handling the
+argument earlier allows the command line to influence those early
+initializations.
 
-Remove redundant checks before processing a register storing operation.
-
-Signed-off-by: Julien Thierry <jthierry@redhat.com>
-Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
+Signed-off-by: Mike Hommey <mh@glandium.org>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lkml.kernel.org/r/20200921215638.37980-1-mh@glandium.org
 ---
- tools/objtool/check.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ arch/x86/kernel/cpu/common.c | 55 +++++++++++++++++++++++++++++++++++-
+ arch/x86/kernel/fpu/init.c   | 55 +-----------------------------------
+ 2 files changed, 55 insertions(+), 55 deletions(-)
 
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 4e2f703..fd2edab 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -2030,7 +2030,7 @@ static int update_cfi_state(struct instruction *insn, struct cfi_state *cfi,
- 				/* drap: push %rbp */
- 				cfi->stack_size = 0;
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index c5d6f17..3c75193 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -23,6 +23,7 @@
+ #include <linux/syscore_ops.h>
+ #include <linux/pgtable.h>
  
--			} else if (regs[op->src.reg].base == CFI_UNDEFINED) {
-+			} else {
++#include <asm/cmdline.h>
+ #include <asm/stackprotector.h>
+ #include <asm/perf_event.h>
+ #include <asm/mmu_context.h>
+@@ -1221,6 +1222,59 @@ static void detect_nopl(void)
+ }
  
- 				/* drap: push %reg */
- 				save_reg(cfi, op->src.reg, CFI_BP, -cfi->stack_size);
-@@ -2059,9 +2059,7 @@ static int update_cfi_state(struct instruction *insn, struct cfi_state *cfi,
+ /*
++ * We parse cpu parameters early because fpu__init_system() is executed
++ * before parse_early_param().
++ */
++static void __init cpu_parse_early_param(void)
++{
++	char arg[128];
++	char *argptr = arg;
++	int arglen, res, bit;
++
++#ifdef CONFIG_X86_32
++	if (cmdline_find_option_bool(boot_command_line, "no387"))
++#ifdef CONFIG_MATH_EMULATION
++		setup_clear_cpu_cap(X86_FEATURE_FPU);
++#else
++		pr_err("Option 'no387' required CONFIG_MATH_EMULATION enabled.\n");
++#endif
++
++	if (cmdline_find_option_bool(boot_command_line, "nofxsr"))
++		setup_clear_cpu_cap(X86_FEATURE_FXSR);
++#endif
++
++	if (cmdline_find_option_bool(boot_command_line, "noxsave"))
++		setup_clear_cpu_cap(X86_FEATURE_XSAVE);
++
++	if (cmdline_find_option_bool(boot_command_line, "noxsaveopt"))
++		setup_clear_cpu_cap(X86_FEATURE_XSAVEOPT);
++
++	if (cmdline_find_option_bool(boot_command_line, "noxsaves"))
++		setup_clear_cpu_cap(X86_FEATURE_XSAVES);
++
++	arglen = cmdline_find_option(boot_command_line, "clearcpuid", arg, sizeof(arg));
++	if (arglen <= 0)
++		return;
++
++	pr_info("Clearing CPUID bits:");
++	do {
++		res = get_option(&argptr, &bit);
++		if (res == 0 || res == 3)
++			break;
++
++		/* If the argument was too long, the last bit may be cut off */
++		if (res == 1 && arglen >= sizeof(arg))
++			break;
++
++		if (bit >= 0 && bit < NCAPINTS * 32) {
++			pr_cont(" " X86_CAP_FMT, x86_cap_flag(bit));
++			setup_clear_cpu_cap(bit);
++		}
++	} while (res == 2);
++	pr_cont("\n");
++}
++
++/*
+  * Do minimum CPU detection early.
+  * Fields really needed: vendor, cpuid_level, family, model, mask,
+  * cache alignment.
+@@ -1255,6 +1309,7 @@ static void __init early_identify_cpu(struct cpuinfo_x86 *c)
+ 		get_cpu_cap(c);
+ 		get_cpu_address_sizes(c);
+ 		setup_force_cpu_cap(X86_FEATURE_CPUID);
++		cpu_parse_early_param();
  
- 				/* save drap offset so we know when to restore it */
- 				cfi->drap_offset = op->dest.offset;
--			}
+ 		if (this_cpu->c_early_init)
+ 			this_cpu->c_early_init(c);
+diff --git a/arch/x86/kernel/fpu/init.c b/arch/x86/kernel/fpu/init.c
+index f8ff895..701f196 100644
+--- a/arch/x86/kernel/fpu/init.c
++++ b/arch/x86/kernel/fpu/init.c
+@@ -5,7 +5,6 @@
+ #include <asm/fpu/internal.h>
+ #include <asm/tlbflush.h>
+ #include <asm/setup.h>
+-#include <asm/cmdline.h>
+ 
+ #include <linux/sched.h>
+ #include <linux/sched/task.h>
+@@ -238,65 +237,11 @@ static void __init fpu__init_system_ctx_switch(void)
+ }
+ 
+ /*
+- * We parse fpu parameters early because fpu__init_system() is executed
+- * before parse_early_param().
+- */
+-static void __init fpu__init_parse_early_param(void)
+-{
+-	char arg[128];
+-	char *argptr = arg;
+-	int arglen, res, bit;
 -
--			else if (regs[op->src.reg].base == CFI_UNDEFINED) {
-+			} else {
+-#ifdef CONFIG_X86_32
+-	if (cmdline_find_option_bool(boot_command_line, "no387"))
+-#ifdef CONFIG_MATH_EMULATION
+-		setup_clear_cpu_cap(X86_FEATURE_FPU);
+-#else
+-		pr_err("Option 'no387' required CONFIG_MATH_EMULATION enabled.\n");
+-#endif
+-
+-	if (cmdline_find_option_bool(boot_command_line, "nofxsr"))
+-		setup_clear_cpu_cap(X86_FEATURE_FXSR);
+-#endif
+-
+-	if (cmdline_find_option_bool(boot_command_line, "noxsave"))
+-		setup_clear_cpu_cap(X86_FEATURE_XSAVE);
+-
+-	if (cmdline_find_option_bool(boot_command_line, "noxsaveopt"))
+-		setup_clear_cpu_cap(X86_FEATURE_XSAVEOPT);
+-
+-	if (cmdline_find_option_bool(boot_command_line, "noxsaves"))
+-		setup_clear_cpu_cap(X86_FEATURE_XSAVES);
+-
+-	arglen = cmdline_find_option(boot_command_line, "clearcpuid", arg, sizeof(arg));
+-	if (arglen <= 0)
+-		return;
+-
+-	pr_info("Clearing CPUID bits:");
+-	do {
+-		res = get_option(&argptr, &bit);
+-		if (res == 0 || res == 3)
+-			break;
+-
+-		/* If the argument was too long, the last bit may be cut off */
+-		if (res == 1 && arglen >= sizeof(arg))
+-			break;
+-
+-		if (bit >= 0 && bit < NCAPINTS * 32) {
+-			pr_cont(" " X86_CAP_FMT, x86_cap_flag(bit));
+-			setup_clear_cpu_cap(bit);
+-		}
+-	} while (res == 2);
+-	pr_cont("\n");
+-}
+-
+-/*
+  * Called on the boot CPU once per system bootup, to set up the initial
+  * FPU state that is later cloned into all processes:
+  */
+ void __init fpu__init_system(struct cpuinfo_x86 *c)
+ {
+-	fpu__init_parse_early_param();
+ 	fpu__init_system_early_generic(c);
  
- 				/* drap: mov reg, disp(%rbp) */
- 				save_reg(cfi, op->src.reg, CFI_BP, op->dest.offset);
+ 	/*
