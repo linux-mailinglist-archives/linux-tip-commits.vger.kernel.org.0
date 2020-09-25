@@ -2,53 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7392727871B
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 25 Sep 2020 14:24:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 90E9D278725
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 25 Sep 2020 14:24:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728521AbgIYMYI (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S1728524AbgIYMYI (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Fri, 25 Sep 2020 08:24:08 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:55974 "EHLO
+Received: from Galois.linutronix.de ([193.142.43.55]:55972 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728407AbgIYMX6 (ORCPT
+        with ESMTP id S1728406AbgIYMX6 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Fri, 25 Sep 2020 08:23:58 -0400
-Date:   Fri, 25 Sep 2020 12:23:54 -0000
+Date:   Fri, 25 Sep 2020 12:23:55 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1601036635;
+        s=2020; t=1601036636;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=/d9ahn+s2EWI3jhvWV8bgJWb2Qb1i+cQdJeI4Yl5WtI=;
-        b=eKTvYcQvMybq5CLUVTlXYrOUIKh8T53NAU+gofje8nbU+U4xzyEze24gwQjZ43wVMCW8ni
-        SfTJvBK94uMO74HLH+BaiAsCAedq0xbvfUlV9kfr+ihvg571f6kCjGKyzw9XKcOgbnTKSZ
-        +eEAZ8jR3iZMSzy0oKZH82ZYhJNc4mPvubL+WNaxklJLb/gSqQLRoltiACpauj+BD0n4xG
-        IOZp9WlayCTZe9AsOouwx+FBFtn1qAG4S0ytUnv1xW8VglQ3IhsjmTEIq6AMQPGTmn1HLo
-        mNvAE5j+0rkPRVgue3rtlagJoAvC5/g4nDOzbUllIIP/4+212XahTWy8PArLBQ==
+        bh=gB96ZgLSYVe3GKnZFMHUgDCpjXM3cM0D/5fPtt/dZXQ=;
+        b=2h3dWSAU2H97mU49rl9e1JgjvRnhWcDfux9HZa/5GRLc1s0J/2CLpSO34elD2T5datxvyh
+        Fm8/UTPlg530nCglLMwCAOEo+aJjaYUX5m6SiODDsyHwdlNHCC6CugLvPi6ZVRauW0b3LF
+        M8ukK5mfLmOxQStdvkZARx2tLGRVknbMWoihagf5Rvq56yiutpKvfKNjDbZT/DYJJVCivS
+        k8uh4l35sU5X7Psm6us+7SwFOcyjcX14TUJdOvtk4IK2BChGNBqmqDc3x4Migsh+Vko51q
+        EGcTt+A9veYwRsKuAtpgg3WdzDZbE3TmEMCRyUT1JpySC+Xz3MkWeFDHiMR1NA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1601036635;
+        s=2020e; t=1601036636;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=/d9ahn+s2EWI3jhvWV8bgJWb2Qb1i+cQdJeI4Yl5WtI=;
-        b=NrSI3+SrW5duAnPHMmpjGWPD/9jvbDprxer/IiMBhETkH7P0vwzFjJitJVs5W4JAlSzj4B
-        78l2ij2Tiw3/EfCw==
-From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
+        bh=gB96ZgLSYVe3GKnZFMHUgDCpjXM3cM0D/5fPtt/dZXQ=;
+        b=rFkXy+4ZOyIP/5AS9436UaXOgK1SkA8w9SHwJAIzWuqIH3mGGioRcusmM4lYKas/46KHdA
+        hFBB97fMXBGvjtCw==
+From:   "tip-bot2 for Kim Phillips" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/x86/intel/uncore: Factor out
- uncore_pci_get_dev_die_info()
-Cc:     Kan Liang <kan.liang@linux.intel.com>,
+Subject: [tip: perf/core] perf/amd/uncore: Inform the user how many counters
+ each uncore PMU has
+Cc:     Kim Phillips <kim.phillips@amd.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <1600094060-82746-2-git-send-email-kan.liang@linux.intel.com>
-References: <1600094060-82746-2-git-send-email-kan.liang@linux.intel.com>
+In-Reply-To: <20200921144330.6331-5-kim.phillips@amd.com>
+References: <20200921144330.6331-5-kim.phillips@amd.com>
 MIME-Version: 1.0
-Message-ID: <160103663492.7002.9442035546439230469.tip-bot2@tip-bot2>
+Message-ID: <160103663538.7002.12744259154529037292.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,76 +59,65 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     fe6507338d635f283e9618b5eaa35f503a8c375b
-Gitweb:        https://git.kernel.org/tip/fe6507338d635f283e9618b5eaa35f503a8c375b
-Author:        Kan Liang <kan.liang@linux.intel.com>
-AuthorDate:    Mon, 14 Sep 2020 07:34:15 -07:00
+Commit-ID:     9ed9647dc0671486f9e998b7258f75167a9c4697
+Gitweb:        https://git.kernel.org/tip/9ed9647dc0671486f9e998b7258f75167a9c4697
+Author:        Kim Phillips <kim.phillips@amd.com>
+AuthorDate:    Mon, 21 Sep 2020 09:43:30 -05:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Thu, 24 Sep 2020 15:55:50 +02:00
 
-perf/x86/intel/uncore: Factor out uncore_pci_get_dev_die_info()
+perf/amd/uncore: Inform the user how many counters each uncore PMU has
 
-The socket and die information is required to register/unregister a PMU
-in the uncore PCI sub driver. The codes, which get the socket and die
-information from a BUS number, can be shared.
+Previously, the uncore driver would say "NB counters detected" on F17h
+machines, which don't have NorthBridge (NB) counters.  They have Data
+Fabric (DF) counters.  Just use the pmu.name to inform users which pmu
+to use and its associated counter count.
 
-Factor out uncore_pci_get_dev_die_info(), which will be used later.
+F17h dmesg BEFORE:
 
-There is no functional change.
+amd_uncore: AMD NB counters detected
+amd_uncore: AMD LLC counters detected
 
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+F17h dmesg AFTER:
+
+amd_uncore: 4 amd_df counters detected
+amd_uncore: 6 amd_l3 counters detected
+
+Signed-off-by: Kim Phillips <kim.phillips@amd.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/1600094060-82746-2-git-send-email-kan.liang@linux.intel.com
+Link: https://lkml.kernel.org/r/20200921144330.6331-5-kim.phillips@amd.com
 ---
- arch/x86/events/intel/uncore.c | 31 +++++++++++++++++++++++--------
- 1 file changed, 23 insertions(+), 8 deletions(-)
+ arch/x86/events/amd/uncore.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/events/intel/uncore.c b/arch/x86/events/intel/uncore.c
-index d5c6d3b..e14b03f 100644
---- a/arch/x86/events/intel/uncore.c
-+++ b/arch/x86/events/intel/uncore.c
-@@ -989,6 +989,26 @@ uncore_types_init(struct intel_uncore_type **types, bool setid)
- }
+diff --git a/arch/x86/events/amd/uncore.c b/arch/x86/events/amd/uncore.c
+index f026715..7f014d4 100644
+--- a/arch/x86/events/amd/uncore.c
++++ b/arch/x86/events/amd/uncore.c
+@@ -595,9 +595,10 @@ static int __init amd_uncore_init(void)
+ 		if (ret)
+ 			goto fail_nb;
  
- /*
-+ * Get the die information of a PCI device.
-+ * @pdev: The PCI device.
-+ * @phys_id: The physical socket id which the device maps to.
-+ * @die: The die id which the device maps to.
-+ */
-+static int uncore_pci_get_dev_die_info(struct pci_dev *pdev,
-+				       int *phys_id, int *die)
-+{
-+	*phys_id = uncore_pcibus_to_physid(pdev->bus);
-+	if (*phys_id < 0)
-+		return -ENODEV;
+-		pr_info("%s NB counters detected\n",
+-			boot_cpu_data.x86_vendor == X86_VENDOR_HYGON ?
+-				"HYGON" : "AMD");
++		pr_info("%d %s %s counters detected\n", num_counters_nb,
++			boot_cpu_data.x86_vendor == X86_VENDOR_HYGON ?  "HYGON" : "",
++			amd_nb_pmu.name);
 +
-+	*die = (topology_max_die_per_package() > 1) ? *phys_id :
-+				topology_phys_to_logical_pkg(*phys_id);
-+	if (*die < 0)
-+		return -EINVAL;
-+
-+	return 0;
-+}
-+/*
-  * add a pci uncore device
-  */
- static int uncore_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
-@@ -998,14 +1018,9 @@ static int uncore_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id
- 	struct intel_uncore_box *box;
- 	int phys_id, die, ret;
+ 		ret = 0;
+ 	}
  
--	phys_id = uncore_pcibus_to_physid(pdev->bus);
--	if (phys_id < 0)
--		return -ENODEV;
--
--	die = (topology_max_die_per_package() > 1) ? phys_id :
--					topology_phys_to_logical_pkg(phys_id);
--	if (die < 0)
--		return -EINVAL;
-+	ret = uncore_pci_get_dev_die_info(pdev, &phys_id, &die);
-+	if (ret)
-+		return ret;
+@@ -626,9 +627,9 @@ static int __init amd_uncore_init(void)
+ 		if (ret)
+ 			goto fail_llc;
  
- 	if (UNCORE_PCI_DEV_TYPE(id->driver_data) == UNCORE_EXTRA_PCI_DEV) {
- 		int idx = UNCORE_PCI_DEV_IDX(id->driver_data);
+-		pr_info("%s LLC counters detected\n",
+-			boot_cpu_data.x86_vendor == X86_VENDOR_HYGON ?
+-				"HYGON" : "AMD");
++		pr_info("%d %s %s counters detected\n", num_counters_llc,
++			boot_cpu_data.x86_vendor == X86_VENDOR_HYGON ?  "HYGON" : "",
++			amd_llc_pmu.name);
+ 		ret = 0;
+ 	}
+ 
