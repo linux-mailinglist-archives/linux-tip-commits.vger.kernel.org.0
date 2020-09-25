@@ -2,52 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 08FDE278714
+	by mail.lfdr.de (Postfix) with ESMTP id 3A496278715
 	for <lists+linux-tip-commits@lfdr.de>; Fri, 25 Sep 2020 14:23:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726368AbgIYMX5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 25 Sep 2020 08:23:57 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:55932 "EHLO
+        id S1728350AbgIYMX4 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 25 Sep 2020 08:23:56 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:55940 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727248AbgIYMX4 (ORCPT
+        with ESMTP id S1727749AbgIYMX4 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Fri, 25 Sep 2020 08:23:56 -0400
-Date:   Fri, 25 Sep 2020 12:23:52 -0000
+Date:   Fri, 25 Sep 2020 12:23:53 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1601036633;
+        s=2020; t=1601036634;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Hpy86rj6o8c+yABsbbZq30I4qb42npDGVVa5mdEkw2s=;
-        b=E3iKG+MHGZqFT3XjLIJph3tIuLRrpTpkncW+x4WcM3RK0SHz+uLyGk9tk54el8yQOSseDa
-        31kFpEdUkuv3t3lGnlZGEuMOPo4yQ0TiO3AaxKDK25pfqQMJKApDp0efbShQB2VWci8bHu
-        y8I93XtJ8fhYO5Tc5xnEP72AeZD91y63j9lzVhKXgSpygzkHDaW560W8FHWF8MMBnBJFRo
-        3YuulK/JSkX+uveCdyTFpkaKrVaMidd+oDCJNflWqTe/AGiGkjL8L+MBfhAg7Oa5tmvjG9
-        jF7PJcCzwNfOyd8IaonyIrqdXcvuxWMeRx2S8nJP+Cn8g3iMGM66dRvCrDfz5g==
+        bh=+2KEc5TEhnpXQ5rfUHq9WagqogkBmnIMlMvwcHeNRok=;
+        b=G46ZmFJv8mzvaY7M8Z7sSkU5pMUBzNEixIBGWXgmwcf66Fa7PatxBCuhZLj3nv9II6hPop
+        6zy4Ff6q/+lbdBsi7t2rv1A3laNVAbLyhp4ocqJB9zl+O88Sobcf+2odlW6Kj+nwa9ehZB
+        vnxLC5slcmVgySjaTWRQqIZ9bbsSRgAQpvcXbpEmGGCJ1+6BiXGhiQ28og79pKBxz8CAUH
+        Uf2PjxTEg6L6TMlJpdkZ7vkOrEp9TRa9/2QVgr1gjoqyjiV1QGk0hljuE591lywTU8Ya04
+        UiK1ajdZzPGdh9wBNng8ubSzAjV1nP0/1iyEuDybkD3cPtNifxzOcI8mJK4G1A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1601036633;
+        s=2020e; t=1601036634;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Hpy86rj6o8c+yABsbbZq30I4qb42npDGVVa5mdEkw2s=;
-        b=KG4yOdlYcQgujWBbSD5a3Ad+r7Vh6iD+mEM954NsY2z+gLDMEk/6lIce0MA4nXTEr+OJvs
-        jjw5JuXDzYPxOmBg==
+        bh=+2KEc5TEhnpXQ5rfUHq9WagqogkBmnIMlMvwcHeNRok=;
+        b=7k+EWHfwY2hFltqXX+gy4Onfmj+rkt+0hi6BKQtzUJEJphIN5Goslv1E6/IPmuJKZWtl29
+        JBOk7spB69kfSdBQ==
 From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/x86/intel/uncore: Support PCIe3 unit on Snow Ridge
+Subject: [tip: perf/core] perf/x86/intel/uncore: Factor out
+ uncore_pci_pmu_unregister()
 Cc:     Kan Liang <kan.liang@linux.intel.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <1600094060-82746-7-git-send-email-kan.liang@linux.intel.com>
-References: <1600094060-82746-7-git-send-email-kan.liang@linux.intel.com>
+In-Reply-To: <1600094060-82746-5-git-send-email-kan.liang@linux.intel.com>
+References: <1600094060-82746-5-git-send-email-kan.liang@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <160103663247.7002.12761039171215978465.tip-bot2@tip-bot2>
+Message-ID: <160103663341.7002.13969626013239692427.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,131 +59,96 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     a3b1e8451d3fd54fe0df661c2c4f983932b3c0bc
-Gitweb:        https://git.kernel.org/tip/a3b1e8451d3fd54fe0df661c2c4f983932b3c0bc
+Commit-ID:     cdcce92a3a03bccbb0b4a0342fc7e279fc507bc3
+Gitweb:        https://git.kernel.org/tip/cdcce92a3a03bccbb0b4a0342fc7e279fc507bc3
 Author:        Kan Liang <kan.liang@linux.intel.com>
-AuthorDate:    Mon, 14 Sep 2020 07:34:20 -07:00
+AuthorDate:    Mon, 14 Sep 2020 07:34:18 -07:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Thu, 24 Sep 2020 15:55:52 +02:00
+CommitterDate: Thu, 24 Sep 2020 15:55:51 +02:00
 
-perf/x86/intel/uncore: Support PCIe3 unit on Snow Ridge
+perf/x86/intel/uncore: Factor out uncore_pci_pmu_unregister()
 
-The Snow Ridge integrated PCIe3 uncore unit can be used to collect
-performance data, e.g. utilization, between PCIe devices, plugged into
-the PCIe port, and the components (in M2IOSF) responsible for
-translating and managing requests to/from the device. The performance
-data is very useful for analyzing the performance of PCIe devices.
+The PMU unregistration in the uncore PCI sub driver is similar as the
+normal PMU unregistration for a PCI device. The codes to unregister a
+PCI PMU can be shared.
 
-The device with the PCIe3 uncore PMON units is owned by the portdrv_pci
-driver. Create a PCI sub driver for the PCIe3 uncore PMON units.
+Factor out uncore_pci_pmu_unregister(), which will be used later.
 
-Here are some difference between PCIe3 uncore unit and other uncore
-pci units.
-- There may be several Root Ports on a system. But the uncore counters
-  only exist in the Root Port A. A user can configure the channel mask
-  to collect the data from other Root Ports.
-- The event format of the PCIe3 uncore unit is the same as IIO unit of
-  SKX.
-- The Control Register of PCIe3 uncore unit is 64 bits.
-- The offset of each counters is 8, which is the same as M2M unit of
-  SNR.
-- New MSR addresses for unit control, counter and counter config.
+Use uncore_pci_get_dev_die_info() to replace the codes which retrieve
+the socket and die informaion.
+
+The pci_set_drvdata() is not included in uncore_pci_pmu_unregister() as
+well, because the uncore PCI sub driver will not touch the private
+driver data pointer of the device.
 
 Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/1600094060-82746-7-git-send-email-kan.liang@linux.intel.com
+Link: https://lkml.kernel.org/r/1600094060-82746-5-git-send-email-kan.liang@linux.intel.com
 ---
- arch/x86/events/intel/uncore_snbep.c | 53 +++++++++++++++++++++++++++-
- 1 file changed, 53 insertions(+)
+ arch/x86/events/intel/uncore.c | 35 +++++++++++++++++++++++----------
+ 1 file changed, 25 insertions(+), 10 deletions(-)
 
-diff --git a/arch/x86/events/intel/uncore_snbep.c b/arch/x86/events/intel/uncore_snbep.c
-index 62e88ad..495056f 100644
---- a/arch/x86/events/intel/uncore_snbep.c
-+++ b/arch/x86/events/intel/uncore_snbep.c
-@@ -393,6 +393,11 @@
- #define SNR_M2M_PCI_PMON_BOX_CTL		0x438
- #define SNR_M2M_PCI_PMON_UMASK_EXT		0xff
- 
-+/* SNR PCIE3 */
-+#define SNR_PCIE3_PCI_PMON_CTL0			0x508
-+#define SNR_PCIE3_PCI_PMON_CTR0			0x4e8
-+#define SNR_PCIE3_PCI_PMON_BOX_CTL		0x4e0
-+
- /* SNR IMC */
- #define SNR_IMC_MMIO_PMON_FIXED_CTL		0x54
- #define SNR_IMC_MMIO_PMON_FIXED_CTR		0x38
-@@ -4551,12 +4556,46 @@ static struct intel_uncore_type snr_uncore_m2m = {
- 	.format_group	= &snr_m2m_uncore_format_group,
- };
- 
-+static void snr_uncore_pci_enable_event(struct intel_uncore_box *box, struct perf_event *event)
-+{
-+	struct pci_dev *pdev = box->pci_dev;
-+	struct hw_perf_event *hwc = &event->hw;
-+
-+	pci_write_config_dword(pdev, hwc->config_base, (u32)(hwc->config | SNBEP_PMON_CTL_EN));
-+	pci_write_config_dword(pdev, hwc->config_base + 4, (u32)(hwc->config >> 32));
-+}
-+
-+static struct intel_uncore_ops snr_pcie3_uncore_pci_ops = {
-+	.init_box	= snr_m2m_uncore_pci_init_box,
-+	.disable_box	= snbep_uncore_pci_disable_box,
-+	.enable_box	= snbep_uncore_pci_enable_box,
-+	.disable_event	= snbep_uncore_pci_disable_event,
-+	.enable_event	= snr_uncore_pci_enable_event,
-+	.read_counter	= snbep_uncore_pci_read_counter,
-+};
-+
-+static struct intel_uncore_type snr_uncore_pcie3 = {
-+	.name		= "pcie3",
-+	.num_counters	= 4,
-+	.num_boxes	= 1,
-+	.perf_ctr_bits	= 48,
-+	.perf_ctr	= SNR_PCIE3_PCI_PMON_CTR0,
-+	.event_ctl	= SNR_PCIE3_PCI_PMON_CTL0,
-+	.event_mask	= SKX_IIO_PMON_RAW_EVENT_MASK,
-+	.event_mask_ext	= SKX_IIO_PMON_RAW_EVENT_MASK_EXT,
-+	.box_ctl	= SNR_PCIE3_PCI_PMON_BOX_CTL,
-+	.ops		= &snr_pcie3_uncore_pci_ops,
-+	.format_group	= &skx_uncore_iio_format_group,
-+};
-+
- enum {
- 	SNR_PCI_UNCORE_M2M,
-+	SNR_PCI_UNCORE_PCIE3,
- };
- 
- static struct intel_uncore_type *snr_pci_uncores[] = {
- 	[SNR_PCI_UNCORE_M2M]		= &snr_uncore_m2m,
-+	[SNR_PCI_UNCORE_PCIE3]		= &snr_uncore_pcie3,
- 	NULL,
- };
- 
-@@ -4573,6 +4612,19 @@ static struct pci_driver snr_uncore_pci_driver = {
- 	.id_table	= snr_uncore_pci_ids,
- };
- 
-+static const struct pci_device_id snr_uncore_pci_sub_ids[] = {
-+	{ /* PCIe3 RP */
-+		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x334a),
-+		.driver_data = UNCORE_PCI_DEV_FULL_DATA(4, 0, SNR_PCI_UNCORE_PCIE3, 0),
-+	},
-+	{ /* end: all zeroes */ }
-+};
-+
-+static struct pci_driver snr_uncore_pci_sub_driver = {
-+	.name		= "snr_uncore_sub",
-+	.id_table	= snr_uncore_pci_sub_ids,
-+};
-+
- int snr_uncore_pci_init(void)
- {
- 	/* SNR UBOX DID */
-@@ -4584,6 +4636,7 @@ int snr_uncore_pci_init(void)
- 
- 	uncore_pci_uncores = snr_pci_uncores;
- 	uncore_pci_driver = &snr_uncore_pci_driver;
-+	uncore_pci_sub_driver = &snr_uncore_pci_sub_driver;
- 	return 0;
+diff --git a/arch/x86/events/intel/uncore.c b/arch/x86/events/intel/uncore.c
+index 6c6f8b3..747d237 100644
+--- a/arch/x86/events/intel/uncore.c
++++ b/arch/x86/events/intel/uncore.c
+@@ -1137,18 +1137,38 @@ static int uncore_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id
+ 	return ret;
  }
  
++/*
++ * Unregister the PMU of a PCI device
++ * @pmu: The corresponding PMU is unregistered.
++ * @phys_id: The physical socket id which the device maps to.
++ * @die: The die id which the device maps to.
++ */
++static void uncore_pci_pmu_unregister(struct intel_uncore_pmu *pmu,
++				      int phys_id, int die)
++{
++	struct intel_uncore_box *box = pmu->boxes[die];
++
++	if (WARN_ON_ONCE(phys_id != box->pci_phys_id))
++		return;
++
++	pmu->boxes[die] = NULL;
++	if (atomic_dec_return(&pmu->activeboxes) == 0)
++		uncore_pmu_unregister(pmu);
++	uncore_box_exit(box);
++	kfree(box);
++}
++
+ static void uncore_pci_remove(struct pci_dev *pdev)
+ {
+ 	struct intel_uncore_box *box;
+ 	struct intel_uncore_pmu *pmu;
+ 	int i, phys_id, die;
+ 
+-	phys_id = uncore_pcibus_to_physid(pdev->bus);
++	if (uncore_pci_get_dev_die_info(pdev, &phys_id, &die))
++		return;
+ 
+ 	box = pci_get_drvdata(pdev);
+ 	if (!box) {
+-		die = (topology_max_die_per_package() > 1) ? phys_id :
+-					topology_phys_to_logical_pkg(phys_id);
+ 		for (i = 0; i < UNCORE_EXTRA_PCI_DEV_MAX; i++) {
+ 			if (uncore_extra_pci_dev[die].dev[i] == pdev) {
+ 				uncore_extra_pci_dev[die].dev[i] = NULL;
+@@ -1160,15 +1180,10 @@ static void uncore_pci_remove(struct pci_dev *pdev)
+ 	}
+ 
+ 	pmu = box->pmu;
+-	if (WARN_ON_ONCE(phys_id != box->pci_phys_id))
+-		return;
+ 
+ 	pci_set_drvdata(pdev, NULL);
+-	pmu->boxes[box->dieid] = NULL;
+-	if (atomic_dec_return(&pmu->activeboxes) == 0)
+-		uncore_pmu_unregister(pmu);
+-	uncore_box_exit(box);
+-	kfree(box);
++
++	uncore_pci_pmu_unregister(pmu, phys_id, die);
+ }
+ 
+ static int __init uncore_pci_init(void)
