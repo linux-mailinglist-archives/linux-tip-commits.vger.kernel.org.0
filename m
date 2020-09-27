@@ -2,17 +2,20 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 390A227A02E
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 27 Sep 2020 11:27:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FC3127A02D
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 27 Sep 2020 11:27:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726610AbgI0J1h (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 27 Sep 2020 05:27:37 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:38152 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726497AbgI0J1Z (ORCPT
+        id S1726600AbgI0J1g (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 27 Sep 2020 05:27:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54702 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726522AbgI0J1Z (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Sun, 27 Sep 2020 05:27:25 -0400
-Date:   Sun, 27 Sep 2020 09:27:22 -0000
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E714C0613D3;
+        Sun, 27 Sep 2020 02:27:25 -0700 (PDT)
+Date:   Sun, 27 Sep 2020 09:27:23 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1601198843;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -20,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=wKR+mytJ+59GArKWsdLJziybCOsL4PfBl+o+11Jqdco=;
-        b=HEZwHeJQid8klg9UHlyaK3Gh1tZRTeZRLdC3b+WqCh3sC3XFg4qVdsq4nyEYOMso8VzRq4
-        J4DbSnO6OR8ZCU3nKP5oSElVvjsF4cznuHo2gXbWqRlTOrrckt0jAhaToerQGxAVIyl/UN
-        pEGU1RM2yZ+2NZj9QEo0KeO39sU6rKxpy+JwK1JAxYip5PL+eU+hDt374gTWTDxR0Rjz98
-        MnCAK6DHNT0xX7JjE1dEvLybbHIW9HHAaVo4wXuxe3cAgyvJp0cyCgpHZ9SzkuG5jz9Rxg
-        vjACG8Kgt7cTG5rGH3cVqFsyoTqd1HchJcLUyT/70BR2XF1HY7JA8Fitxdw86g==
+        bh=YyqNt1b3ngpjcJbFVpjO3KBvIeAuVZdhQRxiA0WhRgY=;
+        b=tEv0xEu+w7XbAskJvXAjqgC3qH0CLMGLU2hzRp72tZVkP5pqKBSeP/6DCgX56KVvUA6Ufb
+        WTh8Ta07nPUpDOMjHnYWmNXcx+aNBYaFfnvO1wmZ8S7zawT5O88WrAdVfUTAvlwioGv7DB
+        YverC7maHLF+pe2JdEZ7Kj5JS62jLXdux5u54oYnL8rbW00X2Cxuh2j4HWMg/6CvrTOpy/
+        cWUg3r23C/A6YW8ATDpsIV6We33WbTOCpFX+9lnLKwUAlFSduYCbtwRnrtK9aMxCr6yoZj
+        85csjLjCEMiCa5fEEyvUv0qlDRhBMzY9eWQafcROeMIp+XG5KaokSP3k5Ldb5Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1601198843;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -33,22 +36,24 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=wKR+mytJ+59GArKWsdLJziybCOsL4PfBl+o+11Jqdco=;
-        b=PUOAdPzH7iCZxBj6SZTKJZ7ko0HITTB6QJUcd7FoXw2BE4EBbeQCbpPFmn9Tq5jAJqrOn6
-        o8nqM698r5edoHBA==
-From:   "tip-bot2 for Kefeng Wang" <tip-bot2@linutronix.de>
+        bh=YyqNt1b3ngpjcJbFVpjO3KBvIeAuVZdhQRxiA0WhRgY=;
+        b=mnv7qCxvac02rSejkqmUZocaW1eRmx56v/CbWxkwQqZxZXow3NwyXMwAhEmIDdCqzanqYX
+        0V8KRw0JCfiGPwDQ==
+From:   "tip-bot2 for Lad Prabhakar" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] clocksource/drivers/sp804: Cleanup clk_get_sys()
-Cc:     Kefeng Wang <wangkefeng.wang@huawei.com>,
-        Zhen Lei <thunder.leizhen@huawei.com>,
+Subject: [tip: timers/core] dt-bindings: timer: renesas,cmt: Document r8a774e1
+ CMT support
+Cc:     Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Rob Herring <robh@kernel.org>,
         Daniel Lezcano <daniel.lezcano@linaro.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200918132237.3552-2-thunder.leizhen@huawei.com>
-References: <20200918132237.3552-2-thunder.leizhen@huawei.com>
+In-Reply-To: <1594811350-14066-6-git-send-email-prabhakar.mahadev-lad.rj@bp.renesas.com>
+References: <1594811350-14066-6-git-send-email-prabhakar.mahadev-lad.rj@bp.renesas.com>
 MIME-Version: 1.0
-Message-ID: <160119884246.7002.9537010852462748057.tip-bot2@tip-bot2>
+Message-ID: <160119884301.7002.9082861042611982447.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,82 +64,43 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     7d19d521a034a8c58586814e0320463d1299a3a9
-Gitweb:        https://git.kernel.org/tip/7d19d521a034a8c58586814e0320463d1299a3a9
-Author:        Kefeng Wang <wangkefeng.wang@huawei.com>
-AuthorDate:    Fri, 18 Sep 2020 21:22:29 +08:00
+Commit-ID:     51b705af287d08192140d6caf16d64e32a7abfe4
+Gitweb:        https://git.kernel.org/tip/51b705af287d08192140d6caf16d64e32a7abfe4
+Author:        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+AuthorDate:    Wed, 15 Jul 2020 12:08:55 +01:00
 Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
 CommitterDate: Thu, 24 Sep 2020 10:51:04 +02:00
 
-clocksource/drivers/sp804: Cleanup clk_get_sys()
+dt-bindings: timer: renesas,cmt: Document r8a774e1 CMT support
 
-Move the clk_get_sys() part into sp804_get_clock_rate(), cleanup the same
-code.
+Document SoC specific bindings for RZ/G2H (r8a774e1) SoC.
 
-Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
-Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
+Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Acked-by: Rob Herring <robh@kernel.org>
 Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20200918132237.3552-2-thunder.leizhen@huawei.com
+Link: https://lore.kernel.org/r/1594811350-14066-6-git-send-email-prabhakar.mahadev-lad.rj@bp.renesas.com
 ---
- drivers/clocksource/timer-sp804.c | 30 ++++++++++--------------------
- 1 file changed, 10 insertions(+), 20 deletions(-)
+ Documentation/devicetree/bindings/timer/renesas,cmt.yaml | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/clocksource/timer-sp804.c b/drivers/clocksource/timer-sp804.c
-index 5cd0abf..bec2d37 100644
---- a/drivers/clocksource/timer-sp804.c
-+++ b/drivers/clocksource/timer-sp804.c
-@@ -22,11 +22,18 @@
- 
- #include "timer-sp.h"
- 
--static long __init sp804_get_clock_rate(struct clk *clk)
-+static long __init sp804_get_clock_rate(struct clk *clk, const char *name)
- {
- 	long rate;
- 	int err;
- 
-+	if (!clk)
-+		clk = clk_get_sys("sp804", name);
-+	if (IS_ERR(clk)) {
-+		pr_err("sp804: %s clock not found: %ld\n", name, PTR_ERR(clk));
-+		return PTR_ERR(clk);
-+	}
-+
- 	err = clk_prepare(clk);
- 	if (err) {
- 		pr_err("sp804: clock failed to prepare: %d\n", err);
-@@ -72,16 +79,7 @@ int  __init __sp804_clocksource_and_sched_clock_init(void __iomem *base,
- {
- 	long rate;
- 
--	if (!clk) {
--		clk = clk_get_sys("sp804", name);
--		if (IS_ERR(clk)) {
--			pr_err("sp804: clock not found: %d\n",
--			       (int)PTR_ERR(clk));
--			return PTR_ERR(clk);
--		}
--	}
--
--	rate = sp804_get_clock_rate(clk);
-+	rate = sp804_get_clock_rate(clk, name);
- 	if (rate < 0)
- 		return -EINVAL;
- 
-@@ -173,15 +171,7 @@ int __init __sp804_clockevents_init(void __iomem *base, unsigned int irq, struct
- 	struct clock_event_device *evt = &sp804_clockevent;
- 	long rate;
- 
--	if (!clk)
--		clk = clk_get_sys("sp804", name);
--	if (IS_ERR(clk)) {
--		pr_err("sp804: %s clock not found: %d\n", name,
--			(int)PTR_ERR(clk));
--		return PTR_ERR(clk);
--	}
--
--	rate = sp804_get_clock_rate(clk);
-+	rate = sp804_get_clock_rate(clk, name);
- 	if (rate < 0)
- 		return -EINVAL;
- 
+diff --git a/Documentation/devicetree/bindings/timer/renesas,cmt.yaml b/Documentation/devicetree/bindings/timer/renesas,cmt.yaml
+index 762b650..428db3a 100644
+--- a/Documentation/devicetree/bindings/timer/renesas,cmt.yaml
++++ b/Documentation/devicetree/bindings/timer/renesas,cmt.yaml
+@@ -71,6 +71,7 @@ properties:
+               - renesas,r8a774a1-cmt0     # 32-bit CMT0 on RZ/G2M
+               - renesas,r8a774b1-cmt0     # 32-bit CMT0 on RZ/G2N
+               - renesas,r8a774c0-cmt0     # 32-bit CMT0 on RZ/G2E
++              - renesas,r8a774e1-cmt0     # 32-bit CMT0 on RZ/G2H
+               - renesas,r8a7795-cmt0      # 32-bit CMT0 on R-Car H3
+               - renesas,r8a7796-cmt0      # 32-bit CMT0 on R-Car M3-W
+               - renesas,r8a77965-cmt0     # 32-bit CMT0 on R-Car M3-N
+@@ -85,6 +86,7 @@ properties:
+               - renesas,r8a774a1-cmt1     # 48-bit CMT on RZ/G2M
+               - renesas,r8a774b1-cmt1     # 48-bit CMT on RZ/G2N
+               - renesas,r8a774c0-cmt1     # 48-bit CMT on RZ/G2E
++              - renesas,r8a774e1-cmt1     # 48-bit CMT on RZ/G2H
+               - renesas,r8a7795-cmt1      # 48-bit CMT on R-Car H3
+               - renesas,r8a7796-cmt1      # 48-bit CMT on R-Car M3-W
+               - renesas,r8a77965-cmt1     # 48-bit CMT on R-Car M3-N
