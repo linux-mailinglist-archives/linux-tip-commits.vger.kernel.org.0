@@ -2,54 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 45FB827A03A
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 27 Sep 2020 11:28:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 66CAA27A035
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 27 Sep 2020 11:27:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726303AbgI0J14 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 27 Sep 2020 05:27:56 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:38184 "EHLO
+        id S1726316AbgI0J1t (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 27 Sep 2020 05:27:49 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:38208 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726526AbgI0J11 (ORCPT
+        with ESMTP id S1726559AbgI0J12 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 27 Sep 2020 05:27:27 -0400
-Date:   Sun, 27 Sep 2020 09:27:24 -0000
+        Sun, 27 Sep 2020 05:27:28 -0400
+Date:   Sun, 27 Sep 2020 09:27:25 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1601198845;
+        s=2020; t=1601198846;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=NBOi2QwA5UCY/kAab7c/wiFdeGtE71L+PEKIG/bOL94=;
-        b=TEnkOGcGX+EQljZPZFPq13++8MAEPrZ6A2i2oo2Z2UctZT0Vv75ii9wqdtIpfOtl4yM4aQ
-        gSp6ENJHBAAy9QcUtW7xX1QUuAZT3FEtMKTWoieXYWWRQUrBQvhtznnqS7ER6H+3TbLIvI
-        QTKOPokzKNELCrm8lFa3Am7SX0dX/WijcCetuaa5BKDmJKM+ezQ9Rsv4JFzTqZnQwd2FKF
-        SVCRJWcnaGXMX38l3NSjqIYmSi0/dZwr3P1yMRCqfNGz5e05alkwgoV6iPZYzRPWOtygmn
-        tIuge7T74DDOykuq2ebS2YlI+8cEr6cTvDfQhncLRrbjEzN+2oznngP16itTPw==
+        bh=NkUziR5CH7MbJe1aUJMRoZ1zyifVJRjEuzhdbnoYtUI=;
+        b=O9g7bFjFSPr3OQMLMxvJb74hRoafn7ZWZa5ZaXCP/QlFLY3+1HH1N/yAyH3kW+KeW1+OLK
+        0ulGsDwgaH5OQGIXcmG9nEokLT/lfOUihsoZOtEaLgnQGIfESHSZX4l38Eivg2wsON86mQ
+        V/k5wJyp9iC9bHmL9FjJu0c+BV8HscdRmJWpXRDAnhQjXsSJuRbJDVeTo1sC4Af1JaXggz
+        1eAn1TxzzBnfyaz9l1W31D6nERTTiL8eMXKRF/eGp4h1kQnXoeykRl6RKDEV7pG7khg0EV
+        Hd+2Z2PFEdp8kbz8doergBTQZ0ltSELwKbYDMRYbgpj0P/R5ZTRUdr9kBdTxHw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1601198845;
+        s=2020e; t=1601198846;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=NBOi2QwA5UCY/kAab7c/wiFdeGtE71L+PEKIG/bOL94=;
-        b=hlIfU+FBYqu8JdUms+07zgLbG3gaDTqiYybdXV5BWt/n3X+i5/oqZM6rmbmYWMZcpQ4Vhj
-        P9NkukaWK3SY8pDg==
-From:   "tip-bot2 for Guo Ren" <tip-bot2@linutronix.de>
+        bh=NkUziR5CH7MbJe1aUJMRoZ1zyifVJRjEuzhdbnoYtUI=;
+        b=aVg0j5TkDiKt+LURY6VkuUlH2LkKyJB5t4BMrOeskaaNmNgnk520v3y4/X7mNIH89aaoOE
+        vaOj/XW84IrwjFCA==
+From:   "tip-bot2 for Tianjia Zhang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/urgent] clocksource/drivers/timer-gx6605s: Fixup counter reload
-Cc:     Guo Ren <guoren@linux.alibaba.com>,
-        Xu Kai <xukai@nationalchip.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <1597735877-71115-1-git-send-email-guoren@kernel.org>
-References: <1597735877-71115-1-git-send-email-guoren@kernel.org>
+Subject: [tip: timers/urgent] clocksource/drivers/h8300_timer8: Fix wrong
+ return value in h8300_8timer_init()
+Cc:     Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Tianjia Zhang <tianjia.zhang@linux.alibaba.com>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200802111541.5429-1-tianjia.zhang@linux.alibaba.com>
+References: <20200802111541.5429-1-tianjia.zhang@linux.alibaba.com>
 MIME-Version: 1.0
-Message-ID: <160119884457.7002.14184229326058068620.tip-bot2@tip-bot2>
+Message-ID: <160119884544.7002.7992233387160286791.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,40 +59,39 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/urgent branch of tip:
 
-Commit-ID:     bc6717d55d07110d8f3c6d31ec2af50c11b07091
-Gitweb:        https://git.kernel.org/tip/bc6717d55d07110d8f3c6d31ec2af50c11b07091
-Author:        Guo Ren <guoren@linux.alibaba.com>
-AuthorDate:    Tue, 18 Aug 2020 07:31:17 
+Commit-ID:     400d033f5a599120089b5f0c54d14d198499af5a
+Gitweb:        https://git.kernel.org/tip/400d033f5a599120089b5f0c54d14d198499af5a
+Author:        Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+AuthorDate:    Sun, 02 Aug 2020 19:15:41 +08:00
 Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
-CommitterDate: Mon, 24 Aug 2020 13:01:39 +02:00
+CommitterDate: Mon, 24 Aug 2020 13:01:38 +02:00
 
-clocksource/drivers/timer-gx6605s: Fixup counter reload
+clocksource/drivers/h8300_timer8: Fix wrong return value in h8300_8timer_init()
 
-When the timer counts to the upper limit, an overflow interrupt is
-generated, and the count is reset with the value in the TIME_INI
-register. But the software expects to start counting from 0 when
-the count overflows, so it forces TIME_INI to 0 to solve the
-potential interrupt storm problem.
+In the init function, if the call to of_iomap() fails, the return
+value is ENXIO instead of -ENXIO.
 
-Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
-Tested-by: Xu Kai <xukai@nationalchip.com>
+Change to the right negative errno.
+
+Fixes: 691f8f878290f ("clocksource/drivers/h8300_timer8: Convert init function to return error")
 Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
 Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/1597735877-71115-1-git-send-email-guoren@kernel.org
+Link: https://lore.kernel.org/r/20200802111541.5429-1-tianjia.zhang@linux.alibaba.com
 ---
- drivers/clocksource/timer-gx6605s.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/clocksource/h8300_timer8.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clocksource/timer-gx6605s.c b/drivers/clocksource/timer-gx6605s.c
-index 80d0939..8d386ad 100644
---- a/drivers/clocksource/timer-gx6605s.c
-+++ b/drivers/clocksource/timer-gx6605s.c
-@@ -28,6 +28,7 @@ static irqreturn_t gx6605s_timer_interrupt(int irq, void *dev)
- 	void __iomem *base = timer_of_base(to_timer_of(ce));
+diff --git a/drivers/clocksource/h8300_timer8.c b/drivers/clocksource/h8300_timer8.c
+index 1d740a8..47114c2 100644
+--- a/drivers/clocksource/h8300_timer8.c
++++ b/drivers/clocksource/h8300_timer8.c
+@@ -169,7 +169,7 @@ static int __init h8300_8timer_init(struct device_node *node)
+ 		return PTR_ERR(clk);
+ 	}
  
- 	writel_relaxed(GX6605S_STATUS_CLR, base + TIMER_STATUS);
-+	writel_relaxed(0, base + TIMER_INI);
- 
- 	ce->event_handler(ce);
- 
+-	ret = ENXIO;
++	ret = -ENXIO;
+ 	base = of_iomap(node, 0);
+ 	if (!base) {
+ 		pr_err("failed to map registers for clockevent\n");
