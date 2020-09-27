@@ -2,56 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1581927A032
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 27 Sep 2020 11:27:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6072F27A038
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 27 Sep 2020 11:28:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726406AbgI0J1g (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 27 Sep 2020 05:27:36 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:38174 "EHLO
+        id S1726665AbgI0J1u (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 27 Sep 2020 05:27:50 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:38194 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726267AbgI0J10 (ORCPT
+        with ESMTP id S1726540AbgI0J11 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 27 Sep 2020 05:27:26 -0400
-Date:   Sun, 27 Sep 2020 09:27:23 -0000
+        Sun, 27 Sep 2020 05:27:27 -0400
+Date:   Sun, 27 Sep 2020 09:27:24 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1601198844;
+        s=2020; t=1601198845;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=28e3sMibb5ZcFhKlLBNkX0aA/BSHMoc1u6cplRYUsSA=;
-        b=OXeH2mNazeN3VxdHzDK4jHLrbnw1o8LieKGOUSkVnqdSQp6U1s0mvoaxOtuAkfvh0UUjGq
-        Snt908kYQ7rKsSzskatwxJD2zO1DAWIFvC3nRr4C/W7RwLUfmRKO8BtoLQonCSvjBTwm45
-        a3pjAf+NxA20BFbpQLxSOjX5JHpu5z5Tcyn181jSZ98IRmccst6GoIWhTY0Jx+RDdpBgnZ
-        R7l1OLkWCxH5V/ywiwu7weV2fubtZEae+PtYQDxBK3uXKn+Jab+6Rnt/8U7h791jlKC2YC
-        Bw6UcdBq8FRWu3eUpus7+dp6QMH47mcRTP73qbJJ2ZShPatD8OteUlXHNDz4qQ==
+        bh=pTKWU/7l4o+IgAzjM3xg89gJGgMIIMbQ0bnBcVw6FWc=;
+        b=WikYgK7o5ghv2LN5R2Dl9ExQvpoDbcH6P5omYCS4ncfCPOsDqpDlw8xfQH8PM16gxSKJao
+        e7Q6zmmBKgXcHlKLPlz69pt+QxaCd+X/sCQi4mi9gmHMTygtBMLJN5Gk+rX6CSmwpf5d11
+        DrrZGcxjgFw2VONzzG6X4ryTlFquZu2jcqlwUO16WnjxmKfAbMu4bZEXGOCVPqB9D3cPOO
+        v0ZXsM2n1qI6qu46+BYDu+X2eu8x8qvSSr8gXectUyPqoyXb12/UsWsA0SsvYuol3eA9NA
+        +LnF9vwh9W5iALbxrdIIkjrncSA1yKtIx5HYgkIwgWQAnUeTxaT7watfxjlZaA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1601198844;
+        s=2020e; t=1601198845;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=28e3sMibb5ZcFhKlLBNkX0aA/BSHMoc1u6cplRYUsSA=;
-        b=MLw/U1BBnoszKlsrtxyfom9I+LoMf6XxfnRDzbf3+jMT2GR/Y1dtETsUCDla8mT6OtbAVB
-        h9fuSLtunMURR7DA==
-From:   "tip-bot2 for Lad Prabhakar" <tip-bot2@linutronix.de>
+        bh=pTKWU/7l4o+IgAzjM3xg89gJGgMIIMbQ0bnBcVw6FWc=;
+        b=NboKaqCSp44gXo85GyuIXqRlNQsO3km/lXA2TYYZqbZczRX1SayFgP4sV2oVZtxgZnkoPN
+        +HoWBFGGKeT1tYAg==
+From:   "tip-bot2 for Tony Lindgren" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] dt-bindings: timer: renesas,cmt: Document r8a7742
- CMT support
-Cc:     Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        "Marian-Cristian Rotariu" <marian-cristian.rotariu.rb@bp.renesas.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Rob Herring <robh@kernel.org>,
+Subject: [tip: timers/urgent] clocksource/drivers/timer-ti-dm: Do reset before enable
+Cc:     "H. Nikolaus Schaller" <hns@goldelico.com>,
+        Tony Lindgren <tony@atomide.com>,
         Daniel Lezcano <daniel.lezcano@linaro.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200902091927.32211-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
-References: <20200902091927.32211-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
+In-Reply-To: <20200817092428.6176-1-tony@atomide.com>
+References: <20200817092428.6176-1-tony@atomide.com>
 MIME-Version: 1.0
-Message-ID: <160119884348.7002.8487339526351500380.tip-bot2@tip-bot2>
+Message-ID: <160119884498.7002.2614579485726728914.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,47 +57,122 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/core branch of tip:
+The following commit has been merged into the timers/urgent branch of tip:
 
-Commit-ID:     e2cb498074a9cc826828a374cc1e66e532e4762d
-Gitweb:        https://git.kernel.org/tip/e2cb498074a9cc826828a374cc1e66e532e4762d
-Author:        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-AuthorDate:    Wed, 02 Sep 2020 10:19:27 +01:00
+Commit-ID:     164805157f3c6834670afbaff563353c773131f1
+Gitweb:        https://git.kernel.org/tip/164805157f3c6834670afbaff563353c773131f1
+Author:        Tony Lindgren <tony@atomide.com>
+AuthorDate:    Mon, 17 Aug 2020 12:24:28 +03:00
 Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
-CommitterDate: Thu, 24 Sep 2020 10:51:04 +02:00
+CommitterDate: Mon, 24 Aug 2020 13:01:39 +02:00
 
-dt-bindings: timer: renesas,cmt: Document r8a7742 CMT support
+clocksource/drivers/timer-ti-dm: Do reset before enable
 
-Document SoC specific compatible strings for r8a7742. No driver change
-is needed as the fallback strings will activate the right code.
+Commit 6cfcd5563b4f ("clocksource/drivers/timer-ti-dm: Fix suspend and
+resume for am3 and am4") exposed a new issue for type2 dual mode timers
+on at least omap5 where the clockevent will stop when the SoC starts
+entering idle states during the boot.
 
-Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Reviewed-by: Marian-Cristian Rotariu <marian-cristian.rotariu.rb@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Acked-by: Rob Herring <robh@kernel.org>
+Turns out we are wrongly first enabling the system timer and then
+resetting it, while we must also re-enable it after reset. The current
+sequence leaves the timer module in a partially initialized state. This
+issue went unnoticed earlier with ti-sysc driver reconfiguring the timer
+module until we fixed the issue of ti-sysc reconfiguring system timers.
+
+Let's fix the issue by calling dmtimer_systimer_enable() from reset for
+both type1 and type2 timers, and switch the order of reset and enable in
+dmtimer_systimer_setup(). Let's also move dmtimer_systimer_enable() and
+dmtimer_systimer_disable() to do this without adding forward declarations.
+
+Fixes: 6cfcd5563b4f ("clocksource/drivers/timer-ti-dm: Fix suspend and resume for am3 and am4")
+Reported-by: H. Nikolaus Schaller" <hns@goldelico.com>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
 Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20200902091927.32211-1-prabhakar.mahadev-lad.rj@bp.renesas.com
+Link: https://lore.kernel.org/r/20200817092428.6176-1-tony@atomide.com
 ---
- Documentation/devicetree/bindings/timer/renesas,cmt.yaml | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/clocksource/timer-ti-dm-systimer.c | 44 ++++++++++-----------
+ 1 file changed, 23 insertions(+), 21 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/timer/renesas,cmt.yaml b/Documentation/devicetree/bindings/timer/renesas,cmt.yaml
-index 7e4dc56..762b650 100644
---- a/Documentation/devicetree/bindings/timer/renesas,cmt.yaml
-+++ b/Documentation/devicetree/bindings/timer/renesas,cmt.yaml
-@@ -39,6 +39,7 @@ properties:
-       - items:
-           - enum:
-               - renesas,r8a73a4-cmt0      # 32-bit CMT0 on R-Mobile APE6
-+              - renesas,r8a7742-cmt0      # 32-bit CMT0 on RZ/G1H
-               - renesas,r8a7743-cmt0      # 32-bit CMT0 on RZ/G1M
-               - renesas,r8a7744-cmt0      # 32-bit CMT0 on RZ/G1N
-               - renesas,r8a7745-cmt0      # 32-bit CMT0 on RZ/G1E
-@@ -53,6 +54,7 @@ properties:
-       - items:
-           - enum:
-               - renesas,r8a73a4-cmt1      # 48-bit CMT1 on R-Mobile APE6
-+              - renesas,r8a7742-cmt1      # 48-bit CMT1 on RZ/G1H
-               - renesas,r8a7743-cmt1      # 48-bit CMT1 on RZ/G1M
-               - renesas,r8a7744-cmt1      # 48-bit CMT1 on RZ/G1N
-               - renesas,r8a7745-cmt1      # 48-bit CMT1 on RZ/G1E
+diff --git a/drivers/clocksource/timer-ti-dm-systimer.c b/drivers/clocksource/timer-ti-dm-systimer.c
+index f6fd1c1..33b3e8a 100644
+--- a/drivers/clocksource/timer-ti-dm-systimer.c
++++ b/drivers/clocksource/timer-ti-dm-systimer.c
+@@ -69,12 +69,33 @@ static bool dmtimer_systimer_revision1(struct dmtimer_systimer *t)
+ 	return !(tidr >> 16);
+ }
+ 
++static void dmtimer_systimer_enable(struct dmtimer_systimer *t)
++{
++	u32 val;
++
++	if (dmtimer_systimer_revision1(t))
++		val = DMTIMER_TYPE1_ENABLE;
++	else
++		val = DMTIMER_TYPE2_ENABLE;
++
++	writel_relaxed(val, t->base + t->sysc);
++}
++
++static void dmtimer_systimer_disable(struct dmtimer_systimer *t)
++{
++	if (!dmtimer_systimer_revision1(t))
++		return;
++
++	writel_relaxed(DMTIMER_TYPE1_DISABLE, t->base + t->sysc);
++}
++
+ static int __init dmtimer_systimer_type1_reset(struct dmtimer_systimer *t)
+ {
+ 	void __iomem *syss = t->base + OMAP_TIMER_V1_SYS_STAT_OFFSET;
+ 	int ret;
+ 	u32 l;
+ 
++	dmtimer_systimer_enable(t);
+ 	writel_relaxed(BIT(1) | BIT(2), t->base + t->ifctrl);
+ 	ret = readl_poll_timeout_atomic(syss, l, l & BIT(0), 100,
+ 					DMTIMER_RESET_WAIT);
+@@ -88,6 +109,7 @@ static int __init dmtimer_systimer_type2_reset(struct dmtimer_systimer *t)
+ 	void __iomem *sysc = t->base + t->sysc;
+ 	u32 l;
+ 
++	dmtimer_systimer_enable(t);
+ 	l = readl_relaxed(sysc);
+ 	l |= BIT(0);
+ 	writel_relaxed(l, sysc);
+@@ -336,26 +358,6 @@ static int __init dmtimer_systimer_init_clock(struct dmtimer_systimer *t,
+ 	return 0;
+ }
+ 
+-static void dmtimer_systimer_enable(struct dmtimer_systimer *t)
+-{
+-	u32 val;
+-
+-	if (dmtimer_systimer_revision1(t))
+-		val = DMTIMER_TYPE1_ENABLE;
+-	else
+-		val = DMTIMER_TYPE2_ENABLE;
+-
+-	writel_relaxed(val, t->base + t->sysc);
+-}
+-
+-static void dmtimer_systimer_disable(struct dmtimer_systimer *t)
+-{
+-	if (!dmtimer_systimer_revision1(t))
+-		return;
+-
+-	writel_relaxed(DMTIMER_TYPE1_DISABLE, t->base + t->sysc);
+-}
+-
+ static int __init dmtimer_systimer_setup(struct device_node *np,
+ 					 struct dmtimer_systimer *t)
+ {
+@@ -409,8 +411,8 @@ static int __init dmtimer_systimer_setup(struct device_node *np,
+ 	t->wakeup = regbase + _OMAP_TIMER_WAKEUP_EN_OFFSET;
+ 	t->ifctrl = regbase + _OMAP_TIMER_IF_CTRL_OFFSET;
+ 
+-	dmtimer_systimer_enable(t);
+ 	dmtimer_systimer_reset(t);
++	dmtimer_systimer_enable(t);
+ 	pr_debug("dmtimer rev %08x sysc %08x\n", readl_relaxed(t->base),
+ 		 readl_relaxed(t->base + t->sysc));
+ 
