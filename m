@@ -2,55 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C136E27BE8F
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 29 Sep 2020 09:57:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DD7027BE94
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 29 Sep 2020 09:57:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727729AbgI2H5J (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 29 Sep 2020 03:57:09 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:44438 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727670AbgI2H4y (ORCPT
+        id S1727756AbgI2H5T (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 29 Sep 2020 03:57:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60242 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727685AbgI2H4y (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Tue, 29 Sep 2020 03:56:54 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D7D0C061755;
+        Tue, 29 Sep 2020 00:56:54 -0700 (PDT)
 Date:   Tue, 29 Sep 2020 07:56:51 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1601366211;
+        s=2020; t=1601366212;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=BQTYCiPI5q40fNQm3+NrIave3SiYE5V8nJl7SiTseKo=;
-        b=ZyyoRvgOhcl7sRf1ajoEi4OxH0V4Ndc7tBLQfIkxlOAhuenLdwUJGIQc8R5zGUIkPpr8Sn
-        KtUGAW3RJ2ipUdm4Mdl6Y9O5A9Cdk47kzCSWT68pLgvzNd7G+y9a2SohR6XRC+Ado5bbqV
-        cZcW8zHB5V6sBTliq1c8ievi5MuC8sv7zL062bDSsZivNEIGf/PRZQ7ON4w5UgOZLWnca/
-        PdgPZvVngEg5fiIRHJzWFxLZ4HMuoXSkxQ1zhOzXQuKKhVvIRBJAtJqkZ3lDBX0PlHqiNp
-        AjOLvEyi0PScxPuaVqYEWhlk8K8ocFf90AtTOnFbbY5Li+6ESJT9FSVfjBgsVw==
+        bh=yzSk0mih3ZnhDaBPWS7n7R6JzM1rIKi0erUcYb+Vuuw=;
+        b=HgJ/+1PzggrTwnThrcdbbdZIP5S3OaEwORv27AAosbR0Emzy/uOJE9DPARSgRiWJkJi0u7
+        DosAaiwG2VhQue1N+i0qJzSb/+4BX327Llh6lgC9AFzDqd4RLDhFfvR00sCCs5R7wEtEuN
+        lmEVwKk9soEjFbtTiv17pHuFcx3OvmJLNd5D5wR10JPv1EmbwY+t1Q6Nrfd+0WMiR2rgvF
+        ctvJlnr8sa0drI0ggZe4MeCsXTIJvFN+R76zN1EIxWzV0BMqbjVQoSrElz2o0SHnAeEm1W
+        h3LOi6xmyYvTMnobr/yh3QJ6jatWXObzk9jZw1KhwWBLxv1kgqdXgPT0u7v3Dw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1601366211;
+        s=2020e; t=1601366212;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=BQTYCiPI5q40fNQm3+NrIave3SiYE5V8nJl7SiTseKo=;
-        b=2TCtJsDmxlylJpJMje6d2D9Oexb/pmfUunDSMqrlAiXwEgUkYVcqfG/4ozllfiWTLYqAM1
-        3KR/g3U8I/m/LBCg==
-From:   "tip-bot2 for Xunlei Pang" <tip-bot2@linutronix.de>
+        bh=yzSk0mih3ZnhDaBPWS7n7R6JzM1rIKi0erUcYb+Vuuw=;
+        b=sPYC9AtYVJOkI/0f8lmCoUPB1/klbMYk/daoidjQG/xHiNcB4lK411phOy3mYWrgKwrISj
+        AwrG+JQTj6ELZuCQ==
+From:   "tip-bot2 for YueHaibing" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/fair: Fix wrong cpu selecting from isolated domain
-Cc:     Wetp Zhang <wetp.zy@linux.alibaba.com>,
-        Xunlei Pang <xlpang@linux.alibaba.com>,
+Subject: [tip: sched/core] sched: Remove unused inline function
+ uclamp_bucket_base_value()
+Cc:     YueHaibing <yuehaibing@huawei.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Jiang Biao <benbjiang@tencent.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <1600930127-76857-1-git-send-email-xlpang@linux.alibaba.com>
-References: <1600930127-76857-1-git-send-email-xlpang@linux.alibaba.com>
+In-Reply-To: <20200922132410.48440-1-yuehaibing@huawei.com>
+References: <20200922132410.48440-1-yuehaibing@huawei.com>
 MIME-Version: 1.0
-Message-ID: <160136621101.7002.9603761843385133161.tip-bot2@tip-bot2>
+Message-ID: <160136621160.7002.405479490400563598.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,79 +63,38 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     df3cb4ea1fb63ff326488efd671ba3c39034255e
-Gitweb:        https://git.kernel.org/tip/df3cb4ea1fb63ff326488efd671ba3c39034255e
-Author:        Xunlei Pang <xlpang@linux.alibaba.com>
-AuthorDate:    Thu, 24 Sep 2020 14:48:47 +08:00
+Commit-ID:     51bd5121c4eb25b911f6bc1ab4de5fe865fe0dcb
+Gitweb:        https://git.kernel.org/tip/51bd5121c4eb25b911f6bc1ab4de5fe865fe0dcb
+Author:        YueHaibing <yuehaibing@huawei.com>
+AuthorDate:    Tue, 22 Sep 2020 21:24:10 +08:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Fri, 25 Sep 2020 14:23:25 +02:00
 
-sched/fair: Fix wrong cpu selecting from isolated domain
+sched: Remove unused inline function uclamp_bucket_base_value()
 
-We've met problems that occasionally tasks with full cpumask
-(e.g. by putting it into a cpuset or setting to full affinity)
-were migrated to our isolated cpus in production environment.
+There is no caller in tree, so can remove it.
 
-After some analysis, we found that it is due to the current
-select_idle_smt() not considering the sched_domain mask.
-
-Steps to reproduce on my 31-CPU hyperthreads machine:
-1. with boot parameter: "isolcpus=domain,2-31"
-   (thread lists: 0,16 and 1,17)
-2. cgcreate -g cpu:test; cgexec -g cpu:test "test_threads"
-3. some threads will be migrated to the isolated cpu16~17.
-
-Fix it by checking the valid domain mask in select_idle_smt().
-
-Fixes: 10e2f1acd010 ("sched/core: Rewrite and improve select_idle_siblings())
-Reported-by: Wetp Zhang <wetp.zy@linux.alibaba.com>
-Signed-off-by: Xunlei Pang <xlpang@linux.alibaba.com>
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Jiang Biao <benbjiang@tencent.com>
-Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
-Link: https://lkml.kernel.org/r/1600930127-76857-1-git-send-email-xlpang@linux.alibaba.com
+Reviewed-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Link: https://lkml.kernel.org/r/20200922132410.48440-1-yuehaibing@huawei.com
 ---
- kernel/sched/fair.c |  9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ kernel/sched/core.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index a15deb2..9613e5d 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -6080,7 +6080,7 @@ static int select_idle_core(struct task_struct *p, struct sched_domain *sd, int 
- /*
-  * Scan the local SMT mask for idle CPUs.
-  */
--static int select_idle_smt(struct task_struct *p, int target)
-+static int select_idle_smt(struct task_struct *p, struct sched_domain *sd, int target)
- {
- 	int cpu;
- 
-@@ -6088,7 +6088,8 @@ static int select_idle_smt(struct task_struct *p, int target)
- 		return -1;
- 
- 	for_each_cpu(cpu, cpu_smt_mask(target)) {
--		if (!cpumask_test_cpu(cpu, p->cpus_ptr))
-+		if (!cpumask_test_cpu(cpu, p->cpus_ptr) ||
-+		    !cpumask_test_cpu(cpu, sched_domain_span(sd)))
- 			continue;
- 		if (available_idle_cpu(cpu) || sched_idle_cpu(cpu))
- 			return cpu;
-@@ -6104,7 +6105,7 @@ static inline int select_idle_core(struct task_struct *p, struct sched_domain *s
- 	return -1;
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index c36dc1a..dd32d85 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -940,11 +940,6 @@ static inline unsigned int uclamp_bucket_id(unsigned int clamp_value)
+ 	return clamp_value / UCLAMP_BUCKET_DELTA;
  }
  
--static inline int select_idle_smt(struct task_struct *p, int target)
-+static inline int select_idle_smt(struct task_struct *p, struct sched_domain *sd, int target)
+-static inline unsigned int uclamp_bucket_base_value(unsigned int clamp_value)
+-{
+-	return UCLAMP_BUCKET_DELTA * uclamp_bucket_id(clamp_value);
+-}
+-
+ static inline unsigned int uclamp_none(enum uclamp_id clamp_id)
  {
- 	return -1;
- }
-@@ -6279,7 +6280,7 @@ symmetric:
- 	if ((unsigned)i < nr_cpumask_bits)
- 		return i;
- 
--	i = select_idle_smt(p, target);
-+	i = select_idle_smt(p, sd, target);
- 	if ((unsigned)i < nr_cpumask_bits)
- 		return i;
- 
+ 	if (clamp_id == UCLAMP_MIN)
