@@ -2,48 +2,45 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 50CE727E037
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 30 Sep 2020 07:23:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CFB027E025
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 30 Sep 2020 07:22:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725786AbgI3FWx (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 30 Sep 2020 01:22:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33440 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725850AbgI3FWW (ORCPT
+        id S1725871AbgI3FWX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 30 Sep 2020 01:22:23 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:53720 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725535AbgI3FWX (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 30 Sep 2020 01:22:22 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A0E8C061755;
-        Tue, 29 Sep 2020 22:22:22 -0700 (PDT)
+        Wed, 30 Sep 2020 01:22:23 -0400
 Date:   Wed, 30 Sep 2020 05:22:20 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1601443340;
+        s=2020; t=1601443341;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=mUzJTkhwU5r5M505flGpRdsJxhxNzqeTLp2KJJuEoJs=;
-        b=0637RWseILa5hOHVtqHzfyZobWpEdYud9gLl/4Ou+b3Cb43yzI0JeB5/8WUMoep+/V6Cyp
-        aM1IZYPRGQSyhPi5Yyq8FzAezTC4/yZkKZoPpXHsHkDqL0DOenCmP5BIBNHEup4uP15CWi
-        TulY4vNMtMrT9d8RuQh5/yvFzR2DpOsNcdZHNty6zGvhDID1oa8JlslXb8EX8Mu6+V0jH9
-        qAJec9INDMBIgok5z4EgGVgUikqaYW9xVfoY9kf/3dYgFvx+IeFz5y0RGHxdeQujcfh9K3
-        clAVop9o4YXdCgMY2jJQQOmYOZgTEz0f994lObKgkeY0Rcw39AvAAU072zf29Q==
+        bh=iyWJg4Mz9uWVaNU8ubkZlVK1CO0nPKxKlTCf42bmovU=;
+        b=wjHGnh+uHHHABpJy9MzhlzseVj0hKHMjp/0H6MU8aHozxtS8EYfmCAU6Fw33MWr1vFWX/d
+        2Afg9KpanKOK2EL40gqgstfq1wxcaxE54VMuSsY5JouKbKpz/PcB/wMIqcsCGeIsUEogjB
+        fPUvuMluiR94Pl1CbEHkeiULnF+arPWS4vLRbfqiTEIhQOD3yGhLrUAOl3FU5Jgh/Een++
+        yEuE9iJBeIZPWneABARuaEjiyVrlSfP3IVkUT4+YINV40NsOKnOFQt6gunGR6czRX4igab
+        KEeDI6kg2gmSew0mUvroyGdgHRz7FIaAAkHmJQhlhPc8HpWEBueo3dHJSR0VmQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1601443340;
+        s=2020e; t=1601443341;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=mUzJTkhwU5r5M505flGpRdsJxhxNzqeTLp2KJJuEoJs=;
-        b=w1nPwPqtscASP72E5vxKvtljnjuW+9+LWl/Uf7j+Pth2kj7Nbs2a2f2SEUqA4JFIFe3Efx
-        4mMsL/a9P1o9FEAg==
+        bh=iyWJg4Mz9uWVaNU8ubkZlVK1CO0nPKxKlTCf42bmovU=;
+        b=KCj3A9nzgu1VvxoIWM6p2vEZO8AW0aAjXumlEdPDZYXv/qe/CnwXvZ6bxaOF6NgAGw9sze
+        Bfiu5uCgjvTCFICA==
 From:   "tip-bot2 for Ard Biesheuvel" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: efi/core] efi: gsmi: fix false dependency on CONFIG_EFI_VARS
+Subject: [tip: efi/core] efi: efivars: un-export efivars_sysfs_init()
 Cc:     Ard Biesheuvel <ardb@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <160144334023.7002.2948247564097221973.tip-bot2@tip-bot2>
+Message-ID: <160144334071.7002.5697117125830877495.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -54,77 +51,57 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the efi/core branch of tip:
 
-Commit-ID:     9846d86031eeca2fb2867fe4ac9d92803a97e8e4
-Gitweb:        https://git.kernel.org/tip/9846d86031eeca2fb2867fe4ac9d92803a97e8e4
+Commit-ID:     5d3c8617ccee6387ba73a5dba77fb9dc21cb85f4
+Gitweb:        https://git.kernel.org/tip/5d3c8617ccee6387ba73a5dba77fb9dc21cb85f4
 Author:        Ard Biesheuvel <ardb@kernel.org>
-AuthorDate:    Wed, 23 Sep 2020 10:18:31 +02:00
+AuthorDate:    Wed, 23 Sep 2020 10:13:07 +02:00
 Committer:     Ard Biesheuvel <ardb@kernel.org>
 CommitterDate: Tue, 29 Sep 2020 19:40:57 +02:00
 
-efi: gsmi: fix false dependency on CONFIG_EFI_VARS
+efi: efivars: un-export efivars_sysfs_init()
 
-The gsmi code does not actually rely on CONFIG_EFI_VARS, since it only
-uses the efivars abstraction that is included unconditionally when
-CONFIG_EFI is defined. CONFIG_EFI_VARS controls the inclusion of the
-code that exposes the sysfs entries, and which has been deprecated for
-some time.
+efivars_sysfs_init() is only used locally in the source file that
+defines it, so make it static and unexport it.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- drivers/firmware/google/Kconfig | 2 +-
- drivers/firmware/google/gsmi.c  | 8 ++++----
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ drivers/firmware/efi/efivars.c | 3 +--
+ include/linux/efi.h            | 4 ----
+ 2 files changed, 1 insertion(+), 6 deletions(-)
 
-diff --git a/drivers/firmware/google/Kconfig b/drivers/firmware/google/Kconfig
-index a3a6ca6..97968ae 100644
---- a/drivers/firmware/google/Kconfig
-+++ b/drivers/firmware/google/Kconfig
-@@ -15,7 +15,7 @@ config GOOGLE_SMI
- 	help
- 	  Say Y here if you want to enable SMI callbacks for Google
- 	  platforms.  This provides an interface for writing to and
--	  clearing the event log.  If EFI_VARS is also enabled this
-+	  clearing the event log.  If CONFIG_EFI is also enabled this
- 	  driver provides an interface for reading and writing NVRAM
- 	  variables.
- 
-diff --git a/drivers/firmware/google/gsmi.c b/drivers/firmware/google/gsmi.c
-index 5b2011e..7d9367b 100644
---- a/drivers/firmware/google/gsmi.c
-+++ b/drivers/firmware/google/gsmi.c
-@@ -302,7 +302,7 @@ static int gsmi_exec(u8 func, u8 sub)
- 	return rc;
+diff --git a/drivers/firmware/efi/efivars.c b/drivers/firmware/efi/efivars.c
+index f39321d..a76f50e 100644
+--- a/drivers/firmware/efi/efivars.c
++++ b/drivers/firmware/efi/efivars.c
+@@ -638,7 +638,7 @@ static void efivars_sysfs_exit(void)
+ 	kset_unregister(efivars_kset);
  }
  
--#ifdef CONFIG_EFI_VARS
-+#ifdef CONFIG_EFI
+-int efivars_sysfs_init(void)
++static int efivars_sysfs_init(void)
+ {
+ 	struct kobject *parent_kobj = efivars_kobject();
+ 	int error = 0;
+@@ -666,7 +666,6 @@ int efivars_sysfs_init(void)
  
- static struct efivars efivars;
+ 	return 0;
+ }
+-EXPORT_SYMBOL_GPL(efivars_sysfs_init);
  
-@@ -483,7 +483,7 @@ static const struct efivar_operations efivar_ops = {
- 	.get_next_variable = gsmi_get_next_variable,
- };
+ module_init(efivars_sysfs_init);
+ module_exit(efivars_sysfs_exit);
+diff --git a/include/linux/efi.h b/include/linux/efi.h
+index ab8c803..4c8dae0 100644
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -1037,10 +1037,6 @@ bool efivar_validate(efi_guid_t vendor, efi_char16_t *var_name, u8 *data,
+ bool efivar_variable_is_removable(efi_guid_t vendor, const char *name,
+ 				  size_t len);
  
+-#if defined(CONFIG_EFI_VARS) || defined(CONFIG_EFI_VARS_MODULE)
+-int efivars_sysfs_init(void);
+-
 -#endif /* CONFIG_EFI_VARS */
-+#endif /* CONFIG_EFI */
+ extern bool efi_capsule_pending(int *reset_type);
  
- static ssize_t eventlog_write(struct file *filp, struct kobject *kobj,
- 			       struct bin_attribute *bin_attr,
-@@ -1007,7 +1007,7 @@ static __init int gsmi_init(void)
- 		goto out_remove_bin_file;
- 	}
- 
--#ifdef CONFIG_EFI_VARS
-+#ifdef CONFIG_EFI
- 	ret = efivars_register(&efivars, &efivar_ops, gsmi_kobj);
- 	if (ret) {
- 		printk(KERN_INFO "gsmi: Failed to register efivars\n");
-@@ -1047,7 +1047,7 @@ static void __exit gsmi_exit(void)
- 	unregister_die_notifier(&gsmi_die_notifier);
- 	atomic_notifier_chain_unregister(&panic_notifier_list,
- 					 &gsmi_panic_notifier);
--#ifdef CONFIG_EFI_VARS
-+#ifdef CONFIG_EFI
- 	efivars_unregister(&efivars);
- #endif
- 
+ extern int efi_capsule_supported(efi_guid_t guid, u32 flags,
