@@ -2,14 +2,14 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9AB8227E026
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 30 Sep 2020 07:22:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 39CAA27E022
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 30 Sep 2020 07:22:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726299AbgI3FW1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 30 Sep 2020 01:22:27 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:53708 "EHLO
+        id S1725554AbgI3FWW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 30 Sep 2020 01:22:22 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:53712 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725306AbgI3FWW (ORCPT
+        with ESMTP id S1725320AbgI3FWW (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Wed, 30 Sep 2020 01:22:22 -0400
 Date:   Wed, 30 Sep 2020 05:22:19 -0000
@@ -18,29 +18,29 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=obVoNHU3UZZp3B75TvjkMBf0KbKUXkpQ/j0DHA4V64M=;
-        b=KV0dQLkiKFMQrVyDJUZWfS4qgPC67JqjTOylU8AYnUvHZDNvzpmwl2Hizl/5at96stm/gb
-        w7g/Fe1qNlB9TEv3yks3H1i1tTeLK2SP3/M3ZcWupVAiBwk7KXhJ25poZUV622W2WkpyWj
-        ywDqYqM2XQvnZlhm5VLpAEDC2ggAFyp+IMwVbOUvcsvKyNTLyx0HdPa/F4S2XPqJBdjPEM
-        jHNdjUFnjfBH/h+P0h03l5yUByaKJv1fcilmRE95J7djHySkdz0pM9isK8nzHSk8BaYWOY
-        kVaib8kJdSQ9Ga2C6Jz8rkCWxW5QytAtkhLr5ZXX4EvhSE78nmtR8UVqceOZYA==
+        bh=q6g5yoTZEJ8bnXxeMUcZjrmOIMDFVjr1lbPEndi7pO8=;
+        b=xXPnY0TgFLnOdhxaabBFBXZ6qF7c/xkxAfWlwryccMJ+RdiSz+ff4+Lgs8c6N5pZlRJ5Lg
+        5Paxo2kaqqzFitzHL32hscyAQmmoZ4OOyu00fgVzES4ZSR9uahvLIe2dYg+Vlw1FDbl2oT
+        O7egsaMxx4B66DGt/3MFyOYpGT3zGEGdmRECfkT0ZvRjXDJq09K75c2A5ZJU3oXIMzEScs
+        QJ0f3dtDOIUy6NjlEBWOUTxr3No3wYEJawahQOFR4SE0ObeekJVDzOIzEugQb3ZDW0kZMz
+        zz4O8pDTrrs6XmX0MSvpShWj5U0GR1urRGGWYnLGdYRjFJ2+NGT5jPIkcZ9afA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1601443340;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=obVoNHU3UZZp3B75TvjkMBf0KbKUXkpQ/j0DHA4V64M=;
-        b=m6tUonM5Q5X3pXDHC3IPn2wBnsg2GbGGTmkqovsddIU7aiKgFba44W//q5Nq1QiiYy5xPT
-        Nyt5TE7pwLoXCTAQ==
+        bh=q6g5yoTZEJ8bnXxeMUcZjrmOIMDFVjr1lbPEndi7pO8=;
+        b=dil/K5eadhc5Wils+Tus8V0ixC7ASABu+xysHGuAFrqjbURdnXs2+43YIXNP2Mxnx5O0dd
+        V0BoOVQg5VLqgQCQ==
 From:   "tip-bot2 for Ard Biesheuvel" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: efi/core] efi: efivars: limit availability to X86 builds
+Subject: [tip: efi/core] efi: remove some false dependencies on CONFIG_EFI_VARS
 Cc:     Ard Biesheuvel <ardb@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <160144333917.7002.9382870354458127638.tip-bot2@tip-bot2>
+Message-ID: <160144333979.7002.16594982317668338232.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -51,82 +51,43 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the efi/core branch of tip:
 
-Commit-ID:     963fabf37f6a94214a823df0a785e653cb8ad6ea
-Gitweb:        https://git.kernel.org/tip/963fabf37f6a94214a823df0a785e653cb8ad6ea
+Commit-ID:     5ee70cd60652e85e4e8ced99f58f2fcbab405110
+Gitweb:        https://git.kernel.org/tip/5ee70cd60652e85e4e8ced99f58f2fcbab405110
 Author:        Ard Biesheuvel <ardb@kernel.org>
-AuthorDate:    Wed, 23 Sep 2020 10:20:10 +02:00
+AuthorDate:    Wed, 23 Sep 2020 10:27:36 +02:00
 Committer:     Ard Biesheuvel <ardb@kernel.org>
 CommitterDate: Tue, 29 Sep 2020 19:40:57 +02:00
 
-efi: efivars: limit availability to X86 builds
+efi: remove some false dependencies on CONFIG_EFI_VARS
 
-CONFIG_EFI_VARS controls the code that exposes EFI variables via
-sysfs entries, which was deprecated before support for non-Intel
-architectures was added to EFI. So let's limit its availability
-to Intel architectures for the time being, and hopefully remove
-it entirely in the not too distant future.
-
-While at it, let's remove the module alias so that the module is
-no longer loaded automatically.
+Remove some false dependencies on CONFIG_EFI_VARS, which only controls
+the creation of the sysfs entries, whereas the underlying functionality
+that these modules rely on is enabled unconditionally when CONFIG_EFI
+is set.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- Documentation/arm/uefi.rst     |  2 +-
- drivers/firmware/efi/Kconfig   | 13 ++++---------
- drivers/firmware/efi/efivars.c |  1 -
- 3 files changed, 5 insertions(+), 11 deletions(-)
+ drivers/firmware/efi/Kconfig | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/Documentation/arm/uefi.rst b/Documentation/arm/uefi.rst
-index f868330..f732f95 100644
---- a/Documentation/arm/uefi.rst
-+++ b/Documentation/arm/uefi.rst
-@@ -23,7 +23,7 @@ makes it possible for the kernel to support additional features:
- For actually enabling [U]EFI support, enable:
- 
- - CONFIG_EFI=y
--- CONFIG_EFI_VARS=y or m
-+- CONFIG_EFIVAR_FS=y or m
- 
- The implementation depends on receiving information about the UEFI environment
- in a Flattened Device Tree (FDT) - so is only available with CONFIG_OF.
 diff --git a/drivers/firmware/efi/Kconfig b/drivers/firmware/efi/Kconfig
-index 80f5c67..da1887f 100644
+index dd8d108..80f5c67 100644
 --- a/drivers/firmware/efi/Kconfig
 +++ b/drivers/firmware/efi/Kconfig
-@@ -4,20 +4,15 @@ menu "EFI (Extensible Firmware Interface) Support"
+@@ -137,7 +137,6 @@ config EFI_GENERIC_STUB_INITRD_CMDLINE_LOADER
  
- config EFI_VARS
- 	tristate "EFI Variable Support via sysfs"
--	depends on EFI
-+	depends on EFI && (X86 || IA64)
+ config EFI_BOOTLOADER_CONTROL
+ 	tristate "EFI Bootloader Control"
+-	depends on EFI_VARS
  	default n
  	help
- 	  If you say Y here, you are able to get EFI (Extensible Firmware
- 	  Interface) variable information via sysfs.  You may read,
- 	  write, create, and destroy EFI variables through this interface.
--
--	  Note that using this driver in concert with efibootmgr requires
--	  at least test release version 0.5.0-test3 or later, which is
--	  available from:
--	  <http://linux.dell.com/efibootmgr/testing/efibootmgr-0.5.0-test3.tar.gz>
--
--	  Subsequent efibootmgr releases may be found at:
--	  <http://github.com/vathpela/efibootmgr>
-+	  Note that this driver is only retained for compatibility with
-+	  legacy users: new users should use the efivarfs filesystem
-+	  instead.
+ 	  This module installs a reboot hook, such that if reboot() is
+@@ -281,7 +280,7 @@ config EFI_EARLYCON
  
- config EFI_ESRT
- 	bool
-diff --git a/drivers/firmware/efi/efivars.c b/drivers/firmware/efi/efivars.c
-index a76f50e..e6b16b3 100644
---- a/drivers/firmware/efi/efivars.c
-+++ b/drivers/firmware/efi/efivars.c
-@@ -22,7 +22,6 @@ MODULE_AUTHOR("Matt Domsch <Matt_Domsch@Dell.com>");
- MODULE_DESCRIPTION("sysfs interface to EFI Variables");
- MODULE_LICENSE("GPL");
- MODULE_VERSION(EFIVARS_VERSION);
--MODULE_ALIAS("platform:efivars");
- 
- static LIST_HEAD(efivar_sysfs_list);
- 
+ config EFI_CUSTOM_SSDT_OVERLAYS
+ 	bool "Load custom ACPI SSDT overlay from an EFI variable"
+-	depends on EFI_VARS && ACPI
++	depends on EFI && ACPI
+ 	default ACPI_TABLE_UPGRADE
+ 	help
+ 	  Allow loading of an ACPI SSDT overlay from an EFI variable specified
