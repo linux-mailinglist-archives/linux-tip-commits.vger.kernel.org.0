@@ -2,54 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D64A4281514
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  2 Oct 2020 16:29:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9647F281D33
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  2 Oct 2020 22:56:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726386AbgJBO3G (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 2 Oct 2020 10:29:06 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:42928 "EHLO
+        id S1725773AbgJBU4U (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 2 Oct 2020 16:56:20 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:45304 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726017AbgJBO3F (ORCPT
+        with ESMTP id S1725283AbgJBU4R (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 2 Oct 2020 10:29:05 -0400
-Date:   Fri, 02 Oct 2020 14:29:02 -0000
+        Fri, 2 Oct 2020 16:56:17 -0400
+Date:   Fri, 02 Oct 2020 20:56:13 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1601648943;
+        s=2020; t=1601672174;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Kh6O6AmCAZzwzK8oZVqQ7DskeEEeI53l84FXZ/tMq1k=;
-        b=hIgV92eC359sZzi1iHCodRCBaXe+GLajrczPxx5oJAXEtQSPh6OXHjQUeGGvC2heNTE5z6
-        t1eB7Jeg2pBrI5Gr+JRyF626SrJuP/3aKMUKFBfASv9xudB3YFpX+9YoQYWQHJFKrivQiD
-        clolf2u2LRgGhWTYg67dXKmTG1/+plecBhkW/WJn4WgRIogb6Jn5KwmvmBKxN9i6cVq0++
-        lNCfqWnCPVpcTRmHB/ROVqguKpXBQXRvshTgQRyx0rkwe7rkXYqEay1m/VF6NWTfNKWcqJ
-        OGu5kgAPyrGS+2wa5eabgXM1kJc6eZ83qcH1UsVWjFK2zkhlIqooPpg6dhVFxg==
+        bh=f0+D252fCaVDFkg/+i1pA3cU4JJHbiR0kItfJgaoxDU=;
+        b=0yq9mmmeddgM0NdKKCHu0oL7/oVGuGS0c248a0XOFFeEm7zJtNI3D0mwdjOQ/EinsjoTld
+        v04dckAyfJuj4s6aXppeeJusoBxoi5mCIim+fn2WqHVBxMHyAzYmUZTaCLMpWCRvhfD8Wr
+        sOrBspA4y6OmN4a4Y1FQOeiOMUiALLwHz68M4xeqa5pHuLI2Y6WM93fkHU/MuJRN7SSZOp
+        uLL12zgKMQfxNPJ7RcQY7VqYEb0bjeo1Msz86+SOBLjwAz2rKOdb/soWUDRZ+YQF3jnsvT
+        IcFq+ntEqF0I7nUt98ZN0eX6zFIELc7400BLpXrW13xjv0cPT7WUS1RNnckEuw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1601648943;
+        s=2020e; t=1601672174;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Kh6O6AmCAZzwzK8oZVqQ7DskeEEeI53l84FXZ/tMq1k=;
-        b=i9PwQhCDtAe/GNe8CBHp3FtC4upWdHmdI3IWCzp/UzSBv8WN8Mvt7AuXXzwPXxmil0SoHS
-        d3uXnS6DPI19RSDA==
-From:   "tip-bot2 for Julia Lawall" <tip-bot2@linutronix.de>
+        bh=f0+D252fCaVDFkg/+i1pA3cU4JJHbiR0kItfJgaoxDU=;
+        b=4mLXvKNfjdAfg5MqeAKGAILbVDuSI0rvUXPuBuqzfT75vKpgG8MHx8FIKyv3IBnzJli7bL
+        38/P+g0bQAfKL2Cg==
+From:   "tip-bot2 for Heinrich Schuchardt" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] clocksource/drivers/armada-370-xp: Use semicolons
- rather than commas to separate statements
-Cc:     Julia Lawall <Julia.Lawall@inria.fr>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <1601233948-11629-17-git-send-email-Julia.Lawall@inria.fr>
-References: <1601233948-11629-17-git-send-email-Julia.Lawall@inria.fr>
+Subject: [tip: x86/urgent] Documentation/x86: Fix incorrect references to
+ zero-page.txt
+Cc:     Heinrich Schuchardt <xypron.glpk@gmx.de>,
+        Borislav Petkov <bp@suse.de>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20201002190623.7489-1-xypron.glpk@gmx.de>
+References: <20201002190623.7489-1-xypron.glpk@gmx.de>
 MIME-Version: 1.0
-Message-ID: <160164894233.7002.10700476113258729444.tip-bot2@tip-bot2>
+Message-ID: <160167217377.7002.573244513258205543.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,55 +57,50 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/core branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     1b80043ed21894eca888157145b955df02887995
-Gitweb:        https://git.kernel.org/tip/1b80043ed21894eca888157145b955df02887995
-Author:        Julia Lawall <Julia.Lawall@inria.fr>
-AuthorDate:    Sun, 27 Sep 2020 21:12:26 +02:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 02 Oct 2020 16:27:28 +02:00
+Commit-ID:     0c7689830e907668288a1a1da84dca66dbdb4728
+Gitweb:        https://git.kernel.org/tip/0c7689830e907668288a1a1da84dca66dbdb4728
+Author:        Heinrich Schuchardt <xypron.glpk@gmx.de>
+AuthorDate:    Fri, 02 Oct 2020 21:06:23 +02:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Fri, 02 Oct 2020 22:49:29 +02:00
 
-clocksource/drivers/armada-370-xp: Use semicolons rather than commas to separate statements
+Documentation/x86: Fix incorrect references to zero-page.txt
 
-Replace commas with semicolons.  What is done is essentially described by
-the following Coccinelle semantic patch (http://coccinelle.lip6.fr/):
+The file zero-page.txt does not exit. Add links to zero-page.rst
+instead.
 
-// <smpl>
-@@ expression e1,e2; @@
-e1
--,
-+;
-e2
-... when any
-// </smpl>
+ [ bp: Massage a bit. ]
 
-Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/1601233948-11629-17-git-send-email-Julia.Lawall@inria.fr
+Signed-off-by: Heinrich Schuchardt <xypron.glpk@gmx.de>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lkml.kernel.org/r/20201002190623.7489-1-xypron.glpk@gmx.de
 ---
- drivers/clocksource/timer-armada-370-xp.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ Documentation/x86/boot.rst | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/clocksource/timer-armada-370-xp.c b/drivers/clocksource/timer-armada-370-xp.c
-index edf1a46..e3acc3c 100644
---- a/drivers/clocksource/timer-armada-370-xp.c
-+++ b/drivers/clocksource/timer-armada-370-xp.c
-@@ -181,12 +181,12 @@ static int armada_370_xp_timer_starting_cpu(unsigned int cpu)
- 		clr = TIMER0_25MHZ;
- 	local_timer_ctrl_clrset(clr, set);
+diff --git a/Documentation/x86/boot.rst b/Documentation/x86/boot.rst
+index 7fafc7a..abb9fc1 100644
+--- a/Documentation/x86/boot.rst
++++ b/Documentation/x86/boot.rst
+@@ -1342,8 +1342,8 @@ follow::
  
--	evt->name		= "armada_370_xp_per_cpu_tick",
-+	evt->name		= "armada_370_xp_per_cpu_tick";
- 	evt->features		= CLOCK_EVT_FEAT_ONESHOT |
- 				  CLOCK_EVT_FEAT_PERIODIC;
--	evt->shift		= 32,
--	evt->rating		= 300,
--	evt->set_next_event	= armada_370_xp_clkevt_next_event,
-+	evt->shift		= 32;
-+	evt->rating		= 300;
-+	evt->set_next_event	= armada_370_xp_clkevt_next_event;
- 	evt->set_state_shutdown	= armada_370_xp_clkevt_shutdown;
- 	evt->set_state_periodic	= armada_370_xp_clkevt_set_periodic;
- 	evt->set_state_oneshot	= armada_370_xp_clkevt_shutdown;
+ In addition to read/modify/write the setup header of the struct
+ boot_params as that of 16-bit boot protocol, the boot loader should
+-also fill the additional fields of the struct boot_params as that
+-described in zero-page.txt.
++also fill the additional fields of the struct boot_params as
++described in chapter :doc:`zero-page`.
+ 
+ After setting up the struct boot_params, the boot loader can load the
+ 32/64-bit kernel in the same way as that of 16-bit boot protocol.
+@@ -1379,7 +1379,7 @@ can be calculated as follows::
+ In addition to read/modify/write the setup header of the struct
+ boot_params as that of 16-bit boot protocol, the boot loader should
+ also fill the additional fields of the struct boot_params as described
+-in zero-page.txt.
++in chapter :doc:`zero-page`.
+ 
+ After setting up the struct boot_params, the boot loader can load
+ 64-bit kernel in the same way as that of 16-bit boot protocol, but
