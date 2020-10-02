@@ -2,127 +2,106 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A012328046A
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  1 Oct 2020 18:59:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 789EB281091
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  2 Oct 2020 12:26:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732287AbgJAQ7s (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 1 Oct 2020 12:59:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52900 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732107AbgJAQ7s (ORCPT
+        id S2387732AbgJBK0s (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 2 Oct 2020 06:26:48 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:41784 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726181AbgJBK0s (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 1 Oct 2020 12:59:48 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E4FEC0613D0;
-        Thu,  1 Oct 2020 09:59:48 -0700 (PDT)
-Date:   Thu, 01 Oct 2020 16:59:44 -0000
+        Fri, 2 Oct 2020 06:26:48 -0400
+Date:   Fri, 02 Oct 2020 10:26:45 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1601571585;
+        s=2020; t=1601634406;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=h2viArEXynjFH7Vx0/SFoYIVa4IC3HY4Q4jMKRoLIe4=;
-        b=p5qF1xaQ0fFExDh4PlL9+elXzzstA881bkj8pNbMUibeQ1nhXpZ5vzFsEqwfABsrCZLse8
-        /UIHvyDkhnIanatDJgQgAOI3ipNF5x3LVcWM181UZnOmjhHd8aIS8spLNzmNwF6KvrdyEx
-        8FzBzto1oPI79TOECbbTxIxHADU/A3ZHRcOPJa/kG9lt0xHpTLdqPaGC7cghf+JczFjdTn
-        H89R0Lqt5vYaBgOD9HUK6GLhYgzfJFMy52Rxu0YVoDGhvekMGg3ARCwuoHzgl9YYezwFUI
-        G4QToGHPKsbjs8q7yw3B4C+aGj8+xlDp+wKYnFzVBJc6Z0sF6nWdMKc/om7jww==
+        bh=xmBj6GSCyLU6QAhvQ1UXh5qEoCfQao6uYrskWW0TjVE=;
+        b=AEWI4qclL7huy9Y9nhgJiq781S0YX9FQLbUCRZWlEr2uZ5/8wmBGOyFRbYBs1qSV1KEwAg
+        KGaIB8onlJUbhRwUokjioD7VcVs5JN765j2epXvamnT5IHMa38+rG0veFTsQTMdxExkZza
+        lw4yoyxOkJlHst+JPL3BkuvcPRuLsUAy12WMh0fkcaPYHDvQuHYaL0Gai3ry3IL3zeIDHy
+        hgmHxsYYgBqGpiDJVmFZsTlTNntZWfnwHn8TmnysyVl5hIAp76BiQhTfZ+skpA0veDtfmZ
+        HDYjF3WPzlv2QWlzD0Ln/o8cjkEWn2YZLZk5W/xtktjIJs+DiAITUxXblpnz1A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1601571585;
+        s=2020e; t=1601634406;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=h2viArEXynjFH7Vx0/SFoYIVa4IC3HY4Q4jMKRoLIe4=;
-        b=mBT75TPfmGGfGcZhlyBvOyLXqAbktZjWg/XF76NYx1wYXIg0XrtsVNLAgj0arIF03ahywt
-        Ax7LRiRrXdWMAMAw==
-From:   "tip-bot2 for Gustavo A. R. Silva" <tip-bot2@linutronix.de>
+        bh=xmBj6GSCyLU6QAhvQ1UXh5qEoCfQao6uYrskWW0TjVE=;
+        b=Bo7AY6+o+VTbq8wrAIN5WNKevHkrDSo7XQEWdcuVgUUmq3ujREQmwRbQhNG5FjmOSv9nCx
+        ej+Ba+3MchUzGHAA==
+From:   "tip-bot2 for Mark Mossberg" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/platform] x86/uv/time: Use a flexible array in struct
- uv_rtc_timer_head
-Cc:     "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Borislav Petkov <bp@suse.de>,
-        Kees Cook <keescook@chromium.org>,
-        Steve Wahl <steve.wahl@hpe.com>, x86 <x86@kernel.org>,
+Subject: [tip: x86/core] x86/dumpstack: Fix misleading instruction pointer
+ error message
+Cc:     Mark Mossberg <mark.mossberg@gmail.com>,
+        Borislav Petkov <bp@suse.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20201001145608.GA10204@embeddedor>
-References: <20201001145608.GA10204@embeddedor>
+In-Reply-To: <20201002042915.403558-1-mark.mossberg@gmail.com>
+References: <20201002042915.403558-1-mark.mossberg@gmail.com>
 MIME-Version: 1.0
-Message-ID: <160157158480.7002.8851684386361032723.tip-bot2@tip-bot2>
+Message-ID: <160163440548.7002.940529565709906799.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/platform branch of tip:
+The following commit has been merged into the x86/core branch of tip:
 
-Commit-ID:     a0947081af2ac9549e6ba19877456730713bde23
-Gitweb:        https://git.kernel.org/tip/a0947081af2ac9549e6ba19877456730713=
-bde23
-Author:        Gustavo A. R. Silva <gustavoars@kernel.org>
-AuthorDate:    Thu, 01 Oct 2020 09:56:08 -05:00
+Commit-ID:     238c91115cd05c71447ea071624a4c9fe661f970
+Gitweb:        https://git.kernel.org/tip/238c91115cd05c71447ea071624a4c9fe661f970
+Author:        Mark Mossberg <mark.mossberg@gmail.com>
+AuthorDate:    Fri, 02 Oct 2020 04:29:16 
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Thu, 01 Oct 2020 18:47:39 +02:00
+CommitterDate: Fri, 02 Oct 2020 11:33:55 +02:00
 
-x86/uv/time: Use a flexible array in struct uv_rtc_timer_head
+x86/dumpstack: Fix misleading instruction pointer error message
 
-There is a regular need in the kernel to provide a way to declare having
-a dynamically sized set of trailing elements in a structure. Kernel code
-should always use =E2=80=9Cflexible array members=E2=80=9D[1] for these cases=
-. The
-older style of one-element or zero-length arrays should no longer be
-used[2].
+Printing "Bad RIP value" if copy_code() fails can be misleading for
+userspace pointers, since copy_code() can fail if the instruction
+pointer is valid but the code is paged out. This is because copy_code()
+calls copy_from_user_nmi() for userspace pointers, which disables page
+fault handling.
 
-struct uv_rtc_timer_head contains a one-element array cpu[1]. Switch it
-to a flexible array and use the struct_size() helper to calculate the
-allocation size. Also, save some heap space in the process[3].
+This is reproducible in OOM situations, where it's plausible that the
+code may be reclaimed in the time between entry into the kernel and when
+this message is printed. This leaves a misleading log in dmesg that
+suggests instruction pointer corruption has occurred, which may alarm
+users.
 
-[1] https://en.wikipedia.org/wiki/Flexible_array_member
-[2] https://www.kernel.org/doc/html/v5.9-rc1/process/deprecated.html#zero-len=
-gth-and-one-element-arrays
-[3] https://lore.kernel.org/lkml/20200518190114.GA7757@embeddedor/
+Change the message to state the error condition more precisely.
 
  [ bp: Massage a bit. ]
 
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Signed-off-by: Mark Mossberg <mark.mossberg@gmail.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Cc: Steve Wahl <steve.wahl@hpe.com>
-Link: https://lkml.kernel.org/r/20201001145608.GA10204@embeddedor
+Link: https://lkml.kernel.org/r/20201002042915.403558-1-mark.mossberg@gmail.com
 ---
- arch/x86/platform/uv/uv_time.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ arch/x86/kernel/dumpstack.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/platform/uv/uv_time.c b/arch/x86/platform/uv/uv_time.c
-index f82a133..6c348c2 100644
---- a/arch/x86/platform/uv/uv_time.c
-+++ b/arch/x86/platform/uv/uv_time.c
-@@ -52,7 +52,7 @@ struct uv_rtc_timer_head {
- 	struct {
- 		int	lcpu;		/* systemwide logical cpu number */
- 		u64	expires;	/* next timer expiration for this cpu */
--	} cpu[1];
-+	} cpu[];
- };
-=20
- /*
-@@ -148,9 +148,8 @@ static __init int uv_rtc_allocate_timers(void)
- 		struct uv_rtc_timer_head *head =3D blade_info[bid];
-=20
- 		if (!head) {
--			head =3D kmalloc_node(sizeof(struct uv_rtc_timer_head) +
--				(uv_blade_nr_possible_cpus(bid) *
--					2 * sizeof(u64)),
-+			head =3D kmalloc_node(struct_size(head, cpu,
-+				uv_blade_nr_possible_cpus(bid)),
- 				GFP_KERNEL, nid);
- 			if (!head) {
- 				uv_rtc_deallocate_timers();
+diff --git a/arch/x86/kernel/dumpstack.c b/arch/x86/kernel/dumpstack.c
+index 48ce445..ea8d51e 100644
+--- a/arch/x86/kernel/dumpstack.c
++++ b/arch/x86/kernel/dumpstack.c
+@@ -115,7 +115,8 @@ void show_opcodes(struct pt_regs *regs, const char *loglvl)
+ 	unsigned long prologue = regs->ip - PROLOGUE_SIZE;
+ 
+ 	if (copy_code(regs, opcodes, prologue, sizeof(opcodes))) {
+-		printk("%sCode: Bad RIP value.\n", loglvl);
++		printk("%sCode: Unable to access opcode bytes at RIP 0x%lx.\n",
++		       loglvl, prologue);
+ 	} else {
+ 		printk("%sCode: %" __stringify(PROLOGUE_SIZE) "ph <%02x> %"
+ 		       __stringify(EPILOGUE_SIZE) "ph\n", loglvl, opcodes,
