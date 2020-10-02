@@ -2,53 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 789EB281091
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  2 Oct 2020 12:26:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D64A4281514
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  2 Oct 2020 16:29:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387732AbgJBK0s (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 2 Oct 2020 06:26:48 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:41784 "EHLO
+        id S1726386AbgJBO3G (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 2 Oct 2020 10:29:06 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:42928 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726181AbgJBK0s (ORCPT
+        with ESMTP id S1726017AbgJBO3F (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 2 Oct 2020 06:26:48 -0400
-Date:   Fri, 02 Oct 2020 10:26:45 -0000
+        Fri, 2 Oct 2020 10:29:05 -0400
+Date:   Fri, 02 Oct 2020 14:29:02 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1601634406;
+        s=2020; t=1601648943;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=xmBj6GSCyLU6QAhvQ1UXh5qEoCfQao6uYrskWW0TjVE=;
-        b=AEWI4qclL7huy9Y9nhgJiq781S0YX9FQLbUCRZWlEr2uZ5/8wmBGOyFRbYBs1qSV1KEwAg
-        KGaIB8onlJUbhRwUokjioD7VcVs5JN765j2epXvamnT5IHMa38+rG0veFTsQTMdxExkZza
-        lw4yoyxOkJlHst+JPL3BkuvcPRuLsUAy12WMh0fkcaPYHDvQuHYaL0Gai3ry3IL3zeIDHy
-        hgmHxsYYgBqGpiDJVmFZsTlTNntZWfnwHn8TmnysyVl5hIAp76BiQhTfZ+skpA0veDtfmZ
-        HDYjF3WPzlv2QWlzD0Ln/o8cjkEWn2YZLZk5W/xtktjIJs+DiAITUxXblpnz1A==
+        bh=Kh6O6AmCAZzwzK8oZVqQ7DskeEEeI53l84FXZ/tMq1k=;
+        b=hIgV92eC359sZzi1iHCodRCBaXe+GLajrczPxx5oJAXEtQSPh6OXHjQUeGGvC2heNTE5z6
+        t1eB7Jeg2pBrI5Gr+JRyF626SrJuP/3aKMUKFBfASv9xudB3YFpX+9YoQYWQHJFKrivQiD
+        clolf2u2LRgGhWTYg67dXKmTG1/+plecBhkW/WJn4WgRIogb6Jn5KwmvmBKxN9i6cVq0++
+        lNCfqWnCPVpcTRmHB/ROVqguKpXBQXRvshTgQRyx0rkwe7rkXYqEay1m/VF6NWTfNKWcqJ
+        OGu5kgAPyrGS+2wa5eabgXM1kJc6eZ83qcH1UsVWjFK2zkhlIqooPpg6dhVFxg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1601634406;
+        s=2020e; t=1601648943;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=xmBj6GSCyLU6QAhvQ1UXh5qEoCfQao6uYrskWW0TjVE=;
-        b=Bo7AY6+o+VTbq8wrAIN5WNKevHkrDSo7XQEWdcuVgUUmq3ujREQmwRbQhNG5FjmOSv9nCx
-        ej+Ba+3MchUzGHAA==
-From:   "tip-bot2 for Mark Mossberg" <tip-bot2@linutronix.de>
+        bh=Kh6O6AmCAZzwzK8oZVqQ7DskeEEeI53l84FXZ/tMq1k=;
+        b=i9PwQhCDtAe/GNe8CBHp3FtC4upWdHmdI3IWCzp/UzSBv8WN8Mvt7AuXXzwPXxmil0SoHS
+        d3uXnS6DPI19RSDA==
+From:   "tip-bot2 for Julia Lawall" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/core] x86/dumpstack: Fix misleading instruction pointer
- error message
-Cc:     Mark Mossberg <mark.mossberg@gmail.com>,
-        Borislav Petkov <bp@suse.de>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20201002042915.403558-1-mark.mossberg@gmail.com>
-References: <20201002042915.403558-1-mark.mossberg@gmail.com>
+Subject: [tip: timers/core] clocksource/drivers/armada-370-xp: Use semicolons
+ rather than commas to separate statements
+Cc:     Julia Lawall <Julia.Lawall@inria.fr>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <1601233948-11629-17-git-send-email-Julia.Lawall@inria.fr>
+References: <1601233948-11629-17-git-send-email-Julia.Lawall@inria.fr>
 MIME-Version: 1.0
-Message-ID: <160163440548.7002.940529565709906799.tip-bot2@tip-bot2>
+Message-ID: <160164894233.7002.10700476113258729444.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -57,51 +58,55 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/core branch of tip:
+The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     238c91115cd05c71447ea071624a4c9fe661f970
-Gitweb:        https://git.kernel.org/tip/238c91115cd05c71447ea071624a4c9fe661f970
-Author:        Mark Mossberg <mark.mossberg@gmail.com>
-AuthorDate:    Fri, 02 Oct 2020 04:29:16 
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Fri, 02 Oct 2020 11:33:55 +02:00
+Commit-ID:     1b80043ed21894eca888157145b955df02887995
+Gitweb:        https://git.kernel.org/tip/1b80043ed21894eca888157145b955df02887995
+Author:        Julia Lawall <Julia.Lawall@inria.fr>
+AuthorDate:    Sun, 27 Sep 2020 21:12:26 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Fri, 02 Oct 2020 16:27:28 +02:00
 
-x86/dumpstack: Fix misleading instruction pointer error message
+clocksource/drivers/armada-370-xp: Use semicolons rather than commas to separate statements
 
-Printing "Bad RIP value" if copy_code() fails can be misleading for
-userspace pointers, since copy_code() can fail if the instruction
-pointer is valid but the code is paged out. This is because copy_code()
-calls copy_from_user_nmi() for userspace pointers, which disables page
-fault handling.
+Replace commas with semicolons.  What is done is essentially described by
+the following Coccinelle semantic patch (http://coccinelle.lip6.fr/):
 
-This is reproducible in OOM situations, where it's plausible that the
-code may be reclaimed in the time between entry into the kernel and when
-this message is printed. This leaves a misleading log in dmesg that
-suggests instruction pointer corruption has occurred, which may alarm
-users.
+// <smpl>
+@@ expression e1,e2; @@
+e1
+-,
++;
+e2
+... when any
+// </smpl>
 
-Change the message to state the error condition more precisely.
-
- [ bp: Massage a bit. ]
-
-Signed-off-by: Mark Mossberg <mark.mossberg@gmail.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20201002042915.403558-1-mark.mossberg@gmail.com
+Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://lore.kernel.org/r/1601233948-11629-17-git-send-email-Julia.Lawall@inria.fr
 ---
- arch/x86/kernel/dumpstack.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/clocksource/timer-armada-370-xp.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/kernel/dumpstack.c b/arch/x86/kernel/dumpstack.c
-index 48ce445..ea8d51e 100644
---- a/arch/x86/kernel/dumpstack.c
-+++ b/arch/x86/kernel/dumpstack.c
-@@ -115,7 +115,8 @@ void show_opcodes(struct pt_regs *regs, const char *loglvl)
- 	unsigned long prologue = regs->ip - PROLOGUE_SIZE;
+diff --git a/drivers/clocksource/timer-armada-370-xp.c b/drivers/clocksource/timer-armada-370-xp.c
+index edf1a46..e3acc3c 100644
+--- a/drivers/clocksource/timer-armada-370-xp.c
++++ b/drivers/clocksource/timer-armada-370-xp.c
+@@ -181,12 +181,12 @@ static int armada_370_xp_timer_starting_cpu(unsigned int cpu)
+ 		clr = TIMER0_25MHZ;
+ 	local_timer_ctrl_clrset(clr, set);
  
- 	if (copy_code(regs, opcodes, prologue, sizeof(opcodes))) {
--		printk("%sCode: Bad RIP value.\n", loglvl);
-+		printk("%sCode: Unable to access opcode bytes at RIP 0x%lx.\n",
-+		       loglvl, prologue);
- 	} else {
- 		printk("%sCode: %" __stringify(PROLOGUE_SIZE) "ph <%02x> %"
- 		       __stringify(EPILOGUE_SIZE) "ph\n", loglvl, opcodes,
+-	evt->name		= "armada_370_xp_per_cpu_tick",
++	evt->name		= "armada_370_xp_per_cpu_tick";
+ 	evt->features		= CLOCK_EVT_FEAT_ONESHOT |
+ 				  CLOCK_EVT_FEAT_PERIODIC;
+-	evt->shift		= 32,
+-	evt->rating		= 300,
+-	evt->set_next_event	= armada_370_xp_clkevt_next_event,
++	evt->shift		= 32;
++	evt->rating		= 300;
++	evt->set_next_event	= armada_370_xp_clkevt_next_event;
+ 	evt->set_state_shutdown	= armada_370_xp_clkevt_shutdown;
+ 	evt->set_state_periodic	= armada_370_xp_clkevt_set_periodic;
+ 	evt->set_state_oneshot	= armada_370_xp_clkevt_shutdown;
