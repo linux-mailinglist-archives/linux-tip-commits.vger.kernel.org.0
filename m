@@ -2,50 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 202742824B2
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  3 Oct 2020 16:22:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B319A2824B5
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  3 Oct 2020 16:22:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725794AbgJCOW1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S1725808AbgJCOW1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Sat, 3 Oct 2020 10:22:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49052 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49054 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725781AbgJCOW1 (ORCPT
+        with ESMTP id S1725782AbgJCOW1 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Sat, 3 Oct 2020 10:22:27 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5FECC0613D0;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF1B1C0613E7;
         Sat,  3 Oct 2020 07:22:26 -0700 (PDT)
-Date:   Sat, 03 Oct 2020 14:22:23 -0000
+Date:   Sat, 03 Oct 2020 14:22:24 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1601734945;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=wZhirwpt1PSn/tdjVw8sKf8GRictB6TaYL8Zm3MnWKU=;
-        b=EwJId8sIe0MPWG1+gyOKqVX6yfpVZGeY2+JUA04L2re7wQ0kGyr78ecADjxd+dwuZyAv3Q
-        50UB7bF31gOym5yOhVRufQMPbJfyjS5ToMSZgAifQ7A9M4z/NZoXwhN6H4d7/yJBxbIUT5
-        ZumcXwVUx2gY3cMdy6aWhy501oEql11OMExCPWNyLomk8JWBCDs322RbGSQduwoW79paiI
-        tSY7oLvMA8ndVP3EnNwL5NwU9YSCOffXyXo/XbeSKA71TPt2g+AXs8K24ckmzR7gMXQ84i
-        +UodXBG27cEhmGVWU4oKU4rUHpfX2Q0ZqMS3/nZD11d1Q++GCD+30hnyRx1Btw==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=ofwHsK4s+6NveviB/3TeVW09UL8WbJfeCt6idkYx9UE=;
+        b=O0tOaCrbeTqRIWUwtvghkLCTmYE9FHdz6EAF0r1UYpNF+8VxZx4auNmziUUf9gWF4tN7rh
+        kKk0/tCEUIdMZSotnzfTYV5xgg/MA1ECsPNJQeCoJTGVkwSK1dbJBpJ4yaWFfL1y1duCVG
+        EYvAct/JOmfpjQpr9ZvCEQXa2yQuv/eV2G3rnutRmernaSv8iBJTtURBqUy45IGOFjoX1D
+        XViP/oRvfI1rf4usVtHxmfLT2qFkooyNWVcUvU5Fh2hQhjLUGi0qyGEl5JP8rYte9GIMd7
+        ye84JA3/pweJOFzYJhL5RNpdkykvexJ9NGzwm4ics8M9vt2kP0T+uvBV6VmOXw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1601734945;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=wZhirwpt1PSn/tdjVw8sKf8GRictB6TaYL8Zm3MnWKU=;
-        b=b17Rx8uGY1voNG9RBPJ6ZuvBhD7togPOs5uVE7IkkOFbp1JEsaWvh8A4MJpBDxxSKfZxuc
-        ZHtD1zk4TSkIWTDw==
-From:   "tip-bot2 for Nathan Chancellor" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=ofwHsK4s+6NveviB/3TeVW09UL8WbJfeCt6idkYx9UE=;
+        b=IsNyP39MjvVssMNsVd+vTZHiwhcS4afYypJ3UaoR8qqw4f0GTkGteX4c2LVtE7HzfYAT0l
+        5e4QDNawIRP0EXDg==
+From:   "tip-bot2 for Steven Rostedt (VMware)" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/static_call] static_call: Fix return type of static_call_init
-Cc:     Nathan Chancellor <natechancellor@gmail.com>,
+Subject: [tip: core/static_call] tracepoint: Fix out of sync data passing by
+ static caller
+Cc:     Naresh Kamboju <naresh.kamboju@linaro.org>,
+        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Sami Tolvanen <samitolvanen@google.com>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <CA+G9fYvPXVRO0NV7yL=FxCmFEMYkCwdz7R=9W+_votpT824YJA@mail.gmail.com>
+References: <CA+G9fYvPXVRO0NV7yL=FxCmFEMYkCwdz7R=9W+_votpT824YJA@mail.gmail.com>
 MIME-Version: 1.0
-Message-ID: <160173494363.7002.10430993422075682487.tip-bot2@tip-bot2>
+Message-ID: <160173494423.7002.804175563693237793.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -56,85 +63,115 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/static_call branch of tip:
 
-Commit-ID:     69e0ad37c9f32d5aa1beb02aab4ec0cd055be013
-Gitweb:        https://git.kernel.org/tip/69e0ad37c9f32d5aa1beb02aab4ec0cd055be013
-Author:        Nathan Chancellor <natechancellor@gmail.com>
-AuthorDate:    Mon, 28 Sep 2020 16:09:39 -07:00
+Commit-ID:     547305a64632813286700cb6d768bfe773df7d19
+Gitweb:        https://git.kernel.org/tip/547305a64632813286700cb6d768bfe773df7d19
+Author:        Steven Rostedt (VMware) <rostedt@goodmis.org>
+AuthorDate:    Thu, 01 Oct 2020 21:27:57 -04:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Fri, 02 Oct 2020 21:18:25 +02:00
 
-static_call: Fix return type of static_call_init
+tracepoint: Fix out of sync data passing by static caller
 
-Functions that are passed to early_initcall should be of type
-initcall_t, which expects a return type of int. This is not currently an
-error but a patch in the Clang LTO series could change that in the
-future.
+Naresh reported a bug that appears to be a side effect of the static
+calls. It happens when going from more than one tracepoint callback to
+a single one, and removing the first callback on the list. The list of
+tracepoint callbacks holds data and a function to call with the
+parameters of that tracepoint and a handler to the associated data.
 
-Fixes: 9183c3f9ed71 ("static_call: Add inline static call infrastructure")
-Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
+ old_list:
+	0: func = foo; data = NULL;
+	1: func = bar; data = &bar_struct;
+
+ new_list:
+	0: func = bar; data = &bar_struct;
+
+	CPU 0				CPU 1
+	-----				-----
+   tp_funcs = old_list;
+   tp_static_caller = tp_interator
+
+   __DO_TRACE()
+
+    data = tp_funcs[0].data = NULL;
+
+				   tp_funcs = new_list;
+				   tracepoint_update_call()
+				      tp_static_caller = tp_funcs[0] = bar;
+    tp_static_caller(data)
+       bar(data)
+         x = data->item = NULL->item
+
+       BOOM!
+
+To solve this, add a tracepoint_synchronize_unregister() between
+changing tp_funcs and updating the static tracepoint, that does both a
+synchronize_rcu() and synchronize_srcu(). This will ensure that when
+the static call is updated to the single callback that it will be
+receiving the data that it registered with.
+
+Fixes: d25e37d89dd2f ("tracepoint: Optimize using static_call()")
+Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
+Signed-off-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
-Link: https://lore.kernel.org/lkml/20200903203053.3411268-17-samitolvanen@google.com/
+Link: https://lore.kernel.org/linux-next/CA+G9fYvPXVRO0NV7yL=FxCmFEMYkCwdz7R=9W+_votpT824YJA@mail.gmail.com
 ---
- include/linux/static_call.h | 6 +++---
- kernel/static_call.c        | 5 +++--
- 2 files changed, 6 insertions(+), 5 deletions(-)
+ kernel/tracepoint.c | 22 ++++++++++++++++------
+ 1 file changed, 16 insertions(+), 6 deletions(-)
 
-diff --git a/include/linux/static_call.h b/include/linux/static_call.h
-index bfa2ba3..695da4c 100644
---- a/include/linux/static_call.h
-+++ b/include/linux/static_call.h
-@@ -136,7 +136,7 @@ extern void arch_static_call_transform(void *site, void *tramp, void *func, bool
- 
- #ifdef CONFIG_HAVE_STATIC_CALL_INLINE
- 
--extern void __init static_call_init(void);
-+extern int __init static_call_init(void);
- 
- struct static_call_mod {
- 	struct static_call_mod *next;
-@@ -187,7 +187,7 @@ extern int static_call_text_reserved(void *start, void *end);
- 
- #elif defined(CONFIG_HAVE_STATIC_CALL)
- 
--static inline void static_call_init(void) { }
-+static inline int static_call_init(void) { return 0; }
- 
- struct static_call_key {
- 	void *func;
-@@ -234,7 +234,7 @@ static inline int static_call_text_reserved(void *start, void *end)
- 
- #else /* Generic implementation */
- 
--static inline void static_call_init(void) { }
-+static inline int static_call_init(void) { return 0; }
- 
- struct static_call_key {
- 	void *func;
-diff --git a/kernel/static_call.c b/kernel/static_call.c
-index f8362b3..84565c2 100644
---- a/kernel/static_call.c
-+++ b/kernel/static_call.c
-@@ -410,12 +410,12 @@ int static_call_text_reserved(void *start, void *end)
- 	return __static_call_mod_text_reserved(start, end);
+diff --git a/kernel/tracepoint.c b/kernel/tracepoint.c
+index e92f3fb..26efd22 100644
+--- a/kernel/tracepoint.c
++++ b/kernel/tracepoint.c
+@@ -221,7 +221,7 @@ static void *func_remove(struct tracepoint_func **funcs,
+ 	return old;
  }
  
--void __init static_call_init(void)
-+int __init static_call_init(void)
+-static void tracepoint_update_call(struct tracepoint *tp, struct tracepoint_func *tp_funcs)
++static void tracepoint_update_call(struct tracepoint *tp, struct tracepoint_func *tp_funcs, bool sync)
  {
- 	int ret;
+ 	void *func = tp->iterator;
  
- 	if (static_call_initialized)
--		return;
-+		return 0;
+@@ -229,8 +229,17 @@ static void tracepoint_update_call(struct tracepoint *tp, struct tracepoint_func
+ 	if (!tp->static_call_key)
+ 		return;
  
- 	cpus_read_lock();
- 	static_call_lock();
-@@ -434,6 +434,7 @@ void __init static_call_init(void)
- #ifdef CONFIG_MODULES
- 	register_module_notifier(&static_call_module_nb);
- #endif
-+	return 0;
+-	if (!tp_funcs[1].func)
++	if (!tp_funcs[1].func) {
+ 		func = tp_funcs[0].func;
++		/*
++		 * If going from the iterator back to a single caller,
++		 * we need to synchronize with __DO_TRACE to make sure
++		 * that the data passed to the callback is the one that
++		 * belongs to that callback.
++		 */
++		if (sync)
++			tracepoint_synchronize_unregister();
++	}
+ 
+ 	__static_call_update(tp->static_call_key, tp->static_call_tramp, func);
  }
- early_initcall(static_call_init);
+@@ -265,7 +274,7 @@ static int tracepoint_add_func(struct tracepoint *tp,
+ 	 * include/linux/tracepoint.h using rcu_dereference_sched().
+ 	 */
+ 	rcu_assign_pointer(tp->funcs, tp_funcs);
+-	tracepoint_update_call(tp, tp_funcs);
++	tracepoint_update_call(tp, tp_funcs, false);
+ 	static_key_enable(&tp->key);
  
+ 	release_probes(old);
+@@ -297,11 +306,12 @@ static int tracepoint_remove_func(struct tracepoint *tp,
+ 			tp->unregfunc();
+ 
+ 		static_key_disable(&tp->key);
++		rcu_assign_pointer(tp->funcs, tp_funcs);
+ 	} else {
+-		tracepoint_update_call(tp, tp_funcs);
++		rcu_assign_pointer(tp->funcs, tp_funcs);
++		tracepoint_update_call(tp, tp_funcs,
++				       tp_funcs[0].func != old[0].func);
+ 	}
+-
+-	rcu_assign_pointer(tp->funcs, tp_funcs);
+ 	release_probes(old);
+ 	return 0;
+ }
