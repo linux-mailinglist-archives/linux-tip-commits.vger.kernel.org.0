@@ -2,110 +2,124 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D41B283126
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  5 Oct 2020 09:54:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FD09283B95
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  5 Oct 2020 17:48:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725936AbgJEHyB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 5 Oct 2020 03:54:01 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:56810 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725887AbgJEHyA (ORCPT
+        id S1726645AbgJEPsd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 5 Oct 2020 11:48:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51854 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726057AbgJEPsd (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 5 Oct 2020 03:54:00 -0400
-Date:   Mon, 05 Oct 2020 07:53:58 -0000
+        Mon, 5 Oct 2020 11:48:33 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA609C0613CE;
+        Mon,  5 Oct 2020 08:48:32 -0700 (PDT)
+Date:   Mon, 05 Oct 2020 15:48:28 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1601884438;
+        s=2020; t=1601912909;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=QYbK7mfoPdUfMhJx3wXEL/7eldwIVbW55QkmynmJOCg=;
-        b=U9tKX5k46+7Q3OXbntUakEq+8F8GVdhGhDaPrJZKM4rpr8i95uYYfr1bQkQDZJd2x6/nQh
-        KrIRjA5yYs2kKu005gidxxzHBgskVzTgSACM1A8my3GKlMB65JVsNBR0IEDw5XDV9H3KE8
-        QiAOxBBcpT2YlX+UbaR+wh6U1yZ7CbzgQJDckniQacHlw4CCDhBXFQmYx7JhZ1mOPzai0f
-        AEXPt/1xUQn2E337SAuv85oGyI/I7lREaYMJAjeppGb6r58l6lI1fXSeF7ltpmudEquUaT
-        AiO4B58eiGzx+QdlKvTImwTQdk48UyPocw8dTLFOryKSUcF2ZYpz+nQiKGxm1w==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=X1QsCQ/nqHzEMGRxGzS/ypcU7g5Cvcg1CMBrnKVfsLM=;
+        b=sOLa7XIW2nPphWs4j7UUWXLG+JslJABm1XIEGR00agB7EI7wRQNI5ln03URGQi/rkN6udE
+        K6oycyBPkulXLyo1xEBdK8nMb4JJ4OhnBZkMKlEzpbqD725sv39emuE5vonOoi8dqjd8Ek
+        d7KwDeAspllDUMb3ZgSre21SPRJmdeKw6HPF8p97h8eFX2nveFPmCchSRq6VBtRDwocbeU
+        4c+CB8hp7nW6CujpOC3BIHAF8Azt3SLREXntqg1y8Sl+tCZQ4iEI3CSPtHZebp9h7nPfPx
+        D2yPJJujzpMNwpq6VKNMghaLXnjLakKDI7bgOz/FvwMTqX8IaxgV4b2kO3o6JA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1601884438;
+        s=2020e; t=1601912909;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=QYbK7mfoPdUfMhJx3wXEL/7eldwIVbW55QkmynmJOCg=;
-        b=uKMYVXDXdxvtgJrEgjw0KxHO2oXj58P731l1xl0Og153yrdtXeg90MCX8K7Sw6FlV61uy6
-        4iDtOaL2ZNaJ5KBA==
-From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=X1QsCQ/nqHzEMGRxGzS/ypcU7g5Cvcg1CMBrnKVfsLM=;
+        b=wmuLBO9LkwaN49i49FyK7JZyFq42hKty6E/QhTlLIBVjVqSckdQWgZ1aW4iu/ydgcmmklf
+        nJSwR3VGUjjIUyDQ==
+From:   "tip-bot2 for Jann Horn" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/x86/intel: Check perf metrics feature for each CPU
-Cc:     Kan Liang <kan.liang@linux.intel.com>,
+Subject: [tip: objtool/core] objtool: Permit __kasan_check_{read,write} under UACCESS
+Cc:     Jann Horn <jannh@google.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20201001211711.25708-1-kan.liang@linux.intel.com>
-References: <20201001211711.25708-1-kan.liang@linux.intel.com>
+        Josh Poimboeuf <jpoimboe@redhat.com>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <160188443801.7002.1461664942801340207.tip-bot2@tip-bot2>
+Message-ID: <160191290839.7002.472467128792746457.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/core branch of tip:
+The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     80a5ce116fc084e8a25d5a936617699e2931b611
-Gitweb:        https://git.kernel.org/tip/80a5ce116fc084e8a25d5a936617699e2931b611
-Author:        Kan Liang <kan.liang@linux.intel.com>
-AuthorDate:    Thu, 01 Oct 2020 14:17:11 -07:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Sat, 03 Oct 2020 16:30:56 +02:00
+Commit-ID:     b0b8e56b82c06b3bb6e5fb66d0e9c9c3fd3ce555
+Gitweb:        https://git.kernel.org/tip/b0b8e56b82c06b3bb6e5fb66d0e9c9c3fd3=
+ce555
+Author:        Jann Horn <jannh@google.com>
+AuthorDate:    Tue, 29 Sep 2020 00:49:16 +02:00
+Committer:     Josh Poimboeuf <jpoimboe@redhat.com>
+CommitterDate: Fri, 02 Oct 2020 09:28:08 -05:00
 
-perf/x86/intel: Check perf metrics feature for each CPU
+objtool: Permit __kasan_check_{read,write} under UACCESS
 
-It might be possible that different CPUs have different CPU metrics on a
-platform. In this case, writing the GLOBAL_CTRL_EN_PERF_METRICS bit to
-the GLOBAL_CTRL register of a CPU, which doesn't support the TopDown
-perf metrics feature, causes MSR access error.
+Building linux-next with JUMP_LABEL=3Dn and KASAN=3Dy, I got this objtool
+warning:
 
-Current TopDown perf metrics feature is enumerated using the boot CPU's
-PERF_CAPABILITIES MSR. The MSR only indicates the boot CPU supports this
-feature.
+arch/x86/lib/copy_mc.o: warning: objtool: copy_mc_to_user()+0x22: call to
+__kasan_check_read() with UACCESS enabled
 
-Check the PERF_CAPABILITIES MSR for each CPU. If any CPU doesn't support
-the perf metrics feature, disable the feature globally.
+What happens here is that copy_mc_to_user() branches on a static key in a
+UACCESS region:
 
-Fixes: 59a854e2f3b9 ("perf/x86/intel: Support TopDown metrics on Ice Lake")
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20201001211711.25708-1-kan.liang@linux.intel.com
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 __uaccess_begin();
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (static_branch_unlikely(&copy_mc_fragile_key))
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 ret =3D copy_mc_fragi=
+le(to, from, len);
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 ret =3D copy_mc_generic(to, from, len);
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 __uaccess_end();
+
+and the !CONFIG_JUMP_LABEL version of static_branch_unlikely() uses
+static_key_enabled(), which uses static_key_count(), which uses
+atomic_read(), which calls instrument_atomic_read(), which uses
+kasan_check_read(), which is __kasan_check_read().
+
+Let's permit these KASAN helpers in UACCESS regions - static keys should
+probably work under UACCESS, I think.
+
+PeterZ adds:
+
+  It's not a matter of permitting, it's a matter of being safe and
+  correct. In this case it is, because it's a thin wrapper around
+  check_memory_region() which was already marked safe.
+
+  check_memory_region() is correct because the only thing it ends up
+  calling is kasa_report() and that is also marked safe because that is
+  annotated with user_access_save/restore() before it does anything else.
+
+  On top of that, all of KASAN is noinstr, so nothing in here will end up
+  in tracing and/or call schedule() before the user_access_save().
+
+Signed-off-by: Jann Horn <jannh@google.com>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
 ---
- arch/x86/events/intel/core.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ tools/objtool/check.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-index bdf28d2..7186098 100644
---- a/arch/x86/events/intel/core.c
-+++ b/arch/x86/events/intel/core.c
-@@ -4083,6 +4083,17 @@ static void intel_pmu_cpu_starting(int cpu)
- 	if (x86_pmu.counter_freezing)
- 		enable_counter_freeze();
- 
-+	/* Disable perf metrics if any added CPU doesn't support it. */
-+	if (x86_pmu.intel_cap.perf_metrics) {
-+		union perf_capabilities perf_cap;
-+
-+		rdmsrl(MSR_IA32_PERF_CAPABILITIES, perf_cap.capabilities);
-+		if (!perf_cap.perf_metrics) {
-+			x86_pmu.intel_cap.perf_metrics = 0;
-+			x86_pmu.intel_ctrl &= ~(1ULL << GLOBAL_CTRL_EN_PERF_METRICS);
-+		}
-+	}
-+
- 	if (!cpuc->shared_regs)
- 		return;
- 
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index 2df9f76..3d14134 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -583,6 +583,8 @@ static const char *uaccess_safe_builtin[] =3D {
+ 	"__asan_store4_noabort",
+ 	"__asan_store8_noabort",
+ 	"__asan_store16_noabort",
++	"__kasan_check_read",
++	"__kasan_check_write",
+ 	/* KASAN in-line */
+ 	"__asan_report_load_n_noabort",
+ 	"__asan_report_load1_noabort",
