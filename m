@@ -2,17 +2,17 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 24B6F283124
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  5 Oct 2020 09:54:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D41B283126
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  5 Oct 2020 09:54:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725917AbgJEHyA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 5 Oct 2020 03:54:00 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:56800 "EHLO
+        id S1725936AbgJEHyB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 5 Oct 2020 03:54:01 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:56810 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725870AbgJEHyA (ORCPT
+        with ESMTP id S1725887AbgJEHyA (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Mon, 5 Oct 2020 03:54:00 -0400
-Date:   Mon, 05 Oct 2020 07:53:57 -0000
+Date:   Mon, 05 Oct 2020 07:53:58 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1601884438;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -20,12 +20,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=9JrlK+rR8v4IwCjI2MWMAnNL4REFxgA/+kUXTxSm2qI=;
-        b=SyapVYX8zwsekqMygVaMstSg3QpfWgfWZ1eexd25LexaLJZS3tiV28kansjWNxulJzv4jw
-        hByjT+7zCocKZtx6VdIuQMKO9XN0HIH6dtChAscUd7CR9gxesi10tD+XXcP62HYP/ek6Hs
-        nx8Ew0U/CXSzfuKAu3oy6pAy2b4YkXn0Y+cZdnYhrOGsg82wBcYsiPHYrChAcZUFiH3FyG
-        0mKleQR8Wy3/mL1knocKCOjWN+NBiWv4hcbLkrmdJMzNpx1m3PUujR4RKYkyuFshN8oepz
-        R58sLC8EPb2cFl8w81+CdsShfaNDOkWIctLrITNEoSJ3lDww9vtkA1as/wuLEQ==
+        bh=QYbK7mfoPdUfMhJx3wXEL/7eldwIVbW55QkmynmJOCg=;
+        b=U9tKX5k46+7Q3OXbntUakEq+8F8GVdhGhDaPrJZKM4rpr8i95uYYfr1bQkQDZJd2x6/nQh
+        KrIRjA5yYs2kKu005gidxxzHBgskVzTgSACM1A8my3GKlMB65JVsNBR0IEDw5XDV9H3KE8
+        QiAOxBBcpT2YlX+UbaR+wh6U1yZ7CbzgQJDckniQacHlw4CCDhBXFQmYx7JhZ1mOPzai0f
+        AEXPt/1xUQn2E337SAuv85oGyI/I7lREaYMJAjeppGb6r58l6lI1fXSeF7ltpmudEquUaT
+        AiO4B58eiGzx+QdlKvTImwTQdk48UyPocw8dTLFOryKSUcF2ZYpz+nQiKGxm1w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1601884438;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -33,21 +33,21 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=9JrlK+rR8v4IwCjI2MWMAnNL4REFxgA/+kUXTxSm2qI=;
-        b=jRsARHLx1ChYdbx+TPtgNablRtJdhDQcj7yIe1XVmE2iXnpcBT9OZZ+XD251Gjl8uPenop
-        rUU2sApS3pr0swDw==
-From:   "tip-bot2 for Colin Ian King" <tip-bot2@linutronix.de>
+        bh=QYbK7mfoPdUfMhJx3wXEL/7eldwIVbW55QkmynmJOCg=;
+        b=uKMYVXDXdxvtgJrEgjw0KxHO2oXj58P731l1xl0Og153yrdtXeg90MCX8K7Sw6FlV61uy6
+        4iDtOaL2ZNaJ5KBA==
+From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] x86/events/amd/iommu: Fix sizeof mismatch
-Cc:     Colin Ian King <colin.king@canonical.com>,
+Subject: [tip: perf/core] perf/x86/intel: Check perf metrics feature for each CPU
+Cc:     Kan Liang <kan.liang@linux.intel.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20201001113900.58889-1-colin.king@canonical.com>
-References: <20201001113900.58889-1-colin.king@canonical.com>
+In-Reply-To: <20201001211711.25708-1-kan.liang@linux.intel.com>
+References: <20201001211711.25708-1-kan.liang@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <160188443750.7002.16043563500088423723.tip-bot2@tip-bot2>
+Message-ID: <160188443801.7002.1461664942801340207.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,39 +58,54 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     59d5396a4666195f89a67e118e9e627ddd6f53a1
-Gitweb:        https://git.kernel.org/tip/59d5396a4666195f89a67e118e9e627ddd6f53a1
-Author:        Colin Ian King <colin.king@canonical.com>
-AuthorDate:    Thu, 01 Oct 2020 12:39:00 +01:00
+Commit-ID:     80a5ce116fc084e8a25d5a936617699e2931b611
+Gitweb:        https://git.kernel.org/tip/80a5ce116fc084e8a25d5a936617699e2931b611
+Author:        Kan Liang <kan.liang@linux.intel.com>
+AuthorDate:    Thu, 01 Oct 2020 14:17:11 -07:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Sat, 03 Oct 2020 16:30:56 +02:00
 
-x86/events/amd/iommu: Fix sizeof mismatch
+perf/x86/intel: Check perf metrics feature for each CPU
 
-An incorrect sizeof is being used, struct attribute ** is not correct,
-it should be struct attribute *. Note that since ** is the same size as
-* this is not causing any issues.  Improve this fix by using sizeof(*attrs)
-as this allows us to not even reference the type of the pointer.
+It might be possible that different CPUs have different CPU metrics on a
+platform. In this case, writing the GLOBAL_CTRL_EN_PERF_METRICS bit to
+the GLOBAL_CTRL register of a CPU, which doesn't support the TopDown
+perf metrics feature, causes MSR access error.
 
-Addresses-Coverity: ("Sizeof not portable (SIZEOF_MISMATCH)")
-Fixes: 51686546304f ("x86/events/amd/iommu: Fix sysfs perf attribute groups")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Current TopDown perf metrics feature is enumerated using the boot CPU's
+PERF_CAPABILITIES MSR. The MSR only indicates the boot CPU supports this
+feature.
+
+Check the PERF_CAPABILITIES MSR for each CPU. If any CPU doesn't support
+the perf metrics feature, disable the feature globally.
+
+Fixes: 59a854e2f3b9 ("perf/x86/intel: Support TopDown metrics on Ice Lake")
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20201001113900.58889-1-colin.king@canonical.com
+Link: https://lkml.kernel.org/r/20201001211711.25708-1-kan.liang@linux.intel.com
 ---
- arch/x86/events/amd/iommu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/events/intel/core.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/arch/x86/events/amd/iommu.c b/arch/x86/events/amd/iommu.c
-index fb61620..be50ef8 100644
---- a/arch/x86/events/amd/iommu.c
-+++ b/arch/x86/events/amd/iommu.c
-@@ -379,7 +379,7 @@ static __init int _init_events_attrs(void)
- 	while (amd_iommu_v2_event_descs[i].attr.attr.name)
- 		i++;
+diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
+index bdf28d2..7186098 100644
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -4083,6 +4083,17 @@ static void intel_pmu_cpu_starting(int cpu)
+ 	if (x86_pmu.counter_freezing)
+ 		enable_counter_freeze();
  
--	attrs = kcalloc(i + 1, sizeof(struct attribute **), GFP_KERNEL);
-+	attrs = kcalloc(i + 1, sizeof(*attrs), GFP_KERNEL);
- 	if (!attrs)
- 		return -ENOMEM;
++	/* Disable perf metrics if any added CPU doesn't support it. */
++	if (x86_pmu.intel_cap.perf_metrics) {
++		union perf_capabilities perf_cap;
++
++		rdmsrl(MSR_IA32_PERF_CAPABILITIES, perf_cap.capabilities);
++		if (!perf_cap.perf_metrics) {
++			x86_pmu.intel_cap.perf_metrics = 0;
++			x86_pmu.intel_ctrl &= ~(1ULL << GLOBAL_CTRL_EN_PERF_METRICS);
++		}
++	}
++
+ 	if (!cpuc->shared_regs)
+ 		return;
  
