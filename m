@@ -2,16 +2,16 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6994328635C
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  7 Oct 2020 18:14:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9264F28635F
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  7 Oct 2020 18:14:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729108AbgJGQOw (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 7 Oct 2020 12:14:52 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:44574 "EHLO
+        id S1729117AbgJGQO4 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 7 Oct 2020 12:14:56 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:44582 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726388AbgJGQOw (ORCPT
+        with ESMTP id S1729106AbgJGQOx (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 7 Oct 2020 12:14:52 -0400
+        Wed, 7 Oct 2020 12:14:53 -0400
 Date:   Wed, 07 Oct 2020 16:14:49 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1602087290;
@@ -20,12 +20,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=9NAWPFMQ78nn6OFBQQhe7rxPuuYfr1VWEK6+zdtfnZw=;
-        b=RheNZW6++FSKI1CknbqGaHEVyMkeDL5TTVL2793cGCgRDQsB7WBcHX1/mGz1SOhvGJ2G6e
-        HBdPZr9mMSyamnRTeMTdwzfG9A9g7QCEtp+oZlzzIO+kZ0SLD4vTwTkweAffx2pkprUXOT
-        pYeRxHpGzwyqxVNMxV+1bgOABjSbzZCMwlNp+j0cUksq+xqrv6avSqULmcdE/4anwOR655
-        7S+eFOaDkJ/ZmYgG/d5WsPKvm6EgsES3b6u/sZ80kQz4Hbg7Vtx3wvemhx623gSp593UmV
-        Mnmz5tA27Weao7a1BNDr58gieynXKgN8lp2YxdZ0KGHIKfDiCoDQShjDFcoVTg==
+        bh=ekQmDJ6SkMzxWz0mhUkFm+pIF6HNEMBNCXeIKiPmXLM=;
+        b=H/2uzxegaWZfe4ZjGTSzU/Vodq8VxCjEe3OzxVbUKya/IBy+63Vzf+WHOXOcWVd9GmRXZL
+        3XKQ188ZSfn85CRV3qaoRLtQWF/jOoiNtxKnl4/dkr1iCZtCKnyNDFoMhbsoNLhefw0m/y
+        LPAhEJpaT0OyI+7UJFxf1EeaHz9M22RSbFNKukdh/GOZbfFXObth4MNuKWfsttfP/e0aO3
+        9hLDWZEG/9WU+eet9gXe6u7WtdsgE13nCmys2Bv3Znumvn35eSg1ZdlQgBKFZXmBEA/4LE
+        DLN/GXFcDnT+oGpIXHaoAQ/oug7NN0o47c1f5MBQN+xncEqIzFkWrI07xAsQCA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1602087290;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -33,137 +33,129 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=9NAWPFMQ78nn6OFBQQhe7rxPuuYfr1VWEK6+zdtfnZw=;
-        b=Es98l++RorZ1oJk7+dQEWFvUAwVK1uCQfAsCAI6OQ5d6dDvovYuNWSx9CZ92k+1Qvb2e4r
-        ddAmjiFATKLizjBg==
+        bh=ekQmDJ6SkMzxWz0mhUkFm+pIF6HNEMBNCXeIKiPmXLM=;
+        b=aJI1WZfsAHGjnCwYffS4evMM1mtlImkynG8in90p5pWwdcwYAEYyLuio7a/r8ephbO5ZmI
+        cM6ngTIjnKl/leDQ==
 From:   "tip-bot2 for Dave Jiang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/pasid] x86/asm: Add an enqcmds() wrapper for the ENQCMDS
- instruction
-Cc:     Dave Jiang <dave.jiang@intel.com>, Borislav Petkov <bp@suse.de>,
-        Tony Luck <tony.luck@intel.com>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200924180041.34056-3-dave.jiang@intel.com>
-References: <20200924180041.34056-3-dave.jiang@intel.com>
+Subject: [tip: x86/pasid] x86/asm: Carve out a generic movdir64b() helper for
+ general usage
+Cc:     Michael Matz <matz@suse.de>, Dave Jiang <dave.jiang@intel.com>,
+        Borislav Petkov <bp@suse.de>, Tony Luck <tony.luck@intel.com>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20201005151126.657029-2-dave.jiang@intel.com>
+References: <20201005151126.657029-2-dave.jiang@intel.com>
 MIME-Version: 1.0
-Message-ID: <160208728918.7002.3071969717527586062.tip-bot2@tip-bot2>
+Message-ID: <160208728972.7002.18130814269550766361.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/pasid branch of tip:
 
-Commit-ID:     7f5933f81bd85a0bf6a87d65c7327ea048a75e54
-Gitweb:        https://git.kernel.org/tip/7f5933f81bd85a0bf6a87d65c7327ea048a=
-75e54
+Commit-ID:     0888e1030d3e3e5ce9dfd8e030cf13a2e9a1519a
+Gitweb:        https://git.kernel.org/tip/0888e1030d3e3e5ce9dfd8e030cf13a2e9a1519a
 Author:        Dave Jiang <dave.jiang@intel.com>
-AuthorDate:    Mon, 05 Oct 2020 08:11:23 -07:00
+AuthorDate:    Mon, 05 Oct 2020 08:11:22 -07:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Wed, 07 Oct 2020 17:53:08 +02:00
+CommitterDate: Wed, 07 Oct 2020 17:49:25 +02:00
 
-x86/asm: Add an enqcmds() wrapper for the ENQCMDS instruction
+x86/asm: Carve out a generic movdir64b() helper for general usage
 
-Currently, the MOVDIR64B instruction is used to atomically submit
-64-byte work descriptors to devices. Although it can encounter errors
-like device queue full, command not accepted, device not ready, etc when
-writing to a device MMIO, MOVDIR64B can not report back on errors from
-the device itself. This means that MOVDIR64B users need to separately
-interact with a device to see if a descriptor was successfully queued,
-which slows down device interactions.
+Carve out the MOVDIR64B inline asm primitive into a generic helper so
+that it can be used by other functions. Move it to special_insns.h and
+have iosubmit_cmds512() call it.
 
-ENQCMD and ENQCMDS also atomically submit 64-byte work descriptors
-to devices. But, they *can* report back errors directly from the
-device, such as if the device was busy, or device not enabled or does
-not support the command. This immediate feedback from the submission
-instruction itself reduces the number of interactions with the device
-and can greatly increase efficiency.
+ [ bp: Massage commit message. ]
 
-ENQCMD can be used at any privilege level, but can effectively only
-submit work on behalf of the current process. ENQCMDS is a ring0-only
-instruction and can explicitly specify a process context instead of
-being tied to the current process or needing to reprogram the IA32_PASID
-MSR.
-
-Use ENQCMDS for work submission within the kernel because a Process
-Address ID (PASID) is setup to translate the kernel virtual address
-space. This PASID is provided to ENQCMDS from the descriptor structure
-submitted to the device and not retrieved from IA32_PASID MSR, which is
-setup for the current user address space.
-
-See Intel Software Developer=E2=80=99s Manual for more information on the
-instructions.
-
- [ bp:
-   - Make operand constraints like movdir64b() because both insns are
-     basically doing the same thing, more or less.
-   - Fixup comments and cleanup. ]
-
-Link: https://lkml.kernel.org/r/20200924180041.34056-3-dave.jiang@intel.com
+Suggested-by: Michael Matz <matz@suse.de>
 Signed-off-by: Dave Jiang <dave.jiang@intel.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
 Reviewed-by: Tony Luck <tony.luck@intel.com>
-Link: https://lkml.kernel.org/r/20201005151126.657029-3-dave.jiang@intel.com
+Reviewed-by: Borislav Petkov <bp@suse.de>
+Link: https://lkml.kernel.org/r/20201005151126.657029-2-dave.jiang@intel.com
 ---
- arch/x86/include/asm/special_insns.h | 42 +++++++++++++++++++++++++++-
- 1 file changed, 42 insertions(+)
+ arch/x86/include/asm/io.h            | 17 +++--------------
+ arch/x86/include/asm/special_insns.h | 22 ++++++++++++++++++++++
+ 2 files changed, 25 insertions(+), 14 deletions(-)
 
-diff --git a/arch/x86/include/asm/special_insns.h b/arch/x86/include/asm/spec=
-ial_insns.h
-index d4baa0e..5482c2d 100644
+diff --git a/arch/x86/include/asm/io.h b/arch/x86/include/asm/io.h
+index e1aa17a..d726459 100644
+--- a/arch/x86/include/asm/io.h
++++ b/arch/x86/include/asm/io.h
+@@ -401,7 +401,7 @@ extern bool phys_mem_access_encrypted(unsigned long phys_addr,
+ 
+ /**
+  * iosubmit_cmds512 - copy data to single MMIO location, in 512-bit units
+- * @__dst: destination, in MMIO space (must be 512-bit aligned)
++ * @dst: destination, in MMIO space (must be 512-bit aligned)
+  * @src: source
+  * @count: number of 512 bits quantities to submit
+  *
+@@ -412,25 +412,14 @@ extern bool phys_mem_access_encrypted(unsigned long phys_addr,
+  * Warning: Do not use this helper unless your driver has checked that the CPU
+  * instruction is supported on the platform.
+  */
+-static inline void iosubmit_cmds512(void __iomem *__dst, const void *src,
++static inline void iosubmit_cmds512(void __iomem *dst, const void *src,
+ 				    size_t count)
+ {
+-	/*
+-	 * Note that this isn't an "on-stack copy", just definition of "dst"
+-	 * as a pointer to 64-bytes of stuff that is going to be overwritten.
+-	 * In the MOVDIR64B case that may be needed as you can use the
+-	 * MOVDIR64B instruction to copy arbitrary memory around. This trick
+-	 * lets the compiler know how much gets clobbered.
+-	 */
+-	volatile struct { char _[64]; } *dst = __dst;
+ 	const u8 *from = src;
+ 	const u8 *end = from + count * 64;
+ 
+ 	while (from < end) {
+-		/* MOVDIR64B [rdx], rax */
+-		asm volatile(".byte 0x66, 0x0f, 0x38, 0xf8, 0x02"
+-			     : "=m" (dst)
+-			     : "d" (from), "a" (dst));
++		movdir64b(dst, from);
+ 		from += 64;
+ 	}
+ }
+diff --git a/arch/x86/include/asm/special_insns.h b/arch/x86/include/asm/special_insns.h
+index 59a3e13..d4baa0e 100644
 --- a/arch/x86/include/asm/special_insns.h
 +++ b/arch/x86/include/asm/special_insns.h
-@@ -256,6 +256,48 @@ static inline void movdir64b(void *dst, const void *src)
- 		     :  "m" (*__src), "a" (__dst), "d" (__src));
- }
-=20
-+/**
-+ * enqcmds - Enqueue a command in supervisor (CPL0) mode
-+ * @dst: destination, in MMIO space (must be 512-bit aligned)
-+ * @src: 512 bits memory operand
-+ *
-+ * The ENQCMDS instruction allows software to write a 512-bit command to
-+ * a 512-bit-aligned special MMIO region that supports the instruction.
-+ * A return status is loaded into the ZF flag in the RFLAGS register.
-+ * ZF =3D 0 equates to success, and ZF =3D 1 indicates retry or error.
-+ *
-+ * This function issues the ENQCMDS instruction to submit data from
-+ * kernel space to MMIO space, in a unit of 512 bits. Order of data access
-+ * is not guaranteed, nor is a memory barrier performed afterwards. It
-+ * returns 0 on success and -EAGAIN on failure.
-+ *
-+ * Warning: Do not use this helper unless your driver has checked that the
-+ * ENQCMDS instruction is supported on the platform and the device accepts
-+ * ENQCMDS.
-+ */
-+static inline int enqcmds(void __iomem *dst, const void *src)
+@@ -234,6 +234,28 @@ static inline void clwb(volatile void *__p)
+ 
+ #define nop() asm volatile ("nop")
+ 
++/* The dst parameter must be 64-bytes aligned */
++static inline void movdir64b(void *dst, const void *src)
 +{
-+	const struct { char _[64]; } *__src =3D src;
-+	struct { char _[64]; } *__dst =3D dst;
-+	int zf;
++	const struct { char _[64]; } *__src = src;
++	struct { char _[64]; } *__dst = dst;
 +
 +	/*
-+	 * ENQCMDS %(rdx), rax
++	 * MOVDIR64B %(rdx), rax.
 +	 *
-+	 * See movdir64b()'s comment on operand specification.
++	 * Both __src and __dst must be memory constraints in order to tell the
++	 * compiler that no other memory accesses should be reordered around
++	 * this one.
++	 *
++	 * Also, both must be supplied as lvalues because this tells
++	 * the compiler what the object is (its size) the instruction accesses.
++	 * I.e., not the pointers but what they point to, thus the deref'ing '*'.
 +	 */
-+	asm volatile(".byte 0xf3, 0x0f, 0x38, 0xf8, 0x02, 0x66, 0x90"
-+		     CC_SET(z)
-+		     : CC_OUT(z) (zf), "+m" (*__dst)
-+		     : "m" (*__src), "a" (__dst), "d" (__src));
-+
-+	/* Submission failure is indicated via EFLAGS.ZF=3D1 */
-+	if (zf)
-+		return -EAGAIN;
-+
-+	return 0;
++	asm volatile(".byte 0x66, 0x0f, 0x38, 0xf8, 0x02"
++		     : "+m" (*__dst)
++		     :  "m" (*__src), "a" (__dst), "d" (__src));
 +}
 +
  #endif /* __KERNEL__ */
-=20
+ 
  #endif /* _ASM_X86_SPECIAL_INSNS_H */
