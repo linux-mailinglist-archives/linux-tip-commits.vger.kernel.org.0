@@ -2,53 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9264F28635F
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  7 Oct 2020 18:14:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E9AA286396
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  7 Oct 2020 18:21:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729117AbgJGQO4 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 7 Oct 2020 12:14:56 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:44582 "EHLO
+        id S1727512AbgJGQUQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 7 Oct 2020 12:20:16 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:44608 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729106AbgJGQOx (ORCPT
+        with ESMTP id S1726138AbgJGQUP (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 7 Oct 2020 12:14:53 -0400
-Date:   Wed, 07 Oct 2020 16:14:49 -0000
+        Wed, 7 Oct 2020 12:20:15 -0400
+Date:   Wed, 07 Oct 2020 16:20:12 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1602087290;
+        s=2020; t=1602087613;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ekQmDJ6SkMzxWz0mhUkFm+pIF6HNEMBNCXeIKiPmXLM=;
-        b=H/2uzxegaWZfe4ZjGTSzU/Vodq8VxCjEe3OzxVbUKya/IBy+63Vzf+WHOXOcWVd9GmRXZL
-        3XKQ188ZSfn85CRV3qaoRLtQWF/jOoiNtxKnl4/dkr1iCZtCKnyNDFoMhbsoNLhefw0m/y
-        LPAhEJpaT0OyI+7UJFxf1EeaHz9M22RSbFNKukdh/GOZbfFXObth4MNuKWfsttfP/e0aO3
-        9hLDWZEG/9WU+eet9gXe6u7WtdsgE13nCmys2Bv3Znumvn35eSg1ZdlQgBKFZXmBEA/4LE
-        DLN/GXFcDnT+oGpIXHaoAQ/oug7NN0o47c1f5MBQN+xncEqIzFkWrI07xAsQCA==
+        bh=/RHVmnusjfPTucOkLKDJTNDjSqJqoVCacxyHnDFNa2U=;
+        b=oDHPTwnaKI1QDa1vTQj+OHXvrHJ0o70oZN+RjnGbhGT3zIuTmCRH4r+WlOOQqaLjjApXxz
+        mwLLoJMt8sIfIMO3nt/KFM0JIawC4mVofc2E2e6U6R1JyUGbPwbTn2KXZKCHLDYwnA7S1E
+        7cHkTmb/JE0rYkwCHOpicP5PjZJlqlwARFbwVv4QWFUxDnWwVzSBPWvcxMmSgCQKoO/uNR
+        ggiJuN0M89A41LpjtJKW+DuMuC+Xyyudib8/N8BHg7BKa/Xfz0eDc9eqDQwc+/h3chzUaW
+        1QT79CT0NCc4t+wRrKTZdBwvm9Y4/tv1+I3h3EoWngjShH+6PSN/oBx0+sCSRQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1602087290;
+        s=2020e; t=1602087613;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ekQmDJ6SkMzxWz0mhUkFm+pIF6HNEMBNCXeIKiPmXLM=;
-        b=aJI1WZfsAHGjnCwYffS4evMM1mtlImkynG8in90p5pWwdcwYAEYyLuio7a/r8ephbO5ZmI
-        cM6ngTIjnKl/leDQ==
-From:   "tip-bot2 for Dave Jiang" <tip-bot2@linutronix.de>
+        bh=/RHVmnusjfPTucOkLKDJTNDjSqJqoVCacxyHnDFNa2U=;
+        b=H/m0CehF5LrxUUpWeFVL/tuOBpJxL3n381b4KwBJKKVlnXY/63LOTK7+K+n3MEY9PohjRW
+        jB50k9cu8jQyiOAA==
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/pasid] x86/asm: Carve out a generic movdir64b() helper for
- general usage
-Cc:     Michael Matz <matz@suse.de>, Dave Jiang <dave.jiang@intel.com>,
-        Borislav Petkov <bp@suse.de>, Tony Luck <tony.luck@intel.com>,
+Subject: [tip: locking/core] lockdep: Revert "lockdep: Use raw_cpu_*() for
+ per-cpu variables"
+Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20201005151126.657029-2-dave.jiang@intel.com>
-References: <20201005151126.657029-2-dave.jiang@intel.com>
+In-Reply-To: <20201005095958.GJ2651@hirez.programming.kicks-ass.net>
+References: <20201005095958.GJ2651@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-Message-ID: <160208728972.7002.18130814269550766361.tip-bot2@tip-bot2>
+Message-ID: <160208761223.7002.12830126769485268107.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -57,105 +56,118 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/pasid branch of tip:
+The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     0888e1030d3e3e5ce9dfd8e030cf13a2e9a1519a
-Gitweb:        https://git.kernel.org/tip/0888e1030d3e3e5ce9dfd8e030cf13a2e9a1519a
-Author:        Dave Jiang <dave.jiang@intel.com>
-AuthorDate:    Mon, 05 Oct 2020 08:11:22 -07:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Wed, 07 Oct 2020 17:49:25 +02:00
+Commit-ID:     820d8a6c966343059ba58b9a82f570f27bf147d6
+Gitweb:        https://git.kernel.org/tip/820d8a6c966343059ba58b9a82f570f27bf147d6
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Mon, 05 Oct 2020 09:56:57 +02:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Wed, 07 Oct 2020 18:14:17 +02:00
 
-x86/asm: Carve out a generic movdir64b() helper for general usage
+lockdep: Revert "lockdep: Use raw_cpu_*() for per-cpu variables"
 
-Carve out the MOVDIR64B inline asm primitive into a generic helper so
-that it can be used by other functions. Move it to special_insns.h and
-have iosubmit_cmds512() call it.
+The thinking in commit:
 
- [ bp: Massage commit message. ]
+  fddf9055a60d ("lockdep: Use raw_cpu_*() for per-cpu variables")
 
-Suggested-by: Michael Matz <matz@suse.de>
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Tony Luck <tony.luck@intel.com>
-Reviewed-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20201005151126.657029-2-dave.jiang@intel.com
+is flawed. While it is true that when we're migratable both CPUs will
+have a 0 value, it doesn't hold that when we do get migrated in the
+middle of a raw_cpu_op(), the old CPU will still have 0 by the time we
+get around to reading it on the new CPU.
+
+Luckily, the reason for that commit (s390 using preempt_disable()
+instead of preempt_disable_notrace() in their percpu code), has since
+been fixed by commit:
+
+  1196f12a2c96 ("s390: don't trace preemption in percpu macros")
+
+An audit of arch/*/include/asm/percpu*.h shows there are no other
+architectures affected by this particular issue.
+
+Fixes: fddf9055a60d ("lockdep: Use raw_cpu_*() for per-cpu variables")
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20201005095958.GJ2651@hirez.programming.kicks-ass.net
 ---
- arch/x86/include/asm/io.h            | 17 +++--------------
- arch/x86/include/asm/special_insns.h | 22 ++++++++++++++++++++++
- 2 files changed, 25 insertions(+), 14 deletions(-)
+ include/linux/lockdep.h | 26 +++++++++-----------------
+ 1 file changed, 9 insertions(+), 17 deletions(-)
 
-diff --git a/arch/x86/include/asm/io.h b/arch/x86/include/asm/io.h
-index e1aa17a..d726459 100644
---- a/arch/x86/include/asm/io.h
-+++ b/arch/x86/include/asm/io.h
-@@ -401,7 +401,7 @@ extern bool phys_mem_access_encrypted(unsigned long phys_addr,
+diff --git a/include/linux/lockdep.h b/include/linux/lockdep.h
+index 1cc9825..f559487 100644
+--- a/include/linux/lockdep.h
++++ b/include/linux/lockdep.h
+@@ -537,19 +537,19 @@ do {									\
+ #define lock_map_release(l)			lock_release(l, _THIS_IP_)
  
- /**
-  * iosubmit_cmds512 - copy data to single MMIO location, in 512-bit units
-- * @__dst: destination, in MMIO space (must be 512-bit aligned)
-+ * @dst: destination, in MMIO space (must be 512-bit aligned)
-  * @src: source
-  * @count: number of 512 bits quantities to submit
-  *
-@@ -412,25 +412,14 @@ extern bool phys_mem_access_encrypted(unsigned long phys_addr,
-  * Warning: Do not use this helper unless your driver has checked that the CPU
-  * instruction is supported on the platform.
-  */
--static inline void iosubmit_cmds512(void __iomem *__dst, const void *src,
-+static inline void iosubmit_cmds512(void __iomem *dst, const void *src,
- 				    size_t count)
- {
--	/*
--	 * Note that this isn't an "on-stack copy", just definition of "dst"
--	 * as a pointer to 64-bytes of stuff that is going to be overwritten.
--	 * In the MOVDIR64B case that may be needed as you can use the
--	 * MOVDIR64B instruction to copy arbitrary memory around. This trick
--	 * lets the compiler know how much gets clobbered.
--	 */
--	volatile struct { char _[64]; } *dst = __dst;
- 	const u8 *from = src;
- 	const u8 *end = from + count * 64;
+ #ifdef CONFIG_PROVE_LOCKING
+-# define might_lock(lock) 						\
++# define might_lock(lock)						\
+ do {									\
+ 	typecheck(struct lockdep_map *, &(lock)->dep_map);		\
+ 	lock_acquire(&(lock)->dep_map, 0, 0, 0, 1, NULL, _THIS_IP_);	\
+ 	lock_release(&(lock)->dep_map, _THIS_IP_);			\
+ } while (0)
+-# define might_lock_read(lock) 						\
++# define might_lock_read(lock)						\
+ do {									\
+ 	typecheck(struct lockdep_map *, &(lock)->dep_map);		\
+ 	lock_acquire(&(lock)->dep_map, 0, 0, 1, 1, NULL, _THIS_IP_);	\
+ 	lock_release(&(lock)->dep_map, _THIS_IP_);			\
+ } while (0)
+-# define might_lock_nested(lock, subclass) 				\
++# define might_lock_nested(lock, subclass)				\
+ do {									\
+ 	typecheck(struct lockdep_map *, &(lock)->dep_map);		\
+ 	lock_acquire(&(lock)->dep_map, subclass, 0, 1, 1, NULL,		\
+@@ -561,29 +561,21 @@ DECLARE_PER_CPU(int, hardirqs_enabled);
+ DECLARE_PER_CPU(int, hardirq_context);
+ DECLARE_PER_CPU(unsigned int, lockdep_recursion);
  
- 	while (from < end) {
--		/* MOVDIR64B [rdx], rax */
--		asm volatile(".byte 0x66, 0x0f, 0x38, 0xf8, 0x02"
--			     : "=m" (dst)
--			     : "d" (from), "a" (dst));
-+		movdir64b(dst, from);
- 		from += 64;
- 	}
- }
-diff --git a/arch/x86/include/asm/special_insns.h b/arch/x86/include/asm/special_insns.h
-index 59a3e13..d4baa0e 100644
---- a/arch/x86/include/asm/special_insns.h
-+++ b/arch/x86/include/asm/special_insns.h
-@@ -234,6 +234,28 @@ static inline void clwb(volatile void *__p)
+-/*
+- * The below lockdep_assert_*() macros use raw_cpu_read() to access the above
+- * per-cpu variables. This is required because this_cpu_read() will potentially
+- * call into preempt/irq-disable and that obviously isn't right. This is also
+- * correct because when IRQs are enabled, it doesn't matter if we accidentally
+- * read the value from our previous CPU.
+- */
+-
+-#define __lockdep_enabled	(debug_locks && !raw_cpu_read(lockdep_recursion))
++#define __lockdep_enabled	(debug_locks && !this_cpu_read(lockdep_recursion))
  
- #define nop() asm volatile ("nop")
+ #define lockdep_assert_irqs_enabled()					\
+ do {									\
+-	WARN_ON_ONCE(__lockdep_enabled && !raw_cpu_read(hardirqs_enabled)); \
++	WARN_ON_ONCE(__lockdep_enabled && !this_cpu_read(hardirqs_enabled)); \
+ } while (0)
  
-+/* The dst parameter must be 64-bytes aligned */
-+static inline void movdir64b(void *dst, const void *src)
-+{
-+	const struct { char _[64]; } *__src = src;
-+	struct { char _[64]; } *__dst = dst;
-+
-+	/*
-+	 * MOVDIR64B %(rdx), rax.
-+	 *
-+	 * Both __src and __dst must be memory constraints in order to tell the
-+	 * compiler that no other memory accesses should be reordered around
-+	 * this one.
-+	 *
-+	 * Also, both must be supplied as lvalues because this tells
-+	 * the compiler what the object is (its size) the instruction accesses.
-+	 * I.e., not the pointers but what they point to, thus the deref'ing '*'.
-+	 */
-+	asm volatile(".byte 0x66, 0x0f, 0x38, 0xf8, 0x02"
-+		     : "+m" (*__dst)
-+		     :  "m" (*__src), "a" (__dst), "d" (__src));
-+}
-+
- #endif /* __KERNEL__ */
+ #define lockdep_assert_irqs_disabled()					\
+ do {									\
+-	WARN_ON_ONCE(__lockdep_enabled && raw_cpu_read(hardirqs_enabled)); \
++	WARN_ON_ONCE(__lockdep_enabled && this_cpu_read(hardirqs_enabled)); \
+ } while (0)
  
- #endif /* _ASM_X86_SPECIAL_INSNS_H */
+ #define lockdep_assert_in_irq()						\
+ do {									\
+-	WARN_ON_ONCE(__lockdep_enabled && !raw_cpu_read(hardirq_context)); \
++	WARN_ON_ONCE(__lockdep_enabled && !this_cpu_read(hardirq_context)); \
+ } while (0)
+ 
+ #define lockdep_assert_preemption_enabled()				\
+@@ -591,7 +583,7 @@ do {									\
+ 	WARN_ON_ONCE(IS_ENABLED(CONFIG_PREEMPT_COUNT)	&&		\
+ 		     __lockdep_enabled			&&		\
+ 		     (preempt_count() != 0		||		\
+-		      !raw_cpu_read(hardirqs_enabled)));		\
++		      !this_cpu_read(hardirqs_enabled)));		\
+ } while (0)
+ 
+ #define lockdep_assert_preemption_disabled()				\
+@@ -599,7 +591,7 @@ do {									\
+ 	WARN_ON_ONCE(IS_ENABLED(CONFIG_PREEMPT_COUNT)	&&		\
+ 		     __lockdep_enabled			&&		\
+ 		     (preempt_count() == 0		&&		\
+-		      raw_cpu_read(hardirqs_enabled)));			\
++		      this_cpu_read(hardirqs_enabled)));		\
+ } while (0)
+ 
+ #else
