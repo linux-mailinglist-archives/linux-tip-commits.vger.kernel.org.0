@@ -2,50 +2,46 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C4BAF286390
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  7 Oct 2020 18:20:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E627286393
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  7 Oct 2020 18:20:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727916AbgJGQUY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 7 Oct 2020 12:20:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48916 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727862AbgJGQUU (ORCPT
+        id S1727981AbgJGQUa (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 7 Oct 2020 12:20:30 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:44696 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727888AbgJGQUW (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 7 Oct 2020 12:20:20 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71C0DC061755;
-        Wed,  7 Oct 2020 09:20:20 -0700 (PDT)
-Date:   Wed, 07 Oct 2020 16:20:18 -0000
+        Wed, 7 Oct 2020 12:20:22 -0400
+Date:   Wed, 07 Oct 2020 16:20:19 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1602087619;
+        s=2020; t=1602087620;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=mh8DO4uSeJNYHzA3HIyZWY4aNVUvK4pZBotNBUdUfbA=;
-        b=xzyvXqi4+tdbolL/WO3BDVvEzBeo66ZpIYmnRB2QU/fLcUJCkujcrBlqeK92xMK0X+MQk0
-        4KdYB8QSnv5Z6ViEd75InZgZ7wL8La70pDojfB+g5TENQ2DkzB4MVBekMPIaF2RlpxWorb
-        +MJcoFREiY8+1hFFwdFCPNG4Dxu5vKIhYljVrcthizIPFrWhOuiSXq/p6vxwfUtD+XKnDM
-        xhUB7+fyGM04NZ3I6Z94ptGUtVnGjz3IeSevzlgz1UpImPGcGEQbiAZw+96qngRzDU74op
-        amYviLUA0HZLlJ4lppt/dnWGBYw1YkB6KzbqoN1hygixTpK2b0hBnoxUbYf4Xg==
+        bh=9PWkpoz1Bhxz8IMpkTJ1TT/ix1qtQEtTBUlV8knttdw=;
+        b=oIpGsLGQk5WL2EIBxjF7UtOtC0wO9GE0ezfkKrEQFhD9jvRvU93qiT8FTmDP6gu7dRQKOg
+        ChLjLZVoBZxBb1j+tk2aI5NdSNpt2ye4r55eJGiJOix/dR3uuqM8cf/KhfMz5yfD3GlKXS
+        oyApZawUbpW5070tTUJ7/1FVKLNkJJQ76PLm/xM22+EtKUcJ9QAb3BIsssrxM28qt/kMbM
+        nU6LFF3Qtkvr2a70nis1ZDap7KM2jYlcvpWbii9x96BLSfArL4k5r4BIvNCz95HbRf6oQj
+        AB7aKOJQQlKR/7Stuo2jOVF7xlnCMPKEec9LF8Zo+G9mfqetqTHOuXLK1XXHNQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1602087619;
+        s=2020e; t=1602087620;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=mh8DO4uSeJNYHzA3HIyZWY4aNVUvK4pZBotNBUdUfbA=;
-        b=WYEWadA5Pd5/BVlb2VXrVFwplbx8odk21BQOyi6CLjRdnqeZl98QWWpDmk3oDYIK5qC0Q1
-        9dSkQYUtz+zmyhBw==
+        bh=9PWkpoz1Bhxz8IMpkTJ1TT/ix1qtQEtTBUlV8knttdw=;
+        b=5Ob4DL0il6yj8n/zEwtmf5dP2+Tojuft/ZeL6MIDx9gIKbN37O8CBqNePgig7xgU+jkLQ3
+        JhgP34CNJdwkkaDQ==
 From:   "tip-bot2 for Vasily Gorbik" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] objtool: Fix x86 orc generation on big endian
- cross compiles
+Subject: [tip: objtool/core] objtool: Allow nested externs to enable BUILD_BUG()
 Cc:     Vasily Gorbik <gor@linux.ibm.com>,
         Josh Poimboeuf <jpoimboe@redhat.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <160208761826.7002.18277460877570400396.tip-bot2@tip-bot2>
+Message-ID: <160208761986.7002.448567990879670641.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -56,260 +52,44 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     1b4998c364bcfd7fe3442820b0f3064b1f7b3a77
-Gitweb:        https://git.kernel.org/tip/1b4998c364bcfd7fe3442820b0f3064b1f7b3a77
+Commit-ID:     2486baae2cf6df73554144d0a4e40ae8809b54d4
+Gitweb:        https://git.kernel.org/tip/2486baae2cf6df73554144d0a4e40ae8809b54d4
 Author:        Vasily Gorbik <gor@linux.ibm.com>
-AuthorDate:    Mon, 05 Oct 2020 17:50:38 +02:00
+AuthorDate:    Mon, 05 Oct 2020 17:50:28 +02:00
 Committer:     Josh Poimboeuf <jpoimboe@redhat.com>
-CommitterDate: Tue, 06 Oct 2020 09:36:57 -05:00
+CommitterDate: Tue, 06 Oct 2020 09:32:13 -05:00
 
-objtool: Fix x86 orc generation on big endian cross compiles
+objtool: Allow nested externs to enable BUILD_BUG()
 
-Correct objtool orc generation endianness problems to enable fully
-functional x86 cross compiles on big endian hardware.
+Currently BUILD_BUG() macro is expanded to smth like the following:
+   do {
+           extern void __compiletime_assert_0(void)
+                   __attribute__((error("BUILD_BUG failed")));
+           if (!(!(1)))
+                   __compiletime_assert_0();
+   } while (0);
 
-Introduces bswap_if_needed macro which does a byte swap if target
-endianness doesn't match the host, i.e. cross compilation for little
-endian on big endian and vice versa. To be used for multi-byte values
-conversion, which are read from / about to be written to a target native
-endianness ELF file.
+If used in a function body this obviously would produce build errors
+with -Wnested-externs and -Werror.
+
+Build objtool with -Wno-nested-externs to enable BUILD_BUG() usage.
 
 Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
 Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
 ---
- arch/x86/include/asm/orc_types.h                 | 10 ++++-
- tools/arch/x86/include/asm/orc_types.h           | 10 ++++-
- tools/objtool/arch/x86/include/arch_endianness.h |  9 ++++-
- tools/objtool/check.c                            |  5 +-
- tools/objtool/endianness.h                       | 38 +++++++++++++++-
- tools/objtool/orc_dump.c                         |  5 +-
- tools/objtool/orc_gen.c                          |  3 +-
- tools/objtool/special.c                          |  6 +-
- 8 files changed, 80 insertions(+), 6 deletions(-)
- create mode 100644 tools/objtool/arch/x86/include/arch_endianness.h
- create mode 100644 tools/objtool/endianness.h
+ tools/objtool/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/orc_types.h b/arch/x86/include/asm/orc_types.h
-index fdbffec..5a2baf2 100644
---- a/arch/x86/include/asm/orc_types.h
-+++ b/arch/x86/include/asm/orc_types.h
-@@ -40,6 +40,8 @@
- #define ORC_REG_MAX			15
- 
- #ifndef __ASSEMBLY__
-+#include <asm/byteorder.h>
-+
- /*
-  * This struct is more or less a vastly simplified version of the DWARF Call
-  * Frame Information standard.  It contains only the necessary parts of DWARF
-@@ -51,10 +53,18 @@
- struct orc_entry {
- 	s16		sp_offset;
- 	s16		bp_offset;
-+#if defined(__LITTLE_ENDIAN_BITFIELD)
- 	unsigned	sp_reg:4;
- 	unsigned	bp_reg:4;
- 	unsigned	type:2;
- 	unsigned	end:1;
-+#elif defined(__BIG_ENDIAN_BITFIELD)
-+	unsigned	bp_reg:4;
-+	unsigned	sp_reg:4;
-+	unsigned	unused:5;
-+	unsigned	end:1;
-+	unsigned	type:2;
-+#endif
- } __packed;
- 
- #endif /* __ASSEMBLY__ */
-diff --git a/tools/arch/x86/include/asm/orc_types.h b/tools/arch/x86/include/asm/orc_types.h
-index fdbffec..5a2baf2 100644
---- a/tools/arch/x86/include/asm/orc_types.h
-+++ b/tools/arch/x86/include/asm/orc_types.h
-@@ -40,6 +40,8 @@
- #define ORC_REG_MAX			15
- 
- #ifndef __ASSEMBLY__
-+#include <asm/byteorder.h>
-+
- /*
-  * This struct is more or less a vastly simplified version of the DWARF Call
-  * Frame Information standard.  It contains only the necessary parts of DWARF
-@@ -51,10 +53,18 @@
- struct orc_entry {
- 	s16		sp_offset;
- 	s16		bp_offset;
-+#if defined(__LITTLE_ENDIAN_BITFIELD)
- 	unsigned	sp_reg:4;
- 	unsigned	bp_reg:4;
- 	unsigned	type:2;
- 	unsigned	end:1;
-+#elif defined(__BIG_ENDIAN_BITFIELD)
-+	unsigned	bp_reg:4;
-+	unsigned	sp_reg:4;
-+	unsigned	unused:5;
-+	unsigned	end:1;
-+	unsigned	type:2;
-+#endif
- } __packed;
- 
- #endif /* __ASSEMBLY__ */
-diff --git a/tools/objtool/arch/x86/include/arch_endianness.h b/tools/objtool/arch/x86/include/arch_endianness.h
-new file mode 100644
-index 0000000..7c36252
---- /dev/null
-+++ b/tools/objtool/arch/x86/include/arch_endianness.h
-@@ -0,0 +1,9 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+#ifndef _ARCH_ENDIANNESS_H
-+#define _ARCH_ENDIANNESS_H
-+
-+#include <endian.h>
-+
-+#define __TARGET_BYTE_ORDER __LITTLE_ENDIAN
-+
-+#endif /* _ARCH_ENDIANNESS_H */
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 3d14134..f48430d 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -13,6 +13,7 @@
- #include "special.h"
- #include "warn.h"
- #include "arch_elf.h"
-+#include "endianness.h"
- 
- #include <linux/objtool.h>
- #include <linux/hashtable.h>
-@@ -1372,7 +1373,7 @@ static int read_unwind_hints(struct objtool_file *file)
- 		cfa = &insn->cfi.cfa;
- 
- 		if (hint->type == UNWIND_HINT_TYPE_RET_OFFSET) {
--			insn->ret_offset = hint->sp_offset;
-+			insn->ret_offset = bswap_if_needed(hint->sp_offset);
- 			continue;
- 		}
- 
-@@ -1384,7 +1385,7 @@ static int read_unwind_hints(struct objtool_file *file)
- 			return -1;
- 		}
- 
--		cfa->offset = hint->sp_offset;
-+		cfa->offset = bswap_if_needed(hint->sp_offset);
- 		insn->cfi.type = hint->type;
- 		insn->cfi.end = hint->end;
- 	}
-diff --git a/tools/objtool/endianness.h b/tools/objtool/endianness.h
-new file mode 100644
-index 0000000..ebece31
---- /dev/null
-+++ b/tools/objtool/endianness.h
-@@ -0,0 +1,38 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+#ifndef _OBJTOOL_ENDIANNESS_H
-+#define _OBJTOOL_ENDIANNESS_H
-+
-+#include <linux/kernel.h>
-+#include <endian.h>
-+#include "arch_endianness.h"
-+
-+#ifndef __TARGET_BYTE_ORDER
-+#error undefined arch __TARGET_BYTE_ORDER
-+#endif
-+
-+#if __BYTE_ORDER != __TARGET_BYTE_ORDER
-+#define __NEED_BSWAP 1
-+#else
-+#define __NEED_BSWAP 0
-+#endif
-+
-+/*
-+ * Does a byte swap if target endianness doesn't match the host, i.e. cross
-+ * compilation for little endian on big endian and vice versa.
-+ * To be used for multi-byte values conversion, which are read from / about
-+ * to be written to a target native endianness ELF file.
-+ */
-+#define bswap_if_needed(val)						\
-+({									\
-+	__typeof__(val) __ret;						\
-+	switch (sizeof(val)) {						\
-+	case 8: __ret = __NEED_BSWAP ? bswap_64(val) : (val); break;	\
-+	case 4: __ret = __NEED_BSWAP ? bswap_32(val) : (val); break;	\
-+	case 2: __ret = __NEED_BSWAP ? bswap_16(val) : (val); break;	\
-+	default:							\
-+		BUILD_BUG(); break;					\
-+	}								\
-+	__ret;								\
-+})
-+
-+#endif /* _OBJTOOL_ENDIANNESS_H */
-diff --git a/tools/objtool/orc_dump.c b/tools/objtool/orc_dump.c
-index 5e6a953..4e818a2 100644
---- a/tools/objtool/orc_dump.c
-+++ b/tools/objtool/orc_dump.c
-@@ -8,6 +8,7 @@
- #include <asm/orc_types.h>
- #include "objtool.h"
- #include "warn.h"
-+#include "endianness.h"
- 
- static const char *reg_name(unsigned int reg)
- {
-@@ -197,11 +198,11 @@ int orc_dump(const char *_objname)
- 
- 		printf(" sp:");
- 
--		print_reg(orc[i].sp_reg, orc[i].sp_offset);
-+		print_reg(orc[i].sp_reg, bswap_if_needed(orc[i].sp_offset));
- 
- 		printf(" bp:");
- 
--		print_reg(orc[i].bp_reg, orc[i].bp_offset);
-+		print_reg(orc[i].bp_reg, bswap_if_needed(orc[i].bp_offset));
- 
- 		printf(" type:%s end:%d\n",
- 		       orc_type_name(orc[i].type), orc[i].end);
-diff --git a/tools/objtool/orc_gen.c b/tools/objtool/orc_gen.c
-index 235663b..134d786 100644
---- a/tools/objtool/orc_gen.c
-+++ b/tools/objtool/orc_gen.c
-@@ -11,6 +11,7 @@
- 
- #include "check.h"
- #include "warn.h"
-+#include "endianness.h"
- 
- int create_orc(struct objtool_file *file)
- {
-@@ -96,6 +97,8 @@ static int create_orc_entry(struct elf *elf, struct section *u_sec, struct secti
- 	/* populate ORC data */
- 	orc = (struct orc_entry *)u_sec->data->d_buf + idx;
- 	memcpy(orc, o, sizeof(*orc));
-+	orc->sp_offset = bswap_if_needed(orc->sp_offset);
-+	orc->bp_offset = bswap_if_needed(orc->bp_offset);
- 
- 	/* populate reloc for ip */
- 	reloc = malloc(sizeof(*reloc));
-diff --git a/tools/objtool/special.c b/tools/objtool/special.c
-index 1a2420f..ab7cb1e 100644
---- a/tools/objtool/special.c
-+++ b/tools/objtool/special.c
-@@ -15,6 +15,7 @@
- #include "special.h"
- #include "warn.h"
- #include "arch_special.h"
-+#include "endianness.h"
- 
- struct special_entry {
- 	const char *sec;
-@@ -77,8 +78,9 @@ static int get_alt_entry(struct elf *elf, struct special_entry *entry,
- 	if (entry->feature) {
- 		unsigned short feature;
- 
--		feature = *(unsigned short *)(sec->data->d_buf + offset +
--					      entry->feature);
-+		feature = bswap_if_needed(*(unsigned short *)(sec->data->d_buf +
-+							      offset +
-+							      entry->feature));
- 		arch_handle_alternative(feature, alt);
- 	}
+diff --git a/tools/objtool/Makefile b/tools/objtool/Makefile
+index 33d1e3c..4ea9a83 100644
+--- a/tools/objtool/Makefile
++++ b/tools/objtool/Makefile
+@@ -37,7 +37,7 @@ INCLUDES := -I$(srctree)/tools/include \
+ 	    -I$(srctree)/tools/arch/$(HOSTARCH)/include/uapi \
+ 	    -I$(srctree)/tools/arch/$(SRCARCH)/include	\
+ 	    -I$(srctree)/tools/objtool/arch/$(SRCARCH)/include
+-WARNINGS := $(EXTRA_WARNINGS) -Wno-switch-default -Wno-switch-enum -Wno-packed
++WARNINGS := $(EXTRA_WARNINGS) -Wno-switch-default -Wno-switch-enum -Wno-packed -Wno-nested-externs
+ CFLAGS   := -Werror $(WARNINGS) $(KBUILD_HOSTCFLAGS) -g $(INCLUDES) $(LIBELF_FLAGS)
+ LDFLAGS  += $(LIBELF_LIBS) $(LIBSUBCMD) $(KBUILD_HOSTLDFLAGS)
  
