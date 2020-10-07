@@ -2,57 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 435B528590F
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  7 Oct 2020 09:12:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 24084285908
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  7 Oct 2020 09:12:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727708AbgJGHMQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 7 Oct 2020 03:12:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48704 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727618AbgJGHMH (ORCPT
+        id S1727695AbgJGHMP (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 7 Oct 2020 03:12:15 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:41576 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727672AbgJGHMJ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 7 Oct 2020 03:12:07 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43C29C0613D2;
-        Wed,  7 Oct 2020 00:12:07 -0700 (PDT)
-Date:   Wed, 07 Oct 2020 07:12:04 -0000
+        Wed, 7 Oct 2020 03:12:09 -0400
+Date:   Wed, 07 Oct 2020 07:12:05 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1602054725;
+        s=2020; t=1602054726;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=m3cQu5oaBj/Ig4zLV/fKPnYkjENaN+ZRtz2gM4nkCbU=;
-        b=ca8nO5vpemphFGLiIv/owE5if/VztbcuJqCQBwVe6/iDem8TpX06gv9iH0rvMz8ZpxDTUN
-        4Oc6Lsxb9SxxLLNPH2A0jNxyhQktceb+Ji4RwNtn0TbwjR/U9dET/hLaKfa5mNMvqnMNBe
-        7l+LHY2E4vD6M2Mhx2wePrIc/FJ0knWwHvb/MF6D23tOkT+Vnwv0FGO6xx74J7PhS7TkSQ
-        lNCJ9Ii5VxICenNN82V38IlUaswwQeLPmIhWnPUPHJAvdeDgBGRGwm/xcYB+yXbokIGT7N
-        mDx/W6XN29ejCQjUWO8SURDTUV5Rf9eZUILuoHlB2A+3IezjD8A2f0UO0pAJKg==
+        bh=wLcJVShCE/bVReTC/c2dp7iAQ6Y9QJGRYrex2JO0/KA=;
+        b=VM56vToFuZpoEmPRGXYO7rfuyTwHZ1TVbQVP2tVLpC9y55ktV+Rnlg7eivXAribK3PAKO1
+        y52dB5JoH9xZXtlhcqbhGnZ0RF5A6uzt3g60G/SIRmVNAnaC+IWraqFHosJNh/klLgwtJq
+        Xaohs0yaUorbVXSHA32KeWWe1CzTRzO20YNL2Usp0EnJkiPZ2ofap3g9cS/zyHFR9WBqxJ
+        xZ1ff+wEWXn2Ro0r3VysmWvcEw+/A89moYYNW3EMLPAfe0kw7ZzYf9FLMw6L4heoVhTuv3
+        7ZtUOWg9UEQNYKkZDvHqWuKZAMMVTYwBbFakHCkqyni2Sl6ihFzakpy6MLOZgg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1602054725;
+        s=2020e; t=1602054726;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=m3cQu5oaBj/Ig4zLV/fKPnYkjENaN+ZRtz2gM4nkCbU=;
-        b=rKCYGohHAhLg5Jl/WBakkZGd3AkCk95Jv2zy2aYazNln1bWs22vlOF5yziJ27oEdOQrW7C
-        J8/1gOQSgxfOfqBA==
+        bh=wLcJVShCE/bVReTC/c2dp7iAQ6Y9QJGRYrex2JO0/KA=;
+        b=Yjs7OB4Crpt8FkVQnu7+nIFj+EaF9ry5dm0TnfgyfG8eamP1rGokQEQ73fRe5KFyLh6bre
+        eiaGPe6A9yAbFJCQ==
 From:   "tip-bot2 for Mike Travis" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/platform] drivers/misc/sgi-xp: Adjust references in UV
- kernel modules
+Subject: [tip: x86/platform] x86/platform/uv: Remove SCIR MMR references for
+ UV systems
 Cc:     Mike Travis <mike.travis@hpe.com>, Borislav Petkov <bp@suse.de>,
         Dimitri Sivanich <dimitri.sivanich@hpe.com>,
-        Steve Wahl <steve.wahl@hpe.com>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20201005203929.148656-4-mike.travis@hpe.com>
-References: <20201005203929.148656-4-mike.travis@hpe.com>
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20201005203929.148656-3-mike.travis@hpe.com>
+References: <20201005203929.148656-3-mike.travis@hpe.com>
 MIME-Version: 1.0
-Message-ID: <160205472494.7002.1526841959986940221.tip-bot2@tip-bot2>
+Message-ID: <160205472550.7002.12214063722259144150.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -63,156 +59,214 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/platform branch of tip:
 
-Commit-ID:     788b66e34e8ab82a93c63a83ba5a9d04f2f4ae26
-Gitweb:        https://git.kernel.org/tip/788b66e34e8ab82a93c63a83ba5a9d04f2f4ae26
+Commit-ID:     c4d98077443adf61268ffb8b2c5d63c6176d845f
+Gitweb:        https://git.kernel.org/tip/c4d98077443adf61268ffb8b2c5d63c6176d845f
 Author:        Mike Travis <mike.travis@hpe.com>
-AuthorDate:    Tue, 06 Oct 2020 16:34:27 -05:00
+AuthorDate:    Mon, 05 Oct 2020 15:39:18 -05:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Wed, 07 Oct 2020 08:56:05 +02:00
+CommitterDate: Wed, 07 Oct 2020 08:53:51 +02:00
 
-drivers/misc/sgi-xp: Adjust references in UV kernel modules
+x86/platform/uv: Remove SCIR MMR references for UV systems
 
-Remove the define is_uv() is_uv_system and just use the latter as is.
-This removes a conflict with a new symbol in the generated uv_mmrs.h
-file (is_uv()).
+UV class systems no longer use System Controller for monitoring of CPU
+activity provided by this driver. Other methods have been developed for
+BIOS and the management controller (BMC). Remove that supporting code.
 
 Signed-off-by: Mike Travis <mike.travis@hpe.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
 Reviewed-by: Dimitri Sivanich <dimitri.sivanich@hpe.com>
-Reviewed-by: Steve Wahl <steve.wahl@hpe.com>
-Link: https://lkml.kernel.org/r/20201005203929.148656-4-mike.travis@hpe.com
+Link: https://lkml.kernel.org/r/20201005203929.148656-3-mike.travis@hpe.com
 ---
- drivers/misc/sgi-xp/xp.h            | 7 +------
- drivers/misc/sgi-xp/xp_main.c       | 4 ++--
- drivers/misc/sgi-xp/xp_uv.c         | 6 ++++--
- drivers/misc/sgi-xp/xpc_main.c      | 6 +++---
- drivers/misc/sgi-xp/xpc_partition.c | 2 +-
- drivers/misc/sgi-xp/xpnet.c         | 2 +-
- 6 files changed, 12 insertions(+), 15 deletions(-)
+ arch/x86/include/asm/uv/uv_hub.h   | 43 +--------------
+ arch/x86/kernel/apic/x2apic_uv_x.c | 82 +-----------------------------
+ 2 files changed, 3 insertions(+), 122 deletions(-)
 
-diff --git a/drivers/misc/sgi-xp/xp.h b/drivers/misc/sgi-xp/xp.h
-index 06469b1..2b6aabc 100644
---- a/drivers/misc/sgi-xp/xp.h
-+++ b/drivers/misc/sgi-xp/xp.h
-@@ -17,11 +17,6 @@
+diff --git a/arch/x86/include/asm/uv/uv_hub.h b/arch/x86/include/asm/uv/uv_hub.h
+index 100d668..b21228d 100644
+--- a/arch/x86/include/asm/uv/uv_hub.h
++++ b/arch/x86/include/asm/uv/uv_hub.h
+@@ -129,17 +129,6 @@
+  */
+ #define UV_MAX_NASID_VALUE	(UV_MAX_NUMALINK_BLADES * 2)
  
- #if defined CONFIG_X86_UV || defined CONFIG_IA64_SGI_UV
- #include <asm/uv/uv.h>
--#define is_uv()		is_uv_system()
--#endif
+-/* System Controller Interface Reg info */
+-struct uv_scir_s {
+-	struct timer_list timer;
+-	unsigned long	offset;
+-	unsigned long	last;
+-	unsigned long	idle_on;
+-	unsigned long	idle_off;
+-	unsigned char	state;
+-	unsigned char	enabled;
+-};
 -
--#ifndef is_uv
--#define is_uv()		0
- #endif
+ /* GAM (globally addressed memory) range table */
+ struct uv_gam_range_s {
+ 	u32	limit;		/* PA bits 56:26 (GAM_RANGE_SHFT) */
+@@ -191,16 +180,13 @@ struct uv_hub_info_s {
+ struct uv_cpu_info_s {
+ 	void			*p_uv_hub_info;
+ 	unsigned char		blade_cpu_id;
+-	struct uv_scir_s	scir;
++	void			*reserved;
+ };
+ DECLARE_PER_CPU(struct uv_cpu_info_s, __uv_cpu_info);
  
- #ifdef USE_DBUG_ON
-@@ -79,7 +74,7 @@
+ #define uv_cpu_info		this_cpu_ptr(&__uv_cpu_info)
+ #define uv_cpu_info_per(cpu)	(&per_cpu(__uv_cpu_info, cpu))
  
- #define XPC_MSG_SIZE(_payload_size) \
- 				ALIGN(XPC_MSG_HDR_MAX_SIZE + (_payload_size), \
--				      is_uv() ? 64 : 128)
-+				      is_uv_system() ? 64 : 128)
+-#define	uv_scir_info		(&uv_cpu_info->scir)
+-#define	uv_cpu_scir_info(cpu)	(&uv_cpu_info_per(cpu)->scir)
+-
+ /* Node specific hub common info struct */
+ extern void **__uv_hub_info_list;
+ static inline struct uv_hub_info_s *uv_hub_info_list(int node)
+@@ -297,9 +283,9 @@ union uvh_apicid {
+ #define UV3_GLOBAL_MMR32_SIZE		(32UL * 1024 * 1024)
  
+ #define UV4_LOCAL_MMR_BASE		0xfa000000UL
+-#define UV4_GLOBAL_MMR32_BASE		0xfc000000UL
++#define UV4_GLOBAL_MMR32_BASE		0
+ #define UV4_LOCAL_MMR_SIZE		(32UL * 1024 * 1024)
+-#define UV4_GLOBAL_MMR32_SIZE		(16UL * 1024 * 1024)
++#define UV4_GLOBAL_MMR32_SIZE		0
  
+ #define UV_LOCAL_MMR_BASE		(				\
+ 					is_uv2_hub() ? UV2_LOCAL_MMR_BASE : \
+@@ -772,29 +758,6 @@ DECLARE_PER_CPU(struct uv_cpu_nmi_s, uv_cpu_nmi);
+ #define	UV_NMI_STATE_DUMP		2
+ #define	UV_NMI_STATE_DUMP_DONE		3
+ 
+-/* Update SCIR state */
+-static inline void uv_set_scir_bits(unsigned char value)
+-{
+-	if (uv_scir_info->state != value) {
+-		uv_scir_info->state = value;
+-		uv_write_local_mmr8(uv_scir_info->offset, value);
+-	}
+-}
+-
+-static inline unsigned long uv_scir_offset(int apicid)
+-{
+-	return SCIR_LOCAL_MMR_BASE | (apicid & 0x3f);
+-}
+-
+-static inline void uv_set_cpu_scir_bits(int cpu, unsigned char value)
+-{
+-	if (uv_cpu_scir_info(cpu)->state != value) {
+-		uv_write_global_mmr8(uv_cpu_to_pnode(cpu),
+-				uv_cpu_scir_info(cpu)->offset, value);
+-		uv_cpu_scir_info(cpu)->state = value;
+-	}
+-}
+-
  /*
-diff --git a/drivers/misc/sgi-xp/xp_main.c b/drivers/misc/sgi-xp/xp_main.c
-index 61b03fc..0eea2f5 100644
---- a/drivers/misc/sgi-xp/xp_main.c
-+++ b/drivers/misc/sgi-xp/xp_main.c
-@@ -233,7 +233,7 @@ xp_init(void)
- 	for (ch_number = 0; ch_number < XPC_MAX_NCHANNELS; ch_number++)
- 		mutex_init(&xpc_registrations[ch_number].mutex);
- 
--	if (is_uv())
-+	if (is_uv_system())
- 		ret = xp_init_uv();
- 	else
- 		ret = 0;
-@@ -249,7 +249,7 @@ module_init(xp_init);
- static void __exit
- xp_exit(void)
- {
--	if (is_uv())
-+	if (is_uv_system())
- 		xp_exit_uv();
+  * Get the minimum revision number of the hub chips within the partition.
+  * (See UVx_HUB_REVISION_BASE above for specific values.)
+diff --git a/arch/x86/kernel/apic/x2apic_uv_x.c b/arch/x86/kernel/apic/x2apic_uv_x.c
+index 0b6eea3..f51fabf 100644
+--- a/arch/x86/kernel/apic/x2apic_uv_x.c
++++ b/arch/x86/kernel/apic/x2apic_uv_x.c
+@@ -909,85 +909,6 @@ static __init void uv_rtc_init(void)
+ 	}
  }
  
-diff --git a/drivers/misc/sgi-xp/xp_uv.c b/drivers/misc/sgi-xp/xp_uv.c
-index f15a9f2..5dcca03 100644
---- a/drivers/misc/sgi-xp/xp_uv.c
-+++ b/drivers/misc/sgi-xp/xp_uv.c
-@@ -148,7 +148,9 @@ xp_restrict_memprotect_uv(unsigned long phys_addr, unsigned long size)
- enum xp_retval
- xp_init_uv(void)
+-/*
+- * percpu heartbeat timer
+- */
+-static void uv_heartbeat(struct timer_list *timer)
+-{
+-	unsigned char bits = uv_scir_info->state;
+-
+-	/* Flip heartbeat bit: */
+-	bits ^= SCIR_CPU_HEARTBEAT;
+-
+-	/* Is this CPU idle? */
+-	if (idle_cpu(raw_smp_processor_id()))
+-		bits &= ~SCIR_CPU_ACTIVITY;
+-	else
+-		bits |= SCIR_CPU_ACTIVITY;
+-
+-	/* Update system controller interface reg: */
+-	uv_set_scir_bits(bits);
+-
+-	/* Enable next timer period: */
+-	mod_timer(timer, jiffies + SCIR_CPU_HB_INTERVAL);
+-}
+-
+-static int uv_heartbeat_enable(unsigned int cpu)
+-{
+-	while (!uv_cpu_scir_info(cpu)->enabled) {
+-		struct timer_list *timer = &uv_cpu_scir_info(cpu)->timer;
+-
+-		uv_set_cpu_scir_bits(cpu, SCIR_CPU_HEARTBEAT|SCIR_CPU_ACTIVITY);
+-		timer_setup(timer, uv_heartbeat, TIMER_PINNED);
+-		timer->expires = jiffies + SCIR_CPU_HB_INTERVAL;
+-		add_timer_on(timer, cpu);
+-		uv_cpu_scir_info(cpu)->enabled = 1;
+-
+-		/* Also ensure that boot CPU is enabled: */
+-		cpu = 0;
+-	}
+-	return 0;
+-}
+-
+-#ifdef CONFIG_HOTPLUG_CPU
+-static int uv_heartbeat_disable(unsigned int cpu)
+-{
+-	if (uv_cpu_scir_info(cpu)->enabled) {
+-		uv_cpu_scir_info(cpu)->enabled = 0;
+-		del_timer(&uv_cpu_scir_info(cpu)->timer);
+-	}
+-	uv_set_cpu_scir_bits(cpu, 0xff);
+-	return 0;
+-}
+-
+-static __init void uv_scir_register_cpu_notifier(void)
+-{
+-	cpuhp_setup_state_nocalls(CPUHP_AP_ONLINE_DYN, "x86/x2apic-uvx:online",
+-				  uv_heartbeat_enable, uv_heartbeat_disable);
+-}
+-
+-#else /* !CONFIG_HOTPLUG_CPU */
+-
+-static __init void uv_scir_register_cpu_notifier(void)
+-{
+-}
+-
+-static __init int uv_init_heartbeat(void)
+-{
+-	int cpu;
+-
+-	if (is_uv_system()) {
+-		for_each_online_cpu(cpu)
+-			uv_heartbeat_enable(cpu);
+-	}
+-
+-	return 0;
+-}
+-
+-late_initcall(uv_init_heartbeat);
+-
+-#endif /* !CONFIG_HOTPLUG_CPU */
+-
+ /* Direct Legacy VGA I/O traffic to designated IOH */
+ static int uv_set_vga_state(struct pci_dev *pdev, bool decode, unsigned int command_bits, u32 flags)
  {
--	BUG_ON(!is_uv());
-+	WARN_ON(!is_uv_system());
-+	if (!is_uv_system())
-+		return xpUnsupported;
+@@ -1517,8 +1438,6 @@ static void __init uv_system_init_hub(void)
+ 			uv_hub_info_list(numa_node_id)->pnode = pnode;
+ 		else if (uv_cpu_hub_info(cpu)->pnode == 0xffff)
+ 			uv_cpu_hub_info(cpu)->pnode = pnode;
+-
+-		uv_cpu_scir_info(cpu)->offset = uv_scir_offset(apicid);
+ 	}
  
- 	xp_max_npartitions = XP_MAX_NPARTITIONS_UV;
- #ifdef CONFIG_X86
-@@ -168,5 +170,5 @@ xp_init_uv(void)
- void
- xp_exit_uv(void)
- {
--	BUG_ON(!is_uv());
-+	WARN_ON(!is_uv_system());
- }
-diff --git a/drivers/misc/sgi-xp/xpc_main.c b/drivers/misc/sgi-xp/xpc_main.c
-index 8a495dc..e3261e6 100644
---- a/drivers/misc/sgi-xp/xpc_main.c
-+++ b/drivers/misc/sgi-xp/xpc_main.c
-@@ -1043,7 +1043,7 @@ xpc_do_exit(enum xp_retval reason)
+ 	for_each_node(nodeid) {
+@@ -1547,7 +1466,6 @@ static void __init uv_system_init_hub(void)
  
- 	xpc_teardown_partitions();
+ 	uv_nmi_setup();
+ 	uv_cpu_init();
+-	uv_scir_register_cpu_notifier();
+ 	uv_setup_proc_files(0);
  
--	if (is_uv())
-+	if (is_uv_system())
- 		xpc_exit_uv();
- }
- 
-@@ -1226,7 +1226,7 @@ xpc_init(void)
- 	dev_set_name(xpc_part, "part");
- 	dev_set_name(xpc_chan, "chan");
- 
--	if (is_uv()) {
-+	if (is_uv_system()) {
- 		ret = xpc_init_uv();
- 
- 	} else {
-@@ -1312,7 +1312,7 @@ out_2:
- 
- 	xpc_teardown_partitions();
- out_1:
--	if (is_uv())
-+	if (is_uv_system())
- 		xpc_exit_uv();
- 	return ret;
- }
-diff --git a/drivers/misc/sgi-xp/xpc_partition.c b/drivers/misc/sgi-xp/xpc_partition.c
-index 099a53b..a47b3bd 100644
---- a/drivers/misc/sgi-xp/xpc_partition.c
-+++ b/drivers/misc/sgi-xp/xpc_partition.c
-@@ -433,7 +433,7 @@ xpc_discovery(void)
- 	 */
- 	region_size = xp_region_size;
- 
--	if (is_uv())
-+	if (is_uv_system())
- 		max_regions = 256;
- 	else {
- 		max_regions = 64;
-diff --git a/drivers/misc/sgi-xp/xpnet.c b/drivers/misc/sgi-xp/xpnet.c
-index 837d6c3..8ee3991 100644
---- a/drivers/misc/sgi-xp/xpnet.c
-+++ b/drivers/misc/sgi-xp/xpnet.c
-@@ -515,7 +515,7 @@ xpnet_init(void)
- {
- 	int result;
- 
--	if (!is_uv())
-+	if (!is_uv_system())
- 		return -ENODEV;
- 
- 	dev_info(xpnet, "registering network device %s\n", XPNET_DEVICE_NAME);
+ 	/* Register Legacy VGA I/O redirection handler: */
