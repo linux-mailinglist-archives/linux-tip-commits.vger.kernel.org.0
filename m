@@ -2,56 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D6B37285C40
+	by mail.lfdr.de (Postfix) with ESMTP id 65102285C3F
 	for <lists+linux-tip-commits@lfdr.de>; Wed,  7 Oct 2020 12:03:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727865AbgJGKCw (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S1727518AbgJGKCw (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Wed, 7 Oct 2020 06:02:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46866 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46868 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727687AbgJGKCv (ORCPT
+        with ESMTP id S1727703AbgJGKCv (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Wed, 7 Oct 2020 06:02:51 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13BDCC0613D2;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5001BC061755;
         Wed,  7 Oct 2020 03:02:51 -0700 (PDT)
-Date:   Wed, 07 Oct 2020 10:02:48 -0000
+Date:   Wed, 07 Oct 2020 10:02:49 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1602064968;
+        s=2020; t=1602064969;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=9KixaGlkvXzdX2BYmeSzi0CSJIpQwUE8wulsHgqcZu4=;
-        b=EkaPctlmMPRAWv2oGKNiySRWYRc82V8CFq/xYp41zayROfXbY7OmuRjiYIu93tnYbbvkV3
-        zzc40DaPUHfp8M3EVNIA+U9U9SypYoJNQNvllc8Yy6oLicvpsT7YI6NCDe+5ZcgQk4qb5o
-        4dB+l5x+u1q/AeO8+HvPdEXpfAkXJo8hHIiiOImRCpPiD8WI/1MrqMqusz+D5TVwuf689J
-        4wIQFsiR575xOH68hZRsLcDTJJfC0Vcn7ixI67ZS+y5juTa+ISb+PPH4Y+MhpMhYNOXXhI
-        VZ71f4TX/nih5LQ4ErVo4rVb7bEnxuQJ9rFOcKmPMSmvv48HwONt7sKK8Pn2Xw==
+        bh=Ul1RAJ/EhaQdfhWthF9joh4Cus1PXOwouVzgOP7J7XU=;
+        b=cWMeBKiGNmj5PsG/ZBQHPVZw5uEUe7s1ed9JqvqTNwXoE0UGo+5OlGXXlToUeVu9p8FREI
+        B7Kp0AOZyADO9+5SRWjBhDk+5dmuutEzTiGKtVQ3n2lIdm/An4V3DOrcCCRuE2DFGByy7V
+        0cahMGA8Uz0HSR58eglD51Z7YfH8vCHXthxYXkRHYhYrDeNOLehxaJJWPN8JHEfKDppw7+
+        bRaT7OlXxIlFSKImnXzg9KbCs5BnMr2WF/sEuGEcNWEQCTF+Jse7gKkMG8u5LaAJO1yjI4
+        VMQPj2LzzegRtuzucNv7GIUZzIK5jPt1h9AIFmevmwkILsYAfztgeV5TrBp2Uw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1602064968;
+        s=2020e; t=1602064969;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=9KixaGlkvXzdX2BYmeSzi0CSJIpQwUE8wulsHgqcZu4=;
-        b=5I20jcFEGsqxLlswxPZYfnvvPN4vu3TxUt9tFMs2Uu/P0vTW9+YRjjBPIDbMGC217nJ1Eo
-        0itGv5RuMEczG0Cg==
-From:   "tip-bot2 for Tony Luck" <tip-bot2@linutronix.de>
+        bh=Ul1RAJ/EhaQdfhWthF9joh4Cus1PXOwouVzgOP7J7XU=;
+        b=vQOWv+c/WhcFm7G9UuAMd3o3gGIwCCLwoQnP2ERxILBQzhHPAhfYIIejWY/9B5DcQY39Rm
+        TbWTxHarrGz8MwCA==
+From:   "tip-bot2 for Youquan Song" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: ras/core] x86/mce: Recover from poison found while copying from
- user space
-Cc:     Borislav Petkov <bp@alien8.de>, Tony Luck <tony.luck@intel.com>,
-        Borislav Petkov <bp@suse.de>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20201006210910.21062-6-tony.luck@intel.com>
-References: <20201006210910.21062-6-tony.luck@intel.com>
+Subject: [tip: ras/core] x86/mce: Add _ASM_EXTABLE_CPY for copy user access
+Cc:     Youquan Song <youquan.song@intel.com>,
+        Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@suse.de>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20201006210910.21062-4-tony.luck@intel.com>
+References: <20201006210910.21062-4-tony.luck@intel.com>
 MIME-Version: 1.0
-Message-ID: <160206496812.7002.8407534676801412666.tip-bot2@tip-bot2>
+Message-ID: <160206496903.7002.7626997597671796632.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -62,111 +61,271 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the ras/core branch of tip:
 
-Commit-ID:     c0ab7ffce275d3f83bd253c70889c28821d4a41d
-Gitweb:        https://git.kernel.org/tip/c0ab7ffce275d3f83bd253c70889c28821d4a41d
-Author:        Tony Luck <tony.luck@intel.com>
-AuthorDate:    Tue, 06 Oct 2020 14:09:09 -07:00
+Commit-ID:     278b917f8cb9b02923c15249f9d1a5769d2c1976
+Gitweb:        https://git.kernel.org/tip/278b917f8cb9b02923c15249f9d1a5769d2c1976
+Author:        Youquan Song <youquan.song@intel.com>
+AuthorDate:    Tue, 06 Oct 2020 14:09:07 -07:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Wed, 07 Oct 2020 11:29:41 +02:00
+CommitterDate: Wed, 07 Oct 2020 11:19:11 +02:00
 
-x86/mce: Recover from poison found while copying from user space
+x86/mce: Add _ASM_EXTABLE_CPY for copy user access
 
-Existing kernel code can only recover from a machine check on code that
-is tagged in the exception table with a fault handling recovery path.
+_ASM_EXTABLE_UA is a general exception entry to record the exception fixup
+for all exception spots between kernel and user space access.
 
-Add two new fields in the task structure to pass information from
-machine check handler to the "task_work" that is queued to run before
-the task returns to user mode:
+To enable recovery from machine checks while coping data from user
+addresses it is necessary to be able to distinguish the places that are
+looping copying data from those that copy a single byte/word/etc.
 
-+ mce_vaddr: will be initialized to the user virtual address of the fault
-  in the case where the fault occurred in the kernel copying data from
-  a user address.  This is so that kill_me_maybe() can provide that
-  information to the user SIGBUS handler.
+Add a new macro _ASM_EXTABLE_CPY and use it in place of _ASM_EXTABLE_UA
+in the copy functions.
 
-+ mce_kflags: copy of the struct mce.kflags needed by kill_me_maybe()
-  to determine if mce_vaddr is applicable to this error.
+Record the exception reason number to regs->ax at
+ex_handler_uaccess which is used to check MCE triggered.
 
-Add code to recover from a machine check while copying data from user
-space to the kernel. Action for this case is the same as if the user
-touched the poison directly; unmap the page and send a SIGBUS to the task.
+The new fixup routine ex_handler_copy() is almost an exact copy of
+ex_handler_uaccess() The difference is that it sets regs->ax to the trap
+number. Following patches use this to avoid trying to copy remaining
+bytes from the tail of the copy and possibly hitting the poison again.
 
-Use a new helper function to share common code between the "fault
-in user mode" case and the "fault while copying from user" case.
+New mce.kflags bit MCE_IN_KERNEL_COPYIN will be used by mce_severity()
+calculation to indicate that a machine check is recoverable because the
+kernel was copying from user space.
 
-New code paths will be activated by the next patch which sets
-MCE_IN_KERNEL_COPYIN.
-
-Suggested-by: Borislav Petkov <bp@alien8.de>
+Signed-off-by: Youquan Song <youquan.song@intel.com>
 Signed-off-by: Tony Luck <tony.luck@intel.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20201006210910.21062-6-tony.luck@intel.com
+Link: https://lkml.kernel.org/r/20201006210910.21062-4-tony.luck@intel.com
 ---
- arch/x86/kernel/cpu/mce/core.c | 27 ++++++++++++++++++++-------
- include/linux/sched.h          |  2 ++
- 2 files changed, 22 insertions(+), 7 deletions(-)
+ arch/x86/include/asm/asm.h  |  6 ++-
+ arch/x86/include/asm/mce.h  | 15 ++++++-
+ arch/x86/lib/copy_user_64.S | 96 ++++++++++++++++++------------------
+ arch/x86/mm/extable.c       | 14 ++++-
+ 4 files changed, 82 insertions(+), 49 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
-index 2d6caf0..5c423c4 100644
---- a/arch/x86/kernel/cpu/mce/core.c
-+++ b/arch/x86/kernel/cpu/mce/core.c
-@@ -1260,6 +1260,21 @@ static void kill_me_maybe(struct callback_head *cb)
- 	kill_me_now(cb);
- }
+diff --git a/arch/x86/include/asm/asm.h b/arch/x86/include/asm/asm.h
+index 5c15f95..0359cbb 100644
+--- a/arch/x86/include/asm/asm.h
++++ b/arch/x86/include/asm/asm.h
+@@ -135,6 +135,9 @@
+ # define _ASM_EXTABLE_UA(from, to)				\
+ 	_ASM_EXTABLE_HANDLE(from, to, ex_handler_uaccess)
  
-+static void queue_task_work(struct mce *m, int kill_it)
-+{
-+	current->mce_addr = m->addr;
-+	current->mce_kflags = m->kflags;
-+	current->mce_ripv = !!(m->mcgstatus & MCG_STATUS_RIPV);
-+	current->mce_whole_page = whole_page(m);
++# define _ASM_EXTABLE_CPY(from, to)				\
++	_ASM_EXTABLE_HANDLE(from, to, ex_handler_copy)
 +
-+	if (kill_it)
-+		current->mce_kill_me.func = kill_me_now;
-+	else
-+		current->mce_kill_me.func = kill_me_maybe;
+ # define _ASM_EXTABLE_FAULT(from, to)				\
+ 	_ASM_EXTABLE_HANDLE(from, to, ex_handler_fault)
+ 
+@@ -160,6 +163,9 @@
+ # define _ASM_EXTABLE_UA(from, to)				\
+ 	_ASM_EXTABLE_HANDLE(from, to, ex_handler_uaccess)
+ 
++# define _ASM_EXTABLE_CPY(from, to)				\
++	_ASM_EXTABLE_HANDLE(from, to, ex_handler_copy)
 +
-+	task_work_add(current, &current->mce_kill_me, true);
-+}
+ # define _ASM_EXTABLE_FAULT(from, to)				\
+ 	_ASM_EXTABLE_HANDLE(from, to, ex_handler_fault)
+ 
+diff --git a/arch/x86/include/asm/mce.h b/arch/x86/include/asm/mce.h
+index ba2062d..a0f1478 100644
+--- a/arch/x86/include/asm/mce.h
++++ b/arch/x86/include/asm/mce.h
+@@ -136,9 +136,24 @@
+ #define	MCE_HANDLED_NFIT	BIT_ULL(3)
+ #define	MCE_HANDLED_EDAC	BIT_ULL(4)
+ #define	MCE_HANDLED_MCELOG	BIT_ULL(5)
 +
++/*
++ * Indicates an MCE which has happened in kernel space but from
++ * which the kernel can recover simply by executing fixup_exception()
++ * so that an error is returned to the caller of the function that
++ * hit the machine check.
++ */
+ #define MCE_IN_KERNEL_RECOV	BIT_ULL(6)
+ 
  /*
-  * The actual machine check handler. This only handles real
-  * exceptions when something got corrupted coming in through int 18.
-@@ -1401,13 +1416,8 @@ noinstr void do_machine_check(struct pt_regs *regs)
- 		/* If this triggers there is no way to recover. Die hard. */
- 		BUG_ON(!on_thread_stack() || !user_mode(regs));
- 
--		current->mce_addr = m.addr;
--		current->mce_ripv = !!(m.mcgstatus & MCG_STATUS_RIPV);
--		current->mce_whole_page = whole_page(&m);
--		current->mce_kill_me.func = kill_me_maybe;
--		if (kill_it)
--			current->mce_kill_me.func = kill_me_now;
--		task_work_add(current, &current->mce_kill_me, true);
-+		queue_task_work(&m, kill_it);
++ * Indicates an MCE that happened in kernel space while copying data
++ * from user. In this case fixup_exception() gets the kernel to the
++ * error exit for the copy function. Machine check handler can then
++ * treat it like a fault taken in user mode.
++ */
++#define MCE_IN_KERNEL_COPYIN	BIT_ULL(7)
 +
- 	} else {
- 		/*
- 		 * Handle an MCE which has happened in kernel space but from
-@@ -1422,6 +1432,9 @@ noinstr void do_machine_check(struct pt_regs *regs)
- 			if (!fixup_exception(regs, X86_TRAP_MC, 0, 0))
- 				mce_panic("Failed kernel mode recovery", &m, msg);
- 		}
-+
-+		if (m.kflags & MCE_IN_KERNEL_COPYIN)
-+			queue_task_work(&m, kill_it);
- 	}
- out:
- 	mce_wrmsrl(MSR_IA32_MCG_STATUS, 0);
-diff --git a/include/linux/sched.h b/include/linux/sched.h
-index 93ecd93..2cbba3e 100644
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -1308,6 +1308,8 @@ struct task_struct {
- #endif
++/*
+  * This structure contains all data related to the MCE log.  Also
+  * carries a signature to make it easier to find from external
+  * debugging tools.  Each entry is only valid when its finished flag
+diff --git a/arch/x86/lib/copy_user_64.S b/arch/x86/lib/copy_user_64.S
+index 816f128..5b68e94 100644
+--- a/arch/x86/lib/copy_user_64.S
++++ b/arch/x86/lib/copy_user_64.S
+@@ -36,8 +36,8 @@
+ 	jmp .Lcopy_user_handle_tail
+ 	.previous
  
- #ifdef CONFIG_X86_MCE
-+	void __user			*mce_vaddr;
-+	__u64				mce_kflags;
- 	u64				mce_addr;
- 	__u64				mce_ripv : 1,
- 					mce_whole_page : 1,
+-	_ASM_EXTABLE_UA(100b, 103b)
+-	_ASM_EXTABLE_UA(101b, 103b)
++	_ASM_EXTABLE_CPY(100b, 103b)
++	_ASM_EXTABLE_CPY(101b, 103b)
+ 	.endm
+ 
+ /*
+@@ -116,26 +116,26 @@ SYM_FUNC_START(copy_user_generic_unrolled)
+ 60:	jmp .Lcopy_user_handle_tail /* ecx is zerorest also */
+ 	.previous
+ 
+-	_ASM_EXTABLE_UA(1b, 30b)
+-	_ASM_EXTABLE_UA(2b, 30b)
+-	_ASM_EXTABLE_UA(3b, 30b)
+-	_ASM_EXTABLE_UA(4b, 30b)
+-	_ASM_EXTABLE_UA(5b, 30b)
+-	_ASM_EXTABLE_UA(6b, 30b)
+-	_ASM_EXTABLE_UA(7b, 30b)
+-	_ASM_EXTABLE_UA(8b, 30b)
+-	_ASM_EXTABLE_UA(9b, 30b)
+-	_ASM_EXTABLE_UA(10b, 30b)
+-	_ASM_EXTABLE_UA(11b, 30b)
+-	_ASM_EXTABLE_UA(12b, 30b)
+-	_ASM_EXTABLE_UA(13b, 30b)
+-	_ASM_EXTABLE_UA(14b, 30b)
+-	_ASM_EXTABLE_UA(15b, 30b)
+-	_ASM_EXTABLE_UA(16b, 30b)
+-	_ASM_EXTABLE_UA(18b, 40b)
+-	_ASM_EXTABLE_UA(19b, 40b)
+-	_ASM_EXTABLE_UA(21b, 50b)
+-	_ASM_EXTABLE_UA(22b, 50b)
++	_ASM_EXTABLE_CPY(1b, 30b)
++	_ASM_EXTABLE_CPY(2b, 30b)
++	_ASM_EXTABLE_CPY(3b, 30b)
++	_ASM_EXTABLE_CPY(4b, 30b)
++	_ASM_EXTABLE_CPY(5b, 30b)
++	_ASM_EXTABLE_CPY(6b, 30b)
++	_ASM_EXTABLE_CPY(7b, 30b)
++	_ASM_EXTABLE_CPY(8b, 30b)
++	_ASM_EXTABLE_CPY(9b, 30b)
++	_ASM_EXTABLE_CPY(10b, 30b)
++	_ASM_EXTABLE_CPY(11b, 30b)
++	_ASM_EXTABLE_CPY(12b, 30b)
++	_ASM_EXTABLE_CPY(13b, 30b)
++	_ASM_EXTABLE_CPY(14b, 30b)
++	_ASM_EXTABLE_CPY(15b, 30b)
++	_ASM_EXTABLE_CPY(16b, 30b)
++	_ASM_EXTABLE_CPY(18b, 40b)
++	_ASM_EXTABLE_CPY(19b, 40b)
++	_ASM_EXTABLE_CPY(21b, 50b)
++	_ASM_EXTABLE_CPY(22b, 50b)
+ SYM_FUNC_END(copy_user_generic_unrolled)
+ EXPORT_SYMBOL(copy_user_generic_unrolled)
+ 
+@@ -180,8 +180,8 @@ SYM_FUNC_START(copy_user_generic_string)
+ 	jmp .Lcopy_user_handle_tail
+ 	.previous
+ 
+-	_ASM_EXTABLE_UA(1b, 11b)
+-	_ASM_EXTABLE_UA(3b, 12b)
++	_ASM_EXTABLE_CPY(1b, 11b)
++	_ASM_EXTABLE_CPY(3b, 12b)
+ SYM_FUNC_END(copy_user_generic_string)
+ EXPORT_SYMBOL(copy_user_generic_string)
+ 
+@@ -213,7 +213,7 @@ SYM_FUNC_START(copy_user_enhanced_fast_string)
+ 	jmp .Lcopy_user_handle_tail
+ 	.previous
+ 
+-	_ASM_EXTABLE_UA(1b, 12b)
++	_ASM_EXTABLE_CPY(1b, 12b)
+ SYM_FUNC_END(copy_user_enhanced_fast_string)
+ EXPORT_SYMBOL(copy_user_enhanced_fast_string)
+ 
+@@ -237,7 +237,7 @@ SYM_CODE_START_LOCAL(.Lcopy_user_handle_tail)
+ 	ASM_CLAC
+ 	ret
+ 
+-	_ASM_EXTABLE_UA(1b, 2b)
++	_ASM_EXTABLE_CPY(1b, 2b)
+ SYM_CODE_END(.Lcopy_user_handle_tail)
+ 
+ /*
+@@ -366,27 +366,27 @@ SYM_FUNC_START(__copy_user_nocache)
+ 	jmp .Lcopy_user_handle_tail
+ 	.previous
+ 
+-	_ASM_EXTABLE_UA(1b, .L_fixup_4x8b_copy)
+-	_ASM_EXTABLE_UA(2b, .L_fixup_4x8b_copy)
+-	_ASM_EXTABLE_UA(3b, .L_fixup_4x8b_copy)
+-	_ASM_EXTABLE_UA(4b, .L_fixup_4x8b_copy)
+-	_ASM_EXTABLE_UA(5b, .L_fixup_4x8b_copy)
+-	_ASM_EXTABLE_UA(6b, .L_fixup_4x8b_copy)
+-	_ASM_EXTABLE_UA(7b, .L_fixup_4x8b_copy)
+-	_ASM_EXTABLE_UA(8b, .L_fixup_4x8b_copy)
+-	_ASM_EXTABLE_UA(9b, .L_fixup_4x8b_copy)
+-	_ASM_EXTABLE_UA(10b, .L_fixup_4x8b_copy)
+-	_ASM_EXTABLE_UA(11b, .L_fixup_4x8b_copy)
+-	_ASM_EXTABLE_UA(12b, .L_fixup_4x8b_copy)
+-	_ASM_EXTABLE_UA(13b, .L_fixup_4x8b_copy)
+-	_ASM_EXTABLE_UA(14b, .L_fixup_4x8b_copy)
+-	_ASM_EXTABLE_UA(15b, .L_fixup_4x8b_copy)
+-	_ASM_EXTABLE_UA(16b, .L_fixup_4x8b_copy)
+-	_ASM_EXTABLE_UA(20b, .L_fixup_8b_copy)
+-	_ASM_EXTABLE_UA(21b, .L_fixup_8b_copy)
+-	_ASM_EXTABLE_UA(30b, .L_fixup_4b_copy)
+-	_ASM_EXTABLE_UA(31b, .L_fixup_4b_copy)
+-	_ASM_EXTABLE_UA(40b, .L_fixup_1b_copy)
+-	_ASM_EXTABLE_UA(41b, .L_fixup_1b_copy)
++	_ASM_EXTABLE_CPY(1b, .L_fixup_4x8b_copy)
++	_ASM_EXTABLE_CPY(2b, .L_fixup_4x8b_copy)
++	_ASM_EXTABLE_CPY(3b, .L_fixup_4x8b_copy)
++	_ASM_EXTABLE_CPY(4b, .L_fixup_4x8b_copy)
++	_ASM_EXTABLE_CPY(5b, .L_fixup_4x8b_copy)
++	_ASM_EXTABLE_CPY(6b, .L_fixup_4x8b_copy)
++	_ASM_EXTABLE_CPY(7b, .L_fixup_4x8b_copy)
++	_ASM_EXTABLE_CPY(8b, .L_fixup_4x8b_copy)
++	_ASM_EXTABLE_CPY(9b, .L_fixup_4x8b_copy)
++	_ASM_EXTABLE_CPY(10b, .L_fixup_4x8b_copy)
++	_ASM_EXTABLE_CPY(11b, .L_fixup_4x8b_copy)
++	_ASM_EXTABLE_CPY(12b, .L_fixup_4x8b_copy)
++	_ASM_EXTABLE_CPY(13b, .L_fixup_4x8b_copy)
++	_ASM_EXTABLE_CPY(14b, .L_fixup_4x8b_copy)
++	_ASM_EXTABLE_CPY(15b, .L_fixup_4x8b_copy)
++	_ASM_EXTABLE_CPY(16b, .L_fixup_4x8b_copy)
++	_ASM_EXTABLE_CPY(20b, .L_fixup_8b_copy)
++	_ASM_EXTABLE_CPY(21b, .L_fixup_8b_copy)
++	_ASM_EXTABLE_CPY(30b, .L_fixup_4b_copy)
++	_ASM_EXTABLE_CPY(31b, .L_fixup_4b_copy)
++	_ASM_EXTABLE_CPY(40b, .L_fixup_1b_copy)
++	_ASM_EXTABLE_CPY(41b, .L_fixup_1b_copy)
+ SYM_FUNC_END(__copy_user_nocache)
+ EXPORT_SYMBOL(__copy_user_nocache)
+diff --git a/arch/x86/mm/extable.c b/arch/x86/mm/extable.c
+index de43525..5829457 100644
+--- a/arch/x86/mm/extable.c
++++ b/arch/x86/mm/extable.c
+@@ -80,6 +80,18 @@ __visible bool ex_handler_uaccess(const struct exception_table_entry *fixup,
+ }
+ EXPORT_SYMBOL(ex_handler_uaccess);
+ 
++__visible bool ex_handler_copy(const struct exception_table_entry *fixup,
++			       struct pt_regs *regs, int trapnr,
++			       unsigned long error_code,
++			       unsigned long fault_addr)
++{
++	WARN_ONCE(trapnr == X86_TRAP_GP, "General protection fault in user access. Non-canonical address?");
++	regs->ip = ex_fixup_addr(fixup);
++	regs->ax = trapnr;
++	return true;
++}
++EXPORT_SYMBOL(ex_handler_copy);
++
+ __visible bool ex_handler_rdmsr_unsafe(const struct exception_table_entry *fixup,
+ 				       struct pt_regs *regs, int trapnr,
+ 				       unsigned long error_code,
+@@ -136,7 +148,7 @@ enum handler_type ex_get_fault_handler_type(unsigned long ip)
+ 	handler = ex_fixup_handler(e);
+ 	if (handler == ex_handler_fault)
+ 		return EX_HANDLER_FAULT;
+-	else if (handler == ex_handler_uaccess)
++	else if (handler == ex_handler_uaccess || handler == ex_handler_copy)
+ 		return EX_HANDLER_UACCESS;
+ 	else
+ 		return EX_HANDLER_OTHER;
