@@ -2,77 +2,89 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AEFF328683F
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  7 Oct 2020 21:25:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 145082869E8
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  7 Oct 2020 23:13:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728278AbgJGTZu (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 7 Oct 2020 15:25:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49784 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727111AbgJGTZt (ORCPT
+        id S1728229AbgJGVNi (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 7 Oct 2020 17:13:38 -0400
+Received: from mail.skyhub.de ([5.9.137.197]:54434 "EHLO mail.skyhub.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727948AbgJGVNi (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 7 Oct 2020 15:25:49 -0400
-Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56E25C061755;
-        Wed,  7 Oct 2020 12:25:49 -0700 (PDT)
+        Wed, 7 Oct 2020 17:13:38 -0400
 Received: from zn.tnic (p200300ec2f091000329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ec:2f09:1000:329c:23ff:fea6:a903])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 883371EC04C0;
-        Wed,  7 Oct 2020 21:25:46 +0200 (CEST)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id B85551EC047E;
+        Wed,  7 Oct 2020 23:13:36 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1602098746;
+        t=1602105216;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=opw1Qn/6cTt4NpJfsBA5sd2YWek1O4FfqlhC+eyT3aM=;
-        b=cxY9OxZpm6DfnAkQUupidpmsqxSSqGyq0WMS8+fnY1iVoJmCLLGx7nWO8kNpfNFS9rHVjL
-        ZwCvPE54E4nWfuzQoqqu1IzJXYiQvI+C0zn30UTd5jaar0q2QafzjPz7JgnYC6si9/q2OT
-        aTf3xBzXCOOseh908jxiLYO5B8sILiI=
-Date:   Wed, 7 Oct 2020 21:25:37 +0200
+        bh=/Yh+wbC0gePra/fHYoDJBYHzwvAnC3odlqyeb1eRkS0=;
+        b=Ahf9g86lq4umgnClS2SgAlXjH3q8p/EGeW3E/h1y+n2Z2C36gTb4SS2luUWONCEkQxF1y3
+        uY/Ic3KwuleaXauo/4WodNuPropBofqVWw8PcZNDIeoE0hbOqLegth9TMiKN1QIjmZdCgJ
+        TY2FWjueaW0HRiDyieoy+76tHexnF28=
+Date:   Wed, 7 Oct 2020 23:13:27 +0200
 From:   Borislav Petkov <bp@alien8.de>
-To:     Dan Williams <dan.j.williams@intel.com>
-Cc:     linux-tip-commits@vger.kernel.org, Tony Luck <tony.luck@intel.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        stable <stable@vger.kernel.org>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [tip: ras/core] x86, powerpc: Rename memcpy_mcsafe() to
- copy_mc_to_{user, kernel}()
-Message-ID: <20201007192528.GL5607@zn.tnic>
-References: <CAHk-=wjSqtXAqfUJxFtWNwmguFASTgB0dz1dT3V-78Quiezqbg@mail.gmail.com>
- <160197822988.7002.13716982099938468868.tip-bot2@tip-bot2>
- <20201007111447.GA23257@zn.tnic>
- <20201007164536.GJ5607@zn.tnic>
- <20201007170305.GK5607@zn.tnic>
- <CAPcyv4jgLRzDzXkbdHwA-XUwWuSoA1tZfVqgvFQ5jxq=m2P_Bg@mail.gmail.com>
+To:     Peter Zijlstra <peterz@infradead.org>
+Cc:     linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
+        Michael Matz <matz@suse.de>, Dave Jiang <dave.jiang@intel.com>,
+        Borislav Petkov <bp@suse.de>, Tony Luck <tony.luck@intel.com>,
+        x86 <x86@kernel.org>
+Subject: Re: [tip: x86/pasid] x86/asm: Carve out a generic movdir64b() helper
+ for general usage
+Message-ID: <20201007211327.GN5607@zn.tnic>
+References: <20201005151126.657029-2-dave.jiang@intel.com>
+ <160208728972.7002.18130814269550766361.tip-bot2@tip-bot2>
+ <20201007170835.GM2628@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CAPcyv4jgLRzDzXkbdHwA-XUwWuSoA1tZfVqgvFQ5jxq=m2P_Bg@mail.gmail.com>
+In-Reply-To: <20201007170835.GM2628@hirez.programming.kicks-ass.net>
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Wed, Oct 07, 2020 at 11:53:15AM -0700, Dan Williams wrote:
-> Oh nice! I just sent a patch [1] to fix this up as well,
+On Wed, Oct 07, 2020 at 07:08:35PM +0200, Peter Zijlstra wrote:
+> (%rdx), %rax, surely?
 
-Yeah, for some reason it took you a while to see it - wondering if your
-mail servers are slow again.
+Right, later. Already tagged the branch so that Vinod can base stuff ontop.
 
-> but mine goes
-> after minimizing when it is exported, I think perhaps both are needed.
-> 
-> http://lore.kernel.org/r/160209507277.2768223.9933672492157583642.stgit@dwillia2-desk3.amr.corp.intel.com
+> Also, that's a horrible convention, but I suppose (%rdx), (%rax) was
+> out?
 
-Looks like it. 
+See the end of this mail:
 
-Why not rip out COPY_MC_TEST altogether though? Or you wanna do that
-after the merge window?
+https://lkml.kernel.org/r/alpine.LSU.2.20.2009241356020.20802@wotan.suse.de
 
-It would be good to not have that export in 5.10 final if it is not
-really needed.
+> Can we pretty please get a binutils version that knows about this
+> instruction, such that we know when we can get rid of the silly .byte
+> encoded mess?
 
-Thx.
+It looks like support for this insn got introduced in this binutils commit:
+
+c0a30a9f0ab4 ("Enable Intel MOVDIRI, MOVDIR64B instructions")
+
+So I guess from 2.31 onwards:
+
+$ git tag --contains c0a30a9f0ab48
+binutils-2_31
+binutils-2_31_1
+binutils-2_32
+binutils-2_33
+binutils-2_33_1
+binutils-2_34
+binutils-2_35
+binutils-2_35_1
+gdb-8.2-release
+gdb-8.2.1-release
+gdb-8.3-release
+gdb-8.3.1-release
+gdb-9.1-release
+gdb-9.2-release
+...
 
 -- 
 Regards/Gruss,
