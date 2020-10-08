@@ -2,52 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 211F7287123
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  8 Oct 2020 11:01:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA68028752E
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  8 Oct 2020 15:19:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726685AbgJHJBd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 8 Oct 2020 05:01:33 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:49196 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725802AbgJHJBd (ORCPT
+        id S1725882AbgJHNT7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 8 Oct 2020 09:19:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45922 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725871AbgJHNT7 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 8 Oct 2020 05:01:33 -0400
-Date:   Thu, 08 Oct 2020 09:01:29 -0000
+        Thu, 8 Oct 2020 09:19:59 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB1D4C061755;
+        Thu,  8 Oct 2020 06:19:58 -0700 (PDT)
+Date:   Thu, 08 Oct 2020 13:19:56 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1602147690;
+        s=2020; t=1602163197;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=durKiTlB47YIdyvZ39mwAzI/Jri1OZ66NuaWMy09ZfU=;
-        b=KnyRGYVYkccpu5OrYl7XvxrnkTzP+T3Idn4pFsU86QCsTOh8ET7wej+grxFAU2s6FEp9aQ
-        aH9F9o7S0RDHy47MkSu45PcmoEDIq/CW3NojwCUrX9hqn52nZwKQIhIYD7xst3tjpEoYSm
-        Lo73hbIRXIFGOWvuKevEfDU/9gBmrtWEywiDjvaeI07Sh6ohvT1cSBDl163vrq6xttHqyC
-        toXPKoK1DXoRJ/68SloVGVyTE558zpkgyo1Mh3Vf4hQjVjDBi4i80bzJrLphetvyUt7dfl
-        sUrvtrN4m36zTHTioQY0Rc4c8SdZvmwCNnLfiiD8KmeD2rCwdKplpuNcda/DlA==
+        bh=EG9ZlchHlc+2jUhtfi09OQdoBZEh71inrCFmLU+JAzE=;
+        b=i2At+S4uFkZJDPPqOsm7GM7DRF476QnWN/Jd7L5X0K50UqzSQWfz/7cio32LBIqJ8ta++4
+        4l0rEwTwVX1Eav/IDWARNdrrSq7LGYx2obtANp1UQ51grkv5ia8LdqrGBOMh02LL7Dqis2
+        yxqh8YvkdCubgndmHAicHlxMXcWSvdcq+INjzTuZqayXZwmNmazA+29bJqkmUXD1PCu0gD
+        5PijDDbK2et9OvpMt+6MRWpjR6MzTONRO6nDY3U341ObrVpC/fUy3ERtAEE6vo7Px1JZld
+        7rYhkmCoMFZ39jGbn1qtt5tuZ/ORO2O615Al0d9TXxwySg8s6XHwMUAWRpQ+PQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1602147690;
+        s=2020e; t=1602163197;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=durKiTlB47YIdyvZ39mwAzI/Jri1OZ66NuaWMy09ZfU=;
-        b=Lwt09hNFkyutJqKs0ovTK9Ge4A7JrPfUMFzhRpAgsr26RlR7T/ALdU/yhAvX9jpAYqWTL4
-        b1e0K1l3gz9DMODg==
-From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
+        bh=EG9ZlchHlc+2jUhtfi09OQdoBZEh71inrCFmLU+JAzE=;
+        b=j7zZ2t91H7FTYNZw7ojG6SB3mbIZgH9D9lByDkHtXPZKScLBFXi4UwfWcHX/w4joyTFL69
+        pc/swEywfy3cxOAg==
+From:   "tip-bot2 for Kajol Jain" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: ras/core] x86/mce: Allow for copy_mc_fragile symbol checksum to
- be generated
-Cc:     Borislav Petkov <bp@suse.de>, x86 <x86@kernel.org>,
+Subject: [tip: perf/core] perf: Fix task_function_call() error handling
+Cc:     Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
+        Kajol Jain <kjain@linux.ibm.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Barret Rhoden <brho@google.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20201007111447.GA23257@zn.tnic>
-References: <20201007111447.GA23257@zn.tnic>
+In-Reply-To: <20200827064732.20860-1-kjain@linux.ibm.com>
+References: <20200827064732.20860-1-kjain@linux.ibm.com>
 MIME-Version: 1.0
-Message-ID: <160214768965.7002.13479051629988685867.tip-bot2@tip-bot2>
+Message-ID: <160216319621.7002.17454541069760802602.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -56,44 +61,57 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the ras/core branch of tip:
+The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     b3149ffcdb31a8eb854cc442a389ae0b539bf28a
-Gitweb:        https://git.kernel.org/tip/b3149ffcdb31a8eb854cc442a389ae0b539bf28a
-Author:        Borislav Petkov <bp@suse.de>
-AuthorDate:    Wed, 07 Oct 2020 18:55:35 +02:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Thu, 08 Oct 2020 10:39:21 +02:00
+Commit-ID:     84ad70320241566e028ada955c694ab92f3351e3
+Gitweb:        https://git.kernel.org/tip/84ad70320241566e028ada955c694ab92f3351e3
+Author:        Kajol Jain <kjain@linux.ibm.com>
+AuthorDate:    Thu, 27 Aug 2020 12:17:32 +05:30
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Thu, 08 Oct 2020 15:16:29 +02:00
 
-x86/mce: Allow for copy_mc_fragile symbol checksum to be generated
+perf: Fix task_function_call() error handling
 
-Add asm/mce.h to asm/asm-prototypes.h so that that asm symbol's checksum
-can be generated in order to support CONFIG_MODVERSIONS with it and fix:
+The error handling introduced by commit:
 
-  WARNING: modpost: EXPORT symbol "copy_mc_fragile" [vmlinux] version \
-	  generation failed, symbol will not be versioned.
+  2ed6edd33a21 ("perf: Add cond_resched() to task_function_call()")
 
-For reference see:
+looses any return value from smp_call_function_single() that is not
+{0, -EINVAL}. This is a problem because it will return -EXNIO when the
+target CPU is offline. Worse, in that case it'll turn into an infinite
+loop.
 
-  4efca4ed05cb ("kbuild: modversions for EXPORT_SYMBOL() for asm")
-  334bb7738764 ("x86/kbuild: enable modversions for symbols exported from asm")
-
-Fixes: ec6347bb4339 ("x86, powerpc: Rename memcpy_mcsafe() to copy_mc_to_{user, kernel}()")
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20201007111447.GA23257@zn.tnic
+Fixes: 2ed6edd33a21 ("perf: Add cond_resched() to task_function_call()")
+Reported-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Barret Rhoden <brho@google.com>
+Tested-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Link: https://lkml.kernel.org/r/20200827064732.20860-1-kjain@linux.ibm.com
 ---
- arch/x86/include/asm/asm-prototypes.h | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/events/core.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/include/asm/asm-prototypes.h b/arch/x86/include/asm/asm-prototypes.h
-index 5a42f92..51e2bf2 100644
---- a/arch/x86/include/asm/asm-prototypes.h
-+++ b/arch/x86/include/asm/asm-prototypes.h
-@@ -5,6 +5,7 @@
- #include <asm/string.h>
- #include <asm/page.h>
- #include <asm/checksum.h>
-+#include <asm/mce.h>
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 45edb85..85a6e7f 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -99,7 +99,7 @@ static void remote_function(void *data)
+  * retry due to any failures in smp_call_function_single(), such as if the
+  * task_cpu() goes offline concurrently.
+  *
+- * returns @func return value or -ESRCH when the process isn't running
++ * returns @func return value or -ESRCH or -ENXIO when the process isn't running
+  */
+ static int
+ task_function_call(struct task_struct *p, remote_function_f func, void *info)
+@@ -115,7 +115,8 @@ task_function_call(struct task_struct *p, remote_function_f func, void *info)
+ 	for (;;) {
+ 		ret = smp_call_function_single(task_cpu(p), remote_function,
+ 					       &data, 1);
+-		ret = !ret ? data.ret : -EAGAIN;
++		if (!ret)
++			ret = data.ret;
  
- #include <asm-generic/asm-prototypes.h>
- 
+ 		if (ret != -EAGAIN)
+ 			break;
