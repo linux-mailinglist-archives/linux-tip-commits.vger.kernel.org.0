@@ -2,135 +2,91 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C9CE288F09
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  9 Oct 2020 18:37:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5CABC288F55
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  9 Oct 2020 19:01:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389662AbgJIQhr (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 9 Oct 2020 12:37:47 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41384 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2388719AbgJIQhr (ORCPT
+        id S2389878AbgJIRBZ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 9 Oct 2020 13:01:25 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:59144 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389742AbgJIRBZ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 9 Oct 2020 12:37:47 -0400
-Received: from paulmck-ThinkPad-P72.home (50-39-104-11.bvtn.or.frontiernet.net [50.39.104.11])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 845CF22280;
-        Fri,  9 Oct 2020 16:37:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1602261466;
-        bh=uyBqRXCX9yoXHHyVP4aERA3vGxdtAVb16Nfie9M1VJ4=;
-        h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
-        b=r5a3tB7nnwlMogggRNBkUk8qAvs//cfbgsOdoCssLegDl4dz0BibERanQGOi47D11
-         hAC02EBZQ4w2VKRb4e6NDkrVXTEGyubHSrTiH4QdGt8U0DSJyjW1cglPeVQ21ksDre
-         WlFV9gv8iGeKfmxlaStaYTQq+DEcN2Yneappvito=
-Received: by paulmck-ThinkPad-P72.home (Postfix, from userid 1000)
-        id 5717335227D5; Fri,  9 Oct 2020 09:37:46 -0700 (PDT)
-Date:   Fri, 9 Oct 2020 09:37:46 -0700
-From:   "Paul E. McKenney" <paulmck@kernel.org>
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     Qian Cai <cai@redhat.com>, Steven Rostedt <rostedt@goodmis.org>,
-        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
-        linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-        Linux Next Mailing List <linux-next@vger.kernel.org>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Boqun Feng <boqun.feng@gmail.com>
-Subject: Re: [tip: locking/core] lockdep: Fix lockdep recursion
-Message-ID: <20201009163746.GA20981@paulmck-ThinkPad-P72>
-Reply-To: paulmck@kernel.org
-References: <160223032121.7002.1269740091547117869.tip-bot2@tip-bot2>
- <e438b231c5e1478527af6c3e69bf0b37df650110.camel@redhat.com>
- <20201009135837.GD29330@paulmck-ThinkPad-P72>
- <20201009162352.GR2611@hirez.programming.kicks-ass.net>
+        Fri, 9 Oct 2020 13:01:25 -0400
+Date:   Fri, 09 Oct 2020 17:01:21 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1602262883;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=X0dgRra6o3xbQR+mSY3zpUGGOE2pAm7wo2s6v5QuJGA=;
+        b=pIXLTbW2WPErHoDAQLcvzTjIRgN0ERXfsdswC3tFr0mXZq7SFQHDbZIvwKC7Rc7/kwloif
+        lPJbimssFt+nRQW3gzwvfb+cXW26FU9mvuUsAq6McrUGDbUw/mIYax5ykQ53rNaaMSeuIk
+        rNXCesuAKGyeubX5G2tS3c15iGDtx6ssIzYoXDMGQ3iPlI5ewI1Spx1skXkvKgrQy4eRdh
+        vACKeX587BGbvrhVg+AGGiqVcZe2nT0IGK5yNSnQ4GtqEKW5zyosVPKM2biFp4wh/flx3P
+        TXBsy7UoGbLpBRIa/VcMdfYKLKI7YW4w7e/9nKj8arp3K2Hk8Q2wCbdnXCNRng==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1602262883;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=X0dgRra6o3xbQR+mSY3zpUGGOE2pAm7wo2s6v5QuJGA=;
+        b=Vh/SsD3cp06HP/ksnh7lbufzY0wWriK8ZJowIzViPA+vls5bHxTsFyyWwnOjIXXHqFB6Fw
+        0C0meqmSx3ely4DA==
+From:   "tip-bot2 for kernel test robot" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: core/rcu] kvfree_rcu(): Fix ifnullfree.cocci warnings
+Cc:     "Joel Fernandes (Google)" <joel@joelfernandes.org>,
+        kernel test robot <lkp@intel.com>,
+        Julia Lawall <julia.lawall@inria.fr>,
+        "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201009162352.GR2611@hirez.programming.kicks-ass.net>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Message-ID: <160226288169.7002.481627657092505420.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2.linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Fri, Oct 09, 2020 at 06:23:52PM +0200, Peter Zijlstra wrote:
-> On Fri, Oct 09, 2020 at 06:58:37AM -0700, Paul E. McKenney wrote:
-> > On Fri, Oct 09, 2020 at 09:41:24AM -0400, Qian Cai wrote:
-> > > On Fri, 2020-10-09 at 07:58 +0000, tip-bot2 for Peter Zijlstra wrote:
-> > > > The following commit has been merged into the locking/core branch of tip:
-> > > > 
-> > > > Commit-ID:     4d004099a668c41522242aa146a38cc4eb59cb1e
-> > > > Gitweb:        
-> > > > https://git.kernel.org/tip/4d004099a668c41522242aa146a38cc4eb59cb1e
-> > > > Author:        Peter Zijlstra <peterz@infradead.org>
-> > > > AuthorDate:    Fri, 02 Oct 2020 11:04:21 +02:00
-> > > > Committer:     Ingo Molnar <mingo@kernel.org>
-> > > > CommitterDate: Fri, 09 Oct 2020 08:53:30 +02:00
-> > > > 
-> > > > lockdep: Fix lockdep recursion
-> > > > 
-> > > > Steve reported that lockdep_assert*irq*(), when nested inside lockdep
-> > > > itself, will trigger a false-positive.
-> > > > 
-> > > > One example is the stack-trace code, as called from inside lockdep,
-> > > > triggering tracing, which in turn calls RCU, which then uses
-> > > > lockdep_assert_irqs_disabled().
-> > > > 
-> > > > Fixes: a21ee6055c30 ("lockdep: Change hardirq{s_enabled,_context} to per-cpu
-> > > > variables")
-> > > > Reported-by: Steven Rostedt <rostedt@goodmis.org>
-> > > > Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> > > > Signed-off-by: Ingo Molnar <mingo@kernel.org>
-> > > 
-> > > Reverting this linux-next commit fixed booting RCU-list warnings everywhere.
-> > 
-> > Is it possible that the RCU-list warnings were being wrongly suppressed
-> > without a21ee6055c30?  As in are you certain that these RCU-list warnings
-> > are in fact false positives?
-> 
-> > > [    4.002695][    T0]  init_timer_key+0x29/0x220
-> > > [    4.002695][    T0]  identify_cpu+0xfcb/0x1980
-> > > [    4.002695][    T0]  identify_secondary_cpu+0x1d/0x190
-> > > [    4.002695][    T0]  smp_store_cpu_info+0x167/0x1f0
-> > > [    4.002695][    T0]  start_secondary+0x5b/0x290
-> > > [    4.002695][    T0]  secondary_startup_64_no_verify+0xb8/0xbb
-> 
-> 
-> They're actually correct warnings, this is trying to use RCU before that
-> CPU is reported to RCU.
-> 
-> Possibly something like the below works, but I've not tested it, nor
-> have I really thought hard about it, bring up tricky and this is just
-> moving code.
+The following commit has been merged into the core/rcu branch of tip:
 
-Looks to me like a good thing to try!  ;-)
+Commit-ID:     849b9c5446ccb0c98c7b11c69f169d22777ab31b
+Gitweb:        https://git.kernel.org/tip/849b9c5446ccb0c98c7b11c69f169d22777ab31b
+Author:        kernel test robot <lkp@intel.com>
+AuthorDate:    Sun, 27 Sep 2020 15:00:29 +02:00
+Committer:     Paul E. McKenney <paulmck@kernel.org>
+CommitterDate: Thu, 01 Oct 2020 09:07:24 -07:00
 
-							Thanx, Paul
+kvfree_rcu(): Fix ifnullfree.cocci warnings
 
-> ---
-> 
-> diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-> index 35ad8480c464..9173d64ee69d 100644
-> --- a/arch/x86/kernel/cpu/common.c
-> +++ b/arch/x86/kernel/cpu/common.c
-> @@ -1670,6 +1670,9 @@ void __init identify_boot_cpu(void)
->  void identify_secondary_cpu(struct cpuinfo_x86 *c)
->  {
->  	BUG_ON(c == &boot_cpu_data);
-> +
-> +	rcu_cpu_starting(smp_processor_id());
-> +
->  	identify_cpu(c);
->  #ifdef CONFIG_X86_32
->  	enable_sep_cpu();
-> diff --git a/arch/x86/kernel/cpu/mtrr/mtrr.c b/arch/x86/kernel/cpu/mtrr/mtrr.c
-> index 6a80f36b5d59..5f436cb4f7c4 100644
-> --- a/arch/x86/kernel/cpu/mtrr/mtrr.c
-> +++ b/arch/x86/kernel/cpu/mtrr/mtrr.c
-> @@ -794,8 +794,6 @@ void mtrr_ap_init(void)
->  	if (!use_intel() || mtrr_aps_delayed_init)
->  		return;
->  
-> -	rcu_cpu_starting(smp_processor_id());
-> -
->  	/*
->  	 * Ideally we should hold mtrr_mutex here to avoid mtrr entries
->  	 * changed, but this routine will be called in cpu boot time,
+NULL check before kfree is not needed.
+
+Generated by: scripts/coccinelle/free/ifnullfree.cocci
+
+Fixes: 16a6320addfc ("rcu/tree: Allocate a page when caller is preemptible")
+Acked-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+Signed-off-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Julia Lawall <julia.lawall@inria.fr>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+---
+ kernel/rcu/tree.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
+index 39ac930..09dfd03 100644
+--- a/kernel/rcu/tree.c
++++ b/kernel/rcu/tree.c
+@@ -3165,8 +3165,7 @@ static void kfree_rcu_work(struct work_struct *work)
+ 				bkvhead[i] = NULL;
+ 			krc_this_cpu_unlock(krcp, flags);
+ 
+-			if (bkvhead[i])
+-				kfree(bkvhead[i]);
++			kfree(bkvhead[i]);
+ 
+ 			cond_resched_tasks_rcu_qs();
+ 		}
