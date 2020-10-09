@@ -2,47 +2,50 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C0BE3288439
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  9 Oct 2020 10:00:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 815FF28842E
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  9 Oct 2020 09:59:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732601AbgJIH7e (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 9 Oct 2020 03:59:34 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:56244 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732492AbgJIH6y (ORCPT
+        id S1732575AbgJIH7S (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 9 Oct 2020 03:59:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49296 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732509AbgJIH65 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 9 Oct 2020 03:58:54 -0400
-Date:   Fri, 09 Oct 2020 07:58:50 -0000
+        Fri, 9 Oct 2020 03:58:57 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6ADAC0613DD;
+        Fri,  9 Oct 2020 00:58:53 -0700 (PDT)
+Date:   Fri, 09 Oct 2020 07:58:51 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1602230331;
+        s=2020; t=1602230332;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=rso/ltSAJ/sz77ox1RHGYYD11K4Ed+muEn7ip6Dxmhc=;
-        b=S3pOGVTl+QT4bbx6DRz3DWIEyMnQr7H7LYRtveRzwlnsF/yT3R6k/QQaZ336QLUIXEJ0p9
-        2ys1/UewvP9Yj7/S1Tb9LxxMllN+wr5ngQAfRQ6q2sRq5uZHS+IZKGUNy+4Mv850TvgkVU
-        WVCyK78pDFN/skknGz6eqKVwXc8u5/Pj3OorVLiejNaGd+ki5KPaF8OTo5bhXibZKgVfac
-        pwnwFpBmmsL2Qx2/BaJuMa3OZgjG2mFuuyWpoQA13WyRYtF65MrrWk3/K7WiP2cy5b3hJd
-        jXaWRz33HlNDx3xEuPUdB0Z/Y9ppnrub/Rn4vKHs5dlbP4RSZjAin7Z9t1bgzQ==
+        bh=ascJWP7w3B3xScXoK4K6IE4Cav1GdhpDImy6b/9N6mY=;
+        b=Com5l8oDirfY4Jcf+0YHoAdLLbpmJgKHbCHqBJ7ueRYgA1kd+mdD/oNMKyF3tTS5bpilcG
+        brWOa5ZgfED1pNLwijTv62+St2Ae4TRsrt8JSpuE0eXHdYG7XP5kcg478buUM+dxZmi00e
+        XYR+jb9bn+fUeK0BEv85PI2ptr/6/6LTbjjpnsWqBjBulrBFkwKDQzVvVswjl5yEunhioR
+        qTn6vBSGy8110FnkPFAN38hmk2FPnaKlJP6gpDBn21EfMjO6ignMa5DmS4RjIuzqV2ZPDF
+        M75/dcQdyd3wXUKw/g1rvIv8PL9LllSyq17nKxRrFg6UHMg+ziN+s75je+m4dQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1602230331;
+        s=2020e; t=1602230332;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=rso/ltSAJ/sz77ox1RHGYYD11K4Ed+muEn7ip6Dxmhc=;
-        b=/eB+mM9979n9sYv86QDAYOO+g/8wamwIU/rEiaxMxifSP4Cojk1G4Ph6eV5ZVB6JRVzd7I
-        2kRBoKh68VAj96Ag==
+        bh=ascJWP7w3B3xScXoK4K6IE4Cav1GdhpDImy6b/9N6mY=;
+        b=s5uVUWi2ZvAjyKGHzk1Sv9t4D2gSdFFl34HtZ2NTcFliLjsCvprPmJuJlqeJvZNQFq/hwR
+        r5wqMcApTnV1y4CQ==
 From:   "tip-bot2 for Marco Elver" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] kcsan: Test support for compound instrumentation
+Subject: [tip: locking/core] kcsan: Skew delay to be longer for certain access types
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Marco Elver <elver@google.com>,
         "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <160223033066.7002.6713001500945527012.tip-bot2@tip-bot2>
+Message-ID: <160223033171.7002.4242667766393113069.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -53,154 +56,69 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     bec4a2474890a6884eb890c778ea02bccaaae6eb
-Gitweb:        https://git.kernel.org/tip/bec4a2474890a6884eb890c778ea02bccaaae6eb
+Commit-ID:     106a307fd0a762e2d47e1cf99e6da43763887a18
+Gitweb:        https://git.kernel.org/tip/106a307fd0a762e2d47e1cf99e6da43763887a18
 Author:        Marco Elver <elver@google.com>
-AuthorDate:    Fri, 24 Jul 2020 09:00:05 +02:00
+AuthorDate:    Fri, 24 Jul 2020 09:00:03 +02:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Mon, 24 Aug 2020 15:09:58 -07:00
+CommitterDate: Mon, 24 Aug 2020 15:09:57 -07:00
 
-kcsan: Test support for compound instrumentation
+kcsan: Skew delay to be longer for certain access types
 
-Changes kcsan-test module to support checking reports that include
-compound instrumentation. Since we should not fail the test if this
-support is unavailable, we have to add a config variable that the test
-can use to decide what to check for.
+For compound instrumentation and assert accesses, skew the watchpoint
+delay to be longer if randomized. This is useful to improve race
+detection for such accesses.
+
+For compound accesses we should increase the delay as we've aggregated
+both read and write instrumentation. By giving up 1 call into the
+runtime, we're less likely to set up a watchpoint and thus less likely
+to detect a race. We can balance this by increasing the watchpoint
+delay.
+
+For assert accesses, we know these are of increased interest, and we
+wish to increase our chances of detecting races for such checks.
+
+Note that, kcsan_udelay_{task,interrupt} define the upper bound delays.
+When randomized, delays are uniformly distributed between [0, delay].
+Skewing the delay does not break this promise as long as the defined
+upper bounds are still adhered to. The current skew results in delays
+uniformly distributed between [delay/2, delay].
 
 Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Marco Elver <elver@google.com>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/kcsan/kcsan-test.c | 65 +++++++++++++++++++++++++++++---------
- lib/Kconfig.kcsan         |  5 +++-
- 2 files changed, 56 insertions(+), 14 deletions(-)
+ kernel/kcsan/core.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/kcsan/kcsan-test.c b/kernel/kcsan/kcsan-test.c
-index 721180c..ebe7fd2 100644
---- a/kernel/kcsan/kcsan-test.c
-+++ b/kernel/kcsan/kcsan-test.c
-@@ -27,6 +27,12 @@
- #include <linux/types.h>
- #include <trace/events/printk.h>
- 
-+#ifdef CONFIG_CC_HAS_TSAN_COMPOUND_READ_BEFORE_WRITE
-+#define __KCSAN_ACCESS_RW(alt) (KCSAN_ACCESS_COMPOUND | KCSAN_ACCESS_WRITE)
-+#else
-+#define __KCSAN_ACCESS_RW(alt) (alt)
-+#endif
-+
- /* Points to current test-case memory access "kernels". */
- static void (*access_kernels[2])(void);
- 
-@@ -186,20 +192,21 @@ static bool report_matches(const struct expect_report *r)
- 
- 	/* Access 1 & 2 */
- 	for (i = 0; i < 2; ++i) {
-+		const int ty = r->access[i].type;
- 		const char *const access_type =
--			(r->access[i].type & KCSAN_ACCESS_ASSERT) ?
--				((r->access[i].type & KCSAN_ACCESS_WRITE) ?
--					 "assert no accesses" :
--					 "assert no writes") :
--				((r->access[i].type & KCSAN_ACCESS_WRITE) ?
--					 "write" :
--					 "read");
-+			(ty & KCSAN_ACCESS_ASSERT) ?
-+				      ((ty & KCSAN_ACCESS_WRITE) ?
-+					       "assert no accesses" :
-+					       "assert no writes") :
-+				      ((ty & KCSAN_ACCESS_WRITE) ?
-+					       ((ty & KCSAN_ACCESS_COMPOUND) ?
-+							"read-write" :
-+							"write") :
-+					       "read");
- 		const char *const access_type_aux =
--			(r->access[i].type & KCSAN_ACCESS_ATOMIC) ?
--				" (marked)" :
--				((r->access[i].type & KCSAN_ACCESS_SCOPED) ?
--					 " (scoped)" :
--					 "");
-+			(ty & KCSAN_ACCESS_ATOMIC) ?
-+				      " (marked)" :
-+				      ((ty & KCSAN_ACCESS_SCOPED) ? " (scoped)" : "");
- 
- 		if (i == 1) {
- 			/* Access 2 */
-@@ -277,6 +284,12 @@ static noinline void test_kernel_write_atomic(void)
- 	WRITE_ONCE(test_var, READ_ONCE_NOCHECK(test_sink) + 1);
+diff --git a/kernel/kcsan/core.c b/kernel/kcsan/core.c
+index 4c8b40b..95a364e 100644
+--- a/kernel/kcsan/core.c
++++ b/kernel/kcsan/core.c
+@@ -283,11 +283,15 @@ static __always_inline bool kcsan_is_enabled(void)
+ 	return READ_ONCE(kcsan_enabled) && get_ctx()->disable_count == 0;
  }
  
-+static noinline void test_kernel_atomic_rmw(void)
-+{
-+	/* Use builtin, so we can set up the "bad" atomic/non-atomic scenario. */
-+	__atomic_fetch_add(&test_var, 1, __ATOMIC_RELAXED);
-+}
+-static inline unsigned int get_delay(void)
++static inline unsigned int get_delay(int type)
+ {
+ 	unsigned int delay = in_task() ? kcsan_udelay_task : kcsan_udelay_interrupt;
++	/* For certain access types, skew the random delay to be longer. */
++	unsigned int skew_delay_order =
++		(type & (KCSAN_ACCESS_COMPOUND | KCSAN_ACCESS_ASSERT)) ? 1 : 0;
 +
- __no_kcsan
- static noinline void test_kernel_write_uninstrumented(void) { test_var++; }
- 
-@@ -439,8 +452,8 @@ static void test_concurrent_races(struct kunit *test)
- 	const struct expect_report expect = {
- 		.access = {
- 			/* NULL will match any address. */
--			{ test_kernel_rmw_array, NULL, 0, KCSAN_ACCESS_WRITE },
--			{ test_kernel_rmw_array, NULL, 0, 0 },
-+			{ test_kernel_rmw_array, NULL, 0, __KCSAN_ACCESS_RW(KCSAN_ACCESS_WRITE) },
-+			{ test_kernel_rmw_array, NULL, 0, __KCSAN_ACCESS_RW(0) },
- 		},
- 	};
- 	static const struct expect_report never = {
-@@ -629,6 +642,29 @@ static void test_read_plain_atomic_write(struct kunit *test)
- 	KUNIT_EXPECT_TRUE(test, match_expect);
+ 	return delay - (IS_ENABLED(CONFIG_KCSAN_DELAY_RANDOMIZE) ?
+-				prandom_u32_max(delay) :
++				prandom_u32_max(delay >> skew_delay_order) :
+ 				0);
  }
  
-+/* Test that atomic RMWs generate correct report. */
-+__no_kcsan
-+static void test_read_plain_atomic_rmw(struct kunit *test)
-+{
-+	const struct expect_report expect = {
-+		.access = {
-+			{ test_kernel_read, &test_var, sizeof(test_var), 0 },
-+			{ test_kernel_atomic_rmw, &test_var, sizeof(test_var),
-+				KCSAN_ACCESS_COMPOUND | KCSAN_ACCESS_WRITE | KCSAN_ACCESS_ATOMIC },
-+		},
-+	};
-+	bool match_expect = false;
-+
-+	if (IS_ENABLED(CONFIG_KCSAN_IGNORE_ATOMICS))
-+		return;
-+
-+	begin_test_checks(test_kernel_read, test_kernel_atomic_rmw);
-+	do {
-+		match_expect = report_matches(&expect);
-+	} while (!end_test_checks(match_expect));
-+	KUNIT_EXPECT_TRUE(test, match_expect);
-+}
-+
- /* Zero-sized accesses should never cause data race reports. */
- __no_kcsan
- static void test_zero_size_access(struct kunit *test)
-@@ -942,6 +978,7 @@ static struct kunit_case kcsan_test_cases[] = {
- 	KCSAN_KUNIT_CASE(test_write_write_struct_part),
- 	KCSAN_KUNIT_CASE(test_read_atomic_write_atomic),
- 	KCSAN_KUNIT_CASE(test_read_plain_atomic_write),
-+	KCSAN_KUNIT_CASE(test_read_plain_atomic_rmw),
- 	KCSAN_KUNIT_CASE(test_zero_size_access),
- 	KCSAN_KUNIT_CASE(test_data_race),
- 	KCSAN_KUNIT_CASE(test_assert_exclusive_writer),
-diff --git a/lib/Kconfig.kcsan b/lib/Kconfig.kcsan
-index 3d282d5..f271ff5 100644
---- a/lib/Kconfig.kcsan
-+++ b/lib/Kconfig.kcsan
-@@ -40,6 +40,11 @@ menuconfig KCSAN
+@@ -470,7 +474,7 @@ kcsan_setup_watchpoint(const volatile void *ptr, size_t size, int type)
+ 	 * Delay this thread, to increase probability of observing a racy
+ 	 * conflicting access.
+ 	 */
+-	udelay(get_delay());
++	udelay(get_delay(type));
  
- if KCSAN
- 
-+# Compiler capabilities that should not fail the test if they are unavailable.
-+config CC_HAS_TSAN_COMPOUND_READ_BEFORE_WRITE
-+	def_bool (CC_IS_CLANG && $(cc-option,-fsanitize=thread -mllvm -tsan-compound-read-before-write=1)) || \
-+		 (CC_IS_GCC && $(cc-option,-fsanitize=thread --param tsan-compound-read-before-write=1))
-+
- config KCSAN_VERBOSE
- 	bool "Show verbose reports with more information about system state"
- 	depends on PROVE_LOCKING
+ 	/*
+ 	 * Re-read value, and check if it is as expected; if not, we infer a
