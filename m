@@ -2,48 +2,46 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A526288270
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  9 Oct 2020 08:38:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BCFF128826A
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  9 Oct 2020 08:38:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731490AbgJIGhK (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 9 Oct 2020 02:37:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36466 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732028AbgJIGfi (ORCPT
+        id S1732267AbgJIGg5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 9 Oct 2020 02:36:57 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:55490 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732032AbgJIGfk (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 9 Oct 2020 02:35:38 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5111BC0613D2;
-        Thu,  8 Oct 2020 23:35:38 -0700 (PDT)
-Date:   Fri, 09 Oct 2020 06:35:36 -0000
+        Fri, 9 Oct 2020 02:35:40 -0400
+Date:   Fri, 09 Oct 2020 06:35:37 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1602225336;
+        s=2020; t=1602225338;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=fUa5GngnLEPx+P4V7jZ6q8T03DJCBqqv2sNq7Folu20=;
-        b=FMAjY5tPzzUZs3b8qwPj6n5+1QUfnm0V55i1egXL34zd75gs4V08xx9oWQeZtC1zO9Lurm
-        CWJmpCMnJneYA6hm0E7oJbBlsJfFMJwGflKMi8+pLAo4smbgyPmVATnQEDw6egzxMCfIDm
-        2g5tu5Z3EdyeGsm4j4014gHj1xXHdaOdkz5fzdFVQNy+qZosUqyV9k3x6rnfmQPq2dbLbT
-        Q5t54TCCLZxPDFen186wY0jwGaSbvsn9tjcFAGTsB9vC8Kh08fLxAso1x9aMaATGhQwRZf
-        l8jYboKzR5rlspPG0peSR1Xjhczxqs1LwdhCwwARC1BWkA+irs7ghsaKE8eVdQ==
+        bh=1WFERfx/rSI7pI3YTD+hhGP8UecLm2meaDGfZwqXK9c=;
+        b=WZQ0mNUA7ZpIY8T+E0sftgg9xnJ0puH7s/6Hdf56o9PtZgu7EMbMS12bebBZwL7l4pR2bK
+        cJl+t3IRN7ZnhDBBOykI3tLcS16F2l9WS66yb92TGrrSN9NvcDp6cyn4pu3YSdCq7cxP98
+        QHAfNe+ihhlRoUZvfn+OUxAF+TYagWmiU++EkpFb0rMaN6xF7MBKUZUuLIMNeECQXt3AVI
+        VPex1PiU2MfIkvTd7Y9G66YD2x2+X4VVVeeDXFNwqOHD+x/yxqX0ZEdnq0A4AfQ1m/57iF
+        4HqyHnyPsU0o+o0RjCJcWlskVJh6fg6/4edOB+HCRNTwlAfVVNmZue7qdex7Rg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1602225336;
+        s=2020e; t=1602225338;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=fUa5GngnLEPx+P4V7jZ6q8T03DJCBqqv2sNq7Folu20=;
-        b=dsCIB0kveo8aiFG2cgT9dpAP27q4RFwxmM6VDA9CqieDUBzBI3GPM9l04OTEZgNwGgZIxm
-        HxJTCiAanNr8PRAg==
-From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
+        bh=1WFERfx/rSI7pI3YTD+hhGP8UecLm2meaDGfZwqXK9c=;
+        b=U7b+WPDOyzH9YAoED60KUZmEk58gP3GLFyy6D1yZD53bX0Xy+7MZZWD2kHZaTPMYOMGgSo
+        hCBPR0/cbIuvZyBA==
+From:   "tip-bot2 for Tobias Klauser" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcu: Move rcu_cpu_started per-CPU variable to rcu_data
-Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
+Subject: [tip: core/rcu] rcu: Fix kerneldoc comments in rcupdate.h
+Cc:     Tobias Klauser <tklauser@distanz.ch>,
+        "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <160222533625.7002.6016249586861310634.tip-bot2@tip-bot2>
+Message-ID: <160222533771.7002.18170202456845299999.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -54,75 +52,62 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     c0f97f20e5d97a1358ade650fcf6a322c0c9bc72
-Gitweb:        https://git.kernel.org/tip/c0f97f20e5d97a1358ade650fcf6a322c0c9bc72
-Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Fri, 24 Jul 2020 20:22:05 -07:00
+Commit-ID:     000601bb62330f18dc8f5d2d0b82e9aec3e207c4
+Gitweb:        https://git.kernel.org/tip/000601bb62330f18dc8f5d2d0b82e9aec3e207c4
+Author:        Tobias Klauser <tklauser@distanz.ch>
+AuthorDate:    Thu, 09 Jul 2020 15:05:59 +02:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Mon, 24 Aug 2020 18:37:54 -07:00
+CommitterDate: Mon, 24 Aug 2020 18:36:08 -07:00
 
-rcu: Move rcu_cpu_started per-CPU variable to rcu_data
+rcu: Fix kerneldoc comments in rcupdate.h
 
-When the rcu_cpu_started per-CPU variable was added by commit
-f64c6013a202 ("rcu/x86: Provide early rcu_cpu_starting() callback"),
-there were multiple sets of per-CPU rcu_data structures.  Therefore, the
-rcu_cpu_started flag was added as a separate per-CPU variable.  But now
-there is only one set of per-CPU rcu_data structures, so this commit
-moves rcu_cpu_started to a new ->cpu_started field in that structure.
+This commit fixes the kerneldoc comments for rcu_read_unlock_bh(),
+rcu_read_unlock_sched() and rcu_head_after_call_rcu() so they e.g. get
+properly linked in the API documentation. Also add parenthesis after
+function names to match the notation used in other kerneldoc comments in
+the same file.
 
+Signed-off-by: Tobias Klauser <tklauser@distanz.ch>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/rcu/tree.c | 11 ++++-------
- kernel/rcu/tree.h |  1 +
- 2 files changed, 5 insertions(+), 7 deletions(-)
+ include/linux/rcupdate.h | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
-index da05afc..52108dd 100644
---- a/kernel/rcu/tree.c
-+++ b/kernel/rcu/tree.c
-@@ -3967,8 +3967,6 @@ int rcutree_offline_cpu(unsigned int cpu)
- 	return 0;
+diff --git a/include/linux/rcupdate.h b/include/linux/rcupdate.h
+index d15d46d..b47d6b6 100644
+--- a/include/linux/rcupdate.h
++++ b/include/linux/rcupdate.h
+@@ -709,8 +709,8 @@ static inline void rcu_read_lock_bh(void)
+ 			 "rcu_read_lock_bh() used illegally while idle");
  }
  
--static DEFINE_PER_CPU(int, rcu_cpu_started);
--
- /*
-  * Mark the specified CPU as being online so that subsequent grace periods
-  * (both expedited and normal) will wait on it.  Note that this means that
-@@ -3988,12 +3986,11 @@ void rcu_cpu_starting(unsigned int cpu)
- 	struct rcu_node *rnp;
- 	bool newcpu;
- 
--	if (per_cpu(rcu_cpu_started, cpu))
-+	rdp = per_cpu_ptr(&rcu_data, cpu);
-+	if (rdp->cpu_started)
- 		return;
-+	rdp->cpu_started = true;
- 
--	per_cpu(rcu_cpu_started, cpu) = 1;
--
--	rdp = per_cpu_ptr(&rcu_data, cpu);
- 	rnp = rdp->mynode;
- 	mask = rdp->grpmask;
- 	raw_spin_lock_irqsave_rcu_node(rnp, flags);
-@@ -4053,7 +4050,7 @@ void rcu_report_dead(unsigned int cpu)
- 	raw_spin_unlock_irqrestore_rcu_node(rnp, flags);
- 	raw_spin_unlock(&rcu_state.ofl_lock);
- 
--	per_cpu(rcu_cpu_started, cpu) = 0;
-+	rdp->cpu_started = false;
+-/*
+- * rcu_read_unlock_bh - marks the end of a softirq-only RCU critical section
++/**
++ * rcu_read_unlock_bh() - marks the end of a softirq-only RCU critical section
+  *
+  * See rcu_read_lock_bh() for more information.
+  */
+@@ -751,10 +751,10 @@ static inline notrace void rcu_read_lock_sched_notrace(void)
+ 	__acquire(RCU_SCHED);
  }
  
- /*
-diff --git a/kernel/rcu/tree.h b/kernel/rcu/tree.h
-index c96ae35..309bc7f 100644
---- a/kernel/rcu/tree.h
-+++ b/kernel/rcu/tree.h
-@@ -156,6 +156,7 @@ struct rcu_data {
- 	bool		beenonline;	/* CPU online at least once. */
- 	bool		gpwrap;		/* Possible ->gp_seq wrap. */
- 	bool		exp_deferred_qs; /* This CPU awaiting a deferred QS? */
-+	bool		cpu_started;	/* RCU watching this onlining CPU. */
- 	struct rcu_node *mynode;	/* This CPU's leaf of hierarchy */
- 	unsigned long grpmask;		/* Mask to apply to leaf qsmask. */
- 	unsigned long	ticks_this_gp;	/* The number of scheduling-clock */
+-/*
+- * rcu_read_unlock_sched - marks the end of a RCU-classic critical section
++/**
++ * rcu_read_unlock_sched() - marks the end of a RCU-classic critical section
+  *
+- * See rcu_read_lock_sched for more information.
++ * See rcu_read_lock_sched() for more information.
+  */
+ static inline void rcu_read_unlock_sched(void)
+ {
+@@ -945,7 +945,7 @@ static inline void rcu_head_init(struct rcu_head *rhp)
+ }
+ 
+ /**
+- * rcu_head_after_call_rcu - Has this rcu_head been passed to call_rcu()?
++ * rcu_head_after_call_rcu() - Has this rcu_head been passed to call_rcu()?
+  * @rhp: The rcu_head structure to test.
+  * @f: The function passed to call_rcu() along with @rhp.
+  *
