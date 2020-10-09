@@ -2,49 +2,48 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F933288236
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  9 Oct 2020 08:35:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB7E0288271
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  9 Oct 2020 08:38:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732045AbgJIGfk (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 9 Oct 2020 02:35:40 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:55580 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731929AbgJIGfh (ORCPT
+        id S1731221AbgJIGhK (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 9 Oct 2020 02:37:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36462 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732025AbgJIGfi (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 9 Oct 2020 02:35:37 -0400
-Date:   Fri, 09 Oct 2020 06:35:34 -0000
+        Fri, 9 Oct 2020 02:35:38 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7D12C0613D8;
+        Thu,  8 Oct 2020 23:35:37 -0700 (PDT)
+Date:   Fri, 09 Oct 2020 06:35:35 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1602225334;
+        s=2020; t=1602225336;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=xjgZXEeDs3BTu2Qvjo0CIFoTOUQKyrt13PEwiAHozTg=;
-        b=3rsHCrPu0cRSM/f7nm7zRJrhGJC6iJpTG+OEqMwqI1jOLWtrGILx0nTwgRNUsKlV6MsiLt
-        GV1YI3f5luMU2Tp3AysuIc8/+nzdgW2Sv68J7lroWRCKpCNp9ncovGeA0R1kX165dncCM+
-        V8ReG3u9UJnDoOjoBmp4wNX7Bu/HKMtX1CQBT1LY77O/1xR67PC8AyARzCPLkkhG0QJrEb
-        lGZmFnz8/bMxSx43jtni4dZ19XKHsquEFaV12jfuWj/XyyiP3Yf7A6ofeyZ14W/Y/fvfxq
-        /h9gPIefBskhTK7YLhlUL2r+Kmr50rYGRTr49/iMK/rIL4YHR34Bk7vZnhUONw==
+        bh=sHh1RFuK7JSSsCBfQMh+rbtO1awZY6pntNvZJuoLYAE=;
+        b=PGP11oeaPYKdrTSCIqRcEm69vCcgP5I/pt1zjSXVQEwsh6l3k/T4lh9BMshRTYCSxi1HQQ
+        kDR3VgLD/Y+5o6NqSgVkSpMqfa+ScvXgbptzfnTFjYpPZsQ4k3TEvKEUeuSsJHIpqJUJhx
+        Xph5C+Ou/r0YZzkNOfOYh7N2KjDUiTx/56XWAANfE5pOrwle7NKMqjYdbdh2GyNVYPFYWb
+        PvRtsasCW8C9YYdEpM1XjVSJFjD1cXJwBH71IajoPS8X6bf0yueDko7g/a5UqXvYLKeWe2
+        Iphdu1XdJ3KZbiFEgDc6NfQgriQapcB3DrSQO1aa6a5PEw9nkCK0acZTLfu26g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1602225334;
+        s=2020e; t=1602225336;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=xjgZXEeDs3BTu2Qvjo0CIFoTOUQKyrt13PEwiAHozTg=;
-        b=hs1T9l8xHFB1xsjBGsFRa1o04FdY4U2t00xbnJWuwlK9bqUXZpdaj1MFu/ZQ04HfmTAMYN
-        EjhB3pPIPMQ2iNCw==
+        bh=sHh1RFuK7JSSsCBfQMh+rbtO1awZY6pntNvZJuoLYAE=;
+        b=CH4D9/JzksgKIKm5keRk8wfVaHGksn5x1t2N0B4ayuhL7S9lrq3pRswkUBh14WsH0fxqB9
+        M63T6xEoSCfophDg==
 From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcu: Remove unused __rcu_is_watching() function
-Cc:     Andy Lutomirski <luto@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H. Peter Anvin" <hpa@zytor.com>, <x86@kernel.org>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
+Subject: [tip: core/rcu] rcu/nocb: Add a warning for non-GP kthread running GP code
+Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <160222533416.7002.17781828054052046297.tip-bot2@tip-bot2>
+Message-ID: <160222533566.7002.13927077796544290635.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -55,82 +54,36 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     7f2a53c231fe5d9522c3b695ab454203904031ac
-Gitweb:        https://git.kernel.org/tip/7f2a53c231fe5d9522c3b695ab454203904031ac
+Commit-ID:     4569c5ee95d5695bfd794ae968c2d59b3e69129a
+Gitweb:        https://git.kernel.org/tip/4569c5ee95d5695bfd794ae968c2d59b3e69129a
 Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Mon, 17 Aug 2020 10:37:22 -07:00
+AuthorDate:    Wed, 05 Aug 2020 10:35:16 -07:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Mon, 24 Aug 2020 18:37:56 -07:00
+CommitterDate: Mon, 24 Aug 2020 18:37:54 -07:00
 
-rcu: Remove unused __rcu_is_watching() function
+rcu/nocb: Add a warning for non-GP kthread running GP code
 
-The x86/entry work removed all uses of __rcu_is_watching(), therefore
-this commit removes it entirely.
+This commit increases RCU's ability to defend itself by emitting a warning
+if one of the nocb CB kthreads invokes the GP kthread's wait function.
+This warning augments a similar check that is carried out at the end
+of rcutorture testing and when RCU CPU stall warnings are emitted.
+The problem with those checks is that the miscreants have long since
+departed and disposed of any and all evidence.
 
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: <x86@kernel.org>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- include/linux/rcutiny.h | 1 -
- include/linux/rcutree.h | 1 -
- kernel/entry/common.c   | 2 +-
- kernel/rcu/tree.c       | 5 -----
- 4 files changed, 1 insertion(+), 8 deletions(-)
+ kernel/rcu/tree_plugin.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/linux/rcutiny.h b/include/linux/rcutiny.h
-index 5cc9637..7c1ecdb 100644
---- a/include/linux/rcutiny.h
-+++ b/include/linux/rcutiny.h
-@@ -103,7 +103,6 @@ static inline void rcu_scheduler_starting(void) { }
- static inline void rcu_end_inkernel_boot(void) { }
- static inline bool rcu_inkernel_boot_has_ended(void) { return true; }
- static inline bool rcu_is_watching(void) { return true; }
--static inline bool __rcu_is_watching(void) { return true; }
- static inline void rcu_momentary_dyntick_idle(void) { }
- static inline void kfree_rcu_scheduler_running(void) { }
- static inline bool rcu_gp_might_be_stalled(void) { return false; }
-diff --git a/include/linux/rcutree.h b/include/linux/rcutree.h
-index d2f4064..59eb5cd 100644
---- a/include/linux/rcutree.h
-+++ b/include/linux/rcutree.h
-@@ -64,7 +64,6 @@ extern int rcu_scheduler_active __read_mostly;
- void rcu_end_inkernel_boot(void);
- bool rcu_inkernel_boot_has_ended(void);
- bool rcu_is_watching(void);
--bool __rcu_is_watching(void);
- #ifndef CONFIG_PREEMPTION
- void rcu_all_qs(void);
- #endif
-diff --git a/kernel/entry/common.c b/kernel/entry/common.c
-index 9852e0d..ad794a1 100644
---- a/kernel/entry/common.c
-+++ b/kernel/entry/common.c
-@@ -278,7 +278,7 @@ noinstr irqentry_state_t irqentry_enter(struct pt_regs *regs)
- 	 * terminate a grace period, if and only if the timer interrupt is
- 	 * not nested into another interrupt.
- 	 *
--	 * Checking for __rcu_is_watching() here would prevent the nesting
-+	 * Checking for rcu_is_watching() here would prevent the nesting
- 	 * interrupt to invoke rcu_irq_enter(). If that nested interrupt is
- 	 * the tick then rcu_flavor_sched_clock_irq() would wrongfully
- 	 * assume that it is the first interupt and eventually claim
-diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
-index 396abe0..2323622 100644
---- a/kernel/rcu/tree.c
-+++ b/kernel/rcu/tree.c
-@@ -1077,11 +1077,6 @@ static void rcu_disable_urgency_upon_qs(struct rcu_data *rdp)
- 	}
- }
- 
--noinstr bool __rcu_is_watching(void)
--{
--	return !rcu_dynticks_curr_cpu_in_eqs();
--}
--
- /**
-  * rcu_is_watching - see if RCU thinks that the current CPU is not idle
-  *
+diff --git a/kernel/rcu/tree_plugin.h b/kernel/rcu/tree_plugin.h
+index 4d63ee3..cb1e8c8 100644
+--- a/kernel/rcu/tree_plugin.h
++++ b/kernel/rcu/tree_plugin.h
+@@ -1926,6 +1926,7 @@ static void nocb_gp_wait(struct rcu_data *my_rdp)
+ 	 * nearest grace period (if any) to wait for next.  The CB kthreads
+ 	 * and the global grace-period kthread are awakened if needed.
+ 	 */
++	WARN_ON_ONCE(my_rdp->nocb_gp_rdp != my_rdp);
+ 	for (rdp = my_rdp; rdp; rdp = rdp->nocb_next_cb_rdp) {
+ 		trace_rcu_nocb_wake(rcu_state.name, rdp->cpu, TPS("Check"));
+ 		rcu_nocb_lock_irqsave(rdp, flags);
