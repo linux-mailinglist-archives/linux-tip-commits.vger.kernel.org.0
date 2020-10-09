@@ -2,89 +2,79 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D1E92890AD
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  9 Oct 2020 20:21:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E5AC2899D3
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  9 Oct 2020 22:38:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388008AbgJISVv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 9 Oct 2020 14:21:51 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60776 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2390337AbgJISVv (ORCPT
+        id S1726386AbgJIUih (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 9 Oct 2020 16:38:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54562 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389377AbgJIUih (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 9 Oct 2020 14:21:51 -0400
-Received: from paulmck-ThinkPad-P72.home (50-39-104-11.bvtn.or.frontiernet.net [50.39.104.11])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4E9B522284;
-        Fri,  9 Oct 2020 18:21:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1602267710;
-        bh=lZeKmEBYOFSPyXXAEhd82JvzWUbzSvGCdC+F4wT6yGk=;
-        h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
-        b=ZwRpWKODPUQmv/XpL7UIxEsk9FGD5WINOwMfvs7Ws3h1vhZFZyNVXqJjJehioJgJl
-         pvl5a4yETlhqP9KJxgRsltYcR1QaZ+yL5xpmzpqzBG3TWXZUvw4232yYdon8nPgjuc
-         t7A/AN8shitzAWTjPRoPE5LVvCNr1EVuLNKbnu+I=
-Received: by paulmck-ThinkPad-P72.home (Postfix, from userid 1000)
-        id 0E9CC35227D5; Fri,  9 Oct 2020 11:21:50 -0700 (PDT)
-Date:   Fri, 9 Oct 2020 11:21:50 -0700
-From:   "Paul E. McKenney" <paulmck@kernel.org>
-To:     Qian Cai <cai@redhat.com>
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
-        linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-        Linux Next Mailing List <linux-next@vger.kernel.org>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Boqun Feng <boqun.feng@gmail.com>
-Subject: Re: [tip: locking/core] lockdep: Fix lockdep recursion
-Message-ID: <20201009182150.GK29330@paulmck-ThinkPad-P72>
-Reply-To: paulmck@kernel.org
-References: <160223032121.7002.1269740091547117869.tip-bot2@tip-bot2>
- <e438b231c5e1478527af6c3e69bf0b37df650110.camel@redhat.com>
- <20201009135837.GD29330@paulmck-ThinkPad-P72>
- <20201009162352.GR2611@hirez.programming.kicks-ass.net>
- <e8fce9c0db7985e132262fd508a519ade656bdd8.camel@redhat.com>
- <942e0ffb37a4580982206d72404c521d72d38314.camel@redhat.com>
+        Fri, 9 Oct 2020 16:38:37 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46DA2C0613D2;
+        Fri,  9 Oct 2020 13:38:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=5QO6RA3HKVUZHpGdEyUHg1uVMriNEKLFam7kt2l8WbY=; b=BykcTHfl5U5QXVGW4edmbJoejd
+        /feI6aevZQDdnvhh45rvU/0eXRo+78rdChTL1QU1Nq0wNiGn73IvchEyJMpMDFko5sJZW/cNdTbjo
+        CY/vlICXrw/WfyKQrGBNXsC0pP3gpGsWD1xWMR6Fu/MAcSaGEE0AlbucgSWqr+RzrXzqdFSfKUNfv
+        aC3p83mK2BGDpcY50GphQuJQBBbcmCUnjsNmn/7jLfvNXSgZ5y+nyWWDT+c+9j+5TDPigoWRBZC5F
+        AAO7GJ0Y/TVe2Qq1qTnl3lMi3Jf/2PQjGFTG6jyXQnZ6TH0bichbeMyzAiLye0K9jQr5IzIY+oCl4
+        i8M8xTiQ==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=worktop.programming.kicks-ass.net)
+        by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1kQz9r-0008Pe-Km; Fri, 09 Oct 2020 20:38:31 +0000
+Received: by worktop.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 7AC67980BDC; Fri,  9 Oct 2020 22:38:22 +0200 (CEST)
+Date:   Fri, 9 Oct 2020 22:38:22 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-tip-commits@vger.kernel.org,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Josh Poimboeuf <jpoimboe@redhat.com>, x86 <x86@kernel.org>
+Subject: Re: [tip: objtool/core] x86/insn: Support big endian cross-compiles
+Message-ID: <20201009203822.GA2974@worktop.programming.kicks-ass.net>
+References: <160208761921.7002.1321765913567405137.tip-bot2@tip-bot2>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <942e0ffb37a4580982206d72404c521d72d38314.camel@redhat.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <160208761921.7002.1321765913567405137.tip-bot2@tip-bot2>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Fri, Oct 09, 2020 at 01:54:34PM -0400, Qian Cai wrote:
-> On Fri, 2020-10-09 at 13:36 -0400, Qian Cai wrote:
-> > Back to x86, we have:
-> > 
-> > start_secondary()
-> >   smp_callin()
-> >     apic_ap_setup()
-> >       setup_local_APIC()
-> >         printk() in certain conditions.
-> > 
-> > which is before smp_store_cpu_info().
-> > 
-> > Can't we add a rcu_cpu_starting() at the very top for each start_secondary(),
-> > secondary_start_kernel(), smp_start_secondary() etc, so we don't worry about
-> > any printk() later?
+On Wed, Oct 07, 2020 at 04:20:19PM -0000, tip-bot2 for Martin Schwidefsky wrote:
+> The following commit has been merged into the objtool/core branch of tip:
 > 
-> This is rather irony. rcu_cpu_starting() is taking a lock and then reports
-> itself.
+> Commit-ID:     2a522b53c47051d3bf98748418f4f8e5f20d2c04
+> Gitweb:        https://git.kernel.org/tip/2a522b53c47051d3bf98748418f4f8e5f20d2c04
+> Author:        Martin Schwidefsky <schwidefsky@de.ibm.com>
+> AuthorDate:    Mon, 05 Oct 2020 17:50:31 +02:00
+> Committer:     Josh Poimboeuf <jpoimboe@redhat.com>
+> CommitterDate: Tue, 06 Oct 2020 09:32:29 -05:00
 > 
-> [    8.826732][    T0]  __lock_acquire.cold.76+0x2ad/0x3e0
-> [    8.826732][    T0]  lock_acquire+0x1c8/0x820
-> [    8.826732][    T0]  _raw_spin_lock_irqsave+0x30/0x50
-> [    8.826732][    T0]  rcu_cpu_starting+0xd0/0x2c0
-> [    8.826732][    T0]  start_secondary+0x10/0x2a0
-> [    8.826732][    T0]  secondary_startup_64_no_verify+0xb8/0xbb
+> x86/insn: Support big endian cross-compiles
+> 
+> x86 instruction decoder code is shared across the kernel source and the
+> tools. Currently objtool seems to be the only tool from build tools needed
+> which breaks x86 cross compilation on big endian systems. Make the x86
+> instruction decoder build host endianness agnostic to support x86 cross
+> compilation and enable objtool to implement endianness awareness for
+> big endian architectures support.
+> 
+> Signed-off-by: Martin Schwidefsky <schwidefsky@de.ibm.com>
+> Co-developed-by: Vasily Gorbik <gor@linux.ibm.com>
+> Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+> Acked-by: Masami Hiramatsu <mhiramat@kernel.org>
+> Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
 
-Fun!!!
+This commit breaks the x86 build with CONFIG_X86_DECODER_SELFTEST=y.
 
-There should be some way around this.  I cannot safely record the
-offline-to-online transition without acquiring a lock.  I suppose
-I could trick lockdep into thinking that it was a recursive lockdep
-report.  Any other approaches?
-
-						Thanx, Paul
+I've asked Boris to truncate tip/objtool/core.
