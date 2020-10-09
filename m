@@ -2,46 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AA5AB28823E
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  9 Oct 2020 08:36:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9307A288240
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  9 Oct 2020 08:36:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732140AbgJIGf5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 9 Oct 2020 02:35:57 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:55740 "EHLO
+        id S1732155AbgJIGf7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 9 Oct 2020 02:35:59 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:55718 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732101AbgJIGft (ORCPT
+        with ESMTP id S1732090AbgJIGfs (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 9 Oct 2020 02:35:49 -0400
+        Fri, 9 Oct 2020 02:35:48 -0400
 Date:   Fri, 09 Oct 2020 06:35:46 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1602225347;
+        s=2020; t=1602225346;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=bdsy+VmfcLeHvYidRAKXlWqld/0y4tGdKJmGcFefHI4=;
-        b=M/82gyCKXLL4j4ZN8L+y2hUjuw8+ugEgdtar0inhCWL3t5uZZ7Mhaxrx7nKEaVBei93R/L
-        s8wkFDIx8aTJotBaes22hDGR9TlGKfZ0OM4cnQ2XjTxfE4cZ5l9yV1P91LYj8z6XQ1EsmS
-        ukWCJZQyAia+oBULsGa6ew4jVYwYCA2p+U3FIFRbCdhee2ycWeD7LntJ3ctQmr7qKwT5n7
-        EzbrgSK00GqwUtQsdDn77hdIL/q5IB9TVse/tH50DWj+Rf0SYMIWjQNLLz4GlBOjmBVXBw
-        SJQtEizi+WG0KXaI1zAso1bpXXZRxOYPlccIDuJLsgrNKHWD7Fo0jQWcZwnIKw==
+        bh=J0d/UMsc62xpOiT0yZyPwU/CYObiDrK89wW4NwNbZAU=;
+        b=ejyaTDQAeTXRazQwW8KBGgsGSQULcNhClPFX7hPlP/ocHYVslWE0zg2/+Us7q0ri++C1w8
+        EmQ9EZm0MaRdNHu6CbGsJ6M+aqkLkCB/KR9COkaSDsOf1Sv3i28KEry6VPeMHADw9Bli/M
+        uoxMurwuAndLzfrtLmEo2OlrAcYpqfpInB9ceU4lsqig2fKFL846XHJrN0VytRaTb1FsXx
+        Z0xIvgFUZaaKDzeowNHDGubsxczW++dRXiOrgAQi068fIu6dLzuiwza2kLC16YKvYHNIRV
+        8segPXfflyQ3uZOCxqf9nz9g6qJwIIOos12kHd4iatjvtWoXzami+vOwc/EHpQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1602225347;
+        s=2020e; t=1602225346;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=bdsy+VmfcLeHvYidRAKXlWqld/0y4tGdKJmGcFefHI4=;
-        b=+4OOlcpAw0+svbpdMKX4fZ13v70Z7vqTe03nB8V94GwnC0sFQZga/Ss8X+DtVaHuZjpGVi
-        LhPbLUIi9JHfcvAA==
-From:   "tip-bot2 for Tobias Klauser" <tip-bot2@linutronix.de>
+        bh=J0d/UMsc62xpOiT0yZyPwU/CYObiDrK89wW4NwNbZAU=;
+        b=4+mqkksyxG4bYkTRghBIXhnNH0HFqNUsl6Q7tJDQT5a2v3/B/Yn+blX9d8Ac61yFeFiAVt
+        KIueBpXlw07ejEAw==
+From:   "tip-bot2 for Randy Dunlap" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] docs: Fix typo in synchronize_rcu() function name
-Cc:     Tobias Klauser <tklauser@distanz.ch>,
-        "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
+Subject: [tip: core/rcu] doc: Drop doubled words from RCU Data-Structures.rst
+Cc:     Randy Dunlap <rdunlap@infradead.org>,
+        Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Josh Triplett <josh@joshtriplett.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        Lai Jiangshan <jiangshanlai@gmail.com>,
+        Joel Fernandes <joel@joelfernandes.org>, rcu@vger.kernel.org,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <160222534661.7002.3876459463895026010.tip-bot2@tip-bot2>
+Message-ID: <160222534612.7002.16770645647309093400.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -52,33 +58,42 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     77f808607a62c3685381a5732a88b30bad8893b5
-Gitweb:        https://git.kernel.org/tip/77f808607a62c3685381a5732a88b30bad8893b5
-Author:        Tobias Klauser <tklauser@distanz.ch>
-AuthorDate:    Thu, 02 Jul 2020 18:28:10 +02:00
+Commit-ID:     1b98b7c5eb2f94eddad541d6fc91f1d1995d644b
+Gitweb:        https://git.kernel.org/tip/1b98b7c5eb2f94eddad541d6fc91f1d1995d644b
+Author:        Randy Dunlap <rdunlap@infradead.org>
+AuthorDate:    Fri, 03 Jul 2020 14:33:41 -07:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Mon, 24 Aug 2020 14:29:16 -07:00
+CommitterDate: Mon, 24 Aug 2020 14:29:17 -07:00
 
-docs: Fix typo in synchronize_rcu() function name
+doc: Drop doubled words from RCU Data-Structures.rst
 
-s/sychronize_rcu/synchronize_rcu/
+Drop the doubled word "the".
 
-Signed-off-by: Tobias Klauser <tklauser@distanz.ch>
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: linux-doc@vger.kernel.org
+Cc: "Paul E. McKenney" <paulmck@kernel.org>
+Cc: Josh Triplett <josh@joshtriplett.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Lai Jiangshan <jiangshanlai@gmail.com>
+Cc: Joel Fernandes <joel@joelfernandes.org>
+Cc: rcu@vger.kernel.org
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- Documentation/RCU/whatisRCU.rst | 2 +-
+ Documentation/RCU/Design/Data-Structures/Data-Structures.rst | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/RCU/whatisRCU.rst b/Documentation/RCU/whatisRCU.rst
-index c7f147b..fb3ff76 100644
---- a/Documentation/RCU/whatisRCU.rst
-+++ b/Documentation/RCU/whatisRCU.rst
-@@ -360,7 +360,7 @@ order to amortize their overhead over many uses of the corresponding APIs.
- 
- There are at least three flavors of RCU usage in the Linux kernel. The diagram
- above shows the most common one. On the updater side, the rcu_assign_pointer(),
--sychronize_rcu() and call_rcu() primitives used are the same for all three
-+synchronize_rcu() and call_rcu() primitives used are the same for all three
- flavors. However for protection (on the reader side), the primitives used vary
- depending on the flavor:
- 
+diff --git a/Documentation/RCU/Design/Data-Structures/Data-Structures.rst b/Documentation/RCU/Design/Data-Structures/Data-Structures.rst
+index 4a48e20..f4efd68 100644
+--- a/Documentation/RCU/Design/Data-Structures/Data-Structures.rst
++++ b/Documentation/RCU/Design/Data-Structures/Data-Structures.rst
+@@ -963,7 +963,7 @@ exit and perhaps also vice versa. Therefore, whenever the
+ ``->dynticks_nesting`` field is incremented up from zero, the
+ ``->dynticks_nmi_nesting`` field is set to a large positive number, and
+ whenever the ``->dynticks_nesting`` field is decremented down to zero,
+-the the ``->dynticks_nmi_nesting`` field is set to zero. Assuming that
++the ``->dynticks_nmi_nesting`` field is set to zero. Assuming that
+ the number of misnested interrupts is not sufficient to overflow the
+ counter, this approach corrects the ``->dynticks_nmi_nesting`` field
+ every time the corresponding CPU enters the idle loop from process
