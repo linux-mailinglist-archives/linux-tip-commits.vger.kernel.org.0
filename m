@@ -2,45 +2,46 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 177B8288233
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  9 Oct 2020 08:35:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F0E9288232
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  9 Oct 2020 08:35:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731990AbgJIGfd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 9 Oct 2020 02:35:33 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:55416 "EHLO
+        id S1731985AbgJIGfc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 9 Oct 2020 02:35:32 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:55382 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731939AbgJIGf2 (ORCPT
+        with ESMTP id S1731940AbgJIGf2 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Fri, 9 Oct 2020 02:35:28 -0400
-Date:   Fri, 09 Oct 2020 06:35:25 -0000
+Date:   Fri, 09 Oct 2020 06:35:26 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1602225326;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=qCvqBe26Y7DN7alxVVb15r1PO4+YP+mATWQzRyrhAZA=;
-        b=aDfnhj1YXxVpQSVGahTIH2torBz2h/N5fR8DKcZZfHHTqvQg8eKMdMiXR1+LJNxq6AyISO
-        laN835iELqiwJ57O/E6srCQ+brD063Z9wi+fwJCbHad3dz/XFanqa2XDQYtgWLesmCkycS
-        Y9q9VYdG3rRZRF4RmZHaYdOl7Rg5XydpxH85c4pATQD73vNVCJX/sM9yLxxNqXLmD36hUZ
-        RQlzbN5f7/gEtLRbO1yet78yDndGO1l+0IW0YA82VObP7G6uPwtYU2QswPcivAH8ybDe7z
-        d389JIjRhSHFrIsfXnjL3HBY3uf11n/+1uTmZAi9L0Kbl1UxSdqS6/ADHPBLVw==
+        bh=GURDUJST2pgnaNGFSxbg04Ve9JGXN03mL1zzdKOGcBo=;
+        b=YSGz88Lrwl4LpmaIuaui2kbq5Ww2z2ZzPtLdtJN9JlTsagsYvnZR0cSo7x+BhL+3y7NpCu
+        LYTO8Z9QP7rX+nz5g3hDD6dDg8eDzDoJijLovFd/f4qDwOpoi9WsL9z/ZqaP98l1SKKm0y
+        mogKIYEE9YIuMoENJVaDEomffegtPcY1AbJHI27QqOMLNLqkTkq4tsYnSQ9XG29gWBtkFx
+        do+/370AEy3ow3uzWdmVwa0mZfID/XW4mIndp3ZZCrH7xrkiKxbSGfqVZExmQY1c+d0xsT
+        ZgFjJu1AifFTtmkKVb0SH3egtkViQHmPfbnhnaeVUTcBYXguBMtzfg0wdLma2A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1602225326;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=qCvqBe26Y7DN7alxVVb15r1PO4+YP+mATWQzRyrhAZA=;
-        b=RuVQCLjo4032JIovO+iNV/7vAbNB8CIxiRqpOJj4rNNsb/IFh9jOxeNFdQp6Y5lMZd6V9W
-        s1fQygeN6GR9t1CA==
+        bh=GURDUJST2pgnaNGFSxbg04Ve9JGXN03mL1zzdKOGcBo=;
+        b=sPB26GBbKv+IkRbenkVtvrCHxVDkL84LgbMOnHoY6RVyWAnZcQTa11QZXEs70Xf5DYNIzV
+        if0k6cnlRkb/3EBQ==
 From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] scftorture: Adapt memory-ordering test to UP operation
+Subject: [tip: core/rcu] scftorture: Block scftorture_invoker() kthreads for
+ offline CPUs
 Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <160222532556.7002.15028957921678826005.tip-bot2@tip-bot2>
+Message-ID: <160222532603.7002.481054098843056401.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -51,35 +52,59 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     9e66bf03f9c538863e614a72c5799bcd9579630e
-Gitweb:        https://git.kernel.org/tip/9e66bf03f9c538863e614a72c5799bcd9579630e
+Commit-ID:     a7c072ef26644b632241d549869f10f8d2dd3b5c
+Gitweb:        https://git.kernel.org/tip/a7c072ef26644b632241d549869f10f8d2dd3b5c
 Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Fri, 03 Jul 2020 15:23:19 -07:00
+AuthorDate:    Thu, 02 Jul 2020 14:15:33 -07:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Mon, 24 Aug 2020 18:38:37 -07:00
 
-scftorture: Adapt memory-ordering test to UP operation
+scftorture: Block scftorture_invoker() kthreads for offline CPUs
 
-On uniprocessor systems, smp_call_function() does nothing.  This commit
-therefore avoids complaining about the lack of handler accesses in the
-single-CPU case where there is no handler.
+Currently, CPU-hotplug operations might result in all but two
+of (say) 100 CPUs being offline, which in turn might result in
+false-positive diagnostics due to overload.  This commit therefore
+causes scftorture_invoker() kthreads for offline CPUs to loop blocking
+for 200 milliseconds at a time, thus continuously adjusting the number
+of threads to match the number of online CPUs.
 
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/scftorture.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/scftorture.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
 diff --git a/kernel/scftorture.c b/kernel/scftorture.c
-index 04d3a42..fc22bcc 100644
+index d9c01c7..04d3a42 100644
 --- a/kernel/scftorture.c
 +++ b/kernel/scftorture.c
-@@ -363,7 +363,8 @@ static void scftorture_invoke_one(struct scf_statistics *scfp, struct torture_ra
- 			scfcp->scfc_out = true;
- 	}
- 	if (scfcp && scfsp->scfs_wait) {
--		if (WARN_ON_ONCE(!scfcp->scfc_out))
-+		if (WARN_ON_ONCE((num_online_cpus() > 1 || scfsp->scfs_prim == SCF_PRIM_SINGLE) &&
-+				 !scfcp->scfc_out))
- 			atomic_inc(&n_mb_out_errs); // Leak rather than trash!
- 		else
- 			kfree(scfcp);
+@@ -381,11 +381,14 @@ static void scftorture_invoke_one(struct scf_statistics *scfp, struct torture_ra
+ // smp_call_function() family of functions.
+ static int scftorture_invoker(void *arg)
+ {
++	int cpu;
+ 	DEFINE_TORTURE_RANDOM(rand);
+ 	struct scf_statistics *scfp = (struct scf_statistics *)arg;
++	bool was_offline = false;
+ 
+ 	VERBOSE_SCFTORTOUT("scftorture_invoker %d: task started", scfp->cpu);
+-	set_cpus_allowed_ptr(current, cpumask_of(scfp->cpu % nr_cpu_ids));
++	cpu = scfp->cpu % nr_cpu_ids;
++	set_cpus_allowed_ptr(current, cpumask_of(cpu));
+ 	set_user_nice(current, MAX_NICE);
+ 	if (holdoff)
+ 		schedule_timeout_interruptible(holdoff * HZ);
+@@ -408,6 +411,14 @@ static int scftorture_invoker(void *arg)
+ 
+ 	do {
+ 		scftorture_invoke_one(scfp, &rand);
++		while (cpu_is_offline(cpu) && !torture_must_stop()) {
++			schedule_timeout_interruptible(HZ / 5);
++			was_offline = true;
++		}
++		if (was_offline) {
++			set_cpus_allowed_ptr(current, cpumask_of(cpu));
++			was_offline = false;
++		}
+ 	} while (!torture_must_stop());
+ 
+ 	VERBOSE_SCFTORTOUT("scftorture_invoker %d ended", scfp->cpu);
