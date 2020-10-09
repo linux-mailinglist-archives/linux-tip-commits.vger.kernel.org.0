@@ -2,49 +2,48 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CA9E288294
+	by mail.lfdr.de (Postfix) with ESMTP id 9B7D0288295
 	for <lists+linux-tip-commits@lfdr.de>; Fri,  9 Oct 2020 08:38:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731953AbgJIGf2 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 9 Oct 2020 02:35:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36374 "EHLO
+        id S1731817AbgJIGf1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 9 Oct 2020 02:35:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36370 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725923AbgJIGfP (ORCPT
+        with ESMTP id S1731845AbgJIGfO (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 9 Oct 2020 02:35:15 -0400
+        Fri, 9 Oct 2020 02:35:14 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25564C0613D5;
-        Thu,  8 Oct 2020 23:35:15 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95F11C0613D4;
+        Thu,  8 Oct 2020 23:35:14 -0700 (PDT)
 Date:   Fri, 09 Oct 2020 06:35:12 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1602225313;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=kEI3jt05TyTejgS45crLuDdk8MooQ6XTwAZBUjl/xWg=;
-        b=C1x9sG+zetDn9pYslq1hZeahaurNxTqkzpOtAEvBJO3FDZcjSP3VMpggLeb7Bm36h/PRm9
-        k2Qe50IVo2iyiZ06QIs9GvL5+2xJbBj/gCLiff8IZG6Jiv0cKW86pybIy+yIs7NIS64gQi
-        eSBY2vpDMPbvkzvvplOUMx9Iii8p+pK/hjioC3bNWB4PIm7ugUEMy90jpztl+lu1G9LspT
-        52pB4B0O99omNadO7b3b5a5cGuMVqATLAgKD587KqrVTvtmJy27XDC/CpETMkzUzo/rNaq
-        /t716DEmisqw1GSiJAS78h5hgaxc4FZsDfvduAWvUmeZYaqgG4rc3pwuLkWqOw==
+        bh=9sd/ZRDtPyTAQwjxZNelfkdlun6QlT44m2PyrfOJN+o=;
+        b=e4j4eumJJY8hNlLa0RJD3/0iXBCazq/NmILpH0bWAc+6YQbakkDbXtQnySroALSZif+0zB
+        1h7eA2XKdoiZ5wPzM2sWXtBF1HmNv5VCSe0Y1PUS2qNxXjq0JE4Zj3yJTSSNU8wMlLLfiq
+        SWYRYOTLm1K0rYODv2ApjcDD2bw1BphPc4wKI5e4Qmly4v3NdGSKEoNTGZMcjVqt4mYh+I
+        N88Ab+gFMMlrwZWWbWgdRGbp5n5W1A+C4yeL3gvf5cS42CdICbpXgFaYhwXJBopFyIW84L
+        rcfySqBfINvdYwjEteu2g9/GsDoSLS3DrDvwdxyChd5/cG1diNvdtAK5GPLujw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1602225313;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=kEI3jt05TyTejgS45crLuDdk8MooQ6XTwAZBUjl/xWg=;
-        b=LncLS7Wh50RzsMht0xEEMxRF95Z/RnqX+coYEG47t8cNDh0Awb/sK/Bbz+30AbvhFseZwv
-        /q7l2OWFCp6VxFAg==
+        bh=9sd/ZRDtPyTAQwjxZNelfkdlun6QlT44m2PyrfOJN+o=;
+        b=lF/I3gPc2XTjAf2QDzjBli4UFGRGRmiIf+DLBfjKykMzy42nWbzK+sfbOeYZZ15NqXI+JH
+        2JF2jY8FUzTWj7BA==
 From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcutorture: Properly set rcu_fwds for OOM handling
-Cc:     kernel test robot <rong.a.chen@intel.com>,
-        "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
+Subject: [tip: core/rcu] rcutorture: Properly synchronize with OOM notifier
+Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <160222531297.7002.4130611121050528796.tip-bot2@tip-bot2>
+Message-ID: <160222531245.7002.6514159583240984002.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -55,58 +54,83 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     c8fa63714763b7795a3f5fb7ed6d000763e6dccc
-Gitweb:        https://git.kernel.org/tip/c8fa63714763b7795a3f5fb7ed6d000763e6dccc
+Commit-ID:     57f602022e82ee8fa6476d0e16ddbaf3eb86b245
+Gitweb:        https://git.kernel.org/tip/57f602022e82ee8fa6476d0e16ddbaf3eb86b245
 Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Sun, 19 Jul 2020 14:40:31 -07:00
+AuthorDate:    Mon, 20 Jul 2020 08:34:07 -07:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Mon, 24 Aug 2020 18:45:34 -07:00
 
-rcutorture: Properly set rcu_fwds for OOM handling
+rcutorture: Properly synchronize with OOM notifier
 
-The conversion of rcu_fwds to dynamic allocation failed to actually
-allocate the required structure.  This commit therefore allocates it,
-frees it, and updates rcu_fwds accordingly.  While in the area, it
-abstracts the cleanup actions into rcu_torture_fwd_prog_cleanup().
+The current rcutorture forward-progress code assumes that it is the
+only cause of out-of-memory (OOM) events.  For script-based rcutorture
+testing, this assumption is in fact correct.  However, testing based
+on modprobe/rmmod might well encounter external OOM events, which could
+happen at any time.
 
-Fixes: 5155be9994e5 ("rcutorture: Dynamically allocate rcu_fwds structure")
-Reported-by: kernel test robot <rong.a.chen@intel.com>
+This commit therefore properly synchronizes the interaction between
+rcutorture's forward-progress testing and its OOM notifier by adding a
+global mutex.
+
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/rcu/rcutorture.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ kernel/rcu/rcutorture.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
 diff --git a/kernel/rcu/rcutorture.c b/kernel/rcu/rcutorture.c
-index c8206ff..7942be4 100644
+index 7942be4..2b3f04e 100644
 --- a/kernel/rcu/rcutorture.c
 +++ b/kernel/rcu/rcutorture.c
-@@ -2148,9 +2148,20 @@ static int __init rcu_torture_fwd_prog_init(void)
+@@ -1796,6 +1796,7 @@ struct rcu_fwd {
+ 	unsigned long rcu_launder_gp_seq_start;
+ };
+ 
++static DEFINE_MUTEX(rcu_fwd_mutex);
+ static struct rcu_fwd *rcu_fwds;
+ static bool rcu_fwd_emergency_stop;
+ 
+@@ -2062,8 +2063,14 @@ static void rcu_torture_fwd_prog_cr(struct rcu_fwd *rfp)
+ static int rcutorture_oom_notify(struct notifier_block *self,
+ 				 unsigned long notused, void *nfreed)
+ {
+-	struct rcu_fwd *rfp = rcu_fwds;
++	struct rcu_fwd *rfp;
+ 
++	mutex_lock(&rcu_fwd_mutex);
++	rfp = rcu_fwds;
++	if (!rfp) {
++		mutex_unlock(&rcu_fwd_mutex);
++		return NOTIFY_OK;
++	}
+ 	WARN(1, "%s invoked upon OOM during forward-progress testing.\n",
+ 	     __func__);
+ 	rcu_torture_fwd_cb_hist(rfp);
+@@ -2081,6 +2088,7 @@ static int rcutorture_oom_notify(struct notifier_block *self,
+ 	smp_mb(); /* Frees before return to avoid redoing OOM. */
+ 	(*(unsigned long *)nfreed)++; /* Forward progress CBs freed! */
+ 	pr_info("%s returning after OOM processing.\n", __func__);
++	mutex_unlock(&rcu_fwd_mutex);
+ 	return NOTIFY_OK;
+ }
+ 
+@@ -2148,7 +2156,9 @@ static int __init rcu_torture_fwd_prog_init(void)
  		return -ENOMEM;
  	spin_lock_init(&rfp->rcu_fwd_lock);
  	rfp->rcu_fwd_cb_tail = &rfp->rcu_fwd_cb_head;
-+	rcu_fwds = rfp;
++	mutex_lock(&rcu_fwd_mutex);
+ 	rcu_fwds = rfp;
++	mutex_unlock(&rcu_fwd_mutex);
  	return torture_create_kthread(rcu_torture_fwd_prog, rfp, fwd_prog_task);
  }
  
-+static void rcu_torture_fwd_prog_cleanup(void)
-+{
-+	struct rcu_fwd *rfp;
-+
-+	torture_stop_kthread(rcu_torture_fwd_prog, fwd_prog_task);
-+	rfp = rcu_fwds;
-+	rcu_fwds = NULL;
-+	kfree(rfp);
-+}
-+
- /* Callback function for RCU barrier testing. */
- static void rcu_torture_barrier_cbf(struct rcu_head *rcu)
- {
-@@ -2448,7 +2459,7 @@ rcu_torture_cleanup(void)
- 	show_rcu_gp_kthreads();
- 	rcu_torture_read_exit_cleanup();
- 	rcu_torture_barrier_cleanup();
--	torture_stop_kthread(rcu_torture_fwd_prog, fwd_prog_task);
-+	rcu_torture_fwd_prog_cleanup();
- 	torture_stop_kthread(rcu_torture_stall, stall_task);
- 	torture_stop_kthread(rcu_torture_writer, writer_task);
+@@ -2158,7 +2168,9 @@ static void rcu_torture_fwd_prog_cleanup(void)
+ 
+ 	torture_stop_kthread(rcu_torture_fwd_prog, fwd_prog_task);
+ 	rfp = rcu_fwds;
++	mutex_lock(&rcu_fwd_mutex);
+ 	rcu_fwds = NULL;
++	mutex_unlock(&rcu_fwd_mutex);
+ 	kfree(rfp);
+ }
  
