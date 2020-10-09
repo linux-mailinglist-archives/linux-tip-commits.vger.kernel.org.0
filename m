@@ -2,14 +2,14 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B8649288F61
+	by mail.lfdr.de (Postfix) with ESMTP id 4C072288F60
 	for <lists+linux-tip-commits@lfdr.de>; Fri,  9 Oct 2020 19:03:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389968AbgJIRBb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 9 Oct 2020 13:01:31 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:59164 "EHLO
+        id S2389734AbgJIRBa (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 9 Oct 2020 13:01:30 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:59178 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389640AbgJIRB1 (ORCPT
+        with ESMTP id S2389928AbgJIRB1 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Fri, 9 Oct 2020 13:01:27 -0400
 Date:   Fri, 09 Oct 2020 17:01:23 -0000
@@ -18,36 +18,36 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=qa5BYAQ/xKA+kV57+AUnTiO/P44u/O6wIIY1Yvzzttg=;
-        b=RY0DZp/jR4qFU2CsQ3SkU4CeCA7L9+U7TauNgFCu5/dc34SvxPKnF55BGnw0yU17c/mbca
-        HbwtdhU0yeCOXM8x1Rdhm5CrfgapCIs1tlxPnA72pCAR9PAIxoBvnghTmQfQRlzq6M1vCU
-        vAN1T4k+1JJrx6B4v4Q+QUvhOmm4FnC1PqbH2zppO4DkjDvHCOqgNDNtHHt2P4CTEb2mCg
-        GrZAz8qP+O6IBdlMzlBQMm2PnXP7/rCKC0C8MdiLruE91jYXxs1n+p1ZNJ527ZgkN617Zk
-        6PehEdCy9TAGpkZDOo48rvdZD/oaI4pab0YPq2og6/J36DaNtuPnQggoHG1cpw==
+        bh=WbJZX8CBU2GPiP81hL+4+7Zc10QJkfzkiRQvY0QYQWQ=;
+        b=IJRFxGwXLwci7KLVZGsXD3sLh8dxKbb5PnNSOgOPSzu9ZZPjaAKbAt9695t2rg4wGlX4FI
+        mUebOPvL9Bhywat0cMF4vLpZux5WVFqGq2Qtv2UwxQWKJd3ip+sWdH+XzOxTeoBEvGBs9W
+        Ft9K+f/9znI7EilbwaMuYaagya3kEIDnpMfJAtI8LVk1pUa+kcaB70UZ1QKaUOxv9KM8+M
+        ghN/Q4fRWTM/QwtC2U3W6J9jU2wmDBrBZaCfvvzQKH+Npli0X3K4DUQR26KSgIPHCmfdka
+        eg0LFbFy6WT64j2D73ZPtrX2DFW8gf6fen/KYzYy1Bo3mUIJb18T6nw+fyKGGg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1602262884;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=qa5BYAQ/xKA+kV57+AUnTiO/P44u/O6wIIY1Yvzzttg=;
-        b=D48HoQUB7Ht5aqnr8tshiG4W7V5hgq04Ov0vSApG90sKUEk/Cwlg8RLyXH5iYWtMggGTNH
-        N9AtH8SSYts8G1AQ==
+        bh=WbJZX8CBU2GPiP81hL+4+7Zc10QJkfzkiRQvY0QYQWQ=;
+        b=Z4lAVIjH6eecq7IYbLsUTIDapGe+/OUNe5TlnHSRF/gwd/pWzqijWsnruR8NCoejfAvBU7
+        cAgtupjt7qsq4LBQ==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcutorture: Cleanup PREEMPT_COUNT leftovers
+Subject: [tip: core/rcu] drm/i915: Cleanup PREEMPT_COUNT leftovers
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Josh Triplett <josh@joshtriplett.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        Lai Jiangshan <jiangshanlai@gmail.com>,
-        Shuah Khan <shuah@kernel.org>, rcu@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, x86 <x86@kernel.org>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        "Paul E. McKenney" <paulmck@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <160226288348.7002.14672482612676279557.tip-bot2@tip-bot2>
+Message-ID: <160226288395.7002.10138923121624324637.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,103 +58,55 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     27405ee98aee7a25bbca59b0aba04f33b6acc561
-Gitweb:        https://git.kernel.org/tip/27405ee98aee7a25bbca59b0aba04f33b6acc561
+Commit-ID:     5d35c1c982ffaaccd1ec974e96e7a5244bbadaa1
+Gitweb:        https://git.kernel.org/tip/5d35c1c982ffaaccd1ec974e96e7a5244bbadaa1
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Mon, 14 Sep 2020 19:37:36 +02:00
+AuthorDate:    Mon, 14 Sep 2020 19:35:03 +02:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Thu, 01 Oct 2020 09:05:16 -07:00
+CommitterDate: Thu, 01 Oct 2020 09:02:13 -07:00
 
-rcutorture: Cleanup PREEMPT_COUNT leftovers
+drm/i915: Cleanup PREEMPT_COUNT leftovers
 
 CONFIG_PREEMPT_COUNT is now unconditionally enabled and will be
 removed. Cleanup the leftovers before doing so.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: "Paul E. McKenney" <paulmck@kernel.org>
-Cc: Josh Triplett <josh@joshtriplett.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Lai Jiangshan <jiangshanlai@gmail.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: rcu@vger.kernel.org
-Cc: linux-kselftest@vger.kernel.org
+Reviewed-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Cc: Jani Nikula <jani.nikula@linux.intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: David Airlie <airlied@linux.ie>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: intel-gfx@lists.freedesktop.org
+Cc: dri-devel@lists.freedesktop.org
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- tools/testing/selftests/rcutorture/configs/rcu/SRCU-t            | 1 -
- tools/testing/selftests/rcutorture/configs/rcu/SRCU-u            | 1 -
- tools/testing/selftests/rcutorture/configs/rcu/TINY01            | 1 -
- tools/testing/selftests/rcutorture/doc/TINY_RCU.txt              | 5 ++---
- tools/testing/selftests/rcutorture/doc/TREE_RCU-kconfig.txt      | 1 -
- tools/testing/selftests/rcutorture/formal/srcu-cbmc/src/config.h | 1 -
- 6 files changed, 2 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/i915/Kconfig.debug | 1 -
+ drivers/gpu/drm/i915/i915_utils.h  | 3 +--
+ 2 files changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/rcutorture/configs/rcu/SRCU-t b/tools/testing/selftests/rcutorture/configs/rcu/SRCU-t
-index 6c78022..553cf65 100644
---- a/tools/testing/selftests/rcutorture/configs/rcu/SRCU-t
-+++ b/tools/testing/selftests/rcutorture/configs/rcu/SRCU-t
-@@ -7,4 +7,3 @@ CONFIG_RCU_TRACE=n
- CONFIG_DEBUG_LOCK_ALLOC=n
- CONFIG_DEBUG_OBJECTS_RCU_HEAD=n
- CONFIG_DEBUG_ATOMIC_SLEEP=y
--#CHECK#CONFIG_PREEMPT_COUNT=y
-diff --git a/tools/testing/selftests/rcutorture/configs/rcu/SRCU-u b/tools/testing/selftests/rcutorture/configs/rcu/SRCU-u
-index c15ada8..99563da 100644
---- a/tools/testing/selftests/rcutorture/configs/rcu/SRCU-u
-+++ b/tools/testing/selftests/rcutorture/configs/rcu/SRCU-u
-@@ -7,4 +7,3 @@ CONFIG_RCU_TRACE=n
- CONFIG_DEBUG_LOCK_ALLOC=y
- CONFIG_PROVE_LOCKING=y
- CONFIG_DEBUG_OBJECTS_RCU_HEAD=n
--CONFIG_PREEMPT_COUNT=n
-diff --git a/tools/testing/selftests/rcutorture/configs/rcu/TINY01 b/tools/testing/selftests/rcutorture/configs/rcu/TINY01
-index 6db705e..9b22b8e 100644
---- a/tools/testing/selftests/rcutorture/configs/rcu/TINY01
-+++ b/tools/testing/selftests/rcutorture/configs/rcu/TINY01
-@@ -10,4 +10,3 @@ CONFIG_RCU_TRACE=n
- #CHECK#CONFIG_RCU_STALL_COMMON=n
- CONFIG_DEBUG_LOCK_ALLOC=n
- CONFIG_DEBUG_OBJECTS_RCU_HEAD=n
--CONFIG_PREEMPT_COUNT=n
-diff --git a/tools/testing/selftests/rcutorture/doc/TINY_RCU.txt b/tools/testing/selftests/rcutorture/doc/TINY_RCU.txt
-index a75b169..d30cedf 100644
---- a/tools/testing/selftests/rcutorture/doc/TINY_RCU.txt
-+++ b/tools/testing/selftests/rcutorture/doc/TINY_RCU.txt
-@@ -3,11 +3,10 @@ This document gives a brief rationale for the TINY_RCU test cases.
+diff --git a/drivers/gpu/drm/i915/Kconfig.debug b/drivers/gpu/drm/i915/Kconfig.debug
+index 1cb28c2..17d9b00 100644
+--- a/drivers/gpu/drm/i915/Kconfig.debug
++++ b/drivers/gpu/drm/i915/Kconfig.debug
+@@ -20,7 +20,6 @@ config DRM_I915_DEBUG
+ 	bool "Enable additional driver debugging"
+ 	depends on DRM_I915
+ 	select DEBUG_FS
+-	select PREEMPT_COUNT
+ 	select I2C_CHARDEV
+ 	select STACKDEPOT
+ 	select DRM_DP_AUX_CHARDEV
+diff --git a/drivers/gpu/drm/i915/i915_utils.h b/drivers/gpu/drm/i915/i915_utils.h
+index 5477337..ecfed86 100644
+--- a/drivers/gpu/drm/i915/i915_utils.h
++++ b/drivers/gpu/drm/i915/i915_utils.h
+@@ -337,8 +337,7 @@ wait_remaining_ms_from_jiffies(unsigned long timestamp_jiffies, int to_wait_ms)
+ 						   (Wmax))
+ #define wait_for(COND, MS)		_wait_for((COND), (MS) * 1000, 10, 1000)
  
- Kconfig Parameters:
- 
--CONFIG_DEBUG_LOCK_ALLOC -- Do all three and none of the three.
--CONFIG_PREEMPT_COUNT
-+CONFIG_DEBUG_LOCK_ALLOC -- Do both and none of the two.
- CONFIG_RCU_TRACE
- 
--The theory here is that randconfig testing will hit the other six possible
-+The theory here is that randconfig testing will hit the other two possible
- combinations of these parameters.
- 
- 
-diff --git a/tools/testing/selftests/rcutorture/doc/TREE_RCU-kconfig.txt b/tools/testing/selftests/rcutorture/doc/TREE_RCU-kconfig.txt
-index 1b96d68..cfdd48f 100644
---- a/tools/testing/selftests/rcutorture/doc/TREE_RCU-kconfig.txt
-+++ b/tools/testing/selftests/rcutorture/doc/TREE_RCU-kconfig.txt
-@@ -43,7 +43,6 @@ CONFIG_64BIT
- 
- 	Used only to check CONFIG_RCU_FANOUT value, inspection suffices.
- 
--CONFIG_PREEMPT_COUNT
- CONFIG_PREEMPT_RCU
- 
- 	Redundant with CONFIG_PREEMPT, ignore.
-diff --git a/tools/testing/selftests/rcutorture/formal/srcu-cbmc/src/config.h b/tools/testing/selftests/rcutorture/formal/srcu-cbmc/src/config.h
-index 283d710..d0d485d 100644
---- a/tools/testing/selftests/rcutorture/formal/srcu-cbmc/src/config.h
-+++ b/tools/testing/selftests/rcutorture/formal/srcu-cbmc/src/config.h
-@@ -8,7 +8,6 @@
- #undef CONFIG_HOTPLUG_CPU
- #undef CONFIG_MODULES
- #undef CONFIG_NO_HZ_FULL_SYSIDLE
--#undef CONFIG_PREEMPT_COUNT
- #undef CONFIG_PREEMPT_RCU
- #undef CONFIG_PROVE_RCU
- #undef CONFIG_RCU_NOCB_CPU
+-/* If CONFIG_PREEMPT_COUNT is disabled, in_atomic() always reports false. */
+-#if defined(CONFIG_DRM_I915_DEBUG) && defined(CONFIG_PREEMPT_COUNT)
++#ifdef CONFIG_DRM_I915_DEBUG
+ # define _WAIT_FOR_ATOMIC_CHECK(ATOMIC) WARN_ON_ONCE((ATOMIC) && !in_atomic())
+ #else
+ # define _WAIT_FOR_ATOMIC_CHECK(ATOMIC) do { } while (0)
