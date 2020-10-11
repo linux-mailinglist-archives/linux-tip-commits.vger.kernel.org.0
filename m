@@ -2,53 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B092F28A8FE
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 11 Oct 2020 20:00:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9425728A90B
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 11 Oct 2020 20:00:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729859AbgJKSAW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S1728858AbgJKSAW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Sun, 11 Oct 2020 14:00:22 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:39992 "EHLO
+Received: from Galois.linutronix.de ([193.142.43.55]:40004 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388414AbgJKR5a (ORCPT
+        with ESMTP id S2388412AbgJKR5a (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Sun, 11 Oct 2020 13:57:30 -0400
-Date:   Sun, 11 Oct 2020 17:57:26 -0000
+Date:   Sun, 11 Oct 2020 17:57:27 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1602439047;
+        s=2020; t=1602439048;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=q5ktlsKbmEu3ydfPh9gd5b5z5SmSFaYkbgf8PJT8+/4=;
-        b=k3R8vl+cPEpDOY53mfoRPX1YZjU6dShTrObrGT7JHJm9qwg30U76Roja75jC10zZk4IS2R
-        2yKnIbulVSPyF+B1eJEoeFsXahBMPJrZ8txq0iBToSt3/slhDMOzpuvxhiHJqYdudUZcje
-        5cbA5+EXB+fQL8tfkbVFQeYtGCF8FfuWCtMMPgDnyPBuH/Y9TqYviBIYlv4Pblv0djBYOG
-        mP+S8jrbgIQPzy18gOlEgO9wvImf2YwK8RDceKgKoQQQMZQWM9iag0bESGl3cybM6rN0Lg
-        6vl3Dh+JNdYSwlMycFXOBF942WU3/8xu/NKQyZVAREEWhxK9jGeSsqdFYYzGFg==
+        bh=tKH/mZnZhopVXCDDdjtJJYhDcr30GcDIM6xX82LZ9wU=;
+        b=bX+5fOkHeGb0K8c6KrAyEXVYf4OhVxOwDTRav1n+VfM2P3qououOH67BQuEFGGvuKurwcB
+        08NROVkJidqC7v3FLCHo57GUheeq9pRf0gDywL89zS/UM8QUS4msvdPnkNJ2XPjPPgiqHJ
+        DRcYX1bzzgh5ECd6lB7jpi4x6h++QVdk9qC4y6PlD2RY/x4nd/oIFGlZ+VtdNnfhshckTh
+        pHv68oinOJqLfKF6gO2epD2XAq2y29zF4MUVu1pJNbZli8EYcoHRAcgRVBnPMFLrmIy0oK
+        I85aoLG05nmbRq7o/ckwNwghpon3f9P+M8byGtXdswCAXr7q8O2RYn69Q1dDVA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1602439047;
+        s=2020e; t=1602439048;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=q5ktlsKbmEu3ydfPh9gd5b5z5SmSFaYkbgf8PJT8+/4=;
-        b=+T6DOGIqMbWDMKrl2uo7PZRcB7ul6mTPu8qsrlh1XJuXMRrQgVtXOmjf7pY4p2W9KME7/n
-        m8z3eoJdngqyKKBw==
+        bh=tKH/mZnZhopVXCDDdjtJJYhDcr30GcDIM6xX82LZ9wU=;
+        b=PUTnY/qDXo923p1l9CsJw86f7yD4ZuH+L3SK2in2RHZDop/lhr00EpUJaEiv5Ynhm6IoqP
+        8Phd9TMbzCHCdZDA==
 From:   "tip-bot2 for Zhen Lei" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] dt-bindings: dw-apb-ictl: Update binding to describe
- use as primary interrupt controller
+Subject: [tip: irq/core] irqchip/dw-apb-ictl: Refactor priot to introducing
+ hierarchical irq domains
 Cc:     Zhen Lei <thunder.leizhen@huawei.com>,
-        Marc Zyngier <maz@kernel.org>, Rob Herring <robh@kernel.org>,
+        Marc Zyngier <maz@kernel.org>, Haoyu Lv <lvhaoyu@huawei.com>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200924071754.4509-5-thunder.leizhen@huawei.com>
-References: <20200924071754.4509-5-thunder.leizhen@huawei.com>
+In-Reply-To: <20200924071754.4509-3-thunder.leizhen@huawei.com>
+References: <20200924071754.4509-3-thunder.leizhen@huawei.com>
 MIME-Version: 1.0
-Message-ID: <160243904641.7002.779093701720103039.tip-bot2@tip-bot2>
+Message-ID: <160243904745.7002.18322312004522474060.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,67 +59,92 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     8156b80fd4885d0ca9748e736441cc37f4eb476a
-Gitweb:        https://git.kernel.org/tip/8156b80fd4885d0ca9748e736441cc37f4eb476a
+Commit-ID:     d59f7d159891466361808522b63cf3548ea3ecb0
+Gitweb:        https://git.kernel.org/tip/d59f7d159891466361808522b63cf3548ea3ecb0
 Author:        Zhen Lei <thunder.leizhen@huawei.com>
-AuthorDate:    Thu, 24 Sep 2020 15:17:52 +08:00
+AuthorDate:    Thu, 24 Sep 2020 15:17:50 +08:00
 Committer:     Marc Zyngier <maz@kernel.org>
-CommitterDate: Fri, 25 Sep 2020 16:49:15 +01:00
+CommitterDate: Fri, 25 Sep 2020 16:49:09 +01:00
 
-dt-bindings: dw-apb-ictl: Update binding to describe use as primary interrupt controller
+irqchip/dw-apb-ictl: Refactor priot to introducing hierarchical irq domains
 
-Add the required updates to describe the use of dw-apb-ictl as a primary
-interrupt controller.
+Add the required abstractions that will help introducing hierarchical
+domain support to the dw-apb-ictl driver.
+
+No functional change.
 
 Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
-[maz: commit message]
+[maz: commit message, some cleanups]
 Signed-off-by: Marc Zyngier <maz@kernel.org>
-Reviewed-by: Rob Herring <robh@kernel.org>
-Link: https://lore.kernel.org/r/20200924071754.4509-5-thunder.leizhen@huawei.com
+Tested-by: Haoyu Lv <lvhaoyu@huawei.com>
+Link: https://lore.kernel.org/r/20200924071754.4509-3-thunder.leizhen@huawei.com
 ---
- Documentation/devicetree/bindings/interrupt-controller/snps,dw-apb-ictl.txt | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ drivers/irqchip/irq-dw-apb-ictl.c | 19 +++++++++++--------
+ 1 file changed, 11 insertions(+), 8 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/interrupt-controller/snps,dw-apb-ictl.txt b/Documentation/devicetree/bindings/interrupt-controller/snps,dw-apb-ictl.txt
-index 086ff08..2db59df 100644
---- a/Documentation/devicetree/bindings/interrupt-controller/snps,dw-apb-ictl.txt
-+++ b/Documentation/devicetree/bindings/interrupt-controller/snps,dw-apb-ictl.txt
-@@ -2,7 +2,8 @@ Synopsys DesignWare APB interrupt controller (dw_apb_ictl)
+diff --git a/drivers/irqchip/irq-dw-apb-ictl.c b/drivers/irqchip/irq-dw-apb-ictl.c
+index e4550e9..353fe62 100644
+--- a/drivers/irqchip/irq-dw-apb-ictl.c
++++ b/drivers/irqchip/irq-dw-apb-ictl.c
+@@ -26,7 +26,7 @@
+ #define APB_INT_FINALSTATUS_H	0x34
+ #define APB_INT_BASE_OFFSET	0x04
  
- Synopsys DesignWare provides interrupt controller IP for APB known as
- dw_apb_ictl. The IP is used as secondary interrupt controller in some SoCs with
--APB bus, e.g. Marvell Armada 1500.
-+APB bus, e.g. Marvell Armada 1500. It can also be used as primary interrupt
-+controller in some SoCs, e.g. Hisilicon SD5203.
+-static void dw_apb_ictl_handler(struct irq_desc *desc)
++static void dw_apb_ictl_handle_irq_cascaded(struct irq_desc *desc)
+ {
+ 	struct irq_domain *d = irq_desc_get_handler_data(desc);
+ 	struct irq_chip *chip = irq_desc_get_chip(desc);
+@@ -43,7 +43,7 @@ static void dw_apb_ictl_handler(struct irq_desc *desc)
+ 			u32 virq = irq_find_mapping(d, gc->irq_base + hwirq);
  
- Required properties:
- - compatible: shall be "snps,dw-apb-ictl"
-@@ -10,6 +11,8 @@ Required properties:
-   region starting with ENABLE_LOW register
- - interrupt-controller: identifies the node as an interrupt controller
- - #interrupt-cells: number of cells to encode an interrupt-specifier, shall be 1
+ 			generic_handle_irq(virq);
+-			stat &= ~(1 << hwirq);
++			stat &= ~BIT(hwirq);
+ 		}
+ 	}
+ 
+@@ -68,17 +68,20 @@ static void dw_apb_ictl_resume(struct irq_data *d)
+ static int __init dw_apb_ictl_init(struct device_node *np,
+ 				   struct device_node *parent)
+ {
++	const struct irq_domain_ops *domain_ops;
+ 	unsigned int clr = IRQ_NOREQUEST | IRQ_NOPROBE | IRQ_NOAUTOEN;
+ 	struct resource r;
+ 	struct irq_domain *domain;
+ 	struct irq_chip_generic *gc;
+ 	void __iomem *iobase;
+-	int ret, nrirqs, irq, i;
++	int ret, nrirqs, parent_irq, i;
+ 	u32 reg;
+ 
++	domain_ops = &irq_generic_chip_ops;
 +
-+Additional required property when it's used as secondary interrupt controller:
- - interrupts: interrupt reference to primary interrupt controller
+ 	/* Map the parent interrupt for the chained handler */
+-	irq = irq_of_parse_and_map(np, 0);
+-	if (irq <= 0) {
++	parent_irq = irq_of_parse_and_map(np, 0);
++	if (parent_irq <= 0) {
+ 		pr_err("%pOF: unable to parse irq\n", np);
+ 		return -EINVAL;
+ 	}
+@@ -120,8 +123,7 @@ static int __init dw_apb_ictl_init(struct device_node *np,
+ 	else
+ 		nrirqs = fls(readl_relaxed(iobase + APB_INT_ENABLE_L));
  
- The interrupt sources map to the corresponding bits in the interrupt
-@@ -21,6 +24,7 @@ registers, i.e.
- - (optional) fast interrupts start at 64.
+-	domain = irq_domain_add_linear(np, nrirqs,
+-				       &irq_generic_chip_ops, NULL);
++	domain = irq_domain_add_linear(np, nrirqs, domain_ops, NULL);
+ 	if (!domain) {
+ 		pr_err("%pOF: unable to add irq domain\n", np);
+ 		ret = -ENOMEM;
+@@ -146,7 +148,8 @@ static int __init dw_apb_ictl_init(struct device_node *np,
+ 		gc->chip_types[0].chip.irq_resume = dw_apb_ictl_resume;
+ 	}
  
- Example:
-+	/* dw_apb_ictl is used as secondary interrupt controller */
- 	aic: interrupt-controller@3000 {
- 		compatible = "snps,dw-apb-ictl";
- 		reg = <0x3000 0xc00>;
-@@ -29,3 +33,11 @@ Example:
- 		interrupt-parent = <&gic>;
- 		interrupts = <GIC_SPI 3 IRQ_TYPE_LEVEL_HIGH>;
- 	};
-+
-+	/* dw_apb_ictl is used as primary interrupt controller */
-+	vic: interrupt-controller@10130000 {
-+		compatible = "snps,dw-apb-ictl";
-+		reg = <0x10130000 0x1000>;
-+		interrupt-controller;
-+		#interrupt-cells = <1>;
-+	};
+-	irq_set_chained_handler_and_data(irq, dw_apb_ictl_handler, domain);
++	irq_set_chained_handler_and_data(parent_irq,
++				dw_apb_ictl_handle_irq_cascaded, domain);
+ 
+ 	return 0;
+ 
