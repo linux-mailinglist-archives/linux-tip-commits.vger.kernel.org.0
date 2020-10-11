@@ -2,46 +2,47 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B28528A8F1
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 11 Oct 2020 20:00:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB01228A8AF
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 11 Oct 2020 19:58:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730509AbgJKR7z (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 11 Oct 2020 13:59:55 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:40076 "EHLO
+        id S2388555AbgJKR5y (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 11 Oct 2020 13:57:54 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:40084 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388435AbgJKR5e (ORCPT
+        with ESMTP id S2388438AbgJKR5e (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Sun, 11 Oct 2020 13:57:34 -0400
 Date:   Sun, 11 Oct 2020 17:57:31 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1602439051;
+        s=2020; t=1602439052;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=AlmDU2rO4y/SlSRUsz9AmxWf54iH85p3PrqNd2PNEuI=;
-        b=xA+nDdSXGXch/zdsCl2j4skkoJ2zPGttuAL5pdKmpD6K4JwP8l6xC8cI0PwbECeMdRmbYY
-        OY5siVVFIbbhTDQNYJfAtV8u13A81rGjm2a9PHnyxvw7NyGPbDv2gI+IbyNTZVIaZnR8IO
-        V8BARCcg/OUTtGh0/6vS5PYuTlSQ1r005v5IWxQLQXNc7l/7Fk6ltDg44StSTaskkom3V6
-        kyIkmzJzykXiCC7FKFlp9bTEys0SeFx7IcgwWaC63pHt55eitDQK3+bsr1+Ov3R7ZLu22l
-        f6XqUjuPrxEUdeGSwkkJE/MjPepAMnwOqPtgI/BTlkAnoFirnCP9IYf+j5vp5w==
+        bh=bb8Y0XXeajllYMPmNFP1vSUSfAvHQOsWoGv6wYcdAGs=;
+        b=NreSxpV39kVOpfZGEbhHNCSelGaBDqhe2wKPd3ZD9bcKCtcyVdnWoyfcPk0efxqtQP+1AO
+        w0DDTZecnpIElNWNmVXDf4DrPLxeMKKgg5s8t1lsujyOuwLmUjdF4naXijDLCGCoqiFENr
+        XfCqHPWt37Pil2PFsbWJOvMQMwe9SleXHUwKf38FV7m7bJeWbhM4hUVabVWzjMg+n7fwoa
+        l1rWYYXDRX4XDqlMpSJc0k1e5i366VTiqDnn9HT4/X6x9qTWsL0LxZpa1zt8RfKMkzWcgT
+        0q8uSGcOst48n+d+0kJ5Lkq8VkaH9t9eowLuLlJlVDDgzO9EkXNl/0GUmMxq+A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1602439051;
+        s=2020e; t=1602439052;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=AlmDU2rO4y/SlSRUsz9AmxWf54iH85p3PrqNd2PNEuI=;
-        b=TWBe5aHMgLBMV2IDIBACOL1uaEq3rtC9hIdgNEly/SFMs1onGkOWtq6yq0zn8MQJCYCgP0
-        4Cb6mqTfJ+EcSZDg==
+        bh=bb8Y0XXeajllYMPmNFP1vSUSfAvHQOsWoGv6wYcdAGs=;
+        b=9gK0h2D3+gcYWMadHgB3mWmCjxEMXCCv8jmAVwBtUPBIyDOgQDtw31R47F9M5OXkszJRKW
+        aGW2lHtvfl4Fl6AA==
 From:   "tip-bot2 for Marc Zyngier" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] ARM: Kill __smp_cross_call and co
+Subject: [tip: irq/core] arm64: Remove custom IRQ stat accounting
 Cc:     Valentin Schneider <valentin.schneider@arm.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
         Marc Zyngier <maz@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <160243905108.7002.6252100978578102774.tip-bot2@tip-bot2>
+Message-ID: <160243905159.7002.4103912241704389488.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -52,118 +53,184 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     8aa837cb7a032884c787b15de81f7d9de8af0869
-Gitweb:        https://git.kernel.org/tip/8aa837cb7a032884c787b15de81f7d9de8af0869
+Commit-ID:     a263881525310e10ecd46ae8e8531ac9e968b1b4
+Gitweb:        https://git.kernel.org/tip/a263881525310e10ecd46ae8e8531ac9e968b1b4
 Author:        Marc Zyngier <maz@kernel.org>
-AuthorDate:    Mon, 22 Jun 2020 22:15:54 +01:00
+AuthorDate:    Sat, 20 Jun 2020 17:19:00 +01:00
 Committer:     Marc Zyngier <maz@kernel.org>
 CommitterDate: Thu, 17 Sep 2020 16:37:28 +01:00
 
-ARM: Kill __smp_cross_call and co
+arm64: Remove custom IRQ stat accounting
 
-The old IPI registration interface is now unused on arm, so let's
-get rid of it.
+Let's switch the arm64 code to the core accounting, which already
+does everything we need.
 
 Reviewed-by: Valentin Schneider <valentin.schneider@arm.com>
+Acked-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Marc Zyngier <maz@kernel.org>
 ---
- arch/arm/include/asm/smp.h |  6 ------
- arch/arm/kernel/smp.c      | 26 +++++++-------------------
- 2 files changed, 7 insertions(+), 25 deletions(-)
+ arch/arm64/include/asm/hardirq.h |  9 ---------
+ arch/arm64/include/asm/smp.h     |  5 -----
+ arch/arm64/kernel/irq.c          | 11 +----------
+ arch/arm64/kernel/smp.c          | 30 ++++++++++++------------------
+ 4 files changed, 13 insertions(+), 42 deletions(-)
 
-diff --git a/arch/arm/include/asm/smp.h b/arch/arm/include/asm/smp.h
-index 0e29730..0ca55a6 100644
---- a/arch/arm/include/asm/smp.h
-+++ b/arch/arm/include/asm/smp.h
-@@ -39,12 +39,6 @@ void handle_IPI(int ipinr, struct pt_regs *regs);
-  */
- extern void smp_init_cpus(void);
+diff --git a/arch/arm64/include/asm/hardirq.h b/arch/arm64/include/asm/hardirq.h
+index 985493a..5ffa4ba 100644
+--- a/arch/arm64/include/asm/hardirq.h
++++ b/arch/arm64/include/asm/hardirq.h
+@@ -13,21 +13,12 @@
+ #include <asm/kvm_arm.h>
+ #include <asm/sysreg.h>
  
+-#define NR_IPI	7
+-
+ typedef struct {
+ 	unsigned int __softirq_pending;
+-	unsigned int ipi_irqs[NR_IPI];
+ } ____cacheline_aligned irq_cpustat_t;
+ 
+ #include <linux/irq_cpustat.h>	/* Standard mappings for irq_cpustat_t above */
+ 
+-#define __inc_irq_stat(cpu, member)	__IRQ_STAT(cpu, member)++
+-#define __get_irq_stat(cpu, member)	__IRQ_STAT(cpu, member)
+-
+-u64 smp_irq_stat_cpu(unsigned int cpu);
+-#define arch_irq_stat_cpu	smp_irq_stat_cpu
+-
+ #define __ARCH_IRQ_EXIT_IRQS_DISABLED	1
+ 
+ struct nmi_ctx {
+diff --git a/arch/arm64/include/asm/smp.h b/arch/arm64/include/asm/smp.h
+index c298ad0..2e7f529 100644
+--- a/arch/arm64/include/asm/smp.h
++++ b/arch/arm64/include/asm/smp.h
+@@ -56,11 +56,6 @@ static inline void set_cpu_logical_map(int cpu, u64 hwid)
+ struct seq_file;
+ 
+ /*
+- * generate IPI list text
+- */
+-extern void show_ipi_list(struct seq_file *p, int prec);
 -
 -/*
-- * Provide a function to raise an IPI cross call on CPUs in callmap.
-- */
--extern void set_smp_cross_call(void (*)(const struct cpumask *, unsigned int));
--
- /*
-  * Register IPI interrupts with the arch SMP code
+  * Discover the set of possible CPUs and determine their
+  * SMP operations.
   */
-diff --git a/arch/arm/kernel/smp.c b/arch/arm/kernel/smp.c
-index f21f784..d51e649 100644
---- a/arch/arm/kernel/smp.c
-+++ b/arch/arm/kernel/smp.c
-@@ -511,14 +511,6 @@ void __init smp_prepare_cpus(unsigned int max_cpus)
- 	}
- }
+diff --git a/arch/arm64/kernel/irq.c b/arch/arm64/kernel/irq.c
+index 04a327c..9cf2fb8 100644
+--- a/arch/arm64/kernel/irq.c
++++ b/arch/arm64/kernel/irq.c
+@@ -10,10 +10,10 @@
+  * Copyright (C) 2012 ARM Ltd.
+  */
  
--static void (*__smp_cross_call)(const struct cpumask *, unsigned int);
+-#include <linux/kernel_stat.h>
+ #include <linux/irq.h>
+ #include <linux/memory.h>
+ #include <linux/smp.h>
++#include <linux/hardirq.h>
+ #include <linux/init.h>
+ #include <linux/irqchip.h>
+ #include <linux/kprobes.h>
+@@ -22,20 +22,11 @@
+ #include <asm/daifflags.h>
+ #include <asm/vmap_stack.h>
+ 
+-unsigned long irq_err_count;
 -
--void __init set_smp_cross_call(void (*fn)(const struct cpumask *, unsigned int))
+ /* Only access this in an NMI enter/exit */
+ DEFINE_PER_CPU(struct nmi_ctx, nmi_contexts);
+ 
+ DEFINE_PER_CPU(unsigned long *, irq_stack_ptr);
+ 
+-int arch_show_interrupts(struct seq_file *p, int prec)
 -{
--	if (!__smp_cross_call)
--		__smp_cross_call = fn;
+-	show_ipi_list(p, prec);
+-	seq_printf(p, "%*s: %10lu\n", prec, "Err", irq_err_count);
+-	return 0;
 -}
 -
- static const char *ipi_types[NR_IPI] __tracepoint_string = {
- #define S(x,s)	[x] = s
- 	S(IPI_WAKEUP, "CPU wakeup interrupts"),
-@@ -530,11 +522,7 @@ static const char *ipi_types[NR_IPI] __tracepoint_string = {
- 	S(IPI_COMPLETION, "completion interrupts"),
+ #ifdef CONFIG_VMAP_STACK
+ static void init_irq_stacks(void)
+ {
+diff --git a/arch/arm64/kernel/smp.c b/arch/arm64/kernel/smp.c
+index 58fb155..b6bde26 100644
+--- a/arch/arm64/kernel/smp.c
++++ b/arch/arm64/kernel/smp.c
+@@ -30,6 +30,7 @@
+ #include <linux/completion.h>
+ #include <linux/of.h>
+ #include <linux/irq_work.h>
++#include <linux/kernel_stat.h>
+ #include <linux/kexec.h>
+ #include <linux/kvm_host.h>
+ 
+@@ -72,7 +73,8 @@ enum ipi_msg_type {
+ 	IPI_CPU_CRASH_STOP,
+ 	IPI_TIMER,
+ 	IPI_IRQ_WORK,
+-	IPI_WAKEUP
++	IPI_WAKEUP,
++	NR_IPI
  };
  
--static void smp_cross_call(const struct cpumask *target, unsigned int ipinr)
--{
--	trace_ipi_raise_rcuidle(target, ipi_types[ipinr]);
--	__smp_cross_call(target, ipinr);
--}
-+static void smp_cross_call(const struct cpumask *target, unsigned int ipinr);
+ static int ipi_irq_base __read_mostly;
+@@ -795,29 +797,23 @@ static const char *ipi_types[NR_IPI] __tracepoint_string = {
  
- void show_ipi_list(struct seq_file *p, int prec)
+ static void smp_cross_call(const struct cpumask *target, unsigned int ipinr);
+ 
+-void show_ipi_list(struct seq_file *p, int prec)
++unsigned long irq_err_count;
++
++int arch_show_interrupts(struct seq_file *p, int prec)
  {
-@@ -713,16 +701,17 @@ static irqreturn_t ipi_handler(int irq, void *data)
- 	return IRQ_HANDLED;
- }
+ 	unsigned int cpu, i;
  
--static void ipi_send(const struct cpumask *target, unsigned int ipi)
-+static void smp_cross_call(const struct cpumask *target, unsigned int ipinr)
- {
--	__ipi_send_mask(ipi_desc[ipi], target);
-+	trace_ipi_raise_rcuidle(target, ipi_types[ipinr]);
-+	__ipi_send_mask(ipi_desc[ipinr], target);
- }
- 
- static void ipi_setup(int cpu)
- {
- 	int i;
- 
--	if (!ipi_irq_base)
-+	if (WARN_ON_ONCE(!ipi_irq_base))
- 		return;
- 
- 	for (i = 0; i < nr_ipi; i++)
-@@ -733,7 +722,7 @@ static void ipi_teardown(int cpu)
- {
- 	int i;
- 
--	if (!ipi_irq_base)
-+	if (WARN_ON_ONCE(!ipi_irq_base))
- 		return;
- 
- 	for (i = 0; i < nr_ipi; i++)
-@@ -759,7 +748,6 @@ void __init set_smp_ipi_range(int ipi_base, int n)
+ 	for (i = 0; i < NR_IPI; i++) {
++		unsigned int irq = irq_desc_get_irq(ipi_desc[i]);
+ 		seq_printf(p, "%*s%u:%s", prec - 1, "IPI", i,
+ 			   prec >= 4 ? " " : "");
+ 		for_each_online_cpu(cpu)
+-			seq_printf(p, "%10u ",
+-				   __get_irq_stat(cpu, ipi_irqs[i]));
++			seq_printf(p, "%10u ", kstat_irqs_cpu(irq, cpu));
+ 		seq_printf(p, "      %s\n", ipi_types[i]);
  	}
+-}
+-
+-u64 smp_irq_stat_cpu(unsigned int cpu)
+-{
+-	u64 sum = 0;
+-	int i;
  
- 	ipi_irq_base = ipi_base;
--	set_smp_cross_call(ipi_send);
- 
- 	/* Setup the boot CPU immediately */
- 	ipi_setup(smp_processor_id());
-@@ -872,7 +860,7 @@ core_initcall(register_cpufreq_notifier);
- 
- static void raise_nmi(cpumask_t *mask)
- {
--	__smp_cross_call(mask, IPI_CPU_BACKTRACE);
-+	__ipi_send_mask(ipi_desc[IPI_CPU_BACKTRACE], mask);
+-	for (i = 0; i < NR_IPI; i++)
+-		sum += __get_irq_stat(cpu, ipi_irqs[i]);
+-
+-	return sum;
++	seq_printf(p, "%*s: %10lu\n", prec, "Err", irq_err_count);
++	return 0;
  }
  
- void arch_trigger_cpumask_backtrace(const cpumask_t *mask, bool exclude_self)
+ void arch_send_call_function_ipi_mask(const struct cpumask *mask)
+@@ -892,10 +888,8 @@ static void do_handle_IPI(int ipinr)
+ {
+ 	unsigned int cpu = smp_processor_id();
+ 
+-	if ((unsigned)ipinr < NR_IPI) {
++	if ((unsigned)ipinr < NR_IPI)
+ 		trace_ipi_entry_rcuidle(ipi_types[ipinr]);
+-		__inc_irq_stat(cpu, ipi_irqs[ipinr]);
+-	}
+ 
+ 	switch (ipinr) {
+ 	case IPI_RESCHEDULE:
+@@ -992,7 +986,7 @@ void __init set_smp_ipi_range(int ipi_base, int n)
+ 		int err;
+ 
+ 		err = request_percpu_irq(ipi_base + i, ipi_handler,
+-					 "IPI", &irq_stat);
++					 "IPI", &cpu_number);
+ 		WARN_ON(err);
+ 
+ 		ipi_desc[i] = irq_to_desc(ipi_base + i);
