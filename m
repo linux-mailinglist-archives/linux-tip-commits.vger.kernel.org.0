@@ -2,14 +2,14 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9425728A90B
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 11 Oct 2020 20:00:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4322F28A8FD
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 11 Oct 2020 20:00:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728858AbgJKSAW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 11 Oct 2020 14:00:22 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:40004 "EHLO
+        id S1728314AbgJKSAV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 11 Oct 2020 14:00:21 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:40012 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388412AbgJKR5a (ORCPT
+        with ESMTP id S2388417AbgJKR5a (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Sun, 11 Oct 2020 13:57:30 -0400
 Date:   Sun, 11 Oct 2020 17:57:27 -0000
@@ -20,12 +20,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=tKH/mZnZhopVXCDDdjtJJYhDcr30GcDIM6xX82LZ9wU=;
-        b=bX+5fOkHeGb0K8c6KrAyEXVYf4OhVxOwDTRav1n+VfM2P3qououOH67BQuEFGGvuKurwcB
-        08NROVkJidqC7v3FLCHo57GUheeq9pRf0gDywL89zS/UM8QUS4msvdPnkNJ2XPjPPgiqHJ
-        DRcYX1bzzgh5ECd6lB7jpi4x6h++QVdk9qC4y6PlD2RY/x4nd/oIFGlZ+VtdNnfhshckTh
-        pHv68oinOJqLfKF6gO2epD2XAq2y29zF4MUVu1pJNbZli8EYcoHRAcgRVBnPMFLrmIy0oK
-        I85aoLG05nmbRq7o/ckwNwghpon3f9P+M8byGtXdswCAXr7q8O2RYn69Q1dDVA==
+        bh=4uDD41WyUgCEXwneM9SO+gduyfV4bBsi+bPVZxq323M=;
+        b=VjIKkKVxMDWTQMZvZKzIOs4mVYqlzv9JrkHqwEhlcx5Qwk/7+m7xlNyM48qQPD3uzUta/o
+        O3PwxUSc0q0r4SCZuL60wI5HFrxz+PUGGh1RlGml6fDAjxQYN3or/WtwKMevYcLCAs5qrL
+        kBTf4iNI9mdKiC7zGvXpTkwf8DiHrbxTYoC3NPbVPxxRuoSwR8TSVEI2AUsU7i6kMeyliy
+        02GjyfDF5a9/nU4rvkb/n8yCBJoh9t9R50sNiI3wpMtGLfeqz9CYCzinDXxa4vg/xXzGtY
+        B5qsQs1AyUEYfd1scGiCxNxWGd715dc8dhpV3cDuKXK7L3ypNyWD6I4ntZogeA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1602439048;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -33,22 +33,22 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=tKH/mZnZhopVXCDDdjtJJYhDcr30GcDIM6xX82LZ9wU=;
-        b=PUTnY/qDXo923p1l9CsJw86f7yD4ZuH+L3SK2in2RHZDop/lhr00EpUJaEiv5Ynhm6IoqP
-        8Phd9TMbzCHCdZDA==
+        bh=4uDD41WyUgCEXwneM9SO+gduyfV4bBsi+bPVZxq323M=;
+        b=/FXW/RerjY6DRwvD5rlWEJXi6m8y5qIlSzD5qiaKW4JKBsAEcTVpRqWAhFImiQOqusmcEv
+        DfhWUiFfqNzORLDQ==
 From:   "tip-bot2 for Zhen Lei" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] irqchip/dw-apb-ictl: Refactor priot to introducing
- hierarchical irq domains
+Subject: [tip: irq/core] genirq: Add stub for set_handle_irq() when
+ !GENERIC_IRQ_MULTI_HANDLER
 Cc:     Zhen Lei <thunder.leizhen@huawei.com>,
-        Marc Zyngier <maz@kernel.org>, Haoyu Lv <lvhaoyu@huawei.com>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200924071754.4509-3-thunder.leizhen@huawei.com>
-References: <20200924071754.4509-3-thunder.leizhen@huawei.com>
+        Marc Zyngier <maz@kernel.org>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200924071754.4509-2-thunder.leizhen@huawei.com>
+References: <20200924071754.4509-2-thunder.leizhen@huawei.com>
 MIME-Version: 1.0
-Message-ID: <160243904745.7002.18322312004522474060.tip-bot2@tip-bot2>
+Message-ID: <160243904796.7002.2521371025849384201.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,92 +59,41 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     d59f7d159891466361808522b63cf3548ea3ecb0
-Gitweb:        https://git.kernel.org/tip/d59f7d159891466361808522b63cf3548ea3ecb0
+Commit-ID:     ea0c80d1764449acf2f70fdb25aec33800cd0348
+Gitweb:        https://git.kernel.org/tip/ea0c80d1764449acf2f70fdb25aec33800cd0348
 Author:        Zhen Lei <thunder.leizhen@huawei.com>
-AuthorDate:    Thu, 24 Sep 2020 15:17:50 +08:00
+AuthorDate:    Thu, 24 Sep 2020 15:17:49 +08:00
 Committer:     Marc Zyngier <maz@kernel.org>
-CommitterDate: Fri, 25 Sep 2020 16:49:09 +01:00
+CommitterDate: Fri, 25 Sep 2020 16:33:57 +01:00
 
-irqchip/dw-apb-ictl: Refactor priot to introducing hierarchical irq domains
+genirq: Add stub for set_handle_irq() when !GENERIC_IRQ_MULTI_HANDLER
 
-Add the required abstractions that will help introducing hierarchical
-domain support to the dw-apb-ictl driver.
-
-No functional change.
+In order to avoid compilation errors when a driver references set_handle_irq(),
+but that the architecture doesn't select GENERIC_IRQ_MULTI_HANDLER,
+add a stub function that will just WARN_ON_ONCE() if ever used.
 
 Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
-[maz: commit message, some cleanups]
+[maz: commit message]
 Signed-off-by: Marc Zyngier <maz@kernel.org>
-Tested-by: Haoyu Lv <lvhaoyu@huawei.com>
-Link: https://lore.kernel.org/r/20200924071754.4509-3-thunder.leizhen@huawei.com
+Link: https://lore.kernel.org/r/20200924071754.4509-2-thunder.leizhen@huawei.com
 ---
- drivers/irqchip/irq-dw-apb-ictl.c | 19 +++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
+ include/linux/irq.h | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/irqchip/irq-dw-apb-ictl.c b/drivers/irqchip/irq-dw-apb-ictl.c
-index e4550e9..353fe62 100644
---- a/drivers/irqchip/irq-dw-apb-ictl.c
-+++ b/drivers/irqchip/irq-dw-apb-ictl.c
-@@ -26,7 +26,7 @@
- #define APB_INT_FINALSTATUS_H	0x34
- #define APB_INT_BASE_OFFSET	0x04
+diff --git a/include/linux/irq.h b/include/linux/irq.h
+index 1b7f4df..b167bae 100644
+--- a/include/linux/irq.h
++++ b/include/linux/irq.h
+@@ -1252,6 +1252,12 @@ int __init set_handle_irq(void (*handle_irq)(struct pt_regs *));
+  * top-level IRQ handler.
+  */
+ extern void (*handle_arch_irq)(struct pt_regs *) __ro_after_init;
++#else
++#define set_handle_irq(handle_irq)		\
++	do {					\
++		(void)handle_irq;		\
++		WARN_ON(1);			\
++	} while (0)
+ #endif
  
--static void dw_apb_ictl_handler(struct irq_desc *desc)
-+static void dw_apb_ictl_handle_irq_cascaded(struct irq_desc *desc)
- {
- 	struct irq_domain *d = irq_desc_get_handler_data(desc);
- 	struct irq_chip *chip = irq_desc_get_chip(desc);
-@@ -43,7 +43,7 @@ static void dw_apb_ictl_handler(struct irq_desc *desc)
- 			u32 virq = irq_find_mapping(d, gc->irq_base + hwirq);
- 
- 			generic_handle_irq(virq);
--			stat &= ~(1 << hwirq);
-+			stat &= ~BIT(hwirq);
- 		}
- 	}
- 
-@@ -68,17 +68,20 @@ static void dw_apb_ictl_resume(struct irq_data *d)
- static int __init dw_apb_ictl_init(struct device_node *np,
- 				   struct device_node *parent)
- {
-+	const struct irq_domain_ops *domain_ops;
- 	unsigned int clr = IRQ_NOREQUEST | IRQ_NOPROBE | IRQ_NOAUTOEN;
- 	struct resource r;
- 	struct irq_domain *domain;
- 	struct irq_chip_generic *gc;
- 	void __iomem *iobase;
--	int ret, nrirqs, irq, i;
-+	int ret, nrirqs, parent_irq, i;
- 	u32 reg;
- 
-+	domain_ops = &irq_generic_chip_ops;
-+
- 	/* Map the parent interrupt for the chained handler */
--	irq = irq_of_parse_and_map(np, 0);
--	if (irq <= 0) {
-+	parent_irq = irq_of_parse_and_map(np, 0);
-+	if (parent_irq <= 0) {
- 		pr_err("%pOF: unable to parse irq\n", np);
- 		return -EINVAL;
- 	}
-@@ -120,8 +123,7 @@ static int __init dw_apb_ictl_init(struct device_node *np,
- 	else
- 		nrirqs = fls(readl_relaxed(iobase + APB_INT_ENABLE_L));
- 
--	domain = irq_domain_add_linear(np, nrirqs,
--				       &irq_generic_chip_ops, NULL);
-+	domain = irq_domain_add_linear(np, nrirqs, domain_ops, NULL);
- 	if (!domain) {
- 		pr_err("%pOF: unable to add irq domain\n", np);
- 		ret = -ENOMEM;
-@@ -146,7 +148,8 @@ static int __init dw_apb_ictl_init(struct device_node *np,
- 		gc->chip_types[0].chip.irq_resume = dw_apb_ictl_resume;
- 	}
- 
--	irq_set_chained_handler_and_data(irq, dw_apb_ictl_handler, domain);
-+	irq_set_chained_handler_and_data(parent_irq,
-+				dw_apb_ictl_handle_irq_cascaded, domain);
- 
- 	return 0;
- 
+ #endif /* _LINUX_IRQ_H */
