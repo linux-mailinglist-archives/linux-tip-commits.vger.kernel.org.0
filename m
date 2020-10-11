@@ -2,45 +2,45 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A9C428A89A
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 11 Oct 2020 19:57:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E92B28A899
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 11 Oct 2020 19:57:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388366AbgJKR5W (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 11 Oct 2020 13:57:22 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:39926 "EHLO
+        id S2388350AbgJKR5V (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 11 Oct 2020 13:57:21 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:39920 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388348AbgJKR5W (ORCPT
+        with ESMTP id S2388346AbgJKR5V (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 11 Oct 2020 13:57:22 -0400
+        Sun, 11 Oct 2020 13:57:21 -0400
 Date:   Sun, 11 Oct 2020 17:57:19 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1602439040;
+        s=2020; t=1602439039;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=eR6dW5CT4IrH4DnwXTdbSoufWlD1RQtLJ0Hon3850rs=;
-        b=jXZyTVoFP1rhJoL7LG2RixQf+EsJUFvuVS5NBPt2a4rp14I5e2V6WiLuTRJiqS2JTXzWTv
-        MHMxUWoBzTsacoy1xDjXFFvmQWhtIqx7PRUHBUxqKcaKmK93MJlGjzHBODq2d7QvYPEog/
-        FZnlUwAPOFXlwhSFQi7td8TjfY7azLRyFaTKTQGskoV3hMqcz2Dqp2aKr7QijcRlOq6jbv
-        VVYt5qXvQSaI7xZbc+5GICJw4uKdY5TVIb1u27VVRPKKhjgM2p9roKgPMghmfA/TbjSrqu
-        gfPtkFzWk4LZzDl679Dk281J65rN3RVR/tqI55PC3mEUnCqv/rUCsiFNgQEemg==
+        bh=1m35zJanVmLsB6a66zfzTeIqsCiAeFCLBiJAUxAUeLs=;
+        b=vK2hjiuQFbclDuJx+EXrSmSMywjr//nFL/JbOVvxPYtgU/XTPW9nYjPvm464/bUmrdGZ30
+        feRG345PmoGMuX2fsgrr3SQrbHbws9Wt60ZsOMVgUXtrVNSgdUWu9MR7GKVg0wB8Z8SzdR
+        2UdGkJje2vs1YNYBBdgWFHTM0JOFCcFjWQN5mC939+LYVB5wKxlPGUAx3vORvhpWMOHgZU
+        HGY3lwjyBHI9cbRFFRPwHpY36BGsNzMehHbRHFheRcKnp34nSqoWM7MXTFGRHpOnhBCve+
+        /3O76LUF7wIAsdpSMOFQltcNnhJbLL6ddU5p29G95+2zVWRkvXOUvWoqnW1/AQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1602439040;
+        s=2020e; t=1602439039;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=eR6dW5CT4IrH4DnwXTdbSoufWlD1RQtLJ0Hon3850rs=;
-        b=muqueg/ZEvr5m0ViBU+lDeDcoKJ0+vYsQUYjXtwTzDQ84DaDZ2Akg1OxxOOEKnWLOAgooU
-        g2cAv9iw6jlzV9AA==
+        bh=1m35zJanVmLsB6a66zfzTeIqsCiAeFCLBiJAUxAUeLs=;
+        b=+pEAfrVkMzR2XElFchbYb51xS6gtfFtGj6Gpth+iuwM+iBwhYKtTWy3rNnad70yCC60pPn
+        GXSFG2okI9M1zWBw==
 From:   "tip-bot2 for Marc Zyngier" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] soc/tegra: pmc: Allow optional irq parent callbacks
+Subject: [tip: irq/core] soc/tegra: pmc: Don't create fake interrupt hierarchy levels
 Cc:     Marc Zyngier <maz@kernel.org>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <160243903963.7002.3567031676396410554.tip-bot2@tip-bot2>
+Message-ID: <160243903906.7002.10359129780852098359.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -51,74 +51,129 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     8681cc33f817842df7ebe3c36558d97f5497a177
-Gitweb:        https://git.kernel.org/tip/8681cc33f817842df7ebe3c36558d97f5497a177
+Commit-ID:     c351ab7bf2a565951172cadbdebe686137c3fd43
+Gitweb:        https://git.kernel.org/tip/c351ab7bf2a565951172cadbdebe686137c3fd43
 Author:        Marc Zyngier <maz@kernel.org>
-AuthorDate:    Sun, 04 Oct 2020 21:16:24 +01:00
+AuthorDate:    Sun, 04 Oct 2020 18:27:04 +01:00
 Committer:     Marc Zyngier <maz@kernel.org>
 CommitterDate: Sat, 10 Oct 2020 12:12:11 +01:00
 
-soc/tegra: pmc: Allow optional irq parent callbacks
+soc/tegra: pmc: Don't create fake interrupt hierarchy levels
 
-Make the PMC driver resistent to variable depth interrupt hierarchy,
-which we are about to introduce.
+The Tegra PMC driver does ungodly things with the interrupt hierarchy,
+repeatedly corrupting it by pulling hwirq numbers out of thin air,
+overriding existing IRQ mappings and changing the handling flow
+of unsuspecting users.
+
+All of this is done in the name of preserving the interrupt hierarchy
+even when these levels do not exist in the HW. Together with the use
+of proper IRQs for IPIs, this leads to an unbootable system as the
+rescheduling IPI gets repeatedly repurposed for random drivers...
+
+Instead, let's simply mark the level from which the hierarchy does
+not make sense for the HW, and let the core code trim the usused
+levels from the hierarchy.
 
 Signed-off-by: Marc Zyngier <maz@kernel.org>
 ---
- drivers/soc/tegra/pmc.c | 36 ++++++++++++++++++++++++++++++++----
- 1 file changed, 32 insertions(+), 4 deletions(-)
+ drivers/soc/tegra/pmc.c | 55 +++++-----------------------------------
+ 1 file changed, 7 insertions(+), 48 deletions(-)
 
 diff --git a/drivers/soc/tegra/pmc.c b/drivers/soc/tegra/pmc.c
-index d332e5d..b39536c 100644
+index b39536c..b0bba8a 100644
 --- a/drivers/soc/tegra/pmc.c
 +++ b/drivers/soc/tegra/pmc.c
-@@ -2184,6 +2184,34 @@ static int tegra186_pmc_irq_set_type(struct irq_data *data, unsigned int type)
- 	return 0;
+@@ -1990,44 +1990,17 @@ static int tegra_pmc_irq_alloc(struct irq_domain *domain, unsigned int virq,
+ 							    event->id,
+ 							    &pmc->irq, pmc);
+ 
+-			/*
+-			 * GPIOs don't have an equivalent interrupt in the
+-			 * parent controller (GIC). However some code, such
+-			 * as the one in irq_get_irqchip_state(), require a
+-			 * valid IRQ chip to be set. Make sure that's the
+-			 * case by passing NULL here, which will install a
+-			 * dummy IRQ chip for the interrupt in the parent
+-			 * domain.
+-			 */
+-			if (domain->parent)
+-				irq_domain_set_hwirq_and_chip(domain->parent,
+-							      virq, 0, NULL,
+-							      NULL);
+-
++			/* GPIO hierarchies stop at the PMC level */
++			if (!err && domain->parent)
++ 				err = irq_domain_disconnect_hierarchy(domain->parent,
++								      virq);
+ 			break;
+ 		}
+ 	}
+ 
+-	/*
+-	 * For interrupts that don't have associated wake events, assign a
+-	 * dummy hardware IRQ number. This is used in the ->irq_set_type()
+-	 * and ->irq_set_wake() callbacks to return early for these IRQs.
+-	 */
+-	if (i == soc->num_wake_events) {
+-		err = irq_domain_set_hwirq_and_chip(domain, virq, ULONG_MAX,
+-						    &pmc->irq, pmc);
+-
+-		/*
+-		 * Interrupts without a wake event don't have a corresponding
+-		 * interrupt in the parent controller (GIC). Pass NULL for the
+-		 * chip here, which causes a dummy IRQ chip to be installed
+-		 * for the interrupt in the parent domain, to make this
+-		 * explicit.
+-		 */
+-		if (domain->parent)
+-			irq_domain_set_hwirq_and_chip(domain->parent, virq, 0,
+-						      NULL, NULL);
+-	}
++	/* If there is no wake-up event, there is no PMC mapping */
++	if (i == soc->num_wake_events)
++		err = irq_domain_disconnect_hierarchy(domain, virq);
+ 
+ 	return err;
  }
+@@ -2043,9 +2016,6 @@ static int tegra210_pmc_irq_set_wake(struct irq_data *data, unsigned int on)
+ 	unsigned int offset, bit;
+ 	u32 value;
  
-+static void tegra_irq_mask_parent(struct irq_data *data)
-+{
-+	if (data->parent_data)
-+		irq_chip_mask_parent(data);
-+}
-+
-+static void tegra_irq_unmask_parent(struct irq_data *data)
-+{
-+	if (data->parent_data)
-+		irq_chip_unmask_parent(data);
-+}
-+
-+static void tegra_irq_eoi_parent(struct irq_data *data)
-+{
-+	if (data->parent_data)
-+		irq_chip_eoi_parent(data);
-+}
-+
-+static int tegra_irq_set_affinity_parent(struct irq_data *data,
-+					 const struct cpumask *dest,
-+					 bool force)
-+{
-+	if (data->parent_data)
-+		return irq_chip_set_affinity_parent(data, dest, force);
-+
-+	return -EINVAL;
-+}
-+
- static int tegra_pmc_irq_init(struct tegra_pmc *pmc)
- {
- 	struct irq_domain *parent = NULL;
-@@ -2199,10 +2227,10 @@ static int tegra_pmc_irq_init(struct tegra_pmc *pmc)
- 		return 0;
+-	if (data->hwirq == ULONG_MAX)
+-		return 0;
+-
+ 	offset = data->hwirq / 32;
+ 	bit = data->hwirq % 32;
  
- 	pmc->irq.name = dev_name(pmc->dev);
--	pmc->irq.irq_mask = irq_chip_mask_parent;
--	pmc->irq.irq_unmask = irq_chip_unmask_parent;
--	pmc->irq.irq_eoi = irq_chip_eoi_parent;
--	pmc->irq.irq_set_affinity = irq_chip_set_affinity_parent;
-+	pmc->irq.irq_mask = tegra_irq_mask_parent;
-+	pmc->irq.irq_unmask = tegra_irq_unmask_parent;
-+	pmc->irq.irq_eoi = tegra_irq_eoi_parent;
-+	pmc->irq.irq_set_affinity = tegra_irq_set_affinity_parent;
- 	pmc->irq.irq_set_type = pmc->soc->irq_set_type;
- 	pmc->irq.irq_set_wake = pmc->soc->irq_set_wake;
+@@ -2080,9 +2050,6 @@ static int tegra210_pmc_irq_set_type(struct irq_data *data, unsigned int type)
+ 	unsigned int offset, bit;
+ 	u32 value;
  
+-	if (data->hwirq == ULONG_MAX)
+-		return 0;
+-
+ 	offset = data->hwirq / 32;
+ 	bit = data->hwirq % 32;
+ 
+@@ -2123,10 +2090,6 @@ static int tegra186_pmc_irq_set_wake(struct irq_data *data, unsigned int on)
+ 	unsigned int offset, bit;
+ 	u32 value;
+ 
+-	/* nothing to do if there's no associated wake event */
+-	if (WARN_ON(data->hwirq == ULONG_MAX))
+-		return 0;
+-
+ 	offset = data->hwirq / 32;
+ 	bit = data->hwirq % 32;
+ 
+@@ -2154,10 +2117,6 @@ static int tegra186_pmc_irq_set_type(struct irq_data *data, unsigned int type)
+ 	struct tegra_pmc *pmc = irq_data_get_irq_chip_data(data);
+ 	u32 value;
+ 
+-	/* nothing to do if there's no associated wake event */
+-	if (data->hwirq == ULONG_MAX)
+-		return 0;
+-
+ 	value = readl(pmc->wake + WAKE_AOWAKE_CNTRL(data->hwirq));
+ 
+ 	switch (type) {
