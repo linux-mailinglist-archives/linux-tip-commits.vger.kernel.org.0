@@ -2,95 +2,91 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6989928A39A
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 11 Oct 2020 01:09:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7DCB128A5DB
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 11 Oct 2020 08:08:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390250AbgJJW4v (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 10 Oct 2020 18:56:51 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:42470 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1731252AbgJJTFe (ORCPT
+        id S1726495AbgJKGI5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 11 Oct 2020 02:08:57 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:37870 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725882AbgJKGI5 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 10 Oct 2020 15:05:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1602356728;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=et8KSwo7ZuY1knITYz0pDwFHcnBsxQxwMZNMMJex3WA=;
-        b=QUGGLmUOoTAlV5HPX/QgrNYHk9YF2fNt2FZ0tiLiOiGs+QleroQk3MXWcp+pO1g3YL7N5R
-        2WJ7g54c27hjqAE4uJxmIMbO7LMMegZmnnvI3fKqGTDPZuuvTP+1KJNNJXdQ9k8RlI7Pcs
-        /bHjIwA7v1NYNZ531qlZ25Uumy8bNVU=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-507-oyaZPeUMPDixSdO_QkQz6w-1; Sat, 10 Oct 2020 13:44:23 -0400
-X-MC-Unique: oyaZPeUMPDixSdO_QkQz6w-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id C916E1005E5D;
-        Sat, 10 Oct 2020 17:44:21 +0000 (UTC)
-Received: from treble (ovpn-112-146.rdu2.redhat.com [10.10.112.146])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id A32655C1D0;
-        Sat, 10 Oct 2020 17:44:19 +0000 (UTC)
-Date:   Sat, 10 Oct 2020 12:44:15 -0500
-From:   Josh Poimboeuf <jpoimboe@redhat.com>
-To:     Borislav Petkov <bp@alien8.de>
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Masami Hiramatsu <mhiramat@kernel.org>, x86 <x86@kernel.org>
-Subject: Re: [tip: objtool/core] x86/insn: Support big endian cross-compiles
-Message-ID: <20201010174415.zwopoy6vpficoqlr@treble>
-References: <160208761921.7002.1321765913567405137.tip-bot2@tip-bot2>
- <20201009203822.GA2974@worktop.programming.kicks-ass.net>
- <20201009204921.GB21731@zn.tnic>
+        Sun, 11 Oct 2020 02:08:57 -0400
+Date:   Sun, 11 Oct 2020 06:08:54 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1602396535;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=NFDWvJrrqrrvlMJ5O9iZKUufRiraLZ8NQC5ILvCEisg=;
+        b=Y2uRPlaRXioURdH8ME9LD63HCQvqSOFmgjK8+gewtdxDnOu48SV+wID4YHtReMuiLbTaFe
+        mLgRfwRXOQHcYjda8lBdrsUwzzJX6F/1ynPeYvrialJ2y339KSWskatPJ1WlYe1B8s4Cae
+        L+g0FIX/ZLHteN0dVhFtPuGQwx4ns/b6CYO2Sa+zOv5b2izTQq1v1NngYKG1gERUk8LWK3
+        StgQf0wmB/UPuS9nshDKEzyqsLnLyYa5aDAh1BIe4Y/csamt6dLk23cliF1FboKAzMD3cO
+        GULgTDZzZJNdX9leX5mrrNDS0aNn7pbHHOA1/ope3SX7mLIeJdOeNWMacyONxQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1602396535;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=NFDWvJrrqrrvlMJ5O9iZKUufRiraLZ8NQC5ILvCEisg=;
+        b=ZpEBZSAV38SRQwYehOOO3Z//tb1+MD6f59EZo65Ls+9IykuqzOkTIQZ8CJ2jAdYOC8+5dE
+        HDwvAoN9fRqAE1CA==
+From:   "tip-bot2 for Ard Biesheuvel" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: efi/core] efi: mokvar: add missing include of asm/early_ioremap.h
+Cc:     Nathan Chancellor <natechancellor@gmail.com>,
+        Ard Biesheuvel <ardb@kernel.org>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20201009204921.GB21731@zn.tnic>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+Message-ID: <160239653434.7002.15806482622522996212.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2.linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Fri, Oct 09, 2020 at 10:49:21PM +0200, Borislav Petkov wrote:
-> On Fri, Oct 09, 2020 at 10:38:22PM +0200, Peter Zijlstra wrote:
-> > On Wed, Oct 07, 2020 at 04:20:19PM -0000, tip-bot2 for Martin Schwidefsky wrote:
-> > > The following commit has been merged into the objtool/core branch of tip:
-> > > 
-> > > Commit-ID:     2a522b53c47051d3bf98748418f4f8e5f20d2c04
-> > > Gitweb:        https://git.kernel.org/tip/2a522b53c47051d3bf98748418f4f8e5f20d2c04
-> > > Author:        Martin Schwidefsky <schwidefsky@de.ibm.com>
-> > > AuthorDate:    Mon, 05 Oct 2020 17:50:31 +02:00
-> > > Committer:     Josh Poimboeuf <jpoimboe@redhat.com>
-> > > CommitterDate: Tue, 06 Oct 2020 09:32:29 -05:00
-> > > 
-> > > x86/insn: Support big endian cross-compiles
-> > > 
-> > > x86 instruction decoder code is shared across the kernel source and the
-> > > tools. Currently objtool seems to be the only tool from build tools needed
-> > > which breaks x86 cross compilation on big endian systems. Make the x86
-> > > instruction decoder build host endianness agnostic to support x86 cross
-> > > compilation and enable objtool to implement endianness awareness for
-> > > big endian architectures support.
-> > > 
-> > > Signed-off-by: Martin Schwidefsky <schwidefsky@de.ibm.com>
-> > > Co-developed-by: Vasily Gorbik <gor@linux.ibm.com>
-> > > Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
-> > > Acked-by: Masami Hiramatsu <mhiramat@kernel.org>
-> > > Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
-> > 
-> > This commit breaks the x86 build with CONFIG_X86_DECODER_SELFTEST=y.
-> > 
-> > I've asked Boris to truncate tip/objtool/core.
-> 
-> Yeah, top 4 are gone until this is resolved.
+The following commit has been merged into the efi/core branch of tip:
 
-Masami, I wonder if we even need these selftests anymore?  Objtool
-already decodes the entire kernel.
+Commit-ID:     cc383a9e245c527d3175e2cf4cced9dbbedbbac6
+Gitweb:        https://git.kernel.org/tip/cc383a9e245c527d3175e2cf4cced9dbbedbbac6
+Author:        Ard Biesheuvel <ardb@kernel.org>
+AuthorDate:    Fri, 02 Oct 2020 10:01:23 +02:00
+Committer:     Ard Biesheuvel <ardb@kernel.org>
+CommitterDate: Fri, 02 Oct 2020 10:08:29 +02:00
 
--- 
-Josh
+efi: mokvar: add missing include of asm/early_ioremap.h
 
+Nathan reports that building the new mokvar table code for 32-bit
+ARM fails with errors such as
+
+  error: implicit declaration of function 'early_memunmap'
+  error: implicit declaration of function 'early_memremap'
+
+This is caused by the lack of an explicit #include of the appropriate
+header, and ARM apparently does not inherit that inclusion via another
+header file. So add the #include.
+
+Tested-by: Nathan Chancellor <natechancellor@gmail.com>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+---
+ drivers/firmware/efi/mokvar-table.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/firmware/efi/mokvar-table.c b/drivers/firmware/efi/mokvar-table.c
+index 72a9e17..d8bc013 100644
+--- a/drivers/firmware/efi/mokvar-table.c
++++ b/drivers/firmware/efi/mokvar-table.c
+@@ -40,6 +40,8 @@
+ #include <linux/list.h>
+ #include <linux/slab.h>
+ 
++#include <asm/early_ioremap.h>
++
+ /*
+  * The LINUX_EFI_MOK_VARIABLE_TABLE_GUID config table is a packed
+  * sequence of struct efi_mokvar_table_entry, one for each named
