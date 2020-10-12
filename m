@@ -2,58 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7373A28B407
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 12 Oct 2020 13:45:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0EE1328B5F0
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 12 Oct 2020 15:19:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388135AbgJLLp0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 12 Oct 2020 07:45:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41430 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388070AbgJLLpZ (ORCPT
+        id S2388865AbgJLNTH (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 12 Oct 2020 09:19:07 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:45300 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387930AbgJLNTH (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 12 Oct 2020 07:45:25 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9EB9EC0613CE;
-        Mon, 12 Oct 2020 04:45:25 -0700 (PDT)
-Date:   Mon, 12 Oct 2020 11:45:21 -0000
+        Mon, 12 Oct 2020 09:19:07 -0400
+Date:   Mon, 12 Oct 2020 13:19:03 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1602503123;
+        s=2020; t=1602508744;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=F/ZSaZR0YJBI2cwJ0nGB8AuKWq/v+FHNtXdosmWZABk=;
-        b=SJgWmIzkECNoLyx/TlivZajvnT1AojfnaQGQYJXoBxKQs4WWewHyZ2WvhLrmXbBzX/iY/g
-        o5ioiwKwy0t+rOyF5roXdcBi6WpkD8uToRtOawxbc7ZDWxllocsF+cn3XTUBUv76s4egg+
-        +H3Y405BDgYzJv1rvbedZ+WzJyHQb1XxZHLb3lm5Gya7FQ7ugzrMEmY0LmAFpi3W0Vln0Q
-        5BiLE3aQW8QzlUYSgb2oQxfOHD7kAUxc979D8G28FCjs65NcIgIolKkW90QfbN4ntOWnTa
-        iqtBX7vuYo4bfHb2LYZLZs5SiA8wVFt9UA/k0mTwcuAta0JhvDNpLHDffARjTA==
+        bh=ybWsyHyrHHAhl2S1pNVTP+xMA1alQpPGxwDhxlpgcPU=;
+        b=SnMK5FcQ3wEX1+5GIIhoZul2Xnvowf4+C6EDhBFFPsHnSjqaIy1kFYFxUqCicVau5KNuAQ
+        AVsjSbghmSNA/Zm9fKtYJvrzB1dWnlBnm3y46Zrmi7zU2b3Gf35UC9LLzp8lgfWYABK57U
+        My340BQHvnT6W3H7VeKR1njPM8yHhYm2Ftcqb2vdt/mvypDYri1e7oM0qpgS64/Trxol+D
+        jWvgV47eGNqTeCDMv3/KT2qTiZui49nvOszSQQzb3lskKyt+HhlRKsSYJQuQi73e3OanG3
+        d6IIItoPJS7i2bWZPWSBib8sYM1My0cJXmtqRQOkDc+NkOQb/8GqVwx/IxqG2g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1602503123;
+        s=2020e; t=1602508744;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=F/ZSaZR0YJBI2cwJ0nGB8AuKWq/v+FHNtXdosmWZABk=;
-        b=A08Uinidc+sTgUewhkCtx04xqPUKrTM+CL3ZJyzYuwzBG1pWMysOfmTrxm+ld7tYTdS+7T
-        cYGvMBhoJJOj1BAA==
-From:   "tip-bot2 for Jiri Olsa" <tip-bot2@linutronix.de>
+        bh=ybWsyHyrHHAhl2S1pNVTP+xMA1alQpPGxwDhxlpgcPU=;
+        b=f76NeblQSKqh+mY7YraJG33EArtcRjwj95AlhK+2EkHCXHXxKY2C00UHr3L3szg1G6xSfx
+        QHONY6jrzBSd4wCA==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/core: Fix race in the perf_mmap_close() function
-Cc:     Michael Petlan <mpetlan@redhat.com>, Jiri Olsa <jolsa@kernel.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        Peter Zijlstra <a.p.zijlstra@chello.nl>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Wade Mealing <wmealing@redhat.com>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200916115311.GE2301783@krava>
-References: <20200916115311.GE2301783@krava>
+Subject: [tip: x86/urgent] x86/traps: Fix #DE Oops message regression
+Cc:     Dmitry Vyukov <dvyukov@google.com>,
+        Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <CACT4Y+bTZFkuZd7+bPArowOv-7Die+WZpfOWnEO_Wgs3U59+oA@mail.gmail.com>
+References: <CACT4Y+bTZFkuZd7+bPArowOv-7Die+WZpfOWnEO_Wgs3U59+oA@mail.gmail.com>
 MIME-Version: 1.0
-Message-ID: <160250312175.7002.16224226628192751806.tip-bot2@tip-bot2>
+Message-ID: <160250874375.7002.5021989482130567145.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -62,104 +56,41 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/core branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     f91072ed1b7283b13ca57fcfbece5a3b92726143
-Gitweb:        https://git.kernel.org/tip/f91072ed1b7283b13ca57fcfbece5a3b92726143
-Author:        Jiri Olsa <jolsa@redhat.com>
-AuthorDate:    Wed, 16 Sep 2020 13:53:11 +02:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Mon, 12 Oct 2020 13:24:26 +02:00
+Commit-ID:     20802fef73a5a98b6e8ed1c0aeca82994d835b13
+Gitweb:        https://git.kernel.org/tip/20802fef73a5a98b6e8ed1c0aeca82994d835b13
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Mon, 12 Oct 2020 15:11:47 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Mon, 12 Oct 2020 15:16:56 +02:00
 
-perf/core: Fix race in the perf_mmap_close() function
+x86/traps: Fix #DE Oops message regression
 
-There's a possible race in perf_mmap_close() when checking ring buffer's
-mmap_count refcount value. The problem is that the mmap_count check is
-not atomic because we call atomic_dec() and atomic_read() separately.
+The conversion of #DE to the idtentry mechanism introduced a change in the
+Ooops message which confuses tools which parse crash information in dmesg.
 
-  perf_mmap_close:
-  ...
-   atomic_dec(&rb->mmap_count);
-   ...
-   if (atomic_read(&rb->mmap_count))
-      goto out_put;
+Remove the underscore from 'divide_error' to restore previous behaviour.
 
-   <ring buffer detach>
-   free_uid
-
-out_put:
-  ring_buffer_put(rb); /* could be last */
-
-The race can happen when we have two (or more) events sharing same ring
-buffer and they go through atomic_dec() and then they both see 0 as refcount
-value later in atomic_read(). Then both will go on and execute code which
-is meant to be run just once.
-
-The code that detaches ring buffer is probably fine to be executed more
-than once, but the problem is in calling free_uid(), which will later on
-demonstrate in related crashes and refcount warnings, like:
-
-  refcount_t: addition on 0; use-after-free.
-  ...
-  RIP: 0010:refcount_warn_saturate+0x6d/0xf
-  ...
-  Call Trace:
-  prepare_creds+0x190/0x1e0
-  copy_creds+0x35/0x172
-  copy_process+0x471/0x1a80
-  _do_fork+0x83/0x3a0
-  __do_sys_wait4+0x83/0x90
-  __do_sys_clone+0x85/0xa0
-  do_syscall_64+0x5b/0x1e0
-  entry_SYSCALL_64_after_hwframe+0x44/0xa9
-
-Using atomic decrease and check instead of separated calls.
-
-Tested-by: Michael Petlan <mpetlan@redhat.com>
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Peter Zijlstra <a.p.zijlstra@chello.nl>
-Acked-by: Namhyung Kim <namhyung@kernel.org>
-Acked-by: Wade Mealing <wmealing@redhat.com>
-Fixes: 9bb5d40cd93c ("perf: Fix mmap() accounting hole");
-Link: https://lore.kernel.org/r/20200916115311.GE2301783@krava
+Fixes: 9d06c4027f21 ("x86/entry: Convert Divide Error to IDTENTRY")
+Reported-by: Dmitry Vyukov <dvyukov@google.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/CACT4Y+bTZFkuZd7+bPArowOv-7Die+WZpfOWnEO_Wgs3U59+oA@mail.gmail.com
 ---
- kernel/events/core.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ arch/x86/kernel/traps.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 45edb85..fb662eb 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -5895,11 +5895,11 @@ static void perf_pmu_output_stop(struct perf_event *event);
- static void perf_mmap_close(struct vm_area_struct *vma)
+diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
+index 81a2fb7..316ce1c 100644
+--- a/arch/x86/kernel/traps.c
++++ b/arch/x86/kernel/traps.c
+@@ -195,7 +195,7 @@ static __always_inline void __user *error_get_trap_addr(struct pt_regs *regs)
+ 
+ DEFINE_IDTENTRY(exc_divide_error)
  {
- 	struct perf_event *event = vma->vm_file->private_data;
--
- 	struct perf_buffer *rb = ring_buffer_get(event);
- 	struct user_struct *mmap_user = rb->mmap_user;
- 	int mmap_locked = rb->mmap_locked;
- 	unsigned long size = perf_data_size(rb);
-+	bool detach_rest = false;
+-	do_error_trap(regs, 0, "divide_error", X86_TRAP_DE, SIGFPE,
++	do_error_trap(regs, 0, "divide error", X86_TRAP_DE, SIGFPE,
+ 		      FPE_INTDIV, error_get_trap_addr(regs));
+ }
  
- 	if (event->pmu->event_unmapped)
- 		event->pmu->event_unmapped(event, vma->vm_mm);
-@@ -5930,7 +5930,8 @@ static void perf_mmap_close(struct vm_area_struct *vma)
- 		mutex_unlock(&event->mmap_mutex);
- 	}
- 
--	atomic_dec(&rb->mmap_count);
-+	if (atomic_dec_and_test(&rb->mmap_count))
-+		detach_rest = true;
- 
- 	if (!atomic_dec_and_mutex_lock(&event->mmap_count, &event->mmap_mutex))
- 		goto out_put;
-@@ -5939,7 +5940,7 @@ static void perf_mmap_close(struct vm_area_struct *vma)
- 	mutex_unlock(&event->mmap_mutex);
- 
- 	/* If there's still other mmap()s of this buffer, we're done. */
--	if (atomic_read(&rb->mmap_count))
-+	if (!detach_rest)
- 		goto out_put;
- 
- 	/*
