@@ -2,147 +2,187 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9524028A8B6
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 11 Oct 2020 19:58:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E74228AB28
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 12 Oct 2020 02:02:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388438AbgJKR6N (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 11 Oct 2020 13:58:13 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:40264 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388329AbgJKR5u (ORCPT
+        id S1726460AbgJLACe (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 11 Oct 2020 20:02:34 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53672 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726148AbgJLACd (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 11 Oct 2020 13:57:50 -0400
-Date:   Sun, 11 Oct 2020 17:57:47 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1602439068;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=09HPNPY90TqCVbeYr8hs2feznvKP4K5w4jdxVA3Z9jo=;
-        b=OZEOY5k+FfcF7PZLKSCIs4vZFe0hGrFCimjghRNBFOpAMTAQ+in3ahALWC4BY9naL5+8Uu
-        KfCEejBGfWSwVtLPyWDNamRjamPV3YR8BW+qRG3v59srOD3ibTL4oTdx03UTIiYmTNtNad
-        79oU/VQQ+cRNq7n5lM1f3Hx7aKreukiTKPSQyyBNDSIAoPSWymCiWFyLGXL0rHJ74OUH37
-        vFnNZgolnmlXvhbmgut92Cta1xK+dceXBfqjDcs3NhNv+jxaL5JCQOou2Cx/Cak0kwu7/u
-        33rWESJCWTxVjF+mzhSGO1nvFwWd/Cq9N54ITWaUfU/WyGzECWpKIEi4VUDmJw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1602439068;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=09HPNPY90TqCVbeYr8hs2feznvKP4K5w4jdxVA3Z9jo=;
-        b=92sCyNJk3QUgnZSimRfSh6uuXNHIK+lwS3oPbSPvv64o9CG/ncQdMPVj2tOlP94XQthwjK
-        n2J+moJWFARewJAg==
-From:   "tip-bot2 for Valentin Schneider" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] irqchip/gic-v2, v3: Implement irq_chip->irq_retrigger()
-Cc:     Valentin Schneider <valentin.schneider@arm.com>,
-        Marc Zyngier <maz@kernel.org>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200730170321.31228-2-valentin.schneider@arm.com>
-References: <20200730170321.31228-2-valentin.schneider@arm.com>
-MIME-Version: 1.0
-Message-ID: <160243906734.7002.1103809898484089750.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2.linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+        Sun, 11 Oct 2020 20:02:33 -0400
+Received: from devnote2 (NE2965lan1.rev.em-net.ne.jp [210.141.244.193])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 08D4B2074D;
+        Mon, 12 Oct 2020 00:02:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1602460952;
+        bh=GMaaSRJhJ9tBEJeg7JGfEam3FoW0td08m4out50B96g=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=nbfBteZcGCAWtJo7sCXioLCQA2gf8JgMSxZ3jwYb+ElPI1+XxkirlqxHn9QzD5kXZ
+         iMuIYZNoPQMmacI+8AiKfMi21OWlKD5Qsg/o5h3YHf96uc9/L12YOoH0pEX7i6rOx+
+         zIj399Y9OUf8DzT1m6IiZ7LbOqAdHVMkP5w8KtEc=
+Date:   Mon, 12 Oct 2020 09:02:28 +0900
+From:   Masami Hiramatsu <mhiramat@kernel.org>
+To:     Vasily Gorbik <gor@linux.ibm.com>
+Cc:     Borislav Petkov <bp@alien8.de>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        x86 <x86@kernel.org>
+Subject: Re: [tip: objtool/core] x86/insn: Support big endian cross-compiles
+Message-Id: <20201012090228.2af0bf7e2f85c3a251e573fc@kernel.org>
+In-Reply-To: <your-ad-here.call-01602338530-ext-4703@work.hours>
+References: <160208761921.7002.1321765913567405137.tip-bot2@tip-bot2>
+        <20201009203822.GA2974@worktop.programming.kicks-ass.net>
+        <20201009204921.GB21731@zn.tnic>
+        <your-ad-here.call-01602338530-ext-4703@work.hours>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the irq/core branch of tip:
+On Sat, 10 Oct 2020 16:02:10 +0200
+Vasily Gorbik <gor@linux.ibm.com> wrote:
 
-Commit-ID:     17f644e949ffb14e9c8870d99bc574066d8b685c
-Gitweb:        https://git.kernel.org/tip/17f644e949ffb14e9c8870d99bc574066d8b685c
-Author:        Valentin Schneider <valentin.schneider@arm.com>
-AuthorDate:    Thu, 30 Jul 2020 18:03:20 +01:00
-Committer:     Marc Zyngier <maz@kernel.org>
-CommitterDate: Sun, 06 Sep 2020 18:26:13 +01:00
+> On Fri, Oct 09, 2020 at 10:49:21PM +0200, Borislav Petkov wrote:
+> > On Fri, Oct 09, 2020 at 10:38:22PM +0200, Peter Zijlstra wrote:
+> > > On Wed, Oct 07, 2020 at 04:20:19PM -0000, tip-bot2 for Martin Schwidefsky wrote:
+> > > > The following commit has been merged into the objtool/core branch of tip:
+> > > > 
+> > > > Commit-ID:     2a522b53c47051d3bf98748418f4f8e5f20d2c04
+> > > > Gitweb:        https://git.kernel.org/tip/2a522b53c47051d3bf98748418f4f8e5f20d2c04
+> > > > 
+> > > > x86/insn: Support big endian cross-compiles
+> > > 
+> > > This commit breaks the x86 build with CONFIG_X86_DECODER_SELFTEST=y.
+> > > 
+> > > I've asked Boris to truncate tip/objtool/core.
+> > 
+> > Yeah, top 4 are gone until this is resolved.
+> > 
+> > What I would suggest is to have a look at how tools/ headers are kept
+> > separate from kernel proper ones, see tools/include/ and how those
+> > headers there are full of dummy definitions just so it builds.
+> > 
+> > And then including a global one like linux/kernel.h is just looking for
+> > trouble:
+> > 
+> > In file included from ./include/uapi/linux/byteorder/little_endian.h:12,
+> >                  from ./include/linux/byteorder/little_endian.h:5,
+> >                  from /usr/include/x86_64-linux-gnu/asm/byteorder.h:5,
+> >                  from ./arch/x86/include/asm/insn.h:10,
+> >                  from arch/x86/tools/insn_sanity.c:21:
+> > ./tools/include/linux/types.h:30:18: error: conflicting types for ‘u64’
+> >    30 | typedef uint64_t u64;
+> 
+> Sigh... I have not realized there are more usages of insn.c which are
+> conditionally compiled. It's not like you grep *.c files to find who
+> includes them regularity.
 
-irqchip/gic-v2, v3: Implement irq_chip->irq_retrigger()
+Yes, x86 insn library code is used for the sanity check tool too.
 
-While digging around IRQCHIP_EOI_IF_HANDLED and irq/resend.c, it has come
-to my attention that the IRQ resend situation seems a bit precarious for
-the GIC(s).
+> 
+> Looks like there is no way to find common byte swapping helpers for
+> the kernel and tools then. Even though tools provide quite a bunch of
+> them in tools/include/. So, completely avoiding mixing "kernel" and
+> "userspace" headers would look like the following (delta to commit
+> mentioned above):
+> ---
+> 
+> diff --git a/arch/x86/include/asm/insn.h b/arch/x86/include/asm/insn.h
+> index 004e27bdf121..68197fe18a11 100644
+> --- a/arch/x86/include/asm/insn.h
+> +++ b/arch/x86/include/asm/insn.h
+> @@ -7,7 +7,13 @@
+>   * Copyright (C) IBM Corporation, 2009
+>   */
+>  
+> +#ifdef __KERNEL__
+>  #include <asm/byteorder.h>
+> +#define insn_cpu_to_le32 cpu_to_le32
+> +#else
+> +#include <endian.h>
+> +#define insn_cpu_to_le32 htole32
+> +#endif
+>  /* insn_attr_t is defined in inat.h */
+>  #include <asm/inat.h>
+>  
+> @@ -47,7 +53,7 @@ static inline void insn_field_set(struct insn_field *p, insn_value_t v,
+>  				  unsigned char n)
+>  {
+>  	p->value = v;
+> -	p->little = __cpu_to_le32(v);
+> +	p->little = insn_cpu_to_le32(v);
+>  	p->nbytes = n;
+>  }
+>  
+> diff --git a/arch/x86/lib/insn.c b/arch/x86/lib/insn.c
+> index 520b31fc1f1a..003f32ff7798 100644
+> --- a/arch/x86/lib/insn.c
+> +++ b/arch/x86/lib/insn.c
+> @@ -5,7 +5,6 @@
+>   * Copyright (C) IBM Corporation, 2002, 2004, 2009
+>   */
+>  
+> -#include <linux/kernel.h>
+>  #ifdef __KERNEL__
+>  #include <linux/string.h>
+>  #else
+> @@ -16,15 +15,23 @@
+>  
+>  #include <asm/emulate_prefix.h>
+>  
+> +#ifdef __KERNEL__
+> +#define insn_le32_to_cpu le32_to_cpu
+> +#define insn_le16_to_cpu le16_to_cpu
+> +#else
+> +#define insn_le32_to_cpu le32toh
+> +#define insn_le16_to_cpu le16toh
+> +#endif
+> +
+>  #define leXX_to_cpu(t, r)						\
+>  ({									\
+>  	__typeof__(t) v;						\
+>  	switch (sizeof(t)) {						\
+> -	case 4: v = le32_to_cpu(r); break;				\
+> -	case 2: v = le16_to_cpu(r); break;				\
+> +	case 4: v = insn_le32_to_cpu(r); break;				\
+> +	case 2: v = insn_le16_to_cpu(r); break;				\
+>  	case 1:	v = r; break;						\
+> -	default:							\
+> -		BUILD_BUG(); break;					\
+> +	default: /* relying on -Wuninitialized to report this */	\
+> +		break;							\
+>  	}								\
+>  	v;								\
+>  })
+> --
+> And the same for the tools/*
+> No linux/kernel.h means no BUILD_BUG(), but -Wuninitialized actually
+> does a decent job in this case:
+> arch/x86/../../../arch/x86/lib/insn.c:605:37: error: variable 'v' is
+> 		uninitialized when used here [-Werror,-Wuninitialized]
+>                 insn_field_set(&insn->immediate2, get_next(long, insn), 1);
+>                                                   ^~~~~~~~~~~~~~~~~~~~
 
-When marking an IRQ with IRQS_PENDING, handle_fasteoi_irq() will bail out
-and issue an irq_eoi(). Should the IRQ in question be re-enabled,
-check_irq_resend() will trigger a SW resend, which will go through the flow
-handler again and issue *another* irq_eoi() on the *same* IRQ
-activation. This is something the GIC spec clearly describes as a bad idea:
-any EOI must match a previous ACK.
+Can you initialize v with 0 ? Anyway it will be optimized out while
+compiling the code.
 
-Implement irq_chip.irq_retrigger() for the GIC chips by setting the GIC
-pending bit of the relevant IRQ. After being called by check_irq_resend(),
-this will eventually trigger a *new* interrupt which we will handle as usual.
+> 
+> Masami, Josh,
+> would that be acceptable?
 
-Signed-off-by: Valentin Schneider <valentin.schneider@arm.com>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20200730170321.31228-2-valentin.schneider@arm.com
----
- drivers/irqchip/irq-gic-v3.c | 7 +++++++
- drivers/irqchip/irq-gic.c    | 6 ++++++
- 2 files changed, 13 insertions(+)
+Yes.
 
-diff --git a/drivers/irqchip/irq-gic-v3.c b/drivers/irqchip/irq-gic-v3.c
-index 324f280..b507bc7 100644
---- a/drivers/irqchip/irq-gic-v3.c
-+++ b/drivers/irqchip/irq-gic-v3.c
-@@ -1207,6 +1207,11 @@ static int gic_set_affinity(struct irq_data *d, const struct cpumask *mask_val,
- #define gic_smp_init()		do { } while(0)
- #endif
- 
-+static int gic_retrigger(struct irq_data *data)
-+{
-+	return !gic_irq_set_irqchip_state(data, IRQCHIP_STATE_PENDING, true);
-+}
-+
- #ifdef CONFIG_CPU_PM
- static int gic_cpu_pm_notifier(struct notifier_block *self,
- 			       unsigned long cmd, void *v)
-@@ -1242,6 +1247,7 @@ static struct irq_chip gic_chip = {
- 	.irq_eoi		= gic_eoi_irq,
- 	.irq_set_type		= gic_set_type,
- 	.irq_set_affinity	= gic_set_affinity,
-+	.irq_retrigger          = gic_retrigger,
- 	.irq_get_irqchip_state	= gic_irq_get_irqchip_state,
- 	.irq_set_irqchip_state	= gic_irq_set_irqchip_state,
- 	.irq_nmi_setup		= gic_irq_nmi_setup,
-@@ -1258,6 +1264,7 @@ static struct irq_chip gic_eoimode1_chip = {
- 	.irq_eoi		= gic_eoimode1_eoi_irq,
- 	.irq_set_type		= gic_set_type,
- 	.irq_set_affinity	= gic_set_affinity,
-+	.irq_retrigger          = gic_retrigger,
- 	.irq_get_irqchip_state	= gic_irq_get_irqchip_state,
- 	.irq_set_irqchip_state	= gic_irq_set_irqchip_state,
- 	.irq_set_vcpu_affinity	= gic_irq_set_vcpu_affinity,
-diff --git a/drivers/irqchip/irq-gic.c b/drivers/irqchip/irq-gic.c
-index a27ba2c..e92ee2b 100644
---- a/drivers/irqchip/irq-gic.c
-+++ b/drivers/irqchip/irq-gic.c
-@@ -347,6 +347,11 @@ static int gic_set_affinity(struct irq_data *d, const struct cpumask *mask_val,
- }
- #endif
- 
-+static int gic_retrigger(struct irq_data *data)
-+{
-+	return !gic_irq_set_irqchip_state(data, IRQCHIP_STATE_PENDING, true);
-+}
-+
- static void __exception_irq_entry gic_handle_irq(struct pt_regs *regs)
- {
- 	u32 irqstat, irqnr;
-@@ -417,6 +422,7 @@ static const struct irq_chip gic_chip = {
- 	.irq_unmask		= gic_unmask_irq,
- 	.irq_eoi		= gic_eoi_irq,
- 	.irq_set_type		= gic_set_type,
-+	.irq_retrigger          = gic_retrigger,
- 	.irq_get_irqchip_state	= gic_irq_get_irqchip_state,
- 	.irq_set_irqchip_state	= gic_irq_set_irqchip_state,
- 	.flags			= IRQCHIP_SET_TYPE_MASKED |
+Thank you,
+
+
+-- 
+Masami Hiramatsu <mhiramat@kernel.org>
