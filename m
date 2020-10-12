@@ -2,148 +2,122 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 07D5F28BEBB
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 12 Oct 2020 19:08:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 73CD028C265
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 12 Oct 2020 22:30:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404066AbgJLRId (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 12 Oct 2020 13:08:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35126 "EHLO
+        id S1730073AbgJLUar (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 12 Oct 2020 16:30:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38382 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2403845AbgJLRI3 (ORCPT
+        with ESMTP id S1727484AbgJLUaq (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 12 Oct 2020 13:08:29 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6997CC0613D0;
-        Mon, 12 Oct 2020 10:08:29 -0700 (PDT)
-Date:   Mon, 12 Oct 2020 17:08:27 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1602522507;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=kD4AE9Xjhy1xBbpVilqLgTZel6YalRUgINSHXo6BGKk=;
-        b=28bcxx51ftZbCchvyRprFM2u8Ij41aWJ1fC28W2ROT3ZV8giFDXjg+Jpmj6miwtDDq6xuy
-        UbZDdXv9a3Q5IebGzHfPv9eHUvohU473+8CKzgMaZBDEPWxglhVtcnaSgddutPZiWOkSFo
-        Y3c5MjvXD/HWk/jQezsrGBYr2Gb9pB6mvUuQ8At8DtgyZxV6/fHVjqYPexsyWHpy0ybPia
-        ubVx4sDt9ZG2h6aPzUmkwn5OC4mDe4fiJqUOQrLcwH92W1LDu3mOUTwbHUo+fGqLVul89S
-        /IQPSXUG3qkCRPWlhNYPaV+uGC3v7v0FeBb7yMRdRGFks9oXEOZL02ZgS9VrwA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1602522507;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=kD4AE9Xjhy1xBbpVilqLgTZel6YalRUgINSHXo6BGKk=;
-        b=PZaApUfb0QgzMnyDPTlugskiKtbiB7ywc7OOujyQ4XgIo+keahmSYeon+COwzdXKAVPx7c
-        KnZx0viGIrYDipBQ==
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/kprobes] llist: Add nonatomic __llist_add() and __llist_dell_all()
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <159870619318.1229682.13027387548510028721.stgit@devnote2>
-References: <159870619318.1229682.13027387548510028721.stgit@devnote2>
+        Mon, 12 Oct 2020 16:30:46 -0400
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com [IPv6:2607:f8b0:4864:20::441])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B580BC0613D0
+        for <linux-tip-commits@vger.kernel.org>; Mon, 12 Oct 2020 13:30:46 -0700 (PDT)
+Received: by mail-pf1-x441.google.com with SMTP id 10so5173558pfp.5
+        for <linux-tip-commits@vger.kernel.org>; Mon, 12 Oct 2020 13:30:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=92bEnA9H8SNJVNNEXdCaE7fELDRnT1hkxToMXMt8tLA=;
+        b=HIzavVBrjsYEPQ7zy0x1ixfFocokAD1tqxPGdjDYhes2oevtUfqY5UIZh9P6HklKje
+         HC8JHxJUWPG5dzOYZ1r16QkKifB8c9cwTeiy88Qc0ppBNaPwi4jb7ItH/p69MNInchXT
+         B9YfxheLzcZn49W5OLfOCfQqf4Ddc9IGB26PY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=92bEnA9H8SNJVNNEXdCaE7fELDRnT1hkxToMXMt8tLA=;
+        b=YbH2bo3xxmXx6TMNalfILB/LRqw7ihVV+OAH8A0hfBprdjNpDUnsAnRof5BnG4JZFz
+         TiNCK0IFUI1iXDSpsCfjl7z4ngSWmSA2XZW8njl7shR7recVNxE5qui9/AH/+B3vJrv5
+         6QvlEdjEUjNVzZgLmIRwII+hFJNrZGWypG0TNWJAFNl4Wdz5yGSSDuNqAAtdciJi53GQ
+         FOUtIqtQBMvmNqxJJ3ZLaCE+d/R8Rce0dEI91JiiVrdBhue+WnM2YgYNM16U39uVzhQT
+         BZMjXbfsmK7FC7BgqCEaTReaudDkOyEarpzNesJNmDDWabEZWplakFKr3Xjr4Ba5zWKH
+         Lkkg==
+X-Gm-Message-State: AOAM531FKZUemRfbj95c43/u25HsG/pP1dpoN0uOMPU4ghlpaUAPrf1N
+        DPaRN/7MkVmExaUoPywShmuNEA==
+X-Google-Smtp-Source: ABdhPJwJEP74UTtY0Q33+EQuKQPgJX/KiKy/9Mz86zmV36sv0w+P6X0F9bskoZGMEMk35HIF8oYiEw==
+X-Received: by 2002:a17:90a:7d16:: with SMTP id g22mr21849656pjl.135.1602534646290;
+        Mon, 12 Oct 2020 13:30:46 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id k127sm5983990pgk.10.2020.10.12.13.30.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Oct 2020 13:30:45 -0700 (PDT)
+Date:   Mon, 12 Oct 2020 13:30:44 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     Dmitry Vyukov <dvyukov@google.com>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Marco Elver <elver@google.com>,
+        Brendan Higgins <brendanhiggins@google.com>,
+        syzkaller <syzkaller@googlegroups.com>,
+        linux-tip-commits <linux-tip-commits@vger.kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Alexandre Chartre <alexandre.chartre@oracle.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Andy Lutomirski <luto@kernel.org>, x86 <x86@kernel.org>
+Subject: Re: [tip: x86/entry] x86/entry: Convert Divide Error to IDTENTRY
+Message-ID: <202010121329.1DEA8CD@keescook>
+References: <20200505134904.663914713@linutronix.de>
+ <158991831479.17951.17390452716048622271.tip-bot2@tip-bot2>
+ <CACT4Y+bTZFkuZd7+bPArowOv-7Die+WZpfOWnEO_Wgs3U59+oA@mail.gmail.com>
 MIME-Version: 1.0
-Message-ID: <160252250706.7002.737254513470475787.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2.linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CACT4Y+bTZFkuZd7+bPArowOv-7Die+WZpfOWnEO_Wgs3U59+oA@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/kprobes branch of tip:
+On Sun, Oct 11, 2020 at 05:25:22PM +0200, Dmitry Vyukov wrote:
+> On Tue, May 19, 2020 at 9:59 PM tip-bot2 for Thomas Gleixner
+> <tip-bot2@linutronix.de> wrote:
+> >
+> > The following commit has been merged into the x86/entry branch of tip:
+> >
+> > -DO_ERROR(X86_TRAP_DE,     SIGFPE,  FPE_INTDIV,   IP, "divide error",        divide_error)
+> >
+> > +DEFINE_IDTENTRY(exc_divide_error)
+> > +{
+> > +       do_error_trap(regs, 0, "divide_error", X86_TRAP_DE, SIGFPE,
+> > +                     FPE_INTDIV, error_get_trap_addr(regs));
+> > +}
+> 
+> I suppose this is a copy-paste typo and was supposed to be "divide
+> error", right?
+> Otherwise it changes how kernel oopses look like and breaks syzkaller
+> crash parsing, and probably of every other kernel testing system that
+> looks for kernel crashes.
+> 
+> syzkaller now says just the following for divide errors, without
+> attribution to function/file/maintainers:
+> 
+> kernel panic: Fatal exception (3)
+> FS:  0000000000000000(0000) GS:ffff8880ae500000(0000) knlGS:0000000000000000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 00000000004c9428 CR3: 0000000009e8d000 CR4: 00000000001506e0
+> DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+> DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+> Kernel panic - not syncing: Fatal exception in interrupt
+> Kernel Offset: disabled
+> Rebooting in 86400 seconds..
+> 
+> I will fix it up in syzkaller. It is now required anyway since this
+> new crash mode is in git history, so needed for bisection and testing
+> of older releases.
+> 
+> It is not the first time kernel crash output changes
+> intentionally/unintentionally breaking kernel testing.
+> But I wonder if LKDTM can be turned into actual executable tests that
+> produce pass/fail and fix crash output for different oopses?
+> Marco, you implemented some "output tests" for KCSAN. Can that be
+> extended to other crash types? With some KUnit help? However, I am not
+> sure about hard panics, they may not play well with unit-testing...
 
-Commit-ID:     476c5818c37a7828d558f34ae01f0c32f8bfadde
-Gitweb:        https://git.kernel.org/tip/476c5818c37a7828d558f34ae01f0c32f8bfadde
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Sat, 29 Aug 2020 22:03:13 +09:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Mon, 12 Oct 2020 18:27:27 +02:00
+A lot of the behavioral tests in LKDTM end up triggering arch-specific
+logging. I decided to avoid trying to consolidate it in favor of
+actually getting the test coverage. :)
 
-llist: Add nonatomic __llist_add() and __llist_dell_all()
-
-We'll use these in the new, lockless kretprobes code.
-
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Masami Hiramatsu <mhiramat@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/159870619318.1229682.13027387548510028721.stgit@devnote2
----
- drivers/gpu/drm/i915/i915_request.c |  6 ------
- include/linux/llist.h               | 23 +++++++++++++++++++++++
- 2 files changed, 23 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/gpu/drm/i915/i915_request.c b/drivers/gpu/drm/i915/i915_request.c
-index 0b2fe55..0e851b9 100644
---- a/drivers/gpu/drm/i915/i915_request.c
-+++ b/drivers/gpu/drm/i915/i915_request.c
-@@ -357,12 +357,6 @@ void i915_request_retire_upto(struct i915_request *rq)
- 	} while (i915_request_retire(tmp) && tmp != rq);
- }
- 
--static void __llist_add(struct llist_node *node, struct llist_head *head)
--{
--	node->next = head->first;
--	head->first = node;
--}
--
- static struct i915_request * const *
- __engine_active(struct intel_engine_cs *engine)
- {
-diff --git a/include/linux/llist.h b/include/linux/llist.h
-index 2e9c721..24f207b 100644
---- a/include/linux/llist.h
-+++ b/include/linux/llist.h
-@@ -197,6 +197,16 @@ static inline struct llist_node *llist_next(struct llist_node *node)
- extern bool llist_add_batch(struct llist_node *new_first,
- 			    struct llist_node *new_last,
- 			    struct llist_head *head);
-+
-+static inline bool __llist_add_batch(struct llist_node *new_first,
-+				     struct llist_node *new_last,
-+				     struct llist_head *head)
-+{
-+	new_last->next = head->first;
-+	head->first = new_first;
-+	return new_last->next == NULL;
-+}
-+
- /**
-  * llist_add - add a new entry
-  * @new:	new entry to be added
-@@ -209,6 +219,11 @@ static inline bool llist_add(struct llist_node *new, struct llist_head *head)
- 	return llist_add_batch(new, new, head);
- }
- 
-+static inline bool __llist_add(struct llist_node *new, struct llist_head *head)
-+{
-+	return __llist_add_batch(new, new, head);
-+}
-+
- /**
-  * llist_del_all - delete all entries from lock-less list
-  * @head:	the head of lock-less list to delete all entries
-@@ -222,6 +237,14 @@ static inline struct llist_node *llist_del_all(struct llist_head *head)
- 	return xchg(&head->first, NULL);
- }
- 
-+static inline struct llist_node *__llist_del_all(struct llist_head *head)
-+{
-+	struct llist_node *first = head->first;
-+
-+	head->first = NULL;
-+	return first;
-+}
-+
- extern struct llist_node *llist_del_first(struct llist_head *head);
- 
- struct llist_node *llist_reverse_order(struct llist_node *head);
+-- 
+Kees Cook
