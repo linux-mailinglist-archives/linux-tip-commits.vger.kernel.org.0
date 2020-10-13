@@ -2,125 +2,102 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8141028CB7A
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 13 Oct 2020 12:19:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F383F28CB9F
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 13 Oct 2020 12:27:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727894AbgJMKTq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 13 Oct 2020 06:19:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53892 "EHLO
+        id S1731202AbgJMK1j (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 13 Oct 2020 06:27:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55144 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727214AbgJMKTq (ORCPT
+        with ESMTP id S1731170AbgJMK1i (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 13 Oct 2020 06:19:46 -0400
-Received: from mail-qv1-xf44.google.com (mail-qv1-xf44.google.com [IPv6:2607:f8b0:4864:20::f44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55C4AC0613D0
-        for <linux-tip-commits@vger.kernel.org>; Tue, 13 Oct 2020 03:19:46 -0700 (PDT)
-Received: by mail-qv1-xf44.google.com with SMTP id cv1so9742123qvb.2
-        for <linux-tip-commits@vger.kernel.org>; Tue, 13 Oct 2020 03:19:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=eLBA98YamJiHv2ItZgwdd6EeIaxH30JNvO65ryREESE=;
-        b=WSw76JAUovFabX8dYsf+iktBPU/lQ0Ff5YMxUA/ZXHf+hdEt/pD6hnwlA7pU7ePcpx
-         43rjDkH2RiFN/diiSCDQOAn3SzMQPZ9mn5wHo0weQWTBtvx9exBs0qPkPI+Mi2twpPAB
-         a9pjAs6HogAw+OSpAUp8RYQY3TVH61KWMxLtfJmMPbONobpYnPLHcsYSdaE08leVZGHG
-         EFCkUmrv/N/PIs44Mes33tr6MEOMuGpJIaG75Cj1ER6oiQtaMtPpzQnHDb9a+Gg9UN5J
-         6HPMnsD1tx9npv0fop7ZlBQgtMYj2Fg1SJhCHKowR4AMjfy+PMD866J6Tr2wLKPoMWOX
-         /n/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=eLBA98YamJiHv2ItZgwdd6EeIaxH30JNvO65ryREESE=;
-        b=LMGdSBtWMjSbSE5UuLKPH8fScfp5A5b77+a9DJTUpBCjx1p3NueZGVPzJjzD4A2BGf
-         bDASqgU2uNJOvMVq2Z1S8+tvoepF1nwCudttdxjqwNAIrGB55vxG06EfHNkFHCuauuR/
-         einfiYiYXsfj3k4Zx8RFERJrYJl0WSf4paTr6zH8+lwyoYMyrEQNseyReGPioitM1P0S
-         ggN9oTWO3mUdgVgjrVMLf1fdfeGzi1htrLY1dhnEGmKR32dUhcc3A/sXKZ1gFzuPr44X
-         WvvFjYtsmrcvo7YhV1BdkHpVhWkE/5NtL0H/DAWfoRW0z9cyQGm8DXI+MmBAwvCyTcRE
-         QvVA==
-X-Gm-Message-State: AOAM530tHoEtZtN/VMmhHtE6dGC/1Qc1UJ+xSD+xrXAOzIC2GbCmYEN9
-        gBKFG4CB9/rqUgOCp1sb/vc7JBEyw/029cMl3vYV0Q==
-X-Google-Smtp-Source: ABdhPJz+GJkK44IC0ES1iXdpYyPMZn0GudOemNwH3b1+jXOQeyonIu1Hm330dQZyWmyPwUXbR040pcZDI7eA/aQlqvs=
-X-Received: by 2002:a05:6214:222:: with SMTP id j2mr30342069qvt.32.1602584385008;
- Tue, 13 Oct 2020 03:19:45 -0700 (PDT)
+        Tue, 13 Oct 2020 06:27:38 -0400
+Received: from merlin.infradead.org (merlin.infradead.org [IPv6:2001:8b0:10b:1231::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 796E0C0613D0;
+        Tue, 13 Oct 2020 03:27:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=MZPyYVXUEYs3YSGCvJdse61SjO5uVTagum+obbVonkY=; b=hKIIxEAKckNUJZf25tZk7grtjR
+        061k1jMcJJdzSgHhPHoqHq7KxpOpAJ9WnAcphAtE6MAk0mcHVSRmU2WfRkE2HA7DtsGZat680EGsf
+        7lPabYy0sddJ+rB6EilT7IUDaZpJZYk/ByXs17UgGhNKtxJkNSCAfgaMB1nu/NKpe0HeAmvJ2USt/
+        gK8jkmD4gJKJ3S7IajAK9RkoiWC9Ji2LQFdFqjBVUvcfZxrzBf/DAysDlzfic/nC+RihtR4u8VLCj
+        uyTaLNxG0I9FL9VRKnGn79bbbwdjNSx14rN7pZjXuzafRXkhiIss1aqG6IikjM6StVuozZOpvV9lb
+        xXCq/V5g==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
+        by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1kSHWb-0002bp-TD; Tue, 13 Oct 2020 10:27:22 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id F323B304B90;
+        Tue, 13 Oct 2020 12:27:15 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 867742041906B; Tue, 13 Oct 2020 12:27:15 +0200 (CEST)
+Date:   Tue, 13 Oct 2020 12:27:15 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Boqun Feng <boqun.feng@gmail.com>
+Cc:     Qian Cai <cai@redhat.com>, Steven Rostedt <rostedt@goodmis.org>,
+        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
+        linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
+        Linux Next Mailing List <linux-next@vger.kernel.org>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        "Paul E. McKenney" <paulmck@kernel.org>
+Subject: Re: [tip: locking/core] lockdep: Fix lockdep recursion
+Message-ID: <20201013102715.GX2628@hirez.programming.kicks-ass.net>
+References: <160223032121.7002.1269740091547117869.tip-bot2@tip-bot2>
+ <e438b231c5e1478527af6c3e69bf0b37df650110.camel@redhat.com>
+ <20201012031110.GA39540@debian-boqun.qqnc3lrjykvubdpftowmye0fmh.lx.internal.cloudapp.net>
 MIME-Version: 1.0
-References: <20200505134904.663914713@linutronix.de> <158991831479.17951.17390452716048622271.tip-bot2@tip-bot2>
- <CACT4Y+bTZFkuZd7+bPArowOv-7Die+WZpfOWnEO_Wgs3U59+oA@mail.gmail.com> <202010121329.1DEA8CD@keescook>
-In-Reply-To: <202010121329.1DEA8CD@keescook>
-From:   Dmitry Vyukov <dvyukov@google.com>
-Date:   Tue, 13 Oct 2020 12:19:33 +0200
-Message-ID: <CACT4Y+ZuV2keDjiQppJoozc2O_+noki1SrdzBhP-sAQjBDK-hg@mail.gmail.com>
-Subject: Re: [tip: x86/entry] x86/entry: Convert Divide Error to IDTENTRY
-To:     Kees Cook <keescook@chromium.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Marco Elver <elver@google.com>,
-        Brendan Higgins <brendanhiggins@google.com>,
-        syzkaller <syzkaller@googlegroups.com>,
-        linux-tip-commits <linux-tip-commits@vger.kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Alexandre Chartre <alexandre.chartre@oracle.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Andy Lutomirski <luto@kernel.org>, x86 <x86@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201012031110.GA39540@debian-boqun.qqnc3lrjykvubdpftowmye0fmh.lx.internal.cloudapp.net>
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Mon, Oct 12, 2020 at 10:30 PM Kees Cook <keescook@chromium.org> wrote:
->
-> On Sun, Oct 11, 2020 at 05:25:22PM +0200, Dmitry Vyukov wrote:
-> > On Tue, May 19, 2020 at 9:59 PM tip-bot2 for Thomas Gleixner
-> > <tip-bot2@linutronix.de> wrote:
-> > >
-> > > The following commit has been merged into the x86/entry branch of tip:
-> > >
-> > > -DO_ERROR(X86_TRAP_DE,     SIGFPE,  FPE_INTDIV,   IP, "divide error",        divide_error)
-> > >
-> > > +DEFINE_IDTENTRY(exc_divide_error)
-> > > +{
-> > > +       do_error_trap(regs, 0, "divide_error", X86_TRAP_DE, SIGFPE,
-> > > +                     FPE_INTDIV, error_get_trap_addr(regs));
-> > > +}
-> >
-> > I suppose this is a copy-paste typo and was supposed to be "divide
-> > error", right?
-> > Otherwise it changes how kernel oopses look like and breaks syzkaller
-> > crash parsing, and probably of every other kernel testing system that
-> > looks for kernel crashes.
-> >
-> > syzkaller now says just the following for divide errors, without
-> > attribution to function/file/maintainers:
-> >
-> > kernel panic: Fatal exception (3)
-> > FS:  0000000000000000(0000) GS:ffff8880ae500000(0000) knlGS:0000000000000000
-> > CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> > CR2: 00000000004c9428 CR3: 0000000009e8d000 CR4: 00000000001506e0
-> > DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-> > DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-> > Kernel panic - not syncing: Fatal exception in interrupt
-> > Kernel Offset: disabled
-> > Rebooting in 86400 seconds..
-> >
-> > I will fix it up in syzkaller. It is now required anyway since this
-> > new crash mode is in git history, so needed for bisection and testing
-> > of older releases.
-> >
-> > It is not the first time kernel crash output changes
-> > intentionally/unintentionally breaking kernel testing.
-> > But I wonder if LKDTM can be turned into actual executable tests that
-> > produce pass/fail and fix crash output for different oopses?
-> > Marco, you implemented some "output tests" for KCSAN. Can that be
-> > extended to other crash types? With some KUnit help? However, I am not
-> > sure about hard panics, they may not play well with unit-testing...
->
-> A lot of the behavioral tests in LKDTM end up triggering arch-specific
-> logging. I decided to avoid trying to consolidate it in favor of
-> actually getting the test coverage. :)
+On Mon, Oct 12, 2020 at 11:11:10AM +0800, Boqun Feng wrote:
 
-What do you mean? Some of these tests would need to be arch-specific,
-yes. But I think this is mostly orthogonal to making them PASS/FAIL
-tests that can be used during testing.
+> I think this happened because in this commit debug_lockdep_rcu_enabled()
+> didn't adopt to the change that made lockdep_recursion a percpu
+> variable?
+> 
+> Qian, mind to try the following?
+> 
+> Although, arguably the problem still exists, i.e. we still have an RCU
+> read-side critical section inside lock_acquire(), which may be called on
 
-FTR, syzkaller fix for crash format:
-https://github.com/google/syzkaller/commit/c9f222e7b410a336e436f094e24f6465d1cfdc13
+There is actual RCU usage from the trace_lock_acquire().
+
+> a yet-to-online CPU, which RCU doesn't watch. I think this used to be OK
+> because we don't "free" anything from lockdep, IOW, there is no
+> synchronize_rcu() or call_rcu() that _needs_ to wait for the RCU
+> read-side critical sections inside lockdep. But now we lock class
+> recycling, so it might be a problem.
+> 
+> That said, currently validate_chain() and lock class recycling are
+> mutually excluded via graph_lock, so we are safe for this one ;-)
+
+We should have a comment on that somewhere, could you write one?
+
+> ----------->8
+> diff --git a/kernel/rcu/update.c b/kernel/rcu/update.c
+> index 39334d2d2b37..35d9bab65b75 100644
+> --- a/kernel/rcu/update.c
+> +++ b/kernel/rcu/update.c
+> @@ -275,8 +275,8 @@ EXPORT_SYMBOL_GPL(rcu_callback_map);
+>  
+>  noinstr int notrace debug_lockdep_rcu_enabled(void)
+>  {
+> -	return rcu_scheduler_active != RCU_SCHEDULER_INACTIVE && debug_locks &&
+> -	       current->lockdep_recursion == 0;
+> +	return rcu_scheduler_active != RCU_SCHEDULER_INACTIVE &&
+> +	       __lockdep_enabled;
+>  }
+>  EXPORT_SYMBOL_GPL(debug_lockdep_rcu_enabled);
+
+Urgh, I didn't expect (and forgot to grep) lockdep_recursion users
+outside of lockdep itself :/ It looks like this is indeed the only one.
+
+
