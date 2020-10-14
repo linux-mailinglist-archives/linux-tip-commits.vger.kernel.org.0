@@ -2,58 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4480828E5CF
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 14 Oct 2020 19:59:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 850C228E5D1
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 14 Oct 2020 19:59:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728527AbgJNR7L (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 14 Oct 2020 13:59:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35722 "EHLO
+        id S1728671AbgJNR7R (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 14 Oct 2020 13:59:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35728 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727071AbgJNR7L (ORCPT
+        with ESMTP id S1727071AbgJNR7N (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 14 Oct 2020 13:59:11 -0400
+        Wed, 14 Oct 2020 13:59:13 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C16DFC0613D2;
-        Wed, 14 Oct 2020 10:59:10 -0700 (PDT)
-Date:   Wed, 14 Oct 2020 17:58:51 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C91EC061755;
+        Wed, 14 Oct 2020 10:59:13 -0700 (PDT)
+Date:   Wed, 14 Oct 2020 17:58:54 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1602698348;
+        s=2020; t=1602698350;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=jD1PXWndAygUyGL6CO/NQRWv6PLhWTxqnGXffaEI/3g=;
-        b=zhvm8FxYy9ZKDlFdLZnGvRJ3DxpNFTw/VeWQNZ8SdcPAIkE3oj+vxKjX62pccDvBv+A7Ey
-        C/HuI3XLuTw79I7LAwtrR/mgrMrt5i4FdgmjsWnBZqu4p2oXVniFS+aGYcGrsXtFZpgXuI
-        D5gZ1aGheQn2839T4zJAYLgTpcR7ni7bU9ZCBXcmY2GarnPBlYzNil4yK0IvSt9GEVfY+2
-        1TtGWzKftXNgqLkcs9PIWLPvfLI0Giz4umX8gJXHr0A6gjxP3IbxJajWsWdGAePSmoGdXg
-        +GYwp92xWxhg1AV1jhjQoqDkxxsUQjgOVy+E8x7qL/bHrURVmj6iRoCxfi86qg==
+        bh=e6yrI/iMvyS2r1/ZNYeEYOpuKDwyngU97SsaUa2MKW4=;
+        b=pzMjGsyARUc1amiOLo81bLLtZ1Sij6GB+DgJ94AQjDiY0iywp40p7e6Nd+Zc/8S/8N9ioo
+        PFRCB9M4zCiOlF9Uo9oSvYE87UV/hdXQSxcx/9smdEoAdsaTrUnQ14kMuvkEEgQnwXrb1Y
+        2XR7jPhv8FTyL31TQzKg62yEAdPssfGnr42pbRC16/GkHAsBRBoknPQ0KcQwPHhsBfrywM
+        4QuAsoXBdrlijnzwU4WyUvUMPJ/vNtrT4FBrvcWzmsQ3uxjiXhzt1wTOVll2QCXJbQgWqc
+        +ush3PAiXwYvj04gFcBgetx4wr/J+PLm4lJSTN9BxsG9liCl1mpoer/SsTsyyA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1602698348;
+        s=2020e; t=1602698350;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=jD1PXWndAygUyGL6CO/NQRWv6PLhWTxqnGXffaEI/3g=;
-        b=vZsO9QjUkgUKxI7iw92BG9prxgG70u3HGa4rdTQdD4X3d6EBx6+t+eU5z+UHAliUxQs5Ad
-        s/zmsvI3Hg7QMBDQ==
-From:   "tip-bot2 for Juri Lelli" <tip-bot2@linutronix.de>
+        bh=e6yrI/iMvyS2r1/ZNYeEYOpuKDwyngU97SsaUa2MKW4=;
+        b=ZeO5GHu1z3/RrTXj9UsAD9WbtNIUgUOxPL+JYeD9EGmZpoOwxZFbYDTPA84PEN0Y6NgG9N
+        jrYXOUxFHBdExTDA==
+From:   "tip-bot2 for Andy Lutomirski" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] sched/features: Fix !CONFIG_JUMP_LABEL case
-Cc:     Daniel Bristot de Oliveira <bristot@redhat.com>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        Patrick Bellasi <patrick.bellasi@matbug.net>,
-        Valentin Schneider <valentin.schneider@arm.com>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20201013053114.160628-1-juri.lelli@redhat.com>
-References: <20201013053114.160628-1-juri.lelli@redhat.com>
+Subject: [tip: x86/urgent] x86/syscalls: Document the fact that syscalls
+ 512-547 are a legacy mistake
+Cc:     Jessica Clarke <jrtc27@jrtc27.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <6c56fb4ddd18fc60a238eb4d867e4b3d97c6351e.1602471055.git.luto@kernel.org>
+References: <6c56fb4ddd18fc60a238eb4d867e4b3d97c6351e.1602471055.git.luto@kernel.org>
 MIME-Version: 1.0
-Message-ID: <160269833126.7002.6845610795437305128.tip-bot2@tip-bot2>
+Message-ID: <160269833427.7002.13535911080377553234.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -62,100 +61,55 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/urgent branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     a73f863af4ce9730795eab7097fb2102e6854365
-Gitweb:        https://git.kernel.org/tip/a73f863af4ce9730795eab7097fb2102e6854365
-Author:        Juri Lelli <juri.lelli@redhat.com>
-AuthorDate:    Tue, 13 Oct 2020 07:31:14 +02:00
+Commit-ID:     c3b484c439b0bab7a698495f33ef16286a1000c4
+Gitweb:        https://git.kernel.org/tip/c3b484c439b0bab7a698495f33ef16286a1000c4
+Author:        Andy Lutomirski <luto@kernel.org>
+AuthorDate:    Sun, 11 Oct 2020 19:51:21 -07:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 14 Oct 2020 19:55:46 +02:00
+CommitterDate: Wed, 14 Oct 2020 19:53:40 +02:00
 
-sched/features: Fix !CONFIG_JUMP_LABEL case
+x86/syscalls: Document the fact that syscalls 512-547 are a legacy mistake
 
-Commit:
+Since this commit:
 
-  765cc3a4b224e ("sched/core: Optimize sched_feat() for !CONFIG_SCHED_DEBUG builds")
+  6365b842aae4 ("x86/syscalls: Split the x32 syscalls into their own table")
 
-made sched features static for !CONFIG_SCHED_DEBUG configurations, but
-overlooked the CONFIG_SCHED_DEBUG=y and !CONFIG_JUMP_LABEL cases.
+there is no need for special x32-specific syscall numbers.  I forgot to
+update the comments in syscall_64.tbl.  Add comments to make it clear to
+future contributors that this range is a legacy wart.
 
-For the latter echoing changes to /sys/kernel/debug/sched_features has
-the nasty effect of effectively changing what sched_features reports,
-but without actually changing the scheduler behaviour (since different
-translation units get different sysctl_sched_features).
-
-Fix CONFIG_SCHED_DEBUG=y and !CONFIG_JUMP_LABEL configurations by properly
-restructuring ifdefs.
-
-Fixes: 765cc3a4b224e ("sched/core: Optimize sched_feat() for !CONFIG_SCHED_DEBUG builds")
-Co-developed-by: Daniel Bristot de Oliveira <bristot@redhat.com>
-Signed-off-by: Daniel Bristot de Oliveira <bristot@redhat.com>
-Signed-off-by: Juri Lelli <juri.lelli@redhat.com>
+Reported-by: Jessica Clarke <jrtc27@jrtc27.com>
+Signed-off-by: Andy Lutomirski <luto@kernel.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Patrick Bellasi <patrick.bellasi@matbug.net>
-Reviewed-by: Valentin Schneider <valentin.schneider@arm.com>
-Link: https://lore.kernel.org/r/20201013053114.160628-1-juri.lelli@redhat.com
+Link: https://lore.kernel.org/r/6c56fb4ddd18fc60a238eb4d867e4b3d97c6351e.1602471055.git.luto@kernel.org
 ---
- kernel/sched/core.c  |  2 +-
- kernel/sched/sched.h | 13 ++++++++++---
- 2 files changed, 11 insertions(+), 4 deletions(-)
+ arch/x86/entry/syscalls/syscall_64.tbl | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 8160ab5..d2003a7 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -44,7 +44,7 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(sched_update_nr_running_tp);
+diff --git a/arch/x86/entry/syscalls/syscall_64.tbl b/arch/x86/entry/syscalls/syscall_64.tbl
+index f30d6ae..4adb5d2 100644
+--- a/arch/x86/entry/syscalls/syscall_64.tbl
++++ b/arch/x86/entry/syscalls/syscall_64.tbl
+@@ -363,10 +363,10 @@
+ 439	common	faccessat2		sys_faccessat2
  
- DEFINE_PER_CPU_SHARED_ALIGNED(struct rq, runqueues);
- 
--#if defined(CONFIG_SCHED_DEBUG) && defined(CONFIG_JUMP_LABEL)
-+#ifdef CONFIG_SCHED_DEBUG
- /*
-  * Debugging: various feature bits
-  *
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index 648f023..df80bfc 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -1629,7 +1629,7 @@ enum {
- 
- #undef SCHED_FEAT
- 
--#if defined(CONFIG_SCHED_DEBUG) && defined(CONFIG_JUMP_LABEL)
-+#ifdef CONFIG_SCHED_DEBUG
- 
- /*
-  * To support run-time toggling of sched features, all the translation units
-@@ -1637,6 +1637,7 @@ enum {
-  */
- extern const_debug unsigned int sysctl_sched_features;
- 
-+#ifdef CONFIG_JUMP_LABEL
- #define SCHED_FEAT(name, enabled)					\
- static __always_inline bool static_branch_##name(struct static_key *key) \
- {									\
-@@ -1649,7 +1650,13 @@ static __always_inline bool static_branch_##name(struct static_key *key) \
- extern struct static_key sched_feat_keys[__SCHED_FEAT_NR];
- #define sched_feat(x) (static_branch_##x(&sched_feat_keys[__SCHED_FEAT_##x]))
- 
--#else /* !(SCHED_DEBUG && CONFIG_JUMP_LABEL) */
-+#else /* !CONFIG_JUMP_LABEL */
-+
-+#define sched_feat(x) (sysctl_sched_features & (1UL << __SCHED_FEAT_##x))
-+
-+#endif /* CONFIG_JUMP_LABEL */
-+
-+#else /* !SCHED_DEBUG */
- 
- /*
-  * Each translation unit has its own copy of sysctl_sched_features to allow
-@@ -1665,7 +1672,7 @@ static const_debug __maybe_unused unsigned int sysctl_sched_features =
- 
- #define sched_feat(x) !!(sysctl_sched_features & (1UL << __SCHED_FEAT_##x))
- 
--#endif /* SCHED_DEBUG && CONFIG_JUMP_LABEL */
-+#endif /* SCHED_DEBUG */
- 
- extern struct static_key_false sched_numa_balancing;
- extern struct static_key_false sched_schedstats;
+ #
+-# x32-specific system call numbers start at 512 to avoid cache impact
+-# for native 64-bit operation. The __x32_compat_sys stubs are created
+-# on-the-fly for compat_sys_*() compatibility system calls if X86_X32
+-# is defined.
++# Due to a historical design error, certain syscalls are numbered differently
++# in x32 as compared to native x86_64.  These syscalls have numbers 512-547.
++# Do not add new syscalls to this range.  Numbers 548 and above are available
++# for non-x32 use.
+ #
+ 512	x32	rt_sigaction		compat_sys_rt_sigaction
+ 513	x32	rt_sigreturn		compat_sys_x32_rt_sigreturn
+@@ -404,3 +404,5 @@
+ 545	x32	execveat		compat_sys_execveat
+ 546	x32	preadv2			compat_sys_preadv64v2
+ 547	x32	pwritev2		compat_sys_pwritev64v2
++# This is the end of the legacy x32 range.  Numbers 548 and above are
++# not special and are not to be used for x32-specific syscalls.
