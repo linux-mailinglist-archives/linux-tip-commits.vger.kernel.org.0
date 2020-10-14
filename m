@@ -2,111 +2,101 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D851728DA71
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 14 Oct 2020 09:29:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 81A5528E27E
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 14 Oct 2020 16:51:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727623AbgJNH3F (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 14 Oct 2020 03:29:05 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36030 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725935AbgJNH3E (ORCPT
+        id S1726057AbgJNOvV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 14 Oct 2020 10:51:21 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:58854 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729246AbgJNOvV (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 14 Oct 2020 03:29:04 -0400
-Received: from devnote2 (NE2965lan1.rev.em-net.ne.jp [210.141.244.193])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C0C5F20878;
-        Wed, 14 Oct 2020 07:29:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1602660543;
-        bh=bVOS5OD7v/UUKm67KkgDxWG0kGL5dI5WiJ8fq6+QhwI=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=tS3snivaKkQOQH9y+Ut9gommO3l161qxawaGAZFTKB+G9f/KrqhE+gCh2coG3lN0T
-         V4t0xgoPhMK0qDzi1W+tH3JvUlfK+FH6RDqzR4ZBSraQvB7QQu7aOLYEGxxLNePSeB
-         hh8vog0rZuad8TqAvCP/TxqEG8tIzKHS7pUlPbPY=
-Date:   Wed, 14 Oct 2020 16:28:59 +0900
-From:   Masami Hiramatsu <mhiramat@kernel.org>
-To:     Josh Poimboeuf <jpoimboe@redhat.com>
-Cc:     Borislav Petkov <bp@alien8.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>, x86 <x86@kernel.org>
-Subject: Re: [tip: objtool/core] x86/insn: Support big endian cross-compiles
-Message-Id: <20201014162859.987d5f71f5e5456ffb812abc@kernel.org>
-In-Reply-To: <20201012153949.jfwa7rgpzu5b7ld4@treble>
-References: <160208761921.7002.1321765913567405137.tip-bot2@tip-bot2>
-        <20201009203822.GA2974@worktop.programming.kicks-ass.net>
-        <20201009204921.GB21731@zn.tnic>
-        <20201010174415.zwopoy6vpficoqlr@treble>
-        <20201012091236.0f9a64bfedb8825732b65ea5@kernel.org>
-        <20201012153949.jfwa7rgpzu5b7ld4@treble>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+        Wed, 14 Oct 2020 10:51:21 -0400
+Date:   Wed, 14 Oct 2020 14:51:17 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1602687078;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=wJueDQP+10Qkf1xAvIeG0VodEvFc4SmsIuyoYx387E4=;
+        b=ClZCULtIDI506eohnvNCASz9ZcekmrAYND/1yYkQS2qRq12NLS+PPhQGQSlqe4qSjChlhO
+        COTmOY+PxAg/WPJdox66o52PQ4JqQP/3iCWyvmQEn3DP0v5EAergaO8k1DIGtbrxFP6vnZ
+        +U1fTlAsz0EOp6WBQkG9e20enNQnXBoE90837Fc5s2KjK7hoG1AsproDXsm0W/tm8rSL6R
+        sngeYu9yR/8JrqyuxBuOgUBxbSMBQu5WtF0IRNjSHG0N3xvplqoHMdCWdro+XymS47dThj
+        /ywPz9StJDub4wp0dxjHF+2zBKccbUKR4Eez/lnyK5/LSuVGNQKijHmzGmAtxw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1602687078;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=wJueDQP+10Qkf1xAvIeG0VodEvFc4SmsIuyoYx387E4=;
+        b=4ancqJ7kv2d2nS2ocAiBV6gJ8W+I5K7lK1Vq6I/A6nHs1M27JprhkcJKXH/69DQn6tVtWt
+        V3JIhutmRRUf4gBA==
+From:   "tip-bot2 for zhuguangqing" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: sched/urgent] sched: Replace zero-length array with flexible-array
+Cc:     zhuguangqing <zhuguangqing@xiaomi.com>,
+        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20201014140220.11384-1-zhuguangqing83@gmail.com>
+References: <20201014140220.11384-1-zhuguangqing83@gmail.com>
+MIME-Version: 1.0
+Message-ID: <160268707762.7002.14992849323463105279.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2.linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Mon, 12 Oct 2020 10:39:49 -0500
-Josh Poimboeuf <jpoimboe@redhat.com> wrote:
+The following commit has been merged into the sched/urgent branch of tip:
 
-> On Mon, Oct 12, 2020 at 09:12:36AM +0900, Masami Hiramatsu wrote:
-> > On Sat, 10 Oct 2020 12:44:15 -0500
-> > Josh Poimboeuf <jpoimboe@redhat.com> wrote:
-> > 
-> > > On Fri, Oct 09, 2020 at 10:49:21PM +0200, Borislav Petkov wrote:
-> > > > On Fri, Oct 09, 2020 at 10:38:22PM +0200, Peter Zijlstra wrote:
-> > > > > On Wed, Oct 07, 2020 at 04:20:19PM -0000, tip-bot2 for Martin Schwidefsky wrote:
-> > > > > > The following commit has been merged into the objtool/core branch of tip:
-> > > > > > 
-> > > > > > Commit-ID:     2a522b53c47051d3bf98748418f4f8e5f20d2c04
-> > > > > > Gitweb:        https://git.kernel.org/tip/2a522b53c47051d3bf98748418f4f8e5f20d2c04
-> > > > > > Author:        Martin Schwidefsky <schwidefsky@de.ibm.com>
-> > > > > > AuthorDate:    Mon, 05 Oct 2020 17:50:31 +02:00
-> > > > > > Committer:     Josh Poimboeuf <jpoimboe@redhat.com>
-> > > > > > CommitterDate: Tue, 06 Oct 2020 09:32:29 -05:00
-> > > > > > 
-> > > > > > x86/insn: Support big endian cross-compiles
-> > > > > > 
-> > > > > > x86 instruction decoder code is shared across the kernel source and the
-> > > > > > tools. Currently objtool seems to be the only tool from build tools needed
-> > > > > > which breaks x86 cross compilation on big endian systems. Make the x86
-> > > > > > instruction decoder build host endianness agnostic to support x86 cross
-> > > > > > compilation and enable objtool to implement endianness awareness for
-> > > > > > big endian architectures support.
-> > > > > > 
-> > > > > > Signed-off-by: Martin Schwidefsky <schwidefsky@de.ibm.com>
-> > > > > > Co-developed-by: Vasily Gorbik <gor@linux.ibm.com>
-> > > > > > Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
-> > > > > > Acked-by: Masami Hiramatsu <mhiramat@kernel.org>
-> > > > > > Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
-> > > > > 
-> > > > > This commit breaks the x86 build with CONFIG_X86_DECODER_SELFTEST=y.
-> > > > > 
-> > > > > I've asked Boris to truncate tip/objtool/core.
-> > > > 
-> > > > Yeah, top 4 are gone until this is resolved.
-> > > 
-> > > Masami, I wonder if we even need these selftests anymore?  Objtool
-> > > already decodes the entire kernel.
-> > 
-> > No, they have different roles. The selftest checks if the decoder
-> > works correctly by comparing with the output of objdump.
-> > 
-> > As far as I can see, the objtool relies on the sanity of the decoder
-> > (it trusts the output of the decoder).
-> 
-> Ok.  I wonder if we should move the decoder selftest to the 'tools'
-> subdirectory.
+Commit-ID:     a3f1d195119ffe62c2c558c6f0dced070c2cf004
+Gitweb:        https://git.kernel.org/tip/a3f1d195119ffe62c2c558c6f0dced070c2cf004
+Author:        zhuguangqing <zhuguangqing@xiaomi.com>
+AuthorDate:    Wed, 14 Oct 2020 22:02:20 +08:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Wed, 14 Oct 2020 16:48:48 +02:00
 
-It is in the arch/x86/tools, so it is already in a kind of tools :)
-But yeah, it was considered to be used only on x86. But if someone
-start trying to run it on non-x86, cross compiling, we need to
-reconsider that.
+sched: Replace zero-length array with flexible-array
 
-Thank you,
+In the following commit:
 
--- 
-Masami Hiramatsu <mhiramat@kernel.org>
+  04f5c362ec6d: ("sched/fair: Replace zero-length array with flexible-array")
+
+a zero-length array cpumask[0] has been replaced with cpumask[].
+But there is still a cpumask[0] in 'struct sched_group_capacity'
+which was missed.
+
+The point of using [] instead of [0] is that with [] the compiler will
+generate a build warning if it isn't the last member of a struct.
+
+[ mingo: Rewrote the changelog. ]
+
+Signed-off-by: zhuguangqing <zhuguangqing@xiaomi.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20201014140220.11384-1-zhuguangqing83@gmail.com
+---
+ kernel/sched/sched.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index 8d1ca65..df80bfc 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -1471,7 +1471,7 @@ struct sched_group_capacity {
+ 	int			id;
+ #endif
+ 
+-	unsigned long		cpumask[0];		/* Balance mask */
++	unsigned long		cpumask[];		/* Balance mask */
+ };
+ 
+ struct sched_group {
