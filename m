@@ -2,194 +2,111 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FE7E28D47D
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 13 Oct 2020 21:30:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D851728DA71
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 14 Oct 2020 09:29:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728002AbgJMTa0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 13 Oct 2020 15:30:26 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35626 "EHLO mail.kernel.org"
+        id S1727623AbgJNH3F (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 14 Oct 2020 03:29:05 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36030 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725919AbgJMTa0 (ORCPT
+        id S1725935AbgJNH3E (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 13 Oct 2020 15:30:26 -0400
-Received: from paulmck-ThinkPad-P72.home (50-39-104-11.bvtn.or.frontiernet.net [50.39.104.11])
+        Wed, 14 Oct 2020 03:29:04 -0400
+Received: from devnote2 (NE2965lan1.rev.em-net.ne.jp [210.141.244.193])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8179C208D5;
-        Tue, 13 Oct 2020 19:30:25 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id C0C5F20878;
+        Wed, 14 Oct 2020 07:29:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1602617425;
-        bh=sKfRn0G3r2QJ0n+zStMYMH4/lQ2Rvihck+3oEl1ZvRM=;
-        h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
-        b=R7sjL8Pg4SIQAhpyidIjl4QmhLEOJyFBsROOvFP4YxaQAr2UtPR+9W1tq4+6ZT8cX
-         OYUUCp0+T+8Z6y5dY6t7DTrbaXzs530PPuzZjONxbeNxqoEo0p4cpRLGqF9amoUePO
-         hY0Sy02C5iFegmKKL4YvGB4MclKKd6/Fjx550IOY=
-Received: by paulmck-ThinkPad-P72.home (Postfix, from userid 1000)
-        id 3506E3522A39; Tue, 13 Oct 2020 12:30:25 -0700 (PDT)
-Date:   Tue, 13 Oct 2020 12:30:25 -0700
-From:   "Paul E. McKenney" <paulmck@kernel.org>
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     Boqun Feng <boqun.feng@gmail.com>, Qian Cai <cai@redhat.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
+        s=default; t=1602660543;
+        bh=bVOS5OD7v/UUKm67KkgDxWG0kGL5dI5WiJ8fq6+QhwI=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=tS3snivaKkQOQH9y+Ut9gommO3l161qxawaGAZFTKB+G9f/KrqhE+gCh2coG3lN0T
+         V4t0xgoPhMK0qDzi1W+tH3JvUlfK+FH6RDqzR4ZBSraQvB7QQu7aOLYEGxxLNePSeB
+         hh8vog0rZuad8TqAvCP/TxqEG8tIzKHS7pUlPbPY=
+Date:   Wed, 14 Oct 2020 16:28:59 +0900
+From:   Masami Hiramatsu <mhiramat@kernel.org>
+To:     Josh Poimboeuf <jpoimboe@redhat.com>
+Cc:     Borislav Petkov <bp@alien8.de>,
+        Peter Zijlstra <peterz@infradead.org>,
         linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-        Linux Next Mailing List <linux-next@vger.kernel.org>,
-        Stephen Rothwell <sfr@canb.auug.org.au>
-Subject: Re: [tip: locking/core] lockdep: Fix lockdep recursion
-Message-ID: <20201013193025.GA2424@paulmck-ThinkPad-P72>
-Reply-To: paulmck@kernel.org
-References: <160223032121.7002.1269740091547117869.tip-bot2@tip-bot2>
- <e438b231c5e1478527af6c3e69bf0b37df650110.camel@redhat.com>
- <20201012031110.GA39540@debian-boqun.qqnc3lrjykvubdpftowmye0fmh.lx.internal.cloudapp.net>
- <20201012212812.GH3249@paulmck-ThinkPad-P72>
- <20201013103406.GY2628@hirez.programming.kicks-ass.net>
- <20201013104450.GQ2651@hirez.programming.kicks-ass.net>
- <20201013112544.GZ2628@hirez.programming.kicks-ass.net>
- <20201013162650.GN3249@paulmck-ThinkPad-P72>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201013162650.GN3249@paulmck-ThinkPad-P72>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>, x86 <x86@kernel.org>
+Subject: Re: [tip: objtool/core] x86/insn: Support big endian cross-compiles
+Message-Id: <20201014162859.987d5f71f5e5456ffb812abc@kernel.org>
+In-Reply-To: <20201012153949.jfwa7rgpzu5b7ld4@treble>
+References: <160208761921.7002.1321765913567405137.tip-bot2@tip-bot2>
+        <20201009203822.GA2974@worktop.programming.kicks-ass.net>
+        <20201009204921.GB21731@zn.tnic>
+        <20201010174415.zwopoy6vpficoqlr@treble>
+        <20201012091236.0f9a64bfedb8825732b65ea5@kernel.org>
+        <20201012153949.jfwa7rgpzu5b7ld4@treble>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Tue, Oct 13, 2020 at 09:26:50AM -0700, Paul E. McKenney wrote:
-> On Tue, Oct 13, 2020 at 01:25:44PM +0200, Peter Zijlstra wrote:
-> > On Tue, Oct 13, 2020 at 12:44:50PM +0200, Peter Zijlstra wrote:
-> > > On Tue, Oct 13, 2020 at 12:34:06PM +0200, Peter Zijlstra wrote:
-> > > > On Mon, Oct 12, 2020 at 02:28:12PM -0700, Paul E. McKenney wrote:
-> > > > > It is certainly an accident waiting to happen.  Would something like
-> > > > > the following make sense?
-> > > > 
-> > > > Sadly no.
-> > > > 
-> > > > > ------------------------------------------------------------------------
+On Mon, 12 Oct 2020 10:39:49 -0500
+Josh Poimboeuf <jpoimboe@redhat.com> wrote:
+
+> On Mon, Oct 12, 2020 at 09:12:36AM +0900, Masami Hiramatsu wrote:
+> > On Sat, 10 Oct 2020 12:44:15 -0500
+> > Josh Poimboeuf <jpoimboe@redhat.com> wrote:
+> > 
+> > > On Fri, Oct 09, 2020 at 10:49:21PM +0200, Borislav Petkov wrote:
+> > > > On Fri, Oct 09, 2020 at 10:38:22PM +0200, Peter Zijlstra wrote:
+> > > > > On Wed, Oct 07, 2020 at 04:20:19PM -0000, tip-bot2 for Martin Schwidefsky wrote:
+> > > > > > The following commit has been merged into the objtool/core branch of tip:
+> > > > > > 
+> > > > > > Commit-ID:     2a522b53c47051d3bf98748418f4f8e5f20d2c04
+> > > > > > Gitweb:        https://git.kernel.org/tip/2a522b53c47051d3bf98748418f4f8e5f20d2c04
+> > > > > > Author:        Martin Schwidefsky <schwidefsky@de.ibm.com>
+> > > > > > AuthorDate:    Mon, 05 Oct 2020 17:50:31 +02:00
+> > > > > > Committer:     Josh Poimboeuf <jpoimboe@redhat.com>
+> > > > > > CommitterDate: Tue, 06 Oct 2020 09:32:29 -05:00
+> > > > > > 
+> > > > > > x86/insn: Support big endian cross-compiles
+> > > > > > 
+> > > > > > x86 instruction decoder code is shared across the kernel source and the
+> > > > > > tools. Currently objtool seems to be the only tool from build tools needed
+> > > > > > which breaks x86 cross compilation on big endian systems. Make the x86
+> > > > > > instruction decoder build host endianness agnostic to support x86 cross
+> > > > > > compilation and enable objtool to implement endianness awareness for
+> > > > > > big endian architectures support.
+> > > > > > 
+> > > > > > Signed-off-by: Martin Schwidefsky <schwidefsky@de.ibm.com>
+> > > > > > Co-developed-by: Vasily Gorbik <gor@linux.ibm.com>
+> > > > > > Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+> > > > > > Acked-by: Masami Hiramatsu <mhiramat@kernel.org>
+> > > > > > Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
 > > > > > 
-> > > > > diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
-> > > > > index bfd38f2..52a63bc 100644
-> > > > > --- a/kernel/rcu/tree.c
-> > > > > +++ b/kernel/rcu/tree.c
-> > > > > @@ -4067,6 +4067,7 @@ void rcu_cpu_starting(unsigned int cpu)
-> > > > >  
-> > > > >  	rnp = rdp->mynode;
-> > > > >  	mask = rdp->grpmask;
-> > > > > +	lockdep_off();
-> > > > >  	raw_spin_lock_irqsave_rcu_node(rnp, flags);
-> > > > >  	WRITE_ONCE(rnp->qsmaskinitnext, rnp->qsmaskinitnext | mask);
-> > > > >  	newcpu = !(rnp->expmaskinitnext & mask);
-> > > > > @@ -4086,6 +4087,7 @@ void rcu_cpu_starting(unsigned int cpu)
-> > > > >  	} else {
-> > > > >  		raw_spin_unlock_irqrestore_rcu_node(rnp, flags);
-> > > > >  	}
-> > > > > +	lockdep_on();
-> > > > >  	smp_mb(); /* Ensure RCU read-side usage follows above initialization. */
-> > > > >  }
+> > > > > This commit breaks the x86 build with CONFIG_X86_DECODER_SELFTEST=y.
+> > > > > 
+> > > > > I've asked Boris to truncate tip/objtool/core.
 > > > > 
-> > > > This will just shut it up, but will not fix the actual problem of that
-> > > > spin-lock ending up in trace_lock_acquire() which relies on RCU which
-> > > > isn't looking.
-> > > > 
-> > > > What we need here is to supress tracing not lockdep. Let me consider.
+> > > > Yeah, top 4 are gone until this is resolved.
 > > > 
-> > > We appear to have a similar problem with rcu_report_dead(), it's
-> > > raw_spin_unlock()s can end up in trace_lock_release() while we just
-> > > killed RCU.
+> > > Masami, I wonder if we even need these selftests anymore?  Objtool
+> > > already decodes the entire kernel.
 > > 
-> > So we can deal with the explicit trace_*() calls like the below, but I
-> > really don't like it much. It also doesn't help with function tracing.
-> > This is really early/late in the hotplug cycle and should be considered
-> > entry, we shouldn't be tracing anything here.
+> > No, they have different roles. The selftest checks if the decoder
+> > works correctly by comparing with the output of objdump.
 > > 
-> > Paul, would it be possible to use a scheme similar to IRQ/NMI for
-> > hotplug? That seems to mostly rely on atomic ops, not locks.
+> > As far as I can see, the objtool relies on the sanity of the decoder
+> > (it trusts the output of the decoder).
 > 
-> The rest of the rcu_node tree and the various grace-period/hotplug races
-> makes that question non-trivial.  I will look into it, but I have no
-> reason for optimism.
-> 
-> But there is only one way to find out...  ;-)
+> Ok.  I wonder if we should move the decoder selftest to the 'tools'
+> subdirectory.
 
-The aforementioned races get really ugly really fast.  So I do not
-believe that a lockless approach is a strategy to win here.
+It is in the arch/x86/tools, so it is already in a kind of tools :)
+But yeah, it was considered to be used only on x86. But if someone
+start trying to run it on non-x86, cross compiling, we need to
+reconsider that.
 
-But why not use something sort of like a sequence counter, but adapted
-for local on-CPU use?  This should quiet the diagnostics for the full
-time that RCU needs its locks.  Untested patch below.
+Thank you,
 
-Thoughts?
-
-							Thanx, Paul
-
-------------------------------------------------------------------------
-
-diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
-index 1d42909..5b06886 100644
---- a/kernel/rcu/tree.c
-+++ b/kernel/rcu/tree.c
-@@ -1152,13 +1152,15 @@ bool rcu_lockdep_current_cpu_online(void)
- 	struct rcu_data *rdp;
- 	struct rcu_node *rnp;
- 	bool ret = false;
-+	unsigned long seq;
- 
- 	if (in_nmi() || !rcu_scheduler_fully_active)
- 		return true;
- 	preempt_disable_notrace();
- 	rdp = this_cpu_ptr(&rcu_data);
- 	rnp = rdp->mynode;
--	if (rdp->grpmask & rcu_rnp_online_cpus(rnp))
-+	seq = READ_ONCE(rnp->ofl_seq) & ~0x1;
-+	if (rdp->grpmask & rcu_rnp_online_cpus(rnp) || seq != READ_ONCE(rnp->ofl_seq))
- 		ret = true;
- 	preempt_enable_notrace();
- 	return ret;
-@@ -4065,6 +4067,8 @@ void rcu_cpu_starting(unsigned int cpu)
- 
- 	rnp = rdp->mynode;
- 	mask = rdp->grpmask;
-+	WRITE_ONCE(rnp->ofl_seq, rnp->ofl_seq + 1);
-+	WARN_ON_ONCE(!(rnp->ofl_seq & 0x1));
- 	raw_spin_lock_irqsave_rcu_node(rnp, flags);
- 	WRITE_ONCE(rnp->qsmaskinitnext, rnp->qsmaskinitnext | mask);
- 	newcpu = !(rnp->expmaskinitnext & mask);
-@@ -4084,6 +4088,8 @@ void rcu_cpu_starting(unsigned int cpu)
- 	} else {
- 		raw_spin_unlock_irqrestore_rcu_node(rnp, flags);
- 	}
-+	WRITE_ONCE(rnp->ofl_seq, rnp->ofl_seq + 1);
-+	WARN_ON_ONCE(rnp->ofl_seq & 0x1);
- 	smp_mb(); /* Ensure RCU read-side usage follows above initialization. */
- }
- 
-@@ -4111,6 +4117,8 @@ void rcu_report_dead(unsigned int cpu)
- 
- 	/* Remove outgoing CPU from mask in the leaf rcu_node structure. */
- 	mask = rdp->grpmask;
-+	WRITE_ONCE(rnp->ofl_seq, rnp->ofl_seq + 1);
-+	WARN_ON_ONCE(!(rnp->ofl_seq & 0x1));
- 	raw_spin_lock(&rcu_state.ofl_lock);
- 	raw_spin_lock_irqsave_rcu_node(rnp, flags); /* Enforce GP memory-order guarantee. */
- 	rdp->rcu_ofl_gp_seq = READ_ONCE(rcu_state.gp_seq);
-@@ -4123,6 +4131,8 @@ void rcu_report_dead(unsigned int cpu)
- 	WRITE_ONCE(rnp->qsmaskinitnext, rnp->qsmaskinitnext & ~mask);
- 	raw_spin_unlock_irqrestore_rcu_node(rnp, flags);
- 	raw_spin_unlock(&rcu_state.ofl_lock);
-+	WRITE_ONCE(rnp->ofl_seq, rnp->ofl_seq + 1);
-+	WARN_ON_ONCE(rnp->ofl_seq & 0x1);
- 
- 	rdp->cpu_started = false;
- }
-diff --git a/kernel/rcu/tree.h b/kernel/rcu/tree.h
-index 805c9eb..7d802b6 100644
---- a/kernel/rcu/tree.h
-+++ b/kernel/rcu/tree.h
-@@ -57,6 +57,7 @@ struct rcu_node {
- 				/*  beginning of each grace period. */
- 	unsigned long qsmaskinitnext;
- 				/* Online CPUs for next grace period. */
-+	unsigned long ofl_seq;	/* CPU-hotplug operation sequence count. */
- 	unsigned long expmask;	/* CPUs or groups that need to check in */
- 				/*  to allow the current expedited GP */
- 				/*  to complete. */
+-- 
+Masami Hiramatsu <mhiramat@kernel.org>
