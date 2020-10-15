@@ -2,179 +2,143 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 84F2B28EBAA
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 15 Oct 2020 05:41:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B884828ED0C
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 15 Oct 2020 08:24:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729000AbgJODla (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 14 Oct 2020 23:41:30 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48712 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728934AbgJODla (ORCPT
+        id S1729091AbgJOGYl (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 15 Oct 2020 02:24:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38556 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728662AbgJOGYk (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 14 Oct 2020 23:41:30 -0400
-Received: from paulmck-ThinkPad-P72.home (50-39-104-11.bvtn.or.frontiernet.net [50.39.104.11])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4617E20691;
-        Thu, 15 Oct 2020 03:41:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1602733289;
-        bh=xFrCW4148ckM17ydN7CaAThkadlv2qP8pSAdSmybXcs=;
-        h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
-        b=nlYLNSMFV4hSQCvImDl/Pa7ogKhAUZj91SvIV7C//M8i6DHpmZyD58tjzXAX4hwxa
-         GQirTEDNXtaXy4QJwgnNOVHzrHSa9XnZdqY0UVNshXjNRdU7YWnTXIe2XAtYlbP0h9
-         beYBQkVSXrzevxMxXdsA13HWlEwfT32hhtVAy5So=
-Received: by paulmck-ThinkPad-P72.home (Postfix, from userid 1000)
-        id D265E35229EB; Wed, 14 Oct 2020 20:41:28 -0700 (PDT)
-Date:   Wed, 14 Oct 2020 20:41:28 -0700
-From:   "Paul E. McKenney" <paulmck@kernel.org>
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     Boqun Feng <boqun.feng@gmail.com>, Qian Cai <cai@redhat.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
-        linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-        Linux Next Mailing List <linux-next@vger.kernel.org>,
-        Stephen Rothwell <sfr@canb.auug.org.au>
-Subject: Re: [tip: locking/core] lockdep: Fix lockdep recursion
-Message-ID: <20201015034128.GA10260@paulmck-ThinkPad-P72>
-Reply-To: paulmck@kernel.org
-References: <20201013103406.GY2628@hirez.programming.kicks-ass.net>
- <20201013104450.GQ2651@hirez.programming.kicks-ass.net>
- <20201013112544.GZ2628@hirez.programming.kicks-ass.net>
- <20201013162650.GN3249@paulmck-ThinkPad-P72>
- <20201013193025.GA2424@paulmck-ThinkPad-P72>
- <20201014183405.GA27666@paulmck-ThinkPad-P72>
- <20201014215319.GF2974@worktop.programming.kicks-ass.net>
- <20201014221152.GS3249@paulmck-ThinkPad-P72>
- <20201014223954.GH2594@hirez.programming.kicks-ass.net>
- <20201014235553.GU3249@paulmck-ThinkPad-P72>
+        Thu, 15 Oct 2020 02:24:40 -0400
+Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C683C0613D2
+        for <linux-tip-commits@vger.kernel.org>; Wed, 14 Oct 2020 23:24:40 -0700 (PDT)
+Received: by mail-wr1-x444.google.com with SMTP id b8so1925579wrn.0
+        for <linux-tip-commits@vger.kernel.org>; Wed, 14 Oct 2020 23:24:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=PXzy1d3ckMk0Ny0gHfuwHvgJ6RXIhGLeAUjxyUMOj74=;
+        b=YZbkD9vMiz5BzYxugQodbY8GjIsUu9NZMMfVV6I+A0SuakkKwK87m8Mt6+3RgPHchE
+         8p0/mxoEh81CbftpKckrDFXk4zF+O3+fTs8kjsCiL+Prl6lFiAlEBVd3hnL1ELLihZu0
+         49zucOkSqjTj9l/Zb7mMAyvFgykwp+Dv25lOu4Qo5zkoCcNIL4GJlAu9mBS9LACtkNPe
+         x6KzG7b1i5DJvl1hvDKGNZUBB9AtOuxVtfQpwnW1maOLeTKwTB/avP7sy6d6Y2Wh2a8m
+         RP3+cr9MKuy/NLMQH+8nh+FtMT6g0DHF4ViKmATpr/SHP/V6CJZdTk7Gzq3BDX4/QMg0
+         D3hQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=PXzy1d3ckMk0Ny0gHfuwHvgJ6RXIhGLeAUjxyUMOj74=;
+        b=Kt3k8tq6zsdDyJbUjdUaYpGQpa5KCTxHVw7QvzaDmJT8i60+ha5uGcTuZpA569FpOR
+         MJiDp8neKvqFgLvYxdYZgWfKOIWtMoT2+awM396Zglt/TzbJSTv/EcyKbhWp6h7I9coT
+         +msTmgEDSv/A0iyXjpq7Ab38JJchEehOUevg4FiEDixL2PG7LixMcdRP90y5KDNtYkwB
+         WPZ7l1Id5TNk8iCeVXFF4FMxTAci+ltmrRhJwdR2rR1eVPbthpvfdFp47LbkJB8NBt6D
+         iWxKJd8Uf0eMpl+W9yE9ipH14BdADJvYzLJzjekf+PzMKk72pPADhgpsCTX/CV8Fn3Gy
+         txug==
+X-Gm-Message-State: AOAM53304Gcnubw3SrJrCfBYYVTLB+dfaK7i04U/NG3TZ4R3EQpA8NIp
+        kT/tW8t6s356vUQSi8d/cIiERFnNsmPBNya/mQBFwA==
+X-Google-Smtp-Source: ABdhPJxBQX/QxK6pw7DKHu3C/wNzs8v0GZG0QDSdLbwtuGccZJwqO/VtMhCyAGnJcHarzcj3QQkcXqPhY9n4PXmtnIM=
+X-Received: by 2002:a5d:6407:: with SMTP id z7mr2524568wru.271.1602743078716;
+ Wed, 14 Oct 2020 23:24:38 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201014235553.GU3249@paulmck-ThinkPad-P72>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+References: <160208761921.7002.1321765913567405137.tip-bot2@tip-bot2>
+ <20201009203822.GA2974@worktop.programming.kicks-ass.net> <20201009204921.GB21731@zn.tnic>
+ <20201010174415.zwopoy6vpficoqlr@treble> <20201012091236.0f9a64bfedb8825732b65ea5@kernel.org>
+ <20201012153949.jfwa7rgpzu5b7ld4@treble> <20201014162859.987d5f71f5e5456ffb812abc@kernel.org>
+In-Reply-To: <20201014162859.987d5f71f5e5456ffb812abc@kernel.org>
+From:   Ian Rogers <irogers@google.com>
+Date:   Wed, 14 Oct 2020 23:24:26 -0700
+Message-ID: <CAP-5=fUoSGy3NAzTSbF3YLEPABSs7oPsxLkCx36XkEzzm341yw@mail.gmail.com>
+Subject: Re: [tip: objtool/core] x86/insn: Support big endian cross-compiles
+To:     Masami Hiramatsu <mhiramat@kernel.org>
+Cc:     Josh Poimboeuf <jpoimboe@redhat.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-tip-commits@vger.kernel.org,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>, x86 <x86@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Wed, Oct 14, 2020 at 04:55:53PM -0700, Paul E. McKenney wrote:
-> On Thu, Oct 15, 2020 at 12:39:54AM +0200, Peter Zijlstra wrote:
-> > On Wed, Oct 14, 2020 at 03:11:52PM -0700, Paul E. McKenney wrote:
-> > > On Wed, Oct 14, 2020 at 11:53:19PM +0200, Peter Zijlstra wrote:
-> > > > On Wed, Oct 14, 2020 at 11:34:05AM -0700, Paul E. McKenney wrote:
-> > > > > commit 7deaa04b02298001426730ed0e6214ac20d1a1c1
-> > > > > Author: Paul E. McKenney <paulmck@kernel.org>
-> > > > > Date:   Tue Oct 13 12:39:23 2020 -0700
-> > > > > 
-> > > > >     rcu: Prevent lockdep-RCU splats on lock acquisition/release
-> > > > >     
-> > > > >     The rcu_cpu_starting() and rcu_report_dead() functions transition the
-> > > > >     current CPU between online and offline state from an RCU perspective.
-> > > > >     Unfortunately, this means that the rcu_cpu_starting() function's lock
-> > > > >     acquisition and the rcu_report_dead() function's lock releases happen
-> > > > >     while the CPU is offline from an RCU perspective, which can result in
-> > > > >     lockdep-RCU splats about using RCU from an offline CPU.  In reality,
-> > > > >     aside from the splats, both transitions are safe because a new grace
-> > > > >     period cannot start until these functions release their locks.
-> > > > 
-> > > > But we call the trace_* crud before we acquire the lock. Are you sure
-> > > > that's a false-positive? 
-> > > 
-> > > You lost me on this one.
-> > > 
-> > > I am assuming that you are talking about rcu_cpu_starting(), because
-> > > that is the one where RCU is not initially watching, that is, the
-> > > case where tracing before the lock acquisition would be a problem.
-> > > You cannot be talking about rcu_cpu_starting() itself, because it does
-> > > not do any tracing before acquiring the lock.  But if you are talking
-> > > about the caller of rcu_cpu_starting(), then that caller should put the
-> > > rcu_cpu_starting() before the tracing.  But that would be the other
-> > > patch earlier in this thread that was proposing moving the call to
-> > > rcu_cpu_starting() much earlier in CPU bringup.
-> > > 
-> > > So what am I missing here?
-> > 
-> > rcu_cpu_starting();
-> >   raw_spin_lock_irqsave();
-> >     local_irq_save();
-> >     preempt_disable();
-> >     spin_acquire()
-> >       lock_acquire()
-> >         trace_lock_acquire() <--- *whoopsie-doodle*
-> > 	  /* uses RCU for tracing */
-> >     arch_spin_lock_flags() <--- the actual spinlock
-> 
-> Gah!  Idiot here left out the most important part, so good catch!!!
-> Much easier this way than finding out about it the hard way...
-> 
-> I should have asked myself harder questions earlier today about moving
-> the counter from the rcu_node structure to the rcu_data structure.
-> 
-> Perhaps something like the following untested patch on top of the
-> earlier patch?
+On Wed, Oct 14, 2020 at 12:29 AM Masami Hiramatsu <mhiramat@kernel.org> wrote:
+>
+> On Mon, 12 Oct 2020 10:39:49 -0500
+> Josh Poimboeuf <jpoimboe@redhat.com> wrote:
+>
+> > On Mon, Oct 12, 2020 at 09:12:36AM +0900, Masami Hiramatsu wrote:
+> > > On Sat, 10 Oct 2020 12:44:15 -0500
+> > > Josh Poimboeuf <jpoimboe@redhat.com> wrote:
+> > >
+> > > > On Fri, Oct 09, 2020 at 10:49:21PM +0200, Borislav Petkov wrote:
+> > > > > On Fri, Oct 09, 2020 at 10:38:22PM +0200, Peter Zijlstra wrote:
+> > > > > > On Wed, Oct 07, 2020 at 04:20:19PM -0000, tip-bot2 for Martin Schwidefsky wrote:
+> > > > > > > The following commit has been merged into the objtool/core branch of tip:
+> > > > > > >
+> > > > > > > Commit-ID:     2a522b53c47051d3bf98748418f4f8e5f20d2c04
+> > > > > > > Gitweb:        https://git.kernel.org/tip/2a522b53c47051d3bf98748418f4f8e5f20d2c04
+> > > > > > > Author:        Martin Schwidefsky <schwidefsky@de.ibm.com>
+> > > > > > > AuthorDate:    Mon, 05 Oct 2020 17:50:31 +02:00
+> > > > > > > Committer:     Josh Poimboeuf <jpoimboe@redhat.com>
+> > > > > > > CommitterDate: Tue, 06 Oct 2020 09:32:29 -05:00
+> > > > > > >
+> > > > > > > x86/insn: Support big endian cross-compiles
+> > > > > > >
+> > > > > > > x86 instruction decoder code is shared across the kernel source and the
+> > > > > > > tools. Currently objtool seems to be the only tool from build tools needed
+> > > > > > > which breaks x86 cross compilation on big endian systems. Make the x86
+> > > > > > > instruction decoder build host endianness agnostic to support x86 cross
+> > > > > > > compilation and enable objtool to implement endianness awareness for
+> > > > > > > big endian architectures support.
+> > > > > > >
+> > > > > > > Signed-off-by: Martin Schwidefsky <schwidefsky@de.ibm.com>
+> > > > > > > Co-developed-by: Vasily Gorbik <gor@linux.ibm.com>
+> > > > > > > Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+> > > > > > > Acked-by: Masami Hiramatsu <mhiramat@kernel.org>
+> > > > > > > Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
+> > > > > >
+> > > > > > This commit breaks the x86 build with CONFIG_X86_DECODER_SELFTEST=y.
+> > > > > >
+> > > > > > I've asked Boris to truncate tip/objtool/core.
+> > > > >
+> > > > > Yeah, top 4 are gone until this is resolved.
+> > > >
+> > > > Masami, I wonder if we even need these selftests anymore?  Objtool
+> > > > already decodes the entire kernel.
+> > >
+> > > No, they have different roles. The selftest checks if the decoder
+> > > works correctly by comparing with the output of objdump.
+> > >
+> > > As far as I can see, the objtool relies on the sanity of the decoder
+> > > (it trusts the output of the decoder).
+> >
+> > Ok.  I wonder if we should move the decoder selftest to the 'tools'
+> > subdirectory.
+>
+> It is in the arch/x86/tools, so it is already in a kind of tools :)
+> But yeah, it was considered to be used only on x86. But if someone
+> start trying to run it on non-x86, cross compiling, we need to
+> reconsider that.
+>
+> Thank you,
+>
+> --
+> Masami Hiramatsu <mhiramat@kernel.org>
 
-Except that this is subtlely flawed also.  The delay cannot be at
-rcu_gp_cleanup() time because by the time we are working on the last
-leaf rcu_node structure, callbacks might already have started being
-invoked on CPUs corresponding to the earlier leaf rcu_node structures.
+There is undefined behavior that is present in the x86 insn.c code as
+described in:
+https://lore.kernel.org/lkml/20190724184512.162887-4-nums@google.com/
 
-So the (untested) patch below (on top of the other two) moves the delay
-to rcu_gp_init(), in particular, to the first loop that traverses only
-the leaf rcu_node structures handling CPU hotplug.
+I resent this patch fixing other potential undefined behavior:
+https://lore.kernel.org/lkml/20201015062148.1437894-1-irogers@google.com/T/#t
 
-Hopefully getting closer!
+The misaligned loads will likely break on anything non-x86.
 
-Oh, and the second smp_mb() added to rcu_gp_init() is probably
-redundant given the full barrier implied by the later call to
-raw_spin_lock_irq_rcu_node().  But one thing at a time...
-
-							Thanx, Paul
-
-------------------------------------------------------------------------
-
-diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
-index 8b5215e..5904b63 100644
---- a/kernel/rcu/tree.c
-+++ b/kernel/rcu/tree.c
-@@ -1725,6 +1725,7 @@ static void rcu_strict_gp_boundary(void *unused)
-  */
- static bool rcu_gp_init(void)
- {
-+	unsigned long firstseq;
- 	unsigned long flags;
- 	unsigned long oldmask;
- 	unsigned long mask;
-@@ -1768,6 +1769,12 @@ static bool rcu_gp_init(void)
- 	 */
- 	rcu_state.gp_state = RCU_GP_ONOFF;
- 	rcu_for_each_leaf_node(rnp) {
-+		smp_mb(); // Pair with barriers used when updating ->ofl_seq to odd values.
-+		firstseq = READ_ONCE(rnp->ofl_seq);
-+		if (firstseq & 0x1)
-+			while (firstseq == smp_load_acquire(&rnp->ofl_seq))
-+				schedule_timeout_idle(1);  // Can't wake unless RCU is watching.
-+		smp_mb(); // Pair with barriers used when updating ->ofl_seq to even values.
- 		raw_spin_lock(&rcu_state.ofl_lock);
- 		raw_spin_lock_irq_rcu_node(rnp);
- 		if (rnp->qsmaskinit == rnp->qsmaskinitnext &&
-@@ -1982,7 +1989,6 @@ static void rcu_gp_fqs_loop(void)
- static void rcu_gp_cleanup(void)
- {
- 	int cpu;
--	unsigned long firstseq;
- 	bool needgp = false;
- 	unsigned long gp_duration;
- 	unsigned long new_gp_seq;
-@@ -2020,12 +2026,6 @@ static void rcu_gp_cleanup(void)
- 	new_gp_seq = rcu_state.gp_seq;
- 	rcu_seq_end(&new_gp_seq);
- 	rcu_for_each_node_breadth_first(rnp) {
--		smp_mb(); // Pair with barriers used when updating ->ofl_seq to odd values.
--		firstseq = READ_ONCE(rnp->ofl_seq);
--		if (firstseq & 0x1)
--			while (firstseq == smp_load_acquire(&rnp->ofl_seq))
--				schedule_timeout_idle(1);  // Can't wake unless RCU is watching.
--		smp_mb(); // Pair with barriers used when updating ->ofl_seq to even values.
- 		raw_spin_lock_irq_rcu_node(rnp);
- 		if (WARN_ON_ONCE(rcu_preempt_blocked_readers_cgp(rnp)))
- 			dump_blkd_tasks(rnp, 10);
+Thanks,
+Ian
