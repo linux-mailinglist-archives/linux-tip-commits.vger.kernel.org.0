@@ -2,50 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AD351292C30
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Oct 2020 19:03:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 697B3292C38
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Oct 2020 19:03:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730943AbgJSRCr (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 19 Oct 2020 13:02:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37708 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730928AbgJSRCq (ORCPT
+        id S1731112AbgJSRDa (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 19 Oct 2020 13:03:30 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:32886 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730921AbgJSRCr (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 19 Oct 2020 13:02:46 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46C82C0613CE;
-        Mon, 19 Oct 2020 10:02:46 -0700 (PDT)
-Date:   Mon, 19 Oct 2020 17:02:43 -0000
+        Mon, 19 Oct 2020 13:02:47 -0400
+Date:   Mon, 19 Oct 2020 17:02:44 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1603126964;
+        s=2020; t=1603126965;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=9U0Fn1c2lXj076iIZEF+OMwP4AfamS+30GVJUiITv3o=;
-        b=TudHgiL7QFYdJUqSd/hz5aRuOl/K8GHcOJbQNX0Vty29WnjP3nHAzUBY0bG8ANYXwZHozD
-        TEOB1QcGN3Cm5VKTMw6o45RCN9uTDQv+G6fk9UyHQwE2b6zoPxUuwixXJLp7medxtDUd8z
-        7oOLCDT7JsiGjwONvffyGjPN9zjqhJdNLHg4DKs2KSV9pfBbkAnRWTtWNDCA4zLod0uRH7
-        VmxR/TVxzGrQLjE1Z5LV8EQ0kE9JTgPEGSPFVF0QC8VqwOCwi3cmf45YgPoOdJpkHC0VDu
-        DV2V2vCOu1BBptijVrUf6AgVAIWAxZWHbfYVlKr/MSeTPjEGIt0BNXSCCWequw==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=rQPEhAKOQNmR8Qe2Z+vrAsDXOE5DX3hk4zXgPWd2vRU=;
+        b=giRTdDgMw193aqNbCTM45VA3xRTtKnSoHuVF1BTkBx9TS0SX0P3t/4lVzE24/2+y+x2z0+
+        CRSByfGiNK4qb/8uj691ez24UNSRfOuxPtmclTKAPR/0DTo1GhD5j79Er2h6I1fjRFghTZ
+        luaAByx2Sn4T4kB4IvG1uddXCUq77893vOZxzKcss8vnXiPLkHLsY9RJ/K6tfD4GKKmuTi
+        mVMLKowzJ+OhoHKDY8RHKfZvUQdZFP19o5O63EQT2qoOtxLJJPRgM1o+WUsY/Q+BaAplck
+        Ojas2b6k6p38VTd1WnjHFrezcRSmLl1HjIDqa3XquroiS/A+mxRGo2bKx7jinQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1603126964;
+        s=2020e; t=1603126965;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=9U0Fn1c2lXj076iIZEF+OMwP4AfamS+30GVJUiITv3o=;
-        b=YwKBsKdnRzuCJKFcHMEDFVrjDUAAjx0KHSBEs4BXETmaVXJ4XHTRRhNnVy2uemc92lYcst
-        qAwY+aoO7FZWZcAQ==
-From:   "tip-bot2 for Scott Chen" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=rQPEhAKOQNmR8Qe2Z+vrAsDXOE5DX3hk4zXgPWd2vRU=;
+        b=kYwB08rHdXbS8raICadUTdoktpPRlcqrvPIpeYh/nL/OiL6LCrLOHt/xNeJ3Yj1nxFLgUe
+        nFy+KibCVYTISkCQ==
+From:   "tip-bot2 for Anant Thazhemadam" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] USB: serial: pl2303: add device-id for HP GC device
-Cc:     Scott Chen <scott@labau.com.tw>, stable@vger.kernel.org,
-        Johan Hovold <johan@kernel.org>,
+Subject: [tip: perf/urgent] staging: comedi: check validity of wMaxPacketSize
+ of usb endpoints found
+Cc:     syzbot+009f546aa1370056b1c2@syzkaller.appspotmail.com,
+        Anant Thazhemadam <anant.thazhemadam@gmail.com>,
+        stable <stable@vger.kernel.org>,
         "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20201010082933.5417-1-anant.thazhemadam@gmail.com>
+References: <20201010082933.5417-1-anant.thazhemadam@gmail.com>
 MIME-Version: 1.0
-Message-ID: <160312696384.7002.13344745570625569837.tip-bot2@tip-bot2>
+Message-ID: <160312696435.7002.11176979799560597940.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -56,50 +61,48 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     9f1e27c040b3956a975f993d4b74006b5a04e969
-Gitweb:        https://git.kernel.org/tip/9f1e27c040b3956a975f993d4b74006b5a04e969
-Author:        Scott Chen <scott@labau.com.tw>
-AuthorDate:    Thu, 24 Sep 2020 14:27:45 +08:00
+Commit-ID:     38df15cb4ce149ce3648d2a9ccc0140afa71fc02
+Gitweb:        https://git.kernel.org/tip/38df15cb4ce149ce3648d2a9ccc0140afa71fc02
+Author:        Anant Thazhemadam <anant.thazhemadam@gmail.com>
+AuthorDate:    Sat, 10 Oct 2020 13:59:32 +05:30
 Committer:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 CommitterDate: Sat, 17 Oct 2020 08:31:21 +02:00
 
-USB: serial: pl2303: add device-id for HP GC device
+staging: comedi: check validity of wMaxPacketSize of usb endpoints found
 
-commit 031f9664f8f9356cee662335bc56c93d16e75665 upstream.
+commit e1f13c879a7c21bd207dc6242455e8e3a1e88b40 upstream.
 
-This is adds a device id for HP LD381 which is a pl2303GC-base device.
+While finding usb endpoints in vmk80xx_find_usb_endpoints(), check if
+wMaxPacketSize = 0 for the endpoints found.
 
-Signed-off-by: Scott Chen <scott@labau.com.tw>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Some devices have isochronous endpoints that have wMaxPacketSize = 0
+(as required by the USB-2 spec).
+However, since this doesn't apply here, wMaxPacketSize = 0 can be
+considered to be invalid.
+
+Reported-by: syzbot+009f546aa1370056b1c2@syzkaller.appspotmail.com
+Tested-by: syzbot+009f546aa1370056b1c2@syzkaller.appspotmail.com
+Signed-off-by: Anant Thazhemadam <anant.thazhemadam@gmail.com>
+Cc: stable <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20201010082933.5417-1-anant.thazhemadam@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- drivers/usb/serial/pl2303.c | 1 +
- drivers/usb/serial/pl2303.h | 1 +
- 2 files changed, 2 insertions(+)
+ drivers/staging/comedi/drivers/vmk80xx.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/usb/serial/pl2303.c b/drivers/usb/serial/pl2303.c
-index 048452d..be80670 100644
---- a/drivers/usb/serial/pl2303.c
-+++ b/drivers/usb/serial/pl2303.c
-@@ -100,6 +100,7 @@ static const struct usb_device_id id_table[] = {
- 	{ USB_DEVICE(HP_VENDOR_ID, HP_LD220_PRODUCT_ID) },
- 	{ USB_DEVICE(HP_VENDOR_ID, HP_LD220TA_PRODUCT_ID) },
- 	{ USB_DEVICE(HP_VENDOR_ID, HP_LD381_PRODUCT_ID) },
-+	{ USB_DEVICE(HP_VENDOR_ID, HP_LD381GC_PRODUCT_ID) },
- 	{ USB_DEVICE(HP_VENDOR_ID, HP_LD960_PRODUCT_ID) },
- 	{ USB_DEVICE(HP_VENDOR_ID, HP_LD960TA_PRODUCT_ID) },
- 	{ USB_DEVICE(HP_VENDOR_ID, HP_LCM220_PRODUCT_ID) },
-diff --git a/drivers/usb/serial/pl2303.h b/drivers/usb/serial/pl2303.h
-index 7d3090e..0f681dd 100644
---- a/drivers/usb/serial/pl2303.h
-+++ b/drivers/usb/serial/pl2303.h
-@@ -127,6 +127,7 @@
+diff --git a/drivers/staging/comedi/drivers/vmk80xx.c b/drivers/staging/comedi/drivers/vmk80xx.c
+index 65dc6c5..7956abc 100644
+--- a/drivers/staging/comedi/drivers/vmk80xx.c
++++ b/drivers/staging/comedi/drivers/vmk80xx.c
+@@ -667,6 +667,9 @@ static int vmk80xx_find_usb_endpoints(struct comedi_device *dev)
+ 	if (!devpriv->ep_rx || !devpriv->ep_tx)
+ 		return -ENODEV;
  
- /* Hewlett-Packard POS Pole Displays */
- #define HP_VENDOR_ID		0x03f0
-+#define HP_LD381GC_PRODUCT_ID	0x0183
- #define HP_LM920_PRODUCT_ID	0x026b
- #define HP_TD620_PRODUCT_ID	0x0956
- #define HP_LD960_PRODUCT_ID	0x0b39
++	if (!usb_endpoint_maxp(devpriv->ep_rx) || !usb_endpoint_maxp(devpriv->ep_tx))
++		return -EINVAL;
++
+ 	return 0;
+ }
+ 
