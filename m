@@ -2,53 +2,49 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 10085292C35
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Oct 2020 19:03:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E5F1292C26
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Oct 2020 19:03:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731110AbgJSRDZ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 19 Oct 2020 13:03:25 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:32896 "EHLO
+        id S1730971AbgJSRCt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 19 Oct 2020 13:02:49 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:32870 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730926AbgJSRCr (ORCPT
+        with ESMTP id S1730942AbgJSRCs (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 19 Oct 2020 13:02:47 -0400
-Date:   Mon, 19 Oct 2020 17:02:44 -0000
+        Mon, 19 Oct 2020 13:02:48 -0400
+Date:   Mon, 19 Oct 2020 17:02:45 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1603126965;
+        s=2020; t=1603126966;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=e8ek/MHNvjx+EwcgMnr8LVpLx35mWzxIKmXstJ4BxBs=;
-        b=t8sui3wly760BKOGst8dqKX/nLV1W6MCRg7ZsnKsrkGObhmN8pywSQE1kmp+MyZXyrHyHC
-        0gTMJDsDZ/MJOReKFmK60plXh6u85aUQZiUHjG7DjR/bPwpnWx4MZt8FjtX1asZ7nkGkWr
-        Vc4DqfOepN0KTvmgCwpuy3UE8CL4dlPmbcnit5zpzaoUK1pgJ4Ljc2N12omH3Jek2kQU6S
-        FfllJxUyWbSNQDp4p7tCltMkL9QRIBEqnthDFfYGOI/IAXmjbQnAmO3PhOJSd1r0qJ7Hfa
-        fahwbVe0OwD1O2Ice9gMMzqiHo3OQBugTzy/QeMPQJ+S3jVwzFVBstb8PyMYnA==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=vecU3kJYuPpyYolsjCKQ+Gp5zwhRerMOKy1v8a747ho=;
+        b=2Af5gie/oT3/668kOuhPl6jbhMlJpjLJ3vdU6LC6hkwhwPRkuJ/ZfvPI7fI4H4qzj22gmS
+        iDCqQASgxRvs7T4PYGwHs8Em92GYO94JCTooySij610i1oyPyyn7mX7F/3BlR0cC2n6hAn
+        RCpyt8jPCwxV2QyHSNbXsLUGW64G0y9fw4+kc09oeEw0P+FJH4wFVYJI2oJA7hvIPzeugk
+        /3JRziJUfPUC5S9nSO+FhybvGkDVCgjVYpntYyAcXOr6OiuH9f/vi2yiSRGiTqZIMsAY4W
+        lxdCM2F/RgAa6qEw7Uv/qjQfSwulwdmhptgBoE0/849SHnzkjzjikuNNvtoA6g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1603126965;
+        s=2020e; t=1603126966;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=e8ek/MHNvjx+EwcgMnr8LVpLx35mWzxIKmXstJ4BxBs=;
-        b=Cg5y6AEKfqmK1ZTL82W8+0z/HqlROmevVjEYnVOmU8ei8p1ERSq+ByItnPb54iUtROYk7A
-        7HlBQk2szjKzzbAQ==
-From:   "tip-bot2 for Leonid Bloch" <tip-bot2@linutronix.de>
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=vecU3kJYuPpyYolsjCKQ+Gp5zwhRerMOKy1v8a747ho=;
+        b=LKEGML9uTZhpZ2frwyYCbD6D9RzWvYSqI/63GGTqCl5R4AFTrer/WfTYxi5RpWHO/upS5K
+        trsw4m1Steiq9VCg==
+From:   "tip-bot2 for Oliver Neukum" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] USB: serial: option: Add Telit FT980-KS composition
-Cc:     Leonid Bloch <lb.workbox@gmail.com>, stable@vger.kernel.org,
-        Johan Hovold <johan@kernel.org>,
+Subject: [tip: perf/urgent] media: usbtv: Fix refcounting mixup
+Cc:     Oliver Neukum <oneukum@suse.com>,
+        Ben Hutchings <ben.hutchings@codethink.co.uk>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
         "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <ce86bc05-f4e2-b199-0cdc-792715e3f275@asocscloud.com>
-References: <ce86bc05-f4e2-b199-0cdc-792715e3f275@asocscloud.com>
 MIME-Version: 1.0
-Message-ID: <160312696484.7002.7375378127471146676.tip-bot2@tip-bot2>
+Message-ID: <160312696584.7002.2780733511206872163.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,44 +55,46 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     da6f40842515774026d5bfad297491eb513c40cc
-Gitweb:        https://git.kernel.org/tip/da6f40842515774026d5bfad297491eb513c40cc
-Author:        Leonid Bloch <lb.workbox@gmail.com>
-AuthorDate:    Sun, 04 Oct 2020 18:58:13 +03:00
+Commit-ID:     1eaed405fcd22e52a438b619e6ea85539f1c150a
+Gitweb:        https://git.kernel.org/tip/1eaed405fcd22e52a438b619e6ea85539f1c150a
+Author:        Oliver Neukum <oneukum@suse.com>
+AuthorDate:    Thu, 24 Sep 2020 11:14:10 +02:00
 Committer:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 CommitterDate: Sat, 17 Oct 2020 08:31:21 +02:00
 
-USB: serial: option: Add Telit FT980-KS composition
+media: usbtv: Fix refcounting mixup
 
-commit 924a9213358fb92fa3c3225d6d042aa058167405 upstream.
+commit bf65f8aabdb37bc1a785884374e919477fe13e10 upstream.
 
-This commit adds the following Telit FT980-KS composition:
+The premature free in the error path is blocked by V4L
+refcounting, not USB refcounting. Thanks to
+Ben Hutchings for review.
 
-0x1054: rndis, diag, adb, nmea, modem, modem, aux
+[v2] corrected attributions
 
-AT commands can be sent to /dev/ttyUSB2.
-
-Signed-off-by: Leonid Bloch <lb.workbox@gmail.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/ce86bc05-f4e2-b199-0cdc-792715e3f275@asocscloud.com
-Link: https://lore.kernel.org/r/20201004155813.2342-1-lb.workbox@gmail.com
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Fixes: 50e704453553 ("media: usbtv: prevent double free in error case")
+CC: stable@vger.kernel.org
+Reported-by: Ben Hutchings <ben.hutchings@codethink.co.uk>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- drivers/usb/serial/option.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/media/usb/usbtv/usbtv-core.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/serial/option.c b/drivers/usb/serial/option.c
-index a65e620..2a3bfd6 100644
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -1187,6 +1187,8 @@ static const struct usb_device_id option_ids[] = {
- 	  .driver_info = NCTRL(2) | RSVD(3) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1053, 0xff),	/* Telit FN980 (ECM) */
- 	  .driver_info = NCTRL(0) | RSVD(1) },
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1054, 0xff),	/* Telit FT980-KS */
-+	  .driver_info = NCTRL(2) | RSVD(3) },
- 	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_ME910),
- 	  .driver_info = NCTRL(0) | RSVD(1) | RSVD(3) },
- 	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_ME910_DUAL_MODEM),
+diff --git a/drivers/media/usb/usbtv/usbtv-core.c b/drivers/media/usb/usbtv/usbtv-core.c
+index ee9c656..2308c0b 100644
+--- a/drivers/media/usb/usbtv/usbtv-core.c
++++ b/drivers/media/usb/usbtv/usbtv-core.c
+@@ -113,7 +113,8 @@ static int usbtv_probe(struct usb_interface *intf,
+ 
+ usbtv_audio_fail:
+ 	/* we must not free at this point */
+-	usb_get_dev(usbtv->udev);
++	v4l2_device_get(&usbtv->v4l2_dev);
++	/* this will undo the v4l2_device_get() */
+ 	usbtv_video_free(usbtv);
+ 
+ usbtv_video_fail:
