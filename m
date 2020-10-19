@@ -2,55 +2,48 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D3710292C3B
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Oct 2020 19:03:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 34840292C3E
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Oct 2020 19:04:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730926AbgJSRDb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 19 Oct 2020 13:03:31 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:32860 "EHLO
+        id S1730916AbgJSRDj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 19 Oct 2020 13:03:39 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:32870 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730909AbgJSRCq (ORCPT
+        with ESMTP id S1730911AbgJSRCp (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 19 Oct 2020 13:02:46 -0400
-Date:   Mon, 19 Oct 2020 17:02:42 -0000
+        Mon, 19 Oct 2020 13:02:45 -0400
+Date:   Mon, 19 Oct 2020 17:02:43 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1603126963;
+        s=2020; t=1603126964;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=tTlY+cBtYyvcd7ndef/FoMfCcKAf9Yycpj9RKczYcHY=;
-        b=UA5F/RDIsB0UQOcabcAbNbkZng6f4FvvZvbM489MUcrJXVWOsr2058jvATH0wssXvs8MSN
-        USSs9Ac8Aa7lacBJBVakyNWrQtfNdqGBIpGWeY6IvSYzA7JcbWcFQD4tD2Bx9kwceCQsfq
-        cKhYpbg/2/xrtWeCxXZ1qCNX4DoNk049WxPXTl5KUZhGg/0BxmMMj3hkahGmMfObtyQNqg
-        9MeHcStOGrgko7cEbF7BmuwlrqyLwlkHQ+2ix33VTs3Z0bXO+LnV6eXS7NApacIf0T4bwD
-        CO47RkJQNfjLX8TKlrvqyM21RfuBjUXV+PZrWSoPV8MuyKHaoA6Mn4pAynidlw==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=NLYA7x8rNUp2NIhnLBpUVlWTRkGxI0xw9WxzR9oWLlw=;
+        b=iVxCTAmFCfWpvgCGMf6UxqZ25Ygm4h3A8h4V5gCBWdAXu86D0X/ImJm6n12XOFCjm4T7EC
+        m+RH7LgJak2t6g5sFAfp7k+4qgKS+tpTGQMYB1wRRcTjM91+NMXIoNAMPyBOpVMQcrAnT2
+        uBaY8OTAfeGcZiLwmCW56wJzjIL8Dfjcl9do6u1NoAups+3IHZVlcovaHxN1sg7R/OV1oQ
+        0SPncUo8123Xzo/Ojhsqxrawr2RLizTDnf+8zqHbpYowDdeak9RcOipbOzrHK62TmQSiCg
+        GeI91HwcuD7DNesQj1s7jgcspvHVpsjRjoNVmUv54xYdXretz9bNYJtL4M5ZKQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1603126963;
+        s=2020e; t=1603126964;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=tTlY+cBtYyvcd7ndef/FoMfCcKAf9Yycpj9RKczYcHY=;
-        b=E7QHD1CG/97arEU4Ek7pcXTkNqLbif4u15QD+HB3icL7trRn3ZcCtT1/dbG15jle95t/SP
-        nSSqf6x61zddtqDw==
-From:   "tip-bot2 for Tetsuo Handa" <tip-bot2@linutronix.de>
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=NLYA7x8rNUp2NIhnLBpUVlWTRkGxI0xw9WxzR9oWLlw=;
+        b=rQNcYPjImkF0t+ATEwSst3iR2OEktWu7LzRyhPglVPkrFwTFSFX9M9G4dAQfE8opf1bHks
+        anwsIz0I+ezY9HCA==
+From:   "tip-bot2 for Mychaela N. Falconia" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] vt_ioctl: make VT_RESIZEX behave like VT_RESIZE
-Cc:     syzbot <syzbot+b308f5fd049fbbc6e74f@syzkaller.appspotmail.com>,
-        syzbot <syzbot+16469b5e8e5a72e9131e@syzkaller.appspotmail.com>,
-        Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-        stable <stable@vger.kernel.org>,
+Subject: [tip: perf/urgent] USB: serial: ftdi_sio: add support for FreeCalypso
+ JTAG+UART adapters
+Cc:     "Mychaela N. Falconia" <falcon@freecalypso.org>,
+        stable@vger.kernel.org, Johan Hovold <johan@kernel.org>,
         "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <4933b81b-9b1a-355b-df0e-9b31e8280ab9@i-love.sakura.ne.jp>
-References: <4933b81b-9b1a-355b-df0e-9b31e8280ab9@i-love.sakura.ne.jp>
 MIME-Version: 1.0
-Message-ID: <160312696280.7002.6866734236123032181.tip-bot2@tip-bot2>
+Message-ID: <160312696333.7002.7451593653017604833.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,122 +54,82 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     6d389a66ccfc743699aa0274801654b6c7f9753b
-Gitweb:        https://git.kernel.org/tip/6d389a66ccfc743699aa0274801654b6c7f9753b
-Author:        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
-AuthorDate:    Sun, 27 Sep 2020 20:46:30 +09:00
+Commit-ID:     a71ec88ae6a61ac69854b4ef60c0c7920b225e31
+Gitweb:        https://git.kernel.org/tip/a71ec88ae6a61ac69854b4ef60c0c7920b225e31
+Author:        Mychaela N. Falconia <falcon@freecalypso.org>
+AuthorDate:    Wed, 16 Sep 2020 01:56:29 
 Committer:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 CommitterDate: Sat, 17 Oct 2020 08:31:22 +02:00
 
-vt_ioctl: make VT_RESIZEX behave like VT_RESIZE
+USB: serial: ftdi_sio: add support for FreeCalypso JTAG+UART adapters
 
-commit 988d0763361bb65690d60e2bc53a6b72777040c3 upstream.
+commit 6cf87e5edd9944e1d3b6efd966ea401effc304ee upstream.
 
-syzbot is reporting UAF/OOB read at bit_putcs()/soft_cursor() [1][2], for
-vt_resizex() from ioctl(VT_RESIZEX) allows setting font height larger than
-actual font height calculated by con_font_set() from ioctl(PIO_FONT).
-Since fbcon_set_font() from con_font_set() allocates minimal amount of
-memory based on actual font height calculated by con_font_set(),
-use of vt_resizex() can cause UAF/OOB read for font data.
+There exist many FT2232-based JTAG+UART adapter designs in which
+FT2232 Channel A is used for JTAG and Channel B is used for UART.
+The best way to handle them in Linux is to have the ftdi_sio driver
+create a ttyUSB device only for Channel B and not for Channel A:
+a ttyUSB device for Channel A would be bogus and will disappear as
+soon as the user runs OpenOCD or other applications that access
+Channel A for JTAG from userspace, causing undesirable noise for
+users.  The ftdi_sio driver already has a dedicated quirk for such
+JTAG+UART FT2232 adapters, and it requires assigning custom USB IDs
+to such adapters and adding these IDs to the driver with the
+ftdi_jtag_quirk applied.
 
-VT_RESIZEX was introduced in Linux 1.3.3, but it is unclear that what
-comes to the "+ more" part, and I couldn't find a user of VT_RESIZEX.
+Boutique hardware manufacturer Falconia Partners LLC has created a
+couple of JTAG+UART adapter designs (one buffered, one unbuffered)
+as part of FreeCalypso project, and this hardware is specifically made
+to be used with Linux hosts, with the intent that Channel A will be
+accessed only from userspace via appropriate applications, and that
+Channel B will be supported by the ftdi_sio kernel driver, presenting
+a standard ttyUSB device to userspace.  Toward this end the hardware
+manufacturer will be programming FT2232 EEPROMs with custom USB IDs,
+specifically with the intent that these IDs will be recognized by
+the ftdi_sio driver with the ftdi_jtag_quirk applied.
 
-  #define VT_RESIZE   0x5609 /* set kernel's idea of screensize */
-  #define VT_RESIZEX  0x560A /* set kernel's idea of screensize + more */
-
-So far we are not aware of syzbot reports caused by setting non-zero value
-to v_vlin parameter. But given that it is possible that nobody is using
-VT_RESIZEX, we can try removing support for v_clin and v_vlin parameters.
-
-Therefore, this patch effectively makes VT_RESIZEX behave like VT_RESIZE,
-with emitting a message if somebody is still using v_clin and/or v_vlin
-parameters.
-
-[1] https://syzkaller.appspot.com/bug?id=32577e96d88447ded2d3b76d71254fb855245837
-[2] https://syzkaller.appspot.com/bug?id=6b8355d27b2b94fb5cedf4655e3a59162d9e48e3
-
-Reported-by: syzbot <syzbot+b308f5fd049fbbc6e74f@syzkaller.appspotmail.com>
-Reported-by: syzbot <syzbot+16469b5e8e5a72e9131e@syzkaller.appspotmail.com>
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Cc: stable <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/4933b81b-9b1a-355b-df0e-9b31e8280ab9@i-love.sakura.ne.jp
+Signed-off-by: Mychaela N. Falconia <falcon@freecalypso.org>
+[johan: insert in PID order and drop unused define]
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- drivers/tty/vt/vt_ioctl.c | 57 ++++++--------------------------------
- 1 file changed, 10 insertions(+), 47 deletions(-)
+ drivers/usb/serial/ftdi_sio.c     | 5 +++++
+ drivers/usb/serial/ftdi_sio_ids.h | 7 +++++++
+ 2 files changed, 12 insertions(+)
 
-diff --git a/drivers/tty/vt/vt_ioctl.c b/drivers/tty/vt/vt_ioctl.c
-index a4e520b..bc33938 100644
---- a/drivers/tty/vt/vt_ioctl.c
-+++ b/drivers/tty/vt/vt_ioctl.c
-@@ -773,58 +773,21 @@ static int vt_resizex(struct vc_data *vc, struct vt_consize __user *cs)
- 	if (copy_from_user(&v, cs, sizeof(struct vt_consize)))
- 		return -EFAULT;
+diff --git a/drivers/usb/serial/ftdi_sio.c b/drivers/usb/serial/ftdi_sio.c
+index 9823bb4..8d89a16 100644
+--- a/drivers/usb/serial/ftdi_sio.c
++++ b/drivers/usb/serial/ftdi_sio.c
+@@ -1037,6 +1037,11 @@ static const struct usb_device_id id_table_combined[] = {
+ 	/* U-Blox devices */
+ 	{ USB_DEVICE(UBLOX_VID, UBLOX_C099F9P_ZED_PID) },
+ 	{ USB_DEVICE(UBLOX_VID, UBLOX_C099F9P_ODIN_PID) },
++	/* FreeCalypso USB adapters */
++	{ USB_DEVICE(FTDI_VID, FTDI_FALCONIA_JTAG_BUF_PID),
++		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
++	{ USB_DEVICE(FTDI_VID, FTDI_FALCONIA_JTAG_UNBUF_PID),
++		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
+ 	{ }					/* Terminating entry */
+ };
  
--	/* FIXME: Should check the copies properly */
--	if (!v.v_vlin)
--		v.v_vlin = vc->vc_scan_lines;
--
--	if (v.v_clin) {
--		int rows = v.v_vlin / v.v_clin;
--		if (v.v_rows != rows) {
--			if (v.v_rows) /* Parameters don't add up */
--				return -EINVAL;
--			v.v_rows = rows;
--		}
--	}
--
--	if (v.v_vcol && v.v_ccol) {
--		int cols = v.v_vcol / v.v_ccol;
--		if (v.v_cols != cols) {
--			if (v.v_cols)
--				return -EINVAL;
--			v.v_cols = cols;
--		}
--	}
--
--	if (v.v_clin > 32)
--		return -EINVAL;
-+	if (v.v_vlin)
-+		pr_info_once("\"struct vt_consize\"->v_vlin is ignored. Please report if you need this.\n");
-+	if (v.v_clin)
-+		pr_info_once("\"struct vt_consize\"->v_clin is ignored. Please report if you need this.\n");
+diff --git a/drivers/usb/serial/ftdi_sio_ids.h b/drivers/usb/serial/ftdi_sio_ids.h
+index b5ca17a..3d47c6d 100644
+--- a/drivers/usb/serial/ftdi_sio_ids.h
++++ b/drivers/usb/serial/ftdi_sio_ids.h
+@@ -39,6 +39,13 @@
  
-+	console_lock();
- 	for (i = 0; i < MAX_NR_CONSOLES; i++) {
--		struct vc_data *vcp;
-+		vc = vc_cons[i].d;
+ #define FTDI_LUMEL_PD12_PID	0x6002
  
--		if (!vc_cons[i].d)
--			continue;
--		console_lock();
--		vcp = vc_cons[i].d;
--		if (vcp) {
--			int ret;
--			int save_scan_lines = vcp->vc_scan_lines;
--			int save_font_height = vcp->vc_font.height;
--
--			if (v.v_vlin)
--				vcp->vc_scan_lines = v.v_vlin;
--			if (v.v_clin)
--				vcp->vc_font.height = v.v_clin;
--			vcp->vc_resize_user = 1;
--			ret = vc_resize(vcp, v.v_cols, v.v_rows);
--			if (ret) {
--				vcp->vc_scan_lines = save_scan_lines;
--				vcp->vc_font.height = save_font_height;
--				console_unlock();
--				return ret;
--			}
-+		if (vc) {
-+			vc->vc_resize_user = 1;
-+			vc_resize(vc, v.v_cols, v.v_rows);
- 		}
--		console_unlock();
- 	}
-+	console_unlock();
++/*
++ * Custom USB adapters made by Falconia Partners LLC
++ * for FreeCalypso project, ID codes allocated to Falconia by FTDI.
++ */
++#define FTDI_FALCONIA_JTAG_BUF_PID	0x7150
++#define FTDI_FALCONIA_JTAG_UNBUF_PID	0x7151
++
+ /* Sienna Serial Interface by Secyourit GmbH */
+ #define FTDI_SIENNA_PID		0x8348
  
- 	return 0;
- }
