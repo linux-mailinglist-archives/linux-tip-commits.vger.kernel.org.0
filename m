@@ -2,47 +2,47 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 580D6292C2D
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Oct 2020 19:03:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F8F3292C2F
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Oct 2020 19:03:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730883AbgJSRCo (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 19 Oct 2020 13:02:44 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:32834 "EHLO
+        id S1730862AbgJSRCp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 19 Oct 2020 13:02:45 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:32856 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730862AbgJSRCn (ORCPT
+        with ESMTP id S1730877AbgJSRCp (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 19 Oct 2020 13:02:43 -0400
-Date:   Mon, 19 Oct 2020 17:02:41 -0000
+        Mon, 19 Oct 2020 13:02:45 -0400
+Date:   Mon, 19 Oct 2020 17:02:42 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1603126962;
+        s=2020; t=1603126963;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=Mm2oJkQBpvOsV9aCBMpH+tripIZzlxiNu5ziJUX+6Ig=;
-        b=VHFDNLE/KJ91rOuG9kleyKPLnHxlo4VtA1enELqhwWyZBO1KPcP4RZ9V8e+JvZdOQs/btr
-        RG3ibrkZsA9DtbUeDbSLKKhW2fWV+8HHMTP3Ts9R65lhJYIGd+0MQTVlvyul6TOzbBX7SW
-        BWJhr/hq2yzWCC1pEK0RYUsE5qAXx3Jcr/aBL8WXHHHC+1KTIlGtLH+ohwWkv9U59HHLAE
-        64WbKN9r/5BgojI2Hs94uH+Whp1fwTrh8i1/BSrp8NNNScfvcpa9cnSAYJIsdvJCn93Fvl
-        R6cmhwF8ZBiaYXx8pzDZ+5o+GTrFNMPmBiwBwMT6+SXtw3lvTwQZ5gWewaguiw==
+        bh=yu1Kt8dPnW54mmTs+LVIdbTeM1ogn52+qvOilt60iwc=;
+        b=NGwTu4pHOGipUgE1ok3WMFcUTw3IV3hG7PxI7cRAocC/b47gT5RgggrbmBPkDe4QF6Nzd/
+        8/Be+3Bn8fFMO+eAtrNJlss851SidgfF1rmZuEDMEZTRKD1IsgPgqaa+dnmAKf2NLTCCBa
+        uEujansUJkNtFKAoU1Z4Ey7u7FzdLSnswSKNYUmH7MGZvMn2g5Fum8MJm2+yOldnjLFThY
+        W7NwJ5fzEOq7UEWYpylEto6yi4dJUeqmVUZ3yDydjc4Dmwgn6fb/8IcRor2GJY1TZPa+yw
+        HBVnm64SdU1RQPXZp9EuURpB80ralIACdMFE6X40VQv7vuwYxSIoea0RvM1EpA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1603126962;
+        s=2020e; t=1603126963;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=Mm2oJkQBpvOsV9aCBMpH+tripIZzlxiNu5ziJUX+6Ig=;
-        b=tReg0FhSH4tyV14UAUPhxJWyEVsz+JiILmDcPJU0E4RhK2WVyjjr9dEWvDHdY1gpQiE3lK
-        yqxwQhIkVYIQx6BA==
-From:   "tip-bot2 for Alex Deucher" <tip-bot2@linutronix.de>
+        bh=yu1Kt8dPnW54mmTs+LVIdbTeM1ogn52+qvOilt60iwc=;
+        b=Gel0jr25w2lP4QvqrlXJYmZi6p5IQpzRKoB82SqE9SmE9Nn/Jgw9e9II5ARzPDXeVdYcyC
+        rb33o4zakhIw8EBA==
+From:   "tip-bot2 for Jan Kara" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] Revert "drm/amdgpu: Fix NULL dereference in dpm
- sysfs handlers"
-Cc:     Alex Deucher <alexander.deucher@amd.com>, stable@vger.kernel.org,
+Subject: [tip: perf/urgent] reiserfs: Initialize inode keys properly
+Cc:     syzbot+d94d02749498bb7bab4b@syzkaller.appspotmail.com,
+        Jan Kara <jack@suse.cz>,
         "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <160312696114.7002.3688701594191033856.tip-bot2@tip-bot2>
+Message-ID: <160312696219.7002.5065617515683098473.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -53,61 +53,44 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     ffdf9f8550ee675d4270bbaa5721a6f3116d137e
-Gitweb:        https://git.kernel.org/tip/ffdf9f8550ee675d4270bbaa5721a6f3116d137e
-Author:        Alex Deucher <alexander.deucher@amd.com>
-AuthorDate:    Thu, 30 Jul 2020 11:02:30 -04:00
+Commit-ID:     d3bb68fa8d43bcd889ce86249f73a70e3ba221aa
+Gitweb:        https://git.kernel.org/tip/d3bb68fa8d43bcd889ce86249f73a70e3ba221aa
+Author:        Jan Kara <jack@suse.cz>
+AuthorDate:    Mon, 21 Sep 2020 15:08:50 +02:00
 Committer:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 CommitterDate: Sat, 17 Oct 2020 08:31:22 +02:00
 
-Revert "drm/amdgpu: Fix NULL dereference in dpm sysfs handlers"
+reiserfs: Initialize inode keys properly
 
-commit 2456c290a7889be492cb96092b62d16c11176f72 upstream.
+commit 4443390e08d34d5771ab444f601cf71b3c9634a4 upstream.
 
-This regressed some working configurations so revert it.  Will
-fix this properly for 5.9 and backport then.
+reiserfs_read_locked_inode() didn't initialize key length properly. Use
+_make_cpu_key() macro for key initialization so that all key member are
+properly initialized.
 
-This reverts commit 38e0c89a19fd13f28d2b4721035160a3e66e270b.
-
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
+CC: stable@vger.kernel.org
+Reported-by: syzbot+d94d02749498bb7bab4b@syzkaller.appspotmail.com
+Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_pm.c |  9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ fs/reiserfs/inode.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_pm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_pm.c
-index e4dbf14..5bf4212 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_pm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_pm.c
-@@ -796,7 +796,8 @@ static ssize_t amdgpu_set_pp_od_clk_voltage(struct device *dev,
- 		tmp_str++;
- 	while (isspace(*++tmp_str));
+diff --git a/fs/reiserfs/inode.c b/fs/reiserfs/inode.c
+index 1509775..e43fed9 100644
+--- a/fs/reiserfs/inode.c
++++ b/fs/reiserfs/inode.c
+@@ -1551,11 +1551,7 @@ void reiserfs_read_locked_inode(struct inode *inode,
+ 	 * set version 1, version 2 could be used too, because stat data
+ 	 * key is the same in both versions
+ 	 */
+-	key.version = KEY_FORMAT_3_5;
+-	key.on_disk_key.k_dir_id = dirino;
+-	key.on_disk_key.k_objectid = inode->i_ino;
+-	key.on_disk_key.k_offset = 0;
+-	key.on_disk_key.k_type = 0;
++	_make_cpu_key(&key, KEY_FORMAT_3_5, dirino, inode->i_ino, 0, 0, 3);
  
--	while ((sub_str = strsep(&tmp_str, delimiter)) != NULL) {
-+	while (tmp_str[0]) {
-+		sub_str = strsep(&tmp_str, delimiter);
- 		ret = kstrtol(sub_str, 0, &parameter[parameter_size]);
- 		if (ret)
- 			return -EINVAL;
-@@ -1066,7 +1067,8 @@ static ssize_t amdgpu_read_mask(const char *buf, size_t count, uint32_t *mask)
- 	memcpy(buf_cpy, buf, bytes);
- 	buf_cpy[bytes] = '\0';
- 	tmp = buf_cpy;
--	while ((sub_str = strsep(&tmp, delimiter)) != NULL) {
-+	while (tmp[0]) {
-+		sub_str = strsep(&tmp, delimiter);
- 		if (strlen(sub_str)) {
- 			ret = kstrtol(sub_str, 0, &level);
- 			if (ret)
-@@ -1695,7 +1697,8 @@ static ssize_t amdgpu_set_pp_power_profile_mode(struct device *dev,
- 			i++;
- 		memcpy(buf_cpy, buf, count-i);
- 		tmp_str = buf_cpy;
--		while ((sub_str = strsep(&tmp_str, delimiter)) != NULL) {
-+		while (tmp_str[0]) {
-+			sub_str = strsep(&tmp_str, delimiter);
- 			ret = kstrtol(sub_str, 0, &parameter[parameter_size]);
- 			if (ret)
- 				return -EINVAL;
+ 	/* look for the object's stat data */
+ 	retval = search_item(inode->i_sb, &key, &path_to_sd);
