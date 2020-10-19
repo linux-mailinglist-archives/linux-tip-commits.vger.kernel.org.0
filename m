@@ -2,48 +2,47 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F09AE292C2A
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Oct 2020 19:03:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E92B292C32
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Oct 2020 19:03:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731073AbgJSRDP (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S1731088AbgJSRDP (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Mon, 19 Oct 2020 13:03:15 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:32886 "EHLO
+Received: from Galois.linutronix.de ([193.142.43.55]:32860 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730950AbgJSRCt (ORCPT
+        with ESMTP id S1730947AbgJSRCs (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 19 Oct 2020 13:02:49 -0400
+        Mon, 19 Oct 2020 13:02:48 -0400
 Date:   Mon, 19 Oct 2020 17:02:46 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1603126967;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=lnaDqZ2C9vZg4IyjhJIanNaJnZPz/KL0/LzWNstmiQg=;
-        b=JIhM7pWc2I2t3Yu3uXACm5+xFxf1JjgOxS0m90KULbR7nBvHB1iZftVoeQYuu+TEKL0tYl
-        ZcxtppyXDv5kzVUwJ6XGcjEBavc9l9Ae+hhR4aaPkbK+9umCsCBVD5pXmo+PYZwG7vBMIZ
-        nmbHvJlgobw5YIslDz6ocEtDYM4mnWZI+4Bj21YZTWYtv25Pz/87+Sz/D+uzaKJ37Hnyoc
-        eYd7r7gE4rWuTOaWsuuNNzyAOACK2GOu+5vbyYJBVSFFDYTe86ByojJxgvMIIhQtFcnvIe
-        Ck+8raYIPRaVTAUIdkPawXUZlFpI8ukgRvql4Ku2EDYrTej23v+DLjTNYsBNBA==
+        bh=I4prWtepFhy3bxtt4MIIMMRn0PYif2sTXQiyd4JFXNw=;
+        b=uWecLYAm/pNiCbLKzYYWdHStjDGMGzeuXowkxfPP3+7mT4kC1FQE/NvdZthTuIrRAMKNcw
+        +YpuzZG++S0g6RxuKhu1CZObRAvGFtgRwP9A7RuxXPR8HXs0k255d+Q07fhjYsz+d6T3Zd
+        +F/fAccfZkJnMJRLhuf7rDAJH3H9ZpQf7ay6bz3E5fcxINpcehzwap/RUHjfykXLryWECg
+        aGxtYNbNpSVMS5Jn91pREHUNg+rcDeCt/8AsSbT455Xs4BBn6tpTlz9b5b+OtMqKNiIJGh
+        qTVwQ+nbU7JiuSfZ++dodImu7ZmP9ARikgsCIcTnjNt3KKOR3NhlUqrtsHejRQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1603126967;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=lnaDqZ2C9vZg4IyjhJIanNaJnZPz/KL0/LzWNstmiQg=;
-        b=iMZp05oB2QyEFtQXCzofPcL7TzXHZOU26CXvt6l+RDOIExIr68pY6sG8pNfoVu1VJwRm3/
-        JtULXjB+ZSHtQkDQ==
+        bh=I4prWtepFhy3bxtt4MIIMMRn0PYif2sTXQiyd4JFXNw=;
+        b=s0R7syjb4LvA5GpNkANc2RMnECVu0aSziF1AMS1DtFKiY5O7t8exPOhcNaGQzyxqbxK274
+        6A8IOkhFebjp4mDA==
 From:   "tip-bot2 for Luiz Augusto von Dentz" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] Bluetooth: L2CAP: Fix calling sk_filter on
- non-socket based channel
+Subject: [tip: perf/urgent] Bluetooth: MGMT: Fix not checking if BT_HS is enabled
 Cc:     Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
         Marcel Holtmann <marcel@holtmann.org>,
         "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <160312696694.7002.9566105764222211231.tip-bot2@tip-bot2>
+Message-ID: <160312696638.7002.14202653033190309216.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -54,92 +53,50 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     3dede8ebf46338473143a1e792cc2cacc244f1f2
-Gitweb:        https://git.kernel.org/tip/3dede8ebf46338473143a1e792cc2cacc244f1f2
+Commit-ID:     a0a91211dd0ac6f24393a2917a258de5aeedb842
+Gitweb:        https://git.kernel.org/tip/a0a91211dd0ac6f24393a2917a258de5aeedb842
 Author:        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-AuthorDate:    Thu, 06 Aug 2020 11:17:12 -07:00
+AuthorDate:    Thu, 06 Aug 2020 11:17:14 -07:00
 Committer:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 CommitterDate: Sat, 17 Oct 2020 08:31:21 +02:00
 
-Bluetooth: L2CAP: Fix calling sk_filter on non-socket based channel
+Bluetooth: MGMT: Fix not checking if BT_HS is enabled
 
-commit f19425641cb2572a33cb074d5e30283720bd4d22 upstream.
+commit b560a208cda0297fef6ff85bbfd58a8f0a52a543 upstream.
 
-Only sockets will have the chan->data set to an actual sk, channels
-like A2MP would have its own data which would likely cause a crash when
-calling sk_filter, in order to fix this a new callback has been
-introduced so channels can implement their own filtering if necessary.
+This checks if BT_HS is enabled relecting it on MGMT_SETTING_HS instead
+of always reporting it as supported.
 
 Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Marcel Holtmann <marcel@holtmann.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- include/net/bluetooth/l2cap.h |  2 ++
- net/bluetooth/l2cap_core.c    |  7 ++++---
- net/bluetooth/l2cap_sock.c    | 14 ++++++++++++++
- 3 files changed, 20 insertions(+), 3 deletions(-)
+ net/bluetooth/mgmt.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/bluetooth/l2cap.h b/include/net/bluetooth/l2cap.h
-index 8f1e6a7..1d12329 100644
---- a/include/net/bluetooth/l2cap.h
-+++ b/include/net/bluetooth/l2cap.h
-@@ -665,6 +665,8 @@ struct l2cap_ops {
- 	struct sk_buff		*(*alloc_skb) (struct l2cap_chan *chan,
- 					       unsigned long hdr_len,
- 					       unsigned long len, int nb);
-+	int			(*filter) (struct l2cap_chan * chan,
-+					   struct sk_buff *skb);
- };
+diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
+index 5bbe710..5758ccb 100644
+--- a/net/bluetooth/mgmt.c
++++ b/net/bluetooth/mgmt.c
+@@ -782,7 +782,8 @@ static u32 get_supported_settings(struct hci_dev *hdev)
  
- struct l2cap_conn {
-diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index ade83e2..1ab27b9 100644
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -7301,9 +7301,10 @@ static int l2cap_data_rcv(struct l2cap_chan *chan, struct sk_buff *skb)
- 		goto drop;
- 	}
+ 		if (lmp_ssp_capable(hdev)) {
+ 			settings |= MGMT_SETTING_SSP;
+-			settings |= MGMT_SETTING_HS;
++			if (IS_ENABLED(CONFIG_BT_HS))
++				settings |= MGMT_SETTING_HS;
+ 		}
  
--	if ((chan->mode == L2CAP_MODE_ERTM ||
--	     chan->mode == L2CAP_MODE_STREAMING) && sk_filter(chan->data, skb))
--		goto drop;
-+	if (chan->ops->filter) {
-+		if (chan->ops->filter(chan, skb))
-+			goto drop;
-+	}
+ 		if (lmp_sc_capable(hdev))
+@@ -1815,6 +1816,10 @@ static int set_hs(struct sock *sk, struct hci_dev *hdev, void *data, u16 len)
  
- 	if (!control->sframe) {
- 		int err;
-diff --git a/net/bluetooth/l2cap_sock.c b/net/bluetooth/l2cap_sock.c
-index e1a3e66..79b4c01 100644
---- a/net/bluetooth/l2cap_sock.c
-+++ b/net/bluetooth/l2cap_sock.c
-@@ -1663,6 +1663,19 @@ static void l2cap_sock_suspend_cb(struct l2cap_chan *chan)
- 	sk->sk_state_change(sk);
- }
+ 	bt_dev_dbg(hdev, "sock %p", sk);
  
-+static int l2cap_sock_filter(struct l2cap_chan *chan, struct sk_buff *skb)
-+{
-+	struct sock *sk = chan->data;
++	if (!IS_ENABLED(CONFIG_BT_HS))
++		return mgmt_cmd_status(sk, hdev->id, MGMT_OP_SET_HS,
++				       MGMT_STATUS_NOT_SUPPORTED);
 +
-+	switch (chan->mode) {
-+	case L2CAP_MODE_ERTM:
-+	case L2CAP_MODE_STREAMING:
-+		return sk_filter(sk, skb);
-+	}
-+
-+	return 0;
-+}
-+
- static const struct l2cap_ops l2cap_chan_ops = {
- 	.name			= "L2CAP Socket Interface",
- 	.new_connection		= l2cap_sock_new_connection_cb,
-@@ -1678,6 +1691,7 @@ static const struct l2cap_ops l2cap_chan_ops = {
- 	.get_sndtimeo		= l2cap_sock_get_sndtimeo_cb,
- 	.get_peer_pid		= l2cap_sock_get_peer_pid_cb,
- 	.alloc_skb		= l2cap_sock_alloc_skb_cb,
-+	.filter			= l2cap_sock_filter,
- };
- 
- static void l2cap_sock_destruct(struct sock *sk)
+ 	status = mgmt_bredr_support(hdev);
+ 	if (status)
+ 		return mgmt_cmd_status(sk, hdev->id, MGMT_OP_SET_HS, status);
