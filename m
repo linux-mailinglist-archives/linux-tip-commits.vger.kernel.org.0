@@ -2,90 +2,99 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D9AD28F798
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 15 Oct 2020 19:23:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3930D292C14
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Oct 2020 19:02:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404933AbgJORXU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 15 Oct 2020 13:23:20 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41736 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2404921AbgJORXU (ORCPT
+        id S1730831AbgJSRCm (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 19 Oct 2020 13:02:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37690 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730820AbgJSRCm (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 15 Oct 2020 13:23:20 -0400
-Received: from paulmck-ThinkPad-P72.home (50-39-104-11.bvtn.or.frontiernet.net [50.39.104.11])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0BADE22210;
-        Thu, 15 Oct 2020 17:23:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1602782599;
-        bh=k4ODjt/wmgauVv2aKNMBrX9hKge0dnalAGGU9/9ApwA=;
-        h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
-        b=PyX5/uQkLInEUeWfvFCuetg3mdhDiWE+CBxibJM1pYL97/ddyLt+uy6pfOO/4LX6y
-         /ZZPSmQN0HTPaQrhdfbPP5fwaD/0tBsXryFdplErv12TK7jnGlNE5URFKJkhfNe0Lz
-         wpk/JCmCkZob7aOLRtuJf43z8K/BJzWbwZ+Gal3w=
-Received: by paulmck-ThinkPad-P72.home (Postfix, from userid 1000)
-        id A10D3352078F; Thu, 15 Oct 2020 10:23:18 -0700 (PDT)
-Date:   Thu, 15 Oct 2020 10:23:18 -0700
-From:   "Paul E. McKenney" <paulmck@kernel.org>
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     Boqun Feng <boqun.feng@gmail.com>, Qian Cai <cai@redhat.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
-        linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-        Linux Next Mailing List <linux-next@vger.kernel.org>,
-        Stephen Rothwell <sfr@canb.auug.org.au>
-Subject: Re: [tip: locking/core] lockdep: Fix lockdep recursion
-Message-ID: <20201015172318.GA3705@paulmck-ThinkPad-P72>
-Reply-To: paulmck@kernel.org
-References: <20201013162650.GN3249@paulmck-ThinkPad-P72>
- <20201013193025.GA2424@paulmck-ThinkPad-P72>
- <20201014183405.GA27666@paulmck-ThinkPad-P72>
- <20201014215319.GF2974@worktop.programming.kicks-ass.net>
- <20201014221152.GS3249@paulmck-ThinkPad-P72>
- <20201014223954.GH2594@hirez.programming.kicks-ass.net>
- <20201014235553.GU3249@paulmck-ThinkPad-P72>
- <20201015034128.GA10260@paulmck-ThinkPad-P72>
- <20201015094926.GY2611@hirez.programming.kicks-ass.net>
- <20201015161501.GV3249@paulmck-ThinkPad-P72>
+        Mon, 19 Oct 2020 13:02:42 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20329C0613D0;
+        Mon, 19 Oct 2020 10:02:42 -0700 (PDT)
+Date:   Mon, 19 Oct 2020 17:02:38 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1603126960;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=klSXRhsQqqqtry06bZsmSHSzMiP3z7VwD9kbHwXwStQ=;
+        b=YJmbtEm6tCVxr9abVLlSgyQZlt7FXiU4UZKUGYQlREXHPp75oc+JEFtUktNcC1w+94D1s8
+        ezKj/SWH7RlvujOr7dmjWVHe200FUqCXFSCvhT3snNHrS9zeDtI5cdKU4IR0BEuM/XYBgr
+        TG4XhCEz81rVzWDfIKy9K3KwxzojJfzBXkcFsX6A8Xiio0OhXL9T/jRW2pgnTzCHZ6po99
+        Ghpub0NjQAuAYarHOxM7EfgAw+KTuhtz7tgXwqXzG2+TeVK0kIc3KAbKyMWzevbtazfOpC
+        tKKcCP5nK9i0qpt3EqQh4SM+Hht+8ZSEox2pMbkIpKm/PONR0/6A6f/+n//U9g==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1603126960;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=klSXRhsQqqqtry06bZsmSHSzMiP3z7VwD9kbHwXwStQ=;
+        b=jtHZyAhBQ74skYYGCC92UL5gR7ciLevpyY/FSkUroxxNXYD7B/GOnpfi39HP36M9t7QWyL
+        J2Kgfe81nfgcRPAw==
+From:   "tip-bot2 for Al Grant" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: perf/urgent] perf: correct SNOOPX field offset
+Cc:     Al Grant <al.grant@foss.arm.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Andi Kleen <ak@linux.intel.com>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <4ac9f5cc-4388-b34a-9999-418a4099415d@foss.arm.com>
+References: <4ac9f5cc-4388-b34a-9999-418a4099415d@foss.arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201015161501.GV3249@paulmck-ThinkPad-P72>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Message-ID: <160312695895.7002.2602979482194317435.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2.linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Thu, Oct 15, 2020 at 09:15:01AM -0700, Paul E. McKenney wrote:
-> On Thu, Oct 15, 2020 at 11:49:26AM +0200, Peter Zijlstra wrote:
-> > On Wed, Oct 14, 2020 at 08:41:28PM -0700, Paul E. McKenney wrote:
+The following commit has been merged into the perf/urgent branch of tip:
 
-[ . . . ]
+Commit-ID:     04de3266214453deb5f1d7849a66313e351af8cc
+Gitweb:        https://git.kernel.org/tip/04de3266214453deb5f1d7849a66313e351af8cc
+Author:        Al Grant <al.grant@foss.arm.com>
+AuthorDate:    Mon, 21 Sep 2020 21:46:37 +01:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Mon, 19 Oct 2020 18:51:19 +02:00
 
-> > --- a/kernel/rcu/tree.c
-> > +++ b/kernel/rcu/tree.c
-> > @@ -1764,8 +1764,7 @@ static bool rcu_gp_init(void)
-> >  		smp_mb(); // Pair with barriers used when updating ->ofl_seq to odd values.
-> >  		firstseq = READ_ONCE(rnp->ofl_seq);
-> >  		if (firstseq & 0x1)
-> > -			while (firstseq == smp_load_acquire(&rnp->ofl_seq))
-> > -				schedule_timeout_idle(1);  // Can't wake unless RCU is watching.
-> > +			smp_cond_load_relaxed(&rnp->ofl_seq, VAL == firstseq);
-> >  		smp_mb(); // Pair with barriers used when updating ->ofl_seq to even values.
-> >  		raw_spin_lock(&rcu_state.ofl_lock);
-> >  		raw_spin_lock_irq_rcu_node(rnp);
-> 
-> This would work, and would be absolutely necessary if grace periods
-> took only (say) 500 nanoseconds to complete.  But given that they take
-> multiple milliseconds at best, and given that this race is extremely
-> unlikely, and given the heavy use of virtualization, I have to stick
-> with the schedule_timeout_idle().
-> 
-> In fact, I have on my list to force this race to happen on the grounds
-> that if it ain't tested, it don't work...
+perf: correct SNOOPX field offset
 
-And it only too about 1000 seconds of TREE03 to make this happen, so we
-should be good just relying on rcutorture.  ;-)
+perf_event.h has macros that define the field offsets in the
+data_src bitmask in perf records. The SNOOPX and REMOTE offsets
+were both 37. These are distinct fields, and the bitfield layout
+in perf_mem_data_src confirms that SNOOPX should be at offset 38.
 
-							Thanx, Paul
+Fixes: 52839e653b5629bd ("perf tools: Add support for printing new mem_info encodings")
+Signed-off-by: Al Grant <al.grant@foss.arm.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Andi Kleen <ak@linux.intel.com>
+Link: https://lkml.kernel.org/r/4ac9f5cc-4388-b34a-9999-418a4099415d@foss.arm.com
+---
+ include/uapi/linux/perf_event.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/uapi/linux/perf_event.h b/include/uapi/linux/perf_event.h
+index 077e7ee..b95d3c4 100644
+--- a/include/uapi/linux/perf_event.h
++++ b/include/uapi/linux/perf_event.h
+@@ -1196,7 +1196,7 @@ union perf_mem_data_src {
+ 
+ #define PERF_MEM_SNOOPX_FWD	0x01 /* forward */
+ /* 1 free */
+-#define PERF_MEM_SNOOPX_SHIFT	37
++#define PERF_MEM_SNOOPX_SHIFT  38
+ 
+ /* locked instruction */
+ #define PERF_MEM_LOCK_NA	0x01 /* not available */
