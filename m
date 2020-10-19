@@ -2,47 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F8F3292C2F
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Oct 2020 19:03:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D3710292C3B
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Oct 2020 19:03:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730862AbgJSRCp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 19 Oct 2020 13:02:45 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:32856 "EHLO
+        id S1730926AbgJSRDb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 19 Oct 2020 13:03:31 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:32860 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730877AbgJSRCp (ORCPT
+        with ESMTP id S1730909AbgJSRCq (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 19 Oct 2020 13:02:45 -0400
+        Mon, 19 Oct 2020 13:02:46 -0400
 Date:   Mon, 19 Oct 2020 17:02:42 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1603126963;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=yu1Kt8dPnW54mmTs+LVIdbTeM1ogn52+qvOilt60iwc=;
-        b=NGwTu4pHOGipUgE1ok3WMFcUTw3IV3hG7PxI7cRAocC/b47gT5RgggrbmBPkDe4QF6Nzd/
-        8/Be+3Bn8fFMO+eAtrNJlss851SidgfF1rmZuEDMEZTRKD1IsgPgqaa+dnmAKf2NLTCCBa
-        uEujansUJkNtFKAoU1Z4Ey7u7FzdLSnswSKNYUmH7MGZvMn2g5Fum8MJm2+yOldnjLFThY
-        W7NwJ5fzEOq7UEWYpylEto6yi4dJUeqmVUZ3yDydjc4Dmwgn6fb/8IcRor2GJY1TZPa+yw
-        HBVnm64SdU1RQPXZp9EuURpB80ralIACdMFE6X40VQv7vuwYxSIoea0RvM1EpA==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=tTlY+cBtYyvcd7ndef/FoMfCcKAf9Yycpj9RKczYcHY=;
+        b=UA5F/RDIsB0UQOcabcAbNbkZng6f4FvvZvbM489MUcrJXVWOsr2058jvATH0wssXvs8MSN
+        USSs9Ac8Aa7lacBJBVakyNWrQtfNdqGBIpGWeY6IvSYzA7JcbWcFQD4tD2Bx9kwceCQsfq
+        cKhYpbg/2/xrtWeCxXZ1qCNX4DoNk049WxPXTl5KUZhGg/0BxmMMj3hkahGmMfObtyQNqg
+        9MeHcStOGrgko7cEbF7BmuwlrqyLwlkHQ+2ix33VTs3Z0bXO+LnV6eXS7NApacIf0T4bwD
+        CO47RkJQNfjLX8TKlrvqyM21RfuBjUXV+PZrWSoPV8MuyKHaoA6Mn4pAynidlw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1603126963;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=yu1Kt8dPnW54mmTs+LVIdbTeM1ogn52+qvOilt60iwc=;
-        b=Gel0jr25w2lP4QvqrlXJYmZi6p5IQpzRKoB82SqE9SmE9Nn/Jgw9e9II5ARzPDXeVdYcyC
-        rb33o4zakhIw8EBA==
-From:   "tip-bot2 for Jan Kara" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=tTlY+cBtYyvcd7ndef/FoMfCcKAf9Yycpj9RKczYcHY=;
+        b=E7QHD1CG/97arEU4Ek7pcXTkNqLbif4u15QD+HB3icL7trRn3ZcCtT1/dbG15jle95t/SP
+        nSSqf6x61zddtqDw==
+From:   "tip-bot2 for Tetsuo Handa" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] reiserfs: Initialize inode keys properly
-Cc:     syzbot+d94d02749498bb7bab4b@syzkaller.appspotmail.com,
-        Jan Kara <jack@suse.cz>,
+Subject: [tip: perf/urgent] vt_ioctl: make VT_RESIZEX behave like VT_RESIZE
+Cc:     syzbot <syzbot+b308f5fd049fbbc6e74f@syzkaller.appspotmail.com>,
+        syzbot <syzbot+16469b5e8e5a72e9131e@syzkaller.appspotmail.com>,
+        Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+        stable <stable@vger.kernel.org>,
         "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <4933b81b-9b1a-355b-df0e-9b31e8280ab9@i-love.sakura.ne.jp>
+References: <4933b81b-9b1a-355b-df0e-9b31e8280ab9@i-love.sakura.ne.jp>
 MIME-Version: 1.0
-Message-ID: <160312696219.7002.5065617515683098473.tip-bot2@tip-bot2>
+Message-ID: <160312696280.7002.6866734236123032181.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -53,44 +61,122 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     d3bb68fa8d43bcd889ce86249f73a70e3ba221aa
-Gitweb:        https://git.kernel.org/tip/d3bb68fa8d43bcd889ce86249f73a70e3ba221aa
-Author:        Jan Kara <jack@suse.cz>
-AuthorDate:    Mon, 21 Sep 2020 15:08:50 +02:00
+Commit-ID:     6d389a66ccfc743699aa0274801654b6c7f9753b
+Gitweb:        https://git.kernel.org/tip/6d389a66ccfc743699aa0274801654b6c7f9753b
+Author:        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
+AuthorDate:    Sun, 27 Sep 2020 20:46:30 +09:00
 Committer:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 CommitterDate: Sat, 17 Oct 2020 08:31:22 +02:00
 
-reiserfs: Initialize inode keys properly
+vt_ioctl: make VT_RESIZEX behave like VT_RESIZE
 
-commit 4443390e08d34d5771ab444f601cf71b3c9634a4 upstream.
+commit 988d0763361bb65690d60e2bc53a6b72777040c3 upstream.
 
-reiserfs_read_locked_inode() didn't initialize key length properly. Use
-_make_cpu_key() macro for key initialization so that all key member are
-properly initialized.
+syzbot is reporting UAF/OOB read at bit_putcs()/soft_cursor() [1][2], for
+vt_resizex() from ioctl(VT_RESIZEX) allows setting font height larger than
+actual font height calculated by con_font_set() from ioctl(PIO_FONT).
+Since fbcon_set_font() from con_font_set() allocates minimal amount of
+memory based on actual font height calculated by con_font_set(),
+use of vt_resizex() can cause UAF/OOB read for font data.
 
-CC: stable@vger.kernel.org
-Reported-by: syzbot+d94d02749498bb7bab4b@syzkaller.appspotmail.com
-Signed-off-by: Jan Kara <jack@suse.cz>
+VT_RESIZEX was introduced in Linux 1.3.3, but it is unclear that what
+comes to the "+ more" part, and I couldn't find a user of VT_RESIZEX.
+
+  #define VT_RESIZE   0x5609 /* set kernel's idea of screensize */
+  #define VT_RESIZEX  0x560A /* set kernel's idea of screensize + more */
+
+So far we are not aware of syzbot reports caused by setting non-zero value
+to v_vlin parameter. But given that it is possible that nobody is using
+VT_RESIZEX, we can try removing support for v_clin and v_vlin parameters.
+
+Therefore, this patch effectively makes VT_RESIZEX behave like VT_RESIZE,
+with emitting a message if somebody is still using v_clin and/or v_vlin
+parameters.
+
+[1] https://syzkaller.appspot.com/bug?id=32577e96d88447ded2d3b76d71254fb855245837
+[2] https://syzkaller.appspot.com/bug?id=6b8355d27b2b94fb5cedf4655e3a59162d9e48e3
+
+Reported-by: syzbot <syzbot+b308f5fd049fbbc6e74f@syzkaller.appspotmail.com>
+Reported-by: syzbot <syzbot+16469b5e8e5a72e9131e@syzkaller.appspotmail.com>
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Cc: stable <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/4933b81b-9b1a-355b-df0e-9b31e8280ab9@i-love.sakura.ne.jp
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- fs/reiserfs/inode.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/tty/vt/vt_ioctl.c | 57 ++++++--------------------------------
+ 1 file changed, 10 insertions(+), 47 deletions(-)
 
-diff --git a/fs/reiserfs/inode.c b/fs/reiserfs/inode.c
-index 1509775..e43fed9 100644
---- a/fs/reiserfs/inode.c
-+++ b/fs/reiserfs/inode.c
-@@ -1551,11 +1551,7 @@ void reiserfs_read_locked_inode(struct inode *inode,
- 	 * set version 1, version 2 could be used too, because stat data
- 	 * key is the same in both versions
- 	 */
--	key.version = KEY_FORMAT_3_5;
--	key.on_disk_key.k_dir_id = dirino;
--	key.on_disk_key.k_objectid = inode->i_ino;
--	key.on_disk_key.k_offset = 0;
--	key.on_disk_key.k_type = 0;
-+	_make_cpu_key(&key, KEY_FORMAT_3_5, dirino, inode->i_ino, 0, 0, 3);
+diff --git a/drivers/tty/vt/vt_ioctl.c b/drivers/tty/vt/vt_ioctl.c
+index a4e520b..bc33938 100644
+--- a/drivers/tty/vt/vt_ioctl.c
++++ b/drivers/tty/vt/vt_ioctl.c
+@@ -773,58 +773,21 @@ static int vt_resizex(struct vc_data *vc, struct vt_consize __user *cs)
+ 	if (copy_from_user(&v, cs, sizeof(struct vt_consize)))
+ 		return -EFAULT;
  
- 	/* look for the object's stat data */
- 	retval = search_item(inode->i_sb, &key, &path_to_sd);
+-	/* FIXME: Should check the copies properly */
+-	if (!v.v_vlin)
+-		v.v_vlin = vc->vc_scan_lines;
+-
+-	if (v.v_clin) {
+-		int rows = v.v_vlin / v.v_clin;
+-		if (v.v_rows != rows) {
+-			if (v.v_rows) /* Parameters don't add up */
+-				return -EINVAL;
+-			v.v_rows = rows;
+-		}
+-	}
+-
+-	if (v.v_vcol && v.v_ccol) {
+-		int cols = v.v_vcol / v.v_ccol;
+-		if (v.v_cols != cols) {
+-			if (v.v_cols)
+-				return -EINVAL;
+-			v.v_cols = cols;
+-		}
+-	}
+-
+-	if (v.v_clin > 32)
+-		return -EINVAL;
++	if (v.v_vlin)
++		pr_info_once("\"struct vt_consize\"->v_vlin is ignored. Please report if you need this.\n");
++	if (v.v_clin)
++		pr_info_once("\"struct vt_consize\"->v_clin is ignored. Please report if you need this.\n");
+ 
++	console_lock();
+ 	for (i = 0; i < MAX_NR_CONSOLES; i++) {
+-		struct vc_data *vcp;
++		vc = vc_cons[i].d;
+ 
+-		if (!vc_cons[i].d)
+-			continue;
+-		console_lock();
+-		vcp = vc_cons[i].d;
+-		if (vcp) {
+-			int ret;
+-			int save_scan_lines = vcp->vc_scan_lines;
+-			int save_font_height = vcp->vc_font.height;
+-
+-			if (v.v_vlin)
+-				vcp->vc_scan_lines = v.v_vlin;
+-			if (v.v_clin)
+-				vcp->vc_font.height = v.v_clin;
+-			vcp->vc_resize_user = 1;
+-			ret = vc_resize(vcp, v.v_cols, v.v_rows);
+-			if (ret) {
+-				vcp->vc_scan_lines = save_scan_lines;
+-				vcp->vc_font.height = save_font_height;
+-				console_unlock();
+-				return ret;
+-			}
++		if (vc) {
++			vc->vc_resize_user = 1;
++			vc_resize(vc, v.v_cols, v.v_rows);
+ 		}
+-		console_unlock();
+ 	}
++	console_unlock();
+ 
+ 	return 0;
+ }
