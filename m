@@ -2,53 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BC73298ABF
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 26 Oct 2020 11:51:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8863E298B96
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 26 Oct 2020 12:17:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1771753AbgJZKvG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 26 Oct 2020 06:51:06 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:39090 "EHLO
+        id S1771952AbgJZLR1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 26 Oct 2020 07:17:27 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:39210 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1770960AbgJZKvF (ORCPT
+        with ESMTP id S1771658AbgJZLR1 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 26 Oct 2020 06:51:05 -0400
-Date:   Mon, 26 Oct 2020 10:51:01 -0000
+        Mon, 26 Oct 2020 07:17:27 -0400
+Date:   Mon, 26 Oct 2020 11:17:22 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1603709462;
+        s=2020; t=1603711044;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=qAT90Ww8AO0M+YiJyfFcemR1v6O5CkiPMwWvyQYV/fY=;
-        b=JI5VgPrlb2sTVfT/EimV2Coyich9hMADy/nTs8fJ0wSeBt6g6kgFuvS4BrThrly+nihtjQ
-        rhvbypVaCm5OEE3UanpOVdBWg5a+jR9SMCnMfAo59UTRF1I3JcuGZfr4uyhwKVov83tYK+
-        Ca9XdnPF6wKGgsMbHCcr0R3CXoJdcf3JKcFde/qYrettkSKEoXxMJhROFPWUyujJmIuaM0
-        /ntZWqhnt0XMxzEm1etYlUxwh3f/kfmNH/Sv9q4PCosTzExDJ8WOE23naogACZpNIb59HU
-        /soV9A73uxCc4Tz9UcDzYPOOF4JA7wsGlYnbpbkuqyXrnC2pKSi6PRuAyAiIMw==
+        bh=rNDs6bpZpK+4fqKA7xYj7+yLSIpGYZIr6FmNG8YWfaM=;
+        b=c6ea4/xkOHuR5XuSya9Jy/sYvJRjr2Anx1mzgXmPqpeDEIYC4LetSJv4i0p8rU/rDCuIuq
+        q9OA/nok6zj3NoeEtP5uAotYTym3aU7T1iXE0ipzOOZmsYISyY1DrTQUCPU2yqhiulGPiZ
+        2k5Ab0SYTmdV4jprbkcmrBTyzwRPJG9rzSbZUlrGDL+i/jxOx/e+vGQLxdiM/6hN7jUHgO
+        HVJvOlKtgxOna+g68gfJr5ZrihUx3fWvriMxCaKjZQh6c0QMDKmUXHfjn2TtFFBhuEjooZ
+        9LTqw19TYSLphzU07vsYzaAA3UWZMe6l3d4/3AlaS0NzXvSOEIWQZPNwAMmRpg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1603709462;
+        s=2020e; t=1603711044;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=qAT90Ww8AO0M+YiJyfFcemR1v6O5CkiPMwWvyQYV/fY=;
-        b=/EyD07S9+m1wwo4b3U5xNZT8cbgDs5As2B7r9hqv9utfobVOpsUCcNFT39wM1fuwc0Ctp3
-        O0XbT5N76ZQufhAQ==
-From:   "tip-bot2 for Zeng Tao" <tip-bot2@linutronix.de>
+        bh=rNDs6bpZpK+4fqKA7xYj7+yLSIpGYZIr6FmNG8YWfaM=;
+        b=WnfT42vuMr+h7keSCV1GwxGX3SOecrZyHF4oFNubqad0xri25krNHFZ116LnHiTe8ghWfG
+        8OOHCuzE8vKfoFDw==
+From:   "tip-bot2 for Zong Li" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/urgent] time: Prevent undefined behaviour in timespec64_to_ns()
-Cc:     Zeng Tao <prime.zeng@hisilicon.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Arnd Bergmann <arnd@arndb.de>, stable@vger.kernel.org,
+Subject: [tip: smp/urgent] stop_machine, rcu: Mark functions as notrace
+Cc:     Zong Li <zong.li@sifive.com>, Thomas Gleixner <tglx@linutronix.de>,
+        Atish Patra <atish.patra@wdc.com>,
+        Colin Ian King <colin.king@canonical.com>,
+        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
+        "Paul E. McKenney" <paulmck@kernel.org>, stable@vger.kernel.org,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <1598952616-6416-1-git-send-email-prime.zeng@hisilicon.com>
-References: <1598952616-6416-1-git-send-email-prime.zeng@hisilicon.com>
+In-Reply-To: <20201021073839.43935-1-zong.li@sifive.com>
+References: <20201021073839.43935-1-zong.li@sifive.com>
 MIME-Version: 1.0
-Message-ID: <160370946176.397.12992652264857362737.tip-bot2@tip-bot2>
+Message-ID: <160371104269.397.18106018255287440015.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -57,76 +59,65 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/urgent branch of tip:
+The following commit has been merged into the smp/urgent branch of tip:
 
-Commit-ID:     cb47755725da7b90fecbb2aa82ac3b24a7adb89b
-Gitweb:        https://git.kernel.org/tip/cb47755725da7b90fecbb2aa82ac3b24a7adb89b
-Author:        Zeng Tao <prime.zeng@hisilicon.com>
-AuthorDate:    Tue, 01 Sep 2020 17:30:13 +08:00
+Commit-ID:     4230e2deaa484b385aa01d598b2aea8e7f2660a6
+Gitweb:        https://git.kernel.org/tip/4230e2deaa484b385aa01d598b2aea8e7f2660a6
+Author:        Zong Li <zong.li@sifive.com>
+AuthorDate:    Wed, 21 Oct 2020 15:38:39 +08:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 26 Oct 2020 11:48:11 +01:00
+CommitterDate: Mon, 26 Oct 2020 12:12:27 +01:00
 
-time: Prevent undefined behaviour in timespec64_to_ns()
+stop_machine, rcu: Mark functions as notrace
 
-UBSAN reports:
+Some architectures assume that the stopped CPUs don't make function calls
+to traceable functions when they are in the stopped state. See also commit
+cb9d7fd51d9f ("watchdog: Mark watchdog touch functions as notrace").
 
-Undefined behaviour in ./include/linux/time64.h:127:27
-signed integer overflow:
-17179869187 * 1000000000 cannot be represented in type 'long long int'
-Call Trace:
- timespec64_to_ns include/linux/time64.h:127 [inline]
- set_cpu_itimer+0x65c/0x880 kernel/time/itimer.c:180
- do_setitimer+0x8e/0x740 kernel/time/itimer.c:245
- __x64_sys_setitimer+0x14c/0x2c0 kernel/time/itimer.c:336
- do_syscall_64+0xa1/0x540 arch/x86/entry/common.c:295
+Violating this assumption causes kernel crashes when switching tracer on
+RISC-V.
 
-Commit bd40a175769d ("y2038: itimer: change implementation to timespec64")
-replaced the original conversion which handled time clamping correctly with
-timespec64_to_ns() which has no overflow protection.
+Mark rcu_momentary_dyntick_idle() and stop_machine_yield() notrace to
+prevent this.
 
-Fix it in timespec64_to_ns() as this is not necessarily limited to the
-usage in itimers.
-
-[ tglx: Added comment and adjusted the fixes tag ]
-
-Fixes: 361a3bf00582 ("time64: Add time64.h header and define struct timespec64")
-Signed-off-by: Zeng Tao <prime.zeng@hisilicon.com>
+Fixes: 4ecf0a43e729 ("processor: get rid of cpu_relax_yield")
+Fixes: 366237e7b083 ("stop_machine: Provide RCU quiescent state in multi_cpu_stop()")
+Signed-off-by: Zong Li <zong.li@sifive.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+Tested-by: Atish Patra <atish.patra@wdc.com>
+Tested-by: Colin Ian King <colin.king@canonical.com>
+Acked-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
+Acked-by: Paul E. McKenney <paulmck@kernel.org>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/1598952616-6416-1-git-send-email-prime.zeng@hisilicon.com
+Link: https://lore.kernel.org/r/20201021073839.43935-1-zong.li@sifive.com
 ---
- include/linux/time64.h | 4 ++++
- kernel/time/itimer.c   | 4 ----
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ kernel/rcu/tree.c     | 2 +-
+ kernel/stop_machine.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/time64.h b/include/linux/time64.h
-index c9dcb3e..5117cb5 100644
---- a/include/linux/time64.h
-+++ b/include/linux/time64.h
-@@ -124,6 +124,10 @@ static inline bool timespec64_valid_settod(const struct timespec64 *ts)
+diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
+index 06895ef..2a52f42 100644
+--- a/kernel/rcu/tree.c
++++ b/kernel/rcu/tree.c
+@@ -409,7 +409,7 @@ bool rcu_eqs_special_set(int cpu)
+  *
+  * The caller must have disabled interrupts and must not be idle.
   */
- static inline s64 timespec64_to_ns(const struct timespec64 *ts)
+-void rcu_momentary_dyntick_idle(void)
++notrace void rcu_momentary_dyntick_idle(void)
  {
-+	/* Prevent multiplication overflow */
-+	if ((unsigned long long)ts->tv_sec >= KTIME_SEC_MAX)
-+		return KTIME_MAX;
-+
- 	return ((s64) ts->tv_sec * NSEC_PER_SEC) + ts->tv_nsec;
+ 	int special;
+ 
+diff --git a/kernel/stop_machine.c b/kernel/stop_machine.c
+index 865bb02..890b79c 100644
+--- a/kernel/stop_machine.c
++++ b/kernel/stop_machine.c
+@@ -178,7 +178,7 @@ static void ack_state(struct multi_stop_data *msdata)
+ 		set_state(msdata, msdata->state + 1);
  }
  
-diff --git a/kernel/time/itimer.c b/kernel/time/itimer.c
-index ca4e6d5..00629e6 100644
---- a/kernel/time/itimer.c
-+++ b/kernel/time/itimer.c
-@@ -172,10 +172,6 @@ static void set_cpu_itimer(struct task_struct *tsk, unsigned int clock_id,
- 	u64 oval, nval, ointerval, ninterval;
- 	struct cpu_itimer *it = &tsk->signal->it[clock_id];
- 
--	/*
--	 * Use the to_ktime conversion because that clamps the maximum
--	 * value to KTIME_MAX and avoid multiplication overflows.
--	 */
- 	nval = timespec64_to_ns(&value->it_value);
- 	ninterval = timespec64_to_ns(&value->it_interval);
- 
+-void __weak stop_machine_yield(const struct cpumask *cpumask)
++notrace void __weak stop_machine_yield(const struct cpumask *cpumask)
+ {
+ 	cpu_relax();
+ }
