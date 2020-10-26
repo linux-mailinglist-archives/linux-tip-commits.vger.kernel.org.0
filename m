@@ -2,141 +2,109 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AAB8829640E
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 22 Oct 2020 19:50:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8ACEF298A07
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 26 Oct 2020 11:09:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2508325AbgJVRuy (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 22 Oct 2020 13:50:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36516 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2504383AbgJVRux (ORCPT
+        id S1769090AbgJZKJT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 26 Oct 2020 06:09:19 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:38796 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1769086AbgJZKIm (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 22 Oct 2020 13:50:53 -0400
-Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D713C0613CE
-        for <linux-tip-commits@vger.kernel.org>; Thu, 22 Oct 2020 10:50:53 -0700 (PDT)
-Received: by mail-wm1-x342.google.com with SMTP id k18so3318966wmj.5
-        for <linux-tip-commits@vger.kernel.org>; Thu, 22 Oct 2020 10:50:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amacapital-net.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=eVItXkL1JLXbyeJqJGRNhXfqfEg0ptT6nXNRxtfWxa0=;
-        b=uBOvMYuKqG0FmnBNcmwnEIjVX9ZWYn6/V3Q+JkV0uQ4jD2H0eRa8UZr5RngEY/lGVU
-         TxpCz9tVOXdbNEXOpvuuhexVoTvHnnw57wBjYCeYqMnSUbET6eHaGWsr4f/G9OtCnzZL
-         9in6oLGAIQ2NhngHDk9FKAorm6E4FJCWL0sJiMFr1j3H8IV8EA7gXy81orJk1S/Lg85w
-         EwtkkSJYCrDHUBDqlpq6BNTTuumV9XIiRmcVW82jvggBwCnfNcVpFT6QetpeHWZb8n6f
-         XmVevVZzrBh6Uj1riTk13Ye8kwwzTEFQZQ8bf4OYrH5i+EvbgdG/s/qHWkSZNR3iOaju
-         utOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=eVItXkL1JLXbyeJqJGRNhXfqfEg0ptT6nXNRxtfWxa0=;
-        b=OCUTBZ9Sb8RD7eh9IiPnlpZ2cpw1OlbVEKNBhZ16II8vPAL1EKHB9jdY+J7BvWhxUE
-         /ymTQ+1LOuZJmHoX/6wI5qdBY3vEXJhaDk+5ALYVGS8qe2lBWapmJaM5naspZQpAtPCy
-         rUiMurZ2IRtE60v4FIgmmVot5jzimXzB8KUyGioPjXzlrzLXaNfqlo2Ry+RhJcIDb2e4
-         cLxLG4avW4vBLOykEFBJ2/GfD4LXyQ8KG7BBWBJ7bUEUqOxNphPiIKWCn5P2GS3LPfta
-         n73PzU2SBDI/GIEfhzG0KQP1HtY/WfOy8CU5aShiQ5deAnzwW5mKcjGZOXX4+eNtbmH6
-         P/RQ==
-X-Gm-Message-State: AOAM53006xjvY6gLrE6fzhqfUlfjkJtgEdqKUvtBn+DQuKkAeVtEJZlu
-        nqTuBa1pCIMUUvxrlq7DWOEQSFs1v77FfenYk3fKnA==
-X-Google-Smtp-Source: ABdhPJzHcGP1pbwBmOgzPo8Pj6iY5KhlbzzQznsV8cunSNzexC1jV3N+lkbx1KObJ/UPbviNvCDOrF0ztwEa55B5lPE=
-X-Received: by 2002:a05:600c:2256:: with SMTP id a22mr3644551wmm.138.1603389052121;
- Thu, 22 Oct 2020 10:50:52 -0700 (PDT)
+        Mon, 26 Oct 2020 06:08:42 -0400
+Date:   Mon, 26 Oct 2020 10:08:38 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1603706920;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=vs5OzYKLpnQ2AkS/hmuzsZRHAoKKIICOn5krQpUII3k=;
+        b=r5HTo8uMpKqnBP+E3EIRryGDhAlfV7hM84oDX/EU51Xj+p3xE1Fi0wKXVnriMb8NBKsl3C
+        xthV57tziCh7vdoPOyfKO2fRlbbasvnDf7ZB467qqguYsMmkZdYPVM9TON0IcKobjmQ3e2
+        +HzWBb9uutyUgohUULXPXyGncazYOAU/Yw0ZtaDjJA5GghM4aUJWvxPt1rgXWK1KbKKk3K
+        iT1dkV14mdosXZQPhdb/xYothuly0hzRpIy9CvSXEzf2nL1W6/ZRoCzZl6limSb49bb6QO
+        4n5HMM99h6S1eWqCdvZMkYmkWqCKXpNyiBe3zTbrMD4zPYsewYbyt+fMeNUneQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1603706920;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=vs5OzYKLpnQ2AkS/hmuzsZRHAoKKIICOn5krQpUII3k=;
+        b=MbrcAeviOYshDvtXWc3PeWAhrBWaSxZNvkgFsrjcNzaY1F51YyBQ8f0EBExRXZh+zbxjb7
+        GlfPbYfZB3LEJvBQ==
+From:   "tip-bot2 for Davidlohr Bueso" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: timers/core] timekeeping: Convert jiffies_seq to
+ seqcount_raw_spinlock_t
+Cc:     Davidlohr Bueso <dbueso@suse.de>,
+        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20201021190749.19363-1-dave@stgolabs.net>
+References: <20201021190749.19363-1-dave@stgolabs.net>
 MIME-Version: 1.0
-References: <20201009144225.12019-1-jgross@suse.com> <160336379724.7002.17024152211307266195.tip-bot2@tip-bot2>
-In-Reply-To: <160336379724.7002.17024152211307266195.tip-bot2@tip-bot2>
-From:   Andy Lutomirski <luto@amacapital.net>
-Date:   Thu, 22 Oct 2020 10:50:40 -0700
-Message-ID: <CALCETrWs6iZ+OoEkPNr89biwkxdhr65yj30fwTLxiynvtnVXwg@mail.gmail.com>
-Subject: Re: [tip: x86/urgent] x86/alternative: Don't call text_poke() in lazy
- TLB mode
-To:     LKML <linux-kernel@vger.kernel.org>
-Cc:     linux-tip-commits@vger.kernel.org, Juergen Gross <jgross@suse.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        x86 <x86@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Message-ID: <160370691856.397.3350703895486263181.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2.linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Thu, Oct 22, 2020 at 3:50 AM tip-bot2 for Juergen Gross
-<tip-bot2@linutronix.de> wrote:
->
-> The following commit has been merged into the x86/urgent branch of tip:
->
-> Commit-ID:     abee7c494d8c41bb388839bccc47e06247f0d7de
-> Gitweb:        https://git.kernel.org/tip/abee7c494d8c41bb388839bccc47e06247f0d7de
-> Author:        Juergen Gross <jgross@suse.com>
-> AuthorDate:    Fri, 09 Oct 2020 16:42:25 +02:00
-> Committer:     Peter Zijlstra <peterz@infradead.org>
-> CommitterDate: Thu, 22 Oct 2020 12:37:23 +02:00
->
-> x86/alternative: Don't call text_poke() in lazy TLB mode
->
-> When running in lazy TLB mode the currently active page tables might
-> be the ones of a previous process, e.g. when running a kernel thread.
->
-> This can be problematic in case kernel code is being modified via
-> text_poke() in a kernel thread, and on another processor exit_mmap()
-> is active for the process which was running on the first cpu before
-> the kernel thread.
->
-> As text_poke() is using a temporary address space and the former
-> address space (obtained via cpu_tlbstate.loaded_mm) is restored
-> afterwards, there is a race possible in case the cpu on which
-> exit_mmap() is running wants to make sure there are no stale
-> references to that address space on any cpu active (this e.g. is
-> required when running as a Xen PV guest, where this problem has been
-> observed and analyzed).
->
-> In order to avoid that, drop off TLB lazy mode before switching to the
-> temporary address space.
+The following commit has been merged into the timers/core branch of tip:
 
-Now that I'm actually awake:
+Commit-ID:     1a2b85f1e2a93a3f84243e654d225e4088735336
+Gitweb:        https://git.kernel.org/tip/1a2b85f1e2a93a3f84243e654d225e4088735336
+Author:        Davidlohr Bueso <dave@stgolabs.net>
+AuthorDate:    Wed, 21 Oct 2020 12:07:49 -07:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Mon, 26 Oct 2020 11:04:14 +01:00
 
-Acked-by: Andy Lutomirski <luto@kernel.org>
+timekeeping: Convert jiffies_seq to seqcount_raw_spinlock_t
 
-although it might be nice to at least have a comment that there's some
-performance being left on the table.
+Use the new api and associate the seqcounter to the jiffies_lock enabling
+lockdep support - although for this particular case the write-side locking
+and non-preemptibility are quite obvious.
 
-PeterZ, I like your version except that, if we do that, I also think
-we should move this whole mess into tlb.c instead of alternative.c.
+Signed-off-by: Davidlohr Bueso <dbueso@suse.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20201021190749.19363-1-dave@stgolabs.net
 
---Andy
+---
+ kernel/time/jiffies.c     | 3 ++-
+ kernel/time/timekeeping.h | 2 +-
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
->
-> Fixes: cefa929c034eb5d ("x86/mm: Introduce temporary mm structs")
-> Signed-off-by: Juergen Gross <jgross@suse.com>
-> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> Link: https://lkml.kernel.org/r/20201009144225.12019-1-jgross@suse.com
-> ---
->  arch/x86/kernel/alternative.c |  9 +++++++++
->  1 file changed, 9 insertions(+)
->
-> diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
-> index cdaab30..cd6be6f 100644
-> --- a/arch/x86/kernel/alternative.c
-> +++ b/arch/x86/kernel/alternative.c
-> @@ -807,6 +807,15 @@ static inline temp_mm_state_t use_temporary_mm(struct mm_struct *mm)
->         temp_mm_state_t temp_state;
->
->         lockdep_assert_irqs_disabled();
-> +
-> +       /*
-> +        * Make sure not to be in TLB lazy mode, as otherwise we'll end up
-> +        * with a stale address space WITHOUT being in lazy mode after
-> +        * restoring the previous mm.
-> +        */
-> +       if (this_cpu_read(cpu_tlbstate.is_lazy))
-> +               leave_mm(smp_processor_id());
-> +
->         temp_state.mm = this_cpu_read(cpu_tlbstate.loaded_mm);
->         switch_mm_irqs_off(NULL, mm, current);
->
-
-
--- 
-Andy Lutomirski
-AMA Capital Management, LLC
+diff --git a/kernel/time/jiffies.c b/kernel/time/jiffies.c
+index eddcf49..a5cffe2 100644
+--- a/kernel/time/jiffies.c
++++ b/kernel/time/jiffies.c
+@@ -59,7 +59,8 @@ static struct clocksource clocksource_jiffies = {
+ };
+ 
+ __cacheline_aligned_in_smp DEFINE_RAW_SPINLOCK(jiffies_lock);
+-__cacheline_aligned_in_smp seqcount_t jiffies_seq;
++__cacheline_aligned_in_smp seqcount_raw_spinlock_t jiffies_seq =
++	SEQCNT_RAW_SPINLOCK_ZERO(jiffies_seq, &jiffies_lock);
+ 
+ #if (BITS_PER_LONG < 64)
+ u64 get_jiffies_64(void)
+diff --git a/kernel/time/timekeeping.h b/kernel/time/timekeeping.h
+index 099737f..6c2cbd9 100644
+--- a/kernel/time/timekeeping.h
++++ b/kernel/time/timekeeping.h
+@@ -26,7 +26,7 @@ extern void do_timer(unsigned long ticks);
+ extern void update_wall_time(void);
+ 
+ extern raw_spinlock_t jiffies_lock;
+-extern seqcount_t jiffies_seq;
++extern seqcount_raw_spinlock_t jiffies_seq;
+ 
+ #define CS_NAME_LEN	32
+ 
