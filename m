@@ -2,53 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8ACEF298A07
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 26 Oct 2020 11:09:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FED8298A83
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 26 Oct 2020 11:40:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1769090AbgJZKJT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 26 Oct 2020 06:09:19 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:38796 "EHLO
+        id S1770068AbgJZKkW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 26 Oct 2020 06:40:22 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:39030 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1769086AbgJZKIm (ORCPT
+        with ESMTP id S1770047AbgJZKkV (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 26 Oct 2020 06:08:42 -0400
-Date:   Mon, 26 Oct 2020 10:08:38 -0000
+        Mon, 26 Oct 2020 06:40:21 -0400
+Date:   Mon, 26 Oct 2020 10:40:18 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1603706920;
+        s=2020; t=1603708819;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=vs5OzYKLpnQ2AkS/hmuzsZRHAoKKIICOn5krQpUII3k=;
-        b=r5HTo8uMpKqnBP+E3EIRryGDhAlfV7hM84oDX/EU51Xj+p3xE1Fi0wKXVnriMb8NBKsl3C
-        xthV57tziCh7vdoPOyfKO2fRlbbasvnDf7ZB467qqguYsMmkZdYPVM9TON0IcKobjmQ3e2
-        +HzWBb9uutyUgohUULXPXyGncazYOAU/Yw0ZtaDjJA5GghM4aUJWvxPt1rgXWK1KbKKk3K
-        iT1dkV14mdosXZQPhdb/xYothuly0hzRpIy9CvSXEzf2nL1W6/ZRoCzZl6limSb49bb6QO
-        4n5HMM99h6S1eWqCdvZMkYmkWqCKXpNyiBe3zTbrMD4zPYsewYbyt+fMeNUneQ==
+        bh=OlltfML5jURE2ETArGNEwnvKipiQeRNukCX9me9ih2s=;
+        b=RxHzGEXe4vuRUO1fGmwPtt2AaFDGxwPZN4iqxNLeoy3wHQ3qCwICwa+C1tw/yQsldjn6SV
+        QJuMZXXdY15rIRIsj4SWI8+D3fKyeQ0UaaK/m1oxey8fQeG2vDxkPg0//b/E27hJjAxgdf
+        9ThDZvfdJnYBIDGsskVKtoesbhgARHZO+k+05ggR58wlOqSo2APdp/Mx/3qcaB/HzOX1IK
+        uAUi2TMPccl5XvDjlLaykIZzw50axTlzYHPQf9E1fywbbk4Dp9V3H16mRjwtXVlnJOBRN3
+        fXbAfQTSuL9wLJlvfkpDhX62YLPE0/fHVQaqJN+7enBa01RvgYxoC0E57YGMnw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1603706920;
+        s=2020e; t=1603708819;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=vs5OzYKLpnQ2AkS/hmuzsZRHAoKKIICOn5krQpUII3k=;
-        b=MbrcAeviOYshDvtXWc3PeWAhrBWaSxZNvkgFsrjcNzaY1F51YyBQ8f0EBExRXZh+zbxjb7
-        GlfPbYfZB3LEJvBQ==
-From:   "tip-bot2 for Davidlohr Bueso" <tip-bot2@linutronix.de>
+        bh=OlltfML5jURE2ETArGNEwnvKipiQeRNukCX9me9ih2s=;
+        b=RWqM2yYqyHYFn/6roKZfY1ZFPm5M8zfQJQL/ahCGU6pZ04zbUNK2Zokh50hqHDeL5oWQle
+        xOg7xWY/FL9CKWDQ==
+From:   "tip-bot2 for YueHaibing" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] timekeeping: Convert jiffies_seq to
- seqcount_raw_spinlock_t
-Cc:     Davidlohr Bueso <dbueso@suse.de>,
+Subject: [tip: timers/urgent] timers: Remove unused inline funtion debug_timer_free()
+Cc:     YueHaibing <yuehaibing@huawei.com>,
         Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20201021190749.19363-1-dave@stgolabs.net>
-References: <20201021190749.19363-1-dave@stgolabs.net>
+In-Reply-To: <20200909134749.32300-1-yuehaibing@huawei.com>
+References: <20200909134749.32300-1-yuehaibing@huawei.com>
 MIME-Version: 1.0
-Message-ID: <160370691856.397.3350703895486263181.tip-bot2@tip-bot2>
+Message-ID: <160370881802.397.15234178664001900654.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -57,54 +56,40 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/core branch of tip:
+The following commit has been merged into the timers/urgent branch of tip:
 
-Commit-ID:     1a2b85f1e2a93a3f84243e654d225e4088735336
-Gitweb:        https://git.kernel.org/tip/1a2b85f1e2a93a3f84243e654d225e4088735336
-Author:        Davidlohr Bueso <dave@stgolabs.net>
-AuthorDate:    Wed, 21 Oct 2020 12:07:49 -07:00
+Commit-ID:     9010e3876e1c3f7b1c3769bee519d6a871589aca
+Gitweb:        https://git.kernel.org/tip/9010e3876e1c3f7b1c3769bee519d6a871589aca
+Author:        YueHaibing <yuehaibing@huawei.com>
+AuthorDate:    Wed, 09 Sep 2020 21:47:49 +08:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 26 Oct 2020 11:04:14 +01:00
+CommitterDate: Mon, 26 Oct 2020 11:39:21 +01:00
 
-timekeeping: Convert jiffies_seq to seqcount_raw_spinlock_t
+timers: Remove unused inline funtion debug_timer_free()
 
-Use the new api and associate the seqcounter to the jiffies_lock enabling
-lockdep support - although for this particular case the write-side locking
-and non-preemptibility are quite obvious.
+There is no caller in tree, remove it.
 
-Signed-off-by: Davidlohr Bueso <dbueso@suse.de>
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20201021190749.19363-1-dave@stgolabs.net
+Link: https://lore.kernel.org/r/20200909134749.32300-1-yuehaibing@huawei.com
 
 ---
- kernel/time/jiffies.c     | 3 ++-
- kernel/time/timekeeping.h | 2 +-
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ kernel/time/timer.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/kernel/time/jiffies.c b/kernel/time/jiffies.c
-index eddcf49..a5cffe2 100644
---- a/kernel/time/jiffies.c
-+++ b/kernel/time/jiffies.c
-@@ -59,7 +59,8 @@ static struct clocksource clocksource_jiffies = {
- };
+diff --git a/kernel/time/timer.c b/kernel/time/timer.c
+index de37e33..c3ad64f 100644
+--- a/kernel/time/timer.c
++++ b/kernel/time/timer.c
+@@ -732,11 +732,6 @@ static inline void debug_timer_deactivate(struct timer_list *timer)
+ 	debug_object_deactivate(timer, &timer_debug_descr);
+ }
  
- __cacheline_aligned_in_smp DEFINE_RAW_SPINLOCK(jiffies_lock);
--__cacheline_aligned_in_smp seqcount_t jiffies_seq;
-+__cacheline_aligned_in_smp seqcount_raw_spinlock_t jiffies_seq =
-+	SEQCNT_RAW_SPINLOCK_ZERO(jiffies_seq, &jiffies_lock);
- 
- #if (BITS_PER_LONG < 64)
- u64 get_jiffies_64(void)
-diff --git a/kernel/time/timekeeping.h b/kernel/time/timekeeping.h
-index 099737f..6c2cbd9 100644
---- a/kernel/time/timekeeping.h
-+++ b/kernel/time/timekeeping.h
-@@ -26,7 +26,7 @@ extern void do_timer(unsigned long ticks);
- extern void update_wall_time(void);
- 
- extern raw_spinlock_t jiffies_lock;
--extern seqcount_t jiffies_seq;
-+extern seqcount_raw_spinlock_t jiffies_seq;
- 
- #define CS_NAME_LEN	32
- 
+-static inline void debug_timer_free(struct timer_list *timer)
+-{
+-	debug_object_free(timer, &timer_debug_descr);
+-}
+-
+ static inline void debug_timer_assert_init(struct timer_list *timer)
+ {
+ 	debug_object_assert_init(timer, &timer_debug_descr);
