@@ -2,55 +2,51 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8863E298B96
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 26 Oct 2020 12:17:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 82D2E298BF4
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 26 Oct 2020 12:22:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1771952AbgJZLR1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 26 Oct 2020 07:17:27 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:39210 "EHLO
+        id S1773394AbgJZLW5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 26 Oct 2020 07:22:57 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:39244 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1771658AbgJZLR1 (ORCPT
+        with ESMTP id S1773330AbgJZLW4 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 26 Oct 2020 07:17:27 -0400
-Date:   Mon, 26 Oct 2020 11:17:22 -0000
+        Mon, 26 Oct 2020 07:22:56 -0400
+Date:   Mon, 26 Oct 2020 11:22:53 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1603711044;
+        s=2020; t=1603711374;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=rNDs6bpZpK+4fqKA7xYj7+yLSIpGYZIr6FmNG8YWfaM=;
-        b=c6ea4/xkOHuR5XuSya9Jy/sYvJRjr2Anx1mzgXmPqpeDEIYC4LetSJv4i0p8rU/rDCuIuq
-        q9OA/nok6zj3NoeEtP5uAotYTym3aU7T1iXE0ipzOOZmsYISyY1DrTQUCPU2yqhiulGPiZ
-        2k5Ab0SYTmdV4jprbkcmrBTyzwRPJG9rzSbZUlrGDL+i/jxOx/e+vGQLxdiM/6hN7jUHgO
-        HVJvOlKtgxOna+g68gfJr5ZrihUx3fWvriMxCaKjZQh6c0QMDKmUXHfjn2TtFFBhuEjooZ
-        9LTqw19TYSLphzU07vsYzaAA3UWZMe6l3d4/3AlaS0NzXvSOEIWQZPNwAMmRpg==
+        bh=SlgQvxHJfagEg4w+0Ui1Kt7r5/kLfd7VgkqNKdFX59U=;
+        b=Z6rKe6l+N71MEdzyHyr5MGYXoVnZPhVcL5USsCCcnetj0e1ryg+LkguWPLGr0PWHFnIJpo
+        swiWd94YAy0pqvGJzEP8P35FyNZC9x7gZZ9+NnlEbHWOTgTCsHKY/oylnOIL+BuLWBhfGV
+        HFbxM5R5jZRdSDDZbsMbys0SUB1wYy6UXG0Csl7ob0FiE4/AQ6yt1EzXAXLb1STku7/6xj
+        ErDRNzv6k3S5ujGWRcLGNwNKaTKImQPQhVMbar5IZPg6AXA7EMVmN5blp1MOsf8FYjFAzX
+        Lrq9AHjbLU7DDEdcSfPgs9nS2B9H3Ye3jqdm88O1R/mkSVbXfZz4qdqZgGHSCA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1603711044;
+        s=2020e; t=1603711374;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=rNDs6bpZpK+4fqKA7xYj7+yLSIpGYZIr6FmNG8YWfaM=;
-        b=WnfT42vuMr+h7keSCV1GwxGX3SOecrZyHF4oFNubqad0xri25krNHFZ116LnHiTe8ghWfG
-        8OOHCuzE8vKfoFDw==
-From:   "tip-bot2 for Zong Li" <tip-bot2@linutronix.de>
+        bh=SlgQvxHJfagEg4w+0Ui1Kt7r5/kLfd7VgkqNKdFX59U=;
+        b=/pwggzwKVzOHNixdpoB8Ez187b1X0oy6Ipr4pXTduOJwK0eFOZzx11gx8Su2a2z69m4fJD
+        PcNC4d4LtIuNKaAw==
+From:   "tip-bot2 for Tom Rix" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: smp/urgent] stop_machine, rcu: Mark functions as notrace
-Cc:     Zong Li <zong.li@sifive.com>, Thomas Gleixner <tglx@linutronix.de>,
-        Atish Patra <atish.patra@wdc.com>,
-        Colin Ian King <colin.king@canonical.com>,
-        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
-        "Paul E. McKenney" <paulmck@kernel.org>, stable@vger.kernel.org,
+Subject: [tip: x86/microcode] x86/microcode/amd: Remove unneeded break
+Cc:     Tom Rix <trix@redhat.com>, Borislav Petkov <bp@suse.de>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20201021073839.43935-1-zong.li@sifive.com>
-References: <20201021073839.43935-1-zong.li@sifive.com>
+In-Reply-To: <20201019200629.17247-1-trix@redhat.com>
+References: <20201019200629.17247-1-trix@redhat.com>
 MIME-Version: 1.0
-Message-ID: <160371104269.397.18106018255287440015.tip-bot2@tip-bot2>
+Message-ID: <160371137356.397.16490477068432829900.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,65 +55,35 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the smp/urgent branch of tip:
+The following commit has been merged into the x86/microcode branch of tip:
 
-Commit-ID:     4230e2deaa484b385aa01d598b2aea8e7f2660a6
-Gitweb:        https://git.kernel.org/tip/4230e2deaa484b385aa01d598b2aea8e7f2660a6
-Author:        Zong Li <zong.li@sifive.com>
-AuthorDate:    Wed, 21 Oct 2020 15:38:39 +08:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 26 Oct 2020 12:12:27 +01:00
+Commit-ID:     880396c86a1f3663c22b74fef34353f05a1263ec
+Gitweb:        https://git.kernel.org/tip/880396c86a1f3663c22b74fef34353f05a1263ec
+Author:        Tom Rix <trix@redhat.com>
+AuthorDate:    Mon, 19 Oct 2020 13:06:29 -07:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Mon, 26 Oct 2020 12:18:22 +01:00
 
-stop_machine, rcu: Mark functions as notrace
+x86/microcode/amd: Remove unneeded break
 
-Some architectures assume that the stopped CPUs don't make function calls
-to traceable functions when they are in the stopped state. See also commit
-cb9d7fd51d9f ("watchdog: Mark watchdog touch functions as notrace").
+A break is not needed if it is preceded by a return.
 
-Violating this assumption causes kernel crashes when switching tracer on
-RISC-V.
-
-Mark rcu_momentary_dyntick_idle() and stop_machine_yield() notrace to
-prevent this.
-
-Fixes: 4ecf0a43e729 ("processor: get rid of cpu_relax_yield")
-Fixes: 366237e7b083 ("stop_machine: Provide RCU quiescent state in multi_cpu_stop()")
-Signed-off-by: Zong Li <zong.li@sifive.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Atish Patra <atish.patra@wdc.com>
-Tested-by: Colin Ian King <colin.king@canonical.com>
-Acked-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
-Acked-by: Paul E. McKenney <paulmck@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20201021073839.43935-1-zong.li@sifive.com
+Signed-off-by: Tom Rix <trix@redhat.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lkml.kernel.org/r/20201019200629.17247-1-trix@redhat.com
 ---
- kernel/rcu/tree.c     | 2 +-
- kernel/stop_machine.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/kernel/cpu/microcode/amd.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
-index 06895ef..2a52f42 100644
---- a/kernel/rcu/tree.c
-+++ b/kernel/rcu/tree.c
-@@ -409,7 +409,7 @@ bool rcu_eqs_special_set(int cpu)
-  *
-  * The caller must have disabled interrupts and must not be idle.
-  */
--void rcu_momentary_dyntick_idle(void)
-+notrace void rcu_momentary_dyntick_idle(void)
- {
- 	int special;
+diff --git a/arch/x86/kernel/cpu/microcode/amd.c b/arch/x86/kernel/cpu/microcode/amd.c
+index 3f6b137..3d4a483 100644
+--- a/arch/x86/kernel/cpu/microcode/amd.c
++++ b/arch/x86/kernel/cpu/microcode/amd.c
+@@ -215,7 +215,6 @@ static unsigned int __verify_patch_size(u8 family, u32 sh_psize, size_t buf_size
+ 	default:
+ 		WARN(1, "%s: WTF family: 0x%x\n", __func__, family);
+ 		return 0;
+-		break;
+ 	}
  
-diff --git a/kernel/stop_machine.c b/kernel/stop_machine.c
-index 865bb02..890b79c 100644
---- a/kernel/stop_machine.c
-+++ b/kernel/stop_machine.c
-@@ -178,7 +178,7 @@ static void ack_state(struct multi_stop_data *msdata)
- 		set_state(msdata, msdata->state + 1);
- }
- 
--void __weak stop_machine_yield(const struct cpumask *cpumask)
-+notrace void __weak stop_machine_yield(const struct cpumask *cpumask)
- {
- 	cpu_relax();
- }
+ 	if (sh_psize > min_t(u32, buf_size, max_size))
