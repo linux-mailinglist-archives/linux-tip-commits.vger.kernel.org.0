@@ -2,102 +2,143 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0168829DCC2
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 29 Oct 2020 01:32:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CA69629DF78
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 29 Oct 2020 02:02:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387711AbgJ1Waa (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 28 Oct 2020 18:30:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55600 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387590AbgJ1W30 (ORCPT
+        id S1730752AbgJ2BBj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 28 Oct 2020 21:01:39 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60476 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1731506AbgJ1WRY (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 28 Oct 2020 18:29:26 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7290EC0613D3;
-        Wed, 28 Oct 2020 15:29:26 -0700 (PDT)
-Date:   Wed, 28 Oct 2020 14:12:02 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1603894324;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=EXxmKj+v4EMB2p2dT4DK72DXJA0Fy8oVpTc4Y0PzkWw=;
-        b=iGlheWU/oN6/5nx9K0ZsRXLcUTT7v45A3vG/+dt+Bm0Q95TseVMEZ1kjv4e2i+1iUe/fNJ
-        JI5Krlr41pbuFygIffjVrC3ier+xLNLq7KP2PLK3pLJsBTByj+ws8lkiT7Sv5YhT9VoQtI
-        SHchE6WB/CuWi8yEh62BtWObE+scATZhi6Ym4UXKKSi6ONUuohw9fiXuJBXhgZoiEyW9UA
-        4AqUJ29/tIYk/NLLNMKGJQx/s8b6WZstVMl5TvtW0hAXIJQgroiNYTHYApO05ZbSmug398
-        FMrg+OZj5Sh+e13RIhVwe1kC79uK0czCrAI80sPsDQckTjNYxpFrDmrPgC1rfQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1603894324;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=EXxmKj+v4EMB2p2dT4DK72DXJA0Fy8oVpTc4Y0PzkWw=;
-        b=uZ4q5iEHVBTYpDytSSv2FD9qD3dWS2EZKgZtNJVAa1yGAWPBvy01fVIJET0OLpbJ02ysrN
-        8nONK0mNJkVAX/Bg==
-From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cleanups] x86/setup: Remove unused MCA variables
-Cc:     Borislav Petkov <bp@suse.de>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20201021165614.23023-1-bp@alien8.de>
-References: <20201021165614.23023-1-bp@alien8.de>
+        Wed, 28 Oct 2020 18:17:24 -0400
+Received: from paulmck-ThinkPad-P72.home (50-39-104-11.bvtn.or.frontiernet.net [50.39.104.11])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 943282244C;
+        Wed, 28 Oct 2020 03:01:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1603854090;
+        bh=CYqqIQeLVQ2GDg8Qk4O7/yPF87bpo8HOJdgeKmVSG7M=;
+        h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
+        b=J34e3ugmDw0+RgNgHi7V7cZnahdwYN5VL3pKtKMK88THY++wGQRPmSL5RXWpre6+W
+         dWeTJBj1I+WlGeDc66wKb3HdjZ9gD2JJuoYHopHiwAwVcrUqKcuCX5kGYHh509xQ1f
+         fKaxChn52bKktbUlgXICpAo1sIW2WgfYZSTyDnaU=
+Received: by paulmck-ThinkPad-P72.home (Postfix, from userid 1000)
+        id 4F3683521849; Tue, 27 Oct 2020 20:01:30 -0700 (PDT)
+Date:   Tue, 27 Oct 2020 20:01:30 -0700
+From:   "Paul E. McKenney" <paulmck@kernel.org>
+To:     Qian Cai <cai@redhat.com>
+Cc:     Boqun Feng <boqun.feng@gmail.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
+        linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
+        Linux Next Mailing List <linux-next@vger.kernel.org>,
+        Stephen Rothwell <sfr@canb.auug.org.au>
+Subject: Re: [tip: locking/core] lockdep: Fix lockdep recursion
+Message-ID: <20201028030130.GB3249@paulmck-ThinkPad-P72>
+Reply-To: paulmck@kernel.org
+References: <160223032121.7002.1269740091547117869.tip-bot2@tip-bot2>
+ <e438b231c5e1478527af6c3e69bf0b37df650110.camel@redhat.com>
+ <20201012031110.GA39540@debian-boqun.qqnc3lrjykvubdpftowmye0fmh.lx.internal.cloudapp.net>
+ <1db80eb9676124836809421e85e1aa782c269a80.camel@redhat.com>
 MIME-Version: 1.0
-Message-ID: <160389432296.397.3377847013706678496.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2.linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1db80eb9676124836809421e85e1aa782c269a80.camel@redhat.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cleanups branch of tip:
+On Tue, Oct 27, 2020 at 03:31:41PM -0400, Qian Cai wrote:
+> On Mon, 2020-10-12 at 11:11 +0800, Boqun Feng wrote:
+> > Hi,
+> > 
+> > On Fri, Oct 09, 2020 at 09:41:24AM -0400, Qian Cai wrote:
+> > > On Fri, 2020-10-09 at 07:58 +0000, tip-bot2 for Peter Zijlstra wrote:
+> > > > The following commit has been merged into the locking/core branch of tip:
+> > > > 
+> > > > Commit-ID:     4d004099a668c41522242aa146a38cc4eb59cb1e
+> > > > Gitweb:        
+> > > > https://git.kernel.org/tip/4d004099a668c41522242aa146a38cc4eb59cb1e
+> > > > Author:        Peter Zijlstra <peterz@infradead.org>
+> > > > AuthorDate:    Fri, 02 Oct 2020 11:04:21 +02:00
+> > > > Committer:     Ingo Molnar <mingo@kernel.org>
+> > > > CommitterDate: Fri, 09 Oct 2020 08:53:30 +02:00
+> > > > 
+> > > > lockdep: Fix lockdep recursion
+> > > > 
+> > > > Steve reported that lockdep_assert*irq*(), when nested inside lockdep
+> > > > itself, will trigger a false-positive.
+> > > > 
+> > > > One example is the stack-trace code, as called from inside lockdep,
+> > > > triggering tracing, which in turn calls RCU, which then uses
+> > > > lockdep_assert_irqs_disabled().
+> > > > 
+> > > > Fixes: a21ee6055c30 ("lockdep: Change hardirq{s_enabled,_context} to per-
+> > > > cpu
+> > > > variables")
+> > > > Reported-by: Steven Rostedt <rostedt@goodmis.org>
+> > > > Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> > > > Signed-off-by: Ingo Molnar <mingo@kernel.org>
+> > > 
+> > > Reverting this linux-next commit fixed booting RCU-list warnings everywhere.
+> > > 
+> > 
+> > I think this happened because in this commit debug_lockdep_rcu_enabled()
+> > didn't adopt to the change that made lockdep_recursion a percpu
+> > variable?
+> > 
+> > Qian, mind to try the following?
+> 
+> Boqun, Paul, may I ask what's the latest with the fixes? I must admit that I got
+> lost in this thread, but I remember that the patch from Boqun below at least
+> silence quite some of those warnings if not all. The problem is that some of
+> those warnings would trigger a lockdep circular locks warning due to printk()
+> with some locks held which in turn disabling the lockdep, makes our test runs
+> inefficient.
 
-Commit-ID:     0d847ce7c17613d63401ac82336ee1d5df749120
-Gitweb:        https://git.kernel.org/tip/0d847ce7c17613d63401ac82336ee1d5df749120
-Author:        Borislav Petkov <bp@suse.de>
-AuthorDate:    Wed, 21 Oct 2020 18:39:47 +02:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Wed, 28 Oct 2020 14:58:51 +01:00
+If I have the right email thread associated with the right fixes, these
+commits in -rcu should be what you are looking for:
 
-x86/setup: Remove unused MCA variables
+73b658b6b7d5 ("rcu: Prevent lockdep-RCU splats on lock acquisition/release")
+626b79aa935a ("x86/smpboot:  Move rcu_cpu_starting() earlier")
 
-Commit
+And maybe this one as well:
 
-  bb8187d35f82 ("MCA: delete all remaining traces of microchannel bus support.")
+3a6f638cb95b ("rcu,ftrace: Fix ftrace recursion")
 
-removed the remaining traces of Micro Channel Architecture support but
-one trace remained - three variables in setup.c which have been unused
-since 2012 at least.
+Please let me know if these commits do not fix things.
 
-Drop them finally.
+							Thanx, Paul
 
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20201021165614.23023-1-bp@alien8.de
----
- arch/x86/kernel/setup.c | 5 -----
- 1 file changed, 5 deletions(-)
-
-diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
-index 84f581c..a23130c 100644
---- a/arch/x86/kernel/setup.c
-+++ b/arch/x86/kernel/setup.c
-@@ -119,11 +119,6 @@ EXPORT_SYMBOL(boot_cpu_data);
- 
- unsigned int def_to_bigsmp;
- 
--/* For MCA, but anyone else can use it if they want */
--unsigned int machine_id;
--unsigned int machine_submodel_id;
--unsigned int BIOS_revision;
--
- struct apm_info apm_info;
- EXPORT_SYMBOL(apm_info);
- 
+> > Although, arguably the problem still exists, i.e. we still have an RCU
+> > read-side critical section inside lock_acquire(), which may be called on
+> > a yet-to-online CPU, which RCU doesn't watch. I think this used to be OK
+> > because we don't "free" anything from lockdep, IOW, there is no
+> > synchronize_rcu() or call_rcu() that _needs_ to wait for the RCU
+> > read-side critical sections inside lockdep. But now we lock class
+> > recycling, so it might be a problem.
+> > 
+> > That said, currently validate_chain() and lock class recycling are
+> > mutually excluded via graph_lock, so we are safe for this one ;-)
+> > 
+> > ----------->8
+> > diff --git a/kernel/rcu/update.c b/kernel/rcu/update.c
+> > index 39334d2d2b37..35d9bab65b75 100644
+> > --- a/kernel/rcu/update.c
+> > +++ b/kernel/rcu/update.c
+> > @@ -275,8 +275,8 @@ EXPORT_SYMBOL_GPL(rcu_callback_map);
+> >  
+> >  noinstr int notrace debug_lockdep_rcu_enabled(void)
+> >  {
+> > -	return rcu_scheduler_active != RCU_SCHEDULER_INACTIVE && debug_locks &&
+> > -	       current->lockdep_recursion == 0;
+> > +	return rcu_scheduler_active != RCU_SCHEDULER_INACTIVE &&
+> > +	       __lockdep_enabled;
+> >  }
+> >  EXPORT_SYMBOL_GPL(debug_lockdep_rcu_enabled);
+> 
+> 
