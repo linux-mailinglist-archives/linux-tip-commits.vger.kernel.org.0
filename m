@@ -2,110 +2,102 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 55CF329D5E7
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 28 Oct 2020 23:09:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0168829DCC2
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 29 Oct 2020 01:32:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730342AbgJ1WJ3 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 28 Oct 2020 18:09:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:35722 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1730255AbgJ1WJ0 (ORCPT
+        id S2387711AbgJ1Waa (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 28 Oct 2020 18:30:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55600 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387590AbgJ1W30 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 28 Oct 2020 18:09:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1603922965;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+        Wed, 28 Oct 2020 18:29:26 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7290EC0613D3;
+        Wed, 28 Oct 2020 15:29:26 -0700 (PDT)
+Date:   Wed, 28 Oct 2020 14:12:02 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1603894324;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=284b5r+7PQhFjN0PmG3IKEcminvVA7d407HnU3mjfkE=;
-        b=VZS/5aq5iT7jByT+bagzx8vzPqQHXTY2ClAhq/IA8csEDMZG/rIpbmtlM2xM9TFENNtDM3
-        hf7B6pwDwmZfoqlZUlft9lP2h9HW6NPeWSbTYO1Bkxqt9AEfo5/VTq3n7LM2/wNPE/Mu3e
-        yz/HloZna19HQFNiC6Kk7/H0/o+8U9k=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-416-KC48yM7BOjKGJFAyziTMpw-1; Wed, 28 Oct 2020 16:09:03 -0400
-X-MC-Unique: KC48yM7BOjKGJFAyziTMpw-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 8ECDB8030DE;
-        Wed, 28 Oct 2020 20:09:01 +0000 (UTC)
-Received: from ovpn-66-92.rdu2.redhat.com (ovpn-66-92.rdu2.redhat.com [10.10.66.92])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 4472D5B4B6;
-        Wed, 28 Oct 2020 20:09:00 +0000 (UTC)
-Message-ID: <7cd579ccdacb4f672cf2dc3a0d4553d1845e7ebf.camel@redhat.com>
-Subject: Re: [tip: locking/core] lockdep: Fix lockdep recursion
-From:   Qian Cai <cai@redhat.com>
-To:     paulmck@kernel.org
-Cc:     Boqun Feng <boqun.feng@gmail.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
-        linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-        Linux Next Mailing List <linux-next@vger.kernel.org>,
-        Stephen Rothwell <sfr@canb.auug.org.au>
-Date:   Wed, 28 Oct 2020 16:08:59 -0400
-In-Reply-To: <20201028155328.GC3249@paulmck-ThinkPad-P72>
-References: <160223032121.7002.1269740091547117869.tip-bot2@tip-bot2>
-         <e438b231c5e1478527af6c3e69bf0b37df650110.camel@redhat.com>
-         <20201012031110.GA39540@debian-boqun.qqnc3lrjykvubdpftowmye0fmh.lx.internal.cloudapp.net>
-         <1db80eb9676124836809421e85e1aa782c269a80.camel@redhat.com>
-         <20201028030130.GB3249@paulmck-ThinkPad-P72>
-         <8194dca3b2e871f04c7f6e49672837f8df22546f.camel@redhat.com>
-         <20201028155328.GC3249@paulmck-ThinkPad-P72>
-Content-Type: text/plain; charset="UTF-8"
-Mime-Version: 1.0
+        bh=EXxmKj+v4EMB2p2dT4DK72DXJA0Fy8oVpTc4Y0PzkWw=;
+        b=iGlheWU/oN6/5nx9K0ZsRXLcUTT7v45A3vG/+dt+Bm0Q95TseVMEZ1kjv4e2i+1iUe/fNJ
+        JI5Krlr41pbuFygIffjVrC3ier+xLNLq7KP2PLK3pLJsBTByj+ws8lkiT7Sv5YhT9VoQtI
+        SHchE6WB/CuWi8yEh62BtWObE+scATZhi6Ym4UXKKSi6ONUuohw9fiXuJBXhgZoiEyW9UA
+        4AqUJ29/tIYk/NLLNMKGJQx/s8b6WZstVMl5TvtW0hAXIJQgroiNYTHYApO05ZbSmug398
+        FMrg+OZj5Sh+e13RIhVwe1kC79uK0czCrAI80sPsDQckTjNYxpFrDmrPgC1rfQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1603894324;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=EXxmKj+v4EMB2p2dT4DK72DXJA0Fy8oVpTc4Y0PzkWw=;
+        b=uZ4q5iEHVBTYpDytSSv2FD9qD3dWS2EZKgZtNJVAa1yGAWPBvy01fVIJET0OLpbJ02ysrN
+        8nONK0mNJkVAX/Bg==
+From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/cleanups] x86/setup: Remove unused MCA variables
+Cc:     Borislav Petkov <bp@suse.de>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20201021165614.23023-1-bp@alien8.de>
+References: <20201021165614.23023-1-bp@alien8.de>
+MIME-Version: 1.0
+Message-ID: <160389432296.397.3377847013706678496.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2.linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Wed, 2020-10-28 at 08:53 -0700, Paul E. McKenney wrote:
-> On Wed, Oct 28, 2020 at 10:39:47AM -0400, Qian Cai wrote:
-> > On Tue, 2020-10-27 at 20:01 -0700, Paul E. McKenney wrote:
-> > > If I have the right email thread associated with the right fixes, these
-> > > commits in -rcu should be what you are looking for:
-> > > 
-> > > 73b658b6b7d5 ("rcu: Prevent lockdep-RCU splats on lock
-> > > acquisition/release")
-> > > 626b79aa935a ("x86/smpboot:  Move rcu_cpu_starting() earlier")
-> > > 
-> > > And maybe this one as well:
-> > > 
-> > > 3a6f638cb95b ("rcu,ftrace: Fix ftrace recursion")
-> > > 
-> > > Please let me know if these commits do not fix things.
-> > While those patches silence the warnings for x86. Other arches are still
-> > suffering. It is only after applying the patch from Boqun below fixed
-> > everything.
-> 
-> Fair point!
-> 
-> > Is it a good idea for Boqun to write a formal patch or we should fix all
-> > arches
-> > individually like "x86/smpboot: Move rcu_cpu_starting() earlier"?
-> 
-> By Boqun's patch, you mean the change to debug_lockdep_rcu_enabled()
-> shown below?  Peter Zijlstra showed that real failures can happen, so we
+The following commit has been merged into the x86/cleanups branch of tip:
 
-Yes.
+Commit-ID:     0d847ce7c17613d63401ac82336ee1d5df749120
+Gitweb:        https://git.kernel.org/tip/0d847ce7c17613d63401ac82336ee1d5df749120
+Author:        Borislav Petkov <bp@suse.de>
+AuthorDate:    Wed, 21 Oct 2020 18:39:47 +02:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Wed, 28 Oct 2020 14:58:51 +01:00
 
-> do not want to cover them up.  So we are firmly in "fix all architectures"
-> space here, sorry!
-> 
-> I am happy to accumulate those patches, but cannot commit to creating
-> or testing them.
+x86/setup: Remove unused MCA variables
 
-Okay, I posted 3 patches for each arch and CC'ed you. BTW, it looks like
-something is wrong on @vger.kernel.org today where I received many of those,
+Commit
 
-4.7.1 Hello [216.205.24.124], for recipient address <linux-kernel@vger.kernel.org> the policy analysis reported: zpostgrey: connect: Connection refused
+  bb8187d35f82 ("MCA: delete all remaining traces of microchannel bus support.")
 
-and I can see your previous mails did not even reach there either.
+removed the remaining traces of Micro Channel Architecture support but
+one trace remained - three variables in setup.c which have been unused
+since 2012 at least.
 
-https://lore.kernel.org/lkml/
+Drop them finally.
 
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lkml.kernel.org/r/20201021165614.23023-1-bp@alien8.de
+---
+ arch/x86/kernel/setup.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-
+diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
+index 84f581c..a23130c 100644
+--- a/arch/x86/kernel/setup.c
++++ b/arch/x86/kernel/setup.c
+@@ -119,11 +119,6 @@ EXPORT_SYMBOL(boot_cpu_data);
+ 
+ unsigned int def_to_bigsmp;
+ 
+-/* For MCA, but anyone else can use it if they want */
+-unsigned int machine_id;
+-unsigned int machine_submodel_id;
+-unsigned int BIOS_revision;
+-
+ struct apm_info apm_info;
+ EXPORT_SYMBOL(apm_info);
+ 
