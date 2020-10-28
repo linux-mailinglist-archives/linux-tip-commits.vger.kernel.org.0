@@ -2,143 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CA69629DF78
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 29 Oct 2020 02:02:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 049DD29E0AF
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 29 Oct 2020 02:23:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730752AbgJ2BBj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 28 Oct 2020 21:01:39 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60476 "EHLO mail.kernel.org"
+        id S1729155AbgJ2BXX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 28 Oct 2020 21:23:23 -0400
+Received: from mx2.suse.de ([195.135.220.15]:47940 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731506AbgJ1WRY (ORCPT
+        id S1729805AbgJ1WDm (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 28 Oct 2020 18:17:24 -0400
-Received: from paulmck-ThinkPad-P72.home (50-39-104-11.bvtn.or.frontiernet.net [50.39.104.11])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 943282244C;
-        Wed, 28 Oct 2020 03:01:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1603854090;
-        bh=CYqqIQeLVQ2GDg8Qk4O7/yPF87bpo8HOJdgeKmVSG7M=;
-        h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
-        b=J34e3ugmDw0+RgNgHi7V7cZnahdwYN5VL3pKtKMK88THY++wGQRPmSL5RXWpre6+W
-         dWeTJBj1I+WlGeDc66wKb3HdjZ9gD2JJuoYHopHiwAwVcrUqKcuCX5kGYHh509xQ1f
-         fKaxChn52bKktbUlgXICpAo1sIW2WgfYZSTyDnaU=
-Received: by paulmck-ThinkPad-P72.home (Postfix, from userid 1000)
-        id 4F3683521849; Tue, 27 Oct 2020 20:01:30 -0700 (PDT)
-Date:   Tue, 27 Oct 2020 20:01:30 -0700
-From:   "Paul E. McKenney" <paulmck@kernel.org>
-To:     Qian Cai <cai@redhat.com>
-Cc:     Boqun Feng <boqun.feng@gmail.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
-        linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-        Linux Next Mailing List <linux-next@vger.kernel.org>,
-        Stephen Rothwell <sfr@canb.auug.org.au>
-Subject: Re: [tip: locking/core] lockdep: Fix lockdep recursion
-Message-ID: <20201028030130.GB3249@paulmck-ThinkPad-P72>
-Reply-To: paulmck@kernel.org
-References: <160223032121.7002.1269740091547117869.tip-bot2@tip-bot2>
- <e438b231c5e1478527af6c3e69bf0b37df650110.camel@redhat.com>
- <20201012031110.GA39540@debian-boqun.qqnc3lrjykvubdpftowmye0fmh.lx.internal.cloudapp.net>
- <1db80eb9676124836809421e85e1aa782c269a80.camel@redhat.com>
+        Wed, 28 Oct 2020 18:03:42 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+        by mx2.suse.de (Postfix) with ESMTP id B92E9ABAE;
+        Wed, 28 Oct 2020 09:54:25 +0000 (UTC)
+Date:   Wed, 28 Oct 2020 10:54:24 +0100
+From:   Joerg Roedel <jroedel@suse.de>
+To:     Erdem Aktas <erdemaktas@google.com>, dcovelli@vmware.com
+Cc:     linux-kernel@vger.kernel.org,
+        "Lendacky, Thomas" <Thomas.Lendacky@amd.com>,
+        linux-tip-commits@vger.kernel.org, Borislav Petkov <bp@suse.de>,
+        x86 <x86@kernel.org>
+Subject: Re: [tip: x86/seves] x86/vmware: Add VMware-specific handling for
+ VMMCALL under SEV-ES
+Message-ID: <20201028095424.GJ22179@suse.de>
+References: <20200907131613.12703-65-joro@8bytes.org>
+ <159972972557.20229.773744278485296601.tip-bot2@tip-bot2>
+ <CAAYXXYwFxuK7NvaXTebag0vczRRRyYNRdVPd66GeiCz9_2TXCA@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1db80eb9676124836809421e85e1aa782c269a80.camel@redhat.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <CAAYXXYwFxuK7NvaXTebag0vczRRRyYNRdVPd66GeiCz9_2TXCA@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Tue, Oct 27, 2020 at 03:31:41PM -0400, Qian Cai wrote:
-> On Mon, 2020-10-12 at 11:11 +0800, Boqun Feng wrote:
-> > Hi,
-> > 
-> > On Fri, Oct 09, 2020 at 09:41:24AM -0400, Qian Cai wrote:
-> > > On Fri, 2020-10-09 at 07:58 +0000, tip-bot2 for Peter Zijlstra wrote:
-> > > > The following commit has been merged into the locking/core branch of tip:
-> > > > 
-> > > > Commit-ID:     4d004099a668c41522242aa146a38cc4eb59cb1e
-> > > > Gitweb:        
-> > > > https://git.kernel.org/tip/4d004099a668c41522242aa146a38cc4eb59cb1e
-> > > > Author:        Peter Zijlstra <peterz@infradead.org>
-> > > > AuthorDate:    Fri, 02 Oct 2020 11:04:21 +02:00
-> > > > Committer:     Ingo Molnar <mingo@kernel.org>
-> > > > CommitterDate: Fri, 09 Oct 2020 08:53:30 +02:00
-> > > > 
-> > > > lockdep: Fix lockdep recursion
-> > > > 
-> > > > Steve reported that lockdep_assert*irq*(), when nested inside lockdep
-> > > > itself, will trigger a false-positive.
-> > > > 
-> > > > One example is the stack-trace code, as called from inside lockdep,
-> > > > triggering tracing, which in turn calls RCU, which then uses
-> > > > lockdep_assert_irqs_disabled().
-> > > > 
-> > > > Fixes: a21ee6055c30 ("lockdep: Change hardirq{s_enabled,_context} to per-
-> > > > cpu
-> > > > variables")
-> > > > Reported-by: Steven Rostedt <rostedt@goodmis.org>
-> > > > Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> > > > Signed-off-by: Ingo Molnar <mingo@kernel.org>
-> > > 
-> > > Reverting this linux-next commit fixed booting RCU-list warnings everywhere.
-> > > 
-> > 
-> > I think this happened because in this commit debug_lockdep_rcu_enabled()
-> > didn't adopt to the change that made lockdep_recursion a percpu
-> > variable?
-> > 
-> > Qian, mind to try the following?
+On Tue, Oct 27, 2020 at 04:19:45PM -0700, Erdem Aktas wrote:
+> Looking at the VMWARE_VMCALL(cmd, eax, ebx, ecx, edx) definition, it
+> seems to me only 4 registers are required to be shared with
+> hypervisor. I don't know much about vmware but is not
+> vmware_sev_es_hcall_prepare expose more registers than needed and also
+> vmware_sev_es_hcall_finish might let the hypvervisor to modify
+> additional registers which are not used?
 > 
-> Boqun, Paul, may I ask what's the latest with the fixes? I must admit that I got
-> lost in this thread, but I remember that the patch from Boqun below at least
-> silence quite some of those warnings if not all. The problem is that some of
-> those warnings would trigger a lockdep circular locks warning due to printk()
-> with some locks held which in turn disabling the lockdep, makes our test runs
-> inefficient.
+> Just checking if this is intentional and what I am missing here.
 
-If I have the right email thread associated with the right fixes, these
-commits in -rcu should be what you are looking for:
+Original patch is from Doug, maybe he can clarify what needs to be
+shared. I only adapted it to the call-backs.
 
-73b658b6b7d5 ("rcu: Prevent lockdep-RCU splats on lock acquisition/release")
-626b79aa935a ("x86/smpboot:  Move rcu_cpu_starting() earlier")
+Doug?
 
-And maybe this one as well:
+Regards,
 
-3a6f638cb95b ("rcu,ftrace: Fix ftrace recursion")
-
-Please let me know if these commits do not fix things.
-
-							Thanx, Paul
-
-> > Although, arguably the problem still exists, i.e. we still have an RCU
-> > read-side critical section inside lock_acquire(), which may be called on
-> > a yet-to-online CPU, which RCU doesn't watch. I think this used to be OK
-> > because we don't "free" anything from lockdep, IOW, there is no
-> > synchronize_rcu() or call_rcu() that _needs_ to wait for the RCU
-> > read-side critical sections inside lockdep. But now we lock class
-> > recycling, so it might be a problem.
-> > 
-> > That said, currently validate_chain() and lock class recycling are
-> > mutually excluded via graph_lock, so we are safe for this one ;-)
-> > 
-> > ----------->8
-> > diff --git a/kernel/rcu/update.c b/kernel/rcu/update.c
-> > index 39334d2d2b37..35d9bab65b75 100644
-> > --- a/kernel/rcu/update.c
-> > +++ b/kernel/rcu/update.c
-> > @@ -275,8 +275,8 @@ EXPORT_SYMBOL_GPL(rcu_callback_map);
-> >  
-> >  noinstr int notrace debug_lockdep_rcu_enabled(void)
-> >  {
-> > -	return rcu_scheduler_active != RCU_SCHEDULER_INACTIVE && debug_locks &&
-> > -	       current->lockdep_recursion == 0;
-> > +	return rcu_scheduler_active != RCU_SCHEDULER_INACTIVE &&
-> > +	       __lockdep_enabled;
-> >  }
-> >  EXPORT_SYMBOL_GPL(debug_lockdep_rcu_enabled);
-> 
-> 
+	Joerg
