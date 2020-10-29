@@ -2,53 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BB95729E8FF
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 29 Oct 2020 11:30:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 78BA129E8FE
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 29 Oct 2020 11:30:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726626AbgJ2KaN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 29 Oct 2020 06:30:13 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:60548 "EHLO
+        id S1725920AbgJ2KaQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 29 Oct 2020 06:30:16 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:60568 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725920AbgJ2KaN (ORCPT
+        with ESMTP id S1726013AbgJ2KaN (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Thu, 29 Oct 2020 06:30:13 -0400
-Date:   Thu, 29 Oct 2020 10:30:09 -0000
+Date:   Thu, 29 Oct 2020 10:30:10 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1603967410;
+        s=2020; t=1603967411;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=pOcKyS6kIsTPqIIHQEn2Hhp8q5MDg5N59RncFe0JbI4=;
-        b=cRSeCEySrWwinX6SAejhDtQXRaCsZ1aXwO26ovzeLMGbS280tDe/fzM6iIINtLq3zUs1Q3
-        xs7it+MujosuK2zQkEGXMBf6en2gynmzPspdn4lt1TmQWG7Y9TNHoZVHgIUf1JCSesGrKb
-        RKSwWfvbGB3DVeFbj6AbhffcyMykpbGK840qqREYITJ5AJ98YHXxLZaBtB7S3dNSVlbmO1
-        FtufwvD+wHuQp45dJYCs0WV0vI93nJjbqdEttTBDQ/cby9rJfwP6HAuu9KaoTQNIq/yOvA
-        9nxu47zVxyODtT/HAIFJemAaZfRxKZ1TNF3mPlWVuHIzmRuRQ08uXfPL632AXw==
+        bh=CP1McKmFoG89FuR5vLKzdnZKTdPCA47TdvaNbaRIMg0=;
+        b=vMKsZT7xnwOh3/lT++VGXGZZ0VS4x1MF5zEDU1U+n3e00hfUMAG8Hq4Qr+RrWgI7nHk1b2
+        DbpJWINmaPC3hd4xPc4OOVBayoQ3Z6VWCnoGKLCN8FC1KQT24gu2GcH8ahDkNo2sR9LQX2
+        TDaNBarm5hVPC6xkuGLw9R9g2lRdQaRF9B/LoUVDo+gOMqV8aG9ONtYiIOxP7mV8q6x6uZ
+        N/tD5ubkg8nROeXQnezF4FviEQP6+ghHalNp42uYUi7zok4T8P4cb1EgpHccdR1GvwZdk4
+        dze1s77m9IyIiKBoZS1EGDZtW95TL8uIPqBEoJraSmXIOGYt2TF/cINWdoKTlw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1603967410;
+        s=2020e; t=1603967411;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=pOcKyS6kIsTPqIIHQEn2Hhp8q5MDg5N59RncFe0JbI4=;
-        b=1ZqqdA5FvcYhGPAHVihd1TT3HEHm2rclYLQHdY9wTDqSuKH63/gxIwnQ84DYkmtLAa/TCJ
-        h+mRWmE6SM6K+hCw==
+        bh=CP1McKmFoG89FuR5vLKzdnZKTdPCA47TdvaNbaRIMg0=;
+        b=dhgX9FtSEOQW61XlYP7/UftK3CHPzVGERX5p+c9DRf6Bh/f3GTzUHe0PvnKiP22YhdNYhh
+        8G1UnIVPc1L6sfBQ==
 From:   "tip-bot2 for Jens Axboe" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/entry] task_work: Use TIF_NOTIFY_SIGNAL if available
-Cc:     Roman Gershman <romger@amazon.com>, Jens Axboe <axboe@kernel.dk>,
-        Thomas Gleixner <tglx@linutronix.de>,
+Subject: [tip: core/entry] signal: Add task_sigpending() helper
+Cc:     Jens Axboe <axboe@kernel.dk>, Thomas Gleixner <tglx@linutronix.de>,
         Oleg Nesterov <oleg@redhat.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20201026203230.386348-5-axboe@kernel.dk>
-References: <20201026203230.386348-5-axboe@kernel.dk>
+In-Reply-To: <20201026203230.386348-2-axboe@kernel.dk>
+References: <20201026203230.386348-2-axboe@kernel.dk>
 MIME-Version: 1.0
-Message-ID: <160396740917.397.14144812059422147901.tip-bot2@tip-bot2>
+Message-ID: <160396741064.397.16273112747578386551.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,143 +58,117 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/entry branch of tip:
 
-Commit-ID:     114518eb6430b832d2f9f5a008043b913ccf0e24
-Gitweb:        https://git.kernel.org/tip/114518eb6430b832d2f9f5a008043b913ccf0e24
+Commit-ID:     5c251e9dc0e127bac6fc5b8e6696363d2e35f515
+Gitweb:        https://git.kernel.org/tip/5c251e9dc0e127bac6fc5b8e6696363d2e35f515
 Author:        Jens Axboe <axboe@kernel.dk>
-AuthorDate:    Mon, 26 Oct 2020 14:32:30 -06:00
+AuthorDate:    Mon, 26 Oct 2020 14:32:27 -06:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 29 Oct 2020 09:37:37 +01:00
+CommitterDate: Thu, 29 Oct 2020 09:37:36 +01:00
 
-task_work: Use TIF_NOTIFY_SIGNAL if available
+signal: Add task_sigpending() helper
 
-If the arch supports TIF_NOTIFY_SIGNAL, then use that for TWA_SIGNAL as
-it's more efficient than using the signal delivery method. This is
-especially true on threaded applications, where ->sighand is shared across
-threads, but it's also lighter weight on non-shared cases.
+This is in preparation for maintaining signal_pending() as the decider of
+whether or not a schedule() loop should be broken, or continue sleeping.
+This is different than the core signal use cases, which really need to know
+whether an actual signal is pending or not. task_sigpending() returns
+non-zero if TIF_SIGPENDING is set.
 
-io_uring is a heavy consumer of TWA_SIGNAL based task_work. A test with
-threads shows a nice improvement running an io_uring based echo server.
+Only core kernel use cases should care about the distinction between
+the two, make sure those use the task_sigpending() helper.
 
-stock kernel:
-0.01% <= 0.1 milliseconds
-95.86% <= 0.2 milliseconds
-98.27% <= 0.3 milliseconds
-99.71% <= 0.4 milliseconds
-100.00% <= 0.5 milliseconds
-100.00% <= 0.6 milliseconds
-100.00% <= 0.7 milliseconds
-100.00% <= 0.8 milliseconds
-100.00% <= 0.9 milliseconds
-100.00% <= 1.0 milliseconds
-100.00% <= 1.1 milliseconds
-100.00% <= 2 milliseconds
-100.00% <= 3 milliseconds
-100.00% <= 3 milliseconds
-1378930.00 requests per second
-~1600% CPU
-
-1.38M requests/second, and all 16 CPUs are maxed out.
-
-patched kernel:
-0.01% <= 0.1 milliseconds
-98.24% <= 0.2 milliseconds
-99.47% <= 0.3 milliseconds
-99.99% <= 0.4 milliseconds
-100.00% <= 0.5 milliseconds
-100.00% <= 0.6 milliseconds
-100.00% <= 0.7 milliseconds
-100.00% <= 0.8 milliseconds
-100.00% <= 0.9 milliseconds
-100.00% <= 1.2 milliseconds
-1666111.38 requests per second
-~1450% CPU
-
-1.67M requests/second, and we're no longer just hammering on the sighand
-lock. The original reporter states:
-
-"For 5.7.15 my benchmark achieves 1.6M qps and system cpu is at ~80%.
- for 5.7.16 or later it achieves only 1M qps and the system cpu is is
- at ~100%"
-
-with the only difference there being that TWA_SIGNAL is used
-unconditionally in 5.7.16, since it's required to be able to handle the
-inability to run task_work if the application is waiting in the kernel
-already on an event that needs task_work run to be satisfied. Also see
-commit 0ba9c9edcd15.
-
-Reported-by: Roman Gershman <romger@amazon.com>
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
 Reviewed-by: Oleg Nesterov <oleg@redhat.com>
-Link: https://lore.kernel.org/r/20201026203230.386348-5-axboe@kernel.dk
+Link: https://lore.kernel.org/r/20201026203230.386348-2-axboe@kernel.dk
 
 ---
- kernel/task_work.c | 41 +++++++++++++++++++++++++++++------------
- 1 file changed, 29 insertions(+), 12 deletions(-)
+ include/linux/sched/signal.h |  9 +++++++--
+ kernel/events/uprobes.c      |  2 +-
+ kernel/signal.c              |  8 ++++----
+ 3 files changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/kernel/task_work.c b/kernel/task_work.c
-index 613b2d6..ae05889 100644
---- a/kernel/task_work.c
-+++ b/kernel/task_work.c
-@@ -5,6 +5,34 @@
+diff --git a/include/linux/sched/signal.h b/include/linux/sched/signal.h
+index 1bad18a..404145d 100644
+--- a/include/linux/sched/signal.h
++++ b/include/linux/sched/signal.h
+@@ -353,11 +353,16 @@ static inline int restart_syscall(void)
+ 	return -ERESTARTNOINTR;
+ }
  
- static struct callback_head work_exited; /* all we need is ->next == NULL */
+-static inline int signal_pending(struct task_struct *p)
++static inline int task_sigpending(struct task_struct *p)
+ {
+ 	return unlikely(test_tsk_thread_flag(p,TIF_SIGPENDING));
+ }
  
-+/*
-+ * TWA_SIGNAL signaling - use TIF_NOTIFY_SIGNAL, if available, as it's faster
-+ * than TIF_SIGPENDING as there's no dependency on ->sighand. The latter is
-+ * shared for threads, and can cause contention on sighand->lock. Even for
-+ * the non-threaded case TIF_NOTIFY_SIGNAL is more efficient, as no locking
-+ * or IRQ disabling is involved for notification (or running) purposes.
-+ */
-+static void task_work_notify_signal(struct task_struct *task)
++static inline int signal_pending(struct task_struct *p)
 +{
-+#if defined(TIF_NOTIFY_SIGNAL)
-+	set_notify_signal(task);
-+#else
-+	unsigned long flags;
-+
-+	/*
-+	 * Only grab the sighand lock if we don't already have some
-+	 * task_work pending. This pairs with the smp_store_mb()
-+	 * in get_signal(), see comment there.
-+	 */
-+	if (!(READ_ONCE(task->jobctl) & JOBCTL_TASK_WORK) &&
-+	    lock_task_sighand(task, &flags)) {
-+		task->jobctl |= JOBCTL_TASK_WORK;
-+		signal_wake_up(task, 0);
-+		unlock_task_sighand(task, &flags);
-+	}
-+#endif
++	return task_sigpending(p);
 +}
 +
- /**
-  * task_work_add - ask the @task to execute @work->func()
-  * @task: the task which should run the callback
-@@ -28,7 +56,6 @@ int
- task_work_add(struct task_struct *task, struct callback_head *work, int notify)
+ static inline int __fatal_signal_pending(struct task_struct *p)
  {
- 	struct callback_head *head;
--	unsigned long flags;
+ 	return unlikely(sigismember(&p->pending.signal, SIGKILL));
+@@ -365,7 +370,7 @@ static inline int __fatal_signal_pending(struct task_struct *p)
  
- 	do {
- 		head = READ_ONCE(task->task_works);
-@@ -42,17 +69,7 @@ task_work_add(struct task_struct *task, struct callback_head *work, int notify)
- 		set_notify_resume(task);
- 		break;
- 	case TWA_SIGNAL:
--		/*
--		 * Only grab the sighand lock if we don't already have some
--		 * task_work pending. This pairs with the smp_store_mb()
--		 * in get_signal(), see comment there.
--		 */
--		if (!(READ_ONCE(task->jobctl) & JOBCTL_TASK_WORK) &&
--		    lock_task_sighand(task, &flags)) {
--			task->jobctl |= JOBCTL_TASK_WORK;
--			signal_wake_up(task, 0);
--			unlock_task_sighand(task, &flags);
--		}
-+		task_work_notify_signal(task);
- 		break;
- 	}
+ static inline int fatal_signal_pending(struct task_struct *p)
+ {
+-	return signal_pending(p) && __fatal_signal_pending(p);
++	return task_sigpending(p) && __fatal_signal_pending(p);
+ }
  
+ static inline int signal_pending_state(long state, struct task_struct *p)
+diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
+index 649fd53..edd0c98 100644
+--- a/kernel/events/uprobes.c
++++ b/kernel/events/uprobes.c
+@@ -1973,7 +1973,7 @@ bool uprobe_deny_signal(void)
+ 
+ 	WARN_ON_ONCE(utask->state != UTASK_SSTEP);
+ 
+-	if (signal_pending(t)) {
++	if (task_sigpending(t)) {
+ 		spin_lock_irq(&t->sighand->siglock);
+ 		clear_tsk_thread_flag(t, TIF_SIGPENDING);
+ 		spin_unlock_irq(&t->sighand->siglock);
+diff --git a/kernel/signal.c b/kernel/signal.c
+index 42b67d2..b179ecc 100644
+--- a/kernel/signal.c
++++ b/kernel/signal.c
+@@ -983,7 +983,7 @@ static inline bool wants_signal(int sig, struct task_struct *p)
+ 	if (task_is_stopped_or_traced(p))
+ 		return false;
+ 
+-	return task_curr(p) || !signal_pending(p);
++	return task_curr(p) || !task_sigpending(p);
+ }
+ 
+ static void complete_signal(int sig, struct task_struct *p, enum pid_type type)
+@@ -2822,7 +2822,7 @@ static void retarget_shared_pending(struct task_struct *tsk, sigset_t *which)
+ 		/* Remove the signals this thread can handle. */
+ 		sigandsets(&retarget, &retarget, &t->blocked);
+ 
+-		if (!signal_pending(t))
++		if (!task_sigpending(t))
+ 			signal_wake_up(t, 0);
+ 
+ 		if (sigisemptyset(&retarget))
+@@ -2856,7 +2856,7 @@ void exit_signals(struct task_struct *tsk)
+ 
+ 	cgroup_threadgroup_change_end(tsk);
+ 
+-	if (!signal_pending(tsk))
++	if (!task_sigpending(tsk))
+ 		goto out;
+ 
+ 	unblocked = tsk->blocked;
+@@ -2900,7 +2900,7 @@ long do_no_restart_syscall(struct restart_block *param)
+ 
+ static void __set_task_blocked(struct task_struct *tsk, const sigset_t *newset)
+ {
+-	if (signal_pending(tsk) && !thread_group_empty(tsk)) {
++	if (task_sigpending(tsk) && !thread_group_empty(tsk)) {
+ 		sigset_t newblocked;
+ 		/* A set of now blocked but previously unblocked signals. */
+ 		sigandnsets(&newblocked, newset, &current->blocked);
