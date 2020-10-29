@@ -2,52 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C1FE29E997
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 29 Oct 2020 11:52:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 77D4929E990
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 29 Oct 2020 11:52:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727244AbgJ2KwN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 29 Oct 2020 06:52:13 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:60756 "EHLO
+        id S1727174AbgJ2Kv4 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 29 Oct 2020 06:51:56 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:60798 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726882AbgJ2Kvw (ORCPT
+        with ESMTP id S1727123AbgJ2Kvy (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 29 Oct 2020 06:51:52 -0400
-Date:   Thu, 29 Oct 2020 10:51:50 -0000
+        Thu, 29 Oct 2020 06:51:54 -0400
+Date:   Thu, 29 Oct 2020 10:51:51 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1603968711;
+        s=2020; t=1603968712;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=fnX4T+Yu+tpptypCpXVJawwc6puGWhEcbA1bI1Ml53s=;
-        b=yh0fwPddMvhUsDxktJVf5MmiwymvuPZ51UJADcLv02urGSjQ1e4lQVMZMeYow9KCKqQwh2
-        yMJJQirSicQ6iVmnB4I79gfoCzt7Ki2Da1/qiMKpnPdiw8nri48Jb6Ot+rSrB2upJNE/4t
-        wtBxOmSkkq5UKiBBTvBtdUnFDR3+noQt3HJW1a0p8qL7loAa6OHeYyjXr472S0+zuwCU9n
-        GujhbZU6JsZPZuyRAL6X02PNsVZcrXg9xz5UJ2vrsN7XMWHS2SeIyaDbeLMQdujt8H6vJ+
-        YQA1vyYgM/vZir0q+fJJTAuOWXN7rC0Guc27TdD+4CZ/97kKSROL5CEQazQaqg==
+        bh=mYdkwXBLw1WFZcgR5oVXfBuFgHvVpaQWFhKvJ1diGpg=;
+        b=J4DhtWxAmEjrHqzB+/ejUwTzrE0xaVpLB9x5sBMptfkDObfplgXWHoxB5fIh4P+zxLP+Ge
+        PCKK2hQJrzxCKhA642XWtkfriUFqWdPNzegEeZTo629xx726AmP1SFzvDEsIvMqTBcodXA
+        22293M/GwBqpLoV3ZbeTiQ8CpBM4fmxif0YukLUb/1ELh7MifqHYRtswU5SV+enMgIyflP
+        0QXDew0l3yvHvl71t213+B4993/Hqfih6TNiFRrfjdm1f3Tq7jhAQyoFPMF3paKqOpCamH
+        JFFOWJHvc6/WMgMoRHyotN15x4nVxEvi/BA03gqkYztFZ+RY5YTxae+4Ti7k8g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1603968711;
+        s=2020e; t=1603968712;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=fnX4T+Yu+tpptypCpXVJawwc6puGWhEcbA1bI1Ml53s=;
-        b=QNEsP7NJGZZy1qYKllPjXyhi6Md8ZaFXIKtHfKdchGxWPZyN0POC9EoO0EYMJyvYJXdZPT
-        4jw9KQ8m2f/9LeDA==
-From:   "tip-bot2 for Dietmar Eggemann" <tip-bot2@linutronix.de>
+        bh=mYdkwXBLw1WFZcgR5oVXfBuFgHvVpaQWFhKvJ1diGpg=;
+        b=312Wa3q27EQ1Lmh++s1mwEqy+AAqK+L/ddqqsHLIuPoqRLOkdv+fg7UBeFgPpqGlFe2Ac4
+        dTFQeLTS7klQ1VDQ==
+From:   "tip-bot2 for Peng Liu" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/cpupri: Remove pri_to_cpu[CPUPRI_IDLE]
-Cc:     Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20200922083934.19275-2-dietmar.eggemann@arm.com>
-References: <20200922083934.19275-2-dietmar.eggemann@arm.com>
+Subject: [tip: sched/core] sched/deadline: Optimize sched_dl_global_validate()
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        Peng Liu <iwtbavbm@gmail.com>,
+        Daniel Bristot de Oliveira <bristot@redhat.com>,
+        Juri Lelli <juri.lelli@redhat.com>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <78d21ee792cc48ff79e8cd62a5f26208463684d6.1602171061.git.iwtbavbm@gmail.com>
+References: <78d21ee792cc48ff79e8cd62a5f26208463684d6.1602171061.git.iwtbavbm@gmail.com>
 MIME-Version: 1.0
-Message-ID: <160396871056.397.17031098897920284601.tip-bot2@tip-bot2>
+Message-ID: <160396871191.397.18191930337022595419.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,137 +60,162 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     5e054bca44fe92323de5e9b71478d1904b8bb1b7
-Gitweb:        https://git.kernel.org/tip/5e054bca44fe92323de5e9b71478d1904b8bb1b7
-Author:        Dietmar Eggemann <dietmar.eggemann@arm.com>
-AuthorDate:    Tue, 22 Sep 2020 10:39:33 +02:00
+Commit-ID:     26762423a2664692de2bcccc9de684a5ac105e23
+Gitweb:        https://git.kernel.org/tip/26762423a2664692de2bcccc9de684a5ac105e23
+Author:        Peng Liu <iwtbavbm@gmail.com>
+AuthorDate:    Thu, 08 Oct 2020 23:48:46 +08:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Thu, 29 Oct 2020 11:00:29 +01:00
+CommitterDate: Thu, 29 Oct 2020 11:00:28 +01:00
 
-sched/cpupri: Remove pri_to_cpu[CPUPRI_IDLE]
+sched/deadline: Optimize sched_dl_global_validate()
 
-pri_to_cpu[CPUPRI_IDLE=0] isn't used since cpupri_set(..., newpri) is
-never called with newpri = MAX_PRIO (140).
+Under CONFIG_SMP, dl_bw is per root domain, but not per CPU.
+When checking or updating dl_bw, currently iterating every CPU is
+overdoing, just need iterate each root domain once.
 
-Current mapping:
-
-p->rt_priority   p->prio   newpri   cpupri
-
-                               -1       -1 (CPUPRI_INVALID)
-
-                              140        0 (CPUPRI_IDLE)
-
-                              100        1 (CPUPRI_NORMAL)
-
-             1        98       98        3
-           ...
-            49        50       50       51
-            50        49       49       52
-           ...
-            99         0        0      101
-
-Even when cpupri was introduced with commit 6e0534f27819 ("sched: use a
-2-d bitmap for searching lowest-pri CPU") in v2.6.27, only
-
-   (1) CPUPRI_INVALID (-1),
-   (2) MAX_RT_PRIO (100),
-   (3) an RT prio (RT1..RT99)
-
-were used as newprio in cpupri_set(..., newpri) -> convert_prio(newpri).
-
-MAX_RT_PRIO is used only in dec_rt_tasks() -> dec_rt_prio() ->
-dec_rt_prio_smp() -> cpupri_set() in case of !rt_rq->rt_nr_running.
-I.e. it stands for a non-rt task, including the IDLE task.
-
-Commit 57785df5ac53 ("sched: Fix task priority bug") removed code in
-v2.6.33 which did set the priority of the IDLE task to MAX_PRIO.
-Although this happened after the introduction of cpupri, it didn't have
-an effect on the values used for cpupri_set(..., newpri).
-
-Remove CPUPRI_IDLE and adapt the cpupri implementation accordingly.
-This will save a useless for loop with an atomic_read in
-cpupri_find_fitness() calling __cpupri_find().
-
-New mapping:
-
-p->rt_priority   p->prio   newpri   cpupri
-
-                               -1       -1 (CPUPRI_INVALID)
-
-                              100        0 (CPUPRI_NORMAL)
-
-             1        98       98        2
-           ...
-            49        50       50       50
-            50        49       49       51
-           ...
-            99         0        0      100
-
-Signed-off-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Suggested-by: Peter Zijlstra <peterz@infradead.org>
+Signed-off-by: Peng Liu <iwtbavbm@gmail.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20200922083934.19275-2-dietmar.eggemann@arm.com
+Reviewed-by: Daniel Bristot de Oliveira <bristot@redhat.com>
+Acked-by: Juri Lelli <juri.lelli@redhat.com>
+Link: https://lkml.kernel.org/r/78d21ee792cc48ff79e8cd62a5f26208463684d6.1602171061.git.iwtbavbm@gmail.com
 ---
- kernel/sched/cpupri.c | 10 ++++------
- kernel/sched/cpupri.h |  7 +++----
- 2 files changed, 7 insertions(+), 10 deletions(-)
+ kernel/sched/deadline.c | 39 ++++++++++++++++++++++++++++++++-------
+ kernel/sched/sched.h    |  9 +++++++++
+ kernel/sched/topology.c |  1 +
+ 3 files changed, 42 insertions(+), 7 deletions(-)
 
-diff --git a/kernel/sched/cpupri.c b/kernel/sched/cpupri.c
-index 0033731..a5d14ed 100644
---- a/kernel/sched/cpupri.c
-+++ b/kernel/sched/cpupri.c
-@@ -11,7 +11,7 @@
-  *  This code tracks the priority of each CPU so that global migration
-  *  decisions are easy to calculate.  Each CPU can be in a state as follows:
-  *
-- *                 (INVALID), IDLE, NORMAL, RT1, ... RT99
-+ *                 (INVALID), NORMAL, RT1, ... RT99
-  *
-  *  going from the lowest priority to the highest.  CPUs in the INVALID state
-  *  are not eligible for routing.  The system maintains this state with
-@@ -19,24 +19,22 @@
-  *  in that class).  Therefore a typical application without affinity
-  *  restrictions can find a suitable CPU with O(1) complexity (e.g. two bit
-  *  searches).  For tasks with affinity restrictions, the algorithm has a
-- *  worst case complexity of O(min(102, nr_domcpus)), though the scenario that
-+ *  worst case complexity of O(min(101, nr_domcpus)), though the scenario that
-  *  yields the worst case search is fairly contrived.
-  */
- #include "sched.h"
- 
--/* Convert between a 140 based task->prio, and our 102 based cpupri */
-+/* Convert between a 140 based task->prio, and our 101 based cpupri */
- static int convert_prio(int prio)
- {
- 	int cpupri;
- 
- 	if (prio == CPUPRI_INVALID)
- 		cpupri = CPUPRI_INVALID;
--	else if (prio == MAX_PRIO)
--		cpupri = CPUPRI_IDLE;
- 	else if (prio >= MAX_RT_PRIO)
- 		cpupri = CPUPRI_NORMAL;
- 	else
--		cpupri = MAX_RT_PRIO - prio + 1;
-+		cpupri = MAX_RT_PRIO - prio;
- 
- 	return cpupri;
+diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
+index f232305..98d96d4 100644
+--- a/kernel/sched/deadline.c
++++ b/kernel/sched/deadline.c
+@@ -97,6 +97,17 @@ static inline unsigned long dl_bw_capacity(int i)
+ 		return __dl_bw_capacity(i);
+ 	}
  }
-diff --git a/kernel/sched/cpupri.h b/kernel/sched/cpupri.h
-index efbb492..1a16236 100644
---- a/kernel/sched/cpupri.h
-+++ b/kernel/sched/cpupri.h
-@@ -1,11 +1,10 @@
- /* SPDX-License-Identifier: GPL-2.0 */
++
++static inline bool dl_bw_visited(int cpu, u64 gen)
++{
++	struct root_domain *rd = cpu_rq(cpu)->rd;
++
++	if (rd->visit_gen == gen)
++		return true;
++
++	rd->visit_gen = gen;
++	return false;
++}
+ #else
+ static inline struct dl_bw *dl_bw_of(int i)
+ {
+@@ -112,6 +123,11 @@ static inline unsigned long dl_bw_capacity(int i)
+ {
+ 	return SCHED_CAPACITY_SCALE;
+ }
++
++static inline bool dl_bw_visited(int cpu, u64 gen)
++{
++	return false;
++}
+ #endif
  
--#define CPUPRI_NR_PRIORITIES	(MAX_RT_PRIO + 2)
-+#define CPUPRI_NR_PRIORITIES	(MAX_RT_PRIO + 1)
+ static inline
+@@ -2535,11 +2551,15 @@ const struct sched_class dl_sched_class
+ 	.update_curr		= update_curr_dl,
+ };
  
- #define CPUPRI_INVALID		-1
--#define CPUPRI_IDLE		 0
--#define CPUPRI_NORMAL		 1
--/* values 2-101 are RT priorities 0-99 */
-+#define CPUPRI_NORMAL		 0
-+/* values 2-100 are RT priorities 0-99 */
++/* Used for dl_bw check and update, used under sched_rt_handler()::mutex */
++static u64 dl_generation;
++
+ int sched_dl_global_validate(void)
+ {
+ 	u64 runtime = global_rt_runtime();
+ 	u64 period = global_rt_period();
+ 	u64 new_bw = to_ratio(period, runtime);
++	u64 gen = ++dl_generation;
+ 	struct dl_bw *dl_b;
+ 	int cpu, ret = 0;
+ 	unsigned long flags;
+@@ -2548,13 +2568,13 @@ int sched_dl_global_validate(void)
+ 	 * Here we want to check the bandwidth not being set to some
+ 	 * value smaller than the currently allocated bandwidth in
+ 	 * any of the root_domains.
+-	 *
+-	 * FIXME: Cycling on all the CPUs is overdoing, but simpler than
+-	 * cycling on root_domains... Discussion on different/better
+-	 * solutions is welcome!
+ 	 */
+ 	for_each_possible_cpu(cpu) {
+ 		rcu_read_lock_sched();
++
++		if (dl_bw_visited(cpu, gen))
++			goto next;
++
+ 		dl_b = dl_bw_of(cpu);
  
- struct cpupri_vec {
- 	atomic_t		count;
+ 		raw_spin_lock_irqsave(&dl_b->lock, flags);
+@@ -2562,6 +2582,7 @@ int sched_dl_global_validate(void)
+ 			ret = -EBUSY;
+ 		raw_spin_unlock_irqrestore(&dl_b->lock, flags);
+ 
++next:
+ 		rcu_read_unlock_sched();
+ 
+ 		if (ret)
+@@ -2587,6 +2608,7 @@ static void init_dl_rq_bw_ratio(struct dl_rq *dl_rq)
+ void sched_dl_do_global(void)
+ {
+ 	u64 new_bw = -1;
++	u64 gen = ++dl_generation;
+ 	struct dl_bw *dl_b;
+ 	int cpu;
+ 	unsigned long flags;
+@@ -2597,11 +2619,14 @@ void sched_dl_do_global(void)
+ 	if (global_rt_runtime() != RUNTIME_INF)
+ 		new_bw = to_ratio(global_rt_period(), global_rt_runtime());
+ 
+-	/*
+-	 * FIXME: As above...
+-	 */
+ 	for_each_possible_cpu(cpu) {
+ 		rcu_read_lock_sched();
++
++		if (dl_bw_visited(cpu, gen)) {
++			rcu_read_unlock_sched();
++			continue;
++		}
++
+ 		dl_b = dl_bw_of(cpu);
+ 
+ 		raw_spin_lock_irqsave(&dl_b->lock, flags);
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index df80bfc..49a2dae 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -801,6 +801,15 @@ struct root_domain {
+ 	struct dl_bw		dl_bw;
+ 	struct cpudl		cpudl;
+ 
++	/*
++	 * Indicate whether a root_domain's dl_bw has been checked or
++	 * updated. It's monotonously increasing value.
++	 *
++	 * Also, some corner cases, like 'wrap around' is dangerous, but given
++	 * that u64 is 'big enough'. So that shouldn't be a concern.
++	 */
++	u64 visit_gen;
++
+ #ifdef HAVE_RT_PUSH_IPI
+ 	/*
+ 	 * For IPI pull requests, loop across the rto_mask.
+diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
+index dd77702..90f3e55 100644
+--- a/kernel/sched/topology.c
++++ b/kernel/sched/topology.c
+@@ -516,6 +516,7 @@ static int init_rootdomain(struct root_domain *rd)
+ 	init_irq_work(&rd->rto_push_work, rto_push_irq_work_func);
+ #endif
+ 
++	rd->visit_gen = 0;
+ 	init_dl_bw(&rd->dl_bw);
+ 	if (cpudl_init(&rd->cpudl) != 0)
+ 		goto free_rto_mask;
