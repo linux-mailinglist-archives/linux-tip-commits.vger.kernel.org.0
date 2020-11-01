@@ -2,52 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FBC12A1FB5
-	for <lists+linux-tip-commits@lfdr.de>; Sun,  1 Nov 2020 18:00:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F41432A1FB7
+	for <lists+linux-tip-commits@lfdr.de>; Sun,  1 Nov 2020 18:00:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727060AbgKARAN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S1727072AbgKARAN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Sun, 1 Nov 2020 12:00:13 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:53826 "EHLO
+Received: from Galois.linutronix.de ([193.142.43.55]:53834 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726790AbgKARAM (ORCPT
+        with ESMTP id S1726791AbgKARAM (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Sun, 1 Nov 2020 12:00:12 -0500
-Date:   Sun, 01 Nov 2020 17:00:08 -0000
+Date:   Sun, 01 Nov 2020 17:00:09 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1604250009;
+        s=2020; t=1604250010;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=eMqVqtc2C4auwzMu8GaTt+B0rSb97C4C/gdI6Z46Klw=;
-        b=xMQeAGEzydEt9enP/Evk6F/hDUj3C4gkgwoNLAwxU9ilta6mZ1x+SN0syeVuUgbi1aHCgz
-        hm1HME3rfLdCROxUsZiufrV2eLTYKAU8xzAf6pxah/gF3yQ8RF6hI+rs7pAXxqrLs0uOme
-        D00gtTQK3AHTKQEqiJR8MjRZBylP3uqKLR7COytFIsdkCDzCf+AqXbkdExwGq5eCLwI0YH
-        D1wsHS234ECA2iPcBpfwIDXRzdrUv7SV8CuoKxMRm1WpS0/5OP13lGTNpvbE1R60rCuv7J
-        6NeFF63OLO1qnAIswn51d4HgH2xUsG4zAvpw8B8PJt6Yjer9Mf+LFV93ywWfhA==
+        bh=aCnuJ3lVmHHG4SSasG7csbDqsih9xX8WfJDoPw/c1LM=;
+        b=ykIuZj0s4zoDLvY5BUcYHH6Eyos4NlR7+fWNuwKs1hLQOBjS3BXOxBfH+HjFATVfuKiVzp
+        guKTmbVHksblERjPFzGqk6aFYWc4m9JWs82dTwZSGBvEK0+98j+U668oJMmZDhK8ZEf8PR
+        pwWEfwcWsQP9tk4B/w+dKlqdb6+xwRx8w6Z32YwabMALPHyYA7Bb07WuR+jEQb+4JgpYLZ
+        9Lq477hN0mjewaIOwlJPa53vwHGZpyO5JhTA6ZJFNCtyPWwy/qyCLwoZ2aOJD9YVUCrn+O
+        BAIiKhbhbcMeaT6EQoHMQAuOPAueTPA9fYQOxF+coIweBPmBfvyiHM9hw/0Sqw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1604250009;
+        s=2020e; t=1604250010;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=eMqVqtc2C4auwzMu8GaTt+B0rSb97C4C/gdI6Z46Klw=;
-        b=CspyW5yjv3je8vQlirOZSjZ2JtdjITsPlFWxCIzpYv/Xj7RwVmIaNR4VET7iz9uAJneBtz
-        oLqWkLdTiSZqNMDg==
-From:   "tip-bot2 for Geert Uytterhoeven" <tip-bot2@linutronix.de>
+        bh=aCnuJ3lVmHHG4SSasG7csbDqsih9xX8WfJDoPw/c1LM=;
+        b=BpkO4QJZ4/j/YcOPOwrXBf/x7wH1VjQb+MzHbUQ/XzM4v8brwvhYmvYXr+vzbtURgqODKu
+        zsHqXryZhQDJx/DA==
+From:   "tip-bot2 for Greentime Hu" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/urgent] irqchip/renesas-intc-irqpin: Merge irlm_bit and needs_irlm
-Cc:     Geert Uytterhoeven <geert+renesas@glider.be>,
-        Marc Zyngier <maz@kernel.org>, x86 <x86@kernel.org>,
+Subject: [tip: irq/urgent] irqchip/sifive-plic: Fix chip_data access within a
+ hierarchy
+Cc:     Greentime Hu <greentime.hu@sifive.com>,
+        Marc Zyngier <maz@kernel.org>,
+        Anup Patel <anup@brainfault.org>,
+        Atish Patra <atish.patra@wdc.com>, x86 <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20201028153955.1736767-1-geert+renesas@glider.be>
-References: <20201028153955.1736767-1-geert+renesas@glider.be>
+In-Reply-To: <20201029023738.127472-1-greentime.hu@sifive.com>
+References: <20201029023738.127472-1-greentime.hu@sifive.com>
 MIME-Version: 1.0
-Message-ID: <160425000858.397.1155944274384830993.tip-bot2@tip-bot2>
+Message-ID: <160425000919.397.3903804075850306877.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,59 +61,69 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/urgent branch of tip:
 
-Commit-ID:     b388bdf2bac7aedac9bde5ab63eaf7646f29fc00
-Gitweb:        https://git.kernel.org/tip/b388bdf2bac7aedac9bde5ab63eaf7646f29fc00
-Author:        Geert Uytterhoeven <geert+renesas@glider.be>
-AuthorDate:    Wed, 28 Oct 2020 16:39:55 +01:00
+Commit-ID:     f9ac7bbd6e4540dcc6df621b9c9b6eb2e26ded1d
+Gitweb:        https://git.kernel.org/tip/f9ac7bbd6e4540dcc6df621b9c9b6eb2e26ded1d
+Author:        Greentime Hu <greentime.hu@sifive.com>
+AuthorDate:    Thu, 29 Oct 2020 10:37:38 +08:00
 Committer:     Marc Zyngier <maz@kernel.org>
-CommitterDate: Sun, 01 Nov 2020 11:59:22 
+CommitterDate: Sun, 01 Nov 2020 11:52:27 
 
-irqchip/renesas-intc-irqpin: Merge irlm_bit and needs_irlm
+irqchip/sifive-plic: Fix chip_data access within a hierarchy
 
-Get rid of the separate flag to indicate if the IRLM bit is present in
-the INTC/Interrupt Control Register 0, by considering -1 an invalid
-irlm_bit value.
+The plic driver crashes in plic_irq_unmask() when the interrupt is within a
+hierarchy, as it picks the top-level chip_data instead of its local one.
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Using irq_data_get_irq_chip_data() instead of irq_get_chip_data() solves
+the issue for good.
+
+Fixes: f1ad1133b18f ("irqchip/sifive-plic: Add support for multiple PLICs")
+Signed-off-by: Greentime Hu <greentime.hu@sifive.com>
+[maz: rewrote commit message]
 Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20201028153955.1736767-1-geert+renesas@glider.be
+Reviewed-by: Anup Patel <anup@brainfault.org>
+Reviewed-by: Atish Patra <atish.patra@wdc.com>
+Link: https://lore.kernel.org/r/20201029023738.127472-1-greentime.hu@sifive.com
 ---
- drivers/irqchip/irq-renesas-intc-irqpin.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ drivers/irqchip/irq-sifive-plic.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/irqchip/irq-renesas-intc-irqpin.c b/drivers/irqchip/irq-renesas-intc-irqpin.c
-index 3819185..cb7f60b 100644
---- a/drivers/irqchip/irq-renesas-intc-irqpin.c
-+++ b/drivers/irqchip/irq-renesas-intc-irqpin.c
-@@ -71,8 +71,7 @@ struct intc_irqpin_priv {
- };
+diff --git a/drivers/irqchip/irq-sifive-plic.c b/drivers/irqchip/irq-sifive-plic.c
+index 4048657..6f432d2 100644
+--- a/drivers/irqchip/irq-sifive-plic.c
++++ b/drivers/irqchip/irq-sifive-plic.c
+@@ -99,7 +99,7 @@ static inline void plic_irq_toggle(const struct cpumask *mask,
+ 				   struct irq_data *d, int enable)
+ {
+ 	int cpu;
+-	struct plic_priv *priv = irq_get_chip_data(d->irq);
++	struct plic_priv *priv = irq_data_get_irq_chip_data(d);
  
- struct intc_irqpin_config {
--	unsigned int irlm_bit;
--	unsigned needs_irlm:1;
-+	int irlm_bit;		/* -1 if non-existent */
- };
+ 	writel(enable, priv->regs + PRIORITY_BASE + d->hwirq * PRIORITY_PER_ID);
+ 	for_each_cpu(cpu, mask) {
+@@ -115,7 +115,7 @@ static void plic_irq_unmask(struct irq_data *d)
+ {
+ 	struct cpumask amask;
+ 	unsigned int cpu;
+-	struct plic_priv *priv = irq_get_chip_data(d->irq);
++	struct plic_priv *priv = irq_data_get_irq_chip_data(d);
  
- static unsigned long intc_irqpin_read32(void __iomem *iomem)
-@@ -349,11 +348,10 @@ static const struct irq_domain_ops intc_irqpin_irq_domain_ops = {
+ 	cpumask_and(&amask, &priv->lmask, cpu_online_mask);
+ 	cpu = cpumask_any_and(irq_data_get_affinity_mask(d),
+@@ -127,7 +127,7 @@ static void plic_irq_unmask(struct irq_data *d)
  
- static const struct intc_irqpin_config intc_irqpin_irlm_r8a777x = {
- 	.irlm_bit = 23, /* ICR0.IRLM0 */
--	.needs_irlm = 1,
- };
+ static void plic_irq_mask(struct irq_data *d)
+ {
+-	struct plic_priv *priv = irq_get_chip_data(d->irq);
++	struct plic_priv *priv = irq_data_get_irq_chip_data(d);
  
- static const struct intc_irqpin_config intc_irqpin_rmobile = {
--	.needs_irlm = 0,
-+	.irlm_bit = -1,
- };
+ 	plic_irq_toggle(&priv->lmask, d, 0);
+ }
+@@ -138,7 +138,7 @@ static int plic_set_affinity(struct irq_data *d,
+ {
+ 	unsigned int cpu;
+ 	struct cpumask amask;
+-	struct plic_priv *priv = irq_get_chip_data(d->irq);
++	struct plic_priv *priv = irq_data_get_irq_chip_data(d);
  
- static const struct of_device_id intc_irqpin_dt_ids[] = {
-@@ -470,7 +468,7 @@ static int intc_irqpin_probe(struct platform_device *pdev)
- 	}
+ 	cpumask_and(&amask, &priv->lmask, mask_val);
  
- 	/* configure "individual IRQ mode" where needed */
--	if (config && config->needs_irlm) {
-+	if (config && config->irlm_bit >= 0) {
- 		if (io[INTC_IRQPIN_REG_IRLM])
- 			intc_irqpin_read_modify_write(p, INTC_IRQPIN_REG_IRLM,
- 						      config->irlm_bit, 1, 1);
