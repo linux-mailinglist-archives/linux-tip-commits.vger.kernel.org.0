@@ -2,175 +2,150 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 923792A245F
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  2 Nov 2020 06:38:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D1372A2461
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  2 Nov 2020 06:38:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726749AbgKBFiA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 2 Nov 2020 00:38:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51028 "EHLO
+        id S1727790AbgKBFiM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 2 Nov 2020 00:38:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51060 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725208AbgKBFiA (ORCPT
+        with ESMTP id S1726684AbgKBFiM (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 2 Nov 2020 00:38:00 -0500
-Received: from mail-il1-x141.google.com (mail-il1-x141.google.com [IPv6:2607:f8b0:4864:20::141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BE35C0617A6;
-        Sun,  1 Nov 2020 21:38:00 -0800 (PST)
-Received: by mail-il1-x141.google.com with SMTP id a20so11848057ilk.13;
-        Sun, 01 Nov 2020 21:38:00 -0800 (PST)
+        Mon, 2 Nov 2020 00:38:12 -0500
+Received: from mail-il1-x143.google.com (mail-il1-x143.google.com [IPv6:2607:f8b0:4864:20::143])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DA95C0617A6;
+        Sun,  1 Nov 2020 21:38:12 -0800 (PST)
+Received: by mail-il1-x143.google.com with SMTP id z2so11823011ilh.11;
+        Sun, 01 Nov 2020 21:38:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=AmtyWXXFCEjzWmQYxQpJxHrT5LT5SmaadSNhDN5r2mI=;
-        b=SMe2WPsXWxRPeMHazpborPwlpILG3FkT8obRAsJM+ZUm17kfQqQaPOSob0Jc6yYugj
-         ZqBPdYKwg3bc0qSbCZWXbHaQWgNQzwlRk42k8eXus8j7Yeb/5zlb4SJbqmWWBLln4Q7X
-         inmI2wuYD14UH9usZ3Nk4/CkUpiNvboME/4Qqd8ccqry3TKpqNx4DjDbdOKyyGQ/6ktG
-         VcEMGRSGAptEDcWhlx6OI6A6UxlF3qlWYGTTQQNlgn/OEAts52wdVurh83MOC9H6Z3lG
-         pXuNvyZHo6IYXhBHbpLMquaYXmKssDrw8a2EARGY4OniciLCiHcA3KaeAggHLdQasTZO
-         z3+g==
+        bh=3bPLW8Pb33mTsR143+WbKlCrEH4pZOBKjwtOQGjJ+H0=;
+        b=UT2LY8wk3t/ZJpYVyjOJmucInrj9gg8gSLa2+FvH55HMbB/KZjQ0KivvpwWUImY8B0
+         OWkiy9UBDk07EDSI8dsFiRHl6hS9bHAIkwBnF+DpXoJe2fvzLCPl9bSk6TGVpZuCCgfj
+         79DhdqasMtBvGNcd7C6+Cf8baIE4a9rlDv5lF9/qypqRO9e71XnBuXS06RI5w1IhHXRv
+         PQUQS1LDiSFXeJvtr87J09DiqrQL92TTa2Kf6Ua+Hgn9O2fx/PIaaceCVxopht+06Odj
+         edd/IOqyruBV9xjX4doOmOXufeyqEtGQIuFzySXDuJRjnwDt4Dx/fc5wUP0WepxN2omR
+         eK0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=AmtyWXXFCEjzWmQYxQpJxHrT5LT5SmaadSNhDN5r2mI=;
-        b=Qw+IqKvzolbLLJvZ7xWjZnQXL9g+EEWkdM4h06Rr2fj6r3a/YhfuqBIieuzx/IVZXE
-         Y9eHV0zxD8i3fHIj3qpchRTj7nsnqgmq32GwcyqskZMCYouUbqlTd7TsWbM4l1jZ6ohN
-         +eVAgFWSKZJqD8eJS5PVDCe3ANzMvymCpujk1TkHmVTgbBHi24D0YUMkFQZZoMwdD27Y
-         KtyAYd5HbWmptwavIH7uGxwzfLW4GJmo5tNyTxdIGhzBnsqXJGgm5KY6IaGw92FwKy1j
-         GCgb7sB9c/I4/KwLM72h2KW2dzaBMZL5+ISTASloE1LDhu3clz80p+vcfCwkETU5L/oc
-         eIbA==
-X-Gm-Message-State: AOAM532WS+2Yq6mBRuB9Af+NqzBR1LWaShXhPlzbH/0T3VJCGTgdf38r
-        5zZVQeRsLXUFN4zEnUdywEWZMZj3ceQ=
-X-Google-Smtp-Source: ABdhPJyIp/AtxHQmHCSEmY8oCG4MZHinb72/M4jmjLADKWL2YG0K30CPyr1MBsktCB1AUmGcXp/jLw==
-X-Received: by 2002:a92:c8c4:: with SMTP id c4mr2987641ilq.161.1604295479696;
-        Sun, 01 Nov 2020 21:37:59 -0800 (PST)
+        bh=3bPLW8Pb33mTsR143+WbKlCrEH4pZOBKjwtOQGjJ+H0=;
+        b=jVtX0rWVzM2Tovm7wsxo06Av+j1iys9wHPxVQmGos4SVnJXtl7vhFcaFz4BeWvtTBt
+         eHgwR+l1jQLJZ9GT7K7xoSO7p2rkbiOZ6OZc+R6Ky7E9AhEcWYEt2erBg23ifGpFRfVB
+         /yor+2+5ieoX5k01kUtDJG+NV+2qaOwbSyKEbvYAyH+JGVoFjLTOOk36raRtlBKrgPtV
+         df3yHR/FfacNXwkUidaG4fZQtSm0R4/rNb3U49bfvC+LvBq9K3gvouEaZesPOtGiy1pj
+         dmPcbgm0W2YS9BmgZvnDc4GwnFrPl2VtxZeBKzmNzfX9sqLMiLDoeOhbpFDhQVuNQSq8
+         EXcA==
+X-Gm-Message-State: AOAM531zqbZcPTN0kuttqJ/4pwI27RUAvPX2Evm2eYNuWeoQdaBIWc2E
+        cLmCFGC+uuf7fDF7JENV1u8=
+X-Google-Smtp-Source: ABdhPJyjN215y0CpZk+oo0tT4jqpjyIMDFstapXd5fvns8MZPkeTVqUDt//a4weMZNTQrVg2HmhHjA==
+X-Received: by 2002:a92:5e55:: with SMTP id s82mr10065834ilb.48.1604295491795;
+        Sun, 01 Nov 2020 21:38:11 -0800 (PST)
 Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
-        by smtp.gmail.com with ESMTPSA id w81sm10489656ilk.38.2020.11.01.21.37.58
+        by smtp.gmail.com with ESMTPSA id j10sm465312iop.34.2020.11.01.21.38.10
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 01 Nov 2020 21:37:58 -0800 (PST)
+        Sun, 01 Nov 2020 21:38:11 -0800 (PST)
 Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-        by mailauth.nyi.internal (Postfix) with ESMTP id BAB5827C0054;
-        Mon,  2 Nov 2020 00:37:57 -0500 (EST)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute3.internal (MEProxy); Mon, 02 Nov 2020 00:37:57 -0500
-X-ME-Sender: <xms:NZufX1mq9UgIp5_b2H1KcvCWgXeiUnVPpJjdObIr3cku2vDpUypWqw>
-    <xme:NZufXw2ap0cSNdAhPj4Hdc8yWfJk7pbPcnQ8EhTjjRV8NW470tX61OIztoiRmoS1z
-    sKhx4hEEGAmbGvRSw>
+        by mailauth.nyi.internal (Postfix) with ESMTP id 9469827C0054;
+        Mon,  2 Nov 2020 00:38:10 -0500 (EST)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute3.internal (MEProxy); Mon, 02 Nov 2020 00:38:10 -0500
+X-ME-Sender: <xms:QpufX4D-eEb-ifAsIGqonj8wd7wXcB1-v3eqBifMzHt09Rm3I5ulaQ>
+    <xme:QpufX6h4IZy--xnKF-hfUAtuC0RRQIgLO9wdqWg6KmQaK8J3isYv4fjSlhRXsY4Q3
+    -cWgkPQEVfEA3r_Sw>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedujedruddttddgkeehucetufdoteggodetrfdotf
     fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
     uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
     cujfgurhephffvufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpeeuohhquhhn
     ucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrth
-    htvghrnhephedvveetfefgiedutedtfeevvddvleekjeeuffffleeguefhhfejteekieeu
-    ueelnecukfhppedutddurdekiedrgedurdegjeenucevlhhushhtvghrufhiiigvpedtne
-    curfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghr
-    shhonhgrlhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnpeepfh
-    higihmvgdrnhgrmhgvsehfihigmhgvrdhnrghmvg
-X-ME-Proxy: <xmx:NZufX7qdIFhxWs8fAEShzy4zOLgT7WkXnQiyQAZzWMoLb-eDp_Oi0g>
-    <xmx:NZufX1mw88tWul5KOKJWWE0Njj9e-VF3wZWr6PR9-9jOB63EL_xTQQ>
-    <xmx:NZufXz3QgcPA_-gJ298S96J_UDJ49_7MD7y4SXoJgPfQH6Ijyu2UxA>
-    <xmx:NZufXz-C_A27gLlNQrJqSgBU5RI_vsqRAXwwbSc9AGVvD0nyURU35w>
+    htvghrnhepkeejkeekudekieevuedufefhudeiheevvddvtddtveffteegvdehueeltddu
+    hfeunecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucfkphepuddtuddrkeeirdegud
+    drgeejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhep
+    sghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtie
+    egqddujeejkeehheehvddqsghoqhhunheppehfihigmhgvrdhnrghmvgesfhhigihmvgdr
+    nhgrmhgv
+X-ME-Proxy: <xmx:QpufX7mn52649JHwb28QJ4axAAFd8BWlwMhlaRv_1ctFNxkYAa6enw>
+    <xmx:QpufX-wLwqr-Yfe1fj9d073aMv2GEQrSUSNBgFsNvktJvvYhqIyLww>
+    <xmx:QpufX9TfKO1ZsW43vJN4FHX2GyPPF5U_Gm98_0UyM537sodDkj0Z-g>
+    <xmx:QpufX2J5C451qX7DQkmF9qmjIzhUfhZpBMRAJvIwDnXXfCnGU0AJgA>
 Received: from localhost (unknown [101.86.41.47])
-        by mail.messagingengine.com (Postfix) with ESMTPA id 6E5043280063;
-        Mon,  2 Nov 2020 00:37:56 -0500 (EST)
+        by mail.messagingengine.com (Postfix) with ESMTPA id 60198306467D;
+        Mon,  2 Nov 2020 00:38:08 -0500 (EST)
 From:   Boqun Feng <boqun.feng@gmail.com>
 To:     linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org
 Cc:     Qian Cai <cai@redhat.com>, Boqun Feng <boqun.feng@gmail.com>,
         Chris Wilson <chris@chris-wilson.co.uk>,
         Peter Zijlstra <peterz@infradead.org>,
         Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>
-Subject: [PATCH 1/2] lockdep: Avoid to modify chain keys in validate_chain()
-Date:   Mon,  2 Nov 2020 13:37:41 +0800
-Message-Id: <20201102053743.450459-1-boqun.feng@gmail.com>
+Subject: [PATCH 2/2] lockdep/selftest: Add spin_nest_lock test
+Date:   Mon,  2 Nov 2020 13:37:42 +0800
+Message-Id: <20201102053743.450459-2-boqun.feng@gmail.com>
 X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20201030093806.GA2628@hirez.programming.kicks-ass.net>
+In-Reply-To: <20201102053743.450459-1-boqun.feng@gmail.com>
 References: <20201030093806.GA2628@hirez.programming.kicks-ass.net>
+ <20201102053743.450459-1-boqun.feng@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-Chris Wilson reported a problem spotted by check_chain_key(): a chain
-key got changed in validate_chain() because we modify the ->read in
-validate_chain() to skip checks for dependency adding, and ->read is
-taken into calculation for chain key since commit f611e8cf98ec
-("lockdep: Take read/write status in consideration when generate
-chainkey").
+Add a self test case to test the behavior for the following case:
 
-Fix this by avoiding to modify ->read in validate_chain() based on two
-facts: a) since we now support recursive read lock detection, there is
-no need to skip checks for dependency adding for recursive readers, b)
-since we have a), there is only one case left (nest_lock) where we want
-to skip checks in validate_chain(), we simply remove the modification
-for ->read and rely on the return value of check_deadlock() to skip the
-dependency adding.
+	lock(A);
+	lock_nest_lock(C1, A);
+	lock(B);
+	lock_nest_lock(C2, A);
 
-Reported-by: Chris Wilson <chris@chris-wilson.co.uk>
+This is a reproducer for a problem[1] reported by Chris Wilson, and is
+helpful to prevent this.
+
+[1]: https://lore.kernel.org/lkml/160390684819.31966.12048967113267928793@build.alporthouse.com/
+
 Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Chris Wilson <chris@chris-wilson.co.uk>
 ---
-Peter,
+ lib/locking-selftest.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-I managed to get a reproducer for the problem Chris reported, please see
-patch #2. With this patch, that problem gets fixed.
-
-This small patchset is based on your locking/core, patch #2 actually
-relies on your "s/raw_spin/spin" changes, thanks for taking care of that
-;-)
-
-Regards,
-Boqun
-
- kernel/locking/lockdep.c | 19 +++++++++----------
- 1 file changed, 9 insertions(+), 10 deletions(-)
-
-diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
-index 3e99dfef8408..a294326fd998 100644
---- a/kernel/locking/lockdep.c
-+++ b/kernel/locking/lockdep.c
-@@ -2765,7 +2765,9 @@ print_deadlock_bug(struct task_struct *curr, struct held_lock *prev,
-  * (Note that this has to be done separately, because the graph cannot
-  * detect such classes of deadlocks.)
-  *
-- * Returns: 0 on deadlock detected, 1 on OK, 2 on recursive read
-+ * Returns: 0 on deadlock detected, 1 on OK, 2 if another lock with the same
-+ * lock class is held but nest_lock is also held, i.e. we rely on the
-+ * nest_lock to avoid the deadlock.
-  */
- static int
- check_deadlock(struct task_struct *curr, struct held_lock *next)
-@@ -2788,7 +2790,7 @@ check_deadlock(struct task_struct *curr, struct held_lock *next)
- 		 * lock class (i.e. read_lock(lock)+read_lock(lock)):
- 		 */
- 		if ((next->read == 2) && prev->read)
--			return 2;
-+			continue;
+diff --git a/lib/locking-selftest.c b/lib/locking-selftest.c
+index afa7d4bb291f..4c24ac8a456c 100644
+--- a/lib/locking-selftest.c
++++ b/lib/locking-selftest.c
+@@ -2009,6 +2009,19 @@ static void ww_test_spin_nest_unlocked(void)
+ 	U(A);
+ }
  
- 		/*
- 		 * We're holding the nest_lock, which serializes this lock's
-@@ -3592,16 +3594,13 @@ static int validate_chain(struct task_struct *curr,
++/* This is not a deadlock, because we have X1 to serialize Y1 and Y2 */
++static void ww_test_spin_nest_lock(void)
++{
++	spin_lock(&lock_X1);
++	spin_lock_nest_lock(&lock_Y1, &lock_X1);
++	spin_lock(&lock_A);
++	spin_lock_nest_lock(&lock_Y2, &lock_X1);
++	spin_unlock(&lock_A);
++	spin_unlock(&lock_Y2);
++	spin_unlock(&lock_Y1);
++	spin_unlock(&lock_X1);
++}
++
+ static void ww_test_unneeded_slow(void)
+ {
+ 	WWAI(&t);
+@@ -2226,6 +2239,10 @@ static void ww_tests(void)
+ 	dotest(ww_test_spin_nest_unlocked, FAILURE, LOCKTYPE_WW);
+ 	pr_cont("\n");
  
- 		if (!ret)
- 			return 0;
--		/*
--		 * Mark recursive read, as we jump over it when
--		 * building dependencies (just like we jump over
--		 * trylock entries):
--		 */
--		if (ret == 2)
--			hlock->read = 2;
- 		/*
- 		 * Add dependency only if this lock is not the head
--		 * of the chain, and if it's not a secondary read-lock:
-+		 * of the chain, and if the new lock introduces no more
-+		 * lock dependency (because we already hold a lock with the
-+		 * same lock class) nor deadlock (because the nest_lock
-+		 * serializes nesting locks), see the comments for
-+		 * check_deadlock().
- 		 */
- 		if (!chain_head && ret != 2) {
- 			if (!check_prevs_add(curr, hlock))
++	print_testname("spinlock nest test");
++	dotest(ww_test_spin_nest_lock, SUCCESS, LOCKTYPE_WW);
++	pr_cont("\n");
++
+ 	printk("  -----------------------------------------------------\n");
+ 	printk("                                 |block | try  |context|\n");
+ 	printk("  -----------------------------------------------------\n");
 -- 
 2.28.0
 
