@@ -2,101 +2,167 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B4C9D2A49C4
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  3 Nov 2020 16:31:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D4C642A5039
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  3 Nov 2020 20:35:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728046AbgKCPah (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 3 Nov 2020 10:30:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56718 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728549AbgKCP3d (ORCPT
+        id S1725997AbgKCTf1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 3 Nov 2020 14:35:27 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:62476 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725957AbgKCTf1 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 3 Nov 2020 10:29:33 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4403C061A48;
-        Tue,  3 Nov 2020 07:29:32 -0800 (PST)
-Date:   Tue, 03 Nov 2020 15:29:29 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1604417371;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=W8/e5IFrTqIwtRICO+bpxRvUanylygCEjoO3F833h/k=;
-        b=OPlf+EVX4boAw207TXQeMEifISEFY9mvubdEE8XvztkwD8L5J+hSbPCbx3nha4azxSVFz6
-        Yj2abSmK/2WkAZ1lNkT47/SzAC9+ZiXIiC6l1gcqSFJSjxBOgwMOOGgtIo95GVV93/hobV
-        iFYUX/4blP9pljTv55RrrOmtolSmeFLuzKrh9OPkbjAP0jlxFeP4DDv/kIzAtkSPwK4z3A
-        p+6bUO55GREeCDydbY/h5teTjx09mMoISyQiCMBXxPRrEGSi5U9IVQGRGS2zQ88J76NKXA
-        QPk79eONOZMTImcszqhDBhMOCB2kwVOQn/Epmj+Oesb5ZyocbrYVmn6x5ca7oA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1604417371;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=W8/e5IFrTqIwtRICO+bpxRvUanylygCEjoO3F833h/k=;
-        b=lL86WPsWS3SsVPk8wnBs+qygHGjATRbtVYOjhxtIF/4PCL2KPx/fRAJDJv4WUl/gAtrlFY
-        iTuyfhUpYxIJYzCA==
-From:   "tip-bot2 for Peter Ujfalusi" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/urgent] dt-bindings: irqchip: ti, sci-inta: Fix diagram
- indentation for unmapped events
-Cc:     Rob Herring <robh@kernel.org>,
-        Peter Ujfalusi <peter.ujfalusi@ti.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Marc Zyngier <maz@kernel.org>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20201103135004.2363-1-peter.ujfalusi@ti.com>
-References: <20201103135004.2363-1-peter.ujfalusi@ti.com>
+        Tue, 3 Nov 2020 14:35:27 -0500
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 0A3JXH1j054347;
+        Tue, 3 Nov 2020 14:35:15 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
+ subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=pp1; bh=yJVK0p7OTPVLnh9heLWN7XzBBJHmhTORtbVuKHXpgxY=;
+ b=X7I5wHIm7VjOdrQw2o5Vh1wlNBxXhIkUeJYimAitVinlk099EIMlgPTizyoUL++qtQr4
+ X0pU54WJKvwpHKmn0jWOV6nnfZncqLuo8aC7FN4ndHJgC5lW4ERhg/x3DJQp3ifr5yPz
+ l5MMV8qWlxfocyCCOW3TsDc1KWf6ptsPbx+oydQllgCgfbOJCit0BlYxckncgWkKZQt4
+ 7BEXdVjT7O8m+EbryyWRtksDWCp1uFubvh0yE+lPrPZEq38W/jSRBEzDVhhCghLI+BRV
+ UKq+WCzMj0sKAQMftLXHwHaqNC5KNACtKuBISA3IOCJyNFBubCqwIdMGc/stK499TwlF 5w== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 34kbppbdtx-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 03 Nov 2020 14:35:15 -0500
+Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 0A3JXfnE055436;
+        Tue, 3 Nov 2020 14:35:14 -0500
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com [159.122.73.70])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 34kbppbdsd-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 03 Nov 2020 14:35:14 -0500
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+        by ppma01fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0A3JRjDL007981;
+        Tue, 3 Nov 2020 19:35:11 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+        by ppma01fra.de.ibm.com with ESMTP id 34jbytrxgu-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 03 Nov 2020 19:35:11 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+        by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 0A3JZ8dC9437740
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 3 Nov 2020 19:35:09 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id BFD3AA4060;
+        Tue,  3 Nov 2020 19:35:08 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 87F11A4064;
+        Tue,  3 Nov 2020 19:35:06 +0000 (GMT)
+Received: from localhost (unknown [9.145.42.130])
+        by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+        Tue,  3 Nov 2020 19:35:05 +0000 (GMT)
+Date:   Tue, 3 Nov 2020 20:35:00 +0100
+From:   Vasily Gorbik <gor@linux.ibm.com>
+To:     Josh Poimboeuf <jpoimboe@redhat.com>,
+        Masami Hiramatsu <mhiramat@kernel.org>
+Cc:     Borislav Petkov <bp@alien8.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
+        x86 <x86@kernel.org>
+Subject: Re: [tip: objtool/core] x86/insn: Support big endian cross-compiles
+Message-ID: <cover.thread-59328d.your-ad-here.call-01604429777-ext-1374@work.hours>
+References: <20201014162859.987d5f71f5e5456ffb812abc@kernel.org>
 MIME-Version: 1.0
-Message-ID: <160441736983.397.807773403524844790.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2.linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20201014162859.987d5f71f5e5456ffb812abc@kernel.org>
+X-Patchwork-Bot: notify
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312,18.0.737
+ definitions=2020-11-03_08:2020-11-03,2020-11-03 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 phishscore=0
+ adultscore=0 clxscore=1011 impostorscore=0 mlxscore=0 mlxlogscore=999
+ spamscore=0 suspectscore=0 malwarescore=0 priorityscore=1501
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2011030130
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the irq/urgent branch of tip:
+On Wed, Oct 14, 2020 at 04:28:59PM +0900, Masami Hiramatsu wrote:
+> On Mon, 12 Oct 2020 10:39:49 -0500
+> Josh Poimboeuf <jpoimboe@redhat.com> wrote:
+> 
+> > On Mon, Oct 12, 2020 at 09:12:36AM +0900, Masami Hiramatsu wrote:
+> > > On Sat, 10 Oct 2020 12:44:15 -0500
+> > > Josh Poimboeuf <jpoimboe@redhat.com> wrote:
+> > > 
+> > > > On Fri, Oct 09, 2020 at 10:49:21PM +0200, Borislav Petkov wrote:
+> > > > > On Fri, Oct 09, 2020 at 10:38:22PM +0200, Peter Zijlstra wrote:
+> > > > > > On Wed, Oct 07, 2020 at 04:20:19PM -0000, tip-bot2 for Martin Schwidefsky wrote:
+> > > > > > > The following commit has been merged into the objtool/core branch of tip:
+> > > > > > > 
+> > > > > > > Commit-ID:     2a522b53c47051d3bf98748418f4f8e5f20d2c04
+> > > > > > > Gitweb:        https://git.kernel.org/tip/2a522b53c47051d3bf98748418f4f8e5f20d2c04
+> > > > > > > Author:        Martin Schwidefsky <schwidefsky@de.ibm.com>
+> > > > > > > AuthorDate:    Mon, 05 Oct 2020 17:50:31 +02:00
+> > > > > > > Committer:     Josh Poimboeuf <jpoimboe@redhat.com>
+> > > > > > > CommitterDate: Tue, 06 Oct 2020 09:32:29 -05:00
+> > > > > > > 
+> > > > > > > x86/insn: Support big endian cross-compiles
+> > > > > > > 
+> > > > > > > x86 instruction decoder code is shared across the kernel source and the
+> > > > > > > tools. Currently objtool seems to be the only tool from build tools needed
+> > > > > > > which breaks x86 cross compilation on big endian systems. Make the x86
+> > > > > > > instruction decoder build host endianness agnostic to support x86 cross
+> > > > > > > compilation and enable objtool to implement endianness awareness for
+> > > > > > > big endian architectures support.
+> > > > > > > 
+> > > > > > > Signed-off-by: Martin Schwidefsky <schwidefsky@de.ibm.com>
+> > > > > > > Co-developed-by: Vasily Gorbik <gor@linux.ibm.com>
+> > > > > > > Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+> > > > > > > Acked-by: Masami Hiramatsu <mhiramat@kernel.org>
+> > > > > > > Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
+> > > > > > 
+> > > > > > This commit breaks the x86 build with CONFIG_X86_DECODER_SELFTEST=y.
+> > > > > > 
+> > > > > > I've asked Boris to truncate tip/objtool/core.
+> > > > > 
+> > > > > Yeah, top 4 are gone until this is resolved.
+> > > > 
+> > > > Masami, I wonder if we even need these selftests anymore?  Objtool
+> > > > already decodes the entire kernel.
+> > > 
+> > > No, they have different roles. The selftest checks if the decoder
+> > > works correctly by comparing with the output of objdump.
+> > > 
+> > > As far as I can see, the objtool relies on the sanity of the decoder
+> > > (it trusts the output of the decoder).
+> > 
+> > Ok.  I wonder if we should move the decoder selftest to the 'tools'
+> > subdirectory.
+> 
+> It is in the arch/x86/tools, so it is already in a kind of tools :)
+> But yeah, it was considered to be used only on x86. But if someone
+> start trying to run it on non-x86, cross compiling, we need to
+> reconsider that.
 
-Commit-ID:     82768a86c64659c7181571ebfbc41ec9f2e52dde
-Gitweb:        https://git.kernel.org/tip/82768a86c64659c7181571ebfbc41ec9f2e52dde
-Author:        Peter Ujfalusi <peter.ujfalusi@ti.com>
-AuthorDate:    Tue, 03 Nov 2020 15:50:04 +02:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 03 Nov 2020 16:25:55 +01:00
+I actually tried to move it to tools/testing/selftests and encountered
+several problems with kselftest build in general:
+- out of source build is broken if path is relative,
+- out of source build headers partially installed in
+  $(srcdir)arch/x86/include/generated/ instead of $(objdir), when
+  kselftests are called from the kbuild,
+- out of source test runs is broken,
+- kernel headers are installed unconditionally.
 
-dt-bindings: irqchip: ti, sci-inta: Fix diagram indentation for unmapped events
+These things impede moving decoder selftests to kselftests.
 
-One space has been missing by the diagram update.
+On the other hand making the decoder selftest work "in place" seems
+trivial. The following fix on top of jpoimboe/objtool/core fixes the
+build, as well as cross-compilation. With that I can cross-compile
+x86 kernel on s390 with CONFIG_X86_DECODER_SELFTEST=y and posttest runs
+just fine.
 
-Fixes: bb2bd7c7f3d0 ("dt-bindings: irqchip: ti, sci-inta: Update for unmapped event handling")
-Reported-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Rob Herring <robh@kernel.org>
-Cc: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20201103135004.2363-1-peter.ujfalusi@ti.com
+Vasily Gorbik (1):
+  x86/tools: Use tools headers for instruction decoder selftests
 
----
- Documentation/devicetree/bindings/interrupt-controller/ti,sci-inta.yaml | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/tools/Makefile      | 8 ++++----
+ arch/x86/tools/insn_sanity.c | 4 ----
+ 2 files changed, 4 insertions(+), 8 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/interrupt-controller/ti,sci-inta.yaml b/Documentation/devicetree/bindings/interrupt-controller/ti,sci-inta.yaml
-index cc79549..8d90bc5 100644
---- a/Documentation/devicetree/bindings/interrupt-controller/ti,sci-inta.yaml
-+++ b/Documentation/devicetree/bindings/interrupt-controller/ti,sci-inta.yaml
-@@ -34,7 +34,7 @@ description: |
-                        |                                         |
-                        |      Unmap                              |
-                        | +--------------+                        |
-- Unmapped events ----->| |   umapidx    |-------------------------> Globalevents
-+  Unmapped events ---->| |   umapidx    |-------------------------> Globalevents
-                        | +--------------+                        |
-                        |                                         |
-                        +-----------------------------------------+
+-- 
+2.25.4
