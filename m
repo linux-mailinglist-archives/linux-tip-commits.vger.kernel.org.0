@@ -2,53 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5044F2AA11A
+	by mail.lfdr.de (Postfix) with ESMTP id BD8B12AA11B
 	for <lists+linux-tip-commits@lfdr.de>; Sat,  7 Nov 2020 00:28:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728969AbgKFX1c (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 6 Nov 2020 18:27:32 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:38548 "EHLO
+        id S1729037AbgKFX1d (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 6 Nov 2020 18:27:33 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:38434 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728198AbgKFX13 (ORCPT
+        with ESMTP id S1729011AbgKFX1a (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 6 Nov 2020 18:27:29 -0500
-Date:   Fri, 06 Nov 2020 23:27:26 -0000
+        Fri, 6 Nov 2020 18:27:30 -0500
+Date:   Fri, 06 Nov 2020 23:27:27 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1604705247;
+        s=2020; t=1604705248;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=MIGdJo+a1mhpcsGUyQVDq5wNtn8Sp8hjlep86+l4aao=;
-        b=fojbAvUIWCjMtot+9S2EiNrHr+mjYZ6/D8xs7LGfI9e3Qh0DvnzjGzMnqvPCbuPM50doRw
-        btHSCax6TFDwyKO30JRioicbvrFePtwF6SGSQiW3uUKL3mFX/x5g39qnnKIBpYHhY3PAk3
-        S2HwGUkaqtObmiZC9SYrFG6x6IUt14w34YgZzEf2LqDqNiINggul6jDNMTd4azNI75WpXI
-        p5x6pjvy5Gl1b0H8rHzf5N5mq3dUuROb5a59v+KFabINDjwU8beTJa9PiuIFjDHnnIYVV2
-        3BaOnM6Jpwh9Gs4Kzn+EuiVcmJ+EwJXLilEpzl+jsZTLDi3WVUFTPrPzq4Dthw==
+        bh=aAyL+ADOoA845ttjTbDhYkco/wC6opXX0llYwKTOTaw=;
+        b=p2Vd703dh5lVdC4JSKHCiTwkx3ngg4AlHFgQ73PD2uycCL/8qiyeN/uF8A29OX0TiT9Px7
+        f/1jkTmeBaiMWbTiOqFt87ZfFbGkaDbMCKWkx81mJpwy8/HQe3pDeUO0tIRRe1YBRCLnEH
+        Yj7zRca+oqJYQnww6grQ4FbhebX019Vh65bjRMRhBiD7WUxBXxx4ReMRCzOl2KJ5B5HQ4l
+        oB6lu8qCwefTAqjVwV6aENFk879mlH8GTqIBhcrJemJ5FPNZQWzpe6MR9x+fgW+jMwEitX
+        PJu/OH6BZgTmblvmezw8gO7khb5oh33bMHbf8DQ7d1pc0bOC/exdfqT74omp8Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1604705247;
+        s=2020e; t=1604705248;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=MIGdJo+a1mhpcsGUyQVDq5wNtn8Sp8hjlep86+l4aao=;
-        b=PXQYvL2yeJC9idi4W2Bas27Jl512cfoGcI03ebPfZ7wfxK1ebjRaz2biywTo/2jy3vL8O8
-        RSU/tIgy5xCXNoDw==
+        bh=aAyL+ADOoA845ttjTbDhYkco/wC6opXX0llYwKTOTaw=;
+        b=RX1yaCEu7m4jC158K4Rwg5vZZvMOQP4K+gGuJ/+LVxdgk4J+QDkUM//tCqeG3EzfK0smM+
+        +R700LKkLtrIFVDw==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/mm] asm-generic: Provide kmap_size.h
+Subject: [tip: core/mm] sh/highmem: Remove all traces of unused cruft
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Arnd Bergmann <arnd@arndb.de>,
         Andrew Morton <akpm@linux-foundation.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>, Arnd Bergmann <arnd@arndb.de>,
         x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20201103095857.078043987@linutronix.de>
-References: <20201103095857.078043987@linutronix.de>
+In-Reply-To: <20201103095856.979798613@linutronix.de>
+References: <20201103095856.979798613@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <160470524624.397.7764720699234410327.tip-bot2@tip-bot2>
+Message-ID: <160470524712.397.18423833305163964941.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,76 +60,102 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/mm branch of tip:
 
-Commit-ID:     4f8b96cd47b06f1e3ec71c1a3216113efe8dbfb5
-Gitweb:        https://git.kernel.org/tip/4f8b96cd47b06f1e3ec71c1a3216113efe8dbfb5
+Commit-ID:     673afbace459ae6fd8d03bda410e0a9f10438c99
+Gitweb:        https://git.kernel.org/tip/673afbace459ae6fd8d03bda410e0a9f10438c99
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Tue, 03 Nov 2020 10:27:17 +01:00
+AuthorDate:    Tue, 03 Nov 2020 10:27:16 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Fri, 06 Nov 2020 23:14:54 +01:00
 
-asm-generic: Provide kmap_size.h
+sh/highmem: Remove all traces of unused cruft
 
-kmap_types.h is a misnomer because the old atomic MAP based array does not
-exist anymore and the whole indirection of architectures including
-kmap_types.h is inconinstent and does not allow to provide guard page
-debugging for this misfeature.
-
-Add a common header file which defines the mapping stack size for all
-architectures. Will be used when converting architectures over to a
-generic kmap_local/atomic implementation.
-
-The array size is chosen with the following constraints in mind:
-
-    - The deepest nest level in one context is 3 according to code
-      inspection.
-
-    - The worst case nesting for the upcoming reemptible version would be:
-
-      2 maps in task context and a fault inside
-      2 maps in the fault handler
-      3 maps in softirq
-      2 maps in interrupt
-
-So a total of 16 is sufficient and probably overestimated.
+For whatever reasons SH has highmem bits all over the place but does
+not enable it via Kconfig. Remove the bitrot.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Arnd Bergmann <arnd@arndb.de>
 Cc: Andrew Morton <akpm@linux-foundation.org>
-Link: https://lore.kernel.org/r/20201103095857.078043987@linutronix.de
-
+Link: https://lore.kernel.org/r/20201103095856.979798613@linutronix.de
+Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+Cc: Rich Felker <dalias@libc.org>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Andrew Morton <akpm@linux-foundation.org>
 ---
- include/asm-generic/Kbuild      |  1 +
- include/asm-generic/kmap_size.h | 12 ++++++++++++
- 2 files changed, 13 insertions(+)
- create mode 100644 include/asm-generic/kmap_size.h
+ arch/sh/include/asm/fixmap.h     |  8 --------
+ arch/sh/include/asm/kmap_types.h | 15 ---------------
+ arch/sh/mm/init.c                |  8 --------
+ 3 files changed, 31 deletions(-)
+ delete mode 100644 arch/sh/include/asm/kmap_types.h
 
-diff --git a/include/asm-generic/Kbuild b/include/asm-generic/Kbuild
-index e78bbb9..ed62d38 100644
---- a/include/asm-generic/Kbuild
-+++ b/include/asm-generic/Kbuild
-@@ -31,6 +31,7 @@ mandatory-y += irq_regs.h
- mandatory-y += irq_work.h
- mandatory-y += kdebug.h
- mandatory-y += kmap_types.h
-+mandatory-y += kmap_size.h
- mandatory-y += kprobes.h
- mandatory-y += linkage.h
- mandatory-y += local.h
-diff --git a/include/asm-generic/kmap_size.h b/include/asm-generic/kmap_size.h
-new file mode 100644
-index 0000000..9d6c778
---- /dev/null
-+++ b/include/asm-generic/kmap_size.h
-@@ -0,0 +1,12 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _ASM_GENERIC_KMAP_SIZE_H
-+#define _ASM_GENERIC_KMAP_SIZE_H
-+
-+/* For debug this provides guard pages between the maps */
-+#ifdef CONFIG_DEBUG_HIGHMEM
-+# define KM_MAX_IDX	33
-+#else
-+# define KM_MAX_IDX	16
-+#endif
-+
-+#endif
+diff --git a/arch/sh/include/asm/fixmap.h b/arch/sh/include/asm/fixmap.h
+index f38adc1..b07fbc7 100644
+--- a/arch/sh/include/asm/fixmap.h
++++ b/arch/sh/include/asm/fixmap.h
+@@ -13,9 +13,6 @@
+ #include <linux/kernel.h>
+ #include <linux/threads.h>
+ #include <asm/page.h>
+-#ifdef CONFIG_HIGHMEM
+-#include <asm/kmap_types.h>
+-#endif
+ 
+ /*
+  * Here we define all the compile-time 'special' virtual
+@@ -53,11 +50,6 @@ enum fixed_addresses {
+ 	FIX_CMAP_BEGIN,
+ 	FIX_CMAP_END = FIX_CMAP_BEGIN + (FIX_N_COLOURS * NR_CPUS) - 1,
+ 
+-#ifdef CONFIG_HIGHMEM
+-	FIX_KMAP_BEGIN,	/* reserved pte's for temporary kernel mappings */
+-	FIX_KMAP_END = FIX_KMAP_BEGIN + (KM_TYPE_NR * NR_CPUS) - 1,
+-#endif
+-
+ #ifdef CONFIG_IOREMAP_FIXED
+ 	/*
+ 	 * FIX_IOREMAP entries are useful for mapping physical address
+diff --git a/arch/sh/include/asm/kmap_types.h b/arch/sh/include/asm/kmap_types.h
+deleted file mode 100644
+index b78107f..0000000
+--- a/arch/sh/include/asm/kmap_types.h
++++ /dev/null
+@@ -1,15 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-#ifndef __SH_KMAP_TYPES_H
+-#define __SH_KMAP_TYPES_H
+-
+-/* Dummy header just to define km_type. */
+-
+-#ifdef CONFIG_DEBUG_HIGHMEM
+-#define  __WITH_KM_FENCE
+-#endif
+-
+-#include <asm-generic/kmap_types.h>
+-
+-#undef __WITH_KM_FENCE
+-
+-#endif
+diff --git a/arch/sh/mm/init.c b/arch/sh/mm/init.c
+index 3348e0c..0db6919 100644
+--- a/arch/sh/mm/init.c
++++ b/arch/sh/mm/init.c
+@@ -362,9 +362,6 @@ void __init mem_init(void)
+ 	mem_init_print_info(NULL);
+ 	pr_info("virtual kernel memory layout:\n"
+ 		"    fixmap  : 0x%08lx - 0x%08lx   (%4ld kB)\n"
+-#ifdef CONFIG_HIGHMEM
+-		"    pkmap   : 0x%08lx - 0x%08lx   (%4ld kB)\n"
+-#endif
+ 		"    vmalloc : 0x%08lx - 0x%08lx   (%4ld MB)\n"
+ 		"    lowmem  : 0x%08lx - 0x%08lx   (%4ld MB) (cached)\n"
+ #ifdef CONFIG_UNCACHED_MAPPING
+@@ -376,11 +373,6 @@ void __init mem_init(void)
+ 		FIXADDR_START, FIXADDR_TOP,
+ 		(FIXADDR_TOP - FIXADDR_START) >> 10,
+ 
+-#ifdef CONFIG_HIGHMEM
+-		PKMAP_BASE, PKMAP_BASE+LAST_PKMAP*PAGE_SIZE,
+-		(LAST_PKMAP*PAGE_SIZE) >> 10,
+-#endif
+-
+ 		(unsigned long)VMALLOC_START, VMALLOC_END,
+ 		(VMALLOC_END - VMALLOC_START) >> 20,
+ 
