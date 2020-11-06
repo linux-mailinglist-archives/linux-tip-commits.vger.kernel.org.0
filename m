@@ -2,54 +2,58 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9313B2AA114
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  7 Nov 2020 00:28:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F13B92AA117
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  7 Nov 2020 00:28:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728543AbgKFX1R (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 6 Nov 2020 18:27:17 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:38412 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727264AbgKFX1P (ORCPT
+        id S1728640AbgKFX1S (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 6 Nov 2020 18:27:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43908 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728198AbgKFX1R (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 6 Nov 2020 18:27:15 -0500
-Date:   Fri, 06 Nov 2020 23:27:12 -0000
+        Fri, 6 Nov 2020 18:27:17 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B5B5C0613D2;
+        Fri,  6 Nov 2020 15:27:16 -0800 (PST)
+Date:   Fri, 06 Nov 2020 23:27:13 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1604705233;
+        s=2020; t=1604705234;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=DurPxM/TiHII1+4yN5BElY2xOnZQNkwsnqcCT1FdALc=;
-        b=aWEPNNqih3HwKiBUN33lsCRJPwHDxykA5NmsrlfefdrwVNX2Ts1ZzJPq9ZyWZAugSEV4YO
-        tlg+zNdVvmSCrVS2Fk+Fkv8RH8cvRBrnRWzUx4PN/Ll6E+6NAseQ5H4FYDOWGQ2+8lML6+
-        1Lpg+Uiwcmme7WVojxzptcWXvBsB7R1Qlxms47pYg3jAIV3dAVFEV+OKOuTzTjKxTACYDg
-        b2bKhTNf/gdiDlm8QlLvZK3TpARPDwgSyYPU4/gtbfQFkO+5uRVvjHyR0xeFcyolWSQ7nT
-        Kst5LzHZJ5FO0hnpT48/NSAIQ/bEUUwsugwbU4FB/fzVTRZ9Us4FCXQ72NXbFQ==
+        bh=Vs2hsNsDCu03iBrpL4x3TmHdLnwL1QeRZpMF+TExK20=;
+        b=dpU3jXClreI+M98jH+hd1EcJZN5hZSK0eiAnG66WduCOnla1LSOLUfW3XnVCugW2oG2Nje
+        lDC8ELYjusEeQh1HcaHHl+OKyXUtVQg6pa2YpHWQyknndJo01aSsKZYeLTGu36S7RDo08j
+        KEl1mlJqRX/XFqvHNGtPkZuwhaqc3MLY/TJZiEzqZ6lg5jgGypxEi9zv/tfm42igIX/u5m
+        haAGkYKXila/Ub5F+z8vbhYog7uDZ1wDwaKAz65Jjx1sKAiCSuMeonymU3Z5BoJcXeuo4B
+        FHUBLJMrS6AqHUs/bQAeToWVRE0zmsD5HkQgsOQGfYC/UOOLa71P6IjUeYDy7w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1604705233;
+        s=2020e; t=1604705234;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=DurPxM/TiHII1+4yN5BElY2xOnZQNkwsnqcCT1FdALc=;
-        b=1QTS5gpNMnkPJiDxe+9Dm2PIPdPBQKaUaNEech/9B+D/dPdtcv+hb8TXmV2HnUJ8jaTE9t
-        pSPfe8atfvuzJ9Cw==
+        bh=Vs2hsNsDCu03iBrpL4x3TmHdLnwL1QeRZpMF+TExK20=;
+        b=4EoKrOqT0bD/3chnSSbMtSmcK55oqWZH2aF9IcUvF5Iu9rmy5H2XfEv/qDNIAIDaFRA5WE
+        5ntq9tY3qTORwSCA==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/mm] io-mapping: Cleanup atomic iomap
+Subject: [tip: core/mm] mm/highmem: Remove the old kmap_atomic cruft
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Linus Torvalds <torvalds@linuxfoundation.org>,
         Christoph Hellwig <hch@lst.de>,
         Andrew Morton <akpm@linux-foundation.org>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20201103095858.625310005@linutronix.de>
-References: <20201103095858.625310005@linutronix.de>
+        Arnd Bergmann <arnd@arndb.de>, x86 <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <20201103095858.516281567@linutronix.de>
+References: <20201103095858.516281567@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <160470523252.397.4778590462909013884.tip-bot2@tip-bot2>
+Message-ID: <160470523356.397.9071244869695369728.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,97 +64,147 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/mm branch of tip:
 
-Commit-ID:     351191ad55c8a1eccaf23e4187c62056229c0779
-Gitweb:        https://git.kernel.org/tip/351191ad55c8a1eccaf23e4187c62056229c0779
+Commit-ID:     3c1016b53c311906878c703af1e2b29855a9a962
+Gitweb:        https://git.kernel.org/tip/3c1016b53c311906878c703af1e2b29855a9a962
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Tue, 03 Nov 2020 10:27:32 +01:00
+AuthorDate:    Tue, 03 Nov 2020 10:27:31 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Fri, 06 Nov 2020 23:14:58 +01:00
 
-io-mapping: Cleanup atomic iomap
+mm/highmem: Remove the old kmap_atomic cruft
 
-Switch the atomic iomap implementation over to kmap_local and stick the
-preempt/pagefault mechanics into the generic code similar to the
-kmap_atomic variants.
-
-Rename the x86 map function in preparation for a non-atomic variant.
+All users gone.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Cc: Linus Torvalds <torvalds@linuxfoundation.org>
 Cc: Christoph Hellwig <hch@lst.de>
 Cc: Andrew Morton <akpm@linux-foundation.org>
-Link: https://lore.kernel.org/r/20201103095858.625310005@linutronix.de
+Cc: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20201103095858.516281567@linutronix.de
 
 ---
- arch/x86/include/asm/iomap.h |  9 +--------
- arch/x86/mm/iomap_32.c       |  6 ++----
- include/linux/io-mapping.h   |  8 ++++++--
- 3 files changed, 9 insertions(+), 14 deletions(-)
+ include/linux/highmem.h | 63 ++--------------------------------------
+ mm/highmem.c            |  7 +----
+ 2 files changed, 5 insertions(+), 65 deletions(-)
 
-diff --git a/arch/x86/include/asm/iomap.h b/arch/x86/include/asm/iomap.h
-index 0be7a30..e2de092 100644
---- a/arch/x86/include/asm/iomap.h
-+++ b/arch/x86/include/asm/iomap.h
-@@ -13,14 +13,7 @@
- #include <asm/cacheflush.h>
- #include <asm/tlbflush.h>
- 
--void __iomem *iomap_atomic_pfn_prot(unsigned long pfn, pgprot_t prot);
+diff --git a/include/linux/highmem.h b/include/linux/highmem.h
+index de78869..3180a8f 100644
+--- a/include/linux/highmem.h
++++ b/include/linux/highmem.h
+@@ -86,31 +86,16 @@ static inline void kunmap(struct page *page)
+  * be used in IRQ contexts, so in some (very limited) cases we need
+  * it.
+  */
 -
--static inline void iounmap_atomic(void __iomem *vaddr)
--{
--	kunmap_local_indexed((void __force *)vaddr);
--	pagefault_enable();
--	preempt_enable();
--}
-+void __iomem *__iomap_local_pfn_prot(unsigned long pfn, pgprot_t prot);
- 
- int iomap_create_wc(resource_size_t base, unsigned long size, pgprot_t *prot);
- 
-diff --git a/arch/x86/mm/iomap_32.c b/arch/x86/mm/iomap_32.c
-index e0a40d7..9aaa756 100644
---- a/arch/x86/mm/iomap_32.c
-+++ b/arch/x86/mm/iomap_32.c
-@@ -44,7 +44,7 @@ void iomap_free(resource_size_t base, unsigned long size)
- }
- EXPORT_SYMBOL_GPL(iomap_free);
- 
--void __iomem *iomap_atomic_pfn_prot(unsigned long pfn, pgprot_t prot)
-+void __iomem *__iomap_local_pfn_prot(unsigned long pfn, pgprot_t prot)
+-#ifndef CONFIG_KMAP_LOCAL
+-void *kmap_atomic_high_prot(struct page *page, pgprot_t prot);
+-void kunmap_atomic_high(void *kvaddr);
+-
+ static inline void *kmap_atomic_prot(struct page *page, pgprot_t prot)
  {
- 	/*
- 	 * For non-PAT systems, translate non-WB request to UC- just in
-@@ -60,8 +60,6 @@ void __iomem *iomap_atomic_pfn_prot(unsigned long pfn, pgprot_t prot)
- 	/* Filter out unsupported __PAGE_KERNEL* bits: */
- 	pgprot_val(prot) &= __default_kernel_pte_mask;
+ 	preempt_disable();
+ 	pagefault_disable();
+-	if (!PageHighMem(page))
+-		return page_address(page);
+-	return kmap_atomic_high_prot(page, prot);
+-}
+-
+-static inline void __kunmap_atomic(void *vaddr)
+-{
+-	kunmap_atomic_high(vaddr);
++	return __kmap_local_page_prot(page, prot);
+ }
+-#else /* !CONFIG_KMAP_LOCAL */
  
+-static inline void *kmap_atomic_prot(struct page *page, pgprot_t prot)
++static inline void *kmap_atomic(struct page *page)
+ {
 -	preempt_disable();
 -	pagefault_disable();
- 	return (void __force __iomem *)__kmap_local_pfn_prot(pfn, prot);
- }
--EXPORT_SYMBOL_GPL(iomap_atomic_pfn_prot);
-+EXPORT_SYMBOL_GPL(__iomap_local_pfn_prot);
-diff --git a/include/linux/io-mapping.h b/include/linux/io-mapping.h
-index 3b0940b..60e7c83 100644
---- a/include/linux/io-mapping.h
-+++ b/include/linux/io-mapping.h
-@@ -69,13 +69,17 @@ io_mapping_map_atomic_wc(struct io_mapping *mapping,
- 
- 	BUG_ON(offset >= mapping->size);
- 	phys_addr = mapping->base + offset;
--	return iomap_atomic_pfn_prot(PHYS_PFN(phys_addr), mapping->prot);
-+	preempt_disable();
-+	pagefault_disable();
-+	return __iomap_local_pfn_prot(PHYS_PFN(phys_addr), mapping->prot);
+-	return __kmap_local_page_prot(page, prot);
++	return kmap_atomic_prot(page, kmap_prot);
  }
  
- static inline void
- io_mapping_unmap_atomic(void __iomem *vaddr)
- {
--	iounmap_atomic(vaddr);
-+	kunmap_local_indexed((void __force *)vaddr);
-+	pagefault_enable();
-+	preempt_enable();
+ static inline void *kmap_atomic_pfn(unsigned long pfn)
+@@ -125,13 +110,6 @@ static inline void __kunmap_atomic(void *addr)
+ 	kunmap_local_indexed(addr);
  }
  
- static inline void __iomem *
+-#endif /* CONFIG_KMAP_LOCAL */
+-
+-static inline void *kmap_atomic(struct page *page)
+-{
+-	return kmap_atomic_prot(page, kmap_prot);
+-}
+-
+ /* declarations for linux/mm/highmem.c */
+ unsigned int nr_free_highpages(void);
+ extern atomic_long_t _totalhigh_pages;
+@@ -212,41 +190,8 @@ static inline void __kunmap_atomic(void *addr)
+ 
+ #define kmap_flush_unused()	do {} while(0)
+ 
+-#endif /* CONFIG_HIGHMEM */
+-
+-#if !defined(CONFIG_KMAP_LOCAL)
+-#if defined(CONFIG_HIGHMEM)
+-
+-DECLARE_PER_CPU(int, __kmap_atomic_idx);
+-
+-static inline int kmap_atomic_idx_push(void)
+-{
+-	int idx = __this_cpu_inc_return(__kmap_atomic_idx) - 1;
+-
+-#ifdef CONFIG_DEBUG_HIGHMEM
+-	WARN_ON_ONCE(in_irq() && !irqs_disabled());
+-	BUG_ON(idx >= KM_TYPE_NR);
+-#endif
+-	return idx;
+-}
+-
+-static inline int kmap_atomic_idx(void)
+-{
+-	return __this_cpu_read(__kmap_atomic_idx) - 1;
+-}
+ 
+-static inline void kmap_atomic_idx_pop(void)
+-{
+-#ifdef CONFIG_DEBUG_HIGHMEM
+-	int idx = __this_cpu_dec_return(__kmap_atomic_idx);
+-
+-	BUG_ON(idx < 0);
+-#else
+-	__this_cpu_dec(__kmap_atomic_idx);
+-#endif
+-}
+-#endif
+-#endif
++#endif /* CONFIG_HIGHMEM */
+ 
+ /*
+  * Prevent people trying to call kunmap_atomic() as if it were kunmap()
+diff --git a/mm/highmem.c b/mm/highmem.c
+index 77677c6..499dfaf 100644
+--- a/mm/highmem.c
++++ b/mm/highmem.c
+@@ -31,12 +31,6 @@
+ #include <asm/tlbflush.h>
+ #include <linux/vmalloc.h>
+ 
+-#ifndef CONFIG_KMAP_LOCAL
+-#ifdef CONFIG_HIGHMEM
+-DEFINE_PER_CPU(int, __kmap_atomic_idx);
+-#endif
+-#endif
+-
+ /*
+  * Virtual_count is not a pure "count".
+  *  0 means that it is not mapped, and has not been mapped
+@@ -410,6 +404,7 @@ static inline void kmap_local_idx_pop(void)
+ #ifndef arch_kmap_local_post_map
+ # define arch_kmap_local_post_map(vaddr, pteval)	do { } while (0)
+ #endif
++
+ #ifndef arch_kmap_local_pre_unmap
+ # define arch_kmap_local_pre_unmap(vaddr)		do { } while (0)
+ #endif
