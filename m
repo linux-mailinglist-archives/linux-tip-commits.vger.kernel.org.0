@@ -2,321 +2,108 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D6502A8CB2
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Nov 2020 03:24:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C21572A94F5
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Nov 2020 12:01:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725616AbgKFCYS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 5 Nov 2020 21:24:18 -0500
-Received: from mail.kernel.org ([198.145.29.99]:38274 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725830AbgKFCYS (ORCPT
+        id S1727020AbgKFLBt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 6 Nov 2020 06:01:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39388 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726422AbgKFLBt (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 5 Nov 2020 21:24:18 -0500
-Received: from devnote2 (NE2965lan1.rev.em-net.ne.jp [210.141.244.193])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 588BA20756;
-        Fri,  6 Nov 2020 02:24:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1604629457;
-        bh=xMN6cgH+3YWBsfFzBgyeCgx+M+Ohkp2GEdGQ5KnNxPw=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=v10ZtJEa8TocEylSLRuCSlDjVDOggtZAwwHbP5a8KenH3Uq/YMVJX+l3D/o5FZRg2
-         selNGEDGALpnHoubmGCJ85oDOPEoeDLhuqgsv/0s4vx0LRgwTMmKoMqlfqJHelYqw8
-         smE+Mx39S9bhPNcZTot3Jkg0Y6wYfbBGa9fE8ENg=
-Date:   Fri, 6 Nov 2020 11:24:13 +0900
-From:   Masami Hiramatsu <mhiramat@kernel.org>
-To:     Vasily Gorbik <gor@linux.ibm.com>
-Cc:     kernel test robot <lkp@intel.com>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        kbuild-all@lists.01.org, clang-built-linux@googlegroups.com,
-        Borislav Petkov <bp@alien8.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-        x86 <x86@kernel.org>
-Subject: Re: [PATCH 1/1] x86/tools: Use tools headers for instruction
- decoder selftests
-Message-Id: <20201106112413.80248e44fef68d9acf932dec@kernel.org>
-In-Reply-To: <your-ad-here.call-01604481523-ext-9352@work.hours>
-References: <patch-1.thread-59328d.git-59328d9dc2b9.your-ad-here.call-01604429777-ext-1374@work.hours>
-        <202011041702.EIrDb4hS-lkp@intel.com>
-        <your-ad-here.call-01604481523-ext-9352@work.hours>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+        Fri, 6 Nov 2020 06:01:49 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FD38C0613CF;
+        Fri,  6 Nov 2020 03:01:49 -0800 (PST)
+Date:   Fri, 06 Nov 2020 11:01:45 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1604660507;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=l+Lr4luvqX5AY0oKUf3vEzGcztSHnX4u0eLOHWhgpkw=;
+        b=zwfm3igvkySGAOyiB4zH/fTFSdev8dHh2d5EgU7kq5XXNptYX6qlk+aIqiOOW4BkXfrYFp
+        sTm8eRUmXCac8HWFa5F43Ga+WqpAP9s0Kb1VsgaN2N4EpUE0dzpu0Yke64QnAKmJDm53zL
+        drAq1p2zyN5gdUVgAuzacr2jN2a2SRH1G0Gp4mAk4E0SOyhwudA0HngqUVrOpkrg9Dw0oC
+        6LvdppRlcFwUj9rwhtFZta/RJPVpBWqPHgxe3TCc9ue//kwIAkeugK8k/Wv5U4r836Ij3s
+        2YlTMjwLSyGKv400RFf0oZmvBK4wKpTJhalwNYjFGnL7caBDbpo8T+yYvPXMmA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1604660507;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=l+Lr4luvqX5AY0oKUf3vEzGcztSHnX4u0eLOHWhgpkw=;
+        b=6X3twlw3vfhVXIQ/ZXk2cuUaNOrGKd73j7WZ4/ox8s1SKNEaeMsEemCFA2+kIbFMsC6yyG
+        qLhxSh2/dyajqhDA==
+From:   "tip-bot2 for Kaixu Xia" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: ras/core] x86/mce: Assign boolean values to a bool variable
+Cc:     Tosk Robot <tencent_os_robot@tencent.com>,
+        Kaixu Xia <kaixuxia@tencent.com>, Borislav Petkov <bp@suse.de>,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <1604654363-1463-1-git-send-email-kaixuxia@tencent.com>
+References: <1604654363-1463-1-git-send-email-kaixuxia@tencent.com>
+MIME-Version: 1.0
+Message-ID: <160466050594.397.9879783882609753138.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2.linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Wed, 4 Nov 2020 10:18:43 +0100
-Vasily Gorbik <gor@linux.ibm.com> wrote:
+The following commit has been merged into the ras/core branch of tip:
 
-> On Wed, Nov 04, 2020 at 05:11:28PM +0800, kernel test robot wrote:
-> > Hi Vasily,
-> > 
-> > I love your patch! Yet something to improve:
-> > 
-> > [auto build test ERROR on tip/x86/core]
-> > [also build test ERROR on v5.10-rc2 next-20201103]
-> > [If your patch is applied to the wrong git tree, kindly drop us a note.
-> > And when submitting patch, we suggest to use '--base' as documented in
-> > https://git-scm.com/docs/git-format-patch]
-> > 
-> > url:    https://github.com/0day-ci/linux/commits/Vasily-Gorbik/x86-tools-Use-tools-headers-for-instruction-decoder-selftests/20201104-043600
-> > base:   https://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git 238c91115cd05c71447ea071624a4c9fe661f970
-> > config: x86_64-randconfig-a005-20201104 (attached as .config)
-> > compiler: clang version 12.0.0 (https://github.com/llvm/llvm-project 1fcd5d5655e29f85e12b402e32974f207cfedf32)
-> > reproduce (this is a W=1 build):
-> >         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-> >         chmod +x ~/bin/make.cross
-> >         # install x86_64 cross compiling tool for clang build
-> >         # apt-get install binutils-x86-64-linux-gnu
-> >         # https://github.com/0day-ci/linux/commit/ab4952becdfae8a76a6f0e0fb4ec7d078e80d5d6
-> >         git remote add linux-review https://github.com/0day-ci/linux
-> >         git fetch --no-tags linux-review Vasily-Gorbik/x86-tools-Use-tools-headers-for-instruction-decoder-selftests/20201104-043600
-> >         git checkout ab4952becdfae8a76a6f0e0fb4ec7d078e80d5d6
-> >         # save the attached .config to linux build tree
-> >         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross ARCH=x86_64 
-> > 
-> > If you fix the issue, kindly add following tag as appropriate
-> > Reported-by: kernel test robot <lkp@intel.com>
-> > 
-> > All error/warnings (new ones prefixed by >>):
-> > 
-> >    In file included from arch/x86/tools/insn_sanity.c:19:
-> > >> tools/arch/x86/lib/insn.c:72:7: warning: implicit declaration of function 'unlikely' [-Wimplicit-function-declaration]
-> >                    if (peek_nbyte_next(insn_byte_t, insn, i) != prefix[i])
-> >                        ^
-> >    tools/arch/x86/lib/insn.c:32:9: note: expanded from macro 'peek_nbyte_next'
-> >            ({ if (unlikely(!validate_next(t, insn, n))) goto err_out; __peek_nbyte_next(t, insn, n); })
-> >                   ^
-> >    tools/arch/x86/lib/insn.c:115:6: warning: implicit declaration of function 'unlikely' [-Wimplicit-function-declaration]
-> >            b = peek_next(insn_byte_t, insn);
-> >                ^
-> >    tools/arch/x86/lib/insn.c:34:28: note: expanded from macro 'peek_next'
-> >    #define peek_next(t, insn)      peek_nbyte_next(t, insn, 0)
-> >                                    ^
-> >    tools/arch/x86/lib/insn.c:32:9: note: expanded from macro 'peek_nbyte_next'
-> >            ({ if (unlikely(!validate_next(t, insn, n))) goto err_out; __peek_nbyte_next(t, insn, n); })
-> >                   ^
-> >    tools/arch/x86/lib/insn.c:140:7: warning: implicit declaration of function 'unlikely' [-Wimplicit-function-declaration]
-> >                    b = peek_next(insn_byte_t, insn);
-> >                        ^
-> >    tools/arch/x86/lib/insn.c:34:28: note: expanded from macro 'peek_next'
-> >    #define peek_next(t, insn)      peek_nbyte_next(t, insn, 0)
-> >                                    ^
-> >    tools/arch/x86/lib/insn.c:32:9: note: expanded from macro 'peek_nbyte_next'
-> >            ({ if (unlikely(!validate_next(t, insn, n))) goto err_out; __peek_nbyte_next(t, insn, n); })
-> >                   ^
-> >    tools/arch/x86/lib/insn.c:145:7: warning: implicit declaration of function 'unlikely' [-Wimplicit-function-declaration]
-> >                    if (unlikely(insn->prefixes.bytes[3])) {
-> >                        ^
-> >    tools/arch/x86/lib/insn.c:157:7: warning: implicit declaration of function 'unlikely' [-Wimplicit-function-declaration]
-> >                    b = peek_next(insn_byte_t, insn);
-> >                        ^
-> >    tools/arch/x86/lib/insn.c:34:28: note: expanded from macro 'peek_next'
-> >    #define peek_next(t, insn)      peek_nbyte_next(t, insn, 0)
-> >                                    ^
-> >    tools/arch/x86/lib/insn.c:32:9: note: expanded from macro 'peek_nbyte_next'
-> >            ({ if (unlikely(!validate_next(t, insn, n))) goto err_out; __peek_nbyte_next(t, insn, n); })
-> >                   ^
-> >    tools/arch/x86/lib/insn.c:171:6: warning: implicit declaration of function 'unlikely' [-Wimplicit-function-declaration]
-> >            b = peek_next(insn_byte_t, insn);
-> >                ^
-> >    tools/arch/x86/lib/insn.c:34:28: note: expanded from macro 'peek_next'
-> >    #define peek_next(t, insn)      peek_nbyte_next(t, insn, 0)
-> >                                    ^
-> >    tools/arch/x86/lib/insn.c:32:9: note: expanded from macro 'peek_nbyte_next'
-> >            ({ if (unlikely(!validate_next(t, insn, n))) goto err_out; __peek_nbyte_next(t, insn, n); })
-> >                   ^
-> >    tools/arch/x86/lib/insn.c:174:20: warning: implicit declaration of function 'unlikely' [-Wimplicit-function-declaration]
-> >                    insn_byte_t b2 = peek_nbyte_next(insn_byte_t, insn, 1);
-> >                                     ^
-> >    tools/arch/x86/lib/insn.c:32:9: note: expanded from macro 'peek_nbyte_next'
-> >            ({ if (unlikely(!validate_next(t, insn, n))) goto err_out; __peek_nbyte_next(t, insn, n); })
-> >                   ^
-> >    tools/arch/x86/lib/insn.c:187:9: warning: implicit declaration of function 'unlikely' [-Wimplicit-function-declaration]
-> >                            b2 = peek_nbyte_next(insn_byte_t, insn, 2);
-> >                                 ^
-> >    tools/arch/x86/lib/insn.c:32:9: note: expanded from macro 'peek_nbyte_next'
-> >            ({ if (unlikely(!validate_next(t, insn, n))) goto err_out; __peek_nbyte_next(t, insn, n); })
-> >                   ^
-> >    tools/arch/x86/lib/insn.c:189:9: warning: implicit declaration of function 'unlikely' [-Wimplicit-function-declaration]
-> >                            b2 = peek_nbyte_next(insn_byte_t, insn, 3);
-> >                                 ^
-> >    tools/arch/x86/lib/insn.c:32:9: note: expanded from macro 'peek_nbyte_next'
-> >            ({ if (unlikely(!validate_next(t, insn, n))) goto err_out; __peek_nbyte_next(t, insn, n); })
-> >                   ^
-> >    tools/arch/x86/lib/insn.c:197:9: warning: implicit declaration of function 'unlikely' [-Wimplicit-function-declaration]
-> >                            b2 = peek_nbyte_next(insn_byte_t, insn, 2);
-> >                                 ^
-> >    tools/arch/x86/lib/insn.c:32:9: note: expanded from macro 'peek_nbyte_next'
-> >            ({ if (unlikely(!validate_next(t, insn, n))) goto err_out; __peek_nbyte_next(t, insn, n); })
-> >                   ^
-> >    tools/arch/x86/lib/insn.c:245:7: warning: implicit declaration of function 'unlikely' [-Wimplicit-function-declaration]
-> >            op = get_next(insn_byte_t, insn);
-> >                 ^
-> >    tools/arch/x86/lib/insn.c:29:9: note: expanded from macro 'get_next'
-> >            ({ if (unlikely(!validate_next(t, insn, 0))) goto err_out; __get_next(t, insn); })
-> >                   ^
-> >    tools/arch/x86/lib/insn.c:265:8: warning: implicit declaration of function 'unlikely' [-Wimplicit-function-declaration]
-> >                    op = get_next(insn_byte_t, insn);
-> >                         ^
-> >    tools/arch/x86/lib/insn.c:29:9: note: expanded from macro 'get_next'
-> >            ({ if (unlikely(!validate_next(t, insn, 0))) goto err_out; __get_next(t, insn); })
-> >                   ^
-> >    tools/arch/x86/lib/insn.c:297:9: warning: implicit declaration of function 'unlikely' [-Wimplicit-function-declaration]
-> >                    mod = get_next(insn_byte_t, insn);
-> >                          ^
-> >    tools/arch/x86/lib/insn.c:29:9: note: expanded from macro 'get_next'
-> >            ({ if (unlikely(!validate_next(t, insn, 0))) goto err_out; __get_next(t, insn); })
-> >                   ^
-> >    tools/arch/x86/lib/insn.c:359:22: warning: implicit declaration of function 'unlikely' [-Wimplicit-function-declaration]
-> >                            insn->sib.value = get_next(insn_byte_t, insn);
-> >                                              ^
-> >    tools/arch/x86/lib/insn.c:29:9: note: expanded from macro 'get_next'
-> >            ({ if (unlikely(!validate_next(t, insn, 0))) goto err_out; __get_next(t, insn); })
-> >                   ^
-> >    tools/arch/x86/lib/insn.c:410:31: warning: implicit declaration of function 'unlikely' [-Wimplicit-function-declaration]
-> >                            insn->displacement.value = get_next(signed char, insn);
-> >                                                       ^
-> >    tools/arch/x86/lib/insn.c:29:9: note: expanded from macro 'get_next'
-> >            ({ if (unlikely(!validate_next(t, insn, 0))) goto err_out; __get_next(t, insn); })
-> >                   ^
-> >    tools/arch/x86/lib/insn.c:415:7: warning: implicit declaration of function 'unlikely' [-Wimplicit-function-declaration]
-> >                                             get_next(short, insn);
-> > --
-> >                                           ^
-> >    tools/arch/x86/lib/insn.c:29:9: note: expanded from macro 'get_next'
-> >            ({ if (unlikely(!validate_next(t, insn, 0))) goto err_out; __get_next(t, insn); })
-> >                   ^
-> >    tools/arch/x86/lib/insn.c:448:26: warning: implicit declaration of function 'unlikely' [-Wimplicit-function-declaration]
-> >                    insn->moffset2.value = get_next(int, insn);
-> >                                           ^
-> >    tools/arch/x86/lib/insn.c:29:9: note: expanded from macro 'get_next'
-> >            ({ if (unlikely(!validate_next(t, insn, 0))) goto err_out; __get_next(t, insn); })
-> >                   ^
-> >    tools/arch/x86/lib/insn.c:467:27: warning: implicit declaration of function 'unlikely' [-Wimplicit-function-declaration]
-> >                    insn->immediate.value = get_next(short, insn);
-> >                                            ^
-> >    tools/arch/x86/lib/insn.c:29:9: note: expanded from macro 'get_next'
-> >            ({ if (unlikely(!validate_next(t, insn, 0))) goto err_out; __get_next(t, insn); })
-> >                   ^
-> >    tools/arch/x86/lib/insn.c:472:27: warning: implicit declaration of function 'unlikely' [-Wimplicit-function-declaration]
-> >                    insn->immediate.value = get_next(int, insn);
-> >                                            ^
-> >    tools/arch/x86/lib/insn.c:29:9: note: expanded from macro 'get_next'
-> >            ({ if (unlikely(!validate_next(t, insn, 0))) goto err_out; __get_next(t, insn); })
-> >                   ^
-> >    tools/arch/x86/lib/insn.c:490:28: warning: implicit declaration of function 'unlikely' [-Wimplicit-function-declaration]
-> >                    insn->immediate1.value = get_next(short, insn);
-> >                                             ^
-> >    tools/arch/x86/lib/insn.c:29:9: note: expanded from macro 'get_next'
-> >            ({ if (unlikely(!validate_next(t, insn, 0))) goto err_out; __get_next(t, insn); })
-> >                   ^
-> >    tools/arch/x86/lib/insn.c:494:28: warning: implicit declaration of function 'unlikely' [-Wimplicit-function-declaration]
-> >                    insn->immediate1.value = get_next(int, insn);
-> >                                             ^
-> >    tools/arch/x86/lib/insn.c:29:9: note: expanded from macro 'get_next'
-> >            ({ if (unlikely(!validate_next(t, insn, 0))) goto err_out; __get_next(t, insn); })
-> >                   ^
-> >    tools/arch/x86/lib/insn.c:498:28: warning: implicit declaration of function 'unlikely' [-Wimplicit-function-declaration]
-> >                    insn->immediate1.value = get_next(int, insn);
-> >                                             ^
-> >    tools/arch/x86/lib/insn.c:29:9: note: expanded from macro 'get_next'
-> >            ({ if (unlikely(!validate_next(t, insn, 0))) goto err_out; __get_next(t, insn); })
-> >                   ^
-> >    tools/arch/x86/lib/insn.c:500:28: warning: implicit declaration of function 'unlikely' [-Wimplicit-function-declaration]
-> >                    insn->immediate2.value = get_next(int, insn);
-> >                                             ^
-> >    tools/arch/x86/lib/insn.c:29:9: note: expanded from macro 'get_next'
-> >            ({ if (unlikely(!validate_next(t, insn, 0))) goto err_out; __get_next(t, insn); })
-> >                   ^
-> >    tools/arch/x86/lib/insn.c:518:28: warning: implicit declaration of function 'unlikely' [-Wimplicit-function-declaration]
-> >                    insn->immediate1.value = get_next(short, insn);
-> >                                             ^
-> >    tools/arch/x86/lib/insn.c:29:9: note: expanded from macro 'get_next'
-> >            ({ if (unlikely(!validate_next(t, insn, 0))) goto err_out; __get_next(t, insn); })
-> >                   ^
-> >    tools/arch/x86/lib/insn.c:522:28: warning: implicit declaration of function 'unlikely' [-Wimplicit-function-declaration]
-> >                    insn->immediate1.value = get_next(int, insn);
-> >                                             ^
-> >    tools/arch/x86/lib/insn.c:29:9: note: expanded from macro 'get_next'
-> >            ({ if (unlikely(!validate_next(t, insn, 0))) goto err_out; __get_next(t, insn); })
-> >                   ^
-> >    tools/arch/x86/lib/insn.c:531:27: warning: implicit declaration of function 'unlikely' [-Wimplicit-function-declaration]
-> >            insn->immediate2.value = get_next(unsigned short, insn);
-> >                                     ^
-> >    tools/arch/x86/lib/insn.c:29:9: note: expanded from macro 'get_next'
-> >            ({ if (unlikely(!validate_next(t, insn, 0))) goto err_out; __get_next(t, insn); })
-> >                   ^
-> >    tools/arch/x86/lib/insn.c:568:27: warning: implicit declaration of function 'unlikely' [-Wimplicit-function-declaration]
-> >                    insn->immediate.value = get_next(signed char, insn);
-> >                                            ^
-> >    tools/arch/x86/lib/insn.c:29:9: note: expanded from macro 'get_next'
-> >            ({ if (unlikely(!validate_next(t, insn, 0))) goto err_out; __get_next(t, insn); })
-> >                   ^
-> >    tools/arch/x86/lib/insn.c:572:27: warning: implicit declaration of function 'unlikely' [-Wimplicit-function-declaration]
-> >                    insn->immediate.value = get_next(short, insn);
-> >                                            ^
-> >    tools/arch/x86/lib/insn.c:29:9: note: expanded from macro 'get_next'
-> >            ({ if (unlikely(!validate_next(t, insn, 0))) goto err_out; __get_next(t, insn); })
-> >                   ^
-> >    tools/arch/x86/lib/insn.c:576:27: warning: implicit declaration of function 'unlikely' [-Wimplicit-function-declaration]
-> >                    insn->immediate.value = get_next(int, insn);
-> >                                            ^
-> >    tools/arch/x86/lib/insn.c:29:9: note: expanded from macro 'get_next'
-> >            ({ if (unlikely(!validate_next(t, insn, 0))) goto err_out; __get_next(t, insn); })
-> >                   ^
-> >    tools/arch/x86/lib/insn.c:580:28: warning: implicit declaration of function 'unlikely' [-Wimplicit-function-declaration]
-> >                    insn->immediate1.value = get_next(int, insn);
-> >                                             ^
-> >    tools/arch/x86/lib/insn.c:29:9: note: expanded from macro 'get_next'
-> >            ({ if (unlikely(!validate_next(t, insn, 0))) goto err_out; __get_next(t, insn); })
-> >                   ^
-> >    tools/arch/x86/lib/insn.c:582:28: warning: implicit declaration of function 'unlikely' [-Wimplicit-function-declaration]
-> >                    insn->immediate2.value = get_next(int, insn);
-> >                                             ^
-> >    tools/arch/x86/lib/insn.c:29:9: note: expanded from macro 'get_next'
-> >            ({ if (unlikely(!validate_next(t, insn, 0))) goto err_out; __get_next(t, insn); })
-> >                   ^
-> >    tools/arch/x86/lib/insn.c:602:28: warning: implicit declaration of function 'unlikely' [-Wimplicit-function-declaration]
-> >                    insn->immediate2.value = get_next(signed char, insn);
-> >                                             ^
-> >    tools/arch/x86/lib/insn.c:29:9: note: expanded from macro 'get_next'
-> >            ({ if (unlikely(!validate_next(t, insn, 0))) goto err_out; __get_next(t, insn); })
-> >                   ^
-> > >> arch/x86/tools/insn_sanity.c:128:19: warning: implicit declaration of function 'ARRAY_SIZE' [-Wimplicit-function-declaration]
-> >            tmp = fgets(buf, ARRAY_SIZE(buf), input_file);
-> >                             ^
-> >    37 warnings generated.
-> >    /usr/bin/ld: /tmp/insn_sanity-8655a9.o: in function `insn_get_prefixes':
-> > >> insn_sanity.c:(.text+0x1bd): undefined reference to `unlikely'
-> > >> /usr/bin/ld: insn_sanity.c:(.text+0x203): undefined reference to `unlikely'
-> >    /usr/bin/ld: insn_sanity.c:(.text+0x24d): undefined reference to `unlikely'
-> >    /usr/bin/ld: insn_sanity.c:(.text+0x30f): undefined reference to `unlikely'
-> >    /usr/bin/ld: insn_sanity.c:(.text+0x353): undefined reference to `unlikely'
-> >    /usr/bin/ld: /tmp/insn_sanity-8655a9.o:insn_sanity.c:(.text+0x38e): more undefined references to `unlikely' follow
-> >    /usr/bin/ld: /tmp/insn_sanity-8655a9.o: in function `main':
-> > >> insn_sanity.c:(.text+0x13cf): undefined reference to `ARRAY_SIZE'
-> >    /usr/bin/ld: /tmp/insn_sanity-8655a9.o: in function `__insn_get_emulate_prefix':
-> >    insn_sanity.c:(.text+0x1cc1): undefined reference to `unlikely'
-> >    /usr/bin/ld: insn_sanity.c:(.text+0x1cef): undefined reference to `unlikely'
-> >    /usr/bin/ld: insn_sanity.c:(.text+0x1d1f): undefined reference to `unlikely'
-> >    /usr/bin/ld: insn_sanity.c:(.text+0x1d47): undefined reference to `unlikely'
-> >    /usr/bin/ld: insn_sanity.c:(.text+0x1d6f): undefined reference to `unlikely'
-> >    clang-12: error: linker command failed with exit code 1 (use -v to see invocation)
-> 
-> Right, this is expected. The patch is based on jpoimboe/objtool/core,
-> which has extra commits.
+Commit-ID:     77080929d56d87a57093869a15d2785b8b2d8cd5
+Gitweb:        https://git.kernel.org/tip/77080929d56d87a57093869a15d2785b8b2d8cd5
+Author:        Kaixu Xia <kaixuxia@tencent.com>
+AuthorDate:    Fri, 06 Nov 2020 17:19:23 +08:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Fri, 06 Nov 2020 11:51:04 +01:00
 
-Has that series already submitted to LKML? I need to look at the series too.
-Or, Josh, can you review it and if it is OK, please pick it to your series
-and send it.
+x86/mce: Assign boolean values to a bool variable
 
-Thank you,
+Fix the following coccinelle warnings:
 
--- 
-Masami Hiramatsu <mhiramat@kernel.org>
+  ./arch/x86/kernel/cpu/mce/core.c:1765:3-20: WARNING: Assignment of 0/1 to bool variable
+  ./arch/x86/kernel/cpu/mce/core.c:1584:2-9: WARNING: Assignment of 0/1 to bool variable
+
+ [ bp: Massage commit message. ]
+
+Reported-by: Tosk Robot <tencent_os_robot@tencent.com>
+Signed-off-by: Kaixu Xia <kaixuxia@tencent.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lkml.kernel.org/r/1604654363-1463-1-git-send-email-kaixuxia@tencent.com
+---
+ arch/x86/kernel/cpu/mce/core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
+index 51bf910..888248a 100644
+--- a/arch/x86/kernel/cpu/mce/core.c
++++ b/arch/x86/kernel/cpu/mce/core.c
+@@ -1581,7 +1581,7 @@ static void __mcheck_cpu_mce_banks_init(void)
+ 		 * __mcheck_cpu_init_clear_banks() does the final bank setup.
+ 		 */
+ 		b->ctl = -1ULL;
+-		b->init = 1;
++		b->init = true;
+ 	}
+ }
+ 
+@@ -1762,7 +1762,7 @@ static int __mcheck_cpu_apply_quirks(struct cpuinfo_x86 *c)
+ 		 */
+ 
+ 		if (c->x86 == 6 && c->x86_model < 0x1A && this_cpu_read(mce_num_banks) > 0)
+-			mce_banks[0].init = 0;
++			mce_banks[0].init = false;
+ 
+ 		/*
+ 		 * All newer Intel systems support MCE broadcasting. Enable
