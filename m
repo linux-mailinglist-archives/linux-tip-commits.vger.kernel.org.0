@@ -2,55 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 973262A9C58
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Nov 2020 19:34:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 24E0B2A9F09
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Nov 2020 22:27:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727984AbgKFSes (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 6 Nov 2020 13:34:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54616 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727773AbgKFSep (ORCPT
+        id S1728116AbgKFV1C (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 6 Nov 2020 16:27:02 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:37868 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728097AbgKFV1C (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 6 Nov 2020 13:34:45 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00B46C0613CF;
-        Fri,  6 Nov 2020 10:34:44 -0800 (PST)
-Date:   Fri, 06 Nov 2020 18:34:41 -0000
+        Fri, 6 Nov 2020 16:27:02 -0500
+Date:   Fri, 06 Nov 2020 21:26:58 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1604687682;
+        s=2020; t=1604698019;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Puqz4ukAZgIrEq385tfYzwFkVGA1caRrB6N7GK7a8SA=;
-        b=iGBZ0jO1FJPogCHg6dlNHMYsj4vrnLFKws58iDmGI7oa70tHAEjavGrezlcu6csNtZMT3h
-        MiBh4uAtNdyTbXId+ZL1cnI3CRiuqNYn1uRe5YgJ2eLtjnKkuJ6EG+ZPDQyObrFE6K46j9
-        A5PUZfhXcyOGwg6CAu4ciWervtp7WBGDiowNP6Cqo604CAWo4HbDXMUqB7mqCt3cmaAPYn
-        ijqMmX+zfQXVTa3isTvwOhzMP4Kz/0jrPUwXBGxjCFW2RfNm7s46wWPy3aYPIkYhL0e5v6
-        +FORxEYRG/07OP5cGtr20xjZHfFNh65qQxVaCFQJXXD9oWJjio4N/hPQlRL9WQ==
+        bh=xnF5r2YVoE5RqX+1EhxgQ4tQC24nY4l/MsoVxZZQNW4=;
+        b=d3EpEFLRty+29Mm86DLmcIZxeGVeMPNcCgCVHDGQMMzpcwBsO/iJWYmURBjRFXOpCy53Wm
+        zJCo3XnzvYAh1qTMuhSzGemWk3U9zZGkQxC+Z5Vddp5LwNDFTWLS8oMkm2qzYLnKjVF4Qf
+        xZ4cuBe5ADhg4ABlOYGHRXI6muR7Ru2YgiKFSzABoYVsyciWnegCTmagcc3ICegrb9cDg2
+        fYz/uPyfE1uOlCgow0WZVrBX43RS7vTRQfXIf/exc/4nptpAZkGppSyx/Gr8p2q9xVj2Dg
+        R5oAnLUC0fmkJtWzLoc8hSAYXaicYlL+/Jw6EVJlz4BeY4g+5WZNm0v6G2TsKw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1604687682;
+        s=2020e; t=1604698019;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Puqz4ukAZgIrEq385tfYzwFkVGA1caRrB6N7GK7a8SA=;
-        b=EMxIJk88egWD2d4f+4QgzFkjMWVMsOKZroCg2N0QGZvoKL7sx7koIhYogw2TWsyYKZi01v
-        ZLh36Iirb8cnqdDQ==
-From:   "tip-bot2 for Zhen Lei" <tip-bot2@linutronix.de>
+        bh=xnF5r2YVoE5RqX+1EhxgQ4tQC24nY4l/MsoVxZZQNW4=;
+        b=xlhCpHwhk7YU4ZlPAPbxxBsMwFsoqdKwT9IT9OWHWrcNqcmIBnJyNg5zbPfhqv7nYqmOva
+        /jx8qgE2+feiWdAQ==
+From:   "tip-bot2 for Mike Galbraith" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: ras/core] x86/mce: Correct the detection of invalid notifier priorities
-Cc:     Zhen Lei <thunder.leizhen@huawei.com>,
-        Borislav Petkov <bp@suse.de>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20201106141216.2062-2-thunder.leizhen@huawei.com>
-References: <20201106141216.2062-2-thunder.leizhen@huawei.com>
+Subject: [tip: locking/urgent] futex: Handle transient "ownerless" rtmutex
+ state correctly
+Cc:     Gratian Crisan <gratian.crisan@ni.com>,
+        Mike Galbraith <efault@gmx.de>,
+        Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org,
+        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <87a6w6x7bb.fsf@ni.com>
+References: <87a6w6x7bb.fsf@ni.com>
 MIME-Version: 1.0
-Message-ID: <160468768153.397.11511315688950606406.tip-bot2@tip-bot2>
+Message-ID: <160469801844.397.7418241151599681987.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,61 +58,86 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the ras/core branch of tip:
+The following commit has been merged into the locking/urgent branch of tip:
 
-Commit-ID:     15af36596ae305aefc8c502c2d3e8c58221709eb
-Gitweb:        https://git.kernel.org/tip/15af36596ae305aefc8c502c2d3e8c58221709eb
-Author:        Zhen Lei <thunder.leizhen@huawei.com>
-AuthorDate:    Fri, 06 Nov 2020 22:12:16 +08:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Fri, 06 Nov 2020 19:02:48 +01:00
+Commit-ID:     63c1b4db662a0967dd7839a2fbaa5300e553901d
+Gitweb:        https://git.kernel.org/tip/63c1b4db662a0967dd7839a2fbaa5300e553901d
+Author:        Mike Galbraith <efault@gmx.de>
+AuthorDate:    Wed, 04 Nov 2020 16:12:44 +01:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Fri, 06 Nov 2020 22:24:58 +01:00
 
-x86/mce: Correct the detection of invalid notifier priorities
+futex: Handle transient "ownerless" rtmutex state correctly
 
-Commit
+Gratian managed to trigger the BUG_ON(!newowner) in fixup_pi_state_owner().
+This is one possible chain of events leading to this:
 
-  c9c6d216ed28 ("x86/mce: Rename "first" function as "early"")
+Task Prio       Operation
+T1   120	lock(F)
+T2   120	lock(F)   -> blocks (top waiter)
+T3   50 (RT)	lock(F)   -> boosts T1 and blocks (new top waiter)
+XX   		timeout/  -> wakes T2
+		signal
+T1   50		unlock(F) -> wakes T3 (rtmutex->owner == NULL, waiter bit is set)
+T2   120	cleanup   -> try_to_take_mutex() fails because T3 is the top waiter
+     			     and the lower priority T2 cannot steal the lock.
+     			  -> fixup_pi_state_owner() sees newowner == NULL -> BUG_ON()
 
-changed the enumeration of MCE notifier priorities. Correct the check
-for notifier priorities to cover the new range.
+The comment states that this is invalid and rt_mutex_real_owner() must
+return a non NULL owner when the trylock failed, but in case of a queued
+and woken up waiter rt_mutex_real_owner() == NULL is a valid transient
+state. The higher priority waiter has simply not yet managed to take over
+the rtmutex.
 
- [ bp: Rewrite commit message, remove superfluous brackets in
-   conditional. ]
+The BUG_ON() is therefore wrong and this is just another retry condition in
+fixup_pi_state_owner().
 
-Fixes: c9c6d216ed28 ("x86/mce: Rename "first" function as "early"")
-Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20201106141216.2062-2-thunder.leizhen@huawei.com
+Drop the locks, so that T3 can make progress, and then try the fixup again.
+
+Gratian provided a great analysis, traces and a reproducer. The analysis is
+to the point, but it confused the hell out of that tglx dude who had to
+page in all the futex horrors again. Condensed version is above. 
+
+[ tglx: Wrote comment and changelog ]
+
+Fixes: c1e2f0eaf015 ("futex: Avoid violating the 10th rule of futex")
+Reported-by: Gratian Crisan <gratian.crisan@ni.com>
+Signed-off-by: Mike Galbraith <efault@gmx.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/87a6w6x7bb.fsf@ni.com
+Link: https://lore.kernel.org/r/87sg9pkvf7.fsf@nanos.tec.linutronix.de
+
 ---
- arch/x86/include/asm/mce.h     | 3 ++-
- arch/x86/kernel/cpu/mce/core.c | 3 ++-
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ kernel/futex.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/include/asm/mce.h b/arch/x86/include/asm/mce.h
-index a0f1478..fc25c88 100644
---- a/arch/x86/include/asm/mce.h
-+++ b/arch/x86/include/asm/mce.h
-@@ -177,7 +177,8 @@ enum mce_notifier_prios {
- 	MCE_PRIO_EXTLOG,
- 	MCE_PRIO_UC,
- 	MCE_PRIO_EARLY,
--	MCE_PRIO_CEC
-+	MCE_PRIO_CEC,
-+	MCE_PRIO_HIGHEST = MCE_PRIO_CEC
- };
+diff --git a/kernel/futex.c b/kernel/futex.c
+index f8614ef..7406914 100644
+--- a/kernel/futex.c
++++ b/kernel/futex.c
+@@ -2380,10 +2380,22 @@ retry:
+ 		}
  
- struct notifier_block;
-diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
-index 888248a..ccac4c2 100644
---- a/arch/x86/kernel/cpu/mce/core.c
-+++ b/arch/x86/kernel/cpu/mce/core.c
-@@ -162,7 +162,8 @@ EXPORT_SYMBOL_GPL(mce_log);
- 
- void mce_register_decode_chain(struct notifier_block *nb)
- {
--	if (WARN_ON(nb->priority > MCE_PRIO_MCELOG && nb->priority < MCE_PRIO_EDAC))
-+	if (WARN_ON(nb->priority < MCE_PRIO_LOWEST ||
-+		    nb->priority > MCE_PRIO_HIGHEST))
- 		return;
- 
- 	blocking_notifier_chain_register(&x86_mce_decoder_chain, nb);
+ 		/*
+-		 * Since we just failed the trylock; there must be an owner.
++		 * The trylock just failed, so either there is an owner or
++		 * there is a higher priority waiter than this one.
+ 		 */
+ 		newowner = rt_mutex_owner(&pi_state->pi_mutex);
+-		BUG_ON(!newowner);
++		/*
++		 * If the higher priority waiter has not yet taken over the
++		 * rtmutex then newowner is NULL. We can't return here with
++		 * that state because it's inconsistent vs. the user space
++		 * state. So drop the locks and try again. It's a valid
++		 * situation and not any different from the other retry
++		 * conditions.
++		 */
++		if (unlikely(!newowner)) {
++			ret = -EAGAIN;
++			goto handle_err;
++		}
+ 	} else {
+ 		WARN_ON_ONCE(argowner != current);
+ 		if (oldowner == current) {
