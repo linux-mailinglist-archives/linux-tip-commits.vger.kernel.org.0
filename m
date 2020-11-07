@@ -2,54 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D8D642AA62E
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  7 Nov 2020 16:14:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F2AFD2AA62B
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  7 Nov 2020 16:14:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726364AbgKGPN5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 7 Nov 2020 10:13:57 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:41824 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726257AbgKGPN4 (ORCPT
+        id S1727996AbgKGPN6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 7 Nov 2020 10:13:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48482 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726257AbgKGPN5 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 7 Nov 2020 10:13:56 -0500
-Date:   Sat, 07 Nov 2020 15:13:53 -0000
+        Sat, 7 Nov 2020 10:13:57 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 633FDC0613CF;
+        Sat,  7 Nov 2020 07:13:57 -0800 (PST)
+Date:   Sat, 07 Nov 2020 15:13:54 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1604762034;
+        s=2020; t=1604762035;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=GUBL1Q9ewccVzUNHLTlQuQpuEgsgoh0nVisziH9kOE0=;
-        b=FPwQNs++SXrAQAJuBYJslUy5qu+w+18rTgxU5fmLw2S5akHD2fRjSDaKCxRPphzZyelu+E
-        AOnc1aWhqK1e/0ue6d7zgTx+ZYjG2tH3iurTLz3oTUS9LmZg/Z4VZt5hofM/Qn8UHOuJxV
-        Fzxyrz8D6YZLGKGXYlYMTF4N1zDV5wjlYIWYumi8moCPVCe0yZpIGZoXlRgPtiw0lTD+fA
-        GSMGx3E2aGjCma7yqYUZoo8RdHuGmBNdieaRceW8djsXbZPMtWTUluKElN+reD7l/SVbM4
-        f1SFTBEDuUOzyRQbSQNzFMGGS6iA0ez0rQphPJwTjq1ZdHQfnTIqPnMSACn6AA==
+        bh=gyG+1H7UuSLP2OKmWxckpk/UPtOx0sGvxKy7oW1J+ok=;
+        b=FkeAxHvK02n8VH7FOqEjqsJEpqzXHzvbCeJXZxsHzMk9Lf6y1IZsw4a8l/sWylROtuPwnd
+        mGGga1lKNFpg2f91AIxx1dzaIbI0OBZ15ULQjHIGEiI0bEq+9S3Nz2ooKV8vw8Cmr346Vu
+        DhnAKyngDjZ7ugiOVHlA+mIJmISA8dnrjd69nzTlPHCET02lZkAYVox+GFbGm9Spy2lxKm
+        FbBrPagpyzF04APkjKvXOt9XYrH/w729PH6n5DQINtvFXp5NEYWI5Czo4Q2YCig0QRvcHj
+        PLZCCreQt02Y7vE3nZRgUbEw6a4p1iFHTR2c6CKBqCYk3h7zU1e124+7IdxNXg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1604762034;
+        s=2020e; t=1604762035;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=GUBL1Q9ewccVzUNHLTlQuQpuEgsgoh0nVisziH9kOE0=;
-        b=a1gNwgMYDePW1KQU5CzLdjW5mEnN7sZLOpTkveQV11M99A/NwIS0Lpt8gr0Dx65LXanu1e
-        qjuPAOS8kBLQ90AQ==
+        bh=gyG+1H7UuSLP2OKmWxckpk/UPtOx0sGvxKy7oW1J+ok=;
+        b=lMYku0XvaWX0Q6qK96cFURNb/JK9XSaJjZJjNHyZv8CFJSVa83S5zs44AFMqCDJ/bT/qAB
+        KGAhI7p06fb3N3Aw==
 From:   "tip-bot2 for Andy Shevchenko" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] regmap: irq: Convert to use irq_domain_create_legacy()
+Subject: [tip: irq/core] irqdomain: Replace open coded of_node_to_fwnode()
 Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Thomas Gleixner <tglx@linutronix.de>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Mark Brown <broonie@kernel.org>, x86@kernel.org,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20201030165919.86234-6-andriy.shevchenko@linux.intel.com>
-References: <20201030165919.86234-6-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20201030165919.86234-4-andriy.shevchenko@linux.intel.com>
+References: <20201030165919.86234-4-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <160476203345.11244.1783557205584650453.tip-bot2@tip-bot2>
+Message-ID: <160476203458.11244.15363644462716481347.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,51 +62,37 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     d315c627a18249930750fe4eb2b21f3fe9b32ea4
-Gitweb:        https://git.kernel.org/tip/d315c627a18249930750fe4eb2b21f3fe9b32ea4
+Commit-ID:     c3a877fea962d9d0fb1e3747334699978f566930
+Gitweb:        https://git.kernel.org/tip/c3a877fea962d9d0fb1e3747334699978f566930
 Author:        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-AuthorDate:    Fri, 30 Oct 2020 18:59:19 +02:00
+AuthorDate:    Fri, 30 Oct 2020 18:59:17 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sat, 07 Nov 2020 11:33:46 +01:00
+CommitterDate: Sat, 07 Nov 2020 11:33:45 +01:00
 
-regmap: irq: Convert to use irq_domain_create_legacy()
+irqdomain: Replace open coded of_node_to_fwnode()
 
-irq_domain_create_legacy() takes a fwnode as parameter contrary to
-irq_domain_add_legacy() which requires a OF node.
-
-Switch the regmap irq domain creation to use that new function so it is not
-longer limited to OF based usage.
+of_node_to_fwnode() should be used for conversion.  Replace the open coded
+variant of it in of_phandle_args_to_fwspec().
 
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Acked-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20201030165919.86234-6-andriy.shevchenko@linux.intel.com
+Link: https://lore.kernel.org/r/20201030165919.86234-4-andriy.shevchenko@linux.intel.com
 
 ---
- drivers/base/regmap/regmap-irq.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ kernel/irq/irqdomain.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/base/regmap/regmap-irq.c b/drivers/base/regmap/regmap-irq.c
-index ad5c2de..19db764 100644
---- a/drivers/base/regmap/regmap-irq.c
-+++ b/drivers/base/regmap/regmap-irq.c
-@@ -803,13 +803,12 @@ int regmap_add_irq_chip_fwnode(struct fwnode_handle *fwnode,
- 	}
+diff --git a/kernel/irq/irqdomain.c b/kernel/irq/irqdomain.c
+index cf8b374..831526f 100644
+--- a/kernel/irq/irqdomain.c
++++ b/kernel/irq/irqdomain.c
+@@ -737,7 +737,7 @@ static void of_phandle_args_to_fwspec(struct device_node *np, const u32 *args,
+ {
+ 	int i;
  
- 	if (irq_base)
--		d->domain = irq_domain_add_legacy(to_of_node(fwnode),
--						  chip->num_irqs, irq_base,
--						  0, &regmap_domain_ops, d);
-+		d->domain = irq_domain_create_legacy(fwnode, chip->num_irqs,
-+						     irq_base, 0,
-+						     &regmap_domain_ops, d);
- 	else
--		d->domain = irq_domain_add_linear(to_of_node(fwnode),
--						  chip->num_irqs,
--						  &regmap_domain_ops, d);
-+		d->domain = irq_domain_create_linear(fwnode, chip->num_irqs,
-+						     &regmap_domain_ops, d);
- 	if (!d->domain) {
- 		dev_err(map->dev, "Failed to create IRQ domain\n");
- 		ret = -ENOMEM;
+-	fwspec->fwnode = np ? &np->fwnode : NULL;
++	fwspec->fwnode = of_node_to_fwnode(np);
+ 	fwspec->param_count = count;
+ 
+ 	for (i = 0; i < count; i++)
