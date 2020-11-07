@@ -2,52 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CA9C02AA48A
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  7 Nov 2020 12:15:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 09D812AA48C
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  7 Nov 2020 12:15:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726422AbgKGLPM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 7 Nov 2020 06:15:12 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:40944 "EHLO
+        id S1726832AbgKGLPN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 7 Nov 2020 06:15:13 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:40962 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726665AbgKGLPL (ORCPT
+        with ESMTP id S1726242AbgKGLPM (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 7 Nov 2020 06:15:11 -0500
-Date:   Sat, 07 Nov 2020 11:15:08 -0000
+        Sat, 7 Nov 2020 06:15:12 -0500
+Date:   Sat, 07 Nov 2020 11:15:09 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1604747709;
+        s=2020; t=1604747710;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=gyG+1H7UuSLP2OKmWxckpk/UPtOx0sGvxKy7oW1J+ok=;
-        b=C7V65H9LsOoQuGq+9mqXGOWi9yuOWYxIAm+cFdfO1qjS3BKLp0QZulscxPMPDr46ys+Fiq
-        FUxU+TlJpYBs27+XEV8Ro4EuN7mDx18w+vXF6IfLPQ0quWAB4dWyhfVxiODqsGo7ny5Fyd
-        wTgkI1Aj1yC5AJJysBsmw5M6LjHtUedzeqeuDjtvhU9KpCRH+gMiKTmrrtx3tjJdePH8DS
-        lXFjzVAe+y7woLSyMEaeGRwIR6azP77PNRPJO5jEKvPQjFBdMF0bpBwFJevNSd0oGCblG6
-        YafVEiQc4vNTPI325Cxnuv0KNI1/qvHNzLRzoXLVAq8WqRHKd+ySDqXe9r0Kjw==
+        bh=WlyNepKjGqlinQjurAmFsYJP0g+gGEOCd0KEkSbjcyM=;
+        b=RuqxEWEeXF4YE2KFA2e7JkFpuL4Yzj24svNq0kfcXT/icr8YN80oL5u9omOZFcwi3A/d8t
+        Y0NvNF0Ga+KunsQR6myN6YWTTUvkQwrIRvib1aSf1Cwc2yLsOCNQfknx6V7tKQ3g2MSB+l
+        FjMjsaVwW3w29MW38xaBMkZkfSN2AjUel38wc8YfUNc7s4vPTn37zZKxPPCO9DdfGGxipl
+        GgRrQ8stHY1elMm79lhRlUtPfiJ6gmu8Jlewj1WxwMpgKHBUs60tYHoW8BOyTSXJthmXZR
+        WAJNk2ssmtc+Pj9goqfklMwLRax4VT053IjDdy8PR3yG8MJYSFRL84XqxLhK0A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1604747709;
+        s=2020e; t=1604747710;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=gyG+1H7UuSLP2OKmWxckpk/UPtOx0sGvxKy7oW1J+ok=;
-        b=MQsf1QrUYarRdeelWdiB0whd9sfvCaoa7+PefpqoYEz+xF7BQxgV2Su357wA90wJ1zS4p/
-        NaH0xe9y+CWyK+BA==
+        bh=WlyNepKjGqlinQjurAmFsYJP0g+gGEOCd0KEkSbjcyM=;
+        b=7dXMLbsq28gEjnSBiAIW0VEmPBJ7A6vlokhr/P52Q4fENBNOJcEMYSnmTGuUr2g1GdZi9G
+        RVi+1FzrHjHu2GCA==
 From:   "tip-bot2 for Andy Shevchenko" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] irqdomain: Replace open coded of_node_to_fwnode()
+Subject: [tip: irq/core] irqdomain: Remove unused of_device_id forward declaration
 Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-In-Reply-To: <20201030165919.86234-4-andriy.shevchenko@linux.intel.com>
-References: <20201030165919.86234-4-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20201030165919.86234-2-andriy.shevchenko@linux.intel.com>
+References: <20201030165919.86234-2-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <160474770895.10260.16489230549196826774.tip-bot2@tip-bot2>
+Message-ID: <160474770997.10260.13324386175243740203.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,37 +58,35 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     c3a877fea962d9d0fb1e3747334699978f566930
-Gitweb:        https://git.kernel.org/tip/c3a877fea962d9d0fb1e3747334699978f566930
+Commit-ID:     eda2845ae5e0ae466c1aca715d642b4977311747
+Gitweb:        https://git.kernel.org/tip/eda2845ae5e0ae466c1aca715d642b4977311747
 Author:        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-AuthorDate:    Fri, 30 Oct 2020 18:59:17 +02:00
+AuthorDate:    Fri, 30 Oct 2020 18:59:15 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Sat, 07 Nov 2020 11:33:45 +01:00
 
-irqdomain: Replace open coded of_node_to_fwnode()
+irqdomain: Remove unused of_device_id forward declaration
 
-of_node_to_fwnode() should be used for conversion.  Replace the open coded
-variant of it in of_phandle_args_to_fwspec().
+There is no users of of_device_id in irqdomain.h. Drop it.
 
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://lore.kernel.org/r/20201030165919.86234-4-andriy.shevchenko@linux.intel.com
+Link: https://lore.kernel.org/r/20201030165919.86234-2-andriy.shevchenko@linux.intel.com
 
 ---
- kernel/irq/irqdomain.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/irqdomain.h | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/kernel/irq/irqdomain.c b/kernel/irq/irqdomain.c
-index cf8b374..831526f 100644
---- a/kernel/irq/irqdomain.c
-+++ b/kernel/irq/irqdomain.c
-@@ -737,7 +737,7 @@ static void of_phandle_args_to_fwspec(struct device_node *np, const u32 *args,
- {
- 	int i;
+diff --git a/include/linux/irqdomain.h b/include/linux/irqdomain.h
+index 71535e8..5664218 100644
+--- a/include/linux/irqdomain.h
++++ b/include/linux/irqdomain.h
+@@ -38,7 +38,6 @@
  
--	fwspec->fwnode = np ? &np->fwnode : NULL;
-+	fwspec->fwnode = of_node_to_fwnode(np);
- 	fwspec->param_count = count;
- 
- 	for (i = 0; i < count; i++)
+ struct device_node;
+ struct irq_domain;
+-struct of_device_id;
+ struct irq_chip;
+ struct irq_data;
+ struct cpumask;
