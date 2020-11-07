@@ -2,52 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 050C32AA465
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  7 Nov 2020 11:19:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E298C2AA488
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  7 Nov 2020 12:15:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727890AbgKGKSy (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 7 Nov 2020 05:18:54 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:40744 "EHLO
+        id S1727084AbgKGLPL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 7 Nov 2020 06:15:11 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:40934 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727955AbgKGKSv (ORCPT
+        with ESMTP id S1726242AbgKGLPK (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 7 Nov 2020 05:18:51 -0500
-Date:   Sat, 07 Nov 2020 10:18:45 -0000
+        Sat, 7 Nov 2020 06:15:10 -0500
+Date:   Sat, 07 Nov 2020 11:15:07 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1604744326;
+        s=2020; t=1604747708;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=BfpOKFPHnxu+UuxH1OShMP6HvIVxuAuxNfzN3n9l++c=;
-        b=N0N+SAKZdpb5bhlGGZF+bWUa5eTY1N7qhLLKmaH/+CdAaFFbByCYo0LS7oEY8E/c8eX0GE
-        umXHt2GeKboBaGhXUKixQiYlkLA7w5mZ2iSt5AADvSdk15JLG742qHsntcTbYKkIDT5FW0
-        Y3MUUREiAiMqrbOxf1fIAkwRIjVQiRYWoWBT/f/mpXxTa7sZRRjTs74E6XxlQP4FEIOqP1
-        cPywr4w297xcqWCombCbwQE/Qh49Kwwzq2jgyIbocP8ED7OPG/x0jJxdgRfco0yRUnMwaR
-        uZ4wqc+Aj9wWHA2IwHnmdkk6G7S8MkQ/3RE02v0+XVL1KiYFZ40SlK0OyU0tyA==
+        bh=GUBL1Q9ewccVzUNHLTlQuQpuEgsgoh0nVisziH9kOE0=;
+        b=SjbZl+A/Bfx9gYJg6veKdnkyRJKNxikR5y3rOr5RsN+jV6wBbh4ThZDla24I/HDK/q7/Tp
+        RO8UjbM5kFv5/0OHBHckZERtwZyqJPg8UWwnzjaHD8yWXEF/vHsYRYD8WEF6N7X0YDnlmR
+        8eCqsh7F0nAr5gWYMrsHlxQggMW6MktHfX+DLxk0t3RsPn3ysSm2ZLdmGeRRnhqeaNciXi
+        TIIwcJQU5NFfKaC5ZwlYLQOeArrihXKhJYZJhJpdfQiiteW6c39/rLUV6MqZf5UqLwj1Fc
+        bFDKN7gKW4FF54dUSLoP6YuHbWFzDFau+vq2QRywT3fCUWILUvx5d76FQbYdDw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1604744326;
+        s=2020e; t=1604747708;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=BfpOKFPHnxu+UuxH1OShMP6HvIVxuAuxNfzN3n9l++c=;
-        b=fzmPhdcrxweCLy6ZP/40uT5mx4dynQffhIWomK9L/+uW6loEtUHuvlDiNyVClNO3tRsTr+
-        Ykbe4R8b0z9br0Bg==
-From:   "tip-bot2 for Mike Travis" <tip-bot2@linutronix.de>
+        bh=GUBL1Q9ewccVzUNHLTlQuQpuEgsgoh0nVisziH9kOE0=;
+        b=3etJeIsfewDINkDJp3B+b9NhiZxqoxvAD3IOv+oJe1lWRtUmDrKuu1dLPyxnw9odBoaH6c
+        cMDpO9gBXlURYHDA==
+From:   "tip-bot2 for Andy Shevchenko" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/platform/uv: Fix missing OEM_TABLE_ID
-Cc:     Mike Travis <mike.travis@hpe.com>,
-        Thomas Gleixner <tglx@linutronix.de>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20201105222741.157029-2-mike.travis@hpe.com>
-References: <20201105222741.157029-2-mike.travis@hpe.com>
+Subject: [tip: irq/core] regmap: irq: Convert to use irq_domain_create_legacy()
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Mark Brown <broonie@kernel.org>
+In-Reply-To: <20201030165919.86234-6-andriy.shevchenko@linux.intel.com>
+References: <20201030165919.86234-6-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <160474432572.397.11629900432820445475.tip-bot2@tip-bot2>
+Message-ID: <160474770777.10260.7332183668915853245.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -56,58 +57,53 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     1aec69ae56be28b5fd3c9daead5f3840c30153c8
-Gitweb:        https://git.kernel.org/tip/1aec69ae56be28b5fd3c9daead5f3840c30153c8
-Author:        Mike Travis <mike.travis@hpe.com>
-AuthorDate:    Thu, 05 Nov 2020 16:27:39 -06:00
+Commit-ID:     d315c627a18249930750fe4eb2b21f3fe9b32ea4
+Gitweb:        https://git.kernel.org/tip/d315c627a18249930750fe4eb2b21f3fe9b32ea4
+Author:        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+AuthorDate:    Fri, 30 Oct 2020 18:59:19 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sat, 07 Nov 2020 11:17:39 +01:00
+CommitterDate: Sat, 07 Nov 2020 11:33:46 +01:00
 
-x86/platform/uv: Fix missing OEM_TABLE_ID
+regmap: irq: Convert to use irq_domain_create_legacy()
 
-Testing shows a problem in that the OEM_TABLE_ID was missing for
-hubless systems.  This is used to determine the APIC type (legacy or
-extended).  Add the OEM_TABLE_ID to the early hubless processing.
+irq_domain_create_legacy() takes a fwnode as parameter contrary to
+irq_domain_add_legacy() which requires a OF node.
 
-Fixes: 1e61f5a95f191 ("Add and decode Arch Type in UVsystab")
-Signed-off-by: Mike Travis <mike.travis@hpe.com>
+Switch the regmap irq domain creation to use that new function so it is not
+longer limited to OF based usage.
+
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20201105222741.157029-2-mike.travis@hpe.com
----
- arch/x86/kernel/apic/x2apic_uv_x.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Acked-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20201030165919.86234-6-andriy.shevchenko@linux.intel.com
 
-diff --git a/arch/x86/kernel/apic/x2apic_uv_x.c b/arch/x86/kernel/apic/x2apic_uv_x.c
-index 714233c..a579479 100644
---- a/arch/x86/kernel/apic/x2apic_uv_x.c
-+++ b/arch/x86/kernel/apic/x2apic_uv_x.c
-@@ -366,7 +366,7 @@ static int __init early_get_arch_type(void)
- 	return ret;
- }
+---
+ drivers/base/regmap/regmap-irq.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/base/regmap/regmap-irq.c b/drivers/base/regmap/regmap-irq.c
+index ad5c2de..19db764 100644
+--- a/drivers/base/regmap/regmap-irq.c
++++ b/drivers/base/regmap/regmap-irq.c
+@@ -803,13 +803,12 @@ int regmap_add_irq_chip_fwnode(struct fwnode_handle *fwnode,
+ 	}
  
--static int __init uv_set_system_type(char *_oem_id)
-+static int __init uv_set_system_type(char *_oem_id, char *_oem_table_id)
- {
- 	/* Save OEM_ID passed from ACPI MADT */
- 	uv_stringify(sizeof(oem_id), oem_id, _oem_id);
-@@ -394,6 +394,9 @@ static int __init uv_set_system_type(char *_oem_id)
- 		else
- 			uv_hubless_system = 0x9;
- 
-+		/* Copy APIC type */
-+		uv_stringify(sizeof(oem_table_id), oem_table_id, _oem_table_id);
-+
- 		pr_info("UV: OEM IDs %s/%s, SystemType %d, HUBLESS ID %x\n",
- 			oem_id, oem_table_id, uv_system_type, uv_hubless_system);
- 		return 0;
-@@ -456,7 +459,7 @@ static int __init uv_acpi_madt_oem_check(char *_oem_id, char *_oem_table_id)
- 	uv_cpu_info->p_uv_hub_info = &uv_hub_info_node0;
- 
- 	/* If not UV, return. */
--	if (likely(uv_set_system_type(_oem_id) == 0))
-+	if (uv_set_system_type(_oem_id, _oem_table_id) == 0)
- 		return 0;
- 
- 	/* Save and Decode OEM Table ID */
+ 	if (irq_base)
+-		d->domain = irq_domain_add_legacy(to_of_node(fwnode),
+-						  chip->num_irqs, irq_base,
+-						  0, &regmap_domain_ops, d);
++		d->domain = irq_domain_create_legacy(fwnode, chip->num_irqs,
++						     irq_base, 0,
++						     &regmap_domain_ops, d);
+ 	else
+-		d->domain = irq_domain_add_linear(to_of_node(fwnode),
+-						  chip->num_irqs,
+-						  &regmap_domain_ops, d);
++		d->domain = irq_domain_create_linear(fwnode, chip->num_irqs,
++						     &regmap_domain_ops, d);
+ 	if (!d->domain) {
+ 		dev_err(map->dev, "Failed to create IRQ domain\n");
+ 		ret = -ENOMEM;
