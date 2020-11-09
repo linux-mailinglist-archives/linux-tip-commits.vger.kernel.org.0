@@ -2,81 +2,90 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3127B2AC80B
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  9 Nov 2020 23:09:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 31A502AC8B1
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  9 Nov 2020 23:36:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730157AbgKIWJL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 9 Nov 2020 17:09:11 -0500
-Received: from mga12.intel.com ([192.55.52.136]:40676 "EHLO mga12.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725946AbgKIWJL (ORCPT
+        id S1730035AbgKIWgn (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 9 Nov 2020 17:36:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54404 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725946AbgKIWgn (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 9 Nov 2020 17:09:11 -0500
-IronPort-SDR: E8wx47jbtfJISQnehsPbhwGJn+DzpDUdCX0tIeQcBwPs7NhduHOiI/LxHRhktQ+5Gx2exe7fis
- D8GNTn8fWv1Q==
-X-IronPort-AV: E=McAfee;i="6000,8403,9800"; a="149159709"
-X-IronPort-AV: E=Sophos;i="5.77,464,1596524400"; 
-   d="scan'208";a="149159709"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2020 14:09:10 -0800
-IronPort-SDR: mQI2yGa2ahYt3jSSfoD/vi3GJ9vubhkdb2KQNDBoeq5tjBMQ+1SshO3mRbUOCncxzufnOC5v6o
- SO9Af1mVf5eQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.77,464,1596524400"; 
-   d="scan'208";a="398432646"
-Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
-  by orsmga001.jf.intel.com with ESMTP; 09 Nov 2020 14:09:10 -0800
-Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1713.5; Mon, 9 Nov 2020 14:09:09 -0800
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1713.5; Mon, 9 Nov 2020 14:09:09 -0800
-Received: from fmsmsx610.amr.corp.intel.com ([10.18.126.90]) by
- fmsmsx610.amr.corp.intel.com ([10.18.126.90]) with mapi id 15.01.1713.004;
- Mon, 9 Nov 2020 14:09:09 -0800
-From:   "Luck, Tony" <tony.luck@intel.com>
-To:     Qian Cai <cai@redhat.com>,
+        Mon, 9 Nov 2020 17:36:43 -0500
+Received: from mail-oi1-x22b.google.com (mail-oi1-x22b.google.com [IPv6:2607:f8b0:4864:20::22b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD720C0613D3
+        for <linux-tip-commits@vger.kernel.org>; Mon,  9 Nov 2020 14:36:41 -0800 (PST)
+Received: by mail-oi1-x22b.google.com with SMTP id k26so12072613oiw.0
+        for <linux-tip-commits@vger.kernel.org>; Mon, 09 Nov 2020 14:36:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=CTh6EHdj/sEjVeEM7tTLdCGN17vFXhY30SLk5/K9tus=;
+        b=DQepMCFhAe7e5wzfvOjHy+zSRqIgqviiVN86ZTuq+EjTL/Mjqv1OpUP/DhwbvqVXWt
+         76jrPoQJBhQiAsIMEsumWsQ69zJmoKfDn+XzeIQbC7V9v/kcPPAOCAGzHdulH9SG77xX
+         kA2zleK1xZmj/sADDwAzXXUeIL1Ht0tEFFO/RhzwcEs2ySi+sL23LWKiHjUJctMTcfZV
+         zQf0bfsCwCfeP3brkU25GS2wehLX6WX52wLpctCDKAlLTgBX0yL0HpnPv9yZ94uvaqYy
+         6a4TcSqhRT4gixWuZ4PA86TEB6/POnXjx8nx0X+PAfNhDQm071OPu9Iwx3qzuNL3G8jh
+         9HlA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=CTh6EHdj/sEjVeEM7tTLdCGN17vFXhY30SLk5/K9tus=;
+        b=M+6OjhwbL2EWWgQTn14EAF07335JTf/BGYEtkFzRh8dEBXqDAL8MkpVP6daKaNu9FA
+         T5EjfEbPT6ehq5BJq6m7/sOVqcmU+d/pQdVwDbft6eKUaPtm6OAuUZDs0f4pXUxl8Lih
+         /JD4/5ZHmG6hnLykiGLJUCs0BqkflPSdVb4zIn/OTti7prJ7t8z0LEjz4K76xA3WqjQU
+         gKlziwNgm5/HhS4SmSgC63/2LWqk5SeHy3aoObmgPjmmTkLl8ByPqpX3R+IqD17+dfsw
+         dPP4Vf+SD5OXGkIVQyEC+LB31q0EibCqfRDlU7WAEt7EXscUG3O1BRCF/N1647wfIUsH
+         QwAg==
+X-Gm-Message-State: AOAM531vvShq6cB05Vbwsc4H056puTNbQ5Mey08dudJSZTMvQjmuLKk6
+        EICdivioLTD0rQ682wSZdGQLBlw9Zg/4c7NlU4BMAg==
+X-Google-Smtp-Source: ABdhPJyGsZp34bN65P+ZviA1hv7Uw0zaa+Kw38+E6oue4vDWjH3T/+uur8iehxwmbCi7dDf59M+lS1szSQhCxNuYQeo=
+X-Received: by 2002:a54:4082:: with SMTP id i2mr969744oii.28.1604961400870;
+ Mon, 09 Nov 2020 14:36:40 -0800 (PST)
+MIME-Version: 1.0
+References: <20201030190807.GA13884@agluck-desk2.amr.corp.intel.com>
+ <160431588828.397.16468104725047768957.tip-bot2@tip-bot2> <3f863634cd75824907e8ccf8164548c2ef036f20.camel@redhat.com>
+ <bfc274fc27724ea39ecac1e7ac834ed8@intel.com>
+In-Reply-To: <bfc274fc27724ea39ecac1e7ac834ed8@intel.com>
+From:   Jim Mattson <jmattson@google.com>
+Date:   Mon, 9 Nov 2020 14:36:29 -0800
+Message-ID: <CALMp9eTFaiYkTnVe8xKzg40E4nZ3rAOii0O06bTy0+oLNjyKhA@mail.gmail.com>
+Subject: Re: [tip: ras/core] x86/mce: Enable additional error logging on
+ certain Intel CPUs
+To:     "Luck, Tony" <tony.luck@intel.com>
+Cc:     Qian Cai <cai@redhat.com>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "linux-tip-commits@vger.kernel.org" 
-        <linux-tip-commits@vger.kernel.org>
-CC:     Boris Petkov <bp@alien8.de>, Borislav Petkov <bp@suse.de>,
-        x86 <x86@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
+        <linux-tip-commits@vger.kernel.org>, Boris Petkov <bp@alien8.de>,
+        Borislav Petkov <bp@suse.de>, x86 <x86@kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
         "kvm@vger.kernel.org" <kvm@vger.kernel.org>
-Subject: RE: [tip: ras/core] x86/mce: Enable additional error logging on
- certain Intel CPUs
-Thread-Topic: [tip: ras/core] x86/mce: Enable additional error logging on
- certain Intel CPUs
-Thread-Index: AQHWsQncdZGZz6bl20aw0A24zT9Gy6nA6f4A//98jeA=
-Date:   Mon, 9 Nov 2020 22:09:08 +0000
-Message-ID: <bfc274fc27724ea39ecac1e7ac834ed8@intel.com>
-References: <20201030190807.GA13884@agluck-desk2.amr.corp.intel.com>
-         <160431588828.397.16468104725047768957.tip-bot2@tip-bot2>
- <3f863634cd75824907e8ccf8164548c2ef036f20.camel@redhat.com>
-In-Reply-To: <3f863634cd75824907e8ccf8164548c2ef036f20.camel@redhat.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-dlp-product: dlpe-windows
-dlp-reaction: no-action
-dlp-version: 11.5.1.3
-x-originating-ip: [10.22.254.132]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-V2hhdCBkb2VzIEtWTSBkbyB3aXRoIG1vZGVsIHNwZWNpZmljIE1TUnM/DQoNCkxvb2tzIGxpa2Ug
-eW91IGxldCB0aGUgZ3Vlc3QgYmVsaWV2ZSBpdCB3YXMgcnVubmluZyBvbiBvbmUgb2YgU2FuZHkg
-QnJpZGdlLCBJdnkgQnJpZGdlLCBIYXN3ZWxsIChYZW9uKS4NCg0KU28sIHRoZSBjb3JlIE1DRSBj
-b2RlIHRyaWVkIHRvIGVuYWJsZSBleHRlbmRlZCBlcnJvciByZXBvcnRpbmcuDQoNCklmIHRoZXJl
-IGlzIGEgbW9kZSB0byBoYXZlIEtWTSBsZXQgdGhlIGd1ZXN0IHRoaW5rIHRoYXQgaXQgcmVhZC93
-cm90ZSBNU1IgMHgxN0YsDQpidXQgYWN0dWFsbHksIGRvZXNuJ3QgZG8gaXQgLi4uIHRoYXQgd291
-bGQgc2VlbSB0byBiZSBhIHJlYXNvbmFibGUgdGhpbmcgdG8gZG8gaGVyZS4NCg0KLVRvbnkNCg==
+On Mon, Nov 9, 2020 at 2:09 PM Luck, Tony <tony.luck@intel.com> wrote:
+>
+> What does KVM do with model specific MSRs?
+
+"Model specific model-specific registers?" :-)
+
+KVM only implements a small subset of MSRs. By default, any access to
+the rest raises #GP.
+
+> Looks like you let the guest believe it was running on one of Sandy Bridge, Ivy Bridge, Haswell (Xeon).
+>
+> So, the core MCE code tried to enable extended error reporting.
+>
+> If there is a mode to have KVM let the guest think that it read/wrote MSR 0x17F,
+> but actually, doesn't do it ... that would seem to be a reasonable thing to do here.
+
+There is an 'ignore_msrs' module parameter, to sink writes and return
+zero on reads for unknown MSRs, but I don't think it's commonly used.
+
+I thought Linux had long ago gone the route of turning rdmsr/wrmsr
+into rdmsr_safe/wrmsr_safe, so that the guest would ignore the #GPs on
+writes and return zero to the caller for #GPs on reads.
