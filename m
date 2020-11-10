@@ -2,14 +2,14 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E25D82AD6BA
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 10 Nov 2020 13:47:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 655AA2AD6BB
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 10 Nov 2020 13:47:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730392AbgKJMpW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 10 Nov 2020 07:45:22 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:58224 "EHLO
+        id S1730406AbgKJMpv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 10 Nov 2020 07:45:51 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:58230 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730296AbgKJMpW (ORCPT
+        with ESMTP id S1728478AbgKJMpW (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Tue, 10 Nov 2020 07:45:22 -0500
 Date:   Tue, 10 Nov 2020 12:45:19 -0000
@@ -20,12 +20,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=iD3uuvec7KvBLO1A3AiFYIoKWwhZn15/Y848zjVVSIU=;
-        b=o5JgSqIxmlQZ3QKRjqvMWdh2CRUwcBOwIEnQiLRlXPIeNcUmJw0HscoYCaByIzqIhGWm8v
-        U7Rys5LOOzkCmlT5LvIuGSwiVRbRyjxP+iWWu2mnpyjkgXGr8WFt0Ggj/yMNB8v/BgGRQr
-        yOChq4+N4i0NoUlf7J0/P+cPTqz6LOiRGv7Em6r6vSXp9LCuW6zMRopcJUhxNHx2hOAlO8
-        jtgZMc7ZP1aU8s3IJE58y9wZptj6vzwtOLTQTzKxhnHcwh4QHJQqkTN8V57UNQ4oJQOgSm
-        6VoZJmtOzGpNwHAWCZbPO4WIR9AsFjkJYIQG4Oq7vCJfQ+adJeyy1Q7RusT8gA==
+        bh=NtnXMzSzaOPu6h0vfEVKJleqFYSEHIqAn/XWEwy7Tt0=;
+        b=K7+dEAI+/iKRGS7f5+440hfLW3fgkEmKmNu0LXSGiIasWkbfCVIDZNxKvsQ4DiX9j6Y2ZW
+        z9ie5vWHQxB/iVGoP8dDaF71DKRA8zp0F30Tb3yJ7OSOYL3AfE15ZfTjkmWOHDHsmzYrgi
+        +F2/8B/a6mrbFG3S1gRZsZT/sekHiYhMdeb3QscZQW5uDdOo+Jj9HaFEeqJdYF3t2BxqeA
+        zj9HZigrzf6/ETvhHCp13P5NU7sued5/XmDcB8rt1WtbVnZr2u+cV9UUaez8S78QQL2WjL
+        m1aZ6z2FOextKDFW5BcSu6zb3k1pwcssxL2Pja8iP1kODUMPGyVxnJKQnRE0cQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1605012320;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -33,20 +33,21 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=iD3uuvec7KvBLO1A3AiFYIoKWwhZn15/Y848zjVVSIU=;
-        b=AEoz6KyPSVOquY7Pp/EYPXjFBbHn+QYDsxWGjE8+4mpT2kMmVFsTUBRg3qq4/CBxM1blPd
-        vYvYgabM+iZInYAg==
+        bh=NtnXMzSzaOPu6h0vfEVKJleqFYSEHIqAn/XWEwy7Tt0=;
+        b=0ijBzOEKdpug6/IA36yTpDgBD7TrJxMyI6Se/B2C3aef76EuyUdJQmc2C3M1DREnRP69em
+        MO62UIsLGe+58AAg==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf: Simplify group_sched_out()
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: perf/urgent] perf/x86: Make dummy_iregs static
+Cc:     Steven Rostedt <rostedt@goodmis.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20201029162901.904060564@infradead.org>
-References: <20201029162901.904060564@infradead.org>
+In-Reply-To: <20201030151955.324273677@infradead.org>
+References: <20201030151955.324273677@infradead.org>
 MIME-Version: 1.0
-Message-ID: <160501231936.11244.12656213160461765711.tip-bot2@tip-bot2>
+Message-ID: <160501231994.11244.6830281963445643876.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -57,37 +58,37 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     8c7855d82933bab7fa5e96f0e568fc125c2e1ab4
-Gitweb:        https://git.kernel.org/tip/8c7855d82933bab7fa5e96f0e568fc125c2e1ab4
+Commit-ID:     e506d1dac0edb2df82f2aa0582e814f9cd9aa07d
+Gitweb:        https://git.kernel.org/tip/e506d1dac0edb2df82f2aa0582e814f9cd9aa07d
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Thu, 29 Oct 2020 16:28:25 +01:00
+AuthorDate:    Fri, 30 Oct 2020 12:15:06 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Mon, 09 Nov 2020 18:12:35 +01:00
 
-perf: Simplify group_sched_out()
+perf/x86: Make dummy_iregs static
 
-Since event_sched_out() clears cpuctx->exclusive upon removal of an
-exclusive event (and only group leaders can be exclusive), there is no
-point in group_sched_out() trying to do it too. It is impossible for
-cpuctx->exclusive to still be set here.
+Having pt_regs on-stack is unfortunate, it's 168 bytes. Since it isn't
+actually used, make it a static variable. This both gets if off the
+stack and ensures it gets 0 initialized, just in case someone does
+look at it.
 
+Reported-by: Steven Rostedt <rostedt@goodmis.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20201029162901.904060564@infradead.org
+Link: https://lkml.kernel.org/r/20201030151955.324273677@infradead.org
 ---
- kernel/events/core.c | 3 ---
- 1 file changed, 3 deletions(-)
+ arch/x86/events/intel/ds.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index d67c9cb..9a57366 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -2312,9 +2312,6 @@ group_sched_out(struct perf_event *group_event,
- 		event_sched_out(event, cpuctx, ctx);
+diff --git a/arch/x86/events/intel/ds.c b/arch/x86/events/intel/ds.c
+index 276b29d..b47cc42 100644
+--- a/arch/x86/events/intel/ds.c
++++ b/arch/x86/events/intel/ds.c
+@@ -1738,7 +1738,7 @@ __intel_pmu_pebs_event(struct perf_event *event,
+ 	struct x86_perf_regs perf_regs;
+ 	struct pt_regs *regs = &perf_regs.regs;
+ 	void *at = get_next_pebs_record_by_bit(base, top, bit);
+-	struct pt_regs dummy_iregs;
++	static struct pt_regs dummy_iregs;
  
- 	perf_pmu_enable(ctx->pmu);
--
--	if (group_event->attr.exclusive)
--		cpuctx->exclusive = 0;
- }
- 
- #define DETACH_GROUP	0x01UL
+ 	if (hwc->flags & PERF_X86_EVENT_AUTO_RELOAD) {
+ 		/*
