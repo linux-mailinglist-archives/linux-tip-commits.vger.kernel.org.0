@@ -2,77 +2,107 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AA89C2ADCED
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 10 Nov 2020 18:28:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DA6A2ADD52
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 10 Nov 2020 18:47:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729718AbgKJR2v (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 10 Nov 2020 12:28:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60530 "EHLO
+        id S1726307AbgKJRrd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 10 Nov 2020 12:47:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35200 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726307AbgKJR2v (ORCPT
+        with ESMTP id S1726179AbgKJRrd (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 10 Nov 2020 12:28:51 -0500
-Received: from merlin.infradead.org (merlin.infradead.org [IPv6:2001:8b0:10b:1231::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1509C0613CF;
-        Tue, 10 Nov 2020 09:28:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=HmUTZYGrR/d2vlH5DfUaqIdhg5JyXUfN+e9H+G1so7Y=; b=O87/okRKGoZqB8rEmfQg1N2Uvz
-        I+k/a0S4IlQ43WJzql61DHZINpXV7IIlx9xTCeYi3oXgjo6zEIf06fAeNzq2xA3D9OfYiMP76jHEw
-        GXCxHDzGv9/LvXcpjyW+BNmG0bVR5J2dPjOUI830ML9/jjYd1QInxu0hdfSxt1IxiXepEWF0ilb+4
-        2UFdMrHOE5TUtzJXIEx42UDI0cButAh7BzuMs3/oMnrw9CTNxqdhr9PUGmSfweambA6tYKJP4EcFc
-        3ffFoepILDPSRIVy2Lon0YFU9YAcpteJUERKnagI2eQ5gKkGE50uoZf71zvtMqnqUwL8+GqepMy4f
-        0UCNw2xA==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
-        by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1kcXRh-0004MV-T1; Tue, 10 Nov 2020 17:28:42 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id E6FCD307197;
-        Tue, 10 Nov 2020 18:28:38 +0100 (CET)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id C14142BDD3947; Tue, 10 Nov 2020 18:28:38 +0100 (CET)
-Date:   Tue, 10 Nov 2020 18:28:38 +0100
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Boqun Feng <boqun.feng@gmail.com>
-Cc:     linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-        Qian Cai <cai@redhat.com>,
-        Chris Wilson <chris@chris-wilson.co.uk>,
-        Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>
-Subject: Re: [PATCH 1/2] lockdep: Avoid to modify chain keys in
- validate_chain()
-Message-ID: <20201110172838.GP2594@hirez.programming.kicks-ass.net>
-References: <20201030093806.GA2628@hirez.programming.kicks-ass.net>
- <20201102053743.450459-1-boqun.feng@gmail.com>
+        Tue, 10 Nov 2020 12:47:33 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6368BC0613CF;
+        Tue, 10 Nov 2020 09:47:33 -0800 (PST)
+Date:   Tue, 10 Nov 2020 17:47:29 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1605030450;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=mEAqCmkLjY+QN2F9+QtcffwNijSbKSBgR51ZN03lPQQ=;
+        b=KbmxabAch52Ghl23Df6nK4RaMnaXUv+9JmZLvOY0Dho7qZE3QY2EPW9rFwoqZrviMzWZ8O
+        63rUglJ3YXJCLYDA0KqGpLDyqMvTXShA1XKQjhCnv+J3ZmvqIG1GjIwn+KN2rGiD+8P862
+        FQH82z05h8W6lYyVpWawX0Gd8CjOaKPJCHEDhffWoQKz8dfK0ffpk6/7ngQ084e2qWoh6B
+        OXO3hq5KLcy8VUA35DRs7/uH70VcqvDKhY0hE+inVKU4GNDCVlIGAf/07DUdxV4Hr2kH0T
+        67dxm7MnYvuwl+9Srw6+1pAEegKt/jc9Uqiu5iemfTxo1VwW4TyEUmbdYbktMw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1605030450;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=mEAqCmkLjY+QN2F9+QtcffwNijSbKSBgR51ZN03lPQQ=;
+        b=cv/u9f/8eFjKeW4lJ1xj3DraXXzwotjEhRhlfn28NhZm7JfmmOSC7xKSSaf5juW2L8S6y6
+        EvqKW4LZ49DoEYBw==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/apic] x86/ioapic: Correct the PCI/ISA trigger type selection
+Cc:     Tom Lendacky <thomas.lendacky@amd.com>,
+        Borislav Petkov <bp@alien8.de>, Qian Cai <cai@redhat.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        David Woodhouse <dwmw@amazon.co.uk>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <87d00lgu13.fsf@nanos.tec.linutronix.de>
+References: <87d00lgu13.fsf@nanos.tec.linutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201102053743.450459-1-boqun.feng@gmail.com>
+Message-ID: <160503044953.11244.10545793402097139581.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2.linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Mon, Nov 02, 2020 at 01:37:41PM +0800, Boqun Feng wrote:
-> Chris Wilson reported a problem spotted by check_chain_key(): a chain
-> key got changed in validate_chain() because we modify the ->read in
-> validate_chain() to skip checks for dependency adding, and ->read is
-> taken into calculation for chain key since commit f611e8cf98ec
-> ("lockdep: Take read/write status in consideration when generate
-> chainkey").
-> 
-> Fix this by avoiding to modify ->read in validate_chain() based on two
-> facts: a) since we now support recursive read lock detection, there is
-> no need to skip checks for dependency adding for recursive readers, b)
-> since we have a), there is only one case left (nest_lock) where we want
-> to skip checks in validate_chain(), we simply remove the modification
-> for ->read and rely on the return value of check_deadlock() to skip the
-> dependency adding.
-> 
-> Reported-by: Chris Wilson <chris@chris-wilson.co.uk>
-> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-> Cc: Peter Zijlstra <peterz@infradead.org>
+The following commit has been merged into the x86/apic branch of tip:
 
-Thanks Boqun!
+Commit-ID:     aec8da04e4d71afdd4ab3025ea34a6517435f363
+Gitweb:        https://git.kernel.org/tip/aec8da04e4d71afdd4ab3025ea34a6517435f363
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Tue, 10 Nov 2020 15:34:32 +01:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Tue, 10 Nov 2020 18:43:22 +01:00
+
+x86/ioapic: Correct the PCI/ISA trigger type selection
+
+PCI's default trigger type is level and ISA's is edge. The recent
+refactoring made it the other way round, which went unnoticed as it seems
+only to cause havoc on some AMD systems.
+
+Make the comment and code do the right thing again.
+
+Fixes: a27dca645d2c ("x86/io_apic: Cleanup trigger/polarity helpers")
+Reported-by: Tom Lendacky <thomas.lendacky@amd.com>
+Reported-by: Borislav Petkov <bp@alien8.de>
+Reported-by: Qian Cai <cai@redhat.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: David Woodhouse <dwmw@amazon.co.uk>
+Link: https://lore.kernel.org/r/87d00lgu13.fsf@nanos.tec.linutronix.de
+---
+ arch/x86/kernel/apic/io_apic.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/x86/kernel/apic/io_apic.c b/arch/x86/kernel/apic/io_apic.c
+index 0602c95..089e755 100644
+--- a/arch/x86/kernel/apic/io_apic.c
++++ b/arch/x86/kernel/apic/io_apic.c
+@@ -809,9 +809,9 @@ static bool irq_is_level(int idx)
+ 	case MP_IRQTRIG_DEFAULT:
+ 		/*
+ 		 * Conforms to spec, ie. bus-type dependent trigger
+-		 * mode. PCI defaults to egde, ISA to level.
++		 * mode. PCI defaults to level, ISA to edge.
+ 		 */
+-		level = test_bit(bus, mp_bus_not_pci);
++		level = !test_bit(bus, mp_bus_not_pci);
+ 		/* Take EISA into account */
+ 		return eisa_irq_is_level(idx, bus, level);
+ 	case MP_IRQTRIG_EDGE:
