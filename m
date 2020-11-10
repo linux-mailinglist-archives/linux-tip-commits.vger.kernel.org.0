@@ -2,57 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D3B1B2AD4CF
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 10 Nov 2020 12:22:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 01E2A2AD697
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 10 Nov 2020 13:45:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726827AbgKJLVy (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 10 Nov 2020 06:21:54 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:57688 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726706AbgKJLVy (ORCPT
+        id S1729183AbgKJMpU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 10 Nov 2020 07:45:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44190 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726462AbgKJMpT (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 10 Nov 2020 06:21:54 -0500
-Date:   Tue, 10 Nov 2020 11:21:50 -0000
+        Tue, 10 Nov 2020 07:45:19 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEBADC0613CF;
+        Tue, 10 Nov 2020 04:45:19 -0800 (PST)
+Date:   Tue, 10 Nov 2020 12:45:16 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1605007311;
+        s=2020; t=1605012318;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=6WS3gMqsYdRBr/rqnwp3cWwPN8TN6b++cO3+unqgljI=;
-        b=Sl0plRqCQtJ91OnCUqtv7cT0NBCBayZjJvtnzkFiON2dTnfi7FJ/aBVs1EnxSzbEUqVQRa
-        a2cTq21f+m9LnI4aHU4/entU9+THQl+Lzx7fsc7f+v6qyWfGMxPIlWooUrVI86o+0xhVwn
-        o+GDXG7dzTivTjqbEmxufohrr1l0Y4FPYp+9fY2vMcFXIk8PIAc19YFGehytvIjS8bM/cB
-        x5wHfd1149aJzT5O+8DyE3ZB5Yl7a8nBdjdKRApvwLUa+ow70dNAUtPjPMCB2EaNQkV0A5
-        +kAaNH+L3eXdtMNPmWbfE84Hba7StDHRHiWmIp1kMHWrNNAQkYHJMwZFcfB+Fw==
+        bh=HrTgrf7/CGEXNHmsjzQw3hJOy7cpo4rYK2KkMa6DqNg=;
+        b=YRUMLgQbeEve/2EJef4jQi4n1x2DSds5VbaWIfz5XujhwfKDRNyLiqKaGX2uCmdcRhD0RY
+        +RlBAC5SRBEmaq6aaKsSnrDYZiwt8saATXyZL8zvsYuIqpxOHsODcWt88NFcQKT/yQSK2h
+        qVCM+FdftwQBOsFKNzTtwOO82oNs/OhaX7LWhTslmzMVZqZ4vrfTduiD64hZ8KV/J1pj48
+        9oZyuFjInBw8l7K4nLpTfQtqso7KBwCOBNAFfaquMKS+TII8ZfwAwPk2ES1j0S+Q9YgqxE
+        UgrhXTeLQ04pOnWKc63+PDdzUtUv9ZstIQsY/9+vB1Q4KVVIi3uOLOfBzikb/Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1605007311;
+        s=2020e; t=1605012318;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=6WS3gMqsYdRBr/rqnwp3cWwPN8TN6b++cO3+unqgljI=;
-        b=ZYkAFblHOOVy6Ck011Rty7u5KYYzAGOMiAyCr69qHe7UrTQMcLJ+G6Vn/G0Db9iBKBt6Jn
-        kOBt+eeK4300jyDA==
-From:   "tip-bot2 for Peng Wang" <tip-bot2@linutronix.de>
+        bh=HrTgrf7/CGEXNHmsjzQw3hJOy7cpo4rYK2KkMa6DqNg=;
+        b=fSo1sY0WJx8AXUQhZIXx6bHjM17xgROvt+RFQ5AzVyZwPDR67cZTUIT5fyepRvEE6PIxF5
+        DHkT65lNVGE5yyBA==
+From:   "tip-bot2 for Stephane Eranian" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/fair: Reorder throttle_cfs_rq() path
-Cc:     Peng Wang <rocking@linux.alibaba.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Phil Auld <pauld@redhat.com>, Ben Segall <bsegall@google.com>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: =?utf-8?q?=3Cf11dd2e3ab35cc538e2eb57bf0c99b6eaffce127=2E16049?=
- =?utf-8?q?73978=2Egit=2Erocking=40linux=2Ealibaba=2Ecom=3E?=
-References: =?utf-8?q?=3Cf11dd2e3ab35cc538e2eb57bf0c99b6eaffce127=2E160497?=
- =?utf-8?q?3978=2Egit=2Erocking=40linux=2Ealibaba=2Ecom=3E?=
+Subject: [tip: perf/urgent] perf/x86/intel: Make anythread filter support conditional
+Cc:     Stephane Eranian <eranian@google.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20201028194247.3160610-1-eranian@google.com>
+References: <20201028194247.3160610-1-eranian@google.com>
 MIME-Version: 1.0
-Message-ID: <160500731014.11244.11693121696022661111.tip-bot2@tip-bot2>
+Message-ID: <160501231688.11244.5518242768684799323.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,87 +59,101 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     b6d37a764a5b852db63101b3f2db0e699574b903
-Gitweb:        https://git.kernel.org/tip/b6d37a764a5b852db63101b3f2db0e699574b903
-Author:        Peng Wang <rocking@linux.alibaba.com>
-AuthorDate:    Tue, 10 Nov 2020 10:11:59 +08:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 10 Nov 2020 12:20:12 +01:00
+Commit-ID:     cadbaa039b99a6d5c26ce1c7f2fc0325943e605a
+Gitweb:        https://git.kernel.org/tip/cadbaa039b99a6d5c26ce1c7f2fc0325943e605a
+Author:        Stephane Eranian <eranian@google.com>
+AuthorDate:    Wed, 28 Oct 2020 12:42:47 -07:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Mon, 09 Nov 2020 18:12:36 +01:00
 
-sched/fair: Reorder throttle_cfs_rq() path
+perf/x86/intel: Make anythread filter support conditional
 
-As commit:
+Starting with Arch Perfmon v5, the anythread filter on generic counters may be
+deprecated. The current kernel was exporting the any filter without checking.
+On Icelake, it means you could do cpu/event=0x3c,any/ even though the filter
+does not exist. This patch corrects the problem by relying on the CPUID 0xa leaf
+function to determine if anythread is supported or not as described in the
+Intel SDM Vol3b 18.2.5.1 AnyThread Deprecation section.
 
-  39f23ce07b93 ("sched/fair: Fix unthrottle_cfs_rq() for leaf_cfs_rq list")
-
-does in unthrottle_cfs_rq(), throttle_cfs_rq() can also use the same
-pattern as dequeue_task_fair().
-
-No functional changes.
-
-Signed-off-by: Peng Wang <rocking@linux.alibaba.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Vincent Guittot <vincent.guittot@linaro.org>
-Cc: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: Phil Auld <pauld@redhat.com>
-Cc: Ben Segall <bsegall@google.com>
-Link: https://lore.kernel.org/r/f11dd2e3ab35cc538e2eb57bf0c99b6eaffce127.1604973978.git.rocking@linux.alibaba.com
+Signed-off-by: Stephane Eranian <eranian@google.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20201028194247.3160610-1-eranian@google.com
 ---
- kernel/sched/fair.c | 34 +++++++++++++++++++++++-----------
- 1 file changed, 23 insertions(+), 11 deletions(-)
+ arch/x86/events/intel/core.c      | 10 ++++++++++
+ arch/x86/events/perf_event.h      |  1 +
+ arch/x86/include/asm/perf_event.h |  4 +++-
+ arch/x86/kvm/cpuid.c              |  4 +++-
+ 4 files changed, 17 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 52cacfc..2755a7e 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -4788,25 +4788,37 @@ static bool throttle_cfs_rq(struct cfs_rq *cfs_rq)
- 		struct cfs_rq *qcfs_rq = cfs_rq_of(se);
- 		/* throttled entity or throttle-on-deactivate */
- 		if (!se->on_rq)
--			break;
-+			goto done;
+diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
+index c37387c..af457f8 100644
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -4987,6 +4987,12 @@ __init int intel_pmu_init(void)
  
--		if (dequeue) {
--			dequeue_entity(qcfs_rq, se, DEQUEUE_SLEEP);
--		} else {
--			update_load_avg(qcfs_rq, se, 0);
--			se_update_runnable(se);
--		}
-+		dequeue_entity(qcfs_rq, se, DEQUEUE_SLEEP);
+ 	x86_add_quirk(intel_arch_events_quirk); /* Install first, so it runs last */
  
- 		qcfs_rq->h_nr_running -= task_delta;
- 		qcfs_rq->idle_h_nr_running -= idle_task_delta;
- 
--		if (qcfs_rq->load.weight)
--			dequeue = 0;
-+		if (qcfs_rq->load.weight) {
-+			/* Avoid re-evaluating load for this entity: */
-+			se = parent_entity(se);
-+			break;
-+		}
- 	}
- 
--	if (!se)
--		sub_nr_running(rq, task_delta);
-+	for_each_sched_entity(se) {
-+		struct cfs_rq *qcfs_rq = cfs_rq_of(se);
-+		/* throttled entity or throttle-on-deactivate */
-+		if (!se->on_rq)
-+			goto done;
-+
-+		update_load_avg(qcfs_rq, se, 0);
-+		se_update_runnable(se);
- 
-+		qcfs_rq->h_nr_running -= task_delta;
-+		qcfs_rq->idle_h_nr_running -= idle_task_delta;
++	if (version >= 5) {
++		x86_pmu.intel_cap.anythread_deprecated = edx.split.anythread_deprecated;
++		if (x86_pmu.intel_cap.anythread_deprecated)
++			pr_cont(" AnyThread deprecated, ");
 +	}
 +
-+	/* At this point se is NULL and we are at root level*/
-+	sub_nr_running(rq, task_delta);
-+
-+done:
  	/*
- 	 * Note: distribution will already see us throttled via the
- 	 * throttled-list.  rq->lock protects completion.
+ 	 * Install the hw-cache-events table:
+ 	 */
+@@ -5512,6 +5518,10 @@ __init int intel_pmu_init(void)
+ 	x86_pmu.intel_ctrl |=
+ 		((1LL << x86_pmu.num_counters_fixed)-1) << INTEL_PMC_IDX_FIXED;
+ 
++	/* AnyThread may be deprecated on arch perfmon v5 or later */
++	if (x86_pmu.intel_cap.anythread_deprecated)
++		x86_pmu.format_attrs = intel_arch_formats_attr;
++
+ 	if (x86_pmu.event_constraints) {
+ 		/*
+ 		 * event on fixed counter2 (REF_CYCLES) only works on this
+diff --git a/arch/x86/events/perf_event.h b/arch/x86/events/perf_event.h
+index 1d1fe46..6a8edfe 100644
+--- a/arch/x86/events/perf_event.h
++++ b/arch/x86/events/perf_event.h
+@@ -585,6 +585,7 @@ union perf_capabilities {
+ 		u64     pebs_baseline:1;
+ 		u64	perf_metrics:1;
+ 		u64	pebs_output_pt_available:1;
++		u64	anythread_deprecated:1;
+ 	};
+ 	u64	capabilities;
+ };
+diff --git a/arch/x86/include/asm/perf_event.h b/arch/x86/include/asm/perf_event.h
+index 6960cd6..b9a7fd0 100644
+--- a/arch/x86/include/asm/perf_event.h
++++ b/arch/x86/include/asm/perf_event.h
+@@ -137,7 +137,9 @@ union cpuid10_edx {
+ 	struct {
+ 		unsigned int num_counters_fixed:5;
+ 		unsigned int bit_width_fixed:8;
+-		unsigned int reserved:19;
++		unsigned int reserved1:2;
++		unsigned int anythread_deprecated:1;
++		unsigned int reserved2:16;
+ 	} split;
+ 	unsigned int full;
+ };
+diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
+index 06a278b..0752dec 100644
+--- a/arch/x86/kvm/cpuid.c
++++ b/arch/x86/kvm/cpuid.c
+@@ -672,7 +672,9 @@ static inline int __do_cpuid_func(struct kvm_cpuid_array *array, u32 function)
+ 
+ 		edx.split.num_counters_fixed = min(cap.num_counters_fixed, MAX_FIXED_COUNTERS);
+ 		edx.split.bit_width_fixed = cap.bit_width_fixed;
+-		edx.split.reserved = 0;
++		edx.split.anythread_deprecated = 1;
++		edx.split.reserved1 = 0;
++		edx.split.reserved2 = 0;
+ 
+ 		entry->eax = eax.full;
+ 		entry->ebx = cap.events_mask;
