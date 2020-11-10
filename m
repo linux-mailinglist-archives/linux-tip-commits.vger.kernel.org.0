@@ -2,160 +2,146 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 41FDF2AD3F3
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 10 Nov 2020 11:40:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D3B1B2AD4CF
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 10 Nov 2020 12:22:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729604AbgKJKkm (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 10 Nov 2020 05:40:42 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:21139 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726219AbgKJKkm (ORCPT
+        id S1726827AbgKJLVy (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 10 Nov 2020 06:21:54 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:57688 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726706AbgKJLVy (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 10 Nov 2020 05:40:42 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1605004840;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+        Tue, 10 Nov 2020 06:21:54 -0500
+Date:   Tue, 10 Nov 2020 11:21:50 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1605007311;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=mFapeUoz9EK+CeReEbp81IVPN8G8zVDapgbISzQg6Vs=;
-        b=ZravZIYZ904Xj210Gmu5ZbplPBdlSpO5rWG+ngA15PfevgyevZv0wZs4LJLGpyi8G/Rnhu
-        3IeEzh1F4VbD2kxfTQ3j/0FRltXscjCxKtMpm51gWLKd+foZj9mFu9/BMsB2EokUY7ihoF
-        3Z8sKcL+m9U204JeJkt4RQfNNO5v1pA=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-186-C4YfgnlXNA2L94Bcuwgk-g-1; Tue, 10 Nov 2020 05:40:38 -0500
-X-MC-Unique: C4YfgnlXNA2L94Bcuwgk-g-1
-Received: by mail-ej1-f72.google.com with SMTP id nt22so4534417ejb.17
-        for <linux-tip-commits@vger.kernel.org>; Tue, 10 Nov 2020 02:40:38 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:to:cc:references:from:subject:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=mFapeUoz9EK+CeReEbp81IVPN8G8zVDapgbISzQg6Vs=;
-        b=fxnWw4le+qBbJ/ZejOv5M3RHOcoqMjMnFIWF/q9APSfbYlf+qKwz5Ub1F7EcZIno//
-         nJrSv/Bd3gpwhHu2edk8pInndePEip9fP9Qd76c4OMQq4h0a1pUmV/jHXIx56RP/lsXE
-         nKI5hYKmhO2l7sDb0MqNZ99UNrBU+0N9LvVRG5jRdCb/cg9SNVs2XQIWr0L9W8r+bDa4
-         OVQrljRCV1BIgJA2nMUgSHSVR5vu+33FsWTubiQbtv9xY2xjaMEJMoNKWTJjHEU/a9j7
-         x9G/xb7556dtdGVZRxx9xYtGfvkFVOxRP/fCM57OwOY1IkmVm89f+9bJAoowAyQ7C31a
-         BrZg==
-X-Gm-Message-State: AOAM5315CpNz+Rryg9kWgGlYK596RM9Ow0dzUwIpB21WQdG/wapbHoPX
-        XgVqJFRlxwm/8q8/7z7fUP0NxCFnV8mLsB7TZJ1eFm2b68GdUtN44WKj+Tc2GDnpQCOaKpK6O6s
-        5eDXJcoYYkql5ixQt+0eQnNFmw+dNlQI=
-X-Received: by 2002:a17:906:1183:: with SMTP id n3mr19064862eja.188.1605004837137;
-        Tue, 10 Nov 2020 02:40:37 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJwnjrd2VMYhvgmNsyYwtSr3fGttybQrjvuv3QVZvsz5l664w5dGcdQ9COwyU1SYrBNdF5vTUQ==
-X-Received: by 2002:a17:906:1183:: with SMTP id n3mr19064842eja.188.1605004836846;
-        Tue, 10 Nov 2020 02:40:36 -0800 (PST)
-Received: from ?IPv6:2001:b07:6468:f312:c8dd:75d4:99ab:290a? ([2001:b07:6468:f312:c8dd:75d4:99ab:290a])
-        by smtp.gmail.com with ESMTPSA id m16sm8760572eja.58.2020.11.10.02.40.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 10 Nov 2020 02:40:35 -0800 (PST)
-To:     Borislav Petkov <bp@alien8.de>
-Cc:     "Luck, Tony" <tony.luck@intel.com>,
-        Jim Mattson <jmattson@google.com>, Qian Cai <cai@redhat.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-tip-commits@vger.kernel.org" 
-        <linux-tip-commits@vger.kernel.org>, x86 <x86@kernel.org>,
-        "kvm@vger.kernel.org" <kvm@vger.kernel.org>
-References: <20201030190807.GA13884@agluck-desk2.amr.corp.intel.com>
- <160431588828.397.16468104725047768957.tip-bot2@tip-bot2>
- <3f863634cd75824907e8ccf8164548c2ef036f20.camel@redhat.com>
- <bfc274fc27724ea39ecac1e7ac834ed8@intel.com>
- <CALMp9eTFaiYkTnVe8xKzg40E4nZ3rAOii0O06bTy0+oLNjyKhA@mail.gmail.com>
- <a22b5468e1c94906b72c4d8bc83c0f64@intel.com>
- <20201109232402.GA25492@agluck-desk2.amr.corp.intel.com>
- <20201110063151.GB7290@nazgul.tnic>
- <094c2395-b1b3-d908-657c-9bd4144e40ac@redhat.com>
- <20201110095615.GB9450@nazgul.tnic>
-From:   Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH] x86/mce: Check for hypervisor before enabling additional
- error logging
-Message-ID: <b8de7f7b-7aa1-d98b-74be-62d7c055542b@redhat.com>
-Date:   Tue, 10 Nov 2020 11:40:34 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.0
+        bh=6WS3gMqsYdRBr/rqnwp3cWwPN8TN6b++cO3+unqgljI=;
+        b=Sl0plRqCQtJ91OnCUqtv7cT0NBCBayZjJvtnzkFiON2dTnfi7FJ/aBVs1EnxSzbEUqVQRa
+        a2cTq21f+m9LnI4aHU4/entU9+THQl+Lzx7fsc7f+v6qyWfGMxPIlWooUrVI86o+0xhVwn
+        o+GDXG7dzTivTjqbEmxufohrr1l0Y4FPYp+9fY2vMcFXIk8PIAc19YFGehytvIjS8bM/cB
+        x5wHfd1149aJzT5O+8DyE3ZB5Yl7a8nBdjdKRApvwLUa+ow70dNAUtPjPMCB2EaNQkV0A5
+        +kAaNH+L3eXdtMNPmWbfE84Hba7StDHRHiWmIp1kMHWrNNAQkYHJMwZFcfB+Fw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1605007311;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=6WS3gMqsYdRBr/rqnwp3cWwPN8TN6b++cO3+unqgljI=;
+        b=ZYkAFblHOOVy6Ck011Rty7u5KYYzAGOMiAyCr69qHe7UrTQMcLJ+G6Vn/G0Db9iBKBt6Jn
+        kOBt+eeK4300jyDA==
+From:   "tip-bot2 for Peng Wang" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: sched/core] sched/fair: Reorder throttle_cfs_rq() path
+Cc:     Peng Wang <rocking@linux.alibaba.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Phil Auld <pauld@redhat.com>, Ben Segall <bsegall@google.com>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: =?utf-8?q?=3Cf11dd2e3ab35cc538e2eb57bf0c99b6eaffce127=2E16049?=
+ =?utf-8?q?73978=2Egit=2Erocking=40linux=2Ealibaba=2Ecom=3E?=
+References: =?utf-8?q?=3Cf11dd2e3ab35cc538e2eb57bf0c99b6eaffce127=2E160497?=
+ =?utf-8?q?3978=2Egit=2Erocking=40linux=2Ealibaba=2Ecom=3E?=
 MIME-Version: 1.0
-In-Reply-To: <20201110095615.GB9450@nazgul.tnic>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Message-ID: <160500731014.11244.11693121696022661111.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2.linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On 10/11/20 10:56, Borislav Petkov wrote:
-> On Tue, Nov 10, 2020 at 09:50:43AM +0100, Paolo Bonzini wrote:
->> 1) ignore_msrs _cannot_ be on by default.  You cannot know in advance that
->> for all non-architectural MSRs it's okay for them to read as zero and eat
->> writes.  For some non-architectural MSR which never reads as zero on real
->> hardware, who knows that there isn't some code using the contents of the MSR
->> as a divisor, and causing a division by zero exception with ignore_msrs=1?
-> 
-> So if you're emulating a certain type of hardware - say a certain CPU
-> model - then what are you saying? That you're emulating it but not
-> really all of it, just some bits?
+The following commit has been merged into the sched/core branch of tip:
 
-We try to emulate all that is described in the SDM as architectural, as 
-long as we expose the corresponding CPUID leaves.
+Commit-ID:     b6d37a764a5b852db63101b3f2db0e699574b903
+Gitweb:        https://git.kernel.org/tip/b6d37a764a5b852db63101b3f2db0e699574b903
+Author:        Peng Wang <rocking@linux.alibaba.com>
+AuthorDate:    Tue, 10 Nov 2020 10:11:59 +08:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Tue, 10 Nov 2020 12:20:12 +01:00
 
-However, f/m/s mean nothing when running virtualized.  First, trying to 
-derive any non-architectural property from the f/m/s is going to fail. 
-Second, even the host can be anything as long as it's newer than the 
-f/m/s that the VM reports (i.e. you can get a Sandy Bridge model and 
-model name even if running on Skylake).
+sched/fair: Reorder throttle_cfs_rq() path
 
-Also, X86_FEATURE_HYPERVISOR might be clear even if running virtualized. 
-  (Thank you nVidia for using it to play market segmentation games).
+As commit:
 
-> Because this is what happens - the kernel checks that it runs on a
-> certain CPU type and this tells it that those MSRs are there. But then
-> comes virt and throws all assumptions out.
-> 
-> So if it emulates a CPU model and the kernel tries to access those MSRs,
-> then the HV should ignore those MSR accesses if it doesn't know about
-> them. Why should the kernel change everytime some tool or virtualization
-> has shortcomings?
+  39f23ce07b93 ("sched/fair: Fix unthrottle_cfs_rq() for leaf_cfs_rq list")
 
-See above: how can the hypervisor know a safe value for all MSRs, 
-possibly including the undocumented ones?
+does in unthrottle_cfs_rq(), throttle_cfs_rq() can also use the same
+pattern as dequeue_task_fair().
 
->> 3) because of (1) and (2), the solution is very simple.  If the MSR is
->> architectural, its absence is a KVM bug and we'll fix it in all stable
->> versions.  If the MSR is not architectural (and 17Fh isn't; not only it's
->> not mentioned in the SDM,
-> 
-> It is mentioned in the SDM.
+No functional changes.
 
-Oh right they moved the MSRs to a separate manual; found it now.  Still, 
-it's not architectural.
+Signed-off-by: Peng Wang <rocking@linux.alibaba.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Vincent Guittot <vincent.guittot@linaro.org>
+Cc: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: Phil Auld <pauld@redhat.com>
+Cc: Ben Segall <bsegall@google.com>
+Link: https://lore.kernel.org/r/f11dd2e3ab35cc538e2eb57bf0c99b6eaffce127.1604973978.git.rocking@linux.alibaba.com
+---
+ kernel/sched/fair.c | 34 +++++++++++++++++++++++-----------
+ 1 file changed, 23 insertions(+), 11 deletions(-)
 
-> But maybe we should have a choice and maybe qemu/kvm should have a way
-> to ignore certain MSRs for certain CPU types, regardless of them being
-> architectural or not.
-
-If it makes sense to emulate certain non-architectural MSRs we can add 
-them.  Supporting the error control MSR wouldn't even be hard, but I'm 
-not sure it makes sense:
-
-1) that MSR has not been there on current processors for several years 
-(and therefore Intel has clearly no intention of making architectural). 
-  For what we know, even current processors might not provide any of 
-that extended information at all (and still the VM could present Sandy 
-Bridge f/m/s).
-
-2) it would only present extended error info if the host itself enables 
-the bit, so one might question the wisdom of backporting that support 
-this to stable kernels
-
-3) It's unclear whether the guest would be able to use the extended 
-error information at all (and in some cases the description in the 
-manual is not even proper English: "allows the iMC to log first device 
-error when corrected error is detected during normal read"?).
-
-4) other hypervisors, including older distros, would likely have the 
-same issue.
-
-Paolo
-
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 52cacfc..2755a7e 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -4788,25 +4788,37 @@ static bool throttle_cfs_rq(struct cfs_rq *cfs_rq)
+ 		struct cfs_rq *qcfs_rq = cfs_rq_of(se);
+ 		/* throttled entity or throttle-on-deactivate */
+ 		if (!se->on_rq)
+-			break;
++			goto done;
+ 
+-		if (dequeue) {
+-			dequeue_entity(qcfs_rq, se, DEQUEUE_SLEEP);
+-		} else {
+-			update_load_avg(qcfs_rq, se, 0);
+-			se_update_runnable(se);
+-		}
++		dequeue_entity(qcfs_rq, se, DEQUEUE_SLEEP);
+ 
+ 		qcfs_rq->h_nr_running -= task_delta;
+ 		qcfs_rq->idle_h_nr_running -= idle_task_delta;
+ 
+-		if (qcfs_rq->load.weight)
+-			dequeue = 0;
++		if (qcfs_rq->load.weight) {
++			/* Avoid re-evaluating load for this entity: */
++			se = parent_entity(se);
++			break;
++		}
+ 	}
+ 
+-	if (!se)
+-		sub_nr_running(rq, task_delta);
++	for_each_sched_entity(se) {
++		struct cfs_rq *qcfs_rq = cfs_rq_of(se);
++		/* throttled entity or throttle-on-deactivate */
++		if (!se->on_rq)
++			goto done;
++
++		update_load_avg(qcfs_rq, se, 0);
++		se_update_runnable(se);
+ 
++		qcfs_rq->h_nr_running -= task_delta;
++		qcfs_rq->idle_h_nr_running -= idle_task_delta;
++	}
++
++	/* At this point se is NULL and we are at root level*/
++	sub_nr_running(rq, task_delta);
++
++done:
+ 	/*
+ 	 * Note: distribution will already see us throttled via the
+ 	 * throttled-list.  rq->lock protects completion.
