@@ -2,19 +2,16 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 39D992AD6BF
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 10 Nov 2020 13:47:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 263392AD698
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 10 Nov 2020 13:45:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732448AbgKJMqv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 10 Nov 2020 07:46:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44196 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730320AbgKJMpV (ORCPT
+        id S1730357AbgKJMpW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 10 Nov 2020 07:45:22 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:58216 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729908AbgKJMpV (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Tue, 10 Nov 2020 07:45:21 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBAA8C0613CF;
-        Tue, 10 Nov 2020 04:45:20 -0800 (PST)
 Date:   Tue, 10 Nov 2020 12:45:18 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1605012319;
@@ -23,12 +20,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=dlhQewQtTXEPhYiIf7CuYtR9qEyliWZVMPK5jIbCPWM=;
-        b=PkMrUHu7zMIyIganLWpTeZoZ5VfnuSH6FsJ/Byz5CZI04q5fmTuDw7we8QUzVC2waHBHZY
-        c7btkuNfjYJCo3Qg6J9d5+3ZmR68tvVNnTG5ITQyvpSHCBWnGpB10hGr6fAI5Bfj0iRz1Z
-        VTi2pDcafoL2lbcYXWWQY1yyOBLNRqsW7J925clXF2lVC9L2hRAZZXEd7QL6JytJULoIvl
-        9Y1XMXzmeZcErbVRCrN6T7vHhAWeSV8XZkhmfabBX3C6XVNg20HGEhpuyETxdOS4VcpzXN
-        IYnVsVlcZfJvXHVdpxuHjCupgadKeshGZw3RiRwy1rr9ehXVgEq28+2Tu/E5rg==
+        bh=ugkvKKKj/B/GVLO+EvRlv47ZxCHOzPG5PDM7+dvSB8c=;
+        b=DAdj+BIqKkbuHSTEDCZ3ZA4FWAxNm+d6vGhTMLT6PhjsHz7LloXmbSbfT9gFEmp9ClqlPM
+        0g7ouTrXlZb/VgUfw7E8SQYMcPFQg9XgdRz8waLSJH9B7efCthrFffVLtwe5s8lsTFWhGT
+        spbe6Kdo58qTKMi20NjHUzLqetuR0olPN3WqkrG735ZvpXr2BByg+aUDYNAF8cibtRxkwv
+        i/HKGeGIrNGhawwNh4wixzmw90dMfg0Hk4mApiTX1iKxK/H7WE6uSRS0Jx+1QsUs/VYxuT
+        qfE4lYhYhxgqICH4xA0k2+D8iabGPSTYTf7gupwarWMEIpvzkQ72SD9sZlfoIA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1605012319;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,21 +33,20 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=dlhQewQtTXEPhYiIf7CuYtR9qEyliWZVMPK5jIbCPWM=;
-        b=5QG2cObk50ucHSBpXnp3eTkjlZ5AnDQM1KDNU1+dsjIn2zuNr7bLFRAeyh7Pggic2yDXrV
-        8eLGseypP1xhhLDg==
+        bh=ugkvKKKj/B/GVLO+EvRlv47ZxCHOzPG5PDM7+dvSB8c=;
+        b=aJ+mOp9ucPOOdAj9mQi65VzkNH8yNsyzqM3HCzhX73AYm4Rhu7gbv7ZRMVniuuAvwDcQHw
+        uo+M85uehr9x2gAg==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf: Fix event multiplexing for exclusive groups
-Cc:     Andi Kleen <ak@linux.intel.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: perf/urgent] perf: Simplify group_sched_in()
+Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20201029162902.038667689@infradead.org>
-References: <20201029162902.038667689@infradead.org>
+In-Reply-To: <20201029162901.972161394@infradead.org>
+References: <20201029162901.972161394@infradead.org>
 MIME-Version: 1.0
-Message-ID: <160501231817.11244.16475577084391904219.tip-bot2@tip-bot2>
+Message-ID: <160501231880.11244.5143559563506354630.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,47 +57,51 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     2714c3962f304d031d5016c963c4b459337b0749
-Gitweb:        https://git.kernel.org/tip/2714c3962f304d031d5016c963c4b459337b0749
+Commit-ID:     251ff2d49347793d348babcff745289b11910e96
+Gitweb:        https://git.kernel.org/tip/251ff2d49347793d348babcff745289b11910e96
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Thu, 29 Oct 2020 16:29:53 +01:00
+AuthorDate:    Thu, 29 Oct 2020 16:29:15 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Mon, 09 Nov 2020 18:12:36 +01:00
+CommitterDate: Mon, 09 Nov 2020 18:12:35 +01:00
 
-perf: Fix event multiplexing for exclusive groups
+perf: Simplify group_sched_in()
 
-Commit 9e6302056f80 ("perf: Use hrtimers for event multiplexing")
-placed the hrtimer (re)start call in the wrong place.  Instead of
-capturing all scheduling failures, it only considered the PMU failure.
+Collate the error paths. Code duplication only leads to divergence and
+extra bugs.
 
-The result is that groups using perf_event_attr::exclusive are no
-longer rotated.
-
-Fixes: 9e6302056f80 ("perf: Use hrtimers for event multiplexing")
-Reported-by: Andi Kleen <ak@linux.intel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20201029162902.038667689@infradead.org
+Link: https://lkml.kernel.org/r/20201029162901.972161394@infradead.org
 ---
- kernel/events/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/events/core.c | 10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
 diff --git a/kernel/events/core.c b/kernel/events/core.c
-index f0e5268..00be48a 100644
+index 9a57366..f0e5268 100644
 --- a/kernel/events/core.c
 +++ b/kernel/events/core.c
-@@ -2612,7 +2612,6 @@ group_error:
+@@ -2580,11 +2580,8 @@ group_sched_in(struct perf_event *group_event,
  
- error:
+ 	pmu->start_txn(pmu, PERF_PMU_TXN_ADD);
+ 
+-	if (event_sched_in(group_event, cpuctx, ctx)) {
+-		pmu->cancel_txn(pmu);
+-		perf_mux_hrtimer_restart(cpuctx);
+-		return -EAGAIN;
+-	}
++	if (event_sched_in(group_event, cpuctx, ctx))
++		goto error;
+ 
+ 	/*
+ 	 * Schedule in siblings as one group (if any):
+@@ -2613,10 +2610,9 @@ group_error:
+ 	}
+ 	event_sched_out(group_event, cpuctx, ctx);
+ 
++error:
  	pmu->cancel_txn(pmu);
--	perf_mux_hrtimer_restart(cpuctx);
+-
+ 	perf_mux_hrtimer_restart(cpuctx);
+-
  	return -EAGAIN;
  }
  
-@@ -3672,6 +3671,7 @@ static int merge_sched_in(struct perf_event *event, void *data)
- 
- 		*can_add_hw = 0;
- 		ctx->rotate_necessary = 1;
-+		perf_mux_hrtimer_restart(cpuctx);
- 	}
- 
- 	return 0;
