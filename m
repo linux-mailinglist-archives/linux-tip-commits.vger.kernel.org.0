@@ -2,20 +2,17 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E59932AEB22
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 11 Nov 2020 09:24:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 467F22AEB17
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 11 Nov 2020 09:24:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726108AbgKKIY2 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 11 Nov 2020 03:24:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32810 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726316AbgKKIXX (ORCPT
+        id S1726537AbgKKIYI (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 11 Nov 2020 03:24:08 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:36218 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726108AbgKKIXY (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 11 Nov 2020 03:23:23 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1038EC0617A6;
-        Wed, 11 Nov 2020 00:23:23 -0800 (PST)
-Date:   Wed, 11 Nov 2020 08:23:20 -0000
+        Wed, 11 Nov 2020 03:23:24 -0500
+Date:   Wed, 11 Nov 2020 08:23:21 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1605083001;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -23,12 +20,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=EovlCglc3/W7alZEeGWomWOnilAjtapcjVasCvLmMjo=;
-        b=R5t9d+sIb5B/BvLFrmBXvcLO5VeOTR3gbwhbXrFKpgSX5s+BHvgv/ZS9Dqa5fBHpmkcYhR
-        q3lV4TIqH5LWB/+4EoE913wjPg46sm4RBZFzC0EBtbr9Nkw8YFwBoyC492NRj2icX8Fi9O
-        w9LXxzYqk0Zzea30sBMAsV0fHmwk+Sy4MEIzmAE1D0xX+3+zkFxkYMcSaNFoW6y/Fq0K8s
-        V0Bac7DZBjszhPUiE4RDXiLR66i45TnrruQKcC77ZgQ4NTk0VJkM9XK1VUalBxC4rBKDiD
-        0uHn8QhisqEIXdSu3uI5w916clDOPUK1MGHFIj8v7g4GOK6hseBJNWlBqno8Lg==
+        bh=UvE9LY1jsT/pZmVPF/sse33JIotbrXZqo8J6uvWbF9A=;
+        b=tfRzn0jRzHcy8GGfSgSLlo8g6tTUN+pgFSSDX/IUn99T/OTk4KpVvq5DfSfzhbleBb828E
+        lZ4hGlLpiBK+Z6gzMmlRPueWgF4dw+/V9eBkyXsofcmgUbpkwLRdVChCgbGTdoOQR8Q7NB
+        J7MUB9crkPe47mxdYcUdC5hF1xx+OL0998TiRgpBk3t/W5tWijWuEyGjo4sqIZdbjoXcA2
+        0kmUrl3Q7J815PQ9MixyyUE4pCet6PvCo5Q1cEWSCtsnG5Em3mT9PfiFkn8DUAiMGdSlCd
+        BPR5EB8l7Wpjn77oYRdTXaabMRaesghcaRciLQKFnHCq/laa3/aKcOl4x6sqUQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1605083001;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,22 +33,22 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=EovlCglc3/W7alZEeGWomWOnilAjtapcjVasCvLmMjo=;
-        b=JJS1VXkfnuzNZLCVw+Uz000HG+0GPil7It0VbQSJFDTgufzOZ24lcCF/TK4RjlsufVUyvh
-        UnFZiEsJdhN/tCBg==
+        bh=UvE9LY1jsT/pZmVPF/sse33JIotbrXZqo8J6uvWbF9A=;
+        b=CvjUC6YRXV7grWJxKl+gWWIgGxIzhZKXyPvvLIFXQKU4uL1nzVKIrxQgF4Zw36ym10MYSA
+        m//Et3Qutz/JwuCA==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched: Massage set_cpus_allowed()
+Subject: [tip: sched/core] sched: Fix hotplug vs CPU bandwidth control
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Valentin Schneider <valentin.schneider@arm.com>,
         Daniel Bristot de Oliveira <bristot@redhat.com>,
         x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20201023102346.729082820@infradead.org>
-References: <20201023102346.729082820@infradead.org>
+In-Reply-To: <20201023102346.639538965@infradead.org>
+References: <20201023102346.639538965@infradead.org>
 MIME-Version: 1.0
-Message-ID: <160508300049.11244.9581262522957109833.tip-bot2@tip-bot2>
+Message-ID: <160508300111.11244.6541265294100152865.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -62,180 +59,99 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     9cfc3e18adb0362533e911bf3ce6ec8c821cfccc
-Gitweb:        https://git.kernel.org/tip/9cfc3e18adb0362533e911bf3ce6ec8c821cfccc
+Commit-ID:     120455c514f7321981c907a01c543b05aff3f254
+Gitweb:        https://git.kernel.org/tip/120455c514f7321981c907a01c543b05aff3f254
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Wed, 16 Sep 2020 14:59:08 +02:00
+AuthorDate:    Fri, 25 Sep 2020 16:42:31 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Tue, 10 Nov 2020 18:38:59 +01:00
 
-sched: Massage set_cpus_allowed()
+sched: Fix hotplug vs CPU bandwidth control
 
-Thread a u32 flags word through the *set_cpus_allowed*() callchain.
-This will allow adding behavioural tweaks for future users.
+Since we now migrate tasks away before DYING, we should also move
+bandwidth unthrottle, otherwise we can gain tasks from unthrottle
+after we expect all tasks to be gone already.
+
+Also; it looks like the RT balancers don't respect cpu_active() and
+instead rely on rq->online in part, complete this. This too requires
+we do set_rq_offline() earlier to match the cpu_active() semantics.
+(The bigger patch is to convert RT to cpu_active() entirely)
+
+Since set_rq_online() is called from sched_cpu_activate(), place
+set_rq_offline() in sched_cpu_deactivate().
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Valentin Schneider <valentin.schneider@arm.com>
 Reviewed-by: Daniel Bristot de Oliveira <bristot@redhat.com>
-Link: https://lkml.kernel.org/r/20201023102346.729082820@infradead.org
+Link: https://lkml.kernel.org/r/20201023102346.639538965@infradead.org
 ---
- kernel/sched/core.c     | 28 ++++++++++++++++++----------
- kernel/sched/deadline.c |  5 +++--
- kernel/sched/sched.h    |  7 +++++--
- 3 files changed, 26 insertions(+), 14 deletions(-)
+ kernel/sched/core.c     | 14 ++++++++++----
+ kernel/sched/deadline.c |  2 +-
+ kernel/sched/rt.c       |  2 +-
+ 3 files changed, 12 insertions(+), 6 deletions(-)
 
 diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index dcb88a0..396accb 100644
+index 6c89806..dcb88a0 100644
 --- a/kernel/sched/core.c
 +++ b/kernel/sched/core.c
-@@ -1824,13 +1824,14 @@ static int migration_cpu_stop(void *data)
-  * sched_class::set_cpus_allowed must do the below, but is not required to
-  * actually call this function.
-  */
--void set_cpus_allowed_common(struct task_struct *p, const struct cpumask *new_mask)
-+void set_cpus_allowed_common(struct task_struct *p, const struct cpumask *new_mask, u32 flags)
+@@ -6977,6 +6977,8 @@ int sched_cpu_activate(unsigned int cpu)
+ 
+ int sched_cpu_deactivate(unsigned int cpu)
  {
- 	cpumask_copy(&p->cpus_mask, new_mask);
- 	p->nr_cpus_allowed = cpumask_weight(new_mask);
- }
++	struct rq *rq = cpu_rq(cpu);
++	struct rq_flags rf;
+ 	int ret;
  
--void do_set_cpus_allowed(struct task_struct *p, const struct cpumask *new_mask)
-+static void
-+__do_set_cpus_allowed(struct task_struct *p, const struct cpumask *new_mask, u32 flags)
- {
- 	struct rq *rq = task_rq(p);
- 	bool queued, running;
-@@ -1851,7 +1852,7 @@ void do_set_cpus_allowed(struct task_struct *p, const struct cpumask *new_mask)
- 	if (running)
- 		put_prev_task(rq, p);
+ 	set_cpu_active(cpu, false);
+@@ -6991,6 +6993,14 @@ int sched_cpu_deactivate(unsigned int cpu)
  
--	p->sched_class->set_cpus_allowed(p, new_mask);
-+	p->sched_class->set_cpus_allowed(p, new_mask, flags);
+ 	balance_push_set(cpu, true);
  
- 	if (queued)
- 		enqueue_task(rq, p, ENQUEUE_RESTORE | ENQUEUE_NOCLOCK);
-@@ -1859,6 +1860,11 @@ void do_set_cpus_allowed(struct task_struct *p, const struct cpumask *new_mask)
- 		set_next_task(rq, p);
- }
- 
-+void do_set_cpus_allowed(struct task_struct *p, const struct cpumask *new_mask)
-+{
-+	__do_set_cpus_allowed(p, new_mask, 0);
-+}
++	rq_lock_irqsave(rq, &rf);
++	if (rq->rd) {
++		update_rq_clock(rq);
++		BUG_ON(!cpumask_test_cpu(cpu, rq->rd->span));
++		set_rq_offline(rq);
++	}
++	rq_unlock_irqrestore(rq, &rf);
 +
- /*
-  * Change a given task's CPU affinity. Migrate the thread to a
-  * proper CPU and schedule it away if the CPU it's executing on
-@@ -1869,7 +1875,8 @@ void do_set_cpus_allowed(struct task_struct *p, const struct cpumask *new_mask)
-  * call is not atomic; no spinlocks may be held.
-  */
- static int __set_cpus_allowed_ptr(struct task_struct *p,
--				  const struct cpumask *new_mask, bool check)
-+				  const struct cpumask *new_mask,
-+				  u32 flags)
- {
- 	const struct cpumask *cpu_valid_mask = cpu_active_mask;
- 	unsigned int dest_cpu;
-@@ -1891,7 +1898,7 @@ static int __set_cpus_allowed_ptr(struct task_struct *p,
- 	 * Must re-check here, to close a race against __kthread_bind(),
- 	 * sched_setaffinity() is not guaranteed to observe the flag.
- 	 */
--	if (check && (p->flags & PF_NO_SETAFFINITY)) {
-+	if ((flags & SCA_CHECK) && (p->flags & PF_NO_SETAFFINITY)) {
- 		ret = -EINVAL;
- 		goto out;
- 	}
-@@ -1910,7 +1917,7 @@ static int __set_cpus_allowed_ptr(struct task_struct *p,
- 		goto out;
- 	}
- 
--	do_set_cpus_allowed(p, new_mask);
-+	__do_set_cpus_allowed(p, new_mask, flags);
- 
- 	if (p->flags & PF_KTHREAD) {
- 		/*
-@@ -1947,7 +1954,7 @@ out:
- 
- int set_cpus_allowed_ptr(struct task_struct *p, const struct cpumask *new_mask)
- {
--	return __set_cpus_allowed_ptr(p, new_mask, false);
-+	return __set_cpus_allowed_ptr(p, new_mask, 0);
- }
- EXPORT_SYMBOL_GPL(set_cpus_allowed_ptr);
- 
-@@ -2406,7 +2413,8 @@ void sched_set_stop_task(int cpu, struct task_struct *stop)
- #else
- 
- static inline int __set_cpus_allowed_ptr(struct task_struct *p,
--					 const struct cpumask *new_mask, bool check)
-+					 const struct cpumask *new_mask,
-+					 u32 flags)
- {
- 	return set_cpus_allowed_ptr(p, new_mask);
- }
-@@ -6006,7 +6014,7 @@ long sched_setaffinity(pid_t pid, const struct cpumask *in_mask)
- 	}
- #endif
- again:
--	retval = __set_cpus_allowed_ptr(p, new_mask, true);
-+	retval = __set_cpus_allowed_ptr(p, new_mask, SCA_CHECK);
- 
- 	if (!retval) {
- 		cpuset_cpus_allowed(p, cpus_allowed);
-@@ -6590,7 +6598,7 @@ void init_idle(struct task_struct *idle, int cpu)
- 	 *
- 	 * And since this is boot we can forgo the serialization.
- 	 */
--	set_cpus_allowed_common(idle, cpumask_of(cpu));
-+	set_cpus_allowed_common(idle, cpumask_of(cpu), 0);
- #endif
+ #ifdef CONFIG_SCHED_SMT
  	/*
- 	 * We're having a chicken and egg problem, even though we are
+ 	 * When going down, decrement the number of cores with SMT present.
+@@ -7072,10 +7082,6 @@ int sched_cpu_dying(unsigned int cpu)
+ 	sched_tick_stop(cpu);
+ 
+ 	rq_lock_irqsave(rq, &rf);
+-	if (rq->rd) {
+-		BUG_ON(!cpumask_test_cpu(cpu, rq->rd->span));
+-		set_rq_offline(rq);
+-	}
+ 	BUG_ON(rq->nr_running != 1);
+ 	rq_unlock_irqrestore(rq, &rf);
+ 
 diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
-index 77880fe..e97c7c2 100644
+index f232305..77880fe 100644
 --- a/kernel/sched/deadline.c
 +++ b/kernel/sched/deadline.c
-@@ -2301,7 +2301,8 @@ static void task_woken_dl(struct rq *rq, struct task_struct *p)
- }
+@@ -543,7 +543,7 @@ static int push_dl_task(struct rq *rq);
  
- static void set_cpus_allowed_dl(struct task_struct *p,
--				const struct cpumask *new_mask)
-+				const struct cpumask *new_mask,
-+				u32 flags)
+ static inline bool need_pull_dl_task(struct rq *rq, struct task_struct *prev)
  {
- 	struct root_domain *src_rd;
- 	struct rq *rq;
-@@ -2330,7 +2331,7 @@ static void set_cpus_allowed_dl(struct task_struct *p,
- 		raw_spin_unlock(&src_dl_b->lock);
- 	}
- 
--	set_cpus_allowed_common(p, new_mask);
-+	set_cpus_allowed_common(p, new_mask, flags);
+-	return dl_task(prev);
++	return rq->online && dl_task(prev);
  }
  
- /* Assumes rq->lock is held */
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index c6f707a..0420d80 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -1814,7 +1814,8 @@ struct sched_class {
- 	void (*task_woken)(struct rq *this_rq, struct task_struct *task);
+ static DEFINE_PER_CPU(struct callback_head, dl_push_head);
+diff --git a/kernel/sched/rt.c b/kernel/sched/rt.c
+index 49ec096..40a4663 100644
+--- a/kernel/sched/rt.c
++++ b/kernel/sched/rt.c
+@@ -265,7 +265,7 @@ static void pull_rt_task(struct rq *this_rq);
+ static inline bool need_pull_rt_task(struct rq *rq, struct task_struct *prev)
+ {
+ 	/* Try to pull RT tasks here if we lower this rq's prio */
+-	return rq->rt.highest_prio.curr > prev->prio;
++	return rq->online && rq->rt.highest_prio.curr > prev->prio;
+ }
  
- 	void (*set_cpus_allowed)(struct task_struct *p,
--				 const struct cpumask *newmask);
-+				 const struct cpumask *newmask,
-+				 u32 flags);
- 
- 	void (*rq_online)(struct rq *rq);
- 	void (*rq_offline)(struct rq *rq);
-@@ -1907,7 +1908,9 @@ extern void update_group_capacity(struct sched_domain *sd, int cpu);
- 
- extern void trigger_load_balance(struct rq *rq);
- 
--extern void set_cpus_allowed_common(struct task_struct *p, const struct cpumask *new_mask);
-+#define SCA_CHECK		0x01
-+
-+extern void set_cpus_allowed_common(struct task_struct *p, const struct cpumask *new_mask, u32 flags);
- 
- #endif
- 
+ static inline int rt_overloaded(struct rq *rq)
