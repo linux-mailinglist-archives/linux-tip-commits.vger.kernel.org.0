@@ -2,53 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1DC4A2AEB0C
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 11 Nov 2020 09:24:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 26ACB2AEB09
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 11 Nov 2020 09:23:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726491AbgKKIXs (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 11 Nov 2020 03:23:48 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:36286 "EHLO
+        id S1726432AbgKKIXl (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 11 Nov 2020 03:23:41 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:36242 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726351AbgKKIX1 (ORCPT
+        with ESMTP id S1726376AbgKKIX3 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 11 Nov 2020 03:23:27 -0500
-Date:   Wed, 11 Nov 2020 08:23:24 -0000
+        Wed, 11 Nov 2020 03:23:29 -0500
+Date:   Wed, 11 Nov 2020 08:23:26 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1605083005;
+        s=2020; t=1605083007;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Pzpn1kPr16DfTpHI2+SSmyKhry05qUuNysR6hEjmJsg=;
-        b=Zx/NY02Ia8p6YBof9CEcc8IFB9TjemsOJiDrgSgBuY5pYeKQyuDO1fzcTkKEghKW5ah9EQ
-        njBhY69cyp2jgcZZvBeHc+8LjwUxQbgYg6MD4LImFL0kucEmPurPaOGZPLwE4MNB56LgfI
-        Ub0mPMSdLYfwBanF20hFKp/fpvd8W85v+DnNXpGkm4pWXrmYHs6MtrUB6xMQt4QeWLjBJu
-        3PMCOzuyLq6uHmDeWQljDnGSL1+/GZWxqG6GTg6KPOMVbIRah1lWpgh2KMPUCfM0uweUK6
-        oM7laDqIjTFhl67DfK58wK2QjgdQu4UMmJ0fzDNI4SKogc1pBgP5pIyEU+BnnQ==
+        bh=uAgjSp2j4ExFJA8oR5i/nCtb9LCLDSoCAcTAVFx12cE=;
+        b=nLuFE9f8q9+pTZqurem8vDTpJUQZ+Uc0t35z0FV517yBU8aU4CdeMB3h+u2DWPAWKZpWU+
+        oV/Nc+Vq1V23W362toN73LeSIlJn3SOzT0VQ9S7mXSkkAamkXpLmnYzDLJsp/KR+Padt5I
+        Ctq9jiF5A7YK2m9y+1WO41m/iVErxVgt0mueLwOGjqjRv9L8PyMWCIiwVr8o9l/YynnNcB
+        CR0xrz12+qvatIttqI/+3FpBa1FM7pkZO0lDFQokmQ5f5trTSIIrbbe2GX9omGxgyND945
+        MD57RoE6sqtHCcYDCMgpQRdkTMF3mczO7bWCwuv0ZZhzcIS3VgHd5qyPcnfLyg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1605083005;
+        s=2020e; t=1605083007;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Pzpn1kPr16DfTpHI2+SSmyKhry05qUuNysR6hEjmJsg=;
-        b=2BxCSWPCQ6F+cgZf+qJCp7b/xODESMOOvU37zNSfupJck1ymqrz6CXD+9+JciHoulNWkNe
-        EVoGlxkauoSTjVDA==
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+        bh=uAgjSp2j4ExFJA8oR5i/nCtb9LCLDSoCAcTAVFx12cE=;
+        b=4SogBABDK0M8UuvKtAxeI8YppYPjX5p4Dt8MK1GjyjiOox2Qd9YszBRb8Zj1dt0NkQ/RsK
+        xx2QL4qAOnyyQ0Cg==
+From:   "tip-bot2 for Colin Ian King" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] stop_machine: Add function and caller debug info
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+Subject: [tip: sched/urgent] sched/debug: Fix memory corruption caused by
+ multiple small reads of flags
+Cc:     Jeff Bastian <jbastian@redhat.com>,
+        Colin Ian King <colin.king@canonical.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Valentin Schneider <valentin.schneider@arm.com>,
-        Daniel Bristot de Oliveira <bristot@redhat.com>,
         x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20201023102346.116513635@infradead.org>
-References: <20201023102346.116513635@infradead.org>
+In-Reply-To: <20201029151103.373410-1-colin.king@canonical.com>
+References: <20201029151103.373410-1-colin.king@canonical.com>
 MIME-Version: 1.0
-Message-ID: <160508300457.11244.14762732628813639514.tip-bot2@tip-bot2>
+Message-ID: <160508300664.11244.13448102071248830397.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -57,168 +59,74 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     a8b62fd0850503cf1e557d7e5a98d3f1f5c25eef
-Gitweb:        https://git.kernel.org/tip/a8b62fd0850503cf1e557d7e5a98d3f1f5c25eef
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Mon, 21 Sep 2020 12:58:17 +02:00
+Commit-ID:     8d4d9c7b4333abccb3bf310d76ef7ea2edb9828f
+Gitweb:        https://git.kernel.org/tip/8d4d9c7b4333abccb3bf310d76ef7ea2edb9828f
+Author:        Colin Ian King <colin.king@canonical.com>
+AuthorDate:    Thu, 29 Oct 2020 15:11:03 
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 10 Nov 2020 18:38:57 +01:00
+CommitterDate: Tue, 10 Nov 2020 18:38:49 +01:00
 
-stop_machine: Add function and caller debug info
+sched/debug: Fix memory corruption caused by multiple small reads of flags
 
-Crashes in stop-machine are hard to connect to the calling code, add a
-little something to help with that.
+Reading /proc/sys/kernel/sched_domain/cpu*/domain0/flags mutliple times
+with small reads causes oopses with slub corruption issues because the kfree is
+free'ing an offset from a previous allocation. Fix this by adding in a new
+pointer 'buf' for the allocation and kfree and use the temporary pointer tmp
+to handle memory copies of the buf offsets.
 
+Fixes: 5b9f8ff7b320 ("sched/debug: Output SD flag names rather than their values")
+Reported-by: Jeff Bastian <jbastian@redhat.com>
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Valentin Schneider <valentin.schneider@arm.com>
-Reviewed-by: Daniel Bristot de Oliveira <bristot@redhat.com>
-Link: https://lkml.kernel.org/r/20201023102346.116513635@infradead.org
+Link: https://lkml.kernel.org/r/20201029151103.373410-1-colin.king@canonical.com
 ---
- include/linux/stop_machine.h |  5 +++++
- kernel/sched/core.c          |  1 +
- kernel/stop_machine.c        | 27 ++++++++++++++++++++++++---
- lib/dump_stack.c             |  2 ++
- 4 files changed, 32 insertions(+), 3 deletions(-)
+ kernel/sched/debug.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/include/linux/stop_machine.h b/include/linux/stop_machine.h
-index 76d8b09..30577c3 100644
---- a/include/linux/stop_machine.h
-+++ b/include/linux/stop_machine.h
-@@ -24,6 +24,7 @@ typedef int (*cpu_stop_fn_t)(void *arg);
- struct cpu_stop_work {
- 	struct list_head	list;		/* cpu_stopper->works */
- 	cpu_stop_fn_t		fn;
-+	unsigned long		caller;
- 	void			*arg;
- 	struct cpu_stop_done	*done;
- };
-@@ -36,6 +37,8 @@ void stop_machine_park(int cpu);
- void stop_machine_unpark(int cpu);
- void stop_machine_yield(const struct cpumask *cpumask);
+diff --git a/kernel/sched/debug.c b/kernel/sched/debug.c
+index 0655524..2357921 100644
+--- a/kernel/sched/debug.c
++++ b/kernel/sched/debug.c
+@@ -251,7 +251,7 @@ static int sd_ctl_doflags(struct ctl_table *table, int write,
+ 	unsigned long flags = *(unsigned long *)table->data;
+ 	size_t data_size = 0;
+ 	size_t len = 0;
+-	char *tmp;
++	char *tmp, *buf;
+ 	int idx;
  
-+extern void print_stop_info(const char *log_lvl, struct task_struct *task);
-+
- #else	/* CONFIG_SMP */
+ 	if (write)
+@@ -269,17 +269,17 @@ static int sd_ctl_doflags(struct ctl_table *table, int write,
+ 		return 0;
+ 	}
  
- #include <linux/workqueue.h>
-@@ -80,6 +83,8 @@ static inline bool stop_one_cpu_nowait(unsigned int cpu,
- 	return false;
+-	tmp = kcalloc(data_size + 1, sizeof(*tmp), GFP_KERNEL);
+-	if (!tmp)
++	buf = kcalloc(data_size + 1, sizeof(*buf), GFP_KERNEL);
++	if (!buf)
+ 		return -ENOMEM;
+ 
+ 	for_each_set_bit(idx, &flags, __SD_FLAG_CNT) {
+ 		char *name = sd_flag_debug[idx].name;
+ 
+-		len += snprintf(tmp + len, strlen(name) + 2, "%s ", name);
++		len += snprintf(buf + len, strlen(name) + 2, "%s ", name);
+ 	}
+ 
+-	tmp += *ppos;
++	tmp = buf + *ppos;
+ 	len -= *ppos;
+ 
+ 	if (len > *lenp)
+@@ -294,7 +294,7 @@ static int sd_ctl_doflags(struct ctl_table *table, int write,
+ 	*lenp = len;
+ 	*ppos += len;
+ 
+-	kfree(tmp);
++	kfree(buf);
+ 
+ 	return 0;
  }
- 
-+static inline void print_stop_info(const char *log_lvl, struct task_struct *task) { }
-+
- #endif	/* CONFIG_SMP */
- 
- /*
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index d2003a7..5e24104 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -6447,6 +6447,7 @@ void sched_show_task(struct task_struct *p)
- 		(unsigned long)task_thread_info(p)->flags);
- 
- 	print_worker_info(KERN_INFO, p);
-+	print_stop_info(KERN_INFO, p);
- 	show_stack(p, NULL, KERN_INFO);
- 	put_task_stack(p);
- }
-diff --git a/kernel/stop_machine.c b/kernel/stop_machine.c
-index 865bb02..3cf567c 100644
---- a/kernel/stop_machine.c
-+++ b/kernel/stop_machine.c
-@@ -42,11 +42,27 @@ struct cpu_stopper {
- 	struct list_head	works;		/* list of pending works */
- 
- 	struct cpu_stop_work	stop_work;	/* for stop_cpus */
-+	unsigned long		caller;
-+	cpu_stop_fn_t		fn;
- };
- 
- static DEFINE_PER_CPU(struct cpu_stopper, cpu_stopper);
- static bool stop_machine_initialized = false;
- 
-+void print_stop_info(const char *log_lvl, struct task_struct *task)
-+{
-+	/*
-+	 * If @task is a stopper task, it cannot migrate and task_cpu() is
-+	 * stable.
-+	 */
-+	struct cpu_stopper *stopper = per_cpu_ptr(&cpu_stopper, task_cpu(task));
-+
-+	if (task != stopper->thread)
-+		return;
-+
-+	printk("%sStopper: %pS <- %pS\n", log_lvl, stopper->fn, (void *)stopper->caller);
-+}
-+
- /* static data for stop_cpus */
- static DEFINE_MUTEX(stop_cpus_mutex);
- static bool stop_cpus_in_progress;
-@@ -123,7 +139,7 @@ static bool cpu_stop_queue_work(unsigned int cpu, struct cpu_stop_work *work)
- int stop_one_cpu(unsigned int cpu, cpu_stop_fn_t fn, void *arg)
- {
- 	struct cpu_stop_done done;
--	struct cpu_stop_work work = { .fn = fn, .arg = arg, .done = &done };
-+	struct cpu_stop_work work = { .fn = fn, .arg = arg, .done = &done, .caller = _RET_IP_ };
- 
- 	cpu_stop_init_done(&done, 1);
- 	if (!cpu_stop_queue_work(cpu, &work))
-@@ -331,7 +347,8 @@ int stop_two_cpus(unsigned int cpu1, unsigned int cpu2, cpu_stop_fn_t fn, void *
- 	work1 = work2 = (struct cpu_stop_work){
- 		.fn = multi_cpu_stop,
- 		.arg = &msdata,
--		.done = &done
-+		.done = &done,
-+		.caller = _RET_IP_,
- 	};
- 
- 	cpu_stop_init_done(&done, 2);
-@@ -367,7 +384,7 @@ int stop_two_cpus(unsigned int cpu1, unsigned int cpu2, cpu_stop_fn_t fn, void *
- bool stop_one_cpu_nowait(unsigned int cpu, cpu_stop_fn_t fn, void *arg,
- 			struct cpu_stop_work *work_buf)
- {
--	*work_buf = (struct cpu_stop_work){ .fn = fn, .arg = arg, };
-+	*work_buf = (struct cpu_stop_work){ .fn = fn, .arg = arg, .caller = _RET_IP_, };
- 	return cpu_stop_queue_work(cpu, work_buf);
- }
- 
-@@ -487,6 +504,8 @@ repeat:
- 		int ret;
- 
- 		/* cpu stop callbacks must not sleep, make in_atomic() == T */
-+		stopper->caller = work->caller;
-+		stopper->fn = fn;
- 		preempt_count_inc();
- 		ret = fn(arg);
- 		if (done) {
-@@ -495,6 +514,8 @@ repeat:
- 			cpu_stop_signal_done(done);
- 		}
- 		preempt_count_dec();
-+		stopper->fn = NULL;
-+		stopper->caller = 0;
- 		WARN_ONCE(preempt_count(),
- 			  "cpu_stop: %ps(%p) leaked preempt count\n", fn, arg);
- 		goto repeat;
-diff --git a/lib/dump_stack.c b/lib/dump_stack.c
-index a00ee6e..f5a33b6 100644
---- a/lib/dump_stack.c
-+++ b/lib/dump_stack.c
-@@ -12,6 +12,7 @@
- #include <linux/atomic.h>
- #include <linux/kexec.h>
- #include <linux/utsname.h>
-+#include <linux/stop_machine.h>
- 
- static char dump_stack_arch_desc_str[128];
- 
-@@ -57,6 +58,7 @@ void dump_stack_print_info(const char *log_lvl)
- 		       log_lvl, dump_stack_arch_desc_str);
- 
- 	print_worker_info(log_lvl, current);
-+	print_stop_info(log_lvl, current);
- }
- 
- /**
