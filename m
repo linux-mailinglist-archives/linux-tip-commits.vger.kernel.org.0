@@ -2,56 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 62EB92AEAFF
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 11 Nov 2020 09:23:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A3662AEB3F
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 11 Nov 2020 09:25:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725916AbgKKIXP (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 11 Nov 2020 03:23:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32770 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725859AbgKKIXO (ORCPT
+        id S1725933AbgKKIZe (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 11 Nov 2020 03:25:34 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:36188 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725468AbgKKIXP (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 11 Nov 2020 03:23:14 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D140C0613D1;
-        Wed, 11 Nov 2020 00:23:14 -0800 (PST)
-Date:   Wed, 11 Nov 2020 08:23:10 -0000
+        Wed, 11 Nov 2020 03:23:15 -0500
+Date:   Wed, 11 Nov 2020 08:23:11 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1605082991;
+        s=2020; t=1605082992;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=TY5TxBKNnEAFKhri/u5pCFAsNXAeU2T4LtZ6aNmY0Z0=;
-        b=z7xBxPe35S8KIGqOSEt19AcdrkEtP/OAkrbE5twdme04W7XDlXGeVqBDBIvmwWAKV006zj
-        2+2hUF8gAOuXAZez1UZzbrrgfaCq4HtVMgBnbSXLinm2gRdj35hTe9aJjrvx+Jz9c3kSpg
-        n1zsrP0MDN8r5IopEOynD0ORAjE6c945GdHgTjMONl3m69uUkVBqR7ZfGu/hckRyhlO7tU
-        JIpFjw7G92s5j1DqfXj40C3n9QUOR9HPfvL2Dh9zNfDop+cjDp1ksxMJ4c8LL0xhx9LJjA
-        RFfgkPblMbHjOvWF+0wCw9UQy9Vmo09B9alEq+Z0px+36S34L2HLMzrRBSj7Uw==
+        bh=4pwe9Dw1e18KCFlSunQp/d6l6NrJ/N4plglchRQDmLs=;
+        b=RGCYlHp09a8pZgscbWJ8ypCwjMHDnbWhWVn9yYrkawKqzb2LDCo6UNW6J5tbJCcKFeWcQc
+        jiUtN4rVfNb1XgrqRrbNz5+eNO6fViIbhWHu1awqojuf6m3K83qulvVLsa1v0a9bJR61PK
+        BWL0LW6gV6euoiJK4wIeaBn6G8gOIcGT56qmzseWGdrdrLiSmzTOgyrxOOOwnRsGzsMaMw
+        Oyhna42fdrfmdCovNCbd6cgT2i0o/CZoA1hDnBUIrk5G722OG7f/QSPsTZ2zLff/vDDIGo
+        PerfoDejKEY3h4gS7pbYzStEyLXlIJe2XBDlGK5/fV+rYt/cFEt6tk80hcBYcw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1605082991;
+        s=2020e; t=1605082992;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=TY5TxBKNnEAFKhri/u5pCFAsNXAeU2T4LtZ6aNmY0Z0=;
-        b=Z6P4KAJURu7FXXjMfIgrbzsDzXz0LuJLmLijPxhKUJNw5uigNZtHk9cLHI7nW3HJogmQsx
-        P4PY7pfis4dxWvCg==
-From:   "tip-bot2 for Boqun Feng" <tip-bot2@linutronix.de>
+        bh=4pwe9Dw1e18KCFlSunQp/d6l6NrJ/N4plglchRQDmLs=;
+        b=sYYDvsRWmDuDxOBP/CENEcP0+YQhcemiczOfqvUqgBYNfv5sCiZv1wgMjRea1g+22jv1zO
+        6MXYcFvGV1BvZHBA==
+From:   "tip-bot2 for Arnd Bergmann" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/urgent] lockdep: Avoid to modify chain keys in validate_chain()
-Cc:     Chris Wilson <chris@chris-wilson.co.uk>,
-        Boqun Feng <boqun.feng@gmail.com>,
+Subject: [tip: perf/urgent] perf/x86/intel/uncore: Fix Add BW copypasta
+Cc:     Arnd Bergmann <arnd@arndb.de>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20201102053743.450459-1-boqun.feng@gmail.com>
-References: <20201102053743.450459-1-boqun.feng@gmail.com>
+In-Reply-To: <20201026215203.3893972-1-arnd@kernel.org>
+References: <20201026215203.3893972-1-arnd@kernel.org>
 MIME-Version: 1.0
-Message-ID: <160508299029.11244.18427700216581701358.tip-bot2@tip-bot2>
+Message-ID: <160508299133.11244.9181059699387478025.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,82 +56,44 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the locking/urgent branch of tip:
+The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     d61fc96a37603384cd531622c1e89de1096b5123
-Gitweb:        https://git.kernel.org/tip/d61fc96a37603384cd531622c1e89de1096b5123
-Author:        Boqun Feng <boqun.feng@gmail.com>
-AuthorDate:    Mon, 02 Nov 2020 13:37:41 +08:00
+Commit-ID:     1a8cfa24e21c2f154791f0cdd85fc28496918722
+Gitweb:        https://git.kernel.org/tip/1a8cfa24e21c2f154791f0cdd85fc28496918722
+Author:        Arnd Bergmann <arnd@arndb.de>
+AuthorDate:    Mon, 26 Oct 2020 22:51:57 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 10 Nov 2020 18:38:38 +01:00
+CommitterDate: Tue, 10 Nov 2020 18:38:40 +01:00
 
-lockdep: Avoid to modify chain keys in validate_chain()
+perf/x86/intel/uncore: Fix Add BW copypasta
 
-Chris Wilson reported a problem spotted by check_chain_key(): a chain
-key got changed in validate_chain() because we modify the ->read in
-validate_chain() to skip checks for dependency adding, and ->read is
-taken into calculation for chain key since commit f611e8cf98ec
-("lockdep: Take read/write status in consideration when generate
-chainkey").
+gcc -Wextra points out a duplicate initialization of one array
+member:
 
-Fix this by avoiding to modify ->read in validate_chain() based on two
-facts: a) since we now support recursive read lock detection, there is
-no need to skip checks for dependency adding for recursive readers, b)
-since we have a), there is only one case left (nest_lock) where we want
-to skip checks in validate_chain(), we simply remove the modification
-for ->read and rely on the return value of check_deadlock() to skip the
-dependency adding.
+arch/x86/events/intel/uncore_snb.c:478:37: warning: initialized field overwritten [-Woverride-init]
+  478 |  [SNB_PCI_UNCORE_IMC_DATA_READS]  = { SNB_UNCORE_PCI_IMC_DATA_WRITES_BASE,
 
-Reported-by: Chris Wilson <chris@chris-wilson.co.uk>
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+The only sensible explanation is that a duplicate 'READS' was used
+instead of the correct 'WRITES', so change it back.
+
+Fixes: 24633d901ea4 ("perf/x86/intel/uncore: Add BW counters for GT, IA and IO breakdown")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20201102053743.450459-1-boqun.feng@gmail.com
+Link: https://lkml.kernel.org/r/20201026215203.3893972-1-arnd@kernel.org
 ---
- kernel/locking/lockdep.c | 19 +++++++++----------
- 1 file changed, 9 insertions(+), 10 deletions(-)
+ arch/x86/events/intel/uncore_snb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
-index b71ad8d..d9fb9e1 100644
---- a/kernel/locking/lockdep.c
-+++ b/kernel/locking/lockdep.c
-@@ -2765,7 +2765,9 @@ print_deadlock_bug(struct task_struct *curr, struct held_lock *prev,
-  * (Note that this has to be done separately, because the graph cannot
-  * detect such classes of deadlocks.)
-  *
-- * Returns: 0 on deadlock detected, 1 on OK, 2 on recursive read
-+ * Returns: 0 on deadlock detected, 1 on OK, 2 if another lock with the same
-+ * lock class is held but nest_lock is also held, i.e. we rely on the
-+ * nest_lock to avoid the deadlock.
-  */
- static int
- check_deadlock(struct task_struct *curr, struct held_lock *next)
-@@ -2788,7 +2790,7 @@ check_deadlock(struct task_struct *curr, struct held_lock *next)
- 		 * lock class (i.e. read_lock(lock)+read_lock(lock)):
- 		 */
- 		if ((next->read == 2) && prev->read)
--			return 2;
-+			continue;
- 
- 		/*
- 		 * We're holding the nest_lock, which serializes this lock's
-@@ -3593,15 +3595,12 @@ static int validate_chain(struct task_struct *curr,
- 		if (!ret)
- 			return 0;
- 		/*
--		 * Mark recursive read, as we jump over it when
--		 * building dependencies (just like we jump over
--		 * trylock entries):
--		 */
--		if (ret == 2)
--			hlock->read = 2;
--		/*
- 		 * Add dependency only if this lock is not the head
--		 * of the chain, and if it's not a secondary read-lock:
-+		 * of the chain, and if the new lock introduces no more
-+		 * lock dependency (because we already hold a lock with the
-+		 * same lock class) nor deadlock (because the nest_lock
-+		 * serializes nesting locks), see the comments for
-+		 * check_deadlock().
- 		 */
- 		if (!chain_head && ret != 2) {
- 			if (!check_prevs_add(curr, hlock))
+diff --git a/arch/x86/events/intel/uncore_snb.c b/arch/x86/events/intel/uncore_snb.c
+index 39e632e..bbd1120 100644
+--- a/arch/x86/events/intel/uncore_snb.c
++++ b/arch/x86/events/intel/uncore_snb.c
+@@ -475,7 +475,7 @@ enum perf_snb_uncore_imc_freerunning_types {
+ static struct freerunning_counters snb_uncore_imc_freerunning[] = {
+ 	[SNB_PCI_UNCORE_IMC_DATA_READS]		= { SNB_UNCORE_PCI_IMC_DATA_READS_BASE,
+ 							0x0, 0x0, 1, 32 },
+-	[SNB_PCI_UNCORE_IMC_DATA_READS]		= { SNB_UNCORE_PCI_IMC_DATA_WRITES_BASE,
++	[SNB_PCI_UNCORE_IMC_DATA_WRITES]	= { SNB_UNCORE_PCI_IMC_DATA_WRITES_BASE,
+ 							0x0, 0x0, 1, 32 },
+ 	[SNB_PCI_UNCORE_IMC_GT_REQUESTS]	= { SNB_UNCORE_PCI_IMC_GT_REQUESTS_BASE,
+ 							0x0, 0x0, 1, 32 },
