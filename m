@@ -2,53 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9065E2AF071
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 11 Nov 2020 13:23:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BCCD92AF246
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 11 Nov 2020 14:36:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725979AbgKKMXE (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 11 Nov 2020 07:23:04 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:37978 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725882AbgKKMXD (ORCPT
+        id S1727037AbgKKNgd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 11 Nov 2020 08:36:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54382 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727031AbgKKNg1 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 11 Nov 2020 07:23:03 -0500
-Date:   Wed, 11 Nov 2020 12:22:59 -0000
+        Wed, 11 Nov 2020 08:36:27 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4521BC0613D1;
+        Wed, 11 Nov 2020 05:36:27 -0800 (PST)
+Date:   Wed, 11 Nov 2020 13:36:23 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1605097380;
+        s=2020; t=1605101784;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=HIqPjYYJfAb0E1+y40ZmCG9ZGL7udxK14w1qon3YJ8U=;
-        b=c2qKni+eNIqXJgpzUny0BzLi3ChItBQelhUy2J1cIkfzEuK3nPNweh9YnfPhs8yS5Wxgha
-        pxh6UJGzDksUgDrUh5SVYu/pK9aX7EBnaJUdM2cNGv0otGSVdmPcpsjFGZyozKp9MgDF+g
-        iPUVUMgwgAtvHZrZoTKb7Tx+fQ8XbGomu/G7YgA5XFWFQYr+HTFoPUFrf8Ck2mppWYz4aU
-        Fj6+6KaXfpnjiOBNppKZiYL5ozs/If9epu6LyNEci6bnbzW2mIghu/ptyZRm5Zcc2Yi87O
-        e3IpmdI23UcRc9Jv4SaO+WltAzn/n+M75dv67UuJxA0Iw7MYNwyvFVvoT9hFkw==
+        bh=KSPhQ2upG2dWWh9XRQLnfBIgg40EYUB+gBorBPYw9p8=;
+        b=EvMQfe7uyv97BIdi7N8d4eMLZZZENeNSRPzSfLqaXbvAUE8aeKY5XrFv7WHH0WOEBmPIvY
+        gy0x8qq23Z8Jc81jSOwQM1hHyxYX4/AbZocwdqIr6syA0t32K40vCzc1o9wG/6oRkx5yxH
+        nXjkgfp9GfhZb9WpPP9m7c9ZZ5MdjAsZmB6is6LknXroc2dzosJjvKoa1ox0eobZESU09y
+        WrOsU5gHZlvsXni0gekZC/egBIS/zuRlqCedIav/Oz93qwp0Y2pmEkuV8/rL2SYjXc/V/p
+        VX43/Dpsz/uuOcnrs7SdT/U1sDWXNeWAa/l7w7VsaE2Y3+Adbfl1vFFxBawEbQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1605097380;
+        s=2020e; t=1605101784;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=HIqPjYYJfAb0E1+y40ZmCG9ZGL7udxK14w1qon3YJ8U=;
-        b=SxVQf1Vy2eUisW+uM3AHtoveupmK31subp23h2KsswpT4UER63wCo0MfA/TlzoBarzIF0S
-        8/QIsYmuVXbm0QCA==
-From:   "tip-bot2 for Jiri Slaby" <tip-bot2@linutronix.de>
+        bh=KSPhQ2upG2dWWh9XRQLnfBIgg40EYUB+gBorBPYw9p8=;
+        b=PhW+HszYzxLHcmhHkf6hVslwgvlXFSULz/obB9FzF6sCIRjeDi8QliehMG64iREC8ODQNQ
+        G1srLw0QxIN5JkCA==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/platform/uv: Drop last traces of uv_flush_tlb_others
-Cc:     Jiri Slaby <jslaby@suse.cz>, Thomas Gleixner <tglx@linutronix.de>,
-        Mike Travis <mike.travis@hpe.com>,
-        Steve Wahl <steve.wahl@hpe.com>, x86@kernel.org,
+Subject: [tip: x86/fpu] x86/fpu: Make kernel FPU protection RT friendly
+Cc:     Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20201109093653.2042-1-jslaby@suse.cz>
-References: <20201109093653.2042-1-jslaby@suse.cz>
+In-Reply-To: <20201027101349.588965083@linutronix.de>
+References: <20201027101349.588965083@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <160509737932.11244.2434801428950537873.tip-bot2@tip-bot2>
+Message-ID: <160510178339.11244.18052705321586947595.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -57,64 +58,69 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the x86/fpu branch of tip:
 
-Commit-ID:     b2896458b850ec7cb69b054b195b4b399f7e1f22
-Gitweb:        https://git.kernel.org/tip/b2896458b850ec7cb69b054b195b4b399f7e1f22
-Author:        Jiri Slaby <jslaby@suse.cz>
-AuthorDate:    Mon, 09 Nov 2020 10:36:53 +01:00
+Commit-ID:     cba08c5dc6dc1a906a0b5ddac9a9ac6c9a64f2e8
+Gitweb:        https://git.kernel.org/tip/cba08c5dc6dc1a906a0b5ddac9a9ac6c9a64f2e8
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Tue, 27 Oct 2020 11:09:51 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 11 Nov 2020 13:16:51 +01:00
+CommitterDate: Wed, 11 Nov 2020 14:35:16 +01:00
 
-x86/platform/uv: Drop last traces of uv_flush_tlb_others
+x86/fpu: Make kernel FPU protection RT friendly
 
-Commit 39297dde7390 ("x86/platform/uv: Remove UV BAU TLB Shootdown
-Handler") removed uv_flush_tlb_others. Its declaration was removed also
-from asm/uv/uv.h. But only for the CONFIG_X86_UV=y case. The inline
-definition (!X86_UV case) is still in place.
+Non RT kernels need to protect FPU against preemption and bottom half
+processing. This is achieved by disabling bottom halfs via
+local_bh_disable() which implictly disables preemption.
 
-So remove this implementation with everything what was added to support
-uv_flush_tlb_others:
-* include of asm/tlbflush.h
-* forward declarations of struct cpumask, mm_struct, and flush_tlb_info
+On RT kernels this protection mechanism is not sufficient because
+local_bh_disable() does not disable preemption. It serializes bottom half
+related processing via a CPU local lock.
 
-Signed-off-by: Jiri Slaby <jslaby@suse.cz>
+As bottom halfs are running always in thread context on RT kernels
+disabling preemption is the proper choice as it implicitly prevents bottom
+half processing.
+
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Mike Travis <mike.travis@hpe.com>
-Acked-by: Steve Wahl <steve.wahl@hpe.com>
-Link: https://lore.kernel.org/r/20201109093653.2042-1-jslaby@suse.cz
+Link: https://lore.kernel.org/r/20201027101349.588965083@linutronix.de
 
 ---
- arch/x86/include/asm/uv/uv.h | 10 ----------
- 1 file changed, 10 deletions(-)
+ arch/x86/include/asm/fpu/api.h | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/include/asm/uv/uv.h b/arch/x86/include/asm/uv/uv.h
-index 172d3e4..648eb23 100644
---- a/arch/x86/include/asm/uv/uv.h
-+++ b/arch/x86/include/asm/uv/uv.h
-@@ -2,14 +2,8 @@
- #ifndef _ASM_X86_UV_UV_H
- #define _ASM_X86_UV_UV_H
+diff --git a/arch/x86/include/asm/fpu/api.h b/arch/x86/include/asm/fpu/api.h
+index 2c5bef7..a5aba4a 100644
+--- a/arch/x86/include/asm/fpu/api.h
++++ b/arch/x86/include/asm/fpu/api.h
+@@ -32,15 +32,29 @@ extern void fpregs_mark_activate(void);
+  *
+  * local_bh_disable() protects against both preemption and soft interrupts
+  * on !RT kernels.
++ *
++ * On RT kernels local_bh_disable() is not sufficient because it only
++ * serializes soft interrupt related sections via a local lock, but stays
++ * preemptible. Disabling preemption is the right choice here as bottom
++ * half processing is always in thread context on RT kernels so it
++ * implicitly prevents bottom half processing as well.
++ *
++ * Disabling preemption also serializes against kernel_fpu_begin().
+  */
+ static inline void fpregs_lock(void)
+ {
+-	local_bh_disable();
++	if (!IS_ENABLED(CONFIG_PREEMPT_RT))
++		local_bh_disable();
++	else
++		preempt_disable();
+ }
  
--#include <asm/tlbflush.h>
--
- enum uv_system_type {UV_NONE, UV_LEGACY_APIC, UV_X2APIC};
+ static inline void fpregs_unlock(void)
+ {
+-	local_bh_enable();
++	if (!IS_ENABLED(CONFIG_PREEMPT_RT))
++		local_bh_enable();
++	else
++		preempt_enable();
+ }
  
--struct cpumask;
--struct mm_struct;
--struct flush_tlb_info;
--
- #ifdef CONFIG_X86_UV
- #include <linux/efi.h>
- 
-@@ -44,10 +38,6 @@ static inline int is_uv_system(void)	{ return 0; }
- static inline int is_uv_hubbed(int uv)	{ return 0; }
- static inline void uv_cpu_init(void)	{ }
- static inline void uv_system_init(void)	{ }
--static inline const struct cpumask *
--uv_flush_tlb_others(const struct cpumask *cpumask,
--		    const struct flush_tlb_info *info)
--{ return cpumask; }
- 
- #endif	/* X86_UV */
- 
+ #ifdef CONFIG_X86_DEBUG_FPU
