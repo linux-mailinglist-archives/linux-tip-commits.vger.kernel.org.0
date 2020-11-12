@@ -2,57 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7228D2B06ED
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 12 Nov 2020 14:48:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AA8C52B1273
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 13 Nov 2020 00:06:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727790AbgKLNsU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 12 Nov 2020 08:48:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52714 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727264AbgKLNsU (ORCPT
+        id S1726899AbgKLXGI (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 12 Nov 2020 18:06:08 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:47774 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726588AbgKLXGI (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 12 Nov 2020 08:48:20 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EA94C0613D1;
-        Thu, 12 Nov 2020 05:48:20 -0800 (PST)
-Date:   Thu, 12 Nov 2020 13:48:16 -0000
+        Thu, 12 Nov 2020 18:06:08 -0500
+Date:   Thu, 12 Nov 2020 23:06:03 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1605188898;
+        s=2020; t=1605222365;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=FxcKLusCpufT+m8ruOGOq6YJs7J/asijBD9ZKdep9R8=;
-        b=ZIBE8m9EtcY69mOO8lxsgrxWkOnfXMOo7L//UfdTpLveKQgoPoRRfOiDE1oy/VoM1EP2Qj
-        CVHaMKl5APXWbmj6NZwUHSbbSUD1aBtfPbVywX+P3YhcEarvzeLwG8FbyXSCUkHh6bXGoZ
-        NyGoM73u0w4hNA0NVUbyymVNgK2YVHt0wiSfiiMkZdAUU6+t6L2prOY9jVuG8jVSGPKORa
-        oB4nWsSlVNCx1nMd0OCaMuAYz/zpv43Yasy+kPQ1wOkVPl0TNRJMJf1Ju8H4GNvE4HTtm0
-        Rvi67ZgpM2ISLJKuxdXtAeUyJMCtWMzOnVVQIdmpujxxfT9IbaBWh8crKizdow==
+        bh=QTpmNCNqBmw3Yyz+3dNWgY5l4250Y0qHxE6RjNAhzs0=;
+        b=XMjkHyeLiDBowGutTIbPmBpOQWN435u3gplAvtk2hvX4tKloXUC/cINpVguJOOCqwzOaGx
+        8My7+OfL2DsVYd5WAIZdRzv8W+Z5LrsWShE52DYmy2mNzFxgDBziqFuUsUmhF+x77CV/y7
+        AWZAld9atlHt2MjT4stHTk5q8v0J/V+GEE4N5Y60qHIufTWakBfmvp2pldFX4wCHU3stsH
+        bj0ip8AntbIzaUTyrXUUq68CIVo0ftrNSeSlRW7KbBHz0cJS6rv8SVpFRiWe7slzHU098s
+        zeDAzaRFf/axXH5C4fZoMxvgpsAtjLe4evr+rbGI1+gBpX6Rl2/QDXyDIiES1g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1605188898;
+        s=2020e; t=1605222365;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=FxcKLusCpufT+m8ruOGOq6YJs7J/asijBD9ZKdep9R8=;
-        b=lVQqU4zJje9KxG1JvspBMrzQmbQ+DQH2/aj0ybrcoUd5wVsGYC38TeDY22Ip7TXdLx9e0J
-        89zpjqyelCxmfpCw==
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+        bh=QTpmNCNqBmw3Yyz+3dNWgY5l4250Y0qHxE6RjNAhzs0=;
+        b=Y8GqIe8KvLRJ91l1kdb4BJWMvXzKMHmFGzYGP5H6SbZCng/1mhFtv3EhUq8UdC0Os7Lde6
+        8gCjzvbD/9BsFUBg==
+From:   "tip-bot2 for Mike Travis" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/mm] mm/highmem: Take kmap_high_get() properly into account
-Cc:     vtolkm@googlemail.com, Marek Szyprowski <m.szyprowski@samsung.com>,
+Subject: [tip: x86/urgent] x86/platform/uv: Fix copied UV5 output archtype
+Cc:     Mike Travis <mike.travis@hpe.com>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Andrew Morton <akpm@linux-foundation.org>, x86@kernel.org,
+        Steve Wahl <steve.wahl@hpe.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <87y2j6n8mj.fsf@nanos.tec.linutronix.de>
-References: <87y2j6n8mj.fsf@nanos.tec.linutronix.de>
+In-Reply-To: <20201111010418.82133-1-mike.travis@hpe.com>
+References: <20201111010418.82133-1-mike.travis@hpe.com>
 MIME-Version: 1.0
-Message-ID: <160518889672.11244.12357999747948053258.tip-bot2@tip-bot2>
+Message-ID: <160522236375.11244.9421056354118266795.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,76 +57,63 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the core/mm branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     2a656cad337e0e1ca582f58847d7b0c7eeba4dc8
-Gitweb:        https://git.kernel.org/tip/2a656cad337e0e1ca582f58847d7b0c7eeba4dc8
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Thu, 12 Nov 2020 11:59:32 +01:00
+Commit-ID:     77c7e1bc060deab6430f1dff5922ccd3093d9776
+Gitweb:        https://git.kernel.org/tip/77c7e1bc060deab6430f1dff5922ccd3093d9776
+Author:        Mike Travis <mike.travis@hpe.com>
+AuthorDate:    Tue, 10 Nov 2020 19:04:18 -06:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 12 Nov 2020 14:44:38 +01:00
+CommitterDate: Fri, 13 Nov 2020 00:00:31 +01:00
 
-mm/highmem: Take kmap_high_get() properly into account
+x86/platform/uv: Fix copied UV5 output archtype
 
-kunmap_local() warns when the virtual address to unmap is below
-PAGE_OFFSET. This is correct except for the case that the mapping was
-obtained via kmap_high_get() because the PKMAP addresses are right below
-PAGE_OFFSET.
+A test shows that the output contains a space:
+    # cat /proc/sgi_uv/archtype
+    NSGI4 U/UVX
 
-Cure it by skipping the WARN_ON() when the unmap was handled by
-kunmap_high().
+Remove that embedded space by copying the "trimmed" buffer instead of the
+untrimmed input character list.  Use sizeof to remove size dependency on
+copy out length.  Increase output buffer size by one character just in case
+BIOS sends an 8 character string for archtype.
 
-Fixes: 298fa1ad5571 ("highmem: Provide generic variant of kmap_atomic*")
-Reported-by: vtolkm@googlemail.com
-Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Fixes: 1e61f5a95f19 ("Add and decode Arch Type in UVsystab")
+Signed-off-by: Mike Travis <mike.travis@hpe.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Tested-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Link: https://lore.kernel.org/r/87y2j6n8mj.fsf@nanos.tec.linutronix.de
-
+Reviewed-by: Steve Wahl <steve.wahl@hpe.com>
+Link: https://lore.kernel.org/r/20201111010418.82133-1-mike.travis@hpe.com
 ---
- mm/highmem.c | 19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+ arch/x86/kernel/apic/x2apic_uv_x.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/mm/highmem.c b/mm/highmem.c
-index 54bd233..78c481a 100644
---- a/mm/highmem.c
-+++ b/mm/highmem.c
-@@ -426,12 +426,15 @@ static inline void *arch_kmap_local_high_get(struct page *page)
- #endif
+diff --git a/arch/x86/kernel/apic/x2apic_uv_x.c b/arch/x86/kernel/apic/x2apic_uv_x.c
+index 3115caa..1b98f8c 100644
+--- a/arch/x86/kernel/apic/x2apic_uv_x.c
++++ b/arch/x86/kernel/apic/x2apic_uv_x.c
+@@ -33,7 +33,7 @@ static union uvh_apicid		uvh_apicid;
+ static int			uv_node_id;
  
- /* Unmap a local mapping which was obtained by kmap_high_get() */
--static inline void kmap_high_unmap_local(unsigned long vaddr)
-+static inline bool kmap_high_unmap_local(unsigned long vaddr)
- {
- #ifdef ARCH_NEEDS_KMAP_HIGH_GET
--	if (vaddr >= PKMAP_ADDR(0) && vaddr < PKMAP_ADDR(LAST_PKMAP))
-+	if (vaddr >= PKMAP_ADDR(0) && vaddr < PKMAP_ADDR(LAST_PKMAP)) {
- 		kunmap_high(pte_page(pkmap_page_table[PKMAP_NR(vaddr)]));
-+		return true;
-+	}
- #endif
-+	return false;
- }
+ /* Unpack AT/OEM/TABLE ID's to be NULL terminated strings */
+-static u8 uv_archtype[UV_AT_SIZE];
++static u8 uv_archtype[UV_AT_SIZE + 1];
+ static u8 oem_id[ACPI_OEM_ID_SIZE + 1];
+ static u8 oem_table_id[ACPI_OEM_TABLE_ID_SIZE + 1];
  
- static inline int kmap_local_calc_idx(int idx)
-@@ -491,10 +494,14 @@ void kunmap_local_indexed(void *vaddr)
+@@ -320,7 +320,7 @@ static int __init decode_arch_type(unsigned long ptr)
  
- 	if (addr < __fix_to_virt(FIX_KMAP_END) ||
- 	    addr > __fix_to_virt(FIX_KMAP_BEGIN)) {
--		WARN_ON_ONCE(addr < PAGE_OFFSET);
--
--		/* Handle mappings which were obtained by kmap_high_get() */
--		kmap_high_unmap_local(addr);
-+		/*
-+		 * Handle mappings which were obtained by kmap_high_get()
-+		 * first as the virtual address of such mappings is below
-+		 * PAGE_OFFSET. Warn for all other addresses which are in
-+		 * the user space part of the virtual address space.
-+		 */
-+		if (!kmap_high_unmap_local(addr))
-+			WARN_ON_ONCE(addr < PAGE_OFFSET);
- 		return;
+ 	if (n > 0 && n < sizeof(uv_ate->archtype)) {
+ 		pr_info("UV: UVarchtype received from BIOS\n");
+-		uv_stringify(UV_AT_SIZE, uv_archtype, uv_ate->archtype);
++		uv_stringify(sizeof(uv_archtype), uv_archtype, uv_ate->archtype);
+ 		return 1;
  	}
+ 	return 0;
+@@ -378,7 +378,7 @@ static int __init uv_set_system_type(char *_oem_id, char *_oem_table_id)
+ 	if (!early_get_arch_type())
  
+ 		/* If not use OEM ID for UVarchtype */
+-		uv_stringify(UV_AT_SIZE, uv_archtype, _oem_id);
++		uv_stringify(sizeof(uv_archtype), uv_archtype, oem_id);
+ 
+ 	/* Check if not hubbed */
+ 	if (strncmp(uv_archtype, "SGI", 3) != 0) {
