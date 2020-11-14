@@ -2,57 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 99A092B199C
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 13 Nov 2020 12:07:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 477E22B29C6
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 14 Nov 2020 01:19:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726481AbgKMLHi (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 13 Nov 2020 06:07:38 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:51146 "EHLO
+        id S1726125AbgKNASF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 13 Nov 2020 19:18:05 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:56106 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726620AbgKMLFv (ORCPT
+        with ESMTP id S1725866AbgKNASE (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 13 Nov 2020 06:05:51 -0500
-Date:   Fri, 13 Nov 2020 11:05:18 -0000
+        Fri, 13 Nov 2020 19:18:04 -0500
+Date:   Sat, 14 Nov 2020 00:18:01 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1605265519;
+        s=2020; t=1605313082;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=OHvVnWfC04H6CLgb0PcgeRfpxqIseC1sFZpzGiGgfSs=;
-        b=lvD6TwiQwMKLJ/SSJGTf/6+DeL7VgLaXyoVpx4SH/R0m+wYoAftbpThguQvCQD/9MBP2es
-        Jr0yogZkEcVkkGY3npvTPbtBgzLlr8jC6H8aiMsHNQj5NKWAQCmJ19WBOvbIl1AXqRaVSg
-        M001wNrqDvNsVcLv/qnAYyyshWLgI2C+oWNzVMVFQs+lOwlpgTfsDcP/VU+XTCmvU4LDv/
-        t4tHbd2tZGLU+GoJ8tiUMpTc54K7LMz01iyv2axL3lK7BQDm8AqUNFn4ZW2dCAAJvISCQ8
-        xMVGEjF2NkqadVQ/YJG+kXdxW8FU0MgfBeCmUYzj8yfG0vsFzDNVquuscoYXuw==
+        bh=4Y6QUSct+LSWBUOXnsqzWhiWVdRDh6X544dsTtmbEFI=;
+        b=O05S74/JLuq8kZLHAatrUTEPod+VAklV67nBtVF9999r1K3AkdTGoyXzddhCqAbssdvFHd
+        DF0ADv0SyOCWjiTjaQ9Tcx4NodDScxQZnXZ3OjWRDbYn8tBpmGJiZVoyXTqiJKbofyksw+
+        h6ahduLL1A0yKiNlquOnTWiSgeHqw6Q45tgt9sVzL7ORGsBja4gVRxYjGNAVptBPun3+3j
+        dBR/My6dUZueOPuuQpb9IWf9tqpwR4uFBiAVOduUBr56xk0lOBRxLXs53hciYn0kA+dNU4
+        tARu4K/ZpLOmNkzgWTkVgcXBLrDamVTrqneCe03WYI7O+ZlEQQBGgJynYso/Kg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1605265519;
+        s=2020e; t=1605313082;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=OHvVnWfC04H6CLgb0PcgeRfpxqIseC1sFZpzGiGgfSs=;
-        b=QQdN5VKz7Wu/YrIgQnTmRrGh8bd26ZDDi1mOgWDSKsr5q3frXdgXt+Qri3DZlVKE21mmgW
-        G4yHaawi7FDFT/BQ==
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+        bh=4Y6QUSct+LSWBUOXnsqzWhiWVdRDh6X544dsTtmbEFI=;
+        b=n88a1WXiueK3i5bVOc2FNT3UgAK1MYE9VxpcBrF1Mb1xYn/vYesuAphM0LlOaLtFtini1G
+        tubk8GsKmtS4+TDg==
+From:   "tip-bot2 for Lukas Bulwahn" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] iommu/vt-d: Cure VF irqdomain hickup
-Cc:     Jason Gunthorpe <jgg@nvidia.com>,
+Subject: [tip: locking/core] futex: Remove unused empty compat_exit_robust_list()
+Cc:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Lu Baolu <baolu.lu@linux.intel.com>,
-        Joerg Roedel <joro@8bytes.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Marc Zyngier <maz@kernel.org>,
-        David Woodhouse <dwmw2@infradead.org>, x86@kernel.org,
+        Nathan Chancellor <natechancellor@gmail.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <draft-87eekymlpz.fsf@nanos.tec.linutronix.de>
-References: <draft-87eekymlpz.fsf@nanos.tec.linutronix.de>
+In-Reply-To: <20201113172012.27221-1-lukas.bulwahn@gmail.com>
+References: <20201113172012.27221-1-lukas.bulwahn@gmail.com>
 MIME-Version: 1.0
-Message-ID: <160526551813.11244.15704259493221193953.tip-bot2@tip-bot2>
+Message-ID: <160531308152.11244.2917354987036179379.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,79 +57,52 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     ff828729be446b86957f7c294068758231cd2183
-Gitweb:        https://git.kernel.org/tip/ff828729be446b86957f7c294068758231cd2183
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Thu, 12 Nov 2020 20:14:16 +01:00
+Commit-ID:     932f8c64d38bb08f69c8c26a2216ba0c36c6daa8
+Gitweb:        https://git.kernel.org/tip/932f8c64d38bb08f69c8c26a2216ba0c36c6daa8
+Author:        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+AuthorDate:    Fri, 13 Nov 2020 18:20:12 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 13 Nov 2020 12:00:40 +01:00
+CommitterDate: Sat, 14 Nov 2020 01:15:35 +01:00
 
-iommu/vt-d: Cure VF irqdomain hickup
+futex: Remove unused empty compat_exit_robust_list()
 
-The recent changes to store the MSI irqdomain pointer in struct device
-missed that Intel DMAR does not register virtual function devices.  Due to
-that a VF device gets the plain PCI-MSI domain assigned and then issues
-compat MSI messages which get caught by the interrupt remapping unit.
+Commit ba31c1a48538 ("futex: Move futex exit handling into futex code")
+introduced compat_exit_robust_list() with a full-fledged implementation for
+CONFIG_COMPAT, and an empty-body function for !CONFIG_COMPAT.
 
-Cure that by inheriting the irq domain from the physical function
-device.
+However, compat_exit_robust_list() is only used in futex_mm_release() under
+#ifdef CONFIG_COMPAT.
 
-Ideally the irqdomain would be associated to the bus, but DMAR can have
-multiple units and therefore irqdomains on a single bus. The VF 'bus' could
-of course inherit the domain from the PF, but that'd be yet another x86
-oddity.
+Hence for !CONFIG_COMPAT, make CC=clang W=1 warns:
 
-Fixes: 85a8dfc57a0b ("iommm/vt-d: Store irq domain in struct device")
-Reported-by: Jason Gunthorpe <jgg@nvidia.com>
+  kernel/futex.c:314:20:
+    warning: unused function 'compat_exit_robust_list' [-Wunused-function]
+
+There is no need to declare the unused empty function for !CONFIG_COMPAT.
+
+Simply remove it.
+
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Lu Baolu <baolu.lu@linux.intel.com>
-Cc: Joerg Roedel <joro@8bytes.org>
-Cc: Bjorn Helgaas <bhelgaas@google.com>
-Cc: Marc Zyngier <maz@kernel.org>
-Cc: David Woodhouse <dwmw2@infradead.org>
-Link: https://lore.kernel.org/r/draft-87eekymlpz.fsf@nanos.tec.linutronix.de
+Reviewed-by: Nathan Chancellor <natechancellor@gmail.com>
+Link: https://lore.kernel.org/r/20201113172012.27221-1-lukas.bulwahn@gmail.com
 
 ---
- drivers/iommu/intel/dmar.c | 19 ++++++++++++++++++-
- 1 file changed, 18 insertions(+), 1 deletion(-)
+ kernel/futex.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/iommu/intel/dmar.c b/drivers/iommu/intel/dmar.c
-index 404b40a..b2e8044 100644
---- a/drivers/iommu/intel/dmar.c
-+++ b/drivers/iommu/intel/dmar.c
-@@ -333,6 +333,11 @@ static void  dmar_pci_bus_del_dev(struct dmar_pci_notify_info *info)
- 	dmar_iommu_notify_scope_dev(info);
- }
+diff --git a/kernel/futex.c b/kernel/futex.c
+index ac32887..aee6ce2 100644
+--- a/kernel/futex.c
++++ b/kernel/futex.c
+@@ -310,8 +310,6 @@ static inline bool should_fail_futex(bool fshared)
  
-+static inline void vf_inherit_msi_domain(struct pci_dev *pdev)
-+{
-+	dev_set_msi_domain(&pdev->dev, dev_get_msi_domain(&pdev->physfn->dev));
-+}
-+
- static int dmar_pci_bus_notifier(struct notifier_block *nb,
- 				 unsigned long action, void *data)
- {
-@@ -342,8 +347,20 @@ static int dmar_pci_bus_notifier(struct notifier_block *nb,
- 	/* Only care about add/remove events for physical functions.
- 	 * For VFs we actually do the lookup based on the corresponding
- 	 * PF in device_to_iommu() anyway. */
--	if (pdev->is_virtfn)
-+	if (pdev->is_virtfn) {
-+		/*
-+		 * Ensure that the VF device inherits the irq domain of the
-+		 * PF device. Ideally the device would inherit the domain
-+		 * from the bus, but DMAR can have multiple units per bus
-+		 * which makes this impossible. The VF 'bus' could inherit
-+		 * from the PF device, but that's yet another x86'sism to
-+		 * inflict on everybody else.
-+		 */
-+		if (action == BUS_NOTIFY_ADD_DEVICE)
-+			vf_inherit_msi_domain(pdev);
- 		return NOTIFY_DONE;
-+	}
-+
- 	if (action != BUS_NOTIFY_ADD_DEVICE &&
- 	    action != BUS_NOTIFY_REMOVED_DEVICE)
- 		return NOTIFY_DONE;
+ #ifdef CONFIG_COMPAT
+ static void compat_exit_robust_list(struct task_struct *curr);
+-#else
+-static inline void compat_exit_robust_list(struct task_struct *curr) { }
+ #endif
+ 
+ /*
