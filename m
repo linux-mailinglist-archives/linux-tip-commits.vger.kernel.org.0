@@ -2,56 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 359DE2B3A61
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 15 Nov 2020 23:51:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EF4E22B3A68
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 15 Nov 2020 23:51:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728122AbgKOWvL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 15 Nov 2020 17:51:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41644 "EHLO
+        id S1728140AbgKOWvO (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 15 Nov 2020 17:51:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41650 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728085AbgKOWvI (ORCPT
+        with ESMTP id S1728110AbgKOWvJ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 15 Nov 2020 17:51:08 -0500
+        Sun, 15 Nov 2020 17:51:09 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91E81C0613CF;
-        Sun, 15 Nov 2020 14:51:08 -0800 (PST)
-Date:   Sun, 15 Nov 2020 22:51:06 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5F01C0613CF;
+        Sun, 15 Nov 2020 14:51:09 -0800 (PST)
+Date:   Sun, 15 Nov 2020 22:51:07 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1605480667;
+        s=2020; t=1605480668;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=+EynBt7yhjA5j4pXaQ3hwoHC4N06FLM/y8HOL57JWAQ=;
-        b=pV9B6zVDGYkAOhcf+Z4Q0ZlYUCzhealv5SxIvaX7IXzEtnHTc2jgTB2RfJ0NQZl98HPMug
-        pnM5dMli9TEjQDxZ09c8hCqq18UogqbqacildA6DhsxcRGEqQ4ehGBCJKIrZPw4tAuitjY
-        lWOvDItAw7BAsPrf3mmrtq+Z9hgNFgCwItst8J0m9YBMPx1muBfLGEYKfuq2pUk/AYRjsa
-        IaVTYex2qdPLRKMNh86YcpBl0SDe+EiDvTYHMHsDzfGcriZ1L0+nwoMmgUtqQzP/48vol6
-        eB6IQVYH3DjW35iLhfF/AchXxwAUs2S0UltyCHjpFgCC0mB7hQeAP+SSjYxYmQ==
+        bh=eAbwv5pO+FdE7FetcQeB791mwyK29Xn4hTU9E4SYKpU=;
+        b=4tsaFaZwBABA8wVFdhlQ/VLoYJiGlVDZjzLHYy5loJ0n3eZRL5RVTVZuUV1XPGPDBhgmEu
+        uKupmMmFiT5gIRnini4MbFjNwVn2Q2pHXpra/kxBFr8xkjzANbZZFuv5xcVxauPRiBxOil
+        cBoGNhKdEGnY8RZik8dnHHkiWqn+ToHnKyQ/diM0aGDVjnn4o0kwgvk8y0xUREiXUntmqm
+        eiWpV46CRiRXiSirEi+zrmYNZjZjvcTH+X+qGpBP/CCqnCRjO9wM5HP/gNMntKo3i4Ldu0
+        MWjLy/ADLF4ZKKZHtYHdYfF9KfrIW99BMjprCGyfja9w7X41msjZczi0crqM/A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1605480667;
+        s=2020e; t=1605480668;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=+EynBt7yhjA5j4pXaQ3hwoHC4N06FLM/y8HOL57JWAQ=;
-        b=99nDKplcm3nnlsc3yZtrlexMJkDETESK9GYcXTzFpRuN5mCvd3EC5uZUFrS3aaj8cFkhvZ
-        OZYOxX5mpknh45DA==
-From:   "tip-bot2 for Alex Shi" <tip-bot2@linutronix.de>
+        bh=eAbwv5pO+FdE7FetcQeB791mwyK29Xn4hTU9E4SYKpU=;
+        b=EH5xDXD3ZRMlhK9O6YE3mbNGm+f4ddZDWErEnviMMFM7DUBBLcEzFCCCeRTcjHzQuYSsY6
+        Yc19EN5dfx4M9wCg==
+From:   "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] timekeeping: Remove static functions from
- kernel-doc markup
-Cc:     Alex Shi <alex.shi@linux.alibaba.com>,
+Subject: [tip: timers/core] timers: Don't block on ->expiry_lock for
+ TIMER_IRQSAFE timers
+Cc:     Mike Galbraith <efault@gmx.de>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
         Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <1605252275-63652-4-git-send-email-alex.shi@linux.alibaba.com>
-References: <1605252275-63652-4-git-send-email-alex.shi@linux.alibaba.com>
+In-Reply-To: <20201103190937.hga67rqhvknki3tp@linutronix.de>
+References: <20201103190937.hga67rqhvknki3tp@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <160548066628.11244.9491301360637842667.tip-bot2@tip-bot2>
+Message-ID: <160548066747.11244.15660821900299207801.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -62,88 +63,66 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     199d280c884de44c3b0daeb77438db43f6db01a2
-Gitweb:        https://git.kernel.org/tip/199d280c884de44c3b0daeb77438db43f6db01a2
-Author:        Alex Shi <alex.shi@linux.alibaba.com>
-AuthorDate:    Fri, 13 Nov 2020 15:24:33 +08:00
+Commit-ID:     c725dafc95f1b37027840aaeaa8b7e4e9cd20516
+Gitweb:        https://git.kernel.org/tip/c725dafc95f1b37027840aaeaa8b7e4e9cd20516
+Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+AuthorDate:    Tue, 03 Nov 2020 20:09:37 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sun, 15 Nov 2020 23:47:23 +01:00
+CommitterDate: Sun, 15 Nov 2020 20:59:26 +01:00
 
-timekeeping: Remove static functions from kernel-doc markup
+timers: Don't block on ->expiry_lock for TIMER_IRQSAFE timers
 
-Various static functions in the timekeeping code have function comments
-which pretend to be kernel-doc, but are incomplete and trigger parser
-warnings.
+PREEMPT_RT does not spin and wait until a running timer completes its
+callback but instead it blocks on a sleeping lock to prevent a livelock in
+the case that the task waiting for the callback completion preempted the
+callback.
 
-As these functions are local to the timekeeping core code there is no need
-to expose them via kernel-doc.
+This cannot be done for timers flagged with TIMER_IRQSAFE. These timers can
+be canceled from an interrupt disabled context even on RT kernels.
 
-Remove the double star kernel-doc marker and remove excess newlines.
+The expiry callback of such timers is invoked with interrupts disabled so
+there is no need to use the expiry lock mechanism because obviously the
+callback cannot be preempted even on RT kernels.
 
-[ tglx: Massaged changelog and removed excess newlines ]
+Do not use the timer_base::expiry_lock mechanism when waiting for a running
+callback to complete if the timer is flagged with TIMER_IRQSAFE.
 
-Signed-off-by: Alex Shi <alex.shi@linux.alibaba.com>
+Also add a lockdep assertion for RT kernels to validate that the expiry
+lock mechanism is always invoked in preemptible context.
+
+Reported-by: Mike Galbraith <efault@gmx.de>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/1605252275-63652-4-git-send-email-alex.shi@linux.alibaba.com
+Link: https://lore.kernel.org/r/20201103190937.hga67rqhvknki3tp@linutronix.de
 
 ---
- kernel/time/timekeeping.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ kernel/time/timer.c |  9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/time/timekeeping.c b/kernel/time/timekeeping.c
-index 6858a31..570fc50 100644
---- a/kernel/time/timekeeping.c
-+++ b/kernel/time/timekeeping.c
-@@ -1415,9 +1415,8 @@ void timekeeping_warp_clock(void)
- 	}
- }
+diff --git a/kernel/time/timer.c b/kernel/time/timer.c
+index de37e33..af9ddfb 100644
+--- a/kernel/time/timer.c
++++ b/kernel/time/timer.c
+@@ -1288,7 +1288,7 @@ static void del_timer_wait_running(struct timer_list *timer)
+ 	u32 tf;
  
--/**
-+/*
-  * __timekeeping_set_tai_offset - Sets the TAI offset from UTC and monotonic
-- *
-  */
- static void __timekeeping_set_tai_offset(struct timekeeper *tk, s32 tai_offset)
- {
-@@ -1425,7 +1424,7 @@ static void __timekeeping_set_tai_offset(struct timekeeper *tk, s32 tai_offset)
- 	tk->offs_tai = ktime_add(tk->offs_real, ktime_set(tai_offset, 0));
- }
+ 	tf = READ_ONCE(timer->flags);
+-	if (!(tf & TIMER_MIGRATING)) {
++	if (!(tf & (TIMER_MIGRATING | TIMER_IRQSAFE))) {
+ 		struct timer_base *base = get_timer_base(tf);
  
--/**
-+/*
-  * change_clocksource - Swaps clocksources if a new one is available
-  *
-  * Accumulates current time interval and initializes new clocksource
-@@ -2023,13 +2022,12 @@ static void timekeeping_adjust(struct timekeeper *tk, s64 offset)
- 	}
- }
+ 		/*
+@@ -1372,6 +1372,13 @@ int del_timer_sync(struct timer_list *timer)
+ 	 */
+ 	WARN_ON(in_irq() && !(timer->flags & TIMER_IRQSAFE));
  
--/**
-+/*
-  * accumulate_nsecs_to_secs - Accumulates nsecs into secs
-  *
-  * Helper function that accumulates the nsecs greater than a second
-  * from the xtime_nsec field to the xtime_secs field.
-  * It also calls into the NTP code to handle leapsecond processing.
-- *
-  */
- static inline unsigned int accumulate_nsecs_to_secs(struct timekeeper *tk)
- {
-@@ -2071,7 +2069,7 @@ static inline unsigned int accumulate_nsecs_to_secs(struct timekeeper *tk)
- 	return clock_set;
- }
++	/*
++	 * Must be able to sleep on PREEMPT_RT because of the slowpath in
++	 * del_timer_wait_running().
++	 */
++	if (IS_ENABLED(CONFIG_PREEMPT_RT) && !(timer->flags & TIMER_IRQSAFE))
++		lockdep_assert_preemption_enabled();
++
+ 	do {
+ 		ret = try_to_del_timer_sync(timer);
  
--/**
-+/*
-  * logarithmic_accumulation - shifted accumulation of cycles
-  *
-  * This functions accumulates a shifted interval of cycles into
-@@ -2314,7 +2312,7 @@ ktime_t ktime_get_update_offsets_now(unsigned int *cwsseq, ktime_t *offs_real,
- 	return base;
- }
- 
--/**
-+/*
-  * timekeeping_validate_timex - Ensures the timex is ok for use in do_adjtimex
-  */
- static int timekeeping_validate_timex(const struct __kernel_timex *txc)
