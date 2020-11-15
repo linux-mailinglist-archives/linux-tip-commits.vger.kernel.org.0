@@ -2,54 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 02B412B3487
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 15 Nov 2020 12:06:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 77D912B3829
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 15 Nov 2020 19:57:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726704AbgKOLFq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 15 Nov 2020 06:05:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46840 "EHLO
+        id S1727156AbgKOS4N (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 15 Nov 2020 13:56:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33976 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726642AbgKOLFp (ORCPT
+        with ESMTP id S1726923AbgKOS4M (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 15 Nov 2020 06:05:45 -0500
+        Sun, 15 Nov 2020 13:56:12 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3807C0613D1;
-        Sun, 15 Nov 2020 03:05:45 -0800 (PST)
-Date:   Sun, 15 Nov 2020 11:05:41 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 695EBC0613D1;
+        Sun, 15 Nov 2020 10:56:12 -0800 (PST)
+Date:   Sun, 15 Nov 2020 18:56:08 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1605438343;
+        s=2020; t=1605466570;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Bij7WmP9+y87wX1KmnpAU4g3B0H3sxtPXI7Q6zWWxQs=;
-        b=cFN0Xi+xYEvuHoPWSxGjXqYvCpIIXDs5G2NN1Pg0ai7C8x5elEIbH3B2X2TIYdBKsZ5STX
-        90FFlaLoj9Pyj7LxVMf02QdJknDAS1QSBXLzCNXKQvBLgb3wKExhDwhYef6uWYzjRUfuUw
-        01XTQ09oJkydhWgrHghO6334MluuwikVi5ZsazgTMOwIdj0rpq7gMhpg0JL0EktGgQvMFI
-        eG+1o+OtmlTDWJm+qPs0/183zJLoa+mLEqTt0T9akXNNTcQh5vLPbDOnraA2sPr6kbveiV
-        3HivOAR0SjeIQ7bxZKbaS/u2Gnr0RA5P9TmD05stYxlcmRVYF8iEcDb50pmdDg==
+        bh=uEDpHhF2OCoF+id9YLRt+CynHxCQsmIsMt62XXgA0kg=;
+        b=MeKN1K+cxBSCzQq+PJ/6PMv3hYLxbZqozJ7wBS0G26W1U6EbdfeaaTPXjIeB7k7y9m0BIT
+        7V33Fm1uavMI5aEdVO8G87Yr0e+kVOWi3QkcwCJgBZ31FH43T0CblwCg9icDVdoiJ2gOWj
+        ehUukimQyxKl+qtRYW9yNm+ZObRcrRjJyh2gLmpkat4lbJdZhIys+t1zgGbU7ZpJJIYDN6
+        LlGMYQqkB3yyP96EHzYUXgQGnMNXaVsEH3c/mIYDsCN0IR++rgLUCtGSpMZwjMahHTwaoS
+        ejhZOR/PGNgV+nXe+IxK8Z8MMzyieyzJC3wuRqRn7hbImaf4zLjXO/ne7FF6vA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1605438343;
+        s=2020e; t=1605466570;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Bij7WmP9+y87wX1KmnpAU4g3B0H3sxtPXI7Q6zWWxQs=;
-        b=9aHzsEu+3vkUgLobOam1UnDVGcyOjlX2Z8WySsysE24LlvIOAjNhLa9gnis2OYvkDodXxT
-        HMq6ok/G231XAjAA==
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+        bh=uEDpHhF2OCoF+id9YLRt+CynHxCQsmIsMt62XXgA0kg=;
+        b=YwbUxQu1X1O5+AKqp8dmw0HaPHJiu4X+Scw3qkclUgrgHziNbFss6sumvgK2SjbB6epFxY
+        Exs++CInV2zXZqAg==
+From:   "tip-bot2 for Ira Weiny" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] genirq/irqdomain: Make irq_domain_disassociate() static
-Cc:     Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
-        linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <87a6vja7mb.fsf@nanos.tec.linutronix.de>
-References: <87a6vja7mb.fsf@nanos.tec.linutronix.de>
+Subject: [tip: core/entry] entry: Fix spelling/typo errors in irq entry code
+Cc:     Ira Weiny <ira.weiny@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20201104230157.3378023-1-ira.weiny@intel.com>
+References: <20201104230157.3378023-1-ira.weiny@intel.com>
 MIME-Version: 1.0
-Message-ID: <160543834186.11244.15951474822549357496.tip-bot2@tip-bot2>
+Message-ID: <160546656898.11244.12849621903409820578.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,50 +59,72 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the irq/core branch of tip:
+The following commit has been merged into the core/entry branch of tip:
 
-Commit-ID:     e906a546bd8653ed2e7a14cb300fd17952d7f862
-Gitweb:        https://git.kernel.org/tip/e906a546bd8653ed2e7a14cb300fd17952d7f862
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Sat, 14 Nov 2020 23:36:28 +01:00
+Commit-ID:     8ca2378089994a0508248230e1a1e75f73102d32
+Gitweb:        https://git.kernel.org/tip/8ca2378089994a0508248230e1a1e75f73102d32
+Author:        Ira Weiny <ira.weiny@intel.com>
+AuthorDate:    Wed, 04 Nov 2020 15:01:57 -08:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sun, 15 Nov 2020 12:01:11 +01:00
+CommitterDate: Sun, 15 Nov 2020 19:51:51 +01:00
 
-genirq/irqdomain: Make irq_domain_disassociate() static
+entry: Fix spelling/typo errors in irq entry code
 
-No users outside of the core code.
+s/reguired/required/
+s/Interupts/Interrupts/
+s/quiescient/quiescent/
+s/assemenbly/assembly/
 
+Signed-off-by: Ira Weiny <ira.weiny@intel.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/87a6vja7mb.fsf@nanos.tec.linutronix.de
+Link: https://lore.kernel.org/r/20201104230157.3378023-1-ira.weiny@intel.com
 
 ---
- include/linux/irqdomain.h | 2 --
- kernel/irq/irqdomain.c    | 2 +-
- 2 files changed, 1 insertion(+), 3 deletions(-)
+ include/linux/entry-common.h | 4 ++--
+ kernel/entry/common.c        | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/irqdomain.h b/include/linux/irqdomain.h
-index 77bf7d8..5701a8b 100644
---- a/include/linux/irqdomain.h
-+++ b/include/linux/irqdomain.h
-@@ -387,8 +387,6 @@ extern int irq_domain_associate(struct irq_domain *domain, unsigned int irq,
- extern void irq_domain_associate_many(struct irq_domain *domain,
- 				      unsigned int irq_base,
- 				      irq_hw_number_t hwirq_base, int count);
--extern void irq_domain_disassociate(struct irq_domain *domain,
--				    unsigned int irq);
- 
- extern unsigned int irq_create_mapping(struct irq_domain *host,
- 				       irq_hw_number_t hwirq);
-diff --git a/kernel/irq/irqdomain.c b/kernel/irq/irqdomain.c
-index 9c9cb88..3d7463f 100644
---- a/kernel/irq/irqdomain.c
-+++ b/kernel/irq/irqdomain.c
-@@ -496,7 +496,7 @@ static void irq_domain_set_mapping(struct irq_domain *domain,
- 	}
- }
- 
--void irq_domain_disassociate(struct irq_domain *domain, unsigned int irq)
-+static void irq_domain_disassociate(struct irq_domain *domain, unsigned int irq)
- {
- 	struct irq_data *irq_data = irq_get_irq_data(irq);
- 	irq_hw_number_t hwirq;
+diff --git a/include/linux/entry-common.h b/include/linux/entry-common.h
+index 1a128ba..6693812 100644
+--- a/include/linux/entry-common.h
++++ b/include/linux/entry-common.h
+@@ -415,7 +415,7 @@ void irqentry_exit_cond_resched(void);
+  * @state:	Return value from matching call to irqentry_enter()
+  *
+  * Depending on the return target (kernel/user) this runs the necessary
+- * preemption and work checks if possible and reguired and returns to
++ * preemption and work checks if possible and required and returns to
+  * the caller with interrupts disabled and no further work pending.
+  *
+  * This is the last action before returning to the low level ASM code which
+@@ -438,7 +438,7 @@ irqentry_state_t noinstr irqentry_nmi_enter(struct pt_regs *regs);
+  * @regs:	Pointer to pt_regs (NMI entry regs)
+  * @irq_state:	Return value from matching call to irqentry_nmi_enter()
+  *
+- * Last action before returning to the low level assmenbly code.
++ * Last action before returning to the low level assmebly code.
+  *
+  * Counterpart to irqentry_nmi_enter().
+  */
+diff --git a/kernel/entry/common.c b/kernel/entry/common.c
+index bc75c11..fa17baa 100644
+--- a/kernel/entry/common.c
++++ b/kernel/entry/common.c
+@@ -304,7 +304,7 @@ noinstr irqentry_state_t irqentry_enter(struct pt_regs *regs)
+ 	 * If this entry hit the idle task invoke rcu_irq_enter() whether
+ 	 * RCU is watching or not.
+ 	 *
+-	 * Interupts can nest when the first interrupt invokes softirq
++	 * Interrupts can nest when the first interrupt invokes softirq
+ 	 * processing on return which enables interrupts.
+ 	 *
+ 	 * Scheduler ticks in the idle task can mark quiescent state and
+@@ -315,7 +315,7 @@ noinstr irqentry_state_t irqentry_enter(struct pt_regs *regs)
+ 	 * interrupt to invoke rcu_irq_enter(). If that nested interrupt is
+ 	 * the tick then rcu_flavor_sched_clock_irq() would wrongfully
+ 	 * assume that it is the first interupt and eventually claim
+-	 * quiescient state and end grace periods prematurely.
++	 * quiescent state and end grace periods prematurely.
+ 	 *
+ 	 * Unconditionally invoke rcu_irq_enter() so RCU state stays
+ 	 * consistent.
