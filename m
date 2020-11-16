@@ -2,53 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 014502B5209
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 16 Nov 2020 21:09:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 41C0C2B5270
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 16 Nov 2020 21:24:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731792AbgKPUIg (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 16 Nov 2020 15:08:36 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:43360 "EHLO
+        id S1732371AbgKPUYX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 16 Nov 2020 15:24:23 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:43464 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729938AbgKPUIc (ORCPT
+        with ESMTP id S1726657AbgKPUYW (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 16 Nov 2020 15:08:32 -0500
-Date:   Mon, 16 Nov 2020 20:08:28 -0000
+        Mon, 16 Nov 2020 15:24:22 -0500
+Date:   Mon, 16 Nov 2020 20:24:18 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1605557309;
+        s=2020; t=1605558259;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=X0vimLuqM8jdVFuRcftBEKkrbfA8mfIwyk26c32Mar0=;
-        b=LF4M7FRKGnRKxUzh3SqnFKesuVbckAn7Zbh+radsjyl716QcXON8zH2OSCvWPiGCImWSd2
-        9Khu/tJ/5Y1i3vamr/aZ5ZlDl11X2o7mCO3hlRpjhjF4VnulUIn6MkKvmRUVNptfhq1rxf
-        25lZOMc3KlfRtDBICQKWaYHQ+DFHgDdKrRZHqVNiauYbpdTKPgzkgPSE+Ak0OyHCKcz/Qe
-        dpa331/YZk1nylcEGolhyObtrKmU72l2ye6F67jnQkX9Qda9+c2KBuvHDG6YtaUOHvL50f
-        0EgoSwDqApAWTFKG7s5jx+LyqgBsEGk+mbjgL9GSIv3VfCbzdNGne7NejnE9Mg==
+        bh=26EBQuDLqRfJIob62SZ1w327byH5+z8iA8+RsCArhFc=;
+        b=quK/hU5EWlIbLZzck0ReJs47B52II3g4eMXncbaKCqH106rDTe5CcU4XHJwb4BdnvqJm37
+        VsVr0EWOb00RXHEf8zFvTLooNi0ojgNkhzZbIQ7bbCQQLFqc1c7ZP/a36BGxQZUG1+noJR
+        5u2bKlTFha+ASy8Ahsox4V8vchvaj9LLBtXL9kFj5ZeOWBOQt93qxrfdZaZX7fbXQy4oq5
+        5VCRf2t8LA7et/Bl+4HXX24zf+A5K6vDbhGbGdA7ABcBv3DnFmwTS7zg9YTfarftoqek95
+        mxUKbg66JP5ukm8w3KxCR+RQPLUVsK5pAJGlgBWeU1UqNOJud/5/EPZf35Bd0w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1605557309;
+        s=2020e; t=1605558259;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=X0vimLuqM8jdVFuRcftBEKkrbfA8mfIwyk26c32Mar0=;
-        b=gR4mQV3z+gEtVXLObNaJCK1qNbZa+0o3RtjB0q59hsxUoI6SSD7IctRlkoKca5WWErRC5B
-        sq0E9BzOSwnkeqAQ==
-From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
+        bh=26EBQuDLqRfJIob62SZ1w327byH5+z8iA8+RsCArhFc=;
+        b=PAmYrdu8IJT4WCBYuAKTVHo8B8VF4Zo40Bi12m4Xd4Cennumn/oaRovR2z/2LLpvy8h7Qa
+        QM0QvAdrSWbu3WBQ==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/misc] tools/power/cpupower: Read energy_perf_bias from sysfs
-Cc:     Borislav Petkov <bp@suse.de>,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        Thomas Renninger <trenn@suse.com>, x86@kernel.org,
+Subject: [tip: core/mm] xtensa/mm/highmem: Make generic kmap_atomic() work correctly
+Cc:     Max Filippov <jcmvbkbc@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20201029190259.3476-2-bp@alien8.de>
-References: <20201029190259.3476-2-bp@alien8.de>
+In-Reply-To: <20201116193253.23875-1-jcmvbkbc@gmail.com>
+References: <20201116193253.23875-1-jcmvbkbc@gmail.com>
 MIME-Version: 1.0
-Message-ID: <160555730888.11244.3110463362645056723.tip-bot2@tip-bot2>
+Message-ID: <160555825838.11244.4652932210210243090.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -57,255 +56,233 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/misc branch of tip:
+The following commit has been merged into the core/mm branch of tip:
 
-Commit-ID:     8113ab20e850491b4144a1a64246f07a2d737a49
-Gitweb:        https://git.kernel.org/tip/8113ab20e850491b4144a1a64246f07a2d737a49
-Author:        Borislav Petkov <bp@suse.de>
-AuthorDate:    Thu, 15 Oct 2020 12:28:58 +02:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Mon, 16 Nov 2020 17:42:12 +01:00
+Commit-ID:     1eb0616c2df5b78c301eaa7bd2ee859f43915001
+Gitweb:        https://git.kernel.org/tip/1eb0616c2df5b78c301eaa7bd2ee859f43915001
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Mon, 16 Nov 2020 11:32:53 -08:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Mon, 16 Nov 2020 21:19:24 +01:00
 
-tools/power/cpupower: Read energy_perf_bias from sysfs
+xtensa/mm/highmem: Make generic kmap_atomic() work correctly
 
-... instead of poking at the MSR. For that, move the accessor functions
-to misc.c and add a sysfs-writing function too.
+The conversion to the generic kmap_atomic() implementation missed the fact
+that xtensa's fixmap works bottom up while all other implementations work
+top down. There is no real reason why xtensa needs to work that way.
 
-There should be no functional changes resulting from this.
+Cure it by:
 
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
-Cc: Thomas Renninger <trenn@suse.com>
-Link: https://lkml.kernel.org/r/20201029190259.3476-2-bp@alien8.de
+  - Using the generic fix_to_virt()/virt_to_fix() functions which work top
+    down
+  - Adjusting the mapping defines
+  - Using the generic index calculation for the non cache aliasing case
+  - Making the cache colour offset reverse so the effective index is correct
+
+While at it, remove the outdated and misleading comment above the fixmap
+enum which originates from the initial copy&pasta of this code from i386.
+
+[ Max: Fixed the off by one in the index calculation ]
+
+Fixes: 629ed3f7dad2 ("xtensa/mm/highmem: Switch to generic kmap atomic")
+Reported-by: Max Filippov <jcmvbkbc@gmail.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Max Filippov <jcmvbkbc@gmail.com>
+Link: https://lore.kernel.org/r/20201116193253.23875-1-jcmvbkbc@gmail.com
+
 ---
- tools/power/cpupower/lib/cpupower.c          | 23 ++++++++-
- tools/power/cpupower/lib/cpupower_intern.h   |  5 ++-
- tools/power/cpupower/utils/cpupower-info.c   |  2 +-
- tools/power/cpupower/utils/cpupower-set.c    |  2 +-
- tools/power/cpupower/utils/helpers/helpers.h |  8 +--
- tools/power/cpupower/utils/helpers/misc.c    | 48 +++++++++++++++++++-
- tools/power/cpupower/utils/helpers/msr.c     | 28 +-----------
- 7 files changed, 81 insertions(+), 35 deletions(-)
+ arch/xtensa/include/asm/fixmap.h  | 55 +++---------------------------
+ arch/xtensa/include/asm/highmem.h | 15 ++++----
+ arch/xtensa/mm/highmem.c          | 18 ++++++----
+ arch/xtensa/mm/init.c             |  4 +-
+ arch/xtensa/mm/mmu.c              |  3 +-
+ 5 files changed, 31 insertions(+), 64 deletions(-)
 
-diff --git a/tools/power/cpupower/lib/cpupower.c b/tools/power/cpupower/lib/cpupower.c
-index 3656e69..3f7d0c0 100644
---- a/tools/power/cpupower/lib/cpupower.c
-+++ b/tools/power/cpupower/lib/cpupower.c
-@@ -16,8 +16,8 @@
+diff --git a/arch/xtensa/include/asm/fixmap.h b/arch/xtensa/include/asm/fixmap.h
+index 92049b6..1c65dc1 100644
+--- a/arch/xtensa/include/asm/fixmap.h
++++ b/arch/xtensa/include/asm/fixmap.h
+@@ -17,63 +17,22 @@
+ #include <linux/threads.h>
+ #include <linux/pgtable.h>
+ #include <asm/kmap_size.h>
+-#endif
  
- unsigned int cpupower_read_sysfs(const char *path, char *buf, size_t buflen)
+-/*
+- * Here we define all the compile-time 'special' virtual
+- * addresses. The point is to have a constant address at
+- * compile time, but to set the physical address only
+- * in the boot process. We allocate these special addresses
+- * from the start of the consistent memory region upwards.
+- * Also this lets us do fail-safe vmalloc(), we
+- * can guarantee that these special addresses and
+- * vmalloc()-ed addresses never overlap.
+- *
+- * these 'compile-time allocated' memory buffers are
+- * fixed-size 4k pages. (or larger if used with an increment
+- * higher than 1) use fixmap_set(idx,phys) to associate
+- * physical memory with fixmap indices.
+- */
++/* The map slots for temporary mappings via kmap_atomic/local(). */
+ enum fixed_addresses {
+-#ifdef CONFIG_HIGHMEM
+-	/* reserved pte's for temporary kernel mappings */
+ 	FIX_KMAP_BEGIN,
+ 	FIX_KMAP_END = FIX_KMAP_BEGIN +
+ 		(KM_MAX_IDX * NR_CPUS * DCACHE_N_COLORS) - 1,
+-#endif
+ 	__end_of_fixed_addresses
+ };
+ 
+-#define FIXADDR_TOP     (XCHAL_KSEG_CACHED_VADDR - PAGE_SIZE)
++#define FIXADDR_END     (XCHAL_KSEG_CACHED_VADDR - PAGE_SIZE)
+ #define FIXADDR_SIZE	(__end_of_fixed_addresses << PAGE_SHIFT)
+-#define FIXADDR_START	((FIXADDR_TOP - FIXADDR_SIZE) & PMD_MASK)
++/* Enforce that FIXADDR_START is PMD aligned to handle cache aliasing */
++#define FIXADDR_START	((FIXADDR_END - FIXADDR_SIZE) & PMD_MASK)
++#define FIXADDR_TOP	(FIXADDR_START + FIXADDR_SIZE - PAGE_SIZE)
+ 
+-#define __fix_to_virt(x)	(FIXADDR_START + ((x) << PAGE_SHIFT))
+-#define __virt_to_fix(x)	(((x) - FIXADDR_START) >> PAGE_SHIFT)
+-
+-#ifndef __ASSEMBLY__
+-/*
+- * 'index to address' translation. If anyone tries to use the idx
+- * directly without translation, we catch the bug with a NULL-deference
+- * kernel oops. Illegal ranges of incoming indices are caught too.
+- */
+-static __always_inline unsigned long fix_to_virt(const unsigned int idx)
+-{
+-	/* Check if this memory layout is broken because fixmap overlaps page
+-	 * table.
+-	 */
+-	BUILD_BUG_ON(FIXADDR_START <
+-		     TLBTEMP_BASE_1 + TLBTEMP_SIZE);
+-	BUILD_BUG_ON(idx >= __end_of_fixed_addresses);
+-	return __fix_to_virt(idx);
+-}
+-
+-static inline unsigned long virt_to_fix(const unsigned long vaddr)
+-{
+-	BUG_ON(vaddr >= FIXADDR_TOP || vaddr < FIXADDR_START);
+-	return __virt_to_fix(vaddr);
+-}
+-
+-#endif
++#include <asm-generic/fixmap.h>
+ 
++#endif /* CONFIG_HIGHMEM */
+ #endif
+diff --git a/arch/xtensa/include/asm/highmem.h b/arch/xtensa/include/asm/highmem.h
+index 0fc3b1c..34b8b62 100644
+--- a/arch/xtensa/include/asm/highmem.h
++++ b/arch/xtensa/include/asm/highmem.h
+@@ -12,6 +12,7 @@
+ #ifndef _XTENSA_HIGHMEM_H
+ #define _XTENSA_HIGHMEM_H
+ 
++#ifdef CONFIG_HIGHMEM
+ #include <linux/wait.h>
+ #include <linux/pgtable.h>
+ #include <asm/cacheflush.h>
+@@ -58,6 +59,13 @@ static inline wait_queue_head_t *get_pkmap_wait_queue_head(unsigned int color)
  {
--	int fd;
- 	ssize_t numread;
-+	int fd;
+ 	return pkmap_map_wait_arr + color;
+ }
++
++enum fixed_addresses kmap_local_map_idx(int type, unsigned long pfn);
++#define arch_kmap_local_map_idx		kmap_local_map_idx
++
++enum fixed_addresses kmap_local_unmap_idx(int type, unsigned long addr);
++#define arch_kmap_local_unmap_idx	kmap_local_unmap_idx
++
+ #endif
  
- 	fd = open(path, O_RDONLY);
- 	if (fd == -1)
-@@ -35,6 +35,27 @@ unsigned int cpupower_read_sysfs(const char *path, char *buf, size_t buflen)
- 	return (unsigned int) numread;
+ extern pte_t *pkmap_page_table;
+@@ -67,15 +75,10 @@ static inline void flush_cache_kmaps(void)
+ 	flush_cache_all();
  }
  
-+unsigned int cpupower_write_sysfs(const char *path, char *buf, size_t buflen)
-+{
-+	ssize_t numwritten;
-+	int fd;
+-enum fixed_addresses kmap_local_map_idx(int type, unsigned long pfn);
+-#define arch_kmap_local_map_idx		kmap_local_map_idx
+-
+-enum fixed_addresses kmap_local_unmap_idx(int type, unsigned long addr);
+-#define arch_kmap_local_unmap_idx	kmap_local_unmap_idx
+-
+ #define arch_kmap_local_post_unmap(vaddr)	\
+ 	local_flush_tlb_kernel_range(vaddr, vaddr + PAGE_SIZE)
+ 
+ void kmap_init(void);
+ 
++#endif /* CONFIG_HIGHMEM */
+ #endif
+diff --git a/arch/xtensa/mm/highmem.c b/arch/xtensa/mm/highmem.c
+index 0735ca5..35c4f7d 100644
+--- a/arch/xtensa/mm/highmem.c
++++ b/arch/xtensa/mm/highmem.c
+@@ -23,16 +23,16 @@ static void __init kmap_waitqueues_init(void)
+ 	for (i = 0; i < ARRAY_SIZE(pkmap_map_wait_arr); ++i)
+ 		init_waitqueue_head(pkmap_map_wait_arr + i);
+ }
+-#else
+-static inline void kmap_waitqueues_init(void)
+-{
+-}
+-#endif
+ 
+ static inline enum fixed_addresses kmap_idx(int type, unsigned long color)
+ {
+-	return (type + KM_MAX_IDX * smp_processor_id()) * DCACHE_N_COLORS +
+-		color;
++	int idx = (type + KM_MAX_IDX * smp_processor_id()) * DCACHE_N_COLORS;
 +
-+	fd = open(path, O_WRONLY);
-+	if (fd == -1)
-+		return 0;
-+
-+	numwritten = write(fd, buf, buflen - 1);
-+	if (numwritten < 1) {
-+		perror(path);
-+		close(fd);
-+		return -1;
-+	}
-+
-+	close(fd);
-+
-+	return (unsigned int) numwritten;
-+}
-+
- /*
-  * Detect whether a CPU is online
-  *
-diff --git a/tools/power/cpupower/lib/cpupower_intern.h b/tools/power/cpupower/lib/cpupower_intern.h
-index 4887c76..ac1112b 100644
---- a/tools/power/cpupower/lib/cpupower_intern.h
-+++ b/tools/power/cpupower/lib/cpupower_intern.h
-@@ -1,6 +1,11 @@
- /* SPDX-License-Identifier: GPL-2.0 */
- #define PATH_TO_CPU "/sys/devices/system/cpu/"
-+
-+#ifndef MAX_LINE_LEN
- #define MAX_LINE_LEN 4096
++	/*
++	 * The fixmap operates top down, so the color offset needs to be
++	 * reverse as well.
++	 */
++	return idx + DCACHE_N_COLORS - 1 - color;
+ }
+ 
+ enum fixed_addresses kmap_local_map_idx(int type, unsigned long pfn)
+@@ -45,6 +45,10 @@ enum fixed_addresses kmap_local_unmap_idx(int type, unsigned long addr)
+ 	return kmap_idx(type, DCACHE_ALIAS(addr));
+ }
+ 
++#else
++static inline void kmap_waitqueues_init(void) { }
 +#endif
 +
- #define SYSFS_PATH_MAX 255
- 
- unsigned int cpupower_read_sysfs(const char *path, char *buf, size_t buflen);
-+unsigned int cpupower_write_sysfs(const char *path, char *buf, size_t buflen);
-diff --git a/tools/power/cpupower/utils/cpupower-info.c b/tools/power/cpupower/utils/cpupower-info.c
-index 0ba61a2..06345b5 100644
---- a/tools/power/cpupower/utils/cpupower-info.c
-+++ b/tools/power/cpupower/utils/cpupower-info.c
-@@ -101,7 +101,7 @@ int cmd_info(int argc, char **argv)
- 		}
- 
- 		if (params.perf_bias) {
--			ret = msr_intel_get_perf_bias(cpu);
-+			ret = cpupower_intel_get_perf_bias(cpu);
- 			if (ret < 0) {
- 				fprintf(stderr,
- 			_("Could not read perf-bias value[%d]\n"), ret);
-diff --git a/tools/power/cpupower/utils/cpupower-set.c b/tools/power/cpupower/utils/cpupower-set.c
-index 052044d..180d5ba 100644
---- a/tools/power/cpupower/utils/cpupower-set.c
-+++ b/tools/power/cpupower/utils/cpupower-set.c
-@@ -95,7 +95,7 @@ int cmd_set(int argc, char **argv)
- 		}
- 
- 		if (params.perf_bias) {
--			ret = msr_intel_set_perf_bias(cpu, perf_bias);
-+			ret = cpupower_intel_set_perf_bias(cpu, perf_bias);
- 			if (ret) {
- 				fprintf(stderr, _("Error setting perf-bias "
- 						  "value on CPU %d\n"), cpu);
-diff --git a/tools/power/cpupower/utils/helpers/helpers.h b/tools/power/cpupower/utils/helpers/helpers.h
-index c258eec..37dac16 100644
---- a/tools/power/cpupower/utils/helpers/helpers.h
-+++ b/tools/power/cpupower/utils/helpers/helpers.h
-@@ -105,8 +105,8 @@ extern struct cpupower_cpu_info cpupower_cpu_info;
- extern int read_msr(int cpu, unsigned int idx, unsigned long long *val);
- extern int write_msr(int cpu, unsigned int idx, unsigned long long val);
- 
--extern int msr_intel_set_perf_bias(unsigned int cpu, unsigned int val);
--extern int msr_intel_get_perf_bias(unsigned int cpu);
-+extern int cpupower_intel_set_perf_bias(unsigned int cpu, unsigned int val);
-+extern int cpupower_intel_get_perf_bias(unsigned int cpu);
- extern unsigned long long msr_intel_get_turbo_ratio(unsigned int cpu);
- 
- /* Read/Write msr ****************************/
-@@ -150,9 +150,9 @@ static inline int read_msr(int cpu, unsigned int idx, unsigned long long *val)
- { return -1; };
- static inline int write_msr(int cpu, unsigned int idx, unsigned long long val)
- { return -1; };
--static inline int msr_intel_set_perf_bias(unsigned int cpu, unsigned int val)
-+static inline int cpupower_intel_set_perf_bias(unsigned int cpu, unsigned int val)
- { return -1; };
--static inline int msr_intel_get_perf_bias(unsigned int cpu)
-+static inline int cpupower_intel_get_perf_bias(unsigned int cpu)
- { return -1; };
- static inline unsigned long long msr_intel_get_turbo_ratio(unsigned int cpu)
- { return 0; };
-diff --git a/tools/power/cpupower/utils/helpers/misc.c b/tools/power/cpupower/utils/helpers/misc.c
-index f406adc..e8f8f64 100644
---- a/tools/power/cpupower/utils/helpers/misc.c
-+++ b/tools/power/cpupower/utils/helpers/misc.c
-@@ -1,7 +1,15 @@
- // SPDX-License-Identifier: GPL-2.0
-+
-+#include <stdio.h>
-+#include <errno.h>
-+#include <stdlib.h>
-+
- #if defined(__i386__) || defined(__x86_64__)
- 
- #include "helpers/helpers.h"
-+#include "helpers/sysfs.h"
-+
-+#include "cpupower_intern.h"
- 
- #define MSR_AMD_HWCR	0xc0010015
- 
-@@ -40,4 +48,44 @@ int cpufreq_has_boost_support(unsigned int cpu, int *support, int *active,
- 		*support = *active = 1;
- 	return 0;
- }
-+
-+int cpupower_intel_get_perf_bias(unsigned int cpu)
-+{
-+	char linebuf[MAX_LINE_LEN];
-+	char path[SYSFS_PATH_MAX];
-+	unsigned long val;
-+	char *endp;
-+
-+	if (!(cpupower_cpu_info.caps & CPUPOWER_CAP_PERF_BIAS))
-+		return -1;
-+
-+	snprintf(path, sizeof(path), PATH_TO_CPU "cpu%u/power/energy_perf_bias", cpu);
-+
-+	if (cpupower_read_sysfs(path, linebuf, MAX_LINE_LEN) == 0)
-+		return -1;
-+
-+	val = strtol(linebuf, &endp, 0);
-+	if (endp == linebuf || errno == ERANGE)
-+		return -1;
-+
-+	return val;
-+}
-+
-+int cpupower_intel_set_perf_bias(unsigned int cpu, unsigned int val)
-+{
-+	char path[SYSFS_PATH_MAX];
-+	char linebuf[3] = {};
-+
-+	if (!(cpupower_cpu_info.caps & CPUPOWER_CAP_PERF_BIAS))
-+		return -1;
-+
-+	snprintf(path, sizeof(path), PATH_TO_CPU "cpu%u/power/energy_perf_bias", cpu);
-+	snprintf(linebuf, sizeof(linebuf), "%d", val);
-+
-+	if (cpupower_write_sysfs(path, linebuf, 3) <= 0)
-+		return -1;
-+
-+	return 0;
-+}
-+
- #endif /* #if defined(__i386__) || defined(__x86_64__) */
-diff --git a/tools/power/cpupower/utils/helpers/msr.c b/tools/power/cpupower/utils/helpers/msr.c
-index ab99507..8b0b6be 100644
---- a/tools/power/cpupower/utils/helpers/msr.c
-+++ b/tools/power/cpupower/utils/helpers/msr.c
-@@ -11,7 +11,6 @@
- /* Intel specific MSRs */
- #define MSR_IA32_PERF_STATUS		0x198
- #define MSR_IA32_MISC_ENABLES		0x1a0
--#define MSR_IA32_ENERGY_PERF_BIAS	0x1b0
- #define MSR_NEHALEM_TURBO_RATIO_LIMIT	0x1ad
- 
- /*
-@@ -73,33 +72,6 @@ int write_msr(int cpu, unsigned int idx, unsigned long long val)
- 	return -1;
- }
- 
--int msr_intel_get_perf_bias(unsigned int cpu)
--{
--	unsigned long long val;
--	int ret;
--
--	if (!(cpupower_cpu_info.caps & CPUPOWER_CAP_PERF_BIAS))
--		return -1;
--
--	ret = read_msr(cpu, MSR_IA32_ENERGY_PERF_BIAS, &val);
--	if (ret)
--		return ret;
--	return val;
--}
--
--int msr_intel_set_perf_bias(unsigned int cpu, unsigned int val)
--{
--	int ret;
--
--	if (!(cpupower_cpu_info.caps & CPUPOWER_CAP_PERF_BIAS))
--		return -1;
--
--	ret = write_msr(cpu, MSR_IA32_ENERGY_PERF_BIAS, val);
--	if (ret)
--		return ret;
--	return 0;
--}
--
- unsigned long long msr_intel_get_turbo_ratio(unsigned int cpu)
+ void __init kmap_init(void)
  {
- 	unsigned long long val;
+ 	/* Check if this memory layout is broken because PKMAP overlaps
+diff --git a/arch/xtensa/mm/init.c b/arch/xtensa/mm/init.c
+index c6fc83e..0f85666 100644
+--- a/arch/xtensa/mm/init.c
++++ b/arch/xtensa/mm/init.c
+@@ -147,8 +147,8 @@ void __init mem_init(void)
+ #ifdef CONFIG_HIGHMEM
+ 		PKMAP_BASE, PKMAP_BASE + LAST_PKMAP * PAGE_SIZE,
+ 		(LAST_PKMAP*PAGE_SIZE) >> 10,
+-		FIXADDR_START, FIXADDR_TOP,
+-		(FIXADDR_TOP - FIXADDR_START) >> 10,
++		FIXADDR_START, FIXADDR_END,
++		(FIXADDR_END - FIXADDR_START) >> 10,
+ #endif
+ 		PAGE_OFFSET, PAGE_OFFSET +
+ 		(max_low_pfn - min_low_pfn) * PAGE_SIZE,
+diff --git a/arch/xtensa/mm/mmu.c b/arch/xtensa/mm/mmu.c
+index fd2193d..7e4d97d 100644
+--- a/arch/xtensa/mm/mmu.c
++++ b/arch/xtensa/mm/mmu.c
+@@ -52,7 +52,8 @@ static void * __init init_pmd(unsigned long vaddr, unsigned long n_pages)
+ 
+ static void __init fixedrange_init(void)
+ {
+-	init_pmd(__fix_to_virt(0), __end_of_fixed_addresses);
++	BUILD_BUG_ON(FIXADDR_START < TLBTEMP_BASE_1 + TLBTEMP_SIZE);
++	init_pmd(FIXADDR_START, __end_of_fixed_addresses);
+ }
+ #endif
+ 
