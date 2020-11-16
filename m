@@ -2,19 +2,16 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BF0A32B5204
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 16 Nov 2020 21:09:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D087D2B5202
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 16 Nov 2020 21:09:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731748AbgKPUIc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 16 Nov 2020 15:08:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41308 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731662AbgKPUIa (ORCPT
+        id S1731636AbgKPUIa (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 16 Nov 2020 15:08:30 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:43338 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729459AbgKPUIa (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Mon, 16 Nov 2020 15:08:30 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9206FC0613CF;
-        Mon, 16 Nov 2020 12:08:30 -0800 (PST)
 Date:   Mon, 16 Nov 2020 20:08:27 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1605557308;
@@ -23,12 +20,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=UNtM+Tqm8xc4Yhv0kGDgHY27rB8uw2uBmAbWvfTcnjo=;
-        b=bc2O+p8XDY6crVD4O+2wrSuebrIKlCSb9N6ouVaGCOQJXixoj0dmyatbBIIHhuM7nb07c2
-        8nfzSdlxfgFz1xufW887FzfZ7RuPJVtJ4pjMTFmeMWLSQ3tDS7BHpjpZZuNGlw7nVCraGw
-        vUTiQm2Wz7JyvdeAvRkovMud+QBJef/8YYQc4QbzwncCATq5uWDMOWoV4t8oWqoXzLeQ1v
-        1GCcU6MLQmw/zX8JYu0jtUDkzqnYVD5mGe7icqpKUiz/dEf4ejo2ZI+B9MmmKwHfcaxfbx
-        ObZcwcaLc5TNp7guki9CvOyFoCZs/WqfPDLyLggkkE4tIAmIp/FrZkK/fDppyA==
+        bh=np68QpS74WRZwzXnueJuSt4qob2qXsd/YJ/hEUqDJBw=;
+        b=fU4LQPnw503NIF+fsts6CliwvYBVLn8qee0epIK/3R7Y2qO561vaqLjh+wmo2bxLMoEvwj
+        tkUp4gb3NNJU3I/Cqp1FhKXVve3zx4rizS3X5624JyqNf/xBdFzPgw7AbmPv+yFccFtgXq
+        hHmD/optMiYJamU9Im9c8lpmdzqIVGZ0jh2G9pe5ltCs8rHzkbAuqQgFD7ZYBofUDyS5nT
+        yS/HZ67ZMsY8P1srTq0IjSv1Ed4bxduSJSeEEhhhrcn4pxtszvIOzfGQwGB2GywhL/ODH8
+        xy6pF8rCiIKR+dwPMzkRxQeB0neUMFlRU8x1+4714los/Z1ecE3XkDcFlxE2KQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1605557308;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,21 +33,21 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=UNtM+Tqm8xc4Yhv0kGDgHY27rB8uw2uBmAbWvfTcnjo=;
-        b=Gkb7MRmDYyZXAQlJgCPm0+yPk3VxgFM7uL+dn7NQ8HxlkU4RtA3w6nW239POqTn39t2TyA
-        eb0VWktYOFglSxBQ==
+        bh=np68QpS74WRZwzXnueJuSt4qob2qXsd/YJ/hEUqDJBw=;
+        b=pl0EjPgvr5zFow1fnY77XQSacxaz8qiYIXIR/CgzwyS1nNpGMBvhJ7Ws78GAboLSsAPenx
+        7mkK0ATad+DKzaAQ==
 From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/misc] tools/power/x86_energy_perf_policy: Read
- energy_perf_bias from sysfs
-Cc:     Borislav Petkov <bp@suse.de>, x86@kernel.org,
+Subject: [tip: x86/misc] x86/msr: Do not allow writes to MSR_IA32_ENERGY_PERF_BIAS
+Cc:     Borislav Petkov <bp@suse.de>,
+        Shuah Khan <skhan@linuxfoundation.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20201029190259.3476-4-bp@alien8.de>
-References: <20201029190259.3476-4-bp@alien8.de>
+In-Reply-To: <20201029190259.3476-5-bp@alien8.de>
+References: <20201029190259.3476-5-bp@alien8.de>
 MIME-Version: 1.0
-Message-ID: <160555730775.11244.6939969381086396057.tip-bot2@tip-bot2>
+Message-ID: <160555730711.11244.5287578166367187235.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,171 +58,36 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/misc branch of tip:
 
-Commit-ID:     fe0a5788624c8b8f113a35bbe4636e37f9321241
-Gitweb:        https://git.kernel.org/tip/fe0a5788624c8b8f113a35bbe4636e37f9321241
+Commit-ID:     18741a5251d018094536a2dffe284d269ebb07fe
+Gitweb:        https://git.kernel.org/tip/18741a5251d018094536a2dffe284d269ebb07fe
 Author:        Borislav Petkov <bp@suse.de>
-AuthorDate:    Thu, 15 Oct 2020 14:58:48 +02:00
+AuthorDate:    Thu, 15 Oct 2020 15:00:31 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Mon, 16 Nov 2020 17:43:28 +01:00
+CommitterDate: Mon, 16 Nov 2020 17:44:04 +01:00
 
-tools/power/x86_energy_perf_policy: Read energy_perf_bias from sysfs
+x86/msr: Do not allow writes to MSR_IA32_ENERGY_PERF_BIAS
 
-... and stop poking at the MSR directly.
+Now that all in-kernel-tree users are converted to using the sysfs file,
+remove the MSR from the "allowlist".
 
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20201029190259.3476-4-bp@alien8.de
+Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
+Link: https://lkml.kernel.org/r/20201029190259.3476-5-bp@alien8.de
 ---
- tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c | 109 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-------
- 1 file changed, 99 insertions(+), 10 deletions(-)
+ arch/x86/kernel/msr.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c b/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
-index 3fe1eed..ad6aed1 100644
---- a/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
-+++ b/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
-@@ -91,6 +91,9 @@ unsigned int has_hwp_request_pkg;	/* IA32_HWP_REQUEST_PKG */
- 
- unsigned int bdx_highest_ratio;
- 
-+#define PATH_TO_CPU "/sys/devices/system/cpu/"
-+#define SYSFS_PATH_MAX 255
-+
- /*
-  * maintain compatibility with original implementation, but don't document it:
-  */
-@@ -668,6 +671,48 @@ int put_msr(int cpu, int offset, unsigned long long new_msr)
- 	return 0;
- }
- 
-+static unsigned int read_sysfs(const char *path, char *buf, size_t buflen)
-+{
-+	ssize_t numread;
-+	int fd;
-+
-+	fd = open(path, O_RDONLY);
-+	if (fd == -1)
-+		return 0;
-+
-+	numread = read(fd, buf, buflen - 1);
-+	if (numread < 1) {
-+		close(fd);
-+		return 0;
-+	}
-+
-+	buf[numread] = '\0';
-+	close(fd);
-+
-+	return (unsigned int) numread;
-+}
-+
-+static unsigned int write_sysfs(const char *path, char *buf, size_t buflen)
-+{
-+	ssize_t numwritten;
-+	int fd;
-+
-+	fd = open(path, O_WRONLY);
-+	if (fd == -1)
-+		return 0;
-+
-+	numwritten = write(fd, buf, buflen - 1);
-+	if (numwritten < 1) {
-+		perror("write failed\n");
-+		close(fd);
-+		return -1;
-+	}
-+
-+	close(fd);
-+
-+	return (unsigned int) numwritten;
-+}
-+
- void print_hwp_cap(int cpu, struct msr_hwp_cap *cap, char *str)
- {
- 	if (cpu != -1)
-@@ -745,17 +790,61 @@ void write_hwp_request(int cpu, struct msr_hwp_request *hwp_req, unsigned int ms
- 	put_msr(cpu, msr_offset, msr);
- }
- 
-+static int get_epb(int cpu)
-+{
-+	char path[SYSFS_PATH_MAX];
-+	char linebuf[3];
-+	char *endp;
-+	long val;
-+
-+	if (!has_epb)
-+		return -1;
-+
-+	snprintf(path, sizeof(path), PATH_TO_CPU "cpu%u/power/energy_perf_bias", cpu);
-+
-+	if (!read_sysfs(path, linebuf, 3))
-+		return -1;
-+
-+	val = strtol(linebuf, &endp, 0);
-+	if (endp == linebuf || errno == ERANGE)
-+		return -1;
-+
-+	return (int)val;
-+}
-+
-+static int set_epb(int cpu, int val)
-+{
-+	char path[SYSFS_PATH_MAX];
-+	char linebuf[3];
-+	char *endp;
-+	int ret;
-+
-+	if (!has_epb)
-+		return -1;
-+
-+	snprintf(path, sizeof(path), PATH_TO_CPU "cpu%u/power/energy_perf_bias", cpu);
-+	snprintf(linebuf, sizeof(linebuf), "%d", val);
-+
-+	ret = write_sysfs(path, linebuf, 3);
-+	if (ret <= 0)
-+		return -1;
-+
-+	val = strtol(linebuf, &endp, 0);
-+	if (endp == linebuf || errno == ERANGE)
-+		return -1;
-+
-+	return (int)val;
-+}
-+
- int print_cpu_msrs(int cpu)
- {
--	unsigned long long msr;
- 	struct msr_hwp_request req;
- 	struct msr_hwp_cap cap;
-+	int epb;
- 
--	if (has_epb) {
--		get_msr(cpu, MSR_IA32_ENERGY_PERF_BIAS, &msr);
--
--		printf("cpu%d: EPB %u\n", cpu, (unsigned int) msr);
--	}
-+	epb = get_epb(cpu);
-+	if (epb >= 0)
-+		printf("cpu%d: EPB %u\n", cpu, (unsigned int) epb);
- 
- 	if (!has_hwp)
+diff --git a/arch/x86/kernel/msr.c b/arch/x86/kernel/msr.c
+index c0d4098..b114786 100644
+--- a/arch/x86/kernel/msr.c
++++ b/arch/x86/kernel/msr.c
+@@ -99,9 +99,6 @@ static int filter_write(u32 reg)
+ 	if (!__ratelimit(&fw_rs))
  		return 0;
-@@ -1038,15 +1127,15 @@ int enable_hwp_on_cpu(int cpu)
- int update_cpu_msrs(int cpu)
- {
- 	unsigned long long msr;
+ 
+-	if (reg == MSR_IA32_ENERGY_PERF_BIAS)
+-		return 0;
 -
-+	int epb;
+ 	pr_err("Write to unrecognized MSR 0x%x by %s (pid: %d). Please report to x86@kernel.org.\n",
+ 	       reg, current->comm, current->pid);
  
- 	if (update_epb) {
--		get_msr(cpu, MSR_IA32_ENERGY_PERF_BIAS, &msr);
--		put_msr(cpu, MSR_IA32_ENERGY_PERF_BIAS, new_epb);
-+		epb = get_epb(cpu);
-+		set_epb(cpu, new_epb);
- 
- 		if (verbose)
- 			printf("cpu%d: ENERGY_PERF_BIAS old: %d new: %d\n",
--				cpu, (unsigned int) msr, (unsigned int) new_epb);
-+				cpu, epb, (unsigned int) new_epb);
- 	}
- 
- 	if (update_turbo) {
