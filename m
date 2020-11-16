@@ -2,52 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D087D2B5202
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 16 Nov 2020 21:09:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 392E02B5205
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 16 Nov 2020 21:09:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731636AbgKPUIa (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 16 Nov 2020 15:08:30 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:43338 "EHLO
+        id S1731737AbgKPUIc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 16 Nov 2020 15:08:32 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:43350 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729459AbgKPUIa (ORCPT
+        with ESMTP id S1726643AbgKPUIb (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 16 Nov 2020 15:08:30 -0500
-Date:   Mon, 16 Nov 2020 20:08:27 -0000
+        Mon, 16 Nov 2020 15:08:31 -0500
+Date:   Mon, 16 Nov 2020 20:08:28 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1605557308;
+        s=2020; t=1605557309;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=np68QpS74WRZwzXnueJuSt4qob2qXsd/YJ/hEUqDJBw=;
-        b=fU4LQPnw503NIF+fsts6CliwvYBVLn8qee0epIK/3R7Y2qO561vaqLjh+wmo2bxLMoEvwj
-        tkUp4gb3NNJU3I/Cqp1FhKXVve3zx4rizS3X5624JyqNf/xBdFzPgw7AbmPv+yFccFtgXq
-        hHmD/optMiYJamU9Im9c8lpmdzqIVGZ0jh2G9pe5ltCs8rHzkbAuqQgFD7ZYBofUDyS5nT
-        yS/HZ67ZMsY8P1srTq0IjSv1Ed4bxduSJSeEEhhhrcn4pxtszvIOzfGQwGB2GywhL/ODH8
-        xy6pF8rCiIKR+dwPMzkRxQeB0neUMFlRU8x1+4714los/Z1ecE3XkDcFlxE2KQ==
+        bh=peDNfF+HZPUmdgkgBtUN3jkmX7nTFV65Rz6J8vjKBaA=;
+        b=aWShKzvXB+NwB7/XkI8Ai51RbYRzdJooSH7Ia2fTkLqL1ZDplMbyX13Xe/pilJ/5eUp58y
+        qQ2c+eCy7N9E/FU1ZNspH/cK7cniIamrlYxK7nMLu2ffqhZAqsAuDgby8AYAuWefmHAZjK
+        FAgfGi8AXuJynrZmU+a0hjPvA27AdqQcTlvV0/1W7lFj2ojmiyYSeG0fmD5Hps6VRsTTC6
+        dEk49GTtCJ8RPZ65HCazuPCEvEyT7mHAAwtgJgfb7ZSwd5r/9jlm0AEHnkdwZWF8XZhEWM
+        i3iXwg1RXoKtHF40j4HPDTwTTNw5YTzQFo2MaUCw1RJtfE9tuS683f1q49fn6w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1605557308;
+        s=2020e; t=1605557309;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=np68QpS74WRZwzXnueJuSt4qob2qXsd/YJ/hEUqDJBw=;
-        b=pl0EjPgvr5zFow1fnY77XQSacxaz8qiYIXIR/CgzwyS1nNpGMBvhJ7Ws78GAboLSsAPenx
-        7mkK0ATad+DKzaAQ==
+        bh=peDNfF+HZPUmdgkgBtUN3jkmX7nTFV65Rz6J8vjKBaA=;
+        b=XxhLiqV1nx8NpUJtzjQ2ICnONKuS4HVKIHGX7+CGQQh69pV7G+u0JKgzoHMuvU7HXeqjK5
+        rOTBRyL/I/UKa7DA==
 From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/misc] x86/msr: Do not allow writes to MSR_IA32_ENERGY_PERF_BIAS
-Cc:     Borislav Petkov <bp@suse.de>,
-        Shuah Khan <skhan@linuxfoundation.org>, x86@kernel.org,
+Subject: [tip: x86/misc] tools/power/turbostat: Read energy_perf_bias from sysfs
+Cc:     Borislav Petkov <bp@suse.de>, Len Brown <lenb@kernel.org>,
+        linux-pm@vger.kernel.org, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20201029190259.3476-5-bp@alien8.de>
-References: <20201029190259.3476-5-bp@alien8.de>
+In-Reply-To: <20201029190259.3476-3-bp@alien8.de>
+References: <20201029190259.3476-3-bp@alien8.de>
 MIME-Version: 1.0
-Message-ID: <160555730711.11244.5287578166367187235.tip-bot2@tip-bot2>
+Message-ID: <160555730832.11244.4666731063927349137.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,36 +58,86 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/misc branch of tip:
 
-Commit-ID:     18741a5251d018094536a2dffe284d269ebb07fe
-Gitweb:        https://git.kernel.org/tip/18741a5251d018094536a2dffe284d269ebb07fe
+Commit-ID:     6d6501d912a9a5e1b73d7fbf419b90a8ec11ed7a
+Gitweb:        https://git.kernel.org/tip/6d6501d912a9a5e1b73d7fbf419b90a8ec11ed7a
 Author:        Borislav Petkov <bp@suse.de>
-AuthorDate:    Thu, 15 Oct 2020 15:00:31 +02:00
+AuthorDate:    Thu, 15 Oct 2020 14:50:16 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Mon, 16 Nov 2020 17:44:04 +01:00
+CommitterDate: Mon, 16 Nov 2020 17:42:46 +01:00
 
-x86/msr: Do not allow writes to MSR_IA32_ENERGY_PERF_BIAS
+tools/power/turbostat: Read energy_perf_bias from sysfs
 
-Now that all in-kernel-tree users are converted to using the sysfs file,
-remove the MSR from the "allowlist".
+... instead of poking at the MSR directly.
 
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
-Link: https://lkml.kernel.org/r/20201029190259.3476-5-bp@alien8.de
+Cc: Len Brown <lenb@kernel.org>
+Cc: linux-pm@vger.kernel.org
+Link: https://lkml.kernel.org/r/20201029190259.3476-3-bp@alien8.de
 ---
- arch/x86/kernel/msr.c | 3 ---
- 1 file changed, 3 deletions(-)
+ tools/power/x86/turbostat/turbostat.c | 29 +++++++++++++++++++++-----
+ 1 file changed, 24 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/kernel/msr.c b/arch/x86/kernel/msr.c
-index c0d4098..b114786 100644
---- a/arch/x86/kernel/msr.c
-+++ b/arch/x86/kernel/msr.c
-@@ -99,9 +99,6 @@ static int filter_write(u32 reg)
- 	if (!__ratelimit(&fw_rs))
+diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
+index 33b3708..0baec7e 100644
+--- a/tools/power/x86/turbostat/turbostat.c
++++ b/tools/power/x86/turbostat/turbostat.c
+@@ -1721,6 +1721,25 @@ int get_mp(int cpu, struct msr_counter *mp, unsigned long long *counterp)
+ 	return 0;
+ }
+ 
++int get_epb(int cpu)
++{
++	char path[128 + PATH_BYTES];
++	int ret, epb = -1;
++	FILE *fp;
++
++	sprintf(path, "/sys/devices/system/cpu/cpu%d/power/energy_perf_bias", cpu);
++
++	fp = fopen_or_die(path, "r");
++
++	ret = fscanf(fp, "%d", &epb);
++	if (ret != 1)
++		err(1, "%s(%s)", __func__, path);
++
++	fclose(fp);
++
++	return epb;
++}
++
+ void get_apic_id(struct thread_data *t)
+ {
+ 	unsigned int eax, ebx, ecx, edx;
+@@ -3631,9 +3650,8 @@ dump_sysfs_pstate_config(void)
+  */
+ int print_epb(struct thread_data *t, struct core_data *c, struct pkg_data *p)
+ {
+-	unsigned long long msr;
+ 	char *epb_string;
+-	int cpu;
++	int cpu, epb;
+ 
+ 	if (!has_epb)
+ 		return 0;
+@@ -3649,10 +3667,11 @@ int print_epb(struct thread_data *t, struct core_data *c, struct pkg_data *p)
+ 		return -1;
+ 	}
+ 
+-	if (get_msr(cpu, MSR_IA32_ENERGY_PERF_BIAS, &msr))
++	epb = get_epb(cpu);
++	if (epb < 0)
  		return 0;
  
--	if (reg == MSR_IA32_ENERGY_PERF_BIAS)
--		return 0;
--
- 	pr_err("Write to unrecognized MSR 0x%x by %s (pid: %d). Please report to x86@kernel.org.\n",
- 	       reg, current->comm, current->pid);
+-	switch (msr & 0xF) {
++	switch (epb) {
+ 	case ENERGY_PERF_BIAS_PERFORMANCE:
+ 		epb_string = "performance";
+ 		break;
+@@ -3666,7 +3685,7 @@ int print_epb(struct thread_data *t, struct core_data *c, struct pkg_data *p)
+ 		epb_string = "custom";
+ 		break;
+ 	}
+-	fprintf(outf, "cpu%d: MSR_IA32_ENERGY_PERF_BIAS: 0x%08llx (%s)\n", cpu, msr, epb_string);
++	fprintf(outf, "cpu%d: EPB: %d (%s)\n", cpu, epb, epb_string);
  
+ 	return 0;
+ }
