@@ -2,49 +2,46 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E26C12B6C7F
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Nov 2020 19:04:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 51D6A2B6C82
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Nov 2020 19:04:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730287AbgKQSDN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S1730401AbgKQSDN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Tue, 17 Nov 2020 13:03:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46720 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730286AbgKQSDL (ORCPT
+Received: from Galois.linutronix.de ([193.142.43.55]:49772 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728606AbgKQSDM (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 17 Nov 2020 13:03:11 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6CC0C0613CF;
-        Tue, 17 Nov 2020 10:03:10 -0800 (PST)
+        Tue, 17 Nov 2020 13:03:12 -0500
 Date:   Tue, 17 Nov 2020 18:03:08 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1605636189;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=gAUdI08FG9y7TeYcYcanwAnLIyAkRP4lZNUNKJZseSM=;
-        b=qV/xJRTLnNx/P6SLezrpHfwk4UNx0PymQ6ukWAjWoBR+BvcSHE54xAE8SENRpjEh1s8f+G
-        MUGTkWFMx3SNSJE/6paaHpQu7Ait0Ir35BXnD+/RsN0FBChbLZir4fKNSqIyEZXJ7gc2WX
-        ZCWzhzlPI8WCmduaJHYylJ+AYnLXv5SoE3ObYXfcIFqpNcIrzAxRFBjSpVsfa6tBIFcBob
-        opA2lVVTb0XGOqMILV6RZAykaBSUTLuaiSxrWr323Sd32mdFPeRxLsiH1E+Oz7RyoOX5US
-        vQnXkEi8jqr+zqj+Z/2YQbQj4dnxuU4wGGFiGltZnpW2An7KQT/f+SCn2KsFqQ==
+        bh=zu9/exQYH/ZcvQtbFPNF09u/MVBQckahb30jvyKD99g=;
+        b=n1nRsWPDRIxYg/7/pp+CSKZEh9zDXrIWTDsaJW6hKSv+XH3KuxxNtcxdjlh2AptKAiL3+O
+        x+h9b82VVPiK8oOWyHYhL43lxdnkY2KqdxnFJmg07Pyz/6zVeTKOEBS/KgS7W00EZtpJdV
+        LUohZ3QVRLq2P7arzXt4/Jg1khSxUEE/lHRwG46XWPqzZZmC0u9J5UejdoU00C/toSZDUy
+        F1Ew5YgW3TKPjucv2KUPh3c99f3RGeu2VRbNMxnqGlB64qZx+pzA5pshawtVoXqxxkvaY0
+        sW8A0OrkPlZrXA5X4REddFq1zMlQa8NDfHUTIotbhHsKYj7Wat+cWAAgKv0zog==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1605636189;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=gAUdI08FG9y7TeYcYcanwAnLIyAkRP4lZNUNKJZseSM=;
-        b=EJxbxRk0ZNvT6tnNk3Wqwp4QZloJOFcicLoYqeSTwnSzdFY84fVFYodOB3Py7gpr5Kx3b0
-        +6Ve4iwvRo5fVjBw==
+        bh=zu9/exQYH/ZcvQtbFPNF09u/MVBQckahb30jvyKD99g=;
+        b=oaZMOWaIrkfLrS1EnUGAGEONQbvRFMZQ7Uww1osusZMUC2WBprkHc+KEToseBBSuinkKsH
+        EwrfYaTTBDxYM2DQ==
 From:   "tip-bot2 for Chester Lin" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: efi/core] ima: generalize x86/EFI arch glue for other EFI architectures
+Subject: [tip: efi/core] efi: generalize efi_get_secureboot
 Cc:     Chester Lin <clin@suse.com>, Mimi Zohar <zohar@linux.ibm.com>,
         Ard Biesheuvel <ardb@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <160563618835.11244.6772332423131200299.tip-bot2@tip-bot2>
+Message-ID: <160563618897.11244.6024847866326161619.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -55,242 +52,163 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the efi/core branch of tip:
 
-Commit-ID:     25519d68344269f9dc58b5bc72f648248a1fafb9
-Gitweb:        https://git.kernel.org/tip/25519d68344269f9dc58b5bc72f648248a1fafb9
+Commit-ID:     e1ac4b2406d94eddce8ac2c5ab4235f6075a9602
+Gitweb:        https://git.kernel.org/tip/e1ac4b2406d94eddce8ac2c5ab4235f6075a9602
 Author:        Chester Lin <clin@suse.com>
-AuthorDate:    Fri, 30 Oct 2020 14:08:39 +08:00
+AuthorDate:    Fri, 30 Oct 2020 14:08:38 +08:00
 Committer:     Ard Biesheuvel <ardb@kernel.org>
-CommitterDate: Fri, 06 Nov 2020 07:40:42 +01:00
+CommitterDate: Wed, 04 Nov 2020 23:05:40 +01:00
 
-ima: generalize x86/EFI arch glue for other EFI architectures
+efi: generalize efi_get_secureboot
 
-Move the x86 IMA arch code into security/integrity/ima/ima_efi.c,
-so that we will be able to wire it up for arm64 in a future patch.
+Generalize the efi_get_secureboot() function so not only efistub but also
+other subsystems can use it.
+
+Note that the MokSbState handling is not factored out: the variable is
+boot time only, and so it cannot be parameterized as easily. Also, the
+IMA code will switch to this version in a future patch, and it does not
+incorporate the MokSbState exception in the first place.
+
+Note that the new efi_get_secureboot_mode() helper treats any failures
+to read SetupMode as setup mode being disabled.
 
 Co-developed-by: Chester Lin <clin@suse.com>
 Signed-off-by: Chester Lin <clin@suse.com>
 Acked-by: Mimi Zohar <zohar@linux.ibm.com>
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/x86/include/asm/efi.h       |  3 +-
- arch/x86/kernel/Makefile         |  2 +-
- arch/x86/kernel/ima_arch.c       | 94 +-------------------------------
- security/integrity/ima/Makefile  |  4 +-
- security/integrity/ima/ima_efi.c | 73 ++++++++++++++++++++++++-
- 5 files changed, 80 insertions(+), 96 deletions(-)
- delete mode 100644 arch/x86/kernel/ima_arch.c
- create mode 100644 security/integrity/ima/ima_efi.c
+ arch/x86/boot/compressed/Makefile         |  2 +-
+ drivers/firmware/efi/libstub/efistub.h    |  2 +-
+ drivers/firmware/efi/libstub/secureboot.c | 41 ++++++++--------------
+ include/linux/efi.h                       | 23 +++++++++++-
+ 4 files changed, 40 insertions(+), 28 deletions(-)
 
-diff --git a/arch/x86/include/asm/efi.h b/arch/x86/include/asm/efi.h
-index 7673dc8..c98f783 100644
---- a/arch/x86/include/asm/efi.h
-+++ b/arch/x86/include/asm/efi.h
-@@ -380,4 +380,7 @@ static inline void efi_fake_memmap_early(void)
- }
- #endif
+diff --git a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefile
+index ee24908..8d358a6 100644
+--- a/arch/x86/boot/compressed/Makefile
++++ b/arch/x86/boot/compressed/Makefile
+@@ -35,7 +35,7 @@ cflags-$(CONFIG_X86_32) := -march=i386
+ cflags-$(CONFIG_X86_64) := -mcmodel=small -mno-red-zone
+ KBUILD_CFLAGS += $(cflags-y)
+ KBUILD_CFLAGS += -mno-mmx -mno-sse
+-KBUILD_CFLAGS += -ffreestanding
++KBUILD_CFLAGS += -ffreestanding -fshort-wchar
+ KBUILD_CFLAGS += -fno-stack-protector
+ KBUILD_CFLAGS += $(call cc-disable-warning, address-of-packed-member)
+ KBUILD_CFLAGS += $(call cc-disable-warning, gnu)
+diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
+index 2d7abcd..b8ec29d 100644
+--- a/drivers/firmware/efi/libstub/efistub.h
++++ b/drivers/firmware/efi/libstub/efistub.h
+@@ -848,4 +848,6 @@ asmlinkage void __noreturn efi_enter_kernel(unsigned long entrypoint,
  
-+#define arch_ima_efi_boot_mode	\
-+	({ extern struct boot_params boot_params; boot_params.secure_boot; })
+ void efi_handle_post_ebs_state(void);
+ 
++enum efi_secureboot_mode efi_get_secureboot(void);
 +
- #endif /* _ASM_X86_EFI_H */
-diff --git a/arch/x86/kernel/Makefile b/arch/x86/kernel/Makefile
-index 68608bd..5eeb808 100644
---- a/arch/x86/kernel/Makefile
-+++ b/arch/x86/kernel/Makefile
-@@ -161,5 +161,3 @@ ifeq ($(CONFIG_X86_64),y)
- 	obj-$(CONFIG_MMCONF_FAM10H)	+= mmconf-fam10h_64.o
- 	obj-y				+= vsmp_64.o
- endif
+ #endif
+diff --git a/drivers/firmware/efi/libstub/secureboot.c b/drivers/firmware/efi/libstub/secureboot.c
+index 5efc524..af18d86 100644
+--- a/drivers/firmware/efi/libstub/secureboot.c
++++ b/drivers/firmware/efi/libstub/secureboot.c
+@@ -12,15 +12,16 @@
+ 
+ #include "efistub.h"
+ 
+-/* BIOS variables */
+-static const efi_guid_t efi_variable_guid = EFI_GLOBAL_VARIABLE_GUID;
+-static const efi_char16_t efi_SecureBoot_name[] = L"SecureBoot";
+-static const efi_char16_t efi_SetupMode_name[] = L"SetupMode";
 -
--obj-$(CONFIG_IMA_SECURE_AND_OR_TRUSTED_BOOT)	+= ima_arch.o
-diff --git a/arch/x86/kernel/ima_arch.c b/arch/x86/kernel/ima_arch.c
-deleted file mode 100644
-index 7dfb1e8..0000000
---- a/arch/x86/kernel/ima_arch.c
-+++ /dev/null
-@@ -1,94 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0+ */
--/*
-- * Copyright (C) 2018 IBM Corporation
-- */
--#include <linux/efi.h>
--#include <linux/module.h>
--#include <linux/ima.h>
--
--extern struct boot_params boot_params;
--
--static enum efi_secureboot_mode get_sb_mode(void)
--{
--	efi_guid_t efi_variable_guid = EFI_GLOBAL_VARIABLE_GUID;
--	efi_status_t status;
--	unsigned long size;
--	u8 secboot, setupmode;
--
+ /* SHIM variables */
+ static const efi_guid_t shim_guid = EFI_SHIM_LOCK_GUID;
+ static const efi_char16_t shim_MokSBState_name[] = L"MokSBState";
+ 
++static efi_status_t get_var(efi_char16_t *name, efi_guid_t *vendor, u32 *attr,
++			    unsigned long *data_size, void *data)
++{
++	return get_efi_var(name, vendor, attr, data_size, data);
++}
++
+ /*
+  * Determine whether we're in secure boot mode.
+  *
+@@ -30,26 +31,18 @@ static const efi_char16_t shim_MokSBState_name[] = L"MokSBState";
+ enum efi_secureboot_mode efi_get_secureboot(void)
+ {
+ 	u32 attr;
+-	u8 secboot, setupmode, moksbstate;
+ 	unsigned long size;
++	enum efi_secureboot_mode mode;
+ 	efi_status_t status;
++	u8 moksbstate;
+ 
 -	size = sizeof(secboot);
--
--	if (!efi_rt_services_supported(EFI_RT_SUPPORTED_GET_VARIABLE)) {
--		pr_info("ima: secureboot mode unknown, no efi\n");
--		return efi_secureboot_mode_unknown;
--	}
--
--	/* Get variable contents into buffer */
--	status = efi.get_variable(L"SecureBoot", &efi_variable_guid,
--				  NULL, &size, &secboot);
--	if (status == EFI_NOT_FOUND) {
--		pr_info("ima: secureboot mode disabled\n");
+-	status = get_efi_var(efi_SecureBoot_name, &efi_variable_guid,
+-			     NULL, &size, &secboot);
+-	if (status == EFI_NOT_FOUND)
 -		return efi_secureboot_mode_disabled;
--	}
--
--	if (status != EFI_SUCCESS) {
--		pr_info("ima: secureboot mode unknown\n");
--		return efi_secureboot_mode_unknown;
--	}
+-	if (status != EFI_SUCCESS)
+-		goto out_efi_err;
 -
 -	size = sizeof(setupmode);
--	status = efi.get_variable(L"SetupMode", &efi_variable_guid,
--				  NULL, &size, &setupmode);
+-	status = get_efi_var(efi_SetupMode_name, &efi_variable_guid,
+-			     NULL, &size, &setupmode);
+-	if (status != EFI_SUCCESS)
+-		goto out_efi_err;
 -
--	if (status != EFI_SUCCESS)	/* ignore unknown SetupMode */
--		setupmode = 0;
--
--	if (secboot == 0 || setupmode == 1) {
--		pr_info("ima: secureboot mode disabled\n");
+-	if (secboot == 0 || setupmode == 1)
 -		return efi_secureboot_mode_disabled;
--	}
--
--	pr_info("ima: secureboot mode enabled\n");
--	return efi_secureboot_mode_enabled;
--}
--
--bool arch_ima_get_secureboot(void)
--{
--	static enum efi_secureboot_mode sb_mode;
--	static bool initialized;
--
--	if (!initialized && efi_enabled(EFI_BOOT)) {
--		sb_mode = boot_params.secure_boot;
--
--		if (sb_mode == efi_secureboot_mode_unset)
--			sb_mode = get_sb_mode();
--		initialized = true;
--	}
--
--	if (sb_mode == efi_secureboot_mode_enabled)
--		return true;
--	else
--		return false;
--}
--
--/* secureboot arch rules */
--static const char * const sb_arch_rules[] = {
--#if !IS_ENABLED(CONFIG_KEXEC_SIG)
--	"appraise func=KEXEC_KERNEL_CHECK appraise_type=imasig",
--#endif /* CONFIG_KEXEC_SIG */
--	"measure func=KEXEC_KERNEL_CHECK",
--#if !IS_ENABLED(CONFIG_MODULE_SIG)
--	"appraise func=MODULE_CHECK appraise_type=imasig",
--#endif
--	"measure func=MODULE_CHECK",
--	NULL
--};
--
--const char * const *arch_get_ima_policy(void)
--{
--	if (IS_ENABLED(CONFIG_IMA_ARCH_POLICY) && arch_ima_get_secureboot()) {
--		if (IS_ENABLED(CONFIG_MODULE_SIG))
--			set_module_sig_enforced();
--		return sb_arch_rules;
--	}
--	return NULL;
--}
-diff --git a/security/integrity/ima/Makefile b/security/integrity/ima/Makefile
-index 67dabca..2499f24 100644
---- a/security/integrity/ima/Makefile
-+++ b/security/integrity/ima/Makefile
-@@ -14,3 +14,7 @@ ima-$(CONFIG_HAVE_IMA_KEXEC) += ima_kexec.o
- ima-$(CONFIG_IMA_BLACKLIST_KEYRING) += ima_mok.o
- ima-$(CONFIG_IMA_MEASURE_ASYMMETRIC_KEYS) += ima_asymmetric_keys.o
- ima-$(CONFIG_IMA_QUEUE_EARLY_BOOT_KEYS) += ima_queue_keys.o
-+
-+ifeq ($(CONFIG_EFI),y)
-+ima-$(CONFIG_IMA_SECURE_AND_OR_TRUSTED_BOOT) += ima_efi.o
-+endif
-diff --git a/security/integrity/ima/ima_efi.c b/security/integrity/ima/ima_efi.c
-new file mode 100644
-index 0000000..71786d0
---- /dev/null
-+++ b/security/integrity/ima/ima_efi.c
-@@ -0,0 +1,73 @@
-+/* SPDX-License-Identifier: GPL-2.0+ */
-+/*
-+ * Copyright (C) 2018 IBM Corporation
-+ */
-+#include <linux/efi.h>
-+#include <linux/module.h>
-+#include <linux/ima.h>
-+#include <asm/efi.h>
-+
-+#ifndef arch_ima_efi_boot_mode
-+#define arch_ima_efi_boot_mode efi_secureboot_mode_unset
-+#endif
-+
-+static enum efi_secureboot_mode get_sb_mode(void)
-+{
-+	enum efi_secureboot_mode mode;
-+
-+	if (!efi_rt_services_supported(EFI_RT_SUPPORTED_GET_VARIABLE)) {
-+		pr_info("ima: secureboot mode unknown, no efi\n");
++	mode = efi_get_secureboot_mode(get_var);
++	if (mode == efi_secureboot_mode_unknown) {
++		efi_err("Could not determine UEFI Secure Boot status.\n");
 +		return efi_secureboot_mode_unknown;
 +	}
++	if (mode != efi_secureboot_mode_enabled)
++		return mode;
+ 
+ 	/*
+ 	 * See if a user has put the shim into insecure mode. If so, and if the
+@@ -69,8 +62,4 @@ enum efi_secureboot_mode efi_get_secureboot(void)
+ secure_boot_enabled:
+ 	efi_info("UEFI Secure Boot is enabled.\n");
+ 	return efi_secureboot_mode_enabled;
+-
+-out_efi_err:
+-	efi_err("Could not determine UEFI Secure Boot status.\n");
+-	return efi_secureboot_mode_unknown;
+ }
+diff --git a/include/linux/efi.h b/include/linux/efi.h
+index d7c0e73..1cd5d91 100644
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -1089,7 +1089,28 @@ enum efi_secureboot_mode {
+ 	efi_secureboot_mode_disabled,
+ 	efi_secureboot_mode_enabled,
+ };
+-enum efi_secureboot_mode efi_get_secureboot(void);
 +
-+	mode = efi_get_secureboot_mode(efi.get_variable);
-+	if (mode == efi_secureboot_mode_disabled)
-+		pr_info("ima: secureboot mode disabled\n");
-+	else if (mode == efi_secureboot_mode_unknown)
-+		pr_info("ima: secureboot mode unknown\n");
-+	else
-+		pr_info("ima: secureboot mode enabled\n");
-+	return mode;
-+}
-+
-+bool arch_ima_get_secureboot(void)
++static inline
++enum efi_secureboot_mode efi_get_secureboot_mode(efi_get_variable_t *get_var)
 +{
-+	static enum efi_secureboot_mode sb_mode;
-+	static bool initialized;
++	u8 secboot, setupmode = 0;
++	efi_status_t status;
++	unsigned long size;
 +
-+	if (!initialized && efi_enabled(EFI_BOOT)) {
-+		sb_mode = arch_ima_efi_boot_mode;
++	size = sizeof(secboot);
++	status = get_var(L"SecureBoot", &EFI_GLOBAL_VARIABLE_GUID, NULL, &size,
++			 &secboot);
++	if (status == EFI_NOT_FOUND)
++		return efi_secureboot_mode_disabled;
++	if (status != EFI_SUCCESS)
++		return efi_secureboot_mode_unknown;
 +
-+		if (sb_mode == efi_secureboot_mode_unset)
-+			sb_mode = get_sb_mode();
-+		initialized = true;
-+	}
-+
-+	if (sb_mode == efi_secureboot_mode_enabled)
-+		return true;
-+	else
-+		return false;
++	size = sizeof(setupmode);
++	get_var(L"SetupMode", &EFI_GLOBAL_VARIABLE_GUID, NULL, &size, &setupmode);
++	if (secboot == 0 || setupmode == 1)
++		return efi_secureboot_mode_disabled;
++	return efi_secureboot_mode_enabled;
 +}
-+
-+/* secureboot arch rules */
-+static const char * const sb_arch_rules[] = {
-+#if !IS_ENABLED(CONFIG_KEXEC_SIG)
-+	"appraise func=KEXEC_KERNEL_CHECK appraise_type=imasig",
-+#endif /* CONFIG_KEXEC_SIG */
-+	"measure func=KEXEC_KERNEL_CHECK",
-+#if !IS_ENABLED(CONFIG_MODULE_SIG)
-+	"appraise func=MODULE_CHECK appraise_type=imasig",
-+#endif
-+	"measure func=MODULE_CHECK",
-+	NULL
-+};
-+
-+const char * const *arch_get_ima_policy(void)
-+{
-+	if (IS_ENABLED(CONFIG_IMA_ARCH_POLICY) && arch_ima_get_secureboot()) {
-+		if (IS_ENABLED(CONFIG_MODULE_SIG))
-+			set_module_sig_enforced();
-+		return sb_arch_rules;
-+	}
-+	return NULL;
-+}
+ 
+ #ifdef CONFIG_RESET_ATTACK_MITIGATION
+ void efi_enable_reset_attack_mitigation(void);
