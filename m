@@ -2,53 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 363412B6C84
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Nov 2020 19:04:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DA3D82B6C81
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Nov 2020 19:04:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730347AbgKQSDN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S1730422AbgKQSDN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Tue, 17 Nov 2020 13:03:13 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:49776 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730287AbgKQSDM (ORCPT
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46722 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728251AbgKQSDM (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Tue, 17 Nov 2020 13:03:12 -0500
-Date:   Tue, 17 Nov 2020 18:03:09 -0000
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CA5DC0613CF;
+        Tue, 17 Nov 2020 10:03:12 -0800 (PST)
+Date:   Tue, 17 Nov 2020 18:03:10 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1605636190;
+        s=2020; t=1605636191;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=xVfmVveJyj12/kGyk3umfMmntJGc6PIIBrZEyzy4UMo=;
-        b=cvAFLwZ95h/WSGoIsOV/nrg0IiLK7SElgNW0ungYXt9igmrDhWaFTERdEWM1+5H3WJzIoo
-        yOBaOpJXIsIamCj91lqFCma2kR7KebW9KAIeEOduO7T3rr7bE7qKeb1TIrD70F+DbRaM5r
-        IH9EeobpHdlaKG/DUw9Ii4C/d5nuW3bIw2DSXi/YytY0yiaDL37/r9o/I/BJLfj05jAHB/
-        OCLI+zD52KfdFbFnADbushT+sGv+0RdDzcigmkN2eIzEwjzmDKZOiDNbtSb2xfAkIvqNyD
-        eVYQpYCob48mzgwaI1MovQ8Zux4JNWvZJp79yblY0MSK4zzyPOa+Yko2vGf0ig==
+        bh=LAHx4DHRFurIUrMe8bCxbHG6Ve3Q49+Z2tzbXkLwJWE=;
+        b=h4huvNS9m5nHaBifM1WvFN1OdW1od7EozpZS6cnjAzDeyD/17qnK94uCmO/EAOsuTUHpbs
+        f6Ek0UfCU5iYCj40HJgjr9thy9Y1rHwV0mEf/OY3SzuwJSJ0Hw7Tiv/+gDnEUYr9spElLq
+        Uw7c0US7ROVHNHo4DOQEplq7GXguYfYzGCf+bZuTIBVn4X/SeGnxxtUN3XLpTaVVPVUp3M
+        a3vUZc5IvAiAJMulTe3xVkpPtQ6VyegazSEPS1tPPeKygn+Zys9/dBvhLZodvvp9LNchtD
+        vaaUymhUrSszFXh6w65TetvSzYWBML9C2BFCVy93g2VaOnMZyz9M1s230RFK3g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1605636190;
+        s=2020e; t=1605636191;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=xVfmVveJyj12/kGyk3umfMmntJGc6PIIBrZEyzy4UMo=;
-        b=u21xZ763dTvvF6+LsszrkLxjF+/41SIVVsSOu+pIuYWMR5lijEQz5mGBUf0LC1OfQ9WOPd
-        eX2c0c9cxeE6NDBg==
-From:   "tip-bot2 for Geert Uytterhoeven" <tip-bot2@linutronix.de>
+        bh=LAHx4DHRFurIUrMe8bCxbHG6Ve3Q49+Z2tzbXkLwJWE=;
+        b=xNQkdwkO6EmYUoP98eeDDr3aKRKqfR9wCzjZYc/BwvefEImC/7lU/w6IwAmQ6lcKtzpaH1
+        LeOi0l/lYrLFxqAw==
+From:   "tip-bot2 for Arvind Sankar" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: efi/core] efi/libstub: EFI_GENERIC_STUB_INITRD_CMDLINE_LOADER
- should not default to yes
-Cc:     Geert Uytterhoeven <geert+renesas@glider.be>,
+Subject: [tip: efi/core] efi/x86: Only copy the compressed kernel image in
+ efi_relocate_kernel()
+Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
         Ard Biesheuvel <ardb@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20201028153402.1736103-1-geert+renesas@glider.be>
-References: <20201028153402.1736103-1-geert+renesas@glider.be>
+In-Reply-To: <20201011142012.96493-1-nivedita@alum.mit.edu>
+References: <20201011142012.96493-1-nivedita@alum.mit.edu>
 MIME-Version: 1.0
-Message-ID: <160563618958.11244.17271289662483151013.tip-bot2@tip-bot2>
+Message-ID: <160563619021.11244.4162091685668996130.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,39 +62,44 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the efi/core branch of tip:
 
-Commit-ID:     6edcf9dc2e1aff3aa1f5a69ee420fb30dd0e968a
-Gitweb:        https://git.kernel.org/tip/6edcf9dc2e1aff3aa1f5a69ee420fb30dd0e968a
-Author:        Geert Uytterhoeven <geert+renesas@glider.be>
-AuthorDate:    Wed, 28 Oct 2020 16:34:02 +01:00
+Commit-ID:     688eb28211abdf82a3f51e8997f1c8137947227d
+Gitweb:        https://git.kernel.org/tip/688eb28211abdf82a3f51e8997f1c8137947227d
+Author:        Arvind Sankar <nivedita@alum.mit.edu>
+AuthorDate:    Sun, 11 Oct 2020 10:20:12 -04:00
 Committer:     Ard Biesheuvel <ardb@kernel.org>
-CommitterDate: Thu, 29 Oct 2020 00:36:13 +01:00
+CommitterDate: Mon, 26 Oct 2020 08:06:36 +01:00
 
-efi/libstub: EFI_GENERIC_STUB_INITRD_CMDLINE_LOADER should not default to yes
+efi/x86: Only copy the compressed kernel image in efi_relocate_kernel()
 
-EFI_GENERIC_STUB_INITRD_CMDLINE_LOADER is deprecated, so it should not
-be enabled by default.
+The image_size argument to efi_relocate_kernel() is currently specified
+as init_size, but this is unnecessarily large. The compressed kernel is
+much smaller, in fact, its image only extends up to the start of _bss,
+since at this point, the .bss section is still uninitialized.
 
-In light of commit 4da0b2b7e67524cc ("efi/libstub: Re-enable command
-line initrd loading for x86"), keep the default for X86.
+Depending on compression level, this can reduce the amount of data
+copied by 4-5x.
 
-Fixes: cf6b83664895a5c7 ("efi/libstub: Make initrd file loader configurable")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/20201028153402.1736103-1-geert+renesas@glider.be
+Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
+Link: https://lore.kernel.org/r/20201011142012.96493-1-nivedita@alum.mit.edu
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- drivers/firmware/efi/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/firmware/efi/libstub/x86-stub.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/efi/Kconfig b/drivers/firmware/efi/Kconfig
-index 36ec1f7..b452cfa 100644
---- a/drivers/firmware/efi/Kconfig
-+++ b/drivers/firmware/efi/Kconfig
-@@ -122,7 +122,7 @@ config EFI_ARMSTUB_DTB_LOADER
- config EFI_GENERIC_STUB_INITRD_CMDLINE_LOADER
- 	bool "Enable the command line initrd loader" if !X86
- 	depends on EFI_STUB && (EFI_GENERIC_STUB || X86)
--	default y
-+	default y if X86
- 	depends on !RISCV
- 	help
- 	  Select this config option to add support for the initrd= command
+diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
+index 3672539..f14c4ff 100644
+--- a/drivers/firmware/efi/libstub/x86-stub.c
++++ b/drivers/firmware/efi/libstub/x86-stub.c
+@@ -715,8 +715,11 @@ unsigned long efi_main(efi_handle_t handle,
+ 	    (IS_ENABLED(CONFIG_X86_32) && buffer_end > KERNEL_IMAGE_SIZE)    ||
+ 	    (IS_ENABLED(CONFIG_X86_64) && buffer_end > MAXMEM_X86_64_4LEVEL) ||
+ 	    (image_offset == 0)) {
++		extern char _bss[];
++
+ 		status = efi_relocate_kernel(&bzimage_addr,
+-					     hdr->init_size, hdr->init_size,
++					     (unsigned long)_bss - bzimage_addr,
++					     hdr->init_size,
+ 					     hdr->pref_address,
+ 					     hdr->kernel_alignment,
+ 					     LOAD_PHYSICAL_ADDR);
