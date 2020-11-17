@@ -2,49 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E853B2B6C21
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Nov 2020 18:47:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 40B8D2B6C1B
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Nov 2020 18:47:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727838AbgKQRrR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 17 Nov 2020 12:47:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44230 "EHLO
+        id S1728413AbgKQRrN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 17 Nov 2020 12:47:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44228 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729008AbgKQRrN (ORCPT
+        with ESMTP id S1728330AbgKQRrN (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Tue, 17 Nov 2020 12:47:13 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C30AC0613CF;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2646DC0613CF;
         Tue, 17 Nov 2020 09:47:13 -0800 (PST)
 Date:   Tue, 17 Nov 2020 17:47:10 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1605635231;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=KguMoOgsQhKc602WlhYsE+kgcjU7TeMYiybaJDeuyWk=;
-        b=xcw1jeyNQIEwQkg0sAmeUPVOA6vlBPL/e/Q0iRJcIkqNxsdG0DUZB8tmcTnP6vsxGVJbha
-        ydXhYoCnu5i0UX7N4a77cBjSWYMgueyjBJB63v4eJ8hvZHUBxH23wZZd5/VmBOogonnHnL
-        3pac1AJXS5X5KRvC1HTz0bVLpFitXeXnRyA1tL0TFVK7lCooKw3ALHjPeiqGSa5DGg1NP8
-        yq/i2ylJasBUrzQy8e0Zu+12jlztBErt37g19hC/uWyLGvdd/UJFF9gqClqTlP/D9eOoqI
-        MVaXy6AINd8nWQXM2xQvA+kih3LoRZP+m9lX6nABArrhuh+kVPTFnEA/GdYmZw==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=5TtcJ/Dhuz1KukPIcUPXcf25NvLw1I8V/R0UBTaSf6c=;
+        b=h67FLW+MBNaga4uIUQkLpERbff8jiuI07FrAX/+XfJOMhuDvP4wxanAj/4eMP8FtnqX8yH
+        K27mfj1hvKmEHcIrlKhH/dRgt6ubzpWxgRcnjo+Om2q1La4Dic68i6j1EAYQT4h9O5h9Mi
+        qbAx78ZA2+2Fa+a5QmBjR6aRpId8lUATokH4jKnkq6II7kkGtbTeem1L0jAoElzlEEyCq9
+        o+40tWf3u9QgAOw6AbIhaL364BrnS5ng/kLBRoLwxv0442jg4Y+xeYsK6ZjD4jmXwk94Or
+        lwTQpdq0aQdKjZt0HIo89PpGh3YgSdKyU7mTazgAny4x6qs181EvoYFNz/Z3yA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1605635231;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=KguMoOgsQhKc602WlhYsE+kgcjU7TeMYiybaJDeuyWk=;
-        b=kBbfhwX22/FCxpHKIoWfGpKbajuT/5eBHzoF2jQtPfbUyPsfSq07mibFs7Z90X/emhzg+F
-        IRD5uDZOkPkHWrCQ==
-From:   "tip-bot2 for Ard Biesheuvel" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=5TtcJ/Dhuz1KukPIcUPXcf25NvLw1I8V/R0UBTaSf6c=;
+        b=AjOBiTchlV7Kpw4YmF0fu+2f72GRsyTvEKD9l2yib8z+4SuX89C11E5Rcakht1kkBsWh/g
+        2m+zxyfLAGelpAAw==
+From:   "tip-bot2 for Vamshi K Sthambamkadi" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: efi/urgent] efi/arm: set HSCTLR Thumb2 bit correctly for HVC
- calls from HYP
-Cc:     Ard Biesheuvel <ardb@kernel.org>, x86@kernel.org,
+Subject: [tip: efi/urgent] efivarfs: fix memory leak in efivarfs_create()
+Cc:     <stable@vger.kernel.org>,
+        Vamshi K Sthambamkadi <vamshi.k.sthambamkadi@gmail.com>,
+        Ard Biesheuvel <ardb@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
+In-Reply-To: <20201023115429.GA2479@cosmos>
+References: <20201023115429.GA2479@cosmos>
 MIME-Version: 1.0
-Message-ID: <160563523094.11244.17039859225367140126.tip-bot2@tip-bot2>
+Message-ID: <160563523031.11244.13285027603206176660.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -55,48 +62,52 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the efi/urgent branch of tip:
 
-Commit-ID:     fbc81ec5b85d43a4b22e49ec0e643fa7dec2ea40
-Gitweb:        https://git.kernel.org/tip/fbc81ec5b85d43a4b22e49ec0e643fa7dec2ea40
-Author:        Ard Biesheuvel <ardb@kernel.org>
-AuthorDate:    Sat, 03 Oct 2020 17:28:27 +02:00
+Commit-ID:     fe5186cf12e30facfe261e9be6c7904a170bd822
+Gitweb:        https://git.kernel.org/tip/fe5186cf12e30facfe261e9be6c7904a170bd822
+Author:        Vamshi K Sthambamkadi <vamshi.k.sthambamkadi@gmail.com>
+AuthorDate:    Fri, 23 Oct 2020 17:24:39 +05:30
 Committer:     Ard Biesheuvel <ardb@kernel.org>
-CommitterDate: Mon, 26 Oct 2020 08:02:11 +01:00
+CommitterDate: Mon, 26 Oct 2020 08:15:24 +01:00
 
-efi/arm: set HSCTLR Thumb2 bit correctly for HVC calls from HYP
+efivarfs: fix memory leak in efivarfs_create()
 
-Commit
+kmemleak report:
+  unreferenced object 0xffff9b8915fcb000 (size 4096):
+  comm "efivarfs.sh", pid 2360, jiffies 4294920096 (age 48.264s)
+  hex dump (first 32 bytes):
+    2d 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  -...............
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+  backtrace:
+    [<00000000cc4d897c>] kmem_cache_alloc_trace+0x155/0x4b0
+    [<000000007d1dfa72>] efivarfs_create+0x6e/0x1a0
+    [<00000000e6ee18fc>] path_openat+0xe4b/0x1120
+    [<000000000ad0414f>] do_filp_open+0x91/0x100
+    [<00000000ce93a198>] do_sys_openat2+0x20c/0x2d0
+    [<000000002a91be6d>] do_sys_open+0x46/0x80
+    [<000000000a854999>] __x64_sys_openat+0x20/0x30
+    [<00000000c50d89c9>] do_syscall_64+0x38/0x90
+    [<00000000cecd6b5f>] entry_SYSCALL_64_after_hwframe+0x44/0xa9
 
-  db227c19e68db353 ("ARM: 8985/1: efi/decompressor: deal with HYP mode boot gracefully")
+In efivarfs_create(), inode->i_private is setup with efivar_entry
+object which is never freed.
 
-updated the EFI entry code to permit firmware to invoke the EFI stub
-loader in HYP mode, with the MMU either enabled or disabled, neither
-of which is permitted by the EFI spec, but which does happen in the
-field.
-
-In the MMU on case, we remain in HYP mode as configured by the firmware,
-and rely on the fact that any HVC instruction issued in this mode will
-be dispatched via the SVC slot in the HYP vector table. However, this
-slot will point to a Thumb2 symbol if the kernel is built in Thumb2
-mode, and so we have to configure HSCTLR to ensure that the exception
-handlers are invoked in Thumb2 mode as well.
-
-Fixes: db227c19e68db353 ("ARM: 8985/1: efi/decompressor: deal with HYP mode boot gracefully")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Vamshi K Sthambamkadi <vamshi.k.sthambamkadi@gmail.com>
+Link: https://lore.kernel.org/r/20201023115429.GA2479@cosmos
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/arm/boot/compressed/head.S | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/efivarfs/super.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm/boot/compressed/head.S b/arch/arm/boot/compressed/head.S
-index 2e04ec5..caa2732 100644
---- a/arch/arm/boot/compressed/head.S
-+++ b/arch/arm/boot/compressed/head.S
-@@ -1472,6 +1472,9 @@ ENTRY(efi_enter_kernel)
- 		@ issued from HYP mode take us to the correct handler code. We
- 		@ will disable the MMU before jumping to the kernel proper.
- 		@
-+ ARM(		bic	r1, r1, #(1 << 30)	) @ clear HSCTLR.TE
-+ THUMB(		orr	r1, r1, #(1 << 30)	) @ set HSCTLR.TE
-+		mcr	p15, 4, r1, c1, c0, 0
- 		adr	r0, __hyp_reentry_vectors
- 		mcr	p15, 4, r0, c12, c0, 0	@ set HYP vector base (HVBAR)
- 		isb
+diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
+index 15880a6..f943fd0 100644
+--- a/fs/efivarfs/super.c
++++ b/fs/efivarfs/super.c
+@@ -21,6 +21,7 @@ LIST_HEAD(efivarfs_list);
+ static void efivarfs_evict_inode(struct inode *inode)
+ {
+ 	clear_inode(inode);
++	kfree(inode->i_private);
+ }
+ 
+ static const struct super_operations efivarfs_ops = {
