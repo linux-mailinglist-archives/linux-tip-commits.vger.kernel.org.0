@@ -2,52 +2,49 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 989822B6C1E
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Nov 2020 18:47:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E853B2B6C21
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Nov 2020 18:47:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729990AbgKQRrO (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 17 Nov 2020 12:47:14 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:49682 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727838AbgKQRrO (ORCPT
+        id S1727838AbgKQRrR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 17 Nov 2020 12:47:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44230 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729008AbgKQRrN (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 17 Nov 2020 12:47:14 -0500
-Date:   Tue, 17 Nov 2020 17:47:09 -0000
+        Tue, 17 Nov 2020 12:47:13 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C30AC0613CF;
+        Tue, 17 Nov 2020 09:47:13 -0800 (PST)
+Date:   Tue, 17 Nov 2020 17:47:10 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1605635231;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=o4O87AnU5hneBS3mjSaT0iMcb9LaTdka39Ud6mJbR/o=;
-        b=rfjVlpsMnAoUGTUTBPwvWD3eFgCfWFOdDSD/KkwATcwvaFgy3VexZMs/66QgfK9Weco94n
-        sZ3NpA9JfYv52gU43WYW5L8A/sTMWoGsCa3Vf+2+3f3tnkgnaVa8EDsdOf1gcYJjDv7692
-        +caS+K+JMQcuca9RHYcu3/XKgkfkhGSWvynW4SERkh2dSg5WziI9Kqb3RABUlztCmEe6VS
-        TCsgCqxgEwbiFLmTqRVA4jWq/tpqSAZvpcDoEhcVVlYPTEjydLFSxX2fD2+E7ynF7qv9wp
-        r4hecTg/91oqSIOC9OqPAt/9e+KzkZuzLJWspoqhE7gQioB0mRsHdFy4D/QBng==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=KguMoOgsQhKc602WlhYsE+kgcjU7TeMYiybaJDeuyWk=;
+        b=xcw1jeyNQIEwQkg0sAmeUPVOA6vlBPL/e/Q0iRJcIkqNxsdG0DUZB8tmcTnP6vsxGVJbha
+        ydXhYoCnu5i0UX7N4a77cBjSWYMgueyjBJB63v4eJ8hvZHUBxH23wZZd5/VmBOogonnHnL
+        3pac1AJXS5X5KRvC1HTz0bVLpFitXeXnRyA1tL0TFVK7lCooKw3ALHjPeiqGSa5DGg1NP8
+        yq/i2ylJasBUrzQy8e0Zu+12jlztBErt37g19hC/uWyLGvdd/UJFF9gqClqTlP/D9eOoqI
+        MVaXy6AINd8nWQXM2xQvA+kih3LoRZP+m9lX6nABArrhuh+kVPTFnEA/GdYmZw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1605635231;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=o4O87AnU5hneBS3mjSaT0iMcb9LaTdka39Ud6mJbR/o=;
-        b=E1IQErOhjtB1UdbbcDxtdoIkjziPjfYFBvht1TmqCJnbgeVVebOR3wptSMQwc3+Zw1IqKH
-        pnP6zxq8VJ3kYPAQ==
-From:   "tip-bot2 for Arvind Sankar" <tip-bot2@linutronix.de>
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=KguMoOgsQhKc602WlhYsE+kgcjU7TeMYiybaJDeuyWk=;
+        b=kBbfhwX22/FCxpHKIoWfGpKbajuT/5eBHzoF2jQtPfbUyPsfSq07mibFs7Z90X/emhzg+F
+        IRD5uDZOkPkHWrCQ==
+From:   "tip-bot2 for Ard Biesheuvel" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: efi/urgent] efi/x86: Free efi_pgd with free_pages()
-Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
-        Ard Biesheuvel <ardb@kernel.org>, x86@kernel.org,
+Subject: [tip: efi/urgent] efi/arm: set HSCTLR Thumb2 bit correctly for HVC
+ calls from HYP
+Cc:     Ard Biesheuvel <ardb@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20201110163919.1134431-1-nivedita@alum.mit.edu>
-References: <20201110163919.1134431-1-nivedita@alum.mit.edu>
 MIME-Version: 1.0
-Message-ID: <160563522966.11244.17449598594182315880.tip-bot2@tip-bot2>
+Message-ID: <160563523094.11244.17039859225367140126.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,82 +55,48 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the efi/urgent branch of tip:
 
-Commit-ID:     c2fe61d8be491ff8188edaf22e838f819999146b
-Gitweb:        https://git.kernel.org/tip/c2fe61d8be491ff8188edaf22e838f819999146b
-Author:        Arvind Sankar <nivedita@alum.mit.edu>
-AuthorDate:    Tue, 10 Nov 2020 11:39:19 -05:00
+Commit-ID:     fbc81ec5b85d43a4b22e49ec0e643fa7dec2ea40
+Gitweb:        https://git.kernel.org/tip/fbc81ec5b85d43a4b22e49ec0e643fa7dec2ea40
+Author:        Ard Biesheuvel <ardb@kernel.org>
+AuthorDate:    Sat, 03 Oct 2020 17:28:27 +02:00
 Committer:     Ard Biesheuvel <ardb@kernel.org>
-CommitterDate: Tue, 10 Nov 2020 19:18:11 +01:00
+CommitterDate: Mon, 26 Oct 2020 08:02:11 +01:00
 
-efi/x86: Free efi_pgd with free_pages()
-
-Commit
-
-  d9e9a6418065 ("x86/mm/pti: Allocate a separate user PGD")
-
-changed the PGD allocation to allocate PGD_ALLOCATION_ORDER pages, so in
-the error path it should be freed using free_pages() rather than
-free_page().
+efi/arm: set HSCTLR Thumb2 bit correctly for HVC calls from HYP
 
 Commit
 
-    06ace26f4e6f ("x86/efi: Free efi_pgd with free_pages()")
+  db227c19e68db353 ("ARM: 8985/1: efi/decompressor: deal with HYP mode boot gracefully")
 
-fixed one instance of this, but missed another.
+updated the EFI entry code to permit firmware to invoke the EFI stub
+loader in HYP mode, with the MMU either enabled or disabled, neither
+of which is permitted by the EFI spec, but which does happen in the
+field.
 
-Move the freeing out-of-line to avoid code duplication and fix this bug.
+In the MMU on case, we remain in HYP mode as configured by the firmware,
+and rely on the fact that any HVC instruction issued in this mode will
+be dispatched via the SVC slot in the HYP vector table. However, this
+slot will point to a Thumb2 symbol if the kernel is built in Thumb2
+mode, and so we have to configure HSCTLR to ensure that the exception
+handlers are invoked in Thumb2 mode as well.
 
-Fixes: d9e9a6418065 ("x86/mm/pti: Allocate a separate user PGD")
-Link: https://lore.kernel.org/r/20201110163919.1134431-1-nivedita@alum.mit.edu
-Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
+Fixes: db227c19e68db353 ("ARM: 8985/1: efi/decompressor: deal with HYP mode boot gracefully")
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/x86/platform/efi/efi_64.c | 24 +++++++++++++-----------
- 1 file changed, 13 insertions(+), 11 deletions(-)
+ arch/arm/boot/compressed/head.S | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/x86/platform/efi/efi_64.c b/arch/x86/platform/efi/efi_64.c
-index 8f5759d..e1e8d4e 100644
---- a/arch/x86/platform/efi/efi_64.c
-+++ b/arch/x86/platform/efi/efi_64.c
-@@ -78,28 +78,30 @@ int __init efi_alloc_page_tables(void)
- 	gfp_mask = GFP_KERNEL | __GFP_ZERO;
- 	efi_pgd = (pgd_t *)__get_free_pages(gfp_mask, PGD_ALLOCATION_ORDER);
- 	if (!efi_pgd)
--		return -ENOMEM;
-+		goto fail;
- 
- 	pgd = efi_pgd + pgd_index(EFI_VA_END);
- 	p4d = p4d_alloc(&init_mm, pgd, EFI_VA_END);
--	if (!p4d) {
--		free_page((unsigned long)efi_pgd);
--		return -ENOMEM;
--	}
-+	if (!p4d)
-+		goto free_pgd;
- 
- 	pud = pud_alloc(&init_mm, p4d, EFI_VA_END);
--	if (!pud) {
--		if (pgtable_l5_enabled())
--			free_page((unsigned long) pgd_page_vaddr(*pgd));
--		free_pages((unsigned long)efi_pgd, PGD_ALLOCATION_ORDER);
--		return -ENOMEM;
--	}
-+	if (!pud)
-+		goto free_p4d;
- 
- 	efi_mm.pgd = efi_pgd;
- 	mm_init_cpumask(&efi_mm);
- 	init_new_context(NULL, &efi_mm);
- 
- 	return 0;
-+
-+free_p4d:
-+	if (pgtable_l5_enabled())
-+		free_page((unsigned long)pgd_page_vaddr(*pgd));
-+free_pgd:
-+	free_pages((unsigned long)efi_pgd, PGD_ALLOCATION_ORDER);
-+fail:
-+	return -ENOMEM;
- }
- 
- /*
+diff --git a/arch/arm/boot/compressed/head.S b/arch/arm/boot/compressed/head.S
+index 2e04ec5..caa2732 100644
+--- a/arch/arm/boot/compressed/head.S
++++ b/arch/arm/boot/compressed/head.S
+@@ -1472,6 +1472,9 @@ ENTRY(efi_enter_kernel)
+ 		@ issued from HYP mode take us to the correct handler code. We
+ 		@ will disable the MMU before jumping to the kernel proper.
+ 		@
++ ARM(		bic	r1, r1, #(1 << 30)	) @ clear HSCTLR.TE
++ THUMB(		orr	r1, r1, #(1 << 30)	) @ set HSCTLR.TE
++		mcr	p15, 4, r1, c1, c0, 0
+ 		adr	r0, __hyp_reentry_vectors
+ 		mcr	p15, 4, r0, c12, c0, 0	@ set HYP vector base (HVBAR)
+ 		isb
