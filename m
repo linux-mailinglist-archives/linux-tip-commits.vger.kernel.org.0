@@ -2,17 +2,20 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A1032B82D2
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 18 Nov 2020 18:21:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A1ABE2B82D1
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 18 Nov 2020 18:21:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726375AbgKRRSQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S1726085AbgKRRSQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Wed, 18 Nov 2020 12:18:16 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:56146 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725774AbgKRRSQ (ORCPT
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36996 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725943AbgKRRSQ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Wed, 18 Nov 2020 12:18:16 -0500
-Date:   Wed, 18 Nov 2020 17:18:12 -0000
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41394C0613D4;
+        Wed, 18 Nov 2020 09:18:16 -0800 (PST)
+Date:   Wed, 18 Nov 2020 17:18:13 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1605719894;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -20,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Kx8P4d0sWUgrdE6GVK91YXQbwnCDVUb+GAe3FVoMMvQ=;
-        b=xs8i6DU1pfWfvKI0rwvo4h8Q/wdixiLsiUEPi6GMNC4q8EkQuzvOVlEvKPNMKHNW/jOTOH
-        hiiGiyCK5WLuRLDhZnZHHj7n6oSxKLys23cb952Y/qCaO0MT0RScYXRV5UWcsLGxt1FH1d
-        E2PbxHlkqw7+ypf4W/Q9i6p74thOQlNx+ecVOLKNb8hwWl66iWRdX4I0nVCzMw3BkXqHk6
-        zc2+yxi3xriKjuLP7buZWpaJPnTm+3I3OHh2MX5Vh784qrjFGhFnjC8KHDuiJoBIOEJLpW
-        wKrvIdgT3TAf5q+f2UpdC+ll4A/7hEUIyyuWqIcxNX+7VC2FuqygGZOtdfPJ2A==
+        bh=bUACd/DXMENWgHWR1UHzhNmWqQNE2W8yE2uF7k+W2dM=;
+        b=xfXFwC25z9hG/Qm6LMzAeQoc/sYC1sfDYjL7Kel8cOcLte2EV8B2Kwp2jW/eD8N5kh/2cS
+        Pp3dwvRpUzqc78W3Wrrz8p4UUBZsMVswW5u7RGjRWDY24dpWl+Izu7XC2nZCvdqvumy4Fs
+        3gagn9WN51HwwBUMAePmdofDUXxGTL8pD5+jvFqHdImMHqaA1J57veV8U+5OQZGGUYiLTk
+        HU+bsWKWrnRB/nLeZqQmUJ7n5Nf0J+pE5sy1Jcg6n2GbNSHJtYIYlytHPBSdQ5EjOWTRic
+        oF5Y6NFqECdw2UPiVcFuSqwgAVWqKdy8mCjShUUYKKyQWsIIb4Z6+EXHKE6UJA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1605719894;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -33,21 +36,21 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Kx8P4d0sWUgrdE6GVK91YXQbwnCDVUb+GAe3FVoMMvQ=;
-        b=juMRW7xgWLDeR6xSn1Z14kFMsKJIYBS/xdws/QeHca6w0lWNtKjV8AEsSlGduCz+rEzEEO
-        6b7LsRlylV1eUUCA==
+        bh=bUACd/DXMENWgHWR1UHzhNmWqQNE2W8yE2uF7k+W2dM=;
+        b=dhY1x2idHHyXu1dOj8oqpdIxIo3s5YrvbLW+r7HiqpcBRtT9EEaNuFUWSr/8tDBKXobzvx
+        /e+V3kzAvVR9jFDA==
 From:   "tip-bot2 for Arvind Sankar" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cleanups] x86/head/64: Remove unused GET_CR2_INTO() macro
+Subject: [tip: x86/cleanups] x86/boot: Remove unused finalize_identity_maps()
 Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
         Borislav Petkov <bp@suse.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20201005151208.2212886-3-nivedita@alum.mit.edu>
-References: <20201005151208.2212886-3-nivedita@alum.mit.edu>
+In-Reply-To: <20201005151208.2212886-2-nivedita@alum.mit.edu>
+References: <20201005151208.2212886-2-nivedita@alum.mit.edu>
 MIME-Version: 1.0
-Message-ID: <160571989294.11244.6098902926178128841.tip-bot2@tip-bot2>
+Message-ID: <160571989365.11244.15278626511040475571.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,84 +61,47 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/cleanups branch of tip:
 
-Commit-ID:     31d8546033053b98de00846ede8088bdbe38651d
-Gitweb:        https://git.kernel.org/tip/31d8546033053b98de00846ede8088bdbe38651d
+Commit-ID:     0ac317e89791b76055ef11b952625ef77a1d2eba
+Gitweb:        https://git.kernel.org/tip/0ac317e89791b76055ef11b952625ef77a1d2eba
 Author:        Arvind Sankar <nivedita@alum.mit.edu>
-AuthorDate:    Mon, 05 Oct 2020 11:12:08 -04:00
+AuthorDate:    Mon, 05 Oct 2020 11:12:07 -04:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Wed, 18 Nov 2020 18:09:38 +01:00
+CommitterDate: Wed, 18 Nov 2020 16:04:23 +01:00
 
-x86/head/64: Remove unused GET_CR2_INTO() macro
+x86/boot: Remove unused finalize_identity_maps()
 
 Commit
 
-  4b47cdbda6f1 ("x86/head/64: Move early exception dispatch to C code")
+  8570978ea030 ("x86/boot/compressed/64: Don't pre-map memory in KASLR code")
 
-removed the usage of GET_CR2_INTO().
-
-Drop the definition as well, and related definitions in paravirt.h and
-asm-offsets.h
+removed all the references to finalize_identity_maps(), but neglected to
+delete the actual function. Remove it.
 
 Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20201005151208.2212886-3-nivedita@alum.mit.edu
+Link: https://lkml.kernel.org/r/20201005151208.2212886-2-nivedita@alum.mit.edu
 ---
- arch/x86/include/asm/paravirt.h | 11 -----------
- arch/x86/kernel/asm-offsets.c   |  1 -
- arch/x86/kernel/head_64.S       |  9 ---------
- 3 files changed, 21 deletions(-)
+ arch/x86/boot/compressed/ident_map_64.c | 10 ----------
+ 1 file changed, 10 deletions(-)
 
-diff --git a/arch/x86/include/asm/paravirt.h b/arch/x86/include/asm/paravirt.h
-index d25cc68..f8dce11 100644
---- a/arch/x86/include/asm/paravirt.h
-+++ b/arch/x86/include/asm/paravirt.h
-@@ -812,17 +812,6 @@ extern void default_banner(void);
- #endif /* CONFIG_PARAVIRT_XXL */
- #endif	/* CONFIG_X86_64 */
+diff --git a/arch/x86/boot/compressed/ident_map_64.c b/arch/x86/boot/compressed/ident_map_64.c
+index a5e5db6..6bf2022 100644
+--- a/arch/x86/boot/compressed/ident_map_64.c
++++ b/arch/x86/boot/compressed/ident_map_64.c
+@@ -167,16 +167,6 @@ void initialize_identity_maps(void *rmode)
+ 	write_cr3(top_level_pgt);
+ }
  
--#ifdef CONFIG_PARAVIRT_XXL
+-/*
+- * This switches the page tables to the new level4 that has been built
+- * via calls to add_identity_map() above. If booted via startup_32(),
+- * this is effectively a no-op.
+- */
+-void finalize_identity_maps(void)
+-{
+-	write_cr3(top_level_pgt);
+-}
 -
--#define GET_CR2_INTO_AX							\
--	PARA_SITE(PARA_PATCH(PV_MMU_read_cr2),				\
--		  ANNOTATE_RETPOLINE_SAFE;				\
--		  call PARA_INDIRECT(pv_ops+PV_MMU_read_cr2);		\
--		 )
--
--#endif /* CONFIG_PARAVIRT_XXL */
--
--
- #endif /* __ASSEMBLY__ */
- #else  /* CONFIG_PARAVIRT */
- # define default_banner x86_init_noop
-diff --git a/arch/x86/kernel/asm-offsets.c b/arch/x86/kernel/asm-offsets.c
-index 70b7154..60b9f42 100644
---- a/arch/x86/kernel/asm-offsets.c
-+++ b/arch/x86/kernel/asm-offsets.c
-@@ -66,7 +66,6 @@ static void __used common(void)
- 	OFFSET(PV_IRQ_irq_disable, paravirt_patch_template, irq.irq_disable);
- 	OFFSET(PV_IRQ_irq_enable, paravirt_patch_template, irq.irq_enable);
- 	OFFSET(PV_CPU_iret, paravirt_patch_template, cpu.iret);
--	OFFSET(PV_MMU_read_cr2, paravirt_patch_template, mmu.read_cr2);
- #endif
- 
- #ifdef CONFIG_XEN
-diff --git a/arch/x86/kernel/head_64.S b/arch/x86/kernel/head_64.S
-index 7eb2a1c..2215d4c 100644
---- a/arch/x86/kernel/head_64.S
-+++ b/arch/x86/kernel/head_64.S
-@@ -26,15 +26,6 @@
- #include <asm/nospec-branch.h>
- #include <asm/fixmap.h>
- 
--#ifdef CONFIG_PARAVIRT_XXL
--#include <asm/asm-offsets.h>
--#include <asm/paravirt.h>
--#define GET_CR2_INTO(reg) GET_CR2_INTO_AX ; _ASM_MOV %_ASM_AX, reg
--#else
--#define INTERRUPT_RETURN iretq
--#define GET_CR2_INTO(reg) _ASM_MOV %cr2, reg
--#endif
--
- /*
-  * We are not able to switch in one step to the final KERNEL ADDRESS SPACE
-  * because we need identity-mapped pages.
+ static pte_t *split_large_pmd(struct x86_mapping_info *info,
+ 			      pmd_t *pmdp, unsigned long __address)
+ {
