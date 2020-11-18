@@ -2,55 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D2642B8335
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 18 Nov 2020 18:42:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A12D72B856C
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 18 Nov 2020 21:17:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727470AbgKRRjl (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 18 Nov 2020 12:39:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40286 "EHLO
+        id S1726211AbgKRUQh (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 18 Nov 2020 15:16:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36552 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725943AbgKRRjl (ORCPT
+        with ESMTP id S1726163AbgKRUQh (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 18 Nov 2020 12:39:41 -0500
+        Wed, 18 Nov 2020 15:16:37 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2F19C0613D4;
-        Wed, 18 Nov 2020 09:39:40 -0800 (PST)
-Date:   Wed, 18 Nov 2020 17:39:37 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0B61C0613D4;
+        Wed, 18 Nov 2020 12:16:36 -0800 (PST)
+Date:   Wed, 18 Nov 2020 20:16:32 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1605721179;
+        s=2020; t=1605730594;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=WGG7M1saX6GKkYBMqOWccazJCHfEwu2zYn14Qobog8k=;
-        b=jFDufLeHKAQRKdpREDGwyNzL07Sfpf61sqnzDuCAQZpH7xIyunALu10kPfss8qqr2ln+m3
-        Qaq3UU5wHtJf8KvaqNjft2dYdetVJ9GAD6VOiTxlyRjFuPpgo9Y7lSEWgNXZGkbYhtRFeZ
-        Vu1RXsqJyGUonVSIY1DNT3t38Y90T2YCM586cFW8M5FhPSuidVucIrIf6yswc0+td0Pp5F
-        voJ4FxKBIFT0EvPPY5089Aowy0tAJca8ecJvaPAkH5ZhmMPrDMbg6XZf7SSHQtu1BcOxie
-        sh/UFwr1W5A1UQfVOhEyekabff3GsdH0O6m2mW2cOWJ7yMMbxpC6mDl6oBaziA==
+        bh=Y27AJb3H1UgxmHEH77YQ8CfypHEfv9aJXOt4AZ1ecNk=;
+        b=SMdNdWRIEMgQfzB6iDelT7+OjIrU57lVapq2S5JaIsaTBJYFNpmHoor7kzRNA8iNd9mYDe
+        PIUHwYgGmRdHPi9zb0yf6mKORdaAIslfNgJqgvwz7ZD3dJOk55TB4kaOCSNaBh7ckhNTsj
+        Ks0/gcHYJkp7iRAzWI6osDXB4/uu2bWL0cCIhLNdzJa2Y0N5Zqglum7iFgPhE4OXtQtAqC
+        xDO5CrK/CC56foeIWa5sliwJHnBo5wJ246yQuW2JP1T/78IS8LfhQJsWs9+Z3ruNs2gN7M
+        4bLYwaxEgW9ZTsGDIuWEOHVFpoj+LZz/i1yS+LGq6KtBV2DxyD129E523I/FNQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1605721179;
+        s=2020e; t=1605730594;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=WGG7M1saX6GKkYBMqOWccazJCHfEwu2zYn14Qobog8k=;
-        b=MV8dJob4zeOpfBJoJmoEEJif4Te4CWQwbpA/byzD2Y5H26hforV6Om2BDAxDNA8HYR2tkg
-        Y1I/mpsCPXCrIOAA==
-From:   "tip-bot2 for Jarkko Sakkinen" <tip-bot2@linutronix.de>
+        bh=Y27AJb3H1UgxmHEH77YQ8CfypHEfv9aJXOt4AZ1ecNk=;
+        b=/uiwyUJ1DqDrgUuCtu4vL2dW22KOmvKePnFe9vdE5PinC5fVM7/orzb0PvkkEfASIhzStR
+        YBlVoMiu7xDP3mCA==
+From:   "tip-bot2 for David Woodhouse" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/sgx] selftests/sgx: Use a statically generated 3072-bit RSA key
-Cc:     Jarkko Sakkinen <jarkko@kernel.org>, Borislav Petkov <bp@suse.de>,
-        linux-kselftest@vger.kernel.org, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20201118170640.39629-1-jarkko@kernel.org>
-References: <20201118170640.39629-1-jarkko@kernel.org>
+Subject: [tip: x86/apic] iommu/amd: Fix IOMMU interrupt generation in X2APIC mode
+Cc:     David Woodhouse <dwmw@amazon.co.uk>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <05e3a5ba317f5ff48d2f8356f19e617f8b9d23a4.camel@infradead.org>
+References: <05e3a5ba317f5ff48d2f8356f19e617f8b9d23a4.camel@infradead.org>
 MIME-Version: 1.0
-Message-ID: <160572117767.11244.6436872924300352142.tip-bot2@tip-bot2>
+Message-ID: <160573059267.11244.12231423190200356496.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,199 +60,330 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/sgx branch of tip:
+The following commit has been merged into the x86/apic branch of tip:
 
-Commit-ID:     0eaa8d153a1d573e53b8283c90db44057d1376f6
-Gitweb:        https://git.kernel.org/tip/0eaa8d153a1d573e53b8283c90db44057d1376f6
-Author:        Jarkko Sakkinen <jarkko@kernel.org>
-AuthorDate:    Wed, 18 Nov 2020 19:06:40 +02:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Wed, 18 Nov 2020 18:26:00 +01:00
+Commit-ID:     d1adcfbb520c43c10fc22fcdccdd4204e014fb53
+Gitweb:        https://git.kernel.org/tip/d1adcfbb520c43c10fc22fcdccdd4204e014fb53
+Author:        David Woodhouse <dwmw@amazon.co.uk>
+AuthorDate:    Wed, 11 Nov 2020 12:09:01 
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Wed, 18 Nov 2020 20:55:59 +01:00
 
-selftests/sgx: Use a statically generated 3072-bit RSA key
+iommu/amd: Fix IOMMU interrupt generation in X2APIC mode
 
-Use a statically generated key for signing the enclave, because
-generating keys on the fly can eat the kernel entropy pool. Another
-good reason for doing this is predictable builds. The RSA has been
-arbitrarily selected. It's contents do not matter.
+The AMD IOMMU has two modes for generating its own interrupts.
 
-This also makes the selftest execute a lot quicker instead of the delay
-that it had before (because of slow key generation).
+The first is very much based on PCI MSI, and can be configured by Linux
+precisely that way. But like legacy unmapped PCI MSI it's limited to
+8 bits of APIC ID.
 
- [ bp: Disambiguate "static key" which means something else in the
-   kernel, fix typos. ]
+The second method does not use PCI MSI at all in hardawre, and instead
+configures the INTCAPXT registers in the IOMMU directly with the APIC ID
+and vector.
 
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Cc: linux-kselftest@vger.kernel.org
-Link: https://lkml.kernel.org/r/20201118170640.39629-1-jarkko@kernel.org
+In the latter case, the IOMMU driver would still use pci_enable_msi(),
+read back (through MMIO) the MSI message that Linux wrote to the PCI MSI
+table, then swizzle those bits into the appropriate register.
+
+Historically, this worked because__irq_compose_msi_msg() would silently
+generate an invalid MSI message with the high bits of the APIC ID in the
+high bits of the MSI address. That hack was intended only for the Intel
+IOMMU, and I recently enforced that, introducing a warning in
+__irq_msi_compose_msg() if it was invoked with an APIC ID above 255.
+
+Fix the AMD IOMMU not to depend on that hack any more, by having its own
+irqdomain and directly putting the bits from the irq_cfg into the right
+place in its ->activate() method.
+
+Fixes: 47bea873cf80 "x86/msi: Only use high bits of MSI address for DMAR unit")
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+Link: https://lore.kernel.org/r/05e3a5ba317f5ff48d2f8356f19e617f8b9d23a4.camel@infradead.org
 ---
- tools/testing/selftests/sgx/Makefile     |  6 +++-
- tools/testing/selftests/sgx/main.h       |  3 ++-
- tools/testing/selftests/sgx/sign_key.S   | 12 +++++++-
- tools/testing/selftests/sgx/sign_key.pem | 39 +++++++++++++++++++++++-
- tools/testing/selftests/sgx/sigstruct.c  | 34 +++++++-------------
- 5 files changed, 71 insertions(+), 23 deletions(-)
- create mode 100644 tools/testing/selftests/sgx/sign_key.S
- create mode 100644 tools/testing/selftests/sgx/sign_key.pem
+ arch/x86/include/asm/hw_irq.h |   1 +-
+ drivers/iommu/amd/init.c      | 191 ++++++++++++++++++++++-----------
+ 2 files changed, 133 insertions(+), 59 deletions(-)
 
-diff --git a/tools/testing/selftests/sgx/Makefile b/tools/testing/selftests/sgx/Makefile
-index d51c906..7f12d55 100644
---- a/tools/testing/selftests/sgx/Makefile
-+++ b/tools/testing/selftests/sgx/Makefile
-@@ -25,7 +25,8 @@ endif
- $(OUTPUT)/test_sgx: $(OUTPUT)/main.o \
- 		    $(OUTPUT)/load.o \
- 		    $(OUTPUT)/sigstruct.o \
--		    $(OUTPUT)/call.o
-+		    $(OUTPUT)/call.o \
-+		    $(OUTPUT)/sign_key.o
- 	$(CC) $(HOST_CFLAGS) -o $@ $^ -lcrypto
- 
- $(OUTPUT)/main.o: main.c
-@@ -40,6 +41,9 @@ $(OUTPUT)/sigstruct.o: sigstruct.c
- $(OUTPUT)/call.o: call.S
- 	$(CC) $(HOST_CFLAGS) -c $< -o $@
- 
-+$(OUTPUT)/sign_key.o: sign_key.S
-+	$(CC) $(HOST_CFLAGS) -c $< -o $@
-+
- $(OUTPUT)/test_encl.elf: test_encl.lds test_encl.c test_encl_bootstrap.S
- 	$(CC) $(ENCL_CFLAGS) -T $^ -o $@
- 
-diff --git a/tools/testing/selftests/sgx/main.h b/tools/testing/selftests/sgx/main.h
-index 45e6ab6..67211a7 100644
---- a/tools/testing/selftests/sgx/main.h
-+++ b/tools/testing/selftests/sgx/main.h
-@@ -27,6 +27,9 @@ struct encl {
- 	struct sgx_sigstruct sigstruct;
+diff --git a/arch/x86/include/asm/hw_irq.h b/arch/x86/include/asm/hw_irq.h
+index 458f5a6..d465ece 100644
+--- a/arch/x86/include/asm/hw_irq.h
++++ b/arch/x86/include/asm/hw_irq.h
+@@ -39,6 +39,7 @@ enum irq_alloc_type {
+ 	X86_IRQ_ALLOC_TYPE_PCI_MSI,
+ 	X86_IRQ_ALLOC_TYPE_PCI_MSIX,
+ 	X86_IRQ_ALLOC_TYPE_DMAR,
++	X86_IRQ_ALLOC_TYPE_AMDVI,
+ 	X86_IRQ_ALLOC_TYPE_UV,
  };
  
-+extern unsigned char sign_key[];
-+extern unsigned char sign_key_end[];
-+
- void encl_delete(struct encl *ctx);
- bool encl_load(const char *path, struct encl *encl);
- bool encl_measure(struct encl *encl);
-diff --git a/tools/testing/selftests/sgx/sign_key.S b/tools/testing/selftests/sgx/sign_key.S
-new file mode 100644
-index 0000000..e4fbe94
---- /dev/null
-+++ b/tools/testing/selftests/sgx/sign_key.S
-@@ -0,0 +1,12 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/**
-+* Copyright(c) 2016-20 Intel Corporation.
-+*/
-+
-+    .section ".rodata", "a"
-+
-+sign_key:
-+    .globl sign_key
-+    .incbin "sign_key.pem"
-+sign_key_end:
-+    .globl sign_key_end
-diff --git a/tools/testing/selftests/sgx/sign_key.pem b/tools/testing/selftests/sgx/sign_key.pem
-new file mode 100644
-index 0000000..d76f21f
---- /dev/null
-+++ b/tools/testing/selftests/sgx/sign_key.pem
-@@ -0,0 +1,39 @@
-+-----BEGIN RSA PRIVATE KEY-----
-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
-+-----END RSA PRIVATE KEY-----
-diff --git a/tools/testing/selftests/sgx/sigstruct.c b/tools/testing/selftests/sgx/sigstruct.c
-index cc06f10..dee7a3d 100644
---- a/tools/testing/selftests/sgx/sigstruct.c
-+++ b/tools/testing/selftests/sgx/sigstruct.c
-@@ -135,33 +135,21 @@ static inline const BIGNUM *get_modulus(RSA *key)
+diff --git a/drivers/iommu/amd/init.c b/drivers/iommu/amd/init.c
+index a94b96f..07d1f99 100644
+--- a/drivers/iommu/amd/init.c
++++ b/drivers/iommu/amd/init.c
+@@ -16,6 +16,7 @@
+ #include <linux/syscore_ops.h>
+ #include <linux/interrupt.h>
+ #include <linux/msi.h>
++#include <linux/irq.h>
+ #include <linux/amd-iommu.h>
+ #include <linux/export.h>
+ #include <linux/kmemleak.h>
+@@ -1557,14 +1558,7 @@ static int __init init_iommu_one(struct amd_iommu *iommu, struct ivhd_header *h)
+ 			break;
+ 		}
  
- static RSA *gen_sign_key(void)
+-		/*
+-		 * Note: Since iommu_update_intcapxt() leverages
+-		 * the IOMMU MMIO access to MSI capability block registers
+-		 * for MSI address lo/hi/data, we need to check both
+-		 * EFR[XtSup] and EFR[MsiCapMmioSup] for x2APIC support.
+-		 */
+-		if ((h->efr_reg & BIT(IOMMU_EFR_XTSUP_SHIFT)) &&
+-		    (h->efr_reg & BIT(IOMMU_EFR_MSICAPMMIOSUP_SHIFT)))
++		if (h->efr_reg & BIT(IOMMU_EFR_XTSUP_SHIFT))
+ 			amd_iommu_xt_mode = IRQ_REMAP_X2APIC_MODE;
+ 		break;
+ 	default:
+@@ -1981,27 +1975,32 @@ union intcapxt {
+ } __attribute__ ((packed));
+ 
+ /*
+- * Setup the IntCapXT registers with interrupt routing information
+- * based on the PCI MSI capability block registers, accessed via
+- * MMIO MSI address low/hi and MSI data registers.
++ * There isn't really any need to mask/unmask at the irqchip level because
++ * the 64-bit INTCAPXT registers can be updated atomically without tearing
++ * when the affinity is being updated.
+  */
+-static void iommu_update_intcapxt(struct amd_iommu *iommu)
++static void intcapxt_unmask_irq(struct irq_data *data)
  {
--	BIGNUM *e;
-+	unsigned long sign_key_length;
-+	BIO *bio;
- 	RSA *key;
--	int ret;
+-	struct msi_msg msg;
+-	union intcapxt xt;
+-	u32 destid;
++}
  
--	e = BN_new();
--	key = RSA_new();
-+	sign_key_length = (unsigned long)&sign_key_end -
-+			  (unsigned long)&sign_key;
+-	msg.address_lo = readl(iommu->mmio_base + MMIO_MSI_ADDR_LO_OFFSET);
+-	msg.address_hi = readl(iommu->mmio_base + MMIO_MSI_ADDR_HI_OFFSET);
+-	msg.data = readl(iommu->mmio_base + MMIO_MSI_DATA_OFFSET);
++static void intcapxt_mask_irq(struct irq_data *data)
++{
++}
  
--	if (!e || !key)
--		goto err;
--
--	ret = BN_set_word(e, RSA_3);
--	if (ret != 1)
--		goto err;
--
--	ret = RSA_generate_key_ex(key, 3072, e, NULL);
--	if (ret != 1)
--		goto err;
-+	bio = BIO_new_mem_buf(&sign_key, sign_key_length);
-+	if (!bio)
-+		return NULL;
+-	destid = x86_msi_msg_get_destid(&msg, x2apic_enabled());
++static struct irq_chip intcapxt_controller;
++
++static int intcapxt_irqdomain_activate(struct irq_domain *domain,
++				       struct irq_data *irqd, bool reserve)
++{
++	struct amd_iommu *iommu = irqd->chip_data;
++	struct irq_cfg *cfg = irqd_cfg(irqd);
++	union intcapxt xt;
  
--	BN_free(e);
-+	key = PEM_read_bio_RSAPrivateKey(bio, NULL, NULL, NULL);
-+	BIO_free(bio);
+ 	xt.capxt = 0ULL;
+-	xt.dest_mode_logical = msg.arch_data.dest_mode_logical;
+-	xt.vector = msg.arch_data.vector;
+-	xt.destid_0_23 = destid & GENMASK(23, 0);
+-	xt.destid_24_31 = destid >> 24;
++	xt.dest_mode_logical = apic->dest_mode_logical;
++	xt.vector = cfg->vector;
++	xt.destid_0_23 = cfg->dest_apicid & GENMASK(23, 0);
++	xt.destid_24_31 = cfg->dest_apicid >> 24;
  
- 	return key;
--
--err:
--	RSA_free(key);
--	BN_free(e);
--
--	return NULL;
+ 	/**
+ 	 * Current IOMMU implemtation uses the same IRQ for all
+@@ -2010,64 +2009,142 @@ static void iommu_update_intcapxt(struct amd_iommu *iommu)
+ 	writeq(xt.capxt, iommu->mmio_base + MMIO_INTCAPXT_EVT_OFFSET);
+ 	writeq(xt.capxt, iommu->mmio_base + MMIO_INTCAPXT_PPR_OFFSET);
+ 	writeq(xt.capxt, iommu->mmio_base + MMIO_INTCAPXT_GALOG_OFFSET);
++	return 0;
  }
  
- static void reverse_bytes(void *data, int length)
-@@ -339,8 +327,10 @@ bool encl_measure(struct encl *encl)
- 		goto err;
+-static void _irq_notifier_notify(struct irq_affinity_notify *notify,
+-				 const cpumask_t *mask)
++static void intcapxt_irqdomain_deactivate(struct irq_domain *domain,
++					  struct irq_data *irqd)
+ {
+-	struct amd_iommu *iommu;
++	intcapxt_mask_irq(irqd);
++}
  
- 	key = gen_sign_key();
--	if (!key)
-+	if (!key) {
-+		ERR_print_errors_fp(stdout);
- 		goto err;
+-	for_each_iommu(iommu) {
+-		if (iommu->dev->irq == notify->irq) {
+-			iommu_update_intcapxt(iommu);
+-			break;
+-		}
++
++static int intcapxt_irqdomain_alloc(struct irq_domain *domain, unsigned int virq,
++				    unsigned int nr_irqs, void *arg)
++{
++	struct irq_alloc_info *info = arg;
++	int i, ret;
++
++	if (!info || info->type != X86_IRQ_ALLOC_TYPE_AMDVI)
++		return -EINVAL;
++
++	ret = irq_domain_alloc_irqs_parent(domain, virq, nr_irqs, arg);
++	if (ret < 0)
++		return ret;
++
++	for (i = virq; i < virq + nr_irqs; i++) {
++		struct irq_data *irqd = irq_domain_get_irq_data(domain, i);
++
++		irqd->chip = &intcapxt_controller;
++		irqd->chip_data = info->data;
++		__irq_set_handler(i, handle_edge_irq, 0, "edge");
+ 	}
++
++	return ret;
+ }
+ 
+-static void _irq_notifier_release(struct kref *ref)
++static void intcapxt_irqdomain_free(struct irq_domain *domain, unsigned int virq,
++				    unsigned int nr_irqs)
+ {
++	irq_domain_free_irqs_top(domain, virq, nr_irqs);
+ }
+ 
+-static int iommu_init_intcapxt(struct amd_iommu *iommu)
++static int intcapxt_set_affinity(struct irq_data *irqd,
++				 const struct cpumask *mask, bool force)
+ {
++	struct irq_data *parent = irqd->parent_data;
+ 	int ret;
+-	struct irq_affinity_notify *notify = &iommu->intcapxt_notify;
+ 
+-	/**
+-	 * IntCapXT requires XTSup=1 and MsiCapMmioSup=1,
+-	 * which can be inferred from amd_iommu_xt_mode.
+-	 */
+-	if (amd_iommu_xt_mode != IRQ_REMAP_X2APIC_MODE)
+-		return 0;
++	ret = parent->chip->irq_set_affinity(parent, mask, force);
++	if (ret < 0 || ret == IRQ_SET_MASK_OK_DONE)
++		return ret;
+ 
+-	/**
+-	 * Also, we need to setup notifier to update the IntCapXT registers
+-	 * whenever the irq affinity is changed from user-space.
+-	 */
+-	notify->irq = iommu->dev->irq;
+-	notify->notify = _irq_notifier_notify,
+-	notify->release = _irq_notifier_release,
+-	ret = irq_set_affinity_notifier(iommu->dev->irq, notify);
++	return intcapxt_irqdomain_activate(irqd->domain, irqd, false);
++}
++
++static struct irq_chip intcapxt_controller = {
++	.name			= "IOMMU-MSI",
++	.irq_unmask		= intcapxt_unmask_irq,
++	.irq_mask		= intcapxt_mask_irq,
++	.irq_ack		= irq_chip_ack_parent,
++	.irq_retrigger		= irq_chip_retrigger_hierarchy,
++	.irq_set_affinity       = intcapxt_set_affinity,
++	.flags			= IRQCHIP_SKIP_SET_WAKE,
++};
++
++static const struct irq_domain_ops intcapxt_domain_ops = {
++	.alloc			= intcapxt_irqdomain_alloc,
++	.free			= intcapxt_irqdomain_free,
++	.activate		= intcapxt_irqdomain_activate,
++	.deactivate		= intcapxt_irqdomain_deactivate,
++};
++
++
++static struct irq_domain *iommu_irqdomain;
++
++static struct irq_domain *iommu_get_irqdomain(void)
++{
++	struct fwnode_handle *fn;
++
++	/* No need for locking here (yet) as the init is single-threaded */
++	if (iommu_irqdomain)
++		return iommu_irqdomain;
++
++	fn = irq_domain_alloc_named_fwnode("AMD-Vi-MSI");
++	if (!fn)
++		return NULL;
++
++	iommu_irqdomain = irq_domain_create_hierarchy(x86_vector_domain, 0, 0,
++						      fn, &intcapxt_domain_ops,
++						      NULL);
++	if (!iommu_irqdomain)
++		irq_domain_free_fwnode(fn);
++
++	return iommu_irqdomain;
++}
++
++static int iommu_setup_intcapxt(struct amd_iommu *iommu)
++{
++	struct irq_domain *domain;
++	struct irq_alloc_info info;
++	int irq, ret;
++
++	domain = iommu_get_irqdomain();
++	if (!domain)
++		return -ENXIO;
++
++	init_irq_alloc_info(&info, NULL);
++	info.type = X86_IRQ_ALLOC_TYPE_AMDVI;
++	info.data = iommu;
++
++	irq = irq_domain_alloc_irqs(domain, 1, NUMA_NO_NODE, &info);
++	if (irq < 0) {
++		irq_domain_remove(domain);
++		return irq;
 +	}
++
++	ret = request_threaded_irq(irq, amd_iommu_int_handler,
++				   amd_iommu_int_thread, 0, "AMD-Vi", iommu);
+ 	if (ret) {
+-		pr_err("Failed to register irq affinity notifier (devid=%#x, irq %d)\n",
+-		       iommu->devid, iommu->dev->irq);
++		irq_domain_free_irqs(irq, 1);
++		irq_domain_remove(domain);
+ 		return ret;
+ 	}
  
- 	BN_bn2bin(get_modulus(key), sigstruct->modulus);
+-	iommu_update_intcapxt(iommu);
+ 	iommu_feature_enable(iommu, CONTROL_INTCAPXT_EN);
+-	return ret;
++	return 0;
+ }
  
+-static int iommu_init_msi(struct amd_iommu *iommu)
++static int iommu_init_irq(struct amd_iommu *iommu)
+ {
+ 	int ret;
+ 
+ 	if (iommu->int_enabled)
+ 		goto enable_faults;
+ 
+-	if (iommu->dev->msi_cap)
++	if (amd_iommu_xt_mode == IRQ_REMAP_X2APIC_MODE)
++		ret = iommu_setup_intcapxt(iommu);
++	else if (iommu->dev->msi_cap)
+ 		ret = iommu_setup_msi(iommu);
+ 	else
+ 		ret = -ENODEV;
+@@ -2076,10 +2153,6 @@ static int iommu_init_msi(struct amd_iommu *iommu)
+ 		return ret;
+ 
+ enable_faults:
+-	ret = iommu_init_intcapxt(iommu);
+-	if (ret)
+-		return ret;
+-
+ 	iommu_feature_enable(iommu, CONTROL_EVT_INT_EN);
+ 
+ 	if (iommu->ppr_log != NULL)
+@@ -2702,7 +2775,7 @@ static int amd_iommu_enable_interrupts(void)
+ 	int ret = 0;
+ 
+ 	for_each_iommu(iommu) {
+-		ret = iommu_init_msi(iommu);
++		ret = iommu_init_irq(iommu);
+ 		if (ret)
+ 			goto out;
+ 	}
