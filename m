@@ -2,53 +2,48 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C6EE2BA997
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 20 Nov 2020 12:52:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F5242BAA2D
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 20 Nov 2020 13:34:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727992AbgKTLvv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 20 Nov 2020 06:51:51 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:40046 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727934AbgKTLvv (ORCPT
+        id S1727878AbgKTMeC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 20 Nov 2020 07:34:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42420 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727273AbgKTMeC (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 20 Nov 2020 06:51:51 -0500
-Date:   Fri, 20 Nov 2020 11:51:47 -0000
+        Fri, 20 Nov 2020 07:34:02 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19AF3C0613CF;
+        Fri, 20 Nov 2020 04:34:02 -0800 (PST)
+Date:   Fri, 20 Nov 2020 12:33:57 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1605873108;
+        s=2020; t=1605875639;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=mhgLeBe98T66vHPfQ+Qad065DCd4QEmp0NUSOu/SXmw=;
-        b=EDQhEYu7kQIW0bmbyUTEHyh4Btx6rw8MM0Vh4VyavhdVV//zMLuGopdXuycQa7Fb4m3V08
-        qhre2cjVtRk3euPWxswZTst55SEpi3YZRFPXjh1tKlTsleov2OboetxK1u69aHE6rd96DB
-        96i/tunZqG/4ShBUOa4mVe84D9bh3vGbAqHgDIJREvTaWnR0rBTW426nQp+FeTNaq/GBd9
-        uXkMjobKdPkeOhVjIAvA1r7j6IKkVtxMo0u1vqyvZaBMgtrgPFyb0mxZdJsGxQdmBMHn/L
-        5gHcMgZHUhpzDCFkD0V2ZSPo46/sIIz5mhG/HwIsNAdGkedgLEmfgrm6g7d4Eg==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=GH9+dmtOReJvFt5uJXm36DQ5ddX710bK7BYLhCfNTKI=;
+        b=1lIjXEeLaagk0gw7wmzkfRsgeyuwuTHgjlZUsQ2EhYu2PVYgu480i0O/kj0wyzJS2MPAuV
+        7lYDunibffESckbRkszksS40ooUOjna1ny921nRr8egvPwxXHJFZYdepaiXA3BU1cwYDGu
+        vWAduKfrLx3hzy9SbIYg0Igd15dkKB66j9LCCVPvg12/6trl9GgKoFnfv8nWiH033jgwwl
+        2Tc9mql2mcZyfJFOiW8EY0jV7Epg8DfLijLLyyBX2AdQnKpMFTg/7hTwMRBRznHW4lvv4w
+        Bw8Sw2E3fDaoPrO/oIeV0QjuE9KV6oEXzkDH0HFybSOS8IuYxC8hVqMq1F3m8Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1605873108;
+        s=2020e; t=1605875639;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=mhgLeBe98T66vHPfQ+Qad065DCd4QEmp0NUSOu/SXmw=;
-        b=9vo9H9yJOxU0mRRdVZR2ZjWbnsVf/QtW/7RRonfLpxFazKL0/2Y0b33419KtDKEf1H7bNL
-        StsVmrJOA6SFMeCg==
-From:   "tip-bot2 for Lukas Bulwahn" <tip-bot2@linutronix.de>
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=GH9+dmtOReJvFt5uJXm36DQ5ddX710bK7BYLhCfNTKI=;
+        b=TPSTucObabTbuzygka82YtwjQRRSyu6LBckvjbQl8ZIA2x28v/iAUmKzQz4pz+8j6LjzsO
+        47v4p+BeWFCwnvDg==
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cleanups] x86/mm: Declare 'start' variable where it is used
-Cc:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        Borislav Petkov <bp@suse.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+Subject: [tip: core/core] coccinelle: Remove broken check
+Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20200928100004.25674-1-lukas.bulwahn@gmail.com>
-References: <20200928100004.25674-1-lukas.bulwahn@gmail.com>
 MIME-Version: 1.0
-Message-ID: <160587310720.11244.17157588656599003783.tip-bot2@tip-bot2>
+Message-ID: <160587563778.11244.7037290441526713921.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -57,79 +52,227 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cleanups branch of tip:
+The following commit has been merged into the core/core branch of tip:
 
-Commit-ID:     bab202ab87ba4da48018daf0f6810b22705a570d
-Gitweb:        https://git.kernel.org/tip/bab202ab87ba4da48018daf0f6810b22705a570d
-Author:        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-AuthorDate:    Mon, 28 Sep 2020 12:00:04 +02:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Fri, 20 Nov 2020 12:49:00 +01:00
+Commit-ID:     994ddefc2440c96cc8e1386b2bc23d4793f07eb4
+Gitweb:        https://git.kernel.org/tip/994ddefc2440c96cc8e1386b2bc23d4793f07eb4
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Mon, 09 Nov 2020 12:32:00 +01:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Thu, 19 Nov 2020 11:26:18 +01:00
 
-x86/mm: Declare 'start' variable where it is used
+coccinelle: Remove broken check
 
-It is not required to initialize the local variable start in
-memory_map_top_down(), as the variable will be initialized in any path
-before it is used.
+Get rid of the endless stream of patches that complain about:
 
-make clang-analyzer on x86_64 tinyconfig reports:
+  "WARNING: Assignment of 0/1 to bool variable"
 
-  arch/x86/mm/init.c:612:15: warning: Although the value stored to 'start' \
-  is used in the enclosing expression, the value is never actually read \
-  from 'start' [clang-analyzer-deadcode.DeadStores]
+Which is perfectly valid C.
 
-Move the variable declaration into the loop, where it is used.
-
-No code changed:
-
-  # arch/x86/mm/init.o:
-
-   text    data     bss     dec     hex filename
-   7105    1424   26768   35297    89e1 init.o.before
-   7105    1424   26768   35297    89e1 init.o.after
-
-md5:
-   a8d76c1bb5fce9cae251780a7ee7730f  init.o.before.asm
-   a8d76c1bb5fce9cae251780a7ee7730f  init.o.after.asm
-
- [ bp: Massage. ]
-
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lkml.kernel.org/r/20200928100004.25674-1-lukas.bulwahn@gmail.com
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 ---
- arch/x86/mm/init.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ scripts/coccinelle/misc/boolinit.cocci | 195 +------------------------
+ 1 file changed, 195 deletions(-)
+ delete mode 100644 scripts/coccinelle/misc/boolinit.cocci
 
-diff --git a/arch/x86/mm/init.c b/arch/x86/mm/init.c
-index c7a4760..e26f5c5 100644
---- a/arch/x86/mm/init.c
-+++ b/arch/x86/mm/init.c
-@@ -596,7 +596,7 @@ static unsigned long __init get_new_step_size(unsigned long step_size)
- static void __init memory_map_top_down(unsigned long map_start,
- 				       unsigned long map_end)
- {
--	unsigned long real_end, start, last_start;
-+	unsigned long real_end, last_start;
- 	unsigned long step_size;
- 	unsigned long addr;
- 	unsigned long mapped_ram_size = 0;
-@@ -609,7 +609,7 @@ static void __init memory_map_top_down(unsigned long map_start,
- 	step_size = PMD_SIZE;
- 	max_pfn_mapped = 0; /* will get exact value next */
- 	min_pfn_mapped = real_end >> PAGE_SHIFT;
--	last_start = start = real_end;
-+	last_start = real_end;
- 
- 	/*
- 	 * We start from the top (end of memory) and go to the bottom.
-@@ -618,6 +618,8 @@ static void __init memory_map_top_down(unsigned long map_start,
- 	 * for page table.
- 	 */
- 	while (last_start > map_start) {
-+		unsigned long start;
-+
- 		if (last_start > step_size) {
- 			start = round_down(last_start - 1, step_size);
- 			if (start < map_start)
+diff --git a/scripts/coccinelle/misc/boolinit.cocci b/scripts/coccinelle/misc/boolinit.cocci
+deleted file mode 100644
+index fed6126..0000000
+--- a/scripts/coccinelle/misc/boolinit.cocci
++++ /dev/null
+@@ -1,195 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-only
+-/// Bool initializations should use true and false.  Bool tests don't need
+-/// comparisons.  Based on contributions from Joe Perches, Rusty Russell
+-/// and Bruce W Allan.
+-///
+-// Confidence: High
+-// Copyright: (C) 2012 Julia Lawall, INRIA/LIP6.
+-// Copyright: (C) 2012 Gilles Muller, INRIA/LiP6.
+-// URL: http://coccinelle.lip6.fr/
+-// Options: --include-headers
+-
+-virtual patch
+-virtual context
+-virtual org
+-virtual report
+-
+-@boolok@
+-symbol true,false;
+-@@
+-(
+-true
+-|
+-false
+-)
+-
+-@depends on patch@
+-bool t;
+-@@
+-
+-(
+-- t == true
+-+ t
+-|
+-- true == t
+-+ t
+-|
+-- t != true
+-+ !t
+-|
+-- true != t
+-+ !t
+-|
+-- t == false
+-+ !t
+-|
+-- false == t
+-+ !t
+-|
+-- t != false
+-+ t
+-|
+-- false != t
+-+ t
+-)
+-
+-@depends on patch disable is_zero, isnt_zero@
+-bool t;
+-@@
+-
+-(
+-- t == 1
+-+ t
+-|
+-- t != 1
+-+ !t
+-|
+-- t == 0
+-+ !t
+-|
+-- t != 0
+-+ t
+-)
+-
+-@depends on patch && boolok@
+-bool b;
+-@@
+-(
+- b =
+-- 0
+-+ false
+-|
+- b =
+-- 1
+-+ true
+-)
+-
+-// ---------------------------------------------------------------------
+-
+-@r1 depends on !patch@
+-bool t;
+-position p;
+-@@
+-
+-(
+-* t@p == true
+-|
+-* true == t@p
+-|
+-* t@p != true
+-|
+-* true != t@p
+-|
+-* t@p == false
+-|
+-* false == t@p
+-|
+-* t@p != false
+-|
+-* false != t@p
+-)
+-
+-@r2 depends on !patch disable is_zero, isnt_zero@
+-bool t;
+-position p;
+-@@
+-
+-(
+-* t@p == 1
+-|
+-* t@p != 1
+-|
+-* t@p == 0
+-|
+-* t@p != 0
+-)
+-
+-@r3 depends on !patch && boolok@
+-bool b;
+-position p1;
+-@@
+-(
+-*b@p1 = 0
+-|
+-*b@p1 = 1
+-)
+-
+-@r4 depends on !patch@
+-bool b;
+-position p2;
+-identifier i;
+-constant c != {0,1};
+-@@
+-(
+- b = i
+-|
+-*b@p2 = c
+-)
+-
+-@script:python depends on org@
+-p << r1.p;
+-@@
+-
+-cocci.print_main("WARNING: Comparison to bool",p)
+-
+-@script:python depends on org@
+-p << r2.p;
+-@@
+-
+-cocci.print_main("WARNING: Comparison of 0/1 to bool variable",p)
+-
+-@script:python depends on org@
+-p1 << r3.p1;
+-@@
+-
+-cocci.print_main("WARNING: Assignment of 0/1 to bool variable",p1)
+-
+-@script:python depends on org@
+-p2 << r4.p2;
+-@@
+-
+-cocci.print_main("ERROR: Assignment of non-0/1 constant to bool variable",p2)
+-
+-@script:python depends on report@
+-p << r1.p;
+-@@
+-
+-coccilib.report.print_report(p[0],"WARNING: Comparison to bool")
+-
+-@script:python depends on report@
+-p << r2.p;
+-@@
+-
+-coccilib.report.print_report(p[0],"WARNING: Comparison of 0/1 to bool variable")
+-
+-@script:python depends on report@
+-p1 << r3.p1;
+-@@
+-
+-coccilib.report.print_report(p1[0],"WARNING: Assignment of 0/1 to bool variable")
+-
+-@script:python depends on report@
+-p2 << r4.p2;
+-@@
+-
+-coccilib.report.print_report(p2[0],"ERROR: Assignment of non-0/1 constant to bool variable")
