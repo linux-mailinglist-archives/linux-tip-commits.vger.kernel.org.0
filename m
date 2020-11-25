@@ -2,56 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 52ED32C41AA
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 25 Nov 2020 15:05:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A4D02C4827
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 25 Nov 2020 20:25:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729687AbgKYODJ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 25 Nov 2020 09:03:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35682 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729720AbgKYOCz (ORCPT
+        id S1727070AbgKYTYU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 25 Nov 2020 14:24:20 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:51854 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725836AbgKYTYT (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 25 Nov 2020 09:02:55 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2764C061A4E;
-        Wed, 25 Nov 2020 06:02:55 -0800 (PST)
-Date:   Wed, 25 Nov 2020 14:02:53 -0000
+        Wed, 25 Nov 2020 14:24:19 -0500
+Date:   Wed, 25 Nov 2020 19:24:15 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1606312973;
+        s=2020; t=1606332256;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=XoutWbMEVCsIpMvHmpbZSanIi12GH9Iow5PKeM6F9Wo=;
-        b=HFkStP2v6oezqdwJI8ME3np68exp9FU8sN3VDV0CCh0D+QohX7oV/6R0/SwKQTtwSuRisQ
-        TV9ocwUSeXsx5NninJQhEqlR/WlUW653QsJIJ3Tk7exZkJlVDh17ppmW/8rZHZb0cZEyO1
-        0QWJpKwrT9ksFPrJRiI1o+4k7VPP9oF8GPl0n1w5hxnzH4zYe+q/a+cPMSkhc8eYHoVLyy
-        e7/znSpkVL7N5tLwqBKITA6oyrOdoEmlqkrH5pzpRcW+fJ7zD4abhPmaGzXXOQLrur+bWG
-        uZpfqUV31q3SXQOSZhg2OWDhWQje697GVgMIb+kFfXEPmkx+YXHWkBjrzUrLuQ==
+        bh=iKKiuUxwD/+n02zCddiNL92k5p2H5uFP3za0swJggAk=;
+        b=zV6qq2xGOpkb8AiesUyL4fpVrY5INVds8byVfcc2fxdld6bn5nQ60OgS7htFAHW7piSfpG
+        y4kNJnWTAFY75d9ZEMd47nVtv08j/cg0v0Fol7gPiWAJs3IBNiLWZIsuMaya6D9Xpnhqt1
+        tjNgnrETRyuN514r9qbmF3U5xTuGqTNTAl3ydiNZEUXw88x1eqza3kLFsZ95xd4V60AJSV
+        0HMI2VuYInE6WT5N33Nn1CT82Img7T6iMcFAxTWMOG3ir+0dVC2IWp5zqWp818hnwRYxnu
+        shQknpS8fE4QswXtnmc/8JULKzSkaOFQaBTTq1TgL0oeyIIpvJcM+QSP8INhjQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1606312973;
+        s=2020e; t=1606332256;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=XoutWbMEVCsIpMvHmpbZSanIi12GH9Iow5PKeM6F9Wo=;
-        b=gyK3uJtWypbHp8F6gQaZkDvZN+JT+sjzUgWrIBozexQPSFna0s4JUpYy5RR8bkStouRr27
-        pn3MsWYprC3VtaAA==
-From:   "tip-bot2 for Mel Gorman" <tip-bot2@linutronix.de>
+        bh=iKKiuUxwD/+n02zCddiNL92k5p2H5uFP3za0swJggAk=;
+        b=GyRv0ancUfN9MbXGiQV8zvduYddFx/2zeKSOXUVOUkkOo69NsLDtOi0hDAybWvaxhPfgEe
+        DM6nTeez3o/TYbDQ==
+From:   "tip-bot2 for Anand K Mistry" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/numa: Allow a floating imbalance between NUMA nodes
-Cc:     Mel Gorman <mgorman@techsingularity.net>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Vincent Guittot <vincent.guittot@linaro.org>, x86@kernel.org,
+Subject: [tip: x86/urgent] x86/speculation: Fix prctl() when
+ spectre_v2_user={seccomp,prctl},ibpb
+Cc:     Anand K Mistry <amistry@google.com>, Borislav Petkov <bp@suse.de>,
+        <stable@vger.kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20201120090630.3286-4-mgorman@techsingularity.net>
-References: <20201120090630.3286-4-mgorman@techsingularity.net>
+In-Reply-To: <20201110123349.1.Id0cbf996d2151f4c143c90f9028651a5b49a5908@changeid>
+References: <20201110123349.1.Id0cbf996d2151f4c143c90f9028651a5b49a5908@changeid>
 MIME-Version: 1.0
-Message-ID: <160631297333.3364.10427637559724972015.tip-bot2@tip-bot2>
+Message-ID: <160633225579.3364.12052138578908275403.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,97 +57,82 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     7d2b5dd0bcc48095651f1b85f751eef610b3e034
-Gitweb:        https://git.kernel.org/tip/7d2b5dd0bcc48095651f1b85f751eef610b3e034
-Author:        Mel Gorman <mgorman@techsingularity.net>
-AuthorDate:    Fri, 20 Nov 2020 09:06:29 
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 24 Nov 2020 16:47:47 +01:00
+Commit-ID:     33fc379df76b4991e5ae312f07bcd6820811971e
+Gitweb:        https://git.kernel.org/tip/33fc379df76b4991e5ae312f07bcd6820811971e
+Author:        Anand K Mistry <amistry@google.com>
+AuthorDate:    Tue, 10 Nov 2020 12:33:53 +11:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Wed, 25 Nov 2020 20:17:09 +01:00
 
-sched/numa: Allow a floating imbalance between NUMA nodes
+x86/speculation: Fix prctl() when spectre_v2_user={seccomp,prctl},ibpb
 
-Currently, an imbalance is only allowed when a destination node
-is almost completely idle. This solved one basic class of problems
-and was the cautious approach.
+When spectre_v2_user={seccomp,prctl},ibpb is specified on the command
+line, IBPB is force-enabled and STIPB is conditionally-enabled (or not
+available).
 
-This patch revisits the possibility that NUMA nodes can be imbalanced
-until 25% of the CPUs are occupied. The reasoning behind 25% is somewhat
-superficial -- it's half the cores when HT is enabled.  At higher
-utilisations, balancing should continue as normal and keep things even
-until scheduler domains are fully busy or over utilised.
+However, since
 
-Note that this is not expected to be a universal win. Any benchmark
-that prefers spreading as wide as possible with limited communication
-will favour the old behaviour as there is more memory bandwidth.
-Workloads that communicate heavily in pairs such as netperf or tbench
-benefit. For the tests I ran, the vast majority of workloads saw
-a benefit so it seems to be a worthwhile trade-off.
+  21998a351512 ("x86/speculation: Avoid force-disabling IBPB based on STIBP and enhanced IBRS.")
 
-Signed-off-by: Mel Gorman <mgorman@techsingularity.net>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
-Link: https://lkml.kernel.org/r/20201120090630.3286-4-mgorman@techsingularity.net
+the spectre_v2_user_ibpb variable is set to SPECTRE_V2_USER_{PRCTL,SECCOMP}
+instead of SPECTRE_V2_USER_STRICT, which is the actual behaviour.
+Because the issuing of IBPB relies on the switch_mm_*_ibpb static
+branches, the mitigations behave as expected.
+
+Since
+
+  1978b3a53a74 ("x86/speculation: Allow IBPB to be conditionally enabled on CPUs with always-on STIBP")
+
+this discrepency caused the misreporting of IB speculation via prctl().
+
+On CPUs with STIBP always-on and spectre_v2_user=seccomp,ibpb,
+prctl(PR_GET_SPECULATION_CTRL) would return PR_SPEC_PRCTL |
+PR_SPEC_ENABLE instead of PR_SPEC_DISABLE since both IBPB and STIPB are
+always on. It also allowed prctl(PR_SET_SPECULATION_CTRL) to set the IB
+speculation mode, even though the flag is ignored.
+
+Similarly, for CPUs without SMT, prctl(PR_GET_SPECULATION_CTRL) should
+also return PR_SPEC_DISABLE since IBPB is always on and STIBP is not
+available.
+
+ [ bp: Massage commit message. ]
+
+Fixes: 21998a351512 ("x86/speculation: Avoid force-disabling IBPB based on STIBP and enhanced IBRS.")
+Fixes: 1978b3a53a74 ("x86/speculation: Allow IBPB to be conditionally enabled on CPUs with always-on STIBP")
+Signed-off-by: Anand K Mistry <amistry@google.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Cc: <stable@vger.kernel.org>
+Link: https://lkml.kernel.org/r/20201110123349.1.Id0cbf996d2151f4c143c90f9028651a5b49a5908@changeid
 ---
- kernel/sched/fair.c | 21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ arch/x86/kernel/cpu/bugs.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 2626c6b..377c77b 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -1559,7 +1559,8 @@ struct task_numa_env {
- static unsigned long cpu_load(struct rq *rq);
- static unsigned long cpu_runnable(struct rq *rq);
- static unsigned long cpu_util(int cpu);
--static inline long adjust_numa_imbalance(int imbalance, int dst_running);
-+static inline long adjust_numa_imbalance(int imbalance,
-+					int dst_running, int dst_weight);
+diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
+index 581fb72..d41b70f 100644
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -739,11 +739,13 @@ spectre_v2_user_select_mitigation(enum spectre_v2_mitigation_cmd v2_cmd)
+ 	if (boot_cpu_has(X86_FEATURE_IBPB)) {
+ 		setup_force_cpu_cap(X86_FEATURE_USE_IBPB);
  
- static inline enum
- numa_type numa_classify(unsigned int imbalance_pct,
-@@ -1939,7 +1940,8 @@ static void task_numa_find_cpu(struct task_numa_env *env,
- 		src_running = env->src_stats.nr_running - 1;
- 		dst_running = env->dst_stats.nr_running + 1;
- 		imbalance = max(0, dst_running - src_running);
--		imbalance = adjust_numa_imbalance(imbalance, dst_running);
-+		imbalance = adjust_numa_imbalance(imbalance, dst_running,
-+							env->dst_stats.weight);
- 
- 		/* Use idle CPU if there is no imbalance */
- 		if (!imbalance) {
-@@ -8995,16 +8997,14 @@ next_group:
- 
- #define NUMA_IMBALANCE_MIN 2
- 
--static inline long adjust_numa_imbalance(int imbalance, int dst_running)
-+static inline long adjust_numa_imbalance(int imbalance,
-+				int dst_running, int dst_weight)
- {
--	unsigned int imbalance_min;
++		spectre_v2_user_ibpb = mode;
+ 		switch (cmd) {
+ 		case SPECTRE_V2_USER_CMD_FORCE:
+ 		case SPECTRE_V2_USER_CMD_PRCTL_IBPB:
+ 		case SPECTRE_V2_USER_CMD_SECCOMP_IBPB:
+ 			static_branch_enable(&switch_mm_always_ibpb);
++			spectre_v2_user_ibpb = SPECTRE_V2_USER_STRICT;
+ 			break;
+ 		case SPECTRE_V2_USER_CMD_PRCTL:
+ 		case SPECTRE_V2_USER_CMD_AUTO:
+@@ -757,8 +759,6 @@ spectre_v2_user_select_mitigation(enum spectre_v2_mitigation_cmd v2_cmd)
+ 		pr_info("mitigation: Enabling %s Indirect Branch Prediction Barrier\n",
+ 			static_key_enabled(&switch_mm_always_ibpb) ?
+ 			"always-on" : "conditional");
 -
- 	/*
- 	 * Allow a small imbalance based on a simple pair of communicating
--	 * tasks that remain local when the source domain is almost idle.
-+	 * tasks that remain local when the destination is lightly loaded.
- 	 */
--	imbalance_min = NUMA_IMBALANCE_MIN;
--	if (dst_running <= imbalance_min)
-+	if (dst_running < (dst_weight >> 2) && imbalance <= NUMA_IMBALANCE_MIN)
- 		return 0;
- 
- 	return imbalance;
-@@ -9106,9 +9106,10 @@ static inline void calculate_imbalance(struct lb_env *env, struct sd_lb_stats *s
- 		}
- 
- 		/* Consider allowing a small imbalance between NUMA groups */
--		if (env->sd->flags & SD_NUMA)
-+		if (env->sd->flags & SD_NUMA) {
- 			env->imbalance = adjust_numa_imbalance(env->imbalance,
--						busiest->sum_nr_running);
-+				busiest->sum_nr_running, busiest->group_weight);
-+		}
- 
- 		return;
+-		spectre_v2_user_ibpb = mode;
  	}
+ 
+ 	/*
