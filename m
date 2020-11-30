@@ -2,113 +2,143 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 948FA2C6A25
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 27 Nov 2020 17:51:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C1DE62C80E7
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 30 Nov 2020 10:24:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731746AbgK0Qtc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 27 Nov 2020 11:49:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55254 "EHLO
+        id S1727970AbgK3JXm (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 30 Nov 2020 04:23:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56264 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731612AbgK0Qt2 (ORCPT
+        with ESMTP id S1727714AbgK3JXl (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 27 Nov 2020 11:49:28 -0500
+        Mon, 30 Nov 2020 04:23:41 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCB10C0613D1;
-        Fri, 27 Nov 2020 08:49:28 -0800 (PST)
-Date:   Fri, 27 Nov 2020 16:49:26 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A940EC0613D4;
+        Mon, 30 Nov 2020 01:23:01 -0800 (PST)
+Date:   Mon, 30 Nov 2020 09:22:57 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1606495766;
+        s=2020; t=1606728178;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=hknGfpaZlk4fYNbaScezbL+jgcw5gCrH3olnhnnpX/A=;
-        b=yaXSBCoh6+4bhhdgb4AG5ubmnpqPLZkrbMVOLOI8soqlDlt7pTG2HROAq04fRJbB4Qn8e6
-        q4o8QQnugW+XwTlG7NZLgmtYyb+rJIqB7gOLq2FtENVFS5QU5O9GEOrc3FVRRbM75nOpEl
-        kbgTF3Ejnt/LWVRu/UZjIgPPYlya2rl/c+5oeGU8LS9kr2jT29OpGwpy//o8ZduJmCWBRi
-        Sgq1sEOK/pJx9Bxw1phVDoQeUjbs4IvC+tseFasVVT+UkeyNqvF7AOlcz0hCsINgjVO+q1
-        V9YpLrbmN2HCgaGgODlY6sudop5J/rVIAL9ITLQErKAX36pz/0FBQ00KHukKwg==
+        bh=uVySK87KiEC5eQir1K/CIAWTPMBHfuQx2J3VlxQ5xpo=;
+        b=N7V0ynWLF1lpzs48TBA1jZIcAO6UxL+uCYvNm3SCfhNRh+d4vFgh1ml8PLvucoy1SuvDBJ
+        NCguiAQhXL2LjxyHBwxeL7YoIr1iE5utW/QC45HkS8esWw2QoAEsthP62NpC06HV4mNgne
+        Wh1+cQVLWEsoOpIGbK+govfNICfEJPTU2FynqXrmbA86JFxbNshm7kIIpSee5p8bsrUiKf
+        qEHzcwZoc6vIVa7V5MsIKkKVbT3XFeVAaKEGo9Jg41OX5AVAvNGLnuDjFGOM2q1ehD/wKr
+        QgtvUVha/W6EyMWFtBD+M4haacv5w8tvMS7gEgJX343Lju2jpOzVslE79n0wfg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1606495766;
+        s=2020e; t=1606728178;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=hknGfpaZlk4fYNbaScezbL+jgcw5gCrH3olnhnnpX/A=;
-        b=t6p9N56U6Vir9yJx1RV5bvXyJQJ/mz+SsILBX6fWS5dNsJcq2Ltw7kv28pxNcuk5Y9n8fP
-        N58ZcG3Xz3YQ+/DA==
-From:   tip-bot2 for Amadeusz =?utf-8?q?S=C5=82awi=C5=84ski?= 
-        <tip-bot2@linutronix.de>
+        bh=uVySK87KiEC5eQir1K/CIAWTPMBHfuQx2J3VlxQ5xpo=;
+        b=saencdVHn1dhaLsV1VBtkYI8zux4S3XF5VATK4f/fT6tn4se9n6rptN+t0nfxq/ohibUIb
+        oqztkq9TSEG4NjDQ==
+From:   "tip-bot2 for Marc Zyngier" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: efi/urgent] efi/efivars: Set generic ops before loading SSDT
-Cc:     amadeuszx.slawinski@linux.intel.com,
-        Cezary Rojewski <cezary.rojewski@intel.com>,
-        Ard Biesheuvel <ardb@kernel.org>, x86@kernel.org,
+Subject: [tip: irq/urgent] MAINTAINERS: Move Jason Cooper to CREDITS
+Cc:     Marc Zyngier <maz@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Gregory CLEMENT <gregory.clement@bootlin.com>,
+        Andrew Lunn <andrew@lunn.ch>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20201123172817.124146-1-amadeuszx.slawinski@linux.intel.com>
-References: <20201123172817.124146-1-amadeuszx.slawinski@linux.intel.com>
+In-Reply-To: <20201128103707.332874-1-maz@kernel.org>
+References: <20201128103707.332874-1-maz@kernel.org>
 MIME-Version: 1.0
-Message-ID: <160649576626.3364.8890840511181549442.tip-bot2@tip-bot2>
+Message-ID: <160672817751.3364.7459472481507223428.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the efi/urgent branch of tip:
+The following commit has been merged into the irq/urgent branch of tip:
 
-Commit-ID:     50bdcf047503e30126327d0be4f0ad7337106d68
-Gitweb:        https://git.kernel.org/tip/50bdcf047503e30126327d0be4f0ad73371=
-06d68
-Author:        Amadeusz S=C5=82awi=C5=84ski <amadeuszx.slawinski@linux.intel.=
-com>
-AuthorDate:    Mon, 23 Nov 2020 12:28:17 -05:00
-Committer:     Ard Biesheuvel <ardb@kernel.org>
-CommitterDate: Wed, 25 Nov 2020 16:55:02 +01:00
+Commit-ID:     509920aee72ae23235615a009c5148cdb38794c3
+Gitweb:        https://git.kernel.org/tip/509920aee72ae23235615a009c5148cdb38794c3
+Author:        Marc Zyngier <maz@kernel.org>
+AuthorDate:    Sat, 28 Nov 2020 10:37:07 
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Mon, 30 Nov 2020 10:20:34 +01:00
 
-efi/efivars: Set generic ops before loading SSDT
+MAINTAINERS: Move Jason Cooper to CREDITS
 
-Efivars allows for overriding of SSDT tables, however starting with
-commit
+Jason's email address has now been bouncing for weeks, and no
+reply was received when trying to reach out on other addresses.
 
-  bf67fad19e493b ("efi: Use more granular check for availability for variable=
- services")
+We really hope he is OK. But until we hear of his whereabouts,
+let's move him to the CREDITS file so that people stop Cc-ing
+him.
 
-this use case is broken. When loading SSDT generic ops should be set
-first, however mentioned commit reversed order of operations. Fix this
-by restoring original order of operations.
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Acked-by: Gregory CLEMENT <gregory.clement@bootlin.com>
+Acked-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://lore.kernel.org/r/20201128103707.332874-1-maz@kernel.org
 
-Fixes: bf67fad19e493b ("efi: Use more granular check for availability for var=
-iable services")
-Signed-off-by: Amadeusz S=C5=82awi=C5=84ski <amadeuszx.slawinski@linux.intel.=
-com>
-Link: https://lore.kernel.org/r/20201123172817.124146-1-amadeuszx.slawinski@l=
-inux.intel.com
-Tested-by: Cezary Rojewski <cezary.rojewski@intel.com>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- drivers/firmware/efi/efi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ CREDITS     | 5 +++++
+ MAINTAINERS | 4 ----
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-index 5e5480a..6c6eec0 100644
---- a/drivers/firmware/efi/efi.c
-+++ b/drivers/firmware/efi/efi.c
-@@ -390,10 +390,10 @@ static int __init efisubsys_init(void)
-=20
- 	if (efi_rt_services_supported(EFI_RT_SUPPORTED_GET_VARIABLE |
- 				      EFI_RT_SUPPORTED_GET_NEXT_VARIABLE_NAME)) {
--		efivar_ssdt_load();
- 		error =3D generic_ops_register();
- 		if (error)
- 			goto err_put;
-+		efivar_ssdt_load();
- 		platform_device_register_simple("efivars", 0, NULL, 0);
- 	}
-=20
+diff --git a/CREDITS b/CREDITS
+index 7483019..e88d1a7 100644
+--- a/CREDITS
++++ b/CREDITS
+@@ -740,6 +740,11 @@ S: (ask for current address)
+ S: Portland, Oregon
+ S: USA
+ 
++N: Jason Cooper
++D: ARM/Marvell SOC co-maintainer
++D: irqchip co-maintainer
++D: MVEBU PCI DRIVER co-maintainer
++
+ N: Robin Cornelius
+ E: robincornelius@users.sourceforge.net
+ D: Ralink rt2x00 WLAN driver
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 2daa6ee..4f27f43 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -2014,7 +2014,6 @@ M:	Philipp Zabel <philipp.zabel@gmail.com>
+ S:	Maintained
+ 
+ ARM/Marvell Dove/MV78xx0/Orion SOC support
+-M:	Jason Cooper <jason@lakedaemon.net>
+ M:	Andrew Lunn <andrew@lunn.ch>
+ M:	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+ M:	Gregory Clement <gregory.clement@bootlin.com>
+@@ -2031,7 +2030,6 @@ F:	arch/arm/plat-orion/
+ F:	drivers/soc/dove/
+ 
+ ARM/Marvell Kirkwood and Armada 370, 375, 38x, 39x, XP, 3700, 7K/8K, CN9130 SOC support
+-M:	Jason Cooper <jason@lakedaemon.net>
+ M:	Andrew Lunn <andrew@lunn.ch>
+ M:	Gregory Clement <gregory.clement@bootlin.com>
+ M:	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+@@ -9248,7 +9246,6 @@ F:	kernel/irq/
+ 
+ IRQCHIP DRIVERS
+ M:	Thomas Gleixner <tglx@linutronix.de>
+-M:	Jason Cooper <jason@lakedaemon.net>
+ M:	Marc Zyngier <maz@kernel.org>
+ L:	linux-kernel@vger.kernel.org
+ S:	Maintained
+@@ -13394,7 +13391,6 @@ F:	drivers/pci/controller/mobiveil/pcie-mobiveil*
+ 
+ PCI DRIVER FOR MVEBU (Marvell Armada 370 and Armada XP SOC support)
+ M:	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+-M:	Jason Cooper <jason@lakedaemon.net>
+ L:	linux-pci@vger.kernel.org
+ L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
+ S:	Maintained
