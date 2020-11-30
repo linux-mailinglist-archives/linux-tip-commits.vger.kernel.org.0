@@ -2,57 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C1DE62C80E7
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 30 Nov 2020 10:24:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2557C2C833E
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 30 Nov 2020 12:31:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727970AbgK3JXm (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 30 Nov 2020 04:23:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56264 "EHLO
+        id S1728925AbgK3L3p (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 30 Nov 2020 06:29:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47694 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727714AbgK3JXl (ORCPT
+        with ESMTP id S1726810AbgK3L3p (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 30 Nov 2020 04:23:41 -0500
+        Mon, 30 Nov 2020 06:29:45 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A940EC0613D4;
-        Mon, 30 Nov 2020 01:23:01 -0800 (PST)
-Date:   Mon, 30 Nov 2020 09:22:57 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21BCCC0613CF;
+        Mon, 30 Nov 2020 03:29:05 -0800 (PST)
+Date:   Mon, 30 Nov 2020 11:29:02 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1606728178;
+        s=2020; t=1606735743;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=uVySK87KiEC5eQir1K/CIAWTPMBHfuQx2J3VlxQ5xpo=;
-        b=N7V0ynWLF1lpzs48TBA1jZIcAO6UxL+uCYvNm3SCfhNRh+d4vFgh1ml8PLvucoy1SuvDBJ
-        NCguiAQhXL2LjxyHBwxeL7YoIr1iE5utW/QC45HkS8esWw2QoAEsthP62NpC06HV4mNgne
-        Wh1+cQVLWEsoOpIGbK+govfNICfEJPTU2FynqXrmbA86JFxbNshm7kIIpSee5p8bsrUiKf
-        qEHzcwZoc6vIVa7V5MsIKkKVbT3XFeVAaKEGo9Jg41OX5AVAvNGLnuDjFGOM2q1ehD/wKr
-        QgtvUVha/W6EyMWFtBD+M4haacv5w8tvMS7gEgJX343Lju2jpOzVslE79n0wfg==
+        bh=l0pjxdzVT2soZbYSgLF/KFW8zRzTkl95WGxMx0fC1w8=;
+        b=TR0L6UD4z6FaQFfyjjNmfb9Gfv7bVkqQD1i93DxhJEAnAFVSO7Z27bC6NvpetvV5D/LoIn
+        WCM6wzSTZNEDWh4hm/ELJKfiLGggKOWxEpCISy9p/KgD6BgdlWcV1ocUGF0M6I8iLshlon
+        aHykp0Lv1nu3eLC/Zo2Pq8mkRw2PvIgma2aG84ApADdyphNGffc5vAcolGE546SPiP6due
+        w7ruFiL9XG0Ozmgw7A7J1/P5BVWGnGBQOYVWrRu57vROl2/yZ2bkg9tiAwQmtvep85Z4Co
+        MaDmNi4rNauOm7f/YA541uWjiX4XvhjQDo1jV+7GnXQZM4xMGSDyWL4dB/CI1A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1606728178;
+        s=2020e; t=1606735743;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=uVySK87KiEC5eQir1K/CIAWTPMBHfuQx2J3VlxQ5xpo=;
-        b=saencdVHn1dhaLsV1VBtkYI8zux4S3XF5VATK4f/fT6tn4se9n6rptN+t0nfxq/ohibUIb
-        oqztkq9TSEG4NjDQ==
-From:   "tip-bot2 for Marc Zyngier" <tip-bot2@linutronix.de>
+        bh=l0pjxdzVT2soZbYSgLF/KFW8zRzTkl95WGxMx0fC1w8=;
+        b=9aKoRS7v/jzR1QtJF1GyVlXSKWNfk4/BAcwimilDKIrCJ9M35G6DZmraLJvXBguPv/6/I4
+        RRgE+uzGcvIMpwDg==
+From:   "tip-bot2 for Laurent Vivier" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/urgent] MAINTAINERS: Move Jason Cooper to CREDITS
-Cc:     Marc Zyngier <maz@kernel.org>,
+Subject: [tip: irq/urgent] powerpc/pseries: Pass MSI affinity to irq_create_mapping()
+Cc:     Laurent Vivier <lvivier@redhat.com>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Gregory CLEMENT <gregory.clement@bootlin.com>,
-        Andrew Lunn <andrew@lunn.ch>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20201128103707.332874-1-maz@kernel.org>
-References: <20201128103707.332874-1-maz@kernel.org>
+        Greg Kurz <groug@kaod.org>,
+        Michael Ellerman <mpe@ellerman.id.au>, stable@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org, maz@kernel.org
+In-Reply-To: <20201126082852.1178497-3-lvivier@redhat.com>
+References: <20201126082852.1178497-3-lvivier@redhat.com>
 MIME-Version: 1.0
-Message-ID: <160672817751.3364.7459472481507223428.tip-bot2@tip-bot2>
+Message-ID: <160673574245.3364.4192827087700999581.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -63,82 +63,57 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/urgent branch of tip:
 
-Commit-ID:     509920aee72ae23235615a009c5148cdb38794c3
-Gitweb:        https://git.kernel.org/tip/509920aee72ae23235615a009c5148cdb38794c3
-Author:        Marc Zyngier <maz@kernel.org>
-AuthorDate:    Sat, 28 Nov 2020 10:37:07 
+Commit-ID:     9ea69a55b3b9a71cded9726af591949c1138f235
+Gitweb:        https://git.kernel.org/tip/9ea69a55b3b9a71cded9726af591949c1138f235
+Author:        Laurent Vivier <lvivier@redhat.com>
+AuthorDate:    Thu, 26 Nov 2020 09:28:52 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 30 Nov 2020 10:20:34 +01:00
+CommitterDate: Mon, 30 Nov 2020 12:22:04 +01:00
 
-MAINTAINERS: Move Jason Cooper to CREDITS
+powerpc/pseries: Pass MSI affinity to irq_create_mapping()
 
-Jason's email address has now been bouncing for weeks, and no
-reply was received when trying to reach out on other addresses.
+With virtio multiqueue, normally each queue IRQ is mapped to a CPU.
 
-We really hope he is OK. But until we hear of his whereabouts,
-let's move him to the CREDITS file so that people stop Cc-ing
-him.
+Commit 0d9f0a52c8b9f ("virtio_scsi: use virtio IRQ affinity") exposed
+an existing shortcoming of the arch code by moving virtio_scsi to
+the automatic IRQ affinity assignment.
 
-Signed-off-by: Marc Zyngier <maz@kernel.org>
+The affinity is correctly computed in msi_desc but this is not applied
+to the system IRQs.
+
+It appears the affinity is correctly passed to rtas_setup_msi_irqs() but
+lost at this point and never passed to irq_domain_alloc_descs()
+(see commit 06ee6d571f0e ("genirq: Add affinity hint to irq allocation"))
+because irq_create_mapping() doesn't take an affinity parameter.
+
+Use the new irq_create_mapping_affinity() function, which allows to forward
+the affinity setting from rtas_setup_msi_irqs() to irq_domain_alloc_descs().
+
+With this change, the virtqueues are correctly dispatched between the CPUs
+on pseries.
+
+Fixes: e75eafb9b039 ("genirq/msi: Switch to new irq spreading infrastructure")
+Signed-off-by: Laurent Vivier <lvivier@redhat.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Gregory CLEMENT <gregory.clement@bootlin.com>
-Acked-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://lore.kernel.org/r/20201128103707.332874-1-maz@kernel.org
-
+Reviewed-by: Greg Kurz <groug@kaod.org>
+Acked-by: Michael Ellerman <mpe@ellerman.id.au>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20201126082852.1178497-3-lvivier@redhat.com
 ---
- CREDITS     | 5 +++++
- MAINTAINERS | 4 ----
- 2 files changed, 5 insertions(+), 4 deletions(-)
+ arch/powerpc/platforms/pseries/msi.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/CREDITS b/CREDITS
-index 7483019..e88d1a7 100644
---- a/CREDITS
-+++ b/CREDITS
-@@ -740,6 +740,11 @@ S: (ask for current address)
- S: Portland, Oregon
- S: USA
+diff --git a/arch/powerpc/platforms/pseries/msi.c b/arch/powerpc/platforms/pseries/msi.c
+index 133f6ad..b3ac245 100644
+--- a/arch/powerpc/platforms/pseries/msi.c
++++ b/arch/powerpc/platforms/pseries/msi.c
+@@ -458,7 +458,8 @@ again:
+ 			return hwirq;
+ 		}
  
-+N: Jason Cooper
-+D: ARM/Marvell SOC co-maintainer
-+D: irqchip co-maintainer
-+D: MVEBU PCI DRIVER co-maintainer
-+
- N: Robin Cornelius
- E: robincornelius@users.sourceforge.net
- D: Ralink rt2x00 WLAN driver
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 2daa6ee..4f27f43 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -2014,7 +2014,6 @@ M:	Philipp Zabel <philipp.zabel@gmail.com>
- S:	Maintained
+-		virq = irq_create_mapping(NULL, hwirq);
++		virq = irq_create_mapping_affinity(NULL, hwirq,
++						   entry->affinity);
  
- ARM/Marvell Dove/MV78xx0/Orion SOC support
--M:	Jason Cooper <jason@lakedaemon.net>
- M:	Andrew Lunn <andrew@lunn.ch>
- M:	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
- M:	Gregory Clement <gregory.clement@bootlin.com>
-@@ -2031,7 +2030,6 @@ F:	arch/arm/plat-orion/
- F:	drivers/soc/dove/
- 
- ARM/Marvell Kirkwood and Armada 370, 375, 38x, 39x, XP, 3700, 7K/8K, CN9130 SOC support
--M:	Jason Cooper <jason@lakedaemon.net>
- M:	Andrew Lunn <andrew@lunn.ch>
- M:	Gregory Clement <gregory.clement@bootlin.com>
- M:	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-@@ -9248,7 +9246,6 @@ F:	kernel/irq/
- 
- IRQCHIP DRIVERS
- M:	Thomas Gleixner <tglx@linutronix.de>
--M:	Jason Cooper <jason@lakedaemon.net>
- M:	Marc Zyngier <maz@kernel.org>
- L:	linux-kernel@vger.kernel.org
- S:	Maintained
-@@ -13394,7 +13391,6 @@ F:	drivers/pci/controller/mobiveil/pcie-mobiveil*
- 
- PCI DRIVER FOR MVEBU (Marvell Armada 370 and Armada XP SOC support)
- M:	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
--M:	Jason Cooper <jason@lakedaemon.net>
- L:	linux-pci@vger.kernel.org
- L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
- S:	Maintained
+ 		if (!virq) {
+ 			pr_debug("rtas_msi: Failed mapping hwirq %d\n", hwirq);
