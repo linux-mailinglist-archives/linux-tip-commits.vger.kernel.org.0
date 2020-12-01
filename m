@@ -2,57 +2,58 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AFFAC2CA579
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  1 Dec 2020 15:24:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B5DFC2CA885
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  1 Dec 2020 17:45:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728702AbgLAOWc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 1 Dec 2020 09:22:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44906 "EHLO
+        id S1727381AbgLAQoX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 1 Dec 2020 11:44:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38976 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727132AbgLAOWb (ORCPT
+        with ESMTP id S1726485AbgLAQoX (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 1 Dec 2020 09:22:31 -0500
+        Tue, 1 Dec 2020 11:44:23 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E3E6C0613CF;
-        Tue,  1 Dec 2020 06:21:51 -0800 (PST)
-Date:   Tue, 01 Dec 2020 14:21:49 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB1A1C0613D6;
+        Tue,  1 Dec 2020 08:43:42 -0800 (PST)
+Date:   Tue, 01 Dec 2020 16:43:39 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1606832509;
+        s=2020; t=1606841020;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=jXR2UCXgzQJckdE1VjLynnNMuNCrAjZe3ReBI7ONfjM=;
-        b=0F54uI299Wn5CD+3YVkaqahRqI/LTDvbge7g1a3wHCc5LOuiYz+wIxKu+cIIN24vnENmV1
-        Ax7p2+WcsJ5/6HpF5c5TR0inqXgnf5saVFw1iMBNjOLAotq5kkfjyrUOvD1bL+PFC4epDA
-        TYIuMBKBtxaVAy4HcKXA8D/ggBbejfpDebNJSOCtYAyEUZLXlLRs/Lox2Q9yBV8VWoz769
-        NOez38zyNHVHvsSs4VQu3AVCN5g0hpsMMcioor389QyEJs4GIb9dk9SIcViCJpPSPP6ws7
-        2gXAfZSxx4Pe8E5PNChpLWUj4r4VRXU6lGibkAsoCHRw1T5cHU2mO8/Fd0D7OA==
+        bh=btGQfODE28DUIErTFVGy4pmvPQAjXfts3GLmmIUzGq0=;
+        b=PlyeYe3uRqRGqZ0ZX6PrTrmeNhcvjyrsIvUqo0An6kwIGtPRQ44qU5MOTNHdlH27OU2Z8p
+        /ux4fScCtC+Z8aW3B0W4k3DuRtxVQjttgch/xktpO8pnrKh1rh85UxPffecaP+RgnGbouk
+        BddHiOg4JK30XcUv+6/+nom3AVCMPvIC4I8JhMb831mmKPY5S02PoaCT7AVrMk5pYWeVHi
+        AhgSTj+NbQUWpKZ4ECnUWWICCWrjOF1pfGyXcq8UMcFQfIth+WEkNV1yvu+hz9GjdahR+M
+        4KS7zMWvgi88dlGKBjV4J7VV71JegApqdAnEZxUpM1WjRgyDg4d8mlrPXQb1DA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1606832509;
+        s=2020e; t=1606841020;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=jXR2UCXgzQJckdE1VjLynnNMuNCrAjZe3ReBI7ONfjM=;
-        b=QPXYU2B8zCK/T+eeU+rY+CgZRk4QgLcDI0DyzQpdIC6oA05zuUWdmfi13vteaTiSWOnvu6
-        X21Av8eN1aGpcmDQ==
-From:   "tip-bot2 for Sami Tolvanen" <tip-bot2@linutronix.de>
+        bh=btGQfODE28DUIErTFVGy4pmvPQAjXfts3GLmmIUzGq0=;
+        b=cUfEDpYuubBUEqRLeIblDCKZkFZsDvBvdyntEOxCgQz3LZjsqeXm98d8SgiowTM8fbPv8S
+        5JbzpMsKGqXM3rBQ==
+From:   "tip-bot2 for Nick Desaulniers" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/misc] x86/pci: Fix the function type for check_reserved_t
-Cc:     Sedat Dilek <sedat.dilek@gmail.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Sami Tolvanen <samitolvanen@google.com>,
-        Borislav Petkov <bp@suse.de>, x86@kernel.org,
+Subject: [tip: x86/build] x86/build: Remove -m16 workaround for unsupported
+ versions of GCC
+Cc:     Nick Desaulniers <ndesaulniers@google.com>,
+        Borislav Petkov <bp@suse.de>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        David Woodhouse <dwmw@amazon.co.uk>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20201130193900.456726-1-samitolvanen@google.com>
-References: <20201130193900.456726-1-samitolvanen@google.com>
+In-Reply-To: <20201201011307.3676986-1-ndesaulniers@google.com>
+References: <20201201011307.3676986-1-ndesaulniers@google.com>
 MIME-Version: 1.0
-Message-ID: <160683250909.3364.11212976072626111571.tip-bot2@tip-bot2>
+Message-ID: <160684101976.3364.7563855323822414041.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,58 +62,75 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/misc branch of tip:
+The following commit has been merged into the x86/build branch of tip:
 
-Commit-ID:     83321c335dccba262a57378361d63da96b8166d6
-Gitweb:        https://git.kernel.org/tip/83321c335dccba262a57378361d63da96b8166d6
-Author:        Sami Tolvanen <samitolvanen@google.com>
-AuthorDate:    Mon, 30 Nov 2020 11:39:00 -08:00
+Commit-ID:     2838307b019dfec0c309c4e8e589658736cff4c9
+Gitweb:        https://git.kernel.org/tip/2838307b019dfec0c309c4e8e589658736cff4c9
+Author:        Nick Desaulniers <ndesaulniers@google.com>
+AuthorDate:    Mon, 30 Nov 2020 17:13:06 -08:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 01 Dec 2020 14:22:52 +01:00
+CommitterDate: Tue, 01 Dec 2020 17:17:18 +01:00
 
-x86/pci: Fix the function type for check_reserved_t
+x86/build: Remove -m16 workaround for unsupported versions of GCC
 
-e820__mapped_all() is passed as a callback to is_mmconf_reserved(),
-which expects a function of type:
+Revert the following two commits:
 
-  typedef bool (*check_reserved_t)(u64 start, u64 end, unsigned type);
+  de3accdaec88 ("x86, build: Build 16-bit code with -m16 where possible")
+  a9cfccee6604 ("x86, build: Change code16gcc.h from a C header to an assembly header")
 
-However, e820__mapped_all() accepts enum e820_type as the last argument
-and this type mismatch trips indirect call checking with Clang's
-Control-Flow Integrity (CFI).
+Since
 
-As is_mmconf_reserved() only passes enum e820_type values for the
-type argument, change the typedef and the unused type argument in
-is_acpi_reserved() to enum e820_type to fix the type mismatch.
+  0bddd227f3dc ("Documentation: update for gcc 4.9 requirement")
 
-Reported-by: Sedat Dilek <sedat.dilek@gmail.com>
-Suggested-by: Borislav Petkov <bp@alien8.de>
-Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
+the minimum supported version of GCC is gcc-4.9. It's now safe to remove
+this code.
+
+Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20201130193900.456726-1-samitolvanen@google.com
+Reviewed-by: Nathan Chancellor <natechancellor@gmail.com>
+Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
+Link: https://lkml.kernel.org/r/20201201011307.3676986-1-ndesaulniers@google.com
 ---
- arch/x86/pci/mmconfig-shared.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/Makefile         |  9 +--------
+ arch/x86/boot/code16gcc.h | 12 ------------
+ 2 files changed, 1 insertion(+), 20 deletions(-)
+ delete mode 100644 arch/x86/boot/code16gcc.h
 
-diff --git a/arch/x86/pci/mmconfig-shared.c b/arch/x86/pci/mmconfig-shared.c
-index 6fa42e9..234998f 100644
---- a/arch/x86/pci/mmconfig-shared.c
-+++ b/arch/x86/pci/mmconfig-shared.c
-@@ -425,7 +425,7 @@ static acpi_status find_mboard_resource(acpi_handle handle, u32 lvl,
- 	return AE_OK;
- }
+diff --git a/arch/x86/Makefile b/arch/x86/Makefile
+index 154259f..b891066 100644
+--- a/arch/x86/Makefile
++++ b/arch/x86/Makefile
+@@ -24,14 +24,7 @@ endif
  
--static bool is_acpi_reserved(u64 start, u64 end, unsigned not_used)
-+static bool is_acpi_reserved(u64 start, u64 end, enum e820_type not_used)
- {
- 	struct resource mcfg_res;
- 
-@@ -442,7 +442,7 @@ static bool is_acpi_reserved(u64 start, u64 end, unsigned not_used)
- 	return mcfg_res.flags;
- }
- 
--typedef bool (*check_reserved_t)(u64 start, u64 end, unsigned type);
-+typedef bool (*check_reserved_t)(u64 start, u64 end, enum e820_type type);
- 
- static bool __ref is_mmconf_reserved(check_reserved_t is_reserved,
- 				     struct pci_mmcfg_region *cfg,
+ # How to compile the 16-bit code.  Note we always compile for -march=i386;
+ # that way we can complain to the user if the CPU is insufficient.
+-#
+-# The -m16 option is supported by GCC >= 4.9 and clang >= 3.5. For
+-# older versions of GCC, include an *assembly* header to make sure that
+-# gcc doesn't play any games behind our back.
+-CODE16GCC_CFLAGS := -m32 -Wa,$(srctree)/arch/x86/boot/code16gcc.h
+-M16_CFLAGS	 := $(call cc-option, -m16, $(CODE16GCC_CFLAGS))
+-
+-REALMODE_CFLAGS	:= $(M16_CFLAGS) -g -Os -DDISABLE_BRANCH_PROFILING \
++REALMODE_CFLAGS	:= -m16 -g -Os -DDISABLE_BRANCH_PROFILING \
+ 		   -Wall -Wstrict-prototypes -march=i386 -mregparm=3 \
+ 		   -fno-strict-aliasing -fomit-frame-pointer -fno-pic \
+ 		   -mno-mmx -mno-sse
+diff --git a/arch/x86/boot/code16gcc.h b/arch/x86/boot/code16gcc.h
+deleted file mode 100644
+index e19fd75..0000000
+--- a/arch/x86/boot/code16gcc.h
++++ /dev/null
+@@ -1,12 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-#
+-# code16gcc.h
+-#
+-# This file is added to the assembler via -Wa when compiling 16-bit C code.
+-# This is done this way instead via asm() to make sure gcc does not reorder
+-# things around us.
+-#
+-# gcc 4.9+ has a real -m16 option so we can drop this hack long term.
+-#
+-
+-	.code16gcc
