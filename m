@@ -2,58 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B5DFC2CA885
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  1 Dec 2020 17:45:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A9A552CA939
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  1 Dec 2020 18:02:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727381AbgLAQoX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 1 Dec 2020 11:44:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38976 "EHLO
+        id S1729166AbgLARA6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 1 Dec 2020 12:00:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41576 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726485AbgLAQoX (ORCPT
+        with ESMTP id S1726005AbgLARA6 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 1 Dec 2020 11:44:23 -0500
+        Tue, 1 Dec 2020 12:00:58 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB1A1C0613D6;
-        Tue,  1 Dec 2020 08:43:42 -0800 (PST)
-Date:   Tue, 01 Dec 2020 16:43:39 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E212C0613D4;
+        Tue,  1 Dec 2020 09:00:18 -0800 (PST)
+Date:   Tue, 01 Dec 2020 17:00:15 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1606841020;
+        s=2020; t=1606842016;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=btGQfODE28DUIErTFVGy4pmvPQAjXfts3GLmmIUzGq0=;
-        b=PlyeYe3uRqRGqZ0ZX6PrTrmeNhcvjyrsIvUqo0An6kwIGtPRQ44qU5MOTNHdlH27OU2Z8p
-        /ux4fScCtC+Z8aW3B0W4k3DuRtxVQjttgch/xktpO8pnrKh1rh85UxPffecaP+RgnGbouk
-        BddHiOg4JK30XcUv+6/+nom3AVCMPvIC4I8JhMb831mmKPY5S02PoaCT7AVrMk5pYWeVHi
-        AhgSTj+NbQUWpKZ4ECnUWWICCWrjOF1pfGyXcq8UMcFQfIth+WEkNV1yvu+hz9GjdahR+M
-        4KS7zMWvgi88dlGKBjV4J7VV71JegApqdAnEZxUpM1WjRgyDg4d8mlrPXQb1DA==
+        bh=wVIMKRD7s9B20AHCrU0fh/AK9+bnfcAmltC1MBzLuZg=;
+        b=2UJeKOrOIsaZnK0XJXvK2pB5CtWlS3GLZ/C3TCY2Sz3wSI7RvvG5sdo0i1QZZ2fBat9nox
+        7deQ9Wjm38C5PFbe4TLSuRbUkvYpm/ypBhz7a1MKTn/ziAkeGkW8sVhv+zi80EaOSJQOoo
+        LL6ViIDNr6TVtBtxVXV1vT+qfja7djwxoVcnXmw+heYNs+mfFf83VrFrw5jUowkXua4EHg
+        FHL1I5pQeZH4EwrSiorbvg7P8cql5ZYyAe6nc9OaHG6jtk0AmAmFFv7WDN26KNc4Yf4QiC
+        chHPLuK5r3Na8+MWn0Ghv+48Q3hjgI3rPbH/yujF2JgOTE6zppH5RResuuRX3A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1606841020;
+        s=2020e; t=1606842016;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=btGQfODE28DUIErTFVGy4pmvPQAjXfts3GLmmIUzGq0=;
-        b=cUfEDpYuubBUEqRLeIblDCKZkFZsDvBvdyntEOxCgQz3LZjsqeXm98d8SgiowTM8fbPv8S
-        5JbzpMsKGqXM3rBQ==
-From:   "tip-bot2 for Nick Desaulniers" <tip-bot2@linutronix.de>
+        bh=wVIMKRD7s9B20AHCrU0fh/AK9+bnfcAmltC1MBzLuZg=;
+        b=diJsXXxFNpe0avqHJRsVV/tNWxTp4Ee1E1hWy1mRrISk98HEYXPfFDqT3DEA2ppKbmL/lO
+        FPQA1vz9HpztB6Cw==
+From:   "tip-bot2 for Babu Moger" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/build] x86/build: Remove -m16 workaround for unsupported
- versions of GCC
-Cc:     Nick Desaulniers <ndesaulniers@google.com>,
-        Borislav Petkov <bp@suse.de>,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        David Woodhouse <dwmw@amazon.co.uk>, x86@kernel.org,
+Subject: [tip: x86/urgent] x86/resctrl: Fix AMD L3 QOS CDP enable/disable
+Cc:     Babu Moger <babu.moger@amd.com>, Borislav Petkov <bp@suse.de>,
+        Reinette Chatre <reinette.chatre@intel.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20201201011307.3676986-1-ndesaulniers@google.com>
-References: <20201201011307.3676986-1-ndesaulniers@google.com>
+In-Reply-To: <160675180380.15628.3309402017215002347.stgit@bmoger-ubuntu>
+References: <160675180380.15628.3309402017215002347.stgit@bmoger-ubuntu>
 MIME-Version: 1.0
-Message-ID: <160684101976.3364.7563855323822414041.tip-bot2@tip-bot2>
+Message-ID: <160684201570.3364.4966217184350853149.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -62,75 +59,115 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/build branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     2838307b019dfec0c309c4e8e589658736cff4c9
-Gitweb:        https://git.kernel.org/tip/2838307b019dfec0c309c4e8e589658736cff4c9
-Author:        Nick Desaulniers <ndesaulniers@google.com>
-AuthorDate:    Mon, 30 Nov 2020 17:13:06 -08:00
+Commit-ID:     fae3a13d2a3d49a89391889808428cf1e72afbd7
+Gitweb:        https://git.kernel.org/tip/fae3a13d2a3d49a89391889808428cf1e72afbd7
+Author:        Babu Moger <babu.moger@amd.com>
+AuthorDate:    Mon, 30 Nov 2020 09:57:20 -06:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 01 Dec 2020 17:17:18 +01:00
+CommitterDate: Tue, 01 Dec 2020 17:53:31 +01:00
 
-x86/build: Remove -m16 workaround for unsupported versions of GCC
+x86/resctrl: Fix AMD L3 QOS CDP enable/disable
 
-Revert the following two commits:
+When the AMD QoS feature CDP (code and data prioritization) is enabled
+or disabled, the CDP bit in MSR 0000_0C81 is written on one of the CPUs
+in an L3 domain (core complex). That is not correct - the CDP bit needs
+to be updated on all the logical CPUs in the domain.
 
-  de3accdaec88 ("x86, build: Build 16-bit code with -m16 where possible")
-  a9cfccee6604 ("x86, build: Change code16gcc.h from a C header to an assembly header")
+This was not spelled out clearly in the spec earlier. The specification
+has been updated and the updated document, "AMD64 Technology Platform
+Quality of Service Extensions Publication # 56375 Revision: 1.02 Issue
+Date: October 2020" is available now. Refer the section: Code and Data
+Prioritization.
 
-Since
+Fix the issue by adding a new flag arch_has_per_cpu_cfg in rdt_cache
+data structure.
 
-  0bddd227f3dc ("Documentation: update for gcc 4.9 requirement")
+The documentation can be obtained at:
+https://developer.amd.com/wp-content/resources/56375.pdf
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=206537
 
-the minimum supported version of GCC is gcc-4.9. It's now safe to remove
-this code.
+ [ bp: Massage commit message. ]
 
-Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
+Fixes: 4d05bf71f157 ("x86/resctrl: Introduce AMD QOS feature")
+Signed-off-by: Babu Moger <babu.moger@amd.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Nathan Chancellor <natechancellor@gmail.com>
-Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
-Link: https://lkml.kernel.org/r/20201201011307.3676986-1-ndesaulniers@google.com
+Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
+Link: https://lkml.kernel.org/r/160675180380.15628.3309402017215002347.stgit@bmoger-ubuntu
 ---
- arch/x86/Makefile         |  9 +--------
- arch/x86/boot/code16gcc.h | 12 ------------
- 2 files changed, 1 insertion(+), 20 deletions(-)
- delete mode 100644 arch/x86/boot/code16gcc.h
+ arch/x86/kernel/cpu/resctrl/core.c     |  4 ++++
+ arch/x86/kernel/cpu/resctrl/internal.h |  3 +++
+ arch/x86/kernel/cpu/resctrl/rdtgroup.c |  9 +++++++--
+ 3 files changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/Makefile b/arch/x86/Makefile
-index 154259f..b891066 100644
---- a/arch/x86/Makefile
-+++ b/arch/x86/Makefile
-@@ -24,14 +24,7 @@ endif
+diff --git a/arch/x86/kernel/cpu/resctrl/core.c b/arch/x86/kernel/cpu/resctrl/core.c
+index e5f4ee8..e8b5f1c 100644
+--- a/arch/x86/kernel/cpu/resctrl/core.c
++++ b/arch/x86/kernel/cpu/resctrl/core.c
+@@ -570,6 +570,8 @@ static void domain_add_cpu(int cpu, struct rdt_resource *r)
  
- # How to compile the 16-bit code.  Note we always compile for -march=i386;
- # that way we can complain to the user if the CPU is insufficient.
--#
--# The -m16 option is supported by GCC >= 4.9 and clang >= 3.5. For
--# older versions of GCC, include an *assembly* header to make sure that
--# gcc doesn't play any games behind our back.
--CODE16GCC_CFLAGS := -m32 -Wa,$(srctree)/arch/x86/boot/code16gcc.h
--M16_CFLAGS	 := $(call cc-option, -m16, $(CODE16GCC_CFLAGS))
--
--REALMODE_CFLAGS	:= $(M16_CFLAGS) -g -Os -DDISABLE_BRANCH_PROFILING \
-+REALMODE_CFLAGS	:= -m16 -g -Os -DDISABLE_BRANCH_PROFILING \
- 		   -Wall -Wstrict-prototypes -march=i386 -mregparm=3 \
- 		   -fno-strict-aliasing -fomit-frame-pointer -fno-pic \
- 		   -mno-mmx -mno-sse
-diff --git a/arch/x86/boot/code16gcc.h b/arch/x86/boot/code16gcc.h
-deleted file mode 100644
-index e19fd75..0000000
---- a/arch/x86/boot/code16gcc.h
-+++ /dev/null
-@@ -1,12 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0 */
--#
--# code16gcc.h
--#
--# This file is added to the assembler via -Wa when compiling 16-bit C code.
--# This is done this way instead via asm() to make sure gcc does not reorder
--# things around us.
--#
--# gcc 4.9+ has a real -m16 option so we can drop this hack long term.
--#
--
--	.code16gcc
+ 	if (d) {
+ 		cpumask_set_cpu(cpu, &d->cpu_mask);
++		if (r->cache.arch_has_per_cpu_cfg)
++			rdt_domain_reconfigure_cdp(r);
+ 		return;
+ 	}
+ 
+@@ -923,6 +925,7 @@ static __init void rdt_init_res_defs_intel(void)
+ 		    r->rid == RDT_RESOURCE_L2CODE) {
+ 			r->cache.arch_has_sparse_bitmaps = false;
+ 			r->cache.arch_has_empty_bitmaps = false;
++			r->cache.arch_has_per_cpu_cfg = false;
+ 		} else if (r->rid == RDT_RESOURCE_MBA) {
+ 			r->msr_base = MSR_IA32_MBA_THRTL_BASE;
+ 			r->msr_update = mba_wrmsr_intel;
+@@ -943,6 +946,7 @@ static __init void rdt_init_res_defs_amd(void)
+ 		    r->rid == RDT_RESOURCE_L2CODE) {
+ 			r->cache.arch_has_sparse_bitmaps = true;
+ 			r->cache.arch_has_empty_bitmaps = true;
++			r->cache.arch_has_per_cpu_cfg = true;
+ 		} else if (r->rid == RDT_RESOURCE_MBA) {
+ 			r->msr_base = MSR_IA32_MBA_BW_BASE;
+ 			r->msr_update = mba_wrmsr_amd;
+diff --git a/arch/x86/kernel/cpu/resctrl/internal.h b/arch/x86/kernel/cpu/resctrl/internal.h
+index 80fa997..f65d3c0 100644
+--- a/arch/x86/kernel/cpu/resctrl/internal.h
++++ b/arch/x86/kernel/cpu/resctrl/internal.h
+@@ -360,6 +360,8 @@ struct msr_param {
+  *			executing entities
+  * @arch_has_sparse_bitmaps:	True if a bitmap like f00f is valid.
+  * @arch_has_empty_bitmaps:	True if the '0' bitmap is valid.
++ * @arch_has_per_cpu_cfg:	True if QOS_CFG register for this cache
++ *				level has CPU scope.
+  */
+ struct rdt_cache {
+ 	unsigned int	cbm_len;
+@@ -369,6 +371,7 @@ struct rdt_cache {
+ 	unsigned int	shareable_bits;
+ 	bool		arch_has_sparse_bitmaps;
+ 	bool		arch_has_empty_bitmaps;
++	bool		arch_has_per_cpu_cfg;
+ };
+ 
+ /**
+diff --git a/arch/x86/kernel/cpu/resctrl/rdtgroup.c b/arch/x86/kernel/cpu/resctrl/rdtgroup.c
+index 6f4ca4b..f341842 100644
+--- a/arch/x86/kernel/cpu/resctrl/rdtgroup.c
++++ b/arch/x86/kernel/cpu/resctrl/rdtgroup.c
+@@ -1909,8 +1909,13 @@ static int set_cache_qos_cfg(int level, bool enable)
+ 
+ 	r_l = &rdt_resources_all[level];
+ 	list_for_each_entry(d, &r_l->domains, list) {
+-		/* Pick one CPU from each domain instance to update MSR */
+-		cpumask_set_cpu(cpumask_any(&d->cpu_mask), cpu_mask);
++		if (r_l->cache.arch_has_per_cpu_cfg)
++			/* Pick all the CPUs in the domain instance */
++			for_each_cpu(cpu, &d->cpu_mask)
++				cpumask_set_cpu(cpu, cpu_mask);
++		else
++			/* Pick one CPU from each domain instance to update MSR */
++			cpumask_set_cpu(cpumask_any(&d->cpu_mask), cpu_mask);
+ 	}
+ 	cpu = get_cpu();
+ 	/* Update QOS_CFG MSR on this cpu if it's in cpu_mask. */
