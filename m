@@ -2,52 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C8DA42CC688
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  2 Dec 2020 20:24:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6539F2CC774
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  2 Dec 2020 21:10:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731110AbgLBTXy (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 2 Dec 2020 14:23:54 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:35854 "EHLO
+        id S2387671AbgLBUH7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 2 Dec 2020 15:07:59 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:36108 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731039AbgLBTXy (ORCPT
+        with ESMTP id S2387658AbgLBUH7 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 2 Dec 2020 14:23:54 -0500
-Date:   Wed, 02 Dec 2020 19:23:12 -0000
+        Wed, 2 Dec 2020 15:07:59 -0500
+Date:   Wed, 02 Dec 2020 20:07:16 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1606936992;
+        s=2020; t=1606939637;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=RUazshvEdYKlWUiZfcIFFNA8RwpF173JvUXEOw12WQg=;
-        b=FPBN979cc2toaDwc9sVMrU/NgW2beYF9Kr/haLwaSw2Q5iyB0XgJanhGtAQk+o93x+Uxcp
-        6gX8LC6RMCiAREUdqsAdOerPARd6ndxp4g9axb50qedYpUpYlWHrWmbIxj7DWG30gsItQr
-        8bFEzN9Vspty4RaS1x2O5WQMpRXOsitf68g9shnTk37pMKI3lIZw+qQf4q1hMlAxaASvOz
-        b+ggKx5zeCR0Kh8jzl6oOL8vpZVBt8jTmevzukM8yK3nLRpY38hnSYI40+CSftlA8GRarM
-        BojFpAvG16kIZEwFjq2xCplgIW0hRG00vKdaUpXY+rlmGjvK+iPK7t4ySib7wg==
+        bh=S0bf1BObtlOiK1XGhzRvbwJpfCuy1RwtsxA4SYzDfWY=;
+        b=170e1J5pPjvg9EZ6ZrjjO3lKHbn2Gz1icT9B/DfQJW5InqQ5c1eR9IYNWkojAud8jhUzLs
+        PDo9+wBbnEc27mcsoulxHNcgINXxmb1xMlcOc43VV71MKNX+zFT57MeZBm5d2yOYgQjq57
+        deJCPDt6Qf/Zn8pmPW2wA6NSCuUpU6ya5Uoa8+hl2x19cgt1ks+8MZTPcsnh05B8xC/GVE
+        TwwKY9QpZ8zlXuTeIInW9wPQffbN8gef1v0AUNYQcLDZyHP3VptT8sbb6OHnlKjCLJFDIP
+        tnMZAzM9ROWq/ZHkgn6xHp6SVVQUbmPkdpue+XjY5gbcOS7tKS8wqH09rBclcw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1606936992;
+        s=2020e; t=1606939637;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=RUazshvEdYKlWUiZfcIFFNA8RwpF173JvUXEOw12WQg=;
-        b=cxfcmWN0l811U+u1nLs1d7PRIXXEw6DPHQib+g8hJKB3iQ0tRc9dk5Te02ZQGpYahgiNj0
-        +tmXVcjIr+ix02BQ==
-From:   "tip-bot2 for Frederic Weisbecker" <tip-bot2@linutronix.de>
+        bh=S0bf1BObtlOiK1XGhzRvbwJpfCuy1RwtsxA4SYzDfWY=;
+        b=KDrUCllkvNDQczI5ktZEYVMo9z8IzdUpSKf14u7E7gJhYOtJYKSOOb6y5AZ4MHngn5rwkx
+        Q/iCh/9PYmnzF1Dg==
+From:   "tip-bot2 for Dan Carpenter" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] sched/cputime: Remove symbol exports from IRQ time accounting
-Cc:     Frederic Weisbecker <frederic@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
-        linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20201202115732.27827-2-frederic@kernel.org>
-References: <20201202115732.27827-2-frederic@kernel.org>
+Subject: [tip: x86/platform] x86/platform/uv: Fix an error code in uv_hubs_init()
+Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Borislav Petkov <bp@suse.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <jMAJb3H3iv@mwanda>
+References: <jMAJb3H3iv@mwanda>
 MIME-Version: 1.0
-Message-ID: <160693699209.3364.4469833037418267275.tip-bot2@tip-bot2>
+Message-ID: <160693963638.3364.15126718535201940817.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -56,77 +56,37 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the irq/core branch of tip:
+The following commit has been merged into the x86/platform branch of tip:
 
-Commit-ID:     7197688b2006357da75a014e0a76be89ca9c2d46
-Gitweb:        https://git.kernel.org/tip/7197688b2006357da75a014e0a76be89ca9c2d46
-Author:        Frederic Weisbecker <frederic@kernel.org>
-AuthorDate:    Wed, 02 Dec 2020 12:57:28 +01:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 02 Dec 2020 20:20:04 +01:00
+Commit-ID:     fa4a379ecfa0c735e8979bb732fe5a1705a64052
+Gitweb:        https://git.kernel.org/tip/fa4a379ecfa0c735e8979bb732fe5a1705a64052
+Author:        Dan Carpenter <dan.carpenter@oracle.com>
+AuthorDate:    Wed, 02 Dec 2020 17:44:07 +03:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Wed, 02 Dec 2020 20:51:53 +01:00
 
-sched/cputime: Remove symbol exports from IRQ time accounting
+x86/platform/uv: Fix an error code in uv_hubs_init()
 
-account_irq_enter_time() and account_irq_exit_time() are not called
-from modules. EXPORT_SYMBOL_GPL() can be safely removed from the IRQ
-cputime accounting functions called from there.
+Return -ENOMEM on allocation failure instead of returning random stack
+memory contents.
 
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20201202115732.27827-2-frederic@kernel.org
-
+Fixes: 4fc2cf1f2daf ("x86/platform/uv: Add new uv_sysfs platform driver")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lkml.kernel.org/r/X8eoN/jMAJb3H3iv@mwanda
 ---
- arch/s390/kernel/vtime.c | 10 +++++-----
- kernel/sched/cputime.c   |  2 --
- 2 files changed, 5 insertions(+), 7 deletions(-)
+ drivers/platform/x86/uv_sysfs.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/s390/kernel/vtime.c b/arch/s390/kernel/vtime.c
-index 8df10d3..f9f2a11 100644
---- a/arch/s390/kernel/vtime.c
-+++ b/arch/s390/kernel/vtime.c
-@@ -226,7 +226,7 @@ void vtime_flush(struct task_struct *tsk)
-  * Update process times based on virtual cpu times stored by entry.S
-  * to the lowcore fields user_timer, system_timer & steal_clock.
-  */
--void vtime_account_irq_enter(struct task_struct *tsk)
-+void vtime_account_kernel(struct task_struct *tsk)
- {
- 	u64 timer;
+diff --git a/drivers/platform/x86/uv_sysfs.c b/drivers/platform/x86/uv_sysfs.c
+index 54c3425..e17ce8c 100644
+--- a/drivers/platform/x86/uv_sysfs.c
++++ b/drivers/platform/x86/uv_sysfs.c
+@@ -248,6 +248,7 @@ static int uv_hubs_init(void)
+ 		uv_hubs[i] = kzalloc(sizeof(*uv_hubs[i]), GFP_KERNEL);
+ 		if (!uv_hubs[i]) {
+ 			i--;
++			ret = -ENOMEM;
+ 			goto err_hubs;
+ 		}
  
-@@ -245,12 +245,12 @@ void vtime_account_irq_enter(struct task_struct *tsk)
- 
- 	virt_timer_forward(timer);
- }
--EXPORT_SYMBOL_GPL(vtime_account_irq_enter);
--
--void vtime_account_kernel(struct task_struct *tsk)
--__attribute__((alias("vtime_account_irq_enter")));
- EXPORT_SYMBOL_GPL(vtime_account_kernel);
- 
-+void vtime_account_irq_enter(struct task_struct *tsk)
-+__attribute__((alias("vtime_account_kernel")));
-+
-+
- /*
-  * Sorted add to a list. List is linear searched until first bigger
-  * element is found.
-diff --git a/kernel/sched/cputime.c b/kernel/sched/cputime.c
-index 5a55d23..61ce9f9 100644
---- a/kernel/sched/cputime.c
-+++ b/kernel/sched/cputime.c
-@@ -71,7 +71,6 @@ void irqtime_account_irq(struct task_struct *curr)
- 	else if (in_serving_softirq() && curr != this_cpu_ksoftirqd())
- 		irqtime_account_delta(irqtime, delta, CPUTIME_SOFTIRQ);
- }
--EXPORT_SYMBOL_GPL(irqtime_account_irq);
- 
- static u64 irqtime_tick_accounted(u64 maxtime)
- {
-@@ -434,7 +433,6 @@ void vtime_account_irq_enter(struct task_struct *tsk)
- 	else
- 		vtime_account_kernel(tsk);
- }
--EXPORT_SYMBOL_GPL(vtime_account_irq_enter);
- #endif /* __ARCH_HAS_VTIME_ACCOUNT */
- 
- void cputime_adjust(struct task_cputime *curr, struct prev_cputime *prev,
