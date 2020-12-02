@@ -2,55 +2,58 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B7CA2CBF3B
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  2 Dec 2020 15:14:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 25A412CBF48
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  2 Dec 2020 15:14:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727019AbgLBOMo (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 2 Dec 2020 09:12:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40020 "EHLO
+        id S1730306AbgLBONU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 2 Dec 2020 09:13:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40122 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728986AbgLBOMo (ORCPT
+        with ESMTP id S1727449AbgLBONT (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 2 Dec 2020 09:12:44 -0500
+        Wed, 2 Dec 2020 09:13:19 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2A8EC0613D4;
-        Wed,  2 Dec 2020 06:12:03 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C505C061A04;
+        Wed,  2 Dec 2020 06:12:05 -0800 (PST)
 Date:   Wed, 02 Dec 2020 14:12:02 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1606918322;
+        s=2020; t=1606918323;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=GOk8c/T+ua7VKqJwatAWz8PEJ5wH5Uiv4aj4CnDREAI=;
-        b=xMWegTBzHAruwLCvaRcLlvwpRpIpNtfek2NQVYhbWgOXSV0WTj3hxYf2mjoCB0+WOKq3qg
-        H2ehkiBZlQ7t+JAMd+vubIc9Hr2EugJxm6CYfyBgAg8Z1uDl8xGPonWtZzm9SUjGVtIWFl
-        kPBhCGVoZalrIaKZJcNopVVwq8l/9Y+oYkdjXWBzy7+3a3f4ioTEWbjAox97kuIJFQ78eB
-        HSsYU042I3EPJHOor0EiBEtPnunF4gOj3FB7sdcDc9e4+DVoEi+9oQ98CDkEjiMsq4Am1l
-        T44tiAS240CUI6MYu/cFK/2RcOjtc2Owydz/rihiISBirdAwO+UmkerGxTXzng==
+        bh=ZLGIh65fRr2cPIT7mGuHkurFJCOy3PaxNzoDy921hek=;
+        b=vdYu/bdWyNkgJl7WInsHvGUkLnTCSFK6FBGRbyVMpnLrX/tVWDDk2s2fpdAt7BGpxazCH3
+        ZcSIPnQePVfwVruKnFnPtcWf1Dt5IAog4UBshHOVUiupmokaTRwjaklYJJ+25OYEQ6drx5
+        Vp30gJo01CDAmLF1IUYI0UsSqKZl7o0lIEybo+WDOLJxXVM8ueAvsoDoTJO3MvcVkvJUuq
+        upVN+OVjtgf8Ow9WVlQ2EO4Mb2dCramofY7Q3cVBY9GehXF4vatGWS0BksvPMGdBTEig3D
+        l1hSrWo2Ahdumq5BYTIo2licH2J0jWaij0rPGhnj19GeSzXvxVSRarSuERsmfA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1606918322;
+        s=2020e; t=1606918323;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=GOk8c/T+ua7VKqJwatAWz8PEJ5wH5Uiv4aj4CnDREAI=;
-        b=wEKzwK1yel7KyVpZgMQWBOCa/NvXKZ0aNMIR0rD4tE47KkELEKco7XykFRMNDmKS08imtP
-        wBNLfdZiVLGzc2DQ==
-From:   "tip-bot2 for Sven Schnelle" <tip-bot2@linutronix.de>
+        bh=ZLGIh65fRr2cPIT7mGuHkurFJCOy3PaxNzoDy921hek=;
+        b=jtdpRR81z8pehkEord3xOuieaF+DUCZFz9ANZxA42So48uldUjRZbCsvMpm97Rwa3r2xPa
+        5agjbFkHzT8PizAg==
+From:   "tip-bot2 for Gabriel Krisman Bertazi" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/entry] entry: Rename exit_to_user_mode()
-Cc:     Sven Schnelle <svens@linux.ibm.com>,
-        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+Subject: [tip: core/entry] selftests: Add benchmark for syscall user dispatch
+Cc:     Gabriel Krisman Bertazi <krisman@collabora.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Kees Cook <keescook@chromium.org>,
+        Andy Lutomirski <luto@kernel.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20201201142755.31931-3-svens@linux.ibm.com>
-References: <20201201142755.31931-3-svens@linux.ibm.com>
+In-Reply-To: <20201127193238.821364-7-krisman@collabora.com>
+References: <20201127193238.821364-7-krisman@collabora.com>
 MIME-Version: 1.0
-Message-ID: <160691832213.3364.4766112716143844753.tip-bot2@tip-bot2>
+Message-ID: <160691832282.3364.12028588752836921089.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,64 +64,261 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/entry branch of tip:
 
-Commit-ID:     bb793562f0da7317adf6c456316bca651ff46f5d
-Gitweb:        https://git.kernel.org/tip/bb793562f0da7317adf6c456316bca651ff46f5d
-Author:        Sven Schnelle <svens@linux.ibm.com>
-AuthorDate:    Tue, 01 Dec 2020 15:27:52 +01:00
+Commit-ID:     d87ae0fa21c26db2d7c66f22dee9c27ecda48ce2
+Gitweb:        https://git.kernel.org/tip/d87ae0fa21c26db2d7c66f22dee9c27ecda48ce2
+Author:        Gabriel Krisman Bertazi <krisman@collabora.com>
+AuthorDate:    Fri, 27 Nov 2020 14:32:37 -05:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Wed, 02 Dec 2020 15:07:57 +01:00
 
-entry: Rename exit_to_user_mode()
+selftests: Add benchmark for syscall user dispatch
 
-In order to make this function publicly available rename it so it can still
-be inlined. An additional exit_to_user_mode() function will be added with
-a later commit.
+This is the patch I'm using to evaluate the impact syscall user dispatch
+has on native syscall (syscalls not redirected to userspace) when
+enabled for the process and submiting syscalls though the unblocked
+dispatch selector. It works by running a step to define a baseline of
+the cost of executing sysinfo, then enabling SUD, and rerunning that
+step.
 
-Signed-off-by: Sven Schnelle <svens@linux.ibm.com>
+On my test machine, an AMD Ryzen 5 1500X, I have the following results
+with the latest version of syscall user dispatch patches.
+
+root@olga:~# syscall_user_dispatch/sud_benchmark
+  Calibrating test set to last ~5 seconds...
+  test iterations = 37500000
+  Avg syscall time 134ns.
+  Caught sys_ff00
+  trapped_call_count 1, native_call_count 0.
+  Avg syscall time 147ns.
+  Interception overhead: 9.7% (+13ns).
+
+Signed-off-by: Gabriel Krisman Bertazi <krisman@collabora.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20201201142755.31931-3-svens@linux.ibm.com
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Reviewed-by: Andy Lutomirski <luto@kernel.org>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20201127193238.821364-7-krisman@collabora.com
 
 ---
- kernel/entry/common.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ tools/testing/selftests/syscall_user_dispatch/Makefile        |   2 +-
+ tools/testing/selftests/syscall_user_dispatch/sud_benchmark.c | 200 +++++++-
+ 2 files changed, 201 insertions(+), 1 deletion(-)
+ create mode 100644 tools/testing/selftests/syscall_user_dispatch/sud_benchmark.c
 
-diff --git a/kernel/entry/common.c b/kernel/entry/common.c
-index 8e294a7..dff07b4 100644
---- a/kernel/entry/common.c
-+++ b/kernel/entry/common.c
-@@ -122,7 +122,7 @@ noinstr void syscall_enter_from_user_mode_prepare(struct pt_regs *regs)
- }
+diff --git a/tools/testing/selftests/syscall_user_dispatch/Makefile b/tools/testing/selftests/syscall_user_dispatch/Makefile
+index 8e15fa4..03c1202 100644
+--- a/tools/testing/selftests/syscall_user_dispatch/Makefile
++++ b/tools/testing/selftests/syscall_user_dispatch/Makefile
+@@ -5,5 +5,5 @@ LINUX_HDR_PATH = $(INSTALL_HDR_PATH)/include/
  
- /**
-- * exit_to_user_mode - Fixup state when exiting to user mode
-+ * __exit_to_user_mode - Fixup state when exiting to user mode
-  *
-  * Syscall/interupt exit enables interrupts, but the kernel state is
-  * interrupts disabled when this is invoked. Also tell RCU about it.
-@@ -133,7 +133,7 @@ noinstr void syscall_enter_from_user_mode_prepare(struct pt_regs *regs)
-  *    mitigations, etc.
-  * 4) Tell lockdep that interrupts are enabled
-  */
--static __always_inline void exit_to_user_mode(void)
-+static __always_inline void __exit_to_user_mode(void)
- {
- 	instrumentation_begin();
- 	trace_hardirqs_on_prepare();
-@@ -299,7 +299,7 @@ __visible noinstr void syscall_exit_to_user_mode(struct pt_regs *regs)
- 	local_irq_disable_exit_to_user();
- 	exit_to_user_mode_prepare(regs);
- 	instrumentation_end();
--	exit_to_user_mode();
-+	__exit_to_user_mode();
- }
+ CFLAGS += -Wall -I$(LINUX_HDR_PATH)
  
- noinstr void irqentry_enter_from_user_mode(struct pt_regs *regs)
-@@ -312,7 +312,7 @@ noinstr void irqentry_exit_to_user_mode(struct pt_regs *regs)
- 	instrumentation_begin();
- 	exit_to_user_mode_prepare(regs);
- 	instrumentation_end();
--	exit_to_user_mode();
-+	__exit_to_user_mode();
- }
- 
- noinstr irqentry_state_t irqentry_enter(struct pt_regs *regs)
+-TEST_GEN_PROGS := sud_test
++TEST_GEN_PROGS := sud_test sud_benchmark
+ include ../lib.mk
+diff --git a/tools/testing/selftests/syscall_user_dispatch/sud_benchmark.c b/tools/testing/selftests/syscall_user_dispatch/sud_benchmark.c
+new file mode 100644
+index 0000000..6689f11
+--- /dev/null
++++ b/tools/testing/selftests/syscall_user_dispatch/sud_benchmark.c
+@@ -0,0 +1,200 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Copyright (c) 2020 Collabora Ltd.
++ *
++ * Benchmark and test syscall user dispatch
++ */
++
++#define _GNU_SOURCE
++#include <stdio.h>
++#include <string.h>
++#include <stdlib.h>
++#include <signal.h>
++#include <errno.h>
++#include <time.h>
++#include <sys/time.h>
++#include <unistd.h>
++#include <sys/sysinfo.h>
++#include <sys/prctl.h>
++#include <sys/syscall.h>
++
++#ifndef PR_SET_SYSCALL_USER_DISPATCH
++# define PR_SET_SYSCALL_USER_DISPATCH	59
++# define PR_SYS_DISPATCH_OFF	0
++# define PR_SYS_DISPATCH_ON	1
++#endif
++
++#ifdef __NR_syscalls
++# define MAGIC_SYSCALL_1 (__NR_syscalls + 1) /* Bad Linux syscall number */
++#else
++# define MAGIC_SYSCALL_1 (0xff00)  /* Bad Linux syscall number */
++#endif
++
++/*
++ * To test returning from a sigsys with selector blocked, the test
++ * requires some per-architecture support (i.e. knowledge about the
++ * signal trampoline address).  On i386, we know it is on the vdso, and
++ * a small trampoline is open-coded for x86_64.  Other architectures
++ * that have a trampoline in the vdso will support TEST_BLOCKED_RETURN
++ * out of the box, but don't enable them until they support syscall user
++ * dispatch.
++ */
++#if defined(__x86_64__) || defined(__i386__)
++#define TEST_BLOCKED_RETURN
++#endif
++
++#ifdef __x86_64__
++void* (syscall_dispatcher_start)(void);
++void* (syscall_dispatcher_end)(void);
++#else
++unsigned long syscall_dispatcher_start = 0;
++unsigned long syscall_dispatcher_end = 0;
++#endif
++
++unsigned long trapped_call_count = 0;
++unsigned long native_call_count = 0;
++
++char selector;
++#define SYSCALL_BLOCK   (selector = PR_SYS_DISPATCH_ON)
++#define SYSCALL_UNBLOCK (selector = PR_SYS_DISPATCH_OFF)
++
++#define CALIBRATION_STEP 100000
++#define CALIBRATE_TO_SECS 5
++int factor;
++
++static double one_sysinfo_step(void)
++{
++	struct timespec t1, t2;
++	int i;
++	struct sysinfo info;
++
++	clock_gettime(CLOCK_MONOTONIC, &t1);
++	for (i = 0; i < CALIBRATION_STEP; i++)
++		sysinfo(&info);
++	clock_gettime(CLOCK_MONOTONIC, &t2);
++	return (t2.tv_sec - t1.tv_sec) + 1.0e-9 * (t2.tv_nsec - t1.tv_nsec);
++}
++
++static void calibrate_set(void)
++{
++	double elapsed = 0;
++
++	printf("Calibrating test set to last ~%d seconds...\n", CALIBRATE_TO_SECS);
++
++	while (elapsed < 1) {
++		elapsed += one_sysinfo_step();
++		factor += CALIBRATE_TO_SECS;
++	}
++
++	printf("test iterations = %d\n", CALIBRATION_STEP * factor);
++}
++
++static double perf_syscall(void)
++{
++	unsigned int i;
++	double partial = 0;
++
++	for (i = 0; i < factor; ++i)
++		partial += one_sysinfo_step()/(CALIBRATION_STEP*factor);
++	return partial;
++}
++
++static void handle_sigsys(int sig, siginfo_t *info, void *ucontext)
++{
++	char buf[1024];
++	int len;
++
++	SYSCALL_UNBLOCK;
++
++	/* printf and friends are not signal-safe. */
++	len = snprintf(buf, 1024, "Caught sys_%x\n", info->si_syscall);
++	write(1, buf, len);
++
++	if (info->si_syscall == MAGIC_SYSCALL_1)
++		trapped_call_count++;
++	else
++		native_call_count++;
++
++#ifdef TEST_BLOCKED_RETURN
++	SYSCALL_BLOCK;
++#endif
++
++#ifdef __x86_64__
++	__asm__ volatile("movq $0xf, %rax");
++	__asm__ volatile("leaveq");
++	__asm__ volatile("add $0x8, %rsp");
++	__asm__ volatile("syscall_dispatcher_start:");
++	__asm__ volatile("syscall");
++	__asm__ volatile("nop"); /* Landing pad within dispatcher area */
++	__asm__ volatile("syscall_dispatcher_end:");
++#endif
++
++}
++
++int main(void)
++{
++	struct sigaction act;
++	double time1, time2;
++	int ret;
++	sigset_t mask;
++
++	memset(&act, 0, sizeof(act));
++	sigemptyset(&mask);
++
++	act.sa_sigaction = handle_sigsys;
++	act.sa_flags = SA_SIGINFO;
++	act.sa_mask = mask;
++
++	calibrate_set();
++
++	time1 = perf_syscall();
++	printf("Avg syscall time %.0lfns.\n", time1 * 1.0e9);
++
++	ret = sigaction(SIGSYS, &act, NULL);
++	if (ret) {
++		perror("Error sigaction:");
++		exit(-1);
++	}
++
++	fprintf(stderr, "Enabling syscall trapping.\n");
++
++	if (prctl(PR_SET_SYSCALL_USER_DISPATCH, PR_SYS_DISPATCH_ON,
++		  syscall_dispatcher_start,
++		  (syscall_dispatcher_end - syscall_dispatcher_start + 1),
++		  &selector)) {
++		perror("prctl failed\n");
++		exit(-1);
++	}
++
++	SYSCALL_BLOCK;
++	syscall(MAGIC_SYSCALL_1);
++
++#ifdef TEST_BLOCKED_RETURN
++	if (selector == PR_SYS_DISPATCH_OFF) {
++		fprintf(stderr, "Failed to return with selector blocked.\n");
++		exit(-1);
++	}
++#endif
++
++	SYSCALL_UNBLOCK;
++
++	if (!trapped_call_count) {
++		fprintf(stderr, "syscall trapping does not work.\n");
++		exit(-1);
++	}
++
++	time2 = perf_syscall();
++
++	if (native_call_count) {
++		perror("syscall trapping intercepted more syscalls than expected\n");
++		exit(-1);
++	}
++
++	printf("trapped_call_count %lu, native_call_count %lu.\n",
++	       trapped_call_count, native_call_count);
++	printf("Avg syscall time %.0lfns.\n", time2 * 1.0e9);
++	printf("Interception overhead: %.1lf%% (+%.0lfns).\n",
++	       100.0 * (time2 / time1 - 1.0), 1.0e9 * (time2 - time1));
++	return 0;
++
++}
