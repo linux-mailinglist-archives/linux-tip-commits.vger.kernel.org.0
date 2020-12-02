@@ -2,55 +2,58 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4AB7A2CBF44
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  2 Dec 2020 15:14:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C9C3E2CBF43
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  2 Dec 2020 15:14:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730288AbgLBOM4 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 2 Dec 2020 09:12:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40024 "EHLO
+        id S1728937AbgLBOMv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 2 Dec 2020 09:12:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40032 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730219AbgLBOMo (ORCPT
+        with ESMTP id S1730249AbgLBOMp (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 2 Dec 2020 09:12:44 -0500
+        Wed, 2 Dec 2020 09:12:45 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3935EC0617A6;
-        Wed,  2 Dec 2020 06:12:04 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73091C0617A7;
+        Wed,  2 Dec 2020 06:12:05 -0800 (PST)
 Date:   Wed, 02 Dec 2020 14:12:02 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1606918322;
+        s=2020; t=1606918323;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=qC7331buLxO2vuFkwsGtrm4GufkgOH2IAuIR+dyHZZA=;
-        b=FuWLRRpanDCpzGmhuHan+9bNS71AOOvnFAy4Rvsc4/CQsz4+9UeKDO3nwaWetjX4+9xmaC
-        aPoLYWOxoBUu3OaMA1/b3cX2REDIC53ibyE7rqjl4m1ZsScptLV/mxucXC5ViX3aRYwPbx
-        8aNsDJBX71XIXq/6pIXvHtY7phMymUdivetpZJZKBdJmMSt/UoGwwluc6GCsa5CB9Bv2+U
-        X8i81PEgG+JgI7Bt0wQzg0j77l57SrI6/JukibRstTUoKBYta1c5uF90GEq7nscgAjXpF8
-        F55YELdgBGiNAOu7AAiPpH2zXlcMhLy1GFaGDhjtfsnRIUpkRIkBBAhJpIMXLw==
+        bh=+tbsIkaop7pC3knwQHnfKKRvpwep8cfxUJSf6Cdw0tk=;
+        b=lFfp2jKX1rB5lpRqPSMD19kk2fh7h1cpy+C1EQ5tuBNY1xyLBjETRRADd7pgr5sYs8Rb/n
+        cIOM5oaoiSPdCB3Mo3PfNQ8oOKuLhi/8mKhmGyBTTizL9r+Fl7Z3MYoWiAjwzOxm+Fp9ku
+        UrH0PyQrcUi9n6og2WpNcKRIAALdOzs/PYqIfhN4M7sNULoVVkve6sY+foZTVIIKdUMdS0
+        iKTpElTaj9uluuhV67PXvavs3fxZjG2sYrbf6MklyE/3iP00ikJzMLCyHZD4iMD9EbpDit
+        VixTTDxk+kAi2j9DArrvnxLEhNEEtxVK1QhNP7tOWg0MWw4Cmqw5hRkGwPwL6Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1606918322;
+        s=2020e; t=1606918323;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=qC7331buLxO2vuFkwsGtrm4GufkgOH2IAuIR+dyHZZA=;
-        b=a7/ssSutxMSsxjaRzQ2h/yyX+6/xZBfKA7YNDTGOeKKo63DPRUuJeLBJ86KZ3VJw7zM76w
-        AmOhQj1VlzFnzrBg==
-From:   "tip-bot2 for Sven Schnelle" <tip-bot2@linutronix.de>
+        bh=+tbsIkaop7pC3knwQHnfKKRvpwep8cfxUJSf6Cdw0tk=;
+        b=TFDaEhSDc2qFFVaM5ru5xcyj+vQ3KcYSGGhtkdjf9eXt+OQbp+K7h9zU19JVLGE+IFZA7c
+        062pc6LenWdfnHBw==
+From:   "tip-bot2 for Gabriel Krisman Bertazi" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/entry] entry: Rename enter_from_user_mode()
-Cc:     Sven Schnelle <svens@linux.ibm.com>,
-        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+Subject: [tip: core/entry] docs: Document Syscall User Dispatch
+Cc:     Gabriel Krisman Bertazi <krisman@collabora.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Kees Cook <keescook@chromium.org>,
+        Andy Lutomirski <luto@kernel.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20201201142755.31931-2-svens@linux.ibm.com>
-References: <20201201142755.31931-2-svens@linux.ibm.com>
+In-Reply-To: <20201127193238.821364-8-krisman@collabora.com>
+References: <20201127193238.821364-8-krisman@collabora.com>
 MIME-Version: 1.0
-Message-ID: <160691832237.3364.17734338910542289465.tip-bot2@tip-bot2>
+Message-ID: <160691832261.3364.17061203625721748275.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,73 +64,137 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/entry branch of tip:
 
-Commit-ID:     6666bb714fb3bc7b2e8be72b9c92f2d8a89ea2dc
-Gitweb:        https://git.kernel.org/tip/6666bb714fb3bc7b2e8be72b9c92f2d8a89ea2dc
-Author:        Sven Schnelle <svens@linux.ibm.com>
-AuthorDate:    Tue, 01 Dec 2020 15:27:51 +01:00
+Commit-ID:     a4452e671c6770e1bb80764f39995934067f70a0
+Gitweb:        https://git.kernel.org/tip/a4452e671c6770e1bb80764f39995934067f70a0
+Author:        Gabriel Krisman Bertazi <krisman@collabora.com>
+AuthorDate:    Fri, 27 Nov 2020 14:32:38 -05:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Wed, 02 Dec 2020 15:07:57 +01:00
 
-entry: Rename enter_from_user_mode()
+docs: Document Syscall User Dispatch
 
-In order to make this function publicly available rename it so it can still
-be inlined. An additional enter_from_user_mode() function will be added with
-a later commit.
+Explain the interface, provide some background and security notes.
 
-Signed-off-by: Sven Schnelle <svens@linux.ibm.com>
+[ tglx: Add note about non-visibility, add it to the index and fix the
+  	kerneldoc warning ] 
+
+Signed-off-by: Gabriel Krisman Bertazi <krisman@collabora.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20201201142755.31931-2-svens@linux.ibm.com
-
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Reviewed-by: Andy Lutomirski <luto@kernel.org>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20201127193238.821364-8-krisman@collabora.com
 ---
- kernel/entry/common.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ Documentation/admin-guide/index.rst                 |  1 +-
+ Documentation/admin-guide/syscall-user-dispatch.rst | 90 ++++++++++++-
+ 2 files changed, 91 insertions(+)
+ create mode 100644 Documentation/admin-guide/syscall-user-dispatch.rst
 
-diff --git a/kernel/entry/common.c b/kernel/entry/common.c
-index e661e70..8e294a7 100644
---- a/kernel/entry/common.c
-+++ b/kernel/entry/common.c
-@@ -11,7 +11,7 @@
- #include <trace/events/syscalls.h>
- 
- /**
-- * enter_from_user_mode - Establish state when coming from user mode
-+ * __enter_from_user_mode - Establish state when coming from user mode
-  *
-  * Syscall/interrupt entry disables interrupts, but user mode is traced as
-  * interrupts enabled. Also with NO_HZ_FULL RCU might be idle.
-@@ -20,7 +20,7 @@
-  * 2) Invoke context tracking if enabled to reactivate RCU
-  * 3) Trace interrupts off state
-  */
--static __always_inline void enter_from_user_mode(struct pt_regs *regs)
-+static __always_inline void __enter_from_user_mode(struct pt_regs *regs)
- {
- 	arch_check_user_regs(regs);
- 	lockdep_hardirqs_off(CALLER_ADDR0);
-@@ -103,7 +103,7 @@ noinstr long syscall_enter_from_user_mode(struct pt_regs *regs, long syscall)
- {
- 	long ret;
- 
--	enter_from_user_mode(regs);
-+	__enter_from_user_mode(regs);
- 
- 	instrumentation_begin();
- 	local_irq_enable();
-@@ -115,7 +115,7 @@ noinstr long syscall_enter_from_user_mode(struct pt_regs *regs, long syscall)
- 
- noinstr void syscall_enter_from_user_mode_prepare(struct pt_regs *regs)
- {
--	enter_from_user_mode(regs);
-+	__enter_from_user_mode(regs);
- 	instrumentation_begin();
- 	local_irq_enable();
- 	instrumentation_end();
-@@ -304,7 +304,7 @@ __visible noinstr void syscall_exit_to_user_mode(struct pt_regs *regs)
- 
- noinstr void irqentry_enter_from_user_mode(struct pt_regs *regs)
- {
--	enter_from_user_mode(regs);
-+	__enter_from_user_mode(regs);
- }
- 
- noinstr void irqentry_exit_to_user_mode(struct pt_regs *regs)
+diff --git a/Documentation/admin-guide/index.rst b/Documentation/admin-guide/index.rst
+index 4e0c4ae..b29d3c1 100644
+--- a/Documentation/admin-guide/index.rst
++++ b/Documentation/admin-guide/index.rst
+@@ -111,6 +111,7 @@ configure specific aspects of kernel behavior to your liking.
+    rtc
+    serial-console
+    svga
++   syscall-user-dispatch
+    sysrq
+    thunderbolt
+    ufs
+diff --git a/Documentation/admin-guide/syscall-user-dispatch.rst b/Documentation/admin-guide/syscall-user-dispatch.rst
+new file mode 100644
+index 0000000..a380d65
+--- /dev/null
++++ b/Documentation/admin-guide/syscall-user-dispatch.rst
+@@ -0,0 +1,90 @@
++.. SPDX-License-Identifier: GPL-2.0
++
++=====================
++Syscall User Dispatch
++=====================
++
++Background
++----------
++
++Compatibility layers like Wine need a way to efficiently emulate system
++calls of only a part of their process - the part that has the
++incompatible code - while being able to execute native syscalls without
++a high performance penalty on the native part of the process.  Seccomp
++falls short on this task, since it has limited support to efficiently
++filter syscalls based on memory regions, and it doesn't support removing
++filters.  Therefore a new mechanism is necessary.
++
++Syscall User Dispatch brings the filtering of the syscall dispatcher
++address back to userspace.  The application is in control of a flip
++switch, indicating the current personality of the process.  A
++multiple-personality application can then flip the switch without
++invoking the kernel, when crossing the compatibility layer API
++boundaries, to enable/disable the syscall redirection and execute
++syscalls directly (disabled) or send them to be emulated in userspace
++through a SIGSYS.
++
++The goal of this design is to provide very quick compatibility layer
++boundary crosses, which is achieved by not executing a syscall to change
++personality every time the compatibility layer executes.  Instead, a
++userspace memory region exposed to the kernel indicates the current
++personality, and the application simply modifies that variable to
++configure the mechanism.
++
++There is a relatively high cost associated with handling signals on most
++architectures, like x86, but at least for Wine, syscalls issued by
++native Windows code are currently not known to be a performance problem,
++since they are quite rare, at least for modern gaming applications.
++
++Since this mechanism is designed to capture syscalls issued by
++non-native applications, it must function on syscalls whose invocation
++ABI is completely unexpected to Linux.  Syscall User Dispatch, therefore
++doesn't rely on any of the syscall ABI to make the filtering.  It uses
++only the syscall dispatcher address and the userspace key.
++
++As the ABI of these intercepted syscalls is unknown to Linux, these
++syscalls are not instrumentable via ptrace or the syscall tracepoints.
++
++Interface
++---------
++
++A thread can setup this mechanism on supported kernels by executing the
++following prctl:
++
++  prctl(PR_SET_SYSCALL_USER_DISPATCH, <op>, <offset>, <length>, [selector])
++
++<op> is either PR_SYS_DISPATCH_ON or PR_SYS_DISPATCH_OFF, to enable and
++disable the mechanism globally for that thread.  When
++PR_SYS_DISPATCH_OFF is used, the other fields must be zero.
++
++[<offset>, <offset>+<length>) delimit a memory region interval
++from which syscalls are always executed directly, regardless of the
++userspace selector.  This provides a fast path for the C library, which
++includes the most common syscall dispatchers in the native code
++applications, and also provides a way for the signal handler to return
++without triggering a nested SIGSYS on (rt\_)sigreturn.  Users of this
++interface should make sure that at least the signal trampoline code is
++included in this region. In addition, for syscalls that implement the
++trampoline code on the vDSO, that trampoline is never intercepted.
++
++[selector] is a pointer to a char-sized region in the process memory
++region, that provides a quick way to enable disable syscall redirection
++thread-wide, without the need to invoke the kernel directly.  selector
++can be set to PR_SYS_DISPATCH_ON or PR_SYS_DISPATCH_OFF.  Any other
++value should terminate the program with a SIGSYS.
++
++Security Notes
++--------------
++
++Syscall User Dispatch provides functionality for compatibility layers to
++quickly capture system calls issued by a non-native part of the
++application, while not impacting the Linux native regions of the
++process.  It is not a mechanism for sandboxing system calls, and it
++should not be seen as a security mechanism, since it is trivial for a
++malicious application to subvert the mechanism by jumping to an allowed
++dispatcher region prior to executing the syscall, or to discover the
++address and modify the selector value.  If the use case requires any
++kind of security sandboxing, Seccomp should be used instead.
++
++Any fork or exec of the existing process resets the mechanism to
++PR_SYS_DISPATCH_OFF.
