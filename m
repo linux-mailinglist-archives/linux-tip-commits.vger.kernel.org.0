@@ -2,57 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 82AE22CBA8F
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  2 Dec 2020 11:29:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CC4E32CBC8D
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  2 Dec 2020 13:13:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728664AbgLBK2p (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 2 Dec 2020 05:28:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33620 "EHLO
+        id S1728699AbgLBMMh (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 2 Dec 2020 07:12:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49636 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728555AbgLBK2o (ORCPT
+        with ESMTP id S1728341AbgLBMMh (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 2 Dec 2020 05:28:44 -0500
+        Wed, 2 Dec 2020 07:12:37 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B31FDC0613CF;
-        Wed,  2 Dec 2020 02:28:04 -0800 (PST)
-Date:   Wed, 02 Dec 2020 10:28:02 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 812A0C0613CF;
+        Wed,  2 Dec 2020 04:11:57 -0800 (PST)
+Date:   Wed, 02 Dec 2020 12:11:53 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1606904883;
+        s=2020; t=1606911114;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=GZJQsQNhrH/5pVvSDLr2TDadb/o0VDkOMz7MrTikpUk=;
-        b=ooSXoMBIdZ74nMhGmcD4v8LUXzpfOGfN/9hzTuR4Blxt5ei/vj4ArNtWXfvWrSBF2tKxIM
-        LKzptS0YgbD1/BmGNmgcfYbnrX6gJbDu/3j87vNnJLhsRl84FTCG30fpYJOsb0BfaWof8C
-        oOGaLEV27drkTFyzQfJL0LFsmOWDX9TvOYcRX6GbKKG5t4RDTKl8MvITB5Epyf+01CHlOM
-        4sWO15PSdxJ5poxL01VIzAMazVzQF9MD8/qXk7wRjK+vlm5N28D61LOvklrSHSQB90iapw
-        1dp+RmSAEQbNu/kvbF1PX9iV5kEovGyrF07CgbHbp4WbATT75QbramMTXUWtVw==
+        bh=KG8wQsly4u9F6yV+AsFpIO8VtDCWXKG4ZqoLK+MgegY=;
+        b=MiCZQM4gvgm/xEx+6v9BylIHZtzIqUTR2TwZhFJmDZDnUYDu0gmLNXd0kGeqVlFiunnT4y
+        vqqT5BczqqUxeC62ZfjvRBjAKQgBjVIQ2cwQRSq1d+AWKGCU8+kgp7XAM/7BIgEBv9NYRs
+        iIFpTKGfnhaZMn0bif4SvnU8OYWHMgVWepIWH2VooORm0RAz+dMa2yByvUkxIStkvdTzv8
+        r5tvoNmlzOgZ0ZCMLe1YLl5xcHvxSX6LlmQpTTh5U/AFRG6FWbL4Tgy7yp2kWg46foydWf
+        wh1TsfEgTsQROSP7yh34UAZcA6P4Vz2UJM/DT2qSdZ/D3zEiQvYXjhvVaMcvkw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1606904883;
+        s=2020e; t=1606911114;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=GZJQsQNhrH/5pVvSDLr2TDadb/o0VDkOMz7MrTikpUk=;
-        b=05wjwML6N0cpmCT1EYSSrscFhRxmaqzeWXSamXt4ZP4h+VsJ1TvEHZSZ+izlW7JwODgiel
-        UYe9+HrQMoIIuiDg==
-From:   "tip-bot2 for Dexuan Cui" <tip-bot2@linutronix.de>
+        bh=KG8wQsly4u9F6yV+AsFpIO8VtDCWXKG4ZqoLK+MgegY=;
+        b=oJ6aiVfFWousKKB3U4Ab5hBZJp1A8qT/lxyHUk7eQXWGpqJKORGONbhQymuyaF7TG7bJRc
+        Fs2Rwp5Ge0ul6EBA==
+From:   "tip-bot2 for Mauro Carvalho Chehab" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/apic] iommu/hyper-v: Remove I/O-APIC ID check from
- hyperv_irq_remapping_select()
-Cc:     Dexuan Cui <decui@microsoft.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        David Woodhouse <dwmw@amazon.co.uk>, x86@kernel.org,
+Subject: [tip: x86/sgx] x86/sgx: Fix a typo in kernel-doc markup
+Cc:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        Borislav Petkov <bp@suse.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20201202004510.1818-1-decui@microsoft.com>
-References: <20201202004510.1818-1-decui@microsoft.com>
+In-Reply-To: =?utf-8?q?=3Cca11a4540d981cbd5f026b6cbc8931aa55654e00=2E16068?=
+ =?utf-8?q?97462=2Egit=2Emchehab+huawei=40kernel=2Eorg=3E?=
+References: =?utf-8?q?=3Cca11a4540d981cbd5f026b6cbc8931aa55654e00=2E160689?=
+ =?utf-8?q?7462=2Egit=2Emchehab+huawei=40kernel=2Eorg=3E?=
 MIME-Version: 1.0
-Message-ID: <160690488231.3364.5753445245767279779.tip-bot2@tip-bot2>
+Message-ID: <160691111323.3364.16384786016052912723.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,53 +61,41 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/apic branch of tip:
+The following commit has been merged into the x86/sgx branch of tip:
 
-Commit-ID:     26ab12bb9d96133b7880141d68b5e01a8783de9d
-Gitweb:        https://git.kernel.org/tip/26ab12bb9d96133b7880141d68b5e01a8783de9d
-Author:        Dexuan Cui <decui@microsoft.com>
-AuthorDate:    Tue, 01 Dec 2020 16:45:10 -08:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 02 Dec 2020 11:22:55 +01:00
+Commit-ID:     bab8c183d1d452f5fdc059aef2f0788bd2986231
+Gitweb:        https://git.kernel.org/tip/bab8c183d1d452f5fdc059aef2f0788bd2986231
+Author:        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+AuthorDate:    Wed, 02 Dec 2020 09:27:14 +01:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Wed, 02 Dec 2020 12:54:47 +01:00
 
-iommu/hyper-v: Remove I/O-APIC ID check from hyperv_irq_remapping_select()
+x86/sgx: Fix a typo in kernel-doc markup
 
-commit a491bb19f728 ("iommu/hyper-v: Implement select() method on remapping
-irqdomain") restricted the irq_domain_ops::select() callback to match on
-I/O-APIC index 0, which was correct until the parameter was changed to
-carry the I/O APIC ID in commit f36a74b9345a.
+Fix the following kernel-doc warning:
 
-If the ID is not 0 then the match fails. Therefore I/O-APIC init fails to
-retrieve the parent irqdomain for the I/O-APIC resulting in a boot panic:
+  arch/x86/include/uapi/asm/sgx.h:19: warning: expecting prototype \
+    for enum sgx_epage_flags. Prototype was for enum sgx_page_flags instead
 
-    kernel BUG at arch/x86/kernel/apic/io_apic.c:2408!
+ [ bp: Launder the commit message. ]
 
-Fix it by matching the I/O-APIC independent of the ID as there is only one
-I/O APIC emulated by Hyper-V.
-
-[ tglx: Amended changelog ]
-
-Fixes: f36a74b9345a ("x86/ioapic: Use I/O-APIC ID for finding irqdomain, not index")
-Signed-off-by: Dexuan Cui <decui@microsoft.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
-Link: https://lore.kernel.org/r/20201202004510.1818-1-decui@microsoft.com
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lkml.kernel.org/r/ca11a4540d981cbd5f026b6cbc8931aa55654e00.1606897462.git.mchehab+huawei@kernel.org
 ---
- drivers/iommu/hyperv-iommu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/include/uapi/asm/sgx.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iommu/hyperv-iommu.c b/drivers/iommu/hyperv-iommu.c
-index 9438daa..1d21a0b 100644
---- a/drivers/iommu/hyperv-iommu.c
-+++ b/drivers/iommu/hyperv-iommu.c
-@@ -105,8 +105,8 @@ static int hyperv_irq_remapping_select(struct irq_domain *d,
- 				       struct irq_fwspec *fwspec,
- 				       enum irq_domain_bus_token bus_token)
- {
--	/* Claim only the first (and only) I/OAPIC */
--	return x86_fwspec_is_ioapic(fwspec) && fwspec->param[0] == 0;
-+	/* Claim the only I/O APIC emulated by Hyper-V */
-+	return x86_fwspec_is_ioapic(fwspec);
- }
+diff --git a/arch/x86/include/uapi/asm/sgx.h b/arch/x86/include/uapi/asm/sgx.h
+index 791e453..9034f30 100644
+--- a/arch/x86/include/uapi/asm/sgx.h
++++ b/arch/x86/include/uapi/asm/sgx.h
+@@ -9,7 +9,7 @@
+ #include <linux/ioctl.h>
  
- static const struct irq_domain_ops hyperv_ir_domain_ops = {
+ /**
+- * enum sgx_epage_flags - page control flags
++ * enum sgx_page_flags - page control flags
+  * %SGX_PAGE_MEASURE:	Measure the page contents with a sequence of
+  *			ENCLS[EEXTEND] operations.
+  */
