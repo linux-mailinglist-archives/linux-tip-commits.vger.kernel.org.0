@@ -2,56 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DC04E2CD0B8
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  3 Dec 2020 09:03:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D18E2CD21A
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  3 Dec 2020 10:09:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387642AbgLCICl (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 3 Dec 2020 03:02:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36330 "EHLO
+        id S2388476AbgLCJIN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 3 Dec 2020 04:08:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46380 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726539AbgLCICl (ORCPT
+        with ESMTP id S2387504AbgLCJIM (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 3 Dec 2020 03:02:41 -0500
+        Thu, 3 Dec 2020 04:08:12 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 108FEC061A4F;
-        Thu,  3 Dec 2020 00:02:01 -0800 (PST)
-Date:   Thu, 03 Dec 2020 08:01:58 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E56A2C061A4D;
+        Thu,  3 Dec 2020 01:07:31 -0800 (PST)
+Date:   Thu, 03 Dec 2020 09:07:29 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1606982518;
+        s=2020; t=1606986449;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=U6BgxEmxKkozwk8mZoVi8ciZYSw10ivYCIXxs+1D0s8=;
-        b=La43T1XMg7IIadZsN+ZiFhU46coAkeBXzBw1XkjApNHaMH+WZ9MNRc1i4VRxtPb/X2dyBg
-        eIjzb1UNhDcVENUnKq0pTqrUvDrUw5NrQBLqdnhvmX1LppQjBMsRvWtsME1fWpKiQElfKW
-        Q3w5fvhQgHuy68YU3/fCQC+ej6+/iWQJRRgoaXPyWr4mknB4hAat8KjMCAbqJ+KHCDgpcu
-        qnrvm8BWvS9XbC3ucpwdvE+9+PP9RTNcFNqxck4pXqJyG23fLp/lflTHlQGN3vuOw46MqL
-        uc3WdvgfngfUi3nqY/nPYf3MMwVmjEHQQU45Nqcm+3GcDyTvFdbXSM+wmz1H9g==
+        bh=zDIknPMIm3lzC3RwS+ZU/AF5O0kS5a1gOT3SJgmIAtc=;
+        b=pxA7WaGJr3/5jV38hxrN758aGsMCYXAvbTww4TnpSYT8fCdVB4srfnIYD4E0WwGVCAEhLq
+        vStmfntdmMMInc+9+PREnLZWs2lOMUmLWzCZOOt73WFV1dL5S8ryHZLfpm63XT29LjwChF
+        odc5CgyF01aj6HBH0iIUsnZDqhLI1FUa2DuXYdItmpUHBBqCclXNt50ntv0NjFuXjbdeXn
+        q7ezJNDqwyWS6p7GU+1gTYmP5CytZWKxcroM4wHUxJIQoDdjwQNyjcORnHatGx4zFctEMQ
+        yCmZGgNYv3UlSxpO1jgXNP8tBH3sn7hu4n0zDgf/oVbBGKeeopKwRs6ZC5QxUg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1606982518;
+        s=2020e; t=1606986449;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=U6BgxEmxKkozwk8mZoVi8ciZYSw10ivYCIXxs+1D0s8=;
-        b=fHVlzY0NH3miIdrzZfeZcEka4Uvx2cfi+7Q2/SueEViwHrFjCps+yTOJEIXe8DVEEero55
-        nwt0R8Px+EvzuVBQ==
-From:   "tip-bot2 for Dan Carpenter" <tip-bot2@linutronix.de>
+        bh=zDIknPMIm3lzC3RwS+ZU/AF5O0kS5a1gOT3SJgmIAtc=;
+        b=CAE4SjaQsLhw4Z1E9Gklt8kpfMa8Bv5mMCnXbEKjr5p8fLpTIsvfs3MekH16ab2y3G7JW2
+        GGU90/poZOjeCfDA==
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/platform] x86/platform/uv: Fix an error code in uv_hubs_init()
-Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Borislav Petkov <bp@suse.de>,
-        Justin Ernst <justin.ernst@hpe.com>, x86@kernel.org,
+Subject: [tip: locking/urgent] intel_idle: Build fix
+Cc:     Randy Dunlap <rdunlap@infradead.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <jMAJb3H3iv@mwanda>
-References: <jMAJb3H3iv@mwanda>
+In-Reply-To: <20201130115402.GO3040@hirez.programming.kicks-ass.net>
+References: <20201130115402.GO3040@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-Message-ID: <160698251832.3364.1308727905551541129.tip-bot2@tip-bot2>
+Message-ID: <160698644907.3364.1644696820259028448.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,38 +59,70 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/platform branch of tip:
+The following commit has been merged into the locking/urgent branch of tip:
 
-Commit-ID:     18d047bd89b8c1f9ba3c9b2d2f7309c953b3ce97
-Gitweb:        https://git.kernel.org/tip/18d047bd89b8c1f9ba3c9b2d2f7309c953b3ce97
-Author:        Dan Carpenter <dan.carpenter@oracle.com>
-AuthorDate:    Wed, 02 Dec 2020 17:44:07 +03:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Thu, 03 Dec 2020 08:51:06 +01:00
+Commit-ID:     4d916140bf28ff027997144ea1bb4299e1536f87
+Gitweb:        https://git.kernel.org/tip/4d916140bf28ff027997144ea1bb4299e1536f87
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Mon, 30 Nov 2020 12:54:34 +01:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Thu, 03 Dec 2020 10:00:23 +01:00
 
-x86/platform/uv: Fix an error code in uv_hubs_init()
+intel_idle: Build fix
 
-Return -ENOMEM on allocation failure instead of returning random stack
-memory contents.
+Because CONFIG_ soup.
 
-Fixes: 4fc2cf1f2daf ("x86/platform/uv: Add new uv_sysfs platform driver")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Justin Ernst <justin.ernst@hpe.com>
-Link: https://lkml.kernel.org/r/X8eoN/jMAJb3H3iv@mwanda
+Fixes: 6e1d2bc675bd ("intel_idle: Fix intel_idle() vs tracing")
+Reported-by: Randy Dunlap <rdunlap@infradead.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20201130115402.GO3040@hirez.programming.kicks-ass.net
 ---
- drivers/platform/x86/uv_sysfs.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/idle/intel_idle.c | 28 ++++++++++++++--------------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/platform/x86/uv_sysfs.c b/drivers/platform/x86/uv_sysfs.c
-index 54c3425..e17ce8c 100644
---- a/drivers/platform/x86/uv_sysfs.c
-+++ b/drivers/platform/x86/uv_sysfs.c
-@@ -248,6 +248,7 @@ static int uv_hubs_init(void)
- 		uv_hubs[i] = kzalloc(sizeof(*uv_hubs[i]), GFP_KERNEL);
- 		if (!uv_hubs[i]) {
- 			i--;
-+			ret = -ENOMEM;
- 			goto err_hubs;
- 		}
+diff --git a/drivers/idle/intel_idle.c b/drivers/idle/intel_idle.c
+index 7ee7ffe..d793355 100644
+--- a/drivers/idle/intel_idle.c
++++ b/drivers/idle/intel_idle.c
+@@ -1140,6 +1140,20 @@ static bool __init intel_idle_max_cstate_reached(int cstate)
+ 	return false;
+ }
  
++static bool __init intel_idle_state_needs_timer_stop(struct cpuidle_state *state)
++{
++	unsigned long eax = flg2MWAIT(state->flags);
++
++	if (boot_cpu_has(X86_FEATURE_ARAT))
++		return false;
++
++	/*
++	 * Switch over to one-shot tick broadcast if the target C-state
++	 * is deeper than C1.
++	 */
++	return !!((eax >> MWAIT_SUBSTATE_SIZE) & MWAIT_CSTATE_MASK);
++}
++
+ #ifdef CONFIG_ACPI_PROCESSOR_CSTATE
+ #include <acpi/processor.h>
+ 
+@@ -1210,20 +1224,6 @@ static bool __init intel_idle_acpi_cst_extract(void)
+ 	return false;
+ }
+ 
+-static bool __init intel_idle_state_needs_timer_stop(struct cpuidle_state *state)
+-{
+-	unsigned long eax = flg2MWAIT(state->flags);
+-
+-	if (boot_cpu_has(X86_FEATURE_ARAT))
+-		return false;
+-
+-	/*
+-	 * Switch over to one-shot tick broadcast if the target C-state
+-	 * is deeper than C1.
+-	 */
+-	return !!((eax >> MWAIT_SUBSTATE_SIZE) & MWAIT_CSTATE_MASK);
+-}
+-
+ static void __init intel_idle_init_cstates_acpi(struct cpuidle_driver *drv)
+ {
+ 	int cstate, limit = min_t(int, CPUIDLE_STATE_MAX, acpi_state_table.count);
