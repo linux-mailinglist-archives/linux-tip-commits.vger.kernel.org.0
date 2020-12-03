@@ -2,55 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 432E32CD254
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  3 Dec 2020 10:16:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C85CD2CD240
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  3 Dec 2020 10:14:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388592AbgLCJPL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 3 Dec 2020 04:15:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47280 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728764AbgLCJOC (ORCPT
+        id S1730109AbgLCJOH (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 3 Dec 2020 04:14:07 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:39482 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728392AbgLCJOD (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 3 Dec 2020 04:14:02 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B3C8C061A4E;
-        Thu,  3 Dec 2020 01:13:22 -0800 (PST)
+        Thu, 3 Dec 2020 04:14:03 -0500
 Date:   Thu, 03 Dec 2020 09:13:20 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1606986801;
+        s=2020; t=1606986800;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=VIkKosaBcX+Ew9O7TRSvoATVKwe3UK0Q+EST2eiBX3M=;
-        b=InWutED0oVr6hdMklslXLHrI2lwXpvqJ2gcMSSP2a9T6IZyY+mNR7VFKOHaMwBePemEZCa
-        RXVZxinOHJ+hkIVExp802jsUAkrci2z4ywpHsiIIxo+WavyBt/tLuPZaqwA5j86++wults
-        zkcVaBqiG+R2yoDRzRaylHsnBX9aOK/8UChwDaTEWro5EdF46DW7PRHT6fB56VLnOWAym6
-        hOjNuoBMuPpsrSJJVXbqIKBADrUVPpl2y4FU97WX7tj+US9QGbm0y+xgO2mQ1oHIBaSOr1
-        34ZwvufJxTGpio54tPSvPA1kA+mswYjtRlFNOPGQfytlmDpBg5IT01eEGuv4QA==
+        bh=uFBS9Ar7CYgrL0OKL4ivCXVwnlwojpwvEZ8sFPmcvsQ=;
+        b=wVEZz0u/xVDMzJICQoi6s0AwuTeAytuebKjxmXOBc2+kAlpyNM75hTEbxKMg57vmC5nkcv
+        rSmRigbC0SCgtpSgl1mYyzr+2rTfvr9I91b8eckvrBooyqxAp4ltnX7sDWZ6f34SbmEbvQ
+        0C/RXnmS9/NrImbUqDbkpiFbpBMcLZDzWwr6NGWmLHLyEEs9QjIpvq/5aKASc36ZtRCIqG
+        DA5EDAai3M9l9GbesF/JCChcxz5/y5slfufUuy1M+cwiVA+GQV/AvwLXX9mTKIyDmV4Rt+
+        eLQTTlduDDnQ7oh4hEGIG0Q1OhxXWx01A6RbStDRIHS13EXDkufsnCUKC/WKPg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1606986801;
+        s=2020e; t=1606986800;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=VIkKosaBcX+Ew9O7TRSvoATVKwe3UK0Q+EST2eiBX3M=;
-        b=PdtnRIrCeNr0L7M1hh3TMvtcDC4xwJ5gwA/oZE+y+CRveABXMz7jhiiZy8bUqYdMDGBmJc
-        pCqqaKqxbObSwuDQ==
-From:   "tip-bot2 for Giovanni Gherdovich" <tip-bot2@linutronix.de>
+        bh=uFBS9Ar7CYgrL0OKL4ivCXVwnlwojpwvEZ8sFPmcvsQ=;
+        b=p13/bQ6fks5XtQStTQMt91kDSBRyQgGhers4KyO/DMZONo3DGx1XpTw8UaRCXyWCzBt5bm
+        6rLk7dQjPKTq5uAA==
+From:   "tip-bot2 for Mauro Carvalho Chehab" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] x86, sched: Use midpoint of max_boost and max_P for
- frequency invariance on AMD EPYC
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: sched/core] sched: Fix kernel-doc markup
+Cc:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Vincent Guittot <vincent.guittot@linaro.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20201112182614.10700-3-ggherdovich@suse.cz>
-References: <20201112182614.10700-3-ggherdovich@suse.cz>
+In-Reply-To: =?utf-8?q?=3C50cd6f460aeb872ebe518a8e9cfffda2df8bdb0a=2E16068?=
+ =?utf-8?q?23973=2Egit=2Emchehab+huawei=40kernel=2Eorg=3E?=
+References: =?utf-8?q?=3C50cd6f460aeb872ebe518a8e9cfffda2df8bdb0a=2E160682?=
+ =?utf-8?q?3973=2Egit=2Emchehab+huawei=40kernel=2Eorg=3E?=
 MIME-Version: 1.0
-Message-ID: <160698680062.3364.2318205075982527285.tip-bot2@tip-bot2>
+Message-ID: <160698680037.3364.2097322976526631858.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,77 +61,76 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     46609527577d1def0af29ca5b56cffeeea771ada
-Gitweb:        https://git.kernel.org/tip/46609527577d1def0af29ca5b56cffeeea771ada
-Author:        Giovanni Gherdovich <ggherdovich@suse.cz>
-AuthorDate:    Thu, 12 Nov 2020 19:26:13 +01:00
+Commit-ID:     65697a12a10f2ac8ab9ed1003134cac3cfb72b48
+Gitweb:        https://git.kernel.org/tip/65697a12a10f2ac8ab9ed1003134cac3cfb72b48
+Author:        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+AuthorDate:    Tue, 01 Dec 2020 13:09:06 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Thu, 03 Dec 2020 10:00:35 +01:00
 
-x86, sched: Use midpoint of max_boost and max_P for frequency invariance on AMD EPYC
+sched: Fix kernel-doc markup
 
-Frequency invariant accounting calculations need the ratio
-freq_curr/freq_max, but freq_max is unknown as it depends on dynamic power
-allocation between cores: AMD EPYC CPUs implement "Core Performance Boost".
-Three candidates are considered to estimate this value:
+Kernel-doc requires that a kernel-doc markup to be immediately
+below the function prototype, as otherwise it will rename it.
+So, move sys_sched_yield() markup to the right place.
 
-- maximum non-boost frequency
-- maximum boost frequency
-- the mid point between the above two
+Also fix the cpu_util() markup: Kernel-doc markups
+should use this format:
+        identifier - description
 
-Experimental data on an AMD EPYC Zen2 machine slightly favors the third
-option, which is applied with this patch.
-
-The analysis uses the ondemand cpufreq governor as baseline, and compares
-it with schedutil in a number of configurations. Using the freq_max value
-described above offers a moderate advantage in performance and efficiency:
-
-sugov-max (freq_max=max_boost) performs the worst on tbench: less
-throughput and reduced efficiency than the other invariant-schedutil
-options (see "Data Overview" below). Consider that tbench is generally a
-problematic case as no schedutil version currently is better than ondemand.
-
-sugov-P0 (freq_max=max_P) is the worst on dbench, while the other sugov's
-can surpass ondemand with less filesystem latency and slightly increased
-efficiency.
-
-1. DATA OVERVIEW
-2. DETAILED PERFORMANCE TABLES
-3. POWER CONSUMPTION TABLE
-
-1. DATA OVERVIEW
-================
-
-sugov-noinv : non-invariant schedutil governor
-sugov-max   : invariant schedutil, freq_max=max_boost
-sugov-mid   : invariant schedutil, freq_max=midpoint
-sugov-P0    : invariant schedutil, freq_max=max_P
-perfgov     : performance governor
-
-driver      : acpi_cpufreq
-machine     : AMD EPYC 7742 (Zen2, aka "Rome"), dual socket,
-              128 cores / 256 threads, SATA SSD storage, 250G of memory,
-	      XFS filesystem
-
-Benchmarks are described in the next section.
-Tilde (~) means the value is the same as baseline.
-
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20201112182614.10700-3-ggherdovich@suse.cz
+Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
+Link: https://lkml.kernel.org/r/50cd6f460aeb872ebe518a8e9cfffda2df8bdb0a.1606823973.git.mchehab+huawei@kernel.org
 ---
- arch/x86/kernel/smpboot.c | 2 ++
- 1 file changed, 2 insertions(+)
+ kernel/sched/core.c | 16 ++++++++--------
+ kernel/sched/fair.c |  2 +-
+ 2 files changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
-index a4ab5cf..c5dd5f6 100644
---- a/arch/x86/kernel/smpboot.c
-+++ b/arch/x86/kernel/smpboot.c
-@@ -2054,6 +2054,8 @@ static bool amd_set_max_freq_ratio(void)
- 	}
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index a7abbba..7af80c3 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -6611,14 +6611,6 @@ SYSCALL_DEFINE3(sched_getaffinity, pid_t, pid, unsigned int, len,
+ 	return ret;
+ }
  
- 	perf_ratio = div_u64(highest_perf * SCHED_CAPACITY_SCALE, nominal_perf);
-+	/* midpoint between max_boost and max_P */
-+	perf_ratio = (perf_ratio + SCHED_CAPACITY_SCALE) >> 1;
- 	if (!perf_ratio) {
- 		pr_debug("Non-zero highest/nominal perf values led to a 0 ratio\n");
- 		return false;
+-/**
+- * sys_sched_yield - yield the current processor to other threads.
+- *
+- * This function yields the current CPU to other tasks. If there are no
+- * other threads running on this CPU then this function will return.
+- *
+- * Return: 0.
+- */
+ static void do_sched_yield(void)
+ {
+ 	struct rq_flags rf;
+@@ -6636,6 +6628,14 @@ static void do_sched_yield(void)
+ 	schedule();
+ }
+ 
++/**
++ * sys_sched_yield - yield the current processor to other threads.
++ *
++ * This function yields the current CPU to other tasks. If there are no
++ * other threads running on this CPU then this function will return.
++ *
++ * Return: 0.
++ */
+ SYSCALL_DEFINE0(sched_yield)
+ {
+ 	do_sched_yield();
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index e7e21ac..f5dceda 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -6330,7 +6330,7 @@ static int select_idle_sibling(struct task_struct *p, int prev, int target)
+ }
+ 
+ /**
+- * Amount of capacity of a CPU that is (estimated to be) used by CFS tasks
++ * cpu_util - Estimates the amount of capacity of a CPU used by CFS tasks.
+  * @cpu: the CPU to get the utilization of
+  *
+  * The unit of the return value must be the one of capacity so we can compare
