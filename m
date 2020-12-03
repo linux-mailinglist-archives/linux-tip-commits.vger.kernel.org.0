@@ -2,20 +2,17 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BE4092CD27A
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  3 Dec 2020 10:26:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 932F82CD27E
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  3 Dec 2020 10:26:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388425AbgLCJZP (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 3 Dec 2020 04:25:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48988 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729955AbgLCJZO (ORCPT
+        id S2388514AbgLCJZY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 3 Dec 2020 04:25:24 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:39622 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728664AbgLCJZQ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 3 Dec 2020 04:25:14 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8ABE4C061A4E;
-        Thu,  3 Dec 2020 01:24:34 -0800 (PST)
-Date:   Thu, 03 Dec 2020 09:24:32 -0000
+        Thu, 3 Dec 2020 04:25:16 -0500
+Date:   Thu, 03 Dec 2020 09:24:33 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1606987473;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -23,12 +20,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ipjxahc+Ms/hM2PNjclVwGdh6NyHM6s5FO0Lojm4GE8=;
-        b=IdxWgzIqynj0CTe/9YoAgJwYJMehjbbo998y0pWRluAnS/fb5+2KHmxLvSKsAdHXG4rkpM
-        d7eTtv9lKh4cAiYtOkD/s3m29nhjvXGnNOQBvdrlZNTWWWv+D6NQ0Tsm6iAgMfuIyHoN6H
-        o4ANR/wd4Qb4JPUGskCsbpzkRWuiQTwccrtOH1EEeGRJa0HxjyMSCSdPdOAfvOtznoOaid
-        obgpnD67rIGBh0U1FxFH3JXjrvVTpmmXRtjksnukpNLdohMAPunY0ArEez5/bMf+rALvZF
-        /BauqsRZlLEwyjv5l4Bj0Ma0CSzOz3/0WabXhQsU+p4h75v32rkY+X+TsU5dEw==
+        bh=ANAiS3fo5jRwE3AvMDaoQ7GuKHyVvs6l1W/mEyjYtSI=;
+        b=AWVJD5NowqfcNHT5GPqmxU3GW5/39IvGx7Gz/x6wpqgDfi9vFqd7gCvmSt31XmvM0wjVpN
+        57AJcIRpMHUhP2ZbtQsUQQl5+FUr1xPCaS7061V+MUjxOh84wMY3drv78Raa6/m/ZrPrf+
+        MDggFmlBFk8Dg/P8HIRRqnnwuoPWHd/wEMeBroElihOXpxcKB6lSGG4UVUpJQHAn153hDi
+        HRJWVYGAcLGN71ee9q9E/mNv2B6/pIG8FKnOQ2UF9X2zoWc+rOCInL80VVMIcuLaAgP+Me
+        PDtywoYZiRfIqOYrVQ/8hR7cqDlCUcX3ImvP2htn5NsvHFBRy7JKKnZfE41CBQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1606987473;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,20 +33,20 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ipjxahc+Ms/hM2PNjclVwGdh6NyHM6s5FO0Lojm4GE8=;
-        b=9p/nb3NydrFsWYX24tFPxO+jtH0eNNjdZi+/6Y7v66EnX6y1yORj1grcRpB8wsFSpE21mc
-        vw8E4HiKOR3ykICA==
+        bh=ANAiS3fo5jRwE3AvMDaoQ7GuKHyVvs6l1W/mEyjYtSI=;
+        b=ekx8HvUQczpQ6H3NQevWRbslLF4vFIfXKRStYpxXAGNSbDAUn5JtIEfDG2UcYVtAop5VgJ
+        E5LsnNCrjvNowOAg==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] sparc64/mm: Implement pXX_leaf_size() support
+Subject: [tip: perf/core] mm/gup: Provide gup_get_pte() more generic
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20201126121121.301768209@infradead.org>
-References: <20201126121121.301768209@infradead.org>
+In-Reply-To: <20201126121121.036370527@infradead.org>
+References: <20201126121121.036370527@infradead.org>
 MIME-Version: 1.0
-Message-ID: <160698747256.3364.11091161045872604310.tip-bot2@tip-bot2>
+Message-ID: <160698747311.3364.2439398871681898668.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,88 +57,165 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     974821786fbc9c5c94ae75d96246c58bc0dc67bb
-Gitweb:        https://git.kernel.org/tip/974821786fbc9c5c94ae75d96246c58bc0dc67bb
+Commit-ID:     2a4a06da8a4b93dd189171eed7a99fffd38f42f3
+Gitweb:        https://git.kernel.org/tip/2a4a06da8a4b93dd189171eed7a99fffd38f42f3
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Fri, 13 Nov 2020 11:46:23 +01:00
+AuthorDate:    Fri, 13 Nov 2020 11:41:40 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Thu, 03 Dec 2020 10:14:51 +01:00
+CommitterDate: Thu, 03 Dec 2020 10:14:50 +01:00
 
-sparc64/mm: Implement pXX_leaf_size() support
+mm/gup: Provide gup_get_pte() more generic
 
-Sparc64 has non-pagetable aligned large page support; wire up the
-pXX_leaf_size() functions to report the correct pagetable page size.
-
-This enables PERF_SAMPLE_{DATA,CODE}_PAGE_SIZE to report accurate
-pagetable leaf sizes.
+In order to write another lockless page-table walker, we need
+gup_get_pte() exposed. While doing that, rename it to
+ptep_get_lockless() to match the existing ptep_get() naming.
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20201126121121.301768209@infradead.org
+Link: https://lkml.kernel.org/r/20201126121121.036370527@infradead.org
 ---
- arch/sparc/include/asm/pgtable_64.h | 13 +++++++++++++
- arch/sparc/mm/hugetlbpage.c         | 19 +++++++++++++------
- 2 files changed, 26 insertions(+), 6 deletions(-)
+ include/linux/pgtable.h | 55 ++++++++++++++++++++++++++++++++++++++-
+ mm/gup.c                | 58 +----------------------------------------
+ 2 files changed, 56 insertions(+), 57 deletions(-)
 
-diff --git a/arch/sparc/include/asm/pgtable_64.h b/arch/sparc/include/asm/pgtable_64.h
-index 7ef6aff..550d390 100644
---- a/arch/sparc/include/asm/pgtable_64.h
-+++ b/arch/sparc/include/asm/pgtable_64.h
-@@ -1121,6 +1121,19 @@ extern unsigned long cmdline_memory_size;
- 
- asmlinkage void do_sparc64_fault(struct pt_regs *regs);
- 
-+#ifdef CONFIG_HUGETLB_PAGE
-+
-+#define pud_leaf_size pud_leaf_size
-+extern unsigned long pud_leaf_size(pud_t pud);
-+
-+#define pmd_leaf_size pmd_leaf_size
-+extern unsigned long pmd_leaf_size(pmd_t pmd);
-+
-+#define pte_leaf_size pte_leaf_size
-+extern unsigned long pte_leaf_size(pte_t pte);
-+
-+#endif /* CONFIG_HUGETLB_PAGE */
-+
- #endif /* !(__ASSEMBLY__) */
- 
- #endif /* !(_SPARC64_PGTABLE_H) */
-diff --git a/arch/sparc/mm/hugetlbpage.c b/arch/sparc/mm/hugetlbpage.c
-index ec423b5..bf865dc 100644
---- a/arch/sparc/mm/hugetlbpage.c
-+++ b/arch/sparc/mm/hugetlbpage.c
-@@ -247,14 +247,17 @@ static unsigned int sun4u_huge_tte_to_shift(pte_t entry)
- 	return shift;
+diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+index 71125a4..ed9266c 100644
+--- a/include/linux/pgtable.h
++++ b/include/linux/pgtable.h
+@@ -258,6 +258,61 @@ static inline pte_t ptep_get(pte_t *ptep)
  }
+ #endif
  
--static unsigned int huge_tte_to_shift(pte_t entry)
-+static unsigned long tte_to_shift(pte_t entry)
- {
--	unsigned long shift;
--
- 	if (tlb_type == hypervisor)
--		shift = sun4v_huge_tte_to_shift(entry);
--	else
--		shift = sun4u_huge_tte_to_shift(entry);
-+		return sun4v_huge_tte_to_shift(entry);
-+
-+	return sun4u_huge_tte_to_shift(entry);
-+}
-+
-+static unsigned int huge_tte_to_shift(pte_t entry)
++#ifdef CONFIG_GUP_GET_PTE_LOW_HIGH
++/*
++ * WARNING: only to be used in the get_user_pages_fast() implementation.
++ *
++ * With get_user_pages_fast(), we walk down the pagetables without taking any
++ * locks.  For this we would like to load the pointers atomically, but sometimes
++ * that is not possible (e.g. without expensive cmpxchg8b on x86_32 PAE).  What
++ * we do have is the guarantee that a PTE will only either go from not present
++ * to present, or present to not present or both -- it will not switch to a
++ * completely different present page without a TLB flush in between; something
++ * that we are blocking by holding interrupts off.
++ *
++ * Setting ptes from not present to present goes:
++ *
++ *   ptep->pte_high = h;
++ *   smp_wmb();
++ *   ptep->pte_low = l;
++ *
++ * And present to not present goes:
++ *
++ *   ptep->pte_low = 0;
++ *   smp_wmb();
++ *   ptep->pte_high = 0;
++ *
++ * We must ensure here that the load of pte_low sees 'l' IFF pte_high sees 'h'.
++ * We load pte_high *after* loading pte_low, which ensures we don't see an older
++ * value of pte_high.  *Then* we recheck pte_low, which ensures that we haven't
++ * picked up a changed pte high. We might have gotten rubbish values from
++ * pte_low and pte_high, but we are guaranteed that pte_low will not have the
++ * present bit set *unless* it is 'l'. Because get_user_pages_fast() only
++ * operates on present ptes we're safe.
++ */
++static inline pte_t ptep_get_lockless(pte_t *ptep)
 +{
-+	unsigned long shift = tte_to_shift(entry);
- 
- 	if (shift == PAGE_SHIFT)
- 		WARN_ONCE(1, "tto_to_shift: invalid hugepage tte=0x%lx\n",
-@@ -272,6 +275,10 @@ static unsigned long huge_tte_to_size(pte_t pte)
- 	return size;
++	pte_t pte;
++
++	do {
++		pte.pte_low = ptep->pte_low;
++		smp_rmb();
++		pte.pte_high = ptep->pte_high;
++		smp_rmb();
++	} while (unlikely(pte.pte_low != ptep->pte_low));
++
++	return pte;
++}
++#else /* CONFIG_GUP_GET_PTE_LOW_HIGH */
++/*
++ * We require that the PTE can be read atomically.
++ */
++static inline pte_t ptep_get_lockless(pte_t *ptep)
++{
++	return ptep_get(ptep);
++}
++#endif /* CONFIG_GUP_GET_PTE_LOW_HIGH */
++
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+ #ifndef __HAVE_ARCH_PMDP_HUGE_GET_AND_CLEAR
+ static inline pmd_t pmdp_huge_get_and_clear(struct mm_struct *mm,
+diff --git a/mm/gup.c b/mm/gup.c
+index 98eb8e6..44b0c6b 100644
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -2085,62 +2085,6 @@ static void put_compound_head(struct page *page, int refs, unsigned int flags)
+ 	put_page(page);
  }
  
-+unsigned long pud_leaf_size(pud_t pud) { return 1UL << tte_to_shift((pte_t)pud); }
-+unsigned long pmd_leaf_size(pmd_t pmd) { return 1UL << tte_to_shift((pte_t)pmd); }
-+unsigned long pte_leaf_size(pte_t pte) { return 1UL << tte_to_shift((pte_t)pte); }
-+
- pte_t *huge_pte_alloc(struct mm_struct *mm,
- 			unsigned long addr, unsigned long sz)
- {
+-#ifdef CONFIG_GUP_GET_PTE_LOW_HIGH
+-
+-/*
+- * WARNING: only to be used in the get_user_pages_fast() implementation.
+- *
+- * With get_user_pages_fast(), we walk down the pagetables without taking any
+- * locks.  For this we would like to load the pointers atomically, but sometimes
+- * that is not possible (e.g. without expensive cmpxchg8b on x86_32 PAE).  What
+- * we do have is the guarantee that a PTE will only either go from not present
+- * to present, or present to not present or both -- it will not switch to a
+- * completely different present page without a TLB flush in between; something
+- * that we are blocking by holding interrupts off.
+- *
+- * Setting ptes from not present to present goes:
+- *
+- *   ptep->pte_high = h;
+- *   smp_wmb();
+- *   ptep->pte_low = l;
+- *
+- * And present to not present goes:
+- *
+- *   ptep->pte_low = 0;
+- *   smp_wmb();
+- *   ptep->pte_high = 0;
+- *
+- * We must ensure here that the load of pte_low sees 'l' IFF pte_high sees 'h'.
+- * We load pte_high *after* loading pte_low, which ensures we don't see an older
+- * value of pte_high.  *Then* we recheck pte_low, which ensures that we haven't
+- * picked up a changed pte high. We might have gotten rubbish values from
+- * pte_low and pte_high, but we are guaranteed that pte_low will not have the
+- * present bit set *unless* it is 'l'. Because get_user_pages_fast() only
+- * operates on present ptes we're safe.
+- */
+-static inline pte_t gup_get_pte(pte_t *ptep)
+-{
+-	pte_t pte;
+-
+-	do {
+-		pte.pte_low = ptep->pte_low;
+-		smp_rmb();
+-		pte.pte_high = ptep->pte_high;
+-		smp_rmb();
+-	} while (unlikely(pte.pte_low != ptep->pte_low));
+-
+-	return pte;
+-}
+-#else /* CONFIG_GUP_GET_PTE_LOW_HIGH */
+-/*
+- * We require that the PTE can be read atomically.
+- */
+-static inline pte_t gup_get_pte(pte_t *ptep)
+-{
+-	return ptep_get(ptep);
+-}
+-#endif /* CONFIG_GUP_GET_PTE_LOW_HIGH */
+-
+ static void __maybe_unused undo_dev_pagemap(int *nr, int nr_start,
+ 					    unsigned int flags,
+ 					    struct page **pages)
+@@ -2166,7 +2110,7 @@ static int gup_pte_range(pmd_t pmd, unsigned long addr, unsigned long end,
+ 
+ 	ptem = ptep = pte_offset_map(&pmd, addr);
+ 	do {
+-		pte_t pte = gup_get_pte(ptep);
++		pte_t pte = ptep_get_lockless(ptep);
+ 		struct page *head, *page;
+ 
+ 		/*
