@@ -2,55 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D18E2CD21A
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  3 Dec 2020 10:09:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 190DD2CD21C
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  3 Dec 2020 10:09:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388476AbgLCJIN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 3 Dec 2020 04:08:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46380 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387504AbgLCJIM (ORCPT
+        id S2388493AbgLCJIO (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 3 Dec 2020 04:08:14 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:39388 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387757AbgLCJIN (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 3 Dec 2020 04:08:12 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E56A2C061A4D;
-        Thu,  3 Dec 2020 01:07:31 -0800 (PST)
-Date:   Thu, 03 Dec 2020 09:07:29 -0000
+        Thu, 3 Dec 2020 04:08:13 -0500
+Date:   Thu, 03 Dec 2020 09:07:30 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1606986449;
+        s=2020; t=1606986451;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=zDIknPMIm3lzC3RwS+ZU/AF5O0kS5a1gOT3SJgmIAtc=;
-        b=pxA7WaGJr3/5jV38hxrN758aGsMCYXAvbTww4TnpSYT8fCdVB4srfnIYD4E0WwGVCAEhLq
-        vStmfntdmMMInc+9+PREnLZWs2lOMUmLWzCZOOt73WFV1dL5S8ryHZLfpm63XT29LjwChF
-        odc5CgyF01aj6HBH0iIUsnZDqhLI1FUa2DuXYdItmpUHBBqCclXNt50ntv0NjFuXjbdeXn
-        q7ezJNDqwyWS6p7GU+1gTYmP5CytZWKxcroM4wHUxJIQoDdjwQNyjcORnHatGx4zFctEMQ
-        yCmZGgNYv3UlSxpO1jgXNP8tBH3sn7hu4n0zDgf/oVbBGKeeopKwRs6ZC5QxUg==
+        bh=RgeQfumqpHMIZDAZQAL3F9T92x5EwmAFc2PXfbA/u3I=;
+        b=Z2e4y0UtnksgMiZctvONoMm+kMyWL0hT8AQT2+bAtPUCrSu73VxhchTzobUrElELf8RkWV
+        UTU38qeVEoCm4oFN2M+zZ4RObSJQjrXVDevlc1DgTwddlN8vyGVxTyZHU1rSWA/qHnOfmK
+        Tmq4YLAQGkOcjQaUweK+MbTc2k6jsVI0j4mBNb09F3ORYQCSXzsGPNeVt41DR7Iya4q23H
+        1Bcala2jgQrMDKIixyzqEMX2g+GZrr4iB9i29AI6ReWUibnhu5q9yO28h7ghD6FGQTVoIR
+        lWkhVPF0nHLby6B+Ztc84MG9jfXTkpw9KAylhEnAtFoiX36wco+T4yxg0OWe2Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1606986449;
+        s=2020e; t=1606986451;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=zDIknPMIm3lzC3RwS+ZU/AF5O0kS5a1gOT3SJgmIAtc=;
-        b=CAE4SjaQsLhw4Z1E9Gklt8kpfMa8Bv5mMCnXbEKjr5p8fLpTIsvfs3MekH16ab2y3G7JW2
-        GGU90/poZOjeCfDA==
+        bh=RgeQfumqpHMIZDAZQAL3F9T92x5EwmAFc2PXfbA/u3I=;
+        b=2/xuGemmJ2C8GT4cyk+nQxYf2f68pfVB3m7osOx3YtDKjjiThhXmbMid4M7CEQEifl7J85
+        HEo7s+EJedH8ABDA==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/urgent] intel_idle: Build fix
-Cc:     Randy Dunlap <rdunlap@infradead.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: perf/core] arm64/mm: Implement pXX_leaf_size() support
+Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Will Deacon <will@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20201130115402.GO3040@hirez.programming.kicks-ass.net>
-References: <20201130115402.GO3040@hirez.programming.kicks-ass.net>
+In-Reply-To: <20201126125747.GG2414@hirez.programming.kicks-ass.net>
+References: <20201126125747.GG2414@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-Message-ID: <160698644907.3364.1644696820259028448.tip-bot2@tip-bot2>
+Message-ID: <160698645060.3364.4631972091195475660.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,70 +56,50 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the locking/urgent branch of tip:
+The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     4d916140bf28ff027997144ea1bb4299e1536f87
-Gitweb:        https://git.kernel.org/tip/4d916140bf28ff027997144ea1bb4299e1536f87
+Commit-ID:     311c656945eccc9304aa4e8f3dee7cbfdbabb72d
+Gitweb:        https://git.kernel.org/tip/311c656945eccc9304aa4e8f3dee7cbfdbabb72d
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Mon, 30 Nov 2020 12:54:34 +01:00
+AuthorDate:    Fri, 13 Nov 2020 11:46:06 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Thu, 03 Dec 2020 10:00:23 +01:00
+CommitterDate: Thu, 03 Dec 2020 10:00:31 +01:00
 
-intel_idle: Build fix
+arm64/mm: Implement pXX_leaf_size() support
 
-Because CONFIG_ soup.
+ARM64 has non-pagetable aligned large page support with PTE_CONT, when
+this bit is set the page is part of a super-page. Match the hugetlb
+code and support these super pages for PTE and PMD levels.
 
-Fixes: 6e1d2bc675bd ("intel_idle: Fix intel_idle() vs tracing")
-Reported-by: Randy Dunlap <rdunlap@infradead.org>
+This enables PERF_SAMPLE_{DATA,CODE}_PAGE_SIZE to report accurate
+pagetable leaf sizes.
+
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20201130115402.GO3040@hirez.programming.kicks-ass.net
+Acked-by: Will Deacon <will@kernel.org>
+Link: https://lkml.kernel.org/r/20201126125747.GG2414@hirez.programming.kicks-ass.net
 ---
- drivers/idle/intel_idle.c | 28 ++++++++++++++--------------
- 1 file changed, 14 insertions(+), 14 deletions(-)
+ arch/arm64/include/asm/pgtable.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/idle/intel_idle.c b/drivers/idle/intel_idle.c
-index 7ee7ffe..d793355 100644
---- a/drivers/idle/intel_idle.c
-+++ b/drivers/idle/intel_idle.c
-@@ -1140,6 +1140,20 @@ static bool __init intel_idle_max_cstate_reached(int cstate)
- 	return false;
- }
+diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+index 5628289..dc6e2d9 100644
+--- a/arch/arm64/include/asm/pgtable.h
++++ b/arch/arm64/include/asm/pgtable.h
+@@ -415,6 +415,7 @@ static inline int pmd_trans_huge(pmd_t pmd)
+ #define pmd_dirty(pmd)		pte_dirty(pmd_pte(pmd))
+ #define pmd_young(pmd)		pte_young(pmd_pte(pmd))
+ #define pmd_valid(pmd)		pte_valid(pmd_pte(pmd))
++#define pmd_cont(pmd)		pte_cont(pmd_pte(pmd))
+ #define pmd_wrprotect(pmd)	pte_pmd(pte_wrprotect(pmd_pte(pmd)))
+ #define pmd_mkold(pmd)		pte_pmd(pte_mkold(pmd_pte(pmd)))
+ #define pmd_mkwrite(pmd)	pte_pmd(pte_mkwrite(pmd_pte(pmd)))
+@@ -511,6 +512,9 @@ extern pgprot_t phys_mem_access_prot(struct file *file, unsigned long pfn,
+ 				 PMD_TYPE_SECT)
+ #define pmd_leaf(pmd)		pmd_sect(pmd)
  
-+static bool __init intel_idle_state_needs_timer_stop(struct cpuidle_state *state)
-+{
-+	unsigned long eax = flg2MWAIT(state->flags);
++#define pmd_leaf_size(pmd)	(pmd_cont(pmd) ? CONT_PMD_SIZE : PMD_SIZE)
++#define pte_leaf_size(pte)	(pte_cont(pte) ? CONT_PTE_SIZE : PAGE_SIZE)
 +
-+	if (boot_cpu_has(X86_FEATURE_ARAT))
-+		return false;
-+
-+	/*
-+	 * Switch over to one-shot tick broadcast if the target C-state
-+	 * is deeper than C1.
-+	 */
-+	return !!((eax >> MWAIT_SUBSTATE_SIZE) & MWAIT_CSTATE_MASK);
-+}
-+
- #ifdef CONFIG_ACPI_PROCESSOR_CSTATE
- #include <acpi/processor.h>
- 
-@@ -1210,20 +1224,6 @@ static bool __init intel_idle_acpi_cst_extract(void)
- 	return false;
- }
- 
--static bool __init intel_idle_state_needs_timer_stop(struct cpuidle_state *state)
--{
--	unsigned long eax = flg2MWAIT(state->flags);
--
--	if (boot_cpu_has(X86_FEATURE_ARAT))
--		return false;
--
--	/*
--	 * Switch over to one-shot tick broadcast if the target C-state
--	 * is deeper than C1.
--	 */
--	return !!((eax >> MWAIT_SUBSTATE_SIZE) & MWAIT_CSTATE_MASK);
--}
--
- static void __init intel_idle_init_cstates_acpi(struct cpuidle_driver *drv)
- {
- 	int cstate, limit = min_t(int, CPUIDLE_STATE_MAX, acpi_state_table.count);
+ #if defined(CONFIG_ARM64_64K_PAGES) || CONFIG_PGTABLE_LEVELS < 3
+ static inline bool pud_sect(pud_t pud) { return false; }
+ static inline bool pud_table(pud_t pud) { return true; }
