@@ -2,54 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BA622CD21B
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  3 Dec 2020 10:09:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 582C22CD221
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  3 Dec 2020 10:09:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388488AbgLCJIN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 3 Dec 2020 04:08:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46382 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388467AbgLCJIM (ORCPT
+        id S2388526AbgLCJIX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 3 Dec 2020 04:08:23 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:39398 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388471AbgLCJIO (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 3 Dec 2020 04:08:12 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 041BAC061A4E;
-        Thu,  3 Dec 2020 01:07:32 -0800 (PST)
+        Thu, 3 Dec 2020 04:08:14 -0500
 Date:   Thu, 03 Dec 2020 09:07:30 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1606986450;
+        s=2020; t=1606986451;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ZESFwGZj+JubuhWQ8H9sKylF1e9+OfKyH5SzJyC65pg=;
-        b=r1lRtSiLylaA2ufjVY5DpcGFJzt3rpMPuP7dVq4P8rZhuZMy0fEQRaAVwMGj5Wei5oPru7
-        oXElVxKy7miWgxs4v5IjBr6BWBjjsxvcAn1X8z3EnZN5G5mXv84yCXi3seWyapg4Ljr5Ap
-        NtmE3rudHyblRdVUqjU41JoaYb1J9LjS3NwZk4ngYbMq92tV25K5+pHaqqbAOizs5DE7cx
-        6Vk+fmr1s+tRMJdXHMUPfFRtQfhYuJDHpcIO32n1PKvxmHY3bwzI8cTCJAfFcK4mYYKt90
-        UnlnVWbYWNEct5nJCxy0Kxm6UgaYj8ZrWaH6ncpOrVtsxFGFPczGk/IMV6g3YA==
+        bh=epkoSjWfNA1F/6ox/zOIBTO8j8rewzsNzEkhGBZI4/E=;
+        b=VdLRpvdKKlEEudrbLk/hCO/ZpbeTyDbfeaVfHZpDP+tT9tE51M36A/IuoukZs1J7E/tE/s
+        4xetWycTtXJ4tVgGR3+se9URwXdxYhX2yOrqdDCtPlmm7TjenrQOdKTHVGl2V6vfw3diSJ
+        7oXOuTQCE4euvzgzxunOgLnL8jUIGC/kLX0m1bcKRVy5aC9kPMCNr0SWDphPGGAe6dqmdq
+        9jvR5iOofYbBuvrkf0UdT5KCPt5nk9RVb+nyNZxaySL2pJ56BGiRG+OfCde0o37V0Oep5m
+        qSN43pPcxvko8e5/sR/1YIvU9dHWd/xdN5SV7H3GKi20YFi9ewAors1mi0LNfw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1606986450;
+        s=2020e; t=1606986451;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ZESFwGZj+JubuhWQ8H9sKylF1e9+OfKyH5SzJyC65pg=;
-        b=H9UU+UiguIrrIFls4l7j1P7oj+0cd0yBlm4dZMPJjAI9QkV8Zi1ixFM4+IwwstMOOyjVyG
-        X0kmmteGZpMTNTAA==
+        bh=epkoSjWfNA1F/6ox/zOIBTO8j8rewzsNzEkhGBZI4/E=;
+        b=twq84SlsqruNfgM9q3tqglA9MAG6ENZT6aHCnEcxd8asxlYFEPolm+enNaFzh2/jEmru2X
+        yN6N6MOgRqlDs4Cw==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] powerpc/8xx: Implement pXX_leaf_size() support
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: perf/core] perf/core: Fix arch_perf_get_page_size()
+Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Kan Liang <kan.liang@linux.intel.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20201126121121.364451610@infradead.org>
-References: <20201126121121.364451610@infradead.org>
+In-Reply-To: <20201126124207.GM3040@hirez.programming.kicks-ass.net>
+References: <20201126124207.GM3040@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-Message-ID: <160698645014.3364.16950403315152077351.tip-bot2@tip-bot2>
+Message-ID: <160698645099.3364.1792518146804763766.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,77 +58,181 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     9e7d61ae8acc62ef6dd5fc5f4033ed9420372599
-Gitweb:        https://git.kernel.org/tip/9e7d61ae8acc62ef6dd5fc5f4033ed9420372599
+Commit-ID:     96078bdfdc40a83501c5415dba56339f7661b3d1
+Gitweb:        https://git.kernel.org/tip/96078bdfdc40a83501c5415dba56339f7661b3d1
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Thu, 26 Nov 2020 11:53:33 +01:00
+AuthorDate:    Wed, 11 Nov 2020 13:43:57 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Thu, 03 Dec 2020 10:00:32 +01:00
+CommitterDate: Thu, 03 Dec 2020 10:00:31 +01:00
 
-powerpc/8xx: Implement pXX_leaf_size() support
+perf/core: Fix arch_perf_get_page_size()
 
-Christophe Leroy wrote:
+The (new) page-table walker in arch_perf_get_page_size() is broken in
+various ways. Specifically while it is used in a lockless manner, it
+doesn't depend on CONFIG_HAVE_FAST_GUP nor uses the proper _lockless
+offset methods, nor is careful to only read each entry only once.
 
-> I can help with powerpc 8xx. It is a 32 bits powerpc. The PGD has 1024
-> entries, that means each entry maps 4M.
->
-> Page sizes are 4k, 16k, 512k and 8M.
->
-> For the 8M pages we use hugepd with a single entry. The two related PGD
-> entries point to the same hugepd.
->
-> For the other sizes, they are in standard page tables. 16k pages appear
-> 4 times in the page table. 512k entries appear 128 times in the page
-> table.
->
-> When the PGD entry has _PMD_PAGE_8M bits, the PMD entry points to a
-> hugepd with holds the single 8M entry.
->
-> In the PTE, we have two bits: _PAGE_SPS and _PAGE_HUGE
->
-> _PAGE_HUGE means it is a 512k page
-> _PAGE_SPS means it is not a 4k page
->
-> The kernel can by build either with 4k pages as standard page size, or
-> 16k pages. It doesn't change the page table layout though.
+Also the hugetlb support is broken due to calling pte_page() without
+first checking pte_special().
 
+Rewrite the whole thing to be a proper lockless page-table walker and
+employ the new pXX_leaf_size() pgtable functions to determine the
+pagetable size without looking at the page-frames.
+
+Fixes: 51b646b2d9f8 ("perf,mm: Handle non-page-table-aligned hugetlbfs")
+Fixes: 8d97e71811aa ("perf/core: Add PERF_SAMPLE_DATA_PAGE_SIZE")
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20201126121121.364451610@infradead.org
+Tested-by: Kan Liang <kan.liang@linux.intel.com>
+Link: https://lkml.kernel.org/r/20201126124207.GM3040@hirez.programming.kicks-ass.net
 ---
- arch/powerpc/include/asm/nohash/32/pte-8xx.h | 23 +++++++++++++++++++-
- 1 file changed, 23 insertions(+)
+ kernel/events/core.c | 103 +++++++++++++++---------------------------
+ 1 file changed, 38 insertions(+), 65 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/nohash/32/pte-8xx.h b/arch/powerpc/include/asm/nohash/32/pte-8xx.h
-index 1581204..fcc48d5 100644
---- a/arch/powerpc/include/asm/nohash/32/pte-8xx.h
-+++ b/arch/powerpc/include/asm/nohash/32/pte-8xx.h
-@@ -135,6 +135,29 @@ static inline pte_t pte_mkhuge(pte_t pte)
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index d2f3ca7..a21b0be 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -52,6 +52,7 @@
+ #include <linux/mount.h>
+ #include <linux/min_heap.h>
+ #include <linux/highmem.h>
++#include <linux/pgtable.h>
+ 
+ #include "internal.h"
+ 
+@@ -7001,90 +7002,62 @@ static u64 perf_virt_to_phys(u64 virt)
+ 	return phys_addr;
  }
  
- #define pte_mkhuge pte_mkhuge
-+
-+static inline unsigned long pgd_leaf_size(pgd_t pgd)
-+{
-+	if (pgd_val(pgd) & _PMD_PAGE_8M)
-+		return SZ_8M;
-+	return SZ_4M;
-+}
-+
-+#define pgd_leaf_size pgd_leaf_size
-+
-+static inline unsigned long pte_leaf_size(pte_t pte)
-+{
-+	pte_basic_t val = pte_val(pte);
-+
-+	if (val & _PAGE_HUGE)
-+		return SZ_512K;
-+	if (val & _PAGE_SPS)
-+		return SZ_16K;
-+	return SZ_4K;
-+}
-+
-+#define pte_leaf_size pte_leaf_size
-+
- #endif
+-#ifdef CONFIG_MMU
+-
+ /*
+- * Return the MMU page size of a given virtual address.
+- *
+- * This generic implementation handles page-table aligned huge pages, as well
+- * as non-page-table aligned hugetlbfs compound pages.
+- *
+- * If an architecture supports and uses non-page-table aligned pages in their
+- * kernel mapping it will need to provide it's own implementation of this
+- * function.
++ * Return the pagetable size of a given virtual address.
+  */
+-__weak u64 arch_perf_get_page_size(struct mm_struct *mm, unsigned long addr)
++static u64 perf_get_pgtable_size(struct mm_struct *mm, unsigned long addr)
+ {
+-	struct page *page;
+-	pgd_t *pgd;
+-	p4d_t *p4d;
+-	pud_t *pud;
+-	pmd_t *pmd;
+-	pte_t *pte;
++	u64 size = 0;
  
- #endif /* __KERNEL__ */
+-	pgd = pgd_offset(mm, addr);
+-	if (pgd_none(*pgd))
+-		return 0;
++#ifdef CONFIG_HAVE_FAST_GUP
++	pgd_t *pgdp, pgd;
++	p4d_t *p4dp, p4d;
++	pud_t *pudp, pud;
++	pmd_t *pmdp, pmd;
++	pte_t *ptep, pte;
+ 
+-	p4d = p4d_offset(pgd, addr);
+-	if (!p4d_present(*p4d))
++	pgdp = pgd_offset(mm, addr);
++	pgd = READ_ONCE(*pgdp);
++	if (pgd_none(pgd))
+ 		return 0;
+ 
+-	if (p4d_leaf(*p4d))
+-		return 1ULL << P4D_SHIFT;
++	if (pgd_leaf(pgd))
++		return pgd_leaf_size(pgd);
+ 
+-	pud = pud_offset(p4d, addr);
+-	if (!pud_present(*pud))
++	p4dp = p4d_offset_lockless(pgdp, pgd, addr);
++	p4d = READ_ONCE(*p4dp);
++	if (!p4d_present(p4d))
+ 		return 0;
+ 
+-	if (pud_leaf(*pud)) {
+-#ifdef pud_page
+-		page = pud_page(*pud);
+-		if (PageHuge(page))
+-			return page_size(compound_head(page));
+-#endif
+-		return 1ULL << PUD_SHIFT;
+-	}
++	if (p4d_leaf(p4d))
++		return p4d_leaf_size(p4d);
+ 
+-	pmd = pmd_offset(pud, addr);
+-	if (!pmd_present(*pmd))
++	pudp = pud_offset_lockless(p4dp, p4d, addr);
++	pud = READ_ONCE(*pudp);
++	if (!pud_present(pud))
+ 		return 0;
+ 
+-	if (pmd_leaf(*pmd)) {
+-#ifdef pmd_page
+-		page = pmd_page(*pmd);
+-		if (PageHuge(page))
+-			return page_size(compound_head(page));
+-#endif
+-		return 1ULL << PMD_SHIFT;
+-	}
++	if (pud_leaf(pud))
++		return pud_leaf_size(pud);
+ 
+-	pte = pte_offset_map(pmd, addr);
+-	if (!pte_present(*pte)) {
+-		pte_unmap(pte);
++	pmdp = pmd_offset_lockless(pudp, pud, addr);
++	pmd = READ_ONCE(*pmdp);
++	if (!pmd_present(pmd))
+ 		return 0;
+-	}
+ 
+-	page = pte_page(*pte);
+-	if (PageHuge(page)) {
+-		u64 size = page_size(compound_head(page));
+-		pte_unmap(pte);
+-		return size;
+-	}
++	if (pmd_leaf(pmd))
++		return pmd_leaf_size(pmd);
+ 
+-	pte_unmap(pte);
+-	return PAGE_SIZE;
+-}
++	ptep = pte_offset_map(&pmd, addr);
++	pte = ptep_get_lockless(ptep);
++	if (pte_present(pte))
++		size = pte_leaf_size(pte);
++	pte_unmap(ptep);
++#endif /* CONFIG_HAVE_FAST_GUP */
+ 
+-#else
+-
+-static u64 arch_perf_get_page_size(struct mm_struct *mm, unsigned long addr)
+-{
+-	return 0;
++	return size;
+ }
+ 
+-#endif
+-
+ static u64 perf_get_page_size(unsigned long addr)
+ {
+ 	struct mm_struct *mm;
+@@ -7109,7 +7082,7 @@ static u64 perf_get_page_size(unsigned long addr)
+ 		mm = &init_mm;
+ 	}
+ 
+-	size = arch_perf_get_page_size(mm, addr);
++	size = perf_get_pgtable_size(mm, addr);
+ 
+ 	local_irq_restore(flags);
+ 
