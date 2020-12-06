@@ -2,36 +2,29 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A66392CFAFA
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  5 Dec 2020 11:23:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 38B1D2D0062
+	for <lists+linux-tip-commits@lfdr.de>; Sun,  6 Dec 2020 05:10:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728276AbgLEKW3 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 5 Dec 2020 05:22:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51148 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727943AbgLEKVa (ORCPT
+        id S1726948AbgLFEJe (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 5 Dec 2020 23:09:34 -0500
+Received: from mail.kernel.org ([198.145.29.99]:49304 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726920AbgLFEJZ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 5 Dec 2020 05:21:30 -0500
-Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B266C061A51;
-        Sat,  5 Dec 2020 02:20:50 -0800 (PST)
-Received: from zn.tnic (p200300ec2f21ef0015054ed9185c317a.dip0.t-ipconnect.de [IPv6:2003:ec:2f21:ef00:1505:4ed9:185c:317a])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 5F48F1EC0494;
-        Sat,  5 Dec 2020 11:17:03 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1607163423;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=oo0/lXNnhSYJq1ZkrccRKwqxO+zFM/8uFysGplWZKrg=;
-        b=oiwQuNmRpbjkJI3R6n/YzgyYTXRw9SaBxba2OuSFKelLDBpZY+fl0nTkC5evthrkogJtRz
-        5LJnckym0kvVa8hWyWRIXXERSI1xJ7ef9R9bYBuQ37ZU4ow815FY7SG38IIgECOpGsuWC5
-        6fL/dKv3H3rybDzNW/BCSSwtwwkysEM=
-Date:   Sat, 5 Dec 2020 11:17:04 +0100
-From:   Borislav Petkov <bp@alien8.de>
-To:     Masami Hiramatsu <mhiramat@kernel.org>
+        Sat, 5 Dec 2020 23:09:25 -0500
+Date:   Sun, 6 Dec 2020 12:53:25 +0900
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1607226809;
+        bh=oNdexUdzXEELZFB/asVGYCG3iBfFGGOsLg4yKLqOUVE=;
+        h=From:To:Cc:Subject:In-Reply-To:References:From;
+        b=SpL4mxdyV/CYPWANhRJt+EBWH21CKMozVXoeFiqHlfs8S1wKYyQFgfRp7sm0uLW8V
+         5WBvSXofY7npPVpuPpw/RW6dS4xJmbf13SBUzIJlqO7O3zUuGfIAADOuVMpuZBvtuI
+         uyQ64FFiDmP1pEFctqo5YhIzVqCvB0HmNBIZ1Y4K6NPIQrhdk2NTt34RM2ZXKkjP7M
+         J+vH7IVtl3mCGpntPxY6MpeRZf8pTkKrVegE3aVp9tfo6tuZnUZ5oF+HzTBcZxuYGp
+         /lYz66ljnIIXDCw9JSocLi/U6waYNw/ZgJhPRpFRK76Zy5lpHH0WsUkjwB0fUm5UwN
+         +kBKRpOxOkWdg==
+From:   Masami Hiramatsu <mhiramat@kernel.org>
+To:     Borislav Petkov <bp@alien8.de>
 Cc:     linux-kernel@vger.kernel.org,
         tip-bot2 for Masami Hiramatsu <tip-bot2@linutronix.de>,
         linux-tip-commits@vger.kernel.org,
@@ -41,29 +34,35 @@ Cc:     linux-kernel@vger.kernel.org,
         stable@vger.kernel.org, x86@kernel.org
 Subject: Re: [tip: x86/urgent] x86/uprobes: Do not use prefixes.nbytes when
  looping over prefixes.bytes
-Message-ID: <20201205101704.GB26409@zn.tnic>
+Message-Id: <20201206125325.d676906774c2329742746005@kernel.org>
+In-Reply-To: <20201205101704.GB26409@zn.tnic>
 References: <160697103739.3146288.7437620795200799020.stgit@devnote2>
- <160709424307.3364.5849503551045240938.tip-bot2@tip-bot2>
- <20201205091256.14161a2e1606c527131efc06@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20201205091256.14161a2e1606c527131efc06@kernel.org>
+        <160709424307.3364.5849503551045240938.tip-bot2@tip-bot2>
+        <20201205091256.14161a2e1606c527131efc06@kernel.org>
+        <20201205101704.GB26409@zn.tnic>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Sat, Dec 05, 2020 at 09:12:56AM +0900, Masami Hiramatsu wrote:
-> This may break tools/objtool build. Please keep "inat.h".
+On Sat, 5 Dec 2020 11:17:04 +0100
+Borislav Petkov <bp@alien8.de> wrote:
 
-How? Please elaborate.
+> On Sat, Dec 05, 2020 at 09:12:56AM +0900, Masami Hiramatsu wrote:
+> > This may break tools/objtool build. Please keep "inat.h".
+> 
+> How? Please elaborate.
+> 
+> Build tests are fine here.
 
-Build tests are fine here.
+Oops, sorry, it was for perf build.
 
-Thx.
+Please refer commit 00a263902ac3 ("perf intel-pt: Use shared x86 insn decoder").
+
+Thank you,
 
 -- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Masami Hiramatsu <mhiramat@kernel.org>
