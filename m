@@ -2,19 +2,16 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F261D2D022F
-	for <lists+linux-tip-commits@lfdr.de>; Sun,  6 Dec 2020 10:10:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 539892D0229
+	for <lists+linux-tip-commits@lfdr.de>; Sun,  6 Dec 2020 10:10:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727530AbgLFJKS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 6 Dec 2020 04:10:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52514 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725943AbgLFJKO (ORCPT
+        id S1726485AbgLFJKP (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 6 Dec 2020 04:10:15 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:57308 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726209AbgLFJKN (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 6 Dec 2020 04:10:14 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07659C0613D0;
-        Sun,  6 Dec 2020 01:09:34 -0800 (PST)
+        Sun, 6 Dec 2020 04:10:13 -0500
 Date:   Sun, 06 Dec 2020 09:09:30 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1607245771;
@@ -23,12 +20,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=7XIcmMDqZP+StD6WMSScIteYahFlEKzsPdt6JyXYW1U=;
-        b=U/GIY2TBUYfhca6FnFMzF7a+4GS8iQjwXLHxMFsyfASJ2tfWitBNdz7CFtJ2i1pNocO9/I
-        bHvexH6GJuCHryDMv+JPl0iJUXtN9bELvQsQ7Je/7snLWDHW5vkL1LXpo+9cg2wdraR/EW
-        /GYP69rCft/pKre3ODQsk17Vx1gr+rySAEDuOoDb2AcW3BImi+v58ZJJeAAXxdgFS65xDy
-        CAIBEehQ/Pue8ZaW1GZX5hW8VsRw1ck+X8oI8O5DhWOByfWmZ36XePVELV8SVZdTgCo7RG
-        VYoKLZndLFCssNvXKt0JG7yNqX6as6YWrYjC3i6PXcSXiubEhYI64a9gqX9Y/g==
+        bh=eY7RW9wRlLumLKbgtN+8B1XUsllLVvHZSgoZDgKOR9Q=;
+        b=Wy01ux/BJ0ZbZiUePS8O7VgFkfKVsqr5qbunWjRinZdgzGq5om3nUvg4SjrjJj8sr8WbWB
+        iInlaCw9CexqQoefZ73fSk7jixpnFDony0ZrOcz2mpKOytV8u9d9ygt3D5ZllCzRiwrzMn
+        qJWLlHP6ZGhf3Mu8gtljJTLR+Ajs77V1oDJBfgVZpqxVDSxiAjODsUyMZthxVDVickrx5P
+        Cw55QKssavGKhoW2+FLtQfubpAs8tcfh4sVNwLx68oN9hzJH3wcn8/WmWT8wN8KrRCnYYi
+        /gh7EKy4NFHPe9Zk/DqvF+qlYRKGZ376gTowNohqbhbbk1pEWvDPqrGSWGDl+g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1607245771;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,23 +33,25 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=7XIcmMDqZP+StD6WMSScIteYahFlEKzsPdt6JyXYW1U=;
-        b=81pcTWM4u1eK+0sjNZscGEWnbQsOrRX3WoLx/qCxkZIKAVR5+MCsmocsobkZ2VTvfdLRUm
-        hHaL71oduOKWpHCw==
+        bh=eY7RW9wRlLumLKbgtN+8B1XUsllLVvHZSgoZDgKOR9Q=;
+        b=2WcGV9cdads9H/dgce/ucbXISjlcR4m51XpZkMn0EEt8OvQCHEl0R6ZJDJBxrBqJIh9CTD
+        Xt1MlM6QWq3A5OBg==
 From:   "tip-bot2 for Masami Hiramatsu" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/sev-es: Use new for_each_insn_prefix() macro to
- loop over prefixes bytes
+Subject: [tip: x86/urgent] x86/uprobes: Do not use prefixes.nbytes when
+ looping over prefixes.bytes
 Cc:     syzbot+9b64b619f10f19d19a7c@syzkaller.appspotmail.com,
         Masami Hiramatsu <mhiramat@kernel.org>,
-        Borislav Petkov <bp@suse.de>, x86@kernel.org,
+        Borislav Petkov <bp@suse.de>,
+        Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
+        stable@vger.kernel.org, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <160697106089.3146288.2052422845039649176.stgit@devnote2>
-References: <160697106089.3146288.2052422845039649176.stgit@devnote2>
+In-Reply-To: <160697103739.3146288.7437620795200799020.stgit@devnote2>
+References: <160697103739.3146288.7437620795200799020.stgit@devnote2>
 MIME-Version: 1.0
-Message-ID: <160724577024.3364.5782296021920253763.tip-bot2@tip-bot2>
+Message-ID: <160724577086.3364.16453446433031160252.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -63,54 +62,130 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     84da009f06e60cf59d5e861f8e2101d2d3885517
-Gitweb:        https://git.kernel.org/tip/84da009f06e60cf59d5e861f8e2101d2d3885517
+Commit-ID:     4e9a5ae8df5b3365183150f6df49e49dece80d8c
+Gitweb:        https://git.kernel.org/tip/4e9a5ae8df5b3365183150f6df49e49dece80d8c
 Author:        Masami Hiramatsu <mhiramat@kernel.org>
-AuthorDate:    Thu, 03 Dec 2020 13:51:01 +09:00
+AuthorDate:    Thu, 03 Dec 2020 13:50:37 +09:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Sun, 06 Dec 2020 10:03:08 +01:00
+CommitterDate: Sun, 06 Dec 2020 09:58:13 +01:00
 
-x86/sev-es: Use new for_each_insn_prefix() macro to loop over prefixes bytes
+x86/uprobes: Do not use prefixes.nbytes when looping over prefixes.bytes
 
 Since insn.prefixes.nbytes can be bigger than the size of
-insn.prefixes.bytes[] when a prefix is repeated, the proper
-check must be:
+insn.prefixes.bytes[] when a prefix is repeated, the proper check must
+be
 
   insn.prefixes.bytes[i] != 0 and i < 4
 
-instead of using insn.prefixes.nbytes. Use the new
-for_each_insn_prefix() macro which does it correctly.
+instead of using insn.prefixes.nbytes.
 
-Debugged by Kees Cook <keescook@chromium.org>.
+Introduce a for_each_insn_prefix() macro for this purpose. Debugged by
+Kees Cook <keescook@chromium.org>.
 
- [ bp: Massage commit message. ]
+ [ bp: Massage commit message, sync with the respective header in tools/
+   and drop "we". ]
 
-Fixes: 25189d08e516 ("x86/sev-es: Add support for handling IOIO exceptions")
+Fixes: 2b1444983508 ("uprobes, mm, x86: Add the ability to install and remove uprobes breakpoints")
 Reported-by: syzbot+9b64b619f10f19d19a7c@syzkaller.appspotmail.com
 Signed-off-by: Masami Hiramatsu <mhiramat@kernel.org>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/160697106089.3146288.2052422845039649176.stgit@devnote2
+Reviewed-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Cc: stable@vger.kernel.org
+Link: https://lkml.kernel.org/r/160697103739.3146288.7437620795200799020.stgit@devnote2
 ---
- arch/x86/boot/compressed/sev-es.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ arch/x86/include/asm/insn.h       | 15 +++++++++++++++
+ arch/x86/kernel/uprobes.c         | 10 ++++++----
+ tools/arch/x86/include/asm/insn.h | 15 +++++++++++++++
+ 3 files changed, 36 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/boot/compressed/sev-es.c b/arch/x86/boot/compressed/sev-es.c
-index 954cb27..27826c2 100644
---- a/arch/x86/boot/compressed/sev-es.c
-+++ b/arch/x86/boot/compressed/sev-es.c
-@@ -32,13 +32,12 @@ struct ghcb *boot_ghcb;
-  */
- static bool insn_has_rep_prefix(struct insn *insn)
+diff --git a/arch/x86/include/asm/insn.h b/arch/x86/include/asm/insn.h
+index 5c1ae3e..a8c3d28 100644
+--- a/arch/x86/include/asm/insn.h
++++ b/arch/x86/include/asm/insn.h
+@@ -201,6 +201,21 @@ static inline int insn_offset_immediate(struct insn *insn)
+ 	return insn_offset_displacement(insn) + insn->displacement.nbytes;
+ }
+ 
++/**
++ * for_each_insn_prefix() -- Iterate prefixes in the instruction
++ * @insn: Pointer to struct insn.
++ * @idx:  Index storage.
++ * @prefix: Prefix byte.
++ *
++ * Iterate prefix bytes of given @insn. Each prefix byte is stored in @prefix
++ * and the index is stored in @idx (note that this @idx is just for a cursor,
++ * do not change it.)
++ * Since prefixes.nbytes can be bigger than 4 if some prefixes
++ * are repeated, it cannot be used for looping over the prefixes.
++ */
++#define for_each_insn_prefix(insn, idx, prefix)	\
++	for (idx = 0; idx < ARRAY_SIZE(insn->prefixes.bytes) && (prefix = insn->prefixes.bytes[idx]) != 0; idx++)
++
+ #define POP_SS_OPCODE 0x1f
+ #define MOV_SREG_OPCODE 0x8e
+ 
+diff --git a/arch/x86/kernel/uprobes.c b/arch/x86/kernel/uprobes.c
+index 3fdaa04..138bdb1 100644
+--- a/arch/x86/kernel/uprobes.c
++++ b/arch/x86/kernel/uprobes.c
+@@ -255,12 +255,13 @@ static volatile u32 good_2byte_insns[256 / 32] = {
+ 
+ static bool is_prefix_bad(struct insn *insn)
  {
 +	insn_byte_t p;
  	int i;
  
- 	insn_get_prefixes(insn);
- 
 -	for (i = 0; i < insn->prefixes.nbytes; i++) {
--		insn_byte_t p = insn->prefixes.bytes[i];
--
 +	for_each_insn_prefix(insn, i, p) {
- 		if (p == 0xf2 || p == 0xf3)
- 			return true;
+ 		insn_attr_t attr;
+ 
+-		attr = inat_get_opcode_attribute(insn->prefixes.bytes[i]);
++		attr = inat_get_opcode_attribute(p);
+ 		switch (attr) {
+ 		case INAT_MAKE_PREFIX(INAT_PFX_ES):
+ 		case INAT_MAKE_PREFIX(INAT_PFX_CS):
+@@ -715,6 +716,7 @@ static const struct uprobe_xol_ops push_xol_ops = {
+ static int branch_setup_xol_ops(struct arch_uprobe *auprobe, struct insn *insn)
+ {
+ 	u8 opc1 = OPCODE1(insn);
++	insn_byte_t p;
+ 	int i;
+ 
+ 	switch (opc1) {
+@@ -746,8 +748,8 @@ static int branch_setup_xol_ops(struct arch_uprobe *auprobe, struct insn *insn)
+ 	 * Intel and AMD behavior differ in 64-bit mode: Intel ignores 66 prefix.
+ 	 * No one uses these insns, reject any branch insns with such prefix.
+ 	 */
+-	for (i = 0; i < insn->prefixes.nbytes; i++) {
+-		if (insn->prefixes.bytes[i] == 0x66)
++	for_each_insn_prefix(insn, i, p) {
++		if (p == 0x66)
+ 			return -ENOTSUPP;
  	}
+ 
+diff --git a/tools/arch/x86/include/asm/insn.h b/tools/arch/x86/include/asm/insn.h
+index 568854b..52c6262 100644
+--- a/tools/arch/x86/include/asm/insn.h
++++ b/tools/arch/x86/include/asm/insn.h
+@@ -201,6 +201,21 @@ static inline int insn_offset_immediate(struct insn *insn)
+ 	return insn_offset_displacement(insn) + insn->displacement.nbytes;
+ }
+ 
++/**
++ * for_each_insn_prefix() -- Iterate prefixes in the instruction
++ * @insn: Pointer to struct insn.
++ * @idx:  Index storage.
++ * @prefix: Prefix byte.
++ *
++ * Iterate prefix bytes of given @insn. Each prefix byte is stored in @prefix
++ * and the index is stored in @idx (note that this @idx is just for a cursor,
++ * do not change it.)
++ * Since prefixes.nbytes can be bigger than 4 if some prefixes
++ * are repeated, it cannot be used for looping over the prefixes.
++ */
++#define for_each_insn_prefix(insn, idx, prefix)	\
++	for (idx = 0; idx < ARRAY_SIZE(insn->prefixes.bytes) && (prefix = insn->prefixes.bytes[idx]) != 0; idx++)
++
+ #define POP_SS_OPCODE 0x1f
+ #define MOV_SREG_OPCODE 0x8e
+ 
