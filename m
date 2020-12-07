@@ -2,16 +2,16 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D2B682D1D78
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  7 Dec 2020 23:39:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 280102D1D72
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  7 Dec 2020 23:39:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727929AbgLGWi3 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 7 Dec 2020 17:38:29 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:39322 "EHLO
+        id S1727687AbgLGWiZ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 7 Dec 2020 17:38:25 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:39318 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727550AbgLGWi0 (ORCPT
+        with ESMTP id S1726160AbgLGWiZ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 7 Dec 2020 17:38:26 -0500
+        Mon, 7 Dec 2020 17:38:25 -0500
 Date:   Mon, 07 Dec 2020 22:37:42 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1607380663;
@@ -20,12 +20,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=xBcx+lKmWz+jWcuORdN5ZzXrx+oJgRxfeyHAyf49Aag=;
-        b=O9xH0O7VCf6FS22Me0XrOnOPDJrm58zk1ccqgGcBKWbIbEmtnmGnS4oaFLkXMoyNPBGDTC
-        kxKmCA848mBt0TAWQsZsokNspFaKFisUnNQoruao69jVXY66Tn7/0ZquWgBe/165NskWzv
-        o/HRvVYyoHHvHQT+xCA/WdXZSD5Hf+SVy5ahBSwpGexcJxyk9LvyeS/V3Lrqb8Lcv1IclX
-        mQh0psEvWVe2HUBHJSySq1TcWF6GLd2baxE7RcdvE6KpmkOSYsH75tnTrjiiUOGYi5ybzQ
-        6H2dJDrEeusuvt+FemT7l42CW2KcgU3qb4yfAlhju3A6JnPKyWgBRzXfFmIetQ==
+        bh=LlOv2nhZSYUNfrDH/NODvJ/R+ba+fzVidFl8yW+bX4U=;
+        b=AWtwOsZXFLKxyvWxxjwD2yvjoHMyBy7axHmaL23yQ1loTYgFptqo2iDc2Ksp0kh0gMigcS
+        UDhx4hCYEbPfxrOAIHtEANbj3Y8bJbM7PIPlE/U/rr6934yZdDMZsfP3x2xbMWj/lmh9M+
+        fdsBh9F7q/gvxz0NWaPfJllu4iOjgLkA878pNzcfA2X9MAUJMh0+XFuBzAngZL2m0LSlco
+        HLEiFrxhVLJfxkX+fHOfXcj4OPUDTjR0x6O7eKHQFnCMNkEbhH1hhpQ/2McmLOTcGpAo9o
+        /dFPAAhQD1U15jg4ky3fJnomy5tAKDlgm23SJzLqr3jNp+0OyYSr9fo1w6fGWA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1607380663;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -33,23 +33,23 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=xBcx+lKmWz+jWcuORdN5ZzXrx+oJgRxfeyHAyf49Aag=;
-        b=1iIP+g4/K8QUGmsTcosfkhlOfqzSVoGZJfGkUoLy2Pfmpo83/pBm3IrQZqJLDKgCQGKwIJ
-        LUh4PqOv4ONT1iCg==
+        bh=LlOv2nhZSYUNfrDH/NODvJ/R+ba+fzVidFl8yW+bX4U=;
+        b=pLk7yayMjffPBEs4HqX/u29iXw9efjgSqNsm+d4HSguJX9ojYW4sDMUP95OoySf5V/PbAR
+        VpLL0KawZltmduAA==
 From:   "tip-bot2 for Mike Travis" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/platform] x86/platform/uv: Add kernel interfaces for
- obtaining system info
+Subject: [tip: x86/platform] x86/platform/uv: Add deprecated messages to /proc
+ info leaves
 Cc:     Mike Travis <mike.travis@hpe.com>, Borislav Petkov <bp@suse.de>,
         Steve Wahl <steve.wahl@hpe.com>,
         Hans de Goede <hdegoede@redhat.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20201128034227.120869-2-mike.travis@hpe.com>
-References: <20201128034227.120869-2-mike.travis@hpe.com>
+In-Reply-To: <20201128034227.120869-5-mike.travis@hpe.com>
+References: <20201128034227.120869-5-mike.travis@hpe.com>
 MIME-Version: 1.0
-Message-ID: <160738066295.3364.4859407678343290345.tip-bot2@tip-bot2>
+Message-ID: <160738066254.3364.17197742331172905331.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,61 +60,62 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/platform branch of tip:
 
-Commit-ID:     a67fffb017aed93fca42ce7aa5b6aaf54ff912ad
-Gitweb:        https://git.kernel.org/tip/a67fffb017aed93fca42ce7aa5b6aaf54ff912ad
+Commit-ID:     148c277165cdc72d97d1711b9a1e566d66521828
+Gitweb:        https://git.kernel.org/tip/148c277165cdc72d97d1711b9a1e566d66521828
 Author:        Mike Travis <mike.travis@hpe.com>
-AuthorDate:    Fri, 27 Nov 2020 21:42:23 -06:00
+AuthorDate:    Fri, 27 Nov 2020 21:42:26 -06:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Mon, 07 Dec 2020 19:44:54 +01:00
+CommitterDate: Mon, 07 Dec 2020 20:03:09 +01:00
 
-x86/platform/uv: Add kernel interfaces for obtaining system info
+x86/platform/uv: Add deprecated messages to /proc info leaves
 
-Add kernel interfaces used to obtain info for the uv_sysfs driver
-to display.
+Add "deprecated" message to any access to old /proc/sgi_uv/* leaves.
+
+ [ bp: Do not have a trailing function opening brace and the arguments
+   continuing on the next line and align them on the opening brace. ]
 
 Signed-off-by: Mike Travis <mike.travis@hpe.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
 Reviewed-by: Steve Wahl <steve.wahl@hpe.com>
 Acked-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lkml.kernel.org/r/20201128034227.120869-2-mike.travis@hpe.com
+Link: https://lkml.kernel.org/r/20201128034227.120869-5-mike.travis@hpe.com
 ---
- arch/x86/include/asm/uv/bios.h     |  2 ++
- arch/x86/kernel/apic/x2apic_uv_x.c | 12 ++++++++++++
- 2 files changed, 14 insertions(+)
+ arch/x86/kernel/apic/x2apic_uv_x.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/uv/bios.h b/arch/x86/include/asm/uv/bios.h
-index 01ba080..1b6455f 100644
---- a/arch/x86/include/asm/uv/bios.h
-+++ b/arch/x86/include/asm/uv/bios.h
-@@ -200,6 +200,8 @@ extern long sn_partition_id;
- extern long sn_coherency_id;
- extern long sn_region_size;
- extern long system_serial_number;
-+extern ssize_t uv_get_archtype(char *buf, int len);
-+extern int uv_get_hubless_system(void);
- 
- extern struct kobject *sgi_uv_kobj;	/* /sys/firmware/sgi_uv */
- 
 diff --git a/arch/x86/kernel/apic/x2apic_uv_x.c b/arch/x86/kernel/apic/x2apic_uv_x.c
-index 1b98f8c..4874603 100644
+index 4874603..d75e1d9 100644
 --- a/arch/x86/kernel/apic/x2apic_uv_x.c
 +++ b/arch/x86/kernel/apic/x2apic_uv_x.c
-@@ -502,6 +502,18 @@ enum uv_system_type get_uv_system_type(void)
- 	return uv_system_type;
+@@ -1615,21 +1615,30 @@ static void check_efi_reboot(void)
+ 		reboot_type = BOOT_ACPI;
  }
  
-+int uv_get_hubless_system(void)
-+{
-+	return uv_hubless_system;
-+}
-+EXPORT_SYMBOL_GPL(uv_get_hubless_system);
-+
-+ssize_t uv_get_archtype(char *buf, int len)
-+{
-+	return scnprintf(buf, len, "%s/%s", uv_archtype, oem_table_id);
-+}
-+EXPORT_SYMBOL_GPL(uv_get_archtype);
-+
- int is_uv_system(void)
+-/* Setup user proc fs files */
++/*
++ * User proc fs file handling now deprecated.
++ * Recommend using /sys/firmware/sgi_uv/... instead.
++ */
+ static int __maybe_unused proc_hubbed_show(struct seq_file *file, void *data)
  {
- 	return uv_system_type != UV_NONE;
++	pr_notice_once("%s: using deprecated /proc/sgi_uv/hubbed, use /sys/firmware/sgi_uv/hub_type\n",
++		       current->comm);
+ 	seq_printf(file, "0x%x\n", uv_hubbed_system);
+ 	return 0;
+ }
+ 
+ static int __maybe_unused proc_hubless_show(struct seq_file *file, void *data)
+ {
++	pr_notice_once("%s: using deprecated /proc/sgi_uv/hubless, use /sys/firmware/sgi_uv/hubless\n",
++		       current->comm);
+ 	seq_printf(file, "0x%x\n", uv_hubless_system);
+ 	return 0;
+ }
+ 
+ static int __maybe_unused proc_archtype_show(struct seq_file *file, void *data)
+ {
++	pr_notice_once("%s: using deprecated /proc/sgi_uv/archtype, use /sys/firmware/sgi_uv/archtype\n",
++		       current->comm);
+ 	seq_printf(file, "%s/%s\n", uv_archtype, oem_table_id);
+ 	return 0;
+ }
