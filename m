@@ -2,18 +2,18 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ED0962D1D76
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  7 Dec 2020 23:39:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 94D0E2D1D73
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  7 Dec 2020 23:39:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726160AbgLGWi0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 7 Dec 2020 17:38:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60176 "EHLO
+        id S1727832AbgLGWiZ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 7 Dec 2020 17:38:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60174 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727662AbgLGWiZ (ORCPT
+        with ESMTP id S1726617AbgLGWiZ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Mon, 7 Dec 2020 17:38:25 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3774FC061793;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3165AC061749;
         Mon,  7 Dec 2020 14:37:45 -0800 (PST)
 Date:   Mon, 07 Dec 2020 22:37:42 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
@@ -23,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=bghgC8s1RZpcGCj7iPmhAPelRLZ5y+oqGwRK63rNvoU=;
-        b=ZQXaYFr9JVmccDrmDNEb+9JVbqaZurVuHCkbdDe2AUc8ougOhcD8LmrwBBGhyTGEiz3a9y
-        yCHQIXK2wDEYaBEEo7M+Vyx4GijySQ0wxDBZTE6gYvkPNGmOmZw71NuwL7+jWLX/QeL3pN
-        ImU5w35vKWCDhbsV7I+qVu9ZKCFcOPULVCoAQXnSc+QFxxisux24seYozt5y9EeDRqTz5T
-        LMtDi5YbXmtdMLZ/tg4momIs/z507z9bKXjWTd/m36lvoSXuVLuWDwJgzUegKPFpVFQwv2
-        hLgdMFq8Lfrf/4u99Icubx9klfBUn3I5+d0JX3NMjYx9afZwO7uf9CDUiSGx/w==
+        bh=NiWpngYQqA3mJsocQ433sIYBnMyXSWCQGbbHEOQ9Z34=;
+        b=ol2RgoFwwI2s4oCAQPdJGoKYr5IqWVLXOO3eM8XhPjhbJOntohVrXQ6+DfCcyDdLdy3I0l
+        ZSqoUCIxTlYv/dwK4hUuUzayD97iozsvViP0s9ttwCN3DRsfs2MiK2Bk1XOgYnICUNpyQw
+        28LPL3t7x3ERtiujrum4xKJyUrf11dKSs8TmTd+xJ5agcpMFAak3kkk84zLXCuq2hrjdbA
+        m6VNZjL4gEpsmKpEU7MxjuY5dt/eokNTan4nfmL/IsySRrbuJw5MfwAUvqPzq8WBY/MU3O
+        PDJQPr/aIFdoSAXcqz3Y6CziUZG86oa68/aK1CSEf0iF/Kieik/y3lU3VYD3Gw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1607380663;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,23 +36,21 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=bghgC8s1RZpcGCj7iPmhAPelRLZ5y+oqGwRK63rNvoU=;
-        b=hmVpTaWJFshl3fJArBd3tneT9Xxsn4Oy9XmWLtHvUQCRJ98y/Ku0xGkRbXxli7j6Jqm1Pt
-        ayOG5LYFkJY1CFCA==
+        bh=NiWpngYQqA3mJsocQ433sIYBnMyXSWCQGbbHEOQ9Z34=;
+        b=zdcvIqRfb9Nooj/FwZIrh4krswJPxMi66guvlZvWUKYY3vh8f0Jun5gYOCNrtjVDn9UEBp
+        0R1SOM6zNc5xheDQ==
 From:   "tip-bot2 for Mike Travis" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/platform] x86/platform/uv: Add sysfs leaves to replace
- those in procfs
+Subject: [tip: x86/platform] x86/platform/uv: Update sysfs documentation
 Cc:     Mike Travis <mike.travis@hpe.com>, Borislav Petkov <bp@suse.de>,
-        Steve Wahl <steve.wahl@hpe.com>,
         Hans de Goede <hdegoede@redhat.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20201128034227.120869-3-mike.travis@hpe.com>
-References: <20201128034227.120869-3-mike.travis@hpe.com>
+In-Reply-To: <20201128034227.120869-6-mike.travis@hpe.com>
+References: <20201128034227.120869-6-mike.travis@hpe.com>
 MIME-Version: 1.0
-Message-ID: <160738066283.3364.14396167239614008322.tip-bot2@tip-bot2>
+Message-ID: <160738066226.3364.16068740086522542201.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -63,63 +61,60 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/platform branch of tip:
 
-Commit-ID:     612a0063c9ba3aba79b9006faa0edad5f9d41162
-Gitweb:        https://git.kernel.org/tip/612a0063c9ba3aba79b9006faa0edad5f9d41162
+Commit-ID:     c9624cb7db1c418cbdc8fd2cde6835f83cd0f8a2
+Gitweb:        https://git.kernel.org/tip/c9624cb7db1c418cbdc8fd2cde6835f83cd0f8a2
 Author:        Mike Travis <mike.travis@hpe.com>
-AuthorDate:    Fri, 27 Nov 2020 21:42:24 -06:00
+AuthorDate:    Fri, 27 Nov 2020 21:42:27 -06:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Mon, 07 Dec 2020 19:49:01 +01:00
+CommitterDate: Mon, 07 Dec 2020 21:19:20 +01:00
 
-x86/platform/uv: Add sysfs leaves to replace those in procfs
+x86/platform/uv: Update sysfs documentation
 
-Add uv_sysfs leaves to display the info.
+Update sysfs documentation file to include moved /proc leaves.
 
 Signed-off-by: Mike Travis <mike.travis@hpe.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Steve Wahl <steve.wahl@hpe.com>
 Acked-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lkml.kernel.org/r/20201128034227.120869-3-mike.travis@hpe.com
+Link: https://lkml.kernel.org/r/20201128034227.120869-6-mike.travis@hpe.com
 ---
- drivers/platform/x86/uv_sysfs.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ Documentation/ABI/testing/sysfs-firmware-sgi_uv | 16 ++++++++++++++++-
+ 1 file changed, 16 insertions(+)
 
-diff --git a/drivers/platform/x86/uv_sysfs.c b/drivers/platform/x86/uv_sysfs.c
-index c27f5ff..922d32f 100644
---- a/drivers/platform/x86/uv_sysfs.c
-+++ b/drivers/platform/x86/uv_sysfs.c
-@@ -736,17 +736,35 @@ static ssize_t uv_type_show(struct kobject *kobj,
- 	return scnprintf(buf, PAGE_SIZE, "%s\n", uv_type_string());
- }
+diff --git a/Documentation/ABI/testing/sysfs-firmware-sgi_uv b/Documentation/ABI/testing/sysfs-firmware-sgi_uv
+index 351b1f4..637c668 100644
+--- a/Documentation/ABI/testing/sysfs-firmware-sgi_uv
++++ b/Documentation/ABI/testing/sysfs-firmware-sgi_uv
+@@ -7,10 +7,25 @@ Description:
  
-+static ssize_t uv_archtype_show(struct kobject *kobj,
-+			struct kobj_attribute *attr, char *buf)
-+{
-+	return uv_get_archtype(buf, PAGE_SIZE);
-+}
+ 		Under that directory are a number of read-only attributes::
+ 
++			archtype
++			hub_type
++			hubless
+ 			partition_id
+ 			coherence_id
+ 			uv_type
+ 
++		The archtype entry contains the UV architecture type that
++		is used to select arch-dependent addresses and features.
++		It can be set via the OEM_ID in the ACPI MADT table or by
++		UVsystab entry both passed from UV BIOS.
 +
-+static ssize_t uv_hub_type_show(struct kobject *kobj,
-+			struct kobj_attribute *attr, char *buf)
-+{
-+	return scnprintf(buf, PAGE_SIZE, "0x%x\n", uv_hub_type());
-+}
++		The hub_type entry is used to select the type of hub which is
++		similar to uv_type but encoded in a binary format.  Include
++		the file uv_hub.h to get the definitions.
 +
- static struct kobj_attribute partition_id_attr =
- 	__ATTR(partition_id, 0444, partition_id_show, NULL);
- static struct kobj_attribute coherence_id_attr =
- 	__ATTR(coherence_id, 0444, coherence_id_show, NULL);
- static struct kobj_attribute uv_type_attr =
- 	__ATTR(uv_type, 0444, uv_type_show, NULL);
-+static struct kobj_attribute uv_archtype_attr =
-+	__ATTR(archtype, 0444, uv_archtype_show, NULL);
-+static struct kobj_attribute uv_hub_type_attr =
-+	__ATTR(hub_type, 0444, uv_hub_type_show, NULL);
++		The hubless entry basically is present and set only if there
++		is no hub.  In this case the hub_type entry is not present.
++
+ 		The partition_id entry contains the partition id.
+ 		UV systems can be partitioned into multiple physical
+ 		machines, which each partition running a unique copy
+@@ -24,6 +39,7 @@ Description:
  
- static struct attribute *base_attrs[] = {
- 	&partition_id_attr.attr,
- 	&coherence_id_attr.attr,
- 	&uv_type_attr.attr,
-+	&uv_archtype_attr.attr,
-+	&uv_hub_type_attr.attr,
- 	NULL,
- };
+ 		The uv_type entry contains the hub revision number.
+ 		This value can be used to identify the UV system version::
++			"0.*" = Hubless UV ('*' is subtype)
  
+ 			"3.0" = UV2
+ 			"5.0" = UV3
