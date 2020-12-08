@@ -2,52 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9EF2A2D2768
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  8 Dec 2020 10:24:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D9472D31D7
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  8 Dec 2020 19:13:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728623AbgLHJWv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 8 Dec 2020 04:22:51 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:37744 "EHLO
+        id S1730954AbgLHSNN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 8 Dec 2020 13:13:13 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:40492 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728531AbgLHJWv (ORCPT
+        with ESMTP id S1730495AbgLHSNN (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 8 Dec 2020 04:22:51 -0500
-Date:   Tue, 08 Dec 2020 09:22:08 -0000
+        Tue, 8 Dec 2020 13:13:13 -0500
+Date:   Tue, 08 Dec 2020 18:12:29 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1607419329;
+        s=2020; t=1607451150;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=TbYmfTSHSURq22bkLjKpyea5MYZXwpbexckIwe5I0go=;
-        b=vAVyuL3zAXwwmYa0KQsT6PQ/GRpmYc6JDcr0EizUntViUiU3n0FXA1BpRDwH8AvcKKf+Gd
-        qYOgS3qyYkQkvSsv2Hz7od3GikYp8W6Q9y2nqvvgr7eX5Yjj81DUCFA8VZ4U7cIcit2yp4
-        W/FzO8sxjfZXV7e6Z6U2XvpzQB5nub/+gLv6mkPJMkcbS64eY5zQJHns5wadd0HPFdymjS
-        xr5JAFHAd74WyyagRswJx7qrSAblU4AXFc5BEGKdnyVNrYunCEGuZYuAKNx/uvvDjBhvnV
-        VneisDzpcwcGpjnOIuAgRR5vSFB5HVgykpWDqp+2BNZNHK6qBItXeeJo+dRdhw==
+        bh=xsOLQ9Y+5JZt3k24y9BQmHDJk+C56opPtHsHl8GEVg4=;
+        b=wrr0CObYcxYP1NmCTxMWhVMwj/xk0mydNWK2ZGViLkc4JBwZbAU5LcZQhhGJ5BmjLsEMOy
+        EHI8krv/ieW7AA4Zghb4QessuvnQBF8lFumEoHWcGmC7pPj7/ei7/0Wr0CU0ghuuDVx4dH
+        tCO0XZ5Vtzw2wKB75Px7p7sfpP4XbVPw3/5jDJvrgOUD4vuKSJJVJ3a9/CfWhHveK8XW1C
+        uHfqK2Qm9iMUOTzc6gRvDmOLOAsdMCafbAIcRUAQSvlxapoZLyc7JCCtG8SKmiVDMv758/
+        nTR284eTomEEE/lJwPvKiKpRtnZL5KTHiyWuD/+ZLtclJxqYdFiiqJVd9d+GMA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1607419329;
+        s=2020e; t=1607451150;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=TbYmfTSHSURq22bkLjKpyea5MYZXwpbexckIwe5I0go=;
-        b=69o0teH//x7DXdYknF7JT27SSasw6Qj5EBx4XrHAUgmvNNGG9t14GG1TmmxdaJpxnT1GYI
-        0LQVw669KrmOw5Dw==
-From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
+        bh=xsOLQ9Y+5JZt3k24y9BQmHDJk+C56opPtHsHl8GEVg4=;
+        b=zeGO0CQW49uQTKC0HYdVbO+DMBX6rLDDo7GYJdrjX56913W4hJUsC/wNO31IrsDjDguHYb
+        pj1FryR949q3uPAg==
+From:   "tip-bot2 for Arvind Sankar" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/misc] x86/msr: Add a pointer to an URL which contains
- further details
-Cc:     Borislav Petkov <bp@suse.de>, x86@kernel.org,
+Subject: [tip: x86/cpu] x86/cpu/amd: Remove dead code for TSEG region remapping
+Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
+        Borislav Petkov <bp@suse.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20201205002825.19107-1-bp@alien8.de>
-References: <20201205002825.19107-1-bp@alien8.de>
+In-Reply-To: <20201127171324.1846019-1-nivedita@alum.mit.edu>
+References: <20201127171324.1846019-1-nivedita@alum.mit.edu>
 MIME-Version: 1.0
-Message-ID: <160741932810.3364.658134697822426874.tip-bot2@tip-bot2>
+Message-ID: <160745114956.3364.12729288651743353490.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -56,40 +56,148 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/misc branch of tip:
+The following commit has been merged into the x86/cpu branch of tip:
 
-Commit-ID:     f77f420d34754b8d08ac6ebf094ff7193023196a
-Gitweb:        https://git.kernel.org/tip/f77f420d34754b8d08ac6ebf094ff7193023196a
-Author:        Borislav Petkov <bp@suse.de>
-AuthorDate:    Sat, 05 Dec 2020 01:19:45 +01:00
+Commit-ID:     262bd5724afdefd4c48a260d6100e78cc43ee06b
+Gitweb:        https://git.kernel.org/tip/262bd5724afdefd4c48a260d6100e78cc43ee06b
+Author:        Arvind Sankar <nivedita@alum.mit.edu>
+AuthorDate:    Fri, 27 Nov 2020 12:13:24 -05:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 08 Dec 2020 10:17:08 +01:00
+CommitterDate: Tue, 08 Dec 2020 18:45:21 +01:00
 
-x86/msr: Add a pointer to an URL which contains further details
+x86/cpu/amd: Remove dead code for TSEG region remapping
 
-After having collected the majority of reports about MSRs being written
-by userspace tools and what tools those are, and all newer reports
-mostly repeating, add an URL where detailed information is gathered and
-kept up-to-date.
+Commit
 
+  26bfa5f89486 ("x86, amd: Cleanup init_amd")
+
+moved the code that remaps the TSEG region using 4k pages from
+init_amd() to bsp_init_amd().
+
+However, bsp_init_amd() is executed well before the direct mapping is
+actually created:
+
+  setup_arch()
+    -> early_cpu_init()
+      -> early_identify_cpu()
+        -> this_cpu->c_bsp_init()
+	  -> bsp_init_amd()
+    ...
+    -> init_mem_mapping()
+
+So the change effectively disabled the 4k remapping, because
+pfn_range_is_mapped() is always false at this point.
+
+It has been over six years since the commit, and no-one seems to have
+noticed this, so just remove the code. The original code was also
+incomplete, since it doesn't check how large the TSEG address range
+actually is, so it might remap only part of it in any case.
+
+Hygon has copied the incorrect version, so the code has never run on it
+since the cpu support was added two years ago. Remove it from there as
+well.
+
+Committer notes:
+
+This workaround is incomplete anyway:
+
+1. The code must check MSRC001_0113.TValid (SMM TSeg Mask MSR) first, to
+check whether the TSeg address range is enabled.
+
+2. The code must check whether the range is not 2M aligned - if it is,
+there's nothing to work around.
+
+3. In all the BIOSes tested, the TSeg range is in a e820 reserved area
+and those are not mapped anymore, after
+
+  66520ebc2df3 ("x86, mm: Only direct map addresses that are marked as E820_RAM")
+
+which means, there's nothing to be worked around either.
+
+So let's rip it out.
+
+Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20201205002825.19107-1-bp@alien8.de
+Link: https://lkml.kernel.org/r/20201127171324.1846019-1-nivedita@alum.mit.edu
 ---
- arch/x86/kernel/msr.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/x86/kernel/cpu/amd.c   | 21 ---------------------
+ arch/x86/kernel/cpu/hygon.c | 20 --------------------
+ 2 files changed, 41 deletions(-)
 
-diff --git a/arch/x86/kernel/msr.c b/arch/x86/kernel/msr.c
-index 95e6b97..8a67d1f 100644
---- a/arch/x86/kernel/msr.c
-+++ b/arch/x86/kernel/msr.c
-@@ -99,8 +99,9 @@ static int filter_write(u32 reg)
- 	if (!__ratelimit(&fw_rs))
- 		return 0;
+diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
+index 1f71c76..f8ca66f 100644
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -23,7 +23,6 @@
  
--	pr_warn("Write to unrecognized MSR 0x%x by %s (pid: %d). Please report to x86@kernel.org.\n",
-+	pr_warn("Write to unrecognized MSR 0x%x by %s (pid: %d).\n",
- 	        reg, current->comm, current->pid);
-+	pr_warn("See https://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git/about for details.\n");
+ #ifdef CONFIG_X86_64
+ # include <asm/mmconfig.h>
+-# include <asm/set_memory.h>
+ #endif
  
- 	return 0;
- }
+ #include "cpu.h"
+@@ -509,26 +508,6 @@ static void early_init_amd_mc(struct cpuinfo_x86 *c)
+ 
+ static void bsp_init_amd(struct cpuinfo_x86 *c)
+ {
+-
+-#ifdef CONFIG_X86_64
+-	if (c->x86 >= 0xf) {
+-		unsigned long long tseg;
+-
+-		/*
+-		 * Split up direct mapping around the TSEG SMM area.
+-		 * Don't do it for gbpages because there seems very little
+-		 * benefit in doing so.
+-		 */
+-		if (!rdmsrl_safe(MSR_K8_TSEG_ADDR, &tseg)) {
+-			unsigned long pfn = tseg >> PAGE_SHIFT;
+-
+-			pr_debug("tseg: %010llx\n", tseg);
+-			if (pfn_range_is_mapped(pfn, pfn + 1))
+-				set_memory_4k((unsigned long)__va(tseg), 1);
+-		}
+-	}
+-#endif
+-
+ 	if (cpu_has(c, X86_FEATURE_CONSTANT_TSC)) {
+ 
+ 		if (c->x86 > 0x10 ||
+diff --git a/arch/x86/kernel/cpu/hygon.c b/arch/x86/kernel/cpu/hygon.c
+index dc0840a..ae59115 100644
+--- a/arch/x86/kernel/cpu/hygon.c
++++ b/arch/x86/kernel/cpu/hygon.c
+@@ -14,9 +14,6 @@
+ #include <asm/cacheinfo.h>
+ #include <asm/spec-ctrl.h>
+ #include <asm/delay.h>
+-#ifdef CONFIG_X86_64
+-# include <asm/set_memory.h>
+-#endif
+ 
+ #include "cpu.h"
+ 
+@@ -203,23 +200,6 @@ static void early_init_hygon_mc(struct cpuinfo_x86 *c)
+ 
+ static void bsp_init_hygon(struct cpuinfo_x86 *c)
+ {
+-#ifdef CONFIG_X86_64
+-	unsigned long long tseg;
+-
+-	/*
+-	 * Split up direct mapping around the TSEG SMM area.
+-	 * Don't do it for gbpages because there seems very little
+-	 * benefit in doing so.
+-	 */
+-	if (!rdmsrl_safe(MSR_K8_TSEG_ADDR, &tseg)) {
+-		unsigned long pfn = tseg >> PAGE_SHIFT;
+-
+-		pr_debug("tseg: %010llx\n", tseg);
+-		if (pfn_range_is_mapped(pfn, pfn + 1))
+-			set_memory_4k((unsigned long)__va(tseg), 1);
+-	}
+-#endif
+-
+ 	if (cpu_has(c, X86_FEATURE_CONSTANT_TSC)) {
+ 		u64 val;
+ 
