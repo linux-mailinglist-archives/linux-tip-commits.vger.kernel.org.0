@@ -2,19 +2,16 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D3AC2D4927
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Dec 2020 19:39:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EDEFF2D494A
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Dec 2020 19:43:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729725AbgLISj3 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 9 Dec 2020 13:39:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46804 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728997AbgLISj3 (ORCPT
+        id S1733289AbgLISmM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 9 Dec 2020 13:42:12 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:48312 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727559AbgLISjb (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 9 Dec 2020 13:39:29 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1016CC0613CF;
-        Wed,  9 Dec 2020 10:38:49 -0800 (PST)
+        Wed, 9 Dec 2020 13:39:31 -0500
 Date:   Wed, 09 Dec 2020 18:38:46 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1607539127;
@@ -23,12 +20,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=U8ItWNThca6KPkdlpq5Bor2HOLrs0TWGDCTrSos999k=;
-        b=iVZpdVyInC/lgDhmRseAQFri24TM0//aghQmEM5OxJ9ojm6CfxzfTXcx9XU7L5yjxo8/vX
-        yZnWAAQng8SC4Jp2343L81Vww7VWYlidd8K/9zqEkp+URi46c6Kgg1ZINOvNxEssLSSjkd
-        2ztAB1AGUOebDEpyePPnCtzRTHrFMPamX3UBmtYd8ze5R6T+p70LYTp+EuYhAk+XwwoylM
-        XKtnrENg9828rQipXyvN0NWl0U/ebSw5gwNco8SQJWUJfSylTRGhaddpkWP+E+UUHYKjwu
-        LcqTN0QKmK2H/avBdnHhbKHAtfOQfR1kYv5aVxo9+6RsO52F15S+8KBzzLwK6g==
+        bh=6amLPYhulIcC8MH0lDtd1dgFefYZ+jQhQU9WZUwKSXk=;
+        b=SORboJduNpuawz+4fYoXj8I7dBRtjodQJt7xH93v7FlS8FU49XpBHbZud4nPaXEm46l7jw
+        worTqrEdITqs0IVMjgUHfIjpyjtAKeUxVfyvdAIJDGgBXimqFXm23o+NUaC02oz/wctK4N
+        SQhUmYf84kiY5/jiHfo3GYkkOnatSqW+El3eOZ1WYqhnyHqskjodF8P5/NwDDwqlcPcpP+
+        /ExdJd5X3RG01KpYYW+N/ul32tWOskgfckOwruyyNOXKIiOX7audVuF5P3ckoZZEpWn9N0
+        htiSW0qdq92STEsWGlBy5pn1bG1bFRIE06CVpe4JX8RaruVXqqEY69fcOlcp2w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1607539127;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,22 +33,22 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=U8ItWNThca6KPkdlpq5Bor2HOLrs0TWGDCTrSos999k=;
-        b=xk3Km7W1+Tl0oKcCTKoEQRkCgTi7/Cd1M7kuIq587GoZShKB9ESD/415EWbkzMgYCd21g9
-        aj5GhnWw4GLqYlCg==
+        bh=6amLPYhulIcC8MH0lDtd1dgFefYZ+jQhQU9WZUwKSXk=;
+        b=x54Hjd7Lq+bAfMIhCDqSorGJEDK/421DHA16VLSxWOsJBSA75FX5Ld6XHZwfr33fcFMXNE
+        incbKdiC22HYr4Dg==
 From:   "tip-bot2 for Ahmed S. Darwish" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] Documentation: seqlock: s/LOCKTYPE/LOCKNAME/g
+Subject: [tip: locking/core] seqlock: Prefix internal seqcount_t-only macros
+ with a "do_"
 Cc:     "Ahmed S. Darwish" <a.darwish@linutronix.de>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        stable@vger.kernel.org, x86@kernel.org,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20201206162143.14387-2-a.darwish@linutronix.de>
-References: <20201206162143.14387-2-a.darwish@linutronix.de>
+In-Reply-To: <CAHk-=wikhGExmprXgaW+MVXG1zsGpztBbVwOb23vetk41EtTBQ@mail.gmail.com>
+References: <CAHk-=wikhGExmprXgaW+MVXG1zsGpztBbVwOb23vetk41EtTBQ@mail.gmail.com>
 MIME-Version: 1.0
-Message-ID: <160753912693.3364.7415240565588650319.tip-bot2@tip-bot2>
+Message-ID: <160753912666.3364.821233138673064897.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -62,77 +59,256 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     cf48647243cc28d15280600292db5777592606c5
-Gitweb:        https://git.kernel.org/tip/cf48647243cc28d15280600292db5777592606c5
+Commit-ID:     66bcfcdf89d00f2409f4b5da0f8c20c08318dc72
+Gitweb:        https://git.kernel.org/tip/66bcfcdf89d00f2409f4b5da0f8c20c08318dc72
 Author:        Ahmed S. Darwish <a.darwish@linutronix.de>
-AuthorDate:    Sun, 06 Dec 2020 17:21:41 +01:00
+AuthorDate:    Sun, 06 Dec 2020 17:21:42 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Wed, 09 Dec 2020 17:08:49 +01:00
 
-Documentation: seqlock: s/LOCKTYPE/LOCKNAME/g
+seqlock: Prefix internal seqcount_t-only macros with a "do_"
 
-Sequence counters with an associated write serialization lock are called
-seqcount_LOCKNAME_t. Fix the documentation accordingly.
+When the seqcount_LOCKNAME_t group of data types were introduced, two
+classes of seqlock.h sequence counter macros were added:
 
-While at it, remove a paragraph that inappropriately discussed a
-seqlock.h implementation detail.
+  - An external public API which can either take a plain seqcount_t or
+    any of the seqcount_LOCKNAME_t variants.
 
-Fixes: 6dd699b13d53 ("seqlock: seqcount_LOCKNAME_t: Standardize naming convention")
+  - An internal API which takes only a plain seqcount_t.
+
+To distinguish between the two groups, the "*_seqcount_t_*" pattern was
+used for the latter. This confused a number of mm/ call-site developers,
+and Linus also commented that it was not a standard practice for marking
+seqlock.h internal APIs.
+
+Distinguish the latter group of macros by prefixing a "do_".
+
 Signed-off-by: Ahmed S. Darwish <a.darwish@linutronix.de>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20201206162143.14387-2-a.darwish@linutronix.de
+Link: https://lkml.kernel.org/r/CAHk-=wikhGExmprXgaW+MVXG1zsGpztBbVwOb23vetk41EtTBQ@mail.gmail.com
 ---
- Documentation/locking/seqlock.rst | 21 ++++++++++-----------
- 1 file changed, 10 insertions(+), 11 deletions(-)
+ include/linux/seqlock.h | 66 ++++++++++++++++++++--------------------
+ 1 file changed, 33 insertions(+), 33 deletions(-)
 
-diff --git a/Documentation/locking/seqlock.rst b/Documentation/locking/seqlock.rst
-index a334b58..64405e5 100644
---- a/Documentation/locking/seqlock.rst
-+++ b/Documentation/locking/seqlock.rst
-@@ -89,7 +89,7 @@ Read path::
+diff --git a/include/linux/seqlock.h b/include/linux/seqlock.h
+index d89134c..235cbc6 100644
+--- a/include/linux/seqlock.h
++++ b/include/linux/seqlock.h
+@@ -425,9 +425,9 @@ SEQCOUNT_LOCKNAME(ww_mutex,     struct ww_mutex, true,     &s->lock->base, ww_mu
+  * Return: true if a read section retry is required, else false
+  */
+ #define __read_seqcount_retry(s, start)					\
+-	__read_seqcount_t_retry(seqprop_ptr(s), start)
++	do___read_seqcount_retry(seqprop_ptr(s), start)
  
- .. _seqcount_locktype_t:
+-static inline int __read_seqcount_t_retry(const seqcount_t *s, unsigned start)
++static inline int do___read_seqcount_retry(const seqcount_t *s, unsigned start)
+ {
+ 	kcsan_atomic_next(0);
+ 	return unlikely(READ_ONCE(s->sequence) != start);
+@@ -445,12 +445,12 @@ static inline int __read_seqcount_t_retry(const seqcount_t *s, unsigned start)
+  * Return: true if a read section retry is required, else false
+  */
+ #define read_seqcount_retry(s, start)					\
+-	read_seqcount_t_retry(seqprop_ptr(s), start)
++	do_read_seqcount_retry(seqprop_ptr(s), start)
  
--Sequence counters with associated locks (``seqcount_LOCKTYPE_t``)
-+Sequence counters with associated locks (``seqcount_LOCKNAME_t``)
- -----------------------------------------------------------------
+-static inline int read_seqcount_t_retry(const seqcount_t *s, unsigned start)
++static inline int do_read_seqcount_retry(const seqcount_t *s, unsigned start)
+ {
+ 	smp_rmb();
+-	return __read_seqcount_t_retry(s, start);
++	return do___read_seqcount_retry(s, start);
+ }
  
- As discussed at :ref:`seqcount_t`, sequence count write side critical
-@@ -115,27 +115,26 @@ The following sequence counters with associated locks are defined:
-   - ``seqcount_mutex_t``
-   - ``seqcount_ww_mutex_t``
+ /**
+@@ -462,10 +462,10 @@ do {									\
+ 	if (seqprop_preemptible(s))					\
+ 		preempt_disable();					\
+ 									\
+-	raw_write_seqcount_t_begin(seqprop_ptr(s));			\
++	do_raw_write_seqcount_begin(seqprop_ptr(s));			\
+ } while (0)
  
--The plain seqcount read and write APIs branch out to the specific
--seqcount_LOCKTYPE_t implementation at compile-time. This avoids kernel
--API explosion per each new seqcount LOCKTYPE.
-+The sequence counter read and write APIs can take either a plain
-+seqcount_t or any of the seqcount_LOCKNAME_t variants above.
+-static inline void raw_write_seqcount_t_begin(seqcount_t *s)
++static inline void do_raw_write_seqcount_begin(seqcount_t *s)
+ {
+ 	kcsan_nestable_atomic_begin();
+ 	s->sequence++;
+@@ -478,13 +478,13 @@ static inline void raw_write_seqcount_t_begin(seqcount_t *s)
+  */
+ #define raw_write_seqcount_end(s)					\
+ do {									\
+-	raw_write_seqcount_t_end(seqprop_ptr(s));			\
++	do_raw_write_seqcount_end(seqprop_ptr(s));			\
+ 									\
+ 	if (seqprop_preemptible(s))					\
+ 		preempt_enable();					\
+ } while (0)
  
--Initialization (replace "LOCKTYPE" with one of the supported locks)::
-+Initialization (replace "LOCKNAME" with one of the supported locks)::
+-static inline void raw_write_seqcount_t_end(seqcount_t *s)
++static inline void do_raw_write_seqcount_end(seqcount_t *s)
+ {
+ 	smp_wmb();
+ 	s->sequence++;
+@@ -506,12 +506,12 @@ do {									\
+ 	if (seqprop_preemptible(s))					\
+ 		preempt_disable();					\
+ 									\
+-	write_seqcount_t_begin_nested(seqprop_ptr(s), subclass);	\
++	do_write_seqcount_begin_nested(seqprop_ptr(s), subclass);	\
+ } while (0)
  
- 	/* dynamic */
--	seqcount_LOCKTYPE_t foo_seqcount;
--	seqcount_LOCKTYPE_init(&foo_seqcount, &lock);
-+	seqcount_LOCKNAME_t foo_seqcount;
-+	seqcount_LOCKNAME_init(&foo_seqcount, &lock);
+-static inline void write_seqcount_t_begin_nested(seqcount_t *s, int subclass)
++static inline void do_write_seqcount_begin_nested(seqcount_t *s, int subclass)
+ {
+-	raw_write_seqcount_t_begin(s);
++	do_raw_write_seqcount_begin(s);
+ 	seqcount_acquire(&s->dep_map, subclass, 0, _RET_IP_);
+ }
  
- 	/* static */
--	static seqcount_LOCKTYPE_t foo_seqcount =
--		SEQCNT_LOCKTYPE_ZERO(foo_seqcount, &lock);
-+	static seqcount_LOCKNAME_t foo_seqcount =
-+		SEQCNT_LOCKNAME_ZERO(foo_seqcount, &lock);
+@@ -533,12 +533,12 @@ do {									\
+ 	if (seqprop_preemptible(s))					\
+ 		preempt_disable();					\
+ 									\
+-	write_seqcount_t_begin(seqprop_ptr(s));				\
++	do_write_seqcount_begin(seqprop_ptr(s));			\
+ } while (0)
  
- 	/* C99 struct init */
- 	struct {
--		.seq   = SEQCNT_LOCKTYPE_ZERO(foo.seq, &lock),
-+		.seq   = SEQCNT_LOCKNAME_ZERO(foo.seq, &lock),
- 	} foo;
+-static inline void write_seqcount_t_begin(seqcount_t *s)
++static inline void do_write_seqcount_begin(seqcount_t *s)
+ {
+-	write_seqcount_t_begin_nested(s, 0);
++	do_write_seqcount_begin_nested(s, 0);
+ }
  
- Write path: same as in :ref:`seqcount_t`, while running from a context
--with the associated LOCKTYPE lock acquired.
-+with the associated write serialization lock acquired.
+ /**
+@@ -549,16 +549,16 @@ static inline void write_seqcount_t_begin(seqcount_t *s)
+  */
+ #define write_seqcount_end(s)						\
+ do {									\
+-	write_seqcount_t_end(seqprop_ptr(s));				\
++	do_write_seqcount_end(seqprop_ptr(s));				\
+ 									\
+ 	if (seqprop_preemptible(s))					\
+ 		preempt_enable();					\
+ } while (0)
  
- Read path: same as in :ref:`seqcount_t`.
+-static inline void write_seqcount_t_end(seqcount_t *s)
++static inline void do_write_seqcount_end(seqcount_t *s)
+ {
+ 	seqcount_release(&s->dep_map, _RET_IP_);
+-	raw_write_seqcount_t_end(s);
++	do_raw_write_seqcount_end(s);
+ }
+ 
+ /**
+@@ -603,9 +603,9 @@ static inline void write_seqcount_t_end(seqcount_t *s)
+  *      }
+  */
+ #define raw_write_seqcount_barrier(s)					\
+-	raw_write_seqcount_t_barrier(seqprop_ptr(s))
++	do_raw_write_seqcount_barrier(seqprop_ptr(s))
+ 
+-static inline void raw_write_seqcount_t_barrier(seqcount_t *s)
++static inline void do_raw_write_seqcount_barrier(seqcount_t *s)
+ {
+ 	kcsan_nestable_atomic_begin();
+ 	s->sequence++;
+@@ -623,9 +623,9 @@ static inline void raw_write_seqcount_t_barrier(seqcount_t *s)
+  * will complete successfully and see data older than this.
+  */
+ #define write_seqcount_invalidate(s)					\
+-	write_seqcount_t_invalidate(seqprop_ptr(s))
++	do_write_seqcount_invalidate(seqprop_ptr(s))
+ 
+-static inline void write_seqcount_t_invalidate(seqcount_t *s)
++static inline void do_write_seqcount_invalidate(seqcount_t *s)
+ {
+ 	smp_wmb();
+ 	kcsan_nestable_atomic_begin();
+@@ -865,9 +865,9 @@ static inline unsigned read_seqretry(const seqlock_t *sl, unsigned start)
+ }
+ 
+ /*
+- * For all seqlock_t write side functions, use write_seqcount_*t*_begin()
+- * instead of the generic write_seqcount_begin(). This way, no redundant
+- * lockdep_assert_held() checks are added.
++ * For all seqlock_t write side functions, use the the internal
++ * do_write_seqcount_begin() instead of generic write_seqcount_begin().
++ * This way, no redundant lockdep_assert_held() checks are added.
+  */
+ 
+ /**
+@@ -886,7 +886,7 @@ static inline unsigned read_seqretry(const seqlock_t *sl, unsigned start)
+ static inline void write_seqlock(seqlock_t *sl)
+ {
+ 	spin_lock(&sl->lock);
+-	write_seqcount_t_begin(&sl->seqcount.seqcount);
++	do_write_seqcount_begin(&sl->seqcount.seqcount);
+ }
+ 
+ /**
+@@ -898,7 +898,7 @@ static inline void write_seqlock(seqlock_t *sl)
+  */
+ static inline void write_sequnlock(seqlock_t *sl)
+ {
+-	write_seqcount_t_end(&sl->seqcount.seqcount);
++	do_write_seqcount_end(&sl->seqcount.seqcount);
+ 	spin_unlock(&sl->lock);
+ }
+ 
+@@ -912,7 +912,7 @@ static inline void write_sequnlock(seqlock_t *sl)
+ static inline void write_seqlock_bh(seqlock_t *sl)
+ {
+ 	spin_lock_bh(&sl->lock);
+-	write_seqcount_t_begin(&sl->seqcount.seqcount);
++	do_write_seqcount_begin(&sl->seqcount.seqcount);
+ }
+ 
+ /**
+@@ -925,7 +925,7 @@ static inline void write_seqlock_bh(seqlock_t *sl)
+  */
+ static inline void write_sequnlock_bh(seqlock_t *sl)
+ {
+-	write_seqcount_t_end(&sl->seqcount.seqcount);
++	do_write_seqcount_end(&sl->seqcount.seqcount);
+ 	spin_unlock_bh(&sl->lock);
+ }
+ 
+@@ -939,7 +939,7 @@ static inline void write_sequnlock_bh(seqlock_t *sl)
+ static inline void write_seqlock_irq(seqlock_t *sl)
+ {
+ 	spin_lock_irq(&sl->lock);
+-	write_seqcount_t_begin(&sl->seqcount.seqcount);
++	do_write_seqcount_begin(&sl->seqcount.seqcount);
+ }
+ 
+ /**
+@@ -951,7 +951,7 @@ static inline void write_seqlock_irq(seqlock_t *sl)
+  */
+ static inline void write_sequnlock_irq(seqlock_t *sl)
+ {
+-	write_seqcount_t_end(&sl->seqcount.seqcount);
++	do_write_seqcount_end(&sl->seqcount.seqcount);
+ 	spin_unlock_irq(&sl->lock);
+ }
+ 
+@@ -960,7 +960,7 @@ static inline unsigned long __write_seqlock_irqsave(seqlock_t *sl)
+ 	unsigned long flags;
+ 
+ 	spin_lock_irqsave(&sl->lock, flags);
+-	write_seqcount_t_begin(&sl->seqcount.seqcount);
++	do_write_seqcount_begin(&sl->seqcount.seqcount);
+ 	return flags;
+ }
+ 
+@@ -989,7 +989,7 @@ static inline unsigned long __write_seqlock_irqsave(seqlock_t *sl)
+ static inline void
+ write_sequnlock_irqrestore(seqlock_t *sl, unsigned long flags)
+ {
+-	write_seqcount_t_end(&sl->seqcount.seqcount);
++	do_write_seqcount_end(&sl->seqcount.seqcount);
+ 	spin_unlock_irqrestore(&sl->lock, flags);
+ }
  
