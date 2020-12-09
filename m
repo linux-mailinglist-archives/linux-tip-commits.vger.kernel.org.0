@@ -2,52 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B424E2D492A
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Dec 2020 19:39:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F3CDD2D4966
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Dec 2020 19:47:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733001AbgLISjl (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 9 Dec 2020 13:39:41 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:48386 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732979AbgLISjd (ORCPT
+        id S1730088AbgLISpW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 9 Dec 2020 13:45:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47702 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729882AbgLISpV (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 9 Dec 2020 13:39:33 -0500
-Date:   Wed, 09 Dec 2020 18:38:49 -0000
+        Wed, 9 Dec 2020 13:45:21 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E5E2C0613CF;
+        Wed,  9 Dec 2020 10:44:41 -0800 (PST)
+Date:   Wed, 09 Dec 2020 18:44:38 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1607539129;
+        s=2020; t=1607539479;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=mAL2zMzkTh6hP3MISpcsyU2YzUhyhDailjudNGYtL/0=;
-        b=rWBsZ1k/V228JhVcgFOEux7nq8aMZAQleUQLxBYdiVTgleO7j4h29AWe2BaBTMWKOf7Vli
-        XRpvR/mJRP3FaeFu4FKUM2S4YroE4n2ES3XjXN8u7wb036LB0s42OhBVPICZix/+Sd8fTA
-        mmhG1RZq/7228nH8rbjY23scRDhW2vsccqpMv7nqZkOrkB5wUrwHBmUG7mIVeL0Qjc/03m
-        aXqZUOPVzuJR7kcq9SCSfPxakAyQi04NW3Jcbtxsar4Cj8i2FLwlApceT54iFuQ3u/NnZ3
-        HFxGaynzV0v+6yEbWojgJYS6qrPXwebQkSWMTR5BcBJftUbjSrEAsQCHxbPeOw==
+        bh=mSMXOJ06KUW9Qp0QMdwRiGLL9RbemCGh134wdgaLr64=;
+        b=f5m5DIsfwNYa9QASGrpXcekWkowTQ9aB7px+uUR5S6tPuLwoY+zs3eK9Rn2zkE5i1RWaVR
+        bzO/Io7117RY0eYF+tNwsATjuXhrYGh1KGemD1WdBEbejWLcR9gS8ivY4q5CoIRXZbTAa3
+        9uxkl6plQmeRgqmhbbKlwk2901h5dy2bNuwbmH6/tCbThNAYHjyyR5z4g+gqFFH/tYp8ZZ
+        UQYcHKgdiPmP+p0hU+kQhTcirJtBLSdjHNSyImB/YOoeYJY0F0Q34NofHLgzn946hG+7fM
+        iZy+e4q1Ff5UF5Lwa3ph1H29pqD1JCr+Hhx+/doRTGqwA0kbMdrny87XF8zddA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1607539129;
+        s=2020e; t=1607539479;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=mAL2zMzkTh6hP3MISpcsyU2YzUhyhDailjudNGYtL/0=;
-        b=JmhyTd98QN7PZNdb24Q2lBmmMkBdGRfAw0UhvkuN+UNrfOdr0lWGugGVKuvGC8xoN9FToj
-        vnFXQQOANS8C84CQ==
-From:   "tip-bot2 for Eric W. Biederman" <tip-bot2@linutronix.de>
+        bh=mSMXOJ06KUW9Qp0QMdwRiGLL9RbemCGh134wdgaLr64=;
+        b=HQjyLNvAy5Ed37oLKoFiZnU1IgYZmaCb2EPooxOTr14Gzjd9lxtaCfxVfuZ2MDmSVd4ghP
+        qCZYzvhOj42zUTCA==
+From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] rwsem: Implement down_read_killable_nested
-Cc:     "Eric W. Biederman" <ebiederm@xmission.com>,
+Subject: [tip: perf/core] perf/x86/intel: Add Tremont Topdown support
+Cc:     Kan Liang <kan.liang@linux.intel.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <87o8jabqh3.fsf@x220.int.ebiederm.org>
-References: <87o8jabqh3.fsf@x220.int.ebiederm.org>
+In-Reply-To: <1607457952-3519-1-git-send-email-kan.liang@linux.intel.com>
+References: <1607457952-3519-1-git-send-email-kan.liang@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <160753912926.3364.11774141440383901114.tip-bot2@tip-bot2>
+Message-ID: <160753947871.3364.1276461404139222923.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -56,72 +59,73 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the locking/core branch of tip:
+The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     0f9368b5bf6db0c04afc5454b1be79022a681615
-Gitweb:        https://git.kernel.org/tip/0f9368b5bf6db0c04afc5454b1be79022a681615
-Author:        Eric W. Biederman <ebiederm@xmission.com>
-AuthorDate:    Thu, 03 Dec 2020 14:10:32 -06:00
+Commit-ID:     c2208046bba6842dc232a600dc5cafc2fca41078
+Gitweb:        https://git.kernel.org/tip/c2208046bba6842dc232a600dc5cafc2fca41078
+Author:        Kan Liang <kan.liang@linux.intel.com>
+AuthorDate:    Tue, 08 Dec 2020 12:05:52 -08:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 09 Dec 2020 17:08:41 +01:00
+CommitterDate: Wed, 09 Dec 2020 17:08:59 +01:00
 
-rwsem: Implement down_read_killable_nested
+perf/x86/intel: Add Tremont Topdown support
 
-In preparation for converting exec_update_mutex to a rwsem so that
-multiple readers can execute in parallel and not deadlock, add
-down_read_killable_nested.  This is needed so that kcmp_lock
-can be converted from working on a mutexes to working on rw_semaphores.
+Tremont has four L1 Topdown events, TOPDOWN_FE_BOUND.ALL,
+TOPDOWN_BAD_SPECULATION.ALL, TOPDOWN_BE_BOUND.ALL and
+TOPDOWN_RETIRING.ALL. They are available on GP counters.
 
-Signed-off-by: Eric W. Biederman <ebiederm@xmission.com>
+Export them to sysfs and facilitate the perf stat tool.
+
+ $perf stat --topdown -- sleep 1
+
+ Performance counter stats for 'sleep 1':
+
+            retiring      bad speculation       frontend bound
+backend bound
+               24.9%                16.8%                31.7%
+26.6%
+
+       1.001224610 seconds time elapsed
+
+       0.001150000 seconds user
+       0.000000000 seconds sys
+
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/87o8jabqh3.fsf@x220.int.ebiederm.org
+Link: https://lkml.kernel.org/r/1607457952-3519-1-git-send-email-kan.liang@linux.intel.com
 ---
- include/linux/rwsem.h  |  2 ++
- kernel/locking/rwsem.c | 14 ++++++++++++++
- 2 files changed, 16 insertions(+)
+ arch/x86/events/intel/core.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/include/linux/rwsem.h b/include/linux/rwsem.h
-index 25e3fde..13021b0 100644
---- a/include/linux/rwsem.h
-+++ b/include/linux/rwsem.h
-@@ -171,6 +171,7 @@ extern void downgrade_write(struct rw_semaphore *sem);
-  * See Documentation/locking/lockdep-design.rst for more details.)
-  */
- extern void down_read_nested(struct rw_semaphore *sem, int subclass);
-+extern int __must_check down_read_killable_nested(struct rw_semaphore *sem, int subclass);
- extern void down_write_nested(struct rw_semaphore *sem, int subclass);
- extern int down_write_killable_nested(struct rw_semaphore *sem, int subclass);
- extern void _down_write_nest_lock(struct rw_semaphore *sem, struct lockdep_map *nest_lock);
-@@ -191,6 +192,7 @@ extern void down_read_non_owner(struct rw_semaphore *sem);
- extern void up_read_non_owner(struct rw_semaphore *sem);
- #else
- # define down_read_nested(sem, subclass)		down_read(sem)
-+# define down_read_killable_nested(sem, subclass)	down_read_killable(sem)
- # define down_write_nest_lock(sem, nest_lock)	down_write(sem)
- # define down_write_nested(sem, subclass)	down_write(sem)
- # define down_write_killable_nested(sem, subclass)	down_write_killable(sem)
-diff --git a/kernel/locking/rwsem.c b/kernel/locking/rwsem.c
-index f11b9bd..54d11cb 100644
---- a/kernel/locking/rwsem.c
-+++ b/kernel/locking/rwsem.c
-@@ -1605,6 +1605,20 @@ void down_read_nested(struct rw_semaphore *sem, int subclass)
- }
- EXPORT_SYMBOL(down_read_nested);
+diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
+index 6c0d18f..d4569bf 100644
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -1901,6 +1901,19 @@ static __initconst const u64 tnt_hw_cache_extra_regs
+ 	},
+ };
  
-+int down_read_killable_nested(struct rw_semaphore *sem, int subclass)
-+{
-+	might_sleep();
-+	rwsem_acquire_read(&sem->dep_map, subclass, 0, _RET_IP_);
++EVENT_ATTR_STR(topdown-fe-bound,       td_fe_bound_tnt,        "event=0x71,umask=0x0");
++EVENT_ATTR_STR(topdown-retiring,       td_retiring_tnt,        "event=0xc2,umask=0x0");
++EVENT_ATTR_STR(topdown-bad-spec,       td_bad_spec_tnt,        "event=0x73,umask=0x6");
++EVENT_ATTR_STR(topdown-be-bound,       td_be_bound_tnt,        "event=0x74,umask=0x0");
 +
-+	if (LOCK_CONTENDED_RETURN(sem, __down_read_trylock, __down_read_killable)) {
-+		rwsem_release(&sem->dep_map, _RET_IP_);
-+		return -EINTR;
-+	}
++static struct attribute *tnt_events_attrs[] = {
++	EVENT_PTR(td_fe_bound_tnt),
++	EVENT_PTR(td_retiring_tnt),
++	EVENT_PTR(td_bad_spec_tnt),
++	EVENT_PTR(td_be_bound_tnt),
++	NULL,
++};
 +
-+	return 0;
-+}
-+EXPORT_SYMBOL(down_read_killable_nested);
-+
- void _down_write_nest_lock(struct rw_semaphore *sem, struct lockdep_map *nest)
- {
- 	might_sleep();
+ static struct extra_reg intel_tnt_extra_regs[] __read_mostly = {
+ 	/* must define OFFCORE_RSP_X first, see intel_fixup_er() */
+ 	INTEL_UEVENT_EXTRA_REG(0x01b7, MSR_OFFCORE_RSP_0, 0x800ff0ffffff9fffull, RSP_0),
+@@ -5174,6 +5187,7 @@ __init int intel_pmu_init(void)
+ 		x86_pmu.lbr_pt_coexist = true;
+ 		x86_pmu.flags |= PMU_FL_HAS_RSP_1;
+ 		x86_pmu.get_event_constraints = tnt_get_event_constraints;
++		td_attr = tnt_events_attrs;
+ 		extra_attr = slm_format_attr;
+ 		pr_cont("Tremont events, ");
+ 		name = "Tremont";
