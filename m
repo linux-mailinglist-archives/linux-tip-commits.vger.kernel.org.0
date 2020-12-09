@@ -2,90 +2,176 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D15B2D487E
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Dec 2020 19:02:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C6572D4893
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Dec 2020 19:06:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728951AbgLISCT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 9 Dec 2020 13:02:19 -0500
-Received: from mail.kernel.org ([198.145.29.99]:53924 "EHLO mail.kernel.org"
+        id S1732501AbgLISFw (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 9 Dec 2020 13:05:52 -0500
+Received: from mail.kernel.org ([198.145.29.99]:54440 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728099AbgLISCT (ORCPT
+        id S1732461AbgLISFw (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 9 Dec 2020 13:02:19 -0500
-Date:   Wed, 9 Dec 2020 15:01:47 -0300
+        Wed, 9 Dec 2020 13:05:52 -0500
+Date:   Wed, 9 Dec 2020 15:05:19 -0300
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1607536899;
-        bh=YkDIffOrd4YjHYDteG42fXPxp5LD271yGDalbafSdOw=;
+        s=k20201202; t=1607537111;
+        bh=w7bipq0SUrgQUd+zYlUutmyVUYkj9IYNtEEIakkju00=;
         h=From:To:Cc:Subject:References:In-Reply-To:From;
-        b=RwMWg2vh4jdD1M3CmObhFWfTVC05SAP4FolhKw6f6a8iZ4+1Lwv9tER04yEyTiSDV
-         hH2Ew2MiwfJizuUJfnNCvEcKd2ImNBMQcM11lczLGe6u2868x5AQdR9JtmefVMLc62
-         V8lI0DIXZVyO8sEfRPbDcRk6BlvXirc8blss9G1Rc+OmutDKyOnoGWJQ4bA2nMlH4F
-         miTswvTh1kqfxfcMf4yEnKC1Ykz3jKcdE8nOFsmxhvg3u5o3ZOjObkRYzNx7Nvys8x
-         xezvT//oWg1Qqb+QuK2k4JgbMyewGtObOQbE38aGj2TnJuYvGG7OwFS1GDYuesoq8k
-         TJThOwG/fsExQ==
+        b=TzQPzdOUOxcyIc1xXcd8aFfbBjmgjwHcEFVSmNHZ4/SgH1MOhpGr5erjq2K+yDltT
+         v/FT2W447p4ywB9IA8WYpmuRQE4VGGqDsBpKE3GBlmMWzgzQ+S4Z7AL6XUmW6whPfG
+         ydTtw+qrBQj9k/vckLJa7wZv0DVDvdr0/T3Oi0xlzM7a8FCOwl1jNgFhVB9KLIOEWo
+         m2uk3AeSD+VOCNm6ixR/JnKKDSsUJe357tpORZQvfLrdTterugYcV0IZm4vC/QPDwH
+         LZ2pGkAExPuibwB0uNOVBTz2K+dRh/wq1aiRDErNYqazlL8EEib0/k1AUOsgRsIqgt
+         Uf3r7oLbEDV+g==
 From:   Arnaldo Carvalho de Melo <acme@kernel.org>
-To:     Borislav Petkov <bp@suse.de>
-Cc:     Masami Hiramatsu <mhiramat@kernel.org>,
-        Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org,
+To:     Masami Hiramatsu <mhiramat@kernel.org>
+Cc:     linux-kernel@vger.kernel.org,
         tip-bot2 for Masami Hiramatsu <tip-bot2@linutronix.de>,
         linux-tip-commits@vger.kernel.org,
         syzbot+9b64b619f10f19d19a7c@syzkaller.appspotmail.com,
-        Srikar Dronamraju <srikar@linux.vnet.ibm.com>, x86@kernel.org
+        Borislav Petkov <bp@suse.de>,
+        Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
+        stable@vger.kernel.org, x86@kernel.org
 Subject: Re: [tip: x86/urgent] x86/uprobes: Do not use prefixes.nbytes when
  looping over prefixes.bytes
-Message-ID: <20201209180147.GD185686@kernel.org>
+Message-ID: <20201209180519.GE185686@kernel.org>
 References: <160697103739.3146288.7437620795200799020.stgit@devnote2>
  <160709424307.3364.5849503551045240938.tip-bot2@tip-bot2>
  <20201205091256.14161a2e1606c527131efc06@kernel.org>
- <20201205101704.GB26409@zn.tnic>
- <20201206125325.d676906774c2329742746005@kernel.org>
- <20201206090250.GA10741@zn.tnic>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20201206090250.GA10741@zn.tnic>
+In-Reply-To: <20201205091256.14161a2e1606c527131efc06@kernel.org>
 X-Url:  http://acmel.wordpress.com
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-Em Sun, Dec 06, 2020 at 10:02:50AM +0100, Borislav Petkov escreveu:
-> ( drop stable@ )
+Em Sat, Dec 05, 2020 at 09:12:56AM +0900, Masami Hiramatsu escreveu:
+> On Fri, 04 Dec 2020 15:04:03 -0000
+> "tip-bot2 for Masami Hiramatsu" <tip-bot2@linutronix.de> wrote:
 > 
-> On Sun, Dec 06, 2020 at 12:53:25PM +0900, Masami Hiramatsu wrote:
-> > On Sat, 5 Dec 2020 11:17:04 +0100
-> > Borislav Petkov <bp@alien8.de> wrote:
+> > The following commit has been merged into the x86/urgent branch of tip:
 > > 
-> > > On Sat, Dec 05, 2020 at 09:12:56AM +0900, Masami Hiramatsu wrote:
-> > > > This may break tools/objtool build. Please keep "inat.h".
-> > > 
-> > > How? Please elaborate.
-> > > 
-> > > Build tests are fine here.
+> > Commit-ID:     9dc23f960adb9ce410ef835b32a2398fdb09c828
+> > Gitweb:        https://git.kernel.org/tip/9dc23f960adb9ce410ef835b32a2398fdb09c828
+> > Author:        Masami Hiramatsu <mhiramat@kernel.org>
+> > AuthorDate:    Thu, 03 Dec 2020 13:50:37 +09:00
+> > Committer:     Borislav Petkov <bp@suse.de>
+> > CommitterDate: Fri, 04 Dec 2020 14:32:57 +01:00
 > > 
-> > Oops, sorry, it was for perf build.
+> > x86/uprobes: Do not use prefixes.nbytes when looping over prefixes.bytes
 > > 
-> > Please refer commit 00a263902ac3 ("perf intel-pt: Use shared x86 insn decoder").
+> > Since insn.prefixes.nbytes can be bigger than the size of
+> > insn.prefixes.bytes[] when a prefix is repeated, the proper check must
+> > be
+> > 
+> >   insn.prefixes.bytes[i] != 0 and i < 4
+> > 
+> > instead of using insn.prefixes.nbytes.
+> > 
+> > Introduce a for_each_insn_prefix() macro for this purpose. Debugged by
+> > Kees Cook <keescook@chromium.org>.
+> > 
+> >  [ bp: Massage commit message, sync with the respective header in tools/
+> >    and drop "we". ]
+> > 
+> > Fixes: 2b1444983508 ("uprobes, mm, x86: Add the ability to install and remove uprobes breakpoints")
+> > Reported-by: syzbot+9b64b619f10f19d19a7c@syzkaller.appspotmail.com
+> > Signed-off-by: Masami Hiramatsu <mhiramat@kernel.org>
+> > Signed-off-by: Borislav Petkov <bp@suse.de>
+> > Reviewed-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+> > Cc: stable@vger.kernel.org
+> > Link: https://lkml.kernel.org/r/160697103739.3146288.7437620795200799020.stgit@devnote2
+> > ---
+> >  arch/x86/include/asm/insn.h       | 15 +++++++++++++++
+> >  arch/x86/kernel/uprobes.c         | 10 ++++++----
+> >  tools/arch/x86/include/asm/insn.h | 17 ++++++++++++++++-
+> >  3 files changed, 37 insertions(+), 5 deletions(-)
+> > 
+> > diff --git a/arch/x86/include/asm/insn.h b/arch/x86/include/asm/insn.h
+> > index 5c1ae3e..a8c3d28 100644
+> > --- a/arch/x86/include/asm/insn.h
+> > +++ b/arch/x86/include/asm/insn.h
+> > @@ -201,6 +201,21 @@ static inline int insn_offset_immediate(struct insn *insn)
+> >  	return insn_offset_displacement(insn) + insn->displacement.nbytes;
+> >  }
+> >  
+> > +/**
+> > + * for_each_insn_prefix() -- Iterate prefixes in the instruction
+> > + * @insn: Pointer to struct insn.
+> > + * @idx:  Index storage.
+> > + * @prefix: Prefix byte.
+> > + *
+> > + * Iterate prefix bytes of given @insn. Each prefix byte is stored in @prefix
+> > + * and the index is stored in @idx (note that this @idx is just for a cursor,
+> > + * do not change it.)
+> > + * Since prefixes.nbytes can be bigger than 4 if some prefixes
+> > + * are repeated, it cannot be used for looping over the prefixes.
+> > + */
+> > +#define for_each_insn_prefix(insn, idx, prefix)	\
+> > +	for (idx = 0; idx < ARRAY_SIZE(insn->prefixes.bytes) && (prefix = insn->prefixes.bytes[idx]) != 0; idx++)
+> > +
+> >  #define POP_SS_OPCODE 0x1f
+> >  #define MOV_SREG_OPCODE 0x8e
+> >  
+> > diff --git a/arch/x86/kernel/uprobes.c b/arch/x86/kernel/uprobes.c
+> > index 3fdaa04..138bdb1 100644
+> > --- a/arch/x86/kernel/uprobes.c
+> > +++ b/arch/x86/kernel/uprobes.c
+> > @@ -255,12 +255,13 @@ static volatile u32 good_2byte_insns[256 / 32] = {
+> >  
+> >  static bool is_prefix_bad(struct insn *insn)
+> >  {
+> > +	insn_byte_t p;
+> >  	int i;
+> >  
+> > -	for (i = 0; i < insn->prefixes.nbytes; i++) {
+> > +	for_each_insn_prefix(insn, i, p) {
+> >  		insn_attr_t attr;
+> >  
+> > -		attr = inat_get_opcode_attribute(insn->prefixes.bytes[i]);
+> > +		attr = inat_get_opcode_attribute(p);
+> >  		switch (attr) {
+> >  		case INAT_MAKE_PREFIX(INAT_PFX_ES):
+> >  		case INAT_MAKE_PREFIX(INAT_PFX_CS):
+> > @@ -715,6 +716,7 @@ static const struct uprobe_xol_ops push_xol_ops = {
+> >  static int branch_setup_xol_ops(struct arch_uprobe *auprobe, struct insn *insn)
+> >  {
+> >  	u8 opc1 = OPCODE1(insn);
+> > +	insn_byte_t p;
+> >  	int i;
+> >  
+> >  	switch (opc1) {
+> > @@ -746,8 +748,8 @@ static int branch_setup_xol_ops(struct arch_uprobe *auprobe, struct insn *insn)
+> >  	 * Intel and AMD behavior differ in 64-bit mode: Intel ignores 66 prefix.
+> >  	 * No one uses these insns, reject any branch insns with such prefix.
+> >  	 */
+> > -	for (i = 0; i < insn->prefixes.nbytes; i++) {
+> > -		if (insn->prefixes.bytes[i] == 0x66)
+> > +	for_each_insn_prefix(insn, i, p) {
+> > +		if (p == 0x66)
+> >  			return -ENOTSUPP;
+> >  	}
+> >  
+> > diff --git a/tools/arch/x86/include/asm/insn.h b/tools/arch/x86/include/asm/insn.h
+> > index 568854b..a8c3d28 100644
+> > --- a/tools/arch/x86/include/asm/insn.h
+> > +++ b/tools/arch/x86/include/asm/insn.h
+> > @@ -8,7 +8,7 @@
+> >   */
+> >  
+> >  /* insn_attr_t is defined in inat.h */
+> > -#include "inat.h"
+> > +#include <asm/inat.h>
 > 
-> Oh wow:
-> 
-> "This way we continue to be able to process perf.data files with Intel PT
->  traces in distros other than x86."
-> 
-> acme, why is that? Can you explain pls?
-> 
-> It probably would be better to fix this so that copying insn.h to keep
-> it in sync won't cause any future breakages. Or the diffing check should
-> verify whether header paths are wrong in the tools/ version and fail if
-> so, so that we don't break it.
+> This may break tools/objtool build. Please keep "inat.h".
 
-Trying to swap this back into my brain...
+And also it would be interesting to avoid updating both the kernel and
+the tools/ copy, otherwise one would have to test the tools build, which
+may break with such updates.
 
-Humm, if I'm building this on, say, aarch64 then asm/ will not be
-pointing to x86, right? Intel PT needs the x86 instruction decoder,
-right?
-
-I should've have wrote in the cset comment log if this was related to
-cross build failures I encountered, can't remember now :-\
+The whole point of the copy is to avoid that, otherwise we could just
+use the kernel files directly.
 
 - Arnaldo
