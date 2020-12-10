@@ -2,85 +2,118 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BAEC22D597D
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Dec 2020 12:43:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A96C2D5997
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Dec 2020 12:47:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728423AbgLJLlj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 10 Dec 2020 06:41:39 -0500
-Received: from mx2.suse.de ([195.135.220.15]:43750 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725904AbgLJLlc (ORCPT
+        id S1727043AbgLJLpA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 10 Dec 2020 06:45:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35232 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732885AbgLJLo5 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 10 Dec 2020 06:41:32 -0500
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.221.27])
-        by mx2.suse.de (Postfix) with ESMTP id C73AAAE2B;
-        Thu, 10 Dec 2020 11:40:49 +0000 (UTC)
-Date:   Thu, 10 Dec 2020 11:36:07 +0100
-From:   Borislav Petkov <bp@suse.de>
-To:     Arnaldo Carvalho de Melo <acme@kernel.org>
-Cc:     Masami Hiramatsu <mhiramat@kernel.org>,
-        linux-kernel@vger.kernel.org,
-        tip-bot2 for Masami Hiramatsu <tip-bot2@linutronix.de>,
-        linux-tip-commits@vger.kernel.org,
-        syzbot+9b64b619f10f19d19a7c@syzkaller.appspotmail.com,
-        Srikar Dronamraju <srikar@linux.vnet.ibm.com>, x86@kernel.org
-Subject: Re: [tip: x86/urgent] x86/uprobes: Do not use prefixes.nbytes when
- looping over prefixes.bytes
-Message-ID: <20201210103607.GA26633@zn.tnic>
-References: <160697103739.3146288.7437620795200799020.stgit@devnote2>
- <160709424307.3364.5849503551045240938.tip-bot2@tip-bot2>
- <20201205091256.14161a2e1606c527131efc06@kernel.org>
- <20201205101704.GB26409@zn.tnic>
- <20201206125325.d676906774c2329742746005@kernel.org>
- <20201206090250.GA10741@zn.tnic>
- <20201209180147.GD185686@kernel.org>
+        Thu, 10 Dec 2020 06:44:57 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D8E8C061793;
+        Thu, 10 Dec 2020 03:44:17 -0800 (PST)
+Date:   Thu, 10 Dec 2020 11:44:14 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1607600655;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=y9ZggfT5Wgyj7L/mvbAGMIlzUrXCA6F2CAUaSPt1KRk=;
+        b=sQazjDxRl4zrmcSkTN6t0Cq12Xf0nBHgnx47vuHxCTeqmrSdzAj4eVCyrXIL1kqHAFbQxy
+        mwDMZoYUVOKSzpcMXUM3i1OTfxbjsf0BEfC6uxoRifFSE4ThVzDF14051AR5zhnvfDRmp6
+        AZtMaJ/Y3yIqWQUubL+snCbJsoCWtn69IDZauWUeqePnBf0936u7simHU+RUDOe1j6lE7y
+        9CR0HPKZAD/sWvF999z9HLK1w9slJlt/uq7ggJYbrdS49ELT8ScCihZXwT+IhOU/d15djY
+        6KWKu0cvEVYmbDQZR3DCIr8wmd/DzqvnrPK0hykcS5g/yWixcnzotcT9dMpaiA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1607600655;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=y9ZggfT5Wgyj7L/mvbAGMIlzUrXCA6F2CAUaSPt1KRk=;
+        b=mGis3PyEnW+8c6X7LJ725VABMZEi9+mIMLv7Or+XM/YLh0yp6IFycFmACAY5a4CVHMtVe+
+        ZJP0vQNp7dlittAg==
+From:   "tip-bot2 for Arvind Sankar" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/urgent] x86/mm/mem_encrypt: Fix definition of PMD_FLAGS_DEC_WP
+Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
+        Borislav Petkov <bp@suse.de>,
+        Tom Lendacky <thomas.lendacky@amd.com>, stable@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20201111160946.147341-1-nivedita@alum.mit.edu>
+References: <20201111160946.147341-1-nivedita@alum.mit.edu>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20201209180147.GD185686@kernel.org>
+Message-ID: <160760065470.3364.9118672083291010559.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Wed, Dec 09, 2020 at 03:01:47PM -0300, Arnaldo Carvalho de Melo wrote:
-> Trying to swap this back into my brain...
+The following commit has been merged into the x86/urgent branch of tip:
 
-I know *exactly* what you mean. :)
+Commit-ID:     29ac40cbed2bc06fa218ca25d7f5e280d3d08a25
+Gitweb:        https://git.kernel.org/tip/29ac40cbed2bc06fa218ca25d7f5e280d3d08a25
+Author:        Arvind Sankar <nivedita@alum.mit.edu>
+AuthorDate:    Wed, 11 Nov 2020 11:09:45 -05:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Thu, 10 Dec 2020 12:28:06 +01:00
 
-> 
-> Humm, if I'm building this on, say, aarch64 then asm/ will not be
-> pointing to x86, right? Intel PT needs the x86 instruction decoder,
-> right?
+x86/mm/mem_encrypt: Fix definition of PMD_FLAGS_DEC_WP
 
-Yeah.
+The PAT bit is in different locations for 4k and 2M/1G page table
+entries.
 
-> I should've have wrote in the cset comment log if this was related to
-> cross build failures I encountered, can't remember now :-\
+Add a definition for _PAGE_LARGE_CACHE_MASK to represent the three
+caching bits (PWT, PCD, PAT), similar to _PAGE_CACHE_MASK for 4k pages,
+and use it in the definition of PMD_FLAGS_DEC_WP to get the correct PAT
+index for write-protected pages.
 
-I think that is it. There's inat.h in tools/arch/x86/include/asm/ too so
-it needs to be exactly that one that gets included on other arches.
+Fixes: 6ebcb060713f ("x86/mm: Add support to encrypt the kernel in-place")
+Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Tested-by: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: stable@vger.kernel.org
+Link: https://lkml.kernel.org/r/20201111160946.147341-1-nivedita@alum.mit.edu
+---
+ arch/x86/include/asm/pgtable_types.h | 1 +
+ arch/x86/mm/mem_encrypt_identity.c   | 4 ++--
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-> And also it would be interesting to avoid updating both the kernel and
-> the tools/ copy, otherwise one would have to test the tools build, which
-> may break with such updates.
->
-> The whole point of the copy is to avoid that, otherwise we could just
-> use the kernel files directly.
-
-Well, there's this diff -u thing which makes sure both copies are in sync.
-
-Why did we ever copy the insn decoder to tools/?
-
-There must've been some reason because otherwise we could probably use
-the one in arch/x86/lib/, in tools/.
-
-Yeah, this whole copying of headers back'n'forth is turning out to be
-kinda hairy...
-
--- 
-Regards/Gruss,
-    Boris.
-
-SUSE Software Solutions Germany GmbH, GF: Felix Imendörffer, HRB 36809, AG Nürnberg
+diff --git a/arch/x86/include/asm/pgtable_types.h b/arch/x86/include/asm/pgtable_types.h
+index 816b31c..394757e 100644
+--- a/arch/x86/include/asm/pgtable_types.h
++++ b/arch/x86/include/asm/pgtable_types.h
+@@ -155,6 +155,7 @@ enum page_cache_mode {
+ #define _PAGE_ENC		(_AT(pteval_t, sme_me_mask))
+ 
+ #define _PAGE_CACHE_MASK	(_PAGE_PWT | _PAGE_PCD | _PAGE_PAT)
++#define _PAGE_LARGE_CACHE_MASK	(_PAGE_PWT | _PAGE_PCD | _PAGE_PAT_LARGE)
+ 
+ #define _PAGE_NOCACHE		(cachemode2protval(_PAGE_CACHE_MODE_UC))
+ #define _PAGE_CACHE_WP		(cachemode2protval(_PAGE_CACHE_MODE_WP))
+diff --git a/arch/x86/mm/mem_encrypt_identity.c b/arch/x86/mm/mem_encrypt_identity.c
+index 733b983..6c5eb6f 100644
+--- a/arch/x86/mm/mem_encrypt_identity.c
++++ b/arch/x86/mm/mem_encrypt_identity.c
+@@ -45,8 +45,8 @@
+ #define PMD_FLAGS_LARGE		(__PAGE_KERNEL_LARGE_EXEC & ~_PAGE_GLOBAL)
+ 
+ #define PMD_FLAGS_DEC		PMD_FLAGS_LARGE
+-#define PMD_FLAGS_DEC_WP	((PMD_FLAGS_DEC & ~_PAGE_CACHE_MASK) | \
+-				 (_PAGE_PAT | _PAGE_PWT))
++#define PMD_FLAGS_DEC_WP	((PMD_FLAGS_DEC & ~_PAGE_LARGE_CACHE_MASK) | \
++				 (_PAGE_PAT_LARGE | _PAGE_PWT))
+ 
+ #define PMD_FLAGS_ENC		(PMD_FLAGS_LARGE | _PAGE_ENC)
+ 
