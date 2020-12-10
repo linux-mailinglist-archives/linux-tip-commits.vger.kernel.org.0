@@ -2,57 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F0BCF2D62C9
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Dec 2020 17:59:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7FD1A2D6B96
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 11 Dec 2020 00:39:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391482AbgLJQ6s (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 10 Dec 2020 11:58:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55624 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2391024AbgLJQ6k (ORCPT
+        id S2387983AbgLJXJp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 10 Dec 2020 18:09:45 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:58836 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388045AbgLJWbR (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 10 Dec 2020 11:58:40 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBACFC0613CF;
-        Thu, 10 Dec 2020 08:57:59 -0800 (PST)
-Date:   Thu, 10 Dec 2020 16:57:56 -0000
+        Thu, 10 Dec 2020 17:31:17 -0500
+Date:   Thu, 10 Dec 2020 22:04:33 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1607619477;
+        s=2020; t=1607637874;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=7Dk+j8f4SMBkGP28rH/XZ3AY/EJSuuo9gA+ZZVs/63k=;
-        b=VNN/U0j9Wtq4QkXkU+0wu4smU0dheKziZZCxe0pFpPB1/5nF4pU+k0shP9XTXJFsQGTeYk
-        6QOe7/s814BPpC/5YrXB50M65Mt9e2J+jcwx6MCnLOcm0UwFYE5phnHWX/PdOPqj6FeLMG
-        A2sGrR+Mt4D8AOwPVGp9pMeg/Md8r1GDf+wK8RVmVceVhfFwOkhWdr4LKHOViQsRsWzEvR
-        eLStud9B7Te+aZrREVvWQFithajWyl7LNWJWgjkDFiQ964LCRK+xfJqW11n/p3bVvkDv0m
-        uR7hBTwgNpiOIEbekx5A4A7tq9xv/C/pKa8LnriauBWoC/WlSZFs/pPNO/VncA==
+        bh=VGmPq1i3ayrpyyrVWVoevEjU3QrxYsIort8NEoox4yg=;
+        b=hqCVMUfmuuticgtDymRG8jxVgKfcFBzIB8pH+l/OI50m/5MRXQLvICVL5XRnShD1fdU7zS
+        uJ2GN/5zKHWIkchNoD1WGnOItSOiUg5KRJkU/eKqkA7yPkxvjEdqmw2mUb8klHvfwutPgX
+        PxuxC+UDyZTvbi8Lvmg8wx3Za1npgvVOUw2FbsBKWQXcA3IAtTxnf3xUPNzuQlxz7Em99G
+        pCsZ+/QdH1xpbvWOIL0OhbaOeo/eE6OMdHBxPK+a9MOLpXyFe6EYV8M8BD9WRLEgRy8AEG
+        IxTXXg6uMXttBc0ctbRWxHTdWpdDUd329F2cgyOpHEm2eQtL7IKG2NjhvZrEaw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1607619477;
+        s=2020e; t=1607637874;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=7Dk+j8f4SMBkGP28rH/XZ3AY/EJSuuo9gA+ZZVs/63k=;
-        b=HYCznEtDo2zPHpsHs9QyKNoAT3jX/Gs/oWzTRtTp79FkIIwoMO/ueNrA2jAWHoQWLTZI9J
-        kz5FgkZyXkanZYCQ==
-From:   "tip-bot2 for Xiaochen Shen" <tip-bot2@linutronix.de>
+        bh=VGmPq1i3ayrpyyrVWVoevEjU3QrxYsIort8NEoox4yg=;
+        b=Prvbtp9FjBqAtnFs1a+QKMk96kMxUa+7ebchJTMKBOD4BZ2ODJR7oe5dOa363J9JgvnJbH
+        4SvbeE4WVTaLGSCA==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/resctrl: Fix incorrect local bandwidth when
- mba_sc is enabled
-Cc:     Xiaochen Shen <xiaochen.shen@intel.com>,
-        Borislav Petkov <bp@suse.de>, Tony Luck <tony.luck@intel.com>,
-        <stable@vger.kernel.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <1607063279-19437-1-git-send-email-xiaochen.shen@intel.com>
-References: <1607063279-19437-1-git-send-email-xiaochen.shen@intel.com>
+Subject: [tip: x86/urgent] x86/apic/vector: Fix ordering in vector assignment
+Cc:     Prarit Bhargava <prarit@redhat.com>,
+        "Shung-Hsi Yu" <shung-hsi.yu@suse.com>,
+        Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <87ft4djtyp.fsf@nanos.tec.linutronix.de>
+References: <87ft4djtyp.fsf@nanos.tec.linutronix.de>
 MIME-Version: 1.0
-Message-ID: <160761947623.3364.17511692146380778670.tip-bot2@tip-bot2>
+Message-ID: <160763787305.3364.11404170583920698033.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -63,120 +59,94 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     06c5fe9b12dde1b62821f302f177c972bb1c81f9
-Gitweb:        https://git.kernel.org/tip/06c5fe9b12dde1b62821f302f177c972bb1c81f9
-Author:        Xiaochen Shen <xiaochen.shen@intel.com>
-AuthorDate:    Fri, 04 Dec 2020 14:27:59 +08:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Thu, 10 Dec 2020 17:52:37 +01:00
+Commit-ID:     190113b4c6531c8e09b31d5235f9b5175cbb0f72
+Gitweb:        https://git.kernel.org/tip/190113b4c6531c8e09b31d5235f9b5175cbb0f72
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Thu, 10 Dec 2020 21:18:22 +01:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Thu, 10 Dec 2020 23:00:54 +01:00
 
-x86/resctrl: Fix incorrect local bandwidth when mba_sc is enabled
+x86/apic/vector: Fix ordering in vector assignment
 
-The MBA software controller (mba_sc) is a feedback loop which
-periodically reads MBM counters and tries to restrict the bandwidth
-below a user-specified value. It tags along the MBM counter overflow
-handler to do the updates with 1s interval in mbm_update() and
-update_mba_bw().
+Prarit reported that depending on the affinity setting the
 
-The purpose of mbm_update() is to periodically read the MBM counters to
-make sure that the hardware counter doesn't wrap around more than once
-between user samplings. mbm_update() calls __mon_event_count() for local
-bandwidth updating when mba_sc is not enabled, but calls mbm_bw_count()
-instead when mba_sc is enabled. __mon_event_count() will not be called
-for local bandwidth updating in MBM counter overflow handler, but it is
-still called when reading MBM local bandwidth counter file
-'mbm_local_bytes', the call path is as below:
+ ' irq $N: Affinity broken due to vector space exhaustion.'
 
-  rdtgroup_mondata_show()
-    mon_event_read()
-      mon_event_count()
-        __mon_event_count()
+message is showing up in dmesg, but the vector space on the CPUs in the
+affinity mask is definitely not exhausted.
 
-In __mon_event_count(), m->chunks is updated by delta chunks which is
-calculated from previous MSR value (m->prev_msr) and current MSR value.
-When mba_sc is enabled, m->chunks is also updated in mbm_update() by
-mistake by the delta chunks which is calculated from m->prev_bw_msr
-instead of m->prev_msr. But m->chunks is not used in update_mba_bw() in
-the mba_sc feedback loop.
+Shung-Hsi provided traces and analysis which pinpoints the problem:
 
-When reading MBM local bandwidth counter file, m->chunks was changed
-unexpectedly by mbm_bw_count(). As a result, the incorrect local
-bandwidth counter which calculated from incorrect m->chunks is shown to
-the user.
+The ordering of trying to assign an interrupt vector in
+assign_irq_vector_any_locked() is simply wrong if the interrupt data has a
+valid node assigned. It does:
 
-Fix this by removing incorrect m->chunks updating in mbm_bw_count() in
-MBM counter overflow handler, and always calling __mon_event_count() in
-mbm_update() to make sure that the hardware local bandwidth counter
-doesn't wrap around.
+ 1) Try the intersection of affinity mask and node mask
+ 2) Try the node mask
+ 3) Try the full affinity mask
+ 4) Try the full online mask
 
-Test steps:
-  # Run workload with aggressive memory bandwidth (e.g., 10 GB/s)
-  git clone https://github.com/intel/intel-cmt-cat && cd intel-cmt-cat
-  && make
-  ./tools/membw/membw -c 0 -b 10000 --read
+Obviously #2 and #3 are in the wrong order as the requested affinity
+mask has to take precedence.
 
-  # Enable MBA software controller
-  mount -t resctrl resctrl -o mba_MBps /sys/fs/resctrl
+In the observed cases #1 failed because the affinity mask did not contain
+CPUs from node 0. That made it allocate a vector from node 0, thereby
+breaking affinity and emitting the misleading message.
 
-  # Create control group c1
-  mkdir /sys/fs/resctrl/c1
+Revert the order of #2 and #3 so the full affinity mask without the node
+intersection is tried before actually affinity is broken.
 
-  # Set MB throttle to 6 GB/s
-  echo "MB:0=6000;1=6000" > /sys/fs/resctrl/c1/schemata
+If no node is assigned then only the full affinity mask and if that fails
+the full online mask is tried.
 
-  # Write PID of the workload to tasks file
-  echo `pidof membw` > /sys/fs/resctrl/c1/tasks
+Fixes: d6ffc6ac83b1 ("x86/vector: Respect affinity mask in irq descriptor")
+Reported-by: Prarit Bhargava <prarit@redhat.com>
+Reported-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/87ft4djtyp.fsf@nanos.tec.linutronix.de
 
-  # Read local bytes counters twice with 1s interval, the calculated
-  # local bandwidth is not as expected (approaching to 6 GB/s):
-  local_1=`cat /sys/fs/resctrl/c1/mon_data/mon_L3_00/mbm_local_bytes`
-  sleep 1
-  local_2=`cat /sys/fs/resctrl/c1/mon_data/mon_L3_00/mbm_local_bytes`
-  echo "local b/w (bytes/s):" `expr $local_2 - $local_1`
-
-Before fix:
-  local b/w (bytes/s): 11076796416
-
-After fix:
-  local b/w (bytes/s): 5465014272
-
-Fixes: ba0f26d8529c (x86/intel_rdt/mba_sc: Prepare for feedback loop)
-Signed-off-by: Xiaochen Shen <xiaochen.shen@intel.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Tony Luck <tony.luck@intel.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lkml.kernel.org/r/1607063279-19437-1-git-send-email-xiaochen.shen@intel.com
 ---
- arch/x86/kernel/cpu/resctrl/monitor.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ arch/x86/kernel/apic/vector.c | 24 ++++++++++++++----------
+ 1 file changed, 14 insertions(+), 10 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/resctrl/monitor.c b/arch/x86/kernel/cpu/resctrl/monitor.c
-index 54dffe5..a98519a 100644
---- a/arch/x86/kernel/cpu/resctrl/monitor.c
-+++ b/arch/x86/kernel/cpu/resctrl/monitor.c
-@@ -279,7 +279,6 @@ static void mbm_bw_count(u32 rmid, struct rmid_read *rr)
- 		return;
+diff --git a/arch/x86/kernel/apic/vector.c b/arch/x86/kernel/apic/vector.c
+index 1eac536..758bbf2 100644
+--- a/arch/x86/kernel/apic/vector.c
++++ b/arch/x86/kernel/apic/vector.c
+@@ -273,20 +273,24 @@ static int assign_irq_vector_any_locked(struct irq_data *irqd)
+ 	const struct cpumask *affmsk = irq_data_get_affinity_mask(irqd);
+ 	int node = irq_data_get_node(irqd);
  
- 	chunks = mbm_overflow_count(m->prev_bw_msr, tval, rr->r->mbm_width);
--	m->chunks += chunks;
- 	cur_bw = (chunks * r->mon_scale) >> 20;
- 
- 	if (m->delta_comp)
-@@ -450,15 +449,14 @@ static void mbm_update(struct rdt_resource *r, struct rdt_domain *d, int rmid)
- 	}
- 	if (is_mbm_local_enabled()) {
- 		rr.evtid = QOS_L3_MBM_LOCAL_EVENT_ID;
-+		__mon_event_count(rmid, &rr);
- 
- 		/*
- 		 * Call the MBA software controller only for the
- 		 * control groups and when user has enabled
- 		 * the software controller explicitly.
- 		 */
--		if (!is_mba_sc(NULL))
--			__mon_event_count(rmid, &rr);
--		else
-+		if (is_mba_sc(NULL))
- 			mbm_bw_count(rmid, &rr);
- 	}
+-	if (node == NUMA_NO_NODE)
+-		goto all;
+-	/* Try the intersection of @affmsk and node mask */
+-	cpumask_and(vector_searchmask, cpumask_of_node(node), affmsk);
+-	if (!assign_vector_locked(irqd, vector_searchmask))
+-		return 0;
+-	/* Try the node mask */
+-	if (!assign_vector_locked(irqd, cpumask_of_node(node)))
+-		return 0;
+-all:
++	if (node != NUMA_NO_NODE) {
++		/* Try the intersection of @affmsk and node mask */
++		cpumask_and(vector_searchmask, cpumask_of_node(node), affmsk);
++		if (!assign_vector_locked(irqd, vector_searchmask))
++			return 0;
++	}
++
+ 	/* Try the full affinity mask */
+ 	cpumask_and(vector_searchmask, affmsk, cpu_online_mask);
+ 	if (!assign_vector_locked(irqd, vector_searchmask))
+ 		return 0;
++
++	if (node != NUMA_NO_NODE) {
++		/* Try the node mask */
++		if (!assign_vector_locked(irqd, cpumask_of_node(node)))
++			return 0;
++	}
++
+ 	/* Try the full online mask */
+ 	return assign_vector_locked(irqd, cpu_online_mask);
  }
