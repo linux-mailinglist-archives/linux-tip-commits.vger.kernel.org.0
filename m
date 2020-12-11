@@ -2,52 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 240BD2D6B93
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 11 Dec 2020 00:39:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EB9612D72E4
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 11 Dec 2020 10:36:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387432AbgLJXJo (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 10 Dec 2020 18:09:44 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:58838 "EHLO
+        id S2437439AbgLKJfa (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 11 Dec 2020 04:35:30 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:33370 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388035AbgLJWbQ (ORCPT
+        with ESMTP id S2405655AbgLKJfV (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 10 Dec 2020 17:31:16 -0500
-Date:   Thu, 10 Dec 2020 22:04:34 -0000
+        Fri, 11 Dec 2020 04:35:21 -0500
+Date:   Fri, 11 Dec 2020 09:34:37 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1607637874;
+        s=2020; t=1607679278;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Rt9QRnOtg+5ZrOtIegVhtf1b8NkMrLmsSF+RRgRYRwc=;
-        b=zyS23411np1EesNAPS3/0QkXqXbcLTNJ9bvRklWXJxmeaTVaUwlvRXUrvdYbScQsi38vMe
-        3AAX9eHRVmI4BMfugypp3km4HTry+Vcc1OrR6LHF99ZKDkLU1evXByuA4YEA20D2/XCSR/
-        b25zszoPCMDwiNf9Svxi0wicMuROYC/N0uvd6FnW7l4YYSDJcQQavHfv5yt225eK7wei2Z
-        z8KsDKFkCPMPQjQqnNJUif3YphrcnNVTivoBOQsH8dcoHNJ8qJQie3utrluZtFEuRd3EdL
-        yFE1rVEgovCkwWZJypL5lS5nqR/yVTuupCF91UotFb+q8XG26/gIIYIvp1fbFg==
+        bh=gUuQQtK0hH5SjR+STpZ8Xe2W+JkSJ/MYwCfXkMh+Uu4=;
+        b=LMGG0uLcpPKQGs/FGS70cy/pWXy1g71Dwkq+IYeccRwkvxmn99pzQ/tR9u+hpE/gORmVnK
+        VJCRldk/QWMRXFiWjXYTm/cW7fP/peonH43Dfa4J3Wpe4Iy6xIQymNMVv4jOSPRK7Ja1hV
+        gSxV8TPLw8ZXK67xDIjpTWGDmTCbsx5z5IoNaoDygr8nDpAD670QfGZoodGAaprjO8PTIe
+        4B8Orch7xo5VDO+MZyQHXaEuy95ZhyaSc1xj2dofw452VlMTwFfBSt28oE7gcI3qmqqd5L
+        LaiCvhlFYcH4Q6YTePJhj4rPRIeczI0HClhqimYbRouI6ycsZnTItQiRDy36hw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1607637874;
+        s=2020e; t=1607679278;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Rt9QRnOtg+5ZrOtIegVhtf1b8NkMrLmsSF+RRgRYRwc=;
-        b=GGzJsG+RrDcZh2nfb05i+etdJnUURH5vfMs0kbJY5ToeoGMgz4XtMd5vw3TwQWwmpJuW0b
-        uC/4nMx7S7bEz9CQ==
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+        bh=gUuQQtK0hH5SjR+STpZ8Xe2W+JkSJ/MYwCfXkMh+Uu4=;
+        b=LOHdCHgdrR2wnG+EcclvNgdoUMs2wMmUa5IQlSug0/o+KjZUiNA7u9P/9EXV09jReSVEy+
+        mKpIVbvkwoXC4hCg==
+From:   "tip-bot2 for Barry Song" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/apic] x86/ioapic: Cleanup the timer_works() irqflags mess
-Cc:     Mark Rutland <mark.rutland@arm.com>,
-        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+Subject: [tip: sched/core] sched/fair: Trivial correction of the
+ newidle_balance() comment
+Cc:     Barry Song <song.bao.hua@hisilicon.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <87k0tpju47.fsf@nanos.tec.linutronix.de>
-References: <87k0tpju47.fsf@nanos.tec.linutronix.de>
+In-Reply-To: <20201202220641.22752-1-song.bao.hua@hisilicon.com>
+References: <20201202220641.22752-1-song.bao.hua@hisilicon.com>
 MIME-Version: 1.0
-Message-ID: <160763787415.3364.14966268731529828798.tip-bot2@tip-bot2>
+Message-ID: <160767927760.3364.12152783613892271821.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -56,134 +58,39 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/apic branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     058df195c23403f91acc028e39ca2ad599d0af52
-Gitweb:        https://git.kernel.org/tip/058df195c23403f91acc028e39ca2ad599d0af52
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Thu, 10 Dec 2020 21:15:04 +01:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 10 Dec 2020 23:02:31 +01:00
+Commit-ID:     5b78f2dc315354c05300795064f587366a02c6ff
+Gitweb:        https://git.kernel.org/tip/5b78f2dc315354c05300795064f587366a02c6ff
+Author:        Barry Song <song.bao.hua@hisilicon.com>
+AuthorDate:    Thu, 03 Dec 2020 11:06:41 +13:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Fri, 11 Dec 2020 10:30:44 +01:00
 
-x86/ioapic: Cleanup the timer_works() irqflags mess
+sched/fair: Trivial correction of the newidle_balance() comment
 
-Mark tripped over the creative irqflags handling in the IO-APIC timer
-delivery check which ends up doing:
+idle_balance() has been renamed to newidle_balance(). To differentiate
+with nohz_idle_balance, it seems refining the comment will be helpful
+for the readers of the code.
 
-        local_irq_save(flags);
-	local_irq_enable();
-        local_irq_restore(flags);
-
-which triggered a new consistency check he's working on required for
-replacing the POPF based restore with a conditional STI.
-
-That code is a historical mess and none of this is needed. Make it
-straightforward use local_irq_disable()/enable() as that's all what is
-required. It is invoked from interrupt enabled code nowadays.
-
-Reported-by: Mark Rutland <mark.rutland@arm.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Mark Rutland <mark.rutland@arm.com>
-Link: https://lore.kernel.org/r/87k0tpju47.fsf@nanos.tec.linutronix.de
-
+Signed-off-by: Barry Song <song.bao.hua@hisilicon.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lkml.kernel.org/r/20201202220641.22752-1-song.bao.hua@hisilicon.com
 ---
- arch/x86/kernel/apic/io_apic.c | 22 ++++++----------------
- 1 file changed, 6 insertions(+), 16 deletions(-)
+ kernel/sched/fair.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/apic/io_apic.c b/arch/x86/kernel/apic/io_apic.c
-index 089e755..e4ab480 100644
---- a/arch/x86/kernel/apic/io_apic.c
-+++ b/arch/x86/kernel/apic/io_apic.c
-@@ -1620,21 +1620,16 @@ static void __init delay_without_tsc(void)
- static int __init timer_irq_works(void)
- {
- 	unsigned long t1 = jiffies;
--	unsigned long flags;
- 
- 	if (no_timer_check)
- 		return 1;
- 
--	local_save_flags(flags);
- 	local_irq_enable();
--
- 	if (boot_cpu_has(X86_FEATURE_TSC))
- 		delay_with_tsc();
- 	else
- 		delay_without_tsc();
- 
--	local_irq_restore(flags);
--
- 	/*
- 	 * Expect a few ticks at least, to be sure some possible
- 	 * glue logic does not lock up after one or two first
-@@ -1643,10 +1638,10 @@ static int __init timer_irq_works(void)
- 	 * least one tick may be lost due to delays.
- 	 */
- 
--	/* jiffies wrap? */
--	if (time_after(jiffies, t1 + 4))
--		return 1;
--	return 0;
-+	local_irq_disable();
-+
-+	/* Did jiffies advance? */
-+	return time_after(jiffies, t1 + 4);
- }
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index efac224..04a3ce2 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -10550,7 +10550,7 @@ static inline void nohz_newidle_balance(struct rq *this_rq) { }
+ #endif /* CONFIG_NO_HZ_COMMON */
  
  /*
-@@ -2163,13 +2158,12 @@ static inline void __init check_timer(void)
- 	struct irq_cfg *cfg = irqd_cfg(irq_data);
- 	int node = cpu_to_node(0);
- 	int apic1, pin1, apic2, pin2;
--	unsigned long flags;
- 	int no_pin1 = 0;
- 
- 	if (!global_clock_event)
- 		return;
- 
--	local_irq_save(flags);
-+	local_irq_disable();
- 
- 	/*
- 	 * get/set the timer IRQ vector:
-@@ -2237,7 +2231,6 @@ static inline void __init check_timer(void)
- 			goto out;
- 		}
- 		panic_if_irq_remap("timer doesn't work through Interrupt-remapped IO-APIC");
--		local_irq_disable();
- 		clear_IO_APIC_pin(apic1, pin1);
- 		if (!no_pin1)
- 			apic_printk(APIC_QUIET, KERN_ERR "..MP-BIOS bug: "
-@@ -2261,7 +2254,6 @@ static inline void __init check_timer(void)
- 		/*
- 		 * Cleanup, just in case ...
- 		 */
--		local_irq_disable();
- 		legacy_pic->mask(0);
- 		clear_IO_APIC_pin(apic2, pin2);
- 		apic_printk(APIC_QUIET, KERN_INFO "....... failed.\n");
-@@ -2278,7 +2270,6 @@ static inline void __init check_timer(void)
- 		apic_printk(APIC_QUIET, KERN_INFO "..... works.\n");
- 		goto out;
- 	}
--	local_irq_disable();
- 	legacy_pic->mask(0);
- 	apic_write(APIC_LVT0, APIC_LVT_MASKED | APIC_DM_FIXED | cfg->vector);
- 	apic_printk(APIC_QUIET, KERN_INFO "..... failed.\n");
-@@ -2297,7 +2288,6 @@ static inline void __init check_timer(void)
- 		apic_printk(APIC_QUIET, KERN_INFO "..... works.\n");
- 		goto out;
- 	}
--	local_irq_disable();
- 	apic_printk(APIC_QUIET, KERN_INFO "..... failed :(.\n");
- 	if (apic_is_x2apic_enabled())
- 		apic_printk(APIC_QUIET, KERN_INFO
-@@ -2306,7 +2296,7 @@ static inline void __init check_timer(void)
- 	panic("IO-APIC + timer doesn't work!  Boot with apic=debug and send a "
- 		"report.  Then try booting with the 'noapic' option.\n");
- out:
--	local_irq_restore(flags);
-+	local_irq_enable();
- }
- 
- /*
+- * idle_balance is called by schedule() if this_cpu is about to become
++ * newidle_balance is called by schedule() if this_cpu is about to become
+  * idle. Attempts to pull tasks from other CPUs.
+  *
+  * Returns:
