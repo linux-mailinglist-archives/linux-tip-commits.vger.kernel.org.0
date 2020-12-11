@@ -2,20 +2,20 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C3ED92D737C
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 11 Dec 2020 11:10:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 196862D7370
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 11 Dec 2020 11:10:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405797AbgLKKJE (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 11 Dec 2020 05:09:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60852 "EHLO
+        id S2405777AbgLKKJD (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 11 Dec 2020 05:09:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60866 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2404366AbgLKKIb (ORCPT
+        with ESMTP id S2394049AbgLKKIc (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 11 Dec 2020 05:08:31 -0500
+        Fri, 11 Dec 2020 05:08:32 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD786C0613D3;
-        Fri, 11 Dec 2020 02:07:50 -0800 (PST)
-Date:   Fri, 11 Dec 2020 10:07:48 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41F71C061793;
+        Fri, 11 Dec 2020 02:07:52 -0800 (PST)
+Date:   Fri, 11 Dec 2020 10:07:49 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1607681269;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -23,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=JsjImkdAFWVRzner0mgqGAEOfz46qJ/MzfZkkhIFTjY=;
-        b=EoNYr9r2sULHCuVZ/taeHsCTZKgLHM33jlAzqRSWybadN9E+0EMh4U7fCR86NEqy0fIWyP
-        SBprYISvY5oTV3u2b0yBW3pOP0YskIYclETzhWImRCdjeh1f7pnqvmeXlSWewL2E9Jsvs9
-        JeUlQ8HSE+Yt+VGH/HP17BwmLwsCK0aiyHHt0CigAJuEG/xJFQX1fwsux9o4/MopouYaXF
-        hfxwaMDBl1/qo2d9LM9ycRdDoNXBgOm6KbFmGF+4kyaoUFrJ4SXmm44GCysrcD7zzhHQ/o
-        OExPgQoBUu7k22gIqGciknXPw323wT7MI6075NilFrr4RqG+F6w8BmXWlWVtUg==
+        bh=eonn9sBn1m+7sGxDFacwFjquuRDevWbibyptF/6Y/+U=;
+        b=QWOgsjlXoKRgH1NiF1tKQFYbYTiLpl+8HmPkkXv3KUV3bqPgXLEe1As4X+wi3LXMUW8b+j
+        t6QMlC0twK5+4HeK0imjR8YYpSMri5MYY5/RwyxcMDC1Ob2qUyUAxVXr1Cnogxh9I0Xrp6
+        dnArS+8jiCt9oGac783N8bpsIyxknF0nU3VTFt585lXtIQJEvCdhcVbTnyppvs3oUeQK7X
+        +QavrYYEr3FUOrGu7BxxlbvVomMlboNbJzCY/OsLo7sz6wBoC0PLO3IQsmHJpuLljUQ+IF
+        ePPCNSTqg9jdrGbhh0Z9cc5VYLmWT2TV96iBZDS2xkzg34kFJVGSPjmwMXwZXg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1607681269;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,22 +36,21 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=JsjImkdAFWVRzner0mgqGAEOfz46qJ/MzfZkkhIFTjY=;
-        b=9VwfF+iy7+LXZskxKz7Xz9Aol+gaA0KdLbTkf0RMiM4UC1K8kcqsh+HT4f2ne8lvzBi5aA
-        2CHZGKYq7e6QeRBw==
+        bh=eonn9sBn1m+7sGxDFacwFjquuRDevWbibyptF/6Y/+U=;
+        b=BOD0IgfUtxpHPd1YV2chP60HSMR+fEzz3arX0CxiiIbX45buhEXxY+bi24oWPeSkRHbbOy
+        Kx0arvXVdJrhsnBQ==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] rtc: cmos: Make rtc_cmos sync offset correct
+Subject: [tip: timers/core] rtc: mc146818: Prevent reading garbage
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Jason Gunthorpe <jgg@nvidia.com>,
         Alexandre Belloni <alexandre.belloni@bootlin.com>,
         x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20201206220541.830517160@linutronix.de>
-References: <20201206220541.830517160@linutronix.de>
+In-Reply-To: <20201206220541.594826678@linutronix.de>
+References: <20201206220541.594826678@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <160768126882.3364.17475010470329427231.tip-bot2@tip-bot2>
+Message-ID: <160768126932.3364.17815331718961415909.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -62,54 +61,164 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     b0ecd8e8c5ef376777277c4c2db7de92ac59f23f
-Gitweb:        https://git.kernel.org/tip/b0ecd8e8c5ef376777277c4c2db7de92ac59f23f
+Commit-ID:     05a0302c35481e9b47fb90ba40922b0a4cae40d8
+Gitweb:        https://git.kernel.org/tip/05a0302c35481e9b47fb90ba40922b0a4cae40d8
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Sun, 06 Dec 2020 22:46:16 +01:00
+AuthorDate:    Sun, 06 Dec 2020 22:46:14 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Fri, 11 Dec 2020 10:40:52 +01:00
 
-rtc: cmos: Make rtc_cmos sync offset correct
+rtc: mc146818: Prevent reading garbage
 
-The offset for rtc_cmos must be -500ms to work correctly with the current
-implementation of rtc_set_ntp_time() due to the following:
+The MC146818 driver is prone to read garbage from the RTC. There are
+several issues all related to the update cycle of the MC146818. The chip
+increments seconds obviously once per second and indicates that by a bit in
+a register. The bit goes high 244us before the actual update starts. During
+the update the readout of the time values is undefined.
 
-  tsched       twrite(t2.tv_sec - 1) 	 t2 (seconds increment)
+The code just checks whether the update in progress bit (UIP) is set before
+reading the clock. If it's set it waits arbitrary 20ms before retrying,
+which is ample because the maximum update time is ~2ms.
 
-twrite - tsched is the transport time for the write to hit the device,
-which is negligible for this chip because it's accessed directly.
+But this check does not guarantee that the UIP bit goes high and the actual
+update happens during the readout. So the following can happen
 
-t2 - twrite = 500ms according to the datasheet.
+ 0.997 	       UIP = False
+   -> Interrupt/NMI/preemption
+ 0.998	       UIP -> True
+ 0.999	       Readout	<- Undefined
 
-But rtc_set_ntp_time() calculation of tsched is:
+To prevent this rework the code so it checks UIP before and after the
+readout and if set after the readout try again.
 
-    tsched = t2 - 1sec - (t2 - twrite)
+But that's not enough to cover the following:
 
-The default for the sync offset is 500ms which means that the write happens
-at t2 - 1.5 seconds which is obviously off by a second for this device.
+ 0.997 	       UIP = False
+ 	       Readout seconds
+   -> NMI (or vCPU scheduled out)
+ 0.998	       UIP -> True
+ 	       update completes
+	       UIP -> False
+ 1.000	       Readout	minutes,....
+ 	       UIP check succeeds
 
-Make the offset -500ms so it works correct.
+That can make the readout wrong up to 59 seconds.
+
+To prevent this, read the seconds value before the first UIP check,
+validate it after checking UIP and after reading out the rest.
+
+It's amazing that the original i386 code had this actually correct and
+the generic implementation of the MC146818 driver got it wrong in 2002 and
+it stayed that way until today.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
 Acked-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Link: https://lore.kernel.org/r/20201206220541.830517160@linutronix.de
+Link: https://lore.kernel.org/r/20201206220541.594826678@linutronix.de
 
 ---
- drivers/rtc/rtc-cmos.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/rtc/rtc-mc146818-lib.c | 64 ++++++++++++++++++++-------------
+ 1 file changed, 39 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/rtc/rtc-cmos.c b/drivers/rtc/rtc-cmos.c
-index c633319..7728fac 100644
---- a/drivers/rtc/rtc-cmos.c
-+++ b/drivers/rtc/rtc-cmos.c
-@@ -868,6 +868,9 @@ cmos_do_probe(struct device *dev, struct resource *ports, int rtc_irq)
- 	if (retval)
- 		goto cleanup2;
+diff --git a/drivers/rtc/rtc-mc146818-lib.c b/drivers/rtc/rtc-mc146818-lib.c
+index 2ecd875..98048bb 100644
+--- a/drivers/rtc/rtc-mc146818-lib.c
++++ b/drivers/rtc/rtc-mc146818-lib.c
+@@ -8,41 +8,41 @@
+ #include <linux/acpi.h>
+ #endif
  
-+	/* Set the sync offset for the periodic 11min update correct */
-+	cmos_rtc.rtc->set_offset_nsec = -(NSEC_PER_SEC / 2);
+-/*
+- * Returns true if a clock update is in progress
+- */
+-static inline unsigned char mc146818_is_updating(void)
+-{
+-	unsigned char uip;
+-	unsigned long flags;
+-
+-	spin_lock_irqsave(&rtc_lock, flags);
+-	uip = (CMOS_READ(RTC_FREQ_SELECT) & RTC_UIP);
+-	spin_unlock_irqrestore(&rtc_lock, flags);
+-	return uip;
+-}
+-
+ unsigned int mc146818_get_time(struct rtc_time *time)
+ {
+ 	unsigned char ctrl;
+ 	unsigned long flags;
+ 	unsigned char century = 0;
++	bool retry;
+ 
+ #ifdef CONFIG_MACH_DECSTATION
+ 	unsigned int real_year;
+ #endif
+ 
++again:
++	spin_lock_irqsave(&rtc_lock, flags);
+ 	/*
+-	 * read RTC once any update in progress is done. The update
+-	 * can take just over 2ms. We wait 20ms. There is no need to
+-	 * to poll-wait (up to 1s - eeccch) for the falling edge of RTC_UIP.
+-	 * If you need to know *exactly* when a second has started, enable
+-	 * periodic update complete interrupts, (via ioctl) and then
+-	 * immediately read /dev/rtc which will block until you get the IRQ.
+-	 * Once the read clears, read the RTC time (again via ioctl). Easy.
++	 * Check whether there is an update in progress during which the
++	 * readout is unspecified. The maximum update time is ~2ms. Poll
++	 * every msec for completion.
++	 *
++	 * Store the second value before checking UIP so a long lasting NMI
++	 * which happens to hit after the UIP check cannot make an update
++	 * cycle invisible.
+ 	 */
+-	if (mc146818_is_updating())
+-		mdelay(20);
++	time->tm_sec = CMOS_READ(RTC_SECONDS);
 +
- 	/* export at least the first block of NVRAM */
- 	nvmem_cfg.size = address_space - NVRAM_OFFSET;
- 	if (rtc_nvmem_register(cmos_rtc.rtc, &nvmem_cfg))
++	if (CMOS_READ(RTC_FREQ_SELECT) & RTC_UIP) {
++		spin_unlock_irqrestore(&rtc_lock, flags);
++		mdelay(1);
++		goto again;
++	}
++
++	/* Revalidate the above readout */
++	if (time->tm_sec != CMOS_READ(RTC_SECONDS)) {
++		spin_unlock_irqrestore(&rtc_lock, flags);
++		goto again;
++	}
+ 
+ 	/*
+ 	 * Only the values that we read from the RTC are set. We leave
+@@ -50,8 +50,6 @@ unsigned int mc146818_get_time(struct rtc_time *time)
+ 	 * RTC has RTC_DAY_OF_WEEK, we ignore it, as it is only updated
+ 	 * by the RTC when initially set to a non-zero value.
+ 	 */
+-	spin_lock_irqsave(&rtc_lock, flags);
+-	time->tm_sec = CMOS_READ(RTC_SECONDS);
+ 	time->tm_min = CMOS_READ(RTC_MINUTES);
+ 	time->tm_hour = CMOS_READ(RTC_HOURS);
+ 	time->tm_mday = CMOS_READ(RTC_DAY_OF_MONTH);
+@@ -66,8 +64,24 @@ unsigned int mc146818_get_time(struct rtc_time *time)
+ 		century = CMOS_READ(acpi_gbl_FADT.century);
+ #endif
+ 	ctrl = CMOS_READ(RTC_CONTROL);
++	/*
++	 * Check for the UIP bit again. If it is set now then
++	 * the above values may contain garbage.
++	 */
++	retry = CMOS_READ(RTC_FREQ_SELECT) & RTC_UIP;
++	/*
++	 * A NMI might have interrupted the above sequence so check whether
++	 * the seconds value has changed which indicates that the NMI took
++	 * longer than the UIP bit was set. Unlikely, but possible and
++	 * there is also virt...
++	 */
++	retry |= time->tm_sec != CMOS_READ(RTC_SECONDS);
++
+ 	spin_unlock_irqrestore(&rtc_lock, flags);
+ 
++	if (retry)
++		goto again;
++
+ 	if (!(ctrl & RTC_DM_BINARY) || RTC_ALWAYS_BCD)
+ 	{
+ 		time->tm_sec = bcd2bin(time->tm_sec);
