@@ -2,54 +2,59 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EDDA12D72ED
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 11 Dec 2020 10:36:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 05EC72D72E2
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 11 Dec 2020 10:36:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2437443AbgLKJfa (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 11 Dec 2020 04:35:30 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:33400 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2405656AbgLKJfY (ORCPT
+        id S2405662AbgLKJf1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 11 Dec 2020 04:35:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55742 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2405658AbgLKJfU (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 11 Dec 2020 04:35:24 -0500
+        Fri, 11 Dec 2020 04:35:20 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64426C0613D6;
+        Fri, 11 Dec 2020 01:34:40 -0800 (PST)
 Date:   Fri, 11 Dec 2020 09:34:38 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1607679279;
+        s=2020; t=1607679278;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ou+kKfZCkWPvAo2ZhmDsF0nRC6jNnkhrcbBdDKBylPA=;
-        b=tQu+qL5jnLForGAY+wBXxoclv04B1ULW1PzokeGHAByoerOF6Be/dbBqeP2sRsYROKanR9
-        DRPeElymGB4nMfhuKWsIGp3JwSzGMo5f+pc5cJ1NjxhNle6JMqya8LLZwHFKwQjzoodu13
-        qQGeU2tDmMuZUkZv3i8DvgrMHRUQxPr2ribR86RX/ApJTW0jGrDt2/nSGaxM4tIBVJSJyF
-        BlZU8HrLSkcBp2j/TJvScbysughKsi0+Skhs82xPf+yaRJpUmeFxVGn4moR0cVTxoCNr+6
-        3MFKJcWKpERj3WiSy2U6t/RpSkJ28cgxnfXw3oIFb4nRMwClHCnW4UhPQLhgnA==
+        bh=cTHs41V+aSVHSoooUsie3k4ICBWAWRHRAMu79bY/M6Q=;
+        b=jyNXMC39LoC7xQYzK5yUWjIJ10TEP/gPeqH++ez7Xe2pTaJLXMbC9W90bq+kZGlFOXGjEe
+        rMsDMbgeaBjUw5x0u14kQsuHhpHbur1MVHnCLvCbrGuLIEGrcInvOolCq/0Bb0lQJyF5bn
+        v4jxM9yA3hiHuSzq0c6L8UGRB1s8hN7jwN/ODos3PY0nWv2rE9NeIK1zRzit02vl/Ry8x5
+        29SncbJHkPilqqpYiH51rHXAi/9TpBqmUfSo2/5yVjAByYRUt+bIwDRsct+KuIqUUqm6PP
+        nWeCNKquLo31iyKZo6gygu/6Pq7pK7Z6z0+zchle2l/HXZ2cO6+sMo1P5fVnmg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1607679279;
+        s=2020e; t=1607679278;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ou+kKfZCkWPvAo2ZhmDsF0nRC6jNnkhrcbBdDKBylPA=;
-        b=MHBFk58YhQC84pJCueUaye7b3TzkWGlITcXULLxkPVccwsLxsDtQlWX1y4COuy+m5S2iuJ
-        6H/1k5k0igtSMwDQ==
-From:   "tip-bot2 for Giovanni Gherdovich" <tip-bot2@linutronix.de>
+        bh=cTHs41V+aSVHSoooUsie3k4ICBWAWRHRAMu79bY/M6Q=;
+        b=NIFRtSRzL1CBiaPCB1A2/Ux+XtqakFxba1JLvo78TaQ8i272cNm/nqruAYapcO+AMSbvft
+        +zjbww8cd3aHkmDg==
+From:   "tip-bot2 for Mauro Carvalho Chehab" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] x86, sched: Use midpoint of max_boost and max_P for
- frequency invariance on AMD EPYC
-Cc:     Giovanni Gherdovich <ggherdovich@suse.cz>,
+Subject: [tip: sched/core] sched: Fix kernel-doc markup
+Cc:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
+        Ingo Molnar <mingo@kernel.org>,
+        Vincent Guittot <vincent.guittot@linaro.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20201112182614.10700-3-ggherdovich@suse.cz>
-References: <20201112182614.10700-3-ggherdovich@suse.cz>
+In-Reply-To: =?utf-8?q?=3C50cd6f460aeb872ebe518a8e9cfffda2df8bdb0a=2E16068?=
+ =?utf-8?q?23973=2Egit=2Emchehab+huawei=40kernel=2Eorg=3E?=
+References: =?utf-8?q?=3C50cd6f460aeb872ebe518a8e9cfffda2df8bdb0a=2E160682?=
+ =?utf-8?q?3973=2Egit=2Emchehab+huawei=40kernel=2Eorg=3E?=
 MIME-Version: 1.0
-Message-ID: <160767927880.3364.502191929718820704.tip-bot2@tip-bot2>
+Message-ID: <160767927827.3364.3591387628156330333.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,219 +65,77 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     976df7e5730e3ec8a7e192c09c10ce6e8db07e65
-Gitweb:        https://git.kernel.org/tip/976df7e5730e3ec8a7e192c09c10ce6e8db07e65
-Author:        Giovanni Gherdovich <ggherdovich@suse.cz>
-AuthorDate:    Thu, 12 Nov 2020 19:26:13 +01:00
+Commit-ID:     59a74b1544e1c07ffbfd1edff5fd73ce7d3d3146
+Gitweb:        https://git.kernel.org/tip/59a74b1544e1c07ffbfd1edff5fd73ce7d3d3146
+Author:        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+AuthorDate:    Tue, 01 Dec 2020 13:09:06 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 11 Dec 2020 10:29:55 +01:00
+CommitterDate: Fri, 11 Dec 2020 10:30:31 +01:00
 
-x86, sched: Use midpoint of max_boost and max_P for frequency invariance on AMD EPYC
+sched: Fix kernel-doc markup
 
-Frequency invariant accounting calculations need the ratio
-freq_curr/freq_max, but freq_max is unknown as it depends on dynamic power
-allocation between cores: AMD EPYC CPUs implement "Core Performance Boost".
-Three candidates are considered to estimate this value:
+Kernel-doc requires that a kernel-doc markup to be immediately
+below the function prototype, as otherwise it will rename it.
+So, move sys_sched_yield() markup to the right place.
 
-- maximum non-boost frequency
-- maximum boost frequency
-- the mid point between the above two
+Also fix the cpu_util() markup: Kernel-doc markups
+should use this format:
+        identifier - description
 
-Experimental data on an AMD EPYC Zen2 machine slightly favors the third
-option, which is applied with this patch.
-
-The analysis uses the ondemand cpufreq governor as baseline, and compares
-it with schedutil in a number of configurations. Using the freq_max value
-described above offers a moderate advantage in performance and efficiency:
-
-sugov-max (freq_max=max_boost) performs the worst on tbench: less
-throughput and reduced efficiency than the other invariant-schedutil
-options (see "Data Overview" below). Consider that tbench is generally a
-problematic case as no schedutil version currently is better than ondemand.
-
-sugov-P0 (freq_max=max_P) is the worst on dbench, while the other sugov's
-can surpass ondemand with less filesystem latency and slightly increased
-efficiency.
-
-1. DATA OVERVIEW
-2. DETAILED PERFORMANCE TABLES
-3. POWER CONSUMPTION TABLE
-
-1. DATA OVERVIEW
-================
-
-sugov-noinv : non-invariant schedutil governor
-sugov-max   : invariant schedutil, freq_max=max_boost
-sugov-mid   : invariant schedutil, freq_max=midpoint
-sugov-P0    : invariant schedutil, freq_max=max_P
-perfgov     : performance governor
-
-driver      : acpi_cpufreq
-machine     : AMD EPYC 7742 (Zen2, aka "Rome"), dual socket,
-              128 cores / 256 threads, SATA SSD storage, 250G of memory,
-	      XFS filesystem
-
-Benchmarks are described in the next section.
-Tilde (~) means the value is the same as baseline.
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-            ondemand  perfgov  sugov-noinv  sugov-max  sugov-mid  sugov-P0  better if
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-                                        PERFORMANCE RATIOS
-tbench        1.00       1.44       0.90       0.87       0.93       0.93      higher
-dbench        1.00       0.91       0.95       0.94       0.94       1.06      lower
-kernbench     1.00       0.93       ~          ~          ~          0.97      lower
-gitsource     1.00       0.66       0.97       0.96       ~          0.95      lower
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-                                    PERFORMANCE-PER-WATT RATIOS
-tbench        1.00       1.16       0.84       0.84       0.88       0.85      higher
-dbench        1.00       1.03       1.02       1.02       1.02       0.93      higher
-kernbench     1.00       1.05       ~          ~          ~          ~         higher
-gitsource     1.00       1.46       1.04       1.04       ~          1.05      higher
-
-2. DETAILED PERFORMANCE TABLES
-==============================
-
-Benchmark          : tbench4 (i.e. dbench4 over the network, actually loopback)
-Varying parameter  : number of clients
-Unit               : MB/sec (higher is better)
-
-                  5.9.0-ondemand (BASELINE)                   5.9.0-perfgov               5.9.0-sugov-noinv
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-Hmean  1        427.19  +- 0.16% (        )     778.35  +- 0.10% (  82.20%)     346.92  +- 0.14% ( -18.79%)
-Hmean  2        853.82  +- 0.09% (        )    1536.23  +- 0.03% (  79.93%)     694.36  +- 0.05% ( -18.68%)
-Hmean  4       1657.54  +- 0.12% (        )    2938.18  +- 0.12% (  77.26%)    1362.81  +- 0.11% ( -17.78%)
-Hmean  8       3301.87  +- 0.06% (        )    5679.10  +- 0.04% (  72.00%)    2693.35  +- 0.04% ( -18.43%)
-Hmean  16      6139.65  +- 0.05% (        )    9498.81  +- 0.04% (  54.71%)    4889.97  +- 0.17% ( -20.35%)
-Hmean  32     11170.28  +- 0.09% (        )   17393.25  +- 0.08% (  55.71%)    9104.55  +- 0.09% ( -18.49%)
-Hmean  64     19322.97  +- 0.17% (        )   31573.91  +- 0.08% (  63.40%)   18552.52  +- 0.40% (  -3.99%)
-Hmean  128    30383.71  +- 0.11% (        )   37416.91  +- 0.15% (  23.15%)   25938.70  +- 0.41% ( -14.63%)
-Hmean  256    31143.96  +- 0.41% (        )   30908.76  +- 0.88% (  -0.76%)   29754.32  +- 0.24% (  -4.46%)
-Hmean  512    30858.49  +- 0.26% (        )   38524.60  +- 1.19% (  24.84%)   42080.39  +- 0.56% (  36.37%)
-Hmean  1024   39187.37  +- 0.19% (        )   36213.86  +- 0.26% (  -7.59%)   39555.98  +- 0.12% (   0.94%)
-
-                            5.9.0-sugov-max                 5.9.0-sugov-mid                  5.9.0-sugov-P0
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-Hmean  1        352.59  +- 1.03% ( -17.46%)     352.08  +- 0.75% ( -17.58%)     352.31  +- 1.48% ( -17.53%)
-Hmean  2        697.32  +- 0.08% ( -18.33%)     700.16  +- 0.20% ( -18.00%)     696.79  +- 0.06% ( -18.39%)
-Hmean  4       1369.88  +- 0.04% ( -17.35%)    1369.72  +- 0.07% ( -17.36%)    1365.91  +- 0.05% ( -17.59%)
-Hmean  8       2696.79  +- 0.04% ( -18.33%)    2711.06  +- 0.04% ( -17.89%)    2715.10  +- 0.61% ( -17.77%)
-Hmean  16      4725.03  +- 0.03% ( -23.04%)    4875.65  +- 0.02% ( -20.59%)    4953.05  +- 0.28% ( -19.33%)
-Hmean  32      9231.65  +- 0.10% ( -17.36%)    8704.89  +- 0.27% ( -22.07%)   10562.02  +- 0.36% (  -5.45%)
-Hmean  64     15364.27  +- 0.19% ( -20.49%)   17786.64  +- 0.15% (  -7.95%)   19665.40  +- 0.22% (   1.77%)
-Hmean  128    42100.58  +- 0.13% (  38.56%)   34946.28  +- 0.13% (  15.02%)   38635.79  +- 0.06% (  27.16%)
-Hmean  256    30660.23  +- 1.08% (  -1.55%)   32307.67  +- 0.54% (   3.74%)   31153.27  +- 0.12% (   0.03%)
-Hmean  512    24604.32  +- 0.14% ( -20.27%)   40408.50  +- 1.10% (  30.95%)   38800.29  +- 1.23% (  25.74%)
-Hmean  1024   35535.47  +- 0.28% (  -9.32%)   41070.38  +- 2.56% (   4.81%)   31308.29  +- 2.52% ( -20.11%)
-
-Benchmark          : dbench (filesystem stressor)
-Varying parameter  : number of clients
-Unit               : seconds (lower is better)
-
-NOTE-1: This dbench version measures the average latency of a set of filesystem
-        operations, as we found the traditional dbench metric (throughput) to be
-	misleading.
-NOTE-2: Due to high variability, we partition the original dataset and apply
-        statistical bootrapping (a resampling method). Accuracy is reported in the
-	form of 95% confidence intervals.
-
-                  5.9.0-ondemand (BASELINE)                   5.9.0-perfgov               5.9.0-sugov-noinv
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-SubAmean  1         98.79  +- 0.92 (        )      83.36  +- 0.82 (  15.62%)      84.82  +- 0.92 (  14.14%)
-SubAmean  2        116.00  +- 0.89 (        )     102.12  +- 0.77 (  11.96%)     109.63  +- 0.89 (   5.49%)
-SubAmean  4        149.90  +- 1.03 (        )     132.12  +- 0.91 (  11.86%)     143.90  +- 1.15 (   4.00%)
-SubAmean  8        182.41  +- 1.13 (        )     159.86  +- 0.93 (  12.36%)     165.82  +- 1.03 (   9.10%)
-SubAmean  16       237.83  +- 1.23 (        )     219.46  +- 1.14 (   7.72%)     229.28  +- 1.19 (   3.59%)
-SubAmean  32       334.34  +- 1.49 (        )     309.94  +- 1.42 (   7.30%)     321.19  +- 1.36 (   3.93%)
-SubAmean  64       576.61  +- 2.16 (        )     540.75  +- 2.00 (   6.22%)     551.27  +- 1.99 (   4.39%)
-SubAmean  128     1350.07  +- 4.14 (        )    1205.47  +- 3.20 (  10.71%)    1280.26  +- 3.75 (   5.17%)
-SubAmean  256     3444.42  +- 7.97 (        )    3698.00 +- 27.43 (  -7.36%)    3494.14  +- 7.81 (  -1.44%)
-SubAmean  2048   39457.89 +- 29.01 (        )   34105.33 +- 41.85 (  13.57%)   39688.52 +- 36.26 (  -0.58%)
-
-                            5.9.0-sugov-max                 5.9.0-sugov-mid                  5.9.0-sugov-P0
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-SubAmean  1         85.68  +- 1.04 (  13.27%)      84.16  +- 0.84 (  14.81%)      83.99  +- 0.90 (  14.99%)
-SubAmean  2        108.42  +- 0.95 (   6.54%)     109.91  +- 1.39 (   5.24%)     112.06  +- 0.91 (   3.39%)
-SubAmean  4        136.90  +- 1.04 (   8.67%)     137.59  +- 0.93 (   8.21%)     136.55  +- 0.95 (   8.91%)
-SubAmean  8        163.15  +- 0.96 (  10.56%)     166.07  +- 1.02 (   8.96%)     165.81  +- 0.99 (   9.10%)
-SubAmean  16       224.86  +- 1.12 (   5.45%)     223.83  +- 1.06 (   5.89%)     230.66  +- 1.19 (   3.01%)
-SubAmean  32       320.51  +- 1.38 (   4.13%)     322.85  +- 1.49 (   3.44%)     321.96  +- 1.46 (   3.70%)
-SubAmean  64       553.25  +- 1.93 (   4.05%)     554.19  +- 2.08 (   3.89%)     562.26  +- 2.22 (   2.49%)
-SubAmean  128     1264.35  +- 3.72 (   6.35%)    1256.99  +- 3.46 (   6.89%)    2018.97 +- 18.79 ( -49.55%)
-SubAmean  256     3466.25  +- 8.25 (  -0.63%)    3450.58  +- 8.44 (  -0.18%)    5032.12 +- 38.74 ( -46.09%)
-SubAmean  2048   39133.10 +- 45.71 (   0.82%)   39905.95 +- 34.33 (  -1.14%)   53811.86 +-193.04 ( -36.38%)
-
-Benchmark          : kernbench (kernel compilation)
-Varying parameter  : number of jobs
-Unit               : seconds (lower is better)
-
-                  5.9.0-ondemand (BASELINE)                   5.9.0-perfgov               5.9.0-sugov-noinv
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-Amean  2        471.71 +- 26.61% (        )     409.88 +- 16.99% (  13.11%)     430.63  +- 0.18% (   8.71%)
-Amean  4        211.87  +- 0.58% (        )     194.03  +- 0.74% (   8.42%)     215.33  +- 0.64% (  -1.63%)
-Amean  8        109.79  +- 1.27% (        )     101.43  +- 1.53% (   7.61%)     111.05  +- 1.95% (  -1.15%)
-Amean  16        59.50  +- 1.28% (        )      55.61  +- 1.35% (   6.55%)      59.65  +- 1.78% (  -0.24%)
-Amean  32        34.94  +- 1.22% (        )      32.36  +- 1.95% (   7.41%)      35.44  +- 0.63% (  -1.43%)
-Amean  64        22.58  +- 0.38% (        )      20.97  +- 1.28% (   7.11%)      22.41  +- 1.73% (   0.74%)
-Amean  128       17.72  +- 0.44% (        )      16.68  +- 0.32% (   5.88%)      17.65  +- 0.96% (   0.37%)
-Amean  256       16.44  +- 0.53% (        )      15.76  +- 0.32% (   4.18%)      16.76  +- 0.60% (  -1.93%)
-Amean  512       16.54  +- 0.21% (        )      15.62  +- 0.41% (   5.53%)      16.84  +- 0.85% (  -1.83%)
-
-                            5.9.0-sugov-max                 5.9.0-sugov-mid                  5.9.0-sugov-P0
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-Amean  2        421.30  +- 0.24% (  10.69%)     419.26  +- 0.15% (  11.12%)     414.38  +- 0.33% (  12.15%)
-Amean  4  	217.81  +- 5.53% (  -2.80%)     211.63  +- 0.99% (   0.12%)     208.43  +- 0.47% (   1.63%)
-Amean  8  	108.80  +- 0.43% (   0.90%)     108.48  +- 1.44% (   1.19%)     108.59  +- 3.08% (   1.09%)
-Amean  16 	 58.84  +- 0.74% (   1.12%)      58.37  +- 0.94% (   1.91%)      57.78  +- 0.78% (   2.90%)
-Amean  32 	 34.04  +- 2.00% (   2.59%)      34.28  +- 1.18% (   1.91%)      33.98  +- 2.21% (   2.75%)
-Amean  64 	 22.22  +- 1.69% (   1.60%)      22.27  +- 1.60% (   1.38%)      22.25  +- 1.41% (   1.47%)
-Amean  128	 17.55  +- 0.24% (   0.97%)      17.53  +- 0.94% (   1.04%)      17.49  +- 0.43% (   1.30%)
-Amean  256	 16.51  +- 0.46% (  -0.40%)      16.48  +- 0.48% (  -0.19%)      16.44  +- 1.21% (   0.00%)
-Amean  512	 16.50  +- 0.35% (   0.19%)      16.35  +- 0.42% (   1.14%)      16.37  +- 0.33% (   0.99%)
-
-Benchmark          : gitsource (time to run the git unit test suite)
-Varying parameter  : none
-Unit               : seconds (lower is better)
-
-                  5.9.0-ondemand (BASELINE)                   5.9.0-perfgov               5.9.0-sugov-noinv
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-Amean          1035.76  +- 0.30% (        )     688.21  +- 0.04% (  33.56%)    1003.85  +- 0.14% (   3.08%)
-
-                            5.9.0-sugov-max                 5.9.0-sugov-mid                  5.9.0-sugov-P0
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-Amean           995.82  +- 0.08% (   3.86%)    1011.98  +- 0.03% (   2.30%)     986.87  +- 0.19% (   4.72%)
-
-3. POWER CONSUMPTION TABLE
-==========================
-
-Average power consumption (watts).
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-            ondemand  perfgov  sugov-noinv  sugov-max  sugov-mid  sugov-P0
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-tbench4     227.25     281.83     244.17     236.76     241.50     247.99
-dbench4     151.97     161.87     157.08     158.10     158.06     153.73
-kernbench   162.78     167.22     162.90     164.19     164.65     164.72
-gitsource   133.65     139.00     133.04     134.43     134.18     134.32
-
-Signed-off-by: Giovanni Gherdovich <ggherdovich@suse.cz>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lkml.kernel.org/r/20201112182614.10700-3-ggherdovich@suse.cz
+Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
+Link: https://lkml.kernel.org/r/50cd6f460aeb872ebe518a8e9cfffda2df8bdb0a.1606823973.git.mchehab+huawei@kernel.org
 ---
- arch/x86/kernel/smpboot.c | 2 ++
- 1 file changed, 2 insertions(+)
+ kernel/sched/core.c | 16 ++++++++--------
+ kernel/sched/fair.c |  2 +-
+ 2 files changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
-index a4ab5cf..c5dd5f6 100644
---- a/arch/x86/kernel/smpboot.c
-+++ b/arch/x86/kernel/smpboot.c
-@@ -2054,6 +2054,8 @@ static bool amd_set_max_freq_ratio(void)
- 	}
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index a7abbba..7af80c3 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -6611,14 +6611,6 @@ SYSCALL_DEFINE3(sched_getaffinity, pid_t, pid, unsigned int, len,
+ 	return ret;
+ }
  
- 	perf_ratio = div_u64(highest_perf * SCHED_CAPACITY_SCALE, nominal_perf);
-+	/* midpoint between max_boost and max_P */
-+	perf_ratio = (perf_ratio + SCHED_CAPACITY_SCALE) >> 1;
- 	if (!perf_ratio) {
- 		pr_debug("Non-zero highest/nominal perf values led to a 0 ratio\n");
- 		return false;
+-/**
+- * sys_sched_yield - yield the current processor to other threads.
+- *
+- * This function yields the current CPU to other tasks. If there are no
+- * other threads running on this CPU then this function will return.
+- *
+- * Return: 0.
+- */
+ static void do_sched_yield(void)
+ {
+ 	struct rq_flags rf;
+@@ -6636,6 +6628,14 @@ static void do_sched_yield(void)
+ 	schedule();
+ }
+ 
++/**
++ * sys_sched_yield - yield the current processor to other threads.
++ *
++ * This function yields the current CPU to other tasks. If there are no
++ * other threads running on this CPU then this function will return.
++ *
++ * Return: 0.
++ */
+ SYSCALL_DEFINE0(sched_yield)
+ {
+ 	do_sched_yield();
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index e7e21ac..f5dceda 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -6330,7 +6330,7 @@ static int select_idle_sibling(struct task_struct *p, int prev, int target)
+ }
+ 
+ /**
+- * Amount of capacity of a CPU that is (estimated to be) used by CFS tasks
++ * cpu_util - Estimates the amount of capacity of a CPU used by CFS tasks.
+  * @cpu: the CPU to get the utilization of
+  *
+  * The unit of the return value must be the one of capacity so we can compare
