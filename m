@@ -2,18 +2,18 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 460102D86CE
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 12 Dec 2020 14:13:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5EF6C2D86CC
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 12 Dec 2020 14:13:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2438893AbgLLNMb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 12 Dec 2020 08:12:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41694 "EHLO
+        id S2395257AbgLLNLB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 12 Dec 2020 08:11:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41692 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2438894AbgLLM7Z (ORCPT
+        with ESMTP id S1725764AbgLLM7Z (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Sat, 12 Dec 2020 07:59:25 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 817D1C061793;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E7CEC0613D6;
         Sat, 12 Dec 2020 04:58:40 -0800 (PST)
 Date:   Sat, 12 Dec 2020 12:58:36 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
@@ -23,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Syk/5Pm78WmjbYRYKALZAHgm5RituhwmJV4c+Upm+kI=;
-        b=fQIB96yKil3OloY4C+o933v14C2WIBCleFEofP+vXOp2mtTDP2XOpRR+5ndsFK2Gqf5jM8
-        ivQdbijp+wxkIcjTr80sRvUUHDE9uT+77jHBmYWbjhyxOB5CNtJPKC6oKYiVjaXehp3OZ7
-        rOnEbHfT5W32VCahDeiotgFWYjg29ebHGZJKrGE4Rq0/EcKynjEzIEhX4Fw1E0VUxUnCov
-        +MQEH3buvJjMlVVdE8g+Rp2llh8iK9ttSXS1iAcooo0Q1VFEbNm2pvr5QD3BzurdXzm/PD
-        xIRS6Ns6SWIUR5kJmIq566nHSAAarO6I0jw6/owcvkDsp/m5PsrDgJHAg0ReVA==
+        bh=Nk1ANxlzzip/J4mjShQ0Pve9n07Xf0iz5t5d5/vJfQY=;
+        b=iq9VUxck3I8zV1Dmy4dvmvhdAxGBWtJSDMaISKDry9leK+k2j025/tbvtTmWfzWbhhyg97
+        zj0/y8etPja45AXsk6dUPdV9KCM1pNLcBGxGU+QFsuSgpD5HXul+nmqDliRprYkxpV0mKt
+        Ox2GxFDsEVBJqvq9Xg00cbTWjFR8yvDesHiA6FwGViTGX3chpcPjiFLCbOOvszxLsTAPMm
+        Y3dK15JG6QK5uPeLWCmOH1oXXfevwrzeYYhjIEgilS8fKb7nLwLH2O+Yu4aNxvbfGGGeSD
+        5HxVgPNSvu6j3fgogYFZoYfM4PlI4Bife8E7xcAnW0lBTVfzog0884Q4d2dCYA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1607777916;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,21 +36,21 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Syk/5Pm78WmjbYRYKALZAHgm5RituhwmJV4c+Upm+kI=;
-        b=GpAJy6ZKhV42JGBXgxCN0QQjDV0SGSq8Mk9A13sNxBD0A6fRexCKeAwc+dM/RG78dvh5t3
-        kIaJ4NRElljtlNAw==
+        bh=Nk1ANxlzzip/J4mjShQ0Pve9n07Xf0iz5t5d5/vJfQY=;
+        b=UFoDapTaeoeRjH9CekvXf+2xB7o+JTFTfYpfuwjXpgO1C2/1AzD1UB9UUwkV1MG+r4VrJ0
+        WmOjehpn81WcjvBw==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] net/mlx5: Replace irq_to_desc() abuse
+Subject: [tip: irq/core] net/mlx5: Use effective interrupt affinity
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Saeed Mahameed <saeedm@nvidia.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20201210194044.769458162@linutronix.de>
-References: <20201210194044.769458162@linutronix.de>
+In-Reply-To: <20201210194044.876342330@linutronix.de>
+References: <20201210194044.876342330@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <160777791646.3364.2505749639821754000.tip-bot2@tip-bot2>
+Message-ID: <160777791620.3364.1699410105095052355.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,76 +61,41 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     3d18847680102182fed60b90ae65cbbb3d929a3c
-Gitweb:        https://git.kernel.org/tip/3d18847680102182fed60b90ae65cbbb3d929a3c
+Commit-ID:     ca00c76aa8acf5a7563dd9f5020f9c6dc9a0577d
+Gitweb:        https://git.kernel.org/tip/ca00c76aa8acf5a7563dd9f5020f9c6dc9a0577d
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Thu, 10 Dec 2020 20:25:58 +01:00
+AuthorDate:    Thu, 10 Dec 2020 20:25:59 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Sat, 12 Dec 2020 12:59:06 +01:00
 
-net/mlx5: Replace irq_to_desc() abuse
+net/mlx5: Use effective interrupt affinity
 
-No driver has any business with the internals of an interrupt
-descriptor. Storing a pointer to it just to use yet another helper at the
-actual usage site to retrieve the affinity mask is creative at best. Just
-because C does not allow encapsulation does not mean that the kernel has no
-limits.
+Using the interrupt affinity mask for checking locality is not really
+working well on architectures which support effective affinity masks.
 
-Retrieve a pointer to the affinity mask itself and use that. It's still
-using an interface which is usually not for random drivers, but definitely
-less hideous than the previous hack.
+The affinity mask is either the system wide default or set by user space,
+but the architecture can or even must reduce the mask to the effective set,
+which means that checking the affinity mask itself does not really tell
+about the actual target CPUs.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Cc: Saeed Mahameed <saeedm@nvidia.com>
-Link: https://lore.kernel.org/r/20201210194044.769458162@linutronix.de
+Link: https://lore.kernel.org/r/20201210194044.876342330@linutronix.de
 
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en.h      | 2 +-
  drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 2 +-
- drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c | 6 +-----
- 3 files changed, 3 insertions(+), 7 deletions(-)
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en.h b/drivers/net/ethernet/mellanox/mlx5/core/en.h
-index 2f05b0f..45fd585 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en.h
-@@ -669,7 +669,7 @@ struct mlx5e_channel {
- 	spinlock_t                 async_icosq_lock;
- 
- 	/* data path - accessed per napi poll */
--	struct irq_desc *irq_desc;
-+	const struct cpumask	  *aff_mask;
- 	struct mlx5e_ch_stats     *stats;
- 
- 	/* control */
 diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-index b3f02aa..0e19b3c 100644
+index 0e19b3c..dad9bd8 100644
 --- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
 +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
 @@ -1998,7 +1998,7 @@ static int mlx5e_open_channel(struct mlx5e_priv *priv, int ix,
  	c->num_tc   = params->num_tc;
  	c->xdp      = !!params->xdp_prog;
  	c->stats    = &priv->channel_stats[ix].ch;
--	c->irq_desc = irq_to_desc(irq);
-+	c->aff_mask = irq_get_affinity_mask(irq);
+-	c->aff_mask = irq_get_affinity_mask(irq);
++	c->aff_mask = irq_get_effective_affinity_mask(irq);
  	c->lag_port = mlx5e_enumerate_lag_port(priv->mdev, ix);
  
  	netif_napi_add(netdev, &c->napi, mlx5e_napi_poll, 64);
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c
-index d586867..793e313 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c
-@@ -40,12 +40,8 @@
- static inline bool mlx5e_channel_no_affinity_change(struct mlx5e_channel *c)
- {
- 	int current_cpu = smp_processor_id();
--	const struct cpumask *aff;
--	struct irq_data *idata;
- 
--	idata = irq_desc_get_irq_data(c->irq_desc);
--	aff = irq_data_get_affinity_mask(idata);
--	return cpumask_test_cpu(current_cpu, aff);
-+	return cpumask_test_cpu(current_cpu, c->aff_mask);
- }
- 
- static void mlx5e_handle_tx_dim(struct mlx5e_txqsq *sq)
