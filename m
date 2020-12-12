@@ -2,54 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 584672D8695
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 12 Dec 2020 14:04:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 420A22D86B6
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 12 Dec 2020 14:10:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405688AbgLLNDp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 12 Dec 2020 08:03:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41832 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2438962AbgLLNAa (ORCPT
+        id S2438918AbgLLM7w (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 12 Dec 2020 07:59:52 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:41368 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2438903AbgLLM7d (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 12 Dec 2020 08:00:30 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55B4CC0611CC;
-        Sat, 12 Dec 2020 04:58:46 -0800 (PST)
-Date:   Sat, 12 Dec 2020 12:58:41 -0000
+        Sat, 12 Dec 2020 07:59:33 -0500
+Date:   Sat, 12 Dec 2020 12:58:50 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1607777921;
+        s=2020; t=1607777930;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=L1lBa/sKexG+SJIcc9xB/l2ZhQnK+L5HGjO6Gjgbu/Y=;
-        b=kgWX9PlyRFrD9URdfePcfdlNfGOQJeKY9Lh/kU4a0phVsyFKOF+6LLu/qf2XmVk0m+uoGL
-        JgF8INQLy2RmQZl2s1MTRoMLaHBKuGlObQmPXgG0l2l6JdM+l3ZtdfrF4g1QcAKOC4xBsA
-        8+h+fl3nTi3jFsF1hovPG4rYRlrm8AaivsC1/Lu5jkv2rXjNOlSuHjpqRqYc+7xg4aGpJ0
-        yudgfCxNEAHo4gwD0DBhkUivrJYMfzHgm2ltuBVl0w9UXQJCvrGBkaD+N0dAgQJTAtt2ib
-        BFt84c6qD3054YMI0QwkjBT+WRm16Fp+P+RV+3t1vZbCULUMvRWIhH6dz9RbOg==
+        bh=eIH9RBM6w1uHKgwf2MxqPV0kICztpCuzgPZBkypU000=;
+        b=HHFjCSqGSaWY/KNzbYo2kJiseD86B5sKa8tdDQdD3GCPR/lFMnAurDwtyuauIvxyGNXkri
+        RGKU1zaQUfmSdLVT+TV7bW666zSt8Bfa6/rrVCtMdl1Z0oYlOF3jZ7xvyBXxkx7uTtX1Et
+        2iWNag9m9ARRu3oPTwenN1VlMWPi4yr53gjH69hQVtWBspW1lcoext9/xMZklsvHZnafa7
+        6o10hHgLzH7bzJQ5aBHDHb33yjTDu3ffn6JP/6ZM+w/lFmmOCVZ7KoxfyeWu1RH+e/XCw0
+        KYy6UtLhQRmCnTXX/0dih44Oiq0gurz02FLhmhYk9XQrQyoolZe3yp+j+L5NfQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1607777921;
+        s=2020e; t=1607777930;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=L1lBa/sKexG+SJIcc9xB/l2ZhQnK+L5HGjO6Gjgbu/Y=;
-        b=83HwTXf4c7basT0Asvm8byVBMIqddl1xjakznR+pQgkQMkDqky6ukZMwTMeupS4P/pZXws
-        B7XgaJ4aKj8eFxBA==
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+        bh=eIH9RBM6w1uHKgwf2MxqPV0kICztpCuzgPZBkypU000=;
+        b=CrXE3+cYHvb5yZ+X6DyGZsK1sEfqrSD7/1sPoCPEqHv3ZsbgTg515pM+4VpJQzC7r50s4v
+        gIYLa7D2lv5xKPDA==
+From:   "tip-bot2 for Keqian Zhu" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] genirq: Annotate irq stats data races
-Cc:     Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
-        linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20201210194043.067097663@linutronix.de>
-References: <20201210194043.067097663@linutronix.de>
+Subject: [tip: timers/core] clocksource/drivers/arm_arch_timer: Correct fault
+ programming of CNTKCTL_EL1.EVNTI
+Cc:     Marc Zyngier <maz@kernel.org>, Keqian Zhu <zhukeqian1@huawei.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20201204073126.6920-3-zhukeqian1@huawei.com>
+References: <20201204073126.6920-3-zhukeqian1@huawei.com>
 MIME-Version: 1.0
-Message-ID: <160777792105.3364.9820233761878732243.tip-bot2@tip-bot2>
+Message-ID: <160777793029.3364.11017925799580259560.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,60 +57,70 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the irq/core branch of tip:
+The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     fb4f676fc901cb547226efb3e69ffeaeefa124be
-Gitweb:        https://git.kernel.org/tip/fb4f676fc901cb547226efb3e69ffeaeefa124be
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Thu, 10 Dec 2020 20:25:41 +01:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sat, 12 Dec 2020 12:59:03 +01:00
+Commit-ID:     8b7770b877d187bfdae1eaf587bd2b792479a31c
+Gitweb:        https://git.kernel.org/tip/8b7770b877d187bfdae1eaf587bd2b792479a31c
+Author:        Keqian Zhu <zhukeqian1@huawei.com>
+AuthorDate:    Fri, 04 Dec 2020 15:31:26 +08:00
+Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
+CommitterDate: Sat, 05 Dec 2020 19:34:04 +01:00
 
-genirq: Annotate irq stats data races
+clocksource/drivers/arm_arch_timer: Correct fault programming of CNTKCTL_EL1.EVNTI
 
-Both the per cpu stats and the accumulated count are accessed lockless and
-can be concurrently modified. That's intentional and the stats are a rough
-estimate anyway. Annotate them with data_race().
+ARM virtual counter supports event stream, it can only trigger an event
+when the trigger bit (the value of CNTKCTL_EL1.EVNTI) of CNTVCT_EL0 changes,
+so the actual period of event stream is 2^(cntkctl_evnti + 1). For example,
+when the trigger bit is 0, then virtual counter trigger an event for every
+two cycles.
 
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20201210194043.067097663@linutronix.de
+While we're at it, rework the way we compute the trigger bit position
+by making it more obvious that when bits [n:n-1] are both set (with n
+being the most significant bit), we pick bit (n + 1).
 
+Fixes: 037f637767a8 ("drivers: clocksource: add support for ARM architected timer event stream")
+Suggested-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Keqian Zhu <zhukeqian1@huawei.com>
+Acked-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://lore.kernel.org/r/20201204073126.6920-3-zhukeqian1@huawei.com
 ---
- kernel/irq/irqdesc.c | 4 ++--
- kernel/irq/proc.c    | 5 +++--
- 2 files changed, 5 insertions(+), 4 deletions(-)
+ drivers/clocksource/arm_arch_timer.c | 23 ++++++++++++++++-------
+ 1 file changed, 16 insertions(+), 7 deletions(-)
 
-diff --git a/kernel/irq/irqdesc.c b/kernel/irq/irqdesc.c
-index f309869..d28f69e 100644
---- a/kernel/irq/irqdesc.c
-+++ b/kernel/irq/irqdesc.c
-@@ -943,10 +943,10 @@ unsigned int kstat_irqs(unsigned int irq)
- 	if (!irq_settings_is_per_cpu_devid(desc) &&
- 	    !irq_settings_is_per_cpu(desc) &&
- 	    !irq_is_nmi(desc))
--	    return desc->tot_count;
-+		return data_race(desc->tot_count);
+diff --git a/drivers/clocksource/arm_arch_timer.c b/drivers/clocksource/arm_arch_timer.c
+index 777d38c..d017782 100644
+--- a/drivers/clocksource/arm_arch_timer.c
++++ b/drivers/clocksource/arm_arch_timer.c
+@@ -822,15 +822,24 @@ static void arch_timer_evtstrm_enable(int divider)
  
- 	for_each_possible_cpu(cpu)
--		sum += *per_cpu_ptr(desc->kstat_irqs, cpu);
-+		sum += data_race(*per_cpu_ptr(desc->kstat_irqs, cpu));
- 	return sum;
+ static void arch_timer_configure_evtstream(void)
+ {
+-	int evt_stream_div, pos;
++	int evt_stream_div, lsb;
++
++	/*
++	 * As the event stream can at most be generated at half the frequency
++	 * of the counter, use half the frequency when computing the divider.
++	 */
++	evt_stream_div = arch_timer_rate / ARCH_TIMER_EVT_STREAM_FREQ / 2;
++
++	/*
++	 * Find the closest power of two to the divisor. If the adjacent bit
++	 * of lsb (last set bit, starts from 0) is set, then we use (lsb + 1).
++	 */
++	lsb = fls(evt_stream_div) - 1;
++	if (lsb > 0 && (evt_stream_div & BIT(lsb - 1)))
++		lsb++;
+ 
+-	/* Find the closest power of two to the divisor */
+-	evt_stream_div = arch_timer_rate / ARCH_TIMER_EVT_STREAM_FREQ;
+-	pos = fls(evt_stream_div);
+-	if (pos > 1 && !(evt_stream_div & (1 << (pos - 2))))
+-		pos--;
+ 	/* enable event stream */
+-	arch_timer_evtstrm_enable(min(pos, 15));
++	arch_timer_evtstrm_enable(max(0, min(lsb, 15)));
  }
  
-diff --git a/kernel/irq/proc.c b/kernel/irq/proc.c
-index 72513ed..9813878 100644
---- a/kernel/irq/proc.c
-+++ b/kernel/irq/proc.c
-@@ -488,9 +488,10 @@ int show_interrupts(struct seq_file *p, void *v)
- 	if (!desc || irq_settings_is_hidden(desc))
- 		goto outsparse;
- 
--	if (desc->kstat_irqs)
-+	if (desc->kstat_irqs) {
- 		for_each_online_cpu(j)
--			any_count |= *per_cpu_ptr(desc->kstat_irqs, j);
-+			any_count |= data_race(*per_cpu_ptr(desc->kstat_irqs, j));
-+	}
- 
- 	if ((!desc->action || irq_desc_is_chained(desc)) && !any_count)
- 		goto outsparse;
+ static void arch_counter_set_user_access(void)
