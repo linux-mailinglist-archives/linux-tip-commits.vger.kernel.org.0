@@ -2,55 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 259A92D81EC
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 11 Dec 2020 23:24:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E16682D8680
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 12 Dec 2020 14:00:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391436AbgLKWXq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 11 Dec 2020 17:23:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33002 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2391236AbgLKWX3 (ORCPT
+        id S2438908AbgLLM7k (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 12 Dec 2020 07:59:40 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:41184 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2438887AbgLLM71 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 11 Dec 2020 17:23:29 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B3A4C0613CF;
-        Fri, 11 Dec 2020 14:22:49 -0800 (PST)
-Date:   Fri, 11 Dec 2020 22:22:46 -0000
+        Sat, 12 Dec 2020 07:59:27 -0500
+Date:   Sat, 12 Dec 2020 12:58:34 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1607725366;
+        s=2020; t=1607777915;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=NGZrdxckk0CcnTGimSJiWXfqdPSodDoQdFA1WLG1ac0=;
-        b=CmtGy4XkB1+Y4W7El/ccpze72z3xjrnjk488km8HKT1Jh9vQjI5xFTg6FAY28pPAFtsfp2
-        OFFeLzBIsh+NeLK/c5V5e8TTtlW2bBg6PdfqCqlO+zlXEhHI7aUSn7Q/bS4+YZSDJPg73f
-        9WF9EaNep9Jo3B3BIBM4uCI8XdWvAYdgU+SHFjam78gCUPucRpTZeTEdCXkyCJ7lxB9Tad
-        77au6PTGbap/itoBo34h4OZTeBj43uWc+j4Tom42wPqINwbH4j10DjW0HHbVQh1uyRzyh3
-        TE7YkEoXPjgMABp3ogVWowIuLCbtUVHBsRNUwW11TLPR3y2O+yzh+f6Y8H6obQ==
+        bh=cNdfIeqUAAU0sMmBY6ykntm6U4cFy2yyBbpgDxANoCo=;
+        b=d/yrqcvJ+MDFAiL1yW+i2su8J7ppugE4GK9ZoVrgGW0m79GaWcntduI2668GDdkHBts7Zv
+        tPAUw7zGH0sRHWVnece3MIsvXlCVYiVJxk86WZkZtn55ylwc7rgTwReh5dRJ12WNkc50GJ
+        FnooajcocCaVX7xCaozEljTb9UYmX35PavjYc4lUmfaCFj2TWK9OVe34URrZjnfbNt1O6b
+        oTKD4xp0hteiIiHxc93e2z9nw6JQTCdNfYjPX+ksnEZgsG3H06z7arMN4K5YNKl43EVtwb
+        m2MkyMy9X1drWrf/7zCf7tmwMV084hZenputC+A6rw7GtiXEUcBcQe/Cieme5g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1607725366;
+        s=2020e; t=1607777915;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=NGZrdxckk0CcnTGimSJiWXfqdPSodDoQdFA1WLG1ac0=;
-        b=OVAlVI5VY7+pZPoxPNHK6fCibvb1s9DkBMi6cC3/qedslKxzeEYV6nJwqf5+/Y3k7vw6jO
-        H76/vVd7jG6zPcAA==
+        bh=cNdfIeqUAAU0sMmBY6ykntm6U4cFy2yyBbpgDxANoCo=;
+        b=dW8gvKVWIcdZJK0yWBDCWHo6OwGRZtg3Iqx50z9ThJ/UgEIY6yR/6q6s2yFOMXebthcMC+
+        5fFcWYeAISlImuAQ==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] tick/sched: Make jiffies update quick check more robust
+Subject: [tip: irq/core] xen/events: Implement irq distribution
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Frederic Weisbecker <frederic@kernel.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <87czzpc02w.fsf@nanos.tec.linutronix.de>
-References: <87czzpc02w.fsf@nanos.tec.linutronix.de>
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Juergen Gross <jgross@suse.com>,
+        Stefano Stabellini <sstabellini@kernel.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org, maz@kernel.org
+In-Reply-To: <20201210194045.457218278@linutronix.de>
+References: <20201210194045.457218278@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <160772536603.3364.16160339487217714301.tip-bot2@tip-bot2>
+Message-ID: <160777791448.3364.2400431156679652798.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,155 +58,168 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/core branch of tip:
+The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     aa3b66f401b372598b29421bab4d17b631b92407
-Gitweb:        https://git.kernel.org/tip/aa3b66f401b372598b29421bab4d17b631b92407
+Commit-ID:     93b6adbf0420a7bd84167a4feb289cc2c1b4efca
+Gitweb:        https://git.kernel.org/tip/93b6adbf0420a7bd84167a4feb289cc2c1b4efca
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Fri, 04 Dec 2020 11:55:19 +01:00
+AuthorDate:    Thu, 10 Dec 2020 20:26:05 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 11 Dec 2020 23:19:10 +01:00
+CommitterDate: Sat, 12 Dec 2020 12:59:07 +01:00
 
-tick/sched: Make jiffies update quick check more robust
+xen/events: Implement irq distribution
 
-The quick check in tick_do_update_jiffies64() whether jiffies need to be
-updated is not really correct under all circumstances and on all
-architectures, especially not on 32bit systems.
-
-The quick check does:
-
-    if (now < READ_ONCE(tick_next_period))
-    	return;
-
-and the counterpart in the update is:
-
-    WRITE_ONCE(tick_next_period, next_update_time);
-
-This has two problems:
-
-  1) On weakly ordered architectures there is no guarantee that the stores
-     before the WRITE_ONCE() are visible which means that other CPUs can
-     operate on a stale jiffies value.
-
-  2) On 32bit the store of tick_next_period which is an u64 is split into
-     two 32bit stores. If the first 32bit store advances tick_next_period
-     far out and the second 32bit store is delayed (virt, NMI ...) then
-     jiffies will become stale until the second 32bit store happens.
-
-Address this by seperating the handling for 32bit and 64bit.
-
-On 64bit problem #1 is addressed by replacing READ_ONCE() / WRITE_ONCE()
-with smp_load_acquire() / smp_store_release().
-
-On 32bit problem #2 is addressed by protecting the quick check with the
-jiffies sequence counter. The load and stores can be plain because the
-sequence count mechanics provides the required barriers already.
+Keep track of the assignments of event channels to CPUs and select the
+online CPU with the least assigned channels in the affinity mask which is
+handed to irq_chip::irq_set_affinity() from the core code.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Link: https://lore.kernel.org/r/87czzpc02w.fsf@nanos.tec.linutronix.de
+Cc: Boris Ostrovsky <boris.ostrovsky@oracle.com>
+Cc: Juergen Gross <jgross@suse.com>
+Cc: Stefano Stabellini <sstabellini@kernel.org>
+Link: https://lore.kernel.org/r/20201210194045.457218278@linutronix.de
 
 ---
- kernel/time/tick-sched.c | 74 ++++++++++++++++++++++++---------------
- 1 file changed, 47 insertions(+), 27 deletions(-)
+ drivers/xen/events/events_base.c | 76 +++++++++++++++++++++++++++----
+ 1 file changed, 68 insertions(+), 8 deletions(-)
 
-diff --git a/kernel/time/tick-sched.c b/kernel/time/tick-sched.c
-index cc7cba2..a9e6893 100644
---- a/kernel/time/tick-sched.c
-+++ b/kernel/time/tick-sched.c
-@@ -57,36 +57,42 @@ static ktime_t last_jiffies_update;
- static void tick_do_update_jiffies64(ktime_t now)
+diff --git a/drivers/xen/events/events_base.c b/drivers/xen/events/events_base.c
+index b352440..a803033 100644
+--- a/drivers/xen/events/events_base.c
++++ b/drivers/xen/events/events_base.c
+@@ -96,6 +96,7 @@ struct irq_info {
+ 	struct list_head eoi_list;
+ 	short refcnt;
+ 	u8 spurious_cnt;
++	u8 is_accounted;
+ 	enum xen_irq_type type; /* type */
+ 	unsigned irq;
+ 	evtchn_port_t evtchn;   /* event channel */
+@@ -161,6 +162,9 @@ static DEFINE_PER_CPU(int [NR_VIRQS], virq_to_irq) = {[0 ... NR_VIRQS-1] = -1};
+ /* IRQ <-> IPI mapping */
+ static DEFINE_PER_CPU(int [XEN_NR_IPIS], ipi_to_irq) = {[0 ... XEN_NR_IPIS-1] = -1};
+ 
++/* Event channel distribution data */
++static atomic_t channels_on_cpu[NR_CPUS];
++
+ static int **evtchn_to_irq;
+ #ifdef CONFIG_X86
+ static unsigned long *pirq_eoi_map;
+@@ -257,6 +261,32 @@ static void set_info_for_irq(unsigned int irq, struct irq_info *info)
+ 		irq_set_chip_data(irq, info);
+ }
+ 
++/* Per CPU channel accounting */
++static void channels_on_cpu_dec(struct irq_info *info)
++{
++	if (!info->is_accounted)
++		return;
++
++	info->is_accounted = 0;
++
++	if (WARN_ON_ONCE(info->cpu >= nr_cpu_ids))
++		return;
++
++	WARN_ON_ONCE(!atomic_add_unless(&channels_on_cpu[info->cpu], -1 , 0));
++}
++
++static void channels_on_cpu_inc(struct irq_info *info)
++{
++	if (WARN_ON_ONCE(info->cpu >= nr_cpu_ids))
++		return;
++
++	if (WARN_ON_ONCE(!atomic_add_unless(&channels_on_cpu[info->cpu], 1,
++					    INT_MAX)))
++		return;
++
++	info->is_accounted = 1;
++}
++
+ /* Constructors for packed IRQ information. */
+ static int xen_irq_info_common_setup(struct irq_info *info,
+ 				     unsigned irq,
+@@ -339,6 +369,7 @@ static void xen_irq_info_cleanup(struct irq_info *info)
  {
- 	unsigned long ticks = 1;
--	ktime_t delta;
-+	ktime_t delta, nextp;
+ 	set_evtchn_to_irq(info->evtchn, -1);
+ 	info->evtchn = 0;
++	channels_on_cpu_dec(info);
+ }
  
- 	/*
--	 * Do a quick check without holding jiffies_lock. The READ_ONCE()
-+	 * 64bit can do a quick check without holding jiffies lock and
-+	 * without looking at the sequence count. The smp_load_acquire()
- 	 * pairs with the update done later in this function.
- 	 *
--	 * This is also an intentional data race which is even safe on
--	 * 32bit in theory. If there is a concurrent update then the check
--	 * might give a random answer. It does not matter because if it
--	 * returns then the concurrent update is already taking care, if it
--	 * falls through then it will pointlessly contend on jiffies_lock.
--	 *
--	 * Though there is one nasty case on 32bit due to store tearing of
--	 * the 64bit value. If the first 32bit store makes the quick check
--	 * return on all other CPUs and the writing CPU context gets
--	 * delayed to complete the second store (scheduled out on virt)
--	 * then jiffies can become stale for up to ~2^32 nanoseconds
--	 * without noticing. After that point all CPUs will wait for
--	 * jiffies lock.
--	 *
--	 * OTOH, this is not any different than the situation with NOHZ=off
--	 * where one CPU is responsible for updating jiffies and
--	 * timekeeping. If that CPU goes out for lunch then all other CPUs
--	 * will operate on stale jiffies until it decides to come back.
-+	 * 32bit cannot do that because the store of tick_next_period
-+	 * consists of two 32bit stores and the first store could move it
-+	 * to a random point in the future.
- 	 */
--	if (ktime_before(now, READ_ONCE(tick_next_period)))
--		return;
-+	if (IS_ENABLED(CONFIG_64BIT)) {
-+		if (ktime_before(now, smp_load_acquire(&tick_next_period)))
-+			return;
-+	} else {
-+		unsigned int seq;
+ /*
+@@ -449,7 +480,9 @@ static void bind_evtchn_to_cpu(evtchn_port_t evtchn, unsigned int cpu,
  
--	/* Reevaluate with jiffies_lock held */
-+		/*
-+		 * Avoid contention on jiffies_lock and protect the quick
-+		 * check with the sequence count.
-+		 */
-+		do {
-+			seq = read_seqcount_begin(&jiffies_seq);
-+			nextp = tick_next_period;
-+		} while (read_seqcount_retry(&jiffies_seq, seq));
+ 	xen_evtchn_port_bind_to_cpu(evtchn, cpu, info->cpu);
+ 
++	channels_on_cpu_dec(info);
+ 	info->cpu = cpu;
++	channels_on_cpu_inc(info);
+ }
+ 
+ /**
+@@ -622,11 +655,6 @@ static void xen_irq_init(unsigned irq)
+ {
+ 	struct irq_info *info;
+ 
+-#ifdef CONFIG_SMP
+-	/* By default all event channels notify CPU#0. */
+-	cpumask_copy(irq_get_affinity_mask(irq), cpumask_of(0));
+-#endif
+-
+ 	info = kzalloc(sizeof(*info), GFP_KERNEL);
+ 	if (info == NULL)
+ 		panic("Unable to allocate metadata for IRQ%d\n", irq);
+@@ -1697,10 +1725,38 @@ static int xen_rebind_evtchn_to_cpu(evtchn_port_t evtchn, unsigned int tcpu)
+ 	return 0;
+ }
+ 
++/*
++ * Find the CPU within @dest mask which has the least number of channels
++ * assigned. This is not precise as the per cpu counts can be modified
++ * concurrently.
++ */
++static unsigned int select_target_cpu(const struct cpumask *dest)
++{
++	unsigned int cpu, best_cpu = UINT_MAX, minch = UINT_MAX;
 +
-+		if (ktime_before(now, nextp))
-+			return;
++	for_each_cpu_and(cpu, dest, cpu_online_mask) {
++		unsigned int curch = atomic_read(&channels_on_cpu[cpu]);
++
++		if (curch < minch) {
++			minch = curch;
++			best_cpu = cpu;
++		}
 +	}
 +
-+	/* Quick check failed, i.e. update is required. */
- 	raw_spin_lock(&jiffies_lock);
 +	/*
-+	 * Reevaluate with the lock held. Another CPU might have done the
-+	 * update already.
++	 * Catch the unlikely case that dest contains no online CPUs. Can't
++	 * recurse.
 +	 */
- 	if (ktime_before(now, tick_next_period)) {
- 		raw_spin_unlock(&jiffies_lock);
- 		return;
-@@ -112,11 +118,25 @@ static void tick_do_update_jiffies64(ktime_t now)
- 	jiffies_64 += ticks;
- 
- 	/*
--	 * Keep the tick_next_period variable up to date.  WRITE_ONCE()
--	 * pairs with the READ_ONCE() in the lockless quick check above.
-+	 * Keep the tick_next_period variable up to date.
- 	 */
--	WRITE_ONCE(tick_next_period,
--		   ktime_add_ns(last_jiffies_update, TICK_NSEC));
-+	nextp = ktime_add_ns(last_jiffies_update, TICK_NSEC);
++	if (best_cpu == UINT_MAX)
++		return select_target_cpu(cpu_online_mask);
 +
-+	if (IS_ENABLED(CONFIG_64BIT)) {
-+		/*
-+		 * Pairs with smp_load_acquire() in the lockless quick
-+		 * check above and ensures that the update to jiffies_64 is
-+		 * not reordered vs. the store to tick_next_period, neither
-+		 * by the compiler nor by the CPU.
-+		 */
-+		smp_store_release(&tick_next_period, nextp);
-+	} else {
-+		/*
-+		 * A plain store is good enough on 32bit as the quick check
-+		 * above is protected by the sequence count.
-+		 */
-+		tick_next_period = nextp;
++	return best_cpu;
++}
++
+ static int set_affinity_irq(struct irq_data *data, const struct cpumask *dest,
+ 			    bool force)
+ {
+-	unsigned tcpu = cpumask_first_and(dest, cpu_online_mask);
++	unsigned int tcpu = select_target_cpu(dest);
+ 	int ret;
+ 
+ 	ret = xen_rebind_evtchn_to_cpu(evtchn_from_irq(data->irq), tcpu);
+@@ -1928,8 +1984,12 @@ void xen_irq_resume(void)
+ 	xen_evtchn_resume();
+ 
+ 	/* No IRQ <-> event-channel mappings. */
+-	list_for_each_entry(info, &xen_irq_list_head, list)
+-		info->evtchn = 0; /* zap event-channel binding */
++	list_for_each_entry(info, &xen_irq_list_head, list) {
++		/* Zap event-channel binding */
++		info->evtchn = 0;
++		/* Adjust accounting */
++		channels_on_cpu_dec(info);
 +	}
  
- 	/*
- 	 * Release the sequence count. calc_global_load() below is not
+ 	clear_evtchn_to_irq_all();
+ 
