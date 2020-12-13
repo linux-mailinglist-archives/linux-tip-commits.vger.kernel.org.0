@@ -2,49 +2,48 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 55FC12D8FEF
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 13 Dec 2020 20:20:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 04DEF2D8FA7
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 13 Dec 2020 20:04:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390899AbgLMTTC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 13 Dec 2020 14:19:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35530 "EHLO
+        id S2392983AbgLMTDS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 13 Dec 2020 14:03:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35654 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390972AbgLMTCp (ORCPT
+        with ESMTP id S2392549AbgLMTDL (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 13 Dec 2020 14:02:45 -0500
+        Sun, 13 Dec 2020 14:03:11 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AA98C0619D5;
-        Sun, 13 Dec 2020 11:01:11 -0800 (PST)
-Date:   Sun, 13 Dec 2020 19:01:09 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3016C0619DB;
+        Sun, 13 Dec 2020 11:01:12 -0800 (PST)
+Date:   Sun, 13 Dec 2020 19:01:10 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1607886069;
+        s=2020; t=1607886071;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=7FSzG2Qo2EDCOGqUHRDOHrD5/tJZs7moRwnfQ7bvgOE=;
-        b=xonTMBZDMmrjv2lO+QBhs1BDxKLGzh23xTcL36d58PLVFBWUuUPB/5bzWoBZltAl/P5LJ2
-        +VUvswwEYcTBcuKU9Py3TXXPHdQNwVcayaYI8ps7Z5ZX+y3PVPlZpRWQN8jUZRlK2wcpt8
-        NYnadb7Da4SBwrV1hNjXOLdSHOYH14FsFKOnJUG2GIBfrKCHk9Ty1UvfQ18tyGDZJCOxQs
-        2WU7hXL4IEXD/sMAI4nde7iVMhXoEaEHfTjOzSp/4yOSRwgYbhrk4C1a+hR9f6ZI4y7/ty
-        vFgbuXR3FqORLRNmKAZeRSXR0dIu3lxqY7w1OosAd23ou14yc2kg8F9+45ooFA==
+        bh=7nawM6Mt9Ak82bcDerdoLJUjO3Feelny/2Jl200B6Aw=;
+        b=eWUCaWgedCSu2GqVgEZ8VM6gSnm5pfyeMto7v0C3VwPq3J14SHQI//FrvRhw3k2TD70MTS
+        q362S3qRBIhPx2ZUZQPPAGOcZgRekCvHlxsNXnVOehjsSEeAPl8PSD2P3ezlpqGQMrdXLN
+        JrAYgfZ/st9mpPniDZkw3anoIHyzkULzd0D1gH4+weldeCa4CXhQYmyqLOtrROecMxiOkB
+        xCiuBuYAC5p4KrX+LzICt/x1yW9YC/GtWnPtm3KN2XDokFQFFWO1aUw2qIvVmyPHikMwrF
+        PyfVOGKXqmumpYZGfDSqD40syq6RsvKeVL8ZJPRTZL1821clJ5X58ujcUrYDOw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1607886069;
+        s=2020e; t=1607886071;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=7FSzG2Qo2EDCOGqUHRDOHrD5/tJZs7moRwnfQ7bvgOE=;
-        b=hcuxeWMoAKwYss7VX0LXIUNMgLLuUPHKuSSel44H3w8v1XMMifjU1dRLETVHp0FnRDfIXk
-        Iir+DYih0SQ86yAA==
-From:   "tip-bot2 for Hou Tao" <tip-bot2@linutronix.de>
+        bh=7nawM6Mt9Ak82bcDerdoLJUjO3Feelny/2Jl200B6Aw=;
+        b=ediocWKziCHhzHFaSUEvo4Z34hVpaWyyId3UcFG4e0AjE98wH4tlvEAWTzj+MPzzOBQagj
+        gOX8pu7002o1afDQ==
+From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] locktorture: Ignore nreaders_stress if no readlock support
-Cc:     Hou Tao <houtao1@huawei.com>,
-        "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
+Subject: [tip: core/rcu] torture: Make torture_stutter() use hrtimer
+Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <160788606933.3364.1160215468410470955.tip-bot2@tip-bot2>
+Message-ID: <160788607063.3364.17005020794280661837.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -55,40 +54,63 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     e5ace37d83af459bd491847df570b6763c602344
-Gitweb:        https://git.kernel.org/tip/e5ace37d83af459bd491847df570b6763c602344
-Author:        Hou Tao <houtao1@huawei.com>
-AuthorDate:    Fri, 18 Sep 2020 19:44:24 +08:00
+Commit-ID:     fda5ba9ed254727ac5761b81455d8e93c78eba4a
+Gitweb:        https://git.kernel.org/tip/fda5ba9ed254727ac5761b81455d8e93c78eba4a
+Author:        Paul E. McKenney <paulmck@kernel.org>
+AuthorDate:    Wed, 02 Sep 2020 21:08:41 -07:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Fri, 06 Nov 2020 17:13:52 -08:00
+CommitterDate: Fri, 06 Nov 2020 17:13:49 -08:00
 
-locktorture: Ignore nreaders_stress if no readlock support
+torture: Make torture_stutter() use hrtimer
 
-Exclusive locks do not have readlock support, which means that a
-locktorture run with the following module parameters will do nothing:
+The torture_stutter() function uses schedule_timeout_interruptible()
+to time the stutter duration, but this can miss race conditions due to
+its being time-synchronized with everything else that is based on the
+timer wheels.  This commit therefore converts torture_stutter() to use
+the high-resolution timers via schedule_hrtimeout(), and also to fuzz
+the stutter interval.  While in the area, this commit also limits the
+spin-loop portion of the stutter_wait() function's wait loop to two
+jiffies, down from about one second.
 
- torture_type=mutex_lock nwriters_stress=0 nreaders_stress=1
-
-This commit therefore rejects this combination for exclusive locks by
-returning -EINVAL during module init.
-
-Signed-off-by: Hou Tao <houtao1@huawei.com>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/locking/locktorture.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/torture.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/kernel/locking/locktorture.c b/kernel/locking/locktorture.c
-index 316531d..046ea2d 100644
---- a/kernel/locking/locktorture.c
-+++ b/kernel/locking/locktorture.c
-@@ -870,7 +870,8 @@ static int __init lock_torture_init(void)
- 		goto unwind;
- 	}
+diff --git a/kernel/torture.c b/kernel/torture.c
+index be09377..56ff02b 100644
+--- a/kernel/torture.c
++++ b/kernel/torture.c
+@@ -641,20 +641,27 @@ EXPORT_SYMBOL_GPL(stutter_wait);
+  */
+ static int torture_stutter(void *arg)
+ {
++	ktime_t delay;
++	DEFINE_TORTURE_RANDOM(rand);
+ 	int wtime;
  
--	if (nwriters_stress == 0 && nreaders_stress == 0) {
-+	if (nwriters_stress == 0 &&
-+	    (!cxt.cur_ops->readlock || nreaders_stress == 0)) {
- 		pr_alert("lock-torture: must run at least one locking thread\n");
- 		firsterr = -EINVAL;
- 		goto unwind;
+ 	VERBOSE_TOROUT_STRING("torture_stutter task started");
+ 	do {
+ 		if (!torture_must_stop() && stutter > 1) {
+ 			wtime = stutter;
+-			if (stutter > HZ + 1) {
++			if (stutter > 2) {
+ 				WRITE_ONCE(stutter_pause_test, 1);
+-				wtime = stutter - HZ - 1;
+-				schedule_timeout_interruptible(wtime);
+-				wtime = HZ + 1;
++				wtime = stutter - 3;
++				delay = ktime_divns(NSEC_PER_SEC * wtime, HZ);
++				delay += (torture_random(&rand) >> 3) % NSEC_PER_MSEC;
++				set_current_state(TASK_INTERRUPTIBLE);
++				schedule_hrtimeout(&delay, HRTIMER_MODE_REL);
++				wtime = 2;
+ 			}
+ 			WRITE_ONCE(stutter_pause_test, 2);
+-			schedule_timeout_interruptible(wtime);
++			delay = ktime_divns(NSEC_PER_SEC * wtime, HZ);
++			set_current_state(TASK_INTERRUPTIBLE);
++			schedule_hrtimeout(&delay, HRTIMER_MODE_REL);
+ 		}
+ 		WRITE_ONCE(stutter_pause_test, 0);
+ 		if (!torture_must_stop())
