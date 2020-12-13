@@ -2,48 +2,47 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DDB72D8FA9
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 13 Dec 2020 20:04:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E2BE62D8F97
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 13 Dec 2020 20:03:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392923AbgLMTDS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 13 Dec 2020 14:03:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35652 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2392576AbgLMTDL (ORCPT
+        id S2387779AbgLMTCK (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 13 Dec 2020 14:02:10 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:46744 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729813AbgLMTBz (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 13 Dec 2020 14:03:11 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A643EC0619DA;
-        Sun, 13 Dec 2020 11:01:12 -0800 (PST)
-Date:   Sun, 13 Dec 2020 19:01:10 -0000
+        Sun, 13 Dec 2020 14:01:55 -0500
+Date:   Sun, 13 Dec 2020 19:01:11 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1607886071;
+        s=2020; t=1607886072;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=uOirk58nAnBS9UX7B3m3VLVEu04b3qkgY9n3Q9Q5Trc=;
-        b=24CTKkBuu7c5L4fm6Eq29rnPKhGTGHqmr93WJdKUWADRbtz75eCBZpTg9K7YzHemFxDrbU
-        ux7hfOF0bW+FauLFXw4PKRO8Z4oz3SgOqAoG0TbVQkREatGPQN0U8cKZ/UOK8ned6rlzP+
-        eqFfUCXKZtfLF0dwMw4Jq3HTpIwxhjBqfhuryigAWgibMipJiPRfoCQK6fKXQvOK1RkPG6
-        ZsGnB1pSUtM0U6RRufDmS9jbKL4am54UxTEzNX7iiIJ5gT8H1UhhR9iRfdxic3iJbcWeh+
-        6x77xF8vIB7FeTMi87NOL6xSi+ezSdJYrD6+LdNepBkQMqcoOS2vqtG3CzuPIg==
+        bh=aK19tajOXU2XxgOEJFIMptYecJ8Q/IP/RnVubEMijIk=;
+        b=HdDO4XwmgWsHLKgomqYZk2MsPG0pR52vPlmD++X6SrE47QEy2RbqjyVSVDtr8BP6NyBIOt
+        bTAhaubi58zP33dR3OWexsGGcelH1GuA6qJJPb5wFAIxApI41hm78dpubtXjC5XvkTh5Fy
+        It/fUYEDcCizkw0Kaebzv1fA9Vxeh4pAmq3GiMFcMidlD2LjZOAo/ogfHWVLHkxowhhje9
+        UL6UeF+Hp+3oyxSjeKTcVvAr36LYJiNUynJCSVi+wmddpvZbKKWX1yKv6CX+WEhsvlNRDI
+        yvwWxoyg+jtV3fEkg6zxl3UQO58qz74co53Vv0703ygZCTcnK8Gmd+9O73RjkQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1607886071;
+        s=2020e; t=1607886072;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=uOirk58nAnBS9UX7B3m3VLVEu04b3qkgY9n3Q9Q5Trc=;
-        b=LVIq+iyRhr17qc9YJvVHfoFDHb9fOF8DX+7qDY0fNqPfrLDt2tDlhRogDznZP/iXYHXXUX
-        usCFgVGB+M8adwBg==
-From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
+        bh=aK19tajOXU2XxgOEJFIMptYecJ8Q/IP/RnVubEMijIk=;
+        b=oyF/cfk2NrPxSzIp29+GtQW8BwlsTxrmMU8lIUI3IKkSJ9KaIW3bo1iHw8hKnKQS3wZSpA
+        IMT1t4sa3DUlq0Cg==
+From:   "tip-bot2 for Joel Fernandes (Google)" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] scftorture: Add an alternative IPI vector
-Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
+Subject: [tip: core/rcu] docs: Update RCU's hotplug requirements with a bit
+ about design
+Cc:     "Joel Fernandes (Google)" <joel@joelfernandes.org>,
+        "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <160788607050.3364.18260435161958207630.tip-bot2@tip-bot2>
+Message-ID: <160788607173.3364.2022355149628880918.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -54,159 +53,85 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     1ac78b49d61d4a095ef8b861542549eef1823f36
-Gitweb:        https://git.kernel.org/tip/1ac78b49d61d4a095ef8b861542549eef1823f36
-Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Thu, 03 Sep 2020 13:09:47 -07:00
+Commit-ID:     a043260740d5d6ec5be59c3fb595c719890a0b0b
+Gitweb:        https://git.kernel.org/tip/a043260740d5d6ec5be59c3fb595c719890a0b0b
+Author:        Joel Fernandes (Google) <joel@joelfernandes.org>
+AuthorDate:    Tue, 29 Sep 2020 15:29:28 -04:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Fri, 06 Nov 2020 17:13:49 -08:00
+CommitterDate: Fri, 06 Nov 2020 17:02:43 -08:00
 
-scftorture: Add an alternative IPI vector
+docs: Update RCU's hotplug requirements with a bit about design
 
-The scftorture tests currently use only smp_call_function() and
-friends, which means that these tests cannot locate bugs caused by
-interactions between different IPI vectors.  This commit therefore adds
-the rescheduling IPI to the mix.
+The rcu_barrier() section of the "Hotplug CPU" section discusses
+deadlocks, however the description of deadlocks other than those involving
+rcu_barrier() is rather incomplete.
 
-Note that this commit permits resched_cpus() only when scftorture is
-built in.  This is a workaround.  Longer term, this will use real wakeups
-rather than resched_cpu().
+This commit therefore continues the section by describing how RCU's
+design handles CPU hotplug in a deadlock-free way.
 
+Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/scftorture.c | 41 ++++++++++++++++++++++++++++++++---------
- 1 file changed, 32 insertions(+), 9 deletions(-)
+ Documentation/RCU/Design/Requirements/Requirements.rst | 49 +++++++--
+ 1 file changed, 39 insertions(+), 10 deletions(-)
 
-diff --git a/kernel/scftorture.c b/kernel/scftorture.c
-index 554a521..3fbb7a7 100644
---- a/kernel/scftorture.c
-+++ b/kernel/scftorture.c
-@@ -62,6 +62,7 @@ torture_param(int, stat_interval, 60, "Number of seconds between stats printk()s
- torture_param(int, stutter_cpus, 5, "Number of jiffies to change CPUs under test, 0=disable");
- torture_param(bool, use_cpus_read_lock, 0, "Use cpus_read_lock() to exclude CPU hotplug.");
- torture_param(int, verbose, 0, "Enable verbose debugging printk()s");
-+torture_param(int, weight_resched, -1, "Testing weight for resched_cpu() operations.");
- torture_param(int, weight_single, -1, "Testing weight for single-CPU no-wait operations.");
- torture_param(int, weight_single_wait, -1, "Testing weight for single-CPU operations.");
- torture_param(int, weight_many, -1, "Testing weight for multi-CPU no-wait operations.");
-@@ -82,6 +83,7 @@ torture_param(bool, shutdown, SCFTORT_SHUTDOWN, "Shutdown at end of torture test
- struct scf_statistics {
- 	struct task_struct *task;
- 	int cpu;
-+	long long n_resched;
- 	long long n_single;
- 	long long n_single_ofl;
- 	long long n_single_wait;
-@@ -97,12 +99,15 @@ static struct task_struct *scf_torture_stats_task;
- static DEFINE_PER_CPU(long long, scf_invoked_count);
- 
- // Data for random primitive selection
--#define SCF_PRIM_SINGLE		0
--#define SCF_PRIM_MANY		1
--#define SCF_PRIM_ALL		2
--#define SCF_NPRIMS		(2 * 3) // Need wait and no-wait versions of each.
-+#define SCF_PRIM_RESCHED	0
-+#define SCF_PRIM_SINGLE		1
-+#define SCF_PRIM_MANY		2
-+#define SCF_PRIM_ALL		3
-+#define SCF_NPRIMS		7 // Need wait and no-wait versions of each,
-+				  //  except for SCF_PRIM_RESCHED.
- 
- static char *scf_prim_name[] = {
-+	"resched_cpu",
- 	"smp_call_function_single",
- 	"smp_call_function_many",
- 	"smp_call_function",
-@@ -136,6 +141,8 @@ static char *bangstr = "";
- 
- static DEFINE_TORTURE_RANDOM_PERCPU(scf_torture_rand);
- 
-+extern void resched_cpu(int cpu); // An alternative IPI vector.
+diff --git a/Documentation/RCU/Design/Requirements/Requirements.rst b/Documentation/RCU/Design/Requirements/Requirements.rst
+index 1ae79a1..8807985 100644
+--- a/Documentation/RCU/Design/Requirements/Requirements.rst
++++ b/Documentation/RCU/Design/Requirements/Requirements.rst
+@@ -1929,16 +1929,45 @@ The Linux-kernel CPU-hotplug implementation has notifiers that are used
+ to allow the various kernel subsystems (including RCU) to respond
+ appropriately to a given CPU-hotplug operation. Most RCU operations may
+ be invoked from CPU-hotplug notifiers, including even synchronous
+-grace-period operations such as ``synchronize_rcu()`` and
+-``synchronize_rcu_expedited()``.
+-
+-However, all-callback-wait operations such as ``rcu_barrier()`` are also
+-not supported, due to the fact that there are phases of CPU-hotplug
+-operations where the outgoing CPU's callbacks will not be invoked until
+-after the CPU-hotplug operation ends, which could also result in
+-deadlock. Furthermore, ``rcu_barrier()`` blocks CPU-hotplug operations
+-during its execution, which results in another type of deadlock when
+-invoked from a CPU-hotplug notifier.
++grace-period operations such as (``synchronize_rcu()`` and
++``synchronize_rcu_expedited()``).  However, these synchronous operations
++do block and therefore cannot be invoked from notifiers that execute via
++``stop_machine()``, specifically those between the ``CPUHP_AP_OFFLINE``
++and ``CPUHP_AP_ONLINE`` states.
 +
- // Print torture statistics.  Caller must ensure serialization.
- static void scf_torture_stats_print(void)
- {
-@@ -148,6 +155,7 @@ static void scf_torture_stats_print(void)
- 	for_each_possible_cpu(cpu)
- 		invoked_count += data_race(per_cpu(scf_invoked_count, cpu));
- 	for (i = 0; i < nthreads; i++) {
-+		scfs.n_resched += scf_stats_p[i].n_resched;
- 		scfs.n_single += scf_stats_p[i].n_single;
- 		scfs.n_single_ofl += scf_stats_p[i].n_single_ofl;
- 		scfs.n_single_wait += scf_stats_p[i].n_single_wait;
-@@ -160,8 +168,8 @@ static void scf_torture_stats_print(void)
- 	if (atomic_read(&n_errs) || atomic_read(&n_mb_in_errs) ||
- 	    atomic_read(&n_mb_out_errs) || atomic_read(&n_alloc_errs))
- 		bangstr = "!!! ";
--	pr_alert("%s %sscf_invoked_count %s: %lld single: %lld/%lld single_ofl: %lld/%lld many: %lld/%lld all: %lld/%lld ",
--		 SCFTORT_FLAG, bangstr, isdone ? "VER" : "ver", invoked_count,
-+	pr_alert("%s %sscf_invoked_count %s: %lld resched: %lld single: %lld/%lld single_ofl: %lld/%lld many: %lld/%lld all: %lld/%lld ",
-+		 SCFTORT_FLAG, bangstr, isdone ? "VER" : "ver", invoked_count, scfs.n_resched,
- 		 scfs.n_single, scfs.n_single_wait, scfs.n_single_ofl, scfs.n_single_wait_ofl,
- 		 scfs.n_many, scfs.n_many_wait, scfs.n_all, scfs.n_all_wait);
- 	torture_onoff_stats();
-@@ -314,6 +322,13 @@ static void scftorture_invoke_one(struct scf_statistics *scfp, struct torture_ra
- 		}
- 	}
- 	switch (scfsp->scfs_prim) {
-+	case SCF_PRIM_RESCHED:
-+		if (IS_BUILTIN(CONFIG_SCF_TORTURE_TEST)) {
-+			cpu = torture_random(trsp) % nr_cpu_ids;
-+			scfp->n_resched++;
-+			resched_cpu(cpu);
-+		}
-+		break;
- 	case SCF_PRIM_SINGLE:
- 		cpu = torture_random(trsp) % nr_cpu_ids;
- 		if (scfsp->scfs_wait)
-@@ -433,8 +448,8 @@ static void
- scftorture_print_module_parms(const char *tag)
- {
- 	pr_alert(SCFTORT_FLAG
--		 "--- %s:  verbose=%d holdoff=%d longwait=%d nthreads=%d onoff_holdoff=%d onoff_interval=%d shutdown_secs=%d stat_interval=%d stutter_cpus=%d use_cpus_read_lock=%d, weight_single=%d, weight_single_wait=%d, weight_many=%d, weight_many_wait=%d, weight_all=%d, weight_all_wait=%d\n", tag,
--		 verbose, holdoff, longwait, nthreads, onoff_holdoff, onoff_interval, shutdown, stat_interval, stutter_cpus, use_cpus_read_lock, weight_single, weight_single_wait, weight_many, weight_many_wait, weight_all, weight_all_wait);
-+		 "--- %s:  verbose=%d holdoff=%d longwait=%d nthreads=%d onoff_holdoff=%d onoff_interval=%d shutdown_secs=%d stat_interval=%d stutter_cpus=%d use_cpus_read_lock=%d, weight_resched=%d, weight_single=%d, weight_single_wait=%d, weight_many=%d, weight_many_wait=%d, weight_all=%d, weight_all_wait=%d\n", tag,
-+		 verbose, holdoff, longwait, nthreads, onoff_holdoff, onoff_interval, shutdown, stat_interval, stutter_cpus, use_cpus_read_lock, weight_resched, weight_single, weight_single_wait, weight_many, weight_many_wait, weight_all, weight_all_wait);
- }
++In addition, all-callback-wait operations such as ``rcu_barrier()`` may
++not be invoked from any CPU-hotplug notifier.  This restriction is due
++to the fact that there are phases of CPU-hotplug operations where the
++outgoing CPU's callbacks will not be invoked until after the CPU-hotplug
++operation ends, which could also result in deadlock. Furthermore,
++``rcu_barrier()`` blocks CPU-hotplug operations during its execution,
++which results in another type of deadlock when invoked from a CPU-hotplug
++notifier.
++
++Finally, RCU must avoid deadlocks due to interaction between hotplug,
++timers and grace period processing. It does so by maintaining its own set
++of books that duplicate the centrally maintained ``cpu_online_mask``,
++and also by reporting quiescent states explicitly when a CPU goes
++offline.  This explicit reporting of quiescent states avoids any need
++for the force-quiescent-state loop (FQS) to report quiescent states for
++offline CPUs.  However, as a debugging measure, the FQS loop does splat
++if offline CPUs block an RCU grace period for too long.
++
++An offline CPU's quiescent state will be reported either:
++1.  As the CPU goes offline using RCU's hotplug notifier (``rcu_report_dead()``).
++2.  When grace period initialization (``rcu_gp_init()``) detects a
++    race either with CPU offlining or with a task unblocking on a leaf
++    ``rcu_node`` structure whose CPUs are all offline.
++
++The CPU-online path (``rcu_cpu_starting()``) should never need to report
++a quiescent state for an offline CPU.  However, as a debugging measure,
++it does emit a warning if a quiescent state was not already reported
++for that CPU.
++
++During the checking/modification of RCU's hotplug bookkeeping, the
++corresponding CPU's leaf node lock is held. This avoids race conditions
++between RCU's hotplug notifier hooks, the grace period initialization
++code, and the FQS loop, all of which refer to or modify this bookkeeping.
  
- static void scf_cleanup_handler(void *unused)
-@@ -475,6 +490,7 @@ static int __init scf_torture_init(void)
- {
- 	long i;
- 	int firsterr = 0;
-+	unsigned long weight_resched1 = weight_resched;
- 	unsigned long weight_single1 = weight_single;
- 	unsigned long weight_single_wait1 = weight_single_wait;
- 	unsigned long weight_many1 = weight_many;
-@@ -487,9 +503,10 @@ static int __init scf_torture_init(void)
- 
- 	scftorture_print_module_parms("Start of test");
- 
--	if (weight_single == -1 && weight_single_wait == -1 &&
-+	if (weight_resched == -1 && weight_single == -1 && weight_single_wait == -1 &&
- 	    weight_many == -1 && weight_many_wait == -1 &&
- 	    weight_all == -1 && weight_all_wait == -1) {
-+		weight_resched1 = 2 * nr_cpu_ids;
- 		weight_single1 = 2 * nr_cpu_ids;
- 		weight_single_wait1 = 2 * nr_cpu_ids;
- 		weight_many1 = 2;
-@@ -497,6 +514,8 @@ static int __init scf_torture_init(void)
- 		weight_all1 = 1;
- 		weight_all_wait1 = 1;
- 	} else {
-+		if (weight_resched == -1)
-+			weight_resched1 = 0;
- 		if (weight_single == -1)
- 			weight_single1 = 0;
- 		if (weight_single_wait == -1)
-@@ -517,6 +536,10 @@ static int __init scf_torture_init(void)
- 		firsterr = -EINVAL;
- 		goto unwind;
- 	}
-+	if (IS_BUILTIN(CONFIG_SCF_TORTURE_TEST))
-+		scf_sel_add(weight_resched1, SCF_PRIM_RESCHED, false);
-+	else if (weight_resched1)
-+		VERBOSE_SCFTORTOUT_ERRSTRING("built as module, weight_resched ignored");
- 	scf_sel_add(weight_single1, SCF_PRIM_SINGLE, false);
- 	scf_sel_add(weight_single_wait1, SCF_PRIM_SINGLE, true);
- 	scf_sel_add(weight_many1, SCF_PRIM_MANY, false);
+ Scheduler and RCU
+ ~~~~~~~~~~~~~~~~~
