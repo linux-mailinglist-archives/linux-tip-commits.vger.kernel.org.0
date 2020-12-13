@@ -2,18 +2,18 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D19252D8FE3
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 13 Dec 2020 20:17:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 468E42D8FF9
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 13 Dec 2020 20:21:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392438AbgLMTQz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 13 Dec 2020 14:16:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35632 "EHLO
+        id S1727247AbgLMTUW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 13 Dec 2020 14:20:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35510 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2392046AbgLMTDI (ORCPT
+        with ESMTP id S2390541AbgLMTCm (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 13 Dec 2020 14:03:08 -0500
+        Sun, 13 Dec 2020 14:02:42 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DECEC0611CE;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AFF6C0611CD;
         Sun, 13 Dec 2020 11:01:09 -0800 (PST)
 Date:   Sun, 13 Dec 2020 19:01:06 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
@@ -21,31 +21,29 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=H3YgJEq4LYUQ3ezjb0CkeGil1mVwqCH8FIuwNs/eaTo=;
-        b=eUAesJkOe78zlyQTUoC0A8O1M/gjEjUG96j5JximghWoOirwbAHax+7J9wHZ5rlPBDUPI4
-        POlkxaIacvPaZNemmPrpAlZ+tyB0l9UAYlG+/hfqgKPl/rbUtjvQ1m48dZl+rJ8z+zvMQp
-        /fiOXhkAPVbHdRzuBdrQKchMF0mv/JA5zMy9l6jx/pkzH2Wx3/z4eNoVlP4wSasdlrzn6J
-        x2zQizo647bxkO7nnPyraH+j0IbwiRmIPC/fV1cxwewlvjaco8Dhh1iUI4ciJ1IoO1+OLq
-        ToHXJSaYmZYs6ZGn9mgiSdmNgl9QHBI3YkEJm6X4zu4IWy2wxWCs+pg05ShDMQ==
+        bh=gLfNGSf+Jq0ugP7ZpAIPH82xJZnlCDZp13juylGORx8=;
+        b=Ki2klPN5aufyx0GjxPnHjGs4z7hGHwX+8GmkBkZluSEoeo331U2oLlXfIIf9+UrG1/A1FB
+        aox6wSrkJyjFLYzeG+hbCtLUQQh6EcBfOi990gug6ppaAMmjWOo1uacXHK90Se7WvMjP6D
+        vR/Z33E0suDF8B8btPPEofzvTcUBv/XrlWY75CGxr1dXhXtxlW5h63VlvnKn0+sB0hJAxr
+        0VyXxv3/ebGyXrKp2nv8oOThKcPNu57pK3sEFfwf/ogYPvlxRwBF6d+iggOTaeHZeM36bc
+        n5KYlc0x2CqnaSoij+eDI9P2+MgAJi9KygUgvcOa7R6I251+NsO6Ic/O6cwUFw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1607886067;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=H3YgJEq4LYUQ3ezjb0CkeGil1mVwqCH8FIuwNs/eaTo=;
-        b=/GfpKS8kT5gpl2wNq8yUwCnUOxZqAsVdJVcgXxzzdtYsd/YQ+plxtFerVjWVdoaNqKFz7/
-        J4gtjmPTyxjO9YAw==
-From:   "tip-bot2 for Bhaskar Chowdhury" <tip-bot2@linutronix.de>
+        bh=gLfNGSf+Jq0ugP7ZpAIPH82xJZnlCDZp13juylGORx8=;
+        b=mvif0Jl9Mm5of4Qp3BMbVSoCGWt/uyLCdr3stM3jeVXT+1WYuiMwqh1PPpRtPsx2+PYBu4
+        MFT8d9tuYJNWPxAA==
+From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] tools/nolibc: Fix a spelling error in a comment
-Cc:     Bhaskar Chowdhury <unixbhaskar@gmail.com>,
-        Willy Tarreau <w@1wt.eu>,
-        "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
+Subject: [tip: core/rcu] torture: Make kvm-check-branches.sh use --allcpus
+Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <160788606676.3364.14206290151138290950.tip-bot2@tip-bot2>
+Message-ID: <160788606692.3364.15241784450900157813.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -56,38 +54,45 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     06dc8d4591b8d8ce0ece94474718b53f0a5c5de3
-Gitweb:        https://git.kernel.org/tip/06dc8d4591b8d8ce0ece94474718b53f0a5c5de3
-Author:        Bhaskar Chowdhury <unixbhaskar@gmail.com>
-AuthorDate:    Tue, 20 Oct 2020 21:22:56 +02:00
+Commit-ID:     5be7d80deb80ceef50a6bd86d83c8fd62264778a
+Gitweb:        https://git.kernel.org/tip/5be7d80deb80ceef50a6bd86d83c8fd62264778a
+Author:        Paul E. McKenney <paulmck@kernel.org>
+AuthorDate:    Thu, 15 Oct 2020 11:42:17 -07:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Fri, 06 Nov 2020 17:13:58 -08:00
 
-tools/nolibc:  Fix a spelling error in a comment
+torture: Make kvm-check-branches.sh use --allcpus
 
-Fix a spelling in the comment line.
+Currently the kvm-check-branches.sh script calculates the number of CPUs
+and passes this to the kvm.sh --cpus command-line argument.  This works,
+but this commit saves a line by instead using the new kvm.sh --allcpus
+command-line argument.
 
-s/memry/memory/p
-
-This is on linux-next.
-
-Signed-off-by: Bhaskar Chowdhury <unixbhaskar@gmail.com>
-Signed-off-by: Willy Tarreau <w@1wt.eu>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- tools/include/nolibc/nolibc.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/rcutorture/bin/kvm-check-branches.sh | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/tools/include/nolibc/nolibc.h b/tools/include/nolibc/nolibc.h
-index d6d2623..e61d36c 100644
---- a/tools/include/nolibc/nolibc.h
-+++ b/tools/include/nolibc/nolibc.h
-@@ -107,7 +107,7 @@ static int errno;
- #endif
+diff --git a/tools/testing/selftests/rcutorture/bin/kvm-check-branches.sh b/tools/testing/selftests/rcutorture/bin/kvm-check-branches.sh
+index 6e65c13..370406b 100755
+--- a/tools/testing/selftests/rcutorture/bin/kvm-check-branches.sh
++++ b/tools/testing/selftests/rcutorture/bin/kvm-check-branches.sh
+@@ -52,8 +52,7 @@ echo Results directory: $resdir/$ds
+ KVM="`pwd`/tools/testing/selftests/rcutorture"; export KVM
+ PATH=${KVM}/bin:$PATH; export PATH
+ . functions.sh
+-cpus="`identify_qemu_vcpus`"
+-echo Using up to $cpus CPUs.
++echo Using all `identify_qemu_vcpus` CPUs.
  
- /* errno codes all ensure that they will not conflict with a valid pointer
-- * because they all correspond to the highest addressable memry page.
-+ * because they all correspond to the highest addressable memory page.
-  */
- #define MAX_ERRNO 4095
+ # Each pass through this loop does one command-line argument.
+ for gitbr in $@
+@@ -74,7 +73,7 @@ do
+ 		# Test the specified commit.
+ 		git checkout $i > $resdir/$ds/$idir/git-checkout.out 2>&1
+ 		echo git checkout return code: $? "(Commit $ntry: $i)"
+-		kvm.sh --cpus $cpus --duration 3 --trust-make > $resdir/$ds/$idir/kvm.sh.out 2>&1
++		kvm.sh --allcpus --duration 3 --trust-make > $resdir/$ds/$idir/kvm.sh.out 2>&1
+ 		ret=$?
+ 		echo kvm.sh return code $ret for commit $i from branch $gitbr
  
