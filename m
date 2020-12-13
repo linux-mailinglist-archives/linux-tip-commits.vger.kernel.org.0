@@ -2,47 +2,46 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 12B4A2D901A
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 13 Dec 2020 20:27:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8542E2D8FF3
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 13 Dec 2020 20:21:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2394947AbgLMTZx (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 13 Dec 2020 14:25:53 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:46580 "EHLO
+        id S2389949AbgLMTCb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 13 Dec 2020 14:02:31 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:46574 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730792AbgLMTCF (ORCPT
+        with ESMTP id S1732088AbgLMTCI (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 13 Dec 2020 14:02:05 -0500
-Date:   Sun, 13 Dec 2020 19:01:13 -0000
+        Sun, 13 Dec 2020 14:02:08 -0500
+Date:   Sun, 13 Dec 2020 19:01:14 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1607886074;
+        s=2020; t=1607886075;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=+oQOrJEYsdg1mESLBSgg1eK/Hq8ZzGFN/yuceEK9zLc=;
-        b=00XSiuVY6A4W5uwaGKsG3b0Zoi8z7WQjaz6R3LtJPoUVY9zmMSW9NuoLnOTstHNuGAEwjf
-        98yyYo5m4gGavnyY731xn85Ygnxs7DEBU+dDX6JtDl1Y59xgYXNfZzKGzI70Rcb4wHz9fK
-        1kINWexUe5gcz8i0pNTT5OadHDMN4EJ8YEEewP6qAbKqeVvL4eBHvB0MS3qSHfE78cIK9I
-        vQkAJFdQ7Il4JbL5BcXMSEXhR/qjmMtKlku5vvSOgfaGF4ldFYtehj79Xq5abaFGJLKN09
-        9l7riU9RtvoyLSNKdi/5iKi6DtTB2Bs4sVN2dVImAyRUbrO0LodWjzYKF/0IKA==
+        bh=zmbmRk4ZszZ1QrQtkgSEJadskh5ZiIzN4efURuXYneA=;
+        b=KEJ0+TdcOMCHV0gFasJJkTYIGoUxmUiYizesXjeVTdnQHVcmAB9WyCH5QgGZe3SKC31D1F
+        T4NOBl4Gp4uwX8dy1LDH8UXRLFP+AiapT5dfXptI5Yb2MPbBrRd9XEusXtd1wq0M5iY5vD
+        1NYX31oLk9SwU4ODOGn+1G36C9FpAZfFCxO0cHpTpZF3lKRIrdMFvrroju3Y9YHA+fD0/n
+        koX01BHQdxgVpF+Vi78m7B5jn3amgjVihqfxaqFJTLZ0GaF+ri6eDDxMZDVVKHyx3Px1sw
+        tigPyjl05CCnCtSb+6mRkZFOO7+qRsGKGPvdsEYsm4mIMmwYMn4BYeYesMXgzw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1607886074;
+        s=2020e; t=1607886075;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=+oQOrJEYsdg1mESLBSgg1eK/Hq8ZzGFN/yuceEK9zLc=;
-        b=gC4qNX16xlo+2yeGRH/LG+Hf0Cy1gsGjDSggX+F4c/SmvUMwdy7WIXyr3+o2Hc3N2vMh7V
-        f1r9eOH7XkbJq/Bg==
+        bh=zmbmRk4ZszZ1QrQtkgSEJadskh5ZiIzN4efURuXYneA=;
+        b=wBRR4HhjgmZiu3Qy0YHLT4K4O/mIeqOmlQRmrjU+Sna4nG5vf/3pMO+ScKIb1G/vZBe+52
+        FZu+IF1HgRDAWnCg==
 From:   "tip-bot2 for Jakub Kicinski" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] lockdep: Provide dummy forward declaration of
- *_is_held() helpers
+Subject: [tip: core/rcu] sched: Un-hide lockdep_tasklist_lock_is_held() for !LOCKDEP
 Cc:     Jakub Kicinski <kuba@kernel.org>,
         "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <160788607366.3364.2310309535322165601.tip-bot2@tip-bot2>
+Message-ID: <160788607476.3364.15470212499968970763.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -53,55 +52,41 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     cd539cff9470fe1dacf0bf5ab3f54f37b854d6fc
-Gitweb:        https://git.kernel.org/tip/cd539cff9470fe1dacf0bf5ab3f54f37b854d6fc
+Commit-ID:     9f14cb030d987ae5e201e88cd345c6d772bcce51
+Gitweb:        https://git.kernel.org/tip/9f14cb030d987ae5e201e88cd345c6d772bcce51
 Author:        Jakub Kicinski <kuba@kernel.org>
-AuthorDate:    Wed, 16 Sep 2020 11:45:27 -07:00
+AuthorDate:    Wed, 16 Sep 2020 11:45:22 -07:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Mon, 02 Nov 2020 17:10:01 -08:00
+CommitterDate: Mon, 02 Nov 2020 17:09:59 -08:00
 
-lockdep: Provide dummy forward declaration of *_is_held() helpers
+sched: Un-hide lockdep_tasklist_lock_is_held() for !LOCKDEP
 
-When CONFIG_LOCKDEP is not set, lock_is_held() and lockdep_is_held()
-are not declared or defined.  This forces all callers to use #ifdefs
-around these checks.
+Currently, variables used only within lockdep expressions are flagged as
+unused, requiring that these variables' declarations be decorated with
+either #ifdef or __maybe_unused.  This results in ugly code.  This commit
+therefore causes the lockdep_tasklist_lock_is_held() function to be
+visible even when lockdep is not enabled, thus removing the need for
+these decorations.  This approach further relies on dead-code elimination
+to remove any references to functions or variables that are not available
+in non-lockdep kernels.
 
-Recent RCU changes added a lot of lockdep_is_held() calls inside
-rcu_dereference_protected().  This macro hides its argument on !LOCKDEP
-builds, which can lead to false-positive unused-variable warnings.
-
-This commit therefore provides forward declarations of lock_is_held()
-and lockdep_is_held() but without defining them.  This way callers
-(including those internal to RCU) can keep them visible to the compiler
-on !LOCKDEP builds and instead depend on dead code elimination to remove
-the references, which in turn prevents the linker from complaining about
-the lack of the corresponding function definitions.
-
-[ paulmck: Apply Peter Zijlstra feedback on "extern". ]
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
---
-CC: peterz@infradead.org
-CC: mingo@redhat.com
-CC: will@kernel.org
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- include/linux/lockdep.h | 6 ++++++
- 1 file changed, 6 insertions(+)
+ include/linux/sched/task.h | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/include/linux/lockdep.h b/include/linux/lockdep.h
-index f559487..ccc3ce6 100644
---- a/include/linux/lockdep.h
-+++ b/include/linux/lockdep.h
-@@ -375,6 +375,12 @@ static inline void lockdep_unregister_key(struct lock_class_key *key)
+diff --git a/include/linux/sched/task.h b/include/linux/sched/task.h
+index 85fb2f3..c0f71f2 100644
+--- a/include/linux/sched/task.h
++++ b/include/linux/sched/task.h
+@@ -47,9 +47,7 @@ extern spinlock_t mmlist_lock;
+ extern union thread_union init_thread_union;
+ extern struct task_struct init_task;
  
- #define lockdep_depth(tsk)	(0)
+-#ifdef CONFIG_PROVE_RCU
+ extern int lockdep_tasklist_lock_is_held(void);
+-#endif /* #ifdef CONFIG_PROVE_RCU */
  
-+/*
-+ * Dummy forward declarations, allow users to write less ifdef-y code
-+ * and depend on dead code elimination.
-+ */
-+extern int lock_is_held(const void *);
-+extern int lockdep_is_held(const void *);
- #define lockdep_is_held_type(l, r)		(1)
- 
- #define lockdep_assert_held(l)			do { (void)(l); } while (0)
+ extern asmlinkage void schedule_tail(struct task_struct *prev);
+ extern void init_idle(struct task_struct *idle, int cpu);
