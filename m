@@ -2,48 +2,48 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 89F742D8FEB
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 13 Dec 2020 20:20:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0577E2D8FDF
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 13 Dec 2020 20:16:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2394736AbgLMTTC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 13 Dec 2020 14:19:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35500 "EHLO
+        id S1726522AbgLMTQJ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 13 Dec 2020 14:16:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35648 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390902AbgLMTCp (ORCPT
+        with ESMTP id S2392457AbgLMTDK (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 13 Dec 2020 14:02:45 -0500
+        Sun, 13 Dec 2020 14:03:10 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E63ECC0619D4;
-        Sun, 13 Dec 2020 11:01:10 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C412FC0619D8;
+        Sun, 13 Dec 2020 11:01:11 -0800 (PST)
 Date:   Sun, 13 Dec 2020 19:01:09 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1607886069;
+        s=2020; t=1607886070;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=uYy4ZbMkV2paKim/rBSalueFcAPikIjoGXkkZAmZOQw=;
-        b=3/S79a7J9vJgKdYcBY8TIbfAUZeARrWZRi42uiIUpeHMk1xWRLSA7iD+LHmiYdmT2FrnUn
-        afk4ZWTxMwfXbLlyHwwR5y75PINYSU/owGw9n8gKd28nwF1SSeGKtFQ6Zxp8AQ7XZy8i/g
-        UrwN2oNcwgVSz5PyF0gVnM2RfI7jbmCBhP+6YnKtpD9fYlFfRs0xnMiouyG9CA9wHpmbEH
-        JBx6lmxjYD9jrzCmIk/xC4jQO85JGaApyXHtZQEGsWFFn7M1IDK51/x3nsql0ueWCPFIad
-        74WamccFziE8AKKd9qJr8D3Ww5wupj2pHq7e30gs59adewXgyGEtlOpLYYp4yQ==
+        bh=/O5STtLbx51+JYrmDZWaTrM9A5smaxG+GPTfVI6OQV0=;
+        b=YVYsNytgu+zZqWGfzcE6AWnJyNrc4F8Pi9IpesgTS8dunTew0wwuOn/EDMxgY587xv1eGP
+        BeknYYFCvJxTbEKevAEDiBx9bUbAEkscm+tSKF9WPF9eKeUeQh67JaxttnTQlnRGyrgUtK
+        staHWLe6kjEQ82MRQDWFB9hFhsI45i9L70eYBT873c69QGevho3zJWLrzdbOhGjJLwN/L/
+        ec70nN/s15EI3P2Ye7jNwFQoY/UkQMXggi3nDm92gMKKvOonQ1nfHmWxbDeTbHAl/4LRcI
+        Zs1QYmg5ekT0fiL2ImslL8RSIcbmA9TXTYQLV0/im9pBAXbqmkP5Sp8zquERgQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1607886069;
+        s=2020e; t=1607886070;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=uYy4ZbMkV2paKim/rBSalueFcAPikIjoGXkkZAmZOQw=;
-        b=XW3zya6NgP721rBhQ2OrBvVWsubV/kTi2cs3TilsM+3alHLVHt9tO5/Pm9+R/qRYA4RW1t
-        Ix+32N0CxUiJgGBw==
+        bh=/O5STtLbx51+JYrmDZWaTrM9A5smaxG+GPTfVI6OQV0=;
+        b=+f6ptejEV05oou8Eppl0ekvVyjjppz0MUutKShidSMVNWbw05VBZuORiGfrXhQMVbDjlnu
+        iK34+gROv2/VG9Bg==
 From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] locktorture: Prevent hangs for invalid arguments
+Subject: [tip: core/rcu] rcuscale: Prevent hangs for invalid arguments
 Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <160788606913.3364.7958504209031937550.tip-bot2@tip-bot2>
+Message-ID: <160788606989.3364.4487124508260996108.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -54,46 +54,46 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     6b74fa0a776e3715d385b23d29db469179c825b0
-Gitweb:        https://git.kernel.org/tip/6b74fa0a776e3715d385b23d29db469179c825b0
+Commit-ID:     2f2214d43ccd27ac6d124287107c136a0f7c6053
+Gitweb:        https://git.kernel.org/tip/2f2214d43ccd27ac6d124287107c136a0f7c6053
 Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Fri, 18 Sep 2020 11:18:06 -07:00
+AuthorDate:    Thu, 17 Sep 2020 10:30:46 -07:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Fri, 06 Nov 2020 17:13:53 -08:00
+CommitterDate: Fri, 06 Nov 2020 17:13:51 -08:00
 
-locktorture: Prevent hangs for invalid arguments
+rcuscale: Prevent hangs for invalid arguments
 
-If an locktorture torture-test run is given a bad kvm.sh argument, the
+If an rcuscale torture-test run is given a bad kvm.sh argument, the
 test will complain to the console, which is good.  What is bad is that
 from the user's perspective, it will just hang for the time specified
 by the --duration argument.  This commit therefore forces an immediate
-kernel shutdown if a lock_torture_init()-time error occurs, thus avoiding
+kernel shutdown if a rcu_scale_init()-time error occurs, thus avoiding
 the appearance of a hang.  It also forces a console splat in this case
 to clearly indicate the presence of an error.
 
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/locking/locktorture.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ kernel/rcu/rcuscale.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/locking/locktorture.c b/kernel/locking/locktorture.c
-index 046ea2d..79fbd97 100644
---- a/kernel/locking/locktorture.c
-+++ b/kernel/locking/locktorture.c
-@@ -29,6 +29,7 @@
- #include <linux/slab.h>
- #include <linux/percpu-rwsem.h>
- #include <linux/torture.h>
-+#include <linux/reboot.h>
- 
- MODULE_LICENSE("GPL");
- MODULE_AUTHOR("Paul E. McKenney <paulmck@linux.ibm.com>");
-@@ -1041,6 +1042,10 @@ static int __init lock_torture_init(void)
+diff --git a/kernel/rcu/rcuscale.c b/kernel/rcu/rcuscale.c
+index c42f240..06491d5 100644
+--- a/kernel/rcu/rcuscale.c
++++ b/kernel/rcu/rcuscale.c
+@@ -802,7 +802,6 @@ rcu_scale_init(void)
+ 		for (i = 0; i < ARRAY_SIZE(scale_ops); i++)
+ 			pr_cont(" %s", scale_ops[i]->name);
+ 		pr_cont("\n");
+-		WARN_ON(!IS_MODULE(CONFIG_RCU_SCALE_TEST));
+ 		firsterr = -EINVAL;
+ 		cur_ops = NULL;
+ 		goto unwind;
+@@ -876,6 +875,10 @@ rcu_scale_init(void)
  unwind:
  	torture_init_end();
- 	lock_torture_cleanup();
-+	if (shutdown_secs) {
-+		WARN_ON(!IS_MODULE(CONFIG_LOCK_TORTURE_TEST));
+ 	rcu_scale_cleanup();
++	if (shutdown) {
++		WARN_ON(!IS_MODULE(CONFIG_RCU_SCALE_TEST));
 +		kernel_power_off();
 +	}
  	return firsterr;
