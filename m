@@ -2,48 +2,49 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AF41C2D8FAA
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 13 Dec 2020 20:04:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DA6742D8FA6
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 13 Dec 2020 20:03:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392757AbgLMTDS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 13 Dec 2020 14:03:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35634 "EHLO
+        id S2392701AbgLMTDM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 13 Dec 2020 14:03:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35636 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2392262AbgLMTDI (ORCPT
+        with ESMTP id S2392433AbgLMTDI (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Sun, 13 Dec 2020 14:03:08 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2634AC0611CF;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9525C0611D0;
         Sun, 13 Dec 2020 11:01:09 -0800 (PST)
 Date:   Sun, 13 Dec 2020 19:01:07 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1607886067;
+        s=2020; t=1607886068;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=CPvhgryxZcXu30pYcRnjDYgNdJjOQ9zjQCN1l8Bc+TQ=;
-        b=YR3yMs378mDh3lqD2/pze6m9gvHLdcj2iGgFNTebiC7gAAQQ7rLwzKKgjTMFXbG4vwULPd
-        0WSPBwT/iIOQWoGGOgePCcVvHymX9elDfB4vuLn/UdDRNe5s2VwfgstYBWmTdcP9Tso/5u
-        KPU+cwXaBnx5nB0L88TZHi76lCMYHoHawWEEAV11INknDOfeWwWYj0zenLulYcPfhQ6944
-        QyNFpRc8QYHhZ22CFjf7xScedrZUDzLcMiYAvRyYTrUPhUgLJDT6rEm1m6o0GtHpLHbPAd
-        YolCSRnukqjM0mNoFTjna9gbS4mSz3QSTBGIlzUOtqD70BzsKTPt4pTRgeRyUw==
+        bh=XAhY19PAJrwuXA0hTJgPEZ4cUIrKScXzJIZYlkgN0xc=;
+        b=BVZwfigS8SVHBhomAS4v52Y/OUK7OcoBwBu+Du4bhrfAIMQC+Qy7bA1kgr/bPOaz5dRwMw
+        WwtAazpjDGeCSEGmyIFdJFf6EDzf3iTyA0MeBgcRYOpibLBg1MOUG/i0YmVaTBY2PHrKV2
+        ahhBjcwbfw72g+gJbCsdlIP8hO2vA/PlQ+QaValjUQ3upeTY5OhEfrfVQP9QKjirTl2D0j
+        94+/yCBoXsUcBBPk4kgxfdVxOdIE4IynjCRHrSAa6dipH5edFRvMDNc3Nt556xExs42qBv
+        MZl+su1lZdnnBEQG2+B9uSYOvY71U0vixoh61ZwBiQ3ISBYxpNRx2tYFthjAHA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1607886067;
+        s=2020e; t=1607886068;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=CPvhgryxZcXu30pYcRnjDYgNdJjOQ9zjQCN1l8Bc+TQ=;
-        b=FXIA8swJuKJtVSkDcaq1oNvJ/6/o1sXt+5giWBiYgTr7Q3R0f61i4mVa5tpT4UgXLqQ9dv
-        ZrMX2LUZdwwYp9Bg==
+        bh=XAhY19PAJrwuXA0hTJgPEZ4cUIrKScXzJIZYlkgN0xc=;
+        b=nkzFnbIiK0gmG69nqwUbMalyex/Q81bIThAug6ZYckDJCsKqHB5BV5cos1N5SLWoNLwDZg
+        NOqwzT/GT6fmewCQ==
 From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcutorture: Don't do need_resched() testing if ->sync is NULL
-Cc:     Tom Rix <trix@redhat.com>, "Paul E. McKenney" <paulmck@kernel.org>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
+Subject: [tip: core/rcu] torture: Allow alternative forms of kvm.sh
+ command-line arguments
+Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <160788606722.3364.14457642071832399627.tip-bot2@tip-bot2>
+Message-ID: <160788606771.3364.14917703470958671269.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -54,51 +55,51 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     a7eb937b67b64b8b4645f1ebca3ac2079c6de81b
-Gitweb:        https://git.kernel.org/tip/a7eb937b67b64b8b4645f1ebca3ac2079c6de81b
+Commit-ID:     a5136f4ffb44f8c1a80406c5bfd4d233433398e6
+Gitweb:        https://git.kernel.org/tip/a5136f4ffb44f8c1a80406c5bfd4d233433398e6
 Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Fri, 09 Oct 2020 19:51:55 -07:00
+AuthorDate:    Thu, 24 Sep 2020 08:52:33 -07:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Fri, 06 Nov 2020 17:13:57 -08:00
+CommitterDate: Fri, 06 Nov 2020 17:13:55 -08:00
 
-rcutorture: Don't do need_resched() testing if ->sync is NULL
+torture: Allow alternative forms of kvm.sh command-line arguments
 
-If cur_ops->sync is NULL, rcu_torture_fwd_prog_nr() will nevertheless
-attempt to call through it.  This commit therefore flags cases where
-neither need_resched() nor call_rcu() forward-progress testing
-can be performed due to NULL function pointers, and also causes
-rcu_torture_fwd_prog_nr() to take an early exit if cur_ops->sync()
-is NULL.
+This commit allows --build-only as a synonym for --buildonly, --kconfigs
+for --kconfig, and --kmake-args for --kmake-arg.
 
-Reported-by: Tom Rix <trix@redhat.com>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/rcu/rcutorture.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ tools/testing/selftests/rcutorture/bin/kvm.sh | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/rcu/rcutorture.c b/kernel/rcu/rcutorture.c
-index e7d52fd..4dfd113 100644
---- a/kernel/rcu/rcutorture.c
-+++ b/kernel/rcu/rcutorture.c
-@@ -1923,7 +1923,9 @@ static void rcu_torture_fwd_prog_nr(struct rcu_fwd *rfp,
- 	unsigned long stopat;
- 	static DEFINE_TORTURE_RANDOM(trs);
- 
--	if  (cur_ops->call && cur_ops->sync && cur_ops->cb_barrier) {
-+	if (!cur_ops->sync)
-+		return; // Cannot do need_resched() forward progress testing without ->sync.
-+	if (cur_ops->call && cur_ops->cb_barrier) {
- 		init_rcu_head_on_stack(&fcs.rh);
- 		selfpropcb = true;
- 	}
-@@ -2149,8 +2151,8 @@ static int __init rcu_torture_fwd_prog_init(void)
- 
- 	if (!fwd_progress)
- 		return 0; /* Not requested, so don't do it. */
--	if (!cur_ops->stall_dur || cur_ops->stall_dur() <= 0 ||
--	    cur_ops == &rcu_busted_ops) {
-+	if ((!cur_ops->sync && !cur_ops->call) ||
-+	    !cur_ops->stall_dur || cur_ops->stall_dur() <= 0 || cur_ops == &rcu_busted_ops) {
- 		VERBOSE_TOROUT_STRING("rcu_torture_fwd_prog_init: Disabled, unsupported by RCU flavor under test");
- 		return 0;
- 	}
+diff --git a/tools/testing/selftests/rcutorture/bin/kvm.sh b/tools/testing/selftests/rcutorture/bin/kvm.sh
+index c348d96..45d07b7 100755
+--- a/tools/testing/selftests/rcutorture/bin/kvm.sh
++++ b/tools/testing/selftests/rcutorture/bin/kvm.sh
+@@ -93,7 +93,7 @@ do
+ 		TORTURE_BOOT_IMAGE="$2"
+ 		shift
+ 		;;
+-	--buildonly)
++	--buildonly|--build-only)
+ 		TORTURE_BUILDONLY=1
+ 		;;
+ 	--configs|--config)
+@@ -160,7 +160,7 @@ do
+ 		jitter="$2"
+ 		shift
+ 		;;
+-	--kconfig)
++	--kconfig|--kconfigs)
+ 		checkarg --kconfig "(Kconfig options)" $# "$2" '^CONFIG_[A-Z0-9_]\+=\([ynm]\|[0-9]\+\)\( CONFIG_[A-Z0-9_]\+=\([ynm]\|[0-9]\+\)\)*$' '^error$'
+ 		TORTURE_KCONFIG_ARG="$2"
+ 		shift
+@@ -171,7 +171,7 @@ do
+ 	--kcsan)
+ 		TORTURE_KCONFIG_KCSAN_ARG="CONFIG_DEBUG_INFO=y CONFIG_KCSAN=y CONFIG_KCSAN_ASSUME_PLAIN_WRITES_ATOMIC=n CONFIG_KCSAN_REPORT_VALUE_CHANGE_ONLY=n CONFIG_KCSAN_REPORT_ONCE_IN_MS=100000 CONFIG_KCSAN_VERBOSE=y CONFIG_KCSAN_INTERRUPT_WATCHER=y"; export TORTURE_KCONFIG_KCSAN_ARG
+ 		;;
+-	--kmake-arg)
++	--kmake-arg|--kmake-args)
+ 		checkarg --kmake-arg "(kernel make arguments)" $# "$2" '.*' '^error$'
+ 		TORTURE_KMAKE_ARG="$2"
+ 		shift
