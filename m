@@ -2,50 +2,48 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CFD592D8FD6
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 13 Dec 2020 20:15:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 07DF82D902E
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 13 Dec 2020 20:30:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728492AbgLMTEH (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 13 Dec 2020 14:04:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35394 "EHLO
+        id S1727909AbgLMT35 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 13 Dec 2020 14:29:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35392 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727322AbgLMTBm (ORCPT
+        with ESMTP id S1726799AbgLMTBm (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Sun, 13 Dec 2020 14:01:42 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E79FC061793;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30F0BC0613D6;
         Sun, 13 Dec 2020 11:01:02 -0800 (PST)
-Date:   Sun, 13 Dec 2020 19:00:59 -0000
+Date:   Sun, 13 Dec 2020 19:01:00 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1607886060;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=S9U9R92tuompJjtXxNdeXU3BlzUbm52kfN1/dndvUg8=;
-        b=2FctbWob5tCa26o+rCzWYGvHQ0CRfPD/jNrA3hQmZt8LBnkzz1ak/ryp+u9XaHm+KDqQ1U
-        isiEpttkCzy29052N4gt9Ytf2QWdFKEgZ3jy2TIcUiumgce/f08JHvq9Hqfm8smyIlTapq
-        Ml+F2oFBf0rKp6WY/qVpLdVOWcbgmK4lz1a8dB5lq9y8zSLmNKWax3FkSntt8HSIToKQCZ
-        MnnLoqlc6ziLkEfZy0WqleAnyqxIVi4IlSltzBnaPmmS3uEGe5Eq45fqULGEAc92bc8/r+
-        OWNFSyyz/F9fjm11+O+MStHRdZUu7ORX9Fix5KC+JEgGtyNkKwWB8R2QbXu0UA==
+        bh=JUSEeczplsDqGMKH0bJsbuS8ltO0bnOhRwdcYtDd9/s=;
+        b=yzARfwVgyEX7eW7/98B4aFpSsE7TOLjIeS9lGYfoWcp2JD0QS93M/9j14/3JjokOMnKpWu
+        KBKEIl6FDQXdvdCmb8nK2LBy/N2k4VVjYUapGMFjfdqE8p6y/XT8HnrO9t+e7Aq4ygZoi8
+        L/3aLivAo2DnfXJsXXqLUPWYGTk8jOl7/QqgttG8edoy3HZaw+qBLObyYgFj8g/Qcq/bac
+        iLqwHSfDqySNoLl6UknaNkQc7uonWFFZXly+Fmeg+TkxVkIjGkVbfYhwDugFlTZeKFq3Gr
+        BIdRwqZF11B1ef9OhlZBQMm/l8pvha5qfZCCvjCz7mGsfIIDT8oJFq7HSoxqoA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1607886060;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=S9U9R92tuompJjtXxNdeXU3BlzUbm52kfN1/dndvUg8=;
-        b=SbavKxpPd+fnLlLLQIK0deQcbFE+tWqkwWbA2cMIwHVDyG/RtYjAOgRod7VNhsQECQbngp
-        IUTKUJSV0UKZ+gDw==
-From:   "tip-bot2 for Uladzislau Rezki (Sony)" <tip-bot2@linutronix.de>
+        bh=JUSEeczplsDqGMKH0bJsbuS8ltO0bnOhRwdcYtDd9/s=;
+        b=G72YxHI7bR9Uhtl7mgXsgLHKMLk4fdKTk0DLzxoFvnE/ixkqFDPG0iIYBkzsI2Az9NM9r4
+        KJED8IAVtqvVzFCA==
+From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcu/tree: Defer kvfree_rcu() allocation to a clean context
-Cc:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        "Uladzislau Rezki (Sony)" <urezki@gmail.com>,
-        "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
+Subject: [tip: core/rcu] rcu: Prevent lockdep-RCU splats on lock acquisition/release
+Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <160788605910.3364.1339126535985500040.tip-bot2@tip-bot2>
+Message-ID: <160788606018.3364.6771823343122064966.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -56,232 +54,134 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     56292e8609e39537297a7468dda4d87b9bd81d6a
-Gitweb:        https://git.kernel.org/tip/56292e8609e39537297a7468dda4d87b9bd81d6a
-Author:        Uladzislau Rezki (Sony) <urezki@gmail.com>
-AuthorDate:    Thu, 29 Oct 2020 17:50:04 +01:00
+Commit-ID:     4d60b475f858ebdb06c1339f01a890f287b5e587
+Gitweb:        https://git.kernel.org/tip/4d60b475f858ebdb06c1339f01a890f287b5e587
+Author:        Paul E. McKenney <paulmck@kernel.org>
+AuthorDate:    Tue, 13 Oct 2020 12:39:23 -07:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Thu, 19 Nov 2020 19:37:17 -08:00
 
-rcu/tree: Defer kvfree_rcu() allocation to a clean context
+rcu: Prevent lockdep-RCU splats on lock acquisition/release
 
-The current memmory-allocation interface causes the following difficulties
-for kvfree_rcu():
+The rcu_cpu_starting() and rcu_report_dead() functions transition the
+current CPU between online and offline state from an RCU perspective.
+Unfortunately, this means that the rcu_cpu_starting() function's lock
+acquisition and the rcu_report_dead() function's lock releases happen
+while the CPU is offline from an RCU perspective, which can result
+in lockdep-RCU splats about using RCU from an offline CPU.  And this
+situation can also result in too-short grace periods, especially in
+guest OSes that are subject to vCPU preemption.
 
-a) If built with CONFIG_PROVE_RAW_LOCK_NESTING, the lockdep will
-   complain about violation of the nesting rules, as in "BUG: Invalid
-   wait context".  This Kconfig option checks for proper raw_spinlock
-   vs. spinlock nesting, in particular, it is not legal to acquire a
-   spinlock_t while holding a raw_spinlock_t.
+This commit therefore uses sequence-count-like synchronization to forgive
+use of RCU while RCU thinks a CPU is offline across the full extent of
+the rcu_cpu_starting() and rcu_report_dead() function's lock acquisitions
+and releases.
 
-   This is a problem because kfree_rcu() uses raw_spinlock_t whereas the
-   "page allocator" internally deals with spinlock_t to access to its
-   zones. The code also can be broken from higher level of view:
-   <snip>
-       raw_spin_lock(&some_lock);
-       kfree_rcu(some_pointer, some_field_offset);
-   <snip>
+One approach would have been to use the actual sequence-count primitives
+provided by the Linux kernel.  Unfortunately, the resulting code looks
+completely broken and wrong, and is likely to result in patches that
+break RCU in an attempt to address this appearance of broken wrongness.
+Plus there is no net savings in lines of code, given the additional
+explicit memory barriers required.
 
-b) If built with CONFIG_PREEMPT_RT, spinlock_t is converted into
-   sleeplock.  This means that invoking the page allocator from atomic
-   contexts results in "BUG: scheduling while atomic".
+Therefore, this sequence count is instead implemented by a new ->ofl_seq
+field in the rcu_node structure.  If this counter's value is an odd
+number, RCU forgives RCU read-side critical sections on other CPUs covered
+by the same rcu_node structure, even if those CPUs are offline from
+an RCU perspective.  In addition, if a given leaf rcu_node structure's
+->ofl_seq counter value is an odd number, rcu_gp_init() delays starting
+the grace period until that counter value changes.
 
-c) Please note that call_rcu() is already invoked from raw atomic context,
-   so it is only reasonable to expaect that kfree_rcu() and kvfree_rcu()
-   will also be called from atomic raw context.
-
-This commit therefore defers page allocation to a clean context using the
-combination of an hrtimer and a workqueue.  The hrtimer stage is required
-in order to avoid deadlocks with the scheduler.  This deferred allocation
-is required only when kvfree_rcu()'s per-CPU page cache is empty.
-
-Link: https://lore.kernel.org/lkml/20200630164543.4mdcf6zb4zfclhln@linutronix.de/
-Fixes: 3042f83f19be ("rcu: Support reclaim for head-less object")
-Reported-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+[ paulmck: Apply Peter Zijlstra feedback. ]
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/rcu/tree.c | 109 +++++++++++++++++++++++++++------------------
- 1 file changed, 66 insertions(+), 43 deletions(-)
+ kernel/rcu/tree.c | 21 ++++++++++++++++++++-
+ kernel/rcu/tree.h |  1 +
+ 2 files changed, 21 insertions(+), 1 deletion(-)
 
 diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
-index 0f278d6..01918d8 100644
+index 50d90ee..3438534 100644
 --- a/kernel/rcu/tree.c
 +++ b/kernel/rcu/tree.c
-@@ -177,7 +177,7 @@ module_param(rcu_unlock_delay, int, 0444);
-  * per-CPU. Object size is equal to one page. This value
-  * can be changed at boot time.
+@@ -1152,7 +1152,7 @@ bool rcu_lockdep_current_cpu_online(void)
+ 	preempt_disable_notrace();
+ 	rdp = this_cpu_ptr(&rcu_data);
+ 	rnp = rdp->mynode;
+-	if (rdp->grpmask & rcu_rnp_online_cpus(rnp))
++	if (rdp->grpmask & rcu_rnp_online_cpus(rnp) || READ_ONCE(rnp->ofl_seq) & 0x1)
+ 		ret = true;
+ 	preempt_enable_notrace();
+ 	return ret;
+@@ -1717,6 +1717,7 @@ static void rcu_strict_gp_boundary(void *unused)
   */
--static int rcu_min_cached_objs = 2;
-+static int rcu_min_cached_objs = 5;
- module_param(rcu_min_cached_objs, int, 0444);
+ static bool rcu_gp_init(void)
+ {
++	unsigned long firstseq;
+ 	unsigned long flags;
+ 	unsigned long oldmask;
+ 	unsigned long mask;
+@@ -1760,6 +1761,12 @@ static bool rcu_gp_init(void)
+ 	 */
+ 	rcu_state.gp_state = RCU_GP_ONOFF;
+ 	rcu_for_each_leaf_node(rnp) {
++		smp_mb(); // Pair with barriers used when updating ->ofl_seq to odd values.
++		firstseq = READ_ONCE(rnp->ofl_seq);
++		if (firstseq & 0x1)
++			while (firstseq == READ_ONCE(rnp->ofl_seq))
++				schedule_timeout_idle(1);  // Can't wake unless RCU is watching.
++		smp_mb(); // Pair with barriers used when updating ->ofl_seq to even values.
+ 		raw_spin_lock(&rcu_state.ofl_lock);
+ 		raw_spin_lock_irq_rcu_node(rnp);
+ 		if (rnp->qsmaskinit == rnp->qsmaskinitnext &&
+@@ -4069,6 +4076,9 @@ void rcu_cpu_starting(unsigned int cpu)
  
- /* Retrieve RCU kthreads priority for rcutorture */
-@@ -3089,6 +3089,9 @@ struct kfree_rcu_cpu_work {
-  *	In order to save some per-cpu space the list is singular.
-  *	Even though it is lockless an access has to be protected by the
-  *	per-cpu lock.
-+ * @page_cache_work: A work to refill the cache when it is empty
-+ * @work_in_progress: Indicates that page_cache_work is running
-+ * @hrtimer: A hrtimer for scheduling a page_cache_work
-  * @nr_bkv_objs: number of allocated objects at @bkvcache.
-  *
-  * This is a per-CPU structure.  The reason that it is not included in
-@@ -3105,6 +3108,11 @@ struct kfree_rcu_cpu {
- 	bool monitor_todo;
- 	bool initialized;
- 	int count;
-+
-+	struct work_struct page_cache_work;
-+	atomic_t work_in_progress;
-+	struct hrtimer hrtimer;
-+
- 	struct llist_head bkvcache;
- 	int nr_bkv_objs;
- };
-@@ -3222,10 +3230,10 @@ static void kfree_rcu_work(struct work_struct *work)
- 			}
- 			rcu_lock_release(&rcu_callback_map);
- 
--			krcp = krc_this_cpu_lock(&flags);
-+			raw_spin_lock_irqsave(&krcp->lock, flags);
- 			if (put_cached_bnode(krcp, bkvhead[i]))
- 				bkvhead[i] = NULL;
--			krc_this_cpu_unlock(krcp, flags);
-+			raw_spin_unlock_irqrestore(&krcp->lock, flags);
- 
- 			if (bkvhead[i])
- 				free_page((unsigned long) bkvhead[i]);
-@@ -3352,6 +3360,57 @@ static void kfree_rcu_monitor(struct work_struct *work)
- 		raw_spin_unlock_irqrestore(&krcp->lock, flags);
+ 	rnp = rdp->mynode;
+ 	mask = rdp->grpmask;
++	WRITE_ONCE(rnp->ofl_seq, rnp->ofl_seq + 1);
++	WARN_ON_ONCE(!(rnp->ofl_seq & 0x1));
++	smp_mb(); // Pair with rcu_gp_cleanup()'s ->ofl_seq barrier().
+ 	raw_spin_lock_irqsave_rcu_node(rnp, flags);
+ 	WRITE_ONCE(rnp->qsmaskinitnext, rnp->qsmaskinitnext | mask);
+ 	newcpu = !(rnp->expmaskinitnext & mask);
+@@ -4088,6 +4098,9 @@ void rcu_cpu_starting(unsigned int cpu)
+ 	} else {
+ 		raw_spin_unlock_irqrestore_rcu_node(rnp, flags);
+ 	}
++	smp_mb(); // Pair with rcu_gp_cleanup()'s ->ofl_seq barrier().
++	WRITE_ONCE(rnp->ofl_seq, rnp->ofl_seq + 1);
++	WARN_ON_ONCE(rnp->ofl_seq & 0x1);
+ 	smp_mb(); /* Ensure RCU read-side usage follows above initialization. */
  }
  
-+static enum hrtimer_restart
-+schedule_page_work_fn(struct hrtimer *t)
-+{
-+	struct kfree_rcu_cpu *krcp =
-+		container_of(t, struct kfree_rcu_cpu, hrtimer);
-+
-+	queue_work(system_highpri_wq, &krcp->page_cache_work);
-+	return HRTIMER_NORESTART;
-+}
-+
-+static void fill_page_cache_func(struct work_struct *work)
-+{
-+	struct kvfree_rcu_bulk_data *bnode;
-+	struct kfree_rcu_cpu *krcp =
-+		container_of(work, struct kfree_rcu_cpu,
-+			page_cache_work);
-+	unsigned long flags;
-+	bool pushed;
-+	int i;
-+
-+	for (i = 0; i < rcu_min_cached_objs; i++) {
-+		bnode = (struct kvfree_rcu_bulk_data *)
-+			__get_free_page(GFP_KERNEL | __GFP_NOWARN);
-+
-+		if (bnode) {
-+			raw_spin_lock_irqsave(&krcp->lock, flags);
-+			pushed = put_cached_bnode(krcp, bnode);
-+			raw_spin_unlock_irqrestore(&krcp->lock, flags);
-+
-+			if (!pushed) {
-+				free_page((unsigned long) bnode);
-+				break;
-+			}
-+		}
-+	}
-+
-+	atomic_set(&krcp->work_in_progress, 0);
-+}
-+
-+static void
-+run_page_cache_worker(struct kfree_rcu_cpu *krcp)
-+{
-+	if (rcu_scheduler_active == RCU_SCHEDULER_RUNNING &&
-+			!atomic_xchg(&krcp->work_in_progress, 1)) {
-+		hrtimer_init(&krcp->hrtimer, CLOCK_MONOTONIC,
-+			HRTIMER_MODE_REL);
-+		krcp->hrtimer.function = schedule_page_work_fn;
-+		hrtimer_start(&krcp->hrtimer, 0, HRTIMER_MODE_REL);
-+	}
-+}
-+
- static inline bool
- kvfree_call_rcu_add_ptr_to_bulk(struct kfree_rcu_cpu *krcp, void *ptr)
- {
-@@ -3368,32 +3427,8 @@ kvfree_call_rcu_add_ptr_to_bulk(struct kfree_rcu_cpu *krcp, void *ptr)
- 	if (!krcp->bkvhead[idx] ||
- 			krcp->bkvhead[idx]->nr_records == KVFREE_BULK_MAX_ENTR) {
- 		bnode = get_cached_bnode(krcp);
--		if (!bnode) {
--			/*
--			 * To keep this path working on raw non-preemptible
--			 * sections, prevent the optional entry into the
--			 * allocator as it uses sleeping locks. In fact, even
--			 * if the caller of kfree_rcu() is preemptible, this
--			 * path still is not, as krcp->lock is a raw spinlock.
--			 * With additional page pre-allocation in the works,
--			 * hitting this return is going to be much less likely.
--			 */
--			if (IS_ENABLED(CONFIG_PREEMPT_RT))
--				return false;
--
--			/*
--			 * NOTE: For one argument of kvfree_rcu() we can
--			 * drop the lock and get the page in sleepable
--			 * context. That would allow to maintain an array
--			 * for the CONFIG_PREEMPT_RT as well if no cached
--			 * pages are available.
--			 */
--			bnode = (struct kvfree_rcu_bulk_data *)
--				__get_free_page(GFP_NOWAIT | __GFP_NOWARN);
--		}
--
- 		/* Switch to emergency path. */
--		if (unlikely(!bnode))
-+		if (!bnode)
- 			return false;
+@@ -4115,6 +4128,9 @@ void rcu_report_dead(unsigned int cpu)
  
- 		/* Initialize the new block. */
-@@ -3457,12 +3492,10 @@ void kvfree_call_rcu(struct rcu_head *head, rcu_callback_t func)
- 		goto unlock_return;
- 	}
+ 	/* Remove outgoing CPU from mask in the leaf rcu_node structure. */
+ 	mask = rdp->grpmask;
++	WRITE_ONCE(rnp->ofl_seq, rnp->ofl_seq + 1);
++	WARN_ON_ONCE(!(rnp->ofl_seq & 0x1));
++	smp_mb(); // Pair with rcu_gp_cleanup()'s ->ofl_seq barrier().
+ 	raw_spin_lock(&rcu_state.ofl_lock);
+ 	raw_spin_lock_irqsave_rcu_node(rnp, flags); /* Enforce GP memory-order guarantee. */
+ 	rdp->rcu_ofl_gp_seq = READ_ONCE(rcu_state.gp_seq);
+@@ -4127,6 +4143,9 @@ void rcu_report_dead(unsigned int cpu)
+ 	WRITE_ONCE(rnp->qsmaskinitnext, rnp->qsmaskinitnext & ~mask);
+ 	raw_spin_unlock_irqrestore_rcu_node(rnp, flags);
+ 	raw_spin_unlock(&rcu_state.ofl_lock);
++	smp_mb(); // Pair with rcu_gp_cleanup()'s ->ofl_seq barrier().
++	WRITE_ONCE(rnp->ofl_seq, rnp->ofl_seq + 1);
++	WARN_ON_ONCE(rnp->ofl_seq & 0x1);
  
--	/*
--	 * Under high memory pressure GFP_NOWAIT can fail,
--	 * in that case the emergency path is maintained.
--	 */
- 	success = kvfree_call_rcu_add_ptr_to_bulk(krcp, ptr);
- 	if (!success) {
-+		run_page_cache_worker(krcp);
-+
- 		if (head == NULL)
- 			// Inline if kvfree_rcu(one_arg) call.
- 			goto unlock_return;
-@@ -4482,24 +4515,14 @@ static void __init kfree_rcu_batch_init(void)
- 
- 	for_each_possible_cpu(cpu) {
- 		struct kfree_rcu_cpu *krcp = per_cpu_ptr(&krc, cpu);
--		struct kvfree_rcu_bulk_data *bnode;
- 
- 		for (i = 0; i < KFREE_N_BATCHES; i++) {
- 			INIT_RCU_WORK(&krcp->krw_arr[i].rcu_work, kfree_rcu_work);
- 			krcp->krw_arr[i].krcp = krcp;
- 		}
- 
--		for (i = 0; i < rcu_min_cached_objs; i++) {
--			bnode = (struct kvfree_rcu_bulk_data *)
--				__get_free_page(GFP_NOWAIT | __GFP_NOWARN);
--
--			if (bnode)
--				put_cached_bnode(krcp, bnode);
--			else
--				pr_err("Failed to preallocate for %d CPU!\n", cpu);
--		}
--
- 		INIT_DELAYED_WORK(&krcp->monitor_work, kfree_rcu_monitor);
-+		INIT_WORK(&krcp->page_cache_work, fill_page_cache_func);
- 		krcp->initialized = true;
- 	}
- 	if (register_shrinker(&kfree_rcu_shrinker))
+ 	rdp->cpu_started = false;
+ }
+diff --git a/kernel/rcu/tree.h b/kernel/rcu/tree.h
+index 805c9eb..7708ed1 100644
+--- a/kernel/rcu/tree.h
++++ b/kernel/rcu/tree.h
+@@ -56,6 +56,7 @@ struct rcu_node {
+ 				/*  Initialized from ->qsmaskinitnext at the */
+ 				/*  beginning of each grace period. */
+ 	unsigned long qsmaskinitnext;
++	unsigned long ofl_seq;	/* CPU-hotplug operation sequence count. */
+ 				/* Online CPUs for next grace period. */
+ 	unsigned long expmask;	/* CPUs or groups that need to check in */
+ 				/*  to allow the current expedited GP */
