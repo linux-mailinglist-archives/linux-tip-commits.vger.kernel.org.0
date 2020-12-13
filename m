@@ -2,46 +2,47 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DDA22D8FAD
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 13 Dec 2020 20:04:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 581782D8FD5
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 13 Dec 2020 20:15:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728615AbgLMTED (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 13 Dec 2020 14:04:03 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:46470 "EHLO
+        id S1727247AbgLMTD6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 13 Dec 2020 14:03:58 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:46480 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727471AbgLMTBo (ORCPT
+        with ESMTP id S1726427AbgLMTBp (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 13 Dec 2020 14:01:44 -0500
-Date:   Sun, 13 Dec 2020 19:01:01 -0000
+        Sun, 13 Dec 2020 14:01:45 -0500
+Date:   Sun, 13 Dec 2020 19:01:02 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1607886062;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=qhKYu1Ldu+f1TgbS5XS0Rify3c1y+IUY9L5eSuHtCyY=;
-        b=RoGnWRNNuimNAmKoA47cZIQJyXu1gkYeS6VKXGpAsGmKDmzUd0RXq5ZP68Uo9Z/QXIPAfZ
-        EgTtDk048mtSw2TO6CGSbi0T1a6esVr8KNhYHsQpj9J5Zcd3HZQb38w+UxLgUvjrkK5R2/
-        7//jpYuuWZ+FI5HVVY2G6pN+FW5W1Ym0N0C9LuywLMUIGALeuqiQO1ySQfeRPqbc4fz6Bb
-        1wwMgNDnffnGfdwn6lyUx6vSrfAbsIncPOkCigb/DQtLOWb6RqSjwN4l+/dbQrWSV/jCp4
-        zR2qfl/5wD66rXugXeCOVkjUXwlAcAhDcD1MHdJQYeONahoYZzyjaH5GVv/J+w==
+        bh=LFFRhYwRKePmX3B7oQ/gnKzrUi9yNYQipqp12rX2xgE=;
+        b=rf6fFLvRr0+t889p6qMreepiCBoNm1vU25rOWlIE2mPVzp/B9fEsylMHpu5d3iinkWwv8Z
+        E81dnu+JZuBEw9LonqEwRa6Wuf5UKijjBe8wGvfAX/mmTWf3u83c2OZ9+nq0UeHLMUnXvQ
+        rFgcqvf4kONQxCYORJYgrHbKs54/hzg/QqWQDVUnsY/h8/9fv8d8ntmBFZrRbxTo1DLP81
+        AitcLdGfo9gu+7WxRL+CyFxXpJqm11kv6KzB1DI4rtdhU9V/iFL+xye6B6Z2aktfH9oKa9
+        esO/1eFAIcs9JLqfCiEfPojz6aXNcDR7GuRHZBh4EI7IaJfgVHpsp+7hBFUI5Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1607886062;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=qhKYu1Ldu+f1TgbS5XS0Rify3c1y+IUY9L5eSuHtCyY=;
-        b=Nmd3jSZ0j2fW16UaoLuvfhp+i1nX4PQppCqUrcZwMz0v7cElpWr334eeuceYSdZtCCHYQ7
-        gKTx3n9WHW9gEjDg==
+        bh=LFFRhYwRKePmX3B7oQ/gnKzrUi9yNYQipqp12rX2xgE=;
+        b=7nBh26svZJj96iKbVtiam5UHhru5GNCcJPwXhfzYBmWucxPbh5ijlGbR3meQDcTl53p5Ap
+        jTSDtfkqHWx/n6Ag==
 From:   "tip-bot2 for Neeraj Upadhyay" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcu: Clarify nocb kthreads naming in RCU_NOCB_CPU config
-Cc:     Neeraj Upadhyay <neeraju@codeaurora.org>,
+Subject: [tip: core/rcu] rcu: Fix single-CPU check in rcu_blocking_is_gp()
+Cc:     "Joel Fernandes (Google)" <joel@joelfernandes.org>,
+        Neeraj Upadhyay <neeraju@codeaurora.org>,
         "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <160788606186.3364.10216145648628597394.tip-bot2@tip-bot2>
+Message-ID: <160788606214.3364.8772322600812299902.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -52,58 +53,197 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     a3941517fcd6625adc540aef5ec3f717c8fa71e8
-Gitweb:        https://git.kernel.org/tip/a3941517fcd6625adc540aef5ec3f717c8fa71e8
+Commit-ID:     ed73860cecc3ec12aa50a6dcfb4900e5b4ae9507
+Gitweb:        https://git.kernel.org/tip/ed73860cecc3ec12aa50a6dcfb4900e5b4ae9507
 Author:        Neeraj Upadhyay <neeraju@codeaurora.org>
-AuthorDate:    Thu, 24 Sep 2020 12:04:10 +05:30
+AuthorDate:    Wed, 23 Sep 2020 12:59:33 +05:30
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Thu, 19 Nov 2020 19:37:16 -08:00
 
-rcu: Clarify nocb kthreads naming in RCU_NOCB_CPU config
+rcu: Fix single-CPU check in rcu_blocking_is_gp()
 
-This commit clarifies that the "p" and the "s" in the in the RCU_NOCB_CPU
-config-option description refer to the "x" in the "rcuox/N" kthread name.
+Currently, for CONFIG_PREEMPTION=n kernels, rcu_blocking_is_gp() uses
+num_online_cpus() to determine whether there is only one CPU online.  When
+there is only a single CPU online, the simple fact that synchronize_rcu()
+could be legally called implies that a full grace period has elapsed.
+Therefore, in the single-CPU case, synchronize_rcu() simply returns
+immediately.  Unfortunately, num_online_cpus() is unreliable while a
+CPU-hotplug operation is transitioning to or from single-CPU operation
+because:
 
+1.	num_online_cpus() uses atomic_read(&__num_online_cpus) to
+	locklessly sample the number of online CPUs.  The hotplug locks
+	are not held, which means that an incoming CPU can concurrently
+	update this count.  This in turn means that an RCU read-side
+	critical section on the incoming CPU might observe updates
+	prior to the grace period, but also that this critical section
+	might extend beyond the end of the optimized synchronize_rcu().
+	This breaks RCU's fundamental guarantee.
+
+2.	In addition, num_online_cpus() does no ordering, thus providing
+	another way that RCU's fundamental guarantee can be broken by
+	the current code.
+
+3.	The most probable failure mode happens on outgoing CPUs.
+	The outgoing CPU updates the count of online CPUs in the
+	CPUHP_TEARDOWN_CPU stop-machine handler, which is fine in
+	and of itself due to preemption being disabled at the call
+	to num_online_cpus().  Unfortunately, after that stop-machine
+	handler returns, the CPU takes one last trip through the
+	scheduler (which has RCU readers) and, after the resulting
+	context switch, one final dive into the idle loop.  During this
+	time, RCU needs to keep track of two CPUs, but num_online_cpus()
+	will say that there is only one, which in turn means that the
+	surviving CPU will incorrectly ignore the outgoing CPU's RCU
+	read-side critical sections.
+
+This problem is illustrated by the following litmus test in which P0()
+corresponds to synchronize_rcu() and P1() corresponds to the incoming CPU.
+The herd7 tool confirms that the "exists" clause can be satisfied,
+thus demonstrating that this breakage can happen according to the Linux
+kernel memory model.
+
+   {
+     int x = 0;
+     atomic_t numonline = ATOMIC_INIT(1);
+   }
+
+   P0(int *x, atomic_t *numonline)
+   {
+     int r0;
+     WRITE_ONCE(*x, 1);
+     r0 = atomic_read(numonline);
+     if (r0 == 1) {
+       smp_mb();
+     } else {
+       synchronize_rcu();
+     }
+     WRITE_ONCE(*x, 2);
+   }
+
+   P1(int *x, atomic_t *numonline)
+   {
+     int r0; int r1;
+
+     atomic_inc(numonline);
+     smp_mb();
+     rcu_read_lock();
+     r0 = READ_ONCE(*x);
+     smp_rmb();
+     r1 = READ_ONCE(*x);
+     rcu_read_unlock();
+   }
+
+   locations [x;numonline;]
+
+   exists (1:r0=0 /\ 1:r1=2)
+
+It is important to note that these problems arise only when the system
+is transitioning to or from single-CPU operation.
+
+One solution would be to hold the CPU-hotplug locks while sampling
+num_online_cpus(), which was in fact the intent of the (redundant)
+preempt_disable() and preempt_enable() surrounding this call to
+num_online_cpus().  Actually blocking CPU hotplug would not only result
+in excessive overhead, but would also unnecessarily impede CPU-hotplug
+operations.
+
+This commit therefore follows long-standing RCU tradition by maintaining
+a separate RCU-specific set of CPU-hotplug books.
+
+This separate set of books is implemented by a new ->n_online_cpus field
+in the rcu_state structure that maintains RCU's count of the online CPUs.
+This count is incremented early in the CPU-online process, so that
+the critical transition away from single-CPU operation will occur when
+there is only a single CPU.  Similarly for the critical transition to
+single-CPU operation, the counter is decremented late in the CPU-offline
+process, again while there is only a single CPU.  Because there is only
+ever a single CPU when the ->n_online_cpus field undergoes the critical
+1->2 and 2->1 transitions, full memory ordering and mutual exclusion is
+provided implicitly and, better yet, for free.
+
+In the case where the CPU is coming online, nothing will happen until
+the current CPU helps it come online.  Therefore, the new CPU will see
+all accesses prior to the optimized grace period, which means that RCU
+does not need to further delay this new CPU.  In the case where the CPU
+is going offline, the outgoing CPU is totally out of the picture before
+the optimized grace period starts, which means that this outgoing CPU
+cannot see any of the accesses following that grace period.  Again,
+RCU needs no further interaction with the outgoing CPU.
+
+This does mean that synchronize_rcu() will unnecessarily do a few grace
+periods the hard way just before the second CPU comes online and just
+after the second-to-last CPU goes offline, but it is not worth optimizing
+this uncommon case.
+
+Reviewed-by: Joel Fernandes (Google) <joel@joelfernandes.org>
 Signed-off-by: Neeraj Upadhyay <neeraju@codeaurora.org>
-[ paulmck: While in the area, update description and advice. ]
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/rcu/Kconfig | 20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
+ kernel/rcu/tree.c | 19 +++++++++++++++++--
+ kernel/rcu/tree.h |  1 +
+ 2 files changed, 18 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/rcu/Kconfig b/kernel/rcu/Kconfig
-index b71e21f..cdc57b4 100644
---- a/kernel/rcu/Kconfig
-+++ b/kernel/rcu/Kconfig
-@@ -221,19 +221,23 @@ config RCU_NOCB_CPU
- 	  Use this option to reduce OS jitter for aggressive HPC or
- 	  real-time workloads.	It can also be used to offload RCU
- 	  callback invocation to energy-efficient CPUs in battery-powered
--	  asymmetric multiprocessors.
-+	  asymmetric multiprocessors.  The price of this reduced jitter
-+	  is that the overhead of call_rcu() increases and that some
-+	  workloads will incur significant increases in context-switch
-+	  rates.
+diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
+index 0ccdca4..39e14cf 100644
+--- a/kernel/rcu/tree.c
++++ b/kernel/rcu/tree.c
+@@ -2396,6 +2396,7 @@ int rcutree_dead_cpu(unsigned int cpu)
+ 	if (!IS_ENABLED(CONFIG_HOTPLUG_CPU))
+ 		return 0;
  
- 	  This option offloads callback invocation from the set of CPUs
- 	  specified at boot time by the rcu_nocbs parameter.  For each
- 	  such CPU, a kthread ("rcuox/N") will be created to invoke
- 	  callbacks, where the "N" is the CPU being offloaded, and where
--	  the "p" for RCU-preempt (PREEMPTION kernels) and "s" for RCU-sched
--	  (!PREEMPTION kernels).  Nothing prevents this kthread from running
--	  on the specified CPUs, but (1) the kthreads may be preempted
--	  between each callback, and (2) affinity or cgroups can be used
--	  to force the kthreads to run on whatever set of CPUs is desired.
--
--	  Say Y here if you want to help to debug reduced OS jitter.
-+	  the "x" is "p" for RCU-preempt (PREEMPTION kernels) and "s" for
-+	  RCU-sched (!PREEMPTION kernels).  Nothing prevents this kthread
-+	  from running on the specified CPUs, but (1) the kthreads may be
-+	  preempted between each callback, and (2) affinity or cgroups can
-+	  be used to force the kthreads to run on whatever set of CPUs is
-+	  desired.
-+
-+	  Say Y here if you need reduced OS jitter, despite added overhead.
- 	  Say N here if you are unsure.
++	WRITE_ONCE(rcu_state.n_online_cpus, rcu_state.n_online_cpus - 1);
+ 	/* Adjust any no-longer-needed kthreads. */
+ 	rcu_boost_kthread_setaffinity(rnp, -1);
+ 	/* Do any needed no-CB deferred wakeups from this CPU. */
+@@ -3577,7 +3578,20 @@ static int rcu_blocking_is_gp(void)
+ 		return rcu_scheduler_active == RCU_SCHEDULER_INACTIVE;
+ 	might_sleep();  /* Check for RCU read-side critical section. */
+ 	preempt_disable();
+-	ret = num_online_cpus() <= 1;
++	/*
++	 * If the rcu_state.n_online_cpus counter is equal to one,
++	 * there is only one CPU, and that CPU sees all prior accesses
++	 * made by any CPU that was online at the time of its access.
++	 * Furthermore, if this counter is equal to one, its value cannot
++	 * change until after the preempt_enable() below.
++	 *
++	 * Furthermore, if rcu_state.n_online_cpus is equal to one here,
++	 * all later CPUs (both this one and any that come online later
++	 * on) are guaranteed to see all accesses prior to this point
++	 * in the code, without the need for additional memory barriers.
++	 * Those memory barriers are provided by CPU-hotplug code.
++	 */
++	ret = READ_ONCE(rcu_state.n_online_cpus) <= 1;
+ 	preempt_enable();
+ 	return ret;
+ }
+@@ -3622,7 +3636,7 @@ void synchronize_rcu(void)
+ 			 lock_is_held(&rcu_sched_lock_map),
+ 			 "Illegal synchronize_rcu() in RCU read-side critical section");
+ 	if (rcu_blocking_is_gp())
+-		return;
++		return;  // Context allows vacuous grace periods.
+ 	if (rcu_gp_is_expedited())
+ 		synchronize_rcu_expedited();
+ 	else
+@@ -3962,6 +3976,7 @@ int rcutree_prepare_cpu(unsigned int cpu)
+ 	raw_spin_unlock_irqrestore_rcu_node(rnp, flags);
+ 	rcu_prepare_kthreads(cpu);
+ 	rcu_spawn_cpu_nocb_kthread(cpu);
++	WRITE_ONCE(rcu_state.n_online_cpus, rcu_state.n_online_cpus + 1);
  
- config TASKS_TRACE_RCU_READ_MB
+ 	return 0;
+ }
+diff --git a/kernel/rcu/tree.h b/kernel/rcu/tree.h
+index e4f66b8..805c9eb 100644
+--- a/kernel/rcu/tree.h
++++ b/kernel/rcu/tree.h
+@@ -298,6 +298,7 @@ struct rcu_state {
+ 						/* Hierarchy levels (+1 to */
+ 						/*  shut bogus gcc warning) */
+ 	int ncpus;				/* # CPUs seen so far. */
++	int n_online_cpus;			/* # CPUs online for RCU. */
+ 
+ 	/* The following fields are guarded by the root rcu_node's lock. */
+ 
