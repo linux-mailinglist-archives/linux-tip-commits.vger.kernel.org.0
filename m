@@ -2,105 +2,79 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C1752D9030
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 13 Dec 2020 20:31:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 247E42D9E80
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 14 Dec 2020 19:06:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387779AbgLMT35 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 13 Dec 2020 14:29:57 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:46414 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725778AbgLMTBm (ORCPT
+        id S2408342AbgLNSGR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 14 Dec 2020 13:06:17 -0500
+Received: from mail.kernel.org ([198.145.29.99]:38154 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2407936AbgLNSGK (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 13 Dec 2020 14:01:42 -0500
-Date:   Sun, 13 Dec 2020 19:00:59 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1607886060;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=+CbHgVki3q1baGdbDkEk/RUvyB4yTwMgFVyKhn5reU8=;
-        b=SDuxwSrfqwSbrti8SXlLEN+pIKMVhFZjCnHK73c3Er8Q/PrejAWLyXfoH5yBwKNbx6C68y
-        hDKysJR78sAsYKSnzF4KL02lFfQ1rpASurV306Jj6oKUBvXwKpwT2/bp/NH4jjV+NRx+sc
-        +4AG7dw7t/wSJ5vUrfWOM4799Jkd2EljrBI3HLm7rOe/Zofhg6Q/DYg6rIUUNg7FPEj+ix
-        ACW4SGe2N7DG7Gm2eT3BLhqb0h4zLzW8UGoFyna6HWJhJoC4QTPO8gEu5exVVKArlgPn5R
-        fdmhJEBAfpZo4CWgkaJj5X1W7NDHAYv8di3bdDj+wqI3QNrweu00uDSRWqOfiQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1607886060;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=+CbHgVki3q1baGdbDkEk/RUvyB4yTwMgFVyKhn5reU8=;
-        b=+mtGMkXlg4jmHlh9qOlCNhWWH3UaoHrRlOMktvlGqXgmom5lelX8nJxnAnGK+rhV3TZSoN
-        yRwD7GfnxVU9KrAQ==
-From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcu: Do not report strict GPs for outgoing CPUs
-Cc:     "Paul E. McKenney" <paulmck@kernel.org>,
-        Jann Horn <jannh@google.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
+        Mon, 14 Dec 2020 13:06:10 -0500
+X-Gm-Message-State: AOAM5335/GpO0EJe4HKFDKn2kn3pIbzh3BGxj3wqvimGGLoLaGNTw1OT
+        feiY9n0z5j4/TdPwRNaY9dfFuVzdOjAk6/3VmfH38Q==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1607969129;
+        bh=rAaVfHwnElycFCW/txpY82sI5mEz7/7D/XkiCH7nAxs=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=kJFukkS8BNVZ0DynZyc3QnjJsTmV9X27cBy8ZduKENNOPNZ4cwpFXP56DPTMEsiIc
+         7pRI8CvX0KCTCbrSinv36CQpuMRPVNP9NxXTlbYZC3hn5QlUESZsxNpBZJRYNDd3g/
+         SPePfUMunZaYROEbxNXPOkxesl0vXkQoit8cJaUiZpfcsynl5q2D3HH99TQX0e313Z
+         VIuDeOEMsD+bLPMi/xXlDiYpDEHJmzj4tkz2s3JibU1vcckS0wF06C+Q6OjDH14rc9
+         O+Zti1qNq53fa3HZggUIiuRPKYePcED/IE+EHeQfcT5ox5hHbNFCmlT+sQh8BB/dFe
+         mTVUy2Dile55A==
+X-Google-Smtp-Source: ABdhPJxfn6S4mVr9Zd7vPIFH7/vXr1SlgoPxayWAiaO86zkxmLkcozP3AR/ZAC/1h72TbkN0IM+oRpphJTrim2gok5o=
+X-Received: by 2002:a5d:4905:: with SMTP id x5mr14778136wrq.75.1607969128267;
+ Mon, 14 Dec 2020 10:05:28 -0800 (PST)
 MIME-Version: 1.0
-Message-ID: <160788605941.3364.4968080291078714518.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+References: <d3e7197e034fa4852afcf370ca49c30496e58e40.1607058304.git.luto@kernel.org>
+ <160750336770.3364.7388742360472960633.tip-bot2@tip-bot2>
+In-Reply-To: <160750336770.3364.7388742360472960633.tip-bot2@tip-bot2>
+From:   Andy Lutomirski <luto@kernel.org>
+Date:   Mon, 14 Dec 2020 10:05:18 -0800
+X-Gmail-Original-Message-ID: <CALCETrW4KAbvAE45T4N0CMdR7XQyrRQTEAq5fX=xVpGAEb3KwA@mail.gmail.com>
+Message-ID: <CALCETrW4KAbvAE45T4N0CMdR7XQyrRQTEAq5fX=xVpGAEb3KwA@mail.gmail.com>
+Subject: Re: [tip: x86/urgent] membarrier: Add an actual barrier before rseq_preempt()
+To:     LKML <linux-kernel@vger.kernel.org>,
+        Greg KH <gregkh@linuxfoundation.org>,
+        Sasha Levin <sashal@kernel.org>
+Cc:     linux-tip-commits@vger.kernel.org,
+        Andy Lutomirski <luto@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        stable <stable@vger.kernel.org>, X86 ML <x86@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the core/rcu branch of tip:
+On Wed, Dec 9, 2020 at 12:42 AM tip-bot2 for Andy Lutomirski
+<tip-bot2@linutronix.de> wrote:
+>
+> The following commit has been merged into the x86/urgent branch of tip:
+>
+> Commit-ID:     2ecedd7569080fd05c1a457e8af2165afecfa29f
+> Gitweb:        https://git.kernel.org/tip/2ecedd7569080fd05c1a457e8af2165afecfa29f
+> Author:        Andy Lutomirski <luto@kernel.org>
+> AuthorDate:    Thu, 03 Dec 2020 21:07:04 -08:00
+> Committer:     Thomas Gleixner <tglx@linutronix.de>
+> CommitterDate: Wed, 09 Dec 2020 09:37:43 +01:00
+>
+> membarrier: Add an actual barrier before rseq_preempt()
+>
+> It seems that most RSEQ membarrier users will expect any stores done before
+> the membarrier() syscall to be visible to the target task(s).  While this
+> is extremely likely to be true in practice, nothing actually guarantees it
+> by a strict reading of the x86 manuals.  Rather than providing this
+> guarantee by accident and potentially causing a problem down the road, just
+> add an explicit barrier.
+>
+> Fixes: 70216e18e519 ("membarrier: Provide core serializing command, *_SYNC_CORE")
 
-Commit-ID:     bfb3aa735f82c8d98b32a669934ee7d6b346264d
-Gitweb:        https://git.kernel.org/tip/bfb3aa735f82c8d98b32a669934ee7d6b346264d
-Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Fri, 30 Oct 2020 13:11:24 -07:00
-Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Thu, 19 Nov 2020 19:37:17 -08:00
+Whoops, this got mangled on its way to tip.  This should be:
 
-rcu: Do not report strict GPs for outgoing CPUs
+Fixes: 2a36ab717e8f ("rseq/membarrier: Add
+MEMBARRIER_CMD_PRIVATE_EXPEDITED_RSEQ")
 
-An outgoing CPU is marked offline in a stop-machine handler and most
-of that CPU's services stop at that point, including IRQ work queues.
-However, that CPU must take another pass through the scheduler and through
-a number of CPU-hotplug notifiers, many of which contain RCU readers.
-In the past, these readers were not a problem because the outgoing CPU
-has interrupts disabled, so that rcu_read_unlock_special() would not
-be invoked, and thus RCU would never attempt to queue IRQ work on the
-outgoing CPU.
-
-This changed with the advent of the CONFIG_RCU_STRICT_GRACE_PERIOD
-Kconfig option, in which rcu_read_unlock_special() is invoked upon exit
-from almost all RCU read-side critical sections.  Worse yet, because
-interrupts are disabled, rcu_read_unlock_special() cannot immediately
-report a quiescent state and will therefore attempt to defer this
-reporting, for example, by queueing IRQ work.  Which fails with a splat
-because the CPU is already marked as being offline.
-
-But it turns out that there is no need to report this quiescent state
-because rcu_report_dead() will do this job shortly after the outgoing
-CPU makes its final dive into the idle loop.  This commit therefore
-makes rcu_read_unlock_special() refrain from queuing IRQ work onto
-outgoing CPUs.
-
-Fixes: 44bad5b3cca2 ("rcu: Do full report for .need_qs for strict GPs")
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Cc: Jann Horn <jannh@google.com>
----
- kernel/rcu/tree_plugin.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/kernel/rcu/tree_plugin.h b/kernel/rcu/tree_plugin.h
-index fd8a52e..7e291ce 100644
---- a/kernel/rcu/tree_plugin.h
-+++ b/kernel/rcu/tree_plugin.h
-@@ -628,7 +628,7 @@ static void rcu_read_unlock_special(struct task_struct *t)
- 			set_tsk_need_resched(current);
- 			set_preempt_need_resched();
- 			if (IS_ENABLED(CONFIG_IRQ_WORK) && irqs_were_disabled &&
--			    !rdp->defer_qs_iw_pending && exp) {
-+			    !rdp->defer_qs_iw_pending && exp && cpu_online(rdp->cpu)) {
- 				// Get scheduler to re-evaluate and call hooks.
- 				// If !IRQ_WORK, FQS scan will eventually IPI.
- 				init_irq_work(&rdp->defer_qs_iw,
+and this patch does not need to be backported.
