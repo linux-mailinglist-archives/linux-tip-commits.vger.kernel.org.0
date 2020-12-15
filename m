@@ -2,79 +2,82 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 247E42D9E80
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 14 Dec 2020 19:06:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C78C2DAA75
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 15 Dec 2020 10:55:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2408342AbgLNSGR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 14 Dec 2020 13:06:17 -0500
-Received: from mail.kernel.org ([198.145.29.99]:38154 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2407936AbgLNSGK (ORCPT
+        id S1727775AbgLOJzX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 15 Dec 2020 04:55:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56362 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727029AbgLOJzV (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 14 Dec 2020 13:06:10 -0500
-X-Gm-Message-State: AOAM5335/GpO0EJe4HKFDKn2kn3pIbzh3BGxj3wqvimGGLoLaGNTw1OT
-        feiY9n0z5j4/TdPwRNaY9dfFuVzdOjAk6/3VmfH38Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1607969129;
-        bh=rAaVfHwnElycFCW/txpY82sI5mEz7/7D/XkiCH7nAxs=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=kJFukkS8BNVZ0DynZyc3QnjJsTmV9X27cBy8ZduKENNOPNZ4cwpFXP56DPTMEsiIc
-         7pRI8CvX0KCTCbrSinv36CQpuMRPVNP9NxXTlbYZC3hn5QlUESZsxNpBZJRYNDd3g/
-         SPePfUMunZaYROEbxNXPOkxesl0vXkQoit8cJaUiZpfcsynl5q2D3HH99TQX0e313Z
-         VIuDeOEMsD+bLPMi/xXlDiYpDEHJmzj4tkz2s3JibU1vcckS0wF06C+Q6OjDH14rc9
-         O+Zti1qNq53fa3HZggUIiuRPKYePcED/IE+EHeQfcT5ox5hHbNFCmlT+sQh8BB/dFe
-         mTVUy2Dile55A==
-X-Google-Smtp-Source: ABdhPJxfn6S4mVr9Zd7vPIFH7/vXr1SlgoPxayWAiaO86zkxmLkcozP3AR/ZAC/1h72TbkN0IM+oRpphJTrim2gok5o=
-X-Received: by 2002:a5d:4905:: with SMTP id x5mr14778136wrq.75.1607969128267;
- Mon, 14 Dec 2020 10:05:28 -0800 (PST)
+        Tue, 15 Dec 2020 04:55:21 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C58E9C06179C;
+        Tue, 15 Dec 2020 01:54:40 -0800 (PST)
+Date:   Tue, 15 Dec 2020 09:54:37 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1608026078;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=pkkZ1bnfhidQ9s+9M5c8h3pn9iOV5knY3H32OkphY6E=;
+        b=lczz4rpH4wzI0oTzDPJQyDPSRFelzEQQXdXvQD3LRRwhyFFjotQx80DRP6hb6Vn2YjEk1/
+        1TGVrrPm8iTlbsWEJEjq3LGNPpU5Ak2+lll2Jjd6IOjJZrvUXMynJ8t9QliZPLwZcvWoFM
+        FlY6zJmgwwTAUzI+tFKkyXYqiqJMLHNGmIOU1lQxKyVfSTwupXKjPaYbmDqXwqQJKWaTmm
+        Fohs0+VdOsfcK1CEZttP8NQu6StlU4+KKaG0deoH/UH7iApvs5QDp7A2oCftP+R/L4aAuh
+        rVBBXz2MziilZRvi/iQ8H1Qpzsd1TGhwjQvvDMv1CutWLe93TUkPDl8RKNtFiA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1608026078;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=pkkZ1bnfhidQ9s+9M5c8h3pn9iOV5knY3H32OkphY6E=;
+        b=kIZIMAnaa8r723AQU3R/uEh7H/pBkZBbIKQvfFgsq9sCV4UJS/56jFUehKZynpMwdTSGcC
+        CXCnk+iRlMbivFBw==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: irq/core] Merge tag 'irqchip-5.11' of
+ git://git.kernel.org/pub/scm/linux/kernel/git/maz/arm-platforms into irq/core
+Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, maz@kernel.org
+In-Reply-To: <20201212135626.1479884-1-maz@kernel.org>
+References: <20201212135626.1479884-1-maz@kernel.org>
 MIME-Version: 1.0
-References: <d3e7197e034fa4852afcf370ca49c30496e58e40.1607058304.git.luto@kernel.org>
- <160750336770.3364.7388742360472960633.tip-bot2@tip-bot2>
-In-Reply-To: <160750336770.3364.7388742360472960633.tip-bot2@tip-bot2>
-From:   Andy Lutomirski <luto@kernel.org>
-Date:   Mon, 14 Dec 2020 10:05:18 -0800
-X-Gmail-Original-Message-ID: <CALCETrW4KAbvAE45T4N0CMdR7XQyrRQTEAq5fX=xVpGAEb3KwA@mail.gmail.com>
-Message-ID: <CALCETrW4KAbvAE45T4N0CMdR7XQyrRQTEAq5fX=xVpGAEb3KwA@mail.gmail.com>
-Subject: Re: [tip: x86/urgent] membarrier: Add an actual barrier before rseq_preempt()
-To:     LKML <linux-kernel@vger.kernel.org>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        Sasha Levin <sashal@kernel.org>
-Cc:     linux-tip-commits@vger.kernel.org,
-        Andy Lutomirski <luto@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        stable <stable@vger.kernel.org>, X86 ML <x86@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Message-ID: <160802607773.3364.11177787714362053582.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Wed, Dec 9, 2020 at 12:42 AM tip-bot2 for Andy Lutomirski
-<tip-bot2@linutronix.de> wrote:
->
-> The following commit has been merged into the x86/urgent branch of tip:
->
-> Commit-ID:     2ecedd7569080fd05c1a457e8af2165afecfa29f
-> Gitweb:        https://git.kernel.org/tip/2ecedd7569080fd05c1a457e8af2165afecfa29f
-> Author:        Andy Lutomirski <luto@kernel.org>
-> AuthorDate:    Thu, 03 Dec 2020 21:07:04 -08:00
-> Committer:     Thomas Gleixner <tglx@linutronix.de>
-> CommitterDate: Wed, 09 Dec 2020 09:37:43 +01:00
->
-> membarrier: Add an actual barrier before rseq_preempt()
->
-> It seems that most RSEQ membarrier users will expect any stores done before
-> the membarrier() syscall to be visible to the target task(s).  While this
-> is extremely likely to be true in practice, nothing actually guarantees it
-> by a strict reading of the x86 manuals.  Rather than providing this
-> guarantee by accident and potentially causing a problem down the road, just
-> add an explicit barrier.
->
-> Fixes: 70216e18e519 ("membarrier: Provide core serializing command, *_SYNC_CORE")
+The following commit has been merged into the irq/core branch of tip:
 
-Whoops, this got mangled on its way to tip.  This should be:
+Commit-ID:     3c41e57a1e168d879e923c5583adeae47eec9f64
+Gitweb:        https://git.kernel.org/tip/3c41e57a1e168d879e923c5583adeae47eec9f64
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Tue, 15 Dec 2020 10:48:07 +01:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Tue, 15 Dec 2020 10:48:07 +01:00
 
-Fixes: 2a36ab717e8f ("rseq/membarrier: Add
-MEMBARRIER_CMD_PRIVATE_EXPEDITED_RSEQ")
+Merge tag 'irqchip-5.11' of git://git.kernel.org/pub/scm/linux/kernel/git/maz/arm-platforms into irq/core
 
-and this patch does not need to be backported.
+Pull irqchip updates for 5.11 from Marc Zyngier:
+
+  - Preliminary support for managed interrupts on platform devices
+  - Correctly identify allocation of MSIs proxyied by another device
+  - Remove the fasteoi IPI flow which has been proved useless
+  - Generalise the Ocelot support to new SoCs
+  - Improve GICv4.1 vcpu entry, matching the corresponding KVM optimisation
+  - Work around spurious interrupts on Qualcomm PDC
+  - Random fixes and cleanups
+
+Link: https://lore.kernel.org/r/20201212135626.1479884-1-maz@kernel.org
+---
