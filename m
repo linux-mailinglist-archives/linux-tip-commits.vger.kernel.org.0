@@ -2,52 +2,58 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 89CB22DBF46
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 16 Dec 2020 12:19:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B168B2DC197
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 16 Dec 2020 14:51:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725802AbgLPLT1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 16 Dec 2020 06:19:27 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:39102 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725283AbgLPLT1 (ORCPT
+        id S1726411AbgLPNuY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 16 Dec 2020 08:50:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34108 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726333AbgLPNuX (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 16 Dec 2020 06:19:27 -0500
-Date:   Wed, 16 Dec 2020 11:18:43 -0000
+        Wed, 16 Dec 2020 08:50:23 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82D8BC061794;
+        Wed, 16 Dec 2020 05:49:43 -0800 (PST)
+Date:   Wed, 16 Dec 2020 13:49:40 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1608117524;
+        s=2020; t=1608126581;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=jz3I4Tqo/lX9bY0037W7+wsY40deo+/W4vQAxpvFxAI=;
-        b=BrNbW60LyVTXUhTJYk8k05rOxzfKw6cIatVUeUKxB8hGglQcvkGGWQGtnJDsxmPu6EMfMV
-        SbB3eF6qlsNLgmVBbgPvO5cEME7tPlsEh2qFTpV8CaPTFt4oIx26TRPC/IionkdYqLqpmv
-        wPtx+VTMaiASn+taBSbqGXEjVKZDbU74PNW4B/oavBpJNg27g/zm7r+8cAGhva/z+H1RHo
-        U9MXVh9ERjrmLpIpG6hAa0qF5wywBnNDVC5DA1TN/vP0FiWPUiGjWGl/RBgxyG7I4PXX7B
-        84hS6bAk5MX1Xs2srdeMoDRcArZUI3lBZZxFzaCC5+VZH7A6EC4MFXEJvrz9lg==
+        bh=EW0YRaMbLs8Jge3dol1Eki0ZqMZijwlm5g5V8zo3UPU=;
+        b=iRqTK7Y+zWJAXPYW4gTR30W06l7m2e4QteDEvG9PudH6VIBLsUi14GDBfoIrBsFFPXWcsI
+        tgsu62Ngqeo1XD68NulF98SJ8Ub2GvVU/F/qLjuAL8pc0oymueJ612hnLRf1PhaK70bewJ
+        Z8kbuDDMUHO0scrGKePS3hrr5lzBXIzjFjQpyIIy2VgEuQ6JfISbdj1yeWZyvTzqHrB1fS
+        7YpaSm70/QwA27fbVuSUnhuHVOzq4KFjIA/SZfakv/82OTgJImHHTbS/Y2F/CvtFlRM9Sk
+        3JJ5pQ2uIxbp9o59OF6EIipKOsY1qhR7XP3NB7u52evP13HKBZnFcMbCTdoDKA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1608117524;
+        s=2020e; t=1608126581;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=jz3I4Tqo/lX9bY0037W7+wsY40deo+/W4vQAxpvFxAI=;
-        b=ZRQAQ48DhPxATd0JW3c/OG9K8CPXM7VYLtM0a8Ug08XnochaQfdtkiL6C5BkNesskL5fpd
-        /sAvG3HnTw9mUwBw==
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+        bh=EW0YRaMbLs8Jge3dol1Eki0ZqMZijwlm5g5V8zo3UPU=;
+        b=xLMmGCp+auBQ2a1HheEqKpYmylMipVVzfUOrmXfXF//aLAZlPZ/ZQPs0wNgKz/EpifSAxJ
+        6083k9khecY/sUBA==
+From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] sched: Optimize finish_lock_switch()
-Cc:     kernel test robot <oliver.sang@intel.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: objtool/urgent] objtool: Fix seg fault with Clang non-section symbols
+Cc:     Arnd Bergmann <arnd@kernel.org>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Miroslav Benes <mbenes@suse.cz>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20201210161408.GX3021@hirez.programming.kicks-ass.net>
-References: <20201210161408.GX3021@hirez.programming.kicks-ass.net>
+In-Reply-To: <ba6b6c0f0dd5acbba66e403955a967d9fdd1726a.1607983452.git.jpoimboe@redhat.com>
+References: <ba6b6c0f0dd5acbba66e403955a967d9fdd1726a.1607983452.git.jpoimboe@redhat.com>
 MIME-Version: 1.0
-Message-ID: <160811752374.3364.14062690988197592123.tip-bot2@tip-bot2>
+Message-ID: <160812658044.3364.4188208281079332844.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -56,185 +62,156 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/urgent branch of tip:
+The following commit has been merged into the objtool/urgent branch of tip:
 
-Commit-ID:     ae7927023243dcc7389b2d59b16c09cbbeaecc36
-Gitweb:        https://git.kernel.org/tip/ae7927023243dcc7389b2d59b16c09cbbeaecc36
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Thu, 10 Dec 2020 17:14:08 +01:00
+Commit-ID:     44f6a7c0755d8dd453c70557e11687bb080a6f21
+Gitweb:        https://git.kernel.org/tip/44f6a7c0755d8dd453c70557e11687bb080a6f21
+Author:        Josh Poimboeuf <jpoimboe@redhat.com>
+AuthorDate:    Mon, 14 Dec 2020 16:04:20 -06:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 15 Dec 2020 11:27:53 +01:00
+CommitterDate: Wed, 16 Dec 2020 14:35:46 +01:00
 
-sched: Optimize finish_lock_switch()
+objtool: Fix seg fault with Clang non-section symbols
 
-The kernel test robot measured a -1.6% performance regression on
-will-it-scale/sched_yield due to commit:
+The Clang assembler likes to strip section symbols, which means objtool
+can't reference some text code by its section.  This confuses objtool
+greatly, causing it to seg fault.
 
-  2558aacff858 ("sched/hotplug: Ensure only per-cpu kthreads run during hotplug")
+The fix is similar to what was done before, for ORC reloc generation:
 
-Even though we were careful to replace a single load with another
-single load from the same cacheline.
+  e81e07244325 ("objtool: Support Clang non-section symbols in ORC generation")
 
-Restore finish_lock_switch() to the exact state before the offending
-patch and solve the problem differently.
+Factor out that code into a common helper and use it for static call
+reloc generation as well.
 
-Fixes: 2558aacff858 ("sched/hotplug: Ensure only per-cpu kthreads run during hotplug")
-Reported-by: kernel test robot <oliver.sang@intel.com>
+Reported-by: Arnd Bergmann <arnd@kernel.org>
+Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20201210161408.GX3021@hirez.programming.kicks-ass.net
+Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
+Reviewed-by: Miroslav Benes <mbenes@suse.cz>
+Link: https://github.com/ClangBuiltLinux/linux/issues/1207
+Link: https://lkml.kernel.org/r/ba6b6c0f0dd5acbba66e403955a967d9fdd1726a.1607983452.git.jpoimboe@redhat.com
 ---
- kernel/sched/core.c  | 40 +++++++++++++++-------------------------
- kernel/sched/sched.h | 13 +++++--------
- 2 files changed, 20 insertions(+), 33 deletions(-)
+ tools/objtool/check.c   | 11 +++++++++--
+ tools/objtool/elf.c     | 26 ++++++++++++++++++++++++++
+ tools/objtool/elf.h     |  2 ++
+ tools/objtool/orc_gen.c | 29 +++++------------------------
+ 4 files changed, 42 insertions(+), 26 deletions(-)
 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 7af80c3..0ca7d2d 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -3985,15 +3985,20 @@ static void do_balance_callbacks(struct rq *rq, struct callback_head *head)
- 	}
- }
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index c6ab445..5f8d3ee 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -467,13 +467,20 @@ static int create_static_call_sections(struct objtool_file *file)
  
-+static void balance_push(struct rq *rq);
+ 		/* populate reloc for 'addr' */
+ 		reloc = malloc(sizeof(*reloc));
 +
-+struct callback_head balance_push_callback = {
-+	.next = NULL,
-+	.func = (void (*)(struct callback_head *))balance_push,
-+};
+ 		if (!reloc) {
+ 			perror("malloc");
+ 			return -1;
+ 		}
+ 		memset(reloc, 0, sizeof(*reloc));
+-		reloc->sym = insn->sec->sym;
+-		reloc->addend = insn->offset;
 +
- static inline struct callback_head *splice_balance_callbacks(struct rq *rq)
- {
- 	struct callback_head *head = rq->balance_callback;
- 
- 	lockdep_assert_held(&rq->lock);
--	if (head) {
-+	if (head)
- 		rq->balance_callback = NULL;
--		rq->balance_flags &= ~BALANCE_WORK;
--	}
- 
- 	return head;
- }
-@@ -4014,21 +4019,6 @@ static inline void balance_callbacks(struct rq *rq, struct callback_head *head)
- 	}
- }
- 
--static void balance_push(struct rq *rq);
--
--static inline void balance_switch(struct rq *rq)
--{
--	if (likely(!rq->balance_flags))
--		return;
--
--	if (rq->balance_flags & BALANCE_PUSH) {
--		balance_push(rq);
--		return;
--	}
--
--	__balance_callbacks(rq);
--}
--
- #else
- 
- static inline void __balance_callbacks(struct rq *rq)
-@@ -4044,10 +4034,6 @@ static inline void balance_callbacks(struct rq *rq, struct callback_head *head)
- {
++		insn_to_reloc_sym_addend(insn->sec, insn->offset, reloc);
++		if (!reloc->sym) {
++			WARN_FUNC("static call tramp: missing containing symbol",
++				  insn->sec, insn->offset);
++			return -1;
++		}
++
+ 		reloc->type = R_X86_64_PC32;
+ 		reloc->offset = idx * sizeof(struct static_call_site);
+ 		reloc->sec = reloc_sec;
+diff --git a/tools/objtool/elf.c b/tools/objtool/elf.c
+index 4e1d746..be89c74 100644
+--- a/tools/objtool/elf.c
++++ b/tools/objtool/elf.c
+@@ -262,6 +262,32 @@ struct reloc *find_reloc_by_dest(const struct elf *elf, struct section *sec, uns
+ 	return find_reloc_by_dest_range(elf, sec, offset, 1);
  }
  
--static inline void balance_switch(struct rq *rq)
--{
--}
--
- #endif
- 
- static inline void
-@@ -4075,7 +4061,7 @@ static inline void finish_lock_switch(struct rq *rq)
- 	 * prev into current:
- 	 */
- 	spin_acquire(&rq->lock.dep_map, 0, 0, _THIS_IP_);
--	balance_switch(rq);
-+	__balance_callbacks(rq);
- 	raw_spin_unlock_irq(&rq->lock);
- }
- 
-@@ -7256,6 +7242,10 @@ static void balance_push(struct rq *rq)
- 
- 	lockdep_assert_held(&rq->lock);
- 	SCHED_WARN_ON(rq->cpu != smp_processor_id());
++void insn_to_reloc_sym_addend(struct section *sec, unsigned long offset,
++			      struct reloc *reloc)
++{
++	if (sec->sym) {
++		reloc->sym = sec->sym;
++		reloc->addend = offset;
++		return;
++	}
++
 +	/*
-+	 * Ensure the thing is persistent until balance_push_set(.on = false);
++	 * The Clang assembler strips section symbols, so we have to reference
++	 * the function symbol instead:
 +	 */
-+	rq->balance_callback = &balance_push_callback;
- 
- 	/*
- 	 * Both the cpu-hotplug and stop task are in this case and are
-@@ -7305,9 +7295,9 @@ static void balance_push_set(int cpu, bool on)
- 
- 	rq_lock_irqsave(rq, &rf);
- 	if (on)
--		rq->balance_flags |= BALANCE_PUSH;
-+		rq->balance_callback = &balance_push_callback;
- 	else
--		rq->balance_flags &= ~BALANCE_PUSH;
-+		rq->balance_callback = NULL;
- 	rq_unlock_irqrestore(rq, &rf);
- }
- 
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index f5acb6c..12ada79 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -975,7 +975,6 @@ struct rq {
- 	unsigned long		cpu_capacity_orig;
- 
- 	struct callback_head	*balance_callback;
--	unsigned char		balance_flags;
- 
- 	unsigned char		nohz_idle_balance;
- 	unsigned char		idle_balance;
-@@ -1226,6 +1225,8 @@ struct rq_flags {
- #endif
- };
- 
-+extern struct callback_head balance_push_callback;
++	reloc->sym = find_symbol_containing(sec, offset);
++	if (!reloc->sym) {
++		/*
++		 * Hack alert.  This happens when we need to reference the NOP
++		 * pad insn immediately after the function.
++		 */
++		reloc->sym = find_symbol_containing(sec, offset - 1);
++	}
 +
- /*
-  * Lockdep annotation that avoids accidental unlocks; it's like a
-  * sticky/continuous lockdep_assert_held().
-@@ -1243,9 +1244,9 @@ static inline void rq_pin_lock(struct rq *rq, struct rq_flags *rf)
- #ifdef CONFIG_SCHED_DEBUG
- 	rq->clock_update_flags &= (RQCF_REQ_SKIP|RQCF_ACT_SKIP);
- 	rf->clock_update_flags = 0;
--#endif
- #ifdef CONFIG_SMP
--	SCHED_WARN_ON(rq->balance_callback);
-+	SCHED_WARN_ON(rq->balance_callback && rq->balance_callback != &balance_push_callback);
-+#endif
- #endif
- }
- 
-@@ -1408,9 +1409,6 @@ init_numa_balancing(unsigned long clone_flags, struct task_struct *p)
- 
- #ifdef CONFIG_SMP
- 
--#define BALANCE_WORK	0x01
--#define BALANCE_PUSH	0x02
--
- static inline void
- queue_balance_callback(struct rq *rq,
- 		       struct callback_head *head,
-@@ -1418,13 +1416,12 @@ queue_balance_callback(struct rq *rq,
++	if (reloc->sym)
++		reloc->addend = offset - reloc->sym->offset;
++}
++
+ static int read_sections(struct elf *elf)
  {
- 	lockdep_assert_held(&rq->lock);
+ 	Elf_Scn *s = NULL;
+diff --git a/tools/objtool/elf.h b/tools/objtool/elf.h
+index 807f8c6..e6890cc 100644
+--- a/tools/objtool/elf.h
++++ b/tools/objtool/elf.h
+@@ -140,6 +140,8 @@ struct reloc *find_reloc_by_dest(const struct elf *elf, struct section *sec, uns
+ struct reloc *find_reloc_by_dest_range(const struct elf *elf, struct section *sec,
+ 				     unsigned long offset, unsigned int len);
+ struct symbol *find_func_containing(struct section *sec, unsigned long offset);
++void insn_to_reloc_sym_addend(struct section *sec, unsigned long offset,
++			      struct reloc *reloc);
+ int elf_rebuild_reloc_section(struct elf *elf, struct section *sec);
  
--	if (unlikely(head->next || (rq->balance_flags & BALANCE_PUSH)))
-+	if (unlikely(head->next || rq->balance_callback == &balance_push_callback))
- 		return;
+ #define for_each_sec(file, sec)						\
+diff --git a/tools/objtool/orc_gen.c b/tools/objtool/orc_gen.c
+index 235663b..9ce68b3 100644
+--- a/tools/objtool/orc_gen.c
++++ b/tools/objtool/orc_gen.c
+@@ -105,30 +105,11 @@ static int create_orc_entry(struct elf *elf, struct section *u_sec, struct secti
+ 	}
+ 	memset(reloc, 0, sizeof(*reloc));
  
- 	head->func = (void (*)(struct callback_head *))func;
- 	head->next = rq->balance_callback;
- 	rq->balance_callback = head;
--	rq->balance_flags |= BALANCE_WORK;
- }
+-	if (insn_sec->sym) {
+-		reloc->sym = insn_sec->sym;
+-		reloc->addend = insn_off;
+-	} else {
+-		/*
+-		 * The Clang assembler doesn't produce section symbols, so we
+-		 * have to reference the function symbol instead:
+-		 */
+-		reloc->sym = find_symbol_containing(insn_sec, insn_off);
+-		if (!reloc->sym) {
+-			/*
+-			 * Hack alert.  This happens when we need to reference
+-			 * the NOP pad insn immediately after the function.
+-			 */
+-			reloc->sym = find_symbol_containing(insn_sec,
+-							   insn_off - 1);
+-		}
+-		if (!reloc->sym) {
+-			WARN("missing symbol for insn at offset 0x%lx\n",
+-			     insn_off);
+-			return -1;
+-		}
+-
+-		reloc->addend = insn_off - reloc->sym->offset;
++	insn_to_reloc_sym_addend(insn_sec, insn_off, reloc);
++	if (!reloc->sym) {
++		WARN("missing symbol for insn at offset 0x%lx",
++		     insn_off);
++		return -1;
+ 	}
  
- #define rcu_dereference_check_sched_domain(p) \
+ 	reloc->type = R_X86_64_PC32;
