@@ -2,19 +2,16 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 71B542DE727
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 18 Dec 2020 17:03:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BD24C2DE729
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 18 Dec 2020 17:04:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729109AbgLRQDQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 18 Dec 2020 11:03:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46186 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728558AbgLRQDQ (ORCPT
+        id S1729663AbgLRQDU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 18 Dec 2020 11:03:20 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:53274 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728576AbgLRQDQ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Fri, 18 Dec 2020 11:03:16 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D55F5C0617A7;
-        Fri, 18 Dec 2020 08:02:35 -0800 (PST)
 Date:   Fri, 18 Dec 2020 16:02:33 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1608307353;
@@ -23,12 +20,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=mFqT7MdMkMPajxa+3jGsjpVqAegoRAPqBlb6GgY5BT0=;
-        b=lpOXHJKBTNpLUCxV/M6LtJdlEAGRuUuZBCv+MBVIbUhWFzWmP/am6Qlh9kDCkABuplFHSx
-        ryZWjZRrURrDWx3kgO6kyuLr7nq0P5HotEiRDUuroKsoyiNxhuHDKp93H6idb7/f2hsfb3
-        pfAgqGDkcBxCt2XljQDBV6feuk6IlASnE/cArBFJqhaQaxiNTTIS5g+FmvtaAfz9LhOUmx
-        sxbPKgGo2/QPet5jfNC0pIy2tiUkZauBgFq4Nu4QVpj6Zh4rhWCgVwHMBma4dWBgzsfwCU
-        Ag2mUaM4XSpq/RsfNDgTXXXW1vWZtZwHL1lpZVLLs2xoGZ/s/j5aAUdyyvcD1g==
+        bh=Ak9hDsFJ30HPWeVTqWXDGAjW8p7OnzScgieDojIWkyA=;
+        b=oCB7NvcyIrAvShyql31Wo9WaoBsLqn4Qhkt94SPDVWlkdkIAdkKtT/9Oe4uMxpA2t1STlv
+        wSAMoDAetWJCh9d/7H1RMtjavfUCP2oFFvFhQNrtPxOJlbtgcG2j2PIpqfoMeU6EUTHXZr
+        sKQNqn4svwa7e8IlT8a1y/IimELBP3ePif8mYYl/3VXCkm2WYxvN+RgV4JHqlrz8WdrY59
+        rk4hWFjdaE6phcCNviYh+9NYSXxWm/NnWll0D6D2F/iWQ7HAg4nvM9UoY4ouuh/AKnbvP1
+        KZbAaLK7lOKmu1k131APsSwbK6BNX1lVSbKgOoqhqjzbeRO7ohIb6pbBY8cpeA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1608307353;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,24 +33,23 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=mFqT7MdMkMPajxa+3jGsjpVqAegoRAPqBlb6GgY5BT0=;
-        b=L8uGwYrpljlLfwhseC1NsjVUYwJe4gPdXendgZ7YmciUHPDVLn3ZMEx11gNgDd5prBBFDz
-        aJ2J/fG/++wMO1CA==
+        bh=Ak9hDsFJ30HPWeVTqWXDGAjW8p7OnzScgieDojIWkyA=;
+        b=S00G7R8l8dO2A2KW+kDXOiCDOhetsUoKE/yWzobnhSs8sSRCimdwzjyOJ3S37o18DvBdAr
+        ltTzaZE6PDtgwKBg==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/urgent] jump_label/static_call: Add MAINTAINERS
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
+Subject: [tip: locking/urgent] jump_label: Fix usage in module __init
+Cc:     Dexuan Cui <decui@microsoft.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Josh Poimboeuf <jpoimboe@redhat.com>,
-        Jason Baron <jbaron@akamai.com>, x86@kernel.org,
+        Jessica Yu <jeyu@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20201216133014.GT3092@hirez.programming.kicks-ass.net>
-References: <20201216133014.GT3092@hirez.programming.kicks-ass.net>
+In-Reply-To: <20201216135435.GV3092@hirez.programming.kicks-ass.net>
+References: <20201216135435.GV3092@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-Message-ID: <160830735320.22759.7371044943415400270.tip-bot2@tip-bot2>
+Message-ID: <160830735347.22759.2891847784480992331.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -64,52 +60,70 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/urgent branch of tip:
 
-Commit-ID:     441fa3409769180df2fd12fcada35441435a120c
-Gitweb:        https://git.kernel.org/tip/441fa3409769180df2fd12fcada35441435a120c
+Commit-ID:     55d2eba8e7cd439c11cdb204898c2d384227629b
+Gitweb:        https://git.kernel.org/tip/55d2eba8e7cd439c11cdb204898c2d384227629b
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Wed, 16 Dec 2020 14:19:22 +01:00
+AuthorDate:    Wed, 16 Dec 2020 12:21:36 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Fri, 18 Dec 2020 16:53:12 +01:00
 
-jump_label/static_call: Add MAINTAINERS
+jump_label: Fix usage in module __init
 
-These files don't appear to have a MAINTAINERS entry and as such
-patches miss being seen by people who know this code.
+When the static_key is part of the module, and the module calls
+static_key_inc/enable() from it's __init section *AND* has a
+static_branch_*() user in that very same __init section, things go
+wobbly.
 
+If the static_key lives outside the module, jump_label_add_module()
+would append this module's sites to the key and jump_label_update()
+would take the static_key_linked() branch and all would be fine.
+
+If all the sites are outside of __init, then everything will be fine
+too.
+
+However, when all is aligned just as described above,
+jump_label_update() calls __jump_label_update(.init = false) and we'll
+not update sites in __init text.
+
+Fixes: 19483677684b ("jump_label: Annotate entries that operate on __init code earlier")
+Reported-by: Dexuan Cui <decui@microsoft.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
 Acked-by: Josh Poimboeuf <jpoimboe@redhat.com>
-Acked-by: Jason Baron <jbaron@akamai.com>
-Link: https://lkml.kernel.org/r/20201216133014.GT3092@hirez.programming.kicks-ass.net
+Tested-by: Jessica Yu <jeyu@kernel.org>
+Link: https://lkml.kernel.org/r/20201216135435.GV3092@hirez.programming.kicks-ass.net
 ---
- MAINTAINERS | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ kernel/jump_label.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 281de21..be02614 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -16675,6 +16675,22 @@ M:	Ion Badulescu <ionut@badula.org>
- S:	Odd Fixes
- F:	drivers/net/ethernet/adaptec/starfire*
+diff --git a/kernel/jump_label.c b/kernel/jump_label.c
+index 015ef90..c6a39d6 100644
+--- a/kernel/jump_label.c
++++ b/kernel/jump_label.c
+@@ -793,6 +793,7 @@ int jump_label_text_reserved(void *start, void *end)
+ static void jump_label_update(struct static_key *key)
+ {
+ 	struct jump_entry *stop = __stop___jump_table;
++	bool init = system_state < SYSTEM_RUNNING;
+ 	struct jump_entry *entry;
+ #ifdef CONFIG_MODULES
+ 	struct module *mod;
+@@ -804,15 +805,16 @@ static void jump_label_update(struct static_key *key)
  
-+STATIC BRANCH/CALL
-+M:	Peter Zijlstra <peterz@infradead.org>
-+M:	Josh Poimboeuf <jpoimboe@redhat.com>
-+M:	Jason Baron <jbaron@akamai.com>
-+R:	Steven Rostedt <rostedt@goodmis.org>
-+R:	Ard Biesheuvel <ardb@kernel.org>
-+S:	Supported
-+F:	arch/*/include/asm/jump_label*.h
-+F:	arch/*/include/asm/static_call*.h
-+F:	arch/*/kernel/jump_label.c
-+F:	arch/*/kernel/static_call.c
-+F:	include/linux/jump_label*.h
-+F:	include/linux/static_call*.h
-+F:	kernel/jump_label.c
-+F:	kernel/static_call.c
-+
- STEC S1220 SKD DRIVER
- M:	Damien Le Moal <Damien.LeMoal@wdc.com>
- L:	linux-block@vger.kernel.org
+ 	preempt_disable();
+ 	mod = __module_address((unsigned long)key);
+-	if (mod)
++	if (mod) {
+ 		stop = mod->jump_entries + mod->num_jump_entries;
++		init = mod->state == MODULE_STATE_COMING;
++	}
+ 	preempt_enable();
+ #endif
+ 	entry = static_key_entries(key);
+ 	/* if there are no users, entry can be NULL */
+ 	if (entry)
+-		__jump_label_update(key, entry, stop,
+-				    system_state < SYSTEM_RUNNING);
++		__jump_label_update(key, entry, stop, init);
+ }
+ 
+ #ifdef CONFIG_STATIC_KEYS_SELFTEST
