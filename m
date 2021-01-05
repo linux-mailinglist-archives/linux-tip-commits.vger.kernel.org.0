@@ -2,43 +2,43 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AC0F22EA8E0
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  5 Jan 2021 11:34:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7290C2EA91E
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  5 Jan 2021 11:47:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729289AbhAEKeG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 5 Jan 2021 05:34:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48254 "EHLO
+        id S1728891AbhAEKph (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 5 Jan 2021 05:45:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50032 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729286AbhAEKeG (ORCPT
+        with ESMTP id S1728557AbhAEKph (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 5 Jan 2021 05:34:06 -0500
+        Tue, 5 Jan 2021 05:45:37 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7828C061793;
-        Tue,  5 Jan 2021 02:33:25 -0800 (PST)
-Date:   Tue, 05 Jan 2021 10:33:21 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89354C061574;
+        Tue,  5 Jan 2021 02:44:56 -0800 (PST)
+Date:   Tue, 05 Jan 2021 10:44:54 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1609842803;
+        s=2020; t=1609843494;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=xyHdgLBHIEj9JYFxRruai+YHlB2CHkyzn762qs1f/tA=;
-        b=wHhP6ZKt6AkmTtxWgdZZgmOhg2p2oRBMn0MT4+TRIQ05101dM7Or33kYwnhOXK2rMxtC9A
-        7ECvjz5tdBr5g/TX1uGNwqpRjtRxt63LcXRYfVrfOH8l5cjqjiHYgvqU3tSEVS9RzGpFeA
-        CRj8b1IE4u+h0sY/LqUrnkeJUOwnxuSoAuQ6Yl4OkuwQYH7xj36C+zGe2HoSZpj5sVA8Iw
-        fCacY8wbf1AHKbp0bs7BkiuZ94WceEiecwRhZO491DG2hJHVSQj6tlxL/7rqbFS6oCfiUd
-        eD+xWLgVQ8YZV9gOYoTvCn+7bA4Nfb1AojMFJaJJmA1QgiY8GZ14N+qrGEbyfQ==
+        bh=pcXBGR6ucWolwK6w6uG4mpnWtnKTn1MVtlPQkcCXSeU=;
+        b=jWISzYlnS3PfwvxtLFACSr/UHG5PrC7KRq8DuVNPJKF50g0VMP2Ihgdv3krRRMLVUc3mJG
+        HOUQMTUsZdH1sWwKbhhyqeW42r2nuS/5imQ9AG7xISL2M/UqGeEXXjXYTWmMTI3+VMlKOX
+        acBZYYO9svu5rx88mHH1cYkt/L5gcL40e1uZeRGEEsxL2CRCY357CFekwBsitix7/+fTIo
+        PBgPLM1Lx2ie5YXhTtu5gnseQTDyyJq0PXzkjmbhXh2RJi7Th0lai7fCtszLW31xzxgE08
+        tpVCzbJIwzYtSz/FHsa8OgkcXQC3/rV/rjensa5kNoXASkO4uLu+yLj1lhN/nw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1609842803;
+        s=2020e; t=1609843494;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=xyHdgLBHIEj9JYFxRruai+YHlB2CHkyzn762qs1f/tA=;
-        b=32TRGuONYj0QDr0HnZ0avkZ9KJ7uQYsYU1yiSGfbHwU5DUgpPFHZZVb6rWJ/KNW5bhoZJ7
-        sb/LIpHe1gDnHhCA==
+        bh=pcXBGR6ucWolwK6w6uG4mpnWtnKTn1MVtlPQkcCXSeU=;
+        b=ax3rs1vTbrkWYfTfRH7iKxxLNJob7ng7sHe9ddYb9OTZBG3DMvbtUijPn5KW0KtwOuJNpH
+        w+9a88gpx2ttGxAQ==
 From:   "tip-bot2 for Dan Williams" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
@@ -46,6 +46,7 @@ To:     linux-tip-commits@vger.kernel.org
 Subject: [tip: x86/urgent] x86/mm: Fix leak of pmd ptlock
 Cc:     Dan Williams <dan.j.williams@intel.com>,
         Borislav Petkov <bp@suse.de>, Yi Zhang <yi.zhang@redhat.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         <stable@vger.kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 In-Reply-To: =?utf-8?q?=3C160697689204=2E605323=2E17629854984697045602=2Es?=
@@ -53,7 +54,7 @@ In-Reply-To: =?utf-8?q?=3C160697689204=2E605323=2E17629854984697045602=2Es?=
 References: =?utf-8?q?=3C160697689204=2E605323=2E17629854984697045602=2Est?=
  =?utf-8?q?git=40dwillia2-desk3=2Eamr=2Ecorp=2Eintel=2Ecom=3E?=
 MIME-Version: 1.0
-Message-ID: <160984280139.414.600325623903793598.tip-bot2@tip-bot2>
+Message-ID: <160984349415.414.16783769604201998583.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -64,12 +65,12 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     1bd3d9c593211e09771562b464028d3ab7e05b3a
-Gitweb:        https://git.kernel.org/tip/1bd3d9c593211e09771562b464028d3ab7e05b3a
+Commit-ID:     d1c5246e08eb64991001d97a3bd119c93edbc79a
+Gitweb:        https://git.kernel.org/tip/d1c5246e08eb64991001d97a3bd119c93edbc79a
 Author:        Dan Williams <dan.j.williams@intel.com>
 AuthorDate:    Wed, 02 Dec 2020 22:28:12 -08:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 05 Jan 2021 11:17:21 +01:00
+CommitterDate: Tue, 05 Jan 2021 11:40:23 +01:00
 
 x86/mm: Fix leak of pmd ptlock
 
@@ -129,6 +130,7 @@ Fixes: 28ee90fe6048 ("x86/mm: implement free pmd/pte page interfaces")
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
 Tested-by: Yi Zhang <yi.zhang@redhat.com>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Cc: <stable@vger.kernel.org>
 Link: https://lkml.kernel.org/r/160697689204.605323.17629854984697045602.stgit@dwillia2-desk3.amr.corp.intel.com
 ---
