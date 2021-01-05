@@ -2,56 +2,58 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 833022E9D07
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  4 Jan 2021 19:30:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AC0F22EA8E0
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  5 Jan 2021 11:34:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726497AbhADSaF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 4 Jan 2021 13:30:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40770 "EHLO
+        id S1729289AbhAEKeG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 5 Jan 2021 05:34:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48254 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726396AbhADSaE (ORCPT
+        with ESMTP id S1729286AbhAEKeG (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 4 Jan 2021 13:30:04 -0500
+        Tue, 5 Jan 2021 05:34:06 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 435E9C061794;
-        Mon,  4 Jan 2021 10:29:24 -0800 (PST)
-Date:   Mon, 04 Jan 2021 18:29:19 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7828C061793;
+        Tue,  5 Jan 2021 02:33:25 -0800 (PST)
+Date:   Tue, 05 Jan 2021 10:33:21 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1609784959;
+        s=2020; t=1609842803;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=kM7c+t6EDNGt6sqKxFbnnws/zaHoluaYzE3C9iUtwbc=;
-        b=H3884R/mTQXg0CE5ihc1Nslsl/1aWF0dyhNxlNFnuZp5htxTUsXqlBH5BFDajz9720FjFa
-        QgZ/1aI5AGffq+GXs8Zb/MwSyqmdmCW+Z32lCyuzASdX2sDCHrSqU2zFYltKHDVoG1sU6K
-        SeB7rRSS6m34H2d74WaSpvsQHKs8MSGIftg53zPErlzAPgZErgskR05GHZYc95WZBsaWTP
-        mxNqr/BNdF+n7BxERBOsaFMytcVlLyrCVSTE8WmeRstK2BvF0dO1ObVp0ZVEssMeOM5gov
-        tBFteYLEeFviEj95VPJtrixaTkABgsBwuxg+zxSOeFtNy4+4hyrkRhgne1ZCUA==
+        bh=xyHdgLBHIEj9JYFxRruai+YHlB2CHkyzn762qs1f/tA=;
+        b=wHhP6ZKt6AkmTtxWgdZZgmOhg2p2oRBMn0MT4+TRIQ05101dM7Or33kYwnhOXK2rMxtC9A
+        7ECvjz5tdBr5g/TX1uGNwqpRjtRxt63LcXRYfVrfOH8l5cjqjiHYgvqU3tSEVS9RzGpFeA
+        CRj8b1IE4u+h0sY/LqUrnkeJUOwnxuSoAuQ6Yl4OkuwQYH7xj36C+zGe2HoSZpj5sVA8Iw
+        fCacY8wbf1AHKbp0bs7BkiuZ94WceEiecwRhZO491DG2hJHVSQj6tlxL/7rqbFS6oCfiUd
+        eD+xWLgVQ8YZV9gOYoTvCn+7bA4Nfb1AojMFJaJJmA1QgiY8GZ14N+qrGEbyfQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1609784959;
+        s=2020e; t=1609842803;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=kM7c+t6EDNGt6sqKxFbnnws/zaHoluaYzE3C9iUtwbc=;
-        b=I3jXBXv9bvZ7S8PuWfwRFPMhRV7sjc3DHhs4QUML4n3H7pNe9r6JqkZj9qB9Z5XZLQumb2
-        E3vkzW3I8XLcFZDA==
-From:   "tip-bot2 for Lorenzo Stoakes" <tip-bot2@linutronix.de>
+        bh=xyHdgLBHIEj9JYFxRruai+YHlB2CHkyzn762qs1f/tA=;
+        b=32TRGuONYj0QDr0HnZ0avkZ9KJ7uQYsYU1yiSGfbHwU5DUgpPFHZZVb6rWJ/KNW5bhoZJ7
+        sb/LIpHe1gDnHhCA==
+From:   "tip-bot2 for Dan Williams" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/mm] x86/mm: Increase pgt_buf size for 5-level page tables
-Cc:     Lorenzo Stoakes <lstoakes@gmail.com>, Borislav Petkov <bp@suse.de>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Dave Hansen <dave.hansen@intel.com>, x86@kernel.org,
+Subject: [tip: x86/urgent] x86/mm: Fix leak of pmd ptlock
+Cc:     Dan Williams <dan.j.williams@intel.com>,
+        Borislav Petkov <bp@suse.de>, Yi Zhang <yi.zhang@redhat.com>,
+        <stable@vger.kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20201215205641.34096-1-lstoakes@gmail.com>
-References: <20201215205641.34096-1-lstoakes@gmail.com>
+In-Reply-To: =?utf-8?q?=3C160697689204=2E605323=2E17629854984697045602=2Es?=
+ =?utf-8?q?tgit=40dwillia2-desk3=2Eamr=2Ecorp=2Eintel=2Ecom=3E?=
+References: =?utf-8?q?=3C160697689204=2E605323=2E17629854984697045602=2Est?=
+ =?utf-8?q?git=40dwillia2-desk3=2Eamr=2Ecorp=2Eintel=2Ecom=3E?=
 MIME-Version: 1.0
-Message-ID: <160978495908.414.11743150085990569826.tip-bot2@tip-bot2>
+Message-ID: <160984280139.414.600325623903793598.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,89 +62,89 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/mm branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     167dcfc08b0b1f964ea95d410aa496fd78adf475
-Gitweb:        https://git.kernel.org/tip/167dcfc08b0b1f964ea95d410aa496fd78adf475
-Author:        Lorenzo Stoakes <lstoakes@gmail.com>
-AuthorDate:    Tue, 15 Dec 2020 20:56:41 
+Commit-ID:     1bd3d9c593211e09771562b464028d3ab7e05b3a
+Gitweb:        https://git.kernel.org/tip/1bd3d9c593211e09771562b464028d3ab7e05b3a
+Author:        Dan Williams <dan.j.williams@intel.com>
+AuthorDate:    Wed, 02 Dec 2020 22:28:12 -08:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Mon, 04 Jan 2021 18:07:50 +01:00
+CommitterDate: Tue, 05 Jan 2021 11:17:21 +01:00
 
-x86/mm: Increase pgt_buf size for 5-level page tables
+x86/mm: Fix leak of pmd ptlock
 
-pgt_buf is used to allocate page tables on initial direct page mapping
-which bootstraps the kernel into being able to allocate these before the
-direct mapping makes further pages available.
+Commit
 
-INIT_PGD_PAGE_COUNT is set to 6 pages (doubled for KASLR) - 3 (PUD, PMD,
-PTE) for the 1 MiB ISA mapping and 3 more for the first direct mapping
-assignment in each case providing 2 MiB of address space.
+  28ee90fe6048 ("x86/mm: implement free pmd/pte page interfaces")
 
-This has not been updated for 5-level page tables which has an
-additional P4D page table level above PUD.
+introduced a new location where a pmd was released, but neglected to
+run the pmd page destructor. In fact, this happened previously for a
+different pmd release path and was fixed by commit:
 
-In most instances, this will not have a material impact as the first
-4 page levels allocated for the ISA mapping will provide sufficient
-address space to encompass all further address mappings.
+  c283610e44ec ("x86, mm: do not leak page->ptl for pmd page tables").
 
-If the first direct mapping is within 512 GiB of the ISA mapping, only
-a PMD and PTE needs to be added in the instance the kernel is using 4
-KiB page tables (e.g. CONFIG_DEBUG_PAGEALLOC is enabled) and only a PMD
-if the kernel can use 2 MiB pages (the first allocation is limited to
-PMD_SIZE so a GiB page cannot be used there).
+This issue was hidden until recently because the failure mode is silent,
+but commit:
 
-However, if the machine has more than 512 GiB of RAM and the kernel is
-allocating 4 KiB page size, 3 further page tables are required.
+  b2b29d6d0119 ("mm: account PMD tables like PTE tables")
 
-If the machine has more than 256 TiB of RAM at 4 KiB or 2 MiB page size,
-further 3 or 4 page tables are required respectively.
+turns the failure mode into this signature:
 
-Update INIT_PGD_PAGE_COUNT to reflect this.
+ BUG: Bad page state in process lt-pmem-ns  pfn:15943d
+ page:000000007262ed7b refcount:0 mapcount:-1024 mapping:0000000000000000 index:0x0 pfn:0x15943d
+ flags: 0xaffff800000000()
+ raw: 00affff800000000 dead000000000100 0000000000000000 0000000000000000
+ raw: 0000000000000000 ffff913a029bcc08 00000000fffffbff 0000000000000000
+ page dumped because: nonzero mapcount
+ [..]
+  dump_stack+0x8b/0xb0
+  bad_page.cold+0x63/0x94
+  free_pcp_prepare+0x224/0x270
+  free_unref_page+0x18/0xd0
+  pud_free_pmd_page+0x146/0x160
+  ioremap_pud_range+0xe3/0x350
+  ioremap_page_range+0x108/0x160
+  __ioremap_caller.constprop.0+0x174/0x2b0
+  ? memremap+0x7a/0x110
+  memremap+0x7a/0x110
+  devm_memremap+0x53/0xa0
+  pmem_attach_disk+0x4ed/0x530 [nd_pmem]
+  ? __devm_release_region+0x52/0x80
+  nvdimm_bus_probe+0x85/0x210 [libnvdimm]
 
- [ bp: Sanitize text into passive voice without ambiguous personal pronouns. ]
+Given this is a repeat occurrence it seemed prudent to look for other
+places where this destructor might be missing and whether a better
+helper is needed. try_to_free_pmd_page() looks like a candidate, but
+testing with setting up and tearing down pmd mappings via the dax unit
+tests is thus far not triggering the failure.
 
-Signed-off-by: Lorenzo Stoakes <lstoakes@gmail.com>
+As for a better helper pmd_free() is close, but it is a messy fit
+due to requiring an @mm arg. Also, ___pmd_free_tlb() wants to call
+paravirt_tlb_remove_table() instead of free_page(), so open-coded
+pgtable_pmd_page_dtor() seems the best way forward for now.
+
+Debugged together with Matthew Wilcox <willy@infradead.org>.
+
+Fixes: 28ee90fe6048 ("x86/mm: implement free pmd/pte page interfaces")
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Acked-by: Dave Hansen <dave.hansen@intel.com>
-Link: https://lkml.kernel.org/r/20201215205641.34096-1-lstoakes@gmail.com
+Tested-by: Yi Zhang <yi.zhang@redhat.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lkml.kernel.org/r/160697689204.605323.17629854984697045602.stgit@dwillia2-desk3.amr.corp.intel.com
 ---
- arch/x86/mm/init.c | 19 ++++++++++++++-----
- 1 file changed, 14 insertions(+), 5 deletions(-)
+ arch/x86/mm/pgtable.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/x86/mm/init.c b/arch/x86/mm/init.c
-index e26f5c5..dd694fb 100644
---- a/arch/x86/mm/init.c
-+++ b/arch/x86/mm/init.c
-@@ -157,16 +157,25 @@ __ref void *alloc_low_pages(unsigned int num)
- }
+diff --git a/arch/x86/mm/pgtable.c b/arch/x86/mm/pgtable.c
+index dfd82f5..f6a9e2e 100644
+--- a/arch/x86/mm/pgtable.c
++++ b/arch/x86/mm/pgtable.c
+@@ -829,6 +829,8 @@ int pud_free_pmd_page(pud_t *pud, unsigned long addr)
+ 	}
  
- /*
-- * By default need 3 4k for initial PMD_SIZE,  3 4k for 0-ISA_END_ADDRESS.
-- * With KASLR memory randomization, depending on the machine e820 memory
-- * and the PUD alignment. We may need twice more pages when KASLR memory
-+ * By default need to be able to allocate page tables below PGD firstly for
-+ * the 0-ISA_END_ADDRESS range and secondly for the initial PMD_SIZE mapping.
-+ * With KASLR memory randomization, depending on the machine e820 memory and the
-+ * PUD alignment, twice that many pages may be needed when KASLR memory
-  * randomization is enabled.
-  */
+ 	free_page((unsigned long)pmd_sv);
 +
-+#ifndef CONFIG_X86_5LEVEL
-+#define INIT_PGD_PAGE_TABLES    3
-+#else
-+#define INIT_PGD_PAGE_TABLES    4
-+#endif
-+
- #ifndef CONFIG_RANDOMIZE_MEMORY
--#define INIT_PGD_PAGE_COUNT      6
-+#define INIT_PGD_PAGE_COUNT      (2 * INIT_PGD_PAGE_TABLES)
- #else
--#define INIT_PGD_PAGE_COUNT      12
-+#define INIT_PGD_PAGE_COUNT      (4 * INIT_PGD_PAGE_TABLES)
- #endif
-+
- #define INIT_PGT_BUF_SIZE	(INIT_PGD_PAGE_COUNT * PAGE_SIZE)
- RESERVE_BRK(early_pgt_alloc, INIT_PGT_BUF_SIZE);
- void  __init early_alloc_pgt_buf(void)
++	pgtable_pmd_page_dtor(virt_to_page(pmd));
+ 	free_page((unsigned long)pmd);
+ 
+ 	return 1;
