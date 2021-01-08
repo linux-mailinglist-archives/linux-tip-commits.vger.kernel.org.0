@@ -2,55 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C0C232EEE46
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 Jan 2021 09:03:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DA7E2EEE7A
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 Jan 2021 09:19:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727001AbhAHICS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 8 Jan 2021 03:02:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51230 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726817AbhAHICS (ORCPT
+        id S1727449AbhAHIT0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 8 Jan 2021 03:19:26 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:48886 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725793AbhAHIT0 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 8 Jan 2021 03:02:18 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39C3FC0612F5;
-        Fri,  8 Jan 2021 00:01:38 -0800 (PST)
-Date:   Fri, 08 Jan 2021 08:01:34 -0000
+        Fri, 8 Jan 2021 03:19:26 -0500
+Date:   Fri, 08 Jan 2021 08:18:42 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1610092895;
+        s=2020; t=1610093923;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=c2DTisWit8OV2tHztEcM+aLYzs9o7pwomLKcEqJtNgI=;
-        b=WhI5txmq/6XQINA/PvaO4q10ClL6mwpT+H89i62InwA4KgnXyYH2ZL4b3W6Oe6PTZjSsRf
-        Nj/+czbD61vVNwjOSWRI9URkuwNVkawV1U/pzld+2BD3Ph/1rFmuplpaPE0OEFztJBQld1
-        2mnorLRWqULRPKNr4Mmjhdk3vvlHC8LJ2adCg75B1InLo9y/xI3SN4Q/Q2jXelmiRMc+wz
-        M+MrYc8xh7stlZ4iJUo8wdoOyy+0+zCrOCO3i6zeelNjK/KYP48xVmaw5NT8kfM2dGC1HY
-        IyghmcX3X/zllmHnBh0P17K4l9QOpX6S0XpmXN4G6ir5xu4Y649ccBSBqkk2JA==
+        bh=q65QGZu7U1uTBRcwZxKM6PUCnxFUGixRYAOQnjlYh2g=;
+        b=HAk1fcRQHl8k+byNRqd3Yyo4t/QyqYHEpyQcIBNjpiBn+D3kYpBNCoI4si99oeDFkkgPnB
+        IX1cu8uAw6KEUG8Qnq8/ERuUOTTsjU4heqM6G8bb2JoS44xaSGY/a5mhGgl3EGIIHhy57L
+        98URmjv6j02ER2DZL2oktDJ+SPrd5oXXutxjOE4xGeUK7m11hwo1Cwc5j5KdwgnE1mNBxJ
+        WlTDS0qhk3iIUa0yPCn2WoIUb6IcvcFQvIHG2vcQOtOwkyuyTIlDKrOYXJyuhIOrGKxDiW
+        xGTdZAanOw7liRIsBVuyknupPwej43L3KulfGO2ZW33YV1M3dt9uaq5t6fGmDg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1610092895;
+        s=2020e; t=1610093923;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=c2DTisWit8OV2tHztEcM+aLYzs9o7pwomLKcEqJtNgI=;
-        b=ZKJOAq6ijCehZb0BwtOKy0NmbUkf/XEiVHhX1I370i5gTk3HpqkEW73OyICGEkXABm+l9Z
-        m38H406GIEJdHrBg==
-From:   "tip-bot2 for Tom Rix" <tip-bot2@linutronix.de>
+        bh=q65QGZu7U1uTBRcwZxKM6PUCnxFUGixRYAOQnjlYh2g=;
+        b=i3RI9UGD66QmVQXmkgPTcN2OStN6FQSHWQKgLP31gYdei0czcwiwGlneP3n6zRUN/kJDTI
+        xaAsi9sUFdPq6HDA==
+From:   "tip-bot2 for Fenghua Yu" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cache] x86/resctrl: Add printf attribute to log function
-Cc:     Tom Rix <trix@redhat.com>, Borislav Petkov <bp@suse.de>,
-        Reinette Chatre <reinette.chatre@intel.com>, x86@kernel.org,
+Subject: [tip: x86/urgent] x86/resctrl: Don't move a task to the same resource group
+Cc:     Shakeel Butt <shakeelb@google.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Reinette Chatre <reinette.chatre@intel.com>,
+        Borislav Petkov <bp@suse.de>, Tony Luck <tony.luck@intel.com>,
+        stable@vger.kernel.org, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20201221160009.3752017-1-trix@redhat.com>
-References: <20201221160009.3752017-1-trix@redhat.com>
+In-Reply-To: =?utf-8?q?=3C962ede65d8e95be793cb61102cca37f7bb018e66=2E16082?=
+ =?utf-8?q?43147=2Egit=2Ereinette=2Echatre=40intel=2Ecom=3E?=
+References: =?utf-8?q?=3C962ede65d8e95be793cb61102cca37f7bb018e66=2E160824?=
+ =?utf-8?q?3147=2Egit=2Ereinette=2Echatre=40intel=2Ecom=3E?=
 MIME-Version: 1.0
-Message-ID: <161009289493.414.10503732751311581962.tip-bot2@tip-bot2>
+Message-ID: <161009392288.414.6204730563015001676.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,40 +61,54 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cache branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     91031e096e1fa0216027bfb7fdca931225aebbf0
-Gitweb:        https://git.kernel.org/tip/91031e096e1fa0216027bfb7fdca931225aebbf0
-Author:        Tom Rix <trix@redhat.com>
-AuthorDate:    Mon, 21 Dec 2020 08:00:09 -08:00
+Commit-ID:     a0195f314a25582b38993bf30db11c300f4f4611
+Gitweb:        https://git.kernel.org/tip/a0195f314a25582b38993bf30db11c300f4f4611
+Author:        Fenghua Yu <fenghua.yu@intel.com>
+AuthorDate:    Thu, 17 Dec 2020 14:31:19 -08:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Fri, 08 Jan 2021 08:55:02 +01:00
+CommitterDate: Fri, 08 Jan 2021 09:08:03 +01:00
 
-x86/resctrl: Add printf attribute to log function
+x86/resctrl: Don't move a task to the same resource group
 
-Mark the function with the __printf attribute to allow the compiler to
-more thoroughly typecheck its arguments against a format string with
--Wformat and similar flags.
+Shakeel Butt reported in [1] that a user can request a task to be moved
+to a resource group even if the task is already in the group. It just
+wastes time to do the move operation which could be costly to send IPI
+to a different CPU.
 
- [ bp: Massage commit message. ]
+Add a sanity check to ensure that the move operation only happens when
+the task is not already in the resource group.
 
-Signed-off-by: Tom Rix <trix@redhat.com>
+[1] https://lore.kernel.org/lkml/CALvZod7E9zzHwenzf7objzGKsdBmVwTgEJ0nPgs0LUFU3SN5Pw@mail.gmail.com/
+
+Fixes: e02737d5b826 ("x86/intel_rdt: Add tasks files")
+Reported-by: Shakeel Butt <shakeelb@google.com>
+Signed-off-by: Fenghua Yu <fenghua.yu@intel.com>
+Signed-off-by: Reinette Chatre <reinette.chatre@intel.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Acked-by: Reinette Chatre <reinette.chatre@intel.com>
-Link: https://lkml.kernel.org/r/20201221160009.3752017-1-trix@redhat.com
+Reviewed-by: Tony Luck <tony.luck@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lkml.kernel.org/r/962ede65d8e95be793cb61102cca37f7bb018e66.1608243147.git.reinette.chatre@intel.com
 ---
- arch/x86/kernel/cpu/resctrl/internal.h | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/kernel/cpu/resctrl/rdtgroup.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/arch/x86/kernel/cpu/resctrl/internal.h b/arch/x86/kernel/cpu/resctrl/internal.h
-index ee71c47..c4d320d 100644
---- a/arch/x86/kernel/cpu/resctrl/internal.h
-+++ b/arch/x86/kernel/cpu/resctrl/internal.h
-@@ -572,6 +572,7 @@ union cpuid_0x10_x_edx {
- 
- void rdt_last_cmd_clear(void);
- void rdt_last_cmd_puts(const char *s);
-+__printf(1, 2)
- void rdt_last_cmd_printf(const char *fmt, ...);
- 
- void rdt_ctrl_update(void *arg);
+diff --git a/arch/x86/kernel/cpu/resctrl/rdtgroup.c b/arch/x86/kernel/cpu/resctrl/rdtgroup.c
+index 1c6f8a6..460f3e0 100644
+--- a/arch/x86/kernel/cpu/resctrl/rdtgroup.c
++++ b/arch/x86/kernel/cpu/resctrl/rdtgroup.c
+@@ -546,6 +546,13 @@ static void update_task_closid_rmid(struct task_struct *t)
+ static int __rdtgroup_move_task(struct task_struct *tsk,
+ 				struct rdtgroup *rdtgrp)
+ {
++	/* If the task is already in rdtgrp, no need to move the task. */
++	if ((rdtgrp->type == RDTCTRL_GROUP && tsk->closid == rdtgrp->closid &&
++	     tsk->rmid == rdtgrp->mon.rmid) ||
++	    (rdtgrp->type == RDTMON_GROUP && tsk->rmid == rdtgrp->mon.rmid &&
++	     tsk->closid == rdtgrp->mon.parent->closid))
++		return 0;
++
+ 	/*
+ 	 * Set the task's closid/rmid before the PQR_ASSOC MSR can be
+ 	 * updated by them.
