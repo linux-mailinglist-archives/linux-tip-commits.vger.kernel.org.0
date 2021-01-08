@@ -2,51 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D18DE2ECBC3
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  7 Jan 2021 09:33:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C0C232EEE46
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 Jan 2021 09:03:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726799AbhAGIdJ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 7 Jan 2021 03:33:09 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:42236 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725900AbhAGIdJ (ORCPT
+        id S1727001AbhAHICS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 8 Jan 2021 03:02:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51230 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726817AbhAHICS (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 7 Jan 2021 03:33:09 -0500
-Date:   Thu, 07 Jan 2021 08:32:25 -0000
+        Fri, 8 Jan 2021 03:02:18 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39C3FC0612F5;
+        Fri,  8 Jan 2021 00:01:38 -0800 (PST)
+Date:   Fri, 08 Jan 2021 08:01:34 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1610008346;
+        s=2020; t=1610092895;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=gzvJi7F2EteM6rhRpf2w3zsOevfIbpep1onnVi0E3yc=;
-        b=pBCaS9n/JueNwJyceHdqAli1khlesfA5DhXrpAvnOtYXLTevX26N1TtPaHVvb2yYIX8ZvG
-        HA43qkpXzXU7B/Po3WzCkVzRTbvvWKHnWuCGbMm3VWsqwnhLOMXD92LDh03JTL3XB3STuR
-        QrvfAFeD3P4Z1/aVDJDILOr1lieRhWqkizubHQa2vojbnPMLRo+bbvzWrPJsb2+tQrpsoD
-        AMp0P3QbCRF1CF8ktuu65u9UF4gahIbqqrv0/OCEiUpblTeyG1Gg6BkwUiRlSgHOnuokJM
-        S/BHQHUWYSuMYhhLIQOElrErWGkPJe4ATF8YYEN3FeRtBeEIz/D9SBR+Fa0/CQ==
+        bh=c2DTisWit8OV2tHztEcM+aLYzs9o7pwomLKcEqJtNgI=;
+        b=WhI5txmq/6XQINA/PvaO4q10ClL6mwpT+H89i62InwA4KgnXyYH2ZL4b3W6Oe6PTZjSsRf
+        Nj/+czbD61vVNwjOSWRI9URkuwNVkawV1U/pzld+2BD3Ph/1rFmuplpaPE0OEFztJBQld1
+        2mnorLRWqULRPKNr4Mmjhdk3vvlHC8LJ2adCg75B1InLo9y/xI3SN4Q/Q2jXelmiRMc+wz
+        M+MrYc8xh7stlZ4iJUo8wdoOyy+0+zCrOCO3i6zeelNjK/KYP48xVmaw5NT8kfM2dGC1HY
+        IyghmcX3X/zllmHnBh0P17K4l9QOpX6S0XpmXN4G6ir5xu4Y649ccBSBqkk2JA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1610008346;
+        s=2020e; t=1610092895;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=gzvJi7F2EteM6rhRpf2w3zsOevfIbpep1onnVi0E3yc=;
-        b=hO+1cGeyfR6iwp+u342smsztj5tfiM+abN5/QxbWia79bSnxF2SWAT5rhMZ/boYHq0vjP0
-        LLX6o8F71qq3CdDg==
-From:   "tip-bot2 for Roman Kiryanov" <tip-bot2@linutronix.de>
+        bh=c2DTisWit8OV2tHztEcM+aLYzs9o7pwomLKcEqJtNgI=;
+        b=ZKJOAq6ijCehZb0BwtOKy0NmbUkf/XEiVHhX1I370i5gTk3HpqkEW73OyICGEkXABm+l9Z
+        m38H406GIEJdHrBg==
+From:   "tip-bot2 for Tom Rix" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/platform] x86/platform: Retire arch/x86/platform/goldfish
-Cc:     Roman Kiryanov <rkir@google.com>, Borislav Petkov <bp@suse.de>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20201117025522.1874864-1-rkir@google.com>
-References: <20201117025522.1874864-1-rkir@google.com>
+Subject: [tip: x86/cache] x86/resctrl: Add printf attribute to log function
+Cc:     Tom Rix <trix@redhat.com>, Borislav Petkov <bp@suse.de>,
+        Reinette Chatre <reinette.chatre@intel.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20201221160009.3752017-1-trix@redhat.com>
+References: <20201221160009.3752017-1-trix@redhat.com>
 MIME-Version: 1.0
-Message-ID: <161000834585.414.17890422566889835723.tip-bot2@tip-bot2>
+Message-ID: <161009289493.414.10503732751311581962.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -55,108 +59,40 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/platform branch of tip:
+The following commit has been merged into the x86/cache branch of tip:
 
-Commit-ID:     2b29eed3f201b49feb92fdd0178b10825a5528f4
-Gitweb:        https://git.kernel.org/tip/2b29eed3f201b49feb92fdd0178b10825a5528f4
-Author:        Roman Kiryanov <rkir@google.com>
-AuthorDate:    Mon, 16 Nov 2020 18:55:22 -08:00
+Commit-ID:     91031e096e1fa0216027bfb7fdca931225aebbf0
+Gitweb:        https://git.kernel.org/tip/91031e096e1fa0216027bfb7fdca931225aebbf0
+Author:        Tom Rix <trix@redhat.com>
+AuthorDate:    Mon, 21 Dec 2020 08:00:09 -08:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Thu, 07 Jan 2021 09:22:31 +01:00
+CommitterDate: Fri, 08 Jan 2021 08:55:02 +01:00
 
-x86/platform: Retire arch/x86/platform/goldfish
+x86/resctrl: Add printf attribute to log function
 
-The Android Studio Emulator (aka goldfish) does not use
-arch/x86/platform/goldfish since 5.4 kernel.
+Mark the function with the __printf attribute to allow the compiler to
+more thoroughly typecheck its arguments against a format string with
+-Wformat and similar flags.
 
-Signed-off-by: Roman Kiryanov <rkir@google.com>
+ [ bp: Massage commit message. ]
+
+Signed-off-by: Tom Rix <trix@redhat.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20201117025522.1874864-1-rkir@google.com
+Acked-by: Reinette Chatre <reinette.chatre@intel.com>
+Link: https://lkml.kernel.org/r/20201221160009.3752017-1-trix@redhat.com
 ---
- arch/x86/platform/Makefile            |  1 +-
- arch/x86/platform/goldfish/Makefile   |  2 +-
- arch/x86/platform/goldfish/goldfish.c | 54 +--------------------------
- 3 files changed, 57 deletions(-)
- delete mode 100644 arch/x86/platform/goldfish/Makefile
- delete mode 100644 arch/x86/platform/goldfish/goldfish.c
+ arch/x86/kernel/cpu/resctrl/internal.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/platform/Makefile b/arch/x86/platform/Makefile
-index d0e8354..b2f90a1 100644
---- a/arch/x86/platform/Makefile
-+++ b/arch/x86/platform/Makefile
-@@ -4,7 +4,6 @@ obj-y	+= atom/
- obj-y	+= ce4100/
- obj-y	+= efi/
- obj-y	+= geode/
--obj-y	+= goldfish/
- obj-y	+= iris/
- obj-y	+= intel/
- obj-y	+= intel-mid/
-diff --git a/arch/x86/platform/goldfish/Makefile b/arch/x86/platform/goldfish/Makefile
-deleted file mode 100644
-index 072c395..0000000
---- a/arch/x86/platform/goldfish/Makefile
-+++ /dev/null
-@@ -1,2 +0,0 @@
--# SPDX-License-Identifier: GPL-2.0-only
--obj-$(CONFIG_GOLDFISH)	+= goldfish.o
-diff --git a/arch/x86/platform/goldfish/goldfish.c b/arch/x86/platform/goldfish/goldfish.c
-deleted file mode 100644
-index 6b6f8b4..0000000
---- a/arch/x86/platform/goldfish/goldfish.c
-+++ /dev/null
-@@ -1,54 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0-only
--/*
-- * Copyright (C) 2007 Google, Inc.
-- * Copyright (C) 2011 Intel, Inc.
-- * Copyright (C) 2013 Intel, Inc.
-- */
--
--#include <linux/kernel.h>
--#include <linux/irq.h>
--#include <linux/platform_device.h>
--
--/*
-- * Where in virtual device memory the IO devices (timers, system controllers
-- * and so on)
-- */
--
--#define GOLDFISH_PDEV_BUS_BASE	(0xff001000)
--#define GOLDFISH_PDEV_BUS_END	(0xff7fffff)
--#define GOLDFISH_PDEV_BUS_IRQ	(4)
--
--#define GOLDFISH_TTY_BASE	(0x2000)
--
--static struct resource goldfish_pdev_bus_resources[] = {
--	{
--		.start  = GOLDFISH_PDEV_BUS_BASE,
--		.end    = GOLDFISH_PDEV_BUS_END,
--		.flags  = IORESOURCE_MEM,
--	},
--	{
--		.start	= GOLDFISH_PDEV_BUS_IRQ,
--		.end	= GOLDFISH_PDEV_BUS_IRQ,
--		.flags	= IORESOURCE_IRQ,
--	}
--};
--
--static bool goldfish_enable __initdata;
--
--static int __init goldfish_setup(char *str)
--{
--	goldfish_enable = true;
--	return 0;
--}
--__setup("goldfish", goldfish_setup);
--
--static int __init goldfish_init(void)
--{
--	if (!goldfish_enable)
--		return -ENODEV;
--
--	platform_device_register_simple("goldfish_pdev_bus", -1,
--					goldfish_pdev_bus_resources, 2);
--	return 0;
--}
--device_initcall(goldfish_init);
+diff --git a/arch/x86/kernel/cpu/resctrl/internal.h b/arch/x86/kernel/cpu/resctrl/internal.h
+index ee71c47..c4d320d 100644
+--- a/arch/x86/kernel/cpu/resctrl/internal.h
++++ b/arch/x86/kernel/cpu/resctrl/internal.h
+@@ -572,6 +572,7 @@ union cpuid_0x10_x_edx {
+ 
+ void rdt_last_cmd_clear(void);
+ void rdt_last_cmd_puts(const char *s);
++__printf(1, 2)
+ void rdt_last_cmd_printf(const char *fmt, ...);
+ 
+ void rdt_ctrl_update(void *arg);
