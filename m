@@ -2,16 +2,19 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7354E2F3DD5
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 13 Jan 2021 01:44:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CD5502F3CD9
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 13 Jan 2021 01:43:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2436901AbhALVhU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 12 Jan 2021 16:37:20 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:48316 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2436723AbhALUMy (ORCPT
+        id S2436869AbhALVhV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 12 Jan 2021 16:37:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54908 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2436754AbhALUMy (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Tue, 12 Jan 2021 15:12:54 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F716C061786;
+        Tue, 12 Jan 2021 12:12:14 -0800 (PST)
 Date:   Tue, 12 Jan 2021 20:12:09 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1610482332;
@@ -20,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=NkCJyEiRbTLg4uc3/PpmQgQhPIgjI5nAt8LH/Pr86l8=;
-        b=z5/ScDi2UtSIjtaa1hEcMwuRCF0xf5U4CnKds7lYDZGpAJ0dHPvwMrR8+6tVsPlvt8/Umf
-        SxDI3a60caPxt37RdfMOCIv/1nS0CocQQI4uJ8HUsivtIdsHM+Ni28rdXVDO7CuDpZ26ph
-        ZVCbMYyJv0DFdYcD9Ti6JQqQHipvUo1tjGUfvNTr7kAaqKk4h0IBTLmq0wWOKkscsQfYfe
-        UYpOqdY5BdkauXFQTnu0CXDAA6Qw4DHFD5FSdDvqDjQqU7TFX4GK229v9KmUGyHZBc70nU
-        pV6pVh49QH1Sp4RLtklPwSDU68nxsurP81QaACIHlW9DdxH2DVOQKmM3a3sxTA==
+        bh=0ysm0lcjeQTEkYz8ldt/BGUvyfBNrhwwAE0TSWDrsAg=;
+        b=b/QOJYX9jipp+RvVUL9F69+mF0SixwHAJtVqBFa+y4Pf+Vgf2RIVNhs/akG0euEWclgDb9
+        LDPxOexRbcxzoMlkjIbEvJZDMBIXLk4ZQ15BJvybCxdpD8phJiMyuhQTNLMTjzPFM5yHPu
+        C5KhseO8qGvFf+/IyUkN4efkAUKbh+7ZAITWrOuT6arO9lbQV6oMuyIAnzd1LpXU8i25+w
+        UlCIBq5a9mE1+8a7hqaB/pqnJjgEjjXI2+QLgAseVSi/rKGvf4LEmMq9IMDAI/WNyui05Q
+        6OWHWIaLhRwnruBI56sdLwX1Ig9sBlqnRTW1E+tvtkhcSPEJfIny/3B/trhtMA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1610482332;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -33,22 +36,21 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=NkCJyEiRbTLg4uc3/PpmQgQhPIgjI5nAt8LH/Pr86l8=;
-        b=vfvOdmWivgO07Cf5Jq6sg+PpBmRtXh/cQxJ1FartAcZcyB4NWX4zgrjZT7Xm88XnXXWCg3
-        kuj7VSOlzsenI1Bg==
+        bh=0ysm0lcjeQTEkYz8ldt/BGUvyfBNrhwwAE0TSWDrsAg=;
+        b=V/RWMpJ257tOrChaV6Eg6B23iKnod1D4dnqL7LslEESZqfc6C9F7F0574uzVwMSuGINfFZ
+        NZXir12naUXkCqDQ==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86: __always_inline __{rd,wr}msr()
-Cc:     Randy Dunlap <rdunlap@infradead.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+Subject: [tip: x86/urgent] x86/mce: Remove explicit/superfluous tracing
+Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <bf3gV+BW7kGEsB@hirez.programming.kicks-ass.net>
-References: <bf3gV+BW7kGEsB@hirez.programming.kicks-ass.net>
+In-Reply-To: <20210106144017.719310466@infradead.org>
+References: <20210106144017.719310466@infradead.org>
 MIME-Version: 1.0
-Message-ID: <161048232936.414.13129849390143250864.tip-bot2@tip-bot2>
+Message-ID: <161048232974.414.12478202427962876073.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,48 +61,50 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     66a425011c61e71560c234492d204e83cfb73d1d
-Gitweb:        https://git.kernel.org/tip/66a425011c61e71560c234492d204e83cfb73d1d
+Commit-ID:     737495361d4469477ffe45d51e6fc56f44f3cc6a
+Gitweb:        https://git.kernel.org/tip/737495361d4469477ffe45d51e6fc56f44f3cc6a
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Thu, 07 Jan 2021 11:14:25 +01:00
+AuthorDate:    Wed, 06 Jan 2021 15:36:24 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Tue, 12 Jan 2021 21:10:59 +01:00
 
-x86: __always_inline __{rd,wr}msr()
+x86/mce: Remove explicit/superfluous tracing
 
-When the compiler choses to not inline the trivial MSR helpers:
+There's some explicit tracing left in exc_machine_check_kernel(),
+remove it, as it's already implied by irqentry_nmi_enter().
 
-  vmlinux.o: warning: objtool: __sev_es_nmi_complete()+0xce: call to __wrmsr.constprop.14() leaves .noinstr.text section
-
-Reported-by: Randy Dunlap <rdunlap@infradead.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Randy Dunlap <rdunlap@infradead.org> # build-tested
-Link: https://lore.kernel.org/r/X/bf3gV+BW7kGEsB@hirez.programming.kicks-ass.net
+Link: https://lore.kernel.org/r/20210106144017.719310466@infradead.org
 
 ---
- arch/x86/include/asm/msr.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/kernel/cpu/mce/core.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/include/asm/msr.h b/arch/x86/include/asm/msr.h
-index 0b4920a..e16cccd 100644
---- a/arch/x86/include/asm/msr.h
-+++ b/arch/x86/include/asm/msr.h
-@@ -86,7 +86,7 @@ static inline void do_trace_rdpmc(unsigned int msr, u64 val, int failed) {}
-  * think of extending them - you will be slapped with a stinking trout or a frozen
-  * shark will reach you, wherever you are! You've been warned.
-  */
--static inline unsigned long long notrace __rdmsr(unsigned int msr)
-+static __always_inline unsigned long long __rdmsr(unsigned int msr)
- {
- 	DECLARE_ARGS(val, low, high);
- 
-@@ -98,7 +98,7 @@ static inline unsigned long long notrace __rdmsr(unsigned int msr)
- 	return EAX_EDX_VAL(val, low, high);
+diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
+index 13d3f1c..e133ce1 100644
+--- a/arch/x86/kernel/cpu/mce/core.c
++++ b/arch/x86/kernel/cpu/mce/core.c
+@@ -1992,10 +1992,9 @@ static __always_inline void exc_machine_check_kernel(struct pt_regs *regs)
+ 	 * that out because it's an indirect call. Annotate it.
+ 	 */
+ 	instrumentation_begin();
+-	trace_hardirqs_off_finish();
++
+ 	machine_check_vector(regs);
+-	if (regs->flags & X86_EFLAGS_IF)
+-		trace_hardirqs_on_prepare();
++
+ 	instrumentation_end();
+ 	irqentry_nmi_exit(regs, irq_state);
  }
- 
--static inline void notrace __wrmsr(unsigned int msr, u32 low, u32 high)
-+static __always_inline void __wrmsr(unsigned int msr, u32 low, u32 high)
+@@ -2004,7 +2003,9 @@ static __always_inline void exc_machine_check_user(struct pt_regs *regs)
  {
- 	asm volatile("1: wrmsr\n"
- 		     "2:\n"
+ 	irqentry_enter_from_user_mode(regs);
+ 	instrumentation_begin();
++
+ 	machine_check_vector(regs);
++
+ 	instrumentation_end();
+ 	irqentry_exit_to_user_mode(regs);
+ }
