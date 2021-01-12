@@ -2,56 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B81412F1EC4
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 11 Jan 2021 20:16:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 26D212F2DEC
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Jan 2021 12:31:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390713AbhAKTPe (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 11 Jan 2021 14:15:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42830 "EHLO
+        id S1727717AbhALLai (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 12 Jan 2021 06:30:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54770 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390383AbhAKTPe (ORCPT
+        with ESMTP id S1726974AbhALLai (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 11 Jan 2021 14:15:34 -0500
+        Tue, 12 Jan 2021 06:30:38 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B38DEC061786;
-        Mon, 11 Jan 2021 11:14:53 -0800 (PST)
-Date:   Mon, 11 Jan 2021 19:14:50 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0116C061575;
+        Tue, 12 Jan 2021 03:29:57 -0800 (PST)
+Date:   Tue, 12 Jan 2021 11:29:54 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1610392491;
+        s=2020; t=1610450996;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=wMKpksQeNw2J4WuIigQd8lSlcw5aEFUcku4DAHtxxbA=;
-        b=lSxjlCRNc/xWYmw0zoBCqaRBo8NvkRBSPtbvX5ZN1EF1dZ6dW0T2raN4EU2HszZ750/q+P
-        Cd+7vPz/cWs+bQtBdwMV0i9u9EP2NJ5U7kWZlC5h2+HS0uyWyXv10pQMfE8WhqCBNhaCYW
-        5OYQ4cYlHPt7tysma0LMklbQSpiP/JMyW1j52WWiA2zijYbNMbyCFYxRVvuwcYbeTXwwT6
-        uJC3yMzp9tN5eh19xiabYuWmc/2+cQ+qlCngAyiYj6UGflVgI6SyIYgC1VDX7W0h5JT0C2
-        s3FmYTqDNfyIizK5p/ddd1VCooNSadSGf5wdhPrINU/0VhDfv1ZIL9ZtqtxCrA==
+        bh=91oTihXoxU68dbzytY74015PUJ/bpJqMktPoYOT9K74=;
+        b=zY/ge/7G6Q+ij/oTcUlPJFzfBjDWbL2G9nAciNwxTPQF4Nn5hQ+8VMgkd4pkH3Oitj6JxR
+        Vq+JQSiUs5l5NH62nPVraazjd39vkZdh8Iki71bFvgC+DXWPlnoK2aKQS/XwCQgy4ufG6r
+        u7tzUpgEIX1qXENP2Byz7aLSML8Lvt/iILHyL1U9aQtIXFBvcbbULgoXnX8tLQkE8WEJdx
+        JP+GOK0hL449YTWhlEcdokYyaDmobGtfq6ZgNbykctfmqajFuHyp2+ksjczBz+UMLC3js+
+        8b3H1J3cpawzFcYYWWPSU8PICt70PTE8mCjJaTQPrAzN7Gi9bdifNw7r2jqVzw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1610392491;
+        s=2020e; t=1610450996;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=wMKpksQeNw2J4WuIigQd8lSlcw5aEFUcku4DAHtxxbA=;
-        b=+QIVEE+74+S9amFbZSLOi27B2NS6S+TOhAb+YZLIzELQyGshD9Ynv1TuxhNNx7cOXUap6b
-        OdEOMSsyYRKwYtAw==
-From:   "tip-bot2 for Hyunwook (Wooky) Baek" <tip-bot2@linutronix.de>
+        bh=91oTihXoxU68dbzytY74015PUJ/bpJqMktPoYOT9K74=;
+        b=2HQ7IRN86X9hjkWb+cnS45poCdYNYjwrzy8WnNDJLuXNniVfklfh1OrjnuulMQXakNu3Bc
+        u2pZW2QWHsIZNxCw==
+From:   "tip-bot2 for Yazen Ghannam" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/sev-es: Handle string port IO to kernel memory properly
-Cc:     "Hyunwook (Wooky) Baek" <baekhw@google.com>,
-        Borislav Petkov <bp@suse.de>,
-        David Rientjes <rientjes@google.com>, x86@kernel.org,
+Subject: [tip: x86/urgent] x86/cpu/amd: Set __max_die_per_package on AMD
+Cc:     Johnathan Smithinovic <johnathan.smithinovic@gmx.at>,
+        Rafael Kitover <rkitover@gmail.com>,
+        Yazen Ghannam <Yazen.Ghannam@amd.com>,
+        Borislav Petkov <bp@suse.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210110071102.2576186-1-baekhw@google.com>
-References: <20210110071102.2576186-1-baekhw@google.com>
+In-Reply-To: <20210106112106.GE5729@zn.tnic>
+References: <20210106112106.GE5729@zn.tnic>
 MIME-Version: 1.0
-Message-ID: <161039249026.414.12255461373156299431.tip-bot2@tip-bot2>
+Message-ID: <161045099499.414.11674184748143438343.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -62,64 +63,52 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     7024f60d655272bd2ca1d3a4c9e0a63319b1eea1
-Gitweb:        https://git.kernel.org/tip/7024f60d655272bd2ca1d3a4c9e0a63319b1eea1
-Author:        Hyunwook (Wooky) Baek <baekhw@google.com>
-AuthorDate:    Sat, 09 Jan 2021 23:11:02 -08:00
+Commit-ID:     76e2fc63ca40977af893b724b00cc2f8e9ce47a4
+Gitweb:        https://git.kernel.org/tip/76e2fc63ca40977af893b724b00cc2f8e9ce47a4
+Author:        Yazen Ghannam <Yazen.Ghannam@amd.com>
+AuthorDate:    Mon, 11 Jan 2021 11:04:29 +01:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Mon, 11 Jan 2021 20:01:52 +01:00
+CommitterDate: Tue, 12 Jan 2021 12:21:01 +01:00
 
-x86/sev-es: Handle string port IO to kernel memory properly
+x86/cpu/amd: Set __max_die_per_package on AMD
 
-Don't assume dest/source buffers are userspace addresses when manually
-copying data for string I/O or MOVS MMIO, as {get,put}_user() will fail
-if handed a kernel address and ultimately lead to a kernel panic.
+Set the maximum DIE per package variable on AMD using the
+NodesPerProcessor topology value. This will be used by RAPL, among
+others, to determine the maximum number of DIEs on the system in order
+to do per-DIE manipulations.
 
-When invoking INSB/OUTSB instructions in kernel space in a
-SEV-ES-enabled VM, the kernel crashes with the following message:
+ [ bp: Productize into a proper patch. ]
 
-  "SEV-ES: Unsupported exception in #VC instruction emulation - can't continue"
-
-Handle that case properly.
-
- [ bp: Massage commit message. ]
-
-Fixes: f980f9c31a92 ("x86/sev-es: Compile early handler code into kernel image")
-Signed-off-by: Hyunwook (Wooky) Baek <baekhw@google.com>
+Fixes: 028c221ed190 ("x86/CPU/AMD: Save AMD NodeId as cpu_die_id")
+Reported-by: Johnathan Smithinovic <johnathan.smithinovic@gmx.at>
+Reported-by: Rafael Kitover <rkitover@gmail.com>
+Signed-off-by: Yazen Ghannam <Yazen.Ghannam@amd.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Acked-by: David Rientjes <rientjes@google.com>
-Link: https://lkml.kernel.org/r/20210110071102.2576186-1-baekhw@google.com
+Tested-by: Johnathan Smithinovic <johnathan.smithinovic@gmx.at>
+Tested-by: Rafael Kitover <rkitover@gmail.com>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=210939
+Link: https://lkml.kernel.org/r/20210106112106.GE5729@zn.tnic
+Link: https://lkml.kernel.org/r/20210111101455.1194-1-bp@alien8.de
 ---
- arch/x86/kernel/sev-es.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ arch/x86/kernel/cpu/amd.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kernel/sev-es.c b/arch/x86/kernel/sev-es.c
-index 0bd1a0f..ab31c34 100644
---- a/arch/x86/kernel/sev-es.c
-+++ b/arch/x86/kernel/sev-es.c
-@@ -286,6 +286,12 @@ static enum es_result vc_write_mem(struct es_em_ctxt *ctxt,
- 	u16 d2;
- 	u8  d1;
+diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
+index f8ca66f..347a956 100644
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -542,12 +542,12 @@ static void bsp_init_amd(struct cpuinfo_x86 *c)
+ 		u32 ecx;
  
-+	/* If instruction ran in kernel mode and the I/O buffer is in kernel space */
-+	if (!user_mode(ctxt->regs) && !access_ok(target, size)) {
-+		memcpy(dst, buf, size);
-+		return ES_OK;
-+	}
-+
- 	switch (size) {
- 	case 1:
- 		memcpy(&d1, buf, 1);
-@@ -335,6 +341,12 @@ static enum es_result vc_read_mem(struct es_em_ctxt *ctxt,
- 	u16 d2;
- 	u8  d1;
+ 		ecx = cpuid_ecx(0x8000001e);
+-		nodes_per_socket = ((ecx >> 8) & 7) + 1;
++		__max_die_per_package = nodes_per_socket = ((ecx >> 8) & 7) + 1;
+ 	} else if (boot_cpu_has(X86_FEATURE_NODEID_MSR)) {
+ 		u64 value;
  
-+	/* If instruction ran in kernel mode and the I/O buffer is in kernel space */
-+	if (!user_mode(ctxt->regs) && !access_ok(s, size)) {
-+		memcpy(buf, src, size);
-+		return ES_OK;
-+	}
-+
- 	switch (size) {
- 	case 1:
- 		if (get_user(d1, s))
+ 		rdmsrl(MSR_FAM10H_NODE_ID, value);
+-		nodes_per_socket = ((value >> 3) & 7) + 1;
++		__max_die_per_package = nodes_per_socket = ((value >> 3) & 7) + 1;
+ 	}
+ 
+ 	if (!boot_cpu_has(X86_FEATURE_AMD_SSBD) &&
