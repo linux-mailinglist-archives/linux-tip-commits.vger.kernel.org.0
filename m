@@ -2,14 +2,14 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E6F822F3CD5
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 13 Jan 2021 01:43:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E8FEC2F3CEB
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 13 Jan 2021 01:43:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2436784AbhALVhV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 12 Jan 2021 16:37:21 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:48390 "EHLO
+        id S2436824AbhALVhW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 12 Jan 2021 16:37:22 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:48394 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2436824AbhALUSw (ORCPT
+        with ESMTP id S2436832AbhALUSw (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Tue, 12 Jan 2021 15:18:52 -0500
 Date:   Tue, 12 Jan 2021 20:18:08 -0000
@@ -20,12 +20,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=9AG036gacMsJ7cOPhUuL8X5chuyKH0VZhcXObnW7ezY=;
-        b=zmbI6ecMD/1zj5wHe7Sf+zLdBZFgB7QAJkl/4MQndn1nleIMPqPWms6pHzd4Tsv90pO6D7
-        6dbe5H5e+/Pai1zikR9VZn3qUTNVeUS+/UDQkIGZTZhCfwEZqtGjRcCtz9lhzeYRtkB7D+
-        tSaxmoC/3a6XzYH2wOtuhGjPWNr0RC+ZiDgTtLNgzA0H06P1UrrUp1T5G1Z4cdUeHBFdFA
-        ycGtGJB5E5MIf86chcRjuKrGSj25QEGkiFogt+182KdM7HQUyBHZrpcqmJAdgU+8vLQ8H8
-        5IXVIlttHD8Mx6mKrROq3Z/3Y37NgCS0pnZx3DQnWOO0HbDhdh3IR0Rq47P3PQ==
+        bh=GeY/3iwNgQgkQhw71eWQN6faVvZpEODlj0Z6ju8gdLY=;
+        b=aKrqhVmzY+eyfz05ZPzUAJw9+JYqbpGYYxt1QDsF8AQY2jiNF+K7Gy207h6tkHocD25L6D
+        0nXv1CkbyOIBEg6Nn+NMsWtUyB9Py1BsEC1GtAf8G4gwOhGq7IYhbLuLtpS95gK/WPpK8L
+        4qzfVWhCIS6SV1fY3dkZGwOtsiNQNJcOGaiWGkKeN7Il9Kupfz1jls+2C5ff10gJ2A+D6i
+        otHK6thok9fraath41NvqXrPEsAY8KIpAyCID/M1UKut8EhG8tIn8IIlUVxCa275q8Bf/H
+        n06zfING1CwSBULlD+2R1OwHA/8S8ORNb78+X2EYEZD/vLq/VP7f8M+uU2aMmw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1610482689;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -33,21 +33,21 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=9AG036gacMsJ7cOPhUuL8X5chuyKH0VZhcXObnW7ezY=;
-        b=NJ79J10ejnFV5VzMEsLvdjVqwRqDYHI/QlL0tM7OxPnw+heRaM/YxIKY1Jd9Km7rvhXwpP
-        nwkw1ZcYlxVOPmDw==
-From:   "tip-bot2 for Chunguang Xu" <tip-bot2@linutronix.de>
+        bh=GeY/3iwNgQgkQhw71eWQN6faVvZpEODlj0Z6ju8gdLY=;
+        b=ZPGwGow8E2DkrZsPw6EoWBNFk3U3/n/1uKCOMF3/yrLtTyYG3yjY20+7yRRBfVp1EcWGpQ
+        PxAcDup4I2JCuaCw==
+From:   "tip-bot2 for Geert Uytterhoeven" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/urgent] timekeeping: Remove unused get_seconds()
-Cc:     Chunguang Xu <brookxu@tencent.com>,
+Subject: [tip: timers/urgent] ntp: Fix RTC synchronization on 32-bit platforms
+Cc:     Geert Uytterhoeven <geert+renesas@glider.be>,
         Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <1606816351-26900-1-git-send-email-brookxu@tencent.com>
-References: <1606816351-26900-1-git-send-email-brookxu@tencent.com>
+In-Reply-To: <20210111103956.290378-1-geert+renesas@glider.be>
+References: <20210111103956.290378-1-geert+renesas@glider.be>
 MIME-Version: 1.0
-Message-ID: <161048268887.414.15933446514318366457.tip-bot2@tip-bot2>
+Message-ID: <161048268862.414.3356040186950421264.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,71 +58,49 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/urgent branch of tip:
 
-Commit-ID:     aba428a0c612bb259891307da12e22efd0fab14c
-Gitweb:        https://git.kernel.org/tip/aba428a0c612bb259891307da12e22efd0fab14c
-Author:        Chunguang Xu <brookxu@tencent.com>
-AuthorDate:    Tue, 01 Dec 2020 17:52:31 +08:00
+Commit-ID:     e3fab2f3de081e98c50b7b4ace1b040161d95310
+Gitweb:        https://git.kernel.org/tip/e3fab2f3de081e98c50b7b4ace1b040161d95310
+Author:        Geert Uytterhoeven <geert+renesas@glider.be>
+AuthorDate:    Mon, 11 Jan 2021 11:39:56 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Tue, 12 Jan 2021 21:13:01 +01:00
 
-timekeeping: Remove unused get_seconds()
+ntp: Fix RTC synchronization on 32-bit platforms
 
-The get_seconds() cleanup seems to have been completed, now it is
-time to delete the legacy interface to avoid misuse later.
+Due to an integer overflow, RTC synchronization now happens every 2s
+instead of the intended 11 minutes.  Fix this by forcing 64-bit
+arithmetic for the sync period calculation.
 
-Signed-off-by: Chunguang Xu <brookxu@tencent.com>
+Annotate the other place which multiplies seconds for consistency as well.
+
+Fixes: c9e6189fb03123a7 ("ntp: Make the RTC synchronization more reliable")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/1606816351-26900-1-git-send-email-brookxu@tencent.com
+Link: https://lore.kernel.org/r/20210111103956.290378-1-geert+renesas@glider.be
 
 ---
- include/linux/ktime.h         |  1 -
- include/linux/timekeeping32.h | 14 --------------
- kernel/time/timekeeping.c     |  3 +--
- 3 files changed, 1 insertion(+), 17 deletions(-)
- delete mode 100644 include/linux/timekeeping32.h
+ kernel/time/ntp.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/ktime.h b/include/linux/ktime.h
-index a12b552..73f20de 100644
---- a/include/linux/ktime.h
-+++ b/include/linux/ktime.h
-@@ -230,6 +230,5 @@ static inline ktime_t ms_to_ktime(u64 ms)
- }
+diff --git a/kernel/time/ntp.c b/kernel/time/ntp.c
+index 7404d38..87389b9 100644
+--- a/kernel/time/ntp.c
++++ b/kernel/time/ntp.c
+@@ -498,7 +498,7 @@ out:
+ static void sync_hw_clock(struct work_struct *work);
+ static DECLARE_WORK(sync_work, sync_hw_clock);
+ static struct hrtimer sync_hrtimer;
+-#define SYNC_PERIOD_NS (11UL * 60 * NSEC_PER_SEC)
++#define SYNC_PERIOD_NS (11ULL * 60 * NSEC_PER_SEC)
  
- # include <linux/timekeeping.h>
--# include <linux/timekeeping32.h>
+ static enum hrtimer_restart sync_timer_callback(struct hrtimer *timer)
+ {
+@@ -512,7 +512,7 @@ static void sched_sync_hw_clock(unsigned long offset_nsec, bool retry)
+ 	ktime_t exp = ktime_set(ktime_get_real_seconds(), 0);
  
- #endif
-diff --git a/include/linux/timekeeping32.h b/include/linux/timekeeping32.h
-deleted file mode 100644
-index 266017f..0000000
---- a/include/linux/timekeeping32.h
-+++ /dev/null
-@@ -1,14 +0,0 @@
--#ifndef _LINUX_TIMEKEEPING32_H
--#define _LINUX_TIMEKEEPING32_H
--/*
-- * These interfaces are all based on the old timespec type
-- * and should get replaced with the timespec64 based versions
-- * over time so we can remove the file here.
-- */
--
--static inline unsigned long get_seconds(void)
--{
--	return ktime_get_real_seconds();
--}
--
--#endif
-diff --git a/kernel/time/timekeeping.c b/kernel/time/timekeeping.c
-index a45cedd..6aee576 100644
---- a/kernel/time/timekeeping.c
-+++ b/kernel/time/timekeeping.c
-@@ -991,8 +991,7 @@ EXPORT_SYMBOL_GPL(ktime_get_seconds);
- /**
-  * ktime_get_real_seconds - Get the seconds portion of CLOCK_REALTIME
-  *
-- * Returns the wall clock seconds since 1970. This replaces the
-- * get_seconds() interface which is not y2038 safe on 32bit systems.
-+ * Returns the wall clock seconds since 1970.
-  *
-  * For 64bit systems the fast access to tk->xtime_sec is preserved. On
-  * 32bit systems the access must be protected with the sequence
+ 	if (retry)
+-		exp = ktime_add_ns(exp, 2 * NSEC_PER_SEC - offset_nsec);
++		exp = ktime_add_ns(exp, 2ULL * NSEC_PER_SEC - offset_nsec);
+ 	else
+ 		exp = ktime_add_ns(exp, SYNC_PERIOD_NS - offset_nsec);
+ 
