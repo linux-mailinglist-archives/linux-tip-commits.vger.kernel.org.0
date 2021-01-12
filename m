@@ -2,51 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 574B92F32C3
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Jan 2021 15:17:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7354E2F3DD5
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 13 Jan 2021 01:44:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728983AbhALOPd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 12 Jan 2021 09:15:33 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:46422 "EHLO
+        id S2436901AbhALVhU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 12 Jan 2021 16:37:20 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:48316 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725613AbhALOPd (ORCPT
+        with ESMTP id S2436723AbhALUMy (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 12 Jan 2021 09:15:33 -0500
-Date:   Tue, 12 Jan 2021 14:14:49 -0000
+        Tue, 12 Jan 2021 15:12:54 -0500
+Date:   Tue, 12 Jan 2021 20:12:09 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1610460890;
+        s=2020; t=1610482332;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=M/jFzWa0BcooDpIR8auJzgjzenvo/u0Q391Wtg/QO3Y=;
-        b=MJE6PAhw9TP/gvD50FfB2xwkYT+QyBUgvUNcu+g/bgLU8IJXzetEWhNAHxHi4aeeYFB0qn
-        SoBLoJctnLpee1VysLTK2fELFGVvdzy14nF4YuWkeZINTpovtqLmwi3ckrC3b2zCqEZ4+z
-        xGWNDy5+y47BnSTFOMKjt7ypHbZZOl2AX1Tc1xealn3gAYkHnTlnTD8lJATgka5zUjf0SE
-        YHMczVfmDU81h3pTwvH4iOana4XEsfRP40Q2uL/I9sy8FvEHTTeSQcMHm31jBKUkOeaTIJ
-        7ez57DqpusK8jyLaNG5vGlOjLpxGhKmYgYcMuFMrwcDJuxALQniTLCnjOnQcJw==
+        bh=NkCJyEiRbTLg4uc3/PpmQgQhPIgjI5nAt8LH/Pr86l8=;
+        b=z5/ScDi2UtSIjtaa1hEcMwuRCF0xf5U4CnKds7lYDZGpAJ0dHPvwMrR8+6tVsPlvt8/Umf
+        SxDI3a60caPxt37RdfMOCIv/1nS0CocQQI4uJ8HUsivtIdsHM+Ni28rdXVDO7CuDpZ26ph
+        ZVCbMYyJv0DFdYcD9Ti6JQqQHipvUo1tjGUfvNTr7kAaqKk4h0IBTLmq0wWOKkscsQfYfe
+        UYpOqdY5BdkauXFQTnu0CXDAA6Qw4DHFD5FSdDvqDjQqU7TFX4GK229v9KmUGyHZBc70nU
+        pV6pVh49QH1Sp4RLtklPwSDU68nxsurP81QaACIHlW9DdxH2DVOQKmM3a3sxTA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1610460890;
+        s=2020e; t=1610482332;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=M/jFzWa0BcooDpIR8auJzgjzenvo/u0Q391Wtg/QO3Y=;
-        b=OqTMpI1yKj9u1SknJLeLja53sarl/H0K4mUBNIiwx+oxQJeOA7+p4G47hAyNG5cJ9jjiLf
-        xVi3YUIfmoisnTDA==
-From:   "tip-bot2 for Hao Lee" <tip-bot2@linutronix.de>
+        bh=NkCJyEiRbTLg4uc3/PpmQgQhPIgjI5nAt8LH/Pr86l8=;
+        b=vfvOdmWivgO07Cf5Jq6sg+PpBmRtXh/cQxJ1FartAcZcyB4NWX4zgrjZT7Xm88XnXXWCg3
+        kuj7VSOlzsenI1Bg==
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cleanups] x86/entry: Remove now unused do_IRQ() declaration
-Cc:     Hao Lee <haolee.swjtu@gmail.com>, Borislav Petkov <bp@suse.de>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20210103030834.GA15432@haolee.github.io>
-References: <20210103030834.GA15432@haolee.github.io>
+Subject: [tip: x86/urgent] x86: __always_inline __{rd,wr}msr()
+Cc:     Randy Dunlap <rdunlap@infradead.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <bf3gV+BW7kGEsB@hirez.programming.kicks-ass.net>
+References: <bf3gV+BW7kGEsB@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-Message-ID: <161046088982.414.245132272230243029.tip-bot2@tip-bot2>
+Message-ID: <161048232936.414.13129849390143250864.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -55,40 +57,50 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cleanups branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     11aa1415d8bd2920ce884356479eabbd64b1df2a
-Gitweb:        https://git.kernel.org/tip/11aa1415d8bd2920ce884356479eabbd64b1df2a
-Author:        Hao Lee <haolee.swjtu@gmail.com>
-AuthorDate:    Sun, 03 Jan 2021 03:08:34 
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 12 Jan 2021 14:37:37 +01:00
+Commit-ID:     66a425011c61e71560c234492d204e83cfb73d1d
+Gitweb:        https://git.kernel.org/tip/66a425011c61e71560c234492d204e83cfb73d1d
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Thu, 07 Jan 2021 11:14:25 +01:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Tue, 12 Jan 2021 21:10:59 +01:00
 
-x86/entry: Remove now unused do_IRQ() declaration
+x86: __always_inline __{rd,wr}msr()
 
-do_IRQ() has been replaced by common_interrupt() in
+When the compiler choses to not inline the trivial MSR helpers:
 
-  fa5e5c409213 ("x86/entry: Use idtentry for interrupts")
+  vmlinux.o: warning: objtool: __sev_es_nmi_complete()+0xce: call to __wrmsr.constprop.14() leaves .noinstr.text section
 
-Remove its now unused declaration.
+Reported-by: Randy Dunlap <rdunlap@infradead.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Acked-by: Randy Dunlap <rdunlap@infradead.org> # build-tested
+Link: https://lore.kernel.org/r/X/bf3gV+BW7kGEsB@hirez.programming.kicks-ass.net
 
-Signed-off-by: Hao Lee <haolee.swjtu@gmail.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20210103030834.GA15432@haolee.github.io
 ---
- arch/x86/include/asm/irq.h | 2 --
- 1 file changed, 2 deletions(-)
+ arch/x86/include/asm/msr.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/include/asm/irq.h b/arch/x86/include/asm/irq.h
-index 528c8a7..76d3896 100644
---- a/arch/x86/include/asm/irq.h
-+++ b/arch/x86/include/asm/irq.h
-@@ -40,8 +40,6 @@ extern void native_init_IRQ(void);
+diff --git a/arch/x86/include/asm/msr.h b/arch/x86/include/asm/msr.h
+index 0b4920a..e16cccd 100644
+--- a/arch/x86/include/asm/msr.h
++++ b/arch/x86/include/asm/msr.h
+@@ -86,7 +86,7 @@ static inline void do_trace_rdpmc(unsigned int msr, u64 val, int failed) {}
+  * think of extending them - you will be slapped with a stinking trout or a frozen
+  * shark will reach you, wherever you are! You've been warned.
+  */
+-static inline unsigned long long notrace __rdmsr(unsigned int msr)
++static __always_inline unsigned long long __rdmsr(unsigned int msr)
+ {
+ 	DECLARE_ARGS(val, low, high);
  
- extern void __handle_irq(struct irq_desc *desc, struct pt_regs *regs);
+@@ -98,7 +98,7 @@ static inline unsigned long long notrace __rdmsr(unsigned int msr)
+ 	return EAX_EDX_VAL(val, low, high);
+ }
  
--extern __visible void do_IRQ(struct pt_regs *regs, unsigned long vector);
--
- extern void init_ISA_irqs(void);
- 
- extern void __init init_IRQ(void);
+-static inline void notrace __wrmsr(unsigned int msr, u32 low, u32 high)
++static __always_inline void __wrmsr(unsigned int msr, u32 low, u32 high)
+ {
+ 	asm volatile("1: wrmsr\n"
+ 		     "2:\n"
