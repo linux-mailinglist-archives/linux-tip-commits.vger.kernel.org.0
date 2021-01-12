@@ -2,54 +2,51 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0972A2F2E19
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Jan 2021 12:38:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 574B92F32C3
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Jan 2021 15:17:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728415AbhALLgm (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 12 Jan 2021 06:36:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56078 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730028AbhALLgm (ORCPT
+        id S1728983AbhALOPd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 12 Jan 2021 09:15:33 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:46422 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725613AbhALOPd (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 12 Jan 2021 06:36:42 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC723C061786;
-        Tue, 12 Jan 2021 03:36:01 -0800 (PST)
-Date:   Tue, 12 Jan 2021 11:35:59 -0000
+        Tue, 12 Jan 2021 09:15:33 -0500
+Date:   Tue, 12 Jan 2021 14:14:49 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1610451360;
+        s=2020; t=1610460890;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=a5sjhOmifIrT2Py3V1i0s3HcR5HfPZJwj/KHXhMNUJI=;
-        b=qNyGfdZpuksBJie/gUlDBuKKlm9cn/SRUm7PZrK+DH3pxpjmG5gc6GRc6F6D+0NaOTGMZX
-        4KRGDdFXwIRLi/LN/4YLuHKUNaEjL4H9uPUyAbLkQy3KgM+UeyY4Gk1VjaAxqOIQgtjE+x
-        5qHolfy0zWRCixu0GTbBqBfTyv0hRgfid/oTB9d0JbTgLgbP1CxlzofT4Me35xMYtgujWJ
-        jztSeJ838pWf+8y+L1GHmCGgtyQARvmsU8maf1H88IQiZ5tfy2Sa2RyBc/oKIG+9Qotli3
-        Gs/50XbgOqkfnkOpIFG4GZYyTYLMPljPjDbyDlVGoBU6JgOEtB/G659lx9rMRA==
+        bh=M/jFzWa0BcooDpIR8auJzgjzenvo/u0Q391Wtg/QO3Y=;
+        b=MJE6PAhw9TP/gvD50FfB2xwkYT+QyBUgvUNcu+g/bgLU8IJXzetEWhNAHxHi4aeeYFB0qn
+        SoBLoJctnLpee1VysLTK2fELFGVvdzy14nF4YuWkeZINTpovtqLmwi3ckrC3b2zCqEZ4+z
+        xGWNDy5+y47BnSTFOMKjt7ypHbZZOl2AX1Tc1xealn3gAYkHnTlnTD8lJATgka5zUjf0SE
+        YHMczVfmDU81h3pTwvH4iOana4XEsfRP40Q2uL/I9sy8FvEHTTeSQcMHm31jBKUkOeaTIJ
+        7ez57DqpusK8jyLaNG5vGlOjLpxGhKmYgYcMuFMrwcDJuxALQniTLCnjOnQcJw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1610451360;
+        s=2020e; t=1610460890;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=a5sjhOmifIrT2Py3V1i0s3HcR5HfPZJwj/KHXhMNUJI=;
-        b=zcVQmoUjNplPtfsLUYh9vKUfP48DDhUxL/bDcFcXDojtZi5rUat1D4vOhMr+wpxkNn2Sy/
-        V0RtwKjaJg7irjDg==
-From:   "tip-bot2 for Andy Lutomirski" <tip-bot2@linutronix.de>
+        bh=M/jFzWa0BcooDpIR8auJzgjzenvo/u0Q391Wtg/QO3Y=;
+        b=OqTMpI1yKj9u1SknJLeLja53sarl/H0K4mUBNIiwx+oxQJeOA7+p4G47hAyNG5cJ9jjiLf
+        xVi3YUIfmoisnTDA==
+From:   "tip-bot2 for Hao Lee" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/misc] selftests/x86: Use __builtin_ia32_read/writeeflags
-Cc:     Andy Lutomirski <luto@kernel.org>, Borislav Petkov <bp@suse.de>,
+Subject: [tip: x86/cleanups] x86/entry: Remove now unused do_IRQ() declaration
+Cc:     Hao Lee <haolee.swjtu@gmail.com>, Borislav Petkov <bp@suse.de>,
         x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <aee4b1cdfc56083eb779ce927b7d3459aad2af76.1604346818.git.luto@kernel.org>
-References: <aee4b1cdfc56083eb779ce927b7d3459aad2af76.1604346818.git.luto@kernel.org>
+In-Reply-To: <20210103030834.GA15432@haolee.github.io>
+References: <20210103030834.GA15432@haolee.github.io>
 MIME-Version: 1.0
-Message-ID: <161045135928.414.3841470312504984374.tip-bot2@tip-bot2>
+Message-ID: <161046088982.414.245132272230243029.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,73 +55,40 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/misc branch of tip:
+The following commit has been merged into the x86/cleanups branch of tip:
 
-Commit-ID:     9297e602adf8d5587d83941c48e4dbae46c8df5f
-Gitweb:        https://git.kernel.org/tip/9297e602adf8d5587d83941c48e4dbae46c8df5f
-Author:        Andy Lutomirski <luto@kernel.org>
-AuthorDate:    Mon, 02 Nov 2020 11:54:02 -08:00
+Commit-ID:     11aa1415d8bd2920ce884356479eabbd64b1df2a
+Gitweb:        https://git.kernel.org/tip/11aa1415d8bd2920ce884356479eabbd64b1df2a
+Author:        Hao Lee <haolee.swjtu@gmail.com>
+AuthorDate:    Sun, 03 Jan 2021 03:08:34 
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 12 Jan 2021 12:31:28 +01:00
+CommitterDate: Tue, 12 Jan 2021 14:37:37 +01:00
 
-selftests/x86: Use __builtin_ia32_read/writeeflags
+x86/entry: Remove now unused do_IRQ() declaration
 
-The asm to read and write EFLAGS from userspace is horrible.  The
-compiler builtins are now available on all supported compilers, so
-use them instead.
+do_IRQ() has been replaced by common_interrupt() in
 
-(The compiler builtins are also unnecessarily ugly, but that's a
- more manageable level of ugliness.)
+  fa5e5c409213 ("x86/entry: Use idtentry for interrupts")
 
-Signed-off-by: Andy Lutomirski <luto@kernel.org>
+Remove its now unused declaration.
+
+Signed-off-by: Hao Lee <haolee.swjtu@gmail.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/aee4b1cdfc56083eb779ce927b7d3459aad2af76.1604346818.git.luto@kernel.org
+Link: https://lkml.kernel.org/r/20210103030834.GA15432@haolee.github.io
 ---
- tools/testing/selftests/x86/helpers.h | 24 ++++--------------------
- 1 file changed, 4 insertions(+), 20 deletions(-)
+ arch/x86/include/asm/irq.h | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/tools/testing/selftests/x86/helpers.h b/tools/testing/selftests/x86/helpers.h
-index f5ff2a2..4ef42c4 100644
---- a/tools/testing/selftests/x86/helpers.h
-+++ b/tools/testing/selftests/x86/helpers.h
-@@ -6,36 +6,20 @@
+diff --git a/arch/x86/include/asm/irq.h b/arch/x86/include/asm/irq.h
+index 528c8a7..76d3896 100644
+--- a/arch/x86/include/asm/irq.h
++++ b/arch/x86/include/asm/irq.h
+@@ -40,8 +40,6 @@ extern void native_init_IRQ(void);
  
- static inline unsigned long get_eflags(void)
- {
--	unsigned long eflags;
+ extern void __handle_irq(struct irq_desc *desc, struct pt_regs *regs);
+ 
+-extern __visible void do_IRQ(struct pt_regs *regs, unsigned long vector);
 -
--	asm volatile (
- #ifdef __x86_64__
--		"subq $128, %%rsp\n\t"
--		"pushfq\n\t"
--		"popq %0\n\t"
--		"addq $128, %%rsp"
-+	return __builtin_ia32_readeflags_u64();
- #else
--		"pushfl\n\t"
--		"popl %0"
-+	return __builtin_ia32_readeflags_u32();
- #endif
--		: "=r" (eflags) :: "memory");
--
--	return eflags;
- }
+ extern void init_ISA_irqs(void);
  
- static inline void set_eflags(unsigned long eflags)
- {
--	asm volatile (
- #ifdef __x86_64__
--		"subq $128, %%rsp\n\t"
--		"pushq %0\n\t"
--		"popfq\n\t"
--		"addq $128, %%rsp"
-+	__builtin_ia32_writeeflags_u64(eflags);
- #else
--		"pushl %0\n\t"
--		"popfl"
-+	__builtin_ia32_writeeflags_u32(eflags);
- #endif
--		:: "r" (eflags) : "flags", "memory");
- }
- 
- #endif /* __SELFTESTS_X86_HELPERS_H */
+ extern void __init init_IRQ(void);
