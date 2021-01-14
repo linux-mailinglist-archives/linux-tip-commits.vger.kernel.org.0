@@ -2,53 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C7DAE2F5FF7
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 14 Jan 2021 12:31:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B7382F6004
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 14 Jan 2021 12:31:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728199AbhANL3t (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 14 Jan 2021 06:29:49 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:58904 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728055AbhANL3s (ORCPT
+        id S1728824AbhANLa0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 14 Jan 2021 06:30:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54472 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726948AbhANLaW (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 14 Jan 2021 06:29:48 -0500
+        Thu, 14 Jan 2021 06:30:22 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4DC6C0613D6;
+        Thu, 14 Jan 2021 03:29:07 -0800 (PST)
 Date:   Thu, 14 Jan 2021 11:29:05 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1610623745;
+        s=2020; t=1610623746;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Sn9wm9AmwvZJdzJF1wjtaq0gmxKSO8U0ba6MoztGgcM=;
-        b=ochAxpRG+bZLN+i/lOOAJLlGkC3dtBZhXBTzRcCvEvi128wOwUC1raUWCyWEzDn5Rv30Yf
-        b37SYy5CeGZ9hCDGgnpbUqaSFhTdFajsNyrR5EsuWapB5L+9RoSp6JfJI0NfPQabbAJqiE
-        Z3eQly+RENbL3TBxScDESL4Bann8LdJ0ylnG/D1KriaYB6vnsFEX4U2xn1WQLu5PQnoeTS
-        tiIGBZzf/iuKO9LB4bYM78+nQRgG+m+sFepKp1VeRBx5EfenrdT0uTF4PiahvS/ex8THpQ
-        FoZDHC55WqAwWwylk03kYn6IdFFq3R6/VlLIPtvAy9vHE4KUbYmjN227VQXOEw==
+        bh=/UusE7S7X/Bu4d8l/hL8T9ugF+/T68MT1V1isQyK0UQ=;
+        b=Yz/1srcsCEvHHQnke19KCI7znxgRWzb050x+LicErlxup7tGnTPbwgEYfUr6FCFbv224em
+        1Co+tFrXlDo27G38KCjiZ/H3aM1c5yFjpQdmXvKmLDqdKygzE3Af/epdXqrsuEgagEqT0H
+        CPeGB/d39pxNS3yQvj9r9LYTHldZ6MQLzZfPuLSse61uAi//Th3aWWT4n6tONvij1oS+YY
+        9/7A+p5mbRl3DzNobQEv2N/CtmkmD4tnUdt9qrQDZokVkVPcDqJEyQsupHCwOmrtG/EJTK
+        pHl6abORVIq5tBwYo+We9PIraQtoYMo074AQLN6IR8bj5oo/LLy/g2p2MPi/0w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1610623745;
+        s=2020e; t=1610623746;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Sn9wm9AmwvZJdzJF1wjtaq0gmxKSO8U0ba6MoztGgcM=;
-        b=xAEKSYpaIRDuFtmZoMxhL6CpdoqPkutiKhaB+b5tVkKEVqOrNABJ23ENWHQ5DWdBlYH26b
-        GvZFSlQckzIiiJCw==
-From:   "tip-bot2 for Hui Su" <tip-bot2@linutronix.de>
+        bh=/UusE7S7X/Bu4d8l/hL8T9ugF+/T68MT1V1isQyK0UQ=;
+        b=61V8Zv5daCHVdWC1sJrQM+eGKFA51NwGEoQ85MKK+bOerACU2BIAIVsRhredi+fdfuFcDI
+        uYMk7J+7Wwy5wDAQ==
+From:   "tip-bot2 for Vincent Guittot" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched: Use task_current() instead of 'rq->curr == p'
-Cc:     Hui Su <sh_def@163.com>,
+Subject: [tip: sched/core] sched/fair: Reduce cases for active balance
+Cc:     Vincent Guittot <vincent.guittot@linaro.org>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        "Steven Rostedt (VMware)" <rostedt@goodmis.org>, x86@kernel.org,
+        Valentin Schneider <valentin.schneider@arm.com>,
+        Mel Gorman <mgorman@suse.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20201030173223.GA52339@rlk>
-References: <20201030173223.GA52339@rlk>
+In-Reply-To: <20210107103325.30851-4-vincent.guittot@linaro.org>
+References: <20210107103325.30851-4-vincent.guittot@linaro.org>
 MIME-Version: 1.0
-Message-ID: <161062374538.414.11462783395036200170.tip-bot2@tip-bot2>
+Message-ID: <161062374566.414.13015378085673509435.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,97 +63,112 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     65bcf072e20ed7597caa902f170f293662b0af3c
-Gitweb:        https://git.kernel.org/tip/65bcf072e20ed7597caa902f170f293662b0af3c
-Author:        Hui Su <sh_def@163.com>
-AuthorDate:    Sat, 31 Oct 2020 01:32:23 +08:00
+Commit-ID:     e9b9734b74656abb585a7f6fabf1d30ce00e51ea
+Gitweb:        https://git.kernel.org/tip/e9b9734b74656abb585a7f6fabf1d30ce00e51ea
+Author:        Vincent Guittot <vincent.guittot@linaro.org>
+AuthorDate:    Thu, 07 Jan 2021 11:33:25 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Thu, 14 Jan 2021 11:20:11 +01:00
 
-sched: Use task_current() instead of 'rq->curr == p'
+sched/fair: Reduce cases for active balance
 
-Use the task_current() function where appropriate.
+Active balance is triggered for a number of voluntary cases like misfit
+or pinned tasks cases but also after that a number of load balance
+attempts failed to migrate a task. There is no need to use active load
+balance when the group is overloaded because an overloaded state means
+that there is at least one waiting task. Nevertheless, the waiting task
+is not selected and detached until the threshold becomes higher than its
+load. This threshold increases with the number of failed lb (see the
+condition if ((load >> env->sd->nr_balance_failed) > env->imbalance) in
+detach_tasks()) and the waiting task will end up to be selected after a
+number of attempts.
 
-No functional change.
-
-Signed-off-by: Hui Su <sh_def@163.com>
+Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
-Link: https://lkml.kernel.org/r/20201030173223.GA52339@rlk
+Reviewed-by: Valentin Schneider <valentin.schneider@arm.com>
+Acked-by: Mel Gorman <mgorman@suse.de>
+Link: https://lkml.kernel.org/r/20210107103325.30851-4-vincent.guittot@linaro.org
 ---
- kernel/sched/deadline.c | 2 +-
- kernel/sched/debug.c    | 2 +-
- kernel/sched/fair.c     | 6 +++---
- kernel/sched/rt.c       | 2 +-
- 4 files changed, 6 insertions(+), 6 deletions(-)
+ kernel/sched/fair.c | 45 ++++++++++++++++++++++----------------------
+ 1 file changed, 23 insertions(+), 22 deletions(-)
 
-diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
-index 75686c6..5421782 100644
---- a/kernel/sched/deadline.c
-+++ b/kernel/sched/deadline.c
-@@ -2514,7 +2514,7 @@ static void switched_to_dl(struct rq *rq, struct task_struct *p)
- static void prio_changed_dl(struct rq *rq, struct task_struct *p,
- 			    int oldprio)
- {
--	if (task_on_rq_queued(p) || rq->curr == p) {
-+	if (task_on_rq_queued(p) || task_current(rq, p)) {
- #ifdef CONFIG_SMP
- 		/*
- 		 * This might be too much, but unfortunately
-diff --git a/kernel/sched/debug.c b/kernel/sched/debug.c
-index 2357921..486f403 100644
---- a/kernel/sched/debug.c
-+++ b/kernel/sched/debug.c
-@@ -486,7 +486,7 @@ static char *task_group_path(struct task_group *tg)
- static void
- print_task(struct seq_file *m, struct rq *rq, struct task_struct *p)
- {
--	if (rq->curr == p)
-+	if (task_current(rq, p))
- 		SEQ_printf(m, ">R");
- 	else
- 		SEQ_printf(m, " %c", task_state_to_char(p));
 diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 53802b7..197a514 100644
+index 48f99c8..53802b7 100644
 --- a/kernel/sched/fair.c
 +++ b/kernel/sched/fair.c
-@@ -5430,7 +5430,7 @@ static void hrtick_start_fair(struct rq *rq, struct task_struct *p)
- 		s64 delta = slice - ran;
+@@ -9512,13 +9512,32 @@ asym_active_balance(struct lb_env *env)
+ }
  
- 		if (delta < 0) {
--			if (rq->curr == p)
-+			if (task_current(rq, p))
- 				resched_curr(rq);
- 			return;
+ static inline bool
+-voluntary_active_balance(struct lb_env *env)
++imbalanced_active_balance(struct lb_env *env)
++{
++	struct sched_domain *sd = env->sd;
++
++	/*
++	 * The imbalanced case includes the case of pinned tasks preventing a fair
++	 * distribution of the load on the system but also the even distribution of the
++	 * threads on a system with spare capacity
++	 */
++	if ((env->migration_type == migrate_task) &&
++	    (sd->nr_balance_failed > sd->cache_nice_tries+2))
++		return 1;
++
++	return 0;
++}
++
++static int need_active_balance(struct lb_env *env)
+ {
+ 	struct sched_domain *sd = env->sd;
+ 
+ 	if (asym_active_balance(env))
+ 		return 1;
+ 
++	if (imbalanced_active_balance(env))
++		return 1;
++
+ 	/*
+ 	 * The dst_cpu is idle and the src_cpu CPU has only 1 CFS task.
+ 	 * It's worth migrating the task if the src_cpu's capacity is reduced
+@@ -9538,16 +9557,6 @@ voluntary_active_balance(struct lb_env *env)
+ 	return 0;
+ }
+ 
+-static int need_active_balance(struct lb_env *env)
+-{
+-	struct sched_domain *sd = env->sd;
+-
+-	if (voluntary_active_balance(env))
+-		return 1;
+-
+-	return unlikely(sd->nr_balance_failed > sd->cache_nice_tries+2);
+-}
+-
+ static int active_load_balance_cpu_stop(void *data);
+ 
+ static int should_we_balance(struct lb_env *env)
+@@ -9800,21 +9809,13 @@ more_balance:
+ 			/* We've kicked active balancing, force task migration. */
+ 			sd->nr_balance_failed = sd->cache_nice_tries+1;
  		}
-@@ -10829,7 +10829,7 @@ prio_changed_fair(struct rq *rq, struct task_struct *p, int oldprio)
- 	 * our priority decreased, or if we are not currently running on
- 	 * this runqueue and our priority is higher than the current's
- 	 */
--	if (rq->curr == p) {
-+	if (task_current(rq, p)) {
- 		if (p->prio > oldprio)
- 			resched_curr(rq);
- 	} else
-@@ -10962,7 +10962,7 @@ static void switched_to_fair(struct rq *rq, struct task_struct *p)
- 		 * kick off the schedule if running, otherwise just see
- 		 * if we can still preempt the current task.
- 		 */
--		if (rq->curr == p)
-+		if (task_current(rq, p))
- 			resched_curr(rq);
- 		else
- 			check_preempt_curr(rq, p, 0);
-diff --git a/kernel/sched/rt.c b/kernel/sched/rt.c
-index dbe4629..8f720b7 100644
---- a/kernel/sched/rt.c
-+++ b/kernel/sched/rt.c
-@@ -2357,7 +2357,7 @@ prio_changed_rt(struct rq *rq, struct task_struct *p, int oldprio)
- 	if (!task_on_rq_queued(p))
- 		return;
+-	} else
++	} else {
+ 		sd->nr_balance_failed = 0;
++	}
  
--	if (rq->curr == p) {
-+	if (task_current(rq, p)) {
- #ifdef CONFIG_SMP
- 		/*
- 		 * If our priority decreases while running, we
+-	if (likely(!active_balance) || voluntary_active_balance(&env)) {
++	if (likely(!active_balance) || need_active_balance(&env)) {
+ 		/* We were unbalanced, so reset the balancing interval */
+ 		sd->balance_interval = sd->min_interval;
+-	} else {
+-		/*
+-		 * If we've begun active balancing, start to back off. This
+-		 * case may not be covered by the all_pinned logic if there
+-		 * is only 1 task on the busy runqueue (because we don't call
+-		 * detach_tasks).
+-		 */
+-		if (sd->balance_interval < sd->max_interval)
+-			sd->balance_interval *= 2;
+ 	}
+ 
+ 	goto out;
