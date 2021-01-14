@@ -2,58 +2,59 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DE7222F6017
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 14 Jan 2021 12:31:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 358932F600F
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 14 Jan 2021 12:31:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726984AbhANLbC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 14 Jan 2021 06:31:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54476 "EHLO
+        id S1728964AbhANLar (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 14 Jan 2021 06:30:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54490 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727967AbhANLaW (ORCPT
+        with ESMTP id S1728814AbhANLaY (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 14 Jan 2021 06:30:22 -0500
+        Thu, 14 Jan 2021 06:30:24 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EB40C061786;
-        Thu, 14 Jan 2021 03:29:08 -0800 (PST)
-Date:   Thu, 14 Jan 2021 11:29:06 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 184C1C061795;
+        Thu, 14 Jan 2021 03:29:10 -0800 (PST)
+Date:   Thu, 14 Jan 2021 11:29:07 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1610623746;
+        s=2020; t=1610623747;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=P+cdyo6L9objzX/ld2AADn9MmuuOJQmG6rTY9Evb4/A=;
-        b=xUz0Ywab9PxwmPNBEyUYvLJDgIIoR18FLZJpdOWjtDgrKCrDCLl6n11M6zMpqrqoNAAD1a
-        yZHfNwjrxyY5PY7WmL2J6cf67Sz8+zG/g+kUCwBNkGI2XnBU3thDavogRMBul2MwVaFsHv
-        4uhayLa8vnLic8c0DsfiPhhCPJmae57LsdLu0r4DnvBSPqAnBMYqF8mwA0XIXBVriLwNV0
-        q1n7dycljNALh9Hd0JKQXAdI92RIXNkWerc0e/g3be6RiZ23t+XC0kpWXsv/yLqVkvC/dF
-        uhiNwicBNCzXi76ctM0vvoX2vodXE9XrSPl6L7JBdDginEFVmMjLQtHiQNckkg==
+        bh=Jj5vVRZBtqnAfJy8dky3jq/Os8/iyU/xJg/chTv7SsA=;
+        b=aK3aCvM+ahNYXS6Yz6/yXANQKHYTsMxvd+b1AVU1N1jlcqm7Ktx+rbz75dRUrHjb2/l9hf
+        aXBflEvgeTI/MMVBdQ9ZN4mgfcbl9/W6F/key6fTdJWfMiMGe9LKjbA2HKdC3c4LiPkghJ
+        BJjhqR9/MDriWCOnloAql3oShlHeqBtTUxOJCY7n18dBjqrJc4MygCNfgfgbw2A/lGpbDZ
+        0n9pdQJEHJm4nopY8Mp4Vleu04DBsVdzAwSMbF9v80ItgdA5WgVV+UMk02mnm+Quemq2G8
+        fcp6zqe5ozCLxB+xNbxuGzcbmlfq30ISNWVb9ZqQFotnShJ2WZHzE3bl0KnZyA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1610623746;
+        s=2020e; t=1610623747;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=P+cdyo6L9objzX/ld2AADn9MmuuOJQmG6rTY9Evb4/A=;
-        b=J3BjJCtYIkCLoGHe/YVlEnGNJOpycwkHfyGeSVrebKRWTr6W5JZ9dbrLB7w8GOXX3slzCj
-        z+BDOp7ZCMsIW9Dg==
-From:   "tip-bot2 for Xuewen Yan" <tip-bot2@linutronix.de>
+        bh=Jj5vVRZBtqnAfJy8dky3jq/Os8/iyU/xJg/chTv7SsA=;
+        b=dxuak0e6332AD6l+w3H84GwpNhmeb4r39LnYw02gJx53Fl0xHlcLeNYT98QCPkSglIojko
+        7MTXr9VZEB54oKBg==
+From:   "tip-bot2 for Viresh Kumar" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/fair: Avoid stale CPU util_est value for
- schedutil in task dequeue
-Cc:     Xuewen Yan <xuewen.yan@unisoc.com>,
+Subject: [tip: sched/core] sched/core: Rename schedutil_cpu_util() and allow
+ rest of the kernel to use it
+Cc:     Viresh Kumar <viresh.kumar@linaro.org>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>, x86@kernel.org,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <1608283672-18240-1-git-send-email-xuewen.yan94@gmail.com>
-References: <1608283672-18240-1-git-send-email-xuewen.yan94@gmail.com>
+In-Reply-To: =?utf-8?q?=3Cdb011961fb3bb8bef1c0eda5cd64564637d3ef31=2E16074?=
+ =?utf-8?q?00596=2Egit=2Eviresh=2Ekumar=40linaro=2Eorg=3E?=
+References: =?utf-8?q?=3Cdb011961fb3bb8bef1c0eda5cd64564637d3ef31=2E160740?=
+ =?utf-8?q?0596=2Egit=2Eviresh=2Ekumar=40linaro=2Eorg=3E?=
 MIME-Version: 1.0
-Message-ID: <161062374634.414.4052128476465595493.tip-bot2@tip-bot2>
+Message-ID: <161062374723.414.15375550750639828007.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -64,153 +65,149 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     8c1f560c1ea3f19e22ba356f62680d9d449c9ec2
-Gitweb:        https://git.kernel.org/tip/8c1f560c1ea3f19e22ba356f62680d9d449c9ec2
-Author:        Xuewen Yan <xuewen.yan@unisoc.com>
-AuthorDate:    Fri, 18 Dec 2020 17:27:52 +08:00
+Commit-ID:     a5418be9dffe70ccbb0b4bd5ea3881c81927e965
+Gitweb:        https://git.kernel.org/tip/a5418be9dffe70ccbb0b4bd5ea3881c81927e965
+Author:        Viresh Kumar <viresh.kumar@linaro.org>
+AuthorDate:    Tue, 08 Dec 2020 09:46:56 +05:30
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Thu, 14 Jan 2021 11:20:10 +01:00
+CommitterDate: Thu, 14 Jan 2021 11:20:09 +01:00
 
-sched/fair: Avoid stale CPU util_est value for schedutil in task dequeue
+sched/core: Rename schedutil_cpu_util() and allow rest of the kernel to use it
 
-CPU (root cfs_rq) estimated utilization (util_est) is currently used in
-dequeue_task_fair() to drive frequency selection before it is updated.
+There is nothing schedutil specific in schedutil_cpu_util(), rename it
+to effective_cpu_util(). Also create and expose another wrapper
+sched_cpu_util() which can be used by other parts of the kernel, like
+thermal core (that will be done in a later commit).
 
-with:
-
-CPU_util        : rq->cfs.avg.util_avg
-CPU_util_est    : rq->cfs.avg.util_est
-CPU_utilization : max(CPU_util, CPU_util_est)
-task_util       : p->se.avg.util_avg
-task_util_est   : p->se.avg.util_est
-
-dequeue_task_fair():
-
-    /* (1) CPU_util and task_util update + inform schedutil about
-           CPU_utilization changes */
-    for_each_sched_entity() /* 2 loops */
-        (dequeue_entity() ->) update_load_avg() -> cfs_rq_util_change()
-         -> cpufreq_update_util() ->...-> sugov_update_[shared\|single]
-         -> sugov_get_util() -> cpu_util_cfs()
-
-    /* (2) CPU_util_est and task_util_est update */
-    util_est_dequeue()
-
-cpu_util_cfs() uses CPU_utilization which could lead to a false (too
-high) utilization value for schedutil in task ramp-down or ramp-up
-scenarios during task dequeue.
-
-To mitigate the issue split the util_est update (2) into:
-
- (A) CPU_util_est update in util_est_dequeue()
- (B) task_util_est update in util_est_update()
-
-Place (A) before (1) and keep (B) where (2) is. The latter is necessary
-since (B) relies on task_util update in (1).
-
-Fixes: 7f65ea42eb00 ("sched/fair: Add util_est on top of PELT")
-Signed-off-by: Xuewen Yan <xuewen.yan@unisoc.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
-Link: https://lkml.kernel.org/r/1608283672-18240-1-git-send-email-xuewen.yan94@gmail.com
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://lkml.kernel.org/r/db011961fb3bb8bef1c0eda5cd64564637d3ef31.1607400596.git.viresh.kumar@linaro.org
 ---
- kernel/sched/fair.c | 43 ++++++++++++++++++++++++++++---------------
- 1 file changed, 28 insertions(+), 15 deletions(-)
+ include/linux/sched.h            |  5 +++++
+ kernel/sched/core.c              | 10 ++++++++--
+ kernel/sched/cpufreq_schedutil.c |  2 +-
+ kernel/sched/fair.c              |  6 +++---
+ kernel/sched/sched.h             | 10 +++++-----
+ 5 files changed, 22 insertions(+), 11 deletions(-)
 
+diff --git a/include/linux/sched.h b/include/linux/sched.h
+index 6e3a5ee..31169e7 100644
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -1968,6 +1968,11 @@ extern long sched_getaffinity(pid_t pid, struct cpumask *mask);
+ #define TASK_SIZE_OF(tsk)	TASK_SIZE
+ #endif
+ 
++#ifdef CONFIG_SMP
++/* Returns effective CPU energy utilization, as seen by the scheduler */
++unsigned long sched_cpu_util(int cpu, unsigned long max);
++#endif /* CONFIG_SMP */
++
+ #ifdef CONFIG_RSEQ
+ 
+ /*
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index d89d682..4fe4cbf 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -5683,8 +5683,8 @@ struct task_struct *idle_task(int cpu)
+  * based on the task model parameters and gives the minimal utilization
+  * required to meet deadlines.
+  */
+-unsigned long schedutil_cpu_util(int cpu, unsigned long util_cfs,
+-				 unsigned long max, enum schedutil_type type,
++unsigned long effective_cpu_util(int cpu, unsigned long util_cfs,
++				 unsigned long max, enum cpu_util_type type,
+ 				 struct task_struct *p)
+ {
+ 	unsigned long dl_util, util, irq;
+@@ -5768,6 +5768,12 @@ unsigned long schedutil_cpu_util(int cpu, unsigned long util_cfs,
+ 
+ 	return min(max, util);
+ }
++
++unsigned long sched_cpu_util(int cpu, unsigned long max)
++{
++	return effective_cpu_util(cpu, cpu_util_cfs(cpu_rq(cpu)), max,
++				  ENERGY_UTIL, NULL);
++}
+ #endif /* CONFIG_SMP */
+ 
+ /**
+diff --git a/kernel/sched/cpufreq_schedutil.c b/kernel/sched/cpufreq_schedutil.c
+index 1dfa692..41e498b 100644
+--- a/kernel/sched/cpufreq_schedutil.c
++++ b/kernel/sched/cpufreq_schedutil.c
+@@ -178,7 +178,7 @@ static void sugov_get_util(struct sugov_cpu *sg_cpu)
+ 
+ 	sg_cpu->max = max;
+ 	sg_cpu->bw_dl = cpu_bw_dl(rq);
+-	sg_cpu->util = schedutil_cpu_util(sg_cpu->cpu, cpu_util_cfs(rq), max,
++	sg_cpu->util = effective_cpu_util(sg_cpu->cpu, cpu_util_cfs(rq), max,
+ 					  FREQUENCY_UTIL, NULL);
+ }
+ 
 diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 389cb58..40d3ebf 100644
+index 04a3ce2..39c5bda 100644
 --- a/kernel/sched/fair.c
 +++ b/kernel/sched/fair.c
-@@ -3943,6 +3943,22 @@ static inline void util_est_enqueue(struct cfs_rq *cfs_rq,
- 	trace_sched_util_est_cfs_tp(cfs_rq);
+@@ -6543,7 +6543,7 @@ compute_energy(struct task_struct *p, int dst_cpu, struct perf_domain *pd)
+ 		 * is already enough to scale the EM reported power
+ 		 * consumption at the (eventually clamped) cpu_capacity.
+ 		 */
+-		sum_util += schedutil_cpu_util(cpu, util_cfs, cpu_cap,
++		sum_util += effective_cpu_util(cpu, util_cfs, cpu_cap,
+ 					       ENERGY_UTIL, NULL);
+ 
+ 		/*
+@@ -6553,7 +6553,7 @@ compute_energy(struct task_struct *p, int dst_cpu, struct perf_domain *pd)
+ 		 * NOTE: in case RT tasks are running, by default the
+ 		 * FREQUENCY_UTIL's utilization can be max OPP.
+ 		 */
+-		cpu_util = schedutil_cpu_util(cpu, util_cfs, cpu_cap,
++		cpu_util = effective_cpu_util(cpu, util_cfs, cpu_cap,
+ 					      FREQUENCY_UTIL, tsk);
+ 		max_util = max(max_util, cpu_util);
+ 	}
+@@ -6651,7 +6651,7 @@ static int find_energy_efficient_cpu(struct task_struct *p, int prev_cpu)
+ 			 * IOW, placing the task there would make the CPU
+ 			 * overutilized. Take uclamp into account to see how
+ 			 * much capacity we can get out of the CPU; this is
+-			 * aligned with schedutil_cpu_util().
++			 * aligned with sched_cpu_util().
+ 			 */
+ 			util = uclamp_rq_util_with(cpu_rq(cpu), util, p);
+ 			if (!fits_capacity(util, cpu_cap))
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index 242d4c5..045b010 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -2559,22 +2559,22 @@ static inline unsigned long capacity_orig_of(int cpu)
  }
  
-+static inline void util_est_dequeue(struct cfs_rq *cfs_rq,
-+				    struct task_struct *p)
-+{
-+	unsigned int enqueued;
-+
-+	if (!sched_feat(UTIL_EST))
-+		return;
-+
-+	/* Update root cfs_rq's estimated utilization */
-+	enqueued  = cfs_rq->avg.util_est.enqueued;
-+	enqueued -= min_t(unsigned int, enqueued, _task_util_est(p));
-+	WRITE_ONCE(cfs_rq->avg.util_est.enqueued, enqueued);
-+
-+	trace_sched_util_est_cfs_tp(cfs_rq);
-+}
-+
- /*
-  * Check if a (signed) value is within a specified (unsigned) margin,
-  * based on the observation that:
-@@ -3956,23 +3972,16 @@ static inline bool within_margin(int value, int margin)
- 	return ((unsigned int)(value + margin - 1) < (2 * margin - 1));
- }
+ /**
+- * enum schedutil_type - CPU utilization type
++ * enum cpu_util_type - CPU utilization type
+  * @FREQUENCY_UTIL:	Utilization used to select frequency
+  * @ENERGY_UTIL:	Utilization used during energy calculation
+  *
+  * The utilization signals of all scheduling classes (CFS/RT/DL) and IRQ time
+  * need to be aggregated differently depending on the usage made of them. This
+- * enum is used within schedutil_freq_util() to differentiate the types of
++ * enum is used within effective_cpu_util() to differentiate the types of
+  * utilization expected by the callers, and adjust the aggregation accordingly.
+  */
+-enum schedutil_type {
++enum cpu_util_type {
+ 	FREQUENCY_UTIL,
+ 	ENERGY_UTIL,
+ };
  
--static void
--util_est_dequeue(struct cfs_rq *cfs_rq, struct task_struct *p, bool task_sleep)
-+static inline void util_est_update(struct cfs_rq *cfs_rq,
-+				   struct task_struct *p,
-+				   bool task_sleep)
- {
- 	long last_ewma_diff;
- 	struct util_est ue;
--	int cpu;
+-unsigned long schedutil_cpu_util(int cpu, unsigned long util_cfs,
+-				 unsigned long max, enum schedutil_type type,
++unsigned long effective_cpu_util(int cpu, unsigned long util_cfs,
++				 unsigned long max, enum cpu_util_type type,
+ 				 struct task_struct *p);
  
- 	if (!sched_feat(UTIL_EST))
- 		return;
- 
--	/* Update root cfs_rq's estimated utilization */
--	ue.enqueued  = cfs_rq->avg.util_est.enqueued;
--	ue.enqueued -= min_t(unsigned int, ue.enqueued, _task_util_est(p));
--	WRITE_ONCE(cfs_rq->avg.util_est.enqueued, ue.enqueued);
--
--	trace_sched_util_est_cfs_tp(cfs_rq);
--
- 	/*
- 	 * Skip update of task's estimated utilization when the task has not
- 	 * yet completed an activation, e.g. being migrated.
-@@ -4012,8 +4021,7 @@ util_est_dequeue(struct cfs_rq *cfs_rq, struct task_struct *p, bool task_sleep)
- 	 * To avoid overestimation of actual task utilization, skip updates if
- 	 * we cannot grant there is idle time in this CPU.
- 	 */
--	cpu = cpu_of(rq_of(cfs_rq));
--	if (task_util(p) > capacity_orig_of(cpu))
-+	if (task_util(p) > capacity_orig_of(cpu_of(rq_of(cfs_rq))))
- 		return;
- 
- 	/*
-@@ -4096,8 +4104,11 @@ static inline void
- util_est_enqueue(struct cfs_rq *cfs_rq, struct task_struct *p) {}
- 
- static inline void
--util_est_dequeue(struct cfs_rq *cfs_rq, struct task_struct *p,
--		 bool task_sleep) {}
-+util_est_dequeue(struct cfs_rq *cfs_rq, struct task_struct *p) {}
-+
-+static inline void
-+util_est_update(struct cfs_rq *cfs_rq, struct task_struct *p,
-+		bool task_sleep) {}
- static inline void update_misfit_status(struct task_struct *p, struct rq *rq) {}
- 
- #endif /* CONFIG_SMP */
-@@ -5609,6 +5620,8 @@ static void dequeue_task_fair(struct rq *rq, struct task_struct *p, int flags)
- 	int idle_h_nr_running = task_has_idle_policy(p);
- 	bool was_sched_idle = sched_idle_rq(rq);
- 
-+	util_est_dequeue(&rq->cfs, p);
-+
- 	for_each_sched_entity(se) {
- 		cfs_rq = cfs_rq_of(se);
- 		dequeue_entity(cfs_rq, se, flags);
-@@ -5659,7 +5672,7 @@ static void dequeue_task_fair(struct rq *rq, struct task_struct *p, int flags)
- 		rq->next_balance = jiffies;
- 
- dequeue_throttle:
--	util_est_dequeue(&rq->cfs, p, task_sleep);
-+	util_est_update(&rq->cfs, p, task_sleep);
- 	hrtick_update(rq);
- }
- 
+ static inline unsigned long cpu_bw_dl(struct rq *rq)
