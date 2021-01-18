@@ -2,97 +2,166 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D2A112F8E03
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 16 Jan 2021 18:16:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D4622F9DA8
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 18 Jan 2021 12:12:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726848AbhAPRNE (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 16 Jan 2021 12:13:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39210 "EHLO
+        id S2389155AbhARKsS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 18 Jan 2021 05:48:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55524 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728417AbhAPRKr (ORCPT
+        with ESMTP id S2389763AbhARKOh (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 16 Jan 2021 12:10:47 -0500
-Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8D11C061799;
-        Sat, 16 Jan 2021 05:21:45 -0800 (PST)
-Received: from zn.tnic (p200300ec2f1d4300a881d5f5d537354a.dip0.t-ipconnect.de [IPv6:2003:ec:2f1d:4300:a881:d5f5:d537:354a])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 456DB1EC01DF;
-        Sat, 16 Jan 2021 14:21:43 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1610803303;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=7Zz10OE8XpyB0dTcgWlutqLK3n0EMs6JDbH60sWPGjI=;
-        b=CbV98VLLOHVuQ/AKo1pfRlAA5qICcSmRujq78EQi//jjOwhAOCFp70coT3RfnPVYriwief
-        fAK+NAaqlULyku7Lxb6rUroHgdgxF068uGAaiMjWxTBMCaG3yZf/lBUQqfTLDvEZsz5OU8
-        esQZRxOB+aMWxv93iu/wH7C4ijLPsAM=
-Date:   Sat, 16 Jan 2021 14:21:31 +0100
-From:   Borislav Petkov <bp@alien8.de>
-To:     x86-ml <x86@kernel.org>
-Cc:     linux-tip-commits@vger.kernel.org, Tom Rix <trix@redhat.com>,
-        "Steven Rostedt (VMware)" <rostedt@goodmis.org>, x86@kernel.org,
+        Mon, 18 Jan 2021 05:14:37 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48A68C0613ED;
+        Mon, 18 Jan 2021 02:13:34 -0800 (PST)
+Date:   Mon, 18 Jan 2021 10:13:31 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1610964812;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=IvmVZPP0VndjtYa6L8VFCBF6N0RsHzRUtXE/hWwsACc=;
+        b=4Uf2gEwafbqMpPzu+KOMsou5+iKxjSkRMnjx1SrS17iCwuvRwbaZk+WN5RfBEaDCq8dS94
+        4ZnOU2TmffFMxLgNdASnzi6mPwROQdJrfIdvREl++DT360hFE33Ytpvm53zb9JQ/pWjfXK
+        vDl07PnJW1b+jw2TgROLfxh+RyMMT11YfJSzxvGn4mSqX+Ry8Z7evmAGVASV2HXJjWom6/
+        FUKbrhLLMMzugO6zWiq8STLoWX+qvPIfiUfpF1/BqzEX4wabLkfqECMSRow9Xku3Z/tLDX
+        CifsNE6Sy8YRWIEu3gnZZXq0oRTusRoG9yBQsJ2YW30ZCeUie6UHRx2kBwN91w==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1610964812;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=IvmVZPP0VndjtYa6L8VFCBF6N0RsHzRUtXE/hWwsACc=;
+        b=7o6ScEduPFMcQTZ0/fa0gEd0Iy6dWxNXGRA6V3tqZqNarI2weEfMUOg1rZVSIf3nrM94oi
+        YBc0yNuIVOicMJBg==
+From:   "tip-bot2 for Martin Schwidefsky" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: objtool/core] objtool: Fix reloc generation on big endian
+ cross-compiles
+Cc:     Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Josh Poimboeuf <jpoimboe@redhat.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [tip: x86/cleanups] x86: Remove definition of DEBUG
-Message-ID: <20210116132131.GA5176@zn.tnic>
-References: <20210114212827.47584-1-trix@redhat.com>
- <161069669846.414.838011020047246326.tip-bot2@tip-bot2>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <161069669846.414.838011020047246326.tip-bot2@tip-bot2>
+Message-ID: <161096481208.414.14523335310723551001.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Fri, Jan 15, 2021 at 07:44:58AM -0000, tip-bot2 for Tom Rix wrote:
-> The following commit has been merged into the x86/cleanups branch of tip:
-> 
-> Commit-ID:     b86cb29287be07041b81f5611e37ae9ffabff876
-> Gitweb:        https://git.kernel.org/tip/b86cb29287be07041b81f5611e37ae9ffabff876
-> Author:        Tom Rix <trix@redhat.com>
-> AuthorDate:    Thu, 14 Jan 2021 13:28:27 -08:00
-> Committer:     Borislav Petkov <bp@suse.de>
-> CommitterDate: Fri, 15 Jan 2021 08:23:10 +01:00
-> 
-> x86: Remove definition of DEBUG
-> 
-> Defining DEBUG should only be done in development. So remove it.
-> 
-> Signed-off-by: Tom Rix <trix@redhat.com>
-> Signed-off-by: Borislav Petkov <bp@suse.de>
-> Acked-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
-> Link: https://lkml.kernel.org/r/20210114212827.47584-1-trix@redhat.com
-> ---
->  arch/x86/kernel/cpu/mtrr/generic.c | 1 -
->  arch/x86/kernel/cpu/mtrr/mtrr.c    | 2 --
+The following commit has been merged into the objtool/core branch of tip:
 
-Btw, this removes the MTRR ranges output from dmesg - something which
-we have had since forever. If you guys think it is still important for
-debugging purposes, I can resurrect it by making all those pr_info.
+Commit-ID:     a1a664ece586457e9f7652b0bc5b08386259e358
+Gitweb:        https://git.kernel.org/tip/a1a664ece586457e9f7652b0bc5b08386259e358
+Author:        Martin Schwidefsky <schwidefsky@de.ibm.com>
+AuthorDate:    Fri, 13 Nov 2020 00:03:26 +01:00
+Committer:     Josh Poimboeuf <jpoimboe@redhat.com>
+CommitterDate: Wed, 13 Jan 2021 18:13:12 -06:00
 
-This thing:
+objtool: Fix reloc generation on big endian cross-compiles
 
-MTRR default type: uncachable
-MTRR fixed ranges enabled:
-  00000-9FFFF write-back
-  A0000-BFFFF write-through
-  C0000-FFFFF write-protect
-MTRR variable ranges enabled:
-  0 base 000000000000 mask FFFF80000000 write-back
-  1 base 000080000000 mask FFFFC0000000 write-back
-  2 base 0000C0000000 mask FFFFE0000000 write-back
-  3 disabled
-  4 disabled
-  5 disabled
-  6 disabled
-  7 disabled
-TOM2: 0000000820000000 aka 33280M
+Relocations generated in elf_rebuild_rel[a]_reloc_section() are broken
+if objtool is built and run on a big endian system.
 
--- 
-Regards/Gruss,
-    Boris.
+The following errors pop up during x86 cross-compilation:
 
-https://people.kernel.org/tglx/notes-about-netiquette
+  x86_64-9.1.0-ld: fs/efivarfs/inode.o: bad reloc symbol index (0x2000000 >= 0x22) for offset 0 in section `.orc_unwind_ip'
+  x86_64-9.1.0-ld: final link failed: bad value
+
+Convert those functions to use gelf_update_rel[a](), similar to what
+elf_write_reloc() does.
+
+Signed-off-by: Martin Schwidefsky <schwidefsky@de.ibm.com>
+Co-developed-by: Vasily Gorbik <gor@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Masami Hiramatsu <mhiramat@kernel.org>
+Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
+---
+ tools/objtool/elf.c | 34 +++++++++++++++++++---------------
+ 1 file changed, 19 insertions(+), 15 deletions(-)
+
+diff --git a/tools/objtool/elf.c b/tools/objtool/elf.c
+index be89c74..c784122 100644
+--- a/tools/objtool/elf.c
++++ b/tools/objtool/elf.c
+@@ -855,25 +855,27 @@ static int elf_rebuild_rel_reloc_section(struct section *sec, int nr)
+ {
+ 	struct reloc *reloc;
+ 	int idx = 0, size;
+-	GElf_Rel *relocs;
++	void *buf;
+ 
+ 	/* Allocate a buffer for relocations */
+-	size = nr * sizeof(*relocs);
+-	relocs = malloc(size);
+-	if (!relocs) {
++	size = nr * sizeof(GElf_Rel);
++	buf = malloc(size);
++	if (!buf) {
+ 		perror("malloc");
+ 		return -1;
+ 	}
+ 
+-	sec->data->d_buf = relocs;
++	sec->data->d_buf = buf;
+ 	sec->data->d_size = size;
++	sec->data->d_type = ELF_T_REL;
+ 
+ 	sec->sh.sh_size = size;
+ 
+ 	idx = 0;
+ 	list_for_each_entry(reloc, &sec->reloc_list, list) {
+-		relocs[idx].r_offset = reloc->offset;
+-		relocs[idx].r_info = GELF_R_INFO(reloc->sym->idx, reloc->type);
++		reloc->rel.r_offset = reloc->offset;
++		reloc->rel.r_info = GELF_R_INFO(reloc->sym->idx, reloc->type);
++		gelf_update_rel(sec->data, idx, &reloc->rel);
+ 		idx++;
+ 	}
+ 
+@@ -884,26 +886,28 @@ static int elf_rebuild_rela_reloc_section(struct section *sec, int nr)
+ {
+ 	struct reloc *reloc;
+ 	int idx = 0, size;
+-	GElf_Rela *relocs;
++	void *buf;
+ 
+ 	/* Allocate a buffer for relocations with addends */
+-	size = nr * sizeof(*relocs);
+-	relocs = malloc(size);
+-	if (!relocs) {
++	size = nr * sizeof(GElf_Rela);
++	buf = malloc(size);
++	if (!buf) {
+ 		perror("malloc");
+ 		return -1;
+ 	}
+ 
+-	sec->data->d_buf = relocs;
++	sec->data->d_buf = buf;
+ 	sec->data->d_size = size;
++	sec->data->d_type = ELF_T_RELA;
+ 
+ 	sec->sh.sh_size = size;
+ 
+ 	idx = 0;
+ 	list_for_each_entry(reloc, &sec->reloc_list, list) {
+-		relocs[idx].r_offset = reloc->offset;
+-		relocs[idx].r_addend = reloc->addend;
+-		relocs[idx].r_info = GELF_R_INFO(reloc->sym->idx, reloc->type);
++		reloc->rela.r_offset = reloc->offset;
++		reloc->rela.r_addend = reloc->addend;
++		reloc->rela.r_info = GELF_R_INFO(reloc->sym->idx, reloc->type);
++		gelf_update_rela(sec->data, idx, &reloc->rela);
+ 		idx++;
+ 	}
+ 
