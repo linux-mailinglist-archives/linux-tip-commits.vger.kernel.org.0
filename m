@@ -2,14 +2,14 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E8602FAC03
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 18 Jan 2021 22:00:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 81CB02FAC01
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 18 Jan 2021 22:00:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390514AbhARU7m (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 18 Jan 2021 15:59:42 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:55338 "EHLO
+        id S2389944AbhARU7l (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 18 Jan 2021 15:59:41 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:55304 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389764AbhARKOi (ORCPT
+        with ESMTP id S2389761AbhARKOi (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Mon, 18 Jan 2021 05:14:38 -0500
 Date:   Mon, 18 Jan 2021 10:13:32 -0000
@@ -18,31 +18,33 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=+ASOL/HUcXT0Ylb7pBBnIWCkuW9iIUMnFxk/hpocQG0=;
-        b=dvVypYVjnNjBNPDjHHXgWAIq1RtM5gJabaCuCAFBsSwqR1Yis25mCff5BBsilNgSgEb2lM
-        RMi+RGsZIcv/tTVYWZvXLQQrVqyayr2Y2O00AuP9HlYGUNUHha0+gqCR5qziBEicPhDvZw
-        ZlnyxF4IdwXqTeTJSh5mTcbg7de3O8F/1VKD4MENC8P1ODrbyuu8R7TjrWukEXDoJ6N95+
-        PItz+obVBvPFQnSJrE0cDAeMXaVFef2pcfh0Ig56NkPPQIyUSaguqDpHqw822I/9jwqtft
-        u70diq3362uMYgtKUU1wktTwT8JYWiotsYLyv4qUEBb0KL9l5pKq627PAInUiQ==
+        bh=N200xvYKaDL7tHm8Rzwrr0HU1/brDxR7TTDvWBDPLPY=;
+        b=m9AYFj5VAUrZGPnVhJRAn1+6dNN+lQWQ/sjdgozJ4mG5yHgiXNXaVQ936EmR7LZxBDXtdV
+        5+OCVCryVglIv8EqHZmert6+9NhNrtfK96ngpvwmYZUBmQWOva+CdMceH72HTFKUyNwDo6
+        1mVqhcqhRs24eGne/8u9rm3DIMDEhssgvPqSezaxmjf+UUDcAKdujEZKu1T20sZD6Jn3pt
+        QdIPFmCGMoIx/jdl3Yf0cH+R7fQ5509fQtLuVt0NJYvRIyViCDIo7JoqttRtX92/7QDzXd
+        W5ZgTxlYosZYDNJIq7G/3Ln9KnhOkvTBhSHelpM36Qra5BxmXQvBfXFGmI59+Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1610964813;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=+ASOL/HUcXT0Ylb7pBBnIWCkuW9iIUMnFxk/hpocQG0=;
-        b=Fcpt5yI4beLXtF05MqvOcFQPfc4hrEctYiK/gWdxkAnUOkmOSGQMYT0rcCA4d1AeFBQK+s
-        np/A1CmswvPAGBCQ==
-From:   "tip-bot2 for Julien Thierry" <tip-bot2@linutronix.de>
+        bh=N200xvYKaDL7tHm8Rzwrr0HU1/brDxR7TTDvWBDPLPY=;
+        b=TY2TIpagEQcRsbJCWn4zRHflORQYn1Vb5X4junA8NW3sXszMZ+5WcZTttd386LamVReBXL
+        +OgAfbOIQX6OEDAQ==
+From:   "tip-bot2 for Vasily Gorbik" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] objtool: Support addition to set CFA base
-Cc:     Julien Thierry <jthierry@redhat.com>,
+Subject: [tip: objtool/core] x86/tools: Use tools headers for instruction
+ decoder selftests
+Cc:     Vasily Gorbik <gor@linux.ibm.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
         Josh Poimboeuf <jpoimboe@redhat.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <161096481293.414.7918792110016452403.tip-bot2@tip-bot2>
+Message-ID: <161096481258.414.12537383171975793205.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -53,50 +55,58 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     468af56a7bbaa626da5a4578bedc930d731fba13
-Gitweb:        https://git.kernel.org/tip/468af56a7bbaa626da5a4578bedc930d731fba13
-Author:        Julien Thierry <jthierry@redhat.com>
-AuthorDate:    Wed, 14 Oct 2020 08:38:01 +01:00
+Commit-ID:     c8d7b7e592f471ec1da39d872dc6bbf767a812e7
+Gitweb:        https://git.kernel.org/tip/c8d7b7e592f471ec1da39d872dc6bbf767a812e7
+Author:        Vasily Gorbik <gor@linux.ibm.com>
+AuthorDate:    Fri, 13 Nov 2020 00:03:20 +01:00
 Committer:     Josh Poimboeuf <jpoimboe@redhat.com>
-CommitterDate: Wed, 13 Jan 2021 18:13:10 -06:00
+CommitterDate: Wed, 13 Jan 2021 18:13:11 -06:00
 
-objtool: Support addition to set CFA base
+x86/tools: Use tools headers for instruction decoder selftests
 
-On arm64, the compiler can set the frame pointer either
-with a move operation or with and add operation like:
+Currently the x86 instruction decoder is used from:
+- the kernel itself,
+- from tools like objtool and perf,
+- within x86 tools, i.e. instruction decoder selftests.
 
-    add (SP + constant), BP
+The first two cases are similar, because tools headers try to mimic
+kernel headers.
 
-For a simple move operation, the CFA base is changed from SP to BP.
-Handle also changing the CFA base when the frame pointer is set with
-an addition instruction.
+Instruction decoder selftests include some of the kernel headers
+directly, including uapi headers. This works until headers dependencies
+are kept to a minimum and tools are not cross-compiled. Since the goal
+of the x86 instruction decoder selftests is not to verify uapi headers,
+move it to using tools headers, like is already done for vdso2c tool,
+mkpiggy and other tools in arch/x86/boot/.
 
-Signed-off-by: Julien Thierry <jthierry@redhat.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
 Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Masami Hiramatsu <mhiramat@kernel.org>
 Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
 ---
- tools/objtool/check.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ arch/x86/tools/Makefile | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 88210b0..00d00f9 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -1960,6 +1960,17 @@ static int update_cfi_state(struct instruction *insn, struct cfi_state *cfi,
- 				break;
- 			}
+diff --git a/arch/x86/tools/Makefile b/arch/x86/tools/Makefile
+index 55b1ab3..bddfc9a 100644
+--- a/arch/x86/tools/Makefile
++++ b/arch/x86/tools/Makefile
+@@ -29,14 +29,14 @@ posttest: $(obj)/insn_decoder_test vmlinux $(obj)/insn_sanity
+ hostprogs += insn_decoder_test insn_sanity
  
-+			if (!cfi->drap && op->src.reg == CFI_SP &&
-+			    op->dest.reg == CFI_BP && cfa->base == CFI_SP &&
-+			    check_reg_frame_pos(&regs[CFI_BP], -cfa->offset + op->src.offset)) {
-+
-+				/* lea disp(%rsp), %rbp */
-+				cfa->base = CFI_BP;
-+				cfa->offset -= op->src.offset;
-+				cfi->bp_scratch = false;
-+				break;
-+			}
-+
- 			if (op->src.reg == CFI_SP && cfa->base == CFI_SP) {
+ # -I needed for generated C source and C source which in the kernel tree.
+-HOSTCFLAGS_insn_decoder_test.o := -Wall -I$(objtree)/arch/x86/lib/ -I$(srctree)/arch/x86/include/uapi/ -I$(srctree)/arch/x86/include/ -I$(srctree)/arch/x86/lib/ -I$(srctree)/include/uapi/
++HOSTCFLAGS_insn_decoder_test.o := -Wall -I$(srctree)/tools/arch/x86/lib/ -I$(srctree)/tools/arch/x86/include/ -I$(objtree)/arch/x86/lib/
  
- 				/* drap: lea disp(%rsp), %drap */
+-HOSTCFLAGS_insn_sanity.o := -Wall -I$(objtree)/arch/x86/lib/ -I$(srctree)/arch/x86/include/ -I$(srctree)/arch/x86/lib/ -I$(srctree)/include/
++HOSTCFLAGS_insn_sanity.o := -Wall -I$(srctree)/tools/arch/x86/lib/ -I$(srctree)/tools/arch/x86/include/ -I$(objtree)/arch/x86/lib/
+ 
+ # Dependencies are also needed.
+-$(obj)/insn_decoder_test.o: $(srctree)/arch/x86/lib/insn.c $(srctree)/arch/x86/lib/inat.c $(srctree)/arch/x86/include/asm/inat_types.h $(srctree)/arch/x86/include/asm/inat.h $(srctree)/arch/x86/include/asm/insn.h $(objtree)/arch/x86/lib/inat-tables.c
++$(obj)/insn_decoder_test.o: $(srctree)/tools/arch/x86/lib/insn.c $(srctree)/tools/arch/x86/lib/inat.c $(srctree)/tools/arch/x86/include/asm/inat_types.h $(srctree)/tools/arch/x86/include/asm/inat.h $(srctree)/tools/arch/x86/include/asm/insn.h $(objtree)/arch/x86/lib/inat-tables.c
+ 
+-$(obj)/insn_sanity.o: $(srctree)/arch/x86/lib/insn.c $(srctree)/arch/x86/lib/inat.c $(srctree)/arch/x86/include/asm/inat_types.h $(srctree)/arch/x86/include/asm/inat.h $(srctree)/arch/x86/include/asm/insn.h $(objtree)/arch/x86/lib/inat-tables.c
++$(obj)/insn_sanity.o: $(srctree)/tools/arch/x86/lib/insn.c $(srctree)/tools/arch/x86/lib/inat.c $(srctree)/tools/arch/x86/include/asm/inat_types.h $(srctree)/tools/arch/x86/include/asm/inat.h $(srctree)/tools/arch/x86/include/asm/insn.h $(objtree)/arch/x86/lib/inat-tables.c
+ 
+ HOST_EXTRACFLAGS += -I$(srctree)/tools/include
+ hostprogs	+= relocs
