@@ -2,130 +2,132 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 815E72FE757
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 21 Jan 2021 11:19:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AA1492FEB5A
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 21 Jan 2021 14:17:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729049AbhAUKRQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 21 Jan 2021 05:17:16 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:48729 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729016AbhAUKQn (ORCPT
+        id S1726690AbhAUNNu (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 21 Jan 2021 08:13:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35760 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731723AbhAUNNV (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 21 Jan 2021 05:16:43 -0500
-Received: from mail-ej1-f69.google.com ([209.85.218.69])
-        by youngberry.canonical.com with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <andrea.righi@canonical.com>)
-        id 1l2X0F-00005C-0i
-        for linux-tip-commits@vger.kernel.org; Thu, 21 Jan 2021 10:15:47 +0000
-Received: by mail-ej1-f69.google.com with SMTP id le12so554779ejb.13
-        for <linux-tip-commits@vger.kernel.org>; Thu, 21 Jan 2021 02:15:47 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=nUFfyvUlJANPl5QUFEVLx1yTXROv8TYtpca6Xw1vx/o=;
-        b=U9efKUtX1YPZB4jaQUaydjShpaDV66wx3N9U8Vu9m7pg8hejBj4iYai+JuoPlVpUim
-         aRo3n2ctfeJKbGPrqwvNEA0EyM5bFkNlnw4/2H0Its1NaBPDW7pLECX5tHqrzAflx6z9
-         knd1+HjU9aww693oCZ6a3wKLat2pKXn2HQg85EjACvFVlbOTdmdXedtk/XIU86Sp5+rb
-         ByhB9juBKYnGflf81WAdMpi+fPDhB9gBaXMBDs3ZEj4lDpYjml9Abpxwk4mVlrqHTDy3
-         CzMTYQRqrJLq3NRHrzqvq+4Tbx6mXQBIZQ151L89Sy3P1rHVVPd9dIXLXEKZ0+CjO/St
-         PFag==
-X-Gm-Message-State: AOAM533jyNnIlV9W8MFZ7hEyHPjq0ZJ7tU9TsFYAUruJBtvKRfUKLNa6
-        t/VYZlpbnmiOQbThlaigZllMyyDkpvzeHasR61EX5wS5fZ+1Yc1edjBYz9aOKj6cZ2TlakMejve
-        p68Ma0KDibD6oC+eF2LN9BzydNZefPx2ls6tGD2O2InjI5Ple
-X-Received: by 2002:a05:6402:22ba:: with SMTP id cx26mr10620066edb.350.1611224146481;
-        Thu, 21 Jan 2021 02:15:46 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJz6n3kKv/0vJWfWS+YdCglfI3p85TXbTNS8r/5TQCFcL3E7z1I3d31X/VJhF590p/Y3CYG4Kw==
-X-Received: by 2002:a05:6402:22ba:: with SMTP id cx26mr10620055edb.350.1611224146269;
-        Thu, 21 Jan 2021 02:15:46 -0800 (PST)
-Received: from localhost (host-79-52-126-228.retail.telecomitalia.it. [79.52.126.228])
-        by smtp.gmail.com with ESMTPSA id bl13sm2053785ejb.64.2021.01.21.02.15.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Jan 2021 02:15:45 -0800 (PST)
-Date:   Thu, 21 Jan 2021 11:15:44 +0100
-From:   Andrea Righi <andrea.righi@canonical.com>
-To:     Ingo Molnar <mingo@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-        Borislav Petkov <bp@alien8.de>, x86@kernel.org
-Subject: Re: [tip: x86/entry] x86/entry: Build thunk_$(BITS) only if
- CONFIG_PREEMPTION=y
-Message-ID: <YAlUUBs2qPIqLgCt@xps-13-7390>
-References: <YAAvk0UQelq0Ae7+@xps-13-7390>
- <161121327995.414.14890124942899525500.tip-bot2@tip-bot2>
- <20210121074928.GA1346795@gmail.com>
- <YAlAr1Gs+Jm4r5o7@xps-13-7390>
+        Thu, 21 Jan 2021 08:13:21 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47DF7C0613ED;
+        Thu, 21 Jan 2021 05:12:38 -0800 (PST)
+Date:   Thu, 21 Jan 2021 13:12:34 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1611234755;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=Ezha1d0Zd2429mrCjSWxK7xBksyVQkmSg+5fZNwJrMs=;
+        b=NH6s+kbVUTyfsbkfppbsd3bwQ2b8oWWfZJh3iY4sFnfkWxSIT9S6OJEJEH7xguM1ohJ07u
+        hH9VdQe96rWQfUVV+ysTqgr15T46ZuWSwyRD9coB4cjU1SO49ID5SsPQVOJMjXAaHllriU
+        99Ip9Hr4ZW8c3CifsPMbVahupjycLhINgq92baxKrxZmL+hpDJtsqxKjE+N2ufnIMRjWN+
+        RuwiN3iv66F/yCgiQZPaUKw1sm8DvTt2Kp7H5dT6Kv4PIHXniPy60GXvQ+pAIxK39GPrE8
+        xiWg8/sGkit2mR4LtrV9Thf3zyRpHtv51nVqM/F3Cfxzr81iGD82IF2LpDJ8zQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1611234755;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=Ezha1d0Zd2429mrCjSWxK7xBksyVQkmSg+5fZNwJrMs=;
+        b=7xUqdyt/GrUdqi7VkLKIDegNIVTLjiTf/ZxRzCJam7pHyMFOUnHxPS4ZljkgD5wSCP8qpu
+        xKVsuoubWVBLKkBg==
+From:   "tip-bot2 for Sami Tolvanen" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/sgx] x86/sgx: Fix the return type of sgx_init()
+Cc:     Sami Tolvanen <samitolvanen@google.com>,
+        Borislav Petkov <bp@suse.de>,
+        Darren Kenny <darren.kenny@oracle.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20210113232311.277302-1-samitolvanen@google.com>
+References: <20210113232311.277302-1-samitolvanen@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YAlAr1Gs+Jm4r5o7@xps-13-7390>
+Message-ID: <161123475481.414.2596508265480174315.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Thu, Jan 21, 2021 at 09:52:01AM +0100, Andrea Righi wrote:
-> On Thu, Jan 21, 2021 at 08:49:28AM +0100, Ingo Molnar wrote:
-> > 
-> > * tip-bot2 for Andrea Righi <tip-bot2@linutronix.de> wrote:
-> > 
-> > > The following commit has been merged into the x86/entry branch of tip:
-> > > 
-> > > Commit-ID:     e6d92b6680371ae1aeeb6c5eb2387fdc5d9a2c89
-> > > Gitweb:        https://git.kernel.org/tip/e6d92b6680371ae1aeeb6c5eb2387fdc5d9a2c89
-> > > Author:        Andrea Righi <andrea.righi@canonical.com>
-> > > AuthorDate:    Thu, 14 Jan 2021 12:48:35 +01:00
-> > > Committer:     Ingo Molnar <mingo@kernel.org>
-> > > CommitterDate: Thu, 21 Jan 2021 08:11:52 +01:00
-> > > 
-> > > x86/entry: Build thunk_$(BITS) only if CONFIG_PREEMPTION=y
-> > > 
-> > > With CONFIG_PREEMPTION disabled, arch/x86/entry/thunk_64.o is just an
-> > > empty object file.
-> > > 
-> > > With the newer binutils (tested with 2.35.90.20210113-1ubuntu1) the GNU
-> > > assembler doesn't generate a symbol table for empty object files and
-> > > objtool fails with the following error when a valid symbol table cannot
-> > > be found:
-> > > 
-> > >   arch/x86/entry/thunk_64.o: warning: objtool: missing symbol table
-> > > 
-> > > To prevent this from happening, build thunk_$(BITS).o only if
-> > > CONFIG_PREEMPTION is enabled.
-> > > 
-> > >   BugLink: https://bugs.launchpad.net/bugs/1911359
-> > > 
-> > > Fixes: 320100a5ffe5 ("x86/entry: Remove the TRACE_IRQS cruft")
-> > > Signed-off-by: Andrea Righi <andrea.righi@canonical.com>
-> > > Signed-off-by: Ingo Molnar <mingo@kernel.org>
-> > > Cc: Borislav Petkov <bp@alien8.de>
-> > > Link: https://lore.kernel.org/r/YAAvk0UQelq0Ae7+@xps-13-7390
-> > 
-> > Hm, this fails to build on UML defconfig:
-> > 
-> >  /home/mingo/gcc/cross/lib/gcc/x86_64-linux/9.3.1/../../../../x86_64-linux/bin/ld: arch/x86/um/../entry/thunk_64.o: in function `preempt_schedule_thunk':
-> >  /home/mingo/tip.cross/arch/x86/um/../entry/thunk_64.S:34: undefined reference to `preempt_schedule'
-> >  /home/mingo/gcc/cross/lib/gcc/x86_64-linux/9.3.1/../../../../x86_64-linux/bin/ld: arch/x86/um/../entry/thunk_64.o: in function `preempt_schedule_notrace_thunk':
-> >  /home/mingo/tip.cross/arch/x86/um/../entry/thunk_64.S:35: undefined reference to `preempt_schedule_notrace'
-> > 
-> > Thanks,
-> > 
-> > 	Ingo
-> 
-> I've been able to reproduce it, I'm looking at this right now. Thanks!
+The following commit has been merged into the x86/sgx branch of tip:
 
-I see, basically UML selects ARCH_NO_PREEMPT, but in
-arch/x86/um/Makefile it explicitly includes thunk_$(BITS).o regardless.
+Commit-ID:     31bf92881714fe9962d43d097b5114a9b4ad0a12
+Gitweb:        https://git.kernel.org/tip/31bf92881714fe9962d43d097b5114a9b4ad0a12
+Author:        Sami Tolvanen <samitolvanen@google.com>
+AuthorDate:    Wed, 13 Jan 2021 15:23:11 -08:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Thu, 21 Jan 2021 14:04:06 +01:00
 
-Considering that thunk_$(BITS) only contains preemption code now, we can
-probably drop it from the Makefile, or, to be more consistent with the
-x86 change, we could include it only if CONFIG_PREEMPTION is enabled
-(even if it would never be, because UML has ARCH_NO_PREEMPT).
+x86/sgx: Fix the return type of sgx_init()
 
-If it's unlikely that preemption will be enabled in UML one day I'd
-probably go with the former, otherwise I'd go with the latter, because
-it looks more consistent.
+device_initcall() expects a function of type initcall_t, which returns
+an integer. Change the signature of sgx_init() to match.
 
-Opinions?
+Fixes: e7e0545299d8c ("x86/sgx: Initialize metadata for Enclave Page Cache (EPC) sections")
+Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Reviewed-by: Darren Kenny <darren.kenny@oracle.com>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Link: https://lkml.kernel.org/r/20210113232311.277302-1-samitolvanen@google.com
+---
+ arch/x86/kernel/cpu/sgx/main.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-Thanks,
--Andrea
+diff --git a/arch/x86/kernel/cpu/sgx/main.c b/arch/x86/kernel/cpu/sgx/main.c
+index c519fc5..8df81a3 100644
+--- a/arch/x86/kernel/cpu/sgx/main.c
++++ b/arch/x86/kernel/cpu/sgx/main.c
+@@ -700,25 +700,27 @@ static bool __init sgx_page_cache_init(void)
+ 	return true;
+ }
+ 
+-static void __init sgx_init(void)
++static int __init sgx_init(void)
+ {
+ 	int ret;
+ 	int i;
+ 
+ 	if (!cpu_feature_enabled(X86_FEATURE_SGX))
+-		return;
++		return -ENODEV;
+ 
+ 	if (!sgx_page_cache_init())
+-		return;
++		return -ENOMEM;
+ 
+-	if (!sgx_page_reclaimer_init())
++	if (!sgx_page_reclaimer_init()) {
++		ret = -ENOMEM;
+ 		goto err_page_cache;
++	}
+ 
+ 	ret = sgx_drv_init();
+ 	if (ret)
+ 		goto err_kthread;
+ 
+-	return;
++	return 0;
+ 
+ err_kthread:
+ 	kthread_stop(ksgxd_tsk);
+@@ -728,6 +730,8 @@ err_page_cache:
+ 		vfree(sgx_epc_sections[i].pages);
+ 		memunmap(sgx_epc_sections[i].virt_addr);
+ 	}
++
++	return ret;
+ }
+ 
+ device_initcall(sgx_init);
