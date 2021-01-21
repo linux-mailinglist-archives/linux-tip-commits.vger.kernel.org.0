@@ -2,57 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DEA882FBDEC
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 Jan 2021 18:44:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C009F2FE398
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 21 Jan 2021 08:17:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387681AbhASOsC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 19 Jan 2021 09:48:02 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:33728 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389676AbhASKOe (ORCPT
+        id S1726793AbhAUHQ2 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 21 Jan 2021 02:16:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43348 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726821AbhAUHPX (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 19 Jan 2021 05:14:34 -0500
-Date:   Tue, 19 Jan 2021 10:12:43 -0000
+        Thu, 21 Jan 2021 02:15:23 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2D23C061575;
+        Wed, 20 Jan 2021 23:14:42 -0800 (PST)
+Date:   Thu, 21 Jan 2021 07:14:39 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1611051164;
+        s=2020; t=1611213280;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=39MTs0/AkU91NCzyrxDCYO5z9+AjlVQGidsTvcEiDHM=;
-        b=xfEtEAnFyy+vg8kCU0kw4nvrZuxeGzc26mO1ZJU2bs9voiQtNx8R5Yb5zhbeZbnPSF5f/y
-        Ijxe5egyTR9fPhqosjsV7pPOv+6ZttYIEDJVHk9DQtlXfM74As3Za8I32WXfOthpnofZM4
-        ChUW8iBVs5I74Xx2qLqhE4rsy4+L+GsGlAMhfn1rBJRFaAgVZU6u6MRM4sIFNqvPgvhDIt
-        lj2/6QcQyw1ggOLOCn0s2o/FcgzPh74zJKZzic1TdZ3WRUXEa34p4AYZTdRxG2En7n1oH8
-        NoMjA8rep72Qn6jPSLvQxyzYDCeqLq1KeVBNPyi9Rd6h7oh8Yp84arkrixv0Fg==
+        bh=rhSh/HQgdN2lB7/EZd4gRNSdAORZpzmyu4+TIebLNY8=;
+        b=Um1EJA3dPP+CiPWRe6fDf6FinFU4NWe9rq8Hyay6pERPXNtPwEccZ4wggwH9oBjzxyYP4U
+        Vcskd7WrRLZODTr1NYHzpongoMGcuAZMACYZ1UVVuqqLZFFyMzl+zAGkO0iWCrVPpfznpo
+        KZ/Dru0oUOJm4gEYXrK8UXskcd54+xPXoHj8ZfACHFPhHnqnPQQJj1RQNZ2L8MqwKOlOwV
+        Mg3QiZ0sJE8LiK3pltERr9haoG3HUQWGr6P5ukZsP99m1PIXJAh42FONsYR9MVkqFiThmB
+        RBovyuAW8B8PguTfUWaX2Hhz1Ltq38ry/umJEIzmwcdGy4VBz8pQRY9BOsT2QQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1611051164;
+        s=2020e; t=1611213280;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=39MTs0/AkU91NCzyrxDCYO5z9+AjlVQGidsTvcEiDHM=;
-        b=CwQ2Ow6NhFnWP7KNxxt1jA5m3PFzVnqdgJ5x2DZ+RR7E0VGOieYKmD7By9oYd/umsg6wIZ
-        3BsgmOuw5t5iIMBA==
-From:   "tip-bot2 for Nick Desaulniers" <tip-bot2@linutronix.de>
+        bh=rhSh/HQgdN2lB7/EZd4gRNSdAORZpzmyu4+TIebLNY8=;
+        b=RXj5TaUagGHYePH1fU0VySk7d12MR8mlMTh5IFM1ptDeyDMfmqKjPAkEF9UXxtvA0BG6XI
+        9Tsts0WD5YM/piDA==
+From:   "tip-bot2 for Andrea Righi" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/entry] x86/entry: Emit a symbol for register restoring thunk
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Mark Brown <broonie@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Borislav Petkov <bp@suse.de>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20210112194625.4181814-1-ndesaulniers@google.com>
-References: <20210112194625.4181814-1-ndesaulniers@google.com>
+Subject: [tip: x86/entry] x86/entry: Build thunk_$(BITS) only if CONFIG_PREEMPTION=y
+Cc:     Andrea Righi <andrea.righi@canonical.com>,
+        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <YAAvk0UQelq0Ae7+@xps-13-7390>
+References: <YAAvk0UQelq0Ae7+@xps-13-7390>
 MIME-Version: 1.0
-Message-ID: <161105116375.414.15930533850412363220.tip-bot2@tip-bot2>
+Message-ID: <161121327995.414.14890124942899525500.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -63,129 +61,96 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/entry branch of tip:
 
-Commit-ID:     5e6dca82bcaa49348f9e5fcb48df4881f6d6c4ae
-Gitweb:        https://git.kernel.org/tip/5e6dca82bcaa49348f9e5fcb48df4881f6d6c4ae
-Author:        Nick Desaulniers <ndesaulniers@google.com>
-AuthorDate:    Tue, 12 Jan 2021 11:46:24 -08:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Thu, 14 Jan 2021 17:18:25 +01:00
+Commit-ID:     e6d92b6680371ae1aeeb6c5eb2387fdc5d9a2c89
+Gitweb:        https://git.kernel.org/tip/e6d92b6680371ae1aeeb6c5eb2387fdc5d9a2c89
+Author:        Andrea Righi <andrea.righi@canonical.com>
+AuthorDate:    Thu, 14 Jan 2021 12:48:35 +01:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Thu, 21 Jan 2021 08:11:52 +01:00
 
-x86/entry: Emit a symbol for register restoring thunk
+x86/entry: Build thunk_$(BITS) only if CONFIG_PREEMPTION=y
 
-Arnd found a randconfig that produces the warning:
+With CONFIG_PREEMPTION disabled, arch/x86/entry/thunk_64.o is just an
+empty object file.
 
-  arch/x86/entry/thunk_64.o: warning: objtool: missing symbol for insn at
-  offset 0x3e
+With the newer binutils (tested with 2.35.90.20210113-1ubuntu1) the GNU
+assembler doesn't generate a symbol table for empty object files and
+objtool fails with the following error when a valid symbol table cannot
+be found:
 
-when building with LLVM_IAS=1 (Clang's integrated assembler). Josh
-notes:
+  arch/x86/entry/thunk_64.o: warning: objtool: missing symbol table
 
-  With the LLVM assembler not generating section symbols, objtool has no
-  way to reference this code when it generates ORC unwinder entries,
-  because this code is outside of any ELF function.
+To prevent this from happening, build thunk_$(BITS).o only if
+CONFIG_PREEMPTION is enabled.
 
-  The limitation now being imposed by objtool is that all code must be
-  contained in an ELF symbol.  And .L symbols don't create such symbols.
+  BugLink: https://bugs.launchpad.net/bugs/1911359
 
-  So basically, you can use an .L symbol *inside* a function or a code
-  segment, you just can't use the .L symbol to contain the code using a
-  SYM_*_START/END annotation pair.
-
-Fangrui notes that this optimization is helpful for reducing image size
-when compiling with -ffunction-sections and -fdata-sections. I have
-observed on the order of tens of thousands of symbols for the kernel
-images built with those flags.
-
-A patch has been authored against GNU binutils to match this behavior
-of not generating unused section symbols ([1]), so this will
-also become a problem for users of GNU binutils once they upgrade to 2.36.
-
-Omit the .L prefix on a label so that the assembler will emit an entry
-into the symbol table for the label, with STB_LOCAL binding. This
-enables objtool to generate proper unwind info here with LLVM_IAS=1 or
-GNU binutils 2.36+.
-
- [ bp: Massage commit message. ]
-
-Reported-by: Arnd Bergmann <arnd@arndb.de>
-Suggested-by: Josh Poimboeuf <jpoimboe@redhat.com>
-Suggested-by: Borislav Petkov <bp@alien8.de>
-Suggested-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Josh Poimboeuf <jpoimboe@redhat.com>
-Link: https://lkml.kernel.org/r/20210112194625.4181814-1-ndesaulniers@google.com
-Link: https://github.com/ClangBuiltLinux/linux/issues/1209
-Link: https://reviews.llvm.org/D93783
-Link: https://sourceware.org/binutils/docs/as/Symbol-Names.html
-Link: https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=d1bcae833b32f1408485ce69f844dcd7ded093a8 [1]
+Fixes: 320100a5ffe5 ("x86/entry: Remove the TRACE_IRQS cruft")
+Signed-off-by: Andrea Righi <andrea.righi@canonical.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Borislav Petkov <bp@alien8.de>
+Link: https://lore.kernel.org/r/YAAvk0UQelq0Ae7+@xps-13-7390
 ---
- Documentation/asm-annotations.rst | 5 +++++
- arch/x86/entry/thunk_64.S         | 8 ++++----
- include/linux/linkage.h           | 5 +++++
- 3 files changed, 14 insertions(+), 4 deletions(-)
+ arch/x86/entry/Makefile   | 3 ++-
+ arch/x86/entry/thunk_32.S | 2 --
+ arch/x86/entry/thunk_64.S | 4 ----
+ 3 files changed, 2 insertions(+), 7 deletions(-)
 
-diff --git a/Documentation/asm-annotations.rst b/Documentation/asm-annotations.rst
-index 32ea574..76424e0 100644
---- a/Documentation/asm-annotations.rst
-+++ b/Documentation/asm-annotations.rst
-@@ -100,6 +100,11 @@ Instruction Macros
- ~~~~~~~~~~~~~~~~~~
- This section covers ``SYM_FUNC_*`` and ``SYM_CODE_*`` enumerated above.
+diff --git a/arch/x86/entry/Makefile b/arch/x86/entry/Makefile
+index 08bf95d..83c98da 100644
+--- a/arch/x86/entry/Makefile
++++ b/arch/x86/entry/Makefile
+@@ -21,12 +21,13 @@ CFLAGS_syscall_64.o		+= $(call cc-option,-Wno-override-init,)
+ CFLAGS_syscall_32.o		+= $(call cc-option,-Wno-override-init,)
+ CFLAGS_syscall_x32.o		+= $(call cc-option,-Wno-override-init,)
  
-+``objtool`` requires that all code must be contained in an ELF symbol. Symbol
-+names that have a ``.L`` prefix do not emit symbol table entries. ``.L``
-+prefixed symbols can be used within a code region, but should be avoided for
-+denoting a range of code via ``SYM_*_START/END`` annotations.
-+
- * ``SYM_FUNC_START`` and ``SYM_FUNC_START_LOCAL`` are supposed to be **the
-   most frequent markings**. They are used for functions with standard calling
-   conventions -- global and local. Like in C, they both align the functions to
+-obj-y				:= entry_$(BITS).o thunk_$(BITS).o syscall_$(BITS).o
++obj-y				:= entry_$(BITS).o syscall_$(BITS).o
+ obj-y				+= common.o
+ 
+ obj-y				+= vdso/
+ obj-y				+= vsyscall/
+ 
++obj-$(CONFIG_PREEMPTION)	+= thunk_$(BITS).o
+ obj-$(CONFIG_IA32_EMULATION)	+= entry_64_compat.o syscall_32.o
+ obj-$(CONFIG_X86_X32_ABI)	+= syscall_x32.o
+ 
+diff --git a/arch/x86/entry/thunk_32.S b/arch/x86/entry/thunk_32.S
+index f1f96d4..5997ec0 100644
+--- a/arch/x86/entry/thunk_32.S
++++ b/arch/x86/entry/thunk_32.S
+@@ -29,10 +29,8 @@ SYM_CODE_START_NOALIGN(\name)
+ SYM_CODE_END(\name)
+ 	.endm
+ 
+-#ifdef CONFIG_PREEMPTION
+ 	THUNK preempt_schedule_thunk, preempt_schedule
+ 	THUNK preempt_schedule_notrace_thunk, preempt_schedule_notrace
+ 	EXPORT_SYMBOL(preempt_schedule_thunk)
+ 	EXPORT_SYMBOL(preempt_schedule_notrace_thunk)
+-#endif
+ 
 diff --git a/arch/x86/entry/thunk_64.S b/arch/x86/entry/thunk_64.S
-index ccd3287..c9a9fbf 100644
+index 496b11e..9d543c4 100644
 --- a/arch/x86/entry/thunk_64.S
 +++ b/arch/x86/entry/thunk_64.S
-@@ -31,7 +31,7 @@ SYM_FUNC_START_NOALIGN(\name)
- 	.endif
- 
- 	call \func
--	jmp  .L_restore
-+	jmp  __thunk_restore
- SYM_FUNC_END(\name)
+@@ -31,14 +31,11 @@ SYM_FUNC_END(\name)
  	_ASM_NOKPROBE(\name)
  	.endm
-@@ -44,7 +44,7 @@ SYM_FUNC_END(\name)
- #endif
  
- #ifdef CONFIG_PREEMPTION
--SYM_CODE_START_LOCAL_NOALIGN(.L_restore)
-+SYM_CODE_START_LOCAL_NOALIGN(__thunk_restore)
+-#ifdef CONFIG_PREEMPTION
+ 	THUNK preempt_schedule_thunk, preempt_schedule
+ 	THUNK preempt_schedule_notrace_thunk, preempt_schedule_notrace
+ 	EXPORT_SYMBOL(preempt_schedule_thunk)
+ 	EXPORT_SYMBOL(preempt_schedule_notrace_thunk)
+-#endif
+ 
+-#ifdef CONFIG_PREEMPTION
+ SYM_CODE_START_LOCAL_NOALIGN(__thunk_restore)
  	popq %r11
  	popq %r10
- 	popq %r9
-@@ -56,6 +56,6 @@ SYM_CODE_START_LOCAL_NOALIGN(.L_restore)
- 	popq %rdi
- 	popq %rbp
+@@ -53,4 +50,3 @@ SYM_CODE_START_LOCAL_NOALIGN(__thunk_restore)
  	ret
--	_ASM_NOKPROBE(.L_restore)
--SYM_CODE_END(.L_restore)
-+	_ASM_NOKPROBE(__thunk_restore)
-+SYM_CODE_END(__thunk_restore)
- #endif
-diff --git a/include/linux/linkage.h b/include/linux/linkage.h
-index 5bcfbd9..dbf8506 100644
---- a/include/linux/linkage.h
-+++ b/include/linux/linkage.h
-@@ -178,6 +178,11 @@
-  * Objtool generates debug info for both FUNC & CODE, but needs special
-  * annotations for each CODE's start (to describe the actual stack frame).
-  *
-+ * Objtool requires that all code must be contained in an ELF symbol. Symbol
-+ * names that have a  .L prefix do not emit symbol table entries. .L
-+ * prefixed symbols can be used within a code region, but should be avoided for
-+ * denoting a range of code via ``SYM_*_START/END`` annotations.
-+ *
-  * ALIAS -- does not generate debug info -- the aliased function will
-  */
- 
+ 	_ASM_NOKPROBE(__thunk_restore)
+ SYM_CODE_END(__thunk_restore)
+-#endif
