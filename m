@@ -2,16 +2,19 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D822300A60
+	by mail.lfdr.de (Postfix) with ESMTP id B9FFE300A61
 	for <lists+linux-tip-commits@lfdr.de>; Fri, 22 Jan 2021 18:59:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729276AbhAVRvZ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 22 Jan 2021 12:51:25 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:55700 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729244AbhAVRm1 (ORCPT
+        id S1729290AbhAVRv2 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 22 Jan 2021 12:51:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37178 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729051AbhAVRmR (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 22 Jan 2021 12:42:27 -0500
+        Fri, 22 Jan 2021 12:42:17 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13BC4C06174A;
+        Fri, 22 Jan 2021 09:41:37 -0800 (PST)
 Date:   Fri, 22 Jan 2021 17:41:34 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1611337295;
@@ -20,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=/1vB1QUr1165eo6pyFtEfPYX+ErJNEqfinIUJxVvEKM=;
-        b=FgFz+xSpdCwceSvwMneDofsr/4IGvBsvNSTtgt7M6OP3LYqtA/b64ByVj60QsI1jJwOVr9
-        jwUwoVcp34Oq6FCojfbVK7uKe/zxKOZbTUibtzPNEKtPHrPDh1qxU4TsNyCgWj8z4uQW5w
-        hXTEHsGeohmwEEk7sd0NteIRT2PH53rdSfPujxlawt2ZPvIcxNhYJb10vzCQU0QIAuIgT2
-        5loVuKF3Uf6EAuDqKdio/qqdYtq9RmKEr8gSwzHqwtI3BC81/I9U/qKINTf2iIgrtsiHWn
-        L683C1tma7Y1zCKEo5D9PaN0mZz7k1ycaQYEQaw3u/XMYaftg8c4GXqXETwo9A==
+        bh=vWApvcSANT83v+JCFoco0KltM/bSpHt02z6aEBwqOwM=;
+        b=YGn4cbX6FfsI8h+4NWIzlIWEWeBQSt4ZE5CsaofTTkz63IXrGZoFk7lA/xHCXfXXJ2zPSd
+        R5WSBQyviOaKdlngilb5ePxMowvzXxl6pp+ULcQgmXMVi+R2CMCqyC2Nls7+ERkP/heSK5
+        BPooZASD/CwOZZgQHjKDJPqqbbNQiqt1z/SoexPYqRwOYKAq4HsDrzABbEd95XLliVdN32
+        pEZBrJFSXGO2TphRn7ungvjVC/24q+A66lqrqojK/IE16htRa5OuqCNZmZVXahjDEwDxYM
+        kC/gUHp+bukmjVcBEwIZXJzSihQZ1uqf6rd7CQJ+eAF4JqNZFBsMz+v6QDacbg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1611337295;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -33,21 +36,21 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=/1vB1QUr1165eo6pyFtEfPYX+ErJNEqfinIUJxVvEKM=;
-        b=aUEgvQPZmCkjbVtnI2Fs/Hi5NoGAUz6+y1WbwmHqgN5iySfuy1YvQeP4f8CKOA0+5MGcuy
-        Nucw2zrX4f+zvtDw==
+        bh=vWApvcSANT83v+JCFoco0KltM/bSpHt02z6aEBwqOwM=;
+        b=8V7mNadao6rNlp/f0bAwIQTvzO89N5/jtgMEtdBOmsNBJ87zwdHjsmVhR9fh4rTDQ8mROh
+        TLqEeiNQOcGsVIAg==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] sched: Prepare to use balance_push in ttwu()
+Subject: [tip: sched/urgent] workqueue: Restrict affinity change to rescuer
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Valentin Schneider <valentin.schneider@arm.com>,
         x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20210121103506.966069627@infradead.org>
-References: <20210121103506.966069627@infradead.org>
+In-Reply-To: <20210121103506.826629830@infradead.org>
+References: <20210121103506.826629830@infradead.org>
 MIME-Version: 1.0
-Message-ID: <161133729464.414.3770602797973233529.tip-bot2@tip-bot2>
+Message-ID: <161133729498.414.8534909860979779052.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,80 +61,57 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     975707f227b07a8212060f94447171d15d7a681b
-Gitweb:        https://git.kernel.org/tip/975707f227b07a8212060f94447171d15d7a681b
+Commit-ID:     640f17c82460e9724fd256f0a1f5d99e7ff0bda4
+Gitweb:        https://git.kernel.org/tip/640f17c82460e9724fd256f0a1f5d99e7ff0bda4
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Wed, 20 Jan 2021 15:05:41 +01:00
+AuthorDate:    Fri, 15 Jan 2021 19:08:36 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Fri, 22 Jan 2021 15:09:43 +01:00
 
-sched: Prepare to use balance_push in ttwu()
+workqueue: Restrict affinity change to rescuer
 
-In preparation of using the balance_push state in ttwu() we need it to
-provide a reliable and consistent state.
+create_worker() will already set the right affinity using
+kthread_bind_mask(), this means only the rescuer will need to change
+it's affinity.
 
-The immediate problem is that rq->balance_callback gets cleared every
-schedule() and then re-set in the balance_push_callback() itself. This
-is not a reliable signal, so add a variable that stays set during the
-entire time.
+Howveer, while in cpu-hot-unplug a regular task is not allowed to run
+on online&&!active as it would be pushed away quite agressively. We
+need KTHREAD_IS_PER_CPU to survive in that environment.
 
-Also move setting it before the synchronize_rcu() in
-sched_cpu_deactivate(), such that we get guaranteed visibility to
-ttwu(), which is a preempt-disable region.
+Therefore set the affinity after getting that magic flag.
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Valentin Schneider <valentin.schneider@arm.com>
 Tested-by: Valentin Schneider <valentin.schneider@arm.com>
-Link: https://lkml.kernel.org/r/20210121103506.966069627@infradead.org
+Link: https://lkml.kernel.org/r/20210121103506.826629830@infradead.org
 ---
- kernel/sched/core.c  | 11 ++++++-----
- kernel/sched/sched.h |  1 +
- 2 files changed, 7 insertions(+), 5 deletions(-)
+ kernel/workqueue.c |  9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 8da0fd7..16946b5 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -7320,6 +7320,7 @@ static void balance_push_set(int cpu, bool on)
- 	struct rq_flags rf;
+diff --git a/kernel/workqueue.c b/kernel/workqueue.c
+index cce3433..894bb88 100644
+--- a/kernel/workqueue.c
++++ b/kernel/workqueue.c
+@@ -1849,12 +1849,6 @@ static void worker_attach_to_pool(struct worker *worker,
+ 	mutex_lock(&wq_pool_attach_mutex);
  
- 	rq_lock_irqsave(rq, &rf);
-+	rq->balance_push = on;
- 	if (on) {
- 		WARN_ON_ONCE(rq->balance_callback);
- 		rq->balance_callback = &balance_push_callback;
-@@ -7489,17 +7490,17 @@ int sched_cpu_deactivate(unsigned int cpu)
- 	int ret;
- 
- 	set_cpu_active(cpu, false);
-+	balance_push_set(cpu, true);
-+
  	/*
--	 * We've cleared cpu_active_mask, wait for all preempt-disabled and RCU
--	 * users of this state to go away such that all new such users will
--	 * observe it.
-+	 * We've cleared cpu_active_mask / set balance_push, wait for all
-+	 * preempt-disabled and RCU users of this state to go away such that
-+	 * all new such users will observe it.
- 	 *
- 	 * Do sync before park smpboot threads to take care the rcu boost case.
- 	 */
- 	synchronize_rcu();
- 
--	balance_push_set(cpu, true);
+-	 * set_cpus_allowed_ptr() will fail if the cpumask doesn't have any
+-	 * online CPUs.  It'll be re-applied when any of the CPUs come up.
+-	 */
+-	set_cpus_allowed_ptr(worker->task, pool->attrs->cpumask);
 -
- 	rq_lock_irqsave(rq, &rf);
- 	if (rq->rd) {
- 		update_rq_clock(rq);
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index 12ada79..bb09988 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -975,6 +975,7 @@ struct rq {
- 	unsigned long		cpu_capacity_orig;
+-	/*
+ 	 * The wq_pool_attach_mutex ensures %POOL_DISASSOCIATED remains
+ 	 * stable across this function.  See the comments above the flag
+ 	 * definition for details.
+@@ -1864,6 +1858,9 @@ static void worker_attach_to_pool(struct worker *worker,
+ 	else
+ 		kthread_set_per_cpu(worker->task, pool->cpu);
  
- 	struct callback_head	*balance_callback;
-+	unsigned char		balance_push;
++	if (worker->rescue_wq)
++		set_cpus_allowed_ptr(worker->task, pool->attrs->cpumask);
++
+ 	list_add_tail(&worker->node, &pool->workers);
+ 	worker->pool = pool;
  
- 	unsigned char		nohz_idle_balance;
- 	unsigned char		idle_balance;
