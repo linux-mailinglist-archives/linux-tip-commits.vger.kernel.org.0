@@ -2,19 +2,19 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 27571300A44
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 22 Jan 2021 18:51:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AD82A300A43
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 22 Jan 2021 18:51:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729176AbhAVRuv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 22 Jan 2021 12:50:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37198 "EHLO
+        id S1728923AbhAVRup (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 22 Jan 2021 12:50:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729271AbhAVRmZ (ORCPT
+        with ESMTP id S1729267AbhAVRmZ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Fri, 22 Jan 2021 12:42:25 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E9D0C061788;
-        Fri, 22 Jan 2021 09:41:40 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97750C0613D6;
+        Fri, 22 Jan 2021 09:41:38 -0800 (PST)
 Date:   Fri, 22 Jan 2021 17:41:36 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1611337296;
@@ -23,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=i9BcL50rm8i5DNQgULkOCBpJrrpITPsfg3U2i/kOcEA=;
-        b=yz8tOfGlNdAr0Dv36lemlm0n/Q/UBsitU+zS6zcWmHyvSM4sjmVpr+Wegq3MDIQZDg1Hhs
-        Xmb1vYYpHit0/X7pxWPzIoR3b8d5Ha3+Z9NL1rZpb/SJjAHTNoiAQoLbK3co7JV6GIVrmR
-        qcHsFHcPhv9xUve46bNQbytFvJlihLbB/oguFbQPC7R/OPu32e98sxU9Pr80QGXRBpzmE1
-        a0nMG+M3c4fidruABGNAr2yHLI7ht4WTVcLaND8n84Ate6LdVOfl2KPYgF+re4Om8OpWd0
-        bXDXsN00wMAJWLsFNr84tx0cSafGY5DSvIwPR98VF0d/QPcGcxAKU2dbsD2JRg==
+        bh=NZre0rtm0ik9c9K+MY0f0zk7+c0MzlrD4JNer3gU+IA=;
+        b=pNtzCsCCmnfERAHzKyAJ9oCezsVQyNQij15fPfuB2BFMhEyX2yZLDE1nh5oqCEt3Uh6Z14
+        b6kH8iK4UdVbFR3eUIvi+46NHRJJLnT93gdW5z48n0YR3Aiee6bHAnJ2oZy+Z1HuIEWJ2L
+        Mhys+qdiJNrO5K4X8xJt/xteIgTjCpxWqi7g1A0YTyxYEoxUC5KdfD13C0qtuF0Y3vwH8N
+        Mc/nxpZHgDw97/gLKAPxbj2YEwT48blDSoJ4f1l7DbeXjoUIkCnxKmuoqWSn5mpdrG8G5I
+        QERVIaWvKmyCQy6KjO4t0Kri7bGWNSIsf29VzvTtN1jMP1syO4BD8JuQzLPLew==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1611337296;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,25 +36,21 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=i9BcL50rm8i5DNQgULkOCBpJrrpITPsfg3U2i/kOcEA=;
-        b=oflT5tJChUehbrKcRoFq4wHMW8yD/COt8A80W07aSgrYOJITBX8r7e/lIwuMcE47wJYYdR
-        NALNN7ISzRLXDmCQ==
-From:   "tip-bot2 for Lai Jiangshan" <tip-bot2@linutronix.de>
+        bh=NZre0rtm0ik9c9K+MY0f0zk7+c0MzlrD4JNer3gU+IA=;
+        b=FMf3jv4ptYe+KFe/GA78yzIHCpLxjoQ9RkQdZBYSSbVmK/4FOXUNZNRKGQUAQ5DKw6O79T
+        eWc1ihHAUx1sfbAw==
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] workqueue: Use cpu_possible_mask instead of
- cpu_active_mask to break affinity
-Cc:     Lai Jiangshan <laijs@linux.alibaba.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+Subject: [tip: sched/urgent] sched: Don't run cpu-online with balance_push() enabled
+Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Valentin Schneider <valentin.schneider@arm.com>,
-        Tejun Heo <tj@kernel.org>,
-        "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20210111152638.2417-4-jiangshanlai@gmail.com>
-References: <20210111152638.2417-4-jiangshanlai@gmail.com>
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20210121103506.415606087@infradead.org>
+References: <20210121103506.415606087@infradead.org>
 MIME-Version: 1.0
-Message-ID: <161133729644.414.3800664867137502999.tip-bot2@tip-bot2>
+Message-ID: <161133729610.414.12540823678408067540.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,47 +61,68 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     547a77d02f8cfb345631ce23b5b548d27afa0fc4
-Gitweb:        https://git.kernel.org/tip/547a77d02f8cfb345631ce23b5b548d27afa0fc4
-Author:        Lai Jiangshan <laijs@linux.alibaba.com>
-AuthorDate:    Mon, 11 Jan 2021 23:26:33 +08:00
+Commit-ID:     22f667c97aadbf481e2cae2d6feabdf431e27b31
+Gitweb:        https://git.kernel.org/tip/22f667c97aadbf481e2cae2d6feabdf431e27b31
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Fri, 15 Jan 2021 18:17:45 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Fri, 22 Jan 2021 15:09:41 +01:00
+CommitterDate: Fri, 22 Jan 2021 15:09:42 +01:00
 
-workqueue: Use cpu_possible_mask instead of cpu_active_mask to break affinity
+sched: Don't run cpu-online with balance_push() enabled
 
-The scheduler won't break affinity for us any more, and we should
-"emulate" the same behavior when the scheduler breaks affinity for
-us.  The behavior is "changing the cpumask to cpu_possible_mask".
+We don't need to push away tasks when we come online, mark the push
+complete right before the CPU dies.
 
-And there might be some other CPUs online later while the worker is
-still running with the pending work items.  The worker should be allowed
-to use the later online CPUs as before and process the work items ASAP.
-If we use cpu_active_mask here, we can't achieve this goal but
-using cpu_possible_mask can.
+XXX hotplug state machine has trouble with rollback here.
 
-Fixes: 06249738a41a ("workqueue: Manually break affinity on hotplug")
-Signed-off-by: Lai Jiangshan <laijs@linux.alibaba.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Valentin Schneider <valentin.schneider@arm.com>
-Acked-by: Tejun Heo <tj@kernel.org>
-Tested-by: Paul E. McKenney <paulmck@kernel.org>
 Tested-by: Valentin Schneider <valentin.schneider@arm.com>
-Link: https://lkml.kernel.org/r/20210111152638.2417-4-jiangshanlai@gmail.com
+Link: https://lkml.kernel.org/r/20210121103506.415606087@infradead.org
 ---
- kernel/workqueue.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/sched/core.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/workqueue.c b/kernel/workqueue.c
-index 9880b6c..1646331 100644
---- a/kernel/workqueue.c
-+++ b/kernel/workqueue.c
-@@ -4920,7 +4920,7 @@ static void unbind_workers(int cpu)
- 		raw_spin_unlock_irq(&pool->lock);
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 627534f..8da0fd7 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -7320,10 +7320,12 @@ static void balance_push_set(int cpu, bool on)
+ 	struct rq_flags rf;
  
- 		for_each_pool_worker(worker, pool)
--			WARN_ON_ONCE(set_cpus_allowed_ptr(worker->task, cpu_active_mask) < 0);
-+			WARN_ON_ONCE(set_cpus_allowed_ptr(worker->task, cpu_possible_mask) < 0);
+ 	rq_lock_irqsave(rq, &rf);
+-	if (on)
++	if (on) {
++		WARN_ON_ONCE(rq->balance_callback);
+ 		rq->balance_callback = &balance_push_callback;
+-	else
++	} else if (rq->balance_callback == &balance_push_callback) {
+ 		rq->balance_callback = NULL;
++	}
+ 	rq_unlock_irqrestore(rq, &rf);
+ }
  
- 		mutex_unlock(&wq_pool_attach_mutex);
+@@ -7441,6 +7443,10 @@ int sched_cpu_activate(unsigned int cpu)
+ 	struct rq *rq = cpu_rq(cpu);
+ 	struct rq_flags rf;
  
++	/*
++	 * Make sure that when the hotplug state machine does a roll-back
++	 * we clear balance_push. Ideally that would happen earlier...
++	 */
+ 	balance_push_set(cpu, false);
+ 
+ #ifdef CONFIG_SCHED_SMT
+@@ -7608,6 +7614,12 @@ int sched_cpu_dying(unsigned int cpu)
+ 	}
+ 	rq_unlock_irqrestore(rq, &rf);
+ 
++	/*
++	 * Now that the CPU is offline, make sure we're welcome
++	 * to new tasks once we come back up.
++	 */
++	balance_push_set(cpu, false);
++
+ 	calc_load_migrate(rq);
+ 	update_max_interval();
+ 	nohz_balance_exit_idle(rq);
