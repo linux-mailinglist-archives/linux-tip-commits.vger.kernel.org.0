@@ -2,56 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 76278306435
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 27 Jan 2021 20:37:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BCEF830641A
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 27 Jan 2021 20:33:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344527AbhA0Tfe (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 27 Jan 2021 14:35:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53290 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231731AbhA0Tb6 (ORCPT
+        id S1344434AbhA0Tcv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 27 Jan 2021 14:32:51 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:58444 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1344241AbhA0TcR (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 27 Jan 2021 14:31:58 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7472AC061786;
-        Wed, 27 Jan 2021 11:31:17 -0800 (PST)
-Date:   Wed, 27 Jan 2021 19:31:15 -0000
+        Wed, 27 Jan 2021 14:32:17 -0500
+Date:   Wed, 27 Jan 2021 19:31:34 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1611775876;
+        s=2020; t=1611775895;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=hmwX9I7TEiX9jdiCIFhkG1Mot+9odzLF89TAKXB+K8U=;
-        b=g3M2pWo7T5Kq/1/KeVxWL+Puxzsl4W6WGp5K/635wbmwhB2/pM48alyOJYEwIh/e+Udjjk
-        HXrYSj20OWjiVShueYSHOmVDVcQPe1QRjAZKD8Egt6hrkEc4SsGcWkkPDlEf4V4PWLzoor
-        0cHz4J/I19vZ8HojibbcUUzgPHdcQHmfmrQHtXfyy6DEMIwXookSB3W8pIGCBp797iSqP5
-        WLUGVSTqkVQAWhHIaqhpzXsT+5xiP7iq1qsRDfPFpPw2DLda97X87KuQ9DQdxwdi9tUAlm
-        V1S8HBO58g+pr4/h1jBa73ZVWrlkpgKTMZNRIndknFdvEri7PzJTT80uB2Ny0w==
+        bh=ZWd9zuAKnbFdypCI+AMFWb/xOlm+1GwlYKXpziv/GsE=;
+        b=hAHhUcvTB1/LQakNOuKdwbiV1e4occ20MEPp0ol+89XamcR0VMR0vaAk8Ixz75sCmmc0HG
+        VvdjfOWKJtftobtCEWVsE2SgP+zZIUR1KrkFDzSua9o2SixLyEzKkPY5WaOxJ4CgEH6lMY
+        zp4PRdAGKgG48Z6lEgZLXA7p1LrQyXNPCYB/6GFIP9a/4E/S+lwHIgoKpIXnTgQJHtvqu3
+        z9W+xKiSxw/mGpvqm1ZkFrpoDN0e6kp3ReQ1z2I1qCh78UtP52FnM4Rl+QIyE8107hfPUc
+        kW3aOBpnJJJDkKVbdOrHuJ9rU62dclcrRJsqH+6uohFmsw3wAtltEcYraX1wMg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1611775876;
+        s=2020e; t=1611775895;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=hmwX9I7TEiX9jdiCIFhkG1Mot+9odzLF89TAKXB+K8U=;
-        b=D75FXHKRXnf75GwaJsiV25sFIEcY/jsQBGl5BDe8cYZIEbDPspz58HAVL5HMWYr1pbpVDZ
-        hHrtGa6g0OQ1P2BA==
-From:   "tip-bot2 for Alex Shi" <tip-bot2@linutronix.de>
+        bh=ZWd9zuAKnbFdypCI+AMFWb/xOlm+1GwlYKXpziv/GsE=;
+        b=cdZzZjK0+2kOfepF4lCvv17jAGIVXtZ1gYHPDnEZhpfy8qEo1AtW7vW5p7b79nVsv7aNWD
+        9RkGpEqqEomWHQAw==
+From:   "tip-bot2 for Misono Tomohiro" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] locking/rtmutex: Add missing kernel-doc markup
-Cc:     Alex Shi <alex.shi@linux.alibaba.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Will Deacon <will@kernel.org>, x86@kernel.org,
+Subject: [tip: x86/misc] x86/MSR: Filter MSR writes through X86_IOC_WRMSR_REGS
+ ioctl too
+Cc:     Misono Tomohiro <misono.tomohiro@jp.fujitsu.com>,
+        Borislav Petkov <bp@suse.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <1605257895-5536-2-git-send-email-alex.shi@linux.alibaba.com>
-References: <1605257895-5536-2-git-send-email-alex.shi@linux.alibaba.com>
+In-Reply-To: <20210127122456.13939-1-misono.tomohiro@jp.fujitsu.com>
+References: <20210127122456.13939-1-misono.tomohiro@jp.fujitsu.com>
 MIME-Version: 1.0
-Message-ID: <161177587549.23325.16141968098815646844.tip-bot2@tip-bot2>
+Message-ID: <161177589483.23325.9744949016620095034.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,73 +57,51 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the locking/core branch of tip:
+The following commit has been merged into the x86/misc branch of tip:
 
-Commit-ID:     59ea5f1508e15cecddd8e2ca828f7962ea37adab
-Gitweb:        https://git.kernel.org/tip/59ea5f1508e15cecddd8e2ca828f7962ea37adab
-Author:        Alex Shi <alex.shi@linux.alibaba.com>
-AuthorDate:    Fri, 13 Nov 2020 16:58:11 +08:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 27 Jan 2021 12:44:52 +01:00
+Commit-ID:     02a16aa13574c8526beadfc9ae8cc9b66315fa2d
+Gitweb:        https://git.kernel.org/tip/02a16aa13574c8526beadfc9ae8cc9b66315fa2d
+Author:        Misono Tomohiro <misono.tomohiro@jp.fujitsu.com>
+AuthorDate:    Wed, 27 Jan 2021 21:24:56 +09:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Wed, 27 Jan 2021 19:06:47 +01:00
 
-locking/rtmutex: Add missing kernel-doc markup
+x86/MSR: Filter MSR writes through X86_IOC_WRMSR_REGS ioctl too
 
-To fix the following issues:
-kernel/locking/rtmutex.c:1612: warning: Function parameter or member
-'lock' not described in '__rt_mutex_futex_unlock'
-kernel/locking/rtmutex.c:1612: warning: Function parameter or member
-'wake_q' not described in '__rt_mutex_futex_unlock'
-kernel/locking/rtmutex.c:1675: warning: Function parameter or member
-'name' not described in '__rt_mutex_init'
-kernel/locking/rtmutex.c:1675: warning: Function parameter or member
-'key' not described in '__rt_mutex_init'
+Commit
 
-[ tglx: Change rt lock to rt_mutex for consistency sake ]
+  a7e1f67ed29f ("x86/msr: Filter MSR writes")
 
-Signed-off-by: Alex Shi <alex.shi@linux.alibaba.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Will Deacon <will@kernel.org>
-Link: https://lore.kernel.org/r/1605257895-5536-2-git-send-email-alex.shi@linux.alibaba.com
+introduced a module parameter to disable writing to the MSR device file
+and tainted the kernel upon writing. As MSR registers can be written by
+the X86_IOC_WRMSR_REGS ioctl too, the same filtering and tainting should
+be applied to the ioctl as well.
 
+ [ bp: Massage commit message and space out statements. ]
+
+Fixes: a7e1f67ed29f ("x86/msr: Filter MSR writes")
+Signed-off-by: Misono Tomohiro <misono.tomohiro@jp.fujitsu.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lkml.kernel.org/r/20210127122456.13939-1-misono.tomohiro@jp.fujitsu.com
 ---
- kernel/locking/rtmutex.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ arch/x86/kernel/msr.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/kernel/locking/rtmutex.c b/kernel/locking/rtmutex.c
-index cfdd5b9..a201e5e 100644
---- a/kernel/locking/rtmutex.c
-+++ b/kernel/locking/rtmutex.c
-@@ -1604,8 +1604,11 @@ void __sched rt_mutex_unlock(struct rt_mutex *lock)
- EXPORT_SYMBOL_GPL(rt_mutex_unlock);
- 
- /**
-- * Futex variant, that since futex variants do not use the fast-path, can be
-- * simple and will not need to retry.
-+ * __rt_mutex_futex_unlock - Futex variant, that since futex variants
-+ * do not use the fast-path, can be simple and will not need to retry.
-+ *
-+ * @lock:	The rt_mutex to be unlocked
-+ * @wake_q:	The wake queue head from which to get the next lock waiter
-  */
- bool __sched __rt_mutex_futex_unlock(struct rt_mutex *lock,
- 				    struct wake_q_head *wake_q)
-@@ -1662,13 +1665,15 @@ void rt_mutex_destroy(struct rt_mutex *lock)
- EXPORT_SYMBOL_GPL(rt_mutex_destroy);
- 
- /**
-- * __rt_mutex_init - initialize the rt lock
-+ * __rt_mutex_init - initialize the rt_mutex
-  *
-- * @lock: the rt lock to be initialized
-+ * @lock:	The rt_mutex to be initialized
-+ * @name:	The lock name used for debugging
-+ * @key:	The lock class key used for debugging
-  *
-- * Initialize the rt lock to unlocked state.
-+ * Initialize the rt_mutex to unlocked state.
-  *
-- * Initializing of a locked rt lock is not allowed
-+ * Initializing of a locked rt_mutex is not allowed
-  */
- void __rt_mutex_init(struct rt_mutex *lock, const char *name,
- 		     struct lock_class_key *key)
+diff --git a/arch/x86/kernel/msr.c b/arch/x86/kernel/msr.c
+index 8a67d1f..ed8ac6b 100644
+--- a/arch/x86/kernel/msr.c
++++ b/arch/x86/kernel/msr.c
+@@ -182,6 +182,13 @@ static long msr_ioctl(struct file *file, unsigned int ioc, unsigned long arg)
+ 		err = security_locked_down(LOCKDOWN_MSR);
+ 		if (err)
+ 			break;
++
++		err = filter_write(regs[1]);
++		if (err)
++			return err;
++
++		add_taint(TAINT_CPU_OUT_OF_SPEC, LOCKDEP_STILL_OK);
++
+ 		err = wrmsr_safe_regs_on_cpu(cpu, regs);
+ 		if (err)
+ 			break;
