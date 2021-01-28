@@ -2,16 +2,19 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B7BF3075DB
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 28 Jan 2021 13:23:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F8183075DD
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 28 Jan 2021 13:23:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231260AbhA1MWV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 28 Jan 2021 07:22:21 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:34756 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231178AbhA1MWT (ORCPT
+        id S231178AbhA1MWZ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 28 Jan 2021 07:22:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43860 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231563AbhA1MWW (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 28 Jan 2021 07:22:19 -0500
+        Thu, 28 Jan 2021 07:22:22 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9C2DC061573;
+        Thu, 28 Jan 2021 04:21:38 -0800 (PST)
 Date:   Thu, 28 Jan 2021 12:21:36 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1611836497;
@@ -20,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=trpTr5Kt6dyOcuEAnVdH0aFyDdUBi+2DCuy6JjrYcbI=;
-        b=dAsjuBJO3JBaZxSNHCZBNQntmN1/5W2H7oEzyAMWOIs0NpRftMqPRuyNA3diT2ymJ6xGpU
-        aoPTEpO1d7H7MeEd92hWeQi5gj2sPOZ64pe6BRT5JwnKdP+VgpvhuoF0N374NhWTZVxcTW
-        HSZv38oIrmYRjKDmLG9wUNOuocZoErNqXs15deXWJ6dsu68/mL0G7qc0uvurYFsX51hwHe
-        0ac4cxyzKHYwj799akte2cLYUMu0zum4wXBLj6x7XUwFtfEpuhErj8z20JMhiz49ip5FVa
-        nldIu1yy+ADDl/Cu5TyZOOl3ZMiFHwezBNhz/d9oElUoforlVib28rDtLgjmfg==
+        bh=0XFsQOXaUf6eQkfskm6e+uuyZvnZrXDmgTVqxDe1KcQ=;
+        b=mjSCPamW299FhhXP8lxN3JCdAO4Klcu0RKLzjmr5Z/4pigjSB6Y55fL1Os3EiNcWy1bY3F
+        +HiCtIEUGUag//5dTaMYy44ve93QRtLLbjOJDhCzR5ucbpEb2NpLclOYs00kyj5prPtHMm
+        Bga5J+kQqsgjQij+qPBnU5WnUw6sGg0I7cMSTl1WqYECEKlPRuCCXYqFIzDObtRBw2er4q
+        7mXfDmH0NKRyIpyXRmZwbqBxKR8IfZLY3g99uyQgmNKo47SicVQKbPR7ezMaZIsqyUmKlu
+        l5B9LWoAgIkj0VQe4vtLC48+R8pPxV1D8hYTQ0Pzggm6eJ8+0+NWZ9hUTuUtrw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1611836497;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -33,22 +36,21 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=trpTr5Kt6dyOcuEAnVdH0aFyDdUBi+2DCuy6JjrYcbI=;
-        b=eOVuruo85Tf6Q46WXOGYDzuZJD2mqkrylbvsieO7XilfeKT2tkLY5wEONYZV+uhE9L8Wo4
-        X5c8b78sAvDhJ2BQ==
-From:   "tip-bot2 for Alex Shi" <tip-bot2@linutronix.de>
+        bh=0XFsQOXaUf6eQkfskm6e+uuyZvnZrXDmgTVqxDe1KcQ=;
+        b=MazKJum34oteacmMZwlKRUv0I0njn3FU0f+Ojb4890GlSkhNXQPrI1DfsecD669+RKbXDI
+        rwhq5PcN37+4lxCg==
+From:   "tip-bot2 for Jangwoong Kim" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] locking/rtmutex: Add missing kernel-doc markup
-Cc:     Alex Shi <alex.shi@linux.alibaba.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Will Deacon <will@kernel.org>, x86@kernel.org,
+Subject: [tip: locking/core] futex: Remove unneeded gotos
+Cc:     Jangwoong Kim <6812skiii@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <1605257895-5536-2-git-send-email-alex.shi@linux.alibaba.com>
-References: <1605257895-5536-2-git-send-email-alex.shi@linux.alibaba.com>
+In-Reply-To: <20201230122953.10473-1-6812skiii@gmail.com>
+References: <20201230122953.10473-1-6812skiii@gmail.com>
 MIME-Version: 1.0
-Message-ID: <161183649616.23325.8512729812885530815.tip-bot2@tip-bot2>
+Message-ID: <161183649645.23325.6834431262596546506.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,72 +61,63 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     bf594bf400016a1ac58c753bcc0393a39c36f669
-Gitweb:        https://git.kernel.org/tip/bf594bf400016a1ac58c753bcc0393a39c36f669
-Author:        Alex Shi <alex.shi@linux.alibaba.com>
-AuthorDate:    Fri, 13 Nov 2020 16:58:11 +08:00
+Commit-ID:     0f9438503ea1312ef49be4d9762e0f0006546364
+Gitweb:        https://git.kernel.org/tip/0f9438503ea1312ef49be4d9762e0f0006546364
+Author:        Jangwoong Kim <6812skiii@gmail.com>
+AuthorDate:    Wed, 30 Dec 2020 21:29:53 +09:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Thu, 28 Jan 2021 13:20:18 +01:00
 
-locking/rtmutex: Add missing kernel-doc markup
+futex: Remove unneeded gotos
 
-To fix the following issues:
-kernel/locking/rtmutex.c:1612: warning: Function parameter or member
-'lock' not described in '__rt_mutex_futex_unlock'
-kernel/locking/rtmutex.c:1612: warning: Function parameter or member
-'wake_q' not described in '__rt_mutex_futex_unlock'
-kernel/locking/rtmutex.c:1675: warning: Function parameter or member
-'name' not described in '__rt_mutex_init'
-kernel/locking/rtmutex.c:1675: warning: Function parameter or member
-'key' not described in '__rt_mutex_init'
+Get rid of gotos that do not contain any cleanup. These were not removed in
+commit 9180bd467f9a ("futex: Remove put_futex_key()").
 
-[ tglx: Change rt lock to rt_mutex for consistency sake ]
-
-Signed-off-by: Alex Shi <alex.shi@linux.alibaba.com>
+Signed-off-by: Jangwoong Kim <6812skiii@gmail.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Will Deacon <will@kernel.org>
-Link: https://lore.kernel.org/r/1605257895-5536-2-git-send-email-alex.shi@linux.alibaba.com
+Link: https://lore.kernel.org/r/20201230122953.10473-1-6812skiii@gmail.com
 
 
 ---
- kernel/locking/rtmutex.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ kernel/futex.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/locking/rtmutex.c b/kernel/locking/rtmutex.c
-index cfdd5b9..a201e5e 100644
---- a/kernel/locking/rtmutex.c
-+++ b/kernel/locking/rtmutex.c
-@@ -1604,8 +1604,11 @@ void __sched rt_mutex_unlock(struct rt_mutex *lock)
- EXPORT_SYMBOL_GPL(rt_mutex_unlock);
+diff --git a/kernel/futex.c b/kernel/futex.c
+index d0775aa..f3570a2 100644
+--- a/kernel/futex.c
++++ b/kernel/futex.c
+@@ -3024,7 +3024,7 @@ retry:
+ 		 * Success, we're done! No tricky corner cases.
+ 		 */
+ 		if (!ret)
+-			goto out_putkey;
++			return ret;
+ 		/*
+ 		 * The atomic access to the futex value generated a
+ 		 * pagefault, so retry the user-access and the wakeup:
+@@ -3041,7 +3041,7 @@ retry:
+ 		 * wake_futex_pi has detected invalid state. Tell user
+ 		 * space.
+ 		 */
+-		goto out_putkey;
++		return ret;
+ 	}
  
- /**
-- * Futex variant, that since futex variants do not use the fast-path, can be
-- * simple and will not need to retry.
-+ * __rt_mutex_futex_unlock - Futex variant, that since futex variants
-+ * do not use the fast-path, can be simple and will not need to retry.
-+ *
-+ * @lock:	The rt_mutex to be unlocked
-+ * @wake_q:	The wake queue head from which to get the next lock waiter
-  */
- bool __sched __rt_mutex_futex_unlock(struct rt_mutex *lock,
- 				    struct wake_q_head *wake_q)
-@@ -1662,13 +1665,15 @@ void rt_mutex_destroy(struct rt_mutex *lock)
- EXPORT_SYMBOL_GPL(rt_mutex_destroy);
+ 	/*
+@@ -3062,7 +3062,7 @@ retry:
  
- /**
-- * __rt_mutex_init - initialize the rt lock
-+ * __rt_mutex_init - initialize the rt_mutex
-  *
-- * @lock: the rt lock to be initialized
-+ * @lock:	The rt_mutex to be initialized
-+ * @name:	The lock name used for debugging
-+ * @key:	The lock class key used for debugging
-  *
-- * Initialize the rt lock to unlocked state.
-+ * Initialize the rt_mutex to unlocked state.
-  *
-- * Initializing of a locked rt lock is not allowed
-+ * Initializing of a locked rt_mutex is not allowed
-  */
- void __rt_mutex_init(struct rt_mutex *lock, const char *name,
- 		     struct lock_class_key *key)
+ 		default:
+ 			WARN_ON_ONCE(1);
+-			goto out_putkey;
++			return ret;
+ 		}
+ 	}
+ 
+@@ -3073,7 +3073,6 @@ retry:
+ 
+ out_unlock:
+ 	spin_unlock(&hb->lock);
+-out_putkey:
+ 	return ret;
+ 
+ pi_retry:
