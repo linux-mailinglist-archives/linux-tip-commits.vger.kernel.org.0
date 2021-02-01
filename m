@@ -2,57 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A8B5309464
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 30 Jan 2021 11:22:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C90930A696
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  1 Feb 2021 12:33:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232018AbhA3KWn (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 30 Jan 2021 05:22:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55944 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232450AbhA3A1G (ORCPT
+        id S230009AbhBALdP (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 1 Feb 2021 06:33:15 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:56926 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229570AbhBALdK (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 29 Jan 2021 19:27:06 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DEE0C061573;
-        Fri, 29 Jan 2021 16:25:51 -0800 (PST)
-Date:   Sat, 30 Jan 2021 00:25:45 -0000
+        Mon, 1 Feb 2021 06:33:10 -0500
+Date:   Mon, 01 Feb 2021 11:32:25 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1611966346;
+        s=2020; t=1612179147;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=+O2w7S5EIr+xgRrn3lyGkiuObLVFWzLYI3jLm0zSy/U=;
-        b=ja8CJybGquWcD7wxc/usJyM56b3UFxypqDDDtDspDxVrMoVoYvlT5Q0s7At0cqXOM3roEP
-        R3Rl/+CUltc1hsSR7kfK06bfQEkjriHOkot/CEr5Y3SH+dG5QIPU06cy4TEXHycMX99Sf4
-        Jjc/Z+u2BAx/gn1nfjZouSA779XKP/rbST2724j7U8jgwUzmudwcmpdpIr3MWIBZ88zyb0
-        9aKO65qBI+JQeyshoA9+3AEEPQnszDykyifcWOS0qIvzb2uFfCkvx5pgH4+6Hg93rXGZv5
-        3OmkwTcES8xRF2+3FvDx6fZJAJ2X/HfRTChoWhXTjW/pLzxRU9sHr+8VICahCg==
+        bh=LDQ/TXY7ggLB/kky2ERZC0LtBrm8BfvVqJaqiSLmzgg=;
+        b=CL4GnYgfD0hpnnsC6QJqHoJvGjM0g1C7S3mNBPBkFH915E9qdZxqIZ+bbCmTZg4+dFQx7J
+        nM7dLNBK1r1GSIRrOP2o+bz5hgWG91T0smiMSr5wX1dfcyGUjUh4KKdVA793y6N3eY76qC
+        oIOJSuEW4XvBma1bhbEA8K1fyzX0PuefN1dPku3WM5xTWkIc2JUZ98TFcxS7WzqBoMmieL
+        hmqGi9hp3dgczFoB6Lca9ulELgD6Y01NzCyItD/LO2rINLvtGsjvsBdgKAAKzdjgnPseIj
+        V9WzFKBwIARe6taexBQfC/9cL4qW6LBiUxef0lGbGJzRFcd8R5BB1EAWGzJyTw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1611966346;
+        s=2020e; t=1612179147;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=+O2w7S5EIr+xgRrn3lyGkiuObLVFWzLYI3jLm0zSy/U=;
-        b=MRBubB14FDQzEGB0tTRGQtmEY00BfkciJEEtiWpfLIpBuQm87AJOg+c8d5+4nbzsCAU8qc
-        m7rtiZT71xnxkXDw==
-From:   "tip-bot2 for Marc Zyngier" <tip-bot2@linutronix.de>
+        bh=LDQ/TXY7ggLB/kky2ERZC0LtBrm8BfvVqJaqiSLmzgg=;
+        b=LOfMt1v2GqZihanM65+LS4vMZsIChe2xPZxoeoSgkCUWx6XEnzgLTMFISHXxjcyBCjUMSe
+        J59AT8n1cggkJ9Bw==
+From:   "tip-bot2 for Will Deacon" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/urgent] genirq/msi: Activate Multi-MSI early when
- MSI_FLAG_ACTIVATE_EARLY is set
-Cc:     Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
-        Marc Zyngier <maz@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20210123122759.1781359-1-maz@kernel.org>
-References: <20210123122759.1781359-1-maz@kernel.org>
+Subject: [tip: core/mm] tlb: mmu_gather: Remove start/end arguments from
+ tlb_gather_mmu()
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Will Deacon <will@kernel.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Yu Zhao <yuzhao@google.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <CAHk-=wjQWa14_4UpfDf=fiineNP+RH74kZeDMo_f1D35xNzq9w@mail.gmail.com>
+References: <CAHk-=wjQWa14_4UpfDf=fiineNP+RH74kZeDMo_f1D35xNzq9w@mail.gmail.com>
 MIME-Version: 1.0
-Message-ID: <161196634552.23325.925660465209901325.tip-bot2@tip-bot2>
+Message-ID: <161217914566.23325.13021666121882104598.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,132 +59,251 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the irq/urgent branch of tip:
+The following commit has been merged into the core/mm branch of tip:
 
-Commit-ID:     4c457e8cb75eda91906a4f89fc39bde3f9a43922
-Gitweb:        https://git.kernel.org/tip/4c457e8cb75eda91906a4f89fc39bde3f9a43922
-Author:        Marc Zyngier <maz@kernel.org>
-AuthorDate:    Sat, 23 Jan 2021 12:27:59 
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sat, 30 Jan 2021 01:22:31 +01:00
+Commit-ID:     a72afd873089c697053e9daa85ff343b3140d2e7
+Gitweb:        https://git.kernel.org/tip/a72afd873089c697053e9daa85ff343b3140d2e7
+Author:        Will Deacon <will@kernel.org>
+AuthorDate:    Wed, 27 Jan 2021 23:53:45 
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Fri, 29 Jan 2021 20:02:29 +01:00
 
-genirq/msi: Activate Multi-MSI early when MSI_FLAG_ACTIVATE_EARLY is set
+tlb: mmu_gather: Remove start/end arguments from tlb_gather_mmu()
 
-When MSI_FLAG_ACTIVATE_EARLY is set (which is the case for PCI),
-__msi_domain_alloc_irqs() performs the activation of the interrupt (which
-in the case of PCI results in the endpoint being programmed) as soon as the
-interrupt is allocated.
+The 'start' and 'end' arguments to tlb_gather_mmu() are no longer
+needed now that there is a separate function for 'fullmm' flushing.
 
-But it appears that this is only done for the first vector, introducing an
-inconsistent behaviour for PCI Multi-MSI.
+Remove the unused arguments and update all callers.
 
-Fix it by iterating over the number of vectors allocated to each MSI
-descriptor. This is easily achieved by introducing a new
-"for_each_msi_vector" iterator, together with a tiny bit of refactoring.
-
-Fixes: f3b0946d629c ("genirq/msi: Make sure PCI MSIs are activated early")
-Reported-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20210123122759.1781359-1-maz@kernel.org
-
+Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Yu Zhao <yuzhao@google.com>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/CAHk-=wjQWa14_4UpfDf=fiineNP+RH74kZeDMo_f1D35xNzq9w@mail.gmail.com
 ---
- include/linux/msi.h |  6 ++++++-
- kernel/irq/msi.c    | 44 ++++++++++++++++++++------------------------
- 2 files changed, 26 insertions(+), 24 deletions(-)
+ arch/ia64/include/asm/tlb.h |  2 +-
+ arch/x86/kernel/ldt.c       |  2 +-
+ fs/exec.c                   |  2 +-
+ include/linux/mm_types.h    |  3 +--
+ mm/hugetlb.c                | 16 +---------------
+ mm/madvise.c                |  6 +++---
+ mm/memory.c                 |  4 ++--
+ mm/mmap.c                   |  2 +-
+ mm/mmu_gather.c             | 22 ++++++++--------------
+ mm/oom_kill.c               |  2 +-
+ 10 files changed, 20 insertions(+), 41 deletions(-)
 
-diff --git a/include/linux/msi.h b/include/linux/msi.h
-index 360a0a7..aef35fd 100644
---- a/include/linux/msi.h
-+++ b/include/linux/msi.h
-@@ -178,6 +178,12 @@ struct msi_desc {
- 	list_for_each_entry((desc), dev_to_msi_list((dev)), list)
- #define for_each_msi_entry_safe(desc, tmp, dev)	\
- 	list_for_each_entry_safe((desc), (tmp), dev_to_msi_list((dev)), list)
-+#define for_each_msi_vector(desc, __irq, dev)				\
-+	for_each_msi_entry((desc), (dev))				\
-+		if ((desc)->irq)					\
-+			for (__irq = (desc)->irq;			\
-+			     __irq < ((desc)->irq + (desc)->nvec_used);	\
-+			     __irq++)
+diff --git a/arch/ia64/include/asm/tlb.h b/arch/ia64/include/asm/tlb.h
+index 7059eb2..a15fe08 100644
+--- a/arch/ia64/include/asm/tlb.h
++++ b/arch/ia64/include/asm/tlb.h
+@@ -23,7 +23,7 @@
+  * unmapping a portion of the virtual address space, these hooks are called according to
+  * the following template:
+  *
+- *	tlb <- tlb_gather_mmu(mm, start, end);		// start unmap for address space MM
++ *	tlb <- tlb_gather_mmu(mm);			// start unmap for address space MM
+  *	{
+  *	  for each vma that needs a shootdown do {
+  *	    tlb_start_vma(tlb, vma);
+diff --git a/arch/x86/kernel/ldt.c b/arch/x86/kernel/ldt.c
+index 0d4e125..7ad9834 100644
+--- a/arch/x86/kernel/ldt.c
++++ b/arch/x86/kernel/ldt.c
+@@ -398,7 +398,7 @@ static void free_ldt_pgtables(struct mm_struct *mm)
+ 	if (!boot_cpu_has(X86_FEATURE_PTI))
+ 		return;
  
- #ifdef CONFIG_IRQ_MSI_IOMMU
- static inline const void *msi_desc_get_iommu_cookie(struct msi_desc *desc)
-diff --git a/kernel/irq/msi.c b/kernel/irq/msi.c
-index dc0e2d7..b338d62 100644
---- a/kernel/irq/msi.c
-+++ b/kernel/irq/msi.c
-@@ -436,22 +436,22 @@ int __msi_domain_alloc_irqs(struct irq_domain *domain, struct device *dev,
+-	tlb_gather_mmu(&tlb, mm, start, end);
++	tlb_gather_mmu(&tlb, mm);
+ 	free_pgd_range(&tlb, start, end, start, end);
+ 	tlb_finish_mmu(&tlb);
+ #endif
+diff --git a/fs/exec.c b/fs/exec.c
+index 69d89a0..5a853f0 100644
+--- a/fs/exec.c
++++ b/fs/exec.c
+@@ -708,7 +708,7 @@ static int shift_arg_pages(struct vm_area_struct *vma, unsigned long shift)
+ 		return -ENOMEM;
  
- 	can_reserve = msi_check_reservation_mode(domain, info, dev);
+ 	lru_add_drain();
+-	tlb_gather_mmu(&tlb, mm, old_start, old_end);
++	tlb_gather_mmu(&tlb, mm);
+ 	if (new_end > old_start) {
+ 		/*
+ 		 * when the old and new regions overlap clear from new_end.
+diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+index e49868b..0974ad5 100644
+--- a/include/linux/mm_types.h
++++ b/include/linux/mm_types.h
+@@ -588,8 +588,7 @@ static inline cpumask_t *mm_cpumask(struct mm_struct *mm)
+ }
  
--	for_each_msi_entry(desc, dev) {
--		virq = desc->irq;
--		if (desc->nvec_used == 1)
--			dev_dbg(dev, "irq %d for MSI\n", virq);
--		else
-+	/*
-+	 * This flag is set by the PCI layer as we need to activate
-+	 * the MSI entries before the PCI layer enables MSI in the
-+	 * card. Otherwise the card latches a random msi message.
-+	 */
-+	if (!(info->flags & MSI_FLAG_ACTIVATE_EARLY))
-+		goto skip_activate;
-+
-+	for_each_msi_vector(desc, i, dev) {
-+		if (desc->irq == i) {
-+			virq = desc->irq;
- 			dev_dbg(dev, "irq [%d-%d] for MSI\n",
- 				virq, virq + desc->nvec_used - 1);
--		/*
--		 * This flag is set by the PCI layer as we need to activate
--		 * the MSI entries before the PCI layer enables MSI in the
--		 * card. Otherwise the card latches a random msi message.
--		 */
--		if (!(info->flags & MSI_FLAG_ACTIVATE_EARLY))
--			continue;
-+		}
+ struct mmu_gather;
+-extern void tlb_gather_mmu(struct mmu_gather *tlb, struct mm_struct *mm,
+-				unsigned long start, unsigned long end);
++extern void tlb_gather_mmu(struct mmu_gather *tlb, struct mm_struct *mm);
+ extern void tlb_gather_mmu_fullmm(struct mmu_gather *tlb, struct mm_struct *mm);
+ extern void tlb_finish_mmu(struct mmu_gather *tlb);
  
--		irq_data = irq_domain_get_irq_data(domain, desc->irq);
-+		irq_data = irq_domain_get_irq_data(domain, i);
- 		if (!can_reserve) {
- 			irqd_clr_can_reserve(irq_data);
- 			if (domain->flags & IRQ_DOMAIN_MSI_NOMASK_QUIRK)
-@@ -462,28 +462,24 @@ int __msi_domain_alloc_irqs(struct irq_domain *domain, struct device *dev,
- 			goto cleanup;
- 	}
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 33db4fa..89635f4 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -3967,23 +3967,9 @@ void __unmap_hugepage_range_final(struct mmu_gather *tlb,
+ void unmap_hugepage_range(struct vm_area_struct *vma, unsigned long start,
+ 			  unsigned long end, struct page *ref_page)
+ {
+-	struct mm_struct *mm;
+ 	struct mmu_gather tlb;
+-	unsigned long tlb_start = start;
+-	unsigned long tlb_end = end;
  
-+skip_activate:
- 	/*
- 	 * If these interrupts use reservation mode, clear the activated bit
- 	 * so request_irq() will assign the final vector.
- 	 */
- 	if (can_reserve) {
--		for_each_msi_entry(desc, dev) {
--			irq_data = irq_domain_get_irq_data(domain, desc->irq);
-+		for_each_msi_vector(desc, i, dev) {
-+			irq_data = irq_domain_get_irq_data(domain, i);
- 			irqd_clr_activated(irq_data);
- 		}
- 	}
- 	return 0;
- 
- cleanup:
--	for_each_msi_entry(desc, dev) {
--		struct irq_data *irqd;
+-	/*
+-	 * If shared PMDs were possibly used within this vma range, adjust
+-	 * start/end for worst case tlb flushing.
+-	 * Note that we can not be sure if PMDs are shared until we try to
+-	 * unmap pages.  However, we want to make sure TLB flushing covers
+-	 * the largest possible range.
+-	 */
+-	adjust_range_if_pmd_sharing_possible(vma, &tlb_start, &tlb_end);
 -
--		if (desc->irq == virq)
--			break;
+-	mm = vma->vm_mm;
 -
--		irqd = irq_domain_get_irq_data(domain, desc->irq);
--		if (irqd_is_activated(irqd))
--			irq_domain_deactivate_irq(irqd);
-+	for_each_msi_vector(desc, i, dev) {
-+		irq_data = irq_domain_get_irq_data(domain, i);
-+		if (irqd_is_activated(irq_data))
-+			irq_domain_deactivate_irq(irq_data);
- 	}
- 	msi_domain_free_irqs(domain, dev);
- 	return ret;
+-	tlb_gather_mmu(&tlb, mm, tlb_start, tlb_end);
++	tlb_gather_mmu(&tlb, vma->vm_mm);
+ 	__unmap_hugepage_range(&tlb, vma, start, end, ref_page);
+ 	tlb_finish_mmu(&tlb);
+ }
+diff --git a/mm/madvise.c b/mm/madvise.c
+index 1b68520..0938fd3 100644
+--- a/mm/madvise.c
++++ b/mm/madvise.c
+@@ -506,7 +506,7 @@ static long madvise_cold(struct vm_area_struct *vma,
+ 		return -EINVAL;
+ 
+ 	lru_add_drain();
+-	tlb_gather_mmu(&tlb, mm, start_addr, end_addr);
++	tlb_gather_mmu(&tlb, mm);
+ 	madvise_cold_page_range(&tlb, vma, start_addr, end_addr);
+ 	tlb_finish_mmu(&tlb);
+ 
+@@ -558,7 +558,7 @@ static long madvise_pageout(struct vm_area_struct *vma,
+ 		return 0;
+ 
+ 	lru_add_drain();
+-	tlb_gather_mmu(&tlb, mm, start_addr, end_addr);
++	tlb_gather_mmu(&tlb, mm);
+ 	madvise_pageout_page_range(&tlb, vma, start_addr, end_addr);
+ 	tlb_finish_mmu(&tlb);
+ 
+@@ -723,7 +723,7 @@ static int madvise_free_single_vma(struct vm_area_struct *vma,
+ 				range.start, range.end);
+ 
+ 	lru_add_drain();
+-	tlb_gather_mmu(&tlb, mm, range.start, range.end);
++	tlb_gather_mmu(&tlb, mm);
+ 	update_hiwater_rss(mm);
+ 
+ 	mmu_notifier_invalidate_range_start(&range);
+diff --git a/mm/memory.c b/mm/memory.c
+index 7bd3f12..9e8576a 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -1534,7 +1534,7 @@ void zap_page_range(struct vm_area_struct *vma, unsigned long start,
+ 	lru_add_drain();
+ 	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, vma, vma->vm_mm,
+ 				start, start + size);
+-	tlb_gather_mmu(&tlb, vma->vm_mm, start, range.end);
++	tlb_gather_mmu(&tlb, vma->vm_mm);
+ 	update_hiwater_rss(vma->vm_mm);
+ 	mmu_notifier_invalidate_range_start(&range);
+ 	for ( ; vma && vma->vm_start < range.end; vma = vma->vm_next)
+@@ -1561,7 +1561,7 @@ static void zap_page_range_single(struct vm_area_struct *vma, unsigned long addr
+ 	lru_add_drain();
+ 	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, vma, vma->vm_mm,
+ 				address, address + size);
+-	tlb_gather_mmu(&tlb, vma->vm_mm, address, range.end);
++	tlb_gather_mmu(&tlb, vma->vm_mm);
+ 	update_hiwater_rss(vma->vm_mm);
+ 	mmu_notifier_invalidate_range_start(&range);
+ 	unmap_single_vma(&tlb, vma, address, range.end, details);
+diff --git a/mm/mmap.c b/mm/mmap.c
+index 4eac7c6..90673fe 100644
+--- a/mm/mmap.c
++++ b/mm/mmap.c
+@@ -2671,7 +2671,7 @@ static void unmap_region(struct mm_struct *mm,
+ 	struct mmu_gather tlb;
+ 
+ 	lru_add_drain();
+-	tlb_gather_mmu(&tlb, mm, start, end);
++	tlb_gather_mmu(&tlb, mm);
+ 	update_hiwater_rss(mm);
+ 	unmap_vmas(&tlb, vma, start, end);
+ 	free_pgtables(&tlb, vma, prev ? prev->vm_end : FIRST_USER_ADDRESS,
+diff --git a/mm/mmu_gather.c b/mm/mmu_gather.c
+index 5f5e45d..0dc7149 100644
+--- a/mm/mmu_gather.c
++++ b/mm/mmu_gather.c
+@@ -253,21 +253,17 @@ void tlb_flush_mmu(struct mmu_gather *tlb)
+  * tlb_gather_mmu - initialize an mmu_gather structure for page-table tear-down
+  * @tlb: the mmu_gather structure to initialize
+  * @mm: the mm_struct of the target address space
+- * @start: start of the region that will be removed from the page-table
+- * @end: end of the region that will be removed from the page-table
++ * @fullmm: @mm is without users and we're going to destroy the full address
++ *	    space (exit/execve)
+  *
+  * Called to initialize an (on-stack) mmu_gather structure for page-table
+- * tear-down from @mm. The @start and @end are set to 0 and -1
+- * respectively when @mm is without users and we're going to destroy
+- * the full address space (exit/execve).
++ * tear-down from @mm.
+  */
+ static void __tlb_gather_mmu(struct mmu_gather *tlb, struct mm_struct *mm,
+-			     unsigned long start, unsigned long end)
++			     bool fullmm)
+ {
+ 	tlb->mm = mm;
+-
+-	/* Is it from 0 to ~0? */
+-	tlb->fullmm     = !(start | (end+1));
++	tlb->fullmm = fullmm;
+ 
+ #ifndef CONFIG_MMU_GATHER_NO_GATHER
+ 	tlb->need_flush_all = 0;
+@@ -287,16 +283,14 @@ static void __tlb_gather_mmu(struct mmu_gather *tlb, struct mm_struct *mm,
+ 	inc_tlb_flush_pending(tlb->mm);
+ }
+ 
+-void tlb_gather_mmu(struct mmu_gather *tlb, struct mm_struct *mm,
+-		    unsigned long start, unsigned long end)
++void tlb_gather_mmu(struct mmu_gather *tlb, struct mm_struct *mm)
+ {
+-	WARN_ON(!(start | (end + 1))); /* Use _fullmm() instead */
+-	__tlb_gather_mmu(tlb, mm, start, end);
++	__tlb_gather_mmu(tlb, mm, false);
+ }
+ 
+ void tlb_gather_mmu_fullmm(struct mmu_gather *tlb, struct mm_struct *mm)
+ {
+-	__tlb_gather_mmu(tlb, mm, 0, -1);
++	__tlb_gather_mmu(tlb, mm, true);
+ }
+ 
+ /**
+diff --git a/mm/oom_kill.c b/mm/oom_kill.c
+index 757e557..c9a33ff 100644
+--- a/mm/oom_kill.c
++++ b/mm/oom_kill.c
+@@ -546,7 +546,7 @@ bool __oom_reap_task_mm(struct mm_struct *mm)
+ 			mmu_notifier_range_init(&range, MMU_NOTIFY_UNMAP, 0,
+ 						vma, mm, vma->vm_start,
+ 						vma->vm_end);
+-			tlb_gather_mmu(&tlb, mm, range.start, range.end);
++			tlb_gather_mmu(&tlb, mm);
+ 			if (mmu_notifier_invalidate_range_start_nonblock(&range)) {
+ 				tlb_finish_mmu(&tlb);
+ 				ret = false;
