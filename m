@@ -2,16 +2,16 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D4ADF30BBBC
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  2 Feb 2021 11:05:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DEBF630BBBA
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  2 Feb 2021 11:05:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229693AbhBBKFX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 2 Feb 2021 05:05:23 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:35592 "EHLO
+        id S230115AbhBBKFK (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 2 Feb 2021 05:05:10 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:35606 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231258AbhBBKEh (ORCPT
+        with ESMTP id S230029AbhBBKEg (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 2 Feb 2021 05:04:37 -0500
+        Tue, 2 Feb 2021 05:04:36 -0500
 Date:   Tue, 02 Feb 2021 10:03:52 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1612260233;
@@ -20,12 +20,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Q8cAsFK8lFNJaAbN8W82Rx79RWWZcSFP21OIo8I3N+Y=;
-        b=GkBQbSNuIQoHUafQyJokZXwy3UXrLBETPkTjR8meHeKvo2/TDAbHxzT8gaHHewCMvzw2I3
-        Bt27aEe4fvzq7HLgU8PuRFc6m1Au2nd/uMdfc7aGGxT/+bkjSzokLp7JP1iUDN5Az4aeYH
-        zRBEAHAOKkLOzxqn7Itfrosn+1sbkse+FzK5KylylyZgjqediS/Rjynj2RVVWAUk1reuQf
-        /0I1Om35vKxVOeTSISR8IhYkPJYyLGr0zxVdAf7CPxp1S4ryYDBDxtag6h5BINWeWMFDzB
-        QOZJb8gh1nZuH5z8c8ZZBIa7iT8yim4byl45/dcDSbLc4duUTDDlhAEQ32RvWw==
+        bh=bRlYEvuMy1ynxF5bxEF4a/gMATOZh4Nc6xuC2aUsC6k=;
+        b=HJHp9z1huuOqvXqcBDXJVigiynPN1zXvVqo0VzvaWOuRVnWIcDJTxOIZog3CY2hvCpX05Q
+        1qCgdarh1v7CicuXTzIn45j3EQBGGCv9dkMZvNlgtiBQtnxLxmSKMCJF+k9QhRRzey3Gvt
+        qf14ozZ93OUVbF3eq/4C++yGtDo6qBj5+rYhhabX/aAs1rwzIv3Zrm+XtXyT2fJnmAXKo9
+        BcUEA3aNR+AHTJSPgI4m0VwFkTyxFPGujsGt42wgY/MAdgfa68qPyvm4C81uEjjkzGLk+q
+        Q4dCXg9tGTx9+nsXL+9bw4JZaA/AyjO4upP1kFvPO2HHum7GlXDVHugKmT0zjg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1612260233;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -33,21 +33,21 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Q8cAsFK8lFNJaAbN8W82Rx79RWWZcSFP21OIo8I3N+Y=;
-        b=yILKj4NOiLXfEu3sb+WKJSH+EIbWutXAQlwI4yrG+vNOHm9XDKw4598jDtxLUlkLbeIAQQ
-        HC81n9cRw8YiWeCA==
+        bh=bRlYEvuMy1ynxF5bxEF4a/gMATOZh4Nc6xuC2aUsC6k=;
+        b=a1FKhKEbWwvv+a7+93wuRD8YUvkzFkvX+HG/fnw54qiJhJgfKeaZcwoqVIYTIePGNgXrMi
+        e+CluaSImT+8FRBQ==
 From:   "tip-bot2 for Dietmar Eggemann" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched: Remove USER_PRIO, TASK_USER_PRIO and MAX_USER_PRIO
+Subject: [tip: sched/core] sched: Remove MAX_USER_RT_PRIO
 Cc:     Dietmar Eggemann <dietmar.eggemann@arm.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210128131040.296856-3-dietmar.eggemann@arm.com>
-References: <20210128131040.296856-3-dietmar.eggemann@arm.com>
+In-Reply-To: <20210128131040.296856-2-dietmar.eggemann@arm.com>
+References: <20210128131040.296856-2-dietmar.eggemann@arm.com>
 MIME-Version: 1.0
-Message-ID: <161226023208.23325.6027956760315640238.tip-bot2@tip-bot2>
+Message-ID: <161226023229.23325.8725751974683460180.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,95 +58,78 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     c18b4a67cc459fb8389f6a89ce28e404aafe562c
-Gitweb:        https://git.kernel.org/tip/c18b4a67cc459fb8389f6a89ce28e404aafe562c
+Commit-ID:     4d38ea6a6d93115113fb4c023d5bb15e8ce1589c
+Gitweb:        https://git.kernel.org/tip/4d38ea6a6d93115113fb4c023d5bb15e8ce1589c
 Author:        Dietmar Eggemann <dietmar.eggemann@arm.com>
-AuthorDate:    Thu, 28 Jan 2021 14:10:39 +01:00
+AuthorDate:    Thu, 28 Jan 2021 14:10:38 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Mon, 01 Feb 2021 15:31:39 +01:00
 
-sched: Remove USER_PRIO, TASK_USER_PRIO and MAX_USER_PRIO
+sched: Remove MAX_USER_RT_PRIO
 
-The only remaining use of MAX_USER_PRIO (and USER_PRIO) is the
-SCALE_PRIO() definition in the PowerPC Cell architecture's Synergistic
-Processor Unit (SPU) scheduler. TASK_USER_PRIO isn't used anymore.
+Commit d46523ea32a7 ("[PATCH] fix MAX_USER_RT_PRIO and MAX_RT_PRIO")
+was introduced due to a a small time period in which the realtime patch
+set was using different values for MAX_USER_RT_PRIO and MAX_RT_PRIO.
 
-Commit fe443ef2ac42 ("[POWERPC] spusched: Dynamic timeslicing for
-SCHED_OTHER") copied SCALE_PRIO() from the task scheduler in v2.6.23.
+This is no longer true, i.e. now MAX_RT_PRIO == MAX_USER_RT_PRIO.
 
-Commit a4ec24b48dde ("sched: tidy up SCHED_RR") removed it from the task
-scheduler in v2.6.24.
-
-Commit 3ee237dddcd8 ("sched/prio: Add 3 macros of MAX_NICE, MIN_NICE and
-NICE_WIDTH in prio.h") introduced NICE_WIDTH much later.
-
-With:
-
-  MAX_USER_PRIO = USER_PRIO(MAX_PRIO)
-
-                = MAX_PRIO - MAX_RT_PRIO
-
-       MAX_PRIO = MAX_RT_PRIO + NICE_WIDTH
-
-  MAX_USER_PRIO = MAX_RT_PRIO + NICE_WIDTH - MAX_RT_PRIO
-
-  MAX_USER_PRIO = NICE_WIDTH
-
-MAX_USER_PRIO can be replaced by NICE_WIDTH to be able to remove all the
-{*_}USER_PRIO defines.
+Get rid of MAX_USER_RT_PRIO and make everything use MAX_RT_PRIO
+instead.
 
 Signed-off-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20210128131040.296856-3-dietmar.eggemann@arm.com
+Link: https://lkml.kernel.org/r/20210128131040.296856-2-dietmar.eggemann@arm.com
 ---
- arch/powerpc/platforms/cell/spufs/sched.c |  2 +-
- include/linux/sched/prio.h                |  9 ---------
- kernel/sched/sched.h                      |  2 +-
- 3 files changed, 2 insertions(+), 11 deletions(-)
+ include/linux/sched/prio.h |  9 +--------
+ kernel/sched/core.c        |  7 +++----
+ 2 files changed, 4 insertions(+), 12 deletions(-)
 
-diff --git a/arch/powerpc/platforms/cell/spufs/sched.c b/arch/powerpc/platforms/cell/spufs/sched.c
-index f18d506..aeb7f39 100644
---- a/arch/powerpc/platforms/cell/spufs/sched.c
-+++ b/arch/powerpc/platforms/cell/spufs/sched.c
-@@ -72,7 +72,7 @@ static struct timer_list spuloadavg_timer;
- #define DEF_SPU_TIMESLICE	(100 * HZ / (1000 * SPUSCHED_TICK))
- 
- #define SCALE_PRIO(x, prio) \
--	max(x * (MAX_PRIO - prio) / (MAX_USER_PRIO / 2), MIN_SPU_TIMESLICE)
-+	max(x * (MAX_PRIO - prio) / (NICE_WIDTH / 2), MIN_SPU_TIMESLICE)
- 
- /*
-  * scale user-nice values [ -20 ... 0 ... 19 ] to time slice values:
 diff --git a/include/linux/sched/prio.h b/include/linux/sched/prio.h
-index d111f2f..ab83d85 100644
+index 7d64fea..d111f2f 100644
 --- a/include/linux/sched/prio.h
 +++ b/include/linux/sched/prio.h
-@@ -27,15 +27,6 @@
- #define PRIO_TO_NICE(prio)	((prio) - DEFAULT_PRIO)
+@@ -11,16 +11,9 @@
+  * priority is 0..MAX_RT_PRIO-1, and SCHED_NORMAL/SCHED_BATCH
+  * tasks are in the range MAX_RT_PRIO..MAX_PRIO-1. Priority
+  * values are inverted: lower p->prio value means higher priority.
+- *
+- * The MAX_USER_RT_PRIO value allows the actual maximum
+- * RT priority to be separate from the value exported to
+- * user-space.  This allows kernel threads to set their
+- * priority to a value higher than any user task. Note:
+- * MAX_RT_PRIO must not be smaller than MAX_USER_RT_PRIO.
+  */
  
- /*
-- * 'User priority' is the nice value converted to something we
-- * can work with better when scaling various scheduler parameters,
-- * it's a [ 0 ... 39 ] range.
-- */
--#define USER_PRIO(p)		((p)-MAX_RT_PRIO)
--#define TASK_USER_PRIO(p)	USER_PRIO((p)->static_prio)
--#define MAX_USER_PRIO		(USER_PRIO(MAX_PRIO))
--
--/*
-  * Convert nice value [19,-20] to rlimit style value [1,40].
-  */
- static inline long nice_to_rlimit(long nice)
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index 045b010..6edc67d 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -140,7 +140,7 @@ extern void call_trace_sched_update_nr_running(struct rq *rq, int count);
-  * scale_load() and scale_load_down(w) to convert between them. The
-  * following must be true:
-  *
-- *  scale_load(sched_prio_to_weight[USER_PRIO(NICE_TO_PRIO(0))]) == NICE_0_LOAD
-+ *  scale_load(sched_prio_to_weight[NICE_TO_PRIO(0)-MAX_RT_PRIO]) == NICE_0_LOAD
-  *
-  */
- #define NICE_0_LOAD		(1L << NICE_0_LOAD_SHIFT)
+-#define MAX_USER_RT_PRIO	100
+-#define MAX_RT_PRIO		MAX_USER_RT_PRIO
++#define MAX_RT_PRIO		100
+ 
+ #define MAX_PRIO		(MAX_RT_PRIO + NICE_WIDTH)
+ #define DEFAULT_PRIO		(MAX_RT_PRIO + NICE_WIDTH / 2)
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 06b4499..625ec1e 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -5897,11 +5897,10 @@ recheck:
+ 
+ 	/*
+ 	 * Valid priorities for SCHED_FIFO and SCHED_RR are
+-	 * 1..MAX_USER_RT_PRIO-1, valid priority for SCHED_NORMAL,
++	 * 1..MAX_RT_PRIO-1, valid priority for SCHED_NORMAL,
+ 	 * SCHED_BATCH and SCHED_IDLE is 0.
+ 	 */
+-	if ((p->mm && attr->sched_priority > MAX_USER_RT_PRIO-1) ||
+-	    (!p->mm && attr->sched_priority > MAX_RT_PRIO-1))
++	if (attr->sched_priority > MAX_RT_PRIO-1)
+ 		return -EINVAL;
+ 	if ((dl_policy(policy) && !__checkparam_dl(attr)) ||
+ 	    (rt_policy(policy) != (attr->sched_priority != 0)))
+@@ -6969,7 +6968,7 @@ SYSCALL_DEFINE1(sched_get_priority_max, int, policy)
+ 	switch (policy) {
+ 	case SCHED_FIFO:
+ 	case SCHED_RR:
+-		ret = MAX_USER_RT_PRIO-1;
++		ret = MAX_RT_PRIO-1;
+ 		break;
+ 	case SCHED_DEADLINE:
+ 	case SCHED_NORMAL:
