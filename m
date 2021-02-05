@@ -2,68 +2,97 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6627F31034A
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  5 Feb 2021 04:12:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F9FA31082D
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  5 Feb 2021 10:46:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230126AbhBEDJy (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 4 Feb 2021 22:09:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48632 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229692AbhBEDJw (ORCPT
+        id S229984AbhBEJqN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 5 Feb 2021 04:46:13 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:46600 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229870AbhBEJoK (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 4 Feb 2021 22:09:52 -0500
-Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BA89C0617A7;
-        Thu,  4 Feb 2021 19:08:43 -0800 (PST)
-Received: by mail-wr1-x42a.google.com with SMTP id g10so6020589wrx.1;
-        Thu, 04 Feb 2021 19:08:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=message-id:sender:from:mime-version:content-transfer-encoding
-         :content-description:subject:to:date:reply-to;
-        bh=hqf55dXwvcYwwL4sAkoYuOM6RPu6wxeec88n5sMRYiY=;
-        b=pQw1eYLSdTjZvZOdl5Cr4//Nr8eiEDw9Q2r5puuK9/fs8HR+SpI2v81B2bI/LyejfM
-         2JdjglncTUiZsvdsFPQ8KDuhkwkXoGq00ZFn7V20FbzvfRwQIrPSC1Ovu1CJn2HbT7s/
-         z9v3HtLkw2wrotlB+2/YXOH1RMnLOTdyDlQVn3xhNvzEYqSrPkNAmV1jeAr2YOJtJMwF
-         APP7Zvi0xmR5ZjxceEIEGO//K199AFUPYNo6lNU46fkbP9NVrobFA6ExkFnRlZNRK5Aq
-         E3ofGoeLajcBOgBNw+evKlDAbj/h7EDjZOGullekQuqh3el3+Tv7zGmEBWsDIGXprSSy
-         HSAw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:sender:from:mime-version
-         :content-transfer-encoding:content-description:subject:to:date
-         :reply-to;
-        bh=hqf55dXwvcYwwL4sAkoYuOM6RPu6wxeec88n5sMRYiY=;
-        b=L3cdcsWRU7lYP0MvTfpH583+4oLUP2EBUZkLfXvJodl+fkxujZWC84vWwT1lNadKQN
-         83+GzffFy7ffySR9zV6kb45iBA3haZowXZzOIrp4sYIRq13AeGQ7JI6KRXEBAc2lRYeB
-         ZwUDg809/xjFTeBcgQRlo0BQQuNKoCG4hGc49xYZW7XcaLC88DrhJuSykw7RMFlyLNMa
-         WuVsjCfcvuwo1B6jwZvD6HLVORMIC26Qizt/3J/OKU1sXUrVK5Rg8/Kn1K8Xko6eS1v2
-         eFGGnJsZFV+PhRqrN6FAJQwDsxvWvfEfK8qlNWNRtMaYd0yI/vEEG6y+iVQfbh667zYS
-         U2LQ==
-X-Gm-Message-State: AOAM532C/e+7xc4MyAkv+anaVvwYzpzqSjRGDfmfHCia2XMIWpt+2dnp
-        3owvIpQd2Dnrc6rV//0xHTX5R/6DLxiOJQ==
-X-Google-Smtp-Source: ABdhPJypl7QfYrU8WT7a/sif0ddtG8fqAufMQ3cGVz0BrcCU9NLHB/GELTK9e37VHKCxGnApj+/dlw==
-X-Received: by 2002:adf:f183:: with SMTP id h3mr2550860wro.30.1612494522287;
-        Thu, 04 Feb 2021 19:08:42 -0800 (PST)
-Received: from [192.168.1.6] ([154.124.28.35])
-        by smtp.gmail.com with ESMTPSA id n9sm10836813wrq.41.2021.02.04.19.08.39
-        (version=TLS1 cipher=AES128-SHA bits=128/128);
-        Thu, 04 Feb 2021 19:08:41 -0800 (PST)
-Message-ID: <601cb6b9.1c69fb81.5ea54.2eaf@mx.google.com>
-Sender: Skylar Anderson <barr.markimmbayie@gmail.com>
-From:   calantha camara <sgt.andersonskylar0@gmail.com>
-X-Google-Original-From: calantha camara
-Content-Type: text/plain; charset="iso-8859-1"
+        Fri, 5 Feb 2021 04:44:10 -0500
+Date:   Fri, 05 Feb 2021 09:43:28 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1612518209;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=bmOSBl6fxV6bmim1RfPGpWZJiBIHaqzxi5BfQAFXtj0=;
+        b=oJbT+lbKuq+fEZoWrThiUPHvHFltoVxZOdBAQDSHuk1UeC2S43wzfXD+I/FybbXv4dtOAg
+        0qgXfzGwNOrvdj6xyzFGxrk7QANIHVz6XFaCgGdMzjapR0l9TeLBP/CPHFSGlZLyBfWo+d
+        RNCwEe5HyqVwxj81A6GlT5cG1HihW1oldlG60ueZ4/iaoP6CBbY1FjOZoXine23gQwOYnw
+        WMZq3WZBLIEl/KSQ0mEvvFiEDhGWpLYx5WcZndypabt9uOIqGVDjgdsWgaVQrSRJRx5FUT
+        GO7XeViGMHp/KTXJ6LxXMedv5EOTzsPN0r8n38cca2Is0cB6VvbLuYQOYfyKjA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1612518209;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=bmOSBl6fxV6bmim1RfPGpWZJiBIHaqzxi5BfQAFXtj0=;
+        b=TOCzkU7M+jrqyKs27b+oGDWe3NXUsabAnBt1/N3CGloHtnLfl3h1RQjj1ibpBJfidKMrhW
+        FmmYcNUsGFmwDTAA==
+From:   "tip-bot2 for Alexey Dobriyan" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/cleanups] x86/asm: Fixup TASK_SIZE_MAX comment
+Cc:     Alexey Dobriyan <adobriyan@gmail.com>,
+        Borislav Petkov <bp@suse.de>,
+        Andy Lutomirski <luto@kernel.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20200305181719.GA5490@avx2>
+References: <20200305181719.GA5490@avx2>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: hi dear
-To:     Recipients <calantha@vger.kernel.org>
-Date:   Fri, 05 Feb 2021 03:08:34 +0000
-Reply-To: calanthac20@gmail.com
-X-Mailer: cdcaafe51be8cdb99a1c85906066cad3d0e60e273541515a58395093a7c4e1f0eefb01d7fc4e6278706e9fb8c4dad093c3263345202970888b6b4d817f9e998c032e7d59
+Message-ID: <161251820804.23325.5778148373565783781.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-do you speak Eglish
+The following commit has been merged into the x86/cleanups branch of tip:
+
+Commit-ID:     4f63b320afdd9af406f4426b0ff1a2cdb23e5b8d
+Gitweb:        https://git.kernel.org/tip/4f63b320afdd9af406f4426b0ff1a2cdb23e5b8d
+Author:        Alexey Dobriyan <adobriyan@gmail.com>
+AuthorDate:    Thu, 05 Mar 2020 21:17:19 +03:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Fri, 05 Feb 2021 10:37:39 +01:00
+
+x86/asm: Fixup TASK_SIZE_MAX comment
+
+Comment says "by preventing anything executable" which is not true. Even
+PROT_NONE mapping can't be installed at (1<<47 - 4096).
+
+  mmap(0x7ffffffff000, 4096, PROT_NONE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = -1 ENOMEM
+
+ [ bp: Fixup to the moved location in page_64_types.h. ]
+
+Signed-off-by: Alexey Dobriyan <adobriyan@gmail.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Reviewed-by: Andy Lutomirski <luto@kernel.org>
+Link: https://lkml.kernel.org/r/20200305181719.GA5490@avx2
+---
+ arch/x86/include/asm/page_64_types.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/x86/include/asm/page_64_types.h b/arch/x86/include/asm/page_64_types.h
+index 645bd1d..64297ea 100644
+--- a/arch/x86/include/asm/page_64_types.h
++++ b/arch/x86/include/asm/page_64_types.h
+@@ -66,7 +66,7 @@
+  * On Intel CPUs, if a SYSCALL instruction is at the highest canonical
+  * address, then that syscall will enter the kernel with a
+  * non-canonical return address, and SYSRET will explode dangerously.
+- * We avoid this particular problem by preventing anything executable
++ * We avoid this particular problem by preventing anything
+  * from being mapped at the maximum canonical address.
+  *
+  * On AMD CPUs in the Ryzen family, there's a nasty bug in which the
