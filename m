@@ -2,56 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6CA9131100F
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  5 Feb 2021 19:38:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E179311095
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  5 Feb 2021 20:00:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232178AbhBEQzN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 5 Feb 2021 11:55:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46858 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233379AbhBEQxa (ORCPT
+        id S233706AbhBERRm (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 5 Feb 2021 12:17:42 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:49558 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229690AbhBERQW (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 5 Feb 2021 11:53:30 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4618C0613D6;
-        Fri,  5 Feb 2021 10:35:12 -0800 (PST)
-Date:   Fri, 05 Feb 2021 18:35:10 -0000
+        Fri, 5 Feb 2021 12:16:22 -0500
+Date:   Fri, 05 Feb 2021 18:58:02 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1612550111;
+        s=2020; t=1612551483;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Exs6lFYVVBxc5ax1bU8BhYnTez6nauNcIiJLbxsfMOY=;
-        b=nTOeZ/cF70RZMY5ZToKFfQDtt5QRS36Rl4zOnxdLJHw811yswecyQJBxpBke9n9Q90FWlz
-        lfuSUr99Y9omIlVjw1SOZBVp+05sUfyJsqytyxUxxLGF5iUorue1MEbe4tFUoqjqD/cbog
-        5M7reDs5xNNTErV6kxuIBZ1uNgrslTGmvbHdKL+r3V4iDrTwNr9ARt6YwSWlqnQWbg5OoH
-        Eykv5OHf0g8N3eMIpEFO0uq18EDobhJz7YYRVWBGRORnrqlQpnQVFLIcvm4LQVIRj/++q2
-        IyN9O4UDYTkYMCFPQKdRwrJD4sKzeRW6r3NgwSdE+HNb7X4TPyCyEaOT4myZZA==
+        bh=ThxGWeqsK4d0OgDaQKX6wTkCCqd4OEQOPXa8W7M8KMI=;
+        b=lmqkb90yslJwUq6k9d3C+9W1tAXghnftslInu/5XiO8mSL66QnyNsDeaxtMcLuut3yE2BG
+        b6ocl4nR1cNYikicFujClRmLmXiJ7eMO0tORE4iot8hB0d3T37quGS7cr3RmdHVqVdpNaY
+        kYEu6vDUqoeF4D592bJBlgstNz3Ib6XpN5rnwnZeI1Xm1m989RNGQ2+DsRGBAPjHZsm2cp
+        yKuUsTC8vCj7leduNosct5NWv94SAvv3LATIVvX5t9nw7O6gZuexFhZgpTQsnpBgsnxKq6
+        38K2mI/tdXwmSLKeA5asLRAhpZqwh2rIHLS2FUD42uxTs8KsfwBrNSNjCPEK+g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1612550111;
+        s=2020e; t=1612551483;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Exs6lFYVVBxc5ax1bU8BhYnTez6nauNcIiJLbxsfMOY=;
-        b=1xQIYxMwmhNuJLCKIN/xhNa2xKuKIRVUysu8lrSsu8+jIc8Ygd467aSM3tLwegNtNV/j6n
-        RIzSgJrTFyGAXTAg==
-From:   "tip-bot2 for Alexey Dobriyan" <tip-bot2@linutronix.de>
+        bh=ThxGWeqsK4d0OgDaQKX6wTkCCqd4OEQOPXa8W7M8KMI=;
+        b=OmJcRQZ3u5CW2iQZG78S78PCvQhgme65eshriqGTihyxxXDHJwdiCXCpMohF8gFMszjVj3
+        lp4TohkwvcVOuxCg==
+From:   "tip-bot2 for Anand K Mistry" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] timens: Delete no-op time_ns_init()
-Cc:     Alexey Dobriyan <adobriyan@gmail.com>,
+Subject: [tip: x86/cleanups] x86/Kconfig: Remove HPET_EMULATE_RTC depends on RTC
+Cc:     Anand K Mistry <amistry@google.com>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Andrei Vagin <avagin@gmail.com>, x86@kernel.org,
+        Randy Dunlap <rdunlap@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20201228215402.GA572900@localhost.localdomain>
-References: <20201228215402.GA572900@localhost.localdomain>
+In-Reply-To: <20210204183205.1.If5c6ded53a00ecad6a02a1e974316291cc0239d1@changeid>
+References: <20210204183205.1.If5c6ded53a00ecad6a02a1e974316291cc0239d1@changeid>
 MIME-Version: 1.0
-Message-ID: <161255011051.23325.10863511684535856878.tip-bot2@tip-bot2>
+Message-ID: <161255148297.23325.11250667185160852143.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,36 +57,38 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/core branch of tip:
+The following commit has been merged into the x86/cleanups branch of tip:
 
-Commit-ID:     174bcc691f44fdd05046c694fc650933819f72c7
-Gitweb:        https://git.kernel.org/tip/174bcc691f44fdd05046c694fc650933819f72c7
-Author:        Alexey Dobriyan <adobriyan@gmail.com>
-AuthorDate:    Tue, 29 Dec 2020 00:54:02 +03:00
+Commit-ID:     3228e1dc80983ee1f5d2e533d010b3bd8b50f0e2
+Gitweb:        https://git.kernel.org/tip/3228e1dc80983ee1f5d2e533d010b3bd8b50f0e2
+Author:        Anand K Mistry <amistry@google.com>
+AuthorDate:    Thu, 04 Feb 2021 18:32:32 +11:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 05 Feb 2021 19:32:09 +01:00
+CommitterDate: Fri, 05 Feb 2021 19:56:35 +01:00
 
-timens: Delete no-op time_ns_init()
+x86/Kconfig: Remove HPET_EMULATE_RTC depends on RTC
 
-Signed-off-by: Alexey Dobriyan <adobriyan@gmail.com>
+The RTC config option was removed in commit f52ef24be21a ("rtc/alpha:
+remove legacy rtc driver")
+
+Signed-off-by: Anand K Mistry <amistry@google.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Andrei Vagin <avagin@gmail.com>
-Link: https://lore.kernel.org/r/20201228215402.GA572900@localhost.localdomain
+Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
+Link: https://lore.kernel.org/r/20210204183205.1.If5c6ded53a00ecad6a02a1e974316291cc0239d1@changeid
 ---
- kernel/time/namespace.c | 6 ------
- 1 file changed, 6 deletions(-)
+ arch/x86/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/time/namespace.c b/kernel/time/namespace.c
-index 6ca625f..12eab0d 100644
---- a/kernel/time/namespace.c
-+++ b/kernel/time/namespace.c
-@@ -465,9 +465,3 @@ struct time_namespace init_time_ns = {
- 	.ns.ops		= &timens_operations,
- 	.frozen_offsets	= true,
- };
--
--static int __init time_ns_init(void)
--{
--	return 0;
--}
--subsys_initcall(time_ns_init);
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 7b6dd10..865c1e7 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -889,7 +889,7 @@ config HPET_TIMER
+ 
+ config HPET_EMULATE_RTC
+ 	def_bool y
+-	depends on HPET_TIMER && (RTC=y || RTC=m || RTC_DRV_CMOS=m || RTC_DRV_CMOS=y)
++	depends on HPET_TIMER && (RTC_DRV_CMOS=m || RTC_DRV_CMOS=y)
+ 
+ config APB_TIMER
+ 	def_bool y if X86_INTEL_MID
