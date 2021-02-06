@@ -2,93 +2,72 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E9D95311D6F
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  6 Feb 2021 14:20:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D8A6A311EAB
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  6 Feb 2021 17:34:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229704AbhBFNUF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 6 Feb 2021 08:20:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35026 "EHLO
+        id S229774AbhBFQd0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 6 Feb 2021 11:33:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48054 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229711AbhBFNUA (ORCPT
+        with ESMTP id S229715AbhBFQdZ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 6 Feb 2021 08:20:00 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D5B1C06174A;
-        Sat,  6 Feb 2021 05:19:20 -0800 (PST)
-Date:   Sat, 06 Feb 2021 13:19:17 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1612617558;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=YdhW8H6qMtBR3dhPjNOCZRv4mtqbJgbehBwMCpjdRto=;
-        b=0aQZF0jANt5pyjB0XcpH6MWrRgSDKFh9eO0QhFUz+X13NSRhZLF8/2w+Vh75Mh8N78PYv4
-        8okU2qVRARTIyLkjvqbqsRgF9tCdTnXcMFDeZyX5R6ONMR3vcY5OGqqubopKlKhmKm5x14
-        +4tDMfZvqVMA1TJb8MbLi3yAO59O/+awj1d0aWYe2lhLZtPCykpjqMImKrEpHJft2vZVlq
-        c83CFJ2mfvZZNEASTXPpEqvC8j259xIU/8sJuRPzOY8k93F2exGyszMJAclQ7WnCAiJMGf
-        m61tgR8dMyw0r1XYRxUHyOKY6wsvyv2sx8fJkP9FDPUOanz52MqQF+JW5f7dlg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1612617558;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=YdhW8H6qMtBR3dhPjNOCZRv4mtqbJgbehBwMCpjdRto=;
-        b=wtxWxzTmp9C0wOnlhVhgy0u7VetV+HsnOz2XJHP8Wk7/UZ6qxZtwYSRwlnQ98s6AcaOPtI
-        nqBbM79DZAVvrRCg==
-From:   "tip-bot2 for Jarkko Sakkinen" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/sgx] MAINTAINERS: Add Dave Hansen as reviewer for INTEL SGX
-Cc:     Jarkko Sakkinen <jarkko@kernel.org>, Borislav Petkov <bp@suse.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20210205151546.144810-1-jarkko@kernel.org>
-References: <20210205151546.144810-1-jarkko@kernel.org>
+        Sat, 6 Feb 2021 11:33:25 -0500
+Received: from mail-ot1-x32f.google.com (mail-ot1-x32f.google.com [IPv6:2607:f8b0:4864:20::32f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7083AC06174A
+        for <linux-tip-commits@vger.kernel.org>; Sat,  6 Feb 2021 08:32:45 -0800 (PST)
+Received: by mail-ot1-x32f.google.com with SMTP id o12so10036457ote.12
+        for <linux-tip-commits@vger.kernel.org>; Sat, 06 Feb 2021 08:32:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=XeMgAW+cx24N/wv8PNeOlMR0vLin7caKIko2yyeqvRw=;
+        b=bAHqJFXwRTK8yH/6dnC3Mrve+BI7F7/00grOX7pYMAhy3cIHzjlDkuxBdKPzMZqTRR
+         ICf8XBQzfq4VHs/t+hElyR6bCB64IYqfgVZHioLKN20ZTnwt0y5nR1rnuUCVKodHOtqd
+         NSf5loIuQXGrgOEajteR/ugVxKswuLax2MkiN8TNhEZs0lkw5uzh8qghsLkKLdkRCQHT
+         c+3dS6eVxTafBdjA+Tzrntha/Y5Vs2m62Q9ayOgs4EJYrZQ/6hdeI0PI06KQsYG1HWjV
+         uz0Ftk8PvuZo1dn0mL4CJpIbzv+BQ6bLaJAwtYLLm/xdYRv6sAUXWUcxyCnTl4KzsqLE
+         hV6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=XeMgAW+cx24N/wv8PNeOlMR0vLin7caKIko2yyeqvRw=;
+        b=IeZAhYUyphP1sU2gN1UTaFiliR2mWQFfhvZDkITPTzudAw7wbqg0mrHWeMh9CBIAtv
+         7ClXzN/3MMOG1H3ukyoTX2hGsgfPgHfjgGMgUy0e0XztW9y6b4OsrGoLaIEiKztd2EnC
+         fpMlllcOOwmbOlHePI34aynjnzHQYQGd6bo9l8UbAPke09JnOs1J0A7MlGHdIz0S08Nr
+         U12UAgc0Oenjj3RBH2L62qPVt9eXwbmiJvLePTvnSd8oRRYQPwZ5j+024X5xIKFHSVmP
+         lqNFKwoQbRfOMc37sgLpCpHZkayphZaU0pCnTM6rvyEObbPJYiSEFgzh2W3qJO6egBTB
+         g2OA==
+X-Gm-Message-State: AOAM530Jj+hdX/9M3xqCQS3IkVVxMRAS8aELSFssYGfQKRVd3KZe+iFv
+        o+CzNU8Cw7IJhCnypyHM40oEhkj6O+9kjkevYxI=
+X-Google-Smtp-Source: ABdhPJygS4BxJRPN+Gym3WfEk1Q55hrE/uVKqPkban0dMNDf9voI6ldTJ3RWZ6NnyrqT/YrJa8B5Akib+rDuO4VyXhI=
+X-Received: by 2002:a9d:866:: with SMTP id 93mr7190577oty.365.1612629164761;
+ Sat, 06 Feb 2021 08:32:44 -0800 (PST)
 MIME-Version: 1.0
-Message-ID: <161261755749.23325.11866851026791658905.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Received: by 2002:a4a:3e02:0:0:0:0:0 with HTTP; Sat, 6 Feb 2021 08:32:43 -0800 (PST)
+Reply-To: sroomf70@gmail.com
+From:   "Dr. Ali Moses" <alimoses07@gmail.com>
+Date:   Sat, 6 Feb 2021 17:32:43 +0100
+Message-ID: <CADWzZe7zH0s3oc1bmpzom5+Sc4FKgNZTWmq3E55TEZ4ma_ckmg@mail.gmail.com>
+Subject: Greetings,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/sgx branch of tip:
+-- 
+Greetings,
+I'm Dr. Ali Moses, did you Receive the (FUND), that was paid to you?
+please, do not hesitate to Let me know with your full name:.. for
+immediate verification notice,
 
-Commit-ID:     848477782bfa2b6aec738045246abd6cd104006c
-Gitweb:        https://git.kernel.org/tip/848477782bfa2b6aec738045246abd6cd104006c
-Author:        Jarkko Sakkinen <jarkko@kernel.org>
-AuthorDate:    Fri, 05 Feb 2021 17:15:44 +02:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Sat, 06 Feb 2021 14:15:27 +01:00
+Thanks,
 
-MAINTAINERS: Add Dave Hansen as reviewer for INTEL SGX
+Dr. Ali Moses,
+Foreign Remittance Director
 
-Add Dave as reviewer for INTEL SGX patches.
+Sincerely Yours, Respectfully,
 
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lkml.kernel.org/r/20210205151546.144810-1-jarkko@kernel.org
----
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 5b66de2..41b78e2 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -9227,6 +9227,7 @@ F:	include/linux/tboot.h
- 
- INTEL SGX
- M:	Jarkko Sakkinen <jarkko@kernel.org>
-+R:	Dave Hansen <dave.hansen@linux.intel.com>
- L:	linux-sgx@vger.kernel.org
- S:	Supported
- Q:	https://patchwork.kernel.org/project/intel-sgx/list/
+Mr Bill T Winters,
+Group Chief Executive Officer & Executive Director,
