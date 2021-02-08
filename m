@@ -2,53 +2,45 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4113D3131B7
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  8 Feb 2021 13:04:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3BA353131B5
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  8 Feb 2021 13:04:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233168AbhBHMEJ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 8 Feb 2021 07:04:09 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:36286 "EHLO
+        id S233171AbhBHMDv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 8 Feb 2021 07:03:51 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:36260 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233510AbhBHMBV (ORCPT
+        with ESMTP id S233361AbhBHMBV (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Mon, 8 Feb 2021 07:01:21 -0500
 Date:   Mon, 08 Feb 2021 12:00:38 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1612785639;
+        s=2020; t=1612785638;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=/0oy2jLEBcKqauRQo4yp+K/JYA9+Jpwd4lNquu4Opn4=;
-        b=Zz2gK5oUsgR4MUAOPUs+WNwsKhPp3hurvmpXs+8JcASl4h5H+UREDMO3VgHAMfYtzLj/En
-        ipedTSes9gl0dA98gtTesfb1NP6ZS09K+97f5yyYwcxAWKS+1idlKTPsUQ4dAC+rSiWNCr
-        nnubGD3oN1lPphL8jZPIzYVYIWxIrcOyTJSzWfWII59eoqGj8L792KGH5VzFTZz3ByKdYi
-        WJjvsOz8P4p0dv7m06fxtF10sdbmM0C5eoNWB64KSM9F0z9NOLkzi9GdNCBkCtQsso1lb0
-        Ip0BQl9Iq2+1SwzWDZAVtxR49ZfvyIFb3xbNu05nep/ng7i6LQBHzjvBlrIPOw==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=u1vDYv7AJqNBfPTmH3PtamVzT+ln1aI0pl5c84l3wA0=;
+        b=QY0Fpx3n1mBjk88augLM7Lgn4OSWKVJaJYSeoxBHS4hwydOtGJF2V1VZ+bd3vUrDgLkaE3
+        /uLo71pjtshv5s/YDObUpceUaeZ9mKp5LPZ/35ynwIhbA8efXT+PyWYoMQZ+0Q8X2M0yX8
+        XSS2KyMdm/0mCCmicEVeEUz1xr85FLf+PKR+RYN3nZn+dyDEgzKTAVH3ccgWgLygjz5f6b
+        vvFWVcqB4V9fbmcWSv7g7yPjieCOI6OZ7Xlu+ogjjsp84Tu7FSH9KRXuq+ytBX40JeXrls
+        7uY7l3WqIgjQxJerQbSNCtduayXYeIDmxFotOZhfcsqWyeSDPo/FC7dXlCMtqg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1612785639;
+        s=2020e; t=1612785638;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=/0oy2jLEBcKqauRQo4yp+K/JYA9+Jpwd4lNquu4Opn4=;
-        b=V6JwmfiDn57Jc/SPKhh0ovhTRgY86m8FPFDvG9LILHGDaGdCR54MkZGXkhFJ6mZwvto/mK
-        /JXj0Ok6Ld09lWDg==
-From:   "tip-bot2 for Peter Zijlstra (Intel)" <tip-bot2@linutronix.de>
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=u1vDYv7AJqNBfPTmH3PtamVzT+ln1aI0pl5c84l3wA0=;
+        b=F+JD6Op+nhoiZvJsxXL1AIEVbXgoQKS76QtFUz+U686MsbeVphRZytRBnttYJgHV13sKlR
+        T4+Z67nflIg3TtDw==
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] preempt/dynamic: Support dynamic preempt with
- preempt= boot option
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Frederic Weisbecker <frederic@kernel.org>, x86@kernel.org,
+Subject: [tip: sched/core] sched: Harden PREEMPT_DYNAMIC
+Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210118141223.123667-9-frederic@kernel.org>
-References: <20210118141223.123667-9-frederic@kernel.org>
 MIME-Version: 1.0
-Message-ID: <161278563889.23325.16615646963543538971.tip-bot2@tip-bot2>
+Message-ID: <161278563804.23325.3092408762385428647.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,110 +51,109 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     4f8a0041162ab74ba5f89ee58f8aad59c4c85d22
-Gitweb:        https://git.kernel.org/tip/4f8a0041162ab74ba5f89ee58f8aad59c4c85d22
-Author:        Peter Zijlstra (Intel) <peterz@infradead.org>
-AuthorDate:    Mon, 18 Jan 2021 15:12:23 +01:00
+Commit-ID:     936eba768e7d4701373115977db1dbe954b6f6af
+Gitweb:        https://git.kernel.org/tip/936eba768e7d4701373115977db1dbe954b6f6af
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Mon, 25 Jan 2021 16:26:50 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Fri, 05 Feb 2021 17:19:58 +01:00
+CommitterDate: Fri, 05 Feb 2021 17:19:59 +01:00
 
-preempt/dynamic: Support dynamic preempt with preempt= boot option
+sched: Harden PREEMPT_DYNAMIC
 
-Support the preempt= boot option and patch the static call sites
-accordingly.
+Use the new EXPORT_STATIC_CALL_TRAMP() / static_call_mod() to unexport
+the static_call_key for the PREEMPT_DYNAMIC calls such that modules
+can no longer update these calls.
+
+Having modules change/hi-jack the preemption calls would be horrible.
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20210118141223.123667-9-frederic@kernel.org
 ---
- kernel/sched/core.c | 67 +++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 66 insertions(+), 1 deletion(-)
+ arch/x86/include/asm/preempt.h | 4 ++--
+ include/linux/kernel.h         | 2 +-
+ include/linux/sched.h          | 2 +-
+ kernel/sched/core.c            | 8 ++++----
+ 4 files changed, 8 insertions(+), 8 deletions(-)
 
+diff --git a/arch/x86/include/asm/preempt.h b/arch/x86/include/asm/preempt.h
+index 9b12dce..0aa96f8 100644
+--- a/arch/x86/include/asm/preempt.h
++++ b/arch/x86/include/asm/preempt.h
+@@ -114,7 +114,7 @@ DECLARE_STATIC_CALL(preempt_schedule, __preempt_schedule_func);
+ 
+ #define __preempt_schedule() \
+ do { \
+-	__ADDRESSABLE(STATIC_CALL_KEY(preempt_schedule)); \
++	__STATIC_CALL_MOD_ADDRESSABLE(preempt_schedule); \
+ 	asm volatile ("call " STATIC_CALL_TRAMP_STR(preempt_schedule) : ASM_CALL_CONSTRAINT); \
+ } while (0)
+ 
+@@ -127,7 +127,7 @@ DECLARE_STATIC_CALL(preempt_schedule_notrace, __preempt_schedule_notrace_func);
+ 
+ #define __preempt_schedule_notrace() \
+ do { \
+-	__ADDRESSABLE(STATIC_CALL_KEY(preempt_schedule_notrace)); \
++	__STATIC_CALL_MOD_ADDRESSABLE(preempt_schedule_notrace); \
+ 	asm volatile ("call " STATIC_CALL_TRAMP_STR(preempt_schedule_notrace) : ASM_CALL_CONSTRAINT); \
+ } while (0)
+ 
+diff --git a/include/linux/kernel.h b/include/linux/kernel.h
+index cfd3d34..5b7ed6d 100644
+--- a/include/linux/kernel.h
++++ b/include/linux/kernel.h
+@@ -93,7 +93,7 @@ DECLARE_STATIC_CALL(might_resched, __cond_resched);
+ 
+ static __always_inline void might_resched(void)
+ {
+-	static_call(might_resched)();
++	static_call_mod(might_resched)();
+ }
+ 
+ #else
+diff --git a/include/linux/sched.h b/include/linux/sched.h
+index 2f35594..4d56828 100644
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -1880,7 +1880,7 @@ DECLARE_STATIC_CALL(cond_resched, __cond_resched);
+ 
+ static __always_inline int _cond_resched(void)
+ {
+-	return static_call(cond_resched)();
++	return static_call_mod(cond_resched)();
+ }
+ 
+ #else
 diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index cd0c46f..0562992 100644
+index c659266..81e1e19 100644
 --- a/kernel/sched/core.c
 +++ b/kernel/sched/core.c
-@@ -12,6 +12,7 @@
+@@ -5254,7 +5254,7 @@ EXPORT_SYMBOL(preempt_schedule);
  
- #include "sched.h"
- 
-+#include <linux/entry-common.h>
- #include <linux/nospec.h>
- 
- #include <linux/kcov.h>
-@@ -5314,9 +5315,73 @@ DEFINE_STATIC_CALL(preempt_schedule_notrace, __preempt_schedule_notrace_func);
- EXPORT_STATIC_CALL(preempt_schedule_notrace);
+ #ifdef CONFIG_PREEMPT_DYNAMIC
+ DEFINE_STATIC_CALL(preempt_schedule, __preempt_schedule_func);
+-EXPORT_STATIC_CALL(preempt_schedule);
++EXPORT_STATIC_CALL_TRAMP(preempt_schedule);
  #endif
  
--
- #endif /* CONFIG_PREEMPTION */
  
-+#ifdef CONFIG_PREEMPT_DYNAMIC
-+
-+/*
-+ * SC:cond_resched
-+ * SC:might_resched
-+ * SC:preempt_schedule
-+ * SC:preempt_schedule_notrace
-+ * SC:irqentry_exit_cond_resched
-+ *
-+ *
-+ * NONE:
-+ *   cond_resched               <- __cond_resched
-+ *   might_resched              <- RET0
-+ *   preempt_schedule           <- NOP
-+ *   preempt_schedule_notrace   <- NOP
-+ *   irqentry_exit_cond_resched <- NOP
-+ *
-+ * VOLUNTARY:
-+ *   cond_resched               <- __cond_resched
-+ *   might_resched              <- __cond_resched
-+ *   preempt_schedule           <- NOP
-+ *   preempt_schedule_notrace   <- NOP
-+ *   irqentry_exit_cond_resched <- NOP
-+ *
-+ * FULL:
-+ *   cond_resched               <- RET0
-+ *   might_resched              <- RET0
-+ *   preempt_schedule           <- preempt_schedule
-+ *   preempt_schedule_notrace   <- preempt_schedule_notrace
-+ *   irqentry_exit_cond_resched <- irqentry_exit_cond_resched
-+ */
-+static int __init setup_preempt_mode(char *str)
-+{
-+	if (!strcmp(str, "none")) {
-+		static_call_update(cond_resched, __cond_resched);
-+		static_call_update(might_resched, (typeof(&__cond_resched)) __static_call_return0);
-+		static_call_update(preempt_schedule, (typeof(&preempt_schedule)) NULL);
-+		static_call_update(preempt_schedule_notrace, (typeof(&preempt_schedule_notrace)) NULL);
-+		static_call_update(irqentry_exit_cond_resched, (typeof(&irqentry_exit_cond_resched)) NULL);
-+		pr_info("Dynamic Preempt: %s\n", str);
-+	} else if (!strcmp(str, "voluntary")) {
-+		static_call_update(cond_resched, __cond_resched);
-+		static_call_update(might_resched, __cond_resched);
-+		static_call_update(preempt_schedule, (typeof(&preempt_schedule)) NULL);
-+		static_call_update(preempt_schedule_notrace, (typeof(&preempt_schedule_notrace)) NULL);
-+		static_call_update(irqentry_exit_cond_resched, (typeof(&irqentry_exit_cond_resched)) NULL);
-+		pr_info("Dynamic Preempt: %s\n", str);
-+	} else if (!strcmp(str, "full")) {
-+		static_call_update(cond_resched, (typeof(&__cond_resched)) __static_call_return0);
-+		static_call_update(might_resched, (typeof(&__cond_resched)) __static_call_return0);
-+		static_call_update(preempt_schedule, __preempt_schedule_func);
-+		static_call_update(preempt_schedule_notrace, __preempt_schedule_notrace_func);
-+		static_call_update(irqentry_exit_cond_resched, irqentry_exit_cond_resched);
-+		pr_info("Dynamic Preempt: %s\n", str);
-+	} else {
-+		pr_warn("Dynamic Preempt: Unsupported preempt mode %s, default to full\n", str);
-+		return 1;
-+	}
-+	return 0;
-+}
-+__setup("preempt=", setup_preempt_mode);
-+
-+#endif /* CONFIG_PREEMPT_DYNAMIC */
-+
-+
+@@ -5312,7 +5312,7 @@ EXPORT_SYMBOL_GPL(preempt_schedule_notrace);
+ 
+ #ifdef CONFIG_PREEMPT_DYNAMIC
+ DEFINE_STATIC_CALL(preempt_schedule_notrace, __preempt_schedule_notrace_func);
+-EXPORT_STATIC_CALL(preempt_schedule_notrace);
++EXPORT_STATIC_CALL_TRAMP(preempt_schedule_notrace);
+ #endif
+ 
+ #endif /* CONFIG_PREEMPTION */
+@@ -6982,10 +6982,10 @@ EXPORT_SYMBOL(__cond_resched);
+ 
+ #ifdef CONFIG_PREEMPT_DYNAMIC
+ DEFINE_STATIC_CALL_RET0(cond_resched, __cond_resched);
+-EXPORT_STATIC_CALL(cond_resched);
++EXPORT_STATIC_CALL_TRAMP(cond_resched);
+ 
+ DEFINE_STATIC_CALL_RET0(might_resched, __cond_resched);
+-EXPORT_STATIC_CALL(might_resched);
++EXPORT_STATIC_CALL_TRAMP(might_resched);
+ #endif
+ 
  /*
-  * This is the entry point to schedule() from kernel preemption
-  * off of irq context.
