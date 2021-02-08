@@ -2,53 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DD4F83131BD
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  8 Feb 2021 13:05:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 209E53131C3
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  8 Feb 2021 13:05:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233417AbhBHME2 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 8 Feb 2021 07:04:28 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:36306 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233528AbhBHMBX (ORCPT
+        id S233495AbhBHMEv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 8 Feb 2021 07:04:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39110 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233539AbhBHMBX (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Mon, 8 Feb 2021 07:01:23 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 885B5C061788;
+        Mon,  8 Feb 2021 04:00:42 -0800 (PST)
 Date:   Mon, 08 Feb 2021 12:00:39 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1612785639;
+        s=2020; t=1612785640;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=PxRA7XWowwajpMWzOrnt+RfpNDfyICmRi7r+ty6r9cQ=;
-        b=4Y9wkgeOIe98K9Lb5q2ujZMFBmQJhJo8wwwsjxNsOpV/t3QP1WPXqLzYcno556wAR1asYw
-        qwGyqteo600YMdxCRleNLsnJJrY1JThgPtH61hQ0CIPqh+EhQWeOKkUaKvWhZePjhSKJjv
-        tZIuofPuoZwLwXTDEoBbCTZF98Ob5zuNOME9bmDJZxKQMXAnXGudT7DV7INlZtm1EkdtwD
-        E4rTIU/Hx1x0jPpD8Nj5xSAKp/FOtJxpoEdvI4JRE5Weq/RB0MG0b0hqDEFtpPUHhlH/b4
-        G7ftI5blTwa09JRiCcg0KdA79TF4sxX0meOeNQEoupf2zcArkQ7I8NBdU5g5KQ==
+        bh=I0LHQH+Qsp1jrBEOS2/LWLVmWPS54PV8ucMA3I/3mLE=;
+        b=Yjd//8PnrdqKHclj+uFO96fGWLKuCyWX/EOdyFti+9rTnPx8mmR82iQwOvYZ0Dyf2S8spQ
+        oVlBTM3ofmDzXisthaFibR50IZgH4VYq+58BMRRYWcU5xS5KXwWzOwB1S0Xeeh14zj5ZXD
+        lP3EEHYC7ALjeGcRzVCwF7f7d8gXEZIiDMG1QJZGNecDFBZEsqQWhU+85Fiu9BU6Se20Jf
+        GmSTNBht864AjDqM5FpmN1FyPEMvSRfTU7T3eX1JK94TzQd1W2xyvhuHjvJrQf1XQ5pzJl
+        peb2nGjq68DBQt+PbPF7ed2nQ8hgbqsFSqmRok9r24cuf57aR7LGdKDwTjuWZA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1612785639;
+        s=2020e; t=1612785640;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=PxRA7XWowwajpMWzOrnt+RfpNDfyICmRi7r+ty6r9cQ=;
-        b=x+Bt2kZHnlwVwyvHSY1w6EkkK+lisQdbQ2jAUnh7TmZMk0fmF8oQ9hy4CVAHIQbQoylApQ
-        w4tDggm94nfSUjCQ==
+        bh=I0LHQH+Qsp1jrBEOS2/LWLVmWPS54PV8ucMA3I/3mLE=;
+        b=+81jzKj6ph/UmI2cQwxj2K0Vk3Q9KBZhhuE17qivw7sAuLaFzdexH9/TmwT/SN/YuiKZsr
+        KT+TUVdy+it/YrAQ==
 From:   "tip-bot2 for Peter Zijlstra (Intel)" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] preempt/dynamic: Provide
- preempt_schedule[_notrace]() static calls
+Subject: [tip: sched/core] preempt/dynamic: Provide cond_resched() and
+ might_resched() static calls
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Frederic Weisbecker <frederic@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210118141223.123667-7-frederic@kernel.org>
-References: <20210118141223.123667-7-frederic@kernel.org>
+In-Reply-To: <20210118141223.123667-6-frederic@kernel.org>
+References: <20210118141223.123667-6-frederic@kernel.org>
 MIME-Version: 1.0
-Message-ID: <161278563937.23325.13632797418141466848.tip-bot2@tip-bot2>
+Message-ID: <161278563959.23325.10056567717653940950.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,114 +62,149 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     8c98e8cf723c3ab2ac924b0942dd3b8074f874e5
-Gitweb:        https://git.kernel.org/tip/8c98e8cf723c3ab2ac924b0942dd3b8074f874e5
+Commit-ID:     bf3054bb801cf566e65e5f3d060435dbfa4a2f36
+Gitweb:        https://git.kernel.org/tip/bf3054bb801cf566e65e5f3d060435dbfa4a2f36
 Author:        Peter Zijlstra (Intel) <peterz@infradead.org>
-AuthorDate:    Mon, 18 Jan 2021 15:12:21 +01:00
+AuthorDate:    Mon, 18 Jan 2021 15:12:20 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Fri, 05 Feb 2021 17:19:57 +01:00
+CommitterDate: Fri, 05 Feb 2021 17:19:56 +01:00
 
-preempt/dynamic: Provide preempt_schedule[_notrace]() static calls
+preempt/dynamic: Provide cond_resched() and might_resched() static calls
 
-Provide static calls to control preempt_schedule[_notrace]()
-(called in CONFIG_PREEMPT) so that we can override their behaviour when
-preempt= is overriden.
+Provide static calls to control cond_resched() (called in !CONFIG_PREEMPT)
+and might_resched() (called in CONFIG_PREEMPT_VOLUNTARY) to that we
+can override their behaviour when preempt= is overriden.
 
 Since the default behaviour is full preemption, both their calls are
-initialized to the arch provided wrapper, if any.
+ignored when preempt= isn't passed.
 
-[fweisbec: only define static calls when PREEMPT_DYNAMIC, make it less
-           dependent on x86 with __preempt_schedule_func]
+[fweisbec: branch might_resched() directly to __cond_resched(), only
+           define static calls when PREEMPT_DYNAMIC]
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20210118141223.123667-7-frederic@kernel.org
+Link: https://lkml.kernel.org/r/20210118141223.123667-6-frederic@kernel.org
 ---
- arch/x86/include/asm/preempt.h | 34 +++++++++++++++++++++++++--------
- kernel/sched/core.c            | 12 ++++++++++++-
- 2 files changed, 38 insertions(+), 8 deletions(-)
+ include/linux/kernel.h | 23 +++++++++++++++++++----
+ include/linux/sched.h  | 27 ++++++++++++++++++++++++---
+ kernel/sched/core.c    | 16 +++++++++++++---
+ 3 files changed, 56 insertions(+), 10 deletions(-)
 
-diff --git a/arch/x86/include/asm/preempt.h b/arch/x86/include/asm/preempt.h
-index 69485ca..9b12dce 100644
---- a/arch/x86/include/asm/preempt.h
-+++ b/arch/x86/include/asm/preempt.h
-@@ -5,6 +5,7 @@
- #include <asm/rmwcc.h>
- #include <asm/percpu.h>
- #include <linux/thread_info.h>
+diff --git a/include/linux/kernel.h b/include/linux/kernel.h
+index f7902d8..cfd3d34 100644
+--- a/include/linux/kernel.h
++++ b/include/linux/kernel.h
+@@ -15,7 +15,7 @@
+ #include <linux/typecheck.h>
+ #include <linux/printk.h>
+ #include <linux/build_bug.h>
+-
 +#include <linux/static_call_types.h>
+ #include <asm/byteorder.h>
  
- DECLARE_PER_CPU(int, __preempt_count);
+ #include <uapi/linux/kernel.h>
+@@ -81,11 +81,26 @@ struct pt_regs;
+ struct user;
  
-@@ -103,16 +104,33 @@ static __always_inline bool should_resched(int preempt_offset)
- }
+ #ifdef CONFIG_PREEMPT_VOLUNTARY
+-extern int _cond_resched(void);
+-# define might_resched() _cond_resched()
++
++extern int __cond_resched(void);
++# define might_resched() __cond_resched()
++
++#elif defined(CONFIG_PREEMPT_DYNAMIC)
++
++extern int __cond_resched(void);
++
++DECLARE_STATIC_CALL(might_resched, __cond_resched);
++
++static __always_inline void might_resched(void)
++{
++	static_call(might_resched)();
++}
++
+ #else
++
+ # define might_resched() do { } while (0)
+-#endif
++
++#endif /* CONFIG_PREEMPT_* */
  
- #ifdef CONFIG_PREEMPTION
--  extern asmlinkage void preempt_schedule_thunk(void);
--# define __preempt_schedule() \
--	asm volatile ("call preempt_schedule_thunk" : ASM_CALL_CONSTRAINT)
+ #ifdef CONFIG_DEBUG_ATOMIC_SLEEP
+ extern void ___might_sleep(const char *file, int line, int preempt_offset);
+diff --git a/include/linux/sched.h b/include/linux/sched.h
+index e115222..2f35594 100644
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -1871,11 +1871,32 @@ static inline int test_tsk_need_resched(struct task_struct *tsk)
+  * value indicates whether a reschedule was done in fact.
+  * cond_resched_lock() will drop the spinlock before scheduling,
+  */
+-#ifndef CONFIG_PREEMPTION
+-extern int _cond_resched(void);
++#if !defined(CONFIG_PREEMPTION) || defined(CONFIG_PREEMPT_DYNAMIC)
++extern int __cond_resched(void);
++
++#ifdef CONFIG_PREEMPT_DYNAMIC
++
++DECLARE_STATIC_CALL(cond_resched, __cond_resched);
++
++static __always_inline int _cond_resched(void)
++{
++	return static_call(cond_resched)();
++}
++
+ #else
++
++static inline int _cond_resched(void)
++{
++	return __cond_resched();
++}
++
++#endif /* CONFIG_PREEMPT_DYNAMIC */
++
++#else
++
+ static inline int _cond_resched(void) { return 0; }
+-#endif
++
++#endif /* !defined(CONFIG_PREEMPTION) || defined(CONFIG_PREEMPT_DYNAMIC) */
  
--  extern asmlinkage void preempt_schedule(void);
--  extern asmlinkage void preempt_schedule_notrace_thunk(void);
--# define __preempt_schedule_notrace() \
--	asm volatile ("call preempt_schedule_notrace_thunk" : ASM_CALL_CONSTRAINT)
-+extern asmlinkage void preempt_schedule(void);
-+extern asmlinkage void preempt_schedule_thunk(void);
-+
-+#define __preempt_schedule_func preempt_schedule_thunk
-+
-+DECLARE_STATIC_CALL(preempt_schedule, __preempt_schedule_func);
-+
-+#define __preempt_schedule() \
-+do { \
-+	__ADDRESSABLE(STATIC_CALL_KEY(preempt_schedule)); \
-+	asm volatile ("call " STATIC_CALL_TRAMP_STR(preempt_schedule) : ASM_CALL_CONSTRAINT); \
-+} while (0)
-+
-+extern asmlinkage void preempt_schedule_notrace(void);
-+extern asmlinkage void preempt_schedule_notrace_thunk(void);
-+
-+#define __preempt_schedule_notrace_func preempt_schedule_notrace_thunk
-+
-+DECLARE_STATIC_CALL(preempt_schedule_notrace, __preempt_schedule_notrace_func);
-+
-+#define __preempt_schedule_notrace() \
-+do { \
-+	__ADDRESSABLE(STATIC_CALL_KEY(preempt_schedule_notrace)); \
-+	asm volatile ("call " STATIC_CALL_TRAMP_STR(preempt_schedule_notrace) : ASM_CALL_CONSTRAINT); \
-+} while (0)
- 
--  extern asmlinkage void preempt_schedule_notrace(void);
- #endif
- 
- #endif /* __ASM_PREEMPT_H */
+ #define cond_resched() ({			\
+ 	___might_sleep(__FILE__, __LINE__, 0);	\
 diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index bc7b00b..cd0c46f 100644
+index be3a956..bc7b00b 100644
 --- a/kernel/sched/core.c
 +++ b/kernel/sched/core.c
-@@ -5251,6 +5251,12 @@ asmlinkage __visible void __sched notrace preempt_schedule(void)
- NOKPROBE_SYMBOL(preempt_schedule);
- EXPORT_SYMBOL(preempt_schedule);
- 
-+#ifdef CONFIG_PREEMPT_DYNAMIC
-+DEFINE_STATIC_CALL(preempt_schedule, __preempt_schedule_func);
-+EXPORT_STATIC_CALL(preempt_schedule);
-+#endif
-+
-+
- /**
-  * preempt_schedule_notrace - preempt_schedule called by tracing
-  *
-@@ -5303,6 +5309,12 @@ asmlinkage __visible void __sched notrace preempt_schedule_notrace(void)
+@@ -6771,17 +6771,27 @@ SYSCALL_DEFINE0(sched_yield)
+ 	return 0;
  }
- EXPORT_SYMBOL_GPL(preempt_schedule_notrace);
  
-+#ifdef CONFIG_PREEMPT_DYNAMIC
-+DEFINE_STATIC_CALL(preempt_schedule_notrace, __preempt_schedule_notrace_func);
-+EXPORT_STATIC_CALL(preempt_schedule_notrace);
+-#ifndef CONFIG_PREEMPTION
+-int __sched _cond_resched(void)
++#if !defined(CONFIG_PREEMPTION) || defined(CONFIG_PREEMPT_DYNAMIC)
++int __sched __cond_resched(void)
+ {
+ 	if (should_resched(0)) {
+ 		preempt_schedule_common();
+ 		return 1;
+ 	}
++#ifndef CONFIG_PREEMPT_RCU
+ 	rcu_all_qs();
++#endif
+ 	return 0;
+ }
+-EXPORT_SYMBOL(_cond_resched);
++EXPORT_SYMBOL(__cond_resched);
 +#endif
 +
++#ifdef CONFIG_PREEMPT_DYNAMIC
++DEFINE_STATIC_CALL_RET0(cond_resched, __cond_resched);
++EXPORT_STATIC_CALL(cond_resched);
 +
- #endif /* CONFIG_PREEMPTION */
++DEFINE_STATIC_CALL_RET0(might_resched, __cond_resched);
++EXPORT_STATIC_CALL(might_resched);
+ #endif
  
  /*
