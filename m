@@ -2,53 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ACE59314D8E
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  9 Feb 2021 11:55:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BD993152BC
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  9 Feb 2021 16:26:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231910AbhBIKwf (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 9 Feb 2021 05:52:35 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:43478 "EHLO
+        id S232613AbhBIPZN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 9 Feb 2021 10:25:13 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:44914 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231891AbhBIKub (ORCPT
+        with ESMTP id S232629AbhBIPXG (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 9 Feb 2021 05:50:31 -0500
-Date:   Tue, 09 Feb 2021 10:49:46 -0000
+        Tue, 9 Feb 2021 10:23:06 -0500
+Date:   Tue, 09 Feb 2021 15:22:21 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1612867787;
+        s=2020; t=1612884142;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=i8+b4Xc5jM4icogxo50AsI6S5yyz0tfbGfOXoe4V7wM=;
-        b=cf2c/8Kxf3xqQrqBtMJLLMUFz2CVQ3Ru/YwZXZt9JB/MvQxg4OrYz6vR2nahQ873f6+2Lb
-        msftbFKidt6MgdZ7Rkgm5+uPdFE9mm549d70BT5EWS2HTudK0d4O0LigJ7FFV/8TKFbtJb
-        JorIFbb2ezjiN6RjizshgmmJKjb0iq9aMfaz0V8quBH5UH/+KA8Lnqc5gilYvlflQG3hb/
-        TJNWn2V6MBDHSjg7Dy+31UONNz68hXCL+sQs8eWA2cIaCRIqFbB29FQ7cjZEYGQC0Zyyhq
-        Klbe56M1OFIpBD0d8Sdj22kM/qMWPD8JPZm96Z68Mc5ll/aJ+587ShgEyWnLWg==
+        bh=XB03glBY/5tLLvRLJWJe41AKQPCVAeafGDFn/GWB+gk=;
+        b=FD7jb+nGF9QH+3aMW0aVJ1nO1YituWa3YaYDJkKstPzdcdI+OH8A2Ia3niVvoYTpyyLWCY
+        ejMTXssqP7y/sR6Fwzf5kPtFqUDosg9ADu5KaXeiIZWN2CxJWEwX9tBzTL3nup4h2Ae6PD
+        tdZiHX7FkqeeA232fIJWUGDTaWNCL6vBFQWIRGjbNDsjXern0ulIVkhImEer1WngO3ZFOu
+        psj3ChQbd3ZA2tujwkUDqZb6IVaU64x9yuV4BojemNfUUO6uHHeWbtR9J/AA5Zob1C4S/t
+        VkT1PHuH4pyvkD6nWICif9Ui3Mcf0vttjENtlb3OtKQZ9kkt27wiDURlkCs23A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1612867787;
+        s=2020e; t=1612884142;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=i8+b4Xc5jM4icogxo50AsI6S5yyz0tfbGfOXoe4V7wM=;
-        b=RflkZXVwqomxIurN5bH8QBw6wat6A0s8a4UKxAkarl1Wj/jmaBMgG3yPVkpgXAxHBBV4ah
-        sFZ4Zw0kE64p/gBw==
-From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
+        bh=XB03glBY/5tLLvRLJWJe41AKQPCVAeafGDFn/GWB+gk=;
+        b=E/IEdE+BlWEwcA7E3mJlQV0pPelYYszaUXVt/bOeH/pe0YIQlFWa1FtUnGrFZ4mUG+ufAu
+        nsCOzCxOqR4WVoCA==
+From:   "tip-bot2 for Mikael Beckius" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/build: Disable CET instrumentation in the
- kernel for 32-bit too
-Cc:     AC <achirvasub@gmail.com>, Borislav Petkov <bp@suse.de>,
-        Josh Poimboeuf <jpoimboe@redhat.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <xT4ex@arch-chirva.localdomain>
-References: <xT4ex@arch-chirva.localdomain>
+Subject: [tip: timers/urgent] hrtimer: Update softirq_expires_next correctly
+ in hrtimer_force_reprogram()
+Cc:     Mikael Beckius <mikael.beckius@windriver.com>,
+        Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20210128140208.30264-1-mikael.beckius@windriver.com>
+References: <20210128140208.30264-1-mikael.beckius@windriver.com>
 MIME-Version: 1.0
-Message-ID: <161286778686.23325.10302847745526792763.tip-bot2@tip-bot2>
+Message-ID: <161288414184.23325.3143319640747364296.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -57,57 +57,107 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the timers/urgent branch of tip:
 
-Commit-ID:     256b92af784d5043eeb7d559b6d5963dcc2ecb10
-Gitweb:        https://git.kernel.org/tip/256b92af784d5043eeb7d559b6d5963dcc2ecb10
-Author:        Borislav Petkov <bp@suse.de>
-AuthorDate:    Mon, 08 Feb 2021 16:43:30 +01:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 09 Feb 2021 11:23:47 +01:00
+Commit-ID:     0fcc7c20d2e2a65fb5b80d42841084e8509d085d
+Gitweb:        https://git.kernel.org/tip/0fcc7c20d2e2a65fb5b80d42841084e8509d085d
+Author:        Mikael Beckius <mikael.beckius@windriver.com>
+AuthorDate:    Thu, 28 Jan 2021 15:02:08 +01:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Tue, 09 Feb 2021 16:18:42 +01:00
 
-x86/build: Disable CET instrumentation in the kernel for 32-bit too
+hrtimer: Update softirq_expires_next correctly in hrtimer_force_reprogram()
 
-Commit
+hrtimer_force_reprogram() invokes __hrtimer_get_next_event() to find the
+earliest expiry time of all hrtimer bases. __hrtimer_get_next_event() does
+not update cpu_base::[softirq_]_expires_next. That needs to be done at the
+callsites.
 
-  20bf2b378729 ("x86/build: Disable CET instrumentation in the kernel")
+hrtimer_force_reprogram() updates cpu_base::softirq_expires_next only when
+the first expiring timer is a softirq timer and the soft interrupt is not
+activated. That's wrong because cpu_base::softirq_expires_next is left
+stale when the first expiring timer of all bases is a timer which expires
+in hard interrupt context.
 
-disabled CET instrumentation which gets added by default by the Ubuntu
-gcc9 and 10 by default, but did that only for 64-bit builds. It would
-still fail when building a 32-bit target. So disable CET for all x86
-builds.
+That becomes a problem when clock_settime() sets CLOCK_REALTIME forward and
+the first soft expiring timer is in the CLOCK_REALTIME_SOFT base. Setting
+CLOCK_REALTIME forward moves the clock MONOTONIC based expiry time of that
+timer before the stale cpu_base::softirq_expires_next.
 
-Fixes: 20bf2b378729 ("x86/build: Disable CET instrumentation in the kernel")
-Reported-by: AC <achirvasub@gmail.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Acked-by: Josh Poimboeuf <jpoimboe@redhat.com>
-Tested-by: AC <achirvasub@gmail.com>
-Link: https://lkml.kernel.org/r/YCCIgMHkzh/xT4ex@arch-chirva.localdomain
+cpu_base::softirq_expires_next is cached to make the check for raising the
+soft interrupt fast. In the above case the soft interrupt won't be raised
+until clock monotonic reaches the stale cpu_base::softirq_expires_next
+value. That's incorrect, but what's worse it that if the softirq timer
+becomes the first expiring timer of all clock bases after the hard expiry
+timer has been handled the reprogramming of the clockevent from
+hrtimer_interrupt() will result in an interrupt storm. That happens because
+the reprogramming does not use cpu_base::softirq_expires_next, it uses
+__hrtimer_get_next_event() which returns the actual expiry time. Once clock
+MONOTONIC reaches cpu_base::softirq_expires_next the soft interrupt is
+raised and the storm subsides.
+
+Change the logic in hrtimer_force_reprogram() to evaluate the soft and hard
+bases seperately, update softirq_expires_next and handle the case when a
+soft expiring timer is the first of all bases by comparing the expiry times
+and updating the required cpu base fields.
+
+[ tglx: Modified it to avoid the double evaluation ]
+
+Fixes:5da70160462e ("hrtimer: Implement support for softirq based hrtimers")
+Signed-off-by: Mikael Beckius <mikael.beckius@windriver.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20210128140208.30264-1-mikael.beckius@windriver.com
+
 ---
- arch/x86/Makefile | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ kernel/time/hrtimer.c | 32 +++++++++++++++++++-------------
+ 1 file changed, 19 insertions(+), 13 deletions(-)
 
-diff --git a/arch/x86/Makefile b/arch/x86/Makefile
-index 5857917..30920d7 100644
---- a/arch/x86/Makefile
-+++ b/arch/x86/Makefile
-@@ -50,6 +50,9 @@ export BITS
- KBUILD_CFLAGS += -mno-sse -mno-mmx -mno-sse2 -mno-3dnow
- KBUILD_CFLAGS += $(call cc-option,-mno-avx,)
+diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
+index 743c852..88a0145 100644
+--- a/kernel/time/hrtimer.c
++++ b/kernel/time/hrtimer.c
+@@ -626,24 +626,30 @@ static inline int hrtimer_hres_active(void)
+ static void
+ hrtimer_force_reprogram(struct hrtimer_cpu_base *cpu_base, int skip_equal)
+ {
+-	ktime_t expires_next;
++	ktime_t expires_next, soft = KTIME_MAX;
  
-+# Intel CET isn't enabled in the kernel
-+KBUILD_CFLAGS += $(call cc-option,-fcf-protection=none)
-+
- ifeq ($(CONFIG_X86_32),y)
-         BITS := 32
-         UTS_MACHINE := i386
-@@ -120,9 +123,6 @@ else
- 
-         KBUILD_CFLAGS += -mno-red-zone
-         KBUILD_CFLAGS += -mcmodel=kernel
+ 	/*
+-	 * Find the current next expiration time.
++	 * If the soft interrupt has already been activated, ignore the
++	 * soft bases. They will be handled in the already raised soft
++	 * interrupt.
+ 	 */
+-	expires_next = __hrtimer_get_next_event(cpu_base, HRTIMER_ACTIVE_ALL);
 -
--	# Intel CET isn't enabled in the kernel
--	KBUILD_CFLAGS += $(call cc-option,-fcf-protection=none)
- endif
+-	if (cpu_base->next_timer && cpu_base->next_timer->is_soft) {
++	if (!cpu_base->softirq_activated) {
++		soft = __hrtimer_get_next_event(cpu_base, HRTIMER_ACTIVE_SOFT);
+ 		/*
+-		 * When the softirq is activated, hrtimer has to be
+-		 * programmed with the first hard hrtimer because soft
+-		 * timer interrupt could occur too late.
++		 * Update the soft expiry time. clock_settime() might have
++		 * affected it.
+ 		 */
+-		if (cpu_base->softirq_activated)
+-			expires_next = __hrtimer_get_next_event(cpu_base,
+-								HRTIMER_ACTIVE_HARD);
+-		else
+-			cpu_base->softirq_expires_next = expires_next;
++		cpu_base->softirq_expires_next = soft;
++	}
++
++	expires_next = __hrtimer_get_next_event(cpu_base, HRTIMER_ACTIVE_HARD);
++	/*
++	 * If a softirq timer is expiring first, update cpu_base->next_timer
++	 * and program the hardware with the soft expiry time.
++	 */
++	if (expires_next > soft) {
++		cpu_base->next_timer = cpu_base->softirq_next_timer;
++		expires_next = soft;
+ 	}
  
- ifdef CONFIG_X86_X32
+ 	if (skip_equal && expires_next == cpu_base->expires_next)
