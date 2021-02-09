@@ -2,53 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BD993152BC
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  9 Feb 2021 16:26:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 752C6315317
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  9 Feb 2021 16:46:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232613AbhBIPZN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 9 Feb 2021 10:25:13 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:44914 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232629AbhBIPXG (ORCPT
+        id S232575AbhBIPpy (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 9 Feb 2021 10:45:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57838 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232565AbhBIPpt (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 9 Feb 2021 10:23:06 -0500
-Date:   Tue, 09 Feb 2021 15:22:21 -0000
+        Tue, 9 Feb 2021 10:45:49 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C050C06178C;
+        Tue,  9 Feb 2021 07:45:08 -0800 (PST)
+Date:   Tue, 09 Feb 2021 15:45:06 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1612884142;
+        s=2020; t=1612885507;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=XB03glBY/5tLLvRLJWJe41AKQPCVAeafGDFn/GWB+gk=;
-        b=FD7jb+nGF9QH+3aMW0aVJ1nO1YituWa3YaYDJkKstPzdcdI+OH8A2Ia3niVvoYTpyyLWCY
-        ejMTXssqP7y/sR6Fwzf5kPtFqUDosg9ADu5KaXeiIZWN2CxJWEwX9tBzTL3nup4h2Ae6PD
-        tdZiHX7FkqeeA232fIJWUGDTaWNCL6vBFQWIRGjbNDsjXern0ulIVkhImEer1WngO3ZFOu
-        psj3ChQbd3ZA2tujwkUDqZb6IVaU64x9yuV4BojemNfUUO6uHHeWbtR9J/AA5Zob1C4S/t
-        VkT1PHuH4pyvkD6nWICif9Ui3Mcf0vttjENtlb3OtKQZ9kkt27wiDURlkCs23A==
+        bh=UcXzA7oB7+15eHqD7wQ2LCtP7azctiBe/+GAwWhg42U=;
+        b=K05Hgcj3JLpuawFM+u15a/FLAgjVq/yJ8kQESmzZNg31CC5N5thJqYTxkC+SY9Ed7xQYxW
+        PwgXeq9K51pgKJmeJpwgZxvXpzeTtv2Mtu+8XL8qceXN9gZCDODrnq3EGHT8gGWb8Yga4w
+        I8g+xQQypPjZzC9E+db5i2VKUa7tStgUE2xyYEJcU6W24Hc48hLX9kj/tK94ZNV1b1Xw0E
+        hpJDnIf4vsJ3aVcGS5CkcnQiSmvewEXe8ILAWJT7FEzLe09z1slig6CNdx23VOAd+O1GVm
+        S2VkzrjgEXPooxivMDIyLzWuE11/h0XPhedrRY0ROATvVX8T3V1eUzEIiYaLvw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1612884142;
+        s=2020e; t=1612885507;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=XB03glBY/5tLLvRLJWJe41AKQPCVAeafGDFn/GWB+gk=;
-        b=E/IEdE+BlWEwcA7E3mJlQV0pPelYYszaUXVt/bOeH/pe0YIQlFWa1FtUnGrFZ4mUG+ufAu
-        nsCOzCxOqR4WVoCA==
-From:   "tip-bot2 for Mikael Beckius" <tip-bot2@linutronix.de>
+        bh=UcXzA7oB7+15eHqD7wQ2LCtP7azctiBe/+GAwWhg42U=;
+        b=8sDXgypl+sY9dR3AWdUFMlumAER6L0SiTHPKBt+s01azjv9fRPR0I7pnzKZAivRjVRRp6C
+        RlChXPgM0UqVdIDA==
+From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/urgent] hrtimer: Update softirq_expires_next correctly
- in hrtimer_force_reprogram()
-Cc:     Mikael Beckius <mikael.beckius@windriver.com>,
-        Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20210128140208.30264-1-mikael.beckius@windriver.com>
-References: <20210128140208.30264-1-mikael.beckius@windriver.com>
+Subject: [tip: sched/core] static_call: Allow module use without exposing
+ static_call_key
+Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Josh Poimboeuf <jpoimboe@redhat.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20210127231837.ifddpn7rhwdaepiu@treble>
+References: <20210127231837.ifddpn7rhwdaepiu@treble>
 MIME-Version: 1.0
-Message-ID: <161288414184.23325.3143319640747364296.tip-bot2@tip-bot2>
+Message-ID: <161288550659.23325.1239131065305414972.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -57,107 +60,342 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/urgent branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     0fcc7c20d2e2a65fb5b80d42841084e8509d085d
-Gitweb:        https://git.kernel.org/tip/0fcc7c20d2e2a65fb5b80d42841084e8509d085d
-Author:        Mikael Beckius <mikael.beckius@windriver.com>
-AuthorDate:    Thu, 28 Jan 2021 15:02:08 +01:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 09 Feb 2021 16:18:42 +01:00
+Commit-ID:     8659343e7612746d595d55e7cf695c46f2ed571a
+Gitweb:        https://git.kernel.org/tip/8659343e7612746d595d55e7cf695c46f2ed571a
+Author:        Josh Poimboeuf <jpoimboe@redhat.com>
+AuthorDate:    Wed, 27 Jan 2021 17:18:37 -06:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Tue, 09 Feb 2021 16:31:03 +01:00
 
-hrtimer: Update softirq_expires_next correctly in hrtimer_force_reprogram()
+static_call: Allow module use without exposing static_call_key
 
-hrtimer_force_reprogram() invokes __hrtimer_get_next_event() to find the
-earliest expiry time of all hrtimer bases. __hrtimer_get_next_event() does
-not update cpu_base::[softirq_]_expires_next. That needs to be done at the
-callsites.
+When exporting static_call_key; with EXPORT_STATIC_CALL*(), the module
+can use static_call_update() to change the function called.  This is
+not desirable in general.
 
-hrtimer_force_reprogram() updates cpu_base::softirq_expires_next only when
-the first expiring timer is a softirq timer and the soft interrupt is not
-activated. That's wrong because cpu_base::softirq_expires_next is left
-stale when the first expiring timer of all bases is a timer which expires
-in hard interrupt context.
+Not exporting static_call_key however also disallows usage of
+static_call(), since objtool needs the key to construct the
+static_call_site.
 
-That becomes a problem when clock_settime() sets CLOCK_REALTIME forward and
-the first soft expiring timer is in the CLOCK_REALTIME_SOFT base. Setting
-CLOCK_REALTIME forward moves the clock MONOTONIC based expiry time of that
-timer before the stale cpu_base::softirq_expires_next.
+Solve this by allowing objtool to create the static_call_site using
+the trampoline address when it builds a module and cannot find the
+static_call_key symbol. The module loader will then try and map the
+trampole back to a key before it constructs the normal sites list.
 
-cpu_base::softirq_expires_next is cached to make the check for raising the
-soft interrupt fast. In the above case the soft interrupt won't be raised
-until clock monotonic reaches the stale cpu_base::softirq_expires_next
-value. That's incorrect, but what's worse it that if the softirq timer
-becomes the first expiring timer of all clock bases after the hard expiry
-timer has been handled the reprogramming of the clockevent from
-hrtimer_interrupt() will result in an interrupt storm. That happens because
-the reprogramming does not use cpu_base::softirq_expires_next, it uses
-__hrtimer_get_next_event() which returns the actual expiry time. Once clock
-MONOTONIC reaches cpu_base::softirq_expires_next the soft interrupt is
-raised and the storm subsides.
+Doing this requires a trampoline -> key associsation, so add another
+magic section that keeps those.
 
-Change the logic in hrtimer_force_reprogram() to evaluate the soft and hard
-bases seperately, update softirq_expires_next and handle the case when a
-soft expiring timer is the first of all bases by comparing the expiry times
-and updating the required cpu base fields.
-
-[ tglx: Modified it to avoid the double evaluation ]
-
-Fixes:5da70160462e ("hrtimer: Implement support for softirq based hrtimers")
-Signed-off-by: Mikael Beckius <mikael.beckius@windriver.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20210128140208.30264-1-mikael.beckius@windriver.com
-
+Originally-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20210127231837.ifddpn7rhwdaepiu@treble
 ---
- kernel/time/hrtimer.c | 32 +++++++++++++++++++-------------
- 1 file changed, 19 insertions(+), 13 deletions(-)
+ arch/x86/include/asm/static_call.h      |  7 +++-
+ include/asm-generic/vmlinux.lds.h       |  5 +-
+ include/linux/static_call.h             | 22 +++++++++-
+ include/linux/static_call_types.h       | 27 +++++++++++-
+ kernel/static_call.c                    | 55 +++++++++++++++++++++++-
+ tools/include/linux/static_call_types.h | 27 +++++++++++-
+ tools/objtool/check.c                   | 17 ++++++-
+ 7 files changed, 149 insertions(+), 11 deletions(-)
 
-diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
-index 743c852..88a0145 100644
---- a/kernel/time/hrtimer.c
-+++ b/kernel/time/hrtimer.c
-@@ -626,24 +626,30 @@ static inline int hrtimer_hres_active(void)
- static void
- hrtimer_force_reprogram(struct hrtimer_cpu_base *cpu_base, int skip_equal)
- {
--	ktime_t expires_next;
-+	ktime_t expires_next, soft = KTIME_MAX;
+diff --git a/arch/x86/include/asm/static_call.h b/arch/x86/include/asm/static_call.h
+index c37f119..cbb67b6 100644
+--- a/arch/x86/include/asm/static_call.h
++++ b/arch/x86/include/asm/static_call.h
+@@ -37,4 +37,11 @@
+ #define ARCH_DEFINE_STATIC_CALL_NULL_TRAMP(name)			\
+ 	__ARCH_DEFINE_STATIC_CALL_TRAMP(name, "ret; nop; nop; nop; nop")
  
- 	/*
--	 * Find the current next expiration time.
-+	 * If the soft interrupt has already been activated, ignore the
-+	 * soft bases. They will be handled in the already raised soft
-+	 * interrupt.
- 	 */
--	expires_next = __hrtimer_get_next_event(cpu_base, HRTIMER_ACTIVE_ALL);
++
++#define ARCH_ADD_TRAMP_KEY(name)					\
++	asm(".pushsection .static_call_tramp_key, \"a\"		\n"	\
++	    ".long " STATIC_CALL_TRAMP_STR(name) " - .		\n"	\
++	    ".long " STATIC_CALL_KEY_STR(name) " - .		\n"	\
++	    ".popsection					\n")
++
+ #endif /* _ASM_STATIC_CALL_H */
+diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
+index b2b3d81..b0871e2 100644
+--- a/include/asm-generic/vmlinux.lds.h
++++ b/include/asm-generic/vmlinux.lds.h
+@@ -393,7 +393,10 @@
+ 	. = ALIGN(8);							\
+ 	__start_static_call_sites = .;					\
+ 	KEEP(*(.static_call_sites))					\
+-	__stop_static_call_sites = .;
++	__stop_static_call_sites = .;					\
++	__start_static_call_tramp_key = .;				\
++	KEEP(*(.static_call_tramp_key))					\
++	__stop_static_call_tramp_key = .;
+ 
+ /*
+  * Allow architectures to handle ro_after_init data on their
+diff --git a/include/linux/static_call.h b/include/linux/static_call.h
+index d69dd8b..85ecc78 100644
+--- a/include/linux/static_call.h
++++ b/include/linux/static_call.h
+@@ -138,6 +138,12 @@ struct static_call_key {
+ 	};
+ };
+ 
++/* For finding the key associated with a trampoline */
++struct static_call_tramp_key {
++	s32 tramp;
++	s32 key;
++};
++
+ extern void __static_call_update(struct static_call_key *key, void *tramp, void *func);
+ extern int static_call_mod_init(struct module *mod);
+ extern int static_call_text_reserved(void *start, void *end);
+@@ -165,11 +171,18 @@ extern long __static_call_return0(void);
+ #define EXPORT_STATIC_CALL(name)					\
+ 	EXPORT_SYMBOL(STATIC_CALL_KEY(name));				\
+ 	EXPORT_SYMBOL(STATIC_CALL_TRAMP(name))
 -
--	if (cpu_base->next_timer && cpu_base->next_timer->is_soft) {
-+	if (!cpu_base->softirq_activated) {
-+		soft = __hrtimer_get_next_event(cpu_base, HRTIMER_ACTIVE_SOFT);
- 		/*
--		 * When the softirq is activated, hrtimer has to be
--		 * programmed with the first hard hrtimer because soft
--		 * timer interrupt could occur too late.
-+		 * Update the soft expiry time. clock_settime() might have
-+		 * affected it.
- 		 */
--		if (cpu_base->softirq_activated)
--			expires_next = __hrtimer_get_next_event(cpu_base,
--								HRTIMER_ACTIVE_HARD);
--		else
--			cpu_base->softirq_expires_next = expires_next;
-+		cpu_base->softirq_expires_next = soft;
+ #define EXPORT_STATIC_CALL_GPL(name)					\
+ 	EXPORT_SYMBOL_GPL(STATIC_CALL_KEY(name));			\
+ 	EXPORT_SYMBOL_GPL(STATIC_CALL_TRAMP(name))
+ 
++/* Leave the key unexported, so modules can't change static call targets: */
++#define EXPORT_STATIC_CALL_TRAMP(name)					\
++	EXPORT_SYMBOL(STATIC_CALL_TRAMP(name));				\
++	ARCH_ADD_TRAMP_KEY(name)
++#define EXPORT_STATIC_CALL_TRAMP_GPL(name)				\
++	EXPORT_SYMBOL_GPL(STATIC_CALL_TRAMP(name));			\
++	ARCH_ADD_TRAMP_KEY(name)
++
+ #elif defined(CONFIG_HAVE_STATIC_CALL)
+ 
+ static inline int static_call_init(void) { return 0; }
+@@ -216,11 +229,16 @@ static inline long __static_call_return0(void)
+ #define EXPORT_STATIC_CALL(name)					\
+ 	EXPORT_SYMBOL(STATIC_CALL_KEY(name));				\
+ 	EXPORT_SYMBOL(STATIC_CALL_TRAMP(name))
+-
+ #define EXPORT_STATIC_CALL_GPL(name)					\
+ 	EXPORT_SYMBOL_GPL(STATIC_CALL_KEY(name));			\
+ 	EXPORT_SYMBOL_GPL(STATIC_CALL_TRAMP(name))
+ 
++/* Leave the key unexported, so modules can't change static call targets: */
++#define EXPORT_STATIC_CALL_TRAMP(name)					\
++	EXPORT_SYMBOL(STATIC_CALL_TRAMP(name))
++#define EXPORT_STATIC_CALL_TRAMP_GPL(name)				\
++	EXPORT_SYMBOL_GPL(STATIC_CALL_TRAMP(name))
++
+ #else /* Generic implementation */
+ 
+ static inline int static_call_init(void) { return 0; }
+diff --git a/include/linux/static_call_types.h b/include/linux/static_call_types.h
+index 08f78b1..ae5662d 100644
+--- a/include/linux/static_call_types.h
++++ b/include/linux/static_call_types.h
+@@ -10,6 +10,7 @@
+ #define STATIC_CALL_KEY_PREFIX_STR	__stringify(STATIC_CALL_KEY_PREFIX)
+ #define STATIC_CALL_KEY_PREFIX_LEN	(sizeof(STATIC_CALL_KEY_PREFIX_STR) - 1)
+ #define STATIC_CALL_KEY(name)		__PASTE(STATIC_CALL_KEY_PREFIX, name)
++#define STATIC_CALL_KEY_STR(name)	__stringify(STATIC_CALL_KEY(name))
+ 
+ #define STATIC_CALL_TRAMP_PREFIX	__SCT__
+ #define STATIC_CALL_TRAMP_PREFIX_STR	__stringify(STATIC_CALL_TRAMP_PREFIX)
+@@ -39,17 +40,39 @@ struct static_call_site {
+ 
+ #ifdef CONFIG_HAVE_STATIC_CALL
+ 
++#define __raw_static_call(name)	(&STATIC_CALL_TRAMP(name))
++
++#ifdef CONFIG_HAVE_STATIC_CALL_INLINE
++
+ /*
+  * __ADDRESSABLE() is used to ensure the key symbol doesn't get stripped from
+  * the symbol table so that objtool can reference it when it generates the
+  * .static_call_sites section.
+  */
++#define __STATIC_CALL_ADDRESSABLE(name) \
++	__ADDRESSABLE(STATIC_CALL_KEY(name))
++
+ #define __static_call(name)						\
+ ({									\
+-	__ADDRESSABLE(STATIC_CALL_KEY(name));				\
+-	&STATIC_CALL_TRAMP(name);					\
++	__STATIC_CALL_ADDRESSABLE(name);				\
++	__raw_static_call(name);					\
+ })
+ 
++#else /* !CONFIG_HAVE_STATIC_CALL_INLINE */
++
++#define __STATIC_CALL_ADDRESSABLE(name)
++#define __static_call(name)	__raw_static_call(name)
++
++#endif /* CONFIG_HAVE_STATIC_CALL_INLINE */
++
++#ifdef MODULE
++#define __STATIC_CALL_MOD_ADDRESSABLE(name)
++#define static_call_mod(name)	__raw_static_call(name)
++#else
++#define __STATIC_CALL_MOD_ADDRESSABLE(name) __STATIC_CALL_ADDRESSABLE(name)
++#define static_call_mod(name)	__static_call(name)
++#endif
++
+ #define static_call(name)	__static_call(name)
+ 
+ #else
+diff --git a/kernel/static_call.c b/kernel/static_call.c
+index 0bc11b5..6906c6e 100644
+--- a/kernel/static_call.c
++++ b/kernel/static_call.c
+@@ -12,6 +12,8 @@
+ 
+ extern struct static_call_site __start_static_call_sites[],
+ 			       __stop_static_call_sites[];
++extern struct static_call_tramp_key __start_static_call_tramp_key[],
++				    __stop_static_call_tramp_key[];
+ 
+ static bool static_call_initialized;
+ 
+@@ -323,10 +325,59 @@ static int __static_call_mod_text_reserved(void *start, void *end)
+ 	return ret;
+ }
+ 
++static unsigned long tramp_key_lookup(unsigned long addr)
++{
++	struct static_call_tramp_key *start = __start_static_call_tramp_key;
++	struct static_call_tramp_key *stop = __stop_static_call_tramp_key;
++	struct static_call_tramp_key *tramp_key;
++
++	for (tramp_key = start; tramp_key != stop; tramp_key++) {
++		unsigned long tramp;
++
++		tramp = (long)tramp_key->tramp + (long)&tramp_key->tramp;
++		if (tramp == addr)
++			return (long)tramp_key->key + (long)&tramp_key->key;
 +	}
 +
-+	expires_next = __hrtimer_get_next_event(cpu_base, HRTIMER_ACTIVE_HARD);
-+	/*
-+	 * If a softirq timer is expiring first, update cpu_base->next_timer
-+	 * and program the hardware with the soft expiry time.
-+	 */
-+	if (expires_next > soft) {
-+		cpu_base->next_timer = cpu_base->softirq_next_timer;
-+		expires_next = soft;
- 	}
++	return 0;
++}
++
+ static int static_call_add_module(struct module *mod)
+ {
+-	return __static_call_init(mod, mod->static_call_sites,
+-				  mod->static_call_sites + mod->num_static_call_sites);
++	struct static_call_site *start = mod->static_call_sites;
++	struct static_call_site *stop = start + mod->num_static_call_sites;
++	struct static_call_site *site;
++
++	for (site = start; site != stop; site++) {
++		unsigned long addr = (unsigned long)static_call_key(site);
++		unsigned long key;
++
++		/*
++		 * Is the key is exported, 'addr' points to the key, which
++		 * means modules are allowed to call static_call_update() on
++		 * it.
++		 *
++		 * Otherwise, the key isn't exported, and 'addr' points to the
++		 * trampoline so we need to lookup the key.
++		 *
++		 * We go through this dance to prevent crazy modules from
++		 * abusing sensitive static calls.
++		 */
++		if (!kernel_text_address(addr))
++			continue;
++
++		key = tramp_key_lookup(addr);
++		if (!key) {
++			pr_warn("Failed to fixup __raw_static_call() usage at: %ps\n",
++				static_call_addr(site));
++			return -EINVAL;
++		}
++
++		site->key = (key - (long)&site->key) |
++			    (site->key & STATIC_CALL_SITE_FLAGS);
++	}
++
++	return __static_call_init(mod, start, stop);
+ }
  
- 	if (skip_equal && expires_next == cpu_base->expires_next)
+ static void static_call_del_module(struct module *mod)
+diff --git a/tools/include/linux/static_call_types.h b/tools/include/linux/static_call_types.h
+index 08f78b1..ae5662d 100644
+--- a/tools/include/linux/static_call_types.h
++++ b/tools/include/linux/static_call_types.h
+@@ -10,6 +10,7 @@
+ #define STATIC_CALL_KEY_PREFIX_STR	__stringify(STATIC_CALL_KEY_PREFIX)
+ #define STATIC_CALL_KEY_PREFIX_LEN	(sizeof(STATIC_CALL_KEY_PREFIX_STR) - 1)
+ #define STATIC_CALL_KEY(name)		__PASTE(STATIC_CALL_KEY_PREFIX, name)
++#define STATIC_CALL_KEY_STR(name)	__stringify(STATIC_CALL_KEY(name))
+ 
+ #define STATIC_CALL_TRAMP_PREFIX	__SCT__
+ #define STATIC_CALL_TRAMP_PREFIX_STR	__stringify(STATIC_CALL_TRAMP_PREFIX)
+@@ -39,17 +40,39 @@ struct static_call_site {
+ 
+ #ifdef CONFIG_HAVE_STATIC_CALL
+ 
++#define __raw_static_call(name)	(&STATIC_CALL_TRAMP(name))
++
++#ifdef CONFIG_HAVE_STATIC_CALL_INLINE
++
+ /*
+  * __ADDRESSABLE() is used to ensure the key symbol doesn't get stripped from
+  * the symbol table so that objtool can reference it when it generates the
+  * .static_call_sites section.
+  */
++#define __STATIC_CALL_ADDRESSABLE(name) \
++	__ADDRESSABLE(STATIC_CALL_KEY(name))
++
+ #define __static_call(name)						\
+ ({									\
+-	__ADDRESSABLE(STATIC_CALL_KEY(name));				\
+-	&STATIC_CALL_TRAMP(name);					\
++	__STATIC_CALL_ADDRESSABLE(name);				\
++	__raw_static_call(name);					\
+ })
+ 
++#else /* !CONFIG_HAVE_STATIC_CALL_INLINE */
++
++#define __STATIC_CALL_ADDRESSABLE(name)
++#define __static_call(name)	__raw_static_call(name)
++
++#endif /* CONFIG_HAVE_STATIC_CALL_INLINE */
++
++#ifdef MODULE
++#define __STATIC_CALL_MOD_ADDRESSABLE(name)
++#define static_call_mod(name)	__raw_static_call(name)
++#else
++#define __STATIC_CALL_MOD_ADDRESSABLE(name) __STATIC_CALL_ADDRESSABLE(name)
++#define static_call_mod(name)	__static_call(name)
++#endif
++
+ #define static_call(name)	__static_call(name)
+ 
+ #else
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index 5f8d3ee..7bd96d6 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -502,8 +502,21 @@ static int create_static_call_sections(struct objtool_file *file)
+ 
+ 		key_sym = find_symbol_by_name(file->elf, tmp);
+ 		if (!key_sym) {
+-			WARN("static_call: can't find static_call_key symbol: %s", tmp);
+-			return -1;
++			if (!module) {
++				WARN("static_call: can't find static_call_key symbol: %s", tmp);
++				return -1;
++			}
++
++			/*
++			 * For modules(), the key might not be exported, which
++			 * means the module can make static calls but isn't
++			 * allowed to change them.
++			 *
++			 * In that case we temporarily set the key to be the
++			 * trampoline address.  This is fixed up in
++			 * static_call_add_module().
++			 */
++			key_sym = insn->call_dest;
+ 		}
+ 		free(key_name);
+ 
