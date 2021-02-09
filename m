@@ -2,19 +2,16 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 752C6315317
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  9 Feb 2021 16:46:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D9BE231531A
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  9 Feb 2021 16:46:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232575AbhBIPpy (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 9 Feb 2021 10:45:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57838 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232565AbhBIPpt (ORCPT
+        id S232582AbhBIPp6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 9 Feb 2021 10:45:58 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:45032 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232548AbhBIPpu (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 9 Feb 2021 10:45:49 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C050C06178C;
-        Tue,  9 Feb 2021 07:45:08 -0800 (PST)
+        Tue, 9 Feb 2021 10:45:50 -0500
 Date:   Tue, 09 Feb 2021 15:45:06 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1612885507;
@@ -23,12 +20,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=UcXzA7oB7+15eHqD7wQ2LCtP7azctiBe/+GAwWhg42U=;
-        b=K05Hgcj3JLpuawFM+u15a/FLAgjVq/yJ8kQESmzZNg31CC5N5thJqYTxkC+SY9Ed7xQYxW
-        PwgXeq9K51pgKJmeJpwgZxvXpzeTtv2Mtu+8XL8qceXN9gZCDODrnq3EGHT8gGWb8Yga4w
-        I8g+xQQypPjZzC9E+db5i2VKUa7tStgUE2xyYEJcU6W24Hc48hLX9kj/tK94ZNV1b1Xw0E
-        hpJDnIf4vsJ3aVcGS5CkcnQiSmvewEXe8ILAWJT7FEzLe09z1slig6CNdx23VOAd+O1GVm
-        S2VkzrjgEXPooxivMDIyLzWuE11/h0XPhedrRY0ROATvVX8T3V1eUzEIiYaLvw==
+        bh=5Dq3ZQ/5Szkm5G+i8hAJ8U2bM9k6hjZsGXQtEcnj7Js=;
+        b=w+kGFwWoUs9wxUjXUHa0TocssQl94mz08kuDyf6TDdew938aZ3UJcAYdWXEjrhLKcHpMHq
+        ma8PkUzAp3YJM+0eEx8wEa3Z5owlwJvW3G8qiasj2jsSZysngc15Ns0bE4mjyY+euRcOu4
+        sMnMWL+Df4I4sB3ud4Q/htK+V8PSPqk6hnRXnvMef6a/68R2MmhsJPMZT1jSCf98op2XNO
+        X4uA10zaObtRK1jaB1kxx5EyYUUCK7clIGfFhTKSG8Z35Oaq99dcZqTrlWJ/WPyzr6tUHn
+        pOFUute5hl24wXla+JXuULrY9Yr6rOP6eTS/qQPhnDnvjeZDhL0Vy1JP3bHE7w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1612885507;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,22 +33,20 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=UcXzA7oB7+15eHqD7wQ2LCtP7azctiBe/+GAwWhg42U=;
-        b=8sDXgypl+sY9dR3AWdUFMlumAER6L0SiTHPKBt+s01azjv9fRPR0I7pnzKZAivRjVRRp6C
-        RlChXPgM0UqVdIDA==
-From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
+        bh=5Dq3ZQ/5Szkm5G+i8hAJ8U2bM9k6hjZsGXQtEcnj7Js=;
+        b=vYNk8rtsifL9zlId3SmfwwHDotJcCk4TxD11Kscz/tshkSHIWA/IEKlmagWOrEaYCrro2A
+        U/NM+x0tYkWURPCg==
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] static_call: Allow module use without exposing
- static_call_key
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Josh Poimboeuf <jpoimboe@redhat.com>, x86@kernel.org,
+Subject: [tip: sched/core] sched: Add /debug/sched_preempt
+Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210127231837.ifddpn7rhwdaepiu@treble>
-References: <20210127231837.ifddpn7rhwdaepiu@treble>
+In-Reply-To: <YAsGiUYf6NyaTplX@hirez.programming.kicks-ass.net>
+References: <YAsGiUYf6NyaTplX@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-Message-ID: <161288550659.23325.1239131065305414972.tip-bot2@tip-bot2>
+Message-ID: <161288550683.23325.6904383371578790672.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -62,340 +57,188 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     8659343e7612746d595d55e7cf695c46f2ed571a
-Gitweb:        https://git.kernel.org/tip/8659343e7612746d595d55e7cf695c46f2ed571a
-Author:        Josh Poimboeuf <jpoimboe@redhat.com>
-AuthorDate:    Wed, 27 Jan 2021 17:18:37 -06:00
+Commit-ID:     b57f3de85c79f9fbfe2fd84cc6ba548e4e73d02d
+Gitweb:        https://git.kernel.org/tip/b57f3de85c79f9fbfe2fd84cc6ba548e4e73d02d
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Fri, 22 Jan 2021 13:01:58 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Tue, 09 Feb 2021 16:31:03 +01:00
 
-static_call: Allow module use without exposing static_call_key
+sched: Add /debug/sched_preempt
 
-When exporting static_call_key; with EXPORT_STATIC_CALL*(), the module
-can use static_call_update() to change the function called.  This is
-not desirable in general.
+Add a debugfs file to muck about with the preempt mode at runtime.
 
-Not exporting static_call_key however also disallows usage of
-static_call(), since objtool needs the key to construct the
-static_call_site.
-
-Solve this by allowing objtool to create the static_call_site using
-the trampoline address when it builds a module and cannot find the
-static_call_key symbol. The module loader will then try and map the
-trampole back to a key before it constructs the normal sites list.
-
-Doing this requires a trampoline -> key associsation, so add another
-magic section that keeps those.
-
-Originally-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20210127231837.ifddpn7rhwdaepiu@treble
+Link: https://lkml.kernel.org/r/YAsGiUYf6NyaTplX@hirez.programming.kicks-ass.net
 ---
- arch/x86/include/asm/static_call.h      |  7 +++-
- include/asm-generic/vmlinux.lds.h       |  5 +-
- include/linux/static_call.h             | 22 +++++++++-
- include/linux/static_call_types.h       | 27 +++++++++++-
- kernel/static_call.c                    | 55 +++++++++++++++++++++++-
- tools/include/linux/static_call_types.h | 27 +++++++++++-
- tools/objtool/check.c                   | 17 ++++++-
- 7 files changed, 149 insertions(+), 11 deletions(-)
+ kernel/sched/core.c | 135 ++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 126 insertions(+), 9 deletions(-)
 
-diff --git a/arch/x86/include/asm/static_call.h b/arch/x86/include/asm/static_call.h
-index c37f119..cbb67b6 100644
---- a/arch/x86/include/asm/static_call.h
-+++ b/arch/x86/include/asm/static_call.h
-@@ -37,4 +37,11 @@
- #define ARCH_DEFINE_STATIC_CALL_NULL_TRAMP(name)			\
- 	__ARCH_DEFINE_STATIC_CALL_TRAMP(name, "ret; nop; nop; nop; nop")
- 
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 220393d..cb226f7 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -5349,37 +5349,154 @@ EXPORT_STATIC_CALL(preempt_schedule_notrace);
+  *   preempt_schedule_notrace   <- preempt_schedule_notrace
+  *   irqentry_exit_cond_resched <- irqentry_exit_cond_resched
+  */
+-static int __init setup_preempt_mode(char *str)
 +
-+#define ARCH_ADD_TRAMP_KEY(name)					\
-+	asm(".pushsection .static_call_tramp_key, \"a\"		\n"	\
-+	    ".long " STATIC_CALL_TRAMP_STR(name) " - .		\n"	\
-+	    ".long " STATIC_CALL_KEY_STR(name) " - .		\n"	\
-+	    ".popsection					\n")
-+
- #endif /* _ASM_STATIC_CALL_H */
-diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
-index b2b3d81..b0871e2 100644
---- a/include/asm-generic/vmlinux.lds.h
-+++ b/include/asm-generic/vmlinux.lds.h
-@@ -393,7 +393,10 @@
- 	. = ALIGN(8);							\
- 	__start_static_call_sites = .;					\
- 	KEEP(*(.static_call_sites))					\
--	__stop_static_call_sites = .;
-+	__stop_static_call_sites = .;					\
-+	__start_static_call_tramp_key = .;				\
-+	KEEP(*(.static_call_tramp_key))					\
-+	__stop_static_call_tramp_key = .;
- 
- /*
-  * Allow architectures to handle ro_after_init data on their
-diff --git a/include/linux/static_call.h b/include/linux/static_call.h
-index d69dd8b..85ecc78 100644
---- a/include/linux/static_call.h
-+++ b/include/linux/static_call.h
-@@ -138,6 +138,12 @@ struct static_call_key {
- 	};
- };
- 
-+/* For finding the key associated with a trampoline */
-+struct static_call_tramp_key {
-+	s32 tramp;
-+	s32 key;
++enum {
++	preempt_dynamic_none = 0,
++	preempt_dynamic_voluntary,
++	preempt_dynamic_full,
 +};
 +
- extern void __static_call_update(struct static_call_key *key, void *tramp, void *func);
- extern int static_call_mod_init(struct module *mod);
- extern int static_call_text_reserved(void *start, void *end);
-@@ -165,11 +171,18 @@ extern long __static_call_return0(void);
- #define EXPORT_STATIC_CALL(name)					\
- 	EXPORT_SYMBOL(STATIC_CALL_KEY(name));				\
- 	EXPORT_SYMBOL(STATIC_CALL_TRAMP(name))
--
- #define EXPORT_STATIC_CALL_GPL(name)					\
- 	EXPORT_SYMBOL_GPL(STATIC_CALL_KEY(name));			\
- 	EXPORT_SYMBOL_GPL(STATIC_CALL_TRAMP(name))
- 
-+/* Leave the key unexported, so modules can't change static call targets: */
-+#define EXPORT_STATIC_CALL_TRAMP(name)					\
-+	EXPORT_SYMBOL(STATIC_CALL_TRAMP(name));				\
-+	ARCH_ADD_TRAMP_KEY(name)
-+#define EXPORT_STATIC_CALL_TRAMP_GPL(name)				\
-+	EXPORT_SYMBOL_GPL(STATIC_CALL_TRAMP(name));			\
-+	ARCH_ADD_TRAMP_KEY(name)
++static int preempt_dynamic_mode = preempt_dynamic_full;
 +
- #elif defined(CONFIG_HAVE_STATIC_CALL)
- 
- static inline int static_call_init(void) { return 0; }
-@@ -216,11 +229,16 @@ static inline long __static_call_return0(void)
- #define EXPORT_STATIC_CALL(name)					\
- 	EXPORT_SYMBOL(STATIC_CALL_KEY(name));				\
- 	EXPORT_SYMBOL(STATIC_CALL_TRAMP(name))
--
- #define EXPORT_STATIC_CALL_GPL(name)					\
- 	EXPORT_SYMBOL_GPL(STATIC_CALL_KEY(name));			\
- 	EXPORT_SYMBOL_GPL(STATIC_CALL_TRAMP(name))
- 
-+/* Leave the key unexported, so modules can't change static call targets: */
-+#define EXPORT_STATIC_CALL_TRAMP(name)					\
-+	EXPORT_SYMBOL(STATIC_CALL_TRAMP(name))
-+#define EXPORT_STATIC_CALL_TRAMP_GPL(name)				\
-+	EXPORT_SYMBOL_GPL(STATIC_CALL_TRAMP(name))
++static int sched_dynamic_mode(const char *str)
+ {
+-	if (!strcmp(str, "none")) {
++	if (!strcmp(str, "none"))
++		return 0;
 +
- #else /* Generic implementation */
- 
- static inline int static_call_init(void) { return 0; }
-diff --git a/include/linux/static_call_types.h b/include/linux/static_call_types.h
-index 08f78b1..ae5662d 100644
---- a/include/linux/static_call_types.h
-+++ b/include/linux/static_call_types.h
-@@ -10,6 +10,7 @@
- #define STATIC_CALL_KEY_PREFIX_STR	__stringify(STATIC_CALL_KEY_PREFIX)
- #define STATIC_CALL_KEY_PREFIX_LEN	(sizeof(STATIC_CALL_KEY_PREFIX_STR) - 1)
- #define STATIC_CALL_KEY(name)		__PASTE(STATIC_CALL_KEY_PREFIX, name)
-+#define STATIC_CALL_KEY_STR(name)	__stringify(STATIC_CALL_KEY(name))
- 
- #define STATIC_CALL_TRAMP_PREFIX	__SCT__
- #define STATIC_CALL_TRAMP_PREFIX_STR	__stringify(STATIC_CALL_TRAMP_PREFIX)
-@@ -39,17 +40,39 @@ struct static_call_site {
- 
- #ifdef CONFIG_HAVE_STATIC_CALL
- 
-+#define __raw_static_call(name)	(&STATIC_CALL_TRAMP(name))
++	if (!strcmp(str, "voluntary"))
++		return 1;
 +
-+#ifdef CONFIG_HAVE_STATIC_CALL_INLINE
++	if (!strcmp(str, "full"))
++		return 2;
 +
- /*
-  * __ADDRESSABLE() is used to ensure the key symbol doesn't get stripped from
-  * the symbol table so that objtool can reference it when it generates the
-  * .static_call_sites section.
-  */
-+#define __STATIC_CALL_ADDRESSABLE(name) \
-+	__ADDRESSABLE(STATIC_CALL_KEY(name))
++	return -1;
++}
 +
- #define __static_call(name)						\
- ({									\
--	__ADDRESSABLE(STATIC_CALL_KEY(name));				\
--	&STATIC_CALL_TRAMP(name);					\
-+	__STATIC_CALL_ADDRESSABLE(name);				\
-+	__raw_static_call(name);					\
- })
- 
-+#else /* !CONFIG_HAVE_STATIC_CALL_INLINE */
-+
-+#define __STATIC_CALL_ADDRESSABLE(name)
-+#define __static_call(name)	__raw_static_call(name)
-+
-+#endif /* CONFIG_HAVE_STATIC_CALL_INLINE */
-+
-+#ifdef MODULE
-+#define __STATIC_CALL_MOD_ADDRESSABLE(name)
-+#define static_call_mod(name)	__raw_static_call(name)
-+#else
-+#define __STATIC_CALL_MOD_ADDRESSABLE(name) __STATIC_CALL_ADDRESSABLE(name)
-+#define static_call_mod(name)	__static_call(name)
-+#endif
-+
- #define static_call(name)	__static_call(name)
- 
- #else
-diff --git a/kernel/static_call.c b/kernel/static_call.c
-index 0bc11b5..6906c6e 100644
---- a/kernel/static_call.c
-+++ b/kernel/static_call.c
-@@ -12,6 +12,8 @@
- 
- extern struct static_call_site __start_static_call_sites[],
- 			       __stop_static_call_sites[];
-+extern struct static_call_tramp_key __start_static_call_tramp_key[],
-+				    __stop_static_call_tramp_key[];
- 
- static bool static_call_initialized;
- 
-@@ -323,10 +325,59 @@ static int __static_call_mod_text_reserved(void *start, void *end)
- 	return ret;
- }
- 
-+static unsigned long tramp_key_lookup(unsigned long addr)
++static void sched_dynamic_update(int mode)
 +{
-+	struct static_call_tramp_key *start = __start_static_call_tramp_key;
-+	struct static_call_tramp_key *stop = __stop_static_call_tramp_key;
-+	struct static_call_tramp_key *tramp_key;
++	/*
++	 * Avoid {NONE,VOLUNTARY} -> FULL transitions from ever ending up in
++	 * the ZERO state, which is invalid.
++	 */
++	static_call_update(cond_resched, __cond_resched);
++	static_call_update(might_resched, __cond_resched);
++	static_call_update(preempt_schedule, __preempt_schedule_func);
++	static_call_update(preempt_schedule_notrace, __preempt_schedule_notrace_func);
++	static_call_update(irqentry_exit_cond_resched, irqentry_exit_cond_resched);
 +
-+	for (tramp_key = start; tramp_key != stop; tramp_key++) {
-+		unsigned long tramp;
++	switch (mode) {
++	case preempt_dynamic_none:
+ 		static_call_update(cond_resched, __cond_resched);
+ 		static_call_update(might_resched, (typeof(&__cond_resched)) __static_call_return0);
+ 		static_call_update(preempt_schedule, (typeof(&preempt_schedule)) NULL);
+ 		static_call_update(preempt_schedule_notrace, (typeof(&preempt_schedule_notrace)) NULL);
+ 		static_call_update(irqentry_exit_cond_resched, (typeof(&irqentry_exit_cond_resched)) NULL);
+-		pr_info("Dynamic Preempt: %s\n", str);
+-	} else if (!strcmp(str, "voluntary")) {
++		pr_info("Dynamic Preempt: none\n");
++		break;
 +
-+		tramp = (long)tramp_key->tramp + (long)&tramp_key->tramp;
-+		if (tramp == addr)
-+			return (long)tramp_key->key + (long)&tramp_key->key;
++	case preempt_dynamic_voluntary:
+ 		static_call_update(cond_resched, __cond_resched);
+ 		static_call_update(might_resched, __cond_resched);
+ 		static_call_update(preempt_schedule, (typeof(&preempt_schedule)) NULL);
+ 		static_call_update(preempt_schedule_notrace, (typeof(&preempt_schedule_notrace)) NULL);
+ 		static_call_update(irqentry_exit_cond_resched, (typeof(&irqentry_exit_cond_resched)) NULL);
+-		pr_info("Dynamic Preempt: %s\n", str);
+-	} else if (!strcmp(str, "full")) {
++		pr_info("Dynamic Preempt: voluntary\n");
++		break;
++
++	case preempt_dynamic_full:
+ 		static_call_update(cond_resched, (typeof(&__cond_resched)) __static_call_return0);
+ 		static_call_update(might_resched, (typeof(&__cond_resched)) __static_call_return0);
+ 		static_call_update(preempt_schedule, __preempt_schedule_func);
+ 		static_call_update(preempt_schedule_notrace, __preempt_schedule_notrace_func);
+ 		static_call_update(irqentry_exit_cond_resched, irqentry_exit_cond_resched);
+-		pr_info("Dynamic Preempt: %s\n", str);
+-	} else {
+-		pr_warn("Dynamic Preempt: Unsupported preempt mode %s, default to full\n", str);
++		pr_info("Dynamic Preempt: full\n");
++		break;
 +	}
 +
++	preempt_dynamic_mode = mode;
++}
++
++static int __init setup_preempt_mode(char *str)
++{
++	int mode = sched_dynamic_mode(str);
++	if (mode < 0) {
++		pr_warn("Dynamic Preempt: unsupported mode: %s\n", str);
+ 		return 1;
+ 	}
++
++	sched_dynamic_update(mode);
+ 	return 0;
+ }
+ __setup("preempt=", setup_preempt_mode);
+ 
++#ifdef CONFIG_SCHED_DEBUG
++
++static ssize_t sched_dynamic_write(struct file *filp, const char __user *ubuf,
++				   size_t cnt, loff_t *ppos)
++{
++	char buf[16];
++	int mode;
++
++	if (cnt > 15)
++		cnt = 15;
++
++	if (copy_from_user(&buf, ubuf, cnt))
++		return -EFAULT;
++
++	buf[cnt] = 0;
++	mode = sched_dynamic_mode(strstrip(buf));
++	if (mode < 0)
++		return mode;
++
++	sched_dynamic_update(mode);
++
++	*ppos += cnt;
++
++	return cnt;
++}
++
++static int sched_dynamic_show(struct seq_file *m, void *v)
++{
++	static const char * preempt_modes[] = {
++		"none", "voluntary", "full"
++	};
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(preempt_modes); i++) {
++		if (preempt_dynamic_mode == i)
++			seq_puts(m, "(");
++		seq_puts(m, preempt_modes[i]);
++		if (preempt_dynamic_mode == i)
++			seq_puts(m, ")");
++
++		seq_puts(m, " ");
++	}
++
++	seq_puts(m, "\n");
 +	return 0;
 +}
 +
- static int static_call_add_module(struct module *mod)
- {
--	return __static_call_init(mod, mod->static_call_sites,
--				  mod->static_call_sites + mod->num_static_call_sites);
-+	struct static_call_site *start = mod->static_call_sites;
-+	struct static_call_site *stop = start + mod->num_static_call_sites;
-+	struct static_call_site *site;
++static int sched_dynamic_open(struct inode *inode, struct file *filp)
++{
++	return single_open(filp, sched_dynamic_show, NULL);
++}
 +
-+	for (site = start; site != stop; site++) {
-+		unsigned long addr = (unsigned long)static_call_key(site);
-+		unsigned long key;
++static const struct file_operations sched_dynamic_fops = {
++	.open		= sched_dynamic_open,
++	.write		= sched_dynamic_write,
++	.read		= seq_read,
++	.llseek		= seq_lseek,
++	.release	= single_release,
++};
 +
-+		/*
-+		 * Is the key is exported, 'addr' points to the key, which
-+		 * means modules are allowed to call static_call_update() on
-+		 * it.
-+		 *
-+		 * Otherwise, the key isn't exported, and 'addr' points to the
-+		 * trampoline so we need to lookup the key.
-+		 *
-+		 * We go through this dance to prevent crazy modules from
-+		 * abusing sensitive static calls.
-+		 */
-+		if (!kernel_text_address(addr))
-+			continue;
++static __init int sched_init_debug_dynamic(void)
++{
++	debugfs_create_file("sched_preempt", 0644, NULL, NULL, &sched_dynamic_fops);
++	return 0;
++}
++late_initcall(sched_init_debug_dynamic);
 +
-+		key = tramp_key_lookup(addr);
-+		if (!key) {
-+			pr_warn("Failed to fixup __raw_static_call() usage at: %ps\n",
-+				static_call_addr(site));
-+			return -EINVAL;
-+		}
-+
-+		site->key = (key - (long)&site->key) |
-+			    (site->key & STATIC_CALL_SITE_FLAGS);
-+	}
-+
-+	return __static_call_init(mod, start, stop);
- }
++#endif /* CONFIG_SCHED_DEBUG */
+ #endif /* CONFIG_PREEMPT_DYNAMIC */
  
- static void static_call_del_module(struct module *mod)
-diff --git a/tools/include/linux/static_call_types.h b/tools/include/linux/static_call_types.h
-index 08f78b1..ae5662d 100644
---- a/tools/include/linux/static_call_types.h
-+++ b/tools/include/linux/static_call_types.h
-@@ -10,6 +10,7 @@
- #define STATIC_CALL_KEY_PREFIX_STR	__stringify(STATIC_CALL_KEY_PREFIX)
- #define STATIC_CALL_KEY_PREFIX_LEN	(sizeof(STATIC_CALL_KEY_PREFIX_STR) - 1)
- #define STATIC_CALL_KEY(name)		__PASTE(STATIC_CALL_KEY_PREFIX, name)
-+#define STATIC_CALL_KEY_STR(name)	__stringify(STATIC_CALL_KEY(name))
- 
- #define STATIC_CALL_TRAMP_PREFIX	__SCT__
- #define STATIC_CALL_TRAMP_PREFIX_STR	__stringify(STATIC_CALL_TRAMP_PREFIX)
-@@ -39,17 +40,39 @@ struct static_call_site {
- 
- #ifdef CONFIG_HAVE_STATIC_CALL
- 
-+#define __raw_static_call(name)	(&STATIC_CALL_TRAMP(name))
-+
-+#ifdef CONFIG_HAVE_STATIC_CALL_INLINE
-+
- /*
-  * __ADDRESSABLE() is used to ensure the key symbol doesn't get stripped from
-  * the symbol table so that objtool can reference it when it generates the
-  * .static_call_sites section.
-  */
-+#define __STATIC_CALL_ADDRESSABLE(name) \
-+	__ADDRESSABLE(STATIC_CALL_KEY(name))
-+
- #define __static_call(name)						\
- ({									\
--	__ADDRESSABLE(STATIC_CALL_KEY(name));				\
--	&STATIC_CALL_TRAMP(name);					\
-+	__STATIC_CALL_ADDRESSABLE(name);				\
-+	__raw_static_call(name);					\
- })
- 
-+#else /* !CONFIG_HAVE_STATIC_CALL_INLINE */
-+
-+#define __STATIC_CALL_ADDRESSABLE(name)
-+#define __static_call(name)	__raw_static_call(name)
-+
-+#endif /* CONFIG_HAVE_STATIC_CALL_INLINE */
-+
-+#ifdef MODULE
-+#define __STATIC_CALL_MOD_ADDRESSABLE(name)
-+#define static_call_mod(name)	__raw_static_call(name)
-+#else
-+#define __STATIC_CALL_MOD_ADDRESSABLE(name) __STATIC_CALL_ADDRESSABLE(name)
-+#define static_call_mod(name)	__static_call(name)
-+#endif
-+
- #define static_call(name)	__static_call(name)
- 
- #else
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 5f8d3ee..7bd96d6 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -502,8 +502,21 @@ static int create_static_call_sections(struct objtool_file *file)
- 
- 		key_sym = find_symbol_by_name(file->elf, tmp);
- 		if (!key_sym) {
--			WARN("static_call: can't find static_call_key symbol: %s", tmp);
--			return -1;
-+			if (!module) {
-+				WARN("static_call: can't find static_call_key symbol: %s", tmp);
-+				return -1;
-+			}
-+
-+			/*
-+			 * For modules(), the key might not be exported, which
-+			 * means the module can make static calls but isn't
-+			 * allowed to change them.
-+			 *
-+			 * In that case we temporarily set the key to be the
-+			 * trampoline address.  This is fixed up in
-+			 * static_call_add_module().
-+			 */
-+			key_sym = insn->call_dest;
- 		}
- 		free(key_name);
  
