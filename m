@@ -2,55 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AFF0531668E
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 10 Feb 2021 13:25:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C72C4316691
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 10 Feb 2021 13:25:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231352AbhBJMZY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 10 Feb 2021 07:25:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42656 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231830AbhBJMXr (ORCPT
+        id S230028AbhBJMZ1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 10 Feb 2021 07:25:27 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:59366 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231828AbhBJMXs (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 10 Feb 2021 07:23:47 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D0E0C0613D6;
-        Wed, 10 Feb 2021 04:23:04 -0800 (PST)
-Date:   Wed, 10 Feb 2021 12:23:00 -0000
+        Wed, 10 Feb 2021 07:23:48 -0500
+Date:   Wed, 10 Feb 2021 12:23:01 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1612959781;
+        s=2020; t=1612959782;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=EPfb9Ak/7oZVp+rq0/MiGcyVN0w3IA2vrBMT+mr+7LE=;
-        b=cH5xWhihx+xTMmggtxQG1P8ru5JS/8tKEEfmrbi+hNRAH4RdFIcALOZDnPzolKTTwz2JGY
-        tyqFMwiso/zIqnb8xRqQgIU10BLdUtksgaKYxO8KYzEIyiBkIdBqZ+FnxojGZDL8eSUva+
-        JlA9sisS9qfMVoxdLFvpnWDxxHzTkRPBhFdzoBQwUze6f9drR1hUukYRdOBpzWpyDnQgEv
-        Z/Ke/c3ZNM5RfHtNXfRqZUTwvHX6H1VQSmh8DmCMbFcZoqzjwusgiCAxN7HYwpkHFiJg+f
-        J5o/qPdr0TW/2fOigaa03c9lrs8Y6TnlOzrQR+4Z9OqaAj4B+yFN/lbJh4JWmA==
+        bh=zQVL9DyeN/TePUg/Z4cAv4C7Yah//iWSAblU5bnN9+k=;
+        b=cP94gF+QcI+QkQdTn1quAHkYTXj/KK0Y8p2+Sv28VikBYYnVtU7bHK4Q7tLmuLlMtWx6St
+        FORXPLGtTvztK/UcWvjpijAH1DLitT5JghQIISSU806su1srfbJvS8syBgGGJDCddBXZl1
+        EnIuYMTV1ezAxkYH+IsIMH7qGZvUwjNsoNjh2YNiK5k6FCQ5Qk4Gic7c2DD0QY34AeoIYU
+        wmJD8XK1xN0VKLYteWpYEpAicLw8cq0KPDr3+Z98P8FNIudzCFFqvSOzqwqB47+rv1ZpGz
+        K+Z73Ld1+7ypH6MTJCqR2CC7TsBJgl+r7EY/S+qzDoCo+FgTGjAWMEKbMSQBjA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1612959781;
+        s=2020e; t=1612959782;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=EPfb9Ak/7oZVp+rq0/MiGcyVN0w3IA2vrBMT+mr+7LE=;
-        b=vtXS/KtRkB4q0EuYqKG9XiWcKGsf+4s5Lu0CzsjbRWwQ8xLXhxkDe0MLDHWpkYTJSfkUu+
-        9yf3jbIxRAMwhSBA==
+        bh=zQVL9DyeN/TePUg/Z4cAv4C7Yah//iWSAblU5bnN9+k=;
+        b=RAKbj200Z7qt0FgjITjdcpzQeu70Mdsv2UT/TKTkICT7m2MPdQCPRdH9jQmLAKtZ0x8MP2
+        2BHwNa2u18AarbCw==
 From:   "tip-bot2 for Juergen Gross" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/paravirt] x86/pv: Rework arch_local_irq_restore() to not use popf
-Cc:     Andy Lutomirski <luto@kernel.org>, Juergen Gross <jgross@suse.com>,
-        Borislav Petkov <bp@suse.de>, x86@kernel.org,
+Subject: [tip: x86/paravirt] x86/xen: Use specific Xen pv interrupt entry for DF
+Cc:     Juergen Gross <jgross@suse.com>, Borislav Petkov <bp@suse.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210120135555.32594-7-jgross@suse.com>
-References: <20210120135555.32594-7-jgross@suse.com>
+In-Reply-To: <20210120135555.32594-4-jgross@suse.com>
+References: <20210120135555.32594-4-jgross@suse.com>
 MIME-Version: 1.0
-Message-ID: <161295978073.23325.10689551911607038793.tip-bot2@tip-bot2>
+Message-ID: <161295978163.23325.10478028782418680739.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,283 +59,86 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/paravirt branch of tip:
 
-Commit-ID:     ab234a260b1f625b26cbefa93ca365b0ae66df33
-Gitweb:        https://git.kernel.org/tip/ab234a260b1f625b26cbefa93ca365b0ae66df33
+Commit-ID:     5b4c6d65019bff65757f61adbbad5e45a333b800
+Gitweb:        https://git.kernel.org/tip/5b4c6d65019bff65757f61adbbad5e45a333b800
 Author:        Juergen Gross <jgross@suse.com>
-AuthorDate:    Wed, 20 Jan 2021 14:55:46 +01:00
+AuthorDate:    Wed, 20 Jan 2021 14:55:43 +01:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Wed, 10 Feb 2021 12:36:45 +01:00
+CommitterDate: Wed, 10 Feb 2021 12:13:40 +01:00
 
-x86/pv: Rework arch_local_irq_restore() to not use popf
+x86/xen: Use specific Xen pv interrupt entry for DF
 
-POPF is a rather expensive operation, so don't use it for restoring
-irq flags. Instead, test whether interrupts are enabled in the flags
-parameter and enable interrupts via STI in that case.
+Xen PV guests don't use IST. For double fault interrupts, switch to
+the same model as NMI.
 
-This results in the restore_fl paravirt op to be no longer needed.
+Correct a typo in a comment while copying it.
 
-Suggested-by: Andy Lutomirski <luto@kernel.org>
 Signed-off-by: Juergen Gross <jgross@suse.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20210120135555.32594-7-jgross@suse.com
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20210120135555.32594-4-jgross@suse.com
 ---
- arch/x86/include/asm/irqflags.h       | 20 +++++--------------
- arch/x86/include/asm/paravirt.h       |  5 +-----
- arch/x86/include/asm/paravirt_types.h |  7 ++-----
- arch/x86/kernel/irqflags.S            | 11 +----------
- arch/x86/kernel/paravirt.c            |  1 +-
- arch/x86/kernel/paravirt_patch.c      |  3 +---
- arch/x86/xen/enlighten_pv.c           |  2 +--
- arch/x86/xen/irq.c                    | 23 +---------------------
- arch/x86/xen/xen-asm.S                | 28 +--------------------------
- arch/x86/xen/xen-ops.h                |  1 +-
- 10 files changed, 8 insertions(+), 93 deletions(-)
+ arch/x86/include/asm/idtentry.h |  3 +++
+ arch/x86/xen/enlighten_pv.c     | 10 ++++++++--
+ arch/x86/xen/xen-asm.S          |  2 +-
+ 3 files changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/include/asm/irqflags.h b/arch/x86/include/asm/irqflags.h
-index e585a47..144d70e 100644
---- a/arch/x86/include/asm/irqflags.h
-+++ b/arch/x86/include/asm/irqflags.h
-@@ -35,15 +35,6 @@ extern __always_inline unsigned long native_save_fl(void)
- 	return flags;
- }
+diff --git a/arch/x86/include/asm/idtentry.h b/arch/x86/include/asm/idtentry.h
+index 616909e..41e2e2e 100644
+--- a/arch/x86/include/asm/idtentry.h
++++ b/arch/x86/include/asm/idtentry.h
+@@ -608,6 +608,9 @@ DECLARE_IDTENTRY_RAW(X86_TRAP_DB,	xenpv_exc_debug);
  
--extern inline void native_restore_fl(unsigned long flags);
--extern inline void native_restore_fl(unsigned long flags)
--{
--	asm volatile("push %0 ; popf"
--		     : /* no output */
--		     :"g" (flags)
--		     :"memory", "cc");
--}
--
- static __always_inline void native_irq_disable(void)
- {
- 	asm volatile("cli": : :"memory");
-@@ -79,11 +70,6 @@ static __always_inline unsigned long arch_local_save_flags(void)
- 	return native_save_fl();
- }
+ /* #DF */
+ DECLARE_IDTENTRY_DF(X86_TRAP_DF,	exc_double_fault);
++#ifdef CONFIG_XEN_PV
++DECLARE_IDTENTRY_RAW_ERRORCODE(X86_TRAP_DF,	xenpv_exc_double_fault);
++#endif
  
--static __always_inline void arch_local_irq_restore(unsigned long flags)
--{
--	native_restore_fl(flags);
--}
--
- static __always_inline void arch_local_irq_disable(void)
- {
- 	native_irq_disable();
-@@ -152,6 +138,12 @@ static __always_inline int arch_irqs_disabled(void)
- 
- 	return arch_irqs_disabled_flags(flags);
- }
-+
-+static __always_inline void arch_local_irq_restore(unsigned long flags)
-+{
-+	if (!arch_irqs_disabled_flags(flags))
-+		arch_local_irq_enable();
-+}
- #else
- #ifdef CONFIG_X86_64
- #ifdef CONFIG_XEN_PV
-diff --git a/arch/x86/include/asm/paravirt.h b/arch/x86/include/asm/paravirt.h
-index dd43b11..4abf110 100644
---- a/arch/x86/include/asm/paravirt.h
-+++ b/arch/x86/include/asm/paravirt.h
-@@ -648,11 +648,6 @@ static inline notrace unsigned long arch_local_save_flags(void)
- 	return PVOP_CALLEE0(unsigned long, irq.save_fl);
- }
- 
--static inline notrace void arch_local_irq_restore(unsigned long f)
--{
--	PVOP_VCALLEE1(irq.restore_fl, f);
--}
--
- static inline notrace void arch_local_irq_disable(void)
- {
- 	PVOP_VCALLEE0(irq.irq_disable);
-diff --git a/arch/x86/include/asm/paravirt_types.h b/arch/x86/include/asm/paravirt_types.h
-index 0169365..de87087 100644
---- a/arch/x86/include/asm/paravirt_types.h
-+++ b/arch/x86/include/asm/paravirt_types.h
-@@ -168,16 +168,13 @@ struct pv_cpu_ops {
- struct pv_irq_ops {
- #ifdef CONFIG_PARAVIRT_XXL
- 	/*
--	 * Get/set interrupt state.  save_fl and restore_fl are only
--	 * expected to use X86_EFLAGS_IF; all other bits
--	 * returned from save_fl are undefined, and may be ignored by
--	 * restore_fl.
-+	 * Get/set interrupt state.  save_fl is expected to use X86_EFLAGS_IF;
-+	 * all other bits returned from save_fl are undefined.
- 	 *
- 	 * NOTE: These functions callers expect the callee to preserve
- 	 * more registers than the standard C calling convention.
- 	 */
- 	struct paravirt_callee_save save_fl;
--	struct paravirt_callee_save restore_fl;
- 	struct paravirt_callee_save irq_disable;
- 	struct paravirt_callee_save irq_enable;
- 
-diff --git a/arch/x86/kernel/irqflags.S b/arch/x86/kernel/irqflags.S
-index 0db0375..8ef3506 100644
---- a/arch/x86/kernel/irqflags.S
-+++ b/arch/x86/kernel/irqflags.S
-@@ -13,14 +13,3 @@ SYM_FUNC_START(native_save_fl)
- 	ret
- SYM_FUNC_END(native_save_fl)
- EXPORT_SYMBOL(native_save_fl)
--
--/*
-- * void native_restore_fl(unsigned long flags)
-- * %eax/%rdi: flags
-- */
--SYM_FUNC_START(native_restore_fl)
--	push %_ASM_ARG1
--	popf
--	ret
--SYM_FUNC_END(native_restore_fl)
--EXPORT_SYMBOL(native_restore_fl)
-diff --git a/arch/x86/kernel/paravirt.c b/arch/x86/kernel/paravirt.c
-index 18560b7..c60222a 100644
---- a/arch/x86/kernel/paravirt.c
-+++ b/arch/x86/kernel/paravirt.c
-@@ -320,7 +320,6 @@ struct paravirt_patch_template pv_ops = {
- 
- 	/* Irq ops. */
- 	.irq.save_fl		= __PV_IS_CALLEE_SAVE(native_save_fl),
--	.irq.restore_fl		= __PV_IS_CALLEE_SAVE(native_restore_fl),
- 	.irq.irq_disable	= __PV_IS_CALLEE_SAVE(native_irq_disable),
- 	.irq.irq_enable		= __PV_IS_CALLEE_SAVE(native_irq_enable),
- 	.irq.safe_halt		= native_safe_halt,
-diff --git a/arch/x86/kernel/paravirt_patch.c b/arch/x86/kernel/paravirt_patch.c
-index 2fada2c..abd27ec 100644
---- a/arch/x86/kernel/paravirt_patch.c
-+++ b/arch/x86/kernel/paravirt_patch.c
-@@ -25,7 +25,6 @@ struct patch_xxl {
- 	const unsigned char	mmu_read_cr2[3];
- 	const unsigned char	mmu_read_cr3[3];
- 	const unsigned char	mmu_write_cr3[3];
--	const unsigned char	irq_restore_fl[2];
- 	const unsigned char	cpu_wbinvd[2];
- 	const unsigned char	mov64[3];
- };
-@@ -37,7 +36,6 @@ static const struct patch_xxl patch_data_xxl = {
- 	.mmu_read_cr2		= { 0x0f, 0x20, 0xd0 },	// mov %cr2, %[re]ax
- 	.mmu_read_cr3		= { 0x0f, 0x20, 0xd8 },	// mov %cr3, %[re]ax
- 	.mmu_write_cr3		= { 0x0f, 0x22, 0xdf },	// mov %rdi, %cr3
--	.irq_restore_fl		= { 0x57, 0x9d },	// push %rdi; popfq
- 	.cpu_wbinvd		= { 0x0f, 0x09 },	// wbinvd
- 	.mov64			= { 0x48, 0x89, 0xf8 },	// mov %rdi, %rax
- };
-@@ -71,7 +69,6 @@ unsigned int native_patch(u8 type, void *insn_buff, unsigned long addr,
- 	switch (type) {
- 
- #ifdef CONFIG_PARAVIRT_XXL
--	PATCH_CASE(irq, restore_fl, xxl, insn_buff, len);
- 	PATCH_CASE(irq, save_fl, xxl, insn_buff, len);
- 	PATCH_CASE(irq, irq_enable, xxl, insn_buff, len);
- 	PATCH_CASE(irq, irq_disable, xxl, insn_buff, len);
+ /* #VC */
+ #ifdef CONFIG_AMD_MEM_ENCRYPT
 diff --git a/arch/x86/xen/enlighten_pv.c b/arch/x86/xen/enlighten_pv.c
-index 6abf3f2..dc0a337 100644
+index 9db1d31..1fec2ee 100644
 --- a/arch/x86/xen/enlighten_pv.c
 +++ b/arch/x86/xen/enlighten_pv.c
-@@ -1035,8 +1035,6 @@ void __init xen_setup_vcpu_info_placement(void)
- 	 */
- 	if (xen_have_vcpu_info_placement) {
- 		pv_ops.irq.save_fl = __PV_IS_CALLEE_SAVE(xen_save_fl_direct);
--		pv_ops.irq.restore_fl =
--			__PV_IS_CALLEE_SAVE(xen_restore_fl_direct);
- 		pv_ops.irq.irq_disable =
- 			__PV_IS_CALLEE_SAVE(xen_irq_disable_direct);
- 		pv_ops.irq.irq_enable =
-diff --git a/arch/x86/xen/irq.c b/arch/x86/xen/irq.c
-index 850c93f..dfa091d 100644
---- a/arch/x86/xen/irq.c
-+++ b/arch/x86/xen/irq.c
-@@ -42,28 +42,6 @@ asmlinkage __visible unsigned long xen_save_fl(void)
- }
- PV_CALLEE_SAVE_REGS_THUNK(xen_save_fl);
+@@ -567,10 +567,16 @@ void noist_exc_debug(struct pt_regs *regs);
  
--__visible void xen_restore_fl(unsigned long flags)
--{
--	struct vcpu_info *vcpu;
--
--	/* convert from IF type flag */
--	flags = !(flags & X86_EFLAGS_IF);
--
--	/* See xen_irq_enable() for why preemption must be disabled. */
--	preempt_disable();
--	vcpu = this_cpu_read(xen_vcpu);
--	vcpu->evtchn_upcall_mask = flags;
--
--	if (flags == 0) {
--		barrier(); /* unmask then check (avoid races) */
--		if (unlikely(vcpu->evtchn_upcall_pending))
--			xen_force_evtchn_callback();
--		preempt_enable();
--	} else
--		preempt_enable_no_resched();
--}
--PV_CALLEE_SAVE_REGS_THUNK(xen_restore_fl);
--
- asmlinkage __visible void xen_irq_disable(void)
+ DEFINE_IDTENTRY_RAW(xenpv_exc_nmi)
  {
- 	/* There's a one instruction preempt window here.  We need to
-@@ -118,7 +96,6 @@ static void xen_halt(void)
+-	/* On Xen PV, NMI doesn't use IST.  The C part is the sane as native. */
++	/* On Xen PV, NMI doesn't use IST.  The C part is the same as native. */
+ 	exc_nmi(regs);
+ }
  
- static const struct pv_irq_ops xen_irq_ops __initconst = {
- 	.save_fl = PV_CALLEE_SAVE(xen_save_fl),
--	.restore_fl = PV_CALLEE_SAVE(xen_restore_fl),
- 	.irq_disable = PV_CALLEE_SAVE(xen_irq_disable),
- 	.irq_enable = PV_CALLEE_SAVE(xen_irq_enable),
++DEFINE_IDTENTRY_RAW_ERRORCODE(xenpv_exc_double_fault)
++{
++	/* On Xen PV, DF doesn't use IST.  The C part is the same as native. */
++	exc_double_fault(regs, error_code);
++}
++
+ DEFINE_IDTENTRY_RAW(xenpv_exc_debug)
+ {
+ 	/*
+@@ -622,7 +628,7 @@ struct trap_array_entry {
  
+ static struct trap_array_entry trap_array[] = {
+ 	TRAP_ENTRY_REDIR(exc_debug,			true  ),
+-	TRAP_ENTRY(exc_double_fault,			true  ),
++	TRAP_ENTRY_REDIR(exc_double_fault,		true  ),
+ #ifdef CONFIG_X86_MCE
+ 	TRAP_ENTRY_REDIR(exc_machine_check,		true  ),
+ #endif
 diff --git a/arch/x86/xen/xen-asm.S b/arch/x86/xen/xen-asm.S
-index 1d738c5..02f3134 100644
+index cd330ce..eac9dac 100644
 --- a/arch/x86/xen/xen-asm.S
 +++ b/arch/x86/xen/xen-asm.S
-@@ -72,34 +72,6 @@ SYM_FUNC_START(xen_save_fl_direct)
- 	ret
- SYM_FUNC_END(xen_save_fl_direct)
- 
--
--/*
-- * In principle the caller should be passing us a value return from
-- * xen_save_fl_direct, but for robustness sake we test only the
-- * X86_EFLAGS_IF flag rather than the whole byte. After setting the
-- * interrupt mask state, it checks for unmasked pending events and
-- * enters the hypervisor to get them delivered if so.
-- */
--SYM_FUNC_START(xen_restore_fl_direct)
--	FRAME_BEGIN
--	testw $X86_EFLAGS_IF, %di
--	setz PER_CPU_VAR(xen_vcpu_info) + XEN_vcpu_info_mask
--	/*
--	 * Preempt here doesn't matter because that will deal with any
--	 * pending interrupts.  The pending check may end up being run
--	 * on the wrong CPU, but that doesn't hurt.
--	 */
--
--	/* check for unmasked and pending */
--	cmpw $0x0001, PER_CPU_VAR(xen_vcpu_info) + XEN_vcpu_info_pending
--	jnz 1f
--	call check_events
--1:
--	FRAME_END
--	ret
--SYM_FUNC_END(xen_restore_fl_direct)
--
--
- /*
-  * Force an event check by making a hypercall, but preserve regs
-  * before making the call.
-diff --git a/arch/x86/xen/xen-ops.h b/arch/x86/xen/xen-ops.h
-index b2fd80a..8d7ec49 100644
---- a/arch/x86/xen/xen-ops.h
-+++ b/arch/x86/xen/xen-ops.h
-@@ -131,7 +131,6 @@ static inline void __init xen_efi_init(struct boot_params *boot_params)
- __visible void xen_irq_enable_direct(void);
- __visible void xen_irq_disable_direct(void);
- __visible unsigned long xen_save_fl_direct(void);
--__visible void xen_restore_fl_direct(unsigned long);
- 
- __visible unsigned long xen_read_cr2(void);
- __visible unsigned long xen_read_cr2_direct(void);
+@@ -161,7 +161,7 @@ xen_pv_trap asm_exc_overflow
+ xen_pv_trap asm_exc_bounds
+ xen_pv_trap asm_exc_invalid_op
+ xen_pv_trap asm_exc_device_not_available
+-xen_pv_trap asm_exc_double_fault
++xen_pv_trap asm_xenpv_exc_double_fault
+ xen_pv_trap asm_exc_coproc_segment_overrun
+ xen_pv_trap asm_exc_invalid_tss
+ xen_pv_trap asm_exc_segment_not_present
