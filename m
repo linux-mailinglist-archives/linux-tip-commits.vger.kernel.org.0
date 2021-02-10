@@ -2,54 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A0FB316D36
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 10 Feb 2021 18:48:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 28067316D40
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 10 Feb 2021 18:48:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232929AbhBJRsD (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 10 Feb 2021 12:48:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55956 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233238AbhBJRra (ORCPT
+        id S233206AbhBJRsW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 10 Feb 2021 12:48:22 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:33188 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233248AbhBJRrb (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 10 Feb 2021 12:47:30 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0D7CC0613D6;
-        Wed, 10 Feb 2021 09:46:47 -0800 (PST)
-Date:   Wed, 10 Feb 2021 17:45:55 -0000
+        Wed, 10 Feb 2021 12:47:31 -0500
+Date:   Wed, 10 Feb 2021 17:45:56 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1612979156;
+        s=2020; t=1612979157;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Zp08V0qMUz4l32cBV0XmFNs3wbjGfVf7sl8cfA8pw5c=;
-        b=f4798bnDpiKZcTcxjvPFVs+WBIfbzevH6kFRjXg0mn3V59zYcYiVglvIbHWIYLMVATBmoX
-        smWiR92e/xjJ9+jdL8SJ86f278zqBcVFY6b8Lw8XwBi2KL7YsjmjsTRP0HM9/5wATp5uPA
-        FbQJxZPNWMMElPdtqb07U31TM33PBAbzfetbNgCCPtwFQ2Ydytsxmms1hxHaPndy7iNoLy
-        /h/idVylTDL5fwlNfCydEpXwwiHWefLYL3iJMLZSxo57davky+tkrhQ3tf6v5okCekh+va
-        HwRflneq57sMLOQ6YEb3ok9tzqfi0rVLyGGaEqiBNmmv2kXqyr+3hiKR/DADMQ==
+        bh=newQk4QZWZs5sOpaNHe8ulmPWEeiE+1KGZAGfvZ62Og=;
+        b=4nF+wdQhQmAIJZ0v/9ZC1UVi/Yoh0vwpyPI4U6v8aj/Ez0xnR7TBNIr1ycXjTuw83wEVyv
+        wFnEbKJ3F6HQll5v6OLQHkrGWVFL8Kj0mO0cZRmVdWFoxjOfMJoCoBAf1XkpKVmK4cD239
+        pi8H0DpjWfqp48DpSB4tLv0+NGct4bSUUf6YOXpSEHAMkgldRwFyCV5wmIhT3eolipiJBd
+        dWVqg5aRKFWcGDk6N1WOwF1u2xKGLWsQdNXaOQ5DkzM6lwMZAn5WBwnwFCeXdDIySUb+EO
+        gV9WpOpn/YqXQobxDKmVRR+w641kayWEPwMi0esxH/8pFxEnjipK+umPze+gDw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1612979156;
+        s=2020e; t=1612979157;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Zp08V0qMUz4l32cBV0XmFNs3wbjGfVf7sl8cfA8pw5c=;
-        b=QpnQ0bbwnsDXDyp4mwRn8fMRdifdAD7IpipWZTkLgWpeGQ9QoCtan/XgdCkvdK7Mt9b7l5
-        hHvKhkTFVc+FgKCA==
+        bh=newQk4QZWZs5sOpaNHe8ulmPWEeiE+1KGZAGfvZ62Og=;
+        b=1sDk4fV5kevx94s4OpMGHega9r00RHH+x6W/0pMcPkJwomRWS7J1+w5JEPlGTLicAJO2NM
+        dI5dUxDjjKvvDvDQ==
 From:   "tip-bot2 for Andy Lutomirski" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/mm] x86/fault: Correct a few user vs kernel checks wrt WRUSS
+Subject: [tip: x86/mm] x86/fault: Fix AMD erratum #91 errata fixup for user code
 Cc:     Andy Lutomirski <luto@kernel.org>, Borislav Petkov <bp@suse.de>,
+        Christoph Hellwig <hch@lst.de>, stable@vger.kernel.org,
         x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <a7b7bcea730bd4069e6b7e629236bb2cf526c2fb.1612924255.git.luto@kernel.org>
-References: <a7b7bcea730bd4069e6b7e629236bb2cf526c2fb.1612924255.git.luto@kernel.org>
+In-Reply-To: <b91f7f92f3367d2d3a88eec3b09c6aab1b2dc8ef.1612924255.git.luto@kernel.org>
+References: <b91f7f92f3367d2d3a88eec3b09c6aab1b2dc8ef.1612924255.git.luto@kernel.org>
 MIME-Version: 1.0
-Message-ID: <161297915574.23325.6956352117154470598.tip-bot2@tip-bot2>
+Message-ID: <161297915681.23325.3596910072184499475.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,82 +58,99 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/mm branch of tip:
 
-Commit-ID:     56e62cd28aaae2fcbec8af67b05843c47c6da170
-Gitweb:        https://git.kernel.org/tip/56e62cd28aaae2fcbec8af67b05843c47c6da170
+Commit-ID:     35f1c89b0cce247bf0213df243ed902989b1dcda
+Gitweb:        https://git.kernel.org/tip/35f1c89b0cce247bf0213df243ed902989b1dcda
 Author:        Andy Lutomirski <luto@kernel.org>
-AuthorDate:    Tue, 09 Feb 2021 18:33:38 -08:00
+AuthorDate:    Tue, 09 Feb 2021 18:33:33 -08:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Wed, 10 Feb 2021 14:13:32 +01:00
+CommitterDate: Wed, 10 Feb 2021 13:11:41 +01:00
 
-x86/fault: Correct a few user vs kernel checks wrt WRUSS
+x86/fault: Fix AMD erratum #91 errata fixup for user code
 
-In general, page fault errors for WRUSS should be just like get_user(),
-etc.  Fix three bugs in this area:
+The recent rework of probe_kernel_address() and its conversion to
+get_kernel_nofault() inadvertently broke is_prefetch(). Before this
+change, probe_kernel_address() was used as a sloppy "read user or
+kernel memory" helper, but it doesn't do that any more. The new
+get_kernel_nofault() reads *kernel* memory only, which completely broke
+is_prefetch() for user access.
 
-There is a comment that says that, if the kernel can't handle a page fault
-on a user address due to OOM, the OOM-kill-and-retry logic would be
-skipped.  The code checked kernel *privilege*, not kernel mode, so it
-missed WRUSS.  This means that the kernel would malfunction if it got OOM
-on a WRUSS fault -- this would be a kernel-mode, user-privilege fault, and
-the OOM killer would be invoked and the handler would retry the faulting
-instruction.
+Adjust the code to the correct accessor based on access mode. The
+manual address bounds check is no longer necessary, since the accessor
+helpers (get_user() / get_kernel_nofault()) do the right thing all by
+themselves. As a bonus, by using the correct accessor, the open-coded
+address bounds check is not needed anymore.
 
-A failed user access from kernel while a fatal signal is pending should
-fail even if the instruction in question was WRUSS.
+ [ bp: Massage commit message. ]
 
-do_sigbus() should not send SIGBUS for WRUSS -- it should handle it like
-any other kernel mode failure.
-
+Fixes: eab0c6089b68 ("maccess: unify the probe kernel arch hooks")
 Signed-off-by: Andy Lutomirski <luto@kernel.org>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/a7b7bcea730bd4069e6b7e629236bb2cf526c2fb.1612924255.git.luto@kernel.org
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Cc: stable@vger.kernel.org
+Link: https://lkml.kernel.org/r/b91f7f92f3367d2d3a88eec3b09c6aab1b2dc8ef.1612924255.git.luto@kernel.org
 ---
- arch/x86/mm/fault.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ arch/x86/mm/fault.c | 27 +++++++++++++++++----------
+ 1 file changed, 17 insertions(+), 10 deletions(-)
 
 diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
-index 013910b..b110484 100644
+index f1f1b5a..441c3e9 100644
 --- a/arch/x86/mm/fault.c
 +++ b/arch/x86/mm/fault.c
-@@ -945,7 +945,7 @@ do_sigbus(struct pt_regs *regs, unsigned long error_code, unsigned long address,
- 	  vm_fault_t fault)
- {
- 	/* Kernel mode? Handle exceptions or die: */
--	if (!(error_code & X86_PF_USER)) {
-+	if (!user_mode(regs)) {
- 		no_context(regs, error_code, address, SIGBUS, BUS_ADRERR);
- 		return;
+@@ -54,7 +54,7 @@ kmmio_fault(struct pt_regs *regs, unsigned long addr)
+  * 32-bit mode:
+  *
+  *   Sometimes AMD Athlon/Opteron CPUs report invalid exceptions on prefetch.
+- *   Check that here and ignore it.
++ *   Check that here and ignore it.  This is AMD erratum #91.
+  *
+  * 64-bit mode:
+  *
+@@ -83,11 +83,7 @@ check_prefetch_opcode(struct pt_regs *regs, unsigned char *instr,
+ #ifdef CONFIG_X86_64
+ 	case 0x40:
+ 		/*
+-		 * In AMD64 long mode 0x40..0x4F are valid REX prefixes
+-		 * Need to figure out under what instruction mode the
+-		 * instruction was issued. Could check the LDT for lm,
+-		 * but for now it's good enough to assume that long
+-		 * mode only uses well known segments or kernel.
++		 * In 64-bit mode 0x40..0x4F are valid REX prefixes
+ 		 */
+ 		return (!user_mode(regs) || user_64bit_mode(regs));
+ #endif
+@@ -127,20 +123,31 @@ is_prefetch(struct pt_regs *regs, unsigned long error_code, unsigned long addr)
+ 	instr = (void *)convert_ip_to_linear(current, regs);
+ 	max_instr = instr + 15;
+ 
+-	if (user_mode(regs) && instr >= (unsigned char *)TASK_SIZE_MAX)
+-		return 0;
++	/*
++	 * This code has historically always bailed out if IP points to a
++	 * not-present page (e.g. due to a race).  No one has ever
++	 * complained about this.
++	 */
++	pagefault_disable();
+ 
+ 	while (instr < max_instr) {
+ 		unsigned char opcode;
+ 
+-		if (get_kernel_nofault(opcode, instr))
+-			break;
++		if (user_mode(regs)) {
++			if (get_user(opcode, instr))
++				break;
++		} else {
++			if (get_kernel_nofault(opcode, instr))
++				break;
++		}
+ 
+ 		instr++;
+ 
+ 		if (!check_prefetch_opcode(regs, instr, opcode, &prefetch))
+ 			break;
  	}
-@@ -1217,7 +1217,14 @@ do_kern_addr_fault(struct pt_regs *regs, unsigned long hw_error_code,
++
++	pagefault_enable();
+ 	return prefetch;
  }
- NOKPROBE_SYMBOL(do_kern_addr_fault);
  
--/* Handle faults in the user portion of the address space */
-+/*
-+ * Handle faults in the user portion of the address space.  Nothing in here
-+ * should check X86_PF_USER without a specific justification: for almost
-+ * all purposes, we should treat a normal kernel access to user memory
-+ * (e.g. get_user(), put_user(), etc.) the same as the WRUSS instruction.
-+ * The one exception is AC flag handling, which is, per the x86
-+ * architecture, special for WRUSS.
-+ */
- static inline
- void do_user_addr_fault(struct pt_regs *regs,
- 			unsigned long error_code,
-@@ -1406,14 +1413,14 @@ good_area:
- 	if (likely(!(fault & VM_FAULT_ERROR)))
- 		return;
- 
--	if (fatal_signal_pending(current) && !(error_code & X86_PF_USER)) {
-+	if (fatal_signal_pending(current) && !user_mode(regs)) {
- 		no_context(regs, error_code, address, 0, 0);
- 		return;
- 	}
- 
- 	if (fault & VM_FAULT_OOM) {
- 		/* Kernel mode? Handle exceptions or die: */
--		if (!(error_code & X86_PF_USER)) {
-+		if (!user_mode(regs)) {
- 			no_context(regs, error_code, address,
- 				   SIGSEGV, SEGV_MAPERR);
- 			return;
