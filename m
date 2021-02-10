@@ -2,54 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9073231688C
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 10 Feb 2021 15:00:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A0C5C316891
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 10 Feb 2021 15:00:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231753AbhBJOAY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 10 Feb 2021 09:00:24 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:60182 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231419AbhBJOAO (ORCPT
+        id S231634AbhBJOAa (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 10 Feb 2021 09:00:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35244 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231754AbhBJOAZ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 10 Feb 2021 09:00:14 -0500
+        Wed, 10 Feb 2021 09:00:25 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E819C06178A;
+        Wed, 10 Feb 2021 05:59:32 -0800 (PST)
 Date:   Wed, 10 Feb 2021 13:59:30 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1612965571;
+        s=2020; t=1612965570;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=5twxcMTESUJy4VsUJZl6DxaJC26vQah7lRxd18c0y4U=;
-        b=w6N3urLKu9UZMLqxyN7q7nQ50Qi8AA0LSMFtHyDNO+nCEpwfyE4brNF+gt6BRqOVI/7Wfn
-        d5WqlVzcsvdeiAGFWZ7LUcWtlQUkyQvBpu41HJMPlk29cx/+s4JBPJXi4agg4iBntketvw
-        SFf5Oi/y4cbgL7vpcc29H79uiI6qiM0stIVl5KFG1ArJdW1+7k3zomRxABolFZnigymEX/
-        3Su53p7r8Ah/cajfVRK6W7GuS66h3bD+cufT88QD5wp7T0Eq/SliuCzaDydbBZQsH8TYXS
-        JS4uMNn11F0qNH2m7plT2TrfcxoIkKQfItHdgl68ZM4DAgQvKHFsxUZ4O0wI+Q==
+        bh=hX916SXnRhDn+Z+tHpMlZ/5GKLNDWSrhS4/UgmLwAww=;
+        b=K4D5JQJzcquO1TA3JuJifrj304Jlk3GTSxmS8CQmGJBTTBUbDTqQ4YecUZZD8wKIGzPEvT
+        f29mNKbE8VnpPW8PD7iO+HBG46Z3mJuzHuWliGr4wzpZOG9VBibRs2wT2mFQlWIG30k94R
+        AgxasldI0j1mxpM2Lwalr/VQOhcISIlYpcG7KK21VW5m20o9qK0G5pXfQsFTCtVqdbnLiX
+        k9UG9kfmtCUWL8ISNDrSky0V3wswCfQ5xVrzAsmJvBn5Y6FN6GKjisi/P+wJXfbqKYAQWB
+        9ZDXznwQ9YMGQI2hitT0qGTs8Y7C/f88JsDT4zGsgjxnKAisPqZpU5mcsxMIUQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1612965571;
+        s=2020e; t=1612965570;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=5twxcMTESUJy4VsUJZl6DxaJC26vQah7lRxd18c0y4U=;
-        b=CY2XDSbuZjPdjzJfW1lJXi4H6LdCA4VerYFoKSfJlCBjAC/Lcsk2DirVQL5tSJzQQJwDA+
-        LftQAiXzKPEDUnBA==
-From:   "tip-bot2 for Jim Mattson" <tip-bot2@linutronix.de>
+        bh=hX916SXnRhDn+Z+tHpMlZ/5GKLNDWSrhS4/UgmLwAww=;
+        b=ehMotstMOnJwWnSwZbVSZjvQFSs5bnuq5BIes8UH1sEcafVnD5fiHRz3bQvlQibSqL/GnX
+        8U9BRtTXXugZHeAQ==
+From:   "tip-bot2 for Zhang Rui" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/x86/kvm: Add Cascade Lake Xeon steppings to
- isolation_ucodes[]
-Cc:     Jim Mattson <jmattson@google.com>,
+Subject: [tip: perf/core] perf/x86/rapl: Only check lower 32bits for RAPL
+ energy counters
+Cc:     Zhang Rui <rui.zhang@intel.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Andi Kleen <ak@linux.intel.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210205191324.2889006-1-jmattson@google.com>
-References: <20210205191324.2889006-1-jmattson@google.com>
+In-Reply-To: <20210204161816.12649-2-rui.zhang@intel.com>
+References: <20210204161816.12649-2-rui.zhang@intel.com>
 MIME-Version: 1.0
-Message-ID: <161296557060.23325.2852849746600741313.tip-bot2@tip-bot2>
+Message-ID: <161296557018.23325.4865146815939567306.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,44 +63,56 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     b3c3361fe325074d4144c29d46daae4fc5a268d5
-Gitweb:        https://git.kernel.org/tip/b3c3361fe325074d4144c29d46daae4fc5a268d5
-Author:        Jim Mattson <jmattson@google.com>
-AuthorDate:    Fri, 05 Feb 2021 11:13:24 -08:00
+Commit-ID:     b6f78d3fba7f605f673185d7292d84af7576fdc1
+Gitweb:        https://git.kernel.org/tip/b6f78d3fba7f605f673185d7292d84af7576fdc1
+Author:        Zhang Rui <rui.zhang@intel.com>
+AuthorDate:    Fri, 05 Feb 2021 00:18:15 +08:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 10 Feb 2021 14:44:54 +01:00
+CommitterDate: Wed, 10 Feb 2021 14:44:55 +01:00
 
-perf/x86/kvm: Add Cascade Lake Xeon steppings to isolation_ucodes[]
+perf/x86/rapl: Only check lower 32bits for RAPL energy counters
 
-Cascade Lake Xeon parts have the same model number as Skylake Xeon
-parts, so they are tagged with the intel_pebs_isolation
-quirk. However, as with Skylake Xeon H0 stepping parts, the PEBS
-isolation issue is fixed in all microcode versions.
+In the RAPL ENERGY_COUNTER MSR, only the lower 32bits represent the energy
+counter.
 
-Add the Cascade Lake Xeon steppings (5, 6, and 7) to the
-isolation_ucodes[] table so that these parts benefit from Andi's
-optimization in commit 9b545c04abd4f ("perf/x86/kvm: Avoid unnecessary
-work in guest filtering").
+On previous platforms, the higher 32bits are reverved and always return
+Zero. But on Intel SapphireRapids platform, the higher 32bits are reused
+for other purpose and return non-zero value.
 
-Signed-off-by: Jim Mattson <jmattson@google.com>
+Thus check the lower 32bits only for these ENERGY_COUTNER MSRs, to make
+sure the RAPL PMU events are not added erroneously when higher 32bits
+contain non-zero value.
+
+Signed-off-by: Zhang Rui <rui.zhang@intel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Andi Kleen <ak@linux.intel.com>
-Link: https://lkml.kernel.org/r/20210205191324.2889006-1-jmattson@google.com
+Link: https://lkml.kernel.org/r/20210204161816.12649-2-rui.zhang@intel.com
 ---
- arch/x86/events/intel/core.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/x86/events/rapl.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-index 67a7246..5bac48d 100644
---- a/arch/x86/events/intel/core.c
-+++ b/arch/x86/events/intel/core.c
-@@ -4513,6 +4513,9 @@ static const struct x86_cpu_desc isolation_ucodes[] = {
- 	INTEL_CPU_DESC(INTEL_FAM6_BROADWELL_X,		 2, 0x0b000014),
- 	INTEL_CPU_DESC(INTEL_FAM6_SKYLAKE_X,		 3, 0x00000021),
- 	INTEL_CPU_DESC(INTEL_FAM6_SKYLAKE_X,		 4, 0x00000000),
-+	INTEL_CPU_DESC(INTEL_FAM6_SKYLAKE_X,		 5, 0x00000000),
-+	INTEL_CPU_DESC(INTEL_FAM6_SKYLAKE_X,		 6, 0x00000000),
-+	INTEL_CPU_DESC(INTEL_FAM6_SKYLAKE_X,		 7, 0x00000000),
- 	INTEL_CPU_DESC(INTEL_FAM6_SKYLAKE_L,		 3, 0x0000007c),
- 	INTEL_CPU_DESC(INTEL_FAM6_SKYLAKE,		 3, 0x0000007c),
- 	INTEL_CPU_DESC(INTEL_FAM6_KABYLAKE,		 9, 0x0000004e),
+diff --git a/arch/x86/events/rapl.c b/arch/x86/events/rapl.c
+index 7dbbeaa..7ed25b2 100644
+--- a/arch/x86/events/rapl.c
++++ b/arch/x86/events/rapl.c
+@@ -523,12 +523,15 @@ static bool test_msr(int idx, void *data)
+ 	return test_bit(idx, (unsigned long *) data);
+ }
+ 
++/* Only lower 32bits of the MSR represents the energy counter */
++#define RAPL_MSR_MASK 0xFFFFFFFF
++
+ static struct perf_msr intel_rapl_msrs[] = {
+-	[PERF_RAPL_PP0]  = { MSR_PP0_ENERGY_STATUS,      &rapl_events_cores_group, test_msr },
+-	[PERF_RAPL_PKG]  = { MSR_PKG_ENERGY_STATUS,      &rapl_events_pkg_group,   test_msr },
+-	[PERF_RAPL_RAM]  = { MSR_DRAM_ENERGY_STATUS,     &rapl_events_ram_group,   test_msr },
+-	[PERF_RAPL_PP1]  = { MSR_PP1_ENERGY_STATUS,      &rapl_events_gpu_group,   test_msr },
+-	[PERF_RAPL_PSYS] = { MSR_PLATFORM_ENERGY_STATUS, &rapl_events_psys_group,  test_msr },
++	[PERF_RAPL_PP0]  = { MSR_PP0_ENERGY_STATUS,      &rapl_events_cores_group, test_msr, false, RAPL_MSR_MASK },
++	[PERF_RAPL_PKG]  = { MSR_PKG_ENERGY_STATUS,      &rapl_events_pkg_group,   test_msr, false, RAPL_MSR_MASK },
++	[PERF_RAPL_RAM]  = { MSR_DRAM_ENERGY_STATUS,     &rapl_events_ram_group,   test_msr, false, RAPL_MSR_MASK },
++	[PERF_RAPL_PP1]  = { MSR_PP1_ENERGY_STATUS,      &rapl_events_gpu_group,   test_msr, false, RAPL_MSR_MASK },
++	[PERF_RAPL_PSYS] = { MSR_PLATFORM_ENERGY_STATUS, &rapl_events_psys_group,  test_msr, false, RAPL_MSR_MASK },
+ };
+ 
+ /*
