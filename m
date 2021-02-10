@@ -2,52 +2,51 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 28067316D40
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 10 Feb 2021 18:48:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E511316D3A
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 10 Feb 2021 18:48:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233206AbhBJRsW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 10 Feb 2021 12:48:22 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:33188 "EHLO
+        id S233193AbhBJRsM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 10 Feb 2021 12:48:12 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:33184 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233248AbhBJRrb (ORCPT
+        with ESMTP id S233231AbhBJRra (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 10 Feb 2021 12:47:31 -0500
+        Wed, 10 Feb 2021 12:47:30 -0500
 Date:   Wed, 10 Feb 2021 17:45:56 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1612979157;
+        s=2020; t=1612979156;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=newQk4QZWZs5sOpaNHe8ulmPWEeiE+1KGZAGfvZ62Og=;
-        b=4nF+wdQhQmAIJZ0v/9ZC1UVi/Yoh0vwpyPI4U6v8aj/Ez0xnR7TBNIr1ycXjTuw83wEVyv
-        wFnEbKJ3F6HQll5v6OLQHkrGWVFL8Kj0mO0cZRmVdWFoxjOfMJoCoBAf1XkpKVmK4cD239
-        pi8H0DpjWfqp48DpSB4tLv0+NGct4bSUUf6YOXpSEHAMkgldRwFyCV5wmIhT3eolipiJBd
-        dWVqg5aRKFWcGDk6N1WOwF1u2xKGLWsQdNXaOQ5DkzM6lwMZAn5WBwnwFCeXdDIySUb+EO
-        gV9WpOpn/YqXQobxDKmVRR+w641kayWEPwMi0esxH/8pFxEnjipK+umPze+gDw==
+        bh=Q5cpuOmD8cEP353a6nVpYT84YVOvs1fELkcfNv/GQ/Y=;
+        b=v7f5V6g6rT85iR0MQPXGyotwdato0cEgv3FxH/jBwVGzifA2wXxWYG4iw9+i1rrQrynA7q
+        lWtwlv7aLA7Th2mACty1w9riPcESzLD3fyzAMFWS18sYQTSUkv0wypqlWV5QG4h8dpYbQU
+        LF+PcJZvWgZolR9L2PSwBaI4rBx1uwRuJ2yLFD0ZaDgXcV230+CiUQ7ueHTaCDWCJNtr0a
+        aVJ/V7q4GclOeaS5fZWETsOsO3y3UeJDlEbWmeogdN6w0TRajGykzGbTjwdQnQNG+w+JIh
+        Mip8WiX01Jqhrk7/gwXijzvwcX5DGBPFiuQ7Mad1UR6o5L4h1jKfedCu1JcEkw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1612979157;
+        s=2020e; t=1612979156;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=newQk4QZWZs5sOpaNHe8ulmPWEeiE+1KGZAGfvZ62Og=;
-        b=1sDk4fV5kevx94s4OpMGHega9r00RHH+x6W/0pMcPkJwomRWS7J1+w5JEPlGTLicAJO2NM
-        dI5dUxDjjKvvDvDQ==
+        bh=Q5cpuOmD8cEP353a6nVpYT84YVOvs1fELkcfNv/GQ/Y=;
+        b=SXpeCQrfe3RD2SMuABOMr1sKENDkJNLRAuBRh4VC4hn7ZigCyDLwFVf+kl8UlJ4YzN+YSl
+        0DoBPWYfKsEcdECw==
 From:   "tip-bot2 for Andy Lutomirski" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/mm] x86/fault: Fix AMD erratum #91 errata fixup for user code
+Subject: [tip: x86/mm] x86/fault/32: Move is_f00f_bug() to do_kern_addr_fault()
 Cc:     Andy Lutomirski <luto@kernel.org>, Borislav Petkov <bp@suse.de>,
-        Christoph Hellwig <hch@lst.de>, stable@vger.kernel.org,
         x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <b91f7f92f3367d2d3a88eec3b09c6aab1b2dc8ef.1612924255.git.luto@kernel.org>
-References: <b91f7f92f3367d2d3a88eec3b09c6aab1b2dc8ef.1612924255.git.luto@kernel.org>
+In-Reply-To: <e9668729a48ce6754022b0a4415631e8ebdd00e7.1612924255.git.luto@kernel.org>
+References: <e9668729a48ce6754022b0a4415631e8ebdd00e7.1612924255.git.luto@kernel.org>
 MIME-Version: 1.0
-Message-ID: <161297915681.23325.3596910072184499475.tip-bot2@tip-bot2>
+Message-ID: <161297915621.23325.11879363405011117616.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,99 +57,64 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/mm branch of tip:
 
-Commit-ID:     35f1c89b0cce247bf0213df243ed902989b1dcda
-Gitweb:        https://git.kernel.org/tip/35f1c89b0cce247bf0213df243ed902989b1dcda
+Commit-ID:     f42a40fd53fb5c77bae67d917d66078dbaa46bc2
+Gitweb:        https://git.kernel.org/tip/f42a40fd53fb5c77bae67d917d66078dbaa46bc2
 Author:        Andy Lutomirski <luto@kernel.org>
-AuthorDate:    Tue, 09 Feb 2021 18:33:33 -08:00
+AuthorDate:    Tue, 09 Feb 2021 18:33:36 -08:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Wed, 10 Feb 2021 13:11:41 +01:00
+CommitterDate: Wed, 10 Feb 2021 14:11:07 +01:00
 
-x86/fault: Fix AMD erratum #91 errata fixup for user code
+x86/fault/32: Move is_f00f_bug() to do_kern_addr_fault()
 
-The recent rework of probe_kernel_address() and its conversion to
-get_kernel_nofault() inadvertently broke is_prefetch(). Before this
-change, probe_kernel_address() was used as a sloppy "read user or
-kernel memory" helper, but it doesn't do that any more. The new
-get_kernel_nofault() reads *kernel* memory only, which completely broke
-is_prefetch() for user access.
+bad_area() and its relatives are called from many places in fault.c, and
+exactly one of them wants the F00F workaround.
 
-Adjust the code to the correct accessor based on access mode. The
-manual address bounds check is no longer necessary, since the accessor
-helpers (get_user() / get_kernel_nofault()) do the right thing all by
-themselves. As a bonus, by using the correct accessor, the open-coded
-address bounds check is not needed anymore.
+__bad_area_nosemaphore() no longer contains any kernel fault code, which
+prepares for further cleanups.
 
- [ bp: Massage commit message. ]
-
-Fixes: eab0c6089b68 ("maccess: unify the probe kernel arch hooks")
 Signed-off-by: Andy Lutomirski <luto@kernel.org>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/b91f7f92f3367d2d3a88eec3b09c6aab1b2dc8ef.1612924255.git.luto@kernel.org
+Link: https://lkml.kernel.org/r/e9668729a48ce6754022b0a4415631e8ebdd00e7.1612924255.git.luto@kernel.org
 ---
- arch/x86/mm/fault.c | 27 +++++++++++++++++----------
- 1 file changed, 17 insertions(+), 10 deletions(-)
+ arch/x86/mm/fault.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
 diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
-index f1f1b5a..441c3e9 100644
+index 91cf7a6..3ffed00 100644
 --- a/arch/x86/mm/fault.c
 +++ b/arch/x86/mm/fault.c
-@@ -54,7 +54,7 @@ kmmio_fault(struct pt_regs *regs, unsigned long addr)
-  * 32-bit mode:
-  *
-  *   Sometimes AMD Athlon/Opteron CPUs report invalid exceptions on prefetch.
-- *   Check that here and ignore it.
-+ *   Check that here and ignore it.  This is AMD erratum #91.
-  *
-  * 64-bit mode:
-  *
-@@ -83,11 +83,7 @@ check_prefetch_opcode(struct pt_regs *regs, unsigned char *instr,
- #ifdef CONFIG_X86_64
- 	case 0x40:
- 		/*
--		 * In AMD64 long mode 0x40..0x4F are valid REX prefixes
--		 * Need to figure out under what instruction mode the
--		 * instruction was issued. Could check the LDT for lm,
--		 * but for now it's good enough to assume that long
--		 * mode only uses well known segments or kernel.
-+		 * In 64-bit mode 0x40..0x4F are valid REX prefixes
- 		 */
- 		return (!user_mode(regs) || user_64bit_mode(regs));
- #endif
-@@ -127,20 +123,31 @@ is_prefetch(struct pt_regs *regs, unsigned long error_code, unsigned long addr)
- 	instr = (void *)convert_ip_to_linear(current, regs);
- 	max_instr = instr + 15;
- 
--	if (user_mode(regs) && instr >= (unsigned char *)TASK_SIZE_MAX)
--		return 0;
-+	/*
-+	 * This code has historically always bailed out if IP points to a
-+	 * not-present page (e.g. due to a race).  No one has ever
-+	 * complained about this.
-+	 */
-+	pagefault_disable();
- 
- 	while (instr < max_instr) {
- 		unsigned char opcode;
- 
--		if (get_kernel_nofault(opcode, instr))
--			break;
-+		if (user_mode(regs)) {
-+			if (get_user(opcode, instr))
-+				break;
-+		} else {
-+			if (get_kernel_nofault(opcode, instr))
-+				break;
-+		}
- 
- 		instr++;
- 
- 		if (!check_prefetch_opcode(regs, instr, opcode, &prefetch))
- 			break;
- 	}
-+
-+	pagefault_enable();
- 	return prefetch;
+@@ -482,10 +482,12 @@ static int is_errata100(struct pt_regs *regs, unsigned long address)
  }
  
+ /* Pentium F0 0F C7 C8 bug workaround: */
+-static int is_f00f_bug(struct pt_regs *regs, unsigned long address)
++static int is_f00f_bug(struct pt_regs *regs, unsigned long error_code,
++		       unsigned long address)
+ {
+ #ifdef CONFIG_X86_F00F_BUG
+-	if (boot_cpu_has_bug(X86_BUG_F00F) && idt_is_f00f_address(address)) {
++	if (boot_cpu_has_bug(X86_BUG_F00F) && !(error_code & X86_PF_USER) &&
++	    idt_is_f00f_address(address)) {
+ 		handle_invalid_op(regs);
+ 		return 1;
+ 	}
+@@ -853,9 +855,6 @@ __bad_area_nosemaphore(struct pt_regs *regs, unsigned long error_code,
+ 		return;
+ 	}
+ 
+-	if (is_f00f_bug(regs, address))
+-		return;
+-
+ 	no_context(regs, error_code, address, SIGSEGV, si_code);
+ }
+ 
+@@ -1195,6 +1194,9 @@ do_kern_addr_fault(struct pt_regs *regs, unsigned long hw_error_code,
+ 	}
+ #endif
+ 
++	if (is_f00f_bug(regs, hw_error_code, address))
++		return;
++
+ 	/* Was the fault spurious, caused by lazy TLB invalidation? */
+ 	if (spurious_kernel_fault(hw_error_code, address))
+ 		return;
