@@ -2,47 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E7703170DB
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 10 Feb 2021 21:02:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ECC8E317210
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 10 Feb 2021 22:11:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232663AbhBJUCO (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 10 Feb 2021 15:02:14 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:33938 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232432AbhBJUCJ (ORCPT
+        id S233440AbhBJVLb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 10 Feb 2021 16:11:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43380 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231897AbhBJVK5 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 10 Feb 2021 15:02:09 -0500
-Date:   Wed, 10 Feb 2021 20:01:24 -0000
+        Wed, 10 Feb 2021 16:10:57 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40193C061574;
+        Wed, 10 Feb 2021 13:10:16 -0800 (PST)
+Date:   Wed, 10 Feb 2021 21:10:13 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1612987284;
+        s=2020; t=1612991414;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=YUV5iawYKwc//7V+/jWC9tsW6XF6QkHni4nokw1Bi1k=;
-        b=x6hYj65uGwI/KLkL5rYthEot4A065M9nLkGAESI9pi9nfA0lURev9C7pXr2slAwAEGfGyF
-        MwFgaC1r3kM2BOa8/EmAioYUlBrG3+bI0iEeEWtFpPDG0nN9Xx+yyJmAFMVkTvCOXerk12
-        F8pkN86ZXFh9eAfTr5HKDl8L699+Lx7DUSRzmHzki1Mg4hCsjVU6j5la8sDNwgRlwm32yv
-        uzmegiwkydoxEuaWmKbxvroePmrR6nkLBU/WR4XO90fmYSfSqrR2FTJWP+LBj4HQYXtTM7
-        YUf2zPjePqGfjEvm734SRsM6lxODooJPtp24MCmX34gZiZj/v+jT4k9+x+5gkQ==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=gngjeJPNcZZcgmyt6/v2khOLAQVyDcojVu/JN00cNBY=;
+        b=aQnMd/CN9ux3ON8NLtKjiGUGk0bv9NldIvkAK6H2vk4dT2A6HT130dxS3EyrwRUvLqx4S6
+        tCuG4mVv18GTR57VfEkpc09Oo7/7CVFLHPXvFjg7N2I1w8W5K41M2mDy5ikaoBn/8Ldeu6
+        uVhBmPau05NQmuJ2+vMUFSWksMSL/msLtH8lBT05+ZoFS0qCYyoplyB5mHXQm0DVO+dIl7
+        bWkq5jEBKyNw8k/LqPs2rSkLpXpshj81YKsxIfNU1eKlbOYKCruC6Mj4jQ7yq7zJGIn321
+        Fm9wNr7NEnEcD3YmD12OwAqlanAoFPVqTu79uCT+5YCm77cMoFBowhkqck7Hkw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1612987284;
+        s=2020e; t=1612991414;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=YUV5iawYKwc//7V+/jWC9tsW6XF6QkHni4nokw1Bi1k=;
-        b=GONTXU1HOBRRiMmbKD1X76Av6KgtmNehPOfJp+62O6NHzAfXXRg44t6ejbe7UVQ96zTh0m
-        y9q5tsaKbY0nrYCQ==
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=gngjeJPNcZZcgmyt6/v2khOLAQVyDcojVu/JN00cNBY=;
+        b=OA17cxdwMMMoqlgshG/WDLTV2hlYomxccsUwStwlKjafBgRQ+eR6c2xnAmg2I7Rdj721MC
+        Ush82G/5PimCRtDQ==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] x86/unwind/orc: Change REG_SP_INDIRECT
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Miroslav Benes <mbenes@suse.cz>,
-        Josh Poimboeuf <jpoimboe@redhat.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
+Subject: [tip: x86/urgent] x86/pci: Create PCI/MSI irqdomain after
+ x86_init.pci.arch_init()
+Cc:     Juergen Gross <jgross@suse.com>,
+        Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <87pn18djte.fsf@nanos.tec.linutronix.de>
+References: <87pn18djte.fsf@nanos.tec.linutronix.de>
 MIME-Version: 1.0
-Message-ID: <161298728406.23325.17194681043408058054.tip-bot2@tip-bot2>
+Message-ID: <161299141323.23325.8366354176580288665.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -51,69 +60,67 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the objtool/core branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     87ccc826bf1c9e5ab4c2f649b404e02c63e47622
-Gitweb:        https://git.kernel.org/tip/87ccc826bf1c9e5ab4c2f649b404e02c63e47622
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Wed, 03 Feb 2021 12:02:21 +01:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 10 Feb 2021 20:53:51 +01:00
+Commit-ID:     70245f86c109e0eafb92ea9653184c0e44b4b35c
+Gitweb:        https://git.kernel.org/tip/70245f86c109e0eafb92ea9653184c0e44b4b35c
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Wed, 10 Feb 2021 16:27:41 +01:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Wed, 10 Feb 2021 22:06:47 +01:00
 
-x86/unwind/orc: Change REG_SP_INDIRECT
+x86/pci: Create PCI/MSI irqdomain after x86_init.pci.arch_init()
 
-Currently REG_SP_INDIRECT is unused but means (%rsp + offset),
-change it to mean (%rsp) + offset.
+Invoking x86_init.irqs.create_pci_msi_domain() before
+x86_init.pci.arch_init() breaks XEN PV.
 
-The reason is that we're going to swizzle stack in the middle of a C
-function with non-trivial stack footprint. This means that when the
-unwinder finds the ToS, it needs to dereference it (%rsp) and then add
-the offset to the next frame, resulting in: (%rsp) + offset
+The XEN_PV specific pci.arch_init() function overrides the default
+create_pci_msi_domain() which is obviously too late.
 
-This is somewhat unfortunate, since REG_BP_INDIRECT is used (by DRAP)
-and thus needs to retain the current (%rbp + offset).
+As a consequence the XEN PV PCI/MSI allocation goes through the native
+path which runs out of vectors and causes malfunction.
 
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Miroslav Benes <mbenes@suse.cz>
-Acked-by: Josh Poimboeuf <jpoimboe@redhat.com>
+Invoke it after x86_init.pci.arch_init().
+
+Fixes: 6b15ffa07dc3 ("x86/irq: Initialize PCI/MSI domain at PCI init time")
+Reported-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Juergen Gross <jgross@suse.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/87pn18djte.fsf@nanos.tec.linutronix.de
 ---
- arch/x86/kernel/unwind_orc.c | 5 ++++-
- tools/objtool/orc_dump.c     | 2 +-
- 2 files changed, 5 insertions(+), 2 deletions(-)
+ arch/x86/pci/init.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/kernel/unwind_orc.c b/arch/x86/kernel/unwind_orc.c
-index 73f8001..2a1d47f 100644
---- a/arch/x86/kernel/unwind_orc.c
-+++ b/arch/x86/kernel/unwind_orc.c
-@@ -471,7 +471,7 @@ bool unwind_next_frame(struct unwind_state *state)
- 		break;
+diff --git a/arch/x86/pci/init.c b/arch/x86/pci/init.c
+index 00bfa1e..0bb3b8b 100644
+--- a/arch/x86/pci/init.c
++++ b/arch/x86/pci/init.c
+@@ -9,16 +9,23 @@
+    in the right sequence from here. */
+ static __init int pci_arch_init(void)
+ {
+-	int type;
+-
+-	x86_create_pci_msi_domain();
++	int type, pcbios = 1;
  
- 	case ORC_REG_SP_INDIRECT:
--		sp = state->sp + orc->sp_offset;
-+		sp = state->sp;
- 		indirect = true;
- 		break;
+ 	type = pci_direct_probe();
  
-@@ -521,6 +521,9 @@ bool unwind_next_frame(struct unwind_state *state)
- 	if (indirect) {
- 		if (!deref_stack_reg(state, sp, &sp))
- 			goto err;
+ 	if (!(pci_probe & PCI_PROBE_NOEARLY))
+ 		pci_mmcfg_early_init();
+ 
+-	if (x86_init.pci.arch_init && !x86_init.pci.arch_init())
++	if (x86_init.pci.arch_init)
++		pcbios = x86_init.pci.arch_init();
 +
-+		if (orc->sp_reg == ORC_REG_SP_INDIRECT)
-+			sp += orc->sp_offset;
- 	}
++	/*
++	 * Must happen after x86_init.pci.arch_init(). Xen sets up the
++	 * x86_init.irqs.create_pci_msi_domain there.
++	 */
++	x86_create_pci_msi_domain();
++
++	if (!pcbios)
+ 		return 0;
  
- 	/* Find IP, SP and possibly regs: */
-diff --git a/tools/objtool/orc_dump.c b/tools/objtool/orc_dump.c
-index c53fae9..f5a8508 100644
---- a/tools/objtool/orc_dump.c
-+++ b/tools/objtool/orc_dump.c
-@@ -55,7 +55,7 @@ static void print_reg(unsigned int reg, int offset)
- 	if (reg == ORC_REG_BP_INDIRECT)
- 		printf("(bp%+d)", offset);
- 	else if (reg == ORC_REG_SP_INDIRECT)
--		printf("(sp%+d)", offset);
-+		printf("(sp)%+d", offset);
- 	else if (reg == ORC_REG_UNDEFINED)
- 		printf("(und)");
- 	else
+ 	pci_pcbios_init();
