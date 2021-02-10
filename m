@@ -2,401 +2,342 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 775C831633F
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 10 Feb 2021 11:09:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AFF0531668E
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 10 Feb 2021 13:25:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230018AbhBJKJd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 10 Feb 2021 05:09:33 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:58090 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230379AbhBJKHL (ORCPT
+        id S231352AbhBJMZY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 10 Feb 2021 07:25:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42656 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231830AbhBJMXr (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 10 Feb 2021 05:07:11 -0500
-Date:   Wed, 10 Feb 2021 10:06:25 -0000
+        Wed, 10 Feb 2021 07:23:47 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D0E0C0613D6;
+        Wed, 10 Feb 2021 04:23:04 -0800 (PST)
+Date:   Wed, 10 Feb 2021 12:23:00 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1612951588;
+        s=2020; t=1612959781;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=HFElhJXcH/rTP70CatrXXqHYO6/EMpy4OYIZD9OGn2g=;
-        b=jrFU2gJWlzizNgJDMZi6Qgod3lyq+XhXYjjCou/bvbhr2J7Ka50oC4R83M2UGZVIfjuiSW
-        xMxXviS3p6DICnTlMhSFSfw3aFa5wvtRvdUVw8gxVCq+gpJ5qLhtD231TwnwACc+iX3HrP
-        K/lTmamUUGkzSKG1KpQtvVl5exorxZhAMC+YlD3nXvxPRJ56SMgwdP0LJF52XxAm0KWaZs
-        6McjisGkGDWJ6qEpWa7CcTy1qW7TW1Tk9MbxuhaKllhpl6lcRgcvGeK91wcZVyARKp7w36
-        5SlSn38hkuMFF5R+9QLl3BCXFg/s8VI/4XFgsoydY7jsdIVmRh5wckec/E5wgQ==
+        bh=EPfb9Ak/7oZVp+rq0/MiGcyVN0w3IA2vrBMT+mr+7LE=;
+        b=cH5xWhihx+xTMmggtxQG1P8ru5JS/8tKEEfmrbi+hNRAH4RdFIcALOZDnPzolKTTwz2JGY
+        tyqFMwiso/zIqnb8xRqQgIU10BLdUtksgaKYxO8KYzEIyiBkIdBqZ+FnxojGZDL8eSUva+
+        JlA9sisS9qfMVoxdLFvpnWDxxHzTkRPBhFdzoBQwUze6f9drR1hUukYRdOBpzWpyDnQgEv
+        Z/Ke/c3ZNM5RfHtNXfRqZUTwvHX6H1VQSmh8DmCMbFcZoqzjwusgiCAxN7HYwpkHFiJg+f
+        J5o/qPdr0TW/2fOigaa03c9lrs8Y6TnlOzrQR+4Z9OqaAj4B+yFN/lbJh4JWmA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1612951588;
+        s=2020e; t=1612959781;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=HFElhJXcH/rTP70CatrXXqHYO6/EMpy4OYIZD9OGn2g=;
-        b=upvRInNcFI3Yr3copa3ylI3nSqN/GLwigGQyitE2qCLqVt3yHTKRDsg/dJOwH5cHjIn9+K
-        5zcMzPfCntfrFHDQ==
-From:   tip-bot2 for Uwe =?utf-8?q?Kleine-K=C3=B6nig?= 
-        <tip-bot2@linutronix.de>
+        bh=EPfb9Ak/7oZVp+rq0/MiGcyVN0w3IA2vrBMT+mr+7LE=;
+        b=vtXS/KtRkB4q0EuYqKG9XiWcKGsf+4s5Lu0CzsjbRWwQ8xLXhxkDe0MLDHWpkYTJSfkUu+
+        9yf3jbIxRAMwhSBA==
+From:   "tip-bot2 for Juergen Gross" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] clocksource/drivers/efm32: Drop unused timer code
-Cc:     u.kleine-koenig@pengutronix.de,
-        Daniel Lezcano <daniel.lezcano@linaro.org>, x86@kernel.org,
+Subject: [tip: x86/paravirt] x86/pv: Rework arch_local_irq_restore() to not use popf
+Cc:     Andy Lutomirski <luto@kernel.org>, Juergen Gross <jgross@suse.com>,
+        Borislav Petkov <bp@suse.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210115155130.185010-4-u.kleine-koenig@pengutronix.de>
-References: <20210115155130.185010-4-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20210120135555.32594-7-jgross@suse.com>
+References: <20210120135555.32594-7-jgross@suse.com>
 MIME-Version: 1.0
-Message-ID: <161295158547.23325.15638365010660281338.tip-bot2@tip-bot2>
+Message-ID: <161295978073.23325.10689551911607038793.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/core branch of tip:
+The following commit has been merged into the x86/paravirt branch of tip:
 
-Commit-ID:     523d83ef0979a9d0c8340913b40b696cb4f2f050
-Gitweb:        https://git.kernel.org/tip/523d83ef0979a9d0c8340913b40b696cb4f=
-2f050
-Author:        Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
-AuthorDate:    Fri, 15 Jan 2021 16:51:26 +01:00
-Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
-CommitterDate: Mon, 18 Jan 2021 16:29:54 +01:00
+Commit-ID:     ab234a260b1f625b26cbefa93ca365b0ae66df33
+Gitweb:        https://git.kernel.org/tip/ab234a260b1f625b26cbefa93ca365b0ae66df33
+Author:        Juergen Gross <jgross@suse.com>
+AuthorDate:    Wed, 20 Jan 2021 14:55:46 +01:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Wed, 10 Feb 2021 12:36:45 +01:00
 
-clocksource/drivers/efm32: Drop unused timer code
+x86/pv: Rework arch_local_irq_restore() to not use popf
 
-Support for this machine was just removed, so drop the now unused timer
-code, too.
+POPF is a rather expensive operation, so don't use it for restoring
+irq flags. Instead, test whether interrupts are enabled in the flags
+parameter and enable interrupts via STI in that case.
 
-Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20210115155130.185010-4-u.kleine-koenig@pengu=
-tronix.de
+This results in the restore_fl paravirt op to be no longer needed.
+
+Suggested-by: Andy Lutomirski <luto@kernel.org>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lkml.kernel.org/r/20210120135555.32594-7-jgross@suse.com
 ---
- drivers/clocksource/Kconfig       |   9 +-
- drivers/clocksource/Makefile      |   1 +-
- drivers/clocksource/timer-efm32.c | 278 +-----------------------------
- 3 files changed, 288 deletions(-)
- delete mode 100644 drivers/clocksource/timer-efm32.c
+ arch/x86/include/asm/irqflags.h       | 20 +++++--------------
+ arch/x86/include/asm/paravirt.h       |  5 +-----
+ arch/x86/include/asm/paravirt_types.h |  7 ++-----
+ arch/x86/kernel/irqflags.S            | 11 +----------
+ arch/x86/kernel/paravirt.c            |  1 +-
+ arch/x86/kernel/paravirt_patch.c      |  3 +---
+ arch/x86/xen/enlighten_pv.c           |  2 +--
+ arch/x86/xen/irq.c                    | 23 +---------------------
+ arch/x86/xen/xen-asm.S                | 28 +--------------------------
+ arch/x86/xen/xen-ops.h                |  1 +-
+ 10 files changed, 8 insertions(+), 93 deletions(-)
 
-diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
-index 9f00b83..6bf89e2 100644
---- a/drivers/clocksource/Kconfig
-+++ b/drivers/clocksource/Kconfig
-@@ -242,15 +242,6 @@ config INTEGRATOR_AP_TIMER
- 	help
- 	  Enables support for the Integrator-AP timer.
-=20
--config CLKSRC_EFM32
--	bool "Clocksource for Energy Micro's EFM32 SoCs" if !ARCH_EFM32
--	depends on OF && ARM && (ARCH_EFM32 || COMPILE_TEST)
--	select CLKSRC_MMIO
--	default ARCH_EFM32
--	help
--	  Support to use the timers of EFM32 SoCs as clock source and clock
--	  event device.
--
- config CLKSRC_LPC32XX
- 	bool "Clocksource for LPC32XX" if COMPILE_TEST
- 	depends on HAS_IOMEM
-diff --git a/drivers/clocksource/Makefile b/drivers/clocksource/Makefile
-index 3c75cbb..0817338 100644
---- a/drivers/clocksource/Makefile
-+++ b/drivers/clocksource/Makefile
-@@ -43,7 +43,6 @@ obj-$(CONFIG_VT8500_TIMER)	+=3D timer-vt8500.o
- obj-$(CONFIG_NSPIRE_TIMER)	+=3D timer-zevio.o
- obj-$(CONFIG_BCM_KONA_TIMER)	+=3D bcm_kona_timer.o
- obj-$(CONFIG_CADENCE_TTC_TIMER)	+=3D timer-cadence-ttc.o
--obj-$(CONFIG_CLKSRC_EFM32)	+=3D timer-efm32.o
- obj-$(CONFIG_CLKSRC_STM32)	+=3D timer-stm32.o
- obj-$(CONFIG_CLKSRC_STM32_LP)	+=3D timer-stm32-lp.o
- obj-$(CONFIG_CLKSRC_EXYNOS_MCT)	+=3D exynos_mct.o
-diff --git a/drivers/clocksource/timer-efm32.c b/drivers/clocksource/timer-ef=
-m32.c
-deleted file mode 100644
-index 441a4b9..0000000
---- a/drivers/clocksource/timer-efm32.c
-+++ /dev/null
-@@ -1,278 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0-only
--/*
-- * Copyright (C) 2013 Pengutronix
-- * Uwe Kleine-Koenig <u.kleine-koenig@pengutronix.de>
-- */
--
--#define pr_fmt(fmt)	KBUILD_MODNAME ": " fmt
--
--#include <linux/kernel.h>
--#include <linux/clocksource.h>
--#include <linux/clockchips.h>
--#include <linux/irq.h>
--#include <linux/interrupt.h>
--#include <linux/of.h>
--#include <linux/of_address.h>
--#include <linux/of_irq.h>
--#include <linux/clk.h>
--
--#define TIMERn_CTRL			0x00
--#define TIMERn_CTRL_PRESC(val)			(((val) & 0xf) << 24)
--#define TIMERn_CTRL_PRESC_1024			TIMERn_CTRL_PRESC(10)
--#define TIMERn_CTRL_CLKSEL(val)			(((val) & 0x3) << 16)
--#define TIMERn_CTRL_CLKSEL_PRESCHFPERCLK	TIMERn_CTRL_CLKSEL(0)
--#define TIMERn_CTRL_OSMEN			0x00000010
--#define TIMERn_CTRL_MODE(val)			(((val) & 0x3) <<  0)
--#define TIMERn_CTRL_MODE_UP			TIMERn_CTRL_MODE(0)
--#define TIMERn_CTRL_MODE_DOWN			TIMERn_CTRL_MODE(1)
--
--#define TIMERn_CMD			0x04
--#define TIMERn_CMD_START			0x00000001
--#define TIMERn_CMD_STOP				0x00000002
--
--#define TIMERn_IEN			0x0c
--#define TIMERn_IF			0x10
--#define TIMERn_IFS			0x14
--#define TIMERn_IFC			0x18
--#define TIMERn_IRQ_UF				0x00000002
--
--#define TIMERn_TOP			0x1c
--#define TIMERn_CNT			0x24
--
--struct efm32_clock_event_ddata {
--	struct clock_event_device evtdev;
--	void __iomem *base;
--	unsigned periodic_top;
--};
--
--static int efm32_clock_event_shutdown(struct clock_event_device *evtdev)
+diff --git a/arch/x86/include/asm/irqflags.h b/arch/x86/include/asm/irqflags.h
+index e585a47..144d70e 100644
+--- a/arch/x86/include/asm/irqflags.h
++++ b/arch/x86/include/asm/irqflags.h
+@@ -35,15 +35,6 @@ extern __always_inline unsigned long native_save_fl(void)
+ 	return flags;
+ }
+ 
+-extern inline void native_restore_fl(unsigned long flags);
+-extern inline void native_restore_fl(unsigned long flags)
 -{
--	struct efm32_clock_event_ddata *ddata =3D
--		container_of(evtdev, struct efm32_clock_event_ddata, evtdev);
--
--	writel_relaxed(TIMERn_CMD_STOP, ddata->base + TIMERn_CMD);
--	return 0;
+-	asm volatile("push %0 ; popf"
+-		     : /* no output */
+-		     :"g" (flags)
+-		     :"memory", "cc");
 -}
 -
--static int efm32_clock_event_set_oneshot(struct clock_event_device *evtdev)
+ static __always_inline void native_irq_disable(void)
+ {
+ 	asm volatile("cli": : :"memory");
+@@ -79,11 +70,6 @@ static __always_inline unsigned long arch_local_save_flags(void)
+ 	return native_save_fl();
+ }
+ 
+-static __always_inline void arch_local_irq_restore(unsigned long flags)
 -{
--	struct efm32_clock_event_ddata *ddata =3D
--		container_of(evtdev, struct efm32_clock_event_ddata, evtdev);
--
--	writel_relaxed(TIMERn_CMD_STOP, ddata->base + TIMERn_CMD);
--	writel_relaxed(TIMERn_CTRL_PRESC_1024 |
--		       TIMERn_CTRL_CLKSEL_PRESCHFPERCLK |
--		       TIMERn_CTRL_OSMEN |
--		       TIMERn_CTRL_MODE_DOWN,
--		       ddata->base + TIMERn_CTRL);
--	return 0;
+-	native_restore_fl(flags);
 -}
 -
--static int efm32_clock_event_set_periodic(struct clock_event_device *evtdev)
+ static __always_inline void arch_local_irq_disable(void)
+ {
+ 	native_irq_disable();
+@@ -152,6 +138,12 @@ static __always_inline int arch_irqs_disabled(void)
+ 
+ 	return arch_irqs_disabled_flags(flags);
+ }
++
++static __always_inline void arch_local_irq_restore(unsigned long flags)
++{
++	if (!arch_irqs_disabled_flags(flags))
++		arch_local_irq_enable();
++}
+ #else
+ #ifdef CONFIG_X86_64
+ #ifdef CONFIG_XEN_PV
+diff --git a/arch/x86/include/asm/paravirt.h b/arch/x86/include/asm/paravirt.h
+index dd43b11..4abf110 100644
+--- a/arch/x86/include/asm/paravirt.h
++++ b/arch/x86/include/asm/paravirt.h
+@@ -648,11 +648,6 @@ static inline notrace unsigned long arch_local_save_flags(void)
+ 	return PVOP_CALLEE0(unsigned long, irq.save_fl);
+ }
+ 
+-static inline notrace void arch_local_irq_restore(unsigned long f)
 -{
--	struct efm32_clock_event_ddata *ddata =3D
--		container_of(evtdev, struct efm32_clock_event_ddata, evtdev);
--
--	writel_relaxed(TIMERn_CMD_STOP, ddata->base + TIMERn_CMD);
--	writel_relaxed(ddata->periodic_top, ddata->base + TIMERn_TOP);
--	writel_relaxed(TIMERn_CTRL_PRESC_1024 |
--		       TIMERn_CTRL_CLKSEL_PRESCHFPERCLK |
--		       TIMERn_CTRL_MODE_DOWN,
--		       ddata->base + TIMERn_CTRL);
--	writel_relaxed(TIMERn_CMD_START, ddata->base + TIMERn_CMD);
--	return 0;
+-	PVOP_VCALLEE1(irq.restore_fl, f);
 -}
 -
--static int efm32_clock_event_set_next_event(unsigned long evt,
--					    struct clock_event_device *evtdev)
--{
--	struct efm32_clock_event_ddata *ddata =3D
--		container_of(evtdev, struct efm32_clock_event_ddata, evtdev);
--
--	writel_relaxed(TIMERn_CMD_STOP, ddata->base + TIMERn_CMD);
--	writel_relaxed(evt, ddata->base + TIMERn_CNT);
--	writel_relaxed(TIMERn_CMD_START, ddata->base + TIMERn_CMD);
--
--	return 0;
--}
--
--static irqreturn_t efm32_clock_event_handler(int irq, void *dev_id)
--{
--	struct efm32_clock_event_ddata *ddata =3D dev_id;
--
--	writel_relaxed(TIMERn_IRQ_UF, ddata->base + TIMERn_IFC);
--
--	ddata->evtdev.event_handler(&ddata->evtdev);
--
--	return IRQ_HANDLED;
--}
--
--static struct efm32_clock_event_ddata clock_event_ddata =3D {
--	.evtdev =3D {
--		.name =3D "efm32 clockevent",
--		.features =3D CLOCK_EVT_FEAT_ONESHOT | CLOCK_EVT_FEAT_PERIODIC,
--		.set_state_shutdown =3D efm32_clock_event_shutdown,
--		.set_state_periodic =3D efm32_clock_event_set_periodic,
--		.set_state_oneshot =3D efm32_clock_event_set_oneshot,
--		.set_next_event =3D efm32_clock_event_set_next_event,
--		.rating =3D 200,
--	},
--};
--
--static int __init efm32_clocksource_init(struct device_node *np)
--{
--	struct clk *clk;
--	void __iomem *base;
--	unsigned long rate;
--	int ret;
--
--	clk =3D of_clk_get(np, 0);
--	if (IS_ERR(clk)) {
--		ret =3D PTR_ERR(clk);
--		pr_err("failed to get clock for clocksource (%d)\n", ret);
--		goto err_clk_get;
--	}
--
--	ret =3D clk_prepare_enable(clk);
--	if (ret) {
--		pr_err("failed to enable timer clock for clocksource (%d)\n",
--		       ret);
--		goto err_clk_enable;
--	}
--	rate =3D clk_get_rate(clk);
--
--	base =3D of_iomap(np, 0);
--	if (!base) {
--		ret =3D -EADDRNOTAVAIL;
--		pr_err("failed to map registers for clocksource\n");
--		goto err_iomap;
--	}
--
--	writel_relaxed(TIMERn_CTRL_PRESC_1024 |
--		       TIMERn_CTRL_CLKSEL_PRESCHFPERCLK |
--		       TIMERn_CTRL_MODE_UP, base + TIMERn_CTRL);
--	writel_relaxed(TIMERn_CMD_START, base + TIMERn_CMD);
--
--	ret =3D clocksource_mmio_init(base + TIMERn_CNT, "efm32 timer",
--				    DIV_ROUND_CLOSEST(rate, 1024), 200, 16,
--				    clocksource_mmio_readl_up);
--	if (ret) {
--		pr_err("failed to init clocksource (%d)\n", ret);
--		goto err_clocksource_init;
--	}
--
--	return 0;
--
--err_clocksource_init:
--
--	iounmap(base);
--err_iomap:
--
--	clk_disable_unprepare(clk);
--err_clk_enable:
--
--	clk_put(clk);
--err_clk_get:
--
--	return ret;
--}
--
--static int __init efm32_clockevent_init(struct device_node *np)
--{
--	struct clk *clk;
--	void __iomem *base;
--	unsigned long rate;
--	int irq;
--	int ret;
--
--	clk =3D of_clk_get(np, 0);
--	if (IS_ERR(clk)) {
--		ret =3D PTR_ERR(clk);
--		pr_err("failed to get clock for clockevent (%d)\n", ret);
--		goto err_clk_get;
--	}
--
--	ret =3D clk_prepare_enable(clk);
--	if (ret) {
--		pr_err("failed to enable timer clock for clockevent (%d)\n",
--		       ret);
--		goto err_clk_enable;
--	}
--	rate =3D clk_get_rate(clk);
--
--	base =3D of_iomap(np, 0);
--	if (!base) {
--		ret =3D -EADDRNOTAVAIL;
--		pr_err("failed to map registers for clockevent\n");
--		goto err_iomap;
--	}
--
--	irq =3D irq_of_parse_and_map(np, 0);
--	if (!irq) {
--		ret =3D -ENOENT;
--		pr_err("failed to get irq for clockevent\n");
--		goto err_get_irq;
--	}
--
--	writel_relaxed(TIMERn_IRQ_UF, base + TIMERn_IEN);
--
--	clock_event_ddata.base =3D base;
--	clock_event_ddata.periodic_top =3D DIV_ROUND_CLOSEST(rate, 1024 * HZ);
--
--	clockevents_config_and_register(&clock_event_ddata.evtdev,
--					DIV_ROUND_CLOSEST(rate, 1024),
--					0xf, 0xffff);
--
--	ret =3D request_irq(irq, efm32_clock_event_handler, IRQF_TIMER,
--			  "efm32 clockevent", &clock_event_ddata);
--	if (ret) {
--		pr_err("Failed setup irq\n");
--		goto err_setup_irq;
--	}
--
--	return 0;
--
--err_setup_irq:
--err_get_irq:
--
--	iounmap(base);
--err_iomap:
--
--	clk_disable_unprepare(clk);
--err_clk_enable:
--
--	clk_put(clk);
--err_clk_get:
--
--	return ret;
--}
+ static inline notrace void arch_local_irq_disable(void)
+ {
+ 	PVOP_VCALLEE0(irq.irq_disable);
+diff --git a/arch/x86/include/asm/paravirt_types.h b/arch/x86/include/asm/paravirt_types.h
+index 0169365..de87087 100644
+--- a/arch/x86/include/asm/paravirt_types.h
++++ b/arch/x86/include/asm/paravirt_types.h
+@@ -168,16 +168,13 @@ struct pv_cpu_ops {
+ struct pv_irq_ops {
+ #ifdef CONFIG_PARAVIRT_XXL
+ 	/*
+-	 * Get/set interrupt state.  save_fl and restore_fl are only
+-	 * expected to use X86_EFLAGS_IF; all other bits
+-	 * returned from save_fl are undefined, and may be ignored by
+-	 * restore_fl.
++	 * Get/set interrupt state.  save_fl is expected to use X86_EFLAGS_IF;
++	 * all other bits returned from save_fl are undefined.
+ 	 *
+ 	 * NOTE: These functions callers expect the callee to preserve
+ 	 * more registers than the standard C calling convention.
+ 	 */
+ 	struct paravirt_callee_save save_fl;
+-	struct paravirt_callee_save restore_fl;
+ 	struct paravirt_callee_save irq_disable;
+ 	struct paravirt_callee_save irq_enable;
+ 
+diff --git a/arch/x86/kernel/irqflags.S b/arch/x86/kernel/irqflags.S
+index 0db0375..8ef3506 100644
+--- a/arch/x86/kernel/irqflags.S
++++ b/arch/x86/kernel/irqflags.S
+@@ -13,14 +13,3 @@ SYM_FUNC_START(native_save_fl)
+ 	ret
+ SYM_FUNC_END(native_save_fl)
+ EXPORT_SYMBOL(native_save_fl)
 -
 -/*
-- * This function asserts that we have exactly one clocksource and one
-- * clock_event_device in the end.
+- * void native_restore_fl(unsigned long flags)
+- * %eax/%rdi: flags
 - */
--static int __init efm32_timer_init(struct device_node *np)
+-SYM_FUNC_START(native_restore_fl)
+-	push %_ASM_ARG1
+-	popf
+-	ret
+-SYM_FUNC_END(native_restore_fl)
+-EXPORT_SYMBOL(native_restore_fl)
+diff --git a/arch/x86/kernel/paravirt.c b/arch/x86/kernel/paravirt.c
+index 18560b7..c60222a 100644
+--- a/arch/x86/kernel/paravirt.c
++++ b/arch/x86/kernel/paravirt.c
+@@ -320,7 +320,6 @@ struct paravirt_patch_template pv_ops = {
+ 
+ 	/* Irq ops. */
+ 	.irq.save_fl		= __PV_IS_CALLEE_SAVE(native_save_fl),
+-	.irq.restore_fl		= __PV_IS_CALLEE_SAVE(native_restore_fl),
+ 	.irq.irq_disable	= __PV_IS_CALLEE_SAVE(native_irq_disable),
+ 	.irq.irq_enable		= __PV_IS_CALLEE_SAVE(native_irq_enable),
+ 	.irq.safe_halt		= native_safe_halt,
+diff --git a/arch/x86/kernel/paravirt_patch.c b/arch/x86/kernel/paravirt_patch.c
+index 2fada2c..abd27ec 100644
+--- a/arch/x86/kernel/paravirt_patch.c
++++ b/arch/x86/kernel/paravirt_patch.c
+@@ -25,7 +25,6 @@ struct patch_xxl {
+ 	const unsigned char	mmu_read_cr2[3];
+ 	const unsigned char	mmu_read_cr3[3];
+ 	const unsigned char	mmu_write_cr3[3];
+-	const unsigned char	irq_restore_fl[2];
+ 	const unsigned char	cpu_wbinvd[2];
+ 	const unsigned char	mov64[3];
+ };
+@@ -37,7 +36,6 @@ static const struct patch_xxl patch_data_xxl = {
+ 	.mmu_read_cr2		= { 0x0f, 0x20, 0xd0 },	// mov %cr2, %[re]ax
+ 	.mmu_read_cr3		= { 0x0f, 0x20, 0xd8 },	// mov %cr3, %[re]ax
+ 	.mmu_write_cr3		= { 0x0f, 0x22, 0xdf },	// mov %rdi, %cr3
+-	.irq_restore_fl		= { 0x57, 0x9d },	// push %rdi; popfq
+ 	.cpu_wbinvd		= { 0x0f, 0x09 },	// wbinvd
+ 	.mov64			= { 0x48, 0x89, 0xf8 },	// mov %rdi, %rax
+ };
+@@ -71,7 +69,6 @@ unsigned int native_patch(u8 type, void *insn_buff, unsigned long addr,
+ 	switch (type) {
+ 
+ #ifdef CONFIG_PARAVIRT_XXL
+-	PATCH_CASE(irq, restore_fl, xxl, insn_buff, len);
+ 	PATCH_CASE(irq, save_fl, xxl, insn_buff, len);
+ 	PATCH_CASE(irq, irq_enable, xxl, insn_buff, len);
+ 	PATCH_CASE(irq, irq_disable, xxl, insn_buff, len);
+diff --git a/arch/x86/xen/enlighten_pv.c b/arch/x86/xen/enlighten_pv.c
+index 6abf3f2..dc0a337 100644
+--- a/arch/x86/xen/enlighten_pv.c
++++ b/arch/x86/xen/enlighten_pv.c
+@@ -1035,8 +1035,6 @@ void __init xen_setup_vcpu_info_placement(void)
+ 	 */
+ 	if (xen_have_vcpu_info_placement) {
+ 		pv_ops.irq.save_fl = __PV_IS_CALLEE_SAVE(xen_save_fl_direct);
+-		pv_ops.irq.restore_fl =
+-			__PV_IS_CALLEE_SAVE(xen_restore_fl_direct);
+ 		pv_ops.irq.irq_disable =
+ 			__PV_IS_CALLEE_SAVE(xen_irq_disable_direct);
+ 		pv_ops.irq.irq_enable =
+diff --git a/arch/x86/xen/irq.c b/arch/x86/xen/irq.c
+index 850c93f..dfa091d 100644
+--- a/arch/x86/xen/irq.c
++++ b/arch/x86/xen/irq.c
+@@ -42,28 +42,6 @@ asmlinkage __visible unsigned long xen_save_fl(void)
+ }
+ PV_CALLEE_SAVE_REGS_THUNK(xen_save_fl);
+ 
+-__visible void xen_restore_fl(unsigned long flags)
 -{
--	static int has_clocksource, has_clockevent;
--	int ret =3D 0;
+-	struct vcpu_info *vcpu;
 -
--	if (!has_clocksource) {
--		ret =3D efm32_clocksource_init(np);
--		if (!ret) {
--			has_clocksource =3D 1;
--			return 0;
--		}
--	}
+-	/* convert from IF type flag */
+-	flags = !(flags & X86_EFLAGS_IF);
 -
--	if (!has_clockevent) {
--		ret =3D efm32_clockevent_init(np);
--		if (!ret) {
--			has_clockevent =3D 1;
--			return 0;
--		}
--	}
+-	/* See xen_irq_enable() for why preemption must be disabled. */
+-	preempt_disable();
+-	vcpu = this_cpu_read(xen_vcpu);
+-	vcpu->evtchn_upcall_mask = flags;
 -
--	return ret;
+-	if (flags == 0) {
+-		barrier(); /* unmask then check (avoid races) */
+-		if (unlikely(vcpu->evtchn_upcall_pending))
+-			xen_force_evtchn_callback();
+-		preempt_enable();
+-	} else
+-		preempt_enable_no_resched();
 -}
--TIMER_OF_DECLARE(efm32compat, "efm32,timer", efm32_timer_init);
--TIMER_OF_DECLARE(efm32, "energymicro,efm32-timer", efm32_timer_init);
+-PV_CALLEE_SAVE_REGS_THUNK(xen_restore_fl);
+-
+ asmlinkage __visible void xen_irq_disable(void)
+ {
+ 	/* There's a one instruction preempt window here.  We need to
+@@ -118,7 +96,6 @@ static void xen_halt(void)
+ 
+ static const struct pv_irq_ops xen_irq_ops __initconst = {
+ 	.save_fl = PV_CALLEE_SAVE(xen_save_fl),
+-	.restore_fl = PV_CALLEE_SAVE(xen_restore_fl),
+ 	.irq_disable = PV_CALLEE_SAVE(xen_irq_disable),
+ 	.irq_enable = PV_CALLEE_SAVE(xen_irq_enable),
+ 
+diff --git a/arch/x86/xen/xen-asm.S b/arch/x86/xen/xen-asm.S
+index 1d738c5..02f3134 100644
+--- a/arch/x86/xen/xen-asm.S
++++ b/arch/x86/xen/xen-asm.S
+@@ -72,34 +72,6 @@ SYM_FUNC_START(xen_save_fl_direct)
+ 	ret
+ SYM_FUNC_END(xen_save_fl_direct)
+ 
+-
+-/*
+- * In principle the caller should be passing us a value return from
+- * xen_save_fl_direct, but for robustness sake we test only the
+- * X86_EFLAGS_IF flag rather than the whole byte. After setting the
+- * interrupt mask state, it checks for unmasked pending events and
+- * enters the hypervisor to get them delivered if so.
+- */
+-SYM_FUNC_START(xen_restore_fl_direct)
+-	FRAME_BEGIN
+-	testw $X86_EFLAGS_IF, %di
+-	setz PER_CPU_VAR(xen_vcpu_info) + XEN_vcpu_info_mask
+-	/*
+-	 * Preempt here doesn't matter because that will deal with any
+-	 * pending interrupts.  The pending check may end up being run
+-	 * on the wrong CPU, but that doesn't hurt.
+-	 */
+-
+-	/* check for unmasked and pending */
+-	cmpw $0x0001, PER_CPU_VAR(xen_vcpu_info) + XEN_vcpu_info_pending
+-	jnz 1f
+-	call check_events
+-1:
+-	FRAME_END
+-	ret
+-SYM_FUNC_END(xen_restore_fl_direct)
+-
+-
+ /*
+  * Force an event check by making a hypercall, but preserve regs
+  * before making the call.
+diff --git a/arch/x86/xen/xen-ops.h b/arch/x86/xen/xen-ops.h
+index b2fd80a..8d7ec49 100644
+--- a/arch/x86/xen/xen-ops.h
++++ b/arch/x86/xen/xen-ops.h
+@@ -131,7 +131,6 @@ static inline void __init xen_efi_init(struct boot_params *boot_params)
+ __visible void xen_irq_enable_direct(void);
+ __visible void xen_irq_disable_direct(void);
+ __visible unsigned long xen_save_fl_direct(void);
+-__visible void xen_restore_fl_direct(unsigned long);
+ 
+ __visible unsigned long xen_read_cr2(void);
+ __visible unsigned long xen_read_cr2_direct(void);
