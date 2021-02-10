@@ -2,118 +2,106 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B7C43168FA
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 10 Feb 2021 15:19:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AA726316D28
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 10 Feb 2021 18:47:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231432AbhBJOTg (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 10 Feb 2021 09:19:36 -0500
-Received: from mail.kernel.org ([198.145.29.99]:34568 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230526AbhBJOTX (ORCPT
+        id S233118AbhBJRqs (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 10 Feb 2021 12:46:48 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:33112 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233119AbhBJRqo (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 10 Feb 2021 09:19:23 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id D2BB264E77;
-        Wed, 10 Feb 2021 14:18:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1612966721;
-        bh=/H/VpuE4ftmMd1Jm1lW1k1psNWGjYaTa1sG7utPCWP8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Jxmz6XzlQ/YtWrL9W/YfZfx/AwJJNqC/ad908KSGQTVb+PdyYIVbHQBTS4j3byBFt
-         z+VwvbpFI7rJKzT4g5Zt+EbLq1gmgNNvfd9gyFgP5DCNlL91sjwkvsgt3UW164ia4b
-         j53OdRdFpcjiUbfuexjbLGQn4iG3y4pwd23K4OItiuyWSbZxQOuGovZVthbp9sSh4J
-         /pkJLQsAJ8uCthRIGqYwwyJPp4B7zxdFGNPmioNxtIe0lEVn0nq50MjLIWLZgsXO+o
-         HBEJIsUjxIBjVPPYxedLDl57bfEfUPs5e+k8PNvxUhKgrfP9rm7Thnt9yGqxlbz7QA
-         ni+ATs9hAdQ4g==
-Date:   Wed, 10 Feb 2021 15:18:38 +0100
-From:   Frederic Weisbecker <frederic@kernel.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     linux-tip-commits@vger.kernel.org, Mike Galbraith <efault@gmx.de>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org
-Subject: Re: [tip: sched/core] sched,x86: Allow !PREEMPT_DYNAMIC
-Message-ID: <20210210141838.GA53130@lothringen>
-References: <YCK1+JyFNxQnWeXK@hirez.programming.kicks-ass.net>
- <161296521143.23325.3662179234825253723.tip-bot2@tip-bot2>
+        Wed, 10 Feb 2021 12:46:44 -0500
+Date:   Wed, 10 Feb 2021 17:45:54 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1612979155;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=QhpO4wtRHBVDqOi6Ibrcz7CIBBDNPJaomOUcCEk9Exc=;
+        b=UsmbD4I8PKm2kvJ7BntT1kNAmHPugGfF3Wwk7GLgnq39umWvpZul1/Uv4OtXvHIyxoa9ye
+        DtEEEJj7h32u/NCSvlY5MfsHaRNfB7D7e9HscleDLlO53gE9GId9birbpupvj+hfnhajHY
+        t3430HPQj7a1q2aG4dZnoaqURXSS/ivdOAY7bLANRNJfnpRBMUi6Eu5gBGH2+SBRjWx3PR
+        SGopHbTNRlglHoftbfX5DClF8431+AYad6gXRWaWWI5SaJDstwKWGyVRU4IQEL4U/sJ4yP
+        GQX0fGwVFQ8dbK9dbuFI8Mtj9ombmAONC5CW7HMWLuITv8IRFj6I3YtMpTDM/w==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1612979155;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=QhpO4wtRHBVDqOi6Ibrcz7CIBBDNPJaomOUcCEk9Exc=;
+        b=6Bt0oRgAGt55sT3EPghPHzFgixMTBd9joLmkBPEo9UwuYqJZ5xVZue//DG1sx0qne0fU+e
+        AYDlL4vqxyIICGDQ==
+From:   "tip-bot2 for Andy Lutomirski" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/mm] x86/fault: Don't run fixups for SMAP violations
+Cc:     Andy Lutomirski <luto@kernel.org>, Borislav Petkov <bp@suse.de>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <66a02343624b1ff46f02a838c497fc05c1a871b3.1612924255.git.luto@kernel.org>
+References: <66a02343624b1ff46f02a838c497fc05c1a871b3.1612924255.git.luto@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <161296521143.23325.3662179234825253723.tip-bot2@tip-bot2>
+Message-ID: <161297915451.23325.5119224707479092069.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Wed, Feb 10, 2021 at 01:53:31PM -0000, tip-bot2 for Peter Zijlstra wrote:
-> The following commit has been merged into the sched/core branch of tip:
-> 
-> Commit-ID:     82891be90f3c42dc964fd61b8b2a89de12940c9f
-> Gitweb:        https://git.kernel.org/tip/82891be90f3c42dc964fd61b8b2a89de12940c9f
-> Author:        Peter Zijlstra <peterz@infradead.org>
-> AuthorDate:    Tue, 09 Feb 2021 22:02:33 +01:00
-> Committer:     Peter Zijlstra <peterz@infradead.org>
-> CommitterDate: Wed, 10 Feb 2021 14:44:51 +01:00
-> 
-> sched,x86: Allow !PREEMPT_DYNAMIC
-> 
-> Allow building x86 with PREEMPT_DYNAMIC=n, this is needed for
-> PREEMPT_RT as it makes no sense to not have full preemption on
-> PREEMPT_RT.
-> 
-> Fixes: 8c98e8cf723c ("preempt/dynamic: Provide preempt_schedule[_notrace]() static calls")
-> Reported-by: Mike Galbraith <efault@gmx.de>
-> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> Tested-by: Mike Galbraith <efault@gmx.de>
-> Link: https://lkml.kernel.org/r/YCK1+JyFNxQnWeXK@hirez.programming.kicks-ass.net
+The following commit has been merged into the x86/mm branch of tip:
 
-Also should we add something like this?
+Commit-ID:     ca247283781d754216395a41c5e8be8ec79a5f1c
+Gitweb:        https://git.kernel.org/tip/ca247283781d754216395a41c5e8be8ec79a5f1c
+Author:        Andy Lutomirski <luto@kernel.org>
+AuthorDate:    Tue, 09 Feb 2021 18:33:45 -08:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Wed, 10 Feb 2021 16:27:57 +01:00
 
-From 4e1de6d9d8804ea7edc6f8767abea37f5103799a Mon Sep 17 00:00:00 2001
-From: Frederic Weisbecker <frederic@kernel.org>
-Date: Wed, 10 Feb 2021 15:11:39 +0100
-Subject: [PATCH] preempt/dynamic: Make PREEMPT_DYNAMIC optional
+x86/fault: Don't run fixups for SMAP violations
 
-In order not to make the small trampoline overhead mandatory for archs
-that support HAVE_STATIC_CALL but not HAVE_STATIC_CALL_INLINE, make
-PREEMPT_DYNAMIC optional.
+A SMAP-violating kernel access is not a recoverable condition.  Imagine
+kernel code that, outside of a uaccess region, dereferences a pointer to
+the user range by accident.  If SMAP is on, this will reliably generate
+as an intentional user access.  This makes it easy for bugs to be
+overlooked if code is inadequately tested both with and without SMAP.
 
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+This was discovered because BPF can generate invalid accesses to user
+memory, but those warnings only got printed if SMAP was off. Make it so
+that this type of error will be discovered with SMAP on as well.
+
+ [ bp: Massage commit message. ]
+
+Signed-off-by: Andy Lutomirski <luto@kernel.org>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lkml.kernel.org/r/66a02343624b1ff46f02a838c497fc05c1a871b3.1612924255.git.luto@kernel.org
 ---
- kernel/Kconfig.preempt | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ arch/x86/mm/fault.c |  9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/Kconfig.preempt b/kernel/Kconfig.preempt
-index 416017301660..1fe759677907 100644
---- a/kernel/Kconfig.preempt
-+++ b/kernel/Kconfig.preempt
-@@ -40,7 +40,6 @@ config PREEMPT
- 	depends on !ARCH_NO_PREEMPT
- 	select PREEMPTION
- 	select UNINLINE_SPIN_UNLOCK if !ARCH_INLINE_SPIN_UNLOCK
--	select PREEMPT_DYNAMIC if HAVE_PREEMPT_DYNAMIC
- 	help
- 	  This option reduces the latency of the kernel by making
- 	  all kernel code (that is not executing in a critical section)
-@@ -83,11 +82,13 @@ config PREEMPTION
-        select PREEMPT_COUNT
+diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
+index 1a0cfed..1c3054b 100644
+--- a/arch/x86/mm/fault.c
++++ b/arch/x86/mm/fault.c
+@@ -1279,9 +1279,12 @@ void do_user_addr_fault(struct pt_regs *regs,
+ 	 */
+ 	if (unlikely(cpu_feature_enabled(X86_FEATURE_SMAP) &&
+ 		     !(error_code & X86_PF_USER) &&
+-		     !(regs->flags & X86_EFLAGS_AC)))
+-	{
+-		bad_area_nosemaphore(regs, error_code, address);
++		     !(regs->flags & X86_EFLAGS_AC))) {
++		/*
++		 * No extable entry here.  This was a kernel access to an
++		 * invalid pointer.  get_kernel_nofault() will not get here.
++		 */
++		page_fault_oops(regs, error_code, address);
+ 		return;
+ 	}
  
- config PREEMPT_DYNAMIC
--	bool
-+	bool "Override preemption flavour at boot time"
-+	depends on HAVE_PREEMPT_DYNAMIC && PREEMPT
-+	default HAVE_STATIC_CALL_INLINE
- 	help
- 	  This option allows to define the preemption model on the kernel
--	  command line parameter and thus override the default preemption
--	  model defined during compile time.
-+	  command line parameter "preempt=" and thus override the default
-+	  preemption model defined during compile time.
- 
- 	  The feature is primarily interesting for Linux distributions which
- 	  provide a pre-built kernel binary to reduce the number of kernel
-@@ -99,3 +100,5 @@ config PREEMPT_DYNAMIC
- 
- 	  Interesting if you want the same pre-built kernel should be used for
- 	  both Server and Desktop workloads.
-+
-+	  Say Y if you have CONFIG_HAVE_STATIC_CALL_INLINE.
--- 
-2.25.1
-
