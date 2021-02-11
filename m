@@ -2,55 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CA7A3182C0
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 11 Feb 2021 01:54:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 68A993182B6
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 11 Feb 2021 01:54:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230335AbhBKAvX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 10 Feb 2021 19:51:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34482 "EHLO
+        id S230020AbhBKAvH (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 10 Feb 2021 19:51:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34454 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230093AbhBKAvO (ORCPT
+        with ESMTP id S229743AbhBKAvG (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 10 Feb 2021 19:51:14 -0500
+        Wed, 10 Feb 2021 19:51:06 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7F5DC061788;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55283C061756;
         Wed, 10 Feb 2021 16:50:26 -0800 (PST)
 Date:   Thu, 11 Feb 2021 00:50:24 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1613004625;
+        s=2020; t=1613004624;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Yv4t5YixocZ8rJ7dt6A7fuu8UoDHZB/9DK5wiysk4U8=;
-        b=UAh/AIYjytT6yzzLP7g6+9wx+aaQ4rK2dA8lJGOG2VuJNjAvRqranu5tX9H/RNu1ibqzDk
-        lGnpjHd+/TAAMog+kpl3qdX2U3PljmKJSFzYdpgH3a9MMwBH4kywf1otvWYPx3JDJY/Cxv
-        eaQAeIKGR3bSEQ7uHlRPEgV0T9ftWmZ9yE6o0mxynL8160WD3fbxPU5fffb71qdBiCFcgo
-        bgQwDQsmxvmwIWip3XpneK3lA32HCIUHYqlPeA4uL2BoKvdqNSv9T5h8EEosYkThg4a6U5
-        9Nao0xHEWm3jhBprgfU8a25HfEFZiE69S8s4M1LLqJOEZkTwoUYA1g69SP7xnw==
+        bh=ZbR9B1Tsx9Pq3c7cpxmiv8ErRo0EaDvnFA4353iNUtg=;
+        b=ANZEfkyL2uMLjEhdrJ37acYBrD1fCH9V/YwP2As7QnJLRFCZGF5ZQk2RSKTKlm2IJ4DoUc
+        T9CmQkP7DmrN8Sz4O7nyhCBli2T6P4rpxyLrnm1uaq5EMCBFb6JGxEScQ5brjaGuny5R3M
+        WwCyYLRBZP5D5IEAdZnJSLS0TI4tfbtWdMX+4pRC8VRcQ7PJx6yBhan0HB0ET7Su2CG/qt
+        zEpnRcWG1P5GLxGs0ewJTiVoXBg2cdvMPAFh7nV/6IOtzpu5feCNQGLtJgiaWTMTVxA8b3
+        pG6NYbDOflKbrhxqQxgRe5zvdiuk1Zb5bRk0xWAnGfljtKQu4hIPO4gYcUmrsQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1613004625;
+        s=2020e; t=1613004624;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Yv4t5YixocZ8rJ7dt6A7fuu8UoDHZB/9DK5wiysk4U8=;
-        b=kpZ09jQeaWHg+e1Fs0xFjV9H31zOG6uwbC4DLflm4mo/u2IQC63XOFa1V+l8hKcUazTi9/
-        cl52RsiCslRWVOAA==
+        bh=ZbR9B1Tsx9Pq3c7cpxmiv8ErRo0EaDvnFA4353iNUtg=;
+        b=1rxZzSFxilCRbNAIzr3n1WX+BY2/KmSM8FXHjLU3H0xzh+8pUWGENezHNpbqrhEJHuL5jy
+        jeQhqkWVIky+4+AA==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/entry] x86/softirq: Remove indirection in do_softirq_own_stack()
+Subject: [tip: x86/entry] softirq: Move do_softirq_own_stack() to generic asm header
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Kees Cook <keescook@chromium.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210210002512.972714001@linutronix.de>
-References: <20210210002512.972714001@linutronix.de>
+In-Reply-To: <20210210002513.289960691@linutronix.de>
+References: <20210210002513.289960691@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <161300462488.23325.3422829173467212769.tip-bot2@tip-bot2>
+Message-ID: <161300462406.23325.11301767256395948426.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,158 +61,188 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/entry branch of tip:
 
-Commit-ID:     52d743f3b71265e14560a38f4c835d07b9c6fc4c
-Gitweb:        https://git.kernel.org/tip/52d743f3b71265e14560a38f4c835d07b9c6fc4c
+Commit-ID:     db1cc7aede37eb9235759131ddfefd9c0ea5136f
+Gitweb:        https://git.kernel.org/tip/db1cc7aede37eb9235759131ddfefd9c0ea5136f
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Wed, 10 Feb 2021 00:40:50 +01:00
+AuthorDate:    Wed, 10 Feb 2021 00:40:53 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 10 Feb 2021 23:34:15 +01:00
+CommitterDate: Wed, 10 Feb 2021 23:34:16 +01:00
 
-x86/softirq: Remove indirection in do_softirq_own_stack()
+softirq: Move do_softirq_own_stack() to generic asm header
 
-Use the new inline stack switching and remove the old ASM indirect call
-implementation.
+To avoid include recursion hell move the do_softirq_own_stack() related
+content into a generic asm header and include it from all places in arch/
+which need the prototype.
+
+This allows architectures to provide an inline implementation of
+do_softirq_own_stack() without introducing a lot of #ifdeffery all over the
+place.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Reviewed-by: Kees Cook <keescook@chromium.org>
-Link: https://lore.kernel.org/r/20210210002512.972714001@linutronix.de
-
+Link: https://lore.kernel.org/r/20210210002513.289960691@linutronix.de
 
 ---
- arch/x86/entry/entry_64.S        | 39 +-----------------------
- arch/x86/include/asm/irq_stack.h | 52 +++++++++----------------------
- arch/x86/kernel/irq_64.c         |  2 +-
- 3 files changed, 17 insertions(+), 76 deletions(-)
+ arch/parisc/kernel/irq.c            |  1 +
+ arch/powerpc/kernel/irq.c           |  1 +
+ arch/s390/kernel/irq.c              |  1 +
+ arch/sh/kernel/irq.c                |  1 +
+ arch/sparc/kernel/irq_64.c          |  1 +
+ arch/x86/kernel/irq_32.c            |  1 +
+ arch/x86/kernel/irq_64.c            |  1 +
+ include/asm-generic/Kbuild          |  1 +
+ include/asm-generic/softirq_stack.h | 14 ++++++++++++++
+ include/linux/interrupt.h           |  9 ---------
+ kernel/softirq.c                    |  2 ++
+ 11 files changed, 24 insertions(+), 9 deletions(-)
+ create mode 100644 include/asm-generic/softirq_stack.h
 
-diff --git a/arch/x86/entry/entry_64.S b/arch/x86/entry/entry_64.S
-index f446e90..bd52f67 100644
---- a/arch/x86/entry/entry_64.S
-+++ b/arch/x86/entry/entry_64.S
-@@ -756,45 +756,6 @@ SYM_CODE_START_LOCAL_NOALIGN(.Lbad_gs)
- SYM_CODE_END(.Lbad_gs)
- 	.previous
+diff --git a/arch/parisc/kernel/irq.c b/arch/parisc/kernel/irq.c
+index 49cd6d2..1632d52 100644
+--- a/arch/parisc/kernel/irq.c
++++ b/arch/parisc/kernel/irq.c
+@@ -17,6 +17,7 @@
+ #include <linux/types.h>
+ #include <asm/io.h>
  
--/*
-- * rdi: New stack pointer points to the top word of the stack
-- * rsi: Function pointer
-- * rdx: Function argument (can be NULL if none)
-- */
--SYM_FUNC_START(asm_call_on_stack)
--	/*
--	 * Save the frame pointer unconditionally. This allows the ORC
--	 * unwinder to handle the stack switch.
--	 */
--	pushq		%rbp
--	mov		%rsp, %rbp
--
--	/*
--	 * The unwinder relies on the word at the top of the new stack
--	 * page linking back to the previous RSP.
--	 */
--	mov		%rsp, (%rdi)
--	mov		%rdi, %rsp
--	/* Move the argument to the right place */
--	mov		%rdx, %rdi
--
--1:
--	.pushsection .discard.instr_begin
--	.long 1b - .
--	.popsection
--
--	CALL_NOSPEC	rsi
--
--2:
--	.pushsection .discard.instr_end
--	.long 2b - .
--	.popsection
--
--	/* Restore the previous stack pointer from RBP. */
--	leaveq
--	ret
--SYM_FUNC_END(asm_call_on_stack)
--
- #ifdef CONFIG_XEN_PV
- /*
-  * A note on the "critical region" in our callback handler.
-diff --git a/arch/x86/include/asm/irq_stack.h b/arch/x86/include/asm/irq_stack.h
-index dabc0cf..fa444c2 100644
---- a/arch/x86/include/asm/irq_stack.h
-+++ b/arch/x86/include/asm/irq_stack.h
-@@ -185,20 +185,23 @@
- 			      IRQ_CONSTRAINTS, regs, vector);		\
- }
++#include <asm/softirq_stack.h>
+ #include <asm/smp.h>
+ #include <asm/ldcw.h>
  
--static __always_inline bool irqstack_active(void)
--{
--	return __this_cpu_read(hardirq_stack_inuse);
--}
--
--void asm_call_on_stack(void *sp, void (*func)(void), void *arg);
-+#define ASM_CALL_SOFTIRQ						\
-+	"call %P[__func]				\n"
+diff --git a/arch/powerpc/kernel/irq.c b/arch/powerpc/kernel/irq.c
+index 6b1eca5..96296d3 100644
+--- a/arch/powerpc/kernel/irq.c
++++ b/arch/powerpc/kernel/irq.c
+@@ -65,6 +65,7 @@
+ #include <asm/livepatch.h>
+ #include <asm/asm-prototypes.h>
+ #include <asm/hw_irq.h>
++#include <asm/softirq_stack.h>
  
--static __always_inline void __run_on_irqstack(void (*func)(void))
--{
--	void *tos = __this_cpu_read(hardirq_stack_ptr);
--
--	__this_cpu_write(hardirq_stack_inuse, true);
--	asm_call_on_stack(tos, func, NULL);
--	__this_cpu_write(hardirq_stack_inuse, false);
-+/*
-+ * Macro to invoke __do_softirq on the irq stack. Contrary to the above
-+ * the only check which is necessary is whether the interrupt stack is
-+ * in use already.
-+ */
-+#define run_softirq_on_irqstack_cond()					\
-+{									\
-+	if (__this_cpu_read(hardirq_stack_inuse)) {			\
-+		__do_softirq();						\
-+	} else {							\
-+		__this_cpu_write(hardirq_stack_inuse, true);		\
-+		call_on_irqstack(__do_softirq, ASM_CALL_SOFTIRQ);	\
-+		__this_cpu_write(hardirq_stack_inuse, false);		\
-+	}								\
- }
+ #ifdef CONFIG_PPC64
+ #include <asm/paca.h>
+diff --git a/arch/s390/kernel/irq.c b/arch/s390/kernel/irq.c
+index f8a8b94..a1a2f75 100644
+--- a/arch/s390/kernel/irq.c
++++ b/arch/s390/kernel/irq.c
+@@ -27,6 +27,7 @@
+ #include <asm/irq.h>
+ #include <asm/hw_irq.h>
+ #include <asm/stacktrace.h>
++#include <asm/softirq_stack.h>
+ #include "entry.h"
  
- #else /* CONFIG_X86_64 */
-@@ -219,29 +222,6 @@ static __always_inline void __run_on_irqstack(void (*func)(void))
- 	irq_exit_rcu();							\
- }
+ DEFINE_PER_CPU_SHARED_ALIGNED(struct irq_stat, irq_stat);
+diff --git a/arch/sh/kernel/irq.c b/arch/sh/kernel/irq.c
+index ab5f790..ef0f082 100644
+--- a/arch/sh/kernel/irq.c
++++ b/arch/sh/kernel/irq.c
+@@ -20,6 +20,7 @@
+ #include <linux/uaccess.h>
+ #include <asm/thread_info.h>
+ #include <cpu/mmu_context.h>
++#include <asm/softirq_stack.h>
  
--static inline bool irqstack_active(void) { return false; }
--static inline void __run_on_irqstack(void (*func)(void)) { }
- #endif /* !CONFIG_X86_64 */
+ atomic_t irq_err_count;
  
--static __always_inline bool irq_needs_irq_stack(struct pt_regs *regs)
--{
--	if (IS_ENABLED(CONFIG_X86_32))
--		return false;
--	if (!regs)
--		return !irqstack_active();
--	return !user_mode(regs) && !irqstack_active();
--}
--
--
--static __always_inline void run_on_irqstack_cond(void (*func)(void),
--						 struct pt_regs *regs)
--{
--	lockdep_assert_irqs_disabled();
--
--	if (irq_needs_irq_stack(regs))
--		__run_on_irqstack(func);
--	else
--		func();
--}
--
- #endif
+diff --git a/arch/sparc/kernel/irq_64.c b/arch/sparc/kernel/irq_64.c
+index 3ec9f14..c8848bb 100644
+--- a/arch/sparc/kernel/irq_64.c
++++ b/arch/sparc/kernel/irq_64.c
+@@ -42,6 +42,7 @@
+ #include <asm/head.h>
+ #include <asm/hypervisor.h>
+ #include <asm/cacheflush.h>
++#include <asm/softirq_stack.h>
+ 
+ #include "entry.h"
+ #include "cpumap.h"
+diff --git a/arch/x86/kernel/irq_32.c b/arch/x86/kernel/irq_32.c
+index 0b79efc..044902d 100644
+--- a/arch/x86/kernel/irq_32.c
++++ b/arch/x86/kernel/irq_32.c
+@@ -22,6 +22,7 @@
+ 
+ #include <asm/apic.h>
+ #include <asm/nospec-branch.h>
++#include <asm/softirq_stack.h>
+ 
+ #ifdef CONFIG_DEBUG_STACKOVERFLOW
+ 
 diff --git a/arch/x86/kernel/irq_64.c b/arch/x86/kernel/irq_64.c
-index 7103f98..8d9f9a1 100644
+index b88fdb9..f335c39 100644
 --- a/arch/x86/kernel/irq_64.c
 +++ b/arch/x86/kernel/irq_64.c
-@@ -76,5 +76,5 @@ int irq_init_percpu_irqstack(unsigned int cpu)
+@@ -20,6 +20,7 @@
+ #include <linux/sched/task_stack.h>
  
- void do_softirq_own_stack(void)
- {
--	run_on_irqstack_cond(__do_softirq, NULL);
-+	run_softirq_on_irqstack_cond();
- }
+ #include <asm/cpu_entry_area.h>
++#include <asm/softirq_stack.h>
+ #include <asm/irq_stack.h>
+ #include <asm/io_apic.h>
+ #include <asm/apic.h>
+diff --git a/include/asm-generic/Kbuild b/include/asm-generic/Kbuild
+index 267f6df..bd68418 100644
+--- a/include/asm-generic/Kbuild
++++ b/include/asm-generic/Kbuild
+@@ -51,6 +51,7 @@ mandatory-y += sections.h
+ mandatory-y += serial.h
+ mandatory-y += shmparam.h
+ mandatory-y += simd.h
++mandatory-y += softirq_stack.h
+ mandatory-y += switch_to.h
+ mandatory-y += timex.h
+ mandatory-y += tlbflush.h
+diff --git a/include/asm-generic/softirq_stack.h b/include/asm-generic/softirq_stack.h
+new file mode 100644
+index 0000000..eceeecf
+--- /dev/null
++++ b/include/asm-generic/softirq_stack.h
+@@ -0,0 +1,14 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++#ifndef __ASM_GENERIC_SOFTIRQ_STACK_H
++#define __ASM_GENERIC_SOFTIRQ_STACK_H
++
++#ifdef CONFIG_HAVE_SOFTIRQ_ON_OWN_STACK
++void do_softirq_own_stack(void);
++#else
++static inline void do_softirq_own_stack(void)
++{
++	__do_softirq();
++}
++#endif
++
++#endif
+diff --git a/include/linux/interrupt.h b/include/linux/interrupt.h
+index f0b918f..967e257 100644
+--- a/include/linux/interrupt.h
++++ b/include/linux/interrupt.h
+@@ -569,15 +569,6 @@ struct softirq_action
+ asmlinkage void do_softirq(void);
+ asmlinkage void __do_softirq(void);
+ 
+-#ifdef CONFIG_HAVE_SOFTIRQ_ON_OWN_STACK
+-void do_softirq_own_stack(void);
+-#else
+-static inline void do_softirq_own_stack(void)
+-{
+-	__do_softirq();
+-}
+-#endif
+-
+ extern void open_softirq(int nr, void (*action)(struct softirq_action *));
+ extern void softirq_init(void);
+ extern void __raise_softirq_irqoff(unsigned int nr);
+diff --git a/kernel/softirq.c b/kernel/softirq.c
+index 9d71046..9908ec4 100644
+--- a/kernel/softirq.c
++++ b/kernel/softirq.c
+@@ -26,6 +26,8 @@
+ #include <linux/tick.h>
+ #include <linux/irq.h>
+ 
++#include <asm/softirq_stack.h>
++
+ #define CREATE_TRACE_POINTS
+ #include <trace/events/irq.h>
+ 
