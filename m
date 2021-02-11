@@ -2,52 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B9EB3182BF
+	by mail.lfdr.de (Postfix) with ESMTP id ED6693182C1
 	for <lists+linux-tip-commits@lfdr.de>; Thu, 11 Feb 2021 01:54:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230333AbhBKAvX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 10 Feb 2021 19:51:23 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:35534 "EHLO
+        id S230359AbhBKAvY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 10 Feb 2021 19:51:24 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:35540 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230059AbhBKAvJ (ORCPT
+        with ESMTP id S230073AbhBKAvJ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Wed, 10 Feb 2021 19:51:09 -0500
 Date:   Thu, 11 Feb 2021 00:50:26 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1613004626;
+        s=2020; t=1613004627;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ekGaO8yzrbcjGv5e3X/YOOgr9mUzt/CyqelhfnncumQ=;
-        b=Mod2fJwLumzFQEN/bhZH/oUbN01pK/CS6/cCNQ2RExd3BIe+KTArpg9C7d1nxrqxHQ0hqp
-        8pEtjXD+/XEHOszjEUIQkVcMO/UHYP37M6xbXF17+kX4pANZynXoLhJLxH8xeYl7b/OMN4
-        HlNK+faIMIxdKaInHn1emRxV6sNGAXayhjY2nHAGjpB3GN/mIqLlS55Npv2nFcDjXfepUJ
-        QRXktorUsEK712f9TbsatVSdECKyV3BsSzCYopCLxNSWHQvmfzOPEiB5aqvvz1p0y7NLWM
-        dgAz/6r6iugoJTFetrzsLcztUuKpyDYkwq7t/k8xeeO1KLzEkHamSzpZsanUHA==
+        bh=uSA4uYqhoMBg3xQ5/uxVx4rSThHhDZRiv8V1vm/1djg=;
+        b=DjM55M/gc67fel68GIFVhYIiXx3MtFPwHpI4RSpS/YsmthexxdRSSqv9D2O8h0IDe+EQaR
+        1U1Vy2j2V+v9CHFpfclzjCMm2gq3cinbWRzqksd1+dn/4qaK35vCT6BerxZ/S3pgKr5lg3
+        SNkQdvcPK7f2qlgMzYI2YbKjWUkz9Wqy2/K+AfLPgg8fTbRZRYGgTGnlkYMabA6j+acFX3
+        pZWXnzPIPXsPcgr+WppXC5ay7Sk6UUYF4M+sKpsq13vr21JE1QqOFMpWLXa70CBDgsVxun
+        ZwfQ2yg+qTv13qwzAM6t9kbeJuQgWTWwgyrLIp9KSytWUf0vrLUfQ36eTH8LGQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1613004626;
+        s=2020e; t=1613004627;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ekGaO8yzrbcjGv5e3X/YOOgr9mUzt/CyqelhfnncumQ=;
-        b=iVdsQjTw4GhztveBmKIKZG2rm+rtxZ0gBaZwmhE4dGgNKwQT9LVzdw2GZAZf5pYXEr4WJi
-        BwGz5fiV3o+NyCBg==
+        bh=uSA4uYqhoMBg3xQ5/uxVx4rSThHhDZRiv8V1vm/1djg=;
+        b=f5B7ygLRbw3Mu+dx6EgUSZc28EMKnmD+6RhdtNMnyINdIq60ewFjUG6QT8VqFutBziuQTB
+        r6ZhC9iSYcCC1oCQ==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/entry] x86/irq/64: Adjust the per CPU irq stack pointer by 8
+Subject: [tip: x86/entry] x86/irq: Sanitize irq stack tracking
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Kees Cook <keescook@chromium.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210210002512.354260928@linutronix.de>
-References: <20210210002512.354260928@linutronix.de>
+In-Reply-To: <20210210002512.228830141@linutronix.de>
+References: <20210210002512.228830141@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <161300462633.23325.3267212299771627736.tip-bot2@tip-bot2>
+Message-ID: <161300462663.23325.18001189785066981366.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,193 +58,123 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/entry branch of tip:
 
-Commit-ID:     951c2a51ae75382d519839e2308394ad43ce4b40
-Gitweb:        https://git.kernel.org/tip/951c2a51ae75382d519839e2308394ad43ce4b40
+Commit-ID:     e7f89001797148e8dc7060c335df2c56e73a8c7a
+Gitweb:        https://git.kernel.org/tip/e7f89001797148e8dc7060c335df2c56e73a8c7a
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Wed, 10 Feb 2021 00:40:44 +01:00
+AuthorDate:    Wed, 10 Feb 2021 00:40:43 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 10 Feb 2021 23:34:14 +01:00
+CommitterDate: Wed, 10 Feb 2021 23:34:13 +01:00
 
-x86/irq/64: Adjust the per CPU irq stack pointer by 8
+x86/irq: Sanitize irq stack tracking
 
-The per CPU hardirq_stack_ptr contains the pointer to the irq stack in the
-form that it is ready to be assigned to [ER]SP so that the first push ends
-up on the top entry of the stack.
+The recursion protection for hard interrupt stacks is an unsigned int per
+CPU variable initialized to -1 named __irq_count. 
 
-But the stack switching on 64 bit has the following rules:
+The irq stack switching is only done when the variable is -1, which creates
+worse code than just checking for 0. When the stack switching happens it
+uses this_cpu_add/sub(1), but there is no reason to do so. It simply can
+use straight writes. This is a historical leftover from the low level ASM
+code which used inc and jz to make a decision.
 
-    1) Store the current stack pointer (RSP) in the top most stack entry
-       to allow the unwinder to link back to the previous stack
-
-    2) Set RSP to the top most stack entry
-
-    3) Invoke functions on the irq stack
-
-    4) Pop RSP from the top most stack entry (stored in #1) so it's back
-       to the original stack.
-
-That requires all stack switching code to decrement the stored pointer by 8
-in order to be able to store the current RSP and then set RSP to that
-location. That's a pointless exercise.
-
-Do the -8 adjustment right when storing the pointer and make the data type
-a void pointer to avoid confusion vs. the struct irq_stack data type which
-is on 64bit only used to declare the backing store. Move the definition
-next to the inuse flag so they likely end up in the same cache
-line. Sticking them into a struct to enforce it is a seperate change.
+Rename it to hardirq_stack_inuse, make it a bool and use plain stores.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Reviewed-by: Kees Cook <keescook@chromium.org>
-Link: https://lore.kernel.org/r/20210210002512.354260928@linutronix.de
+Link: https://lore.kernel.org/r/20210210002512.228830141@linutronix.de
+
 
 ---
- arch/x86/include/asm/irq_stack.h |  6 +++---
- arch/x86/include/asm/processor.h |  7 +++----
+ arch/x86/include/asm/irq_stack.h | 14 +++++++-------
+ arch/x86/include/asm/processor.h |  2 +-
  arch/x86/kernel/cpu/common.c     |  2 +-
- arch/x86/kernel/dumpstack_64.c   | 22 ++++++++++++++++------
- arch/x86/kernel/irq_64.c         |  6 ++++--
- 5 files changed, 27 insertions(+), 16 deletions(-)
+ arch/x86/kernel/process_64.c     |  2 +-
+ 4 files changed, 10 insertions(+), 10 deletions(-)
 
 diff --git a/arch/x86/include/asm/irq_stack.h b/arch/x86/include/asm/irq_stack.h
-index 4487bb9..554f84b 100644
+index 7758169..4487bb9 100644
 --- a/arch/x86/include/asm/irq_stack.h
 +++ b/arch/x86/include/asm/irq_stack.h
-@@ -23,7 +23,7 @@ static __always_inline void __run_on_irqstack(void (*func)(void))
- 	void *tos = __this_cpu_read(hardirq_stack_ptr);
- 
- 	__this_cpu_write(hardirq_stack_inuse, true);
--	asm_call_on_stack(tos - 8, func, NULL);
-+	asm_call_on_stack(tos, func, NULL);
- 	__this_cpu_write(hardirq_stack_inuse, false);
+@@ -9,7 +9,7 @@
+ #ifdef CONFIG_X86_64
+ static __always_inline bool irqstack_active(void)
+ {
+-	return __this_cpu_read(irq_count) != -1;
++	return __this_cpu_read(hardirq_stack_inuse);
  }
  
-@@ -34,7 +34,7 @@ __run_sysvec_on_irqstack(void (*func)(struct pt_regs *regs),
+ void asm_call_on_stack(void *sp, void (*func)(void), void *arg);
+@@ -22,9 +22,9 @@ static __always_inline void __run_on_irqstack(void (*func)(void))
+ {
  	void *tos = __this_cpu_read(hardirq_stack_ptr);
  
- 	__this_cpu_write(hardirq_stack_inuse, true);
--	asm_call_sysvec_on_stack(tos - 8, func, regs);
-+	asm_call_sysvec_on_stack(tos, func, regs);
- 	__this_cpu_write(hardirq_stack_inuse, false);
+-	__this_cpu_add(irq_count, 1);
++	__this_cpu_write(hardirq_stack_inuse, true);
+ 	asm_call_on_stack(tos - 8, func, NULL);
+-	__this_cpu_sub(irq_count, 1);
++	__this_cpu_write(hardirq_stack_inuse, false);
  }
  
-@@ -45,7 +45,7 @@ __run_irq_on_irqstack(void (*func)(struct irq_desc *desc),
+ static __always_inline void
+@@ -33,9 +33,9 @@ __run_sysvec_on_irqstack(void (*func)(struct pt_regs *regs),
+ {
  	void *tos = __this_cpu_read(hardirq_stack_ptr);
  
- 	__this_cpu_write(hardirq_stack_inuse, true);
--	asm_call_irq_on_stack(tos - 8, func, desc);
-+	asm_call_irq_on_stack(tos, func, desc);
- 	__this_cpu_write(hardirq_stack_inuse, false);
+-	__this_cpu_add(irq_count, 1);
++	__this_cpu_write(hardirq_stack_inuse, true);
+ 	asm_call_sysvec_on_stack(tos - 8, func, regs);
+-	__this_cpu_sub(irq_count, 1);
++	__this_cpu_write(hardirq_stack_inuse, false);
  }
  
+ static __always_inline void
+@@ -44,9 +44,9 @@ __run_irq_on_irqstack(void (*func)(struct irq_desc *desc),
+ {
+ 	void *tos = __this_cpu_read(hardirq_stack_ptr);
+ 
+-	__this_cpu_add(irq_count, 1);
++	__this_cpu_write(hardirq_stack_inuse, true);
+ 	asm_call_irq_on_stack(tos - 8, func, desc);
+-	__this_cpu_sub(irq_count, 1);
++	__this_cpu_write(hardirq_stack_inuse, false);
+ }
+ 
+ #else /* CONFIG_X86_64 */
 diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
-index 11d10f4..dc6d149 100644
+index c20a52b..11d10f4 100644
 --- a/arch/x86/include/asm/processor.h
 +++ b/arch/x86/include/asm/processor.h
-@@ -426,8 +426,6 @@ struct irq_stack {
- 	char		stack[IRQ_STACK_SIZE];
- } __aligned(IRQ_STACK_SIZE);
- 
--DECLARE_PER_CPU(struct irq_stack *, hardirq_stack_ptr);
--
- #ifdef CONFIG_X86_32
- DECLARE_PER_CPU(unsigned long, cpu_current_top_of_stack);
- #else
-@@ -454,6 +452,7 @@ static inline unsigned long cpu_kernelmode_gs_base(int cpu)
+@@ -454,7 +454,7 @@ static inline unsigned long cpu_kernelmode_gs_base(int cpu)
  	return (unsigned long)per_cpu(fixed_percpu_data.gs_base, cpu);
  }
  
-+DECLARE_PER_CPU(void *, hardirq_stack_ptr);
- DECLARE_PER_CPU(bool, hardirq_stack_inuse);
+-DECLARE_PER_CPU(unsigned int, irq_count);
++DECLARE_PER_CPU(bool, hardirq_stack_inuse);
  extern asmlinkage void ignore_sysret(void);
  
-@@ -473,9 +472,9 @@ struct stack_canary {
- };
- DECLARE_PER_CPU_ALIGNED(struct stack_canary, stack_canary);
- #endif
--/* Per CPU softirq stack pointer */
-+DECLARE_PER_CPU(struct irq_stack *, hardirq_stack_ptr);
- DECLARE_PER_CPU(struct irq_stack *, softirq_stack_ptr);
--#endif	/* X86_64 */
-+#endif	/* !X86_64 */
- 
- extern unsigned int fpu_kernel_xstate_size;
- extern unsigned int fpu_user_xstate_size;
+ /* Save actual FS/GS selectors and bases to current->thread */
 diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index 845c8a4..c5e23f3 100644
+index 35ad848..845c8a4 100644
 --- a/arch/x86/kernel/cpu/common.c
 +++ b/arch/x86/kernel/cpu/common.c
-@@ -1739,7 +1739,7 @@ DEFINE_PER_CPU(struct task_struct *, current_task) ____cacheline_aligned =
- 	&init_task;
+@@ -1740,7 +1740,7 @@ DEFINE_PER_CPU(struct task_struct *, current_task) ____cacheline_aligned =
  EXPORT_PER_CPU_SYMBOL(current_task);
  
--DEFINE_PER_CPU(struct irq_stack *, hardirq_stack_ptr);
-+DEFINE_PER_CPU(void *, hardirq_stack_ptr);
- DEFINE_PER_CPU(bool, hardirq_stack_inuse);
+ DEFINE_PER_CPU(struct irq_stack *, hardirq_stack_ptr);
+-DEFINE_PER_CPU(unsigned int, irq_count) __visible = -1;
++DEFINE_PER_CPU(bool, hardirq_stack_inuse);
  
  DEFINE_PER_CPU(int, __preempt_count) = INIT_PREEMPT_COUNT;
-diff --git a/arch/x86/kernel/dumpstack_64.c b/arch/x86/kernel/dumpstack_64.c
-index 1dd8513..5601b95 100644
---- a/arch/x86/kernel/dumpstack_64.c
-+++ b/arch/x86/kernel/dumpstack_64.c
-@@ -128,12 +128,21 @@ static __always_inline bool in_exception_stack(unsigned long *stack, struct stac
+ EXPORT_PER_CPU_SYMBOL(__preempt_count);
+diff --git a/arch/x86/kernel/process_64.c b/arch/x86/kernel/process_64.c
+index ad582f9..d08307d 100644
+--- a/arch/x86/kernel/process_64.c
++++ b/arch/x86/kernel/process_64.c
+@@ -539,7 +539,7 @@ __switch_to(struct task_struct *prev_p, struct task_struct *next_p)
+ 	int cpu = smp_processor_id();
  
- static __always_inline bool in_irq_stack(unsigned long *stack, struct stack_info *info)
- {
--	unsigned long *end   = (unsigned long *)this_cpu_read(hardirq_stack_ptr);
--	unsigned long *begin = end - (IRQ_STACK_SIZE / sizeof(long));
-+	unsigned long *end = (unsigned long *)this_cpu_read(hardirq_stack_ptr);
-+	unsigned long *begin;
+ 	WARN_ON_ONCE(IS_ENABLED(CONFIG_DEBUG_ENTRY) &&
+-		     this_cpu_read(irq_count) != -1);
++		     this_cpu_read(hardirq_stack_inuse));
  
- 	/*
--	 * This is a software stack, so 'end' can be a valid stack pointer.
--	 * It just means the stack is empty.
-+	 * @end points directly to the top most stack entry to avoid a -8
-+	 * adjustment in the stack switch hotpath. Adjust it back before
-+	 * calculating @begin.
-+	 */
-+	end++;
-+	begin = end - (IRQ_STACK_SIZE / sizeof(long));
-+
-+	/*
-+	 * Due to the switching logic RSP can never be == @end because the
-+	 * final operation is 'popq %rsp' which means after that RSP points
-+	 * to the original stack and not to @end.
- 	 */
- 	if (stack < begin || stack >= end)
- 		return false;
-@@ -143,8 +152,9 @@ static __always_inline bool in_irq_stack(unsigned long *stack, struct stack_info
- 	info->end	= end;
- 
- 	/*
--	 * The next stack pointer is the first thing pushed by the entry code
--	 * after switching to the irq stack.
-+	 * The next stack pointer is stored at the top of the irq stack
-+	 * before switching to the irq stack. Actual stack entries are all
-+	 * below that.
- 	 */
- 	info->next_sp = (unsigned long *)*(end - 1);
- 
-diff --git a/arch/x86/kernel/irq_64.c b/arch/x86/kernel/irq_64.c
-index 440eed5..7103f98 100644
---- a/arch/x86/kernel/irq_64.c
-+++ b/arch/x86/kernel/irq_64.c
-@@ -48,7 +48,8 @@ static int map_irq_stack(unsigned int cpu)
- 	if (!va)
- 		return -ENOMEM;
- 
--	per_cpu(hardirq_stack_ptr, cpu) = va + IRQ_STACK_SIZE;
-+	/* Store actual TOS to avoid adjustment in the hotpath */
-+	per_cpu(hardirq_stack_ptr, cpu) = va + IRQ_STACK_SIZE - 8;
- 	return 0;
- }
- #else
-@@ -60,7 +61,8 @@ static int map_irq_stack(unsigned int cpu)
- {
- 	void *va = per_cpu_ptr(&irq_stack_backing_store, cpu);
- 
--	per_cpu(hardirq_stack_ptr, cpu) = va + IRQ_STACK_SIZE;
-+	/* Store actual TOS to avoid adjustment in the hotpath */
-+	per_cpu(hardirq_stack_ptr, cpu) = va + IRQ_STACK_SIZE - 8;
- 	return 0;
- }
- #endif
+ 	if (!test_thread_flag(TIF_NEED_FPU_LOAD))
+ 		switch_fpu_prepare(prev_fpu, cpu);
