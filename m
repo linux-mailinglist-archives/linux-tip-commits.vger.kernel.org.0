@@ -2,52 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D6C213182BB
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 11 Feb 2021 01:54:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DA8F33182C3
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 11 Feb 2021 01:54:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230289AbhBKAvV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 10 Feb 2021 19:51:21 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:35526 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230055AbhBKAvJ (ORCPT
+        id S230389AbhBKAv0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 10 Feb 2021 19:51:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34488 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230102AbhBKAvO (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 10 Feb 2021 19:51:09 -0500
+        Wed, 10 Feb 2021 19:51:14 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABD3DC06178C;
+        Wed, 10 Feb 2021 16:50:28 -0800 (PST)
 Date:   Thu, 11 Feb 2021 00:50:26 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1613004626;
+        s=2020; t=1613004627;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=2XVOHnUUrTxPAaH3KOwdh/vGwIiTcz9Kgj265LbFboA=;
-        b=Exrc3H/QCYCNtIcy3nZFqSm85vwS/fApPPrHE7ZYgozrv/B5tgX9DLN6Q2aoPeAatxFTAo
-        QPwHer5qHl8EQNJ339rC7HQT23z2pVMezaNvg66aPXzkJEf1njzgeqQdq3DGxdvUGXmOhl
-        AcUzusv4NbKO6loTk/LO6j0BfpkLi3RIxgrQ8orsRrU2basiwv+tLSTEiw1/XKNosmqkWw
-        jxaVSUTi0cfO4xcVUkfZcSS4jFFeMtFA9qEE39Zedu2OQgSNeL7aqZfDV91uH/lxxMnErE
-        vGpg16ZAb5Ujb5npSYkwxSzMt/I19giM3SRep3m9tceDKQs/pgJx1yMfTba+tg==
+        bh=pX+YaPAnnOVy3bv73++XGwEpy7ufnfN5Bx2KrTGv/HY=;
+        b=F5S9N+P7sd5aD+IpPASsvyjhkDO7TOqLv4tLOsGmMqcAsOUmoRTDRWDJOvT9J9Uk+GBePE
+        d/7tlDrcsaU4sIkZEFIE4ElbsvsYgyia6ppAI5HdEw6yw41qcWG4qk8A1Yu4SXdGfdwB4I
+        YVn6s/Or389Eai9x49F98BOGsaYvRtvhBj/iTcYq4up5N+B38EJgbn87ttrArqPshCdAs6
+        U6eVibZQQVOo/MkAt2q0cYRNq8IFfb4FhlTPcUQJYh2AMyAdIZ/E9K8ZbcjJsq5mmXFjA/
+        ZDPVukBvHN5WA7h7fBJZDtneBBvdaRERj9BYi8/GDuBuv+FeaGNKl87gIpz2OQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1613004626;
+        s=2020e; t=1613004627;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=2XVOHnUUrTxPAaH3KOwdh/vGwIiTcz9Kgj265LbFboA=;
-        b=ejuFf95yUcHPaSgMXcGzZUbBE5RuYrQ3YpLQSIx+B3m3BSfYBmE1SQJdBsQ7j0JZICFc95
-        DwO6MxzZfzWjefDQ==
+        bh=pX+YaPAnnOVy3bv73++XGwEpy7ufnfN5Bx2KrTGv/HY=;
+        b=81nddm/KQnK3aWbINgFR34oxryELKSoE23eDWV4isWZz1ccH2ycfBwq/+QF/Z5C/wcoDfb
+        ikqlnc0TciK744Dw==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/entry] x86/apic: Split out spurious handling code
+Subject: [tip: x86/entry] x86/entry: Fix instrumentation annotation
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Kees Cook <keescook@chromium.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20210210002512.469379641@linutronix.de>
-References: <20210210002512.469379641@linutronix.de>
+        Kees Cook <keescook@chromium.org>, stable@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20210210002512.106502464@linutronix.de>
+References: <20210210002512.106502464@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <161300462610.23325.8050669891207216296.tip-bot2@tip-bot2>
+Message-ID: <161300462686.23325.5366837009836887341.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,82 +61,38 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/entry branch of tip:
 
-Commit-ID:     3c5e0267ec3e6ed7d3f1793273cbf0beb4f86a74
-Gitweb:        https://git.kernel.org/tip/3c5e0267ec3e6ed7d3f1793273cbf0beb4f86a74
+Commit-ID:     15f720aabe71a5662c4198b22532d95bbeec80ef
+Gitweb:        https://git.kernel.org/tip/15f720aabe71a5662c4198b22532d95bbeec80ef
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Wed, 10 Feb 2021 00:40:45 +01:00
+AuthorDate:    Wed, 10 Feb 2021 00:40:42 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 10 Feb 2021 23:34:14 +01:00
+CommitterDate: Wed, 10 Feb 2021 23:34:13 +01:00
 
-x86/apic: Split out spurious handling code
+x86/entry: Fix instrumentation annotation
 
-sysvec_spurious_apic_interrupt() calls into the handling body of
-__spurious_interrupt() which is not obvious as that function is declared
-inside the DEFINE_IDTENTRY_IRQ(spurious_interrupt) macro.
+Embracing a callout into instrumentation_begin() / instrumentation_begin()
+does not really make sense. Make the latter instrumentation_end().
 
-As __spurious_interrupt() is currently always inlined this ends up with two
-copies of the same code for no reason.
-
-Split the handling function out and invoke it from both entry points.
-
+Fixes: 2f6474e4636b ("x86/entry: Switch XEN/PV hypercall entry to IDTENTRY")
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Reviewed-by: Kees Cook <keescook@chromium.org>
-Link: https://lore.kernel.org/r/20210210002512.469379641@linutronix.de
-
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20210210002512.106502464@linutronix.de
 
 ---
- arch/x86/kernel/apic/apic.c | 31 +++++++++++++++++++------------
- 1 file changed, 19 insertions(+), 12 deletions(-)
+ arch/x86/entry/common.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
-index 6bd20c0..02956c0 100644
---- a/arch/x86/kernel/apic/apic.c
-+++ b/arch/x86/kernel/apic/apic.c
-@@ -2133,18 +2133,11 @@ void __init register_lapic_address(unsigned long address)
-  * Local APIC interrupts
-  */
+diff --git a/arch/x86/entry/common.c b/arch/x86/entry/common.c
+index 18d8f17..c4efffb 100644
+--- a/arch/x86/entry/common.c
++++ b/arch/x86/entry/common.c
+@@ -266,7 +266,7 @@ __visible noinstr void xen_pv_evtchn_do_upcall(struct pt_regs *regs)
  
--/**
-- * spurious_interrupt - Catch all for interrupts raised on unused vectors
-- * @regs:	Pointer to pt_regs on stack
-- * @vector:	The vector number
-- *
-- * This is invoked from ASM entry code to catch all interrupts which
-- * trigger on an entry which is routed to the common_spurious idtentry
-- * point.
-- *
-- * Also called from sysvec_spurious_apic_interrupt().
-+/*
-+ * Common handling code for spurious_interrupt and spurious_vector entry
-+ * points below. No point in allowing the compiler to inline it twice.
-  */
--DEFINE_IDTENTRY_IRQ(spurious_interrupt)
-+static noinline void handle_spurious_interrupt(u8 vector)
- {
- 	u32 v;
+ 	instrumentation_begin();
+ 	run_on_irqstack_cond(__xen_pv_evtchn_do_upcall, regs);
+-	instrumentation_begin();
++	instrumentation_end();
  
-@@ -2179,9 +2172,23 @@ out:
- 	trace_spurious_apic_exit(vector);
- }
+ 	set_irq_regs(old_regs);
  
-+/**
-+ * spurious_interrupt - Catch all for interrupts raised on unused vectors
-+ * @regs:	Pointer to pt_regs on stack
-+ * @vector:	The vector number
-+ *
-+ * This is invoked from ASM entry code to catch all interrupts which
-+ * trigger on an entry which is routed to the common_spurious idtentry
-+ * point.
-+ */
-+DEFINE_IDTENTRY_IRQ(spurious_interrupt)
-+{
-+	handle_spurious_interrupt(vector);
-+}
-+
- DEFINE_IDTENTRY_SYSVEC(sysvec_spurious_apic_interrupt)
- {
--	__spurious_interrupt(regs, SPURIOUS_APIC_VECTOR);
-+	handle_spurious_interrupt(SPURIOUS_APIC_VECTOR);
- }
- 
- /*
