@@ -2,14 +2,14 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C1C32319E8A
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 12 Feb 2021 13:38:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B0DFD319E8C
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 12 Feb 2021 13:38:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231236AbhBLMiW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 12 Feb 2021 07:38:22 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:45330 "EHLO
+        id S230482AbhBLMif (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 12 Feb 2021 07:38:35 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:45332 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231264AbhBLMhv (ORCPT
+        with ESMTP id S231278AbhBLMhv (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Fri, 12 Feb 2021 07:37:51 -0500
 Date:   Fri, 12 Feb 2021 12:37:07 -0000
@@ -18,31 +18,29 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=2WaDoHHKmM0pCeDccu4x6VJnqvweuwKEfinkIKT6gX4=;
-        b=aLvqaGCGw7+27JErbBbvagki19LUPKi1wh1ZL0j4nvvGius7MSE8Dag/lX/3VDU0MbBWry
-        veVnv+I3yDRkLWsD6dlQMdDgQpfXIRUCG7NrqRhdO4N6GXb+pBQDAbeWfZO0lONmUGGd+m
-        l6YkfmdrN5lBxF+5YKNw1/3hezBjoNqhpC1sLcdvpHoN1SYAMaxDiGQD5auaCGXX9GR3TN
-        ACCn3D1brYdrPJYvN9ogkbNqRQ5XCu9B8cDj2ilipSSDiQohZWIZnO/T3mPPnyDjZIo3MB
-        IheWT1QYjANexg/Cnw4IG1nwK/DITYKERO7wu4/wJmQ9TW0XgCqW3zHUGX2XNA==
+        bh=hObuhokv9DXAro6iPtrPgaGy2mZjO+YCQuxrkoxn7gc=;
+        b=hMa8PROhqH/Vk7kgpqtU85qYeaN2c4MqzTzo0pg7RIga0Ig7Go6Q2MkyqERsVwH0WmcBL3
+        Lt/0IDdKYpkdgdAKImVYHhWJXpOWZ3bY3WTf+85xRQH3Ba0sxreRjhiI1p2XasHLd0Ib22
+        ADF7+dnj68xKr2e9hJCTdRqJa2f7n/wXCfcgKAMmERQt1R7RyA1it/TXVDbtJognV0fAzm
+        bRNanAbvlcWFthEr90uNhjmdfrdF5hA8rsWUmtXm5I6rkgNPqwd3vYgL7vpiKoqMaSPnmI
+        UIczuPbzHYjC7HeYuKchkZ40u+FdskTKxIe7U5/flH9onX2JElfP6lPGgvNL2g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1613133427;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=2WaDoHHKmM0pCeDccu4x6VJnqvweuwKEfinkIKT6gX4=;
-        b=E+GAbM8IB24IAO/wjGUbH/P+8LM2QWV3FeQAzb2ux3/Luo5fffAFsbBk2gYYG/NMLwJIW2
-        dnw+CbfIlmaqkJDw==
-From:   "tip-bot2 for Willy Tarreau" <tip-bot2@linutronix.de>
+        bh=hObuhokv9DXAro6iPtrPgaGy2mZjO+YCQuxrkoxn7gc=;
+        b=SPgz1CJzLHdhDPljIw+y6aKcbxPawjqfOYLmG3O+8j/0wsxuQ0ksvzQYPsNkoT91M0YRQB
+        Hwo5bByD/eR5UuBA==
+From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] tools/nolibc: Add the definition for dup()
-Cc:     Valentin Schneider <valentin.schneider@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>, Willy Tarreau <w@1wt.eu>,
-        "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
+Subject: [tip: core/rcu] rcutorture: Add rcutree.use_softirq=0 to RUDE01 and TASKS01
+Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <161313342710.23325.15512886496672918580.tip-bot2@tip-bot2>
+Message-ID: <161313342734.23325.4567901204038337648.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -53,48 +51,38 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     c261145abd2461f921ac44ad70c28778dda710f4
-Gitweb:        https://git.kernel.org/tip/c261145abd2461f921ac44ad70c28778dda710f4
-Author:        Willy Tarreau <w@1wt.eu>
-AuthorDate:    Thu, 21 Jan 2021 08:20:23 +01:00
+Commit-ID:     d945f797e483979bdeded76266c366f35929afb8
+Gitweb:        https://git.kernel.org/tip/d945f797e483979bdeded76266c366f35929afb8
+Author:        Paul E. McKenney <paulmck@kernel.org>
+AuthorDate:    Fri, 25 Dec 2020 07:40:48 -08:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Thu, 21 Jan 2021 10:06:44 -08:00
+CommitterDate: Tue, 12 Jan 2021 09:55:23 -08:00
 
-tools/nolibc: Add the definition for dup()
+rcutorture: Add rcutree.use_softirq=0 to RUDE01 and TASKS01
 
-This commit adds the dup() function, which was omitted when sys_dup()
-was defined.  This is a port of nolibc's upstream commit 47cc42a79c92
-to the Linux kernel.
+RCU's rcutree.use_softirq=0 kernel boot parameter substitutes the per-CPU
+rcuc kthreads for softirq, which is used in real-time installations.
+However, none of the rcutorture scenarios test this parameter.
+This commit therefore adds rcutree.use_softirq=0 to the RUDE01 and
+TASKS01 rcutorture scenarios, both of which indirectly exercise RCU.
 
-Fixes: 66b6f755ad45 ("rcutorture: Import a copy of nolibc")
-Tested-by: Valentin Schneider <valentin.schneider@arm.com>
-Tested-by: Mark Rutland <mark.rutland@arm.com> [arm64]
-Signed-off-by: Willy Tarreau <w@1wt.eu>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- tools/include/nolibc/nolibc.h | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ tools/testing/selftests/rcutorture/configs/rcu/RUDE01.boot  | 1 +
+ tools/testing/selftests/rcutorture/configs/rcu/TASKS01.boot | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/tools/include/nolibc/nolibc.h b/tools/include/nolibc/nolibc.h
-index e61d36c..3115c64 100644
---- a/tools/include/nolibc/nolibc.h
-+++ b/tools/include/nolibc/nolibc.h
-@@ -1853,6 +1853,18 @@ int close(int fd)
- }
- 
- static __attribute__((unused))
-+int dup(int fd)
-+{
-+	int ret = sys_dup(fd);
-+
-+	if (ret < 0) {
-+		SET_ERRNO(-ret);
-+		ret = -1;
-+	}
-+	return ret;
-+}
-+
-+static __attribute__((unused))
- int dup2(int old, int new)
- {
- 	int ret = sys_dup2(old, new);
+diff --git a/tools/testing/selftests/rcutorture/configs/rcu/RUDE01.boot b/tools/testing/selftests/rcutorture/configs/rcu/RUDE01.boot
+index 9363708..932a079 100644
+--- a/tools/testing/selftests/rcutorture/configs/rcu/RUDE01.boot
++++ b/tools/testing/selftests/rcutorture/configs/rcu/RUDE01.boot
+@@ -1 +1,2 @@
+ rcutorture.torture_type=tasks-rude
++rcutree.use_softirq=0
+diff --git a/tools/testing/selftests/rcutorture/configs/rcu/TASKS01.boot b/tools/testing/selftests/rcutorture/configs/rcu/TASKS01.boot
+index cd2a188..22cdece 100644
+--- a/tools/testing/selftests/rcutorture/configs/rcu/TASKS01.boot
++++ b/tools/testing/selftests/rcutorture/configs/rcu/TASKS01.boot
+@@ -1 +1,2 @@
+ rcutorture.torture_type=tasks
++rcutree.use_softirq=0
