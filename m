@@ -2,46 +2,49 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CF319319F01
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 12 Feb 2021 13:47:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 39BD9319F04
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 12 Feb 2021 13:47:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231941AbhBLMpS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 12 Feb 2021 07:45:18 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:45894 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231907AbhBLMnQ (ORCPT
+        id S231904AbhBLMp3 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 12 Feb 2021 07:45:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43418 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231910AbhBLMnR (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 12 Feb 2021 07:43:16 -0500
+        Fri, 12 Feb 2021 07:43:17 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B10DCC0617A7;
+        Fri, 12 Feb 2021 04:42:37 -0800 (PST)
 Date:   Fri, 12 Feb 2021 12:37:28 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1613133448;
+        s=2020; t=1613133449;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=QsQuMuTVYzLZPwIlJOUyMeJETLD68NwEBcImHP9EuVE=;
-        b=LLrV6libDXkcUqFLfctVVE8wsDGwtkDhX4Tnhxt0ZU06v6tAbJmI/dzrvWQOQHaZkcgERI
-        z9vO5f9USvX9gNGl5As6riEdFc+ctkKvhcmfis92riTNFKCaPwFHpDaPk7YCPdgg7nnLhW
-        pWZ9nIkunYwXm3Zt94qJPVnvM/ul70ivRTnpz9IzKaONuPM2we6IJJHtuzgfBa6UzW4yoX
-        WOhJbpgz+9num71YeyNs0liPGJQtWo0QbreVvV5b2MkmEnmcKNgvv+rlXZ7nT2LJ1+BL6V
-        Tzuc7pM7HPC2pL/zPPGyeFXqvYlU07eXikTeVMD95yjh+iWSqZ3+++c3Un3Wvg==
+        bh=VuSlqGiLqOYJUXClVLOO2u35K7fNBzAv8eRJl9mNdFs=;
+        b=dvCXJ7YcmOmmUogh5Qgwfpzb94uN0MPdWw99cqkLtrpsQljF/9CqWQqSAOX7AgkvNrhZOh
+        FSVAWXNF8lUSpi7TLNaHIEzE/FgUpZCWeYql8w/CP/UoVL0N6mXdE9Hd+a55S2rtsMziB1
+        TOOaqshzacGNzI/IZA7WlXkuCltEeXBX3+jXfsOQ8dkDS+qH7bW4FDwRIaFNonrtuJELHQ
+        vziLXcJy9rqg0JYYftPSP7wJwMeSONx/HBxDfnMzfp4eWDWvxRfN9e1UjkdCS+8LTLLdHI
+        hZwsuTIQ9rxEeGSEmgAD/xVRghjrJVfSKynSPRu8TlIYjMBt1lbfSwpIPs8KIQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1613133448;
+        s=2020e; t=1613133449;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=QsQuMuTVYzLZPwIlJOUyMeJETLD68NwEBcImHP9EuVE=;
-        b=Q4EcnUazbGuwuWbf4w98FFW42XZR8Ev+kmrhS+R3FfIg21sEudKoeSU3yTjsuIPeBxwqoY
-        x1C3DzbI7+suGsBg==
+        bh=VuSlqGiLqOYJUXClVLOO2u35K7fNBzAv8eRJl9mNdFs=;
+        b=zltBEoRmv4FuBchGN0f7Ey2Hx1OF6qcPIX897wXnYG6PfHNAIsuI5sVfN2v83r3tuQnAJ6
+        uD9/t+4TBibFQGDw==
 From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] torture: Prepare for splitting qemu execution from
- kvm-test-1-run.sh
+Subject: [tip: core/rcu] torture: Make kvm.sh "--dryrun sched" summarize
+ number of builds
 Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <161313344820.23325.15981808874188955972.tip-bot2@tip-bot2>
+Message-ID: <161313344873.23325.13236245957669798292.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -52,55 +55,38 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     315957cad445aa80e567983a43d9bb2a24a8534d
-Gitweb:        https://git.kernel.org/tip/315957cad445aa80e567983a43d9bb2a24a8534d
+Commit-ID:     eca0501a7a2036d3e63aae80cf7f2594408374ff
+Gitweb:        https://git.kernel.org/tip/eca0501a7a2036d3e63aae80cf7f2594408374ff
 Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Tue, 17 Nov 2020 16:28:18 -08:00
+AuthorDate:    Sun, 08 Nov 2020 15:52:30 -08:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Mon, 04 Jan 2021 14:01:19 -08:00
+CommitterDate: Mon, 04 Jan 2021 14:01:18 -08:00
 
-torture: Prepare for splitting qemu execution from kvm-test-1-run.sh
+torture: Make kvm.sh "--dryrun sched" summarize number of builds
 
-Distributed execution of rcutorture is eased if the qemu execution can
-be split from the building of the kernel, as this allows target systems
-to be used that are not set up to build kernels.  It also avoids issues
-with toolchain version skew across the cluster, aside of course from
-qemu and KVM version skew.
-
-This commit therefore records needed data as comments in the qemu-cmd file
-and moves recording of the starting time to just before qemu is launched.
+Knowing the number of builds that kvm.sh will split a run into allows
+estimation of the duration of a test, give or take build duration.
+This commit therefore adds a line of output to "--dryrun sched" that
+gives the number of builds that will be run.  This excludes "builds"
+for repeated scenarios that reuse an earlier build.
 
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- tools/testing/selftests/rcutorture/bin/kvm-test-1-run.sh | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ tools/testing/selftests/rcutorture/bin/kvm.sh | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/tools/testing/selftests/rcutorture/bin/kvm-test-1-run.sh b/tools/testing/selftests/rcutorture/bin/kvm-test-1-run.sh
-index 3cd03d0..4bc0e62 100755
---- a/tools/testing/selftests/rcutorture/bin/kvm-test-1-run.sh
-+++ b/tools/testing/selftests/rcutorture/bin/kvm-test-1-run.sh
-@@ -125,7 +125,6 @@ seconds=$4
- qemu_args=$5
- boot_args=$6
- 
--kstarttime=`gawk 'BEGIN { print systime() }' < /dev/null`
- if test -z "$TORTURE_BUILDONLY"
- then
- 	echo ' ---' `date`: Starting kernel
-@@ -158,6 +157,8 @@ then
- 	boot_args="$boot_args $TORTURE_BOOT_GDB_ARG"
- fi
- echo $QEMU $qemu_args -m $TORTURE_QEMU_MEM -kernel $KERNEL -append \"$qemu_append $boot_args\" $TORTURE_QEMU_GDB_ARG > $resdir/qemu-cmd
-+echo "# TORTURE_SHUTDOWN_GRACE=$TORTURE_SHUTDOWN_GRACE" >> $resdir/qemu-cmd
-+echo "# seconds=$seconds" >> $resdir/qemu-cmd
- 
- if test -n "$TORTURE_BUILDONLY"
- then
-@@ -174,6 +175,7 @@ echo 'echo $! > $resdir/qemu_pid' >> $T/qemu-cmd
- echo "NOTE: $QEMU either did not run or was interactive" > $resdir/console.log
- 
- # Attempt to run qemu
-+kstarttime=`gawk 'BEGIN { print systime() }' < /dev/null`
- ( . $T/qemu-cmd; wait `cat  $resdir/qemu_pid`; echo $? > $resdir/qemu-retval ) &
- commandcompleted=0
- if test -z "$TORTURE_KCONFIG_GDB_ARG"
+diff --git a/tools/testing/selftests/rcutorture/bin/kvm.sh b/tools/testing/selftests/rcutorture/bin/kvm.sh
+index 1078be1..55a18a9 100755
+--- a/tools/testing/selftests/rcutorture/bin/kvm.sh
++++ b/tools/testing/selftests/rcutorture/bin/kvm.sh
+@@ -536,6 +536,10 @@ then
+ 	egrep 'Start batch|Starting build\.' $T/script |
+ 		grep -v ">>" |
+ 		sed -e 's/:.*$//' -e 's/^echo //'
++	nbuilds="`grep 'Starting build\.' $T/script |
++		  grep -v ">>" | sed -e 's/:.*$//' -e 's/^echo //' |
++		  awk '{ print $1 }' | grep -v '\.' | wc -l`"
++	echo Total number of builds: $nbuilds
+ 	nbatches="`grep 'Start batch' $T/script | grep -v ">>" | wc -l`"
+ 	echo Total number of batches: $nbatches
+ 	exit 0
