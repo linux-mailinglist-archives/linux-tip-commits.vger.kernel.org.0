@@ -2,48 +2,45 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9849A319ECF
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 12 Feb 2021 13:43:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 57163319E99
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 12 Feb 2021 13:42:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231805AbhBLMln (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 12 Feb 2021 07:41:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42736 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231138AbhBLMkL (ORCPT
+        id S231576AbhBLMi4 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 12 Feb 2021 07:38:56 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:45408 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231362AbhBLMhz (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 12 Feb 2021 07:40:11 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EC3EC06121E;
-        Fri, 12 Feb 2021 04:37:15 -0800 (PST)
+        Fri, 12 Feb 2021 07:37:55 -0500
 Date:   Fri, 12 Feb 2021 12:37:11 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1613133431;
+        s=2020; t=1613133432;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=ynK+bHKs88dnle2spYJIUrPju4aT5nG7k6UFgF55hJ8=;
-        b=vuxx3uUzWBAJOKJJr2nQqUOoKxn2VeGEfXwUCxsOdcI9hTgsB8eLOci/qs5XRB+Gknp8AQ
-        VCU+DfJAQzOUsbjwQvfwRTdbncXF3hWZWUYA3rhXWbKi9UuJYbsSHXBlVlym9xGaIT4tAM
-        WJBjbdvhw+/anT3HWVrxgig8oJpUKUDwUvMfdS/Rty9aPHdv5N9v6Am6r4BNyLqGamZDRt
-        K3gUnF/5e5OYI6LQO4705qI9+nww2akv6/pmjoO1fVQjW/TYLVxMqGl1+XT6758RfECkwB
-        azJbMp834/7W11wn7PKELGU6q1LggBuVHXj2VD49kTkTbc+hJalGgufUVbjfBA==
+        bh=moW0f5K46Gf7gX3aCXxtwPelP2KXbb3oFxNVQIAfDEE=;
+        b=j5G1zvrpyz8wst0Sm07gRzj5uQXldJgBa/uOw7QfGWTvCFJiZ0vR3zwHkcZBCAp2tya0y0
+        Ovdi1cYgalV9yh1FUGu6pEdnE+27nK6jklEt311Mw9KwZaN2Ex1q+uTKxFt5oxgy7k5Saw
+        vpKiqtKUTOEjk+HZZpJrg4trYdvkUTbYHAWezdfPh17ocbHU+p+F5PtydOoXjsNlUzFufz
+        ijwz1oB8DWkocm/3zGL7Bm+j6c8m9d1vOEVFvcHE+CWg0eZMApsyelXStT+9qukrJ65nN4
+        EHjTTpfmtVssxXZBptK9paPSXCPfd5p6xQO8wsakMGGsjpwaWXgK0ALYv7cihA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1613133431;
+        s=2020e; t=1613133432;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=ynK+bHKs88dnle2spYJIUrPju4aT5nG7k6UFgF55hJ8=;
-        b=Tmi8mcFN3YpbQtVfTBYoI5iMltpuEj8lZjYCVseFo3nOaVJa4FWGBghTkLaCnGvpj+SHrg
-        KAqgzOvjxmABaBAQ==
+        bh=moW0f5K46Gf7gX3aCXxtwPelP2KXbb3oFxNVQIAfDEE=;
+        b=iEVZMlinFiIrnp8UjCU4xbrdaMwfAg08QSOT68a+T26a157YsRDjPSim/r2OYSCnFrbF1d
+        oIBsJtu5fSIYesBg==
 From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] torture: Add --kcsan-kmake-arg to torture.sh for KCSAN
+Subject: [tip: core/rcu] torture: Allow scenarios to be specified to torture.sh
 Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <161313343136.23325.5039120435350311417.tip-bot2@tip-bot2>
+Message-ID: <161313343182.23325.8042404972059642303.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -54,86 +51,131 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     c54e413822701a18e7cf6bada2028ea9a9ecdaf9
-Gitweb:        https://git.kernel.org/tip/c54e413822701a18e7cf6bada2028ea9a9ecdaf9
+Commit-ID:     8847bd4988321cbc66c94e9dfb05b401c50378a3
+Gitweb:        https://git.kernel.org/tip/8847bd4988321cbc66c94e9dfb05b401c50378a3
 Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Fri, 27 Nov 2020 18:06:57 -08:00
+AuthorDate:    Fri, 27 Nov 2020 08:31:39 -08:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Wed, 06 Jan 2021 17:03:46 -08:00
+CommitterDate: Wed, 06 Jan 2021 17:03:45 -08:00
 
-torture: Add --kcsan-kmake-arg to torture.sh for KCSAN
+torture: Allow scenarios to be specified to torture.sh
 
-In 2020, running KCSAN often requires careful choice of compiler.
-This commit therefore adds a --kcsan-kmake-arg parameter to torture.sh
-to allow specifying (for example) "CC=clang" to the kernel build process
-to correctly build a KCSAN-enabled kernel.
+This commit adds --configs-rcutorture, --configs-locktorture, and
+--configs-scftorture arguments to torture.sh, allowing the desired
+set of scenarios to be passed to each.  The default for each has been
+changed from a large-system-appropriate set to just CFLIST for each.
+Users are encouraged to create scripts that provide appropriate settings
+for their specific systems.
 
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- tools/testing/selftests/rcutorture/bin/torture.sh | 21 ++++++++++----
- 1 file changed, 15 insertions(+), 6 deletions(-)
+ tools/testing/selftests/rcutorture/bin/torture.sh | 46 +++++++++++++-
+ 1 file changed, 43 insertions(+), 3 deletions(-)
 
 diff --git a/tools/testing/selftests/rcutorture/bin/torture.sh b/tools/testing/selftests/rcutorture/bin/torture.sh
-index 90ca736..0867f30 100755
+index cf74123..f614011 100755
 --- a/tools/testing/selftests/rcutorture/bin/torture.sh
 +++ b/tools/testing/selftests/rcutorture/bin/torture.sh
-@@ -34,6 +34,7 @@ fi
- configs_rcutorture=
- configs_locktorture=
- configs_scftorture=
-+kcsan_kmake_args=
+@@ -30,6 +30,11 @@ then
+ 	VERBOSE_BATCH_CPUS=0
+ fi
  
++# Configurations/scenarios.
++configs_rcutorture=
++configs_locktorture=
++configs_scftorture=
++
  # Default duration and apportionment.
  duration_base=10
-@@ -79,6 +80,7 @@ usage () {
- 	echo "       --do-refscale / --do-no-refscale"
- 	echo "       --do-scftorture / --do-no-scftorture"
- 	echo "       --duration [ <minutes> | <hours>h | <days>d ]"
-+	echo "       --kcsan-kmake-arg kernel-make-arguments"
- 	exit 1
- }
+ duration_rcutorture_frac=7
+@@ -59,6 +64,9 @@ function doyesno () {
  
-@@ -166,6 +168,11 @@ do
- 		duration_base=$(($ts*mult))
- 		shift
- 		;;
-+	--kcsan-kmake-arg|--kcsan-kmake-args)
-+		checkarg --kcsan-kmake-arg "(kernel make arguments)" $# "$2" '.*' '^error$'
-+		kcsan_kmake_args="`echo "$kcsan_kmake_args $2" | sed -e 's/^ *//' -e 's/ *$//'`"
+ usage () {
+ 	echo "Usage: $scriptname optional arguments:"
++	echo "       --configs-rcutorture \"config-file list w/ repeat factor (3*TINY01)\""
++	echo "       --configs-locktorture \"config-file list w/ repeat factor (10*LOCK01)\""
++	echo "       --configs-scftorture \"config-file list w/ repeat factor (2*CFLIST)\""
+ 	echo "       --doall"
+ 	echo "       --doallmodconfig / --do-no-allmodconfig"
+ 	echo "       --do-kasan / --do-no-kasan"
+@@ -77,6 +85,21 @@ usage () {
+ while test $# -gt 0
+ do
+ 	case "$1" in
++	--config-rcutorture|--configs-rcutorture)
++		checkarg --configs-rcutorture "(list of config files)" "$#" "$2" '^[^/]\+$' '^--'
++		configs_rcutorture="$configs_rcutorture $2"
 +		shift
 +		;;
- 	*)
- 		echo Unknown argument $1
- 		usage
-@@ -269,6 +276,8 @@ function torture_one {
- # Note that quoting is problematic.  So on the command line, pass multiple
- # values with multiple kvm.sh argument instances.
- function torture_set {
-+	local cur_kcsan_kmake_args=
-+	local kcsan_kmake_tag=
- 	local flavor=$1
- 	shift
- 	curflavor=$flavor
-@@ -281,7 +290,12 @@ function torture_set {
- 	if test "$do_kcsan" = "yes"
- 	then
- 		curflavor=${flavor}-kcsan
--		torture_one $* --kconfig "CONFIG_DEBUG_LOCK_ALLOC=y CONFIG_PROVE_LOCKING=y" --kmake-arg "CC=clang" --kcsan
-+		if test -n "$kcsan_kmake_args"
-+		then
-+			kcsan_kmake_tag="--kmake-args"
-+			cur_kcsan_kmake_args="$kcsan_kmake_args"
-+		fi
-+		torture_one $* --kconfig "CONFIG_DEBUG_LOCK_ALLOC=y CONFIG_PROVE_LOCKING=y" $kcsan_kmake_tag $cur_kcsan_kmake_args --kcsan
- 	fi
- }
++	--config-locktorture|--configs-locktorture)
++		checkarg --configs-locktorture "(list of config files)" "$#" "$2" '^[^/]\+$' '^--'
++		configs_locktorture="$configs_locktorture $2"
++		shift
++		;;
++	--config-scftorture|--configs-scftorture)
++		checkarg --configs-scftorture "(list of config files)" "$#" "$2" '^[^/]\+$' '^--'
++		configs_scftorture="$configs_scftorture $2"
++		shift
++		;;
+ 	--doall)
+ 		do_allmodconfig=yes
+ 		do_rcutorture=yes
+@@ -155,18 +178,35 @@ T=/tmp/torture.sh.$$
+ trap 'rm -rf $T' 0 2
+ mkdir $T
  
-@@ -382,8 +396,3 @@ then
- 	cp $T/log $tdir
++# Calculate rcutorture defaults and apportion time
++if test -z "$configs_rcutorture"
++then
++	configs_rcutorture=CFLIST
++fi
+ duration_rcutorture=$((duration_base*duration_rcutorture_frac/10))
+ if test "$duration_rcutorture" -eq 0
+ then
+ 	echo " --- Zero time for rcutorture, disabling" | tee -a $T/log
+ 	do_rcutorture=no
  fi
- exit $ret
--
--# @@@
--# Need a way for the invoker to specify clang.  Maybe --kcsan-kmake or some such.
--# --kconfig as with --bootargs (Both have overrides.)
--# Command line parameters for --bootargs, --config, --kconfig, --kmake-arg, and --qemu-arg
++
++# Calculate locktorture defaults and apportion time
++if test -z "$configs_locktorture"
++then
++	configs_locktorture=CFLIST
++fi
+ duration_locktorture=$((duration_base*duration_locktorture_frac/10))
+ if test "$duration_locktorture" -eq 0
+ then
+ 	echo " --- Zero time for locktorture, disabling" | tee -a $T/log
+ 	do_locktorture=no
+ fi
++
++# Calculate scftorture defaults and apportion time
++if test -z "$configs_scftorture"
++then
++	configs_scftorture=CFLIST
++fi
+ duration_scftorture=$((duration_base*duration_scftorture_frac/10))
+ if test "$duration_scftorture" -eq 0
+ then
+@@ -268,19 +308,19 @@ fi
+ if test "$do_rcutorture" = "yes"
+ then
+ 	torture_bootargs="rcupdate.rcu_cpu_stall_suppress_at_boot=1 torture.disable_onoff_at_boot rcupdate.rcu_task_stall_timeout=30000"
+-	torture_set "rcutorture" tools/testing/selftests/rcutorture/bin/kvm.sh --allcpus --duration "$duration_rcutorture" --configs "TREE10 4*CFLIST" --trust-make
++	torture_set "rcutorture" tools/testing/selftests/rcutorture/bin/kvm.sh --allcpus --duration "$duration_rcutorture" --configs "$configs_rcutorture" --trust-make
+ fi
+ 
+ if test "$do_locktorture" = "yes"
+ then
+ 	torture_bootargs="torture.disable_onoff_at_boot"
+-	torture_set "locktorture" tools/testing/selftests/rcutorture/bin/kvm.sh --torture lock --allcpus --duration "$duration_locktorture" --configs "14*CFLIST" --trust-make
++	torture_set "locktorture" tools/testing/selftests/rcutorture/bin/kvm.sh --torture lock --allcpus --duration "$duration_locktorture" --configs "$configs_locktorture" --trust-make
+ fi
+ 
+ if test "$do_scftorture" = "yes"
+ then
+ 	torture_bootargs="scftorture.nthreads=$HALF_ALLOTED_CPUS torture.disable_onoff_at_boot"
+-	torture_set "scftorture" tools/testing/selftests/rcutorture/bin/kvm.sh --torture scf --allcpus --duration "$duration_scftorture" --kconfig "CONFIG_NR_CPUS=$HALF_ALLOTED_CPUS" --trust-make
++	torture_set "scftorture" tools/testing/selftests/rcutorture/bin/kvm.sh --torture scf --allcpus --duration "$duration_scftorture" --configs "$configs_scftorture" --kconfig "CONFIG_NR_CPUS=$HALF_ALLOTED_CPUS" --trust-make
+ fi
+ 
+ if test "$do_refscale" = yes
