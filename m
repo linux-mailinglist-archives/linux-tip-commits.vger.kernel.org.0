@@ -2,53 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D2DD319E82
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 12 Feb 2021 13:38:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B6442319E7E
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 12 Feb 2021 13:38:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231380AbhBLMhz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 12 Feb 2021 07:37:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42212 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231178AbhBLMhr (ORCPT
+        id S231308AbhBLMhu (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 12 Feb 2021 07:37:50 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:45148 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231148AbhBLMhr (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Fri, 12 Feb 2021 07:37:47 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8768DC061786;
-        Fri, 12 Feb 2021 04:37:07 -0800 (PST)
 Date:   Fri, 12 Feb 2021 12:37:03 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1613133424;
+        s=2020; t=1613133423;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=Wm3+/ZioKwWoQFRQO8xdr1aYgVij0tuadky7iNPDJvk=;
-        b=KdLSE5uZa0+fWqeypEylwVaW1fctaSCHbGDJn8LJcXZ9UQSQNp12XZM0HZsXL192gWgmQx
-        FLsA8HG1aJ1h9EZyN7WeqxcF5bTcPpUBmpJ9O+Pv7TCTSRhg/bT9cLH0JMUBZaSVQ7TG0x
-        WTzOGv86zL3WRpb4i/3hFKyf2lwpGIGfXO1QNuzbcrzloRAEEbMnoEjmKU/vC9UYwfif6b
-        qxp+0Gi2jYtqi9++OPet50Nv22NBFR/jEZYDtPeARTm8TW+r6Voo0/y4C9uIx31sV9Q8Ow
-        ycpqQGP3CAXEXSTCBhdNa0w+wce5hDIgTh8FoF8lclTqj/Fri02T5WIGKh3KOQ==
+        bh=dUJvwdumNVZHK95MXFfgcP7q4xasT44BxPDFvU3NBMY=;
+        b=cV54wL2Xdn934oFYsHyy4JK00CHOcKwcTdvVpG6sTejwgSVqU3MQcyPHZ3ZqYppEXC7wIK
+        GlcfHdIup6hqhsHdBaPQwQdG9V5OobzOvbMez53//mYvIXJHZG8VGLQs3nhEF1VIiy0DUA
+        6wKl60ubu6QJ8ZH1UcimEs0knO6e9Ll9enoWdWfVRAldFWxgcH7a2L+J20+OhjDfoJ03XK
+        cuzxnmwiVIgi4nSDWeuJyBHZB5z81HRIpnhlW7ROEieQFXsfaXx+abZBslEnv20pY44sIO
+        C0lUTTA+Q7HomXoPCTfcj/G9LzcDMXPKkur8kEm9iwSkwNMeDejM+xKkfbvDAg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1613133424;
+        s=2020e; t=1613133423;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=Wm3+/ZioKwWoQFRQO8xdr1aYgVij0tuadky7iNPDJvk=;
-        b=nHhoL9zC5QaFNLo0UMluLeV1FkHyD5zItr80kKUaNv/9CW0iC+y+x/jyZXmyUirdjPHG9A
-        v67fv9wSGGcE0BBQ==
+        bh=dUJvwdumNVZHK95MXFfgcP7q4xasT44BxPDFvU3NBMY=;
+        b=hU5w9v9a+QeETkGVRkLZIVM8cGSXwS6G9nXTT2XuzUi6PbSY6iMnY+995UEPRkA1B5kdDl
+        gR7qdV1qOC9TKiBQ==
 From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] mm: Make mem_dump_obj() handle vmalloc() memory
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Joonsoo Kim <iamjoonsoo.kim@lge.com>, <linux-mm@kvack.org>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        Vlastimil Babka <vbabka@suse.cz>,
+Subject: [tip: core/rcu] rcu: Make call_rcu() print mem_dump_obj() info for
+ double-freed callback
+Cc:     Christoph Lameter <cl@linux.com>,
+        Pekka Enberg <penberg@kernel.org>,
+        David Rientjes <rientjes@google.com>,
+        Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        <linux-mm@kvack.org>, Andrii Nakryiko <andrii@kernel.org>,
         Naresh Kamboju <naresh.kamboju@linaro.org>,
         "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <161313342375.23325.18336254972948855257.tip-bot2@tip-bot2>
+Message-ID: <161313342318.23325.5404547146366093321.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,106 +59,60 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     98f180837a896ecedf8f7e12af22b57f271d43c9
-Gitweb:        https://git.kernel.org/tip/98f180837a896ecedf8f7e12af22b57f271d43c9
+Commit-ID:     b4b7914a6a73fc169fd1ce2fcd78a1d83d9528a9
+Gitweb:        https://git.kernel.org/tip/b4b7914a6a73fc169fd1ce2fcd78a1d83d9528a9
 Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Tue, 08 Dec 2020 16:13:57 -08:00
+AuthorDate:    Tue, 08 Dec 2020 13:45:49 -08:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Fri, 22 Jan 2021 15:24:04 -08:00
+CommitterDate: Fri, 22 Jan 2021 15:24:16 -08:00
 
-mm: Make mem_dump_obj() handle vmalloc() memory
+rcu: Make call_rcu() print mem_dump_obj() info for double-freed callback
 
-This commit adds vmalloc() support to mem_dump_obj().  Note that the
-vmalloc_dump_obj() function combines the checking and dumping, in
-contrast with the split between kmem_valid_obj() and kmem_dump_obj().
-The reason for the difference is that the checking in the vmalloc()
-case involves acquiring a global lock, and redundant acquisitions of
-global locks should be avoided, even on not-so-fast paths.
+The debug-object double-free checks in __call_rcu() print out the
+RCU callback function, which is usually sufficient to track down the
+double free.  However, all uses of things like queue_rcu_work() will
+have the same RCU callback function (rcu_work_rcufn() in this case),
+so a diagnostic message for a double queue_rcu_work() needs more than
+just the callback function.
 
-Note that this change causes on-stack variables to be reported as
-vmalloc() storage from kernel_clone() or similar, depending on the degree
-of inlining that your compiler does.  This is likely more helpful than
-the earlier "non-paged (local) memory".
+This commit therefore calls mem_dump_obj() to dump out any additional
+available information on the double-freed callback.
 
-Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Christoph Lameter <cl@linux.com>
+Cc: Pekka Enberg <penberg@kernel.org>
+Cc: David Rientjes <rientjes@google.com>
 Cc: Joonsoo Kim <iamjoonsoo.kim@lge.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
 Cc: <linux-mm@kvack.org>
 Reported-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
 Tested-by: Naresh Kamboju <naresh.kamboju@linaro.org>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- include/linux/vmalloc.h |  6 ++++++
- mm/util.c               | 14 ++++++++------
- mm/vmalloc.c            | 12 ++++++++++++
- 3 files changed, 26 insertions(+), 6 deletions(-)
+ kernel/rcu/tree.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/vmalloc.h b/include/linux/vmalloc.h
-index 80c0181..c18f475 100644
---- a/include/linux/vmalloc.h
-+++ b/include/linux/vmalloc.h
-@@ -246,4 +246,10 @@ pcpu_free_vm_areas(struct vm_struct **vms, int nr_vms)
- int register_vmap_purge_notifier(struct notifier_block *nb);
- int unregister_vmap_purge_notifier(struct notifier_block *nb);
- 
-+#ifdef CONFIG_MMU
-+bool vmalloc_dump_obj(void *object);
-+#else
-+static inline bool vmalloc_dump_obj(void *object) { return false; }
-+#endif
-+
- #endif /* _LINUX_VMALLOC_H */
-diff --git a/mm/util.c b/mm/util.c
-index 92f23d2..5487022 100644
---- a/mm/util.c
-+++ b/mm/util.c
-@@ -996,18 +996,20 @@ int __weak memcmp_pages(struct page *page1, struct page *page2)
-  */
- void mem_dump_obj(void *object)
+diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
+index 40e5e3d..84513c5 100644
+--- a/kernel/rcu/tree.c
++++ b/kernel/rcu/tree.c
+@@ -2941,6 +2941,7 @@ static void check_cb_ovld(struct rcu_data *rdp)
+ static void
+ __call_rcu(struct rcu_head *head, rcu_callback_t func)
  {
-+	if (kmem_valid_obj(object)) {
-+		kmem_dump_obj(object);
-+		return;
-+	}
-+	if (vmalloc_dump_obj(object))
-+		return;
- 	if (!virt_addr_valid(object)) {
- 		if (object == NULL)
- 			pr_cont(" NULL pointer.\n");
- 		else if (object == ZERO_SIZE_PTR)
- 			pr_cont(" zero-size pointer.\n");
- 		else
--			pr_cont(" non-paged (local) memory.\n");
--		return;
--	}
--	if (kmem_valid_obj(object)) {
--		kmem_dump_obj(object);
-+			pr_cont(" non-paged memory.\n");
++	static atomic_t doublefrees;
+ 	unsigned long flags;
+ 	struct rcu_data *rdp;
+ 	bool was_alldone;
+@@ -2954,8 +2955,10 @@ __call_rcu(struct rcu_head *head, rcu_callback_t func)
+ 		 * Use rcu:rcu_callback trace event to find the previous
+ 		 * time callback was passed to __call_rcu().
+ 		 */
+-		WARN_ONCE(1, "__call_rcu(): Double-freed CB %p->%pS()!!!\n",
+-			  head, head->func);
++		if (atomic_inc_return(&doublefrees) < 4) {
++			pr_err("%s(): Double-freed CB %p->%pS()!!!  ", __func__, head, head->func);
++			mem_dump_obj(head);
++		}
+ 		WRITE_ONCE(head->func, rcu_leak_callback);
  		return;
  	}
--	pr_cont(" non-slab memory.\n");
-+	pr_cont(" non-slab/vmalloc memory.\n");
- }
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index 4d88fe5..c274ea4 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -3448,6 +3448,18 @@ void pcpu_free_vm_areas(struct vm_struct **vms, int nr_vms)
- }
- #endif	/* CONFIG_SMP */
- 
-+bool vmalloc_dump_obj(void *object)
-+{
-+	struct vm_struct *vm;
-+	void *objp = (void *)PAGE_ALIGN((unsigned long)object);
-+
-+	vm = find_vm_area(objp);
-+	if (!vm)
-+		return false;
-+	pr_cont(" vmalloc allocated at %pS\n", vm->caller);
-+	return true;
-+}
-+
- #ifdef CONFIG_PROC_FS
- static void *s_start(struct seq_file *m, loff_t *pos)
- 	__acquires(&vmap_purge_lock)
