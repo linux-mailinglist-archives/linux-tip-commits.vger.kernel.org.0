@@ -2,42 +2,41 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F5CB319EC2
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 12 Feb 2021 13:42:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 103D4319EC7
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 12 Feb 2021 13:42:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231737AbhBLMkp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 12 Feb 2021 07:40:45 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:45424 "EHLO
+        id S231764AbhBLMk4 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 12 Feb 2021 07:40:56 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:45294 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231610AbhBLMjP (ORCPT
+        with ESMTP id S231294AbhBLMju (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 12 Feb 2021 07:39:15 -0500
+        Fri, 12 Feb 2021 07:39:50 -0500
 Date:   Fri, 12 Feb 2021 12:37:18 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1613133438;
+        s=2020; t=1613133439;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=jkPnAvUhy1VljhbGD8DrEwXIsgl+IBtNmEOA0KjE89c=;
-        b=JA57vtp39e0GovyxnBw3k51Ztoa6CrqqSGHCL190HXS/y+TBC8IFDqMDUqMPc5qynLXIbt
-        dWWOG5ikT/XZIrG1vx3c567fncjFdXtUGIoCwYgAs+VeJ8abG+BSDmvrf9UquxNClKQVbW
-        +kwJp4JJ93Dj6ozZwHDzyokRCmkSIJqZbqj81LGqmvccXF7C1lOnMXzg9+Qc1Vi/BEY8MJ
-        nQp78bXO1RmloXS4Hy6bXJOMUfYx1h9w8up+eday/Wy5BsQZU6RkZVSOxRmMNvDfLXeP8M
-        aYNQcxO0JJlPGuDnInj7A59t21xg4daE3Z+YRdt8cWeSMw35hohhZcPop+eEtA==
+        bh=wYwql6tJOqJUPIe4BK59ur8kJLCOQne0MbFrCaGo69E=;
+        b=iBhlwK7sbR+heT+DsSguCXLrerg6Ha6CNPtF5CgWTkI3sEKmvbbatdUb4J7XS4FU03iNij
+        7Z+SWUGrNZglXzHjWjptQJ2d6Jwiy1ESpGymwZUfnbyp3UFJ70hRNPI5Jxz5qyFhagfj7V
+        sgRyTHbgbmfvziwlPFXVNkMMH0/awuP/EBO5/huTFf8d1GAqSV2EyI0xX7FszKYnQ1MVzO
+        KDsdFXHxxGKV/ftbfAUv6j+QeLp4aDlMDyhKBDPzR3k83Tj21D5yiWQ089GZD3JuDFC4jd
+        5M63FyoXf/UTi4YNHaIo4hzobFnExlWJWejOjAmjDoP8K7z0eAdZT6ysZyoAww==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1613133438;
+        s=2020e; t=1613133439;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=jkPnAvUhy1VljhbGD8DrEwXIsgl+IBtNmEOA0KjE89c=;
-        b=GdJLxYk4r9vHy6hHa17vsRMnQQ0Sed9zx1RpA3/Z/mge3P9Z3Hy8/3Hxu05HbFHfG68iJO
-        zg8ecs8RgeAX8SBw==
+        bh=wYwql6tJOqJUPIe4BK59ur8kJLCOQne0MbFrCaGo69E=;
+        b=aICML/5s1iOfYPwzAKoWuEwW4yNR4oZvpZJTXThi9KB1oSQqqHa22xuZHe334n/E7ZTU19
+        v94xNETLYpbUB1BA==
 From:   "tip-bot2 for Frederic Weisbecker" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcu/nocb: Only cond_resched() from actual offloaded
- batch processing
+Subject: [tip: core/rcu] rcu/nocb: Flush bypass before setting SEGCBLIST_SOFTIRQ_ONLY
 Cc:     Josh Triplett <josh@joshtriplett.org>,
         Steven Rostedt <rostedt@goodmis.org>,
         Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
@@ -50,7 +49,7 @@ Cc:     Josh Triplett <josh@joshtriplett.org>,
         "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <161313343834.23325.16043726274859719159.tip-bot2@tip-bot2>
+Message-ID: <161313343880.23325.18244968176863208111.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,19 +60,19 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     e3abe959fbd57aa751bc533677a35c411cee9b16
-Gitweb:        https://git.kernel.org/tip/e3abe959fbd57aa751bc533677a35c411cee9b16
+Commit-ID:     314202f84ddd61e4d7576ef62570ad2e2d9db06b
+Gitweb:        https://git.kernel.org/tip/314202f84ddd61e4d7576ef62570ad2e2d9db06b
 Author:        Frederic Weisbecker <frederic@kernel.org>
-AuthorDate:    Fri, 13 Nov 2020 13:13:26 +01:00
+AuthorDate:    Fri, 13 Nov 2020 13:13:24 +01:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Wed, 06 Jan 2021 16:24:59 -08:00
 
-rcu/nocb: Only cond_resched() from actual offloaded batch processing
+rcu/nocb: Flush bypass before setting SEGCBLIST_SOFTIRQ_ONLY
 
-During a toggle operations, rcu_do_batch() may be invoked concurrently
-by softirqs and offloaded processing for a given CPU's callbacks.
-This commit therefore makes sure cond_resched() is invoked only from
-the offloaded context.
+This commit flushes the bypass queue and sets state to avoid its being
+refilled before switching to the final de-offloaded state.  To avoid
+refilling, this commit sets SEGCBLIST_SOFTIRQ_ONLY before re-enabling
+IRQs.
 
 Cc: Josh Triplett <josh@joshtriplett.org>
 Cc: Steven Rostedt <rostedt@goodmis.org>
@@ -87,20 +86,33 @@ Tested-by: Boqun Feng <boqun.feng@gmail.com>
 Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/rcu/tree.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ kernel/rcu/tree_plugin.h | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
-index 83362f6..4ef59a5 100644
---- a/kernel/rcu/tree.c
-+++ b/kernel/rcu/tree.c
-@@ -2516,8 +2516,7 @@ static void rcu_do_batch(struct rcu_data *rdp)
- 			/* Exceeded the time limit, so leave. */
- 			break;
- 		}
--		if (offloaded) {
--			WARN_ON_ONCE(in_serving_softirq());
-+		if (!in_serving_softirq()) {
- 			local_bh_enable();
- 			lockdep_assert_irqs_enabled();
- 			cond_resched_tasks_rcu_qs();
+diff --git a/kernel/rcu/tree_plugin.h b/kernel/rcu/tree_plugin.h
+index c88ad62..35dc9b3 100644
+--- a/kernel/rcu/tree_plugin.h
++++ b/kernel/rcu/tree_plugin.h
+@@ -2339,12 +2339,21 @@ static int __rcu_nocb_rdp_deoffload(struct rcu_data *rdp)
+ 	swait_event_exclusive(rdp->nocb_state_wq,
+ 			      !rcu_segcblist_test_flags(cblist, SEGCBLIST_KTHREAD_CB |
+ 							SEGCBLIST_KTHREAD_GP));
+-	/* Make sure nocb timer won't stay around */
+ 	rcu_nocb_lock_irqsave(rdp, flags);
++	/* Make sure nocb timer won't stay around */
+ 	WRITE_ONCE(rdp->nocb_defer_wakeup, RCU_NOCB_WAKE_OFF);
+ 	rcu_nocb_unlock_irqrestore(rdp, flags);
+ 	del_timer_sync(&rdp->nocb_timer);
+ 
++	/*
++	 * Flush bypass. While IRQs are disabled and once we set
++	 * SEGCBLIST_SOFTIRQ_ONLY, no callback is supposed to be
++	 * enqueued on bypass.
++	 */
++	rcu_nocb_lock_irqsave(rdp, flags);
++	rcu_nocb_flush_bypass(rdp, NULL, jiffies);
++	rcu_nocb_unlock_irqrestore(rdp, flags);
++
+ 	return ret;
+ }
+ 
