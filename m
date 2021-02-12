@@ -2,48 +2,46 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 42909319ECB
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 12 Feb 2021 13:42:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F59A319E90
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 12 Feb 2021 13:38:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231652AbhBLMlQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 12 Feb 2021 07:41:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42702 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230260AbhBLMkB (ORCPT
+        id S231559AbhBLMio (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 12 Feb 2021 07:38:44 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:45360 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231317AbhBLMhx (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 12 Feb 2021 07:40:01 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1797C0617AB;
-        Fri, 12 Feb 2021 04:37:13 -0800 (PST)
+        Fri, 12 Feb 2021 07:37:53 -0500
 Date:   Fri, 12 Feb 2021 12:37:09 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1613133430;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=q8tZTeStUgUkOmKGGZEhWAUdTKqJmMSQXOkOUd8QaqE=;
-        b=EB69wBL7Ql95IZcG86kWfO5MvqD2C5p27taWvn1WN7z7Vej+IoSc3hgkpMjqSDT4qEKsjB
-        Opz+ESxA040zRupC8Dvk1eeo6+oPggPMwx1TnHGYwMcGY4apx/O4IvLLZ+rLe/pr+7tDOF
-        TyOQJvTZ1PhJN0Utbjcjzx07WWrGtWSDx5P/KFOlH9XuKVpcypZjizobuuJVzLIKXaHqNO
-        GkKczvdInqsJjzoLpZE9RLkNlhdZCBoi+nt4pyuUzarzTZfaMBlpKbtpv0TKq16njYL6Ya
-        TCPX0hcaBOvtILD5eRbxmgw+UPRbpS1jYGFGQrIF0EM46VgZoGPyRyzXPqOpGQ==
+        bh=HwPUiiq7w4vfrbGCAi5N0EGfv3DfPMreFa0Od1jEYN4=;
+        b=RvLZO7RAoTaiFKIHdl6XG2gjtP2aGg2DJstZoc7+/jHpphZQwb9cZyxNkjEsXDTIpTUzJz
+        8xUUglYp+DmDDMGVh9XhFVInfJ98/yvRWngrwFZ5+6V5Lhq6inf/4l9lf7p+OSuuYdCokW
+        ec8PXg53t8gPPgH77NathUUKLN5vlunVgdql5MYAy0rBO8/KaYtBDpNOYWi/dYdcAyu/dw
+        kLK9MV7hHM2ucA3ZyfX4ImxaP5SrADcVaKZhwS9HK0LfVl43wlEXKVmQgeOROLhEQcwgZJ
+        dKgulDX1FsVpFke4+x6t+mLYGYDI2kWjGRDh5afeO1gTP4XkMPhe+EAIV98GRg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1613133430;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=q8tZTeStUgUkOmKGGZEhWAUdTKqJmMSQXOkOUd8QaqE=;
-        b=Wn/uT8PayGEQ+doFhgEAFGxiyHzZs/0eCHMf5zHJSvVXy/e/PkGS5khEQ4BPz26Lr3abPS
-        /f16Jn/F1v7owsDg==
+        bh=HwPUiiq7w4vfrbGCAi5N0EGfv3DfPMreFa0Od1jEYN4=;
+        b=kXX0o66lTQeps+ULMzTA66C0oQvD7VQSuC0lVj3bbiGazj912RnGxmWIShJYWHIJrGZ9p3
+        OT/NchDMsd3jF6AQ==
 From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] torture: Add fuzzed hrtimer-based sleep functions
+Subject: [tip: core/rcu] rcutorture: Use torture_hrtimeout_jiffies() to avoid
+ busy-waits
 Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <161313342977.23325.11204289325171029680.tip-bot2@tip-bot2>
+Message-ID: <161313342952.23325.12367181586526090712.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -54,129 +52,87 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     ae19aaafae95a5487469433e9cae4c208f8d15cd
-Gitweb:        https://git.kernel.org/tip/ae19aaafae95a5487469433e9cae4c208f8d15cd
+Commit-ID:     ea31fd9ca87399ac4e03cd6c215451fa7dc366e4
+Gitweb:        https://git.kernel.org/tip/ea31fd9ca87399ac4e03cd6c215451fa7dc366e4
 Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Tue, 17 Nov 2020 11:30:18 -08:00
+AuthorDate:    Tue, 17 Nov 2020 11:32:54 -08:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Wed, 06 Jan 2021 17:17:19 -08:00
 
-torture: Add fuzzed hrtimer-based sleep functions
+rcutorture: Use torture_hrtimeout_jiffies() to avoid busy-waits
 
-This commit adds torture_hrtimeout_ns(), torture_hrtimeout_us(),
-torture_hrtimeout_ms(), torture_hrtimeout_jiffies(), and
-torture_hrtimeout_s(), each of which uses hrtimers to block for a fuzzed
-time interval.  These functions are intended to be used by the various
-torture tests to decouple wakeups from the timer wheel, thus providing
-more opportunity for Murphy to insert destructive race conditions.
+Because rcu_torture_writer() and rcu_torture_fakewriter() predate
+hrtimers, they do timer-wheel-decoupled timed waits by using the
+timer-wheel-based schedule_timeout_interruptible() functions in
+conjunction with a random udelay()-based wait.  This latter unnecessarily
+burns CPU time, so this commit instead uses torture_hrtimeout_jiffies()
+to decouple from the timer wheels without busy-waiting.
 
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- include/linux/torture.h |  7 ++++-
- kernel/torture.c        | 75 ++++++++++++++++++++++++++++++++++++++++-
- 2 files changed, 82 insertions(+)
+ kernel/rcu/rcutorture.c | 26 +++++++-------------------
+ 1 file changed, 7 insertions(+), 19 deletions(-)
 
-diff --git a/include/linux/torture.h b/include/linux/torture.h
-index 7f65bd1..32941f8 100644
---- a/include/linux/torture.h
-+++ b/include/linux/torture.h
-@@ -61,6 +61,13 @@ static inline void torture_random_init(struct torture_random_state *trsp)
- 	trsp->trs_count = 0;
- }
+diff --git a/kernel/rcu/rcutorture.c b/kernel/rcu/rcutorture.c
+index 03bdf67..9414e30 100644
+--- a/kernel/rcu/rcutorture.c
++++ b/kernel/rcu/rcutorture.c
+@@ -1194,10 +1194,7 @@ rcu_torture_writer(void *arg)
+ 			case RTWS_COND_GET:
+ 				rcu_torture_writer_state = RTWS_COND_GET;
+ 				gp_snap = cur_ops->get_gp_state();
+-				i = torture_random(&rand) % 16;
+-				if (i != 0)
+-					schedule_timeout_interruptible(i);
+-				udelay(torture_random(&rand) % 1000);
++				torture_hrtimeout_jiffies(torture_random(&rand) % 16, &rand);
+ 				rcu_torture_writer_state = RTWS_COND_SYNC;
+ 				cur_ops->cond_sync(gp_snap);
+ 				rcu_torture_pipe_update(old_rp);
+@@ -1206,12 +1203,9 @@ rcu_torture_writer(void *arg)
+ 				rcu_torture_writer_state = RTWS_POLL_GET;
+ 				gp_snap = cur_ops->start_gp_poll();
+ 				rcu_torture_writer_state = RTWS_POLL_WAIT;
+-				while (!cur_ops->poll_gp_state(gp_snap)) {
+-					i = torture_random(&rand) % 16;
+-					if (i != 0)
+-						schedule_timeout_interruptible(i);
+-					udelay(torture_random(&rand) % 1000);
+-				}
++				while (!cur_ops->poll_gp_state(gp_snap))
++					torture_hrtimeout_jiffies(torture_random(&rand) % 16,
++								  &rand);
+ 				rcu_torture_pipe_update(old_rp);
+ 				break;
+ 			case RTWS_SYNC:
+@@ -1290,7 +1284,6 @@ static int
+ rcu_torture_fakewriter(void *arg)
+ {
+ 	unsigned long gp_snap;
+-	int i;
+ 	DEFINE_TORTURE_RANDOM(rand);
  
-+/* Definitions for high-resolution-timer sleeps. */
-+int torture_hrtimeout_ns(ktime_t baset_ns, u32 fuzzt_ns, struct torture_random_state *trsp);
-+int torture_hrtimeout_us(u32 baset_us, u32 fuzzt_ns, struct torture_random_state *trsp);
-+int torture_hrtimeout_ms(u32 baset_ms, u32 fuzzt_us, struct torture_random_state *trsp);
-+int torture_hrtimeout_jiffies(u32 baset_j, struct torture_random_state *trsp);
-+int torture_hrtimeout_s(u32 baset_s, u32 fuzzt_ms, struct torture_random_state *trsp);
-+
- /* Task shuffler, which causes CPUs to occasionally go idle. */
- void torture_shuffle_task_register(struct task_struct *tp);
- int torture_shuffle_init(long shuffint);
-diff --git a/kernel/torture.c b/kernel/torture.c
-index 8562ac1..7548634 100644
---- a/kernel/torture.c
-+++ b/kernel/torture.c
-@@ -58,6 +58,81 @@ static int verbose;
- static int fullstop = FULLSTOP_RMMOD;
- static DEFINE_MUTEX(fullstop_mutex);
- 
-+/*
-+ * Schedule a high-resolution-timer sleep in nanoseconds, with a 32-bit
-+ * nanosecond random fuzz.  This function and its friends desynchronize
-+ * testing from the timer wheel.
-+ */
-+int torture_hrtimeout_ns(ktime_t baset_ns, u32 fuzzt_ns, struct torture_random_state *trsp)
-+{
-+	ktime_t hto = baset_ns;
-+
-+	if (trsp)
-+		hto += (torture_random(trsp) >> 3) % fuzzt_ns;
-+	set_current_state(TASK_UNINTERRUPTIBLE);
-+	return schedule_hrtimeout(&hto, HRTIMER_MODE_REL);
-+}
-+EXPORT_SYMBOL_GPL(torture_hrtimeout_ns);
-+
-+/*
-+ * Schedule a high-resolution-timer sleep in microseconds, with a 32-bit
-+ * nanosecond (not microsecond!) random fuzz.
-+ */
-+int torture_hrtimeout_us(u32 baset_us, u32 fuzzt_ns, struct torture_random_state *trsp)
-+{
-+	ktime_t baset_ns = baset_us * NSEC_PER_USEC;
-+
-+	return torture_hrtimeout_ns(baset_ns, fuzzt_ns, trsp);
-+}
-+EXPORT_SYMBOL_GPL(torture_hrtimeout_us);
-+
-+/*
-+ * Schedule a high-resolution-timer sleep in milliseconds, with a 32-bit
-+ * microsecond (not millisecond!) random fuzz.
-+ */
-+int torture_hrtimeout_ms(u32 baset_ms, u32 fuzzt_us, struct torture_random_state *trsp)
-+{
-+	ktime_t baset_ns = baset_ms * NSEC_PER_MSEC;
-+	u32 fuzzt_ns;
-+
-+	if ((u32)~0U / NSEC_PER_USEC < fuzzt_us)
-+		fuzzt_ns = (u32)~0U;
-+	else
-+		fuzzt_ns = fuzzt_us * NSEC_PER_USEC;
-+	return torture_hrtimeout_ns(baset_ns, fuzzt_ns, trsp);
-+}
-+EXPORT_SYMBOL_GPL(torture_hrtimeout_ms);
-+
-+/*
-+ * Schedule a high-resolution-timer sleep in jiffies, with an
-+ * implied one-jiffy random fuzz.  This is intended to replace calls to
-+ * schedule_timeout_interruptible() and friends.
-+ */
-+int torture_hrtimeout_jiffies(u32 baset_j, struct torture_random_state *trsp)
-+{
-+	ktime_t baset_ns = jiffies_to_nsecs(baset_j);
-+
-+	return torture_hrtimeout_ns(baset_ns, jiffies_to_nsecs(1), trsp);
-+}
-+EXPORT_SYMBOL_GPL(torture_hrtimeout_jiffies);
-+
-+/*
-+ * Schedule a high-resolution-timer sleep in milliseconds, with a 32-bit
-+ * millisecond (not second!) random fuzz.
-+ */
-+int torture_hrtimeout_s(u32 baset_s, u32 fuzzt_ms, struct torture_random_state *trsp)
-+{
-+	ktime_t baset_ns = baset_s * NSEC_PER_SEC;
-+	u32 fuzzt_ns;
-+
-+	if ((u32)~0U / NSEC_PER_MSEC < fuzzt_ms)
-+		fuzzt_ns = (u32)~0U;
-+	else
-+		fuzzt_ns = fuzzt_ms * NSEC_PER_MSEC;
-+	return torture_hrtimeout_ns(baset_ns, fuzzt_ns, trsp);
-+}
-+EXPORT_SYMBOL_GPL(torture_hrtimeout_s);
-+
- #ifdef CONFIG_HOTPLUG_CPU
- 
- /*
+ 	VERBOSE_TOROUT_STRING("rcu_torture_fakewriter task started");
+@@ -1311,19 +1304,14 @@ rcu_torture_fakewriter(void *arg)
+ 				break;
+ 			case RTWS_COND_GET:
+ 				gp_snap = cur_ops->get_gp_state();
+-				i = torture_random(&rand) % 16;
+-				if (i != 0)
+-					schedule_timeout_interruptible(i);
+-				udelay(torture_random(&rand) % 1000);
++				torture_hrtimeout_jiffies(torture_random(&rand) % 16, &rand);
+ 				cur_ops->cond_sync(gp_snap);
+ 				break;
+ 			case RTWS_POLL_GET:
+ 				gp_snap = cur_ops->start_gp_poll();
+ 				while (!cur_ops->poll_gp_state(gp_snap)) {
+-					i = torture_random(&rand) % 16;
+-					if (i != 0)
+-						schedule_timeout_interruptible(i);
+-					udelay(torture_random(&rand) % 1000);
++					torture_hrtimeout_jiffies(torture_random(&rand) % 16,
++								  &rand);
+ 				}
+ 				break;
+ 			case RTWS_SYNC:
