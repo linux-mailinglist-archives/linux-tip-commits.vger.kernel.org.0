@@ -2,50 +2,47 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ADCD2319EAC
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 12 Feb 2021 13:42:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 50466319E89
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 12 Feb 2021 13:38:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230515AbhBLMkH (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 12 Feb 2021 07:40:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42384 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231518AbhBLMid (ORCPT
+        id S231484AbhBLMiU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 12 Feb 2021 07:38:20 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:45320 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231260AbhBLMhu (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 12 Feb 2021 07:38:33 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAA17C061797;
-        Fri, 12 Feb 2021 04:37:10 -0800 (PST)
+        Fri, 12 Feb 2021 07:37:50 -0500
 Date:   Fri, 12 Feb 2021 12:37:06 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1613133427;
+        s=2020; t=1613133426;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=uxyrjjTtzb3HDBMsgQo3W1WjPnT24y71jbOQXob22eo=;
-        b=pCqc+AUth97Q+Z5TvfVNTLGPcFd4dtSCynoL1f+F84IcWoo5hjHQNexQXuik1cwctKrJX1
-        CPXH+Zx4tX+UFpLto8/siXFFUxQ9NRPs2eZjfiLLl/Unl4Ys4/u0/962ZNFBYcCxzerz1k
-        O9k2t3uF3BKzHobS50bfN/Pe2N2HeHVURu1jjyaotMv9XzE1ImEXUsJ7+4ixJkGZEWAN/J
-        y9QDi5krbDbTxMa0mbeBsBcodpHxdE3PkuKyTiZHpqCB/0iZ7Kz6Mpo3u4wvT6sz+Pz+CY
-        kMrlrq3Qd8aPGjvzvi9B8mSETr1FW3m/6jxtnaVEUcmVoOOe6zTd1EaFdKXhJw==
+        bh=xvScgZzu0y2CsM+k3X8Mfc9PDRdmGvOKHudQODlnAbk=;
+        b=gUdYZne9gOh2p+qmDx4DZwWY5FXKzQQStLXsSMMjKHMgVCslR1SdAjnO3uXDLOmX4+gFPf
+        t5ySj4VzGX2y733dqpDcqFNuHyni2XK1LQ0MkI+auurM3nzFy9JL2CXzMyuP0HqgdH5Ubi
+        NvWzSp/49WeMpl079WKZEFyFblZUVYcdDvRWN3WG7Y6RPafRMtm/Khf8UZDqLTG18pnGNx
+        Xrgf07d3lNcKfZJl7LDhip+CE0X/OayWZFNUCmyDF+WzAWFY08fvMG6d8EI1DUQTOdDCMj
+        dfnAzDLn4JvXYdDj3osjlILFUV/2YE2jZHxUL8j2BaCdSxjOnJUUyu9LC9gaag==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1613133427;
+        s=2020e; t=1613133426;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=uxyrjjTtzb3HDBMsgQo3W1WjPnT24y71jbOQXob22eo=;
-        b=yJWRoEZwL35dXa7D4Ong0bih/xyYllGOpjuBcyqUqwqKK9fczUFNQb696WCf7ydY+LgQTE
-        tBbrfLUQ0BcMoNBw==
+        bh=xvScgZzu0y2CsM+k3X8Mfc9PDRdmGvOKHudQODlnAbk=;
+        b=41dp4avj9jvG3Fqg+bQHW6QVky0e5ojTB9Rl8m4FGAH2KXkcjFpoJWamcTNQZR1dQ57hLj
+        9x3ullHDUD0JVRDQ==
 From:   "tip-bot2 for Willy Tarreau" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] tools/nolibc: Make getpgrp() fall back to getpgid(0)
+Subject: [tip: core/rcu] tools/nolibc: Implement fork() based on clone()
 Cc:     Valentin Schneider <valentin.schneider@arm.com>,
         Mark Rutland <mark.rutland@arm.com>, Willy Tarreau <w@1wt.eu>,
         "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <161313342657.23325.16799302339651184115.tip-bot2@tip-bot2>
+Message-ID: <161313342629.23325.12823145130445742962.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -56,18 +53,20 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     c0c7c103756fee25aadfd5c36f7b86e318f9abb4
-Gitweb:        https://git.kernel.org/tip/c0c7c103756fee25aadfd5c36f7b86e318f9abb4
+Commit-ID:     be60ca41fbaa93bc8f92b24e34d8cc62af41300d
+Gitweb:        https://git.kernel.org/tip/be60ca41fbaa93bc8f92b24e34d8cc62af41300d
 Author:        Willy Tarreau <w@1wt.eu>
-AuthorDate:    Thu, 21 Jan 2021 08:20:25 +01:00
+AuthorDate:    Thu, 21 Jan 2021 08:20:26 +01:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Thu, 21 Jan 2021 10:06:44 -08:00
 
-tools/nolibc: Make getpgrp() fall back to getpgid(0)
+tools/nolibc: Implement fork() based on clone()
 
-The getpgrp() syscall is not implemented on arm64, so this commit instead
-uses getpgid(0) when getpgrp() is not available.  This is a port of
-nolibc's upstream commit 2379f25073f9 to the Linux kernel.
+Some archs such as arm64 do not have fork() and have to use clone()
+instead.  This commit therefore makes fork() use clone() when
+available. This requires including signal.h to get the definition of
+SIGCHLD.  This is a port of nolibc's upstream commit d2dc42fd6149 to
+the Linux kernel.
 
 Fixes: 66b6f755ad45 ("rcutorture: Import a copy of nolibc")
 Tested-by: Valentin Schneider <valentin.schneider@arm.com>
@@ -75,46 +74,35 @@ Tested-by: Mark Rutland <mark.rutland@arm.com> [arm64]
 Signed-off-by: Willy Tarreau <w@1wt.eu>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- tools/include/nolibc/nolibc.h | 20 +++++++++++++++++++-
- 1 file changed, 19 insertions(+), 1 deletion(-)
+ tools/include/nolibc/nolibc.h | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
 diff --git a/tools/include/nolibc/nolibc.h b/tools/include/nolibc/nolibc.h
-index 5fda4d8..9209da8 100644
+index 9209da8..fdd5524 100644
 --- a/tools/include/nolibc/nolibc.h
 +++ b/tools/include/nolibc/nolibc.h
-@@ -1545,9 +1545,15 @@ int sys_getdents64(int fd, struct linux_dirent64 *dirp, int count)
- }
+@@ -271,6 +271,8 @@ struct stat {
+ #define WEXITSTATUS(status)   (((status) & 0xff00) >> 8)
+ #define WIFEXITED(status)     (((status) & 0x7f) == 0)
  
++/* for SIGCHLD */
++#include <asm/signal.h>
+ 
+ /* Below comes the architecture-specific code. For each architecture, we have
+  * the syscall declarations and the _start code definition. This is the only
+@@ -1529,7 +1531,15 @@ int sys_execve(const char *filename, char *const argv[], char *const envp[])
  static __attribute__((unused))
-+pid_t sys_getpgid(pid_t pid)
-+{
-+	return my_syscall1(__NR_getpgid, pid);
-+}
-+
-+static __attribute__((unused))
- pid_t sys_getpgrp(void)
+ pid_t sys_fork(void)
  {
--	return my_syscall0(__NR_getpgrp);
-+	return sys_getpgid(0);
++#ifdef __NR_clone
++	/* note: some archs only have clone() and not fork(). Different archs
++	 * have a different API, but most archs have the flags on first arg and
++	 * will not use the rest with no other flag.
++	 */
++	return my_syscall5(__NR_clone, SIGCHLD, 0, 0, 0, 0);
++#else
+ 	return my_syscall0(__NR_fork);
++#endif
  }
  
  static __attribute__((unused))
-@@ -1951,6 +1957,18 @@ int getdents64(int fd, struct linux_dirent64 *dirp, int count)
- }
- 
- static __attribute__((unused))
-+pid_t getpgid(pid_t pid)
-+{
-+	pid_t ret = sys_getpgid(pid);
-+
-+	if (ret < 0) {
-+		SET_ERRNO(-ret);
-+		ret = -1;
-+	}
-+	return ret;
-+}
-+
-+static __attribute__((unused))
- pid_t getpgrp(void)
- {
- 	pid_t ret = sys_getpgrp();
