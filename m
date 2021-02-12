@@ -2,42 +2,42 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E37A9319EC1
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 12 Feb 2021 13:42:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CFAA7319EC3
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 12 Feb 2021 13:42:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231264AbhBLMkp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 12 Feb 2021 07:40:45 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:45414 "EHLO
+        id S231743AbhBLMkr (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 12 Feb 2021 07:40:47 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:45442 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231603AbhBLMjN (ORCPT
+        with ESMTP id S231621AbhBLMjU (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 12 Feb 2021 07:39:13 -0500
+        Fri, 12 Feb 2021 07:39:20 -0500
 Date:   Fri, 12 Feb 2021 12:37:18 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1613133438;
+        s=2020; t=1613133439;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=AsI37Vs2BES46kgqEv95fXrf2NwHUTkrbYQF+q5zz2s=;
-        b=MDUi9ZYeFpgDxKzVXHUixJo0E8ySj4X0+0/OZh4gOUKbGp8ZGKPXCI5jE81y7VTrJMqdXd
-        YkX7v5xNrdo3OOJKESk4DG6VooxjtiW5A49gRtRbNI3/gjHUNtPegFXvOOd4xWgkOFkU+G
-        /+MfpECGiiNfqNuKnyOLStRixiyN1cswTy+4JUjC4af1euJbmJnZvPa353ffqDH4CMk5Sl
-        bwNU7I0HQGZGbYTKQrsWIOhwOQHw1B9TLcalSxsCqg0UIZHOXFoBHgWeu/qeMQ/YMeQ4m8
-        hTi/qWE+74UTUJjJKdEVv6JZ/PeJryUTC85cIPy1V0QkOgjHIsHSkd9auBJS8w==
+        bh=3YrjrQekvkKj8iZKNWq7t1M8zunZQiOFqyLXSm2SEgU=;
+        b=OZf2Zp1lQxSHSzUR8J6FTzQzbV9/wUp7qlgLkfytpzHanrUrZ69MhlD2QzWaaQzTNDc7Hm
+        O/KjWIi6KRnXwh08HkGIlkBEpp5dBFaeJcpwZ+RXGn7eXW527FSBsAWJ21pQIFarN5RYyF
+        P8CvLtM5k9E5YwfBa0GvphbNYDTKlUB5yXYDKTrSBBMba8KeJlwXhj+SmvDIgfkmMZ2Mx2
+        brDPrNtImvDcgPl7T0vs0EQtK5wErd+ZcjK7gYoOVFX+mP41km22MYUPWQrIye/i9UFwdh
+        6PjLrPaMZNHsjrEldt5djwTyR8LSfEXrYy6jlAL3rPY3ElwRG78Of+X12g760A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1613133438;
+        s=2020e; t=1613133439;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=AsI37Vs2BES46kgqEv95fXrf2NwHUTkrbYQF+q5zz2s=;
-        b=UCaic7q3HeaWi0FAq06XTQAaEHNsY/W+doC7cu54OZQ+gNmUS/VKxf805cMNss9MMJ5Unf
-        ubO+8wOUI+T3C9CQ==
+        bh=3YrjrQekvkKj8iZKNWq7t1M8zunZQiOFqyLXSm2SEgU=;
+        b=/K5Xe1g+fm3YzabLtam2RVwBl+zCk4rPJsmnk9Ctpz4AmkMY7rMrjgAxrle0aWiZIG0re6
+        PEjAhY7U2cfNANAQ==
 From:   "tip-bot2 for Frederic Weisbecker" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcu/nocb: Process batch locally as long as offloading
- isn't complete
+Subject: [tip: core/rcu] rcu/nocb: Set SEGCBLIST_SOFTIRQ_ONLY at the very last
+ stage of de-offloading
 Cc:     Josh Triplett <josh@joshtriplett.org>,
         Steven Rostedt <rostedt@goodmis.org>,
         Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
@@ -50,7 +50,7 @@ Cc:     Josh Triplett <josh@joshtriplett.org>,
         "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <161313343812.23325.2633708901299893170.tip-bot2@tip-bot2>
+Message-ID: <161313343854.23325.17698030659823462530.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,19 +61,18 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     32aa2f4170d22f0b9fcb75ab05679ab122fae373
-Gitweb:        https://git.kernel.org/tip/32aa2f4170d22f0b9fcb75ab05679ab122fae373
+Commit-ID:     b9ced9e1ab51ed6057ac8198fd1eeb404a32a867
+Gitweb:        https://git.kernel.org/tip/b9ced9e1ab51ed6057ac8198fd1eeb404a32a867
 Author:        Frederic Weisbecker <frederic@kernel.org>
-AuthorDate:    Fri, 13 Nov 2020 13:13:27 +01:00
+AuthorDate:    Fri, 13 Nov 2020 13:13:25 +01:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Wed, 06 Jan 2021 16:24:59 -08:00
 
-rcu/nocb: Process batch locally as long as offloading isn't complete
+rcu/nocb: Set SEGCBLIST_SOFTIRQ_ONLY at the very last stage of de-offloading
 
-This commit makes sure to process the callbacks locally (via either
-RCU_SOFTIRQ or the rcuc kthread) whenever the segcblist isn't entirely
-offloaded.  This ensures that callbacks are invoked one way or another
-while a CPU is in the middle of a toggle operation.
+This commit sets SEGCBLIST_SOFTIRQ_ONLY once toggling is otherwise fully
+complete, allowing further RCU callback manipulation to be carried out
+locklessly and locally.
 
 Cc: Josh Triplett <josh@joshtriplett.org>
 Cc: Steven Rostedt <rostedt@goodmis.org>
@@ -87,51 +86,26 @@ Tested-by: Boqun Feng <boqun.feng@gmail.com>
 Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/rcu/rcu_segcblist.h | 12 ++++++++++++
- kernel/rcu/tree.c          |  3 ++-
- 2 files changed, 14 insertions(+), 1 deletion(-)
+ kernel/rcu/tree_plugin.h |  9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/rcu/rcu_segcblist.h b/kernel/rcu/rcu_segcblist.h
-index 28c9a52..afad6fc 100644
---- a/kernel/rcu/rcu_segcblist.h
-+++ b/kernel/rcu/rcu_segcblist.h
-@@ -95,6 +95,18 @@ static inline bool rcu_segcblist_is_offloaded(struct rcu_segcblist *rsclp)
- 	return false;
+diff --git a/kernel/rcu/tree_plugin.h b/kernel/rcu/tree_plugin.h
+index 35dc9b3..8641b72 100644
+--- a/kernel/rcu/tree_plugin.h
++++ b/kernel/rcu/tree_plugin.h
+@@ -2352,7 +2352,14 @@ static int __rcu_nocb_rdp_deoffload(struct rcu_data *rdp)
+ 	 */
+ 	rcu_nocb_lock_irqsave(rdp, flags);
+ 	rcu_nocb_flush_bypass(rdp, NULL, jiffies);
+-	rcu_nocb_unlock_irqrestore(rdp, flags);
++	rcu_segcblist_set_flags(cblist, SEGCBLIST_SOFTIRQ_ONLY);
++	/*
++	 * With SEGCBLIST_SOFTIRQ_ONLY, we can't use
++	 * rcu_nocb_unlock_irqrestore() anymore. Theoretically we
++	 * could set SEGCBLIST_SOFTIRQ_ONLY with cb unlocked and IRQs
++	 * disabled now, but let's be paranoid.
++	 */
++	raw_spin_unlock_irqrestore(&rdp->nocb_lock, flags);
+ 
+ 	return ret;
  }
- 
-+static inline bool rcu_segcblist_completely_offloaded(struct rcu_segcblist *rsclp)
-+{
-+	int flags = SEGCBLIST_KTHREAD_CB | SEGCBLIST_KTHREAD_GP | SEGCBLIST_OFFLOADED;
-+
-+	if (IS_ENABLED(CONFIG_RCU_NOCB_CPU)) {
-+		if ((rsclp->flags & flags) == flags)
-+			return true;
-+	}
-+
-+	return false;
-+}
-+
- /*
-  * Are all segments following the specified segment of the specified
-  * rcu_segcblist structure empty of callbacks?  (The specified
-diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
-index 4ef59a5..ec14c01 100644
---- a/kernel/rcu/tree.c
-+++ b/kernel/rcu/tree.c
-@@ -2700,6 +2700,7 @@ static __latent_entropy void rcu_core(void)
- 	struct rcu_data *rdp = raw_cpu_ptr(&rcu_data);
- 	struct rcu_node *rnp = rdp->mynode;
- 	const bool offloaded = rcu_segcblist_is_offloaded(&rdp->cblist);
-+	const bool do_batch = !rcu_segcblist_completely_offloaded(&rdp->cblist);
- 
- 	if (cpu_is_offline(smp_processor_id()))
- 		return;
-@@ -2729,7 +2730,7 @@ static __latent_entropy void rcu_core(void)
- 	rcu_check_gp_start_stall(rnp, rdp, rcu_jiffies_till_stall_check());
- 
- 	/* If there are callbacks ready, invoke them. */
--	if (!offloaded && rcu_segcblist_ready_cbs(&rdp->cblist) &&
-+	if (do_batch && rcu_segcblist_ready_cbs(&rdp->cblist) &&
- 	    likely(READ_ONCE(rcu_scheduler_fully_active)))
- 		rcu_do_batch(rdp);
- 
