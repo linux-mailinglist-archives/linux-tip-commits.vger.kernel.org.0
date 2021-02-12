@@ -2,55 +2,48 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 68B8D319ED6
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 12 Feb 2021 13:43:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C5000319ED9
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 12 Feb 2021 13:43:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231691AbhBLMmT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 12 Feb 2021 07:42:19 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:45332 "EHLO
+        id S229907AbhBLMme (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 12 Feb 2021 07:42:34 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:45334 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231687AbhBLMk1 (ORCPT
+        with ESMTP id S231426AbhBLMkb (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 12 Feb 2021 07:40:27 -0500
-Date:   Fri, 12 Feb 2021 12:37:20 -0000
+        Fri, 12 Feb 2021 07:40:31 -0500
+Date:   Fri, 12 Feb 2021 12:37:21 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1613133441;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=a3IoNioZ3MsloB8m8HajhZlbe4DfHzk3Cx0unkWNEeo=;
-        b=SD5KNtVbbY31S3cYNQiv+v8tEPtyo+NWxHrV8hEEiPuc3eQX/zowLx4TfIMZ3AG9n17S41
-        +/ugXJFKWEmFcLOZ3S8rhqNRB/Ha37OItlUiyhTB100bhe7KTitizluMdinzW7YLOo+8uv
-        yk6kbYeU5ML84KeCjpgxDXIeWH8/tHwuYXZHX5m8WUybIOFmBta52elKZoaZvsoBHDAAlh
-        8u79sbM/3a/X8IiP7Cgryz0ZhpQL4coigkxn+8Spc4NgSkUpF1TJWIa+ecBvTihX/Yb9oE
-        gSCtfWxtoosnQYEGZinvAS/S4v1Fz5QQmV2mWj5srIE5HtzLErvA5M9BSG46xQ==
+        bh=m5+TS1b3ATOHr7MFbXaXx5Ysim80ZoLNR44LKSeccwM=;
+        b=eaB+IndEu0HawAFp4pvo+2aATeU4YB1QBgbuBqp0JXC4zsNGSgQIKiooY69XN3ou4NvDQ4
+        84U8TPAlpmhBR+wF5YhWf8U/pY2587EaA2J376YYZgFSycIY6DqsDwitaDkjcdPvjARrvl
+        GLn5XBQWDy+CsQxLmBWLtzByuwQjjF2Op68ifRUoOT8t/VFQSPIjKTt4HqUTFjbEJlBfjC
+        ViaC/KBKnHzPaHBNKdTbkhtH1Dt+fR/keJsacqzzZAUazyecMsgH8jqXgaGM2aAFopKF/G
+        Ql/0ezp64lTS+DLZq3N5eKQWrazN6Y6iGBzMmCLKpoo6cEkrTGKNOXsZzCnm+g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1613133441;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=a3IoNioZ3MsloB8m8HajhZlbe4DfHzk3Cx0unkWNEeo=;
-        b=yyQbk4Gv7LsvHjlNL/L5uo+djVvLIiY05JTBV3FZvDo7/7bNuecgycwW7UvXdacwEsT2rw
-        vjqwx0A8oJ286mAA==
-From:   "tip-bot2 for Frederic Weisbecker" <tip-bot2@linutronix.de>
+        bh=m5+TS1b3ATOHr7MFbXaXx5Ysim80ZoLNR44LKSeccwM=;
+        b=L4HQGuMhalefX5hS86w7oiDAxTGaORP772pgHB+MUxTg/vr3OmbMrK50t7DItnCNwjFapy
+        RnEAmUi8NdOoD1BQ==
+From:   "tip-bot2 for Joel Fernandes (Google)" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcu/nocb: Provide basic callback offloading state
- machine bits
-Cc:     Josh Triplett <josh@joshtriplett.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        Lai Jiangshan <jiangshanlai@gmail.com>,
-        Joel Fernandes <joel@joelfernandes.org>,
+Subject: [tip: core/rcu] rcu/trace: Add tracing for how segcb list changes
+Cc:     Frederic Weisbecker <frederic@kernel.org>,
         Neeraj Upadhyay <neeraju@codeaurora.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        Frederic Weisbecker <frederic@kernel.org>,
+        "Joel Fernandes (Google)" <joel@joelfernandes.org>,
         "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <161313344053.23325.10412106197291366185.tip-bot2@tip-bot2>
+Message-ID: <161313344136.23325.13233635101480157456.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,224 +54,111 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     8d346d438f93b5344e99d429727ec9c2f392d4ec
-Gitweb:        https://git.kernel.org/tip/8d346d438f93b5344e99d429727ec9c2f392d4ec
-Author:        Frederic Weisbecker <frederic@kernel.org>
-AuthorDate:    Fri, 13 Nov 2020 13:13:17 +01:00
+Commit-ID:     3afe7fa535491ecd0382c3968dc2349602bff8a2
+Gitweb:        https://git.kernel.org/tip/3afe7fa535491ecd0382c3968dc2349602bff8a2
+Author:        Joel Fernandes (Google) <joel@joelfernandes.org>
+AuthorDate:    Sat, 14 Nov 2020 14:31:32 -05:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Wed, 06 Jan 2021 16:24:19 -08:00
 
-rcu/nocb: Provide basic callback offloading state machine bits
+rcu/trace: Add tracing for how segcb list changes
 
-Offloading and de-offloading RCU callback processes must be done
-carefully.  There must never be a time at which callback processing is
-disabled because the task driving the offloading or de-offloading might be
-preempted or otherwise stalled at that point in time, which would result
-in OOM due to calbacks piling up indefinitely.  This implies that there
-will be times during which a given CPU's callbacks might be concurrently
-invoked by both that CPU's RCU_SOFTIRQ handler (or, equivalently, that
-CPU's rcuc kthread) and by that CPU's rcuo kthread.
+This commit adds tracing to track how the segcb list changes before/after
+acceleration, during queuing and during dequeuing.
 
-This situation could fatally confuse both rcu_barrier() and the
-CPU-hotplug offlining process, so these must be excluded during any
-concurrent-callback-invocation period.  In addition, during times of
-concurrent callback invocation, changes to ->cblist must be protected
-both as needed for RCU_SOFTIRQ and as needed for the rcuo kthread.
+This tracing helped discover an optimization that avoided needless GP
+requests when no callbacks were accelerated. The tracing overhead is
+minimal as each segment's length is now stored in the respective segment.
 
-This commit therefore defines and documents the states for a state
-machine that coordinates offloading and deoffloading.
-
-Cc: Josh Triplett <josh@joshtriplett.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Lai Jiangshan <jiangshanlai@gmail.com>
-Cc: Joel Fernandes <joel@joelfernandes.org>
-Cc: Neeraj Upadhyay <neeraju@codeaurora.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Inspired-by: Paul E. McKenney <paulmck@kernel.org>
-Tested-by: Boqun Feng <boqun.feng@gmail.com>
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
+Reviewed-by: Neeraj Upadhyay <neeraju@codeaurora.org>
+Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- include/linux/rcu_segcblist.h | 115 ++++++++++++++++++++++++++++++++-
- kernel/rcu/rcu_segcblist.c    |   1 +-
- kernel/rcu/rcu_segcblist.h    |  12 ++-
- kernel/rcu/tree.c             |   3 +-
- 4 files changed, 128 insertions(+), 3 deletions(-)
+ include/trace/events/rcu.h | 26 ++++++++++++++++++++++++++
+ kernel/rcu/tree.c          |  9 +++++++++
+ 2 files changed, 35 insertions(+)
 
-diff --git a/include/linux/rcu_segcblist.h b/include/linux/rcu_segcblist.h
-index 4714b02..8afe886 100644
---- a/include/linux/rcu_segcblist.h
-+++ b/include/linux/rcu_segcblist.h
-@@ -63,8 +63,121 @@ struct rcu_cblist {
- #define RCU_NEXT_TAIL		3
- #define RCU_CBLIST_NSEGS	4
+diff --git a/include/trace/events/rcu.h b/include/trace/events/rcu.h
+index 155b5cb..5fc2940 100644
+--- a/include/trace/events/rcu.h
++++ b/include/trace/events/rcu.h
+@@ -505,6 +505,32 @@ TRACE_EVENT_RCU(rcu_callback,
+ 		  __entry->qlen)
+ );
  
++TRACE_EVENT_RCU(rcu_segcb_stats,
 +
-+/*
-+ *                     ==NOCB Offloading state machine==
-+ *
-+ *
-+ *  ----------------------------------------------------------------------------
-+ *  |                         SEGCBLIST_SOFTIRQ_ONLY                           |
-+ *  |                                                                          |
-+ *  |  Callbacks processed by rcu_core() from softirqs or local                |
-+ *  |  rcuc kthread, without holding nocb_lock.                                |
-+ *  ----------------------------------------------------------------------------
-+ *                                         |
-+ *                                         v
-+ *  ----------------------------------------------------------------------------
-+ *  |                        SEGCBLIST_OFFLOADED                               |
-+ *  |                                                                          |
-+ *  | Callbacks processed by rcu_core() from softirqs or local                 |
-+ *  | rcuc kthread, while holding nocb_lock. Waking up CB and GP kthreads,     |
-+ *  | allowing nocb_timer to be armed.                                         |
-+ *  ----------------------------------------------------------------------------
-+ *                                         |
-+ *                                         v
-+ *                        -----------------------------------
-+ *                        |                                 |
-+ *                        v                                 v
-+ *  ---------------------------------------  ----------------------------------|
-+ *  |        SEGCBLIST_OFFLOADED |        |  |     SEGCBLIST_OFFLOADED |       |
-+ *  |        SEGCBLIST_KTHREAD_CB         |  |     SEGCBLIST_KTHREAD_GP        |
-+ *  |                                     |  |                                 |
-+ *  |                                     |  |                                 |
-+ *  | CB kthread woke up and              |  | GP kthread woke up and          |
-+ *  | acknowledged SEGCBLIST_OFFLOADED.   |  | acknowledged SEGCBLIST_OFFLOADED|
-+ *  | Processes callbacks concurrently    |  |                                 |
-+ *  | with rcu_core(), holding            |  |                                 |
-+ *  | nocb_lock.                          |  |                                 |
-+ *  ---------------------------------------  -----------------------------------
-+ *                        |                                 |
-+ *                        -----------------------------------
-+ *                                         |
-+ *                                         v
-+ *  |--------------------------------------------------------------------------|
-+ *  |                           SEGCBLIST_OFFLOADED |                          |
-+ *  |                           SEGCBLIST_KTHREAD_CB |                         |
-+ *  |                           SEGCBLIST_KTHREAD_GP                           |
-+ *  |                                                                          |
-+ *  |   Kthreads handle callbacks holding nocb_lock, local rcu_core() stops    |
-+ *  |   handling callbacks.                                                    |
-+ *  ----------------------------------------------------------------------------
-+ */
++		TP_PROTO(struct rcu_segcblist *rs, const char *ctx),
 +
++		TP_ARGS(rs, ctx),
 +
++		TP_STRUCT__entry(
++			__field(const char *, ctx)
++			__array(unsigned long, gp_seq, RCU_CBLIST_NSEGS)
++			__array(long, seglen, RCU_CBLIST_NSEGS)
++		),
 +
-+/*
-+ *                       ==NOCB De-Offloading state machine==
-+ *
-+ *
-+ *  |--------------------------------------------------------------------------|
-+ *  |                           SEGCBLIST_OFFLOADED |                          |
-+ *  |                           SEGCBLIST_KTHREAD_CB |                         |
-+ *  |                           SEGCBLIST_KTHREAD_GP                           |
-+ *  |                                                                          |
-+ *  |   CB/GP kthreads handle callbacks holding nocb_lock, local rcu_core()    |
-+ *  |   ignores callbacks.                                                     |
-+ *  ----------------------------------------------------------------------------
-+ *                                      |
-+ *                                      v
-+ *  |--------------------------------------------------------------------------|
-+ *  |                           SEGCBLIST_KTHREAD_CB |                         |
-+ *  |                           SEGCBLIST_KTHREAD_GP                           |
-+ *  |                                                                          |
-+ *  |   CB/GP kthreads and local rcu_core() handle callbacks concurrently      |
-+ *  |   holding nocb_lock. Wake up CB and GP kthreads if necessary.            |
-+ *  ----------------------------------------------------------------------------
-+ *                                      |
-+ *                                      v
-+ *                     -----------------------------------
-+ *                     |                                 |
-+ *                     v                                 v
-+ *  ---------------------------------------------------------------------------|
-+ *  |                                                                          |
-+ *  |        SEGCBLIST_KTHREAD_CB         |       SEGCBLIST_KTHREAD_GP         |
-+ *  |                                     |                                    |
-+ *  | GP kthread woke up and              |   CB kthread woke up and           |
-+ *  | acknowledged the fact that          |   acknowledged the fact that       |
-+ *  | SEGCBLIST_OFFLOADED got cleared.    |   SEGCBLIST_OFFLOADED got cleared. |
-+ *  |                                     |   The CB kthread goes to sleep     |
-+ *  | The callbacks from the target CPU   |   until it ever gets re-offloaded. |
-+ *  | will be ignored from the GP kthread |                                    |
-+ *  | loop.                               |                                    |
-+ *  ----------------------------------------------------------------------------
-+ *                      |                                 |
-+ *                      -----------------------------------
-+ *                                      |
-+ *                                      v
-+ *  ----------------------------------------------------------------------------
-+ *  |                                   0                                      |
-+ *  |                                                                          |
-+ *  | Callbacks processed by rcu_core() from softirqs or local                 |
-+ *  | rcuc kthread, while holding nocb_lock. Forbid nocb_timer to be armed.    |
-+ *  | Flush pending nocb_timer. Flush nocb bypass callbacks.                   |
-+ *  ----------------------------------------------------------------------------
-+ *                                      |
-+ *                                      v
-+ *  ----------------------------------------------------------------------------
-+ *  |                         SEGCBLIST_SOFTIRQ_ONLY                           |
-+ *  |                                                                          |
-+ *  |  Callbacks processed by rcu_core() from softirqs or local                |
-+ *  |  rcuc kthread, without holding nocb_lock.                                |
-+ *  ----------------------------------------------------------------------------
-+ */
- #define SEGCBLIST_ENABLED	BIT(0)
--#define SEGCBLIST_OFFLOADED	BIT(1)
-+#define SEGCBLIST_SOFTIRQ_ONLY	BIT(1)
-+#define SEGCBLIST_KTHREAD_CB	BIT(2)
-+#define SEGCBLIST_KTHREAD_GP	BIT(3)
-+#define SEGCBLIST_OFFLOADED	BIT(4)
- 
- struct rcu_segcblist {
- 	struct rcu_head *head;
-diff --git a/kernel/rcu/rcu_segcblist.c b/kernel/rcu/rcu_segcblist.c
-index 934945d..7fc6362 100644
---- a/kernel/rcu/rcu_segcblist.c
-+++ b/kernel/rcu/rcu_segcblist.c
-@@ -266,6 +266,7 @@ void rcu_segcblist_disable(struct rcu_segcblist *rsclp)
-  */
- void rcu_segcblist_offload(struct rcu_segcblist *rsclp)
- {
-+	rcu_segcblist_clear_flags(rsclp, SEGCBLIST_SOFTIRQ_ONLY);
- 	rcu_segcblist_set_flags(rsclp, SEGCBLIST_OFFLOADED);
- }
- 
-diff --git a/kernel/rcu/rcu_segcblist.h b/kernel/rcu/rcu_segcblist.h
-index ff372db..e05952a 100644
---- a/kernel/rcu/rcu_segcblist.h
-+++ b/kernel/rcu/rcu_segcblist.h
-@@ -83,8 +83,16 @@ static inline bool rcu_segcblist_is_enabled(struct rcu_segcblist *rsclp)
- /* Is the specified rcu_segcblist offloaded?  */
- static inline bool rcu_segcblist_is_offloaded(struct rcu_segcblist *rsclp)
- {
--	return IS_ENABLED(CONFIG_RCU_NOCB_CPU) &&
--		rcu_segcblist_test_flags(rsclp, SEGCBLIST_OFFLOADED);
-+	if (IS_ENABLED(CONFIG_RCU_NOCB_CPU)) {
-+		/*
-+		 * Complete de-offloading happens only when SEGCBLIST_SOFTIRQ_ONLY
-+		 * is set.
-+		 */
-+		if (!rcu_segcblist_test_flags(rsclp, SEGCBLIST_SOFTIRQ_ONLY))
-+			return true;
-+	}
++		TP_fast_assign(
++			__entry->ctx = ctx;
++			memcpy(__entry->seglen, rs->seglen, RCU_CBLIST_NSEGS * sizeof(long));
++			memcpy(__entry->gp_seq, rs->gp_seq, RCU_CBLIST_NSEGS * sizeof(unsigned long));
 +
-+	return false;
- }
- 
++		),
++
++		TP_printk("%s seglen: (DONE=%ld, WAIT=%ld, NEXT_READY=%ld, NEXT=%ld) "
++			  "gp_seq: (DONE=%lu, WAIT=%lu, NEXT_READY=%lu, NEXT=%lu)", __entry->ctx,
++			  __entry->seglen[0], __entry->seglen[1], __entry->seglen[2], __entry->seglen[3],
++			  __entry->gp_seq[0], __entry->gp_seq[1], __entry->gp_seq[2], __entry->gp_seq[3])
++
++);
++
  /*
+  * Tracepoint for the registration of a single RCU callback of the special
+  * kvfree() form.  The first argument is the RCU type, the second argument
 diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
-index 8086c04..7cfc2e8 100644
+index b0fb654..6bf269c 100644
 --- a/kernel/rcu/tree.c
 +++ b/kernel/rcu/tree.c
-@@ -83,6 +83,9 @@ static DEFINE_PER_CPU_SHARED_ALIGNED(struct rcu_data, rcu_data) = {
- 	.dynticks_nesting = 1,
- 	.dynticks_nmi_nesting = DYNTICK_IRQ_NONIDLE,
- 	.dynticks = ATOMIC_INIT(RCU_DYNTICK_CTRL_CTR),
-+#ifdef CONFIG_RCU_NOCB_CPU
-+	.cblist.flags = SEGCBLIST_SOFTIRQ_ONLY,
-+#endif
- };
- static struct rcu_state rcu_state = {
- 	.level = { &rcu_state.node[0] },
+@@ -1495,6 +1495,8 @@ static bool rcu_accelerate_cbs(struct rcu_node *rnp, struct rcu_data *rdp)
+ 	if (!rcu_segcblist_pend_cbs(&rdp->cblist))
+ 		return false;
+ 
++	trace_rcu_segcb_stats(&rdp->cblist, TPS("SegCbPreAcc"));
++
+ 	/*
+ 	 * Callbacks are often registered with incomplete grace-period
+ 	 * information.  Something about the fact that getting exact
+@@ -1515,6 +1517,8 @@ static bool rcu_accelerate_cbs(struct rcu_node *rnp, struct rcu_data *rdp)
+ 	else
+ 		trace_rcu_grace_period(rcu_state.name, gp_seq_req, TPS("AccReadyCB"));
+ 
++	trace_rcu_segcb_stats(&rdp->cblist, TPS("SegCbPostAcc"));
++
+ 	return ret;
+ }
+ 
+@@ -2471,11 +2475,14 @@ static void rcu_do_batch(struct rcu_data *rdp)
+ 	rcu_segcblist_extract_done_cbs(&rdp->cblist, &rcl);
+ 	if (offloaded)
+ 		rdp->qlen_last_fqs_check = rcu_segcblist_n_cbs(&rdp->cblist);
++
++	trace_rcu_segcb_stats(&rdp->cblist, TPS("SegCbDequeued"));
+ 	rcu_nocb_unlock_irqrestore(rdp, flags);
+ 
+ 	/* Invoke callbacks. */
+ 	tick_dep_set_task(current, TICK_DEP_BIT_RCU);
+ 	rhp = rcu_cblist_dequeue(&rcl);
++
+ 	for (; rhp; rhp = rcu_cblist_dequeue(&rcl)) {
+ 		rcu_callback_t f;
+ 
+@@ -2987,6 +2994,8 @@ __call_rcu(struct rcu_head *head, rcu_callback_t func)
+ 		trace_rcu_callback(rcu_state.name, head,
+ 				   rcu_segcblist_n_cbs(&rdp->cblist));
+ 
++	trace_rcu_segcb_stats(&rdp->cblist, TPS("SegCBQueued"));
++
+ 	/* Go handle any RCU core processing required. */
+ 	if (unlikely(rcu_segcblist_is_offloaded(&rdp->cblist))) {
+ 		__call_rcu_nocb_wake(rdp, was_alldone, flags); /* unlocks */
