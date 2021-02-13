@@ -2,73 +2,99 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F06B131AB7B
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 13 Feb 2021 14:01:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AA78531AC0B
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 13 Feb 2021 15:10:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229647AbhBMNAw (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 13 Feb 2021 08:00:52 -0500
-Received: from mail.kernel.org ([198.145.29.99]:32814 "EHLO mail.kernel.org"
+        id S229598AbhBMOJr (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 13 Feb 2021 09:09:47 -0500
+Received: from mail.kernel.org ([198.145.29.99]:42868 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229584AbhBMNAt (ORCPT
+        id S229584AbhBMOJq (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 13 Feb 2021 08:00:49 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 3792B64E3C;
-        Sat, 13 Feb 2021 13:00:08 +0000 (UTC)
+        Sat, 13 Feb 2021 09:09:46 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id D315264DEB;
+        Sat, 13 Feb 2021 14:09:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1613221208;
-        bh=Cz2orqtp9R/X6eFbJi3BEio1pVXe1l7tT2SPS1n1dZo=;
+        s=korg; t=1613225345;
+        bh=pTRlgXkyhIUDcjvu3VK/6FMuyvV971qckI4/kaJRXvg=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=VjME+QqSd/NwaLbfecqxtpP/Ivntll97DtXqpuUazrx3IP9gMYTILIZA9aCRVSeFl
-         RzlciUcDeetk2TKmCB0cr1aINaZeXiR6+3pGkYpg+664npLhBURfUYb7IFSazymWgt
-         Iiv144ekNsDRNIsL8+NNQdcHb2nUJBkvwhHs2m14=
-Date:   Sat, 13 Feb 2021 14:00:06 +0100
+        b=f6LKUDOl0e+B22x558Jcdkhmwp7xy8eK5tJ+wGVckiBrI1+DSzXRFbH22Oy8rmglZ
+         Kmqfygd8myp8NyLSIz0FSTsTi5zm5xUXj38DGahvvY13nCzgyEyaIGB8PltPvGNPzJ
+         7UE0nQTWVFEiaPuKLYwgiW14X8TQ5Z9r8CGaAPiA=
+Date:   Sat, 13 Feb 2021 15:09:02 +0100
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Xi Ruoyao <xry111@mengyan1223.wang>
-Cc:     stable@vger.kernel.org, Arnd Bergmann <arnd@kernel.org>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+To:     Steven Rostedt <rostedt@goodmis.org>
+Cc:     Josh Poimboeuf <jpoimboe@redhat.com>,
         Nick Desaulniers <ndesaulniers@google.com>,
-        Miroslav Benes <mbenes@suse.cz>, x86@kernel.org,
-        linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org
+        Xi Ruoyao <xry111@mengyan1223.wang>,
+        "# 3.4.x" <stable@vger.kernel.org>,
+        Arnd Bergmann <arnd@kernel.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Miroslav Benes <mbenes@suse.cz>,
+        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-tip-commits@vger.kernel.org
 Subject: Re: [tip: objtool/urgent] objtool: Fix seg fault with Clang
  non-section symbols
-Message-ID: <YCfNVhB8D73RKnKV@kroah.com>
+Message-ID: <YCfdfkoeh8i0baCj@kroah.com>
 References: <ba6b6c0f0dd5acbba66e403955a967d9fdd1726a.1607983452.git.jpoimboe@redhat.com>
  <160812658044.3364.4188208281079332844.tip-bot2@tip-bot2>
  <dded80b60d9136ea90987516c28f93273385651f.camel@mengyan1223.wang>
+ <YCU3Vdoqd+EI+zpv@kroah.com>
+ <CAKwvOd=GHdkvAU3u6ROSgtGqC_wrkXo8siL1nZHE-qsqSx0gsw@mail.gmail.com>
+ <YCafKVSTX9MxDBMd@kroah.com>
+ <20210212170750.y7xtitigfqzpchqd@treble>
+ <20210212124547.1dcf067e@gandalf.local.home>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <dded80b60d9136ea90987516c28f93273385651f.camel@mengyan1223.wang>
+In-Reply-To: <20210212124547.1dcf067e@gandalf.local.home>
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Thu, Feb 11, 2021 at 09:32:03PM +0800, Xi Ruoyao wrote:
-> Hi all,
+On Fri, Feb 12, 2021 at 12:45:47PM -0500, Steven Rostedt wrote:
+> On Fri, 12 Feb 2021 11:07:50 -0600
+> Josh Poimboeuf <jpoimboe@redhat.com> wrote:
 > 
-> The latest GNU assembler (binutils-2.36.1) is removing unused section symbols
-> like Clang [1].  So linux-5.10.15 can't be built with binutils-2.36.1 now.  It
-> has been reported as https://bugzilla.kernel.org/show_bug.cgi?id=211693.
 > 
-> I can confirm this commit fixes the issue.  It should be cherry-picked into
-> stable branches, so the following stable releases will be able to built with
-> latest GNU toolchain.
-> 
-> [1]: https://sourceware.org/pipermail/binutils/2020-December/114671.html
-> 
-> At last, happy new lunar year guys :).
-> 
-> On 2020-12-16 13:49 +0000, tip-bot2 for Josh Poimboeuf wrote:
-> > The following commit has been merged into the objtool/urgent branch of tip:
+> > > Any ideas are appreciated.  
 > > 
-> > Commit-ID:     44f6a7c0755d8dd453c70557e11687bb080a6f21
+> > [ Adding Steve Rostedt ]
+> > 
+> > This error message comes from recordmcount.  It probably can't handle
+> > the missing STT_SECTION symbols which are getting stripped by the new
+> > binutils.  (Objtool also had trouble with that.)
+> > 
+> > No idea why you only see this on 4.4 though.
+> > 
+> 
+> Just taking a quick look, but would something like this work?
+> 
+> I created this against v4.4.257.
+> 
+> -- Steve
+> 
+> diff --git a/scripts/recordmcount.h b/scripts/recordmcount.h
+> index 04151ede8043..698404f092d0 100644
+> --- a/scripts/recordmcount.h
+> +++ b/scripts/recordmcount.h
+> @@ -437,6 +437,8 @@ static unsigned find_secsym_ndx(unsigned const txtndx,
+>  			if (w2(ehdr->e_machine) == EM_ARM
+>  			    && ELF_ST_TYPE(symp->st_info) == STT_FUNC)
+>  				continue;
+> +			if (ELF_ST_TYPE(symp->st_info) == STT_SECTION)
+> +				continue;
+>  
+>  			*recvalp = _w(symp->st_value);
+>  			return symp - sym0;
+> 
 
-Now queued up for 5.10.y.
 
-If people want it in older kernels, please provide a working backport.
+Thanks for the patch, but no, still fails with:
 
-thanks,
+Cannot find symbol for section 8: .text.unlikely.
+kernel/kexec_file.o: failed
+make[1]: *** [scripts/Makefile.build:277: kernel/kexec_file.o] Error 1
+make[1]: *** Deleting file 'kernel/kexec_file.o'
 
-greg k-h
