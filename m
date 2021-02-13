@@ -2,85 +2,73 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7682031A3FA
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 12 Feb 2021 18:47:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F06B131AB7B
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 13 Feb 2021 14:01:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231735AbhBLRqh (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 12 Feb 2021 12:46:37 -0500
-Received: from mail.kernel.org ([198.145.29.99]:48760 "EHLO mail.kernel.org"
+        id S229647AbhBMNAw (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 13 Feb 2021 08:00:52 -0500
+Received: from mail.kernel.org ([198.145.29.99]:32814 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231474AbhBLRqb (ORCPT
+        id S229584AbhBMNAt (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 12 Feb 2021 12:46:31 -0500
-Received: from gandalf.local.home (cpe-66-24-58-225.stny.res.rr.com [66.24.58.225])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2D31664E89;
-        Fri, 12 Feb 2021 17:45:49 +0000 (UTC)
-Date:   Fri, 12 Feb 2021 12:45:47 -0500
-From:   Steven Rostedt <rostedt@goodmis.org>
-To:     Josh Poimboeuf <jpoimboe@redhat.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Xi Ruoyao <xry111@mengyan1223.wang>,
-        "# 3.4.x" <stable@vger.kernel.org>,
-        Arnd Bergmann <arnd@kernel.org>,
+        Sat, 13 Feb 2021 08:00:49 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 3792B64E3C;
+        Sat, 13 Feb 2021 13:00:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1613221208;
+        bh=Cz2orqtp9R/X6eFbJi3BEio1pVXe1l7tT2SPS1n1dZo=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=VjME+QqSd/NwaLbfecqxtpP/Ivntll97DtXqpuUazrx3IP9gMYTILIZA9aCRVSeFl
+         RzlciUcDeetk2TKmCB0cr1aINaZeXiR6+3pGkYpg+664npLhBURfUYb7IFSazymWgt
+         Iiv144ekNsDRNIsL8+NNQdcHb2nUJBkvwhHs2m14=
+Date:   Sat, 13 Feb 2021 14:00:06 +0100
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Xi Ruoyao <xry111@mengyan1223.wang>
+Cc:     stable@vger.kernel.org, Arnd Bergmann <arnd@kernel.org>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Miroslav Benes <mbenes@suse.cz>,
-        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-tip-commits@vger.kernel.org
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Miroslav Benes <mbenes@suse.cz>, x86@kernel.org,
+        linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org
 Subject: Re: [tip: objtool/urgent] objtool: Fix seg fault with Clang
  non-section symbols
-Message-ID: <20210212124547.1dcf067e@gandalf.local.home>
-In-Reply-To: <20210212170750.y7xtitigfqzpchqd@treble>
+Message-ID: <YCfNVhB8D73RKnKV@kroah.com>
 References: <ba6b6c0f0dd5acbba66e403955a967d9fdd1726a.1607983452.git.jpoimboe@redhat.com>
-        <160812658044.3364.4188208281079332844.tip-bot2@tip-bot2>
-        <dded80b60d9136ea90987516c28f93273385651f.camel@mengyan1223.wang>
-        <YCU3Vdoqd+EI+zpv@kroah.com>
-        <CAKwvOd=GHdkvAU3u6ROSgtGqC_wrkXo8siL1nZHE-qsqSx0gsw@mail.gmail.com>
-        <YCafKVSTX9MxDBMd@kroah.com>
-        <20210212170750.y7xtitigfqzpchqd@treble>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+ <160812658044.3364.4188208281079332844.tip-bot2@tip-bot2>
+ <dded80b60d9136ea90987516c28f93273385651f.camel@mengyan1223.wang>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <dded80b60d9136ea90987516c28f93273385651f.camel@mengyan1223.wang>
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Fri, 12 Feb 2021 11:07:50 -0600
-Josh Poimboeuf <jpoimboe@redhat.com> wrote:
-
-
-> > Any ideas are appreciated.  
+On Thu, Feb 11, 2021 at 09:32:03PM +0800, Xi Ruoyao wrote:
+> Hi all,
 > 
-> [ Adding Steve Rostedt ]
+> The latest GNU assembler (binutils-2.36.1) is removing unused section symbols
+> like Clang [1].  So linux-5.10.15 can't be built with binutils-2.36.1 now.  It
+> has been reported as https://bugzilla.kernel.org/show_bug.cgi?id=211693.
 > 
-> This error message comes from recordmcount.  It probably can't handle
-> the missing STT_SECTION symbols which are getting stripped by the new
-> binutils.  (Objtool also had trouble with that.)
+> I can confirm this commit fixes the issue.  It should be cherry-picked into
+> stable branches, so the following stable releases will be able to built with
+> latest GNU toolchain.
 > 
-> No idea why you only see this on 4.4 though.
+> [1]: https://sourceware.org/pipermail/binutils/2020-December/114671.html
 > 
+> At last, happy new lunar year guys :).
+> 
+> On 2020-12-16 13:49 +0000, tip-bot2 for Josh Poimboeuf wrote:
+> > The following commit has been merged into the objtool/urgent branch of tip:
+> > 
+> > Commit-ID:     44f6a7c0755d8dd453c70557e11687bb080a6f21
 
-Just taking a quick look, but would something like this work?
+Now queued up for 5.10.y.
 
-I created this against v4.4.257.
+If people want it in older kernels, please provide a working backport.
 
--- Steve
+thanks,
 
-diff --git a/scripts/recordmcount.h b/scripts/recordmcount.h
-index 04151ede8043..698404f092d0 100644
---- a/scripts/recordmcount.h
-+++ b/scripts/recordmcount.h
-@@ -437,6 +437,8 @@ static unsigned find_secsym_ndx(unsigned const txtndx,
- 			if (w2(ehdr->e_machine) == EM_ARM
- 			    && ELF_ST_TYPE(symp->st_info) == STT_FUNC)
- 				continue;
-+			if (ELF_ST_TYPE(symp->st_info) == STT_SECTION)
-+				continue;
- 
- 			*recvalp = _w(symp->st_value);
- 			return symp - sym0;
-
+greg k-h
