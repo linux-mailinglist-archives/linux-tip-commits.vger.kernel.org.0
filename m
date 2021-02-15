@@ -2,103 +2,86 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3183031BB92
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 15 Feb 2021 15:57:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7998331BEB7
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 15 Feb 2021 17:19:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229961AbhBOO4x (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 15 Feb 2021 09:56:53 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:33292 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230142AbhBOO4i (ORCPT
+        id S231238AbhBOQQp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 15 Feb 2021 11:16:45 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:28970 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S231136AbhBOP7s (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 15 Feb 2021 09:56:38 -0500
-Date:   Mon, 15 Feb 2021 14:55:55 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1613400955;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=JsaoZCB9zSWouNLOeT/XvD1H+a5WgTq8/fZupRieDR4=;
-        b=eNzLR9mJx0YSNDjY04tbJ5spHM04AqTIATPSxhF2rKIrqIJSsFRPSlL5RJTX54x+nwIxei
-        FS26nytMH20ak9LkUZUhDgyacjy5UJWqQL5BaLXqHTSdFOXiZ3ij8BJIAP1SlZviiOTx6a
-        bG5thfPCQIueuHm+hecNXh00qxGnV/v8NMiXHZzdP2nvpv5s7h2QIHwGuRwHwMj/pCaV1V
-        nq+MchDFUDnBFRYymglBwaJo5T607ziVrkubQz0NasQB8McGxx+WNnGEqECyf5rm1ftXkR
-        HmupQxMxctPAiNQC3HpLmcanGa4QmL6kLp1GmYdI21d8Lo8AX/U2B30ILB/vog==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1613400955;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=JsaoZCB9zSWouNLOeT/XvD1H+a5WgTq8/fZupRieDR4=;
-        b=lXS8M5Nn0BNE2fCewuzr3mlHJ9JTF5NKOe7uhzEEnfrFTbcVmyWCO9VgB8prl8FlHd59R0
-        xh9NFPPwoWqH2yCg==
-From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] tools/memory-model: Tie acquire loads to reads-from
-Cc:     Boqun Feng <boqun.feng@gmail.com>,
-        "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
+        Mon, 15 Feb 2021 10:59:48 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1613404698;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=c6jv3nP+7Q06U4+toIFOfwOxFo1g4xAmXkGnBLIkfoE=;
+        b=a5UjVgdGpinU5lo41acwy4bdNya0qQUWijK3uAk6g7tucWTO+v/bcpibnpRfJN4URLrdKI
+        I0Kyvo19wTrlQtrtyh17CD2U/kpYLAe3kHUrzDeLi0GwkFsBVs5wMa+HKLUmYvCmQXS29d
+        /8uXq+SZHQWIdBYzh3rVQrvfRTH1wls=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-518-zltMbELtNOuUs49q07VJ3g-1; Mon, 15 Feb 2021 10:58:14 -0500
+X-MC-Unique: zltMbELtNOuUs49q07VJ3g-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 7179B107ACC7;
+        Mon, 15 Feb 2021 15:58:10 +0000 (UTC)
+Received: from treble (ovpn-120-169.rdu2.redhat.com [10.10.120.169])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 6E02919CAB;
+        Mon, 15 Feb 2021 15:58:08 +0000 (UTC)
+Date:   Mon, 15 Feb 2021 09:58:06 -0600
+From:   Josh Poimboeuf <jpoimboe@redhat.com>
+To:     Steven Rostedt <rostedt@goodmis.org>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Xi Ruoyao <xry111@mengyan1223.wang>,
+        "# 3.4.x" <stable@vger.kernel.org>,
+        Arnd Bergmann <arnd@kernel.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Miroslav Benes <mbenes@suse.cz>,
+        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-tip-commits@vger.kernel.org
+Subject: Re: [tip: objtool/urgent] objtool: Fix seg fault with Clang
+ non-section symbols
+Message-ID: <20210215155806.bjcouvmkapj4pa4y@treble>
+References: <CAKwvOd=GHdkvAU3u6ROSgtGqC_wrkXo8siL1nZHE-qsqSx0gsw@mail.gmail.com>
+ <YCafKVSTX9MxDBMd@kroah.com>
+ <20210212170750.y7xtitigfqzpchqd@treble>
+ <20210212124547.1dcf067e@gandalf.local.home>
+ <YCfdfkoeh8i0baCj@kroah.com>
+ <20210213091304.2dd51e5f@oasis.local.home>
+ <20210213155203.lehuegwc3h42nebs@treble>
+ <YCf9bnsmXqRGMn+j@kroah.com>
+ <20210214155147.3owdimqv2lyhu6by@treble>
+ <20210215095307.6f5fb12f@gandalf.local.home>
 MIME-Version: 1.0
-Message-ID: <161340095527.20312.14396173781027795750.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20210215095307.6f5fb12f@gandalf.local.home>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the locking/core branch of tip:
+On Mon, Feb 15, 2021 at 09:53:07AM -0500, Steven Rostedt wrote:
+> On Sun, 14 Feb 2021 09:51:47 -0600
+> Josh Poimboeuf <jpoimboe@redhat.com> wrote:
+> 
+> > Steve, looks like recordmcount avoids referencing weak symbols directly
+> > by their function symbol.  Maybe it can just skip weak symbols which
+> > don't have a section symbol, since this seems like a rare scenario.
+> 
+> When does the .text.unlikely section disappear? During the creation of the
+> object, or later in the linker stage?
 
-Commit-ID:     8881e7a774a8d14088d6c6fde8730660f74a3642
-Gitweb:        https://git.kernel.org/tip/8881e7a774a8d14088d6c6fde8730660f74a3642
-Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Fri, 06 Nov 2020 09:58:01 -08:00
-Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Mon, 04 Jan 2021 14:40:49 -08:00
+The section is there, but the symbol associated with the section
+(".text.unlikely" symbol) isn't generated by the assembler.
 
-tools/memory-model: Tie acquire loads to reads-from
+-- 
+Josh
 
-This commit explicitly makes the connection between acquire loads and
-the reads-from relation.  It also adds an entry for happens-before,
-and refers to the corresponding section of explanation.txt.
-
-Reported-by: Boqun Feng <boqun.feng@gmail.com>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
----
- tools/memory-model/Documentation/glossary.txt | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
-
-diff --git a/tools/memory-model/Documentation/glossary.txt b/tools/memory-model/Documentation/glossary.txt
-index 79acb75..b2da636 100644
---- a/tools/memory-model/Documentation/glossary.txt
-+++ b/tools/memory-model/Documentation/glossary.txt
-@@ -33,10 +33,11 @@ Acquire:  With respect to a lock, acquiring that lock, for example,
- 	acquire loads.
- 
- 	When an acquire load returns the value stored by a release store
--	to that same variable, then all operations preceding that store
--	happen before any operations following that load acquire.
-+	to that same variable, (in other words, the acquire load "reads
-+	from" the release store), then all operations preceding that
-+	store "happen before" any operations following that load acquire.
- 
--	See also "Relaxed" and "Release".
-+	See also "Happens-Before", "Reads-From", "Relaxed", and "Release".
- 
- Coherence (co):  When one CPU's store to a given variable overwrites
- 	either the value from another CPU's store or some later value,
-@@ -119,6 +120,11 @@ Fully Ordered:  An operation such as smp_mb() that orders all of
- 	that orders all of its CPU's prior accesses, itself, and
- 	all of its CPU's subsequent accesses.
- 
-+Happens-Before (hb): A relation between two accesses in which LKMM
-+	guarantees the first access precedes the second.  For more
-+	detail, please see the "THE HAPPENS-BEFORE RELATION: hb"
-+	section of explanation.txt.
-+
- Marked Access:  An access to a variable that uses an special function or
- 	macro such as "r1 = READ_ONCE(x)" or "smp_store_release(&a, 1)".
- 
