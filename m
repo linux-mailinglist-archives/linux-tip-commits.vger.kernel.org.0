@@ -2,40 +2,24 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7998331BEB7
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 15 Feb 2021 17:19:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D380B31C380
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 15 Feb 2021 22:23:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231238AbhBOQQp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 15 Feb 2021 11:16:45 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:28970 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231136AbhBOP7s (ORCPT
+        id S229672AbhBOVWy (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 15 Feb 2021 16:22:54 -0500
+Received: from mail.kernel.org ([198.145.29.99]:58456 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229662AbhBOVWx (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 15 Feb 2021 10:59:48 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1613404698;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=c6jv3nP+7Q06U4+toIFOfwOxFo1g4xAmXkGnBLIkfoE=;
-        b=a5UjVgdGpinU5lo41acwy4bdNya0qQUWijK3uAk6g7tucWTO+v/bcpibnpRfJN4URLrdKI
-        I0Kyvo19wTrlQtrtyh17CD2U/kpYLAe3kHUrzDeLi0GwkFsBVs5wMa+HKLUmYvCmQXS29d
-        /8uXq+SZHQWIdBYzh3rVQrvfRTH1wls=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-518-zltMbELtNOuUs49q07VJ3g-1; Mon, 15 Feb 2021 10:58:14 -0500
-X-MC-Unique: zltMbELtNOuUs49q07VJ3g-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        Mon, 15 Feb 2021 16:22:53 -0500
+Received: from gandalf.local.home (cpe-66-24-58-225.stny.res.rr.com [66.24.58.225])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 7179B107ACC7;
-        Mon, 15 Feb 2021 15:58:10 +0000 (UTC)
-Received: from treble (ovpn-120-169.rdu2.redhat.com [10.10.120.169])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 6E02919CAB;
-        Mon, 15 Feb 2021 15:58:08 +0000 (UTC)
-Date:   Mon, 15 Feb 2021 09:58:06 -0600
-From:   Josh Poimboeuf <jpoimboe@redhat.com>
-To:     Steven Rostedt <rostedt@goodmis.org>
+        by mail.kernel.org (Postfix) with ESMTPSA id 3449364DE0;
+        Mon, 15 Feb 2021 21:22:11 +0000 (UTC)
+Date:   Mon, 15 Feb 2021 16:22:09 -0500
+From:   Steven Rostedt <rostedt@goodmis.org>
+To:     Josh Poimboeuf <jpoimboe@redhat.com>
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Nick Desaulniers <ndesaulniers@google.com>,
         Xi Ruoyao <xry111@mengyan1223.wang>,
@@ -48,40 +32,62 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         linux-tip-commits@vger.kernel.org
 Subject: Re: [tip: objtool/urgent] objtool: Fix seg fault with Clang
  non-section symbols
-Message-ID: <20210215155806.bjcouvmkapj4pa4y@treble>
+Message-ID: <20210215162209.5e2a475b@gandalf.local.home>
+In-Reply-To: <20210215155806.bjcouvmkapj4pa4y@treble>
 References: <CAKwvOd=GHdkvAU3u6ROSgtGqC_wrkXo8siL1nZHE-qsqSx0gsw@mail.gmail.com>
- <YCafKVSTX9MxDBMd@kroah.com>
- <20210212170750.y7xtitigfqzpchqd@treble>
- <20210212124547.1dcf067e@gandalf.local.home>
- <YCfdfkoeh8i0baCj@kroah.com>
- <20210213091304.2dd51e5f@oasis.local.home>
- <20210213155203.lehuegwc3h42nebs@treble>
- <YCf9bnsmXqRGMn+j@kroah.com>
- <20210214155147.3owdimqv2lyhu6by@treble>
- <20210215095307.6f5fb12f@gandalf.local.home>
+        <YCafKVSTX9MxDBMd@kroah.com>
+        <20210212170750.y7xtitigfqzpchqd@treble>
+        <20210212124547.1dcf067e@gandalf.local.home>
+        <YCfdfkoeh8i0baCj@kroah.com>
+        <20210213091304.2dd51e5f@oasis.local.home>
+        <20210213155203.lehuegwc3h42nebs@treble>
+        <YCf9bnsmXqRGMn+j@kroah.com>
+        <20210214155147.3owdimqv2lyhu6by@treble>
+        <20210215095307.6f5fb12f@gandalf.local.home>
+        <20210215155806.bjcouvmkapj4pa4y@treble>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20210215095307.6f5fb12f@gandalf.local.home>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Mon, Feb 15, 2021 at 09:53:07AM -0500, Steven Rostedt wrote:
-> On Sun, 14 Feb 2021 09:51:47 -0600
-> Josh Poimboeuf <jpoimboe@redhat.com> wrote:
+On Mon, 15 Feb 2021 09:58:06 -0600
+Josh Poimboeuf <jpoimboe@redhat.com> wrote:
+
+> On Mon, Feb 15, 2021 at 09:53:07AM -0500, Steven Rostedt wrote:
+> > On Sun, 14 Feb 2021 09:51:47 -0600
+> > Josh Poimboeuf <jpoimboe@redhat.com> wrote:
+> >   
+> > > Steve, looks like recordmcount avoids referencing weak symbols directly
+> > > by their function symbol.  Maybe it can just skip weak symbols which
+> > > don't have a section symbol, since this seems like a rare scenario.  
+> > 
+> > When does the .text.unlikely section disappear? During the creation of the
+> > object, or later in the linker stage?  
 > 
-> > Steve, looks like recordmcount avoids referencing weak symbols directly
-> > by their function symbol.  Maybe it can just skip weak symbols which
-> > don't have a section symbol, since this seems like a rare scenario.
+> The section is there, but the symbol associated with the section
+> (".text.unlikely" symbol) isn't generated by the assembler.
 > 
-> When does the .text.unlikely section disappear? During the creation of the
-> object, or later in the linker stage?
 
-The section is there, but the symbol associated with the section
-(".text.unlikely" symbol) isn't generated by the assembler.
+Greg,
 
--- 
-Josh
+Does this fix the issue with you? It appears to fix it for my arch linux
+VM that I created that uses binutils 2.36-3.
 
+-- Steve
+
+diff --git a/scripts/recordmcount.h b/scripts/recordmcount.h
+index f9b19524da11..558b67f8364e 100644
+--- a/scripts/recordmcount.h
++++ b/scripts/recordmcount.h
+@@ -562,7 +562,7 @@ static char const * __has_rel_mcount(Elf_Shdr const *const relhdr, /* reltype */
+ 	if (w(txthdr->sh_type) != SHT_PROGBITS ||
+ 	    !(_w(txthdr->sh_flags) & SHF_EXECINSTR))
+ 		return NULL;
+-	return txtname;
++	return shdr0->sh_size ? txtname : NULL;
+ }
+ 
+ static char const *has_rel_mcount(Elf_Shdr const *const relhdr,
