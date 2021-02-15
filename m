@@ -2,49 +2,50 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A2D9031BB93
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 15 Feb 2021 15:57:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F61F31BB9B
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 15 Feb 2021 15:59:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230190AbhBOO44 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 15 Feb 2021 09:56:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59476 "EHLO
+        id S230234AbhBOO5O (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 15 Feb 2021 09:57:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59554 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230169AbhBOO4n (ORCPT
+        with ESMTP id S230200AbhBOO5H (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 15 Feb 2021 09:56:43 -0500
+        Mon, 15 Feb 2021 09:57:07 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1C5EC06178C;
-        Mon, 15 Feb 2021 06:55:45 -0800 (PST)
-Date:   Mon, 15 Feb 2021 14:55:43 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 581F8C0617A7;
+        Mon, 15 Feb 2021 06:55:47 -0800 (PST)
+Date:   Mon, 15 Feb 2021 14:55:44 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1613400944;
+        s=2020; t=1613400945;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=r54iJMbwz1Hwtq0IluSa9tOgcIsSlkJ71J1kGtMZLJU=;
-        b=P1xUjT7/tuOaUE5frxVq72fS1Wpr34qPSn7DuqgxKY78vlIgQK5yenJyHT4/UEJszeH8W5
-        UklR8srJbduTiKKbp6MjmWJMF5MY0tjrH5+ffSoNptnBB5tFXlIeRs/9jZhja8HhqU/Gkk
-        DprWlSZPOtY7P26wpz4NSbhyPEqgVZdOUR5xkgpHpCNLrwvijPVuOHDgMV4xElLN6g+357
-        CL8tkIwIB/63raMEI2lvkErtItzNQRdecpn1mLaQ0SJwwoKtKHR9aTN6XZ9GHSerxYsTa8
-        8bgGNmDNtfaTTdPL58U/aGEVAPCkBr/bxecYjdJfjS5FSt07yjW5Y/MYYYfB9Q==
+        bh=4H4J9yLMyAZ4uHIglQY+Zl4X3n525BLn6RYLeG9cBcY=;
+        b=E/yGcDh931HEoauvO/qMrjrskIIFnL9cRFFvNdtgWyaLm5XOW5RhSLHxFDKea8zTUqIikY
+        bNIj3TAKacvK75NqKK9SWz2uBUIMkwyfgezHk706gUSpssKga85goTt5bAlLxnoLYgNeYI
+        RncwelDqOhM2PvbHucVh8Bz18LFqvXYhLXptS3vE0sV5Ou5t9DwlvVnLJGEgpn5d/dspjw
+        SfkA/fLRpjjYTXnM2bMRugwt47S5J2DHE/91i+rPQKwWx7eFDfvYul6NhGveQ6oW03b59K
+        ZDnTFR+B5olpAogtsIzPjg/uQXTAokWXh4DX3Cx1rzbU4wa3HdS13cUo4BRHlA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1613400944;
+        s=2020e; t=1613400945;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=r54iJMbwz1Hwtq0IluSa9tOgcIsSlkJ71J1kGtMZLJU=;
-        b=1ve9BZwKP3PaCB9fc1ji/ldfgHgQL4GcDyD17MeKqYBgVG3SFKlinf1gQ5ZnlQccWUKhov
-        Ccd5l1SqHAVo3mBg==
+        bh=4H4J9yLMyAZ4uHIglQY+Zl4X3n525BLn6RYLeG9cBcY=;
+        b=Kpbd9tAdGf2BX8XSwLAKfWedV/e2WqZ0zFe+a7dIBGK7cdY5zmVhXKYSZbyQVI9isGJiYP
+        9nLAfCc7Zxb02CCQ==
 From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcutorture: Add writer-side tests of polling grace-period API
+Subject: [tip: core/rcu] srcu: Provide polling interfaces for Tiny SRCU grace periods
 Cc:     Kent Overstreet <kent.overstreet@gmail.com>,
+        Neeraj Upadhyay <neeraju@codeaurora.org>,
         "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <161340094344.20312.11422301982293275008.tip-bot2@tip-bot2>
+Message-ID: <161340094472.20312.4135097897204210652.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -55,205 +56,179 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     0fd0548db13346bfb3bb23860ab270a32d6e385a
-Gitweb:        https://git.kernel.org/tip/0fd0548db13346bfb3bb23860ab270a32d6e385a
+Commit-ID:     8b5bd67cf6422b63ee100d76d8de8960ca2df7f0
+Gitweb:        https://git.kernel.org/tip/8b5bd67cf6422b63ee100d76d8de8960ca2df7f0
 Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Fri, 13 Nov 2020 20:43:59 -08:00
+AuthorDate:    Fri, 13 Nov 2020 12:54:48 -08:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Mon, 04 Jan 2021 13:53:40 -08:00
+CommitterDate: Mon, 04 Jan 2021 13:53:38 -08:00
 
-rcutorture: Add writer-side tests of polling grace-period API
+srcu: Provide polling interfaces for Tiny SRCU grace periods
 
-This commit adds writer-side testing of the polling grace-period API.
-One test verifies that the polling API sees a grace period caused by
-some other mechanism.  Another test verifies that using the polling API
-to wait for a grace period does not result in too-short grace periods.
-A third test verifies that the polling API does not report
-completion within a read-side critical section.  A fourth and final
-test verifies that the polling API does report completion given an
-intervening grace period.
+There is a need for a polling interface for SRCU grace
+periods, so this commit supplies get_state_synchronize_srcu(),
+start_poll_synchronize_srcu(), and poll_state_synchronize_srcu() for this
+purpose.  The first can be used if future grace periods are inevitable
+(perhaps due to a later call_srcu() invocation), the second if future
+grace periods might not otherwise happen, and the third to check if a
+grace period has elapsed since the corresponding call to either of the
+first two.
+
+As with get_state_synchronize_rcu() and cond_synchronize_rcu(),
+the return value from either get_state_synchronize_srcu() or
+start_poll_synchronize_srcu() must be passed in to a later call to
+poll_state_synchronize_srcu().
 
 Link: https://lore.kernel.org/rcu/20201112201547.GF3365678@moria.home.lan/
 Reported-by: Kent Overstreet <kent.overstreet@gmail.com>
+[ paulmck: Add EXPORT_SYMBOL_GPL() per kernel test robot feedback. ]
+[ paulmck: Apply feedback from Neeraj Upadhyay. ]
+Link: https://lore.kernel.org/lkml/20201117004017.GA7444@paulmck-ThinkPad-P72/
+Reviewed-by: Neeraj Upadhyay <neeraju@codeaurora.org>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/rcu/rcutorture.c | 79 ++++++++++++++++++++++++++++++++++++----
- 1 file changed, 72 insertions(+), 7 deletions(-)
+ include/linux/rcupdate.h |  2 +-
+ include/linux/srcu.h     |  3 ++-
+ include/linux/srcutiny.h |  1 +-
+ kernel/rcu/srcutiny.c    | 55 +++++++++++++++++++++++++++++++++++++--
+ 4 files changed, 59 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/rcu/rcutorture.c b/kernel/rcu/rcutorture.c
-index bcea23c..78ba95d 100644
---- a/kernel/rcu/rcutorture.c
-+++ b/kernel/rcu/rcutorture.c
-@@ -85,6 +85,7 @@ torture_param(bool, gp_cond, false, "Use conditional/async GP wait primitives");
- torture_param(bool, gp_exp, false, "Use expedited GP wait primitives");
- torture_param(bool, gp_normal, false,
- 	     "Use normal (non-expedited) GP wait primitives");
-+torture_param(bool, gp_poll, false, "Use polling GP wait primitives");
- torture_param(bool, gp_sync, false, "Use synchronous GP wait primitives");
- torture_param(int, irqreader, 1, "Allow RCU readers from irq handlers");
- torture_param(int, leakpointer, 0, "Leak pointer dereferences from readers");
-@@ -183,9 +184,11 @@ static int rcu_torture_writer_state;
- #define RTWS_EXP_SYNC		4
- #define RTWS_COND_GET		5
- #define RTWS_COND_SYNC		6
--#define RTWS_SYNC		7
--#define RTWS_STUTTER		8
--#define RTWS_STOPPING		9
-+#define RTWS_POLL_GET		7
-+#define RTWS_POLL_WAIT		8
-+#define RTWS_SYNC		9
-+#define RTWS_STUTTER		10
-+#define RTWS_STOPPING		11
- static const char * const rcu_torture_writer_state_names[] = {
- 	"RTWS_FIXED_DELAY",
- 	"RTWS_DELAY",
-@@ -194,6 +197,8 @@ static const char * const rcu_torture_writer_state_names[] = {
- 	"RTWS_EXP_SYNC",
- 	"RTWS_COND_GET",
- 	"RTWS_COND_SYNC",
-+	"RTWS_POLL_GET",
-+	"RTWS_POLL_WAIT",
- 	"RTWS_SYNC",
- 	"RTWS_STUTTER",
- 	"RTWS_STOPPING",
-@@ -312,6 +317,8 @@ struct rcu_torture_ops {
- 	void (*sync)(void);
- 	void (*exp_sync)(void);
- 	unsigned long (*get_gp_state)(void);
-+	unsigned long (*start_gp_poll)(void);
-+	bool (*poll_gp_state)(unsigned long oldstate);
- 	void (*cond_sync)(unsigned long oldstate);
- 	call_rcu_func_t call;
- 	void (*cb_barrier)(void);
-@@ -570,6 +577,21 @@ static void srcu_torture_synchronize(void)
- 	synchronize_srcu(srcu_ctlp);
+diff --git a/include/linux/rcupdate.h b/include/linux/rcupdate.h
+index de08264..e09c0d8 100644
+--- a/include/linux/rcupdate.h
++++ b/include/linux/rcupdate.h
+@@ -33,6 +33,8 @@
+ #define ULONG_CMP_GE(a, b)	(ULONG_MAX / 2 >= (a) - (b))
+ #define ULONG_CMP_LT(a, b)	(ULONG_MAX / 2 < (a) - (b))
+ #define ulong2long(a)		(*(long *)(&(a)))
++#define USHORT_CMP_GE(a, b)	(USHRT_MAX / 2 >= (unsigned short)((a) - (b)))
++#define USHORT_CMP_LT(a, b)	(USHRT_MAX / 2 < (unsigned short)((a) - (b)))
+ 
+ /* Exported common interfaces */
+ void call_rcu(struct rcu_head *head, rcu_callback_t func);
+diff --git a/include/linux/srcu.h b/include/linux/srcu.h
+index e432cc9..a0895bb 100644
+--- a/include/linux/srcu.h
++++ b/include/linux/srcu.h
+@@ -60,6 +60,9 @@ void cleanup_srcu_struct(struct srcu_struct *ssp);
+ int __srcu_read_lock(struct srcu_struct *ssp) __acquires(ssp);
+ void __srcu_read_unlock(struct srcu_struct *ssp, int idx) __releases(ssp);
+ void synchronize_srcu(struct srcu_struct *ssp);
++unsigned long get_state_synchronize_srcu(struct srcu_struct *ssp);
++unsigned long start_poll_synchronize_srcu(struct srcu_struct *ssp);
++bool poll_state_synchronize_srcu(struct srcu_struct *ssp, unsigned long cookie);
+ 
+ #ifdef CONFIG_DEBUG_LOCK_ALLOC
+ 
+diff --git a/include/linux/srcutiny.h b/include/linux/srcutiny.h
+index b8b42d0..0e0cf4d 100644
+--- a/include/linux/srcutiny.h
++++ b/include/linux/srcutiny.h
+@@ -16,6 +16,7 @@
+ struct srcu_struct {
+ 	short srcu_lock_nesting[2];	/* srcu_read_lock() nesting depth. */
+ 	unsigned short srcu_idx;	/* Current reader array element in bit 0x2. */
++	unsigned short srcu_idx_max;	/* Furthest future srcu_idx request. */
+ 	u8 srcu_gp_running;		/* GP workqueue running? */
+ 	u8 srcu_gp_waiting;		/* GP waiting for readers? */
+ 	struct swait_queue_head srcu_wq;
+diff --git a/kernel/rcu/srcutiny.c b/kernel/rcu/srcutiny.c
+index 3bac1db..26344dc 100644
+--- a/kernel/rcu/srcutiny.c
++++ b/kernel/rcu/srcutiny.c
+@@ -34,6 +34,7 @@ static int init_srcu_struct_fields(struct srcu_struct *ssp)
+ 	ssp->srcu_gp_running = false;
+ 	ssp->srcu_gp_waiting = false;
+ 	ssp->srcu_idx = 0;
++	ssp->srcu_idx_max = 0;
+ 	INIT_WORK(&ssp->srcu_work, srcu_drive_gp);
+ 	INIT_LIST_HEAD(&ssp->srcu_work.entry);
+ 	return 0;
+@@ -84,6 +85,8 @@ void cleanup_srcu_struct(struct srcu_struct *ssp)
+ 	WARN_ON(ssp->srcu_gp_waiting);
+ 	WARN_ON(ssp->srcu_cb_head);
+ 	WARN_ON(&ssp->srcu_cb_head != ssp->srcu_cb_tail);
++	WARN_ON(ssp->srcu_idx != ssp->srcu_idx_max);
++	WARN_ON(ssp->srcu_idx & 0x1);
  }
+ EXPORT_SYMBOL_GPL(cleanup_srcu_struct);
  
-+static unsigned long srcu_torture_get_gp_state(void)
-+{
-+	return get_state_synchronize_srcu(srcu_ctlp);
-+}
-+
-+static unsigned long srcu_torture_start_gp_poll(void)
-+{
-+	return start_poll_synchronize_srcu(srcu_ctlp);
-+}
-+
-+static bool srcu_torture_poll_gp_state(unsigned long oldstate)
-+{
-+	return poll_state_synchronize_srcu(srcu_ctlp, oldstate);
-+}
-+
- static void srcu_torture_call(struct rcu_head *head,
- 			      rcu_callback_t func)
+@@ -114,7 +117,7 @@ void srcu_drive_gp(struct work_struct *wp)
+ 	struct srcu_struct *ssp;
+ 
+ 	ssp = container_of(wp, struct srcu_struct, srcu_work);
+-	if (ssp->srcu_gp_running || !READ_ONCE(ssp->srcu_cb_head))
++	if (ssp->srcu_gp_running || USHORT_CMP_GE(ssp->srcu_idx, READ_ONCE(ssp->srcu_idx_max)))
+ 		return; /* Already running or nothing to do. */
+ 
+ 	/* Remove recently arrived callbacks and wait for readers. */
+@@ -147,13 +150,19 @@ void srcu_drive_gp(struct work_struct *wp)
+ 	 * straighten that out.
+ 	 */
+ 	WRITE_ONCE(ssp->srcu_gp_running, false);
+-	if (READ_ONCE(ssp->srcu_cb_head))
++	if (USHORT_CMP_LT(ssp->srcu_idx, READ_ONCE(ssp->srcu_idx_max)))
+ 		schedule_work(&ssp->srcu_work);
+ }
+ EXPORT_SYMBOL_GPL(srcu_drive_gp);
+ 
+ static void srcu_gp_start_if_needed(struct srcu_struct *ssp)
  {
-@@ -601,6 +623,9 @@ static struct rcu_torture_ops srcu_ops = {
- 	.deferred_free	= srcu_torture_deferred_free,
- 	.sync		= srcu_torture_synchronize,
- 	.exp_sync	= srcu_torture_synchronize_expedited,
-+	.get_gp_state	= srcu_torture_get_gp_state,
-+	.start_gp_poll	= srcu_torture_start_gp_poll,
-+	.poll_gp_state	= srcu_torture_poll_gp_state,
- 	.call		= srcu_torture_call,
- 	.cb_barrier	= srcu_torture_barrier,
- 	.stats		= srcu_torture_stats,
-@@ -1027,18 +1052,20 @@ static int
- rcu_torture_writer(void *arg)
++	unsigned short cookie;
++
++	cookie = get_state_synchronize_srcu(ssp);
++	if (USHORT_CMP_GE(READ_ONCE(ssp->srcu_idx_max), cookie))
++		return;
++	WRITE_ONCE(ssp->srcu_idx_max, cookie);
+ 	if (!READ_ONCE(ssp->srcu_gp_running)) {
+ 		if (likely(srcu_init_done))
+ 			schedule_work(&ssp->srcu_work);
+@@ -196,6 +205,48 @@ void synchronize_srcu(struct srcu_struct *ssp)
+ }
+ EXPORT_SYMBOL_GPL(synchronize_srcu);
+ 
++/*
++ * get_state_synchronize_srcu - Provide an end-of-grace-period cookie
++ */
++unsigned long get_state_synchronize_srcu(struct srcu_struct *ssp)
++{
++	unsigned long ret;
++
++	barrier();
++	ret = (READ_ONCE(ssp->srcu_idx) + 3) & ~0x1;
++	barrier();
++	return ret & USHRT_MAX;
++}
++EXPORT_SYMBOL_GPL(get_state_synchronize_srcu);
++
++/*
++ * start_poll_synchronize_srcu - Provide cookie and start grace period
++ *
++ * The difference between this and get_state_synchronize_srcu() is that
++ * this function ensures that the poll_state_synchronize_srcu() will
++ * eventually return the value true.
++ */
++unsigned long start_poll_synchronize_srcu(struct srcu_struct *ssp)
++{
++	unsigned long ret = get_state_synchronize_srcu(ssp);
++
++	srcu_gp_start_if_needed(ssp);
++	return ret;
++}
++EXPORT_SYMBOL_GPL(start_poll_synchronize_srcu);
++
++/*
++ * poll_state_synchronize_srcu - Has cookie's grace period ended?
++ */
++bool poll_state_synchronize_srcu(struct srcu_struct *ssp, unsigned long cookie)
++{
++	bool ret = USHORT_CMP_GE(READ_ONCE(ssp->srcu_idx), cookie);
++
++	barrier();
++	return ret;
++}
++EXPORT_SYMBOL_GPL(poll_state_synchronize_srcu);
++
+ /* Lockdep diagnostics.  */
+ void __init rcu_scheduler_starting(void)
  {
- 	bool can_expedite = !rcu_gp_is_expedited() && !rcu_gp_is_normal();
-+	unsigned long cookie;
- 	int expediting = 0;
- 	unsigned long gp_snap;
- 	bool gp_cond1 = gp_cond, gp_exp1 = gp_exp, gp_normal1 = gp_normal;
--	bool gp_sync1 = gp_sync;
-+	bool gp_poll1 = gp_poll, gp_sync1 = gp_sync;
- 	int i;
-+	int idx;
- 	int oldnice = task_nice(current);
- 	struct rcu_torture *rp;
- 	struct rcu_torture *old_rp;
- 	static DEFINE_TORTURE_RANDOM(rand);
- 	bool stutter_waited;
- 	int synctype[] = { RTWS_DEF_FREE, RTWS_EXP_SYNC,
--			   RTWS_COND_GET, RTWS_SYNC };
-+			   RTWS_COND_GET, RTWS_POLL_GET, RTWS_SYNC };
- 	int nsynctypes = 0;
- 
- 	VERBOSE_TOROUT_STRING("rcu_torture_writer task started");
-@@ -1048,8 +1075,8 @@ rcu_torture_writer(void *arg)
- 			 torture_type, cur_ops->name);
- 
- 	/* Initialize synctype[] array.  If none set, take default. */
--	if (!gp_cond1 && !gp_exp1 && !gp_normal1 && !gp_sync1)
--		gp_cond1 = gp_exp1 = gp_normal1 = gp_sync1 = true;
-+	if (!gp_cond1 && !gp_exp1 && !gp_normal1 && !gp_poll1 && !gp_sync1)
-+		gp_cond1 = gp_exp1 = gp_normal1 = gp_poll1 = gp_sync1 = true;
- 	if (gp_cond1 && cur_ops->get_gp_state && cur_ops->cond_sync) {
- 		synctype[nsynctypes++] = RTWS_COND_GET;
- 		pr_info("%s: Testing conditional GPs.\n", __func__);
-@@ -1068,6 +1095,12 @@ rcu_torture_writer(void *arg)
- 	} else if (gp_normal && !cur_ops->deferred_free) {
- 		pr_alert("%s: gp_normal without primitives.\n", __func__);
- 	}
-+	if (gp_poll1 && cur_ops->start_gp_poll && cur_ops->poll_gp_state) {
-+		synctype[nsynctypes++] = RTWS_POLL_GET;
-+		pr_info("%s: Testing polling GPs.\n", __func__);
-+	} else if (gp_poll && (!cur_ops->start_gp_poll || !cur_ops->poll_gp_state)) {
-+		pr_alert("%s: gp_poll without primitives.\n", __func__);
-+	}
- 	if (gp_sync1 && cur_ops->sync) {
- 		synctype[nsynctypes++] = RTWS_SYNC;
- 		pr_info("%s: Testing normal GPs.\n", __func__);
-@@ -1107,6 +1140,18 @@ rcu_torture_writer(void *arg)
- 			atomic_inc(&rcu_torture_wcount[i]);
- 			WRITE_ONCE(old_rp->rtort_pipe_count,
- 				   old_rp->rtort_pipe_count + 1);
-+			if (cur_ops->get_gp_state && cur_ops->poll_gp_state) {
-+				idx = cur_ops->readlock();
-+				cookie = cur_ops->get_gp_state();
-+				WARN_ONCE(rcu_torture_writer_state != RTWS_DEF_FREE &&
-+					  cur_ops->poll_gp_state(cookie),
-+					  "%s: Cookie check 1 failed %s(%d) %lu->%lu\n",
-+					  __func__,
-+					  rcu_torture_writer_state_getname(),
-+					  rcu_torture_writer_state,
-+					  cookie, cur_ops->get_gp_state());
-+				cur_ops->readunlock(idx);
-+			}
- 			switch (synctype[torture_random(&rand) % nsynctypes]) {
- 			case RTWS_DEF_FREE:
- 				rcu_torture_writer_state = RTWS_DEF_FREE;
-@@ -1128,6 +1173,18 @@ rcu_torture_writer(void *arg)
- 				cur_ops->cond_sync(gp_snap);
- 				rcu_torture_pipe_update(old_rp);
- 				break;
-+			case RTWS_POLL_GET:
-+				rcu_torture_writer_state = RTWS_POLL_GET;
-+				gp_snap = cur_ops->start_gp_poll();
-+				rcu_torture_writer_state = RTWS_POLL_WAIT;
-+				while (!cur_ops->poll_gp_state(gp_snap)) {
-+					i = torture_random(&rand) % 16;
-+					if (i != 0)
-+						schedule_timeout_interruptible(i);
-+					udelay(torture_random(&rand) % 1000);
-+				}
-+				rcu_torture_pipe_update(old_rp);
-+				break;
- 			case RTWS_SYNC:
- 				rcu_torture_writer_state = RTWS_SYNC;
- 				cur_ops->sync();
-@@ -1137,6 +1194,14 @@ rcu_torture_writer(void *arg)
- 				WARN_ON_ONCE(1);
- 				break;
- 			}
-+			if (cur_ops->get_gp_state && cur_ops->poll_gp_state)
-+				WARN_ONCE(rcu_torture_writer_state != RTWS_DEF_FREE &&
-+					  !cur_ops->poll_gp_state(cookie),
-+					  "%s: Cookie check 2 failed %s(%d) %lu->%lu\n",
-+					  __func__,
-+					  rcu_torture_writer_state_getname(),
-+					  rcu_torture_writer_state,
-+					  cookie, cur_ops->get_gp_state());
- 		}
- 		WRITE_ONCE(rcu_torture_current_version,
- 			   rcu_torture_current_version + 1);
