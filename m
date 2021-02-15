@@ -2,50 +2,46 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 45CCF31BBA7
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 15 Feb 2021 15:59:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3183031BB92
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 15 Feb 2021 15:57:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230263AbhBOO5n (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 15 Feb 2021 09:57:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59532 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230241AbhBOO5S (ORCPT
+        id S229961AbhBOO4x (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 15 Feb 2021 09:56:53 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:33292 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230142AbhBOO4i (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 15 Feb 2021 09:57:18 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9EB6DC0611C1;
-        Mon, 15 Feb 2021 06:55:57 -0800 (PST)
+        Mon, 15 Feb 2021 09:56:38 -0500
 Date:   Mon, 15 Feb 2021 14:55:55 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1613400956;
+        s=2020; t=1613400955;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=wsxnDcMlpJkki1bD+3EV0U8LME79Eq3IinY7kBnm7Zw=;
-        b=b3zLXgzoCdj9dwokAbKGnv+WIX2vC9FCnmmE7k7qUACxhJfPnYs+mQIvGqJezpHqwi/OqP
-        24WXZiOryUvlRehOdubn3dSET/ut/UiOu5Ex9m6WFrHmjpIj9NfGzEzd+s40ezKHoboe7v
-        wTjeXmXagI2ogL5T2QQyRUevGRFDIBQI+Jgv3AG6wgibDa9LLFuqSwzv7Dl7alauE6ZOtA
-        70lwnLESKeuMgcgpdVxTnGFedVZy06hyePTuxUeMgQdHacnPoC7843dW052wbHo03stJTy
-        rJnTK582UO6nVjEP6R2HdhoC1iGoVz8dViLH3NCOY8t96zO5GjQ3Q6E4KxTMgg==
+        bh=JsaoZCB9zSWouNLOeT/XvD1H+a5WgTq8/fZupRieDR4=;
+        b=eNzLR9mJx0YSNDjY04tbJ5spHM04AqTIATPSxhF2rKIrqIJSsFRPSlL5RJTX54x+nwIxei
+        FS26nytMH20ak9LkUZUhDgyacjy5UJWqQL5BaLXqHTSdFOXiZ3ij8BJIAP1SlZviiOTx6a
+        bG5thfPCQIueuHm+hecNXh00qxGnV/v8NMiXHZzdP2nvpv5s7h2QIHwGuRwHwMj/pCaV1V
+        nq+MchDFUDnBFRYymglBwaJo5T607ziVrkubQz0NasQB8McGxx+WNnGEqECyf5rm1ftXkR
+        HmupQxMxctPAiNQC3HpLmcanGa4QmL6kLp1GmYdI21d8Lo8AX/U2B30ILB/vog==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1613400956;
+        s=2020e; t=1613400955;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=wsxnDcMlpJkki1bD+3EV0U8LME79Eq3IinY7kBnm7Zw=;
-        b=J2oQ5LHUFmml+53bbNepPelis5VKb0/7J3jpIhew0e4Ey0MWih4TJN2n5SwAELDIcgWblO
-        iI5HkMWtkq0JjNAw==
-From:   "tip-bot2 for Marco Elver" <tip-bot2@linutronix.de>
+        bh=JsaoZCB9zSWouNLOeT/XvD1H+a5WgTq8/fZupRieDR4=;
+        b=lXS8M5Nn0BNE2fCewuzr3mlHJ9JTF5NKOe7uhzEEnfrFTbcVmyWCO9VgB8prl8FlHd59R0
+        xh9NFPPwoWqH2yCg==
+From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] kcsan: Rewrite kcsan_prandom_u32_max() without
- prandom_u32_state()
-Cc:     Marco Elver <elver@google.com>,
+Subject: [tip: locking/core] tools/memory-model: Tie acquire loads to reads-from
+Cc:     Boqun Feng <boqun.feng@gmail.com>,
         "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <161340095583.20312.15815240255763140896.tip-bot2@tip-bot2>
+Message-ID: <161340095527.20312.14396173781027795750.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -56,108 +52,53 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     71a076f4a61a6c779794ad286f356b39725edc3b
-Gitweb:        https://git.kernel.org/tip/71a076f4a61a6c779794ad286f356b39725edc3b
-Author:        Marco Elver <elver@google.com>
-AuthorDate:    Tue, 24 Nov 2020 12:02:09 +01:00
+Commit-ID:     8881e7a774a8d14088d6c6fde8730660f74a3642
+Gitweb:        https://git.kernel.org/tip/8881e7a774a8d14088d6c6fde8730660f74a3642
+Author:        Paul E. McKenney <paulmck@kernel.org>
+AuthorDate:    Fri, 06 Nov 2020 09:58:01 -08:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Mon, 04 Jan 2021 14:39:07 -08:00
+CommitterDate: Mon, 04 Jan 2021 14:40:49 -08:00
 
-kcsan: Rewrite kcsan_prandom_u32_max() without prandom_u32_state()
+tools/memory-model: Tie acquire loads to reads-from
 
-Rewrite kcsan_prandom_u32_max() to not depend on code that might be
-instrumented, removing any dependency on lib/random32.c. The rewrite
-implements a simple linear congruential generator, that is sufficient
-for our purposes (for udelay() and skip_watch counter randomness).
+This commit explicitly makes the connection between acquire loads and
+the reads-from relation.  It also adds an entry for happens-before,
+and refers to the corresponding section of explanation.txt.
 
-The initial motivation for this was to allow enabling KCSAN for
-kernel/sched (remove KCSAN_SANITIZE := n from kernel/sched/Makefile),
-with CONFIG_DEBUG_PREEMPT=y. Without this change, we could observe
-recursion:
-
-	check_access() [via instrumentation]
-	  kcsan_setup_watchpoint()
-	    reset_kcsan_skip()
-	      kcsan_prandom_u32_max()
-	        get_cpu_var()
-		  preempt_disable()
-		    preempt_count_add() [in kernel/sched/core.c]
-		      check_access() [via instrumentation]
-
-Note, while this currently does not affect an unmodified kernel, it'd be
-good to keep a KCSAN kernel working when KCSAN_SANITIZE := n is removed
-from kernel/sched/Makefile to permit testing scheduler code with KCSAN
-if desired.
-
-Fixes: cd290ec24633 ("kcsan: Use tracing-safe version of prandom")
-Signed-off-by: Marco Elver <elver@google.com>
+Reported-by: Boqun Feng <boqun.feng@gmail.com>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/kcsan/core.c | 26 +++++++++++++-------------
- 1 file changed, 13 insertions(+), 13 deletions(-)
+ tools/memory-model/Documentation/glossary.txt | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/kcsan/core.c b/kernel/kcsan/core.c
-index 3994a21..3bf98db 100644
---- a/kernel/kcsan/core.c
-+++ b/kernel/kcsan/core.c
-@@ -12,7 +12,6 @@
- #include <linux/moduleparam.h>
- #include <linux/percpu.h>
- #include <linux/preempt.h>
--#include <linux/random.h>
- #include <linux/sched.h>
- #include <linux/uaccess.h>
+diff --git a/tools/memory-model/Documentation/glossary.txt b/tools/memory-model/Documentation/glossary.txt
+index 79acb75..b2da636 100644
+--- a/tools/memory-model/Documentation/glossary.txt
++++ b/tools/memory-model/Documentation/glossary.txt
+@@ -33,10 +33,11 @@ Acquire:  With respect to a lock, acquiring that lock, for example,
+ 	acquire loads.
  
-@@ -101,7 +100,7 @@ static atomic_long_t watchpoints[CONFIG_KCSAN_NUM_WATCHPOINTS + NUM_SLOTS-1];
- static DEFINE_PER_CPU(long, kcsan_skip);
+ 	When an acquire load returns the value stored by a release store
+-	to that same variable, then all operations preceding that store
+-	happen before any operations following that load acquire.
++	to that same variable, (in other words, the acquire load "reads
++	from" the release store), then all operations preceding that
++	store "happen before" any operations following that load acquire.
  
- /* For kcsan_prandom_u32_max(). */
--static DEFINE_PER_CPU(struct rnd_state, kcsan_rand_state);
-+static DEFINE_PER_CPU(u32, kcsan_rand_state);
+-	See also "Relaxed" and "Release".
++	See also "Happens-Before", "Reads-From", "Relaxed", and "Release".
  
- static __always_inline atomic_long_t *find_watchpoint(unsigned long addr,
- 						      size_t size,
-@@ -275,20 +274,17 @@ should_watch(const volatile void *ptr, size_t size, int type, struct kcsan_ctx *
- }
+ Coherence (co):  When one CPU's store to a given variable overwrites
+ 	either the value from another CPU's store or some later value,
+@@ -119,6 +120,11 @@ Fully Ordered:  An operation such as smp_mb() that orders all of
+ 	that orders all of its CPU's prior accesses, itself, and
+ 	all of its CPU's subsequent accesses.
  
- /*
-- * Returns a pseudo-random number in interval [0, ep_ro). See prandom_u32_max()
-- * for more details.
-- *
-- * The open-coded version here is using only safe primitives for all contexts
-- * where we can have KCSAN instrumentation. In particular, we cannot use
-- * prandom_u32() directly, as its tracepoint could cause recursion.
-+ * Returns a pseudo-random number in interval [0, ep_ro). Simple linear
-+ * congruential generator, using constants from "Numerical Recipes".
-  */
- static u32 kcsan_prandom_u32_max(u32 ep_ro)
- {
--	struct rnd_state *state = &get_cpu_var(kcsan_rand_state);
--	const u32 res = prandom_u32_state(state);
-+	u32 state = this_cpu_read(kcsan_rand_state);
++Happens-Before (hb): A relation between two accesses in which LKMM
++	guarantees the first access precedes the second.  For more
++	detail, please see the "THE HAPPENS-BEFORE RELATION: hb"
++	section of explanation.txt.
 +
-+	state = 1664525 * state + 1013904223;
-+	this_cpu_write(kcsan_rand_state, state);
+ Marked Access:  An access to a variable that uses an special function or
+ 	macro such as "r1 = READ_ONCE(x)" or "smp_store_release(&a, 1)".
  
--	put_cpu_var(kcsan_rand_state);
--	return (u32)(((u64) res * ep_ro) >> 32);
-+	return state % ep_ro;
- }
- 
- static inline void reset_kcsan_skip(void)
-@@ -639,10 +635,14 @@ static __always_inline void check_access(const volatile void *ptr, size_t size,
- 
- void __init kcsan_init(void)
- {
-+	int cpu;
-+
- 	BUG_ON(!in_task());
- 
- 	kcsan_debugfs_init();
--	prandom_seed_full_state(&kcsan_rand_state);
-+
-+	for_each_possible_cpu(cpu)
-+		per_cpu(kcsan_rand_state, cpu) = (u32)get_cycles();
- 
- 	/*
- 	 * We are in the init task, and no other tasks should be running;
