@@ -2,47 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E38BC31BB8C
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 15 Feb 2021 15:57:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E131731BB9C
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 15 Feb 2021 15:59:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229952AbhBOO4m (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 15 Feb 2021 09:56:42 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:33170 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230106AbhBOO43 (ORCPT
+        id S230236AbhBOO5R (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 15 Feb 2021 09:57:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59556 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230175AbhBOO5H (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 15 Feb 2021 09:56:29 -0500
+        Mon, 15 Feb 2021 09:57:07 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71574C0617A9;
+        Mon, 15 Feb 2021 06:55:48 -0800 (PST)
 Date:   Mon, 15 Feb 2021 14:55:45 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1613400945;
+        s=2020; t=1613400946;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=xy/KLKNvhr1dzOykrr9GbaOujdgK4dGqybjuM4XPsVA=;
-        b=uz36fmA1tXaKJNJTISR3CXdqX4KYAr71jNA9P9rH/VBjah5ECGA9cX2wyZTHmAEYsF1sdF
-        LFVHbsxeDAAJtsk0ZE4fqV8jeh/uMfJthF6cQf9av8u+JYQx547c+seDTV2ZQR7kyzKIai
-        Mugo+7aKE4wzn01cy8MNvYB6oVdERjisQ9BpwrqwQxUA6jhodnRfIlm2hNEMxlOTB5Qvbm
-        ilN2pBKvjRUWeEIiN9PmXAIE0ITzKtTaiMNCo/830GOuZWRp24+FVdni2LI8/KmAiJQrP+
-        GCCdFr9ES1s7M+50fxvHeT73s8Ut4xAVlWVvWRClHiysg+Z+QueP4/OFP4bfGw==
+        bh=K6I48ns3Jo4oBtb260eUlccEUt3YUP8NbXmKEFx6Ntg=;
+        b=JFuC8D+7XSBLedRVyP8wKZ87by7zXoErPqTlZLZH0HV9yeiG/o1eH0isJzKKEOLTt5521u
+        +rpnchS8/TH52x7DE9Wu3S/C3+qvuSEKhIg3FLHdTMzWBT189rtuSZtStAaq/CNlTHmXp3
+        4avIzil2lPMbfVeMBSizlcFK22Ol1+UDdgf/AImTNIdcwh4LbkzHZNKhCIkEGd9nGNgUhO
+        NV6GLeBmiX/YM++QW65zW0pLP7YTmKscmmd93g6T9/iuqfEmX473gu237COCZBZhv87Tyo
+        vXWka+qRyCFvO6rld9DV8OfjNrg/COKVU3kzE8IERGOrrGGC3K9EOzgxcBowog==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1613400945;
+        s=2020e; t=1613400946;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=xy/KLKNvhr1dzOykrr9GbaOujdgK4dGqybjuM4XPsVA=;
-        b=pzImbTZN/g9pqFx2qoVQZiHoztAsA/D3RWvykQev7GcM9Q1k2Miod61+SNDKnHoUdzOmlR
-        VkMBSVxCMI66F2Dw==
-From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
+        bh=K6I48ns3Jo4oBtb260eUlccEUt3YUP8NbXmKEFx6Ntg=;
+        b=ZFbF0LE4B6Vh2pfsJuPQTKlQI6ogN48keuwbbnrn1B/rJohcRN6MQNObUKO++3nmwDbXGC
+        hJ9zj8HXn14PHbDA==
+From:   "tip-bot2 for Julia Cartwright" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] srcu: Make Tiny SRCU use multi-bit grace-period counter
-Cc:     Kent Overstreet <kent.overstreet@gmail.com>,
-        Neeraj Upadhyay <neeraju@codeaurora.org>,
+Subject: [tip: core/rcu] rcu: Enable rcu_normal_after_boot unconditionally for RT
+Cc:     Luiz Capitulino <lcapitulino@redhat.com>,
+        "Paul E. McKenney" <paulmck@linux.ibm.com>,
+        Julia Cartwright <julia@ni.com>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
         "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <161340094543.20312.12812461473979360371.tip-bot2@tip-bot2>
+Message-ID: <161340094568.20312.13010770270932827765.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -53,80 +58,73 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     74612a07b83fc46c2b2e6f71a541d55b024ebefc
-Gitweb:        https://git.kernel.org/tip/74612a07b83fc46c2b2e6f71a541d55b024ebefc
-Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Thu, 12 Nov 2020 16:34:09 -08:00
+Commit-ID:     36221e109eb20ac111bc3bf3e8d5639aa457c7e0
+Gitweb:        https://git.kernel.org/tip/36221e109eb20ac111bc3bf3e8d5639aa457c7e0
+Author:        Julia Cartwright <julia@ni.com>
+AuthorDate:    Tue, 15 Dec 2020 15:16:47 +01:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Mon, 04 Jan 2021 13:53:36 -08:00
+CommitterDate: Mon, 04 Jan 2021 13:43:51 -08:00
 
-srcu: Make Tiny SRCU use multi-bit grace-period counter
+rcu: Enable rcu_normal_after_boot unconditionally for RT
 
-There is a need for a polling interface for SRCU grace periods.  This
-polling needs to distinguish between an SRCU instance being idle on the
-one hand or in the middle of a grace period on the other.  This commit
-therefore converts the Tiny SRCU srcu_struct structure's srcu_idx from
-a defacto boolean to a free-running counter, using the bottom bit to
-indicate that a grace period is in progress.  The second-from-bottom
-bit is thus used as the index returned by srcu_read_lock().
+Expedited RCU grace periods send IPIs to all non-idle CPUs, and thus can
+disrupt time-critical code in real-time applications.  However, there
+is a portion of boot-time processing (presumably before any real-time
+applications have started) where expedited RCU grace periods are the only
+option.  And so it is that experience with the -rt patchset indicates that
+PREEMPT_RT systems should always set the rcupdate.rcu_normal_after_boot
+kernel boot parameter.
 
-Link: https://lore.kernel.org/rcu/20201112201547.GF3365678@moria.home.lan/
-Reported-by: Kent Overstreet <kent.overstreet@gmail.com>
-[ paulmck: Fix ->srcu_lock_nesting[] indexing per Neeraj Upadhyay. ]
-Reviewed-by: Neeraj Upadhyay <neeraju@codeaurora.org>
+This commit therefore makes the post-boot application environment safe
+for real-time applications by making PREEMPT_RT systems disable the
+rcupdate.rcu_normal_after_boot kernel boot parameter and acting as
+if this parameter had been set.  This means that post-boot calls to
+synchronize_rcu_expedited() will be treated as if they were instead
+calls to synchronize_rcu(), thus preventing the IPIs, and thus avoiding
+disrupting real-time applications.
+
+Suggested-by: Luiz Capitulino <lcapitulino@redhat.com>
+Acked-by: Paul E. McKenney <paulmck@linux.ibm.com>
+Signed-off-by: Julia Cartwright <julia@ni.com>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+[ paulmck: Update kernel-parameters.txt accordingly. ]
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- include/linux/srcutiny.h | 6 +++---
- kernel/rcu/srcutiny.c    | 5 +++--
- 2 files changed, 6 insertions(+), 5 deletions(-)
+ Documentation/admin-guide/kernel-parameters.txt | 7 +++++++
+ kernel/rcu/update.c                             | 4 +++-
+ 2 files changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/srcutiny.h b/include/linux/srcutiny.h
-index 5a5a194..b8b42d0 100644
---- a/include/linux/srcutiny.h
-+++ b/include/linux/srcutiny.h
-@@ -15,7 +15,7 @@
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index 521255f..e0008d9 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -4474,6 +4474,13 @@
+ 			only normal grace-period primitives.  No effect
+ 			on CONFIG_TINY_RCU kernels.
  
- struct srcu_struct {
- 	short srcu_lock_nesting[2];	/* srcu_read_lock() nesting depth. */
--	short srcu_idx;			/* Current reader array element. */
-+	unsigned short srcu_idx;	/* Current reader array element in bit 0x2. */
- 	u8 srcu_gp_running;		/* GP workqueue running? */
- 	u8 srcu_gp_waiting;		/* GP waiting for readers? */
- 	struct swait_queue_head srcu_wq;
-@@ -59,7 +59,7 @@ static inline int __srcu_read_lock(struct srcu_struct *ssp)
- {
- 	int idx;
++			But note that CONFIG_PREEMPT_RT=y kernels enables
++			this kernel boot parameter, forcibly setting
++			it to the value one, that is, converting any
++			post-boot attempt at an expedited RCU grace
++			period to instead use normal non-expedited
++			grace-period processing.
++
+ 	rcupdate.rcu_task_ipi_delay= [KNL]
+ 			Set time in jiffies during which RCU tasks will
+ 			avoid sending IPIs, starting with the beginning
+diff --git a/kernel/rcu/update.c b/kernel/rcu/update.c
+index 39334d2..b95ae86 100644
+--- a/kernel/rcu/update.c
++++ b/kernel/rcu/update.c
+@@ -56,8 +56,10 @@
+ #ifndef CONFIG_TINY_RCU
+ module_param(rcu_expedited, int, 0);
+ module_param(rcu_normal, int, 0);
+-static int rcu_normal_after_boot;
++static int rcu_normal_after_boot = IS_ENABLED(CONFIG_PREEMPT_RT);
++#ifndef CONFIG_PREEMPT_RT
+ module_param(rcu_normal_after_boot, int, 0);
++#endif
+ #endif /* #ifndef CONFIG_TINY_RCU */
  
--	idx = READ_ONCE(ssp->srcu_idx);
-+	idx = ((READ_ONCE(ssp->srcu_idx) + 1) & 0x2) >> 1;
- 	WRITE_ONCE(ssp->srcu_lock_nesting[idx], ssp->srcu_lock_nesting[idx] + 1);
- 	return idx;
- }
-@@ -80,7 +80,7 @@ static inline void srcu_torture_stats_print(struct srcu_struct *ssp,
- {
- 	int idx;
- 
--	idx = READ_ONCE(ssp->srcu_idx) & 0x1;
-+	idx = ((READ_ONCE(ssp->srcu_idx) + 1) & 0x2) >> 1;
- 	pr_alert("%s%s Tiny SRCU per-CPU(idx=%d): (%hd,%hd)\n",
- 		 tt, tf, idx,
- 		 READ_ONCE(ssp->srcu_lock_nesting[!idx]),
-diff --git a/kernel/rcu/srcutiny.c b/kernel/rcu/srcutiny.c
-index 6208c1d..5598cf6 100644
---- a/kernel/rcu/srcutiny.c
-+++ b/kernel/rcu/srcutiny.c
-@@ -124,11 +124,12 @@ void srcu_drive_gp(struct work_struct *wp)
- 	ssp->srcu_cb_head = NULL;
- 	ssp->srcu_cb_tail = &ssp->srcu_cb_head;
- 	local_irq_enable();
--	idx = ssp->srcu_idx;
--	WRITE_ONCE(ssp->srcu_idx, !ssp->srcu_idx);
-+	idx = (ssp->srcu_idx & 0x2) / 2;
-+	WRITE_ONCE(ssp->srcu_idx, ssp->srcu_idx + 1);
- 	WRITE_ONCE(ssp->srcu_gp_waiting, true);  /* srcu_read_unlock() wakes! */
- 	swait_event_exclusive(ssp->srcu_wq, !READ_ONCE(ssp->srcu_lock_nesting[idx]));
- 	WRITE_ONCE(ssp->srcu_gp_waiting, false); /* srcu_read_unlock() cheap. */
-+	WRITE_ONCE(ssp->srcu_idx, ssp->srcu_idx + 1);
- 
- 	/* Invoke the callbacks we removed above. */
- 	while (lh) {
+ #ifdef CONFIG_DEBUG_LOCK_ALLOC
