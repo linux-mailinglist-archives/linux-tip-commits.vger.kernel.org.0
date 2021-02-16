@@ -2,92 +2,91 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D380B31C380
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 15 Feb 2021 22:23:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CA3AA31C828
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 16 Feb 2021 10:35:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229672AbhBOVWy (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 15 Feb 2021 16:22:54 -0500
-Received: from mail.kernel.org ([198.145.29.99]:58456 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229662AbhBOVWx (ORCPT
+        id S229888AbhBPJfW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 16 Feb 2021 04:35:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45046 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229796AbhBPJfV (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 15 Feb 2021 16:22:53 -0500
-Received: from gandalf.local.home (cpe-66-24-58-225.stny.res.rr.com [66.24.58.225])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3449364DE0;
-        Mon, 15 Feb 2021 21:22:11 +0000 (UTC)
-Date:   Mon, 15 Feb 2021 16:22:09 -0500
-From:   Steven Rostedt <rostedt@goodmis.org>
-To:     Josh Poimboeuf <jpoimboe@redhat.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Xi Ruoyao <xry111@mengyan1223.wang>,
-        "# 3.4.x" <stable@vger.kernel.org>,
-        Arnd Bergmann <arnd@kernel.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Miroslav Benes <mbenes@suse.cz>,
-        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-tip-commits@vger.kernel.org
-Subject: Re: [tip: objtool/urgent] objtool: Fix seg fault with Clang
- non-section symbols
-Message-ID: <20210215162209.5e2a475b@gandalf.local.home>
-In-Reply-To: <20210215155806.bjcouvmkapj4pa4y@treble>
-References: <CAKwvOd=GHdkvAU3u6ROSgtGqC_wrkXo8siL1nZHE-qsqSx0gsw@mail.gmail.com>
-        <YCafKVSTX9MxDBMd@kroah.com>
-        <20210212170750.y7xtitigfqzpchqd@treble>
-        <20210212124547.1dcf067e@gandalf.local.home>
-        <YCfdfkoeh8i0baCj@kroah.com>
-        <20210213091304.2dd51e5f@oasis.local.home>
-        <20210213155203.lehuegwc3h42nebs@treble>
-        <YCf9bnsmXqRGMn+j@kroah.com>
-        <20210214155147.3owdimqv2lyhu6by@treble>
-        <20210215095307.6f5fb12f@gandalf.local.home>
-        <20210215155806.bjcouvmkapj4pa4y@treble>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        Tue, 16 Feb 2021 04:35:21 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 532C4C061574;
+        Tue, 16 Feb 2021 01:34:41 -0800 (PST)
+Date:   Tue, 16 Feb 2021 09:34:38 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1613468079;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=qEKtAayEr8Y1QiesiNhk/bLBhnWzLsjGwJWi+vtocuI=;
+        b=sLXqXXzu+q53gjVXBENnHxAwlgcO2jLQYRYEX5ygRBMZMD/Hze7T0ftrZKeGqkiiXZO0+h
+        OrKJKJ0zcQJfbXzI/6I1yQS9oqebB5Z4hq9eIiBMiUYXW3gSOK6kexJ6SQqrwSF1ihPO99
+        zrHmMGkdIVOHlCYHf4/h8gQyv5uJkBnjwQDLcrfarmYyOBu+/Bj7c5g2uv8Sy2ooAnZVuX
+        ah/fwDrdrK2Xsetlfli8oPtVLUQRIgbiGHCjYyOSRlRl2O7aAsu6MVYPgzxzNiFKTjU5bT
+        JauhAhmsTGf+fgjJYC4ijOd8UqOVLnXLoOG61FEy6lIqn8B2OrgoRtQ3jN6Jeg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1613468079;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=qEKtAayEr8Y1QiesiNhk/bLBhnWzLsjGwJWi+vtocuI=;
+        b=Jgf48xJNaBRIvAurgKxW4zF18Cc115Cdp8pZ1nLvl4NnN0FHk5SpblZ4L+w6H+uAZdVbCS
+        L6/vBlAI6WsbQ9DQ==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/entry] um: Enforce the usage of asm-generic/softirq_stack.h
+Cc:     Guenter Roeck <linux@roeck-us.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Richard Weinberger <richard@nod.at>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Message-ID: <161346807864.20312.12484247851663762729.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Mon, 15 Feb 2021 09:58:06 -0600
-Josh Poimboeuf <jpoimboe@redhat.com> wrote:
+The following commit has been merged into the x86/entry branch of tip:
 
-> On Mon, Feb 15, 2021 at 09:53:07AM -0500, Steven Rostedt wrote:
-> > On Sun, 14 Feb 2021 09:51:47 -0600
-> > Josh Poimboeuf <jpoimboe@redhat.com> wrote:
-> >   
-> > > Steve, looks like recordmcount avoids referencing weak symbols directly
-> > > by their function symbol.  Maybe it can just skip weak symbols which
-> > > don't have a section symbol, since this seems like a rare scenario.  
-> > 
-> > When does the .text.unlikely section disappear? During the creation of the
-> > object, or later in the linker stage?  
-> 
-> The section is there, but the symbol associated with the section
-> (".text.unlikely" symbol) isn't generated by the assembler.
-> 
+Commit-ID:     3aac798a917be3b8f2f647b834bb06bf2f8df4f1
+Gitweb:        https://git.kernel.org/tip/3aac798a917be3b8f2f647b834bb06bf2f8df4f1
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Tue, 16 Feb 2021 10:23:14 +01:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Tue, 16 Feb 2021 10:23:14 +01:00
 
-Greg,
+um: Enforce the usage of asm-generic/softirq_stack.h
 
-Does this fix the issue with you? It appears to fix it for my arch linux
-VM that I created that uses binutils 2.36-3.
+The recent rework of the X86 irq stack switching mechanism broke UM as UM
+pulls in the X86 specific variant of softirq_stack.h.
 
--- Steve
+Enforce the usage of the asm-generic variant.
 
-diff --git a/scripts/recordmcount.h b/scripts/recordmcount.h
-index f9b19524da11..558b67f8364e 100644
---- a/scripts/recordmcount.h
-+++ b/scripts/recordmcount.h
-@@ -562,7 +562,7 @@ static char const * __has_rel_mcount(Elf_Shdr const *const relhdr, /* reltype */
- 	if (w(txthdr->sh_type) != SHT_PROGBITS ||
- 	    !(_w(txthdr->sh_flags) & SHF_EXECINSTR))
- 		return NULL;
--	return txtname;
-+	return shdr0->sh_size ? txtname : NULL;
- }
- 
- static char const *has_rel_mcount(Elf_Shdr const *const relhdr,
+Fixes: 72f40a2823d6 ("x86/softirq/64: Inline do_softirq_own_stack()")
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: Richard Weinberger <richard@nod.at>
+---
+ arch/um/include/asm/Kbuild | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/um/include/asm/Kbuild b/arch/um/include/asm/Kbuild
+index 1c63b26..18f8645 100644
+--- a/arch/um/include/asm/Kbuild
++++ b/arch/um/include/asm/Kbuild
+@@ -21,6 +21,7 @@ generic-y += param.h
+ generic-y += pci.h
+ generic-y += percpu.h
+ generic-y += preempt.h
++generic-y += softirq_stack.h
+ generic-y += switch_to.h
+ generic-y += topology.h
+ generic-y += trace_clock.h
