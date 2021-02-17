@@ -2,14 +2,14 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C85131DA25
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 17 Feb 2021 14:20:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B48031DA26
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 17 Feb 2021 14:20:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232882AbhBQNSn (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 17 Feb 2021 08:18:43 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:45274 "EHLO
+        id S232884AbhBQNSq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 17 Feb 2021 08:18:46 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:45292 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232841AbhBQNSU (ORCPT
+        with ESMTP id S232846AbhBQNSU (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Wed, 17 Feb 2021 08:18:20 -0500
 Date:   Wed, 17 Feb 2021 13:17:36 -0000
@@ -20,12 +20,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=WQ+rPM7r7HXBa8dLVmBMjucIfa1fBxf33RH9G+idF18=;
-        b=v8YCdGa1gHXlR/6Q/K/GELASwDBpZMuQvRg+2jlvBScR8SKSIIwD1dk8kr15nNJ/zSDKZj
-        Qq1u7PvcU24W/j9uDvAhK4+RkCxO2BstLxdbAUlp0j7XM6s9hwrSMqRuf/2Zb/UeWkZJtn
-        0Lhgu4Owy3bOYlhbjUzbnpf7fQjchJoj8lKq9yFIcnBu78a1IJpAA/m8KZJKZVw+1zmHev
-        YC2FECQErYksTSO21p8zOTsSnAfhyxx8GN6Z+GnsMYkpn4fh9hbeOYAkj4VFBvTDM0PmLS
-        e9daQ/4oPrMiVkFOJOnhCptgK/j9CUrSh+izaXxzOwBLGq0sFsOQ13cHHPPEwg==
+        bh=U0fYHDJuJETMJsp5SXPR/4h6qRFGQn1sH+35hAaR3KI=;
+        b=wnJ11txNeBe9r88myasosjfiqBKd57HiAs9qWIb1vFd0xbDknLevsH1ArDpxV3VEBDmVGl
+        h1vvf33ecSl5xYBrCq3yct81e/cIti994aZ7u+jJ1l2XQlWa0d+EMFxS+6jsfYoKOxVmFk
+        5f+0nRUOPX4rFSqIW6s4gfIu3CrOxC9USmvMrDM0pqk+4vjWQwoJDJCyRiFgmMdfl77Vob
+        mPgMI+p2OC0pqmzej/U0SLFX3TpQDA4ozyBVq5pY+QzjyxDnodxFEcHIVwxchq99hUIkAQ
+        k96Mx0S7nuvSt89lk3mB0aPFE6J2w5HXbbmu576SxDUoQb4d6r8Nt/08LKW01w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1613567857;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -33,22 +33,25 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=WQ+rPM7r7HXBa8dLVmBMjucIfa1fBxf33RH9G+idF18=;
-        b=tqGS471dOMWk1R00SwASJhCeAya2TTtrM7YWxOLVkx9lEvJ6B83koiBFIjbRQls3KwDTBF
-        Nr/3xFjmW67Op7DA==
+        bh=U0fYHDJuJETMJsp5SXPR/4h6qRFGQn1sH+35hAaR3KI=;
+        b=BUEZkqtSjLuVgp3v1RzCbG0K4jnep9jUQ6pdO3ha0Of3d6eh+We1k+XD2bAVA5arGvmr9B
+        wDQhkbBBIs+ZiPCg==
 From:   "tip-bot2 for Dietmar Eggemann" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched: Remove MAX_USER_RT_PRIO
+Subject: [tip: sched/core] sched/topology: Fix sched_domain_topology_level
+ alloc in sched_init_numa()
 Cc:     Dietmar Eggemann <dietmar.eggemann@arm.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
+        Ingo Molnar <mingo@kernel.org>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Barry Song <song.bao.hua@hisilicon.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210128131040.296856-2-dietmar.eggemann@arm.com>
-References: <20210128131040.296856-2-dietmar.eggemann@arm.com>
+In-Reply-To: <6000e39e-7d28-c360-9cd6-8798fd22a9bf@arm.com>
+References: <6000e39e-7d28-c360-9cd6-8798fd22a9bf@arm.com>
 MIME-Version: 1.0
-Message-ID: <161356785658.20312.1229231822797112292.tip-bot2@tip-bot2>
+Message-ID: <161356785681.20312.13022545187499987936.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,79 +62,52 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     ae18ad281e825993d190073d0ae2ea35dee27ee1
-Gitweb:        https://git.kernel.org/tip/ae18ad281e825993d190073d0ae2ea35dee27ee1
+Commit-ID:     71e5f6644fb2f3304fcb310145ded234a37e7cc1
+Gitweb:        https://git.kernel.org/tip/71e5f6644fb2f3304fcb310145ded234a37e7cc1
 Author:        Dietmar Eggemann <dietmar.eggemann@arm.com>
-AuthorDate:    Thu, 28 Jan 2021 14:10:38 +01:00
+AuthorDate:    Mon, 01 Feb 2021 10:53:53 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 17 Feb 2021 14:08:11 +01:00
+CommitterDate: Wed, 17 Feb 2021 14:08:05 +01:00
 
-sched: Remove MAX_USER_RT_PRIO
+sched/topology: Fix sched_domain_topology_level alloc in sched_init_numa()
 
-Commit d46523ea32a7 ("[PATCH] fix MAX_USER_RT_PRIO and MAX_RT_PRIO")
-was introduced due to a a small time period in which the realtime patch
-set was using different values for MAX_USER_RT_PRIO and MAX_RT_PRIO.
+Commit "sched/topology: Make sched_init_numa() use a set for the
+deduplicating sort" allocates 'i + nr_levels (level)' instead of
+'i + nr_levels + 1' sched_domain_topology_level.
 
-This is no longer true, i.e. now MAX_RT_PRIO == MAX_USER_RT_PRIO.
+This led to an Oops (on Arm64 juno with CONFIG_SCHED_DEBUG):
 
-Get rid of MAX_USER_RT_PRIO and make everything use MAX_RT_PRIO
-instead.
+sched_init_domains
+  build_sched_domains()
+    __free_domain_allocs()
+      __sdt_free() {
+	...
+        for_each_sd_topology(tl)
+	  ...
+          sd = *per_cpu_ptr(sdd->sd, j); <--
+	  ...
+      }
 
 Signed-off-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lkml.kernel.org/r/20210128131040.296856-2-dietmar.eggemann@arm.com
+Tested-by: Vincent Guittot <vincent.guittot@linaro.org>
+Tested-by: Barry Song <song.bao.hua@hisilicon.com>
+Link: https://lkml.kernel.org/r/6000e39e-7d28-c360-9cd6-8798fd22a9bf@arm.com
 ---
- include/linux/sched/prio.h |  9 +--------
- kernel/sched/core.c        |  7 +++----
- 2 files changed, 4 insertions(+), 12 deletions(-)
+ kernel/sched/topology.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/sched/prio.h b/include/linux/sched/prio.h
-index 7d64fea..d111f2f 100644
---- a/include/linux/sched/prio.h
-+++ b/include/linux/sched/prio.h
-@@ -11,16 +11,9 @@
-  * priority is 0..MAX_RT_PRIO-1, and SCHED_NORMAL/SCHED_BATCH
-  * tasks are in the range MAX_RT_PRIO..MAX_PRIO-1. Priority
-  * values are inverted: lower p->prio value means higher priority.
-- *
-- * The MAX_USER_RT_PRIO value allows the actual maximum
-- * RT priority to be separate from the value exported to
-- * user-space.  This allows kernel threads to set their
-- * priority to a value higher than any user task. Note:
-- * MAX_RT_PRIO must not be smaller than MAX_USER_RT_PRIO.
-  */
+diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
+index bf5c9bd..09d3504 100644
+--- a/kernel/sched/topology.c
++++ b/kernel/sched/topology.c
+@@ -1702,7 +1702,7 @@ void sched_init_numa(void)
+ 	/* Compute default topology size */
+ 	for (i = 0; sched_domain_topology[i].mask; i++);
  
--#define MAX_USER_RT_PRIO	100
--#define MAX_RT_PRIO		MAX_USER_RT_PRIO
-+#define MAX_RT_PRIO		100
- 
- #define MAX_PRIO		(MAX_RT_PRIO + NICE_WIDTH)
- #define DEFAULT_PRIO		(MAX_RT_PRIO + NICE_WIDTH / 2)
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 6c789dc..f0b0b67 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -5911,11 +5911,10 @@ recheck:
- 
- 	/*
- 	 * Valid priorities for SCHED_FIFO and SCHED_RR are
--	 * 1..MAX_USER_RT_PRIO-1, valid priority for SCHED_NORMAL,
-+	 * 1..MAX_RT_PRIO-1, valid priority for SCHED_NORMAL,
- 	 * SCHED_BATCH and SCHED_IDLE is 0.
- 	 */
--	if ((p->mm && attr->sched_priority > MAX_USER_RT_PRIO-1) ||
--	    (!p->mm && attr->sched_priority > MAX_RT_PRIO-1))
-+	if (attr->sched_priority > MAX_RT_PRIO-1)
- 		return -EINVAL;
- 	if ((dl_policy(policy) && !__checkparam_dl(attr)) ||
- 	    (rt_policy(policy) != (attr->sched_priority != 0)))
-@@ -6983,7 +6982,7 @@ SYSCALL_DEFINE1(sched_get_priority_max, int, policy)
- 	switch (policy) {
- 	case SCHED_FIFO:
- 	case SCHED_RR:
--		ret = MAX_USER_RT_PRIO-1;
-+		ret = MAX_RT_PRIO-1;
- 		break;
- 	case SCHED_DEADLINE:
- 	case SCHED_NORMAL:
+-	tl = kzalloc((i + nr_levels) *
++	tl = kzalloc((i + nr_levels + 1) *
+ 			sizeof(struct sched_domain_topology_level), GFP_KERNEL);
+ 	if (!tl)
+ 		return;
