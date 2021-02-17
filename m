@@ -2,56 +2,50 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B48031DA26
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 17 Feb 2021 14:20:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 98CFB31DA36
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 17 Feb 2021 14:20:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232884AbhBQNSq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 17 Feb 2021 08:18:46 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:45292 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232846AbhBQNSU (ORCPT
+        id S232597AbhBQNTt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 17 Feb 2021 08:19:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33280 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232901AbhBQNTC (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 17 Feb 2021 08:18:20 -0500
-Date:   Wed, 17 Feb 2021 13:17:36 -0000
+        Wed, 17 Feb 2021 08:19:02 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAEE1C0617AA;
+        Wed, 17 Feb 2021 05:17:39 -0800 (PST)
+Date:   Wed, 17 Feb 2021 13:17:37 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1613567857;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=U0fYHDJuJETMJsp5SXPR/4h6qRFGQn1sH+35hAaR3KI=;
-        b=wnJ11txNeBe9r88myasosjfiqBKd57HiAs9qWIb1vFd0xbDknLevsH1ArDpxV3VEBDmVGl
-        h1vvf33ecSl5xYBrCq3yct81e/cIti994aZ7u+jJ1l2XQlWa0d+EMFxS+6jsfYoKOxVmFk
-        5f+0nRUOPX4rFSqIW6s4gfIu3CrOxC9USmvMrDM0pqk+4vjWQwoJDJCyRiFgmMdfl77Vob
-        mPgMI+p2OC0pqmzej/U0SLFX3TpQDA4ozyBVq5pY+QzjyxDnodxFEcHIVwxchq99hUIkAQ
-        k96Mx0S7nuvSt89lk3mB0aPFE6J2w5HXbbmu576SxDUoQb4d6r8Nt/08LKW01w==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=rd/W1CRGnSD8mehvLbKv8P+T2jwQCIZywXxgXcMfz94=;
+        b=zacELPSktbD/FbyWvAYuCo18wjymiIOh8rHpraTHxtbvbhle9seIqwAd11iiBU21rYmMOI
+        58bB6+AgZv9KJiNY47ELu2OIZzruO2VKBtQrLTWCB6PLODki86IAlmgJtZ1R+8eqXbsFOo
+        NtQk51gKyCmkGKyoo++YpK0+IfGTD0iEPMucLi0HpxRcnSwR4DMtT5UvIkDNL77bSk3gRm
+        bDft2nNNUOhdOCq9atKEyvOt7rX2L0w5SrqGg94G8BWwg8uF5g52c+Vkhf7t0f9oNxYSmQ
+        6lK++gPMhN2Qs9r7S9R3IgrRoJ7B2jhCN6LXjJlY+xA13M5/fNGdGR7aZypCQw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1613567857;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=U0fYHDJuJETMJsp5SXPR/4h6qRFGQn1sH+35hAaR3KI=;
-        b=BUEZkqtSjLuVgp3v1RzCbG0K4jnep9jUQ6pdO3ha0Of3d6eh+We1k+XD2bAVA5arGvmr9B
-        wDQhkbBBIs+ZiPCg==
-From:   "tip-bot2 for Dietmar Eggemann" <tip-bot2@linutronix.de>
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=rd/W1CRGnSD8mehvLbKv8P+T2jwQCIZywXxgXcMfz94=;
+        b=bk8+V0X/BwicpI5hFztndOOEFrM9kBSUme4gUHbaiHHsRIKr4F4BfPvZ1rMvLTJbT7CBiO
+        v4Euc2QEz9jQQaBA==
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/topology: Fix sched_domain_topology_level
- alloc in sched_init_numa()
-Cc:     Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+Subject: [tip: sched/core] rbtree, timerqueue: Use rb_add_cached()
+Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Ingo Molnar <mingo@kernel.org>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Barry Song <song.bao.hua@hisilicon.com>, x86@kernel.org,
+        Davidlohr Bueso <dbueso@suse.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <6000e39e-7d28-c360-9cd6-8798fd22a9bf@arm.com>
-References: <6000e39e-7d28-c360-9cd6-8798fd22a9bf@arm.com>
 MIME-Version: 1.0
-Message-ID: <161356785681.20312.13022545187499987936.tip-bot2@tip-bot2>
+Message-ID: <161356785704.20312.639489769023750532.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -62,52 +56,70 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     71e5f6644fb2f3304fcb310145ded234a37e7cc1
-Gitweb:        https://git.kernel.org/tip/71e5f6644fb2f3304fcb310145ded234a37e7cc1
-Author:        Dietmar Eggemann <dietmar.eggemann@arm.com>
-AuthorDate:    Mon, 01 Feb 2021 10:53:53 +01:00
+Commit-ID:     798172b1374e28ecf687d6662fc5fdaec5c65385
+Gitweb:        https://git.kernel.org/tip/798172b1374e28ecf687d6662fc5fdaec5c65385
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Wed, 29 Apr 2020 17:07:53 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 17 Feb 2021 14:08:05 +01:00
+CommitterDate: Wed, 17 Feb 2021 14:08:01 +01:00
 
-sched/topology: Fix sched_domain_topology_level alloc in sched_init_numa()
+rbtree, timerqueue: Use rb_add_cached()
 
-Commit "sched/topology: Make sched_init_numa() use a set for the
-deduplicating sort" allocates 'i + nr_levels (level)' instead of
-'i + nr_levels + 1' sched_domain_topology_level.
+Reduce rbtree boiler plate by using the new helpers.
 
-This led to an Oops (on Arm64 juno with CONFIG_SCHED_DEBUG):
-
-sched_init_domains
-  build_sched_domains()
-    __free_domain_allocs()
-      __sdt_free() {
-	...
-        for_each_sd_topology(tl)
-	  ...
-          sd = *per_cpu_ptr(sdd->sd, j); <--
-	  ...
-      }
-
-Signed-off-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: Vincent Guittot <vincent.guittot@linaro.org>
-Tested-by: Barry Song <song.bao.hua@hisilicon.com>
-Link: https://lkml.kernel.org/r/6000e39e-7d28-c360-9cd6-8798fd22a9bf@arm.com
+Acked-by: Davidlohr Bueso <dbueso@suse.de>
 ---
- kernel/sched/topology.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ lib/timerqueue.c | 28 +++++++++-------------------
+ 1 file changed, 9 insertions(+), 19 deletions(-)
 
-diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
-index bf5c9bd..09d3504 100644
---- a/kernel/sched/topology.c
-+++ b/kernel/sched/topology.c
-@@ -1702,7 +1702,7 @@ void sched_init_numa(void)
- 	/* Compute default topology size */
- 	for (i = 0; sched_domain_topology[i].mask; i++);
+diff --git a/lib/timerqueue.c b/lib/timerqueue.c
+index c527109..cdb9c76 100644
+--- a/lib/timerqueue.c
++++ b/lib/timerqueue.c
+@@ -14,6 +14,14 @@
+ #include <linux/rbtree.h>
+ #include <linux/export.h>
  
--	tl = kzalloc((i + nr_levels) *
-+	tl = kzalloc((i + nr_levels + 1) *
- 			sizeof(struct sched_domain_topology_level), GFP_KERNEL);
- 	if (!tl)
- 		return;
++#define __node_2_tq(_n) \
++	rb_entry((_n), struct timerqueue_node, node)
++
++static inline bool __timerqueue_less(struct rb_node *a, const struct rb_node *b)
++{
++	return __node_2_tq(a)->expires < __node_2_tq(b)->expires;
++}
++
+ /**
+  * timerqueue_add - Adds timer to timerqueue.
+  *
+@@ -26,28 +34,10 @@
+  */
+ bool timerqueue_add(struct timerqueue_head *head, struct timerqueue_node *node)
+ {
+-	struct rb_node **p = &head->rb_root.rb_root.rb_node;
+-	struct rb_node *parent = NULL;
+-	struct timerqueue_node *ptr;
+-	bool leftmost = true;
+-
+ 	/* Make sure we don't add nodes that are already added */
+ 	WARN_ON_ONCE(!RB_EMPTY_NODE(&node->node));
+ 
+-	while (*p) {
+-		parent = *p;
+-		ptr = rb_entry(parent, struct timerqueue_node, node);
+-		if (node->expires < ptr->expires) {
+-			p = &(*p)->rb_left;
+-		} else {
+-			p = &(*p)->rb_right;
+-			leftmost = false;
+-		}
+-	}
+-	rb_link_node(&node->node, parent, p);
+-	rb_insert_color_cached(&node->node, &head->rb_root, leftmost);
+-
+-	return leftmost;
++	return rb_add_cached(&node->node, &head->rb_root, __timerqueue_less);
+ }
+ EXPORT_SYMBOL_GPL(timerqueue_add);
+ 
