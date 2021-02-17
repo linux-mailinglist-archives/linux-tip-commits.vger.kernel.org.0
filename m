@@ -2,111 +2,218 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FEDD31C8F2
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 16 Feb 2021 11:40:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DBF6431DA0E
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 17 Feb 2021 14:18:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229809AbhBPKkZ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 16 Feb 2021 05:40:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59002 "EHLO
+        id S232833AbhBQNSQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 17 Feb 2021 08:18:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33088 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229767AbhBPKkW (ORCPT
+        with ESMTP id S232533AbhBQNSO (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 16 Feb 2021 05:40:22 -0500
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A43DC061574;
-        Tue, 16 Feb 2021 02:39:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=gHDXAw/B+mW6hMmWjHJ5AP1o5rqDQiiLPaGpdzXb7Ok=; b=IrZz0SUU89p9EAXf/KDm2T9Y8B
-        02nlaxYtoPnJiHmTETta4Bf3i+3soPeGV8+LZhaWOsoU437IWVJrBaglh6jns+blO4c5SNLHbpnpq
-        +7K0zJ0xln6dl30Gx+iKLOLVS3ushnYJ8+O2AuiPgA1AeGN3SAPKLalYqBhI7nZvbbRpjJFCYSOg8
-        /GAmeX06NVvF47NAblLMIqQkuiIKE/niIioyYGnGuvFeudJePh9zWYfqpsvjZt1W4JM+Uq0d4tv2E
-        I2lzcnfQaaOCQzXpGKqqzM0K6z6yTCYcOQ5yfVtVu4/nZ9GhGnfJLBYLXsFrd0FjOwgZWIzsrkzSY
-        KFr7W4FQ==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
-        by casper.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
-        id 1lBxkE-00Gkyh-AG; Tue, 16 Feb 2021 10:38:38 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 482173059DD;
-        Tue, 16 Feb 2021 11:38:12 +0100 (CET)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 2CBB62058AF24; Tue, 16 Feb 2021 11:38:12 +0100 (CET)
-Date:   Tue, 16 Feb 2021 11:38:12 +0100
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Frederic Weisbecker <frederic@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-        Mike Galbraith <efault@gmx.de>, x86@kernel.org
-Subject: Re: [tip: sched/core] sched,x86: Allow !PREEMPT_DYNAMIC
-Message-ID: <YCuglAA95cDfSoFD@hirez.programming.kicks-ass.net>
-References: <YCK1+JyFNxQnWeXK@hirez.programming.kicks-ass.net>
- <161296521143.23325.3662179234825253723.tip-bot2@tip-bot2>
- <20210210141838.GA53130@lothringen>
+        Wed, 17 Feb 2021 08:18:14 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51D5FC061574;
+        Wed, 17 Feb 2021 05:17:33 -0800 (PST)
+Date:   Wed, 17 Feb 2021 13:17:30 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1613567851;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=qB4HogsaDhgqvLnS7LEaBAtHSECMrErbHEF0Mhacb7k=;
+        b=R5ZbmKXoPv0twTUHq1ltVbMMIdlCyNwbPga8C7NGJwWoG+FBKEvdr3xyd+MoPu9lNYP6Gp
+        8S03g4eIT64SWxYzMalvcexlAEVWUta1Ta1CptUf3aLqUKLMCnRTAuxro0fxkQJCRDFXcY
+        hlhf20F8MjT7JAe23FoMNluQXoOyFJith29oIxuSKFgdAtdJWqXTybjyzNoQXzta/5a0Cq
+        jtyTpoNwNUncs/j/KursJHOVIG/ouiB0MGFX3lxJbsg1+z/0K/LX6BpENVwSiac6DGgJ+0
+        XwvlgqDTw5hovEXfo2vtrPrBwbr21yY/+cPwA9DDJ419GBmim5Fj2Af4MNuHeg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1613567851;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=qB4HogsaDhgqvLnS7LEaBAtHSECMrErbHEF0Mhacb7k=;
+        b=8VqAQmUboHFhug4rraaYFsONg7/S8mbBEJryx9WpgEx+mTcW1uWApzsDAXOuhZr4G3mq8W
+        ucmlu4TtEpF/YdAw==
+From:   "tip-bot2 for Frederic Weisbecker" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: sched/core] entry/kvm: Explicitly flush pending rcuog wakeup
+ before last rescheduling point
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        Frederic Weisbecker <frederic@kernel.org>,
+        Ingo Molnar <mingo@kernel.org>, stable@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20210131230548.32970-6-frederic@kernel.org>
+References: <20210131230548.32970-6-frederic@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210210141838.GA53130@lothringen>
+Message-ID: <161356785079.20312.1441970262621353352.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Wed, Feb 10, 2021 at 03:18:38PM +0100, Frederic Weisbecker wrote:
-> Also should we add something like this?
+The following commit has been merged into the sched/core branch of tip:
 
-I suppose we can do that, but I'd rather have actual numbers to go with
-it, I don't think the trampolines are really that terrible.
+Commit-ID:     4ae7dc97f726ea95c58ac58af71cc034ad22d7de
+Gitweb:        https://git.kernel.org/tip/4ae7dc97f726ea95c58ac58af71cc034ad22d7de
+Author:        Frederic Weisbecker <frederic@kernel.org>
+AuthorDate:    Mon, 01 Feb 2021 00:05:48 +01:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Wed, 17 Feb 2021 14:12:43 +01:00
 
-> From: Frederic Weisbecker <frederic@kernel.org>
-> Date: Wed, 10 Feb 2021 15:11:39 +0100
-> Subject: [PATCH] preempt/dynamic: Make PREEMPT_DYNAMIC optional
-> 
-> In order not to make the small trampoline overhead mandatory for archs
-> that support HAVE_STATIC_CALL but not HAVE_STATIC_CALL_INLINE, make
-> PREEMPT_DYNAMIC optional.
-> 
-> Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-> ---
->  kernel/Kconfig.preempt | 11 +++++++----
->  1 file changed, 7 insertions(+), 4 deletions(-)
-> 
-> diff --git a/kernel/Kconfig.preempt b/kernel/Kconfig.preempt
-> index 416017301660..1fe759677907 100644
-> --- a/kernel/Kconfig.preempt
-> +++ b/kernel/Kconfig.preempt
-> @@ -40,7 +40,6 @@ config PREEMPT
->  	depends on !ARCH_NO_PREEMPT
->  	select PREEMPTION
->  	select UNINLINE_SPIN_UNLOCK if !ARCH_INLINE_SPIN_UNLOCK
-> -	select PREEMPT_DYNAMIC if HAVE_PREEMPT_DYNAMIC
->  	help
->  	  This option reduces the latency of the kernel by making
->  	  all kernel code (that is not executing in a critical section)
-> @@ -83,11 +82,13 @@ config PREEMPTION
->         select PREEMPT_COUNT
->  
->  config PREEMPT_DYNAMIC
-> -	bool
-> +	bool "Override preemption flavour at boot time"
-> +	depends on HAVE_PREEMPT_DYNAMIC && PREEMPT
-> +	default HAVE_STATIC_CALL_INLINE
->  	help
->  	  This option allows to define the preemption model on the kernel
-> -	  command line parameter and thus override the default preemption
-> -	  model defined during compile time.
-> +	  command line parameter "preempt=" and thus override the default
-> +	  preemption model defined during compile time.
->  
->  	  The feature is primarily interesting for Linux distributions which
->  	  provide a pre-built kernel binary to reduce the number of kernel
-> @@ -99,3 +100,5 @@ config PREEMPT_DYNAMIC
->  
->  	  Interesting if you want the same pre-built kernel should be used for
->  	  both Server and Desktop workloads.
-> +
-> +	  Say Y if you have CONFIG_HAVE_STATIC_CALL_INLINE.
-> -- 
-> 2.25.1
-> 
+entry/kvm: Explicitly flush pending rcuog wakeup before last rescheduling point
+
+Following the idle loop model, cleanly check for pending rcuog wakeup
+before the last rescheduling point upon resuming to guest mode. This
+way we can avoid to do it from rcu_user_enter() with the last resort
+self-IPI hack that enforces rescheduling.
+
+Suggested-by: Peter Zijlstra <peterz@infradead.org>
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://lkml.kernel.org/r/20210131230548.32970-6-frederic@kernel.org
+---
+ arch/x86/kvm/x86.c        |  1 +-
+ include/linux/entry-kvm.h | 14 ++++++++++++-
+ kernel/rcu/tree.c         | 44 +++++++++++++++++++++++++++++---------
+ kernel/rcu/tree_plugin.h  |  1 +-
+ 4 files changed, 50 insertions(+), 10 deletions(-)
+
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 1b404e4..b967c1c 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -1782,6 +1782,7 @@ EXPORT_SYMBOL_GPL(kvm_emulate_wrmsr);
+ 
+ bool kvm_vcpu_exit_request(struct kvm_vcpu *vcpu)
+ {
++	xfer_to_guest_mode_prepare();
+ 	return vcpu->mode == EXITING_GUEST_MODE || kvm_request_pending(vcpu) ||
+ 		xfer_to_guest_mode_work_pending();
+ }
+diff --git a/include/linux/entry-kvm.h b/include/linux/entry-kvm.h
+index 9b93f85..8b2b1d6 100644
+--- a/include/linux/entry-kvm.h
++++ b/include/linux/entry-kvm.h
+@@ -47,6 +47,20 @@ static inline int arch_xfer_to_guest_mode_handle_work(struct kvm_vcpu *vcpu,
+ int xfer_to_guest_mode_handle_work(struct kvm_vcpu *vcpu);
+ 
+ /**
++ * xfer_to_guest_mode_prepare - Perform last minute preparation work that
++ *				need to be handled while IRQs are disabled
++ *				upon entering to guest.
++ *
++ * Has to be invoked with interrupts disabled before the last call
++ * to xfer_to_guest_mode_work_pending().
++ */
++static inline void xfer_to_guest_mode_prepare(void)
++{
++	lockdep_assert_irqs_disabled();
++	rcu_nocb_flush_deferred_wakeup();
++}
++
++/**
+  * __xfer_to_guest_mode_work_pending - Check if work is pending
+  *
+  * Returns: True if work pending, False otherwise.
+diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
+index 2ebc211..ce17b84 100644
+--- a/kernel/rcu/tree.c
++++ b/kernel/rcu/tree.c
+@@ -678,9 +678,10 @@ EXPORT_SYMBOL_GPL(rcu_idle_enter);
+ 
+ #ifdef CONFIG_NO_HZ_FULL
+ 
++#if !defined(CONFIG_GENERIC_ENTRY) || !defined(CONFIG_KVM_XFER_TO_GUEST_WORK)
+ /*
+  * An empty function that will trigger a reschedule on
+- * IRQ tail once IRQs get re-enabled on userspace resume.
++ * IRQ tail once IRQs get re-enabled on userspace/guest resume.
+  */
+ static void late_wakeup_func(struct irq_work *work)
+ {
+@@ -689,6 +690,37 @@ static void late_wakeup_func(struct irq_work *work)
+ static DEFINE_PER_CPU(struct irq_work, late_wakeup_work) =
+ 	IRQ_WORK_INIT(late_wakeup_func);
+ 
++/*
++ * If either:
++ *
++ * 1) the task is about to enter in guest mode and $ARCH doesn't support KVM generic work
++ * 2) the task is about to enter in user mode and $ARCH doesn't support generic entry.
++ *
++ * In these cases the late RCU wake ups aren't supported in the resched loops and our
++ * last resort is to fire a local irq_work that will trigger a reschedule once IRQs
++ * get re-enabled again.
++ */
++noinstr static void rcu_irq_work_resched(void)
++{
++	struct rcu_data *rdp = this_cpu_ptr(&rcu_data);
++
++	if (IS_ENABLED(CONFIG_GENERIC_ENTRY) && !(current->flags & PF_VCPU))
++		return;
++
++	if (IS_ENABLED(CONFIG_KVM_XFER_TO_GUEST_WORK) && (current->flags & PF_VCPU))
++		return;
++
++	instrumentation_begin();
++	if (do_nocb_deferred_wakeup(rdp) && need_resched()) {
++		irq_work_queue(this_cpu_ptr(&late_wakeup_work));
++	}
++	instrumentation_end();
++}
++
++#else
++static inline void rcu_irq_work_resched(void) { }
++#endif
++
+ /**
+  * rcu_user_enter - inform RCU that we are resuming userspace.
+  *
+@@ -702,8 +734,6 @@ static DEFINE_PER_CPU(struct irq_work, late_wakeup_work) =
+  */
+ noinstr void rcu_user_enter(void)
+ {
+-	struct rcu_data *rdp = this_cpu_ptr(&rcu_data);
+-
+ 	lockdep_assert_irqs_disabled();
+ 
+ 	/*
+@@ -711,13 +741,7 @@ noinstr void rcu_user_enter(void)
+ 	 * rescheduling opportunity in the entry code. Trigger a self IPI
+ 	 * that will fire and reschedule once we resume in user/guest mode.
+ 	 */
+-	instrumentation_begin();
+-	if (!IS_ENABLED(CONFIG_GENERIC_ENTRY) || (current->flags & PF_VCPU)) {
+-		if (do_nocb_deferred_wakeup(rdp) && need_resched())
+-			irq_work_queue(this_cpu_ptr(&late_wakeup_work));
+-	}
+-	instrumentation_end();
+-
++	rcu_irq_work_resched();
+ 	rcu_eqs_enter(true);
+ }
+ 
+diff --git a/kernel/rcu/tree_plugin.h b/kernel/rcu/tree_plugin.h
+index 384856e..cdc1b76 100644
+--- a/kernel/rcu/tree_plugin.h
++++ b/kernel/rcu/tree_plugin.h
+@@ -2197,6 +2197,7 @@ void rcu_nocb_flush_deferred_wakeup(void)
+ {
+ 	do_nocb_deferred_wakeup(this_cpu_ptr(&rcu_data));
+ }
++EXPORT_SYMBOL_GPL(rcu_nocb_flush_deferred_wakeup);
+ 
+ void __init rcu_init_nohz(void)
+ {
