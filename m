@@ -2,17 +2,20 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D5DD631DA14
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 17 Feb 2021 14:18:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D302D31DA12
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 17 Feb 2021 14:18:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232854AbhBQNSU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 17 Feb 2021 08:18:20 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:45132 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231703AbhBQNSO (ORCPT
+        id S232848AbhBQNST (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 17 Feb 2021 08:18:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33086 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232547AbhBQNSO (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Wed, 17 Feb 2021 08:18:14 -0500
-Date:   Wed, 17 Feb 2021 13:17:30 -0000
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58B15C061756;
+        Wed, 17 Feb 2021 05:17:33 -0800 (PST)
+Date:   Wed, 17 Feb 2021 13:17:31 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1613567851;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -20,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=gE9WVdKS8Np5uJgazh8C/sfdqwqMVwU+lqHROJmW72M=;
-        b=cZnjjlUvZtzC32k5MY+hpK+vn6TyfQ0TIWGkfvjQFRkuD0JWfmYuhHfz2f3AK4at4pMlZS
-        HdU56vyJ8VHYNZjDaR6mWqEnuPgv43HMMR1GRxJdf8+WvQuhStmF6Z2uxFvHjaXiwrekMq
-        aJh1NUFp2UhLHivsFrquN3VLPDvQv/31KUXjF5DQMEz6W9jyVDuVfyKVqpJeCSsLueTckI
-        imF/jwLXAKv1sUtiWU3Rb55JHpjEQ9d8dmr4SNeutalC5/2mkK27qkvvHTud6g4hrBosME
-        43lskEo+ygLwTVNy+6ox6vkGoumdwo7D896/qxqCWDjgOT97rj/dvPgGYLkNrg==
+        bh=ApmEGfWSdfLwWtPCWhMvgsk3uqD3dLDXeXnwrO8kjHY=;
+        b=Aw7cXupl09o20sVipGeaahHLeDi/BBQ1hIfPXe1fwkJYflWd+VgZtXwlkzb4vQraRI1VcW
+        eI/ydAVNk2SOrYc7Mhqr2sJhzkSEJxbI3+0hYi+/JeiEMWKfqcqw8XqiGUVQrwDzRz283H
+        CZDbGMaee+VdaEPITzy7wEtUrg4QPvEvrGcQjDhWvAGJLTeCdcgkHxzlK3sO1cLfnkYTj+
+        xW5Lmij6F93PxYgomhtG67wqHoQb41kjK2Nce8f+WjBYGJ4iyD2Ru3xasn0eiIpwOmjZwG
+        RlIEQx6fjWJyog+VoBmthu5HgsvQHxDViDf5HyxMao6eT3xaWf02bU6Dmtl0mw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1613567851;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -33,22 +36,23 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=gE9WVdKS8Np5uJgazh8C/sfdqwqMVwU+lqHROJmW72M=;
-        b=fNrmRX2UqbW/C1l8tQuiawVr3F10T/vdbjL+MjlFskAvxCwwKOFary9v/ELBeTiZlBNLe2
-        SxmpUmzb7OHOM9Dw==
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+        bh=ApmEGfWSdfLwWtPCWhMvgsk3uqD3dLDXeXnwrO8kjHY=;
+        b=SrBFFLmfyQxalaT0ThcifE8KpyQwJjOiRJ9boGAsKUOZ2CxTSeplWVyUcZa8Ao5ZtVq1KH
+        saUkt1Gs4Hgd/LCg==
+From:   "tip-bot2 for Frederic Weisbecker" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched,x86: Allow !PREEMPT_DYNAMIC
-Cc:     Mike Galbraith <efault@gmx.de>,
+Subject: [tip: sched/core] entry: Explicitly flush pending rcuog wakeup before
+ last rescheduling point
+Cc:     Frederic Weisbecker <frederic@kernel.org>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <YCK1+JyFNxQnWeXK@hirez.programming.kicks-ass.net>
-References: <YCK1+JyFNxQnWeXK@hirez.programming.kicks-ass.net>
+        Ingo Molnar <mingo@kernel.org>, stable@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20210131230548.32970-5-frederic@kernel.org>
+References: <20210131230548.32970-5-frederic@kernel.org>
 MIME-Version: 1.0
-Message-ID: <161356785045.20312.7404465373129724665.tip-bot2@tip-bot2>
+Message-ID: <161356785106.20312.6122282234763949644.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,74 +63,77 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     c5e6fc08feb2b88dc5dac2f3c817e1c2a4cafda4
-Gitweb:        https://git.kernel.org/tip/c5e6fc08feb2b88dc5dac2f3c817e1c2a4cafda4
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Tue, 09 Feb 2021 22:02:33 +01:00
+Commit-ID:     47b8ff194c1fd73d58dc339b597d466fe48c8958
+Gitweb:        https://git.kernel.org/tip/47b8ff194c1fd73d58dc339b597d466fe48c8958
+Author:        Frederic Weisbecker <frederic@kernel.org>
+AuthorDate:    Mon, 01 Feb 2021 00:05:47 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Wed, 17 Feb 2021 14:12:43 +01:00
 
-sched,x86: Allow !PREEMPT_DYNAMIC
+entry: Explicitly flush pending rcuog wakeup before last rescheduling point
 
-Allow building x86 with PREEMPT_DYNAMIC=n, this is needed for
-PREEMPT_RT as it makes no sense to not have full preemption on
-PREEMPT_RT.
+Following the idle loop model, cleanly check for pending rcuog wakeup
+before the last rescheduling point on resuming to user mode. This
+way we can avoid to do it from rcu_user_enter() with the last resort
+self-IPI hack that enforces rescheduling.
 
-Fixes: 8c98e8cf723c ("preempt/dynamic: Provide preempt_schedule[_notrace]() static calls")
-Reported-by: Mike Galbraith <efault@gmx.de>
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: Mike Galbraith <efault@gmx.de>
-Link: https://lkml.kernel.org/r/YCK1+JyFNxQnWeXK@hirez.programming.kicks-ass.net
+Cc: stable@vger.kernel.org
+Link: https://lkml.kernel.org/r/20210131230548.32970-5-frederic@kernel.org
 ---
- arch/x86/include/asm/preempt.h | 24 ++++++++++++++++++------
- 1 file changed, 18 insertions(+), 6 deletions(-)
+ kernel/entry/common.c |  7 +++++++
+ kernel/rcu/tree.c     | 12 +++++++-----
+ 2 files changed, 14 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/include/asm/preempt.h b/arch/x86/include/asm/preempt.h
-index 0aa96f8..f8cb8af 100644
---- a/arch/x86/include/asm/preempt.h
-+++ b/arch/x86/include/asm/preempt.h
-@@ -110,6 +110,13 @@ extern asmlinkage void preempt_schedule_thunk(void);
- 
- #define __preempt_schedule_func preempt_schedule_thunk
- 
-+extern asmlinkage void preempt_schedule_notrace(void);
-+extern asmlinkage void preempt_schedule_notrace_thunk(void);
+diff --git a/kernel/entry/common.c b/kernel/entry/common.c
+index f09cae3..8442e5c 100644
+--- a/kernel/entry/common.c
++++ b/kernel/entry/common.c
+@@ -184,6 +184,10 @@ static unsigned long exit_to_user_mode_loop(struct pt_regs *regs,
+ 		 * enabled above.
+ 		 */
+ 		local_irq_disable_exit_to_user();
 +
-+#define __preempt_schedule_notrace_func preempt_schedule_notrace_thunk
++		/* Check if any of the above work has queued a deferred wakeup */
++		rcu_nocb_flush_deferred_wakeup();
 +
-+#ifdef CONFIG_PREEMPT_DYNAMIC
-+
- DECLARE_STATIC_CALL(preempt_schedule, __preempt_schedule_func);
+ 		ti_work = READ_ONCE(current_thread_info()->flags);
+ 	}
  
- #define __preempt_schedule() \
-@@ -118,11 +125,6 @@ do { \
- 	asm volatile ("call " STATIC_CALL_TRAMP_STR(preempt_schedule) : ASM_CALL_CONSTRAINT); \
- } while (0)
+@@ -197,6 +201,9 @@ static void exit_to_user_mode_prepare(struct pt_regs *regs)
  
--extern asmlinkage void preempt_schedule_notrace(void);
--extern asmlinkage void preempt_schedule_notrace_thunk(void);
--
--#define __preempt_schedule_notrace_func preempt_schedule_notrace_thunk
--
- DECLARE_STATIC_CALL(preempt_schedule_notrace, __preempt_schedule_notrace_func);
+ 	lockdep_assert_irqs_disabled();
  
- #define __preempt_schedule_notrace() \
-@@ -131,6 +133,16 @@ do { \
- 	asm volatile ("call " STATIC_CALL_TRAMP_STR(preempt_schedule_notrace) : ASM_CALL_CONSTRAINT); \
- } while (0)
++	/* Flush pending rcuog wakeup before the last need_resched() check */
++	rcu_nocb_flush_deferred_wakeup();
++
+ 	if (unlikely(ti_work & EXIT_TO_USER_MODE_WORK))
+ 		ti_work = exit_to_user_mode_loop(regs, ti_work);
  
--#endif
-+#else /* PREEMPT_DYNAMIC */
-+
-+#define __preempt_schedule() \
-+	asm volatile ("call preempt_schedule_thunk" : ASM_CALL_CONSTRAINT);
-+
-+#define __preempt_schedule_notrace() \
-+	asm volatile ("call preempt_schedule_notrace_thunk" : ASM_CALL_CONSTRAINT);
-+
-+#endif /* PREEMPT_DYNAMIC */
-+
-+#endif /* PREEMPTION */
+diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
+index 4b1e5bd..2ebc211 100644
+--- a/kernel/rcu/tree.c
++++ b/kernel/rcu/tree.c
+@@ -707,13 +707,15 @@ noinstr void rcu_user_enter(void)
+ 	lockdep_assert_irqs_disabled();
  
- #endif /* __ASM_PREEMPT_H */
+ 	/*
+-	 * We may be past the last rescheduling opportunity in the entry code.
+-	 * Trigger a self IPI that will fire and reschedule once we resume to
+-	 * user/guest mode.
++	 * Other than generic entry implementation, we may be past the last
++	 * rescheduling opportunity in the entry code. Trigger a self IPI
++	 * that will fire and reschedule once we resume in user/guest mode.
+ 	 */
+ 	instrumentation_begin();
+-	if (do_nocb_deferred_wakeup(rdp) && need_resched())
+-		irq_work_queue(this_cpu_ptr(&late_wakeup_work));
++	if (!IS_ENABLED(CONFIG_GENERIC_ENTRY) || (current->flags & PF_VCPU)) {
++		if (do_nocb_deferred_wakeup(rdp) && need_resched())
++			irq_work_queue(this_cpu_ptr(&late_wakeup_work));
++	}
+ 	instrumentation_end();
+ 
+ 	rcu_eqs_enter(true);
