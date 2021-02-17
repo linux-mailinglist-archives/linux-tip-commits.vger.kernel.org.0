@@ -2,57 +2,48 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C85F31DA3A
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 17 Feb 2021 14:20:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CBB6A31DA2C
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 17 Feb 2021 14:20:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232918AbhBQNT5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 17 Feb 2021 08:19:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33460 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232782AbhBQNTx (ORCPT
+        id S232908AbhBQNTL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 17 Feb 2021 08:19:11 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:45336 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232852AbhBQNSX (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 17 Feb 2021 08:19:53 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51FDCC06121C;
-        Wed, 17 Feb 2021 05:17:41 -0800 (PST)
+        Wed, 17 Feb 2021 08:18:23 -0500
 Date:   Wed, 17 Feb 2021 13:17:38 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1613567859;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Enhza+v10Ym2ixtyOL9d52WlnFvQYOluMR1bV/a0k6M=;
-        b=TFE0XbLy2gO4Re80psMgSLtdhcSNY4NylqLWVAs4mQXhPPblJC+GJf17hVJjdkvW3lTnfe
-        iKtjy9OoMGdAtlHqCONkMN892zZWxKJ6Qb1dzAjaAUAuizl7JUoRjPI63SR+z5OMQvu9A2
-        ZWpEqTLTUWSjjlBtdBPXPz76vURYnvIb0IwBRj2/g3WlkEv9RiBSC/S6D3SVJJ9QgpF1cJ
-        O0vmTJ00GeC0b/sXV/Ly71f7y63JVzYfDAO+45c1XRJVUjSMugf8yJukPv0WVAmrsqNcop
-        ftjGaehJ4EcXqx8nVW5UmZ9W0Ez4wVslJxXLIZshgmXg1SH0RuC1kwn2GqQxbA==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=TmPvPzeDIJHSnmklP7bvMkLX/nCDvLZW6VFfYT/XK4Y=;
+        b=0y+nVTW8zbQCkZntN02SeYGYhhA9rJUfYvKD0IVBLO7ogbMvvsmimrxvVWUlLgG9eTVJEg
+        AFsbT1mgwV/pPe3Q2MaJOSQKP403fE9HqlFcZ0LSCgb0wW9ItOJb++AsStoayTZegz18wn
+        5c8fKYGknEmA2b8PuVRXwfMItIH2EINd7p+n3ZvZxOqlffoAl+j0+WGJg3SR7VaxoOERM3
+        yjjRBzec6iUiE5YhuJeKa+63JiB/+IWYxf4aITw3jLCq8qXaU+0xs6W5WHHdjkAh/Puvkx
+        yMoPRFpxdCzU8E6+KoLqMRoAN+QR+LVePHqLXHH8yz/lsKJ93mYTUExPt7uysQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1613567859;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Enhza+v10Ym2ixtyOL9d52WlnFvQYOluMR1bV/a0k6M=;
-        b=K4SrviUxo9C0N6XIgrGwcuKO3v65lw70G4vWLFaQI1tvTatUAABanMF9/4enBwigB4pxTK
-        8mVc9Vjwj9WeixBg==
-From:   "tip-bot2 for Mel Gorman" <tip-bot2@linutronix.de>
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=TmPvPzeDIJHSnmklP7bvMkLX/nCDvLZW6VFfYT/XK4Y=;
+        b=8S7jpp0oTfhFuPPEQcUWXL6nHWIPNWshpGAKKFSITQQxjOAI7SF56C+gf4624166GpbV3k
+        L1CegX1vz17zwRDQ==
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/fair: Merge select_idle_core/cpu()
-Cc:     Mel Gorman <mgorman@techsingularity.net>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+Subject: [tip: sched/core] rbtree: Add generic add and find helpers
+Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Ingo Molnar <mingo@kernel.org>,
-        Vincent Guittot <vincent.guittot@linaro.org>, x86@kernel.org,
+        Michel Lespinasse <walken@google.com>,
+        Davidlohr Bueso <dbueso@suse.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210127135203.19633-5-mgorman@techsingularity.net>
-References: <20210127135203.19633-5-mgorman@techsingularity.net>
 MIME-Version: 1.0
-Message-ID: <161356785893.20312.10270833120354178289.tip-bot2@tip-bot2>
+Message-ID: <161356785868.20312.16705119540462191828.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -63,196 +54,573 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     9fe1f127b913318c631d0041ecf71486e38c2c2d
-Gitweb:        https://git.kernel.org/tip/9fe1f127b913318c631d0041ecf71486e38c2c2d
-Author:        Mel Gorman <mgorman@techsingularity.net>
-AuthorDate:    Wed, 27 Jan 2021 13:52:03 
+Commit-ID:     2d24dd5798d0474d9bf705bfca8725e7d20f9d54
+Gitweb:        https://git.kernel.org/tip/2d24dd5798d0474d9bf705bfca8725e7d20f9d54
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Wed, 29 Apr 2020 17:03:22 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 17 Feb 2021 14:07:25 +01:00
+CommitterDate: Wed, 17 Feb 2021 14:07:31 +01:00
 
-sched/fair: Merge select_idle_core/cpu()
+rbtree: Add generic add and find helpers
 
-Both select_idle_core() and select_idle_cpu() do a loop over the same
-cpumask. Observe that by clearing the already visited CPUs, we can
-fold the iteration and iterate a core at a time.
+I've always been bothered by the endless (fragile) boilerplate for
+rbtree, and I recently wrote some rbtree helpers for objtool and
+figured I should lift them into the kernel and use them more widely.
 
-All we need to do is remember any non-idle CPU we encountered while
-scanning for an idle core. This way we'll only iterate every CPU once.
+Provide:
 
-Signed-off-by: Mel Gorman <mgorman@techsingularity.net>
+partial-order; less() based:
+ - rb_add(): add a new entry to the rbtree
+ - rb_add_cached(): like rb_add(), but for a rb_root_cached
+
+total-order; cmp() based:
+ - rb_find(): find an entry in an rbtree
+ - rb_find_add(): find an entry, and add if not found
+
+ - rb_find_first(): find the first (leftmost) matching entry
+ - rb_next_match(): continue from rb_find_first()
+ - rb_for_each(): iterate a sub-tree using the previous two
+
+Inlining and constant propagation should see the compiler inline the
+whole thing, including the various compare functions.
+
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
-Link: https://lkml.kernel.org/r/20210127135203.19633-5-mgorman@techsingularity.net
+Reviewed-by: Michel Lespinasse <walken@google.com>
+Acked-by: Davidlohr Bueso <dbueso@suse.de>
 ---
- kernel/sched/fair.c |  99 +++++++++++++++++++++++++------------------
- 1 file changed, 59 insertions(+), 40 deletions(-)
+ include/linux/rbtree.h       | 190 ++++++++++++++++++++++++++++++++++-
+ tools/include/linux/rbtree.h | 192 +++++++++++++++++++++++++++++++++-
+ tools/objtool/elf.c          |  73 +------------
+ 3 files changed, 392 insertions(+), 63 deletions(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 6a0fc8a..c73d588 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -6019,6 +6019,14 @@ static inline int find_idlest_cpu(struct sched_domain *sd, struct task_struct *p
- 	return new_cpu;
+diff --git a/include/linux/rbtree.h b/include/linux/rbtree.h
+index d7db179..e0b300d 100644
+--- a/include/linux/rbtree.h
++++ b/include/linux/rbtree.h
+@@ -158,4 +158,194 @@ static inline void rb_replace_node_cached(struct rb_node *victim,
+ 	rb_replace_node(victim, new, &root->rb_root);
  }
  
-+static inline int __select_idle_cpu(int cpu)
++/*
++ * The below helper functions use 2 operators with 3 different
++ * calling conventions. The operators are related like:
++ *
++ *	comp(a->key,b) < 0  := less(a,b)
++ *	comp(a->key,b) > 0  := less(b,a)
++ *	comp(a->key,b) == 0 := !less(a,b) && !less(b,a)
++ *
++ * If these operators define a partial order on the elements we make no
++ * guarantee on which of the elements matching the key is found. See
++ * rb_find().
++ *
++ * The reason for this is to allow the find() interface without requiring an
++ * on-stack dummy object, which might not be feasible due to object size.
++ */
++
++/**
++ * rb_add_cached() - insert @node into the leftmost cached tree @tree
++ * @node: node to insert
++ * @tree: leftmost cached tree to insert @node into
++ * @less: operator defining the (partial) node order
++ */
++static __always_inline void
++rb_add_cached(struct rb_node *node, struct rb_root_cached *tree,
++	      bool (*less)(struct rb_node *, const struct rb_node *))
 +{
-+	if (available_idle_cpu(cpu) || sched_idle_cpu(cpu))
-+		return cpu;
++	struct rb_node **link = &tree->rb_root.rb_node;
++	struct rb_node *parent = NULL;
++	bool leftmost = true;
 +
-+	return -1;
-+}
-+
- #ifdef CONFIG_SCHED_SMT
- DEFINE_STATIC_KEY_FALSE(sched_smt_present);
- EXPORT_SYMBOL_GPL(sched_smt_present);
-@@ -6077,48 +6085,51 @@ unlock:
-  * there are no idle cores left in the system; tracked through
-  * sd_llc->shared->has_idle_cores and enabled through update_idle_core() above.
-  */
--static int select_idle_core(struct task_struct *p, struct sched_domain *sd, int target)
-+static int select_idle_core(struct task_struct *p, int core, struct cpumask *cpus, int *idle_cpu)
- {
--	struct cpumask *cpus = this_cpu_cpumask_var_ptr(select_idle_mask);
--	int core, cpu;
-+	bool idle = true;
-+	int cpu;
- 
- 	if (!static_branch_likely(&sched_smt_present))
--		return -1;
--
--	if (!test_idle_cores(target, false))
--		return -1;
--
--	cpumask_and(cpus, sched_domain_span(sd), p->cpus_ptr);
-+		return __select_idle_cpu(core);
- 
--	for_each_cpu_wrap(core, cpus, target) {
--		bool idle = true;
--
--		for_each_cpu(cpu, cpu_smt_mask(core)) {
--			if (!available_idle_cpu(cpu)) {
--				idle = false;
--				break;
-+	for_each_cpu(cpu, cpu_smt_mask(core)) {
-+		if (!available_idle_cpu(cpu)) {
-+			idle = false;
-+			if (*idle_cpu == -1) {
-+				if (sched_idle_cpu(cpu) && cpumask_test_cpu(cpu, p->cpus_ptr)) {
-+					*idle_cpu = cpu;
-+					break;
-+				}
-+				continue;
- 			}
-+			break;
- 		}
--
--		if (idle)
--			return core;
--
--		cpumask_andnot(cpus, cpus, cpu_smt_mask(core));
-+		if (*idle_cpu == -1 && cpumask_test_cpu(cpu, p->cpus_ptr))
-+			*idle_cpu = cpu;
- 	}
- 
--	/*
--	 * Failed to find an idle core; stop looking for one.
--	 */
--	set_idle_cores(target, 0);
-+	if (idle)
-+		return core;
- 
-+	cpumask_andnot(cpus, cpus, cpu_smt_mask(core));
- 	return -1;
- }
- 
- #else /* CONFIG_SCHED_SMT */
- 
--static inline int select_idle_core(struct task_struct *p, struct sched_domain *sd, int target)
-+static inline void set_idle_cores(int cpu, int val)
- {
--	return -1;
-+}
-+
-+static inline bool test_idle_cores(int cpu, bool def)
-+{
-+	return def;
-+}
-+
-+static inline int select_idle_core(struct task_struct *p, int core, struct cpumask *cpus, int *idle_cpu)
-+{
-+	return __select_idle_cpu(core);
- }
- 
- #endif /* CONFIG_SCHED_SMT */
-@@ -6131,10 +6142,11 @@ static inline int select_idle_core(struct task_struct *p, struct sched_domain *s
- static int select_idle_cpu(struct task_struct *p, struct sched_domain *sd, int target)
- {
- 	struct cpumask *cpus = this_cpu_cpumask_var_ptr(select_idle_mask);
-+	int i, cpu, idle_cpu = -1, nr = INT_MAX;
-+	bool smt = test_idle_cores(target, false);
-+	int this = smp_processor_id();
- 	struct sched_domain *this_sd;
- 	u64 time;
--	int this = smp_processor_id();
--	int cpu, nr = INT_MAX;
- 
- 	this_sd = rcu_dereference(*this_cpu_ptr(&sd_llc));
- 	if (!this_sd)
-@@ -6142,7 +6154,7 @@ static int select_idle_cpu(struct task_struct *p, struct sched_domain *sd, int t
- 
- 	cpumask_and(cpus, sched_domain_span(sd), p->cpus_ptr);
- 
--	if (sched_feat(SIS_PROP)) {
-+	if (sched_feat(SIS_PROP) && !smt) {
- 		u64 avg_cost, avg_idle, span_avg;
- 
- 		/*
-@@ -6162,18 +6174,29 @@ static int select_idle_cpu(struct task_struct *p, struct sched_domain *sd, int t
- 	}
- 
- 	for_each_cpu_wrap(cpu, cpus, target) {
--		if (!--nr)
--			return -1;
--		if (available_idle_cpu(cpu) || sched_idle_cpu(cpu))
--			break;
-+		if (smt) {
-+			i = select_idle_core(p, cpu, cpus, &idle_cpu);
-+			if ((unsigned int)i < nr_cpumask_bits)
-+				return i;
-+
++	while (*link) {
++		parent = *link;
++		if (less(node, parent)) {
++			link = &parent->rb_left;
 +		} else {
-+			if (!--nr)
-+				return -1;
-+			idle_cpu = __select_idle_cpu(cpu);
-+			if ((unsigned int)idle_cpu < nr_cpumask_bits)
-+				break;
++			link = &parent->rb_right;
++			leftmost = false;
 +		}
- 	}
- 
--	if (sched_feat(SIS_PROP)) {
-+	if (smt)
-+		set_idle_cores(this, false);
++	}
 +
-+	if (sched_feat(SIS_PROP) && !smt) {
- 		time = cpu_clock(this) - time;
- 		update_avg(&this_sd->avg_scan_cost, time);
- 	}
- 
--	return cpu;
-+	return idle_cpu;
++	rb_link_node(node, parent, link);
++	rb_insert_color_cached(node, tree, leftmost);
++}
++
++/**
++ * rb_add() - insert @node into @tree
++ * @node: node to insert
++ * @tree: tree to insert @node into
++ * @less: operator defining the (partial) node order
++ */
++static __always_inline void
++rb_add(struct rb_node *node, struct rb_root *tree,
++       bool (*less)(struct rb_node *, const struct rb_node *))
++{
++	struct rb_node **link = &tree->rb_node;
++	struct rb_node *parent = NULL;
++
++	while (*link) {
++		parent = *link;
++		if (less(node, parent))
++			link = &parent->rb_left;
++		else
++			link = &parent->rb_right;
++	}
++
++	rb_link_node(node, parent, link);
++	rb_insert_color(node, tree);
++}
++
++/**
++ * rb_find_add() - find equivalent @node in @tree, or add @node
++ * @node: node to look-for / insert
++ * @tree: tree to search / modify
++ * @cmp: operator defining the node order
++ *
++ * Returns the rb_node matching @node, or NULL when no match is found and @node
++ * is inserted.
++ */
++static __always_inline struct rb_node *
++rb_find_add(struct rb_node *node, struct rb_root *tree,
++	    int (*cmp)(struct rb_node *, const struct rb_node *))
++{
++	struct rb_node **link = &tree->rb_node;
++	struct rb_node *parent = NULL;
++	int c;
++
++	while (*link) {
++		parent = *link;
++		c = cmp(node, parent);
++
++		if (c < 0)
++			link = &parent->rb_left;
++		else if (c > 0)
++			link = &parent->rb_right;
++		else
++			return parent;
++	}
++
++	rb_link_node(node, parent, link);
++	rb_insert_color(node, tree);
++	return NULL;
++}
++
++/**
++ * rb_find() - find @key in tree @tree
++ * @key: key to match
++ * @tree: tree to search
++ * @cmp: operator defining the node order
++ *
++ * Returns the rb_node matching @key or NULL.
++ */
++static __always_inline struct rb_node *
++rb_find(const void *key, const struct rb_root *tree,
++	int (*cmp)(const void *key, const struct rb_node *))
++{
++	struct rb_node *node = tree->rb_node;
++
++	while (node) {
++		int c = cmp(key, node);
++
++		if (c < 0)
++			node = node->rb_left;
++		else if (c > 0)
++			node = node->rb_right;
++		else
++			return node;
++	}
++
++	return NULL;
++}
++
++/**
++ * rb_find_first() - find the first @key in @tree
++ * @key: key to match
++ * @tree: tree to search
++ * @cmp: operator defining node order
++ *
++ * Returns the leftmost node matching @key, or NULL.
++ */
++static __always_inline struct rb_node *
++rb_find_first(const void *key, const struct rb_root *tree,
++	      int (*cmp)(const void *key, const struct rb_node *))
++{
++	struct rb_node *node = tree->rb_node;
++	struct rb_node *match = NULL;
++
++	while (node) {
++		int c = cmp(key, node);
++
++		if (c <= 0) {
++			if (!c)
++				match = node;
++			node = node->rb_left;
++		} else if (c > 0) {
++			node = node->rb_right;
++		}
++	}
++
++	return match;
++}
++
++/**
++ * rb_next_match() - find the next @key in @tree
++ * @key: key to match
++ * @tree: tree to search
++ * @cmp: operator defining node order
++ *
++ * Returns the next node matching @key, or NULL.
++ */
++static __always_inline struct rb_node *
++rb_next_match(const void *key, struct rb_node *node,
++	      int (*cmp)(const void *key, const struct rb_node *))
++{
++	node = rb_next(node);
++	if (node && cmp(key, node))
++		node = NULL;
++	return node;
++}
++
++/**
++ * rb_for_each() - iterates a subtree matching @key
++ * @node: iterator
++ * @key: key to match
++ * @tree: tree to search
++ * @cmp: operator defining node order
++ */
++#define rb_for_each(node, key, tree, cmp) \
++	for ((node) = rb_find_first((key), (tree), (cmp)); \
++	     (node); (node) = rb_next_match((key), (node), (cmp)))
++
+ #endif	/* _LINUX_RBTREE_H */
+diff --git a/tools/include/linux/rbtree.h b/tools/include/linux/rbtree.h
+index 30dd21f..2680f2e 100644
+--- a/tools/include/linux/rbtree.h
++++ b/tools/include/linux/rbtree.h
+@@ -152,4 +152,194 @@ static inline void rb_replace_node_cached(struct rb_node *victim,
+ 	rb_replace_node(victim, new, &root->rb_root);
  }
  
- /*
-@@ -6302,10 +6325,6 @@ static int select_idle_sibling(struct task_struct *p, int prev, int target)
- 	if (!sd)
- 		return target;
+-#endif /* __TOOLS_LINUX_PERF_RBTREE_H */
++/*
++ * The below helper functions use 2 operators with 3 different
++ * calling conventions. The operators are related like:
++ *
++ *	comp(a->key,b) < 0  := less(a,b)
++ *	comp(a->key,b) > 0  := less(b,a)
++ *	comp(a->key,b) == 0 := !less(a,b) && !less(b,a)
++ *
++ * If these operators define a partial order on the elements we make no
++ * guarantee on which of the elements matching the key is found. See
++ * rb_find().
++ *
++ * The reason for this is to allow the find() interface without requiring an
++ * on-stack dummy object, which might not be feasible due to object size.
++ */
++
++/**
++ * rb_add_cached() - insert @node into the leftmost cached tree @tree
++ * @node: node to insert
++ * @tree: leftmost cached tree to insert @node into
++ * @less: operator defining the (partial) node order
++ */
++static __always_inline void
++rb_add_cached(struct rb_node *node, struct rb_root_cached *tree,
++	      bool (*less)(struct rb_node *, const struct rb_node *))
++{
++	struct rb_node **link = &tree->rb_root.rb_node;
++	struct rb_node *parent = NULL;
++	bool leftmost = true;
++
++	while (*link) {
++		parent = *link;
++		if (less(node, parent)) {
++			link = &parent->rb_left;
++		} else {
++			link = &parent->rb_right;
++			leftmost = false;
++		}
++	}
++
++	rb_link_node(node, parent, link);
++	rb_insert_color_cached(node, tree, leftmost);
++}
++
++/**
++ * rb_add() - insert @node into @tree
++ * @node: node to insert
++ * @tree: tree to insert @node into
++ * @less: operator defining the (partial) node order
++ */
++static __always_inline void
++rb_add(struct rb_node *node, struct rb_root *tree,
++       bool (*less)(struct rb_node *, const struct rb_node *))
++{
++	struct rb_node **link = &tree->rb_node;
++	struct rb_node *parent = NULL;
++
++	while (*link) {
++		parent = *link;
++		if (less(node, parent))
++			link = &parent->rb_left;
++		else
++			link = &parent->rb_right;
++	}
++
++	rb_link_node(node, parent, link);
++	rb_insert_color(node, tree);
++}
++
++/**
++ * rb_find_add() - find equivalent @node in @tree, or add @node
++ * @node: node to look-for / insert
++ * @tree: tree to search / modify
++ * @cmp: operator defining the node order
++ *
++ * Returns the rb_node matching @node, or NULL when no match is found and @node
++ * is inserted.
++ */
++static __always_inline struct rb_node *
++rb_find_add(struct rb_node *node, struct rb_root *tree,
++	    int (*cmp)(struct rb_node *, const struct rb_node *))
++{
++	struct rb_node **link = &tree->rb_node;
++	struct rb_node *parent = NULL;
++	int c;
++
++	while (*link) {
++		parent = *link;
++		c = cmp(node, parent);
++
++		if (c < 0)
++			link = &parent->rb_left;
++		else if (c > 0)
++			link = &parent->rb_right;
++		else
++			return parent;
++	}
++
++	rb_link_node(node, parent, link);
++	rb_insert_color(node, tree);
++	return NULL;
++}
++
++/**
++ * rb_find() - find @key in tree @tree
++ * @key: key to match
++ * @tree: tree to search
++ * @cmp: operator defining the node order
++ *
++ * Returns the rb_node matching @key or NULL.
++ */
++static __always_inline struct rb_node *
++rb_find(const void *key, const struct rb_root *tree,
++	int (*cmp)(const void *key, const struct rb_node *))
++{
++	struct rb_node *node = tree->rb_node;
++
++	while (node) {
++		int c = cmp(key, node);
++
++		if (c < 0)
++			node = node->rb_left;
++		else if (c > 0)
++			node = node->rb_right;
++		else
++			return node;
++	}
++
++	return NULL;
++}
++
++/**
++ * rb_find_first() - find the first @key in @tree
++ * @key: key to match
++ * @tree: tree to search
++ * @cmp: operator defining node order
++ *
++ * Returns the leftmost node matching @key, or NULL.
++ */
++static __always_inline struct rb_node *
++rb_find_first(const void *key, const struct rb_root *tree,
++	      int (*cmp)(const void *key, const struct rb_node *))
++{
++	struct rb_node *node = tree->rb_node;
++	struct rb_node *match = NULL;
++
++	while (node) {
++		int c = cmp(key, node);
++
++		if (c <= 0) {
++			if (!c)
++				match = node;
++			node = node->rb_left;
++		} else if (c > 0) {
++			node = node->rb_right;
++		}
++	}
++
++	return match;
++}
++
++/**
++ * rb_next_match() - find the next @key in @tree
++ * @key: key to match
++ * @tree: tree to search
++ * @cmp: operator defining node order
++ *
++ * Returns the next node matching @key, or NULL.
++ */
++static __always_inline struct rb_node *
++rb_next_match(const void *key, struct rb_node *node,
++	      int (*cmp)(const void *key, const struct rb_node *))
++{
++	node = rb_next(node);
++	if (node && cmp(key, node))
++		node = NULL;
++	return node;
++}
++
++/**
++ * rb_for_each() - iterates a subtree matching @key
++ * @node: iterator
++ * @key: key to match
++ * @tree: tree to search
++ * @cmp: operator defining node order
++ */
++#define rb_for_each(node, key, tree, cmp) \
++	for ((node) = rb_find_first((key), (tree), (cmp)); \
++	     (node); (node) = rb_next_match((key), (node), (cmp)))
++
++#endif	/* __TOOLS_LINUX_PERF_RBTREE_H */
+diff --git a/tools/objtool/elf.c b/tools/objtool/elf.c
+index d8421e1..e85988c 100644
+--- a/tools/objtool/elf.c
++++ b/tools/objtool/elf.c
+@@ -43,75 +43,24 @@ static void elf_hash_init(struct hlist_head *table)
+ #define elf_hash_for_each_possible(name, obj, member, key)			\
+ 	hlist_for_each_entry(obj, &name[hash_min(key, elf_hash_bits())], member)
  
--	i = select_idle_core(p, sd, target);
--	if ((unsigned)i < nr_cpumask_bits)
--		return i;
+-static void rb_add(struct rb_root *tree, struct rb_node *node,
+-		   int (*cmp)(struct rb_node *, const struct rb_node *))
+-{
+-	struct rb_node **link = &tree->rb_node;
+-	struct rb_node *parent = NULL;
 -
- 	i = select_idle_cpu(p, sd, target);
- 	if ((unsigned)i < nr_cpumask_bits)
- 		return i;
+-	while (*link) {
+-		parent = *link;
+-		if (cmp(node, parent) < 0)
+-			link = &parent->rb_left;
+-		else
+-			link = &parent->rb_right;
+-	}
+-
+-	rb_link_node(node, parent, link);
+-	rb_insert_color(node, tree);
+-}
+-
+-static struct rb_node *rb_find_first(const struct rb_root *tree, const void *key,
+-			       int (*cmp)(const void *key, const struct rb_node *))
+-{
+-	struct rb_node *node = tree->rb_node;
+-	struct rb_node *match = NULL;
+-
+-	while (node) {
+-		int c = cmp(key, node);
+-		if (c <= 0) {
+-			if (!c)
+-				match = node;
+-			node = node->rb_left;
+-		} else if (c > 0) {
+-			node = node->rb_right;
+-		}
+-	}
+-
+-	return match;
+-}
+-
+-static struct rb_node *rb_next_match(struct rb_node *node, const void *key,
+-				    int (*cmp)(const void *key, const struct rb_node *))
+-{
+-	node = rb_next(node);
+-	if (node && cmp(key, node))
+-		node = NULL;
+-	return node;
+-}
+-
+-#define rb_for_each(tree, node, key, cmp) \
+-	for ((node) = rb_find_first((tree), (key), (cmp)); \
+-	     (node); (node) = rb_next_match((node), (key), (cmp)))
+-
+-static int symbol_to_offset(struct rb_node *a, const struct rb_node *b)
++static bool symbol_to_offset(struct rb_node *a, const struct rb_node *b)
+ {
+ 	struct symbol *sa = rb_entry(a, struct symbol, node);
+ 	struct symbol *sb = rb_entry(b, struct symbol, node);
+ 
+ 	if (sa->offset < sb->offset)
+-		return -1;
++		return true;
+ 	if (sa->offset > sb->offset)
+-		return 1;
++		return false;
+ 
+ 	if (sa->len < sb->len)
+-		return -1;
++		return true;
+ 	if (sa->len > sb->len)
+-		return 1;
++		return false;
+ 
+ 	sa->alias = sb;
+ 
+-	return 0;
++	return false;
+ }
+ 
+ static int symbol_by_offset(const void *key, const struct rb_node *node)
+@@ -165,7 +114,7 @@ struct symbol *find_symbol_by_offset(struct section *sec, unsigned long offset)
+ {
+ 	struct rb_node *node;
+ 
+-	rb_for_each(&sec->symbol_tree, node, &offset, symbol_by_offset) {
++	rb_for_each(node, &offset, &sec->symbol_tree, symbol_by_offset) {
+ 		struct symbol *s = rb_entry(node, struct symbol, node);
+ 
+ 		if (s->offset == offset && s->type != STT_SECTION)
+@@ -179,7 +128,7 @@ struct symbol *find_func_by_offset(struct section *sec, unsigned long offset)
+ {
+ 	struct rb_node *node;
+ 
+-	rb_for_each(&sec->symbol_tree, node, &offset, symbol_by_offset) {
++	rb_for_each(node, &offset, &sec->symbol_tree, symbol_by_offset) {
+ 		struct symbol *s = rb_entry(node, struct symbol, node);
+ 
+ 		if (s->offset == offset && s->type == STT_FUNC)
+@@ -193,7 +142,7 @@ struct symbol *find_symbol_containing(const struct section *sec, unsigned long o
+ {
+ 	struct rb_node *node;
+ 
+-	rb_for_each(&sec->symbol_tree, node, &offset, symbol_by_offset) {
++	rb_for_each(node, &offset, &sec->symbol_tree, symbol_by_offset) {
+ 		struct symbol *s = rb_entry(node, struct symbol, node);
+ 
+ 		if (s->type != STT_SECTION)
+@@ -207,7 +156,7 @@ struct symbol *find_func_containing(struct section *sec, unsigned long offset)
+ {
+ 	struct rb_node *node;
+ 
+-	rb_for_each(&sec->symbol_tree, node, &offset, symbol_by_offset) {
++	rb_for_each(node, &offset, &sec->symbol_tree, symbol_by_offset) {
+ 		struct symbol *s = rb_entry(node, struct symbol, node);
+ 
+ 		if (s->type == STT_FUNC)
+@@ -442,7 +391,7 @@ static int read_symbols(struct elf *elf)
+ 		sym->offset = sym->sym.st_value;
+ 		sym->len = sym->sym.st_size;
+ 
+-		rb_add(&sym->sec->symbol_tree, &sym->node, symbol_to_offset);
++		rb_add(&sym->node, &sym->sec->symbol_tree, symbol_to_offset);
+ 		pnode = rb_prev(&sym->node);
+ 		if (pnode)
+ 			entry = &rb_entry(pnode, struct symbol, node)->list;
