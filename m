@@ -2,50 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4454631DA38
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 17 Feb 2021 14:20:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C85F31DA3A
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 17 Feb 2021 14:20:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232769AbhBQNTw (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 17 Feb 2021 08:19:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33238 "EHLO
+        id S232918AbhBQNT5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 17 Feb 2021 08:19:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33460 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232913AbhBQNT2 (ORCPT
+        with ESMTP id S232782AbhBQNTx (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 17 Feb 2021 08:19:28 -0500
+        Wed, 17 Feb 2021 08:19:53 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72552C061356;
-        Wed, 17 Feb 2021 05:17:40 -0800 (PST)
-Date:   Wed, 17 Feb 2021 13:17:37 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51FDCC06121C;
+        Wed, 17 Feb 2021 05:17:41 -0800 (PST)
+Date:   Wed, 17 Feb 2021 13:17:38 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1613567858;
+        s=2020; t=1613567859;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=IWtMROH6UtVEqnnOS8T+fJs9Czza09lonxeI6K0/ySo=;
-        b=M38tjeGlAlywxvEGnCzF6uJyPTas2pW/Jfhld2TAm27dKyJtNW1TeJAIJmU+zKcUi1QWvB
-        Ee5UU3bRX1m8moOn8Su/ZwxWrA/amXlo25CuL9zDuUMKtnk9a9Vw+EOeuUdM4cbRHW9G6x
-        INi4K7juk3VsJBFJzHLs8s3+clwTczyYFXXrcrPPlWTm7Gm/TYgdPmUDyJrZHvZqQuFmbL
-        Bf/DNoayuX7DF8e5+niSWsKrxBbaEs6KPm4ZGnqWbDnjIZu7SD5oPFhuoetj4SaUIUqr0A
-        d1kaKO+EUXDYbdb1YHcoBhfXmj15ufhai2RM81Gci/PBjFAknrt8H9F/3nKCpg==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=Enhza+v10Ym2ixtyOL9d52WlnFvQYOluMR1bV/a0k6M=;
+        b=TFE0XbLy2gO4Re80psMgSLtdhcSNY4NylqLWVAs4mQXhPPblJC+GJf17hVJjdkvW3lTnfe
+        iKtjy9OoMGdAtlHqCONkMN892zZWxKJ6Qb1dzAjaAUAuizl7JUoRjPI63SR+z5OMQvu9A2
+        ZWpEqTLTUWSjjlBtdBPXPz76vURYnvIb0IwBRj2/g3WlkEv9RiBSC/S6D3SVJJ9QgpF1cJ
+        O0vmTJ00GeC0b/sXV/Ly71f7y63JVzYfDAO+45c1XRJVUjSMugf8yJukPv0WVAmrsqNcop
+        ftjGaehJ4EcXqx8nVW5UmZ9W0Ez4wVslJxXLIZshgmXg1SH0RuC1kwn2GqQxbA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1613567858;
+        s=2020e; t=1613567859;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=IWtMROH6UtVEqnnOS8T+fJs9Czza09lonxeI6K0/ySo=;
-        b=MJr5KXnmZFxVSvPLhjdsOsqb+j8LEGGD68gGY3C2ZP29Yy1Uz1WqRKyvqBDUS2ePJPKmTL
-        FwgWKK4hTj3D03Dg==
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=Enhza+v10Ym2ixtyOL9d52WlnFvQYOluMR1bV/a0k6M=;
+        b=K4SrviUxo9C0N6XIgrGwcuKO3v65lw70G4vWLFaQI1tvTatUAABanMF9/4enBwigB4pxTK
+        8mVc9Vjwj9WeixBg==
+From:   "tip-bot2 for Mel Gorman" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] rbtree, perf: Use new rbtree helpers
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Ingo Molnar <mingo@kernel.org>, Tejun Heo <tj@kernel.org>,
-        Davidlohr Bueso <dbueso@suse.de>, x86@kernel.org,
+Subject: [tip: sched/core] sched/fair: Merge select_idle_core/cpu()
+Cc:     Mel Gorman <mgorman@techsingularity.net>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Ingo Molnar <mingo@kernel.org>,
+        Vincent Guittot <vincent.guittot@linaro.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
+In-Reply-To: <20210127135203.19633-5-mgorman@techsingularity.net>
+References: <20210127135203.19633-5-mgorman@techsingularity.net>
 MIME-Version: 1.0
-Message-ID: <161356785782.20312.6517258331763018562.tip-bot2@tip-bot2>
+Message-ID: <161356785893.20312.10270833120354178289.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -56,298 +63,196 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     a3b89864554bbce1594b7abdb5739fc708c1ca95
-Gitweb:        https://git.kernel.org/tip/a3b89864554bbce1594b7abdb5739fc708c1ca95
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Wed, 29 Apr 2020 17:05:15 +02:00
+Commit-ID:     9fe1f127b913318c631d0041ecf71486e38c2c2d
+Gitweb:        https://git.kernel.org/tip/9fe1f127b913318c631d0041ecf71486e38c2c2d
+Author:        Mel Gorman <mgorman@techsingularity.net>
+AuthorDate:    Wed, 27 Jan 2021 13:52:03 
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 17 Feb 2021 14:07:48 +01:00
+CommitterDate: Wed, 17 Feb 2021 14:07:25 +01:00
 
-rbtree, perf: Use new rbtree helpers
+sched/fair: Merge select_idle_core/cpu()
 
-Reduce rbtree boiler plate by using the new helpers.
+Both select_idle_core() and select_idle_cpu() do a loop over the same
+cpumask. Observe that by clearing the already visited CPUs, we can
+fold the iteration and iterate a core at a time.
 
-One noteworthy change is unification of the various (partial) compare
-functions. We construct a subtree match by forcing the sub-order to
-always match, see __group_cmp().
+All we need to do is remember any non-idle CPU we encountered while
+scanning for an idle core. This way we'll only iterate every CPU once.
 
-Due to 'const' we had to touch cgroup_id().
-
+Signed-off-by: Mel Gorman <mgorman@techsingularity.net>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Tejun Heo <tj@kernel.org>
-Acked-by: Davidlohr Bueso <dbueso@suse.de>
+Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
+Link: https://lkml.kernel.org/r/20210127135203.19633-5-mgorman@techsingularity.net
 ---
- include/linux/cgroup.h |   4 +-
- kernel/events/core.c   | 195 ++++++++++++++++++----------------------
- 2 files changed, 92 insertions(+), 107 deletions(-)
+ kernel/sched/fair.c |  99 +++++++++++++++++++++++++------------------
+ 1 file changed, 59 insertions(+), 40 deletions(-)
 
-diff --git a/include/linux/cgroup.h b/include/linux/cgroup.h
-index 451c2d2..4f2f79d 100644
---- a/include/linux/cgroup.h
-+++ b/include/linux/cgroup.h
-@@ -307,7 +307,7 @@ void css_task_iter_end(struct css_task_iter *it);
-  * Inline functions.
-  */
- 
--static inline u64 cgroup_id(struct cgroup *cgrp)
-+static inline u64 cgroup_id(const struct cgroup *cgrp)
- {
- 	return cgrp->kn->id;
- }
-@@ -701,7 +701,7 @@ void cgroup_path_from_kernfs_id(u64 id, char *buf, size_t buflen);
- struct cgroup_subsys_state;
- struct cgroup;
- 
--static inline u64 cgroup_id(struct cgroup *cgrp) { return 1; }
-+static inline u64 cgroup_id(const struct cgroup *cgrp) { return 1; }
- static inline void css_get(struct cgroup_subsys_state *css) {}
- static inline void css_put(struct cgroup_subsys_state *css) {}
- static inline int cgroup_attach_task_all(struct task_struct *from,
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 55d1879..3d89096 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -1595,50 +1595,91 @@ static void perf_event_groups_init(struct perf_event_groups *groups)
- 	groups->index = 0;
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 6a0fc8a..c73d588 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -6019,6 +6019,14 @@ static inline int find_idlest_cpu(struct sched_domain *sd, struct task_struct *p
+ 	return new_cpu;
  }
  
-+static inline struct cgroup *event_cgroup(const struct perf_event *event)
++static inline int __select_idle_cpu(int cpu)
 +{
-+	struct cgroup *cgroup = NULL;
++	if (available_idle_cpu(cpu) || sched_idle_cpu(cpu))
++		return cpu;
 +
-+#ifdef CONFIG_CGROUP_PERF
-+	if (event->cgrp)
-+		cgroup = event->cgrp->css.cgroup;
-+#endif
-+
-+	return cgroup;
++	return -1;
 +}
 +
- /*
-  * Compare function for event groups;
-  *
-  * Implements complex key that first sorts by CPU and then by virtual index
-  * which provides ordering when rotating groups for the same CPU.
+ #ifdef CONFIG_SCHED_SMT
+ DEFINE_STATIC_KEY_FALSE(sched_smt_present);
+ EXPORT_SYMBOL_GPL(sched_smt_present);
+@@ -6077,48 +6085,51 @@ unlock:
+  * there are no idle cores left in the system; tracked through
+  * sd_llc->shared->has_idle_cores and enabled through update_idle_core() above.
   */
--static bool
--perf_event_groups_less(struct perf_event *left, struct perf_event *right)
-+static __always_inline int
-+perf_event_groups_cmp(const int left_cpu, const struct cgroup *left_cgroup,
-+		      const u64 left_group_index, const struct perf_event *right)
+-static int select_idle_core(struct task_struct *p, struct sched_domain *sd, int target)
++static int select_idle_core(struct task_struct *p, int core, struct cpumask *cpus, int *idle_cpu)
  {
--	if (left->cpu < right->cpu)
--		return true;
--	if (left->cpu > right->cpu)
--		return false;
-+	if (left_cpu < right->cpu)
-+		return -1;
-+	if (left_cpu > right->cpu)
-+		return 1;
+-	struct cpumask *cpus = this_cpu_cpumask_var_ptr(select_idle_mask);
+-	int core, cpu;
++	bool idle = true;
++	int cpu;
  
- #ifdef CONFIG_CGROUP_PERF
--	if (left->cgrp != right->cgrp) {
--		if (!left->cgrp || !left->cgrp->css.cgroup) {
--			/*
--			 * Left has no cgroup but right does, no cgroups come
--			 * first.
--			 */
--			return true;
--		}
--		if (!right->cgrp || !right->cgrp->css.cgroup) {
--			/*
--			 * Right has no cgroup but left does, no cgroups come
--			 * first.
--			 */
--			return false;
--		}
--		/* Two dissimilar cgroups, order by id. */
--		if (left->cgrp->css.cgroup->kn->id < right->cgrp->css.cgroup->kn->id)
--			return true;
-+	{
-+		const struct cgroup *right_cgroup = event_cgroup(right);
+ 	if (!static_branch_likely(&sched_smt_present))
+-		return -1;
+-
+-	if (!test_idle_cores(target, false))
+-		return -1;
+-
+-	cpumask_and(cpus, sched_domain_span(sd), p->cpus_ptr);
++		return __select_idle_cpu(core);
  
--		return false;
-+		if (left_cgroup != right_cgroup) {
-+			if (!left_cgroup) {
-+				/*
-+				 * Left has no cgroup but right does, no
-+				 * cgroups come first.
-+				 */
-+				return -1;
-+			}
-+			if (!right_cgroup) {
-+				/*
-+				 * Right has no cgroup but left does, no
-+				 * cgroups come first.
-+				 */
-+				return 1;
-+			}
-+			/* Two dissimilar cgroups, order by id. */
-+			if (cgroup_id(left_cgroup) < cgroup_id(right_cgroup))
-+				return -1;
+-	for_each_cpu_wrap(core, cpus, target) {
+-		bool idle = true;
+-
+-		for_each_cpu(cpu, cpu_smt_mask(core)) {
+-			if (!available_idle_cpu(cpu)) {
+-				idle = false;
+-				break;
++	for_each_cpu(cpu, cpu_smt_mask(core)) {
++		if (!available_idle_cpu(cpu)) {
++			idle = false;
++			if (*idle_cpu == -1) {
++				if (sched_idle_cpu(cpu) && cpumask_test_cpu(cpu, p->cpus_ptr)) {
++					*idle_cpu = cpu;
++					break;
++				}
++				continue;
+ 			}
++			break;
+ 		}
+-
+-		if (idle)
+-			return core;
+-
+-		cpumask_andnot(cpus, cpus, cpu_smt_mask(core));
++		if (*idle_cpu == -1 && cpumask_test_cpu(cpu, p->cpus_ptr))
++			*idle_cpu = cpu;
+ 	}
+ 
+-	/*
+-	 * Failed to find an idle core; stop looking for one.
+-	 */
+-	set_idle_cores(target, 0);
++	if (idle)
++		return core;
+ 
++	cpumask_andnot(cpus, cpus, cpu_smt_mask(core));
+ 	return -1;
+ }
+ 
+ #else /* CONFIG_SCHED_SMT */
+ 
+-static inline int select_idle_core(struct task_struct *p, struct sched_domain *sd, int target)
++static inline void set_idle_cores(int cpu, int val)
+ {
+-	return -1;
++}
 +
-+			return 1;
++static inline bool test_idle_cores(int cpu, bool def)
++{
++	return def;
++}
++
++static inline int select_idle_core(struct task_struct *p, int core, struct cpumask *cpus, int *idle_cpu)
++{
++	return __select_idle_cpu(core);
+ }
+ 
+ #endif /* CONFIG_SCHED_SMT */
+@@ -6131,10 +6142,11 @@ static inline int select_idle_core(struct task_struct *p, struct sched_domain *s
+ static int select_idle_cpu(struct task_struct *p, struct sched_domain *sd, int target)
+ {
+ 	struct cpumask *cpus = this_cpu_cpumask_var_ptr(select_idle_mask);
++	int i, cpu, idle_cpu = -1, nr = INT_MAX;
++	bool smt = test_idle_cores(target, false);
++	int this = smp_processor_id();
+ 	struct sched_domain *this_sd;
+ 	u64 time;
+-	int this = smp_processor_id();
+-	int cpu, nr = INT_MAX;
+ 
+ 	this_sd = rcu_dereference(*this_cpu_ptr(&sd_llc));
+ 	if (!this_sd)
+@@ -6142,7 +6154,7 @@ static int select_idle_cpu(struct task_struct *p, struct sched_domain *sd, int t
+ 
+ 	cpumask_and(cpus, sched_domain_span(sd), p->cpus_ptr);
+ 
+-	if (sched_feat(SIS_PROP)) {
++	if (sched_feat(SIS_PROP) && !smt) {
+ 		u64 avg_cost, avg_idle, span_avg;
+ 
+ 		/*
+@@ -6162,18 +6174,29 @@ static int select_idle_cpu(struct task_struct *p, struct sched_domain *sd, int t
+ 	}
+ 
+ 	for_each_cpu_wrap(cpu, cpus, target) {
+-		if (!--nr)
+-			return -1;
+-		if (available_idle_cpu(cpu) || sched_idle_cpu(cpu))
+-			break;
++		if (smt) {
++			i = select_idle_core(p, cpu, cpus, &idle_cpu);
++			if ((unsigned int)i < nr_cpumask_bits)
++				return i;
++
++		} else {
++			if (!--nr)
++				return -1;
++			idle_cpu = __select_idle_cpu(cpu);
++			if ((unsigned int)idle_cpu < nr_cpumask_bits)
++				break;
 +		}
  	}
- #endif
  
--	if (left->group_index < right->group_index)
--		return true;
--	if (left->group_index > right->group_index)
--		return false;
-+	if (left_group_index < right->group_index)
-+		return -1;
-+	if (left_group_index > right->group_index)
-+		return 1;
+-	if (sched_feat(SIS_PROP)) {
++	if (smt)
++		set_idle_cores(this, false);
++
++	if (sched_feat(SIS_PROP) && !smt) {
+ 		time = cpu_clock(this) - time;
+ 		update_avg(&this_sd->avg_scan_cost, time);
+ 	}
  
--	return false;
-+	return 0;
-+}
-+
-+#define __node_2_pe(node) \
-+	rb_entry((node), struct perf_event, group_node)
-+
-+static inline bool __group_less(struct rb_node *a, const struct rb_node *b)
-+{
-+	struct perf_event *e = __node_2_pe(a);
-+	return perf_event_groups_cmp(e->cpu, event_cgroup(e), e->group_index,
-+				     __node_2_pe(b)) < 0;
-+}
-+
-+struct __group_key {
-+	int cpu;
-+	struct cgroup *cgroup;
-+};
-+
-+static inline int __group_cmp(const void *key, const struct rb_node *node)
-+{
-+	const struct __group_key *a = key;
-+	const struct perf_event *b = __node_2_pe(node);
-+
-+	/* partial/subtree match: @cpu, @cgroup; ignore: @group_index */
-+	return perf_event_groups_cmp(a->cpu, a->cgroup, b->group_index, b);
+-	return cpu;
++	return idle_cpu;
  }
  
  /*
-@@ -1650,27 +1691,9 @@ static void
- perf_event_groups_insert(struct perf_event_groups *groups,
- 			 struct perf_event *event)
- {
--	struct perf_event *node_event;
--	struct rb_node *parent;
--	struct rb_node **node;
--
- 	event->group_index = ++groups->index;
+@@ -6302,10 +6325,6 @@ static int select_idle_sibling(struct task_struct *p, int prev, int target)
+ 	if (!sd)
+ 		return target;
  
--	node = &groups->tree.rb_node;
--	parent = *node;
+-	i = select_idle_core(p, sd, target);
+-	if ((unsigned)i < nr_cpumask_bits)
+-		return i;
 -
--	while (*node) {
--		parent = *node;
--		node_event = container_of(*node, struct perf_event, group_node);
--
--		if (perf_event_groups_less(event, node_event))
--			node = &parent->rb_left;
--		else
--			node = &parent->rb_right;
--	}
--
--	rb_link_node(&event->group_node, parent, node);
--	rb_insert_color(&event->group_node, &groups->tree);
-+	rb_add(&event->group_node, &groups->tree, __group_less);
- }
- 
- /*
-@@ -1718,45 +1741,17 @@ static struct perf_event *
- perf_event_groups_first(struct perf_event_groups *groups, int cpu,
- 			struct cgroup *cgrp)
- {
--	struct perf_event *node_event = NULL, *match = NULL;
--	struct rb_node *node = groups->tree.rb_node;
--#ifdef CONFIG_CGROUP_PERF
--	u64 node_cgrp_id, cgrp_id = 0;
--
--	if (cgrp)
--		cgrp_id = cgrp->kn->id;
--#endif
--
--	while (node) {
--		node_event = container_of(node, struct perf_event, group_node);
--
--		if (cpu < node_event->cpu) {
--			node = node->rb_left;
--			continue;
--		}
--		if (cpu > node_event->cpu) {
--			node = node->rb_right;
--			continue;
--		}
--#ifdef CONFIG_CGROUP_PERF
--		node_cgrp_id = 0;
--		if (node_event->cgrp && node_event->cgrp->css.cgroup)
--			node_cgrp_id = node_event->cgrp->css.cgroup->kn->id;
-+	struct __group_key key = {
-+		.cpu = cpu,
-+		.cgroup = cgrp,
-+	};
-+	struct rb_node *node;
- 
--		if (cgrp_id < node_cgrp_id) {
--			node = node->rb_left;
--			continue;
--		}
--		if (cgrp_id > node_cgrp_id) {
--			node = node->rb_right;
--			continue;
--		}
--#endif
--		match = node_event;
--		node = node->rb_left;
--	}
-+	node = rb_find_first(&key, &groups->tree, __group_cmp);
-+	if (node)
-+		return __node_2_pe(node);
- 
--	return match;
-+	return NULL;
- }
- 
- /*
-@@ -1765,27 +1760,17 @@ perf_event_groups_first(struct perf_event_groups *groups, int cpu,
- static struct perf_event *
- perf_event_groups_next(struct perf_event *event)
- {
--	struct perf_event *next;
--#ifdef CONFIG_CGROUP_PERF
--	u64 curr_cgrp_id = 0;
--	u64 next_cgrp_id = 0;
--#endif
--
--	next = rb_entry_safe(rb_next(&event->group_node), typeof(*event), group_node);
--	if (next == NULL || next->cpu != event->cpu)
--		return NULL;
--
--#ifdef CONFIG_CGROUP_PERF
--	if (event->cgrp && event->cgrp->css.cgroup)
--		curr_cgrp_id = event->cgrp->css.cgroup->kn->id;
-+	struct __group_key key = {
-+		.cpu = event->cpu,
-+		.cgroup = event_cgroup(event),
-+	};
-+	struct rb_node *next;
- 
--	if (next->cgrp && next->cgrp->css.cgroup)
--		next_cgrp_id = next->cgrp->css.cgroup->kn->id;
-+	next = rb_next_match(&key, &event->group_node, __group_cmp);
-+	if (next)
-+		return __node_2_pe(next);
- 
--	if (curr_cgrp_id != next_cgrp_id)
--		return NULL;
--#endif
--	return next;
-+	return NULL;
- }
- 
- /*
+ 	i = select_idle_cpu(p, sd, target);
+ 	if ((unsigned)i < nr_cpumask_bits)
+ 		return i;
