@@ -2,17 +2,20 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CBD5832B051
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  3 Mar 2021 04:43:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 39BDB32B062
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  3 Mar 2021 04:43:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235595AbhCCDhO (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 2 Mar 2021 22:37:14 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:35704 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1378835AbhCBJD0 (ORCPT
+        id S1352287AbhCCDhx (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 2 Mar 2021 22:37:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52330 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1378858AbhCBJDa (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 2 Mar 2021 04:03:26 -0500
-Date:   Tue, 02 Mar 2021 09:01:55 -0000
+        Tue, 2 Mar 2021 04:03:30 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0E6AC0617AA;
+        Tue,  2 Mar 2021 01:01:58 -0800 (PST)
+Date:   Tue, 02 Mar 2021 09:01:56 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1614675716;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -20,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=/sybR9nsvB35T/F1HG+zdLQgZ1CBfNipke2xlswkYJ4=;
-        b=EFWEaVzEnqyB2T1c1EWOIuc46u1uqlZab9ucEB2vRFR2FFBYVBl9pksOXr1BOraL57rfmk
-        Zq5y+k2yLvy3HSl50Iwzjw9Yqn8bHEWI2jysRReHnHl0iqUUxPMkiUBpToZWVuW3ePXP4g
-        EmidqvYFnPNSOmZgoOBUhaR+h+HooEmc5jAhffzKPUYJPs3XwIDtw7DjKs5PZiDmermUv7
-        t5seYRRXRe4D/REw/SQJO5Bov9g1dVQviF4ECjDm4GciYornYKFY7rN0/ar+L95iRNlNg8
-        wFRHHdyakMSgf0gZADARzSOfp3b767uhT1YhxyIMvUQV20MZE/deFXoXPuvPNw==
+        bh=wtfTOSmNlg+RGCXYXdF48/1pcUyHTx/mrCajOMG+Mv4=;
+        b=kFqUpJSboeIXsJsPFnV8WLdQzmA+20MrGeaXND+iTMefYYhxKSZTRW3YpGH3yZFQ+CcSHW
+        EBqSseu6M0IOKcl+YMaVoQCghiEvw0x07lenIZ01Ei0tR+zEoWT+/Kh+1qqTac6kjqQcyp
+        UZFWssPLMl0EZUXs1GU3OH0ZXzgPFuHA+MR4f2baVBfj5U5ui041FtA4299AGxwJgoQXZd
+        8LXK+8tScCfxVjQwRFKEVza/P5g0/0pNYS0CKzCk0I5RhBhMeTrb+3IWg2+8MJqzTf/opj
+        kqqxRvOuGBdXHJ3h+Eyfo+2TYmzdtDye97WHPnCs9lSSt92Se3vjRaRLg+amsQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1614675716;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -33,22 +36,24 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=/sybR9nsvB35T/F1HG+zdLQgZ1CBfNipke2xlswkYJ4=;
-        b=SKXvlH+5NbTMyjH/ZvUsMiGpsTEQz39mCeNxV6JG9r0dceTfVDm8wH4yaK+rc8/Oabp7Vu
-        bSpmssy3WsN7ffBQ==
-From:   "tip-bot2 for Vincent Guittot" <tip-bot2@linutronix.de>
+        bh=wtfTOSmNlg+RGCXYXdF48/1pcUyHTx/mrCajOMG+Mv4=;
+        b=ttcLh9utv0lUvdrg9KTQPbDda80bUpp+FMEuZFeBVL10vYzvpYsz5hw4+hStw1HR+Jn58e
+        64zOse1+so5s8FCQ==
+From:   "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/fair: Remove unused parameter of update_nohz_stats
-Cc:     Vincent Guittot <vincent.guittot@linaro.org>,
+Subject: [tip: sched/core] kcov: Remove kcov include from sched.h and move it
+ to its users.
+Cc:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Valentin Schneider <valentin.schneider@arm.com>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20210224133007.28644-4-vincent.guittot@linaro.org>
-References: <20210224133007.28644-4-vincent.guittot@linaro.org>
+        Johannes Berg <johannes@sipsolutions.net>,
+        Andrey Konovalov <andreyknvl@google.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20210218173124.iy5iyqv3a4oia4vv@linutronix.de>
+References: <20210218173124.iy5iyqv3a4oia4vv@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <161467571544.20312.5783812537772586397.tip-bot2@tip-bot2>
+Message-ID: <161467571626.20312.16737329930821436697.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,54 +64,97 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     8af3f0fbfbaa3b78bb1fc577ee42c3228f3cc822
-Gitweb:        https://git.kernel.org/tip/8af3f0fbfbaa3b78bb1fc577ee42c3228f3cc822
-Author:        Vincent Guittot <vincent.guittot@linaro.org>
-AuthorDate:    Wed, 24 Feb 2021 14:30:03 +01:00
+Commit-ID:     eae7a59d5a1e9bcf9804bcbd006ddce5cf72f8f4
+Gitweb:        https://git.kernel.org/tip/eae7a59d5a1e9bcf9804bcbd006ddce5cf72f8f4
+Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+AuthorDate:    Thu, 18 Feb 2021 18:31:24 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Mon, 01 Mar 2021 18:17:23 +01:00
+CommitterDate: Mon, 01 Mar 2021 18:17:22 +01:00
 
-sched/fair: Remove unused parameter of update_nohz_stats
+kcov: Remove kcov include from sched.h and move it to its users.
 
-idle load balance is the only user of update_nohz_stats and doesn't use
-force parameter. Remove it
+The recent addition of in_serving_softirq() to kconv.h results in
+compile failure on PREEMPT_RT because it requires
+task_struct::softirq_disable_cnt. This is not available if kconv.h is
+included from sched.h.
 
-Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
+It is not needed to include kconv.h from sched.h. All but the net/ user
+already include the kconv header file.
+
+Move the include of the kconv.h header from sched.h it its users.
+Additionally include sched.h from kconv.h to ensure that everything
+task_struct related is available.
+
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Valentin Schneider <valentin.schneider@arm.com>
-Link: https://lkml.kernel.org/r/20210224133007.28644-4-vincent.guittot@linaro.org
+Acked-by: Johannes Berg <johannes@sipsolutions.net>
+Acked-by: Andrey Konovalov <andreyknvl@google.com>
+Link: https://lkml.kernel.org/r/20210218173124.iy5iyqv3a4oia4vv@linutronix.de
 ---
- kernel/sched/fair.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ include/linux/kcov.h  | 1 +
+ include/linux/sched.h | 1 -
+ net/core/skbuff.c     | 1 +
+ net/mac80211/iface.c  | 1 +
+ net/mac80211/rx.c     | 1 +
+ 5 files changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 6a458e9..1b91030 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -8352,7 +8352,7 @@ group_type group_classify(unsigned int imbalance_pct,
- 	return group_has_spare;
- }
+diff --git a/include/linux/kcov.h b/include/linux/kcov.h
+index 4e3037d..55dc338 100644
+--- a/include/linux/kcov.h
++++ b/include/linux/kcov.h
+@@ -2,6 +2,7 @@
+ #ifndef _LINUX_KCOV_H
+ #define _LINUX_KCOV_H
  
--static bool update_nohz_stats(struct rq *rq, bool force)
-+static bool update_nohz_stats(struct rq *rq)
- {
- #ifdef CONFIG_NO_HZ_COMMON
- 	unsigned int cpu = rq->cpu;
-@@ -8363,7 +8363,7 @@ static bool update_nohz_stats(struct rq *rq, bool force)
- 	if (!cpumask_test_cpu(cpu, nohz.idle_cpus_mask))
- 		return false;
++#include <linux/sched.h>
+ #include <uapi/linux/kcov.h>
  
--	if (!force && !time_after(jiffies, rq->last_blocked_load_update_tick))
-+	if (!time_after(jiffies, rq->last_blocked_load_update_tick))
- 		return true;
+ struct task_struct;
+diff --git a/include/linux/sched.h b/include/linux/sched.h
+index ef00bb2..cf245bc 100644
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -14,7 +14,6 @@
+ #include <linux/pid.h>
+ #include <linux/sem.h>
+ #include <linux/shm.h>
+-#include <linux/kcov.h>
+ #include <linux/mutex.h>
+ #include <linux/plist.h>
+ #include <linux/hrtimer.h>
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index 545a472..420f23c 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -60,6 +60,7 @@
+ #include <linux/prefetch.h>
+ #include <linux/if_vlan.h>
+ #include <linux/mpls.h>
++#include <linux/kcov.h>
  
- 	update_blocked_averages(cpu);
-@@ -10401,7 +10401,7 @@ static void _nohz_idle_balance(struct rq *this_rq, unsigned int flags,
- 
- 		rq = cpu_rq(balance_cpu);
- 
--		has_blocked_load |= update_nohz_stats(rq, true);
-+		has_blocked_load |= update_nohz_stats(rq);
- 
- 		/*
- 		 * If time for next balance is due,
+ #include <net/protocol.h>
+ #include <net/dst.h>
+diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
+index b80c9b0..c127deb 100644
+--- a/net/mac80211/iface.c
++++ b/net/mac80211/iface.c
+@@ -15,6 +15,7 @@
+ #include <linux/if_arp.h>
+ #include <linux/netdevice.h>
+ #include <linux/rtnetlink.h>
++#include <linux/kcov.h>
+ #include <net/mac80211.h>
+ #include <net/ieee80211_radiotap.h>
+ #include "ieee80211_i.h"
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index c1343c0..62047e9 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -17,6 +17,7 @@
+ #include <linux/etherdevice.h>
+ #include <linux/rcupdate.h>
+ #include <linux/export.h>
++#include <linux/kcov.h>
+ #include <linux/bitops.h>
+ #include <net/mac80211.h>
+ #include <net/ieee80211_radiotap.h>
