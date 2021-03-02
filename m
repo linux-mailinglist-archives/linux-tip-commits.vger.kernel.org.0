@@ -2,58 +2,46 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 39BDB32B062
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  3 Mar 2021 04:43:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CE82F32B046
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  3 Mar 2021 04:43:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352287AbhCCDhx (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 2 Mar 2021 22:37:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52330 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1378858AbhCBJDa (ORCPT
+        id S1350253AbhCCDf6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 2 Mar 2021 22:35:58 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:35770 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1378838AbhCBJD0 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 2 Mar 2021 04:03:30 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0E6AC0617AA;
-        Tue,  2 Mar 2021 01:01:58 -0800 (PST)
+        Tue, 2 Mar 2021 04:03:26 -0500
 Date:   Tue, 02 Mar 2021 09:01:56 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1614675716;
+        s=2020; t=1614675717;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=wtfTOSmNlg+RGCXYXdF48/1pcUyHTx/mrCajOMG+Mv4=;
-        b=kFqUpJSboeIXsJsPFnV8WLdQzmA+20MrGeaXND+iTMefYYhxKSZTRW3YpGH3yZFQ+CcSHW
-        EBqSseu6M0IOKcl+YMaVoQCghiEvw0x07lenIZ01Ei0tR+zEoWT+/Kh+1qqTac6kjqQcyp
-        UZFWssPLMl0EZUXs1GU3OH0ZXzgPFuHA+MR4f2baVBfj5U5ui041FtA4299AGxwJgoQXZd
-        8LXK+8tScCfxVjQwRFKEVza/P5g0/0pNYS0CKzCk0I5RhBhMeTrb+3IWg2+8MJqzTf/opj
-        kqqxRvOuGBdXHJ3h+Eyfo+2TYmzdtDye97WHPnCs9lSSt92Se3vjRaRLg+amsQ==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=YXny8m16onebBca7MJcoTKbcwRi1HbBvixTzf1b98cA=;
+        b=ABPGF3vJVT8emsHE+E69qYH78CSLqUZlnbjjAoM8OmAMAUdEC9tVIIV4C0Y+46qm7QEXlq
+        gela/S0W3JDgMMB2jvrxYfX+lKmkeOV61/NnAJbUp3COyeWaaE7/2EGDpj7GFBSThP8bXd
+        XodQu2ZdzRbbm1eiZZQYX0NO0SwkBV8ppvCFFujrCPPLGTWJyy1aGTQ5fMJfJMzSoWao3B
+        VlIEbSJHGZRX609DqnEN1cnACf62U9/GDBzh0bv836XODTCFim72A3YLKACpZNK8k/mzMS
+        4geYBFYS2caHKt1Ln/304d3r4FlQTNbY/SV9+ecUIjn1Zc0xyBMjKpGkudbn7Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1614675716;
+        s=2020e; t=1614675717;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=wtfTOSmNlg+RGCXYXdF48/1pcUyHTx/mrCajOMG+Mv4=;
-        b=ttcLh9utv0lUvdrg9KTQPbDda80bUpp+FMEuZFeBVL10vYzvpYsz5hw4+hStw1HR+Jn58e
-        64zOse1+so5s8FCQ==
-From:   "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=YXny8m16onebBca7MJcoTKbcwRi1HbBvixTzf1b98cA=;
+        b=0qVovKNir8ap5gNr+JbvO0lpauJ/g3Brei0Pl5Zps2+PA2udA2zI2M4Bj/WWhq7+Shgm82
+        jvZEutvZcGtpumBg==
+From:   "tip-bot2 for Valentin Schneider" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] kcov: Remove kcov include from sched.h and move it
- to its users.
-Cc:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Andrey Konovalov <andreyknvl@google.com>, x86@kernel.org,
+Subject: [tip: sched/core] sched: Simplify migration_cpu_stop()
+Cc:     Valentin Schneider <valentin.schneider@arm.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210218173124.iy5iyqv3a4oia4vv@linutronix.de>
-References: <20210218173124.iy5iyqv3a4oia4vv@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <161467571626.20312.16737329930821436697.tip-bot2@tip-bot2>
+Message-ID: <161467571651.20312.8520180930890736591.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -64,97 +52,90 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     eae7a59d5a1e9bcf9804bcbd006ddce5cf72f8f4
-Gitweb:        https://git.kernel.org/tip/eae7a59d5a1e9bcf9804bcbd006ddce5cf72f8f4
-Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-AuthorDate:    Thu, 18 Feb 2021 18:31:24 +01:00
+Commit-ID:     560c86ed4c1ca92592c04a8b2032fb29f8556a90
+Gitweb:        https://git.kernel.org/tip/560c86ed4c1ca92592c04a8b2032fb29f8556a90
+Author:        Valentin Schneider <valentin.schneider@arm.com>
+AuthorDate:    Thu, 25 Feb 2021 10:22:30 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Mon, 01 Mar 2021 18:17:22 +01:00
 
-kcov: Remove kcov include from sched.h and move it to its users.
+sched: Simplify migration_cpu_stop()
 
-The recent addition of in_serving_softirq() to kconv.h results in
-compile failure on PREEMPT_RT because it requires
-task_struct::softirq_disable_cnt. This is not available if kconv.h is
-included from sched.h.
+Since, when ->stop_pending, only the stopper can uninstall
+p->migration_pending. This could simplify a few ifs, because:
 
-It is not needed to include kconv.h from sched.h. All but the net/ user
-already include the kconv header file.
+  (pending != NULL) => (pending == p->migration_pending)
 
-Move the include of the kconv.h header from sched.h it its users.
-Additionally include sched.h from kconv.h to ensure that everything
-task_struct related is available.
+Also, the fatty comment above affine_move_task() probably needs a bit
+of gardening.
 
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Valentin Schneider <valentin.schneider@arm.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Johannes Berg <johannes@sipsolutions.net>
-Acked-by: Andrey Konovalov <andreyknvl@google.com>
-Link: https://lkml.kernel.org/r/20210218173124.iy5iyqv3a4oia4vv@linutronix.de
 ---
- include/linux/kcov.h  | 1 +
- include/linux/sched.h | 1 -
- net/core/skbuff.c     | 1 +
- net/mac80211/iface.c  | 1 +
- net/mac80211/rx.c     | 1 +
- 5 files changed, 4 insertions(+), 1 deletion(-)
+ kernel/sched/core.c | 27 ++++++++++++++++++---------
+ 1 file changed, 18 insertions(+), 9 deletions(-)
 
-diff --git a/include/linux/kcov.h b/include/linux/kcov.h
-index 4e3037d..55dc338 100644
---- a/include/linux/kcov.h
-+++ b/include/linux/kcov.h
-@@ -2,6 +2,7 @@
- #ifndef _LINUX_KCOV_H
- #define _LINUX_KCOV_H
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 9819121..f9dfb34 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -1927,6 +1927,12 @@ static int migration_cpu_stop(void *data)
+ 	rq_lock(rq, &rf);
  
-+#include <linux/sched.h>
- #include <uapi/linux/kcov.h>
+ 	/*
++	 * If we were passed a pending, then ->stop_pending was set, thus
++	 * p->migration_pending must have remained stable.
++	 */
++	WARN_ON_ONCE(pending && pending != p->migration_pending);
++
++	/*
+ 	 * If task_rq(p) != rq, it cannot be migrated here, because we're
+ 	 * holding rq->lock, if p->on_rq == 0 it cannot get enqueued because
+ 	 * we're holding p->pi_lock.
+@@ -1936,8 +1942,7 @@ static int migration_cpu_stop(void *data)
+ 			goto out;
  
- struct task_struct;
-diff --git a/include/linux/sched.h b/include/linux/sched.h
-index ef00bb2..cf245bc 100644
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -14,7 +14,6 @@
- #include <linux/pid.h>
- #include <linux/sem.h>
- #include <linux/shm.h>
--#include <linux/kcov.h>
- #include <linux/mutex.h>
- #include <linux/plist.h>
- #include <linux/hrtimer.h>
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 545a472..420f23c 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -60,6 +60,7 @@
- #include <linux/prefetch.h>
- #include <linux/if_vlan.h>
- #include <linux/mpls.h>
-+#include <linux/kcov.h>
+ 		if (pending) {
+-			if (p->migration_pending == pending)
+-				p->migration_pending = NULL;
++			p->migration_pending = NULL;
+ 			complete = true;
+ 		}
  
- #include <net/protocol.h>
- #include <net/dst.h>
-diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
-index b80c9b0..c127deb 100644
---- a/net/mac80211/iface.c
-+++ b/net/mac80211/iface.c
-@@ -15,6 +15,7 @@
- #include <linux/if_arp.h>
- #include <linux/netdevice.h>
- #include <linux/rtnetlink.h>
-+#include <linux/kcov.h>
- #include <net/mac80211.h>
- #include <net/ieee80211_radiotap.h>
- #include "ieee80211_i.h"
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index c1343c0..62047e9 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -17,6 +17,7 @@
- #include <linux/etherdevice.h>
- #include <linux/rcupdate.h>
- #include <linux/export.h>
-+#include <linux/kcov.h>
- #include <linux/bitops.h>
- #include <net/mac80211.h>
- #include <net/ieee80211_radiotap.h>
+@@ -1976,8 +1981,7 @@ static int migration_cpu_stop(void *data)
+ 		 * somewhere allowed, we're done.
+ 		 */
+ 		if (cpumask_test_cpu(task_cpu(p), p->cpus_ptr)) {
+-			if (p->migration_pending == pending)
+-				p->migration_pending = NULL;
++			p->migration_pending = NULL;
+ 			complete = true;
+ 			goto out;
+ 		}
+@@ -2165,16 +2169,21 @@ void do_set_cpus_allowed(struct task_struct *p, const struct cpumask *new_mask)
+  *
+  * (1) In the cases covered above. There is one more where the completion is
+  * signaled within affine_move_task() itself: when a subsequent affinity request
+- * cancels the need for an active migration. Consider:
++ * occurs after the stopper bailed out due to the targeted task still being
++ * Migrate-Disable. Consider:
+  *
+  *     Initial conditions: P0->cpus_mask = [0, 1]
+  *
+- *     P0@CPU0            P1                             P2
+- *
+- *     migrate_disable();
+- *     <preempted>
++ *     CPU0		  P1				P2
++ *     <P0>
++ *       migrate_disable();
++ *       <preempted>
+  *                        set_cpus_allowed_ptr(P0, [1]);
+  *                          <blocks>
++ *     <migration/0>
++ *       migration_cpu_stop()
++ *         is_migration_disabled()
++ *           <bails>
+  *                                                       set_cpus_allowed_ptr(P0, [0, 1]);
+  *                                                         <signal completion>
+  *                          <awakes>
