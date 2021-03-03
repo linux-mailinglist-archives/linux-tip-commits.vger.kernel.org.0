@@ -2,19 +2,19 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2605B32C780
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  4 Mar 2021 02:11:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FB6D32C7BC
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  4 Mar 2021 02:11:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355618AbhCDAcI (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 3 Mar 2021 19:32:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37638 "EHLO
+        id S1355677AbhCDAcm (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 3 Mar 2021 19:32:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37812 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1582431AbhCCKVL (ORCPT
+        with ESMTP id S1843038AbhCCKYr (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 3 Mar 2021 05:21:11 -0500
+        Wed, 3 Mar 2021 05:24:47 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E93EBC08EC2F;
-        Wed,  3 Mar 2021 01:49:38 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C96BC08EC66;
+        Wed,  3 Mar 2021 01:49:41 -0800 (PST)
 Date:   Wed, 03 Mar 2021 09:49:36 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1614764977;
@@ -23,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Gs9ZzgIItOpb66CTWgidjMbH9rx2aMPX0PYAefOGwxA=;
-        b=EPdlTeSo1RaAr5xkerIsuYbKsJ2/XCKnclXJgy88cEj+xkWLA6jCRNzPCr7GQ/NkB9AKCX
-        4Xminze9JFPG70uRSncytpxooM/2zCVS/1cWBqg7bXrbWiYbJCUMWBL862+Wzv4OmQiOdA
-        HyKKdLmFYNwhpewiogvh4DjChCG0+ASYxvAY4xZK/bW73h7OeoGm//vXFBlwVjsmA+1f8b
-        YkxBH6KKEtZentdoVNIPi4ZWCAJT8Lyt3x51ITY6K1o7sLNUviQnm391h+qsMWVblkLdRU
-        OYreJ3dW/M/Mk8zH3nR4jJN2f4M1xPZ6mxrh9QH0UqMEN+F43kdEJG3V/wyGJA==
+        bh=Q5MEh5+BGenUUyK/QrA5gHPrNEb8FI+SOWRvaZ1nfVk=;
+        b=ebdqO8avVzWZu3nNs4Um5UU/5cJpoiwvTGEUxMhTEFyYToYx68Pe92vM/CNM2aOBO70JSo
+        9ozl6rZR7n6bJFHOCgGb9Nu5mwon4YQulSH0ItMjBJPB27Cfs1qe8zYdzCkOpkivfpbxFe
+        zfLjudrXbjtnhJsCFlICS572FBZAlmD4dg+fbe1pRU6YRR3xlSlt1kmOh+0GbQmbwDR4SK
+        CjmwPlKkExUMFzLAQfsBywSwnRuM5kUvrB1L3E6bT87kpaRndpw4HS6/HdLSdXRnh8itKV
+        zqxyObXUZoJektJtJEqtIWWqwtMGhpqhfI/8Bzdz7ssfNBde3AfAWnX37BgEyQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1614764977;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,24 +36,22 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Gs9ZzgIItOpb66CTWgidjMbH9rx2aMPX0PYAefOGwxA=;
-        b=BFU/kwMrpEefGXypkxrR6vP++jmohxoiekJ7P0WHCo31kz2X+1rbEe63Y6aesuFBKpuyuo
-        jLzlPghrxcxsKbDQ==
-From:   "tip-bot2 for Vincent Donnefort" <tip-bot2@linutronix.de>
+        bh=Q5MEh5+BGenUUyK/QrA5gHPrNEb8FI+SOWRvaZ1nfVk=;
+        b=vvcXVb8/jDZewlk2W/WzXXABJ7o4jGFdKIJnfHOwN3SKL6VLWB0w27zDOG3SwMBom3xdyz
+        qQJ5+6uYMAnFqhCg==
+From:   "tip-bot2 for Vincent Guittot" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/fair: Fix task utilization accountability in
- compute_energy()
-Cc:     Vincent Donnefort <vincent.donnefort@arm.com>,
+Subject: [tip: sched/core] sched/fair: Reduce the window for duplicated update
+Cc:     Vincent Guittot <vincent.guittot@linaro.org>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Quentin Perret <qperret@google.com>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20210225083612.1113823-2-vincent.donnefort@arm.com>
-References: <20210225083612.1113823-2-vincent.donnefort@arm.com>
+        Valentin Schneider <valentin.schneider@arm.com>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20210224133007.28644-8-vincent.guittot@linaro.org>
+References: <20210224133007.28644-8-vincent.guittot@linaro.org>
 MIME-Version: 1.0
-Message-ID: <161476497633.20312.518515728651071926.tip-bot2@tip-bot2>
+Message-ID: <161476497664.20312.7873446370756765765.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -64,122 +62,67 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     2d120f71df4baeb7694f513c86fe6f85940f6f76
-Gitweb:        https://git.kernel.org/tip/2d120f71df4baeb7694f513c86fe6f85940f6f76
-Author:        Vincent Donnefort <vincent.donnefort@arm.com>
-AuthorDate:    Thu, 25 Feb 2021 08:36:11 
+Commit-ID:     780eec5b50930b34e2f096b4dce5368d90497b55
+Gitweb:        https://git.kernel.org/tip/780eec5b50930b34e2f096b4dce5368d90497b55
+Author:        Vincent Guittot <vincent.guittot@linaro.org>
+AuthorDate:    Wed, 24 Feb 2021 14:30:07 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 03 Mar 2021 10:33:00 +01:00
+CommitterDate: Wed, 03 Mar 2021 10:32:59 +01:00
 
-sched/fair: Fix task utilization accountability in compute_energy()
+sched/fair: Reduce the window for duplicated update
 
-find_energy_efficient_cpu() (feec()) computes for each perf_domain (pd) an
-energy delta as follows:
+Start to update last_blocked_load_update_tick to reduce the possibility
+of another cpu starting the update one more time
 
-  feec(task)
-    for_each_pd
-      base_energy = compute_energy(task, -1, pd)
-        -> for_each_cpu(pd)
-           -> cpu_util_next(cpu, task, -1)
-
-      energy_delta = compute_energy(task, dst_cpu, pd)
-        -> for_each_cpu(pd)
-           -> cpu_util_next(cpu, task, dst_cpu)
-      energy_delta -= base_energy
-
-Then it picks the best CPU as being the one that minimizes energy_delta.
-
-cpu_util_next() estimates the CPU utilization that would happen if the
-task was placed on dst_cpu as follows:
-
-  max(cpu_util + task_util, cpu_util_est + _task_util_est)
-
-The task contribution to the energy delta can then be either:
-
-  (1) _task_util_est, on a mostly idle CPU, where cpu_util is close to 0
-      and _task_util_est > cpu_util.
-  (2) task_util, on a mostly busy CPU, where cpu_util > _task_util_est.
-
-  (cpu_util_est doesn't appear here. It is 0 when a CPU is idle and
-   otherwise must be small enough so that feec() takes the CPU as a
-   potential target for the task placement)
-
-This is problematic for feec(), as cpu_util_next() might give an unfair
-advantage to a CPU which is mostly busy (2) compared to one which is
-mostly idle (1). _task_util_est being always bigger than task_util in
-feec() (as the task is waking up), the task contribution to the energy
-might look smaller on certain CPUs (2) and this breaks the energy
-comparison.
-
-This issue is, moreover, not sporadic. By starving idle CPUs, it keeps
-their cpu_util < _task_util_est (1) while others will maintain cpu_util >
-_task_util_est (2).
-
-Fix this problem by always using max(task_util, _task_util_est) as a task
-contribution to the energy (ENERGY_UTIL). The new estimated CPU
-utilization for the energy would then be:
-
-  max(cpu_util, cpu_util_est) + max(task_util, _task_util_est)
-
-compute_energy() still needs to know which OPP would be selected if the
-task would be migrated in the perf_domain (FREQUENCY_UTIL). Hence,
-cpu_util_next() is still used to estimate the maximum util within the pd.
-
-Signed-off-by: Vincent Donnefort <vincent.donnefort@arm.com>
+Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Quentin Perret <qperret@google.com>
-Reviewed-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Link: https://lkml.kernel.org/r/20210225083612.1113823-2-vincent.donnefort@arm.com
+Reviewed-by: Valentin Schneider <valentin.schneider@arm.com>
+Link: https://lkml.kernel.org/r/20210224133007.28644-8-vincent.guittot@linaro.org
 ---
- kernel/sched/fair.c | 24 ++++++++++++++++++++----
- 1 file changed, 20 insertions(+), 4 deletions(-)
+ kernel/sched/fair.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
 diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index f1b55f9..b994db9 100644
+index e87e1b3..f1b55f9 100644
 --- a/kernel/sched/fair.c
 +++ b/kernel/sched/fair.c
-@@ -6518,8 +6518,24 @@ compute_energy(struct task_struct *p, int dst_cpu, struct perf_domain *pd)
- 	 * its pd list and will not be accounted by compute_energy().
- 	 */
- 	for_each_cpu_and(cpu, pd_mask, cpu_online_mask) {
--		unsigned long cpu_util, util_cfs = cpu_util_next(cpu, p, dst_cpu);
--		struct task_struct *tsk = cpu == dst_cpu ? p : NULL;
-+		unsigned long util_freq = cpu_util_next(cpu, p, dst_cpu);
-+		unsigned long cpu_util, util_running = util_freq;
-+		struct task_struct *tsk = NULL;
-+
-+		/*
-+		 * When @p is placed on @cpu:
-+		 *
-+		 * util_running = max(cpu_util, cpu_util_est) +
-+		 *		  max(task_util, _task_util_est)
-+		 *
-+		 * while cpu_util_next is: max(cpu_util + task_util,
-+		 *			       cpu_util_est + _task_util_est)
-+		 */
-+		if (cpu == dst_cpu) {
-+			tsk = p;
-+			util_running =
-+				cpu_util_next(cpu, p, -1) + task_util_est(p);
-+		}
+@@ -7852,16 +7852,20 @@ static inline bool others_have_blocked(struct rq *rq)
+ 	return false;
+ }
  
- 		/*
- 		 * Busy time computation: utilization clamping is not
-@@ -6527,7 +6543,7 @@ compute_energy(struct task_struct *p, int dst_cpu, struct perf_domain *pd)
- 		 * is already enough to scale the EM reported power
- 		 * consumption at the (eventually clamped) cpu_capacity.
- 		 */
--		sum_util += effective_cpu_util(cpu, util_cfs, cpu_cap,
-+		sum_util += effective_cpu_util(cpu, util_running, cpu_cap,
- 					       ENERGY_UTIL, NULL);
+-static inline void update_blocked_load_status(struct rq *rq, bool has_blocked)
++static inline void update_blocked_load_tick(struct rq *rq)
+ {
+-	rq->last_blocked_load_update_tick = jiffies;
++	WRITE_ONCE(rq->last_blocked_load_update_tick, jiffies);
++}
  
- 		/*
-@@ -6537,7 +6553,7 @@ compute_energy(struct task_struct *p, int dst_cpu, struct perf_domain *pd)
- 		 * NOTE: in case RT tasks are running, by default the
- 		 * FREQUENCY_UTIL's utilization can be max OPP.
- 		 */
--		cpu_util = effective_cpu_util(cpu, util_cfs, cpu_cap,
-+		cpu_util = effective_cpu_util(cpu, util_freq, cpu_cap,
- 					      FREQUENCY_UTIL, tsk);
- 		max_util = max(max_util, cpu_util);
- 	}
++static inline void update_blocked_load_status(struct rq *rq, bool has_blocked)
++{
+ 	if (!has_blocked)
+ 		rq->has_blocked_load = 0;
+ }
+ #else
+ static inline bool cfs_rq_has_blocked(struct cfs_rq *cfs_rq) { return false; }
+ static inline bool others_have_blocked(struct rq *rq) { return false; }
++static inline void update_blocked_load_tick(struct rq *rq) {}
+ static inline void update_blocked_load_status(struct rq *rq, bool has_blocked) {}
+ #endif
+ 
+@@ -8022,6 +8026,7 @@ static void update_blocked_averages(int cpu)
+ 	struct rq_flags rf;
+ 
+ 	rq_lock_irqsave(rq, &rf);
++	update_blocked_load_tick(rq);
+ 	update_rq_clock(rq);
+ 
+ 	decayed |= __update_blocked_others(rq, &done);
+@@ -8363,7 +8368,7 @@ static bool update_nohz_stats(struct rq *rq)
+ 	if (!cpumask_test_cpu(cpu, nohz.idle_cpus_mask))
+ 		return false;
+ 
+-	if (!time_after(jiffies, rq->last_blocked_load_update_tick))
++	if (!time_after(jiffies, READ_ONCE(rq->last_blocked_load_update_tick)))
+ 		return true;
+ 
+ 	update_blocked_averages(cpu);
