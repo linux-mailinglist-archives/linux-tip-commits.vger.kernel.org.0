@@ -2,55 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D6FA332C7AE
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  4 Mar 2021 02:11:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D153F32C794
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  4 Mar 2021 02:11:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1441823AbhCDAci (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 3 Mar 2021 19:32:38 -0500
+        id S1358967AbhCDAcS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 3 Mar 2021 19:32:18 -0500
 Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37966 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1843007AbhCCKXr (ORCPT
+        with ESMTP id S1842944AbhCCKWu (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 3 Mar 2021 05:23:47 -0500
+        Wed, 3 Mar 2021 05:22:50 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E90BC061A32;
-        Wed,  3 Mar 2021 00:45:37 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03966C061A27;
+        Wed,  3 Mar 2021 00:45:34 -0800 (PST)
 Date:   Wed, 03 Mar 2021 08:45:32 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1614761133;
+        s=2020; t=1614761132;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=A7HqsQ0FVYZqNqC6gYTKD7/zoMnZg6iR+TYNp05qU14=;
-        b=odtasLBA9CQm5NQMo6uCdB2opplnVxpQW0vSgw/pERZkcUGu9L1VuJs01VHpIvtZyyMRLZ
-        oTGaGmUrIDEWqtARa5mcH/kaqNkIcao3mn4GhVz3bdF9RLTqvY+osj/kK7fDbalFlP3XgH
-        YD3acAP5T6o1ipb5GWm5RRb/EHZlF5J0PxynP5JgXKHElFb2QpOI2jpxXVWfBru9Gbv2ah
-        yAwkYKcrrQ/iAqDOrU8yKyxm1Dg/y4/mAEwGhoHBSxZQ/ZHKdZL5TWnznG85mGnAzUR6iA
-        DQKV3YHkUAo+j5g4tk0x5Xp68lQPAopjOjVzFJ3cXt5dhn4uhNEAzYbpVsu0KA==
+        bh=gFw4AmE6CLpZesktFsWfsCW6iSbhJYscfWmyWACvOjg=;
+        b=dhYCf+9g80vQqznxKOMuS5lQkXIS9Cw8u5yjFEXCFZxzwKocfKoSlPY3NFAdnnNVQK5u6H
+        UqGlYDKPNkLqwRs89pkn32GACbkbfO07dP9x1xZlCyKUPePP5E7LpvrysNq/7G/XltObyq
+        BzEYUytH+5t6JG1HXsi5DGwhp9GGSMCYk9DPZ0uCZwp1jX7OtXdXuunhHqcslzLXqq+spj
+        CQjeOqhm+0vqwjhbjB/u50KW4ziBLVMf3gV1RZ5qAWk70btCpwKcHdAVPiJkzA3DuK+DTZ
+        67i+adL03YCs05CkKYS1hm1e1fCfMRY6NI1ob54gpZjwlUkkhegmx+JUaI8dMA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1614761133;
+        s=2020e; t=1614761132;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=A7HqsQ0FVYZqNqC6gYTKD7/zoMnZg6iR+TYNp05qU14=;
-        b=80rH+eYzKtJ4ZCCx+9D+9X6rScN2QLglS2ckNdeqeAMcRY7vhka2I7nxQHLyoVerzKNX0r
-        oVUGD4ZDJBEezfCQ==
+        bh=gFw4AmE6CLpZesktFsWfsCW6iSbhJYscfWmyWACvOjg=;
+        b=QURYFhE0LKtLaDz91pr53fOwxuSYg+IGlGyX2bSSiLuwhaFstsR/t7E6Ximkcl3TkGNwRo
+        Vyv8v8rOY63rcECA==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] objtool,x86: More ModRM sugar
+Subject: [tip: objtool/core] objtool: Collate parse_options() users
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Josh Poimboeuf <jpoimboe@redhat.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <ljatFXqQbm8@hirez.programming.kicks-ass.net>
-References: <ljatFXqQbm8@hirez.programming.kicks-ass.net>
+In-Reply-To: <20210226110004.193108106@infradead.org>
+References: <20210226110004.193108106@infradead.org>
 MIME-Version: 1.0
-Message-ID: <161476113270.20312.10287338824461806523.tip-bot2@tip-bot2>
+Message-ID: <161476113210.20312.17541602683654847139.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,130 +61,84 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     7e1b2eb05787d1c7f18445b7cfdfc612e827ca7b
-Gitweb:        https://git.kernel.org/tip/7e1b2eb05787d1c7f18445b7cfdfc612e827ca7b
+Commit-ID:     13d52bf07c55645f9e3c430748708253d724e705
+Gitweb:        https://git.kernel.org/tip/13d52bf07c55645f9e3c430748708253d724e705
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Fri, 12 Feb 2021 09:13:00 +01:00
+AuthorDate:    Fri, 26 Feb 2021 11:18:24 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 03 Mar 2021 09:38:31 +01:00
+CommitterDate: Wed, 03 Mar 2021 09:38:32 +01:00
 
-objtool,x86: More ModRM sugar
+objtool: Collate parse_options() users
 
-Better helpers to decode ModRM.
+Ensure there's a single place that parses check_options, in
+preparation for extending where to get options from.
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Acked-by: Josh Poimboeuf <jpoimboe@redhat.com>
-Link: https://lkml.kernel.org/r/YCZB/ljatFXqQbm8@hirez.programming.kicks-ass.net
+Link: https://lkml.kernel.org/r/20210226110004.193108106@infradead.org
 ---
- tools/objtool/arch/x86/decode.c | 28 +++++++++++++++++-----------
- 1 file changed, 17 insertions(+), 11 deletions(-)
+ tools/objtool/builtin-check.c           | 14 +++++++++-----
+ tools/objtool/builtin-orc.c             |  5 +----
+ tools/objtool/include/objtool/builtin.h |  2 ++
+ 3 files changed, 12 insertions(+), 9 deletions(-)
 
-diff --git a/tools/objtool/arch/x86/decode.c b/tools/objtool/arch/x86/decode.c
-index b42e5ec..431bafb 100644
---- a/tools/objtool/arch/x86/decode.c
-+++ b/tools/objtool/arch/x86/decode.c
-@@ -82,15 +82,21 @@ unsigned long arch_jump_destination(struct instruction *insn)
-  * 01 |  [r/m + d8]    |[S+d]|   [r/m + d8]  |
-  * 10 |  [r/m + d32]   |[S+D]|   [r/m + d32] |
-  * 11 |                   r/ m               |
-- *
-  */
+diff --git a/tools/objtool/builtin-check.c b/tools/objtool/builtin-check.c
+index 97f063d..0399752 100644
+--- a/tools/objtool/builtin-check.c
++++ b/tools/objtool/builtin-check.c
+@@ -42,17 +42,21 @@ const struct option check_options[] = {
+ 	OPT_END(),
+ };
+ 
++int cmd_parse_options(int argc, const char **argv, const char * const usage[])
++{
++	argc = parse_options(argc, argv, check_options, usage, 0);
++	if (argc != 1)
++		usage_with_options(usage, check_options);
++	return argc;
++}
 +
-+#define mod_is_mem()	(modrm_mod != 3)
-+#define mod_is_reg()	(modrm_mod == 3)
+ int cmd_check(int argc, const char **argv)
+ {
+ 	const char *objname;
+ 	struct objtool_file *file;
+ 	int ret;
+ 
+-	argc = parse_options(argc, argv, check_options, check_usage, 0);
+-
+-	if (argc != 1)
+-		usage_with_options(check_usage, check_options);
+-
++	argc = cmd_parse_options(argc, argv, check_usage);
+ 	objname = argv[0];
+ 
+ 	file = objtool_open_read(objname);
+diff --git a/tools/objtool/builtin-orc.c b/tools/objtool/builtin-orc.c
+index 8273bbf..17f8b93 100644
+--- a/tools/objtool/builtin-orc.c
++++ b/tools/objtool/builtin-orc.c
+@@ -34,10 +34,7 @@ int cmd_orc(int argc, const char **argv)
+ 		struct objtool_file *file;
+ 		int ret;
+ 
+-		argc = parse_options(argc, argv, check_options, orc_usage, 0);
+-		if (argc != 1)
+-			usage_with_options(orc_usage, check_options);
+-
++		argc = cmd_parse_options(argc, argv, orc_usage);
+ 		objname = argv[0];
+ 
+ 		file = objtool_open_read(objname);
+diff --git a/tools/objtool/include/objtool/builtin.h b/tools/objtool/include/objtool/builtin.h
+index d019210..15ac0b7 100644
+--- a/tools/objtool/include/objtool/builtin.h
++++ b/tools/objtool/include/objtool/builtin.h
+@@ -11,6 +11,8 @@ extern const struct option check_options[];
+ extern bool no_fp, no_unreachable, retpoline, module, backtrace, uaccess, stats,
+             validate_dup, vmlinux, mcount, noinstr, backup;
+ 
++extern int cmd_parse_options(int argc, const char **argv, const char * const usage[]);
 +
- #define is_RIP()   ((modrm_rm & 7) == CFI_BP && modrm_mod == 0)
--#define have_SIB() ((modrm_rm & 7) == CFI_SP && modrm_mod != 3)
-+#define have_SIB() ((modrm_rm & 7) == CFI_SP && mod_is_mem())
+ extern int cmd_check(int argc, const char **argv);
+ extern int cmd_orc(int argc, const char **argv);
  
- #define rm_is(reg) (have_SIB() ? \
- 		    sib_base == (reg) && sib_index == CFI_SP : \
- 		    modrm_rm == (reg))
- 
-+#define rm_is_mem(reg)	(mod_is_mem() && !is_RIP() && rm_is(reg))
-+#define rm_is_reg(reg)	(mod_is_reg() && modrm_rm == (reg))
-+
- int arch_decode_instruction(const struct elf *elf, const struct section *sec,
- 			    unsigned long offset, unsigned int maxlen,
- 			    unsigned int *len, enum insn_type *type,
-@@ -154,7 +160,7 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
- 
- 	case 0x1:
- 	case 0x29:
--		if (rex_w && modrm_mod == 3 && modrm_rm == CFI_SP) {
-+		if (rex_w && rm_is_reg(CFI_SP)) {
- 
- 			/* add/sub reg, %rsp */
- 			ADD_OP(op) {
-@@ -219,7 +225,7 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
- 			break;
- 
- 		/* %rsp target only */
--		if (!(modrm_mod == 3 && modrm_rm == CFI_SP))
-+		if (!rm_is_reg(CFI_SP))
- 			break;
- 
- 		imm = insn.immediate.value;
-@@ -272,7 +278,7 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
- 
- 		if (modrm_reg == CFI_SP) {
- 
--			if (modrm_mod == 3) {
-+			if (mod_is_reg()) {
- 				/* mov %rsp, reg */
- 				ADD_OP(op) {
- 					op->src.type = OP_SRC_REG;
-@@ -308,7 +314,7 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
- 			break;
- 		}
- 
--		if (modrm_mod == 3 && modrm_rm == CFI_SP) {
-+		if (rm_is_reg(CFI_SP)) {
- 
- 			/* mov reg, %rsp */
- 			ADD_OP(op) {
-@@ -325,7 +331,7 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
- 		if (!rex_w)
- 			break;
- 
--		if ((modrm_mod == 1 || modrm_mod == 2) && modrm_rm == CFI_BP) {
-+		if (rm_is_mem(CFI_BP)) {
- 
- 			/* mov reg, disp(%rbp) */
- 			ADD_OP(op) {
-@@ -338,7 +344,7 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
- 			break;
- 		}
- 
--		if (modrm_mod != 3 && rm_is(CFI_SP)) {
-+		if (rm_is_mem(CFI_SP)) {
- 
- 			/* mov reg, disp(%rsp) */
- 			ADD_OP(op) {
-@@ -357,7 +363,7 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
- 		if (!rex_w)
- 			break;
- 
--		if ((modrm_mod == 1 || modrm_mod == 2) && modrm_rm == CFI_BP) {
-+		if (rm_is_mem(CFI_BP)) {
- 
- 			/* mov disp(%rbp), reg */
- 			ADD_OP(op) {
-@@ -370,7 +376,7 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
- 			break;
- 		}
- 
--		if (modrm_mod != 3 && rm_is(CFI_SP)) {
-+		if (rm_is_mem(CFI_SP)) {
- 
- 			/* mov disp(%rsp), reg */
- 			ADD_OP(op) {
-@@ -386,7 +392,7 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
- 		break;
- 
- 	case 0x8d:
--		if (modrm_mod == 3) {
-+		if (mod_is_reg()) {
- 			WARN("invalid LEA encoding at %s:0x%lx", sec->name, offset);
- 			break;
- 		}
