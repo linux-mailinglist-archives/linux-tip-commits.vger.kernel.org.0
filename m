@@ -2,56 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6346632C787
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  4 Mar 2021 02:11:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D89932C79D
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  4 Mar 2021 02:11:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355632AbhCDAcK (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 3 Mar 2021 19:32:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37974 "EHLO
+        id S1355659AbhCDAcW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 3 Mar 2021 19:32:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37992 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1842922AbhCCKWf (ORCPT
+        with ESMTP id S1842987AbhCCKX0 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 3 Mar 2021 05:22:35 -0500
+        Wed, 3 Mar 2021 05:23:26 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96A44C061A2B;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30AAEC061A2A;
         Wed,  3 Mar 2021 00:45:35 -0800 (PST)
 Date:   Wed, 03 Mar 2021 08:45:33 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1614761134;
+        s=2020; t=1614761133;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=PdwCCZLJdhpJ6bcF67VEVoiRGhEBbV515tp++QQcoms=;
-        b=WUdT0u5Em1JrK6Tw2ClOCjsecTz+KsmhsABrFeY1C2eBhu0LI8akPOvmtuuTIr6X+a1+HB
-        2KkemLEPxHv4j+qff29+tXAMA9fYr4H+tiXFSWsNAeLBIUNtD5ofxTqfzR5Z6HJud6/rQr
-        CNmliWW+MM8HtZSNagNlocr/xxO/pK3/w2nZhf6UlTUINSJGDt563Bfz2EUPin7lg5mL/l
-        Ey0ZZxcTZ+f8MloO2vPD7FTzUhRWqo21TgIKFXq5yLrP4JXwKkUJ7EXEPuGpT5ImcoMx0I
-        VA+5H70ACvGG9zatXbXvRo/xdE72E2Vn7x440jalUCdo638ENaPrOMeynfQ7DA==
+        bh=1ej3IlpyC21cesUrgNW4FET0PlvgjIlZzs988if/SCg=;
+        b=AXnOYwNv7S1pTVwgQdN6ZJ2OAIcsX9OwFal4f1Oa/b66MgfLqCf8cC69TQKOshLEW1vygO
+        tx1Ej2J96shDPgiC+BZBXENGQc0+1M/Z5I7ufkBLkEMjpG018gcQnQC92JawvqlKYs1UVE
+        FMxSOuYrIRSvEBBlQlUxqa7IIK169B+MS5TS55A6vOOyTGw17s4mDNg255MyMO6hmCUrtz
+        q/s6nar5iU3vhqXp/Bfv8lRq0iG/AW7A675T9zSMlNDfzjj2uZSXHSBkSbBeVIlOH5Cz+f
+        KX9A97vdq2JXWy2JL1mNLvFKdJFz7jAkkgAn1kjY8AKN8Gld/jsGdI9fTf5lug==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1614761134;
+        s=2020e; t=1614761133;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=PdwCCZLJdhpJ6bcF67VEVoiRGhEBbV515tp++QQcoms=;
-        b=ex4BLzyw17teMq7zAgBgPbjshY9Geq/Xb9XuWdLE9RZKY08SaqdlxNAtU8GgTb4sjdFgoE
-        tSaQjRNUk34EAcDw==
+        bh=1ej3IlpyC21cesUrgNW4FET0PlvgjIlZzs988if/SCg=;
+        b=QR63V/D1sq1k0LW4Ckp3l7OwNC9agQARGv5pwSqpKVIfZDoAaGjP/RYbmK6BKsKHauab37
+        Ue7OZNnQF9pEvYDA==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] objtool,x86: Support %riz encodings
+Subject: [tip: objtool/core] objtool,x86: Rewrite ADD/SUB/AND
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Josh Poimboeuf <jpoimboe@redhat.com>,
         Nick Desaulniers <ndesaulniers@google.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210211173627.472967498@infradead.org>
-References: <20210211173627.472967498@infradead.org>
+In-Reply-To: <20210211173627.588366777@infradead.org>
+References: <20210211173627.588366777@infradead.org>
 MIME-Version: 1.0
-Message-ID: <161476113350.20312.2842241634559152746.tip-bot2@tip-bot2>
+Message-ID: <161476113312.20312.6376931770918404958.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -62,188 +62,128 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     0a8bef63e5bf4496251f7bac4ddadb5f5f489932
-Gitweb:        https://git.kernel.org/tip/0a8bef63e5bf4496251f7bac4ddadb5f5f489932
+Commit-ID:     e1bba6c8930b56c4afe88aa875f3d20d1cef4fe1
+Gitweb:        https://git.kernel.org/tip/e1bba6c8930b56c4afe88aa875f3d20d1cef4fe1
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Wed, 10 Feb 2021 11:47:35 +01:00
+AuthorDate:    Wed, 10 Feb 2021 14:11:30 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 03 Mar 2021 09:38:30 +01:00
+CommitterDate: Wed, 03 Mar 2021 09:38:31 +01:00
 
-objtool,x86: Support %riz encodings
+objtool,x86: Rewrite ADD/SUB/AND
 
-When there's a SIB byte, the register otherwise denoted by r/m will
-then be denoted by SIB.base REX.b will now extend this. SIB.index == SP
-is magic and notes an index value zero.
-
-This means that there's a bunch of alternative (longer) encodings for
-the same thing. Eg. 'ModRM.mod != 3, ModRM.r/m = AX' can be encoded as
-'ModRM.mod != 3, ModRM.r/m = SP, SIB.base = AX, SIB.index = SP' which is actually 4
-different encodings because the value of SIB.scale is irrelevant,
-giving rise to 5 different but equal encodings.
-
-Support these encodings and clean up the SIB handling in general.
+Support sign extending and imm8 forms.
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Acked-by: Josh Poimboeuf <jpoimboe@redhat.com>
 Tested-by: Nick Desaulniers <ndesaulniers@google.com>
-Link: https://lkml.kernel.org/r/20210211173627.472967498@infradead.org
+Link: https://lkml.kernel.org/r/20210211173627.588366777@infradead.org
 ---
- tools/objtool/arch/x86/decode.c | 67 ++++++++++++++++++++++----------
- 1 file changed, 48 insertions(+), 19 deletions(-)
+ tools/objtool/arch/x86/decode.c | 70 +++++++++++++++++++++++---------
+ 1 file changed, 51 insertions(+), 19 deletions(-)
 
 diff --git a/tools/objtool/arch/x86/decode.c b/tools/objtool/arch/x86/decode.c
-index 5ce7dc4..78ae5be 100644
+index 78ae5be..b42e5ec 100644
 --- a/tools/objtool/arch/x86/decode.c
 +++ b/tools/objtool/arch/x86/decode.c
-@@ -72,6 +72,25 @@ unsigned long arch_jump_destination(struct instruction *insn)
- 		return -1; \
- 	else for (list_add_tail(&op->list, ops_list); op; op = NULL)
- 
-+/*
-+ * Helpers to decode ModRM/SIB:
-+ *
-+ * r/m| AX  CX  DX  BX |  SP |  BP |  SI  DI |
-+ *    | R8  R9 R10 R11 | R12 | R13 | R14 R15 |
-+ * Mod+----------------+-----+-----+---------+
-+ * 00 |    [r/m]       |[SIB]|[IP+]|  [r/m]  |
-+ * 01 |  [r/m + d8]    |[S+d]|   [r/m + d8]  |
-+ * 10 |  [r/m + d32]   |[S+D]|   [r/m + d32] |
-+ * 11 |                   r/ m               |
-+ *
-+ */
-+#define is_RIP()   ((modrm_rm & 7) == CFI_BP && modrm_mod == 0)
-+#define have_SIB() ((modrm_rm & 7) == CFI_SP && modrm_mod != 3)
-+
-+#define rm_is(reg) (have_SIB() ? \
-+		    sib_base == (reg) && sib_index == CFI_SP : \
-+		    modrm_rm == (reg))
-+
- int arch_decode_instruction(const struct elf *elf, const struct section *sec,
- 			    unsigned long offset, unsigned int maxlen,
- 			    unsigned int *len, enum insn_type *type,
-@@ -83,7 +102,7 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
+@@ -98,13 +98,14 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
+ 			    struct list_head *ops_list)
+ {
+ 	struct insn insn;
+-	int x86_64, sign;
++	int x86_64;
  	unsigned char op1, op2,
  		      rex = 0, rex_b = 0, rex_r = 0, rex_w = 0, rex_x = 0,
  		      modrm = 0, modrm_mod = 0, modrm_rm = 0, modrm_reg = 0,
--		      sib = 0 /* , sib_scale = 0, sib_index = 0, sib_base = 0 */;
-+		      sib = 0, /* sib_scale = 0, */ sib_index = 0, sib_base = 0;
+ 		      sib = 0, /* sib_scale = 0, */ sib_index = 0, sib_base = 0;
  	struct stack_op *op = NULL;
  	struct symbol *sym;
++	u64 imm;
  
-@@ -125,11 +144,9 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
+ 	x86_64 = is_x86_64(elf);
+ 	if (x86_64 == -1)
+@@ -200,12 +201,54 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
+ 		*type = INSN_JUMP_CONDITIONAL;
+ 		break;
  
- 	if (insn.sib.nbytes) {
- 		sib = insn.sib.bytes[0];
--		/*
--		sib_scale = X86_SIB_SCALE(sib);
-+		/* sib_scale = X86_SIB_SCALE(sib); */
- 		sib_index = X86_SIB_INDEX(sib) + 8*rex_x;
- 		sib_base  = X86_SIB_BASE(sib)  + 8*rex_b;
--		 */
- 	}
+-	case 0x81:
+-	case 0x83:
+-		if (rex != 0x48)
++	case 0x80 ... 0x83:
++		/*
++		 * 1000 00sw : mod OP r/m : immediate
++		 *
++		 * s - sign extend immediate
++		 * w - imm8 / imm32
++		 *
++		 * OP: 000 ADD    100 AND
++		 *     001 OR     101 SUB
++		 *     010 ADC    110 XOR
++		 *     011 SBB    111 CMP
++		 */
++
++		/* 64bit only */
++		if (!rex_w)
+ 			break;
  
- 	switch (op1) {
-@@ -218,7 +235,10 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
+-		if (modrm == 0xe4) {
++		/* %rsp target only */
++		if (!(modrm_mod == 3 && modrm_rm == CFI_SP))
++			break;
++
++		imm = insn.immediate.value;
++		if (op1 & 2) { /* sign extend */
++			if (op1 & 1) { /* imm32 */
++				imm <<= 32;
++				imm = (s64)imm >> 32;
++			} else { /* imm8 */
++				imm <<= 56;
++				imm = (s64)imm >> 56;
++			}
++		}
++
++		switch (modrm_reg & 7) {
++		case 5:
++			imm = -imm;
++			/* fallthrough */
++		case 0:
++			/* add/sub imm, %rsp */
++			ADD_OP(op) {
++				op->src.type = OP_SRC_ADD;
++				op->src.reg = CFI_SP;
++				op->src.offset = imm;
++				op->dest.type = OP_DEST_REG;
++				op->dest.reg = CFI_SP;
++			}
++			break;
++
++		case 4:
+ 			/* and imm, %rsp */
+ 			ADD_OP(op) {
+ 				op->src.type = OP_SRC_AND;
+@@ -215,23 +258,12 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
+ 				op->dest.reg = CFI_SP;
+ 			}
+ 			break;
+-		}
+ 
+-		if (modrm == 0xc4)
+-			sign = 1;
+-		else if (modrm == 0xec)
+-			sign = -1;
+-		else
++		default:
++			/* WARN ? */
+ 			break;
+-
+-		/* add/sub imm, %rsp */
+-		ADD_OP(op) {
+-			op->src.type = OP_SRC_ADD;
+-			op->src.reg = CFI_SP;
+-			op->src.offset = insn.immediate.value * sign;
+-			op->dest.type = OP_DEST_REG;
+-			op->dest.reg = CFI_SP;
+ 		}
++
  		break;
  
  	case 0x89:
--		if (rex_w && modrm_reg == CFI_SP) {
-+		if (!rex_w)
-+			break;
-+
-+		if (modrm_reg == CFI_SP) {
- 
- 			if (modrm_mod == 3) {
- 				/* mov %rsp, reg */
-@@ -231,14 +251,17 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
- 				break;
- 
- 			} else {
--				/* skip nontrivial SIB */
--				if ((modrm_rm & 7) == 4 && !(sib == 0x24 && rex_b == rex_x))
--					break;
--
- 				/* skip RIP relative displacement */
--				if ((modrm_rm & 7) == 5 && modrm_mod == 0)
-+				if (is_RIP())
- 					break;
- 
-+				/* skip nontrivial SIB */
-+				if (have_SIB()) {
-+					modrm_rm = sib_base;
-+					if (sib_index != CFI_SP)
-+						break;
-+				}
-+
- 				/* mov %rsp, disp(%reg) */
- 				ADD_OP(op) {
- 					op->src.type = OP_SRC_REG;
-@@ -253,7 +276,7 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
- 			break;
- 		}
- 
--		if (rex_w && modrm_mod == 3 && modrm_rm == CFI_SP) {
-+		if (modrm_mod == 3 && modrm_rm == CFI_SP) {
- 
- 			/* mov reg, %rsp */
- 			ADD_OP(op) {
-@@ -267,6 +290,9 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
- 
- 		/* fallthrough */
- 	case 0x88:
-+		if (!rex_w)
-+			break;
-+
- 		if ((modrm_mod == 1 || modrm_mod == 2) && modrm_rm == CFI_BP) {
- 
- 			/* mov reg, disp(%rbp) */
-@@ -280,7 +306,7 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
- 			break;
- 		}
- 
--		if (rex_w && modrm_rm == CFI_SP && sib == 0x24) {
-+		if (modrm_mod != 3 && rm_is(CFI_SP)) {
- 
- 			/* mov reg, disp(%rsp) */
- 			ADD_OP(op) {
-@@ -299,7 +325,7 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
- 		if (!rex_w)
- 			break;
- 
--		if (modrm_mod == 1 && modrm_rm == CFI_BP) {
-+		if ((modrm_mod == 1 || modrm_mod == 2) && modrm_rm == CFI_BP) {
- 
- 			/* mov disp(%rbp), reg */
- 			ADD_OP(op) {
-@@ -312,7 +338,7 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
- 			break;
- 		}
- 
--		if (modrm_mod != 3 && modrm_rm == CFI_SP && sib == 0x24) {
-+		if (modrm_mod != 3 && rm_is(CFI_SP)) {
- 
- 			/* mov disp(%rsp), reg */
- 			ADD_OP(op) {
-@@ -337,14 +363,17 @@ int arch_decode_instruction(const struct elf *elf, const struct section *sec,
- 		if (!rex_w)
- 			break;
- 
--		/* skip nontrivial SIB */
--		if ((modrm_rm & 7) == 4 && !(sib == 0x24 && rex_b == rex_x))
--			break;
--
- 		/* skip RIP relative displacement */
--		if ((modrm_rm & 7) == 5 && modrm_mod == 0)
-+		if (is_RIP())
- 			break;
- 
-+		/* skip nontrivial SIB */
-+		if (have_SIB()) {
-+			modrm_rm = sib_base;
-+			if (sib_index != CFI_SP)
-+				break;
-+		}
-+
- 		/* lea disp(%src), %dst */
- 		ADD_OP(op) {
- 			op->src.offset = insn.displacement.value;
