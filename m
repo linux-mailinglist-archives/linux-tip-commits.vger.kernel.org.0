@@ -2,57 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 980E432C783
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  4 Mar 2021 02:11:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E690132C78C
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  4 Mar 2021 02:11:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355621AbhCDAcJ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 3 Mar 2021 19:32:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37814 "EHLO
+        id S1355642AbhCDAcP (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 3 Mar 2021 19:32:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1582451AbhCCKWK (ORCPT
+        with ESMTP id S1842931AbhCCKWj (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 3 Mar 2021 05:22:10 -0500
+        Wed, 3 Mar 2021 05:22:39 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9ECA1C0610CB;
-        Wed,  3 Mar 2021 00:45:40 -0800 (PST)
-Date:   Wed, 03 Mar 2021 08:45:35 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FF6CC08EC2B;
+        Wed,  3 Mar 2021 01:49:38 -0800 (PST)
+Date:   Wed, 03 Mar 2021 09:49:34 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1614761135;
+        s=2020; t=1614764975;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ZE4tgXzO6KBgcOg2xfue1avIYafapWs5LQlZpLbkEVQ=;
-        b=zORxVuV7zM+7IQdVbS89BS1QYTg+oy9pltZD+h1AVL7RTc3JCkN8oUQybxxgrY8lyHT1UN
-        3GSjkn317/G+v8oT7d+3/qiezKZDGkopJ7YcIfLLFPbocG2Wy466eC+egxfUo5ZbmYo1Tq
-        vswSM0G3OU2MHZmfcC9r66T/dAb42AWFJYGHzFAImUpxVruSuG8hnXzkGHkxik38Vvt6TU
-        YoVbSLA4Ijb/XGyaAHtpqwfrM1afwNou60lrGt2ywfMojtU7WmggOgqYaQ30OKLimsVYr4
-        ARFoKi7I3ygRdbdmcoy1USWvxeki5747ySj6+zUQONPiafnPJfHVw0Oh8fVRfA==
+        bh=mgOPFoYyiw8NY2vGV+0scutbfVbhkpkyvQHNVX42788=;
+        b=VVs5ZsVJGHgLCbrc0NBP+zNGhO2y4lof3U1THGtSQBV8Recg7mVnQQ8kJwCNHrYgtClLZV
+        DjDDlQcxQrzcwWZYGO4UvviZXdJo1UBKaCo4UcjxVGaQC3+ydbPmOYfpOqNEl1g1wFTFpp
+        22cZlnIh6L9BjRyxhLbJa+oy8G47g6YSF4KYSYwO44/zwb2UDtB58oFJG4SvsWlgjihDt8
+        FayK6eW6VMYgt/L4ljChCspSBHp330e5VpKvitLdMflVJStb3Oq+UcFNnAodoE7I2mLUaY
+        OSl4WdW81tXtrECgF2SspBOl5SeHcYVl4eC49zwXI2HExBXeNl9i3Kce+lN4ig==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1614761135;
+        s=2020e; t=1614764975;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ZE4tgXzO6KBgcOg2xfue1avIYafapWs5LQlZpLbkEVQ=;
-        b=vdnTPj1KYPal8etRvxIUlC8RYbH15K3OVOZ4RNdQ2wU3cuYTUUDMA8sKwyhMgA44yX15S3
-        8Mb6ReC0sUM+d9BA==
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+        bh=mgOPFoYyiw8NY2vGV+0scutbfVbhkpkyvQHNVX42788=;
+        b=Vogyc8ShRcM9ybwP3l2T65Mi4mvsbDqkEkd1t0A5xpnh740R5cJgUdDZOzRiCsakjHCJF4
+        U36U3Pd+UrtpIIAw==
+From:   "tip-bot2 for Vincent Donnefort" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] objtool: Allow UNWIND_HINT to suppress dodgy
- stack modifications
-Cc:     Josh Poimboeuf <jpoimboe@redhat.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Nick Desaulniers <ndesaulniers@google.com>, x86@kernel.org,
+Subject: [tip: sched/core] cpu/hotplug: CPUHP_BRINGUP_CPU failure exception
+Cc:     Vincent Donnefort <vincent.donnefort@arm.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210211173626.918498579@infradead.org>
-References: <20210211173626.918498579@infradead.org>
+In-Reply-To: <20210216103506.416286-3-vincent.donnefort@arm.com>
+References: <20210216103506.416286-3-vincent.donnefort@arm.com>
 MIME-Version: 1.0
-Message-ID: <161476113526.20312.8523623729007936280.tip-bot2@tip-bot2>
+Message-ID: <161476497481.20312.7532268175021230545.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,95 +59,66 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the objtool/core branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     8c0cca513be9e3dd9c17b55b72b66751f3487577
-Gitweb:        https://git.kernel.org/tip/8c0cca513be9e3dd9c17b55b72b66751f3487577
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Thu, 11 Feb 2021 13:03:28 +01:00
+Commit-ID:     5e7f238920174248049ff840eff43c94f3a2e67e
+Gitweb:        https://git.kernel.org/tip/5e7f238920174248049ff840eff43c94f3a2e67e
+Author:        Vincent Donnefort <vincent.donnefort@arm.com>
+AuthorDate:    Tue, 16 Feb 2021 10:35:05 
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 03 Mar 2021 09:38:29 +01:00
+CommitterDate: Wed, 03 Mar 2021 10:33:00 +01:00
 
-objtool: Allow UNWIND_HINT to suppress dodgy stack modifications
+cpu/hotplug: CPUHP_BRINGUP_CPU failure exception
 
-rewind_stack_do_exit()
-	UNWIND_HINT_FUNC
-	/* Prevent any naive code from trying to unwind to our caller. */
+The atomic states (between CPUHP_AP_IDLE_DEAD and CPUHP_AP_ONLINE) are
+triggered by the CPUHP_BRINGUP_CPU step. If the latter fails, no atomic
+state can be rolled back.
 
-	xorl	%ebp, %ebp
-	movq	PER_CPU_VAR(cpu_current_top_of_stack), %rax
-	leaq	-PTREGS_SIZE(%rax), %rsp
-	UNWIND_HINT_REGS
+DEAD callbacks too can't fail and disallow recovery. As a consequence,
+during hotunplug, the fail injection interface should prohibit all states
+from CPUHP_BRINGUP_CPU to CPUHP_ONLINE.
 
-	call	do_exit
-
-Does unspeakable things to the stack, which objtool currently fails to
-detect due to a limitation in instruction decoding. This will be
-rectified after which the above will result in:
-
-arch/x86/entry/entry_64.o: warning: objtool: .text+0xab: unsupported stack register modification
-
-Allow the UNWIND_HINT on the next instruction to suppress this, it
-will overwrite the state anyway.
-
-Suggested-by: Josh Poimboeuf <jpoimboe@redhat.com>
+Signed-off-by: Vincent Donnefort <vincent.donnefort@arm.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Josh Poimboeuf <jpoimboe@redhat.com>
-Tested-by: Nick Desaulniers <ndesaulniers@google.com>
-Link: https://lkml.kernel.org/r/20210211173626.918498579@infradead.org
+Link: https://lkml.kernel.org/r/20210216103506.416286-3-vincent.donnefort@arm.com
 ---
- tools/objtool/check.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ kernel/cpu.c | 19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
 
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 068cdb4..12b8f0f 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -1959,8 +1959,9 @@ static void restore_reg(struct cfi_state *cfi, unsigned char reg)
-  *   41 5d			pop    %r13
-  *   c3				retq
-  */
--static int update_cfi_state(struct instruction *insn, struct cfi_state *cfi,
--			     struct stack_op *op)
-+static int update_cfi_state(struct instruction *insn,
-+			    struct instruction *next_insn,
-+			    struct cfi_state *cfi, struct stack_op *op)
- {
- 	struct cfi_reg *cfa = &cfi->cfa;
- 	struct cfi_reg *regs = cfi->regs;
-@@ -2161,7 +2162,7 @@ static int update_cfi_state(struct instruction *insn, struct cfi_state *cfi,
- 				break;
- 			}
+diff --git a/kernel/cpu.c b/kernel/cpu.c
+index 9121edf..680ed8f 100644
+--- a/kernel/cpu.c
++++ b/kernel/cpu.c
+@@ -1045,9 +1045,13 @@ static int __ref _cpu_down(unsigned int cpu, int tasks_frozen,
+ 	 * to do the further cleanups.
+ 	 */
+ 	ret = cpuhp_down_callbacks(cpu, st, target);
+-	if (ret && st->state == CPUHP_TEARDOWN_CPU && st->state < prev_state) {
+-		cpuhp_reset_state(st, prev_state);
+-		__cpuhp_kick_ap(st);
++	if (ret && st->state < prev_state) {
++		if (st->state == CPUHP_TEARDOWN_CPU) {
++			cpuhp_reset_state(st, prev_state);
++			__cpuhp_kick_ap(st);
++		} else {
++			WARN(1, "DEAD callback error for CPU%d", cpu);
++		}
+ 	}
  
--			if (op->dest.reg == cfi->cfa.base) {
-+			if (op->dest.reg == cfi->cfa.base && !(next_insn && next_insn->hint)) {
- 				WARN_FUNC("unsupported stack register modification",
- 					  insn->sec, insn->offset);
- 				return -1;
-@@ -2433,13 +2434,15 @@ static int propagate_alt_cfi(struct objtool_file *file, struct instruction *insn
- 	return 0;
- }
+ out:
+@@ -2222,6 +2226,15 @@ static ssize_t write_cpuhp_fail(struct device *dev,
+ 		return -EINVAL;
  
--static int handle_insn_ops(struct instruction *insn, struct insn_state *state)
-+static int handle_insn_ops(struct instruction *insn,
-+			   struct instruction *next_insn,
-+			   struct insn_state *state)
- {
- 	struct stack_op *op;
- 
- 	list_for_each_entry(op, &insn->stack_ops, list) {
- 
--		if (update_cfi_state(insn, &state->cfi, op))
-+		if (update_cfi_state(insn, next_insn, &state->cfi, op))
- 			return 1;
- 
- 		if (op->dest.type == OP_DEST_PUSHF) {
-@@ -2719,7 +2722,7 @@ static int validate_branch(struct objtool_file *file, struct symbol *func,
- 				return 0;
- 		}
- 
--		if (handle_insn_ops(insn, &state))
-+		if (handle_insn_ops(insn, next_insn, &state))
- 			return 1;
- 
- 		switch (insn->type) {
+ 	/*
++	 * DEAD callbacks cannot fail...
++	 * ... neither can CPUHP_BRINGUP_CPU during hotunplug. The latter
++	 * triggering STARTING callbacks, a failure in this state would
++	 * hinder rollback.
++	 */
++	if (fail <= CPUHP_BRINGUP_CPU && st->state > CPUHP_BRINGUP_CPU)
++		return -EINVAL;
++
++	/*
+ 	 * Cannot fail anything that doesn't have callbacks.
+ 	 */
+ 	mutex_lock(&cpuhp_state_mutex);
