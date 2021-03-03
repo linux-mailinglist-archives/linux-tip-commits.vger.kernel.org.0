@@ -2,56 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 82B5D32C78B
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  4 Mar 2021 02:11:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 82F7E32C7C2
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  4 Mar 2021 02:12:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358743AbhCDAcP (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 3 Mar 2021 19:32:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37982 "EHLO
+        id S1355676AbhCDAcp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 3 Mar 2021 19:32:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37970 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1842924AbhCCKWg (ORCPT
+        with ESMTP id S1843042AbhCCKYv (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 3 Mar 2021 05:22:36 -0500
+        Wed, 3 Mar 2021 05:24:51 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C809C08EC31;
-        Wed,  3 Mar 2021 01:49:39 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59586C08EC49;
+        Wed,  3 Mar 2021 01:49:41 -0800 (PST)
 Date:   Wed, 03 Mar 2021 09:49:37 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1614764978;
+        s=2020; t=1614764977;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=/kpGDB+dtKyI/ybyOwa/9kKmrICWwBnWQy1b8eKtTxk=;
-        b=JaCWgQGYIVDDJh0wZCn13hIhBcO6ExwkreY9w82DzsluNT0LaJdUV6XmkaUFW8qnGKa8cg
-        9sNM5M0puRk2Stin6II69gte7W8OFQBLEdAiINycR44Pi5ATk7xfAN7sXAMDjmXdE847SG
-        mwqMDIbydYXOTMcPiYVcoKaPSQsFnA86WYXGDVD34lpI4AfHkbZy5QrUVHnNLFtBkoAiVt
-        Iqs+1WdgkcOMp8ik269opzjsB7dAAudMs4g9GPRceMUxSnNqZVjhY+oECXGGltbM2ULW82
-        UN7cm0sKUxJsIL6xiAwugK9FS/KK1BD/3AFko8i5ReJIEz5Kj327pB3xFCsk8A==
+        bh=eXdL0nmNs95bfYZR8480kySxyqBsiglCQla+I5KC730=;
+        b=1Ye5PFAF5yt+CP7sglDD85O7za+yZOMMLCi/CFxCwb5VS5He06sT6DtFByRZBRNcj+KEX7
+        +szveMbuQp+4pqrGHbIWewE82d+6Eb/uQXpBACiX9cXBpJEl29js/Dp2GgHCDSHgLv1xEA
+        11gMtEAdB1yrGAXuaXxKg7laYLPPRYUr1J2B6cF8CSc5lHueCvxyFgzbUX2greIaPLYeEc
+        8zlYeVnMLJWOQ6bpU4T3Z3xl2WChqZn/JnjCbl71A/T3FGLAT1KgJohGgqyXaQR1bEs1ww
+        NcJ8q9oQ/UJBsnd/4+BKuLyugJaOVcROLd/yfyZP49Pgfswp9cEbKMXeWY65zQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1614764978;
+        s=2020e; t=1614764977;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=/kpGDB+dtKyI/ybyOwa/9kKmrICWwBnWQy1b8eKtTxk=;
-        b=xQx2StjM0GskqPkhlZENO7uI8kN7+JmtTSeJS2YEX2CceNI1NS/DCbTuAuL18pPyN1t066
-        +Ql5pYw1IICvDrBw==
+        bh=eXdL0nmNs95bfYZR8480kySxyqBsiglCQla+I5KC730=;
+        b=8Qwnhyj1b2/OAHEyQx1KI+W+3RR7gQ6PW8JsEJIy1u9UOgBQ2Egg2Qbm0sWGc0IN2g5hY9
+        LsKVoK8F270tnuAw==
 From:   "tip-bot2 for Vincent Guittot" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/fair: Reorder newidle_balance pulled_task tests
+Subject: [tip: sched/core] sched/fair: Trigger the update of blocked load on
+ newly idle cpu
 Cc:     Vincent Guittot <vincent.guittot@linaro.org>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Valentin Schneider <valentin.schneider@arm.com>,
         x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20210224133007.28644-6-vincent.guittot@linaro.org>
-References: <20210224133007.28644-6-vincent.guittot@linaro.org>
+In-Reply-To: <20210224133007.28644-7-vincent.guittot@linaro.org>
+References: <20210224133007.28644-7-vincent.guittot@linaro.org>
 MIME-Version: 1.0
-Message-ID: <161476497748.20312.7719009634434548681.tip-bot2@tip-bot2>
+Message-ID: <161476497709.20312.16132151672736837410.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -62,55 +63,128 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     053192dea58da994fb3dd7ad235440accf292a08
-Gitweb:        https://git.kernel.org/tip/053192dea58da994fb3dd7ad235440accf292a08
+Commit-ID:     63dbe695827f0f612a0cdbc82a43a974bcd536cd
+Gitweb:        https://git.kernel.org/tip/63dbe695827f0f612a0cdbc82a43a974bcd536cd
 Author:        Vincent Guittot <vincent.guittot@linaro.org>
-AuthorDate:    Wed, 24 Feb 2021 14:30:05 +01:00
+AuthorDate:    Wed, 24 Feb 2021 14:30:06 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Wed, 03 Mar 2021 10:32:59 +01:00
 
-sched/fair: Reorder newidle_balance pulled_task tests
+sched/fair: Trigger the update of blocked load on newly idle cpu
 
-Reorder the tests and skip useless ones when no load balance has been
-performed and rq lock has not been released.
+Instead of waking up a random and already idle CPU, we can take advantage
+of this_cpu being about to enter idle to run the ILB and update the
+blocked load.
 
 Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Valentin Schneider <valentin.schneider@arm.com>
-Link: https://lkml.kernel.org/r/20210224133007.28644-6-vincent.guittot@linaro.org
+Link: https://lkml.kernel.org/r/20210224133007.28644-7-vincent.guittot@linaro.org
 ---
- kernel/sched/fair.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ kernel/sched/core.c  |  2 +-
+ kernel/sched/fair.c  | 24 +++++++++++++++++++++---
+ kernel/sched/idle.c  |  6 ++++++
+ kernel/sched/sched.h |  7 +++++++
+ 4 files changed, 35 insertions(+), 4 deletions(-)
 
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index f9dfb34..361974e 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -737,7 +737,7 @@ static void nohz_csd_func(void *info)
+ 	/*
+ 	 * Release the rq::nohz_csd.
+ 	 */
+-	flags = atomic_fetch_andnot(NOHZ_KICK_MASK, nohz_flags(cpu));
++	flags = atomic_fetch_andnot(NOHZ_KICK_MASK | NOHZ_NEWILB_KICK, nohz_flags(cpu));
+ 	WARN_ON(!(flags & NOHZ_KICK_MASK));
+ 
+ 	rq->idle_balance = idle_cpu(cpu);
 diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 3c00918..356a245 100644
+index 356a245..e87e1b3 100644
 --- a/kernel/sched/fair.c
 +++ b/kernel/sched/fair.c
-@@ -10584,7 +10584,6 @@ static int newidle_balance(struct rq *this_rq, struct rq_flags *rf)
- 	if (curr_cost > this_rq->max_idle_balance_cost)
- 		this_rq->max_idle_balance_cost = curr_cost;
+@@ -10453,6 +10453,24 @@ static bool nohz_idle_balance(struct rq *this_rq, enum cpu_idle_type idle)
+ 	return true;
+ }
  
--out:
- 	/*
- 	 * While browsing the domains, we released the rq lock, a task could
- 	 * have been enqueued in the meantime. Since we're not going idle,
-@@ -10593,14 +10592,15 @@ out:
- 	if (this_rq->cfs.h_nr_running && !pulled_task)
- 		pulled_task = 1;
- 
--	/* Move the next balance forward */
--	if (time_after(this_rq->next_balance, next_balance))
--		this_rq->next_balance = next_balance;
--
- 	/* Is there a task of a high priority class? */
- 	if (this_rq->nr_running != this_rq->cfs.h_nr_running)
- 		pulled_task = -1;
- 
-+out:
-+	/* Move the next balance forward */
-+	if (time_after(this_rq->next_balance, next_balance))
-+		this_rq->next_balance = next_balance;
++/*
++ * Check if we need to run the ILB for updating blocked load before entering
++ * idle state.
++ */
++void nohz_run_idle_balance(int cpu)
++{
++	unsigned int flags;
 +
- 	if (pulled_task)
- 		this_rq->idle_stamp = 0;
- 	else
++	flags = atomic_fetch_andnot(NOHZ_NEWILB_KICK, nohz_flags(cpu));
++
++	/*
++	 * Update the blocked load only if no SCHED_SOFTIRQ is about to happen
++	 * (ie NOHZ_STATS_KICK set) and will do the same.
++	 */
++	if ((flags == NOHZ_NEWILB_KICK) && !need_resched())
++		_nohz_idle_balance(cpu_rq(cpu), NOHZ_STATS_KICK, CPU_IDLE);
++}
++
+ static void nohz_newidle_balance(struct rq *this_rq)
+ {
+ 	int this_cpu = this_rq->cpu;
+@@ -10474,10 +10492,10 @@ static void nohz_newidle_balance(struct rq *this_rq)
+ 		return;
+ 
+ 	/*
+-	 * Blocked load of idle CPUs need to be updated.
+-	 * Kick an ILB to update statistics.
++	 * Set the need to trigger ILB in order to update blocked load
++	 * before entering idle state.
+ 	 */
+-	kick_ilb(NOHZ_STATS_KICK);
++	atomic_or(NOHZ_NEWILB_KICK, nohz_flags(this_cpu));
+ }
+ 
+ #else /* !CONFIG_NO_HZ_COMMON */
+diff --git a/kernel/sched/idle.c b/kernel/sched/idle.c
+index 7199e6f..7a92d60 100644
+--- a/kernel/sched/idle.c
++++ b/kernel/sched/idle.c
+@@ -261,6 +261,12 @@ exit_idle:
+ static void do_idle(void)
+ {
+ 	int cpu = smp_processor_id();
++
++	/*
++	 * Check if we need to update blocked load
++	 */
++	nohz_run_idle_balance(cpu);
++
+ 	/*
+ 	 * If the arch has a polling bit, we maintain an invariant:
+ 	 *
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index 10a1522..0ddc9a6 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -2385,9 +2385,11 @@ extern void cfs_bandwidth_usage_dec(void);
+ #ifdef CONFIG_NO_HZ_COMMON
+ #define NOHZ_BALANCE_KICK_BIT	0
+ #define NOHZ_STATS_KICK_BIT	1
++#define NOHZ_NEWILB_KICK_BIT	2
+ 
+ #define NOHZ_BALANCE_KICK	BIT(NOHZ_BALANCE_KICK_BIT)
+ #define NOHZ_STATS_KICK		BIT(NOHZ_STATS_KICK_BIT)
++#define NOHZ_NEWILB_KICK	BIT(NOHZ_NEWILB_KICK_BIT)
+ 
+ #define NOHZ_KICK_MASK	(NOHZ_BALANCE_KICK | NOHZ_STATS_KICK)
+ 
+@@ -2398,6 +2400,11 @@ extern void nohz_balance_exit_idle(struct rq *rq);
+ static inline void nohz_balance_exit_idle(struct rq *rq) { }
+ #endif
+ 
++#if defined(CONFIG_SMP) && defined(CONFIG_NO_HZ_COMMON)
++extern void nohz_run_idle_balance(int cpu);
++#else
++static inline void nohz_run_idle_balance(int cpu) { }
++#endif
+ 
+ #ifdef CONFIG_SMP
+ static inline
