@@ -2,55 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7AFBD32FA32
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  6 Mar 2021 12:49:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E3BA032FA48
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  6 Mar 2021 12:55:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230197AbhCFLs4 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 6 Mar 2021 06:48:56 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:34612 "EHLO
+        id S230399AbhCFLzQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 6 Mar 2021 06:55:16 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:34694 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230242AbhCFLso (ORCPT
+        with ESMTP id S229888AbhCFLyf (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 6 Mar 2021 06:48:44 -0500
-Date:   Sat, 06 Mar 2021 11:48:42 -0000
+        Sat, 6 Mar 2021 06:54:35 -0500
+Date:   Sat, 06 Mar 2021 11:54:33 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1615031322;
+        s=2020; t=1615031674;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=m++4Gq1c135Kzg9ILoKnYE+YdL72EsA8c0l4q0RoRGI=;
-        b=Hxx+KyNcUJwlFVT8lCzT7paOILaPl+SH1TyrvlkSW8oP7FkccKEZECH4WdMl9UmvJJspQa
-        zGjsJFlj6A+Il1BkLa8bpwORXHhLy7tL7o6tFj1LU5oZasToYTsxtOhfpevjlUwBon+/Ep
-        6OIbWdgMsqx5Lnut3IlTfXwdTLF1i4ZEkFRH09n2qdh25E6bXZ9Eerxs+lH9RPiRLUgMYS
-        uC/MTSoXpS1zpN5XUkLJNXLuCdWUEFOAukbdiBF0XV67YZGJ48S9zC0VRldak0uOOvsu/K
-        dVB6ONlusi4Wk9Mtt2P6bfsfJ2huUy3judJ4x6C1R1Oi9r4yV8kx5ykGRgy8ow==
+        bh=yKlpfY6iy9/LgLWIyGD0WzTaUCPiIHYhx0Vj6z8rcTs=;
+        b=h1DyokGRmdUKsy8H0yfVWIAAYh2jr7w5bFMOPLTUkJujTgQN08lWyBS6aY1WNc2feYUoUj
+        qEGqEXhuw7HbcApAle2tp4hYJp6G1Iiuaa5yAtGxyVDGBPRqngQDDpo3g6JHI9IRsMJWGz
+        77VoFIZ+1uRLMhI6WfgFMzTzs7b/jgblKzvg1lngnbGWfiKCNsx1i4Ohlkxf55Rw91GcwN
+        FRM4vPKNb/r8i1kyGtMaa23f0GcKVIv9O7jjoqqjF1ctqBnMJnwQ3NjB3k4tkD+Ecd6DVt
+        RFq5NEnfHk5qFIpxW2Jqkp68R0mVan1YG+TZnXMTSBhk0w+CtTELgTPlJS1v7Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1615031322;
+        s=2020e; t=1615031674;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=m++4Gq1c135Kzg9ILoKnYE+YdL72EsA8c0l4q0RoRGI=;
-        b=Tnwv1g39DGUGz9o0mn7d8rORS2YFkV6BxXKwCv2+4Bz9M955Blvo49/uTBOCQwMKHAFYTz
-        uL383um00/MZ3ACA==
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+        bh=yKlpfY6iy9/LgLWIyGD0WzTaUCPiIHYhx0Vj6z8rcTs=;
+        b=qd5pA6jlDqEOkDvmm9ut3aV+FcttcYVDMJnucPXC7tIRCnVXXktyaaB9AmnFqNk2ba6Uwe
+        YNvpuGzVrxie+iAA==
+From:   "tip-bot2 for Barry Song" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] objtool: Allow UNWIND_HINT to suppress dodgy
- stack modifications
-Cc:     Josh Poimboeuf <jpoimboe@redhat.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20210211173626.918498579@infradead.org>
-References: <20210211173626.918498579@infradead.org>
+Subject: [tip: irq/core] genirq: Add IRQF_NO_AUTOEN for request_irq/nmi()
+Cc:     Barry Song <song.bao.hua@hisilicon.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@kernel.org>, dmitry.torokhov@gmail.com,
+        x86@kernel.org, linux-kernel@vger.kernel.org, maz@kernel.org
+In-Reply-To: <20210302224916.13980-2-song.bao.hua@hisilicon.com>
+References: <20210302224916.13980-2-song.bao.hua@hisilicon.com>
 MIME-Version: 1.0
-Message-ID: <161503132223.398.16100360259547234905.tip-bot2@tip-bot2>
+Message-ID: <161503167360.398.13740433416194421791.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,96 +57,107 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the objtool/core branch of tip:
+The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     d54dba41999498b38a40940e1123019d50b26496
-Gitweb:        https://git.kernel.org/tip/d54dba41999498b38a40940e1123019d50b26496
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Thu, 11 Feb 2021 13:03:28 +01:00
+Commit-ID:     cbe16f35bee6880becca6f20d2ebf6b457148552
+Gitweb:        https://git.kernel.org/tip/cbe16f35bee6880becca6f20d2ebf6b457148552
+Author:        Barry Song <song.bao.hua@hisilicon.com>
+AuthorDate:    Wed, 03 Mar 2021 11:49:15 +13:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sat, 06 Mar 2021 12:44:22 +01:00
+CommitterDate: Sat, 06 Mar 2021 12:48:00 +01:00
 
-objtool: Allow UNWIND_HINT to suppress dodgy stack modifications
+genirq: Add IRQF_NO_AUTOEN for request_irq/nmi()
 
-rewind_stack_do_exit()
-	UNWIND_HINT_FUNC
-	/* Prevent any naive code from trying to unwind to our caller. */
+Many drivers don't want interrupts enabled automatically via request_irq().
+So they are handling this issue by either way of the below two:
 
-	xorl	%ebp, %ebp
-	movq	PER_CPU_VAR(cpu_current_top_of_stack), %rax
-	leaq	-PTREGS_SIZE(%rax), %rsp
-	UNWIND_HINT_REGS
+(1)
+  irq_set_status_flags(irq, IRQ_NOAUTOEN);
+  request_irq(dev, irq...);
 
-	call	do_exit
+(2)
+  request_irq(dev, irq...);
+  disable_irq(irq);
 
-Does unspeakable things to the stack, which objtool currently fails to
-detect due to a limitation in instruction decoding. This will be
-rectified after which the above will result in:
+The code in the second way is silly and unsafe. In the small time gap
+between request_irq() and disable_irq(), interrupts can still come.
 
-arch/x86/entry/entry_64.o: warning: objtool: .text+0xab: unsupported stack register modification
+The code in the first way is safe though it's subobtimal.
 
-Allow the UNWIND_HINT on the next instruction to suppress this, it
-will overwrite the state anyway.
+Add a new IRQF_NO_AUTOEN flag which can be handed in by drivers to
+request_irq() and request_nmi(). It prevents the automatic enabling of the
+requested interrupt/nmi in the same safe way as #1 above. With that the
+various usage sites of #1 and #2 above can be simplified and corrected.
 
-Suggested-by: Josh Poimboeuf <jpoimboe@redhat.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Barry Song <song.bao.hua@hisilicon.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Josh Poimboeuf <jpoimboe@redhat.com>
-Tested-by: Nick Desaulniers <ndesaulniers@google.com>
-Link: https://lkml.kernel.org/r/20210211173626.918498579@infradead.org
+Cc: dmitry.torokhov@gmail.com
+Link: https://lore.kernel.org/r/20210302224916.13980-2-song.bao.hua@hisilicon.com
 ---
- tools/objtool/check.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ include/linux/interrupt.h |  4 ++++
+ kernel/irq/manage.c       | 11 +++++++++--
+ 2 files changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 068cdb4..12b8f0f 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -1959,8 +1959,9 @@ static void restore_reg(struct cfi_state *cfi, unsigned char reg)
-  *   41 5d			pop    %r13
-  *   c3				retq
+diff --git a/include/linux/interrupt.h b/include/linux/interrupt.h
+index 967e257..76f1161 100644
+--- a/include/linux/interrupt.h
++++ b/include/linux/interrupt.h
+@@ -61,6 +61,9 @@
+  *                interrupt handler after suspending interrupts. For system
+  *                wakeup devices users need to implement wakeup detection in
+  *                their interrupt handlers.
++ * IRQF_NO_AUTOEN - Don't enable IRQ or NMI automatically when users request it.
++ *                Users will enable it explicitly by enable_irq() or enable_nmi()
++ *                later.
   */
--static int update_cfi_state(struct instruction *insn, struct cfi_state *cfi,
--			     struct stack_op *op)
-+static int update_cfi_state(struct instruction *insn,
-+			    struct instruction *next_insn,
-+			    struct cfi_state *cfi, struct stack_op *op)
- {
- 	struct cfi_reg *cfa = &cfi->cfa;
- 	struct cfi_reg *regs = cfi->regs;
-@@ -2161,7 +2162,7 @@ static int update_cfi_state(struct instruction *insn, struct cfi_state *cfi,
- 				break;
- 			}
+ #define IRQF_SHARED		0x00000080
+ #define IRQF_PROBE_SHARED	0x00000100
+@@ -74,6 +77,7 @@
+ #define IRQF_NO_THREAD		0x00010000
+ #define IRQF_EARLY_RESUME	0x00020000
+ #define IRQF_COND_SUSPEND	0x00040000
++#define IRQF_NO_AUTOEN		0x00080000
  
--			if (op->dest.reg == cfi->cfa.base) {
-+			if (op->dest.reg == cfi->cfa.base && !(next_insn && next_insn->hint)) {
- 				WARN_FUNC("unsupported stack register modification",
- 					  insn->sec, insn->offset);
- 				return -1;
-@@ -2433,13 +2434,15 @@ static int propagate_alt_cfi(struct objtool_file *file, struct instruction *insn
- 	return 0;
- }
+ #define IRQF_TIMER		(__IRQF_TIMER | IRQF_NO_SUSPEND | IRQF_NO_THREAD)
  
--static int handle_insn_ops(struct instruction *insn, struct insn_state *state)
-+static int handle_insn_ops(struct instruction *insn,
-+			   struct instruction *next_insn,
-+			   struct insn_state *state)
- {
- 	struct stack_op *op;
- 
- 	list_for_each_entry(op, &insn->stack_ops, list) {
- 
--		if (update_cfi_state(insn, &state->cfi, op))
-+		if (update_cfi_state(insn, next_insn, &state->cfi, op))
- 			return 1;
- 
- 		if (op->dest.type == OP_DEST_PUSHF) {
-@@ -2719,7 +2722,7 @@ static int validate_branch(struct objtool_file *file, struct symbol *func,
- 				return 0;
+diff --git a/kernel/irq/manage.c b/kernel/irq/manage.c
+index dec3f73..97c231a 100644
+--- a/kernel/irq/manage.c
++++ b/kernel/irq/manage.c
+@@ -1693,7 +1693,8 @@ __setup_irq(unsigned int irq, struct irq_desc *desc, struct irqaction *new)
+ 			irqd_set(&desc->irq_data, IRQD_NO_BALANCING);
  		}
  
--		if (handle_insn_ops(insn, &state))
-+		if (handle_insn_ops(insn, next_insn, &state))
- 			return 1;
+-		if (irq_settings_can_autoenable(desc)) {
++		if (!(new->flags & IRQF_NO_AUTOEN) &&
++		    irq_settings_can_autoenable(desc)) {
+ 			irq_startup(desc, IRQ_RESEND, IRQ_START_COND);
+ 		} else {
+ 			/*
+@@ -2086,10 +2087,15 @@ int request_threaded_irq(unsigned int irq, irq_handler_t handler,
+ 	 * which interrupt is which (messes up the interrupt freeing
+ 	 * logic etc).
+ 	 *
++	 * Also shared interrupts do not go well with disabling auto enable.
++	 * The sharing interrupt might request it while it's still disabled
++	 * and then wait for interrupts forever.
++	 *
+ 	 * Also IRQF_COND_SUSPEND only makes sense for shared interrupts and
+ 	 * it cannot be set along with IRQF_NO_SUSPEND.
+ 	 */
+ 	if (((irqflags & IRQF_SHARED) && !dev_id) ||
++	    ((irqflags & IRQF_SHARED) && (irqflags & IRQF_NO_AUTOEN)) ||
+ 	    (!(irqflags & IRQF_SHARED) && (irqflags & IRQF_COND_SUSPEND)) ||
+ 	    ((irqflags & IRQF_NO_SUSPEND) && (irqflags & IRQF_COND_SUSPEND)))
+ 		return -EINVAL;
+@@ -2245,7 +2251,8 @@ int request_nmi(unsigned int irq, irq_handler_t handler,
  
- 		switch (insn->type) {
+ 	desc = irq_to_desc(irq);
+ 
+-	if (!desc || irq_settings_can_autoenable(desc) ||
++	if (!desc || (irq_settings_can_autoenable(desc) &&
++	    !(irqflags & IRQF_NO_AUTOEN)) ||
+ 	    !irq_settings_can_request(desc) ||
+ 	    WARN_ON(irq_settings_is_per_cpu_devid(desc)) ||
+ 	    !irq_supports_nmi(desc))
