@@ -2,56 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7495832E5FB
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  5 Mar 2021 11:17:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 86E7B32F964
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  6 Mar 2021 11:39:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229589AbhCEKQu (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 5 Mar 2021 05:16:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36526 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229729AbhCEKQT (ORCPT
+        id S229881AbhCFKie (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 6 Mar 2021 05:38:34 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:33888 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230120AbhCFKiW (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 5 Mar 2021 05:16:19 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63B0CC061574;
-        Fri,  5 Mar 2021 02:16:19 -0800 (PST)
-Date:   Fri, 05 Mar 2021 10:16:15 -0000
+        Sat, 6 Mar 2021 05:38:22 -0500
+Date:   Sat, 06 Mar 2021 10:38:19 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1614939376;
+        s=2020; t=1615027100;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=04a0H18vqlVyjuYMpzIQ3AUdAEbsDZ3RETQN/UKYFIs=;
-        b=SaAiazyP7Dr21NPycWSv+FO2vziRF3n/93uJXdZoaDZgjWs2W3Ta2Y9Tt3dSozxdOjZPQ9
-        RjfYacSwkVCl/ENFjQ/veO+v4A2OvCbKPjHrNhJg9LVurVRXhMc5M8jaqzNWkukAgiB9wP
-        fU+U37TcBpV5gj2zZQC64OogYrh1oZZ0iaWXZIUslTuUU220MrjceoisJ5yZPA0nvVGrou
-        zVF5ZprHC0fiOWwGg3T6lE3pUa4mUCj0bhN4vV0pwHTKQnRqRsdGdLt1Undq/cKZFDI9AG
-        McceutUGCYPDOaJeT0l3XHtBeFxLqF2Y4yA4zz8HkMm5gy2L0EMx7WnAM0+cig==
+        bh=zSSfOnWXoj1UNYlFixyPMLY4tAQO/UE7XPtf2ZoG8ko=;
+        b=KD+jVaIDh6UY+bU64o9RG3rpBd52ZTW5CuksOvXMAG0Lhp4+3Va8NKdbGJTFYGYYP4o48W
+        WJEl5jELL+7AUA1hIaWhb7yEQu0hoRUFOGMY6C312wnccNMQpzcUhQlJbKFsRwBj3dNwo0
+        M2FzLiyPeSkfKcBly7akzuGZDpi2B51LvufNMyKo8VtZlUmgwqUKx8q8Ha7DOV3+g8SFGC
+        dUJFkMDylITqdFc+wvcKIuABKLrC5OmOaQd8tFjK4Y6gl/vfgFyR/VMjuBD+jEc/DlduJw
+        UbWIZfT3RLKXT2h44n1fznqF/tlCvKBAjJFj3UIdGR0oz9pOhYjvVPTI+drYFw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1614939376;
+        s=2020e; t=1615027100;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=04a0H18vqlVyjuYMpzIQ3AUdAEbsDZ3RETQN/UKYFIs=;
-        b=YQOb34SeftEK6dssbdyJq3YlthyYu33kM38rQ5XHjGWt8i6Zcrt1TkgRGp1hr8WGQUttoW
-        7Sza71QrH6+YKUAA==
-From:   "tip-bot2 for Andy Lutomirski" <tip-bot2@linutronix.de>
+        bh=zSSfOnWXoj1UNYlFixyPMLY4tAQO/UE7XPtf2ZoG8ko=;
+        b=y+CvJMj0OD+2qmMjS8gI3ytMvWA0nf/funjCiLZ+et5n3mDv/nxGI0CD6VDGcNlJgxHult
+        K6Eh+djeXClk65DA==
+From:   "tip-bot2 for Jiri Slaby" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/entry: Fix entry/exit mismatch on failed fast
- 32-bit syscalls
-Cc:     Andy Lutomirski <luto@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <8c82296ddf803b91f8d1e5eac89e5803ba54ab0e.1614884673.git.luto@kernel.org>
-References: <8c82296ddf803b91f8d1e5eac89e5803ba54ab0e.1614884673.git.luto@kernel.org>
+Subject: [tip: x86/vdso] x86/vdso: Use proper modifier for len's format
+ specifier in extract()
+Cc:     Jiri Slaby <jslaby@suse.cz>, Borislav Petkov <bp@suse.de>,
+        Jarkko Sakkinen <jarkko@kernel.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20210303064357.17056-1-jslaby@suse.cz>
+References: <20210303064357.17056-1-jslaby@suse.cz>
 MIME-Version: 1.0
-Message-ID: <161493937508.398.8936209544992148886.tip-bot2@tip-bot2>
+Message-ID: <161502709986.398.1775215743911969084.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,50 +57,55 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the x86/vdso branch of tip:
 
-Commit-ID:     dabf017539988a9bfc40a38dbafd35c501bacc44
-Gitweb:        https://git.kernel.org/tip/dabf017539988a9bfc40a38dbafd35c501bacc44
-Author:        Andy Lutomirski <luto@kernel.org>
-AuthorDate:    Thu, 04 Mar 2021 11:05:54 -08:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 05 Mar 2021 11:10:13 +01:00
+Commit-ID:     70c9d959226b7c5c48c119e2c1cfc1424f87b023
+Gitweb:        https://git.kernel.org/tip/70c9d959226b7c5c48c119e2c1cfc1424f87b023
+Author:        Jiri Slaby <jslaby@suse.cz>
+AuthorDate:    Wed, 03 Mar 2021 07:43:57 +01:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Sat, 06 Mar 2021 11:34:07 +01:00
 
-x86/entry: Fix entry/exit mismatch on failed fast 32-bit syscalls
+x86/vdso: Use proper modifier for len's format specifier in extract()
 
-On a 32-bit fast syscall that fails to read its arguments from user
-memory, the kernel currently does syscall exit work but not
-syscall entry work.  This confuses audit and ptrace.  For example:
+Commit
 
-    $ ./tools/testing/selftests/x86/syscall_arg_fault_32
-    ...
-    strace: pid 264258: entering, ptrace_syscall_info.op == 2
-    ...
+  8382c668ce4f ("x86/vdso: Add support for exception fixup in vDSO functions")
 
-This is a minimal fix intended for ease of backporting.  A more
-complete cleanup is coming.
+prints length "len" which is size_t.
 
-Fixes: 0b085e68f407 ("x86/entry: Consolidate 32/64 bit syscall entry")
-Signed-off-by: Andy Lutomirski <luto@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/8c82296ddf803b91f8d1e5eac89e5803ba54ab0e.1614884673.git.luto@kernel.org
+Compilers now complain when building on a 32-bit host:
 
+  HOSTCC  arch/x86/entry/vdso/vdso2c
+  ...
+  In file included from arch/x86/entry/vdso/vdso2c.c:162:
+  arch/x86/entry/vdso/vdso2c.h: In function 'extract64':
+  arch/x86/entry/vdso/vdso2c.h:38:52: warning: format '%lu' expects argument of \
+	type 'long unsigned int', but argument 4 has type 'size_t' {aka 'unsigned int'}
+
+So use proper modifier (%zu) for size_t.
+
+ [ bp: Massage commit message. ]
+
+Fixes: 8382c668ce4f ("x86/vdso: Add support for exception fixup in vDSO functions")
+Signed-off-by: Jiri Slaby <jslaby@suse.cz>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Acked-by: Jarkko Sakkinen <jarkko@kernel.org>
+Link: https://lkml.kernel.org/r/20210303064357.17056-1-jslaby@suse.cz
 ---
- arch/x86/entry/common.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/x86/entry/vdso/vdso2c.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/entry/common.c b/arch/x86/entry/common.c
-index a2433ae..4efd39a 100644
---- a/arch/x86/entry/common.c
-+++ b/arch/x86/entry/common.c
-@@ -128,7 +128,8 @@ static noinstr bool __do_fast_syscall_32(struct pt_regs *regs)
- 		regs->ax = -EFAULT;
+diff --git a/arch/x86/entry/vdso/vdso2c.h b/arch/x86/entry/vdso/vdso2c.h
+index 1c7cfac..5264daa 100644
+--- a/arch/x86/entry/vdso/vdso2c.h
++++ b/arch/x86/entry/vdso/vdso2c.h
+@@ -35,7 +35,7 @@ static void BITSFUNC(extract)(const unsigned char *data, size_t data_len,
+ 	if (offset + len > data_len)
+ 		fail("section to extract overruns input data");
  
- 		instrumentation_end();
--		syscall_exit_to_user_mode(regs);
-+		local_irq_disable();
-+		irqentry_exit_to_user_mode(regs);
- 		return false;
- 	}
- 
+-	fprintf(outfile, "static const unsigned char %s[%lu] = {", name, len);
++	fprintf(outfile, "static const unsigned char %s[%zu] = {", name, len);
+ 	BITSFUNC(copy)(outfile, data + offset, len);
+ 	fprintf(outfile, "\n};\n\n");
+ }
