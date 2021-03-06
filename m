@@ -2,18 +2,18 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2704732FA3A
+	by mail.lfdr.de (Postfix) with ESMTP id 7304232FA3B
 	for <lists+linux-tip-commits@lfdr.de>; Sat,  6 Mar 2021 12:49:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230414AbhCFLs5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 6 Mar 2021 06:48:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54018 "EHLO
+        id S230421AbhCFLs6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 6 Mar 2021 06:48:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54016 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230289AbhCFLsr (ORCPT
+        with ESMTP id S230260AbhCFLsr (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Sat, 6 Mar 2021 06:48:47 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C1B1C061760;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DAC5C06174A;
         Sat,  6 Mar 2021 03:48:47 -0800 (PST)
 Date:   Sat, 06 Mar 2021 11:48:39 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
@@ -23,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=t7XsPDXIAlGV/PIFreHDZ+nJ2sDnp5r+3/3683Zy0uE=;
-        b=26RU+fn8WlGLS16VBtlOXTlciZdHts8zh6OjcPeOobmtf3iqyomt/DtOIN8Jb2LxLMpDq0
-        lUbNalIpRqmwkZaQ8voek/k54P9HJba47uZ+Trg0iaMSPceSyFCid/jjWMEpknTFJLVZTZ
-        SR8SHAKj/iSi1v2btOKAud64nyfHVHWim8jDc6+h6gRwKV40p7dXl9moAMdZkGUvPheyGU
-        5i4iXeJDBcU23WcewBFNqamAlIkDjFvqpPFEXG9zCp4m2fcrHWnbq9VIv+cI+Qyj9dgaNQ
-        ETOkgBfO8mPpJWfaOf0JSWA9HLrXHNbcLC+vHl0Cf0tJTSXJA3O/DB5X2XMZAA==
+        bh=VEAyueJVVGy9v6xizSUwnZHFoMMWuDJhvwDU7eP8w0A=;
+        b=IzjAJdH/mbQ7uzCAEWLc3vAvy7dBf2VGZpK/a/FARmamqZDg8K8f3KiDsn5+fMZceTGejb
+        UfIn/uSx5P3p8td5u5ZUYjdeBZKYerTlebPEvEX6DoYoqr0nnczJjM4RqcstRoMbc8a+hI
+        bNXEGn1We3JxR8rwqiqS59vsY3cgoxWIpFViVnOLMNELyLya0yxi7RVVVicGmqqm82RJ0X
+        KzseML1egzv8Z+1Zt/ZkoFGCbkiHOxIrqouSARnMHoSH+8RlXxyUpmSF0J8YARNzqfhGcF
+        dURxs+FrxjDl6mRhYdOflzJG5ZtBJOQuni0WDBrewW/1PhmtY/5dio7CgvmsrQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1615031320;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,23 +36,22 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=t7XsPDXIAlGV/PIFreHDZ+nJ2sDnp5r+3/3683Zy0uE=;
-        b=HF6kCc5SNKyv7aUSapnItt4YxQySPKJVXGEFp5v5xrqKFly6EzG5tfm1/znxNebNwcVEaf
-        ZtVme6wFa9uzvEAg==
+        bh=VEAyueJVVGy9v6xizSUwnZHFoMMWuDJhvwDU7eP8w0A=;
+        b=2K2ZfS1qooMY1osnqxPTzpab/nxatx8egZ4l3HXgdXyVMakG68Rq14h9O8u2Ict5gMeTD3
+        PKikJjxYybULlVAg==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] objtool: Parse options from OBJTOOL_ARGS
-Cc:     Borislav Petkov <bp@alien8.de>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+Subject: [tip: objtool/core] objtool: Collate parse_options() users
+Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Ingo Molnar <mingo@kernel.org>,
         Josh Poimboeuf <jpoimboe@redhat.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210226110004.252553847@infradead.org>
-References: <20210226110004.252553847@infradead.org>
+In-Reply-To: <20210226110004.193108106@infradead.org>
+References: <20210226110004.193108106@infradead.org>
 MIME-Version: 1.0
-Message-ID: <161503131911.398.14570626719309626291.tip-bot2@tip-bot2>
+Message-ID: <161503131954.398.4348232937211103861.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -63,81 +62,85 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     900b4df347bbac4874149a226143a556909faba8
-Gitweb:        https://git.kernel.org/tip/900b4df347bbac4874149a226143a556909faba8
+Commit-ID:     a2f605f9ff57397d05a8e2f282b78a69f574d305
+Gitweb:        https://git.kernel.org/tip/a2f605f9ff57397d05a8e2f282b78a69f574d305
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Fri, 26 Feb 2021 11:32:30 +01:00
+AuthorDate:    Fri, 26 Feb 2021 11:18:24 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Sat, 06 Mar 2021 12:44:23 +01:00
 
-objtool: Parse options from OBJTOOL_ARGS
+objtool: Collate parse_options() users
 
-Teach objtool to parse options from the OBJTOOL_ARGS environment
-variable.
+Ensure there's a single place that parses check_options, in
+preparation for extending where to get options from.
 
-This enables things like:
-
-  $ OBJTOOL_ARGS="--backup" make O=defconfig-build/ kernel/ponies.o
-
-to obtain both defconfig-build/kernel/ponies.o{,.orig} and easily
-inspect what objtool actually did.
-
-Suggested-by: Borislav Petkov <bp@alien8.de>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Acked-by: Josh Poimboeuf <jpoimboe@redhat.com>
-Link: https://lkml.kernel.org/r/20210226110004.252553847@infradead.org
+Link: https://lkml.kernel.org/r/20210226110004.193108106@infradead.org
 ---
- tools/objtool/builtin-check.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ tools/objtool/builtin-check.c           | 14 +++++++++-----
+ tools/objtool/builtin-orc.c             |  5 +----
+ tools/objtool/include/objtool/builtin.h |  2 ++
+ 3 files changed, 12 insertions(+), 9 deletions(-)
 
 diff --git a/tools/objtool/builtin-check.c b/tools/objtool/builtin-check.c
-index 0399752..8b38b5d 100644
+index 97f063d..0399752 100644
 --- a/tools/objtool/builtin-check.c
 +++ b/tools/objtool/builtin-check.c
-@@ -15,6 +15,7 @@
- 
- #include <subcmd/parse-options.h>
- #include <string.h>
-+#include <stdlib.h>
- #include <objtool/builtin.h>
- #include <objtool/objtool.h>
- 
-@@ -26,6 +27,11 @@ static const char * const check_usage[] = {
- 	NULL,
+@@ -42,17 +42,21 @@ const struct option check_options[] = {
+ 	OPT_END(),
  };
  
-+static const char * const env_usage[] = {
-+	"OBJTOOL_ARGS=\"<options>\"",
-+	NULL,
-+};
++int cmd_parse_options(int argc, const char **argv, const char * const usage[])
++{
++	argc = parse_options(argc, argv, check_options, usage, 0);
++	if (argc != 1)
++		usage_with_options(usage, check_options);
++	return argc;
++}
 +
- const struct option check_options[] = {
- 	OPT_BOOLEAN('f', "no-fp", &no_fp, "Skip frame pointer validation"),
- 	OPT_BOOLEAN('u', "no-unreachable", &no_unreachable, "Skip 'unreachable instruction' warnings"),
-@@ -44,6 +50,25 @@ const struct option check_options[] = {
- 
- int cmd_parse_options(int argc, const char **argv, const char * const usage[])
+ int cmd_check(int argc, const char **argv)
  {
-+	const char *envv[16] = { };
-+	char *env;
-+	int envc;
+ 	const char *objname;
+ 	struct objtool_file *file;
+ 	int ret;
+ 
+-	argc = parse_options(argc, argv, check_options, check_usage, 0);
+-
+-	if (argc != 1)
+-		usage_with_options(check_usage, check_options);
+-
++	argc = cmd_parse_options(argc, argv, check_usage);
+ 	objname = argv[0];
+ 
+ 	file = objtool_open_read(objname);
+diff --git a/tools/objtool/builtin-orc.c b/tools/objtool/builtin-orc.c
+index 8273bbf..17f8b93 100644
+--- a/tools/objtool/builtin-orc.c
++++ b/tools/objtool/builtin-orc.c
+@@ -34,10 +34,7 @@ int cmd_orc(int argc, const char **argv)
+ 		struct objtool_file *file;
+ 		int ret;
+ 
+-		argc = parse_options(argc, argv, check_options, orc_usage, 0);
+-		if (argc != 1)
+-			usage_with_options(orc_usage, check_options);
+-
++		argc = cmd_parse_options(argc, argv, orc_usage);
+ 		objname = argv[0];
+ 
+ 		file = objtool_open_read(objname);
+diff --git a/tools/objtool/include/objtool/builtin.h b/tools/objtool/include/objtool/builtin.h
+index d019210..15ac0b7 100644
+--- a/tools/objtool/include/objtool/builtin.h
++++ b/tools/objtool/include/objtool/builtin.h
+@@ -11,6 +11,8 @@ extern const struct option check_options[];
+ extern bool no_fp, no_unreachable, retpoline, module, backtrace, uaccess, stats,
+             validate_dup, vmlinux, mcount, noinstr, backup;
+ 
++extern int cmd_parse_options(int argc, const char **argv, const char * const usage[]);
 +
-+	env = getenv("OBJTOOL_ARGS");
-+	if (env) {
-+		envv[0] = "OBJTOOL_ARGS";
-+		for (envc = 1; envc < ARRAY_SIZE(envv); ) {
-+			envv[envc++] = env;
-+			env = strchr(env, ' ');
-+			if (!env)
-+				break;
-+			*env = '\0';
-+			env++;
-+		}
-+
-+		parse_options(envc, envv, check_options, env_usage, 0);
-+	}
-+
- 	argc = parse_options(argc, argv, check_options, usage, 0);
- 	if (argc != 1)
- 		usage_with_options(usage, check_options);
+ extern int cmd_check(int argc, const char **argv);
+ extern int cmd_orc(int argc, const char **argv);
+ 
