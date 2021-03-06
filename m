@@ -2,53 +2,58 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 19B1832F96C
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  6 Mar 2021 11:44:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C8F5932F970
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  6 Mar 2021 11:45:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229881AbhCFKoO (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 6 Mar 2021 05:44:14 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:33938 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229833AbhCFKoM (ORCPT
+        id S230192AbhCFKos (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 6 Mar 2021 05:44:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40146 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229988AbhCFKoP (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 6 Mar 2021 05:44:12 -0500
+        Sat, 6 Mar 2021 05:44:15 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 671B4C06175F;
+        Sat,  6 Mar 2021 02:44:14 -0800 (PST)
 Date:   Sat, 06 Mar 2021 10:44:10 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1615027450;
+        s=2020; t=1615027451;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=qEhVbtk5QlCCXgUlRyRU8XGF3KSq9HuPYtLcmCUdGVU=;
-        b=b/sTxRfGuqBhh9k7Uel2nUTz0ANtjDHV/QTlHTWW/rfKrk2kV3hnqASy+nze7gpCovtoPq
-        Uov3ezJmdGD6DqRfYuSRcIlFUlEfgXzLGg7hsynZ2LhF90LSyi2UPcgeyhgPrLUidX0Gi+
-        Mk68PebTOraNkwr7xO5PPeEWrAq12bkjFyFHy1Ubm4NK3fB3I9me0ggInsIxVhXAcbEdDH
-        +3HsUNHtRqtDctYpQD5UTygs5kFsJ+t8/SaPXc4/Jcaikgl1dazQxLOyQiC/ofdEeR+CVs
-        e71zWCC4v74S8+mOlGBwnTR4L0tq5ID5s7q6c7gpZ1ecRq8YrSK8ApMKiy2gXQ==
+        bh=i3TbMPyJ4q/rEX0v+j8qU/SMu9e5MJJ994TgIEawHMw=;
+        b=ZZvGntQAuo7zpdixrttTx6iN+dAHVY0RAtxL7/JIGbDrnZFxas6adxhIi1zzprIfNm4Dvv
+        UC9DzooIldwFLN/qnPJZW8WfFk1nnaN0bIlTnJBtUYvKUDNcopfBAEG5esGTXP5Xl8V1lx
+        dtwMB3qxbIOSrAycg/ID8sBCypbGWZuGAJagRm/HeYXc40BiaHHMQygmMUulDYyhMqCC4M
+        gVMWNW/macHgepj2WQodcg2vHXFlQ4ys0aq4bJ4uVL3ANlE/tTrrgjg52EA77+L8jgyOaA
+        zu1eiwui6itWIbB867+l8h97H3nY+VZ6lRBoELQ7zKPENNhYelpbeZcFu4oTUA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1615027450;
+        s=2020e; t=1615027451;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=qEhVbtk5QlCCXgUlRyRU8XGF3KSq9HuPYtLcmCUdGVU=;
-        b=FI/Yn640cVPagVt2U8JGg/i3LHLVkz8xBgl8ohBixfeeRtAlXdM0a2kTSmwedh7UawJlxh
-        AOaQQUs7FiutP/Dw==
+        bh=i3TbMPyJ4q/rEX0v+j8qU/SMu9e5MJJ994TgIEawHMw=;
+        b=dO7gnkib5wyv5Jn5A1oRyLHR3K5z/ecUTxy2cMVaznE0+ecnVNMrcYiDRTPs5WsKWUfsIQ
+        w13mHnLjreIYdzBA==
 From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/unwind/orc: Silence warnings caused by missing ORC data
-Cc:     Josh Poimboeuf <jpoimboe@redhat.com>,
+Subject: [tip: x86/urgent] x86/unwind/orc: Disable KASAN checking in the ORC
+ unwinder, part 2
+Cc:     Ivan Babrou <ivan@cloudflare.com>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Ivan Babrou <ivan@cloudflare.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <06d02c4bbb220bd31668db579278b0352538efbb.1612534649.git.jpoimboe@redhat.com>
-References: <06d02c4bbb220bd31668db579278b0352538efbb.1612534649.git.jpoimboe@redhat.com>
+        "Steven Rostedt (VMware)" <rostedt@goodmis.org>, stable@kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <9583327904ebbbeda399eca9c56d6c7085ac20fe.1612534649.git.jpoimboe@redhat.com>
+References: <9583327904ebbbeda399eca9c56d6c7085ac20fe.1612534649.git.jpoimboe@redhat.com>
 MIME-Version: 1.0
-Message-ID: <161502745026.398.15873955078916279742.tip-bot2@tip-bot2>
+Message-ID: <161502745059.398.8274137708006500653.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,42 +64,90 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     d072f941c1e234f8495cc4828370b180318bf49b
-Gitweb:        https://git.kernel.org/tip/d072f941c1e234f8495cc4828370b180318bf49b
+Commit-ID:     8bd7b3980ca62904814d536b3a2453001992a0c3
+Gitweb:        https://git.kernel.org/tip/8bd7b3980ca62904814d536b3a2453001992a0c3
 Author:        Josh Poimboeuf <jpoimboe@redhat.com>
-AuthorDate:    Fri, 05 Feb 2021 08:24:03 -06:00
+AuthorDate:    Fri, 05 Feb 2021 08:24:02 -06:00
 Committer:     Borislav Petkov <bp@suse.de>
 CommitterDate: Sat, 06 Mar 2021 11:37:00 +01:00
 
-x86/unwind/orc: Silence warnings caused by missing ORC data
+x86/unwind/orc: Disable KASAN checking in the ORC unwinder, part 2
 
-The ORC unwinder attempts to fall back to frame pointers when ORC data
-is missing for a given instruction.  It sets state->error, but then
-tries to keep going as a best-effort type of thing.  That may result in
-further warnings if the unwinder gets lost.
+KASAN reserves "redzone" areas between stack frames in order to detect
+stack overruns.  A read or write to such an area triggers a KASAN
+"stack-out-of-bounds" BUG.
 
-Until we have some way to register generated code with the unwinder,
-missing ORC will be expected, and occasionally going off the rails will
-also be expected.  So don't warn about it.
+Normally, the ORC unwinder stays in-bounds and doesn't access the
+redzone.  But sometimes it can't find ORC metadata for a given
+instruction.  This can happen for code which is missing ORC metadata, or
+for generated code.  In such cases, the unwinder attempts to fall back
+to frame pointers, as a best-effort type thing.
 
+This fallback often works, but when it doesn't, the unwinder can get
+confused and go off into the weeds into the KASAN redzone, triggering
+the aforementioned KASAN BUG.
+
+But in this case, the unwinder's confusion is actually harmless and
+working as designed.  It already has checks in place to prevent
+off-stack accesses, but those checks get short-circuited by the KASAN
+BUG.  And a BUG is a lot more disruptive than a harmless unwinder
+warning.
+
+Disable the KASAN checks by using READ_ONCE_NOCHECK() for all stack
+accesses.  This finishes the job started by commit 881125bfe65b
+("x86/unwind: Disable KASAN checking in the ORC unwinder"), which only
+partially fixed the issue.
+
+Fixes: ee9f8fce9964 ("x86/unwind: Add the ORC unwinder")
+Reported-by: Ivan Babrou <ivan@cloudflare.com>
 Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
 Tested-by: Ivan Babrou <ivan@cloudflare.com>
-Link: https://lkml.kernel.org/r/06d02c4bbb220bd31668db579278b0352538efbb.1612534649.git.jpoimboe@redhat.com
+Cc: stable@kernel.org
+Link: https://lkml.kernel.org/r/9583327904ebbbeda399eca9c56d6c7085ac20fe.1612534649.git.jpoimboe@redhat.com
 ---
- arch/x86/kernel/unwind_orc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/unwind_orc.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/arch/x86/kernel/unwind_orc.c b/arch/x86/kernel/unwind_orc.c
-index 1bcc14c..a120253 100644
+index 2a1d47f..1bcc14c 100644
 --- a/arch/x86/kernel/unwind_orc.c
 +++ b/arch/x86/kernel/unwind_orc.c
-@@ -13,7 +13,7 @@
+@@ -367,8 +367,8 @@ static bool deref_stack_regs(struct unwind_state *state, unsigned long addr,
+ 	if (!stack_access_ok(state, addr, sizeof(struct pt_regs)))
+ 		return false;
  
- #define orc_warn_current(args...)					\
- ({									\
--	if (state->task == current)					\
-+	if (state->task == current && !state->error)			\
- 		orc_warn(args);						\
- })
+-	*ip = regs->ip;
+-	*sp = regs->sp;
++	*ip = READ_ONCE_NOCHECK(regs->ip);
++	*sp = READ_ONCE_NOCHECK(regs->sp);
+ 	return true;
+ }
+ 
+@@ -380,8 +380,8 @@ static bool deref_stack_iret_regs(struct unwind_state *state, unsigned long addr
+ 	if (!stack_access_ok(state, addr, IRET_FRAME_SIZE))
+ 		return false;
+ 
+-	*ip = regs->ip;
+-	*sp = regs->sp;
++	*ip = READ_ONCE_NOCHECK(regs->ip);
++	*sp = READ_ONCE_NOCHECK(regs->sp);
+ 	return true;
+ }
+ 
+@@ -402,12 +402,12 @@ static bool get_reg(struct unwind_state *state, unsigned int reg_off,
+ 		return false;
+ 
+ 	if (state->full_regs) {
+-		*val = ((unsigned long *)state->regs)[reg];
++		*val = READ_ONCE_NOCHECK(((unsigned long *)state->regs)[reg]);
+ 		return true;
+ 	}
+ 
+ 	if (state->prev_regs) {
+-		*val = ((unsigned long *)state->prev_regs)[reg];
++		*val = READ_ONCE_NOCHECK(((unsigned long *)state->prev_regs)[reg]);
+ 		return true;
+ 	}
  
