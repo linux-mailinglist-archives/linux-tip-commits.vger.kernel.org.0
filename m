@@ -2,57 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 603B832FA52
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  6 Mar 2021 12:55:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 41EA332FA64
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  6 Mar 2021 13:01:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230492AbhCFLzU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 6 Mar 2021 06:55:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55292 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230373AbhCFLyn (ORCPT
+        id S230197AbhCFMBM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 6 Mar 2021 07:01:12 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:34822 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230034AbhCFMA4 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 6 Mar 2021 06:54:43 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35B3AC06174A;
-        Sat,  6 Mar 2021 03:54:43 -0800 (PST)
-Date:   Sat, 06 Mar 2021 11:54:41 -0000
+        Sat, 6 Mar 2021 07:00:56 -0500
+Date:   Sat, 06 Mar 2021 12:00:54 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1615031681;
+        s=2020; t=1615032055;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=USEARG+v1+8bR50yYQ/qjJw1H0h2AdTjblRbi4GbxZA=;
-        b=LC7r94pysGscWGKEMWdU9rgHvWsy6ka3kr4at0r0o/NvTGaRN7oVKlVggjzxMPE+Lmtzo+
-        5Fp15IYko5cC1T7+2FMZEHDzmVvE6t2eFwTZKtzhA8xLWuDib6JrCNEkcbtSGpf5Zqzcrt
-        vNcPiAiqF7JVCuMq10cNf86jE5uyXUtPzEDnHHke+Z98+LboxFjcWzmFq3Str4lMw4uxT/
-        LZA7mo9LIYU2G7fiLqEZEwY30fZ3RZyfZhlgAUzDHQtEBMFTyPizXZQufXNLX/m//mWkpW
-        GmLHh5f3/HXcnP1dBxZnZeMuwIa0IGG+MI5Di0d3s5oU7wWrcKxYkUsVU6gqdA==
+        bh=mfmu88nDWL095cg1TE55X2DyeYZIxYhjeRaFv/oD/2Y=;
+        b=h3ZTMxvfXwLT0O5pXpsxzAbS9e5zPj4/JUTO8DLUgd2exWrFi+Zzt8Ala6tiGeOUzRcDtD
+        TO6+MGm/HLjKt2zxDb5/RyXQ1NnTv55Ly/j9Sgnro+3sqGGHPGfDCoK3lUsXlV52sTnXcd
+        shl8XC9+2ItiE8Q7cBRrWOtywABCXA9pd5EPJ8VMBo45N1KTwrDPH6iSj1wYeJPMO0A0Wj
+        mKQMwnIXjeEFhxqCw8dcTFj/oZXYPyaeRQTDf1nOZ+8r5IK4EZTlueuuJPYmJSYY8fAenq
+        IB5Y4yq+StkydAoT/5f7ypyWi/5mxX47qYIyhPvsyrmvVlitpsJZ9dUEFGZ16g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1615031681;
+        s=2020e; t=1615032055;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=USEARG+v1+8bR50yYQ/qjJw1H0h2AdTjblRbi4GbxZA=;
-        b=5cSAl/uSjHDfvuTFNYk/GqLnojOKofyupJVdSyrzXASd9XhIjtH4najt+zGJcDNt5NcabE
-        yPGwj9PNHxaNJqAg==
-From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
+        bh=mfmu88nDWL095cg1TE55X2DyeYZIxYhjeRaFv/oD/2Y=;
+        b=nw/3m3ravBrAiU3nUdNCxqpzI/QPlY9MR8PjIlfQbiwSFLW+CQ9WrDTvjfEcstGAr06aK/
+        dwFpqnlNXo0LdSAA==
+From:   "tip-bot2 for Anna-Maria Behnsen" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf/core: Flush PMU internal buffers for per-CPU events
-Cc:     Gabriel Marin <gmx@google.com>, Namhyung Kim <namhyung@kernel.org>,
-        Kan Liang <kan.liang@linux.intel.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+Subject: [tip: timers/urgent] hrtimer: Update softirq_expires_next correctly
+ after __hrtimer_get_next_event()
+Cc:     Mikael Beckius <mikael.beckius@windriver.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "Anna-Maria Behnsen" <anna-maria@linutronix.de>,
         Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20201130193842.10569-1-kan.liang@linux.intel.com>
-References: <20201130193842.10569-1-kan.liang@linux.intel.com>
+In-Reply-To: <20210223160240.27518-1-anna-maria@linutronix.de>
+References: <20210223160240.27518-1-anna-maria@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <161503168119.398.11605082976787751960.tip-bot2@tip-bot2>
+Message-ID: <161503205468.398.17874260863236032046.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,178 +59,155 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/urgent branch of tip:
+The following commit has been merged into the timers/urgent branch of tip:
 
-Commit-ID:     a5398bffc01fe044848c5024e5e867e407f239b8
-Gitweb:        https://git.kernel.org/tip/a5398bffc01fe044848c5024e5e867e407f239b8
-Author:        Kan Liang <kan.liang@linux.intel.com>
-AuthorDate:    Mon, 30 Nov 2020 11:38:40 -08:00
+Commit-ID:     eca8f0c80a005aea84df507a446fc0154fc55a32
+Gitweb:        https://git.kernel.org/tip/eca8f0c80a005aea84df507a446fc0154fc55a32
+Author:        Anna-Maria Behnsen <anna-maria@linutronix.de>
+AuthorDate:    Tue, 23 Feb 2021 17:02:40 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sat, 06 Mar 2021 12:52:39 +01:00
+CommitterDate: Sat, 06 Mar 2021 12:53:47 +01:00
 
-perf/core: Flush PMU internal buffers for per-CPU events
+hrtimer: Update softirq_expires_next correctly after __hrtimer_get_next_event()
 
-Sometimes the PMU internal buffers have to be flushed for per-CPU events
-during a context switch, e.g., large PEBS. Otherwise, the perf tool may
-report samples in locations that do not belong to the process where the
-samples are processed in, because PEBS does not tag samples with PID/TID.
+hrtimer_force_reprogram() and hrtimer_interrupt() invokes
+__hrtimer_get_next_event() to find the earliest expiry time of hrtimer
+bases. __hrtimer_get_next_event() does not update
+cpu_base::[softirq_]_expires_next to preserve reprogramming logic. That
+needs to be done at the callsites.
 
-The current code only flush the buffers for a per-task event. It doesn't
-check a per-CPU event.
+hrtimer_force_reprogram() updates cpu_base::softirq_expires_next only when
+the first expiring timer is a softirq timer and the soft interrupt is not
+activated. That's wrong because cpu_base::softirq_expires_next is left
+stale when the first expiring timer of all bases is a timer which expires
+in hard interrupt context. hrtimer_interrupt() does never update
+cpu_base::softirq_expires_next which is wrong too.
 
-Add a new event state flag, PERF_ATTACH_SCHED_CB, to indicate that the
-PMU internal buffers have to be flushed for this event during a context
-switch.
+That becomes a problem when clock_settime() sets CLOCK_REALTIME forward and
+the first soft expiring timer is in the CLOCK_REALTIME_SOFT base. Setting
+CLOCK_REALTIME forward moves the clock MONOTONIC based expiry time of that
+timer before the stale cpu_base::softirq_expires_next.
 
-Add sched_cb_entry and perf_sched_cb_usages back to track the PMU/cpuctx
-which is required to be flushed.
+cpu_base::softirq_expires_next is cached to make the check for raising the
+soft interrupt fast. In the above case the soft interrupt won't be raised
+until clock monotonic reaches the stale cpu_base::softirq_expires_next
+value. That's incorrect, but what's worse it that if the softirq timer
+becomes the first expiring timer of all clock bases after the hard expiry
+timer has been handled the reprogramming of the clockevent from
+hrtimer_interrupt() will result in an interrupt storm. That happens because
+the reprogramming does not use cpu_base::softirq_expires_next, it uses
+__hrtimer_get_next_event() which returns the actual expiry time. Once clock
+MONOTONIC reaches cpu_base::softirq_expires_next the soft interrupt is
+raised and the storm subsides.
 
-Only need to invoke the sched_task() for per-CPU events in this patch.
-The per-task events have been handled in perf_event_context_sched_in/out
-already.
+Change the logic in hrtimer_force_reprogram() to evaluate the soft and hard
+bases seperately, update softirq_expires_next and handle the case when a
+soft expiring timer is the first of all bases by comparing the expiry times
+and updating the required cpu base fields. Split this functionality into a
+separate function to be able to use it in hrtimer_interrupt() as well
+without copy paste.
 
-Fixes: 9c964efa4330 ("perf/x86/intel: Drain the PEBS buffer during context switches")
-Reported-by: Gabriel Marin <gmx@google.com>
-Originally-by: Namhyung Kim <namhyung@kernel.org>
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Fixes: da70160462e ("hrtimer: Implement support for softirq based hrtimers")
+Reported-by: Mikael Beckius <mikael.beckius@windriver.com>
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Mikael Beckius <mikael.beckius@windriver.com>
+Signed-off-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lkml.kernel.org/r/20201130193842.10569-1-kan.liang@linux.intel.com
+Link: https://lore.kernel.org/r/20210223160240.27518-1-anna-maria@linutronix.de
 ---
- include/linux/perf_event.h |  2 ++-
- kernel/events/core.c       | 42 +++++++++++++++++++++++++++++++++----
- 2 files changed, 40 insertions(+), 4 deletions(-)
+ kernel/time/hrtimer.c | 60 +++++++++++++++++++++++++++---------------
+ 1 file changed, 39 insertions(+), 21 deletions(-)
 
-diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
-index fab42cf..3f7f89e 100644
---- a/include/linux/perf_event.h
-+++ b/include/linux/perf_event.h
-@@ -606,6 +606,7 @@ struct swevent_hlist {
- #define PERF_ATTACH_TASK	0x04
- #define PERF_ATTACH_TASK_DATA	0x08
- #define PERF_ATTACH_ITRACE	0x10
-+#define PERF_ATTACH_SCHED_CB	0x20
- 
- struct perf_cgroup;
- struct perf_buffer;
-@@ -872,6 +873,7 @@ struct perf_cpu_context {
- 	struct list_head		cgrp_cpuctx_entry;
- #endif
- 
-+	struct list_head		sched_cb_entry;
- 	int				sched_cb_usage;
- 
- 	int				online;
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 0aeca5f..03db40f 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -386,6 +386,7 @@ static DEFINE_MUTEX(perf_sched_mutex);
- static atomic_t perf_sched_count;
- 
- static DEFINE_PER_CPU(atomic_t, perf_cgroup_events);
-+static DEFINE_PER_CPU(int, perf_sched_cb_usages);
- static DEFINE_PER_CPU(struct pmu_event_list, pmu_sb_events);
- 
- static atomic_t nr_mmap_events __read_mostly;
-@@ -3461,11 +3462,16 @@ unlock:
- 	}
- }
- 
-+static DEFINE_PER_CPU(struct list_head, sched_cb_list);
-+
- void perf_sched_cb_dec(struct pmu *pmu)
- {
- 	struct perf_cpu_context *cpuctx = this_cpu_ptr(pmu->pmu_cpu_context);
- 
--	--cpuctx->sched_cb_usage;
-+	this_cpu_dec(perf_sched_cb_usages);
-+
-+	if (!--cpuctx->sched_cb_usage)
-+		list_del(&cpuctx->sched_cb_entry);
- }
- 
- 
-@@ -3473,7 +3479,10 @@ void perf_sched_cb_inc(struct pmu *pmu)
- {
- 	struct perf_cpu_context *cpuctx = this_cpu_ptr(pmu->pmu_cpu_context);
- 
--	cpuctx->sched_cb_usage++;
-+	if (!cpuctx->sched_cb_usage++)
-+		list_add(&cpuctx->sched_cb_entry, this_cpu_ptr(&sched_cb_list));
-+
-+	this_cpu_inc(perf_sched_cb_usages);
+diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
+index 743c852..788b9d1 100644
+--- a/kernel/time/hrtimer.c
++++ b/kernel/time/hrtimer.c
+@@ -546,8 +546,11 @@ static ktime_t __hrtimer_next_event_base(struct hrtimer_cpu_base *cpu_base,
  }
  
  /*
-@@ -3502,6 +3511,24 @@ static void __perf_pmu_sched_task(struct perf_cpu_context *cpuctx, bool sched_in
- 	perf_ctx_unlock(cpuctx, cpuctx->task_ctx);
+- * Recomputes cpu_base::*next_timer and returns the earliest expires_next but
+- * does not set cpu_base::*expires_next, that is done by hrtimer_reprogram.
++ * Recomputes cpu_base::*next_timer and returns the earliest expires_next
++ * but does not set cpu_base::*expires_next, that is done by
++ * hrtimer[_force]_reprogram and hrtimer_interrupt only. When updating
++ * cpu_base::*expires_next right away, reprogramming logic would no longer
++ * work.
+  *
+  * When a softirq is pending, we can ignore the HRTIMER_ACTIVE_SOFT bases,
+  * those timers will get run whenever the softirq gets handled, at the end of
+@@ -588,6 +591,37 @@ __hrtimer_get_next_event(struct hrtimer_cpu_base *cpu_base, unsigned int active_
+ 	return expires_next;
  }
  
-+static void perf_pmu_sched_task(struct task_struct *prev,
-+				struct task_struct *next,
-+				bool sched_in)
++static ktime_t hrtimer_update_next_event(struct hrtimer_cpu_base *cpu_base)
 +{
-+	struct perf_cpu_context *cpuctx;
++	ktime_t expires_next, soft = KTIME_MAX;
 +
-+	if (prev == next)
-+		return;
-+
-+	list_for_each_entry(cpuctx, this_cpu_ptr(&sched_cb_list), sched_cb_entry) {
-+		/* will be handled in perf_event_context_sched_in/out */
-+		if (cpuctx->task_ctx)
-+			continue;
-+
-+		__perf_pmu_sched_task(cpuctx, sched_in);
++	/*
++	 * If the soft interrupt has already been activated, ignore the
++	 * soft bases. They will be handled in the already raised soft
++	 * interrupt.
++	 */
++	if (!cpu_base->softirq_activated) {
++		soft = __hrtimer_get_next_event(cpu_base, HRTIMER_ACTIVE_SOFT);
++		/*
++		 * Update the soft expiry time. clock_settime() might have
++		 * affected it.
++		 */
++		cpu_base->softirq_expires_next = soft;
 +	}
++
++	expires_next = __hrtimer_get_next_event(cpu_base, HRTIMER_ACTIVE_HARD);
++	/*
++	 * If a softirq timer is expiring first, update cpu_base->next_timer
++	 * and program the hardware with the soft expiry time.
++	 */
++	if (expires_next > soft) {
++		cpu_base->next_timer = cpu_base->softirq_next_timer;
++		expires_next = soft;
++	}
++
++	return expires_next;
 +}
 +
- static void perf_event_switch(struct task_struct *task,
- 			      struct task_struct *next_prev, bool sched_in);
- 
-@@ -3524,6 +3551,9 @@ void __perf_event_task_sched_out(struct task_struct *task,
+ static inline ktime_t hrtimer_update_base(struct hrtimer_cpu_base *base)
  {
- 	int ctxn;
+ 	ktime_t *offs_real = &base->clock_base[HRTIMER_BASE_REALTIME].offset;
+@@ -628,23 +662,7 @@ hrtimer_force_reprogram(struct hrtimer_cpu_base *cpu_base, int skip_equal)
+ {
+ 	ktime_t expires_next;
  
-+	if (__this_cpu_read(perf_sched_cb_usages))
-+		perf_pmu_sched_task(task, next, false);
-+
- 	if (atomic_read(&nr_switch_events))
- 		perf_event_switch(task, next, false);
+-	/*
+-	 * Find the current next expiration time.
+-	 */
+-	expires_next = __hrtimer_get_next_event(cpu_base, HRTIMER_ACTIVE_ALL);
+-
+-	if (cpu_base->next_timer && cpu_base->next_timer->is_soft) {
+-		/*
+-		 * When the softirq is activated, hrtimer has to be
+-		 * programmed with the first hard hrtimer because soft
+-		 * timer interrupt could occur too late.
+-		 */
+-		if (cpu_base->softirq_activated)
+-			expires_next = __hrtimer_get_next_event(cpu_base,
+-								HRTIMER_ACTIVE_HARD);
+-		else
+-			cpu_base->softirq_expires_next = expires_next;
+-	}
++	expires_next = hrtimer_update_next_event(cpu_base);
  
-@@ -3832,6 +3862,9 @@ void __perf_event_task_sched_in(struct task_struct *prev,
- 
- 	if (atomic_read(&nr_switch_events))
- 		perf_event_switch(task, prev, true);
-+
-+	if (__this_cpu_read(perf_sched_cb_usages))
-+		perf_pmu_sched_task(prev, task, true);
- }
- 
- static u64 perf_calculate_period(struct perf_event *event, u64 nsec, u64 count)
-@@ -4656,7 +4689,7 @@ static void unaccount_event(struct perf_event *event)
- 	if (event->parent)
+ 	if (skip_equal && expires_next == cpu_base->expires_next)
  		return;
+@@ -1644,8 +1662,8 @@ retry:
  
--	if (event->attach_state & PERF_ATTACH_TASK)
-+	if (event->attach_state & (PERF_ATTACH_TASK | PERF_ATTACH_SCHED_CB))
- 		dec = true;
- 	if (event->attr.mmap || event->attr.mmap_data)
- 		atomic_dec(&nr_mmap_events);
-@@ -11175,7 +11208,7 @@ static void account_event(struct perf_event *event)
- 	if (event->parent)
- 		return;
+ 	__hrtimer_run_queues(cpu_base, now, flags, HRTIMER_ACTIVE_HARD);
  
--	if (event->attach_state & PERF_ATTACH_TASK)
-+	if (event->attach_state & (PERF_ATTACH_TASK | PERF_ATTACH_SCHED_CB))
- 		inc = true;
- 	if (event->attr.mmap || event->attr.mmap_data)
- 		atomic_inc(&nr_mmap_events);
-@@ -12972,6 +13005,7 @@ static void __init perf_event_init_all_cpus(void)
- #ifdef CONFIG_CGROUP_PERF
- 		INIT_LIST_HEAD(&per_cpu(cgrp_cpuctx_list, cpu));
- #endif
-+		INIT_LIST_HEAD(&per_cpu(sched_cb_list, cpu));
- 	}
- }
- 
+-	/* Reevaluate the clock bases for the next expiry */
+-	expires_next = __hrtimer_get_next_event(cpu_base, HRTIMER_ACTIVE_ALL);
++	/* Reevaluate the clock bases for the [soft] next expiry */
++	expires_next = hrtimer_update_next_event(cpu_base);
+ 	/*
+ 	 * Store the new expiry value so the migration code can verify
+ 	 * against it.
