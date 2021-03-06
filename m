@@ -2,50 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CDA4432FA4E
+	by mail.lfdr.de (Postfix) with ESMTP id 81A8D32FA4D
 	for <lists+linux-tip-commits@lfdr.de>; Sat,  6 Mar 2021 12:55:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230461AbhCFLzT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 6 Mar 2021 06:55:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55254 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230329AbhCFLyh (ORCPT
+        id S229888AbhCFLzR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 6 Mar 2021 06:55:17 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:34758 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230323AbhCFLyh (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Sat, 6 Mar 2021 06:54:37 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC2C7C06175F;
-        Sat,  6 Mar 2021 03:54:36 -0800 (PST)
-Date:   Sat, 06 Mar 2021 11:54:34 -0000
+Date:   Sat, 06 Mar 2021 11:54:35 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1615031675;
+        s=2020; t=1615031676;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=o2ICOZ8uRP5ii5RQMqIZgNoYqIRrm6M4uwb7LNgNO3s=;
-        b=sZ/OC53e7d86B6ao1nN2cP7609XHknInvkd6qbn2aQ2hT/KW75EBXZ2VLcSMqx192tnAJ8
-        dhQq1JrD+64hP4ITr3/MQeaIFnqRQX2BM+kB+J8ePl8XmxaZh3/3qoguKXQOrdQP9LUioH
-        +OLbbqyP2ChJcEYlnaMb47XLURA1biTy6KpidgzqZliG5Jkk+iYO/YM0BmpeV/YSlob/WR
-        cv5kh2j054xDakunOnac46CNXlnXJUYLIuj0V9h1vIZySF3MYrUIOwQa1yAlv/yf1okdt3
-        3ZIus92Bxt4PGwuvGest0cS3ZteTFGxjwAt9S/PG66IizV8Wp2jHbk8GPZKvqA==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=21PtMgo5esx0f9qYfMiOPAKEeGiNP5JdjJ7pHFapubQ=;
+        b=I8LCW2fM+YuCQoo4IckPAyyzIQaKhaNq8X0ghHfPmB2Q4giDpI9k1FZxNrIp+xMxntZ1gq
+        eTlkRBeEj05Sa/9cQkVzcdYgCFCCgTmawS9/DwxtmgGVWjotRtUMUwPwagy6Wp6fxheFtT
+        dz/iMqAUTKYDl37Fifa0OoIgFGIkNcgKjckFiZtjFWQYEwikIV+6SxA9pBcDf3e9txCeX9
+        q7D8XKyXkhkkTjF1uq05nxWwAHR2AL19GLUkvjAR9FdXNvKYVR4c5i1snEFTWlbmiUwImW
+        sxLdrnJ4OWMM7CvFKL+ULdxMyb+6qKSEVQndeepgpjfV+Blc3y+anUyMAPkHpw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1615031675;
+        s=2020e; t=1615031676;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=o2ICOZ8uRP5ii5RQMqIZgNoYqIRrm6M4uwb7LNgNO3s=;
-        b=YOmpd2H7oZGXoCKZL7YDk/iRPWW64vlIsODdCqCmfgVSfcsUpKO7+9lUDVCYNRhMZmi5EW
-        BQSipraP7KsE3eAA==
-From:   "tip-bot2 for Shuah Khan" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=21PtMgo5esx0f9qYfMiOPAKEeGiNP5JdjJ7pHFapubQ=;
+        b=/zWuMeU7np1PV2mjvMeOTJC3GU1r6yoFeef36AG64ZeAQvM+V3u7o0W4w+8u4ia7Zv8TNl
+        4w1HJyyLYTGRZ0Dg==
+From:   "tip-bot2 for Juergen Gross" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] lockdep: Add lockdep_assert_not_held()
-Cc:     Shuah Khan <skhan@linuxfoundation.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
+Subject: [tip: locking/core] locking/csd_lock: Add boot parameter for
+ controlling CSD lock debugging
+Cc:     Juergen Gross <jgross@suse.com>, Ingo Molnar <mingo@kernel.org>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20210301101336.7797-2-jgross@suse.com>
+References: <20210301101336.7797-2-jgross@suse.com>
 MIME-Version: 1.0
-Message-ID: <161503167472.398.16348854716222341542.tip-bot2@tip-bot2>
+Message-ID: <161503167578.398.264181158722622384.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -56,83 +58,143 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     3e31f94752e454bdd0ca4a1d046ee21f80c166c5
-Gitweb:        https://git.kernel.org/tip/3e31f94752e454bdd0ca4a1d046ee21f80c166c5
-Author:        Shuah Khan <skhan@linuxfoundation.org>
-AuthorDate:    Fri, 26 Feb 2021 17:06:58 -07:00
+Commit-ID:     8d0968cc6b8ffd8496c2ebffdfdc801f949a85e5
+Gitweb:        https://git.kernel.org/tip/8d0968cc6b8ffd8496c2ebffdfdc801f949a85e5
+Author:        Juergen Gross <jgross@suse.com>
+AuthorDate:    Mon, 01 Mar 2021 11:13:34 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sat, 06 Mar 2021 12:51:05 +01:00
+CommitterDate: Sat, 06 Mar 2021 12:49:48 +01:00
 
-lockdep: Add lockdep_assert_not_held()
+locking/csd_lock: Add boot parameter for controlling CSD lock debugging
 
-Some kernel functions must be called without holding a specific lock.
-Add lockdep_assert_not_held() to be used in these functions to detect
-incorrect calls while holding a lock.
+Currently CSD lock debugging can be switched on and off via a kernel
+config option only. Unfortunately there is at least one problem with
+CSD lock handling pending for about 2 years now, which has been seen
+in different environments (mostly when running virtualized under KVM
+or Xen, at least once on bare metal). Multiple attempts to catch this
+issue have finally led to introduction of CSD lock debug code, but
+this code is not in use in most distros as it has some impact on
+performance.
 
-lockdep_assert_not_held() provides the opposite functionality of
-lockdep_assert_held() which is used to assert calls that require
-holding a specific lock.
+In order to be able to ship kernels with CONFIG_CSD_LOCK_WAIT_DEBUG
+enabled even for production use, add a boot parameter for switching
+the debug functionality on. This will reduce any performance impact
+of the debug coding to a bare minimum when not being used.
 
-Incorporates suggestions from Peter Zijlstra to avoid misfires when
-lockdep_off() is employed.
-
-The need for lockdep_assert_not_held() came up in a discussion on
-ath10k patch. ath10k_drain_tx() and i915_vma_pin_ww() are examples
-of functions that can use lockdep_assert_not_held().
-
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+[ Minor edits. ]
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/linux-wireless/871rdmu9z9.fsf@codeaurora.org/
+Link: https://lore.kernel.org/r/20210301101336.7797-2-jgross@suse.com
 ---
- include/linux/lockdep.h  | 11 ++++++++---
- kernel/locking/lockdep.c |  6 +++++-
- 2 files changed, 13 insertions(+), 4 deletions(-)
+ Documentation/admin-guide/kernel-parameters.txt |  6 +++-
+ kernel/smp.c                                    | 38 ++++++++++++++--
+ 2 files changed, 40 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/lockdep.h b/include/linux/lockdep.h
-index 7b7ebf2..dbd9ea8 100644
---- a/include/linux/lockdep.h
-+++ b/include/linux/lockdep.h
-@@ -301,8 +301,12 @@ extern void lock_unpin_lock(struct lockdep_map *lock, struct pin_cookie);
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index 0454572..98dbffa 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -784,6 +784,12 @@
+ 	cs89x0_media=	[HW,NET]
+ 			Format: { rj45 | aui | bnc }
  
- #define lockdep_depth(tsk)	(debug_locks ? (tsk)->lockdep_depth : 0)
- 
--#define lockdep_assert_held(l)	do {				\
--		WARN_ON(debug_locks && !lockdep_is_held(l));	\
-+#define lockdep_assert_held(l)	do {					\
-+		WARN_ON(debug_locks && lockdep_is_held(l) == 0);	\
-+	} while (0)
++	csdlock_debug=	[KNL] Enable debug add-ons of cross-CPU function call
++			handling. When switched on, additional debug data is
++			printed to the console in case a hanging CPU is
++			detected, and that CPU is pinged again in order to try
++			to resolve the hang situation.
 +
-+#define lockdep_assert_not_held(l)	do {				\
-+		WARN_ON(debug_locks && lockdep_is_held(l) == 1);	\
- 	} while (0)
+ 	dasd=		[HW,NET]
+ 			See header of drivers/s390/block/dasd_devmap.c.
  
- #define lockdep_assert_held_write(l)	do {			\
-@@ -393,7 +397,8 @@ extern int lockdep_is_held(const void *);
- #define lockdep_is_held_type(l, r)		(1)
+diff --git a/kernel/smp.c b/kernel/smp.c
+index aeb0adf..d5f0b21 100644
+--- a/kernel/smp.c
++++ b/kernel/smp.c
+@@ -24,6 +24,7 @@
+ #include <linux/sched/clock.h>
+ #include <linux/nmi.h>
+ #include <linux/sched/debug.h>
++#include <linux/jump_label.h>
  
- #define lockdep_assert_held(l)			do { (void)(l); } while (0)
--#define lockdep_assert_held_write(l)	do { (void)(l); } while (0)
-+#define lockdep_assert_not_held(l)		do { (void)(l); } while (0)
-+#define lockdep_assert_held_write(l)		do { (void)(l); } while (0)
- #define lockdep_assert_held_read(l)		do { (void)(l); } while (0)
- #define lockdep_assert_held_once(l)		do { (void)(l); } while (0)
+ #include "smpboot.h"
+ #include "sched/smp.h"
+@@ -102,6 +103,20 @@ void __init call_function_init(void)
  
-diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
-index c6d0c1d..969736b 100644
---- a/kernel/locking/lockdep.c
-+++ b/kernel/locking/lockdep.c
-@@ -5539,8 +5539,12 @@ noinstr int lock_is_held_type(const struct lockdep_map *lock, int read)
- 	unsigned long flags;
- 	int ret = 0;
+ #ifdef CONFIG_CSD_LOCK_WAIT_DEBUG
  
-+	/*
-+	 * Avoid false negative lockdep_assert_held() and
-+	 * lockdep_assert_not_held().
-+	 */
- 	if (unlikely(!lockdep_enabled()))
--		return 1; /* avoid false negative lockdep_assert_held() */
-+		return -1;
++static DEFINE_STATIC_KEY_FALSE(csdlock_debug_enabled);
++
++static int __init csdlock_debug(char *str)
++{
++	unsigned int val = 0;
++
++	get_option(&str, &val);
++	if (val)
++		static_branch_enable(&csdlock_debug_enabled);
++
++	return 0;
++}
++early_param("csdlock_debug", csdlock_debug);
++
+ static DEFINE_PER_CPU(call_single_data_t *, cur_csd);
+ static DEFINE_PER_CPU(smp_call_func_t, cur_csd_func);
+ static DEFINE_PER_CPU(void *, cur_csd_info);
+@@ -110,7 +125,7 @@ static DEFINE_PER_CPU(void *, cur_csd_info);
+ static atomic_t csd_bug_count = ATOMIC_INIT(0);
  
- 	raw_local_irq_save(flags);
- 	check_flags(flags);
+ /* Record current CSD work for current CPU, NULL to erase. */
+-static void csd_lock_record(call_single_data_t *csd)
++static void __csd_lock_record(call_single_data_t *csd)
+ {
+ 	if (!csd) {
+ 		smp_mb(); /* NULL cur_csd after unlock. */
+@@ -125,7 +140,13 @@ static void csd_lock_record(call_single_data_t *csd)
+ 		  /* Or before unlock, as the case may be. */
+ }
+ 
+-static __always_inline int csd_lock_wait_getcpu(call_single_data_t *csd)
++static __always_inline void csd_lock_record(call_single_data_t *csd)
++{
++	if (static_branch_unlikely(&csdlock_debug_enabled))
++		__csd_lock_record(csd);
++}
++
++static int csd_lock_wait_getcpu(call_single_data_t *csd)
+ {
+ 	unsigned int csd_type;
+ 
+@@ -140,7 +161,7 @@ static __always_inline int csd_lock_wait_getcpu(call_single_data_t *csd)
+  * the CSD_TYPE_SYNC/ASYNC types provide the destination CPU,
+  * so waiting on other types gets much less information.
+  */
+-static __always_inline bool csd_lock_wait_toolong(call_single_data_t *csd, u64 ts0, u64 *ts1, int *bug_id)
++static bool csd_lock_wait_toolong(call_single_data_t *csd, u64 ts0, u64 *ts1, int *bug_id)
+ {
+ 	int cpu = -1;
+ 	int cpux;
+@@ -204,7 +225,7 @@ static __always_inline bool csd_lock_wait_toolong(call_single_data_t *csd, u64 t
+  * previous function call. For multi-cpu calls its even more interesting
+  * as we'll have to ensure no other cpu is observing our csd.
+  */
+-static __always_inline void csd_lock_wait(call_single_data_t *csd)
++static void __csd_lock_wait(call_single_data_t *csd)
+ {
+ 	int bug_id = 0;
+ 	u64 ts0, ts1;
+@@ -218,6 +239,15 @@ static __always_inline void csd_lock_wait(call_single_data_t *csd)
+ 	smp_acquire__after_ctrl_dep();
+ }
+ 
++static __always_inline void csd_lock_wait(call_single_data_t *csd)
++{
++	if (static_branch_unlikely(&csdlock_debug_enabled)) {
++		__csd_lock_wait(csd);
++		return;
++	}
++
++	smp_cond_load_acquire(&csd->node.u_flags, !(VAL & CSD_FLAG_LOCK));
++}
+ #else
+ static void csd_lock_record(call_single_data_t *csd)
+ {
