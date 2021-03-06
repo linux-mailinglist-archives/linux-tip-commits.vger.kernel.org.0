@@ -2,57 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 999F632F9F8
+	by mail.lfdr.de (Postfix) with ESMTP id 019CD32F9F4
 	for <lists+linux-tip-commits@lfdr.de>; Sat,  6 Mar 2021 12:43:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230466AbhCFLm3 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 6 Mar 2021 06:42:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52614 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230323AbhCFLmV (ORCPT
+        id S230260AbhCFLmb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 6 Mar 2021 06:42:31 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:34268 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230341AbhCFLmW (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 6 Mar 2021 06:42:21 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A12F7C06175F;
-        Sat,  6 Mar 2021 03:42:20 -0800 (PST)
-Date:   Sat, 06 Mar 2021 11:42:18 -0000
+        Sat, 6 Mar 2021 06:42:22 -0500
+Date:   Sat, 06 Mar 2021 11:42:19 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1615030939;
+        s=2020; t=1615030940;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=4vvHwa4ijzPORnwg40Q6sbzSiFhrexXoUjLep87zoHA=;
-        b=S9CWc/53AmqQYDGnJeJnbfFZH8RhnlFZT7y679hDYmPMDUjK3Hz7Bw0xTzeCh6MNj3Oppx
-        avt65AjMQZYWAjdk7vmnkZJwISUHZjcKCoNHGZNV8l8fnbbQhTbW8E4YTcBJsZ4ha4W8u0
-        wUIasr/i+r6Fm0eKy8IkWzwuYWLvpFAomDbcsvcTh5hp2Pun0aoyQcxEfodOWKtC3YhAvX
-        XkYM8Zj1fv0ymAXp/2rYsGI9Kr7I8qVT3VQ83RmOwmVZSzvuuSMqr5M7kHjGTHtohr/sOR
-        tM8+Y4/vICuKYf3bLddjJZJw2DwYw/j6hDokHl36DDnAYQcCZZ9y6jzM8mWX6w==
+        bh=TEGHZCNfMOmRTb0fhQ3fON6Fr5t1Etlx15m9W8M1I/U=;
+        b=om4R5608TKgblJdAupfO/ia2aoX8PT/3WEEAhPM5DQuftaWvWeJ9562DPvmDmQ6klwIzo5
+        GVGmQ4CdSGSmiFLsj4AVkcSDFNT8figJ4NG4okoF4QzaQCQyWY+7/dZkstBoLdA3YsbiGS
+        HEho+pSk8R8N4R151t8pSSVlk7mlTsxwISDKA0MBbAZk/jMIk79dW7wBKEZ0pksQ0TewTO
+        ZovEm3JnrwQLugG3vnJ0EsfXEKlp2ujKMhUadXOH9I0uBEqpXvBIWHWWQLehbB7ulo8vRS
+        1n1jGk5NZBCR00NToAZ7hIXrFBfMq3pnGNEH/TUz0v1T7Lcs/BV2+GVMcc0tyg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1615030939;
+        s=2020e; t=1615030940;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=4vvHwa4ijzPORnwg40Q6sbzSiFhrexXoUjLep87zoHA=;
-        b=5mC6esdXBj4rKimbeTDD8xyI6gpo1GxdxMTyLRQEB+M8NSLVA/+6PPTOMnQW94hN4WhXtw
-        FBeYiLROZYMSEDDQ==
-From:   "tip-bot2 for Johannes Weiner" <tip-bot2@linutronix.de>
+        bh=TEGHZCNfMOmRTb0fhQ3fON6Fr5t1Etlx15m9W8M1I/U=;
+        b=3LrYlOnsVvnUFkl3JuDKGYxbhv+YPHXD50oXJ1unR5w0/JMnynmpijmF4knGkyn8Nvokju
+        Wl3tZHkfv2VnECCA==
+From:   "tip-bot2 for Vincent Donnefort" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] psi: Pressure states are unlikely
-Cc:     Johannes Weiner <hannes@cmpxchg.org>,
-        Chengming Zhou <zhouchengming@bytedance.com>,
+Subject: [tip: sched/core] cpu/hotplug: Add cpuhp_invoke_callback_range()
+Cc:     Vincent Donnefort <vincent.donnefort@arm.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210303034659.91735-4-zhouchengming@bytedance.com>
-References: <20210303034659.91735-4-zhouchengming@bytedance.com>
+In-Reply-To: <20210216103506.416286-4-vincent.donnefort@arm.com>
+References: <20210216103506.416286-4-vincent.donnefort@arm.com>
 MIME-Version: 1.0
-Message-ID: <161503093847.398.958510579963989988.tip-bot2@tip-bot2>
+Message-ID: <161503093994.398.3203177270870536065.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -63,62 +59,323 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     fddc8bab531e217806b84906681324377d741c6c
-Gitweb:        https://git.kernel.org/tip/fddc8bab531e217806b84906681324377d741c6c
-Author:        Johannes Weiner <hannes@cmpxchg.org>
-AuthorDate:    Wed, 03 Mar 2021 11:46:58 +08:00
+Commit-ID:     453e41085183980087f8a80dada523caf1131c3c
+Gitweb:        https://git.kernel.org/tip/453e41085183980087f8a80dada523caf1131c3c
+Author:        Vincent Donnefort <vincent.donnefort@arm.com>
+AuthorDate:    Tue, 16 Feb 2021 10:35:06 
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sat, 06 Mar 2021 12:40:23 +01:00
+CommitterDate: Sat, 06 Mar 2021 12:40:22 +01:00
 
-psi: Pressure states are unlikely
+cpu/hotplug: Add cpuhp_invoke_callback_range()
 
-Move the unlikely branches out of line. This eliminates undesirable
-jumps during wakeup and sleeps for workloads that aren't under any
-sort of resource pressure.
+Factorizing and unifying cpuhp callback range invocations, especially for
+the hotunplug path, where two different ways of decrementing were used. The
+first one, decrements before the callback is called:
 
-Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
-Signed-off-by: Chengming Zhou <zhouchengming@bytedance.com>
+ cpuhp_thread_fun()
+     state = st->state;
+     st->state--;
+     cpuhp_invoke_callback(state);
+
+The second one, after:
+
+ take_down_cpu()|cpuhp_down_callbacks()
+     cpuhp_invoke_callback(st->state);
+     st->state--;
+
+This is problematic for rolling back the steps in case of error, as
+depending on the decrement, the rollback will start from N or N-1. It also
+makes tracing inconsistent, between steps run in the cpuhp thread and
+the others.
+
+Additionally, avoid useless cpuhp_thread_fun() loops by skipping empty
+steps.
+
+Signed-off-by: Vincent Donnefort <vincent.donnefort@arm.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lkml.kernel.org/r/20210303034659.91735-4-zhouchengming@bytedance.com
+Link: https://lkml.kernel.org/r/20210216103506.416286-4-vincent.donnefort@arm.com
 ---
- kernel/sched/psi.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ kernel/cpu.c | 170 ++++++++++++++++++++++++++++++--------------------
+ 1 file changed, 102 insertions(+), 68 deletions(-)
 
-diff --git a/kernel/sched/psi.c b/kernel/sched/psi.c
-index 0fe6ff6..3907a6b 100644
---- a/kernel/sched/psi.c
-+++ b/kernel/sched/psi.c
-@@ -219,17 +219,17 @@ static bool test_state(unsigned int *tasks, enum psi_states state)
- {
- 	switch (state) {
- 	case PSI_IO_SOME:
--		return tasks[NR_IOWAIT];
-+		return unlikely(tasks[NR_IOWAIT]);
- 	case PSI_IO_FULL:
--		return tasks[NR_IOWAIT] && !tasks[NR_RUNNING];
-+		return unlikely(tasks[NR_IOWAIT] && !tasks[NR_RUNNING]);
- 	case PSI_MEM_SOME:
--		return tasks[NR_MEMSTALL];
-+		return unlikely(tasks[NR_MEMSTALL]);
- 	case PSI_MEM_FULL:
--		return tasks[NR_MEMSTALL] && !tasks[NR_RUNNING];
-+		return unlikely(tasks[NR_MEMSTALL] && !tasks[NR_RUNNING]);
- 	case PSI_CPU_SOME:
--		return tasks[NR_RUNNING] > tasks[NR_ONCPU];
-+		return unlikely(tasks[NR_RUNNING] > tasks[NR_ONCPU]);
- 	case PSI_CPU_FULL:
--		return tasks[NR_RUNNING] && !tasks[NR_ONCPU];
-+		return unlikely(tasks[NR_RUNNING] && !tasks[NR_ONCPU]);
- 	case PSI_NONIDLE:
- 		return tasks[NR_IOWAIT] || tasks[NR_MEMSTALL] ||
- 			tasks[NR_RUNNING];
-@@ -729,7 +729,7 @@ static void psi_group_change(struct psi_group *group, int cpu,
- 	 * task in a cgroup is in_memstall, the corresponding groupc
- 	 * on that cpu is in PSI_MEM_FULL state.
- 	 */
--	if (groupc->tasks[NR_ONCPU] && cpu_curr(cpu)->in_memstall)
-+	if (unlikely(groupc->tasks[NR_ONCPU] && cpu_curr(cpu)->in_memstall))
- 		state_mask |= (1 << PSI_MEM_FULL);
+diff --git a/kernel/cpu.c b/kernel/cpu.c
+index 680ed8f..23505d6 100644
+--- a/kernel/cpu.c
++++ b/kernel/cpu.c
+@@ -135,6 +135,11 @@ static struct cpuhp_step *cpuhp_get_step(enum cpuhp_state state)
+ 	return cpuhp_hp_states + state;
+ }
  
- 	groupc->state_mask = state_mask;
++static bool cpuhp_step_empty(bool bringup, struct cpuhp_step *step)
++{
++	return bringup ? !step->startup.single : !step->teardown.single;
++}
++
+ /**
+  * cpuhp_invoke_callback _ Invoke the callbacks for a given state
+  * @cpu:	The cpu for which the callback should be invoked
+@@ -157,26 +162,24 @@ static int cpuhp_invoke_callback(unsigned int cpu, enum cpuhp_state state,
+ 
+ 	if (st->fail == state) {
+ 		st->fail = CPUHP_INVALID;
+-
+-		if (!(bringup ? step->startup.single : step->teardown.single))
+-			return 0;
+-
+ 		return -EAGAIN;
+ 	}
+ 
++	if (cpuhp_step_empty(bringup, step)) {
++		WARN_ON_ONCE(1);
++		return 0;
++	}
++
+ 	if (!step->multi_instance) {
+ 		WARN_ON_ONCE(lastp && *lastp);
+ 		cb = bringup ? step->startup.single : step->teardown.single;
+-		if (!cb)
+-			return 0;
++
+ 		trace_cpuhp_enter(cpu, st->target, state, cb);
+ 		ret = cb(cpu);
+ 		trace_cpuhp_exit(cpu, st->state, state, ret);
+ 		return ret;
+ 	}
+ 	cbm = bringup ? step->startup.multi : step->teardown.multi;
+-	if (!cbm)
+-		return 0;
+ 
+ 	/* Single invocation for instance add/remove */
+ 	if (node) {
+@@ -475,6 +478,15 @@ cpuhp_set_state(struct cpuhp_cpu_state *st, enum cpuhp_state target)
+ static inline void
+ cpuhp_reset_state(struct cpuhp_cpu_state *st, enum cpuhp_state prev_state)
+ {
++	st->target = prev_state;
++
++	/*
++	 * Already rolling back. No need invert the bringup value or to change
++	 * the current state.
++	 */
++	if (st->rollback)
++		return;
++
+ 	st->rollback = true;
+ 
+ 	/*
+@@ -488,7 +500,6 @@ cpuhp_reset_state(struct cpuhp_cpu_state *st, enum cpuhp_state prev_state)
+ 			st->state++;
+ 	}
+ 
+-	st->target = prev_state;
+ 	st->bringup = !st->bringup;
+ }
+ 
+@@ -591,10 +602,53 @@ static int finish_cpu(unsigned int cpu)
+  * Hotplug state machine related functions
+  */
+ 
+-static void undo_cpu_up(unsigned int cpu, struct cpuhp_cpu_state *st)
++/*
++ * Get the next state to run. Empty ones will be skipped. Returns true if a
++ * state must be run.
++ *
++ * st->state will be modified ahead of time, to match state_to_run, as if it
++ * has already ran.
++ */
++static bool cpuhp_next_state(bool bringup,
++			     enum cpuhp_state *state_to_run,
++			     struct cpuhp_cpu_state *st,
++			     enum cpuhp_state target)
+ {
+-	for (st->state--; st->state > st->target; st->state--)
+-		cpuhp_invoke_callback(cpu, st->state, false, NULL, NULL);
++	do {
++		if (bringup) {
++			if (st->state >= target)
++				return false;
++
++			*state_to_run = ++st->state;
++		} else {
++			if (st->state <= target)
++				return false;
++
++			*state_to_run = st->state--;
++		}
++
++		if (!cpuhp_step_empty(bringup, cpuhp_get_step(*state_to_run)))
++			break;
++	} while (true);
++
++	return true;
++}
++
++static int cpuhp_invoke_callback_range(bool bringup,
++				       unsigned int cpu,
++				       struct cpuhp_cpu_state *st,
++				       enum cpuhp_state target)
++{
++	enum cpuhp_state state;
++	int err = 0;
++
++	while (cpuhp_next_state(bringup, &state, st, target)) {
++		err = cpuhp_invoke_callback(cpu, state, bringup, NULL, NULL);
++		if (err)
++			break;
++	}
++
++	return err;
+ }
+ 
+ static inline bool can_rollback_cpu(struct cpuhp_cpu_state *st)
+@@ -617,16 +671,12 @@ static int cpuhp_up_callbacks(unsigned int cpu, struct cpuhp_cpu_state *st,
+ 	enum cpuhp_state prev_state = st->state;
+ 	int ret = 0;
+ 
+-	while (st->state < target) {
+-		st->state++;
+-		ret = cpuhp_invoke_callback(cpu, st->state, true, NULL, NULL);
+-		if (ret) {
+-			if (can_rollback_cpu(st)) {
+-				st->target = prev_state;
+-				undo_cpu_up(cpu, st);
+-			}
+-			break;
+-		}
++	ret = cpuhp_invoke_callback_range(true, cpu, st, target);
++	if (ret) {
++		cpuhp_reset_state(st, prev_state);
++		if (can_rollback_cpu(st))
++			WARN_ON(cpuhp_invoke_callback_range(false, cpu, st,
++							    prev_state));
+ 	}
+ 	return ret;
+ }
+@@ -690,17 +740,9 @@ static void cpuhp_thread_fun(unsigned int cpu)
+ 		state = st->cb_state;
+ 		st->should_run = false;
+ 	} else {
+-		if (bringup) {
+-			st->state++;
+-			state = st->state;
+-			st->should_run = (st->state < st->target);
+-			WARN_ON_ONCE(st->state > st->target);
+-		} else {
+-			state = st->state;
+-			st->state--;
+-			st->should_run = (st->state > st->target);
+-			WARN_ON_ONCE(st->state < st->target);
+-		}
++		st->should_run = cpuhp_next_state(bringup, &state, st, st->target);
++		if (!st->should_run)
++			goto end;
+ 	}
+ 
+ 	WARN_ON_ONCE(!cpuhp_is_ap_state(state));
+@@ -728,6 +770,7 @@ static void cpuhp_thread_fun(unsigned int cpu)
+ 		st->should_run = false;
+ 	}
+ 
++end:
+ 	cpuhp_lock_release(bringup);
+ 	lockdep_release_cpus_lock();
+ 
+@@ -881,19 +924,18 @@ static int take_cpu_down(void *_param)
+ 		return err;
+ 
+ 	/*
+-	 * We get here while we are in CPUHP_TEARDOWN_CPU state and we must not
+-	 * do this step again.
++	 * Must be called from CPUHP_TEARDOWN_CPU, which means, as we are going
++	 * down, that the current state is CPUHP_TEARDOWN_CPU - 1.
+ 	 */
+-	WARN_ON(st->state != CPUHP_TEARDOWN_CPU);
+-	st->state--;
++	WARN_ON(st->state != (CPUHP_TEARDOWN_CPU - 1));
++
+ 	/* Invoke the former CPU_DYING callbacks */
+-	for (; st->state > target; st->state--) {
+-		ret = cpuhp_invoke_callback(cpu, st->state, false, NULL, NULL);
+-		/*
+-		 * DYING must not fail!
+-		 */
+-		WARN_ON_ONCE(ret);
+-	}
++	ret = cpuhp_invoke_callback_range(false, cpu, st, target);
++
++	/*
++	 * DYING must not fail!
++	 */
++	WARN_ON_ONCE(ret);
+ 
+ 	/* Give up timekeeping duties */
+ 	tick_handover_do_timer();
+@@ -975,27 +1017,22 @@ void cpuhp_report_idle_dead(void)
+ 				 cpuhp_complete_idle_dead, st, 0);
+ }
+ 
+-static void undo_cpu_down(unsigned int cpu, struct cpuhp_cpu_state *st)
+-{
+-	for (st->state++; st->state < st->target; st->state++)
+-		cpuhp_invoke_callback(cpu, st->state, true, NULL, NULL);
+-}
+-
+ static int cpuhp_down_callbacks(unsigned int cpu, struct cpuhp_cpu_state *st,
+ 				enum cpuhp_state target)
+ {
+ 	enum cpuhp_state prev_state = st->state;
+ 	int ret = 0;
+ 
+-	for (; st->state > target; st->state--) {
+-		ret = cpuhp_invoke_callback(cpu, st->state, false, NULL, NULL);
+-		if (ret) {
+-			st->target = prev_state;
+-			if (st->state < prev_state)
+-				undo_cpu_down(cpu, st);
+-			break;
+-		}
++	ret = cpuhp_invoke_callback_range(false, cpu, st, target);
++	if (ret) {
++
++		cpuhp_reset_state(st, prev_state);
++
++		if (st->state < prev_state)
++			WARN_ON(cpuhp_invoke_callback_range(true, cpu, st,
++							    prev_state));
+ 	}
++
+ 	return ret;
+ }
+ 
+@@ -1168,14 +1205,12 @@ void notify_cpu_starting(unsigned int cpu)
+ 
+ 	rcu_cpu_starting(cpu);	/* Enables RCU usage on this CPU. */
+ 	cpumask_set_cpu(cpu, &cpus_booted_once_mask);
+-	while (st->state < target) {
+-		st->state++;
+-		ret = cpuhp_invoke_callback(cpu, st->state, true, NULL, NULL);
+-		/*
+-		 * STARTING must not fail!
+-		 */
+-		WARN_ON_ONCE(ret);
+-	}
++	ret = cpuhp_invoke_callback_range(true, cpu, st, target);
++
++	/*
++	 * STARTING must not fail!
++	 */
++	WARN_ON_ONCE(ret);
+ }
+ 
+ /*
+@@ -1781,8 +1816,7 @@ static int cpuhp_issue_call(int cpu, enum cpuhp_state state, bool bringup,
+ 	 * If there's nothing to do, we done.
+ 	 * Relies on the union for multi_instance.
+ 	 */
+-	if ((bringup && !sp->startup.single) ||
+-	    (!bringup && !sp->teardown.single))
++	if (cpuhp_step_empty(bringup, sp))
+ 		return 0;
+ 	/*
+ 	 * The non AP bound callbacks can fail on bringup. On teardown
