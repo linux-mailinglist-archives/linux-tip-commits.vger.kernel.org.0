@@ -2,55 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 41EA332FA64
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  6 Mar 2021 13:01:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 993E032FA67
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  6 Mar 2021 13:01:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230197AbhCFMBM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S230227AbhCFMBM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Sat, 6 Mar 2021 07:01:12 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:34822 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230034AbhCFMA4 (ORCPT
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56628 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229969AbhCFMBB (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 6 Mar 2021 07:00:56 -0500
-Date:   Sat, 06 Mar 2021 12:00:54 -0000
+        Sat, 6 Mar 2021 07:01:01 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07D62C06174A;
+        Sat,  6 Mar 2021 04:01:00 -0800 (PST)
+Date:   Sat, 06 Mar 2021 12:00:58 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1615032055;
+        s=2020; t=1615032059;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=mfmu88nDWL095cg1TE55X2DyeYZIxYhjeRaFv/oD/2Y=;
-        b=h3ZTMxvfXwLT0O5pXpsxzAbS9e5zPj4/JUTO8DLUgd2exWrFi+Zzt8Ala6tiGeOUzRcDtD
-        TO6+MGm/HLjKt2zxDb5/RyXQ1NnTv55Ly/j9Sgnro+3sqGGHPGfDCoK3lUsXlV52sTnXcd
-        shl8XC9+2ItiE8Q7cBRrWOtywABCXA9pd5EPJ8VMBo45N1KTwrDPH6iSj1wYeJPMO0A0Wj
-        mKQMwnIXjeEFhxqCw8dcTFj/oZXYPyaeRQTDf1nOZ+8r5IK4EZTlueuuJPYmJSYY8fAenq
-        IB5Y4yq+StkydAoT/5f7ypyWi/5mxX47qYIyhPvsyrmvVlitpsJZ9dUEFGZ16g==
+        bh=zECPSplBSNZdsm/OdC/wa6DIU88yUWrFmBdrisgu6gM=;
+        b=sOJXWfyjt9YfMG3b7cUuiLgeOB8O5XuJRQXQPLTKUYwIVndaZ8eI6blW+XiSBTu5g+/TNl
+        /kaMQPXkStd7cwiheWcSHa4MSeMl8kMoi0O5FZ1vmuLZQM4jE6A2gdt4DB4aORIb9fA7oO
+        CGqVet882LBdmKotZ7pq+tq9xwoSLgY/Pvv/OGMSrkVtCBtqTAX5+w5e4053BYdBq5+sRp
+        P+6F+4YsQclQ6KwNeAXWzOiEg0nm8nkkWVgNrleN/DRVx3E5Mjqs8zd84zYTvauF0zr6pT
+        NUMg4NyHBrEoUw5t0RuNqo+vBJXDR4rLT1131iHt3mluk7m5WF5zHYH6YHF6Qg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1615032055;
+        s=2020e; t=1615032059;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=mfmu88nDWL095cg1TE55X2DyeYZIxYhjeRaFv/oD/2Y=;
-        b=nw/3m3ravBrAiU3nUdNCxqpzI/QPlY9MR8PjIlfQbiwSFLW+CQ9WrDTvjfEcstGAr06aK/
-        dwFpqnlNXo0LdSAA==
-From:   "tip-bot2 for Anna-Maria Behnsen" <tip-bot2@linutronix.de>
+        bh=zECPSplBSNZdsm/OdC/wa6DIU88yUWrFmBdrisgu6gM=;
+        b=Xit/Lt5QgtR5haIRVJXl70yBG/kKc+k4/ISz0oSpXCMqH+lxLDNZ20eH3Y89ONoYNc72MK
+        ZxkIV4Zw+aPf2dAw==
+From:   "tip-bot2 for Pu Wen" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/urgent] hrtimer: Update softirq_expires_next correctly
- after __hrtimer_get_next_event()
-Cc:     Mikael Beckius <mikael.beckius@windriver.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "Anna-Maria Behnsen" <anna-maria@linutronix.de>,
+Subject: [tip: x86/cpu] x86/cpu/hygon: Set __max_die_per_package on Hygon
+Cc:     Pu Wen <puwen@hygon.cn>, Borislav Petkov <bp@suse.de>,
         Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210223160240.27518-1-anna-maria@linutronix.de>
-References: <20210223160240.27518-1-anna-maria@linutronix.de>
+In-Reply-To: <20210302020217.1827-1-puwen@hygon.cn>
+References: <20210302020217.1827-1-puwen@hygon.cn>
 MIME-Version: 1.0
-Message-ID: <161503205468.398.17874260863236032046.tip-bot2@tip-bot2>
+Message-ID: <161503205896.398.4716836736710504611.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,155 +59,45 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/urgent branch of tip:
+The following commit has been merged into the x86/cpu branch of tip:
 
-Commit-ID:     eca8f0c80a005aea84df507a446fc0154fc55a32
-Gitweb:        https://git.kernel.org/tip/eca8f0c80a005aea84df507a446fc0154fc55a32
-Author:        Anna-Maria Behnsen <anna-maria@linutronix.de>
-AuthorDate:    Tue, 23 Feb 2021 17:02:40 +01:00
+Commit-ID:     59eca2fa1934de42d8aa44d3bef655c92ea69703
+Gitweb:        https://git.kernel.org/tip/59eca2fa1934de42d8aa44d3bef655c92ea69703
+Author:        Pu Wen <puwen@hygon.cn>
+AuthorDate:    Tue, 02 Mar 2021 10:02:17 +08:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sat, 06 Mar 2021 12:53:47 +01:00
+CommitterDate: Sat, 06 Mar 2021 12:54:59 +01:00
 
-hrtimer: Update softirq_expires_next correctly after __hrtimer_get_next_event()
+x86/cpu/hygon: Set __max_die_per_package on Hygon
 
-hrtimer_force_reprogram() and hrtimer_interrupt() invokes
-__hrtimer_get_next_event() to find the earliest expiry time of hrtimer
-bases. __hrtimer_get_next_event() does not update
-cpu_base::[softirq_]_expires_next to preserve reprogramming logic. That
-needs to be done at the callsites.
+Set the maximum DIE per package variable on Hygon using the
+nodes_per_socket value in order to do per-DIE manipulations for drivers
+such as powercap.
 
-hrtimer_force_reprogram() updates cpu_base::softirq_expires_next only when
-the first expiring timer is a softirq timer and the soft interrupt is not
-activated. That's wrong because cpu_base::softirq_expires_next is left
-stale when the first expiring timer of all bases is a timer which expires
-in hard interrupt context. hrtimer_interrupt() does never update
-cpu_base::softirq_expires_next which is wrong too.
-
-That becomes a problem when clock_settime() sets CLOCK_REALTIME forward and
-the first soft expiring timer is in the CLOCK_REALTIME_SOFT base. Setting
-CLOCK_REALTIME forward moves the clock MONOTONIC based expiry time of that
-timer before the stale cpu_base::softirq_expires_next.
-
-cpu_base::softirq_expires_next is cached to make the check for raising the
-soft interrupt fast. In the above case the soft interrupt won't be raised
-until clock monotonic reaches the stale cpu_base::softirq_expires_next
-value. That's incorrect, but what's worse it that if the softirq timer
-becomes the first expiring timer of all clock bases after the hard expiry
-timer has been handled the reprogramming of the clockevent from
-hrtimer_interrupt() will result in an interrupt storm. That happens because
-the reprogramming does not use cpu_base::softirq_expires_next, it uses
-__hrtimer_get_next_event() which returns the actual expiry time. Once clock
-MONOTONIC reaches cpu_base::softirq_expires_next the soft interrupt is
-raised and the storm subsides.
-
-Change the logic in hrtimer_force_reprogram() to evaluate the soft and hard
-bases seperately, update softirq_expires_next and handle the case when a
-soft expiring timer is the first of all bases by comparing the expiry times
-and updating the required cpu base fields. Split this functionality into a
-separate function to be able to use it in hrtimer_interrupt() as well
-without copy paste.
-
-Fixes: da70160462e ("hrtimer: Implement support for softirq based hrtimers")
-Reported-by: Mikael Beckius <mikael.beckius@windriver.com>
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Mikael Beckius <mikael.beckius@windriver.com>
-Signed-off-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Pu Wen <puwen@hygon.cn>
+Signed-off-by: Borislav Petkov <bp@suse.de>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20210223160240.27518-1-anna-maria@linutronix.de
+Link: https://lkml.kernel.org/r/20210302020217.1827-1-puwen@hygon.cn
 ---
- kernel/time/hrtimer.c | 60 +++++++++++++++++++++++++++---------------
- 1 file changed, 39 insertions(+), 21 deletions(-)
+ arch/x86/kernel/cpu/hygon.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
-index 743c852..788b9d1 100644
---- a/kernel/time/hrtimer.c
-+++ b/kernel/time/hrtimer.c
-@@ -546,8 +546,11 @@ static ktime_t __hrtimer_next_event_base(struct hrtimer_cpu_base *cpu_base,
- }
+diff --git a/arch/x86/kernel/cpu/hygon.c b/arch/x86/kernel/cpu/hygon.c
+index ae59115..0bd6c74 100644
+--- a/arch/x86/kernel/cpu/hygon.c
++++ b/arch/x86/kernel/cpu/hygon.c
+@@ -215,12 +215,12 @@ static void bsp_init_hygon(struct cpuinfo_x86 *c)
+ 		u32 ecx;
  
- /*
-- * Recomputes cpu_base::*next_timer and returns the earliest expires_next but
-- * does not set cpu_base::*expires_next, that is done by hrtimer_reprogram.
-+ * Recomputes cpu_base::*next_timer and returns the earliest expires_next
-+ * but does not set cpu_base::*expires_next, that is done by
-+ * hrtimer[_force]_reprogram and hrtimer_interrupt only. When updating
-+ * cpu_base::*expires_next right away, reprogramming logic would no longer
-+ * work.
-  *
-  * When a softirq is pending, we can ignore the HRTIMER_ACTIVE_SOFT bases,
-  * those timers will get run whenever the softirq gets handled, at the end of
-@@ -588,6 +591,37 @@ __hrtimer_get_next_event(struct hrtimer_cpu_base *cpu_base, unsigned int active_
- 	return expires_next;
- }
+ 		ecx = cpuid_ecx(0x8000001e);
+-		nodes_per_socket = ((ecx >> 8) & 7) + 1;
++		__max_die_per_package = nodes_per_socket = ((ecx >> 8) & 7) + 1;
+ 	} else if (boot_cpu_has(X86_FEATURE_NODEID_MSR)) {
+ 		u64 value;
  
-+static ktime_t hrtimer_update_next_event(struct hrtimer_cpu_base *cpu_base)
-+{
-+	ktime_t expires_next, soft = KTIME_MAX;
-+
-+	/*
-+	 * If the soft interrupt has already been activated, ignore the
-+	 * soft bases. They will be handled in the already raised soft
-+	 * interrupt.
-+	 */
-+	if (!cpu_base->softirq_activated) {
-+		soft = __hrtimer_get_next_event(cpu_base, HRTIMER_ACTIVE_SOFT);
-+		/*
-+		 * Update the soft expiry time. clock_settime() might have
-+		 * affected it.
-+		 */
-+		cpu_base->softirq_expires_next = soft;
-+	}
-+
-+	expires_next = __hrtimer_get_next_event(cpu_base, HRTIMER_ACTIVE_HARD);
-+	/*
-+	 * If a softirq timer is expiring first, update cpu_base->next_timer
-+	 * and program the hardware with the soft expiry time.
-+	 */
-+	if (expires_next > soft) {
-+		cpu_base->next_timer = cpu_base->softirq_next_timer;
-+		expires_next = soft;
-+	}
-+
-+	return expires_next;
-+}
-+
- static inline ktime_t hrtimer_update_base(struct hrtimer_cpu_base *base)
- {
- 	ktime_t *offs_real = &base->clock_base[HRTIMER_BASE_REALTIME].offset;
-@@ -628,23 +662,7 @@ hrtimer_force_reprogram(struct hrtimer_cpu_base *cpu_base, int skip_equal)
- {
- 	ktime_t expires_next;
+ 		rdmsrl(MSR_FAM10H_NODE_ID, value);
+-		nodes_per_socket = ((value >> 3) & 7) + 1;
++		__max_die_per_package = nodes_per_socket = ((value >> 3) & 7) + 1;
+ 	}
  
--	/*
--	 * Find the current next expiration time.
--	 */
--	expires_next = __hrtimer_get_next_event(cpu_base, HRTIMER_ACTIVE_ALL);
--
--	if (cpu_base->next_timer && cpu_base->next_timer->is_soft) {
--		/*
--		 * When the softirq is activated, hrtimer has to be
--		 * programmed with the first hard hrtimer because soft
--		 * timer interrupt could occur too late.
--		 */
--		if (cpu_base->softirq_activated)
--			expires_next = __hrtimer_get_next_event(cpu_base,
--								HRTIMER_ACTIVE_HARD);
--		else
--			cpu_base->softirq_expires_next = expires_next;
--	}
-+	expires_next = hrtimer_update_next_event(cpu_base);
- 
- 	if (skip_equal && expires_next == cpu_base->expires_next)
- 		return;
-@@ -1644,8 +1662,8 @@ retry:
- 
- 	__hrtimer_run_queues(cpu_base, now, flags, HRTIMER_ACTIVE_HARD);
- 
--	/* Reevaluate the clock bases for the next expiry */
--	expires_next = __hrtimer_get_next_event(cpu_base, HRTIMER_ACTIVE_ALL);
-+	/* Reevaluate the clock bases for the [soft] next expiry */
-+	expires_next = hrtimer_update_next_event(cpu_base);
- 	/*
- 	 * Store the new expiry value so the migration code can verify
- 	 * against it.
+ 	if (!boot_cpu_has(X86_FEATURE_AMD_SSBD) &&
