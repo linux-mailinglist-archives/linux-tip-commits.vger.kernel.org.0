@@ -2,53 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 45CB232FA12
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  6 Mar 2021 12:43:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2704732FA3A
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  6 Mar 2021 12:49:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231219AbhCFLmj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 6 Mar 2021 06:42:39 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:34280 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230426AbhCFLm1 (ORCPT
+        id S230414AbhCFLs5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 6 Mar 2021 06:48:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54018 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230289AbhCFLsr (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 6 Mar 2021 06:42:27 -0500
-Date:   Sat, 06 Mar 2021 11:42:26 -0000
+        Sat, 6 Mar 2021 06:48:47 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C1B1C061760;
+        Sat,  6 Mar 2021 03:48:47 -0800 (PST)
+Date:   Sat, 06 Mar 2021 11:48:39 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1615030946;
+        s=2020; t=1615031320;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=JeaEYVhu+77EDVCDVK7k5q00t0U7QsQXoyYLwl8BYcA=;
-        b=4smvSPa/hqX2rKdyCapcCtfpuo+pub4Rcb0XbgQs4ufEnz0YdAujULaRMTVpjFHAqwMa0H
-        73tumFNbl6aAmLldFxf7zTgd3Nu1vTHQagRoe7cTvRwMgWknbrtvl2AEpz/i/ndeC05vwC
-        mLhcH4gwO/mwJhFW0YCqPAHvnrWko+LRXBLg4PfQz/xqm8iKQtAbP+RSb2EuUuBieP1y91
-        aVdffRHEHi2zQDw0dtv0iYPVS7XaRKYnYYJ25bzJYgD3Uwhh9GFz2hfuAdT9pTDn4ClVA7
-        fq1Gea5oseqLDEMgdvzj+yAUaqhgZfrDUqmEiousKYR+7xWLFTOmBbPSuJRONg==
+        bh=t7XsPDXIAlGV/PIFreHDZ+nJ2sDnp5r+3/3683Zy0uE=;
+        b=26RU+fn8WlGLS16VBtlOXTlciZdHts8zh6OjcPeOobmtf3iqyomt/DtOIN8Jb2LxLMpDq0
+        lUbNalIpRqmwkZaQ8voek/k54P9HJba47uZ+Trg0iaMSPceSyFCid/jjWMEpknTFJLVZTZ
+        SR8SHAKj/iSi1v2btOKAud64nyfHVHWim8jDc6+h6gRwKV40p7dXl9moAMdZkGUvPheyGU
+        5i4iXeJDBcU23WcewBFNqamAlIkDjFvqpPFEXG9zCp4m2fcrHWnbq9VIv+cI+Qyj9dgaNQ
+        ETOkgBfO8mPpJWfaOf0JSWA9HLrXHNbcLC+vHl0Cf0tJTSXJA3O/DB5X2XMZAA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1615030946;
+        s=2020e; t=1615031320;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=JeaEYVhu+77EDVCDVK7k5q00t0U7QsQXoyYLwl8BYcA=;
-        b=R+EPeQfrGtfs6nG9wQ0JGzhLIETjXreJykGxGAouYomwYfB7xaV5EFmcL+Cqg/Odjcbbp4
-        Pvx2oAFXW/y7EtCw==
+        bh=t7XsPDXIAlGV/PIFreHDZ+nJ2sDnp5r+3/3683Zy0uE=;
+        b=HF6kCc5SNKyv7aUSapnItt4YxQySPKJVXGEFp5v5xrqKFly6EzG5tfm1/znxNebNwcVEaf
+        ZtVme6wFa9uzvEAg==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched: Fix migration_cpu_stop() requeueing
-Cc:     stable@kernel.org, "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+Subject: [tip: objtool/core] objtool: Parse options from OBJTOOL_ARGS
+Cc:     Borislav Petkov <bp@alien8.de>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Ingo Molnar <mingo@kernel.org>,
-        Valentin Schneider <valentin.schneider@arm.com>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20210224131355.357743989@infradead.org>
-References: <20210224131355.357743989@infradead.org>
+        Josh Poimboeuf <jpoimboe@redhat.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20210226110004.252553847@infradead.org>
+References: <20210226110004.252553847@infradead.org>
 MIME-Version: 1.0
-Message-ID: <161503094617.398.15367885573032267808.tip-bot2@tip-bot2>
+Message-ID: <161503131911.398.14570626719309626291.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -57,148 +61,83 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     8a6edb5257e2a84720fe78cb179eca58ba76126f
-Gitweb:        https://git.kernel.org/tip/8a6edb5257e2a84720fe78cb179eca58ba76126f
+Commit-ID:     900b4df347bbac4874149a226143a556909faba8
+Gitweb:        https://git.kernel.org/tip/900b4df347bbac4874149a226143a556909faba8
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Sat, 13 Feb 2021 13:10:35 +01:00
+AuthorDate:    Fri, 26 Feb 2021 11:32:30 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sat, 06 Mar 2021 12:40:20 +01:00
+CommitterDate: Sat, 06 Mar 2021 12:44:23 +01:00
 
-sched: Fix migration_cpu_stop() requeueing
+objtool: Parse options from OBJTOOL_ARGS
 
-When affine_move_task(p) is called on a running task @p, which is not
-otherwise already changing affinity, we'll first set
-p->migration_pending and then do:
+Teach objtool to parse options from the OBJTOOL_ARGS environment
+variable.
 
-	 stop_one_cpu(cpu_of_rq(rq), migration_cpu_stop, &arg);
+This enables things like:
 
-This then gets us to migration_cpu_stop() running on the CPU that was
-previously running our victim task @p.
+  $ OBJTOOL_ARGS="--backup" make O=defconfig-build/ kernel/ponies.o
 
-If we find that our task is no longer on that runqueue (this can
-happen because of a concurrent migration due to load-balance etc.),
-then we'll end up at the:
+to obtain both defconfig-build/kernel/ponies.o{,.orig} and easily
+inspect what objtool actually did.
 
-	} else if (dest_cpu < 1 || pending) {
-
-branch. Which we'll take because we set pending earlier. Here we first
-check if the task @p has already satisfied the affinity constraints,
-if so we bail early [A]. Otherwise we'll reissue migration_cpu_stop()
-onto the CPU that is now hosting our task @p:
-
-	stop_one_cpu_nowait(cpu_of(rq), migration_cpu_stop,
-			    &pending->arg, &pending->stop_work);
-
-Except, we've never initialized pending->arg, which will be all 0s.
-
-This then results in running migration_cpu_stop() on the next CPU with
-arg->p == NULL, which gives the by now obvious result of fireworks.
-
-The cure is to change affine_move_task() to always use pending->arg,
-furthermore we can use the exact same pattern as the
-SCA_MIGRATE_ENABLE case, since we'll block on the pending->done
-completion anyway, no point in adding yet another completion in
-stop_one_cpu().
-
-This then gives a clear distinction between the two
-migration_cpu_stop() use cases:
-
-  - sched_exec() / migrate_task_to() : arg->pending == NULL
-  - affine_move_task() : arg->pending != NULL;
-
-And we can have it ignore p->migration_pending when !arg->pending. Any
-stop work from sched_exec() / migrate_task_to() is in addition to stop
-works from affine_move_task(), which will be sufficient to issue the
-completion.
-
-Fixes: 6d337eab041d ("sched: Fix migrate_disable() vs set_cpus_allowed_ptr()")
-Cc: stable@kernel.org
+Suggested-by: Borislav Petkov <bp@alien8.de>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Valentin Schneider <valentin.schneider@arm.com>
-Link: https://lkml.kernel.org/r/20210224131355.357743989@infradead.org
+Acked-by: Josh Poimboeuf <jpoimboe@redhat.com>
+Link: https://lkml.kernel.org/r/20210226110004.252553847@infradead.org
 ---
- kernel/sched/core.c | 39 ++++++++++++++++++++++++++++-----------
- 1 file changed, 28 insertions(+), 11 deletions(-)
+ tools/objtool/builtin-check.c | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index ca2bb62..79ddba5 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -1922,6 +1922,24 @@ static int migration_cpu_stop(void *data)
- 	rq_lock(rq, &rf);
+diff --git a/tools/objtool/builtin-check.c b/tools/objtool/builtin-check.c
+index 0399752..8b38b5d 100644
+--- a/tools/objtool/builtin-check.c
++++ b/tools/objtool/builtin-check.c
+@@ -15,6 +15,7 @@
  
- 	pending = p->migration_pending;
-+	if (pending && !arg->pending) {
-+		/*
-+		 * This happens from sched_exec() and migrate_task_to(),
-+		 * neither of them care about pending and just want a task to
-+		 * maybe move about.
-+		 *
-+		 * Even if there is a pending, we can ignore it, since
-+		 * affine_move_task() will have it's own stop_work's in flight
-+		 * which will manage the completion.
-+		 *
-+		 * Notably, pending doesn't need to match arg->pending. This can
-+		 * happen when tripple concurrent affine_move_task() first sets
-+		 * pending, then clears pending and eventually sets another
-+		 * pending.
-+		 */
-+		pending = NULL;
+ #include <subcmd/parse-options.h>
+ #include <string.h>
++#include <stdlib.h>
+ #include <objtool/builtin.h>
+ #include <objtool/objtool.h>
+ 
+@@ -26,6 +27,11 @@ static const char * const check_usage[] = {
+ 	NULL,
+ };
+ 
++static const char * const env_usage[] = {
++	"OBJTOOL_ARGS=\"<options>\"",
++	NULL,
++};
++
+ const struct option check_options[] = {
+ 	OPT_BOOLEAN('f', "no-fp", &no_fp, "Skip frame pointer validation"),
+ 	OPT_BOOLEAN('u', "no-unreachable", &no_unreachable, "Skip 'unreachable instruction' warnings"),
+@@ -44,6 +50,25 @@ const struct option check_options[] = {
+ 
+ int cmd_parse_options(int argc, const char **argv, const char * const usage[])
+ {
++	const char *envv[16] = { };
++	char *env;
++	int envc;
++
++	env = getenv("OBJTOOL_ARGS");
++	if (env) {
++		envv[0] = "OBJTOOL_ARGS";
++		for (envc = 1; envc < ARRAY_SIZE(envv); ) {
++			envv[envc++] = env;
++			env = strchr(env, ' ');
++			if (!env)
++				break;
++			*env = '\0';
++			env++;
++		}
++
++		parse_options(envc, envv, check_options, env_usage, 0);
 +	}
 +
- 	/*
- 	 * If task_rq(p) != rq, it cannot be migrated here, because we're
- 	 * holding rq->lock, if p->on_rq == 0 it cannot get enqueued because
-@@ -2194,10 +2212,6 @@ static int affine_move_task(struct rq *rq, struct task_struct *p, struct rq_flag
- 			    int dest_cpu, unsigned int flags)
- {
- 	struct set_affinity_pending my_pending = { }, *pending = NULL;
--	struct migration_arg arg = {
--		.task = p,
--		.dest_cpu = dest_cpu,
--	};
- 	bool complete = false;
- 
- 	/* Can the task run on the task's current CPU? If so, we're done */
-@@ -2235,6 +2249,12 @@ static int affine_move_task(struct rq *rq, struct task_struct *p, struct rq_flag
- 			/* Install the request */
- 			refcount_set(&my_pending.refs, 1);
- 			init_completion(&my_pending.done);
-+			my_pending.arg = (struct migration_arg) {
-+				.task = p,
-+				.dest_cpu = -1,		/* any */
-+				.pending = &my_pending,
-+			};
-+
- 			p->migration_pending = &my_pending;
- 		} else {
- 			pending = p->migration_pending;
-@@ -2265,12 +2285,6 @@ static int affine_move_task(struct rq *rq, struct task_struct *p, struct rq_flag
- 		p->migration_flags &= ~MDF_PUSH;
- 		task_rq_unlock(rq, p, rf);
- 
--		pending->arg = (struct migration_arg) {
--			.task = p,
--			.dest_cpu = -1,
--			.pending = pending,
--		};
--
- 		stop_one_cpu_nowait(cpu_of(rq), migration_cpu_stop,
- 				    &pending->arg, &pending->stop_work);
- 
-@@ -2283,8 +2297,11 @@ static int affine_move_task(struct rq *rq, struct task_struct *p, struct rq_flag
- 		 * is_migration_disabled(p) checks to the stopper, which will
- 		 * run on the same CPU as said p.
- 		 */
-+		refcount_inc(&pending->refs); /* pending->{arg,stop_work} */
- 		task_rq_unlock(rq, p, rf);
--		stop_one_cpu(cpu_of(rq), migration_cpu_stop, &arg);
-+
-+		stop_one_cpu_nowait(cpu_of(rq), migration_cpu_stop,
-+				    &pending->arg, &pending->stop_work);
- 
- 	} else {
- 
+ 	argc = parse_options(argc, argv, check_options, usage, 0);
+ 	if (argc != 1)
+ 		usage_with_options(usage, check_options);
