@@ -2,17 +2,17 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9ED1832FA10
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  6 Mar 2021 12:43:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F1D3332FA0E
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  6 Mar 2021 12:43:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231183AbhCFLmg (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 6 Mar 2021 06:42:36 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:34368 "EHLO
+        id S230491AbhCFLmh (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 6 Mar 2021 06:42:37 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:34296 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230403AbhCFLmZ (ORCPT
+        with ESMTP id S230411AbhCFLmZ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Sat, 6 Mar 2021 06:42:25 -0500
-Date:   Sat, 06 Mar 2021 11:42:23 -0000
+Date:   Sat, 06 Mar 2021 11:42:24 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1615030944;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -20,12 +20,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=1P3PuapQCPu+P6h38eAFeVR5TUXIRpe3xn112g4z9pE=;
-        b=YvXnUI0qZ+/xEYl16U6rbgYM8RRLMakJ6Kyo4pHZM1TUrYzM4uz4pfCJRNcuZo16icNMrO
-        pJKyvcavNdIvIyZV24xPd/HpERS/fLV6EwNZCTw1Qp4vaIqvXiwOgzs/zFlQFukemOdm2j
-        Ukh4Ffqm1wUZEhM8SmemoKySBOvZo+mXBg43WAU1Rdgksu4A9gGUQVntpIYdP3hmpSGiL0
-        /hT7COCbQ6Pa70qoKFtwO17k//S/qp41g/hnHgwA4OVXujKRPQEPTJnBNKAMrxFqJYIKqe
-        qvshWPMvkLTE06pmgoQkRuw4L9LkaIkHLrQqv9Kyin05MzYvHyf1jiSWNf7EIw==
+        bh=gdBR0ohv2b5rkxY/JtiPsnG6VuYWf5wGS8A4oo6zBhE=;
+        b=3SxoNDGeXMxAk9mjGcjJK3L7TfwDjDU+MNXs6JeJZoAp84JkuXzdRqFrHVMoRELbaRc0RV
+        285K7qyuGxBffIeUyiG+wYKl32By9HFrvqv/cMC8/NmYtt1j+z8fu5RPvORxL2Qq0bQwew
+        va6SQNTlbrLIFbrvfR1Pd7TcFmCXNtrlo0ZFTSYLtYxvRagFWGcJyrEyUG3tbZWvSTqKxp
+        vxeOnL029LRIrCJcKadGjsua+2ybxTz7MvySHHK2on3cvxUNmN2oT/YP303BSUEGprc7Xu
+        QNy0n7A2+2A+lhYkU9mtcPMSC13CtWAIh10K3dTP5p1AxkbD5q6R49ctbv+bww==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1615030944;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -33,24 +33,25 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=1P3PuapQCPu+P6h38eAFeVR5TUXIRpe3xn112g4z9pE=;
-        b=9Ru/NouYvLGg5LKyz33DDDcwMf2wKHixK9xd7vKN/0CRXGMRQVfofRn84yEvvjGSyKP0NF
-        B3t3yWENoAQD7nDQ==
-From:   "tip-bot2 for Vincent Guittot" <tip-bot2@linutronix.de>
+        bh=gdBR0ohv2b5rkxY/JtiPsnG6VuYWf5wGS8A4oo6zBhE=;
+        b=VbQ0cPumIFyJNWN4Ua33QZbc/mmpHb6xSnjEvJqaX+GeeSZGJlwIsk2Nc+9yqlGTxOKmfa
+        El5ZUWj3bXuXX9Dw==
+From:   "tip-bot2 for Mathieu Desnoyers" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/fair: Remove update of blocked load from
- newidle_balance
-Cc:     Vincent Guittot <vincent.guittot@linaro.org>,
+Subject: [tip: sched/core] sched/membarrier: fix missing local execution of
+ ipi_sync_rq_state()
+Cc:     Nadav Amit <nadav.amit@gmail.com>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        Valentin Schneider <valentin.schneider@arm.com>,
+        Ingo Molnar <mingo@kernel.org>, stable@vger.kernel.org,
+        #@tip-bot2.tec.linutronix.de, 5.4.x+@tip-bot2.tec.linutronix.de,
         x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20210224133007.28644-2-vincent.guittot@linaro.org>
-References: <20210224133007.28644-2-vincent.guittot@linaro.org>
+In-Reply-To: <74F1E842-4A84-47BF-B6C2-5407DFDD4A4A@gmail.com>
+References: <74F1E842-4A84-47BF-B6C2-5407DFDD4A4A@gmail.com>
 MIME-Version: 1.0
-Message-ID: <161503094353.398.8402845944658689039.tip-bot2@tip-bot2>
+Message-ID: <161503094441.398.6645773108420979518.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,121 +62,45 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     0826530de3cbdc89e60a89e86def94a5f0fc81ca
-Gitweb:        https://git.kernel.org/tip/0826530de3cbdc89e60a89e86def94a5f0fc81ca
-Author:        Vincent Guittot <vincent.guittot@linaro.org>
-AuthorDate:    Wed, 24 Feb 2021 14:30:01 +01:00
+Commit-ID:     ce29ddc47b91f97e7f69a0fb7cbb5845f52a9825
+Gitweb:        https://git.kernel.org/tip/ce29ddc47b91f97e7f69a0fb7cbb5845f52a9825
+Author:        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+AuthorDate:    Wed, 17 Feb 2021 11:56:51 -05:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Sat, 06 Mar 2021 12:40:21 +01:00
 
-sched/fair: Remove update of blocked load from newidle_balance
+sched/membarrier: fix missing local execution of ipi_sync_rq_state()
 
-newidle_balance runs with both preempt and irq disabled which prevent
-local irq to run during this period. The duration for updating the
-blocked load of CPUs varies according to the number of CPU cgroups
-with non-decayed load and extends this critical period to an uncontrolled
-level.
+The function sync_runqueues_membarrier_state() should copy the
+membarrier state from the @mm received as parameter to each runqueue
+currently running tasks using that mm.
 
-Remove the update from newidle_balance and trigger a normal ILB that
-will take care of the update instead.
+However, the use of smp_call_function_many() skips the current runqueue,
+which is unintended. Replace by a call to on_each_cpu_mask().
 
-This reduces the IRQ latency from O(nr_cgroups * nr_nohz_cpus) to
-O(nr_cgroups).
-
-Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
+Fixes: 227a4aadc75b ("sched/membarrier: Fix p->mm->membarrier_state racy load")
+Reported-by: Nadav Amit <nadav.amit@gmail.com>
+Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Valentin Schneider <valentin.schneider@arm.com>
-Link: https://lkml.kernel.org/r/20210224133007.28644-2-vincent.guittot@linaro.org
+Cc: stable@vger.kernel.org # 5.4.x+
+Link: https://lore.kernel.org/r/74F1E842-4A84-47BF-B6C2-5407DFDD4A4A@gmail.com
 ---
- kernel/sched/fair.c | 33 +++++----------------------------
- 1 file changed, 5 insertions(+), 28 deletions(-)
+ kernel/sched/membarrier.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 794c2cb..806e16f 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -7392,8 +7392,6 @@ enum migration_type {
- #define LBF_NEED_BREAK	0x02
- #define LBF_DST_PINNED  0x04
- #define LBF_SOME_PINNED	0x08
--#define LBF_NOHZ_STATS	0x10
--#define LBF_NOHZ_AGAIN	0x20
- 
- struct lb_env {
- 	struct sched_domain	*sd;
-@@ -8397,9 +8395,6 @@ static inline void update_sg_lb_stats(struct lb_env *env,
- 	for_each_cpu_and(i, sched_group_span(group), env->cpus) {
- 		struct rq *rq = cpu_rq(i);
- 
--		if ((env->flags & LBF_NOHZ_STATS) && update_nohz_stats(rq, false))
--			env->flags |= LBF_NOHZ_AGAIN;
--
- 		sgs->group_load += cpu_load(rq);
- 		sgs->group_util += cpu_util(i);
- 		sgs->group_runnable += cpu_runnable(rq);
-@@ -8940,11 +8935,6 @@ static inline void update_sd_lb_stats(struct lb_env *env, struct sd_lb_stats *sd
- 	struct sg_lb_stats tmp_sgs;
- 	int sg_status = 0;
- 
--#ifdef CONFIG_NO_HZ_COMMON
--	if (env->idle == CPU_NEWLY_IDLE && READ_ONCE(nohz.has_blocked))
--		env->flags |= LBF_NOHZ_STATS;
--#endif
--
- 	do {
- 		struct sg_lb_stats *sgs = &tmp_sgs;
- 		int local_group;
-@@ -8981,14 +8971,6 @@ next_group:
- 	/* Tag domain that child domain prefers tasks go to siblings first */
- 	sds->prefer_sibling = child && child->flags & SD_PREFER_SIBLING;
- 
--#ifdef CONFIG_NO_HZ_COMMON
--	if ((env->flags & LBF_NOHZ_AGAIN) &&
--	    cpumask_subset(nohz.idle_cpus_mask, sched_domain_span(env->sd))) {
--
--		WRITE_ONCE(nohz.next_blocked,
--			   jiffies + msecs_to_jiffies(LOAD_AVG_PERIOD));
--	}
--#endif
- 
- 	if (env->sd->flags & SD_NUMA)
- 		env->fbq_type = fbq_classify_group(&sds->busiest_stat);
-@@ -10517,16 +10499,11 @@ static void nohz_newidle_balance(struct rq *this_rq)
- 	    time_before(jiffies, READ_ONCE(nohz.next_blocked)))
- 		return;
- 
--	raw_spin_unlock(&this_rq->lock);
- 	/*
--	 * This CPU is going to be idle and blocked load of idle CPUs
--	 * need to be updated. Run the ilb locally as it is a good
--	 * candidate for ilb instead of waking up another idle CPU.
--	 * Kick an normal ilb if we failed to do the update.
-+	 * Blocked load of idle CPUs need to be updated.
-+	 * Kick an ILB to update statistics.
- 	 */
--	if (!_nohz_idle_balance(this_rq, NOHZ_STATS_KICK, CPU_NEWLY_IDLE))
--		kick_ilb(NOHZ_STATS_KICK);
--	raw_spin_lock(&this_rq->lock);
-+	kick_ilb(NOHZ_STATS_KICK);
- }
- 
- #else /* !CONFIG_NO_HZ_COMMON */
-@@ -10587,8 +10564,6 @@ static int newidle_balance(struct rq *this_rq, struct rq_flags *rf)
- 			update_next_balance(sd, &next_balance);
- 		rcu_read_unlock();
- 
--		nohz_newidle_balance(this_rq);
--
- 		goto out;
+diff --git a/kernel/sched/membarrier.c b/kernel/sched/membarrier.c
+index acdae62..b5add64 100644
+--- a/kernel/sched/membarrier.c
++++ b/kernel/sched/membarrier.c
+@@ -471,9 +471,7 @@ static int sync_runqueues_membarrier_state(struct mm_struct *mm)
  	}
+ 	rcu_read_unlock();
  
-@@ -10654,6 +10629,8 @@ out:
+-	preempt_disable();
+-	smp_call_function_many(tmpmask, ipi_sync_rq_state, mm, 1);
+-	preempt_enable();
++	on_each_cpu_mask(tmpmask, ipi_sync_rq_state, mm, true);
  
- 	if (pulled_task)
- 		this_rq->idle_stamp = 0;
-+	else
-+		nohz_newidle_balance(this_rq);
- 
- 	rq_repin_lock(this_rq, rf);
- 
+ 	free_cpumask_var(tmpmask);
+ 	cpus_read_unlock();
