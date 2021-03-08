@@ -2,53 +2,50 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F9BB330C9A
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  8 Mar 2021 12:41:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 094E6330CA4
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  8 Mar 2021 12:47:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231228AbhCHLlQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 8 Mar 2021 06:41:16 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:45398 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229972AbhCHLlC (ORCPT
+        id S230125AbhCHLqw (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 8 Mar 2021 06:46:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49430 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229627AbhCHLqk (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 8 Mar 2021 06:41:02 -0500
-Date:   Mon, 08 Mar 2021 11:41:00 -0000
+        Mon, 8 Mar 2021 06:46:40 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E094C06174A;
+        Mon,  8 Mar 2021 03:46:40 -0800 (PST)
+Date:   Mon, 08 Mar 2021 11:46:37 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1615203661;
+        s=2020; t=1615203998;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=7nwDCLHhhwHRnil5SA8c4cMC244WlNuluCG1JbTYoiM=;
-        b=REydwh/rVh1lyHcanAd2ReZm9MuGmBepREAyDYm9I4FxF/2tvZ/uZoVrziF5aQ6xb4fWJM
-        sdryUrLpQKT/7irxXJ6U1I3AH1HvZaW8mgDJCNzewZVTi0lS2xeKfTghrlMvY12LjIRCB7
-        CnvEq/oeLD7HtbAaD+gYeHbHSLwSG70zwibgqXRp6Os9bokxVxzFuviOmC6PtbOS7lnN4l
-        Ghc9SUppKfvHvKS/AndDTtUSrDk/B5AlEqGxwNUgbhphQXxCwwsCs1Z8fffthREGjJ7dCN
-        cFffZJYCnK7XVqTZKfKisgUB1cR/0Q3bzZRwxZZkDFZmAWwnSLI5Ie8vKkLaVA==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=D14/ASdzhgKw/JKB9L849uiutME+4sk5Ek3aW7Gm5ro=;
+        b=RwaCjYHqvqd6x8g8/hbQcuAaj03s6omxRM+uNLHzJci3nCTwYFb57Nrm0UFFY2pe99HFhJ
+        ihQ75zrqSBzBiim6rMTkLYLWe23MAfnOTfN9z6BsRIhy5cL1lHLVZ367zL9WLtDg89WK3K
+        CHSVbe6t955pfc0aEhfbeCTaeetoCRALhZZi6WQNnKLaSGQwJZNo06kNX2irDjQbUnUfG2
+        na8DQi57kGUCmZfyWevcPlC3XNMRoM+YOLYHu0P8+Y8gCgYtWSGCSPGdyDTXqHe0Bb5i4e
+        rtUtHSTP0FCNIvetK8MqyTekIIdzs73/t2BBIG/nHsKA/hiyWrBjaKnGbyJFKQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1615203661;
+        s=2020e; t=1615203998;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=7nwDCLHhhwHRnil5SA8c4cMC244WlNuluCG1JbTYoiM=;
-        b=y1ITC2/0h6klA7WBXfSyPV5blLeJi1cqhL0KLPL3dmhuf9w/TQDGY6DPBlkWQJF8lb9mch
-        MKIERXjmGvRlRyDw==
-From:   "tip-bot2 for Mike Travis" <tip-bot2@linutronix.de>
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=D14/ASdzhgKw/JKB9L849uiutME+4sk5Ek3aW7Gm5ro=;
+        b=upkeEWjF5D+zpKrqRzx4R8nKQsBO6FJ5O73dUgBOqt5Pa7o5IMQkjiYcHJI7uatT1+x6Wi
+        mALjzXed6eLHkyDA==
+From:   "tip-bot2 for Ard Biesheuvel" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/platform] x86/platform/uv: Set section block size for
- hubless architectures
-Cc:     Mike Travis <mike.travis@hpe.com>, Borislav Petkov <bp@suse.de>,
-        Steve Wahl <steve.wahl@hpe.com>, Russ Anderson <rja@hpe.com>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20210305162853.299892-1-mike.travis@hpe.com>
-References: <20210305162853.299892-1-mike.travis@hpe.com>
+Subject: [tip: efi/urgent] efi: stub: omit SetVirtualAddressMap() if marked
+ unsupported in RT_PROP table
+Cc:     <stable@vger.kernel.org>, Shawn Guo <shawn.guo@linaro.org>,
+        Ard Biesheuvel <ardb@kernel.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <161520366063.398.17015803098326869178.tip-bot2@tip-bot2>
+Message-ID: <161520399753.398.8886708450052233284.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -57,50 +54,65 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/platform branch of tip:
+The following commit has been merged into the efi/urgent branch of tip:
 
-Commit-ID:     6840a150b9daf35e4d21ab9780d0a03b4ed74a5b
-Gitweb:        https://git.kernel.org/tip/6840a150b9daf35e4d21ab9780d0a03b4ed74a5b
-Author:        Mike Travis <mike.travis@hpe.com>
-AuthorDate:    Fri, 05 Mar 2021 10:28:53 -06:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Mon, 08 Mar 2021 12:17:53 +01:00
+Commit-ID:     9e9888a0fe97b9501a40f717225d2bef7100a2c1
+Gitweb:        https://git.kernel.org/tip/9e9888a0fe97b9501a40f717225d2bef7100a2c1
+Author:        Ard Biesheuvel <ardb@kernel.org>
+AuthorDate:    Fri, 05 Mar 2021 10:21:05 +01:00
+Committer:     Ard Biesheuvel <ardb@kernel.org>
+CommitterDate: Sun, 07 Mar 2021 09:31:02 +01:00
 
-x86/platform/uv: Set section block size for hubless architectures
+efi: stub: omit SetVirtualAddressMap() if marked unsupported in RT_PROP table
 
-Commit
+The EFI_RT_PROPERTIES_TABLE contains a mask of runtime services that are
+available after ExitBootServices(). This mostly does not concern the EFI
+stub at all, given that it runs before that. However, there is one call
+that is made at runtime, which is the call to SetVirtualAddressMap()
+(which is not even callable at boot time to begin with)
 
-  bbbd2b51a2aa ("x86/platform/UV: Use new set memory block size function")
+So add the missing handling of the RT_PROP table to ensure that we only
+call SetVirtualAddressMap() if it is not being advertised as unsupported
+by the firmware.
 
-added a call to set the block size value that is needed by the kernel
-to set the boundaries in the section list. This was done for UV Hubbed
-systems but missed in the UV Hubless setup. Fix that mistake by adding
-that same set call for hubless systems, which support the same NVRAMs
-and Intel BIOS, thus the same problem occurs.
-
- [ bp: Massage commit message. ]
-
-Fixes: bbbd2b51a2aa ("x86/platform/UV: Use new set memory block size function")
-Signed-off-by: Mike Travis <mike.travis@hpe.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Steve Wahl <steve.wahl@hpe.com>
-Reviewed-by: Russ Anderson <rja@hpe.com>
-Link: https://lkml.kernel.org/r/20210305162853.299892-1-mike.travis@hpe.com
+Cc: <stable@vger.kernel.org> # v5.10+
+Tested-by: Shawn Guo <shawn.guo@linaro.org>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/x86/kernel/apic/x2apic_uv_x.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/firmware/efi/libstub/efi-stub.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/arch/x86/kernel/apic/x2apic_uv_x.c b/arch/x86/kernel/apic/x2apic_uv_x.c
-index 52bc217..c9ddd23 100644
---- a/arch/x86/kernel/apic/x2apic_uv_x.c
-+++ b/arch/x86/kernel/apic/x2apic_uv_x.c
-@@ -1671,6 +1671,9 @@ static __init int uv_system_init_hubless(void)
- 	if (rc < 0)
- 		return rc;
+diff --git a/drivers/firmware/efi/libstub/efi-stub.c b/drivers/firmware/efi/libstub/efi-stub.c
+index ec2f398..26e6978 100644
+--- a/drivers/firmware/efi/libstub/efi-stub.c
++++ b/drivers/firmware/efi/libstub/efi-stub.c
+@@ -96,6 +96,18 @@ static void install_memreserve_table(void)
+ 		efi_err("Failed to install memreserve config table!\n");
+ }
  
-+	/* Set section block size for current node memory */
-+	set_block_size();
++static u32 get_supported_rt_services(void)
++{
++	const efi_rt_properties_table_t *rt_prop_table;
++	u32 supported = EFI_RT_SUPPORTED_ALL;
 +
- 	/* Create user access node */
- 	if (rc >= 0)
- 		uv_setup_proc_files(1);
++	rt_prop_table = get_efi_config_table(EFI_RT_PROPERTIES_TABLE_GUID);
++	if (rt_prop_table)
++		supported &= rt_prop_table->runtime_services_supported;
++
++	return supported;
++}
++
+ /*
+  * EFI entry point for the arm/arm64 EFI stubs.  This is the entrypoint
+  * that is described in the PE/COFF header.  Most of the code is the same
+@@ -250,6 +262,10 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
+ 			  (prop_tbl->memory_protection_attribute &
+ 			   EFI_PROPERTIES_RUNTIME_MEMORY_PROTECTION_NON_EXECUTABLE_PE_DATA);
+ 
++	/* force efi_novamap if SetVirtualAddressMap() is unsupported */
++	efi_novamap |= !(get_supported_rt_services() &
++			 EFI_RT_SUPPORTED_SET_VIRTUAL_ADDRESS_MAP);
++
+ 	/* hibernation expects the runtime regions to stay in the same place */
+ 	if (!IS_ENABLED(CONFIG_HIBERNATION) && !efi_nokaslr && !flat_va_mapping) {
+ 		/*
