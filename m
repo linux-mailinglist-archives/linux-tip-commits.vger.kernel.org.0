@@ -2,56 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7EDB2331789
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  8 Mar 2021 20:45:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B457F332B88
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  9 Mar 2021 17:09:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231286AbhCHTpU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 8 Mar 2021 14:45:20 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:47760 "EHLO
+        id S232073AbhCIQIm (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 9 Mar 2021 11:08:42 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:53926 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229813AbhCHTpS (ORCPT
+        with ESMTP id S232098AbhCIQIN (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 8 Mar 2021 14:45:18 -0500
-Date:   Mon, 08 Mar 2021 19:45:16 -0000
+        Tue, 9 Mar 2021 11:08:13 -0500
+Date:   Tue, 09 Mar 2021 16:08:11 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1615232717;
+        s=2020; t=1615306092;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=e7mUrlC1VI2Dam+YB5vP4PsbdUDIxzpEbEKAa4UKsZY=;
-        b=yuX0bY59P5ovD2U2OEXSXNvJYUop0VppeqjqZeTyXImCr1t1gZh576aBh/VsXEOR/+yb3V
-        OVaPo6m/MJ+eDELzbe5/Zhk6W0yYLqoBSqexDB/LegKwwDabDX+uJ4qcsXqHBHN7NB/L6M
-        i5fSlmX3Xo77erR7yxACp/eSdbLKn4ZqAvXEMqsCLxdcFpF8+PQTUbekghTVWScx1lVJ31
-        JeLwrlt8CHOstnNySWh4vfuUlGSzEzT9Qeies7H8mF0+ZFTB0UwzPCEMHbM9la99uAYp6r
-        ggG1DGbeUVyFH6wxxPePJSkSSWBP5EDddNga0MHWCRbGR+Nt+ve6mWwUlFeNmQ==
+        bh=ydP5OQo35wAYWz8Gi3ovOO+XhHXKCyB4t30sZUCfcWY=;
+        b=nsZ8Th5H5/zsO4YFl832ncOKMjnzzxio0VuJ6lBubI6i/9DUSr0PmT4kG7DD4WcfXOhLoa
+        ZBtVqz+9ygOrW37YaKJLMMQFKWAO+fdZymo9QItWZiC6Y0S3uGo97dp9jMZFnH7CdCUWgo
+        5MhMQYNtwNOJ3Z4wf+wLnIe9eGeoGUbKouZ3Ji1wijVkdSLy+ZHk1SaJ0I3kLILNOhBDg1
+        hDkolbGTIwW0j8f9bBWuP5YUsmJyrSG8jM7uajAvHCuJCY/pAC2uDGc3B9oJ7D9Zn82OAQ
+        VlLHVLqxSnGJ6e8r4NAB/bVciaPpJblssdN6lKth9GODMBA4+Yia53Qry1P/RQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1615232717;
+        s=2020e; t=1615306092;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=e7mUrlC1VI2Dam+YB5vP4PsbdUDIxzpEbEKAa4UKsZY=;
-        b=D/sovxAy9NLPUrJX+IF9GOR55F9k+iHikCbZx9MlIKNpastThkNokzaJMNQb8fIsb0aXp3
-        6uHu6unvd+MmiZAg==
-From:   "tip-bot2 for Tom Lendacky" <tip-bot2@linutronix.de>
+        bh=ydP5OQo35wAYWz8Gi3ovOO+XhHXKCyB4t30sZUCfcWY=;
+        b=LAyffzNC8k6oFMCgFgcPG7DdJWE7W+sff6EeaPNVcS60FT81IS7NQsaFJCYxX3yb3AFcYf
+        1HcgYsprM2pqZ0CA==
+From:   "tip-bot2 for Joerg Roedel" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/seves] x86/virtio: Have SEV guests enforce restricted
- virtio memory access
-Cc:     kernel test robot <lkp@intel.com>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Borislav Petkov <bp@suse.de>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: =?utf-8?q?=3Cb46e0211f77ca1831f11132f969d470a6ffc9267=2E16148?=
- =?utf-8?q?97610=2Egit=2Ethomas=2Elendacky=40amd=2Ecom=3E?=
-References: =?utf-8?q?=3Cb46e0211f77ca1831f11132f969d470a6ffc9267=2E161489?=
- =?utf-8?q?7610=2Egit=2Ethomas=2Elendacky=40amd=2Ecom=3E?=
+Subject: [tip: x86/urgent] x86/sev-es: Correctly track IRQ states in runtime
+ #VC handler
+Cc:     Andy Lutomirski <luto@kernel.org>, Joerg Roedel <jroedel@suse.de>,
+        Borislav Petkov <bp@suse.de>, stable@vger.kernel.org,
+        #@tip-bot2.tec.linutronix.de, v5.10+@tip-bot2.tec.linutronix.de,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20210303141716.29223-5-joro@8bytes.org>
+References: <20210303141716.29223-5-joro@8bytes.org>
 MIME-Version: 1.0
-Message-ID: <161523271617.398.12783069066955429974.tip-bot2@tip-bot2>
+Message-ID: <161530609185.398.9748998065952345534.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,66 +58,63 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/seves branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     229164175ff0c61ff581e6bf37fbfcb608b6e9bb
-Gitweb:        https://git.kernel.org/tip/229164175ff0c61ff581e6bf37fbfcb608b6e9bb
-Author:        Tom Lendacky <thomas.lendacky@amd.com>
-AuthorDate:    Thu, 04 Mar 2021 16:40:11 -06:00
+Commit-ID:     62441a1fb53263bda349b6e5997c3cc5c120d89e
+Gitweb:        https://git.kernel.org/tip/62441a1fb53263bda349b6e5997c3cc5c120d89e
+Author:        Joerg Roedel <jroedel@suse.de>
+AuthorDate:    Wed, 03 Mar 2021 15:17:15 +01:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Mon, 08 Mar 2021 20:41:33 +01:00
+CommitterDate: Tue, 09 Mar 2021 12:33:46 +01:00
 
-x86/virtio: Have SEV guests enforce restricted virtio memory access
+x86/sev-es: Correctly track IRQ states in runtime #VC handler
 
-An SEV guest requires that virtio devices use the DMA API to allow the
-hypervisor to successfully access guest memory as needed.
+Call irqentry_nmi_enter()/irqentry_nmi_exit() in the #VC handler to
+correctly track the IRQ state during its execution.
 
-The VIRTIO_F_VERSION_1 and VIRTIO_F_ACCESS_PLATFORM features tell virtio
-to use the DMA API. Add arch_has_restricted_virtio_memory_access() for
-x86, to fail the device probe if these features have not been set for the
-device when running as an SEV guest.
-
- [ bp: Fix -Wmissing-prototypes warning
-   Reported-by: kernel test robot <lkp@intel.com> ]
-
-Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
+Fixes: 0786138c78e79 ("x86/sev-es: Add a Runtime #VC Exception Handler")
+Reported-by: Andy Lutomirski <luto@kernel.org>
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/b46e0211f77ca1831f11132f969d470a6ffc9267.1614897610.git.thomas.lendacky@amd.com
+Cc: stable@vger.kernel.org # v5.10+
+Link: https://lkml.kernel.org/r/20210303141716.29223-5-joro@8bytes.org
 ---
- arch/x86/Kconfig          | 1 +
- arch/x86/mm/mem_encrypt.c | 6 ++++++
- 2 files changed, 7 insertions(+)
+ arch/x86/kernel/sev-es.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 2792879..e80e726 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -1518,6 +1518,7 @@ config AMD_MEM_ENCRYPT
- 	select ARCH_USE_MEMREMAP_PROT
- 	select ARCH_HAS_FORCE_DMA_UNENCRYPTED
- 	select INSTRUCTION_DECODER
-+	select ARCH_HAS_RESTRICTED_VIRTIO_MEMORY_ACCESS
- 	help
- 	  Say yes to enable support for the encryption of system memory.
- 	  This requires an AMD processor that supports Secure Memory
-diff --git a/arch/x86/mm/mem_encrypt.c b/arch/x86/mm/mem_encrypt.c
-index 4b01f7d..f3eb53f 100644
---- a/arch/x86/mm/mem_encrypt.c
-+++ b/arch/x86/mm/mem_encrypt.c
-@@ -19,6 +19,7 @@
- #include <linux/kernel.h>
- #include <linux/bitops.h>
- #include <linux/dma-mapping.h>
-+#include <linux/virtio_config.h>
+diff --git a/arch/x86/kernel/sev-es.c b/arch/x86/kernel/sev-es.c
+index 301f20f..c3fd8fa 100644
+--- a/arch/x86/kernel/sev-es.c
++++ b/arch/x86/kernel/sev-es.c
+@@ -1258,13 +1258,12 @@ static __always_inline bool on_vc_fallback_stack(struct pt_regs *regs)
+ DEFINE_IDTENTRY_VC_SAFE_STACK(exc_vmm_communication)
+ {
+ 	struct sev_es_runtime_data *data = this_cpu_read(runtime_data);
++	irqentry_state_t irq_state;
+ 	struct ghcb_state state;
+ 	struct es_em_ctxt ctxt;
+ 	enum es_result result;
+ 	struct ghcb *ghcb;
  
- #include <asm/tlbflush.h>
- #include <asm/fixmap.h>
-@@ -484,3 +485,8 @@ void __init mem_encrypt_init(void)
- 	print_mem_encrypt_feature_info();
- }
+-	lockdep_assert_irqs_disabled();
+-
+ 	/*
+ 	 * Handle #DB before calling into !noinstr code to avoid recursive #DB.
+ 	 */
+@@ -1273,6 +1272,8 @@ DEFINE_IDTENTRY_VC_SAFE_STACK(exc_vmm_communication)
+ 		return;
+ 	}
  
-+int arch_has_restricted_virtio_memory_access(void)
-+{
-+	return sev_active();
-+}
-+EXPORT_SYMBOL_GPL(arch_has_restricted_virtio_memory_access);
++	irq_state = irqentry_nmi_enter(regs);
++	lockdep_assert_irqs_disabled();
+ 	instrumentation_begin();
+ 
+ 	/*
+@@ -1335,6 +1336,7 @@ DEFINE_IDTENTRY_VC_SAFE_STACK(exc_vmm_communication)
+ 
+ out:
+ 	instrumentation_end();
++	irqentry_nmi_exit(regs, irq_state);
+ 
+ 	return;
+ 
