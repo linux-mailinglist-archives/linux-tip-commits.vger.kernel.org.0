@@ -2,51 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C17C33B347
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 15 Mar 2021 14:07:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B452933C05A
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 15 Mar 2021 16:48:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229746AbhCONGq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 15 Mar 2021 09:06:46 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:34930 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229926AbhCONGg (ORCPT
+        id S232372AbhCOPsT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 15 Mar 2021 11:48:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39862 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231915AbhCOPrz (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 15 Mar 2021 09:06:36 -0400
-Date:   Mon, 15 Mar 2021 13:06:34 -0000
+        Mon, 15 Mar 2021 11:47:55 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 812E0C06175F;
+        Mon, 15 Mar 2021 08:47:50 -0700 (PDT)
+Date:   Mon, 15 Mar 2021 15:47:43 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1615813595;
+        s=2020; t=1615823264;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=VmEUMC1Chi8vr697S3PnQ6o1wes6jaRKnUR7MvTS0to=;
-        b=q2X9NLmWjdXmr6N/CXFpfC4i1xDBaZ4RT/k1x6eVV+UT0fCwHj5eXrhWPHszkBBMcErBSx
-        6mie7ZM4tJJVgeL0byymNeq+Fvx9NrqJ9+A3McDi0TzJ03Kj4j8iGrh2R6KsVyEhJfe1PD
-        5r+I6mx7PrWwwfmuJZ0yppZo7eZzFYIfFzKwWQiqxmZJs3JfgWoJ5COsBV0nw6fsn0vlZ7
-        UuBKkX+xkr8vT9tXllsWq9Dqvcf6IB5dqINoBO6y8QTMiP93qOcJf4Ri4S+grlR4DqapF6
-        DD6U5rlVUMMpxx5U13NlOfX++i6jmzFX7nH79g2i1RjhB9aRAuZQqYUac/AdrQ==
+        bh=nnoNSIniyqNZsV5sM1JWvnOBNGc0hfSeKOURPnMeMGY=;
+        b=RNHUoq3MnSho3LyQtW7fJVom/F0sJyRm9ZZhtfOCFRARQ2/ROGyjxp2kBvdxbD/ZOtYLlf
+        ne6Bs+8ky+zGaWk4Fkh/2D9Wbt/AzpXA79Ffq/1wHBGQ014Jd1wucjC7kyG7lhtZx4U0g8
+        MgT72m78syhwgTxtbHIdYXtn3qsMlDomYpT1efeUqYRn2LIdqupr+VrNCQBAy4rlnY8nAY
+        Z+w/ocU8JBdEv8fJCtuLOuDx6znytK7TA8DfMYss/ekFW1RvxtzfHceEk2wqYHyK9tkmfT
+        rnGB0fGPCuKkUEDiu04Hi1DHOIr6kgwtUJCsxMHiuXRMVWi2fVcTWxzSw1OV0g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1615813595;
+        s=2020e; t=1615823264;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=VmEUMC1Chi8vr697S3PnQ6o1wes6jaRKnUR7MvTS0to=;
-        b=KiApcbFPOs8dMQMpAdUFxM1tOVPIccXYi1ZrUGtnAnA8J83NsGgRraQBBUqW0uYTO0tyNh
-        LyP05xZ6ULOSHrBA==
+        bh=nnoNSIniyqNZsV5sM1JWvnOBNGc0hfSeKOURPnMeMGY=;
+        b=YUH5t5VKZzDc1NQqcXurW0CwKRZpOo71Yzg0I9kMYvlgZkXQCZGG5jL3H1JNTdN4F9DO2x
+        40q6cZQy+LRw0xDQ==
 From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/misc] tools/x86/kcpuid: Add AMD Secure Encryption leaf
-Cc:     Borislav Petkov <bp@suse.de>, Feng Tang <feng.tang@intel.com>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20210313140118.17010-1-bp@alien8.de>
-References: <20210313140118.17010-1-bp@alien8.de>
+Subject: [tip: x86/core] x86/insn: Make insn_complete() static
+Cc:     Borislav Petkov <bp@suse.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20210304174237.31945-22-bp@alien8.de>
+References: <20210304174237.31945-22-bp@alien8.de>
 MIME-Version: 1.0
-Message-ID: <161581359465.398.1247628750440397555.tip-bot2@tip-bot2>
+Message-ID: <161582326380.398.6522700070343190068.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -55,41 +58,97 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/misc branch of tip:
+The following commit has been merged into the x86/core branch of tip:
 
-Commit-ID:     2d4177c01b4e7496c7d47b31865f8c85bffb3604
-Gitweb:        https://git.kernel.org/tip/2d4177c01b4e7496c7d47b31865f8c85bffb3604
+Commit-ID:     f935178b5c1c32ff803b15892a8ba85a1280cb01
+Gitweb:        https://git.kernel.org/tip/f935178b5c1c32ff803b15892a8ba85a1280cb01
 Author:        Borislav Petkov <bp@suse.de>
-AuthorDate:    Sat, 13 Mar 2021 14:56:16 +01:00
+AuthorDate:    Mon, 23 Nov 2020 23:19:03 +01:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Mon, 15 Mar 2021 14:01:25 +01:00
+CommitterDate: Mon, 15 Mar 2021 13:03:46 +01:00
 
-tools/x86/kcpuid: Add AMD Secure Encryption leaf
+x86/insn: Make insn_complete() static
 
-Add the 0x8000001f leaf's fields.
+... and move it above the only place it is used.
 
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Acked-by: Feng Tang <feng.tang@intel.com>
-Link: https://lkml.kernel.org/r/20210313140118.17010-1-bp@alien8.de
+Link: https://lkml.kernel.org/r/20210304174237.31945-22-bp@alien8.de
 ---
- tools/arch/x86/kcpuid/cpuid.csv | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ arch/x86/include/asm/insn.h       | 7 -------
+ arch/x86/lib/insn.c               | 7 +++++++
+ tools/arch/x86/include/asm/insn.h | 7 -------
+ tools/arch/x86/lib/insn.c         | 7 +++++++
+ 4 files changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/tools/arch/x86/kcpuid/cpuid.csv b/tools/arch/x86/kcpuid/cpuid.csv
-index f4a5b85..dd94c07 100644
---- a/tools/arch/x86/kcpuid/cpuid.csv
-+++ b/tools/arch/x86/kcpuid/cpuid.csv
-@@ -378,3 +378,13 @@
- 0x80000008,    0,  EAX,    7:0, phy_adr_bits, Physical Address Bits
- 0x80000008,    0,  EAX,   15:8, lnr_adr_bits, Linear Address Bits
- 0x80000007,    0,  EBX,      9, wbnoinvd, WBNOINVD
+diff --git a/arch/x86/include/asm/insn.h b/arch/x86/include/asm/insn.h
+index 5eb3753..f03b6ca 100644
+--- a/arch/x86/include/asm/insn.h
++++ b/arch/x86/include/asm/insn.h
+@@ -178,13 +178,6 @@ static inline int insn_has_emulate_prefix(struct insn *insn)
+ 	return !!insn->emulate_prefix_size;
+ }
+ 
+-/* Ensure this instruction is decoded completely */
+-static inline int insn_complete(struct insn *insn)
+-{
+-	return insn->opcode.got && insn->modrm.got && insn->sib.got &&
+-		insn->displacement.got && insn->immediate.got;
+-}
+-
+ static inline insn_byte_t insn_vex_m_bits(struct insn *insn)
+ {
+ 	if (insn->vex_prefix.nbytes == 2)	/* 2 bytes VEX */
+diff --git a/arch/x86/lib/insn.c b/arch/x86/lib/insn.c
+index bb58004..058f19b 100644
+--- a/arch/x86/lib/insn.c
++++ b/arch/x86/lib/insn.c
+@@ -714,6 +714,13 @@ int insn_get_length(struct insn *insn)
+ 	return 0;
+ }
+ 
++/* Ensure this instruction is decoded completely */
++static inline int insn_complete(struct insn *insn)
++{
++	return insn->opcode.got && insn->modrm.got && insn->sib.got &&
++		insn->displacement.got && insn->immediate.got;
++}
 +
-+# 8000001F: AMD Secure Encryption
-+0x8000001F,	0, EAX, 0, sme,	Secure Memory Encryption
-+0x8000001F,	0, EAX, 1, sev,	Secure Encrypted Virtualization
-+0x8000001F,	0, EAX, 2, vmpgflush, VM Page Flush MSR
-+0x8000001F,	0, EAX, 3, seves, SEV Encrypted State
-+0x8000001F,	0, EBX, 5:0, c-bit, Page table bit number used to enable memory encryption
-+0x8000001F,	0, EBX, 11:6, mem_encrypt_physaddr_width, Reduction of physical address space in bits with SME enabled
-+0x8000001F,	0, ECX, 31:0, num_encrypted_guests, Maximum ASID value that may be used for an SEV-enabled guest
-+0x8000001F,	0, EDX, 31:0, minimum_sev_asid, Minimum ASID value that must be used for an SEV-enabled, SEV-ES-disabled guest
+ /**
+  * insn_decode() - Decode an x86 instruction
+  * @insn:	&struct insn to be initialized
+diff --git a/tools/arch/x86/include/asm/insn.h b/tools/arch/x86/include/asm/insn.h
+index 5aae785..c9f3eee 100644
+--- a/tools/arch/x86/include/asm/insn.h
++++ b/tools/arch/x86/include/asm/insn.h
+@@ -178,13 +178,6 @@ static inline int insn_has_emulate_prefix(struct insn *insn)
+ 	return !!insn->emulate_prefix_size;
+ }
+ 
+-/* Ensure this instruction is decoded completely */
+-static inline int insn_complete(struct insn *insn)
+-{
+-	return insn->opcode.got && insn->modrm.got && insn->sib.got &&
+-		insn->displacement.got && insn->immediate.got;
+-}
+-
+ static inline insn_byte_t insn_vex_m_bits(struct insn *insn)
+ {
+ 	if (insn->vex_prefix.nbytes == 2)	/* 2 bytes VEX */
+diff --git a/tools/arch/x86/lib/insn.c b/tools/arch/x86/lib/insn.c
+index be2b057..cd4dedd 100644
+--- a/tools/arch/x86/lib/insn.c
++++ b/tools/arch/x86/lib/insn.c
+@@ -714,6 +714,13 @@ int insn_get_length(struct insn *insn)
+ 	return 0;
+ }
+ 
++/* Ensure this instruction is decoded completely */
++static inline int insn_complete(struct insn *insn)
++{
++	return insn->opcode.got && insn->modrm.got && insn->sib.got &&
++		insn->displacement.got && insn->immediate.got;
++}
++
+ /**
+  * insn_decode() - Decode an x86 instruction
+  * @insn:	&struct insn to be initialized
