@@ -2,20 +2,17 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 346EA33C066
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 15 Mar 2021 16:49:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DD0C33C05B
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 15 Mar 2021 16:48:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233056AbhCOPs1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 15 Mar 2021 11:48:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39902 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232226AbhCOPsB (ORCPT
+        id S231817AbhCOPsV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 15 Mar 2021 11:48:21 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:35942 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232098AbhCOPr6 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 15 Mar 2021 11:48:01 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B562C0613DB;
-        Mon, 15 Mar 2021 08:47:52 -0700 (PDT)
-Date:   Mon, 15 Mar 2021 15:47:47 -0000
+        Mon, 15 Mar 2021 11:47:58 -0400
+Date:   Mon, 15 Mar 2021 15:47:48 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1615823268;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -23,12 +20,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=HeddighmRUTuHyh41CoEbOoaahpE2nFQrVbGfXQM7oE=;
-        b=4m8Ab0AX+nrH+jaygUMz5dd8P+bwfBMTvKKeH1KSwMpc9y5RyE/3HXB2feiRxDGIrHcq4I
-        /2se25XP0g4UcCuzWU8hRAxEAG8J6sETtSHWWzYbUaEDBGNy1vKOWRnHXW+7aYwmez4akZ
-        lA9YWWT16rrvJoNc+UJzAnNW8u2Z9Wdku3yEtw9iZu7dsgcLHA0s5RyF6iejXERw549Gox
-        I5FkI72FY1EMUfUoPpyJFCOO4jgAWgl4HZFUaxCT+0pA9mcFn6j6JFacnN5rJEaG0PXb9u
-        zjzzwEomwKrE9I16aJ2NZJeFgwcvf2Juz08izGYynHBX1moydtmV+JE8Z//uLw==
+        bh=+FrIbfniDoPToHgCf17eeb0pEs7HcsidpnBDLBxykLI=;
+        b=eIHaBWsb70w3+cO/LUtxNb3thmhaV7l5RT8V/3slsKXo4NnxDE+YR83DlR1GJj9sQRXdYx
+        Thvrwt+5K8lgkMLgO+NcaL1D+T1qS/Zuk4RGHaFTm32Qt+GtMZD0LTUTmSvJVMXPz0vlF7
+        p6LOWyWz6DYq1jPisWcqq/mrl/oPqU/L5ClN4t8FXVeuEfIgbs0/j4tYPpkeUn7ahsa1eW
+        PRmKLYnXLJU55tcsgaMOn8luzHviVHA1swAlC+qDxd+He6GNQbdg9dO8pB5fBma1pzLWun
+        oTAgCDvrFaR/qmqLWnUPI1F4fO1FQb+IgewmWfaKaQeGXSnn7AK+rF96tjWrgQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1615823268;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,20 +33,20 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=HeddighmRUTuHyh41CoEbOoaahpE2nFQrVbGfXQM7oE=;
-        b=XdUdyKzVE7wGmENFuV2nt30Z6jwtkP0GWaxfF5US/xH9/wdP6THYOlmLGOihG/h94x5HbJ
-        dlLnmdGQKcGfltAw==
+        bh=+FrIbfniDoPToHgCf17eeb0pEs7HcsidpnBDLBxykLI=;
+        b=cIwDdRo84VqOvlCeOPbAfzJBKr8HSbsVZX6W1AR6Brs9FBCxK2UXUyplR6czQ4RsJPHO94
+        eq6PPxu3DVBnpLDQ==
 From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/core] x86/alternative: Use insn_decode()
+Subject: [tip: x86/core] x86/boot/compressed/sev-es: Convert to insn_decode()
 Cc:     Borislav Petkov <bp@suse.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210304174237.31945-10-bp@alien8.de>
-References: <20210304174237.31945-10-bp@alien8.de>
+In-Reply-To: <20210304174237.31945-7-bp@alien8.de>
+References: <20210304174237.31945-7-bp@alien8.de>
 MIME-Version: 1.0
-Message-ID: <161582326756.398.4176877360621612828.tip-bot2@tip-bot2>
+Message-ID: <161582326836.398.15024721671802967704.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,43 +57,47 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/core branch of tip:
 
-Commit-ID:     63c66cde7bbcc79aac14b25861c5b2495eede57b
-Gitweb:        https://git.kernel.org/tip/63c66cde7bbcc79aac14b25861c5b2495eede57b
+Commit-ID:     514ef77607b9ff184c11b88e8f100bc27f07460d
+Gitweb:        https://git.kernel.org/tip/514ef77607b9ff184c11b88e8f100bc27f07460d
 Author:        Borislav Petkov <bp@suse.de>
-AuthorDate:    Fri, 06 Nov 2020 19:37:25 +01:00
+AuthorDate:    Thu, 05 Nov 2020 17:53:20 +01:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Mon, 15 Mar 2021 11:25:38 +01:00
+CommitterDate: Mon, 15 Mar 2021 11:18:35 +01:00
 
-x86/alternative: Use insn_decode()
+x86/boot/compressed/sev-es: Convert to insn_decode()
 
-No functional changes, just simplification.
+Other than simplifying the code there should be no functional changes
+resulting from this.
 
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20210304174237.31945-10-bp@alien8.de
+Link: https://lkml.kernel.org/r/20210304174237.31945-7-bp@alien8.de
 ---
- arch/x86/kernel/alternative.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/x86/boot/compressed/sev-es.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
-index 8d778e4..ce28c5c 100644
---- a/arch/x86/kernel/alternative.c
-+++ b/arch/x86/kernel/alternative.c
-@@ -1274,15 +1274,15 @@ static void text_poke_loc_init(struct text_poke_loc *tp, void *addr,
- 			       const void *opcode, size_t len, const void *emulate)
+diff --git a/arch/x86/boot/compressed/sev-es.c b/arch/x86/boot/compressed/sev-es.c
+index 27826c2..801c626 100644
+--- a/arch/x86/boot/compressed/sev-es.c
++++ b/arch/x86/boot/compressed/sev-es.c
+@@ -78,16 +78,15 @@ static inline void sev_es_wr_ghcb_msr(u64 val)
+ static enum es_result vc_decode_insn(struct es_em_ctxt *ctxt)
  {
- 	struct insn insn;
+ 	char buffer[MAX_INSN_SIZE];
+-	enum es_result ret;
 +	int ret;
  
- 	memcpy((void *)tp->text, opcode, len);
- 	if (!emulate)
- 		emulate = opcode;
+ 	memcpy(buffer, (unsigned char *)ctxt->regs->ip, MAX_INSN_SIZE);
  
--	kernel_insn_init(&insn, emulate, MAX_INSN_SIZE);
--	insn_get_length(&insn);
-+	ret = insn_decode(&insn, emulate, MAX_INSN_SIZE, INSN_MODE_KERN);
+-	insn_init(&ctxt->insn, buffer, MAX_INSN_SIZE, 1);
+-	insn_get_length(&ctxt->insn);
++	ret = insn_decode(&ctxt->insn, buffer, MAX_INSN_SIZE, INSN_MODE_64);
++	if (ret < 0)
++		return ES_DECODE_FAILED;
  
--	BUG_ON(!insn_complete(&insn));
-+	BUG_ON(ret < 0);
- 	BUG_ON(len != insn.length);
+-	ret = ctxt->insn.immediate.got ? ES_OK : ES_DECODE_FAILED;
+-
+-	return ret;
++	return ES_OK;
+ }
  
- 	tp->rel_addr = addr - (void *)_stext;
+ static enum es_result vc_write_mem(struct es_em_ctxt *ctxt,
