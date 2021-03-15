@@ -2,276 +2,133 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A856D33C05C
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 15 Mar 2021 16:48:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 13E7433C285
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 15 Mar 2021 17:53:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232776AbhCOPsU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 15 Mar 2021 11:48:20 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:35948 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232125AbhCOPr6 (ORCPT
+        id S232818AbhCOQxW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 15 Mar 2021 12:53:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54388 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233562AbhCOQxM (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 15 Mar 2021 11:47:58 -0400
-Date:   Mon, 15 Mar 2021 15:47:49 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1615823269;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=+A2Ka7pqbBvuOpPPcSFVmW1XTrSdM8v04qFuXIJuFN0=;
-        b=s2/hmQpI7msGpki0eV9gcbFfizkSMvn2k4AwhXItMZ1liSi7eO21iORmZTK3PYkVlgmdk9
-        J+LX8DvLX19FA/dGZAKXutHO2yVZs7RO/FUObf9pguJi4JzAYvPY6vMo/S6ycZIqQK8poZ
-        v1Mfo69/MLq0ifaXX0gbBA11WERMpCWrvQtLvf2Kck02ZeczzgdWTa16pPJPNPDgzSb2sM
-        pxJsZSjaFcwA4asAi3e+3rulGpKxKOiX75hc8dW+Yjeu4gLeHEpHtx9jSAyvq0p//ZO0r7
-        uP5zOa1e8Sdq/26+xgQJwLdZhNjLNZgrqSNZWczKoHIfwXHZ0NdXiHE8DPhA/w==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1615823269;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=+A2Ka7pqbBvuOpPPcSFVmW1XTrSdM8v04qFuXIJuFN0=;
-        b=ndPT8F2NQdeOstC5xdnv+XO1EfGqjknp6FKR5mt79afdvm7AA9bXT1MYgFFnfKfGi9et44
-        KlmIGIiKUvgWrXCw==
-From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/core] x86/insn: Add a __ignore_sync_check__ marker
-Cc:     Borislav Petkov <bp@suse.de>,
-        Masami Hiramatsu <mhiramat@kernel.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20210304174237.31945-4-bp@alien8.de>
-References: <20210304174237.31945-4-bp@alien8.de>
+        Mon, 15 Mar 2021 12:53:12 -0400
+Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C60EBC06174A;
+        Mon, 15 Mar 2021 09:53:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=KENSFBrgL7G8DHdTp+gR5QWnEIhaP8QPJlJ0A6o62Gk=; b=hpn5s+Vhfg1OqLp8SNfZI0pVi+
+        ZsujCKNxkFeL/YcnABjrqPPkuIh7HMYzRFKhg5sdtJLetjm0b2noamfEA1Xe8abcdBJ1gcIEAPiXV
+        IX04eSTXqa9uVWIA1JDp10E5K685K8+wO7+v3AiyXD3QvptEj+jE88lSJYByIHWFJWhX2TVr6bLXn
+        yEbBcjB4XGlAfRmLBlMiwMF7mOkNLDwMB5RuHs3rQ61Hxmwq/a0a2+alKY4205Grptz+cMMhr1yZW
+        xoBDiFbtCvh6qX/xMSma9rGCIYqqb7t1Z5+gvZO2uhMdtTKtftnkG+gcC2jxzh1nQ+d+iH/ehp7bB
+        L9T3CZ5Q==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
+        by desiato.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
+        id 1lLqSq-00GOuD-7h; Mon, 15 Mar 2021 16:53:09 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id D196D300130;
+        Mon, 15 Mar 2021 17:53:07 +0100 (CET)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id BCB772D1CBC16; Mon, 15 Mar 2021 17:53:07 +0100 (CET)
+Date:   Mon, 15 Mar 2021 17:53:07 +0100
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-tip-commits@vger.kernel.org, Borislav Petkov <bp@suse.de>,
+        Masami Hiramatsu <mhiramat@kernel.org>, x86@kernel.org
+Subject: Re: [tip: x86/core] x86/insn: Add an insn_decode() API
+Message-ID: <YE+Q84RB7X/y93CB@hirez.programming.kicks-ass.net>
+References: <20210304174237.31945-5-bp@alien8.de>
+ <161582326890.398.5378343352256538882.tip-bot2@tip-bot2>
 MIME-Version: 1.0
-Message-ID: <161582326934.398.7431853570797650096.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <161582326890.398.5378343352256538882.tip-bot2@tip-bot2>
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/core branch of tip:
+On Mon, Mar 15, 2021 at 03:47:48PM -0000, tip-bot2 for Borislav Petkov wrote:
+> x86/insn: Add an insn_decode() API
 
-Commit-ID:     d30c7b820be5c4777fe6c3b0c21f9d0064251e51
-Gitweb:        https://git.kernel.org/tip/d30c7b820be5c4777fe6c3b0c21f9d0064251e51
-Author:        Borislav Petkov <bp@suse.de>
-AuthorDate:    Mon, 22 Feb 2021 13:34:40 +01:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Mon, 15 Mar 2021 11:00:57 +01:00
+Seeing as how I'm a lazy sod, does we want something like so?
 
-x86/insn: Add a __ignore_sync_check__ marker
-
-Add an explicit __ignore_sync_check__ marker which will be used to mark
-lines which are supposed to be ignored by file synchronization check
-scripts, its advantage being that it explicitly denotes such lines in
-the code.
-
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Masami Hiramatsu <mhiramat@kernel.org>
-Link: https://lkml.kernel.org/r/20210304174237.31945-4-bp@alien8.de
----
- arch/x86/include/asm/inat.h       |  2 +-
- arch/x86/include/asm/insn.h       |  2 +-
- arch/x86/lib/inat.c               |  2 +-
- arch/x86/lib/insn.c               |  6 +++---
- tools/arch/x86/include/asm/inat.h |  2 +-
- tools/arch/x86/include/asm/insn.h |  2 +-
- tools/arch/x86/lib/inat.c         |  2 +-
- tools/arch/x86/lib/insn.c         |  6 +++---
- tools/objtool/sync-check.sh       | 17 +++++++++++++----
- tools/perf/check-headers.sh       | 15 +++++++++++----
- 10 files changed, 36 insertions(+), 20 deletions(-)
-
-diff --git a/arch/x86/include/asm/inat.h b/arch/x86/include/asm/inat.h
-index 4cf2ad5..b56c574 100644
---- a/arch/x86/include/asm/inat.h
-+++ b/arch/x86/include/asm/inat.h
-@@ -6,7 +6,7 @@
-  *
-  * Written by Masami Hiramatsu <mhiramat@redhat.com>
-  */
--#include <asm/inat_types.h>
-+#include <asm/inat_types.h> /* __ignore_sync_check__ */
- 
- /*
-  * Internal bits. Don't use bitmasks directly, because these bits are
-diff --git a/arch/x86/include/asm/insn.h b/arch/x86/include/asm/insn.h
-index 95a448f..93f8460 100644
 --- a/arch/x86/include/asm/insn.h
 +++ b/arch/x86/include/asm/insn.h
-@@ -9,7 +9,7 @@
+@@ -150,6 +150,8 @@ enum insn_mode {
  
- #include <asm/byteorder.h>
- /* insn_attr_t is defined in inat.h */
--#include <asm/inat.h>
-+#include <asm/inat.h> /* __ignore_sync_check__ */
+ extern int insn_decode(struct insn *insn, const void *kaddr, int buf_len, enum insn_mode m);
  
- #if defined(__BYTE_ORDER) ? __BYTE_ORDER == __LITTLE_ENDIAN : defined(__LITTLE_ENDIAN)
- 
-diff --git a/arch/x86/lib/inat.c b/arch/x86/lib/inat.c
-index 12539fc..b0f3b2a 100644
---- a/arch/x86/lib/inat.c
-+++ b/arch/x86/lib/inat.c
-@@ -4,7 +4,7 @@
-  *
-  * Written by Masami Hiramatsu <mhiramat@redhat.com>
-  */
--#include <asm/insn.h>
-+#include <asm/insn.h> /* __ignore_sync_check__ */
- 
- /* Attribute tables are generated from opcode map */
- #include "inat-tables.c"
-diff --git a/arch/x86/lib/insn.c b/arch/x86/lib/insn.c
-index 4d1640d..ed1e033 100644
---- a/arch/x86/lib/insn.c
-+++ b/arch/x86/lib/insn.c
-@@ -11,10 +11,10 @@
- #else
- #include <string.h>
- #endif
--#include <asm/inat.h>
--#include <asm/insn.h>
-+#include <asm/inat.h> /*__ignore_sync_check__ */
-+#include <asm/insn.h> /* __ignore_sync_check__ */
- 
--#include <asm/emulate_prefix.h>
-+#include <asm/emulate_prefix.h> /* __ignore_sync_check__ */
- 
- #define leXX_to_cpu(t, r)						\
- ({									\
-diff --git a/tools/arch/x86/include/asm/inat.h b/tools/arch/x86/include/asm/inat.h
-index 877827b..a610514 100644
---- a/tools/arch/x86/include/asm/inat.h
-+++ b/tools/arch/x86/include/asm/inat.h
-@@ -6,7 +6,7 @@
-  *
-  * Written by Masami Hiramatsu <mhiramat@redhat.com>
-  */
--#include "inat_types.h"
-+#include "inat_types.h" /* __ignore_sync_check__ */
- 
- /*
-  * Internal bits. Don't use bitmasks directly, because these bits are
-diff --git a/tools/arch/x86/include/asm/insn.h b/tools/arch/x86/include/asm/insn.h
-index cc777c1..7e1239a 100644
---- a/tools/arch/x86/include/asm/insn.h
-+++ b/tools/arch/x86/include/asm/insn.h
-@@ -9,7 +9,7 @@
- 
- #include <asm/byteorder.h>
- /* insn_attr_t is defined in inat.h */
--#include "inat.h"
-+#include "inat.h" /* __ignore_sync_check__ */
- 
- #if defined(__BYTE_ORDER) ? __BYTE_ORDER == __LITTLE_ENDIAN : defined(__LITTLE_ENDIAN)
- 
-diff --git a/tools/arch/x86/lib/inat.c b/tools/arch/x86/lib/inat.c
-index 4f5ed49..dfbcc64 100644
---- a/tools/arch/x86/lib/inat.c
-+++ b/tools/arch/x86/lib/inat.c
-@@ -4,7 +4,7 @@
-  *
-  * Written by Masami Hiramatsu <mhiramat@redhat.com>
-  */
--#include "../include/asm/insn.h"
-+#include "../include/asm/insn.h" /* __ignore_sync_check__ */
- 
- /* Attribute tables are generated from opcode map */
- #include "inat-tables.c"
-diff --git a/tools/arch/x86/lib/insn.c b/tools/arch/x86/lib/insn.c
-index 31afbf0..1174c43 100644
---- a/tools/arch/x86/lib/insn.c
-+++ b/tools/arch/x86/lib/insn.c
-@@ -11,10 +11,10 @@
- #else
- #include <string.h>
- #endif
--#include "../include/asm/inat.h"
--#include "../include/asm/insn.h"
-+#include "../include/asm/inat.h" /* __ignore_sync_check__ */
-+#include "../include/asm/insn.h" /* __ignore_sync_check__ */
- 
--#include "../include/asm/emulate_prefix.h"
-+#include "../include/asm/emulate_prefix.h" /* __ignore_sync_check__ */
- 
- #define leXX_to_cpu(t, r)						\
- ({									\
-diff --git a/tools/objtool/sync-check.sh b/tools/objtool/sync-check.sh
-index 606a4b5..4bbabae 100755
---- a/tools/objtool/sync-check.sh
-+++ b/tools/objtool/sync-check.sh
-@@ -16,11 +16,14 @@ arch/x86/include/asm/emulate_prefix.h
- arch/x86/lib/x86-opcode-map.txt
- arch/x86/tools/gen-insn-attr-x86.awk
- include/linux/static_call_types.h
--arch/x86/include/asm/inat.h     -I '^#include [\"<]\(asm/\)*inat_types.h[\">]'
--arch/x86/include/asm/insn.h     -I '^#include [\"<]\(asm/\)*inat.h[\">]'
--arch/x86/lib/inat.c             -I '^#include [\"<]\(../include/\)*asm/insn.h[\">]'
--arch/x86/lib/insn.c             -I '^#include [\"<]\(../include/\)*asm/in\(at\|sn\).h[\">]' -I '^#include [\"<]\(../include/\)*asm/emulate_prefix.h[\">]'
- "
++#define insn_decode_kernel(_insn, _ptr) insn_decode((_insn), (_ptr), MAX_INSN_SIZE, INSN_MODE_KERN)
 +
-+SYNC_CHECK_FILES='
-+arch/x86/include/asm/inat.h
-+arch/x86/include/asm/insn.h
-+arch/x86/lib/inat.c
-+arch/x86/lib/insn.c
-+'
- fi
+ /* Attribute will be determined after getting ModRM (for opcode groups) */
+ static inline void insn_get_attribute(struct insn *insn)
+ {
+--- a/arch/x86/kernel/alternative.c
++++ b/arch/x86/kernel/alternative.c
+@@ -1333,7 +1333,7 @@ static void text_poke_loc_init(struct te
+ 	if (!emulate)
+ 		emulate = opcode;
  
- check_2 () {
-@@ -63,3 +66,9 @@ while read -r file_entry; do
- done <<EOF
- $FILES
- EOF
-+
-+if [ "$SRCARCH" = "x86" ]; then
-+	for i in $SYNC_CHECK_FILES; do
-+		check $i '-I "^.*\/\*.*__ignore_sync_check__.*\*\/.*$"'
-+	done
-+fi
-diff --git a/tools/perf/check-headers.sh b/tools/perf/check-headers.sh
-index dded93a..07857df 100755
---- a/tools/perf/check-headers.sh
-+++ b/tools/perf/check-headers.sh
-@@ -75,6 +75,13 @@ include/uapi/asm-generic/mman-common.h
- include/uapi/asm-generic/unistd.h
- '
+-	ret = insn_decode(&insn, emulate, MAX_INSN_SIZE, INSN_MODE_KERN);
++	ret = insn_decode_kernel(&insn, emulate);
  
-+SYNC_CHECK_FILES='
-+arch/x86/include/asm/inat.h
-+arch/x86/include/asm/insn.h
-+arch/x86/lib/inat.c
-+arch/x86/lib/insn.c
-+'
-+
- # These copies are under tools/perf/trace/beauty/ as they are not used to in
- # building object files only by scripts in tools/perf/trace/beauty/ to generate
- # tables that then gets included in .c files for things like id->string syscall
-@@ -129,6 +136,10 @@ for i in $FILES; do
-   check $i -B
- done
+ 	BUG_ON(ret < 0);
+ 	BUG_ON(len != insn.length);
+--- a/arch/x86/kernel/cpu/mce/severity.c
++++ b/arch/x86/kernel/cpu/mce/severity.c
+@@ -225,7 +225,7 @@ static bool is_copy_from_user(struct pt_
+ 	if (copy_from_kernel_nofault(insn_buf, (void *)regs->ip, MAX_INSN_SIZE))
+ 		return false;
  
-+for i in $SYNC_CHECK_FILES; do
-+  check $i '-I "^.*\/\*.*__ignore_sync_check__.*\*\/.*$"'
-+done
-+
- # diff with extra ignore lines
- check arch/x86/lib/memcpy_64.S        '-I "^EXPORT_SYMBOL" -I "^#include <asm/export.h>" -I"^SYM_FUNC_START\(_LOCAL\)*(memcpy_\(erms\|orig\))"'
- check arch/x86/lib/memset_64.S        '-I "^EXPORT_SYMBOL" -I "^#include <asm/export.h>" -I"^SYM_FUNC_START\(_LOCAL\)*(memset_\(erms\|orig\))"'
-@@ -137,10 +148,6 @@ check include/uapi/linux/mman.h       '-I "^#include <\(uapi/\)*asm/mman.h>"'
- check include/linux/build_bug.h       '-I "^#\(ifndef\|endif\)\( \/\/\)* static_assert$"'
- check include/linux/ctype.h	      '-I "isdigit("'
- check lib/ctype.c		      '-I "^EXPORT_SYMBOL" -I "^#include <linux/export.h>" -B'
--check arch/x86/include/asm/inat.h     '-I "^#include [\"<]\(asm/\)*inat_types.h[\">]"'
--check arch/x86/include/asm/insn.h     '-I "^#include [\"<]\(asm/\)*inat.h[\">]"'
--check arch/x86/lib/inat.c	      '-I "^#include [\"<]\(../include/\)*asm/insn.h[\">]"'
--check arch/x86/lib/insn.c             '-I "^#include [\"<]\(../include/\)*asm/in\(at\|sn\).h[\">]" -I "^#include [\"<]\(../include/\)*asm/emulate_prefix.h[\">]"'
+-	ret = insn_decode(&insn, insn_buf, MAX_INSN_SIZE, INSN_MODE_KERN);
++	ret = insn_decode_kernel(&insn, insn_buf);
+ 	if (ret < 0)
+ 		return false;
  
- # diff non-symmetric files
- check_2 tools/perf/arch/x86/entry/syscalls/syscall_64.tbl arch/x86/entry/syscalls/syscall_64.tbl
+--- a/arch/x86/kernel/kprobes/core.c
++++ b/arch/x86/kernel/kprobes/core.c
+@@ -279,7 +279,7 @@ static int can_probe(unsigned long paddr
+ 		if (!__addr)
+ 			return 0;
+ 
+-		ret = insn_decode(&insn, (void *)__addr, MAX_INSN_SIZE, INSN_MODE_KERN);
++		ret = insn_decode_kernel(&insn, (void *)__addr);
+ 		if (ret < 0)
+ 			return 0;
+ 
+@@ -316,7 +316,7 @@ int __copy_instruction(u8 *dest, u8 *src
+ 			MAX_INSN_SIZE))
+ 		return 0;
+ 
+-	ret = insn_decode(insn, dest, MAX_INSN_SIZE, INSN_MODE_KERN);
++	ret = insn_decode_kernel(insn, dest);
+ 	if (ret < 0)
+ 		return 0;
+ 
+--- a/arch/x86/kernel/kprobes/opt.c
++++ b/arch/x86/kernel/kprobes/opt.c
+@@ -324,7 +324,7 @@ static int can_optimize(unsigned long pa
+ 		if (!recovered_insn)
+ 			return 0;
+ 
+-		ret = insn_decode(&insn, (void *)recovered_insn, MAX_INSN_SIZE, INSN_MODE_KERN);
++		ret = insn_decode_kernel(&insn, (void *)recovered_insn);
+ 		if (ret < 0)
+ 			return 0;
+ 
+--- a/arch/x86/kernel/traps.c
++++ b/arch/x86/kernel/traps.c
+@@ -504,7 +504,7 @@ static enum kernel_gp_hint get_kernel_gp
+ 			MAX_INSN_SIZE))
+ 		return GP_NO_HINT;
+ 
+-	ret = insn_decode(&insn, insn_buf, MAX_INSN_SIZE, INSN_MODE_KERN);
++	ret = insn_decode_kernel(&insn, insn_buf);
+ 	if (ret < 0)
+ 		return GP_NO_HINT;
+ 
