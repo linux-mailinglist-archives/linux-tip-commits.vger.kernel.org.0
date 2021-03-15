@@ -2,133 +2,214 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 13E7433C285
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 15 Mar 2021 17:53:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0096A33C508
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 15 Mar 2021 19:00:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232818AbhCOQxW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 15 Mar 2021 12:53:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54388 "EHLO
+        id S232072AbhCOSAU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 15 Mar 2021 14:00:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40976 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233562AbhCOQxM (ORCPT
+        with ESMTP id S231875AbhCOSAQ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 15 Mar 2021 12:53:12 -0400
-Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C60EBC06174A;
-        Mon, 15 Mar 2021 09:53:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=KENSFBrgL7G8DHdTp+gR5QWnEIhaP8QPJlJ0A6o62Gk=; b=hpn5s+Vhfg1OqLp8SNfZI0pVi+
-        ZsujCKNxkFeL/YcnABjrqPPkuIh7HMYzRFKhg5sdtJLetjm0b2noamfEA1Xe8abcdBJ1gcIEAPiXV
-        IX04eSTXqa9uVWIA1JDp10E5K685K8+wO7+v3AiyXD3QvptEj+jE88lSJYByIHWFJWhX2TVr6bLXn
-        yEbBcjB4XGlAfRmLBlMiwMF7mOkNLDwMB5RuHs3rQ61Hxmwq/a0a2+alKY4205Grptz+cMMhr1yZW
-        xoBDiFbtCvh6qX/xMSma9rGCIYqqb7t1Z5+gvZO2uhMdtTKtftnkG+gcC2jxzh1nQ+d+iH/ehp7bB
-        L9T3CZ5Q==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
-        by desiato.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
-        id 1lLqSq-00GOuD-7h; Mon, 15 Mar 2021 16:53:09 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id D196D300130;
-        Mon, 15 Mar 2021 17:53:07 +0100 (CET)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id BCB772D1CBC16; Mon, 15 Mar 2021 17:53:07 +0100 (CET)
-Date:   Mon, 15 Mar 2021 17:53:07 +0100
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     linux-tip-commits@vger.kernel.org, Borislav Petkov <bp@suse.de>,
-        Masami Hiramatsu <mhiramat@kernel.org>, x86@kernel.org
-Subject: Re: [tip: x86/core] x86/insn: Add an insn_decode() API
-Message-ID: <YE+Q84RB7X/y93CB@hirez.programming.kicks-ass.net>
-References: <20210304174237.31945-5-bp@alien8.de>
- <161582326890.398.5378343352256538882.tip-bot2@tip-bot2>
+        Mon, 15 Mar 2021 14:00:16 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14DCEC06174A;
+        Mon, 15 Mar 2021 11:00:16 -0700 (PDT)
+Date:   Mon, 15 Mar 2021 18:00:12 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1615831213;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=RDCQt+gtJU0SI5X2kIGrUovTAsueGVDmQPyLh0dffmo=;
+        b=28FU9tyf1NXLTTeq5+bEjwq0SRwhJwsN7f4lfCbBw8ZVPenZyi+EKlC0OYO3hFf+zFgfVo
+        RUaahMZlc2ouI+rMB2kO+q55dEC94Qu0bB/5WuOZTCTyx3G+nhcmsPg1V1XMJktwfIrY25
+        3b6gpbj38J9KflUPKdDf4cm2Qfm0/NDrbvSx2lbmEP72KM+H/L/ksTm4T2nO3CZEyy1XcM
+        weQ0m6LFchF/dQCOFook+E40eZoodIrIcXwWyZ/LxR9jwo/l+27CA+9kBs7tjQ+1p4PMrQ
+        lTdw2J5OyRJgcv8oGIYm7dgtcWo2EPUsQnMwsB7sik//gcgpYHq4/m26EEyqMg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1615831213;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=RDCQt+gtJU0SI5X2kIGrUovTAsueGVDmQPyLh0dffmo=;
+        b=Lc7vMkrdW4a9WnQ3bNaFcdLQD9S153F6+a5wGIomtWF7gfYhs/QP8pBXdt1t9bDie+FFbi
+        DLKnq8UFYamZXfBw==
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/cpu] objtool/x86: Use asm/nops.h
+Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Borislav Petkov <bp@suse.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20210312115749.136357911@infradead.org>
+References: <20210312115749.136357911@infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <161582326890.398.5378343352256538882.tip-bot2@tip-bot2>
+Message-ID: <161583121208.398.8769751653293178203.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Mon, Mar 15, 2021 at 03:47:48PM -0000, tip-bot2 for Borislav Petkov wrote:
-> x86/insn: Add an insn_decode() API
+The following commit has been merged into the x86/cpu branch of tip:
 
-Seeing as how I'm a lazy sod, does we want something like so?
+Commit-ID:     301cddc21a157a3072d789a3097857202e550a24
+Gitweb:        https://git.kernel.org/tip/301cddc21a157a3072d789a3097857202e550a24
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Fri, 12 Mar 2021 12:32:55 +01:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Mon, 15 Mar 2021 16:37:37 +01:00
 
---- a/arch/x86/include/asm/insn.h
-+++ b/arch/x86/include/asm/insn.h
-@@ -150,6 +150,8 @@ enum insn_mode {
- 
- extern int insn_decode(struct insn *insn, const void *kaddr, int buf_len, enum insn_mode m);
- 
-+#define insn_decode_kernel(_insn, _ptr) insn_decode((_insn), (_ptr), MAX_INSN_SIZE, INSN_MODE_KERN)
+objtool/x86: Use asm/nops.h
+
+Since the kernel will rely on a single canonical set of NOPs, make sure
+objtool uses the exact same ones.
+
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lkml.kernel.org/r/20210312115749.136357911@infradead.org
+---
+ tools/arch/x86/include/asm/nops.h | 81 ++++++++++++++++++++++++++++++-
+ tools/objtool/arch/x86/decode.c   | 13 +++--
+ tools/objtool/sync-check.sh       |  1 +-
+ 3 files changed, 90 insertions(+), 5 deletions(-)
+ create mode 100644 tools/arch/x86/include/asm/nops.h
+
+diff --git a/tools/arch/x86/include/asm/nops.h b/tools/arch/x86/include/asm/nops.h
+new file mode 100644
+index 0000000..c1e5e81
+--- /dev/null
++++ b/tools/arch/x86/include/asm/nops.h
+@@ -0,0 +1,81 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _ASM_X86_NOPS_H
++#define _ASM_X86_NOPS_H
 +
- /* Attribute will be determined after getting ModRM (for opcode groups) */
- static inline void insn_get_attribute(struct insn *insn)
++/*
++ * Define nops for use with alternative() and for tracing.
++ */
++
++#ifndef CONFIG_64BIT
++
++/*
++ * Generic 32bit nops from GAS:
++ *
++ * 1: nop
++ * 2: movl %esi,%esi
++ * 3: leal 0x0(%esi),%esi
++ * 4: leal 0x0(%esi,%eiz,1),%esi
++ * 5: leal %ds:0x0(%esi,%eiz,1),%esi
++ * 6: leal 0x0(%esi),%esi
++ * 7: leal 0x0(%esi,%eiz,1),%esi
++ * 8: leal %ds:0x0(%esi,%eiz,1),%esi
++ *
++ * Except 5 and 8, which are DS prefixed 4 and 7 resp, where GAS would emit 2
++ * nop instructions.
++ */
++#define BYTES_NOP1	0x90
++#define BYTES_NOP2	0x89,0xf6
++#define BYTES_NOP3	0x8d,0x76,0x00
++#define BYTES_NOP4	0x8d,0x74,0x26,0x00
++#define BYTES_NOP5	0x3e,BYTES_NOP4
++#define BYTES_NOP6	0x8d,0xb6,0x00,0x00,0x00,0x00
++#define BYTES_NOP7	0x8d,0xb4,0x26,0x00,0x00,0x00,0x00
++#define BYTES_NOP8	0x3e,BYTES_NOP7
++
++#else
++
++/*
++ * Generic 64bit nops from GAS:
++ *
++ * 1: nop
++ * 2: osp nop
++ * 3: nopl (%eax)
++ * 4: nopl 0x00(%eax)
++ * 5: nopl 0x00(%eax,%eax,1)
++ * 6: osp nopl 0x00(%eax,%eax,1)
++ * 7: nopl 0x00000000(%eax)
++ * 8: nopl 0x00000000(%eax,%eax,1)
++ */
++#define BYTES_NOP1	0x90
++#define BYTES_NOP2	0x66,BYTES_NOP1
++#define BYTES_NOP3	0x0f,0x1f,0x00
++#define BYTES_NOP4	0x0f,0x1f,0x40,0x00
++#define BYTES_NOP5	0x0f,0x1f,0x44,0x00,0x00
++#define BYTES_NOP6	0x66,BYTES_NOP5
++#define BYTES_NOP7	0x0f,0x1f,0x80,0x00,0x00,0x00,0x00
++#define BYTES_NOP8	0x0f,0x1f,0x84,0x00,0x00,0x00,0x00,0x00
++
++#endif /* CONFIG_64BIT */
++
++#ifdef __ASSEMBLY__
++#define _ASM_MK_NOP(x) .byte x
++#else
++#define _ASM_MK_NOP(x) ".byte " __stringify(x) "\n"
++#endif
++
++#define ASM_NOP1 _ASM_MK_NOP(BYTES_NOP1)
++#define ASM_NOP2 _ASM_MK_NOP(BYTES_NOP2)
++#define ASM_NOP3 _ASM_MK_NOP(BYTES_NOP3)
++#define ASM_NOP4 _ASM_MK_NOP(BYTES_NOP4)
++#define ASM_NOP5 _ASM_MK_NOP(BYTES_NOP5)
++#define ASM_NOP6 _ASM_MK_NOP(BYTES_NOP6)
++#define ASM_NOP7 _ASM_MK_NOP(BYTES_NOP7)
++#define ASM_NOP8 _ASM_MK_NOP(BYTES_NOP8)
++
++#define ASM_NOP_MAX 8
++
++#ifndef __ASSEMBLY__
++extern const unsigned char * const x86_nops[];
++#endif
++
++#endif /* _ASM_X86_NOPS_H */
+diff --git a/tools/objtool/arch/x86/decode.c b/tools/objtool/arch/x86/decode.c
+index 549813c..c117bfc 100644
+--- a/tools/objtool/arch/x86/decode.c
++++ b/tools/objtool/arch/x86/decode.c
+@@ -11,6 +11,9 @@
+ #include "../../../arch/x86/lib/inat.c"
+ #include "../../../arch/x86/lib/insn.c"
+ 
++#define CONFIG_64BIT 1
++#include <asm/nops.h>
++
+ #include <asm/orc_types.h>
+ #include <objtool/check.h>
+ #include <objtool/elf.h>
+@@ -596,11 +599,11 @@ void arch_initial_func_cfi_state(struct cfi_init_state *state)
+ const char *arch_nop_insn(int len)
  {
---- a/arch/x86/kernel/alternative.c
-+++ b/arch/x86/kernel/alternative.c
-@@ -1333,7 +1333,7 @@ static void text_poke_loc_init(struct te
- 	if (!emulate)
- 		emulate = opcode;
+ 	static const char nops[5][5] = {
+-		/* 1 */ { 0x90 },
+-		/* 2 */ { 0x66, 0x90 },
+-		/* 3 */ { 0x0f, 0x1f, 0x00 },
+-		/* 4 */ { 0x0f, 0x1f, 0x40, 0x00 },
+-		/* 5 */ { 0x0f, 0x1f, 0x44, 0x00, 0x00 },
++		{ BYTES_NOP1 },
++		{ BYTES_NOP2 },
++		{ BYTES_NOP3 },
++		{ BYTES_NOP4 },
++		{ BYTES_NOP5 },
+ 	};
  
--	ret = insn_decode(&insn, emulate, MAX_INSN_SIZE, INSN_MODE_KERN);
-+	ret = insn_decode_kernel(&insn, emulate);
+ 	if (len < 1 || len > 5) {
+diff --git a/tools/objtool/sync-check.sh b/tools/objtool/sync-check.sh
+index 606a4b5..d232686 100755
+--- a/tools/objtool/sync-check.sh
++++ b/tools/objtool/sync-check.sh
+@@ -10,6 +10,7 @@ FILES="include/linux/objtool.h"
  
- 	BUG_ON(ret < 0);
- 	BUG_ON(len != insn.length);
---- a/arch/x86/kernel/cpu/mce/severity.c
-+++ b/arch/x86/kernel/cpu/mce/severity.c
-@@ -225,7 +225,7 @@ static bool is_copy_from_user(struct pt_
- 	if (copy_from_kernel_nofault(insn_buf, (void *)regs->ip, MAX_INSN_SIZE))
- 		return false;
- 
--	ret = insn_decode(&insn, insn_buf, MAX_INSN_SIZE, INSN_MODE_KERN);
-+	ret = insn_decode_kernel(&insn, insn_buf);
- 	if (ret < 0)
- 		return false;
- 
---- a/arch/x86/kernel/kprobes/core.c
-+++ b/arch/x86/kernel/kprobes/core.c
-@@ -279,7 +279,7 @@ static int can_probe(unsigned long paddr
- 		if (!__addr)
- 			return 0;
- 
--		ret = insn_decode(&insn, (void *)__addr, MAX_INSN_SIZE, INSN_MODE_KERN);
-+		ret = insn_decode_kernel(&insn, (void *)__addr);
- 		if (ret < 0)
- 			return 0;
- 
-@@ -316,7 +316,7 @@ int __copy_instruction(u8 *dest, u8 *src
- 			MAX_INSN_SIZE))
- 		return 0;
- 
--	ret = insn_decode(insn, dest, MAX_INSN_SIZE, INSN_MODE_KERN);
-+	ret = insn_decode_kernel(insn, dest);
- 	if (ret < 0)
- 		return 0;
- 
---- a/arch/x86/kernel/kprobes/opt.c
-+++ b/arch/x86/kernel/kprobes/opt.c
-@@ -324,7 +324,7 @@ static int can_optimize(unsigned long pa
- 		if (!recovered_insn)
- 			return 0;
- 
--		ret = insn_decode(&insn, (void *)recovered_insn, MAX_INSN_SIZE, INSN_MODE_KERN);
-+		ret = insn_decode_kernel(&insn, (void *)recovered_insn);
- 		if (ret < 0)
- 			return 0;
- 
---- a/arch/x86/kernel/traps.c
-+++ b/arch/x86/kernel/traps.c
-@@ -504,7 +504,7 @@ static enum kernel_gp_hint get_kernel_gp
- 			MAX_INSN_SIZE))
- 		return GP_NO_HINT;
- 
--	ret = insn_decode(&insn, insn_buf, MAX_INSN_SIZE, INSN_MODE_KERN);
-+	ret = insn_decode_kernel(&insn, insn_buf);
- 	if (ret < 0)
- 		return GP_NO_HINT;
- 
+ if [ "$SRCARCH" = "x86" ]; then
+ FILES="$FILES
++arch/x86/include/asm/nops.h
+ arch/x86/include/asm/inat_types.h
+ arch/x86/include/asm/orc_types.h
+ arch/x86/include/asm/emulate_prefix.h
