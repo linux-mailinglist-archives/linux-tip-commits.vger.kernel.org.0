@@ -2,56 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C7E2433D589
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 16 Mar 2021 15:11:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A494F33D751
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 16 Mar 2021 16:26:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236005AbhCPOKz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 16 Mar 2021 10:10:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47338 "EHLO
+        id S236589AbhCPP0J (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 16 Mar 2021 11:26:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35244 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236010AbhCPOKw (ORCPT
+        with ESMTP id S232145AbhCPPZv (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 16 Mar 2021 10:10:52 -0400
+        Tue, 16 Mar 2021 11:25:51 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCD0EC06174A;
-        Tue, 16 Mar 2021 07:10:51 -0700 (PDT)
-Date:   Tue, 16 Mar 2021 14:10:44 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BAAAC06174A;
+        Tue, 16 Mar 2021 08:25:49 -0700 (PDT)
+Date:   Tue, 16 Mar 2021 15:25:47 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1615903844;
+        s=2020; t=1615908348;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=00vj/oGI9J6csZrOK5auiX4d5Ugy0cCdUyH8sVEbrEc=;
-        b=TrGt+b8RLkK3rTCfs94yBGMCdsD1XiJGHweLzvmSpzpHN0ou56YwEG35kWL6VizgqPm6H2
-        S0FAAZJd3h6iQsx7eJj15INltVQADiNFVIJJMx5W7yRmYM6kg5yEudy5tohcZCnsmyQeGD
-        L2hll0nnosOcx/ui/9U2Gt3eC7WmIkR0QarMRpihxcgoKV4nZK8I3fogENlOGOC63+us9Q
-        9eHIMSijw+4kD4fZZ2CVJICkVkwpAftVlbT+tUdPXONk/WNVHLMIOVRCsJHTzMhtjvx7M4
-        JGb2QVZPl55EE6vY8+JObMXIpWlOIkX+gPwHapOKpXfH8Duj3Y0h8nDdtc8+6Q==
+        bh=rwQkacUhSYfqj80E6WJVpogHjelAPI8Xa2wZ2lUXs2A=;
+        b=31CpDNa/AaAJFVA6+/LbsJ0mTEnR4cQsDvD3b13Wtpcgo2fD0NL9QnrYg1ZDSBIIa2e4H6
+        bNWr/EVGPS6KzL4LvLqPfd+S3/x/OcNhBawTKPy/ceVRouXqkLOzxi6PUcYbyJKAz5TBpJ
+        Ep2/z+pKmci/KNGu52aCuMFIhWYZDZvr2MJ1YZq+7hlg0Y0lCqa0qhlZBeZtvR1QxBSndk
+        5dWO88DNoj5SHvIigY9W9UM5dt0IJCvGgjcz2CUCVctnkqBWKeTqu6gpw/zBcxJ0YWK1vO
+        TBP6i0n8C7fxfxfbmF1TTt5c0qxZ3ZHhwcYmM3zPPvcvPtX8H4hPsbB34vJxKw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1615903844;
+        s=2020e; t=1615908348;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=00vj/oGI9J6csZrOK5auiX4d5Ugy0cCdUyH8sVEbrEc=;
-        b=4jDaNsY+m1PXT/CxGN38TEpsOT2QnjEg4RhKTVFwLqykDGVnNoBhUJA6cK8YDrqM4NSwCX
-        zIu+yEI//aBbKyBQ==
-From:   "tip-bot2 for Davidlohr Bueso" <tip-bot2@linutronix.de>
+        bh=rwQkacUhSYfqj80E6WJVpogHjelAPI8Xa2wZ2lUXs2A=;
+        b=WLtGVEnb/Qji6a5KMxTJcEtj6A9eFbzlCffSAe/KuxkKGNcHC6ngDZVMyJ5qHm0NOQsyCR
+        6tyF+l5LuP7LlRAQ==
+From:   "tip-bot2 for Andy Shevchenko" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] tasklet: Remove tasklet_kill_immediate
-Cc:     Davidlohr Bueso <dbueso@suse.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
+Subject: [tip: irq/urgent] genirq/irq_sim: Fix typos in kernel doc (fnode -> fwnode)
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20210306213658.12862-1-dave@stgolabs.net>
-References: <20210306213658.12862-1-dave@stgolabs.net>
+In-Reply-To: <20210302161453.28540-1-andriy.shevchenko@linux.intel.com>
+References: <20210302161453.28540-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <161590384415.398.14627173979951504972.tip-bot2@tip-bot2>
+Message-ID: <161590834731.398.16285162336678712661.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,81 +59,51 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the irq/core branch of tip:
+The following commit has been merged into the irq/urgent branch of tip:
 
-Commit-ID:     3a0ade0c521a542f8a25e96ce8ea0dfaa532ac75
-Gitweb:        https://git.kernel.org/tip/3a0ade0c521a542f8a25e96ce8ea0dfaa532ac75
-Author:        Davidlohr Bueso <dave@stgolabs.net>
-AuthorDate:    Sat, 06 Mar 2021 13:36:58 -08:00
+Commit-ID:     ef4cb70a4c22bf301cd757dcc838dc8ca9526477
+Gitweb:        https://git.kernel.org/tip/ef4cb70a4c22bf301cd757dcc838dc8ca9526477
+Author:        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+AuthorDate:    Tue, 02 Mar 2021 18:14:53 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 16 Mar 2021 15:06:31 +01:00
+CommitterDate: Tue, 16 Mar 2021 16:20:58 +01:00
 
-tasklet: Remove tasklet_kill_immediate
+genirq/irq_sim: Fix typos in kernel doc (fnode -> fwnode)
 
-Ever since RCU was converted to softirq, it has no users.
+Fix typos in kernel doc, otherwise validation script complains:
 
-Signed-off-by: Davidlohr Bueso <dbueso@suse.de>
+.../irq_sim.c:170: warning: Function parameter or member 'fwnode' not described in 'irq_domain_create_sim'
+.../irq_sim.c:170: warning: Excess function parameter 'fnode' description in 'irq_domain_create_sim'
+.../irq_sim.c:240: warning: Function parameter or member 'fwnode' not described in 'devm_irq_domain_create_sim'
+.../irq_sim.c:240: warning: Excess function parameter 'fnode' description in 'devm_irq_domain_create_sim'
+
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Paul E. McKenney <paulmck@kernel.org>
-Link: https://lore.kernel.org/r/20210306213658.12862-1-dave@stgolabs.net
+Link: https://lore.kernel.org/r/20210302161453.28540-1-andriy.shevchenko@linux.intel.com
 
 ---
- include/linux/interrupt.h |  1 -
- kernel/softirq.c          | 32 --------------------------------
- 2 files changed, 33 deletions(-)
+ kernel/irq/irq_sim.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/interrupt.h b/include/linux/interrupt.h
-index 76f1161..2b98156 100644
---- a/include/linux/interrupt.h
-+++ b/include/linux/interrupt.h
-@@ -716,7 +716,6 @@ static inline void tasklet_enable(struct tasklet_struct *t)
- }
- 
- extern void tasklet_kill(struct tasklet_struct *t);
--extern void tasklet_kill_immediate(struct tasklet_struct *t, unsigned int cpu);
- extern void tasklet_init(struct tasklet_struct *t,
- 			 void (*func)(unsigned long), unsigned long data);
- extern void tasklet_setup(struct tasklet_struct *t,
-diff --git a/kernel/softirq.c b/kernel/softirq.c
-index 9908ec4..8b44ab9 100644
---- a/kernel/softirq.c
-+++ b/kernel/softirq.c
-@@ -658,38 +658,6 @@ static void run_ksoftirqd(unsigned int cpu)
- }
- 
- #ifdef CONFIG_HOTPLUG_CPU
--/*
-- * tasklet_kill_immediate is called to remove a tasklet which can already be
-- * scheduled for execution on @cpu.
-- *
-- * Unlike tasklet_kill, this function removes the tasklet
-- * _immediately_, even if the tasklet is in TASKLET_STATE_SCHED state.
-- *
-- * When this function is called, @cpu must be in the CPU_DEAD state.
-- */
--void tasklet_kill_immediate(struct tasklet_struct *t, unsigned int cpu)
--{
--	struct tasklet_struct **i;
--
--	BUG_ON(cpu_online(cpu));
--	BUG_ON(test_bit(TASKLET_STATE_RUN, &t->state));
--
--	if (!test_bit(TASKLET_STATE_SCHED, &t->state))
--		return;
--
--	/* CPU is dead, so no lock needed. */
--	for (i = &per_cpu(tasklet_vec, cpu).head; *i; i = &(*i)->next) {
--		if (*i == t) {
--			*i = t->next;
--			/* If this was the tail element, move the tail ptr */
--			if (*i == NULL)
--				per_cpu(tasklet_vec, cpu).tail = i;
--			return;
--		}
--	}
--	BUG();
--}
--
- static int takeover_tasklets(unsigned int cpu)
- {
- 	/* CPU is dead, so no lock needed. */
+diff --git a/kernel/irq/irq_sim.c b/kernel/irq/irq_sim.c
+index 4800660..40880c3 100644
+--- a/kernel/irq/irq_sim.c
++++ b/kernel/irq/irq_sim.c
+@@ -159,7 +159,7 @@ static const struct irq_domain_ops irq_sim_domain_ops = {
+  * irq_domain_create_sim - Create a new interrupt simulator irq_domain and
+  *                         allocate a range of dummy interrupts.
+  *
+- * @fnode:      struct fwnode_handle to be associated with this domain.
++ * @fwnode:     struct fwnode_handle to be associated with this domain.
+  * @num_irqs:   Number of interrupts to allocate.
+  *
+  * On success: return a new irq_domain object.
+@@ -228,7 +228,7 @@ static void devm_irq_domain_release_sim(struct device *dev, void *res)
+  *                              a managed device.
+  *
+  * @dev:        Device to initialize the simulator object for.
+- * @fnode:      struct fwnode_handle to be associated with this domain.
++ * @fwnode:     struct fwnode_handle to be associated with this domain.
+  * @num_irqs:   Number of interrupts to allocate
+  *
+  * On success: return a new irq_domain object.
