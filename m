@@ -2,53 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3862133F46E
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 17 Mar 2021 16:50:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E1B6833F46C
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 17 Mar 2021 16:50:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232292AbhCQPtb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 17 Mar 2021 11:49:31 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:51106 "EHLO
+        id S232552AbhCQPta (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 17 Mar 2021 11:49:30 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:51134 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232405AbhCQPs7 (ORCPT
+        with ESMTP id S232400AbhCQPs7 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Wed, 17 Mar 2021 11:48:59 -0400
 Date:   Wed, 17 Mar 2021 15:48:57 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1615996138;
+        s=2020; t=1615996137;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=5wQphV5fMgswqIZUY4jNpyzIHOk6ZBQpWVxUNlY/8A8=;
-        b=KlSyR1lHISHFN+4SKU2kkYM3k0ds0Zlat5Is7xoonYwj99/D8KEZCIOa2qz8tGBOWjCsNv
-        Umo6GdxO8BvfeGcJ7H1VNMZfpt8O1I2Hd1lzAuFGf3i76ou7HvTPuyKvlQaOglj5RdxsjU
-        S+dtPJ1i1k8V0E0q9KxohK+Vl0TbeD189msZ6qHHsmMWfdPs1C7LyxmVPyt9mi5nHZJuk7
-        TE/HLVoOnHS1xAcNffnBlVxHSG4oPlpjQKj4oRXYyk8DB6bsCmLOg8JUQMmqkIlwFFZPWi
-        7oxxe5dqPUwmSq5RMScYxA47C6lT72JWdiu+ztxU/6SWkPgh8wktQz4VjHYzqQ==
+        bh=T+SRGDy1zMe8Vd5oH5fIqc4SuM5qLPSksLVh673yNB4=;
+        b=xrBzoYLoyICIoWIoyLYozozYZTtb2lz/O0iHcvizzzw94tK8v6WVtDVlNXXsgQQogJDGRq
+        wT/0Zzm4K7usFoQp0/r4NNCPfzrvuaQN+au3Lk31pUUzNCmgJfp85zA2rLaOh8fZpNPJDC
+        SrgrYGvVnDSki4EZwka59MSNiiV5ougAwrY1R2i2SRV8dgwlNXWMm+ZESYk+imgDwCmedK
+        YG8UH4Yjgf0P8W8Voqt6Ifko3dEAhzsFbPVnUh0589RDGSrh2lmc5m1BgRnkHIP5a/BmrY
+        bwKccLnzkLrCWK36V1X/f2jZtGWECyNPv17vinRp6RNBZLBxuydwGM7+eEXr1w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1615996138;
+        s=2020e; t=1615996137;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=5wQphV5fMgswqIZUY4jNpyzIHOk6ZBQpWVxUNlY/8A8=;
-        b=sOheMBVPqrrRt+t7iSm6tzgoixnAWb7wEzmrXHoL3zjkgyvDoUSJ7LbiINk1m+4qDUfTr1
-        fAe2anfHK+DBEKBQ==
+        bh=T+SRGDy1zMe8Vd5oH5fIqc4SuM5qLPSksLVh673yNB4=;
+        b=ezezpdVky2Mp28LYSRrt+Jg+PahR7eDQ8xoNtOgSPrffYWsB7utQE8dgUqxycnJrF+jt3c
+        VreOsPEokgh1l7Cw==
 From:   "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] net: jme: Replace link-change tasklet with work
+Subject: [tip: irq/core] net: sundance: Use tasklet_disable_in_atomic().
 Cc:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
         Thomas Gleixner <tglx@linutronix.de>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20210309084242.106288922@linutronix.de>
-References: <20210309084242.106288922@linutronix.de>
+In-Reply-To: <20210309084242.209110861@linutronix.de>
+References: <20210309084242.209110861@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <161599613752.398.15060273706431400877.tip-bot2@tip-bot2>
+Message-ID: <161599613716.398.6112842639162687576.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,93 +59,40 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     c62c38e349c73cad90f59f00fe8070b3648b6d08
-Gitweb:        https://git.kernel.org/tip/c62c38e349c73cad90f59f00fe8070b3648b6d08
+Commit-ID:     25cf87df1a3a85959bf1bf27df0eb2e6e04b2161
+Gitweb:        https://git.kernel.org/tip/25cf87df1a3a85959bf1bf27df0eb2e6e04b2161
 Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-AuthorDate:    Tue, 09 Mar 2021 09:42:11 +01:00
+AuthorDate:    Tue, 09 Mar 2021 09:42:12 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 17 Mar 2021 16:33:58 +01:00
+CommitterDate: Wed, 17 Mar 2021 16:34:00 +01:00
 
-net: jme: Replace link-change tasklet with work
+net: sundance: Use tasklet_disable_in_atomic().
 
-The link change tasklet disables the tasklets for tx/rx processing while
-upating hw parameters and then enables the tasklets again.
+tasklet_disable() is used in the timer callback. This might be distangled,
+but without access to the hardware that's a bit risky.
 
-This update can also be pushed into a workqueue where it can be performed
-in preemptible context. This allows tasklet_disable() to become sleeping.
-
-Replace the linkch_task tasklet with a work.
+Replace it with tasklet_disable_in_atomic() so tasklet_disable() can be
+changed to a sleep wait once all remaining atomic users are converted.
 
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20210309084242.106288922@linutronix.de
+Link: https://lore.kernel.org/r/20210309084242.209110861@linutronix.de
 
 ---
- drivers/net/ethernet/jme.c | 10 +++++-----
- drivers/net/ethernet/jme.h |  2 +-
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/dlink/sundance.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/jme.c b/drivers/net/ethernet/jme.c
-index e9efe07..f1b9284 100644
---- a/drivers/net/ethernet/jme.c
-+++ b/drivers/net/ethernet/jme.c
-@@ -1265,9 +1265,9 @@ jme_stop_shutdown_timer(struct jme_adapter *jme)
- 	jwrite32f(jme, JME_APMC, apmc);
- }
+diff --git a/drivers/net/ethernet/dlink/sundance.c b/drivers/net/ethernet/dlink/sundance.c
+index e3a8858..df0eab4 100644
+--- a/drivers/net/ethernet/dlink/sundance.c
++++ b/drivers/net/ethernet/dlink/sundance.c
+@@ -963,7 +963,7 @@ static void tx_timeout(struct net_device *dev, unsigned int txqueue)
+ 	unsigned long flag;
  
--static void jme_link_change_tasklet(struct tasklet_struct *t)
-+static void jme_link_change_work(struct work_struct *work)
- {
--	struct jme_adapter *jme = from_tasklet(jme, t, linkch_task);
-+	struct jme_adapter *jme = container_of(work, struct jme_adapter, linkch_task);
- 	struct net_device *netdev = jme->dev;
- 	int rc;
- 
-@@ -1510,7 +1510,7 @@ jme_intr_msi(struct jme_adapter *jme, u32 intrstat)
- 		 * all other events are ignored
- 		 */
- 		jwrite32(jme, JME_IEVE, intrstat);
--		tasklet_schedule(&jme->linkch_task);
-+		schedule_work(&jme->linkch_task);
- 		goto out_reenable;
- 	}
- 
-@@ -1832,7 +1832,6 @@ jme_open(struct net_device *netdev)
- 	jme_clear_pm_disable_wol(jme);
- 	JME_NAPI_ENABLE(jme);
- 
--	tasklet_setup(&jme->linkch_task, jme_link_change_tasklet);
- 	tasklet_setup(&jme->txclean_task, jme_tx_clean_tasklet);
- 	tasklet_setup(&jme->rxclean_task, jme_rx_clean_tasklet);
- 	tasklet_setup(&jme->rxempty_task, jme_rx_empty_tasklet);
-@@ -1920,7 +1919,7 @@ jme_close(struct net_device *netdev)
- 
- 	JME_NAPI_DISABLE(jme);
- 
--	tasklet_kill(&jme->linkch_task);
-+	cancel_work_sync(&jme->linkch_task);
- 	tasklet_kill(&jme->txclean_task);
- 	tasklet_kill(&jme->rxclean_task);
- 	tasklet_kill(&jme->rxempty_task);
-@@ -3035,6 +3034,7 @@ jme_init_one(struct pci_dev *pdev,
- 	atomic_set(&jme->rx_empty, 1);
- 
- 	tasklet_setup(&jme->pcc_task, jme_pcc_tasklet);
-+	INIT_WORK(&jme->linkch_task, jme_link_change_work);
- 	jme->dpi.cur = PCC_P1;
- 
- 	jme->reg_ghc = 0;
-diff --git a/drivers/net/ethernet/jme.h b/drivers/net/ethernet/jme.h
-index a2c3b00..2af7632 100644
---- a/drivers/net/ethernet/jme.h
-+++ b/drivers/net/ethernet/jme.h
-@@ -411,7 +411,7 @@ struct jme_adapter {
- 	struct tasklet_struct	rxempty_task;
- 	struct tasklet_struct	rxclean_task;
- 	struct tasklet_struct	txclean_task;
--	struct tasklet_struct	linkch_task;
-+	struct work_struct	linkch_task;
- 	struct tasklet_struct	pcc_task;
- 	unsigned long		flags;
- 	u32			reg_txcs;
+ 	netif_stop_queue(dev);
+-	tasklet_disable(&np->tx_tasklet);
++	tasklet_disable_in_atomic(&np->tx_tasklet);
+ 	iowrite16(0, ioaddr + IntrEnable);
+ 	printk(KERN_WARNING "%s: Transmit timed out, TxStatus %2.2x "
+ 		   "TxFrameId %2.2x,"
