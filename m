@@ -2,241 +2,80 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6CDEA33F083
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 17 Mar 2021 13:39:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A0C3833F0CD
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 17 Mar 2021 14:00:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230078AbhCQMij (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 17 Mar 2021 08:38:39 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:49764 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229863AbhCQMi3 (ORCPT
+        id S230246AbhCQNAX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 17 Mar 2021 09:00:23 -0400
+Received: from casper.infradead.org ([90.155.50.34]:34866 "EHLO
+        casper.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229964AbhCQNAB (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 17 Mar 2021 08:38:29 -0400
-Date:   Wed, 17 Mar 2021 12:38:27 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1615984708;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=M0lUdGEkmJVWbjEAsxHbVVCn26APtUZuSk7lTZDFCs4=;
-        b=XkqXQjDJOT6WhXBzogJ64CabbLqy6mAHbmaCAczraXkpyrPhZsUkXGY26mnYsFUgdfGbZH
-        HDj9r+SwR7D7YYlZFEXpZz+ICG0a8AaACvz7q1LKSGtxvHhzHqWMhtDUt+rQXoC0a4iHr/
-        wa892jkohfaqVkvA7DOKPvCUsBnr778xWcVOgXg5ro73DSH9lrnw9Z1GFFq7RYm9py2wvx
-        hMVb5B5PUFjtyEdg6KbZQSGrbhDpQAp4pFLbLv2OnyfypkFOTcFNyuuZ6rF1of1mUEH+1P
-        zhYG+XGB69ghcR6Ms5cV8XLGw0p1qbUTzDjonCZGSVdig35UOAQhW8mbUjbNzA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1615984708;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=M0lUdGEkmJVWbjEAsxHbVVCn26APtUZuSk7lTZDFCs4=;
-        b=MLwcXdlOKHUGJdqB4hc/SJCK+satPfd/hAXuAqFrRrbvgt6KTfbQJVqgZkfbxmDv1lu9N/
-        vE9LVNGi/EagcuDQ==
-From:   "tip-bot2 for Nicholas Piggin" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/wait_bit, mm/filemap: Increase page and bit
- waitqueue hash size
-Cc:     Nicholas Piggin <npiggin@gmail.com>,
+        Wed, 17 Mar 2021 09:00:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=OsgWaEcn4B2Y823RuGirB7smdrHD9ktZSszdfbNXaUg=; b=XA+1uUVnlgXcQjbmDjnaBuuEGR
+        flhEq42UNEW4sYM0rYOZ7WUmbAL6XtRJyKNJ4Ucn/xgXOkZbK/Ik8+TnijKolPD6cX3QmHCiEViIC
+        /s0XB2mCOKTk4twi9ZRWJ4wIDSPWkLjabmSpZsRrt/QP6Kwhspea/Z/Getkon820mAhQ4iBRmHnoA
+        TgPzTzT39v/5TbC/63CYBmxDppHGJOOBvFwa2QRxdW4CkQRRUu0AZaatHVtc/HpXx8oN66setnybA
+        cGoE5ZNf8vXBtevL9FDPulEq48QiBhvdOkmqpW9s5WDZT3DYgqSRNZUTAgKZcVoLf25YhkWjsUCn/
+        txYZFmuw==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
+        by casper.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
+        id 1lMVm5-001UL8-1g; Wed, 17 Mar 2021 12:59:49 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 10F833050F0;
+        Wed, 17 Mar 2021 13:59:44 +0100 (CET)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id EF79A2B4F1EB8; Wed, 17 Mar 2021 13:59:43 +0100 (CET)
+Date:   Wed, 17 Mar 2021 13:59:43 +0100
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-tip-commits@vger.kernel.org,
+        Waiman Long <longman@redhat.com>,
         Ingo Molnar <mingo@kernel.org>,
-        Peter Zijlstra <a.p.zijlstra@chello.nl>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20210317075427.587806-1-npiggin@gmail.com>
-References: <20210317075427.587806-1-npiggin@gmail.com>
+        Davidlohr Bueso <dbueso@suse.de>, x86@kernel.org
+Subject: Re: [tip: locking/urgent] locking/ww_mutex: Simplify use_ww_ctx &
+ ww_ctx handling
+Message-ID: <YFH9Pw3kwCZC1UTB@hirez.programming.kicks-ass.net>
+References: <20210316153119.13802-2-longman@redhat.com>
+ <161598470257.398.5006518584847290113.tip-bot2@tip-bot2>
 MIME-Version: 1.0
-Message-ID: <161598470782.398.7078277215554525953.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <161598470257.398.5006518584847290113.tip-bot2@tip-bot2>
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+On Wed, Mar 17, 2021 at 12:38:22PM -0000, tip-bot2 for Waiman Long wrote:
+> The following commit has been merged into the locking/urgent branch of tip:
+> 
+> Commit-ID:     5de2055d31ea88fd9ae9709ac95c372a505a60fa
+> Gitweb:        https://git.kernel.org/tip/5de2055d31ea88fd9ae9709ac95c372a505a60fa
+> Author:        Waiman Long <longman@redhat.com>
+> AuthorDate:    Tue, 16 Mar 2021 11:31:16 -04:00
+> Committer:     Ingo Molnar <mingo@kernel.org>
+> CommitterDate: Wed, 17 Mar 2021 09:56:44 +01:00
+> 
+> locking/ww_mutex: Simplify use_ww_ctx & ww_ctx handling
+> 
+> The use_ww_ctx flag is passed to mutex_optimistic_spin(), but the
+> function doesn't use it. The frequent use of the (use_ww_ctx && ww_ctx)
+> combination is repetitive.
+> 
+> In fact, ww_ctx should not be used at all if !use_ww_ctx.  Simplify
+> ww_mutex code by dropping use_ww_ctx from mutex_optimistic_spin() an
+> clear ww_ctx if !use_ww_ctx. In this way, we can replace (use_ww_ctx &&
+> ww_ctx) by just (ww_ctx).
 
-Commit-ID:     873d7c4c6a920d43ff82e44121e54053d4edba93
-Gitweb:        https://git.kernel.org/tip/873d7c4c6a920d43ff82e44121e54053d4edba93
-Author:        Nicholas Piggin <npiggin@gmail.com>
-AuthorDate:    Wed, 17 Mar 2021 17:54:27 +10:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 17 Mar 2021 09:32:30 +01:00
+The reason this code was like this is because GCC could constant
+propagage use_ww_ctx but could not do the same for ww_ctx (since that's
+external).
 
-sched/wait_bit, mm/filemap: Increase page and bit waitqueue hash size
-
-The page waitqueue hash is a bit small (256 entries) on very big systems. A
-16 socket 1536 thread POWER9 system was found to encounter hash collisions
-and excessive time in waitqueue locking at times. This was intermittent and
-hard to reproduce easily with the setup we had (very little real IO
-capacity). The theory is that sometimes (depending on allocation luck)
-important pages would happen to collide a lot in the hash, slowing down page
-locking, causing the problem to snowball.
-
-An small test case was made where threads would write and fsync different
-pages, generating just a small amount of contention across many pages.
-
-Increasing page waitqueue hash size to 262144 entries increased throughput
-by 182% while also reducing standard deviation 3x. perf before the increase:
-
-  36.23%  [k] _raw_spin_lock_irqsave                -      -
-              |
-              |--34.60%--wake_up_page_bit
-              |          0
-              |          iomap_write_end.isra.38
-              |          iomap_write_actor
-              |          iomap_apply
-              |          iomap_file_buffered_write
-              |          xfs_file_buffered_aio_write
-              |          new_sync_write
-
-  17.93%  [k] native_queued_spin_lock_slowpath      -      -
-              |
-              |--16.74%--_raw_spin_lock_irqsave
-              |          |
-              |           --16.44%--wake_up_page_bit
-              |                     iomap_write_end.isra.38
-              |                     iomap_write_actor
-              |                     iomap_apply
-              |                     iomap_file_buffered_write
-              |                     xfs_file_buffered_aio_write
-
-This patch uses alloc_large_system_hash to allocate a bigger system hash
-that scales somewhat with memory size. The bit/var wait-queue is also
-changed to keep code matching, albiet with a smaller scale factor.
-
-A very small CONFIG_BASE_SMALL option is also added because these are two
-of the biggest static objects in the image on very small systems.
-
-This hash could be made per-node, which may help reduce remote accesses
-on well localised workloads, but that adds some complexity with indexing
-and hotplug, so until we get a less artificial workload to test with,
-keep it simple.
-
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Peter Zijlstra <a.p.zijlstra@chello.nl>
-Link: https://lore.kernel.org/r/20210317075427.587806-1-npiggin@gmail.com
----
- kernel/sched/wait_bit.c | 30 +++++++++++++++++++++++-------
- mm/filemap.c            | 24 +++++++++++++++++++++---
- 2 files changed, 44 insertions(+), 10 deletions(-)
-
-diff --git a/kernel/sched/wait_bit.c b/kernel/sched/wait_bit.c
-index 02ce292..dba73de 100644
---- a/kernel/sched/wait_bit.c
-+++ b/kernel/sched/wait_bit.c
-@@ -2,19 +2,24 @@
- /*
-  * The implementation of the wait_bit*() and related waiting APIs:
-  */
-+#include <linux/memblock.h>
- #include "sched.h"
- 
--#define WAIT_TABLE_BITS 8
--#define WAIT_TABLE_SIZE (1 << WAIT_TABLE_BITS)
--
--static wait_queue_head_t bit_wait_table[WAIT_TABLE_SIZE] __cacheline_aligned;
-+#define BIT_WAIT_TABLE_SIZE (1 << bit_wait_table_bits)
-+#if CONFIG_BASE_SMALL
-+static const unsigned int bit_wait_table_bits = 3;
-+static wait_queue_head_t bit_wait_table[BIT_WAIT_TABLE_SIZE] __cacheline_aligned;
-+#else
-+static unsigned int bit_wait_table_bits __ro_after_init;
-+static wait_queue_head_t *bit_wait_table __ro_after_init;
-+#endif
- 
- wait_queue_head_t *bit_waitqueue(void *word, int bit)
- {
- 	const int shift = BITS_PER_LONG == 32 ? 5 : 6;
- 	unsigned long val = (unsigned long)word << shift | bit;
- 
--	return bit_wait_table + hash_long(val, WAIT_TABLE_BITS);
-+	return bit_wait_table + hash_long(val, bit_wait_table_bits);
- }
- EXPORT_SYMBOL(bit_waitqueue);
- 
-@@ -152,7 +157,7 @@ EXPORT_SYMBOL(wake_up_bit);
- 
- wait_queue_head_t *__var_waitqueue(void *p)
- {
--	return bit_wait_table + hash_ptr(p, WAIT_TABLE_BITS);
-+	return bit_wait_table + hash_ptr(p, bit_wait_table_bits);
- }
- EXPORT_SYMBOL(__var_waitqueue);
- 
-@@ -246,6 +251,17 @@ void __init wait_bit_init(void)
- {
- 	int i;
- 
--	for (i = 0; i < WAIT_TABLE_SIZE; i++)
-+	if (!CONFIG_BASE_SMALL) {
-+		bit_wait_table = alloc_large_system_hash("bit waitqueue hash",
-+							sizeof(wait_queue_head_t),
-+							0,
-+							22,
-+							0,
-+							&bit_wait_table_bits,
-+							NULL,
-+							0,
-+							0);
-+	}
-+	for (i = 0; i < BIT_WAIT_TABLE_SIZE; i++)
- 		init_waitqueue_head(bit_wait_table + i);
- }
-diff --git a/mm/filemap.c b/mm/filemap.c
-index 4370048..dbbb5b9 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -34,6 +34,7 @@
- #include <linux/security.h>
- #include <linux/cpuset.h>
- #include <linux/hugetlb.h>
-+#include <linux/memblock.h>
- #include <linux/memcontrol.h>
- #include <linux/cleancache.h>
- #include <linux/shmem_fs.h>
-@@ -990,19 +991,36 @@ EXPORT_SYMBOL(__page_cache_alloc);
-  * at a cost of "thundering herd" phenomena during rare hash
-  * collisions.
-  */
--#define PAGE_WAIT_TABLE_BITS 8
--#define PAGE_WAIT_TABLE_SIZE (1 << PAGE_WAIT_TABLE_BITS)
-+#define PAGE_WAIT_TABLE_SIZE (1 << page_wait_table_bits)
-+#if CONFIG_BASE_SMALL
-+static const unsigned int page_wait_table_bits = 4;
- static wait_queue_head_t page_wait_table[PAGE_WAIT_TABLE_SIZE] __cacheline_aligned;
-+#else
-+static unsigned int page_wait_table_bits __ro_after_init;
-+static wait_queue_head_t *page_wait_table __ro_after_init;
-+#endif
- 
- static wait_queue_head_t *page_waitqueue(struct page *page)
- {
--	return &page_wait_table[hash_ptr(page, PAGE_WAIT_TABLE_BITS)];
-+	return &page_wait_table[hash_ptr(page, page_wait_table_bits)];
- }
- 
- void __init pagecache_init(void)
- {
- 	int i;
- 
-+	if (!CONFIG_BASE_SMALL) {
-+		page_wait_table = alloc_large_system_hash("page waitqueue hash",
-+							sizeof(wait_queue_head_t),
-+							0,
-+							21,
-+							0,
-+							&page_wait_table_bits,
-+							NULL,
-+							0,
-+							0);
-+	}
-+
- 	for (i = 0; i < PAGE_WAIT_TABLE_SIZE; i++)
- 		init_waitqueue_head(&page_wait_table[i]);
- 
+Please double check generated code to make sure you've not introduced a
+bunch of extra branches.
