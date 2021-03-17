@@ -2,93 +2,80 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2177133F995
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 17 Mar 2021 20:55:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AB2BD33F99C
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 17 Mar 2021 20:59:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232592AbhCQTzR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 17 Mar 2021 15:55:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40866 "EHLO
+        id S233312AbhCQT7I (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 17 Mar 2021 15:59:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41678 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232738AbhCQTyy (ORCPT
+        with ESMTP id S232738AbhCQT6k (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 17 Mar 2021 15:54:54 -0400
-Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DD4EC06174A;
-        Wed, 17 Mar 2021 12:54:54 -0700 (PDT)
-Received: by mail-wm1-x329.google.com with SMTP id t5-20020a1c77050000b029010e62cea9deso2049158wmi.0;
-        Wed, 17 Mar 2021 12:54:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=scVZEoQst6gY9XYErRxOo2D348FMWQF9KFFYCoS/wjM=;
-        b=sLAFHXIxxcAvhDrVwfjb1W2K+qCyYROgKbDg+Lh2Z2lvfm3ACQZH5oKvjboDKQBIOQ
-         GhTBWyj+2QMkW4UQh5xhOaQpPlI2MzpU+oecIiWPM3QtFrV2o5ppp1GjMmVLXQNwAH3A
-         anC8chTojKoC622Bn/Fn6N6Un6vHXj3DKb0yAu20fYjIM2atCgniXVt9WkbNgsxz8NKN
-         Tus/+smXvI4SIQzpOt3RBg1sZCReI+uAFGDzuu1LOHzg4gNFTO6k8PMnMft1yeO7veH+
-         1NDmXm6cM7h/PT0bMu4kOR8WtaclhqsBEHVLRSw6Nx1wJ1u20Bczxt7N+xZ1jlZXFYTf
-         Qylw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to;
-        bh=scVZEoQst6gY9XYErRxOo2D348FMWQF9KFFYCoS/wjM=;
-        b=jrJvYOvoec6F1ZuNX98iGHxlJd8TWZNm0RmQetSaBD2edMGCCSFujrf1MvQLX7R6Q0
-         6aF/PD7crpZLdeMiFb3CVTPPep0V9cyb06v1+8dElOEnoZ+/u9xyQ3CyIawmHCtEKPjq
-         YFxMOqQp8sQiqLGVsVQX3PpAS9W94KmoI1Um6omJgcZCsANT5fCqMH0OzaKONrBSUab8
-         WNpbP2FkkcZFTgNBqhwrefvCJvyxkWuHGwzugLsZLSZHMQ3Bif/nmHic53l4cpzoASOz
-         anl/dtnHpBEVBrl+K2emYf0F0CHmkFei0D1RSto5NB8yUOzszbf+8cPdpbSamu+s+cT3
-         J+OQ==
-X-Gm-Message-State: AOAM532PwMH1ueYV9GfMSDp0DRpRu8H7KAn+PtoS9NT001bntysYlyPj
-        S7HCtdV/Lulakt9+mZKi748=
-X-Google-Smtp-Source: ABdhPJxBFZ429tKCOUz47tGiVOK9+zUMzuz7N85RkUXRdaDwDDJ3jf0+xJEQLOdLA6aJ5uLNIkZDYA==
-X-Received: by 2002:a05:600c:4ed1:: with SMTP id g17mr404824wmq.67.1616010892936;
-        Wed, 17 Mar 2021 12:54:52 -0700 (PDT)
-Received: from gmail.com (54033286.catv.pool.telekom.hu. [84.3.50.134])
-        by smtp.gmail.com with ESMTPSA id p18sm6390504wrs.68.2021.03.17.12.54.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Mar 2021 12:54:52 -0700 (PDT)
-Sender: Ingo Molnar <mingo.kernel.org@gmail.com>
-Date:   Wed, 17 Mar 2021 20:54:50 +0100
-From:   Ingo Molnar <mingo@kernel.org>
-To:     Thomas Gleixner <tglx@linutronix.de>
-Cc:     tip-bot2 for Nicholas Piggin <tip-bot2@linutronix.de>,
-        linux-tip-commits@vger.kernel.org,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Peter Zijlstra <a.p.zijlstra@chello.nl>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [tip: sched/core] sched/wait_bit, mm/filemap: Increase page and
- bit waitqueue hash size
-Message-ID: <20210317195450.GA811242@gmail.com>
-References: <20210317075427.587806-1-npiggin@gmail.com>
- <161598470782.398.7078277215554525953.tip-bot2@tip-bot2>
- <87v99pyfmp.fsf@nanos.tec.linutronix.de>
+        Wed, 17 Mar 2021 15:58:40 -0400
+Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5020BC06174A;
+        Wed, 17 Mar 2021 12:58:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=oC8GCTmvlsFkDJ1hgVzSWJ6fGOhXyrj/G6vJTANh9M8=; b=C3bq/xcLSTWNKn1DdXGc9MAbWW
+        fCr5UDHnFBlDxsz5Zs1UKZGPsQet+8IBqS+ZdB+wE0cFiFF8MCvhlRg7mRdIzSpd6d2tFmvHPzK0c
+        l3g6CjXPdAgPmNKvmhAQXxexruIHJYpAQqNWDcseryOORJGbsOMzddTPIsoMSSTz5Z3tTbl2WE9W2
+        1iLQSnwrEMd0EDAa2PwEuftQnXuDZLf+EnqgSJq/WgSCrvw2zG6ewwTOI4bZeP2rSRIL13jg6skOH
+        cOsWf2XeVlLZD28QP1OHB+HWpnfW4SJftzMQt/YRBc6IUFrwzhlEJOxW46JUkCw3172u/vQRw4dr9
+        yTjLBZ2A==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=worktop.programming.kicks-ass.net)
+        by desiato.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
+        id 1lMcJP-003qKE-Hm; Wed, 17 Mar 2021 19:58:36 +0000
+Received: by worktop.programming.kicks-ass.net (Postfix, from userid 1000)
+        id B1D54980BEF; Wed, 17 Mar 2021 20:58:34 +0100 (CET)
+Date:   Wed, 17 Mar 2021 20:58:34 +0100
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Waiman Long <longman@redhat.com>
+Cc:     linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
+        Ingo Molnar <mingo@kernel.org>, x86@kernel.org
+Subject: Re: [tip: locking/urgent] locking/ww_mutex: Treat ww_mutex_lock()
+ like a trylock
+Message-ID: <20210317195834.GV4746@worktop.programming.kicks-ass.net>
+References: <20210316153119.13802-4-longman@redhat.com>
+ <161598470197.398.8903908266426306140.tip-bot2@tip-bot2>
+ <YFIASRkXowQWgj2s@hirez.programming.kicks-ass.net>
+ <YFIEo8IVQ/Mm9jUE@hirez.programming.kicks-ass.net>
+ <e1bcd7fb-3a40-f207-ee19-d276c8b8bb75@redhat.com>
+ <e39f4e37-e3c0-e62a-7062-fdd2c8b3d3b9@redhat.com>
+ <YFIy8Bzj7WAHFmlG@hirez.programming.kicks-ass.net>
+ <YFI/C4VZuWjyHLNK@hirez.programming.kicks-ass.net>
+ <YFJAP8x917Ef0Khj@hirez.programming.kicks-ass.net>
+ <36d26109-f08a-6254-2fd3-ad1a28fcc260@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <87v99pyfmp.fsf@nanos.tec.linutronix.de>
+In-Reply-To: <36d26109-f08a-6254-2fd3-ad1a28fcc260@redhat.com>
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
+On Wed, Mar 17, 2021 at 02:32:27PM -0400, Waiman Long wrote:
+> On 3/17/21 1:45 PM, Peter Zijlstra wrote:
 
-* Thomas Gleixner <tglx@linutronix.de> wrote:
-
-> On Wed, Mar 17 2021 at 12:38, tip-bot wrote:
-> > The following commit has been merged into the sched/core branch of tip:
-> >
-> > Commit-ID:     873d7c4c6a920d43ff82e44121e54053d4edba93
-> > Gitweb:        https://git.kernel.org/tip/873d7c4c6a920d43ff82e44121e54053d4edba93
-> > Author:        Nicholas Piggin <npiggin@gmail.com>
-> > AuthorDate:    Wed, 17 Mar 2021 17:54:27 +10:00
-> > Committer:     Ingo Molnar <mingo@kernel.org>
-> > CommitterDate: Wed, 17 Mar 2021 09:32:30 +01:00
+> > > +# define __DEP_MAP_WW_MUTEX_INITIALIZER(lockname, class) \
+> > > +		, .dep_map = { \
+> > > +			.key = &(class).mutex_key, \
+> > > +			.name = (class).mutex_name, \
+> > 			,name = #class "_mutex", \
+> > 
+> > and it 'works', but shees!
 > 
-> Groan. This does not even compile and Nicholas already sent a V3 in the
-> very same thread. Zapped ...
+> The name string itself may be duplicated for multiple instances of
+> DEFINE_WW_MUTEX(). Do you want to keep DEFINE_WW_MUTEX() or just use
+> ww_mutex_init() for all?
 
-Yeah, thanks - got that too late and got distracted, groan #2.
+So linkers can merge literals, but no guarantee. But yeah, lets just
+kill the thing, less tricky macro crud to worry about.
 
-Thanks!
+> I notice that the problem with DEFINE_WW_MUTEX is that the ww_mutex
+> themselves has null key instead of the same key from the ww_class as with
+> ww_mutex_init().
 
-	Ingo
+Correct.
