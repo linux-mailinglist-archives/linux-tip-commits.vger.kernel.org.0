@@ -2,16 +2,19 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E66B433F075
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 17 Mar 2021 13:39:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 553FC33F078
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 17 Mar 2021 13:39:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229867AbhCQMie (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S229952AbhCQMie (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Wed, 17 Mar 2021 08:38:34 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:49662 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229460AbhCQMiU (ORCPT
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59330 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229512AbhCQMiX (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 17 Mar 2021 08:38:20 -0400
+        Wed, 17 Mar 2021 08:38:23 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DBD3C06174A;
+        Wed, 17 Mar 2021 05:38:22 -0700 (PDT)
 Date:   Wed, 17 Mar 2021 12:38:18 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1615984699;
@@ -20,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Fi8t/0lj0pL/6d5yEo5GjAalAaAhwfw1Db/jSwlCssc=;
-        b=LhHPGbVGBxvHuP6jr5kHqGTokES5uoYo0+p7H7mz8WTz/SnFIE0OAqsb013CkYolhJ3icN
-        Y144zJUglOwdJ0yuhzun6oIWaYrc4F55yEA//S3Fud/ItWVHclR98Pl5EcP0hgEUEqmLsZ
-        LvjQLYg8Ru6i6ghwKiK8ezFS4JqVq/vZehAiveK+hLw9i0dvjUM0vzDt+uX8i7J3zsSKy8
-        nEGw3Z3oARLZP/CG4JQlg9K7g1hoCCelO40+Uv3ahDELWwezmVZNXmMrGF+JXjRRxrg6+g
-        Ws841V1AzBJ/gISWJEK+RNl8232KtFRB4Fez/Rf4HEP/FmhL/i6n1EvvwJsl1w==
+        bh=Qzqhedp0OntONtQytCa2588EidCoFv7TJX9wbYVv3rw=;
+        b=sKg26zE1/VNlttDHWIKp6ZwnUo4JuY4EHI2RTYftVeVyIZ0bulGudK5wHnm3Yk5Nq+bHig
+        dlbey+rK/ttrmmwVWnqkqd9WJ2euqBojb5Pa80a6XofcqpxNePBPwPoEUkW9W/f6jJwTNC
+        u2EtREhwB2gUjIycVfXrGoUgEia+ih4QBp5MeNA2pJ9ZliOIE96n1Mycp+F9O1RmA1Jh/q
+        FihgFPYjDzAzMKW27x2HddnUgvJL7qG9NDoeChyRF3JX7Ia0YFN1ImKomQ1logTYsXGm2X
+        wPB+GgG5O5iuQ+lKOcUu0E8eA3YaFALZzT9ReNah9xqBElJiauSSICfaTqaj7A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1615984699;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -33,23 +36,22 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Fi8t/0lj0pL/6d5yEo5GjAalAaAhwfw1Db/jSwlCssc=;
-        b=L4qbr2zNCcqTbljrGDtnRVuHJdM8DfNdNZ4CsuWoVlGU7Vds6KOvCpCyWJbneXzwHAsM+a
-        X/oawweFaL2mElBw==
-From:   "tip-bot2 for Dirk Behme" <tip-bot2@linutronix.de>
+        bh=Qzqhedp0OntONtQytCa2588EidCoFv7TJX9wbYVv3rw=;
+        b=31jHdkj+29CDOeUCB5byDWQptKUlFAdK9fDDek8v/TE8eYSuNNLYLKmBjDZJsKJmKJSWwU
+        L00p6GncDpBhv2Cw==
+From:   "tip-bot2 for Bhaskar Chowdhury" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] softirq: s/BUG/WARN_ONCE/ on tasklet SCHED state not set
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Dirk Behme <dirk.behme@de.bosch.com>,
-        Eugeniu Rosca <erosca@de.adit-jv.com>,
-        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20210317102012.32399-1-erosca@de.adit-jv.com>
-References: <20210317102012.32399-1-erosca@de.adit-jv.com>
+Subject: [tip: locking/core] locking/rwsem: Fix comment typo
+Cc:     Bhaskar Chowdhury <unixbhaskar@gmail.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        Randy Dunlap <rdunlap@infradead.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20210317041806.4096156-1-unixbhaskar@gmail.com>
+References: <20210317041806.4096156-1-unixbhaskar@gmail.com>
 MIME-Version: 1.0
-Message-ID: <161598469824.398.13339224451166671005.tip-bot2@tip-bot2>
+Message-ID: <161598469872.398.4566004083780448035.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,71 +60,37 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the irq/core branch of tip:
+The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     6b2c339df90788ce6aeecee78d6494f262929206
-Gitweb:        https://git.kernel.org/tip/6b2c339df90788ce6aeecee78d6494f262929206
-Author:        Dirk Behme <dirk.behme@de.bosch.com>
-AuthorDate:    Wed, 17 Mar 2021 11:20:12 +01:00
+Commit-ID:     4faf62b1ef1a9367f7dcf8b7ce509980dfdcee83
+Gitweb:        https://git.kernel.org/tip/4faf62b1ef1a9367f7dcf8b7ce509980dfdcee83
+Author:        Bhaskar Chowdhury <unixbhaskar@gmail.com>
+AuthorDate:    Wed, 17 Mar 2021 09:48:06 +05:30
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 17 Mar 2021 12:59:35 +01:00
+CommitterDate: Wed, 17 Mar 2021 09:34:39 +01:00
 
-softirq: s/BUG/WARN_ONCE/ on tasklet SCHED state not set
+locking/rwsem: Fix comment typo
 
-Replace BUG() with WARN_ONCE() on wrong tasklet state, in order to:
+s/folowing/following/
 
- - increase the verbosity / aid in debugging
- - avoid fatal/unrecoverable state
-
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
-Signed-off-by: Eugeniu Rosca <erosca@de.adit-jv.com>
+Signed-off-by: Bhaskar Chowdhury <unixbhaskar@gmail.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20210317102012.32399-1-erosca@de.adit-jv.com
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
+Link: https://lore.kernel.org/r/20210317041806.4096156-1-unixbhaskar@gmail.com
 ---
- kernel/softirq.c | 25 ++++++++++++++++++-------
- 1 file changed, 18 insertions(+), 7 deletions(-)
+ kernel/locking/rwsem.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/softirq.c b/kernel/softirq.c
-index 8b44ab9..8d56bbf 100644
---- a/kernel/softirq.c
-+++ b/kernel/softirq.c
-@@ -531,6 +531,18 @@ void __tasklet_hi_schedule(struct tasklet_struct *t)
+diff --git a/kernel/locking/rwsem.c b/kernel/locking/rwsem.c
+index abba5df..fe9cc65 100644
+--- a/kernel/locking/rwsem.c
++++ b/kernel/locking/rwsem.c
+@@ -632,7 +632,7 @@ static inline bool rwsem_can_spin_on_owner(struct rw_semaphore *sem)
  }
- EXPORT_SYMBOL(__tasklet_hi_schedule);
  
-+static bool tasklet_should_run(struct tasklet_struct *t)
-+{
-+	if (test_and_clear_bit(TASKLET_STATE_SCHED, &t->state))
-+		return true;
-+
-+	WARN_ONCE(1, "tasklet SCHED state not set: %s %pS\n",
-+		  t->use_callback ? "callback" : "func",
-+		  t->use_callback ? (void *)t->callback : (void *)t->func);
-+
-+	return false;
-+}
-+
- static void tasklet_action_common(struct softirq_action *a,
- 				  struct tasklet_head *tl_head,
- 				  unsigned int softirq_nr)
-@@ -550,13 +562,12 @@ static void tasklet_action_common(struct softirq_action *a,
- 
- 		if (tasklet_trylock(t)) {
- 			if (!atomic_read(&t->count)) {
--				if (!test_and_clear_bit(TASKLET_STATE_SCHED,
--							&t->state))
--					BUG();
--				if (t->use_callback)
--					t->callback(t);
--				else
--					t->func(t->data);
-+				if (tasklet_should_run(t)) {
-+					if (t->use_callback)
-+						t->callback(t);
-+					else
-+						t->func(t->data);
-+				}
- 				tasklet_unlock(t);
- 				continue;
- 			}
+ /*
+- * The rwsem_spin_on_owner() function returns the folowing 4 values
++ * The rwsem_spin_on_owner() function returns the following 4 values
+  * depending on the lock owner state.
+  *   OWNER_NULL  : owner is currently NULL
+  *   OWNER_WRITER: when owner changes and is a writer
