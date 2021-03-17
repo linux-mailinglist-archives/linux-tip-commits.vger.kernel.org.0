@@ -2,52 +2,58 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F01F33F07D
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 17 Mar 2021 13:39:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 20B3E33F082
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 17 Mar 2021 13:39:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230044AbhCQMih (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S230051AbhCQMih (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Wed, 17 Mar 2021 08:38:37 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:49722 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229720AbhCQMi0 (ORCPT
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59356 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229804AbhCQMi1 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 17 Mar 2021 08:38:26 -0400
-Date:   Wed, 17 Mar 2021 12:38:24 -0000
+        Wed, 17 Mar 2021 08:38:27 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82A07C06174A;
+        Wed, 17 Mar 2021 05:38:27 -0700 (PDT)
+Date:   Wed, 17 Mar 2021 12:38:25 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1615984705;
+        s=2020; t=1615984706;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Oo3oLl3D3bCZ7C7ENIbBzljLTNO/XAjw/77NsIFNlU8=;
-        b=tK0JNqTYRiVp0FLKrMv0b3iKuU6ney3sh6cZMRVaOc2Vsy8AW1XXX9SRnBkGAOb2szkJNW
-        SerJj0xYxmXmNOsOywobpU8WdmwkrwAUDNTTGwLObVTKCpxzptn0ZQb40gSWgVUXA7ME2+
-        IbF63FQDRIERnAURxmgLeTyLSTdDdKzuYAaLWoODkznBjET1Wx08RjleTZw7c+mgUImCcH
-        lN9YjJre8S8mckxkaBu8mYyGbgrpKadTPRajQofyYKS1g26uX7tL+wJqp65UXKu/OacJQi
-        jlxjPQ1g6UFapngLEYL/KoBKUcHl/zU5K1YAbJHRbwMgzDQ8gAWZnwULAuc9HA==
+        bh=NMK9mwYemz31+TAh2smZqXf6rAO8D93gOnHoa7VYhuU=;
+        b=0pr6LBYQpF0sIMjckGbctFZxBGrDcLEKBPnVjDuEb102m6wWPyGlLgGauiVibneNFsphTU
+        k/WmV2SS1N2CQHx9Zvf3J9hQsdSKuKaQBZRJfKaBFe2PmtmghoV3iMPApoeZmP7JKDgAkq
+        tINXQsAwEk/+1kTxlv6xwQzy7Of9VBlwBONTL1NodwHZwE55uxfYwS4Z4ldYA7T1A7IVul
+        szGJ98MRGJMVhlKqftbKndxzVJrsv0X8lUzZ3gHTERJ0ltELYQl4W5a3rBnaarqQ0bZDef
+        UdE3eY9t53LmIHKCeoUAp2e/yTBNB0iq8/J72j4tYSwTAdkp5NPp0gV6WwS4Sw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1615984705;
+        s=2020e; t=1615984706;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Oo3oLl3D3bCZ7C7ENIbBzljLTNO/XAjw/77NsIFNlU8=;
-        b=cYBFrArA7jJAGmiiGN88QfqcoOd4WGYPDX07itlSTaqyIl0hicBnQMo73HI5WbD0H5zd78
-        9NSwZQuRpp3cpZCA==
-From:   "tip-bot2 for Namhyung Kim" <tip-bot2@linutronix.de>
+        bh=NMK9mwYemz31+TAh2smZqXf6rAO8D93gOnHoa7VYhuU=;
+        b=aQq0sLazXcCQOFp1kTk3JTaynKivOp92FBar5NbZ5YWE+7J5hGSazQBd+cAoCcppLsCaBA
+        dRr47z0olh6Tp+Bg==
+From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf core: Allocate perf_event in the target node memory
-Cc:     Namhyung Kim <namhyung@kernel.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: perf/urgent] perf/x86/intel: Fix unchecked MSR access error
+ caused by VLBR_EVENT
+Cc:     Vince Weaver <vincent.weaver@maine.edu>,
+        Kan Liang <kan.liang@linux.intel.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        stable@vger.kernel.org, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210311115413.444407-2-namhyung@kernel.org>
-References: <20210311115413.444407-2-namhyung@kernel.org>
+In-Reply-To: <1615555298-140216-2-git-send-email-kan.liang@linux.intel.com>
+References: <1615555298-140216-2-git-send-email-kan.liang@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <161598470458.398.13204797977122218988.tip-bot2@tip-bot2>
+Message-ID: <161598470558.398.3008177602318423260.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -56,49 +62,57 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/core branch of tip:
+The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     ff65338e78418e5970a7aabbabb94c46f2bb821d
-Gitweb:        https://git.kernel.org/tip/ff65338e78418e5970a7aabbabb94c46f2bb821d
-Author:        Namhyung Kim <namhyung@kernel.org>
-AuthorDate:    Thu, 11 Mar 2021 20:54:13 +09:00
+Commit-ID:     2dc0572f2cef87425147658698dce2600b799bd3
+Gitweb:        https://git.kernel.org/tip/2dc0572f2cef87425147658698dce2600b799bd3
+Author:        Kan Liang <kan.liang@linux.intel.com>
+AuthorDate:    Fri, 12 Mar 2021 05:21:38 -08:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 16 Mar 2021 21:44:43 +01:00
+CommitterDate: Tue, 16 Mar 2021 21:44:39 +01:00
 
-perf core: Allocate perf_event in the target node memory
+perf/x86/intel: Fix unchecked MSR access error caused by VLBR_EVENT
 
-For cpu events, it'd better allocating them in the corresponding node
-memory as they would be mostly accessed by the target cpu.  Although
-perf tools sets the cpu affinity before calling perf_event_open, there
-are places it doesn't (notably perf record) and we should consider
-other external users too.
+On a Haswell machine, the perf_fuzzer managed to trigger this message:
 
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+[117248.075892] unchecked MSR access error: WRMSR to 0x3f1 (tried to
+write 0x0400000000000000) at rIP: 0xffffffff8106e4f4
+(native_write_msr+0x4/0x20)
+[117248.089957] Call Trace:
+[117248.092685]  intel_pmu_pebs_enable_all+0x31/0x40
+[117248.097737]  intel_pmu_enable_all+0xa/0x10
+[117248.102210]  __perf_event_task_sched_in+0x2df/0x2f0
+[117248.107511]  finish_task_switch.isra.0+0x15f/0x280
+[117248.112765]  schedule_tail+0xc/0x40
+[117248.116562]  ret_from_fork+0x8/0x30
+
+A fake event called VLBR_EVENT may use the bit 58 of the PEBS_ENABLE, if
+the precise_ip is set. The bit 58 is reserved by the HW. Accessing the
+bit causes the unchecked MSR access error.
+
+The fake event doesn't support PEBS. The case should be rejected.
+
+Fixes: 097e4311cda9 ("perf/x86: Add constraint to create guest LBR event without hw counter")
+Reported-by: Vince Weaver <vincent.weaver@maine.edu>
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20210311115413.444407-2-namhyung@kernel.org
+Cc: stable@vger.kernel.org
+Link: https://lkml.kernel.org/r/1615555298-140216-2-git-send-email-kan.liang@linux.intel.com
 ---
- kernel/events/core.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/x86/events/intel/core.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index f526ddb..6182cb1 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -11288,13 +11288,16 @@ perf_event_alloc(struct perf_event_attr *attr, int cpu,
- 	struct perf_event *event;
- 	struct hw_perf_event *hwc;
- 	long err = -EINVAL;
-+	int node;
+diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
+index 7bbb5bb..37ce384 100644
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -3659,6 +3659,9 @@ static int intel_pmu_hw_config(struct perf_event *event)
+ 		return ret;
  
- 	if ((unsigned)cpu >= nr_cpu_ids) {
- 		if (!task || cpu != -1)
- 			return ERR_PTR(-EINVAL);
- 	}
- 
--	event = kmem_cache_zalloc(perf_event_cache, GFP_KERNEL);
-+	node = (cpu >= 0) ? cpu_to_node(cpu) : -1;
-+	event = kmem_cache_alloc_node(perf_event_cache, GFP_KERNEL | __GFP_ZERO,
-+				      node);
- 	if (!event)
- 		return ERR_PTR(-ENOMEM);
- 
+ 	if (event->attr.precise_ip) {
++		if ((event->attr.config & INTEL_ARCH_EVENT_MASK) == INTEL_FIXED_VLBR_EVENT)
++			return -EINVAL;
++
+ 		if (!(event->attr.freq || (event->attr.wakeup_events && !event->attr.watermark))) {
+ 			event->hw.flags |= PERF_X86_EVENT_AUTO_RELOAD;
+ 			if (!(event->attr.sample_type &
