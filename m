@@ -2,52 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A1D5340E4F
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 18 Mar 2021 20:35:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7DA1B340E55
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 18 Mar 2021 20:35:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232786AbhCRTer (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 18 Mar 2021 15:34:47 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:59874 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232858AbhCRTef (ORCPT
+        id S232898AbhCRTet (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 18 Mar 2021 15:34:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36844 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232871AbhCRTeg (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 18 Mar 2021 15:34:35 -0400
+        Thu, 18 Mar 2021 15:34:36 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1E35C06174A;
+        Thu, 18 Mar 2021 12:34:35 -0700 (PDT)
 Date:   Thu, 18 Mar 2021 19:34:33 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1616096073;
+        s=2020; t=1616096074;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=xyd+Djq4UlHTst5lHL4o+YTdeMzf9M7JW9UK6UHRpmo=;
-        b=xERZasULvF7NIqlmY55FZ0y91sZFHi/wsJXD+ViKCeIKdjsaodv506oU+RXQXi88RuiCQe
-        BpyQl1BrawEIKvlrvVhevndePX6DEwI78AwXhmnev3C2ckp/49wI8XdyK2TUPgFCxMzPbo
-        274Z4yacQULYecUWiQEhY7CTOSpWv4CQOGFhN4Qt/E2pC9QMduT/xxoHOhrAf0xSzoAHKS
-        S9/zMKWUa1EI75vQ6f+m+b+tmzwuveqpzNywWs0I1boPpoil0JL5eeO7kmpRqvOnggEBoM
-        gpzU1U9165MYiofx3C/jJtDXI4WR6fFZtxftHOPHxeBspLfISH39AcbX6oZmnQ==
+        bh=awafObqMmu9TEgjWJRx63fNsn5EVs9IjSpBzGKXfSk4=;
+        b=ED50zyFMjhZqBobhciS2h6ZdUEoL9k5vTi8SbO5gF012uA5t30L1vT324s6+0gLEx6ICSw
+        852P5r2+RDkngg/blRXCCNDGuYfumls1YUm+q6gMoPnxqsw7MPFZfKtjFDJ2JPbK+G54/G
+        8ePJP9J6uG2XU7gp2Lo6mt9Igtgh1Q4PnjrfvCQpt1HNzxrFk75Qg5BcvqDT1AObfLPZzW
+        Xv4EwEnlwsCZCzPB2pjHW7OP3RdpuBLoWuWGZGhEM2ilSRcs+NJwTwM5M4NV1bIYLdvBci
+        +qF7vY+7QvvQ4TBBCQVCLJZ9kabSvJf48Byt1kUNGddqcmGqcEOy9SH1oO9f3g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1616096073;
+        s=2020e; t=1616096074;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=xyd+Djq4UlHTst5lHL4o+YTdeMzf9M7JW9UK6UHRpmo=;
-        b=o3C6V5C0zGqemXkIAqpIQbwo2VlqI55NWOO31UYBBlK7JSrNfNmucFeDqob8/eqGG4+FPe
-        Pqk+u1swk7MKuSAQ==
+        bh=awafObqMmu9TEgjWJRx63fNsn5EVs9IjSpBzGKXfSk4=;
+        b=JbTS7kWOI+TFL2rWiOVVNXYXEmPmMOWBGbn4/5YLPJ7vOEtMuZURX4JA2RA6mK14N3JTLs
+        C5m80PVW5AEJRJBg==
 From:   "tip-bot2 for Joerg Roedel" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/seves] x86/sev-es: Replace open-coded hlt-loops with
- sev_es_terminate()
+Subject: [tip: x86/seves] x86/boot/compressed/64: Add CPUID sanity check to
+ 32-bit boot-path
 Cc:     Joerg Roedel <jroedel@suse.de>, Borislav Petkov <bp@suse.de>,
         x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20210312123824.306-9-joro@8bytes.org>
-References: <20210312123824.306-9-joro@8bytes.org>
+In-Reply-To: <20210312123824.306-7-joro@8bytes.org>
+References: <20210312123824.306-7-joro@8bytes.org>
 MIME-Version: 1.0
-Message-ID: <161609607306.398.2919629380735380401.tip-bot2@tip-bot2>
+Message-ID: <161609607385.398.11055784824810862658.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,74 +61,77 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/seves branch of tip:
 
-Commit-ID:     4fbe2c3b9dd04f44608d710ad2ae83d7f1c04182
-Gitweb:        https://git.kernel.org/tip/4fbe2c3b9dd04f44608d710ad2ae83d7f1c04182
+Commit-ID:     0dd986f3a1e31bd827d2f1f52f07c8a82cd83143
+Gitweb:        https://git.kernel.org/tip/0dd986f3a1e31bd827d2f1f52f07c8a82cd83143
 Author:        Joerg Roedel <jroedel@suse.de>
-AuthorDate:    Fri, 12 Mar 2021 13:38:24 +01:00
+AuthorDate:    Fri, 12 Mar 2021 13:38:22 +01:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Thu, 18 Mar 2021 16:44:59 +01:00
+CommitterDate: Thu, 18 Mar 2021 16:44:52 +01:00
 
-x86/sev-es: Replace open-coded hlt-loops with sev_es_terminate()
+x86/boot/compressed/64: Add CPUID sanity check to 32-bit boot-path
 
-There are a few places left in the SEV-ES C code where hlt loops and/or
-terminate requests are implemented. Replace them all with calls to
-sev_es_terminate().
+The 32-bit #VC handler has no GHCB and can only handle CPUID exit codes.
+It is needed by the early boot code to handle #VC exceptions raised in
+verify_cpu() and to get the position of the C-bit.
+
+But the CPUID information comes from the hypervisor which is untrusted
+and might return results which trick the guest into the no-SEV boot path
+with no C-bit set in the page-tables. All data written to memory would
+then be unencrypted and could leak sensitive data to the hypervisor.
+
+Add sanity checks to the 32-bit boot #VC handler to make sure the
+hypervisor does not pretend that SEV is not enabled.
 
 Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20210312123824.306-9-joro@8bytes.org
+Link: https://lkml.kernel.org/r/20210312123824.306-7-joro@8bytes.org
 ---
- arch/x86/boot/compressed/sev-es.c | 12 +++---------
- arch/x86/kernel/sev-es-shared.c   | 10 +++-------
- 2 files changed, 6 insertions(+), 16 deletions(-)
+ arch/x86/boot/compressed/mem_encrypt.S | 28 +++++++++++++++++++++++++-
+ 1 file changed, 28 insertions(+)
 
-diff --git a/arch/x86/boot/compressed/sev-es.c b/arch/x86/boot/compressed/sev-es.c
-index 27826c2..d904bd5 100644
---- a/arch/x86/boot/compressed/sev-es.c
-+++ b/arch/x86/boot/compressed/sev-es.c
-@@ -200,14 +200,8 @@ void do_boot_stage2_vc(struct pt_regs *regs, unsigned long exit_code)
- 	}
+diff --git a/arch/x86/boot/compressed/mem_encrypt.S b/arch/x86/boot/compressed/mem_encrypt.S
+index ebc4a29..c1e81a8 100644
+--- a/arch/x86/boot/compressed/mem_encrypt.S
++++ b/arch/x86/boot/compressed/mem_encrypt.S
+@@ -139,6 +139,26 @@ SYM_CODE_START(startup32_vc_handler)
+ 	jnz	.Lfail
+ 	movl	%edx, 0(%esp)		# Store result
  
- finish:
--	if (result == ES_OK) {
-+	if (result == ES_OK)
- 		vc_finish_insn(&ctxt);
--	} else if (result != ES_RETRY) {
--		/*
--		 * For now, just halt the machine. That makes debugging easier,
--		 * later we just call sev_es_terminate() here.
--		 */
--		while (true)
--			asm volatile("hlt\n");
--	}
-+	else if (result != ES_RETRY)
-+		sev_es_terminate(GHCB_SEV_ES_REASON_GENERAL_REQUEST);
- }
-diff --git a/arch/x86/kernel/sev-es-shared.c b/arch/x86/kernel/sev-es-shared.c
-index 387b716..0aa9f13 100644
---- a/arch/x86/kernel/sev-es-shared.c
-+++ b/arch/x86/kernel/sev-es-shared.c
-@@ -24,7 +24,7 @@ static bool __init sev_es_check_cpu_features(void)
- 	return true;
- }
++	/*
++	 * Sanity check CPUID results from the Hypervisor. See comment in
++	 * do_vc_no_ghcb() for more details on why this is necessary.
++	 */
++
++	/* Fail if SEV leaf not available in CPUID[0x80000000].EAX */
++	cmpl    $0x80000000, %ebx
++	jne     .Lcheck_sev
++	cmpl    $0x8000001f, 12(%esp)
++	jb      .Lfail
++	jmp     .Ldone
++
++.Lcheck_sev:
++	/* Fail if SEV bit not set in CPUID[0x8000001f].EAX[1] */
++	cmpl    $0x8000001f, %ebx
++	jne     .Ldone
++	btl     $1, 12(%esp)
++	jnc     .Lfail
++
++.Ldone:
+ 	popl	%edx
+ 	popl	%ecx
+ 	popl	%ebx
+@@ -152,6 +172,14 @@ SYM_CODE_START(startup32_vc_handler)
  
--static void sev_es_terminate(unsigned int reason)
-+static void __noreturn sev_es_terminate(unsigned int reason)
- {
- 	u64 val = GHCB_SEV_TERMINATE;
- 
-@@ -206,12 +206,8 @@ void __init do_vc_no_ghcb(struct pt_regs *regs, unsigned long exit_code)
- 	return;
- 
- fail:
--	sev_es_wr_ghcb_msr(GHCB_SEV_TERMINATE);
--	VMGEXIT();
--
--	/* Shouldn't get here - if we do halt the machine */
--	while (true)
--		asm volatile("hlt\n");
-+	/* Terminate the guest */
-+	sev_es_terminate(GHCB_SEV_ES_REASON_GENERAL_REQUEST);
- }
- 
- static enum es_result vc_insn_string_read(struct es_em_ctxt *ctxt,
+ 	iret
+ .Lfail:
++	/* Send terminate request to Hypervisor */
++	movl    $0x100, %eax
++	xorl    %edx, %edx
++	movl    $MSR_AMD64_SEV_ES_GHCB, %ecx
++	wrmsr
++	rep; vmmcall
++
++	/* If request fails, go to hlt loop */
+ 	hlt
+ 	jmp .Lfail
+ SYM_CODE_END(startup32_vc_handler)
