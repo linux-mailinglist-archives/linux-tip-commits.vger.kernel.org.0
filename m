@@ -2,57 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1DC92342524
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 19 Mar 2021 19:46:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D00434283C
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 19 Mar 2021 22:54:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231137AbhCSSp1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 19 Mar 2021 14:45:27 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:38840 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230341AbhCSSpG (ORCPT
+        id S230393AbhCSVyD (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 19 Mar 2021 17:54:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38518 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230177AbhCSVx4 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 19 Mar 2021 14:45:06 -0400
-Date:   Fri, 19 Mar 2021 18:45:04 -0000
+        Fri, 19 Mar 2021 17:53:56 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59A2FC06175F;
+        Fri, 19 Mar 2021 14:53:56 -0700 (PDT)
+Date:   Fri, 19 Mar 2021 21:53:53 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1616179505;
+        s=2020; t=1616190834;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=zPrdhK+m1Ci4G0bz3obIMT88NVV5FbJjMinNiLwwDH8=;
-        b=RSbJBrfWljkkw/n+Gf0+fl4DxdmdDKOEDK0e5BYVGVKMGDWTgIADy3fxPHEMHmrV2hBl4v
-        9iim7I5efaTU5KVRNORDFMoXoHBrLKlJ8ULSan6x5bkIs2Ug22eXTaMDC6s83AwKPyWwVG
-        4aG4nQhRwEBOM9MLUWClzBJoQyUgW9bAMsXWipYRH8jl4V4yejZslhd2rN0c2ojKygYP9z
-        3Azz0ou0hSzj0sUjVW137WBh8xzvXFViOzDuEthvX0GG69M0RTlSFxZTa+gsJweNplf8u1
-        4p4W2ZYerAPYJTfTRswrLsoFGhtk+bv8JEerHul6ZQq3ob3HlHG0iKwaPNx5EQ==
+        bh=IN2AzD/cRScGqE8yPRX/Pp5ZazZQZ5o2YcTgs8GOjHc=;
+        b=E3FjMZliTGS94Hva3MJAgOGEyA+SEJ302rwfGymnI4J8SOWzTihIv+NL+y7gTh4mPw8uM2
+        tXaKJoXsonPZ5zJUd3T4sVFs6oh5lXCTJ0drTfaYYiLYZzUCjymNIvPzRJOoH9ne+tFBpG
+        wlVTq+qnquOIdGm9lLouLRMhwSmlkNObeJWmNPp/y1rDKLT1Ye2KPXcw4Pv9GXrNhByRHi
+        t9NBknUi7vAGIos2Gqg5JgSxh/Oj910jGInV1BJDO/hPqjuU3Ax4jVsx3uDUg153uvRPW3
+        odolyxbWRALoGuD9UfgZZyutzy9MRgLq7GTRNwMJgPIScMdcmixp59lNSHrFjg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1616179505;
+        s=2020e; t=1616190834;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=zPrdhK+m1Ci4G0bz3obIMT88NVV5FbJjMinNiLwwDH8=;
-        b=RO2b0CI/XUWXMF0I1pJu40Ny7s+5BMZqsoQ120ajgwo6S+NUbUc+o4m6mI9F+t0eZwmZrE
-        vdABYnlFvSuW2RBw==
-From:   "tip-bot2 for Jarkko Sakkinen" <tip-bot2@linutronix.de>
+        bh=IN2AzD/cRScGqE8yPRX/Pp5ZazZQZ5o2YcTgs8GOjHc=;
+        b=YwJ8Kr1lFfGZswbUf/qHcxefwdbrXJIvXylFhMxL1HV4PYNVcXS8UjaqY8nBIq3EHb3B/Q
+        /uCrWu18C0OIm4Dw==
+From:   "tip-bot2 for Vitaly Kuznetsov" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/sgx] x86/sgx: Add a basic NUMA allocation scheme to
- sgx_alloc_epc_page()
-Cc:     kernel test robot <lkp@intel.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Kai Huang <kai.huang@intel.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Borislav Petkov <bp@suse.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20210319040602.178558-1-kai.huang@intel.com>
-References: <20210319040602.178558-1-kai.huang@intel.com>
+Subject: [tip: irq/core] genirq/matrix: Prevent allocation counter corruption
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org, maz@kernel.org
+In-Reply-To: <20210319111823.1105248-1-vkuznets@redhat.com>
+References: <20210319111823.1105248-1-vkuznets@redhat.com>
 MIME-Version: 1.0
-Message-ID: <161617950452.398.1397954732506415518.tip-bot2@tip-bot2>
+Message-ID: <161619083334.398.8036450907118788955.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,342 +59,53 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/sgx branch of tip:
+The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     901ddbb9ecf5425183ea0c09d10c2fd7868dce54
-Gitweb:        https://git.kernel.org/tip/901ddbb9ecf5425183ea0c09d10c2fd7868dce54
-Author:        Jarkko Sakkinen <jarkko@kernel.org>
-AuthorDate:    Thu, 18 Mar 2021 01:53:31 +02:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Fri, 19 Mar 2021 19:16:51 +01:00
+Commit-ID:     c93a5e20c3c2dabef8ea360a3d3f18c6f68233ab
+Gitweb:        https://git.kernel.org/tip/c93a5e20c3c2dabef8ea360a3d3f18c6f68233ab
+Author:        Vitaly Kuznetsov <vkuznets@redhat.com>
+AuthorDate:    Fri, 19 Mar 2021 12:18:23 +01:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Fri, 19 Mar 2021 22:52:11 +01:00
 
-x86/sgx: Add a basic NUMA allocation scheme to sgx_alloc_epc_page()
+genirq/matrix: Prevent allocation counter corruption
 
-Background
-==========
+When irq_matrix_free() is called for an unallocated vector the
+managed_allocated and total_allocated counters get out of sync with the
+real state of the matrix. Later, when the last interrupt is freed, these
+counters will underflow resulting in UINTMAX because the counters are
+unsigned.
 
-SGX enclave memory is enumerated by the processor in contiguous physical
-ranges called Enclave Page Cache (EPC) sections.  Currently, there is a
-free list per section, but allocations simply target the lowest-numbered
-sections.  This is functional, but has no NUMA awareness.
+While this is certainly a problem of the calling code, this can be catched
+in the allocator by checking the allocation bit for the to be freed vector
+which simplifies debugging.
 
-Fortunately, EPC sections are covered by entries in the ACPI SRAT table.
-These entries allow each EPC section to be associated with a NUMA node,
-just like normal RAM.
+An example of the problem described above:
+https://lore.kernel.org/lkml/20210318192819.636943062@linutronix.de/
 
-Solution
-========
+Add the missing sanity check and emit a warning when it triggers.
 
-Implement a NUMA-aware enclave page allocator.  Mirror the buddy allocator
-and maintain a list of enclave pages for each NUMA node.  Attempt to
-allocate enclave memory first from local nodes, then fall back to other
-nodes.
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Vitaly Kuznetsov <vkuznets@redhat.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20210319111823.1105248-1-vkuznets@redhat.com
 
-Note that the fallback is not as sophisticated as the buddy allocator
-and is itself not aware of NUMA distances.  When a node's free list is
-empty, it searches for the next-highest node with enclave pages (and
-will wrap if necessary).  This could be improved in the future.
-
-Other
-=====
-
-NUMA_KEEP_MEMINFO dependency is required for phys_to_target_node().
-
- [ Kai Huang: Do not return NULL from __sgx_alloc_epc_page() because
-   callers do not expect that and that leads to a NULL ptr deref. ]
-
- [ dhansen: Fix an uninitialized 'nid' variable in
-   __sgx_alloc_epc_page() as
-
-   Reported-by: kernel test robot <lkp@intel.com>
-
-   to avoid any potential allocations from the wrong NUMA node or even
-   premature allocation failures. ]
-
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Kai Huang <kai.huang@intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@intel.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lore.kernel.org/lkml/158188326978.894464.217282995221175417.stgit@dwillia2-desk3.amr.corp.intel.com/
-Link: https://lkml.kernel.org/r/20210319040602.178558-1-kai.huang@intel.com
-Link: https://lkml.kernel.org/r/20210318214933.29341-1-dave.hansen@intel.com
-Link: https://lkml.kernel.org/r/20210317235332.362001-2-jarkko.sakkinen@intel.com
 ---
- arch/x86/Kconfig               |   1 +-
- arch/x86/kernel/cpu/sgx/main.c | 119 ++++++++++++++++++++------------
- arch/x86/kernel/cpu/sgx/sgx.h  |  16 ++--
- 3 files changed, 88 insertions(+), 48 deletions(-)
+ kernel/irq/matrix.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 2792879..35391e9 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -1931,6 +1931,7 @@ config X86_SGX
- 	depends on CRYPTO_SHA256=y
- 	select SRCU
- 	select MMU_NOTIFIER
-+	select NUMA_KEEP_MEMINFO if NUMA
- 	help
- 	  Intel(R) Software Guard eXtensions (SGX) is a set of CPU instructions
- 	  that can be used by applications to set aside private regions of code
-diff --git a/arch/x86/kernel/cpu/sgx/main.c b/arch/x86/kernel/cpu/sgx/main.c
-index f3a5cd2..13a7599 100644
---- a/arch/x86/kernel/cpu/sgx/main.c
-+++ b/arch/x86/kernel/cpu/sgx/main.c
-@@ -23,9 +23,21 @@ static DECLARE_WAIT_QUEUE_HEAD(ksgxd_waitq);
-  * with sgx_reclaimer_lock acquired.
-  */
- static LIST_HEAD(sgx_active_page_list);
--
- static DEFINE_SPINLOCK(sgx_reclaimer_lock);
- 
-+/* The free page list lock protected variables prepend the lock. */
-+static unsigned long sgx_nr_free_pages;
-+
-+/* Nodes with one or more EPC sections. */
-+static nodemask_t sgx_numa_mask;
-+
-+/*
-+ * Array with one list_head for each possible NUMA node.  Each
-+ * list contains all the sgx_epc_section's which are on that
-+ * node.
-+ */
-+static struct sgx_numa_node *sgx_numa_nodes;
-+
- static LIST_HEAD(sgx_dirty_page_list);
- 
- /*
-@@ -312,6 +324,7 @@ static void sgx_reclaim_pages(void)
- 	struct sgx_epc_section *section;
- 	struct sgx_encl_page *encl_page;
- 	struct sgx_epc_page *epc_page;
-+	struct sgx_numa_node *node;
- 	pgoff_t page_index;
- 	int cnt = 0;
- 	int ret;
-@@ -383,28 +396,18 @@ skip:
- 		epc_page->flags &= ~SGX_EPC_PAGE_RECLAIMER_TRACKED;
- 
- 		section = &sgx_epc_sections[epc_page->section];
--		spin_lock(&section->lock);
--		list_add_tail(&epc_page->list, &section->page_list);
--		section->free_cnt++;
--		spin_unlock(&section->lock);
--	}
--}
--
--static unsigned long sgx_nr_free_pages(void)
--{
--	unsigned long cnt = 0;
--	int i;
--
--	for (i = 0; i < sgx_nr_epc_sections; i++)
--		cnt += sgx_epc_sections[i].free_cnt;
-+		node = section->node;
- 
--	return cnt;
-+		spin_lock(&node->lock);
-+		list_add_tail(&epc_page->list, &node->free_page_list);
-+		sgx_nr_free_pages++;
-+		spin_unlock(&node->lock);
-+	}
- }
- 
- static bool sgx_should_reclaim(unsigned long watermark)
- {
--	return sgx_nr_free_pages() < watermark &&
--	       !list_empty(&sgx_active_page_list);
-+	return sgx_nr_free_pages < watermark && !list_empty(&sgx_active_page_list);
- }
- 
- static int ksgxd(void *p)
-@@ -451,45 +454,56 @@ static bool __init sgx_page_reclaimer_init(void)
- 	return true;
- }
- 
--static struct sgx_epc_page *__sgx_alloc_epc_page_from_section(struct sgx_epc_section *section)
-+static struct sgx_epc_page *__sgx_alloc_epc_page_from_node(int nid)
- {
--	struct sgx_epc_page *page;
-+	struct sgx_numa_node *node = &sgx_numa_nodes[nid];
-+	struct sgx_epc_page *page = NULL;
- 
--	spin_lock(&section->lock);
-+	spin_lock(&node->lock);
- 
--	if (list_empty(&section->page_list)) {
--		spin_unlock(&section->lock);
-+	if (list_empty(&node->free_page_list)) {
-+		spin_unlock(&node->lock);
- 		return NULL;
- 	}
- 
--	page = list_first_entry(&section->page_list, struct sgx_epc_page, list);
-+	page = list_first_entry(&node->free_page_list, struct sgx_epc_page, list);
- 	list_del_init(&page->list);
--	section->free_cnt--;
-+	sgx_nr_free_pages--;
-+
-+	spin_unlock(&node->lock);
- 
--	spin_unlock(&section->lock);
- 	return page;
- }
- 
- /**
-  * __sgx_alloc_epc_page() - Allocate an EPC page
-  *
-- * Iterate through EPC sections and borrow a free EPC page to the caller. When a
-- * page is no longer needed it must be released with sgx_free_epc_page().
-+ * Iterate through NUMA nodes and reserve ia free EPC page to the caller. Start
-+ * from the NUMA node, where the caller is executing.
-  *
-  * Return:
-- *   an EPC page,
-- *   -errno on error
-+ * - an EPC page:	A borrowed EPC pages were available.
-+ * - NULL:		Out of EPC pages.
-  */
- struct sgx_epc_page *__sgx_alloc_epc_page(void)
- {
--	struct sgx_epc_section *section;
- 	struct sgx_epc_page *page;
--	int i;
-+	int nid_of_current = numa_node_id();
-+	int nid = nid_of_current;
- 
--	for (i = 0; i < sgx_nr_epc_sections; i++) {
--		section = &sgx_epc_sections[i];
-+	if (node_isset(nid_of_current, sgx_numa_mask)) {
-+		page = __sgx_alloc_epc_page_from_node(nid_of_current);
-+		if (page)
-+			return page;
-+	}
-+
-+	/* Fall back to the non-local NUMA nodes: */
-+	while (true) {
-+		nid = next_node_in(nid, sgx_numa_mask);
-+		if (nid == nid_of_current)
-+			break;
- 
--		page = __sgx_alloc_epc_page_from_section(section);
-+		page = __sgx_alloc_epc_page_from_node(nid);
- 		if (page)
- 			return page;
- 	}
-@@ -600,6 +614,7 @@ struct sgx_epc_page *sgx_alloc_epc_page(void *owner, bool reclaim)
- void sgx_free_epc_page(struct sgx_epc_page *page)
- {
- 	struct sgx_epc_section *section = &sgx_epc_sections[page->section];
-+	struct sgx_numa_node *node = section->node;
- 	int ret;
- 
- 	WARN_ON_ONCE(page->flags & SGX_EPC_PAGE_RECLAIMER_TRACKED);
-@@ -608,10 +623,12 @@ void sgx_free_epc_page(struct sgx_epc_page *page)
- 	if (WARN_ONCE(ret, "EREMOVE returned %d (0x%x)", ret, ret))
+diff --git a/kernel/irq/matrix.c b/kernel/irq/matrix.c
+index 6f8b1d1..578596e 100644
+--- a/kernel/irq/matrix.c
++++ b/kernel/irq/matrix.c
+@@ -422,7 +422,9 @@ void irq_matrix_free(struct irq_matrix *m, unsigned int cpu,
+ 	if (WARN_ON_ONCE(bit < m->alloc_start || bit >= m->alloc_end))
  		return;
  
--	spin_lock(&section->lock);
--	list_add_tail(&page->list, &section->page_list);
--	section->free_cnt++;
--	spin_unlock(&section->lock);
-+	spin_lock(&node->lock);
+-	clear_bit(bit, cm->alloc_map);
++	if (WARN_ON_ONCE(!test_and_clear_bit(bit, cm->alloc_map)))
++		return;
 +
-+	list_add_tail(&page->list, &node->free_page_list);
-+	sgx_nr_free_pages++;
-+
-+	spin_unlock(&node->lock);
- }
- 
- static bool __init sgx_setup_epc_section(u64 phys_addr, u64 size,
-@@ -632,8 +649,6 @@ static bool __init sgx_setup_epc_section(u64 phys_addr, u64 size,
- 	}
- 
- 	section->phys_addr = phys_addr;
--	spin_lock_init(&section->lock);
--	INIT_LIST_HEAD(&section->page_list);
- 
- 	for (i = 0; i < nr_pages; i++) {
- 		section->pages[i].section = index;
-@@ -642,7 +657,7 @@ static bool __init sgx_setup_epc_section(u64 phys_addr, u64 size,
- 		list_add_tail(&section->pages[i].list, &sgx_dirty_page_list);
- 	}
- 
--	section->free_cnt = nr_pages;
-+	sgx_nr_free_pages += nr_pages;
- 	return true;
- }
- 
-@@ -661,8 +676,13 @@ static bool __init sgx_page_cache_init(void)
- {
- 	u32 eax, ebx, ecx, edx, type;
- 	u64 pa, size;
-+	int nid;
- 	int i;
- 
-+	sgx_numa_nodes = kmalloc_array(num_possible_nodes(), sizeof(*sgx_numa_nodes), GFP_KERNEL);
-+	if (!sgx_numa_nodes)
-+		return false;
-+
- 	for (i = 0; i < ARRAY_SIZE(sgx_epc_sections); i++) {
- 		cpuid_count(SGX_CPUID, i + SGX_CPUID_EPC, &eax, &ebx, &ecx, &edx);
- 
-@@ -685,6 +705,21 @@ static bool __init sgx_page_cache_init(void)
- 			break;
- 		}
- 
-+		nid = numa_map_to_online_node(phys_to_target_node(pa));
-+		if (nid == NUMA_NO_NODE) {
-+			/* The physical address is already printed above. */
-+			pr_warn(FW_BUG "Unable to map EPC section to online node. Fallback to the NUMA node 0.\n");
-+			nid = 0;
-+		}
-+
-+		if (!node_isset(nid, sgx_numa_mask)) {
-+			spin_lock_init(&sgx_numa_nodes[nid].lock);
-+			INIT_LIST_HEAD(&sgx_numa_nodes[nid].free_page_list);
-+			node_set(nid, sgx_numa_mask);
-+		}
-+
-+		sgx_epc_sections[i].node =  &sgx_numa_nodes[nid];
-+
- 		sgx_nr_epc_sections++;
- 	}
- 
-diff --git a/arch/x86/kernel/cpu/sgx/sgx.h b/arch/x86/kernel/cpu/sgx/sgx.h
-index bc8af04..653af8c 100644
---- a/arch/x86/kernel/cpu/sgx/sgx.h
-+++ b/arch/x86/kernel/cpu/sgx/sgx.h
-@@ -30,21 +30,25 @@ struct sgx_epc_page {
- };
- 
- /*
-+ * Contains the tracking data for NUMA nodes having EPC pages. Most importantly,
-+ * the free page list local to the node is stored here.
-+ */
-+struct sgx_numa_node {
-+	struct list_head free_page_list;
-+	spinlock_t lock;
-+};
-+
-+/*
-  * The firmware can define multiple chunks of EPC to the different areas of the
-  * physical memory e.g. for memory areas of the each node. This structure is
-  * used to store EPC pages for one EPC section and virtual memory area where
-  * the pages have been mapped.
-- *
-- * 'lock' must be held before accessing 'page_list' or 'free_cnt'.
-  */
- struct sgx_epc_section {
- 	unsigned long phys_addr;
- 	void *virt_addr;
- 	struct sgx_epc_page *pages;
--
--	spinlock_t lock;
--	struct list_head page_list;
--	unsigned long free_cnt;
-+	struct sgx_numa_node *node;
- };
- 
- extern struct sgx_epc_section sgx_epc_sections[SGX_MAX_EPC_SECTIONS];
+ 	cm->allocated--;
+ 	if(managed)
+ 		cm->managed_allocated--;
