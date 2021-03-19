@@ -2,55 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D00434283C
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 19 Mar 2021 22:54:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CC276342861
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 19 Mar 2021 23:06:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230393AbhCSVyD (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 19 Mar 2021 17:54:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38518 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230177AbhCSVx4 (ORCPT
+        id S230186AbhCSWGR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 19 Mar 2021 18:06:17 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:39946 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230433AbhCSWFx (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 19 Mar 2021 17:53:56 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59A2FC06175F;
-        Fri, 19 Mar 2021 14:53:56 -0700 (PDT)
-Date:   Fri, 19 Mar 2021 21:53:53 -0000
+        Fri, 19 Mar 2021 18:05:53 -0400
+Date:   Fri, 19 Mar 2021 22:05:51 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1616190834;
+        s=2020; t=1616191552;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=IN2AzD/cRScGqE8yPRX/Pp5ZazZQZ5o2YcTgs8GOjHc=;
-        b=E3FjMZliTGS94Hva3MJAgOGEyA+SEJ302rwfGymnI4J8SOWzTihIv+NL+y7gTh4mPw8uM2
-        tXaKJoXsonPZ5zJUd3T4sVFs6oh5lXCTJ0drTfaYYiLYZzUCjymNIvPzRJOoH9ne+tFBpG
-        wlVTq+qnquOIdGm9lLouLRMhwSmlkNObeJWmNPp/y1rDKLT1Ye2KPXcw4Pv9GXrNhByRHi
-        t9NBknUi7vAGIos2Gqg5JgSxh/Oj910jGInV1BJDO/hPqjuU3Ax4jVsx3uDUg153uvRPW3
-        odolyxbWRALoGuD9UfgZZyutzy9MRgLq7GTRNwMJgPIScMdcmixp59lNSHrFjg==
+        bh=3QJThDCNo7fkHvbAFLjyOCFrm6AV3wYi52LiaHosYtU=;
+        b=FpUHegFfPbdGBho+LaiK++CeGrTShXhPWykdexx3hsDvw9zw4ouHbn7kEkEC4YJdMT2AOn
+        GzFuRFAPRppgce7+/G7JenFkl0xBAiol6Ixt4YgFKTNkZqrbf13b41/0IzFDMZuhdNiLRw
+        YZh0wG+AQJ52OOFg5Gy/jiaCfDIySK+pmxCRhUeoMh6tGqGMk3ZrwIMBvfsNPCgIJ6hbon
+        YIhesgR9TKb40y+wFUtRqX86mmT3EVeqE9XTyoSP14PGAuw1lJWbu5oE9flWSze6O6c+A5
+        CmFROUF7GI8WZRiHUCjbg90l044AIdB4b3Cu4oD+ezxOpcQ5tU8yOlMesZu5Bw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1616190834;
+        s=2020e; t=1616191552;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=IN2AzD/cRScGqE8yPRX/Pp5ZazZQZ5o2YcTgs8GOjHc=;
-        b=YwJ8Kr1lFfGZswbUf/qHcxefwdbrXJIvXylFhMxL1HV4PYNVcXS8UjaqY8nBIq3EHb3B/Q
-        /uCrWu18C0OIm4Dw==
-From:   "tip-bot2 for Vitaly Kuznetsov" <tip-bot2@linutronix.de>
+        bh=3QJThDCNo7fkHvbAFLjyOCFrm6AV3wYi52LiaHosYtU=;
+        b=ThxpNtrdG1PpitVQEHc4P+kdjm1YIxoTjA4R0iRhTDXuT+VHFv/ISdvOSX4vbYekcgaZes
+        hrXO4TV07BIirpCQ==
+From:   "tip-bot2 for Johan Hovold" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] genirq/matrix: Prevent allocation counter corruption
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20210319111823.1105248-1-vkuznets@redhat.com>
-References: <20210319111823.1105248-1-vkuznets@redhat.com>
+Subject: [tip: x86/urgent] x86/apic/of: Fix CPU devicetree-node lookups
+Cc:     Johan Hovold <johan@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20210312092033.26317-1-johan@kernel.org>
+References: <20210312092033.26317-1-johan@kernel.org>
 MIME-Version: 1.0
-Message-ID: <161619083334.398.8036450907118788955.tip-bot2@tip-bot2>
+Message-ID: <161619155150.398.1617296870080727250.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,53 +56,57 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the irq/core branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     c93a5e20c3c2dabef8ea360a3d3f18c6f68233ab
-Gitweb:        https://git.kernel.org/tip/c93a5e20c3c2dabef8ea360a3d3f18c6f68233ab
-Author:        Vitaly Kuznetsov <vkuznets@redhat.com>
-AuthorDate:    Fri, 19 Mar 2021 12:18:23 +01:00
+Commit-ID:     dd926880da8dbbe409e709c1d3c1620729a94732
+Gitweb:        https://git.kernel.org/tip/dd926880da8dbbe409e709c1d3c1620729a94732
+Author:        Johan Hovold <johan@kernel.org>
+AuthorDate:    Fri, 12 Mar 2021 10:20:33 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 19 Mar 2021 22:52:11 +01:00
+CommitterDate: Fri, 19 Mar 2021 23:01:49 +01:00
 
-genirq/matrix: Prevent allocation counter corruption
+x86/apic/of: Fix CPU devicetree-node lookups
 
-When irq_matrix_free() is called for an unallocated vector the
-managed_allocated and total_allocated counters get out of sync with the
-real state of the matrix. Later, when the last interrupt is freed, these
-counters will underflow resulting in UINTMAX because the counters are
-unsigned.
+Architectures that describe the CPU topology in devicetree and do not have
+an identity mapping between physical and logical CPU ids must override the
+default implementation of arch_match_cpu_phys_id().
 
-While this is certainly a problem of the calling code, this can be catched
-in the allocator by checking the allocation bit for the to be freed vector
-which simplifies debugging.
+Failing to do so breaks CPU devicetree-node lookups using of_get_cpu_node()
+and of_cpu_device_node_get() which several drivers rely on. It also causes
+the CPU struct devices exported through sysfs to point to the wrong
+devicetree nodes.
 
-An example of the problem described above:
-https://lore.kernel.org/lkml/20210318192819.636943062@linutronix.de/
+On x86, CPUs are described in devicetree using their APIC ids and those
+do not generally coincide with the logical ids, even if CPU0 typically
+uses APIC id 0.
 
-Add the missing sanity check and emit a warning when it triggers.
+Add the missing implementation of arch_match_cpu_phys_id() so that CPU-node
+lookups work also with SMP.
 
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Vitaly Kuznetsov <vkuznets@redhat.com>
+Apart from fixing the broken sysfs devicetree-node links this likely does
+not affect current users of mainline kernels on x86.
+
+Fixes: 4e07db9c8db8 ("x86/devicetree: Use CPU description from Device Tree")
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20210319111823.1105248-1-vkuznets@redhat.com
-
+Link: https://lore.kernel.org/r/20210312092033.26317-1-johan@kernel.org
 ---
- kernel/irq/matrix.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/x86/kernel/apic/apic.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/kernel/irq/matrix.c b/kernel/irq/matrix.c
-index 6f8b1d1..578596e 100644
---- a/kernel/irq/matrix.c
-+++ b/kernel/irq/matrix.c
-@@ -422,7 +422,9 @@ void irq_matrix_free(struct irq_matrix *m, unsigned int cpu,
- 	if (WARN_ON_ONCE(bit < m->alloc_start || bit >= m->alloc_end))
- 		return;
+diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
+index bda4f2a..4f26700 100644
+--- a/arch/x86/kernel/apic/apic.c
++++ b/arch/x86/kernel/apic/apic.c
+@@ -2342,6 +2342,11 @@ static int cpuid_to_apicid[] = {
+ 	[0 ... NR_CPUS - 1] = -1,
+ };
  
--	clear_bit(bit, cm->alloc_map);
-+	if (WARN_ON_ONCE(!test_and_clear_bit(bit, cm->alloc_map)))
-+		return;
++bool arch_match_cpu_phys_id(int cpu, u64 phys_id)
++{
++	return phys_id == cpuid_to_apicid[cpu];
++}
 +
- 	cm->allocated--;
- 	if(managed)
- 		cm->managed_allocated--;
+ #ifdef CONFIG_SMP
+ /**
+  * apic_id_is_primary_thread - Check whether APIC ID belongs to a primary thread
