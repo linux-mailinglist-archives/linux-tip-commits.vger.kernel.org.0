@@ -2,14 +2,14 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5EAB3342522
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 19 Mar 2021 19:46:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1DC92342524
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 19 Mar 2021 19:46:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231134AbhCSSp1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S231137AbhCSSp1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Fri, 19 Mar 2021 14:45:27 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:38836 "EHLO
+Received: from Galois.linutronix.de ([193.142.43.55]:38840 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230304AbhCSSpG (ORCPT
+        with ESMTP id S230341AbhCSSpG (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Fri, 19 Mar 2021 14:45:06 -0400
 Date:   Fri, 19 Mar 2021 18:45:04 -0000
@@ -20,12 +20,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=TVXetTO1VHK+jE309ye1Lv9qhFcTUsJuoScqsUiDnVY=;
-        b=XpLOH20WQ+em5kA49Hkowb72YuOfTkJuymOZFVAFe5mTW6wYMaFUkswDKwti/U2i9z48+Y
-        xUTxBBys9/pkTN9N+XauwImEsHy2vPlNPa+0iHe43zx2Djav83N1LGZVtNXomYCf+Y5Kw1
-        Ws8vUh45Pp5JeGoMhgZo0WmuBb3LYaDwbwLn16cSqn69botyxm5eUJaWYIRoCTTZA6/U0K
-        hV3eiGoCYrDrZCOHCiH747DmwUU3BPCWL+nWBf99Olt0/ItTTwKFlzGfc6jbtJlseLksEq
-        o0mR3+TPSf/E/Mn/keRfkouen/lRLzIt5Y+UkwMPwTUxaXYVxUAfPVeJSGQY9w==
+        bh=zPrdhK+m1Ci4G0bz3obIMT88NVV5FbJjMinNiLwwDH8=;
+        b=RSbJBrfWljkkw/n+Gf0+fl4DxdmdDKOEDK0e5BYVGVKMGDWTgIADy3fxPHEMHmrV2hBl4v
+        9iim7I5efaTU5KVRNORDFMoXoHBrLKlJ8ULSan6x5bkIs2Ug22eXTaMDC6s83AwKPyWwVG
+        4aG4nQhRwEBOM9MLUWClzBJoQyUgW9bAMsXWipYRH8jl4V4yejZslhd2rN0c2ojKygYP9z
+        3Azz0ou0hSzj0sUjVW137WBh8xzvXFViOzDuEthvX0GG69M0RTlSFxZTa+gsJweNplf8u1
+        4p4W2ZYerAPYJTfTRswrLsoFGhtk+bv8JEerHul6ZQq3ob3HlHG0iKwaPNx5EQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1616179505;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -33,22 +33,26 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=TVXetTO1VHK+jE309ye1Lv9qhFcTUsJuoScqsUiDnVY=;
-        b=KbhhYmNWmzJbWnms0MLTWFt6Q2PbviIIKONyICFs6As4E2Sru56Tn4vdU2154k7EoA/df+
-        2Ki0WjSATldWNxBw==
-From:   "tip-bot2 for Dave Hansen" <tip-bot2@linutronix.de>
+        bh=zPrdhK+m1Ci4G0bz3obIMT88NVV5FbJjMinNiLwwDH8=;
+        b=RO2b0CI/XUWXMF0I1pJu40Ny7s+5BMZqsoQ120ajgwo6S+NUbUc+o4m6mI9F+t0eZwmZrE
+        vdABYnlFvSuW2RBw==
+From:   "tip-bot2 for Jarkko Sakkinen" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/sgx] selftests/sgx: Improve error detection and messages
-Cc:     Dave Hansen <dave.hansen@linux.intel.com>,
-        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@suse.de>,
-        Jarkko Sakkinen <jarkko@kernel.org>, x86@kernel.org,
+Subject: [tip: x86/sgx] x86/sgx: Add a basic NUMA allocation scheme to
+ sgx_alloc_epc_page()
+Cc:     kernel test robot <lkp@intel.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Kai Huang <kai.huang@intel.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Borislav Petkov <bp@suse.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210318194301.11D9A984@viggo.jf.intel.com>
-References: <20210318194301.11D9A984@viggo.jf.intel.com>
+In-Reply-To: <20210319040602.178558-1-kai.huang@intel.com>
+References: <20210319040602.178558-1-kai.huang@intel.com>
 MIME-Version: 1.0
-Message-ID: <161617950410.398.8795768589754486108.tip-bot2@tip-bot2>
+Message-ID: <161617950452.398.1397954732506415518.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,237 +63,340 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/sgx branch of tip:
 
-Commit-ID:     4284f7acb78bfb0e0c26a2b78e2b2c3d68fccd6f
-Gitweb:        https://git.kernel.org/tip/4284f7acb78bfb0e0c26a2b78e2b2c3d68fccd6f
-Author:        Dave Hansen <dave.hansen@linux.intel.com>
-AuthorDate:    Thu, 18 Mar 2021 12:43:01 -07:00
+Commit-ID:     901ddbb9ecf5425183ea0c09d10c2fd7868dce54
+Gitweb:        https://git.kernel.org/tip/901ddbb9ecf5425183ea0c09d10c2fd7868dce54
+Author:        Jarkko Sakkinen <jarkko@kernel.org>
+AuthorDate:    Thu, 18 Mar 2021 01:53:31 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Fri, 19 Mar 2021 19:23:41 +01:00
+CommitterDate: Fri, 19 Mar 2021 19:16:51 +01:00
 
-selftests/sgx: Improve error detection and messages
+x86/sgx: Add a basic NUMA allocation scheme to sgx_alloc_epc_page()
 
-The SGX device file (/dev/sgx_enclave) is unusual in that it requires
-execute permissions.  It has to be both "chmod +x" *and* be on a
-filesystem without 'noexec'.
+Background
+==========
 
-In the future, udev and systemd should get updates to set up systems
-automatically.  But, for now, nobody's systems do this automatically,
-and everybody gets error messages like this when running ./test_sgx:
+SGX enclave memory is enumerated by the processor in contiguous physical
+ranges called Enclave Page Cache (EPC) sections.  Currently, there is a
+free list per section, but allocations simply target the lowest-numbered
+sections.  This is functional, but has no NUMA awareness.
 
-	0x0000000000000000 0x0000000000002000 0x03
-	0x0000000000002000 0x0000000000001000 0x05
-	0x0000000000003000 0x0000000000003000 0x03
-	mmap() failed, errno=1.
+Fortunately, EPC sections are covered by entries in the ACPI SRAT table.
+These entries allow each EPC section to be associated with a NUMA node,
+just like normal RAM.
 
-That isn't very user friendly, even for forgetful kernel developers.
+Solution
+========
 
-Further, the test case is rather haphazard about its use of fprintf()
-versus perror().
+Implement a NUMA-aware enclave page allocator.  Mirror the buddy allocator
+and maintain a list of enclave pages for each NUMA node.  Attempt to
+allocate enclave memory first from local nodes, then fall back to other
+nodes.
 
-Improve the error messages.  Use perror() where possible.  Lastly,
-do some sanity checks on opening and mmap()ing the device file so
-that we can get a decent error message out to the user.
+Note that the fallback is not as sophisticated as the buddy allocator
+and is itself not aware of NUMA distances.  When a node's free list is
+empty, it searches for the next-highest node with enclave pages (and
+will wrap if necessary).  This could be improved in the future.
 
-Now, if your user doesn't have permission, you'll get the following:
+Other
+=====
 
-	$ ls -l /dev/sgx_enclave
-	crw------- 1 root root 10, 126 Mar 18 11:29 /dev/sgx_enclave
-	$ ./test_sgx
-	Unable to open /dev/sgx_enclave: Permission denied
+NUMA_KEEP_MEMINFO dependency is required for phys_to_target_node().
 
-If you then 'chown dave:dave /dev/sgx_enclave' (or whatever), but
-you leave execute permissions off, you'll get:
+ [ Kai Huang: Do not return NULL from __sgx_alloc_epc_page() because
+   callers do not expect that and that leads to a NULL ptr deref. ]
 
-	$ ls -l /dev/sgx_enclave
-	crw------- 1 dave dave 10, 126 Mar 18 11:29 /dev/sgx_enclave
-	$ ./test_sgx
-	no execute permissions on device file
+ [ dhansen: Fix an uninitialized 'nid' variable in
+   __sgx_alloc_epc_page() as
 
-If you fix that with "chmod ug+x /dev/sgx" but you leave /dev as
-noexec, you'll get this:
+   Reported-by: kernel test robot <lkp@intel.com>
 
-	$ mount | grep "/dev .*noexec"
-	udev on /dev type devtmpfs (rw,nosuid,noexec,...)
-	$ ./test_sgx
-	ERROR: mmap for exec: Operation not permitted
-	mmap() succeeded for PROT_READ, but failed for PROT_EXEC
-	check that user has execute permissions on /dev/sgx_enclave and
-	that /dev does not have noexec set: 'mount | grep "/dev .*noexec"'
+   to avoid any potential allocations from the wrong NUMA node or even
+   premature allocation failures. ]
 
-That can be fixed with:
-
-	mount -o remount,noexec /devESC
-
-Hopefully, the combination of better error messages and the search
-engines indexing this message will help people fix their systems
-until we do this properly.
-
- [ bp: Improve error messages more. ]
-
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Kai Huang <kai.huang@intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@intel.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Link: https://lore.kernel.org/r/20210318194301.11D9A984@viggo.jf.intel.com
+Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+Link: https://lore.kernel.org/lkml/158188326978.894464.217282995221175417.stgit@dwillia2-desk3.amr.corp.intel.com/
+Link: https://lkml.kernel.org/r/20210319040602.178558-1-kai.huang@intel.com
+Link: https://lkml.kernel.org/r/20210318214933.29341-1-dave.hansen@intel.com
+Link: https://lkml.kernel.org/r/20210317235332.362001-2-jarkko.sakkinen@intel.com
 ---
- tools/testing/selftests/sgx/load.c | 69 +++++++++++++++++++++++------
- tools/testing/selftests/sgx/main.c |  2 +-
- 2 files changed, 56 insertions(+), 15 deletions(-)
+ arch/x86/Kconfig               |   1 +-
+ arch/x86/kernel/cpu/sgx/main.c | 119 ++++++++++++++++++++------------
+ arch/x86/kernel/cpu/sgx/sgx.h  |  16 ++--
+ 3 files changed, 88 insertions(+), 48 deletions(-)
 
-diff --git a/tools/testing/selftests/sgx/load.c b/tools/testing/selftests/sgx/load.c
-index 9d43b75..f441ac3 100644
---- a/tools/testing/selftests/sgx/load.c
-+++ b/tools/testing/selftests/sgx/load.c
-@@ -45,19 +45,19 @@ static bool encl_map_bin(const char *path, struct encl *encl)
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 2792879..35391e9 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -1931,6 +1931,7 @@ config X86_SGX
+ 	depends on CRYPTO_SHA256=y
+ 	select SRCU
+ 	select MMU_NOTIFIER
++	select NUMA_KEEP_MEMINFO if NUMA
+ 	help
+ 	  Intel(R) Software Guard eXtensions (SGX) is a set of CPU instructions
+ 	  that can be used by applications to set aside private regions of code
+diff --git a/arch/x86/kernel/cpu/sgx/main.c b/arch/x86/kernel/cpu/sgx/main.c
+index f3a5cd2..13a7599 100644
+--- a/arch/x86/kernel/cpu/sgx/main.c
++++ b/arch/x86/kernel/cpu/sgx/main.c
+@@ -23,9 +23,21 @@ static DECLARE_WAIT_QUEUE_HEAD(ksgxd_waitq);
+  * with sgx_reclaimer_lock acquired.
+  */
+ static LIST_HEAD(sgx_active_page_list);
+-
+ static DEFINE_SPINLOCK(sgx_reclaimer_lock);
  
- 	fd = open(path, O_RDONLY);
- 	if (fd == -1)  {
--		perror("open()");
-+		perror("enclave executable open()");
- 		return false;
- 	}
- 
- 	ret = stat(path, &sb);
- 	if (ret) {
--		perror("stat()");
-+		perror("enclave executable stat()");
- 		goto err;
- 	}
- 
- 	bin = mmap(NULL, sb.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
- 	if (bin == MAP_FAILED) {
--		perror("mmap()");
-+		perror("enclave executable mmap()");
- 		goto err;
- 	}
- 
-@@ -90,8 +90,7 @@ static bool encl_ioc_create(struct encl *encl)
- 	ioc.src = (unsigned long)secs;
- 	rc = ioctl(encl->fd, SGX_IOC_ENCLAVE_CREATE, &ioc);
- 	if (rc) {
--		fprintf(stderr, "SGX_IOC_ENCLAVE_CREATE failed: errno=%d\n",
--			errno);
-+		perror("SGX_IOC_ENCLAVE_CREATE failed");
- 		munmap((void *)secs->base, encl->encl_size);
- 		return false;
- 	}
-@@ -116,31 +115,72 @@ static bool encl_ioc_add_pages(struct encl *encl, struct encl_segment *seg)
- 
- 	rc = ioctl(encl->fd, SGX_IOC_ENCLAVE_ADD_PAGES, &ioc);
- 	if (rc < 0) {
--		fprintf(stderr, "SGX_IOC_ENCLAVE_ADD_PAGES failed: errno=%d.\n",
--			errno);
-+		perror("SGX_IOC_ENCLAVE_ADD_PAGES failed");
- 		return false;
- 	}
- 
- 	return true;
- }
- 
++/* The free page list lock protected variables prepend the lock. */
++static unsigned long sgx_nr_free_pages;
 +
++/* Nodes with one or more EPC sections. */
++static nodemask_t sgx_numa_mask;
 +
- bool encl_load(const char *path, struct encl *encl)
- {
-+	const char device_path[] = "/dev/sgx_enclave";
- 	Elf64_Phdr *phdr_tbl;
- 	off_t src_offset;
- 	Elf64_Ehdr *ehdr;
-+	struct stat sb;
-+	void *ptr;
- 	int i, j;
++/*
++ * Array with one list_head for each possible NUMA node.  Each
++ * list contains all the sgx_epc_section's which are on that
++ * node.
++ */
++static struct sgx_numa_node *sgx_numa_nodes;
++
+ static LIST_HEAD(sgx_dirty_page_list);
+ 
+ /*
+@@ -312,6 +324,7 @@ static void sgx_reclaim_pages(void)
+ 	struct sgx_epc_section *section;
+ 	struct sgx_encl_page *encl_page;
+ 	struct sgx_epc_page *epc_page;
++	struct sgx_numa_node *node;
+ 	pgoff_t page_index;
+ 	int cnt = 0;
  	int ret;
-+	int fd = -1;
+@@ -383,28 +396,18 @@ skip:
+ 		epc_page->flags &= ~SGX_EPC_PAGE_RECLAIMER_TRACKED;
  
- 	memset(encl, 0, sizeof(*encl));
+ 		section = &sgx_epc_sections[epc_page->section];
+-		spin_lock(&section->lock);
+-		list_add_tail(&epc_page->list, &section->page_list);
+-		section->free_cnt++;
+-		spin_unlock(&section->lock);
+-	}
+-}
+-
+-static unsigned long sgx_nr_free_pages(void)
+-{
+-	unsigned long cnt = 0;
+-	int i;
+-
+-	for (i = 0; i < sgx_nr_epc_sections; i++)
+-		cnt += sgx_epc_sections[i].free_cnt;
++		node = section->node;
  
--	ret = open("/dev/sgx_enclave", O_RDWR);
--	if (ret < 0) {
--		fprintf(stderr, "Unable to open /dev/sgx_enclave\n");
-+	fd = open(device_path, O_RDWR);
-+	if (fd < 0) {
-+		perror("Unable to open /dev/sgx_enclave");
-+		goto err;
+-	return cnt;
++		spin_lock(&node->lock);
++		list_add_tail(&epc_page->list, &node->free_page_list);
++		sgx_nr_free_pages++;
++		spin_unlock(&node->lock);
 +	}
-+
-+	ret = stat(device_path, &sb);
-+	if (ret) {
-+		perror("device file stat()");
-+		goto err;
-+	}
-+
-+	/*
-+	 * This just checks if the /dev file has these permission
-+	 * bits set.  It does not check that the current user is
-+	 * the owner or in the owning group.
-+	 */
-+	if (!(sb.st_mode & (S_IXUSR | S_IXGRP | S_IXOTH))) {
-+		fprintf(stderr, "no execute permissions on device file %s\n", device_path);
-+		goto err;
-+	}
-+
-+	ptr = mmap(NULL, PAGE_SIZE, PROT_READ, MAP_SHARED, fd, 0);
-+	if (ptr == (void *)-1) {
-+		perror("mmap for read");
-+		goto err;
-+	}
-+	munmap(ptr, PAGE_SIZE);
-+
-+#define ERR_MSG \
-+"mmap() succeeded for PROT_READ, but failed for PROT_EXEC.\n" \
-+" Check that current user has execute permissions on %s and \n" \
-+" that /dev does not have noexec set: mount | grep \"/dev .*noexec\"\n" \
-+" If so, remount it executable: mount -o remount,exec /dev\n\n"
-+
-+	ptr = mmap(NULL, PAGE_SIZE, PROT_EXEC, MAP_SHARED, fd, 0);
-+	if (ptr == (void *)-1) {
-+		fprintf(stderr, ERR_MSG, device_path);
- 		goto err;
- 	}
-+	munmap(ptr, PAGE_SIZE);
- 
--	encl->fd = ret;
-+	encl->fd = fd;
- 
- 	if (!encl_map_bin(path, encl))
- 		goto err;
-@@ -217,6 +257,8 @@ bool encl_load(const char *path, struct encl *encl)
- 	return true;
- 
- err:
-+	if (fd != -1)
-+		close(fd);
- 	encl_delete(encl);
- 	return false;
  }
-@@ -229,7 +271,7 @@ static bool encl_map_area(struct encl *encl)
- 	area = mmap(NULL, encl_size * 2, PROT_NONE,
- 		    MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
- 	if (area == MAP_FAILED) {
--		perror("mmap");
-+		perror("reservation mmap()");
- 		return false;
+ 
+ static bool sgx_should_reclaim(unsigned long watermark)
+ {
+-	return sgx_nr_free_pages() < watermark &&
+-	       !list_empty(&sgx_active_page_list);
++	return sgx_nr_free_pages < watermark && !list_empty(&sgx_active_page_list);
+ }
+ 
+ static int ksgxd(void *p)
+@@ -451,45 +454,56 @@ static bool __init sgx_page_reclaimer_init(void)
+ 	return true;
+ }
+ 
+-static struct sgx_epc_page *__sgx_alloc_epc_page_from_section(struct sgx_epc_section *section)
++static struct sgx_epc_page *__sgx_alloc_epc_page_from_node(int nid)
+ {
+-	struct sgx_epc_page *page;
++	struct sgx_numa_node *node = &sgx_numa_nodes[nid];
++	struct sgx_epc_page *page = NULL;
+ 
+-	spin_lock(&section->lock);
++	spin_lock(&node->lock);
+ 
+-	if (list_empty(&section->page_list)) {
+-		spin_unlock(&section->lock);
++	if (list_empty(&node->free_page_list)) {
++		spin_unlock(&node->lock);
+ 		return NULL;
  	}
  
-@@ -268,8 +310,7 @@ bool encl_build(struct encl *encl)
- 	ioc.sigstruct = (uint64_t)&encl->sigstruct;
- 	ret = ioctl(encl->fd, SGX_IOC_ENCLAVE_INIT, &ioc);
- 	if (ret) {
--		fprintf(stderr, "SGX_IOC_ENCLAVE_INIT failed: errno=%d\n",
--			errno);
-+		perror("SGX_IOC_ENCLAVE_INIT failed");
- 		return false;
+-	page = list_first_entry(&section->page_list, struct sgx_epc_page, list);
++	page = list_first_entry(&node->free_page_list, struct sgx_epc_page, list);
+ 	list_del_init(&page->list);
+-	section->free_cnt--;
++	sgx_nr_free_pages--;
++
++	spin_unlock(&node->lock);
+ 
+-	spin_unlock(&section->lock);
+ 	return page;
+ }
+ 
+ /**
+  * __sgx_alloc_epc_page() - Allocate an EPC page
+  *
+- * Iterate through EPC sections and borrow a free EPC page to the caller. When a
+- * page is no longer needed it must be released with sgx_free_epc_page().
++ * Iterate through NUMA nodes and reserve ia free EPC page to the caller. Start
++ * from the NUMA node, where the caller is executing.
+  *
+  * Return:
+- *   an EPC page,
+- *   -errno on error
++ * - an EPC page:	A borrowed EPC pages were available.
++ * - NULL:		Out of EPC pages.
+  */
+ struct sgx_epc_page *__sgx_alloc_epc_page(void)
+ {
+-	struct sgx_epc_section *section;
+ 	struct sgx_epc_page *page;
+-	int i;
++	int nid_of_current = numa_node_id();
++	int nid = nid_of_current;
+ 
+-	for (i = 0; i < sgx_nr_epc_sections; i++) {
+-		section = &sgx_epc_sections[i];
++	if (node_isset(nid_of_current, sgx_numa_mask)) {
++		page = __sgx_alloc_epc_page_from_node(nid_of_current);
++		if (page)
++			return page;
++	}
++
++	/* Fall back to the non-local NUMA nodes: */
++	while (true) {
++		nid = next_node_in(nid, sgx_numa_mask);
++		if (nid == nid_of_current)
++			break;
+ 
+-		page = __sgx_alloc_epc_page_from_section(section);
++		page = __sgx_alloc_epc_page_from_node(nid);
+ 		if (page)
+ 			return page;
+ 	}
+@@ -600,6 +614,7 @@ struct sgx_epc_page *sgx_alloc_epc_page(void *owner, bool reclaim)
+ void sgx_free_epc_page(struct sgx_epc_page *page)
+ {
+ 	struct sgx_epc_section *section = &sgx_epc_sections[page->section];
++	struct sgx_numa_node *node = section->node;
+ 	int ret;
+ 
+ 	WARN_ON_ONCE(page->flags & SGX_EPC_PAGE_RECLAIMER_TRACKED);
+@@ -608,10 +623,12 @@ void sgx_free_epc_page(struct sgx_epc_page *page)
+ 	if (WARN_ONCE(ret, "EREMOVE returned %d (0x%x)", ret, ret))
+ 		return;
+ 
+-	spin_lock(&section->lock);
+-	list_add_tail(&page->list, &section->page_list);
+-	section->free_cnt++;
+-	spin_unlock(&section->lock);
++	spin_lock(&node->lock);
++
++	list_add_tail(&page->list, &node->free_page_list);
++	sgx_nr_free_pages++;
++
++	spin_unlock(&node->lock);
+ }
+ 
+ static bool __init sgx_setup_epc_section(u64 phys_addr, u64 size,
+@@ -632,8 +649,6 @@ static bool __init sgx_setup_epc_section(u64 phys_addr, u64 size,
  	}
  
-diff --git a/tools/testing/selftests/sgx/main.c b/tools/testing/selftests/sgx/main.c
-index 724cec7..b117bb8 100644
---- a/tools/testing/selftests/sgx/main.c
-+++ b/tools/testing/selftests/sgx/main.c
-@@ -195,7 +195,7 @@ int main(int argc, char *argv[], char *envp[])
- 		addr = mmap((void *)encl.encl_base + seg->offset, seg->size,
- 			    seg->prot, MAP_SHARED | MAP_FIXED, encl.fd, 0);
- 		if (addr == MAP_FAILED) {
--			fprintf(stderr, "mmap() failed, errno=%d.\n", errno);
-+			perror("mmap() segment failed");
- 			exit(KSFT_FAIL);
+ 	section->phys_addr = phys_addr;
+-	spin_lock_init(&section->lock);
+-	INIT_LIST_HEAD(&section->page_list);
+ 
+ 	for (i = 0; i < nr_pages; i++) {
+ 		section->pages[i].section = index;
+@@ -642,7 +657,7 @@ static bool __init sgx_setup_epc_section(u64 phys_addr, u64 size,
+ 		list_add_tail(&section->pages[i].list, &sgx_dirty_page_list);
+ 	}
+ 
+-	section->free_cnt = nr_pages;
++	sgx_nr_free_pages += nr_pages;
+ 	return true;
+ }
+ 
+@@ -661,8 +676,13 @@ static bool __init sgx_page_cache_init(void)
+ {
+ 	u32 eax, ebx, ecx, edx, type;
+ 	u64 pa, size;
++	int nid;
+ 	int i;
+ 
++	sgx_numa_nodes = kmalloc_array(num_possible_nodes(), sizeof(*sgx_numa_nodes), GFP_KERNEL);
++	if (!sgx_numa_nodes)
++		return false;
++
+ 	for (i = 0; i < ARRAY_SIZE(sgx_epc_sections); i++) {
+ 		cpuid_count(SGX_CPUID, i + SGX_CPUID_EPC, &eax, &ebx, &ecx, &edx);
+ 
+@@ -685,6 +705,21 @@ static bool __init sgx_page_cache_init(void)
+ 			break;
  		}
+ 
++		nid = numa_map_to_online_node(phys_to_target_node(pa));
++		if (nid == NUMA_NO_NODE) {
++			/* The physical address is already printed above. */
++			pr_warn(FW_BUG "Unable to map EPC section to online node. Fallback to the NUMA node 0.\n");
++			nid = 0;
++		}
++
++		if (!node_isset(nid, sgx_numa_mask)) {
++			spin_lock_init(&sgx_numa_nodes[nid].lock);
++			INIT_LIST_HEAD(&sgx_numa_nodes[nid].free_page_list);
++			node_set(nid, sgx_numa_mask);
++		}
++
++		sgx_epc_sections[i].node =  &sgx_numa_nodes[nid];
++
+ 		sgx_nr_epc_sections++;
  	}
+ 
+diff --git a/arch/x86/kernel/cpu/sgx/sgx.h b/arch/x86/kernel/cpu/sgx/sgx.h
+index bc8af04..653af8c 100644
+--- a/arch/x86/kernel/cpu/sgx/sgx.h
++++ b/arch/x86/kernel/cpu/sgx/sgx.h
+@@ -30,21 +30,25 @@ struct sgx_epc_page {
+ };
+ 
+ /*
++ * Contains the tracking data for NUMA nodes having EPC pages. Most importantly,
++ * the free page list local to the node is stored here.
++ */
++struct sgx_numa_node {
++	struct list_head free_page_list;
++	spinlock_t lock;
++};
++
++/*
+  * The firmware can define multiple chunks of EPC to the different areas of the
+  * physical memory e.g. for memory areas of the each node. This structure is
+  * used to store EPC pages for one EPC section and virtual memory area where
+  * the pages have been mapped.
+- *
+- * 'lock' must be held before accessing 'page_list' or 'free_cnt'.
+  */
+ struct sgx_epc_section {
+ 	unsigned long phys_addr;
+ 	void *virt_addr;
+ 	struct sgx_epc_page *pages;
+-
+-	spinlock_t lock;
+-	struct list_head page_list;
+-	unsigned long free_cnt;
++	struct sgx_numa_node *node;
+ };
+ 
+ extern struct sgx_epc_section sgx_epc_sections[SGX_MAX_EPC_SECTIONS];
