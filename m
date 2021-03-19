@@ -2,56 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B3172341CDF
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 19 Mar 2021 13:26:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E7C8341CF4
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 19 Mar 2021 13:32:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229766AbhCSMZ3 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 19 Mar 2021 08:25:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56604 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230199AbhCSMZM (ORCPT
+        id S229926AbhCSMba (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 19 Mar 2021 08:31:30 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:36656 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229934AbhCSMbX (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 19 Mar 2021 08:25:12 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87DBAC061760;
-        Fri, 19 Mar 2021 05:25:10 -0700 (PDT)
-Date:   Fri, 19 Mar 2021 12:25:08 -0000
+        Fri, 19 Mar 2021 08:31:23 -0400
+Date:   Fri, 19 Mar 2021 12:31:21 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1616156709;
+        s=2020; t=1616157082;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Qg1JTu4OzxPDk4dIjr7LZON45ZC7Q7hacDPqYo+Gw0I=;
-        b=hIX52bIdkqWMiC9rxgbDrlIkYXu32kM1e7C0QM2F/gUuMiShMmFDtOShWimz5OFGODPNDU
-        +JdAv2IsLR/sTYIndZVaJyHkuT3ZZXCSRBHYy3MtBKzeHeuGXZ5cihWnRADfp0VYlwQtYb
-        9q+z01ycbF2Qid5VAIKZ6vPCJkuKorWvfHQ7R2kSu3pgwfI43vMWVBIOjRgo4drWV2VYF5
-        x5KrMIfTh750VFVtQmQpaqqb51jNOCnPtxGZcCmxkjFg4EXGXhMnWzOEFm0kO6XbjrQxED
-        vdxgIF1qbpqH/mIbL3gY6SWGddPP7vgjhMGj0OIcmDISIaiDkb0FphKd4QkxrQ==
+        bh=ta6TbYc2KpxX9Gx0eKTed3N1z7DwvwubHJrt1xszU8w=;
+        b=xegow6TB2ptZo7yiaEQFzsY//u+m5BF3Z9Zt3/gGqZ2j6uTICFb9Hi67Fde7D2nf9G/3+F
+        maXU+RFr1tD9rp5RDO3q566xAzZjBF6ezewqEXN7j2pk7SDhxU4jXyMzz73eR07tplvmg4
+        UyqcH1Kum8C24BkTlZPVotqtzeDVCSH08s9afgKYAaI06dBVxx4CiWfnZ58bNA3tnwL/JK
+        ecgtTwENnKk0cp1iXWrh4SRDYkOxE7l+HIGHNGkNEgj9d4yrJwPWs/VW5DcdFhCNBDAPAV
+        YgMG4cVoglK/YiS3BSk2sAFbgZ9OFbIFQetg7Ghqv4RRdYCe/S4lBDqAg6Uh5Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1616156709;
+        s=2020e; t=1616157082;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Qg1JTu4OzxPDk4dIjr7LZON45ZC7Q7hacDPqYo+Gw0I=;
-        b=YBo7y0ez2lMF/zJiOOILjZel6BFFKAxkRzAMzU+MyQugTdrlfk37apO960Dj6fUSKowhgl
-        +MgrZEiiER9IA0Dw==
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+        bh=ta6TbYc2KpxX9Gx0eKTed3N1z7DwvwubHJrt1xszU8w=;
+        b=/jZD7+J4c6MmBq1r04qAIXozhJgLPakNPBnoRhXd8Fqt8DrKcdRR8MNjnW+UDcIbly4flW
+        tM7EhWR7XEx9dYBg==
+From:   "tip-bot2 for Jiapeng Chong" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/urgent] static_call: Fix static_call_set_init()
-Cc:     Sumit Garg <sumit.garg@linaro.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Jarkko Sakkinen <jarkko@kernel.org>, x86@kernel.org,
+Subject: [tip: x86/cleanups] x86/kaslr: Return boolean values from a function
+ returning bool
+Cc:     Abaci Robot <abaci@linux.alibaba.com>,
+        Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
+        Borislav Petkov <bp@suse.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210318113610.519406371@infradead.org>
-References: <20210318113610.519406371@infradead.org>
+In-Reply-To: <1615283963-67277-1-git-send-email-jiapeng.chong@linux.alibaba.com>
+References: <1615283963-67277-1-git-send-email-jiapeng.chong@linux.alibaba.com>
 MIME-Version: 1.0
-Message-ID: <161615670851.398.10212740171410293456.tip-bot2@tip-bot2>
+Message-ID: <161615708162.398.13397477159993396875.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,85 +58,43 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the locking/urgent branch of tip:
+The following commit has been merged into the x86/cleanups branch of tip:
 
-Commit-ID:     68b1eddd421d2b16c6655eceb48918a1e896bbbc
-Gitweb:        https://git.kernel.org/tip/68b1eddd421d2b16c6655eceb48918a1e896bbbc
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Thu, 18 Mar 2021 11:27:19 +01:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Fri, 19 Mar 2021 13:16:44 +01:00
+Commit-ID:     21d6a7dcbfba5e7b31f4e9d555a9be362578bfc3
+Gitweb:        https://git.kernel.org/tip/21d6a7dcbfba5e7b31f4e9d555a9be362578bfc3
+Author:        Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+AuthorDate:    Tue, 09 Mar 2021 17:59:23 +08:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Fri, 19 Mar 2021 13:25:07 +01:00
 
-static_call: Fix static_call_set_init()
+x86/kaslr: Return boolean values from a function returning bool
 
-It turns out that static_call_set_init() does not preserve the other
-flags; IOW. it clears TAIL if it was set.
+Fix the following coccicheck warnings:
 
-Fixes: 9183c3f9ed710 ("static_call: Add inline static call infrastructure")
-Reported-by: Sumit Garg <sumit.garg@linaro.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Jarkko Sakkinen <jarkko@kernel.org>
-Tested-by: Sumit Garg <sumit.garg@linaro.org>
-Link: https://lkml.kernel.org/r/20210318113610.519406371@infradead.org
+  ./arch/x86/boot/compressed/kaslr.c:642:10-11: WARNING: return of 0/1 in
+  function 'process_mem_region' with return type bool.
+
+Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lkml.kernel.org/r/1615283963-67277-1-git-send-email-jiapeng.chong@linux.alibaba.com
 ---
- kernel/static_call.c | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+ arch/x86/boot/compressed/kaslr.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/static_call.c b/kernel/static_call.c
-index ae82529..080c8a9 100644
---- a/kernel/static_call.c
-+++ b/kernel/static_call.c
-@@ -35,27 +35,30 @@ static inline void *static_call_addr(struct static_call_site *site)
- 	return (void *)((long)site->addr + (long)&site->addr);
- }
+diff --git a/arch/x86/boot/compressed/kaslr.c b/arch/x86/boot/compressed/kaslr.c
+index b92fffb..e366907 100644
+--- a/arch/x86/boot/compressed/kaslr.c
++++ b/arch/x86/boot/compressed/kaslr.c
+@@ -639,9 +639,9 @@ static bool process_mem_region(struct mem_vector *region,
  
-+static inline unsigned long __static_call_key(const struct static_call_site *site)
-+{
-+	return (long)site->key + (long)&site->key;
-+}
- 
- static inline struct static_call_key *static_call_key(const struct static_call_site *site)
- {
--	return (struct static_call_key *)
--		(((long)site->key + (long)&site->key) & ~STATIC_CALL_SITE_FLAGS);
-+	return (void *)(__static_call_key(site) & ~STATIC_CALL_SITE_FLAGS);
- }
- 
- /* These assume the key is word-aligned. */
- static inline bool static_call_is_init(struct static_call_site *site)
- {
--	return ((long)site->key + (long)&site->key) & STATIC_CALL_SITE_INIT;
-+	return __static_call_key(site) & STATIC_CALL_SITE_INIT;
- }
- 
- static inline bool static_call_is_tail(struct static_call_site *site)
- {
--	return ((long)site->key + (long)&site->key) & STATIC_CALL_SITE_TAIL;
-+	return __static_call_key(site) & STATIC_CALL_SITE_TAIL;
- }
- 
- static inline void static_call_set_init(struct static_call_site *site)
- {
--	site->key = ((long)static_call_key(site) | STATIC_CALL_SITE_INIT) -
-+	site->key = (__static_call_key(site) | STATIC_CALL_SITE_INIT) -
- 		    (long)&site->key;
- }
- 
-@@ -190,7 +193,7 @@ void __static_call_update(struct static_call_key *key, void *tramp, void *func)
- 			}
- 
- 			arch_static_call_transform(site_addr, NULL, func,
--				static_call_is_tail(site));
-+						   static_call_is_tail(site));
+ 		if (slot_area_index == MAX_SLOT_AREA) {
+ 			debug_putstr("Aborted e820/efi memmap scan (slot_areas full)!\n");
+-			return 1;
++			return true;
  		}
+-		return 0;
++		return false;
  	}
  
-@@ -349,7 +352,7 @@ static int static_call_add_module(struct module *mod)
- 	struct static_call_site *site;
- 
- 	for (site = start; site != stop; site++) {
--		unsigned long s_key = (long)site->key + (long)&site->key;
-+		unsigned long s_key = __static_call_key(site);
- 		unsigned long addr = s_key & ~STATIC_CALL_SITE_FLAGS;
- 		unsigned long key;
- 
+ #if defined(CONFIG_MEMORY_HOTREMOVE) && defined(CONFIG_ACPI)
