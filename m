@@ -2,55 +2,50 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9555C341DFB
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 19 Mar 2021 14:18:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 03F2F341E2F
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 19 Mar 2021 14:30:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229933AbhCSNST (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 19 Mar 2021 09:18:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39784 "EHLO
+        id S229990AbhCSN3i (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 19 Mar 2021 09:29:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42200 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229736AbhCSNRw (ORCPT
+        with ESMTP id S230009AbhCSN3S (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 19 Mar 2021 09:17:52 -0400
+        Fri, 19 Mar 2021 09:29:18 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45624C06174A;
-        Fri, 19 Mar 2021 06:17:52 -0700 (PDT)
-Date:   Fri, 19 Mar 2021 13:17:50 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00A32C06174A;
+        Fri, 19 Mar 2021 06:29:10 -0700 (PDT)
+Date:   Fri, 19 Mar 2021 13:29:08 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1616159870;
+        s=2020; t=1616160549;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=+ArjPz9hwoJl9auNJ0vto0zGB02WVusPgc04PlXb+uE=;
-        b=DeewKvPGX/ezQTWXJaNMGaqz38PO8/Pe2f10kADmBH3pmzBq+zKjgKE/Cj3BNbV73/suRq
-        5sONkG/uAGO4fBasgmUe8y92MbKRNxSVv/4c4wQi5Vsf7L1JXQdbytT3KJMVtVLkjOftfT
-        cGseuttihRDT1ODYeJAaXn8JwrDmXgE8Q72tydQSMG4ojH3ngA3RfVp4lht4+6+rMMDRr1
-        sJnec3xNhkk/z6+6QyuvI0wgr0NG0joSidtvrEAu/SCNrmNhvpgzgqwb3M8wf4WzqxERhd
-        YmZJjWCKTsRQJv+NyVr8Fn/8xJHuSrPoGHZSv8JsDG6FDUDlErg3Zz+4dnIncg==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=zEie8E1D8lotiW5GlM6ldy8bcHu9nJkR2e7P30O39Yk=;
+        b=QyLn5rGDskmSAKHyztXxRxKWJ3r3ucOs4/qiK1e/Hqt2EdnkihyORWmH2HxuTg/syul95J
+        E19yp1MekEF09E9yvH0bC3tu4MU9U/WqcDbMH5a984ind4quz8nz61itKh4UfyGUNJnZdT
+        PrkdqSb7Z9ngoRZ4YccppUbEj/CqqPgd+R1IVPwG72jPmJOX8CuqfiBejTLanYZ/YrT0Sy
+        Bppxm99shsBXjN7aPjZINFDB69uC2ItrDMFJTH1F3bwhqfCLpmXhWl7lMxFOvo1a1dt2LC
+        //dTC+rC8IbBC7LWd5smsX8dAYCRCpw9BwtNioq9wVBjODdtcO2RWSFam90qNw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1616159870;
+        s=2020e; t=1616160549;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=+ArjPz9hwoJl9auNJ0vto0zGB02WVusPgc04PlXb+uE=;
-        b=r3jX9pZrXReLM3XjvCEljhYA9t0m8XwQD8Dk/lakX72JUqj0MLIeo4B0AOEFN0BTqbxzPw
-        +gzc/dV+TUYJnYBQ==
-From:   "tip-bot2 for Joerg Roedel" <tip-bot2@linutronix.de>
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=zEie8E1D8lotiW5GlM6ldy8bcHu9nJkR2e7P30O39Yk=;
+        b=nslEvXEVma3mm4PuIp5S9dGb7fVUFw5jnvfd74JAVf7fvNuCLHs3rYJGFwBXIQ2mxwhgVE
+        LFFzyXXt2VQr8KAQ==
+From:   "tip-bot2 for Ard Biesheuvel" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/seves] x86/sev-es: Optimize __sev_es_ist_enter() for better
- readability
-Cc:     Joerg Roedel <jroedel@suse.de>, Borislav Petkov <bp@suse.de>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20210303141716.29223-4-joro@8bytes.org>
-References: <20210303141716.29223-4-joro@8bytes.org>
+Subject: [tip: efi/urgent] efi: use 32-bit alignment for efi_guid_t literals
+Cc:     Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Ard Biesheuvel <ardb@kernel.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <161615987012.398.914043660944501718.tip-bot2@tip-bot2>
+Message-ID: <161616054876.398.14673289210383661828.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,82 +54,72 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/seves branch of tip:
+The following commit has been merged into the efi/urgent branch of tip:
 
-Commit-ID:     799de1baaf3509a54ff713efb768020f8defd709
-Gitweb:        https://git.kernel.org/tip/799de1baaf3509a54ff713efb768020f8defd709
-Author:        Joerg Roedel <jroedel@suse.de>
-AuthorDate:    Wed, 03 Mar 2021 15:17:14 +01:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Fri, 19 Mar 2021 13:37:22 +01:00
+Commit-ID:     fb98cc0b3af2ba4d87301dff2b381b12eee35d7d
+Gitweb:        https://git.kernel.org/tip/fb98cc0b3af2ba4d87301dff2b381b12eee35d7d
+Author:        Ard Biesheuvel <ardb@kernel.org>
+AuthorDate:    Wed, 10 Mar 2021 08:33:19 +01:00
+Committer:     Ard Biesheuvel <ardb@kernel.org>
+CommitterDate: Fri, 19 Mar 2021 07:44:28 +01:00
 
-x86/sev-es: Optimize __sev_es_ist_enter() for better readability
+efi: use 32-bit alignment for efi_guid_t literals
 
-Reorganize the code and improve the comments to make the function more
-readable and easier to understand.
+Commit 494c704f9af0 ("efi: Use 32-bit alignment for efi_guid_t") updated
+the type definition of efi_guid_t to ensure that it always appears
+sufficiently aligned (the UEFI spec is ambiguous about this, but given
+the fact that its EFI_GUID type is defined in terms of a struct carrying
+a uint32_t, the natural alignment is definitely >= 32 bits).
 
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20210303141716.29223-4-joro@8bytes.org
+However, we missed the EFI_GUID() macro which is used to instantiate
+efi_guid_t literals: that macro is still based on the guid_t type,
+which does not have a minimum alignment at all. This results in warnings
+such as
+
+  In file included from drivers/firmware/efi/mokvar-table.c:35:
+  include/linux/efi.h:1093:34: warning: passing 1-byte aligned argument to
+      4-byte aligned parameter 2 of 'get_var' may result in an unaligned pointer
+      access [-Walign-mismatch]
+          status = get_var(L"SecureBoot", &EFI_GLOBAL_VARIABLE_GUID, NULL, &size,
+                                          ^
+  include/linux/efi.h:1101:24: warning: passing 1-byte aligned argument to
+      4-byte aligned parameter 2 of 'get_var' may result in an unaligned pointer
+      access [-Walign-mismatch]
+          get_var(L"SetupMode", &EFI_GLOBAL_VARIABLE_GUID, NULL, &size, &setupmode);
+
+The distinction only matters on CPUs that do not support misaligned loads
+fully, but 32-bit ARM's load-multiple instructions fall into that category,
+and these are likely to be emitted by the compiler that built the firmware
+for loading word-aligned 128-bit GUIDs from memory
+
+So re-implement the initializer in terms of our own efi_guid_t type, so that
+the alignment becomes a property of the literal's type.
+
+Fixes: 494c704f9af0 ("efi: Use 32-bit alignment for efi_guid_t")
+Reported-by: Nathan Chancellor <nathan@kernel.org>
+Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Tested-by: Nathan Chancellor <nathan@kernel.org>
+Link: https://github.com/ClangBuiltLinux/linux/issues/1327
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/x86/kernel/sev-es.c | 36 ++++++++++++++++++++++++------------
- 1 file changed, 24 insertions(+), 12 deletions(-)
+ include/linux/efi.h | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kernel/sev-es.c b/arch/x86/kernel/sev-es.c
-index 225704e..26f5479 100644
---- a/arch/x86/kernel/sev-es.c
-+++ b/arch/x86/kernel/sev-es.c
-@@ -137,29 +137,41 @@ static __always_inline bool on_vc_stack(struct pt_regs *regs)
- }
+diff --git a/include/linux/efi.h b/include/linux/efi.h
+index 8710f57..6b5d36b 100644
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -72,8 +72,10 @@ typedef void *efi_handle_t;
+  */
+ typedef guid_t efi_guid_t __aligned(__alignof__(u32));
+ 
+-#define EFI_GUID(a,b,c,d0,d1,d2,d3,d4,d5,d6,d7) \
+-	GUID_INIT(a, b, c, d0, d1, d2, d3, d4, d5, d6, d7)
++#define EFI_GUID(a, b, c, d...) (efi_guid_t){ {					\
++	(a) & 0xff, ((a) >> 8) & 0xff, ((a) >> 16) & 0xff, ((a) >> 24) & 0xff,	\
++	(b) & 0xff, ((b) >> 8) & 0xff,						\
++	(c) & 0xff, ((c) >> 8) & 0xff, d } }
  
  /*
-- * This function handles the case when an NMI is raised in the #VC exception
-- * handler entry code. In this case, the IST entry for #VC must be adjusted, so
-- * that any subsequent #VC exception will not overwrite the stack contents of the
-- * interrupted #VC handler.
-+ * This function handles the case when an NMI is raised in the #VC
-+ * exception handler entry code, before the #VC handler has switched off
-+ * its IST stack. In this case, the IST entry for #VC must be adjusted,
-+ * so that any nested #VC exception will not overwrite the stack
-+ * contents of the interrupted #VC handler.
-  *
-  * The IST entry is adjusted unconditionally so that it can be also be
-- * unconditionally adjusted back in sev_es_ist_exit(). Otherwise a nested
-- * sev_es_ist_exit() call may adjust back the IST entry too early.
-+ * unconditionally adjusted back in __sev_es_ist_exit(). Otherwise a
-+ * nested sev_es_ist_exit() call may adjust back the IST entry too
-+ * early.
-+ *
-+ * The __sev_es_ist_enter() and __sev_es_ist_exit() functions always run
-+ * on the NMI IST stack, as they are only called from NMI handling code
-+ * right now.
-  */
- void noinstr __sev_es_ist_enter(struct pt_regs *regs)
- {
- 	unsigned long old_ist, new_ist;
- 
- 	/* Read old IST entry */
--	old_ist = __this_cpu_read(cpu_tss_rw.x86_tss.ist[IST_INDEX_VC]);
-+	new_ist = old_ist = __this_cpu_read(cpu_tss_rw.x86_tss.ist[IST_INDEX_VC]);
- 
--	/* Make room on the IST stack */
-+	/*
-+	 * If NMI happened while on the #VC IST stack, set the new IST
-+	 * value below regs->sp, so that the interrupted stack frame is
-+	 * not overwritten by subsequent #VC exceptions.
-+	 */
- 	if (on_vc_stack(regs))
--		new_ist = ALIGN_DOWN(regs->sp, 8) - sizeof(old_ist);
--	else
--		new_ist = old_ist - sizeof(old_ist);
-+		new_ist = regs->sp;
- 
--	/* Store old IST entry */
-+	/*
-+	 * Reserve additional 8 bytes and store old IST value so this
-+	 * adjustment can be unrolled in __sev_es_ist_exit().
-+	 */
-+	new_ist -= sizeof(old_ist);
- 	*(unsigned long *)new_ist = old_ist;
- 
- 	/* Set new IST entry */
+  * Generic EFI table header
