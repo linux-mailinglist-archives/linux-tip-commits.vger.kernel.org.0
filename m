@@ -2,54 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C8DA6341D71
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 19 Mar 2021 13:55:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9555C341DFB
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 19 Mar 2021 14:18:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229937AbhCSMyf (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 19 Mar 2021 08:54:35 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:36818 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230060AbhCSMyU (ORCPT
+        id S229933AbhCSNST (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 19 Mar 2021 09:18:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39784 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229736AbhCSNRw (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 19 Mar 2021 08:54:20 -0400
-Date:   Fri, 19 Mar 2021 12:54:17 -0000
+        Fri, 19 Mar 2021 09:17:52 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45624C06174A;
+        Fri, 19 Mar 2021 06:17:52 -0700 (PDT)
+Date:   Fri, 19 Mar 2021 13:17:50 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1616158458;
+        s=2020; t=1616159870;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=6Po6dBNT/n61UXXRklMcoA4R/HjEjyRTLs7IjXbRF3U=;
-        b=iwYx7+WshDEdZcKk5SnxSXM8qOTNo98YHGf0wt+E+Dy0RNM2ly1RUSTF80MNd3sIZdEQGV
-        YZM2+Co9L2FLQi0r4Vg10wvpd/QT0NeAjFye8PUPNJarFdspOmLftj230KWEBtoJwMlFH5
-        VLCowxtj04AvKIJPDyBrrQDbcKCBTWu/xozSGp/i8xvJL67p12FFy2vK5vJMulHVL5AYvq
-        8LybKgUdRIPyYeCPErHtg5uLCWf4JMpOvoo9ebe+GjkrLNKf3r7WZgZhOLRcXboVWq5vGv
-        shmtOK89ciztowrq62VigK9HSJ5etbnaRCkGbVdNOIdDLfkBv0jHA1AsBmCFsg==
+        bh=+ArjPz9hwoJl9auNJ0vto0zGB02WVusPgc04PlXb+uE=;
+        b=DeewKvPGX/ezQTWXJaNMGaqz38PO8/Pe2f10kADmBH3pmzBq+zKjgKE/Cj3BNbV73/suRq
+        5sONkG/uAGO4fBasgmUe8y92MbKRNxSVv/4c4wQi5Vsf7L1JXQdbytT3KJMVtVLkjOftfT
+        cGseuttihRDT1ODYeJAaXn8JwrDmXgE8Q72tydQSMG4ojH3ngA3RfVp4lht4+6+rMMDRr1
+        sJnec3xNhkk/z6+6QyuvI0wgr0NG0joSidtvrEAu/SCNrmNhvpgzgqwb3M8wf4WzqxERhd
+        YmZJjWCKTsRQJv+NyVr8Fn/8xJHuSrPoGHZSv8JsDG6FDUDlErg3Zz+4dnIncg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1616158458;
+        s=2020e; t=1616159870;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=6Po6dBNT/n61UXXRklMcoA4R/HjEjyRTLs7IjXbRF3U=;
-        b=BbVgzhmzgCP+u/bOW9Amnp+8TKspTfAjRjUHKFfn4KtIzEZgt14Dp2NlWDP2bMr/8JompL
-        DflIlIO2hPgfo1Bw==
-From:   "tip-bot2 for Waiman Long" <tip-bot2@linutronix.de>
+        bh=+ArjPz9hwoJl9auNJ0vto0zGB02WVusPgc04PlXb+uE=;
+        b=r3jX9pZrXReLM3XjvCEljhYA9t0m8XwQD8Dk/lakX72JUqj0MLIeo4B0AOEFN0BTqbxzPw
+        +gzc/dV+TUYJnYBQ==
+From:   "tip-bot2 for Joerg Roedel" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] locking/locktorture: Fix false positive circular
- locking splat in ww_mutex test
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        Waiman Long <longman@redhat.com>,
-        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20210318172814.4400-3-longman@redhat.com>
-References: <20210318172814.4400-3-longman@redhat.com>
+Subject: [tip: x86/seves] x86/sev-es: Optimize __sev_es_ist_enter() for better
+ readability
+Cc:     Joerg Roedel <jroedel@suse.de>, Borislav Petkov <bp@suse.de>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20210303141716.29223-4-joro@8bytes.org>
+References: <20210303141716.29223-4-joro@8bytes.org>
 MIME-Version: 1.0
-Message-ID: <161615845780.398.3515033532845132919.tip-bot2@tip-bot2>
+Message-ID: <161615987012.398.914043660944501718.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,67 +59,82 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the locking/core branch of tip:
+The following commit has been merged into the x86/seves branch of tip:
 
-Commit-ID:     2ea55bbba23e9d36996299664d618393c8602646
-Gitweb:        https://git.kernel.org/tip/2ea55bbba23e9d36996299664d618393c8602646
-Author:        Waiman Long <longman@redhat.com>
-AuthorDate:    Thu, 18 Mar 2021 13:28:11 -04:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 19 Mar 2021 12:13:09 +01:00
+Commit-ID:     799de1baaf3509a54ff713efb768020f8defd709
+Gitweb:        https://git.kernel.org/tip/799de1baaf3509a54ff713efb768020f8defd709
+Author:        Joerg Roedel <jroedel@suse.de>
+AuthorDate:    Wed, 03 Mar 2021 15:17:14 +01:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Fri, 19 Mar 2021 13:37:22 +01:00
 
-locking/locktorture: Fix false positive circular locking splat in ww_mutex test
+x86/sev-es: Optimize __sev_es_ist_enter() for better readability
 
-In order to avoid false positive circular locking lockdep splat
-when runnng the ww_mutex torture test, we need to make sure that
-the ww_mutexes have the same lock class as the acquire_ctx. This
-means the ww_mutexes must have the same lockdep key as the
-acquire_ctx. Unfortunately the current DEFINE_WW_MUTEX() macro fails
-to do that. As a result, we add an init method for the ww_mutex test
-to do explicit ww_mutex_init()'s of the ww_mutexes to avoid the false
-positive warning.
+Reorganize the code and improve the comments to make the function more
+readable and easier to understand.
 
-Suggested-by: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Waiman Long <longman@redhat.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20210318172814.4400-3-longman@redhat.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lkml.kernel.org/r/20210303141716.29223-4-joro@8bytes.org
 ---
- kernel/locking/locktorture.c | 17 ++++++++++++++---
- 1 file changed, 14 insertions(+), 3 deletions(-)
+ arch/x86/kernel/sev-es.c | 36 ++++++++++++++++++++++++------------
+ 1 file changed, 24 insertions(+), 12 deletions(-)
 
-diff --git a/kernel/locking/locktorture.c b/kernel/locking/locktorture.c
-index 0ab94e1..3c27f43 100644
---- a/kernel/locking/locktorture.c
-+++ b/kernel/locking/locktorture.c
-@@ -357,10 +357,20 @@ static struct lock_torture_ops mutex_lock_ops = {
- };
- 
- #include <linux/ww_mutex.h>
-+/*
-+ * The torture ww_mutexes should belong to the same lock class as
-+ * torture_ww_class to avoid lockdep problem. The ww_mutex_init()
-+ * function is called for initialization to ensure that.
-+ */
- static DEFINE_WD_CLASS(torture_ww_class);
--static DEFINE_WW_MUTEX(torture_ww_mutex_0, &torture_ww_class);
--static DEFINE_WW_MUTEX(torture_ww_mutex_1, &torture_ww_class);
--static DEFINE_WW_MUTEX(torture_ww_mutex_2, &torture_ww_class);
-+static struct ww_mutex torture_ww_mutex_0, torture_ww_mutex_1, torture_ww_mutex_2;
-+
-+static void torture_ww_mutex_init(void)
-+{
-+	ww_mutex_init(&torture_ww_mutex_0, &torture_ww_class);
-+	ww_mutex_init(&torture_ww_mutex_1, &torture_ww_class);
-+	ww_mutex_init(&torture_ww_mutex_2, &torture_ww_class);
-+}
- 
- static int torture_ww_mutex_lock(void)
- __acquires(torture_ww_mutex_0)
-@@ -418,6 +428,7 @@ __releases(torture_ww_mutex_2)
+diff --git a/arch/x86/kernel/sev-es.c b/arch/x86/kernel/sev-es.c
+index 225704e..26f5479 100644
+--- a/arch/x86/kernel/sev-es.c
++++ b/arch/x86/kernel/sev-es.c
+@@ -137,29 +137,41 @@ static __always_inline bool on_vc_stack(struct pt_regs *regs)
  }
  
- static struct lock_torture_ops ww_mutex_lock_ops = {
-+	.init		= torture_ww_mutex_init,
- 	.writelock	= torture_ww_mutex_lock,
- 	.write_delay	= torture_mutex_delay,
- 	.task_boost     = torture_boost_dummy,
+ /*
+- * This function handles the case when an NMI is raised in the #VC exception
+- * handler entry code. In this case, the IST entry for #VC must be adjusted, so
+- * that any subsequent #VC exception will not overwrite the stack contents of the
+- * interrupted #VC handler.
++ * This function handles the case when an NMI is raised in the #VC
++ * exception handler entry code, before the #VC handler has switched off
++ * its IST stack. In this case, the IST entry for #VC must be adjusted,
++ * so that any nested #VC exception will not overwrite the stack
++ * contents of the interrupted #VC handler.
+  *
+  * The IST entry is adjusted unconditionally so that it can be also be
+- * unconditionally adjusted back in sev_es_ist_exit(). Otherwise a nested
+- * sev_es_ist_exit() call may adjust back the IST entry too early.
++ * unconditionally adjusted back in __sev_es_ist_exit(). Otherwise a
++ * nested sev_es_ist_exit() call may adjust back the IST entry too
++ * early.
++ *
++ * The __sev_es_ist_enter() and __sev_es_ist_exit() functions always run
++ * on the NMI IST stack, as they are only called from NMI handling code
++ * right now.
+  */
+ void noinstr __sev_es_ist_enter(struct pt_regs *regs)
+ {
+ 	unsigned long old_ist, new_ist;
+ 
+ 	/* Read old IST entry */
+-	old_ist = __this_cpu_read(cpu_tss_rw.x86_tss.ist[IST_INDEX_VC]);
++	new_ist = old_ist = __this_cpu_read(cpu_tss_rw.x86_tss.ist[IST_INDEX_VC]);
+ 
+-	/* Make room on the IST stack */
++	/*
++	 * If NMI happened while on the #VC IST stack, set the new IST
++	 * value below regs->sp, so that the interrupted stack frame is
++	 * not overwritten by subsequent #VC exceptions.
++	 */
+ 	if (on_vc_stack(regs))
+-		new_ist = ALIGN_DOWN(regs->sp, 8) - sizeof(old_ist);
+-	else
+-		new_ist = old_ist - sizeof(old_ist);
++		new_ist = regs->sp;
+ 
+-	/* Store old IST entry */
++	/*
++	 * Reserve additional 8 bytes and store old IST value so this
++	 * adjustment can be unrolled in __sev_es_ist_exit().
++	 */
++	new_ist -= sizeof(old_ist);
+ 	*(unsigned long *)new_ist = old_ist;
+ 
+ 	/* Set new IST entry */
