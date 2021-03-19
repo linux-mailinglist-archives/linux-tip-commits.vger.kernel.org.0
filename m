@@ -2,52 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D454341BC7
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 19 Mar 2021 12:51:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 540F2341CE2
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 19 Mar 2021 13:26:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229638AbhCSLue (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 19 Mar 2021 07:50:34 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:36404 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229512AbhCSLuX (ORCPT
+        id S230166AbhCSMZa (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 19 Mar 2021 08:25:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56600 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230114AbhCSMZM (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 19 Mar 2021 07:50:23 -0400
-Date:   Fri, 19 Mar 2021 11:50:21 -0000
+        Fri, 19 Mar 2021 08:25:12 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4746C06174A;
+        Fri, 19 Mar 2021 05:25:09 -0700 (PDT)
+Date:   Fri, 19 Mar 2021 12:25:07 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1616154622;
+        s=2020; t=1616156708;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Zpxq5otX4TnUbF2LFQlIqJoCztRsOCqmv9aM1qH31Is=;
-        b=ARxMWfnjA5zHVEfQtBcaf3Ub0akswX+qkt5qJxgAGCsQ/33Oy/g87wRQpkphT6HODiI2P4
-        U3tVxS1Izq5iE894x32c1CYr8FBRcPbFSyrZU0v4yzk1vxDZ0zE9bkZVWK6OQ0HcT+ocRH
-        muVxi1jnwW+a5rolnpB1VW98/FGVwWvujwaQRtXeG/QzAISycqnIPwEH9RMw8ko0dwWpWs
-        /XXSfetR2UCmDxdkNqek2y0BR94IUDXzy2yxwoEv0OtE+ezCa/q3TzsOn8hV3FvfWR10eT
-        fZC6izYUOkjbNwOdn//ci5P1Iz7+35Zex+0pBdItd4Wc7Um4ByEY33U0qzCX4Q==
+        bh=c41gDclJ74izuDFqleCjC4OEyVgBPimL3LJByFsY6WA=;
+        b=CwTi6X1JlEx61lMo4tEBcWlTBNoFwwI5e8Ql3gggnBoxoP1s60LxcZev64nJCJYC06Olaz
+        dc4V+QWphCcducKlQsqT5j5ekxOTLkecsfrdF/xbptFvHixnjvby75h+SMVRQjtkIFoRKa
+        gbRajwngwvmnziCUf+YJwC51v2vfl6qzvlw5+r/r47Bds6FSVsOl/SZgRxT4K69Fi1KpvE
+        mu5e6y+wRHp6DBb3aQBmmktykZp5PRU+d7y1Wz74QEemjB1/gwKaSDn5pslL/ZG769tFqo
+        NXr02F/w2Kri13onzjMhTpbaPOLnbeN99YVa++W74PKb67dcMSFlpsVQJx2Liw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1616154622;
+        s=2020e; t=1616156708;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Zpxq5otX4TnUbF2LFQlIqJoCztRsOCqmv9aM1qH31Is=;
-        b=t+0e/lK1UR5mqC8zxBzgkUhdBCDWgkpOTl3VEDtsQb3T0QUXxrKO4CNwbqDOKT8JnRjxGi
-        TZKROOyRrYeQUUBw==
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+        bh=c41gDclJ74izuDFqleCjC4OEyVgBPimL3LJByFsY6WA=;
+        b=DekgXNmkRliVBojOegXNQw50i7N2Y4hypcEEtlQEtA58df9JjRpJ6KhLuXMPsfpkQ1XrgV
+        FjzRt/unZiVIVaDA==
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/ioapic: Ignore IRQ2 again
-Cc:     Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20210318192819.636943062@linutronix.de>
-References: <20210318192819.636943062@linutronix.de>
+Subject: [tip: locking/urgent] static_call: Fix static_call_update() sanity check
+Cc:     Sumit Garg <sumit.garg@linaro.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Jarkko Sakkinen <jarkko@kernel.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20210318113610.739542434@infradead.org>
+References: <20210318113610.739542434@infradead.org>
 MIME-Version: 1.0
-Message-ID: <161615462121.398.1632881583538961240.tip-bot2@tip-bot2>
+Message-ID: <161615670760.398.14295497710199743924.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -56,77 +60,75 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the locking/urgent branch of tip:
 
-Commit-ID:     a501b048a95b79e1e34f03cac3c87ff1e9f229ad
-Gitweb:        https://git.kernel.org/tip/a501b048a95b79e1e34f03cac3c87ff1e9f229ad
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Thu, 18 Mar 2021 20:26:47 +01:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 19 Mar 2021 12:43:41 +01:00
+Commit-ID:     38c93587375053c5b9ef093f4a5ea754538cba32
+Gitweb:        https://git.kernel.org/tip/38c93587375053c5b9ef093f4a5ea754538cba32
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Thu, 18 Mar 2021 11:31:51 +01:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Fri, 19 Mar 2021 13:16:44 +01:00
 
-x86/ioapic: Ignore IRQ2 again
+static_call: Fix static_call_update() sanity check
 
-Vitaly ran into an issue with hotplugging CPU0 on an Amazon instance where
-the matrix allocator claimed to be out of vectors. He analyzed it down to
-the point that IRQ2, the PIC cascade interrupt, which is supposed to be not
-ever routed to the IO/APIC ended up having an interrupt vector assigned
-which got moved during unplug of CPU0.
+Sites that match init_section_contains() get marked as INIT. For
+built-in code init_sections contains both __init and __exit text. OTOH
+kernel_text_address() only explicitly includes __init text (and there
+are no __exit text markers).
 
-The underlying issue is that IRQ2 for various reasons (see commit
-af174783b925 ("x86: I/O APIC: Never configure IRQ2" for details) is treated
-as a reserved system vector by the vector core code and is not accounted as
-a regular vector. The Amazon BIOS has an routing entry of pin2 to IRQ2
-which causes the IO/APIC setup to claim that interrupt which is granted by
-the vector domain because there is no sanity check. As a consequence the
-allocation counter of CPU0 underflows which causes a subsequent unplug to
-fail with:
+Match what jump_label already does and ignore the warning for INIT
+sites. Also see the excellent changelog for commit: 8f35eaa5f2de
+("jump_label: Don't warn on __exit jump entries")
 
-  [ ... ] CPU 0 has 4294967295 vectors, 589 available. Cannot disable CPU
-
-There is another sanity check missing in the matrix allocator, but the
-underlying root cause is that the IO/APIC code lost the IRQ2 ignore logic
-during the conversion to irqdomains.
-
-For almost 6 years nobody complained about this wreckage, which might
-indicate that this requirement could be lifted, but for any system which
-actually has a PIC IRQ2 is unusable by design so any routing entry has no
-effect and the interrupt cannot be connected to a device anyway.
-
-Due to that and due to history biased paranoia reasons restore the IRQ2
-ignore logic and treat it as non existent despite a routing entry claiming
-otherwise.
-
-Fixes: d32932d02e18 ("x86/irq: Convert IOAPIC to use hierarchical irqdomain interfaces")
-Reported-by: Vitaly Kuznetsov <vkuznets@redhat.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Vitaly Kuznetsov <vkuznets@redhat.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20210318192819.636943062@linutronix.de
-
-
+Fixes: 9183c3f9ed710 ("static_call: Add inline static call infrastructure")
+Reported-by: Sumit Garg <sumit.garg@linaro.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Jarkko Sakkinen <jarkko@kernel.org>
+Tested-by: Sumit Garg <sumit.garg@linaro.org>
+Link: https://lkml.kernel.org/r/20210318113610.739542434@infradead.org
 ---
- arch/x86/kernel/apic/io_apic.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ kernel/jump_label.c  |  8 ++++++++
+ kernel/static_call.c | 11 ++++++++++-
+ 2 files changed, 18 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/apic/io_apic.c b/arch/x86/kernel/apic/io_apic.c
-index c3b60c3..73ff4dd 100644
---- a/arch/x86/kernel/apic/io_apic.c
-+++ b/arch/x86/kernel/apic/io_apic.c
-@@ -1032,6 +1032,16 @@ static int mp_map_pin_to_irq(u32 gsi, int idx, int ioapic, int pin,
- 	if (idx >= 0 && test_bit(mp_irqs[idx].srcbus, mp_bus_not_pci)) {
- 		irq = mp_irqs[idx].srcbusirq;
- 		legacy = mp_is_legacy_irq(irq);
-+		/*
-+		 * IRQ2 is unusable for historical reasons on systems which
-+		 * have a legacy PIC. See the comment vs. IRQ2 further down.
-+		 *
-+		 * If this gets removed at some point then the related code
-+		 * in lapic_assign_system_vectors() needs to be adjusted as
-+		 * well.
-+		 */
-+		if (legacy && irq == PIC_CASCADE_IR)
-+			return -EINVAL;
- 	}
+diff --git a/kernel/jump_label.c b/kernel/jump_label.c
+index c6a39d6..ba39fbb 100644
+--- a/kernel/jump_label.c
++++ b/kernel/jump_label.c
+@@ -407,6 +407,14 @@ static bool jump_label_can_update(struct jump_entry *entry, bool init)
+ 		return false;
  
- 	mutex_lock(&ioapic_mutex);
+ 	if (!kernel_text_address(jump_entry_code(entry))) {
++		/*
++		 * This skips patching built-in __exit, which
++		 * is part of init_section_contains() but is
++		 * not part of kernel_text_address().
++		 *
++		 * Skipping built-in __exit is fine since it
++		 * will never be executed.
++		 */
+ 		WARN_ONCE(!jump_entry_is_init(entry),
+ 			  "can't patch jump_label at %pS",
+ 			  (void *)jump_entry_code(entry));
+diff --git a/kernel/static_call.c b/kernel/static_call.c
+index fc22590..2c5950b 100644
+--- a/kernel/static_call.c
++++ b/kernel/static_call.c
+@@ -181,7 +181,16 @@ void __static_call_update(struct static_call_key *key, void *tramp, void *func)
+ 				continue;
+ 
+ 			if (!kernel_text_address((unsigned long)site_addr)) {
+-				WARN_ONCE(1, "can't patch static call site at %pS",
++				/*
++				 * This skips patching built-in __exit, which
++				 * is part of init_section_contains() but is
++				 * not part of kernel_text_address().
++				 *
++				 * Skipping built-in __exit is fine since it
++				 * will never be executed.
++				 */
++				WARN_ONCE(!static_call_is_init(site),
++					  "can't patch static call site at %pS",
+ 					  site_addr);
+ 				continue;
+ 			}
