@@ -2,56 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4783A343048
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 21 Mar 2021 00:23:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 53B01343215
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 21 Mar 2021 12:06:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229766AbhCTXTx (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 20 Mar 2021 19:19:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53492 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229618AbhCTXTZ (ORCPT
+        id S229903AbhCULFx (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 21 Mar 2021 07:05:53 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:47614 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229766AbhCULFh (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 20 Mar 2021 19:19:25 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B00BCC061574;
-        Sat, 20 Mar 2021 16:19:24 -0700 (PDT)
-Date:   Sat, 20 Mar 2021 23:19:20 -0000
+        Sun, 21 Mar 2021 07:05:37 -0400
+Date:   Sun, 21 Mar 2021 11:05:35 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1616282362;
+        s=2020; t=1616324736;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=yfwU/ul0+cTLgyrW6rhIfwnO+4QcYxylCaHls+xR/Xo=;
-        b=Xab4p5vGZWmK06rVfim/7/+vxw2yMek/Bi0RdRZQl0Gl78kKwjJUfkVsS2TXnhw0xlY6RF
-        2MG5988c9cAIBjAjtahBSeoaDPmPDJAR4mipNBtV82uFj0rkjGvT/9GiT3kjMMYOOEyPNH
-        AyEvUYLc18DnGjOQqEiZeOmZ4fdCxzU14FO8UiGh1VaX+VNh6nEYUkxpTdSrbBo4bOCyxr
-        Jqi8F9mYCRqx4A1k/HJQUgHTXluCRUASPo7zFLiCmZTz3NI5+hcFdDJqQtBqKKFaNM/3EH
-        KFFnsbAPkHwQK/tcD5qV0OI47YO5OOma1w7gCtEwNkYQP0Mx1qXVi34Tgxj2xg==
+        bh=wIhJq0AmOs3TpVpI379NKyT/XsKDxqnjt04siXeuItA=;
+        b=wH+viTmwr0tEVWMgghmWhfSduegR+55NHJNUuah1BIModU8eX2GjZ4Hd+h5AazxADxkY10
+        KJXlCusrRELn8DZZzgohGk47cAhiDQ2YR7tyZ/aEmKfnpDr5mS+3lu4L3iFikcRGOGmwBs
+        HATagJnTLwgKLEnrTWzlf5GLs20iA5UzjegXrMiVEZrNEpJm2fdaMMO+VJFoK8nK/Ik8hd
+        KunZGcZgLIrsQlAf+5Lqq3rMD/XOAwhszKOZsiZyC/CcSbe5fCVl8kZd7+oEBEYOqR+U0v
+        cWOsMpeHXyB+zLiMBRupJxZYOjGxgWf6z+hyS2gE+inMiC1nQIOpPgDh/3F4OQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1616282362;
+        s=2020e; t=1616324736;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=yfwU/ul0+cTLgyrW6rhIfwnO+4QcYxylCaHls+xR/Xo=;
-        b=/xouHbAMqvg4ow9I3lJ8cE+9AizOiVNq0sXVKfaZ6Vv/p94c0r7yjBAmELiX7C4CczDSOM
-        7x1yQF582UufZ8CQ==
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+        bh=wIhJq0AmOs3TpVpI379NKyT/XsKDxqnjt04siXeuItA=;
+        b=ZFSLHQrcABJzKUYEvXpIfV/4BOQ5tzwXEeA6elaDZ2ifSIH5Cu5FKHJRw6vJfmi0P56+RW
+        WLr8+Immkk/vgFDg==
+From:   "tip-bot2 for Tetsuo Handa" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/urgent] genirq: Disable interrupts for force threaded handlers
-Cc:     Johan Hovold <johan@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        x86@kernel.org, linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20210317143859.513307808@linutronix.de>
-References: <20210317143859.513307808@linutronix.de>
+Subject: [tip: perf/urgent] lockdep: Add a missing initialization hint to the
+ "INFO: Trying to register non-static key" message
+Cc:     Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20210321064913.4619-1-penguin-kernel@I-love.SAKURA.ne.jp>
+References: <20210321064913.4619-1-penguin-kernel@I-love.SAKURA.ne.jp>
 MIME-Version: 1.0
-Message-ID: <161628236069.398.8387834895225662982.tip-bot2@tip-bot2>
+Message-ID: <161632473539.398.8522082432141572296.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,77 +57,43 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the irq/urgent branch of tip:
+The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     81e2073c175b887398e5bca6c004efa89983f58d
-Gitweb:        https://git.kernel.org/tip/81e2073c175b887398e5bca6c004efa89983f58d
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Wed, 17 Mar 2021 15:38:52 +01:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sun, 21 Mar 2021 00:17:52 +01:00
+Commit-ID:     3a85969e9d912d5dd85362ee37b5f81266e00e77
+Gitweb:        https://git.kernel.org/tip/3a85969e9d912d5dd85362ee37b5f81266e00e77
+Author:        Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+AuthorDate:    Sun, 21 Mar 2021 15:49:13 +09:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Sun, 21 Mar 2021 11:59:57 +01:00
 
-genirq: Disable interrupts for force threaded handlers
+lockdep: Add a missing initialization hint to the "INFO: Trying to register non-static key" message
 
-With interrupt force threading all device interrupt handlers are invoked
-from kernel threads. Contrary to hard interrupt context the invocation only
-disables bottom halfs, but not interrupts. This was an oversight back then
-because any code like this will have an issue:
+Since this message is printed when dynamically allocated spinlocks (e.g.
+kzalloc()) are used without initialization (e.g. spin_lock_init()),
+suggest to developers to check whether initialization functions for objects
+were called, before making developers wonder what annotation is missing.
 
-thread(irq_A)
-  irq_handler(A)
-    spin_lock(&foo->lock);
+[ mingo: Minor tweaks to the message. ]
 
-interrupt(irq_B)
-  irq_handler(B)
-    spin_lock(&foo->lock);
-
-This has been triggered with networking (NAPI vs. hrtimers) and console
-drivers where printk() happens from an interrupt which interrupted the
-force threaded handler.
-
-Now people noticed and started to change the spin_lock() in the handler to
-spin_lock_irqsave() which affects performance or add IRQF_NOTHREAD to the
-interrupt request which in turn breaks RT.
-
-Fix the root cause and not the symptom and disable interrupts before
-invoking the force threaded handler which preserves the regular semantics
-and the usefulness of the interrupt force threading as a general debugging
-tool.
-
-For not RT this is not changing much, except that during the execution of
-the threaded handler interrupts are delayed until the handler
-returns. Vs. scheduling and softirq processing there is no difference.
-
-For RT kernels there is no issue.
-
-Fixes: 8d32a307e4fa ("genirq: Provide forced interrupt threading")
-Reported-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Johan Hovold <johan@kernel.org>
-Acked-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Link: https://lore.kernel.org/r/20210317143859.513307808@linutronix.de
-
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20210321064913.4619-1-penguin-kernel@I-love.SAKURA.ne.jp
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- kernel/irq/manage.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ kernel/locking/lockdep.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/irq/manage.c b/kernel/irq/manage.c
-index dec3f73..21ea370 100644
---- a/kernel/irq/manage.c
-+++ b/kernel/irq/manage.c
-@@ -1142,11 +1142,15 @@ irq_forced_thread_fn(struct irq_desc *desc, struct irqaction *action)
- 	irqreturn_t ret;
- 
- 	local_bh_disable();
-+	if (!IS_ENABLED(CONFIG_PREEMPT_RT))
-+		local_irq_disable();
- 	ret = action->thread_fn(action->irq, action->dev_id);
- 	if (ret == IRQ_HANDLED)
- 		atomic_inc(&desc->threads_handled);
- 
- 	irq_finalize_oneshot(desc, action);
-+	if (!IS_ENABLED(CONFIG_PREEMPT_RT))
-+		local_irq_enable();
- 	local_bh_enable();
- 	return ret;
- }
+diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
+index c6d0c1d..c30eb88 100644
+--- a/kernel/locking/lockdep.c
++++ b/kernel/locking/lockdep.c
+@@ -930,7 +930,8 @@ static bool assign_lock_key(struct lockdep_map *lock)
+ 		/* Debug-check: all keys must be persistent! */
+ 		debug_locks_off();
+ 		pr_err("INFO: trying to register non-static key.\n");
+-		pr_err("the code is fine but needs lockdep annotation.\n");
++		pr_err("The code is fine but needs lockdep annotation, or maybe\n");
++		pr_err("you didn't initialize this object before use?\n");
+ 		pr_err("turning off the locking correctness validator.\n");
+ 		dump_stack();
+ 		return false;
