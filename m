@@ -2,108 +2,123 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E9E6C346D79
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 23 Mar 2021 23:45:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B1B0346DCA
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 24 Mar 2021 00:17:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233971AbhCWWos (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 23 Mar 2021 18:44:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43676 "EHLO
+        id S231193AbhCWXRC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 23 Mar 2021 19:17:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50492 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233955AbhCWWol (ORCPT
+        with ESMTP id S230314AbhCWXQm (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 23 Mar 2021 18:44:41 -0400
-Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCDE9C061574;
-        Tue, 23 Mar 2021 15:44:40 -0700 (PDT)
-Received: by mail-pj1-x102c.google.com with SMTP id q6-20020a17090a4306b02900c42a012202so171536pjg.5;
-        Tue, 23 Mar 2021 15:44:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=4mIqrxpL0hv9pFkU59tSylHTm8hWiP5P63sXNpwmS5Y=;
-        b=mBW9sXhbyxuhGaI8Snrq/JRwe38NlscZpQj992EaRA1rQ8RmOtCQZa6bY9ocScx2YW
-         CIPVyKJrVaEeuB4QwKpXc3+rhuqXY3jnJcVrikoCVBgglpF+sBu4gQKpFWnldYY20ILq
-         jZTNnbqOEoINg88g85bhsUfvVztd38S40UQ948d/nAATVn4FdZLnIeBoYuHhHwqavynR
-         OEtCkALKofjiKhelnI2xs+Krd4utSgnyFO3FNCETAw6j1057m1ZU7stfaB7fnnv9MtDA
-         V/OvmlkCuG9I7iPYTAPMwWJy3ln1wDJKDAXRGuO91Q0tGp1fQS9SkbmuTLfsNvoksjwO
-         hjkw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=4mIqrxpL0hv9pFkU59tSylHTm8hWiP5P63sXNpwmS5Y=;
-        b=VZceWb9Qrh1frNup35++DCMOsfq430klex/kTbbhU0yQ9dqoInslifOm97n/nUxA0c
-         fkCkwzjVmK9JyY7Ipr1XtuzSPdxMcj3y2ZNpa4MxZh0GHcLtAhpWzOJqXlX+DJ6M1hh3
-         gw+FlB0X+xYYLfoAc/yL57Kmdg8VQQAVpOc7LdDmNk+2IYtbcOOzdZV+XK55yS0rXueI
-         HaCq61WIzLnRm2Aci36I+x70xL4eWB83C3i5H6vk1uifvHgX4pFC7eNFU23uBSlEl+am
-         d2by+/N4v/+x/xIuZvDPCfE68WbekauTnUlgGpw0rNaPYnZrSPypbjyrrIjMhXCyrB5h
-         lBog==
-X-Gm-Message-State: AOAM533Fk3WCC1KQwWQVNCoNM7Y5l79PSWxwcQk8Va9lViSl+LPu1ZJw
-        g6xKBq7XgkgKCGg3zed0ejKwhg2OJlk=
-X-Google-Smtp-Source: ABdhPJzkliZ6sBh19wxNSYosYbjLj2Cb3ACaEuIFIGdtdI1t7V4NWQiAgPXbm9joDasgARKeVRi/Vg==
-X-Received: by 2002:a17:90a:7045:: with SMTP id f63mr319012pjk.35.1616539480289;
-        Tue, 23 Mar 2021 15:44:40 -0700 (PDT)
-Received: from google.com ([2620:15c:202:201:4d6b:ca5a:c720:f5c9])
-        by smtp.gmail.com with ESMTPSA id 22sm198388pjl.31.2021.03.23.15.44.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Mar 2021 15:44:38 -0700 (PDT)
-Date:   Tue, 23 Mar 2021 15:44:35 -0700
-From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To:     Thomas Gleixner <tglx@linutronix.de>
-Cc:     tip-bot2 for Barry Song <tip-bot2@linutronix.de>,
-        linux-tip-commits@vger.kernel.org,
-        Barry Song <song.bao.hua@hisilicon.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org, maz@kernel.org
-Subject: Re: [tip: irq/core] genirq: Add IRQF_NO_AUTOEN for request_irq/nmi()
-Message-ID: <YFpvU30bKEZu0CSh@google.com>
-References: <20210302224916.13980-2-song.bao.hua@hisilicon.com>
- <161485523394.398.10007682711343433706.tip-bot2@tip-bot2>
- <87zgzj5gpo.fsf@nanos.tec.linutronix.de>
- <87o8fy69e0.fsf@nanos.tec.linutronix.de>
+        Tue, 23 Mar 2021 19:16:42 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14DFAC061574;
+        Tue, 23 Mar 2021 16:16:42 -0700 (PDT)
+Date:   Tue, 23 Mar 2021 23:16:31 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1616541393;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=ROlGSJk/36JOBgfFFkCiAbFR713lsD8yowkd1H4tQJE=;
+        b=s2OPYSMazcZSzP4bNJQlmkrJtuytwrbSNRDsaSbU5KijR/tuKvBD+lv8diW8dqAO45pvzL
+        DMj7MPMT5wA+iXsBoJx58ePSDvo2bwfOGGMBhONDwbI2rvEMiGbodW0gLxef9VhNAPM8dO
+        IqtZqj3NZWx5aTUJhgYtG7uI1SjXExaUu40NynQLj5SGSmtXIdgIn5NcqwDePBQD2bWMgQ
+        Sl+Ebw8/1aBiI0Ijrcfp+qTzHJlYKXOp5CvJdhxz1bsWXCRjZCXCWFUB3QTeiy4qO2Zvu2
+        RxXr1UXtda+zInrtv3j42ABLPHyZZXGSrnzML/D6PjKtqIWvEmCJZAPRkxaiPg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1616541393;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=ROlGSJk/36JOBgfFFkCiAbFR713lsD8yowkd1H4tQJE=;
+        b=KbyKDs0B9mbiUWsm10SWUfX7PtD1/MB2IYSS1ArNoMjaLceTWv4l0UFQxxcl5rya1Osqul
+        f4qXP4LjV6em5/BA==
+From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: ras/core] x86/mce/inject: Add IPID for injection too
+Cc:     Borislav Petkov <bp@suse.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20210314201806.12798-1-bp@alien8.de>
+References: <20210314201806.12798-1-bp@alien8.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87o8fy69e0.fsf@nanos.tec.linutronix.de>
+Message-ID: <161654139112.398.16619229725316596585.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-Hi Thomas,
+The following commit has been merged into the ras/core branch of tip:
 
-On Thu, Mar 04, 2021 at 07:50:31PM +0100, Thomas Gleixner wrote:
-> Dmitry,
-> 
-> On Thu, Mar 04 2021 at 11:57, Thomas Gleixner wrote:
-> > On Thu, Mar 04 2021 at 10:53, tip-bot wrote:
-> >
-> >> The following commit has been merged into the irq/core branch of tip:
-> >>
-> >> Commit-ID:     e749df1bbd23f4472082210650514548d8a39e9b
-> >> Gitweb:        https://git.kernel.org/tip/e749df1bbd23f4472082210650514548d8a39e9b
-> >> Author:        Barry Song <song.bao.hua@hisilicon.com>
-> >> AuthorDate:    Wed, 03 Mar 2021 11:49:15 +13:00
-> >> Committer:     Thomas Gleixner <tglx@linutronix.de>
-> >> CommitterDate: Thu, 04 Mar 2021 11:47:52 +01:00
-> >>
-> >> genirq: Add IRQF_NO_AUTOEN for request_irq/nmi()
-> >
-> > this commit is immutable and I tagged it so you can pull it into your
-> > tree to add the input changes on top:
-> >
-> >    git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git irq-no-autoen-2021-03-04
-> 
-> Please hold on:
-> 
->   https://lkml.kernel.org/r/CAHk-=wgZjJ89jeH72TC3i6N%2Bz9WEY=3ysp8zR9naRUcSqcAvTA@mail.gmail.com
-> 
-> I'll recreate a tag for you once rc2 is out.
+Commit-ID:     2ffdc2c34421561c12f843e497dd7ce898478c0f
+Gitweb:        https://git.kernel.org/tip/2ffdc2c34421561c12f843e497dd7ce898478c0f
+Author:        Borislav Petkov <bp@suse.de>
+AuthorDate:    Sat, 13 Mar 2021 17:13:29 +01:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Wed, 24 Mar 2021 00:04:45 +01:00
 
-It looks like the change has been picked up as
-cbe16f35bee6880becca6f20d2ebf6b457148552i on top of -rc2,
-but I don't think there is tag for it?
+x86/mce/inject: Add IPID for injection too
 
-Thanks!
+Add an injection file in order to specify the IPID too when injecting
+an error. One use case example is using the machinery to decode MCEs
+collected from other machines.
 
--- 
-Dmitry
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lkml.kernel.org/r/20210314201806.12798-1-bp@alien8.de
+---
+ arch/x86/kernel/cpu/mce/inject.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/arch/x86/kernel/cpu/mce/inject.c b/arch/x86/kernel/cpu/mce/inject.c
+index 7b36073..4e86d97 100644
+--- a/arch/x86/kernel/cpu/mce/inject.c
++++ b/arch/x86/kernel/cpu/mce/inject.c
+@@ -74,6 +74,7 @@ MCE_INJECT_SET(status);
+ MCE_INJECT_SET(misc);
+ MCE_INJECT_SET(addr);
+ MCE_INJECT_SET(synd);
++MCE_INJECT_SET(ipid);
+ 
+ #define MCE_INJECT_GET(reg)						\
+ static int inj_##reg##_get(void *data, u64 *val)			\
+@@ -88,11 +89,13 @@ MCE_INJECT_GET(status);
+ MCE_INJECT_GET(misc);
+ MCE_INJECT_GET(addr);
+ MCE_INJECT_GET(synd);
++MCE_INJECT_GET(ipid);
+ 
+ DEFINE_SIMPLE_ATTRIBUTE(status_fops, inj_status_get, inj_status_set, "%llx\n");
+ DEFINE_SIMPLE_ATTRIBUTE(misc_fops, inj_misc_get, inj_misc_set, "%llx\n");
+ DEFINE_SIMPLE_ATTRIBUTE(addr_fops, inj_addr_get, inj_addr_set, "%llx\n");
+ DEFINE_SIMPLE_ATTRIBUTE(synd_fops, inj_synd_get, inj_synd_set, "%llx\n");
++DEFINE_SIMPLE_ATTRIBUTE(ipid_fops, inj_ipid_get, inj_ipid_set, "%llx\n");
+ 
+ static void setup_inj_struct(struct mce *m)
+ {
+@@ -629,6 +632,8 @@ static const char readme_msg[] =
+ "\t    is present in hardware. \n"
+ "\t  - \"th\": Trigger APIC interrupt for Threshold errors. Causes threshold \n"
+ "\t    APIC interrupt handler to handle the error. \n"
++"\n"
++"ipid:\t IPID (AMD-specific)\n"
+ "\n";
+ 
+ static ssize_t
+@@ -652,6 +657,7 @@ static struct dfs_node {
+ 	{ .name = "misc",	.fops = &misc_fops,   .perm = S_IRUSR | S_IWUSR },
+ 	{ .name = "addr",	.fops = &addr_fops,   .perm = S_IRUSR | S_IWUSR },
+ 	{ .name = "synd",	.fops = &synd_fops,   .perm = S_IRUSR | S_IWUSR },
++	{ .name = "ipid",	.fops = &ipid_fops,   .perm = S_IRUSR | S_IWUSR },
+ 	{ .name = "bank",	.fops = &bank_fops,   .perm = S_IRUSR | S_IWUSR },
+ 	{ .name = "flags",	.fops = &flags_fops,  .perm = S_IRUSR | S_IWUSR },
+ 	{ .name = "cpu",	.fops = &extcpu_fops, .perm = S_IRUSR | S_IWUSR },
