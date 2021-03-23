@@ -2,56 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CD2C9346268
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 23 Mar 2021 16:09:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B27C34626A
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 23 Mar 2021 16:09:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232415AbhCWPJY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 23 Mar 2021 11:09:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57550 "EHLO
+        id S232471AbhCWPJ0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 23 Mar 2021 11:09:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57548 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232711AbhCWPJF (ORCPT
+        with ESMTP id S232710AbhCWPJF (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Tue, 23 Mar 2021 11:09:05 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D297C061763;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CB5CC061574;
         Tue, 23 Mar 2021 08:09:04 -0700 (PDT)
-Date:   Tue, 23 Mar 2021 15:08:56 -0000
+Date:   Tue, 23 Mar 2021 15:08:57 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1616512137;
+        s=2020; t=1616512138;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=4ARHa8gpU9B77j/k8U6moQMTkidbCHbkbQPl9F3msYc=;
-        b=Vl/Ll0ZctqyKjIEbN/tIw/u+iSztchGDHaYaFfEXF6p1brGYk+t53DvSRk9P/EjdHpxoTM
-        RkC3QpCNs5TOEc0lPN6h3Mwt1M1vn0GxQ63RhUzkj1wNtwXK+SKBUdvstdVpmugCWX5Yri
-        sDn+4ukEjqti1b2l3J99uKbAiBSr8GuWLcC8hbfdqw3FFiskfyzmIjFFnYb1yrBkorgEzo
-        Slk5iaBZITfqdc7whr1P6FNGXDh+IZJlA7ZvBiSIliZ63jNXlj7/v033XPfHcrP5Gs93se
-        pRZAUYjbkkPJ8/CH/0r7axRc1nYGowXHP5H9K1PiC+j4c+toIUZxCx3zlIdZBw==
+        bh=VWya+oRmkQeCEUG9aB4YZDUlYh8Osk7vXfGzNe1bvNU=;
+        b=EwyIY3G9BNHmtnyDmxKuMnS35INLY2hDPQYX+Ibu79n/UHI3jl6JAlkSJ4QDYmGmwMFc7c
+        aCgVVIGNj5wOwhICcBU6rsJDdWigwM3zyQkjpOT1RtotL0jc8Yr7em9KCi0iuGnjmGNQlj
+        EO6zp1MvfxXCrda+i1EtT6IuXdiVrNpEnttw3HXBI4yLPOWZPbhuKLO4pnli+uZSYUQjtr
+        G6rTUwm+GOPQ9iTlA8z4/pvJ7kIbp7M+ZPjGnUusPn87mR0ijyS37M+6gXEM5VCGxzN9uT
+        C/VeK+wY0E9iFpPPdToEWk4eYxKGap69jO20iufqkX0gxsxwpr3Fac//dIGA6g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1616512137;
+        s=2020e; t=1616512138;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=4ARHa8gpU9B77j/k8U6moQMTkidbCHbkbQPl9F3msYc=;
-        b=ROT33VLVgWMON74GBjfukGytz7GtfbAmw0fZbWsN+19cJPWAygNpuKKk663fKiijY2TSRH
-        i4iCcuVVvysHO9AA==
-From:   "tip-bot2 for Aubrey Li" <tip-bot2@linutronix.de>
+        bh=VWya+oRmkQeCEUG9aB4YZDUlYh8Osk7vXfGzNe1bvNU=;
+        b=LQOJL/crHNxAzsw4IGsYu9cgxRfHRwnQ+RLAARCxocs1Md1cYRFyZ2zewqPoS3TP4rhCWL
+        JcuKFfia+nzyIrDQ==
+From:   "tip-bot2 for Shakeel Butt" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/fair: Reduce long-tail newly idle balance cost
-Cc:     Aubrey Li <aubrey.li@linux.intel.com>,
+Subject: [tip: sched/core] psi: Reduce calls to sched_clock() in psi
+Cc:     Shakeel Butt <shakeelb@google.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Vincent Guittot <vincent.guittot@linaro.org>, x86@kernel.org,
+        Johannes Weiner <hannes@cmpxchg.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <1614154549-116078-1-git-send-email-aubrey.li@intel.com>
-References: <1614154549-116078-1-git-send-email-aubrey.li@intel.com>
+In-Reply-To: <20210321205156.4186483-1-shakeelb@google.com>
+References: <20210321205156.4186483-1-shakeelb@google.com>
 MIME-Version: 1.0
-Message-ID: <161651213645.398.4816489988541907975.tip-bot2@tip-bot2>
+Message-ID: <161651213738.398.10634964583212923406.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -62,57 +62,156 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     acb4decc1e900468d51b33c5f1ee445278e716a7
-Gitweb:        https://git.kernel.org/tip/acb4decc1e900468d51b33c5f1ee445278e716a7
-Author:        Aubrey Li <aubrey.li@intel.com>
-AuthorDate:    Wed, 24 Feb 2021 16:15:49 +08:00
+Commit-ID:     df77430639c9cf73559bac0f25084518bf9a812d
+Gitweb:        https://git.kernel.org/tip/df77430639c9cf73559bac0f25084518bf9a812d
+Author:        Shakeel Butt <shakeelb@google.com>
+AuthorDate:    Sun, 21 Mar 2021 13:51:56 -07:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 23 Mar 2021 16:01:59 +01:00
+CommitterDate: Tue, 23 Mar 2021 16:01:58 +01:00
 
-sched/fair: Reduce long-tail newly idle balance cost
+psi: Reduce calls to sched_clock() in psi
 
-A long-tail load balance cost is observed on the newly idle path,
-this is caused by a race window between the first nr_running check
-of the busiest runqueue and its nr_running recheck in detach_tasks.
+We noticed that the cost of psi increases with the increase in the
+levels of the cgroups. Particularly the cost of cpu_clock() sticks out
+as the kernel calls it multiple times as it traverses up the cgroup
+tree. This patch reduces the calls to cpu_clock().
 
-Before the busiest runqueue is locked, the tasks on the busiest
-runqueue could be pulled by other CPUs and nr_running of the busiest
-runqueu becomes 1 or even 0 if the running task becomes idle, this
-causes detach_tasks breaks with LBF_ALL_PINNED flag set, and triggers
-load_balance redo at the same sched_domain level.
+Performed perf bench on Intel Broadwell with 3 levels of cgroup.
 
-In order to find the new busiest sched_group and CPU, load balance will
-recompute and update the various load statistics, which eventually leads
-to the long-tail load balance cost.
+Before the patch:
 
-This patch clears LBF_ALL_PINNED flag for this race condition, and hence
-reduces the long-tail cost of newly idle balance.
+$ perf bench sched all
+ # Running sched/messaging benchmark...
+ # 20 sender and receiver processes per group
+ # 10 groups == 400 processes run
 
-Signed-off-by: Aubrey Li <aubrey.li@linux.intel.com>
+     Total time: 0.747 [sec]
+
+ # Running sched/pipe benchmark...
+ # Executed 1000000 pipe operations between two processes
+
+     Total time: 3.516 [sec]
+
+       3.516689 usecs/op
+         284358 ops/sec
+
+After the patch:
+
+$ perf bench sched all
+ # Running sched/messaging benchmark...
+ # 20 sender and receiver processes per group
+ # 10 groups == 400 processes run
+
+     Total time: 0.640 [sec]
+
+ # Running sched/pipe benchmark...
+ # Executed 1000000 pipe operations between two processes
+
+     Total time: 3.329 [sec]
+
+       3.329820 usecs/op
+         300316 ops/sec
+
+Signed-off-by: Shakeel Butt <shakeelb@google.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
-Link: https://lkml.kernel.org/r/1614154549-116078-1-git-send-email-aubrey.li@intel.com
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Link: https://lkml.kernel.org/r/20210321205156.4186483-1-shakeelb@google.com
 ---
- kernel/sched/fair.c |  9 +++++++++
- 1 file changed, 9 insertions(+)
+ kernel/sched/psi.c | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index aaa0dfa..6d73bdb 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -7687,6 +7687,15 @@ static int detach_tasks(struct lb_env *env)
+diff --git a/kernel/sched/psi.c b/kernel/sched/psi.c
+index c8480d7..b1b00e9 100644
+--- a/kernel/sched/psi.c
++++ b/kernel/sched/psi.c
+@@ -644,12 +644,10 @@ static void poll_timer_fn(struct timer_list *t)
+ 	wake_up_interruptible(&group->poll_wait);
+ }
  
- 	lockdep_assert_held(&env->src_rq->lock);
+-static void record_times(struct psi_group_cpu *groupc, int cpu)
++static void record_times(struct psi_group_cpu *groupc, u64 now)
+ {
+ 	u32 delta;
+-	u64 now;
  
-+	/*
-+	 * Source run queue has been emptied by another CPU, clear
-+	 * LBF_ALL_PINNED flag as we will not test any task.
-+	 */
-+	if (env->src_rq->nr_running <= 1) {
-+		env->flags &= ~LBF_ALL_PINNED;
-+		return 0;
-+	}
-+
- 	if (env->imbalance <= 0)
- 		return 0;
+-	now = cpu_clock(cpu);
+ 	delta = now - groupc->state_start;
+ 	groupc->state_start = now;
  
+@@ -676,7 +674,7 @@ static void record_times(struct psi_group_cpu *groupc, int cpu)
+ }
+ 
+ static void psi_group_change(struct psi_group *group, int cpu,
+-			     unsigned int clear, unsigned int set,
++			     unsigned int clear, unsigned int set, u64 now,
+ 			     bool wake_clock)
+ {
+ 	struct psi_group_cpu *groupc;
+@@ -696,7 +694,7 @@ static void psi_group_change(struct psi_group *group, int cpu,
+ 	 */
+ 	write_seqcount_begin(&groupc->seq);
+ 
+-	record_times(groupc, cpu);
++	record_times(groupc, now);
+ 
+ 	for (t = 0, m = clear; m; m &= ~(1 << t), t++) {
+ 		if (!(m & (1 << t)))
+@@ -788,12 +786,14 @@ void psi_task_change(struct task_struct *task, int clear, int set)
+ 	struct psi_group *group;
+ 	bool wake_clock = true;
+ 	void *iter = NULL;
++	u64 now;
+ 
+ 	if (!task->pid)
+ 		return;
+ 
+ 	psi_flags_change(task, clear, set);
+ 
++	now = cpu_clock(cpu);
+ 	/*
+ 	 * Periodic aggregation shuts off if there is a period of no
+ 	 * task changes, so we wake it back up if necessary. However,
+@@ -806,7 +806,7 @@ void psi_task_change(struct task_struct *task, int clear, int set)
+ 		wake_clock = false;
+ 
+ 	while ((group = iterate_groups(task, &iter)))
+-		psi_group_change(group, cpu, clear, set, wake_clock);
++		psi_group_change(group, cpu, clear, set, now, wake_clock);
+ }
+ 
+ void psi_task_switch(struct task_struct *prev, struct task_struct *next,
+@@ -815,6 +815,7 @@ void psi_task_switch(struct task_struct *prev, struct task_struct *next,
+ 	struct psi_group *group, *common = NULL;
+ 	int cpu = task_cpu(prev);
+ 	void *iter;
++	u64 now = cpu_clock(cpu);
+ 
+ 	if (next->pid) {
+ 		bool identical_state;
+@@ -836,7 +837,7 @@ void psi_task_switch(struct task_struct *prev, struct task_struct *next,
+ 				break;
+ 			}
+ 
+-			psi_group_change(group, cpu, 0, TSK_ONCPU, true);
++			psi_group_change(group, cpu, 0, TSK_ONCPU, now, true);
+ 		}
+ 	}
+ 
+@@ -858,7 +859,7 @@ void psi_task_switch(struct task_struct *prev, struct task_struct *next,
+ 
+ 		iter = NULL;
+ 		while ((group = iterate_groups(prev, &iter)) && group != common)
+-			psi_group_change(group, cpu, clear, set, true);
++			psi_group_change(group, cpu, clear, set, now, true);
+ 
+ 		/*
+ 		 * TSK_ONCPU is handled up to the common ancestor. If we're tasked
+@@ -867,7 +868,7 @@ void psi_task_switch(struct task_struct *prev, struct task_struct *next,
+ 		if (sleep) {
+ 			clear &= ~TSK_ONCPU;
+ 			for (; group; group = iterate_groups(prev, &iter))
+-				psi_group_change(group, cpu, clear, set, true);
++				psi_group_change(group, cpu, clear, set, now, true);
+ 		}
+ 	}
+ }
