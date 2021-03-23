@@ -2,81 +2,101 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 91C423458DA
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 23 Mar 2021 08:38:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9868E345978
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 23 Mar 2021 09:16:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229494AbhCWHiK (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 23 Mar 2021 03:38:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44522 "EHLO
+        id S229472AbhCWIQZ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 23 Mar 2021 04:16:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52744 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229665AbhCWHhu (ORCPT
+        with ESMTP id S230050AbhCWIQK (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 23 Mar 2021 03:37:50 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52D54C061574;
-        Tue, 23 Mar 2021 00:37:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=28zxBqK/DmKD7Fz/Yi3TtB21ftumoyYpSPGsW5HWTeM=; b=Ry23EI5FgyKRqUB3aF4Mkk3o7o
-        hOq49wyX34oxJUwBOCSOgCYrHwGf6kTFNZl9VR7gqkAzAjzeM1pBU0H4g0MLqTWDq55vLhKkYNaKX
-        O94clAC69gcftl+6F7nYPhmnu/IC41ShtiIwXuGoNhaI2PlU3/KmsjAVj1i4MWeSD5N/ldXXpXcMM
-        vMSTjHkl45NA0++wvJJBLfPHS4IYr2cyr+qbCkrNC5B+nxSsqHYAMYjvkFPWge1EKQgEmhscD/sUX
-        GXMhxVsDciWe9xIOvQ3c4sHEOvfDUQEFkiQE7pdIEyev86qmCCE5ds6pzrvTBoowDL8FKb90XKP0d
-        Tl+V0+7g==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
-        by casper.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
-        id 1lObbZ-009jFZ-T3; Tue, 23 Mar 2021 07:37:38 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 95FEF3010C8;
-        Tue, 23 Mar 2021 08:37:33 +0100 (CET)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 884AC23601882; Tue, 23 Mar 2021 08:37:33 +0100 (CET)
-Date:   Tue, 23 Mar 2021 08:37:33 +0100
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     linux-tip-commits@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
-        Ingo Molnar <mingo@kernel.org>, x86@kernel.org
-Subject: Re: [tip: locking/core] static_call: Fix function type mismatch
-Message-ID: <YFmavWCgUOOfibXR@hirez.programming.kicks-ass.net>
-References: <20210322214309.730556-1-arnd@kernel.org>
- <161645580767.398.731817901273202970.tip-bot2@tip-bot2>
+        Tue, 23 Mar 2021 04:16:10 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5560C061574;
+        Tue, 23 Mar 2021 01:16:08 -0700 (PDT)
+Date:   Tue, 23 Mar 2021 08:16:05 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1616487366;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=yhoobA2pk+Id/6J8DrRnPV+Dkp/cGA5TRmh32KLuHZU=;
+        b=UhR8alkiIw101KtVF1A04/FAYP9xpgrCVt4XZqrJbiqk/NuYR0kI5MMAzlbm6onGuxBV5h
+        qX5TX0/HI1HDrJ9g0Hres2UuXqS9oij5V+c7GKylIOIOdLizKPDhjoHOj9rZkeP4U87fdJ
+        1JPrn1ry97kWhGOgPXGnI3eS8t7G80rVJHEuylpW2+gsZwA98Wy9hbIB4UZfQbkpDaB62t
+        5QHvyFrZLoQDMLUZDE0uLdhZJS6qatW9yeVac0n8yZ/t7FcwqTNJeK7TEItEx6+mdpADNz
+        eaB2Z+1f1E4XF1ls91wuKGbcfYpriw6GO3uYptonQH3FIKijtRG3ByHyMSK/oA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1616487366;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=yhoobA2pk+Id/6J8DrRnPV+Dkp/cGA5TRmh32KLuHZU=;
+        b=sNJxJ6NLXKvpD+KTFzGNzuOjluPOAmPo2toBoLTbIpRxcRpqA1xmOjnavoWSMYOXyYMMya
+        M+DoyPtm7Xjq8hDg==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: locking/core] locking/mutex: Fix non debug version of
+ mutex_lock_io_nested()
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        stable@vger.kernel.org, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <878s6fshii.fsf@nanos.tec.linutronix.de>
+References: <878s6fshii.fsf@nanos.tec.linutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <161645580767.398.731817901273202970.tip-bot2@tip-bot2>
+Message-ID: <161648736505.398.2737771760695327055.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Mon, Mar 22, 2021 at 11:30:07PM -0000, tip-bot2 for Arnd Bergmann wrote:
-> The following commit has been merged into the locking/core branch of tip:
-> 
-> Commit-ID:     335c73e7c8f7deb23537afbbbe4f8ab48bd5de52
-> Gitweb:        https://git.kernel.org/tip/335c73e7c8f7deb23537afbbbe4f8ab48bd5de52
-> Author:        Arnd Bergmann <arnd@arndb.de>
-> AuthorDate:    Mon, 22 Mar 2021 22:42:24 +01:00
-> Committer:     Ingo Molnar <mingo@kernel.org>
-> CommitterDate: Tue, 23 Mar 2021 00:08:53 +01:00
-> 
-> static_call: Fix function type mismatch
-> 
-> The __static_call_return0() function is declared to return a 'long',
-> while it aliases a couple of functions that all return 'int'. When
-> building with 'make W=1', gcc warns about this:
-> 
->   kernel/sched/core.c:5420:37: error: cast between incompatible function types from 'long int (*)(void)' to 'int (*)(void)' [-Werror=cast-function-type]
->    5420 |   static_call_update(might_resched, (typeof(&__cond_resched)) __static_call_return0);
-> 
-> Change all these function to return 'long' as well, but remove the cast to
-> ensure we get a warning if any of the types ever change.
-> 
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> Signed-off-by: Ingo Molnar <mingo@kernel.org>
-> Link: https://lore.kernel.org/r/20210322214309.730556-1-arnd@kernel.org
+The following commit has been merged into the locking/core branch of tip:
 
-So I strongly disagree and think the warning is bad and should be
-disabled. I'll go uncommit this patch.
+Commit-ID:     ebdbd41bf2536ac57bf315ce9690245e08c5e506
+Gitweb:        https://git.kernel.org/tip/ebdbd41bf2536ac57bf315ce9690245e08c5e506
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Mon, 22 Mar 2021 09:46:13 +01:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Mon, 22 Mar 2021 21:43:57 +01:00
+
+locking/mutex: Fix non debug version of mutex_lock_io_nested()
+
+If CONFIG_DEBUG_LOCK_ALLOC=n then mutex_lock_io_nested() maps to
+mutex_lock() which is clearly wrong because mutex_lock() lacks the
+io_schedule_prepare()/finish() invocations.
+
+Map it to mutex_lock_io().
+
+Fixes: f21860bac05b ("locking/mutex, sched/wait: Fix the mutex_lock_io_nested() define")
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: stable@vger.kernel.org
+Link: https://lkml.kernel.org/r/878s6fshii.fsf@nanos.tec.linutronix.de
+---
+ include/linux/mutex.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/linux/mutex.h b/include/linux/mutex.h
+index 0cd631a..515cff7 100644
+--- a/include/linux/mutex.h
++++ b/include/linux/mutex.h
+@@ -185,7 +185,7 @@ extern void mutex_lock_io(struct mutex *lock);
+ # define mutex_lock_interruptible_nested(lock, subclass) mutex_lock_interruptible(lock)
+ # define mutex_lock_killable_nested(lock, subclass) mutex_lock_killable(lock)
+ # define mutex_lock_nest_lock(lock, nest_lock) mutex_lock(lock)
+-# define mutex_lock_io_nested(lock, subclass) mutex_lock(lock)
++# define mutex_lock_io_nested(lock, subclass) mutex_lock_io(lock)
+ #endif
+ 
+ /*
