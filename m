@@ -2,56 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 63F75347261
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 24 Mar 2021 08:23:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F877347259
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 24 Mar 2021 08:23:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235873AbhCXHWs (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 24 Mar 2021 03:22:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41692 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235832AbhCXHWc (ORCPT
+        id S231178AbhCXHWr (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 24 Mar 2021 03:22:47 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:38668 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233186AbhCXHWb (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 24 Mar 2021 03:22:32 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4AB7C0613DA;
-        Wed, 24 Mar 2021 00:22:31 -0700 (PDT)
-Date:   Wed, 24 Mar 2021 07:22:28 -0000
+        Wed, 24 Mar 2021 03:22:31 -0400
+Date:   Wed, 24 Mar 2021 07:22:29 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1616570548;
+        s=2020; t=1616570550;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=TmN4b4f8EQxDTVF26mUXzuSTrNrAXcYiDzV2tZJx7NU=;
-        b=J0Bd+fn8MnKVQ6+TaJDqR8sEzQQ5nt/V1QYRsEIcVwrbt3GR0A0PEFk2mpfBmBDeRm4PAc
-        gh3jrbIUVgOc3/kNJNqeReUYxM7YiObjsJmvlah7tPYc5aVQm7uhzc7SLM9Fbv18JeqJxd
-        X5mYJcNTFG/LWKJle0fH13DenEUpn2lHSjis9+aKBcanqAAEACXETdO1SyrQQZx6WhKsei
-        5yDUmJgyRLoXifdJNRqg2fvKVZ6ZFnRGSqyyQY62VYFf1t1eKW/Od1ZFTssOWg2rpLGObG
-        aiUH8jeG0hp6vYuCiecFiKmDWJ1ZDOHkLTNXXmwkW+H9dZRgyIoNIBaBC77lEg==
+        bh=ujXTNQ4XvJ93fDgwz3DDpWutDxjK2WINE5GUf6AXOQs=;
+        b=LM7NdWF9jSgX5iw1gYYQLXnaAdb9n3oU6I/c38L2kDKFWxeO+/ljX1dT13o2yDZplaq39j
+        wWzFsCq7yn08BF6rluAtsM5NWRXx5ZncQR/86YIWfIoD9rlSwIJihbXtOibYBGbqrTM7I9
+        eP/JXbZ/WjFVUqWuKOyEQSZojxvlV6qDboAhHLmShED995Xi3q2ZvxPlc8tu4GJX5qsHRb
+        3/t5wQOrWHIczfBxox8aVR2XyZffUlmHThcoLCJ2E2LHm610Om1VUodHQgGoO6zyj4NvSc
+        NdSTsb2seLVMi0vICcc8ZlukU0pPFJPcLAtydROyAvwF/8sZyrNv/jnP4wa+Qg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1616570548;
+        s=2020e; t=1616570550;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=TmN4b4f8EQxDTVF26mUXzuSTrNrAXcYiDzV2tZJx7NU=;
-        b=R10RwKEm/xhOmZl2QIIXmIvJNjb1kRenO31E9Bg1+5YfB1Qh89fHKJi1tb2aTVQTOoAW+y
-        U63Xg06TCy5l4iDA==
+        bh=ujXTNQ4XvJ93fDgwz3DDpWutDxjK2WINE5GUf6AXOQs=;
+        b=VNtzOw4JfGW1Kptlq7C87kOYPEXROSud4Odhz/EjyMFdFivP1tig8khNEplJUaC9JLhEsk
+        54TO5PqIqe6TLfAw==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] locking/rtmutex: Move debug functions as inlines
- into common header
+Subject: [tip: locking/core] locking/rtmutex: Remove empty and unused debug stubs
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210323213708.503445251@linutronix.de>
-References: <20210323213708.503445251@linutronix.de>
+In-Reply-To: <20210323213708.001857655@linutronix.de>
+References: <20210323213708.001857655@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <161657054823.398.5399369283772598365.tip-bot2@tip-bot2>
+Message-ID: <161657054987.398.3509848218878647146.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -62,229 +58,130 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     143d13d824e4ae416433eb92eb428b6771f94f00
-Gitweb:        https://git.kernel.org/tip/143d13d824e4ae416433eb92eb428b6771f94f00
+Commit-ID:     fec6b6a56b6135163f45332570e4c2cc51484a64
+Gitweb:        https://git.kernel.org/tip/fec6b6a56b6135163f45332570e4c2cc51484a64
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Tue, 23 Mar 2021 22:30:29 +01:00
+AuthorDate:    Tue, 23 Mar 2021 22:30:24 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 24 Mar 2021 08:06:08 +01:00
+CommitterDate: Wed, 24 Mar 2021 08:06:07 +01:00
 
-locking/rtmutex: Move debug functions as inlines into common header
+locking/rtmutex: Remove empty and unused debug stubs
 
-There is no value in having two header files providing just empty stubs and
-a C file which implements trivial debug functions which can just be inlined.
+No users, just ballast.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20210323213708.503445251@linutronix.de
+Link: https://lore.kernel.org/r/20210323213708.001857655@linutronix.de
 ---
- kernel/locking/Makefile         |  2 +-
- kernel/locking/rtmutex-debug.c  | 65 +--------------------------------
- kernel/locking/rtmutex-debug.h  | 26 +-------------
- kernel/locking/rtmutex.h        | 24 +------------
- kernel/locking/rtmutex_common.h | 30 ++++++++++++---
- 5 files changed, 25 insertions(+), 122 deletions(-)
- delete mode 100644 kernel/locking/rtmutex-debug.c
- delete mode 100644 kernel/locking/rtmutex-debug.h
- delete mode 100644 kernel/locking/rtmutex.h
+ include/linux/rtmutex.h        | 14 ++------------
+ kernel/locking/rtmutex-debug.c |  9 ---------
+ kernel/locking/rtmutex.c       | 17 -----------------
+ kernel/locking/rtmutex.h       |  2 --
+ 4 files changed, 2 insertions(+), 40 deletions(-)
 
-diff --git a/kernel/locking/Makefile b/kernel/locking/Makefile
-index 8838f1d..3572808 100644
---- a/kernel/locking/Makefile
-+++ b/kernel/locking/Makefile
-@@ -12,7 +12,6 @@ ifdef CONFIG_FUNCTION_TRACER
- CFLAGS_REMOVE_lockdep.o = $(CC_FLAGS_FTRACE)
- CFLAGS_REMOVE_lockdep_proc.o = $(CC_FLAGS_FTRACE)
- CFLAGS_REMOVE_mutex-debug.o = $(CC_FLAGS_FTRACE)
--CFLAGS_REMOVE_rtmutex-debug.o = $(CC_FLAGS_FTRACE)
- endif
+diff --git a/include/linux/rtmutex.h b/include/linux/rtmutex.h
+index 243fabc..d1672de 100644
+--- a/include/linux/rtmutex.h
++++ b/include/linux/rtmutex.h
+@@ -40,18 +40,9 @@ struct rt_mutex_waiter;
+ struct hrtimer_sleeper;
  
- obj-$(CONFIG_DEBUG_IRQFLAGS) += irqflag-debug.o
-@@ -26,7 +25,6 @@ obj-$(CONFIG_LOCK_SPIN_ON_OWNER) += osq_lock.o
- obj-$(CONFIG_PROVE_LOCKING) += spinlock.o
- obj-$(CONFIG_QUEUED_SPINLOCKS) += qspinlock.o
- obj-$(CONFIG_RT_MUTEXES) += rtmutex.o
--obj-$(CONFIG_DEBUG_RT_MUTEXES) += rtmutex-debug.o
- obj-$(CONFIG_DEBUG_SPINLOCK) += spinlock.o
- obj-$(CONFIG_DEBUG_SPINLOCK) += spinlock_debug.o
- obj-$(CONFIG_QUEUED_RWLOCKS) += qrwlock.o
-diff --git a/kernel/locking/rtmutex-debug.c b/kernel/locking/rtmutex-debug.c
-deleted file mode 100644
-index f1a83ec..0000000
---- a/kernel/locking/rtmutex-debug.c
-+++ /dev/null
-@@ -1,65 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0
--/*
-- * RT-Mutexes: blocking mutual exclusion locks with PI support
-- *
-- * started by Ingo Molnar and Thomas Gleixner:
-- *
-- *  Copyright (C) 2004-2006 Red Hat, Inc., Ingo Molnar <mingo@redhat.com>
-- *  Copyright (C) 2006 Timesys Corp., Thomas Gleixner <tglx@timesys.com>
-- *
-- * This code is based on the rt.c implementation in the preempt-rt tree.
-- * Portions of said code are
-- *
-- *  Copyright (C) 2004  LynuxWorks, Inc., Igor Manyilov, Bill Huey
-- *  Copyright (C) 2006  Esben Nielsen
-- *  Copyright (C) 2006  Kihon Technologies Inc.,
-- *			Steven Rostedt <rostedt@goodmis.org>
-- *
-- * See rt.c in preempt-rt for proper credits and further information
-- */
--#include <linux/sched.h>
--#include <linux/sched/rt.h>
--#include <linux/sched/debug.h>
--#include <linux/delay.h>
--#include <linux/export.h>
--#include <linux/spinlock.h>
--#include <linux/kallsyms.h>
--#include <linux/syscalls.h>
--#include <linux/interrupt.h>
--#include <linux/rbtree.h>
--#include <linux/fs.h>
--#include <linux/debug_locks.h>
--
--#include "rtmutex_common.h"
--
--void debug_rt_mutex_unlock(struct rt_mutex *lock)
--{
--	DEBUG_LOCKS_WARN_ON(rt_mutex_owner(lock) != current);
--}
--
--void debug_rt_mutex_proxy_unlock(struct rt_mutex *lock)
--{
--	DEBUG_LOCKS_WARN_ON(!rt_mutex_owner(lock));
--}
--
--void debug_rt_mutex_init_waiter(struct rt_mutex_waiter *waiter)
--{
--	memset(waiter, 0x11, sizeof(*waiter));
--}
--
--void debug_rt_mutex_free_waiter(struct rt_mutex_waiter *waiter)
--{
--	memset(waiter, 0x22, sizeof(*waiter));
--}
--
--void debug_rt_mutex_init(struct rt_mutex *lock, const char *name, struct lock_class_key *key)
--{
--	/*
--	 * Make sure we are not reinitializing a held lock:
--	 */
--	debug_check_no_locks_freed((void *)lock, sizeof(*lock));
--
--#ifdef CONFIG_DEBUG_LOCK_ALLOC
--	lockdep_init_map(&lock->dep_map, name, key, 0);
--#endif
--}
-diff --git a/kernel/locking/rtmutex-debug.h b/kernel/locking/rtmutex-debug.h
-deleted file mode 100644
-index 659e93e..0000000
---- a/kernel/locking/rtmutex-debug.h
-+++ /dev/null
-@@ -1,26 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0 */
--/*
-- * RT-Mutexes: blocking mutual exclusion locks with PI support
-- *
-- * started by Ingo Molnar and Thomas Gleixner:
-- *
-- *  Copyright (C) 2004-2006 Red Hat, Inc., Ingo Molnar <mingo@redhat.com>
-- *  Copyright (C) 2006, Timesys Corp., Thomas Gleixner <tglx@timesys.com>
-- *
-- * This file contains macros used solely by rtmutex.c. Debug version.
-- */
--
--extern void debug_rt_mutex_init_waiter(struct rt_mutex_waiter *waiter);
--extern void debug_rt_mutex_free_waiter(struct rt_mutex_waiter *waiter);
--extern void debug_rt_mutex_init(struct rt_mutex *lock, const char *name, struct lock_class_key *key);
--extern void debug_rt_mutex_lock(struct rt_mutex *lock);
--extern void debug_rt_mutex_unlock(struct rt_mutex *lock);
--extern void debug_rt_mutex_proxy_lock(struct rt_mutex *lock,
--				      struct task_struct *powner);
--extern void debug_rt_mutex_proxy_unlock(struct rt_mutex *lock);
--
--static inline bool debug_rt_mutex_detect_deadlock(struct rt_mutex_waiter *waiter,
--						  enum rtmutex_chainwalk walk)
--{
--	return (waiter != NULL);
--}
-diff --git a/kernel/locking/rtmutex.h b/kernel/locking/rtmutex.h
-deleted file mode 100644
-index 1e484ab..0000000
---- a/kernel/locking/rtmutex.h
-+++ /dev/null
-@@ -1,24 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0 */
--/*
-- * RT-Mutexes: blocking mutual exclusion locks with PI support
-- *
-- * started by Ingo Molnar and Thomas Gleixner:
-- *
-- *  Copyright (C) 2004-2006 Red Hat, Inc., Ingo Molnar <mingo@redhat.com>
-- *  Copyright (C) 2006, Timesys Corp., Thomas Gleixner <tglx@timesys.com>
-- *
-- * This file contains macros used solely by rtmutex.c.
-- * Non-debug version.
-- */
--
--#define debug_rt_mutex_init_waiter(w)			do { } while (0)
--#define debug_rt_mutex_free_waiter(w)			do { } while (0)
--#define debug_rt_mutex_proxy_unlock(l)			do { } while (0)
--#define debug_rt_mutex_unlock(l)			do { } while (0)
--#define debug_rt_mutex_init(m, n, k)			do { } while (0)
--
--static inline bool debug_rt_mutex_detect_deadlock(struct rt_mutex_waiter *w,
--						  enum rtmutex_chainwalk walk)
--{
--	return walk == RT_MUTEX_FULL_CHAINWALK;
--}
-diff --git a/kernel/locking/rtmutex_common.h b/kernel/locking/rtmutex_common.h
-index 1e11855..8456db5 100644
---- a/kernel/locking/rtmutex_common.h
-+++ b/kernel/locking/rtmutex_common.h
-@@ -13,6 +13,7 @@
- #ifndef __KERNEL_RTMUTEX_COMMON_H
- #define __KERNEL_RTMUTEX_COMMON_H
- 
-+#include <linux/debug_locks.h>
- #include <linux/rtmutex.h>
- #include <linux/sched/wake_q.h>
- 
-@@ -123,10 +124,29 @@ extern bool __rt_mutex_futex_unlock(struct rt_mutex *lock,
- 
- extern void rt_mutex_postunlock(struct wake_q_head *wake_q);
- 
--#ifdef CONFIG_DEBUG_RT_MUTEXES
--# include "rtmutex-debug.h"
--#else
--# include "rtmutex.h"
--#endif
-+/* Debug functions */
-+static inline void debug_rt_mutex_unlock(struct rt_mutex *lock)
-+{
-+	if (IS_ENABLED(CONFIG_DEBUG_RT_MUTEXES))
-+		DEBUG_LOCKS_WARN_ON(rt_mutex_owner(lock) != current);
-+}
-+
-+static inline void debug_rt_mutex_proxy_unlock(struct rt_mutex *lock)
-+{
-+	if (IS_ENABLED(CONFIG_DEBUG_RT_MUTEXES))
-+		DEBUG_LOCKS_WARN_ON(!rt_mutex_owner(lock));
-+}
-+
-+static inline void debug_rt_mutex_init_waiter(struct rt_mutex_waiter *waiter)
-+{
-+	if (IS_ENABLED(CONFIG_DEBUG_RT_MUTEXES))
-+		memset(waiter, 0x11, sizeof(*waiter));
-+}
-+
-+static inline void debug_rt_mutex_free_waiter(struct rt_mutex_waiter *waiter)
-+{
-+	if (IS_ENABLED(CONFIG_DEBUG_RT_MUTEXES))
-+		memset(waiter, 0x22, sizeof(*waiter));
-+}
- 
+ #ifdef CONFIG_DEBUG_RT_MUTEXES
+- extern int rt_mutex_debug_check_no_locks_freed(const void *from,
+-						unsigned long len);
+- extern void rt_mutex_debug_check_no_locks_held(struct task_struct *task);
+- extern void rt_mutex_debug_task_free(struct task_struct *tsk);
++extern void rt_mutex_debug_task_free(struct task_struct *tsk);
+ #else
+- static inline int rt_mutex_debug_check_no_locks_freed(const void *from,
+-						       unsigned long len)
+- {
+-	return 0;
+- }
+-# define rt_mutex_debug_check_no_locks_held(task)	do { } while (0)
+-# define rt_mutex_debug_task_free(t)			do { } while (0)
++static inline void rt_mutex_debug_task_free(struct task_struct *tsk) { }
  #endif
+ 
+ #define rt_mutex_init(mutex) \
+@@ -88,7 +79,6 @@ static inline int rt_mutex_is_locked(struct rt_mutex *lock)
+ }
+ 
+ extern void __rt_mutex_init(struct rt_mutex *lock, const char *name, struct lock_class_key *key);
+-extern void rt_mutex_destroy(struct rt_mutex *lock);
+ 
+ #ifdef CONFIG_DEBUG_LOCK_ALLOC
+ extern void rt_mutex_lock_nested(struct rt_mutex *lock, unsigned int subclass);
+diff --git a/kernel/locking/rtmutex-debug.c b/kernel/locking/rtmutex-debug.c
+index fb15010..df584c9 100644
+--- a/kernel/locking/rtmutex-debug.c
++++ b/kernel/locking/rtmutex-debug.c
+@@ -38,20 +38,11 @@ void rt_mutex_debug_task_free(struct task_struct *task)
+ 	DEBUG_LOCKS_WARN_ON(task->pi_blocked_on);
+ }
+ 
+-void debug_rt_mutex_lock(struct rt_mutex *lock)
+-{
+-}
+-
+ void debug_rt_mutex_unlock(struct rt_mutex *lock)
+ {
+ 	DEBUG_LOCKS_WARN_ON(rt_mutex_owner(lock) != current);
+ }
+ 
+-void
+-debug_rt_mutex_proxy_lock(struct rt_mutex *lock, struct task_struct *powner)
+-{
+-}
+-
+ void debug_rt_mutex_proxy_unlock(struct rt_mutex *lock)
+ {
+ 	DEBUG_LOCKS_WARN_ON(!rt_mutex_owner(lock));
+diff --git a/kernel/locking/rtmutex.c b/kernel/locking/rtmutex.c
+index 4beca54..82cb963 100644
+--- a/kernel/locking/rtmutex.c
++++ b/kernel/locking/rtmutex.c
+@@ -885,9 +885,6 @@ static int try_to_take_rt_mutex(struct rt_mutex *lock, struct task_struct *task,
+ 	raw_spin_unlock(&task->pi_lock);
+ 
+ takeit:
+-	/* We got the lock. */
+-	debug_rt_mutex_lock(lock);
+-
+ 	/*
+ 	 * This either preserves the RT_MUTEX_HAS_WAITERS bit if there
+ 	 * are still waiters or clears it.
+@@ -1581,20 +1578,6 @@ void __sched rt_mutex_futex_unlock(struct rt_mutex *lock)
+ }
+ 
+ /**
+- * rt_mutex_destroy - mark a mutex unusable
+- * @lock: the mutex to be destroyed
+- *
+- * This function marks the mutex uninitialized, and any subsequent
+- * use of the mutex is forbidden. The mutex must not be locked when
+- * this function is called.
+- */
+-void rt_mutex_destroy(struct rt_mutex *lock)
+-{
+-	WARN_ON(rt_mutex_is_locked(lock));
+-}
+-EXPORT_SYMBOL_GPL(rt_mutex_destroy);
+-
+-/**
+  * __rt_mutex_init - initialize the rt_mutex
+  *
+  * @lock:	The rt_mutex to be initialized
+diff --git a/kernel/locking/rtmutex.h b/kernel/locking/rtmutex.h
+index d77cb82..1e484ab 100644
+--- a/kernel/locking/rtmutex.h
++++ b/kernel/locking/rtmutex.h
+@@ -13,8 +13,6 @@
+ 
+ #define debug_rt_mutex_init_waiter(w)			do { } while (0)
+ #define debug_rt_mutex_free_waiter(w)			do { } while (0)
+-#define debug_rt_mutex_lock(l)				do { } while (0)
+-#define debug_rt_mutex_proxy_lock(l,p)			do { } while (0)
+ #define debug_rt_mutex_proxy_unlock(l)			do { } while (0)
+ #define debug_rt_mutex_unlock(l)			do { } while (0)
+ #define debug_rt_mutex_init(m, n, k)			do { } while (0)
