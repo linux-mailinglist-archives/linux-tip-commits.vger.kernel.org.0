@@ -2,56 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 101D7348E8C
+	by mail.lfdr.de (Postfix) with ESMTP id D5F8F348E8F
 	for <lists+linux-tip-commits@lfdr.de>; Thu, 25 Mar 2021 12:09:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229836AbhCYLJN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 25 Mar 2021 07:09:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35518 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229995AbhCYLIk (ORCPT
+        id S230153AbhCYLJO (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 25 Mar 2021 07:09:14 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:47070 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230142AbhCYLIt (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 25 Mar 2021 07:08:40 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 157AAC06175F;
-        Thu, 25 Mar 2021 04:08:40 -0700 (PDT)
-Date:   Thu, 25 Mar 2021 11:08:38 -0000
+        Thu, 25 Mar 2021 07:08:49 -0400
+Date:   Thu, 25 Mar 2021 11:08:47 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1616670518;
+        s=2020; t=1616670528;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=xNg4FYleL+r0sDNN8078foPUBcvMcbwC5+est4TqJsw=;
-        b=tYj2uQtVSWmENkw8wW25U9YgLr0xyMITN+kftjSQ8HFQLANVvJNvq+LtUlQVq2JP5Lqlym
-        785R3GHKtqIOv5pd4buH4uogf7d6TLdJ97wtnkmU/N4ZtTBHqwVmVu2ydgr7HWR8UTxHvr
-        dUMwUjswXOc56aQlxLVYTE82Xd9XAOqPML3TdByOTiYf81aURF39hMJjc2eQAhFD4VxqdN
-        Q/bMaM3IHEXm8+5eqzPEsI8iaoEOdxWHXxC9cp8K0nbmxln4rmJ6YXYejkvNCsfDXnCaOY
-        P4x4LDXwzXeiV5A1UfBKM7rludj/WpLrUspubAe5ajgIlUhPEu/Azczsq7hetQ==
+        bh=MQks5ZUGP7v2tV0VUT7qXT5vWaLsL2oK8QkD6CZ0mo0=;
+        b=VImVqSA31/dsLHk99GjSx1rOOuSkdSxiAgIw2ithVdmu0qtSY4QysNeqDCLkI8N+hA9hEM
+        hKgkQYXM0hYuW4LAo0deoe/dmQFdazPlF7dUgyGdm79GIj5JK8iWFzeCL25zKVO2Cx1uTR
+        8T3jbeZe/APbqJI05UFy8Aojl2KtW/mOvAAGrT9G7ogac8afUAAEjv4Y896YqqZwvMU+nG
+        u6lbr103d4a76M/e0L4C8JKmyrJt1o/LlD4+HYNpUvhm7A7M5sXWmZz4kYCt5x2PX8dz4Z
+        HgLOaeXBVlz2u/cGPGqdCXHfe/xjmGWJlOW8RXoWWpNCwMjI64WY400t0B2p7Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1616670518;
+        s=2020e; t=1616670528;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=xNg4FYleL+r0sDNN8078foPUBcvMcbwC5+est4TqJsw=;
-        b=bslZ7v/TBklOBK/ZPlXSP+SwPSWHEwV4+lv68qBJBfdoLAQiixQIbjCTEBrwZVpghwiYxB
-        NZ64g1xI7Vv6qpBA==
-From:   "tip-bot2 for Rasmus Villemoes" <tip-bot2@linutronix.de>
+        bh=MQks5ZUGP7v2tV0VUT7qXT5vWaLsL2oK8QkD6CZ0mo0=;
+        b=qdlo5MHl1DnO0TeMBr61RNF/wlWmU0/fSBi86eoq8bHirJmuYQ5mBZxt/VU9N3ocIIEOh7
+        p3FKphD1KpuWIDAQ==
+From:   "tip-bot2 for Masami Hiramatsu" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/core: Stop using magic values in sched_dynamic_mode()
-Cc:     Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Ingo Molnar <mingo@kernel.org>,
-        Peter Zijlstra <a.p.zijlstra@chello.nl>, x86@kernel.org,
+Subject: [tip: x86/core] x86/kprobes: Fix to identify indirect jmp and others
+ using range case
+Cc:     Colin Ian King <colin.king@canonical.com>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210325004515.531631-1-linux@rasmusvillemoes.dk>
-References: <20210325004515.531631-1-linux@rasmusvillemoes.dk>
+In-Reply-To: <161666692308.1120877.4675552834049546493.stgit@devnote2>
+References: <161666692308.1120877.4675552834049546493.stgit@devnote2>
 MIME-Version: 1.0
-Message-ID: <161667051806.398.14556471814285205703.tip-bot2@tip-bot2>
+Message-ID: <161667052779.398.5074470038473644947.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,46 +58,90 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the x86/core branch of tip:
 
-Commit-ID:     7e1b2eb74928b2478fd0630ce6c664334b480d00
-Gitweb:        https://git.kernel.org/tip/7e1b2eb74928b2478fd0630ce6c664334b480d00
-Author:        Rasmus Villemoes <linux@rasmusvillemoes.dk>
-AuthorDate:    Thu, 25 Mar 2021 01:45:14 +01:00
+Commit-ID:     2f706e0e5e263c0d204e37ea496cbb0e98aac2d2
+Gitweb:        https://git.kernel.org/tip/2f706e0e5e263c0d204e37ea496cbb0e98aac2d2
+Author:        Masami Hiramatsu <mhiramat@kernel.org>
+AuthorDate:    Thu, 25 Mar 2021 19:08:43 +09:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 25 Mar 2021 11:39:12 +01:00
+CommitterDate: Thu, 25 Mar 2021 11:37:22 +01:00
 
-sched/core: Stop using magic values in sched_dynamic_mode()
+x86/kprobes: Fix to identify indirect jmp and others using range case
 
-Use the enum names which are also what is used in the switch() in
-sched_dynamic_update().
+Fix can_boost() to identify indirect jmp and others using range case
+correctly.
 
-Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Since the condition in switch statement is opcode & 0xf0, it can not
+evaluate to 0xff case. This should be under the 0xf0 case. However,
+there is no reason to use the conbinations of the bit-masked condition
+and lower bit checking.
+
+Use range case to clean up the switch statement too.
+
+Fixes: 6256e668b7 ("x86/kprobes: Use int3 instead of debug trap for single-step")
+Reported-by: Colin Ian King <colin.king@canonical.com>
+Signed-off-by: Masami Hiramatsu <mhiramat@kernel.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Peter Zijlstra <a.p.zijlstra@chello.nl>
-Link: https://lore.kernel.org/r/20210325004515.531631-1-linux@rasmusvillemoes.dk
+Link: https://lore.kernel.org/r/161666692308.1120877.4675552834049546493.stgit@devnote2
 ---
- kernel/sched/core.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/x86/kernel/kprobes/core.c | 44 +++++++++++++++------------------
+ 1 file changed, 20 insertions(+), 24 deletions(-)
 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 3384ea7..1fe9d3f 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -5376,13 +5376,13 @@ static int preempt_dynamic_mode = preempt_dynamic_full;
- static int sched_dynamic_mode(const char *str)
- {
- 	if (!strcmp(str, "none"))
--		return 0;
-+		return preempt_dynamic_none;
+diff --git a/arch/x86/kernel/kprobes/core.c b/arch/x86/kernel/kprobes/core.c
+index 81e1432..922a6e2 100644
+--- a/arch/x86/kernel/kprobes/core.c
++++ b/arch/x86/kernel/kprobes/core.c
+@@ -164,32 +164,28 @@ int can_boost(struct insn *insn, void *addr)
  
- 	if (!strcmp(str, "voluntary"))
--		return 1;
-+		return preempt_dynamic_voluntary;
+ 	opcode = insn->opcode.bytes[0];
  
- 	if (!strcmp(str, "full"))
--		return 2;
-+		return preempt_dynamic_full;
- 
- 	return -1;
+-	switch (opcode & 0xf0) {
+-	case 0x60:
+-		/* can't boost "bound" */
+-		return (opcode != 0x62);
+-	case 0x70:
+-		return 0; /* can't boost conditional jump */
+-	case 0x90:
+-		return opcode != 0x9a;	/* can't boost call far */
+-	case 0xc0:
+-		/* can't boost software-interruptions */
+-		return (0xc1 < opcode && opcode < 0xcc) || opcode == 0xcf;
+-	case 0xd0:
+-		/* can boost AA* and XLAT */
+-		return (opcode == 0xd4 || opcode == 0xd5 || opcode == 0xd7);
+-	case 0xe0:
+-		/* can boost in/out and absolute jmps */
+-		return ((opcode & 0x04) || opcode == 0xea);
+-	case 0xf0:
+-		/* clear and set flags are boostable */
+-		return (opcode == 0xf5 || (0xf7 < opcode && opcode < 0xfe));
+-	case 0xff:
+-		/* indirect jmp is boostable */
++	switch (opcode) {
++	case 0x62:		/* bound */
++	case 0x70 ... 0x7f:	/* Conditional jumps */
++	case 0x9a:		/* Call far */
++	case 0xc0 ... 0xc1:	/* Grp2 */
++	case 0xcc ... 0xce:	/* software exceptions */
++	case 0xd0 ... 0xd3:	/* Grp2 */
++	case 0xd6:		/* (UD) */
++	case 0xd8 ... 0xdf:	/* ESC */
++	case 0xe0 ... 0xe3:	/* LOOP*, JCXZ */
++	case 0xe8 ... 0xe9:	/* near Call, JMP */
++	case 0xeb:		/* Short JMP */
++	case 0xf0 ... 0xf4:	/* LOCK/REP, HLT */
++	case 0xf6 ... 0xf7:	/* Grp3 */
++	case 0xfe:		/* Grp4 */
++		/* ... are not boostable */
++		return 0;
++	case 0xff:		/* Grp5 */
++		/* Only indirect jmp is boostable */
+ 		return X86_MODRM_REG(insn->modrm.bytes[0]) == 4;
+ 	default:
+-		/* call is not boostable */
+-		return opcode != 0x9a;
++		return 1;
+ 	}
  }
+ 
