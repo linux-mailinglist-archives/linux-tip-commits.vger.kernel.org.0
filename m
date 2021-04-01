@@ -2,18 +2,18 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 713483518B0
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  1 Apr 2021 19:49:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 703A73518B3
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  1 Apr 2021 19:49:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236471AbhDARrL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 1 Apr 2021 13:47:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57240 "EHLO
+        id S236734AbhDARrS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 1 Apr 2021 13:47:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57170 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234311AbhDARln (ORCPT
+        with ESMTP id S234453AbhDARlp (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 1 Apr 2021 13:41:43 -0400
+        Thu, 1 Apr 2021 13:41:45 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBD0AC00F7DC;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE503C00F7DD;
         Thu,  1 Apr 2021 08:08:58 -0700 (PDT)
 Date:   Thu, 01 Apr 2021 15:08:55 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
@@ -23,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=SeTtPszGDJ59S+qO3YRjuhGF2E//RijgKqeT+FMvtGU=;
-        b=RbBP5t5CMGs+U7EKbX0sBbTYCZhviTmEW1A0qdf0bQP91V1JHerFh4EGY4KjCzHeFIP5Am
-        s+SkGZYBKGNxyTY28oC3p8mxd+hcP7VbfrK9oC9E4jYmDraNP6Wc8J1B3O44R3rw4PKXxw
-        /Ef8aIjluvl2WaX0amHKU3pcT0R0t2dRh7LvH/m9Ra8R3LwBA+xeYyz54OE6wn+QL5RcfC
-        +24uat3Y+EkyLv/v7mIkEX5/Bb3FQrBmuKPmKcxNmK/7quuy7qSsFK4g4iqp/+99C7z39C
-        kxPaAooo0GSc/P5l4koUOxctFYX5AoHxq+LPcUPDjYE/+Uw7Af98T7QkBjboDQ==
+        bh=07q5Zv6n+ClCM4VgUm68AYE7WpZ/SxJN4Zis1PoC5tw=;
+        b=2mR8UHosoqb7ttvbjzcCHJ/okJkRcVFHGLtXFioDa3zejsM3FFZqzazP2KlGq3miEBEjiS
+        7C5L48BcuS8OsIPDyTpf9THt/p9fgUKmWZ5yErdel18Hs/VB1hx6UWAYWm1DdhF6vxN6l4
+        JUDGuBfXIuZ5F2C0zWxqdj4iUVyrQcKr91tbAGqNjPQ7Vo/klrQoU/vM+2pdY7t1F9srIz
+        7JzEVzQti+PfHUV8Qove29aGFXGOuoTZc4cGykWYvENatRS0ipGbR1Ex19RJDeqrW95weM
+        i783SEi9a+rCzkN96quoPLmVDI0IGu1Q1e0Fl7FHSZtYsHSNNO5sQchMNw/JyQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1617289736;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,21 +36,21 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=SeTtPszGDJ59S+qO3YRjuhGF2E//RijgKqeT+FMvtGU=;
-        b=LX7FLZzOT31cLCpkIhjdp8HiwUi5PcQmxAWB9SCQwsHRWHgKWq89TYjhldSGkCK97qUlrx
-        jp4OvTvoN3dQkzDw==
+        bh=07q5Zv6n+ClCM4VgUm68AYE7WpZ/SxJN4Zis1PoC5tw=;
+        b=/zt1zzWl+85xmgJNSca8WaWYEVsDw40WXMBEb7gWkH+7SIvYfrWmPmwKJMFf8qg1+A+HKT
+        5/rpW3QBQyTCh+AQ==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/core] objtool: Extract elf_symbol_add()
+Subject: [tip: x86/core] objtool: Extract elf_strtab_concat()
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Borislav Petkov <bp@suse.de>, Miroslav Benes <mbenes@suse.cz>,
         x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20210326151300.003468981@infradead.org>
-References: <20210326151300.003468981@infradead.org>
+In-Reply-To: <20210326151259.941474004@infradead.org>
+References: <20210326151259.941474004@infradead.org>
 MIME-Version: 1.0
-Message-ID: <161728973564.29796.17344493642659515112.tip-bot2@tip-bot2>
+Message-ID: <161728973595.29796.675571073397423036.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,113 +61,114 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/core branch of tip:
 
-Commit-ID:     d56a3568827ec4b8efcbcfc46fdc944995b6dcf1
-Gitweb:        https://git.kernel.org/tip/d56a3568827ec4b8efcbcfc46fdc944995b6dcf1
+Commit-ID:     557c25be3588971caf21364b6fd240769e37c47c
+Gitweb:        https://git.kernel.org/tip/557c25be3588971caf21364b6fd240769e37c47c
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Fri, 26 Mar 2021 16:12:10 +01:00
+AuthorDate:    Fri, 26 Mar 2021 16:12:09 +01:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Thu, 01 Apr 2021 13:08:52 +02:00
+CommitterDate: Thu, 01 Apr 2021 13:05:50 +02:00
 
-objtool: Extract elf_symbol_add()
+objtool: Extract elf_strtab_concat()
 
-Create a common helper to add symbols.
+Create a common helper to append strings to a strtab.
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Borislav Petkov <bp@suse.de>
 Reviewed-by: Miroslav Benes <mbenes@suse.cz>
-Link: https://lkml.kernel.org/r/20210326151300.003468981@infradead.org
+Link: https://lkml.kernel.org/r/20210326151259.941474004@infradead.org
 ---
- tools/objtool/elf.c | 56 ++++++++++++++++++++++++--------------------
- 1 file changed, 31 insertions(+), 25 deletions(-)
+ tools/objtool/elf.c | 60 +++++++++++++++++++++++++++-----------------
+ 1 file changed, 38 insertions(+), 22 deletions(-)
 
 diff --git a/tools/objtool/elf.c b/tools/objtool/elf.c
-index c278a04..8457218 100644
+index 7b65ae3..c278a04 100644
 --- a/tools/objtool/elf.c
 +++ b/tools/objtool/elf.c
-@@ -290,12 +290,39 @@ static int read_sections(struct elf *elf)
- 	return 0;
+@@ -673,13 +673,48 @@ err:
+ 	return NULL;
  }
  
-+static void elf_add_symbol(struct elf *elf, struct symbol *sym)
++static int elf_add_string(struct elf *elf, struct section *strtab, char *str)
 +{
-+	struct list_head *entry;
-+	struct rb_node *pnode;
++	Elf_Data *data;
++	Elf_Scn *s;
++	int len;
 +
-+	sym->type = GELF_ST_TYPE(sym->sym.st_info);
-+	sym->bind = GELF_ST_BIND(sym->sym.st_info);
++	if (!strtab)
++		strtab = find_section_by_name(elf, ".strtab");
++	if (!strtab) {
++		WARN("can't find .strtab section");
++		return -1;
++	}
 +
-+	sym->offset = sym->sym.st_value;
-+	sym->len = sym->sym.st_size;
++	s = elf_getscn(elf->elf, strtab->idx);
++	if (!s) {
++		WARN_ELF("elf_getscn");
++		return -1;
++	}
 +
-+	rb_add(&sym->node, &sym->sec->symbol_tree, symbol_to_offset);
-+	pnode = rb_prev(&sym->node);
-+	if (pnode)
-+		entry = &rb_entry(pnode, struct symbol, node)->list;
-+	else
-+		entry = &sym->sec->symbol_list;
-+	list_add(&sym->list, entry);
-+	elf_hash_add(elf->symbol_hash, &sym->hash, sym->idx);
-+	elf_hash_add(elf->symbol_name_hash, &sym->name_hash, str_hash(sym->name));
++	data = elf_newdata(s);
++	if (!data) {
++		WARN_ELF("elf_newdata");
++		return -1;
++	}
 +
-+	/*
-+	 * Don't store empty STT_NOTYPE symbols in the rbtree.  They
-+	 * can exist within a function, confusing the sorting.
-+	 */
-+	if (!sym->len)
-+		rb_erase(&sym->node, &sym->sec->symbol_tree);
++	data->d_buf = str;
++	data->d_size = strlen(str) + 1;
++	data->d_align = 1;
++
++	len = strtab->len;
++	strtab->len += data->d_size;
++	strtab->changed = true;
++
++	return len;
 +}
 +
- static int read_symbols(struct elf *elf)
+ struct section *elf_create_section(struct elf *elf, const char *name,
+ 				   unsigned int sh_flags, size_t entsize, int nr)
  {
- 	struct section *symtab, *symtab_shndx, *sec;
- 	struct symbol *sym, *pfunc;
--	struct list_head *entry;
--	struct rb_node *pnode;
- 	int symbols_nr, i;
- 	char *coldstr;
- 	Elf_Data *shndx_data = NULL;
-@@ -340,9 +367,6 @@ static int read_symbols(struct elf *elf)
- 			goto err;
- 		}
+ 	struct section *sec, *shstrtab;
+ 	size_t size = entsize * nr;
+ 	Elf_Scn *s;
+-	Elf_Data *data;
  
--		sym->type = GELF_ST_TYPE(sym->sym.st_info);
--		sym->bind = GELF_ST_BIND(sym->sym.st_info);
--
- 		if ((sym->sym.st_shndx > SHN_UNDEF &&
- 		     sym->sym.st_shndx < SHN_LORESERVE) ||
- 		    (shndx_data && sym->sym.st_shndx == SHN_XINDEX)) {
-@@ -355,32 +379,14 @@ static int read_symbols(struct elf *elf)
- 				     sym->name);
- 				goto err;
- 			}
--			if (sym->type == STT_SECTION) {
-+			if (GELF_ST_TYPE(sym->sym.st_info) == STT_SECTION) {
- 				sym->name = sym->sec->name;
- 				sym->sec->sym = sym;
- 			}
- 		} else
- 			sym->sec = find_section_by_index(elf, 0);
+ 	sec = malloc(sizeof(*sec));
+ 	if (!sec) {
+@@ -736,7 +771,6 @@ struct section *elf_create_section(struct elf *elf, const char *name,
+ 	sec->sh.sh_addralign = 1;
+ 	sec->sh.sh_flags = SHF_ALLOC | sh_flags;
  
--		sym->offset = sym->sym.st_value;
--		sym->len = sym->sym.st_size;
 -
--		rb_add(&sym->node, &sym->sec->symbol_tree, symbol_to_offset);
--		pnode = rb_prev(&sym->node);
--		if (pnode)
--			entry = &rb_entry(pnode, struct symbol, node)->list;
--		else
--			entry = &sym->sec->symbol_list;
--		list_add(&sym->list, entry);
--		elf_hash_add(elf->symbol_hash, &sym->hash, sym->idx);
--		elf_hash_add(elf->symbol_name_hash, &sym->name_hash, str_hash(sym->name));
--
--		/*
--		 * Don't store empty STT_NOTYPE symbols in the rbtree.  They
--		 * can exist within a function, confusing the sorting.
--		 */
--		if (!sym->len)
--			rb_erase(&sym->node, &sym->sec->symbol_tree);
-+		elf_add_symbol(elf, sym);
+ 	/* Add section name to .shstrtab (or .strtab for Clang) */
+ 	shstrtab = find_section_by_name(elf, ".shstrtab");
+ 	if (!shstrtab)
+@@ -745,27 +779,9 @@ struct section *elf_create_section(struct elf *elf, const char *name,
+ 		WARN("can't find .shstrtab or .strtab section");
+ 		return NULL;
  	}
+-
+-	s = elf_getscn(elf->elf, shstrtab->idx);
+-	if (!s) {
+-		WARN_ELF("elf_getscn");
++	sec->sh.sh_name = elf_add_string(elf, shstrtab, sec->name);
++	if (sec->sh.sh_name == -1)
+ 		return NULL;
+-	}
+-
+-	data = elf_newdata(s);
+-	if (!data) {
+-		WARN_ELF("elf_newdata");
+-		return NULL;
+-	}
+-
+-	data->d_buf = sec->name;
+-	data->d_size = strlen(name) + 1;
+-	data->d_align = 1;
+-
+-	sec->sh.sh_name = shstrtab->len;
+-
+-	shstrtab->len += strlen(name) + 1;
+-	shstrtab->changed = true;
  
- 	if (stats)
+ 	list_add_tail(&sec->list, &elf->sections);
+ 	elf_hash_add(elf->section_hash, &sec->hash, sec->idx);
