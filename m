@@ -2,55 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 378AC351D28
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  1 Apr 2021 20:48:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 37A37352736
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  2 Apr 2021 10:12:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236225AbhDAS1T (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 1 Apr 2021 14:27:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37864 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235293AbhDASVG (ORCPT
+        id S234265AbhDBIMo (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 2 Apr 2021 04:12:44 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:36398 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233901AbhDBIMn (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 1 Apr 2021 14:21:06 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAD9CC00F7E0;
-        Thu,  1 Apr 2021 08:09:00 -0700 (PDT)
-Date:   Thu, 01 Apr 2021 15:08:57 -0000
+        Fri, 2 Apr 2021 04:12:43 -0400
+Date:   Fri, 02 Apr 2021 08:12:41 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1617289738;
+        s=2020; t=1617351162;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=QOevEyW1EXdcT3e3X1S7oHVITdqRVDZCgtzrQZ4YR+M=;
-        b=BVHxFGBTqqpdqzVHhyVEe/w+f+XCDcSIOCXY4W8o/Osl2JSELv4d/sOGdgWNkEdRWsAOco
-        zipmcJNxhYQFGzAx3iTKAyX9+M6RBBG+h6ZIEKD8rXMC6BvhA/zYtQuxs7j9yOv3Vru9ZV
-        w1JybiaMKUtbGt3edSNhm7AkKD0tHWaG68tST7dumoeCGQ9fJP9egvuAdGEC4jaIssttRZ
-        IQzMrGSEKc8cMZaEMGWwXIKiWtatd6DY/oSccMD7IjJXbenEc8gWAGYGxXn/tRiybzD6mp
-        5I+TkuREDzjdNhBsQ2zfQuwNwz4cmI9LvhhLajxOuVvysUnFyt4jc35uMAC6BA==
+        bh=aM6og7Uxg/fq4kQkLh1J/UDZWkBhkY7YPZ/aLREyDlg=;
+        b=D5Ru7u9awAUbGYrPjPPGFYFEn7bzk9YDqbi6px+SPPs7rWNMQh8wRpUfIk/Nnoo6U+nTlo
+        +SPsIX7m/uFIie2gcmaRruKPVKdagsL5UlcxOrowzB3wZ909DDRFnLA0EMR4mYgk4jeyDZ
+        jBrsw2YRQKh93Ol4TvyV38GhQSN7Gk1EpmOF7B3/TxJ0ByFJpPrf7bYRuioXCGXPS3Zl/J
+        KQ37i8pVKOhC9OT9sobBsjkkmBGA6VZeIjlQlz0ZJfWs1VUOEskflYigf784qcNq4h5rAL
+        he2g4Zw6s89h7ml8vp6knC2iNGhzq0WjxsQJANITIAk8PbmBf3bjoUkAllE1Mw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1617289738;
+        s=2020e; t=1617351162;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=QOevEyW1EXdcT3e3X1S7oHVITdqRVDZCgtzrQZ4YR+M=;
-        b=lhZFyVbSk3B8Oy0RGPgXsU6whDYd50J681GBasuIR2a9K0pu1euhFJaNzz99ZHlpwejSc8
-        Pc1bX9R3DxBoQ7BQ==
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+        bh=aM6og7Uxg/fq4kQkLh1J/UDZWkBhkY7YPZ/aLREyDlg=;
+        b=81jX4ppp3ArSoxCJ7rxUULOb7LhxE2zENTQhUfzct232cTit1CT2VQ7GAm28wWpogEWEVW
+        C2rOH97FUt/IiIAg==
+From:   "tip-bot2 for Alexander Antonov" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/core] objtool: Fix static_call list generation
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Borislav Petkov <bp@suse.de>, Miroslav Benes <mbenes@suse.cz>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20210326151259.691529901@infradead.org>
-References: <20210326151259.691529901@infradead.org>
+Subject: [tip: perf/core] perf/x86/intel/uncore: Enable IIO stacks to PMON
+ mapping for multi-segment SKX
+Cc:     kernel test robot <lkp@intel.com>,
+        Alexander Antonov <alexander.antonov@linux.intel.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Kan Liang <kan.liang@linux.intel.com>,
+        Andi Kleen <ak@linux.intel.com>,
+        Kyle Meyer <kyle.meyer@hpe.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20210323150507.2013-1-alexander.antonov@linux.intel.com>
+References: <20210323150507.2013-1-alexander.antonov@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <161728973737.29796.8108336872337258798.tip-bot2@tip-bot2>
+Message-ID: <161735116142.29796.1908093361658869591.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,75 +61,203 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/core branch of tip:
+The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     b62b63571e4be0ce31984ce83b04853f2cba678b
-Gitweb:        https://git.kernel.org/tip/b62b63571e4be0ce31984ce83b04853f2cba678b
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Fri, 26 Mar 2021 16:12:05 +01:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Thu, 01 Apr 2021 11:43:16 +02:00
+Commit-ID:     cface0326a6c2ae5c8f47bd466f07624b3e348a7
+Gitweb:        https://git.kernel.org/tip/cface0326a6c2ae5c8f47bd466f07624b3e348a7
+Author:        Alexander Antonov <alexander.antonov@linux.intel.com>
+AuthorDate:    Tue, 23 Mar 2021 18:05:07 +03:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Fri, 02 Apr 2021 10:04:55 +02:00
 
-objtool: Fix static_call list generation
+perf/x86/intel/uncore: Enable IIO stacks to PMON mapping for multi-segment SKX
 
-Currently, objtool generates tail call entries in add_jump_destination()
-but waits until validate_branch() to generate the regular call entries.
-Move these to add_call_destination() for consistency.
+IIO stacks to PMON mapping on Skylake servers is exposed through introduced
+early attributes /sys/devices/uncore_iio_<pmu_idx>/dieX, where dieX is a
+file which holds "Segment:Root Bus" for PCIe root port which can
+be monitored by that IIO PMON block. These sysfs attributes are disabled
+for multiple segment topologies except VMD domains which start at 0x10000.
+This patch removes the limitation and enables IIO stacks to PMON mapping
+for multi-segment Skylake servers by introducing segment-aware
+intel_uncore_topology structure and attributing the topology configuration
+to the segment in skx_iio_get_topology() function.
 
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Alexander Antonov <alexander.antonov@linux.intel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Miroslav Benes <mbenes@suse.cz>
-Link: https://lkml.kernel.org/r/20210326151259.691529901@infradead.org
+Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
+Reviewed-by: Andi Kleen <ak@linux.intel.com>
+Tested-by: Kyle Meyer <kyle.meyer@hpe.com>
+Link: https://lkml.kernel.org/r/20210323150507.2013-1-alexander.antonov@linux.intel.com
 ---
- tools/objtool/check.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ arch/x86/events/intel/uncore.c       | 12 +++++-
+ arch/x86/events/intel/uncore.h       |  9 +++-
+ arch/x86/events/intel/uncore_snbep.c | 60 ++++++++++++---------------
+ 3 files changed, 47 insertions(+), 34 deletions(-)
 
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 6fbc001..8618d03 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -1045,6 +1045,11 @@ static int add_call_destinations(struct objtool_file *file)
- 		} else
- 			insn->call_dest = reloc->sym;
+diff --git a/arch/x86/events/intel/uncore.c b/arch/x86/events/intel/uncore.c
+index 35b3470..a2b68bb 100644
+--- a/arch/x86/events/intel/uncore.c
++++ b/arch/x86/events/intel/uncore.c
+@@ -53,6 +53,18 @@ int uncore_pcibus_to_dieid(struct pci_bus *bus)
+ 	return die_id;
+ }
  
-+		if (insn->call_dest && insn->call_dest->static_call_tramp) {
-+			list_add_tail(&insn->static_call_node,
-+				      &file->static_call_list);
-+		}
++int uncore_die_to_segment(int die)
++{
++	struct pci_bus *bus = NULL;
 +
- 		/*
- 		 * Many compilers cannot disable KCOV with a function attribute
- 		 * so they need a little help, NOP out any KCOV calls from noinstr
-@@ -1788,6 +1793,9 @@ static int decode_sections(struct objtool_file *file)
- 	if (ret)
- 		return ret;
++	/* Find first pci bus which attributes to specified die. */
++	while ((bus = pci_find_next_bus(bus)) &&
++	       (die != uncore_pcibus_to_dieid(bus)))
++		;
++
++	return bus ? pci_domain_nr(bus) : -EINVAL;
++}
++
+ static void uncore_free_pcibus_map(void)
+ {
+ 	struct pci2phy_map *map, *tmp;
+diff --git a/arch/x86/events/intel/uncore.h b/arch/x86/events/intel/uncore.h
+index 549cfb2..96569dc 100644
+--- a/arch/x86/events/intel/uncore.h
++++ b/arch/x86/events/intel/uncore.h
+@@ -42,6 +42,7 @@ struct intel_uncore_pmu;
+ struct intel_uncore_box;
+ struct uncore_event_desc;
+ struct freerunning_counters;
++struct intel_uncore_topology;
  
-+	/*
-+	 * Must be before add_{jump_call}_destination.
-+	 */
- 	ret = read_static_call_tramps(file);
- 	if (ret)
- 		return ret;
-@@ -1800,6 +1808,10 @@ static int decode_sections(struct objtool_file *file)
- 	if (ret)
- 		return ret;
+ struct intel_uncore_type {
+ 	const char *name;
+@@ -87,7 +88,7 @@ struct intel_uncore_type {
+ 	 * to identify which platform component each PMON block of that type is
+ 	 * supposed to monitor.
+ 	 */
+-	u64 *topology;
++	struct intel_uncore_topology *topology;
+ 	/*
+ 	 * Optional callbacks for managing mapping of Uncore units to PMONs
+ 	 */
+@@ -176,6 +177,11 @@ struct freerunning_counters {
+ 	unsigned *box_offsets;
+ };
  
-+	/*
-+	 * Must be before add_call_destination(); it changes INSN_CALL to
-+	 * INSN_JUMP.
-+	 */
- 	ret = read_intra_function_calls(file);
- 	if (ret)
- 		return ret;
-@@ -2762,11 +2774,6 @@ static int validate_branch(struct objtool_file *file, struct symbol *func,
- 			if (dead_end_function(file, insn->call_dest))
- 				return 0;
++struct intel_uncore_topology {
++	u64 configuration;
++	int segment;
++};
++
+ struct pci2phy_map {
+ 	struct list_head list;
+ 	int segment;
+@@ -184,6 +190,7 @@ struct pci2phy_map {
  
--			if (insn->type == INSN_CALL && insn->call_dest->static_call_tramp) {
--				list_add_tail(&insn->static_call_node,
--					      &file->static_call_list);
--			}
+ struct pci2phy_map *__find_pci2phy_map(int segment);
+ int uncore_pcibus_to_dieid(struct pci_bus *bus);
++int uncore_die_to_segment(int die);
+ 
+ ssize_t uncore_event_show(struct device *dev,
+ 			  struct device_attribute *attr, char *buf);
+diff --git a/arch/x86/events/intel/uncore_snbep.c b/arch/x86/events/intel/uncore_snbep.c
+index b79951d..acc3c0e 100644
+--- a/arch/x86/events/intel/uncore_snbep.c
++++ b/arch/x86/events/intel/uncore_snbep.c
+@@ -3684,7 +3684,8 @@ static struct intel_uncore_ops skx_uncore_iio_ops = {
+ 
+ static inline u8 skx_iio_stack(struct intel_uncore_pmu *pmu, int die)
+ {
+-	return pmu->type->topology[die] >> (pmu->pmu_idx * BUS_NUM_STRIDE);
++	return pmu->type->topology[die].configuration >>
++	       (pmu->pmu_idx * BUS_NUM_STRIDE);
+ }
+ 
+ static umode_t
+@@ -3697,19 +3698,14 @@ skx_iio_mapping_visible(struct kobject *kobj, struct attribute *attr, int die)
+ }
+ 
+ static ssize_t skx_iio_mapping_show(struct device *dev,
+-				struct device_attribute *attr, char *buf)
++				    struct device_attribute *attr, char *buf)
+ {
+-	struct pci_bus *bus = pci_find_next_bus(NULL);
+-	struct intel_uncore_pmu *uncore_pmu = dev_to_uncore_pmu(dev);
++	struct intel_uncore_pmu *pmu = dev_to_uncore_pmu(dev);
+ 	struct dev_ext_attribute *ea = to_dev_ext_attribute(attr);
+ 	long die = (long)ea->var;
+ 
+-	/*
+-	 * Current implementation is for single segment configuration hence it's
+-	 * safe to take the segment value from the first available root bus.
+-	 */
+-	return sprintf(buf, "%04x:%02x\n", pci_domain_nr(bus),
+-					   skx_iio_stack(uncore_pmu, die));
++	return sprintf(buf, "%04x:%02x\n", pmu->type->topology[die].segment,
++					   skx_iio_stack(pmu, die));
+ }
+ 
+ static int skx_msr_cpu_bus_read(int cpu, u64 *topology)
+@@ -3746,34 +3742,32 @@ static int die_to_cpu(int die)
+ 
+ static int skx_iio_get_topology(struct intel_uncore_type *type)
+ {
+-	int i, ret;
+-	struct pci_bus *bus = NULL;
 -
- 			break;
+-	/*
+-	 * Verified single-segment environments only; disabled for multiple
+-	 * segment topologies for now except VMD domains.
+-	 * VMD domains start at 0x10000 to not clash with ACPI _SEG domains.
+-	 */
+-	while ((bus = pci_find_next_bus(bus))
+-		&& (!pci_domain_nr(bus) || pci_domain_nr(bus) > 0xffff))
+-		;
+-	if (bus)
+-		return -EPERM;
++	int die, ret = -EPERM;
  
- 		case INSN_JUMP_CONDITIONAL:
+-	type->topology = kcalloc(uncore_max_dies(), sizeof(u64), GFP_KERNEL);
++	type->topology = kcalloc(uncore_max_dies(), sizeof(*type->topology),
++				 GFP_KERNEL);
+ 	if (!type->topology)
+ 		return -ENOMEM;
+ 
+-	for (i = 0; i < uncore_max_dies(); i++) {
+-		ret = skx_msr_cpu_bus_read(die_to_cpu(i), &type->topology[i]);
+-		if (ret) {
+-			kfree(type->topology);
+-			type->topology = NULL;
+-			return ret;
+-		}
++	for (die = 0; die < uncore_max_dies(); die++) {
++		ret = skx_msr_cpu_bus_read(die_to_cpu(die),
++					   &type->topology[die].configuration);
++		if (ret)
++			break;
++
++		ret = uncore_die_to_segment(die);
++		if (ret < 0)
++			break;
++
++		type->topology[die].segment = ret;
+ 	}
+ 
+-	return 0;
++	if (ret < 0) {
++		kfree(type->topology);
++		type->topology = NULL;
++	}
++
++	return ret;
+ }
+ 
+ static struct attribute_group skx_iio_mapping_group = {
+@@ -3794,7 +3788,7 @@ static int skx_iio_set_mapping(struct intel_uncore_type *type)
+ 	struct dev_ext_attribute *eas = NULL;
+ 
+ 	ret = skx_iio_get_topology(type);
+-	if (ret)
++	if (ret < 0)
+ 		goto clear_attr_update;
+ 
+ 	ret = -ENOMEM;
