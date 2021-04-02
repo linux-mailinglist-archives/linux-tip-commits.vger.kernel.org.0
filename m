@@ -2,14 +2,14 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 37A37352736
+	by mail.lfdr.de (Postfix) with ESMTP id 86295352737
 	for <lists+linux-tip-commits@lfdr.de>; Fri,  2 Apr 2021 10:12:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234265AbhDBIMo (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S234361AbhDBIMo (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Fri, 2 Apr 2021 04:12:44 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:36398 "EHLO
+Received: from Galois.linutronix.de ([193.142.43.55]:36402 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233901AbhDBIMn (ORCPT
+        with ESMTP id S234139AbhDBIMn (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Fri, 2 Apr 2021 04:12:43 -0400
 Date:   Fri, 02 Apr 2021 08:12:41 -0000
@@ -20,12 +20,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=aM6og7Uxg/fq4kQkLh1J/UDZWkBhkY7YPZ/aLREyDlg=;
-        b=D5Ru7u9awAUbGYrPjPPGFYFEn7bzk9YDqbi6px+SPPs7rWNMQh8wRpUfIk/Nnoo6U+nTlo
-        +SPsIX7m/uFIie2gcmaRruKPVKdagsL5UlcxOrowzB3wZ909DDRFnLA0EMR4mYgk4jeyDZ
-        jBrsw2YRQKh93Ol4TvyV38GhQSN7Gk1EpmOF7B3/TxJ0ByFJpPrf7bYRuioXCGXPS3Zl/J
-        KQ37i8pVKOhC9OT9sobBsjkkmBGA6VZeIjlQlz0ZJfWs1VUOEskflYigf784qcNq4h5rAL
-        he2g4Zw6s89h7ml8vp6knC2iNGhzq0WjxsQJANITIAk8PbmBf3bjoUkAllE1Mw==
+        bh=JFNkzJhprrvST0Ka6tlqiMl8VeVywkUQWHBwgVFVs30=;
+        b=G1dZTtq2bK3IpJueYJpdpfqls6JjV+7lA43qngugVCuNgT3MTBBiVWin9t9Kyfa9cOn+Jb
+        MT3bMD6E/3x1EatiPOuXoNfQDxT/UxOl3AQSS1OSFoxPmx++vfIpgjcmQdOik7M3USyBSz
+        X3vSQ45IC3ttVr7kGzQahFmoGHxV1UFQXF46m8OCVele3RBa3OyuGOdURPfMIiMbKOfIGI
+        v964pIqAPdTch17XrNLsDtJijn9V6HSVOJ3ASOBTVuBYNZ3pr0beM/yHTdyrRhwvSSA0Lt
+        K3WaF+ysqFx0H3XVtGG+EAXgBe5tWJkwWmpIUxs1qqD3MZLSKF5nMxpvvtgwZA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1617351162;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -33,26 +33,22 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=aM6og7Uxg/fq4kQkLh1J/UDZWkBhkY7YPZ/aLREyDlg=;
-        b=81jX4ppp3ArSoxCJ7rxUULOb7LhxE2zENTQhUfzct232cTit1CT2VQ7GAm28wWpogEWEVW
-        C2rOH97FUt/IiIAg==
-From:   "tip-bot2 for Alexander Antonov" <tip-bot2@linutronix.de>
+        bh=JFNkzJhprrvST0Ka6tlqiMl8VeVywkUQWHBwgVFVs30=;
+        b=3s/HsLUjFoLcDzsOXfXdqk3VHZVm0sYXRcQsNiI2m8zCrl0ZpvvXNZPB4br1DQZtFkWlR8
+        2gBVq59Hnjvtc9CQ==
+From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/x86/intel/uncore: Enable IIO stacks to PMON
- mapping for multi-segment SKX
-Cc:     kernel test robot <lkp@intel.com>,
-        Alexander Antonov <alexander.antonov@linux.intel.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Kan Liang <kan.liang@linux.intel.com>,
-        Andi Kleen <ak@linux.intel.com>,
-        Kyle Meyer <kyle.meyer@hpe.com>, x86@kernel.org,
+Subject: [tip: perf/core] perf/x86/intel/uncore: Generic support for the MMIO
+ type of uncore blocks
+Cc:     Kan Liang <kan.liang@linux.intel.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210323150507.2013-1-alexander.antonov@linux.intel.com>
-References: <20210323150507.2013-1-alexander.antonov@linux.intel.com>
+In-Reply-To: <1616003977-90612-6-git-send-email-kan.liang@linux.intel.com>
+References: <1616003977-90612-6-git-send-email-kan.liang@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <161735116142.29796.1908093361658869591.tip-bot2@tip-bot2>
+Message-ID: <161735116180.29796.17129715669203589919.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -63,201 +59,185 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     cface0326a6c2ae5c8f47bd466f07624b3e348a7
-Gitweb:        https://git.kernel.org/tip/cface0326a6c2ae5c8f47bd466f07624b3e348a7
-Author:        Alexander Antonov <alexander.antonov@linux.intel.com>
-AuthorDate:    Tue, 23 Mar 2021 18:05:07 +03:00
+Commit-ID:     c4c55e362a521d763356b9e02bc9a4348c71a471
+Gitweb:        https://git.kernel.org/tip/c4c55e362a521d763356b9e02bc9a4348c71a471
+Author:        Kan Liang <kan.liang@linux.intel.com>
+AuthorDate:    Wed, 17 Mar 2021 10:59:37 -07:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Fri, 02 Apr 2021 10:04:55 +02:00
 
-perf/x86/intel/uncore: Enable IIO stacks to PMON mapping for multi-segment SKX
+perf/x86/intel/uncore: Generic support for the MMIO type of uncore blocks
 
-IIO stacks to PMON mapping on Skylake servers is exposed through introduced
-early attributes /sys/devices/uncore_iio_<pmu_idx>/dieX, where dieX is a
-file which holds "Segment:Root Bus" for PCIe root port which can
-be monitored by that IIO PMON block. These sysfs attributes are disabled
-for multiple segment topologies except VMD domains which start at 0x10000.
-This patch removes the limitation and enables IIO stacks to PMON mapping
-for multi-segment Skylake servers by introducing segment-aware
-intel_uncore_topology structure and attributing the topology configuration
-to the segment in skx_iio_get_topology() function.
+The discovery table provides the generic uncore block information
+for the MMIO type of uncore blocks, which is good enough to provide
+basic uncore support.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Alexander Antonov <alexander.antonov@linux.intel.com>
+The box control field is composed of the BAR address and box control
+offset. When initializing the uncore blocks, perf should ioremap the
+address from the box control field.
+
+Implement the generic support for the MMIO type of uncore block.
+
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
-Reviewed-by: Andi Kleen <ak@linux.intel.com>
-Tested-by: Kyle Meyer <kyle.meyer@hpe.com>
-Link: https://lkml.kernel.org/r/20210323150507.2013-1-alexander.antonov@linux.intel.com
+Link: https://lkml.kernel.org/r/1616003977-90612-6-git-send-email-kan.liang@linux.intel.com
 ---
- arch/x86/events/intel/uncore.c       | 12 +++++-
- arch/x86/events/intel/uncore.h       |  9 +++-
- arch/x86/events/intel/uncore_snbep.c | 60 ++++++++++++---------------
- 3 files changed, 47 insertions(+), 34 deletions(-)
+ arch/x86/events/intel/uncore.c           |  1 +-
+ arch/x86/events/intel/uncore.h           |  1 +-
+ arch/x86/events/intel/uncore_discovery.c | 98 +++++++++++++++++++++++-
+ arch/x86/events/intel/uncore_discovery.h |  1 +-
+ 4 files changed, 101 insertions(+)
 
 diff --git a/arch/x86/events/intel/uncore.c b/arch/x86/events/intel/uncore.c
-index 35b3470..a2b68bb 100644
+index 3109082..35b3470 100644
 --- a/arch/x86/events/intel/uncore.c
 +++ b/arch/x86/events/intel/uncore.c
-@@ -53,6 +53,18 @@ int uncore_pcibus_to_dieid(struct pci_bus *bus)
- 	return die_id;
- }
- 
-+int uncore_die_to_segment(int die)
-+{
-+	struct pci_bus *bus = NULL;
-+
-+	/* Find first pci bus which attributes to specified die. */
-+	while ((bus = pci_find_next_bus(bus)) &&
-+	       (die != uncore_pcibus_to_dieid(bus)))
-+		;
-+
-+	return bus ? pci_domain_nr(bus) : -EINVAL;
-+}
-+
- static void uncore_free_pcibus_map(void)
- {
- 	struct pci2phy_map *map, *tmp;
-diff --git a/arch/x86/events/intel/uncore.h b/arch/x86/events/intel/uncore.h
-index 549cfb2..96569dc 100644
---- a/arch/x86/events/intel/uncore.h
-+++ b/arch/x86/events/intel/uncore.h
-@@ -42,6 +42,7 @@ struct intel_uncore_pmu;
- struct intel_uncore_box;
- struct uncore_event_desc;
- struct freerunning_counters;
-+struct intel_uncore_topology;
- 
- struct intel_uncore_type {
- 	const char *name;
-@@ -87,7 +88,7 @@ struct intel_uncore_type {
- 	 * to identify which platform component each PMON block of that type is
- 	 * supposed to monitor.
- 	 */
--	u64 *topology;
-+	struct intel_uncore_topology *topology;
- 	/*
- 	 * Optional callbacks for managing mapping of Uncore units to PMONs
- 	 */
-@@ -176,6 +177,11 @@ struct freerunning_counters {
- 	unsigned *box_offsets;
+@@ -1755,6 +1755,7 @@ static const struct intel_uncore_init_fun snr_uncore_init __initconst = {
+ static const struct intel_uncore_init_fun generic_uncore_init __initconst = {
+ 	.cpu_init = intel_uncore_generic_uncore_cpu_init,
+ 	.pci_init = intel_uncore_generic_uncore_pci_init,
++	.mmio_init = intel_uncore_generic_uncore_mmio_init,
  };
  
-+struct intel_uncore_topology {
-+	u64 configuration;
-+	int segment;
-+};
+ static const struct x86_cpu_id intel_uncore_match[] __initconst = {
+diff --git a/arch/x86/events/intel/uncore.h b/arch/x86/events/intel/uncore.h
+index 76fc898..549cfb2 100644
+--- a/arch/x86/events/intel/uncore.h
++++ b/arch/x86/events/intel/uncore.h
+@@ -70,6 +70,7 @@ struct intel_uncore_type {
+ 	union {
+ 		unsigned *msr_offsets;
+ 		unsigned *pci_offsets;
++		unsigned *mmio_offsets;
+ 	};
+ 	unsigned *box_ids;
+ 	struct event_constraint unconstrainted;
+diff --git a/arch/x86/events/intel/uncore_discovery.c b/arch/x86/events/intel/uncore_discovery.c
+index 784d7b4..aba9bff 100644
+--- a/arch/x86/events/intel/uncore_discovery.c
++++ b/arch/x86/events/intel/uncore_discovery.c
+@@ -442,6 +442,90 @@ static struct intel_uncore_ops generic_uncore_pci_ops = {
+ 	.read_counter	= intel_generic_uncore_pci_read_counter,
+ };
+ 
++#define UNCORE_GENERIC_MMIO_SIZE		0x4000
 +
- struct pci2phy_map {
- 	struct list_head list;
- 	int segment;
-@@ -184,6 +190,7 @@ struct pci2phy_map {
- 
- struct pci2phy_map *__find_pci2phy_map(int segment);
- int uncore_pcibus_to_dieid(struct pci_bus *bus);
-+int uncore_die_to_segment(int die);
- 
- ssize_t uncore_event_show(struct device *dev,
- 			  struct device_attribute *attr, char *buf);
-diff --git a/arch/x86/events/intel/uncore_snbep.c b/arch/x86/events/intel/uncore_snbep.c
-index b79951d..acc3c0e 100644
---- a/arch/x86/events/intel/uncore_snbep.c
-+++ b/arch/x86/events/intel/uncore_snbep.c
-@@ -3684,7 +3684,8 @@ static struct intel_uncore_ops skx_uncore_iio_ops = {
- 
- static inline u8 skx_iio_stack(struct intel_uncore_pmu *pmu, int die)
- {
--	return pmu->type->topology[die] >> (pmu->pmu_idx * BUS_NUM_STRIDE);
-+	return pmu->type->topology[die].configuration >>
-+	       (pmu->pmu_idx * BUS_NUM_STRIDE);
- }
- 
- static umode_t
-@@ -3697,19 +3698,14 @@ skx_iio_mapping_visible(struct kobject *kobj, struct attribute *attr, int die)
- }
- 
- static ssize_t skx_iio_mapping_show(struct device *dev,
--				struct device_attribute *attr, char *buf)
-+				    struct device_attribute *attr, char *buf)
- {
--	struct pci_bus *bus = pci_find_next_bus(NULL);
--	struct intel_uncore_pmu *uncore_pmu = dev_to_uncore_pmu(dev);
-+	struct intel_uncore_pmu *pmu = dev_to_uncore_pmu(dev);
- 	struct dev_ext_attribute *ea = to_dev_ext_attribute(attr);
- 	long die = (long)ea->var;
- 
--	/*
--	 * Current implementation is for single segment configuration hence it's
--	 * safe to take the segment value from the first available root bus.
--	 */
--	return sprintf(buf, "%04x:%02x\n", pci_domain_nr(bus),
--					   skx_iio_stack(uncore_pmu, die));
-+	return sprintf(buf, "%04x:%02x\n", pmu->type->topology[die].segment,
-+					   skx_iio_stack(pmu, die));
- }
- 
- static int skx_msr_cpu_bus_read(int cpu, u64 *topology)
-@@ -3746,34 +3742,32 @@ static int die_to_cpu(int die)
- 
- static int skx_iio_get_topology(struct intel_uncore_type *type)
- {
--	int i, ret;
--	struct pci_bus *bus = NULL;
--
--	/*
--	 * Verified single-segment environments only; disabled for multiple
--	 * segment topologies for now except VMD domains.
--	 * VMD domains start at 0x10000 to not clash with ACPI _SEG domains.
--	 */
--	while ((bus = pci_find_next_bus(bus))
--		&& (!pci_domain_nr(bus) || pci_domain_nr(bus) > 0xffff))
--		;
--	if (bus)
--		return -EPERM;
-+	int die, ret = -EPERM;
- 
--	type->topology = kcalloc(uncore_max_dies(), sizeof(u64), GFP_KERNEL);
-+	type->topology = kcalloc(uncore_max_dies(), sizeof(*type->topology),
-+				 GFP_KERNEL);
- 	if (!type->topology)
- 		return -ENOMEM;
- 
--	for (i = 0; i < uncore_max_dies(); i++) {
--		ret = skx_msr_cpu_bus_read(die_to_cpu(i), &type->topology[i]);
--		if (ret) {
--			kfree(type->topology);
--			type->topology = NULL;
--			return ret;
--		}
-+	for (die = 0; die < uncore_max_dies(); die++) {
-+		ret = skx_msr_cpu_bus_read(die_to_cpu(die),
-+					   &type->topology[die].configuration);
-+		if (ret)
-+			break;
++static unsigned int generic_uncore_mmio_box_ctl(struct intel_uncore_box *box)
++{
++	struct intel_uncore_type *type = box->pmu->type;
 +
-+		ret = uncore_die_to_segment(die);
-+		if (ret < 0)
-+			break;
++	if (!type->box_ctls || !type->box_ctls[box->dieid] || !type->mmio_offsets)
++		return 0;
 +
-+		type->topology[die].segment = ret;
- 	}
- 
--	return 0;
-+	if (ret < 0) {
-+		kfree(type->topology);
-+		type->topology = NULL;
++	return type->box_ctls[box->dieid] + type->mmio_offsets[box->pmu->pmu_idx];
++}
++
++static void intel_generic_uncore_mmio_init_box(struct intel_uncore_box *box)
++{
++	unsigned int box_ctl = generic_uncore_mmio_box_ctl(box);
++	struct intel_uncore_type *type = box->pmu->type;
++	resource_size_t addr;
++
++	if (!box_ctl) {
++		pr_warn("Uncore type %d box %d: Invalid box control address.\n",
++			type->type_id, type->box_ids[box->pmu->pmu_idx]);
++		return;
 +	}
 +
-+	return ret;
++	addr = box_ctl;
++	box->io_addr = ioremap(addr, UNCORE_GENERIC_MMIO_SIZE);
++	if (!box->io_addr) {
++		pr_warn("Uncore type %d box %d: ioremap error for 0x%llx.\n",
++			type->type_id, type->box_ids[box->pmu->pmu_idx],
++			(unsigned long long)addr);
++		return;
++	}
++
++	writel(GENERIC_PMON_BOX_CTL_INT, box->io_addr);
++}
++
++static void intel_generic_uncore_mmio_disable_box(struct intel_uncore_box *box)
++{
++	if (!box->io_addr)
++		return;
++
++	writel(GENERIC_PMON_BOX_CTL_FRZ, box->io_addr);
++}
++
++static void intel_generic_uncore_mmio_enable_box(struct intel_uncore_box *box)
++{
++	if (!box->io_addr)
++		return;
++
++	writel(0, box->io_addr);
++}
++
++static void intel_generic_uncore_mmio_enable_event(struct intel_uncore_box *box,
++					     struct perf_event *event)
++{
++	struct hw_perf_event *hwc = &event->hw;
++
++	if (!box->io_addr)
++		return;
++
++	writel(hwc->config, box->io_addr + hwc->config_base);
++}
++
++static void intel_generic_uncore_mmio_disable_event(struct intel_uncore_box *box,
++					      struct perf_event *event)
++{
++	struct hw_perf_event *hwc = &event->hw;
++
++	if (!box->io_addr)
++		return;
++
++	writel(0, box->io_addr + hwc->config_base);
++}
++
++static struct intel_uncore_ops generic_uncore_mmio_ops = {
++	.init_box	= intel_generic_uncore_mmio_init_box,
++	.exit_box	= uncore_mmio_exit_box,
++	.disable_box	= intel_generic_uncore_mmio_disable_box,
++	.enable_box	= intel_generic_uncore_mmio_enable_box,
++	.disable_event	= intel_generic_uncore_mmio_disable_event,
++	.enable_event	= intel_generic_uncore_mmio_enable_event,
++	.read_counter	= uncore_mmio_read_counter,
++};
++
+ static bool uncore_update_uncore_type(enum uncore_access_type type_id,
+ 				      struct intel_uncore_type *uncore,
+ 				      struct intel_uncore_discovery_type *type)
+@@ -468,6 +552,15 @@ static bool uncore_update_uncore_type(enum uncore_access_type type_id,
+ 		uncore->box_ctls = type->box_ctrl_die;
+ 		uncore->pci_offsets = type->box_offset;
+ 		break;
++	case UNCORE_ACCESS_MMIO:
++		uncore->ops = &generic_uncore_mmio_ops;
++		uncore->perf_ctr = (unsigned int)type->ctr_offset;
++		uncore->event_ctl = (unsigned int)type->ctl_offset;
++		uncore->box_ctl = (unsigned int)type->box_ctrl;
++		uncore->box_ctls = type->box_ctrl_die;
++		uncore->mmio_offsets = type->box_offset;
++		uncore->mmio_map_size = UNCORE_GENERIC_MMIO_SIZE;
++		break;
+ 	default:
+ 		return false;
+ 	}
+@@ -522,3 +615,8 @@ int intel_uncore_generic_uncore_pci_init(void)
+ 
+ 	return 0;
  }
- 
- static struct attribute_group skx_iio_mapping_group = {
-@@ -3794,7 +3788,7 @@ static int skx_iio_set_mapping(struct intel_uncore_type *type)
- 	struct dev_ext_attribute *eas = NULL;
- 
- 	ret = skx_iio_get_topology(type);
--	if (ret)
-+	if (ret < 0)
- 		goto clear_attr_update;
- 
- 	ret = -ENOMEM;
++
++void intel_uncore_generic_uncore_mmio_init(void)
++{
++	uncore_mmio_uncores = intel_uncore_generic_init_uncores(UNCORE_ACCESS_MMIO);
++}
+diff --git a/arch/x86/events/intel/uncore_discovery.h b/arch/x86/events/intel/uncore_discovery.h
+index 1639ff7..1d65293 100644
+--- a/arch/x86/events/intel/uncore_discovery.h
++++ b/arch/x86/events/intel/uncore_discovery.h
+@@ -128,3 +128,4 @@ bool intel_uncore_has_discovery_tables(void);
+ void intel_uncore_clear_discovery_tables(void);
+ void intel_uncore_generic_uncore_cpu_init(void);
+ int intel_uncore_generic_uncore_pci_init(void);
++void intel_uncore_generic_uncore_mmio_init(void);
