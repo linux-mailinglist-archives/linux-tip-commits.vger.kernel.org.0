@@ -2,14 +2,14 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A08BB3568C8
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  7 Apr 2021 12:05:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 71A2C3568CA
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  7 Apr 2021 12:05:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350618AbhDGKEY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 7 Apr 2021 06:04:24 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:35436 "EHLO
+        id S1350509AbhDGKEZ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 7 Apr 2021 06:04:25 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:35446 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350516AbhDGKDn (ORCPT
+        with ESMTP id S1350518AbhDGKDn (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Wed, 7 Apr 2021 06:03:43 -0400
 Date:   Wed, 07 Apr 2021 10:03:32 -0000
@@ -20,12 +20,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=R8zs9F+Uvfh643CkArrL2kRjedrEap8jFGvwGzRwIKs=;
-        b=isGwk0n49f/sY1eS5J5G0RzPkvqPpKWT81ZAEHaZwiIP5Wsu6mjogc7xp64jFUdsvfKDR6
-        vO1ZTS0goqKkOH22YOJzfcoHitHqRKRH25npE+kkp7vi2eDgzojYwy2SwvKLWzm4wdg2Lq
-        0tnJTY4CHJszth1MwqM/6DWlxL9e3hSSN4q6KnTmU3+GH68eVffU35izhXJYF3k9ANVVUJ
-        yJsx5q3izcR4GINj5V4IoOobb3UFKNsdMd3XCZ9HIMsDvi+c0aOazDV9hyOv7yRsrTE73S
-        cqEwbIwdDqKqyozoCUYl0w83Ue58FB4VCSJjQnVOZKB/jU8i7PKlppYhqFNJpQ==
+        bh=So51Ys5YLocS/cYgCEv6XXS9AcXDKGDwNlkZu8qQ/uU=;
+        b=xGDdOwra5SHquabJP1EotknJLvuv2KZj44Yz1NklN+9RgrPcDmviVM51whu6eMgdLmc2Ii
+        igxwLhaEk6SsyZdJ/2RgK9KfQUW3XLXIgAx6PRgJmx/KmO2CDV+zKsp1QydMKV7ZQw66Ew
+        pEpUhX9DWYpbVMI8EWYmtKbpG5+m4SnAtbMkA2cbzg+t+o61Hpu/oKQwx7Sq58vUiJ/Z06
+        qhChZcs0Tv8ewPNzLa3+DIVepdZiCue4G3AtsOkGPD+hoFoY4bdWVHDNkORENAXmBMGMly
+        HLBCrkmt7CPTVBCIr+Ox/92AqZ+1krTwKM8MmeVkzjyjS6fr83sqwhChE6TlUA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1617789813;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -33,24 +33,24 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=R8zs9F+Uvfh643CkArrL2kRjedrEap8jFGvwGzRwIKs=;
-        b=wgWmc0ZjfmbEzfS8Ihk4mymDIdkJF2iJ38vlEholW9SLxNyESGXKcV4nCtnfjCv6fO/2oi
-        61w2k8mQuZAcPLBg==
-From:   "tip-bot2 for Kai Huang" <tip-bot2@linutronix.de>
+        bh=So51Ys5YLocS/cYgCEv6XXS9AcXDKGDwNlkZu8qQ/uU=;
+        b=d5M0O+CLE97ZH/Jry9sp1scECe87QCuru+tXEyutFpC37Uv7uKwvJzCuqXtinjytA+7Wo9
+        laCHvzZTysj6OXBQ==
+From:   "tip-bot2 for Sean Christopherson" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/sgx] x86/sgx: Initialize virtual EPC driver even when SGX
- driver is disabled
-Cc:     Kai Huang <kai.huang@intel.com>, Borislav Petkov <bp@suse.de>,
-        Sean Christopherson <seanjc@google.com>,
+Subject: [tip: x86/sgx] x86/cpu/intel: Allow SGX virtualization without Launch
+ Control support
+Cc:     Sean Christopherson <sean.j.christopherson@intel.com>,
+        Kai Huang <kai.huang@intel.com>, Borislav Petkov <bp@suse.de>,
         Jarkko Sakkinen <jarkko@kernel.org>,
         Dave Hansen <dave.hansen@intel.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <d35d17a02bbf8feef83a536cec8b43746d4ea557.1616136308.git.kai.huang@intel.com>
-References: <d35d17a02bbf8feef83a536cec8b43746d4ea557.1616136308.git.kai.huang@intel.com>
+In-Reply-To: <b3329777076509b3b601550da288c8f3c406a865.1616136308.git.kai.huang@intel.com>
+References: <b3329777076509b3b601550da288c8f3c406a865.1616136308.git.kai.huang@intel.com>
 MIME-Version: 1.0
-Message-ID: <161778981256.29796.1413620154236553864.tip-bot2@tip-bot2>
+Message-ID: <161778981292.29796.385447792896149428.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,53 +61,137 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/sgx branch of tip:
 
-Commit-ID:     faa7d3e6f3b983a28bf0f88f82dcb1c162e61105
-Gitweb:        https://git.kernel.org/tip/faa7d3e6f3b983a28bf0f88f82dcb1c162e61105
-Author:        Kai Huang <kai.huang@intel.com>
-AuthorDate:    Fri, 19 Mar 2021 20:23:02 +13:00
+Commit-ID:     332bfc7becf479de8a55864cc5ed0024baea28aa
+Gitweb:        https://git.kernel.org/tip/332bfc7becf479de8a55864cc5ed0024baea28aa
+Author:        Sean Christopherson <sean.j.christopherson@intel.com>
+AuthorDate:    Fri, 19 Mar 2021 20:22:58 +13:00
 Committer:     Borislav Petkov <bp@suse.de>
 CommitterDate: Tue, 06 Apr 2021 09:43:41 +02:00
 
-x86/sgx: Initialize virtual EPC driver even when SGX driver is disabled
+x86/cpu/intel: Allow SGX virtualization without Launch Control support
 
-Modify sgx_init() to always try to initialize the virtual EPC driver,
-even if the SGX driver is disabled.  The SGX driver might be disabled
-if SGX Launch Control is in locked mode, or not supported in the
-hardware at all.  This allows (non-Linux) guests that support non-LC
-configurations to use SGX.
+The kernel will currently disable all SGX support if the hardware does
+not support launch control.  Make it more permissive to allow SGX
+virtualization on systems without Launch Control support.  This will
+allow KVM to expose SGX to guests that have less-strict requirements on
+the availability of flexible launch control.
 
- [ bp: De-silli-fy the test. ]
+Improve error message to distinguish between three cases.  There are two
+cases where SGX support is completely disabled:
+1) SGX has been disabled completely by the BIOS
+2) SGX LC is locked by the BIOS.  Bare-metal support is disabled because
+   of LC unavailability.  SGX virtualization is unavailable (because of
+   Kconfig).
+One where it is partially available:
+3) SGX LC is locked by the BIOS.  Bare-metal support is disabled because
+   of LC unavailability.  SGX virtualization is supported.
 
+Signed-off-by: Sean Christopherson <sean.j.christopherson@intel.com>
+Co-developed-by: Kai Huang <kai.huang@intel.com>
 Signed-off-by: Kai Huang <kai.huang@intel.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Sean Christopherson <seanjc@google.com>
 Acked-by: Jarkko Sakkinen <jarkko@kernel.org>
 Acked-by: Dave Hansen <dave.hansen@intel.com>
-Link: https://lkml.kernel.org/r/d35d17a02bbf8feef83a536cec8b43746d4ea557.1616136308.git.kai.huang@intel.com
+Link: https://lkml.kernel.org/r/b3329777076509b3b601550da288c8f3c406a865.1616136308.git.kai.huang@intel.com
 ---
- arch/x86/kernel/cpu/sgx/main.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ arch/x86/kernel/cpu/feat_ctl.c | 59 ++++++++++++++++++++++++---------
+ 1 file changed, 44 insertions(+), 15 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/sgx/main.c b/arch/x86/kernel/cpu/sgx/main.c
-index b227629..1c8a228 100644
---- a/arch/x86/kernel/cpu/sgx/main.c
-+++ b/arch/x86/kernel/cpu/sgx/main.c
-@@ -743,8 +743,17 @@ static int __init sgx_init(void)
- 		goto err_page_cache;
+diff --git a/arch/x86/kernel/cpu/feat_ctl.c b/arch/x86/kernel/cpu/feat_ctl.c
+index 27533a6..da696eb 100644
+--- a/arch/x86/kernel/cpu/feat_ctl.c
++++ b/arch/x86/kernel/cpu/feat_ctl.c
+@@ -104,8 +104,9 @@ early_param("nosgx", nosgx);
+ 
+ void init_ia32_feat_ctl(struct cpuinfo_x86 *c)
+ {
++	bool enable_sgx_kvm = false, enable_sgx_driver = false;
+ 	bool tboot = tboot_enabled();
+-	bool enable_sgx;
++	bool enable_vmx;
+ 	u64 msr;
+ 
+ 	if (rdmsrl_safe(MSR_IA32_FEAT_CTL, &msr)) {
+@@ -114,13 +115,19 @@ void init_ia32_feat_ctl(struct cpuinfo_x86 *c)
+ 		return;
  	}
  
-+	/*
-+	 * Always try to initialize the native *and* KVM drivers.
-+	 * The KVM driver is less picky than the native one and
-+	 * can function if the native one is not supported on the
-+	 * current system or fails to initialize.
-+	 *
-+	 * Error out only if both fail to initialize.
-+	 */
- 	ret = sgx_drv_init();
--	if (ret)
+-	/*
+-	 * Enable SGX if and only if the kernel supports SGX and Launch Control
+-	 * is supported, i.e. disable SGX if the LE hash MSRs can't be written.
+-	 */
+-	enable_sgx = cpu_has(c, X86_FEATURE_SGX) &&
+-		     cpu_has(c, X86_FEATURE_SGX_LC) &&
+-		     IS_ENABLED(CONFIG_X86_SGX);
++	enable_vmx = cpu_has(c, X86_FEATURE_VMX) &&
++		     IS_ENABLED(CONFIG_KVM_INTEL);
 +
-+	if (sgx_vepc_init() && ret)
- 		goto err_kthread;
++	if (cpu_has(c, X86_FEATURE_SGX) && IS_ENABLED(CONFIG_X86_SGX)) {
++		/*
++		 * Separate out SGX driver enabling from KVM.  This allows KVM
++		 * guests to use SGX even if the kernel SGX driver refuses to
++		 * use it.  This happens if flexible Launch Control is not
++		 * available.
++		 */
++		enable_sgx_driver = cpu_has(c, X86_FEATURE_SGX_LC);
++		enable_sgx_kvm = enable_vmx && IS_ENABLED(CONFIG_X86_SGX_KVM);
++	}
  
- 	return 0;
+ 	if (msr & FEAT_CTL_LOCKED)
+ 		goto update_caps;
+@@ -136,15 +143,18 @@ void init_ia32_feat_ctl(struct cpuinfo_x86 *c)
+ 	 * i.e. KVM is enabled, to avoid unnecessarily adding an attack vector
+ 	 * for the kernel, e.g. using VMX to hide malicious code.
+ 	 */
+-	if (cpu_has(c, X86_FEATURE_VMX) && IS_ENABLED(CONFIG_KVM_INTEL)) {
++	if (enable_vmx) {
+ 		msr |= FEAT_CTL_VMX_ENABLED_OUTSIDE_SMX;
+ 
+ 		if (tboot)
+ 			msr |= FEAT_CTL_VMX_ENABLED_INSIDE_SMX;
+ 	}
+ 
+-	if (enable_sgx)
+-		msr |= FEAT_CTL_SGX_ENABLED | FEAT_CTL_SGX_LC_ENABLED;
++	if (enable_sgx_kvm || enable_sgx_driver) {
++		msr |= FEAT_CTL_SGX_ENABLED;
++		if (enable_sgx_driver)
++			msr |= FEAT_CTL_SGX_LC_ENABLED;
++	}
+ 
+ 	wrmsrl(MSR_IA32_FEAT_CTL, msr);
+ 
+@@ -167,10 +177,29 @@ update_caps:
+ 	}
+ 
+ update_sgx:
+-	if (!(msr & FEAT_CTL_SGX_ENABLED) ||
+-	    !(msr & FEAT_CTL_SGX_LC_ENABLED) || !enable_sgx) {
+-		if (enable_sgx)
+-			pr_err_once("SGX disabled by BIOS\n");
++	if (!(msr & FEAT_CTL_SGX_ENABLED)) {
++		if (enable_sgx_kvm || enable_sgx_driver)
++			pr_err_once("SGX disabled by BIOS.\n");
+ 		clear_cpu_cap(c, X86_FEATURE_SGX);
++		return;
++	}
++
++	/*
++	 * VMX feature bit may be cleared due to being disabled in BIOS,
++	 * in which case SGX virtualization cannot be supported either.
++	 */
++	if (!cpu_has(c, X86_FEATURE_VMX) && enable_sgx_kvm) {
++		pr_err_once("SGX virtualization disabled due to lack of VMX.\n");
++		enable_sgx_kvm = 0;
++	}
++
++	if (!(msr & FEAT_CTL_SGX_LC_ENABLED) && enable_sgx_driver) {
++		if (!enable_sgx_kvm) {
++			pr_err_once("SGX Launch Control is locked. Disable SGX.\n");
++			clear_cpu_cap(c, X86_FEATURE_SGX);
++		} else {
++			pr_err_once("SGX Launch Control is locked. Support SGX virtualization only.\n");
++			clear_cpu_cap(c, X86_FEATURE_SGX_LC);
++		}
+ 	}
+ }
