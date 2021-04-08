@@ -2,18 +2,18 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B9B2A3582F9
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  8 Apr 2021 14:14:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 11C5C3582FA
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  8 Apr 2021 14:14:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231499AbhDHMN5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S231513AbhDHMN5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Thu, 8 Apr 2021 08:13:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50186 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231481AbhDHMNz (ORCPT
+        with ESMTP id S229837AbhDHMNz (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Thu, 8 Apr 2021 08:13:55 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59D7AC061760;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 626AFC061761;
         Thu,  8 Apr 2021 05:13:44 -0700 (PDT)
 Date:   Thu, 08 Apr 2021 12:13:40 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
@@ -23,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=olPAXa5CH+vfmVzU0F/dY3rs0n1BKBcsUFV7ULj+VBU=;
-        b=vG6qfS8+MWGvLtd//0AenJfh8sKFAFq7uesMz3Tfw3yNHsoesUc3kQVF0LsEFp7YA3dvKt
-        JgGN8Ft8VkJWghM0bqQsM5wyxrcaj3D/lNe55BQi62FP9dfHm1M8fcx/ysie/kBNj2jNok
-        2fHFSaDRzLGm45vJ/Uo7awx96NFKh5FGMTj8pIkPwj3+PTFC6RHzgOs8hNZiNcmA7IHHEy
-        yNcq75Tk4SHhwleZkLjl6HGZ4UcoCCSf5e6NPJYBgvzudvSMaHqvFUPZ5YP2/oLBCoTlR3
-        m9KAj3HHdZ8aja/r6878I65Ao525IVZUecgaDWRhA90/Co7RsRmjbGs5rRPEPQ==
+        bh=mb3zMgvlnGxL7DKphWI0Z11QYg4DNvzY1OA8OqKJB9Q=;
+        b=hlu92RImu4S4cLSFL6iPTQpxfzLiGJtT6rTBXIvg2qX0fPMXYrHWb6FMwtoiroo424/APy
+        JONFR/DId3ihfeUODDoXnRPh3iT30zmjWL2gfyK7hSqC6cZNZFrI45VNzK0u9kiKC/dR5H
+        sCAr8VgaMFqnjvLExlaWoEozPjddgCJOSonAeK/l9MpZjemrdkNwZdES5vCG5zS7Phb5/R
+        WQ4DkWdPahKsOjnN/o6iMfK+BNxV6+7DYHgwHQAanYgvMP7O/Sd5t/JF7+iIGWogY9L48T
+        o4TyBvJORVlLIb5S+o9+L2EPz/CoRupOmJHJIExac3gDWbJF33bnhxD+7RypTg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1617884021;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,21 +36,22 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=olPAXa5CH+vfmVzU0F/dY3rs0n1BKBcsUFV7ULj+VBU=;
-        b=tHl7j4FDK8H1P279fcDEcV3usjRe/F3zWDKNno6gAqYIL9m7na8PAFh+eK0ac6eOJpDajK
-        A/Hzqfg6y6i8gHAg==
+        bh=mb3zMgvlnGxL7DKphWI0Z11QYg4DNvzY1OA8OqKJB9Q=;
+        b=/89g/qvTUencI3aUG4Ts+hVdTib74dAjEBxCJlvO1WEAgZe8dXWeQfNs1iKFN5MmukF71j
+        simNHYCvnrm6tsDA==
 From:   "tip-bot2 for Kees Cook" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/entry] x86/entry: Enable random_kstack_offset support
+Subject: [tip: x86/entry] arm64: entry: Enable random_kstack_offset support
 Cc:     Kees Cook <keescook@chromium.org>,
-        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Will Deacon <will@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210401232347.2791257-5-keescook@chromium.org>
-References: <20210401232347.2791257-5-keescook@chromium.org>
+In-Reply-To: <20210401232347.2791257-6-keescook@chromium.org>
+References: <20210401232347.2791257-6-keescook@chromium.org>
 MIME-Version: 1.0
-Message-ID: <161788402091.29796.12870482466677100771.tip-bot2@tip-bot2>
+Message-ID: <161788402015.29796.16586093156076434452.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,103 +62,110 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/entry branch of tip:
 
-Commit-ID:     fe950f6020338c8ac668ef823bb692d36b7542a2
-Gitweb:        https://git.kernel.org/tip/fe950f6020338c8ac668ef823bb692d36b7542a2
+Commit-ID:     70918779aec9bd01d16f4e6e800ffe423d196021
+Gitweb:        https://git.kernel.org/tip/70918779aec9bd01d16f4e6e800ffe423d196021
 Author:        Kees Cook <keescook@chromium.org>
-AuthorDate:    Thu, 01 Apr 2021 16:23:45 -07:00
+AuthorDate:    Thu, 01 Apr 2021 16:23:46 -07:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 08 Apr 2021 14:05:20 +02:00
+CommitterDate: Thu, 08 Apr 2021 14:12:19 +02:00
 
-x86/entry: Enable random_kstack_offset support
+arm64: entry: Enable random_kstack_offset support
 
 Allow for a randomized stack offset on a per-syscall basis, with roughly
-5-6 bits of entropy, depending on compiler and word size. Since the
-method of offsetting uses macros, this cannot live in the common entry
-code (the stack offset needs to be retained for the life of the syscall,
-which means it needs to happen at the actual entry point).
+5 bits of entropy. (And include AAPCS rationale AAPCS thanks to Mark
+Rutland.)
+
+In order to avoid unconditional stack canaries on syscall entry (due to
+the use of alloca()), also disable stack protector to avoid triggering
+needless checks and slowing down the entry path. As there is no general
+way to control stack protector coverage with a function attribute[1],
+this must be disabled at the compilation unit level. This isn't a problem
+here, though, since stack protector was not triggered before: examining
+the resulting syscall.o, there are no changes in canary coverage (none
+before, none now).
+
+[1] a working __attribute__((no_stack_protector)) has been added to GCC
+and Clang but has not been released in any version yet:
+https://gcc.gnu.org/git/gitweb.cgi?p=gcc.git;h=346b302d09c1e6db56d9fe69048acb32fbb97845
+https://reviews.llvm.org/rG4fbf84c1732fca596ad1d6e96015e19760eb8a9b
 
 Signed-off-by: Kees Cook <keescook@chromium.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20210401232347.2791257-5-keescook@chromium.org
+Acked-by: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/r/20210401232347.2791257-6-keescook@chromium.org
 
 ---
- arch/x86/Kconfig                    |  1 +
- arch/x86/entry/common.c             |  3 +++
- arch/x86/include/asm/entry-common.h | 16 ++++++++++++++++
- 3 files changed, 20 insertions(+)
+ arch/arm64/Kconfig          |  1 +
+ arch/arm64/kernel/Makefile  |  5 +++++
+ arch/arm64/kernel/syscall.c | 16 ++++++++++++++++
+ 3 files changed, 22 insertions(+)
 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 2792879..4b4ad8e 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -165,6 +165,7 @@ config X86
- 	select HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD if X86_64
- 	select HAVE_ARCH_USERFAULTFD_WP         if X86_64 && USERFAULTFD
- 	select HAVE_ARCH_VMAP_STACK		if X86_64
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index e4e1b65..4640d25 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -146,6 +146,7 @@ config ARM64
+ 	select HAVE_ARCH_MMAP_RND_COMPAT_BITS if COMPAT
+ 	select HAVE_ARCH_PFN_VALID
+ 	select HAVE_ARCH_PREL32_RELOCATIONS
 +	select HAVE_ARCH_RANDOMIZE_KSTACK_OFFSET
- 	select HAVE_ARCH_WITHIN_STACK_FRAMES
- 	select HAVE_ASM_MODVERSIONS
- 	select HAVE_CMPXCHG_DOUBLE
-diff --git a/arch/x86/entry/common.c b/arch/x86/entry/common.c
-index 4efd39a..7b2542b 100644
---- a/arch/x86/entry/common.c
-+++ b/arch/x86/entry/common.c
-@@ -38,6 +38,7 @@
- #ifdef CONFIG_X86_64
- __visible noinstr void do_syscall_64(unsigned long nr, struct pt_regs *regs)
- {
-+	add_random_kstack_offset();
- 	nr = syscall_enter_from_user_mode(regs, nr);
+ 	select HAVE_ARCH_SECCOMP_FILTER
+ 	select HAVE_ARCH_STACKLEAK
+ 	select HAVE_ARCH_THREAD_STRUCT_WHITELIST
+diff --git a/arch/arm64/kernel/Makefile b/arch/arm64/kernel/Makefile
+index ed65576..6cc9773 100644
+--- a/arch/arm64/kernel/Makefile
++++ b/arch/arm64/kernel/Makefile
+@@ -9,6 +9,11 @@ CFLAGS_REMOVE_ftrace.o = $(CC_FLAGS_FTRACE)
+ CFLAGS_REMOVE_insn.o = $(CC_FLAGS_FTRACE)
+ CFLAGS_REMOVE_return_address.o = $(CC_FLAGS_FTRACE)
  
- 	instrumentation_begin();
-@@ -83,6 +84,7 @@ __visible noinstr void do_int80_syscall_32(struct pt_regs *regs)
- {
- 	unsigned int nr = syscall_32_enter(regs);
- 
-+	add_random_kstack_offset();
- 	/*
- 	 * Subtlety here: if ptrace pokes something larger than 2^32-1 into
- 	 * orig_ax, the unsigned int return value truncates it.  This may
-@@ -102,6 +104,7 @@ static noinstr bool __do_fast_syscall_32(struct pt_regs *regs)
- 	unsigned int nr = syscall_32_enter(regs);
- 	int res;
- 
-+	add_random_kstack_offset();
- 	/*
- 	 * This cannot use syscall_enter_from_user_mode() as it has to
- 	 * fetch EBP before invoking any of the syscall entry work
-diff --git a/arch/x86/include/asm/entry-common.h b/arch/x86/include/asm/entry-common.h
-index 2b87b19..14ebd21 100644
---- a/arch/x86/include/asm/entry-common.h
-+++ b/arch/x86/include/asm/entry-common.h
-@@ -2,6 +2,7 @@
- #ifndef _ASM_X86_ENTRY_COMMON_H
- #define _ASM_X86_ENTRY_COMMON_H
- 
++# Remove stack protector to avoid triggering unneeded stack canary
++# checks due to randomize_kstack_offset.
++CFLAGS_REMOVE_syscall.o	 = -fstack-protector -fstack-protector-strong
++CFLAGS_syscall.o	+= -fno-stack-protector
++
+ # Object file lists.
+ obj-y			:= debug-monitors.o entry.o irq.o fpsimd.o		\
+ 			   entry-common.o entry-fpsimd.o process.o ptrace.o	\
+diff --git a/arch/arm64/kernel/syscall.c b/arch/arm64/kernel/syscall.c
+index b9cf12b..263d6c1 100644
+--- a/arch/arm64/kernel/syscall.c
++++ b/arch/arm64/kernel/syscall.c
+@@ -5,6 +5,7 @@
+ #include <linux/errno.h>
+ #include <linux/nospec.h>
+ #include <linux/ptrace.h>
 +#include <linux/randomize_kstack.h>
- #include <linux/user-return-notifier.h>
+ #include <linux/syscalls.h>
  
- #include <asm/nospec-branch.h>
-@@ -70,6 +71,21 @@ static inline void arch_exit_to_user_mode_prepare(struct pt_regs *regs,
- 	 */
- 	current_thread_info()->status &= ~(TS_COMPAT | TS_I386_REGS_POKED);
- #endif
+ #include <asm/daifflags.h>
+@@ -43,6 +44,8 @@ static void invoke_syscall(struct pt_regs *regs, unsigned int scno,
+ {
+ 	long ret;
+ 
++	add_random_kstack_offset();
++
+ 	if (scno < sc_nr) {
+ 		syscall_fn_t syscall_fn;
+ 		syscall_fn = syscall_table[array_index_nospec(scno, sc_nr)];
+@@ -55,6 +58,19 @@ static void invoke_syscall(struct pt_regs *regs, unsigned int scno,
+ 		ret = lower_32_bits(ret);
+ 
+ 	regs->regs[0] = ret;
 +
 +	/*
 +	 * Ultimately, this value will get limited by KSTACK_OFFSET_MAX(),
-+	 * but not enough for x86 stack utilization comfort. To keep
-+	 * reasonable stack head room, reduce the maximum offset to 8 bits.
++	 * but not enough for arm64 stack utilization comfort. To keep
++	 * reasonable stack head room, reduce the maximum offset to 9 bits.
 +	 *
 +	 * The actual entropy will be further reduced by the compiler when
-+	 * applying stack alignment constraints (see cc_stack_align4/8 in
-+	 * arch/x86/Makefile), which will remove the 3 (x86_64) or 2 (ia32)
-+	 * low bits from any entropy chosen here.
++	 * applying stack alignment constraints: the AAPCS mandates a
++	 * 16-byte (i.e. 4-bit) aligned SP at function boundaries.
 +	 *
-+	 * Therefore, final stack offset entropy will be 5 (x86_64) or
-+	 * 6 (ia32) bits.
++	 * The resulting 5 bits of entropy is seen in SP[8:4].
 +	 */
-+	choose_random_kstack_offset(rdtsc() & 0xFF);
++	choose_random_kstack_offset(get_random_int() & 0x1FF);
  }
- #define arch_exit_to_user_mode_prepare arch_exit_to_user_mode_prepare
  
+ static inline bool has_syscall_work(unsigned long flags)
