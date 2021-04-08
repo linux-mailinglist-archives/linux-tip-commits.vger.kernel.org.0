@@ -2,56 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D3813582FB
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  8 Apr 2021 14:14:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E15E835834E
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  8 Apr 2021 14:31:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231521AbhDHMN6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 8 Apr 2021 08:13:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50190 "EHLO
+        id S229751AbhDHMbL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 8 Apr 2021 08:31:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53976 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231483AbhDHMNz (ORCPT
+        with ESMTP id S229741AbhDHMbL (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 8 Apr 2021 08:13:55 -0400
+        Thu, 8 Apr 2021 08:31:11 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 693D8C061762;
-        Thu,  8 Apr 2021 05:13:44 -0700 (PDT)
-Date:   Thu, 08 Apr 2021 12:13:42 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08855C061760;
+        Thu,  8 Apr 2021 05:31:00 -0700 (PDT)
+Date:   Thu, 08 Apr 2021 12:30:57 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1617884022;
+        s=2020; t=1617885058;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=jl/iDVbgDjoIROPCoDBb62Co+bvxRy+mMrB2zXmb1T0=;
-        b=XTMN4lw01G4vumOWYJTU5u5yxjsIqL6oMfoXv477c9dOwd0zSiYOkaJlH9yXV4+2U9Nn9x
-        wBIIG66vvhx1imVz6ihVa4hXPy8sIKkNFf1NEB9CJ753OcOGt8zmR+Iigh+RCvufr/a/hv
-        C3LzUvao6USBTGRKMHTGDP4G9jubqABrlYdRULwXfv/0PCBh0Ulnnh8hzNc6VTrjQXNSl0
-        3RjXjLgDOu7S1jzmIVOQJP9Wcqef6esmC6pw7mdHUoKl6USMANeVTflp4epDJam+i/zdUX
-        kX0q0r+FJGYV3x0OnJIHfeyGteiingOkx+cOo93HWRYbBKP1hyQfPFXv7hcUOA==
+        bh=51ls2iPxJi2SsBXM8FunGtXV6mURpzyfDVukkNrBJWI=;
+        b=E/znGtMbtmqCrEwTd9ugvuZcEijKwpiknE6t4GtVvmg8mMWdEeVcQXjiUy20R+65UKHs31
+        mGVkF41MtdfqnYYapr0/A8KdBeNbqp+EXHJ9EGvda5zrp/aTx2EJZlqtKx7owhFlCZkHRW
+        ce3o1/ogx8bI8nwgVgVh1/BC5ChX7kuV3w9ZYy/oNy2SxGnBa9nvwyXe4ZHYJpK+k1cXu6
+        OTg+fupQ+4Xso3o5s6pDtjBjYBWCMrBCppAWCZplbVdqFRoSyTisKuHX0r4EbRNppY0zDE
+        1rf9KWORsoLCpqkDdvPNh3QxdvufvR2wY+ARpVgM97czGXqBRTN6MiogsTMjDA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1617884022;
+        s=2020e; t=1617885058;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=jl/iDVbgDjoIROPCoDBb62Co+bvxRy+mMrB2zXmb1T0=;
-        b=xb/cdHMu3zv5wFJeAhadbyKVMl7Ztckv9fehRxt+GZ9hZyrfPm6AQuwb2LW1cZCnj+SiyY
-        Ir2/E2kPsV3XpmDw==
-From:   "tip-bot2 for Kees Cook" <tip-bot2@linutronix.de>
+        bh=51ls2iPxJi2SsBXM8FunGtXV6mURpzyfDVukkNrBJWI=;
+        b=WTkCzd19jn3ZJ3icOilRE2uIlXV9MWjQ6Hc6yfDROe9fVJ56a6Qr06iQCIEOFcdi5xcoks
+        YZXD7s++lxju0KBA==
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/entry] jump_label: Provide CONFIG-driven build state defaults
-Cc:     Kees Cook <keescook@chromium.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: x86/core] x86/cpu: Resort and comment Intel models
+Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Borislav Petkov <bp@suse.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210401232347.2791257-2-keescook@chromium.org>
-References: <20210401232347.2791257-2-keescook@chromium.org>
+In-Reply-To: <YE+HhS8i0gshHD3W@hirez.programming.kicks-ass.net>
+References: <YE+HhS8i0gshHD3W@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-Message-ID: <161788402204.29796.3718117807122564028.tip-bot2@tip-bot2>
+Message-ID: <161788505782.29796.12752205613327973872.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,68 +59,109 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/entry branch of tip:
+The following commit has been merged into the x86/core branch of tip:
 
-Commit-ID:     0d66ccc1627013c95f1e7ef10b95b8451cd7834e
-Gitweb:        https://git.kernel.org/tip/0d66ccc1627013c95f1e7ef10b95b8451cd7834e
-Author:        Kees Cook <keescook@chromium.org>
-AuthorDate:    Thu, 01 Apr 2021 16:23:42 -07:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 08 Apr 2021 14:05:19 +02:00
+Commit-ID:     53375a5a218e7ea0ac18087946b5391f749b764f
+Gitweb:        https://git.kernel.org/tip/53375a5a218e7ea0ac18087946b5391f749b764f
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Mon, 15 Mar 2021 17:12:53 +01:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Thu, 08 Apr 2021 14:22:10 +02:00
 
-jump_label: Provide CONFIG-driven build state defaults
+x86/cpu: Resort and comment Intel models
 
-As shown in the comment in jump_label.h, choosing the initial state of
-static branches changes the assembly layout. If the condition is expected
-to be likely it's inline, and if unlikely it is out of line via a jump.
+The INTEL_FAM6 list has become a mess again. Try and bring some sanity
+back into it.
 
-A few places in the kernel use (or could be using) a CONFIG to choose the
-default state, which would give a small performance benefit to their
-compile-time declared default. Provide the infrastructure to do this.
+Where previously we had one microarch per year and a number of SKUs
+within that, this no longer seems to be the case. We now get different
+uarch names that share a 'core' design.
 
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20210401232347.2791257-2-keescook@chromium.org
+Add the core name starting at skylake and reorder to keep the cores
+in chronological order. Furthermore, Intel marketed the names {Amber,
+Coffee, Whiskey} Lake, but those are in fact steppings of Kaby Lake, add
+comments for them.
 
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lkml.kernel.org/r/YE+HhS8i0gshHD3W@hirez.programming.kicks-ass.net
 ---
- include/linux/jump_label.h | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ arch/x86/include/asm/intel-family.h | 50 +++++++++++++++-------------
+ 1 file changed, 28 insertions(+), 22 deletions(-)
 
-diff --git a/include/linux/jump_label.h b/include/linux/jump_label.h
-index d926912..05f5554 100644
---- a/include/linux/jump_label.h
-+++ b/include/linux/jump_label.h
-@@ -382,6 +382,21 @@ struct static_key_false {
- 		[0 ... (count) - 1] = STATIC_KEY_FALSE_INIT,	\
- 	}
- 
-+#define _DEFINE_STATIC_KEY_1(name)	DEFINE_STATIC_KEY_TRUE(name)
-+#define _DEFINE_STATIC_KEY_0(name)	DEFINE_STATIC_KEY_FALSE(name)
-+#define DEFINE_STATIC_KEY_MAYBE(cfg, name)			\
-+	__PASTE(_DEFINE_STATIC_KEY_, IS_ENABLED(cfg))(name)
-+
-+#define _DEFINE_STATIC_KEY_RO_1(name)	DEFINE_STATIC_KEY_TRUE_RO(name)
-+#define _DEFINE_STATIC_KEY_RO_0(name)	DEFINE_STATIC_KEY_FALSE_RO(name)
-+#define DEFINE_STATIC_KEY_MAYBE_RO(cfg, name)			\
-+	__PASTE(_DEFINE_STATIC_KEY_RO_, IS_ENABLED(cfg))(name)
-+
-+#define _DECLARE_STATIC_KEY_1(name)	DECLARE_STATIC_KEY_TRUE(name)
-+#define _DECLARE_STATIC_KEY_0(name)	DECLARE_STATIC_KEY_FALSE(name)
-+#define DECLARE_STATIC_KEY_MAYBE(cfg, name)			\
-+	__PASTE(_DECLARE_STATIC_KEY_, IS_ENABLED(cfg))(name)
-+
- extern bool ____wrong_branch_error(void);
- 
- #define static_key_enabled(x)							\
-@@ -482,6 +497,10 @@ extern bool ____wrong_branch_error(void);
- 
- #endif /* CONFIG_JUMP_LABEL */
- 
-+#define static_branch_maybe(config, x)					\
-+	(IS_ENABLED(config) ? static_branch_likely(x)			\
-+			    : static_branch_unlikely(x))
-+
- /*
-  * Advanced usage; refcount, branch is enabled when: count != 0
+diff --git a/arch/x86/include/asm/intel-family.h b/arch/x86/include/asm/intel-family.h
+index 9abe842..b15262f 100644
+--- a/arch/x86/include/asm/intel-family.h
++++ b/arch/x86/include/asm/intel-family.h
+@@ -32,7 +32,9 @@
+  *		_EP	- 2 socket server parts
+  *		_EX	- 4+ socket server parts
+  *
+- * The #define line may optionally include a comment including platform names.
++ * The #define line may optionally include a comment including platform or core
++ * names. An exception is made for kabylake where steppings seem to have gotten
++ * their own names :-(
   */
+ 
+ /* Wildcard match for FAM6 so X86_MATCH_INTEL_FAM6_MODEL(ANY) works */
+@@ -69,35 +71,39 @@
+ #define INTEL_FAM6_BROADWELL_X		0x4F
+ #define INTEL_FAM6_BROADWELL_D		0x56
+ 
+-#define INTEL_FAM6_SKYLAKE_L		0x4E
+-#define INTEL_FAM6_SKYLAKE		0x5E
+-#define INTEL_FAM6_SKYLAKE_X		0x55
+-#define INTEL_FAM6_KABYLAKE_L		0x8E
+-#define INTEL_FAM6_KABYLAKE		0x9E
++#define INTEL_FAM6_SKYLAKE_L		0x4E	/* Sky Lake             */
++#define INTEL_FAM6_SKYLAKE		0x5E	/* Sky Lake             */
++#define INTEL_FAM6_SKYLAKE_X		0x55	/* Sky Lake             */
+ 
+-#define INTEL_FAM6_CANNONLAKE_L		0x66
++#define INTEL_FAM6_KABYLAKE_L		0x8E	/* Sky Lake             */
++/*                 AMBERLAKE_L		0x8E	   Sky Lake -- s: 9     */
++/*                 COFFEELAKE_L		0x8E	   Sky Lake -- s: 10    */
++/*                 WHISKEYLAKE_L	0x8E       Sky Lake -- s: 11,12 */
+ 
+-#define INTEL_FAM6_ICELAKE_X		0x6A
+-#define INTEL_FAM6_ICELAKE_D		0x6C
+-#define INTEL_FAM6_ICELAKE		0x7D
+-#define INTEL_FAM6_ICELAKE_L		0x7E
+-#define INTEL_FAM6_ICELAKE_NNPI		0x9D
++#define INTEL_FAM6_KABYLAKE		0x9E	/* Sky Lake             */
++/*                 COFFEELAKE		0x9E	   Sky Lake -- s: 10-13 */
+ 
+-#define INTEL_FAM6_TIGERLAKE_L		0x8C
+-#define INTEL_FAM6_TIGERLAKE		0x8D
++#define INTEL_FAM6_COMETLAKE		0xA5	/* Sky Lake             */
++#define INTEL_FAM6_COMETLAKE_L		0xA6	/* Sky Lake             */
+ 
+-#define INTEL_FAM6_COMETLAKE		0xA5
+-#define INTEL_FAM6_COMETLAKE_L		0xA6
++#define INTEL_FAM6_CANNONLAKE_L		0x66	/* Palm Cove */
+ 
+-#define INTEL_FAM6_ROCKETLAKE		0xA7
++#define INTEL_FAM6_ICELAKE_X		0x6A	/* Sunny Cove */
++#define INTEL_FAM6_ICELAKE_D		0x6C	/* Sunny Cove */
++#define INTEL_FAM6_ICELAKE		0x7D	/* Sunny Cove */
++#define INTEL_FAM6_ICELAKE_L		0x7E	/* Sunny Cove */
++#define INTEL_FAM6_ICELAKE_NNPI		0x9D	/* Sunny Cove */
+ 
+-#define INTEL_FAM6_SAPPHIRERAPIDS_X	0x8F
++#define INTEL_FAM6_LAKEFIELD		0x8A	/* Sunny Cove / Tremont */
+ 
+-/* Hybrid Core/Atom Processors */
++#define INTEL_FAM6_ROCKETLAKE		0xA7	/* Cypress Cove */
+ 
+-#define	INTEL_FAM6_LAKEFIELD		0x8A
+-#define INTEL_FAM6_ALDERLAKE		0x97
+-#define INTEL_FAM6_ALDERLAKE_L		0x9A
++#define INTEL_FAM6_TIGERLAKE_L		0x8C	/* Willow Cove */
++#define INTEL_FAM6_TIGERLAKE		0x8D	/* Willow Cove */
++#define INTEL_FAM6_SAPPHIRERAPIDS_X	0x8F	/* Willow Cove */
++
++#define INTEL_FAM6_ALDERLAKE		0x97	/* Golden Cove / Gracemont */
++#define INTEL_FAM6_ALDERLAKE_L		0x9A	/* Golden Cove / Gracemont */
+ 
+ /* "Small Core" Processors (Atom) */
+ 
