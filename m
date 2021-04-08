@@ -2,51 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 733A5358114
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  8 Apr 2021 12:48:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC22C3582F6
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  8 Apr 2021 14:13:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229964AbhDHKst (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 8 Apr 2021 06:48:49 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:42758 "EHLO
+        id S231455AbhDHMNx (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 8 Apr 2021 08:13:53 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:43200 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229803AbhDHKsn (ORCPT
+        with ESMTP id S229837AbhDHMNx (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 8 Apr 2021 06:48:43 -0400
-Date:   Thu, 08 Apr 2021 10:48:29 -0000
+        Thu, 8 Apr 2021 08:13:53 -0400
+Date:   Thu, 08 Apr 2021 12:13:40 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1617878910;
+        s=2020; t=1617884021;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=0IUq4vRGagIn46c9cW1IleNO1Bt9TPBPMXqjDwpoSVY=;
-        b=m4hGOaQKQCjacGhEKratUgrnMw+Ht0ypLy/Hx5a1Hft57mL8MNJp9BPf209IJn4zE0Qcga
-        VEmL0Eu0EK9onvkM3CNssTwZ+KS+G/5JbhD2q9oKf7O1/YXNm1vqpNONeYRFjzr0AnUy5S
-        hy2R6MBIraOD5AajonWOdIum+Qi+39u5293r2uBAkyZKu+Jv6mVzD9s9J5BmICv/PbZ01N
-        cNRKYjmPwdbO5fCGWZoT9kxtX0pID+W2jS4klTIuH2tUliYb9SMB6Njl+pQsqr0362eh20
-        VH0eZDagJAPpaoMhmM9FJKuqq7Lv9lVmHkGi3usAmqRNqd4j19Vjrc20BvRqew==
+        bh=NFRpOciehEP7XXap4n9wiWt3b54WKnAhswjRmZ64ELs=;
+        b=EO4WmbNPaiVcqEAPONpyeqZFkLbeZtrPpSOxRElFj/Gzts9lux+P8ZYiKTByKPkAoxD95j
+        kc336VWrSIqU5rR5zUNGjwiMzQ0jNQKBX/Eh3YYHa7wUUqrCVlp/ZeJdQVyHcesxNDwCqQ
+        9YX92ElkKi9p3h8KOJ0R5fXy2D3lQ7dgbC82rZE2UCQEve7+3+x4/TSONxzwdW0/0nVS0S
+        YFXawSShF1N1/sqj6y3FGdIW/bnuIyOjSy2NPzwhvAA9b8k4PprmqxdFB9zYut/PNIPEhP
+        rLSGSGdG0bqcmPvKh15tVdUF7DHwVmJq423ld7GdqHARR3Dzoe/JjCJYUWWvUw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1617878910;
+        s=2020e; t=1617884021;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=0IUq4vRGagIn46c9cW1IleNO1Bt9TPBPMXqjDwpoSVY=;
-        b=vRidT/SyKd5zo0ZjWrsclrFDypdndtcWSZWk8AFhNcVT+HGrtjTGOit0ZX50NVIOQf8HG+
-        azzd5wkRGWUzKOBg==
-From:   "tip-bot2 for Zhao Xuehui" <tip-bot2@linutronix.de>
+        bh=NFRpOciehEP7XXap4n9wiWt3b54WKnAhswjRmZ64ELs=;
+        b=iPpROZl0+LEdEMo1H16XNSWvSznLfzJ51lXbVfsAMoeFscrpHEyLjGPWr1VoYGEyHh+RoS
+        MlOgq8WhOFqK7OBA==
+From:   "tip-bot2 for Kees Cook" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cleanups] x86/msr: Make locally used functions static
-Cc:     Zhao Xuehui <zhaoxuehui1@huawei.com>, Borislav Petkov <bp@suse.de>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20210408095218.152264-1-zhaoxuehui1@huawei.com>
-References: <20210408095218.152264-1-zhaoxuehui1@huawei.com>
+Subject: [tip: x86/entry] lkdtm: Add REPORT_STACK for checking stack offsets
+Cc:     Kees Cook <keescook@chromium.org>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20210401232347.2791257-7-keescook@chromium.org>
+References: <20210401232347.2791257-7-keescook@chromium.org>
 MIME-Version: 1.0
-Message-ID: <161787890998.29796.15716124525771113183.tip-bot2@tip-bot2>
+Message-ID: <161788402056.29796.10077892383325680647.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -55,48 +56,146 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cleanups branch of tip:
+The following commit has been merged into the x86/entry branch of tip:
 
-Commit-ID:     3e7bbe15ed84e3baa7dfab3aebed3a06fd39b806
-Gitweb:        https://git.kernel.org/tip/3e7bbe15ed84e3baa7dfab3aebed3a06fd39b806
-Author:        Zhao Xuehui <zhaoxuehui1@huawei.com>
-AuthorDate:    Thu, 08 Apr 2021 17:52:18 +08:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Thu, 08 Apr 2021 11:57:40 +02:00
+Commit-ID:     68ef8735d253f3d840082b78f996bf2d89ee6e5f
+Gitweb:        https://git.kernel.org/tip/68ef8735d253f3d840082b78f996bf2d89ee6e5f
+Author:        Kees Cook <keescook@chromium.org>
+AuthorDate:    Thu, 01 Apr 2021 16:23:47 -07:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Thu, 08 Apr 2021 14:05:20 +02:00
 
-x86/msr: Make locally used functions static
+lkdtm: Add REPORT_STACK for checking stack offsets
 
-The functions msr_read() and msr_write() are not used outside of msr.c,
-make them static.
+For validating the stack offset behavior, report the offset from a given
+process's first seen stack address. Add s script to calculate the results
+to the LKDTM kselftests.
 
- [ bp: Massage commit message. ]
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20210401232347.2791257-7-keescook@chromium.org
 
-Signed-off-by: Zhao Xuehui <zhaoxuehui1@huawei.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20210408095218.152264-1-zhaoxuehui1@huawei.com
 ---
- arch/x86/lib/msr.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/misc/lkdtm/bugs.c                      | 17 ++++++++-
+ drivers/misc/lkdtm/core.c                      |  1 +-
+ drivers/misc/lkdtm/lkdtm.h                     |  1 +-
+ tools/testing/selftests/lkdtm/.gitignore       |  1 +-
+ tools/testing/selftests/lkdtm/Makefile         |  1 +-
+ tools/testing/selftests/lkdtm/stack-entropy.sh | 36 +++++++++++++++++-
+ 6 files changed, 57 insertions(+)
+ create mode 100755 tools/testing/selftests/lkdtm/stack-entropy.sh
 
-diff --git a/arch/x86/lib/msr.c b/arch/x86/lib/msr.c
-index 3bd905e..b09cd2a 100644
---- a/arch/x86/lib/msr.c
-+++ b/arch/x86/lib/msr.c
-@@ -36,7 +36,7 @@ EXPORT_SYMBOL(msrs_free);
-  * argument @m.
-  *
-  */
--int msr_read(u32 msr, struct msr *m)
-+static int msr_read(u32 msr, struct msr *m)
- {
- 	int err;
- 	u64 val;
-@@ -54,7 +54,7 @@ int msr_read(u32 msr, struct msr *m)
-  * @msr: MSR to write
-  * @m: value to write
-  */
--int msr_write(u32 msr, struct msr *m)
-+static int msr_write(u32 msr, struct msr *m)
- {
- 	return wrmsrl_safe(msr, m->q);
+diff --git a/drivers/misc/lkdtm/bugs.c b/drivers/misc/lkdtm/bugs.c
+index 110f5a8..0e8254d 100644
+--- a/drivers/misc/lkdtm/bugs.c
++++ b/drivers/misc/lkdtm/bugs.c
+@@ -134,6 +134,23 @@ noinline void lkdtm_CORRUPT_STACK_STRONG(void)
+ 	__lkdtm_CORRUPT_STACK((void *)&data);
  }
+ 
++static pid_t stack_pid;
++static unsigned long stack_addr;
++
++void lkdtm_REPORT_STACK(void)
++{
++	volatile uintptr_t magic;
++	pid_t pid = task_pid_nr(current);
++
++	if (pid != stack_pid) {
++		pr_info("Starting stack offset tracking for pid %d\n", pid);
++		stack_pid = pid;
++		stack_addr = (uintptr_t)&magic;
++	}
++
++	pr_info("Stack offset: %d\n", (int)(stack_addr - (uintptr_t)&magic));
++}
++
+ void lkdtm_UNALIGNED_LOAD_STORE_WRITE(void)
+ {
+ 	static u8 data[5] __attribute__((aligned(4))) = {1, 2, 3, 4, 5};
+diff --git a/drivers/misc/lkdtm/core.c b/drivers/misc/lkdtm/core.c
+index b2aff4d..8024b6a 100644
+--- a/drivers/misc/lkdtm/core.c
++++ b/drivers/misc/lkdtm/core.c
+@@ -110,6 +110,7 @@ static const struct crashtype crashtypes[] = {
+ 	CRASHTYPE(EXHAUST_STACK),
+ 	CRASHTYPE(CORRUPT_STACK),
+ 	CRASHTYPE(CORRUPT_STACK_STRONG),
++	CRASHTYPE(REPORT_STACK),
+ 	CRASHTYPE(CORRUPT_LIST_ADD),
+ 	CRASHTYPE(CORRUPT_LIST_DEL),
+ 	CRASHTYPE(STACK_GUARD_PAGE_LEADING),
+diff --git a/drivers/misc/lkdtm/lkdtm.h b/drivers/misc/lkdtm/lkdtm.h
+index 5ae48c6..99f90d3 100644
+--- a/drivers/misc/lkdtm/lkdtm.h
++++ b/drivers/misc/lkdtm/lkdtm.h
+@@ -17,6 +17,7 @@ void lkdtm_LOOP(void);
+ void lkdtm_EXHAUST_STACK(void);
+ void lkdtm_CORRUPT_STACK(void);
+ void lkdtm_CORRUPT_STACK_STRONG(void);
++void lkdtm_REPORT_STACK(void);
+ void lkdtm_UNALIGNED_LOAD_STORE_WRITE(void);
+ void lkdtm_SOFTLOCKUP(void);
+ void lkdtm_HARDLOCKUP(void);
+diff --git a/tools/testing/selftests/lkdtm/.gitignore b/tools/testing/selftests/lkdtm/.gitignore
+index f262126..d4b0be8 100644
+--- a/tools/testing/selftests/lkdtm/.gitignore
++++ b/tools/testing/selftests/lkdtm/.gitignore
+@@ -1,2 +1,3 @@
+ *.sh
+ !run.sh
++!stack-entropy.sh
+diff --git a/tools/testing/selftests/lkdtm/Makefile b/tools/testing/selftests/lkdtm/Makefile
+index 1bcc9ee..c71109c 100644
+--- a/tools/testing/selftests/lkdtm/Makefile
++++ b/tools/testing/selftests/lkdtm/Makefile
+@@ -5,6 +5,7 @@ include ../lib.mk
+ 
+ # NOTE: $(OUTPUT) won't get default value if used before lib.mk
+ TEST_FILES := tests.txt
++TEST_PROGS := stack-entropy.sh
+ TEST_GEN_PROGS = $(patsubst %,$(OUTPUT)/%.sh,$(shell awk '{print $$1}' tests.txt | sed -e 's/\#//'))
+ all: $(TEST_GEN_PROGS)
+ 
+diff --git a/tools/testing/selftests/lkdtm/stack-entropy.sh b/tools/testing/selftests/lkdtm/stack-entropy.sh
+new file mode 100755
+index 0000000..b1b8a50
+--- /dev/null
++++ b/tools/testing/selftests/lkdtm/stack-entropy.sh
+@@ -0,0 +1,36 @@
++#!/bin/sh
++# SPDX-License-Identifier: GPL-2.0
++#
++# Measure kernel stack entropy by sampling via LKDTM's REPORT_STACK test.
++set -e
++samples="${1:-1000}"
++
++# Capture dmesg continuously since it may fill up depending on sample size.
++log=$(mktemp -t stack-entropy-XXXXXX)
++dmesg --follow >"$log" & pid=$!
++report=-1
++for i in $(seq 1 $samples); do
++        echo "REPORT_STACK" >/sys/kernel/debug/provoke-crash/DIRECT
++	if [ -t 1 ]; then
++		percent=$(( 100 * $i / $samples ))
++		if [ "$percent" -ne "$report" ]; then
++			/bin/echo -en "$percent%\r"
++			report="$percent"
++		fi
++	fi
++done
++kill "$pid"
++
++# Count unique offsets since last run.
++seen=$(tac "$log" | grep -m1 -B"$samples"0 'Starting stack offset' | \
++	grep 'Stack offset' | awk '{print $NF}' | sort | uniq -c | wc -l)
++bits=$(echo "obase=2; $seen" | bc | wc -L)
++echo "Bits of stack entropy: $bits"
++rm -f "$log"
++
++# We would expect any functional stack randomization to be at least 5 bits.
++if [ "$bits" -lt 5 ]; then
++	exit 1
++else
++	exit 0
++fi
