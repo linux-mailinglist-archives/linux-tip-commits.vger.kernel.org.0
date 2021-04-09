@@ -2,121 +2,116 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E2EE4359D58
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  9 Apr 2021 13:30:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 66537359DFA
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  9 Apr 2021 13:53:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231599AbhDILap (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 9 Apr 2021 07:30:45 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:50118 "EHLO
+        id S233153AbhDILx5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 9 Apr 2021 07:53:57 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:50246 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231402AbhDILap (ORCPT
+        with ESMTP id S231599AbhDILx4 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 9 Apr 2021 07:30:45 -0400
-Date:   Fri, 09 Apr 2021 11:30:31 -0000
+        Fri, 9 Apr 2021 07:53:56 -0400
+Date:   Fri, 09 Apr 2021 11:53:42 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1617967831;
+        s=2020; t=1617969223;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Bwual4sIAnoZe8dE2uFyqX/II+fAPUVbohLGfbgniEo=;
-        b=M5AInw0qDBFXpKKGKyPWT9ZIbHqhbfiRgVrvi91xvxxk2qcIMDPD99Hpc2BzaU4X7Zfphe
-        Smnk4N9pdoszESqMCF4vKM/kWgsrklEqCIbGeUTqZbVdjJg0jAHBFT3BXGaIM8bgsx83pp
-        G1CEyWsU+nqMDXGhWTDHays4JkcAGz4mytDAj7qv0jcqFe5Y1j5DIQA9IQ7QC5ZUMhZyp+
-        zTEcvTseo1h0QSuF+N4Aw29BAa+y0NN8mXnbFZgfwJCmQDJJ37IDv2t0FF8Zen/E3pviUC
-        lFkHLYEagQrbB/xzYWqr/hMnlqfX0McxXyK5JOlAGq8La2PK3jIgIwRlyA/MjA==
+        bh=6IiD1Aj19bIZ6PUtDrzKpQLkj5ySbfMWOS/Z08MbVDo=;
+        b=hpnY/8vGzt7GzCP1UgEOw43R8H+19QcaM3T9DyXh9QPCvnBXcXrEgi6HJ41n4NgVkwtA2Y
+        rNS02EA5eHALvs/JYKdTew9tzifiIB5vRnKG1mcoNpriGTKCmlZSx5BB0og6gQNoI/Vf2V
+        HEBNRswCqp0v4uuZrtKOukf1FLOZwQvGm1OHbRoo0e88rKU57eEY5WAFOWKhPM+h17bE9U
+        X2C4s+C5gEJm2579BcBLiM21X9MXaPgugJkVfiXnZEgqYGNqpN/AD27fifx0AdrFdTWjb2
+        0jUhum1itjjsH0i+cvieMcKkH69WxJyPbqDB9jg5T+jrD0u+rxQx9POjEeKirQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1617967831;
+        s=2020e; t=1617969223;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Bwual4sIAnoZe8dE2uFyqX/II+fAPUVbohLGfbgniEo=;
-        b=HPBtZKyVOg6eozoePTKuM3DL7P4HpHgkmH5e0HNJOdPqov8ln2kC45g/wN5qIpcgxvPeh4
-        i0abe2fMcBOm2SDw==
-From:   "tip-bot2 for Matthieu Baerts" <tip-bot2@linutronix.de>
+        bh=6IiD1Aj19bIZ6PUtDrzKpQLkj5ySbfMWOS/Z08MbVDo=;
+        b=vvkg5/8E3/KZ4Jo8wUnapTJ5EDk+XAtveqcoa4v8Nmv3Bv6oxHpgwuGA1qmEE1nd/QwYF6
+        4D/bsIg9qva1RAAg==
+From:   "tip-bot2 for Thomas Tai" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] static_call: Fix unused variable warn w/o MODULE
-Cc:     Matthieu Baerts <matthieu.baerts@tessares.net>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20210326105023.2058860-1-matthieu.baerts@tessares.net>
-References: <20210326105023.2058860-1-matthieu.baerts@tessares.net>
+Subject: [tip: x86/urgent] x86/traps: Correct exc_general_protection() and
+ math_error() return paths
+Cc:     Thomas Tai <thomas.tai@oracle.com>, Borislav Petkov <bp@suse.de>,
+        Alexandre Chartre <alexandre.chartre@oracle.com>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <1617902914-83245-1-git-send-email-thomas.tai@oracle.com>
+References: <1617902914-83245-1-git-send-email-thomas.tai@oracle.com>
 MIME-Version: 1.0
-Message-ID: <161796783118.29796.15597297301390026189.tip-bot2@tip-bot2>
+Message-ID: <161796922230.29796.17695217108171353828.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the locking/core branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     7d95f22798ecea513f37b792b39fec4bcf20fec3
-Gitweb:        https://git.kernel.org/tip/7d95f22798ecea513f37b792b39fec4bcf2=
-0fec3
-Author:        Matthieu Baerts <matthieu.baerts@tessares.net>
-AuthorDate:    Fri, 26 Mar 2021 11:50:23 +01:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Fri, 09 Apr 2021 13:22:12 +02:00
+Commit-ID:     632a1c209b8773cb0119fe3aada9f1db14fa357c
+Gitweb:        https://git.kernel.org/tip/632a1c209b8773cb0119fe3aada9f1db14fa357c
+Author:        Thomas Tai <thomas.tai@oracle.com>
+AuthorDate:    Thu, 08 Apr 2021 13:28:33 -04:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Fri, 09 Apr 2021 13:45:09 +02:00
 
-static_call: Fix unused variable warn w/o MODULE
+x86/traps: Correct exc_general_protection() and math_error() return paths
 
-Here is the warning converted as error and reported by GCC:
+Commit
 
-  kernel/static_call.c: In function =E2=80=98__static_call_update=E2=80=99:
-  kernel/static_call.c:153:18: error: unused variable =E2=80=98mod=E2=80=99 [=
--Werror=3Dunused-variable]
-    153 |   struct module *mod =3D site_mod->mod;
-        |                  ^~~
-  cc1: all warnings being treated as errors
-  make[1]: *** [scripts/Makefile.build:271: kernel/static_call.o] Error 1
+  334872a09198 ("x86/traps: Attempt to fixup exceptions in vDSO before signaling")
 
-This is simply because since recently, we no longer use 'mod' variable
-elsewhere if MODULE is unset.
+added return statements which bypass calling cond_local_irq_disable().
 
-When using 'make tinyconfig' to generate the default kconfig, MODULE is
-unset.
+According to
 
-There are different ways to fix this warning. Here I tried to minimised
-the number of modified lines and not add more #ifdef. We could also move
-the declaration of the 'mod' variable inside the if-statement or
-directly use site_mod->mod.
+  ca4c6a9858c2 ("x86/traps: Make interrupt enable/disable symmetric in C code"),
 
-Fixes: 698bacefe993 ("static_call: Align static_call_is_init() patching condi=
-tion")
-Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20210326105023.2058860-1-matthieu.baerts@tess=
-ares.net
+cond_local_irq_disable() is needed because the asm return code no longer
+disables interrupts. Follow the existing code as an example to use "goto
+exit" instead of "return" statement.
+
+ [ bp: Massage commit message. ]
+
+Fixes: 334872a09198 ("x86/traps: Attempt to fixup exceptions in vDSO before signaling")
+Signed-off-by: Thomas Tai <thomas.tai@oracle.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
+Link: https://lkml.kernel.org/r/1617902914-83245-1-git-send-email-thomas.tai@oracle.com
 ---
- kernel/static_call.c | 4 ++--
+ arch/x86/kernel/traps.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/static_call.c b/kernel/static_call.c
-index 2c5950b..723fcc9 100644
---- a/kernel/static_call.c
-+++ b/kernel/static_call.c
-@@ -165,13 +165,13 @@ void __static_call_update(struct static_call_key *key, =
-void *tramp, void *func)
-=20
- 		stop =3D __stop_static_call_sites;
-=20
--#ifdef CONFIG_MODULES
- 		if (mod) {
-+#ifdef CONFIG_MODULES
- 			stop =3D mod->static_call_sites +
- 			       mod->num_static_call_sites;
- 			init =3D mod->state =3D=3D MODULE_STATE_COMING;
--		}
- #endif
-+		}
-=20
- 		for (site =3D site_mod->sites;
- 		     site < stop && static_call_key(site) =3D=3D key; site++) {
+diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
+index ac1874a..651e3e5 100644
+--- a/arch/x86/kernel/traps.c
++++ b/arch/x86/kernel/traps.c
+@@ -556,7 +556,7 @@ DEFINE_IDTENTRY_ERRORCODE(exc_general_protection)
+ 		tsk->thread.trap_nr = X86_TRAP_GP;
+ 
+ 		if (fixup_vdso_exception(regs, X86_TRAP_GP, error_code, 0))
+-			return;
++			goto exit;
+ 
+ 		show_signal(tsk, SIGSEGV, "", desc, regs, error_code);
+ 		force_sig(SIGSEGV);
+@@ -1057,7 +1057,7 @@ static void math_error(struct pt_regs *regs, int trapnr)
+ 		goto exit;
+ 
+ 	if (fixup_vdso_exception(regs, trapnr, 0, 0))
+-		return;
++		goto exit;
+ 
+ 	force_sig_fault(SIGFPE, si_code,
+ 			(void __user *)uprobe_get_trap_addr(regs));
