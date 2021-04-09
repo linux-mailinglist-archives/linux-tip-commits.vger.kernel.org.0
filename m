@@ -2,17 +2,20 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CA472359D3D
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  9 Apr 2021 13:24:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4811359D3F
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  9 Apr 2021 13:24:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233019AbhDILYz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 9 Apr 2021 07:24:55 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:50072 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233499AbhDILYy (ORCPT
+        id S233826AbhDILY4 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 9 Apr 2021 07:24:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44244 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233564AbhDILYy (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Fri, 9 Apr 2021 07:24:54 -0400
-Date:   Fri, 09 Apr 2021 11:24:39 -0000
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18B21C061762;
+        Fri,  9 Apr 2021 04:24:42 -0700 (PDT)
+Date:   Fri, 09 Apr 2021 11:24:40 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1617967480;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -20,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=gO8PHj5qi3RzoOQWzvbtAWOJ+ydO67JMVDL3ROwug6Y=;
-        b=EKGU1/ViTq7RWdi7d7ce13H8aS1iEKlBC/mahgOJR1nQVqVj/rqYN1Tp5hxbcX4TSM4nZu
-        4d0kC8ZQz2hMzZHzQr2QYAnudBM68E+XL/EXeEq5wMdUhkAvSpAzdIX2OaleIKVDb9CxGD
-        uVdiih2s60zPEwS3cxevUR6Uy/RU25yLYMuYlJwEsPABOza6VbG8NsHBcFnMQwEJ7p9AvA
-        /uUw4svFfmnaeS/CSpJVHEpSEDtMUKFcZrzLclL4nGq4tP3CORkksjRlKoNojq3RSYaX1x
-        LU4H48bcHVgrbVBMDW+qDna9BKXPIbyQEC8C3+iCdVfIInpUepN2nXg720OXmQ==
+        bh=YrXftU0Qt4zqxSmsgB0ODqvqiRGxTA294PIhqyDqA4A=;
+        b=DIy6x+DNFNlph4OF3ITdO9zL0QpJqxr39Ughu3bQUiX1V4ekOTIZBhqHxchf4xA55XCHR0
+        FpDyqTowRhEajAY4b+QCSt7b+RMtNNLtxNye+Uow3jRLipsr90df4I0win+/+Y6l8syguV
+        iGn8hiI/+JkZDS2213Hcbbldah32a9i8Jw0Retvnu71+oBBI0mPgl0CVNx5xPDAzEEciyu
+        FaRHFOHPIZVGlwSKkEXLimm8U3shfVZvWQVVCeAG3//RmBCRXE5Ur5fc5YwI9Q17Bd2BBP
+        YqwxfZGhYR3t9qWp+BdC4WH06IEM+MnCp6+Ec9j7AYT/FYgbkwd85lp7RY5+UQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1617967480;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -33,23 +36,23 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=gO8PHj5qi3RzoOQWzvbtAWOJ+ydO67JMVDL3ROwug6Y=;
-        b=zfSBm+3orKUGoOKFNtVvIcpjy4Oib4D9fH6WQlwYX/5anSLIsvxdSmvIVUDQtpRFkOeyYe
-        M6Jf8xBJe56g6RDA==
-From:   "tip-bot2 for Rik van Riel" <tip-bot2@linutronix.de>
+        bh=YrXftU0Qt4zqxSmsgB0ODqvqiRGxTA294PIhqyDqA4A=;
+        b=5hZdlenH8CBxX3Wwuqv8wNXL4J3AOIM5Q9vnrF/mnqD7duU4vIfbt19y9x51tmzV0uhlXn
+        txdL5BH/c7P4cTDw==
+From:   "tip-bot2 for Josh Hunt" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/fair: Bring back select_idle_smt(), but differently
-Cc:     Rik van Riel <riel@surriel.com>,
+Subject: [tip: sched/core] psi: allow unprivileged users with CAP_SYS_RESOURCE
+ to write psi files
+Cc:     Josh Hunt <johunt@akamai.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Mel Gorman <mgorman@techsingularity.net>,
-        Vincent Guittot <vincent.guittot@linaro.org>, x86@kernel.org,
+        Johannes Weiner <hannes@cmpxchg.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210326151932.2c187840@imladris.surriel.com>
-References: <20210326151932.2c187840@imladris.surriel.com>
+In-Reply-To: <20210402025833.27599-1-johunt@akamai.com>
+References: <20210402025833.27599-1-johunt@akamai.com>
 MIME-Version: 1.0
-Message-ID: <161796747969.29796.6515268363504971601.tip-bot2@tip-bot2>
+Message-ID: <161796748008.29796.10035394186165880913.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,187 +63,72 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     6bcd3e21ba278098920d26d4888f5e6f4087c61d
-Gitweb:        https://git.kernel.org/tip/6bcd3e21ba278098920d26d4888f5e6f4087c61d
-Author:        Rik van Riel <riel@surriel.com>
-AuthorDate:    Fri, 26 Mar 2021 15:19:32 -04:00
+Commit-ID:     6db12ee0456d0e369c7b59788d46e15a56ad0294
+Gitweb:        https://git.kernel.org/tip/6db12ee0456d0e369c7b59788d46e15a56ad0294
+Author:        Josh Hunt <johunt@akamai.com>
+AuthorDate:    Thu, 01 Apr 2021 22:58:33 -04:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Thu, 08 Apr 2021 23:09:44 +02:00
 
-sched/fair: Bring back select_idle_smt(), but differently
+psi: allow unprivileged users with CAP_SYS_RESOURCE to write psi files
 
-Mel Gorman did some nice work in 9fe1f127b913 ("sched/fair: Merge
-select_idle_core/cpu()"), resulting in the kernel being more efficient
-at finding an idle CPU, and in tasks spending less time waiting to be
-run, both according to the schedstats run_delay numbers, and according
-to measured application latencies. Yay.
+Currently only root can write files under /proc/pressure. Relax this to
+allow tasks running as unprivileged users with CAP_SYS_RESOURCE to be
+able to write to these files.
 
-The flip side of this is that we see more task migrations (about 30%
-more), higher cache misses, higher memory bandwidth utilization, and
-higher CPU use, for the same number of requests/second.
-
-This is most pronounced on a memcache type workload, which saw a
-consistent 1-3% increase in total CPU use on the system, due to those
-increased task migrations leading to higher L2 cache miss numbers, and
-higher memory utilization. The exclusive L3 cache on Skylake does us
-no favors there.
-
-On our web serving workload, that effect is usually negligible.
-
-It appears that the increased number of CPU migrations is generally a
-good thing, since it leads to lower cpu_delay numbers, reflecting the
-fact that tasks get to run faster. However, the reduced locality and
-the corresponding increase in L2 cache misses hurts a little.
-
-The patch below appears to fix the regression, while keeping the
-benefit of the lower cpu_delay numbers, by reintroducing
-select_idle_smt with a twist: when a socket has no idle cores, check
-to see if the sibling of "prev" is idle, before searching all the
-other CPUs.
-
-This fixes both the occasional 9% regression on the web serving
-workload, and the continuous 2% CPU use regression on the memcache
-type workload.
-
-With Mel's patches and this patch together, task migrations are still
-high, but L2 cache misses, memory bandwidth, and CPU time used are
-back down to what they were before. The p95 and p99 response times for
-the memcache type application improve by about 10% over what they were
-before Mel's patches got merged.
-
-Signed-off-by: Rik van Riel <riel@surriel.com>
+Signed-off-by: Josh Hunt <johunt@akamai.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Mel Gorman <mgorman@techsingularity.net>
-Acked-by: Vincent Guittot <vincent.guittot@linaro.org>
-Link: https://lkml.kernel.org/r/20210326151932.2c187840@imladris.surriel.com
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Link: https://lkml.kernel.org/r/20210402025833.27599-1-johunt@akamai.com
 ---
- kernel/sched/fair.c | 55 ++++++++++++++++++++++++++++++++++----------
- 1 file changed, 43 insertions(+), 12 deletions(-)
+ kernel/sched/psi.c | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 6d73bdb..d0bd861 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -6038,11 +6038,9 @@ static inline bool test_idle_cores(int cpu, bool def)
- {
- 	struct sched_domain_shared *sds;
- 
--	if (static_branch_likely(&sched_smt_present)) {
--		sds = rcu_dereference(per_cpu(sd_llc_shared, cpu));
--		if (sds)
--			return READ_ONCE(sds->has_idle_cores);
--	}
-+	sds = rcu_dereference(per_cpu(sd_llc_shared, cpu));
-+	if (sds)
-+		return READ_ONCE(sds->has_idle_cores);
- 
- 	return def;
- }
-@@ -6112,6 +6110,24 @@ static int select_idle_core(struct task_struct *p, int core, struct cpumask *cpu
- 	return -1;
+diff --git a/kernel/sched/psi.c b/kernel/sched/psi.c
+index b1b00e9..d1212f1 100644
+--- a/kernel/sched/psi.c
++++ b/kernel/sched/psi.c
+@@ -1061,19 +1061,27 @@ static int psi_cpu_show(struct seq_file *m, void *v)
+ 	return psi_show(m, &psi_system, PSI_CPU);
  }
  
-+/*
-+ * Scan the local SMT mask for idle CPUs.
-+ */
-+static int select_idle_smt(struct task_struct *p, struct sched_domain *sd, int target)
++static int psi_open(struct file *file, int (*psi_show)(struct seq_file *, void *))
 +{
-+	int cpu;
++	if (file->f_mode & FMODE_WRITE && !capable(CAP_SYS_RESOURCE))
++		return -EPERM;
 +
-+	for_each_cpu(cpu, cpu_smt_mask(target)) {
-+		if (!cpumask_test_cpu(cpu, p->cpus_ptr) ||
-+		    !cpumask_test_cpu(cpu, sched_domain_span(sd)))
-+			continue;
-+		if (available_idle_cpu(cpu) || sched_idle_cpu(cpu))
-+			return cpu;
-+	}
-+
-+	return -1;
++	return single_open(file, psi_show, NULL);
 +}
 +
- #else /* CONFIG_SCHED_SMT */
- 
- static inline void set_idle_cores(int cpu, int val)
-@@ -6128,6 +6144,11 @@ static inline int select_idle_core(struct task_struct *p, int core, struct cpuma
- 	return __select_idle_cpu(core);
+ static int psi_io_open(struct inode *inode, struct file *file)
+ {
+-	return single_open(file, psi_io_show, NULL);
++	return psi_open(file, psi_io_show);
  }
  
-+static inline int select_idle_smt(struct task_struct *p, struct sched_domain *sd, int target)
-+{
-+	return -1;
-+}
-+
- #endif /* CONFIG_SCHED_SMT */
- 
- /*
-@@ -6135,11 +6156,10 @@ static inline int select_idle_core(struct task_struct *p, int core, struct cpuma
-  * comparing the average scan cost (tracked in sd->avg_scan_cost) against the
-  * average idle time for this rq (as found in rq->avg_idle).
-  */
--static int select_idle_cpu(struct task_struct *p, struct sched_domain *sd, int target)
-+static int select_idle_cpu(struct task_struct *p, struct sched_domain *sd, bool has_idle_core, int target)
+ static int psi_memory_open(struct inode *inode, struct file *file)
  {
- 	struct cpumask *cpus = this_cpu_cpumask_var_ptr(select_idle_mask);
- 	int i, cpu, idle_cpu = -1, nr = INT_MAX;
--	bool smt = test_idle_cores(target, false);
- 	int this = smp_processor_id();
- 	struct sched_domain *this_sd;
- 	u64 time;
-@@ -6150,7 +6170,7 @@ static int select_idle_cpu(struct task_struct *p, struct sched_domain *sd, int t
+-	return single_open(file, psi_memory_show, NULL);
++	return psi_open(file, psi_memory_show);
+ }
  
- 	cpumask_and(cpus, sched_domain_span(sd), p->cpus_ptr);
- 
--	if (sched_feat(SIS_PROP) && !smt) {
-+	if (sched_feat(SIS_PROP) && !has_idle_core) {
- 		u64 avg_cost, avg_idle, span_avg;
- 
- 		/*
-@@ -6170,7 +6190,7 @@ static int select_idle_cpu(struct task_struct *p, struct sched_domain *sd, int t
- 	}
- 
- 	for_each_cpu_wrap(cpu, cpus, target) {
--		if (smt) {
-+		if (has_idle_core) {
- 			i = select_idle_core(p, cpu, cpus, &idle_cpu);
- 			if ((unsigned int)i < nr_cpumask_bits)
- 				return i;
-@@ -6184,10 +6204,10 @@ static int select_idle_cpu(struct task_struct *p, struct sched_domain *sd, int t
- 		}
- 	}
- 
--	if (smt)
-+	if (has_idle_core)
- 		set_idle_cores(this, false);
- 
--	if (sched_feat(SIS_PROP) && !smt) {
-+	if (sched_feat(SIS_PROP) && !has_idle_core) {
- 		time = cpu_clock(this) - time;
- 		update_avg(&this_sd->avg_scan_cost, time);
- 	}
-@@ -6242,6 +6262,7 @@ static inline bool asym_fits_capacity(int task_util, int cpu)
-  */
- static int select_idle_sibling(struct task_struct *p, int prev, int target)
+ static int psi_cpu_open(struct inode *inode, struct file *file)
  {
-+	bool has_idle_core = false;
- 	struct sched_domain *sd;
- 	unsigned long task_util;
- 	int i, recent_used_cpu;
-@@ -6321,7 +6342,17 @@ static int select_idle_sibling(struct task_struct *p, int prev, int target)
- 	if (!sd)
- 		return target;
+-	return single_open(file, psi_cpu_show, NULL);
++	return psi_open(file, psi_cpu_show);
+ }
  
--	i = select_idle_cpu(p, sd, target);
-+	if (static_branch_likely(&sched_smt_present)) {
-+		has_idle_core = test_idle_cores(target, false);
-+
-+		if (!has_idle_core && cpus_share_cache(prev, target)) {
-+			i = select_idle_smt(p, sd, prev);
-+			if ((unsigned int)i < nr_cpumask_bits)
-+				return i;
-+		}
-+	}
-+
-+	i = select_idle_cpu(p, sd, has_idle_core, target);
- 	if ((unsigned)i < nr_cpumask_bits)
- 		return i;
- 
+ struct psi_trigger *psi_trigger_create(struct psi_group *group,
+@@ -1353,9 +1361,9 @@ static int __init psi_proc_init(void)
+ {
+ 	if (psi_enable) {
+ 		proc_mkdir("pressure", NULL);
+-		proc_create("pressure/io", 0, NULL, &psi_io_proc_ops);
+-		proc_create("pressure/memory", 0, NULL, &psi_memory_proc_ops);
+-		proc_create("pressure/cpu", 0, NULL, &psi_cpu_proc_ops);
++		proc_create("pressure/io", 0666, NULL, &psi_io_proc_ops);
++		proc_create("pressure/memory", 0666, NULL, &psi_memory_proc_ops);
++		proc_create("pressure/cpu", 0666, NULL, &psi_cpu_proc_ops);
+ 	}
+ 	return 0;
+ }
