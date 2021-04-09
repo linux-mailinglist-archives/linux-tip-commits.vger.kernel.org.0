@@ -2,92 +2,105 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 892A0359BFA
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  9 Apr 2021 12:27:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E1C85359C00
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  9 Apr 2021 12:27:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233413AbhDIK1o (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 9 Apr 2021 06:27:44 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:49584 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231638AbhDIK1k (ORCPT
+        id S233504AbhDIK1t (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 9 Apr 2021 06:27:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59936 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233071AbhDIK1n (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 9 Apr 2021 06:27:40 -0400
+        Fri, 9 Apr 2021 06:27:43 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F374AC061763;
+        Fri,  9 Apr 2021 03:27:30 -0700 (PDT)
 Date:   Fri, 09 Apr 2021 10:27:26 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1617964046;
+        s=2020; t=1617964047;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=UaltpgMDeGU4w9J2XYFo9OnQVGcnxAtDf+M7s4qot8s=;
-        b=1nJFkDMU6/H6eMiUP/63HAoqpyfKRR3E9r9lIVUX6oicVyeVB+AmmncrfPLbLXjmfIKgb3
-        fSJF734E4DzU/otwsyhhrAO9/jledOv11C9KS+KJgwrmsow9hvHniAPfftWpAVhy7yHhWt
-        dX4xGtQmRTnKK0tejAB93LJ9oG/VwKvMgzt35/UGprCvWV/bNbdk0VH9XKd6ifzxTOEjog
-        y6xL7jgDw9E1jOtxoyRFfhkeuhlNzCzwm+1apS4Ki1YEaWjkpQjKV+M93Tne85hX4Q8gi1
-        vEQUIwKH2j3JIbZ0fuQs1mxKK6QEQQUvEYX8AGZEbNkc1zALzvu+vKntag0xWQ==
+        bh=eOpjc/5oLseTKTdow5GlBUGuJdmu0mipYLa59vxGndk=;
+        b=NuHjq8adSrImFjqVh1LrvBrNHVxQ8xBkzGkCy/SR8il5kcG1OctfGInG7M7/UEUYn3YuFN
+        vsqkF3bQ7LNVgnS4au/8XEWGHDUd5gTyhcSlqeYwtFVI1Rcspmt1d5HxsbCJnZiwyG1Ewo
+        QzPI0/mjPPIG89XvVtAJvVJlBhBNtxJ+uHONi9Dvy2pctggcTc0b75UobcBHRZ9SFO3T7t
+        nPcBe2erlWrI79tmCv+zxgnw/4FM3yqdL1vtaev9MZkMELXEMV4C1qapQ0wfT3XmF2Oer7
+        cJMCjy7ruRxviTbAMU7zA7/0ygfLe/mGC4z8McLj+Grc/ZStnLUOGkNl/qB27w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1617964046;
+        s=2020e; t=1617964047;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=UaltpgMDeGU4w9J2XYFo9OnQVGcnxAtDf+M7s4qot8s=;
-        b=BrYMyW/fiSi1rEmHt3eav7uPVKXUw8Du6by9saT/oZ0kItzgKcMFLUosx1Gd1iOYQgtbhw
-        EBsQiSvwBN8+gtDg==
-From:   tip-bot2 for Jonathan =?utf-8?q?Neusch=C3=A4fer?= 
-        <tip-bot2@linutronix.de>
+        bh=eOpjc/5oLseTKTdow5GlBUGuJdmu0mipYLa59vxGndk=;
+        b=jQm1FmUhtRzUuNC2h7XZq1N0M7iqRxC0vYTveTD+qZkwLRMI+WbcFZZrjWZRCTC9yjF5F7
+        aWDY036+cjvmzMAw==
+From:   "tip-bot2 for Drew Fustini" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] clocksource/drivers/npcm: Add support for WPCM450
-Cc:     j.neuschaefer@gmx.net, Daniel Lezcano <daniel.lezcano@linaro.org>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20210320181610.680870-11-j.neuschaefer@gmx.net>
-References: <20210320181610.680870-11-j.neuschaefer@gmx.net>
+Subject: [tip: timers/core] clocksource/drivers/pistachio: Fix trivial typo
+Cc:     "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Drew Fustini <drew@beagleboard.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20210305090315.384547-1-drew@beagleboard.org>
+References: <20210305090315.384547-1-drew@beagleboard.org>
 MIME-Version: 1.0
-Message-ID: <161796404618.29796.1158087389947920908.tip-bot2@tip-bot2>
+Message-ID: <161796404695.29796.11103155064345782166.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     690daddcb60246d8a510aaad7b954bcc53eba17e
-Gitweb:        https://git.kernel.org/tip/690daddcb60246d8a510aaad7b954bcc53e=
-ba17e
-Author:        Jonathan Neusch=C3=A4fer <j.neuschaefer@gmx.net>
-AuthorDate:    Sat, 20 Mar 2021 19:16:06 +01:00
+Commit-ID:     a47d7ef4550d08fb428ea4c3f1a9c71674212208
+Gitweb:        https://git.kernel.org/tip/a47d7ef4550d08fb428ea4c3f1a9c71674212208
+Author:        Drew Fustini <drew@beagleboard.org>
+AuthorDate:    Fri, 05 Mar 2021 01:03:17 -08:00
 Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
-CommitterDate: Thu, 08 Apr 2021 13:24:16 +02:00
+CommitterDate: Thu, 08 Apr 2021 13:24:15 +02:00
 
-clocksource/drivers/npcm: Add support for WPCM450
+clocksource/drivers/pistachio: Fix trivial typo
 
-Add a compatible string for WPCM450, which has essentially the same
-timer controller.
+Fix trivial typo, rename local variable from 'overflw' to 'overflow' in
+pistachio_clocksource_read_cycles().
 
-Signed-off-by: Jonathan Neusch=C3=A4fer <j.neuschaefer@gmx.net>
+Reported-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Signed-off-by: Drew Fustini <drew@beagleboard.org>
 Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20210320181610.680870-11-j.neuschaefer@gmx.net
+Link: https://lore.kernel.org/r/20210305090315.384547-1-drew@beagleboard.org
 ---
- drivers/clocksource/timer-npcm7xx.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/clocksource/timer-pistachio.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clocksource/timer-npcm7xx.c b/drivers/clocksource/timer-=
-npcm7xx.c
-index 9780ffd..a00520c 100644
---- a/drivers/clocksource/timer-npcm7xx.c
-+++ b/drivers/clocksource/timer-npcm7xx.c
-@@ -208,5 +208,6 @@ static int __init npcm7xx_timer_init(struct device_node *=
-np)
- 	return 0;
- }
-=20
-+TIMER_OF_DECLARE(wpcm450, "nuvoton,wpcm450-timer", npcm7xx_timer_init);
- TIMER_OF_DECLARE(npcm7xx, "nuvoton,npcm750-timer", npcm7xx_timer_init);
-=20
+diff --git a/drivers/clocksource/timer-pistachio.c b/drivers/clocksource/timer-pistachio.c
+index a2dd85d..6f37181 100644
+--- a/drivers/clocksource/timer-pistachio.c
++++ b/drivers/clocksource/timer-pistachio.c
+@@ -71,7 +71,7 @@ static u64 notrace
+ pistachio_clocksource_read_cycles(struct clocksource *cs)
+ {
+ 	struct pistachio_clocksource *pcs = to_pistachio_clocksource(cs);
+-	u32 counter, overflw;
++	u32 counter, overflow;
+ 	unsigned long flags;
+ 
+ 	/*
+@@ -80,7 +80,7 @@ pistachio_clocksource_read_cycles(struct clocksource *cs)
+ 	 */
+ 
+ 	raw_spin_lock_irqsave(&pcs->lock, flags);
+-	overflw = gpt_readl(pcs->base, TIMER_CURRENT_OVERFLOW_VALUE, 0);
++	overflow = gpt_readl(pcs->base, TIMER_CURRENT_OVERFLOW_VALUE, 0);
+ 	counter = gpt_readl(pcs->base, TIMER_CURRENT_VALUE, 0);
+ 	raw_spin_unlock_irqrestore(&pcs->lock, flags);
+ 
