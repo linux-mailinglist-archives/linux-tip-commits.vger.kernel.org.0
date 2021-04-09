@@ -2,57 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A4811359D3F
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  9 Apr 2021 13:24:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 031C1359D5A
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  9 Apr 2021 13:30:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233826AbhDILY4 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 9 Apr 2021 07:24:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44244 "EHLO
+        id S231402AbhDILar (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 9 Apr 2021 07:30:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45534 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233564AbhDILYy (ORCPT
+        with ESMTP id S232087AbhDILaq (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 9 Apr 2021 07:24:54 -0400
+        Fri, 9 Apr 2021 07:30:46 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18B21C061762;
-        Fri,  9 Apr 2021 04:24:42 -0700 (PDT)
-Date:   Fri, 09 Apr 2021 11:24:40 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFB07C061760;
+        Fri,  9 Apr 2021 04:30:33 -0700 (PDT)
+Date:   Fri, 09 Apr 2021 11:30:30 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1617967480;
+        s=2020; t=1617967831;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=YrXftU0Qt4zqxSmsgB0ODqvqiRGxTA294PIhqyDqA4A=;
-        b=DIy6x+DNFNlph4OF3ITdO9zL0QpJqxr39Ughu3bQUiX1V4ekOTIZBhqHxchf4xA55XCHR0
-        FpDyqTowRhEajAY4b+QCSt7b+RMtNNLtxNye+Uow3jRLipsr90df4I0win+/+Y6l8syguV
-        iGn8hiI/+JkZDS2213Hcbbldah32a9i8Jw0Retvnu71+oBBI0mPgl0CVNx5xPDAzEEciyu
-        FaRHFOHPIZVGlwSKkEXLimm8U3shfVZvWQVVCeAG3//RmBCRXE5Ur5fc5YwI9Q17Bd2BBP
-        YqwxfZGhYR3t9qWp+BdC4WH06IEM+MnCp6+Ec9j7AYT/FYgbkwd85lp7RY5+UQ==
+        bh=Km7DiN2FPvX3T9yR0beKC7ca7dahwW7kRvrJji7fck8=;
+        b=0DfX++Sx5LdcS/BaxXC73uqQItd9fLAXa18fcFpwOvzTGY746+jvcUP4P7+70nJ77L+tEr
+        fyL5hk/pt4HDaoW7mCJCr7g+8JoLz8kWZcdkLA7Ond6GAoaBN+TG7JZ0w7+aGeritbvMBM
+        9CIWcNPqTahwHAnKczDYtQC3dThVVLgkmhmEQ4afVAD4fEVniIyLkdtvu9TzJJjusyCJCg
+        D+2p6LVYjhxZa+LDT14sjlYISw+jzO/aD+AL8+tZXvKQt+8M9+16pZPzreIeSI9U2rYsTF
+        dj/ds7M/zIAC9kYE3qRbtdHV/UL7rxD4eRV80Q+40WUZVBGWQhFY3JKsvcQmKA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1617967480;
+        s=2020e; t=1617967831;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=YrXftU0Qt4zqxSmsgB0ODqvqiRGxTA294PIhqyDqA4A=;
-        b=5hZdlenH8CBxX3Wwuqv8wNXL4J3AOIM5Q9vnrF/mnqD7duU4vIfbt19y9x51tmzV0uhlXn
-        txdL5BH/c7P4cTDw==
-From:   "tip-bot2 for Josh Hunt" <tip-bot2@linutronix.de>
+        bh=Km7DiN2FPvX3T9yR0beKC7ca7dahwW7kRvrJji7fck8=;
+        b=DmH7xFUcepLJJq3jHreMmYwKkz/JvvasO9VGvTNdJ7/76SgYFpm4Su2DBvN1B5BIOs1j9X
+        +uk4cUwOD8HVsJCw==
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] psi: allow unprivileged users with CAP_SYS_RESOURCE
- to write psi files
-Cc:     Josh Hunt <johunt@akamai.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Johannes Weiner <hannes@cmpxchg.org>, x86@kernel.org,
+Subject: [tip: locking/core] static_call: Relax static_call_update() function
+ argument type
+Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210402025833.27599-1-johunt@akamai.com>
-References: <20210402025833.27599-1-johunt@akamai.com>
+In-Reply-To: <YFoN7nCl8OfGtpeh@hirez.programming.kicks-ass.net>
+References: <YFoN7nCl8OfGtpeh@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-Message-ID: <161796748008.29796.10035394186165880913.tip-bot2@tip-bot2>
+Message-ID: <161796783069.29796.12129990523788339245.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,74 +59,85 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     6db12ee0456d0e369c7b59788d46e15a56ad0294
-Gitweb:        https://git.kernel.org/tip/6db12ee0456d0e369c7b59788d46e15a56ad0294
-Author:        Josh Hunt <johunt@akamai.com>
-AuthorDate:    Thu, 01 Apr 2021 22:58:33 -04:00
+Commit-ID:     9432bbd969c667fc9c4b1c140c5a745ff2a7b540
+Gitweb:        https://git.kernel.org/tip/9432bbd969c667fc9c4b1c140c5a745ff2a7b540
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Tue, 23 Mar 2021 16:49:03 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Thu, 08 Apr 2021 23:09:44 +02:00
+CommitterDate: Fri, 09 Apr 2021 13:22:12 +02:00
 
-psi: allow unprivileged users with CAP_SYS_RESOURCE to write psi files
+static_call: Relax static_call_update() function argument type
 
-Currently only root can write files under /proc/pressure. Relax this to
-allow tasks running as unprivileged users with CAP_SYS_RESOURCE to be
-able to write to these files.
+static_call_update() had stronger type requirements than regular C,
+relax them to match. Instead of requiring the @func argument has the
+exact matching type, allow any type which C is willing to promote to the
+right (function) pointer type. Specifically this allows (void *)
+arguments.
 
-Signed-off-by: Josh Hunt <johunt@akamai.com>
+This cleans up a bunch of static_call_update() callers for
+PREEMPT_DYNAMIC and should get around silly GCC11 warnings for free.
+
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-Link: https://lkml.kernel.org/r/20210402025833.27599-1-johunt@akamai.com
+Link: https://lkml.kernel.org/r/YFoN7nCl8OfGtpeh@hirez.programming.kicks-ass.net
 ---
- kernel/sched/psi.c | 20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+ include/linux/static_call.h |  4 ++--
+ kernel/sched/core.c         | 18 +++++++++---------
+ 2 files changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/kernel/sched/psi.c b/kernel/sched/psi.c
-index b1b00e9..d1212f1 100644
---- a/kernel/sched/psi.c
-+++ b/kernel/sched/psi.c
-@@ -1061,19 +1061,27 @@ static int psi_cpu_show(struct seq_file *m, void *v)
- 	return psi_show(m, &psi_system, PSI_CPU);
- }
+diff --git a/include/linux/static_call.h b/include/linux/static_call.h
+index 85ecc78..8d50f62 100644
+--- a/include/linux/static_call.h
++++ b/include/linux/static_call.h
+@@ -113,9 +113,9 @@ extern void arch_static_call_transform(void *site, void *tramp, void *func, bool
  
-+static int psi_open(struct file *file, int (*psi_show)(struct seq_file *, void *))
-+{
-+	if (file->f_mode & FMODE_WRITE && !capable(CAP_SYS_RESOURCE))
-+		return -EPERM;
-+
-+	return single_open(file, psi_show, NULL);
-+}
-+
- static int psi_io_open(struct inode *inode, struct file *file)
- {
--	return single_open(file, psi_io_show, NULL);
-+	return psi_open(file, psi_io_show);
- }
+ #define static_call_update(name, func)					\
+ ({									\
+-	BUILD_BUG_ON(!__same_type(*(func), STATIC_CALL_TRAMP(name)));	\
++	typeof(&STATIC_CALL_TRAMP(name)) __F = (func);			\
+ 	__static_call_update(&STATIC_CALL_KEY(name),			\
+-			     STATIC_CALL_TRAMP_ADDR(name), func);	\
++			     STATIC_CALL_TRAMP_ADDR(name), __F);	\
+ })
  
- static int psi_memory_open(struct inode *inode, struct file *file)
- {
--	return single_open(file, psi_memory_show, NULL);
-+	return psi_open(file, psi_memory_show);
- }
+ #ifdef CONFIG_HAVE_STATIC_CALL_INLINE
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 9819121..67f9890 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -5396,25 +5396,25 @@ static void sched_dynamic_update(int mode)
+ 	switch (mode) {
+ 	case preempt_dynamic_none:
+ 		static_call_update(cond_resched, __cond_resched);
+-		static_call_update(might_resched, (typeof(&__cond_resched)) __static_call_return0);
+-		static_call_update(preempt_schedule, (typeof(&preempt_schedule)) NULL);
+-		static_call_update(preempt_schedule_notrace, (typeof(&preempt_schedule_notrace)) NULL);
+-		static_call_update(irqentry_exit_cond_resched, (typeof(&irqentry_exit_cond_resched)) NULL);
++		static_call_update(might_resched, (void *)&__static_call_return0);
++		static_call_update(preempt_schedule, NULL);
++		static_call_update(preempt_schedule_notrace, NULL);
++		static_call_update(irqentry_exit_cond_resched, NULL);
+ 		pr_info("Dynamic Preempt: none\n");
+ 		break;
  
- static int psi_cpu_open(struct inode *inode, struct file *file)
- {
--	return single_open(file, psi_cpu_show, NULL);
-+	return psi_open(file, psi_cpu_show);
- }
+ 	case preempt_dynamic_voluntary:
+ 		static_call_update(cond_resched, __cond_resched);
+ 		static_call_update(might_resched, __cond_resched);
+-		static_call_update(preempt_schedule, (typeof(&preempt_schedule)) NULL);
+-		static_call_update(preempt_schedule_notrace, (typeof(&preempt_schedule_notrace)) NULL);
+-		static_call_update(irqentry_exit_cond_resched, (typeof(&irqentry_exit_cond_resched)) NULL);
++		static_call_update(preempt_schedule, NULL);
++		static_call_update(preempt_schedule_notrace, NULL);
++		static_call_update(irqentry_exit_cond_resched, NULL);
+ 		pr_info("Dynamic Preempt: voluntary\n");
+ 		break;
  
- struct psi_trigger *psi_trigger_create(struct psi_group *group,
-@@ -1353,9 +1361,9 @@ static int __init psi_proc_init(void)
- {
- 	if (psi_enable) {
- 		proc_mkdir("pressure", NULL);
--		proc_create("pressure/io", 0, NULL, &psi_io_proc_ops);
--		proc_create("pressure/memory", 0, NULL, &psi_memory_proc_ops);
--		proc_create("pressure/cpu", 0, NULL, &psi_cpu_proc_ops);
-+		proc_create("pressure/io", 0666, NULL, &psi_io_proc_ops);
-+		proc_create("pressure/memory", 0666, NULL, &psi_memory_proc_ops);
-+		proc_create("pressure/cpu", 0666, NULL, &psi_cpu_proc_ops);
- 	}
- 	return 0;
- }
+ 	case preempt_dynamic_full:
+-		static_call_update(cond_resched, (typeof(&__cond_resched)) __static_call_return0);
+-		static_call_update(might_resched, (typeof(&__cond_resched)) __static_call_return0);
++		static_call_update(cond_resched, (void *)&__static_call_return0);
++		static_call_update(might_resched, (void *)&__static_call_return0);
+ 		static_call_update(preempt_schedule, __preempt_schedule_func);
+ 		static_call_update(preempt_schedule_notrace, __preempt_schedule_notrace_func);
+ 		static_call_update(irqentry_exit_cond_resched, irqentry_exit_cond_resched);
