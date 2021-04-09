@@ -2,17 +2,17 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CAF2A35A2BF
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  9 Apr 2021 18:14:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 28F3F35A2C1
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  9 Apr 2021 18:14:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232855AbhDIQOr (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 9 Apr 2021 12:14:47 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:51570 "EHLO
+        id S233577AbhDIQOs (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 9 Apr 2021 12:14:48 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:51616 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231946AbhDIQOq (ORCPT
+        with ESMTP id S232642AbhDIQOq (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Fri, 9 Apr 2021 12:14:46 -0400
-Date:   Fri, 09 Apr 2021 16:14:31 -0000
+Date:   Fri, 09 Apr 2021 16:14:32 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1617984872;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -20,12 +20,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Ul0uzH2FQLFVHfSBRCinHJEz1JT+AehwcswM1KXNt+A=;
-        b=YumX72Q1lt6M1YOwylzWqRkx6OyiE+h0RPTUoEa2O+I7FaTUO3bs9enq4jgNIZMON8+dUb
-        S0iu6kPcPOgmARZzyPIB+W3ouqICQ7KQZFFG5ZjscvbaTIv2ZH39D//iKchmFnPbmyP0g/
-        IJsyCEElR2n/3gPe33S+5yIdmnsylNl7aEX8mby4F6hUDq7r5KlOMtB4S51Q2IvV0LbsT9
-        +8dCrKSH0Q73bXXzLkf+x8wDChUzZjN7gwvM8n9H5WUMoBkHX7d5Roz3CobD201WaqhYca
-        XJC7c9JEermdK6kGjCwhNA7dF8bkweGWc2a38JYgveULVAYxxCohErCWtbRVlQ==
+        bh=7hpCSZzOobafpSrSatk3g1IP76KIISPLcnKKUD58Kko=;
+        b=wyynWcf05jj/XpSDv3DIKt/l0ndFj+CYlMhRY0EiU3P6Uxg7wC9vtIzHKh25CjxeW4Oee+
+        JabfNFVq2bKuURAnfZG1OaPm2dT0gx4fqp6IePxoD4iDF9QMxSqKVl0lzde9INtVAyLs/Q
+        MtuOYI9qkjrdidBUJPd29BszeI2vKu3J83i7g0v5z6RMgfEFNlI2TX54KULAFmrSw6rTNr
+        0e+iT4j1CrG79NG5MrkbRZ7SnGvbzHIsyfxXdmJFP9GcJUbaNnWJdPxJDRPrfVemMIeA68
+        Q/cXnbOSkK5I9QELhwNr/9cgsu5qeR30U8FA9lCJYwh9aa3UBYHB1sGBuy2A5Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1617984872;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -33,24 +33,23 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Ul0uzH2FQLFVHfSBRCinHJEz1JT+AehwcswM1KXNt+A=;
-        b=uAwHwbJYw4sPhNk5gwvr4VZLa2MFtW8hOmvFb0DdRUyme6z+Y0MsBeit/6oYFppGjw0iXQ
-        A7ZU/PjlkwNkdNCA==
-From:   "tip-bot2 for Valentin Schneider" <tip-bot2@linutronix.de>
+        bh=7hpCSZzOobafpSrSatk3g1IP76KIISPLcnKKUD58Kko=;
+        b=BDbmlvhrq5QIOHIngGGMcn3ZQ+K6rAH2/LOBMvj6l2R/A1jAw4R81z/nEGrtNG34zF1XHt
+        vJsZsgp/o/+TrDCQ==
+From:   "tip-bot2 for Rik van Riel" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/fair: Clean up active balance
- nr_balance_failed trickery
-Cc:     Valentin Schneider <valentin.schneider@arm.com>,
+Subject: [tip: sched/core] sched/fair: Bring back select_idle_smt(), but differently
+Cc:     Rik van Riel <riel@surriel.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Mel Gorman <mgorman@techsingularity.net>,
         Vincent Guittot <vincent.guittot@linaro.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210407220628.3798191-3-valentin.schneider@arm.com>
-References: <20210407220628.3798191-3-valentin.schneider@arm.com>
+In-Reply-To: <20210326151932.2c187840@imladris.surriel.com>
+References: <20210326151932.2c187840@imladris.surriel.com>
 MIME-Version: 1.0
-Message-ID: <161798487149.29796.18250747063112261212.tip-bot2@tip-bot2>
+Message-ID: <161798487221.29796.406298137826542407.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,107 +60,187 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     23fb06d9602b0fcfa1a16357a5d7a7f7076a39e2
-Gitweb:        https://git.kernel.org/tip/23fb06d9602b0fcfa1a16357a5d7a7f7076a39e2
-Author:        Valentin Schneider <valentin.schneider@arm.com>
-AuthorDate:    Wed, 07 Apr 2021 23:06:27 +01:00
+Commit-ID:     c722f35b513f807629603bbf24640b1a48be21b5
+Gitweb:        https://git.kernel.org/tip/c722f35b513f807629603bbf24640b1a48be21b5
+Author:        Rik van Riel <riel@surriel.com>
+AuthorDate:    Fri, 26 Mar 2021 15:19:32 -04:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Fri, 09 Apr 2021 18:02:20 +02:00
+CommitterDate: Fri, 09 Apr 2021 18:01:39 +02:00
 
-sched/fair: Clean up active balance nr_balance_failed trickery
+sched/fair: Bring back select_idle_smt(), but differently
 
-When triggering an active load balance, sd->nr_balance_failed is set to
-such a value that any further can_migrate_task() using said sd will ignore
-the output of task_hot().
+Mel Gorman did some nice work in 9fe1f127b913 ("sched/fair: Merge
+select_idle_core/cpu()"), resulting in the kernel being more efficient
+at finding an idle CPU, and in tasks spending less time waiting to be
+run, both according to the schedstats run_delay numbers, and according
+to measured application latencies. Yay.
 
-This behaviour makes sense, as active load balance intentionally preempts a
-rq's running task to migrate it right away, but this asynchronous write is
-a bit shoddy, as the stopper thread might run active_load_balance_cpu_stop
-before the sd->nr_balance_failed write either becomes visible to the
-stopper's CPU or even happens on the CPU that appended the stopper work.
+The flip side of this is that we see more task migrations (about 30%
+more), higher cache misses, higher memory bandwidth utilization, and
+higher CPU use, for the same number of requests/second.
 
-Add a struct lb_env flag to denote active balancing, and use it in
-can_migrate_task(). Remove the sd->nr_balance_failed write that served the
-same purpose. Cleanup the LBF_DST_PINNED active balance special case.
+This is most pronounced on a memcache type workload, which saw a
+consistent 1-3% increase in total CPU use on the system, due to those
+increased task migrations leading to higher L2 cache miss numbers, and
+higher memory utilization. The exclusive L3 cache on Skylake does us
+no favors there.
 
-Signed-off-by: Valentin Schneider <valentin.schneider@arm.com>
+On our web serving workload, that effect is usually negligible.
+
+It appears that the increased number of CPU migrations is generally a
+good thing, since it leads to lower cpu_delay numbers, reflecting the
+fact that tasks get to run faster. However, the reduced locality and
+the corresponding increase in L2 cache misses hurts a little.
+
+The patch below appears to fix the regression, while keeping the
+benefit of the lower cpu_delay numbers, by reintroducing
+select_idle_smt with a twist: when a socket has no idle cores, check
+to see if the sibling of "prev" is idle, before searching all the
+other CPUs.
+
+This fixes both the occasional 9% regression on the web serving
+workload, and the continuous 2% CPU use regression on the memcache
+type workload.
+
+With Mel's patches and this patch together, task migrations are still
+high, but L2 cache misses, memory bandwidth, and CPU time used are
+back down to what they were before. The p95 and p99 response times for
+the memcache type application improve by about 10% over what they were
+before Mel's patches got merged.
+
+Signed-off-by: Rik van Riel <riel@surriel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
-Link: https://lkml.kernel.org/r/20210407220628.3798191-3-valentin.schneider@arm.com
+Reviewed-by: Mel Gorman <mgorman@techsingularity.net>
+Acked-by: Vincent Guittot <vincent.guittot@linaro.org>
+Link: https://lkml.kernel.org/r/20210326151932.2c187840@imladris.surriel.com
 ---
- kernel/sched/fair.c | 31 +++++++++++++++----------------
- 1 file changed, 15 insertions(+), 16 deletions(-)
+ kernel/sched/fair.c | 55 ++++++++++++++++++++++++++++++++++----------
+ 1 file changed, 43 insertions(+), 12 deletions(-)
 
 diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 1ad929b..356637a 100644
+index 6d73bdb..bc34e35 100644
 --- a/kernel/sched/fair.c
 +++ b/kernel/sched/fair.c
-@@ -7453,6 +7453,7 @@ enum migration_type {
- #define LBF_NEED_BREAK	0x02
- #define LBF_DST_PINNED  0x04
- #define LBF_SOME_PINNED	0x08
-+#define LBF_ACTIVE_LB	0x10
+@@ -6038,11 +6038,9 @@ static inline bool test_idle_cores(int cpu, bool def)
+ {
+ 	struct sched_domain_shared *sds;
  
- struct lb_env {
- 	struct sched_domain	*sd;
-@@ -7614,10 +7615,13 @@ int can_migrate_task(struct task_struct *p, struct lb_env *env)
- 		 * our sched_group. We may want to revisit it if we couldn't
- 		 * meet load balance goals by pulling other tasks on src_cpu.
- 		 *
--		 * Avoid computing new_dst_cpu for NEWLY_IDLE or if we have
--		 * already computed one in current iteration.
-+		 * Avoid computing new_dst_cpu
-+		 * - for NEWLY_IDLE
-+		 * - if we have already computed one in current iteration
-+		 * - if it's an active balance
- 		 */
--		if (env->idle == CPU_NEWLY_IDLE || (env->flags & LBF_DST_PINNED))
-+		if (env->idle == CPU_NEWLY_IDLE ||
-+		    env->flags & (LBF_DST_PINNED | LBF_ACTIVE_LB))
- 			return 0;
+-	if (static_branch_likely(&sched_smt_present)) {
+-		sds = rcu_dereference(per_cpu(sd_llc_shared, cpu));
+-		if (sds)
+-			return READ_ONCE(sds->has_idle_cores);
+-	}
++	sds = rcu_dereference(per_cpu(sd_llc_shared, cpu));
++	if (sds)
++		return READ_ONCE(sds->has_idle_cores);
  
- 		/* Prevent to re-select dst_cpu via env's CPUs: */
-@@ -7642,10 +7646,14 @@ int can_migrate_task(struct task_struct *p, struct lb_env *env)
+ 	return def;
+ }
+@@ -6112,6 +6110,24 @@ static int select_idle_core(struct task_struct *p, int core, struct cpumask *cpu
+ 	return -1;
+ }
  
- 	/*
- 	 * Aggressive migration if:
--	 * 1) destination numa is preferred
--	 * 2) task is cache cold, or
--	 * 3) too many balance attempts have failed.
-+	 * 1) active balance
-+	 * 2) destination numa is preferred
-+	 * 3) task is cache cold, or
-+	 * 4) too many balance attempts have failed.
- 	 */
-+	if (env->flags & LBF_ACTIVE_LB)
-+		return 1;
++/*
++ * Scan the local SMT mask for idle CPUs.
++ */
++static int select_idle_smt(struct task_struct *p, struct sched_domain *sd, int target)
++{
++	int cpu;
 +
- 	tsk_cache_hot = migrate_degrades_locality(p, env);
- 	if (tsk_cache_hot == -1)
- 		tsk_cache_hot = task_hot(p, env);
-@@ -9836,9 +9844,6 @@ more_balance:
- 					active_load_balance_cpu_stop, busiest,
- 					&busiest->active_balance_work);
- 			}
--
--			/* We've kicked active balancing, force task migration. */
--			sd->nr_balance_failed = sd->cache_nice_tries+1;
- 		}
- 	} else {
- 		sd->nr_balance_failed = 0;
-@@ -9988,13 +9993,7 @@ static int active_load_balance_cpu_stop(void *data)
- 			.src_cpu	= busiest_rq->cpu,
- 			.src_rq		= busiest_rq,
- 			.idle		= CPU_IDLE,
--			/*
--			 * can_migrate_task() doesn't need to compute new_dst_cpu
--			 * for active balancing. Since we have CPU_IDLE, but no
--			 * @dst_grpmask we need to make that test go away with lying
--			 * about DST_PINNED.
--			 */
--			.flags		= LBF_DST_PINNED,
-+			.flags		= LBF_ACTIVE_LB,
- 		};
++	for_each_cpu(cpu, cpu_smt_mask(target)) {
++		if (!cpumask_test_cpu(cpu, p->cpus_ptr) ||
++		    !cpumask_test_cpu(cpu, sched_domain_span(sd)))
++			continue;
++		if (available_idle_cpu(cpu) || sched_idle_cpu(cpu))
++			return cpu;
++	}
++
++	return -1;
++}
++
+ #else /* CONFIG_SCHED_SMT */
  
- 		schedstat_inc(sd->alb_count);
+ static inline void set_idle_cores(int cpu, int val)
+@@ -6128,6 +6144,11 @@ static inline int select_idle_core(struct task_struct *p, int core, struct cpuma
+ 	return __select_idle_cpu(core);
+ }
+ 
++static inline int select_idle_smt(struct task_struct *p, struct sched_domain *sd, int target)
++{
++	return -1;
++}
++
+ #endif /* CONFIG_SCHED_SMT */
+ 
+ /*
+@@ -6135,11 +6156,10 @@ static inline int select_idle_core(struct task_struct *p, int core, struct cpuma
+  * comparing the average scan cost (tracked in sd->avg_scan_cost) against the
+  * average idle time for this rq (as found in rq->avg_idle).
+  */
+-static int select_idle_cpu(struct task_struct *p, struct sched_domain *sd, int target)
++static int select_idle_cpu(struct task_struct *p, struct sched_domain *sd, bool has_idle_core, int target)
+ {
+ 	struct cpumask *cpus = this_cpu_cpumask_var_ptr(select_idle_mask);
+ 	int i, cpu, idle_cpu = -1, nr = INT_MAX;
+-	bool smt = test_idle_cores(target, false);
+ 	int this = smp_processor_id();
+ 	struct sched_domain *this_sd;
+ 	u64 time;
+@@ -6150,7 +6170,7 @@ static int select_idle_cpu(struct task_struct *p, struct sched_domain *sd, int t
+ 
+ 	cpumask_and(cpus, sched_domain_span(sd), p->cpus_ptr);
+ 
+-	if (sched_feat(SIS_PROP) && !smt) {
++	if (sched_feat(SIS_PROP) && !has_idle_core) {
+ 		u64 avg_cost, avg_idle, span_avg;
+ 
+ 		/*
+@@ -6170,7 +6190,7 @@ static int select_idle_cpu(struct task_struct *p, struct sched_domain *sd, int t
+ 	}
+ 
+ 	for_each_cpu_wrap(cpu, cpus, target) {
+-		if (smt) {
++		if (has_idle_core) {
+ 			i = select_idle_core(p, cpu, cpus, &idle_cpu);
+ 			if ((unsigned int)i < nr_cpumask_bits)
+ 				return i;
+@@ -6184,10 +6204,10 @@ static int select_idle_cpu(struct task_struct *p, struct sched_domain *sd, int t
+ 		}
+ 	}
+ 
+-	if (smt)
++	if (has_idle_core)
+ 		set_idle_cores(this, false);
+ 
+-	if (sched_feat(SIS_PROP) && !smt) {
++	if (sched_feat(SIS_PROP) && !has_idle_core) {
+ 		time = cpu_clock(this) - time;
+ 		update_avg(&this_sd->avg_scan_cost, time);
+ 	}
+@@ -6242,6 +6262,7 @@ static inline bool asym_fits_capacity(int task_util, int cpu)
+  */
+ static int select_idle_sibling(struct task_struct *p, int prev, int target)
+ {
++	bool has_idle_core = false;
+ 	struct sched_domain *sd;
+ 	unsigned long task_util;
+ 	int i, recent_used_cpu;
+@@ -6321,7 +6342,17 @@ static int select_idle_sibling(struct task_struct *p, int prev, int target)
+ 	if (!sd)
+ 		return target;
+ 
+-	i = select_idle_cpu(p, sd, target);
++	if (sched_smt_active()) {
++		has_idle_core = test_idle_cores(target, false);
++
++		if (!has_idle_core && cpus_share_cache(prev, target)) {
++			i = select_idle_smt(p, sd, prev);
++			if ((unsigned int)i < nr_cpumask_bits)
++				return i;
++		}
++	}
++
++	i = select_idle_cpu(p, sd, has_idle_core, target);
+ 	if ((unsigned)i < nr_cpumask_bits)
+ 		return i;
+ 
