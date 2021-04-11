@@ -2,46 +2,46 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 55F6035B4EE
+	by mail.lfdr.de (Postfix) with ESMTP id A18AE35B4EF
 	for <lists+linux-tip-commits@lfdr.de>; Sun, 11 Apr 2021 15:48:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235932AbhDKNoZ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 11 Apr 2021 09:44:25 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:33440 "EHLO
+        id S235788AbhDKNo0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 11 Apr 2021 09:44:26 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:33094 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235583AbhDKNoG (ORCPT
+        with ESMTP id S235775AbhDKNoG (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Sun, 11 Apr 2021 09:44:06 -0400
-Date:   Sun, 11 Apr 2021 13:43:34 -0000
+Date:   Sun, 11 Apr 2021 13:43:35 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1618148614;
+        s=2020; t=1618148616;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=c0eC3OHbzo0MmENIs4LzmXjEZyj71sIXjrcbf7wHC80=;
-        b=HtrvYYxqr8tadgSFkWPAKR3YKtffnq00ClpCuaxInXmyKPa0ZDHWZ/J9izF0reedCGdFzg
-        5V/O/5EaUSVHLqY+kmKwpVUKPWIcNJPViShwmDQQUSqCdVxnyLMmgScKzDSjAxEBRzujqB
-        62DvnAUQFVcANqeWdLtFJ0jH9hkX6R/qA/AaVZ8zSdfG0vA/isrr+IT8NLxPa4Eawz/IQ2
-        N7YOvebKHt2joFBvL9GkO34DNziDFONaIxYcUG43NgusD6a3PFYL9qMsxR7brnMp6SDCkG
-        IExljVMjw0mpmnIsuWfZCL/p4cGWnkJdg+nN+pMmVtnuTeyEQFT4xPhcNMve7g==
+        bh=Af5uzVaVGfmMCOeNOxbrJDiHuHgsvd9kR7UEoNuxzo4=;
+        b=GlpNTieOashrTSERHzHjfrIfly3NawlKFF15lxyxH/VTeef6EIJdE8tyERl33mm8YtDHzt
+        hzwdOKGTQTaQHXXmEo6d0g9xI1Z51BcIM3PwGHprgqdnr6taFfZ2qqcygIhU1p7CpF6QN/
+        CVENsDdCVi5cAZUVnF8t+FR1xBO0YEubP+HPyl6e9lszNWw9qVQkJH5a3QOY17Ica1xbep
+        5F60V5RRQJ8ph6LEoxfXkn5BCdHATiq2gCvC60YAOMJNTP6f7EYYf884HI5wGmfnyHwRg3
+        gqJVCLpyKpaKSM+aXTty2DEJDzyeR18p2Eiza4uVDAQDWwfeP/UgVdv9abfq7A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1618148614;
+        s=2020e; t=1618148616;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=c0eC3OHbzo0MmENIs4LzmXjEZyj71sIXjrcbf7wHC80=;
-        b=4nqWc2SZSe8x6Reufwb8ORoxDnbQFjWESUreoWpEL3zPittoKm6V303Jz94mkaqlCOGePV
-        Ajcjorl7em2a6LBw==
-From:   "tip-bot2 for Lukas Bulwahn" <tip-bot2@linutronix.de>
+        bh=Af5uzVaVGfmMCOeNOxbrJDiHuHgsvd9kR7UEoNuxzo4=;
+        b=1pvk8HH2MMuvBuFdVa2nHd4l/y2WcH2NPFdeGEJArQyRfFNGxonJAVdj0T85NBDnYd004u
+        iqHcZkdLsziBxuBw==
+From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcu-tasks: Rectify kernel-doc for struct rcu_tasks
-Cc:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
+Subject: [tip: core/rcu] rcutorture: Make TREE03 use real-time
+ tree.use_softirq setting
+Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <161814861412.29796.9006237685310304393.tip-bot2@tip-bot2>
+Message-ID: <161814861563.29796.18210411808911193249.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -52,46 +52,31 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     85b86994284820ec070182ec269e6e79735f523a
-Gitweb:        https://git.kernel.org/tip/85b86994284820ec070182ec269e6e79735f523a
-Author:        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-AuthorDate:    Mon, 25 Jan 2021 08:41:05 +01:00
+Commit-ID:     e2b949d54392ad890bb10fb8954d967e2fcd7503
+Gitweb:        https://git.kernel.org/tip/e2b949d54392ad890bb10fb8954d967e2fcd7503
+Author:        Paul E. McKenney <paulmck@kernel.org>
+AuthorDate:    Thu, 14 Jan 2021 16:11:04 -08:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Mon, 08 Mar 2021 14:22:02 -08:00
+CommitterDate: Mon, 08 Mar 2021 14:21:40 -08:00
 
-rcu-tasks: Rectify kernel-doc for struct rcu_tasks
+rcutorture: Make TREE03 use real-time tree.use_softirq setting
 
-The command 'find ./kernel/rcu/ | xargs ./scripts/kernel-doc -none'
-reported an issue with the kernel-doc of struct rcu_tasks.
+TREE03 tests RCU priority boosting, which is a real-time feature.
+It would also be good if it tested something closer to what is
+actually used by the real-time folks.  This commit therefore adds
+tree.use_softirq=0 to the TREE03 kernel boot parameters in TREE03.boot.
 
-This commit rectifies the kernel-doc, such that no issues remain for
-./kernel/rcu/.
-
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/rcu/tasks.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/selftests/rcutorture/configs/rcu/TREE03.boot | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/kernel/rcu/tasks.h b/kernel/rcu/tasks.h
-index af7c194..17c8ebe 100644
---- a/kernel/rcu/tasks.h
-+++ b/kernel/rcu/tasks.h
-@@ -20,7 +20,7 @@ typedef void (*holdouts_func_t)(struct list_head *hop, bool ndrpt, bool *frptp);
- typedef void (*postgp_func_t)(struct rcu_tasks *rtp);
- 
- /**
-- * Definition for a Tasks-RCU-like mechanism.
-+ * struct rcu_tasks - Definition for a Tasks-RCU-like mechanism.
-  * @cbs_head: Head of callback list.
-  * @cbs_tail: Tail pointer for callback list.
-  * @cbs_wq: Wait queue allowning new callback to get kthread's attention.
-@@ -38,7 +38,7 @@ typedef void (*postgp_func_t)(struct rcu_tasks *rtp);
-  * @pregp_func: This flavor's pre-grace-period function (optional).
-  * @pertask_func: This flavor's per-task scan function (optional).
-  * @postscan_func: This flavor's post-task scan function (optional).
-- * @holdout_func: This flavor's holdout-list scan function (optional).
-+ * @holdouts_func: This flavor's holdout-list scan function (optional).
-  * @postgp_func: This flavor's post-grace-period function (optional).
-  * @call_func: This flavor's call_rcu()-equivalent function.
-  * @name: This flavor's textual name.
+diff --git a/tools/testing/selftests/rcutorture/configs/rcu/TREE03.boot b/tools/testing/selftests/rcutorture/configs/rcu/TREE03.boot
+index 1c21894..64f864f 100644
+--- a/tools/testing/selftests/rcutorture/configs/rcu/TREE03.boot
++++ b/tools/testing/selftests/rcutorture/configs/rcu/TREE03.boot
+@@ -4,3 +4,4 @@ rcutree.gp_init_delay=3
+ rcutree.gp_cleanup_delay=3
+ rcutree.kthread_prio=2
+ threadirqs
++tree.use_softirq=0
