@@ -2,45 +2,45 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 69ABB35B4C1
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 11 Apr 2021 15:43:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F203235B4B6
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 11 Apr 2021 15:43:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235499AbhDKNoH (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 11 Apr 2021 09:44:07 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:33036 "EHLO
+        id S235670AbhDKNoD (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 11 Apr 2021 09:44:03 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:33096 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235558AbhDKNn7 (ORCPT
+        with ESMTP id S235530AbhDKNn6 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 11 Apr 2021 09:43:59 -0400
+        Sun, 11 Apr 2021 09:43:58 -0400
 Date:   Sun, 11 Apr 2021 13:43:21 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1618148601;
+        s=2020; t=1618148602;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=vZl94lNk4y7Hz5RjqnywK2D8+zkqu7WVWfJCAHu1oMA=;
-        b=F1FnSOg6KIA3znky5eluaFvO1zupE2iDeVRg4bv+mi/9ft1RitY9W78WSz8IHb3IHSR2U1
-        O8+9AK8nWTMhwaN1uWgnj6Nipio0m4p5UB4RfV2002+GorkXFSEURjgrjtwCzdzZLqd/l4
-        g3GtDpOt8mYxrSMJKC54N757mgJV3y81UeQWWSEM1J7uxtfIZ1jnPs9rW/R+F+AL2kemWe
-        +Slr8v2Pm+KFv1ONzUB793IEmDoHSqMGsKpIUQ4xwmZ4AsU647RLCM2VATchpUHA1QQlOB
-        mTqNU45E+VirfRdFWgz78NbULiT22CgF29AOB4YTsZyogDxoapLwmiOYlH3isg==
+        bh=uc7ZuyrKl8SnVlPKPpPf/hgCS1vyvv0bSUw0UKdvshM=;
+        b=W6dIJKyck+BVEoUoN/c6ZTTfv3qox7YWUY7MzZbIC+QMBQG5fPebeVSIzxwqbAIAbEEhq8
+        NtPtud7uBRTWgGePAQXjj+8hp2BpIRU61vYq0iini/GzK4ASV+bAnB/K5yP0Qmm+QjHZSl
+        +pJ0qo7lRSupQ1/wO26IDgh7koxbb3+BO7M8JU0V6tr8xb2Le+CyNlbnu6lbLI3sX1Z/qo
+        9MiWGL8Rgk5ljyMR9x7G9pbD8x7OtiNfrIS5+c+i5sL+awFneWlT6pT6TgMMZJ4xx3SftD
+        +XKdcQh6zT1qIbwW8exz8cXZbsyfUnbQMcROynxhlYunuq9Wk9gurrMfEgq5RA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1618148601;
+        s=2020e; t=1618148602;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=vZl94lNk4y7Hz5RjqnywK2D8+zkqu7WVWfJCAHu1oMA=;
-        b=oGAzChe6kBfFcEgq6+G3SLs/Qw0enZ53GrLoKEiHK37UvpMNdBpf/oXYBKn74oL45YnOC5
-        DWDuqHZ3N7AtrgAg==
+        bh=uc7ZuyrKl8SnVlPKPpPf/hgCS1vyvv0bSUw0UKdvshM=;
+        b=svKLbuwzjRl1bzQNDeljv734VKLsUkECuhohzYNuO9XhSz+TUFzNLY6rFbU/Co4/b1FORa
+        mVS7zGaYHqZ9X9Aw==
 From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] torture: Add kvm-again.sh to rerun a previous torture-test
+Subject: [tip: core/rcu] torture: Create a "batches" file for build reuse
 Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <161814860109.29796.6667551101891823637.tip-bot2@tip-bot2>
+Message-ID: <161814860147.29796.11337673354834222930.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -51,280 +51,98 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     7cf86c0b6279d9d12bb697e58c7e8b2184a8f3db
-Gitweb:        https://git.kernel.org/tip/7cf86c0b6279d9d12bb697e58c7e8b2184a8f3db
+Commit-ID:     d6100d764cc47100ecabdc704bde5ad0448c87cd
+Gitweb:        https://git.kernel.org/tip/d6100d764cc47100ecabdc704bde5ad0448c87cd
 Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Fri, 19 Feb 2021 17:49:58 -08:00
+AuthorDate:    Wed, 17 Feb 2021 14:40:03 -08:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Mon, 22 Mar 2021 08:29:19 -07:00
+CommitterDate: Mon, 22 Mar 2021 08:29:18 -07:00
 
-torture: Add kvm-again.sh to rerun a previous torture-test
+torture: Create a "batches" file for build reuse
 
-This commit adds a kvm-again.sh script that, given the results directory
-of a torture-test run, re-runs that test.  This means that the kernels
-need not be rebuilt, but it also is a step towards running torture tests
-on remote systems.
+This commit creates a "batches" file in the res/$ds directory, where $ds
+is the datestamp.  This file contains the batches and the number of CPUs,
+for example:
 
-This commit also adds a kvm-test-1-run-batch.sh script that runs one
-batch out of the torture test.  The idea is to copy a results directory
-tree to remote systems, then use kvm-test-1-run-batch.sh to run batches
-on these systems.
+1 TREE03 16
+1 SRCU-P 8
+2 TREE07 16
+2 TREE01 8
+3 TREE02 8
+3 TREE04 8
+3 TREE05 8
+4 SRCU-N 4
+4 TRACE01 4
+4 TRACE02 4
+4 RUDE01 2
+4 RUDE01.2 2
+4 TASKS01 2
+4 TASKS03 2
+4 SRCU-t 1
+4 SRCU-u 1
+4 TASKS02 1
+4 TINY01 1
+5 TINY02 1
+5 TREE09 1
+
+The first column is the batch number, the second the scenario number
+(possibly suffixed by a repetition number, as in "RUDE01.2"), and the
+third is the number of CPUs required by that scenario.  The last line
+shows the number of CPUs expected by this batch file, which allows
+the run to be re-batched if a different number of CPUs is available.
 
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- tools/testing/selftests/rcutorture/bin/kvm-again.sh            | 171 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-
- tools/testing/selftests/rcutorture/bin/kvm-test-1-run-batch.sh |  67 +++++++++++++++++++++++++++-
- 2 files changed, 238 insertions(+)
- create mode 100755 tools/testing/selftests/rcutorture/bin/kvm-again.sh
- create mode 100755 tools/testing/selftests/rcutorture/bin/kvm-test-1-run-batch.sh
+ tools/testing/selftests/rcutorture/bin/kvm.sh | 29 ++++++++++--------
+ 1 file changed, 17 insertions(+), 12 deletions(-)
 
-diff --git a/tools/testing/selftests/rcutorture/bin/kvm-again.sh b/tools/testing/selftests/rcutorture/bin/kvm-again.sh
-new file mode 100755
-index 0000000..4137440
---- /dev/null
-+++ b/tools/testing/selftests/rcutorture/bin/kvm-again.sh
-@@ -0,0 +1,171 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0+
-+#
-+# Rerun a series of tests under KVM.
-+#
-+# Usage: kvm-again.sh /path/to/old/run [ options ]
-+#
-+# Copyright (C) 2021 Facebook, Inc.
-+#
-+# Authors: Paul E. McKenney <paulmck@kernel.org>
-+
-+scriptname=$0
-+args="$*"
-+
-+T=${TMPDIR-/tmp}/kvm-again.sh.$$
-+trap 'rm -rf $T' 0
-+mkdir $T
-+
-+if ! test -d tools/testing/selftests/rcutorture/bin
-+then
-+	echo $scriptname must be run from top-level directory of kernel source tree.
-+	exit 1
-+fi
-+
-+oldrun=$1
-+shift
-+if ! test -d "$oldrun"
-+then
-+	echo "Usage: $scriptname /path/to/old/run [ options ]"
-+	exit 1
-+fi
-+if ! cp "$oldrun/batches" $T/batches.oldrun
-+then
-+	# Later on, can reconstitute this from console.log files.
-+	echo Prior run batches file does not exist: $oldrun/batches
-+	exit 1
-+fi
-+
-+if test -f "$oldrun/torture_suite"
-+then
-+	torture_suite="`cat $oldrun/torture_suite`"
-+elif test -f "$oldrun/TORTURE_SUITE"
-+then
-+	torture_suite="`cat $oldrun/TORTURE_SUITE`"
-+else
-+	echo "Prior run torture_suite file does not exist: $oldrun/{torture_suite,TORTURE_SUITE}"
-+	exit 1
-+fi
-+
-+KVM="`pwd`/tools/testing/selftests/rcutorture"; export KVM
-+PATH=${KVM}/bin:$PATH; export PATH
-+. functions.sh
-+
-+dryrun=
-+default_link="cp -R"
-+rundir="`pwd`/tools/testing/selftests/rcutorture/res/`date +%Y.%m.%d-%H.%M.%S-again`"
-+
-+startdate="`date`"
-+starttime="`get_starttime`"
-+
-+usage () {
-+	echo "Usage: $scriptname $oldrun [ arguments ]:"
-+	echo "       --dryrun"
-+	echo "       --link hard|soft|copy"
-+	echo "       --remote"
-+	echo "       --rundir /new/res/path"
-+	exit 1
-+}
-+
-+while test $# -gt 0
-+do
-+	case "$1" in
-+	--dryrun)
-+		dryrun=1
-+		;;
-+	--link)
-+		checkarg --link "hard|soft|copy" "$#" "$2" 'hard\|soft\|copy' '^--'
-+		case "$2" in
-+		copy)
-+			arg_link="cp -R"
-+			;;
-+		hard)
-+			arg_link="cp -Rl"
-+			;;
-+		soft)
-+			arg_link="cp -Rs"
-+			;;
-+		esac
-+		shift
-+		;;
-+	--remote)
-+		arg_remote=1
-+		default_link="cp -as"
-+		;;
-+	--rundir)
-+		checkarg --rundir "(absolute pathname)" "$#" "$2" '^/' '^error'
-+		rundir=$2
-+		if test -e "$rundir"
-+		then
-+			echo "--rundir $2: Already exists."
-+			usage
-+		fi
-+		shift
-+		;;
-+	*)
-+		echo Unknown argument $1
-+		usage
-+		;;
-+	esac
-+	shift
-+done
-+if test -z "$arg_link"
-+then
-+	arg_link="$default_link"
-+fi
-+
-+echo ---- Re-run results directory: $rundir
-+
-+# Copy old run directory tree over and adjust.
-+mkdir -p "`dirname "$rundir"`"
-+if ! $arg_link "$oldrun" "$rundir"
-+then
-+	echo "Cannot copy from $oldrun to $rundir."
-+	usage
-+fi
-+rm -f "$rundir"/*/{console.log,console.log.diags,qemu_pid,qemu-retval,Warnings,kvm-test-1-run.sh.out,kvm-test-1-run-qemu.sh.out,vmlinux} "$rundir"/log
-+echo $oldrun > "$rundir/re-run"
-+if ! test -d "$rundir/../../bin"
-+then
-+	$arg_link "$oldrun/../../bin" "$rundir/../.."
-+fi
-+for i in $rundir/*/qemu-cmd
-+do
-+	cp "$i" $T
-+	qemu_cmd_dir="`dirname "$i"`"
-+	kernel_dir="`echo $qemu_cmd_dir | sed -e 's/\.[0-9]\+$//'`"
-+	kvm-transform.sh $kernel_dir/bzImage $qemu_cmd_dir/console.log < $T/qemu-cmd > $i
-+	echo "# TORTURE_KCONFIG_GDB_ARG=''" >> $i
-+done
-+grep -v '^#' $T/batches.oldrun | awk '
-+BEGIN {
-+	oldbatch = 1;
-+}
-+
-+{
-+	if (oldbatch != $1) {
-+		print "kvm-test-1-run-batch.sh" curbatch;
-+		curbatch = "";
-+		oldbatch = $1;
+diff --git a/tools/testing/selftests/rcutorture/bin/kvm.sh b/tools/testing/selftests/rcutorture/bin/kvm.sh
+index a1cd05c..0add163 100755
+--- a/tools/testing/selftests/rcutorture/bin/kvm.sh
++++ b/tools/testing/selftests/rcutorture/bin/kvm.sh
+@@ -565,6 +565,18 @@ echo 'ret=$?' >> $T/script
+ echo "cat $T/kvm-recheck.sh.out | tee -a $resdir/$ds/log" >> $T/script
+ echo 'exit $ret' >> $T/script
+ 
++# Extract the tests and their batches from the script.
++egrep 'Start batch|Starting build\.' $T/script | grep -v ">>" |
++	sed -e 's/:.*$//' -e 's/^echo //' -e 's/-ovf//' |
++	awk '
++	/^----Start/ {
++		batchno = $3;
++		next;
 +	}
-+	curbatch = curbatch " " $2;
-+}
++	{
++		print batchno, $1, $2
++	}' > $T/batches
 +
-+END {
-+	print "kvm-test-1-run-batch.sh" curbatch
-+}' > $T/runbatches.sh
-+
-+if test -n "$dryrun"
-+then
-+	echo ---- Dryrun complete, directory: $rundir | tee -a "$rundir/log"
-+else
-+	( cd "$rundir"; sh $T/runbatches.sh )
-+	kcsan-collapse.sh "$rundir" | tee -a "$rundir/log"
-+	echo | tee -a "$rundir/log"
-+	echo ---- Results directory: $rundir | tee -a "$rundir/log"
-+	kvm-recheck.sh "$rundir" > $T/kvm-recheck.sh.out 2>&1
-+	ret=$?
-+	cat $T/kvm-recheck.sh.out | tee -a "$rundir/log"
-+	echo " --- Done at `date` (`get_starttime_duration $starttime`) exitcode $ret" | tee -a "$rundir/log"
-+	exit $ret
-+fi
-diff --git a/tools/testing/selftests/rcutorture/bin/kvm-test-1-run-batch.sh b/tools/testing/selftests/rcutorture/bin/kvm-test-1-run-batch.sh
-new file mode 100755
-index 0000000..7ea0809
---- /dev/null
-+++ b/tools/testing/selftests/rcutorture/bin/kvm-test-1-run-batch.sh
-@@ -0,0 +1,67 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0+
-+#
-+# Carry out a kvm-based run for the specified batch of scenarios, which
-+# might have been built by --build-only kvm.sh run.
-+#
-+# Usage: kvm-test-1-run-batch.sh SCENARIO [ SCENARIO ... ]
-+#
-+# Each SCENARIO is the name of a directory in the current directory
-+#	containing a ready-to-run qemu-cmd file.
-+#
-+# Copyright (C) 2021 Facebook, Inc.
-+#
-+# Authors: Paul E. McKenney <paulmck@kernel.org>
-+
-+T=${TMPDIR-/tmp}/kvm-test-1-run-batch.sh.$$
-+trap 'rm -rf $T' 0
-+mkdir $T
-+
-+echo ---- Running batch $*
-+# Check arguments
-+runfiles=
-+for i in "$@"
-+do
-+	if ! echo $i | grep -q '^[^/.a-z]\+\(\.[0-9]\+\)\?$'
-+	then
-+		echo Bad scenario name: \"$i\" 1>&2
-+		exit 1
-+	fi
-+	if ! test -d "$i"
-+	then
-+		echo Scenario name not a directory: \"$i\" 1>&2
-+		exit 2
-+	fi
-+	if ! test -f "$i/qemu-cmd"
-+	then
-+		echo Scenario lacks a command file: \"$i/qemu-cmd\" 1>&2
-+		exit 3
-+	fi
-+	rm -f $i/build.*
-+	touch $i/build.run
-+	runfiles="$runfiles $i/build.run"
-+done
-+
-+# Extract settings from the qemu-cmd file.
-+grep '^#' $1/qemu-cmd | sed -e 's/^# //' > $T/qemu-cmd-settings
-+. $T/qemu-cmd-settings
-+
-+# Start up jitter, start each scenario, wait, end jitter.
-+echo ---- System running test: `uname -a`
-+echo ---- Starting kernels. `date` | tee -a log
-+$TORTURE_JITTER_START
-+for i in "$@"
-+do
-+	echo ---- System running test: `uname -a` > $i/kvm-test-1-run-qemu.sh.out
-+	echo > $i/kvm-test-1-run-qemu.sh.out
-+	kvm-test-1-run-qemu.sh $i >> $i/kvm-test-1-run-qemu.sh.out 2>&1 &
-+done
-+for i in $runfiles
-+do
-+	while ls $i > /dev/null 2>&1
-+	do
-+		:
-+	done
-+done
-+echo ---- All kernel runs complete. `date` | tee -a log
-+$TORTURE_JITTER_STOP
+ if test "$dryrun" = script
+ then
+ 	cat $T/script
+@@ -583,21 +595,14 @@ then
+ 	exit 0
+ elif test "$dryrun" = batches
+ then
+-	# Extract the tests and their batches from the script.
+-	egrep 'Start batch|Starting build\.' $T/script | grep -v ">>" |
+-		sed -e 's/:.*$//' -e 's/^echo //' -e 's/-ovf//' |
+-		awk '
+-		/^----Start/ {
+-			batchno = $3;
+-			next;
+-		}
+-		{
+-			print batchno, $1, $2
+-		}'
++	cat $T/batches
++	exit 0
+ else
+-	# Not a dryrun, so run the script.
++	# Not a dryrun.  Record the batches and the number of CPUs, then run the script.
+ 	bash $T/script
+ 	ret=$?
++	cp $T/batches $resdir/$ds/batches
++	echo '#' cpus=$cpus >> $resdir/$ds/batches
+ 	echo " --- Done at `date` (`get_starttime_duration $starttime`) exitcode $ret" | tee -a $resdir/$ds/log
+ 	exit $ret
+ fi
