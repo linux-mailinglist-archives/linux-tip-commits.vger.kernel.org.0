@@ -2,45 +2,45 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 941AA35B4E7
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 11 Apr 2021 15:48:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B641135B4EA
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 11 Apr 2021 15:48:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235907AbhDKNoX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 11 Apr 2021 09:44:23 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:33390 "EHLO
+        id S235917AbhDKNoY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 11 Apr 2021 09:44:24 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:33412 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235760AbhDKNoG (ORCPT
+        with ESMTP id S235766AbhDKNoG (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Sun, 11 Apr 2021 09:44:06 -0400
 Date:   Sun, 11 Apr 2021 13:43:32 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1618148612;
+        s=2020; t=1618148613;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=HC4wC4wIkhlW2L9XgKw+jxVlXS7mq16LCQN1e2+uU44=;
-        b=AiDxXUjeViLnXJt42hyS6MtecnqItsmlHarm1oNTdKx3cdyW3uSpfqfKGb80eXcoKt69am
-        0hXo7/Bgp6Suuzg24TRMWSjHzchzlB83Vx5j3UO7EwrINL+txZpQvF3y4Wxp4zCHFK1GG4
-        DaUqFppSy2PXK+eFchKdAnLjjtEtQoFN5sLOtFar80MbU8unS1IyaIJmvGceEFl9jESWBT
-        KWGmJK77HtCFQ3OX88IQiZvMLeW0XETh7njbfcSdzDCoMHQvzsnNjTwUYMmDg7W8wPxgoB
-        M7ivxhD7Lz7RnCOB2x4KwP3P6VKtvmky6Vghpj8Yiy6p2utaRRVAE+gwoBZfPQ==
+        bh=XGTWbtN3y9Vhbxa80n3BbRh15BLjO/bCVJQitlS9RzI=;
+        b=XYYWmy+B3Y8bH3wEJdekq9Y/R1bVriUaIKpS0Uepup0WLXD2cEmPUfft7VyV4z8EIVLz5P
+        LlItA/YEUg9vl7j2Ot2jin3zrE8+mxa93hLIGvMqTG+k/qSvL1e0oIBHuAxD8CsdYCwYCs
+        jj3QI0AvlOEp4y5E3aNiOaK9VD5maeRagcyuEViF7docfXF3m/i9t0ZYlZD6fTRbDmS3I7
+        13L4HhWNdobMfnysYlKttgw5wcg5p92awWsLI3s1Mi/cP0j75K2Kuq5rCgwY9WADTZnrAA
+        s2ko+1AKL8F8VFOpDeRVxuebdrZXDQEqSyIpBaWKoCufB28US+wwlcJvD88u5g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1618148612;
+        s=2020e; t=1618148613;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=HC4wC4wIkhlW2L9XgKw+jxVlXS7mq16LCQN1e2+uU44=;
-        b=Y5eBsqiI0Lpi9xw0Z7yl7kH6LmjEPn3QKkb7o/hgnlTIXf0pTFD7nj8WFzAd1qpcMHMVb1
-        d/EdepDxWtAI5OCQ==
+        bh=XGTWbtN3y9Vhbxa80n3BbRh15BLjO/bCVJQitlS9RzI=;
+        b=5LgB0M0rhitvmaiTyLE22364t2fGXzkq684zhHFS59AKnXdRaYfc1v+FmFIq95XbyAUrrU
+        zgfp0CZRp60/fnAQ==
 From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] torture: Allow 1G of memory for torture.sh kvfree testing
+Subject: [tip: core/rcu] torturescript: Don't rerun failed rcutorture builds
 Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <161814861221.29796.939856109875902261.tip-bot2@tip-bot2>
+Message-ID: <161814861255.29796.17254589208037090229.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -51,36 +51,54 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     3d4977b68101b38c3f9d3be3d89e17ef1fdfc1d3
-Gitweb:        https://git.kernel.org/tip/3d4977b68101b38c3f9d3be3d89e17ef1fdfc1d3
+Commit-ID:     a519d21480d330918bd522499a323432c31b6ec2
+Gitweb:        https://git.kernel.org/tip/a519d21480d330918bd522499a323432c31b6ec2
 Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Thu, 28 Jan 2021 16:38:19 -08:00
+AuthorDate:    Tue, 05 Jan 2021 10:50:32 -08:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Mon, 08 Mar 2021 14:23:01 -08:00
 
-torture: Allow 1G of memory for torture.sh kvfree testing
+torturescript: Don't rerun failed rcutorture builds
 
-Yes, I do recall a time when 512MB of memory was a lot of mass storage,
-much less main memory, but the rcuscale kvfree_rcu() testing invoked by
-torture.sh can sometimes exceed it on large systems, resulting in OOM.
-This commit therefore causes torture.sh to pase the "--memory 1G"
-argument to kvm.sh to reserve a full gigabyte for this purpose.
+If the build fails when running multiple instances of a given rcutorture
+scenario, for example, using the kvm.sh --configs "8*RUDE01" argument,
+the build will be rerun an additional seven times.  This is in some sense
+correct, but it can waste significant time.  This commit therefore checks
+for a prior failed build and simply copies over that build's output.
 
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- tools/testing/selftests/rcutorture/bin/torture.sh | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/rcutorture/bin/kvm-test-1-run.sh | 13 ++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/rcutorture/bin/torture.sh b/tools/testing/selftests/rcutorture/bin/torture.sh
-index ad7525b..56e2e1a 100755
---- a/tools/testing/selftests/rcutorture/bin/torture.sh
-+++ b/tools/testing/selftests/rcutorture/bin/torture.sh
-@@ -374,7 +374,7 @@ done
- if test "$do_kvfree" = "yes"
- then
- 	torture_bootargs="rcuscale.kfree_rcu_test=1 rcuscale.kfree_nthreads=16 rcuscale.holdoff=20 rcuscale.kfree_loops=10000 torture.disable_onoff_at_boot"
--	torture_set "rcuscale-kvfree" tools/testing/selftests/rcutorture/bin/kvm.sh --torture rcuscale --allcpus --duration 10 --kconfig "CONFIG_NR_CPUS=$HALF_ALLOTED_CPUS" --trust-make
-+	torture_set "rcuscale-kvfree" tools/testing/selftests/rcutorture/bin/kvm.sh --torture rcuscale --allcpus --duration 10 --kconfig "CONFIG_NR_CPUS=$HALF_ALLOTED_CPUS" --memory 1G --trust-make
- fi
+diff --git a/tools/testing/selftests/rcutorture/bin/kvm-test-1-run.sh b/tools/testing/selftests/rcutorture/bin/kvm-test-1-run.sh
+index 536d103..9d8a82c 100755
+--- a/tools/testing/selftests/rcutorture/bin/kvm-test-1-run.sh
++++ b/tools/testing/selftests/rcutorture/bin/kvm-test-1-run.sh
+@@ -73,7 +73,7 @@ config_override_param "--kconfig argument" KcList "$TORTURE_KCONFIG_ARG"
+ cp $T/KcList $resdir/ConfigFragment
  
- echo " --- " $scriptname $args
+ base_resdir=`echo $resdir | sed -e 's/\.[0-9]\+$//'`
+-if test "$base_resdir" != "$resdir" -a -f $base_resdir/bzImage -a -f $base_resdir/vmlinux
++if test "$base_resdir" != "$resdir" && test -f $base_resdir/bzImage && test -f $base_resdir/vmlinux
+ then
+ 	# Rerunning previous test, so use that test's kernel.
+ 	QEMU="`identify_qemu $base_resdir/vmlinux`"
+@@ -83,6 +83,17 @@ then
+ 	ln -s $base_resdir/.config $resdir  # for kvm-recheck.sh
+ 	# Arch-independent indicator
+ 	touch $resdir/builtkernel
++elif test "$base_resdir" != "$resdir"
++then
++	# Rerunning previous test for which build failed
++	ln -s $base_resdir/Make*.out $resdir  # for kvm-recheck.sh
++	ln -s $base_resdir/.config $resdir  # for kvm-recheck.sh
++	echo Initial build failed, not running KVM, see $resdir.
++	if test -f $builddir.wait
++	then
++		mv $builddir.wait $builddir.ready
++	fi
++	exit 1
+ elif kvm-build.sh $T/KcList $resdir
+ then
+ 	# Had to build a kernel for this test.
