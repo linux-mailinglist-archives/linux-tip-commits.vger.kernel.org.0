@@ -2,51 +2,45 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 72CB035B4FC
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 11 Apr 2021 15:49:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF30335B502
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 11 Apr 2021 15:49:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235981AbhDKNog (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 11 Apr 2021 09:44:36 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:33304 "EHLO
+        id S236001AbhDKNoo (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 11 Apr 2021 09:44:44 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:33298 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235810AbhDKNoL (ORCPT
+        with ESMTP id S235831AbhDKNoN (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 11 Apr 2021 09:44:11 -0400
-Date:   Sun, 11 Apr 2021 13:43:37 -0000
+        Sun, 11 Apr 2021 09:44:13 -0400
+Date:   Sun, 11 Apr 2021 13:43:38 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1618148618;
+        s=2020; t=1618148619;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=2I8Jzajm6CxpM1DtpVQ0xJu04Azyzi3aak9s7+5qHE4=;
-        b=sNbfMefCx/TpyQpHp9eJ3w7FyQhvQDa/hoAE7W3jHjWKh9/ontfQiqfaKOkMaKk1Y69uXl
-        c2LIBO9DNgbOnsEn6KMEUBvu/SgM4SMevXfQAF1XP9jc1fTvjUlOTO2/AwhdnG/0t+lzPV
-        Nv4qqXhl/r8Wj8w+cHFGjIFNxVaTPXY62WsWAUJadRuwu3IUhNTiXfWP9YQMFXlnUTnvDC
-        uuqhn70nbecxZexHTa9MNu95Wlety3xje+WhyzJWUNu5UPuWTM2hHtw0wjgyFh3QkyGrS8
-        vK26SdFj4RL3tcNkU/CK9LwsLlRb0p1/oDHlbAaFv9LYSiCqKGiEK/UmQYjQ6g==
+        bh=f7E1468DirXlMfMgo19qhJQxEB+iDGqhDyGzR6CKc04=;
+        b=J4+kIkaUl9KaZPmanSjA+X6Hmavtmc5xwLB/S0/C/QNrCinjBPKeYYCDmKRVwgDtV7h50z
+        rHp64J8iJEiKGl4tea7mAtthK2lB47actZdB6MMXeN/YEi6URcKX05uH87Gu/U39SaE1pq
+        922OtUaT+ex6rC5nHC1ZgUmbBU2nhlbetpKR+df/xoh3ADAvxUUFJpXOrnVb5/o7Ft2UPh
+        kB/43Tw3Hp05xuZvFFMayxzyPsIDahq6NRGeTrPR4RB78E+2i+X3UDvI5M11wYvE8G518A
+        f05xDaJ63c1MDIFVkO66G6SuC1ehURFel8oYlwGjiL5UhV6s1PXAZzE9H3TJOw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1618148618;
+        s=2020e; t=1618148619;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=2I8Jzajm6CxpM1DtpVQ0xJu04Azyzi3aak9s7+5qHE4=;
-        b=iDLQQiODGjox+5YLhjgdDKi2MZ65Lq2JMx5A33E93pc40wxU+YWA8x2QG3DYYKn+YfMbis
-        kk1GVye/z6Z//PDA==
-From:   "tip-bot2 for Frederic Weisbecker" <tip-bot2@linutronix.de>
+        bh=f7E1468DirXlMfMgo19qhJQxEB+iDGqhDyGzR6CKc04=;
+        b=6JR7SjfZ9IoyGQIkKD+xlDzPKV8M1WFLV6OwD/vNQ7ZQzRIzpQkB42a7xBYzADIhDQ6L2c
+        OMXu5+CQpizYfzAQ==
+From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcu/nocb: Forbid NOCB toggling on offline CPUs
-Cc:     "Paul E. McKenney" <paulmck@kernel.org>,
-        Josh Triplett <josh@joshtriplett.org>,
-        Lai Jiangshan <jiangshanlai@gmail.com>,
-        Joel Fernandes <joel@joelfernandes.org>,
-        Neeraj Upadhyay <neeraju@codeaurora.org>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        Frederic Weisbecker <frederic@kernel.org>, x86@kernel.org,
+Subject: [tip: core/rcu] rcutorture: Add crude tests for mem_dump_obj()
+Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <161814861738.29796.13597165418686082678.tip-bot2@tip-bot2>
+Message-ID: <161814861848.29796.9140894761328925955.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -57,171 +51,102 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     64305db2856b969a5d48e8f3a5b0d06b5594591c
-Gitweb:        https://git.kernel.org/tip/64305db2856b969a5d48e8f3a5b0d06b5594591c
-Author:        Frederic Weisbecker <frederic@kernel.org>
-AuthorDate:    Thu, 28 Jan 2021 18:12:09 +01:00
+Commit-ID:     0d3dd2c8eadb7d4404b8788f552fb2b824fe2c7e
+Gitweb:        https://git.kernel.org/tip/0d3dd2c8eadb7d4404b8788f552fb2b824fe2c7e
+Author:        Paul E. McKenney <paulmck@kernel.org>
+AuthorDate:    Mon, 07 Dec 2020 21:23:36 -08:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Mon, 08 Mar 2021 14:20:21 -08:00
+CommitterDate: Mon, 08 Mar 2021 14:18:46 -08:00
 
-rcu/nocb: Forbid NOCB toggling on offline CPUs
+rcutorture: Add crude tests for mem_dump_obj()
 
-It makes no sense to de-offload an offline CPU because that CPU will never
-invoke any remaining callbacks.  It also makes little sense to offload an
-offline CPU because any pending RCU callbacks were migrated when that CPU
-went offline.  Yes, it is in theory possible to use a number of tricks
-to permit offloading and deoffloading offline CPUs in certain cases, but
-in practice it is far better to have the simple and deterministic rule
-"Toggling the offload state of an offline CPU is forbidden".
+This commit adds a few crude tests for mem_dump_obj() to rcutorture
+runs.  Just to prevent bitrot, you understand!
 
-For but one example, consider that an offloaded offline CPU might have
-millions of callbacks queued.  Best to just say "no".
-
-This commit therefore forbids toggling of the offloaded state of
-offline CPUs.
-
-Reported-by: Paul E. McKenney <paulmck@kernel.org>
-Cc: Josh Triplett <josh@joshtriplett.org>
-Cc: Lai Jiangshan <jiangshanlai@gmail.com>
-Cc: Joel Fernandes <joel@joelfernandes.org>
-Cc: Neeraj Upadhyay <neeraju@codeaurora.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/rcu/tree.c        |  3 +--
- kernel/rcu/tree_plugin.h | 57 ++++++++++++++-------------------------
- 2 files changed, 22 insertions(+), 38 deletions(-)
+ kernel/rcu/rcutorture.c | 39 +++++++++++++++++++++++++++++++++++++++
+ mm/slab_common.c        |  2 ++
+ mm/util.c               |  1 +
+ 3 files changed, 42 insertions(+)
 
-diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
-index 03503e2..ee77858 100644
---- a/kernel/rcu/tree.c
-+++ b/kernel/rcu/tree.c
-@@ -4086,8 +4086,7 @@ int rcutree_prepare_cpu(unsigned int cpu)
- 	raw_spin_unlock_rcu_node(rnp);		/* irqs remain disabled. */
- 	/*
- 	 * Lock in case the CB/GP kthreads are still around handling
--	 * old callbacks (longer term we should flush all callbacks
--	 * before completing CPU offline)
-+	 * old callbacks.
- 	 */
- 	rcu_nocb_lock(rdp);
- 	if (rcu_segcblist_empty(&rdp->cblist)) /* No early-boot CBs? */
-diff --git a/kernel/rcu/tree_plugin.h b/kernel/rcu/tree_plugin.h
-index 013142d..9fd8588 100644
---- a/kernel/rcu/tree_plugin.h
-+++ b/kernel/rcu/tree_plugin.h
-@@ -2399,23 +2399,18 @@ static int rdp_offload_toggle(struct rcu_data *rdp,
+diff --git a/kernel/rcu/rcutorture.c b/kernel/rcu/rcutorture.c
+index 99657ff..8e93f2e 100644
+--- a/kernel/rcu/rcutorture.c
++++ b/kernel/rcu/rcutorture.c
+@@ -1861,6 +1861,45 @@ rcu_torture_stats(void *arg)
+ 		torture_shutdown_absorb("rcu_torture_stats");
+ 	} while (!torture_must_stop());
+ 	torture_kthread_stopping("rcu_torture_stats");
++
++	{
++		struct rcu_head *rhp;
++		struct kmem_cache *kcp;
++		static int z;
++
++		kcp = kmem_cache_create("rcuscale", 136, 8, SLAB_STORE_USER, NULL);
++		rhp = kmem_cache_alloc(kcp, GFP_KERNEL);
++		pr_alert("mem_dump_obj() slab test: rcu_torture_stats = %px, &rhp = %px, rhp = %px, &z = %px\n", stats_task, &rhp, rhp, &z);
++		pr_alert("mem_dump_obj(ZERO_SIZE_PTR):");
++		mem_dump_obj(ZERO_SIZE_PTR);
++		pr_alert("mem_dump_obj(NULL):");
++		mem_dump_obj(NULL);
++		pr_alert("mem_dump_obj(%px):", &rhp);
++		mem_dump_obj(&rhp);
++		pr_alert("mem_dump_obj(%px):", rhp);
++		mem_dump_obj(rhp);
++		pr_alert("mem_dump_obj(%px):", &rhp->func);
++		mem_dump_obj(&rhp->func);
++		pr_alert("mem_dump_obj(%px):", &z);
++		mem_dump_obj(&z);
++		kmem_cache_free(kcp, rhp);
++		kmem_cache_destroy(kcp);
++		rhp = kmalloc(sizeof(*rhp), GFP_KERNEL);
++		pr_alert("mem_dump_obj() kmalloc test: rcu_torture_stats = %px, &rhp = %px, rhp = %px\n", stats_task, &rhp, rhp);
++		pr_alert("mem_dump_obj(kmalloc %px):", rhp);
++		mem_dump_obj(rhp);
++		pr_alert("mem_dump_obj(kmalloc %px):", &rhp->func);
++		mem_dump_obj(&rhp->func);
++		kfree(rhp);
++		rhp = vmalloc(4096);
++		pr_alert("mem_dump_obj() vmalloc test: rcu_torture_stats = %px, &rhp = %px, rhp = %px\n", stats_task, &rhp, rhp);
++		pr_alert("mem_dump_obj(vmalloc %px):", rhp);
++		mem_dump_obj(rhp);
++		pr_alert("mem_dump_obj(vmalloc %px):", &rhp->func);
++		mem_dump_obj(&rhp->func);
++		vfree(rhp);
++	}
++
  	return 0;
  }
  
--static int __rcu_nocb_rdp_deoffload(struct rcu_data *rdp)
-+static long rcu_nocb_rdp_deoffload(void *arg)
- {
-+	struct rcu_data *rdp = arg;
- 	struct rcu_segcblist *cblist = &rdp->cblist;
- 	unsigned long flags;
- 	int ret;
- 
-+	WARN_ON_ONCE(rdp->cpu != raw_smp_processor_id());
-+
- 	pr_info("De-offloading %d\n", rdp->cpu);
- 
- 	rcu_nocb_lock_irqsave(rdp, flags);
--	/*
--	 * If there are still pending work offloaded, the offline
--	 * CPU won't help much handling them.
--	 */
--	if (cpu_is_offline(rdp->cpu) && !rcu_segcblist_empty(&rdp->cblist)) {
--		rcu_nocb_unlock_irqrestore(rdp, flags);
--		return -EBUSY;
--	}
- 
- 	ret = rdp_offload_toggle(rdp, false, flags);
- 	swait_event_exclusive(rdp->nocb_state_wq,
-@@ -2446,14 +2441,6 @@ static int __rcu_nocb_rdp_deoffload(struct rcu_data *rdp)
- 	return ret;
+diff --git a/mm/slab_common.c b/mm/slab_common.c
+index cec9536..4c6107e 100644
+--- a/mm/slab_common.c
++++ b/mm/slab_common.c
+@@ -545,6 +545,7 @@ bool kmem_valid_obj(void *object)
+ 	page = virt_to_head_page(object);
+ 	return PageSlab(page);
  }
++EXPORT_SYMBOL_GPL(kmem_valid_obj);
  
--static long rcu_nocb_rdp_deoffload(void *arg)
--{
--	struct rcu_data *rdp = arg;
--
--	WARN_ON_ONCE(rdp->cpu != raw_smp_processor_id());
--	return __rcu_nocb_rdp_deoffload(rdp);
--}
--
- int rcu_nocb_cpu_deoffload(int cpu)
- {
- 	struct rcu_data *rdp = per_cpu_ptr(&rcu_data, cpu);
-@@ -2466,12 +2453,14 @@ int rcu_nocb_cpu_deoffload(int cpu)
- 	mutex_lock(&rcu_state.barrier_mutex);
- 	cpus_read_lock();
- 	if (rcu_rdp_is_offloaded(rdp)) {
--		if (cpu_online(cpu))
-+		if (cpu_online(cpu)) {
- 			ret = work_on_cpu(cpu, rcu_nocb_rdp_deoffload, rdp);
--		else
--			ret = __rcu_nocb_rdp_deoffload(rdp);
--		if (!ret)
--			cpumask_clear_cpu(cpu, rcu_nocb_mask);
-+			if (!ret)
-+				cpumask_clear_cpu(cpu, rcu_nocb_mask);
-+		} else {
-+			pr_info("NOCB: Can't CB-deoffload an offline CPU\n");
-+			ret = -EINVAL;
-+		}
+ /**
+  * kmem_dump_obj - Print available slab provenance information
+@@ -601,6 +602,7 @@ void kmem_dump_obj(void *object)
+ 		pr_info("    %pS\n", kp.kp_stack[i]);
  	}
- 	cpus_read_unlock();
- 	mutex_unlock(&rcu_state.barrier_mutex);
-@@ -2480,12 +2469,14 @@ int rcu_nocb_cpu_deoffload(int cpu)
  }
- EXPORT_SYMBOL_GPL(rcu_nocb_cpu_deoffload);
++EXPORT_SYMBOL_GPL(kmem_dump_obj);
+ #endif
  
--static int __rcu_nocb_rdp_offload(struct rcu_data *rdp)
-+static long rcu_nocb_rdp_offload(void *arg)
- {
-+	struct rcu_data *rdp = arg;
- 	struct rcu_segcblist *cblist = &rdp->cblist;
- 	unsigned long flags;
- 	int ret;
- 
-+	WARN_ON_ONCE(rdp->cpu != raw_smp_processor_id());
- 	/*
- 	 * For now we only support re-offload, ie: the rdp must have been
- 	 * offloaded on boot first.
-@@ -2525,14 +2516,6 @@ static int __rcu_nocb_rdp_offload(struct rcu_data *rdp)
- 	return ret;
- }
- 
--static long rcu_nocb_rdp_offload(void *arg)
--{
--	struct rcu_data *rdp = arg;
--
--	WARN_ON_ONCE(rdp->cpu != raw_smp_processor_id());
--	return __rcu_nocb_rdp_offload(rdp);
--}
--
- int rcu_nocb_cpu_offload(int cpu)
- {
- 	struct rcu_data *rdp = per_cpu_ptr(&rcu_data, cpu);
-@@ -2541,12 +2524,14 @@ int rcu_nocb_cpu_offload(int cpu)
- 	mutex_lock(&rcu_state.barrier_mutex);
- 	cpus_read_lock();
- 	if (!rcu_rdp_is_offloaded(rdp)) {
--		if (cpu_online(cpu))
-+		if (cpu_online(cpu)) {
- 			ret = work_on_cpu(cpu, rcu_nocb_rdp_offload, rdp);
--		else
--			ret = __rcu_nocb_rdp_offload(rdp);
--		if (!ret)
--			cpumask_set_cpu(cpu, rcu_nocb_mask);
-+			if (!ret)
-+				cpumask_set_cpu(cpu, rcu_nocb_mask);
-+		} else {
-+			pr_info("NOCB: Can't CB-offload an offline CPU\n");
-+			ret = -EINVAL;
-+		}
+ #ifndef CONFIG_SLOB
+diff --git a/mm/util.c b/mm/util.c
+index 2d497fe..c37e24d 100644
+--- a/mm/util.c
++++ b/mm/util.c
+@@ -1014,4 +1014,5 @@ void mem_dump_obj(void *object)
  	}
- 	cpus_read_unlock();
- 	mutex_unlock(&rcu_state.barrier_mutex);
+ 	pr_cont(" non-slab/vmalloc memory.\n");
+ }
++EXPORT_SYMBOL_GPL(mem_dump_obj);
+ #endif
