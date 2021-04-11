@@ -2,14 +2,14 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C82EC35B4F8
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 11 Apr 2021 15:48:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA3AC35B4FA
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 11 Apr 2021 15:49:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235957AbhDKNod (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 11 Apr 2021 09:44:33 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:33308 "EHLO
+        id S235972AbhDKNof (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 11 Apr 2021 09:44:35 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:33444 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235806AbhDKNoL (ORCPT
+        with ESMTP id S235807AbhDKNoL (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Sun, 11 Apr 2021 09:44:11 -0400
 Date:   Sun, 11 Apr 2021 13:43:36 -0000
@@ -18,36 +18,35 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=VdjbInYUm/+XYAwaoDDVs3tRWaPO+9nKVh6a4gWnTuM=;
-        b=PrXK5x7FlC7TD3PLV3yFFuBx3+yIlA17n9VXh7zoDRZdl02P7NIkBg8dbgCUTG83gjHab0
-        4FYpwAmeUlMzkB3ycfs9eG27B1Ttvn1S7VIBa+w0+Uq0B7kgx7liZ0B0XCnR09vKPbOabk
-        q44EkWD9GNyAFEkSUxr6leX3kmsWg7XITYUkvr07XIDO3zYn50t7/OsrE+/XTt/Xt/zSe5
-        eUcXoZAcynYPU1U6Tj56yPAkewWzgEBpLSHUTwi6NLilq9cIKcagNtpZJqAZMQCxkLVqd0
-        7RedtIJW2avDBUY3THB1slPmSOGaqUvD9OyGBbtQHBAU8reNxF74e/XTb0pZGg==
+        bh=sF9bSsSKfqNk0mVJNho5vUi9/re5mckqnpxWuqqr4kk=;
+        b=YSsPyuyGZC1K0bYwS4hoaetiB4M6BdL+xYBe2gFT81HLzB6LKnUPK5EpBRsijPG2FFI0LR
+        ddt2Fv30Std7/3GAoMZV1TYYYWJwiK1lE1MQ9J1yKThcNi8Xra9RycOF07s+kv+VF7mCzx
+        S+EyqTN0UbQCK8ju/fblZ26cRSDycY66RPGMMHpPlrhJyLak3U8IZ9vM17BhdAXn6BvNgS
+        ii2GcHDcAOy5xgavy41y7dHfZfVAj98D69RmaOweuJlqV7K+gFVoFiQ9A/a6qSiPBDHQxM
+        Jg1RCitdPR9e2zNKXCwOfYrSVXMSXUbkUGdZk4UeNK6jdkik/QoDTiSQRWzHBg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1618148617;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=VdjbInYUm/+XYAwaoDDVs3tRWaPO+9nKVh6a4gWnTuM=;
-        b=FRYnrpYq9xoYaF4nEtMSaw+evwOw8dkPl6uwK9b0MEehodkd6pOzqV/di8IYAXSagj4DOn
-        s/PXri/hahusgqDQ==
+        bh=sF9bSsSKfqNk0mVJNho5vUi9/re5mckqnpxWuqqr4kk=;
+        b=29i/5P3PZATw+dvqlPjv6IfWIEceZxEL9uls6j/O9dS3LrKkULkrMGoRZl/v3MMOAsylWd
+        RMMkJ6zmKJWay9AA==
 From:   "tip-bot2 for Frederic Weisbecker" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcu/nocb: Only (re-)initialize segcblist when needed
- on CPU up
-Cc:     Frederic Weisbecker <frederic@kernel.org>,
+Subject: [tip: core/rcu] rcu/nocb: Avoid confusing double write of rdp->nocb_cb_sleep
+Cc:     "Paul E. McKenney" <paulmck@kernel.org>,
         Josh Triplett <josh@joshtriplett.org>,
         Lai Jiangshan <jiangshanlai@gmail.com>,
         Joel Fernandes <joel@joelfernandes.org>,
         Neeraj Upadhyay <neeraju@codeaurora.org>,
         Boqun Feng <boqun.feng@gmail.com>,
-        "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
+        Frederic Weisbecker <frederic@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <161814861661.29796.13634261035877506522.tip-bot2@tip-bot2>
+Message-ID: <161814861699.29796.13292539988612818468.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,78 +57,71 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     ec711bc12c777b1165585f59f7a6c35a89e04cc3
-Gitweb:        https://git.kernel.org/tip/ec711bc12c777b1165585f59f7a6c35a89e04cc3
+Commit-ID:     8a682b3974c36853b52fc8ede14dee966e96e19f
+Gitweb:        https://git.kernel.org/tip/8a682b3974c36853b52fc8ede14dee966e96e19f
 Author:        Frederic Weisbecker <frederic@kernel.org>
-AuthorDate:    Thu, 28 Jan 2021 18:12:10 +01:00
+AuthorDate:    Thu, 28 Jan 2021 18:12:12 +01:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Mon, 08 Mar 2021 14:20:22 -08:00
+CommitterDate: Mon, 08 Mar 2021 14:20:21 -08:00
 
-rcu/nocb: Only (re-)initialize segcblist when needed on CPU up
+rcu/nocb: Avoid confusing double write of rdp->nocb_cb_sleep
 
-At the start of a CPU-hotplug operation, the incoming CPU's callback
-list can be in a number of states:
+The nocb_cb_wait() function first sets the rdp->nocb_cb_sleep flag to
+true by after invoking the callbacks, and then sets it back to false if
+it finds more callbacks that are ready to invoke.
 
-1.	Disabled and empty.  This is the case when the boot CPU has
-	not invoked call_rcu(), when a non-boot CPU first comes online,
-	and when a non-offloaded CPU comes back online.  In this case,
-	it is both necessary and permissible to initialize ->cblist.
-	Because either the CPU is currently running with interrupts
-	disabled (boot CPU) or is not yet running at all (other CPUs),
-	it is not necessary to acquire ->nocb_lock.
+This is confusing and will become unsafe if this flag is ever read
+locklessly.  This commit therefore writes it only once, based on the
+state after both callback invocation and checking.
 
-	In this case, initialization is required.
-
-2.	Disabled and non-empty.  This cannot occur, because early boot
-	call_rcu() invocations enable the callback list before enqueuing
-	their callback.
-
-3.	Enabled, whether empty or not.	In this case, the callback
-	list has already been initialized.  This case occurs when the
-	boot CPU has executed an early boot call_rcu() and also when
-	an offloaded CPU comes back online.  In both cases, there is
-	no need to initialize the callback list: In the boot-CPU case,
-	the CPU has not (yet) gone offline, and in the offloaded case,
-	the rcuo kthreads are taking care of business.
-
-	Because it is not necessary to initialize the callback list,
-	it is also not necessary to acquire ->nocb_lock.
-
-Therefore, checking if the segcblist is enabled suffices.  This commit
-therefore initializes the callback list at rcutree_prepare_cpu() time
-only if that list is disabled.
-
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Reported-by: Paul E. McKenney <paulmck@kernel.org>
 Cc: Josh Triplett <josh@joshtriplett.org>
 Cc: Lai Jiangshan <jiangshanlai@gmail.com>
 Cc: Joel Fernandes <joel@joelfernandes.org>
 Cc: Neeraj Upadhyay <neeraju@codeaurora.org>
 Cc: Boqun Feng <boqun.feng@gmail.com>
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/rcu/tree.c |  9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ kernel/rcu/tree_plugin.h | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
-index ee77858..402ea36 100644
---- a/kernel/rcu/tree.c
-+++ b/kernel/rcu/tree.c
-@@ -4084,14 +4084,13 @@ int rcutree_prepare_cpu(unsigned int cpu)
- 	rdp->dynticks_nesting = 1;	/* CPU not up, no tearing. */
- 	rcu_dynticks_eqs_online();
- 	raw_spin_unlock_rcu_node(rnp);		/* irqs remain disabled. */
-+
- 	/*
--	 * Lock in case the CB/GP kthreads are still around handling
--	 * old callbacks.
-+	 * Only non-NOCB CPUs that didn't have early-boot callbacks need to be
-+	 * (re-)initialized.
- 	 */
--	rcu_nocb_lock(rdp);
--	if (rcu_segcblist_empty(&rdp->cblist)) /* No early-boot CBs? */
-+	if (!rcu_segcblist_is_enabled(&rdp->cblist))
- 		rcu_segcblist_init(&rdp->cblist);  /* Re-enable callbacks. */
--	rcu_nocb_unlock(rdp);
+diff --git a/kernel/rcu/tree_plugin.h b/kernel/rcu/tree_plugin.h
+index 9fd8588..6a7f77d 100644
+--- a/kernel/rcu/tree_plugin.h
++++ b/kernel/rcu/tree_plugin.h
+@@ -2230,6 +2230,7 @@ static void nocb_cb_wait(struct rcu_data *rdp)
+ 	unsigned long flags;
+ 	bool needwake_state = false;
+ 	bool needwake_gp = false;
++	bool can_sleep = true;
+ 	struct rcu_node *rnp = rdp->mynode;
  
- 	/*
- 	 * Add CPU to leaf rcu_node pending-online bitmask.  Any needed
+ 	local_irq_save(flags);
+@@ -2253,8 +2254,6 @@ static void nocb_cb_wait(struct rcu_data *rdp)
+ 		raw_spin_unlock_rcu_node(rnp); /* irqs remain disabled. */
+ 	}
+ 
+-	WRITE_ONCE(rdp->nocb_cb_sleep, true);
+-
+ 	if (rcu_segcblist_test_flags(cblist, SEGCBLIST_OFFLOADED)) {
+ 		if (!rcu_segcblist_test_flags(cblist, SEGCBLIST_KTHREAD_CB)) {
+ 			rcu_segcblist_set_flags(cblist, SEGCBLIST_KTHREAD_CB);
+@@ -2262,7 +2261,7 @@ static void nocb_cb_wait(struct rcu_data *rdp)
+ 				needwake_state = true;
+ 		}
+ 		if (rcu_segcblist_ready_cbs(cblist))
+-			WRITE_ONCE(rdp->nocb_cb_sleep, false);
++			can_sleep = false;
+ 	} else {
+ 		/*
+ 		 * De-offloading. Clear our flag and notify the de-offload worker.
+@@ -2275,6 +2274,8 @@ static void nocb_cb_wait(struct rcu_data *rdp)
+ 			needwake_state = true;
+ 	}
+ 
++	WRITE_ONCE(rdp->nocb_cb_sleep, can_sleep);
++
+ 	if (rdp->nocb_cb_sleep)
+ 		trace_rcu_nocb_wake(rcu_state.name, rdp->cpu, TPS("CBSleep"));
+ 
