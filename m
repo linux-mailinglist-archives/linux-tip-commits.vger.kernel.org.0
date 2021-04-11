@@ -2,46 +2,46 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0106935B519
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 11 Apr 2021 15:49:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 607AE35B51C
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 11 Apr 2021 15:49:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235782AbhDKNpL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 11 Apr 2021 09:45:11 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:33094 "EHLO
+        id S236098AbhDKNpM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 11 Apr 2021 09:45:12 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:33476 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235919AbhDKNoZ (ORCPT
+        with ESMTP id S235939AbhDKNo1 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 11 Apr 2021 09:44:25 -0400
-Date:   Sun, 11 Apr 2021 13:43:42 -0000
+        Sun, 11 Apr 2021 09:44:27 -0400
+Date:   Sun, 11 Apr 2021 13:43:43 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1618148622;
+        s=2020; t=1618148624;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=o/3kywJq0u3pRoQuZLhO//Dicz8PCnQvXbo9YkT4Arw=;
-        b=X4YLqq7YloiShQrIc8J5WP/M6Sf3dCmRgpu5ELYNCvJiHglg50CDcthZ8K6u1LZa2vCcxw
-        nfyBrkPrtDtVKdZDRBNfbReGZZJRmKJA/7f5W8m8xylVyPgeLnZ3SGFtrz4qL3Dlw65Jnz
-        yN+I52vcpt9XYgVu1+ncuM7TAdsHiXA4JZL7JNdKfOq6Unc9wU0UefpUBP7OFkuHaFOjC7
-        lULPMOnvZlt3YPc9swYVqonCEUc6zgzXAOtpqETywMKMvTpQRYRal/GoucnAhTAQawwNjE
-        II3MzDht0HIN5ccH9wXtqKm0F/lVznQR+T4RI+Eg9MgSjwvggsNb4oDz/nmVoQ==
+        bh=9eDNbk3H2QTyqCLqkl/NQyaNsCi0ZcamzDzlAGlJwAU=;
+        b=stTyGSN5Ch6v99BU80q7OMZWfpkngR+1xoeIQXXsNfYawCl2M42C++iqrJwDtbLhqpgzwE
+        g8n0Z6Jl1UjFlN1rH4URUsEFVSWBYN6nV3iB/8E5pUnhgRNSAFFkRbyRCpqMIRNYCP90Ic
+        lQ1LFRl36UAOgG8nig04FbSEDqmjn4kvmHZ2Z2iUwUCtZC+ChmVNlRLzK0DMnkoRL9Q7l0
+        jT4m7KyB0Bs/GW64EAGF4EqnG6XiIcDStbTSkXo98zf+RRw+sf8rmvwZIbfQr2qXSGHtC9
+        2MjbcezkbO+memqoZ5KBim9yvqc/WqkejX2Rs49/7HiR+iYEl95waqixI46N5A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1618148622;
+        s=2020e; t=1618148624;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=o/3kywJq0u3pRoQuZLhO//Dicz8PCnQvXbo9YkT4Arw=;
-        b=EynoTZehHxSpxkUhUer8HtZuPUszDlHURIQeUJ4td7kZFMu9zA11Xrdb5nYXZ5V2psV0tN
-        p0Ek0nXPhjLjNaCQ==
-From:   "tip-bot2 for Zhouyi Zhou" <tip-bot2@linutronix.de>
+        bh=9eDNbk3H2QTyqCLqkl/NQyaNsCi0ZcamzDzlAGlJwAU=;
+        b=Vz/25/FrEiJDRGjwbwr9DKI26v41NqS6jubPl9Er9A3++T+IriXsMJOzk/40HHYSVpZeyp
+        2giIo+PoTJsDxxBw==
+From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcu: Remove spurious instrumentation_end() in rcu_nmi_enter()
-Cc:     Zhouyi Zhou <zhouzhouyi@gmail.com>,
+Subject: [tip: core/rcu] rcutorture: Use "all" and "N" in "nohz_full" and "rcu_nocbs"
+Cc:     Paul Gortmaker <paul.gortmaker@windriver.com>,
         "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <161814862224.29796.9443095010968245696.tip-bot2@tip-bot2>
+Message-ID: <161814862353.29796.11793516362582086662.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -52,39 +52,40 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     6494ccb93271bee596a12db32ff44867d5be2321
-Gitweb:        https://git.kernel.org/tip/6494ccb93271bee596a12db32ff44867d5be2321
-Author:        Zhouyi Zhou <zhouzhouyi@gmail.com>
-AuthorDate:    Mon, 11 Jan 2021 09:08:59 +08:00
+Commit-ID:     c71c39b344f7eec9d4492913f22126b03bb7b746
+Gitweb:        https://git.kernel.org/tip/c71c39b344f7eec9d4492913f22126b03bb7b746
+Author:        Paul E. McKenney <paulmck@kernel.org>
+AuthorDate:    Thu, 21 Jan 2021 15:56:53 -08:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Mon, 08 Mar 2021 14:17:35 -08:00
+CommitterDate: Mon, 08 Mar 2021 14:16:58 -08:00
 
-rcu: Remove spurious instrumentation_end() in rcu_nmi_enter()
+rcutorture: Use "all" and "N" in "nohz_full" and "rcu_nocbs"
 
-In rcu_nmi_enter(), there is an erroneous instrumentation_end() in the
-second branch of the "if" statement.  Oddly enough, "objtool check -f
-vmlinux.o" fails to complain because it is unable to correctly cover
-all cases.  Instead, objtool visits the third branch first, which marks
-following trace_rcu_dyntick() as visited.  This commit therefore removes
-the spurious instrumentation_end().
+This commit uses the shiny new "all" and "N" cpumask options to decouple
+the "nohz_full" and "rcu_nocbs" kernel boot parameters in the TREE04.boot
+and TREE08.boot files from the CONFIG_NR_CPUS options in the TREE04 and
+TREE08 files.
 
-Fixes: 04b25a495bd6 ("rcu: Mark rcu_nmi_enter() call to rcu_cleanup_after_idle() noinstr")
-Reported-by Neeraj Upadhyay <neeraju@codeaurora.org>
-Signed-off-by: Zhouyi Zhou <zhouzhouyi@gmail.com>
+Reported-by: Paul Gortmaker <paul.gortmaker@windriver.com>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/rcu/tree.c | 1 -
- 1 file changed, 1 deletion(-)
+ tools/testing/selftests/rcutorture/configs/rcu/TREE04.boot | 2 +-
+ tools/testing/selftests/rcutorture/configs/rcu/TREE08.boot | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
-index e62c2de..4d90f20 100644
---- a/kernel/rcu/tree.c
-+++ b/kernel/rcu/tree.c
-@@ -1076,7 +1076,6 @@ noinstr void rcu_nmi_enter(void)
- 	} else if (!in_nmi()) {
- 		instrumentation_begin();
- 		rcu_irq_enter_check_tick();
--		instrumentation_end();
- 	} else  {
- 		instrumentation_begin();
- 	}
+diff --git a/tools/testing/selftests/rcutorture/configs/rcu/TREE04.boot b/tools/testing/selftests/rcutorture/configs/rcu/TREE04.boot
+index 5adc675..a8d94ca 100644
+--- a/tools/testing/selftests/rcutorture/configs/rcu/TREE04.boot
++++ b/tools/testing/selftests/rcutorture/configs/rcu/TREE04.boot
+@@ -1 +1 @@
+-rcutree.rcu_fanout_leaf=4 nohz_full=1-7
++rcutree.rcu_fanout_leaf=4 nohz_full=1-N
+diff --git a/tools/testing/selftests/rcutorture/configs/rcu/TREE08.boot b/tools/testing/selftests/rcutorture/configs/rcu/TREE08.boot
+index 22478fd..94d3844 100644
+--- a/tools/testing/selftests/rcutorture/configs/rcu/TREE08.boot
++++ b/tools/testing/selftests/rcutorture/configs/rcu/TREE08.boot
+@@ -1,3 +1,3 @@
+ rcupdate.rcu_self_test=1
+ rcutree.rcu_fanout_exact=1
+-rcu_nocbs=0-7
++rcu_nocbs=all
