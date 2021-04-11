@@ -2,46 +2,45 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B17C735B4EC
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 11 Apr 2021 15:48:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 941AA35B4E7
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 11 Apr 2021 15:48:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235925AbhDKNoZ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 11 Apr 2021 09:44:25 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:33388 "EHLO
+        id S235907AbhDKNoX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 11 Apr 2021 09:44:23 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:33390 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235767AbhDKNoG (ORCPT
+        with ESMTP id S235760AbhDKNoG (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Sun, 11 Apr 2021 09:44:06 -0400
 Date:   Sun, 11 Apr 2021 13:43:32 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1618148613;
+        s=2020; t=1618148612;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=bsOwYiV646Fao1c+2WGQZY6xwN2A5IKy7VkLpIBWvvI=;
-        b=J9etGcDblLZjsGPcDq6DSIZQccK0gtIr77aJo0GS5YdzW3c6vWQVDinI3ISXqpKsdnuxV9
-        Xo4ZzWC/puhy9Ibti4RBv7T5LFdGsEVnjYgsjebE5MiI0vawKl2CYrlnhLQouSG3+1SMIV
-        hOYWeH2AeNa1kzkLo/TIrYhJ0A4JGT8rPQS6vAmpBiaJo+40O6WPaPe1D/eCaWujSEXBGF
-        uZYKADnxVZabsfNKmrLwJI+7Rh8efKXtb2LFXpnFH1LYUuS+f+hyv1d06kFe912Km1IIYF
-        /UTN/o3QZr5HNPSjbGD/NZV+jv67L+UiciqnMUU93H9xWg7xzLjufDqa2jnxgg==
+        bh=HC4wC4wIkhlW2L9XgKw+jxVlXS7mq16LCQN1e2+uU44=;
+        b=AiDxXUjeViLnXJt42hyS6MtecnqItsmlHarm1oNTdKx3cdyW3uSpfqfKGb80eXcoKt69am
+        0hXo7/Bgp6Suuzg24TRMWSjHzchzlB83Vx5j3UO7EwrINL+txZpQvF3y4Wxp4zCHFK1GG4
+        DaUqFppSy2PXK+eFchKdAnLjjtEtQoFN5sLOtFar80MbU8unS1IyaIJmvGceEFl9jESWBT
+        KWGmJK77HtCFQ3OX88IQiZvMLeW0XETh7njbfcSdzDCoMHQvzsnNjTwUYMmDg7W8wPxgoB
+        M7ivxhD7Lz7RnCOB2x4KwP3P6VKtvmky6Vghpj8Yiy6p2utaRRVAE+gwoBZfPQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1618148613;
+        s=2020e; t=1618148612;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=bsOwYiV646Fao1c+2WGQZY6xwN2A5IKy7VkLpIBWvvI=;
-        b=12OElGvQo0jttuhSOJFoCV0KzZiHfYwbW5c2lXlCazJQnTI4y4xRC8eMS8JISDwWVXBfHF
-        9og1HYrUWxCA4/DA==
-From:   "tip-bot2 for Stephen Zhang" <tip-bot2@linutronix.de>
+        bh=HC4wC4wIkhlW2L9XgKw+jxVlXS7mq16LCQN1e2+uU44=;
+        b=Y5eBsqiI0Lpi9xw0Z7yl7kH6LmjEPn3QKkb7o/hgnlTIXf0pTFD7nj8WFzAd1qpcMHMVb1
+        d/EdepDxWtAI5OCQ==
+From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcutorture: Replace rcu_torture_stall string with %s
-Cc:     Stephen Zhang <stephenzhangzsd@gmail.com>,
-        "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
+Subject: [tip: core/rcu] torture: Allow 1G of memory for torture.sh kvfree testing
+Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <161814861291.29796.7062188151210309046.tip-bot2@tip-bot2>
+Message-ID: <161814861221.29796.939856109875902261.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -52,45 +51,36 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     0a27fff30a5e561dc77e9cb1bf9cf462e1735179
-Gitweb:        https://git.kernel.org/tip/0a27fff30a5e561dc77e9cb1bf9cf462e1735179
-Author:        Stephen Zhang <stephenzhangzsd@gmail.com>
-AuthorDate:    Sat, 23 Jan 2021 17:54:17 +08:00
+Commit-ID:     3d4977b68101b38c3f9d3be3d89e17ef1fdfc1d3
+Gitweb:        https://git.kernel.org/tip/3d4977b68101b38c3f9d3be3d89e17ef1fdfc1d3
+Author:        Paul E. McKenney <paulmck@kernel.org>
+AuthorDate:    Thu, 28 Jan 2021 16:38:19 -08:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Mon, 08 Mar 2021 14:22:28 -08:00
+CommitterDate: Mon, 08 Mar 2021 14:23:01 -08:00
 
-rcutorture: Replace rcu_torture_stall string with %s
+torture: Allow 1G of memory for torture.sh kvfree testing
 
-This commit replaces a hard-coded "rcu_torture_stall" string in a
-pr_alert() format with "%s" and __func__.
+Yes, I do recall a time when 512MB of memory was a lot of mass storage,
+much less main memory, but the rcuscale kvfree_rcu() testing invoked by
+torture.sh can sometimes exceed it on large systems, resulting in OOM.
+This commit therefore causes torture.sh to pase the "--memory 1G"
+argument to kvm.sh to reserve a full gigabyte for this purpose.
 
-Signed-off-by: Stephen Zhang <stephenzhangzsd@gmail.com>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/rcu/rcutorture.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ tools/testing/selftests/rcutorture/bin/torture.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/rcu/rcutorture.c b/kernel/rcu/rcutorture.c
-index 99657ff..271726e 100644
---- a/kernel/rcu/rcutorture.c
-+++ b/kernel/rcu/rcutorture.c
-@@ -1971,8 +1971,8 @@ static int rcu_torture_stall(void *args)
- 			local_irq_disable();
- 		else if (!stall_cpu_block)
- 			preempt_disable();
--		pr_alert("rcu_torture_stall start on CPU %d.\n",
--			 raw_smp_processor_id());
-+		pr_alert("%s start on CPU %d.\n",
-+			  __func__, raw_smp_processor_id());
- 		while (ULONG_CMP_LT((unsigned long)ktime_get_seconds(),
- 				    stop_at))
- 			if (stall_cpu_block)
-@@ -1983,7 +1983,7 @@ static int rcu_torture_stall(void *args)
- 			preempt_enable();
- 		cur_ops->readunlock(idx);
- 	}
--	pr_alert("rcu_torture_stall end.\n");
-+	pr_alert("%s end.\n", __func__);
- 	torture_shutdown_absorb("rcu_torture_stall");
- 	while (!kthread_should_stop())
- 		schedule_timeout_interruptible(10 * HZ);
+diff --git a/tools/testing/selftests/rcutorture/bin/torture.sh b/tools/testing/selftests/rcutorture/bin/torture.sh
+index ad7525b..56e2e1a 100755
+--- a/tools/testing/selftests/rcutorture/bin/torture.sh
++++ b/tools/testing/selftests/rcutorture/bin/torture.sh
+@@ -374,7 +374,7 @@ done
+ if test "$do_kvfree" = "yes"
+ then
+ 	torture_bootargs="rcuscale.kfree_rcu_test=1 rcuscale.kfree_nthreads=16 rcuscale.holdoff=20 rcuscale.kfree_loops=10000 torture.disable_onoff_at_boot"
+-	torture_set "rcuscale-kvfree" tools/testing/selftests/rcutorture/bin/kvm.sh --torture rcuscale --allcpus --duration 10 --kconfig "CONFIG_NR_CPUS=$HALF_ALLOTED_CPUS" --trust-make
++	torture_set "rcuscale-kvfree" tools/testing/selftests/rcutorture/bin/kvm.sh --torture rcuscale --allcpus --duration 10 --kconfig "CONFIG_NR_CPUS=$HALF_ALLOTED_CPUS" --memory 1G --trust-make
+ fi
+ 
+ echo " --- " $scriptname $args
