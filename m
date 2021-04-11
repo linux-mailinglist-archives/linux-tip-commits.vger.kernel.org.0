@@ -2,48 +2,45 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A45F35B4E4
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 11 Apr 2021 15:48:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7EACE35B4E0
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 11 Apr 2021 15:48:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235890AbhDKNoV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 11 Apr 2021 09:44:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43898 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235770AbhDKNoG (ORCPT
+        id S235875AbhDKNoU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 11 Apr 2021 09:44:20 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:33306 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235755AbhDKNoF (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 11 Apr 2021 09:44:06 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E8A3C06138C;
-        Sun, 11 Apr 2021 06:43:49 -0700 (PDT)
-Date:   Sun, 11 Apr 2021 13:43:30 -0000
+        Sun, 11 Apr 2021 09:44:05 -0400
+Date:   Sun, 11 Apr 2021 13:43:31 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1618148611;
+        s=2020; t=1618148612;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=Cd17CE88W3x96ArXq/f5ZpBkhF2Q8LDLzjP7rUGFOzw=;
-        b=EmNEBeDQ0uCltHK1GPv87OV2ubglCV/coR73Vg+DQUIDM1NgzJYLTkbbKEs7krkVQ1DqUn
-        hjs3pdk7EO+Kjxa5v4POZF81Z4RGBKBvBNky0W6DKZLkj8sqf2ssrK/AmmuGrh1oS5Cwyb
-        yE7akJeyAW53lXm8ExAx0xEi1noii4ENNiag9pmhW5w3wFyBD8Ixwa0UiX9/4j7CU2F8uc
-        kO/PyM/DkCTVxzfxzh9zyvqmNUaXmrfeiMsyJR2wleCMb8Ohs78kYfzo/niQLUmVP1WwVQ
-        0KAMT5iErqJ6V7gJR7BdKbLyi7QMC99OcK+JG54ChHztE6NqcHgfQ8ouVRUfoA==
+        bh=Qpv/7hmeJe1rkdMsempkZEFnL2JQXIrePCoufgiLEwE=;
+        b=DLxgIwew9qR2QMvIrJ0PFN9JDM4UxMTLuNaQL38dyTKBUVc5132HKV57nYYJZSIjsKfkiX
+        ZTF0L6LPEnBG+ZZqulMkt8eg0e/Xu0SUPz1q/3x/to7j65LoyNQmGJARp1ncBIaX/MY6Nx
+        guYKV5SEt4wIVHmh+OTM1M1XHAKXiSj4f06BF63sCWgARFs4OdmlP5ywCVj8T+i4zKtX/l
+        7/ehqcItxY69bJYaN+Z2lAdeqcOZqY9XVZVen5VwUCab2wSa5rtAoDUVrTJp5CkoOYYhYd
+        3i3iyLSkKA+/8gy7vUEX4U8B3veOwGbXLe3HgpYLX3VErYr87K5EwpOMU/XHiw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1618148611;
+        s=2020e; t=1618148612;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=Cd17CE88W3x96ArXq/f5ZpBkhF2Q8LDLzjP7rUGFOzw=;
-        b=cU1Frbtep3tM5lxRoFfF78Y9ksatNguYS8WF8QuyaysFl6L00kR2rKl5RjPPKCruWUbHR8
-        tF0uQ+fYedDmS3Bw==
+        bh=Qpv/7hmeJe1rkdMsempkZEFnL2JQXIrePCoufgiLEwE=;
+        b=lUEamtgeLOj66QymMiftcck/J0CIPr97n6w9v9zDRzh5pJmVwZsCUeL+051QHHfoUD0tgX
+        cCaxmJg1GVVqwyBQ==
 From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] refscale: Disable verbose torture-test output
+Subject: [tip: core/rcu] torture: Improve readability of the testid.txt file
 Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <161814861073.29796.17575196497558639163.tip-bot2@tip-bot2>
+Message-ID: <161814861144.29796.9245104369962922661.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -54,35 +51,50 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     aebf8c7bf6d508dfb4255db8f7355ca819d9e6c9
-Gitweb:        https://git.kernel.org/tip/aebf8c7bf6d508dfb4255db8f7355ca819d9e6c9
+Commit-ID:     f9d2f1e2c426ad6c4d7661cc7d90be4de2c4f7a4
+Gitweb:        https://git.kernel.org/tip/f9d2f1e2c426ad6c4d7661cc7d90be4de2c4f7a4
 Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Thu, 28 Jan 2021 10:17:26 -08:00
+AuthorDate:    Thu, 04 Feb 2021 17:20:45 -08:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Mon, 08 Mar 2021 14:23:01 -08:00
 
-refscale: Disable verbose torture-test output
+torture: Improve readability of the testid.txt file
 
-Given large numbers of threads, the quantity of torture-test output is
-sufficient to sometimes result in RCU CPU stall warnings.  The probability
-of these stall warnings was greatly reduced by batching the output,
-but the warnings were not eliminated.  However, the actual test only
-depends on console output that is printed even when refscale.verbose=0.
-This commit therefore causes this test to run with refscale.verbose=0.
+The testid.txt file was intended for occasional in extremis use, but
+now that the new "bare-metal" file references it, it might see more use.
+This commit therefore labels sections of output and adds spacing to make
+it easier to see what needs to be done to make a bare-metal build tree
+match an rcutorture build tree.
+
+Of course, you can avoid this whole issue by building your bare-metal
+kernel in the same directory in which you ran rcutorture, but that might
+not always be an option.
 
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- tools/testing/selftests/rcutorture/configs/refscale/ver_functions.sh | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/rcutorture/bin/kvm.sh |  9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/rcutorture/configs/refscale/ver_functions.sh b/tools/testing/selftests/rcutorture/configs/refscale/ver_functions.sh
-index 321e826..f81fa2c 100644
---- a/tools/testing/selftests/rcutorture/configs/refscale/ver_functions.sh
-+++ b/tools/testing/selftests/rcutorture/configs/refscale/ver_functions.sh
-@@ -12,5 +12,5 @@
- # Adds per-version torture-module parameters to kernels supporting them.
- per_version_boot_params () {
- 	echo $1 refscale.shutdown=1 \
--		refscale.verbose=1
-+		refscale.verbose=0
- }
+diff --git a/tools/testing/selftests/rcutorture/bin/kvm.sh b/tools/testing/selftests/rcutorture/bin/kvm.sh
+index 35a2132..1de198d 100755
+--- a/tools/testing/selftests/rcutorture/bin/kvm.sh
++++ b/tools/testing/selftests/rcutorture/bin/kvm.sh
+@@ -404,11 +404,16 @@ echo $scriptname $args
+ touch $resdir/$ds/log
+ echo $scriptname $args >> $resdir/$ds/log
+ echo ${TORTURE_SUITE} > $resdir/$ds/TORTURE_SUITE
+-pwd > $resdir/$ds/testid.txt
++echo Build directory: `pwd` > $resdir/$ds/testid.txt
+ if test -d .git
+ then
++	echo Current commit: `git rev-parse HEAD` >> $resdir/$ds/testid.txt
++	echo >> $resdir/$ds/testid.txt
++	echo ' ---' Output of "'"git status"'": >> $resdir/$ds/testid.txt
+ 	git status >> $resdir/$ds/testid.txt
+-	git rev-parse HEAD >> $resdir/$ds/testid.txt
++	echo >> $resdir/$ds/testid.txt
++	echo >> $resdir/$ds/testid.txt
++	echo ' ---' Output of "'"git diff HEAD"'": >> $resdir/$ds/testid.txt
+ 	git diff HEAD >> $resdir/$ds/testid.txt
+ fi
+ ___EOF___
