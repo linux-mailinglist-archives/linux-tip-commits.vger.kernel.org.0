@@ -2,51 +2,48 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 57E8E35B4D6
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 11 Apr 2021 15:44:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6BAE35B4CC
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 11 Apr 2021 15:43:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235842AbhDKNoO (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 11 Apr 2021 09:44:14 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:33032 "EHLO
+        id S235819AbhDKNoL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 11 Apr 2021 09:44:11 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:33034 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235669AbhDKNoE (ORCPT
+        with ESMTP id S235676AbhDKNoE (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Sun, 11 Apr 2021 09:44:04 -0400
 Date:   Sun, 11 Apr 2021 13:43:26 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1618148606;
+        s=2020; t=1618148607;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=nOcyLVAkLfK8IpMzoQCct8TR/K7mVK5dOt96BPErnz0=;
-        b=uJYpQUZeHxV+EAhMVx7f966I304ap3GDjIMlSF7EX1kZi/0wdQtQUO7Ez+6TXCBiW3vHXd
-        qOiA7nvMep0wbKRqOSmKv+pk0+yHP1IfOK4He64XLs3Ic2jKxP9dw5lthgZ/wfbeW+feJ4
-        OB6SSRx8ezHTV7RWj4wG4ZBlirG9pSmNWK0k5ZUGNGug16+Gs4egy1QYhgFxgJ4u6Ro+rT
-        bWD1OJTUM0wa8mck4MKLgdxdFOtgqwUUBgRpK+kRbHOmxKJWiovwPHOtE9ZiNeJ0IPkFfU
-        bDP8h0InEh/cEjyh5S12qAIMmU/zfL+HakzU979i88HBTSEF1MaG7vXjLKBBfQ==
+        bh=KoCfVpKfrIDm7w71a7ILo9h5yJzmXzYFB/+89Q+mdXc=;
+        b=1K3qiRUxtBOAsgBFdXQUO3xV8L5Dbf4Yu8iz+Bf9kOnkgQqKC+BN/U/g6iBQmTTns0cKSA
+        GcI7czmtR9Gr2K3kHWwRSh2ND3uqIE7ztQDWloc/obYiTchRFllhW+msyDIz4gWmfGhnen
+        JqtmohXc3KAQSrCuiEQNTq3vvw3/edm38N28Vf5HVJpGj931xRya9dJ+DUxiCq2iHDcZeo
+        avLWSZeHSbR0qWIiAJwpBZpnAjDtc+93ALszHtOQQGODe+Y9ibQ5KV/IV++6jyplLEQ8DQ
+        TZF0nvChPU8+eZgJa4BEYxdpEhvBTpJKYu1CzSZwMENfROSFZICBJB3WbZyzJw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1618148606;
+        s=2020e; t=1618148607;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=nOcyLVAkLfK8IpMzoQCct8TR/K7mVK5dOt96BPErnz0=;
-        b=5puX8yJRTO59yDfOsSPcsAGqNpUYlPkgnPkuLOqRnJIb/g7bwWl0Dxct24fRkKGVv9NHxC
-        BW68Z2UAksZiLTAw==
-From:   "tip-bot2 for Frederic Weisbecker" <tip-bot2@linutronix.de>
+        bh=KoCfVpKfrIDm7w71a7ILo9h5yJzmXzYFB/+89Q+mdXc=;
+        b=P+B7vyOwRN2BBnYbd13+X0ceFORJROCekxut9AMY5UnuhfsTUZfubhgDO708LEUHTRyDkY
+        uovWQFBktD0zqzCw==
+From:   "tip-bot2 for Jiapeng Chong" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcu/nocb: Disable bypass when CPU isn't completely offloaded
-Cc:     "Paul E. McKenney" <paulmck@kernel.org>,
-        Josh Triplett <josh@joshtriplett.org>,
-        Lai Jiangshan <jiangshanlai@gmail.com>,
-        Joel Fernandes <joel@joelfernandes.org>,
-        Neeraj Upadhyay <neeraju@codeaurora.org>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        Frederic Weisbecker <frederic@kernel.org>, x86@kernel.org,
+Subject: [tip: core/rcu] rcu: Make nocb_nobypass_lim_per_jiffy static
+Cc:     Abaci Robot <abaci@linux.alibaba.com>,
+        Frederic Weisbecker <frederic@kernel.org>,
+        Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
+        "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <161814860604.29796.7866400610798245735.tip-bot2@tip-bot2>
+Message-ID: <161814860676.29796.8181697809960571612.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -57,142 +54,40 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     76d00b494d7962e88d4bbd4135f34aba9019c67f
-Gitweb:        https://git.kernel.org/tip/76d00b494d7962e88d4bbd4135f34aba9019c67f
-Author:        Frederic Weisbecker <frederic@kernel.org>
-AuthorDate:    Tue, 23 Feb 2021 01:10:00 +01:00
+Commit-ID:     9640dcab974fb7fba086d30fd9f0ec08b8876d12
+Gitweb:        https://git.kernel.org/tip/9640dcab974fb7fba086d30fd9f0ec08b8876d12
+Author:        Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+AuthorDate:    Wed, 24 Feb 2021 16:30:29 +08:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Mon, 15 Mar 2021 13:54:54 -07:00
+CommitterDate: Mon, 15 Mar 2021 13:54:42 -07:00
 
-rcu/nocb: Disable bypass when CPU isn't completely offloaded
+rcu: Make nocb_nobypass_lim_per_jiffy static
 
-Currently, the bypass is flushed at the very last moment in the
-deoffloading procedure.  However, this approach leads to a larger state
-space than would be preferred.  This commit therefore disables the
-bypass at soon as the deoffloading procedure begins, then flushes it.
-This guarantees that the bypass remains empty and thus out of the way
-of the deoffloading procedure.
+RCU triggerse the following sparse warning:
 
-Symmetrically, this commit waits to enable the bypass until the offloading
-procedure has completed.
+kernel/rcu/tree_plugin.h:1497:5: warning: symbol
+'nocb_nobypass_lim_per_jiffy' was not declared. Should it be static?
 
-Reported-by: Paul E. McKenney <paulmck@kernel.org>
-Cc: Josh Triplett <josh@joshtriplett.org>
-Cc: Lai Jiangshan <jiangshanlai@gmail.com>
-Cc: Joel Fernandes <joel@joelfernandes.org>
-Cc: Neeraj Upadhyay <neeraju@codeaurora.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+This commit therefore makes this variable static.
+
+Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+Reported-by: Frederic Weisbecker <frederic@kernel.org>
+Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- include/linux/rcu_segcblist.h |  7 +++---
- kernel/rcu/tree_plugin.h      | 38 +++++++++++++++++++++++++---------
- 2 files changed, 33 insertions(+), 12 deletions(-)
+ kernel/rcu/tree_plugin.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/rcu_segcblist.h b/include/linux/rcu_segcblist.h
-index 8afe886..3db96c4 100644
---- a/include/linux/rcu_segcblist.h
-+++ b/include/linux/rcu_segcblist.h
-@@ -109,7 +109,7 @@ struct rcu_cblist {
-  *  |                           SEGCBLIST_KTHREAD_GP                           |
-  *  |                                                                          |
-  *  |   Kthreads handle callbacks holding nocb_lock, local rcu_core() stops    |
-- *  |   handling callbacks.                                                    |
-+ *  |   handling callbacks. Enable bypass queueing.                            |
-  *  ----------------------------------------------------------------------------
-  */
- 
-@@ -125,7 +125,7 @@ struct rcu_cblist {
-  *  |                           SEGCBLIST_KTHREAD_GP                           |
-  *  |                                                                          |
-  *  |   CB/GP kthreads handle callbacks holding nocb_lock, local rcu_core()    |
-- *  |   ignores callbacks.                                                     |
-+ *  |   ignores callbacks. Bypass enqueue is enabled.                          |
-  *  ----------------------------------------------------------------------------
-  *                                      |
-  *                                      v
-@@ -134,7 +134,8 @@ struct rcu_cblist {
-  *  |                           SEGCBLIST_KTHREAD_GP                           |
-  *  |                                                                          |
-  *  |   CB/GP kthreads and local rcu_core() handle callbacks concurrently      |
-- *  |   holding nocb_lock. Wake up CB and GP kthreads if necessary.            |
-+ *  |   holding nocb_lock. Wake up CB and GP kthreads if necessary. Disable    |
-+ *  |   bypass enqueue.                                                        |
-  *  ----------------------------------------------------------------------------
-  *                                      |
-  *                                      v
 diff --git a/kernel/rcu/tree_plugin.h b/kernel/rcu/tree_plugin.h
-index e392bd1..b08564b 100644
+index 93d3938..a1a17ad 100644
 --- a/kernel/rcu/tree_plugin.h
 +++ b/kernel/rcu/tree_plugin.h
-@@ -1830,11 +1830,22 @@ static bool rcu_nocb_try_bypass(struct rcu_data *rdp, struct rcu_head *rhp,
- 	unsigned long j = jiffies;
- 	long ncbs = rcu_cblist_n_cbs(&rdp->nocb_bypass);
+@@ -1556,7 +1556,7 @@ early_param("rcu_nocb_poll", parse_rcu_nocb_poll);
+  * After all, the main point of bypassing is to avoid lock contention
+  * on ->nocb_lock, which only can happen at high call_rcu() rates.
+  */
+-int nocb_nobypass_lim_per_jiffy = 16 * 1000 / HZ;
++static int nocb_nobypass_lim_per_jiffy = 16 * 1000 / HZ;
+ module_param(nocb_nobypass_lim_per_jiffy, int, 0);
  
-+	lockdep_assert_irqs_disabled();
-+
-+	// Pure softirq/rcuc based processing: no bypassing, no
-+	// locking.
- 	if (!rcu_rdp_is_offloaded(rdp)) {
- 		*was_alldone = !rcu_segcblist_pend_cbs(&rdp->cblist);
-+		return false;
-+	}
-+
-+	// In the process of (de-)offloading: no bypassing, but
-+	// locking.
-+	if (!rcu_segcblist_completely_offloaded(&rdp->cblist)) {
-+		rcu_nocb_lock(rdp);
-+		*was_alldone = !rcu_segcblist_pend_cbs(&rdp->cblist);
- 		return false; /* Not offloaded, no bypassing. */
- 	}
--	lockdep_assert_irqs_disabled();
- 
- 	// Don't use ->nocb_bypass during early boot.
- 	if (rcu_scheduler_active != RCU_SCHEDULER_RUNNING) {
-@@ -2416,7 +2427,16 @@ static long rcu_nocb_rdp_deoffload(void *arg)
- 	pr_info("De-offloading %d\n", rdp->cpu);
- 
- 	rcu_nocb_lock_irqsave(rdp, flags);
--
-+	/*
-+	 * Flush once and for all now. This suffices because we are
-+	 * running on the target CPU holding ->nocb_lock (thus having
-+	 * interrupts disabled), and because rdp_offload_toggle()
-+	 * invokes rcu_segcblist_offload(), which clears SEGCBLIST_OFFLOADED.
-+	 * Thus future calls to rcu_segcblist_completely_offloaded() will
-+	 * return false, which means that future calls to rcu_nocb_try_bypass()
-+	 * will refuse to put anything into the bypass.
-+	 */
-+	WARN_ON_ONCE(!rcu_nocb_flush_bypass(rdp, NULL, jiffies));
- 	ret = rdp_offload_toggle(rdp, false, flags);
- 	swait_event_exclusive(rdp->nocb_state_wq,
- 			      !rcu_segcblist_test_flags(cblist, SEGCBLIST_KTHREAD_CB |
-@@ -2428,21 +2448,21 @@ static long rcu_nocb_rdp_deoffload(void *arg)
- 	del_timer_sync(&rdp->nocb_timer);
- 
- 	/*
--	 * Flush bypass. While IRQs are disabled and once we set
--	 * SEGCBLIST_SOFTIRQ_ONLY, no callback is supposed to be
--	 * enqueued on bypass.
-+	 * Theoretically we could set SEGCBLIST_SOFTIRQ_ONLY with CB unlocked
-+	 * and IRQs disabled but let's be paranoid.
- 	 */
- 	rcu_nocb_lock_irqsave(rdp, flags);
--	rcu_nocb_flush_bypass(rdp, NULL, jiffies);
- 	rcu_segcblist_set_flags(cblist, SEGCBLIST_SOFTIRQ_ONLY);
- 	/*
- 	 * With SEGCBLIST_SOFTIRQ_ONLY, we can't use
--	 * rcu_nocb_unlock_irqrestore() anymore. Theoretically we
--	 * could set SEGCBLIST_SOFTIRQ_ONLY with cb unlocked and IRQs
--	 * disabled now, but let's be paranoid.
-+	 * rcu_nocb_unlock_irqrestore() anymore.
- 	 */
- 	raw_spin_unlock_irqrestore(&rdp->nocb_lock, flags);
- 
-+	/* Sanity check */
-+	WARN_ON_ONCE(rcu_cblist_n_cbs(&rdp->nocb_bypass));
-+
-+
- 	return ret;
- }
- 
+ /*
