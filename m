@@ -2,46 +2,48 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EF66535B4E1
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 11 Apr 2021 15:48:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2340735B4E6
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 11 Apr 2021 15:48:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235879AbhDKNoU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 11 Apr 2021 09:44:20 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:33296 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235740AbhDKNoF (ORCPT
+        id S235904AbhDKNoX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 11 Apr 2021 09:44:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43896 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235772AbhDKNoG (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 11 Apr 2021 09:44:05 -0400
+        Sun, 11 Apr 2021 09:44:06 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A2C3C06138B;
+        Sun, 11 Apr 2021 06:43:49 -0700 (PDT)
 Date:   Sun, 11 Apr 2021 13:43:29 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1618148610;
+        s=2020; t=1618148609;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=pbDhcAx/4gI3sV/Ymeqglf21SqC+K3PtXp7MiZwtp3U=;
-        b=4V/LtKEeFUpN/ur1Z3RnW18cxecKvn7bDPUG7AJboxz201lr3folzkaBuIJ5kWPTH4c9n+
-        04YCpHojbEP/+PtJ6nI6mA5MGNEmweTihZ5QeCW+iLT0bv0o9MxMZUWFibuO0vEzHqApGr
-        v8K4+orhDcfPcvSO0/0XHHJ9qD8ZppkN+/H43aok+BjFEzABH4wOzoxPmr18GgT+etahR5
-        C1HGJjEHjT2geK0Xcr9QOLCVaCqdPXWC45sc1jdWshfW7n8rLtlzzwT6HpJREc4YGYDKQE
-        irAQlYeQ0hzzLluOaM0DU8jrHmgsp3yeFO5oD4bA248c90NUbVvBenqVbzw0Gg==
+        bh=viipn2e0lkS2GmFL23zdyo0tpQc+sarX1+ppdNnGmBQ=;
+        b=RqoWmKpDvtzpRM+Mf4keOSZDrYOnRnOEZw8lal6XRSlG04mQWLe9/+70E2hNVeGZnDGJvh
+        K6CX/hmNHHIMm0tuCGjA/em4RRo2haCmdrQtYyXPJz2CbnbvU1s3spn+jJc6pwfHf5IS6S
+        WfLGcXoRUZFoMJmKWpxsr4rSnNLtxBKp1oJmbUdLvk/1gGgviQKp6xqVVB+/Pk/zFEJ082
+        H0NeJjn9joaorbSQZwgARV0AlGLNjc8bSJ3ZsDMYrKJEusBnD6qr4GCMyxHmzEp53G1zJ2
+        EBWQKKmbqeM1UK0VKnjGlhlVwYfXH4AbXU70wmxriEm4in3fC9T3kVYhUL8q5g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1618148610;
+        s=2020e; t=1618148609;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=pbDhcAx/4gI3sV/Ymeqglf21SqC+K3PtXp7MiZwtp3U=;
-        b=+4YfcprPYLXFyHpOIQAQIMi3kHIV6kDGd5QdUIJMR8Ei1zCKoVcHddXrWKGHHBtuSX4K12
-        wQjF0tU1pcZ0xKCg==
+        bh=viipn2e0lkS2GmFL23zdyo0tpQc+sarX1+ppdNnGmBQ=;
+        b=KztePGRpgeoQc2mVi89zMXCoMg8Xu80QtPbETr4Jt2mhV0biEaHQYY/iK9bl6/hPstD47w
+        +yO7Rhgn+g0kGJCQ==
 From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] torture: Use file-based protocol to mark batch's runs
- complete
+Subject: [tip: core/rcu] torture: Eliminate jitter_pids file
 Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <161814860991.29796.10493672767983350612.tip-bot2@tip-bot2>
+Message-ID: <161814860919.29796.12443077248137197494.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -52,73 +54,66 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     b674100e630bf9211d7edce06b5d734b125a74ee
-Gitweb:        https://git.kernel.org/tip/b674100e630bf9211d7edce06b5d734b125a74ee
+Commit-ID:     1f922db8eef015f261480347aaf79fa9a25728f2
+Gitweb:        https://git.kernel.org/tip/1f922db8eef015f261480347aaf79fa9a25728f2
 Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Wed, 10 Feb 2021 16:28:44 -08:00
+AuthorDate:    Thu, 11 Feb 2021 10:56:42 -08:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Mon, 08 Mar 2021 14:23:01 -08:00
 
-torture: Use file-based protocol to mark batch's runs complete
+torture: Eliminate jitter_pids file
 
-Currently, the script generated by kvm.sh does a "wait" to wait on both
-the current batch's guest OSes and any jitter.sh scripts.  This works,
-but makes it hard to abstract the jittering so that common code can be
-used for both local and distributed runs.  This commit therefore uses
-"build.run" files in scenario directories, and these files are removed
-after the corresponding scenario's guest OS has completed.
-
-Note that --build-only runs do not create build.run files because they
-also do not create guest OSes and do not run any jitter.sh scripts.
+Now that there is a reliable way to convince the jitter.sh scripts to
+stop, the jitter_pids file is not needed, nor is the code that kills all
+the PIDs contained in this file.  This commit therefore eliminates this
+file and the code using it.
 
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- tools/testing/selftests/rcutorture/bin/kvm-test-1-run.sh |  3 ++-
- tools/testing/selftests/rcutorture/bin/kvm.sh            | 13 +++++--
- 2 files changed, 14 insertions(+), 2 deletions(-)
+ tools/testing/selftests/rcutorture/bin/kvm-test-1-run.sh | 14 +-------
+ tools/testing/selftests/rcutorture/bin/kvm.sh            |  5 +---
+ 2 files changed, 1 insertion(+), 18 deletions(-)
 
 diff --git a/tools/testing/selftests/rcutorture/bin/kvm-test-1-run.sh b/tools/testing/selftests/rcutorture/bin/kvm-test-1-run.sh
-index 91578d3..fed6f10 100755
+index fed6f10..eb5346b 100755
 --- a/tools/testing/selftests/rcutorture/bin/kvm-test-1-run.sh
 +++ b/tools/testing/selftests/rcutorture/bin/kvm-test-1-run.sh
-@@ -345,4 +345,7 @@ then
- 	echo Unknown PID, cannot kill qemu command
- fi
- 
-+# Tell the script that this run is done.
-+rm -f $resdir/build.run
-+
- parse-console.sh $resdir/console.log $title
+@@ -270,20 +270,6 @@ do
+ 				echo "ps -fp $killpid" >> $resdir/Warnings 2>&1
+ 				ps -fp $killpid >> $resdir/Warnings 2>&1
+ 			fi
+-			# Reduce probability of PID reuse by allowing a one-minute buffer
+-			if test $((kruntime + 60)) -lt $seconds && test -s "$resdir/../jitter_pids"
+-			then
+-				awk < "$resdir/../jitter_pids" '
+-				NF > 0 {
+-					pidlist = pidlist " " $1;
+-					n++;
+-				}
+-				END {
+-					if (n > 0) {
+-						print "kill " pidlist;
+-					}
+-				}' | sh
+-			fi
+ 		else
+ 			echo ' ---' `date`: "Kernel done"
+ 		fi
 diff --git a/tools/testing/selftests/rcutorture/bin/kvm.sh b/tools/testing/selftests/rcutorture/bin/kvm.sh
-index 7944510..1f5f872 100755
+index 48da4cd..de93802 100755
 --- a/tools/testing/selftests/rcutorture/bin/kvm.sh
 +++ b/tools/testing/selftests/rcutorture/bin/kvm.sh
-@@ -469,9 +469,15 @@ function dump(first, pastlast, batchnum)
- 		print "echo ", cfr[jn], cpusr[jn] ovf ": Build complete. `date` | tee -a " rd "log";
- 		jn++;
- 	}
-+	print "runfiles="
- 	for (j = 1; j < jn; j++) {
- 		builddir=rd cfr[j] "/build";
--		print "rm -f " builddir ".ready"
-+		if (TORTURE_BUILDONLY)
-+			print "rm -f " builddir ".ready"
-+		else
-+			print "mv " builddir ".ready " builddir ".run"
-+			print "runfiles=\"$runfiles " builddir ".run\""
-+		fi
- 		print "if test -f \"" rd cfr[j] "/builtkernel\""
- 		print "then"
- 		print "\techo ----", cfr[j], cpusr[j] ovf ": Kernel present. `date` | tee -a " rd "log";
-@@ -501,7 +507,10 @@ function dump(first, pastlast, batchnum)
- 		print "\tjitter.sh " j " " dur " " ja[2] " " ja[3] "&"
- 		print "\techo $! >> " rd "jitter_pids"
- 	}
--	print "\twait"
-+	print "\twhile ls $runfiles > /dev/null 2>&1"
-+	print "\tdo"
-+	print "\t\t:"
-+	print "\tdone"
- 	print "\techo ---- All kernel runs complete. `date` | tee -a " rd "log";
- 	print "else"
- 	print "\twait"
+@@ -502,12 +502,9 @@ function dump(first, pastlast, batchnum)
+ 	print "if test -n \"$needqemurun\""
+ 	print "then"
+ 	print "\techo ---- Starting kernels. `date` | tee -a " rd "log";
+-	print "\techo > " rd "jitter_pids"
+ 	print "\ttouch " rd "jittering"
+-	for (j = 0; j < njitter; j++) {
++	for (j = 0; j < njitter; j++)
+ 		print "\tjitter.sh " j " " dur " " rd "jittering " ja[2] " " ja[3] "&"
+-		print "\techo $! >> " rd "jitter_pids"
+-	}
+ 	print "\twhile ls $runfiles > /dev/null 2>&1"
+ 	print "\tdo"
+ 	print "\t\t:"
