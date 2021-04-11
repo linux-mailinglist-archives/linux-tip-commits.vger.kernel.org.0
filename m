@@ -2,14 +2,14 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D9BA235B4D5
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 11 Apr 2021 15:44:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 57E2235B4CE
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 11 Apr 2021 15:43:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235838AbhDKNoO (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 11 Apr 2021 09:44:14 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:33388 "EHLO
+        id S235828AbhDKNoM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 11 Apr 2021 09:44:12 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:33390 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235655AbhDKNoD (ORCPT
+        with ESMTP id S235657AbhDKNoD (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Sun, 11 Apr 2021 09:44:03 -0400
 Date:   Sun, 11 Apr 2021 13:43:24 -0000
@@ -18,29 +18,29 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=jmAEvPFyqqGggxMpVNexwZI9hu6XYu26LoQIgrOQLmI=;
-        b=iPtaTRQFQLdH0c/VFz67fbo/jkjwJhrkeYBJNLaUK0htKLWZHtp+NkUzN1fKza3aFmpRDC
-        Hk7JSrd47idsZsSPntUxllNdKrLY7cKTVv7CVlLgkRRygLZ+o1gn/TC7Dw0eUzvSRkdNeu
-        RiAGasffpMAdaUhLD6J6H1sEWiYCH7j3biPsB4HVCp4jq/sDOFiu0q2ecWE+zuN+sqkkF/
-        Ou29gYbLpyqXO1bV2YyHATxxZMvmBi7VwF5vIokcc8gBpW/EPNUQ5JZ5TXto9NGU84q+R5
-        6g0CzP6dBIeVMPumLENQS66Scz8ag7FkuQSs20Fe1pFveo5Na2753Usy5TV4FQ==
+        bh=Mry+5OR+hQ3Uho6nAOKbGWyCxZmjx5j4mjMGsKs1yxk=;
+        b=K+VJyjoj4fsu6uUL9wRPASB/za7mE9Xds2D2fRjFIym8Jq41ZKTICkrgc0yDggPsOCJ2ag
+        tZMcfzAwLygNLJ8vMV8Rz/s1RYBUmagNRNcHLY2ER6AxDVVbay2OPBMSHt2CR4ZqxAtVYx
+        RPTgLfpPzuEDJgQ27GwB4LTGDscST7RKnveftYvvZ5upWgWYFO0W62z5uy8Co+AiQF3Ivh
+        s4TIaJCKMkscDzJsoLkBpyik+3KV+WsXlwpxcR2KIizs6su9YhPyVwqveDN/cJAoGb9FQq
+        JzCeP17pwsC5/0AoYjKng8ew/V8fWEnXIvf5yiSKNz+TKCKOn8LFuJNCXHlMsQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1618148605;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=jmAEvPFyqqGggxMpVNexwZI9hu6XYu26LoQIgrOQLmI=;
-        b=b9Y2jvgdlhxRg7IEqsKho1lHfaZ8TP1liH+7Zl30Cx9K4DqxMAk+f/sxom3GZE8dx/w7K0
-        7Kf5wIV6KjQludDw==
+        bh=Mry+5OR+hQ3Uho6nAOKbGWyCxZmjx5j4mjMGsKs1yxk=;
+        b=2Bz/1Sw9kWJog59oel6KL5Mnv/KYOIp6wFkO4oJ0jk54La7UEFMSllRDOb2EUCjoYYfFpY
+        uNM0U2cFYaZGA2Dg==
 From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] torture: Record TORTURE_KCONFIG_GDB_ARG in qemu-cmd
+Subject: [tip: core/rcu] torture: Abstract jitter.sh start/stop into scripts
 Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <161814860446.29796.2193811030979572881.tip-bot2@tip-bot2>
+Message-ID: <161814860478.29796.2152584259595748003.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -51,34 +51,120 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     cc45716e07a41233b7c0b2183b0a3e60b85192e0
-Gitweb:        https://git.kernel.org/tip/cc45716e07a41233b7c0b2183b0a3e60b85192e0
+Commit-ID:     040accb3cd4ac4a8d151413f569b7ba6d918a19c
+Gitweb:        https://git.kernel.org/tip/040accb3cd4ac4a8d151413f569b7ba6d918a19c
 Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Thu, 11 Feb 2021 16:19:29 -08:00
+AuthorDate:    Thu, 11 Feb 2021 12:37:46 -08:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Mon, 22 Mar 2021 08:29:15 -07:00
+CommitterDate: Mon, 22 Mar 2021 08:28:34 -07:00
 
-torture: Record TORTURE_KCONFIG_GDB_ARG in qemu-cmd
+torture: Abstract jitter.sh start/stop into scripts
 
-When re-running old rcutorture builds, if the original run involved
-gdb, the re-run also needs to do so.  This commit therefore records the
-TORTURE_KCONFIG_GDB_ARG environment variable into the qemu-cmd file so
-that the re-run can access it.
+This commit creates jitterstart.sh and jitterstop.sh scripts that handle
+the starting and stopping of the jitter.sh scripts.  These must be sourced
+using the bash "." command to allow the generated script to wait on the
+backgrounded jitter.sh scripts.
 
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- tools/testing/selftests/rcutorture/bin/kvm-test-1-run.sh | 1 +
- 1 file changed, 1 insertion(+)
+ tools/testing/selftests/rcutorture/bin/jitterstart.sh | 37 ++++++++++-
+ tools/testing/selftests/rcutorture/bin/jitterstop.sh  | 23 ++++++-
+ tools/testing/selftests/rcutorture/bin/kvm.sh         |  7 +--
+ 3 files changed, 62 insertions(+), 5 deletions(-)
+ create mode 100644 tools/testing/selftests/rcutorture/bin/jitterstart.sh
+ create mode 100644 tools/testing/selftests/rcutorture/bin/jitterstop.sh
 
-diff --git a/tools/testing/selftests/rcutorture/bin/kvm-test-1-run.sh b/tools/testing/selftests/rcutorture/bin/kvm-test-1-run.sh
-index eb5346b..5d9ac90 100755
---- a/tools/testing/selftests/rcutorture/bin/kvm-test-1-run.sh
-+++ b/tools/testing/selftests/rcutorture/bin/kvm-test-1-run.sh
-@@ -201,6 +201,7 @@ echo kernel here: `head -n 1 $testid_txt | sed -e 's/^Build directory: //'`  >> 
- echo $QEMU $qemu_args -m $TORTURE_QEMU_MEM -kernel $KERNEL -append \"$qemu_append $boot_args\" $TORTURE_QEMU_GDB_ARG > $resdir/qemu-cmd
- echo "# TORTURE_SHUTDOWN_GRACE=$TORTURE_SHUTDOWN_GRACE" >> $resdir/qemu-cmd
- echo "# seconds=$seconds" >> $resdir/qemu-cmd
-+echo "# TORTURE_KCONFIG_GDB_ARG=\"$TORTURE_KCONFIG_GDB_ARG\"" >> $resdir/qemu-cmd
- 
- if test -n "$TORTURE_BUILDONLY"
- then
+diff --git a/tools/testing/selftests/rcutorture/bin/jitterstart.sh b/tools/testing/selftests/rcutorture/bin/jitterstart.sh
+new file mode 100644
+index 0000000..3d710ad
+--- /dev/null
++++ b/tools/testing/selftests/rcutorture/bin/jitterstart.sh
+@@ -0,0 +1,37 @@
++#!/bin/bash
++# SPDX-License-Identifier: GPL-2.0+
++#
++# Start up the specified number of jitter.sh scripts in the background.
++#
++# Usage: . jitterstart.sh n jittering-dir duration [ sleepmax [ spinmax ] ]
++#
++# n: Number of jitter.sh scripts to start up.
++# jittering-dir: Directory in which to put "jittering" file.
++# duration: Time to run in seconds.
++# sleepmax: Maximum microseconds to sleep, defaults to one second.
++# spinmax: Maximum microseconds to spin, defaults to one millisecond.
++#
++# Copyright (C) 2021 Facebook, Inc.
++#
++# Authors: Paul E. McKenney <paulmck@kernel.org>
++
++jitter_n=$1
++if test -z "$jitter_n"
++then
++	echo jitterstart.sh: Missing count of jitter.sh scripts to start.
++	exit 33
++fi
++jittering_dir=$2
++if test -z "$jittering_dir"
++then
++	echo jitterstart.sh: Missing directory in which to place jittering file.
++	exit 34
++fi
++shift
++shift
++
++touch ${jittering_dir}/jittering
++for ((jitter_i = 1; jitter_i <= $jitter_n; jitter_i++))
++do
++	jitter.sh $jitter_i "${jittering_dir}/jittering" "$@" &
++done
+diff --git a/tools/testing/selftests/rcutorture/bin/jitterstop.sh b/tools/testing/selftests/rcutorture/bin/jitterstop.sh
+new file mode 100644
+index 0000000..576a4cf
+--- /dev/null
++++ b/tools/testing/selftests/rcutorture/bin/jitterstop.sh
+@@ -0,0 +1,23 @@
++#!/bin/bash
++# SPDX-License-Identifier: GPL-2.0+
++#
++# Remove the "jittering" file, signaling the jitter.sh scripts to stop,
++# then wait for them to terminate.
++#
++# Usage: . jitterstop.sh jittering-dir
++#
++# jittering-dir: Directory containing "jittering" file.
++#
++# Copyright (C) 2021 Facebook, Inc.
++#
++# Authors: Paul E. McKenney <paulmck@kernel.org>
++
++jittering_dir=$1
++if test -z "$jittering_dir"
++then
++	echo jitterstop.sh: Missing directory in which to place jittering file.
++	exit 34
++fi
++
++rm -f ${jittering_dir}/jittering
++wait
+diff --git a/tools/testing/selftests/rcutorture/bin/kvm.sh b/tools/testing/selftests/rcutorture/bin/kvm.sh
+index a2ee3f2..d6973e4 100755
+--- a/tools/testing/selftests/rcutorture/bin/kvm.sh
++++ b/tools/testing/selftests/rcutorture/bin/kvm.sh
+@@ -502,15 +502,12 @@ function dump(first, pastlast, batchnum)
+ 	print "if test -n \"$needqemurun\""
+ 	print "then"
+ 	print "\techo ---- Starting kernels. `date` | tee -a " rd "log";
+-	print "\ttouch " rd "jittering"
+-	for (j = 0; j < njitter; j++)
+-		print "\tjitter.sh " j " " rd "jittering " dur " " ja[2] " " ja[3] "&"
++	print "\t. jitterstart.sh " njitter " " rd " " dur " " ja[2] " " ja[3]
+ 	print "\twhile ls $runfiles > /dev/null 2>&1"
+ 	print "\tdo"
+ 	print "\t\t:"
+ 	print "\tdone"
+-	print "\trm -f " rd "jittering"
+-	print "\twait"
++	print "\t. jitterstop.sh " rd
+ 	print "\techo ---- All kernel runs complete. `date` | tee -a " rd "log";
+ 	print "else"
+ 	print "\twait"
