@@ -2,47 +2,46 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A203F35B516
+	by mail.lfdr.de (Postfix) with ESMTP id 569F535B515
 	for <lists+linux-tip-commits@lfdr.de>; Sun, 11 Apr 2021 15:49:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236085AbhDKNpK (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 11 Apr 2021 09:45:10 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:33440 "EHLO
+        id S236080AbhDKNpJ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 11 Apr 2021 09:45:09 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:33034 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235914AbhDKNoY (ORCPT
+        with ESMTP id S235911AbhDKNoY (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Sun, 11 Apr 2021 09:44:24 -0400
 Date:   Sun, 11 Apr 2021 13:43:41 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1618148622;
+        s=2020; t=1618148621;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=vc7N7SrnKBZDqmSO9+dLrP0b2YWI+39yOfBu6gpgQVI=;
-        b=Y3l1Z4XMj6Q1xWKZ17DspycHqDaBnAjlBSTSDUh3NafbNOvtS3AIfzYm05uopH5r1Awmdm
-        V5wl2MAkWYEC4UROBfbB6hYPRUMhHVTJYlP8DR6isxji5mbfu/jz8xO9+ofAWLPMOKK3Wm
-        aNDGMcQRU7W3eSEPT9THVsV+2Fj6NS8ILeXBfU3KQd96PCr4Romw+gxt1yHTTUuquufmCl
-        6NVEDYE6/Jk0bZb9imk5mleRW6xxNdslhOL6oNY3vHcu1hPBqo2+uJIxN0W0SdNrRXldvM
-        z6K5nfKjCwAenko5oODGxVn9VvOLd9BpYBelIt5teWBPtLh6L/dPaZ9L7bW85Q==
+        bh=lrRzlnORWci0ZimAhgFyoL5a8nWVcle3jqADVOBMR3Y=;
+        b=rIinKJ6X4bCo06YkJBPltMOXYidpASH7KcAKsVSCe2fTMFFOZIcEL/CWT4SJDgu/YpdwdW
+        xcegM3kJ+YExt4podvGiEe6pYTvSrBTPyw/O8yVveHizEkaUaS4JJ2EJlfcbFVjvV5n4fm
+        m4jXOjqfRtzx79htSPUmbYArzGh2bJdyCoWPJROja4DLjKV8JxAbTGs3ZjWp8GIiE6wwKj
+        R2w9aSJlhIYC259ByMuRFoOZmGYFttcPLPoNGYbIlEuELtlzjI05OWSxMvOU7tZ5diOvFh
+        Koh3M5bH9HYhggoxyeWYKzsh2nPO3ve3m4a9rwI8DHVceW5RkjNicxFN8QYsuA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1618148622;
+        s=2020e; t=1618148621;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=vc7N7SrnKBZDqmSO9+dLrP0b2YWI+39yOfBu6gpgQVI=;
-        b=kCK41C/TZi7nmDlHJfWaZWkExyokTxkTIu6vbt/WAYH+sBZ8klN0wrPaDjIkfHkVg5LcAw
-        6er4rymUa/GUgnAA==
-From:   "tip-bot2 for Mauro Carvalho Chehab" <tip-bot2@linutronix.de>
+        bh=lrRzlnORWci0ZimAhgFyoL5a8nWVcle3jqADVOBMR3Y=;
+        b=6N0GMAORQZEZfZNGmquuHYXEVo8BDbsPX2bCtl3Mmd5kWqhUfKOHUt9IxCGxey8nsAMJEH
+        PmShmZ+st5vutYAA==
+From:   "tip-bot2 for Uladzislau Rezki (Sony)" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcu: Fix kfree_rcu() docbook errors
+Subject: [tip: core/rcu] kvfree_rcu: Directly allocate page for single-argument case
 Cc:     "Uladzislau Rezki (Sony)" <urezki@gmail.com>,
-        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
         "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <161814862148.29796.2497631386779373400.tip-bot2@tip-bot2>
+Message-ID: <161814862113.29796.15693621303462252752.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -53,55 +52,121 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     e75956bd00cf4246067c6aee7751faf313233435
-Gitweb:        https://git.kernel.org/tip/e75956bd00cf4246067c6aee7751faf313233435
-Author:        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-AuthorDate:    Thu, 14 Jan 2021 08:22:02 +01:00
+Commit-ID:     148e3731d124079a036b3acf780f3d35c1b9c0aa
+Gitweb:        https://git.kernel.org/tip/148e3731d124079a036b3acf780f3d35c1b9c0aa
+Author:        Uladzislau Rezki (Sony) <urezki@gmail.com>
+AuthorDate:    Wed, 20 Jan 2021 17:21:46 +01:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Mon, 08 Mar 2021 14:17:35 -08:00
+CommitterDate: Mon, 08 Mar 2021 14:18:07 -08:00
 
-rcu: Fix kfree_rcu() docbook errors
+kvfree_rcu: Directly allocate page for single-argument case
 
-After commit 5130b8fd0690 ("rcu: Introduce kfree_rcu() single-argument macro"),
-kernel-doc now emits two warnings:
+Single-argument kvfree_rcu() must be invoked from sleepable contexts,
+so we can directly allocate pages.  Furthermmore, the fallback in case
+of page-allocation failure is the high-latency synchronize_rcu(), so it
+makes sense to do these page allocations from the fastpath, and even to
+permit limited sleeping within the allocator.
 
-	./include/linux/rcupdate.h:884: warning: Excess function parameter 'ptr' description in 'kfree_rcu'
-	./include/linux/rcupdate.h:884: warning: Excess function parameter 'rhf' description in 'kfree_rcu'
+This commit therefore allocates if needed on the fastpath using
+GFP_KERNEL|__GFP_RETRY_MAYFAIL.  This also has the beneficial effect
+of leaving kvfree_rcu()'s per-CPU caches to the double-argument variant
+of kvfree_rcu(), given that the double-argument variant cannot directly
+invoke the allocator.
 
-This commit added some macro magic in order to call two different versions
-of kfree_rcu(), the first having just one argument and the second having
-two arguments.  That makes it difficult to document the kfree_rcu() arguments
-in the docboook header.
-
-In order to make clearer that this macro accepts optional arguments,
-this commit uses macro concatenation so that this macro changes from:
-	#define kfree_rcu kvfree_rcu
-
-to:
-	#define kfree_rcu(ptr, rhf...) kvfree_rcu(ptr, ## rhf)
-
-That not only helps kernel-doc understand the macro arguments, but also
-provides a better C definition that makes clearer that the first argument
-is mandatory and the second one is optional.
-
-Fixes: 5130b8fd0690 ("rcu: Introduce kfree_rcu() single-argument macro")
-Tested-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+[ paulmck: Add add_ptr_to_bulk_krc_lock header comment per Michal Hocko. ]
+Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- include/linux/rcupdate.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/rcu/tree.c | 42 ++++++++++++++++++++++++++----------------
+ 1 file changed, 26 insertions(+), 16 deletions(-)
 
-diff --git a/include/linux/rcupdate.h b/include/linux/rcupdate.h
-index bd04f72..5cc6dea 100644
---- a/include/linux/rcupdate.h
-+++ b/include/linux/rcupdate.h
-@@ -881,7 +881,7 @@ static inline notrace void rcu_read_unlock_sched_notrace(void)
-  * The BUILD_BUG_ON check must not involve any function calls, hence the
-  * checks are done in macros here.
-  */
--#define kfree_rcu kvfree_rcu
-+#define kfree_rcu(ptr, rhf...) kvfree_rcu(ptr, ## rhf)
+diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
+index da6f521..1f8c980 100644
+--- a/kernel/rcu/tree.c
++++ b/kernel/rcu/tree.c
+@@ -3493,37 +3493,50 @@ run_page_cache_worker(struct kfree_rcu_cpu *krcp)
+ 	}
+ }
  
- /**
-  * kvfree_rcu() - kvfree an object after a grace period.
++// Record ptr in a page managed by krcp, with the pre-krc_this_cpu_lock()
++// state specified by flags.  If can_alloc is true, the caller must
++// be schedulable and not be holding any locks or mutexes that might be
++// acquired by the memory allocator or anything that it might invoke.
++// Returns true if ptr was successfully recorded, else the caller must
++// use a fallback.
+ static inline bool
+-kvfree_call_rcu_add_ptr_to_bulk(struct kfree_rcu_cpu *krcp, void *ptr)
++add_ptr_to_bulk_krc_lock(struct kfree_rcu_cpu **krcp,
++	unsigned long *flags, void *ptr, bool can_alloc)
+ {
+ 	struct kvfree_rcu_bulk_data *bnode;
+ 	int idx;
+ 
+-	if (unlikely(!krcp->initialized))
++	*krcp = krc_this_cpu_lock(flags);
++	if (unlikely(!(*krcp)->initialized))
+ 		return false;
+ 
+-	lockdep_assert_held(&krcp->lock);
+ 	idx = !!is_vmalloc_addr(ptr);
+ 
+ 	/* Check if a new block is required. */
+-	if (!krcp->bkvhead[idx] ||
+-			krcp->bkvhead[idx]->nr_records == KVFREE_BULK_MAX_ENTR) {
+-		bnode = get_cached_bnode(krcp);
+-		/* Switch to emergency path. */
++	if (!(*krcp)->bkvhead[idx] ||
++			(*krcp)->bkvhead[idx]->nr_records == KVFREE_BULK_MAX_ENTR) {
++		bnode = get_cached_bnode(*krcp);
++		if (!bnode && can_alloc) {
++			krc_this_cpu_unlock(*krcp, *flags);
++			bnode = (struct kvfree_rcu_bulk_data *)
++				__get_free_page(GFP_KERNEL | __GFP_RETRY_MAYFAIL | __GFP_NOWARN);
++			*krcp = krc_this_cpu_lock(flags);
++		}
++
+ 		if (!bnode)
+ 			return false;
+ 
+ 		/* Initialize the new block. */
+ 		bnode->nr_records = 0;
+-		bnode->next = krcp->bkvhead[idx];
++		bnode->next = (*krcp)->bkvhead[idx];
+ 
+ 		/* Attach it to the head. */
+-		krcp->bkvhead[idx] = bnode;
++		(*krcp)->bkvhead[idx] = bnode;
+ 	}
+ 
+ 	/* Finally insert. */
+-	krcp->bkvhead[idx]->records
+-		[krcp->bkvhead[idx]->nr_records++] = ptr;
++	(*krcp)->bkvhead[idx]->records
++		[(*krcp)->bkvhead[idx]->nr_records++] = ptr;
+ 
+ 	return true;
+ }
+@@ -3561,8 +3574,6 @@ void kvfree_call_rcu(struct rcu_head *head, rcu_callback_t func)
+ 		ptr = (unsigned long *) func;
+ 	}
+ 
+-	krcp = krc_this_cpu_lock(&flags);
+-
+ 	// Queue the object but don't yet schedule the batch.
+ 	if (debug_rcu_head_queue(ptr)) {
+ 		// Probable double kfree_rcu(), just leak.
+@@ -3570,12 +3581,11 @@ void kvfree_call_rcu(struct rcu_head *head, rcu_callback_t func)
+ 			  __func__, head);
+ 
+ 		// Mark as success and leave.
+-		success = true;
+-		goto unlock_return;
++		return;
+ 	}
+ 
+ 	kasan_record_aux_stack(ptr);
+-	success = kvfree_call_rcu_add_ptr_to_bulk(krcp, ptr);
++	success = add_ptr_to_bulk_krc_lock(&krcp, &flags, ptr, !head);
+ 	if (!success) {
+ 		run_page_cache_worker(krcp);
+ 
