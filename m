@@ -2,41 +2,42 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 71E2235B528
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 11 Apr 2021 15:49:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 83B4A35B526
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 11 Apr 2021 15:49:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235990AbhDKNp3 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 11 Apr 2021 09:45:29 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:33296 "EHLO
+        id S236140AbhDKNp1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 11 Apr 2021 09:45:27 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:33304 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235705AbhDKNoj (ORCPT
+        with ESMTP id S235979AbhDKNoh (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 11 Apr 2021 09:44:39 -0400
+        Sun, 11 Apr 2021 09:44:37 -0400
 Date:   Sun, 11 Apr 2021 13:43:45 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1618148626;
+        s=2020; t=1618148625;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=09wnDwDv4CglDwqC+bT/K69nU7SLBvBX7va/zI4Pzr8=;
-        b=IrmDTtXoeaNZtlO8/IN3486leuXIQMz26DI7qVQyVf90Znc4ejH4NfXJs8Ghr5zB7hq8D3
-        k01t7uAPgGHeDtRs/AxAMK5dDfSbnRSobF+AmII6qSIygAtY3KMbHkKhVHZiDirO+8hlYs
-        +Wa5zpJJcsP96/EM62VNi0/ml5r5aXVp/RH+7gCY+tcVsGnoLzxXgQgNwbJd3YnczWaX3C
-        fgwMttwbuEkU9YsmYlNVSb+v57F5lQ0v1uENsqve7W/UDoZ8bMpWN8Um51PSSqxveQg6N/
-        RanZxq7xNKOY8mulYrEB5Sb4U/BHFNlmqDtPH47UBTcx/AbFWwyLuEZxTd55AQ==
+        bh=Ay5XazQ4ibeeVsOIaYwZO2CfVJY2I2sThSDA13DZdAo=;
+        b=RFGl4lyRNxAYeGAaVeTVoAM75RFEzhtnXwVFmcEFDM/aKrtNeAoGHAWoi5SELjzfx/RYlk
+        iA43Slv/i/5WgDB2W9urfSkxVI0fYvdfJMlvB1NYHpSHFEyr5rL3DgnVPpKgWQpI/vfpKi
+        hOVdK9yNHklRzuuaWNUhrz1k/hpiqpPfmEW/uZO0t/soiFlhp0ZciGXNGHh3G1rgop/V6h
+        S+T+rMbRFTgM/olB3KcSuZ+da5/Qfv7tK97NwYSkkDH9DHyEo8N6mptRHr8gDSnA4gZwZO
+        VeIiXNEARvPmmaIAx83MdecL7mB8oQNeUMI+DaCtTeW1qPGslh6VGzMeRYW+SA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1618148626;
+        s=2020e; t=1618148625;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=09wnDwDv4CglDwqC+bT/K69nU7SLBvBX7va/zI4Pzr8=;
-        b=0nLsVyHq5Baq6O5a8yQG3EqK8ta3AWEGyJ0ZBk0qn7zRuqTpnGquyqjlkFPj9OPd6xv1Bv
-        GLFjfJdrQQSKgACA==
+        bh=Ay5XazQ4ibeeVsOIaYwZO2CfVJY2I2sThSDA13DZdAo=;
+        b=7zCXUHKwYV/IGgu9z5RKpuAap9oOwBpxMF1DNCyWdnJGOubAmOeezy4OvLNVCMJUprtBdl
+        RDkciJhbXBkwzzDw==
 From:   "tip-bot2 for Paul Gortmaker" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] lib: test_bitmap: add more start-end:offset/len tests
+Subject: [tip: core/rcu] lib: bitmap: move ERANGE check from set_region to
+ check_region
 Cc:     Yury Norov <yury.norov@gmail.com>,
         Rasmus Villemoes <linux@rasmusvillemoes.dk>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
@@ -44,7 +45,7 @@ Cc:     Yury Norov <yury.norov@gmail.com>,
         "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <161814862581.29796.12464218818779948094.tip-bot2@tip-bot2>
+Message-ID: <161814862504.29796.7917241741632742689.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -55,25 +56,20 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     97330db3af9a41302d1ccb0f495fcb5b5da2cc44
-Gitweb:        https://git.kernel.org/tip/97330db3af9a41302d1ccb0f495fcb5b5da2cc44
+Commit-ID:     f3c869caef648c541a7445f2a6ba2196d343f542
+Gitweb:        https://git.kernel.org/tip/f3c869caef648c541a7445f2a6ba2196d343f542
 Author:        Paul Gortmaker <paul.gortmaker@windriver.com>
-AuthorDate:    Sun, 21 Feb 2021 03:08:22 -05:00
+AuthorDate:    Sun, 21 Feb 2021 03:08:24 -05:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Mon, 08 Mar 2021 14:16:58 -08:00
 
-lib: test_bitmap: add more start-end:offset/len tests
+lib: bitmap: move ERANGE check from set_region to check_region
 
-There are inputs to bitmap_parselist() that would probably never
-be entered manually by a person, but might result from some kind of
-automated input generator.  Things like ranges of length 1, or group
-lengths longer than nbits, overlaps, or offsets of zero.
+It makes sense to do all the checks in check_region() and not 1/2
+in check_region and 1/2 in set_region.
 
-Adding these tests serve two purposes:
-
-1) document what might seem odd but nonetheless valid input.
-
-2) don't regress from what we currently accept as valid.
+Since set_region is called immediately after check_region, the net
+effect on runtime is zero, but it gets rid of an if (...) return...
 
 Cc: Yury Norov <yury.norov@gmail.com>
 Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
@@ -83,46 +79,50 @@ Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Signed-off-by: Paul Gortmaker <paul.gortmaker@windriver.com>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- lib/test_bitmap.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ lib/bitmap.c | 14 +++++---------
+ 1 file changed, 5 insertions(+), 9 deletions(-)
 
-diff --git a/lib/test_bitmap.c b/lib/test_bitmap.c
-index 0f2e91d..3c1c46d 100644
---- a/lib/test_bitmap.c
-+++ b/lib/test_bitmap.c
-@@ -34,6 +34,8 @@ static const unsigned long exp1[] __initconst = {
- 	BITMAP_FROM_U64(0x3333333311111111ULL),
- 	BITMAP_FROM_U64(0xffffffff77777777ULL),
- 	BITMAP_FROM_U64(0),
-+	BITMAP_FROM_U64(0x00008000),
-+	BITMAP_FROM_U64(0x80000000),
+diff --git a/lib/bitmap.c b/lib/bitmap.c
+index 162e285..833f152 100644
+--- a/lib/bitmap.c
++++ b/lib/bitmap.c
+@@ -500,17 +500,12 @@ struct region {
+ 	unsigned int nbits;
  };
  
- static const unsigned long exp2[] __initconst = {
-@@ -334,6 +336,26 @@ static const struct test_bitmap_parselist parselist_tests[] __initconst = {
- 	{0, " ,  ,,  , ,   ",		&exp1[12 * step], 8, 0},
- 	{0, " ,  ,,  , ,   \n",		&exp1[12 * step], 8, 0},
+-static int bitmap_set_region(const struct region *r, unsigned long *bitmap)
++static void bitmap_set_region(const struct region *r, unsigned long *bitmap)
+ {
+ 	unsigned int start;
  
-+	{0, "0-0",			&exp1[0], 32, 0},
-+	{0, "1-1",			&exp1[1 * step], 32, 0},
-+	{0, "15-15",			&exp1[13 * step], 32, 0},
-+	{0, "31-31",			&exp1[14 * step], 32, 0},
+-	if (r->end >= r->nbits)
+-		return -ERANGE;
+-
+ 	for (start = r->start; start <= r->end; start += r->group_len)
+ 		bitmap_set(bitmap, start, min(r->end - start + 1, r->off));
+-
+-	return 0;
+ }
+ 
+ static int bitmap_check_region(const struct region *r)
+@@ -518,6 +513,9 @@ static int bitmap_check_region(const struct region *r)
+ 	if (r->start > r->end || r->group_len == 0 || r->off > r->group_len)
+ 		return -EINVAL;
+ 
++	if (r->end >= r->nbits)
++		return -ERANGE;
 +
-+	{0, "0-0:0/1",			&exp1[12 * step], 32, 0},
-+	{0, "0-0:1/1",			&exp1[0], 32, 0},
-+	{0, "0-0:1/31",			&exp1[0], 32, 0},
-+	{0, "0-0:31/31",		&exp1[0], 32, 0},
-+	{0, "1-1:1/1",			&exp1[1 * step], 32, 0},
-+	{0, "0-15:16/31",		&exp1[2 * step], 32, 0},
-+	{0, "15-15:1/2",		&exp1[13 * step], 32, 0},
-+	{0, "15-15:31/31",		&exp1[13 * step], 32, 0},
-+	{0, "15-31:1/31",		&exp1[13 * step], 32, 0},
-+	{0, "16-31:16/31",		&exp1[3 * step], 32, 0},
-+	{0, "31-31:31/31",		&exp1[14 * step], 32, 0},
-+
-+	{0, "0-31:1/3,1-31:1/3,2-31:1/3",	&exp1[8 * step], 32, 0},
-+	{0, "1-10:8/12,8-31:24/29,0-31:0/3",	&exp1[9 * step], 32, 0},
-+
- 	{-EINVAL, "-1",	NULL, 8, 0},
- 	{-EINVAL, "-0",	NULL, 8, 0},
- 	{-EINVAL, "10-1", NULL, 8, 0},
+ 	return 0;
+ }
+ 
+@@ -656,9 +654,7 @@ int bitmap_parselist(const char *buf, unsigned long *maskp, int nmaskbits)
+ 		if (ret)
+ 			return ret;
+ 
+-		ret = bitmap_set_region(&r, maskp);
+-		if (ret)
+-			return ret;
++		bitmap_set_region(&r, maskp);
+ 	}
+ 
+ 	return 0;
