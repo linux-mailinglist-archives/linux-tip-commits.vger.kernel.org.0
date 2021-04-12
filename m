@@ -2,110 +2,157 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 66E0A35C4C9
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 12 Apr 2021 13:15:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C98E235C70A
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 12 Apr 2021 15:09:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238947AbhDLLPt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 12 Apr 2021 07:15:49 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:38482 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238912AbhDLLPt (ORCPT
+        id S241706AbhDLNJq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 12 Apr 2021 09:09:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37386 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S241661AbhDLNJp (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 12 Apr 2021 07:15:49 -0400
-Date:   Mon, 12 Apr 2021 11:15:29 -0000
+        Mon, 12 Apr 2021 09:09:45 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57B13C061574;
+        Mon, 12 Apr 2021 06:09:27 -0700 (PDT)
+Date:   Mon, 12 Apr 2021 13:09:24 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1618226130;
+        s=2020; t=1618232966;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=6Zaz73R9w1GqcZ3cTQvrV66yQlVChE6T2iNlE1h9BHg=;
-        b=I+fVz3Ue+2r7baUlNIrNh2ke8fkboYoAzeowI8ZpZwTuZjzl86KvFvBO4F6rJRzLLdMvv4
-        p9aK3H6Wca9fbs/cTJWPjArx3J8ap+w6i8sd9WAh+au7V4h11VQvLdGZ0PDmsjamyvXwdn
-        dGsVYWoX4kVi/hLtXUUrVzj9RUZmjgFcY9Gnt6XwBRxRppbTiNY1qg+VvOoGYxCOqAkwmZ
-        VWe++NCUiR+JNGRq2NVn2zmECFBMOYL8FAA7COEBVIVJvdiqJTQHPiCcW/wxwejKHjbi0t
-        rwsrhHJ8rcbYwYHBdOAXFnVsdCHtw/Y7ct5+izWyRJO7quaCmWHPLojPPWOVQg==
+        bh=lHX2Vmkq/amSHVQbX2220WI83Gezgw89KYaGdbOBMAw=;
+        b=K8yVnXroAiLpmnrA92kYwi4DE4ECi4syaLqHtwcPR19wvTPEOBHmmnLmd+toCAtnTcxOHq
+        Eh8PaWyoxvlUz9cT5wvav7gaUR8Dvi7xfQjq+6rpVPnc90meiMJp1LqmX+fdJEj39DsdNY
+        gmzvBxVRhzY57r6O1M2SpnUKqyQvJppSUHN7NIKclYaxQz2yMmB355/VJKgn88hOtnvMUa
+        mGk+QRP/tCB/QH9bkEbgDM4HTMpVb3OFTVYsHzE2jBIe8L1AxAhoQ0NqS2oASaUPCVGEMQ
+        +j59DiIA2VQ0mpoKNBtxIaEqj+k00UbBN/+zgxmh1GoTkteCyOkrUwSwX9Gb5w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1618226130;
+        s=2020e; t=1618232966;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=6Zaz73R9w1GqcZ3cTQvrV66yQlVChE6T2iNlE1h9BHg=;
-        b=YJPDvo5ZUfO9IgORMU6ifWpowpKhWzzPfXFUJkKC9hWQXggZcz+O+NWgaZ+TnL2eRRiW9Y
-        moPRApkYP7A3fhAw==
-From:   "tip-bot2 for Jan Kiszka" <tip-bot2@linutronix.de>
+        bh=lHX2Vmkq/amSHVQbX2220WI83Gezgw89KYaGdbOBMAw=;
+        b=1A5zf1rUHVoxppEyrlrGBX/evkogVZ7J/5EvfOra3onJJLiG3z002z2n2rh8C+iJLTRiPr
+        OEqd0wstcC/KsUBw==
+From:   "tip-bot2 for Mike Travis" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cleanups] x86/asm: Ensure asm/proto.h can be included stand-alone
-Cc:     Jan Kiszka <jan.kiszka@siemens.com>, Borislav Petkov <bp@suse.de>,
+Subject: [tip: x86/platform] x86/platform/uv: Use x2apic enabled bit as set by
+ BIOS to indicate APIC mode
+Cc:     Mike Travis <mike.travis@hpe.com>, Borislav Petkov <bp@suse.de>,
         x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <b76b4be3-cf66-f6b2-9a6c-3e7ef54f9845@web.de>
-References: <b76b4be3-cf66-f6b2-9a6c-3e7ef54f9845@web.de>
+In-Reply-To: <20210408160047.1703-1-mike.travis@hpe.com>
+References: <20210408160047.1703-1-mike.travis@hpe.com>
 MIME-Version: 1.0
-Message-ID: <161822612957.29796.15730791340399984286.tip-bot2@tip-bot2>
+Message-ID: <161823296510.29796.15311781031089345064.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cleanups branch of tip:
+The following commit has been merged into the x86/platform branch of tip:
 
-Commit-ID:     f7b21a0e41171d22296b897dac6e4c41d2a3643c
-Gitweb:        https://git.kernel.org/tip/f7b21a0e41171d22296b897dac6e4c41d2a=
-3643c
-Author:        Jan Kiszka <jan.kiszka@siemens.com>
-AuthorDate:    Sun, 11 Apr 2021 10:12:16 +02:00
+Commit-ID:     41e2da9b5e670a9876ea7b4d8c685a49b1eeee70
+Gitweb:        https://git.kernel.org/tip/41e2da9b5e670a9876ea7b4d8c685a49b1eeee70
+Author:        Mike Travis <mike.travis@hpe.com>
+AuthorDate:    Thu, 08 Apr 2021 11:00:47 -05:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Mon, 12 Apr 2021 13:12:46 +02:00
+CommitterDate: Mon, 12 Apr 2021 15:00:34 +02:00
 
-x86/asm: Ensure asm/proto.h can be included stand-alone
+x86/platform/uv: Use x2apic enabled bit as set by BIOS to indicate APIC mode
 
-Fix:
+BIOS now sets the x2apic enabled bit (and the ACPI table) for extended
+APIC modes. Use that bit to indicate if extended mode is set.
 
-  ../arch/x86/include/asm/proto.h:14:30: warning: =E2=80=98struct task_struct=
-=E2=80=99 declared \
-    inside parameter list will not be visible outside of this definition or d=
-eclaration
-  long do_arch_prctl_64(struct task_struct *task, int option, unsigned long a=
-rg2);
-                               ^~~~~~~~~~~
+ [ bp: Fixup subject prefix. ]
 
-  .../arch/x86/include/asm/proto.h:40:34: warning: =E2=80=98struct task_struc=
-t=E2=80=99 declared \
-    inside parameter list will not be visible outside of this definition or d=
-eclaration
-   long do_arch_prctl_common(struct task_struct *task, int option,
-                                    ^~~~~~~~~~~
-
-if linux/sched.h hasn't be included previously. This fixes a build error
-when this header is used outside of the kernel tree.
-
- [ bp: Massage commit message. ]
-
-Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+Signed-off-by: Mike Travis <mike.travis@hpe.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/b76b4be3-cf66-f6b2-9a6c-3e7ef54f9845@web.de
+Link: https://lkml.kernel.org/r/20210408160047.1703-1-mike.travis@hpe.com
 ---
- arch/x86/include/asm/proto.h | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/kernel/apic/x2apic_uv_x.c | 31 +++++++++++++----------------
+ 1 file changed, 14 insertions(+), 17 deletions(-)
 
-diff --git a/arch/x86/include/asm/proto.h b/arch/x86/include/asm/proto.h
-index b6a9d51..8c5d191 100644
---- a/arch/x86/include/asm/proto.h
-+++ b/arch/x86/include/asm/proto.h
-@@ -4,6 +4,8 @@
-=20
- #include <asm/ldt.h>
-=20
-+struct task_struct;
+diff --git a/arch/x86/kernel/apic/x2apic_uv_x.c b/arch/x86/kernel/apic/x2apic_uv_x.c
+index c9ddd23..930dd09 100644
+--- a/arch/x86/kernel/apic/x2apic_uv_x.c
++++ b/arch/x86/kernel/apic/x2apic_uv_x.c
+@@ -369,6 +369,15 @@ static int __init early_get_arch_type(void)
+ 	return ret;
+ }
+ 
++/* UV system found, check which APIC MODE BIOS already selected */
++static void __init early_set_apic_mode(void)
++{
++	if (x2apic_enabled())
++		uv_system_type = UV_X2APIC;
++	else
++		uv_system_type = UV_LEGACY_APIC;
++}
 +
- /* misc architecture specific prototypes */
-=20
- void syscall_init(void);
+ static int __init uv_set_system_type(char *_oem_id, char *_oem_table_id)
+ {
+ 	/* Save OEM_ID passed from ACPI MADT */
+@@ -404,11 +413,13 @@ static int __init uv_set_system_type(char *_oem_id, char *_oem_table_id)
+ 		else
+ 			uv_hubless_system |= 0x8;
+ 
+-		/* Copy APIC type */
++		/* Copy OEM Table ID and set APIC Mode */
+ 		uv_stringify(sizeof(oem_table_id), oem_table_id, _oem_table_id);
++		early_set_apic_mode();
+ 
+ 		pr_info("UV: OEM IDs %s/%s, SystemType %d, HUBLESS ID %x\n",
+ 			oem_id, oem_table_id, uv_system_type, uv_hubless_system);
++
+ 		return 0;
+ 	}
+ 
+@@ -453,6 +464,7 @@ static int __init uv_set_system_type(char *_oem_id, char *_oem_table_id)
+ 	early_set_hub_type();
+ 
+ 	/* Other UV setup functions */
++	early_set_apic_mode();
+ 	early_get_pnodeid();
+ 	early_get_apic_socketid_shift();
+ 	x86_platform.is_untracked_pat_range = uv_is_untracked_pat_range;
+@@ -472,29 +484,14 @@ static int __init uv_acpi_madt_oem_check(char *_oem_id, char *_oem_table_id)
+ 	if (uv_set_system_type(_oem_id, _oem_table_id) == 0)
+ 		return 0;
+ 
+-	/* Save and Decode OEM Table ID */
++	/* Save for display of the OEM Table ID */
+ 	uv_stringify(sizeof(oem_table_id), oem_table_id, _oem_table_id);
+ 
+-	/* This is the most common hardware variant, x2apic mode */
+-	if (!strcmp(oem_table_id, "UVX"))
+-		uv_system_type = UV_X2APIC;
+-
+-	/* Only used for very small systems, usually 1 chassis, legacy mode  */
+-	else if (!strcmp(oem_table_id, "UVL"))
+-		uv_system_type = UV_LEGACY_APIC;
+-
+-	else
+-		goto badbios;
+-
+ 	pr_info("UV: OEM IDs %s/%s, System/UVType %d/0x%x, HUB RevID %d\n",
+ 		oem_id, oem_table_id, uv_system_type, is_uv(UV_ANY),
+ 		uv_min_hub_revision_id);
+ 
+ 	return 0;
+-
+-badbios:
+-	pr_err("UV: UVarchtype:%s not supported\n", uv_archtype);
+-	BUG();
+ }
+ 
+ enum uv_system_type get_uv_system_type(void)
