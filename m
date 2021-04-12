@@ -2,131 +2,110 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 52DEB35B53C
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 11 Apr 2021 15:49:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 66E0A35C4C9
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 12 Apr 2021 13:15:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236242AbhDKNqK (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 11 Apr 2021 09:46:10 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:33440 "EHLO
+        id S238947AbhDLLPt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 12 Apr 2021 07:15:49 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:38482 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236078AbhDKNpK (ORCPT
+        with ESMTP id S238912AbhDLLPt (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 11 Apr 2021 09:45:10 -0400
-Date:   Sun, 11 Apr 2021 13:43:55 -0000
+        Mon, 12 Apr 2021 07:15:49 -0400
+Date:   Mon, 12 Apr 2021 11:15:29 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1618148636;
+        s=2020; t=1618226130;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=7BBWC45xidcq52O21P3lQ481Xp1J55JZ1a0T0l57AHE=;
-        b=2mV0vpVFChtduUlP5kyudMfUW5gufJq75Te4JU4k/gjC3mcDhXHvllZCJfSXnNrlIhxoTE
-        ffsDd+6EkYisRuPWjyhbgpo39KocPNfDJlqNzKcmFkw2VnMawx+K7/id8Hv+MDlETgNMpU
-        JIU376/H0BlnPDoFKucKDAwJcu4EVhVgXOaVvXhkSwsmrHE1e4kaxsq4AQJt8S2dBtX739
-        01S2n4swwNy6xCE/+CQ+q4fZsLpU/EhtQc+qaY9/juKRawxtQeLmtOPIcMx9tiAs0VOnmc
-        E0+iGu3Sav2RaDZ47/21PsPa8hs2PNtUqjDMtJM1o6PbDuRmbIRCvAoaoEYC4w==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=6Zaz73R9w1GqcZ3cTQvrV66yQlVChE6T2iNlE1h9BHg=;
+        b=I+fVz3Ue+2r7baUlNIrNh2ke8fkboYoAzeowI8ZpZwTuZjzl86KvFvBO4F6rJRzLLdMvv4
+        p9aK3H6Wca9fbs/cTJWPjArx3J8ap+w6i8sd9WAh+au7V4h11VQvLdGZ0PDmsjamyvXwdn
+        dGsVYWoX4kVi/hLtXUUrVzj9RUZmjgFcY9Gnt6XwBRxRppbTiNY1qg+VvOoGYxCOqAkwmZ
+        VWe++NCUiR+JNGRq2NVn2zmECFBMOYL8FAA7COEBVIVJvdiqJTQHPiCcW/wxwejKHjbi0t
+        rwsrhHJ8rcbYwYHBdOAXFnVsdCHtw/Y7ct5+izWyRJO7quaCmWHPLojPPWOVQg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1618148636;
+        s=2020e; t=1618226130;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=7BBWC45xidcq52O21P3lQ481Xp1J55JZ1a0T0l57AHE=;
-        b=+KT1Ny3hU6/4R33HJCktCpYIyYzDb8L0PtLJa8zNJrrmFWb16ZM2R5XhvP9602vX+nDyqG
-        /Uf/810uRPct2VDg==
-From:   "tip-bot2 for Marco Elver" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=6Zaz73R9w1GqcZ3cTQvrV66yQlVChE6T2iNlE1h9BHg=;
+        b=YJPDvo5ZUfO9IgORMU6ifWpowpKhWzzPfXFUJkKC9hWQXggZcz+O+NWgaZ+TnL2eRRiW9Y
+        moPRApkYP7A3fhAw==
+From:   "tip-bot2 for Jan Kiszka" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] kcsan, debugfs: Move debugfs file creation out of
- early init
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        stable <stable@vger.kernel.org>,
-        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
-        Marco Elver <elver@google.com>,
-        "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
+Subject: [tip: x86/cleanups] x86/asm: Ensure asm/proto.h can be included stand-alone
+Cc:     Jan Kiszka <jan.kiszka@siemens.com>, Borislav Petkov <bp@suse.de>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <b76b4be3-cf66-f6b2-9a6c-3e7ef54f9845@web.de>
+References: <b76b4be3-cf66-f6b2-9a6c-3e7ef54f9845@web.de>
 MIME-Version: 1.0
-Message-ID: <161814863544.29796.1503667978431244040.tip-bot2@tip-bot2>
+Message-ID: <161822612957.29796.15730791340399984286.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the locking/core branch of tip:
+The following commit has been merged into the x86/cleanups branch of tip:
 
-Commit-ID:     e36299efe7d749976fbdaaf756dee6ef32543c2c
-Gitweb:        https://git.kernel.org/tip/e36299efe7d749976fbdaaf756dee6ef32543c2c
-Author:        Marco Elver <elver@google.com>
-AuthorDate:    Wed, 03 Mar 2021 10:38:45 +01:00
-Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Mon, 08 Mar 2021 14:27:43 -08:00
+Commit-ID:     f7b21a0e41171d22296b897dac6e4c41d2a3643c
+Gitweb:        https://git.kernel.org/tip/f7b21a0e41171d22296b897dac6e4c41d2a=
+3643c
+Author:        Jan Kiszka <jan.kiszka@siemens.com>
+AuthorDate:    Sun, 11 Apr 2021 10:12:16 +02:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Mon, 12 Apr 2021 13:12:46 +02:00
 
-kcsan, debugfs: Move debugfs file creation out of early init
+x86/asm: Ensure asm/proto.h can be included stand-alone
 
-Commit 56348560d495 ("debugfs: do not attempt to create a new file
-before the filesystem is initalized") forbids creating new debugfs files
-until debugfs is fully initialized.  This means that KCSAN's debugfs
-file creation, which happened at the end of __init(), no longer works.
-And was apparently never supposed to work!
+Fix:
 
-However, there is no reason to create KCSAN's debugfs file so early.
-This commit therefore moves its creation to a late_initcall() callback.
+  ../arch/x86/include/asm/proto.h:14:30: warning: =E2=80=98struct task_struct=
+=E2=80=99 declared \
+    inside parameter list will not be visible outside of this definition or d=
+eclaration
+  long do_arch_prctl_64(struct task_struct *task, int option, unsigned long a=
+rg2);
+                               ^~~~~~~~~~~
 
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: stable <stable@vger.kernel.org>
-Fixes: 56348560d495 ("debugfs: do not attempt to create a new file before the filesystem is initalized")
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Marco Elver <elver@google.com>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+  .../arch/x86/include/asm/proto.h:40:34: warning: =E2=80=98struct task_struc=
+t=E2=80=99 declared \
+    inside parameter list will not be visible outside of this definition or d=
+eclaration
+   long do_arch_prctl_common(struct task_struct *task, int option,
+                                    ^~~~~~~~~~~
+
+if linux/sched.h hasn't be included previously. This fixes a build error
+when this header is used outside of the kernel tree.
+
+ [ bp: Massage commit message. ]
+
+Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lkml.kernel.org/r/b76b4be3-cf66-f6b2-9a6c-3e7ef54f9845@web.de
 ---
- kernel/kcsan/core.c    | 2 --
- kernel/kcsan/debugfs.c | 4 +++-
- kernel/kcsan/kcsan.h   | 5 -----
- 3 files changed, 3 insertions(+), 8 deletions(-)
+ arch/x86/include/asm/proto.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/kernel/kcsan/core.c b/kernel/kcsan/core.c
-index 3bf98db..23e7acb 100644
---- a/kernel/kcsan/core.c
-+++ b/kernel/kcsan/core.c
-@@ -639,8 +639,6 @@ void __init kcsan_init(void)
- 
- 	BUG_ON(!in_task());
- 
--	kcsan_debugfs_init();
--
- 	for_each_possible_cpu(cpu)
- 		per_cpu(kcsan_rand_state, cpu) = (u32)get_cycles();
- 
-diff --git a/kernel/kcsan/debugfs.c b/kernel/kcsan/debugfs.c
-index 3c8093a..209ad8d 100644
---- a/kernel/kcsan/debugfs.c
-+++ b/kernel/kcsan/debugfs.c
-@@ -261,7 +261,9 @@ static const struct file_operations debugfs_ops =
- 	.release = single_release
- };
- 
--void __init kcsan_debugfs_init(void)
-+static void __init kcsan_debugfs_init(void)
- {
- 	debugfs_create_file("kcsan", 0644, NULL, NULL, &debugfs_ops);
- }
+diff --git a/arch/x86/include/asm/proto.h b/arch/x86/include/asm/proto.h
+index b6a9d51..8c5d191 100644
+--- a/arch/x86/include/asm/proto.h
++++ b/arch/x86/include/asm/proto.h
+@@ -4,6 +4,8 @@
+=20
+ #include <asm/ldt.h>
+=20
++struct task_struct;
 +
-+late_initcall(kcsan_debugfs_init);
-diff --git a/kernel/kcsan/kcsan.h b/kernel/kcsan/kcsan.h
-index 8d4bf34..87ccdb3 100644
---- a/kernel/kcsan/kcsan.h
-+++ b/kernel/kcsan/kcsan.h
-@@ -31,11 +31,6 @@ void kcsan_save_irqtrace(struct task_struct *task);
- void kcsan_restore_irqtrace(struct task_struct *task);
- 
- /*
-- * Initialize debugfs file.
-- */
--void kcsan_debugfs_init(void);
--
--/*
-  * Statistics counters displayed via debugfs; should only be modified in
-  * slow-paths.
-  */
+ /* misc architecture specific prototypes */
+=20
+ void syscall_init(void);
