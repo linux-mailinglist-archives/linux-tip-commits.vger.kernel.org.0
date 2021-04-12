@@ -2,105 +2,166 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BC7535C876
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 12 Apr 2021 16:16:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FDF135CFC7
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 12 Apr 2021 19:49:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238495AbhDLORP (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 12 Apr 2021 10:17:15 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:39512 "EHLO
+        id S243300AbhDLRtV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 12 Apr 2021 13:49:21 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:40704 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237579AbhDLORP (ORCPT
+        with ESMTP id S238145AbhDLRtV (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 12 Apr 2021 10:17:15 -0400
-From:   Thomas Gleixner <tglx@linutronix.de>
+        Mon, 12 Apr 2021 13:49:21 -0400
+Date:   Mon, 12 Apr 2021 17:48:59 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1618237016;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+        s=2020; t=1618249741;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=nhAvEHNMMXwBbl3AWVuFy78vV6aJxv0n7jBXDQx7qCM=;
-        b=WOSecj2/dGuF+I+G4E1TrDQZBCZhcUxYJHWHpD5sWreQ8w1Fkwz8QcGWehdVtcAGS4lhtB
-        KvNgTZDpDWKJrzKCr3bcZ51oBPZmzetMApkovyFGExrpU6I/OIeTfoCOtQk+7q8cMCNiFB
-        pE7Vu38ZzubyIJf3Wkt/MIZOeoZGyv+Vp8xMYYQ7yPfoe5Do93dRMmiXTn95rS4y1meApP
-        e2ml7ynw6M32KZgNrEOvbzhB5QCMfo8t+0evy5m4zwcTJbbUFUTr05dUJpa4KySH9QoeRZ
-        X19FPikCnA1iMLC0WCwooYVbogOyPgRylICB044IzROhNAv0zyPXIddLomnuEQ==
+        bh=EgHC46tfyol7OQrQeY7G9ik6yWtC2dKCb/lnBOMVffQ=;
+        b=a9gS0M+CzwcUWv2mRu5SCNaIOPv2PqEsXVysB+cFr1UNoIis1Lm1uBKXlWC31sBOK41SrF
+        FMv2I2B37QzfmK4GDMjXGT2wCIyo46srNqcAbY9+hXU8HmGKX6UI2Akz0dNepdpZGL8HvY
+        Z/EN9WH2nSBLuyRmo2NkEKgkjOfHHSAjIyI2HBJjDcAOl+EDvcvGkxrfNOijwBi8806hy2
+        K78XSskebHTSaTzAOU9DFOuWMTav692QS4SHN0uIdU498GW/hjxLtcK7L4RejGV9/2viqG
+        HhkVgoW5e1fs0MhgK9kqtgdGx9766mBwNXJq+D2mISzT//fpTNsszorvnCYfWw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1618237016;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+        s=2020e; t=1618249741;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=nhAvEHNMMXwBbl3AWVuFy78vV6aJxv0n7jBXDQx7qCM=;
-        b=M11xPhPUpPugUMrxBEOpRFyaA6n2k7bPPG+FoD2hZZnGs+ozu2ncwGucLn5bnXveAfLcIF
-        cwNKoSbVinDpdmDA==
-To:     "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>,
-        linux-tip-commits@vger.kernel.org
-Cc:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Uladzislau Rezki <urezki@gmail.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Frederic Weisbecker <frederic@kernel.org>,
-        "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [tip: core/rcu] softirq: Don't try waking ksoftirqd before it has been spawned
-In-Reply-To: <161814860838.29796.15260901429057690999.tip-bot2@tip-bot2>
-References: <161814860838.29796.15260901429057690999.tip-bot2@tip-bot2>
-Date:   Mon, 12 Apr 2021 16:16:55 +0200
-Message-ID: <87czuz1tbc.ffs@nanos.tec.linutronix.de>
+        bh=EgHC46tfyol7OQrQeY7G9ik6yWtC2dKCb/lnBOMVffQ=;
+        b=UKG4MAuYY6VxKAHTUIf5AiJ5iDFvwIQhya6NksGBRZjCTG3wAEG9SM4sb8Iwho9Dxys9da
+        Qm33JmC/PsnOhHCA==
+From:   "tip-bot2 for Georges Aureau" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/platform] x86/platform/uv: Add more to secondary CPU kdump info
+Cc:     Georges Aureau <georges.aureau@hpe.com>,
+        Mike Travis <mike.travis@hpe.com>,
+        Borislav Petkov <bp@suse.de>, Steve Wahl <steve.wahl@hpe.com>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20210311151028.82678-1-mike.travis@hpe.com>
+References: <20210311151028.82678-1-mike.travis@hpe.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Message-ID: <161824973989.29796.1475506377197380962.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Sun, Apr 11 2021 at 13:43, tip-bot wrote:
-> The following commit has been merged into the core/rcu branch of tip:
->
-> Commit-ID:     1c0c4bc1ceb580851b2d76fdef9712b3bdae134b
-> Gitweb:        https://git.kernel.org/tip/1c0c4bc1ceb580851b2d76fdef9712b3bdae134b
-> Author:        Paul E. McKenney <paulmck@kernel.org>
-> AuthorDate:    Fri, 12 Feb 2021 16:20:40 -08:00
-> Committer:     Paul E. McKenney <paulmck@kernel.org>
-> CommitterDate: Mon, 15 Mar 2021 13:51:48 -07:00
->
-> softirq: Don't try waking ksoftirqd before it has been spawned
->
-> If there is heavy softirq activity, the softirq system will attempt
-> to awaken ksoftirqd and will stop the traditional back-of-interrupt
-> softirq processing.  This is all well and good, but only if the
-> ksoftirqd kthreads already exist, which is not the case during early
-> boot, in which case the system hangs.
->
-> One reproducer is as follows:
->
-> tools/testing/selftests/rcutorture/bin/kvm.sh --allcpus --duration 2 --configs "TREE03" --kconfig "CONFIG_DEBUG_LOCK_ALLOC=y CONFIG_PROVE_LOCKING=y CONFIG_NO_HZ_IDLE=y CONFIG_HZ_PERIODIC=n" --bootargs "threadirqs=1" --trust-make
->
-> This commit therefore adds a couple of existence checks for ksoftirqd
-> and forces back-of-interrupt softirq processing when ksoftirqd does not
-> yet exist.  With this change, the above test passes.
+The following commit has been merged into the x86/platform branch of tip:
 
-Color me confused. I did not follow the discussion around this
-completely, but wasn't it agreed on that this rcu torture muck can wait
-until the threads are brought up?
+Commit-ID:     8f2aca40dd077f74e62982cd2669845f41ed0ac6
+Gitweb:        https://git.kernel.org/tip/8f2aca40dd077f74e62982cd2669845f41ed0ac6
+Author:        Georges Aureau <georges.aureau@hpe.com>
+AuthorDate:    Thu, 11 Mar 2021 09:10:28 -06:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Mon, 12 Apr 2021 19:42:10 +02:00
 
-> diff --git a/kernel/softirq.c b/kernel/softirq.c
-> index 9908ec4..bad14ca 100644
-> --- a/kernel/softirq.c
-> +++ b/kernel/softirq.c
-> @@ -211,7 +211,7 @@ static inline void invoke_softirq(void)
->  	if (ksoftirqd_running(local_softirq_pending()))
->  		return;
->  
-> -	if (!force_irqthreads) {
-> +	if (!force_irqthreads || !__this_cpu_read(ksoftirqd)) {
->  #ifdef CONFIG_HAVE_IRQ_EXIT_ON_IRQ_STACK
->  		/*
->  		 * We can safely execute softirq on the current stack if
+x86/platform/uv: Add more to secondary CPU kdump info
 
-This still breaks RT which forces force_irqthreads to a compile time
-const which makes the compiler optimize out the direct invocation.
+Add call to run_crash_ipi_callback() to gather more info of what the
+secondary CPUs were doing to help with failure analysis.
 
-Surely RT can work around that, but how is that rcu torture muck
-supposed to work then? We're back to square one then.
+Excerpt from Georges:
 
-Thanks,
+'It is only changing where crash secondaries will be stalling after
+having taken care of properly laying down "crash note regs". Please
+note that "crash note regs" are a key piece of data used by crash dump
+debuggers to provide a reliable backtrace of running processors.'
 
-        tglx
+Secondary change pursuant to
+
+  a5f526ecb075 ("CodingStyle: Inclusive Terminology"):
+
+change master/slave to main/secondary.
+
+ [ bp: Massage commit message. ]
+
+Signed-off-by: Georges Aureau <georges.aureau@hpe.com>
+Signed-off-by: Mike Travis <mike.travis@hpe.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Reviewed-by: Steve Wahl <steve.wahl@hpe.com>
+Link: https://lkml.kernel.org/r/20210311151028.82678-1-mike.travis@hpe.com
+---
+ arch/x86/platform/uv/uv_nmi.c | 39 ++++++++++++++++++++--------------
+ 1 file changed, 24 insertions(+), 15 deletions(-)
+
+diff --git a/arch/x86/platform/uv/uv_nmi.c b/arch/x86/platform/uv/uv_nmi.c
+index eafc530..f83810f 100644
+--- a/arch/x86/platform/uv/uv_nmi.c
++++ b/arch/x86/platform/uv/uv_nmi.c
+@@ -24,6 +24,7 @@
+ #include <asm/kdebug.h>
+ #include <asm/local64.h>
+ #include <asm/nmi.h>
++#include <asm/reboot.h>
+ #include <asm/traps.h>
+ #include <asm/uv/uv.h>
+ #include <asm/uv/uv_hub.h>
+@@ -834,34 +835,42 @@ static void uv_nmi_touch_watchdogs(void)
+ 	touch_nmi_watchdog();
+ }
+ 
+-static atomic_t uv_nmi_kexec_failed;
+-
+ #if defined(CONFIG_KEXEC_CORE)
+-static void uv_nmi_kdump(int cpu, int master, struct pt_regs *regs)
++static atomic_t uv_nmi_kexec_failed;
++static void uv_nmi_kdump(int cpu, int main, struct pt_regs *regs)
+ {
++	/* Check if kdump kernel loaded for both main and secondary CPUs */
++	if (!kexec_crash_image) {
++		if (main)
++			pr_err("UV: NMI error: kdump kernel not loaded\n");
++		return;
++	}
++
+ 	/* Call crash to dump system state */
+-	if (master) {
++	if (main) {
+ 		pr_emerg("UV: NMI executing crash_kexec on CPU%d\n", cpu);
+ 		crash_kexec(regs);
+ 
+-		pr_emerg("UV: crash_kexec unexpectedly returned, ");
++		pr_emerg("UV: crash_kexec unexpectedly returned\n");
+ 		atomic_set(&uv_nmi_kexec_failed, 1);
+-		if (!kexec_crash_image) {
+-			pr_cont("crash kernel not loaded\n");
+-			return;
++
++	} else { /* secondary */
++
++		/* If kdump kernel fails, secondaries will exit this loop */
++		while (atomic_read(&uv_nmi_kexec_failed) == 0) {
++
++			/* Once shootdown cpus starts, they do not return */
++			run_crash_ipi_callback(regs);
++
++			mdelay(10);
+ 		}
+-		pr_cont("kexec busy, stalling cpus while waiting\n");
+ 	}
+-
+-	/* If crash exec fails the slaves should return, otherwise stall */
+-	while (atomic_read(&uv_nmi_kexec_failed) == 0)
+-		mdelay(10);
+ }
+ 
+ #else /* !CONFIG_KEXEC_CORE */
+-static inline void uv_nmi_kdump(int cpu, int master, struct pt_regs *regs)
++static inline void uv_nmi_kdump(int cpu, int main, struct pt_regs *regs)
+ {
+-	if (master)
++	if (main)
+ 		pr_err("UV: NMI kdump: KEXEC not supported in this kernel\n");
+ 	atomic_set(&uv_nmi_kexec_failed, 1);
+ }
