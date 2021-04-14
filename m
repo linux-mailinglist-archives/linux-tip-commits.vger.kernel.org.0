@@ -2,148 +2,80 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C8E135ED2C
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 14 Apr 2021 08:22:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DFE3335EE35
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 14 Apr 2021 09:27:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349157AbhDNGWk (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 14 Apr 2021 02:22:40 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:51056 "EHLO
+        id S236846AbhDNHNr (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 14 Apr 2021 03:13:47 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:51310 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232405AbhDNGWi (ORCPT
+        with ESMTP id S1349581AbhDNHNq (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 14 Apr 2021 02:22:38 -0400
-Date:   Wed, 14 Apr 2021 06:22:14 -0000
+        Wed, 14 Apr 2021 03:13:46 -0400
+Date:   Wed, 14 Apr 2021 09:13:22 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1618381335;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
+        s=2020; t=1618384404;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=Sj8bKQs3EzaDo1n24IZ7KqWvkhErmm1PrSIWnyuBl1I=;
-        b=asast63DGsjZ1sz8ZaEtepCNbMu9OG/HV8166DvS+9Ta28rHVooyJLFmBOMxG0yTfAAkAU
-        RE2nQK0QCiMqJKX/zbo9oVRJi3PbMkUhJ2T9bfVAI5oEaY4Qiw/eD5JMN2J9/WR+x1htGj
-        RVgrgetUVRKK27JCcKW0U6NWKoMx1QrRielCTKLp/RaxbbUwSONEu77AwLyxJWOrWulZfj
-        FkdoATUhLJfVLfearKjuukuzS5eFkgt85zffaB7r+yBOkS0AeCmiqqxXD4k2Z9SHpfWs/y
-        uSOrFP9sphVCW3QU8fI9f00vgy8pZeSc7pL7FR2Golzmp2CD85KkqxNuazmQ8w==
+        bh=s1a8CshZw26m5BPo40fPgY70peR7b/oBo1WgNZJ84PU=;
+        b=tfoPDrMz+bDx6GEZ18qfSmD32hyCOd50f121Wj+M1N+AESll+NPKTJF8jLv2RPCaxXKegg
+        Qmj85Ehh8bOAwsEnwJ/iz6jAD4LdoA1J7qdCu3em3suVAWV7DKySDCGmpEHnue7IOOwTLp
+        IZyNN0oGroPATeyUUzKracVt5rWp0GI+K4tL8eYArpqV0i5yX1tCXJrSwM6R31I7wRMHF0
+        Cjqc5Jb6lIsy4oz9K6U5ScTtWg8lDKO2/XV2zpOBlE7V/OtBEkxLHjWFTnsC6yS6F2E9T9
+        5MJNV8r1iC5vyO5erEIAeOt+AGF1L/PnXHV2seu3P/lvdWI8nVCWcro6LnDuLQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1618381335;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
+        s=2020e; t=1618384404;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=Sj8bKQs3EzaDo1n24IZ7KqWvkhErmm1PrSIWnyuBl1I=;
-        b=5wIhF45LzyXhv//dLiJ6MzpzsG9ZAngO+VD3oiwt9IFzVmPskk+T3oROAKItX6PSPBrAmS
-        PGrVX+1nAkdoxgCA==
-From:   "tip-bot2 for Mike Rapoport" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/boot] x86/setup: Move trim_snb_memory() later in
- setup_arch() to fix boot hangs
-Cc:     Randy Dunlap <rdunlap@infradead.org>,
-        Mike Rapoport <rppt@linux.ibm.com>,
-        Borislav Petkov <bp@suse.de>, Hugh Dickins <hughd@google.com>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <f67d3e03-af90-f790-baf4-8d412fe055af@infradead.org>
-References: <f67d3e03-af90-f790-baf4-8d412fe055af@infradead.org>
+        bh=s1a8CshZw26m5BPo40fPgY70peR7b/oBo1WgNZJ84PU=;
+        b=/ji24/zUdBjSgpPBk3m4wRAgZ/rOTRnNiDW44YXS/9ETjOx6+6CyfN+OXZI6NdX9IRqo32
+        kaapHP+y/CBhTlBg==
+From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To:     "Paul E. McKenney" <paulmck@kernel.org>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>,
+        linux-tip-commits@vger.kernel.org,
+        Uladzislau Rezki <urezki@gmail.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Frederic Weisbecker <frederic@kernel.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [tip: core/rcu] softirq: Don't try waking ksoftirqd before it
+ has been spawned
+Message-ID: <20210414071322.nz64kow4sp4nwzmy@linutronix.de>
+References: <161814860838.29796.15260901429057690999.tip-bot2@tip-bot2>
+ <87czuz1tbc.ffs@nanos.tec.linutronix.de>
+ <20210412183645.GF4510@paulmck-ThinkPad-P17-Gen-1>
 MIME-Version: 1.0
-Message-ID: <161838133498.29796.12540775721070465830.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20210412183645.GF4510@paulmck-ThinkPad-P17-Gen-1>
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/boot branch of tip:
+On 2021-04-12 11:36:45 [-0700], Paul E. McKenney wrote:
+> > Color me confused. I did not follow the discussion around this
+> > completely, but wasn't it agreed on that this rcu torture muck can wait
+> > until the threads are brought up?
+> 
+> Yes, we can cause rcutorture to wait.  But in this case, rcutorture
+> is just the messenger, and making it wait would simply be ignoring
+> the message.  The message is that someone could invoke any number of
+> things that wait on a softirq handler's invocation during the interval
+> before ksoftirqd has been spawned.
 
-Commit-ID:     c361e5d4d07d63768880e1994c7ed999b3a94cd9
-Gitweb:        https://git.kernel.org/tip/c361e5d4d07d63768880e1994c7ed999b3a94cd9
-Author:        Mike Rapoport <rppt@linux.ibm.com>
-AuthorDate:    Tue, 13 Apr 2021 21:08:39 +03:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Wed, 14 Apr 2021 08:16:48 +02:00
+My memory on this is that the only user, that required this early
+behaviour, was kprobe which was recently changed to not need it anymore.
+Which makes the test as the only user that remains. Therefore I thought
+that this test will be moved to later position (when ksoftirqd is up and
+running) and that there is no more requirement for RCU to be completely
+up that early in the boot process.
 
-x86/setup: Move trim_snb_memory() later in setup_arch() to fix boot hangs
+Did I miss anything?
 
-Commit
+> 
+> 							Thanx, Paul
 
-  a799c2bd29d1 ("x86/setup: Consolidate early memory reservations")
-
-moved reservation of the memory inaccessible by Sandy Bride integrated
-graphics very early, and, as a result, on systems with such devices
-the first 1M was reserved by trim_snb_memory() which prevented the
-allocation of the real mode trampoline and made the boot hang very
-early.
-
-Since the purpose of trim_snb_memory() is to prevent problematic pages
-ever reaching the graphics device, it is safe to reserve these pages
-after memblock allocations are possible.
-
-Move trim_snb_memory() later in boot so that it will be called after
-reserve_real_mode() and make comments describing trim_snb_memory()
-operation more elaborate.
-
- [ bp: Massage a bit. ]
-
-Fixes: a799c2bd29d1 ("x86/setup: Consolidate early memory reservations")
-Reported-by: Randy Dunlap <rdunlap@infradead.org>
-Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Tested-by: Randy Dunlap <rdunlap@infradead.org>
-Tested-by: Hugh Dickins <hughd@google.com>
-Link: https://lkml.kernel.org/r/f67d3e03-af90-f790-baf4-8d412fe055af@infradead.org
----
- arch/x86/kernel/setup.c | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
-
-diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
-index 776fc9b..e93283e 100644
---- a/arch/x86/kernel/setup.c
-+++ b/arch/x86/kernel/setup.c
-@@ -633,11 +633,16 @@ static void __init trim_snb_memory(void)
- 	printk(KERN_DEBUG "reserving inaccessible SNB gfx pages\n");
- 
- 	/*
--	 * Reserve all memory below the 1 MB mark that has not
--	 * already been reserved.
-+	 * SandyBridge integrated graphics devices have a bug that prevents
-+	 * them from accessing certain memory ranges, namely anything below
-+	 * 1M and in the pages listed in bad_pages[] above.
-+	 *
-+	 * To avoid these pages being ever accessed by SNB gfx devices
-+	 * reserve all memory below the 1 MB mark and bad_pages that have
-+	 * not already been reserved at boot time.
- 	 */
- 	memblock_reserve(0, 1<<20);
--	
-+
- 	for (i = 0; i < ARRAY_SIZE(bad_pages); i++) {
- 		if (memblock_reserve(bad_pages[i], PAGE_SIZE))
- 			printk(KERN_WARNING "failed to reserve 0x%08lx\n",
-@@ -746,8 +751,6 @@ static void __init early_reserve_memory(void)
- 
- 	reserve_ibft_region();
- 	reserve_bios_regions();
--
--	trim_snb_memory();
- }
- 
- /*
-@@ -1081,6 +1084,13 @@ void __init setup_arch(char **cmdline_p)
- 
- 	reserve_real_mode();
- 
-+	/*
-+	 * Reserving memory causing GPU hangs on Sandy Bridge integrated
-+	 * graphics devices should be done after we allocated memory under
-+	 * 1M for the real mode trampoline.
-+	 */
-+	trim_snb_memory();
-+
- 	init_mem_mapping();
- 
- 	idt_setup_early_pf();
+Sebastian
