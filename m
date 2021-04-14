@@ -2,80 +2,103 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DFE3335EE35
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 14 Apr 2021 09:27:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C315635EE87
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 14 Apr 2021 09:42:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236846AbhDNHNr (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 14 Apr 2021 03:13:47 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:51310 "EHLO
+        id S1349746AbhDNHhF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 14 Apr 2021 03:37:05 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:51420 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349581AbhDNHNq (ORCPT
+        with ESMTP id S1349754AbhDNHhE (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 14 Apr 2021 03:13:46 -0400
-Date:   Wed, 14 Apr 2021 09:13:22 +0200
+        Wed, 14 Apr 2021 03:37:04 -0400
+Date:   Wed, 14 Apr 2021 07:36:41 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1618384404;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+        s=2020; t=1618385802;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=s1a8CshZw26m5BPo40fPgY70peR7b/oBo1WgNZJ84PU=;
-        b=tfoPDrMz+bDx6GEZ18qfSmD32hyCOd50f121Wj+M1N+AESll+NPKTJF8jLv2RPCaxXKegg
-        Qmj85Ehh8bOAwsEnwJ/iz6jAD4LdoA1J7qdCu3em3suVAWV7DKySDCGmpEHnue7IOOwTLp
-        IZyNN0oGroPATeyUUzKracVt5rWp0GI+K4tL8eYArpqV0i5yX1tCXJrSwM6R31I7wRMHF0
-        Cjqc5Jb6lIsy4oz9K6U5ScTtWg8lDKO2/XV2zpOBlE7V/OtBEkxLHjWFTnsC6yS6F2E9T9
-        5MJNV8r1iC5vyO5erEIAeOt+AGF1L/PnXHV2seu3P/lvdWI8nVCWcro6LnDuLQ==
+        bh=EhG6yeO7qUBOcTbfLkvq3N6y048F47lyYY/h7j+ClSw=;
+        b=E5JYcrvgsNJJ82rYicVBYxqD3PcFxi1Ew4v8Z+dGBuq/3CMCKn6O3qA2ZoCCQNhLSCgsJS
+        YZgebZfB2a6Q5VYOc8wiswRq7q1P1utq0eNuViaXkvJg0SemRFF9MVuqCcHDApNPO3ZH9l
+        7TxO23gfjrB40PE7lltuxkm44Jn+eNWzjp5J5kg8GEPgDzkQEMU1JGVmVhBtZfuTNGp9tQ
+        NXQ5FUQ4duJuV4eBDqIjImSZbauDkImd02zexfQbTMzVLNA3qrR7sCWfjHpmE5rGFv4KFF
+        1CIKi/fg1ELX8xXcliTtkBNJFIrLuXlTt1j6YfheL4J1+FOwpxl60L2A9wOFXw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1618384404;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+        s=2020e; t=1618385802;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=s1a8CshZw26m5BPo40fPgY70peR7b/oBo1WgNZJ84PU=;
-        b=/ji24/zUdBjSgpPBk3m4wRAgZ/rOTRnNiDW44YXS/9ETjOx6+6CyfN+OXZI6NdX9IRqo32
-        kaapHP+y/CBhTlBg==
-From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To:     "Paul E. McKenney" <paulmck@kernel.org>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>,
-        linux-tip-commits@vger.kernel.org,
-        Uladzislau Rezki <urezki@gmail.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Frederic Weisbecker <frederic@kernel.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [tip: core/rcu] softirq: Don't try waking ksoftirqd before it
- has been spawned
-Message-ID: <20210414071322.nz64kow4sp4nwzmy@linutronix.de>
-References: <161814860838.29796.15260901429057690999.tip-bot2@tip-bot2>
- <87czuz1tbc.ffs@nanos.tec.linutronix.de>
- <20210412183645.GF4510@paulmck-ThinkPad-P17-Gen-1>
+        bh=EhG6yeO7qUBOcTbfLkvq3N6y048F47lyYY/h7j+ClSw=;
+        b=+u0ppabOu5v7QeHwJ97Z1Ba85OXPAE7n4hkukGEMfE8DpI8VLb3n7LkPrmgGipauFNuufQ
+        EORG4MKZKz9wFfAA==
+From:   "tip-bot2 for Jan Kiszka" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/cleanups] x86/pat: Do not compile stubbed functions when
+ X86_PAT is off
+Cc:     Jan Kiszka <jan.kiszka@siemens.com>, Borislav Petkov <bp@suse.de>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <a9351615-7a0d-9d47-af65-d9e2fffe8192@siemens.com>
+References: <a9351615-7a0d-9d47-af65-d9e2fffe8192@siemens.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20210412183645.GF4510@paulmck-ThinkPad-P17-Gen-1>
+Message-ID: <161838580104.29796.1278445228759289660.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On 2021-04-12 11:36:45 [-0700], Paul E. McKenney wrote:
-> > Color me confused. I did not follow the discussion around this
-> > completely, but wasn't it agreed on that this rcu torture muck can wait
-> > until the threads are brought up?
-> 
-> Yes, we can cause rcutorture to wait.  But in this case, rcutorture
-> is just the messenger, and making it wait would simply be ignoring
-> the message.  The message is that someone could invoke any number of
-> things that wait on a softirq handler's invocation during the interval
-> before ksoftirqd has been spawned.
+The following commit has been merged into the x86/cleanups branch of tip:
 
-My memory on this is that the only user, that required this early
-behaviour, was kprobe which was recently changed to not need it anymore.
-Which makes the test as the only user that remains. Therefore I thought
-that this test will be moved to later position (when ksoftirqd is up and
-running) and that there is no more requirement for RCU to be completely
-up that early in the boot process.
+Commit-ID:     16854b567dff767e5ec5e6dc23021271136733a5
+Gitweb:        https://git.kernel.org/tip/16854b567dff767e5ec5e6dc23021271136733a5
+Author:        Jan Kiszka <jan.kiszka@siemens.com>
+AuthorDate:    Mon, 26 Oct 2020 18:39:06 +01:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Wed, 14 Apr 2021 08:21:41 +02:00
 
-Did I miss anything?
+x86/pat: Do not compile stubbed functions when X86_PAT is off
 
-> 
-> 							Thanx, Paul
+Those are already provided by linux/io.h as stubs.
 
-Sebastian
+The conflict remains invisible until someone would pull linux/io.h into
+memtype.c. This fixes a build error when this file is used outside of
+the kernel tree.
+
+  [ bp: Massage commit message. ]
+
+Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lkml.kernel.org/r/a9351615-7a0d-9d47-af65-d9e2fffe8192@siemens.com
+---
+ arch/x86/mm/pat/memtype.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/arch/x86/mm/pat/memtype.c b/arch/x86/mm/pat/memtype.c
+index 6084d14..3112ca7 100644
+--- a/arch/x86/mm/pat/memtype.c
++++ b/arch/x86/mm/pat/memtype.c
+@@ -800,6 +800,7 @@ void memtype_free_io(resource_size_t start, resource_size_t end)
+ 	memtype_free(start, end);
+ }
+ 
++#ifdef CONFIG_X86_PAT
+ int arch_io_reserve_memtype_wc(resource_size_t start, resource_size_t size)
+ {
+ 	enum page_cache_mode type = _PAGE_CACHE_MODE_WC;
+@@ -813,6 +814,7 @@ void arch_io_free_memtype_wc(resource_size_t start, resource_size_t size)
+ 	memtype_free_io(start, start + size);
+ }
+ EXPORT_SYMBOL(arch_io_free_memtype_wc);
++#endif
+ 
+ pgprot_t phys_mem_access_prot(struct file *file, unsigned long pfn,
+ 				unsigned long size, pgprot_t vma_prot)
