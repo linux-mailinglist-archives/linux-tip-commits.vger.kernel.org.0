@@ -2,103 +2,135 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C315635EE87
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 14 Apr 2021 09:42:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2674135F034
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 14 Apr 2021 10:58:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349746AbhDNHhF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 14 Apr 2021 03:37:05 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:51420 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349754AbhDNHhE (ORCPT
+        id S231968AbhDNI6f (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 14 Apr 2021 04:58:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45974 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231732AbhDNI6X (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 14 Apr 2021 03:37:04 -0400
-Date:   Wed, 14 Apr 2021 07:36:41 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1618385802;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=EhG6yeO7qUBOcTbfLkvq3N6y048F47lyYY/h7j+ClSw=;
-        b=E5JYcrvgsNJJ82rYicVBYxqD3PcFxi1Ew4v8Z+dGBuq/3CMCKn6O3qA2ZoCCQNhLSCgsJS
-        YZgebZfB2a6Q5VYOc8wiswRq7q1P1utq0eNuViaXkvJg0SemRFF9MVuqCcHDApNPO3ZH9l
-        7TxO23gfjrB40PE7lltuxkm44Jn+eNWzjp5J5kg8GEPgDzkQEMU1JGVmVhBtZfuTNGp9tQ
-        NXQ5FUQ4duJuV4eBDqIjImSZbauDkImd02zexfQbTMzVLNA3qrR7sCWfjHpmE5rGFv4KFF
-        1CIKi/fg1ELX8xXcliTtkBNJFIrLuXlTt1j6YfheL4J1+FOwpxl60L2A9wOFXw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1618385802;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=EhG6yeO7qUBOcTbfLkvq3N6y048F47lyYY/h7j+ClSw=;
-        b=+u0ppabOu5v7QeHwJ97Z1Ba85OXPAE7n4hkukGEMfE8DpI8VLb3n7LkPrmgGipauFNuufQ
-        EORG4MKZKz9wFfAA==
-From:   "tip-bot2 for Jan Kiszka" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cleanups] x86/pat: Do not compile stubbed functions when
- X86_PAT is off
-Cc:     Jan Kiszka <jan.kiszka@siemens.com>, Borislav Petkov <bp@suse.de>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <a9351615-7a0d-9d47-af65-d9e2fffe8192@siemens.com>
-References: <a9351615-7a0d-9d47-af65-d9e2fffe8192@siemens.com>
+        Wed, 14 Apr 2021 04:58:23 -0400
+Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A897EC061574;
+        Wed, 14 Apr 2021 01:58:01 -0700 (PDT)
+Received: by mail-lf1-x12c.google.com with SMTP id z13so14890441lfd.9;
+        Wed, 14 Apr 2021 01:58:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:date:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=Ph9XQ9XOgzFb8hQj36afy01qe+N6O8vJ6sBQUEUFgjQ=;
+        b=ZKNL4S1a8QSlbHFJkJ3vEJnERpY2IX58VdvvrdSd7cjTOJrr0nS/9QDds6N+8n7bHS
+         Ugwlg+PDn/r10PQyWTY75X3G/dF3bR+59EXUdeOAyxVdGyMt4tF/6ozpZyJx0kM/R4YM
+         3m9ejgd9OCvDFW+KaIMoxdc3hyvDMwE8cau606/XA+cFXkO/Zp1ID37mrI3ZmyDW8kSa
+         VVgd68R8iao1o/t/nsn99WR9uhahZm8Ng/3mvH0wuDwtMxxVjTxoLmtvYf1lTyni6hcV
+         /fbN3ze2i3YEONGBJeGhoDacKaaa9i3UxpjUFSHIgiASHjyZ4ibeKUIKa1ifuPpCE//u
+         d92A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:date:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=Ph9XQ9XOgzFb8hQj36afy01qe+N6O8vJ6sBQUEUFgjQ=;
+        b=SDociZUk8gfwdOvIg027UdLo2QF0U92VkqiHH876cux5oGxJaKbwzf9LfRFlu4KbGN
+         vyL3Omb+VNyHM170CUijca5BJw2swjuME9Mq0CzKVabYXs3Fkut1joRSw/L9HeZfWwEH
+         4yNq6365cYDBgn91HYApHPNgSiqJmgrzyP5DdmCl86KKfh99gsmPT6r1RQzVrfdId8iZ
+         GWhjIQH7nGq+xkAMbFSn3WYWNmJdhC+LoA5PGV2tXRuGh8mFoMdACCvakU2eLYpvaALl
+         P7BK3eqR/4uKzRWcSkGanxER7sOp9QUvF6Ewnxx+K2080PAT4eCZZOw5G0fmYFrR0CPW
+         wUtg==
+X-Gm-Message-State: AOAM531J4rkPzyjinkmffmWUivZp1yFS6Kr04WJ8+EllJsB2alBTvbRX
+        g0NheevuktTfVejvtTWX7p4=
+X-Google-Smtp-Source: ABdhPJyPVJ48xxfFHJ8Zj6MwTawErcp9PqHJ4WYdoqnv+PkW4dG0fXP8ro5obRg6guPF61d7rCSVtQ==
+X-Received: by 2002:a19:c143:: with SMTP id r64mr24937402lff.96.1618390680127;
+        Wed, 14 Apr 2021 01:58:00 -0700 (PDT)
+Received: from pc638.lan (h5ef52e3d.seluork.dyn.perspektivbredband.net. [94.245.46.61])
+        by smtp.gmail.com with ESMTPSA id a2sm3942066lfh.19.2021.04.14.01.57.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 Apr 2021 01:57:59 -0700 (PDT)
+From:   Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@pc638.lan>
+Date:   Wed, 14 Apr 2021 10:57:57 +0200
+To:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>
+Cc:     "Paul E. McKenney" <paulmck@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>,
+        linux-tip-commits@vger.kernel.org,
+        Uladzislau Rezki <urezki@gmail.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Frederic Weisbecker <frederic@kernel.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [tip: core/rcu] softirq: Don't try waking ksoftirqd before it
+ has been spawned
+Message-ID: <20210414085757.GA1917@pc638.lan>
+References: <161814860838.29796.15260901429057690999.tip-bot2@tip-bot2>
+ <87czuz1tbc.ffs@nanos.tec.linutronix.de>
+ <20210412183645.GF4510@paulmck-ThinkPad-P17-Gen-1>
+ <20210414071322.nz64kow4sp4nwzmy@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <161838580104.29796.1278445228759289660.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210414071322.nz64kow4sp4nwzmy@linutronix.de>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cleanups branch of tip:
+On Wed, Apr 14, 2021 at 09:13:22AM +0200, Sebastian Andrzej Siewior wrote:
+> On 2021-04-12 11:36:45 [-0700], Paul E. McKenney wrote:
+> > > Color me confused. I did not follow the discussion around this
+> > > completely, but wasn't it agreed on that this rcu torture muck can wait
+> > > until the threads are brought up?
+> > 
+> > Yes, we can cause rcutorture to wait.  But in this case, rcutorture
+> > is just the messenger, and making it wait would simply be ignoring
+> > the message.  The message is that someone could invoke any number of
+> > things that wait on a softirq handler's invocation during the interval
+> > before ksoftirqd has been spawned.
+> 
+> My memory on this is that the only user, that required this early
+> behaviour, was kprobe which was recently changed to not need it anymore.
+> Which makes the test as the only user that remains. Therefore I thought
+> that this test will be moved to later position (when ksoftirqd is up and
+> running) and that there is no more requirement for RCU to be completely
+> up that early in the boot process.
+> 
+> Did I miss anything?
+> 
+Seems not. Let me wrap it up a bit though i may miss something:
 
-Commit-ID:     16854b567dff767e5ec5e6dc23021271136733a5
-Gitweb:        https://git.kernel.org/tip/16854b567dff767e5ec5e6dc23021271136733a5
-Author:        Jan Kiszka <jan.kiszka@siemens.com>
-AuthorDate:    Mon, 26 Oct 2020 18:39:06 +01:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Wed, 14 Apr 2021 08:21:41 +02:00
+1) Initially we had an issue with booting RISV because of:
 
-x86/pat: Do not compile stubbed functions when X86_PAT is off
+36dadef23fcc ("kprobes: Init kprobes in early_initcall")
 
-Those are already provided by linux/io.h as stubs.
+i.e. a developer decided to move initialization of kprobe at
+early_initcall() phase. Since kprobe uses synchronize_rcu_tasks()
+a system did not boot due to the fact that RCU-tasks were setup
+at core_initcall() step. It happens later in this chain.
 
-The conflict remains invisible until someone would pull linux/io.h into
-memtype.c. This fixes a build error when this file is used outside of
-the kernel tree.
+To address that issue, we had decided to move RCU-tasks setup
+to before early_initcall() and it worked well:
 
-  [ bp: Massage commit message. ]
+https://lore.kernel.org/lkml/20210218083636.GA2030@pc638.lan/T/
 
-Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/a9351615-7a0d-9d47-af65-d9e2fffe8192@siemens.com
----
- arch/x86/mm/pat/memtype.c | 2 ++
- 1 file changed, 2 insertions(+)
+2) After that fix you reported another issue. If the kernel is run
+with "threadirqs=1" - it did not boot also. Because ksoftirqd does
+not exist by that time, thus our early-rcu-self test did not pass.
 
-diff --git a/arch/x86/mm/pat/memtype.c b/arch/x86/mm/pat/memtype.c
-index 6084d14..3112ca7 100644
---- a/arch/x86/mm/pat/memtype.c
-+++ b/arch/x86/mm/pat/memtype.c
-@@ -800,6 +800,7 @@ void memtype_free_io(resource_size_t start, resource_size_t end)
- 	memtype_free(start, end);
- }
- 
-+#ifdef CONFIG_X86_PAT
- int arch_io_reserve_memtype_wc(resource_size_t start, resource_size_t size)
- {
- 	enum page_cache_mode type = _PAGE_CACHE_MODE_WC;
-@@ -813,6 +814,7 @@ void arch_io_free_memtype_wc(resource_size_t start, resource_size_t size)
- 	memtype_free_io(start, start + size);
- }
- EXPORT_SYMBOL(arch_io_free_memtype_wc);
-+#endif
- 
- pgprot_t phys_mem_access_prot(struct file *file, unsigned long pfn,
- 				unsigned long size, pgprot_t vma_prot)
+3) Due to (2), Masami Hiramatsu proposed to fix kprobes by delaying
+kprobe optimization and it also addressed initial issue:
+
+https://lore.kernel.org/lkml/20210219112357.GA34462@pc638.lan/T/
+
+At the same time Paul made another patch:
+
+softirq: Don't try waking ksoftirqd before it has been spawned
+
+it allows us to keep RCU-tasks initialization before even
+early_initcall() where it is now and let our rcu-self-test
+to be completed without any hanging.
+
+--
+Vlad Rezki
