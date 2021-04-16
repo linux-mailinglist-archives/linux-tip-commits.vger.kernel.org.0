@@ -2,55 +2,50 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 46630362353
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 Apr 2021 17:04:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D2F3E362357
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 Apr 2021 17:04:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245408AbhDPPCS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 16 Apr 2021 11:02:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50886 "EHLO
+        id S245430AbhDPPCT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 16 Apr 2021 11:02:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245198AbhDPPCQ (ORCPT
+        with ESMTP id S245324AbhDPPCR (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 16 Apr 2021 11:02:16 -0400
+        Fri, 16 Apr 2021 11:02:17 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54404C061574;
-        Fri, 16 Apr 2021 08:01:51 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2756AC06175F;
+        Fri, 16 Apr 2021 08:01:52 -0700 (PDT)
 Date:   Fri, 16 Apr 2021 15:01:49 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1618585309;
+        s=2020; t=1618585310;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=0qaOt9ua7swaxmJ2q1ypE0rpJziCGDBwNsqTbpnvXjs=;
-        b=GoqxzU7Jr37x2oWz/ORRvDky1MI/I7R32ohMKoBdKLM2HXaFbWokeXzV+C8Rk8gp5F3ygR
-        4A1pBKndhLh8zsAKUlypBxh7W7awKhvMv45Ms/66eoZWIgX2Ao8mgpWTubi6rrNBjs65bN
-        JMLwJ9GaAbWFr2w9VcnE/P3SIkxG13tnHM2ubxZ9fibohBHKSL3JG4E/WjJJe5DjnC9+I3
-        ep6/zyqwfPDIpNNUs6XhbdZ+DNocvL8d06WLYbcl5soF/XoxEsjiLimkSlO1C80SE0dZcY
-        7jqXw7lUTuKjSblJVAhz+dQvcxjqm3eAX9gszAA4r4cQnJNJiMd07KcSjIUo1Q==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=k8FmU4HY1xQa3gFWt3udRSjCOJ6imc/Xux2mb+ILKXg=;
+        b=f2lKRsjFEdjiU9sGOiylCWwL6l8D0c2wts8O0IjTL71988ViAGp5mYNrx9+wi0ffGzc9H6
+        VbJMtddRNhVYO8MTk4np/Gv6I4mKFN/f3UjKoVBgxLr2l4Pl89jY/jHCCN0EdkOZRULon9
+        pAqLCp1/9jIMWDxE9RXvUJngKU218LXWJZIaMi9UOGKI+L6VBp+WUO8sgCNGJ1eE6vuQYR
+        /R6ZNTF0btr2vn/3KuWZjjelk66Ay+tjQCOgcw0nowD1x6kAhQ9xt9yga+H0nsgEd2UvBj
+        2BD8He1z9dRN34UZUBjERd5G1J3oAoW+LJ2/mf/fwEPoyrIwQnQUlWsjCamS0Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1618585309;
+        s=2020e; t=1618585310;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=0qaOt9ua7swaxmJ2q1ypE0rpJziCGDBwNsqTbpnvXjs=;
-        b=+q1TBh6fcJIeGZ8Q1akHQ+maNkdI6Vllb+1gcpPI6ezQ64hW4/aNN5e6P9aHKikw9bKlSV
-        yHbq8rF/b7fIRsCA==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=k8FmU4HY1xQa3gFWt3udRSjCOJ6imc/Xux2mb+ILKXg=;
+        b=kzJd+o0Atv8l/65/XWVm8LQh5jn+Vwi32UecVv6tcVNzBv9Caztp2CvTzS6K1iXFZPjU92
+        ae9AePLtmgN4IuAQ==
 From:   "tip-bot2 for Marco Elver" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] selftests/perf_events: Add kselftest for remove_on_exec
-Cc:     Marco Elver <elver@google.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: perf/core] perf: Add support for SIGTRAP on perf events
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        Marco Elver <elver@google.com>,
+        Dmitry Vyukov <dvyukov@google.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210408103605.1676875-9-elver@google.com>
-References: <20210408103605.1676875-9-elver@google.com>
 MIME-Version: 1.0
-Message-ID: <161858530919.29796.4977531252308363092.tip-bot2@tip-bot2>
+Message-ID: <161858530998.29796.5867430906963081816.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,310 +56,194 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     6216798bf98e82c382922f1b71ecc4a13d6e65cb
-Gitweb:        https://git.kernel.org/tip/6216798bf98e82c382922f1b71ecc4a13d6e65cb
+Commit-ID:     97ba62b278674293762c3d91f724f1bb922f04e0
+Gitweb:        https://git.kernel.org/tip/97ba62b278674293762c3d91f724f1bb922f04e0
 Author:        Marco Elver <elver@google.com>
-AuthorDate:    Thu, 08 Apr 2021 12:36:03 +02:00
+AuthorDate:    Thu, 08 Apr 2021 12:36:01 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Fri, 16 Apr 2021 16:32:42 +02:00
+CommitterDate: Fri, 16 Apr 2021 16:32:41 +02:00
 
-selftests/perf_events: Add kselftest for remove_on_exec
+perf: Add support for SIGTRAP on perf events
 
-Add kselftest to test that remove_on_exec removes inherited events from
-child tasks.
+Adds bit perf_event_attr::sigtrap, which can be set to cause events to
+send SIGTRAP (with si_code TRAP_PERF) to the task where the event
+occurred. The primary motivation is to support synchronous signals on
+perf events in the task where an event (such as breakpoints) triggered.
 
+To distinguish perf events based on the event type, the type is set in
+si_errno. For events that are associated with an address, si_addr is
+copied from perf_sample_data.
+
+The new field perf_event_attr::sig_data is copied to si_perf, which
+allows user space to disambiguate which event (of the same type)
+triggered the signal. For example, user space could encode the relevant
+information it cares about in sig_data.
+
+We note that the choice of an opaque u64 provides the simplest and most
+flexible option. Alternatives where a reference to some user space data
+is passed back suffer from the problem that modification of referenced
+data (be it the event fd, or the perf_event_attr) can race with the
+signal being delivered (of course, the same caveat applies if user space
+decides to store a pointer in sig_data, but the ABI explicitly avoids
+prescribing such a design).
+
+Suggested-by: Peter Zijlstra <peterz@infradead.org>
 Signed-off-by: Marco Elver <elver@google.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20210408103605.1676875-9-elver@google.com
+Acked-by: Dmitry Vyukov <dvyukov@google.com>
+Link: https://lore.kernel.org/lkml/YBv3rAT566k+6zjg@hirez.programming.kicks-ass.net/
 ---
- tools/testing/selftests/perf_events/.gitignore       |   1 +-
- tools/testing/selftests/perf_events/Makefile         |   2 +-
- tools/testing/selftests/perf_events/remove_on_exec.c | 260 ++++++++++-
- 3 files changed, 262 insertions(+), 1 deletion(-)
- create mode 100644 tools/testing/selftests/perf_events/remove_on_exec.c
+ include/linux/perf_event.h      |  1 +-
+ include/uapi/linux/perf_event.h | 10 ++++++-
+ kernel/events/core.c            | 49 +++++++++++++++++++++++++++++++-
+ 3 files changed, 58 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/perf_events/.gitignore b/tools/testing/selftests/perf_events/.gitignore
-index 4dc43e1..790c470 100644
---- a/tools/testing/selftests/perf_events/.gitignore
-+++ b/tools/testing/selftests/perf_events/.gitignore
-@@ -1,2 +1,3 @@
- # SPDX-License-Identifier: GPL-2.0-only
- sigtrap_threads
-+remove_on_exec
-diff --git a/tools/testing/selftests/perf_events/Makefile b/tools/testing/selftests/perf_events/Makefile
-index 973a2c3..fcafa5f 100644
---- a/tools/testing/selftests/perf_events/Makefile
-+++ b/tools/testing/selftests/perf_events/Makefile
-@@ -2,5 +2,5 @@
- CFLAGS += -Wl,-no-as-needed -Wall -I../../../../usr/include
- LDFLAGS += -lpthread
+diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
+index 1660039..7d7280a 100644
+--- a/include/linux/perf_event.h
++++ b/include/linux/perf_event.h
+@@ -735,6 +735,7 @@ struct perf_event {
+ 	int				pending_wakeup;
+ 	int				pending_kill;
+ 	int				pending_disable;
++	unsigned long			pending_addr;	/* SIGTRAP */
+ 	struct irq_work			pending;
  
--TEST_GEN_PROGS := sigtrap_threads
-+TEST_GEN_PROGS := sigtrap_threads remove_on_exec
- include ../lib.mk
-diff --git a/tools/testing/selftests/perf_events/remove_on_exec.c b/tools/testing/selftests/perf_events/remove_on_exec.c
-new file mode 100644
-index 0000000..5814611
---- /dev/null
-+++ b/tools/testing/selftests/perf_events/remove_on_exec.c
-@@ -0,0 +1,260 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Test for remove_on_exec.
-+ *
-+ * Copyright (C) 2021, Google LLC.
-+ */
+ 	atomic_t			event_limit;
+diff --git a/include/uapi/linux/perf_event.h b/include/uapi/linux/perf_event.h
+index 8c5b9f5..31b00e3 100644
+--- a/include/uapi/linux/perf_event.h
++++ b/include/uapi/linux/perf_event.h
+@@ -311,6 +311,7 @@ enum perf_event_read_format {
+ #define PERF_ATTR_SIZE_VER4	104	/* add: sample_regs_intr */
+ #define PERF_ATTR_SIZE_VER5	112	/* add: aux_watermark */
+ #define PERF_ATTR_SIZE_VER6	120	/* add: aux_sample_size */
++#define PERF_ATTR_SIZE_VER7	128	/* add: sig_data */
+ 
+ /*
+  * Hardware event_id to monitor via a performance monitoring event:
+@@ -391,7 +392,8 @@ struct perf_event_attr {
+ 				build_id       :  1, /* use build id in mmap2 events */
+ 				inherit_thread :  1, /* children only inherit if cloned with CLONE_THREAD */
+ 				remove_on_exec :  1, /* event is removed from task on exec */
+-				__reserved_1   : 27;
++				sigtrap        :  1, /* send synchronous SIGTRAP on event */
++				__reserved_1   : 26;
+ 
+ 	union {
+ 		__u32		wakeup_events;	  /* wakeup every n events */
+@@ -443,6 +445,12 @@ struct perf_event_attr {
+ 	__u16	__reserved_2;
+ 	__u32	aux_sample_size;
+ 	__u32	__reserved_3;
 +
-+#define _GNU_SOURCE
-+
-+/* We need the latest siginfo from the kernel repo. */
-+#include <sys/types.h>
-+#include <asm/siginfo.h>
-+#define __have_siginfo_t 1
-+#define __have_sigval_t 1
-+#define __have_sigevent_t 1
-+#define __siginfo_t_defined
-+#define __sigval_t_defined
-+#define __sigevent_t_defined
-+#define _BITS_SIGINFO_CONSTS_H 1
-+#define _BITS_SIGEVENT_CONSTS_H 1
-+
-+#include <stdbool.h>
-+#include <stddef.h>
-+#include <stdint.h>
-+#include <stdio.h>
-+#include <linux/perf_event.h>
-+#include <pthread.h>
-+#include <signal.h>
-+#include <sys/ioctl.h>
-+#include <sys/syscall.h>
-+#include <unistd.h>
-+
-+#include "../kselftest_harness.h"
-+
-+static volatile int signal_count;
-+
-+static struct perf_event_attr make_event_attr(void)
++	/*
++	 * User provided data if sigtrap=1, passed back to user via
++	 * siginfo_t::si_perf, e.g. to permit user to identify the event.
++	 */
++	__u64	sig_data;
+ };
+ 
+ /*
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index e4a584b..6f0723c 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -6392,6 +6392,33 @@ void perf_event_wakeup(struct perf_event *event)
+ 	}
+ }
+ 
++static void perf_sigtrap(struct perf_event *event)
 +{
-+	struct perf_event_attr attr = {
-+		.type		= PERF_TYPE_HARDWARE,
-+		.size		= sizeof(attr),
-+		.config		= PERF_COUNT_HW_INSTRUCTIONS,
-+		.sample_period	= 1000,
-+		.exclude_kernel = 1,
-+		.exclude_hv	= 1,
-+		.disabled	= 1,
-+		.inherit	= 1,
-+		/*
-+		 * Children normally retain their inherited event on exec; with
-+		 * remove_on_exec, we'll remove their event, but the parent and
-+		 * any other non-exec'd children will keep their events.
-+		 */
-+		.remove_on_exec = 1,
-+		.sigtrap	= 1,
-+	};
-+	return attr;
-+}
++	struct kernel_siginfo info;
 +
-+static void sigtrap_handler(int signum, siginfo_t *info, void *ucontext)
-+{
-+	if (info->si_code != TRAP_PERF) {
-+		fprintf(stderr, "%s: unexpected si_code %d\n", __func__, info->si_code);
++	/*
++	 * We'd expect this to only occur if the irq_work is delayed and either
++	 * ctx->task or current has changed in the meantime. This can be the
++	 * case on architectures that do not implement arch_irq_work_raise().
++	 */
++	if (WARN_ON_ONCE(event->ctx->task != current))
 +		return;
-+	}
-+
-+	signal_count++;
-+}
-+
-+FIXTURE(remove_on_exec)
-+{
-+	struct sigaction oldact;
-+	int fd;
-+};
-+
-+FIXTURE_SETUP(remove_on_exec)
-+{
-+	struct perf_event_attr attr = make_event_attr();
-+	struct sigaction action = {};
-+
-+	signal_count = 0;
-+
-+	/* Initialize sigtrap handler. */
-+	action.sa_flags = SA_SIGINFO | SA_NODEFER;
-+	action.sa_sigaction = sigtrap_handler;
-+	sigemptyset(&action.sa_mask);
-+	ASSERT_EQ(sigaction(SIGTRAP, &action, &self->oldact), 0);
-+
-+	/* Initialize perf event. */
-+	self->fd = syscall(__NR_perf_event_open, &attr, 0, -1, -1, PERF_FLAG_FD_CLOEXEC);
-+	ASSERT_NE(self->fd, -1);
-+}
-+
-+FIXTURE_TEARDOWN(remove_on_exec)
-+{
-+	close(self->fd);
-+	sigaction(SIGTRAP, &self->oldact, NULL);
-+}
-+
-+/* Verify event propagates to fork'd child. */
-+TEST_F(remove_on_exec, fork_only)
-+{
-+	int status;
-+	pid_t pid = fork();
-+
-+	if (pid == 0) {
-+		ASSERT_EQ(signal_count, 0);
-+		ASSERT_EQ(ioctl(self->fd, PERF_EVENT_IOC_ENABLE, 0), 0);
-+		while (!signal_count);
-+		_exit(42);
-+	}
-+
-+	while (!signal_count); /* Child enables event. */
-+	EXPECT_EQ(waitpid(pid, &status, 0), pid);
-+	EXPECT_EQ(WEXITSTATUS(status), 42);
-+}
-+
-+/*
-+ * Verify that event does _not_ propagate to fork+exec'd child; event enabled
-+ * after fork+exec.
-+ */
-+TEST_F(remove_on_exec, fork_exec_then_enable)
-+{
-+	pid_t pid_exec, pid_only_fork;
-+	int pipefd[2];
-+	int tmp;
 +
 +	/*
-+	 * Non-exec child, to ensure exec does not affect inherited events of
-+	 * other children.
++	 * perf_pending_event() can race with the task exiting.
 +	 */
-+	pid_only_fork = fork();
-+	if (pid_only_fork == 0) {
-+		/* Block until parent enables event. */
-+		while (!signal_count);
-+		_exit(42);
-+	}
++	if (current->flags & PF_EXITING)
++		return;
 +
-+	ASSERT_NE(pipe(pipefd), -1);
-+	pid_exec = fork();
-+	if (pid_exec == 0) {
-+		ASSERT_NE(dup2(pipefd[1], STDOUT_FILENO), -1);
-+		close(pipefd[0]);
-+		execl("/proc/self/exe", "exec_child", NULL);
-+		_exit((perror("exec failed"), 1));
-+	}
-+	close(pipefd[1]);
-+
-+	ASSERT_EQ(waitpid(pid_exec, &tmp, WNOHANG), 0); /* Child is running. */
-+	/* Wait for exec'd child to start spinning. */
-+	EXPECT_EQ(read(pipefd[0], &tmp, sizeof(int)), sizeof(int));
-+	EXPECT_EQ(tmp, 42);
-+	close(pipefd[0]);
-+	/* Now we can enable the event, knowing the child is doing work. */
-+	EXPECT_EQ(ioctl(self->fd, PERF_EVENT_IOC_ENABLE, 0), 0);
-+	/* If the event propagated to the exec'd child, it will exit normally... */
-+	usleep(100000); /* ... give time for event to trigger (in case of bug). */
-+	EXPECT_EQ(waitpid(pid_exec, &tmp, WNOHANG), 0); /* Should still be running. */
-+	EXPECT_EQ(kill(pid_exec, SIGKILL), 0);
-+
-+	/* Verify removal from child did not affect this task's event. */
-+	tmp = signal_count;
-+	while (signal_count == tmp); /* Should not hang! */
-+	/* Nor should it have affected the first child. */
-+	EXPECT_EQ(waitpid(pid_only_fork, &tmp, 0), pid_only_fork);
-+	EXPECT_EQ(WEXITSTATUS(tmp), 42);
++	clear_siginfo(&info);
++	info.si_signo = SIGTRAP;
++	info.si_code = TRAP_PERF;
++	info.si_errno = event->attr.type;
++	info.si_perf = event->attr.sig_data;
++	info.si_addr = (void __user *)event->pending_addr;
++	force_sig_info(&info);
 +}
 +
-+/*
-+ * Verify that event does _not_ propagate to fork+exec'd child; event enabled
-+ * before fork+exec.
-+ */
-+TEST_F(remove_on_exec, enable_then_fork_exec)
-+{
-+	pid_t pid_exec;
-+	int tmp;
+ static void perf_pending_event_disable(struct perf_event *event)
+ {
+ 	int cpu = READ_ONCE(event->pending_disable);
+@@ -6401,6 +6428,13 @@ static void perf_pending_event_disable(struct perf_event *event)
+ 
+ 	if (cpu == smp_processor_id()) {
+ 		WRITE_ONCE(event->pending_disable, -1);
 +
-+	EXPECT_EQ(ioctl(self->fd, PERF_EVENT_IOC_ENABLE, 0), 0);
-+
-+	pid_exec = fork();
-+	if (pid_exec == 0) {
-+		execl("/proc/self/exe", "exec_child", NULL);
-+		_exit((perror("exec failed"), 1));
-+	}
-+
-+	/*
-+	 * The child may exit abnormally at any time if the event propagated and
-+	 * a SIGTRAP is sent before the handler was set up.
-+	 */
-+	usleep(100000); /* ... give time for event to trigger (in case of bug). */
-+	EXPECT_EQ(waitpid(pid_exec, &tmp, WNOHANG), 0); /* Should still be running. */
-+	EXPECT_EQ(kill(pid_exec, SIGKILL), 0);
-+
-+	/* Verify removal from child did not affect this task's event. */
-+	tmp = signal_count;
-+	while (signal_count == tmp); /* Should not hang! */
-+}
-+
-+TEST_F(remove_on_exec, exec_stress)
-+{
-+	pid_t pids[30];
-+	int i, tmp;
-+
-+	for (i = 0; i < sizeof(pids) / sizeof(pids[0]); i++) {
-+		pids[i] = fork();
-+		if (pids[i] == 0) {
-+			execl("/proc/self/exe", "exec_child", NULL);
-+			_exit((perror("exec failed"), 1));
++		if (event->attr.sigtrap) {
++			perf_sigtrap(event);
++			atomic_set_release(&event->event_limit, 1); /* rearm event */
++			return;
 +		}
 +
-+		/* Some forked with event disabled, rest with enabled. */
-+		if (i > 10)
-+			EXPECT_EQ(ioctl(self->fd, PERF_EVENT_IOC_ENABLE, 0), 0);
+ 		perf_event_disable_local(event);
+ 		return;
+ 	}
+@@ -9103,6 +9137,7 @@ static int __perf_event_overflow(struct perf_event *event,
+ 	if (events && atomic_dec_and_test(&event->event_limit)) {
+ 		ret = 1;
+ 		event->pending_kill = POLL_HUP;
++		event->pending_addr = data->addr;
+ 
+ 		perf_event_disable_inatomic(event);
+ 	}
+@@ -11384,6 +11419,10 @@ perf_event_alloc(struct perf_event_attr *attr, int cpu,
+ 		if (!task || cpu != -1)
+ 			return ERR_PTR(-EINVAL);
+ 	}
++	if (attr->sigtrap && !task) {
++		/* Requires a task: avoid signalling random tasks. */
++		return ERR_PTR(-EINVAL);
 +	}
+ 
+ 	node = (cpu >= 0) ? cpu_to_node(cpu) : -1;
+ 	event = kmem_cache_alloc_node(perf_event_cache, GFP_KERNEL | __GFP_ZERO,
+@@ -11432,6 +11471,9 @@ perf_event_alloc(struct perf_event_attr *attr, int cpu,
+ 
+ 	event->state		= PERF_EVENT_STATE_INACTIVE;
+ 
++	if (event->attr.sigtrap)
++		atomic_set(&event->event_limit, 1);
 +
-+	usleep(100000); /* ... give time for event to trigger (in case of bug). */
+ 	if (task) {
+ 		event->attach_state = PERF_ATTACH_TASK;
+ 		/*
+@@ -11710,6 +11752,9 @@ static int perf_copy_attr(struct perf_event_attr __user *uattr,
+ 	if (attr->remove_on_exec && attr->enable_on_exec)
+ 		return -EINVAL;
+ 
++	if (attr->sigtrap && !attr->remove_on_exec)
++		return -EINVAL;
 +
-+	for (i = 0; i < sizeof(pids) / sizeof(pids[0]); i++) {
-+		/* All children should still be running. */
-+		EXPECT_EQ(waitpid(pids[i], &tmp, WNOHANG), 0);
-+		EXPECT_EQ(kill(pids[i], SIGKILL), 0);
-+	}
-+
-+	/* Verify event is still alive. */
-+	tmp = signal_count;
-+	while (signal_count == tmp);
-+}
-+
-+/* For exec'd child. */
-+static void exec_child(void)
-+{
-+	struct sigaction action = {};
-+	const int val = 42;
-+
-+	/* Set up sigtrap handler in case we erroneously receive a trap. */
-+	action.sa_flags = SA_SIGINFO | SA_NODEFER;
-+	action.sa_sigaction = sigtrap_handler;
-+	sigemptyset(&action.sa_mask);
-+	if (sigaction(SIGTRAP, &action, NULL))
-+		_exit((perror("sigaction failed"), 1));
-+
-+	/* Signal parent that we're starting to spin. */
-+	if (write(STDOUT_FILENO, &val, sizeof(int)) == -1)
-+		_exit((perror("write failed"), 1));
-+
-+	/* Should hang here until killed. */
-+	while (!signal_count);
-+}
-+
-+#define main test_main
-+TEST_HARNESS_MAIN
-+#undef main
-+int main(int argc, char *argv[])
-+{
-+	if (!strcmp(argv[0], "exec_child")) {
-+		exec_child();
-+		return 1;
-+	}
-+
-+	return test_main(argc, argv);
-+}
+ out:
+ 	return ret;
+ 
+@@ -12936,7 +12981,9 @@ inherit_task_group(struct perf_event *event, struct task_struct *parent,
+ 	struct perf_event_context *child_ctx;
+ 
+ 	if (!event->attr.inherit ||
+-	    (event->attr.inherit_thread && !(clone_flags & CLONE_THREAD))) {
++	    (event->attr.inherit_thread && !(clone_flags & CLONE_THREAD)) ||
++	    /* Do not inherit if sigtrap and signal handlers were cleared. */
++	    (event->attr.sigtrap && (clone_flags & CLONE_CLEAR_SIGHAND))) {
+ 		*inherited_all = 0;
+ 		return 0;
+ 	}
