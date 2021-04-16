@@ -2,55 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 18CBC362360
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 Apr 2021 17:04:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA4EA36248D
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 Apr 2021 17:55:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245477AbhDPPCZ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 16 Apr 2021 11:02:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50918 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245427AbhDPPCT (ORCPT
+        id S235867AbhDPPyN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 16 Apr 2021 11:54:13 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:58184 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235689AbhDPPyH (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 16 Apr 2021 11:02:19 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96817C06138A;
-        Fri, 16 Apr 2021 08:01:54 -0700 (PDT)
-Date:   Fri, 16 Apr 2021 15:01:52 -0000
+        Fri, 16 Apr 2021 11:54:07 -0400
+Date:   Fri, 16 Apr 2021 15:53:40 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1618585313;
+        s=2020; t=1618588421;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=gjSIFZMc4fVpUnEimnjOqoL/dmLQH1GtXHPbFt00Wpo=;
-        b=vRj1oHwXAwMp4dbqwWEqu/xAYBGaVfOqhLrKFb5VA6WyxtXQGNjvs4QIBIqtYETP9gcLDD
-        SyEQl+EHnymqx91xverBRbvj5CYeuL7x68wmlzK565ZEHxvDlYPlM3BKI1OXsf0YitTPUf
-        39U90+uBO0kyd3d8P9CKAvFPX0zbQftLGQ+YKdIxB/wXyx7AW+DFRakKQxn80aAGm4Lszv
-        4xxFH18VmxrTxZ0Pdi9OXEbyS0yKBipInPjWSMnYSHukp90xybAvDCwB8gJXEmK19NDkn4
-        sJfGD2aAlyBgiEmHzXK5SowmmxvwY9xX4z/pJh7601sb6P5lPKU6cZdraEiifA==
+        bh=Lnu4T3cswxls+tJVsMJI6VS7beKHORnpxNYvU6mtNig=;
+        b=GTwS/cWuFDwUPxiOVbxciaIYGmTUFgY5o29Ku9KAJN23bgRGCU8Piw68y7hHVcG//pLO+K
+        q+G/LqQWFdewxQOLDJt8TorxvNGXFXcKd3FdQPt7v/MT1Nh6+d+wCbWY4hIuKVrLVG70YK
+        yLUL1oIrj7GSDN+P3t/AqwEuusQHTzkAfUP6GnK3jIIJyS7cM/RO5HSN3yujeimPJGJxfj
+        JcunWhioYcviUVkOpq0czMkudaSdljrByiV7DQ1qNNiz5jg5SYxjBJSHcfddlbdoQM/Q5H
+        MmMh94uAZpX8Kr+bKAj/pYeGdO2sOUYd52bHk9bnWcOzArqw3klX79cDiowOJA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1618585313;
+        s=2020e; t=1618588421;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=gjSIFZMc4fVpUnEimnjOqoL/dmLQH1GtXHPbFt00Wpo=;
-        b=3fPzNzbaR8+GF4pOAuuNOweXCDQF4VUQyLbNPuI7Zhe3LYNxgd7WKLMaPNBL7uzr0KE+MY
-        nJeqeMdq6+JWj/BQ==
-From:   "tip-bot2 for Alexander Shishkin" <tip-bot2@linutronix.de>
+        bh=Lnu4T3cswxls+tJVsMJI6VS7beKHORnpxNYvU6mtNig=;
+        b=8bpS5M7My6Od2n5ZkxomTWXhtZcKpd+N1RKfkSNeDrPlJFynZ1GBS3rkX1wyI0uKQe1Cx0
+        pa5V1xt6fOwwAWAw==
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf: Cap allocation order at aux_watermark
-Cc:     Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20210414154955.49603-2-alexander.shishkin@linux.intel.com>
-References: <20210414154955.49603-2-alexander.shishkin@linux.intel.com>
+Subject: [tip: sched/core] sched,fair: Alternative sched_slice()
+Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Valentin Schneider <valentin.schneider@arm.com>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20210412102001.611897312@infradead.org>
+References: <20210412102001.611897312@infradead.org>
 MIME-Version: 1.0
-Message-ID: <161858531260.29796.6094672207320806626.tip-bot2@tip-bot2>
+Message-ID: <161858842081.29796.1137333756957597015.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,85 +56,73 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/core branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     d68e6799a5c87f415d3bfa0dea49caee28ab00d1
-Gitweb:        https://git.kernel.org/tip/d68e6799a5c87f415d3bfa0dea49caee28ab00d1
-Author:        Alexander Shishkin <alexander.shishkin@linux.intel.com>
-AuthorDate:    Wed, 14 Apr 2021 18:49:54 +03:00
+Commit-ID:     0c2de3f054a59f15e01804b75a04355c48de628c
+Gitweb:        https://git.kernel.org/tip/0c2de3f054a59f15e01804b75a04355c48de628c
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Thu, 25 Mar 2021 13:44:46 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Fri, 16 Apr 2021 16:32:39 +02:00
+CommitterDate: Fri, 16 Apr 2021 17:06:35 +02:00
 
-perf: Cap allocation order at aux_watermark
+sched,fair: Alternative sched_slice()
 
-Currently, we start allocating AUX pages half the size of the total
-requested AUX buffer size, ignoring the attr.aux_watermark setting. This,
-in turn, makes intel_pt driver disregard the watermark also, as it uses
-page order for its SG (ToPA) configuration.
+The current sched_slice() seems to have issues; there's two possible
+things that could be improved:
 
-Now, this can be fixed in the intel_pt PMU driver, but seeing as it's the
-only one currently making use of high order allocations, there is no
-reason not to fix the allocator instead. This way, any other driver
-wishing to add this support would not have to worry about this.
+ - the 'nr_running' used for __sched_period() is daft when cgroups are
+   considered. Using the RQ wide h_nr_running seems like a much more
+   consistent number.
 
-Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+ - (esp) cgroups can slice it real fine, which makes for easy
+   over-scheduling, ensure min_gran is what the name says.
+
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20210414154955.49603-2-alexander.shishkin@linux.intel.com
+Tested-by: Valentin Schneider <valentin.schneider@arm.com>
+Link: https://lkml.kernel.org/r/20210412102001.611897312@infradead.org
 ---
- kernel/events/ring_buffer.c | 34 ++++++++++++++++++----------------
- 1 file changed, 18 insertions(+), 16 deletions(-)
+ kernel/sched/fair.c     | 12 +++++++++++-
+ kernel/sched/features.h |  3 +++
+ 2 files changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/events/ring_buffer.c b/kernel/events/ring_buffer.c
-index bd55ccc..5286871 100644
---- a/kernel/events/ring_buffer.c
-+++ b/kernel/events/ring_buffer.c
-@@ -674,21 +674,26 @@ int rb_alloc_aux(struct perf_buffer *rb, struct perf_event *event,
- 	if (!has_aux(event))
- 		return -EOPNOTSUPP;
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index b3ea14c..49636a4 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -687,7 +687,13 @@ static u64 __sched_period(unsigned long nr_running)
+  */
+ static u64 sched_slice(struct cfs_rq *cfs_rq, struct sched_entity *se)
+ {
+-	u64 slice = __sched_period(cfs_rq->nr_running + !se->on_rq);
++	unsigned int nr_running = cfs_rq->nr_running;
++	u64 slice;
++
++	if (sched_feat(ALT_PERIOD))
++		nr_running = rq_of(cfs_rq)->cfs.h_nr_running;
++
++	slice = __sched_period(nr_running + !se->on_rq);
  
--	/*
--	 * We need to start with the max_order that fits in nr_pages,
--	 * not the other way around, hence ilog2() and not get_order.
--	 */
--	max_order = ilog2(nr_pages);
--
--	/*
--	 * PMU requests more than one contiguous chunks of memory
--	 * for SW double buffering
--	 */
- 	if (!overwrite) {
--		if (!max_order)
--			return -EINVAL;
-+		/*
-+		 * Watermark defaults to half the buffer, and so does the
-+		 * max_order, to aid PMU drivers in double buffering.
-+		 */
-+		if (!watermark)
-+			watermark = nr_pages << (PAGE_SHIFT - 1);
- 
--		max_order--;
-+		/*
-+		 * Use aux_watermark as the basis for chunking to
-+		 * help PMU drivers honor the watermark.
-+		 */
-+		max_order = get_order(watermark);
-+	} else {
-+		/*
-+		 * We need to start with the max_order that fits in nr_pages,
-+		 * not the other way around, hence ilog2() and not get_order.
-+		 */
-+		max_order = ilog2(nr_pages);
-+		watermark = 0;
+ 	for_each_sched_entity(se) {
+ 		struct load_weight *load;
+@@ -704,6 +710,10 @@ static u64 sched_slice(struct cfs_rq *cfs_rq, struct sched_entity *se)
+ 		}
+ 		slice = __calc_delta(slice, se->load.weight, load);
  	}
++
++	if (sched_feat(BASE_SLICE))
++		slice = max(slice, (u64)sysctl_sched_min_granularity);
++
+ 	return slice;
+ }
  
- 	rb->aux_pages = kcalloc_node(nr_pages, sizeof(void *), GFP_KERNEL,
-@@ -743,9 +748,6 @@ int rb_alloc_aux(struct perf_buffer *rb, struct perf_event *event,
- 	rb->aux_overwrite = overwrite;
- 	rb->aux_watermark = watermark;
- 
--	if (!rb->aux_watermark && !rb->aux_overwrite)
--		rb->aux_watermark = nr_pages << (PAGE_SHIFT - 1);
--
- out:
- 	if (!ret)
- 		rb->aux_pgoff = pgoff;
+diff --git a/kernel/sched/features.h b/kernel/sched/features.h
+index 422fa68..011c5ec 100644
+--- a/kernel/sched/features.h
++++ b/kernel/sched/features.h
+@@ -90,3 +90,6 @@ SCHED_FEAT(WA_BIAS, true)
+  */
+ SCHED_FEAT(UTIL_EST, true)
+ SCHED_FEAT(UTIL_EST_FASTUP, true)
++
++SCHED_FEAT(ALT_PERIOD, true)
++SCHED_FEAT(BASE_SLICE, true)
