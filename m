@@ -2,19 +2,16 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F2FDE362498
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 Apr 2021 17:55:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 819F7362494
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 Apr 2021 17:55:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235820AbhDPPyU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 16 Apr 2021 11:54:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34664 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236088AbhDPPyL (ORCPT
+        id S236240AbhDPPyT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 16 Apr 2021 11:54:19 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:58240 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236027AbhDPPyK (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 16 Apr 2021 11:54:11 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89A65C06175F;
-        Fri, 16 Apr 2021 08:53:46 -0700 (PDT)
+        Fri, 16 Apr 2021 11:54:10 -0400
 Date:   Fri, 16 Apr 2021 15:53:44 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1618588425;
@@ -23,12 +20,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=VZoebXQ8Mgg7UhRKnMD9HerFEyIYyqA2Y9vKuqLHlFs=;
-        b=gr+b+mL3XpYUzz30PBSYJ6Cu4lhr/U8MqgMhDKKWvn/qB2nmkJsDpDqP8NW8cZ2hLd3QjL
-        OnC8VcJ/xBTREFdZRz27aiNw/Ri14SjAi18xu7zsClP5ln9Bmjkb7cjbu8wN37hzLpNOMc
-        LsR4ZCL65GHBFHHzbve3jqgxBxr5bwGav7yEIVvAxVXX7TmXpRcgmla6WnTW8qy+LV0Kmp
-        w2ciA/pk4/lF+PJzJwmmjgsX4Ssa3tGgrRKNIv1eMxog8f3KVeHmW0wEg/1O4HG4ANh5HO
-        65eC4UUt8dCEL/jfVdgUTBr3kdlagQFO59ugtFw/Amz5GozS4atOcgI0GRvG8w==
+        bh=6qE2yJxzonP8C3SKSYcvuIhy8zvJ6gGv7M6CIrXOX8M=;
+        b=Q75a8yZl/VC20snywhYzn914oswykE18phOuGiAn0/HyMovtSG24Darmf9rEBBds4XuEs8
+        01395IK1TMqq4qtcsZ0CbPkVO/ZZpsad+QOjFg0SBw0RZ0Tc9zNyryZ6o5Kt47bSbRBBqM
+        IKoM3rvy7YMBzGOXmtG+n0XG5k+lz83mQ5noiJEl0cC2keeDYQuxR7vXug4nOCbsYw6hYP
+        231pG5PrlF8d9c09PGcM3MhMMuiQBliiSrbVUX/0OzjdYUNw6yWAVCboTyidYExiO85t3H
+        Q+A4UPhdt2tw9doFruvalBR0JK0P3BBbeAJru5XD8joJRLSCW3KIc4Tq6lPTXQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1618588425;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,22 +33,21 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=VZoebXQ8Mgg7UhRKnMD9HerFEyIYyqA2Y9vKuqLHlFs=;
-        b=BEfeo6XWA5U8cKGUo8h7zKOEXw0YfZKHwEznPc1VALTYSSQiC4SeA5P2liTj12IGQRHJuO
-        EdN2qy5N+YNG6YDQ==
+        bh=6qE2yJxzonP8C3SKSYcvuIhy8zvJ6gGv7M6CIrXOX8M=;
+        b=GujCNFZu47yyAfLi0n0B7crlSlgxGQMrb3lyJeN3waCs7K7BUpoP9UGXco1DANn9XfMk+L
+        oOEuY8s27kVoQoCg==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched: Use cpu_dying() to fix balance_push vs
- hotplug-rollback
+Subject: [tip: sched/core] cpumask: Introduce DYING mask
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Valentin Schneider <valentin.schneider@arm.com>,
         x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <YHgAYef83VQhKdC2@hirez.programming.kicks-ass.net>
-References: <YHgAYef83VQhKdC2@hirez.programming.kicks-ass.net>
+In-Reply-To: <20210310150109.151441252@infradead.org>
+References: <20210310150109.151441252@infradead.org>
 MIME-Version: 1.0
-Message-ID: <161858842443.29796.7574048202320693227.tip-bot2@tip-bot2>
+Message-ID: <161858842478.29796.12244189943849858201.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -62,139 +58,105 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     b5c4477366fb5e6a2f0f38742c33acd666c07698
-Gitweb:        https://git.kernel.org/tip/b5c4477366fb5e6a2f0f38742c33acd666c07698
+Commit-ID:     e40f74c535b8a0ecf3ef0388b51a34cdadb34fb5
+Gitweb:        https://git.kernel.org/tip/e40f74c535b8a0ecf3ef0388b51a34cdadb34fb5
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Thu, 21 Jan 2021 16:09:32 +01:00
+AuthorDate:    Tue, 19 Jan 2021 18:43:45 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Fri, 16 Apr 2021 17:06:32 +02:00
 
-sched: Use cpu_dying() to fix balance_push vs hotplug-rollback
+cpumask: Introduce DYING mask
 
-Use the new cpu_dying() state to simplify and fix the balance_push()
-vs CPU hotplug rollback state.
-
-Specifically, we currently rely on notifiers sched_cpu_dying() /
-sched_cpu_activate() to terminate balance_push, however if the
-cpu_down() fails when we're past sched_cpu_deactivate(), it should
-terminate balance_push at that point and not wait until we hit
-sched_cpu_activate().
-
-Similarly, when cpu_up() fails and we're going back down, balance_push
-should be active, where it currently is not.
-
-So instead, make sure balance_push is enabled below SCHED_AP_ACTIVE
-(when !cpu_active()), and gate it's utility with cpu_dying().
+Introduce a cpumask that indicates (for each CPU) what direction the
+CPU hotplug is currently going. Notably, it tracks rollbacks. Eg. when
+an up fails and we do a roll-back down, it will accurately reflect the
+direction.
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Valentin Schneider <valentin.schneider@arm.com>
-Link: https://lkml.kernel.org/r/YHgAYef83VQhKdC2@hirez.programming.kicks-ass.net
+Link: https://lkml.kernel.org/r/20210310150109.151441252@infradead.org
 ---
- kernel/sched/core.c  | 26 +++++++++++++++-----------
- kernel/sched/sched.h |  1 -
- 2 files changed, 15 insertions(+), 12 deletions(-)
+ include/linux/cpumask.h | 20 ++++++++++++++++++++
+ kernel/cpu.c            |  6 ++++++
+ 2 files changed, 26 insertions(+)
 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 95bd6ab..7d031da 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -1811,7 +1811,7 @@ static inline bool is_cpu_allowed(struct task_struct *p, int cpu)
- 		return cpu_online(cpu);
+diff --git a/include/linux/cpumask.h b/include/linux/cpumask.h
+index a584336..e6b948a 100644
+--- a/include/linux/cpumask.h
++++ b/include/linux/cpumask.h
+@@ -91,10 +91,12 @@ extern struct cpumask __cpu_possible_mask;
+ extern struct cpumask __cpu_online_mask;
+ extern struct cpumask __cpu_present_mask;
+ extern struct cpumask __cpu_active_mask;
++extern struct cpumask __cpu_dying_mask;
+ #define cpu_possible_mask ((const struct cpumask *)&__cpu_possible_mask)
+ #define cpu_online_mask   ((const struct cpumask *)&__cpu_online_mask)
+ #define cpu_present_mask  ((const struct cpumask *)&__cpu_present_mask)
+ #define cpu_active_mask   ((const struct cpumask *)&__cpu_active_mask)
++#define cpu_dying_mask    ((const struct cpumask *)&__cpu_dying_mask)
  
- 	/* Regular kernel threads don't get to stay during offline. */
--	if (cpu_rq(cpu)->balance_push)
-+	if (cpu_dying(cpu))
- 		return false;
+ extern atomic_t __num_online_cpus;
  
- 	/* But are allowed during online. */
-@@ -7638,6 +7638,9 @@ static DEFINE_PER_CPU(struct cpu_stop_work, push_work);
+@@ -826,6 +828,14 @@ set_cpu_active(unsigned int cpu, bool active)
+ 		cpumask_clear_cpu(cpu, &__cpu_active_mask);
+ }
  
- /*
-  * Ensure we only run per-cpu kthreads once the CPU goes !active.
-+ *
-+ * This is enabled below SCHED_AP_ACTIVE; when !cpu_active(), but only
-+ * effective when the hotplug motion is down.
-  */
- static void balance_push(struct rq *rq)
- {
-@@ -7645,12 +7648,19 @@ static void balance_push(struct rq *rq)
++static inline void
++set_cpu_dying(unsigned int cpu, bool dying)
++{
++	if (dying)
++		cpumask_set_cpu(cpu, &__cpu_dying_mask);
++	else
++		cpumask_clear_cpu(cpu, &__cpu_dying_mask);
++}
  
- 	lockdep_assert_held(&rq->lock);
- 	SCHED_WARN_ON(rq->cpu != smp_processor_id());
+ /**
+  * to_cpumask - convert an NR_CPUS bitmap to a struct cpumask *
+@@ -900,6 +910,11 @@ static inline bool cpu_active(unsigned int cpu)
+ 	return cpumask_test_cpu(cpu, cpu_active_mask);
+ }
+ 
++static inline bool cpu_dying(unsigned int cpu)
++{
++	return cpumask_test_cpu(cpu, cpu_dying_mask);
++}
 +
- 	/*
- 	 * Ensure the thing is persistent until balance_push_set(.on = false);
- 	 */
- 	rq->balance_callback = &balance_push_callback;
+ #else
  
- 	/*
-+	 * Only active while going offline.
-+	 */
-+	if (!cpu_dying(rq->cpu))
-+		return;
+ #define num_online_cpus()	1U
+@@ -927,6 +942,11 @@ static inline bool cpu_active(unsigned int cpu)
+ 	return cpu == 0;
+ }
+ 
++static inline bool cpu_dying(unsigned int cpu)
++{
++	return false;
++}
 +
-+	/*
- 	 * Both the cpu-hotplug and stop task are in this case and are
- 	 * required to complete the hotplug process.
- 	 *
-@@ -7703,7 +7713,6 @@ static void balance_push_set(int cpu, bool on)
- 	struct rq_flags rf;
+ #endif /* NR_CPUS > 1 */
  
- 	rq_lock_irqsave(rq, &rf);
--	rq->balance_push = on;
- 	if (on) {
- 		WARN_ON_ONCE(rq->balance_callback);
- 		rq->balance_callback = &balance_push_callback;
-@@ -7828,8 +7837,8 @@ int sched_cpu_activate(unsigned int cpu)
- 	struct rq_flags rf;
+ #define cpu_is_offline(cpu)	unlikely(!cpu_online(cpu))
+diff --git a/kernel/cpu.c b/kernel/cpu.c
+index 23505d6..838dcf2 100644
+--- a/kernel/cpu.c
++++ b/kernel/cpu.c
+@@ -160,6 +160,9 @@ static int cpuhp_invoke_callback(unsigned int cpu, enum cpuhp_state state,
+ 	int (*cb)(unsigned int cpu);
+ 	int ret, cnt;
  
- 	/*
--	 * Make sure that when the hotplug state machine does a roll-back
--	 * we clear balance_push. Ideally that would happen earlier...
-+	 * Clear the balance_push callback and prepare to schedule
-+	 * regular tasks.
- 	 */
- 	balance_push_set(cpu, false);
++	if (cpu_dying(cpu) != !bringup)
++		set_cpu_dying(cpu, !bringup);
++
+ 	if (st->fail == state) {
+ 		st->fail = CPUHP_INVALID;
+ 		return -EAGAIN;
+@@ -2512,6 +2515,9 @@ EXPORT_SYMBOL(__cpu_present_mask);
+ struct cpumask __cpu_active_mask __read_mostly;
+ EXPORT_SYMBOL(__cpu_active_mask);
  
-@@ -8014,12 +8023,6 @@ int sched_cpu_dying(unsigned int cpu)
- 	}
- 	rq_unlock_irqrestore(rq, &rf);
++struct cpumask __cpu_dying_mask __read_mostly;
++EXPORT_SYMBOL(__cpu_dying_mask);
++
+ atomic_t __num_online_cpus __read_mostly;
+ EXPORT_SYMBOL(__num_online_cpus);
  
--	/*
--	 * Now that the CPU is offline, make sure we're welcome
--	 * to new tasks once we come back up.
--	 */
--	balance_push_set(cpu, false);
--
- 	calc_load_migrate(rq);
- 	update_max_interval();
- 	hrtick_clear(rq);
-@@ -8204,7 +8207,7 @@ void __init sched_init(void)
- 		rq->sd = NULL;
- 		rq->rd = NULL;
- 		rq->cpu_capacity = rq->cpu_capacity_orig = SCHED_CAPACITY_SCALE;
--		rq->balance_callback = NULL;
-+		rq->balance_callback = &balance_push_callback;
- 		rq->active_balance = 0;
- 		rq->next_balance = jiffies;
- 		rq->push_cpu = 0;
-@@ -8251,6 +8254,7 @@ void __init sched_init(void)
- 
- #ifdef CONFIG_SMP
- 	idle_thread_set_boot_cpu();
-+	balance_push_set(smp_processor_id(), false);
- #endif
- 	init_sched_fair_class();
- 
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index cbb0b01..7e7e936 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -983,7 +983,6 @@ struct rq {
- 	unsigned long		cpu_capacity_orig;
- 
- 	struct callback_head	*balance_callback;
--	unsigned char		balance_push;
- 
- 	unsigned char		nohz_idle_balance;
- 	unsigned char		idle_balance;
