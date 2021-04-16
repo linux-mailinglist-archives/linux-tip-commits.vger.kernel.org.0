@@ -2,19 +2,16 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 50EA5362358
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 Apr 2021 17:04:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 62E1D362356
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 Apr 2021 17:04:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245450AbhDPPCV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 16 Apr 2021 11:02:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50894 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245347AbhDPPCR (ORCPT
+        id S245102AbhDPPCT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 16 Apr 2021 11:02:19 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:57832 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S245208AbhDPPCQ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 16 Apr 2021 11:02:17 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D48DC061760;
-        Fri, 16 Apr 2021 08:01:52 -0700 (PDT)
+        Fri, 16 Apr 2021 11:02:16 -0400
 Date:   Fri, 16 Apr 2021 15:01:50 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1618585311;
@@ -23,12 +20,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=dN02knF80B8Q5ThVImZNLeKLw0QWas3On367Qt6nCq4=;
-        b=dIenI8Jrp7hvZzY7+C2S51ewa3rLE+mOl9rxTcLH1Cdf80FWNEAsPmOTDM8mh5ahnj1OZC
-        UcG2P5gPTiKFimjnBRhGVR7ABllAa+/bolVSDVnILBh2rb9jrOhFo4E0MYnoOx9cE/e9e6
-        y/OpXZAnNCNSJe/WtqTXd5A876vtvNCMEMT9Lr53PmyXWgFaUphjAciXkTL5bl6mHSYUhc
-        1umFPyzKyTvUoWCUygV/1qpdMzYvu5k3VtSAhjUAsps4AUCITo5rVu2AhIia5LSZ7hmY8o
-        T0ow8nmIfIGiiI4P8NdBRGZYY6cZepxonc9462LNuvI4ef/UOcrzmTW7fNmqOg==
+        bh=q5p/HiBBoL8SnE05EfvmU4VLP0k7Rt1yt5rj7nPNHJ0=;
+        b=lZbYnesmlPzZHGVFWB27TSsHK35UW4wVOYPj/6Pbx8kFykpfQIavFO4sNXyPqO65msPWTH
+        ERgEiXP2agDURt7nUcKRAsly+zc8vPWHlopAkX0qanbF9LXKSfJ/KfyX1atwK8MqFVOW7C
+        YvpvPB55m0hktWRnoBE5jEEjKNniijE8zuAvHllEiPx8iHXUQeycwBh+QmeYAGL9FA7fdY
+        E4KaHTzAio/iIfZ99HqSJ05ePkhzJDiDG79SIktydqYvGiJjcOC+FRtgLlX7M0RjJ/p5qF
+        7MAJ3bAlZHZ8NrHZXL+b/+lcWiIlQsdUGVInhIbBbP5IUCiIavJqD009kkSFkQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1618585311;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,23 +33,21 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=dN02knF80B8Q5ThVImZNLeKLw0QWas3On367Qt6nCq4=;
-        b=G5cRfuAEoHClni8liCVYoGgqIcYPoGf6PGx0xW9s4owym7AmkefwTxWXHcvpUZbAvu0ZEP
-        9hCNE9rmiw/EECCg==
+        bh=q5p/HiBBoL8SnE05EfvmU4VLP0k7Rt1yt5rj7nPNHJ0=;
+        b=ImkdTYUbx6bFMfKN1MRHIXi6MF3BJVrQ2CZyTLEN6ztvC3GwLKq52DZ+tA1ZlSjHw589h0
+        HOQVTU8+iGXePPCw==
 From:   "tip-bot2 for Marco Elver" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] signal: Introduce TRAP_PERF si_code and si_perf to siginfo
-Cc:     Marco Elver <elver@google.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Arnd Bergmann <arnd@arndb.de>, x86@kernel.org,
+Subject: [tip: perf/core] perf: Add support for event removal on exec
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        Marco Elver <elver@google.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210408103605.1676875-6-elver@google.com>
-References: <20210408103605.1676875-6-elver@google.com>
+In-Reply-To: <20210408103605.1676875-5-elver@google.com>
+References: <20210408103605.1676875-5-elver@google.com>
 MIME-Version: 1.0
-Message-ID: <161858531033.29796.1442507652274621227.tip-bot2@tip-bot2>
+Message-ID: <161858531071.29796.4506820814392849055.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -63,212 +58,141 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     fb6cc127e0b6e629252cdd0f77d5a1f49db95b92
-Gitweb:        https://git.kernel.org/tip/fb6cc127e0b6e629252cdd0f77d5a1f49db95b92
+Commit-ID:     2e498d0a74e5b88a6689ae1b811f247f91ff188e
+Gitweb:        https://git.kernel.org/tip/2e498d0a74e5b88a6689ae1b811f247f91ff188e
 Author:        Marco Elver <elver@google.com>
-AuthorDate:    Thu, 08 Apr 2021 12:36:00 +02:00
+AuthorDate:    Thu, 08 Apr 2021 12:35:59 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Fri, 16 Apr 2021 16:32:41 +02:00
 
-signal: Introduce TRAP_PERF si_code and si_perf to siginfo
+perf: Add support for event removal on exec
 
-Introduces the TRAP_PERF si_code, and associated siginfo_t field
-si_perf. These will be used by the perf event subsystem to send signals
-(if requested) to the task where an event occurred.
+Adds bit perf_event_attr::remove_on_exec, to support removing an event
+from a task on exec.
 
+This option supports the case where an event is supposed to be
+process-wide only, and should not propagate beyond exec, to limit
+monitoring to the original process image only.
+
+Suggested-by: Peter Zijlstra <peterz@infradead.org>
 Signed-off-by: Marco Elver <elver@google.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Geert Uytterhoeven <geert@linux-m68k.org> # m68k
-Acked-by: Arnd Bergmann <arnd@arndb.de> # asm-generic
-Link: https://lkml.kernel.org/r/20210408103605.1676875-6-elver@google.com
+Link: https://lkml.kernel.org/r/20210408103605.1676875-5-elver@google.com
 ---
- arch/m68k/kernel/signal.c          |  3 +++
- arch/x86/kernel/signal_compat.c    |  5 ++++-
- fs/signalfd.c                      |  4 ++++
- include/linux/compat.h             |  2 ++
- include/linux/signal.h             |  1 +
- include/uapi/asm-generic/siginfo.h |  6 +++++-
- include/uapi/linux/signalfd.h      |  4 +++-
- kernel/signal.c                    | 11 +++++++++++
- 8 files changed, 33 insertions(+), 3 deletions(-)
+ include/uapi/linux/perf_event.h |  3 +-
+ kernel/events/core.c            | 70 ++++++++++++++++++++++++++++----
+ 2 files changed, 64 insertions(+), 9 deletions(-)
 
-diff --git a/arch/m68k/kernel/signal.c b/arch/m68k/kernel/signal.c
-index 349570f..a4b7ee1 100644
---- a/arch/m68k/kernel/signal.c
-+++ b/arch/m68k/kernel/signal.c
-@@ -622,6 +622,9 @@ static inline void siginfo_build_tests(void)
- 	/* _sigfault._addr_pkey */
- 	BUILD_BUG_ON(offsetof(siginfo_t, si_pkey) != 0x12);
+diff --git a/include/uapi/linux/perf_event.h b/include/uapi/linux/perf_event.h
+index 813efb6..8c5b9f5 100644
+--- a/include/uapi/linux/perf_event.h
++++ b/include/uapi/linux/perf_event.h
+@@ -390,7 +390,8 @@ struct perf_event_attr {
+ 				text_poke      :  1, /* include text poke events */
+ 				build_id       :  1, /* use build id in mmap2 events */
+ 				inherit_thread :  1, /* children only inherit if cloned with CLONE_THREAD */
+-				__reserved_1   : 28;
++				remove_on_exec :  1, /* event is removed from task on exec */
++				__reserved_1   : 27;
  
-+	/* _sigfault._perf */
-+	BUILD_BUG_ON(offsetof(siginfo_t, si_perf) != 0x10);
+ 	union {
+ 		__u32		wakeup_events;	  /* wakeup every n events */
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 3e3c00f..e4a584b 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -4248,6 +4248,57 @@ out:
+ 		put_ctx(clone_ctx);
+ }
+ 
++static void perf_remove_from_owner(struct perf_event *event);
++static void perf_event_exit_event(struct perf_event *event,
++				  struct perf_event_context *ctx);
 +
- 	/* _sigpoll */
- 	BUILD_BUG_ON(offsetof(siginfo_t, si_band)   != 0x0c);
- 	BUILD_BUG_ON(offsetof(siginfo_t, si_fd)     != 0x10);
-diff --git a/arch/x86/kernel/signal_compat.c b/arch/x86/kernel/signal_compat.c
-index a5330ff..0e5d0a7 100644
---- a/arch/x86/kernel/signal_compat.c
-+++ b/arch/x86/kernel/signal_compat.c
-@@ -29,7 +29,7 @@ static inline void signal_compat_build_tests(void)
- 	BUILD_BUG_ON(NSIGFPE  != 15);
- 	BUILD_BUG_ON(NSIGSEGV != 9);
- 	BUILD_BUG_ON(NSIGBUS  != 5);
--	BUILD_BUG_ON(NSIGTRAP != 5);
-+	BUILD_BUG_ON(NSIGTRAP != 6);
- 	BUILD_BUG_ON(NSIGCHLD != 6);
- 	BUILD_BUG_ON(NSIGSYS  != 2);
- 
-@@ -138,6 +138,9 @@ static inline void signal_compat_build_tests(void)
- 	BUILD_BUG_ON(offsetof(siginfo_t, si_pkey) != 0x20);
- 	BUILD_BUG_ON(offsetof(compat_siginfo_t, si_pkey) != 0x14);
- 
-+	BUILD_BUG_ON(offsetof(siginfo_t, si_perf) != 0x18);
-+	BUILD_BUG_ON(offsetof(compat_siginfo_t, si_perf) != 0x10);
++/*
++ * Removes all events from the current task that have been marked
++ * remove-on-exec, and feeds their values back to parent events.
++ */
++static void perf_event_remove_on_exec(int ctxn)
++{
++	struct perf_event_context *ctx, *clone_ctx = NULL;
++	struct perf_event *event, *next;
++	LIST_HEAD(free_list);
++	unsigned long flags;
++	bool modified = false;
 +
- 	CHECK_CSI_OFFSET(_sigpoll);
- 	CHECK_CSI_SIZE  (_sigpoll, 2*sizeof(int));
- 	CHECK_SI_SIZE   (_sigpoll, 4*sizeof(int));
-diff --git a/fs/signalfd.c b/fs/signalfd.c
-index 456046e..040a114 100644
---- a/fs/signalfd.c
-+++ b/fs/signalfd.c
-@@ -134,6 +134,10 @@ static int signalfd_copyinfo(struct signalfd_siginfo __user *uinfo,
- #endif
- 		new.ssi_addr_lsb = (short) kinfo->si_addr_lsb;
- 		break;
-+	case SIL_PERF_EVENT:
-+		new.ssi_addr = (long) kinfo->si_addr;
-+		new.ssi_perf = kinfo->si_perf;
-+		break;
- 	case SIL_CHLD:
- 		new.ssi_pid    = kinfo->si_pid;
- 		new.ssi_uid    = kinfo->si_uid;
-diff --git a/include/linux/compat.h b/include/linux/compat.h
-index 6e65be7..c8821d9 100644
---- a/include/linux/compat.h
-+++ b/include/linux/compat.h
-@@ -236,6 +236,8 @@ typedef struct compat_siginfo {
- 					char _dummy_pkey[__COMPAT_ADDR_BND_PKEY_PAD];
- 					u32 _pkey;
- 				} _addr_pkey;
-+				/* used when si_code=TRAP_PERF */
-+				compat_u64 _perf;
- 			};
- 		} _sigfault;
++	ctx = perf_pin_task_context(current, ctxn);
++	if (!ctx)
++		return;
++
++	mutex_lock(&ctx->mutex);
++
++	if (WARN_ON_ONCE(ctx->task != current))
++		goto unlock;
++
++	list_for_each_entry_safe(event, next, &ctx->event_list, event_entry) {
++		if (!event->attr.remove_on_exec)
++			continue;
++
++		if (!is_kernel_event(event))
++			perf_remove_from_owner(event);
++
++		modified = true;
++
++		perf_event_exit_event(event, ctx);
++	}
++
++	raw_spin_lock_irqsave(&ctx->lock, flags);
++	if (modified)
++		clone_ctx = unclone_ctx(ctx);
++	--ctx->pin_count;
++	raw_spin_unlock_irqrestore(&ctx->lock, flags);
++
++unlock:
++	mutex_unlock(&ctx->mutex);
++
++	put_ctx(ctx);
++	if (clone_ctx)
++		put_ctx(clone_ctx);
++}
++
+ struct perf_read_data {
+ 	struct perf_event *event;
+ 	bool group;
+@@ -7560,18 +7611,18 @@ void perf_event_exec(void)
+ 	struct perf_event_context *ctx;
+ 	int ctxn;
  
-diff --git a/include/linux/signal.h b/include/linux/signal.h
-index 205526c..1e98548 100644
---- a/include/linux/signal.h
-+++ b/include/linux/signal.h
-@@ -43,6 +43,7 @@ enum siginfo_layout {
- 	SIL_FAULT_MCEERR,
- 	SIL_FAULT_BNDERR,
- 	SIL_FAULT_PKUERR,
-+	SIL_PERF_EVENT,
- 	SIL_CHLD,
- 	SIL_RT,
- 	SIL_SYS,
-diff --git a/include/uapi/asm-generic/siginfo.h b/include/uapi/asm-generic/siginfo.h
-index d259700..d0bb912 100644
---- a/include/uapi/asm-generic/siginfo.h
-+++ b/include/uapi/asm-generic/siginfo.h
-@@ -91,6 +91,8 @@ union __sifields {
- 				char _dummy_pkey[__ADDR_BND_PKEY_PAD];
- 				__u32 _pkey;
- 			} _addr_pkey;
-+			/* used when si_code=TRAP_PERF */
-+			__u64 _perf;
- 		};
- 	} _sigfault;
+-	rcu_read_lock();
+ 	for_each_task_context_nr(ctxn) {
+-		ctx = current->perf_event_ctxp[ctxn];
+-		if (!ctx)
+-			continue;
+-
+ 		perf_event_enable_on_exec(ctxn);
++		perf_event_remove_on_exec(ctxn);
  
-@@ -155,6 +157,7 @@ typedef struct siginfo {
- #define si_lower	_sifields._sigfault._addr_bnd._lower
- #define si_upper	_sifields._sigfault._addr_bnd._upper
- #define si_pkey		_sifields._sigfault._addr_pkey._pkey
-+#define si_perf		_sifields._sigfault._perf
- #define si_band		_sifields._sigpoll._band
- #define si_fd		_sifields._sigpoll._fd
- #define si_call_addr	_sifields._sigsys._call_addr
-@@ -253,7 +256,8 @@ typedef struct siginfo {
- #define TRAP_BRANCH     3	/* process taken branch trap */
- #define TRAP_HWBKPT     4	/* hardware breakpoint/watchpoint */
- #define TRAP_UNK	5	/* undiagnosed trap */
--#define NSIGTRAP	5
-+#define TRAP_PERF	6	/* perf event with sigtrap=1 */
-+#define NSIGTRAP	6
+-		perf_iterate_ctx(ctx, perf_event_addr_filters_exec, NULL,
+-				   true);
++		rcu_read_lock();
++		ctx = rcu_dereference(current->perf_event_ctxp[ctxn]);
++		if (ctx) {
++			perf_iterate_ctx(ctx, perf_event_addr_filters_exec,
++					 NULL, true);
++		}
++		rcu_read_unlock();
+ 	}
+-	rcu_read_unlock();
+ }
  
- /*
-  * There is an additional set of SIGTRAP si_codes used by ptrace
-diff --git a/include/uapi/linux/signalfd.h b/include/uapi/linux/signalfd.h
-index 83429a0..7e33304 100644
---- a/include/uapi/linux/signalfd.h
-+++ b/include/uapi/linux/signalfd.h
-@@ -39,6 +39,8 @@ struct signalfd_siginfo {
- 	__s32 ssi_syscall;
- 	__u64 ssi_call_addr;
- 	__u32 ssi_arch;
-+	__u32 __pad3;
-+	__u64 ssi_perf;
+ struct remote_output {
+@@ -11656,6 +11707,9 @@ static int perf_copy_attr(struct perf_event_attr __user *uattr,
+ 	if (!attr->inherit && attr->inherit_thread)
+ 		return -EINVAL;
  
- 	/*
- 	 * Pad strcture to 128 bytes. Remember to update the
-@@ -49,7 +51,7 @@ struct signalfd_siginfo {
- 	 * comes out of a read(2) and we really don't want to have
- 	 * a compat on read(2).
- 	 */
--	__u8 __pad[28];
-+	__u8 __pad[16];
- };
++	if (attr->remove_on_exec && attr->enable_on_exec)
++		return -EINVAL;
++
+ out:
+ 	return ret;
  
- 
-diff --git a/kernel/signal.c b/kernel/signal.c
-index ba4d1ef..f683518 100644
---- a/kernel/signal.c
-+++ b/kernel/signal.c
-@@ -1199,6 +1199,7 @@ static inline bool has_si_pid_and_uid(struct kernel_siginfo *info)
- 	case SIL_FAULT_MCEERR:
- 	case SIL_FAULT_BNDERR:
- 	case SIL_FAULT_PKUERR:
-+	case SIL_PERF_EVENT:
- 	case SIL_SYS:
- 		ret = false;
- 		break;
-@@ -2531,6 +2532,7 @@ static void hide_si_addr_tag_bits(struct ksignal *ksig)
- 	case SIL_FAULT_MCEERR:
- 	case SIL_FAULT_BNDERR:
- 	case SIL_FAULT_PKUERR:
-+	case SIL_PERF_EVENT:
- 		ksig->info.si_addr = arch_untagged_si_addr(
- 			ksig->info.si_addr, ksig->sig, ksig->info.si_code);
- 		break;
-@@ -3333,6 +3335,10 @@ void copy_siginfo_to_external32(struct compat_siginfo *to,
- #endif
- 		to->si_pkey = from->si_pkey;
- 		break;
-+	case SIL_PERF_EVENT:
-+		to->si_addr = ptr_to_compat(from->si_addr);
-+		to->si_perf = from->si_perf;
-+		break;
- 	case SIL_CHLD:
- 		to->si_pid = from->si_pid;
- 		to->si_uid = from->si_uid;
-@@ -3413,6 +3419,10 @@ static int post_copy_siginfo_from_user32(kernel_siginfo_t *to,
- #endif
- 		to->si_pkey = from->si_pkey;
- 		break;
-+	case SIL_PERF_EVENT:
-+		to->si_addr = compat_ptr(from->si_addr);
-+		to->si_perf = from->si_perf;
-+		break;
- 	case SIL_CHLD:
- 		to->si_pid    = from->si_pid;
- 		to->si_uid    = from->si_uid;
-@@ -4593,6 +4603,7 @@ static inline void siginfo_buildtime_checks(void)
- 	CHECK_OFFSET(si_lower);
- 	CHECK_OFFSET(si_upper);
- 	CHECK_OFFSET(si_pkey);
-+	CHECK_OFFSET(si_perf);
- 
- 	/* sigpoll */
- 	CHECK_OFFSET(si_band);
