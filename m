@@ -2,194 +2,89 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BC6D362496
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 Apr 2021 17:55:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CFEB43625F2
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 Apr 2021 18:45:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236253AbhDPPyT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 16 Apr 2021 11:54:19 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:58270 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236052AbhDPPyL (ORCPT
+        id S235631AbhDPQqL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 16 Apr 2021 12:46:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46394 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235595AbhDPQqL (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 16 Apr 2021 11:54:11 -0400
-Date:   Fri, 16 Apr 2021 15:53:45 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1618588425;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=0I1y9MZrhphYrDfk6yqvW3We/nuPC92yA0E/zHcvn6U=;
-        b=KAIA5qR9mRLX8nedrnKXUcVypSGVbAzEh6ff1GnM9nyYGfAdvTTZg/Qw+QHf0tVkesJZRm
-        Hb5IuG8Hj+PR6XOumM7tYlAfsGgbb3LLJO3AiWaEsXuTazMJYzidEPuvGscfuZaGm9Au/Z
-        MupnF3TPmr9jxZ+AdyOuT0VPkk2VLUaAGxLPCx5FA3sb+8MREiMonhaBw0+X3+2COLJmbR
-        F64FXmer4lw3dMvkn/yQAjMg37M7XnrZJ2+rfubA0+B6IMMr1RO98G3XKii0qYl6kxw2US
-        AWcs0B2H4HNuFghbrZ02/vpPdooFXqFugTFPv5Dk9BeHLCiws68CZpri2ijshA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1618588425;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=0I1y9MZrhphYrDfk6yqvW3We/nuPC92yA0E/zHcvn6U=;
-        b=IMazAZlD83ahY30pWwNjwLOZq4lyiD++pbF3oAviDdeFRY3G7z2Ko11Sy5h6dWvAyiuBxk
-        PUj3aUrzpr4KauAw==
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] cpumask: Make cpu_{online,possible,present,active}() inline
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Valentin Schneider <valentin.schneider@arm.com>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20210310150109.045447765@infradead.org>
-References: <20210310150109.045447765@infradead.org>
+        Fri, 16 Apr 2021 12:46:11 -0400
+Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B657DC061574;
+        Fri, 16 Apr 2021 09:45:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=SU5YU752/kL0HaPZmbBFtkCpzORBnBap3r0L072kgFA=; b=EmquF9WRfeZAXpLdxYmAEyD/+m
+        rdESI31uBHBJap7lOaAMrfjD2CroYlehdGzR/+9Ci9TFaMnlcZXsQwZI9Ld3fpYYxxvn8EoECHAkX
+        CUhR0HOpTbrCTZNfo9GA3gzOphG/mwLmIyyAkvakYMerDmIDd0nHhliFC8xt1KS+yovXSbERgPBxP
+        mzQ65IfBUTwrAzEZhOG+Gpif57rk2FDYQlXEdx/9Y0p9TwRXBDxrJS8X2qMbRS4Ht98Qi4a3OBv3u
+        tRVaT5AM2Io0Vr570JjLw1/ZXroB/oJvzFhC/GGqm+g0Iyq/Fg30LqhCeGrmEwQTh95WAn21w7rg+
+        b2eh3+3A==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
+        by desiato.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
+        id 1lXRbB-002qOF-2K; Fri, 16 Apr 2021 16:45:43 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id D3A6C300212;
+        Fri, 16 Apr 2021 18:45:39 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id BF14320C8DE34; Fri, 16 Apr 2021 18:45:39 +0200 (CEST)
+Date:   Fri, 16 Apr 2021 18:45:39 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-tip-commits@vger.kernel.org,
+        Kan Liang <kan.liang@linux.intel.com>, x86@kernel.org
+Subject: Re: [tip: perf/core] perf/x86: Reset the dirty counter to prevent
+ the leak for an RDPMC task
+Message-ID: <YHm/M4za2LpRYePw@hirez.programming.kicks-ass.net>
+References: <1618410990-21383-2-git-send-email-kan.liang@linux.intel.com>
+ <161858530850.29796.5870405530830102241.tip-bot2@tip-bot2>
 MIME-Version: 1.0
-Message-ID: <161858842514.29796.3881459178050340077.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <161858530850.29796.5870405530830102241.tip-bot2@tip-bot2>
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+On Fri, Apr 16, 2021 at 03:01:48PM -0000, tip-bot2 for Kan Liang wrote:
+> @@ -2331,6 +2367,9 @@ static void x86_pmu_event_unmapped(struct perf_event *event, struct mm_struct *m
+>  	if (!(event->hw.flags & PERF_X86_EVENT_RDPMC_ALLOWED))
+>  		return;
+>  
+> +	if (x86_pmu.sched_task && event->hw.target)
+> +		perf_sched_cb_dec(event->ctx->pmu);
+> +
+>  	if (atomic_dec_and_test(&mm->context.perf_rdpmc_allowed))
+>  		on_each_cpu_mask(mm_cpumask(mm), cr4_update_pce, NULL, 1);
+>  }
 
-Commit-ID:     b02a4fd8148f655095d9e3d6eddd8f0042bcc27c
-Gitweb:        https://git.kernel.org/tip/b02a4fd8148f655095d9e3d6eddd8f0042bcc27c
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Mon, 25 Jan 2021 16:46:49 +01:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Fri, 16 Apr 2021 17:06:32 +02:00
+'perf test' on a kernel with CONFIG_DEBUG_PREEMPT=y gives:
 
-cpumask: Make cpu_{online,possible,present,active}() inline
+[  244.439538] BUG: using smp_processor_id() in preemptible [00000000] code: perf/1771
+[  244.448144] caller is perf_sched_cb_dec+0xa/0x70
+[  244.453314] CPU: 28 PID: 1771 Comm: perf Not tainted 5.12.0-rc3-00026-gb04c0cddff6d #595
+[  244.462347] Hardware name: Intel Corporation S2600GZ/S2600GZ, BIOS SE5C600.86B.02.02.0002.122320131210 12/23/2013
+[  244.473804] Call Trace:
+[  244.476535]  dump_stack+0x6d/0x89
+[  244.480237]  check_preemption_disabled+0xc8/0xd0
+[  244.485394]  perf_sched_cb_dec+0xa/0x70
+[  244.489677]  x86_pmu_event_unmapped+0x35/0x60
+[  244.494541]  perf_mmap_close+0x76/0x580
+[  244.498833]  remove_vma+0x31/0x70
+[  244.502535]  __do_munmap+0x2e8/0x4e0
+[  244.506531]  __vm_munmap+0x7e/0x120
+[  244.510429]  __x64_sys_munmap+0x28/0x30
+[  244.514712]  do_syscall_64+0x33/0x80
+[  244.518701]  entry_SYSCALL_64_after_hwframe+0x44/0xae
 
-Prepare for addition of another mask. Primarily a code movement to
-avoid having to create more #ifdef, but while there, convert
-everything with an argument to an inline function.
 
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Valentin Schneider <valentin.schneider@arm.com>
-Link: https://lkml.kernel.org/r/20210310150109.045447765@infradead.org
----
- include/linux/cpumask.h | 97 +++++++++++++++++++++++++++-------------
- 1 file changed, 66 insertions(+), 31 deletions(-)
+Obviously I tested that after I pushed it out :/
 
-diff --git a/include/linux/cpumask.h b/include/linux/cpumask.h
-index 383684e..a584336 100644
---- a/include/linux/cpumask.h
-+++ b/include/linux/cpumask.h
-@@ -98,37 +98,6 @@ extern struct cpumask __cpu_active_mask;
- 
- extern atomic_t __num_online_cpus;
- 
--#if NR_CPUS > 1
--/**
-- * num_online_cpus() - Read the number of online CPUs
-- *
-- * Despite the fact that __num_online_cpus is of type atomic_t, this
-- * interface gives only a momentary snapshot and is not protected against
-- * concurrent CPU hotplug operations unless invoked from a cpuhp_lock held
-- * region.
-- */
--static inline unsigned int num_online_cpus(void)
--{
--	return atomic_read(&__num_online_cpus);
--}
--#define num_possible_cpus()	cpumask_weight(cpu_possible_mask)
--#define num_present_cpus()	cpumask_weight(cpu_present_mask)
--#define num_active_cpus()	cpumask_weight(cpu_active_mask)
--#define cpu_online(cpu)		cpumask_test_cpu((cpu), cpu_online_mask)
--#define cpu_possible(cpu)	cpumask_test_cpu((cpu), cpu_possible_mask)
--#define cpu_present(cpu)	cpumask_test_cpu((cpu), cpu_present_mask)
--#define cpu_active(cpu)		cpumask_test_cpu((cpu), cpu_active_mask)
--#else
--#define num_online_cpus()	1U
--#define num_possible_cpus()	1U
--#define num_present_cpus()	1U
--#define num_active_cpus()	1U
--#define cpu_online(cpu)		((cpu) == 0)
--#define cpu_possible(cpu)	((cpu) == 0)
--#define cpu_present(cpu)	((cpu) == 0)
--#define cpu_active(cpu)		((cpu) == 0)
--#endif
--
- extern cpumask_t cpus_booted_once_mask;
- 
- static inline void cpu_max_bits_warn(unsigned int cpu, unsigned int bits)
-@@ -894,6 +863,72 @@ static inline const struct cpumask *get_cpu_mask(unsigned int cpu)
- 	return to_cpumask(p);
- }
- 
-+#if NR_CPUS > 1
-+/**
-+ * num_online_cpus() - Read the number of online CPUs
-+ *
-+ * Despite the fact that __num_online_cpus is of type atomic_t, this
-+ * interface gives only a momentary snapshot and is not protected against
-+ * concurrent CPU hotplug operations unless invoked from a cpuhp_lock held
-+ * region.
-+ */
-+static inline unsigned int num_online_cpus(void)
-+{
-+	return atomic_read(&__num_online_cpus);
-+}
-+#define num_possible_cpus()	cpumask_weight(cpu_possible_mask)
-+#define num_present_cpus()	cpumask_weight(cpu_present_mask)
-+#define num_active_cpus()	cpumask_weight(cpu_active_mask)
-+
-+static inline bool cpu_online(unsigned int cpu)
-+{
-+	return cpumask_test_cpu(cpu, cpu_online_mask);
-+}
-+
-+static inline bool cpu_possible(unsigned int cpu)
-+{
-+	return cpumask_test_cpu(cpu, cpu_possible_mask);
-+}
-+
-+static inline bool cpu_present(unsigned int cpu)
-+{
-+	return cpumask_test_cpu(cpu, cpu_present_mask);
-+}
-+
-+static inline bool cpu_active(unsigned int cpu)
-+{
-+	return cpumask_test_cpu(cpu, cpu_active_mask);
-+}
-+
-+#else
-+
-+#define num_online_cpus()	1U
-+#define num_possible_cpus()	1U
-+#define num_present_cpus()	1U
-+#define num_active_cpus()	1U
-+
-+static inline bool cpu_online(unsigned int cpu)
-+{
-+	return cpu == 0;
-+}
-+
-+static inline bool cpu_possible(unsigned int cpu)
-+{
-+	return cpu == 0;
-+}
-+
-+static inline bool cpu_present(unsigned int cpu)
-+{
-+	return cpu == 0;
-+}
-+
-+static inline bool cpu_active(unsigned int cpu)
-+{
-+	return cpu == 0;
-+}
-+
-+#endif /* NR_CPUS > 1 */
-+
- #define cpu_is_offline(cpu)	unlikely(!cpu_online(cpu))
- 
- #if NR_CPUS <= BITS_PER_LONG
