@@ -2,52 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 62594362673
+	by mail.lfdr.de (Postfix) with ESMTP id AEE18362674
 	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 Apr 2021 19:13:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240250AbhDPROK (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S240272AbhDPROK (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Fri, 16 Apr 2021 13:14:10 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:58698 "EHLO
+Received: from Galois.linutronix.de ([193.142.43.55]:58720 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240195AbhDPROJ (ORCPT
+        with ESMTP id S240224AbhDPROK (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 16 Apr 2021 13:14:09 -0400
-Date:   Fri, 16 Apr 2021 17:13:42 -0000
+        Fri, 16 Apr 2021 13:14:10 -0400
+Date:   Fri, 16 Apr 2021 17:13:43 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1618593223;
+        s=2020; t=1618593224;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ZvsrJ5Hqyi39zk78pCpmM+His5U82SGdccbDYR4zRyE=;
-        b=ZsgilCyvBD7hztzYivF4BfHWvZwRT+x3DJy8mMZyhhQA4wtrupcuIkUlpiNcvRNdI3dAPF
-        e+KxXs8qtJVr+hequnkiwtdTZg/JiYIfs4YFwdoTaLk3mO34WfOD3iOdjNl4RELlMk4kKo
-        CQbLQlSs2y9Rwjg0lUhLyBt3V3leJznsnYKL08EqFpFVRdSsm1KT+ntmJIJxo7J1g7SOVa
-        UQPzFjuNQhM/g4x/WL81L+GG9TgOvJcnaZE+kRvxv7VFKZELoiGCkthbdihYLg6ApAOYbP
-        Tl45U8JGD98aP6EuCGfrG0k7M83bc+3aGrKCgljxGjbr5ds4oOvtb8LV0xhFfg==
+        bh=fLrpAR+/vQ+E1RsQXCYLRzyCUBzP8KouI1zW3reGLIA=;
+        b=b9woOJychMWtfbW2WX+8M5xvAdgUD+iFQ6AGXTU2UVwXxfDcyvX1liCrNNLzqMj8kj5ScB
+        6TYsGdfsyBkkl7+yP0Y7yLps0cC3XFw3RTQvNMDxRNvTAzBpbARU3a+O6ONRnvPh02++oK
+        RYiSYnprr79nGkUm1ZsYbsusEg+TnDf1UqCJnGyPl8v2Be+ohV61/cprwQ9nHVIh0NdpH+
+        CV6hygTsVxxCPERsqVz3AHtVTqCaab1Kbj3eE/AeZTGKp3AVpCOVLE1BJzCd6q3qIOHPf2
+        83YIe93ZVSTLjKU+9qF9C4/fHBTTdVpWvwwvI+YXNP2t8uMJcB/LAWCo611fhg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1618593223;
+        s=2020e; t=1618593224;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ZvsrJ5Hqyi39zk78pCpmM+His5U82SGdccbDYR4zRyE=;
-        b=Q+7KeJr1ycgEPGRwjJh66ac9ZQvVzprA+KSWY1eIdwNboHOtvyqpInXTTMVVuwvp1QFHLA
-        mdBMIqdAaXsTjDDA==
-From:   "tip-bot2 for Nathan Chancellor" <tip-bot2@linutronix.de>
+        bh=fLrpAR+/vQ+E1RsQXCYLRzyCUBzP8KouI1zW3reGLIA=;
+        b=PoHUeXhEkqZFQHkr43HQqDWILrobLnSRdMnQpFrD53BbxGe0T5pRBjdsZTWaJTcV7tmT3m
+        UHktWII019pTNsDQ==
+From:   "tip-bot2 for Namhyung Kim" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/amd/uncore: Fix sysfs type mismatch
-Cc:     Nathan Chancellor <nathan@kernel.org>,
+Subject: [tip: perf/core] perf core: Add PERF_COUNT_SW_CGROUP_SWITCHES event
+Cc:     Namhyung Kim <namhyung@kernel.org>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210415001112.3024673-2-nathan@kernel.org>
-References: <20210415001112.3024673-2-nathan@kernel.org>
+In-Reply-To: <20210210083327.22726-2-namhyung@kernel.org>
+References: <20210210083327.22726-2-namhyung@kernel.org>
 MIME-Version: 1.0
-Message-ID: <161859322291.29796.4919135598584645678.tip-bot2@tip-bot2>
+Message-ID: <161859322373.29796.13679463241653165502.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,56 +58,60 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     5deac80d4571dffb51f452f0027979d72259a1b9
-Gitweb:        https://git.kernel.org/tip/5deac80d4571dffb51f452f0027979d72259a1b9
-Author:        Nathan Chancellor <nathan@kernel.org>
-AuthorDate:    Wed, 14 Apr 2021 17:11:12 -07:00
+Commit-ID:     d0d1dd628527c77db2391ce0293c1ed344b2365f
+Gitweb:        https://git.kernel.org/tip/d0d1dd628527c77db2391ce0293c1ed344b2365f
+Author:        Namhyung Kim <namhyung@kernel.org>
+AuthorDate:    Wed, 10 Feb 2021 17:33:26 +09:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Fri, 16 Apr 2021 18:58:52 +02:00
 
-perf/amd/uncore: Fix sysfs type mismatch
+perf core: Add PERF_COUNT_SW_CGROUP_SWITCHES event
 
-dev_attr_show() calls the __uncore_*_show() functions via an indirect
-call but their type does not currently match the type of the show()
-member in 'struct device_attribute', resulting in a Control Flow
-Integrity violation.
+This patch adds a new software event to count context switches
+involving cgroup switches.  So it's counted only if cgroups of
+previous and next tasks are different.  Note that it only checks the
+cgroups in the perf_event subsystem.  For cgroup v2, it shouldn't
+matter anyway.
 
-$ cat /sys/devices/amd_l3/format/umask
-config:8-15
+One can argue that we can do this by using existing sched_switch event
+with eBPF.  But some systems might not have eBPF for some reason so
+I'd like to add this as a simple way.
 
-$ dmesg | grep "CFI failure"
-[ 1258.174653] CFI failure (target: __uncore_umask_show...):
-
-Update the type in the DEFINE_UNCORE_FORMAT_ATTR macro to match
-'struct device_attribute' so that there is no more CFI violation.
-
-Fixes: 06f2c24584f3 ("perf/amd/uncore: Prepare to scale for more attributes that vary per family")
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20210415001112.3024673-2-nathan@kernel.org
+Link: https://lkml.kernel.org/r/20210210083327.22726-2-namhyung@kernel.org
 ---
- arch/x86/events/amd/uncore.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ include/linux/perf_event.h      | 7 +++++++
+ include/uapi/linux/perf_event.h | 1 +
+ 2 files changed, 8 insertions(+)
 
-diff --git a/arch/x86/events/amd/uncore.c b/arch/x86/events/amd/uncore.c
-index 7f014d4..582c0ff 100644
---- a/arch/x86/events/amd/uncore.c
-+++ b/arch/x86/events/amd/uncore.c
-@@ -275,14 +275,14 @@ static struct attribute_group amd_uncore_attr_group = {
+diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
+index 92d51a7..8989b2b 100644
+--- a/include/linux/perf_event.h
++++ b/include/linux/perf_event.h
+@@ -1218,6 +1218,13 @@ static inline void perf_event_task_sched_out(struct task_struct *prev,
+ 	if (__perf_sw_enabled(PERF_COUNT_SW_CONTEXT_SWITCHES))
+ 		__perf_sw_event_sched(PERF_COUNT_SW_CONTEXT_SWITCHES, 1, 0);
+ 
++#ifdef CONFIG_CGROUP_PERF
++	if (__perf_sw_enabled(PERF_COUNT_SW_CGROUP_SWITCHES) &&
++	    perf_cgroup_from_task(prev, NULL) !=
++	    perf_cgroup_from_task(next, NULL))
++		__perf_sw_event_sched(PERF_COUNT_SW_CGROUP_SWITCHES, 1, 0);
++#endif
++
+ 	if (static_branch_unlikely(&perf_sched_events))
+ 		__perf_event_task_sched_out(prev, next);
+ }
+diff --git a/include/uapi/linux/perf_event.h b/include/uapi/linux/perf_event.h
+index 31b00e3..0b58970 100644
+--- a/include/uapi/linux/perf_event.h
++++ b/include/uapi/linux/perf_event.h
+@@ -112,6 +112,7 @@ enum perf_sw_ids {
+ 	PERF_COUNT_SW_EMULATION_FAULTS		= 8,
+ 	PERF_COUNT_SW_DUMMY			= 9,
+ 	PERF_COUNT_SW_BPF_OUTPUT		= 10,
++	PERF_COUNT_SW_CGROUP_SWITCHES		= 11,
+ 
+ 	PERF_COUNT_SW_MAX,			/* non-ABI */
  };
- 
- #define DEFINE_UNCORE_FORMAT_ATTR(_var, _name, _format)			\
--static ssize_t __uncore_##_var##_show(struct kobject *kobj,		\
--				struct kobj_attribute *attr,		\
-+static ssize_t __uncore_##_var##_show(struct device *dev,		\
-+				struct device_attribute *attr,		\
- 				char *page)				\
- {									\
- 	BUILD_BUG_ON(sizeof(_format) >= PAGE_SIZE);			\
- 	return sprintf(page, _format "\n");				\
- }									\
--static struct kobj_attribute format_attr_##_var =			\
-+static struct device_attribute format_attr_##_var =			\
- 	__ATTR(_name, 0444, __uncore_##_var##_show, NULL)
- 
- DEFINE_UNCORE_FORMAT_ATTR(event12,	event,		"config:0-7,32-35");
