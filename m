@@ -2,55 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 25801362233
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 Apr 2021 16:27:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D4BAC36234C
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 Apr 2021 17:04:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235886AbhDPO2D (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 16 Apr 2021 10:28:03 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:57620 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235897AbhDPO2C (ORCPT
+        id S245144AbhDPPCP (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 16 Apr 2021 11:02:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50874 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S244999AbhDPPCO (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 16 Apr 2021 10:28:02 -0400
-Date:   Fri, 16 Apr 2021 14:27:35 -0000
+        Fri, 16 Apr 2021 11:02:14 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0C6BC061574;
+        Fri, 16 Apr 2021 08:01:49 -0700 (PDT)
+Date:   Fri, 16 Apr 2021 15:01:46 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1618583256;
+        s=2020; t=1618585307;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Sx7sDJq/YhxQGmyN5puo1e/5fcEsVfkvA4JzjEuhwUM=;
-        b=shsiyNaYBCzdceKbLD0jnRSdlexiNa3cKjgWNcXjHAbru9mbBKXabnnesHs11PmGft51ab
-        VN352CZFmBt4XNtSexEU0Ef6Q8zX/nxIDSJoSFr1uB+EGgPeIF1iGY+SqKolJzgmq6HiFy
-        f2sRLGLo87WcT/N06KTiaXCBXei6lB9L+22bddAmiMb5E78CiYW0WXlnTrgrccltTjIfEd
-        Zeg9cbnr7IoT6MJcJJamvI4shqD3JqpkfY6zXhbT/+qHBfeEsMFx2JlUu6erlLpTMoHPHQ
-        2yg+49rlRiO+8yxzSD1YpRa2l8YbS1ayYizux1qM6ShKIh7qk5953h81EZClzg==
+        bh=jYZWPtDMrEcYhCUgO6OL6PA5yeacxbkEGBOxZmZxr2o=;
+        b=UjdnVojhsS8+Vo27cJ+tevrqLVVM0+jZ91rZy0/BWezxhkxMJqAl0Xx2NwkyO/WvcVI9PP
+        t3KaWZEv8nKGWXy6fyENTTfnytMOxXXNc4bGyu9RxuZIiYn9awOU0gHrzQHwHD8PFfvBG2
+        aPnKNwixdObByDKD3G6AowUIGsXhqfUif4lKXq4pyx8ILueMMOYiAZXWurIL+8EFUzjXpG
+        8j4tulLSDsW7SGknIV1ZVdassg09SwNMmdrzVezra/HgW2ugOo0H93EPFRjek96X9AmIXD
+        dMKjvsIK+N+fFwMvi95EBiu1XlejzbFbYVHxHzoSRhBCz8B7aOQ0wYSZfnzD3w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1618583256;
+        s=2020e; t=1618585307;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Sx7sDJq/YhxQGmyN5puo1e/5fcEsVfkvA4JzjEuhwUM=;
-        b=IX1AZgZTINzdBNH1jxmHf9FREVIiCaacM3gngOQ3ihk0uuV6YQDonSlL4EQfi7neTAftSK
-        oT32SgWRnrGK65DA==
-From:   "tip-bot2 for Alison Schofield" <tip-bot2@linutronix.de>
+        bh=jYZWPtDMrEcYhCUgO6OL6PA5yeacxbkEGBOxZmZxr2o=;
+        b=MBZhr2neHzVt0lPC7Nupp0wne9NmdnjvnHWgJVWJlxFMsE/QvdD/BSOXypILnxTLMdCXX0
+        Id7aHVWMXYeeocAA==
+From:   "tip-bot2 for Nathan Chancellor" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/core] x86, sched: Treat Intel SNC topology as default, COD
- as exception
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Alison Schofield <alison.schofield@intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        stable@vger.kernel.org, x86@kernel.org,
+Subject: [tip: perf/core] perf/amd/uncore: Fix sysfs type mismatch
+Cc:     Nathan Chancellor <nathan@kernel.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210310190233.31752-1-alison.schofield@intel.com>
-References: <20210310190233.31752-1-alison.schofield@intel.com>
+In-Reply-To: <20210415001112.3024673-2-nathan@kernel.org>
+References: <20210415001112.3024673-2-nathan@kernel.org>
 MIME-Version: 1.0
-Message-ID: <161858325531.29796.18336323014475030833.tip-bot2@tip-bot2>
+Message-ID: <161858530676.29796.11038219693282032016.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,195 +59,58 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/core branch of tip:
+The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     2c88d45edbb89029c1190bb3b136d2602f057c98
-Gitweb:        https://git.kernel.org/tip/2c88d45edbb89029c1190bb3b136d2602f057c98
-Author:        Alison Schofield <alison.schofield@intel.com>
-AuthorDate:    Wed, 10 Mar 2021 11:02:33 -08:00
+Commit-ID:     b04c0cddff6d1d6656c7f7c08c0b8f07eb287564
+Gitweb:        https://git.kernel.org/tip/b04c0cddff6d1d6656c7f7c08c0b8f07eb287564
+Author:        Nathan Chancellor <nathan@kernel.org>
+AuthorDate:    Wed, 14 Apr 2021 17:11:12 -07:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Thu, 15 Apr 2021 18:34:20 +02:00
+CommitterDate: Fri, 16 Apr 2021 16:32:44 +02:00
 
-x86, sched: Treat Intel SNC topology as default, COD as exception
+perf/amd/uncore: Fix sysfs type mismatch
 
-Commit 1340ccfa9a9a ("x86,sched: Allow topologies where NUMA nodes
-share an LLC") added a vendor and model specific check to never
-call topology_sane() for Intel Skylake Server systems where NUMA
-nodes share an LLC.
+dev_attr_show() calls the __uncore_*_show() functions via an indirect
+call but their type does not currently match the type of the show()
+member in 'struct device_attribute', resulting in a Control Flow
+Integrity violation.
 
-Intel Ice Lake and Sapphire Rapids CPUs also enumerate an LLC that is
-shared by multiple NUMA nodes. The LLC on these CPUs is shared for
-off-package data access but private to the NUMA node for on-package
-access. Rather than managing a list of allowable SNC topologies, make
-this SNC topology the default, and treat Intel's Cluster-On-Die (COD)
-topology as the exception.
+$ cat /sys/devices/amd_l3/format/umask
+config:8-15
 
-In SNC mode, Sky Lake, Ice Lake, and Sapphire Rapids servers do not
-emit this warning:
+$ dmesg | grep "CFI failure"
+[ 1258.174653] CFI failure (target: __uncore_umask_show...):
 
-sched: CPU #3's llc-sibling CPU #0 is not on the same node! [node: 1 != 0]. Ignoring dependency.
+Update the type in the DEFINE_UNCORE_FORMAT_ATTR macro to match
+'struct device_attribute' so that there is no more CFI violation.
 
-Suggested-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Alison Schofield <alison.schofield@intel.com>
+Fixes: 06f2c24584f3 ("perf/amd/uncore: Prepare to scale for more attributes that vary per family")
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20210310190233.31752-1-alison.schofield@intel.com
+Link: https://lkml.kernel.org/r/20210415001112.3024673-2-nathan@kernel.org
 ---
- arch/x86/kernel/smpboot.c | 90 +++++++++++++++++++-------------------
- 1 file changed, 46 insertions(+), 44 deletions(-)
+ arch/x86/events/amd/uncore.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
-index 02813a7..147b2f3 100644
---- a/arch/x86/kernel/smpboot.c
-+++ b/arch/x86/kernel/smpboot.c
-@@ -458,29 +458,52 @@ static bool match_smt(struct cpuinfo_x86 *c, struct cpuinfo_x86 *o)
- 	return false;
- }
- 
-+static bool match_die(struct cpuinfo_x86 *c, struct cpuinfo_x86 *o)
-+{
-+	if (c->phys_proc_id == o->phys_proc_id &&
-+	    c->cpu_die_id == o->cpu_die_id)
-+		return true;
-+	return false;
-+}
-+
- /*
-- * Define snc_cpu[] for SNC (Sub-NUMA Cluster) CPUs.
-+ * Unlike the other levels, we do not enforce keeping a
-+ * multicore group inside a NUMA node.  If this happens, we will
-+ * discard the MC level of the topology later.
-+ */
-+static bool match_pkg(struct cpuinfo_x86 *c, struct cpuinfo_x86 *o)
-+{
-+	if (c->phys_proc_id == o->phys_proc_id)
-+		return true;
-+	return false;
-+}
-+
-+/*
-+ * Define intel_cod_cpu[] for Intel COD (Cluster-on-Die) CPUs.
-  *
-- * These are Intel CPUs that enumerate an LLC that is shared by
-- * multiple NUMA nodes. The LLC on these systems is shared for
-- * off-package data access but private to the NUMA node (half
-- * of the package) for on-package access.
-+ * Any Intel CPU that has multiple nodes per package and does not
-+ * match intel_cod_cpu[] has the SNC (Sub-NUMA Cluster) topology.
-  *
-- * CPUID (the source of the information about the LLC) can only
-- * enumerate the cache as being shared *or* unshared, but not
-- * this particular configuration. The CPU in this case enumerates
-- * the cache to be shared across the entire package (spanning both
-- * NUMA nodes).
-+ * When in SNC mode, these CPUs enumerate an LLC that is shared
-+ * by multiple NUMA nodes. The LLC is shared for off-package data
-+ * access but private to the NUMA node (half of the package) for
-+ * on-package access. CPUID (the source of the information about
-+ * the LLC) can only enumerate the cache as shared or unshared,
-+ * but not this particular configuration.
-  */
- 
--static const struct x86_cpu_id snc_cpu[] = {
--	X86_MATCH_INTEL_FAM6_MODEL(SKYLAKE_X, NULL),
-+static const struct x86_cpu_id intel_cod_cpu[] = {
-+	X86_MATCH_INTEL_FAM6_MODEL(HASWELL_X, 0),	/* COD */
-+	X86_MATCH_INTEL_FAM6_MODEL(BROADWELL_X, 0),	/* COD */
-+	X86_MATCH_INTEL_FAM6_MODEL(ANY, 1),		/* SNC */
- 	{}
+diff --git a/arch/x86/events/amd/uncore.c b/arch/x86/events/amd/uncore.c
+index 7f014d4..582c0ff 100644
+--- a/arch/x86/events/amd/uncore.c
++++ b/arch/x86/events/amd/uncore.c
+@@ -275,14 +275,14 @@ static struct attribute_group amd_uncore_attr_group = {
  };
  
- static bool match_llc(struct cpuinfo_x86 *c, struct cpuinfo_x86 *o)
- {
-+	const struct x86_cpu_id *id = x86_match_cpu(intel_cod_cpu);
- 	int cpu1 = c->cpu_index, cpu2 = o->cpu_index;
-+	bool intel_snc = id && id->driver_data;
+ #define DEFINE_UNCORE_FORMAT_ATTR(_var, _name, _format)			\
+-static ssize_t __uncore_##_var##_show(struct kobject *kobj,		\
+-				struct kobj_attribute *attr,		\
++static ssize_t __uncore_##_var##_show(struct device *dev,		\
++				struct device_attribute *attr,		\
+ 				char *page)				\
+ {									\
+ 	BUILD_BUG_ON(sizeof(_format) >= PAGE_SIZE);			\
+ 	return sprintf(page, _format "\n");				\
+ }									\
+-static struct kobj_attribute format_attr_##_var =			\
++static struct device_attribute format_attr_##_var =			\
+ 	__ATTR(_name, 0444, __uncore_##_var##_show, NULL)
  
- 	/* Do not match if we do not have a valid APICID for cpu: */
- 	if (per_cpu(cpu_llc_id, cpu1) == BAD_APICID)
-@@ -495,32 +518,12 @@ static bool match_llc(struct cpuinfo_x86 *c, struct cpuinfo_x86 *o)
- 	 * means 'c' does not share the LLC of 'o'. This will be
- 	 * reflected to userspace.
- 	 */
--	if (!topology_same_node(c, o) && x86_match_cpu(snc_cpu))
-+	if (match_pkg(c, o) && !topology_same_node(c, o) && intel_snc)
- 		return false;
- 
- 	return topology_sane(c, o, "llc");
- }
- 
--/*
-- * Unlike the other levels, we do not enforce keeping a
-- * multicore group inside a NUMA node.  If this happens, we will
-- * discard the MC level of the topology later.
-- */
--static bool match_pkg(struct cpuinfo_x86 *c, struct cpuinfo_x86 *o)
--{
--	if (c->phys_proc_id == o->phys_proc_id)
--		return true;
--	return false;
--}
--
--static bool match_die(struct cpuinfo_x86 *c, struct cpuinfo_x86 *o)
--{
--	if ((c->phys_proc_id == o->phys_proc_id) &&
--		(c->cpu_die_id == o->cpu_die_id))
--		return true;
--	return false;
--}
--
- 
- #if defined(CONFIG_SCHED_SMT) || defined(CONFIG_SCHED_MC)
- static inline int x86_sched_itmt_flags(void)
-@@ -592,14 +595,23 @@ void set_cpu_sibling_map(int cpu)
- 	for_each_cpu(i, cpu_sibling_setup_mask) {
- 		o = &cpu_data(i);
- 
-+		if (match_pkg(c, o) && !topology_same_node(c, o))
-+			x86_has_numa_in_package = true;
-+
- 		if ((i == cpu) || (has_smt && match_smt(c, o)))
- 			link_mask(topology_sibling_cpumask, cpu, i);
- 
- 		if ((i == cpu) || (has_mp && match_llc(c, o)))
- 			link_mask(cpu_llc_shared_mask, cpu, i);
- 
-+		if ((i == cpu) || (has_mp && match_die(c, o)))
-+			link_mask(topology_die_cpumask, cpu, i);
- 	}
- 
-+	threads = cpumask_weight(topology_sibling_cpumask(cpu));
-+	if (threads > __max_smt_threads)
-+		__max_smt_threads = threads;
-+
- 	/*
- 	 * This needs a separate iteration over the cpus because we rely on all
- 	 * topology_sibling_cpumask links to be set-up.
-@@ -613,8 +625,7 @@ void set_cpu_sibling_map(int cpu)
- 			/*
- 			 *  Does this new cpu bringup a new core?
- 			 */
--			if (cpumask_weight(
--			    topology_sibling_cpumask(cpu)) == 1) {
-+			if (threads == 1) {
- 				/*
- 				 * for each core in package, increment
- 				 * the booted_cores for this new cpu
-@@ -631,16 +642,7 @@ void set_cpu_sibling_map(int cpu)
- 			} else if (i != cpu && !c->booted_cores)
- 				c->booted_cores = cpu_data(i).booted_cores;
- 		}
--		if (match_pkg(c, o) && !topology_same_node(c, o))
--			x86_has_numa_in_package = true;
--
--		if ((i == cpu) || (has_mp && match_die(c, o)))
--			link_mask(topology_die_cpumask, cpu, i);
- 	}
--
--	threads = cpumask_weight(topology_sibling_cpumask(cpu));
--	if (threads > __max_smt_threads)
--		__max_smt_threads = threads;
- }
- 
- /* maps the cpu to the sched domain representing multi-core */
+ DEFINE_UNCORE_FORMAT_ATTR(event12,	event,		"config:0-7,32-35");
