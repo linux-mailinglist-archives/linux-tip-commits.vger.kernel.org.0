@@ -2,16 +2,19 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AEE18362674
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 Apr 2021 19:13:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D9FA0362678
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 Apr 2021 19:14:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240272AbhDPROK (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 16 Apr 2021 13:14:10 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:58720 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240224AbhDPROK (ORCPT
+        id S239909AbhDPROS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 16 Apr 2021 13:14:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52520 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235011AbhDPROR (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 16 Apr 2021 13:14:10 -0400
+        Fri, 16 Apr 2021 13:14:17 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86201C061756;
+        Fri, 16 Apr 2021 10:13:52 -0700 (PDT)
 Date:   Fri, 16 Apr 2021 17:13:43 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1618593224;
@@ -20,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=fLrpAR+/vQ+E1RsQXCYLRzyCUBzP8KouI1zW3reGLIA=;
-        b=b9woOJychMWtfbW2WX+8M5xvAdgUD+iFQ6AGXTU2UVwXxfDcyvX1liCrNNLzqMj8kj5ScB
-        6TYsGdfsyBkkl7+yP0Y7yLps0cC3XFw3RTQvNMDxRNvTAzBpbARU3a+O6ONRnvPh02++oK
-        RYiSYnprr79nGkUm1ZsYbsusEg+TnDf1UqCJnGyPl8v2Be+ohV61/cprwQ9nHVIh0NdpH+
-        CV6hygTsVxxCPERsqVz3AHtVTqCaab1Kbj3eE/AeZTGKp3AVpCOVLE1BJzCd6q3qIOHPf2
-        83YIe93ZVSTLjKU+9qF9C4/fHBTTdVpWvwwvI+YXNP2t8uMJcB/LAWCo611fhg==
+        bh=mMNyHYS1vpG2WgX7rE/nYyKQRQmJDT7+w90eGYZShPQ=;
+        b=z9FWfSKpW+w+xIYEUQOJHckYcnRftvzF0SyHEK6msPjwm0AOyndq7+0IazlXKM+j09lDi0
+        jQnA1HTUUD4C0G1l5cML9oYMxL8mUtUnrf7Ao09U6peTUbck+rNsjySCe6S58L+Cg3UD3V
+        YhJ2fOHOuLOAS5rLLVna7gSst2uztfdKUBAq90/JdRjvlG2X7iSzBWln5ZieF7xjfeQRsS
+        Vmbg0sx61MnRIvMJui4AxmPxIGnmidR8BE5IChAnojbum53zgu0HehwUeuz4/7I+GEp3Nu
+        LQTFgBmGtXtzeSh+3eV8R6LjEir1D5vHUlaGc+Fad1ptlfJeDfLSh87uaglmvA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1618593224;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -33,21 +36,21 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=fLrpAR+/vQ+E1RsQXCYLRzyCUBzP8KouI1zW3reGLIA=;
-        b=PoHUeXhEkqZFQHkr43HQqDWILrobLnSRdMnQpFrD53BbxGe0T5pRBjdsZTWaJTcV7tmT3m
-        UHktWII019pTNsDQ==
-From:   "tip-bot2 for Namhyung Kim" <tip-bot2@linutronix.de>
+        bh=mMNyHYS1vpG2WgX7rE/nYyKQRQmJDT7+w90eGYZShPQ=;
+        b=nW8XYwwq2Pwv5ELl/yhqfXl6CftEGPoBcX5ZvI9EVq3GBSJxQ/Pr/JLKEqQNBk4N4f+ilj
+        3EEB83SuGSw5XYCg==
+From:   "tip-bot2 for Nathan Chancellor" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf core: Add PERF_COUNT_SW_CGROUP_SWITCHES event
-Cc:     Namhyung Kim <namhyung@kernel.org>,
+Subject: [tip: perf/core] x86/events/amd/iommu: Fix sysfs type mismatch
+Cc:     Nathan Chancellor <nathan@kernel.org>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210210083327.22726-2-namhyung@kernel.org>
-References: <20210210083327.22726-2-namhyung@kernel.org>
+In-Reply-To: <20210415001112.3024673-1-nathan@kernel.org>
+References: <20210415001112.3024673-1-nathan@kernel.org>
 MIME-Version: 1.0
-Message-ID: <161859322373.29796.13679463241653165502.tip-bot2@tip-bot2>
+Message-ID: <161859322338.29796.3589320816461974467.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,60 +61,54 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     d0d1dd628527c77db2391ce0293c1ed344b2365f
-Gitweb:        https://git.kernel.org/tip/d0d1dd628527c77db2391ce0293c1ed344b2365f
-Author:        Namhyung Kim <namhyung@kernel.org>
-AuthorDate:    Wed, 10 Feb 2021 17:33:26 +09:00
+Commit-ID:     de5bc7b425d4c27ae5faa00ea7eb6b9780b9a355
+Gitweb:        https://git.kernel.org/tip/de5bc7b425d4c27ae5faa00ea7eb6b9780b9a355
+Author:        Nathan Chancellor <nathan@kernel.org>
+AuthorDate:    Wed, 14 Apr 2021 17:11:11 -07:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Fri, 16 Apr 2021 18:58:52 +02:00
 
-perf core: Add PERF_COUNT_SW_CGROUP_SWITCHES event
+x86/events/amd/iommu: Fix sysfs type mismatch
 
-This patch adds a new software event to count context switches
-involving cgroup switches.  So it's counted only if cgroups of
-previous and next tasks are different.  Note that it only checks the
-cgroups in the perf_event subsystem.  For cgroup v2, it shouldn't
-matter anyway.
+dev_attr_show() calls _iommu_event_show() via an indirect call but
+_iommu_event_show()'s type does not currently match the type of the
+show() member in 'struct device_attribute', resulting in a Control Flow
+Integrity violation.
 
-One can argue that we can do this by using existing sched_switch event
-with eBPF.  But some systems might not have eBPF for some reason so
-I'd like to add this as a simple way.
+$ cat /sys/devices/amd_iommu_1/events/mem_dte_hit
+csource=0x0a
 
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+$ dmesg | grep "CFI failure"
+[ 3526.735140] CFI failure (target: _iommu_event_show...):
+
+Change _iommu_event_show() and 'struct amd_iommu_event_desc' to
+'struct device_attribute' so that there is no more CFI violation.
+
+Fixes: 7be6296fdd75 ("perf/x86/amd: AMD IOMMU Performance Counter PERF uncore PMU implementation")
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20210210083327.22726-2-namhyung@kernel.org
+Link: https://lkml.kernel.org/r/20210415001112.3024673-1-nathan@kernel.org
 ---
- include/linux/perf_event.h      | 7 +++++++
- include/uapi/linux/perf_event.h | 1 +
- 2 files changed, 8 insertions(+)
+ arch/x86/events/amd/iommu.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
-index 92d51a7..8989b2b 100644
---- a/include/linux/perf_event.h
-+++ b/include/linux/perf_event.h
-@@ -1218,6 +1218,13 @@ static inline void perf_event_task_sched_out(struct task_struct *prev,
- 	if (__perf_sw_enabled(PERF_COUNT_SW_CONTEXT_SWITCHES))
- 		__perf_sw_event_sched(PERF_COUNT_SW_CONTEXT_SWITCHES, 1, 0);
- 
-+#ifdef CONFIG_CGROUP_PERF
-+	if (__perf_sw_enabled(PERF_COUNT_SW_CGROUP_SWITCHES) &&
-+	    perf_cgroup_from_task(prev, NULL) !=
-+	    perf_cgroup_from_task(next, NULL))
-+		__perf_sw_event_sched(PERF_COUNT_SW_CGROUP_SWITCHES, 1, 0);
-+#endif
-+
- 	if (static_branch_unlikely(&perf_sched_events))
- 		__perf_event_task_sched_out(prev, next);
- }
-diff --git a/include/uapi/linux/perf_event.h b/include/uapi/linux/perf_event.h
-index 31b00e3..0b58970 100644
---- a/include/uapi/linux/perf_event.h
-+++ b/include/uapi/linux/perf_event.h
-@@ -112,6 +112,7 @@ enum perf_sw_ids {
- 	PERF_COUNT_SW_EMULATION_FAULTS		= 8,
- 	PERF_COUNT_SW_DUMMY			= 9,
- 	PERF_COUNT_SW_BPF_OUTPUT		= 10,
-+	PERF_COUNT_SW_CGROUP_SWITCHES		= 11,
- 
- 	PERF_COUNT_SW_MAX,			/* non-ABI */
+diff --git a/arch/x86/events/amd/iommu.c b/arch/x86/events/amd/iommu.c
+index be50ef8..6a98a76 100644
+--- a/arch/x86/events/amd/iommu.c
++++ b/arch/x86/events/amd/iommu.c
+@@ -81,12 +81,12 @@ static struct attribute_group amd_iommu_events_group = {
  };
+ 
+ struct amd_iommu_event_desc {
+-	struct kobj_attribute attr;
++	struct device_attribute attr;
+ 	const char *event;
+ };
+ 
+-static ssize_t _iommu_event_show(struct kobject *kobj,
+-				struct kobj_attribute *attr, char *buf)
++static ssize_t _iommu_event_show(struct device *dev,
++				struct device_attribute *attr, char *buf)
+ {
+ 	struct amd_iommu_event_desc *event =
+ 		container_of(attr, struct amd_iommu_event_desc, attr);
