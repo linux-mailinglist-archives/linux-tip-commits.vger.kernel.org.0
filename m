@@ -2,55 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E3E9362677
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 Apr 2021 19:14:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 48C0E36284A
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 Apr 2021 21:08:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239934AbhDPROS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 16 Apr 2021 13:14:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52522 "EHLO
+        id S241344AbhDPTI0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 16 Apr 2021 15:08:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49634 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239937AbhDPROR (ORCPT
+        with ESMTP id S241240AbhDPTIZ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 16 Apr 2021 13:14:17 -0400
+        Fri, 16 Apr 2021 15:08:25 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A71CEC06175F;
-        Fri, 16 Apr 2021 10:13:52 -0700 (PDT)
-Date:   Fri, 16 Apr 2021 17:13:44 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FC49C061756;
+        Fri, 16 Apr 2021 12:08:00 -0700 (PDT)
+Date:   Fri, 16 Apr 2021 19:07:55 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1618593224;
+        s=2020; t=1618600078;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=InyXIyjhgo0jO8MFVne6xHBVGJwGp5noHp0pOe6BVuA=;
-        b=1eeZ7IbYXgFfvozoiqlf9F6pHXcqoyw+Rpwd+V83jt4MbkNWhPM650nJ4KqJEYyIIfYoNV
-        DWrK0JFx2En/HUSx/K8dDust8FDwFrWXwCHszhr7xklc5h8tDhly3e1vmTZOhblO+ZIRYe
-        Fn9i98LQiVIf+CRNBHu68y8kFMr1KRMzMYLAkXXfkO7F0cNRgEBVlQ5RX8Y2PBc6LeOIid
-        y2nP8ANGx9FO7X73AJdSoLWy+2ovmTJSUtXKrfByTSR9lMGrrc1Fo2dIwBXTZznAhytnQ2
-        Guy/Ncl6asnO7ALGwaqwGf+VlUyg1vJiNawofrgsE/GPOKBY+znWUu4crcjDzw==
+        bh=w8o3r7ZY95iOrYocT8Wrfkc5Xv9rmwcoz5jCJoUFTqw=;
+        b=upOHAm2x4XiAPgbW1YR0/SPQ5DA5dl1/jrFElQf7+rxpHj+1tG+ZrfBczRASqzZtQT5Sqg
+        HPVRClSSZj5whfXb1W7ZuLEEscxUn5WuOuTl7JePII5/r2vYt/41GKJXVn66G6nlJx6R9Q
+        JJVwBmdIipu9P0fwN7ijGA5V4OuEh6yc1/R9UlKemOkjHTaYdhSWR/hipxFsn8pAStBjH1
+        s1G/27cidxit7U/zmTK+WqXLSF/ZXokma/B5XKebGtSfRJLXRRGxgy7/gBymVrALUMEWFa
+        vw7Crv8GAe0O7jfPrrWk11c2xNPOdDTxy0hsVB5rDJiGSHGlBpu8udErFZSNEA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1618593224;
+        s=2020e; t=1618600078;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=InyXIyjhgo0jO8MFVne6xHBVGJwGp5noHp0pOe6BVuA=;
-        b=RaZunMwgGLkY0lFcQll8QXL7xuuoY3mn3Oqf6MdptYBAlRbc2eeaitsY0f60f/+7PpMUjw
-        PLpDk9RR1EJKOrCw==
-From:   "tip-bot2 for Namhyung Kim" <tip-bot2@linutronix.de>
+        bh=w8o3r7ZY95iOrYocT8Wrfkc5Xv9rmwcoz5jCJoUFTqw=;
+        b=cQmVg7VdxxEyLcPcfyk7ue3r/b/k7HGkhhiE6/iJ/1D6BOO/4ZxS1lhGQKSGgRHD5ayq+Q
+        uNsMWR4vxpFUBGAg==
+From:   "tip-bot2 for Jindong Yue" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf core: Factor out __perf_sw_event_sched
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        Namhyung Kim <namhyung@kernel.org>, x86@kernel.org,
+Subject: [tip: timers/core] tick/broadcast: Allow late registered device to
+ enter oneshot mode
+Cc:     Jindong Yue <jindong.yue@nxp.com>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210210083327.22726-1-namhyung@kernel.org>
-References: <20210210083327.22726-1-namhyung@kernel.org>
+In-Reply-To: <20210331083318.21794-1-jindong.yue@nxp.com>
+References: <20210331083318.21794-1-jindong.yue@nxp.com>
 MIME-Version: 1.0
-Message-ID: <161859322409.29796.10758350786737842233.tip-bot2@tip-bot2>
+Message-ID: <161860007587.29796.7100262021118685563.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,102 +60,65 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/core branch of tip:
+The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     7c8056bb366b1b2dc8e4a3cc0b876e15a8ebca2c
-Gitweb:        https://git.kernel.org/tip/7c8056bb366b1b2dc8e4a3cc0b876e15a8ebca2c
-Author:        Namhyung Kim <namhyung@kernel.org>
-AuthorDate:    Wed, 10 Feb 2021 17:33:25 +09:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Fri, 16 Apr 2021 18:58:52 +02:00
+Commit-ID:     9c336c9935cff267470bb3aaa85c66fac194b650
+Gitweb:        https://git.kernel.org/tip/9c336c9935cff267470bb3aaa85c66fac194b650
+Author:        Jindong Yue <jindong.yue@nxp.com>
+AuthorDate:    Wed, 31 Mar 2021 16:33:18 +08:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Fri, 16 Apr 2021 21:03:50 +02:00
 
-perf core: Factor out __perf_sw_event_sched
+tick/broadcast: Allow late registered device to enter oneshot mode
 
-In some cases, we need to check more than whether the software event
-is enabled.  So split the condition check and the actual event
-handling.  This is a preparation for the next change.
+The broadcast device is switched to oneshot mode when the system switches
+to oneshot mode. If a broadcast clock event device is registered after the
+system switched to oneshot mode, it will stay in periodic mode forever.
 
-Suggested-by: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20210210083327.22726-1-namhyung@kernel.org
+Ensure that a late registered device which is selected as broadcast device
+is initialized in oneshot mode when the system already uses oneshot mode.
+
+[ tglx: Massage changelog ]
+
+Signed-off-by: Jindong Yue <jindong.yue@nxp.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20210331083318.21794-1-jindong.yue@nxp.com
+
 ---
- include/linux/perf_event.h | 33 ++++++++++++---------------------
- 1 file changed, 12 insertions(+), 21 deletions(-)
+ kernel/time/tick-broadcast.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
-index 7d7280a..92d51a7 100644
---- a/include/linux/perf_event.h
-+++ b/include/linux/perf_event.h
-@@ -1178,30 +1178,24 @@ DECLARE_PER_CPU(struct pt_regs, __perf_regs[4]);
-  * which is guaranteed by us not actually scheduling inside other swevents
-  * because those disable preemption.
-  */
--static __always_inline void
--perf_sw_event_sched(u32 event_id, u64 nr, u64 addr)
-+static __always_inline void __perf_sw_event_sched(u32 event_id, u64 nr, u64 addr)
- {
--	if (static_key_false(&perf_swevent_enabled[event_id])) {
--		struct pt_regs *regs = this_cpu_ptr(&__perf_regs[0]);
-+	struct pt_regs *regs = this_cpu_ptr(&__perf_regs[0]);
- 
--		perf_fetch_caller_regs(regs);
--		___perf_sw_event(event_id, nr, regs, addr);
--	}
-+	perf_fetch_caller_regs(regs);
-+	___perf_sw_event(event_id, nr, regs, addr);
+diff --git a/kernel/time/tick-broadcast.c b/kernel/time/tick-broadcast.c
+index 6ec7855..a440552 100644
+--- a/kernel/time/tick-broadcast.c
++++ b/kernel/time/tick-broadcast.c
+@@ -107,6 +107,19 @@ void tick_install_broadcast_device(struct clock_event_device *dev)
+ 	tick_broadcast_device.evtdev = dev;
+ 	if (!cpumask_empty(tick_broadcast_mask))
+ 		tick_broadcast_start_periodic(dev);
++
++	if (!(dev->features & CLOCK_EVT_FEAT_ONESHOT))
++		return;
++
++	/*
++	 * If the system already runs in oneshot mode, switch the newly
++	 * registered broadcast device to oneshot mode explicitly.
++	 */
++	if (tick_broadcast_oneshot_active()) {
++		tick_broadcast_switch_to_oneshot();
++		return;
++	}
++
+ 	/*
+ 	 * Inform all cpus about this. We might be in a situation
+ 	 * where we did not switch to oneshot mode because the per cpu
+@@ -115,8 +128,7 @@ void tick_install_broadcast_device(struct clock_event_device *dev)
+ 	 * notification the systems stays stuck in periodic mode
+ 	 * forever.
+ 	 */
+-	if (dev->features & CLOCK_EVT_FEAT_ONESHOT)
+-		tick_clock_notify();
++	tick_clock_notify();
  }
  
- extern struct static_key_false perf_sched_events;
- 
--static __always_inline bool
--perf_sw_migrate_enabled(void)
-+static __always_inline bool __perf_sw_enabled(int swevt)
- {
--	if (static_key_false(&perf_swevent_enabled[PERF_COUNT_SW_CPU_MIGRATIONS]))
--		return true;
--	return false;
-+	return static_key_false(&perf_swevent_enabled[swevt]);
- }
- 
- static inline void perf_event_task_migrate(struct task_struct *task)
- {
--	if (perf_sw_migrate_enabled())
-+	if (__perf_sw_enabled(PERF_COUNT_SW_CPU_MIGRATIONS))
- 		task->sched_migrated = 1;
- }
- 
-@@ -1211,11 +1205,9 @@ static inline void perf_event_task_sched_in(struct task_struct *prev,
- 	if (static_branch_unlikely(&perf_sched_events))
- 		__perf_event_task_sched_in(prev, task);
- 
--	if (perf_sw_migrate_enabled() && task->sched_migrated) {
--		struct pt_regs *regs = this_cpu_ptr(&__perf_regs[0]);
--
--		perf_fetch_caller_regs(regs);
--		___perf_sw_event(PERF_COUNT_SW_CPU_MIGRATIONS, 1, regs, 0);
-+	if (__perf_sw_enabled(PERF_COUNT_SW_CPU_MIGRATIONS) &&
-+	    task->sched_migrated) {
-+		__perf_sw_event_sched(PERF_COUNT_SW_CPU_MIGRATIONS, 1, 0);
- 		task->sched_migrated = 0;
- 	}
- }
-@@ -1223,7 +1215,8 @@ static inline void perf_event_task_sched_in(struct task_struct *prev,
- static inline void perf_event_task_sched_out(struct task_struct *prev,
- 					     struct task_struct *next)
- {
--	perf_sw_event_sched(PERF_COUNT_SW_CONTEXT_SWITCHES, 1, 0);
-+	if (__perf_sw_enabled(PERF_COUNT_SW_CONTEXT_SWITCHES))
-+		__perf_sw_event_sched(PERF_COUNT_SW_CONTEXT_SWITCHES, 1, 0);
- 
- 	if (static_branch_unlikely(&perf_sched_events))
- 		__perf_event_task_sched_out(prev, next);
-@@ -1480,8 +1473,6 @@ static inline int perf_event_refresh(struct perf_event *event, int refresh)
- static inline void
- perf_sw_event(u32 event_id, u64 nr, struct pt_regs *regs, u64 addr)	{ }
- static inline void
--perf_sw_event_sched(u32 event_id, u64 nr, u64 addr)			{ }
--static inline void
- perf_bp_event(struct perf_event *event, void *data)			{ }
- 
- static inline int perf_register_guest_info_callbacks
+ /*
