@@ -2,192 +2,143 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F818362FA6
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 17 Apr 2021 13:43:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 21F3E362FAE
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 17 Apr 2021 13:49:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236058AbhDQLnh (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 17 Apr 2021 07:43:37 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:34878 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231387AbhDQLng (ORCPT
+        id S236058AbhDQLtd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 17 Apr 2021 07:49:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40664 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236009AbhDQLtc (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 17 Apr 2021 07:43:36 -0400
-Date:   Sat, 17 Apr 2021 11:43:08 -0000
+        Sat, 17 Apr 2021 07:49:32 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB905C061574;
+        Sat, 17 Apr 2021 04:49:06 -0700 (PDT)
+Date:   Sat, 17 Apr 2021 11:49:03 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1618659789;
+        s=2020; t=1618660144;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=/GKwiHxeTjtPBnZuMNLCZoaFfSQ48US6MUnNsIkhVXo=;
-        b=tOxhAbx5mvla+J1yOlM8gXRkwTB8XdgkQdVTK7RGLWa2l1oVxNp726I/s3YVL/WxVhW31W
-        zNxSVjkmdYxm4NxNeCxAThOUoagLeKoNDyAc4aUkSSfKyr8IqUlRsN55NMImJ5esjp0/4X
-        AYHbKsljbFZZcd6v7Sugd/8QX4MUSFfLKWRn5bu9unYOmCz2HbDsnlBgjwIgg0YFx9fVXR
-        IauGaMk0mQpjDDjYtZuP9xoV7QuZcUKyLLkhjTJm1EBYEVim7wf6KVfxjUrAI27YupyPgX
-        MGTWSRr8Tu9F61/AoFZz/FRttRFHVoiJJhjx50nEypmbfgqxE82Ei3zBgcHHHg==
+        bh=rFC/rWkjSJET2j48jfBQ2jr1THdQBw4FW0cnT1t61Gk=;
+        b=iTwbxXJ4h0lbd5FXMG8qKPv5+dyVxKStcEjZVgTQ5sLGkuWw5UtSG+v+zVjGwlu4y3tIY2
+        kW3mqW1epJekTVgIKDcjFNNs+7RgSIwyp/bGxPOxcxOz8jNXgkam14An8nHYhbR85BpK7E
+        +sBg8TVXbq0zgCuGZz7ZovF4ZnOtO+RJjB9DEZvwmQ43ZAG/sBAA4D679Y+8yb5OqVF3zT
+        IYO0mGzdo00WjduDtKPrT6x/de9HLXv9jAkc0g+nzAc0D7j9+wOSZezBR9j1eGG0rDbe14
+        o77+AHW6WTYPqPPTDsUYmwWvaNLLpdiQzrCMQzcUKZLKL4Ab08zbQ+udpifdfw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1618659789;
+        s=2020e; t=1618660144;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=/GKwiHxeTjtPBnZuMNLCZoaFfSQ48US6MUnNsIkhVXo=;
-        b=qVGh5fqtc029xWJLv502wIZQEO+J7z5QK6rfkft4sAQHzlLG2XhzeS+7+suGzwcb+Trn2T
-        +8rq+4CuwwxPEHDw==
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+        bh=rFC/rWkjSJET2j48jfBQ2jr1THdQBw4FW0cnT1t61Gk=;
+        b=zEf8ELqoLreGZjsMKSXdcbE0KvsEPK8NrJmG/1jo5qBDmArZV5bp0VR7cbKJ7ItZZDdkWd
+        xl/p7G1KzrFXOCCw==
+From:   "tip-bot2 for Ali Saidi" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/debug: Rename the sched_debug parameter to
- sched_verbose
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: locking/urgent] locking/qrwlock: Fix ordering in
+ queued_write_lock_slowpath()
+Cc:     Ali Saidi <alisaidi@amazon.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Steve Capper <steve.capper@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Waiman Long <longman@redhat.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <161865978854.29796.4481244804056686783.tip-bot2@tip-bot2>
+Message-ID: <161866014365.29796.9238636476613418213.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the locking/urgent branch of tip:
 
-Commit-ID:     9406415f46f6127fd31bb66f0260f7a61a8d2786
-Gitweb:        https://git.kernel.org/tip/9406415f46f6127fd31bb66f0260f7a61a8d2786
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Thu, 15 Apr 2021 18:23:17 +02:00
+Commit-ID:     84a24bf8c52e66b7ac89ada5e3cfbe72d65c1896
+Gitweb:        https://git.kernel.org/tip/84a24bf8c52e66b7ac89ada5e3cfbe72d65=
+c1896
+Author:        Ali Saidi <alisaidi@amazon.com>
+AuthorDate:    Thu, 15 Apr 2021 17:27:11=20
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Sat, 17 Apr 2021 13:22:44 +02:00
+CommitterDate: Sat, 17 Apr 2021 13:40:50 +02:00
 
-sched/debug: Rename the sched_debug parameter to sched_verbose
+locking/qrwlock: Fix ordering in queued_write_lock_slowpath()
 
-CONFIG_SCHED_DEBUG is the build-time Kconfig knob, the boot param
-sched_debug and the /debug/sched/debug_enabled knobs control the
-sched_debug_enabled variable, but what they really do is make
-SCHED_DEBUG more verbose, so rename the lot.
+While this code is executed with the wait_lock held, a reader can
+acquire the lock without holding wait_lock.  The writer side loops
+checking the value with the atomic_cond_read_acquire(), but only truly
+acquires the lock when the compare-and-exchange is completed
+successfully which isn=E2=80=99t ordered. This exposes the window between the
+acquire and the cmpxchg to an A-B-A problem which allows reads
+following the lock acquisition to observe values speculatively before
+the write lock is truly acquired.
 
+We've seen a problem in epoll where the reader does a xchg while
+holding the read lock, but the writer can see a value change out from
+under it.
+
+  Writer                                | Reader
+  ---------------------------------------------------------------------------=
+-----
+  ep_scan_ready_list()                  |
+  |- write_lock_irq()                   |
+      |- queued_write_lock_slowpath()   |
+	|- atomic_cond_read_acquire()   |
+				        | read_lock_irqsave(&ep->lock, flags);
+     --> (observes value before unlock) |  chain_epi_lockless()
+     |                                  |    epi->next =3D xchg(&ep->ovflist,=
+ epi);
+     |                                  | read_unlock_irqrestore(&ep->lock, f=
+lags);
+     |                                  |
+     |     atomic_cmpxchg_relaxed()     |
+     |-- READ_ONCE(ep->ovflist);        |
+
+A core can order the read of the ovflist ahead of the
+atomic_cmpxchg_relaxed(). Switching the cmpxchg to use acquire
+semantics addresses this issue at which point the atomic_cond_read can
+be switched to use relaxed semantics.
+
+Fixes: b519b56e378ee ("locking/qrwlock: Use atomic_cond_read_acquire() when s=
+pinning in qrwlock")
+Signed-off-by: Ali Saidi <alisaidi@amazon.com>
+[peterz: use try_cmpxchg()]
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Steve Capper <steve.capper@arm.com>
+Acked-by: Will Deacon <will@kernel.org>
+Acked-by: Waiman Long <longman@redhat.com>
+Tested-by: Steve Capper <steve.capper@arm.com>
 ---
- Documentation/admin-guide/kernel-parameters.txt |  2 +-
- Documentation/scheduler/sched-domains.rst       | 10 +++++-----
- kernel/sched/debug.c                            |  4 ++--
- kernel/sched/sched.h                            |  2 +-
- kernel/sched/topology.c                         | 12 ++++++------
- 5 files changed, 15 insertions(+), 15 deletions(-)
+ kernel/locking/qrwlock.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 0454572..9e4c026 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -4725,7 +4725,7 @@
- 
- 	sbni=		[NET] Granch SBNI12 leased line adapter
- 
--	sched_debug	[KNL] Enables verbose scheduler debug messages.
-+	sched_verbose	[KNL] Enables verbose scheduler debug messages.
- 
- 	schedstats=	[KNL,X86] Enable or disable scheduled statistics.
- 			Allowed values are enable and disable. This feature
-diff --git a/Documentation/scheduler/sched-domains.rst b/Documentation/scheduler/sched-domains.rst
-index 8582fa5..14ea2f2 100644
---- a/Documentation/scheduler/sched-domains.rst
-+++ b/Documentation/scheduler/sched-domains.rst
-@@ -74,8 +74,8 @@ for a given topology level by creating a sched_domain_topology_level array and
- calling set_sched_topology() with this array as the parameter.
- 
- The sched-domains debugging infrastructure can be enabled by enabling
--CONFIG_SCHED_DEBUG and adding 'sched_debug' to your cmdline. If you forgot to
--tweak your cmdline, you can also flip the /sys/kernel/debug/sched_debug
--knob. This enables an error checking parse of the sched domains which should
--catch most possible errors (described above). It also prints out the domain
--structure in a visual format.
-+CONFIG_SCHED_DEBUG and adding 'sched_debug_verbose' to your cmdline. If you
-+forgot to tweak your cmdline, you can also flip the
-+/sys/kernel/debug/sched/verbose knob. This enables an error checking parse of
-+the sched domains which should catch most possible errors (described above). It
-+also prints out the domain structure in a visual format.
-diff --git a/kernel/sched/debug.c b/kernel/sched/debug.c
-index bf199d6..461342f 100644
---- a/kernel/sched/debug.c
-+++ b/kernel/sched/debug.c
-@@ -275,7 +275,7 @@ static const struct file_operations sched_dynamic_fops = {
- 
- #endif /* CONFIG_PREEMPT_DYNAMIC */
- 
--__read_mostly bool sched_debug_enabled;
-+__read_mostly bool sched_debug_verbose;
- 
- static const struct seq_operations sched_debug_sops;
- 
-@@ -300,7 +300,7 @@ static __init int sched_init_debug(void)
- 	debugfs_sched = debugfs_create_dir("sched", NULL);
- 
- 	debugfs_create_file("features", 0644, debugfs_sched, NULL, &sched_feat_fops);
--	debugfs_create_bool("debug_enabled", 0644, debugfs_sched, &sched_debug_enabled);
-+	debugfs_create_bool("verbose", 0644, debugfs_sched, &sched_debug_verbose);
- #ifdef CONFIG_PREEMPT_DYNAMIC
- 	debugfs_create_file("preempt", 0644, debugfs_sched, NULL, &sched_dynamic_fops);
- #endif
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index 55232db..bde7248 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -2363,7 +2363,7 @@ extern struct sched_entity *__pick_first_entity(struct cfs_rq *cfs_rq);
- extern struct sched_entity *__pick_last_entity(struct cfs_rq *cfs_rq);
- 
- #ifdef	CONFIG_SCHED_DEBUG
--extern bool sched_debug_enabled;
-+extern bool sched_debug_verbose;
- 
- extern void print_cfs_stats(struct seq_file *m, int cpu);
- extern void print_rt_stats(struct seq_file *m, int cpu);
-diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
-index c343aed..55a0a24 100644
---- a/kernel/sched/topology.c
-+++ b/kernel/sched/topology.c
-@@ -14,15 +14,15 @@ static cpumask_var_t sched_domains_tmpmask2;
- 
- static int __init sched_debug_setup(char *str)
+diff --git a/kernel/locking/qrwlock.c b/kernel/locking/qrwlock.c
+index 4786dd2..b94f383 100644
+--- a/kernel/locking/qrwlock.c
++++ b/kernel/locking/qrwlock.c
+@@ -60,6 +60,8 @@ EXPORT_SYMBOL(queued_read_lock_slowpath);
+  */
+ void queued_write_lock_slowpath(struct qrwlock *lock)
  {
--	sched_debug_enabled = true;
-+	sched_debug_verbose = true;
- 
- 	return 0;
++	int cnts;
++
+ 	/* Put the writer into the wait queue */
+ 	arch_spin_lock(&lock->wait_lock);
+=20
+@@ -73,9 +75,8 @@ void queued_write_lock_slowpath(struct qrwlock *lock)
+=20
+ 	/* When no more readers or writers, set the locked flag */
+ 	do {
+-		atomic_cond_read_acquire(&lock->cnts, VAL =3D=3D _QW_WAITING);
+-	} while (atomic_cmpxchg_relaxed(&lock->cnts, _QW_WAITING,
+-					_QW_LOCKED) !=3D _QW_WAITING);
++		cnts =3D atomic_cond_read_relaxed(&lock->cnts, VAL =3D=3D _QW_WAITING);
++	} while (!atomic_try_cmpxchg_acquire(&lock->cnts, &cnts, _QW_LOCKED));
+ unlock:
+ 	arch_spin_unlock(&lock->wait_lock);
  }
--early_param("sched_debug", sched_debug_setup);
-+early_param("sched_verbose", sched_debug_setup);
- 
- static inline bool sched_debug(void)
- {
--	return sched_debug_enabled;
-+	return sched_debug_verbose;
- }
- 
- #define SD_FLAG(_name, mflags) [__##_name] = { .meta_flags = mflags, .name = #_name },
-@@ -131,7 +131,7 @@ static void sched_domain_debug(struct sched_domain *sd, int cpu)
- {
- 	int level = 0;
- 
--	if (!sched_debug_enabled)
-+	if (!sched_debug_verbose)
- 		return;
- 
- 	if (!sd) {
-@@ -152,7 +152,7 @@ static void sched_domain_debug(struct sched_domain *sd, int cpu)
- }
- #else /* !CONFIG_SCHED_DEBUG */
- 
--# define sched_debug_enabled 0
-+# define sched_debug_verbose 0
- # define sched_domain_debug(sd, cpu) do { } while (0)
- static inline bool sched_debug(void)
- {
-@@ -2141,7 +2141,7 @@ build_sched_domains(const struct cpumask *cpu_map, struct sched_domain_attr *att
- 	if (has_asym)
- 		static_branch_inc_cpuslocked(&sched_asym_cpucapacity);
- 
--	if (rq && sched_debug_enabled) {
-+	if (rq && sched_debug_verbose) {
- 		pr_info("root domain span: %*pbl (max cpu_capacity = %lu)\n",
- 			cpumask_pr_args(cpu_map), rq->rd->max_cpu_capacity);
- 	}
