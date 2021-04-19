@@ -2,84 +2,115 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 89AA9363E15
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Apr 2021 10:59:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 523ED364137
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Apr 2021 14:05:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233403AbhDSJAT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 19 Apr 2021 05:00:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57634 "EHLO
+        id S239020AbhDSMFP (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 19 Apr 2021 08:05:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42046 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231779AbhDSJAS (ORCPT
+        with ESMTP id S238882AbhDSMFN (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 19 Apr 2021 05:00:18 -0400
-Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76288C06174A
-        for <linux-tip-commits@vger.kernel.org>; Mon, 19 Apr 2021 01:59:49 -0700 (PDT)
-Received: by mail-wm1-x335.google.com with SMTP id w7-20020a1cdf070000b0290125f388fb34so17589336wmg.0
-        for <linux-tip-commits@vger.kernel.org>; Mon, 19 Apr 2021 01:59:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=imdYfxadLvf66UqJrLdP+jNRWPDriPV49gKMKRgDf9U=;
-        b=MhWOZlAaGQbgumc0RLcBI7Eo6tUscm2hdCcY72xvUiKO6T5U7wVeKkh+1VrFaG66Pu
-         XmIMRiH8YDXvTwJ7cqv6scfSJxAP1+EycEKK6U2FgJK8C7ALnWzIhxFLZ31ZJEEtUauL
-         gHldm3ykUlafuzkHXAvxV2Z4+78hwLKhnpRmjL79+goWXLKedkVsTDcglmA2muBUl5Xe
-         +iRC1LUJXhe/2sXhuGTJhmjvmzaEcdW08XppkbCcY4foF1o6HPMLpM8b+IQdXkofjnUV
-         8JCqEWNmLCB3PeN+XsjQSc+iagQxE46gMFLBse2cQOj57d39VmZ9xVkCDzi6j74Mwsyb
-         +5Uw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=imdYfxadLvf66UqJrLdP+jNRWPDriPV49gKMKRgDf9U=;
-        b=j8kZ7Bde/ZVt5iNbHaxWeXS9ejO3288ELcSv6xWZUkr1JSphXQ3ghXm67DNpCGPOkV
-         9C6Ss3qPl2j075G79fBJTqk2GlhOSgKN4IrPS1tk0rEfgvC3o3R9dV1hGiZz+h7dUPlp
-         KDWV6yfXVHLJ5GgetW3xPhaIUy3A8WxUYOA/ntM8xxzSLkI3OJbG2QGTSbVgOPqwhFpk
-         we7yzJmSYrmhRzQsnmaxkDosgGGZDEeEIF4d9E5/rVrVxtsa+duHCGkIurdFnoPSu2ID
-         Az4LaAjWzBOoyUZqMdAyhQ8LxM8fws+tJLUVuNEO/TbZlAeKG9YCWT6xATMhbu3rru7S
-         px8g==
-X-Gm-Message-State: AOAM533bgRFf7ogYwccCBQpVjHkjbUeFbqYZB4Pe9ouzdxbsCnjGvxML
-        7Cn7px4iKa8HW9C3JzqBPG8vcQ==
-X-Google-Smtp-Source: ABdhPJyttmIhyOWwAZzKx3fqzhhoCfyRE7e8EHnxzE2txBcfL2G/wBuyLWNkAiW9JdSzXZ9BeBSyDA==
-X-Received: by 2002:a05:600c:247:: with SMTP id 7mr18551745wmj.111.1618822788077;
-        Mon, 19 Apr 2021 01:59:48 -0700 (PDT)
-Received: from myrica ([2001:1715:4e26:a7e0:116c:c27a:3e7f:5eaf])
-        by smtp.gmail.com with ESMTPSA id o1sm22902869wrw.95.2021.04.19.01.59.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Apr 2021 01:59:47 -0700 (PDT)
-Date:   Mon, 19 Apr 2021 10:59:30 +0200
-From:   Jean-Philippe Brucker <jean-philippe@linaro.org>
-To:     Borislav Petkov <bp@alien8.de>
-Cc:     linux-tip-commits@vger.kernel.org, x86@kernel.org,
-        linux-kernel@vger.kernel.org,
-        =?utf-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
-Subject: Re: [tip: x86/urgent] x86/dma: Tear down DMA ops on driver unbind
-Message-ID: <YH1GctvMa2filsNg@myrica>
-References: <20210414082633.877461-1-jean-philippe@linaro.org>
- <161847725788.29796.15623166781765421094.tip-bot2@tip-bot2>
- <20210417120644.GA5235@zn.tnic>
+        Mon, 19 Apr 2021 08:05:13 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A752C06174A;
+        Mon, 19 Apr 2021 05:04:42 -0700 (PDT)
+Date:   Mon, 19 Apr 2021 12:04:39 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1618833881;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=vAsHv+kFEP05Q70rujNWIfj6DnEc9X02Qcf8rAYrwO0=;
+        b=cDSr59HazjEWaSHoo/U+mXI/VO8ErhBQrTRSyYPTYwrQOmKc2RbQGdB8wvtbUZQBFYBI7u
+        e/tQhAuBeio0VmAAmbDk0zJM52yB5TvqeWZyvslhwKquZ6D3ff4/cye2tMZDVACnxa6Ama
+        o13LQq3R6lP+E0R/KrDoQ83aR7tbt2LLVed96EzTr+WmP40Qo+VA1M7oPJhzKMwZ8HokDi
+        pQpwzaQGBcEcCLz2KqwjMzHZDgLrTz0X5amePQ7VQIiZ2r2NlCgXUXvmRXGSZQN4KEZ5Oy
+        LA8cc/hU0Pd5EHnjnbbYJnTbXRyddtq3P41SSa/odOqiaLS+tTiqwlUZPDgGrg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1618833881;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=vAsHv+kFEP05Q70rujNWIfj6DnEc9X02Qcf8rAYrwO0=;
+        b=x+fOTpDEowqUkEkn7XHutr7ZRIRF7gJdzSFh+HPRvK2d8hXuaLPi+Lw50Uf6Rj7PobnPC2
+        NCLjciqfv0FtACBg==
+From:   "tip-bot2 for Maciej W. Rozycki" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/build] x86/build: Disable HIGHMEM64G selection for M486SX
+Cc:     "Maciej W. Rozycki" <macro@orcam.me.uk>,
+        Borislav Petkov <bp@suse.de>, stable@vger.kernel.org,
+        #@tip-bot2.tec.linutronix.de, v5.5+@tip-bot2.tec.linutronix.de,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <alpine.DEB.2.21.2104141221340.44318@angie.orcam.me.uk>
+References: <alpine.DEB.2.21.2104141221340.44318@angie.orcam.me.uk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210417120644.GA5235@zn.tnic>
+Message-ID: <161883388012.29796.15651608262748993332.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Sat, Apr 17, 2021 at 02:06:44PM +0200, Borislav Petkov wrote:
-> Nope, sorry, no joy. Zapping it from tip.
-> 
-> With that patch, it fails booting on my test box with messages like
-> (typing up from video I took):
-> 
-> ...
-> ata: softreset failed (1st FIS failed)
-> ahci 0000:03:00:1: AMD-Vi: Event logged [IO_PAGE_FAULT domain=...]
-> ahci 0000:03:00:1: AMD-Vi: Event logged [IO_PAGE_FAULT domain=...]
+The following commit has been merged into the x86/build branch of tip:
 
-Sorry about that, I only tested under QEMU. I'll try to reproduce this on
-an AMD laptop.
+Commit-ID:     0ef3439cd80ba7770723edb0470d15815914bb62
+Gitweb:        https://git.kernel.org/tip/0ef3439cd80ba7770723edb0470d15815914bb62
+Author:        Maciej W. Rozycki <macro@orcam.me.uk>
+AuthorDate:    Wed, 14 Apr 2021 12:38:28 +02:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Mon, 19 Apr 2021 14:02:12 +02:00
 
-Thanks,
-Jean
+x86/build: Disable HIGHMEM64G selection for M486SX
+
+Fix a regression caused by making the 486SX separately selectable in
+Kconfig, for which the HIGHMEM64G setting has not been updated and
+therefore has become exposed as a user-selectable option for the M486SX
+configuration setting unlike with original M486 and all the other
+settings that choose non-PAE-enabled processors:
+
+  High Memory Support
+  > 1. off (NOHIGHMEM)
+    2. 4GB (HIGHMEM4G)
+    3. 64GB (HIGHMEM64G)
+  choice[1-3?]:
+
+With the fix in place the setting is now correctly removed:
+
+  High Memory Support
+  > 1. off (NOHIGHMEM)
+    2. 4GB (HIGHMEM4G)
+  choice[1-2?]:
+
+ [ bp: Massage commit message. ]
+
+Fixes: 87d6021b8143 ("x86/math-emu: Limit MATH_EMULATION to 486SX compatibles")
+Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Cc: stable@vger.kernel.org # v5.5+
+Link: https://lkml.kernel.org/r/alpine.DEB.2.21.2104141221340.44318@angie.orcam.me.uk
+---
+ arch/x86/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 2792879..268b7d5 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -1406,7 +1406,7 @@ config HIGHMEM4G
+ 
+ config HIGHMEM64G
+ 	bool "64GB"
+-	depends on !M486 && !M586 && !M586TSC && !M586MMX && !MGEODE_LX && !MGEODEGX1 && !MCYRIXIII && !MELAN && !MWINCHIPC6 && !WINCHIP3D && !MK6
++	depends on !M486SX && !M486 && !M586 && !M586TSC && !M586MMX && !MGEODE_LX && !MGEODEGX1 && !MCYRIXIII && !MELAN && !MWINCHIPC6 && !WINCHIP3D && !MK6
+ 	select X86_PAE
+ 	help
+ 	  Select this if you have a 32-bit processor and more than 4
