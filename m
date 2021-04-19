@@ -2,104 +2,84 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B797D36301B
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 17 Apr 2021 15:07:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 89AA9363E15
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Apr 2021 10:59:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236464AbhDQM6S (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 17 Apr 2021 08:58:18 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:35160 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232844AbhDQM6S (ORCPT
+        id S233403AbhDSJAT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 19 Apr 2021 05:00:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57634 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231779AbhDSJAS (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 17 Apr 2021 08:58:18 -0400
-Date:   Sat, 17 Apr 2021 12:57:49 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1618664270;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=m1X6+iqVb6LhkUi6QZrdTfAvny6WJ8s4Ht4CSC/bzHQ=;
-        b=32mA8G1dRNTE6o7+44+8iajT6lCR0KHgzWQmKufcAurG9OGlpuSVH5HsPSOSwfcEhZ70ZI
-        4Se5u8z72rzjDHlGiQBxrcqsRNv5Zzh9bjwaNEKz0i9OEpPAbENRaXb/Cd95fvSALCWsOI
-        YlK0uU4NJJh0ZWo7nzmXLqMmaAF8plw/MwG6YDVclZhit20P4rZqQ5YlrBKxSvqpiEZ78G
-        NmJm/l9S61eg91Wg37DfYB+u7FAL7do9MQaiJyiy0clLiYuR4aZswLQ9r5G0F09hR4lDfW
-        HzpAa7K42ggWWwbcPEqOneG+sM+SKbtomL3JEjtNfmRfkzWNaQyOvqMtWdAZuw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1618664270;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=m1X6+iqVb6LhkUi6QZrdTfAvny6WJ8s4Ht4CSC/bzHQ=;
-        b=UtVtTp30I4WXcXtiAQxcZx6hwcTLBrNhOhxOB1pa64LeJ+ci2J6n3y6qBzcatGvDN815Xv
-        WTDfzjbp1DTKryAw==
-From:   "tip-bot2 for Chen Jun" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] posix-timers: Preserve return value in clock_adjtime32()
-Cc:     Chen Jun <chenjun102@huawei.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Richard Cochran <richardcochran@gmail.com>,
-        stable@vger.kernel.org, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20210414030449.90692-1-chenjun102@huawei.com>
-References: <20210414030449.90692-1-chenjun102@huawei.com>
+        Mon, 19 Apr 2021 05:00:18 -0400
+Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76288C06174A
+        for <linux-tip-commits@vger.kernel.org>; Mon, 19 Apr 2021 01:59:49 -0700 (PDT)
+Received: by mail-wm1-x335.google.com with SMTP id w7-20020a1cdf070000b0290125f388fb34so17589336wmg.0
+        for <linux-tip-commits@vger.kernel.org>; Mon, 19 Apr 2021 01:59:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=imdYfxadLvf66UqJrLdP+jNRWPDriPV49gKMKRgDf9U=;
+        b=MhWOZlAaGQbgumc0RLcBI7Eo6tUscm2hdCcY72xvUiKO6T5U7wVeKkh+1VrFaG66Pu
+         XmIMRiH8YDXvTwJ7cqv6scfSJxAP1+EycEKK6U2FgJK8C7ALnWzIhxFLZ31ZJEEtUauL
+         gHldm3ykUlafuzkHXAvxV2Z4+78hwLKhnpRmjL79+goWXLKedkVsTDcglmA2muBUl5Xe
+         +iRC1LUJXhe/2sXhuGTJhmjvmzaEcdW08XppkbCcY4foF1o6HPMLpM8b+IQdXkofjnUV
+         8JCqEWNmLCB3PeN+XsjQSc+iagQxE46gMFLBse2cQOj57d39VmZ9xVkCDzi6j74Mwsyb
+         +5Uw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=imdYfxadLvf66UqJrLdP+jNRWPDriPV49gKMKRgDf9U=;
+        b=j8kZ7Bde/ZVt5iNbHaxWeXS9ejO3288ELcSv6xWZUkr1JSphXQ3ghXm67DNpCGPOkV
+         9C6Ss3qPl2j075G79fBJTqk2GlhOSgKN4IrPS1tk0rEfgvC3o3R9dV1hGiZz+h7dUPlp
+         KDWV6yfXVHLJ5GgetW3xPhaIUy3A8WxUYOA/ntM8xxzSLkI3OJbG2QGTSbVgOPqwhFpk
+         we7yzJmSYrmhRzQsnmaxkDosgGGZDEeEIF4d9E5/rVrVxtsa+duHCGkIurdFnoPSu2ID
+         Az4LaAjWzBOoyUZqMdAyhQ8LxM8fws+tJLUVuNEO/TbZlAeKG9YCWT6xATMhbu3rru7S
+         px8g==
+X-Gm-Message-State: AOAM533bgRFf7ogYwccCBQpVjHkjbUeFbqYZB4Pe9ouzdxbsCnjGvxML
+        7Cn7px4iKa8HW9C3JzqBPG8vcQ==
+X-Google-Smtp-Source: ABdhPJyttmIhyOWwAZzKx3fqzhhoCfyRE7e8EHnxzE2txBcfL2G/wBuyLWNkAiW9JdSzXZ9BeBSyDA==
+X-Received: by 2002:a05:600c:247:: with SMTP id 7mr18551745wmj.111.1618822788077;
+        Mon, 19 Apr 2021 01:59:48 -0700 (PDT)
+Received: from myrica ([2001:1715:4e26:a7e0:116c:c27a:3e7f:5eaf])
+        by smtp.gmail.com with ESMTPSA id o1sm22902869wrw.95.2021.04.19.01.59.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Apr 2021 01:59:47 -0700 (PDT)
+Date:   Mon, 19 Apr 2021 10:59:30 +0200
+From:   Jean-Philippe Brucker <jean-philippe@linaro.org>
+To:     Borislav Petkov <bp@alien8.de>
+Cc:     linux-tip-commits@vger.kernel.org, x86@kernel.org,
+        linux-kernel@vger.kernel.org,
+        =?utf-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
+Subject: Re: [tip: x86/urgent] x86/dma: Tear down DMA ops on driver unbind
+Message-ID: <YH1GctvMa2filsNg@myrica>
+References: <20210414082633.877461-1-jean-philippe@linaro.org>
+ <161847725788.29796.15623166781765421094.tip-bot2@tip-bot2>
+ <20210417120644.GA5235@zn.tnic>
 MIME-Version: 1.0
-Message-ID: <161866426986.29796.2792867256051825310.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210417120644.GA5235@zn.tnic>
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/core branch of tip:
+On Sat, Apr 17, 2021 at 02:06:44PM +0200, Borislav Petkov wrote:
+> Nope, sorry, no joy. Zapping it from tip.
+> 
+> With that patch, it fails booting on my test box with messages like
+> (typing up from video I took):
+> 
+> ...
+> ata: softreset failed (1st FIS failed)
+> ahci 0000:03:00:1: AMD-Vi: Event logged [IO_PAGE_FAULT domain=...]
+> ahci 0000:03:00:1: AMD-Vi: Event logged [IO_PAGE_FAULT domain=...]
 
-Commit-ID:     2d036dfa5f10df9782f5278fc591d79d283c1fad
-Gitweb:        https://git.kernel.org/tip/2d036dfa5f10df9782f5278fc591d79d283c1fad
-Author:        Chen Jun <chenjun102@huawei.com>
-AuthorDate:    Wed, 14 Apr 2021 03:04:49 
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sat, 17 Apr 2021 14:55:06 +02:00
+Sorry about that, I only tested under QEMU. I'll try to reproduce this on
+an AMD laptop.
 
-posix-timers: Preserve return value in clock_adjtime32()
-
-The return value on success (>= 0) is overwritten by the return value of
-put_old_timex32(). That works correct in the fault case, but is wrong for
-the success case where put_old_timex32() returns 0.
-
-Just check the return value of put_old_timex32() and return -EFAULT in case
-it is not zero.
-
-[ tglx: Massage changelog ]
-
-Fixes: 3a4d44b61625 ("ntp: Move adjtimex related compat syscalls to native counterparts")
-Signed-off-by: Chen Jun <chenjun102@huawei.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Richard Cochran <richardcochran@gmail.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20210414030449.90692-1-chenjun102@huawei.com
----
- kernel/time/posix-timers.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/kernel/time/posix-timers.c b/kernel/time/posix-timers.c
-index bf540f5..dd5697d 100644
---- a/kernel/time/posix-timers.c
-+++ b/kernel/time/posix-timers.c
-@@ -1191,8 +1191,8 @@ SYSCALL_DEFINE2(clock_adjtime32, clockid_t, which_clock,
- 
- 	err = do_clock_adjtime(which_clock, &ktx);
- 
--	if (err >= 0)
--		err = put_old_timex32(utp, &ktx);
-+	if (err >= 0 && put_old_timex32(utp, &ktx))
-+		return -EFAULT;
- 
- 	return err;
- }
+Thanks,
+Jean
