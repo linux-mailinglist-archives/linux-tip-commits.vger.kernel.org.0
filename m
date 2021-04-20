@@ -2,119 +2,96 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5ACAC365475
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 20 Apr 2021 10:46:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C7C8B365652
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 20 Apr 2021 12:40:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231184AbhDTIrI (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 20 Apr 2021 04:47:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60178 "EHLO
+        id S230408AbhDTKlT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 20 Apr 2021 06:41:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56990 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231183AbhDTIrI (ORCPT
+        with ESMTP id S230290AbhDTKlS (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 20 Apr 2021 04:47:08 -0400
+        Tue, 20 Apr 2021 06:41:18 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 146AEC06174A;
-        Tue, 20 Apr 2021 01:46:37 -0700 (PDT)
-Date:   Tue, 20 Apr 2021 08:46:32 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C144CC06174A;
+        Tue, 20 Apr 2021 03:40:47 -0700 (PDT)
+Date:   Tue, 20 Apr 2021 10:40:44 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1618908393;
+        s=2020; t=1618915245;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=WWM832S9BcrPc+QBzCiDbAukobV57lBiusLpUgarQ3o=;
-        b=JXuQiluqXjcT/FGPmC94IfHzNegA/PFYd1O64UT2gCX1ko85LrS4LM0z9IiIT7PX9Qb81/
-        XCoLmFyboqYlvDYx+iH0QXENv8igflDH9kMqHHXl8JWXnWKU7ql/8jMBG7bWLzxB782sPT
-        /GEVgW1s6yRFChMiTudgpOLJJhm6Kod56lR5LgfG20F1wFebKqcoHbVro/8n56EYWuAepy
-        9tYwgXm5GiDqy/Q2D8/Rdh4PZF5LPm1q7twpvFouf36QTnInNjKQU4EfJj8/yRBcAnRa3A
-        4p75c903mYIKxNuz1h7kRkaFSzv4VcCnd5DHOyQs11uiYa3m7MCKzhJnABoGMA==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=Wb4eM4nPac9m1qOjx+gQdVVniX4nvTAZh4HF4hyBU3c=;
+        b=xDi0mmWjVSi2NJRkTXzawxBI4UH8MP8OOYaBgA1yVmddov8ttuPFsTdbuCjig9phOToIJ9
+        MOJwcv//d5umR93xNQwMgw4UNxKVqRJS3Zt/c+jnxwabqwhwUmWZTq9gzItNbQYkTUW5eX
+        ArrpGeGiRFpCj/J5RNjW3J9+Gm/Wk6Gre6FLkyXBf85RV4jc6OG01jezqaPJIWEKs6/RUN
+        zSrpBY3TZuu6X5aTnDcJMg2KBFI5+IQSkGTyt/eUQdv/E+WGGRPJaMO/NaQhe4568vw/iH
+        pt/FrI+m/fla71utxerDDfs3d16ZUXQrBM0fZSyi/4PSFIepEdORznrIAyR7gQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1618908393;
+        s=2020e; t=1618915245;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=WWM832S9BcrPc+QBzCiDbAukobV57lBiusLpUgarQ3o=;
-        b=7Hxt2EZRgfc3PSJ2S4vBvOtRA6Ccw1571IjGKLiwuA5nHYshOPrQfibQjmCUY4/3M6UHVJ
-        VDgfzUqNw7oMqRCA==
-From:   "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=Wb4eM4nPac9m1qOjx+gQdVVniX4nvTAZh4HF4hyBU3c=;
+        b=WCDZaTNnu0pJHAOMe+wV0fstBO4/9fDOGXzBNoO8Tuxd43cdbYowgGquWNJbLWtLTavzGh
+        HH8+JFPYc/sS34Cw==
+From:   "tip-bot2 for Zhouyi Zhou" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/platform] x86/platform/uv: Fix !KEXEC build failure
-Cc:     Ingo Molnar <mingo@kernel.org>, Mike Travis <travis@sgi.com>,
-        linux-kernel@vger.kernel.org, x86@kernel.org
+Subject: [tip: sched/urgent] preempt/dynamic: Fix typo in macro conditional statement
+Cc:     Zhouyi Zhou <zhouzhouyi@gmail.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20210410073523.5493-1-zhouzhouyi@gmail.com>
+References: <20210410073523.5493-1-zhouzhouyi@gmail.com>
 MIME-Version: 1.0
-Message-ID: <161890839241.29796.159814055731693380.tip-bot2@tip-bot2>
+Message-ID: <161891524495.29796.16697487389176619561.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/platform branch of tip:
+The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     c2209ea55612efac75de0a58ef5f7394fae7fa0f
-Gitweb:        https://git.kernel.org/tip/c2209ea55612efac75de0a58ef5f7394fae=
-7fa0f
-Author:        Ingo Molnar <mingo@kernel.org>
-AuthorDate:    Tue, 20 Apr 2021 09:47:42 +02:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 20 Apr 2021 10:08:23 +02:00
+Commit-ID:     0c89d87d1d43d9fa268d1dc489518564d58bf497
+Gitweb:        https://git.kernel.org/tip/0c89d87d1d43d9fa268d1dc489518564d58bf497
+Author:        Zhouyi Zhou <zhouzhouyi@gmail.com>
+AuthorDate:    Sat, 10 Apr 2021 15:35:23 +08:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Mon, 19 Apr 2021 20:02:57 +02:00
 
-x86/platform/uv: Fix !KEXEC build failure
+preempt/dynamic: Fix typo in macro conditional statement
 
-When KEXEC is disabled, the UV build fails:
+Commit 40607ee97e4e ("preempt/dynamic: Provide irqentry_exit_cond_resched()
+static call") tried to provide irqentry_exit_cond_resched() static call
+in irqentry_exit, but has a typo in macro conditional statement.
 
-  arch/x86/platform/uv/uv_nmi.c:875:14: error: =E2=80=98uv_nmi_kexec_failed=
-=E2=80=99 undeclared (first use in this function)
-
-Since uv_nmi_kexec_failed is only defined in the KEXEC_CORE #ifdef branch,
-this code cannot ever have been build tested:
-
-	if (main)
-		pr_err("UV: NMI kdump: KEXEC not supported in this kernel\n");
-	atomic_set(&uv_nmi_kexec_failed, 1);
-
-Nor is this use possible in uv_handle_nmi():
-
-                atomic_set(&uv_nmi_kexec_failed, 0);
-
-These bugs were introduced in this commit:
-
-    d0a9964e9873: ("x86/platform/uv: Implement simple dump failover if kdump =
-fails")
-
-Which added the uv_nmi_kexec_failed assignments to !KEXEC code, while making =
-the
-definition KEXEC-only - apparently without testing the !KEXEC case.
-
-Instead of complicating the #ifdef maze, simplify the code by requiring X86_UV
-to depend on KEXEC_CORE. This pattern is present in other architectures as we=
-ll.
-
-( We'll remove the untested, 7 years old !KEXEC complications from the file i=
-n a
-  separate commit. )
-
-Fixes: d0a9964e9873: ("x86/platform/uv: Implement simple dump failover if kdu=
-mp fails")
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Mike Travis <travis@sgi.com>
-Cc: linux-kernel@vger.kernel.org
+Fixes: 40607ee97e4e ("preempt/dynamic: Provide irqentry_exit_cond_resched() static call")
+Signed-off-by: Zhouyi Zhou <zhouzhouyi@gmail.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20210410073523.5493-1-zhouzhouyi@gmail.com
 ---
- arch/x86/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/entry/common.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 2792879..d9776c9 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -571,6 +571,7 @@ config X86_UV
- 	depends on X86_EXTENDED_PLATFORM
- 	depends on NUMA
- 	depends on EFI
-+	depends on KEXEC_CORE
- 	depends on X86_X2APIC
- 	depends on PCI
- 	help
+diff --git a/kernel/entry/common.c b/kernel/entry/common.c
+index 8442e5c..2003d69 100644
+--- a/kernel/entry/common.c
++++ b/kernel/entry/common.c
+@@ -422,7 +422,7 @@ noinstr void irqentry_exit(struct pt_regs *regs, irqentry_state_t state)
+ 
+ 		instrumentation_begin();
+ 		if (IS_ENABLED(CONFIG_PREEMPTION)) {
+-#ifdef CONFIG_PREEMT_DYNAMIC
++#ifdef CONFIG_PREEMPT_DYNAMIC
+ 			static_call(irqentry_exit_cond_resched)();
+ #else
+ 			irqentry_exit_cond_resched();
