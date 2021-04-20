@@ -2,55 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B0F53656BC
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 20 Apr 2021 12:49:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C516E365EE5
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 20 Apr 2021 20:00:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232277AbhDTKsU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 20 Apr 2021 06:48:20 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:52070 "EHLO
+        id S233201AbhDTSBQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 20 Apr 2021 14:01:16 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:54324 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232088AbhDTKrx (ORCPT
+        with ESMTP id S231549AbhDTSBQ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 20 Apr 2021 06:47:53 -0400
-Date:   Tue, 20 Apr 2021 10:47:04 -0000
+        Tue, 20 Apr 2021 14:01:16 -0400
+Date:   Tue, 20 Apr 2021 18:00:42 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1618915625;
+        s=2020; t=1618941643;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=OKt4dO1PrfmwHLYjivxpxatLVxjYOaj8pKl+mLomVCA=;
-        b=RDKrE/ATMJaWPIMYGXaz5tfOUlMpBbrmgehHUIPMXbI2puCpaF1CtPlgpxyW2cGUXO6BeR
-        UG8a1KEJVgYLfgtqDD48tl9B6NTu4lLKgHbXg78cwY05/QE89Bf9oUe4vpRXfsXIk0Pp5k
-        XaMnSmy1C0tisZm/M0kFrSCux+6wydQ3rlSUaaPQge4l19Me5YWxF9H/vTuJVVsrnITPBc
-        RUSudogomOXxkt7hHl/F5a4ijq+qbTVYeaL8LO98Aj+hFEXRIJjdv+7VYl3OF7EZPKmNCi
-        x1loTr1xhCGT9FM+CSPU+M90p06ZSuDb70wueQECMomJjFSCrCwjkG0aFz97yw==
+        bh=lB8Nr79VQcJ0XrHrhfDkVzK+uESNxrArLq8LgVXCQZA=;
+        b=RQcZ0rm//xb+p/bl3ShgqGDi3NZOkeOHrzPie4dW/92IewBMuU1/QT04BoT+0NPPx71KoO
+        0VHMTq4Vq3VfnyV/tSEfu2meMhSO1nVghr1TvU3wLNoKc2fER2m3pFkGgSSXrYn/FJJeK6
+        iKSJxvcKyMQA2lXjgboLPEVdg+d35aWjkUnTfsFvfIHSaV5Np0a2+s68/pRNLcLjGAmjZG
+        l9S2zIoUINT58uUwvPyg0BCu/aOEm4c8JMg9JjcwL0KTkaqemELvxAKAIVjlQ5bMAM0Jj5
+        8VJNsixlTKjNzvzG3Yq7so+97FsqXjZOjen8neq8Oa6lT2zgnUKLAiXlbMg7sw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1618915625;
+        s=2020e; t=1618941643;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=OKt4dO1PrfmwHLYjivxpxatLVxjYOaj8pKl+mLomVCA=;
-        b=taCg2p+B8FcJfoIHCYxTDmWSzVdmlTPHwSXYkMh7QTHTe99j2+TdW/mRCWS1zL3P/tbVdY
-        R+asxN6IO8IEsyCg==
-From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
+        bh=lB8Nr79VQcJ0XrHrhfDkVzK+uESNxrArLq8LgVXCQZA=;
+        b=PtRb2w84N4arpBl578nhmM7gr3ka08KQpgrmm3kJEAcrzv57DP82SmaGAgKWHKpOr/sD2u
+        486kia52A4X2HfBw==
+From:   "tip-bot2 for Mike Galbraith" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] objtool: Support asm jump tables
-Cc:     Josh Poimboeuf <jpoimboe@redhat.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Sami Tolvanen <samitolvanen@google.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <460cf4dc675d64e1124146562cabd2c05aa322e8.1614182415.git.jpoimboe@redhat.com>
-References: <460cf4dc675d64e1124146562cabd2c05aa322e8.1614182415.git.jpoimboe@redhat.com>
+Subject: [tip: x86/urgent] x86/crash: Fix crash_setup_memmap_entries()
+ out-of-bounds access
+Cc:     Mike Galbraith <efault@gmx.de>, Borislav Petkov <bp@suse.de>,
+        Dave Young <dyoung@redhat.com>, <stable@vger.kernel.org>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <725fa3dc1da2737f0f6188a1a9701bead257ea9d.camel@gmx.de>
+References: <725fa3dc1da2737f0f6188a1a9701bead257ea9d.camel@gmx.de>
 MIME-Version: 1.0
-Message-ID: <161891562491.29796.16863206875923055144.tip-bot2@tip-bot2>
+Message-ID: <161894164234.29796.8745971840518585404.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,64 +57,67 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the objtool/core branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     99033461e685b48549ec77608b4bda75ddf772ce
-Gitweb:        https://git.kernel.org/tip/99033461e685b48549ec77608b4bda75ddf772ce
-Author:        Josh Poimboeuf <jpoimboe@redhat.com>
-AuthorDate:    Wed, 24 Feb 2021 10:29:14 -06:00
-Committer:     Josh Poimboeuf <jpoimboe@redhat.com>
-CommitterDate: Mon, 19 Apr 2021 12:36:32 -05:00
+Commit-ID:     5849cdf8c120e3979c57d34be55b92d90a77a47e
+Gitweb:        https://git.kernel.org/tip/5849cdf8c120e3979c57d34be55b92d90a77a47e
+Author:        Mike Galbraith <efault@gmx.de>
+AuthorDate:    Fri, 16 Apr 2021 14:02:07 +02:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Tue, 20 Apr 2021 17:32:46 +02:00
 
-objtool: Support asm jump tables
+x86/crash: Fix crash_setup_memmap_entries() out-of-bounds access
 
-Objtool detection of asm jump tables would normally just work, except
-for the fact that asm retpolines use alternatives.  Objtool thinks the
-alternative code path (a jump to the retpoline) is a sibling call.
+Commit in Fixes: added support for kexec-ing a kernel on panic using a
+new system call. As part of it, it does prepare a memory map for the new
+kernel.
 
-Don't treat alternative indirect branches as sibling calls when the
-original instruction has a jump table.
+However, while doing so, it wrongly accesses memory it has not
+allocated: it accesses the first element of the cmem->ranges[] array in
+memmap_exclude_ranges() but it has not allocated the memory for it in
+crash_setup_memmap_entries(). As KASAN reports:
 
-Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
-Tested-by: Ard Biesheuvel <ardb@kernel.org>
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Tested-by: Sami Tolvanen <samitolvanen@google.com>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Herbert Xu <herbert@gondor.apana.org.au>
-Link: https://lore.kernel.org/r/460cf4dc675d64e1124146562cabd2c05aa322e8.1614182415.git.jpoimboe@redhat.com
+  BUG: KASAN: vmalloc-out-of-bounds in crash_setup_memmap_entries+0x17e/0x3a0
+  Write of size 8 at addr ffffc90000426008 by task kexec/1187
+
+  (gdb) list *crash_setup_memmap_entries+0x17e
+  0xffffffff8107cafe is in crash_setup_memmap_entries (arch/x86/kernel/crash.c:322).
+  317                                      unsigned long long mend)
+  318     {
+  319             unsigned long start, end;
+  320
+  321             cmem->ranges[0].start = mstart;
+  322             cmem->ranges[0].end = mend;
+  323             cmem->nr_ranges = 1;
+  324
+  325             /* Exclude elf header region */
+  326             start = image->arch.elf_load_addr;
+  (gdb)
+
+Make sure the ranges array becomes a single element allocated.
+
+ [ bp: Write a proper commit message. ]
+
+Fixes: dd5f726076cc ("kexec: support for kexec on panic using new system call")
+Signed-off-by: Mike Galbraith <efault@gmx.de>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Reviewed-by: Dave Young <dyoung@redhat.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lkml.kernel.org/r/725fa3dc1da2737f0f6188a1a9701bead257ea9d.camel@gmx.de
 ---
- tools/objtool/check.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ arch/x86/kernel/crash.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index a0f762a..46621e8 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -108,6 +108,18 @@ static struct instruction *prev_insn_same_sym(struct objtool_file *file,
- 	for (insn = next_insn_same_sec(file, insn); insn;		\
- 	     insn = next_insn_same_sec(file, insn))
+diff --git a/arch/x86/kernel/crash.c b/arch/x86/kernel/crash.c
+index a8f3af2..b1deacb 100644
+--- a/arch/x86/kernel/crash.c
++++ b/arch/x86/kernel/crash.c
+@@ -337,7 +337,7 @@ int crash_setup_memmap_entries(struct kimage *image, struct boot_params *params)
+ 	struct crash_memmap_data cmd;
+ 	struct crash_mem *cmem;
  
-+static bool is_jump_table_jump(struct instruction *insn)
-+{
-+	struct alt_group *alt_group = insn->alt_group;
-+
-+	if (insn->jump_table)
-+		return true;
-+
-+	/* Retpoline alternative for a jump table? */
-+	return alt_group && alt_group->orig_group &&
-+	       alt_group->orig_group->first_insn->jump_table;
-+}
-+
- static bool is_sibling_call(struct instruction *insn)
- {
- 	/*
-@@ -120,7 +132,7 @@ static bool is_sibling_call(struct instruction *insn)
+-	cmem = vzalloc(sizeof(struct crash_mem));
++	cmem = vzalloc(struct_size(cmem, ranges, 1));
+ 	if (!cmem)
+ 		return -ENOMEM;
  
- 	/* An indirect jump is either a sibling call or a jump to a table. */
- 	if (insn->type == INSN_JUMP_DYNAMIC)
--		return list_empty(&insn->alts);
-+		return !is_jump_table_jump(insn);
- 
- 	/* add_jump_destinations() sets insn->call_dest for sibling calls. */
- 	return (is_static_jump(insn) && insn->call_dest);
