@@ -2,48 +2,45 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D9FF13656B5
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 20 Apr 2021 12:49:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C94C73656B0
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 20 Apr 2021 12:49:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232143AbhDTKsK (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 20 Apr 2021 06:48:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58504 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231968AbhDTKrl (ORCPT
+        id S232006AbhDTKr6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 20 Apr 2021 06:47:58 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:51948 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232020AbhDTKrf (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 20 Apr 2021 06:47:41 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 534FDC06138E;
-        Tue, 20 Apr 2021 03:47:03 -0700 (PDT)
+        Tue, 20 Apr 2021 06:47:35 -0400
 Date:   Tue, 20 Apr 2021 10:47:01 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1618915621;
+        s=2020; t=1618915622;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=cNddzE7f8TP58z9AOkT4CgesAzn10us0+0hwf51XbxY=;
-        b=Ny4IuHFAMesI8wlYQ/9izOfASOWAAP4gemHHYb9IzlaZtLqRUWD+EP+am8wI/ibfP2BiaH
-        fS5Wj6gtLS2553BczLlpgoxfqfTvxket9MlkfQq7pGE93a2eq7jL9mPYf7Nw0EADmknHdE
-        w40vCDZPNTibbFtrgvvZy+sZpyXwAIe3OyKuhegZB9ArCoN3Cwa/6Dh+JoFtBzQS9uTg0G
-        3UbYOn55qrfNNRyAzIxH2Q6H5trdLaP2wl+xhwERmSokc0cqv5xTd/U001PSb5ewoJ+cTY
-        viZtkl11ho5v16GsdiozGe0bWpcCwtq/HdyyjUlSN1n0tVsybg0FvWbojevEaA==
+        bh=IZS+3FkB+6pa93yvc0GqsDxGzH2GKOmh1cvl6nPOYag=;
+        b=1HlupDm6AGbz2uxLwVSDo/iq0h4jRH13474R4t3gUmUyYqLa0ajJ90cfPEkjgSwbo+RqN1
+        gy38+KEQNHFI93i8tQ4Ikn+7GEBKYgTkhpyRSCfbeE0sn+9HBb/317pxgPm5kguhfNqen1
+        4QyjTMrmd/JONcPLsETANJWYh6hGDXXN5nhukndhdla1ZkZafic00DHDZTIgIlPBT8C6zl
+        ZkEIxMdUQP2EEjX9GC6aGlhall07QpqmfJjeatdz4g0tVLLfmw06E+04lxeSLfWw5wSg7c
+        45H0Us36qYElYxi/1XnCT/I7lqa4XxrM2uLzuMjeVGpurx9ne9ndosh+gFuGDA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1618915621;
+        s=2020e; t=1618915622;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=cNddzE7f8TP58z9AOkT4CgesAzn10us0+0hwf51XbxY=;
-        b=PP3clELmfIjBKSkMJ35cHApvyrXdjcZkBo96z2SL5RZZ50sCAVSdNF+VgZIBpM0YVaQ3s6
-        Fnt68u5jgMceleDQ==
+        bh=IZS+3FkB+6pa93yvc0GqsDxGzH2GKOmh1cvl6nPOYag=;
+        b=sWhiRClr8AfGncaFEjLxMitDLPbrMdLLctdshc8dCEhgrLGhZgZ47sbMr7ktXP5V56Ysl+
+        r3PcPcsNhAyALbBQ==
 From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] x86/crypto/sha512-avx2: Standardize stack
+Subject: [tip: objtool/core] x86/crypto/sha256-avx2: Standardize stack
  alignment prologue
 Cc:     Josh Poimboeuf <jpoimboe@redhat.com>,
         Ard Biesheuvel <ardb@kernel.org>,
@@ -51,10 +48,10 @@ Cc:     Josh Poimboeuf <jpoimboe@redhat.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Herbert Xu <herbert@gondor.apana.org.au>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <b1a7b29fcfc65d60a3b6e77ef75f4762a5b8488d.1614182415.git.jpoimboe@redhat.com>
-References: <b1a7b29fcfc65d60a3b6e77ef75f4762a5b8488d.1614182415.git.jpoimboe@redhat.com>
+In-Reply-To: <8048e7444c49a8137f05265262b83dc50f8fb7f3.1614182415.git.jpoimboe@redhat.com>
+References: <8048e7444c49a8137f05265262b83dc50f8fb7f3.1614182415.git.jpoimboe@redhat.com>
 MIME-Version: 1.0
-Message-ID: <161891562124.29796.4031755393590167497.tip-bot2@tip-bot2>
+Message-ID: <161891562196.29796.14555229104622243282.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,14 +62,14 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     ec063e090bd6487097d459bb4272508b78448270
-Gitweb:        https://git.kernel.org/tip/ec063e090bd6487097d459bb4272508b78448270
+Commit-ID:     ce5846668076aa76a17ab559f0296374e3611fec
+Gitweb:        https://git.kernel.org/tip/ce5846668076aa76a17ab559f0296374e3611fec
 Author:        Josh Poimboeuf <jpoimboe@redhat.com>
-AuthorDate:    Wed, 24 Feb 2021 10:29:24 -06:00
+AuthorDate:    Wed, 24 Feb 2021 10:29:22 -06:00
 Committer:     Josh Poimboeuf <jpoimboe@redhat.com>
 CommitterDate: Mon, 19 Apr 2021 12:36:36 -05:00
 
-x86/crypto/sha512-avx2: Standardize stack alignment prologue
+x86/crypto/sha256-avx2: Standardize stack alignment prologue
 
 Use a more standard prologue for saving the stack pointer before
 realigning the stack.
@@ -86,85 +83,54 @@ Acked-by: Ard Biesheuvel <ardb@kernel.org>
 Tested-by: Sami Tolvanen <samitolvanen@google.com>
 Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Acked-by: Herbert Xu <herbert@gondor.apana.org.au>
-Link: https://lore.kernel.org/r/b1a7b29fcfc65d60a3b6e77ef75f4762a5b8488d.1614182415.git.jpoimboe@redhat.com
+Link: https://lore.kernel.org/r/8048e7444c49a8137f05265262b83dc50f8fb7f3.1614182415.git.jpoimboe@redhat.com
 ---
- arch/x86/crypto/sha512-avx2-asm.S | 42 ++++++++++++++----------------
- 1 file changed, 20 insertions(+), 22 deletions(-)
+ arch/x86/crypto/sha256-avx2-asm.S | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/arch/x86/crypto/sha512-avx2-asm.S b/arch/x86/crypto/sha512-avx2-asm.S
-index 3a44bdc..072cb0f 100644
---- a/arch/x86/crypto/sha512-avx2-asm.S
-+++ b/arch/x86/crypto/sha512-avx2-asm.S
-@@ -102,17 +102,13 @@ SRND_SIZE = 1*8
- INP_SIZE = 1*8
- INPEND_SIZE = 1*8
- CTX_SIZE = 1*8
--RSPSAVE_SIZE = 1*8
--GPRSAVE_SIZE = 5*8
+diff --git a/arch/x86/crypto/sha256-avx2-asm.S b/arch/x86/crypto/sha256-avx2-asm.S
+index 11ff60c..4087f74 100644
+--- a/arch/x86/crypto/sha256-avx2-asm.S
++++ b/arch/x86/crypto/sha256-avx2-asm.S
+@@ -117,15 +117,13 @@ _XMM_SAVE_SIZE	= 0
+ _INP_END_SIZE	= 8
+ _INP_SIZE	= 8
+ _CTX_SIZE	= 8
+-_RSP_SIZE	= 8
  
- frame_XFER = 0
- frame_SRND = frame_XFER + XFER_SIZE
- frame_INP = frame_SRND + SRND_SIZE
- frame_INPEND = frame_INP + INP_SIZE
- frame_CTX = frame_INPEND + INPEND_SIZE
--frame_RSPSAVE = frame_CTX + CTX_SIZE
--frame_GPRSAVE = frame_RSPSAVE + RSPSAVE_SIZE
--frame_size = frame_GPRSAVE + GPRSAVE_SIZE
-+frame_size = frame_CTX + CTX_SIZE
+ _XFER		= 0
+ _XMM_SAVE	= _XFER     + _XFER_SIZE
+ _INP_END	= _XMM_SAVE + _XMM_SAVE_SIZE
+ _INP		= _INP_END  + _INP_END_SIZE
+ _CTX		= _INP      + _INP_SIZE
+-_RSP		= _CTX      + _CTX_SIZE
+-STACK_SIZE	= _RSP      + _RSP_SIZE
++STACK_SIZE	= _CTX      + _CTX_SIZE
  
- ## assume buffers not aligned
- #define	VMOVDQ vmovdqu
-@@ -570,18 +566,18 @@ frame_size = frame_GPRSAVE + GPRSAVE_SIZE
- # "blocks" is the message length in SHA512 blocks
- ########################################################################
- SYM_FUNC_START(sha512_transform_rorx)
-+	# Save GPRs
-+	push	%rbx
-+	push	%r12
-+	push	%r13
-+	push	%r14
-+	push	%r15
-+
- 	# Allocate Stack Space
+ # rotate_Xs
+ # Rotate values of symbols X0...X3
+@@ -533,11 +531,11 @@ SYM_FUNC_START(sha256_transform_rorx)
+ 	pushq	%r14
+ 	pushq	%r15
+ 
 -	mov	%rsp, %rax
 +	push	%rbp
 +	mov	%rsp, %rbp
- 	sub	$frame_size, %rsp
- 	and	$~(0x20 - 1), %rsp
--	mov	%rax, frame_RSPSAVE(%rsp)
++
+ 	subq	$STACK_SIZE, %rsp
+ 	and	$-32, %rsp	# align rsp to 32 byte boundary
+-	mov	%rax, _RSP(%rsp)
 -
--	# Save GPRs
--	mov	%rbx, 8*0+frame_GPRSAVE(%rsp)
--	mov	%r12, 8*1+frame_GPRSAVE(%rsp)
--	mov	%r13, 8*2+frame_GPRSAVE(%rsp)
--	mov	%r14, 8*3+frame_GPRSAVE(%rsp)
--	mov	%r15, 8*4+frame_GPRSAVE(%rsp)
  
- 	shl	$7, NUM_BLKS	# convert to bytes
+ 	shl	$6, NUM_BLKS	# convert to bytes
  	jz	done_hash
-@@ -672,15 +668,17 @@ loop2:
+@@ -704,7 +702,8 @@ only_one_block:
  
  done_hash:
  
--# Restore GPRs
--	mov	8*0+frame_GPRSAVE(%rsp), %rbx
--	mov	8*1+frame_GPRSAVE(%rsp), %r12
--	mov	8*2+frame_GPRSAVE(%rsp), %r13
--	mov	8*3+frame_GPRSAVE(%rsp), %r14
--	mov	8*4+frame_GPRSAVE(%rsp), %r15
--
- 	# Restore Stack Pointer
--	mov	frame_RSPSAVE(%rsp), %rsp
+-	mov	_RSP(%rsp), %rsp
 +	mov	%rbp, %rsp
 +	pop	%rbp
-+
-+	# Restore GPRs
-+	pop	%r15
-+	pop	%r14
-+	pop	%r13
-+	pop	%r12
-+	pop	%rbx
-+
- 	ret
- SYM_FUNC_END(sha512_transform_rorx)
  
+ 	popq	%r15
+ 	popq	%r14
