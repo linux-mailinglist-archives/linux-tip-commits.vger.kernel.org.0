@@ -2,53 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D37236568C
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 20 Apr 2021 12:46:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1000F365691
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 20 Apr 2021 12:46:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231769AbhDTKrS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 20 Apr 2021 06:47:18 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:51708 "EHLO
+        id S231782AbhDTKrU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 20 Apr 2021 06:47:20 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:51694 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231645AbhDTKrP (ORCPT
+        with ESMTP id S231668AbhDTKrR (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 20 Apr 2021 06:47:15 -0400
-Date:   Tue, 20 Apr 2021 10:46:43 -0000
+        Tue, 20 Apr 2021 06:47:17 -0400
+Date:   Tue, 20 Apr 2021 10:46:44 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1618915603;
+        s=2020; t=1618915605;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=KjYcKzRkK2wD9AtKmLxms+yCE01Kolf3kW+gMcr2hFc=;
-        b=PfugoMCSh0vQv/hT55e0KWSYsrF4THOAXvdAKMjnZ1oh0QPbn/XBPEOKIXpm+OJL61eM1l
-        knY0OLJbRClrJ2JhMZjtAuE63HIVr7NNJHCRS4ADgYPC+btoi/Chvxvf0QyWl2CnPZEaWT
-        yQPNZGa4MU10Ho8YGGolC18wsEXSwkfRDJWyy1mFvf8CM5DcUiKMmp9UADzEbWYJoIDWSY
-        AZYwgLzWlhGWBU6ub6qUax+j/0f9rueGPRH1Z1nYxlerO7ferW45RQl5Dj/Y16JTqg1Q97
-        ltmGROH1uEorTV0v8H7HBT+jii0Mc1AKPY9JY+t7G8NSPP1Bwl3fcuUZSIogxQ==
+        bh=NLmVmR/FMbrFBUFyVKQGXOG90bNyLkxW7lhJieuuxGM=;
+        b=qoJxkr8Ju/uNNCqV20GqXbLb9+Q5NkhjtgN+Lmytrxt6xTo/SXe6wXbPe+K38AW0etiAww
+        /i55urp0gS/PooqXj+cHXNAPbib3kXW7OAmmIWejEqeaMg3DKiTaeP90NN3Jpej0XdeDUu
+        72v+Fe9O36BJUZOPkwc2OMmz13qLIDqzqSMaZxOel0x3RveMIO8cNrl1Mtju98K1cS4AdH
+        zNRHUncGs2R/uqqXIZZQaXX/kMuAJJC+dHfzLmpRmElSXzncIMqjKDTlhZ9VaVJ4gf8ipk
+        gNPT2DjBM+eVSMe5KP86qZMk8fb++KKghOruVRENFIWdIfNmd95/QBu96YA4kg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1618915603;
+        s=2020e; t=1618915605;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=KjYcKzRkK2wD9AtKmLxms+yCE01Kolf3kW+gMcr2hFc=;
-        b=r/DZaa2jxArlTkDGmtuuAf9oBV1Bab1rUm/PgzUTlfhEfovVhcTqGfz9OdWl7dFBDLAEDf
-        5YEWJs5aufzVOGBw==
+        bh=NLmVmR/FMbrFBUFyVKQGXOG90bNyLkxW7lhJieuuxGM=;
+        b=WqH+2K1Kotq+U1fM9+SiCdFdTOKT5ugHDvE1Og+x4PE1CItjPIV7ic7aZosc2qc/Xy/i91
+        6QhGr57hHQpjJ/Bg==
 From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/x86/intel: Add attr_update for Hybrid PMUs
+Subject: [tip: perf/core] perf/x86: Factor out x86_pmu_show_pmu_cap
 Cc:     Kan Liang <kan.liang@linux.intel.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Andi Kleen <ak@linux.intel.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <1618237865-33448-19-git-send-email-kan.liang@linux.intel.com>
-References: <1618237865-33448-19-git-send-email-kan.liang@linux.intel.com>
+In-Reply-To: <1618237865-33448-16-git-send-email-kan.liang@linux.intel.com>
+References: <1618237865-33448-16-git-send-email-kan.liang@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <161891560321.29796.16996273968756721274.tip-bot2@tip-bot2>
+Message-ID: <161891560460.29796.11163420194789025178.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,169 +59,85 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     58ae30c29a370c09eb49e0007d881a9aed13c5a3
-Gitweb:        https://git.kernel.org/tip/58ae30c29a370c09eb49e0007d881a9aed13c5a3
+Commit-ID:     e11c1a7eb302ac8f6f47c18fa662546405a5fd83
+Gitweb:        https://git.kernel.org/tip/e11c1a7eb302ac8f6f47c18fa662546405a5fd83
 Author:        Kan Liang <kan.liang@linux.intel.com>
-AuthorDate:    Mon, 12 Apr 2021 07:30:58 -07:00
+AuthorDate:    Mon, 12 Apr 2021 07:30:55 -07:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Mon, 19 Apr 2021 20:03:28 +02:00
+CommitterDate: Mon, 19 Apr 2021 20:03:27 +02:00
 
-perf/x86/intel: Add attr_update for Hybrid PMUs
+perf/x86: Factor out x86_pmu_show_pmu_cap
 
-The attribute_group for Hybrid PMUs should be different from the
-previous
-cpu PMU. For example, cpumask is required for a Hybrid PMU. The PMU type
-should be included in the event and format attribute.
+The PMU capabilities are different among hybrid PMUs. Perf should dump
+the PMU capabilities information for each hybrid PMU.
 
-Add hybrid_attr_update for the Hybrid PMU.
-Check the PMU type in is_visible() function. Only display the event or
-format for the matched Hybrid PMU.
+Factor out x86_pmu_show_pmu_cap() which shows the PMU capabilities
+information. The function will be reused later when registering a
+dedicated hybrid PMU.
 
 Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Andi Kleen <ak@linux.intel.com>
-Link: https://lkml.kernel.org/r/1618237865-33448-19-git-send-email-kan.liang@linux.intel.com
+Link: https://lkml.kernel.org/r/1618237865-33448-16-git-send-email-kan.liang@linux.intel.com
 ---
- arch/x86/events/intel/core.c | 120 ++++++++++++++++++++++++++++++++--
- 1 file changed, 114 insertions(+), 6 deletions(-)
+ arch/x86/events/core.c       | 25 ++++++++++++++++---------
+ arch/x86/events/perf_event.h |  3 +++
+ 2 files changed, 19 insertions(+), 9 deletions(-)
 
-diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-index 4881209..ba24638 100644
---- a/arch/x86/events/intel/core.c
-+++ b/arch/x86/events/intel/core.c
-@@ -5118,6 +5118,106 @@ static const struct attribute_group *attr_update[] = {
- 	NULL,
- };
+diff --git a/arch/x86/events/core.c b/arch/x86/events/core.c
+index ed8dcfb..2e7ae52 100644
+--- a/arch/x86/events/core.c
++++ b/arch/x86/events/core.c
+@@ -1976,6 +1976,20 @@ static void _x86_pmu_read(struct perf_event *event)
+ 	x86_perf_event_update(event);
+ }
  
-+static bool is_attr_for_this_pmu(struct kobject *kobj, struct attribute *attr)
++void x86_pmu_show_pmu_cap(int num_counters, int num_counters_fixed,
++			  u64 intel_ctrl)
 +{
-+	struct device *dev = kobj_to_dev(kobj);
-+	struct x86_hybrid_pmu *pmu =
-+		container_of(dev_get_drvdata(dev), struct x86_hybrid_pmu, pmu);
-+	struct perf_pmu_events_hybrid_attr *pmu_attr =
-+		container_of(attr, struct perf_pmu_events_hybrid_attr, attr.attr);
-+
-+	return pmu->cpu_type & pmu_attr->pmu_type;
++	pr_info("... version:                %d\n",     x86_pmu.version);
++	pr_info("... bit width:              %d\n",     x86_pmu.cntval_bits);
++	pr_info("... generic registers:      %d\n",     num_counters);
++	pr_info("... value mask:             %016Lx\n", x86_pmu.cntval_mask);
++	pr_info("... max period:             %016Lx\n", x86_pmu.max_period);
++	pr_info("... fixed-purpose events:   %lu\n",
++			hweight64((((1ULL << num_counters_fixed) - 1)
++					<< INTEL_PMC_IDX_FIXED) & intel_ctrl));
++	pr_info("... event mask:             %016Lx\n", intel_ctrl);
 +}
 +
-+static umode_t hybrid_events_is_visible(struct kobject *kobj,
-+					struct attribute *attr, int i)
-+{
-+	return is_attr_for_this_pmu(kobj, attr) ? attr->mode : 0;
-+}
-+
-+static inline int hybrid_find_supported_cpu(struct x86_hybrid_pmu *pmu)
-+{
-+	int cpu = cpumask_first(&pmu->supported_cpus);
-+
-+	return (cpu >= nr_cpu_ids) ? -1 : cpu;
-+}
-+
-+static umode_t hybrid_tsx_is_visible(struct kobject *kobj,
-+				     struct attribute *attr, int i)
-+{
-+	struct device *dev = kobj_to_dev(kobj);
-+	struct x86_hybrid_pmu *pmu =
-+		 container_of(dev_get_drvdata(dev), struct x86_hybrid_pmu, pmu);
-+	int cpu = hybrid_find_supported_cpu(pmu);
-+
-+	return (cpu >= 0) && is_attr_for_this_pmu(kobj, attr) && cpu_has(&cpu_data(cpu), X86_FEATURE_RTM) ? attr->mode : 0;
-+}
-+
-+static umode_t hybrid_format_is_visible(struct kobject *kobj,
-+					struct attribute *attr, int i)
-+{
-+	struct device *dev = kobj_to_dev(kobj);
-+	struct x86_hybrid_pmu *pmu =
-+		container_of(dev_get_drvdata(dev), struct x86_hybrid_pmu, pmu);
-+	struct perf_pmu_format_hybrid_attr *pmu_attr =
-+		container_of(attr, struct perf_pmu_format_hybrid_attr, attr.attr);
-+	int cpu = hybrid_find_supported_cpu(pmu);
-+
-+	return (cpu >= 0) && (pmu->cpu_type & pmu_attr->pmu_type) ? attr->mode : 0;
-+}
-+
-+static struct attribute_group hybrid_group_events_td  = {
-+	.name		= "events",
-+	.is_visible	= hybrid_events_is_visible,
-+};
-+
-+static struct attribute_group hybrid_group_events_mem = {
-+	.name		= "events",
-+	.is_visible	= hybrid_events_is_visible,
-+};
-+
-+static struct attribute_group hybrid_group_events_tsx = {
-+	.name		= "events",
-+	.is_visible	= hybrid_tsx_is_visible,
-+};
-+
-+static struct attribute_group hybrid_group_format_extra = {
-+	.name		= "format",
-+	.is_visible	= hybrid_format_is_visible,
-+};
-+
-+static ssize_t intel_hybrid_get_attr_cpus(struct device *dev,
-+					  struct device_attribute *attr,
-+					  char *buf)
-+{
-+	struct x86_hybrid_pmu *pmu =
-+		container_of(dev_get_drvdata(dev), struct x86_hybrid_pmu, pmu);
-+
-+	return cpumap_print_to_pagebuf(true, buf, &pmu->supported_cpus);
-+}
-+
-+static DEVICE_ATTR(cpus, S_IRUGO, intel_hybrid_get_attr_cpus, NULL);
-+static struct attribute *intel_hybrid_cpus_attrs[] = {
-+	&dev_attr_cpus.attr,
-+	NULL,
-+};
-+
-+static struct attribute_group hybrid_group_cpus = {
-+	.attrs		= intel_hybrid_cpus_attrs,
-+};
-+
-+static const struct attribute_group *hybrid_attr_update[] = {
-+	&hybrid_group_events_td,
-+	&hybrid_group_events_mem,
-+	&hybrid_group_events_tsx,
-+	&group_caps_gen,
-+	&group_caps_lbr,
-+	&hybrid_group_format_extra,
-+	&group_default,
-+	&hybrid_group_cpus,
-+	NULL,
-+};
-+
- static struct attribute *empty_attrs;
+ static int __init init_hw_perf_events(void)
+ {
+ 	struct x86_pmu_quirk *quirk;
+@@ -2036,15 +2050,8 @@ static int __init init_hw_perf_events(void)
  
- static void intel_pmu_check_num_counters(int *num_counters,
-@@ -5861,14 +5961,22 @@ __init int intel_pmu_init(void)
+ 	pmu.attr_update = x86_pmu.attr_update;
  
- 	snprintf(pmu_name_str, sizeof(pmu_name_str), "%s", name);
+-	pr_info("... version:                %d\n",     x86_pmu.version);
+-	pr_info("... bit width:              %d\n",     x86_pmu.cntval_bits);
+-	pr_info("... generic registers:      %d\n",     x86_pmu.num_counters);
+-	pr_info("... value mask:             %016Lx\n", x86_pmu.cntval_mask);
+-	pr_info("... max period:             %016Lx\n", x86_pmu.max_period);
+-	pr_info("... fixed-purpose events:   %lu\n",
+-			hweight64((((1ULL << x86_pmu.num_counters_fixed) - 1)
+-					<< INTEL_PMC_IDX_FIXED) & x86_pmu.intel_ctrl));
+-	pr_info("... event mask:             %016Lx\n", x86_pmu.intel_ctrl);
++	x86_pmu_show_pmu_cap(x86_pmu.num_counters, x86_pmu.num_counters_fixed,
++			     x86_pmu.intel_ctrl);
  
-+	if (!is_hybrid()) {
-+		group_events_td.attrs  = td_attr;
-+		group_events_mem.attrs = mem_attr;
-+		group_events_tsx.attrs = tsx_attr;
-+		group_format_extra.attrs = extra_attr;
-+		group_format_extra_skl.attrs = extra_skl_attr;
+ 	if (!x86_pmu.read)
+ 		x86_pmu.read = _x86_pmu_read;
+diff --git a/arch/x86/events/perf_event.h b/arch/x86/events/perf_event.h
+index d8c448b..a3534e3 100644
+--- a/arch/x86/events/perf_event.h
++++ b/arch/x86/events/perf_event.h
+@@ -1092,6 +1092,9 @@ void x86_pmu_enable_event(struct perf_event *event);
  
--	group_events_td.attrs  = td_attr;
--	group_events_mem.attrs = mem_attr;
--	group_events_tsx.attrs = tsx_attr;
--	group_format_extra.attrs = extra_attr;
--	group_format_extra_skl.attrs = extra_skl_attr;
-+		x86_pmu.attr_update = attr_update;
-+	} else {
-+		hybrid_group_events_td.attrs  = td_attr;
-+		hybrid_group_events_mem.attrs = mem_attr;
-+		hybrid_group_events_tsx.attrs = tsx_attr;
-+		hybrid_group_format_extra.attrs = extra_attr;
+ int x86_pmu_handle_irq(struct pt_regs *regs);
  
--	x86_pmu.attr_update = attr_update;
-+		x86_pmu.attr_update = hybrid_attr_update;
-+	}
++void x86_pmu_show_pmu_cap(int num_counters, int num_counters_fixed,
++			  u64 intel_ctrl);
++
+ extern struct event_constraint emptyconstraint;
  
- 	intel_pmu_check_num_counters(&x86_pmu.num_counters,
- 				     &x86_pmu.num_counters_fixed,
+ extern struct event_constraint unconstrained;
