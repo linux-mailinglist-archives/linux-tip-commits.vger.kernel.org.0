@@ -2,56 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BC52736568D
+	by mail.lfdr.de (Postfix) with ESMTP id 6D37236568C
 	for <lists+linux-tip-commits@lfdr.de>; Tue, 20 Apr 2021 12:46:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231808AbhDTKrS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S231769AbhDTKrS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Tue, 20 Apr 2021 06:47:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58396 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231651AbhDTKrR (ORCPT
+Received: from Galois.linutronix.de ([193.142.43.55]:51708 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231645AbhDTKrP (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 20 Apr 2021 06:47:17 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5285C06174A;
-        Tue, 20 Apr 2021 03:46:45 -0700 (PDT)
+        Tue, 20 Apr 2021 06:47:15 -0400
 Date:   Tue, 20 Apr 2021 10:46:43 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1618915604;
+        s=2020; t=1618915603;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=B4llrK+JCpLTIotqAYqDWtVVp9zOKApfOtbN+TY6GIk=;
-        b=B1aEWw0x6ava1P9TVlXzsX8CxXMio/MjdIbBo+8e+GJmQphjD7o7Yo1x8n/YKht6j3/TBJ
-        bh6LKf0gBEk6uA6dNF3p/7Z6TZoqawWxty2NACfj+m/8vmPb7Q3Mi8iVewJrLSgYhi9uQg
-        UWLTTRnYz7p8XcgP3e99xLhmxl2+Enr4x4FtRILYq0XAoaTZIPYsKNivMvXhRJEsyo4nk1
-        XvKZrZVrrvP7E3iH7fc9mzx8fSYMV3Yz2A2uG9pYdmgrMdjld0ybigXPQoczt87TEjEY4k
-        O+u8I8AqnJqwM+ZBwyeHUBlJpGKePtzCAb5GiyfcGDYMhtibCppNCfqBvOXRUg==
+        bh=KjYcKzRkK2wD9AtKmLxms+yCE01Kolf3kW+gMcr2hFc=;
+        b=PfugoMCSh0vQv/hT55e0KWSYsrF4THOAXvdAKMjnZ1oh0QPbn/XBPEOKIXpm+OJL61eM1l
+        knY0OLJbRClrJ2JhMZjtAuE63HIVr7NNJHCRS4ADgYPC+btoi/Chvxvf0QyWl2CnPZEaWT
+        yQPNZGa4MU10Ho8YGGolC18wsEXSwkfRDJWyy1mFvf8CM5DcUiKMmp9UADzEbWYJoIDWSY
+        AZYwgLzWlhGWBU6ub6qUax+j/0f9rueGPRH1Z1nYxlerO7ferW45RQl5Dj/Y16JTqg1Q97
+        ltmGROH1uEorTV0v8H7HBT+jii0Mc1AKPY9JY+t7G8NSPP1Bwl3fcuUZSIogxQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1618915604;
+        s=2020e; t=1618915603;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=B4llrK+JCpLTIotqAYqDWtVVp9zOKApfOtbN+TY6GIk=;
-        b=fG+uNW8Ly9efWM6951RjUN7z4aVVxsU5tB0qRlXBc7Tt6WLHbS+aLvQIbDZ0yNg0rxdfVC
-        wNlyYq/gZhMNErDQ==
+        bh=KjYcKzRkK2wD9AtKmLxms+yCE01Kolf3kW+gMcr2hFc=;
+        b=r/DZaa2jxArlTkDGmtuuAf9oBV1Bab1rUm/PgzUTlfhEfovVhcTqGfz9OdWl7dFBDLAEDf
+        5YEWJs5aufzVOGBw==
 From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/x86: Add structures for the attributes of Hybrid PMUs
+Subject: [tip: perf/core] perf/x86/intel: Add attr_update for Hybrid PMUs
 Cc:     Kan Liang <kan.liang@linux.intel.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Andi Kleen <ak@linux.intel.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <1618237865-33448-18-git-send-email-kan.liang@linux.intel.com>
-References: <1618237865-33448-18-git-send-email-kan.liang@linux.intel.com>
+In-Reply-To: <1618237865-33448-19-git-send-email-kan.liang@linux.intel.com>
+References: <1618237865-33448-19-git-send-email-kan.liang@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <161891560361.29796.6013328590594444170.tip-bot2@tip-bot2>
+Message-ID: <161891560321.29796.16996273968756721274.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -62,160 +59,169 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     a9c81ccdf52dd73a20178c40bca34cf52991fdea
-Gitweb:        https://git.kernel.org/tip/a9c81ccdf52dd73a20178c40bca34cf52991fdea
+Commit-ID:     58ae30c29a370c09eb49e0007d881a9aed13c5a3
+Gitweb:        https://git.kernel.org/tip/58ae30c29a370c09eb49e0007d881a9aed13c5a3
 Author:        Kan Liang <kan.liang@linux.intel.com>
-AuthorDate:    Mon, 12 Apr 2021 07:30:57 -07:00
+AuthorDate:    Mon, 12 Apr 2021 07:30:58 -07:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Mon, 19 Apr 2021 20:03:28 +02:00
 
-perf/x86: Add structures for the attributes of Hybrid PMUs
+perf/x86/intel: Add attr_update for Hybrid PMUs
 
-Hybrid PMUs have different events and formats. In theory, Hybrid PMU
-specific attributes should be maintained in the dedicated struct
-x86_hybrid_pmu, but it wastes space because the events and formats are
-similar among Hybrid PMUs.
+The attribute_group for Hybrid PMUs should be different from the
+previous
+cpu PMU. For example, cpumask is required for a Hybrid PMU. The PMU type
+should be included in the event and format attribute.
 
-To reduce duplication, all hybrid PMUs will share a group of attributes
-in the following patch. To distinguish an attribute from different
-Hybrid PMUs, a PMU aware attribute structure is introduced. A PMU type
-is required for the attribute structure. The type is internal usage. It
-is not visible in the sysfs API.
-
-Hybrid PMUs may support the same event name, but with different event
-encoding, e.g., the mem-loads event on an Atom PMU has different event
-encoding from a Core PMU. It brings issue if two attributes are
-created for them. Current sysfs_update_group finds an attribute by
-searching the attr name (aka event name). If two attributes have the
-same event name, the first attribute will be replaced.
-To address the issue, only one attribute is created for the event. The
-event_str is extended and stores event encodings from all Hybrid PMUs.
-Each event encoding is divided by ";". The order of the event encodings
-must follow the order of the hybrid PMU index. The event_str is internal
-usage as well. When a user wants to show the attribute of a Hybrid PMU,
-only the corresponding part of the string is displayed.
+Add hybrid_attr_update for the Hybrid PMU.
+Check the PMU type in is_visible() function. Only display the event or
+format for the matched Hybrid PMU.
 
 Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Andi Kleen <ak@linux.intel.com>
-Link: https://lkml.kernel.org/r/1618237865-33448-18-git-send-email-kan.liang@linux.intel.com
+Link: https://lkml.kernel.org/r/1618237865-33448-19-git-send-email-kan.liang@linux.intel.com
 ---
- arch/x86/events/core.c       | 43 +++++++++++++++++++++++++++++++++++-
- arch/x86/events/perf_event.h | 19 +++++++++++++++-
- include/linux/perf_event.h   | 12 ++++++++++-
- 3 files changed, 74 insertions(+)
+ arch/x86/events/intel/core.c | 120 ++++++++++++++++++++++++++++++++--
+ 1 file changed, 114 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/events/core.c b/arch/x86/events/core.c
-index bd465a8..37ab109 100644
---- a/arch/x86/events/core.c
-+++ b/arch/x86/events/core.c
-@@ -1860,6 +1860,49 @@ ssize_t events_ht_sysfs_show(struct device *dev, struct device_attribute *attr,
- 			pmu_attr->event_str_noht);
- }
- 
-+ssize_t events_hybrid_sysfs_show(struct device *dev,
-+				 struct device_attribute *attr,
-+				 char *page)
-+{
-+	struct perf_pmu_events_hybrid_attr *pmu_attr =
-+		container_of(attr, struct perf_pmu_events_hybrid_attr, attr);
-+	struct x86_hybrid_pmu *pmu;
-+	const char *str, *next_str;
-+	int i;
-+
-+	if (hweight64(pmu_attr->pmu_type) == 1)
-+		return sprintf(page, "%s", pmu_attr->event_str);
-+
-+	/*
-+	 * Hybrid PMUs may support the same event name, but with different
-+	 * event encoding, e.g., the mem-loads event on an Atom PMU has
-+	 * different event encoding from a Core PMU.
-+	 *
-+	 * The event_str includes all event encodings. Each event encoding
-+	 * is divided by ";". The order of the event encodings must follow
-+	 * the order of the hybrid PMU index.
-+	 */
-+	pmu = container_of(dev_get_drvdata(dev), struct x86_hybrid_pmu, pmu);
-+
-+	str = pmu_attr->event_str;
-+	for (i = 0; i < x86_pmu.num_hybrid_pmus; i++) {
-+		if (!(x86_pmu.hybrid_pmu[i].cpu_type & pmu_attr->pmu_type))
-+			continue;
-+		if (x86_pmu.hybrid_pmu[i].cpu_type & pmu->cpu_type) {
-+			next_str = strchr(str, ';');
-+			if (next_str)
-+				return snprintf(page, next_str - str + 1, "%s", str);
-+			else
-+				return sprintf(page, "%s", str);
-+		}
-+		str = strchr(str, ';');
-+		str++;
-+	}
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(events_hybrid_sysfs_show);
-+
- EVENT_ATTR(cpu-cycles,			CPU_CYCLES		);
- EVENT_ATTR(instructions,		INSTRUCTIONS		);
- EVENT_ATTR(cache-references,		CACHE_REFERENCES	);
-diff --git a/arch/x86/events/perf_event.h b/arch/x86/events/perf_event.h
-index 4282ce4..e2be927 100644
---- a/arch/x86/events/perf_event.h
-+++ b/arch/x86/events/perf_event.h
-@@ -979,6 +979,22 @@ static struct perf_pmu_events_ht_attr event_attr_##v = {		\
- 	.event_str_ht	= ht,						\
- }
- 
-+#define EVENT_ATTR_STR_HYBRID(_name, v, str, _pmu)			\
-+static struct perf_pmu_events_hybrid_attr event_attr_##v = {		\
-+	.attr		= __ATTR(_name, 0444, events_hybrid_sysfs_show, NULL),\
-+	.id		= 0,						\
-+	.event_str	= str,						\
-+	.pmu_type	= _pmu,						\
-+}
-+
-+#define FORMAT_HYBRID_PTR(_id) (&format_attr_hybrid_##_id.attr.attr)
-+
-+#define FORMAT_ATTR_HYBRID(_name, _pmu)					\
-+static struct perf_pmu_format_hybrid_attr format_attr_hybrid_##_name = {\
-+	.attr		= __ATTR_RO(_name),				\
-+	.pmu_type	= _pmu,						\
-+}
-+
- struct pmu *x86_get_pmu(unsigned int cpu);
- extern struct x86_pmu x86_pmu __read_mostly;
- 
-@@ -1149,6 +1165,9 @@ ssize_t events_sysfs_show(struct device *dev, struct device_attribute *attr,
- 			  char *page);
- ssize_t events_ht_sysfs_show(struct device *dev, struct device_attribute *attr,
- 			  char *page);
-+ssize_t events_hybrid_sysfs_show(struct device *dev,
-+				 struct device_attribute *attr,
-+				 char *page);
- 
- static inline bool fixed_counter_disabled(int i, struct pmu *pmu)
- {
-diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
-index 8989b2b..61b3851 100644
---- a/include/linux/perf_event.h
-+++ b/include/linux/perf_event.h
-@@ -1549,6 +1549,18 @@ struct perf_pmu_events_ht_attr {
- 	const char				*event_str_noht;
+diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
+index 4881209..ba24638 100644
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -5118,6 +5118,106 @@ static const struct attribute_group *attr_update[] = {
+ 	NULL,
  };
  
-+struct perf_pmu_events_hybrid_attr {
-+	struct device_attribute			attr;
-+	u64					id;
-+	const char				*event_str;
-+	u64					pmu_type;
++static bool is_attr_for_this_pmu(struct kobject *kobj, struct attribute *attr)
++{
++	struct device *dev = kobj_to_dev(kobj);
++	struct x86_hybrid_pmu *pmu =
++		container_of(dev_get_drvdata(dev), struct x86_hybrid_pmu, pmu);
++	struct perf_pmu_events_hybrid_attr *pmu_attr =
++		container_of(attr, struct perf_pmu_events_hybrid_attr, attr.attr);
++
++	return pmu->cpu_type & pmu_attr->pmu_type;
++}
++
++static umode_t hybrid_events_is_visible(struct kobject *kobj,
++					struct attribute *attr, int i)
++{
++	return is_attr_for_this_pmu(kobj, attr) ? attr->mode : 0;
++}
++
++static inline int hybrid_find_supported_cpu(struct x86_hybrid_pmu *pmu)
++{
++	int cpu = cpumask_first(&pmu->supported_cpus);
++
++	return (cpu >= nr_cpu_ids) ? -1 : cpu;
++}
++
++static umode_t hybrid_tsx_is_visible(struct kobject *kobj,
++				     struct attribute *attr, int i)
++{
++	struct device *dev = kobj_to_dev(kobj);
++	struct x86_hybrid_pmu *pmu =
++		 container_of(dev_get_drvdata(dev), struct x86_hybrid_pmu, pmu);
++	int cpu = hybrid_find_supported_cpu(pmu);
++
++	return (cpu >= 0) && is_attr_for_this_pmu(kobj, attr) && cpu_has(&cpu_data(cpu), X86_FEATURE_RTM) ? attr->mode : 0;
++}
++
++static umode_t hybrid_format_is_visible(struct kobject *kobj,
++					struct attribute *attr, int i)
++{
++	struct device *dev = kobj_to_dev(kobj);
++	struct x86_hybrid_pmu *pmu =
++		container_of(dev_get_drvdata(dev), struct x86_hybrid_pmu, pmu);
++	struct perf_pmu_format_hybrid_attr *pmu_attr =
++		container_of(attr, struct perf_pmu_format_hybrid_attr, attr.attr);
++	int cpu = hybrid_find_supported_cpu(pmu);
++
++	return (cpu >= 0) && (pmu->cpu_type & pmu_attr->pmu_type) ? attr->mode : 0;
++}
++
++static struct attribute_group hybrid_group_events_td  = {
++	.name		= "events",
++	.is_visible	= hybrid_events_is_visible,
 +};
 +
-+struct perf_pmu_format_hybrid_attr {
-+	struct device_attribute			attr;
-+	u64					pmu_type;
++static struct attribute_group hybrid_group_events_mem = {
++	.name		= "events",
++	.is_visible	= hybrid_events_is_visible,
 +};
 +
- ssize_t perf_event_sysfs_show(struct device *dev, struct device_attribute *attr,
- 			      char *page);
++static struct attribute_group hybrid_group_events_tsx = {
++	.name		= "events",
++	.is_visible	= hybrid_tsx_is_visible,
++};
++
++static struct attribute_group hybrid_group_format_extra = {
++	.name		= "format",
++	.is_visible	= hybrid_format_is_visible,
++};
++
++static ssize_t intel_hybrid_get_attr_cpus(struct device *dev,
++					  struct device_attribute *attr,
++					  char *buf)
++{
++	struct x86_hybrid_pmu *pmu =
++		container_of(dev_get_drvdata(dev), struct x86_hybrid_pmu, pmu);
++
++	return cpumap_print_to_pagebuf(true, buf, &pmu->supported_cpus);
++}
++
++static DEVICE_ATTR(cpus, S_IRUGO, intel_hybrid_get_attr_cpus, NULL);
++static struct attribute *intel_hybrid_cpus_attrs[] = {
++	&dev_attr_cpus.attr,
++	NULL,
++};
++
++static struct attribute_group hybrid_group_cpus = {
++	.attrs		= intel_hybrid_cpus_attrs,
++};
++
++static const struct attribute_group *hybrid_attr_update[] = {
++	&hybrid_group_events_td,
++	&hybrid_group_events_mem,
++	&hybrid_group_events_tsx,
++	&group_caps_gen,
++	&group_caps_lbr,
++	&hybrid_group_format_extra,
++	&group_default,
++	&hybrid_group_cpus,
++	NULL,
++};
++
+ static struct attribute *empty_attrs;
  
+ static void intel_pmu_check_num_counters(int *num_counters,
+@@ -5861,14 +5961,22 @@ __init int intel_pmu_init(void)
+ 
+ 	snprintf(pmu_name_str, sizeof(pmu_name_str), "%s", name);
+ 
++	if (!is_hybrid()) {
++		group_events_td.attrs  = td_attr;
++		group_events_mem.attrs = mem_attr;
++		group_events_tsx.attrs = tsx_attr;
++		group_format_extra.attrs = extra_attr;
++		group_format_extra_skl.attrs = extra_skl_attr;
+ 
+-	group_events_td.attrs  = td_attr;
+-	group_events_mem.attrs = mem_attr;
+-	group_events_tsx.attrs = tsx_attr;
+-	group_format_extra.attrs = extra_attr;
+-	group_format_extra_skl.attrs = extra_skl_attr;
++		x86_pmu.attr_update = attr_update;
++	} else {
++		hybrid_group_events_td.attrs  = td_attr;
++		hybrid_group_events_mem.attrs = mem_attr;
++		hybrid_group_events_tsx.attrs = tsx_attr;
++		hybrid_group_format_extra.attrs = extra_attr;
+ 
+-	x86_pmu.attr_update = attr_update;
++		x86_pmu.attr_update = hybrid_attr_update;
++	}
+ 
+ 	intel_pmu_check_num_counters(&x86_pmu.num_counters,
+ 				     &x86_pmu.num_counters_fixed,
