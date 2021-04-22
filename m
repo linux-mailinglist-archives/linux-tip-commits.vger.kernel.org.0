@@ -2,55 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DD8EC367B2F
+	by mail.lfdr.de (Postfix) with ESMTP id 91C60367B2E
 	for <lists+linux-tip-commits@lfdr.de>; Thu, 22 Apr 2021 09:37:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235144AbhDVHgk (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 22 Apr 2021 03:36:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57712 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235120AbhDVHgj (ORCPT
-        <rfc822;linux-tip-commits@vger.kernel.org>);
+        id S235122AbhDVHgj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Thu, 22 Apr 2021 03:36:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57704 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235075AbhDVHgi (ORCPT
+        <rfc822;linux-tip-commits@vger.kernel.org>);
+        Thu, 22 Apr 2021 03:36:38 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E91CEC06174A;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CE75C06138B;
         Thu, 22 Apr 2021 00:36:04 -0700 (PDT)
 Date:   Thu, 22 Apr 2021 07:36:02 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1619076963;
+        s=2020; t=1619076962;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=DhU8gTzVnpg60JZuzCQAP18tLhhmqQ0I95QDutSRJBg=;
-        b=ldFSCWNF5c27kSX6/ElJKlqzI5XFmXD3yEjq9sfjcVOo2f9wYUYC6v2rqmSYir6NELYZFu
-        O2PYsrMH5NVkrNMqRa/RFbZH6zCeWtIT8jAZrNa4Nhp++NdCwbLINaxDO0QfDUbdHRfwVs
-        vtfuk9SaKfpatCFL8axdbswLVl8ILgKPc57Zfk0sBTDJ+bRiHGpVGd/U1s42fJtiDx57px
-        me/DW0kdYfNDiGK6YB8hAbONCmryPzrR4QbQGCOrpvUrzmEhHt9YcfMRDZ4zhLIIUg54oI
-        whR1BD6qnWVIXkxDW9moDodnhKgCaO0purpD7eDHlcMfhB+lm7u5p8pumfX4KQ==
+        bh=FcIjuvMJ40lZLPnI+sCDv0ss+pJjqSFdoBTIAe59r9k=;
+        b=jTlBg7jE58L12ag16bpilKmd5yznfnNypcu5Cg3AKheaPNg3qJ3lPlJkvOBDuIGhPvMniv
+        gT6puvi5y/zQ6d1fAnGgKOjxdRlkX5Hxw9pNv3xfGU9HGJDLiCPe0t3HfdDcErnjKSolLZ
+        pJSkChLxnQlpeDhj4czJu8WmOMGLBAbEHqv5YdQekJkOEPPuaLOJCnU5mpDcgVYpPzvRiD
+        fAAMD2AUQ5+hWsoP/iFJ/z9e/QkBIZPEjJo9aQ0atTIYEy+1r0xIhGuKO0e1BfdNCWKqkS
+        14wiIhRF+oUzqwy25YNMw2ylVhMSC6H/bxA0MmPrkoomuCOK+oaUoxQKu6Rycw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1619076963;
+        s=2020e; t=1619076962;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=DhU8gTzVnpg60JZuzCQAP18tLhhmqQ0I95QDutSRJBg=;
-        b=5q1ZxX0ocwgzBbf20JE4PC5wsdBG/EpZmZK7vaCn50RdhBdM6NyjaOK0AiuX7smys2v2BL
-        LfTzPnkAF+eM1DBg==
-From:   "tip-bot2 for Paul Turner" <tip-bot2@linutronix.de>
+        bh=FcIjuvMJ40lZLPnI+sCDv0ss+pJjqSFdoBTIAe59r9k=;
+        b=6lmUqNjVNWPGEvTlUf36YoBb6nJ3S6rxfThzDWGpQN5+amTbB+QxVRyjxGBbyp57GxmblH
+        AOpIXn96oTTjzWDQ==
+From:   "tip-bot2 for Waiman Long" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched: Warn on long periods of pending need_resched
-Cc:     Paul Turner <pjt@google.com>, Josh Don <joshdon@google.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: sched/core] sched/debug: Fix cgroup_path[] serialization
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        Waiman Long <longman@redhat.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210416212936.390566-1-joshdon@google.com>
-References: <20210416212936.390566-1-joshdon@google.com>
+In-Reply-To: <20210415195426.6677-1-longman@redhat.com>
+References: <20210415195426.6677-1-longman@redhat.com>
 MIME-Version: 1.0
-Message-ID: <161907696286.29796.5382200918025426403.tip-bot2@tip-bot2>
+Message-ID: <161907696201.29796.3255306539355382815.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,246 +61,157 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     c006fac556e401a62054d065da168099ea5a5b10
-Gitweb:        https://git.kernel.org/tip/c006fac556e401a62054d065da168099ea5a5b10
-Author:        Paul Turner <pjt@google.com>
-AuthorDate:    Fri, 16 Apr 2021 14:29:36 -07:00
+Commit-ID:     ad789f84c9a145f8a18744c0387cec22ec51651e
+Gitweb:        https://git.kernel.org/tip/ad789f84c9a145f8a18744c0387cec22ec51651e
+Author:        Waiman Long <longman@redhat.com>
+AuthorDate:    Thu, 15 Apr 2021 15:54:26 -04:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 21 Apr 2021 13:55:41 +02:00
+CommitterDate: Wed, 21 Apr 2021 13:55:42 +02:00
 
-sched: Warn on long periods of pending need_resched
+sched/debug: Fix cgroup_path[] serialization
 
-CPU scheduler marks need_resched flag to signal a schedule() on a
-particular CPU. But, schedule() may not happen immediately in cases
-where the current task is executing in the kernel mode (no
-preemption state) for extended periods of time.
+The handling of sysrq key can be activated by echoing the key to
+/proc/sysrq-trigger or via the magic key sequence typed into a terminal
+that is connected to the system in some way (serial, USB or other mean).
+In the former case, the handling is done in a user context. In the
+latter case, it is likely to be in an interrupt context.
 
-This patch adds a warn_on if need_resched is pending for more than the
-time specified in sysctl resched_latency_warn_ms. If it goes off, it is
-likely that there is a missing cond_resched() somewhere. Monitoring is
-done via the tick and the accuracy is hence limited to jiffy scale. This
-also means that we won't trigger the warning if the tick is disabled.
+Currently in print_cpu() of kernel/sched/debug.c, sched_debug_lock is
+taken with interrupt disabled for the whole duration of the calls to
+print_*_stats() and print_rq() which could last for the quite some time
+if the information dump happens on the serial console.
 
-This feature (LATENCY_WARN) is default disabled.
+If the system has many cpus and the sched_debug_lock is somehow busy
+(e.g. parallel sysrq-t), the system may hit a hard lockup panic
+depending on the actually serial console implementation of the
+system.
 
-Signed-off-by: Paul Turner <pjt@google.com>
-Signed-off-by: Josh Don <joshdon@google.com>
+The purpose of sched_debug_lock is to serialize the use of the global
+cgroup_path[] buffer in print_cpu(). The rests of the printk calls don't
+need serialization from sched_debug_lock.
+
+Calling printk() with interrupt disabled can still be problematic if
+multiple instances are running. Allocating a stack buffer of PATH_MAX
+bytes is not feasible because of the limited size of the kernel stack.
+
+The solution implemented in this patch is to allow only one caller at a
+time to use the full size group_path[], while other simultaneous callers
+will have to use shorter stack buffers with the possibility of path
+name truncation. A "..." suffix will be printed if truncation may have
+happened.  The cgroup path name is provided for informational purpose
+only, so occasional path name truncation should not be a big problem.
+
+Fixes: efe25c2c7b3a ("sched: Reinstate group names in /proc/sched_debug")
+Suggested-by: Peter Zijlstra <peterz@infradead.org>
+Signed-off-by: Waiman Long <longman@redhat.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20210416212936.390566-1-joshdon@google.com
+Link: https://lkml.kernel.org/r/20210415195426.6677-1-longman@redhat.com
 ---
- include/linux/sched/sysctl.h |  3 ++-
- kernel/sched/core.c          | 70 ++++++++++++++++++++++++++++++++++-
- kernel/sched/debug.c         | 13 +++++++-
- kernel/sched/features.h      |  2 +-
- kernel/sched/sched.h         | 10 +++++-
- 5 files changed, 97 insertions(+), 1 deletion(-)
+ kernel/sched/debug.c | 42 +++++++++++++++++++++++++++++-------------
+ 1 file changed, 29 insertions(+), 13 deletions(-)
 
-diff --git a/include/linux/sched/sysctl.h b/include/linux/sched/sysctl.h
-index 0a3f346..db2c0f3 100644
---- a/include/linux/sched/sysctl.h
-+++ b/include/linux/sched/sysctl.h
-@@ -48,6 +48,9 @@ extern unsigned int sysctl_numa_balancing_scan_size;
- #ifdef CONFIG_SCHED_DEBUG
- extern __read_mostly unsigned int sysctl_sched_migration_cost;
- extern __read_mostly unsigned int sysctl_sched_nr_migrate;
-+
-+extern int sysctl_resched_latency_warn_ms;
-+extern int sysctl_resched_latency_warn_once;
- #endif
- 
- /*
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index e6c714b..fcb35ae 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -58,7 +58,17 @@ const_debug unsigned int sysctl_sched_features =
- #include "features.h"
- 	0;
- #undef SCHED_FEAT
--#endif
-+
-+/*
-+ * Print a warning if need_resched is set for the given duration (if
-+ * LATENCY_WARN is enabled).
-+ *
-+ * If sysctl_resched_latency_warn_once is set, only one warning will be shown
-+ * per boot.
-+ */
-+__read_mostly int sysctl_resched_latency_warn_ms = 100;
-+__read_mostly int sysctl_resched_latency_warn_once = 1;
-+#endif /* CONFIG_SCHED_DEBUG */
- 
- /*
-  * Number of tasks to iterate in a single balance run.
-@@ -4527,6 +4537,55 @@ unsigned long long task_sched_runtime(struct task_struct *p)
- 	return ns;
- }
- 
-+#ifdef CONFIG_SCHED_DEBUG
-+static u64 cpu_resched_latency(struct rq *rq)
-+{
-+	int latency_warn_ms = READ_ONCE(sysctl_resched_latency_warn_ms);
-+	u64 resched_latency, now = rq_clock(rq);
-+	static bool warned_once;
-+
-+	if (sysctl_resched_latency_warn_once && warned_once)
-+		return 0;
-+
-+	if (!need_resched() || !latency_warn_ms)
-+		return 0;
-+
-+	if (system_state == SYSTEM_BOOTING)
-+		return 0;
-+
-+	if (!rq->last_seen_need_resched_ns) {
-+		rq->last_seen_need_resched_ns = now;
-+		rq->ticks_without_resched = 0;
-+		return 0;
-+	}
-+
-+	rq->ticks_without_resched++;
-+	resched_latency = now - rq->last_seen_need_resched_ns;
-+	if (resched_latency <= latency_warn_ms * NSEC_PER_MSEC)
-+		return 0;
-+
-+	warned_once = true;
-+
-+	return resched_latency;
-+}
-+
-+static int __init setup_resched_latency_warn_ms(char *str)
-+{
-+	long val;
-+
-+	if ((kstrtol(str, 0, &val))) {
-+		pr_warn("Unable to set resched_latency_warn_ms\n");
-+		return 1;
-+	}
-+
-+	sysctl_resched_latency_warn_ms = val;
-+	return 1;
-+}
-+__setup("resched_latency_warn_ms=", setup_resched_latency_warn_ms);
-+#else
-+static inline u64 cpu_resched_latency(struct rq *rq) { return 0; }
-+#endif /* CONFIG_SCHED_DEBUG */
-+
- /*
-  * This function gets called by the timer code, with HZ frequency.
-  * We call it with interrupts disabled.
-@@ -4538,6 +4597,7 @@ void scheduler_tick(void)
- 	struct task_struct *curr = rq->curr;
- 	struct rq_flags rf;
- 	unsigned long thermal_pressure;
-+	u64 resched_latency;
- 
- 	arch_scale_freq_tick();
- 	sched_clock_tick();
-@@ -4548,10 +4608,15 @@ void scheduler_tick(void)
- 	thermal_pressure = arch_scale_thermal_pressure(cpu_of(rq));
- 	update_thermal_load_avg(rq_clock_thermal(rq), rq, thermal_pressure);
- 	curr->sched_class->task_tick(rq, curr, 0);
-+	if (sched_feat(LATENCY_WARN))
-+		resched_latency = cpu_resched_latency(rq);
- 	calc_global_load_tick(rq);
- 
- 	rq_unlock(rq, &rf);
- 
-+	if (sched_feat(LATENCY_WARN) && resched_latency)
-+		resched_latency_warn(cpu, resched_latency);
-+
- 	perf_event_task_tick();
- 
- #ifdef CONFIG_SMP
-@@ -5046,6 +5111,9 @@ static void __sched notrace __schedule(bool preempt)
- 	next = pick_next_task(rq, prev, &rf);
- 	clear_tsk_need_resched(prev);
- 	clear_preempt_need_resched();
-+#ifdef CONFIG_SCHED_DEBUG
-+	rq->last_seen_need_resched_ns = 0;
-+#endif
- 
- 	if (likely(prev != next)) {
- 		rq->nr_switches++;
 diff --git a/kernel/sched/debug.c b/kernel/sched/debug.c
-index 461342f..7251fc4 100644
+index 7251fc4..9c882f2 100644
 --- a/kernel/sched/debug.c
 +++ b/kernel/sched/debug.c
-@@ -309,6 +309,9 @@ static __init int sched_init_debug(void)
- 	debugfs_create_u32("min_granularity_ns", 0644, debugfs_sched, &sysctl_sched_min_granularity);
- 	debugfs_create_u32("wakeup_granularity_ns", 0644, debugfs_sched, &sysctl_sched_wakeup_granularity);
+@@ -8,8 +8,6 @@
+  */
+ #include "sched.h"
  
-+	debugfs_create_u32("latency_warn_ms", 0644, debugfs_sched, &sysctl_resched_latency_warn_ms);
-+	debugfs_create_u32("latency_warn_once", 0644, debugfs_sched, &sysctl_resched_latency_warn_once);
-+
- #ifdef CONFIG_SMP
- 	debugfs_create_file("tunable_scaling", 0644, debugfs_sched, NULL, &sched_scaling_fops);
- 	debugfs_create_u32("migration_cost_ns", 0644, debugfs_sched, &sysctl_sched_migration_cost);
-@@ -1027,3 +1030,13 @@ void proc_sched_set_task(struct task_struct *p)
- 	memset(&p->se.statistics, 0, sizeof(p->se.statistics));
+-static DEFINE_SPINLOCK(sched_debug_lock);
+-
+ /*
+  * This allows printing both to /proc/sched_debug and
+  * to the console
+@@ -476,16 +474,37 @@ static void print_cfs_group_stats(struct seq_file *m, int cpu, struct task_group
  #endif
- }
-+
-+void resched_latency_warn(int cpu, u64 latency)
-+{
-+	static DEFINE_RATELIMIT_STATE(latency_check_ratelimit, 60 * 60 * HZ, 1);
-+
-+	WARN(__ratelimit(&latency_check_ratelimit),
-+	     "sched: CPU %d need_resched set for > %llu ns (%d ticks) "
-+	     "without schedule\n",
-+	     cpu, latency, cpu_rq(cpu)->ticks_without_resched);
+ 
+ #ifdef CONFIG_CGROUP_SCHED
++static DEFINE_SPINLOCK(sched_debug_lock);
+ static char group_path[PATH_MAX];
+ 
+-static char *task_group_path(struct task_group *tg)
++static void task_group_path(struct task_group *tg, char *path, int plen)
+ {
+-	if (autogroup_path(tg, group_path, PATH_MAX))
+-		return group_path;
++	if (autogroup_path(tg, path, plen))
++		return;
+ 
+-	cgroup_path(tg->css.cgroup, group_path, PATH_MAX);
++	cgroup_path(tg->css.cgroup, path, plen);
 +}
-diff --git a/kernel/sched/features.h b/kernel/sched/features.h
-index 011c5ec..7f8dace 100644
---- a/kernel/sched/features.h
-+++ b/kernel/sched/features.h
-@@ -91,5 +91,7 @@ SCHED_FEAT(WA_BIAS, true)
- SCHED_FEAT(UTIL_EST, true)
- SCHED_FEAT(UTIL_EST_FASTUP, true)
  
-+SCHED_FEAT(LATENCY_WARN, false)
-+
- SCHED_FEAT(ALT_PERIOD, true)
- SCHED_FEAT(BASE_SLICE, true)
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index bde7248..a189bec 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -58,6 +58,7 @@
- #include <linux/prefetch.h>
- #include <linux/profile.h>
- #include <linux/psi.h>
-+#include <linux/ratelimit.h>
- #include <linux/rcupdate_wait.h>
- #include <linux/security.h>
- #include <linux/stop_machine.h>
-@@ -971,6 +972,11 @@ struct rq {
- 
- 	atomic_t		nr_iowait;
- 
-+#ifdef CONFIG_SCHED_DEBUG
-+	u64 last_seen_need_resched_ns;
-+	int ticks_without_resched;
-+#endif
-+
- #ifdef CONFIG_MEMBARRIER
- 	int membarrier_state;
+-	return group_path;
++/*
++ * Only 1 SEQ_printf_task_group_path() caller can use the full length
++ * group_path[] for cgroup path. Other simultaneous callers will have
++ * to use a shorter stack buffer. A "..." suffix is appended at the end
++ * of the stack buffer so that it will show up in case the output length
++ * matches the given buffer size to indicate possible path name truncation.
++ */
++#define SEQ_printf_task_group_path(m, tg, fmt...)			\
++{									\
++	if (spin_trylock(&sched_debug_lock)) {				\
++		task_group_path(tg, group_path, sizeof(group_path));	\
++		SEQ_printf(m, fmt, group_path);				\
++		spin_unlock(&sched_debug_lock);				\
++	} else {							\
++		char buf[128];						\
++		char *bufend = buf + sizeof(buf) - 3;			\
++		task_group_path(tg, buf, bufend - buf);			\
++		strcpy(bufend - 1, "...");				\
++		SEQ_printf(m, fmt, buf);				\
++	}								\
+ }
  #endif
-@@ -2371,6 +2377,8 @@ extern void print_dl_stats(struct seq_file *m, int cpu);
- extern void print_cfs_rq(struct seq_file *m, int cpu, struct cfs_rq *cfs_rq);
- extern void print_rt_rq(struct seq_file *m, int cpu, struct rt_rq *rt_rq);
- extern void print_dl_rq(struct seq_file *m, int cpu, struct dl_rq *dl_rq);
-+
-+extern void resched_latency_warn(int cpu, u64 latency);
- #ifdef CONFIG_NUMA_BALANCING
- extern void
- show_numa_stats(struct task_struct *p, struct seq_file *m);
-@@ -2378,6 +2386,8 @@ extern void
- print_numa_stats(struct seq_file *m, int node, unsigned long tsf,
- 	unsigned long tpf, unsigned long gsf, unsigned long gpf);
- #endif /* CONFIG_NUMA_BALANCING */
-+#else
-+static inline void resched_latency_warn(int cpu, u64 latency) {}
- #endif /* CONFIG_SCHED_DEBUG */
  
- extern void init_cfs_rq(struct cfs_rq *cfs_rq);
+@@ -512,7 +531,7 @@ print_task(struct seq_file *m, struct rq *rq, struct task_struct *p)
+ 	SEQ_printf(m, " %d %d", task_node(p), task_numa_group_id(p));
+ #endif
+ #ifdef CONFIG_CGROUP_SCHED
+-	SEQ_printf(m, " %s", task_group_path(task_group(p)));
++	SEQ_printf_task_group_path(m, task_group(p), " %s")
+ #endif
+ 
+ 	SEQ_printf(m, "\n");
+@@ -549,7 +568,7 @@ void print_cfs_rq(struct seq_file *m, int cpu, struct cfs_rq *cfs_rq)
+ 
+ #ifdef CONFIG_FAIR_GROUP_SCHED
+ 	SEQ_printf(m, "\n");
+-	SEQ_printf(m, "cfs_rq[%d]:%s\n", cpu, task_group_path(cfs_rq->tg));
++	SEQ_printf_task_group_path(m, cfs_rq->tg, "cfs_rq[%d]:%s\n", cpu);
+ #else
+ 	SEQ_printf(m, "\n");
+ 	SEQ_printf(m, "cfs_rq[%d]:\n", cpu);
+@@ -620,7 +639,7 @@ void print_rt_rq(struct seq_file *m, int cpu, struct rt_rq *rt_rq)
+ {
+ #ifdef CONFIG_RT_GROUP_SCHED
+ 	SEQ_printf(m, "\n");
+-	SEQ_printf(m, "rt_rq[%d]:%s\n", cpu, task_group_path(rt_rq->tg));
++	SEQ_printf_task_group_path(m, rt_rq->tg, "rt_rq[%d]:%s\n", cpu);
+ #else
+ 	SEQ_printf(m, "\n");
+ 	SEQ_printf(m, "rt_rq[%d]:\n", cpu);
+@@ -672,7 +691,6 @@ void print_dl_rq(struct seq_file *m, int cpu, struct dl_rq *dl_rq)
+ static void print_cpu(struct seq_file *m, int cpu)
+ {
+ 	struct rq *rq = cpu_rq(cpu);
+-	unsigned long flags;
+ 
+ #ifdef CONFIG_X86
+ 	{
+@@ -723,13 +741,11 @@ do {									\
+ 	}
+ #undef P
+ 
+-	spin_lock_irqsave(&sched_debug_lock, flags);
+ 	print_cfs_stats(m, cpu);
+ 	print_rt_stats(m, cpu);
+ 	print_dl_stats(m, cpu);
+ 
+ 	print_rq(m, rq, cpu);
+-	spin_unlock_irqrestore(&sched_debug_lock, flags);
+ 	SEQ_printf(m, "\n");
+ }
+ 
