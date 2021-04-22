@@ -2,55 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 03B0F367B2D
+	by mail.lfdr.de (Postfix) with ESMTP id DD8EC367B2F
 	for <lists+linux-tip-commits@lfdr.de>; Thu, 22 Apr 2021 09:37:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235106AbhDVHgj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 22 Apr 2021 03:36:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57702 "EHLO
+        id S235144AbhDVHgk (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 22 Apr 2021 03:36:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57712 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235058AbhDVHgi (ORCPT
+        with ESMTP id S235120AbhDVHgj (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 22 Apr 2021 03:36:38 -0400
+        Thu, 22 Apr 2021 03:36:39 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B347EC06174A;
-        Thu, 22 Apr 2021 00:36:03 -0700 (PDT)
-Date:   Thu, 22 Apr 2021 07:36:01 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E91CEC06174A;
+        Thu, 22 Apr 2021 00:36:04 -0700 (PDT)
+Date:   Thu, 22 Apr 2021 07:36:02 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1619076962;
+        s=2020; t=1619076963;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Pd7xFnbZyNjmdW/shVLRxYU4rcYi/IDnOckdZ34Fg94=;
-        b=0rTWXJNK0MBaD1NkKf1IHNEt3vNyi2F9kVqUzjU54EAigFtoi0Chf6gBMoUoVLh3zR8o8C
-        mskSlAHEG2rYDgPFzgc1OL0zE5LXgzlGcgwkt51/DBCPlSDpJy3mCVw0gEhnRnFpz43WQb
-        2dwP26XIx2qqwBE/ALVogYu24gYHvYasfCSzU5Kusg11ViRN86M14AkxJlHcV6526siVWn
-        6aykVOLj5mcoz/z8lLcZaDZqg9O8g5Zny1OFGUw7byRlYHeTvRVCiAFoW2Va2nQvAlGSYi
-        kYOmFtwJ1wCQd2mW/E6fVL2yH/IEGJAUTraAtNH4d2FmNjpOpSJfokwELAgTXA==
+        bh=DhU8gTzVnpg60JZuzCQAP18tLhhmqQ0I95QDutSRJBg=;
+        b=ldFSCWNF5c27kSX6/ElJKlqzI5XFmXD3yEjq9sfjcVOo2f9wYUYC6v2rqmSYir6NELYZFu
+        O2PYsrMH5NVkrNMqRa/RFbZH6zCeWtIT8jAZrNa4Nhp++NdCwbLINaxDO0QfDUbdHRfwVs
+        vtfuk9SaKfpatCFL8axdbswLVl8ILgKPc57Zfk0sBTDJ+bRiHGpVGd/U1s42fJtiDx57px
+        me/DW0kdYfNDiGK6YB8hAbONCmryPzrR4QbQGCOrpvUrzmEhHt9YcfMRDZ4zhLIIUg54oI
+        whR1BD6qnWVIXkxDW9moDodnhKgCaO0purpD7eDHlcMfhB+lm7u5p8pumfX4KQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1619076962;
+        s=2020e; t=1619076963;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Pd7xFnbZyNjmdW/shVLRxYU4rcYi/IDnOckdZ34Fg94=;
-        b=KcQSJxS1yXJEZ6SEHMT9N701fyTiYf5YLtulZ1xs4xBkOArnIRy9H94glfdeMLe9h6dA0j
-        pTav7Y/5EPwtxuAw==
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+        bh=DhU8gTzVnpg60JZuzCQAP18tLhhmqQ0I95QDutSRJBg=;
+        b=5q1ZxX0ocwgzBbf20JE4PC5wsdBG/EpZmZK7vaCn50RdhBdM6NyjaOK0AiuX7smys2v2BL
+        LfTzPnkAF+eM1DBg==
+From:   "tip-bot2 for Paul Turner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] kthread: Fix PF_KTHREAD vs to_kthread() race
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Valentin Schneider <Valentin.Schneider@arm.com>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <YH6WJc825C4P0FCK@hirez.programming.kicks-ass.net>
-References: <YH6WJc825C4P0FCK@hirez.programming.kicks-ass.net>
+Subject: [tip: sched/core] sched: Warn on long periods of pending need_resched
+Cc:     Paul Turner <pjt@google.com>, Josh Don <joshdon@google.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20210416212936.390566-1-joshdon@google.com>
+References: <20210416212936.390566-1-joshdon@google.com>
 MIME-Version: 1.0
-Message-ID: <161907696168.29796.14152815065521259837.tip-bot2@tip-bot2>
+Message-ID: <161907696286.29796.5382200918025426403.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,146 +61,246 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     3a7956e25e1d7b3c148569e78895e1f3178122a9
-Gitweb:        https://git.kernel.org/tip/3a7956e25e1d7b3c148569e78895e1f3178122a9
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Tue, 20 Apr 2021 10:18:17 +02:00
+Commit-ID:     c006fac556e401a62054d065da168099ea5a5b10
+Gitweb:        https://git.kernel.org/tip/c006fac556e401a62054d065da168099ea5a5b10
+Author:        Paul Turner <pjt@google.com>
+AuthorDate:    Fri, 16 Apr 2021 14:29:36 -07:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 21 Apr 2021 13:55:42 +02:00
+CommitterDate: Wed, 21 Apr 2021 13:55:41 +02:00
 
-kthread: Fix PF_KTHREAD vs to_kthread() race
+sched: Warn on long periods of pending need_resched
 
-The kthread_is_per_cpu() construct relies on only being called on
-PF_KTHREAD tasks (per the WARN in to_kthread). This gives rise to the
-following usage pattern:
+CPU scheduler marks need_resched flag to signal a schedule() on a
+particular CPU. But, schedule() may not happen immediately in cases
+where the current task is executing in the kernel mode (no
+preemption state) for extended periods of time.
 
-	if ((p->flags & PF_KTHREAD) && kthread_is_per_cpu(p))
+This patch adds a warn_on if need_resched is pending for more than the
+time specified in sysctl resched_latency_warn_ms. If it goes off, it is
+likely that there is a missing cond_resched() somewhere. Monitoring is
+done via the tick and the accuracy is hence limited to jiffy scale. This
+also means that we won't trigger the warning if the tick is disabled.
 
-However, as reported by syzcaller, this is broken. The scenario is:
+This feature (LATENCY_WARN) is default disabled.
 
-	CPU0				CPU1 (running p)
-
-	(p->flags & PF_KTHREAD) // true
-
-					begin_new_exec()
-					  me->flags &= ~(PF_KTHREAD|...);
-	kthread_is_per_cpu(p)
-	  to_kthread(p)
-	    WARN(!(p->flags & PF_KTHREAD) <-- *SPLAT*
-
-Introduce __to_kthread() that omits the WARN and is sure to check both
-values.
-
-Use this to remove the problematic pattern for kthread_is_per_cpu()
-and fix a number of other kthread_*() functions that have similar
-issues but are currently not used in ways that would expose the
-problem.
-
-Notably kthread_func() is only ever called on 'current', while
-kthread_probe_data() is only used for PF_WQ_WORKER, which implies the
-task is from kthread_create*().
-
-Fixes: ac687e6e8c26 ("kthread: Extract KTHREAD_IS_PER_CPU")
+Signed-off-by: Paul Turner <pjt@google.com>
+Signed-off-by: Josh Don <joshdon@google.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Valentin Schneider <Valentin.Schneider@arm.com>
-Link: https://lkml.kernel.org/r/YH6WJc825C4P0FCK@hirez.programming.kicks-ass.net
+Link: https://lkml.kernel.org/r/20210416212936.390566-1-joshdon@google.com
 ---
- kernel/kthread.c    | 33 +++++++++++++++++++++++++++------
- kernel/sched/core.c |  2 +-
- kernel/sched/fair.c |  2 +-
- 3 files changed, 29 insertions(+), 8 deletions(-)
+ include/linux/sched/sysctl.h |  3 ++-
+ kernel/sched/core.c          | 70 ++++++++++++++++++++++++++++++++++-
+ kernel/sched/debug.c         | 13 +++++++-
+ kernel/sched/features.h      |  2 +-
+ kernel/sched/sched.h         | 10 +++++-
+ 5 files changed, 97 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/kthread.c b/kernel/kthread.c
-index 1578973..6d3c488 100644
---- a/kernel/kthread.c
-+++ b/kernel/kthread.c
-@@ -84,6 +84,25 @@ static inline struct kthread *to_kthread(struct task_struct *k)
- 	return (__force void *)k->set_child_tid;
- }
- 
-+/*
-+ * Variant of to_kthread() that doesn't assume @p is a kthread.
-+ *
-+ * Per construction; when:
-+ *
-+ *   (p->flags & PF_KTHREAD) && p->set_child_tid
-+ *
-+ * the task is both a kthread and struct kthread is persistent. However
-+ * PF_KTHREAD on it's own is not, kernel_thread() can exec() (See umh.c and
-+ * begin_new_exec()).
-+ */
-+static inline struct kthread *__to_kthread(struct task_struct *p)
-+{
-+	void *kthread = (__force void *)p->set_child_tid;
-+	if (kthread && !(p->flags & PF_KTHREAD))
-+		kthread = NULL;
-+	return kthread;
-+}
+diff --git a/include/linux/sched/sysctl.h b/include/linux/sched/sysctl.h
+index 0a3f346..db2c0f3 100644
+--- a/include/linux/sched/sysctl.h
++++ b/include/linux/sched/sysctl.h
+@@ -48,6 +48,9 @@ extern unsigned int sysctl_numa_balancing_scan_size;
+ #ifdef CONFIG_SCHED_DEBUG
+ extern __read_mostly unsigned int sysctl_sched_migration_cost;
+ extern __read_mostly unsigned int sysctl_sched_nr_migrate;
 +
- void free_kthread_struct(struct task_struct *k)
- {
- 	struct kthread *kthread;
-@@ -168,8 +187,9 @@ EXPORT_SYMBOL_GPL(kthread_freezable_should_stop);
-  */
- void *kthread_func(struct task_struct *task)
- {
--	if (task->flags & PF_KTHREAD)
--		return to_kthread(task)->threadfn;
-+	struct kthread *kthread = __to_kthread(task);
-+	if (kthread)
-+		return kthread->threadfn;
- 	return NULL;
- }
- EXPORT_SYMBOL_GPL(kthread_func);
-@@ -199,10 +219,11 @@ EXPORT_SYMBOL_GPL(kthread_data);
-  */
- void *kthread_probe_data(struct task_struct *task)
- {
--	struct kthread *kthread = to_kthread(task);
-+	struct kthread *kthread = __to_kthread(task);
- 	void *data = NULL;
++extern int sysctl_resched_latency_warn_ms;
++extern int sysctl_resched_latency_warn_once;
+ #endif
  
--	copy_from_kernel_nofault(&data, &kthread->data, sizeof(data));
-+	if (kthread)
-+		copy_from_kernel_nofault(&data, &kthread->data, sizeof(data));
- 	return data;
- }
- 
-@@ -514,9 +535,9 @@ void kthread_set_per_cpu(struct task_struct *k, int cpu)
- 	set_bit(KTHREAD_IS_PER_CPU, &kthread->flags);
- }
- 
--bool kthread_is_per_cpu(struct task_struct *k)
-+bool kthread_is_per_cpu(struct task_struct *p)
- {
--	struct kthread *kthread = to_kthread(k);
-+	struct kthread *kthread = __to_kthread(p);
- 	if (!kthread)
- 		return false;
- 
+ /*
 diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index fcb35ae..4a0668a 100644
+index e6c714b..fcb35ae 100644
 --- a/kernel/sched/core.c
 +++ b/kernel/sched/core.c
-@@ -7667,7 +7667,7 @@ static void balance_push(struct rq *rq)
- 	 * histerical raisins.
- 	 */
- 	if (rq->idle == push_task ||
--	    ((push_task->flags & PF_KTHREAD) && kthread_is_per_cpu(push_task)) ||
-+	    kthread_is_per_cpu(push_task) ||
- 	    is_migration_disabled(push_task)) {
+@@ -58,7 +58,17 @@ const_debug unsigned int sysctl_sched_features =
+ #include "features.h"
+ 	0;
+ #undef SCHED_FEAT
+-#endif
++
++/*
++ * Print a warning if need_resched is set for the given duration (if
++ * LATENCY_WARN is enabled).
++ *
++ * If sysctl_resched_latency_warn_once is set, only one warning will be shown
++ * per boot.
++ */
++__read_mostly int sysctl_resched_latency_warn_ms = 100;
++__read_mostly int sysctl_resched_latency_warn_once = 1;
++#endif /* CONFIG_SCHED_DEBUG */
  
- 		/*
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 7ea3b93..1d75af1 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -7612,7 +7612,7 @@ int can_migrate_task(struct task_struct *p, struct lb_env *env)
- 		return 0;
+ /*
+  * Number of tasks to iterate in a single balance run.
+@@ -4527,6 +4537,55 @@ unsigned long long task_sched_runtime(struct task_struct *p)
+ 	return ns;
+ }
  
- 	/* Disregard pcpu kthreads; they are where they need to be. */
--	if ((p->flags & PF_KTHREAD) && kthread_is_per_cpu(p))
-+	if (kthread_is_per_cpu(p))
- 		return 0;
++#ifdef CONFIG_SCHED_DEBUG
++static u64 cpu_resched_latency(struct rq *rq)
++{
++	int latency_warn_ms = READ_ONCE(sysctl_resched_latency_warn_ms);
++	u64 resched_latency, now = rq_clock(rq);
++	static bool warned_once;
++
++	if (sysctl_resched_latency_warn_once && warned_once)
++		return 0;
++
++	if (!need_resched() || !latency_warn_ms)
++		return 0;
++
++	if (system_state == SYSTEM_BOOTING)
++		return 0;
++
++	if (!rq->last_seen_need_resched_ns) {
++		rq->last_seen_need_resched_ns = now;
++		rq->ticks_without_resched = 0;
++		return 0;
++	}
++
++	rq->ticks_without_resched++;
++	resched_latency = now - rq->last_seen_need_resched_ns;
++	if (resched_latency <= latency_warn_ms * NSEC_PER_MSEC)
++		return 0;
++
++	warned_once = true;
++
++	return resched_latency;
++}
++
++static int __init setup_resched_latency_warn_ms(char *str)
++{
++	long val;
++
++	if ((kstrtol(str, 0, &val))) {
++		pr_warn("Unable to set resched_latency_warn_ms\n");
++		return 1;
++	}
++
++	sysctl_resched_latency_warn_ms = val;
++	return 1;
++}
++__setup("resched_latency_warn_ms=", setup_resched_latency_warn_ms);
++#else
++static inline u64 cpu_resched_latency(struct rq *rq) { return 0; }
++#endif /* CONFIG_SCHED_DEBUG */
++
+ /*
+  * This function gets called by the timer code, with HZ frequency.
+  * We call it with interrupts disabled.
+@@ -4538,6 +4597,7 @@ void scheduler_tick(void)
+ 	struct task_struct *curr = rq->curr;
+ 	struct rq_flags rf;
+ 	unsigned long thermal_pressure;
++	u64 resched_latency;
  
- 	if (!cpumask_test_cpu(env->dst_cpu, p->cpus_ptr)) {
+ 	arch_scale_freq_tick();
+ 	sched_clock_tick();
+@@ -4548,10 +4608,15 @@ void scheduler_tick(void)
+ 	thermal_pressure = arch_scale_thermal_pressure(cpu_of(rq));
+ 	update_thermal_load_avg(rq_clock_thermal(rq), rq, thermal_pressure);
+ 	curr->sched_class->task_tick(rq, curr, 0);
++	if (sched_feat(LATENCY_WARN))
++		resched_latency = cpu_resched_latency(rq);
+ 	calc_global_load_tick(rq);
+ 
+ 	rq_unlock(rq, &rf);
+ 
++	if (sched_feat(LATENCY_WARN) && resched_latency)
++		resched_latency_warn(cpu, resched_latency);
++
+ 	perf_event_task_tick();
+ 
+ #ifdef CONFIG_SMP
+@@ -5046,6 +5111,9 @@ static void __sched notrace __schedule(bool preempt)
+ 	next = pick_next_task(rq, prev, &rf);
+ 	clear_tsk_need_resched(prev);
+ 	clear_preempt_need_resched();
++#ifdef CONFIG_SCHED_DEBUG
++	rq->last_seen_need_resched_ns = 0;
++#endif
+ 
+ 	if (likely(prev != next)) {
+ 		rq->nr_switches++;
+diff --git a/kernel/sched/debug.c b/kernel/sched/debug.c
+index 461342f..7251fc4 100644
+--- a/kernel/sched/debug.c
++++ b/kernel/sched/debug.c
+@@ -309,6 +309,9 @@ static __init int sched_init_debug(void)
+ 	debugfs_create_u32("min_granularity_ns", 0644, debugfs_sched, &sysctl_sched_min_granularity);
+ 	debugfs_create_u32("wakeup_granularity_ns", 0644, debugfs_sched, &sysctl_sched_wakeup_granularity);
+ 
++	debugfs_create_u32("latency_warn_ms", 0644, debugfs_sched, &sysctl_resched_latency_warn_ms);
++	debugfs_create_u32("latency_warn_once", 0644, debugfs_sched, &sysctl_resched_latency_warn_once);
++
+ #ifdef CONFIG_SMP
+ 	debugfs_create_file("tunable_scaling", 0644, debugfs_sched, NULL, &sched_scaling_fops);
+ 	debugfs_create_u32("migration_cost_ns", 0644, debugfs_sched, &sysctl_sched_migration_cost);
+@@ -1027,3 +1030,13 @@ void proc_sched_set_task(struct task_struct *p)
+ 	memset(&p->se.statistics, 0, sizeof(p->se.statistics));
+ #endif
+ }
++
++void resched_latency_warn(int cpu, u64 latency)
++{
++	static DEFINE_RATELIMIT_STATE(latency_check_ratelimit, 60 * 60 * HZ, 1);
++
++	WARN(__ratelimit(&latency_check_ratelimit),
++	     "sched: CPU %d need_resched set for > %llu ns (%d ticks) "
++	     "without schedule\n",
++	     cpu, latency, cpu_rq(cpu)->ticks_without_resched);
++}
+diff --git a/kernel/sched/features.h b/kernel/sched/features.h
+index 011c5ec..7f8dace 100644
+--- a/kernel/sched/features.h
++++ b/kernel/sched/features.h
+@@ -91,5 +91,7 @@ SCHED_FEAT(WA_BIAS, true)
+ SCHED_FEAT(UTIL_EST, true)
+ SCHED_FEAT(UTIL_EST_FASTUP, true)
+ 
++SCHED_FEAT(LATENCY_WARN, false)
++
+ SCHED_FEAT(ALT_PERIOD, true)
+ SCHED_FEAT(BASE_SLICE, true)
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index bde7248..a189bec 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -58,6 +58,7 @@
+ #include <linux/prefetch.h>
+ #include <linux/profile.h>
+ #include <linux/psi.h>
++#include <linux/ratelimit.h>
+ #include <linux/rcupdate_wait.h>
+ #include <linux/security.h>
+ #include <linux/stop_machine.h>
+@@ -971,6 +972,11 @@ struct rq {
+ 
+ 	atomic_t		nr_iowait;
+ 
++#ifdef CONFIG_SCHED_DEBUG
++	u64 last_seen_need_resched_ns;
++	int ticks_without_resched;
++#endif
++
+ #ifdef CONFIG_MEMBARRIER
+ 	int membarrier_state;
+ #endif
+@@ -2371,6 +2377,8 @@ extern void print_dl_stats(struct seq_file *m, int cpu);
+ extern void print_cfs_rq(struct seq_file *m, int cpu, struct cfs_rq *cfs_rq);
+ extern void print_rt_rq(struct seq_file *m, int cpu, struct rt_rq *rt_rq);
+ extern void print_dl_rq(struct seq_file *m, int cpu, struct dl_rq *dl_rq);
++
++extern void resched_latency_warn(int cpu, u64 latency);
+ #ifdef CONFIG_NUMA_BALANCING
+ extern void
+ show_numa_stats(struct task_struct *p, struct seq_file *m);
+@@ -2378,6 +2386,8 @@ extern void
+ print_numa_stats(struct seq_file *m, int node, unsigned long tsf,
+ 	unsigned long tpf, unsigned long gsf, unsigned long gpf);
+ #endif /* CONFIG_NUMA_BALANCING */
++#else
++static inline void resched_latency_warn(int cpu, u64 latency) {}
+ #endif /* CONFIG_SCHED_DEBUG */
+ 
+ extern void init_cfs_rq(struct cfs_rq *cfs_rq);
