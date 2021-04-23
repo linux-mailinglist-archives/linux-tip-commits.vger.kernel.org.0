@@ -2,77 +2,104 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A532367C18
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 22 Apr 2021 10:17:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 878B4368D5B
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 23 Apr 2021 08:53:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235329AbhDVIQK (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 22 Apr 2021 04:16:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38294 "EHLO
+        id S229456AbhDWGxf (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 23 Apr 2021 02:53:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54488 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235316AbhDVIQJ (ORCPT
+        with ESMTP id S230131AbhDWGxe (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 22 Apr 2021 04:16:09 -0400
-Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC284C06174A;
-        Thu, 22 Apr 2021 01:15:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=PWr7R1dU9cuwPOC+nwH35454h9m94YSv8+YAHyiC65Q=; b=V+YlHuy8JS8dlfw5WsGflbrZD8
-        35lo6lNadOU7tQptPY7vYjaUfDwI6X8KwBN5MAXd+CwN93sicyEHiRX6cqnKyGzXEbIXYl1DzUSsO
-        B32pGFzQi7JSVOHkIP5a5igROlJHAANLnVkhJKD4hM0h6/0XLS0buxcnBbFt+nWrqOKVarQg7FMkj
-        Y3wQcTOJm0UdBBqNTzIqEqy/kdeErLZbefMhHjJYsbciAHiwJr+SQnOYlNTydebWhXCAt7uGlCYW1
-        JOYfV72Y/5g8m2kn4iNVNYuWAVz+XCKZPnoy0n/xf/YX9Dqi7ott3NOSBm1XkHye9MQSJMQf/SE0x
-        91j2NHJA==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
-        by desiato.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
-        id 1lZUUi-00GDuz-4o; Thu, 22 Apr 2021 08:15:28 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 029B93001E2;
-        Thu, 22 Apr 2021 10:15:26 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id D34932BE658B2; Thu, 22 Apr 2021 10:15:26 +0200 (CEST)
-Date:   Thu, 22 Apr 2021 10:15:26 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     linux-tip-commits@vger.kernel.org, Rik van Riel <riel@surriel.com>,
-        x86@kernel.org, Vincent Guittot <vincent.guittot@linaro.org>
-Subject: Re: [tip: sched/core] sched,fair: skip newidle_balance if a wakeup
- is pending
-Message-ID: <YIEwnnhG9bFkPqQs@hirez.programming.kicks-ass.net>
-References: <20210420120705.5c705d4b@imladris.surriel.com>
- <161907696062.29796.108437696048031441.tip-bot2@tip-bot2>
+        Fri, 23 Apr 2021 02:53:34 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D576FC061574;
+        Thu, 22 Apr 2021 23:52:58 -0700 (PDT)
+Date:   Fri, 23 Apr 2021 06:52:56 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1619160777;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=/lUh85XWwxl8Xbep2KvsWrXNxfz0aaYwtoNZ/flrvZA=;
+        b=ho9TRxMWsml93t+k+qNEAIfJKqK9tDB8mJedNS+GHag0eHEmbH12tU5bfNc5E6QbYVzTv4
+        5JlMx42CQEyZCk74A2+OFXkbr1ApwNnW0Nas8G4iAKd5zEjfcdW+SIwt4e38OmWRLGETLO
+        lFsI4MT8Hjpie4YTk2YFj8LxmLxzOU2Hk3q3PKvSOWyaCkVKmjol1gbgXz5sjDgLV1ZmYw
+        Z24tG6SDFvr/YEuOOAtECk3G87pFO8OE5qXwitorinSfMPEdoUna7kA5econsJtLH84c1Y
+        SDnOVIN/r8DmDQ5VeTwYmjG8t7/6+f7+W6ciJ3EZZaMRvZ9NsjAV8tOzA5/L0Q==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1619160777;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=/lUh85XWwxl8Xbep2KvsWrXNxfz0aaYwtoNZ/flrvZA=;
+        b=Lt2jBpF8mNVWqZHYs7vX6QGmCDZNbeF083fT/sqRArMao54SXCMbi5aHMSnj2Rr4OqOXBG
+        BGfdR/QMnw3C5cDg==
+From:   "tip-bot2 for Arnd Bergmann" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: locking/core] kcsan: Fix printk format string
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Marco Elver <elver@google.com>,
+        "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20210421135059.3371701-1-arnd@kernel.org>
+References: <20210421135059.3371701-1-arnd@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <161907696062.29796.108437696048031441.tip-bot2@tip-bot2>
+Message-ID: <161916077643.29796.8670414298244363723.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Thu, Apr 22, 2021 at 07:36:00AM -0000, tip-bot2 for Rik van Riel wrote:
-> @@ -10684,7 +10693,12 @@ out:
->  	if (time_after(this_rq->next_balance, next_balance))
->  		this_rq->next_balance = next_balance;
->  
-> -	if (pulled_task)
-> +	/*
-> +	 * If we are no longer idle, do not let the time spent here pull
-> +	 * down this_rq->avg_idle. That could lead to newidle_balance not
-> +	 * doing enough work, and the CPU actually going idle.
-> +	 */
-> +	if (pulled_task || this_rq->ttwu_pending)
->  		this_rq->idle_stamp = 0;
+The following commit has been merged into the locking/core branch of tip:
 
-I've un-committed this patch, because vingu was reporting increased idle
-time because of this hunk.  I had mistakenly assumed that was sorted
-with v3, sorry for not keeping better track of things.
+Commit-ID:     f4abe9967c6fdb511ee567e129a014b60945ab93
+Gitweb:        https://git.kernel.org/tip/f4abe9967c6fdb511ee567e129a014b60945ab93
+Author:        Arnd Bergmann <arnd@arndb.de>
+AuthorDate:    Wed, 21 Apr 2021 15:50:38 +02:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Thu, 22 Apr 2021 14:36:03 +02:00
 
-(also, now that I look again, please also fix the Subject to have a
-capital after the :)
+kcsan: Fix printk format string
 
+Printing a 'long' variable using the '%d' format string is wrong
+and causes a warning from gcc:
 
+kernel/kcsan/kcsan_test.c: In function 'nthreads_gen_params':
+include/linux/kern_levels.h:5:25: error: format '%d' expects argument of type 'int', but argument 3 has type 'long int' [-Werror=format=]
+
+Use the appropriate format modifier.
+
+Fixes: f6a149140321 ("kcsan: Switch to KUNIT_CASE_PARAM for parameterized tests")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Marco Elver <elver@google.com>
+Acked-by: Paul E. McKenney <paulmck@kernel.org>
+Link: https://lkml.kernel.org/r/20210421135059.3371701-1-arnd@kernel.org
+---
+ kernel/kcsan/kcsan_test.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/kernel/kcsan/kcsan_test.c b/kernel/kcsan/kcsan_test.c
+index b71751f..8bcffbd 100644
+--- a/kernel/kcsan/kcsan_test.c
++++ b/kernel/kcsan/kcsan_test.c
+@@ -984,7 +984,7 @@ static const void *nthreads_gen_params(const void *prev, char *desc)
+ 		const long min_required_cpus = 2 + min_unused_cpus;
+ 
+ 		if (num_online_cpus() < min_required_cpus) {
+-			pr_err_once("Too few online CPUs (%u < %d) for test\n",
++			pr_err_once("Too few online CPUs (%u < %ld) for test\n",
+ 				    num_online_cpus(), min_required_cpus);
+ 			nthreads = 0;
+ 		} else if (nthreads >= num_online_cpus() - min_unused_cpus) {
