@@ -2,52 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A3F71375384
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  6 May 2021 14:14:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 065BD375381
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  6 May 2021 14:14:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233115AbhEFMPM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S233160AbhEFMPM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Thu, 6 May 2021 08:15:12 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:38668 "EHLO
+Received: from Galois.linutronix.de ([193.142.43.55]:38674 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232884AbhEFMPG (ORCPT
+        with ESMTP id S232921AbhEFMPG (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Thu, 6 May 2021 08:15:06 -0400
 Date:   Thu, 06 May 2021 12:14:06 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1620303246;
+        s=2020; t=1620303247;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Ez7a9LGPAAV41QzZ94EbuhRkbrINtAeGU2AekljcOWc=;
-        b=s8bcdC4vR8d4wsvQN70wQl5mHaOE/dr3Pv2JKLF6sJ7pdJnFp0V26G7ws1ajLS8JQGD5OA
-        bKvcVKWlTZMgPFoOtBsoVfl3UmXjPWKlfubGKlDo0BnuEO60hL3K7oPi309Vgn9QJ7tj99
-        NclGLvRR/oJoCMuKq+f50pZcO5pce76PhOXH1F3SKdKZDrmY3rJ4fnH/mjP5gB/KioqMmn
-        ionZi+pNzBsGt04bKi4EWyjtefNZIJchQDXMfYUu8xx4e66cx2fUWam6PvZse40uIJYa7f
-        2Ljv3FZUIxoQqUlJRam2jSvtkRmsJF9N+JKh0j2EqRZRNZClQYCr9p4N49gvhQ==
+        bh=kN5tDD5vXQHItyKRr5OB+VZS5LAJOBnwou1sKeVites=;
+        b=vIb9WAUujVNVULfJHmlarxvC6LT+28rbfH++5TzQ8J/2HpekBXThM5ktAzqDwb0BwWCyST
+        KsZmPKSYyJ7TjpV0KBdDV6FYPmwfPjgLg8htzp/KjKvIjgmp+nqHNNELOzYQDVuRhA9LJM
+        AKu5SW6D4YtS1XSFsOply5Uii9IBL+5YDrO5IXOC0Z1htQBSWDl+ZV2GK41Gom2e9hRjzJ
+        BjY2SHMl0OUtcZ3bd3ewLh4Gh6cLf5TyOrA2phEWzVc/TLINBzAY4Vgqu7/1EfxD43+6nC
+        FmHsJ5JBRGuG4+7DaLlARlmjt8WJlz0loM1gEGYkPLgStvUJIMQ12LguFnCu+Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1620303246;
+        s=2020e; t=1620303247;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Ez7a9LGPAAV41QzZ94EbuhRkbrINtAeGU2AekljcOWc=;
-        b=Cx0zI1yw/MLZ3YXLVzwRY5txDkHr/dOu9fbU5RHzm0bbDjJvyo4lS9xMRPnA/bvpQFAa1z
-        0k87ChDkTvO/1JDA==
-From:   "tip-bot2 for Lai Jiangshan" <tip-bot2@linutronix.de>
+        bh=kN5tDD5vXQHItyKRr5OB+VZS5LAJOBnwou1sKeVites=;
+        b=XiN8PmDfxupwuyoRgxed+BM/5b7b44RlbdMK2P0SFNOKXuK1JazcbZoXwtwrOCT6deXntc
+        pJObUr16GXUijMAw==
+From:   "tip-bot2 for Sean Christopherson" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] KVM/VMX: Invoke NMI non-IST entry instead of IST entry
-Cc:     Lai Jiangshan <laijs@linux.alibaba.com>,
-        Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <87r1imi8i1.ffs@nanos.tec.linutronix.de>
-References: <87r1imi8i1.ffs@nanos.tec.linutronix.de>
+Subject: [tip: x86/urgent] x86/cpu: Remove write_tsc() and write_rdtscp_aux() wrappers
+Cc:     Sean Christopherson <seanjc@google.com>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20210504225632.1532621-3-seanjc@google.com>
+References: <20210504225632.1532621-3-seanjc@google.com>
 MIME-Version: 1.0
-Message-ID: <162030324615.29796.11969435265957959135.tip-bot2@tip-bot2>
+Message-ID: <162030324666.29796.2683724814193084316.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,153 +58,55 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     a217a6593cec8b315d4c2f344bae33660b39b703
-Gitweb:        https://git.kernel.org/tip/a217a6593cec8b315d4c2f344bae33660b39b703
-Author:        Lai Jiangshan <laijs@linux.alibaba.com>
-AuthorDate:    Tue, 04 May 2021 21:50:14 +02:00
+Commit-ID:     fc48a6d1faadbf08b7a840d58a5a6eb85bd1a79a
+Gitweb:        https://git.kernel.org/tip/fc48a6d1faadbf08b7a840d58a5a6eb85bd1a79a
+Author:        Sean Christopherson <seanjc@google.com>
+AuthorDate:    Tue, 04 May 2021 15:56:32 -07:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 05 May 2021 22:54:10 +02:00
+CommitterDate: Wed, 05 May 2021 21:50:14 +02:00
 
-KVM/VMX: Invoke NMI non-IST entry instead of IST entry
+x86/cpu: Remove write_tsc() and write_rdtscp_aux() wrappers
 
-In VMX, the host NMI handler needs to be invoked after NMI VM-Exit.
-Before commit 1a5488ef0dcf6 ("KVM: VMX: Invoke NMI handler via indirect
-call instead of INTn"), this was done by INTn ("int $2"). But INTn
-microcode is relatively expensive, so the commit reworked NMI VM-Exit
-handling to invoke the kernel handler by function call.
+Drop write_tsc() and write_rdtscp_aux(); the former has no users, and the
+latter has only a single user and is slightly misleading since the only
+in-kernel consumer of MSR_TSC_AUX is RDPID, not RDTSCP.
 
-But this missed a detail. The NMI entry point for direct invocation is
-fetched from the IDT table and called on the kernel stack.  But on 64-bit
-the NMI entry installed in the IDT expects to be invoked on the IST stack.
-It relies on the "NMI executing" variable on the IST stack to work
-correctly, which is at a fixed position in the IST stack.  When the entry
-point is unexpectedly called on the kernel stack, the RSP-addressed "NMI
-executing" variable is obviously also on the kernel stack and is
-"uninitialized" and can cause the NMI entry code to run in the wrong way.
+No functional change intended.
 
-Provide a non-ist entry point for VMX which shares the C-function with
-the regular NMI entry and invoke the new asm entry point instead.
-
-On 32-bit this just maps to the regular NMI entry point as 32-bit has no
-ISTs and is not affected.
-
-[ tglx: Made it independent for backporting, massaged changelog ]
-
-Fixes: 1a5488ef0dcf6 ("KVM: VMX: Invoke NMI handler via indirect call instead of INTn")
-Signed-off-by: Lai Jiangshan <laijs@linux.alibaba.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Lai Jiangshan <laijs@linux.alibaba.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/87r1imi8i1.ffs@nanos.tec.linutronix.de
+Link: https://lore.kernel.org/r/20210504225632.1532621-3-seanjc@google.com
 
 ---
- arch/x86/include/asm/idtentry.h | 15 +++++++++++++++
- arch/x86/kernel/nmi.c           | 10 ++++++++++
- arch/x86/kvm/vmx/vmx.c          | 16 +++++++++-------
- 3 files changed, 34 insertions(+), 7 deletions(-)
+ arch/x86/include/asm/msr.h   | 4 ----
+ arch/x86/kernel/cpu/common.c | 2 +-
+ 2 files changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/arch/x86/include/asm/idtentry.h b/arch/x86/include/asm/idtentry.h
-index e35e342..73d45b0 100644
---- a/arch/x86/include/asm/idtentry.h
-+++ b/arch/x86/include/asm/idtentry.h
-@@ -588,6 +588,21 @@ DECLARE_IDTENTRY_RAW(X86_TRAP_MC,	xenpv_exc_machine_check);
- #endif
- 
- /* NMI */
-+
-+#if defined(CONFIG_X86_64) && IS_ENABLED(CONFIG_KVM_INTEL)
-+/*
-+ * Special NOIST entry point for VMX which invokes this on the kernel
-+ * stack. asm_exc_nmi() requires an IST to work correctly vs. the NMI
-+ * 'executing' marker.
-+ *
-+ * On 32bit this just uses the regular NMI entry point because 32-bit does
-+ * not have ISTs.
-+ */
-+DECLARE_IDTENTRY(X86_TRAP_NMI,		exc_nmi_noist);
-+#else
-+#define asm_exc_nmi_noist		asm_exc_nmi
-+#endif
-+
- DECLARE_IDTENTRY_NMI(X86_TRAP_NMI,	exc_nmi);
- #ifdef CONFIG_XEN_PV
- DECLARE_IDTENTRY_RAW(X86_TRAP_NMI,	xenpv_exc_nmi);
-diff --git a/arch/x86/kernel/nmi.c b/arch/x86/kernel/nmi.c
-index bf250a3..2ef961c 100644
---- a/arch/x86/kernel/nmi.c
-+++ b/arch/x86/kernel/nmi.c
-@@ -524,6 +524,16 @@ nmi_restart:
- 		mds_user_clear_cpu_buffers();
+diff --git a/arch/x86/include/asm/msr.h b/arch/x86/include/asm/msr.h
+index e16cccd..a3f87f1 100644
+--- a/arch/x86/include/asm/msr.h
++++ b/arch/x86/include/asm/msr.h
+@@ -324,10 +324,6 @@ static inline int wrmsrl_safe(u32 msr, u64 val)
+ 	return wrmsr_safe(msr, (u32)val,  (u32)(val >> 32));
  }
  
-+#if defined(CONFIG_X86_64) && IS_ENABLED(CONFIG_KVM_INTEL)
-+DEFINE_IDTENTRY_RAW(exc_nmi_noist)
-+{
-+	exc_nmi(regs);
-+}
-+#endif
-+#if IS_MODULE(CONFIG_KVM_INTEL)
-+EXPORT_SYMBOL_GPL(asm_exc_nmi_noist);
-+#endif
-+
- void stop_nmi(void)
- {
- 	ignore_nmis++;
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index cbe0cda..b21d751 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -36,6 +36,7 @@
- #include <asm/debugreg.h>
- #include <asm/desc.h>
- #include <asm/fpu/internal.h>
-+#include <asm/idtentry.h>
- #include <asm/io.h>
- #include <asm/irq_remapping.h>
- #include <asm/kexec.h>
-@@ -6415,18 +6416,17 @@ static void vmx_apicv_post_state_restore(struct kvm_vcpu *vcpu)
- 
- void vmx_do_interrupt_nmi_irqoff(unsigned long entry);
- 
--static void handle_interrupt_nmi_irqoff(struct kvm_vcpu *vcpu, u32 intr_info)
-+static void handle_interrupt_nmi_irqoff(struct kvm_vcpu *vcpu,
-+					unsigned long entry)
- {
--	unsigned int vector = intr_info & INTR_INFO_VECTOR_MASK;
--	gate_desc *desc = (gate_desc *)host_idt_base + vector;
+-#define write_tsc(low, high) wrmsr(MSR_IA32_TSC, (low), (high))
 -
- 	kvm_before_interrupt(vcpu);
--	vmx_do_interrupt_nmi_irqoff(gate_offset(desc));
-+	vmx_do_interrupt_nmi_irqoff(entry);
- 	kvm_after_interrupt(vcpu);
- }
+-#define write_rdtscp_aux(val) wrmsr(MSR_TSC_AUX, (val), 0)
+-
+ struct msr *msrs_alloc(void);
+ void msrs_free(struct msr *msrs);
+ int msr_set_bit(u32 msr, u8 bit);
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index 490bed0..a1b756c 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -1852,7 +1852,7 @@ static inline void setup_getcpu(int cpu)
+ 	struct desc_struct d = { };
  
- static void handle_exception_nmi_irqoff(struct vcpu_vmx *vmx)
- {
-+	const unsigned long nmi_entry = (unsigned long)asm_exc_nmi_noist;
- 	u32 intr_info = vmx_get_intr_info(&vmx->vcpu);
+ 	if (boot_cpu_has(X86_FEATURE_RDTSCP) || boot_cpu_has(X86_FEATURE_RDPID))
+-		write_rdtscp_aux(cpudata);
++		wrmsr(MSR_TSC_AUX, cpudata, 0);
  
- 	/* if exit due to PF check for async PF */
-@@ -6437,18 +6437,20 @@ static void handle_exception_nmi_irqoff(struct vcpu_vmx *vmx)
- 		kvm_machine_check();
- 	/* We need to handle NMIs before interrupts are enabled */
- 	else if (is_nmi(intr_info))
--		handle_interrupt_nmi_irqoff(&vmx->vcpu, intr_info);
-+		handle_interrupt_nmi_irqoff(&vmx->vcpu, nmi_entry);
- }
- 
- static void handle_external_interrupt_irqoff(struct kvm_vcpu *vcpu)
- {
- 	u32 intr_info = vmx_get_intr_info(vcpu);
-+	unsigned int vector = intr_info & INTR_INFO_VECTOR_MASK;
-+	gate_desc *desc = (gate_desc *)host_idt_base + vector;
- 
- 	if (WARN_ONCE(!is_external_intr(intr_info),
- 	    "KVM: unexpected VM-Exit interrupt info: 0x%x", intr_info))
- 		return;
- 
--	handle_interrupt_nmi_irqoff(vcpu, intr_info);
-+	handle_interrupt_nmi_irqoff(vcpu, gate_offset(desc));
- }
- 
- static void vmx_handle_exit_irqoff(struct kvm_vcpu *vcpu)
+ 	/* Store CPU and node number in limit. */
+ 	d.limit0 = cpudata;
