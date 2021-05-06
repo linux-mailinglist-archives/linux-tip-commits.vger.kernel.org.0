@@ -2,53 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 464AA37550D
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  6 May 2021 15:48:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44E1E375511
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  6 May 2021 15:48:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234002AbhEFNtQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 6 May 2021 09:49:16 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:40440 "EHLO
+        id S234393AbhEFNtU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 6 May 2021 09:49:20 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:40464 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233854AbhEFNtQ (ORCPT
+        with ESMTP id S234033AbhEFNtT (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 6 May 2021 09:49:16 -0400
-Date:   Thu, 06 May 2021 13:48:16 -0000
+        Thu, 6 May 2021 09:49:19 -0400
+Date:   Thu, 06 May 2021 13:48:18 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1620308897;
+        s=2020; t=1620308899;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=+H8MYZgxThC6BOGKn3tgQs+IICBpGBPAa6SRxKU/Cq8=;
-        b=TSf9fwj+E53EQCnkfshiX5BEAoIgUTu+I2WzHhRmQd6u7ddg0PEWI/hRXEDhS8Tts5+Yh6
-        YIIyktYHfiRrqRSgqCO3mY4Jak1Ahajzuc8Nd4ig+lYIMgeyDyTjz1AViuV59oKE1f3jQv
-        C0tuL/Ej5mve9I1+42b97sQfHXrquFGGRImNKVZH7r3+vA20Ti98uLc0eARp4oBcXARHNQ
-        RYcj6MtZpeEAGa4KSYFhF/48KDCBVw6qj65hPsIyLa9pNGmKFqNEDdDWie/EFN3Vvolk6H
-        1BNm+5BwHS1lPbeGY/GrCTmP7ppJ0GCFmYE6lJYsbpyMRrFwpXJLbKZNcbNwWg==
+        bh=zuqG7zDjHOvJGRUdaha22LJ3Sayo8vnyPDl9IGBoSyY=;
+        b=EwuVSPmVJ57+O4NShKRNrtKQfJA8epABMmsDpNbKE/p/sg9AvFFIeTCdb4PYQvLQslOuDZ
+        0v39EL06BdhxdUt+rKQ3K9/MC0cLO+KoSqTSoB+2GtE8wSXyx10RY5Bl3mTghp36rmUCrG
+        0ItcH5YNA6vkR3dw6/pmn56+JpmlC+bzOm1LfdeVNTU3qbmWxUyNQQG414eI5F7XejkvJ1
+        yGeNNXkJT6Zx0vHFUxqLtdDjGDP8o+8U7xr2Cc1KmF+EbZTtaisuWsbORuTU/eymPyQBwL
+        iSkZR6V2DFzs7r7pjEYTU7PwE7LXNERmG+TgneM5xBX3rV4GFFWB0ZfFndAVmA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1620308897;
+        s=2020e; t=1620308899;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=+H8MYZgxThC6BOGKn3tgQs+IICBpGBPAa6SRxKU/Cq8=;
-        b=A89n36N2fT1TC3R66qsQmZgRcUE5Q3JvwOWeWmIjd83vxu37v3eL9aKqS1b85BaXLiopSe
-        NSI27HTxLzdGRQAQ==
-From:   "tip-bot2 for Arnd Bergmann" <tip-bot2@linutronix.de>
+        bh=zuqG7zDjHOvJGRUdaha22LJ3Sayo8vnyPDl9IGBoSyY=;
+        b=7ucQVoHjOAHGmQ5s3ZbeogHHa9lBq0QY2NMC3BzEw7NatPdQF+YL1zoIW5MjgPug1bLLHr
+        rQDmGX8ZbbOKQxAg==
+From:   "tip-bot2 for Suravee Suthikulpanit" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/urgent] smp: Fix smp_call_function_single_async prototype
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Jens Axboe <axboe@kernel.dk>, x86@kernel.org,
+Subject: [tip: perf/urgent] x86/events/amd/iommu: Fix invalid Perf result due
+ to IOMMU PMC power-gating
+Cc:     Alexander Monakov <amonakov@ispras.ru>,
+        Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210505211300.3174456-1-arnd@kernel.org>
-References: <20210505211300.3174456-1-arnd@kernel.org>
+In-Reply-To: <20210504065236.4415-1-suravee.suthikulpanit@amd.com>
+References: <20210504065236.4415-1-suravee.suthikulpanit@amd.com>
 MIME-Version: 1.0
-Message-ID: <162030889655.29796.14817964445442674284.tip-bot2@tip-bot2>
+Message-ID: <162030889887.29796.12426716742809018792.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -57,182 +58,141 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the locking/urgent branch of tip:
+The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     1139aeb1c521eb4a050920ce6c64c36c4f2a3ab7
-Gitweb:        https://git.kernel.org/tip/1139aeb1c521eb4a050920ce6c64c36c4f2a3ab7
-Author:        Arnd Bergmann <arnd@arndb.de>
-AuthorDate:    Wed, 05 May 2021 23:12:42 +02:00
+Commit-ID:     e10de314287c2c14b0e6f0e3e961975ce2f4a83d
+Gitweb:        https://git.kernel.org/tip/e10de314287c2c14b0e6f0e3e961975ce2f4a83d
+Author:        Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+AuthorDate:    Tue, 04 May 2021 01:52:36 -05:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Thu, 06 May 2021 15:33:49 +02:00
+CommitterDate: Thu, 06 May 2021 15:33:37 +02:00
 
-smp: Fix smp_call_function_single_async prototype
+x86/events/amd/iommu: Fix invalid Perf result due to IOMMU PMC power-gating
 
-As of commit 966a967116e6 ("smp: Avoid using two cache lines for struct
-call_single_data"), the smp code prefers 32-byte aligned call_single_data
-objects for performance reasons, but the block layer includes an instance
-of this structure in the main 'struct request' that is more senstive
-to size than to performance here, see 4ccafe032005 ("block: unalign
-call_single_data in struct request").
+On certain AMD platforms, when the IOMMU performance counter source
+(csource) field is zero, power-gating for the counter is enabled, which
+prevents write access and returns zero for read access.
 
-The result is a violation of the calling conventions that clang correctly
-points out:
+This can cause invalid perf result especially when event multiplexing
+is needed (i.e. more number of events than available counters) since
+the current logic keeps track of the previously read counter value,
+and subsequently re-program the counter to continue counting the event.
+With power-gating enabled, we cannot gurantee successful re-programming
+of the counter.
 
-block/blk-mq.c:630:39: warning: passing 8-byte aligned argument to 32-byte aligned parameter 2 of 'smp_call_function_single_async' may result in an unaligned pointer access [-Walign-mismatch]
-                smp_call_function_single_async(cpu, &rq->csd);
+Workaround this issue by :
 
-It does seem that the usage of the call_single_data without cache line
-alignment should still be allowed by the smp code, so just change the
-function prototype so it accepts both, but leave the default alignment
-unchanged for the other users. This seems better to me than adding
-a local hack to shut up an otherwise correct warning in the caller.
+1. Modifying the ordering of setting/reading counters and enabing/
+   disabling csources to only access the counter when the csource
+   is set to non-zero.
 
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+2. Since AMD IOMMU PMU does not support interrupt mode, the logic
+   can be simplified to always start counting with value zero,
+   and accumulate the counter value when stopping without the need
+   to keep track and reprogram the counter with the previously read
+   counter value.
+
+This has been tested on systems with and without power-gating.
+
+Fixes: 994d6608efe4 ("iommu/amd: Remove performance counter pre-initialization test")
+Suggested-by: Alexander Monakov <amonakov@ispras.ru>
+Signed-off-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Jens Axboe <axboe@kernel.dk>
-Link: https://lkml.kernel.org/r/20210505211300.3174456-1-arnd@kernel.org
+Link: https://lkml.kernel.org/r/20210504065236.4415-1-suravee.suthikulpanit@amd.com
 ---
- include/linux/smp.h |  2 +-
- kernel/smp.c        | 26 +++++++++++++-------------
- kernel/up.c         |  2 +-
- 3 files changed, 15 insertions(+), 15 deletions(-)
+ arch/x86/events/amd/iommu.c | 47 +++++++++++++++++++-----------------
+ 1 file changed, 26 insertions(+), 21 deletions(-)
 
-diff --git a/include/linux/smp.h b/include/linux/smp.h
-index 84a0b48..f0d3ef6 100644
---- a/include/linux/smp.h
-+++ b/include/linux/smp.h
-@@ -53,7 +53,7 @@ int smp_call_function_single(int cpuid, smp_call_func_t func, void *info,
- void on_each_cpu_cond_mask(smp_cond_func_t cond_func, smp_call_func_t func,
- 			   void *info, bool wait, const struct cpumask *mask);
+diff --git a/arch/x86/events/amd/iommu.c b/arch/x86/events/amd/iommu.c
+index 6a98a76..2da6139 100644
+--- a/arch/x86/events/amd/iommu.c
++++ b/arch/x86/events/amd/iommu.c
+@@ -18,8 +18,6 @@
+ #include "../perf_event.h"
+ #include "iommu.h"
  
--int smp_call_function_single_async(int cpu, call_single_data_t *csd);
-+int smp_call_function_single_async(int cpu, struct __call_single_data *csd);
+-#define COUNTER_SHIFT		16
+-
+ /* iommu pmu conf masks */
+ #define GET_CSOURCE(x)     ((x)->conf & 0xFFULL)
+ #define GET_DEVID(x)       (((x)->conf >> 8)  & 0xFFFFULL)
+@@ -285,22 +283,31 @@ static void perf_iommu_start(struct perf_event *event, int flags)
+ 	WARN_ON_ONCE(!(hwc->state & PERF_HES_UPTODATE));
+ 	hwc->state = 0;
  
- /*
-  * Call a function on all processors
-diff --git a/kernel/smp.c b/kernel/smp.c
-index e210749..52bf159 100644
---- a/kernel/smp.c
-+++ b/kernel/smp.c
-@@ -211,7 +211,7 @@ static u64 cfd_seq_inc(unsigned int src, unsigned int dst, unsigned int type)
- 	} while (0)
++	/*
++	 * To account for power-gating, which prevents write to
++	 * the counter, we need to enable the counter
++	 * before setting up counter register.
++	 */
++	perf_iommu_enable_event(event);
++
+ 	if (flags & PERF_EF_RELOAD) {
+-		u64 prev_raw_count = local64_read(&hwc->prev_count);
++		u64 count = 0;
+ 		struct amd_iommu *iommu = perf_event_2_iommu(event);
  
- /* Record current CSD work for current CPU, NULL to erase. */
--static void __csd_lock_record(call_single_data_t *csd)
-+static void __csd_lock_record(struct __call_single_data *csd)
- {
- 	if (!csd) {
- 		smp_mb(); /* NULL cur_csd after unlock. */
-@@ -226,13 +226,13 @@ static void __csd_lock_record(call_single_data_t *csd)
- 		  /* Or before unlock, as the case may be. */
++		/*
++		 * Since the IOMMU PMU only support counting mode,
++		 * the counter always start with value zero.
++		 */
+ 		amd_iommu_pc_set_reg(iommu, hwc->iommu_bank, hwc->iommu_cntr,
+-				     IOMMU_PC_COUNTER_REG, &prev_raw_count);
++				     IOMMU_PC_COUNTER_REG, &count);
+ 	}
+ 
+-	perf_iommu_enable_event(event);
+ 	perf_event_update_userpage(event);
+-
  }
  
--static __always_inline void csd_lock_record(call_single_data_t *csd)
-+static __always_inline void csd_lock_record(struct __call_single_data *csd)
+ static void perf_iommu_read(struct perf_event *event)
  {
- 	if (static_branch_unlikely(&csdlock_debug_enabled))
- 		__csd_lock_record(csd);
+-	u64 count, prev, delta;
++	u64 count;
+ 	struct hw_perf_event *hwc = &event->hw;
+ 	struct amd_iommu *iommu = perf_event_2_iommu(event);
+ 
+@@ -311,14 +318,11 @@ static void perf_iommu_read(struct perf_event *event)
+ 	/* IOMMU pc counter register is only 48 bits */
+ 	count &= GENMASK_ULL(47, 0);
+ 
+-	prev = local64_read(&hwc->prev_count);
+-	if (local64_cmpxchg(&hwc->prev_count, prev, count) != prev)
+-		return;
+-
+-	/* Handle 48-bit counter overflow */
+-	delta = (count << COUNTER_SHIFT) - (prev << COUNTER_SHIFT);
+-	delta >>= COUNTER_SHIFT;
+-	local64_add(delta, &event->count);
++	/*
++	 * Since the counter always start with value zero,
++	 * simply just accumulate the count for the event.
++	 */
++	local64_add(count, &event->count);
  }
  
--static int csd_lock_wait_getcpu(call_single_data_t *csd)
-+static int csd_lock_wait_getcpu(struct __call_single_data *csd)
- {
- 	unsigned int csd_type;
+ static void perf_iommu_stop(struct perf_event *event, int flags)
+@@ -328,15 +332,16 @@ static void perf_iommu_stop(struct perf_event *event, int flags)
+ 	if (hwc->state & PERF_HES_UPTODATE)
+ 		return;
  
-@@ -282,7 +282,7 @@ static const char *csd_lock_get_type(unsigned int type)
- 	return (type >= ARRAY_SIZE(seq_type)) ? "?" : seq_type[type];
++	/*
++	 * To account for power-gating, in which reading the counter would
++	 * return zero, we need to read the register before disabling.
++	 */
++	perf_iommu_read(event);
++	hwc->state |= PERF_HES_UPTODATE;
++
+ 	perf_iommu_disable_event(event);
+ 	WARN_ON_ONCE(hwc->state & PERF_HES_STOPPED);
+ 	hwc->state |= PERF_HES_STOPPED;
+-
+-	if (hwc->state & PERF_HES_UPTODATE)
+-		return;
+-
+-	perf_iommu_read(event);
+-	hwc->state |= PERF_HES_UPTODATE;
  }
  
--static void csd_lock_print_extended(call_single_data_t *csd, int cpu)
-+static void csd_lock_print_extended(struct __call_single_data *csd, int cpu)
- {
- 	struct cfd_seq_local *seq = &per_cpu(cfd_seq_local, cpu);
- 	unsigned int srccpu = csd->node.src;
-@@ -321,7 +321,7 @@ static void csd_lock_print_extended(call_single_data_t *csd, int cpu)
-  * the CSD_TYPE_SYNC/ASYNC types provide the destination CPU,
-  * so waiting on other types gets much less information.
-  */
--static bool csd_lock_wait_toolong(call_single_data_t *csd, u64 ts0, u64 *ts1, int *bug_id)
-+static bool csd_lock_wait_toolong(struct __call_single_data *csd, u64 ts0, u64 *ts1, int *bug_id)
- {
- 	int cpu = -1;
- 	int cpux;
-@@ -387,7 +387,7 @@ static bool csd_lock_wait_toolong(call_single_data_t *csd, u64 ts0, u64 *ts1, in
-  * previous function call. For multi-cpu calls its even more interesting
-  * as we'll have to ensure no other cpu is observing our csd.
-  */
--static void __csd_lock_wait(call_single_data_t *csd)
-+static void __csd_lock_wait(struct __call_single_data *csd)
- {
- 	int bug_id = 0;
- 	u64 ts0, ts1;
-@@ -401,7 +401,7 @@ static void __csd_lock_wait(call_single_data_t *csd)
- 	smp_acquire__after_ctrl_dep();
- }
- 
--static __always_inline void csd_lock_wait(call_single_data_t *csd)
-+static __always_inline void csd_lock_wait(struct __call_single_data *csd)
- {
- 	if (static_branch_unlikely(&csdlock_debug_enabled)) {
- 		__csd_lock_wait(csd);
-@@ -431,17 +431,17 @@ static void __smp_call_single_queue_debug(int cpu, struct llist_node *node)
- #else
- #define cfd_seq_store(var, src, dst, type)
- 
--static void csd_lock_record(call_single_data_t *csd)
-+static void csd_lock_record(struct __call_single_data *csd)
- {
- }
- 
--static __always_inline void csd_lock_wait(call_single_data_t *csd)
-+static __always_inline void csd_lock_wait(struct __call_single_data *csd)
- {
- 	smp_cond_load_acquire(&csd->node.u_flags, !(VAL & CSD_FLAG_LOCK));
- }
- #endif
- 
--static __always_inline void csd_lock(call_single_data_t *csd)
-+static __always_inline void csd_lock(struct __call_single_data *csd)
- {
- 	csd_lock_wait(csd);
- 	csd->node.u_flags |= CSD_FLAG_LOCK;
-@@ -454,7 +454,7 @@ static __always_inline void csd_lock(call_single_data_t *csd)
- 	smp_wmb();
- }
- 
--static __always_inline void csd_unlock(call_single_data_t *csd)
-+static __always_inline void csd_unlock(struct __call_single_data *csd)
- {
- 	WARN_ON(!(csd->node.u_flags & CSD_FLAG_LOCK));
- 
-@@ -501,7 +501,7 @@ void __smp_call_single_queue(int cpu, struct llist_node *node)
-  * for execution on the given CPU. data must already have
-  * ->func, ->info, and ->flags set.
-  */
--static int generic_exec_single(int cpu, call_single_data_t *csd)
-+static int generic_exec_single(int cpu, struct __call_single_data *csd)
- {
- 	if (cpu == smp_processor_id()) {
- 		smp_call_func_t func = csd->func;
-@@ -784,7 +784,7 @@ EXPORT_SYMBOL(smp_call_function_single);
-  * NOTE: Be careful, there is unfortunately no current debugging facility to
-  * validate the correctness of this serialization.
-  */
--int smp_call_function_single_async(int cpu, call_single_data_t *csd)
-+int smp_call_function_single_async(int cpu, struct __call_single_data *csd)
- {
- 	int err = 0;
- 
-diff --git a/kernel/up.c b/kernel/up.c
-index bf20b4a..c732130 100644
---- a/kernel/up.c
-+++ b/kernel/up.c
-@@ -25,7 +25,7 @@ int smp_call_function_single(int cpu, void (*func) (void *info), void *info,
- }
- EXPORT_SYMBOL(smp_call_function_single);
- 
--int smp_call_function_single_async(int cpu, call_single_data_t *csd)
-+int smp_call_function_single_async(int cpu, struct __call_single_data *csd)
- {
- 	unsigned long flags;
- 
+ static int perf_iommu_add(struct perf_event *event, int flags)
