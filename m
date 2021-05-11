@@ -2,54 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 73E3B37A150
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 11 May 2021 10:02:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A11237AF59
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 11 May 2021 21:32:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229935AbhEKIDt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 11 May 2021 04:03:49 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:42418 "EHLO
+        id S231944AbhEKTdp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 11 May 2021 15:33:45 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:46008 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229917AbhEKIDn (ORCPT
+        with ESMTP id S231454AbhEKTdp (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 11 May 2021 04:03:43 -0400
-Date:   Tue, 11 May 2021 08:02:35 -0000
+        Tue, 11 May 2021 15:33:45 -0400
+Date:   Tue, 11 May 2021 19:32:36 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1620720156;
+        s=2020; t=1620761557;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=5O24x81upTyoGlUsrTjQHVDQ39mpHr6bnhzCRyp618Y=;
-        b=hvGvxcx1s7J4O2u3iCUU24IftA0QrEadNVPZmhHpS7f4OYn/O80qNfKEdU0gN0cesRrw0m
-        g6rIZeLqr+fRfnF/vRbOi7U/mKnSDbzuwAnH2APpMDhg36iIaI35cGl5MpH0lNtwNGZDcw
-        W1TCajJ/oi/xn6kIupQoA9YF+yMqr7aVv5+gIyOie7BsmrtcgEimY8B86XiHV+xWi86I1B
-        D/kQkZKZrWvfdWX3n4v7Qchv/lp/KVkqqkIW5xMtgZHf5B/0Mqmu8vV2FDoUFEZ39Kwu41
-        pCL+ClDbvorahSx8T9NSeYUQrO2mZIh38fPblggA1qBwU8inROVK5iXUxFBLvA==
+        bh=7c/gAvL2OFqWiTz4vBaXOW7xSRuv+onlTRvNRn0sAj8=;
+        b=wLxi9o+hYgWUV0Zda16mkawXm5XOj16AabFEjCKQSNnuMx5fl15jTMU8C8U26W1lDxW43J
+        YGj2eQvilp36GYAJLdFCjwgDqIBSTPq7O2e24aiR0yTNHfa7MHg9J+x8/8VqbVwLKQ/4g0
+        q+9AOxG7Bn3w4ymMS5sUDQf3/R6aRpUBtAHSNeLWi9GNUunfj3yvP2DkNhUSM4Kqg1b7sX
+        DybOxY0dK4n+I/nVQ5YHvbP60EHUZQYMM0nuAsAIW7uAd2A+Nj83OvRBliAQFenRBBDMX5
+        Wa/Gj6Pc+dyI1qiwDQgxsvd7ZCc48ZADKGMtagtsJ7QEVvrfb8te+QCMVhIHbw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1620720156;
+        s=2020e; t=1620761557;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=5O24x81upTyoGlUsrTjQHVDQ39mpHr6bnhzCRyp618Y=;
-        b=CLj6bJsT3tBj6+7p1y3W+galUlwkruMbyoOvwbLT5uCjrYspsYMxdn6fmP8Apgs36gYlLj
-        YizNZoLh/MXY//CQ==
-From:   "tip-bot2 for Nick Desaulniers" <tip-bot2@linutronix.de>
+        bh=7c/gAvL2OFqWiTz4vBaXOW7xSRuv+onlTRvNRn0sAj8=;
+        b=2pFXVVI3gxxUaMARldoJlyTpD2rXzHMQ3Fl0LzxnYOmQxG+Sa7RgQaBEvcFw8g4TJlUVmA
+        e5taYIr4xewO9wCA==
+From:   "tip-bot2 for Alexandre Belloni" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/urgent] stack: Replace "o" output with "r" input constraint
-Cc:     Nick Desaulniers <ndesaulniers@google.com>,
-        Kees Cook <keescook@chromium.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Nathan Chancellor <nathan@kernel.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20210419231741.4084415-1-keescook@chromium.org>
-References: <20210419231741.4084415-1-keescook@chromium.org>
+Subject: [tip: timers/urgent] alarmtimer: Check RTC features instead of ops
+Cc:     Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20210511014516.563031-1-alexandre.belloni@bootlin.com>
+References: <20210511014516.563031-1-alexandre.belloni@bootlin.com>
 MIME-Version: 1.0
-Message-ID: <162072015599.29796.13527415433369376189.tip-bot2@tip-bot2>
+Message-ID: <162076155630.29796.6492074988685235162.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,63 +56,47 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the core/urgent branch of tip:
+The following commit has been merged into the timers/urgent branch of tip:
 
-Commit-ID:     2515dd6ce8e545b0b2eece84920048ef9ed846c4
-Gitweb:        https://git.kernel.org/tip/2515dd6ce8e545b0b2eece84920048ef9ed846c4
-Author:        Nick Desaulniers <ndesaulniers@google.com>
-AuthorDate:    Mon, 19 Apr 2021 16:17:41 -07:00
+Commit-ID:     e09784a8a751e539dffc94d43bc917b0ac1e934a
+Gitweb:        https://git.kernel.org/tip/e09784a8a751e539dffc94d43bc917b0ac1e934a
+Author:        Alexandre Belloni <alexandre.belloni@bootlin.com>
+AuthorDate:    Tue, 11 May 2021 03:45:16 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 11 May 2021 09:56:11 +02:00
+CommitterDate: Tue, 11 May 2021 21:28:04 +02:00
 
-stack: Replace "o" output with "r" input constraint
+alarmtimer: Check RTC features instead of ops
 
-"o" isn't a common asm() constraint to use; it triggers an assertion in
-assert-enabled builds of LLVM that it's not recognized when targeting
-aarch64 (though it appears to fall back to "m"). It's fixed in LLVM 13 now,
-but there isn't really a good reason to use "o" in particular here. To
-avoid causing build issues for those using assert-enabled builds of earlier
-LLVM versions, the constraint needs changing.
+RTC drivers used to leave .set_alarm() NULL in order to signal the RTC
+device doesn't support alarms. The drivers are now clearing the
+RTC_FEATURE_ALARM bit for that purpose in order to keep the rtc_class_ops
+structure const. So now, .set_alarm() is set unconditionally and this
+possibly causes the alarmtimer code to select an RTC device that doesn't
+support alarms.
 
-Instead, if the point is to retain the __builtin_alloca(), make ptr appear
-to "escape" via being an input to an empty inline asm block. This is
-preferable anyways, since otherwise this looks like a dead store.
+Test RTC_FEATURE_ALARM instead of relying on ops->set_alarm to determine
+whether alarms are available.
 
-While the use of "r" was considered in
-
-  https://lore.kernel.org/lkml/202104011447.2E7F543@keescook/
-
-it was only tested as an output (which looks like a dead store, and wasn't
-sufficient).
-
-Use "r" as an input constraint instead, which behaves correctly across
-compilers and architectures.
-
-Fixes: 39218ff4c625 ("stack: Optionally randomize kernel stack offset each syscall")
-Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
-Signed-off-by: Kees Cook <keescook@chromium.org>
+Fixes: 7ae41220ef58 ("rtc: introduce features bitfield")
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Kees Cook <keescook@chromium.org>
-Tested-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Link: https://reviews.llvm.org/D100412
-Link: https://bugs.llvm.org/show_bug.cgi?id=49956
-Link: https://lore.kernel.org/r/20210419231741.4084415-1-keescook@chromium.org
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20210511014516.563031-1-alexandre.belloni@bootlin.com
 
 ---
- include/linux/randomize_kstack.h | 2 +-
+ kernel/time/alarmtimer.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/randomize_kstack.h b/include/linux/randomize_kstack.h
-index fd80fab..bebc911 100644
---- a/include/linux/randomize_kstack.h
-+++ b/include/linux/randomize_kstack.h
-@@ -38,7 +38,7 @@ void *__builtin_alloca(size_t size);
- 		u32 offset = raw_cpu_read(kstack_offset);		\
- 		u8 *ptr = __builtin_alloca(KSTACK_OFFSET_MAX(offset));	\
- 		/* Keep allocation even after "ptr" loses scope. */	\
--		asm volatile("" : "=o"(*ptr) :: "memory");		\
-+		asm volatile("" :: "r"(ptr) : "memory");		\
- 	}								\
- } while (0)
+diff --git a/kernel/time/alarmtimer.c b/kernel/time/alarmtimer.c
+index bea9d08..5897828 100644
+--- a/kernel/time/alarmtimer.c
++++ b/kernel/time/alarmtimer.c
+@@ -92,7 +92,7 @@ static int alarmtimer_rtc_add_device(struct device *dev,
+ 	if (rtcdev)
+ 		return -EBUSY;
  
+-	if (!rtc->ops->set_alarm)
++	if (!test_bit(RTC_FEATURE_ALARM, rtc->features))
+ 		return -1;
+ 	if (!device_may_wakeup(rtc->dev.parent))
+ 		return -1;
