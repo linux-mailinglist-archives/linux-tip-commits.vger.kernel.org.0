@@ -2,52 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A11237AF59
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 11 May 2021 21:32:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9692B37B868
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 12 May 2021 10:47:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231944AbhEKTdp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 11 May 2021 15:33:45 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:46008 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231454AbhEKTdp (ORCPT
+        id S230481AbhELIsy (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 12 May 2021 04:48:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41500 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231129AbhELIsx (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 11 May 2021 15:33:45 -0400
-Date:   Tue, 11 May 2021 19:32:36 -0000
+        Wed, 12 May 2021 04:48:53 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56402C061761;
+        Wed, 12 May 2021 01:47:45 -0700 (PDT)
+Date:   Wed, 12 May 2021 08:47:42 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1620761557;
+        s=2020; t=1620809263;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=7c/gAvL2OFqWiTz4vBaXOW7xSRuv+onlTRvNRn0sAj8=;
-        b=wLxi9o+hYgWUV0Zda16mkawXm5XOj16AabFEjCKQSNnuMx5fl15jTMU8C8U26W1lDxW43J
-        YGj2eQvilp36GYAJLdFCjwgDqIBSTPq7O2e24aiR0yTNHfa7MHg9J+x8/8VqbVwLKQ/4g0
-        q+9AOxG7Bn3w4ymMS5sUDQf3/R6aRpUBtAHSNeLWi9GNUunfj3yvP2DkNhUSM4Kqg1b7sX
-        DybOxY0dK4n+I/nVQ5YHvbP60EHUZQYMM0nuAsAIW7uAd2A+Nj83OvRBliAQFenRBBDMX5
-        Wa/Gj6Pc+dyI1qiwDQgxsvd7ZCc48ZADKGMtagtsJ7QEVvrfb8te+QCMVhIHbw==
+        bh=OQheMuVOvvuHGyocn6u884NV2M1cxe0aC3IuTqIBdNc=;
+        b=Zsl/GvcgZzszp0Q5HACHevfAYzO6tffHpbo4uULiHIlV9gjKtvdbYI7t2U2egqmJ6gu+JO
+        KCJqyGsLxoxwz0Pn9XK6G6Y+q936GJmh2wfwbqy5ZGqhH/6bhdlnG54Ea37vHzJSfbLiyI
+        fownwfn8F/SjyqMpLZ5o+l7mRrMhNjE57HHFMyRvfxQmrEowKA0SfGEgiE9CFvlzgKcthY
+        Adcd9q5F0ED1ZJgqhlr6Ac8CAEqqJ59CF0QzxPMadXPEKgdJGRMkUQaXXunpmBcB1PeQWL
+        sM7Aj1ZyvijYSTfA/zZyoDCxw+VKGFo47nNBG9E1kGbeLHMhEDRxo30GQd15rA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1620761557;
+        s=2020e; t=1620809263;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=7c/gAvL2OFqWiTz4vBaXOW7xSRuv+onlTRvNRn0sAj8=;
-        b=2pFXVVI3gxxUaMARldoJlyTpD2rXzHMQ3Fl0LzxnYOmQxG+Sa7RgQaBEvcFw8g4TJlUVmA
-        e5taYIr4xewO9wCA==
-From:   "tip-bot2 for Alexandre Belloni" <tip-bot2@linutronix.de>
+        bh=OQheMuVOvvuHGyocn6u884NV2M1cxe0aC3IuTqIBdNc=;
+        b=vfPKtkp2HHQ2o4mcOdwbr3qqmuCzs3MGAcOF+KPyJL80bd/Cn5Pkw8Suc5c0xxkBpuv/b9
+        X6ciRr++ByoQEADg==
+From:   "tip-bot2 for Guenter Roeck" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/urgent] alarmtimer: Check RTC features instead of ops
-Cc:     Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org,
+Subject: [tip: perf/core] perf/x86/intel/uncore: Drop unnecessary NULL checks
+ after container_of()
+Cc:     Guenter Roeck <linux@roeck-us.net>, Ingo Molnar <mingo@kernel.org>,
         x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20210511014516.563031-1-alexandre.belloni@bootlin.com>
-References: <20210511014516.563031-1-alexandre.belloni@bootlin.com>
+In-Reply-To: <20210510224849.2349861-1-linux@roeck-us.net>
+References: <20210510224849.2349861-1-linux@roeck-us.net>
 MIME-Version: 1.0
-Message-ID: <162076155630.29796.6492074988685235162.tip-bot2@tip-bot2>
+Message-ID: <162080926219.29796.17403001869463771532.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -56,47 +59,68 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/urgent branch of tip:
+The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     e09784a8a751e539dffc94d43bc917b0ac1e934a
-Gitweb:        https://git.kernel.org/tip/e09784a8a751e539dffc94d43bc917b0ac1e934a
-Author:        Alexandre Belloni <alexandre.belloni@bootlin.com>
-AuthorDate:    Tue, 11 May 2021 03:45:16 +02:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 11 May 2021 21:28:04 +02:00
+Commit-ID:     440e906702410f59ae5397ec9e3b639edb53f80e
+Gitweb:        https://git.kernel.org/tip/440e906702410f59ae5397ec9e3b639edb53f80e
+Author:        Guenter Roeck <linux@roeck-us.net>
+AuthorDate:    Mon, 10 May 2021 15:48:49 -07:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Wed, 12 May 2021 10:44:21 +02:00
 
-alarmtimer: Check RTC features instead of ops
+perf/x86/intel/uncore: Drop unnecessary NULL checks after container_of()
 
-RTC drivers used to leave .set_alarm() NULL in order to signal the RTC
-device doesn't support alarms. The drivers are now clearing the
-RTC_FEATURE_ALARM bit for that purpose in order to keep the rtc_class_ops
-structure const. So now, .set_alarm() is set unconditionally and this
-possibly causes the alarmtimer code to select an RTC device that doesn't
-support alarms.
+The parameter passed to the pmu_enable() and pmu_disable() functions can not be
+NULL because it is dereferenced by the caller.
 
-Test RTC_FEATURE_ALARM instead of relying on ops->set_alarm to determine
-whether alarms are available.
+That means the result of container_of() on that parameter can also never be NULL.
+The existing NULL checks are therefore unnecessary and misleading. Remove them.
 
-Fixes: 7ae41220ef58 ("rtc: introduce features bitfield")
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20210511014516.563031-1-alexandre.belloni@bootlin.com
+This change was made automatically with the following Coccinelle script.
 
+  @@
+  type t;
+  identifier v;
+  statement s;
+  @@
+
+  <+...
+  (
+    t v = container_of(...);
+  |
+    v = container_of(...);
+  )
+    ...
+    when != v
+  - if (\( !v \| v == NULL \) ) s
+  ...+>
+
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20210510224849.2349861-1-linux@roeck-us.net
 ---
- kernel/time/alarmtimer.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/events/intel/uncore.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/kernel/time/alarmtimer.c b/kernel/time/alarmtimer.c
-index bea9d08..5897828 100644
---- a/kernel/time/alarmtimer.c
-+++ b/kernel/time/alarmtimer.c
-@@ -92,7 +92,7 @@ static int alarmtimer_rtc_add_device(struct device *dev,
- 	if (rtcdev)
- 		return -EBUSY;
+diff --git a/arch/x86/events/intel/uncore.c b/arch/x86/events/intel/uncore.c
+index df7b07d..9bf4dbb 100644
+--- a/arch/x86/events/intel/uncore.c
++++ b/arch/x86/events/intel/uncore.c
+@@ -801,8 +801,6 @@ static void uncore_pmu_enable(struct pmu *pmu)
+ 	struct intel_uncore_box *box;
  
--	if (!rtc->ops->set_alarm)
-+	if (!test_bit(RTC_FEATURE_ALARM, rtc->features))
- 		return -1;
- 	if (!device_may_wakeup(rtc->dev.parent))
- 		return -1;
+ 	uncore_pmu = container_of(pmu, struct intel_uncore_pmu, pmu);
+-	if (!uncore_pmu)
+-		return;
+ 
+ 	box = uncore_pmu_to_box(uncore_pmu, smp_processor_id());
+ 	if (!box)
+@@ -818,8 +816,6 @@ static void uncore_pmu_disable(struct pmu *pmu)
+ 	struct intel_uncore_box *box;
+ 
+ 	uncore_pmu = container_of(pmu, struct intel_uncore_pmu, pmu);
+-	if (!uncore_pmu)
+-		return;
+ 
+ 	box = uncore_pmu_to_box(uncore_pmu, smp_processor_id());
+ 	if (!box)
