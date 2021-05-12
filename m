@@ -2,14 +2,14 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CDA2E37BA72
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 12 May 2021 12:28:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 94D0A37BA6E
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 12 May 2021 12:28:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230514AbhELK3s (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 12 May 2021 06:29:48 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:50560 "EHLO
+        id S230492AbhELK3r (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 12 May 2021 06:29:47 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:50550 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230423AbhELK3j (ORCPT
+        with ESMTP id S230415AbhELK3j (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Wed, 12 May 2021 06:29:39 -0400
 Date:   Wed, 12 May 2021 10:28:29 -0000
@@ -20,12 +20,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=9UHXKCObtPjBsaIewS+lWuVHbm3jNlFOs2DYp5P4drc=;
-        b=tmYP7UM1z8YpjPZC/C9Ivdg+NGqfZahb1+9ZpYi9zNLkF+LHT6P81pVH4vaDajrYnxr+E+
-        qz6Ui1aFH93+IjIfcQnW/YFcwmMlDgKmTX1dK9TaR6fe6QFO9t6b8Sa1NDWaK8r3aiugLx
-        OLx8NiYzSZ951ABfMDEA3RI5iFFqzykmhzoPnw2zuyJ4rOkI4RzPZHwU9aQRpeTmDMNb/v
-        j79jtf6+VNJI6izfJLfs7YdDi0+bBch4cIs9TApQUHR4Pgw5Umt8bE7kM9YH8aq7JVbL4F
-        KNo0s6GS2U0HJ/ztgIal3a87Bic2WqU49ZFUOHSk9CEZgoqSISK8gAeGt54gdQ==
+        bh=1cDvnlLgJnlpX5hGJ8jiKNhhEhx6z82lpjP5ic7YRPM=;
+        b=JSRdQkZylpbTjfkr/+WSehyDheEzUJgc5IQau6Wjb78L8DpwQskcO2peFna/Fn+oZ4qXmX
+        MMWHsQby2K699jAx2uQcYiD//j8suZFYiUmvuIqtd6T2vJGGWMwjunRTGEuW8TEvTirK3U
+        db+TCN7HoWFH9VjSmKUxsXRXqPs+MUbKKfQTw7hdfCJLGWwFGmRjAlqrDMDln3XRAEgNQh
+        BkpdiMpHmZboR+ZhpJvwmHxhwWK/rKJ76IniNsBc6k/k+QJNKGPSTwbMf8TSeoEryqSetB
+        zVUokTvtKCaznFnU1RCgzkZVushTfbXK9IUZ0S4JkrVtvUTS26TDXP4fY7XjZg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1620815310;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -33,25 +33,24 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=9UHXKCObtPjBsaIewS+lWuVHbm3jNlFOs2DYp5P4drc=;
-        b=AGVWuNpjisBC3b/1wuIeqkMZZuT2r50MwZcc4xT196C/1e2Bhg+uZn/aFGs725BSygwcZ2
-        1v6X7FSpZpDfIzDw==
+        bh=1cDvnlLgJnlpX5hGJ8jiKNhhEhx6z82lpjP5ic7YRPM=;
+        b=rmEqycGfCRUbXFGTKIMUsZzy7lq/3zXSo/Y3UODI2W7Mr2LiGLuq9AqfhEpMDkMtPcDPUG
+        3pvgF3iH7XPOt/Cg==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] kvm: Select SCHED_INFO instead of TASK_DELAY_ACCT
+Subject: [tip: sched/core] delayacct: Add static_branch in scheduler hooks
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Marc Zyngier <maz@kernel.org>,
-        Balbir Singh <bsingharora@gmail.com>, x86@kernel.org,
+        Balbir Singh <bsingharora@gmail.com>,
+        Johannes Weiner <hannes@cmpxchg.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210505111525.187225172@infradead.org>
-References: <20210505111525.187225172@infradead.org>
+In-Reply-To: <20210505111525.248028369@infradead.org>
+References: <20210505111525.248028369@infradead.org>
 MIME-Version: 1.0
-Message-ID: <162081530990.29796.11497571349080467949.tip-bot2@tip-bot2>
+Message-ID: <162081530948.29796.14722409380598313239.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -62,73 +61,81 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     63b3f96e1a989846a5a521d4fbef4bc86406929d
-Gitweb:        https://git.kernel.org/tip/63b3f96e1a989846a5a521d4fbef4bc86406929d
+Commit-ID:     eee4d9fee2544389e5ce5697ed92db67c86d7a9f
+Gitweb:        https://git.kernel.org/tip/eee4d9fee2544389e5ce5697ed92db67c86d7a9f
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Tue, 04 May 2021 22:43:39 +02:00
+AuthorDate:    Tue, 04 May 2021 22:43:36 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 12 May 2021 11:43:24 +02:00
+CommitterDate: Wed, 12 May 2021 11:43:25 +02:00
 
-kvm: Select SCHED_INFO instead of TASK_DELAY_ACCT
+delayacct: Add static_branch in scheduler hooks
 
-AFAICT KVM only relies on SCHED_INFO. Nothing uses the p->delays data
-that belongs to TASK_DELAY_ACCT.
+Cheaper when delayacct is disabled.
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
 Reviewed-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Paolo Bonzini <pbonzini@redhat.com>
-Acked-by: Marc Zyngier <maz@kernel.org>
 Acked-by: Balbir Singh <bsingharora@gmail.com>
-Link: https://lkml.kernel.org/r/20210505111525.187225172@infradead.org
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Link: https://lkml.kernel.org/r/20210505111525.248028369@infradead.org
 ---
- arch/arm64/kvm/Kconfig | 5 +----
- arch/x86/kvm/Kconfig   | 5 +----
- 2 files changed, 2 insertions(+), 8 deletions(-)
+ include/linux/delayacct.h | 8 ++++++++
+ kernel/delayacct.c        | 3 +++
+ 2 files changed, 11 insertions(+)
 
-diff --git a/arch/arm64/kvm/Kconfig b/arch/arm64/kvm/Kconfig
-index 3964acf..a4eba09 100644
---- a/arch/arm64/kvm/Kconfig
-+++ b/arch/arm64/kvm/Kconfig
-@@ -20,8 +20,6 @@ if VIRTUALIZATION
- menuconfig KVM
- 	bool "Kernel-based Virtual Machine (KVM) support"
- 	depends on OF
--	# for TASKSTATS/TASK_DELAY_ACCT:
--	depends on NET && MULTIUSER
- 	select MMU_NOTIFIER
- 	select PREEMPT_NOTIFIERS
- 	select HAVE_KVM_CPU_RELAX_INTERCEPT
-@@ -38,8 +36,7 @@ menuconfig KVM
- 	select IRQ_BYPASS_MANAGER
- 	select HAVE_KVM_IRQ_BYPASS
- 	select HAVE_KVM_VCPU_RUN_PID_CHANGE
--	select TASKSTATS
--	select TASK_DELAY_ACCT
-+	select SCHED_INFO
- 	help
- 	  Support hosting virtualized guest machines.
+diff --git a/include/linux/delayacct.h b/include/linux/delayacct.h
+index 21651f9..57fefa5 100644
+--- a/include/linux/delayacct.h
++++ b/include/linux/delayacct.h
+@@ -58,8 +58,10 @@ struct task_delay_info {
  
-diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
-index f6b93a3..fb8efb3 100644
---- a/arch/x86/kvm/Kconfig
-+++ b/arch/x86/kvm/Kconfig
-@@ -22,8 +22,6 @@ config KVM
- 	tristate "Kernel-based Virtual Machine (KVM) support"
- 	depends on HAVE_KVM
- 	depends on HIGH_RES_TIMERS
--	# for TASKSTATS/TASK_DELAY_ACCT:
--	depends on NET && MULTIUSER
- 	depends on X86_LOCAL_APIC
- 	select PREEMPT_NOTIFIERS
- 	select MMU_NOTIFIER
-@@ -36,8 +34,7 @@ config KVM
- 	select KVM_ASYNC_PF
- 	select USER_RETURN_NOTIFIER
- 	select KVM_MMIO
--	select TASKSTATS
--	select TASK_DELAY_ACCT
-+	select SCHED_INFO
- 	select PERF_EVENTS
- 	select HAVE_KVM_MSI
- 	select HAVE_KVM_CPU_RELAX_INTERCEPT
+ #include <linux/sched.h>
+ #include <linux/slab.h>
++#include <linux/jump_label.h>
+ 
+ #ifdef CONFIG_TASK_DELAY_ACCT
++DECLARE_STATIC_KEY_TRUE(delayacct_key);
+ extern int delayacct_on;	/* Delay accounting turned on/off */
+ extern struct kmem_cache *delayacct_cache;
+ extern void delayacct_init(void);
+@@ -114,6 +116,9 @@ static inline void delayacct_tsk_free(struct task_struct *tsk)
+ 
+ static inline void delayacct_blkio_start(void)
+ {
++	if (!static_branch_likely(&delayacct_key))
++		return;
++
+ 	delayacct_set_flag(current, DELAYACCT_PF_BLKIO);
+ 	if (current->delays)
+ 		__delayacct_blkio_start();
+@@ -121,6 +126,9 @@ static inline void delayacct_blkio_start(void)
+ 
+ static inline void delayacct_blkio_end(struct task_struct *p)
+ {
++	if (!static_branch_likely(&delayacct_key))
++		return;
++
+ 	if (p->delays)
+ 		__delayacct_blkio_end(p);
+ 	delayacct_clear_flag(p, DELAYACCT_PF_BLKIO);
+diff --git a/kernel/delayacct.c b/kernel/delayacct.c
+index 3a0b910..63012fd 100644
+--- a/kernel/delayacct.c
++++ b/kernel/delayacct.c
+@@ -14,6 +14,7 @@
+ #include <linux/delayacct.h>
+ #include <linux/module.h>
+ 
++DEFINE_STATIC_KEY_TRUE(delayacct_key);
+ int delayacct_on __read_mostly = 1;	/* Delay accounting turned on/off */
+ struct kmem_cache *delayacct_cache;
+ 
+@@ -28,6 +29,8 @@ void delayacct_init(void)
+ {
+ 	delayacct_cache = KMEM_CACHE(task_delay_info, SLAB_PANIC|SLAB_ACCOUNT);
+ 	delayacct_tsk_init(&init_task);
++	if (!delayacct_on)
++		static_branch_disable(&delayacct_key);
+ }
+ 
+ void __delayacct_tsk_init(struct task_struct *tsk)
