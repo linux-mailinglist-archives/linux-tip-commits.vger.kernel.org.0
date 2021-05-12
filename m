@@ -2,16 +2,16 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DC2F37BA70
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 12 May 2021 12:28:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 21BB837BA73
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 12 May 2021 12:28:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230503AbhELK3s (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 12 May 2021 06:29:48 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:50476 "EHLO
+        id S230525AbhELK3t (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 12 May 2021 06:29:49 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:50450 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230428AbhELK3j (ORCPT
+        with ESMTP id S230431AbhELK3k (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 12 May 2021 06:29:39 -0400
+        Wed, 12 May 2021 06:29:40 -0400
 Date:   Wed, 12 May 2021 10:28:30 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1620815311;
@@ -20,12 +20,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=0dFrpruQBtZTtww53DzNxGZKV1fvvuV4CSh0TZuxxZ0=;
-        b=SQVmo4LvzFAiFMj0xzoQsrN8NLlhmqz9DpEyf5Lw7vn0tzRvnakEc15x9KyHWi99NGRv2x
-        Zc9AFpzchXHGDlD2ivin4gH2j2s0Rc4dT2HuxKovlKcZaAvqJsUHZYvCDnQBE7dKKxIkYh
-        LOpVCM5kVTlG5WiGzx6xkTPAbk9a73CRvLIzqJOf4QU5GNCFeFOHhj73HamM5Vo7N4LWXc
-        RT41UUFqyf7BYlk/rrFvScdmtbOxQQsfmqNsLwlNFtChX/OD7enPnp3Lw9+4s68UtBntra
-        w0Dqif8teEkphGfMt6UIreOrFtZqmXmJOsc+2MN1qGEYsxpUtt/gsOuZ9Ljvdg==
+        bh=JFpxutQ52KhJVif/bjT71h36ld8ZNtFl2uXMahINpmY=;
+        b=qcotagwm3ui3Xyfg0dTvbw+cxiRIu4d4tJBqEGxriShNVLipLD+MnWrb2EgJbZEMhwM5uW
+        atcHgNLkJi5a0mMDnn6XQzW1/dPgdQ1eD+m+HRBKMZCisYqyanB7AnVFUMq64u50pQ4BqE
+        weT33YE+nykhXnbka/Ipa0Qz8rLsxsxOxDroFwZcxKCaqPTjdpeCDH3XuB82VNBLn+WDN0
+        lKigGI+BRBANIbGdPKNBCyl6KeAr47jM6iPENM1CvKif5tkpyDzKyt/Cb3zr6NknG72DI7
+        LKuXhonK0jSpNFcAUd3x9Mv95ZFMZ5oYRB/3cE6WhUFOEp5+L1qnVvSmxMwpog==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1620815311;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -33,23 +33,25 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=0dFrpruQBtZTtww53DzNxGZKV1fvvuV4CSh0TZuxxZ0=;
-        b=xQcrIp/1c6TYlYj1ojbY1AypjIoZlyCQYqfWQHr3XxXSVabe+uru5mE2a1j3p4IpOLfoOP
-        SfKYacJ1BycbuUCw==
+        bh=JFpxutQ52KhJVif/bjT71h36ld8ZNtFl2uXMahINpmY=;
+        b=n7pc390Jr2WhHJnaTkfBeSG/sFyOWTQSVV//MjsEiEXzf5kQL5JOpAGdUYO1UoOpApqnp0
+        3FzfKVWeQg70p8DQ==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched: Simplify sched_info_on()
+Subject: [tip: sched/core] sched: Rename sched_info_{queued,dequeued}
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Rik van Riel <riel@surriel.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@kernel.org>,
-        Johannes Weiner <hannes@cmpxchg.org>, x86@kernel.org,
+        Johannes Weiner <hannes@cmpxchg.org>,
+        Balbir Singh <bsingharora@gmail.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210505111525.121458839@infradead.org>
-References: <20210505111525.121458839@infradead.org>
+In-Reply-To: <20210505111525.061402904@infradead.org>
+References: <20210505111525.061402904@infradead.org>
 MIME-Version: 1.0
-Message-ID: <162081531041.29796.6076928259537596264.tip-bot2@tip-bot2>
+Message-ID: <162081531085.29796.9908485098819730495.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,166 +62,130 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     c5895d3f06cbb80ccb311f1dcb37074651030cb6
-Gitweb:        https://git.kernel.org/tip/c5895d3f06cbb80ccb311f1dcb37074651030cb6
+Commit-ID:     4e29fb709885eda5f0d1fa3418e6ead01a64e46d
+Gitweb:        https://git.kernel.org/tip/4e29fb709885eda5f0d1fa3418e6ead01a64e46d
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Tue, 04 May 2021 22:43:42 +02:00
+AuthorDate:    Tue, 04 May 2021 22:43:45 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Wed, 12 May 2021 11:43:24 +02:00
 
-sched: Simplify sched_info_on()
+sched: Rename sched_info_{queued,dequeued}
 
-The situation around sched_info is somewhat complicated, it is used by
-sched_stats and delayacct and, indirectly, kvm.
-
-If SCHEDSTATS=Y (but disabled by default) sched_info_on() is
-unconditionally true -- this is the case for all distro kernel configs
-I checked.
-
-If for some reason SCHEDSTATS=N, but TASK_DELAY_ACCT=Y, then
-sched_info_on() can return false when delayacct is disabled,
-presumably because there would be no other users left; except kvm is.
-
-Instead of complicating matters further by accurately accounting
-sched_stat and kvm state, simply unconditionally enable when
-SCHED_INFO=Y, matching the common distro case.
+For consistency, rename {queued,dequeued} to {enqueue,dequeue}.
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Rik van Riel <riel@surriel.com>
 Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
 Reviewed-by: Ingo Molnar <mingo@kernel.org>
 Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-Link: https://lkml.kernel.org/r/20210505111525.121458839@infradead.org
+Acked-by: Balbir Singh <bsingharora@gmail.com>
+Link: https://lkml.kernel.org/r/20210505111525.061402904@infradead.org
 ---
- include/linux/sched/stat.h | 10 ++--------
- kernel/delayacct.c         |  1 +-
- kernel/sched/stats.h       | 37 ++++++++++---------------------------
- 3 files changed, 12 insertions(+), 36 deletions(-)
+ kernel/sched/core.c  |  4 ++--
+ kernel/sched/stats.h | 20 ++++++++++----------
+ 2 files changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/include/linux/sched/stat.h b/include/linux/sched/stat.h
-index 5682864..939c3ec 100644
---- a/include/linux/sched/stat.h
-+++ b/include/linux/sched/stat.h
-@@ -3,6 +3,7 @@
- #define _LINUX_SCHED_STAT_H
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 61d1d85..660120d 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -1595,7 +1595,7 @@ static inline void enqueue_task(struct rq *rq, struct task_struct *p, int flags)
+ 		update_rq_clock(rq);
  
- #include <linux/percpu.h>
-+#include <linux/kconfig.h>
+ 	if (!(flags & ENQUEUE_RESTORE)) {
+-		sched_info_queued(rq, p);
++		sched_info_enqueue(rq, p);
+ 		psi_enqueue(p, flags & ENQUEUE_WAKEUP);
+ 	}
  
- /*
-  * Various counters maintained by the scheduler and fork(),
-@@ -23,14 +24,7 @@ extern unsigned long nr_iowait_cpu(int cpu);
+@@ -1609,7 +1609,7 @@ static inline void dequeue_task(struct rq *rq, struct task_struct *p, int flags)
+ 		update_rq_clock(rq);
  
- static inline int sched_info_on(void)
- {
--#ifdef CONFIG_SCHEDSTATS
--	return 1;
--#elif defined(CONFIG_TASK_DELAY_ACCT)
--	extern int delayacct_on;
--	return delayacct_on;
--#else
--	return 0;
--#endif
-+	return IS_ENABLED(CONFIG_SCHED_INFO);
- }
+ 	if (!(flags & DEQUEUE_SAVE)) {
+-		sched_info_dequeued(rq, p);
++		sched_info_dequeue(rq, p);
+ 		psi_dequeue(p, flags & DEQUEUE_SLEEP);
+ 	}
  
- #ifdef CONFIG_SCHEDSTATS
-diff --git a/kernel/delayacct.c b/kernel/delayacct.c
-index 3fe7cd5..3a0b910 100644
---- a/kernel/delayacct.c
-+++ b/kernel/delayacct.c
-@@ -15,7 +15,6 @@
- #include <linux/module.h>
- 
- int delayacct_on __read_mostly = 1;	/* Delay accounting turned on/off */
--EXPORT_SYMBOL_GPL(delayacct_on);
- struct kmem_cache *delayacct_cache;
- 
- static int __init delayacct_setup_disable(char *str)
 diff --git a/kernel/sched/stats.h b/kernel/sched/stats.h
-index ee7da12..33ffd41 100644
+index dc218e9..ee7da12 100644
 --- a/kernel/sched/stats.h
 +++ b/kernel/sched/stats.h
-@@ -150,11 +150,6 @@ static inline void psi_sched_switch(struct task_struct *prev,
- #endif /* CONFIG_PSI */
+@@ -25,7 +25,7 @@ rq_sched_info_depart(struct rq *rq, unsigned long long delta)
+ }
  
- #ifdef CONFIG_SCHED_INFO
--static inline void sched_info_reset_dequeued(struct task_struct *t)
--{
--	t->sched_info.last_queued = 0;
--}
--
- /*
-  * We are interested in knowing how long it was from the *first* time a
-  * task was queued to the time that it finally hit a CPU, we call this routine
-@@ -163,13 +158,12 @@ static inline void sched_info_reset_dequeued(struct task_struct *t)
-  */
- static inline void sched_info_dequeue(struct rq *rq, struct task_struct *t)
+ static inline void
+-rq_sched_info_dequeued(struct rq *rq, unsigned long long delta)
++rq_sched_info_dequeue(struct rq *rq, unsigned long long delta)
  {
--	unsigned long long now = rq_clock(rq), delta = 0;
-+	unsigned long long delta = 0;
+ 	if (rq)
+ 		rq->rq_sched_info.run_delay += delta;
+@@ -42,7 +42,7 @@ rq_sched_info_dequeued(struct rq *rq, unsigned long long delta)
  
--	if (sched_info_on()) {
--		if (t->sched_info.last_queued)
--			delta = now - t->sched_info.last_queued;
-+	if (t->sched_info.last_queued) {
-+		delta = rq_clock(rq) - t->sched_info.last_queued;
-+		t->sched_info.last_queued = 0;
- 	}
--	sched_info_reset_dequeued(t);
- 	t->sched_info.run_delay += delta;
- 
- 	rq_sched_info_dequeue(rq, delta);
-@@ -184,9 +178,10 @@ static void sched_info_arrive(struct rq *rq, struct task_struct *t)
+ #else /* !CONFIG_SCHEDSTATS: */
+ static inline void rq_sched_info_arrive  (struct rq *rq, unsigned long long delta) { }
+-static inline void rq_sched_info_dequeued(struct rq *rq, unsigned long long delta) { }
++static inline void rq_sched_info_dequeue(struct rq *rq, unsigned long long delta) { }
+ static inline void rq_sched_info_depart  (struct rq *rq, unsigned long long delta) { }
+ # define   schedstat_enabled()		0
+ # define __schedstat_inc(var)		do { } while (0)
+@@ -161,7 +161,7 @@ static inline void sched_info_reset_dequeued(struct task_struct *t)
+  * from dequeue_task() to account for possible rq->clock skew across CPUs. The
+  * delta taken on each CPU would annul the skew.
+  */
+-static inline void sched_info_dequeued(struct rq *rq, struct task_struct *t)
++static inline void sched_info_dequeue(struct rq *rq, struct task_struct *t)
  {
  	unsigned long long now = rq_clock(rq), delta = 0;
  
--	if (t->sched_info.last_queued)
-+	if (t->sched_info.last_queued) {
- 		delta = now - t->sched_info.last_queued;
--	sched_info_reset_dequeued(t);
-+		t->sched_info.last_queued = 0;
-+	}
+@@ -172,7 +172,7 @@ static inline void sched_info_dequeued(struct rq *rq, struct task_struct *t)
+ 	sched_info_reset_dequeued(t);
  	t->sched_info.run_delay += delta;
- 	t->sched_info.last_arrival = now;
- 	t->sched_info.pcount++;
-@@ -201,10 +196,8 @@ static void sched_info_arrive(struct rq *rq, struct task_struct *t)
-  */
- static inline void sched_info_enqueue(struct rq *rq, struct task_struct *t)
- {
--	if (sched_info_on()) {
--		if (!t->sched_info.last_queued)
--			t->sched_info.last_queued = rq_clock(rq);
--	}
-+	if (!t->sched_info.last_queued)
-+		t->sched_info.last_queued = rq_clock(rq);
+ 
+-	rq_sched_info_dequeued(rq, delta);
++	rq_sched_info_dequeue(rq, delta);
  }
  
  /*
-@@ -231,7 +224,7 @@ static inline void sched_info_depart(struct rq *rq, struct task_struct *t)
-  * the idle task.)  We are only called when prev != next.
+@@ -197,9 +197,9 @@ static void sched_info_arrive(struct rq *rq, struct task_struct *t)
+ /*
+  * This function is only called from enqueue_task(), but also only updates
+  * the timestamp if it is already not set.  It's assumed that
+- * sched_info_dequeued() will clear that stamp when appropriate.
++ * sched_info_dequeue() will clear that stamp when appropriate.
   */
- static inline void
--__sched_info_switch(struct rq *rq, struct task_struct *prev, struct task_struct *next)
-+sched_info_switch(struct rq *rq, struct task_struct *prev, struct task_struct *next)
+-static inline void sched_info_queued(struct rq *rq, struct task_struct *t)
++static inline void sched_info_enqueue(struct rq *rq, struct task_struct *t)
  {
- 	/*
- 	 * prev now departs the CPU.  It's not interesting to record
-@@ -245,18 +238,8 @@ __sched_info_switch(struct rq *rq, struct task_struct *prev, struct task_struct 
- 		sched_info_arrive(rq, next);
+ 	if (sched_info_on()) {
+ 		if (!t->sched_info.last_queued)
+@@ -212,7 +212,7 @@ static inline void sched_info_queued(struct rq *rq, struct task_struct *t)
+  * due, typically, to expiring its time slice (this may also be called when
+  * switching to the idle task).  Now we can calculate how long we ran.
+  * Also, if the process is still in the TASK_RUNNING state, call
+- * sched_info_queued() to mark that it has now again started waiting on
++ * sched_info_enqueue() to mark that it has now again started waiting on
+  * the runqueue.
+  */
+ static inline void sched_info_depart(struct rq *rq, struct task_struct *t)
+@@ -222,7 +222,7 @@ static inline void sched_info_depart(struct rq *rq, struct task_struct *t)
+ 	rq_sched_info_depart(rq, delta);
+ 
+ 	if (t->state == TASK_RUNNING)
+-		sched_info_queued(rq, t);
++		sched_info_enqueue(rq, t);
  }
  
--static inline void
--sched_info_switch(struct rq *rq, struct task_struct *prev, struct task_struct *next)
--{
--	if (sched_info_on())
--		__sched_info_switch(rq, prev, next);
--}
--
+ /*
+@@ -253,9 +253,9 @@ sched_info_switch(struct rq *rq, struct task_struct *prev, struct task_struct *n
+ }
+ 
  #else /* !CONFIG_SCHED_INFO: */
- # define sched_info_enqueue(rq, t)	do { } while (0)
--# define sched_info_reset_dequeued(t)	do { } while (0)
- # define sched_info_dequeue(rq, t)	do { } while (0)
--# define sched_info_depart(rq, t)	do { } while (0)
--# define sched_info_arrive(rq, next)	do { } while (0)
+-# define sched_info_queued(rq, t)	do { } while (0)
++# define sched_info_enqueue(rq, t)	do { } while (0)
+ # define sched_info_reset_dequeued(t)	do { } while (0)
+-# define sched_info_dequeued(rq, t)	do { } while (0)
++# define sched_info_dequeue(rq, t)	do { } while (0)
+ # define sched_info_depart(rq, t)	do { } while (0)
+ # define sched_info_arrive(rq, next)	do { } while (0)
  # define sched_info_switch(rq, t, next)	do { } while (0)
- #endif /* CONFIG_SCHED_INFO */
