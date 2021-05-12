@@ -2,57 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E3D1037BA57
+	by mail.lfdr.de (Postfix) with ESMTP id D1BDB37BA56
 	for <lists+linux-tip-commits@lfdr.de>; Wed, 12 May 2021 12:28:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230280AbhELK3c (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S230160AbhELK3c (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Wed, 12 May 2021 06:29:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36110 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230202AbhELK3c (ORCPT
+Received: from Galois.linutronix.de ([193.142.43.55]:50354 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230097AbhELK3a (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 12 May 2021 06:29:32 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4F2BC06174A;
-        Wed, 12 May 2021 03:28:23 -0700 (PDT)
+        Wed, 12 May 2021 06:29:30 -0400
 Date:   Wed, 12 May 2021 10:28:21 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1620815302;
+        s=2020; t=1620815301;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=nMN0bvx3oR0stRuQpZTRRHqWS79ADJoWsIEM5mZHmTQ=;
-        b=a04UmZmvL2vsMMS8qq2gby1/4dDK2z+UUNrC21iJOTteW9l/LPoEIYTEd38r/47yqWkO1l
-        AKddSTnZZnPgZy6jXTaY4v1BzVFc2JZSl23+UB5HJHny9ap58RAbtHvNFafLXkPxWh7wd9
-        51ZqI1PZFiuaj1KzMD+XyhGKM+62uhpk/MOGzNZjjDvyyOYxFaDVdGuhSlx6DV3yNahrxE
-        JZfj46BY2NbZhSm2nv6/qa2wixmLgYp69wnMxNsge2K31Qvzsv2n5tplRHNnh69knS7xQ8
-        ZmJJOXvgIWbWZxTKG0v1Vw1F4WnqY7SO/Ftb+OPDH4SficrGbt6Ku+u7wXANeQ==
+        bh=zKj4s/2h/zoKBpQUjnXl+w1D+vQ/RabymJcO+lNmrsk=;
+        b=a0H+dP9rksfs4XUGUCZ5liwu8lrSw/cJxepx9jdWS9YSILOKsDXMl7IivOYEtE1ikT5ONC
+        Ee4v+ikttlpXps9fv1jtOxIPwIs0idt+eH6VmWTg0fpXoYmcsjgXMgIl5zAouleBNhHrxU
+        PschMnhCYBFSnoaR/7pMVvKo0lDQoH9cM/X+Sax73zi+gFMhT4+9pRS8YS56SDXCf4O6K8
+        OJA7tNjxPjBeDdi0b1gywaw8siJ0O8/x/tmg4PXVVzgrMs6mNvby+Cp/vu+qi2ewI+ghUX
+        ++2hRbRErxpvlebHPdqCXgfTzKzRPr51+pnj58lCKRSe4TX1q4BiCi6dGHH3QQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1620815302;
+        s=2020e; t=1620815301;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=nMN0bvx3oR0stRuQpZTRRHqWS79ADJoWsIEM5mZHmTQ=;
-        b=mYlB/H46AKY9rhH+ytqDhkMTUO7CUngHEFQx64iQp8t7rrFI0XIu2cNzLWISSkF9ISgde/
-        GY9yYx7XQ0OGbNAQ==
+        bh=zKj4s/2h/zoKBpQUjnXl+w1D+vQ/RabymJcO+lNmrsk=;
+        b=ERjBmAzgMnIPVbrk8cujjHfkX/vcGnZQ8a/wGZXDY/hEP8aejvoJE/Jwipkzf41Xvd9BM4
+        b/CSyBoy0LnQA8Cg==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched: Trivial core scheduling cookie management
+Subject: [tip: sched/core] sched: Inherit task cookie on fork()
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Don Hiatt <dhiatt@digitalocean.com>,
         Hongyu Ning <hongyu.ning@linux.intel.com>,
         Vincent Guittot <vincent.guittot@linaro.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210422123308.919768100@infradead.org>
-References: <20210422123308.919768100@infradead.org>
+In-Reply-To: <20210422123308.980003687@infradead.org>
+References: <20210422123308.980003687@infradead.org>
 MIME-Version: 1.0
-Message-ID: <162081530166.29796.5711132614441456162.tip-bot2@tip-bot2>
+Message-ID: <162081530126.29796.16157476950875886548.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -63,239 +60,79 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     6e33cad0af49336952e5541464bd02f5b5fd433e
-Gitweb:        https://git.kernel.org/tip/6e33cad0af49336952e5541464bd02f5b5fd433e
+Commit-ID:     85dd3f61203c5cfa72b308ff327b5fbf3fc1ce5e
+Gitweb:        https://git.kernel.org/tip/85dd3f61203c5cfa72b308ff327b5fbf3fc1ce5e
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Fri, 26 Mar 2021 18:55:06 +01:00
+AuthorDate:    Mon, 29 Mar 2021 15:18:35 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Wed, 12 May 2021 11:43:31 +02:00
 
-sched: Trivial core scheduling cookie management
+sched: Inherit task cookie on fork()
 
-In order to not have to use pid_struct, create a new, smaller,
-structure to manage task cookies for core scheduling.
+Note that sched_core_fork() is called from under tasklist_lock, and
+not from sched_fork() earlier. This avoids a few races later.
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Tested-by: Don Hiatt <dhiatt@digitalocean.com>
 Tested-by: Hongyu Ning <hongyu.ning@linux.intel.com>
 Tested-by: Vincent Guittot <vincent.guittot@linaro.org>
-Link: https://lkml.kernel.org/r/20210422123308.919768100@infradead.org
+Link: https://lkml.kernel.org/r/20210422123308.980003687@infradead.org
 ---
- include/linux/sched.h     |   6 ++-
- kernel/fork.c             |   1 +-
- kernel/sched/Makefile     |   1 +-
- kernel/sched/core.c       |   7 +-
- kernel/sched/core_sched.c | 109 +++++++++++++++++++++++++++++++++++++-
- kernel/sched/sched.h      |  16 +++++-
- 6 files changed, 137 insertions(+), 3 deletions(-)
- create mode 100644 kernel/sched/core_sched.c
+ include/linux/sched.h     | 2 ++
+ kernel/fork.c             | 3 +++
+ kernel/sched/core_sched.c | 6 ++++++
+ 3 files changed, 11 insertions(+)
 
 diff --git a/include/linux/sched.h b/include/linux/sched.h
-index 9b822e3..eab3f7c 100644
+index eab3f7c..fba47e5 100644
 --- a/include/linux/sched.h
 +++ b/include/linux/sched.h
-@@ -2179,4 +2179,10 @@ int sched_trace_rq_nr_running(struct rq *rq);
+@@ -2181,8 +2181,10 @@ const struct cpumask *sched_trace_rd_span(struct root_domain *rd);
  
- const struct cpumask *sched_trace_rd_span(struct root_domain *rd);
+ #ifdef CONFIG_SCHED_CORE
+ extern void sched_core_free(struct task_struct *tsk);
++extern void sched_core_fork(struct task_struct *p);
+ #else
+ static inline void sched_core_free(struct task_struct *tsk) { }
++static inline void sched_core_fork(struct task_struct *p) { }
+ #endif
  
-+#ifdef CONFIG_SCHED_CORE
-+extern void sched_core_free(struct task_struct *tsk);
-+#else
-+static inline void sched_core_free(struct task_struct *tsk) { }
-+#endif
-+
  #endif
 diff --git a/kernel/fork.c b/kernel/fork.c
-index dc06afd..d16c60c 100644
+index d16c60c..e7fd928 100644
 --- a/kernel/fork.c
 +++ b/kernel/fork.c
-@@ -742,6 +742,7 @@ void __put_task_struct(struct task_struct *tsk)
- 	exit_creds(tsk);
- 	delayacct_tsk_free(tsk);
- 	put_signal_struct(tsk->signal);
-+	sched_core_free(tsk);
+@@ -2251,6 +2251,8 @@ static __latent_entropy struct task_struct *copy_process(
  
- 	if (!profile_handoff_task(tsk))
- 		free_task(tsk);
-diff --git a/kernel/sched/Makefile b/kernel/sched/Makefile
-index 5fc9c9b..978fcfc 100644
---- a/kernel/sched/Makefile
-+++ b/kernel/sched/Makefile
-@@ -36,3 +36,4 @@ obj-$(CONFIG_CPU_FREQ_GOV_SCHEDUTIL) += cpufreq_schedutil.o
- obj-$(CONFIG_MEMBARRIER) += membarrier.o
- obj-$(CONFIG_CPU_ISOLATION) += isolation.o
- obj-$(CONFIG_PSI) += psi.o
-+obj-$(CONFIG_SCHED_CORE) += core_sched.o
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index b498888..55b2d93 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -167,7 +167,7 @@ static inline int rb_sched_core_cmp(const void *key, const struct rb_node *node)
- 	return 0;
- }
+ 	klp_copy_process(p);
  
--static void sched_core_enqueue(struct rq *rq, struct task_struct *p)
-+void sched_core_enqueue(struct rq *rq, struct task_struct *p)
- {
- 	rq->core->core_task_seq++;
++	sched_core_fork(p);
++
+ 	spin_lock(&current->sighand->siglock);
  
-@@ -177,14 +177,15 @@ static void sched_core_enqueue(struct rq *rq, struct task_struct *p)
- 	rb_add(&p->core_node, &rq->core_tree, rb_sched_core_less);
- }
+ 	/*
+@@ -2338,6 +2340,7 @@ static __latent_entropy struct task_struct *copy_process(
+ 	return p;
  
--static void sched_core_dequeue(struct rq *rq, struct task_struct *p)
-+void sched_core_dequeue(struct rq *rq, struct task_struct *p)
- {
- 	rq->core->core_task_seq++;
- 
--	if (!p->core_cookie)
-+	if (!sched_core_enqueued(p))
- 		return;
- 
- 	rb_erase(&p->core_node, &rq->core_tree);
-+	RB_CLEAR_NODE(&p->core_node);
- }
- 
- /*
+ bad_fork_cancel_cgroup:
++	sched_core_free(p);
+ 	spin_unlock(&current->sighand->siglock);
+ 	write_unlock_irq(&tasklist_lock);
+ 	cgroup_cancel_fork(p, args);
 diff --git a/kernel/sched/core_sched.c b/kernel/sched/core_sched.c
-new file mode 100644
-index 0000000..8d0869a
---- /dev/null
+index 8d0869a..dcbbeae 100644
+--- a/kernel/sched/core_sched.c
 +++ b/kernel/sched/core_sched.c
-@@ -0,0 +1,109 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+
-+#include "sched.h"
-+
-+/*
-+ * A simple wrapper around refcount. An allocated sched_core_cookie's
-+ * address is used to compute the cookie of the task.
-+ */
-+struct sched_core_cookie {
-+	refcount_t refcnt;
-+};
-+
-+unsigned long sched_core_alloc_cookie(void)
-+{
-+	struct sched_core_cookie *ck = kmalloc(sizeof(*ck), GFP_KERNEL);
-+	if (!ck)
-+		return 0;
-+
-+	refcount_set(&ck->refcnt, 1);
-+	sched_core_get();
-+
-+	return (unsigned long)ck;
-+}
-+
-+void sched_core_put_cookie(unsigned long cookie)
-+{
-+	struct sched_core_cookie *ptr = (void *)cookie;
-+
-+	if (ptr && refcount_dec_and_test(&ptr->refcnt)) {
-+		kfree(ptr);
-+		sched_core_put();
-+	}
-+}
-+
-+unsigned long sched_core_get_cookie(unsigned long cookie)
-+{
-+	struct sched_core_cookie *ptr = (void *)cookie;
-+
-+	if (ptr)
-+		refcount_inc(&ptr->refcnt);
-+
-+	return cookie;
-+}
-+
-+/*
-+ * sched_core_update_cookie - replace the cookie on a task
-+ * @p: the task to update
-+ * @cookie: the new cookie
-+ *
-+ * Effectively exchange the task cookie; caller is responsible for lifetimes on
-+ * both ends.
-+ *
-+ * Returns: the old cookie
-+ */
-+unsigned long sched_core_update_cookie(struct task_struct *p, unsigned long cookie)
-+{
-+	unsigned long old_cookie;
-+	struct rq_flags rf;
-+	struct rq *rq;
-+	bool enqueued;
-+
-+	rq = task_rq_lock(p, &rf);
-+
-+	/*
-+	 * Since creating a cookie implies sched_core_get(), and we cannot set
-+	 * a cookie until after we've created it, similarly, we cannot destroy
-+	 * a cookie until after we've removed it, we must have core scheduling
-+	 * enabled here.
-+	 */
-+	SCHED_WARN_ON((p->core_cookie || cookie) && !sched_core_enabled(rq));
-+
-+	enqueued = sched_core_enqueued(p);
-+	if (enqueued)
-+		sched_core_dequeue(rq, p);
-+
-+	old_cookie = p->core_cookie;
-+	p->core_cookie = cookie;
-+
-+	if (enqueued)
-+		sched_core_enqueue(rq, p);
-+
-+	/*
-+	 * If task is currently running, it may not be compatible anymore after
-+	 * the cookie change, so enter the scheduler on its CPU to schedule it
-+	 * away.
-+	 */
-+	if (task_running(rq, p))
-+		resched_curr(rq);
-+
-+	task_rq_unlock(rq, p, &rf);
-+
-+	return old_cookie;
-+}
-+
-+static unsigned long sched_core_clone_cookie(struct task_struct *p)
-+{
-+	unsigned long cookie, flags;
-+
-+	raw_spin_lock_irqsave(&p->pi_lock, flags);
-+	cookie = sched_core_get_cookie(p->core_cookie);
-+	raw_spin_unlock_irqrestore(&p->pi_lock, flags);
-+
-+	return cookie;
-+}
-+
-+void sched_core_free(struct task_struct *p)
-+{
-+	sched_core_put_cookie(p->core_cookie);
-+}
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index 3878386..904c52b 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -1229,6 +1229,22 @@ static inline bool sched_group_cookie_match(struct rq *rq,
+@@ -103,6 +103,12 @@ static unsigned long sched_core_clone_cookie(struct task_struct *p)
+ 	return cookie;
+ }
  
- extern void queue_core_balance(struct rq *rq);
- 
-+static inline bool sched_core_enqueued(struct task_struct *p)
++void sched_core_fork(struct task_struct *p)
 +{
-+	return !RB_EMPTY_NODE(&p->core_node);
++	RB_CLEAR_NODE(&p->core_node);
++	p->core_cookie = sched_core_clone_cookie(current);
 +}
 +
-+extern void sched_core_enqueue(struct rq *rq, struct task_struct *p);
-+extern void sched_core_dequeue(struct rq *rq, struct task_struct *p);
-+
-+extern void sched_core_get(void);
-+extern void sched_core_put(void);
-+
-+extern unsigned long sched_core_alloc_cookie(void);
-+extern void sched_core_put_cookie(unsigned long cookie);
-+extern unsigned long sched_core_get_cookie(unsigned long cookie);
-+extern unsigned long sched_core_update_cookie(struct task_struct *p, unsigned long cookie);
-+
- #else /* !CONFIG_SCHED_CORE */
- 
- static inline bool sched_core_enabled(struct rq *rq)
+ void sched_core_free(struct task_struct *p)
+ {
+ 	sched_core_put_cookie(p->core_cookie);
