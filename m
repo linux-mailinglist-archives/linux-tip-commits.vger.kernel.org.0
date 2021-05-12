@@ -2,57 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 03F9237BA6C
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 12 May 2021 12:28:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CDA2E37BA72
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 12 May 2021 12:28:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230418AbhELK3q (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 12 May 2021 06:29:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36148 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230115AbhELK3i (ORCPT
+        id S230514AbhELK3s (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 12 May 2021 06:29:48 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:50560 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230423AbhELK3j (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 12 May 2021 06:29:38 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 331CAC06174A;
-        Wed, 12 May 2021 03:28:30 -0700 (PDT)
-Date:   Wed, 12 May 2021 10:28:28 -0000
+        Wed, 12 May 2021 06:29:39 -0400
+Date:   Wed, 12 May 2021 10:28:29 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1620815308;
+        s=2020; t=1620815310;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=DzuWqUfH8ZgkreyT3YTqrOvIU5UvcKV36Kowxe7smPc=;
-        b=TCRBLgwFp4Wc5iLCRIxqGNLh2s3STyCZf6VP5LWrGHHN98EACVjPuqVVifTJFrE3uWKeZ1
-        dRexQY1DRf9qTj8o6FQawSeDW3zntJUECTcN7Fnd5AZrnwDZ0aFxyZvsgyH+Jfrsr15Bu3
-        yyzNmYh137E7q8vkzitQ8fkDywdRVBQ3ipHpe6waxDUC4vUQ7LKOQ+vxqVcBCrUPTvgj91
-        gQ4Di5Vtp11ST0foTIWG7TpuklYr8KR1WkLzQgCh4KsYveLoXxuNvStgckEbSGWnLjZycu
-        o7bzgze1w5kA/Qs3ZcB3qAY9w0kD2A7+MGlSIFGiqm6jJpL+vto/cUg0hOmIcw==
+        bh=9UHXKCObtPjBsaIewS+lWuVHbm3jNlFOs2DYp5P4drc=;
+        b=tmYP7UM1z8YpjPZC/C9Ivdg+NGqfZahb1+9ZpYi9zNLkF+LHT6P81pVH4vaDajrYnxr+E+
+        qz6Ui1aFH93+IjIfcQnW/YFcwmMlDgKmTX1dK9TaR6fe6QFO9t6b8Sa1NDWaK8r3aiugLx
+        OLx8NiYzSZ951ABfMDEA3RI5iFFqzykmhzoPnw2zuyJ4rOkI4RzPZHwU9aQRpeTmDMNb/v
+        j79jtf6+VNJI6izfJLfs7YdDi0+bBch4cIs9TApQUHR4Pgw5Umt8bE7kM9YH8aq7JVbL4F
+        KNo0s6GS2U0HJ/ztgIal3a87Bic2WqU49ZFUOHSk9CEZgoqSISK8gAeGt54gdQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1620815308;
+        s=2020e; t=1620815310;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=DzuWqUfH8ZgkreyT3YTqrOvIU5UvcKV36Kowxe7smPc=;
-        b=Fu1FKUdcO+1pxjgEMXisheEtNbeUT7BrgQLd2BCwsDmF5iV5EYvZS/U2X9s3Nhr8N24tkF
-        VgQxBmjjC6KKTvAg==
+        bh=9UHXKCObtPjBsaIewS+lWuVHbm3jNlFOs2DYp5P4drc=;
+        b=AGVWuNpjisBC3b/1wuIeqkMZZuT2r50MwZcc4xT196C/1e2Bhg+uZn/aFGs725BSygwcZ2
+        1v6X7FSpZpDfIzDw==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/fair: Add a few assertions
+Subject: [tip: sched/core] kvm: Select SCHED_INFO instead of TASK_DELAY_ACCT
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Don Hiatt <dhiatt@digitalocean.com>,
-        Hongyu Ning <hongyu.ning@linux.intel.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>, x86@kernel.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Marc Zyngier <maz@kernel.org>,
+        Balbir Singh <bsingharora@gmail.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210422123308.015639083@infradead.org>
-References: <20210422123308.015639083@infradead.org>
+In-Reply-To: <20210505111525.187225172@infradead.org>
+References: <20210505111525.187225172@infradead.org>
 MIME-Version: 1.0
-Message-ID: <162081530827.29796.4612627849821173058.tip-bot2@tip-bot2>
+Message-ID: <162081530990.29796.11497571349080467949.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -63,57 +62,73 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     9099a14708ce1dfecb6002605594a0daa319b555
-Gitweb:        https://git.kernel.org/tip/9099a14708ce1dfecb6002605594a0daa319b555
+Commit-ID:     63b3f96e1a989846a5a521d4fbef4bc86406929d
+Gitweb:        https://git.kernel.org/tip/63b3f96e1a989846a5a521d4fbef4bc86406929d
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Tue, 17 Nov 2020 18:19:35 -05:00
+AuthorDate:    Tue, 04 May 2021 22:43:39 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 12 May 2021 11:43:26 +02:00
+CommitterDate: Wed, 12 May 2021 11:43:24 +02:00
 
-sched/fair: Add a few assertions
+kvm: Select SCHED_INFO instead of TASK_DELAY_ACCT
+
+AFAICT KVM only relies on SCHED_INFO. Nothing uses the p->delays data
+that belongs to TASK_DELAY_ACCT.
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: Don Hiatt <dhiatt@digitalocean.com>
-Tested-by: Hongyu Ning <hongyu.ning@linux.intel.com>
-Tested-by: Vincent Guittot <vincent.guittot@linaro.org>
-Link: https://lkml.kernel.org/r/20210422123308.015639083@infradead.org
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: Paolo Bonzini <pbonzini@redhat.com>
+Acked-by: Marc Zyngier <maz@kernel.org>
+Acked-by: Balbir Singh <bsingharora@gmail.com>
+Link: https://lkml.kernel.org/r/20210505111525.187225172@infradead.org
 ---
- kernel/sched/fair.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ arch/arm64/kvm/Kconfig | 5 +----
+ arch/x86/kvm/Kconfig   | 5 +----
+ 2 files changed, 2 insertions(+), 8 deletions(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index c209f68..6bdbb7b 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -6288,6 +6288,11 @@ static int select_idle_sibling(struct task_struct *p, int prev, int target)
- 		task_util = uclamp_task_util(p);
- 	}
+diff --git a/arch/arm64/kvm/Kconfig b/arch/arm64/kvm/Kconfig
+index 3964acf..a4eba09 100644
+--- a/arch/arm64/kvm/Kconfig
++++ b/arch/arm64/kvm/Kconfig
+@@ -20,8 +20,6 @@ if VIRTUALIZATION
+ menuconfig KVM
+ 	bool "Kernel-based Virtual Machine (KVM) support"
+ 	depends on OF
+-	# for TASKSTATS/TASK_DELAY_ACCT:
+-	depends on NET && MULTIUSER
+ 	select MMU_NOTIFIER
+ 	select PREEMPT_NOTIFIERS
+ 	select HAVE_KVM_CPU_RELAX_INTERCEPT
+@@ -38,8 +36,7 @@ menuconfig KVM
+ 	select IRQ_BYPASS_MANAGER
+ 	select HAVE_KVM_IRQ_BYPASS
+ 	select HAVE_KVM_VCPU_RUN_PID_CHANGE
+-	select TASKSTATS
+-	select TASK_DELAY_ACCT
++	select SCHED_INFO
+ 	help
+ 	  Support hosting virtualized guest machines.
  
-+	/*
-+	 * per-cpu select_idle_mask usage
-+	 */
-+	lockdep_assert_irqs_disabled();
-+
- 	if ((available_idle_cpu(target) || sched_idle_cpu(target)) &&
- 	    asym_fits_capacity(task_util, target))
- 		return target;
-@@ -6781,8 +6786,6 @@ unlock:
-  * certain conditions an idle sibling CPU if the domain has SD_WAKE_AFFINE set.
-  *
-  * Returns the target CPU number.
-- *
-- * preempt must be disabled.
-  */
- static int
- select_task_rq_fair(struct task_struct *p, int prev_cpu, int wake_flags)
-@@ -6795,6 +6798,10 @@ select_task_rq_fair(struct task_struct *p, int prev_cpu, int wake_flags)
- 	/* SD_flags and WF_flags share the first nibble */
- 	int sd_flag = wake_flags & 0xF;
- 
-+	/*
-+	 * required for stable ->cpus_allowed
-+	 */
-+	lockdep_assert_held(&p->pi_lock);
- 	if (wake_flags & WF_TTWU) {
- 		record_wakee(p);
- 
+diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
+index f6b93a3..fb8efb3 100644
+--- a/arch/x86/kvm/Kconfig
++++ b/arch/x86/kvm/Kconfig
+@@ -22,8 +22,6 @@ config KVM
+ 	tristate "Kernel-based Virtual Machine (KVM) support"
+ 	depends on HAVE_KVM
+ 	depends on HIGH_RES_TIMERS
+-	# for TASKSTATS/TASK_DELAY_ACCT:
+-	depends on NET && MULTIUSER
+ 	depends on X86_LOCAL_APIC
+ 	select PREEMPT_NOTIFIERS
+ 	select MMU_NOTIFIER
+@@ -36,8 +34,7 @@ config KVM
+ 	select KVM_ASYNC_PF
+ 	select USER_RETURN_NOTIFIER
+ 	select KVM_MMIO
+-	select TASKSTATS
+-	select TASK_DELAY_ACCT
++	select SCHED_INFO
+ 	select PERF_EVENTS
+ 	select HAVE_KVM_MSI
+ 	select HAVE_KVM_CPU_RELAX_INTERCEPT
