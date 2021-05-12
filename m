@@ -2,54 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3958A37BA67
+	by mail.lfdr.de (Postfix) with ESMTP id C923637BA69
 	for <lists+linux-tip-commits@lfdr.de>; Wed, 12 May 2021 12:28:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230446AbhELK3l (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 12 May 2021 06:29:41 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:50472 "EHLO
+        id S230471AbhELK3o (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 12 May 2021 06:29:44 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:50518 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230377AbhELK3g (ORCPT
+        with ESMTP id S230387AbhELK3h (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 12 May 2021 06:29:36 -0400
+        Wed, 12 May 2021 06:29:37 -0400
 Date:   Wed, 12 May 2021 10:28:27 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1620815307;
+        s=2020; t=1620815308;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=3E+sO8rFvr8nBjHvufSes3a7sxX4XuC/9fOdzZucTl8=;
-        b=wuuEzAl+HzhliehLrXWNuGfedDShq6usm1yN2Y1xZcUNg0gPohaBbE8RRiLm+d+J5Kk+DU
-        dcj14yehvg9r9coM7Gb5KVhNeE6kAaaQSquWxOuoNTAA2PmZSiDjLkMq+UmfHxhCI4WbVl
-        yiGC2lQ7d4B7Jh1LGBx2ZiLvYhJMH5PRTKq4PRWeI1++gQshz7CkvSEYXjwNEYkBcCxRUs
-        qIPVX92Gi+dce3ji6ZK6qukP3+iM2dk6iM8bT2A+knp2qU8wHmUeugSTCLPJFrMvVK+qqx
-        uMRaJ1OnUFj7eTI812KYEj9fS6SGTMLDAtoN2QA2IjVjWg6JwHFlmVVPH2mxLQ==
+        bh=MnZGo0xdy0sCWmf4nljpjIsemqruH0si20tY2TeLtiI=;
+        b=Mt73lxkvwAnZbD/wIS4anPbUpMztW7bVQOtsU/Uan5aP5Xk/ZxJ4jl+tGY2OG7QwQ7UkmY
+        NUFyOzz6m45u1JPUwXBFawNOlojrGGo8LV83FAx5Z/QUdTpFxX3O3nIVCG6FW5hWPXJvNU
+        YXzrJfDBbIBAK+1ALVSXwKTDqrZ3bHBZIy3JXpNlhZ1lUeu6ESPiezS9wfA58A7NMWu6vI
+        X20JoWJgc6dmNWS/mZBPmkyzxSb4dKzm+wEJp3sTlFkFQK2qpcikMvee2PT3yDzjkRNmS5
+        ExmT4q6+6Kl8V37YG3iC5ziOSIkeEyoP/zFERVjkuxxa2awc9aRWViWVGmg7yw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1620815307;
+        s=2020e; t=1620815308;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=3E+sO8rFvr8nBjHvufSes3a7sxX4XuC/9fOdzZucTl8=;
-        b=CZnQaSupONi2+FC7z2Oyu0DbFKlLD6mirmOGywaqWduYP+RdPW07O22seDz+sGZfoh7o43
-        SZY6rxrROU9QZzBQ==
+        bh=MnZGo0xdy0sCWmf4nljpjIsemqruH0si20tY2TeLtiI=;
+        b=5meqwhBtk2yLml3/lLJPKog+IAtgT3ToJNPExEYeg5iTFGhy4b0+MHA6PKkYjX0NoDdQFY
+        //cALuPrJBHxAqDQ==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched: Prepare for Core-wide rq->lock
+Subject: [tip: sched/core] sched: Provide raw_spin_rq_*lock*() helpers
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Don Hiatt <dhiatt@digitalocean.com>,
         Hongyu Ning <hongyu.ning@linux.intel.com>,
         Vincent Guittot <vincent.guittot@linaro.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <BIm@hirez.programming.kicks-ass.net>
-References: <BIm@hirez.programming.kicks-ass.net>
+In-Reply-To: <20210422123308.075967879@infradead.org>
+References: <20210422123308.075967879@infradead.org>
 MIME-Version: 1.0
-Message-ID: <162081530701.29796.1117391153445499337.tip-bot2@tip-bot2>
+Message-ID: <162081530784.29796.6289037347348480162.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,209 +60,112 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     d66f1b06b5b438cd20ba3664b8eef1f9c79e84bf
-Gitweb:        https://git.kernel.org/tip/d66f1b06b5b438cd20ba3664b8eef1f9c79e84bf
+Commit-ID:     39d371b7c0c299d489041884d005aacc4bba8c15
+Gitweb:        https://git.kernel.org/tip/39d371b7c0c299d489041884d005aacc4bba8c15
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Tue, 02 Mar 2021 12:16:48 +01:00
+AuthorDate:    Tue, 02 Mar 2021 12:13:13 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Wed, 12 May 2021 11:43:26 +02:00
 
-sched: Prepare for Core-wide rq->lock
+sched: Provide raw_spin_rq_*lock*() helpers
 
-When switching on core-sched, CPUs need to agree which lock to use for
-their RQ.
-
-The new rule will be that rq->core_enabled will be toggled while
-holding all rq->__locks that belong to a core. This means we need to
-double check the rq->core_enabled value after each lock acquire and
-retry if it changed.
-
-This also has implications for those sites that take multiple RQ
-locks, they need to be careful that the second lock doesn't end up
-being the first lock.
-
-Verify the lock pointer after acquiring the first lock, because if
-they're on the same core, holding any of the rq->__lock instances will
-pin the core state.
-
-While there, change the rq->__lock order to CPU number, instead of rq
-address, this greatly simplifies the next patch.
+In prepration for playing games with rq->lock, add some rq_lock
+wrappers.
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Tested-by: Don Hiatt <dhiatt@digitalocean.com>
 Tested-by: Hongyu Ning <hongyu.ning@linux.intel.com>
 Tested-by: Vincent Guittot <vincent.guittot@linaro.org>
-Link: https://lkml.kernel.org/r/YJUNY0dmrJMD/BIm@hirez.programming.kicks-ass.net
+Link: https://lkml.kernel.org/r/20210422123308.075967879@infradead.org
 ---
- kernel/sched/core.c  | 48 +++++++++++++++++++++++++++++++++++++++++--
- kernel/sched/sched.h | 48 +++++++++++++++----------------------------
- 2 files changed, 63 insertions(+), 33 deletions(-)
+ kernel/sched/core.c  | 15 +++++++++++++-
+ kernel/sched/sched.h | 50 +++++++++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 65 insertions(+)
 
 diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 5e6f5f5..8bd2f12 100644
+index 660120d..5568018 100644
 --- a/kernel/sched/core.c
 +++ b/kernel/sched/core.c
-@@ -186,12 +186,37 @@ int sysctl_sched_rt_runtime = 950000;
+@@ -184,6 +184,21 @@ int sysctl_sched_rt_runtime = 950000;
+  *
+  */
  
- void raw_spin_rq_lock_nested(struct rq *rq, int subclass)
- {
--	raw_spin_lock_nested(rq_lockp(rq), subclass);
-+	raw_spinlock_t *lock;
-+
-+	if (sched_core_disabled()) {
-+		raw_spin_lock_nested(&rq->__lock, subclass);
-+		return;
-+	}
-+
-+	for (;;) {
-+		lock = rq_lockp(rq);
-+		raw_spin_lock_nested(lock, subclass);
-+		if (likely(lock == rq_lockp(rq)))
-+			return;
-+		raw_spin_unlock(lock);
-+	}
- }
- 
- bool raw_spin_rq_trylock(struct rq *rq)
- {
--	return raw_spin_trylock(rq_lockp(rq));
-+	raw_spinlock_t *lock;
-+	bool ret;
-+
-+	if (sched_core_disabled())
-+		return raw_spin_trylock(&rq->__lock);
-+
-+	for (;;) {
-+		lock = rq_lockp(rq);
-+		ret = raw_spin_trylock(lock);
-+		if (!ret || (likely(lock == rq_lockp(rq))))
-+			return ret;
-+		raw_spin_unlock(lock);
-+	}
- }
- 
- void raw_spin_rq_unlock(struct rq *rq)
-@@ -199,6 +224,25 @@ void raw_spin_rq_unlock(struct rq *rq)
- 	raw_spin_unlock(rq_lockp(rq));
- }
- 
-+#ifdef CONFIG_SMP
-+/*
-+ * double_rq_lock - safely lock two runqueues
-+ */
-+void double_rq_lock(struct rq *rq1, struct rq *rq2)
++void raw_spin_rq_lock_nested(struct rq *rq, int subclass)
 +{
-+	lockdep_assert_irqs_disabled();
-+
-+	if (rq_order_less(rq2, rq1))
-+		swap(rq1, rq2);
-+
-+	raw_spin_rq_lock(rq1);
-+	if (rq_lockp(rq1) == rq_lockp(rq2))
-+		return;
-+
-+	raw_spin_rq_lock_nested(rq2, SINGLE_DEPTH_NESTING);
++	raw_spin_lock_nested(rq_lockp(rq), subclass);
 +}
-+#endif
++
++bool raw_spin_rq_trylock(struct rq *rq)
++{
++	return raw_spin_trylock(rq_lockp(rq));
++}
++
++void raw_spin_rq_unlock(struct rq *rq)
++{
++	raw_spin_unlock(rq_lockp(rq));
++}
 +
  /*
   * __task_rq_lock - lock the rq @p resides on.
   */
 diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index dbabf28..f8bd5c8 100644
+index a189bec..f654587 100644
 --- a/kernel/sched/sched.h
 +++ b/kernel/sched/sched.h
-@@ -1113,6 +1113,11 @@ static inline bool is_migration_disabled(struct task_struct *p)
+@@ -1113,6 +1113,56 @@ static inline bool is_migration_disabled(struct task_struct *p)
  #endif
  }
  
-+static inline bool sched_core_disabled(void)
++static inline raw_spinlock_t *rq_lockp(struct rq *rq)
 +{
-+	return true;
++	return &rq->lock;
 +}
 +
- static inline raw_spinlock_t *rq_lockp(struct rq *rq)
- {
- 	return &rq->__lock;
-@@ -2231,10 +2236,17 @@ unsigned long arch_scale_freq_capacity(int cpu)
- }
- #endif
- 
-+
- #ifdef CONFIG_SMP
--#ifdef CONFIG_PREEMPTION
- 
--static inline void double_rq_lock(struct rq *rq1, struct rq *rq2);
-+static inline bool rq_order_less(struct rq *rq1, struct rq *rq2)
++static inline void lockdep_assert_rq_held(struct rq *rq)
 +{
-+	return rq1->cpu < rq2->cpu;
++	lockdep_assert_held(rq_lockp(rq));
 +}
 +
-+extern void double_rq_lock(struct rq *rq1, struct rq *rq2);
++extern void raw_spin_rq_lock_nested(struct rq *rq, int subclass);
++extern bool raw_spin_rq_trylock(struct rq *rq);
++extern void raw_spin_rq_unlock(struct rq *rq);
 +
-+#ifdef CONFIG_PREEMPTION
++static inline void raw_spin_rq_lock(struct rq *rq)
++{
++	raw_spin_rq_lock_nested(rq, 0);
++}
++
++static inline void raw_spin_rq_lock_irq(struct rq *rq)
++{
++	local_irq_disable();
++	raw_spin_rq_lock(rq);
++}
++
++static inline void raw_spin_rq_unlock_irq(struct rq *rq)
++{
++	raw_spin_rq_unlock(rq);
++	local_irq_enable();
++}
++
++static inline unsigned long _raw_spin_rq_lock_irqsave(struct rq *rq)
++{
++	unsigned long flags;
++	local_irq_save(flags);
++	raw_spin_rq_lock(rq);
++	return flags;
++}
++
++static inline void raw_spin_rq_unlock_irqrestore(struct rq *rq, unsigned long flags)
++{
++	raw_spin_rq_unlock(rq);
++	local_irq_restore(flags);
++}
++
++#define raw_spin_rq_lock_irqsave(rq, flags)	\
++do {						\
++	flags = _raw_spin_rq_lock_irqsave(rq);	\
++} while (0)
++
+ #ifdef CONFIG_SCHED_SMT
+ extern void __update_idle_core(struct rq *rq);
  
- /*
-  * fair double_lock_balance: Safely acquires both rq->locks in a fair
-@@ -2274,14 +2286,13 @@ static inline int _double_lock_balance(struct rq *this_rq, struct rq *busiest)
- 	if (likely(raw_spin_rq_trylock(busiest)))
- 		return 0;
- 
--	if (rq_lockp(busiest) >= rq_lockp(this_rq)) {
-+	if (rq_order_less(this_rq, busiest)) {
- 		raw_spin_rq_lock_nested(busiest, SINGLE_DEPTH_NESTING);
- 		return 0;
- 	}
- 
- 	raw_spin_rq_unlock(this_rq);
--	raw_spin_rq_lock(busiest);
--	raw_spin_rq_lock_nested(this_rq, SINGLE_DEPTH_NESTING);
-+	double_rq_lock(this_rq, busiest);
- 
- 	return 1;
- }
-@@ -2334,31 +2345,6 @@ static inline void double_raw_lock(raw_spinlock_t *l1, raw_spinlock_t *l2)
- }
- 
- /*
-- * double_rq_lock - safely lock two runqueues
-- *
-- * Note this does not disable interrupts like task_rq_lock,
-- * you need to do so manually before calling.
-- */
--static inline void double_rq_lock(struct rq *rq1, struct rq *rq2)
--	__acquires(rq1->lock)
--	__acquires(rq2->lock)
--{
--	BUG_ON(!irqs_disabled());
--	if (rq_lockp(rq1) == rq_lockp(rq2)) {
--		raw_spin_rq_lock(rq1);
--		__acquire(rq2->lock);	/* Fake it out ;) */
--	} else {
--		if (rq_lockp(rq1) < rq_lockp(rq2)) {
--			raw_spin_rq_lock(rq1);
--			raw_spin_rq_lock_nested(rq2, SINGLE_DEPTH_NESTING);
--		} else {
--			raw_spin_rq_lock(rq2);
--			raw_spin_rq_lock_nested(rq1, SINGLE_DEPTH_NESTING);
--		}
--	}
--}
--
--/*
-  * double_rq_unlock - safely unlock two runqueues
-  *
-  * Note this does not restore interrupts like task_rq_unlock,
-@@ -2368,11 +2354,11 @@ static inline void double_rq_unlock(struct rq *rq1, struct rq *rq2)
- 	__releases(rq1->lock)
- 	__releases(rq2->lock)
- {
--	raw_spin_rq_unlock(rq1);
- 	if (rq_lockp(rq1) != rq_lockp(rq2))
- 		raw_spin_rq_unlock(rq2);
- 	else
- 		__release(rq2->lock);
-+	raw_spin_rq_unlock(rq1);
- }
- 
- extern void set_rq_online (struct rq *rq);
