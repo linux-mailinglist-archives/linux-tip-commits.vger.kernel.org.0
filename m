@@ -2,52 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BA12C37EDE5
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 13 May 2021 00:54:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5683F37EDE7
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 13 May 2021 00:54:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241315AbhELU4D (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 12 May 2021 16:56:03 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:53648 "EHLO
+        id S241747AbhELU4J (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 12 May 2021 16:56:09 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:53660 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238678AbhELUDH (ORCPT
+        with ESMTP id S238723AbhELUDH (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Wed, 12 May 2021 16:03:07 -0400
-Date:   Wed, 12 May 2021 20:01:46 -0000
+Date:   Wed, 12 May 2021 20:01:47 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1620849707;
+        s=2020; t=1620849708;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=pNNWCnyZavCf3oBct79KcydlQfuXDFo9EH5ShcvhKts=;
-        b=3rFR8XODEUKo/2feK567qOIT+K/t5/A6an+RTnQIqqWwlb60qUnAhQPQUatgQNmVhYMIEe
-        yGrz3abdHYjgZMeDGtoe+SzoybXxZXaDkVV8xdsawnvmh6MIW2LA7/NGfCiIQAAgZ31Z/O
-        +3+/h0KUjGSgIHzudK9EAUSIblAgexny7HLl5BOai0/GxXqySstSZv+YUr9JhksHlBVek9
-        G1rmBkVvf7t6Ij+OLgOzdoUTChmSQeEhuRQl8VXYSUytVM0odFb8AaJN5b1on9j2V+laEI
-        wZ/CsChUtvx+/PNAK3e6fFJuedwqHph1fJLJSRWTp+i2RBP0E5Z3adjW+xLt5g==
+        bh=U16Wen9fRtuglAqaBDoY+AdOgmO4JbDun0z7yyR1kjU=;
+        b=uT38VRBeUCwGi/QWtuGZJLFf47ShY38MrfcQtWZDJLEqckG/QvbcIgJ6aBy5Q6s49AeZG9
+        im6XimfO0dz+VXd/+AIC9PGZRgH0IRdlH+rgq4iD/AVSLp+nrzKn4jJQeK4+gJvWBVDgNj
+        t19d3/l8lpkKROGIGIa7EN0SbeBXhehDpWWBV/v85/Ey6q1Cp7HyYNmllDT25VP1iE/9KN
+        dwZ+ahLyL4JxRH2hHNhbr1Mb6M7ROYr21r4+8P5KVKleOhe/Hqpp+4QyahyoshYnLHfMnm
+        O3/W0Ti4URVeqZofJqjrHJh1GZExRnqxtUBGfYuYW9gCR4yu43o3KNbbOD4WmA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1620849707;
+        s=2020e; t=1620849708;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=pNNWCnyZavCf3oBct79KcydlQfuXDFo9EH5ShcvhKts=;
-        b=r+XnRm92U/KiCAqfaQ2zvnD/fY+zSixr1ck08d9rLpCZqhUK2PZ9FIR4jiFYsrN/tqonHP
-        u9fv5HDPdmQWgXAA==
+        bh=U16Wen9fRtuglAqaBDoY+AdOgmO4JbDun0z7yyR1kjU=;
+        b=t1wkgdi0d1hGYi6jaD8JKcCXOecrk4ZR6oC57QhFleam+ZG7rsnIsk7MNFnXsJWe4w443N
+        t2ixvH5V5L/NL9Aw==
 From:   "tip-bot2 for Alexey Dobriyan" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched: Make nr_iowait_cpu() return 32-bit value
+Subject: [tip: sched/core] sched: Make nr_running() return 32-bit value
 Cc:     Alexey Dobriyan <adobriyan@gmail.com>,
         Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210422200228.1423391-3-adobriyan@gmail.com>
-References: <20210422200228.1423391-3-adobriyan@gmail.com>
+In-Reply-To: <20210422200228.1423391-1-adobriyan@gmail.com>
+References: <20210422200228.1423391-1-adobriyan@gmail.com>
 MIME-Version: 1.0
-Message-ID: <162084970625.29796.535929681999700472.tip-bot2@tip-bot2>
+Message-ID: <162084970734.29796.6875060189702159404.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,82 +58,82 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     8fc2858e572ce761bffcade81a42ac72005e76f9
-Gitweb:        https://git.kernel.org/tip/8fc2858e572ce761bffcade81a42ac72005e76f9
+Commit-ID:     01aee8fd7fb23049e2b52abadbe1f7b5e94a52d2
+Gitweb:        https://git.kernel.org/tip/01aee8fd7fb23049e2b52abadbe1f7b5e94a52d2
 Author:        Alexey Dobriyan <adobriyan@gmail.com>
-AuthorDate:    Thu, 22 Apr 2021 23:02:27 +03:00
+AuthorDate:    Thu, 22 Apr 2021 23:02:25 +03:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 12 May 2021 21:34:16 +02:00
+CommitterDate: Wed, 12 May 2021 21:34:14 +02:00
 
-sched: Make nr_iowait_cpu() return 32-bit value
+sched: Make nr_running() return 32-bit value
 
-Runqueue ->nr_iowait counters are 32-bit anyway.
+Creating 2**32 tasks is impossible due to futex pid limits and wasteful
+anyway. Nobody has done it.
 
-Propagate 32-bitness into other code, but don't try too hard.
+Bring nr_running() into 32-bit world to save on REX prefixes.
 
 Signed-off-by: Alexey Dobriyan <adobriyan@gmail.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20210422200228.1423391-3-adobriyan@gmail.com
+Link: https://lore.kernel.org/r/20210422200228.1423391-1-adobriyan@gmail.com
 ---
- drivers/cpuidle/governors/menu.c | 6 +++---
- include/linux/sched/stat.h       | 2 +-
- kernel/sched/core.c              | 2 +-
- 3 files changed, 5 insertions(+), 5 deletions(-)
+ fs/proc/loadavg.c          | 2 +-
+ fs/proc/stat.c             | 2 +-
+ include/linux/sched/stat.h | 2 +-
+ kernel/sched/core.c        | 4 ++--
+ 4 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/cpuidle/governors/menu.c b/drivers/cpuidle/governors/menu.c
-index c3aa8d6..2e56704 100644
---- a/drivers/cpuidle/governors/menu.c
-+++ b/drivers/cpuidle/governors/menu.c
-@@ -117,7 +117,7 @@ struct menu_device {
- 	int		interval_ptr;
- };
+diff --git a/fs/proc/loadavg.c b/fs/proc/loadavg.c
+index 8468bae..f32878d 100644
+--- a/fs/proc/loadavg.c
++++ b/fs/proc/loadavg.c
+@@ -16,7 +16,7 @@ static int loadavg_proc_show(struct seq_file *m, void *v)
  
--static inline int which_bucket(u64 duration_ns, unsigned long nr_iowaiters)
-+static inline int which_bucket(u64 duration_ns, unsigned int nr_iowaiters)
- {
- 	int bucket = 0;
+ 	get_avenrun(avnrun, FIXED_1/200, 0);
  
-@@ -150,7 +150,7 @@ static inline int which_bucket(u64 duration_ns, unsigned long nr_iowaiters)
-  * to be, the higher this multiplier, and thus the higher
-  * the barrier to go to an expensive C state.
-  */
--static inline int performance_multiplier(unsigned long nr_iowaiters)
-+static inline int performance_multiplier(unsigned int nr_iowaiters)
- {
- 	/* for IO wait tasks (per cpu!) we add 10x each */
- 	return 1 + 10 * nr_iowaiters;
-@@ -270,7 +270,7 @@ static int menu_select(struct cpuidle_driver *drv, struct cpuidle_device *dev,
- 	unsigned int predicted_us;
- 	u64 predicted_ns;
- 	u64 interactivity_req;
--	unsigned long nr_iowaiters;
-+	unsigned int nr_iowaiters;
- 	ktime_t delta, delta_tick;
- 	int i, idx;
- 
+-	seq_printf(m, "%lu.%02lu %lu.%02lu %lu.%02lu %ld/%d %d\n",
++	seq_printf(m, "%lu.%02lu %lu.%02lu %lu.%02lu %u/%d %d\n",
+ 		LOAD_INT(avnrun[0]), LOAD_FRAC(avnrun[0]),
+ 		LOAD_INT(avnrun[1]), LOAD_FRAC(avnrun[1]),
+ 		LOAD_INT(avnrun[2]), LOAD_FRAC(avnrun[2]),
+diff --git a/fs/proc/stat.c b/fs/proc/stat.c
+index f25e853..941605d 100644
+--- a/fs/proc/stat.c
++++ b/fs/proc/stat.c
+@@ -200,7 +200,7 @@ static int show_stat(struct seq_file *p, void *v)
+ 		"\nctxt %llu\n"
+ 		"btime %llu\n"
+ 		"processes %lu\n"
+-		"procs_running %lu\n"
++		"procs_running %u\n"
+ 		"procs_blocked %lu\n",
+ 		nr_context_switches(),
+ 		(unsigned long long)boottime.tv_sec,
 diff --git a/include/linux/sched/stat.h b/include/linux/sched/stat.h
-index 81d9b53..0108a38 100644
+index 939c3ec..73606b3 100644
 --- a/include/linux/sched/stat.h
 +++ b/include/linux/sched/stat.h
-@@ -20,7 +20,7 @@ extern int nr_processes(void);
- extern unsigned int nr_running(void);
+@@ -17,7 +17,7 @@ extern unsigned long total_forks;
+ extern int nr_threads;
+ DECLARE_PER_CPU(unsigned long, process_counts);
+ extern int nr_processes(void);
+-extern unsigned long nr_running(void);
++extern unsigned int nr_running(void);
  extern bool single_task_running(void);
- extern unsigned int nr_iowait(void);
--extern unsigned long nr_iowait_cpu(int cpu);
-+extern unsigned int nr_iowait_cpu(int cpu);
- 
- static inline int sched_info_on(void)
- {
+ extern unsigned long nr_iowait(void);
+ extern unsigned long nr_iowait_cpu(int cpu);
 diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index fadf2bf..24fd795 100644
+index ac8882d..2c6cdb0 100644
 --- a/kernel/sched/core.c
 +++ b/kernel/sched/core.c
-@@ -4739,7 +4739,7 @@ unsigned long long nr_context_switches(void)
-  * it does become runnable.
+@@ -4692,9 +4692,9 @@ context_switch(struct rq *rq, struct task_struct *prev,
+  * externally visible scheduler statistics: current number of runnable
+  * threads, total number of context switches performed since bootup.
   */
- 
--unsigned long nr_iowait_cpu(int cpu)
-+unsigned int nr_iowait_cpu(int cpu)
+-unsigned long nr_running(void)
++unsigned int nr_running(void)
  {
- 	return atomic_read(&cpu_rq(cpu)->nr_iowait);
- }
+-	unsigned long i, sum = 0;
++	unsigned int i, sum = 0;
+ 
+ 	for_each_online_cpu(i)
+ 		sum += cpu_rq(i)->nr_running;
