@@ -2,55 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E38237BDFB
+	by mail.lfdr.de (Postfix) with ESMTP id 31D9837BDFD
 	for <lists+linux-tip-commits@lfdr.de>; Wed, 12 May 2021 15:19:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231166AbhELNU7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 12 May 2021 09:20:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46292 "EHLO
+        id S231309AbhELNVA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 12 May 2021 09:21:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46296 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231203AbhELNU6 (ORCPT
+        with ESMTP id S231230AbhELNU6 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Wed, 12 May 2021 09:20:58 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C888C06174A;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4591C06175F;
         Wed, 12 May 2021 06:19:50 -0700 (PDT)
-Date:   Wed, 12 May 2021 13:19:47 -0000
+Date:   Wed, 12 May 2021 13:19:48 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1620825588;
+        s=2020; t=1620825589;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=eXugBDZF/+fo3g/7REWMwsLvMZecGB0QKmJD6/mzD/c=;
-        b=cQfRyeuyjqc7zf7uX4ZRg+mPgRgC0EIYDPkSpCO8sJOeO9efG2H7Rj5e+J3Np7HE8xNWAw
-        Xz0AQb8jMk2ye5kHGqwLSxyXQn6BND8c5ep3wrBv9/XM3eVmTG57hXif0pryaq1e31mfun
-        EPUCrjebJdzDM2/dJP8IRv8q3Jmw8hM3KYS3Vc+lemqb2H0yHWHZeLbZv2h38y56m+FKHh
-        EyYgEXxHXe0WjJyGUwLtEKbgOg4CRaFfKqfT1Z3QaiHUxfDdv8c5uoHHBL3N0To6gDJCIn
-        4LhKTCzq6CLrLP++Ad1+IX37+b6LuAKZCybUqjpLdQ6uv1NJIWlwncfAcpCsMw==
+        bh=y8F/e2Ae19Kft+w86bW7OPlklULDEOMaT9PUg7yPD2w=;
+        b=EJSAgd0i5alrREgNxYCPxCXXq2uhfzQK4llIKKg3QU5v11sHvEWo5gzOZ/BrwGOaZYG9lS
+        y8VqEcIn9LTxdu2LygAgoQJvt6V4AQcLlKYTI6KX8cciCdRfgmusu9ACxaga/baYxBjg2W
+        3PLUYrFUIPo9y61lzOD4SKqqGTuK54jHpvptf67xOZfk8+gVFgwWDUR0atb9xvuzH5e4M/
+        lrtl/UKmghv1nTgpYDcuLtJ3wcnIBDZVGCS9yMYq//Xi3NMHlu5bG5qwpsNi/aiTqWYHJY
+        UmxHjvvRNGFGu7qSLprMYJKwyrOUgfvuylFFeXy+oBOXBtpqPt1YNSG85B/Nvg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1620825588;
+        s=2020e; t=1620825589;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=eXugBDZF/+fo3g/7REWMwsLvMZecGB0QKmJD6/mzD/c=;
-        b=5a+jnzspC0GKLUEzspqaS9tevxlAStcQmAkFtvdCElXxxFfnM9wJ7HDtLCG3CLaeILk8mT
-        DpwwyPhGG6olEIBA==
+        bh=y8F/e2Ae19Kft+w86bW7OPlklULDEOMaT9PUg7yPD2w=;
+        b=gEZHBcpMbZZeDh/DKQcB8NPDGktKGgoLdtaAxKxQT/RdELO8DQxo/5i3PJAUWpbh7Xekti
+        0Rkkq57GebN9oaBA==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] jump_label, x86: Allow short NOPs
+Subject: [tip: objtool/core] objtool: Decode jump_entry::key addend
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210506194158.216763632@infradead.org>
-References: <20210506194158.216763632@infradead.org>
+In-Reply-To: <20210506194158.028024143@infradead.org>
+References: <20210506194158.028024143@infradead.org>
 MIME-Version: 1.0
-Message-ID: <162082558708.29796.10992563428983424866.tip-bot2@tip-bot2>
+Message-ID: <162082558867.29796.17810756155208472815.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,68 +61,101 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     ab3257042c26d0cd44793c741e2f89bf38b21fe8
-Gitweb:        https://git.kernel.org/tip/ab3257042c26d0cd44793c741e2f89bf38b21fe8
+Commit-ID:     cbf82a3dc241aea82b941a872ed5c52f6af527ea
+Gitweb:        https://git.kernel.org/tip/cbf82a3dc241aea82b941a872ed5c52f6af527ea
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Thu, 06 May 2021 21:34:05 +02:00
+AuthorDate:    Thu, 06 May 2021 21:34:02 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 12 May 2021 14:54:56 +02:00
+CommitterDate: Wed, 12 May 2021 14:54:55 +02:00
 
-jump_label, x86: Allow short NOPs
+objtool: Decode jump_entry::key addend
 
-Now that objtool is able to rewrite jump_label instructions, have the
-compiler emit a JMP, such that it can decide on the optimal encoding,
-and set jump_entry::key bit1 to indicate that objtool should rewrite
-the instruction to a matching NOP.
+Teach objtool about the the low bits in the struct static_key pointer.
 
-For x86_64-allyesconfig this gives:
+That is, the low two bits of @key in:
 
-  jl\     NOP     JMP
-  short:  22997   124
-  long:   30874   90
+  struct jump_entry {
+	s32 code;
+	s32 target;
+	long key;
+  }
 
-IOW, we save (22997+124) * 3 bytes of kernel text in hotpaths.
+as found in the __jump_table section. Since @key has a relocation to
+the variable (to be resolved by the linker), the low two bits will be
+reflected in the relocation's addend.
+
+As such, find the reloc and store the addend, such that we can access
+these bits.
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20210506194158.216763632@infradead.org
+Link: https://lore.kernel.org/r/20210506194158.028024143@infradead.org
 ---
- arch/x86/include/asm/jump_label.h | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ tools/objtool/arch/x86/include/arch/special.h |  1 +
+ tools/objtool/include/objtool/special.h       |  1 +
+ tools/objtool/special.c                       | 14 ++++++++++++++
+ 3 files changed, 16 insertions(+)
 
-diff --git a/arch/x86/include/asm/jump_label.h b/arch/x86/include/asm/jump_label.h
-index ef819e3..0449b12 100644
---- a/arch/x86/include/asm/jump_label.h
-+++ b/arch/x86/include/asm/jump_label.h
-@@ -20,6 +20,22 @@
- 	_ASM_PTR "%c0 + %c1 - .\n\t"			\
- 	".popsection \n\t"
+diff --git a/tools/objtool/arch/x86/include/arch/special.h b/tools/objtool/arch/x86/include/arch/special.h
+index 14271cc..f2918f7 100644
+--- a/tools/objtool/arch/x86/include/arch/special.h
++++ b/tools/objtool/arch/x86/include/arch/special.h
+@@ -9,6 +9,7 @@
+ #define JUMP_ENTRY_SIZE		16
+ #define JUMP_ORIG_OFFSET	0
+ #define JUMP_NEW_OFFSET		4
++#define JUMP_KEY_OFFSET		8
  
-+#ifdef CONFIG_STACK_VALIDATION
+ #define ALT_ENTRY_SIZE		12
+ #define ALT_ORIG_OFFSET		0
+diff --git a/tools/objtool/include/objtool/special.h b/tools/objtool/include/objtool/special.h
+index 8a09f4e..dc4721e 100644
+--- a/tools/objtool/include/objtool/special.h
++++ b/tools/objtool/include/objtool/special.h
+@@ -27,6 +27,7 @@ struct special_alt {
+ 	unsigned long new_off;
+ 
+ 	unsigned int orig_len, new_len; /* group only */
++	u8 key_addend;
+ };
+ 
+ int special_get_alts(struct elf *elf, struct list_head *alts);
+diff --git a/tools/objtool/special.c b/tools/objtool/special.c
+index 07b21cf..bc925cf 100644
+--- a/tools/objtool/special.c
++++ b/tools/objtool/special.c
+@@ -23,6 +23,7 @@ struct special_entry {
+ 	unsigned char size, orig, new;
+ 	unsigned char orig_len, new_len; /* group only */
+ 	unsigned char feature; /* ALTERNATIVE macro CPU feature */
++	unsigned char key; /* jump_label key */
+ };
+ 
+ struct special_entry entries[] = {
+@@ -42,6 +43,7 @@ struct special_entry entries[] = {
+ 		.size = JUMP_ENTRY_SIZE,
+ 		.orig = JUMP_ORIG_OFFSET,
+ 		.new = JUMP_NEW_OFFSET,
++		.key = JUMP_KEY_OFFSET,
+ 	},
+ 	{
+ 		.sec = "__ex_table",
+@@ -122,6 +124,18 @@ static int get_alt_entry(struct elf *elf, struct special_entry *entry,
+ 			alt->new_off -= 0x7ffffff0;
+ 	}
+ 
++	if (entry->key) {
++		struct reloc *key_reloc;
 +
-+static __always_inline bool arch_static_branch(struct static_key *key, bool branch)
-+{
-+	asm_volatile_goto("1:"
-+		"jmp %l[l_yes] # objtool NOPs this \n\t"
-+		JUMP_TABLE_ENTRY
-+		: :  "i" (key), "i" (2 | branch) : : l_yes);
++		key_reloc = find_reloc_by_dest(elf, sec, offset + entry->key);
++		if (!key_reloc) {
++			WARN_FUNC("can't find key reloc",
++				  sec, offset + entry->key);
++			return -1;
++		}
++		alt->key_addend = key_reloc->addend;
++	}
 +
-+	return false;
-+l_yes:
-+	return true;
-+}
-+
-+#else
-+
- static __always_inline bool arch_static_branch(struct static_key * const key, const bool branch)
- {
- 	asm_volatile_goto("1:"
-@@ -32,6 +48,8 @@ l_yes:
- 	return true;
+ 	return 0;
  }
  
-+#endif /* STACK_VALIDATION */
-+
- static __always_inline bool arch_static_branch_jump(struct static_key * const key, const bool branch)
- {
- 	asm_volatile_goto("1:"
