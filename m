@@ -2,51 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C9F937BA6D
+	by mail.lfdr.de (Postfix) with ESMTP id 03F9237BA6C
 	for <lists+linux-tip-commits@lfdr.de>; Wed, 12 May 2021 12:28:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230421AbhELK3q (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S230418AbhELK3q (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Wed, 12 May 2021 06:29:46 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:50544 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230398AbhELK3i (ORCPT
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36148 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230115AbhELK3i (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Wed, 12 May 2021 06:29:38 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 331CAC06174A;
+        Wed, 12 May 2021 03:28:30 -0700 (PDT)
 Date:   Wed, 12 May 2021 10:28:28 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1620815309;
+        s=2020; t=1620815308;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=xQBquYpW0oCpypwgTS9JGzv1AQJSSjvg3kcverQPfPQ=;
-        b=KJbr+L6/Cn4cHTXHNS8F/+zkZ95H7SUpICnXWLmM4RtG0pbbXf5WMA5EpYszILlU6SlhTS
-        /j3eI9AKrw2kLbRv0C62hE2uGDq/LgMa174UF+vxOjyXrBG0JVRx3AriYcgyGDjkFQyYT+
-        G9d2SPNhtIf+L/GXBpuum82P3sjibYKE2D0tWI2m+oLGdZNCFn9ERlqZh+uIH/oolMIrX2
-        HAgc2S1v2VnPGXCVZ0IeYhbqT0RyhMvG7lV3K1F8JJqDuk50+viLpSlirl0INmNGMCrBdC
-        b02yvCLoRWFf9j2ZjXHf1M0FqfBwxECcVzsDCaxkQ17eJlkM/6UbKgZrjH+cDg==
+        bh=DzuWqUfH8ZgkreyT3YTqrOvIU5UvcKV36Kowxe7smPc=;
+        b=TCRBLgwFp4Wc5iLCRIxqGNLh2s3STyCZf6VP5LWrGHHN98EACVjPuqVVifTJFrE3uWKeZ1
+        dRexQY1DRf9qTj8o6FQawSeDW3zntJUECTcN7Fnd5AZrnwDZ0aFxyZvsgyH+Jfrsr15Bu3
+        yyzNmYh137E7q8vkzitQ8fkDywdRVBQ3ipHpe6waxDUC4vUQ7LKOQ+vxqVcBCrUPTvgj91
+        gQ4Di5Vtp11ST0foTIWG7TpuklYr8KR1WkLzQgCh4KsYveLoXxuNvStgckEbSGWnLjZycu
+        o7bzgze1w5kA/Qs3ZcB3qAY9w0kD2A7+MGlSIFGiqm6jJpL+vto/cUg0hOmIcw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1620815309;
+        s=2020e; t=1620815308;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=xQBquYpW0oCpypwgTS9JGzv1AQJSSjvg3kcverQPfPQ=;
-        b=wsN5Oui7BTbYA+g0vTa3xzVHCj2rtK0v2mqBucV1A4fjpQwpfxaTjE2y8QAcN38sS5ShHZ
-        rk511HCVNcHWi4Ag==
+        bh=DzuWqUfH8ZgkreyT3YTqrOvIU5UvcKV36Kowxe7smPc=;
+        b=Fu1FKUdcO+1pxjgEMXisheEtNbeUT7BrgQLd2BCwsDmF5iV5EYvZS/U2X9s3Nhr8N24tkF
+        VgQxBmjjC6KKTvAg==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] delayacct: Add sysctl to enable at runtime
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: sched/core] sched/fair: Add a few assertions
+Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Don Hiatt <dhiatt@digitalocean.com>,
+        Hongyu Ning <hongyu.ning@linux.intel.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <YJkhebGJAywaZowX@hirez.programming.kicks-ass.net>
-References: <YJkhebGJAywaZowX@hirez.programming.kicks-ass.net>
+In-Reply-To: <20210422123308.015639083@infradead.org>
+References: <20210422123308.015639083@infradead.org>
 MIME-Version: 1.0
-Message-ID: <162081530866.29796.12022086349139308604.tip-bot2@tip-bot2>
+Message-ID: <162081530827.29796.4612627849821173058.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -57,142 +63,57 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     0cd7c741f01de13dc1eecf22557593b3514639bb
-Gitweb:        https://git.kernel.org/tip/0cd7c741f01de13dc1eecf22557593b3514639bb
+Commit-ID:     9099a14708ce1dfecb6002605594a0daa319b555
+Gitweb:        https://git.kernel.org/tip/9099a14708ce1dfecb6002605594a0daa319b555
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Mon, 10 May 2021 14:01:00 +02:00
+AuthorDate:    Tue, 17 Nov 2020 18:19:35 -05:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 12 May 2021 11:43:25 +02:00
+CommitterDate: Wed, 12 May 2021 11:43:26 +02:00
 
-delayacct: Add sysctl to enable at runtime
-
-Just like sched_schedstats, allow runtime enabling (and disabling) of
-delayacct. This is useful if one forgot to add the delayacct boot time
-option.
+sched/fair: Add a few assertions
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/YJkhebGJAywaZowX@hirez.programming.kicks-ass.net
+Tested-by: Don Hiatt <dhiatt@digitalocean.com>
+Tested-by: Hongyu Ning <hongyu.ning@linux.intel.com>
+Tested-by: Vincent Guittot <vincent.guittot@linaro.org>
+Link: https://lkml.kernel.org/r/20210422123308.015639083@infradead.org
 ---
- Documentation/accounting/delay-accounting.rst |  6 ++-
- include/linux/delayacct.h                     |  4 ++-
- kernel/delayacct.c                            | 36 +++++++++++++++++-
- kernel/sysctl.c                               | 12 ++++++-
- 4 files changed, 54 insertions(+), 4 deletions(-)
+ kernel/sched/fair.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/accounting/delay-accounting.rst b/Documentation/accounting/delay-accounting.rst
-index f20b282..1b8b46d 100644
---- a/Documentation/accounting/delay-accounting.rst
-+++ b/Documentation/accounting/delay-accounting.rst
-@@ -74,8 +74,10 @@ To enable, add::
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index c209f68..6bdbb7b 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -6288,6 +6288,11 @@ static int select_idle_sibling(struct task_struct *p, int prev, int target)
+ 		task_util = uclamp_task_util(p);
+ 	}
  
-    delayacct
- 
--to the kernel boot options. The rest of the instructions
--below assume this has been done.
-+to the kernel boot options. The rest of the instructions below assume this has
-+been done. Alternatively, use sysctl kernel.task_delayacct to switch the state
-+at runtime. Note however that only tasks started after enabling it will have
-+delayacct information.
- 
- After the system has booted up, use a utility
- similar to  getdelays.c to access the delays
-diff --git a/include/linux/delayacct.h b/include/linux/delayacct.h
-index 225c8e0..af7e6eb 100644
---- a/include/linux/delayacct.h
-+++ b/include/linux/delayacct.h
-@@ -65,6 +65,10 @@ DECLARE_STATIC_KEY_FALSE(delayacct_key);
- extern int delayacct_on;	/* Delay accounting turned on/off */
- extern struct kmem_cache *delayacct_cache;
- extern void delayacct_init(void);
++	/*
++	 * per-cpu select_idle_mask usage
++	 */
++	lockdep_assert_irqs_disabled();
 +
-+extern int sysctl_delayacct(struct ctl_table *table, int write, void *buffer,
-+			    size_t *lenp, loff_t *ppos);
-+
- extern void __delayacct_tsk_init(struct task_struct *);
- extern void __delayacct_tsk_exit(struct task_struct *);
- extern void __delayacct_blkio_start(void);
-diff --git a/kernel/delayacct.c b/kernel/delayacct.c
-index 3f08690..51530d5 100644
---- a/kernel/delayacct.c
-+++ b/kernel/delayacct.c
-@@ -18,6 +18,17 @@ DEFINE_STATIC_KEY_FALSE(delayacct_key);
- int delayacct_on __read_mostly;	/* Delay accounting turned on/off */
- struct kmem_cache *delayacct_cache;
+ 	if ((available_idle_cpu(target) || sched_idle_cpu(target)) &&
+ 	    asym_fits_capacity(task_util, target))
+ 		return target;
+@@ -6781,8 +6786,6 @@ unlock:
+  * certain conditions an idle sibling CPU if the domain has SD_WAKE_AFFINE set.
+  *
+  * Returns the target CPU number.
+- *
+- * preempt must be disabled.
+  */
+ static int
+ select_task_rq_fair(struct task_struct *p, int prev_cpu, int wake_flags)
+@@ -6795,6 +6798,10 @@ select_task_rq_fair(struct task_struct *p, int prev_cpu, int wake_flags)
+ 	/* SD_flags and WF_flags share the first nibble */
+ 	int sd_flag = wake_flags & 0xF;
  
-+static void set_delayacct(bool enabled)
-+{
-+	if (enabled) {
-+		static_branch_enable(&delayacct_key);
-+		delayacct_on = 1;
-+	} else {
-+		delayacct_on = 0;
-+		static_branch_disable(&delayacct_key);
-+	}
-+}
-+
- static int __init delayacct_setup_enable(char *str)
- {
- 	delayacct_on = 1;
-@@ -29,9 +40,30 @@ void delayacct_init(void)
- {
- 	delayacct_cache = KMEM_CACHE(task_delay_info, SLAB_PANIC|SLAB_ACCOUNT);
- 	delayacct_tsk_init(&init_task);
--	if (delayacct_on)
--		static_branch_enable(&delayacct_key);
-+	set_delayacct(delayacct_on);
-+}
-+
-+#ifdef CONFIG_PROC_SYSCTL
-+int sysctl_delayacct(struct ctl_table *table, int write, void *buffer,
-+		     size_t *lenp, loff_t *ppos)
-+{
-+	int state = delayacct_on;
-+	struct ctl_table t;
-+	int err;
-+
-+	if (write && !capable(CAP_SYS_ADMIN))
-+		return -EPERM;
-+
-+	t = *table;
-+	t.data = &state;
-+	err = proc_dointvec_minmax(&t, write, buffer, lenp, ppos);
-+	if (err < 0)
-+		return err;
-+	if (write)
-+		set_delayacct(state);
-+	return err;
- }
-+#endif
++	/*
++	 * required for stable ->cpus_allowed
++	 */
++	lockdep_assert_held(&p->pi_lock);
+ 	if (wake_flags & WF_TTWU) {
+ 		record_wakee(p);
  
- void __delayacct_tsk_init(struct task_struct *tsk)
- {
-diff --git a/kernel/sysctl.c b/kernel/sysctl.c
-index 14edf84..0afbfc8 100644
---- a/kernel/sysctl.c
-+++ b/kernel/sysctl.c
-@@ -71,6 +71,7 @@
- #include <linux/coredump.h>
- #include <linux/latencytop.h>
- #include <linux/pid.h>
-+#include <linux/delayacct.h>
- 
- #include "../lib/kstrtox.h"
- 
-@@ -1727,6 +1728,17 @@ static struct ctl_table kern_table[] = {
- 		.extra2		= SYSCTL_ONE,
- 	},
- #endif /* CONFIG_SCHEDSTATS */
-+#ifdef CONFIG_TASK_DELAY_ACCT
-+	{
-+		.procname	= "task_delayacct",
-+		.data		= NULL,
-+		.maxlen		= sizeof(unsigned int),
-+		.mode		= 0644,
-+		.proc_handler	= sysctl_delayacct,
-+		.extra1		= SYSCTL_ZERO,
-+		.extra2		= SYSCTL_ONE,
-+	},
-+#endif /* CONFIG_TASK_DELAY_ACCT */
- #ifdef CONFIG_NUMA_BALANCING
- 	{
- 		.procname	= "numa_balancing",
