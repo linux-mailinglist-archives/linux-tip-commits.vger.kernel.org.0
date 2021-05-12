@@ -2,55 +2,59 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9692B37B868
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 12 May 2021 10:47:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ACFB837B86E
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 12 May 2021 10:47:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230481AbhELIsy (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 12 May 2021 04:48:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41500 "EHLO
+        id S231223AbhELItD (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 12 May 2021 04:49:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41532 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231129AbhELIsx (ORCPT
+        with ESMTP id S231229AbhELIs7 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 12 May 2021 04:48:53 -0400
+        Wed, 12 May 2021 04:48:59 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56402C061761;
-        Wed, 12 May 2021 01:47:45 -0700 (PDT)
-Date:   Wed, 12 May 2021 08:47:42 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BC16C061760;
+        Wed, 12 May 2021 01:47:51 -0700 (PDT)
+Date:   Wed, 12 May 2021 08:47:49 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1620809263;
+        s=2020; t=1620809270;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=OQheMuVOvvuHGyocn6u884NV2M1cxe0aC3IuTqIBdNc=;
-        b=Zsl/GvcgZzszp0Q5HACHevfAYzO6tffHpbo4uULiHIlV9gjKtvdbYI7t2U2egqmJ6gu+JO
-        KCJqyGsLxoxwz0Pn9XK6G6Y+q936GJmh2wfwbqy5ZGqhH/6bhdlnG54Ea37vHzJSfbLiyI
-        fownwfn8F/SjyqMpLZ5o+l7mRrMhNjE57HHFMyRvfxQmrEowKA0SfGEgiE9CFvlzgKcthY
-        Adcd9q5F0ED1ZJgqhlr6Ac8CAEqqJ59CF0QzxPMadXPEKgdJGRMkUQaXXunpmBcB1PeQWL
-        sM7Aj1ZyvijYSTfA/zZyoDCxw+VKGFo47nNBG9E1kGbeLHMhEDRxo30GQd15rA==
+        bh=uHOHowTuaqG6fAqphFm6F8HCmnXnEYLwnGR3WdQvKe4=;
+        b=ywYg5bIl/5JaNTi0zJhxjvPaXSPVBtDu/CzG7liL1DOafFaGTOvM+f7AA9tt3jojtVxuyz
+        1kUfEpQxPgL8FKIt0wAequBXT0pcc461iusLjj7QLTzhGXtApPRnTauSdQU3Y/8fJuquLg
+        XA5jpnbhVAXBRyV/ADO6I/9eaE6ziLhBwiWvTz4V13U/AgweciXWzaXNhYPwvcZyypoLOv
+        TIHcLHp5u6Fc+AoiL/90I0AevYXX8rwErTfOl5SJ8fU/a46TsdJ4kjybI+skwZl5R3lF4M
+        AcRiB2AhtJQ2A17Ys20fRJYKMA1EWJjebpvYsKzzcNbjRs+R1DFqExQFasE9eQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1620809263;
+        s=2020e; t=1620809270;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=OQheMuVOvvuHGyocn6u884NV2M1cxe0aC3IuTqIBdNc=;
-        b=vfPKtkp2HHQ2o4mcOdwbr3qqmuCzs3MGAcOF+KPyJL80bd/Cn5Pkw8Suc5c0xxkBpuv/b9
-        X6ciRr++ByoQEADg==
-From:   "tip-bot2 for Guenter Roeck" <tip-bot2@linutronix.de>
+        bh=uHOHowTuaqG6fAqphFm6F8HCmnXnEYLwnGR3WdQvKe4=;
+        b=iP2Rx1ycPGYJvACeopEvT4fbhLLVECRi3xa8jkuBK250ls34d5C27z1e8FzINWmgwAvNte
+        c1nIL3JQVEcc3ODA==
+From:   "tip-bot2 for Gautham R. Shenoy" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/x86/intel/uncore: Drop unnecessary NULL checks
- after container_of()
-Cc:     Guenter Roeck <linux@roeck-us.net>, Ingo Molnar <mingo@kernel.org>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20210510224849.2349861-1-linux@roeck-us.net>
-References: <20210510224849.2349861-1-linux@roeck-us.net>
+Subject: [tip: sched/urgent] sched/fair: Fix clearing of has_idle_cores flag
+ in select_idle_cpu()
+Cc:     "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
+        Mel Gorman <mgorman@techsingularity.net>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <1620746169-13996-1-git-send-email-ego@linux.vnet.ibm.com>
+References: <1620746169-13996-1-git-send-email-ego@linux.vnet.ibm.com>
 MIME-Version: 1.0
-Message-ID: <162080926219.29796.17403001869463771532.tip-bot2@tip-bot2>
+Message-ID: <162080926950.29796.5635598249768970052.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,68 +63,51 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/core branch of tip:
+The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     440e906702410f59ae5397ec9e3b639edb53f80e
-Gitweb:        https://git.kernel.org/tip/440e906702410f59ae5397ec9e3b639edb53f80e
-Author:        Guenter Roeck <linux@roeck-us.net>
-AuthorDate:    Mon, 10 May 2021 15:48:49 -07:00
+Commit-ID:     02dbb7246c5bbbbe1607ebdc546ba5c454a664b1
+Gitweb:        https://git.kernel.org/tip/02dbb7246c5bbbbe1607ebdc546ba5c454a664b1
+Author:        Gautham R. Shenoy <ego@linux.vnet.ibm.com>
+AuthorDate:    Tue, 11 May 2021 20:46:09 +05:30
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 12 May 2021 10:44:21 +02:00
+CommitterDate: Wed, 12 May 2021 10:41:28 +02:00
 
-perf/x86/intel/uncore: Drop unnecessary NULL checks after container_of()
+sched/fair: Fix clearing of has_idle_cores flag in select_idle_cpu()
 
-The parameter passed to the pmu_enable() and pmu_disable() functions can not be
-NULL because it is dereferenced by the caller.
+In commit:
 
-That means the result of container_of() on that parameter can also never be NULL.
-The existing NULL checks are therefore unnecessary and misleading. Remove them.
+  9fe1f127b913 ("sched/fair: Merge select_idle_core/cpu()")
 
-This change was made automatically with the following Coccinelle script.
+in select_idle_cpu(), we check if an idle core is present in the LLC
+of the target CPU via the flag "has_idle_cores". We look for the idle
+core in select_idle_cores(). If select_idle_cores() isn't able to find
+an idle core/CPU, we need to unset the has_idle_cores flag in the LLC
+of the target to prevent other CPUs from going down this route.
 
-  @@
-  type t;
-  identifier v;
-  statement s;
-  @@
+However, the current code is unsetting it in the LLC of the current
+CPU instead of the target CPU. This patch fixes this issue.
 
-  <+...
-  (
-    t v = container_of(...);
-  |
-    v = container_of(...);
-  )
-    ...
-    when != v
-  - if (\( !v \| v == NULL \) ) s
-  ...+>
-
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: 9fe1f127b913 ("sched/fair: Merge select_idle_core/cpu()")
+Signed-off-by: Gautham R. Shenoy <ego@linux.vnet.ibm.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20210510224849.2349861-1-linux@roeck-us.net
+Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
+Reviewed-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Acked-by: Mel Gorman <mgorman@techsingularity.net>
+Link: https://lore.kernel.org/r/1620746169-13996-1-git-send-email-ego@linux.vnet.ibm.com
 ---
- arch/x86/events/intel/uncore.c | 4 ----
- 1 file changed, 4 deletions(-)
+ kernel/sched/fair.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/events/intel/uncore.c b/arch/x86/events/intel/uncore.c
-index df7b07d..9bf4dbb 100644
---- a/arch/x86/events/intel/uncore.c
-+++ b/arch/x86/events/intel/uncore.c
-@@ -801,8 +801,6 @@ static void uncore_pmu_enable(struct pmu *pmu)
- 	struct intel_uncore_box *box;
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 20aa234..3248e24 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -6217,7 +6217,7 @@ static int select_idle_cpu(struct task_struct *p, struct sched_domain *sd, bool 
+ 	}
  
- 	uncore_pmu = container_of(pmu, struct intel_uncore_pmu, pmu);
--	if (!uncore_pmu)
--		return;
+ 	if (has_idle_core)
+-		set_idle_cores(this, false);
++		set_idle_cores(target, false);
  
- 	box = uncore_pmu_to_box(uncore_pmu, smp_processor_id());
- 	if (!box)
-@@ -818,8 +816,6 @@ static void uncore_pmu_disable(struct pmu *pmu)
- 	struct intel_uncore_box *box;
- 
- 	uncore_pmu = container_of(pmu, struct intel_uncore_pmu, pmu);
--	if (!uncore_pmu)
--		return;
- 
- 	box = uncore_pmu_to_box(uncore_pmu, smp_processor_id());
- 	if (!box)
+ 	if (sched_feat(SIS_PROP) && !has_idle_core) {
+ 		time = cpu_clock(this) - time;
