@@ -2,179 +2,113 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E99B737EDDB
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 13 May 2021 00:53:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65D5F37EDDE
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 13 May 2021 00:54:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1383977AbhELUzb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 12 May 2021 16:55:31 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:53452 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244950AbhELTVT (ORCPT
+        id S1385970AbhELUzp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 12 May 2021 16:55:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43594 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1344424AbhELT0K (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 12 May 2021 15:21:19 -0400
-Date:   Wed, 12 May 2021 19:20:06 -0000
+        Wed, 12 May 2021 15:26:10 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 429C4C06138F;
+        Wed, 12 May 2021 12:20:17 -0700 (PDT)
+Date:   Wed, 12 May 2021 19:20:13 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1620847209;
+        s=2020; t=1620847215;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=W9CqgNt7a1291GXPjc3CSNz5tckZZ3tHmPuyScdCQVA=;
-        b=IsROUS4APyxfYGG36ohjTCkBKPAA183IAUN/J/cqgAGeoEqrUTRFXXMi7eKjbKGpnql6lw
-        qZ60CkzNab9ewMamLVcO+YAJJR3Yl1IgFki9C/g2odJjpal6can8bv0QkH8iuT1MoJP2UH
-        EvpUiFSPgY2GhygJiI9W6Elo+L8/t37Rtj1pE9pC2EZSAxFWxG/oRYT3kNTqA5SSKOWZkj
-        lHas+hIelFUMb0S20o5A+ErHusQcwTDLA2/TaavSeBXSqN0scSoYvU3nceYlJhjGIsk3lK
-        HFwUyTzLFxsaff2B1Ujze14RDXinxuzhEASIOWCf90bxYwGxChCmxsADbfDCvQ==
+        bh=8acsnM4HzJ2odlgZZUPnssvVTLGfHQehLruvUSsNGQ0=;
+        b=V1PjK7etsr1GsyvM2sz78Y3MELbeJ5xmSEUjquJipi1nkNHKejMQLq/mjOC1abqCIwVwDR
+        JmRSQfsuCdzGBHMHuB6+1uvxr1pL5YyPHp775BQkSv4tc5Mwsbavc7WLi8vMb7Nf/HSgj1
+        ykWFwgikXtt2NqzRsm8wVD3O1pgUsY85nlh6dKpX9gckxZxzIuHALSj93mjRURJxTTzF3W
+        pXa23RC1aNDqbzDJn8IqrUbJVhuf/s2oG3bB1IZe9F84ZFBh5xE4lUOvg+U6ZP7UAxhK0c
+        G6XZH5X9M7nIX7r4lqtGQHYQRRWH9ckGPdMXcUsr+9EpmNthpRDt8tszE+SilA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1620847209;
+        s=2020e; t=1620847215;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=W9CqgNt7a1291GXPjc3CSNz5tckZZ3tHmPuyScdCQVA=;
-        b=pcvKKGaGHByclnWR7utJ6ofzRBTl971ZR+JNGialqF9K6Y4d7xSxUwdOGu8UeUzLw4bW1+
-        8cdHDtNQhAlIysAA==
-From:   "tip-bot2 for Huang Rui" <tip-bot2@linutronix.de>
+        bh=8acsnM4HzJ2odlgZZUPnssvVTLGfHQehLruvUSsNGQ0=;
+        b=HUGRxZeanjgKX0Vu0jW1azbJCVbdqBhGouGlC6Mpp9i+3Dzffh7Iu9l6PLLenw1vCU5nuI
+        c7EcQkHZMaUWAsCw==
+From:   "tip-bot2 for Vasily Gorbik" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] x86, sched: Fix the AMD CPPC maximum performance
- value on certain AMD Ryzen generations
-Cc:     Jason Bagavatsingham <jason.bagavatsingham@gmail.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Huang Rui <ray.huang@amd.com>, Ingo Molnar <mingo@kernel.org>,
-        stable@vger.kernel.org, x86@kernel.org,
+Subject: [tip: objtool/urgent] objtool/x86: Fix elf_add_alternative() endianness
+Cc:     Vasily Gorbik <gor@linux.ibm.com>, Ingo Molnar <mingo@kernel.org>,
+        Peter Zijlstra <a.p.zijlstra@chello.nl>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210425073451.2557394-1-ray.huang@amd.com>
-References: <20210425073451.2557394-1-ray.huang@amd.com>
+In-Reply-To: =?utf-8?q?=3Cpatch-2=2Ethread-6c9df9=2Egit-6c9df9a8098d=2Eyou?=
+ =?utf-8?q?r-ad-here=2Ecall-01620841104-ext-2554=40work=2Ehours=3E?=
+References: =?utf-8?q?=3Cpatch-2=2Ethread-6c9df9=2Egit-6c9df9a8098d=2Eyour?=
+ =?utf-8?q?-ad-here=2Ecall-01620841104-ext-2554=40work=2Ehours=3E?=
 MIME-Version: 1.0
-Message-ID: <162084720697.29796.16642711613957963140.tip-bot2@tip-bot2>
+Message-ID: <162084721395.29796.17337977266072814235.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/urgent branch of tip:
+The following commit has been merged into the objtool/urgent branch of tip:
 
-Commit-ID:     337fb3130c29ef5ea3bbcd45e6589b7be6deeb4d
-Gitweb:        https://git.kernel.org/tip/337fb3130c29ef5ea3bbcd45e6589b7be6d=
-eeb4d
-Author:        Huang Rui <ray.huang@amd.com>
-AuthorDate:    Sun, 25 Apr 2021 15:34:51 +08:00
+Commit-ID:     f66c05d6baf36069c01a02f869bebb75586f2318
+Gitweb:        https://git.kernel.org/tip/f66c05d6baf36069c01a02f869bebb75586f2318
+Author:        Vasily Gorbik <gor@linux.ibm.com>
+AuthorDate:    Wed, 12 May 2021 19:42:13 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 12 May 2021 21:14:08 +02:00
+CommitterDate: Wed, 12 May 2021 21:17:01 +02:00
 
-x86, sched: Fix the AMD CPPC maximum performance value on certain AMD Ryzen g=
-enerations
+objtool/x86: Fix elf_add_alternative() endianness
 
-Some AMD Ryzen generations has different calculation method on maximum
-performance. 255 is not for all ASICs, some specific generations should use 1=
-66
-as the maximum performance. Otherwise, it will report incorrect frequency val=
-ue
-like below:
+Currently x86 kernel cross-compiled on big endian system fails at boot with:
 
-  ~ =E2=86=92 lscpu | grep MHz
-  CPU MHz:                         3400.000
-  CPU max MHz:                     7228.3198
-  CPU min MHz:                     2200.0000
+  kernel BUG at arch/x86/kernel/alternative.c:258!
 
-[ mingo: Tidied up whitespace use. ]
+Corresponding bug condition look like the following:
 
-Fixes: 41ea667227ba ("x86, sched: Calculate frequency invariance for AMD syst=
-ems")
-Fixes: 3c55e94c0ade ("cpufreq: ACPI: Extend frequency tables to cover boost f=
-requencies")
-Reported-by: Jason Bagavatsingham <jason.bagavatsingham@gmail.com>
-Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Huang Rui <ray.huang@amd.com>
+  BUG_ON(feature >= (NCAPINTS + NBUGINTS) * 32);
+
+Fix that by converting alternative feature/cpuid to target endianness.
+
+Fixes: 9bc0bb50727c ("objtool/x86: Rewrite retpoline thunk calls")
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: Jason Bagavatsingham <jason.bagavatsingham@gmail.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20210425073451.2557394-1-ray.huang@amd.com
-Bugzilla: https://bugzilla.kernel.org/show_bug.cgi?id=3D211791
+Acked-by: Peter Zijlstra <a.p.zijlstra@chello.nl>
+Link: https://lore.kernel.org/r/patch-2.thread-6c9df9.git-6c9df9a8098d.your-ad-here.call-01620841104-ext-2554@work.hours
 ---
- arch/x86/include/asm/processor.h |  2 ++
- arch/x86/kernel/cpu/amd.c        | 16 ++++++++++++++++
- arch/x86/kernel/smpboot.c        |  2 +-
- drivers/cpufreq/acpi-cpufreq.c   |  6 +++++-
- 4 files changed, 24 insertions(+), 2 deletions(-)
+ tools/objtool/arch/x86/decode.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processo=
-r.h
-index 154321d..556b2b1 100644
---- a/arch/x86/include/asm/processor.h
-+++ b/arch/x86/include/asm/processor.h
-@@ -787,8 +787,10 @@ DECLARE_PER_CPU(u64, msr_misc_features_shadow);
-=20
- #ifdef CONFIG_CPU_SUP_AMD
- extern u32 amd_get_nodes_per_socket(void);
-+extern u32 amd_get_highest_perf(void);
- #else
- static inline u32 amd_get_nodes_per_socket(void)	{ return 0; }
-+static inline u32 amd_get_highest_perf(void)		{ return 0; }
- #endif
-=20
- static inline uint32_t hypervisor_cpuid_base(const char *sig, uint32_t leave=
-s)
-diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
-index 2d11384..109d2c7 100644
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -1165,3 +1165,19 @@ void set_dr_addr_mask(unsigned long mask, int dr)
- 		break;
+diff --git a/tools/objtool/arch/x86/decode.c b/tools/objtool/arch/x86/decode.c
+index cedf3ed..24295d3 100644
+--- a/tools/objtool/arch/x86/decode.c
++++ b/tools/objtool/arch/x86/decode.c
+@@ -19,6 +19,7 @@
+ #include <objtool/elf.h>
+ #include <objtool/arch.h>
+ #include <objtool/warn.h>
++#include <objtool/endianness.h>
+ #include <arch/elf.h>
+ 
+ static int is_x86_64(const struct elf *elf)
+@@ -725,7 +726,7 @@ static int elf_add_alternative(struct elf *elf,
+ 		return -1;
  	}
- }
-+
-+u32 amd_get_highest_perf(void)
-+{
-+	struct cpuinfo_x86 *c =3D &boot_cpu_data;
-+
-+	if (c->x86 =3D=3D 0x17 && ((c->x86_model >=3D 0x30 && c->x86_model < 0x40) =
-||
-+			       (c->x86_model >=3D 0x70 && c->x86_model < 0x80)))
-+		return 166;
-+
-+	if (c->x86 =3D=3D 0x19 && ((c->x86_model >=3D 0x20 && c->x86_model < 0x30) =
-||
-+			       (c->x86_model >=3D 0x40 && c->x86_model < 0x70)))
-+		return 166;
-+
-+	return 225;
-+}
-+EXPORT_SYMBOL_GPL(amd_get_highest_perf);
-diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
-index 0ad5214..7770245 100644
---- a/arch/x86/kernel/smpboot.c
-+++ b/arch/x86/kernel/smpboot.c
-@@ -2043,7 +2043,7 @@ static bool amd_set_max_freq_ratio(void)
- 		return false;
- 	}
-=20
--	highest_perf =3D perf_caps.highest_perf;
-+	highest_perf =3D amd_get_highest_perf();
- 	nominal_perf =3D perf_caps.nominal_perf;
-=20
- 	if (!highest_perf || !nominal_perf) {
-diff --git a/drivers/cpufreq/acpi-cpufreq.c b/drivers/cpufreq/acpi-cpufreq.c
-index d1bbc16..7e74504 100644
---- a/drivers/cpufreq/acpi-cpufreq.c
-+++ b/drivers/cpufreq/acpi-cpufreq.c
-@@ -646,7 +646,11 @@ static u64 get_max_boost_ratio(unsigned int cpu)
- 		return 0;
- 	}
-=20
--	highest_perf =3D perf_caps.highest_perf;
-+	if (boot_cpu_data.x86_vendor =3D=3D X86_VENDOR_AMD)
-+		highest_perf =3D amd_get_highest_perf();
-+	else
-+		highest_perf =3D perf_caps.highest_perf;
-+
- 	nominal_perf =3D perf_caps.nominal_perf;
-=20
- 	if (!highest_perf || !nominal_perf) {
+ 
+-	alt->cpuid = cpuid;
++	alt->cpuid = bswap_if_needed(cpuid);
+ 	alt->instrlen = orig_len;
+ 	alt->replacementlen = repl_len;
+ 
