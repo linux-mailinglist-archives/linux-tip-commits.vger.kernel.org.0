@@ -2,18 +2,18 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E901D37BDFA
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 12 May 2021 15:19:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E38237BDFB
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 12 May 2021 15:19:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231269AbhELNU7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S231166AbhELNU7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Wed, 12 May 2021 09:20:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46294 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46292 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230037AbhELNU6 (ORCPT
+        with ESMTP id S231203AbhELNU6 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Wed, 12 May 2021 09:20:58 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C823C061574;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C888C06174A;
         Wed, 12 May 2021 06:19:50 -0700 (PDT)
 Date:   Wed, 12 May 2021 13:19:47 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
@@ -23,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=9gU+RP/lnQppvNCgK8p0xEMHn8SaE0tuCjrsNkvAogg=;
-        b=zm3J0jxe9dkr5Ac2SjCbDZTjsE29akU+IxZuisU/4WBX1ugqoAg80bdZdWiC8mAglywYZ0
-        qrlPi48eLHGdGjPkAW3Eq5pUYWf1vHiHbzgGf9+NXseax1JjWlr8XmAdFWUhzqpCoFEG94
-        aOxmK5euQV1UhgJdxqIoB9iMZAoNvESrmFQ29lAfOrrdowWTPFbtqcSsOxciw7kx63lNhZ
-        sY+YSeACz+rhrilFelx/wVrD57hobYBZML1C2bc/HnTLFnlln8AJzT1qgj7mwqUAnYWQ6t
-        Dj8bqDmywEucM/b5NXYqV4zHyti+9KozQpKtOiWcz7vP8Qzg7L3ueT0WvcpUAw==
+        bh=eXugBDZF/+fo3g/7REWMwsLvMZecGB0QKmJD6/mzD/c=;
+        b=cQfRyeuyjqc7zf7uX4ZRg+mPgRgC0EIYDPkSpCO8sJOeO9efG2H7Rj5e+J3Np7HE8xNWAw
+        Xz0AQb8jMk2ye5kHGqwLSxyXQn6BND8c5ep3wrBv9/XM3eVmTG57hXif0pryaq1e31mfun
+        EPUCrjebJdzDM2/dJP8IRv8q3Jmw8hM3KYS3Vc+lemqb2H0yHWHZeLbZv2h38y56m+FKHh
+        EyYgEXxHXe0WjJyGUwLtEKbgOg4CRaFfKqfT1Z3QaiHUxfDdv8c5uoHHBL3N0To6gDJCIn
+        4LhKTCzq6CLrLP++Ad1+IX37+b6LuAKZCybUqjpLdQ6uv1NJIWlwncfAcpCsMw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1620825588;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,21 +36,21 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=9gU+RP/lnQppvNCgK8p0xEMHn8SaE0tuCjrsNkvAogg=;
-        b=IZ1ou4xj/6FFLvyxEjV8di/djwtIOHKeq/yAfF9PC6EhdP+DFvHicPh8Y8D4ymxzSH3rDM
-        gfZiWn6IvumCNTCQ==
+        bh=eXugBDZF/+fo3g/7REWMwsLvMZecGB0QKmJD6/mzD/c=;
+        b=5a+jnzspC0GKLUEzspqaS9tevxlAStcQmAkFtvdCElXxxFfnM9wJ7HDtLCG3CLaeILk8mT
+        DpwwyPhGG6olEIBA==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] objtool: Provide stats for jump_labels
+Subject: [tip: objtool/core] jump_label, x86: Allow short NOPs
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210506194158.153101906@infradead.org>
-References: <20210506194158.153101906@infradead.org>
+In-Reply-To: <20210506194158.216763632@infradead.org>
+References: <20210506194158.216763632@infradead.org>
 MIME-Version: 1.0
-Message-ID: <162082558766.29796.6186809502677667620.tip-bot2@tip-bot2>
+Message-ID: <162082558708.29796.10992563428983424866.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,86 +61,68 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     e2d9494beff21a26438eb611c260b8a6c2dc4dbf
-Gitweb:        https://git.kernel.org/tip/e2d9494beff21a26438eb611c260b8a6c2dc4dbf
+Commit-ID:     ab3257042c26d0cd44793c741e2f89bf38b21fe8
+Gitweb:        https://git.kernel.org/tip/ab3257042c26d0cd44793c741e2f89bf38b21fe8
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Thu, 06 May 2021 21:34:04 +02:00
+AuthorDate:    Thu, 06 May 2021 21:34:05 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Wed, 12 May 2021 14:54:56 +02:00
 
-objtool: Provide stats for jump_labels
+jump_label, x86: Allow short NOPs
 
-Add objtool --stats to count the jump_label sites it encounters.
+Now that objtool is able to rewrite jump_label instructions, have the
+compiler emit a JMP, such that it can decide on the optimal encoding,
+and set jump_entry::key bit1 to indicate that objtool should rewrite
+the instruction to a matching NOP.
+
+For x86_64-allyesconfig this gives:
+
+  jl\     NOP     JMP
+  short:  22997   124
+  long:   30874   90
+
+IOW, we save (22997+124) * 3 bytes of kernel text in hotpaths.
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20210506194158.153101906@infradead.org
+Link: https://lore.kernel.org/r/20210506194158.216763632@infradead.org
 ---
- tools/objtool/check.c                   | 22 ++++++++++++++++++++--
- tools/objtool/include/objtool/objtool.h |  3 +++
- 2 files changed, 23 insertions(+), 2 deletions(-)
+ arch/x86/include/asm/jump_label.h | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 98cf87f..2c6a93e 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -1225,8 +1225,15 @@ static int handle_jump_alt(struct objtool_file *file,
- 			   struct instruction *orig_insn,
- 			   struct instruction **new_insn)
+diff --git a/arch/x86/include/asm/jump_label.h b/arch/x86/include/asm/jump_label.h
+index ef819e3..0449b12 100644
+--- a/arch/x86/include/asm/jump_label.h
++++ b/arch/x86/include/asm/jump_label.h
+@@ -20,6 +20,22 @@
+ 	_ASM_PTR "%c0 + %c1 - .\n\t"			\
+ 	".popsection \n\t"
+ 
++#ifdef CONFIG_STACK_VALIDATION
++
++static __always_inline bool arch_static_branch(struct static_key *key, bool branch)
++{
++	asm_volatile_goto("1:"
++		"jmp %l[l_yes] # objtool NOPs this \n\t"
++		JUMP_TABLE_ENTRY
++		: :  "i" (key), "i" (2 | branch) : : l_yes);
++
++	return false;
++l_yes:
++	return true;
++}
++
++#else
++
+ static __always_inline bool arch_static_branch(struct static_key * const key, const bool branch)
  {
--	if (orig_insn->type == INSN_NOP)
-+	if (orig_insn->type == INSN_NOP) {
-+do_nop:
-+		if (orig_insn->len == 2)
-+			file->jl_nop_short++;
-+		else
-+			file->jl_nop_long++;
-+
- 		return 0;
-+	}
- 
- 	if (orig_insn->type != INSN_JUMP_UNCONDITIONAL) {
- 		WARN_FUNC("unsupported instruction at jump label",
-@@ -1245,9 +1252,14 @@ static int handle_jump_alt(struct objtool_file *file,
- 			       orig_insn->offset, orig_insn->len,
- 			       arch_nop_insn(orig_insn->len));
- 		orig_insn->type = INSN_NOP;
--		return 0;
-+		goto do_nop;
- 	}
- 
-+	if (orig_insn->len == 2)
-+		file->jl_short++;
-+	else
-+		file->jl_long++;
-+
- 	*new_insn = list_next_entry(orig_insn, list);
- 	return 0;
+ 	asm_volatile_goto("1:"
+@@ -32,6 +48,8 @@ l_yes:
+ 	return true;
  }
-@@ -1328,6 +1340,12 @@ static int add_special_section_alts(struct objtool_file *file)
- 		free(special_alt);
- 	}
  
-+	if (stats) {
-+		printf("jl\\\tNOP\tJMP\n");
-+		printf("short:\t%ld\t%ld\n", file->jl_nop_short, file->jl_short);
-+		printf("long:\t%ld\t%ld\n", file->jl_nop_long, file->jl_long);
-+	}
++#endif /* STACK_VALIDATION */
 +
- out:
- 	return ret;
- }
-diff --git a/tools/objtool/include/objtool/objtool.h b/tools/objtool/include/objtool/objtool.h
-index e4084af..24fa836 100644
---- a/tools/objtool/include/objtool/objtool.h
-+++ b/tools/objtool/include/objtool/objtool.h
-@@ -22,6 +22,9 @@ struct objtool_file {
- 	struct list_head static_call_list;
- 	struct list_head mcount_loc_list;
- 	bool ignore_unreachables, c_file, hints, rodata;
-+
-+	unsigned long jl_short, jl_long;
-+	unsigned long jl_nop_short, jl_nop_long;
- };
- 
- struct objtool_file *objtool_open_read(const char *_objname);
+ static __always_inline bool arch_static_branch_jump(struct static_key * const key, const bool branch)
+ {
+ 	asm_volatile_goto("1:"
