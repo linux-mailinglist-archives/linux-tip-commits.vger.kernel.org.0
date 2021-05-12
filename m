@@ -2,56 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B193D37EDD4
+	by mail.lfdr.de (Postfix) with ESMTP id 2063037EDD2
 	for <lists+linux-tip-commits@lfdr.de>; Thu, 13 May 2021 00:44:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346491AbhELUzU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 12 May 2021 16:55:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60924 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1357083AbhELShy (ORCPT
+        id S235990AbhELUzR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 12 May 2021 16:55:17 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:53268 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S243380AbhELSdp (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 12 May 2021 14:37:54 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23D61C061239;
-        Wed, 12 May 2021 11:32:33 -0700 (PDT)
-Date:   Wed, 12 May 2021 18:32:30 -0000
+        Wed, 12 May 2021 14:33:45 -0400
+Date:   Wed, 12 May 2021 18:32:31 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1620844351;
+        s=2020; t=1620844352;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=AuZ52jdPatIbvnFuE0KauhphGZeSHfIiCbzAT4VZhjE=;
-        b=x5Zf6aIE8iyxwSftVm70auKJY26mhjI/DGuZhWhaz4TOaYbhwHWootACL5aoKppgB6P57y
-        55x66l9tRPYNI9KV/Fk0sKrEonuLyV85etfuWuwA0hkIdVEAqa73r643WUGAy0xtRiJArh
-        dFuD9TgkA+19n9pNNWdqdD10lzRk2SOmakA5CxRios7T3eY61homkcQdCccnNRrfvY+ndd
-        0qRpw5EycdbOmggrrtb2+6pFAztWcO0ZjHRp24re1x1B20sAtcsML6PprE9ND3ZDACnP1J
-        EF2tPdkpez/u3NxYAIHpT9xfRyuOa2bas/jHT2B+oIyGIlVTDCyMCQ9aPva+eQ==
+        bh=GL+KN12V2WLlmTN5qmieIkFJpA5O3CkALUJ4v9GhZ0M=;
+        b=BcpmxlJrVK9DhuCoFKi8BSGzLPrNDpthK4DPOuFYWMZCg59ooPUn9ERFXe1yz/8z4u0Olj
+        mxm+OFffaZn0AHXH1nJcrMaENqLSJ7DfvpjbP2g8lSj5z4XG7sKpO36nUC8sosoqhbZPYF
+        mOVAlMsESlIyo4xrScspQFhs6r513yn7XLZaRLM/AxbjdUIZqLCA+l1Wh2Uj9MKINTLKyG
+        cxIIEr7qmgVr4zJyVOPTmMCKiMxfXlcNsuEkUjqnlaTPnaACcxVwawpgpSosMfWzMu6zx/
+        8QzCkxPDeC208YzJ85iPa6YmHGsf6+5tFhaXD/t8CmYi0M79sgKaFllJsZZF5Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1620844351;
+        s=2020e; t=1620844352;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=AuZ52jdPatIbvnFuE0KauhphGZeSHfIiCbzAT4VZhjE=;
-        b=G1RE2eUJvQPVIJWPwLNDtmDyfQQQTBBdWREQelBYmcBX4mWrUqDs/QDb532HWlp4yAEPXi
-        OjlMvvRQJpER8RDQ==
+        bh=GL+KN12V2WLlmTN5qmieIkFJpA5O3CkALUJ4v9GhZ0M=;
+        b=qh0dnRcxq+qQtW22145R4o6XVeafFN3xx2UFxNWaJg/0D5EmMckYEpzRJZXtwcVhNPuvTK
+        GBwnzdRcR+NZvRAw==
 From:   "tip-bot2 for Vasily Gorbik" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/urgent] objtool/x86: Fix elf_add_alternative() endianness
+Subject: [tip: objtool/urgent] objtool: Fix elf_create_undef_symbol() endianness
 Cc:     Vasily Gorbik <gor@linux.ibm.com>, Ingo Molnar <mingo@kernel.org>,
         x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: =?utf-8?q?=3Cpatch-2=2Ethread-6c9df9=2Egit-6c9df9a8098d=2Eyou?=
+In-Reply-To: =?utf-8?q?=3Cpatch-1=2Ethread-6c9df9=2Egit-d39264656387=2Eyou?=
  =?utf-8?q?r-ad-here=2Ecall-01620841104-ext-2554=40work=2Ehours=3E?=
-References: =?utf-8?q?=3Cpatch-2=2Ethread-6c9df9=2Egit-6c9df9a8098d=2Eyour?=
+References: =?utf-8?q?=3Cpatch-1=2Ethread-6c9df9=2Egit-d39264656387=2Eyour?=
  =?utf-8?q?-ad-here=2Ecall-01620841104-ext-2554=40work=2Ehours=3E?=
 MIME-Version: 1.0
-Message-ID: <162084435091.29796.15613736364949786764.tip-bot2@tip-bot2>
+Message-ID: <162084435147.29796.6211951426659224988.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -62,51 +59,39 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the objtool/urgent branch of tip:
 
-Commit-ID:     e63db0917117b26e0217dde51a9df238d3ed63d2
-Gitweb:        https://git.kernel.org/tip/e63db0917117b26e0217dde51a9df238d3ed63d2
+Commit-ID:     7176af27a8bf4ab5b5c7a1850459b194a21cf876
+Gitweb:        https://git.kernel.org/tip/7176af27a8bf4ab5b5c7a1850459b194a21cf876
 Author:        Vasily Gorbik <gor@linux.ibm.com>
-AuthorDate:    Wed, 12 May 2021 19:42:13 +02:00
+AuthorDate:    Wed, 12 May 2021 19:42:10 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Wed, 12 May 2021 20:25:48 +02:00
 
-objtool/x86: Fix elf_add_alternative() endianness
+objtool: Fix elf_create_undef_symbol() endianness
 
-Currently x86 kernel cross-compiled on big endian system fails at boot with:
+Currently x86 cross-compilation fails on big endian system with:
 
-  kernel BUG at arch/x86/kernel/alternative.c:258!
+  x86_64-cross-ld: init/main.o: invalid string offset 488112128 >= 6229 for section `.strtab'
 
-Corresponding bug condition look like the following:
+Mark new ELF data in elf_create_undef_symbol() as symbol, so that libelf
+does endianness handling correctly.
 
-  BUG_ON(feature >= (NCAPINTS + NBUGINTS) * 32);
-
-Fix that by converting alternative feature/cpuid to target endianness.
-
-Fixes: 9bc0bb50727c ("objtool/x86: Rewrite retpoline thunk calls")
+Fixes: 2f2f7e47f052 ("objtool: Add elf_create_undef_symbol()")
 Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/patch-2.thread-6c9df9.git-6c9df9a8098d.your-ad-here.call-01620841104-ext-2554@work.hours
+Link: https://lore.kernel.org/r/patch-1.thread-6c9df9.git-d39264656387.your-ad-here.call-01620841104-ext-2554@work.hours
 ---
- tools/objtool/arch/x86/decode.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tools/objtool/elf.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/objtool/arch/x86/decode.c b/tools/objtool/arch/x86/decode.c
-index cedf3ed..24295d3 100644
---- a/tools/objtool/arch/x86/decode.c
-+++ b/tools/objtool/arch/x86/decode.c
-@@ -19,6 +19,7 @@
- #include <objtool/elf.h>
- #include <objtool/arch.h>
- #include <objtool/warn.h>
-+#include <objtool/endianness.h>
- #include <arch/elf.h>
+diff --git a/tools/objtool/elf.c b/tools/objtool/elf.c
+index d08f5f3..743c2e9 100644
+--- a/tools/objtool/elf.c
++++ b/tools/objtool/elf.c
+@@ -762,6 +762,7 @@ struct symbol *elf_create_undef_symbol(struct elf *elf, const char *name)
+ 	data->d_buf = &sym->sym;
+ 	data->d_size = sizeof(sym->sym);
+ 	data->d_align = 1;
++	data->d_type = ELF_T_SYM;
  
- static int is_x86_64(const struct elf *elf)
-@@ -725,7 +726,7 @@ static int elf_add_alternative(struct elf *elf,
- 		return -1;
- 	}
- 
--	alt->cpuid = cpuid;
-+	alt->cpuid = bswap_if_needed(cpuid);
- 	alt->instrlen = orig_len;
- 	alt->replacementlen = repl_len;
+ 	sym->idx = symtab->len / sizeof(sym->sym);
  
