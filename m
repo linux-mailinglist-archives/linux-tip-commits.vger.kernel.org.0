@@ -2,56 +2,58 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F30E137F87C
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 13 May 2021 15:17:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A43B737F882
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 13 May 2021 15:18:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233767AbhEMNSg (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 13 May 2021 09:18:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55404 "EHLO
+        id S233975AbhEMNT0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 13 May 2021 09:19:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55450 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233842AbhEMNSb (ORCPT
+        with ESMTP id S233898AbhEMNSp (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 13 May 2021 09:18:31 -0400
+        Thu, 13 May 2021 09:18:45 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2A1CC06174A;
-        Thu, 13 May 2021 06:17:21 -0700 (PDT)
-Date:   Thu, 13 May 2021 13:17:18 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2695C061574;
+        Thu, 13 May 2021 06:17:28 -0700 (PDT)
+Date:   Thu, 13 May 2021 13:17:26 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1620911839;
+        s=2020; t=1620911847;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=wTpbuzG+rPAw07ucY7V0DQfdDXZgFVUUGIHIN/4Kito=;
-        b=JjlH7tJRnhb3WvMoTygypqHnT1UszgCOtGLliKI7dKD3kTu5QEHvYQiT5nD36V4M9gU9p8
-        Xe6fgd339eF5ICT76PxcXLAnmyR5LYba7ZQzrkZtxAt5lYE6A904eeQfGdBSlb0nKi8oIp
-        pNahS6n8y1gXZdWW9jXce59EGG1JcS8oFv7hpasqBh8TzqKoqi/FezOXbjMx8sxUlto63u
-        VVThz0N2092+B0yOBxPMH9ezB3Bh/IsJn5l6yH2gScWwWkjeLXMyhX2bzxU5Pj35iTOFiM
-        6tjeFvkoPqux/de0daBw7aQerqV1w/WpUatfmzRlwuAH4q1hilwepYs9qnqzTg==
+        bh=UVV3zneIEDe+eolIm/nNGFGvELudnycxsQZGLPyf+dY=;
+        b=T+r+/lczcEURLhXoG1G9VRZcIHNMzCO8L4XQgkwh6RZSpqfA/BSKlesstA33s5Ojg3JTeE
+        3sncRYu5q0oggNuJ4UYnjP83GA735aUDRi5WS6F5YT+a4o8sddWaznvsKwTDUz5i4OTszU
+        1mDmecTpWNUMOoswlL+nqvHKPBVeDD46cKwJg9ROVbnre1bvAlohlBGO7wlUddaBNEHlLe
+        niba/pJkvP/lLmyN+KZhvvmtMX6HmlUPiYHThds4JWXSc09hONooYXX+fs3JV3AL2Q/qQY
+        xJ/J0FWSL0cb807bb8sl8BZ4SRAMTmtg9DNk62u7tG/1cxdJTPKYeQMgPJbOng==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1620911839;
+        s=2020e; t=1620911847;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=wTpbuzG+rPAw07ucY7V0DQfdDXZgFVUUGIHIN/4Kito=;
-        b=5/TUpg37G1Gu1dP3PCF+G0TO/XREcbZ0oC6ibU5A+xjQPFuxRDukMaJzNuBmGNyd47XQan
-        YEZ8/uJTH5+75zDQ==
-From:   "tip-bot2 for Paul Gortmaker" <tip-bot2@linutronix.de>
+        bh=UVV3zneIEDe+eolIm/nNGFGvELudnycxsQZGLPyf+dY=;
+        b=qY+PhrJcoIME5H7jD1UJJMa2cxa0JEVYuZ5TvdTd1coVLRPU/r9R7DlQtf4BKDq6eyiOvc
+        21BTCLtXB6BggcCw==
+From:   "tip-bot2 for Marcelo Tosatti" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/isolation: Reconcile rcu_nocbs= and nohz_full=
-Cc:     Paul Gortmaker <paul.gortmaker@windriver.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
+Subject: [tip: timers/nohz] tick/nohz: Kick only _queued_ task whose tick
+ dependency is updated
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        Marcelo Tosatti <mtosatti@redhat.com>,
+        Frederic Weisbecker <frederic@kernel.org>,
+        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210419042659.1134916-1-paul.gortmaker@windriver.com>
-References: <20210419042659.1134916-1-paul.gortmaker@windriver.com>
+In-Reply-To: <20210512232924.150322-9-frederic@kernel.org>
+References: <20210512232924.150322-9-frederic@kernel.org>
 MIME-Version: 1.0
-Message-ID: <162091183827.29796.11397808016289850547.tip-bot2@tip-bot2>
+Message-ID: <162091184694.29796.18356854745705114664.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,131 +62,126 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the timers/nohz branch of tip:
 
-Commit-ID:     915a2bc3c6b71e9802b89c5c981b2d5367e1ae3f
-Gitweb:        https://git.kernel.org/tip/915a2bc3c6b71e9802b89c5c981b2d5367e1ae3f
-Author:        Paul Gortmaker <paul.gortmaker@windriver.com>
-AuthorDate:    Mon, 19 Apr 2021 00:26:59 -04:00
+Commit-ID:     a1dfb6311c7739e21e160bc4c5575a1b21b48c87
+Gitweb:        https://git.kernel.org/tip/a1dfb6311c7739e21e160bc4c5575a1b21b48c87
+Author:        Marcelo Tosatti <mtosatti@redhat.com>
+AuthorDate:    Thu, 13 May 2021 01:29:22 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 13 May 2021 14:12:47 +02:00
+CommitterDate: Thu, 13 May 2021 14:21:22 +02:00
 
-sched/isolation: Reconcile rcu_nocbs= and nohz_full=
+tick/nohz: Kick only _queued_ task whose tick dependency is updated
 
-We have a mismatch between RCU and isolation -- in relation to what is
-considered the maximum valid CPU number.
+When the tick dependency of a task is updated, we want it to aknowledge
+the new state and restart the tick if needed. If the task is not
+running, we don't need to kick it because it will observe the new
+dependency upon scheduling in. But if the task is running, we may need
+to send an IPI to it so that it gets notified.
 
-This matters because nohz_full= and rcu_nocbs= are joined at the hip; in
-fact the former will enforce the latter.  So we don't want a CPU mask to
-be valid for one and denied for the other.
+Unfortunately we don't have the means to check if a task is running
+in a race free way. Checking p->on_cpu in a synchronized way against
+p->tick_dep_mask would imply adding a full barrier between
+prepare_task_switch() and tick_nohz_task_switch(), which we want to
+avoid in this fast-path.
 
-The difference 1st appeared as of v4.15; further details are below.
+Therefore we blindly fire an IPI to the task's CPU.
 
-As it is confusing to anyone who isn't looking at the code regularly, a
-reminder is in order; three values exist here:
+Meanwhile we can check if the task is queued on the CPU rq because
+p->on_rq is always set to TASK_ON_RQ_QUEUED _before_ schedule() and its
+full barrier that precedes tick_nohz_task_switch(). And if the task is
+queued on a nohz_full CPU, it also has fair chances to be running as the
+isolation constraints prescribe running single tasks on full dynticks
+CPUs.
 
-  CONFIG_NR_CPUS  - compiled in maximum cap on number of CPUs supported.
-  nr_cpu_ids      - possible # of CPUs (typically reflects what ACPI says)
-  cpus_present    - actual number of present/detected/installed CPUs.
+So use this as a trick to check if we can spare an IPI toward a
+non-running task.
 
-For this example, I'll refer to NR_CPUS=64 from "make defconfig" and
-nr_cpu_ids=6 for ACPI reporting on a board that could run a six core,
-and present=4 for a quad that is physically in the socket.  From dmesg:
+NOTE: For the ordering to be correct, it is assumed that we never
+deactivate a task while it is running, the only exception being the task
+deactivating itself while scheduling out.
 
- smpboot: Allowing 6 CPUs, 2 hotplug CPUs
- setup_percpu: NR_CPUS:64 nr_cpumask_bits:64 nr_cpu_ids:6 nr_node_ids:1
- rcu: 	RCU restricting CPUs from NR_CPUS=64 to nr_cpu_ids=6.
- smp: Brought up 1 node, 4 CPUs
-
-And from userspace, see:
-
-   paul@trash:/sys/devices/system/cpu$ cat present
-   0-3
-   paul@trash:/sys/devices/system/cpu$ cat possible
-   0-5
-   paul@trash:/sys/devices/system/cpu$ cat kernel_max
-   63
-
-Everything is fine if we boot 5x5 for rcu/nohz:
-
-  Command line: BOOT_IMAGE=/boot/bzImage nohz_full=2-5 rcu_nocbs=2-5 root=/dev/sda1 ro
-  NO_HZ: Full dynticks CPUs: 2-5.
-  rcu: 	Offload RCU callbacks from CPUs: 2-5.
-
-..even though there is no CPU 4 or 5.  Both RCU and nohz_full are OK.
-Now we push that > 6 but less than NR_CPU and with 15x15 we get:
-
-  Command line: BOOT_IMAGE=/boot/bzImage rcu_nocbs=2-15 nohz_full=2-15 root=/dev/sda1 ro
-  rcu: 	Note: kernel parameter 'rcu_nocbs=', 'nohz_full', or 'isolcpus=' contains nonexistent CPUs.
-  rcu: 	Offload RCU callbacks from CPUs: 2-5.
-
-These are both functionally equivalent, as we are only changing flags on
-phantom CPUs that don't exist, but note the kernel interpretation changes.
-And worse, it only changes for one of the two - which is the problem.
-
-RCU doesn't care if you want to restrict the flags on phantom CPUs but
-clearly nohz_full does after this change from v4.15.
-
- edb9382175c3: ("sched/isolation: Move isolcpus= handling to the housekeeping code")
-
- -       if (cpulist_parse(str, non_housekeeping_mask) < 0) {
- -               pr_warn("Housekeeping: Incorrect nohz_full cpumask\n");
- +       err = cpulist_parse(str, non_housekeeping_mask);
- +       if (err < 0 || cpumask_last(non_housekeeping_mask) >= nr_cpu_ids) {
- +               pr_warn("Housekeeping: nohz_full= or isolcpus= incorrect CPU range\n");
-
-To be clear, the sanity check on "possible" (nr_cpu_ids) is new here.
-
-The goal was reasonable ; not wanting housekeeping to land on a
-not-possible CPU, but note two things:
-
-  1) this is an exclusion list, not an inclusion list; we are tracking
-     non_housekeeping CPUs; not ones who are explicitly assigned housekeeping
-
-  2) we went one further in 9219565aa890 ("sched/isolation: Require a present CPU in housekeeping mask")
-     - ensuring that housekeeping was sanity checking against present and not just possible CPUs.
-
-To be clear, this means the check added in v4.15 is doubly redundant.
-And more importantly, overly strict/restrictive.
-
-We care now, because the bitmap boot arg parsing now knows that a value
-of "N" is NR_CPUS; the size of the bitmap, but the bitmap code doesn't
-know anything about the subtleties of our max/possible/present CPU
-specifics as outlined above.
-
-So drop the check added in v4.15 (edb9382175c3) and make RCU and
-nohz_full both in alignment again on NR_CPUS so "N" works for both,
-and then they can fall back to nr_cpu_ids internally just as before.
-
-  Command line: BOOT_IMAGE=/boot/bzImage nohz_full=2-N rcu_nocbs=2-N root=/dev/sda1 ro
-  NO_HZ: Full dynticks CPUs: 2-5.
-  rcu: 	Offload RCU callbacks from CPUs: 2-5.
-
-As shown above, with this change, RCU and nohz_full are in sync, even
-with the use of the "N" placeholder.  Same result is achieved with "15".
-
-Signed-off-by: Paul Gortmaker <paul.gortmaker@windriver.com>
+Suggested-by: Peter Zijlstra <peterz@infradead.org>
+Signed-off-by: Marcelo Tosatti <mtosatti@redhat.com>
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Paul E. McKenney <paulmck@kernel.org>
-Link: https://lore.kernel.org/r/20210419042659.1134916-1-paul.gortmaker@windriver.com
+Acked-by: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20210512232924.150322-9-frederic@kernel.org
 ---
- kernel/sched/isolation.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ include/linux/sched.h    |  2 ++
+ kernel/sched/core.c      |  5 +++++
+ kernel/time/tick-sched.c | 19 +++++++++++++++++--
+ 3 files changed, 24 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/sched/isolation.c b/kernel/sched/isolation.c
-index 5a6ea03..7f06eaf 100644
---- a/kernel/sched/isolation.c
-+++ b/kernel/sched/isolation.c
-@@ -81,11 +81,9 @@ static int __init housekeeping_setup(char *str, enum hk_flags flags)
- {
- 	cpumask_var_t non_housekeeping_mask;
- 	cpumask_var_t tmp;
--	int err;
+diff --git a/include/linux/sched.h b/include/linux/sched.h
+index d2c8813..3341ae2 100644
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -2011,6 +2011,8 @@ static inline void set_task_cpu(struct task_struct *p, unsigned int cpu)
  
- 	alloc_bootmem_cpumask_var(&non_housekeeping_mask);
--	err = cpulist_parse(str, non_housekeeping_mask);
--	if (err < 0 || cpumask_last(non_housekeeping_mask) >= nr_cpu_ids) {
-+	if (cpulist_parse(str, non_housekeeping_mask) < 0) {
- 		pr_warn("Housekeeping: nohz_full= or isolcpus= incorrect CPU range\n");
- 		free_bootmem_cpumask_var(non_housekeeping_mask);
- 		return 0;
+ #endif /* CONFIG_SMP */
+ 
++extern bool sched_task_on_rq(struct task_struct *p);
++
+ /*
+  * In order to reduce various lock holder preemption latencies provide an
+  * interface to see if a vCPU is currently running or not.
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 5226cc2..78e480f 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -1590,6 +1590,11 @@ static inline void uclamp_post_fork(struct task_struct *p) { }
+ static inline void init_uclamp(void) { }
+ #endif /* CONFIG_UCLAMP_TASK */
+ 
++bool sched_task_on_rq(struct task_struct *p)
++{
++	return task_on_rq_queued(p);
++}
++
+ static inline void enqueue_task(struct rq *rq, struct task_struct *p, int flags)
+ {
+ 	if (!(flags & ENQUEUE_NOCLOCK))
+diff --git a/kernel/time/tick-sched.c b/kernel/time/tick-sched.c
+index acbe672..197a3bd 100644
+--- a/kernel/time/tick-sched.c
++++ b/kernel/time/tick-sched.c
+@@ -324,14 +324,28 @@ void tick_nohz_full_kick_cpu(int cpu)
+ 
+ static void tick_nohz_kick_task(struct task_struct *tsk)
+ {
+-	int cpu = task_cpu(tsk);
++	int cpu;
++
++	/*
++	 * If the task is not running, run_posix_cpu_timers()
++	 * has nothing to elapse, IPI can then be spared.
++	 *
++	 * activate_task()                      STORE p->tick_dep_mask
++	 *   STORE p->on_rq
++	 * __schedule() (switch to task 'p')    smp_mb() (atomic_fetch_or())
++	 *   LOCK rq->lock                      LOAD p->on_rq
++	 *   smp_mb__after_spin_lock()
++	 *   tick_nohz_task_switch()
++	 *     LOAD p->tick_dep_mask
++	 */
++	if (!sched_task_on_rq(tsk))
++		return;
+ 
+ 	/*
+ 	 * If the task concurrently migrates to another CPU,
+ 	 * we guarantee it sees the new tick dependency upon
+ 	 * schedule.
+ 	 *
+-	 *
+ 	 * set_task_cpu(p, cpu);
+ 	 *   STORE p->cpu = @cpu
+ 	 * __schedule() (switch to task 'p')
+@@ -340,6 +354,7 @@ static void tick_nohz_kick_task(struct task_struct *tsk)
+ 	 *   tick_nohz_task_switch()            smp_mb() (atomic_fetch_or())
+ 	 *      LOAD p->tick_dep_mask           LOAD p->cpu
+ 	 */
++	cpu = task_cpu(tsk);
+ 
+ 	preempt_disable();
+ 	if (cpu_online(cpu))
