@@ -2,182 +2,121 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 23B4037F5C8
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 13 May 2021 12:43:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DF4C37F76C
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 13 May 2021 14:06:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231410AbhEMKoq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 13 May 2021 06:44:46 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:57672 "EHLO
+        id S232152AbhEMMHu (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 13 May 2021 08:07:50 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:58136 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231282AbhEMKon (ORCPT
+        with ESMTP id S233100AbhEMMHg (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 13 May 2021 06:44:43 -0400
-Date:   Thu, 13 May 2021 10:43:29 -0000
+        Thu, 13 May 2021 08:07:36 -0400
+Date:   Thu, 13 May 2021 12:06:23 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1620902610;
+        s=2020; t=1620907584;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=2bei8HvHXreDZV/dPca+C6OA12b/jqyOqS4Fl7f66PM=;
-        b=psPXThA64w+8U9NQ2fsa9bcSpbkitGi89+KwH6LzCRend51flYDVMzqph52H5mwh5Dw6p1
-        n+obnWP7KhzVHlmDihQEpUnuRN1njP8MglSlL3Oi9INtJ74SIH0WZDhc5pHI/24tCz9C4E
-        xE+7Jb17jPEmZMQ6eETju2rTS2ezkQiNUqyYu+i3RYME3QhlaXcnyysjfDdH/OCGX5mjJl
-        wzDlOShcDExw8zdaLUYdokuzU4IIQHubIsJP1tfzxwv+CAOzRxls2+P+lDwe+F5r9O2+jv
-        xq5pgaKXHjZ8CGBfUbkllUxPr5Xpkuc7Jt/r0Kyi9cLaZ7R3aJDsRt5DNr1+gw==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=OfSgEs6K2vIwfb48s+CnOVp73nWZdkBQo4IhPqMOmNI=;
+        b=RXVxAw9VTpxWmsNMFX408LEkYOr2N+Yir7yyhq6NQX4bY6YRU9BfsJXEh4+PdREEoH/pRd
+        SIMNXJLQRD1MGmt+ZCfiaafQz4OCrwlCFuAEBQNdQ6BuJEd6kTx1Fsk1D2JK1S4UwKNhxw
+        4/3M321SROxlvIwPRXOiVL3XlzcMD7hxEK+vfHHodwvgOHFUjzgZiL0Ag209nWDfd25BRK
+        G87cYvp0ffGhAieNDdJjKOi6Vyj5Jl4QUfOoXDNyrYYIwGNaaZOcqWLiaxW3ygFhRMFh41
+        uCxzT47/hQVdNYeThtSHaWXCIlAA0FnrIDmrbFrs1j+7w5wcvdxjGSBrwVA30g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1620902610;
+        s=2020e; t=1620907584;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=2bei8HvHXreDZV/dPca+C6OA12b/jqyOqS4Fl7f66PM=;
-        b=oqc4+WBsmyc3BsMAN1rmtEWyNzvB2BvIpZolt3/gbjhjkVx5NVG7cGADfVT36CXfD7cn1k
-        4S3/948l69mfJZDA==
-From:   "tip-bot2 for Huang Rui" <tip-bot2@linutronix.de>
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=OfSgEs6K2vIwfb48s+CnOVp73nWZdkBQo4IhPqMOmNI=;
+        b=O0h21mANTfXP35Zg+tKUXjK2mHR10AsZp2P3RTJrvtA2MfIj//RgIDq47kqsyKNsRj8URS
+        I5AMdaVrAZ5JVqBQ==
+From:   "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] x86, sched: Fix the AMD CPPC maximum performance
- value on certain AMD Ryzen generations
-Cc:     Jason Bagavatsingham <jason.bagavatsingham@gmail.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Huang Rui <ray.huang@amd.com>, Ingo Molnar <mingo@kernel.org>,
-        stable@vger.kernel.org, x86@kernel.org,
+Subject: [tip: x86/asm] x86/asm: Make <asm/asm.h> valid on cross-builds as well
+Cc:     Stephen Rothwell <sfr@canb.auug.org.au>,
+        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210425073451.2557394-1-ray.huang@amd.com>
-References: <20210425073451.2557394-1-ray.huang@amd.com>
 MIME-Version: 1.0
-Message-ID: <162090260985.29796.14619213138729710355.tip-bot2@tip-bot2>
+Message-ID: <162090758316.29796.6557455559313150627.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/urgent branch of tip:
+The following commit has been merged into the x86/asm branch of tip:
 
-Commit-ID:     3743d55b289c203d8f77b7cd47c24926b9d186ae
-Gitweb:        https://git.kernel.org/tip/3743d55b289c203d8f77b7cd47c24926b9d=
-186ae
-Author:        Huang Rui <ray.huang@amd.com>
-AuthorDate:    Sun, 25 Apr 2021 15:34:51 +08:00
+Commit-ID:     4173d63a75ce47de95ce5406d8adab9005826def
+Gitweb:        https://git.kernel.org/tip/4173d63a75ce47de95ce5406d8adab9005826def
+Author:        Ingo Molnar <mingo@kernel.org>
+AuthorDate:    Thu, 13 May 2021 13:41:41 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 13 May 2021 12:10:24 +02:00
+CommitterDate: Thu, 13 May 2021 13:45:04 +02:00
 
-x86, sched: Fix the AMD CPPC maximum performance value on certain AMD Ryzen g=
-enerations
+x86/asm: Make <asm/asm.h> valid on cross-builds as well
 
-Some AMD Ryzen generations has different calculation method on maximum
-performance. 255 is not for all ASICs, some specific generations should use 1=
-66
-as the maximum performance. Otherwise, it will report incorrect frequency val=
-ue
-like below:
+Stephen Rothwell reported that the objtool cross-build breaks on
+non-x86 hosts:
 
-  ~ =E2=86=92 lscpu | grep MHz
-  CPU MHz:                         3400.000
-  CPU max MHz:                     7228.3198
-  CPU min MHz:                     2200.0000
+  > tools/arch/x86/include/asm/asm.h:185:24: error: invalid register name for 'current_stack_pointer'
+  >   185 | register unsigned long current_stack_pointer asm(_ASM_SP);
+  >       |                        ^~~~~~~~~~~~~~~~~~~~~
 
-[ mingo: Tidied up whitespace use. ]
-[ Alexander Monakov <amonakov@ispras.ru>: fix 225 -> 255 typo. ]
+The PowerPC host obviously doesn't know much about x86 register names.
 
-Fixes: 41ea667227ba ("x86, sched: Calculate frequency invariance for AMD syst=
-ems")
-Fixes: 3c55e94c0ade ("cpufreq: ACPI: Extend frequency tables to cover boost f=
-requencies")
-Reported-by: Jason Bagavatsingham <jason.bagavatsingham@gmail.com>
-Fixed-by: Alexander Monakov <amonakov@ispras.ru>
-Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Huang Rui <ray.huang@amd.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: Jason Bagavatsingham <jason.bagavatsingham@gmail.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20210425073451.2557394-1-ray.huang@amd.com
-Bugzilla: https://bugzilla.kernel.org/show_bug.cgi?id=3D211791
+Protect the kernel-specific bits of <asm/asm.h>, so that it can be
+included by tooling and cross-built.
+
+Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- arch/x86/include/asm/processor.h |  2 ++
- arch/x86/kernel/cpu/amd.c        | 16 ++++++++++++++++
- arch/x86/kernel/smpboot.c        |  2 +-
- drivers/cpufreq/acpi-cpufreq.c   |  6 +++++-
- 4 files changed, 24 insertions(+), 2 deletions(-)
+ arch/x86/include/asm/asm.h       | 4 ++++
+ tools/arch/x86/include/asm/asm.h | 4 ++++
+ 2 files changed, 8 insertions(+)
 
-diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processo=
-r.h
-index 154321d..556b2b1 100644
---- a/arch/x86/include/asm/processor.h
-+++ b/arch/x86/include/asm/processor.h
-@@ -787,8 +787,10 @@ DECLARE_PER_CPU(u64, msr_misc_features_shadow);
-=20
- #ifdef CONFIG_CPU_SUP_AMD
- extern u32 amd_get_nodes_per_socket(void);
-+extern u32 amd_get_highest_perf(void);
- #else
- static inline u32 amd_get_nodes_per_socket(void)	{ return 0; }
-+static inline u32 amd_get_highest_perf(void)		{ return 0; }
+diff --git a/arch/x86/include/asm/asm.h b/arch/x86/include/asm/asm.h
+index 507a37a..3ad3da9 100644
+--- a/arch/x86/include/asm/asm.h
++++ b/arch/x86/include/asm/asm.h
+@@ -120,6 +120,8 @@
+ # define CC_OUT(c) [_cc_ ## c] "=qm"
  #endif
-=20
- static inline uint32_t hypervisor_cpuid_base(const char *sig, uint32_t leave=
-s)
-diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
-index 2d11384..6d7b3b3 100644
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -1165,3 +1165,19 @@ void set_dr_addr_mask(unsigned long mask, int dr)
- 		break;
- 	}
- }
+ 
++#ifdef __KERNEL__
 +
-+u32 amd_get_highest_perf(void)
-+{
-+	struct cpuinfo_x86 *c =3D &boot_cpu_data;
+ /* Exception table entry */
+ #ifdef __ASSEMBLY__
+ # define _ASM_EXTABLE_HANDLE(from, to, handler)			\
+@@ -186,4 +188,6 @@ register unsigned long current_stack_pointer asm(_ASM_SP);
+ #define ASM_CALL_CONSTRAINT "+r" (current_stack_pointer)
+ #endif /* __ASSEMBLY__ */
+ 
++#endif /* __KERNEL__ */
 +
-+	if (c->x86 =3D=3D 0x17 && ((c->x86_model >=3D 0x30 && c->x86_model < 0x40) =
-||
-+			       (c->x86_model >=3D 0x70 && c->x86_model < 0x80)))
-+		return 166;
+ #endif /* _ASM_X86_ASM_H */
+diff --git a/tools/arch/x86/include/asm/asm.h b/tools/arch/x86/include/asm/asm.h
+index 507a37a..3ad3da9 100644
+--- a/tools/arch/x86/include/asm/asm.h
++++ b/tools/arch/x86/include/asm/asm.h
+@@ -120,6 +120,8 @@
+ # define CC_OUT(c) [_cc_ ## c] "=qm"
+ #endif
+ 
++#ifdef __KERNEL__
 +
-+	if (c->x86 =3D=3D 0x19 && ((c->x86_model >=3D 0x20 && c->x86_model < 0x30) =
-||
-+			       (c->x86_model >=3D 0x40 && c->x86_model < 0x70)))
-+		return 166;
+ /* Exception table entry */
+ #ifdef __ASSEMBLY__
+ # define _ASM_EXTABLE_HANDLE(from, to, handler)			\
+@@ -186,4 +188,6 @@ register unsigned long current_stack_pointer asm(_ASM_SP);
+ #define ASM_CALL_CONSTRAINT "+r" (current_stack_pointer)
+ #endif /* __ASSEMBLY__ */
+ 
++#endif /* __KERNEL__ */
 +
-+	return 255;
-+}
-+EXPORT_SYMBOL_GPL(amd_get_highest_perf);
-diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
-index 0ad5214..7770245 100644
---- a/arch/x86/kernel/smpboot.c
-+++ b/arch/x86/kernel/smpboot.c
-@@ -2043,7 +2043,7 @@ static bool amd_set_max_freq_ratio(void)
- 		return false;
- 	}
-=20
--	highest_perf =3D perf_caps.highest_perf;
-+	highest_perf =3D amd_get_highest_perf();
- 	nominal_perf =3D perf_caps.nominal_perf;
-=20
- 	if (!highest_perf || !nominal_perf) {
-diff --git a/drivers/cpufreq/acpi-cpufreq.c b/drivers/cpufreq/acpi-cpufreq.c
-index d1bbc16..7e74504 100644
---- a/drivers/cpufreq/acpi-cpufreq.c
-+++ b/drivers/cpufreq/acpi-cpufreq.c
-@@ -646,7 +646,11 @@ static u64 get_max_boost_ratio(unsigned int cpu)
- 		return 0;
- 	}
-=20
--	highest_perf =3D perf_caps.highest_perf;
-+	if (boot_cpu_data.x86_vendor =3D=3D X86_VENDOR_AMD)
-+		highest_perf =3D amd_get_highest_perf();
-+	else
-+		highest_perf =3D perf_caps.highest_perf;
-+
- 	nominal_perf =3D perf_caps.nominal_perf;
-=20
- 	if (!highest_perf || !nominal_perf) {
+ #endif /* _ASM_X86_ASM_H */
