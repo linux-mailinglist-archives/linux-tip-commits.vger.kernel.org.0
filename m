@@ -2,197 +2,182 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B2B937F483
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 13 May 2021 10:57:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 23B4037F5C8
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 13 May 2021 12:43:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232236AbhEMI6U (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 13 May 2021 04:58:20 -0400
-Received: from mga06.intel.com ([134.134.136.31]:35571 "EHLO mga06.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231176AbhEMI6T (ORCPT
+        id S231410AbhEMKoq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 13 May 2021 06:44:46 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:57672 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231282AbhEMKon (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 13 May 2021 04:58:19 -0400
-IronPort-SDR: 4fN7iFgejAxJySbwOmkiQMWchUw66iMQ6TEnp4gFDx+tryBPF4ae01laQfaQcoLlmAF6MirHcE
- YIGkDZhvxA1Q==
-X-IronPort-AV: E=McAfee;i="6200,9189,9982"; a="261152189"
-X-IronPort-AV: E=Sophos;i="5.82,296,1613462400"; 
-   d="scan'208";a="261152189"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2021 01:57:08 -0700
-IronPort-SDR: ogjvyMBaS7hJxTgzTfHj/rJSru07AIpL+12N6gLVnLt7seKvo+fJJ2rmp2D+0DoBkBmMezecYB
- 7Ft/q33Ur5rw==
-X-IronPort-AV: E=Sophos;i="5.82,296,1613462400"; 
-   d="scan'208";a="625927982"
-Received: from hongyuni-mobl1.ccr.corp.intel.com (HELO [10.238.1.57]) ([10.238.1.57])
-  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2021 01:57:06 -0700
-Subject: Re: [tip: sched/core] sched/fair: Add a few assertions
-To:     linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Don Hiatt <dhiatt@digitalocean.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>, x86@kernel.org
-References: <20210422123308.015639083@infradead.org>
- <162081530827.29796.4612627849821173058.tip-bot2@tip-bot2>
-From:   "Ning, Hongyu" <hongyu.ning@linux.intel.com>
-Message-ID: <532b693a-3699-b3db-f61f-3c8596d8b006@linux.intel.com>
-Date:   Thu, 13 May 2021 16:56:51 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.11.0
+        Thu, 13 May 2021 06:44:43 -0400
+Date:   Thu, 13 May 2021 10:43:29 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1620902610;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=2bei8HvHXreDZV/dPca+C6OA12b/jqyOqS4Fl7f66PM=;
+        b=psPXThA64w+8U9NQ2fsa9bcSpbkitGi89+KwH6LzCRend51flYDVMzqph52H5mwh5Dw6p1
+        n+obnWP7KhzVHlmDihQEpUnuRN1njP8MglSlL3Oi9INtJ74SIH0WZDhc5pHI/24tCz9C4E
+        xE+7Jb17jPEmZMQ6eETju2rTS2ezkQiNUqyYu+i3RYME3QhlaXcnyysjfDdH/OCGX5mjJl
+        wzDlOShcDExw8zdaLUYdokuzU4IIQHubIsJP1tfzxwv+CAOzRxls2+P+lDwe+F5r9O2+jv
+        xq5pgaKXHjZ8CGBfUbkllUxPr5Xpkuc7Jt/r0Kyi9cLaZ7R3aJDsRt5DNr1+gw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1620902610;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=2bei8HvHXreDZV/dPca+C6OA12b/jqyOqS4Fl7f66PM=;
+        b=oqc4+WBsmyc3BsMAN1rmtEWyNzvB2BvIpZolt3/gbjhjkVx5NVG7cGADfVT36CXfD7cn1k
+        4S3/948l69mfJZDA==
+From:   "tip-bot2 for Huang Rui" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: sched/urgent] x86, sched: Fix the AMD CPPC maximum performance
+ value on certain AMD Ryzen generations
+Cc:     Jason Bagavatsingham <jason.bagavatsingham@gmail.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Huang Rui <ray.huang@amd.com>, Ingo Molnar <mingo@kernel.org>,
+        stable@vger.kernel.org, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20210425073451.2557394-1-ray.huang@amd.com>
+References: <20210425073451.2557394-1-ray.huang@amd.com>
 MIME-Version: 1.0
-In-Reply-To: <162081530827.29796.4612627849821173058.tip-bot2@tip-bot2>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Message-ID: <162090260985.29796.14619213138729710355.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
+The following commit has been merged into the sched/urgent branch of tip:
 
-On 2021/5/12 18:28, tip-bot2 for Peter Zijlstra wrote:
-> The following commit has been merged into the sched/core branch of tip:
-> 
-> Commit-ID:     9099a14708ce1dfecb6002605594a0daa319b555
-> Gitweb:        https://git.kernel.org/tip/9099a14708ce1dfecb6002605594a0daa319b555
-> Author:        Peter Zijlstra <peterz@infradead.org>
-> AuthorDate:    Tue, 17 Nov 2020 18:19:35 -05:00
-> Committer:     Peter Zijlstra <peterz@infradead.org>
-> CommitterDate: Wed, 12 May 2021 11:43:26 +02:00
-> 
-> sched/fair: Add a few assertions
-> 
-> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> Tested-by: Don Hiatt <dhiatt@digitalocean.com>
-> Tested-by: Hongyu Ning <hongyu.ning@linux.intel.com>
-> Tested-by: Vincent Guittot <vincent.guittot@linaro.org>
-> Link: https://lkml.kernel.org/r/20210422123308.015639083@infradead.org
-> ---
->  kernel/sched/fair.c | 11 +++++++++--
->  1 file changed, 9 insertions(+), 2 deletions(-)
-> 
+Commit-ID:     3743d55b289c203d8f77b7cd47c24926b9d186ae
+Gitweb:        https://git.kernel.org/tip/3743d55b289c203d8f77b7cd47c24926b9d=
+186ae
+Author:        Huang Rui <ray.huang@amd.com>
+AuthorDate:    Sun, 25 Apr 2021 15:34:51 +08:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Thu, 13 May 2021 12:10:24 +02:00
 
-Add quick test results based on tip tree sched/core merge commit:
+x86, sched: Fix the AMD CPPC maximum performance value on certain AMD Ryzen g=
+enerations
 
-====TEST INFO====
-- kernel under test:
-	-- tip tree sched/core merge: https://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git/commit/?id=60208dac643e24cbc62317de4e486fdcbbf05215
-	-- coresched_v10 kernel source: https://github.com/digitalocean/linux-coresched/commits/coresched/v10-v5.10.y
+Some AMD Ryzen generations has different calculation method on maximum
+performance. 255 is not for all ASICs, some specific generations should use 1=
+66
+as the maximum performance. Otherwise, it will report incorrect frequency val=
+ue
+like below:
 
-- test machine setup: 
-	CPU(s):              192
-	On-line CPU(s) list: 0-191
-	Thread(s) per core:  2
-	Core(s) per socket:  48
-	Socket(s):           2
-	NUMA node(s):        4
+  ~ =E2=86=92 lscpu | grep MHz
+  CPU MHz:                         3400.000
+  CPU max MHz:                     7228.3198
+  CPU min MHz:                     2200.0000
 
-- performance test workloads: 
-	-- A. sysbench cpu (192 threads) + sysbench cpu (192 threads)
-	-- B. sysbench cpu (192 threads) + sysbench mysql (192 threads)
-	-- C. uperf netperf.xml (192 threads over TCP or UDP protocol separately)
-	-- D. will-it-scale context_switch via pipe (192 threads)
+[ mingo: Tidied up whitespace use. ]
+[ Alexander Monakov <amonakov@ispras.ru>: fix 225 -> 255 typo. ]
 
-- negative test:
-	-- A. continuously toggle coresched (enable/disable) thru prctl on task cookies of PGID, during full loading of uperf workload with coresched on
-	-- B. continuously toggle smt (on/off) via /sys/devices/system/cpu/smt/control, during full loading of uperf workload with coresched on
+Fixes: 41ea667227ba ("x86, sched: Calculate frequency invariance for AMD syst=
+ems")
+Fixes: 3c55e94c0ade ("cpufreq: ACPI: Extend frequency tables to cover boost f=
+requencies")
+Reported-by: Jason Bagavatsingham <jason.bagavatsingham@gmail.com>
+Fixed-by: Alexander Monakov <amonakov@ispras.ru>
+Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Huang Rui <ray.huang@amd.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Tested-by: Jason Bagavatsingham <jason.bagavatsingham@gmail.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20210425073451.2557394-1-ray.huang@amd.com
+Bugzilla: https://bugzilla.kernel.org/show_bug.cgi?id=3D211791
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+---
+ arch/x86/include/asm/processor.h |  2 ++
+ arch/x86/kernel/cpu/amd.c        | 16 ++++++++++++++++
+ arch/x86/kernel/smpboot.c        |  2 +-
+ drivers/cpufreq/acpi-cpufreq.c   |  6 +++++-
+ 4 files changed, 24 insertions(+), 2 deletions(-)
 
-====TEST RESULTS====
-- performance change key info:
-	--workload B: coresched (cs_on), sysbench mysql performance drop around 20% vs coresched_v10
-	--workload C, coresched (cs_on), uperf performance increased almost double vs coresched_v10
-	--workload C, default (cs_off), uperf performance drop over 25% vs coresched_v10, same issue seen on v5.13-rc1 base (w/o coresched patchset)
-	--workload D, coresched (cs_on), wis performance increased almost double vs coresched_v10
-
-- negative test summary:
-	no platform hang or kernel panic observed for both test
-
-- performance info of workloads, normalized based on coresched_v10 results
-	-- performance workload A:
-	Note: 
-	* no performance change compared to coresched_v10
-+---------------------------------------+------+--------------------------------------+----------------------------------------+-------+-------------------------------+---------------------------------+
-|                                       | **   | coresched_tip_merge_base_v5.13-rc1   | coresched_tip_merge_base_v5.13-rc1     | **    | coresched_v10_base_v5.10.11   | coresched_v10_base_v5.10.11     |
-+=======================================+======+======================================+========================================+=======+===============================+=================================+
-| workload                              | **   | sysbench cpu * 192                   | sysbench cpu * 192                     | **    | sysbench cpu * 192            | sysbench cpu * 192              |
-+---------------------------------------+------+--------------------------------------+----------------------------------------+-------+-------------------------------+---------------------------------+
-| prctl/cgroup                          | **   | prctl on workload cpu_0              | prctl on workload cpu_1                | **    | cg_sysbench_cpu_0             | cg_sysbench_cpu_1               |
-+---------------------------------------+------+--------------------------------------+----------------------------------------+-------+-------------------------------+---------------------------------+
-| record_item                           | **   | Tput_avg (events/s)                  | Tput_avg (events/s)                    | **    | Tput_avg (events/s)           | Tput_avg (events/s)             |
-+---------------------------------------+------+--------------------------------------+----------------------------------------+-------+-------------------------------+---------------------------------+
-| coresched normalized vs coresched_v10 | **   | 0.97                                 | 1.05                                   | **    | 1                             | 1                               |
-+---------------------------------------+------+--------------------------------------+----------------------------------------+-------+-------------------------------+---------------------------------+
-| default normalized vs coresched_v10   | **   | 1.03                                 | 0.95                                   | **    | 1                             | 1                               |
-+---------------------------------------+------+--------------------------------------+----------------------------------------+-------+-------------------------------+---------------------------------+
-| smtoff normalized vs coresched_v10    | **   | 0.96                                 | 1.04                                   | **    | 1                             | 1                               |
-+---------------------------------------+------+--------------------------------------+----------------------------------------+-------+-------------------------------+---------------------------------+
-
-
-	-- performance workload B:
-	Note: 
-	* coresched (cs_on), sysbench mysql performance drop around 20% vs coresched_v10
-+---------------------------------------+------+--------------------------------------+----------------------------------------+-------+-------------------------------+---------------------------------+
-|                                       | **   | coresched_tip_merge_base_v5.13-rc1   | coresched_tip_merge_base_v5.13-rc1     | **    | coresched_v10_base_v5.10.11   | coresched_v10_base_v5.10.11     |
-+=======================================+======+======================================+========================================+=======+===============================+=================================+
-| workload                              | **   | sysbench cpu * 192                   | sysbench mysql * 192                   | **    | sysbench cpu * 192            | sysbench mysql * 192            |
-+---------------------------------------+------+--------------------------------------+----------------------------------------+-------+-------------------------------+---------------------------------+
-| prctl/cgroup                          | **   | prctl on workload cpu_0              | prctl on workload mysql_0              | **    | cg_sysbench_cpu_0             | cg_sysbench_mysql_0             |
-+---------------------------------------+------+--------------------------------------+----------------------------------------+-------+-------------------------------+---------------------------------+
-| record_item                           | **   | Tput_avg (events/s)                  | Tput_avg (events/s)                    | **    | Tput_avg (events/s)           | Tput_avg (events/s)             |
-+---------------------------------------+------+--------------------------------------+----------------------------------------+-------+-------------------------------+---------------------------------+
-| coresched normalized vs coresched_v10 | **   | 1.02                                 | 0.81                                   | **    | 1                             | 1                               |
-+---------------------------------------+------+--------------------------------------+----------------------------------------+-------+-------------------------------+---------------------------------+
-| default normalized vs coresched_v10   | **   | 1.01                                 | 0.94                                   | **    | 1                             | 1                               |
-+---------------------------------------+------+--------------------------------------+----------------------------------------+-------+-------------------------------+---------------------------------+
-| smtoff normalized vs coresched_v10    | **   | 0.93                                 | 1.18                                   | **    | 1                             | 1                               |
-+---------------------------------------+------+--------------------------------------+----------------------------------------+-------+-------------------------------+---------------------------------+
-
-
-	-- performance workload C:
-	Note: 
-	* coresched (cs_on), uperf performance increased almost double vs coresched_v10
-	* default (cs_off), uperf performance drop over 25% vs coresched_v10, same issue seen on v5.13-rc1 base (w/o coresched patchset)
-+---------------------------------------+------+--------------------------------------+----------------------------------------+-------+-------------------------------+---------------------------------+
-|                                       | **   | coresched_tip_merge_base_v5.13-rc1   | coresched_tip_merge_base_v5.13-rc1     | **    | coresched_v10_base_v5.10.11   | coresched_v10_base_v5.10.11     |
-+=======================================+======+======================================+========================================+=======+===============================+=================================+
-| workload                              | **   | uperf netperf TCP * 192              | uperf netperf UDP * 192                | **    | uperf netperf TCP * 192       | uperf netperf UDP * 192         |
-+---------------------------------------+------+--------------------------------------+----------------------------------------+-------+-------------------------------+---------------------------------+
-| prctl/cgroup                          | **   | prctl on workload uperf              | prctl on workload uperf                | **    | cg_uperf                      | cg_uperf                        |
-+---------------------------------------+------+--------------------------------------+----------------------------------------+-------+-------------------------------+---------------------------------+
-| record_item                           | **   | Tput_avg (Gb/s)                      | Tput_avg (Gb/s)                        | **    | Tput_avg (Gb/s)               | Tput_avg (Gb/s)                 |
-+---------------------------------------+------+--------------------------------------+----------------------------------------+-------+-------------------------------+---------------------------------+
-| coresched normalized vs coresched_v10 | **   | 1.83                                 | 1.93                                   | **    | 1                             | 1                               |
-+---------------------------------------+------+--------------------------------------+----------------------------------------+-------+-------------------------------+---------------------------------+
-| default normalized vs coresched_v10   | **   | 0.75                                 | 0.71                                   | **    | 1                             | 1                               |
-+---------------------------------------+------+--------------------------------------+----------------------------------------+-------+-------------------------------+---------------------------------+
-| smtoff normalized vs coresched_v10    | **   | 1                                    | 1.06                                   | **    | 1                             | 1                               |
-+---------------------------------------+------+--------------------------------------+----------------------------------------+-------+-------------------------------+---------------------------------+
-
-
-	-- performance workload D:
-	Note: 
-	* coresched (cs_on), wis performance increased almost double vs coresched_v10
-	* default (cs_off) and smtoff, wis performance is better vs coresched_v10
-+---------------------------------------+------+--------------------------------------+-------+-------------------------------+
-|                                       | **   | coresched_tip_merge_base_v5.13-rc1   | **    | coresched_v10_base_v5.10.11   |
-+=======================================+======+======================================+=======+===============================+
-| workload                              | **   | will-it-scale  * 192                 | **    | will-it-scale  * 192          |
-|                                       |      | (pipe based context_switch)          |       | (pipe based context_switch)   |
-+---------------------------------------+------+--------------------------------------+-------+-------------------------------+
-| prctl/cgroup                          | **   | prctl on workload wis                | **    | cg_wis                        |
-+---------------------------------------+------+--------------------------------------+-------+-------------------------------+
-| record_item                           | **   | threads_avg                          | **    | threads_avg                   |
-+---------------------------------------+------+--------------------------------------+-------+-------------------------------+
-| coresched normalized vs coresched_v10 | **   | 2.01                                 | **    | 1.00                          |
-+---------------------------------------+------+--------------------------------------+-------+-------------------------------+
-| default normalized vs coresched_v10   | **   | 1.13                                 | **    | 1.00                          |
-+---------------------------------------+------+--------------------------------------+-------+-------------------------------+
-| smtoff normalized vs coresched_v10    | **   | 1.29                                 | **    | 1.00                          |
-+---------------------------------------+------+--------------------------------------+-------+-------------------------------+
-
-
-	-- notes on record_item:
-	* coresched normalized vs coresched_v10: smton, cs enabled, test result normalized by result of coresched_v10 under same config
-	* default normalized vs coresched_v10: smton, cs disabled, test result normalized by result of coresched_v10 under same config
-	* smtoff normalized vs coresched_v10: smtoff, test result normalized by result of coresched_v10 under same config
-
-
-
--- Hongyu Ning
+diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processo=
+r.h
+index 154321d..556b2b1 100644
+--- a/arch/x86/include/asm/processor.h
++++ b/arch/x86/include/asm/processor.h
+@@ -787,8 +787,10 @@ DECLARE_PER_CPU(u64, msr_misc_features_shadow);
+=20
+ #ifdef CONFIG_CPU_SUP_AMD
+ extern u32 amd_get_nodes_per_socket(void);
++extern u32 amd_get_highest_perf(void);
+ #else
+ static inline u32 amd_get_nodes_per_socket(void)	{ return 0; }
++static inline u32 amd_get_highest_perf(void)		{ return 0; }
+ #endif
+=20
+ static inline uint32_t hypervisor_cpuid_base(const char *sig, uint32_t leave=
+s)
+diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
+index 2d11384..6d7b3b3 100644
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -1165,3 +1165,19 @@ void set_dr_addr_mask(unsigned long mask, int dr)
+ 		break;
+ 	}
+ }
++
++u32 amd_get_highest_perf(void)
++{
++	struct cpuinfo_x86 *c =3D &boot_cpu_data;
++
++	if (c->x86 =3D=3D 0x17 && ((c->x86_model >=3D 0x30 && c->x86_model < 0x40) =
+||
++			       (c->x86_model >=3D 0x70 && c->x86_model < 0x80)))
++		return 166;
++
++	if (c->x86 =3D=3D 0x19 && ((c->x86_model >=3D 0x20 && c->x86_model < 0x30) =
+||
++			       (c->x86_model >=3D 0x40 && c->x86_model < 0x70)))
++		return 166;
++
++	return 255;
++}
++EXPORT_SYMBOL_GPL(amd_get_highest_perf);
+diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
+index 0ad5214..7770245 100644
+--- a/arch/x86/kernel/smpboot.c
++++ b/arch/x86/kernel/smpboot.c
+@@ -2043,7 +2043,7 @@ static bool amd_set_max_freq_ratio(void)
+ 		return false;
+ 	}
+=20
+-	highest_perf =3D perf_caps.highest_perf;
++	highest_perf =3D amd_get_highest_perf();
+ 	nominal_perf =3D perf_caps.nominal_perf;
+=20
+ 	if (!highest_perf || !nominal_perf) {
+diff --git a/drivers/cpufreq/acpi-cpufreq.c b/drivers/cpufreq/acpi-cpufreq.c
+index d1bbc16..7e74504 100644
+--- a/drivers/cpufreq/acpi-cpufreq.c
++++ b/drivers/cpufreq/acpi-cpufreq.c
+@@ -646,7 +646,11 @@ static u64 get_max_boost_ratio(unsigned int cpu)
+ 		return 0;
+ 	}
+=20
+-	highest_perf =3D perf_caps.highest_perf;
++	if (boot_cpu_data.x86_vendor =3D=3D X86_VENDOR_AMD)
++		highest_perf =3D amd_get_highest_perf();
++	else
++		highest_perf =3D perf_caps.highest_perf;
++
+ 	nominal_perf =3D perf_caps.nominal_perf;
+=20
+ 	if (!highest_perf || !nominal_perf) {
