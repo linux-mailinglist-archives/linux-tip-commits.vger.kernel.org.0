@@ -2,57 +2,46 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 53DD337F887
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 13 May 2021 15:18:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 248AB3803D7
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 14 May 2021 08:55:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233945AbhEMNTk (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 13 May 2021 09:19:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55540 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233950AbhEMNTF (ORCPT
+        id S232806AbhENG4y (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 14 May 2021 02:56:54 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:34704 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232802AbhENG4y (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 13 May 2021 09:19:05 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06CC0C0613ED;
-        Thu, 13 May 2021 06:17:37 -0700 (PDT)
-Date:   Thu, 13 May 2021 13:17:29 -0000
+        Fri, 14 May 2021 02:56:54 -0400
+Date:   Fri, 14 May 2021 06:55:41 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1620911850;
+        s=2020; t=1620975342;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=RutoUzK4xwcvEKA4oaKgdmga9hHsy5VloH/Y/0vKoPg=;
-        b=LSAwjVnrg1sWf5PJwblqkOft8ZhT4tWBy+PYK+NJTdNF7F8QKmG6tJz9Qd8ugFigAtrG9L
-        /+9G+7w6H+aprb6JTf40Vwy/pzv2/fLz/A1pgyC5Ou0uUchZFgeUISD0nqySjWqPGl2QVU
-        ORrwChQbaTiqJ5f+a3iRCro8cZ0oGO0YWHl7deG8R8F8wCnpL5ZVnmii7ftV0dlowFNgPa
-        UFAicPxyzX8mx/FJ4RVwlnwKp2oB9t6VBKJnZUeFMgU9x1LS/NJZby4wHVbPHSHLIZrH9X
-        LcMcBgejJ/64Yxc4/tK7PaniAHTaDZoyZwmHfTt5AZZYqnGCuDh43Q+6VuyiiA==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=QBKGT4MxKiFHjpSVQ3RwqKQEq3MKk/Q+Vgf6AUlogtg=;
+        b=kBwwVo9p/SBCQjXZ5VEGNlQrlH7+kIXbWEnoyVByyn/imFMs+ZB0Ubt18JaqB2iclLtzHi
+        o+zeTE4Ewo4inc2IV3HcoDs55N4YyBBVNwf+TiMpVOFiByMnQleHx9s1aghsoJ1qQB3tz/
+        jMHx729f/mdgRTsI1JRQDaRmk7RJ3cYQ+zu7igtJRNsQm9eJRhJ0dsXWNEIOteAYFaUSPb
+        W1gNZq1GsRMS2Z/UM542Hwxe5PovQ6kTiffT9Obq5XIdk4bIBdsRfbpV1TVsTKxiXSzQX7
+        5VriCTGpTILRpQxg9yN6GDwTru7HFna6IxYqMNo7fILMVOg0epBlJDd3r5oDVQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1620911850;
+        s=2020e; t=1620975342;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=RutoUzK4xwcvEKA4oaKgdmga9hHsy5VloH/Y/0vKoPg=;
-        b=t1LMsOTTcfRbmmObAv5MPcXzVInv5AtSJbvMHD/ISvIfzBJxjZRAo/8+532t02kYcsMxWL
-        XXNOqAYYFR5d+cBg==
-From:   "tip-bot2 for Yunfeng Ye" <tip-bot2@linutronix.de>
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=QBKGT4MxKiFHjpSVQ3RwqKQEq3MKk/Q+Vgf6AUlogtg=;
+        b=njNvGawT75Ar1fRb11IOyDFXrNR+dFLhYUaaoijFUlpaEBuxyT0M8YFzTFuK5pVV4mVEQl
+        uc4YHhfGzNEFaTBQ==
+From:   "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/nohz] tick/nohz: Conditionally restart tick on idle exit
-Cc:     Yunfeng Ye <yeyunfeng@huawei.com>,
-        Frederic Weisbecker <frederic@kernel.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20210512232924.150322-3-frederic@kernel.org>
-References: <20210512232924.150322-3-frederic@kernel.org>
+Subject: [tip: x86/asm] x86/asm: Make <asm/asm.h> valid on cross-builds as well
+Cc:     Stephen Rothwell <sfr@canb.auug.org.au>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@kernel.org>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <162091184942.29796.4815200413212139734.tip-bot2@tip-bot2>
+Message-ID: <162097534183.29796.426541546552051038.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,112 +50,74 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/nohz branch of tip:
+The following commit has been merged into the x86/asm branch of tip:
 
-Commit-ID:     a5183862e76fdc25f36b39c2489b816a5c66e2e5
-Gitweb:        https://git.kernel.org/tip/a5183862e76fdc25f36b39c2489b816a5c66e2e5
-Author:        Yunfeng Ye <yeyunfeng@huawei.com>
-AuthorDate:    Thu, 13 May 2021 01:29:16 +02:00
+Commit-ID:     41f45fb045bcc20e71eb705b361356e715682162
+Gitweb:        https://git.kernel.org/tip/41f45fb045bcc20e71eb705b361356e715682162
+Author:        Ingo Molnar <mingo@kernel.org>
+AuthorDate:    Thu, 13 May 2021 13:41:41 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 13 May 2021 14:21:21 +02:00
+CommitterDate: Fri, 14 May 2021 08:50:28 +02:00
 
-tick/nohz: Conditionally restart tick on idle exit
+x86/asm: Make <asm/asm.h> valid on cross-builds as well
 
-In nohz_full mode, switching from idle to a task will unconditionally
-issue a tick restart. If the task is alone in the runqueue or is the
-highest priority, the tick will fire once then eventually stop. But that
-alone is still undesired noise.
+Stephen Rothwell reported that the objtool cross-build breaks on
+non-x86 hosts:
 
-Therefore, only restart the tick on idle exit when it's strictly
-necessary.
+  > tools/arch/x86/include/asm/asm.h:185:24: error: invalid register name for 'current_stack_pointer'
+  >   185 | register unsigned long current_stack_pointer asm(_ASM_SP);
+  >       |                        ^~~~~~~~~~~~~~~~~~~~~
 
-Signed-off-by: Yunfeng Ye <yeyunfeng@huawei.com>
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+The PowerPC host obviously doesn't know much about x86 register names.
+
+Protect the kernel-specific bits of <asm/asm.h>, so that it can be
+included by tooling and cross-built.
+
+Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+Reviewed-by: H. Peter Anvin <hpa@zytor.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20210512232924.150322-3-frederic@kernel.org
 ---
- kernel/time/tick-sched.c | 42 +++++++++++++++++++++++++--------------
- 1 file changed, 27 insertions(+), 15 deletions(-)
+ arch/x86/include/asm/asm.h       | 4 ++++
+ tools/arch/x86/include/asm/asm.h | 4 ++++
+ 2 files changed, 8 insertions(+)
 
-diff --git a/kernel/time/tick-sched.c b/kernel/time/tick-sched.c
-index 828b091..05c1ce1 100644
---- a/kernel/time/tick-sched.c
-+++ b/kernel/time/tick-sched.c
-@@ -926,22 +926,28 @@ static void tick_nohz_restart_sched_tick(struct tick_sched *ts, ktime_t now)
- 	tick_nohz_restart(ts, now);
- }
- 
--static void tick_nohz_full_update_tick(struct tick_sched *ts)
-+static void __tick_nohz_full_update_tick(struct tick_sched *ts,
-+					 ktime_t now)
- {
- #ifdef CONFIG_NO_HZ_FULL
- 	int cpu = smp_processor_id();
- 
--	if (!tick_nohz_full_cpu(cpu))
-+	if (can_stop_full_tick(cpu, ts))
-+		tick_nohz_stop_sched_tick(ts, cpu);
-+	else if (ts->tick_stopped)
-+		tick_nohz_restart_sched_tick(ts, now);
-+#endif
-+}
-+
-+static void tick_nohz_full_update_tick(struct tick_sched *ts)
-+{
-+	if (!tick_nohz_full_cpu(smp_processor_id()))
- 		return;
- 
- 	if (!ts->tick_stopped && ts->nohz_mode == NOHZ_MODE_INACTIVE)
- 		return;
- 
--	if (can_stop_full_tick(cpu, ts))
--		tick_nohz_stop_sched_tick(ts, cpu);
--	else if (ts->tick_stopped)
--		tick_nohz_restart_sched_tick(ts, ktime_get());
--#endif
-+	__tick_nohz_full_update_tick(ts, ktime_get());
- }
- 
- static bool can_stop_idle_tick(int cpu, struct tick_sched *ts)
-@@ -1209,18 +1215,24 @@ static void tick_nohz_account_idle_ticks(struct tick_sched *ts)
+diff --git a/arch/x86/include/asm/asm.h b/arch/x86/include/asm/asm.h
+index 507a37a..3ad3da9 100644
+--- a/arch/x86/include/asm/asm.h
++++ b/arch/x86/include/asm/asm.h
+@@ -120,6 +120,8 @@
+ # define CC_OUT(c) [_cc_ ## c] "=qm"
  #endif
- }
  
--static void __tick_nohz_idle_restart_tick(struct tick_sched *ts, ktime_t now)
-+void tick_nohz_idle_restart_tick(void)
- {
--	tick_nohz_restart_sched_tick(ts, now);
--	tick_nohz_account_idle_ticks(ts);
-+	struct tick_sched *ts = this_cpu_ptr(&tick_cpu_sched);
++#ifdef __KERNEL__
 +
-+	if (ts->tick_stopped) {
-+		tick_nohz_restart_sched_tick(ts, ktime_get());
-+		tick_nohz_account_idle_ticks(ts);
-+	}
- }
+ /* Exception table entry */
+ #ifdef __ASSEMBLY__
+ # define _ASM_EXTABLE_HANDLE(from, to, handler)			\
+@@ -186,4 +188,6 @@ register unsigned long current_stack_pointer asm(_ASM_SP);
+ #define ASM_CALL_CONSTRAINT "+r" (current_stack_pointer)
+ #endif /* __ASSEMBLY__ */
  
--void tick_nohz_idle_restart_tick(void)
-+static void tick_nohz_idle_update_tick(struct tick_sched *ts, ktime_t now)
- {
--	struct tick_sched *ts = this_cpu_ptr(&tick_cpu_sched);
-+	if (tick_nohz_full_cpu(smp_processor_id()))
-+		__tick_nohz_full_update_tick(ts, now);
-+	else
-+		tick_nohz_restart_sched_tick(ts, now);
++#endif /* __KERNEL__ */
++
+ #endif /* _ASM_X86_ASM_H */
+diff --git a/tools/arch/x86/include/asm/asm.h b/tools/arch/x86/include/asm/asm.h
+index 507a37a..3ad3da9 100644
+--- a/tools/arch/x86/include/asm/asm.h
++++ b/tools/arch/x86/include/asm/asm.h
+@@ -120,6 +120,8 @@
+ # define CC_OUT(c) [_cc_ ## c] "=qm"
+ #endif
  
--	if (ts->tick_stopped)
--		__tick_nohz_idle_restart_tick(ts, ktime_get());
-+	tick_nohz_account_idle_ticks(ts);
- }
++#ifdef __KERNEL__
++
+ /* Exception table entry */
+ #ifdef __ASSEMBLY__
+ # define _ASM_EXTABLE_HANDLE(from, to, handler)			\
+@@ -186,4 +188,6 @@ register unsigned long current_stack_pointer asm(_ASM_SP);
+ #define ASM_CALL_CONSTRAINT "+r" (current_stack_pointer)
+ #endif /* __ASSEMBLY__ */
  
- /**
-@@ -1252,7 +1264,7 @@ void tick_nohz_idle_exit(void)
- 		tick_nohz_stop_idle(ts, now);
- 
- 	if (tick_stopped)
--		__tick_nohz_idle_restart_tick(ts, now);
-+		tick_nohz_idle_update_tick(ts, now);
- 
- 	local_irq_enable();
- }
++#endif /* __KERNEL__ */
++
+ #endif /* _ASM_X86_ASM_H */
