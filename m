@@ -2,46 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 248AB3803D7
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 14 May 2021 08:55:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C6EF3803E9
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 14 May 2021 09:01:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232806AbhENG4y (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 14 May 2021 02:56:54 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:34704 "EHLO
+        id S232871AbhENHDB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 14 May 2021 03:03:01 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:34744 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232802AbhENG4y (ORCPT
+        with ESMTP id S231373AbhENHDB (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 14 May 2021 02:56:54 -0400
-Date:   Fri, 14 May 2021 06:55:41 -0000
+        Fri, 14 May 2021 03:03:01 -0400
+Date:   Fri, 14 May 2021 07:01:48 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1620975342;
+        s=2020; t=1620975709;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=QBKGT4MxKiFHjpSVQ3RwqKQEq3MKk/Q+Vgf6AUlogtg=;
-        b=kBwwVo9p/SBCQjXZ5VEGNlQrlH7+kIXbWEnoyVByyn/imFMs+ZB0Ubt18JaqB2iclLtzHi
-        o+zeTE4Ewo4inc2IV3HcoDs55N4YyBBVNwf+TiMpVOFiByMnQleHx9s1aghsoJ1qQB3tz/
-        jMHx729f/mdgRTsI1JRQDaRmk7RJ3cYQ+zu7igtJRNsQm9eJRhJ0dsXWNEIOteAYFaUSPb
-        W1gNZq1GsRMS2Z/UM542Hwxe5PovQ6kTiffT9Obq5XIdk4bIBdsRfbpV1TVsTKxiXSzQX7
-        5VriCTGpTILRpQxg9yN6GDwTru7HFna6IxYqMNo7fILMVOg0epBlJDd3r5oDVQ==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=dgXcNQjJ2i0lE402yPaaMpRitE68ZHLdNWvu/FwCCXw=;
+        b=T4Qnheyiayq4+rQ+vZWkPp/lRE8uVZg0FUJZubCh37I4KbtsYrM6E6Rz5sqIe5fd30QOH3
+        B0OtAF7j71v+dEojW6kC1IlJ/GMw2SrAvCXKqDgvp1IiB1zCLo2Vl07csIdXBCPXx4ctjS
+        w5up4k2HEwrxTND8XvZ+nDX8hT9o1EYTwzbZy6q6v/y5AuDvXVj5dxP8+32ijLF+6LDImk
+        bhcROQCl9ke6sRT5wcn3zrz2YyFQNbunpA10bI/K/epxYY6aYGJQ7IylCWG/xLs8AVvTST
+        /k3+22EQbYeF8+SxUHYbE0AF9i5ANxCBOLDONtCxXUaJZedHoTC5lGgJGC1ZgQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1620975342;
+        s=2020e; t=1620975709;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=QBKGT4MxKiFHjpSVQ3RwqKQEq3MKk/Q+Vgf6AUlogtg=;
-        b=njNvGawT75Ar1fRb11IOyDFXrNR+dFLhYUaaoijFUlpaEBuxyT0M8YFzTFuK5pVV4mVEQl
-        uc4YHhfGzNEFaTBQ==
-From:   "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=dgXcNQjJ2i0lE402yPaaMpRitE68ZHLdNWvu/FwCCXw=;
+        b=69EkBhUSv3Np7YSAgL/LG4y0Z069mZt+egWVlru0jbFRgatkScEUCnsVTgRTV+Aglu5gib
+        iIT3lNKwBk+EW6AQ==
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/asm] x86/asm: Make <asm/asm.h> valid on cross-builds as well
-Cc:     Stephen Rothwell <sfr@canb.auug.org.au>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@kernel.org>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
+Subject: [tip: objtool/core] objtool: Reflow handle_jump_alt()
+Cc:     Miroslav Benes <mbenes@suse.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <rL@hirez.programming.kicks-ass.net>
+References: <rL@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-Message-ID: <162097534183.29796.426541546552051038.tip-bot2@tip-bot2>
+Message-ID: <162097570882.29796.6187655256814953470.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -50,74 +57,66 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/asm branch of tip:
+The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     41f45fb045bcc20e71eb705b361356e715682162
-Gitweb:        https://git.kernel.org/tip/41f45fb045bcc20e71eb705b361356e715682162
-Author:        Ingo Molnar <mingo@kernel.org>
-AuthorDate:    Thu, 13 May 2021 13:41:41 +02:00
+Commit-ID:     48001d26c19f02c33795829ec9fc71a0d8d42413
+Gitweb:        https://git.kernel.org/tip/48001d26c19f02c33795829ec9fc71a0d8d42413
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Thu, 13 May 2021 16:15:50 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 14 May 2021 08:50:28 +02:00
+CommitterDate: Fri, 14 May 2021 09:00:10 +02:00
 
-x86/asm: Make <asm/asm.h> valid on cross-builds as well
+objtool: Reflow handle_jump_alt()
 
-Stephen Rothwell reported that the objtool cross-build breaks on
-non-x86 hosts:
+Miroslav figured the code flow in handle_jump_alt() was sub-optimal
+with that goto. Reflow the code to make it clearer.
 
-  > tools/arch/x86/include/asm/asm.h:185:24: error: invalid register name for 'current_stack_pointer'
-  >   185 | register unsigned long current_stack_pointer asm(_ASM_SP);
-  >       |                        ^~~~~~~~~~~~~~~~~~~~~
-
-The PowerPC host obviously doesn't know much about x86 register names.
-
-Protect the kernel-specific bits of <asm/asm.h>, so that it can be
-included by tooling and cross-built.
-
-Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Reviewed-by: H. Peter Anvin <hpa@zytor.com>
+Reported-by: Miroslav Benes <mbenes@suse.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/YJ00lgslY+IpA/rL@hirez.programming.kicks-ass.net
 ---
- arch/x86/include/asm/asm.h       | 4 ++++
- tools/arch/x86/include/asm/asm.h | 4 ++++
- 2 files changed, 8 insertions(+)
+ tools/objtool/check.c | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/arch/x86/include/asm/asm.h b/arch/x86/include/asm/asm.h
-index 507a37a..3ad3da9 100644
---- a/arch/x86/include/asm/asm.h
-+++ b/arch/x86/include/asm/asm.h
-@@ -120,6 +120,8 @@
- # define CC_OUT(c) [_cc_ ## c] "=qm"
- #endif
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index 2c6a93e..e5947fb 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -1225,17 +1225,9 @@ static int handle_jump_alt(struct objtool_file *file,
+ 			   struct instruction *orig_insn,
+ 			   struct instruction **new_insn)
+ {
+-	if (orig_insn->type == INSN_NOP) {
+-do_nop:
+-		if (orig_insn->len == 2)
+-			file->jl_nop_short++;
+-		else
+-			file->jl_nop_long++;
++	if (orig_insn->type != INSN_JUMP_UNCONDITIONAL &&
++	    orig_insn->type != INSN_NOP) {
  
-+#ifdef __KERNEL__
+-		return 0;
+-	}
+-
+-	if (orig_insn->type != INSN_JUMP_UNCONDITIONAL) {
+ 		WARN_FUNC("unsupported instruction at jump label",
+ 			  orig_insn->sec, orig_insn->offset);
+ 		return -1;
+@@ -1252,7 +1244,15 @@ do_nop:
+ 			       orig_insn->offset, orig_insn->len,
+ 			       arch_nop_insn(orig_insn->len));
+ 		orig_insn->type = INSN_NOP;
+-		goto do_nop;
++	}
 +
- /* Exception table entry */
- #ifdef __ASSEMBLY__
- # define _ASM_EXTABLE_HANDLE(from, to, handler)			\
-@@ -186,4 +188,6 @@ register unsigned long current_stack_pointer asm(_ASM_SP);
- #define ASM_CALL_CONSTRAINT "+r" (current_stack_pointer)
- #endif /* __ASSEMBLY__ */
++	if (orig_insn->type == INSN_NOP) {
++		if (orig_insn->len == 2)
++			file->jl_nop_short++;
++		else
++			file->jl_nop_long++;
++
++		return 0;
+ 	}
  
-+#endif /* __KERNEL__ */
-+
- #endif /* _ASM_X86_ASM_H */
-diff --git a/tools/arch/x86/include/asm/asm.h b/tools/arch/x86/include/asm/asm.h
-index 507a37a..3ad3da9 100644
---- a/tools/arch/x86/include/asm/asm.h
-+++ b/tools/arch/x86/include/asm/asm.h
-@@ -120,6 +120,8 @@
- # define CC_OUT(c) [_cc_ ## c] "=qm"
- #endif
- 
-+#ifdef __KERNEL__
-+
- /* Exception table entry */
- #ifdef __ASSEMBLY__
- # define _ASM_EXTABLE_HANDLE(from, to, handler)			\
-@@ -186,4 +188,6 @@ register unsigned long current_stack_pointer asm(_ASM_SP);
- #define ASM_CALL_CONSTRAINT "+r" (current_stack_pointer)
- #endif /* __ASSEMBLY__ */
- 
-+#endif /* __KERNEL__ */
-+
- #endif /* _ASM_X86_ASM_H */
+ 	if (orig_insn->len == 2)
