@@ -2,56 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A981B387B8F
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 18 May 2021 16:44:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02163387B90
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 18 May 2021 16:44:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239632AbhEROqB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 18 May 2021 10:46:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58844 "EHLO
+        id S239868AbhEROqC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 18 May 2021 10:46:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58744 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239902AbhEROpv (ORCPT
+        with ESMTP id S239952AbhEROpw (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 18 May 2021 10:45:51 -0400
+        Tue, 18 May 2021 10:45:52 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 403A7C061345;
-        Tue, 18 May 2021 07:44:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46F77C061347;
+        Tue, 18 May 2021 07:44:26 -0700 (PDT)
 Date:   Tue, 18 May 2021 14:44:22 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1621349063;
+        s=2020; t=1621349064;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=G4jXFS36XNjva7s1uuCUM+VgL1rtxNo0s7v2P8R/1G0=;
-        b=Ed7WNdUOeVlI44hhNKq08SREBeZmbWgsV31pUQiUaMz96CZ6JMev5m693WBdTuYsgDpSwT
-        Xe8k91ykKiNas67TOlzTpG3U/pm3FKse4FM9UnYJogztV4CdKX5IRMgTu06XBKS34nWqSv
-        ftUo20QOmcBc47wKfU1MPENTmrtRhJIdCxEW/M/A52iJOXo4rlOBD2RqXcEMCyveLuqACu
-        rTLOLRv4Z1fKvAiIWLTx/thuaKTowcue82K26NuN4nMH4J7yDiml2Dum9YqZCKzhbv7ZWQ
-        Yj1UT3cIe1wwbmceTO7hYacZjrZsi/ti4yOyDtlPQ7Yj5bKI44fGSUCJ0+vyyg==
+        bh=uJ0BhvIIV0OZDeLOAdh3lBJMLJZABQBLFu/hbvufQos=;
+        b=FDSNGnBawEAwTFBxhQcc/rjZ1KQQBgsukMVGi6qd9xFgR1+2ZJdjVwtg6ByOODYkKyAkl7
+        PAzyQBIev4n6AD/MgNCUsjakBFE/4f1H6n7Ew3/VY88CGBaCl2OF0yDdeyTCAfggFQL8rm
+        bK3K0JCYwyFgWabzVUQSI1rcc4/wfeKCFKUiPpSB8vE5iUgRXPqyLu0v6ckKegLSuKowX9
+        yvKhEYqqkx39sx8D0Bc5murL+27/H4XrCbIUFfg6k9lHZ3bC215T4Lr8ZU8w0nhRhSqBIS
+        9nKqROiODupy/oAqAIpYEXEHm1MAzpbUO3oCUiCGl3agXfV105dzDHsvaSx0Mw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1621349063;
+        s=2020e; t=1621349064;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=G4jXFS36XNjva7s1uuCUM+VgL1rtxNo0s7v2P8R/1G0=;
-        b=j42OHLliyTniTQB4uLEybJj0JRJ94uSa6gykQjCyyULajDjhGywTHS1x0mv3REeXt59HOF
-        3XyBFb2ULY5FcADg==
+        bh=uJ0BhvIIV0OZDeLOAdh3lBJMLJZABQBLFu/hbvufQos=;
+        b=WV/ZFUppueWSPvA2q1BDn1BLaxtAXuFCoWIyj2OLbw77BicoCqjN3cQJVZhpoAW4lGJ/0S
+        t0smMjAapXbg28Bw==
 From:   "tip-bot2 for Fenghua Yu" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/splitlock] x86/bus_lock: Set rate limit for bus lock
+Subject: [tip: x86/splitlock] Documentation/x86: Add buslock.rst
 Cc:     Fenghua Yu <fenghua.yu@intel.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         Tony Luck <tony.luck@intel.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210419214958.4035512-3-fenghua.yu@intel.com>
-References: <20210419214958.4035512-3-fenghua.yu@intel.com>
+In-Reply-To: <20210419214958.4035512-2-fenghua.yu@intel.com>
+References: <20210419214958.4035512-2-fenghua.yu@intel.com>
 MIME-Version: 1.0
-Message-ID: <162134906216.29796.4189388167264894172.tip-bot2@tip-bot2>
+Message-ID: <162134906278.29796.13820849234959966822.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -62,128 +62,150 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/splitlock branch of tip:
 
-Commit-ID:     ef4ae6e4413159d2329a172c12e9274e2cb0a3a8
-Gitweb:        https://git.kernel.org/tip/ef4ae6e4413159d2329a172c12e9274e2cb0a3a8
+Commit-ID:     1897907cca5aa22cdfcdb7fb8f0644a6add0877d
+Gitweb:        https://git.kernel.org/tip/1897907cca5aa22cdfcdb7fb8f0644a6add0877d
 Author:        Fenghua Yu <fenghua.yu@intel.com>
-AuthorDate:    Mon, 19 Apr 2021 21:49:56 
+AuthorDate:    Mon, 19 Apr 2021 21:49:55 
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Tue, 18 May 2021 16:39:31 +02:00
 
-x86/bus_lock: Set rate limit for bus lock
+Documentation/x86: Add buslock.rst
 
-A bus lock can be thousands of cycles slower than atomic operation within
-one cache line. It also disrupts performance on other cores. Malicious
-users can generate multiple bus locks to degrade the whole system
-performance.
+Add buslock.rst to explain bus lock problem and how to detect and
+handle it.
 
-The current mitigation is to kill the offending process, but for certain
-scenarios it's desired to identify and throttle the offending application.
-
-Add a system wide rate limit for bus locks. When the system detects bus
-locks at a rate higher than N/sec (where N can be set by the kernel boot
-argument in the range [1..1000]) any task triggering a bus lock will be
-forced to sleep for at least 20ms until the overall system rate of bus
-locks drops below the threshold.
+[ tglx: Included it into index.rst and added the missing include ... ]
 
 Signed-off-by: Fenghua Yu <fenghua.yu@intel.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Reviewed-by: Tony Luck <tony.luck@intel.com>
-Link: https://lore.kernel.org/r/20210419214958.4035512-3-fenghua.yu@intel.com
+Link: https://lore.kernel.org/r/20210419214958.4035512-2-fenghua.yu@intel.com
 
 ---
- arch/x86/kernel/cpu/intel.c | 42 ++++++++++++++++++++++++++++++++++--
- 1 file changed, 40 insertions(+), 2 deletions(-)
+ Documentation/x86/buslock.rst | 104 +++++++++++++++++++++++++++++++++-
+ Documentation/x86/index.rst   |   1 +-
+ 2 files changed, 105 insertions(+)
+ create mode 100644 Documentation/x86/buslock.rst
 
-diff --git a/arch/x86/kernel/cpu/intel.c b/arch/x86/kernel/cpu/intel.c
-index 8adffc1..7c23f03 100644
---- a/arch/x86/kernel/cpu/intel.c
-+++ b/arch/x86/kernel/cpu/intel.c
-@@ -10,6 +10,7 @@
- #include <linux/thread_info.h>
- #include <linux/init.h>
- #include <linux/uaccess.h>
-+#include <linux/delay.h>
- 
- #include <asm/cpufeature.h>
- #include <asm/msr.h>
-@@ -41,6 +42,7 @@ enum split_lock_detect_state {
- 	sld_off = 0,
- 	sld_warn,
- 	sld_fatal,
-+	sld_ratelimit,
- };
- 
- /*
-@@ -997,13 +999,30 @@ static const struct {
- 	{ "off",	sld_off   },
- 	{ "warn",	sld_warn  },
- 	{ "fatal",	sld_fatal },
-+	{ "ratelimit:", sld_ratelimit },
- };
- 
-+static struct ratelimit_state bld_ratelimit;
+diff --git a/Documentation/x86/buslock.rst b/Documentation/x86/buslock.rst
+new file mode 100644
+index 0000000..159ff6b
+--- /dev/null
++++ b/Documentation/x86/buslock.rst
+@@ -0,0 +1,104 @@
++.. SPDX-License-Identifier: GPL-2.0
 +
- static inline bool match_option(const char *arg, int arglen, const char *opt)
- {
--	int len = strlen(opt);
-+	int len = strlen(opt), ratelimit;
++.. include:: <isonum.txt>
 +
-+	if (strncmp(arg, opt, len))
-+		return false;
++===============================
++Bus lock detection and handling
++===============================
 +
-+	/*
-+	 * Min ratelimit is 1 bus lock/sec.
-+	 * Max ratelimit is 1000 bus locks/sec.
-+	 */
-+	if (sscanf(arg, "ratelimit:%d", &ratelimit) == 1 &&
-+	    ratelimit > 0 && ratelimit <= 1000) {
-+		ratelimit_state_init(&bld_ratelimit, HZ, ratelimit);
-+		ratelimit_set_flags(&bld_ratelimit, RATELIMIT_MSG_ON_RELEASE);
-+		return true;
-+	}
- 
--	return len == arglen && !strncmp(arg, opt, len);
-+	return len == arglen;
- }
- 
- static bool split_lock_verify_msr(bool on)
-@@ -1082,6 +1101,15 @@ static void sld_update_msr(bool on)
- 
- static void split_lock_init(void)
- {
-+	/*
-+	 * #DB for bus lock handles ratelimit and #AC for split lock is
-+	 * disabled.
-+	 */
-+	if (sld_state == sld_ratelimit) {
-+		split_lock_verify_msr(false);
-+		return;
-+	}
++:Copyright: |copy| 2021 Intel Corporation
++:Authors: - Fenghua Yu <fenghua.yu@intel.com>
++          - Tony Luck <tony.luck@intel.com>
 +
- 	if (cpu_model_supports_sld)
- 		split_lock_verify_msr(sld_state != sld_off);
- }
-@@ -1154,6 +1182,12 @@ void handle_bus_lock(struct pt_regs *regs)
- 	switch (sld_state) {
- 	case sld_off:
- 		break;
-+	case sld_ratelimit:
-+		/* Enforce no more than bld_ratelimit bus locks/sec. */
-+		while (!__ratelimit(&bld_ratelimit))
-+			msleep(20);
-+		/* Warn on the bus lock. */
-+		fallthrough;
- 	case sld_warn:
- 		pr_warn_ratelimited("#DB: %s/%d took a bus_lock trap at address: 0x%lx\n",
- 				    current->comm, current->pid, regs->ip);
-@@ -1259,6 +1293,10 @@ static void sld_state_show(void)
- 				" from non-WB" : "");
- 		}
- 		break;
-+	case sld_ratelimit:
-+		if (boot_cpu_has(X86_FEATURE_BUS_LOCK_DETECT))
-+			pr_info("#DB: setting system wide bus lock rate limit to %u/sec\n", bld_ratelimit.burst);
-+		break;
- 	}
- }
- 
++Problem
++=======
++
++A split lock is any atomic operation whose operand crosses two cache lines.
++Since the operand spans two cache lines and the operation must be atomic,
++the system locks the bus while the CPU accesses the two cache lines.
++
++A bus lock is acquired through either split locked access to writeback (WB)
++memory or any locked access to non-WB memory. This is typically thousands of
++cycles slower than an atomic operation within a cache line. It also disrupts
++performance on other cores and brings the whole system to its knees.
++
++Detection
++=========
++
++Intel processors may support either or both of the following hardware
++mechanisms to detect split locks and bus locks.
++
++#AC exception for split lock detection
++--------------------------------------
++
++Beginning with the Tremont Atom CPU split lock operations may raise an
++Alignment Check (#AC) exception when a split lock operation is attemped.
++
++#DB exception for bus lock detection
++------------------------------------
++
++Some CPUs have the ability to notify the kernel by an #DB trap after a user
++instruction acquires a bus lock and is executed. This allows the kernel to
++terminate the application or to enforce throttling.
++
++Software handling
++=================
++
++The kernel #AC and #DB handlers handle bus lock based on the kernel
++parameter "split_lock_detect". Here is a summary of different options:
++
+++------------------+----------------------------+-----------------------+
++|split_lock_detect=|#AC for split lock		|#DB for bus lock	|
+++------------------+----------------------------+-----------------------+
++|off	  	   |Do nothing			|Do nothing		|
+++------------------+----------------------------+-----------------------+
++|warn		   |Kernel OOPs			|Warn once per task and |
++|(default)	   |Warn once per task and	|and continues to run.  |
++|		   |disable future checking	|			|
++|		   |When both features are	|			|
++|		   |supported, warn in #AC	|			|
+++------------------+----------------------------+-----------------------+
++|fatal		   |Kernel OOPs			|Send SIGBUS to user.	|
++|		   |Send SIGBUS to user		|			|
++|		   |When both features are	|			|
++|		   |supported, fatal in #AC	|			|
+++------------------+----------------------------+-----------------------+
++
++Usages
++======
++
++Detecting and handling bus lock may find usages in various areas:
++
++It is critical for real time system designers who build consolidated real
++time systems. These systems run hard real time code on some cores and run
++"untrusted" user processes on other cores. The hard real time cannot afford
++to have any bus lock from the untrusted processes to hurt real time
++performance. To date the designers have been unable to deploy these
++solutions as they have no way to prevent the "untrusted" user code from
++generating split lock and bus lock to block the hard real time code to
++access memory during bus locking.
++
++It's also useful for general computing to prevent guests or user
++applications from slowing down the overall system by executing instructions
++with bus lock.
++
++
++Guidance
++========
++off
++---
++
++Disable checking for split lock and bus lock. This option can be useful if
++there are legacy applications that trigger these events at a low rate so
++that mitigation is not needed.
++
++warn
++----
++
++A warning is emitted when a bus lock is detected which allows to identify
++the offending application. This is the default behavior.
++
++fatal
++-----
++
++In this case, the bus lock is not tolerated and the process is killed.
+diff --git a/Documentation/x86/index.rst b/Documentation/x86/index.rst
+index 4693e19..0004f5d 100644
+--- a/Documentation/x86/index.rst
++++ b/Documentation/x86/index.rst
+@@ -29,6 +29,7 @@ x86-specific Documentation
+    microcode
+    resctrl
+    tsx_async_abort
++   buslock
+    usb-legacy-support
+    i386/index
+    x86_64/index
