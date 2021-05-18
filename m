@@ -2,210 +2,188 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 02163387B90
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 18 May 2021 16:44:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 74D493880C2
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 18 May 2021 21:50:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239868AbhEROqC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 18 May 2021 10:46:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58744 "EHLO
+        id S1351955AbhERTv6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 18 May 2021 15:51:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43532 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239952AbhEROpw (ORCPT
+        with ESMTP id S240654AbhERTv5 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 18 May 2021 10:45:52 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46F77C061347;
-        Tue, 18 May 2021 07:44:26 -0700 (PDT)
-Date:   Tue, 18 May 2021 14:44:22 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1621349064;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=uJ0BhvIIV0OZDeLOAdh3lBJMLJZABQBLFu/hbvufQos=;
-        b=FDSNGnBawEAwTFBxhQcc/rjZ1KQQBgsukMVGi6qd9xFgR1+2ZJdjVwtg6ByOODYkKyAkl7
-        PAzyQBIev4n6AD/MgNCUsjakBFE/4f1H6n7Ew3/VY88CGBaCl2OF0yDdeyTCAfggFQL8rm
-        bK3K0JCYwyFgWabzVUQSI1rcc4/wfeKCFKUiPpSB8vE5iUgRXPqyLu0v6ckKegLSuKowX9
-        yvKhEYqqkx39sx8D0Bc5murL+27/H4XrCbIUFfg6k9lHZ3bC215T4Lr8ZU8w0nhRhSqBIS
-        9nKqROiODupy/oAqAIpYEXEHm1MAzpbUO3oCUiCGl3agXfV105dzDHsvaSx0Mw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1621349064;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=uJ0BhvIIV0OZDeLOAdh3lBJMLJZABQBLFu/hbvufQos=;
-        b=WV/ZFUppueWSPvA2q1BDn1BLaxtAXuFCoWIyj2OLbw77BicoCqjN3cQJVZhpoAW4lGJ/0S
-        t0smMjAapXbg28Bw==
-From:   "tip-bot2 for Fenghua Yu" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/splitlock] Documentation/x86: Add buslock.rst
-Cc:     Fenghua Yu <fenghua.yu@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tony Luck <tony.luck@intel.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20210419214958.4035512-2-fenghua.yu@intel.com>
-References: <20210419214958.4035512-2-fenghua.yu@intel.com>
+        Tue, 18 May 2021 15:51:57 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14708C061573;
+        Tue, 18 May 2021 12:50:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=zbtV+ZW1lothGAMzlfC3VBUebJDk40/F89AsWOkOsbc=; b=a1sKjbiEqm1ilmcxrPUJv93tml
+        D+bNo+eQFW6BOiMPJUoNmulruFyzn8dgprUKpM2+NLZGyjAa7CVtQyjcXvZXovzRNQ93fP13XyQCF
+        ka+m+oflP/9JQynPxhe6C9g2wqF3+L35djwiTgQhWAUOl57HCHVT8gaSJTWwcCX5XRe6H43g9pVM8
+        ShND4umOutiZ9twNh7d0aeReGGTimLbsRoP9wAFYu2MChB/GI33DSauLRf5IPvCOz6aDf0h1gv1lj
+        R+3+idhub8NZGy5mvEiw6ybo3cTisizHTYWddoFHMbo6UG1tHFQnniKiYLfvGzEygh3hj/JOakOmg
+        Z+qm2cxg==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=worktop.programming.kicks-ass.net)
+        by casper.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
+        id 1lj5jB-00EIn7-N5; Tue, 18 May 2021 19:50:09 +0000
+Received: by worktop.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 988A1986465; Tue, 18 May 2021 21:50:04 +0200 (CEST)
+Date:   Tue, 18 May 2021 21:50:04 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-tip-commits@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
+        x86@kernel.org, willy@infradead.org
+Subject: Re: [tip: objtool/core] jump_label, x86: Allow short NOPs
+Message-ID: <20210518195004.GD21560@worktop.programming.kicks-ass.net>
+References: <20210506194158.216763632@infradead.org>
+ <162082558708.29796.10992563428983424866.tip-bot2@tip-bot2>
 MIME-Version: 1.0
-Message-ID: <162134906278.29796.13820849234959966822.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <162082558708.29796.10992563428983424866.tip-bot2@tip-bot2>
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/splitlock branch of tip:
+On Wed, May 12, 2021 at 01:19:47PM -0000, tip-bot2 for Peter Zijlstra wrote:
+> The following commit has been merged into the objtool/core branch of tip:
+> 
+> Commit-ID:     ab3257042c26d0cd44793c741e2f89bf38b21fe8
+> Gitweb:        https://git.kernel.org/tip/ab3257042c26d0cd44793c741e2f89bf38b21fe8
+> Author:        Peter Zijlstra <peterz@infradead.org>
+> AuthorDate:    Thu, 06 May 2021 21:34:05 +02:00
+> Committer:     Ingo Molnar <mingo@kernel.org>
+> CommitterDate: Wed, 12 May 2021 14:54:56 +02:00
+> 
+> jump_label, x86: Allow short NOPs
+> 
+> Now that objtool is able to rewrite jump_label instructions, have the
+> compiler emit a JMP, such that it can decide on the optimal encoding,
+> and set jump_entry::key bit1 to indicate that objtool should rewrite
+> the instruction to a matching NOP.
+> 
+> For x86_64-allyesconfig this gives:
+> 
+>   jl\     NOP     JMP
+>   short:  22997   124
+>   long:   30874   90
+> 
+> IOW, we save (22997+124) * 3 bytes of kernel text in hotpaths.
+> 
+> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> Signed-off-by: Ingo Molnar <mingo@kernel.org>
+> Link: https://lore.kernel.org/r/20210506194158.216763632@infradead.org
 
-Commit-ID:     1897907cca5aa22cdfcdb7fb8f0644a6add0877d
-Gitweb:        https://git.kernel.org/tip/1897907cca5aa22cdfcdb7fb8f0644a6add0877d
-Author:        Fenghua Yu <fenghua.yu@intel.com>
-AuthorDate:    Mon, 19 Apr 2021 21:49:55 
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 18 May 2021 16:39:31 +02:00
+So Willy is having some trouble with this commit; for some reason his
+kernel is no longer booting in his qemu thing, but I can't reproduce.
 
-Documentation/x86: Add buslock.rst
+I've hacked up the below vmlinux.o validation, willy can you run this on
+your vmlinux.o, something like:
 
-Add buslock.rst to explain bus lock problem and how to detect and
-handle it.
+	build/tools/objtool/objtool check -abdJsuld build/vmlinux.o
 
-[ tglx: Included it into index.rst and added the missing include ... ]
+Where I'm assuming you build with O=build/. When I run it on my build
+(with your .config) I get absolutely nothing :/
 
-Signed-off-by: Fenghua Yu <fenghua.yu@intel.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Tony Luck <tony.luck@intel.com>
-Link: https://lore.kernel.org/r/20210419214958.4035512-2-fenghua.yu@intel.com
+Alternatively, can you get me your vmlinux.o + bzImage ?
+
+Also helpful might be trying to attach gdb to the qemu gdbstub and
+looking where the boot fails.
 
 ---
- Documentation/x86/buslock.rst | 104 +++++++++++++++++++++++++++++++++-
- Documentation/x86/index.rst   |   1 +-
- 2 files changed, 105 insertions(+)
- create mode 100644 Documentation/x86/buslock.rst
 
-diff --git a/Documentation/x86/buslock.rst b/Documentation/x86/buslock.rst
-new file mode 100644
-index 0000000..159ff6b
---- /dev/null
-+++ b/Documentation/x86/buslock.rst
-@@ -0,0 +1,104 @@
-+.. SPDX-License-Identifier: GPL-2.0
+diff --git a/tools/objtool/builtin-check.c b/tools/objtool/builtin-check.c
+index 8b38b5d6fec7..100f3efa6136 100644
+--- a/tools/objtool/builtin-check.c
++++ b/tools/objtool/builtin-check.c
+@@ -20,7 +20,7 @@
+ #include <objtool/objtool.h>
+ 
+ bool no_fp, no_unreachable, retpoline, module, backtrace, uaccess, stats,
+-     validate_dup, vmlinux, mcount, noinstr, backup;
++     validate_dup, vmlinux, mcount, noinstr, backup, validate_jl;
+ 
+ static const char * const check_usage[] = {
+ 	"objtool check [<options>] file.o",
+@@ -45,6 +45,7 @@ const struct option check_options[] = {
+ 	OPT_BOOLEAN('l', "vmlinux", &vmlinux, "vmlinux.o validation"),
+ 	OPT_BOOLEAN('M', "mcount", &mcount, "generate __mcount_loc"),
+ 	OPT_BOOLEAN('B', "backup", &backup, "create .orig files before modification"),
++	OPT_BOOLEAN('J', "jump-label", &validate_jl, "validate jump-label tables"),
+ 	OPT_END(),
+ };
+ 
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index 2c6a93edf27e..c3c82e40cbee 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -1225,6 +1225,33 @@ static int handle_jump_alt(struct objtool_file *file,
+ 			   struct instruction *orig_insn,
+ 			   struct instruction **new_insn)
+ {
++	if (validate_jl) {
++#if 0
++		if (special_alt->key_addend & 2) {
++			WARN_FUNC("jump-label mod: %s", orig_insn->sec, orig_insn->offset,
++				  orig_insn->type == INSN_NOP ? "nop" : "jmp");
++		}
++#endif
 +
-+.. include:: <isonum.txt>
++		if (orig_insn->len == 2) {
++			s32 disp;
 +
-+===============================
-+Bus lock detection and handling
-+===============================
++			if (special_alt->orig_sec != special_alt->new_sec) {
++				WARN_FUNC("short jump-label cannot cross sections",
++					  orig_insn->sec, orig_insn->offset);
++				return -1;
++			}
 +
-+:Copyright: |copy| 2021 Intel Corporation
-+:Authors: - Fenghua Yu <fenghua.yu@intel.com>
-+          - Tony Luck <tony.luck@intel.com>
++			disp = special_alt->new_off - (special_alt->orig_off + 2);
 +
-+Problem
-+=======
++			if ((disp >> 31) != (disp >> 7)) {
++				WARN_FUNC("short jump-label, displacement too large: 0x%08x",
++					  orig_insn->sec, orig_insn->offset, disp);
++				return -1;
++			}
++		}
++	}
 +
-+A split lock is any atomic operation whose operand crosses two cache lines.
-+Since the operand spans two cache lines and the operation must be atomic,
-+the system locks the bus while the CPU accesses the two cache lines.
+ 	if (orig_insn->type == INSN_NOP) {
+ do_nop:
+ 		if (orig_insn->len == 2)
+@@ -1244,6 +1271,11 @@ static int handle_jump_alt(struct objtool_file *file,
+ 	if (special_alt->key_addend & 2) {
+ 		struct reloc *reloc = insn_reloc(file, orig_insn);
+ 
++		if (validate_jl) {
++			WARN_FUNC("jump-label unpatched", orig_insn->sec, orig_insn->offset);
++			return -1;
++		}
 +
-+A bus lock is acquired through either split locked access to writeback (WB)
-+memory or any locked access to non-WB memory. This is typically thousands of
-+cycles slower than an atomic operation within a cache line. It also disrupts
-+performance on other cores and brings the whole system to its knees.
-+
-+Detection
-+=========
-+
-+Intel processors may support either or both of the following hardware
-+mechanisms to detect split locks and bus locks.
-+
-+#AC exception for split lock detection
-+--------------------------------------
-+
-+Beginning with the Tremont Atom CPU split lock operations may raise an
-+Alignment Check (#AC) exception when a split lock operation is attemped.
-+
-+#DB exception for bus lock detection
-+------------------------------------
-+
-+Some CPUs have the ability to notify the kernel by an #DB trap after a user
-+instruction acquires a bus lock and is executed. This allows the kernel to
-+terminate the application or to enforce throttling.
-+
-+Software handling
-+=================
-+
-+The kernel #AC and #DB handlers handle bus lock based on the kernel
-+parameter "split_lock_detect". Here is a summary of different options:
-+
-++------------------+----------------------------+-----------------------+
-+|split_lock_detect=|#AC for split lock		|#DB for bus lock	|
-++------------------+----------------------------+-----------------------+
-+|off	  	   |Do nothing			|Do nothing		|
-++------------------+----------------------------+-----------------------+
-+|warn		   |Kernel OOPs			|Warn once per task and |
-+|(default)	   |Warn once per task and	|and continues to run.  |
-+|		   |disable future checking	|			|
-+|		   |When both features are	|			|
-+|		   |supported, warn in #AC	|			|
-++------------------+----------------------------+-----------------------+
-+|fatal		   |Kernel OOPs			|Send SIGBUS to user.	|
-+|		   |Send SIGBUS to user		|			|
-+|		   |When both features are	|			|
-+|		   |supported, fatal in #AC	|			|
-++------------------+----------------------------+-----------------------+
-+
-+Usages
-+======
-+
-+Detecting and handling bus lock may find usages in various areas:
-+
-+It is critical for real time system designers who build consolidated real
-+time systems. These systems run hard real time code on some cores and run
-+"untrusted" user processes on other cores. The hard real time cannot afford
-+to have any bus lock from the untrusted processes to hurt real time
-+performance. To date the designers have been unable to deploy these
-+solutions as they have no way to prevent the "untrusted" user code from
-+generating split lock and bus lock to block the hard real time code to
-+access memory during bus locking.
-+
-+It's also useful for general computing to prevent guests or user
-+applications from slowing down the overall system by executing instructions
-+with bus lock.
-+
-+
-+Guidance
-+========
-+off
-+---
-+
-+Disable checking for split lock and bus lock. This option can be useful if
-+there are legacy applications that trigger these events at a low rate so
-+that mitigation is not needed.
-+
-+warn
-+----
-+
-+A warning is emitted when a bus lock is detected which allows to identify
-+the offending application. This is the default behavior.
-+
-+fatal
-+-----
-+
-+In this case, the bus lock is not tolerated and the process is killed.
-diff --git a/Documentation/x86/index.rst b/Documentation/x86/index.rst
-index 4693e19..0004f5d 100644
---- a/Documentation/x86/index.rst
-+++ b/Documentation/x86/index.rst
-@@ -29,6 +29,7 @@ x86-specific Documentation
-    microcode
-    resctrl
-    tsx_async_abort
-+   buslock
-    usb-legacy-support
-    i386/index
-    x86_64/index
+ 		if (reloc) {
+ 			reloc->type = R_NONE;
+ 			elf_write_reloc(file->elf, reloc);
+@@ -1341,6 +1373,8 @@ static int add_special_section_alts(struct objtool_file *file)
+ 	}
+ 
+ 	if (stats) {
++		if (validate_jl)
++			printf("validate-");
+ 		printf("jl\\\tNOP\tJMP\n");
+ 		printf("short:\t%ld\t%ld\n", file->jl_nop_short, file->jl_short);
+ 		printf("long:\t%ld\t%ld\n", file->jl_nop_long, file->jl_long);
+diff --git a/tools/objtool/include/objtool/builtin.h b/tools/objtool/include/objtool/builtin.h
+index 15ac0b7d3d6a..c9a00423ebd5 100644
+--- a/tools/objtool/include/objtool/builtin.h
++++ b/tools/objtool/include/objtool/builtin.h
+@@ -9,7 +9,7 @@
+ 
+ extern const struct option check_options[];
+ extern bool no_fp, no_unreachable, retpoline, module, backtrace, uaccess, stats,
+-            validate_dup, vmlinux, mcount, noinstr, backup;
++            validate_dup, vmlinux, mcount, noinstr, backup, validate_jl;
+ 
+ extern int cmd_parse_options(int argc, const char **argv, const char * const usage[]);
+ 
