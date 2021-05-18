@@ -2,17 +2,17 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BDDBF3878FF
+	by mail.lfdr.de (Postfix) with ESMTP id 750033878FE
 	for <lists+linux-tip-commits@lfdr.de>; Tue, 18 May 2021 14:40:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349191AbhERMlz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S1349016AbhERMlz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Tue, 18 May 2021 08:41:55 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:59916 "EHLO
+Received: from Galois.linutronix.de ([193.142.43.55]:59928 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241412AbhERMly (ORCPT
+        with ESMTP id S242555AbhERMly (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Tue, 18 May 2021 08:41:54 -0400
-Date:   Tue, 18 May 2021 12:40:33 -0000
+Date:   Tue, 18 May 2021 12:40:34 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1621341635;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -20,12 +20,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=RMsXaE9U3vAnPdSm8fV/PmSPqQ7FpExXGvKWVNt3Yco=;
-        b=hhsRvAQJXaxHyFRX4NS5sYVjswL+4q8DFQNAmlhZkNKEtYaDTTiFEAOtlTnu/n+jjoMxV3
-        WbK+SIeGjTftHXqmLBAWVGRtkddfUmliyIjDpxNpTi6/LV0aLabvnXZV+6fDUb42iNGHfU
-        /jmiFqdq1aUA0+AzNraxZE+77djjnZiU7flVEuYiV9NQGWjeLVKWDhlseBpzHNz07Erm7u
-        jw4L6H1+myRn004Sxp7++hslmlB/rGrTUkxHj7ObP2N7v/tCCSSbeKgcvoRf6SVeVsjV4w
-        1ilOcSV3aYzfp74O3J0zO/YR4rI1M0sfu4094O9JzQ2dQPU9nURgm66n64LHOw==
+        bh=X01DzKErpVi6HcXJTmbDDUSBWacNrK16jsBjNHYoLK0=;
+        b=UJXZrhtSnYNlAfoykEdXfkAv5FCZqgAP4fiUS+aXClCbORiVeh32YrCVro0ayoQAXHQjfV
+        pwNjK5SY12PFjt/g81Pa0Xk0nEqS+rRcKbn3bnYgkB/ovb9HrhSpFYzA2JKWewpCmkYfs5
+        g0LHxM++5Rl0Ej+880ItuBa9692oXgNJUEIjbM9r+oHLK5i8iWiAkLXfwLIsO5zLzHicTA
+        S9aMrSDHgi6nlQvFUXD0egsEa3sTavNG7o0zipqxOcjMWeBbVWDgTnLraayqmMwkfOJrp+
+        BYnmoqjdeTyMnkDjBv8Sqt1zD1lVmZSgwvsMBNXu7UJXbckHwbkX6WJVjimPzg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1621341635;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -33,22 +33,22 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=RMsXaE9U3vAnPdSm8fV/PmSPqQ7FpExXGvKWVNt3Yco=;
-        b=01bG+blSArA2mBweQ6aHNCo3m7ojvgOnsbAI8O8MA8ngBpKRXM2oEdxeRo4XHOB3kvVq2E
-        9qxGiinuEjvry1BQ==
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+        bh=X01DzKErpVi6HcXJTmbDDUSBWacNrK16jsBjNHYoLK0=;
+        b=OYSZ0nU7qCx/o2vlpBsKPbJDn4MW/CVm0EouBIMcPltFN2phj/g4KSYLVx73gPb4fZUgCF
+        p9NEomgUWCqGqwBQ==
+From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/apic] x86/idt: Rework IDT setup for boot CPU
-Cc:     Lai Jiangshan <laijs@linux.alibaba.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
+Subject: [tip: x86/apic] x86_cpu_Init_AP_exception_handling_from_cpu_init_secondary_
+Cc:     Borislav Petkov <bp@suse.de>, Thomas Gleixner <tglx@linutronix.de>,
+        Lai Jiangshan <laijs@linux.alibaba.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210507114000.569244755@linutronix.de>
-References: <20210507114000.569244755@linutronix.de>
+In-Reply-To: <87k0o6gtvu.ffs@nanos.tec.linutronix.de>
+References: <87k0o6gtvu.ffs@nanos.tec.linutronix.de>
 MIME-Version: 1.0
-Message-ID: <162134163353.29796.1887942777115522727.tip-bot2@tip-bot2>
+Message-ID: <162134163419.29796.9958742586545024368.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,165 +59,152 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/apic branch of tip:
 
-Commit-ID:     1f2b9e4acea8e6a39a7c2159d9cbd04583a729f5
-Gitweb:        https://git.kernel.org/tip/1f2b9e4acea8e6a39a7c2159d9cbd04583a729f5
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Fri, 07 May 2021 13:02:12 +02:00
+Commit-ID:     14508594acb7606c10f89e79f3f73e8203295f8b
+Gitweb:        https://git.kernel.org/tip/14508594acb7606c10f89e79f3f73e8203295f8b
+Author:        Borislav Petkov <bp@suse.de>
+AuthorDate:    Mon, 10 May 2021 23:29:25 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 18 May 2021 14:33:54 +02:00
+CommitterDate: Tue, 18 May 2021 14:33:19 +02:00
 
-x86/idt: Rework IDT setup for boot CPU
+x86_cpu_Init_AP_exception_handling_from_cpu_init_secondary_
 
-A basic IDT setup for the boot CPU has to be done before invoking
-cpu_init() because that might trigger #GP when accessing certain MSRs. This
-setup cannot install the IST variants on 64-bit because the TSS setup which
-is required for ISTs to work happens in cpu_init(). That leaves a
-theoretical window where a NMI would invoke the ASM entry point which
-relies on IST being enabled on the kernel stack which is undefined
-behaviour.
+SEV-ES guests require properly setup task register with which the TSS
+descriptor in the GDT can be located so that the IST-type #VC exception
+handler which they need to function properly, can be executed.
 
-This setup logic has never worked correctly, but on the other hand a NMI
-hitting the boot CPU before it has fully set up the IDT would be fatal
-anyway. So the small window between the wrong NMI gate and the IST based
-NMI gate is not really adding a substantial amount of risk.
+This setup needs to happen before attempting to load microcode in
+ucode_cpu_init() on secondary CPUs which can cause such #VC exceptions.
 
-But the setup logic is nevertheless more convoluted than necessary. The
-recent separation of the TSS setup into a separate function to ensure that
-setup so it can setup TSS first, then initialize IDT with the IST variants
-before invoking cpu_init() and get rid of the post cpu_init() IST setup.
+Simplify the machinery by running that exception setup from a new function
+cpu_init_secondary() and explicitly call cpu_init_exception_handling() for
+the boot CPU before cpu_init(). The latter prepares for fixing and
+simplifying the exception/IST setup on the boot CPU.
 
-Move the invocation of cpu_init_exception_handling() ahead of
-idt_setup_traps() and merge the IST setup into the default setup table.
+There should be no functional changes resulting from this patch.
 
-Reported-by: Lai Jiangshan <laijs@linux.alibaba.com>
+[ tglx: Reworked it so cpu_init_exception_handling() stays seperate ]
+
+Signed-off-by: Borislav Petkov <bp@suse.de>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Reviewed-by: Lai Jiangshan <laijs@linux.alibaba.com>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20210507114000.569244755@linutronix.de
----
- arch/x86/include/asm/desc.h |  2 +--
- arch/x86/kernel/idt.c       | 40 ++++++++++--------------------------
- arch/x86/kernel/traps.c     |  7 ++----
- 3 files changed, 15 insertions(+), 34 deletions(-)
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>                                                                                                                                                                                                                        
+Link: https://lore.kernel.org/r/87k0o6gtvu.ffs@nanos.tec.linutronix.de
 
-diff --git a/arch/x86/include/asm/desc.h b/arch/x86/include/asm/desc.h
-index 476082a..96021e9 100644
---- a/arch/x86/include/asm/desc.h
-+++ b/arch/x86/include/asm/desc.h
-@@ -421,10 +421,8 @@ extern bool idt_is_f00f_address(unsigned long address);
+---
+ arch/x86/include/asm/processor.h |  1 +
+ arch/x86/kernel/cpu/common.c     | 28 +++++++++++++++-------------
+ arch/x86/kernel/smpboot.c        |  3 +--
+ arch/x86/kernel/traps.c          |  4 +---
+ 4 files changed, 18 insertions(+), 18 deletions(-)
+
+diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
+index 556b2b1..364d0e4 100644
+--- a/arch/x86/include/asm/processor.h
++++ b/arch/x86/include/asm/processor.h
+@@ -663,6 +663,7 @@ extern void load_direct_gdt(int);
+ extern void load_fixmap_gdt(int);
+ extern void load_percpu_segment(int);
+ extern void cpu_init(void);
++extern void cpu_init_secondary(void);
+ extern void cpu_init_exception_handling(void);
+ extern void cr4_init(void);
  
- #ifdef CONFIG_X86_64
- extern void idt_setup_early_pf(void);
--extern void idt_setup_ist_traps(void);
- #else
- static inline void idt_setup_early_pf(void) { }
--static inline void idt_setup_ist_traps(void) { }
- #endif
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index a1b756c..212e8bc 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -1938,13 +1938,12 @@ void cpu_init_exception_handling(void)
  
- extern void idt_invalidate(void *addr);
-diff --git a/arch/x86/kernel/idt.c b/arch/x86/kernel/idt.c
-index d552f17..6cce604 100644
---- a/arch/x86/kernel/idt.c
-+++ b/arch/x86/kernel/idt.c
-@@ -35,12 +35,16 @@
- #define SYSG(_vector, _addr)				\
- 	G(_vector, _addr, DEFAULT_STACK, GATE_INTERRUPT, DPL3, __KERNEL_CS)
- 
-+#ifdef CONFIG_X86_64
  /*
-  * Interrupt gate with interrupt stack. The _ist index is the index in
-  * the tss.ist[] array, but for the descriptor it needs to start at 1.
+  * cpu_init() initializes state that is per-CPU. Some data is already
+- * initialized (naturally) in the bootstrap process, such as the GDT
+- * and IDT. We reload them nevertheless, this function acts as a
+- * 'CPU state barrier', nothing should get across.
++ * initialized (naturally) in the bootstrap process, such as the GDT.  We
++ * reload it nevertheless, this function acts as a 'CPU state barrier',
++ * nothing should get across.
   */
- #define ISTG(_vector, _addr, _ist)			\
- 	G(_vector, _addr, _ist + 1, GATE_INTERRUPT, DPL0, __KERNEL_CS)
-+#else
-+#define ISTG(_vector, _addr, _ist)	INTG(_vector, _addr)
-+#endif
+ void cpu_init(void)
+ {
+-	struct tss_struct *tss = this_cpu_ptr(&cpu_tss_rw);
+ 	struct task_struct *cur = current;
+ 	int cpu = raw_smp_processor_id();
  
- /* Task gate */
- #define TSKG(_vector, _gdt)				\
-@@ -74,7 +78,7 @@ static const __initconst struct idt_data early_idts[] = {
-  */
- static const __initconst struct idt_data def_idts[] = {
- 	INTG(X86_TRAP_DE,		asm_exc_divide_error),
--	INTG(X86_TRAP_NMI,		asm_exc_nmi),
-+	ISTG(X86_TRAP_NMI,		asm_exc_nmi, IST_INDEX_NMI),
- 	INTG(X86_TRAP_BR,		asm_exc_bounds),
- 	INTG(X86_TRAP_UD,		asm_exc_invalid_op),
- 	INTG(X86_TRAP_NM,		asm_exc_device_not_available),
-@@ -91,12 +95,16 @@ static const __initconst struct idt_data def_idts[] = {
- #ifdef CONFIG_X86_32
- 	TSKG(X86_TRAP_DF,		GDT_ENTRY_DOUBLEFAULT_TSS),
- #else
--	INTG(X86_TRAP_DF,		asm_exc_double_fault),
-+	ISTG(X86_TRAP_DF,		asm_exc_double_fault, IST_INDEX_DF),
+@@ -1957,8 +1956,6 @@ void cpu_init(void)
+ 	    early_cpu_to_node(cpu) != NUMA_NO_NODE)
+ 		set_numa_node(early_cpu_to_node(cpu));
  #endif
--	INTG(X86_TRAP_DB,		asm_exc_debug),
-+	ISTG(X86_TRAP_DB,		asm_exc_debug, IST_INDEX_DB),
+-	setup_getcpu(cpu);
+-
+ 	pr_debug("Initializing CPU#%d\n", cpu);
  
- #ifdef CONFIG_X86_MCE
--	INTG(X86_TRAP_MC,		asm_exc_machine_check),
-+	ISTG(X86_TRAP_MC,		asm_exc_machine_check, IST_INDEX_MCE),
+ 	if (IS_ENABLED(CONFIG_X86_64) || cpu_feature_enabled(X86_FEATURE_VME) ||
+@@ -1970,7 +1967,6 @@ void cpu_init(void)
+ 	 * and set up the GDT descriptor:
+ 	 */
+ 	switch_to_new_gdt(cpu);
+-	load_current_idt();
+ 
+ 	if (IS_ENABLED(CONFIG_X86_64)) {
+ 		loadsegment(fs, 0);
+@@ -1990,12 +1986,6 @@ void cpu_init(void)
+ 	initialize_tlbstate_and_flush();
+ 	enter_lazy_tlb(&init_mm, cur);
+ 
+-	/* Initialize the TSS. */
+-	tss_setup_ist(tss);
+-	tss_setup_io_bitmap(tss);
+-	set_tss_desc(cpu, &get_cpu_entry_area(cpu)->tss.x86_tss);
+-
+-	load_TR_desc();
+ 	/*
+ 	 * sp0 points to the entry trampoline stack regardless of what task
+ 	 * is running.
+@@ -2017,6 +2007,18 @@ void cpu_init(void)
+ 	load_fixmap_gdt(cpu);
+ }
+ 
++#ifdef CONFIG_SMP
++void cpu_init_secondary(void)
++{
++	/*
++	 * Relies on the BP having set-up the IDT tables, which are loaded
++	 * on this CPU in cpu_init_exception_handling().
++	 */
++	cpu_init_exception_handling();
++	cpu_init();
++}
 +#endif
 +
-+#ifdef CONFIG_AMD_MEM_ENCRYPT
-+	ISTG(X86_TRAP_VC,		asm_exc_vmm_communication, IST_INDEX_VC),
+ /*
+  * The microcode loader calls this upon late microcode load to recheck features,
+  * only when microcode has been updated. Caller holds microcode_mutex and CPU
+diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
+index 7770245..2ed45b0 100644
+--- a/arch/x86/kernel/smpboot.c
++++ b/arch/x86/kernel/smpboot.c
+@@ -232,8 +232,7 @@ static void notrace start_secondary(void *unused)
+ 	load_cr3(swapper_pg_dir);
+ 	__flush_tlb_all();
  #endif
- 
- 	SYSG(X86_TRAP_OF,		asm_exc_overflow),
-@@ -221,22 +229,6 @@ static const __initconst struct idt_data early_pf_idts[] = {
- 	INTG(X86_TRAP_PF,		asm_exc_page_fault),
- };
- 
--/*
-- * The exceptions which use Interrupt stacks. They are setup after
-- * cpu_init() when the TSS has been initialized.
-- */
--static const __initconst struct idt_data ist_idts[] = {
--	ISTG(X86_TRAP_DB,	asm_exc_debug,			IST_INDEX_DB),
--	ISTG(X86_TRAP_NMI,	asm_exc_nmi,			IST_INDEX_NMI),
--	ISTG(X86_TRAP_DF,	asm_exc_double_fault,		IST_INDEX_DF),
--#ifdef CONFIG_X86_MCE
--	ISTG(X86_TRAP_MC,	asm_exc_machine_check,		IST_INDEX_MCE),
--#endif
--#ifdef CONFIG_AMD_MEM_ENCRYPT
--	ISTG(X86_TRAP_VC,	asm_exc_vmm_communication,	IST_INDEX_VC),
--#endif
--};
--
- /**
-  * idt_setup_early_pf - Initialize the idt table with early pagefault handler
-  *
-@@ -254,14 +246,6 @@ void __init idt_setup_early_pf(void)
- 	idt_setup_from_table(idt_table, early_pf_idts,
- 			     ARRAY_SIZE(early_pf_idts), true);
- }
--
--/**
-- * idt_setup_ist_traps - Initialize the idt table with traps using IST
-- */
--void __init idt_setup_ist_traps(void)
--{
--	idt_setup_from_table(idt_table, ist_idts, ARRAY_SIZE(ist_idts), true);
--}
- #endif
- 
- static void __init idt_map_in_cea(void)
+-	cpu_init_exception_handling();
+-	cpu_init();
++	cpu_init_secondary();
+ 	rcu_cpu_starting(raw_smp_processor_id());
+ 	x86_cpuinit.early_percpu_clock_init();
+ 	preempt_disable();
 diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
-index 41f7dc4..ed540e0 100644
+index 853ea7a..41f7dc4 100644
 --- a/arch/x86/kernel/traps.c
 +++ b/arch/x86/kernel/traps.c
-@@ -1160,10 +1160,9 @@ void __init trap_init(void)
- 	/* Init GHCB memory pages when running as an SEV-ES guest */
- 	sev_es_init_vc_handling();
+@@ -1162,9 +1162,7 @@ void __init trap_init(void)
  
--	idt_setup_traps();
--
-+	/* Initialize TSS before setting up traps so ISTs work */
- 	cpu_init_exception_handling();
-+	/* Setup traps as cpu_init() might #GP */
-+	idt_setup_traps();
+ 	idt_setup_traps();
+ 
+-	/*
+-	 * Should be a barrier for any external CPU state:
+-	 */
++	cpu_init_exception_handling();
  	cpu_init();
--
--	idt_setup_ist_traps();
- }
+ 
+ 	idt_setup_ist_traps();
