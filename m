@@ -2,45 +2,48 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 750033878FE
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 18 May 2021 14:40:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 32BB1387935
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 18 May 2021 14:52:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349016AbhERMlz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 18 May 2021 08:41:55 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:59928 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242555AbhERMly (ORCPT
+        id S244549AbhERMyC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 18 May 2021 08:54:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32924 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S244238AbhERMyB (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 18 May 2021 08:41:54 -0400
-Date:   Tue, 18 May 2021 12:40:34 -0000
+        Tue, 18 May 2021 08:54:01 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FADCC061573;
+        Tue, 18 May 2021 05:52:43 -0700 (PDT)
+Date:   Tue, 18 May 2021 12:52:38 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1621341635;
+        s=2020; t=1621342360;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=X01DzKErpVi6HcXJTmbDDUSBWacNrK16jsBjNHYoLK0=;
-        b=UJXZrhtSnYNlAfoykEdXfkAv5FCZqgAP4fiUS+aXClCbORiVeh32YrCVro0ayoQAXHQjfV
-        pwNjK5SY12PFjt/g81Pa0Xk0nEqS+rRcKbn3bnYgkB/ovb9HrhSpFYzA2JKWewpCmkYfs5
-        g0LHxM++5Rl0Ej+880ItuBa9692oXgNJUEIjbM9r+oHLK5i8iWiAkLXfwLIsO5zLzHicTA
-        S9aMrSDHgi6nlQvFUXD0egsEa3sTavNG7o0zipqxOcjMWeBbVWDgTnLraayqmMwkfOJrp+
-        BYnmoqjdeTyMnkDjBv8Sqt1zD1lVmZSgwvsMBNXu7UJXbckHwbkX6WJVjimPzg==
+        bh=+5B4L2l45iVUWq5xO8x1wE11+/M3UlE3CB7C4GTh8O4=;
+        b=TizdyBTsNCmYY2ZoTOnqOfdKxGpIknym/hLAdcq2FnjorYlos8wINr9MJ5Y+qM+jdjbZxq
+        ZSjRGYvOYFXfJBeBZpHE0ORfS7UcDbuVqoL093YwciTFdlTm/o+3wwvibMjeXEyJa6GHXz
+        uYbu4m7vBSVZG+qBU/XIurSqq5V23y2TXKUBXX9uRhfz3Sl9msyX0UFr2WTrx+izLRRPYs
+        zypSCw1SPnCguF2mDaw7dbXNSCdiWbhFCjQVdxSxLqWvEoCootvBcr6iHIA5meYbcKzLnK
+        gvgUxsfUQbk9IDZ4F7xB1nO9ZYXTaur7k0TXcXEeDCvuHKaCKpVW+XZIsG5PpA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1621341635;
+        s=2020e; t=1621342360;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=X01DzKErpVi6HcXJTmbDDUSBWacNrK16jsBjNHYoLK0=;
-        b=OYSZ0nU7qCx/o2vlpBsKPbJDn4MW/CVm0EouBIMcPltFN2phj/g4KSYLVx73gPb4fZUgCF
-        p9NEomgUWCqGqwBQ==
+        bh=+5B4L2l45iVUWq5xO8x1wE11+/M3UlE3CB7C4GTh8O4=;
+        b=PUYydTdjErI6/UR6DJtzW9ifv882pzP3XPNME0I7k0brOw2g4rSTrTSqgtip3o+KiX8HFU
+        mIStkwIiKzg6INBA==
 From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/apic] x86_cpu_Init_AP_exception_handling_from_cpu_init_secondary_
+Subject: [tip: x86/apic] x86/cpu: Init AP exception handling from cpu_init_secondary()
 Cc:     Borislav Petkov <bp@suse.de>, Thomas Gleixner <tglx@linutronix.de>,
         Lai Jiangshan <laijs@linux.alibaba.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
@@ -48,7 +51,7 @@ Cc:     Borislav Petkov <bp@suse.de>, Thomas Gleixner <tglx@linutronix.de>,
 In-Reply-To: <87k0o6gtvu.ffs@nanos.tec.linutronix.de>
 References: <87k0o6gtvu.ffs@nanos.tec.linutronix.de>
 MIME-Version: 1.0
-Message-ID: <162134163419.29796.9958742586545024368.tip-bot2@tip-bot2>
+Message-ID: <162134235888.29796.6870292258763745495.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,14 +62,14 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/apic branch of tip:
 
-Commit-ID:     14508594acb7606c10f89e79f3f73e8203295f8b
-Gitweb:        https://git.kernel.org/tip/14508594acb7606c10f89e79f3f73e8203295f8b
+Commit-ID:     b1efd0ff4bd16e8bb8607ba566b03f2024a830bb
+Gitweb:        https://git.kernel.org/tip/b1efd0ff4bd16e8bb8607ba566b03f2024a830bb
 Author:        Borislav Petkov <bp@suse.de>
 AuthorDate:    Mon, 10 May 2021 23:29:25 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 18 May 2021 14:33:19 +02:00
+CommitterDate: Tue, 18 May 2021 14:49:21 +02:00
 
-x86_cpu_Init_AP_exception_handling_from_cpu_init_secondary_
+x86/cpu: Init AP exception handling from cpu_init_secondary()
 
 SEV-ES guests require properly setup task register with which the TSS
 descriptor in the GDT can be located so that the IST-type #VC exception
@@ -89,6 +92,7 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Reviewed-by: Lai Jiangshan <laijs@linux.alibaba.com>
 Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>                                                                                                                                                                                                                        
 Link: https://lore.kernel.org/r/87k0o6gtvu.ffs@nanos.tec.linutronix.de
+
 
 ---
  arch/x86/include/asm/processor.h |  1 +
