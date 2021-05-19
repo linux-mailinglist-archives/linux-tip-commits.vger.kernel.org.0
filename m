@@ -2,53 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C0EA8388916
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 19 May 2021 10:09:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 23C1D38891A
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 19 May 2021 10:09:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244171AbhESIK2 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 19 May 2021 04:10:28 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:37414 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244133AbhESIK0 (ORCPT
+        id S244262AbhESIK3 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 19 May 2021 04:10:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38988 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S244200AbhESIK2 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 19 May 2021 04:10:26 -0400
-Date:   Wed, 19 May 2021 08:09:05 -0000
+        Wed, 19 May 2021 04:10:28 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D79B0C061760;
+        Wed, 19 May 2021 01:09:08 -0700 (PDT)
+Date:   Wed, 19 May 2021 08:09:06 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1621411745;
+        s=2020; t=1621411747;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=h5Qsd/F+VqmPWBMWt83rgzwUkiV6FlxZI3HClVmccF0=;
-        b=w+K6kdYKuIMn5S7bykwCR7v/bIBcTJaNI/jSSMmqGAx0VDmcfCJwRGhafBunOehJZONboa
-        y4yEpas+j7oAnK8m+DcAwObDYWOatF3zozlYJXO0GXOghURR9ANs83lD75zKljeBeJr81G
-        OKQF5fl1lw2WIPxd414JcrIjfEOGPZ9+bT23DhQxXah+2sM0kE1Ogcw/JklwBhJxlTiMAu
-        zqRoryEbkh0z3FHZIHPi2rF+tf0t+qn7VqYFHp89dwJltikEL9Ne3LHdIct4PcppynxgRx
-        Fj5UzFaIBZo/ktpjNz3nkdVFjEuDDFzu2gnAGGDWDXyBD0H2x0rJ+oJL0+FZnw==
+        bh=SDf2RK70zNXt4sEisnIJXbINNOVO1yuZrkPiaobVoeY=;
+        b=WyGlgcMy9bGCrfs83b2WqFzTp4bSuXnH24B8AgWMRTN3tsUC0cAdt5q6gj0vrVrVjCvb3r
+        gCy+v47Z/QIZa5ynZPKzQ0YV87DZKx09mPWz/wcHBb2RaJ02N71I6At30mffoNv4Cz8Zlb
+        j09nu80SWdLW0WXlRU5uDKeN9KW/9/pTEieIz840tL4Z/4aZj4mmfGjOjhMR7zubHAPF+u
+        AocghVXbvqKqEv5fkANWG1NuBhfD/XaxYf43yw+5K6qmR3lmP1dF+dwd/gwJxEJbN2cZ3P
+        hIxOmKXLt0uM3vgV/6zlcgIIOgiGegS3KFrBwSNNiI95pXHwLmblbmDOI2raUw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1621411745;
+        s=2020e; t=1621411747;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=h5Qsd/F+VqmPWBMWt83rgzwUkiV6FlxZI3HClVmccF0=;
-        b=CtrJ9a+lVdieft1nBlX+EPoxjMLt8ttZvahNH3tB2Hv19R8Ht9MvgfpkKpK8wbs/FCBL8o
-        YQtsLz5Ax3WJGyAw==
-From:   "tip-bot2 for Qais Yousef" <tip-bot2@linutronix.de>
+        bh=SDf2RK70zNXt4sEisnIJXbINNOVO1yuZrkPiaobVoeY=;
+        b=J1D4ZeNjXTLcngbL3fXCDHbWSsrv7AlWxzFEz8gSQqPWS/tlwxiJOjP3p2GdqWNeBoAfRL
+        pplKvOSXX8DbzVCw==
+From:   "tip-bot2 for Valentin Schneider" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/uclamp: Fix locking around cpu_util_update_eff()
-Cc:     Quentin Perret <qperret@google.com>,
-        Qais Yousef <qais.yousef@arm.com>,
+Subject: [tip: sched/core] sched: Make the idle task quack like a per-CPU kthread
+Cc:     Valentin Schneider <valentin.schneider@arm.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210510145032.1934078-3-qais.yousef@arm.com>
-References: <20210510145032.1934078-3-qais.yousef@arm.com>
+In-Reply-To: <20210510151024.2448573-2-valentin.schneider@arm.com>
+References: <20210510151024.2448573-2-valentin.schneider@arm.com>
 MIME-Version: 1.0
-Message-ID: <162141174507.29796.8324781220827965808.tip-bot2@tip-bot2>
+Message-ID: <162141174663.29796.7676215251563616030.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,60 +61,143 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     b837122e297fd0429555243c16ac3c341c39a7f5
-Gitweb:        https://git.kernel.org/tip/b837122e297fd0429555243c16ac3c341c39a7f5
-Author:        Qais Yousef <qais.yousef@arm.com>
-AuthorDate:    Mon, 10 May 2021 15:50:32 +01:00
+Commit-ID:     00b89fe0197f0c55a045775c11553c0cdb7082fe
+Gitweb:        https://git.kernel.org/tip/00b89fe0197f0c55a045775c11553c0cdb7082fe
+Author:        Valentin Schneider <valentin.schneider@arm.com>
+AuthorDate:    Mon, 10 May 2021 16:10:23 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 18 May 2021 12:53:54 +02:00
+CommitterDate: Tue, 18 May 2021 12:53:53 +02:00
 
-sched/uclamp: Fix locking around cpu_util_update_eff()
+sched: Make the idle task quack like a per-CPU kthread
 
-cpu_cgroup_css_online() calls cpu_util_update_eff() without holding the
-uclamp_mutex or rcu_read_lock() like other call sites, which is
-a mistake.
+For all intents and purposes, the idle task is a per-CPU kthread. It isn't
+created via the same route as other pcpu kthreads however, and as a result
+it is missing a few bells and whistles: it fails kthread_is_per_cpu() and
+it doesn't have PF_NO_SETAFFINITY set.
 
-The uclamp_mutex is required to protect against concurrent reads and
-writes that could update the cgroup hierarchy.
+Fix the former by giving the idle task a kthread struct along with the
+KTHREAD_IS_PER_CPU flag. This requires some extra iffery as init_idle()
+call be called more than once on the same idle task.
 
-The rcu_read_lock() is required to traverse the cgroup data structures
-in cpu_util_update_eff().
-
-Surround the caller with the required locks and add some asserts to
-better document the dependency in cpu_util_update_eff().
-
-Fixes: 7226017ad37a ("sched/uclamp: Fix a bug in propagating uclamp value in new cgroups")
-Reported-by: Quentin Perret <qperret@google.com>
-Signed-off-by: Qais Yousef <qais.yousef@arm.com>
+Signed-off-by: Valentin Schneider <valentin.schneider@arm.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20210510145032.1934078-3-qais.yousef@arm.com
+Link: https://lkml.kernel.org/r/20210510151024.2448573-2-valentin.schneider@arm.com
 ---
- kernel/sched/core.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ include/linux/kthread.h |  2 ++
+ kernel/kthread.c        | 30 ++++++++++++++++++------------
+ kernel/sched/core.c     | 21 +++++++++++++++------
+ 3 files changed, 35 insertions(+), 18 deletions(-)
 
+diff --git a/include/linux/kthread.h b/include/linux/kthread.h
+index 2484ed9..d9133d6 100644
+--- a/include/linux/kthread.h
++++ b/include/linux/kthread.h
+@@ -33,6 +33,8 @@ struct task_struct *kthread_create_on_cpu(int (*threadfn)(void *data),
+ 					  unsigned int cpu,
+ 					  const char *namefmt);
+ 
++void set_kthread_struct(struct task_struct *p);
++
+ void kthread_set_per_cpu(struct task_struct *k, int cpu);
+ bool kthread_is_per_cpu(struct task_struct *k);
+ 
+diff --git a/kernel/kthread.c b/kernel/kthread.c
+index fe3f2a4..3d32683 100644
+--- a/kernel/kthread.c
++++ b/kernel/kthread.c
+@@ -68,16 +68,6 @@ enum KTHREAD_BITS {
+ 	KTHREAD_SHOULD_PARK,
+ };
+ 
+-static inline void set_kthread_struct(void *kthread)
+-{
+-	/*
+-	 * We abuse ->set_child_tid to avoid the new member and because it
+-	 * can't be wrongly copied by copy_process(). We also rely on fact
+-	 * that the caller can't exec, so PF_KTHREAD can't be cleared.
+-	 */
+-	current->set_child_tid = (__force void __user *)kthread;
+-}
+-
+ static inline struct kthread *to_kthread(struct task_struct *k)
+ {
+ 	WARN_ON(!(k->flags & PF_KTHREAD));
+@@ -103,6 +93,22 @@ static inline struct kthread *__to_kthread(struct task_struct *p)
+ 	return kthread;
+ }
+ 
++void set_kthread_struct(struct task_struct *p)
++{
++	struct kthread *kthread;
++
++	if (__to_kthread(p))
++		return;
++
++	kthread = kzalloc(sizeof(*kthread), GFP_KERNEL);
++	/*
++	 * We abuse ->set_child_tid to avoid the new member and because it
++	 * can't be wrongly copied by copy_process(). We also rely on fact
++	 * that the caller can't exec, so PF_KTHREAD can't be cleared.
++	 */
++	p->set_child_tid = (__force void __user *)kthread;
++}
++
+ void free_kthread_struct(struct task_struct *k)
+ {
+ 	struct kthread *kthread;
+@@ -272,8 +278,8 @@ static int kthread(void *_create)
+ 	struct kthread *self;
+ 	int ret;
+ 
+-	self = kzalloc(sizeof(*self), GFP_KERNEL);
+-	set_kthread_struct(self);
++	set_kthread_struct(current);
++	self = to_kthread(current);
+ 
+ 	/* If user was SIGKILLed, I release the structure. */
+ 	done = xchg(&create->done, NULL);
 diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index f97eb73..3ec420c 100644
+index 24fd795..6a5124c 100644
 --- a/kernel/sched/core.c
 +++ b/kernel/sched/core.c
-@@ -9507,7 +9507,11 @@ static int cpu_cgroup_css_online(struct cgroup_subsys_state *css)
+@@ -8234,12 +8234,25 @@ void __init init_idle(struct task_struct *idle, int cpu)
  
- #ifdef CONFIG_UCLAMP_TASK_GROUP
- 	/* Propagate the effective uclamp value for the new group */
-+	mutex_lock(&uclamp_mutex);
-+	rcu_read_lock();
- 	cpu_util_update_eff(css);
-+	rcu_read_unlock();
-+	mutex_unlock(&uclamp_mutex);
- #endif
+ 	__sched_fork(0, idle);
  
- 	return 0;
-@@ -9597,6 +9601,9 @@ static void cpu_util_update_eff(struct cgroup_subsys_state *css)
- 	enum uclamp_id clamp_id;
- 	unsigned int clamps;
- 
-+	lockdep_assert_held(&uclamp_mutex);
-+	SCHED_WARN_ON(!rcu_read_lock_held());
++	/*
++	 * The idle task doesn't need the kthread struct to function, but it
++	 * is dressed up as a per-CPU kthread and thus needs to play the part
++	 * if we want to avoid special-casing it in code that deals with per-CPU
++	 * kthreads.
++	 */
++	set_kthread_struct(idle);
 +
- 	css_for_each_descendant_pre(css, top_css) {
- 		uc_parent = css_tg(css)->parent
- 			? css_tg(css)->parent->uclamp : NULL;
+ 	raw_spin_lock_irqsave(&idle->pi_lock, flags);
+ 	raw_spin_rq_lock(rq);
+ 
+ 	idle->state = TASK_RUNNING;
+ 	idle->se.exec_start = sched_clock();
+-	idle->flags |= PF_IDLE;
++	/*
++	 * PF_KTHREAD should already be set at this point; regardless, make it
++	 * look like a proper per-CPU kthread.
++	 */
++	idle->flags |= PF_IDLE | PF_KTHREAD | PF_NO_SETAFFINITY;
++	kthread_set_per_cpu(idle, cpu);
+ 
+ 	scs_task_reset(idle);
+ 	kasan_unpoison_task_stack(idle);
+@@ -8456,12 +8469,8 @@ static void balance_push(struct rq *rq)
+ 	/*
+ 	 * Both the cpu-hotplug and stop task are in this case and are
+ 	 * required to complete the hotplug process.
+-	 *
+-	 * XXX: the idle task does not match kthread_is_per_cpu() due to
+-	 * histerical raisins.
+ 	 */
+-	if (rq->idle == push_task ||
+-	    kthread_is_per_cpu(push_task) ||
++	if (kthread_is_per_cpu(push_task) ||
+ 	    is_migration_disabled(push_task)) {
+ 
+ 		/*
