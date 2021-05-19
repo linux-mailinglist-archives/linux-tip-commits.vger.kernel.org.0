@@ -2,55 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E7D1388CB4
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 19 May 2021 13:23:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6923A388CB6
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 19 May 2021 13:24:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350381AbhESLZM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 19 May 2021 07:25:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55238 "EHLO
+        id S1350519AbhESLZW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 19 May 2021 07:25:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55272 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350325AbhESLZL (ORCPT
+        with ESMTP id S1350339AbhESLZT (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 19 May 2021 07:25:11 -0400
+        Wed, 19 May 2021 07:25:19 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BB05C06175F;
-        Wed, 19 May 2021 04:23:52 -0700 (PDT)
-Date:   Wed, 19 May 2021 11:23:49 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A64AEC0613CE;
+        Wed, 19 May 2021 04:23:59 -0700 (PDT)
+Date:   Wed, 19 May 2021 11:23:57 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1621423430;
+        s=2020; t=1621423438;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=oC8q0rOmcDKtolwME7rSjazhCjKJV5JaDUa4U5xRKmc=;
-        b=tXglUprhFWQOUvmiKHzmTabnInng5QjGnAR7sZnZ670fvLFFY4vuwld0McGOyRnChyZECw
-        zNmK7NfJF5640P3NIlqPwAYPsKj436bujhjpVCY4nd/6J1hIs86xihDr2Hbf6oSsM0njQG
-        SziADYphCbAoEsi5cg6pJ/XoYrBWck2MYzSM1fqe2IpytX4Pk2QIV32quZ2/8xYG2/063R
-        4j/ABbVR0QWwYQWkz1Vwu+tpQpFO7psvU5NE98agnmBW1GTCCpAjE575gbyPUyFQrgW3RP
-        cxu+jZQ+atJqedtqMjdYmBx3RhYB6gjy5DTrQdMV/oKzRp+WdxkhvKFrK0XthA==
+        bh=iAXAUArqh6DsaVjCU+NUVObsM0uEAWgGBNbNgpdCKYs=;
+        b=m0qIGMUU5Z/MSzvGLzA7mpLCfUSSIDx1XI/KJiQngQ5jWI8WfZVs0rZheTXmbTIqpwPdzY
+        J5JBbwPXQQrzQwkUMRUfgHOLup7Uf2wjmWb66LGp4wD/P8hJG6nKIs8UfCMuiiWA0AZj1Q
+        JLXR2NHCk4yjgpUM6GwncPwN6XuyvBxxWVCLqr77SjyJiXFvpVtPCTNmkZ/TWuCvqm05Ee
+        tqpb+N7jpv9nGnBYuCkGND/rTvu5AwJUoH2iiWB+Uf8wAOPX8e3RbO3bsxlSiT29baVToF
+        wmK8l6K8Paj2uHT0lSIwGSPsFxx2xuGmkLMbxLSvH0o7vZMMYci0oapgEK27qA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1621423430;
+        s=2020e; t=1621423438;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=oC8q0rOmcDKtolwME7rSjazhCjKJV5JaDUa4U5xRKmc=;
-        b=VOpDbjQnyP+Uy2Giw6AQmAI2kFodm8nQCPJejmxi3rKIeCTlOM0LIS5eWE6L1jRrJF0Jo9
-        V/guX7H35IXF+7CQ==
-From:   "tip-bot2 for Masahiro Yamada" <tip-bot2@linutronix.de>
+        bh=iAXAUArqh6DsaVjCU+NUVObsM0uEAWgGBNbNgpdCKYs=;
+        b=NCtb0Q8Tn13DufqbeNLZc8mfZliUINDOIKeDg5bqcCJODSx7u3Zk98SK0kpqjq9aSC0LiW
+        6JDklMJyYJmXCWCg==
+From:   "tip-bot2 for Nathan Chancellor" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched: Fix a stale comment in pick_next_task()
-Cc:     Masahiro Yamada <masahiroy@kernel.org>,
-        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20210519063709.323162-1-masahiroy@kernel.org>
-References: <20210519063709.323162-1-masahiroy@kernel.org>
+Subject: [tip: x86/urgent] x86/build: Fix location of '-plugin-opt=' flags
+Cc:     Anthony Ruhier <aruhier@mailbox.org>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Ingo Molnar <mingo@kernel.org>, stable@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20210518190106.60935-1-nathan@kernel.org>
+References: <20210518190106.60935-1-nathan@kernel.org>
 MIME-Version: 1.0
-Message-ID: <162142342925.29796.10155000709823402519.tip-bot2@tip-bot2>
+Message-ID: <162142343747.29796.17891708186447529713.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,42 +60,78 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     1699949d3314e5d1956fb082e4cd4798bf6149fc
-Gitweb:        https://git.kernel.org/tip/1699949d3314e5d1956fb082e4cd4798bf6149fc
-Author:        Masahiro Yamada <masahiroy@kernel.org>
-AuthorDate:    Wed, 19 May 2021 15:37:09 +09:00
+Commit-ID:     0024430e920f2900654ad83cd081cf52e02a3ef5
+Gitweb:        https://git.kernel.org/tip/0024430e920f2900654ad83cd081cf52e02a3ef5
+Author:        Nathan Chancellor <nathan@kernel.org>
+AuthorDate:    Tue, 18 May 2021 12:01:06 -07:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 19 May 2021 13:03:21 +02:00
+CommitterDate: Wed, 19 May 2021 13:05:53 +02:00
 
-sched: Fix a stale comment in pick_next_task()
+x86/build: Fix location of '-plugin-opt=' flags
 
-fair_sched_class->next no longer exists since commit:
+Commit b33fff07e3e3 ("x86, build: allow LTO to be selected") added a
+couple of '-plugin-opt=' flags to KBUILD_LDFLAGS because the code model
+and stack alignment are not stored in LLVM bitcode.
 
-  a87e749e8fa1 ("sched: Remove struct sched_class::next field").
+However, these flags were added to KBUILD_LDFLAGS prior to the
+emulation flag assignment, which uses ':=', so they were overwritten
+and never added to $(LD) invocations.
 
-Now the sched_class order is specified by the linker script.
+The absence of these flags caused misalignment issues in the
+AMDGPU driver when compiling with CONFIG_LTO_CLANG, resulting in
+general protection faults.
 
-Rewrite the comment in a more generic way.
+Shuffle the assignment below the initial one so that the flags are
+properly passed along and all of the linker flags stay together.
 
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+At the same time, avoid any future issues with clobbering flags by
+changing the emulation flag assignment to '+=' since KBUILD_LDFLAGS is
+already defined with ':=' in the main Makefile before being exported for
+modification here as a result of commit:
+
+  ce99d0bf312d ("kbuild: clear LDFLAGS in the top Makefile")
+
+Fixes: b33fff07e3e3 ("x86, build: allow LTO to be selected")
+Reported-by: Anthony Ruhier <aruhier@mailbox.org>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20210519063709.323162-1-masahiroy@kernel.org
+Tested-by: Anthony Ruhier <aruhier@mailbox.org>
+Cc: stable@vger.kernel.org
+Link: https://github.com/ClangBuiltLinux/linux/issues/1374
+Link: https://lore.kernel.org/r/20210518190106.60935-1-nathan@kernel.org
 ---
- kernel/sched/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/Makefile | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 3ec420c..3d25272 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -5318,7 +5318,7 @@ __pick_next_task(struct rq *rq, struct task_struct *prev, struct rq_flags *rf)
- 		if (unlikely(p == RETRY_TASK))
- 			goto restart;
+diff --git a/arch/x86/Makefile b/arch/x86/Makefile
+index c77c5d8..3075294 100644
+--- a/arch/x86/Makefile
++++ b/arch/x86/Makefile
+@@ -178,11 +178,6 @@ ifeq ($(ACCUMULATE_OUTGOING_ARGS), 1)
+ 	KBUILD_CFLAGS += $(call cc-option,-maccumulate-outgoing-args,)
+ endif
  
--		/* Assumes fair_sched_class->next == idle_sched_class */
-+		/* Assume the next prioritized class is idle_sched_class */
- 		if (!p) {
- 			put_prev_task(rq, prev);
- 			p = pick_next_task_idle(rq);
+-ifdef CONFIG_LTO_CLANG
+-KBUILD_LDFLAGS	+= -plugin-opt=-code-model=kernel \
+-		   -plugin-opt=-stack-alignment=$(if $(CONFIG_X86_32),4,8)
+-endif
+-
+ # Workaround for a gcc prelease that unfortunately was shipped in a suse release
+ KBUILD_CFLAGS += -Wno-sign-compare
+ #
+@@ -202,7 +197,12 @@ ifdef CONFIG_RETPOLINE
+   endif
+ endif
+ 
+-KBUILD_LDFLAGS := -m elf_$(UTS_MACHINE)
++KBUILD_LDFLAGS += -m elf_$(UTS_MACHINE)
++
++ifdef CONFIG_LTO_CLANG
++KBUILD_LDFLAGS	+= -plugin-opt=-code-model=kernel \
++		   -plugin-opt=-stack-alignment=$(if $(CONFIG_X86_32),4,8)
++endif
+ 
+ ifdef CONFIG_X86_NEED_RELOCS
+ LDFLAGS_vmlinux := --emit-relocs --discard-none
