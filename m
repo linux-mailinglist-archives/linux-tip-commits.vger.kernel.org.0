@@ -2,52 +2,49 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B672138891C
+	by mail.lfdr.de (Postfix) with ESMTP id 6D37538891B
 	for <lists+linux-tip-commits@lfdr.de>; Wed, 19 May 2021 10:09:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244298AbhESIKa (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S244365AbhESIKa (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Wed, 19 May 2021 04:10:30 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:37472 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244179AbhESIK2 (ORCPT
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38994 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S244233AbhESIK3 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 19 May 2021 04:10:28 -0400
+        Wed, 19 May 2021 04:10:29 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C8CCC06175F;
+        Wed, 19 May 2021 01:09:10 -0700 (PDT)
 Date:   Wed, 19 May 2021 08:09:07 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1621411747;
+        s=2020; t=1621411748;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=13aSZm9uvvITPxgS5rz4U/aa+Zlrot3Vo5JIz4tLnXs=;
-        b=ph3PhBN/nypSNZN0RO3bHq3q32i/M10+X+91ZQN/OqAZQebpBmJeHZInNyB45gzpkxXrc4
-        WaBNFX3hp130l4asQAc7pBu9MSitfFRNeOfX4Fhev7i9X7ZV0QL++UmL8ErSrAHM+SVh+S
-        BCFP8Z9tspQuAw9/4W54aAOG6gIOO+BsoRGEO7qK44ixCMIc6Dw7gnF2XJ11lCptZNXTqJ
-        aodwBm4WI3uQxKJhFkbkmUiJTw04cmEId/IaPbeBsuKAM2jFKLahlINkgAnab2OhnYo6zT
-        UoMpT5ANW/avB2FXdsELKeBxe/bvnqyyO4sFOHzHsDsPOBMw81tpeydBBHuizg==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=EqMt3HmWa/96mZiJBqtVTeiSTPz/2kjA+Gz/DhtsODo=;
+        b=kmLVL/p+Yx1PdHHdRYa5jrIb3de+urn+HD+NvIbmzfxjSmpgojDVS9Y0u5TtE7sCWjnHLv
+        GZumkrKWc4kRKsWznCJVfjSRB0kZ4g+MidfA9FY3MaytIldJ01aH4/iNdvaM3gSreobnvi
+        bBVHAg+JQ7T3ZGJtBkGJn6uN0UE5d8bbqRQ8v+bnLQiQal7p64BusMPe8W6LMmXFEsVCxi
+        382yS0GMBTzxMeOcnJJuWDBV4daEmrm29XsmgqcjNBDzku/H6l8+ACaRIBTVnO7X0zoXsi
+        QjWD8a2FxgLHRBzhx/xuQQDsDlNvGPLUAEozPEnOGDAvr8BRoIvY666ExlEjkA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1621411747;
+        s=2020e; t=1621411748;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=13aSZm9uvvITPxgS5rz4U/aa+Zlrot3Vo5JIz4tLnXs=;
-        b=HRgi9WLmkVooQC7BnbJZ2He1keAaBhntNf+e8zKNgeVVQsHHSDUb+D4FtJrrZAqr300mKz
-        fXu4NvgoCdEtfLBg==
-From:   "tip-bot2 for Mel Gorman" <tip-bot2@linutronix.de>
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=EqMt3HmWa/96mZiJBqtVTeiSTPz/2kjA+Gz/DhtsODo=;
+        b=fP/mQFmmegk5bmIIQbFxjyLMoqhj7WJIEl/hQQgpRt3I8lznE0o8gaol5PLF6aNuzRuxiA
+        shcC3d0WkmhWggCQ==
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] delayacct: Document task_delayacct sysctl
+Subject: [tip: sched/core] sched,stats: Further simplify sched_info
 Cc:     Mel Gorman <mgorman@suse.de>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210512114035.GH3672@suse.de>
-References: <20210512114035.GH3672@suse.de>
 MIME-Version: 1.0
-Message-ID: <162141174718.29796.2047071574805504489.tip-bot2@tip-bot2>
+Message-ID: <162141174766.29796.8595133657860805490.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,39 +55,60 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     fcb501704554eebfd27e3220b0540997fd2b24a8
-Gitweb:        https://git.kernel.org/tip/fcb501704554eebfd27e3220b0540997fd2b24a8
-Author:        Mel Gorman <mgorman@suse.de>
-AuthorDate:    Wed, 12 May 2021 12:40:35 +01:00
+Commit-ID:     90a0ff4ec9c65cae3085d23301933172cea3f38a
+Gitweb:        https://git.kernel.org/tip/90a0ff4ec9c65cae3085d23301933172cea3f38a
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Wed, 12 May 2021 13:32:37 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Tue, 18 May 2021 12:53:53 +02:00
 
-delayacct: Document task_delayacct sysctl
+sched,stats: Further simplify sched_info
 
-Update sysctl/kernel.rst.
+There's no point doing delta==0 updates.
 
-Signed-off-by: Mel Gorman <mgorman@suse.de>
+Suggested-by: Mel Gorman <mgorman@suse.de>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20210512114035.GH3672@suse.de
 ---
- Documentation/admin-guide/sysctl/kernel.rst | 7 +++++++
- 1 file changed, 7 insertions(+)
+ kernel/sched/stats.h | 21 ++++++++++++---------
+ 1 file changed, 12 insertions(+), 9 deletions(-)
 
-diff --git a/Documentation/admin-guide/sysctl/kernel.rst b/Documentation/admin-guide/sysctl/kernel.rst
-index 1d56a6b..ebd2f99 100644
---- a/Documentation/admin-guide/sysctl/kernel.rst
-+++ b/Documentation/admin-guide/sysctl/kernel.rst
-@@ -1087,6 +1087,13 @@ Model available). If your platform happens to meet the
- requirements for EAS but you do not want to use it, change
- this value to 0.
+diff --git a/kernel/sched/stats.h b/kernel/sched/stats.h
+index 33ffd41..111072e 100644
+--- a/kernel/sched/stats.h
++++ b/kernel/sched/stats.h
+@@ -160,10 +160,11 @@ static inline void sched_info_dequeue(struct rq *rq, struct task_struct *t)
+ {
+ 	unsigned long long delta = 0;
  
-+task_delayacct
-+===============
+-	if (t->sched_info.last_queued) {
+-		delta = rq_clock(rq) - t->sched_info.last_queued;
+-		t->sched_info.last_queued = 0;
+-	}
++	if (!t->sched_info.last_queued)
++		return;
 +
-+Enables/disables task delay accounting (see
-+:doc:`accounting/delay-accounting.rst`). Enabling this feature incurs
-+a small amount of overhead in the scheduler but is useful for debugging
-+and performance tuning. It is required by some tools such as iotop.
++	delta = rq_clock(rq) - t->sched_info.last_queued;
++	t->sched_info.last_queued = 0;
+ 	t->sched_info.run_delay += delta;
  
- sched_schedstats
- ================
+ 	rq_sched_info_dequeue(rq, delta);
+@@ -176,12 +177,14 @@ static inline void sched_info_dequeue(struct rq *rq, struct task_struct *t)
+  */
+ static void sched_info_arrive(struct rq *rq, struct task_struct *t)
+ {
+-	unsigned long long now = rq_clock(rq), delta = 0;
++	unsigned long long now, delta = 0;
+ 
+-	if (t->sched_info.last_queued) {
+-		delta = now - t->sched_info.last_queued;
+-		t->sched_info.last_queued = 0;
+-	}
++	if (!t->sched_info.last_queued)
++		return;
++
++	now = rq_clock(rq);
++	delta = now - t->sched_info.last_queued;
++	t->sched_info.last_queued = 0;
+ 	t->sched_info.run_delay += delta;
+ 	t->sched_info.last_arrival = now;
+ 	t->sched_info.pcount++;
