@@ -2,56 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 904FA388913
+	by mail.lfdr.de (Postfix) with ESMTP id 3E67F388912
 	for <lists+linux-tip-commits@lfdr.de>; Wed, 19 May 2021 10:09:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243851AbhESIKW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S243775AbhESIKW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Wed, 19 May 2021 04:10:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38946 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38944 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240902AbhESIKW (ORCPT
+        with ESMTP id S243292AbhESIKW (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Wed, 19 May 2021 04:10:22 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCD90C06175F;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCF6DC061760;
         Wed, 19 May 2021 01:09:02 -0700 (PDT)
-Date:   Wed, 19 May 2021 08:08:59 -0000
+Date:   Wed, 19 May 2021 08:09:00 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1621411740;
+        s=2020; t=1621411741;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=dUCERU9g9rZFhynKVWNlHl2jaYGMVAcJmlgr8bUKKsg=;
-        b=ntYJwSciLL0hLHHOq8j+0tDVUrb0uRaaY/GEpp4CdDpp/Mmm8s3ocnic9Sf9sxtvxFiM2e
-        JLFaY1/2kdDr4M1L7ybiXHo93tOlEzEuvx6goBnv5wQNUyCV+sR/jrJLoYIW0vzLWx46tx
-        ymT5vnnSQWjWV1VrXwkrYBH9JB6Y0Y+7Jb/DgSqmfWjEd9Z+CBj6HueWlAXSDiuxBYhcMm
-        HlUW5QWwkGxVrEw7xCRRTlCYvu+wLkPOInhDJFkr6hbXhYFRGkgWNZsvM3UYEHb1m8DXt2
-        8mEeN+rHZ4uEwTyuLbixBRMCxzPqMlUDIEYjx65haUdjYiOVRk1voPCVcBiNDQ==
+        bh=ymD3Xd0Q56rVJqY1+dmNgamOmiGSxh5HDJ14KAGp/Uo=;
+        b=UqdeRqEK/cXEdaRrM5dM1Ati5KtdfAePEVrFufquNKCHivjRcvnhpHohfb8i3busR7V06s
+        STq1U/9JPN1VblqHR7tBK1eDfaEl0yEOzBk49hmcbF5C9ln7CH14xW+jAqDefBAcESw89A
+        TvYQtAXg5udwwJ+Q4MkAnbmao09xcUJIR1zS0RL/ON8BrbcJtkmlgvC7ObToDAJK3rjr6I
+        ge4tp2S5NeVY6/AC8GBO5ZDcTGbjt6thv8m0OSiMo7XrH6S/vSzcV8U+TFz52Q+TvmEzzs
+        6CbgqAROLm0ujYkJFiBXmTQVLToJZCkYnuFi1DY0xBywDL2G58XKIw/wKMFAFw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1621411740;
+        s=2020e; t=1621411741;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=dUCERU9g9rZFhynKVWNlHl2jaYGMVAcJmlgr8bUKKsg=;
-        b=vv+8vIJGbw2RcYmp8zxTpvHh77rNTbc1+L2GcYNCUMbeaG+amtVJikQFR9UcdKI1X0Nj0e
-        h8eiAph+N7QwG6AQ==
-From:   "tip-bot2 for Zqiang" <tip-bot2@linutronix.de>
+        bh=ymD3Xd0Q56rVJqY1+dmNgamOmiGSxh5HDJ14KAGp/Uo=;
+        b=bdKCc9O3Vtf8dI0JBuBxG+DVVuUgPWgSJFS1P8Gy5HBQzka8Tei+moYfRlOabirvSotNML
+        UR3LR45lfqH6oiBw==
+From:   "tip-bot2 for Leo Yan" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/urgent] locking/mutex: clear MUTEX_FLAGS if wait_list
- is empty due to signal
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        Zqiang <qiang.zhang@windriver.com>, x86@kernel.org,
+Subject: [tip: locking/urgent] locking/lockdep: Correct calling tracepoints
+Cc:     Leo Yan <leo.yan@linaro.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210517034005.30828-1-qiang.zhang@windriver.com>
-References: <20210517034005.30828-1-qiang.zhang@windriver.com>
+In-Reply-To: <20210512120937.90211-1-leo.yan@linaro.org>
+References: <20210512120937.90211-1-leo.yan@linaro.org>
 MIME-Version: 1.0
-Message-ID: <162141173966.29796.5194146484813242607.tip-bot2@tip-bot2>
+Message-ID: <162141174033.29796.3524122325407732983.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -62,135 +61,55 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/urgent branch of tip:
 
-Commit-ID:     3a010c493271f04578b133de977e0e5dd2848cea
-Gitweb:        https://git.kernel.org/tip/3a010c493271f04578b133de977e0e5dd2848cea
-Author:        Zqiang <qiang.zhang@windriver.com>
-AuthorDate:    Mon, 17 May 2021 11:40:05 +08:00
+Commit-ID:     89e70d5c583c55088faa2201d397ee30a15704aa
+Gitweb:        https://git.kernel.org/tip/89e70d5c583c55088faa2201d397ee30a15704aa
+Author:        Leo Yan <leo.yan@linaro.org>
+AuthorDate:    Wed, 12 May 2021 20:09:37 +08:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 18 May 2021 12:53:51 +02:00
+CommitterDate: Tue, 18 May 2021 12:53:50 +02:00
 
-locking/mutex: clear MUTEX_FLAGS if wait_list is empty due to signal
+locking/lockdep: Correct calling tracepoints
 
-When a interruptible mutex locker is interrupted by a signal
-without acquiring this lock and removed from the wait queue.
-if the mutex isn't contended enough to have a waiter
-put into the wait queue again, the setting of the WAITER
-bit will force mutex locker to go into the slowpath to
-acquire the lock every time, so if the wait queue is empty,
-the WAITER bit need to be clear.
+The commit eb1f00237aca ("lockdep,trace: Expose tracepoints") reverses
+tracepoints for lock_contended() and lock_acquired(), thus the ftrace
+log shows the wrong locking sequence that "acquired" event is prior to
+"contended" event:
 
-Fixes: 040a0a371005 ("mutex: Add support for wound/wait style locks")
-Suggested-by: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Zqiang <qiang.zhang@windriver.com>
+  <idle>-0       [001] d.s3 20803.501685: lock_acquire: 0000000008b91ab4 &sg_policy->update_lock
+  <idle>-0       [001] d.s3 20803.501686: lock_acquired: 0000000008b91ab4 &sg_policy->update_lock
+  <idle>-0       [001] d.s3 20803.501689: lock_contended: 0000000008b91ab4 &sg_policy->update_lock
+  <idle>-0       [001] d.s3 20803.501690: lock_release: 0000000008b91ab4 &sg_policy->update_lock
+
+This patch fixes calling tracepoints for lock_contended() and
+lock_acquired().
+
+Fixes: eb1f00237aca ("lockdep,trace: Expose tracepoints")
+Signed-off-by: Leo Yan <leo.yan@linaro.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20210517034005.30828-1-qiang.zhang@windriver.com
+Link: https://lkml.kernel.org/r/20210512120937.90211-1-leo.yan@linaro.org
 ---
- kernel/locking/mutex-debug.c |  4 ++--
- kernel/locking/mutex-debug.h |  2 +-
- kernel/locking/mutex.c       | 18 +++++++++++++-----
- kernel/locking/mutex.h       |  4 +---
- 4 files changed, 17 insertions(+), 11 deletions(-)
+ kernel/locking/lockdep.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/locking/mutex-debug.c b/kernel/locking/mutex-debug.c
-index a7276aa..db93015 100644
---- a/kernel/locking/mutex-debug.c
-+++ b/kernel/locking/mutex-debug.c
-@@ -57,7 +57,7 @@ void debug_mutex_add_waiter(struct mutex *lock, struct mutex_waiter *waiter,
- 	task->blocked_on = waiter;
- }
- 
--void mutex_remove_waiter(struct mutex *lock, struct mutex_waiter *waiter,
-+void debug_mutex_remove_waiter(struct mutex *lock, struct mutex_waiter *waiter,
- 			 struct task_struct *task)
+diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
+index 48d736a..7641bd4 100644
+--- a/kernel/locking/lockdep.c
++++ b/kernel/locking/lockdep.c
+@@ -5736,7 +5736,7 @@ void lock_contended(struct lockdep_map *lock, unsigned long ip)
  {
- 	DEBUG_LOCKS_WARN_ON(list_empty(&waiter->list));
-@@ -65,7 +65,7 @@ void mutex_remove_waiter(struct mutex *lock, struct mutex_waiter *waiter,
- 	DEBUG_LOCKS_WARN_ON(task->blocked_on != waiter);
- 	task->blocked_on = NULL;
+ 	unsigned long flags;
  
--	list_del_init(&waiter->list);
-+	INIT_LIST_HEAD(&waiter->list);
- 	waiter->task = NULL;
- }
+-	trace_lock_acquired(lock, ip);
++	trace_lock_contended(lock, ip);
  
-diff --git a/kernel/locking/mutex-debug.h b/kernel/locking/mutex-debug.h
-index 1edd3f4..53e631e 100644
---- a/kernel/locking/mutex-debug.h
-+++ b/kernel/locking/mutex-debug.h
-@@ -22,7 +22,7 @@ extern void debug_mutex_free_waiter(struct mutex_waiter *waiter);
- extern void debug_mutex_add_waiter(struct mutex *lock,
- 				   struct mutex_waiter *waiter,
- 				   struct task_struct *task);
--extern void mutex_remove_waiter(struct mutex *lock, struct mutex_waiter *waiter,
-+extern void debug_mutex_remove_waiter(struct mutex *lock, struct mutex_waiter *waiter,
- 				struct task_struct *task);
- extern void debug_mutex_unlock(struct mutex *lock);
- extern void debug_mutex_init(struct mutex *lock, const char *name,
-diff --git a/kernel/locking/mutex.c b/kernel/locking/mutex.c
-index cb6b112..013e1b0 100644
---- a/kernel/locking/mutex.c
-+++ b/kernel/locking/mutex.c
-@@ -194,7 +194,7 @@ static inline bool __mutex_waiter_is_first(struct mutex *lock, struct mutex_wait
-  * Add @waiter to a given location in the lock wait_list and set the
-  * FLAG_WAITERS flag if it's the first waiter.
-  */
--static void __sched
-+static void
- __mutex_add_waiter(struct mutex *lock, struct mutex_waiter *waiter,
- 		   struct list_head *list)
+ 	if (unlikely(!lock_stat || !lockdep_enabled()))
+ 		return;
+@@ -5754,7 +5754,7 @@ void lock_acquired(struct lockdep_map *lock, unsigned long ip)
  {
-@@ -205,6 +205,16 @@ __mutex_add_waiter(struct mutex *lock, struct mutex_waiter *waiter,
- 		__mutex_set_flag(lock, MUTEX_FLAG_WAITERS);
- }
+ 	unsigned long flags;
  
-+static void
-+__mutex_remove_waiter(struct mutex *lock, struct mutex_waiter *waiter)
-+{
-+	list_del(&waiter->list);
-+	if (likely(list_empty(&lock->wait_list)))
-+		__mutex_clear_flag(lock, MUTEX_FLAGS);
-+
-+	debug_mutex_remove_waiter(lock, waiter, current);
-+}
-+
- /*
-  * Give up ownership to a specific task, when @task = NULL, this is equivalent
-  * to a regular unlock. Sets PICKUP on a handoff, clears HANDOFF, preserves
-@@ -1061,9 +1071,7 @@ acquired:
- 			__ww_mutex_check_waiters(lock, ww_ctx);
- 	}
+-	trace_lock_contended(lock, ip);
++	trace_lock_acquired(lock, ip);
  
--	mutex_remove_waiter(lock, &waiter, current);
--	if (likely(list_empty(&lock->wait_list)))
--		__mutex_clear_flag(lock, MUTEX_FLAGS);
-+	__mutex_remove_waiter(lock, &waiter);
- 
- 	debug_mutex_free_waiter(&waiter);
- 
-@@ -1080,7 +1088,7 @@ skip_wait:
- 
- err:
- 	__set_current_state(TASK_RUNNING);
--	mutex_remove_waiter(lock, &waiter, current);
-+	__mutex_remove_waiter(lock, &waiter);
- err_early_kill:
- 	spin_unlock(&lock->wait_lock);
- 	debug_mutex_free_waiter(&waiter);
-diff --git a/kernel/locking/mutex.h b/kernel/locking/mutex.h
-index 1c2287d..f0c710b 100644
---- a/kernel/locking/mutex.h
-+++ b/kernel/locking/mutex.h
-@@ -10,12 +10,10 @@
-  * !CONFIG_DEBUG_MUTEXES case. Most of them are NOPs:
-  */
- 
--#define mutex_remove_waiter(lock, waiter, task) \
--		__list_del((waiter)->list.prev, (waiter)->list.next)
--
- #define debug_mutex_wake_waiter(lock, waiter)		do { } while (0)
- #define debug_mutex_free_waiter(waiter)			do { } while (0)
- #define debug_mutex_add_waiter(lock, waiter, ti)	do { } while (0)
-+#define debug_mutex_remove_waiter(lock, waiter, ti)     do { } while (0)
- #define debug_mutex_unlock(lock)			do { } while (0)
- #define debug_mutex_init(lock, name, key)		do { } while (0)
- 
+ 	if (unlikely(!lock_stat || !lockdep_enabled()))
+ 		return;
