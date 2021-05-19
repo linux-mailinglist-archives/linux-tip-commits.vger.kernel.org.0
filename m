@@ -2,114 +2,150 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C41C388154
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 18 May 2021 22:24:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7271E3883DC
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 19 May 2021 02:44:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236129AbhERU0P (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 18 May 2021 16:26:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51350 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236047AbhERU0O (ORCPT
+        id S235513AbhESApg (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 18 May 2021 20:45:36 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:39104 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S235375AbhESApg (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 18 May 2021 16:26:14 -0400
-Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58A9CC061573;
-        Tue, 18 May 2021 13:24:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=IrbRchIcupxBfoxuYtFGP6rM8LJCDXMAeIYwWtVaF6E=; b=L00CZ1wasmckLepdoFwFqxRT/s
-        URimQCuCCiBqBhjuxNTaN/zS06ROtYiuJ6kGEFWry1f/5O8ii06CqUkH+LZDhcrKdexnVF8/6LZfr
-        +yeAo/m0/nt9VyGZMvg5cv5cCbHVPOJ8MZbYHDMDwkpPcXWWyR69imryLLslmNRFQmK5VhwXOVLlZ
-        Nql8hLA92G46wtm5Pp8JtremPgEAHXGXkGOWpn/k6yHU6GI3H0pVr1cOOFvBV/9ilhfUnYnNx/Sa3
-        l2qFE5a/WtZsnpUGhDKPUnQSnzjiXVI2Vuoa/7GCW/Y2ysk6Bk4HohCoQrH5NsdsWhf2fDZLa6pT/
-        n0yQshSg==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=worktop.programming.kicks-ass.net)
-        by desiato.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
-        id 1lj6Gi-001omX-Up; Tue, 18 May 2021 20:24:45 +0000
-Received: by worktop.programming.kicks-ass.net (Postfix, from userid 1000)
-        id E04D7986465; Tue, 18 May 2021 22:24:43 +0200 (CEST)
-Date:   Tue, 18 May 2021 22:24:43 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     linux-tip-commits@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
-        x86@kernel.org, willy@infradead.org, masahiroy@kernel.org,
-        michal.lkml@markovi.net, Josh Poimboeuf <jpoimboe@redhat.com>
+        Tue, 18 May 2021 20:45:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1621385057;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=YwTV7Kjj6RrOTTD0I2CX5CsxsnrWqAGskz6Ldbn+/74=;
+        b=RS0RNR4bDnHEOBFwj+nl3ddPEEmaaAHi0sy/D371KwVKffmY44TDSCRAntcAyJhPqrdYPT
+        uMMD7K6M9QHFN+73dQg7ZFVerRPMEvnHEu+hi6tfs/6SZbU+Ivo8Vp0nbCM4hCBrEr2d99
+        E/zH6Ipbynhh9GRsvaaezgnjbWpRVw4=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-136-7LbvmCpqOfSLYyydLcPvzQ-1; Tue, 18 May 2021 20:44:15 -0400
+X-MC-Unique: 7LbvmCpqOfSLYyydLcPvzQ-1
+Received: by mail-qv1-f69.google.com with SMTP id l19-20020a0ce5130000b02901b6795e3304so8850293qvm.2
+        for <linux-tip-commits@vger.kernel.org>; Tue, 18 May 2021 17:44:15 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=YwTV7Kjj6RrOTTD0I2CX5CsxsnrWqAGskz6Ldbn+/74=;
+        b=tgvFrCu931k32DTINo0jCA8Urn7M9/orZ3gnj6l0fOlWrvCivcTPjyczEzvbUsFTVn
+         84yNpLo8vBal+d8lSzs8fTW5x/0Ie2CM7G92HwAWzQRxW562vsokelTq9R28ODNV+MYg
+         RsbGSyVmHTdg+T/A1A+dtqjJ4qEC+ispIAJWE7MLe3/WApmKRIeVMQsWQYrAz+ftJsHj
+         AlVpPDk6hzJ8H4mOIdZhsPRO8f1BRLiTpHSg3L7EgaNZBDSIBYNcrr/b5T421Gv72wrl
+         MYT/zH0Q9CelislGYoUHouGG9LF4T/rMdcQsyKGdnyX2tks64xTxmQBxwuijeuebO/jH
+         i1mg==
+X-Gm-Message-State: AOAM532Q2fCtoxW73+qYhxhxiZfMlNS2u+0pAqRQAeCG4mM5JCimi7Aq
+        rZv3qCpAlPK8GC9M4wlot0sB2Rlan9Yi7uN1beHWAdZFDUi83K/2GGUy5gZ2RRfr/ioQP1WUns+
+        xBr6+ubxDywsJkmvUezZ3mTIzVnZfK0w=
+X-Received: by 2002:ac8:57d3:: with SMTP id w19mr7985508qta.75.1621385054692;
+        Tue, 18 May 2021 17:44:14 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJw/Q1QiH+3hhEaWnwd9y0dfF8Sdg6/iOfxvq1qK25qepn9oxe5obi9OdahD47I+lnDGQNYZ4A==
+X-Received: by 2002:ac8:57d3:: with SMTP id w19mr7985479qta.75.1621385054364;
+        Tue, 18 May 2021 17:44:14 -0700 (PDT)
+Received: from treble ([68.52.236.68])
+        by smtp.gmail.com with ESMTPSA id k2sm12508513qtg.68.2021.05.18.17.44.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 May 2021 17:44:14 -0700 (PDT)
+Date:   Tue, 18 May 2021 19:44:11 -0500
+From:   Josh Poimboeuf <jpoimboe@redhat.com>
+To:     Peter Zijlstra <peterz@infradead.org>
+Cc:     linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
+        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
+        willy@infradead.org, masahiroy@kernel.org, michal.lkml@markovi.net
 Subject: Re: [tip: objtool/core] jump_label, x86: Allow short NOPs
-Message-ID: <20210518202443.GA48949@worktop.programming.kicks-ass.net>
+Message-ID: <20210519004411.xpx4i6qcnfpyyrbj@treble>
 References: <20210506194158.216763632@infradead.org>
  <162082558708.29796.10992563428983424866.tip-bot2@tip-bot2>
  <20210518195004.GD21560@worktop.programming.kicks-ass.net>
+ <20210518202443.GA48949@worktop.programming.kicks-ass.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20210518195004.GD21560@worktop.programming.kicks-ass.net>
+In-Reply-To: <20210518202443.GA48949@worktop.programming.kicks-ass.net>
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-
-+kbuild maintainers
-
-On Tue, May 18, 2021 at 09:50:04PM +0200, Peter Zijlstra wrote:
-> On Wed, May 12, 2021 at 01:19:47PM -0000, tip-bot2 for Peter Zijlstra wrote:
-> > The following commit has been merged into the objtool/core branch of tip:
-> > 
-> > Commit-ID:     ab3257042c26d0cd44793c741e2f89bf38b21fe8
-> > Gitweb:        https://git.kernel.org/tip/ab3257042c26d0cd44793c741e2f89bf38b21fe8
-> > Author:        Peter Zijlstra <peterz@infradead.org>
-> > AuthorDate:    Thu, 06 May 2021 21:34:05 +02:00
-> > Committer:     Ingo Molnar <mingo@kernel.org>
-> > CommitterDate: Wed, 12 May 2021 14:54:56 +02:00
-> > 
-> > jump_label, x86: Allow short NOPs
-> > 
-> > Now that objtool is able to rewrite jump_label instructions, have the
-> > compiler emit a JMP, such that it can decide on the optimal encoding,
-> > and set jump_entry::key bit1 to indicate that objtool should rewrite
-> > the instruction to a matching NOP.
-> > 
-> > For x86_64-allyesconfig this gives:
-> > 
-> >   jl\     NOP     JMP
-> >   short:  22997   124
-> >   long:   30874   90
-> > 
-> > IOW, we save (22997+124) * 3 bytes of kernel text in hotpaths.
-> > 
-> > Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> > Signed-off-by: Ingo Molnar <mingo@kernel.org>
-> > Link: https://lore.kernel.org/r/20210506194158.216763632@infradead.org
+On Tue, May 18, 2021 at 10:24:43PM +0200, Peter Zijlstra wrote:
+> OK, willy followed up on IRC, and it turns out there's a kbuild
+> dependency missing; then objtool changes we don't rebuild:
 > 
-> So Willy is having some trouble with this commit; for some reason his
-> kernel is no longer booting in his qemu thing, but I can't reproduce.
+>   arch/x86/entry/vdso/vma.o
 > 
-> I've hacked up the below vmlinux.o validation, willy can you run this on
-> your vmlinux.o, something like:
+> even though we should, this led to an unpatched 2 byte jump-label and
+> things went sideways. I'm not sure I understand the whole build
+> machinery well enough to know where to begin chasing this.
 > 
-> 	build/tools/objtool/objtool check -abdJsuld build/vmlinux.o
+> Now, this file is mighty magical, due to:
 > 
-> Where I'm assuming you build with O=build/. When I run it on my build
-> (with your .config) I get absolutely nothing :/
+> arch/x86/entry/vdso/Makefile:OBJECT_FILES_NON_STANDARD  := y
+> arch/x86/entry/vdso/Makefile:OBJECT_FILES_NON_STANDARD_vma.o    := n
 > 
-> Alternatively, can you get me your vmlinux.o + bzImage ?
-> 
-> Also helpful might be trying to attach gdb to the qemu gdbstub and
-> looking where the boot fails.
+> Maybe that's related.
 
-OK, willy followed up on IRC, and it turns out there's a kbuild
-dependency missing; then objtool changes we don't rebuild:
+I'm not exactly thrilled that objtool now has the power to easily brick
+a system :-/  Is it really worth it?
 
-  arch/x86/entry/vdso/vma.o
+Anyway, here's one way to fix it.  Maybe Masahiro has a better idea.
 
-even though we should, this led to an unpatched 2 byte jump-label and
-things went sideways. I'm not sure I understand the whole build
-machinery well enough to know where to begin chasing this.
+From f88b208677953bc445db08ac46b6e4259217bb8a Mon Sep 17 00:00:00 2001
+Message-Id: <f88b208677953bc445db08ac46b6e4259217bb8a.1621384807.git.jpoimboe@redhat.com>
+From: Josh Poimboeuf <jpoimboe@redhat.com>
+Date: Tue, 18 May 2021 18:59:15 -0500
+Subject: [PATCH] kbuild: Fix objtool dependency for
+ 'OBJECT_FILES_NON_STANDARD_<obj> := n'
 
-Now, this file is mighty magical, due to:
+"OBJECT_FILES_NON_STANDARD_vma.o := n" has a dependency bug.  When
+objtool source is updated, the affected object doesn't get re-analyzed
+by objtool.
 
-arch/x86/entry/vdso/Makefile:OBJECT_FILES_NON_STANDARD  := y
-arch/x86/entry/vdso/Makefile:OBJECT_FILES_NON_STANDARD_vma.o    := n
+Peter's new variable-sized jump label feature relies on objtool
+rewriting the object file.  Otherwise the system can fail to boot.  That
+effectively upgrades this minor dependency issue to a major bug.
 
-Maybe that's related.
+The problem is that variables in prerequisites are expanded early,
+during the read-in phase.  The '$(objtool_dep)' variable indirectly uses
+'$@', which isn't yet available when the target prerequisites are
+evaluated.
+
+Use '.SECONDEXPANSION:' which causes '$(objtool_dep)' to be expanded in
+a later phase, after the target-specific '$@' variable has been defined.
+
+Fixes: b9ab5ebb14ec ("objtool: Add CONFIG_STACK_VALIDATION option")
+Fixes: ab3257042c26 ("jump_label, x86: Allow short NOPs")
+Reported-by: Matthew Wilcox <willy@infradead.org>
+Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
+---
+ scripts/Makefile.build | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/scripts/Makefile.build b/scripts/Makefile.build
+index 949f723efe53..34d257653fb4 100644
+--- a/scripts/Makefile.build
++++ b/scripts/Makefile.build
+@@ -268,7 +268,8 @@ define rule_as_o_S
+ endef
+ 
+ # Built-in and composite module parts
+-$(obj)/%.o: $(src)/%.c $(recordmcount_source) $(objtool_dep) FORCE
++.SECONDEXPANSION:
++$(obj)/%.o: $(src)/%.c $(recordmcount_source) $$(objtool_dep) FORCE
+ 	$(call if_changed_rule,cc_o_c)
+ 	$(call cmd,force_checksrc)
+ 
+@@ -349,7 +350,7 @@ cmd_modversions_S =								\
+ 	fi
+ endif
+ 
+-$(obj)/%.o: $(src)/%.S $(objtool_dep) FORCE
++$(obj)/%.o: $(src)/%.S $$(objtool_dep) FORCE
+ 	$(call if_changed_rule,as_o_S)
+ 
+ targets += $(filter-out $(subdir-builtin), $(real-obj-y))
+-- 
+2.31.1
+
