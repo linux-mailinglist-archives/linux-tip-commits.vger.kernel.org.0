@@ -2,17 +2,20 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A719738A631
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 20 May 2021 12:24:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 687CF38AD45
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 20 May 2021 14:00:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236184AbhETKZL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 20 May 2021 06:25:11 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:45954 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236368AbhETKXu (ORCPT
+        id S241867AbhETMBX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 20 May 2021 08:01:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48700 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S241924AbhETMAw (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 20 May 2021 06:23:50 -0400
-Date:   Thu, 20 May 2021 10:22:19 -0000
+        Thu, 20 May 2021 08:00:52 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B4F8C04FF32;
+        Thu, 20 May 2021 03:22:21 -0700 (PDT)
+Date:   Thu, 20 May 2021 10:22:18 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1621506139;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -20,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=6BseoDTvKoUMT+QJFQEGGjbZApSjVZjrQkoWva0z5bQ=;
-        b=eFsPWOfSQUU47ulF99G37c+vdWJdstdIyxAnwHsfnrohdl80csl4m31BrptqvzrpJf2aaW
-        TjCov1FRzsIdmUc6gFwfZ2gFU+RRBVQ4Zmcl0XLp7NYR/9aSO1mz2J9ItMey7AfVB9rGw1
-        l4MkguT6wQG7i7Bp4FTuOaL+RvevIIS2oPfsrTIkkrrk9GUDAxQ+p3xawPzH96LTUAF4h0
-        oDyGFjoqpvtqICMT00WQRSXe9yMAyVJvW4DCAgZZaNaO0SmyhtYe7MZj5KvSp2L4qkahA4
-        6HXSiJ9XjN7dooWuQ8XGwBr9UkXRmZ/c2P9Ck6dOCHGMrKRAXqyXMovrlfVEAw==
+        bh=IB5WzEny1VMFztKI/99vS1hgVslzBteBSCM3j6Jl6P8=;
+        b=RjTutPHA9BN4olBfxAtmwR9szJ+hrDlIc4QumZx2b8Jup330HvXbS0UoJOGdF940K+obfS
+        dWiAuPre3m3JWwrnnbcQbm2TiqRucJIRmpTvZnOtj1P7n4m6oRMtaOiaIPKpEXF9pD8xHm
+        xuTZVhgNtilCddHrDFD/C+7q+1ZMmerK8m6c7/wQXxiEFUl3JsXU4GS+8oiTm38Xjg12ca
+        mbP2n13jQ14XXtgTqmknnX/4hudlAgUMeOduHGLu5LmxBj6RqujnDYC+s4QdSLfF52oQs/
+        LVO2EE2aMUu2KdjFYp070V1CIUjUW4qLOWDrNDC0Q1PVBgeYtfHqw6Rsg5Wrkw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1621506139;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -33,22 +36,22 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=6BseoDTvKoUMT+QJFQEGGjbZApSjVZjrQkoWva0z5bQ=;
-        b=PYXj3vRIocApDQ/qvsjVf7MiNaDfUCn71Y9SRHCibnYExes5i43yus6gcZYfjC8NNlNbXH
-        /RZSPemxF3tyX6Aw==
+        bh=IB5WzEny1VMFztKI/99vS1hgVslzBteBSCM3j6Jl6P8=;
+        b=9U4K/E3zYbkPZFgmIbKXY+Iyl3xc8yc43UcXBMYen+DY0+jvKYmQ3rF8GHIlihG09gHerN
+        5J2acNOIGCeCi9Bg==
 From:   "tip-bot2 for Joerg Roedel" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/sev-es: Don't return NULL from sev_es_get_ghcb()
+Subject: [tip: x86/urgent] x86/sev-es: Use __put_user()/__get_user() for data accesses
 Cc:     Joerg Roedel <jroedel@suse.de>, Borislav Petkov <bp@suse.de>,
         stable@vger.kernel.org, #@tip-bot2.tec.linutronix.de,
         v5.10+@tip-bot2.tec.linutronix.de, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210519135251.30093-2-joro@8bytes.org>
-References: <20210519135251.30093-2-joro@8bytes.org>
+In-Reply-To: <20210519135251.30093-4-joro@8bytes.org>
+References: <20210519135251.30093-4-joro@8bytes.org>
 MIME-Version: 1.0
-Message-ID: <162150613911.29796.9924367580414039528.tip-bot2@tip-bot2>
+Message-ID: <162150613809.29796.2550841094526532766.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,78 +62,163 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     b250f2f7792d15bcde98e0456781e2835556d5fa
-Gitweb:        https://git.kernel.org/tip/b250f2f7792d15bcde98e0456781e2835556d5fa
+Commit-ID:     4954f5b8ef0baf70fe978d1a99a5f70e4dd5c877
+Gitweb:        https://git.kernel.org/tip/4954f5b8ef0baf70fe978d1a99a5f70e4dd5c877
 Author:        Joerg Roedel <jroedel@suse.de>
-AuthorDate:    Wed, 19 May 2021 15:52:44 +02:00
+AuthorDate:    Wed, 19 May 2021 15:52:46 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Wed, 19 May 2021 17:05:13 +02:00
+CommitterDate: Wed, 19 May 2021 18:45:37 +02:00
 
-x86/sev-es: Don't return NULL from sev_es_get_ghcb()
+x86/sev-es: Use __put_user()/__get_user() for data accesses
 
-sev_es_get_ghcb() is called from several places but only one of them
-checks the return value. The reaction to returning NULL is always the
-same: calling panic() and kill the machine.
+The put_user() and get_user() functions do checks on the address which is
+passed to them. They check whether the address is actually a user-space
+address and whether its fine to access it. They also call might_fault()
+to indicate that they could fault and possibly sleep.
 
-Instead of adding checks to all call sites, move the panic() into the
-function itself so that it will no longer return NULL.
+All of these checks are neither wanted nor needed in the #VC exception
+handler, which can be invoked from almost any context and also for MMIO
+instructions from kernel space on kernel memory. All the #VC handler
+wants to know is whether a fault happened when the access was tried.
 
-Fixes: 0786138c78e7 ("x86/sev-es: Add a Runtime #VC Exception Handler")
+This is provided by __put_user()/__get_user(), which just do the access
+no matter what. Also add comments explaining why __get_user() and
+__put_user() are the best choice here and why it is safe to use them
+in this context. Also explain why copy_to/from_user can't be used.
+
+In addition, also revert commit
+
+  7024f60d6552 ("x86/sev-es: Handle string port IO to kernel memory properly")
+
+because using __get_user()/__put_user() fixes the same problem while
+the above commit introduced several problems:
+
+  1) It uses access_ok() which is only allowed in task context.
+
+  2) It uses memcpy() which has no fault handling at all and is
+     thus unsafe to use here.
+
+  [ bp: Fix up commit ID of the reverted commit above. ]
+
+Fixes: f980f9c31a92 ("x86/sev-es: Compile early handler code into kernel image")
 Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Borislav Petkov <bp@suse.de>
 Cc: stable@vger.kernel.org # v5.10+
-Link: https://lkml.kernel.org/r/20210519135251.30093-2-joro@8bytes.org
+Link: https://lkml.kernel.org/r/20210519135251.30093-4-joro@8bytes.org
 ---
- arch/x86/kernel/sev.c | 25 ++++++++++++-------------
- 1 file changed, 12 insertions(+), 13 deletions(-)
+ arch/x86/kernel/sev.c | 66 +++++++++++++++++++++++++++++-------------
+ 1 file changed, 46 insertions(+), 20 deletions(-)
 
 diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
-index 4fa111b..82bced8 100644
+index 1f428f4..651b81c 100644
 --- a/arch/x86/kernel/sev.c
 +++ b/arch/x86/kernel/sev.c
-@@ -203,8 +203,18 @@ static __always_inline struct ghcb *sev_es_get_ghcb(struct ghcb_state *state)
- 	if (unlikely(data->ghcb_active)) {
- 		/* GHCB is already in use - save its contents */
+@@ -315,31 +315,44 @@ static enum es_result vc_write_mem(struct es_em_ctxt *ctxt,
+ 	u16 d2;
+ 	u8  d1;
  
--		if (unlikely(data->backup_ghcb_active))
--			return NULL;
-+		if (unlikely(data->backup_ghcb_active)) {
-+			/*
-+			 * Backup-GHCB is also already in use. There is no way
-+			 * to continue here so just kill the machine. To make
-+			 * panic() work, mark GHCBs inactive so that messages
-+			 * can be printed out.
-+			 */
-+			data->ghcb_active        = false;
-+			data->backup_ghcb_active = false;
-+
-+			panic("Unable to handle #VC exception! GHCB and Backup GHCB are already in use");
-+		}
- 
- 		/* Mark backup_ghcb active before writing to it */
- 		data->backup_ghcb_active = true;
-@@ -1289,7 +1299,6 @@ static __always_inline bool on_vc_fallback_stack(struct pt_regs *regs)
-  */
- DEFINE_IDTENTRY_VC_SAFE_STACK(exc_vmm_communication)
- {
--	struct sev_es_runtime_data *data = this_cpu_read(runtime_data);
- 	irqentry_state_t irq_state;
- 	struct ghcb_state state;
- 	struct es_em_ctxt ctxt;
-@@ -1315,16 +1324,6 @@ DEFINE_IDTENTRY_VC_SAFE_STACK(exc_vmm_communication)
- 	 */
- 
- 	ghcb = sev_es_get_ghcb(&state);
--	if (!ghcb) {
--		/*
--		 * Mark GHCBs inactive so that panic() is able to print the
--		 * message.
--		 */
--		data->ghcb_active        = false;
--		data->backup_ghcb_active = false;
--
--		panic("Unable to handle #VC exception! GHCB and Backup GHCB are already in use");
+-	/* If instruction ran in kernel mode and the I/O buffer is in kernel space */
+-	if (!user_mode(ctxt->regs) && !access_ok(target, size)) {
+-		memcpy(dst, buf, size);
+-		return ES_OK;
 -	}
+-
++	/*
++	 * This function uses __put_user() independent of whether kernel or user
++	 * memory is accessed. This works fine because __put_user() does no
++	 * sanity checks of the pointer being accessed. All that it does is
++	 * to report when the access failed.
++	 *
++	 * Also, this function runs in atomic context, so __put_user() is not
++	 * allowed to sleep. The page-fault handler detects that it is running
++	 * in atomic context and will not try to take mmap_sem and handle the
++	 * fault, so additional pagefault_enable()/disable() calls are not
++	 * needed.
++	 *
++	 * The access can't be done via copy_to_user() here because
++	 * vc_write_mem() must not use string instructions to access unsafe
++	 * memory. The reason is that MOVS is emulated by the #VC handler by
++	 * splitting the move up into a read and a write and taking a nested #VC
++	 * exception on whatever of them is the MMIO access. Using string
++	 * instructions here would cause infinite nesting.
++	 */
+ 	switch (size) {
+ 	case 1:
+ 		memcpy(&d1, buf, 1);
+-		if (put_user(d1, target))
++		if (__put_user(d1, target))
+ 			goto fault;
+ 		break;
+ 	case 2:
+ 		memcpy(&d2, buf, 2);
+-		if (put_user(d2, target))
++		if (__put_user(d2, target))
+ 			goto fault;
+ 		break;
+ 	case 4:
+ 		memcpy(&d4, buf, 4);
+-		if (put_user(d4, target))
++		if (__put_user(d4, target))
+ 			goto fault;
+ 		break;
+ 	case 8:
+ 		memcpy(&d8, buf, 8);
+-		if (put_user(d8, target))
++		if (__put_user(d8, target))
+ 			goto fault;
+ 		break;
+ 	default:
+@@ -370,30 +383,43 @@ static enum es_result vc_read_mem(struct es_em_ctxt *ctxt,
+ 	u16 d2;
+ 	u8  d1;
  
- 	vc_ghcb_invalidate(ghcb);
- 	result = vc_init_em_ctxt(&ctxt, regs, error_code);
+-	/* If instruction ran in kernel mode and the I/O buffer is in kernel space */
+-	if (!user_mode(ctxt->regs) && !access_ok(s, size)) {
+-		memcpy(buf, src, size);
+-		return ES_OK;
+-	}
+-
++	/*
++	 * This function uses __get_user() independent of whether kernel or user
++	 * memory is accessed. This works fine because __get_user() does no
++	 * sanity checks of the pointer being accessed. All that it does is
++	 * to report when the access failed.
++	 *
++	 * Also, this function runs in atomic context, so __get_user() is not
++	 * allowed to sleep. The page-fault handler detects that it is running
++	 * in atomic context and will not try to take mmap_sem and handle the
++	 * fault, so additional pagefault_enable()/disable() calls are not
++	 * needed.
++	 *
++	 * The access can't be done via copy_from_user() here because
++	 * vc_read_mem() must not use string instructions to access unsafe
++	 * memory. The reason is that MOVS is emulated by the #VC handler by
++	 * splitting the move up into a read and a write and taking a nested #VC
++	 * exception on whatever of them is the MMIO access. Using string
++	 * instructions here would cause infinite nesting.
++	 */
+ 	switch (size) {
+ 	case 1:
+-		if (get_user(d1, s))
++		if (__get_user(d1, s))
+ 			goto fault;
+ 		memcpy(buf, &d1, 1);
+ 		break;
+ 	case 2:
+-		if (get_user(d2, s))
++		if (__get_user(d2, s))
+ 			goto fault;
+ 		memcpy(buf, &d2, 2);
+ 		break;
+ 	case 4:
+-		if (get_user(d4, s))
++		if (__get_user(d4, s))
+ 			goto fault;
+ 		memcpy(buf, &d4, 4);
+ 		break;
+ 	case 8:
+-		if (get_user(d8, s))
++		if (__get_user(d8, s))
+ 			goto fault;
+ 		memcpy(buf, &d8, 8);
+ 		break;
