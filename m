@@ -2,91 +2,92 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6341238DABF
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 23 May 2021 11:47:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5459838DACF
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 23 May 2021 12:04:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231709AbhEWJse (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 23 May 2021 05:48:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47774 "EHLO
+        id S231658AbhEWKGP (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 23 May 2021 06:06:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51674 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231679AbhEWJsb (ORCPT
+        with ESMTP id S231654AbhEWKGP (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 23 May 2021 05:48:31 -0400
+        Sun, 23 May 2021 06:06:15 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21F59C06138C;
-        Sun, 23 May 2021 02:47:04 -0700 (PDT)
-Date:   Sun, 23 May 2021 09:47:00 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32189C061574;
+        Sun, 23 May 2021 03:04:49 -0700 (PDT)
+Date:   Sun, 23 May 2021 10:04:46 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1621763221;
+        s=2020; t=1621764287;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=9bure5Qg1NJmOySkFDDQUoAasHVVdJwha0wlu56c/Cg=;
-        b=u7fZVB7fUyO0Q0F/awpvldBWwzGm81/qN9FSlNH1qE2rxCooEdv8k+rdv3fw1LAsYqoZWb
-        mGiBnPy2dtR3uoxxfknkEfjNKeaNzaFBKe5XS4opi0Q35Prk080I6dAYEyBDz10iscSRjh
-        XGmya3dmHRxAuTX8g70L6uvujEbHnlP2vciFMw521Wu9OZSdu57XM0ihaYWSU445yzk4ht
-        hMOkIKkRWfjjkGDC1HzrG/0t0u/NR7uc7l8HmD9pdBqxXkUszmGWHWLDMZhm7Ber/RKwxU
-        bSG0fmc1IzlFSwHTyVUzx4ROid9cblAZ39BKwHHbY4pQjdPCAcKoN8qY9k/fXw==
+        bh=5W8D+7/wjpOiCIVH7rU73m1fRoEyqSiT2kiG/P9u3ZA=;
+        b=pzpmxSgeDJbBQ7ZZ4vXFxMPHksSEG72NSlJ5bkLKqyJF4zX/wPWbgU23KeeX1J0EAmallB
+        qR/p8tl0AjuhLuR/jpMYvsq0QZGVu7BHVcR4DsHI6HD80DXTHzoOE5iW9GFpf+Q9YmUYkI
+        9BK3iiRzBTDdcRq5RW5fvNlk5z0dv9MKpDTo2z3I9HsPSkKsUtKd8P0SE/rsrfAl5wxxnY
+        momF4grBRPzDK5YJZcfFSGBYJOqgv4AlzgUl7W415UACdxRkE/RyuenlZnLGCFYk8FMWys
+        aavidjMusGc4bPLk+u8I7f3QBD/DpeKTKcRucQpsoHrdKGmRyspLAvguGT2f4Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1621763221;
+        s=2020e; t=1621764287;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=9bure5Qg1NJmOySkFDDQUoAasHVVdJwha0wlu56c/Cg=;
-        b=EKI7WdZkQwNIdw4altL9MASrIbSIN5QOjL9N9HjDkSEn1+w5Tgykgq6cp4MasLCHqbROoM
-        iBfclPYLJKDErRCQ==
-From:   "tip-bot2 for Changbin Du" <tip-bot2@linutronix.de>
+        bh=5W8D+7/wjpOiCIVH7rU73m1fRoEyqSiT2kiG/P9u3ZA=;
+        b=BSsC3dUXb11W0wsg0opghVw/9PB6ltGs6zkNeo8i2VO8DdWqKemjuqh9q54qDLZKof01Tj
+        eTdG4WT7iWWOYaBw==
+From:   "tip-bot2 for Paul Menzel" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: efi/urgent] efi/fdt: fix panic when no valid fdt found
-Cc:     Changbin Du <changbin.du@gmail.com>,
+Subject: [tip: efi/core] x86/efi: Log 32/64-bit mismatch with kernel as an error
+Cc:     Paul Menzel <pmenzel@molgen.mpg.de>,
         Ard Biesheuvel <ardb@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <162176322081.29796.16823399891747450104.tip-bot2@tip-bot2>
+Message-ID: <162176428679.29796.2511069274477726490.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the efi/urgent branch of tip:
+The following commit has been merged into the efi/core branch of tip:
 
-Commit-ID:     668a84c1bfb2b3fd5a10847825a854d63fac7baa
-Gitweb:        https://git.kernel.org/tip/668a84c1bfb2b3fd5a10847825a854d63fac7baa
-Author:        Changbin Du <changbin.du@gmail.com>
-AuthorDate:    Wed, 24 Mar 2021 22:54:35 +08:00
+Commit-ID:     bb11580f61b6c4ba5c35706abd927c8ac8c32852
+Gitweb:        https://git.kernel.org/tip/bb11580f61b6c4ba5c35706abd927c8ac8c=
+32852
+Author:        Paul Menzel <pmenzel@molgen.mpg.de>
+AuthorDate:    Sat, 15 May 2021 10:14:04 +02:00
 Committer:     Ard Biesheuvel <ardb@kernel.org>
-CommitterDate: Sat, 22 May 2021 14:03:42 +02:00
+CommitterDate: Sat, 22 May 2021 14:09:07 +02:00
 
-efi/fdt: fix panic when no valid fdt found
+x86/efi: Log 32/64-bit mismatch with kernel as an error
 
-setup_arch() would invoke efi_init()->efi_get_fdt_params(). If no
-valid fdt found then initial_boot_params will be null. So we
-should stop further fdt processing here. I encountered this
-issue on risc-v.
+Log the message
 
-Signed-off-by: Changbin Du <changbin.du@gmail.com>
-Fixes: b91540d52a08b ("RISC-V: Add EFI runtime services")
+    No EFI runtime due to 32/64-bit mismatch with kernel
+
+as an error condition, as several things like efivarfs won=E2=80=99t work
+without the EFI runtime.
+
+Signed-off-by: Paul Menzel <pmenzel@molgen.mpg.de>
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- drivers/firmware/efi/fdtparams.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/x86/platform/efi/efi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/efi/fdtparams.c b/drivers/firmware/efi/fdtparams.c
-index bb042ab..e901f85 100644
---- a/drivers/firmware/efi/fdtparams.c
-+++ b/drivers/firmware/efi/fdtparams.c
-@@ -98,6 +98,9 @@ u64 __init efi_get_fdt_params(struct efi_memory_map_data *mm)
- 	BUILD_BUG_ON(ARRAY_SIZE(target) != ARRAY_SIZE(name));
- 	BUILD_BUG_ON(ARRAY_SIZE(target) != ARRAY_SIZE(dt_params[0].params));
- 
-+	if (!fdt)
-+		return 0;
-+
- 	for (i = 0; i < ARRAY_SIZE(dt_params); i++) {
- 		node = fdt_path_offset(fdt, dt_params[i].path);
- 		if (node < 0)
+diff --git a/arch/x86/platform/efi/efi.c b/arch/x86/platform/efi/efi.c
+index 8a26e70..147c30a 100644
+--- a/arch/x86/platform/efi/efi.c
++++ b/arch/x86/platform/efi/efi.c
+@@ -468,7 +468,7 @@ void __init efi_init(void)
+ 	 */
+=20
+ 	if (!efi_runtime_supported())
+-		pr_info("No EFI runtime due to 32/64-bit mismatch with kernel\n");
++		pr_err("No EFI runtime due to 32/64-bit mismatch with kernel\n");
+=20
+ 	if (!efi_runtime_supported() || efi_runtime_disabled()) {
+ 		efi_memmap_unmap();
