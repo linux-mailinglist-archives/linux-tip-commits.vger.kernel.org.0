@@ -2,91 +2,139 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 38C6038DAD0
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 23 May 2021 12:04:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9815B38F1A4
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 24 May 2021 18:34:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231697AbhEWKGR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 23 May 2021 06:06:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51682 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231674AbhEWKGQ (ORCPT
+        id S232118AbhEXQgE (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 24 May 2021 12:36:04 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38378 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232442AbhEXQgE (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 23 May 2021 06:06:16 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48B5FC061574;
-        Sun, 23 May 2021 03:04:50 -0700 (PDT)
-Date:   Sun, 23 May 2021 10:04:48 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1621764288;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=0tUYQHmDvtABAiPtAtlsPGT0mUUsqJITvqkUPcfWZA0=;
-        b=PzQChSycs7AmstTmxqpvvpOWnNBzYT2nuiCaFqqCpFORb68VdE3V6yZqT6Bv9qmZF696bz
-        glwUxKa2qGWLkORPrQoQ2SaLa5tYCUR9hjnAAaujfXpD43k9HcWGKAEr+CAiy473SARezy
-        1Nao6lGXrBXqKrthpgh2Sye3AIDrec+pNMb24v6v0Uo6wfQ7djXNW1GLkb39EmeEfUW3Xh
-        HXBdKqImh20agbcd9nDlNwjI1ff1uz2mLFb5WPTLYsoB0wkjXnOlnvGvJR3A/ltRMI7NNF
-        k4sIhYRAq0xJs6sIHZ7QSF0nFmEZQpeO4SZvANfrtaAWLT4j9m+gnEE3odtAZw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1621764288;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=0tUYQHmDvtABAiPtAtlsPGT0mUUsqJITvqkUPcfWZA0=;
-        b=aTKJURR8XExKm2A2qiaBXBtKGdJm5dlZdkj3CwUzNJkfiC1lYRZP1V5U4iqSpmMoG+mvt1
-        H7MgVKFap6PzsWAQ==
-From:   "tip-bot2 for Heikki Krogerus" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: efi/core] efi/apple-properties: Handle device properties with
- software node API
-Cc:     Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Lukas Wunner <lukas@wunner.de>,
-        Ard Biesheuvel <ardb@kernel.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
+        Mon, 24 May 2021 12:36:04 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 2AAAF6140A
+        for <linux-tip-commits@vger.kernel.org>; Mon, 24 May 2021 16:34:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1621874076;
+        bh=ZLC8qQnMj4ooJVxFsue4U3K8DWfx8sWZhRr0SsKBcjk=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=POmSP74CcUe0KM1A6asTBP5N4cIxU9qdYs5z543h7DwZAi5wWbC+pl8QLI6UkE1G6
+         U2321BNMHejTCio06KhWeZyVujf8vQIy+zgeNhstptLNWb6bS9wo4kjmQHjw8R9RQ7
+         rDHKy1e6H75XccxTC3E4MurrWi1N7CxvXPUaoIPAE8H1JJPUyPfBJveR7+OMBO7WMb
+         /KTAlJ/Fh8Af5kcO1Yyo8m4CXLiQGwCYoOM+g6bXJ59tCp7VDgQ9uPdE0oprCspy5H
+         lR6K0JCV1oyUIeWhz5lnd4yvQLgA/LvwtZ+H4tx1sa5np3laPH6v18fkAuQHee3yOl
+         JoTZIcQaf1WPA==
+Received: by mail-ed1-f48.google.com with SMTP id s6so32648354edu.10
+        for <linux-tip-commits@vger.kernel.org>; Mon, 24 May 2021 09:34:36 -0700 (PDT)
+X-Gm-Message-State: AOAM532UST6ZyOJ7JuNP0z8OOJTA3GP22LkAkEuGoBzznUVuZnHMI9Yb
+        jZHlPnqewzWVL85adRq8vJju8G4Hy3JesG+ksMtBjg==
+X-Google-Smtp-Source: ABdhPJy/LkAdwUDEi2HBwJHj8sOm3jtgls+wbFBUGYPLK3LBnPye3W6g3OUK8gFArWJZcw6647SJKzgVJmX+8UAAWoY=
+X-Received: by 2002:a05:6402:4251:: with SMTP id g17mr26424758edb.238.1621874074727;
+ Mon, 24 May 2021 09:34:34 -0700 (PDT)
 MIME-Version: 1.0
-Message-ID: <162176428803.29796.1147855161001088880.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+References: <20200512145444.15483-6-yu-cheng.yu@intel.com> <158964181793.17951.15480349640697746223.tip-bot2@tip-bot2>
+In-Reply-To: <158964181793.17951.15480349640697746223.tip-bot2@tip-bot2>
+From:   Andy Lutomirski <luto@kernel.org>
+Date:   Mon, 24 May 2021 09:34:23 -0700
+X-Gmail-Original-Message-ID: <CALCETrXfLbsrBX42Y094YLWTG=pqkrf+aSCLruCGzqnZ0Y=P-Q@mail.gmail.com>
+Message-ID: <CALCETrXfLbsrBX42Y094YLWTG=pqkrf+aSCLruCGzqnZ0Y=P-Q@mail.gmail.com>
+Subject: Re: [tip: x86/fpu] x86/fpu/xstate: Define new functions for clearing
+ fpregs and xstates
+To:     LKML <linux-kernel@vger.kernel.org>
+Cc:     linux-tip-commits@vger.kernel.org,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Yu-cheng Yu <yu-cheng.yu@intel.com>,
+        Borislav Petkov <bp@suse.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Tony Luck <tony.luck@intel.com>, x86 <x86@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the efi/core branch of tip:
+On Sat, May 16, 2020 at 8:10 AM tip-bot2 for Fenghua Yu
+<tip-bot2@linutronix.de> wrote:
+>
+> The following commit has been merged into the x86/fpu branch of tip:
+>
+> Commit-ID:     b860eb8dce5906b14e3a7f3c771e0b3d6ef61b94
+> Gitweb:        https://git.kernel.org/tip/b860eb8dce5906b14e3a7f3c771e0b3d6ef61b94
+> Author:        Fenghua Yu <fenghua.yu@intel.com>
+> AuthorDate:    Tue, 12 May 2020 07:54:39 -07:00
+> Committer:     Borislav Petkov <bp@suse.de>
+> CommitterDate: Wed, 13 May 2020 13:41:50 +02:00
+>
+> x86/fpu/xstate: Define new functions for clearing fpregs and xstates
 
-Commit-ID:     55fc610c8cdae353737dbc2d59febd3c1a697095
-Gitweb:        https://git.kernel.org/tip/55fc610c8cdae353737dbc2d59febd3c1a697095
-Author:        Heikki Krogerus <heikki.krogerus@linux.intel.com>
-AuthorDate:    Thu, 04 Mar 2021 11:28:37 +03:00
-Committer:     Ard Biesheuvel <ardb@kernel.org>
-CommitterDate: Sat, 22 May 2021 14:06:59 +02:00
+syzbot says this is busted.  I've made no effort to identify the
+precise bug that is making syzbot complain, but:
 
-efi/apple-properties: Handle device properties with software node API
+>  /*
+> - * Clear FPU registers by setting them up from
+> - * the init fpstate:
+> + * Clear FPU registers by setting them up from the init fpstate.
+> + * Caller must do fpregs_[un]lock() around it.
+>   */
+> -static inline void copy_init_fpstate_to_fpregs(void)
+> +static inline void copy_init_fpstate_to_fpregs(u64 features_mask)
+>  {
+> -       fpregs_lock();
+> -
 
-The old device property API is going to be removed.
-Replacing the device_add_properties() call with the software
-node API equivalent, device_create_managed_software_node().
 
-Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Acked-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
- drivers/firmware/efi/apple-properties.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/efi/apple-properties.c b/drivers/firmware/efi/apple-properties.c
-index e192648..4c3201e 100644
---- a/drivers/firmware/efi/apple-properties.c
-+++ b/drivers/firmware/efi/apple-properties.c
-@@ -157,7 +157,7 @@ static int __init unmarshal_devices(struct properties_header *properties)
- 		if (!entry[0].name)
- 			goto skip_device;
- 
--		ret = device_add_properties(dev, entry); /* makes deep copy */
-+		ret = device_create_managed_software_node(dev, entry, NULL);
- 		if (ret)
- 			dev_err(dev, "error %d assigning properties\n", ret);
- 
+>         if (use_xsave())
+> -               copy_kernel_to_xregs(&init_fpstate.xsave, -1);
+> +               copy_kernel_to_xregs(&init_fpstate.xsave, features_mask);
+>         else if (static_cpu_has(X86_FEATURE_FXSR))
+>                 copy_kernel_to_fxregs(&init_fpstate.fxsave);
+>         else
+> @@ -307,9 +305,6 @@ static inline void copy_init_fpstate_to_fpregs(void)
+>
+>         if (boot_cpu_has(X86_FEATURE_OSPKE))
+>                 copy_init_pkru_to_fpregs();
+
+if (boot_cpu_has(X86_FEATURE_OSPKE) && (features_mask & PKRU)), perhaps?
+
+> -
+> -       fpregs_mark_activate();
+> -       fpregs_unlock();
+>  }
+>
+>  /*
+> @@ -318,18 +313,40 @@ static inline void copy_init_fpstate_to_fpregs(void)
+>   * Called by sys_execve(), by the signal handler code and by various
+>   * error paths.
+>   */
+> -void fpu__clear(struct fpu *fpu)
+> +static void fpu__clear(struct fpu *fpu, bool user_only)
+>  {
+> -       WARN_ON_FPU(fpu != &current->thread.fpu); /* Almost certainly an anomaly */
+> +       WARN_ON_FPU(fpu != &current->thread.fpu);
+>
+> -       fpu__drop(fpu);
+> +       if (!static_cpu_has(X86_FEATURE_FPU)) {
+> +               fpu__drop(fpu);
+> +               fpu__initialize(fpu);
+> +               return;
+> +       }
+>
+> -       /*
+> -        * Make sure fpstate is cleared and initialized.
+> -        */
+> -       fpu__initialize(fpu);
+> -       if (static_cpu_has(X86_FEATURE_FPU))
+> -               copy_init_fpstate_to_fpregs();
+> +       fpregs_lock();
+> +
+> +       if (user_only) {
+> +               if (!fpregs_state_valid(fpu, smp_processor_id()) &&
+> +                   xfeatures_mask_supervisor())
+> +                       copy_kernel_to_xregs(&fpu->state.xsave,
+> +                                            xfeatures_mask_supervisor());
+
+This looks correct to me.
+
+So I'm guessing that syzbot may have misattributed the problem.  But
+we definitely need to clean up the XRSTOR #GP handling before CET
+lands.
