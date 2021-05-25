@@ -2,56 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BA6C338FDD4
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 25 May 2021 11:29:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E1C4E39015F
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 25 May 2021 14:52:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232602AbhEYJat (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 25 May 2021 05:30:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35258 "EHLO
+        id S232874AbhEYMyL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 25 May 2021 08:54:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53378 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232592AbhEYJat (ORCPT
+        with ESMTP id S232937AbhEYMyJ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 25 May 2021 05:30:49 -0400
+        Tue, 25 May 2021 08:54:09 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABE62C061756;
-        Tue, 25 May 2021 02:29:19 -0700 (PDT)
-Date:   Tue, 25 May 2021 09:29:17 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0259C061574;
+        Tue, 25 May 2021 05:52:39 -0700 (PDT)
+Date:   Tue, 25 May 2021 12:52:36 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1621934958;
+        s=2020; t=1621947157;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=LMhi4BfcBkO4X7AHdjy+Sn9Mwk8lxmDdsP5Lxe/p/nE=;
-        b=eNwkRgZsidl6XQjbqYFTACQWz6ZpqoZHHMjPYBijOahF0tXI2iDF2+ennG1yweE8o2nezJ
-        tRR4Wv98RC0Fn4WQegw8rt4C4RevlrPvO70zcl+X9JaDE7FpVSbAVFJzRw6yNeiRaMWh7D
-        Jw4GAwS9QvqVyjsDParh1dg9ieFi5nw728jjU+0IPy3CRdliHyyGE8hh/03oUetXIdPAxF
-        Fxz5+Wl3wdoD3a1dXq8+xWIijS3B0ZaOO5heqSVm8aq0HRomE4xWdVn5LhBsibeVnn92yo
-        MJsiL5iORkcsD30ZYnyS3k4NZtZQeS3PZEEAmrxLacyhOOlCbVF8OvkfIcLKLA==
+        bh=x6t/GlcWjtBF4E090z8l8RZvT802ud2pFrOky6OUnqs=;
+        b=ygdiupc3cYUeyBH+9looV5AjLtbVY4c0HA5bQaIgTevAxiDDeJ8MOISJ6n4XNtPOw8F96E
+        MOPdZM+152P+i7r5hLUSuxFu31I3gzC/PL4ciIhoB9gAe1DfaFEsvWuSgS/1Coep9dn2Wl
+        kSX5v3uvSwWAVq6j+pq1dDSfjRXIxnRhPjob4Owp7/wbGtf1CyTpiEwr81UoDw9sCerhL2
+        vjTbVbMnDBxFmHxQatLFOyPTlEERDHbeAxICk/CDQk16wrb8eOeokaZeQx4AtILyxH0oPM
+        7skwduWGXbu2UdibflqTrw0vp3DR8lyWsMlGunHyQ4XeoIORubeQ6B0wr/ajhw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1621934958;
+        s=2020e; t=1621947157;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=LMhi4BfcBkO4X7AHdjy+Sn9Mwk8lxmDdsP5Lxe/p/nE=;
-        b=r+CNDwCYTqFulYT6FI587Y1qbhWqRawIiL4oOKxxoHxXswkD14YZuEMIXIMOPwGhYGyc1A
-        fGqIb1FuqbRGvRDg==
-From:   "tip-bot2 for H. Peter Anvin (Intel)" <tip-bot2@linutronix.de>
+        bh=x6t/GlcWjtBF4E090z8l8RZvT802ud2pFrOky6OUnqs=;
+        b=8LBT9xTbnUkNaCptm4B8y/Qv0g439ewHiJr0kf3s3YSXj2biROdZQbahpSRxOZi60sKmvH
+        xidOgtxv+hJn86CA==
+From:   "tip-bot2 for David Bartley" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/irq] x86/irq: Remove unused vectors defines
-Cc:     "H. Peter Anvin (Intel)" <hpa@zytor.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Steve Wahl <steve.wahl@hpe.com>, x86@kernel.org,
+Subject: [tip: x86/cpu] x86/amd_nb: Add AMD family 19h model 50h PCI ids
+Cc:     David Bartley <andareed@gmail.com>, Borislav Petkov <bp@suse.de>,
+        Wei Huang <wei.huang2@amd.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210519212154.511983-4-hpa@zytor.com>
-References: <20210519212154.511983-4-hpa@zytor.com>
+In-Reply-To: <20210520174130.94954-1-andareed@gmail.com>
+References: <20210520174130.94954-1-andareed@gmail.com>
 MIME-Version: 1.0
-Message-ID: <162193495749.29796.16612927611286189158.tip-bot2@tip-bot2>
+Message-ID: <162194715628.29796.6405985185138227774.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,82 +59,65 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/irq branch of tip:
+The following commit has been merged into the x86/cpu branch of tip:
 
-Commit-ID:     f1b7d45d3f8f3e18e190e71cb54d4b1917300d1d
-Gitweb:        https://git.kernel.org/tip/f1b7d45d3f8f3e18e190e71cb54d4b1917300d1d
-Author:        H. Peter Anvin (Intel) <hpa@zytor.com>
-AuthorDate:    Wed, 19 May 2021 14:21:49 -07:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 21 May 2021 12:36:44 +02:00
+Commit-ID:     2ade8fc65076095460e3ea1ca65a8f619d7d9a3a
+Gitweb:        https://git.kernel.org/tip/2ade8fc65076095460e3ea1ca65a8f619d7d9a3a
+Author:        David Bartley <andareed@gmail.com>
+AuthorDate:    Thu, 20 May 2021 10:41:30 -07:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Fri, 21 May 2021 12:01:38 +02:00
 
-x86/irq: Remove unused vectors defines
+x86/amd_nb: Add AMD family 19h model 50h PCI ids
 
-UV_BAU_MESSAGE is defined but not used anywhere in the kernel. Presumably
-this is a stale vector number that can be reclaimed.
+This is required to support Zen3 APUs in k10temp.
 
-MCE_VECTOR is not an actual vector: #MC is an exception, not an interrupt
-vector, and as such is correctly described as X86_TRAP_MC. MCE_VECTOR is
-not used anywhere is the kernel.
-
-Note that NMI_VECTOR *is* used; specifically it is the vector number
-programmed into the APIC LVT when an NMI interrupt is configured. At
-the moment it is always numerically identical to X86_TRAP_NMI, that is
-not necessarily going to be the case indefinitely.
-
-Signed-off-by: H. Peter Anvin (Intel) <hpa@zytor.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Steve Wahl <steve.wahl@hpe.com>
-Link: https://lore.kernel.org/r/20210519212154.511983-4-hpa@zytor.com
-
+Signed-off-by: David Bartley <andareed@gmail.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Acked-by: Wei Huang <wei.huang2@amd.com>
+Link: https://lkml.kernel.org/r/20210520174130.94954-1-andareed@gmail.com
 ---
- arch/x86/include/asm/irq_vectors.h       | 4 ++--
- tools/arch/x86/include/asm/irq_vectors.h | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ arch/x86/kernel/amd_nb.c | 3 +++
+ include/linux/pci_ids.h  | 1 +
+ 2 files changed, 4 insertions(+)
 
-diff --git a/arch/x86/include/asm/irq_vectors.h b/arch/x86/include/asm/irq_vectors.h
-index 889f8b1..dc71b78 100644
---- a/arch/x86/include/asm/irq_vectors.h
-+++ b/arch/x86/include/asm/irq_vectors.h
-@@ -26,8 +26,8 @@
-  * This file enumerates the exact layout of them:
-  */
+diff --git a/arch/x86/kernel/amd_nb.c b/arch/x86/kernel/amd_nb.c
+index 0908309..23dda36 100644
+--- a/arch/x86/kernel/amd_nb.c
++++ b/arch/x86/kernel/amd_nb.c
+@@ -25,6 +25,7 @@
+ #define PCI_DEVICE_ID_AMD_17H_M60H_DF_F4 0x144c
+ #define PCI_DEVICE_ID_AMD_17H_M70H_DF_F4 0x1444
+ #define PCI_DEVICE_ID_AMD_19H_DF_F4	0x1654
++#define PCI_DEVICE_ID_AMD_19H_M50H_DF_F4 0x166e
  
-+/* This is used as an interrupt vector when programming the APIC. */
- #define NMI_VECTOR			0x02
--#define MCE_VECTOR			0x12
+ /* Protect the PCI config register pairs used for SMN and DF indirect access. */
+ static DEFINE_MUTEX(smn_mutex);
+@@ -57,6 +58,7 @@ static const struct pci_device_id amd_nb_misc_ids[] = {
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_CNB17H_F3) },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_17H_M70H_DF_F3) },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_19H_DF_F3) },
++	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_19H_M50H_DF_F3) },
+ 	{}
+ };
  
- /*
-  * IDT vectors usable for external interrupt sources start at 0x20.
-@@ -84,7 +84,7 @@
-  */
- #define IRQ_WORK_VECTOR			0xf6
- 
--#define UV_BAU_MESSAGE			0xf5
-+/* 0xf5 - unused, was UV_BAU_MESSAGE */
- #define DEFERRED_ERROR_VECTOR		0xf4
- 
- /* Vector on which hypervisor callbacks will be delivered */
-diff --git a/tools/arch/x86/include/asm/irq_vectors.h b/tools/arch/x86/include/asm/irq_vectors.h
-index 889f8b1..dc71b78 100644
---- a/tools/arch/x86/include/asm/irq_vectors.h
-+++ b/tools/arch/x86/include/asm/irq_vectors.h
-@@ -26,8 +26,8 @@
-  * This file enumerates the exact layout of them:
-  */
- 
-+/* This is used as an interrupt vector when programming the APIC. */
- #define NMI_VECTOR			0x02
--#define MCE_VECTOR			0x12
- 
- /*
-  * IDT vectors usable for external interrupt sources start at 0x20.
-@@ -84,7 +84,7 @@
-  */
- #define IRQ_WORK_VECTOR			0xf6
- 
--#define UV_BAU_MESSAGE			0xf5
-+/* 0xf5 - unused, was UV_BAU_MESSAGE */
- #define DEFERRED_ERROR_VECTOR		0xf4
- 
- /* Vector on which hypervisor callbacks will be delivered */
+@@ -72,6 +74,7 @@ static const struct pci_device_id amd_nb_link_ids[] = {
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_17H_M60H_DF_F4) },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_17H_M70H_DF_F4) },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_19H_DF_F4) },
++	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_19H_M50H_DF_F4) },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_CNB17H_F4) },
+ 	{}
+ };
+diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
+index 4c3fa52..5356ccf 100644
+--- a/include/linux/pci_ids.h
++++ b/include/linux/pci_ids.h
+@@ -555,6 +555,7 @@
+ #define PCI_DEVICE_ID_AMD_17H_M60H_DF_F3 0x144b
+ #define PCI_DEVICE_ID_AMD_17H_M70H_DF_F3 0x1443
+ #define PCI_DEVICE_ID_AMD_19H_DF_F3	0x1653
++#define PCI_DEVICE_ID_AMD_19H_M50H_DF_F3 0x166d
+ #define PCI_DEVICE_ID_AMD_CNB17H_F3	0x1703
+ #define PCI_DEVICE_ID_AMD_LANCE		0x2000
+ #define PCI_DEVICE_ID_AMD_LANCE_HOME	0x2001
