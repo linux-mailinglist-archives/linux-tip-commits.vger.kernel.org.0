@@ -2,50 +2,60 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C295C390421
+	by mail.lfdr.de (Postfix) with ESMTP id 49483390420
 	for <lists+linux-tip-commits@lfdr.de>; Tue, 25 May 2021 16:37:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234047AbhEYOjX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 25 May 2021 10:39:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49356 "EHLO
+        id S234030AbhEYOjW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 25 May 2021 10:39:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49164 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234053AbhEYOiy (ORCPT
+        with ESMTP id S234018AbhEYOiy (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Tue, 25 May 2021 10:38:54 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D07FFC06138A;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0192C061756;
         Tue, 25 May 2021 07:37:22 -0700 (PDT)
 Date:   Tue, 25 May 2021 14:37:19 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1621953440;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=GbnBAnkYGN5vvlJTQPM3MK9oos+1atHyTZcdqGD2XXg=;
-        b=b5RXmcxvqCIxZgFLJ3KEkVxkfJgSLX6GwoNV5RnYByxGKT4WT58j3VXUroybId2zC7ZJ99
-        DlX5BiEJokYIreVWqMA7x5MoL/4yQIK6I/vQ5lv/xuDx+/beog1QNAOzlHNIESiIwMJNHD
-        lvkrM6EI3DRgUK1nlr3/mcA10IRvhr/uLPll/gjwOYGwGk0BMzdlHwfriADZa24i7uz0eC
-        px8C3oLp/6upZKMh3CJme3Y+FUyQgFJ4YLn3DRQ8qiLV0KAqS0r215rTOXm9ksW5Pwcs5j
-        5+npFM0iQNCnWTd0Uw08FTuAV5SxqCp1J2Jxd520jKKtythe3wIZdAqA0Jqg8A==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=SQ8D7JRD4WNdLcyNXJJAp1hpBrpb4wOPT4V/NbeIfFo=;
+        b=SFNG2Eqp1oFXdiUFzDKg05DV8RAtI5e7pCDq3OknYq5v5RmhB2FQcGdmVS6AxgFVt9vKzv
+        fIWL9NU3gL4OZMc367E5OjRNUaWIZVwIbtdbDkFphotKqB1q17eaSR9vJBI2Hd6d5VCms9
+        9p/fu5ar132eBrXy8OSeXnYCIpFSxPJ9MncKixi4SCyes260K/rGFdeHNH67mqYexD0mhU
+        Qec1AKFDQeGP4dtYD3GmeaZxCZ28u7qDnL2bqy5AkHF/l80tS3amF4G2HRV3UpJ6wczm6w
+        e2aV6VtTcc6mv5efvWViFRJVyoJ0ZKWGGOzF4sY7L2J1SBy2CCUY9KtETKjHHw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1621953440;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=GbnBAnkYGN5vvlJTQPM3MK9oos+1atHyTZcdqGD2XXg=;
-        b=gpnNGjKuHI9GWPAbWa57IEl4qW4iDb948NFElvk3PpL0cq206TMe9VvEyoDrqSKZaWBibH
-        H6zgIXMQ1T51GVBA==
-From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=SQ8D7JRD4WNdLcyNXJJAp1hpBrpb4wOPT4V/NbeIfFo=;
+        b=oa6+TtEa0TkKtTkIOV/jQKKuBbwf3UZsBspTaE/TZL88+qFmSThuS40OrZPF3qbf3BCNFW
+        tC1tAWWB9VikurCQ==
+From:   "tip-bot2 for Vasily Gorbik" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] kbuild: Fix objtool dependency for
- 'OBJECT_FILES_NON_STANDARD_<obj> := n'
-Cc:     Matthew Wilcox <willy@infradead.org>,
-        Josh Poimboeuf <jpoimboe@redhat.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
+Subject: [tip: objtool/core] compiler.h: Avoid using inline asm operand modifiers
+Cc:     Vasily Gorbik <gor@linux.ibm.com>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@kernel.org>,
+        Miroslav Benes <mbenes@suse.cz>, Borislav Petkov <bp@suse.de>,
+        linux-kernel@vger.kernel.org, x86@kernel.org
+In-Reply-To: =?utf-8?q?=3Cpatch-1=2Ethread-1a26be=2Egit-930d1b44844a=2Eyou?=
+ =?utf-8?q?r-ad-here=2Ecall-01621428935-ext-2104=40work=2Ehours=3E?=
+References: =?utf-8?q?=3Cpatch-1=2Ethread-1a26be=2Egit-930d1b44844a=2Eyour?=
+ =?utf-8?q?-ad-here=2Ecall-01621428935-ext-2104=40work=2Ehours=3E?=
 MIME-Version: 1.0
-Message-ID: <162195343989.29796.9178659767841844256.tip-bot2@tip-bot2>
+Message-ID: <162195343940.29796.16205009223037156239.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -56,59 +66,76 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     8852c552402979508fdc395ae07aa8761aa46045
-Gitweb:        https://git.kernel.org/tip/8852c552402979508fdc395ae07aa8761aa46045
-Author:        Josh Poimboeuf <jpoimboe@redhat.com>
-AuthorDate:    Tue, 18 May 2021 18:59:15 -05:00
+Commit-ID:     f1069a8756b9e9f6c055e709740d2d66650f0fb0
+Gitweb:        https://git.kernel.org/tip/f1069a8756b9e9f6c055e709740d2d66650f0fb0
+Author:        Vasily Gorbik <gor@linux.ibm.com>
+AuthorDate:    Wed, 19 May 2021 15:03:08 +02:00
 Committer:     Josh Poimboeuf <jpoimboe@redhat.com>
-CommitterDate: Wed, 19 May 2021 15:07:20 -05:00
+CommitterDate: Wed, 19 May 2021 15:30:58 -05:00
 
-kbuild: Fix objtool dependency for 'OBJECT_FILES_NON_STANDARD_<obj> := n'
+compiler.h: Avoid using inline asm operand modifiers
 
-"OBJECT_FILES_NON_STANDARD_vma.o := n" has a dependency bug.  When
-objtool source is updated, the affected object doesn't get re-analyzed
-by objtool.
+The expansion of annotate_reachable/annotate_unreachable on s390 will
+result in a compiler error if the __COUNTER__ value is high enough.
+For example with "i" (154) the "%c0" operand of annotate_reachable
+will be expanded to -102:
 
-Peter's new variable-sized jump label feature relies on objtool
-rewriting the object file.  Otherwise the system can fail to boot.  That
-effectively upgrades this minor dependency issue to a major bug.
+        -102:
+        .pushsection .discard.reachable
+        .long -102b - .
+        .popsection
 
-The problem is that variables in prerequisites are expanded early,
-during the read-in phase.  The '$(objtool_dep)' variable indirectly uses
-'$@', which isn't yet available when the target prerequisites are
-evaluated.
+This is a quirk of the gcc backend for s390, it interprets the %c0
+as a signed byte value. Avoid using operand modifiers in this case
+by simply converting __COUNTER__ to string, with the same result,
+but in an arch assembler independent way.
 
-Use '.SECONDEXPANSION:' which causes '$(objtool_dep)' to be expanded in
-a later phase, after the target-specific '$@' variable has been defined.
-
-Fixes: b9ab5ebb14ec ("objtool: Add CONFIG_STACK_VALIDATION option")
-Fixes: ab3257042c26 ("jump_label, x86: Allow short NOPs")
-Reported-by: Matthew Wilcox <willy@infradead.org>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
 Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
+Link: https://lore.kernel.org/r/patch-1.thread-1a26be.git-930d1b44844a.your-ad-here.call-01621428935-ext-2104@work.hours
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Miroslav Benes <mbenes@suse.cz>
+Cc: Borislav Petkov <bp@suse.de>
+Cc: linux-kernel@vger.kernel.org
 ---
- scripts/Makefile.build | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ include/linux/compiler.h | 22 ++++++++++++++--------
+ 1 file changed, 14 insertions(+), 8 deletions(-)
 
-diff --git a/scripts/Makefile.build b/scripts/Makefile.build
-index 949f723..34d2576 100644
---- a/scripts/Makefile.build
-+++ b/scripts/Makefile.build
-@@ -268,7 +268,8 @@ define rule_as_o_S
- endef
- 
- # Built-in and composite module parts
--$(obj)/%.o: $(src)/%.c $(recordmcount_source) $(objtool_dep) FORCE
-+.SECONDEXPANSION:
-+$(obj)/%.o: $(src)/%.c $(recordmcount_source) $$(objtool_dep) FORCE
- 	$(call if_changed_rule,cc_o_c)
- 	$(call cmd,force_checksrc)
- 
-@@ -349,7 +350,7 @@ cmd_modversions_S =								\
- 	fi
- endif
- 
--$(obj)/%.o: $(src)/%.S $(objtool_dep) FORCE
-+$(obj)/%.o: $(src)/%.S $$(objtool_dep) FORCE
- 	$(call if_changed_rule,as_o_S)
- 
- targets += $(filter-out $(subdir-builtin), $(real-obj-y))
+diff --git a/include/linux/compiler.h b/include/linux/compiler.h
+index df5b405..7704790 100644
+--- a/include/linux/compiler.h
++++ b/include/linux/compiler.h
+@@ -115,18 +115,24 @@ void ftrace_likely_update(struct ftrace_likely_data *f, int val,
+  * The __COUNTER__ based labels are a hack to make each instance of the macros
+  * unique, to convince GCC not to merge duplicate inline asm statements.
+  */
+-#define annotate_reachable() ({						\
+-	asm volatile("%c0:\n\t"						\
++#define __stringify_label(n) #n
++
++#define __annotate_reachable(c) ({					\
++	asm volatile(__stringify_label(c) ":\n\t"			\
+ 		     ".pushsection .discard.reachable\n\t"		\
+-		     ".long %c0b - .\n\t"				\
+-		     ".popsection\n\t" : : "i" (__COUNTER__));		\
++		     ".long " __stringify_label(c) "b - .\n\t"		\
++		     ".popsection\n\t");				\
+ })
+-#define annotate_unreachable() ({					\
+-	asm volatile("%c0:\n\t"						\
++#define annotate_reachable() __annotate_reachable(__COUNTER__)
++
++#define __annotate_unreachable(c) ({					\
++	asm volatile(__stringify_label(c) ":\n\t"			\
+ 		     ".pushsection .discard.unreachable\n\t"		\
+-		     ".long %c0b - .\n\t"				\
+-		     ".popsection\n\t" : : "i" (__COUNTER__));		\
++		     ".long " __stringify_label(c) "b - .\n\t"		\
++		     ".popsection\n\t");				\
+ })
++#define annotate_unreachable() __annotate_unreachable(__COUNTER__)
++
+ #define ASM_UNREACHABLE							\
+ 	"999:\n\t"							\
+ 	".pushsection .discard.unreachable\n\t"				\
