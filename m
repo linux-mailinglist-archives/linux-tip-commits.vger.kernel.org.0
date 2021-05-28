@@ -2,123 +2,103 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A83039389E
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 28 May 2021 00:15:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A9DE13944F8
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 28 May 2021 17:25:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236126AbhE0WQo (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 27 May 2021 18:16:44 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:37264 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233563AbhE0WQo (ORCPT
+        id S236389AbhE1P0r (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 28 May 2021 11:26:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45730 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229684AbhE1P0q (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 27 May 2021 18:16:44 -0400
-From:   Thomas Gleixner <tglx@linutronix.de>
+        Fri, 28 May 2021 11:26:46 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EF93C061574;
+        Fri, 28 May 2021 08:25:12 -0700 (PDT)
+Date:   Fri, 28 May 2021 15:25:09 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1622153709;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+        s=2020; t=1622215510;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=bz5YiDobgLiDsvFe5ic6OsOwced+it1yYmTk8KM8Fx4=;
-        b=em+xYYNwcrzT0I6ItJWqfS4Abi2XgsdH/oIG7iKRk8ULxctOPXISrWQn2jQYbTmPcHimnE
-        ImeMVmcEppMZyongX40EulC5SHc4/ZzUX4nEMBSeENiDqzneY50wzdGZZt/PHbNOJgsaJT
-        AKP6Lwg5Kf9iPMybrlYQUD7PULQVX6nEkePrnAu+q37L/ob93fOUwVSqi5soCUDLkBfZI6
-        ijb4GfBT4OJAYPtOqkJVsK6fmjRZ4Wy9J432pIU0R1JQxKS4fUepW0eOaidkvswSUG7kPp
-        7maDVu5Fj8OuHiHiJHCuD8kgHl/u1Q2vvt/bRnfYgRxc2FUwiXCtfTD8DkaJxQ==
+        bh=tVD/32lu0e2EW4SPDT8da31LdfxPfv1H02tuNXdHyO0=;
+        b=v8iDPIpbM6OD0A9e+yELm6LRO4yUPt3m9jHJpTXkZPILg7TPwYEOhdwcM+SXRpOjhnVPAq
+        OMqmfNuKQ3jWG0co4/EhyukBNbcL1g9CfBF406AjoCtYnx8idMoRRcxgk6I9AwRm879Dbb
+        i8V5HEXMy3+KrNjgz3GRCg1UKiN4o3ne1di+ZiQjJPuCNYT/CUj7/eBB3XAyzVi6p7KBE0
+        PL/7az6+PuQnPG1vs3fW3NBiGxmMJXsWmlFWufe3pBEaYwAIjRPP6E6+IAHbwdP35limA4
+        Kl9PgxsH9mmNsecRh5TJdPkSZZOwYI/q2vRDNnylIuby2yfHJ2HQwR/KjqJarA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1622153709;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+        s=2020e; t=1622215510;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=bz5YiDobgLiDsvFe5ic6OsOwced+it1yYmTk8KM8Fx4=;
-        b=qVEw1+EWA+JML/2K6Tg6hNZZNYC7nXBisxw+bnQLaux5C0OFlIXchIg1HpywkNH31NTnst
-        6d7tBov7MMA/z/DQ==
-To:     tip-bot2 for Kan Liang <tip-bot2@linutronix.de>,
-        linux-tip-commits@vger.kernel.org
-Cc:     Kan Liang <kan.liang@linux.intel.com>,
-        "Peter Zijlstra \(Intel\)" <peterz@infradead.org>,
-        Dave Hansen <dave.hansen@intel.com>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [tip: perf/core] x86/fpu/xstate: Support dynamic supervisor feature for LBR
-In-Reply-To: <159420190464.4006.9196645532990660696.tip-bot2@tip-bot2>
-References: <1593780569-62993-21-git-send-email-kan.liang@linux.intel.com> <159420190464.4006.9196645532990660696.tip-bot2@tip-bot2>
-Date:   Fri, 28 May 2021 00:15:08 +0200
-Message-ID: <87y2bz7rir.ffs@nanos.tec.linutronix.de>
+        bh=tVD/32lu0e2EW4SPDT8da31LdfxPfv1H02tuNXdHyO0=;
+        b=56OqdVwQTYEafpcjJJV9OujGdihJyIDtE9squ8DyqOkO/o9zs9a1mA3+qVJ5hv1BBTdYje
+        4GOCdybELGZGYwDA==
+From:   "tip-bot2 for Tony Luck" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: ras/core] x86/mce: Include a MCi_MISC value in faked mce logs
+Cc:     Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@suse.de>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20210527222846.931851-1-tony.luck@intel.com>
+References: <20210527222846.931851-1-tony.luck@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Message-ID: <162221550967.29796.6170052716634166865.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-Peter,
+The following commit has been merged into the ras/core branch of tip:
 
-On Wed, Jul 08 2020 at 09:51, tip-bot wrote:
-> The following commit has been merged into the perf/core branch of tip:
->
-> Commit-ID:     f0dccc9da4c0fda049e99326f85db8c242fd781f
-> Gitweb:        https://git.kernel.org/tip/f0dccc9da4c0fda049e99326f85db8c242fd781f
-> Author:        Kan Liang <kan.liang@linux.intel.com>
-> AuthorDate:    Fri, 03 Jul 2020 05:49:26 -07:00
-> Committer:     Peter Zijlstra <peterz@infradead.org>
-> CommitterDate: Wed, 08 Jul 2020 11:38:56 +02:00
->
-> x86/fpu/xstate: Support dynamic supervisor feature for LBR
->
-> Last Branch Records (LBR) registers are used to log taken branches and
-> other control flows. In perf with call stack mode, LBR information is
-> used to reconstruct a call stack. To get the complete call stack, perf
-> has to save/restore all LBR registers during a context switch. Due to
-> the large number of the LBR registers, e.g., the current platform has
-> 96 LBR registers, this process causes a high CPU overhead. To reduce
-> the CPU overhead during a context switch, an LBR state component that
-> contains all the LBR related registers is introduced in hardware. All
-> LBR registers can be saved/restored together using one XSAVES/XRSTORS
-> instruction.
->
-> However, the kernel should not save/restore the LBR state component at
-> each context switch, like other state components, because of the
-> following unique features of LBR:
-> - The LBR state component only contains valuable information when LBR
->   is enabled in the perf subsystem, but for most of the time, LBR is
->   disabled.
-> - The size of the LBR state component is huge. For the current
->   platform, it's 808 bytes.
-> If the kernel saves/restores the LBR state at each context switch, for
-> most of the time, it is just a waste of space and cycles.
->
-> To efficiently support the LBR state component, it is desired to have:
-> - only context-switch the LBR when the LBR feature is enabled in perf.
-> - only allocate an LBR-specific XSAVE buffer on demand.
->   (Besides the LBR state, a legacy region and an XSAVE header have to be
->    included in the buffer as well. There is a total of (808+576) byte
->    overhead for the LBR-specific XSAVE buffer. The overhead only happens
->    when the perf is actively using LBRs. There is still a space-saving,
->    on average, when it replaces the constant 808 bytes of overhead for
->    every task, all the time on the systems that support architectural
->    LBR.)
-> - be able to use XSAVES/XRSTORS for accessing LBR at run time.
->   However, the IA32_XSS should not be adjusted at run time.
->   (The XCR0 | IA32_XSS are used to determine the requested-feature
->   bitmap (RFBM) of XSAVES.)
->
-> A solution, called dynamic supervisor feature, is introduced to address
-> this issue, which
-> - does not allocate a buffer in each task->fpu;
-> - does not save/restore a state component at each context switch;
-> - sets the bit corresponding to the dynamic supervisor feature in
->   IA32_XSS at boot time, and avoids setting it at run time.
+Commit-ID:     40cd0aae5957ec175b73dc17dce6079d33fa74f6
+Gitweb:        https://git.kernel.org/tip/40cd0aae5957ec175b73dc17dce6079d33fa74f6
+Author:        Tony Luck <tony.luck@intel.com>
+AuthorDate:    Thu, 27 May 2021 15:28:46 -07:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Fri, 28 May 2021 16:57:16 +02:00
 
-This needs to be put on hold until the whole fpu signal restore mess is
-sorted. The current failure modes are 'harmless', but once XSS comes
-into play it becomes dangerous.
+x86/mce: Include a MCi_MISC value in faked mce logs
 
-Please revert that stuff ASAP until the underlying issues of XSTATE are
-sorted and then this wants to be posted again according to the rules I
-layed out here:
+When BIOS reports memory errors to Linux using the ACPI/APEI
+error reporting method Linux creates a "struct mce" to pass
+to the normal reporting code path.
 
-  https://lore.kernel.org/lkml/874keo80bh.ffs@nanos.tec.linutronix.de/
+The constructed record doesn't include a value for the "misc"
+field of the structure, and so mce_usable_address() says this
+record doesn't include a valid address.
 
-No if, no but..
+Net result is that functions like uc_decode_notifier() will
+just ignore this record instead of taking action to offline
+a page.
 
-Thanks,
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lkml.kernel.org/r/20210527222846.931851-1-tony.luck@intel.com
+---
+ arch/x86/kernel/cpu/mce/apei.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-        tglx
+diff --git a/arch/x86/kernel/cpu/mce/apei.c b/arch/x86/kernel/cpu/mce/apei.c
+index b58b853..0e3ae64 100644
+--- a/arch/x86/kernel/cpu/mce/apei.c
++++ b/arch/x86/kernel/cpu/mce/apei.c
+@@ -36,7 +36,8 @@ void apei_mce_report_mem_error(int severity, struct cper_sec_mem_err *mem_err)
+ 	mce_setup(&m);
+ 	m.bank = -1;
+ 	/* Fake a memory read error with unknown channel */
+-	m.status = MCI_STATUS_VAL | MCI_STATUS_EN | MCI_STATUS_ADDRV | 0x9f;
++	m.status = MCI_STATUS_VAL | MCI_STATUS_EN | MCI_STATUS_ADDRV | MCI_STATUS_MISCV | 0x9f;
++	m.misc = (MCI_MISC_ADDR_PHYS << 6) | PAGE_SHIFT;
+ 
+ 	if (severity >= GHES_SEV_RECOVERABLE)
+ 		m.status |= MCI_STATUS_UC;
