@@ -2,53 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2734E39633F
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 31 May 2021 17:09:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E99D3965D3
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 31 May 2021 18:48:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232463AbhEaPKw (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 31 May 2021 11:10:52 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:54964 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233831AbhEaPIl (ORCPT
+        id S232286AbhEaQtq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 31 May 2021 12:49:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45198 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232622AbhEaQrX (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 31 May 2021 11:08:41 -0400
+        Mon, 31 May 2021 12:47:23 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24028C0612EF;
+        Mon, 31 May 2021 08:07:01 -0700 (PDT)
 Date:   Mon, 31 May 2021 15:06:59 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1622473620;
+        s=2020; t=1622473619;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=eJsc+fCoI7FcRfS0YrtvO77yKk0hWIfDD7peKlScexA=;
-        b=xlGdC1uvYWM86q5GBNXoD6NgNEHwSRbYAXqfQnc7ob0eJS6XwtiLflYZo1+zW0IEGkt832
-        69VVos4xiWMOXC6XQ1cBL1XPnKD9iK7GX3TY07YAA/KYx4nA9ux5zxw7OQ/AnrsbdvO8fk
-        exv3xtrzCt+jktqmZ74C/LvdISpceQ6nZQtXSWVnxl9y4+nkBWM+dWb1NI5EELmv4mFcYu
-        QAYRT2fuojbXIdRNhZ7NdfEvsid5zTwd1ieioQAvjfBwZ8Uc8AgBo/9Z0SZVuBBcZMiqVJ
-        385k+VdcqWzEJhgrBREIceI6AHH9G9EKF4a20KMyMLqBrWIaDAfUQ/AvYIsKcQ==
+        bh=oqJxugIkBiUoQPV+GVG8mSq5Br6LVmGhKP3ykT6gIPA=;
+        b=I7OkCjyneFrKtYhDBPZq2ce8oCPDEQc7jc0+/hpXQ71APJmk1PsdHtw63x2QDu3Q2jupO4
+        hnziAUtdoUx/Ky8eZp/HH0mI9A/8SdBmzlGNytZvS2dllzs6aLgXCbolvwrcrn/9pmvdb5
+        cAkAFKSQcc5GuggDlGGsCsPl+DBZ35spPIBEBNrFuNSH/SwhI5HTUnea8vaZ9koOaSbtiC
+        f1wdRVnPAiWZudimwCQq5NGB1Q0X3rCNaG5Ftx9azVxjeKTCV3klbTjeNWXRwOJXSO0pBr
+        H+Dh8J0/BHDBHqu311AJvR7awQVFj5GAUCqNBZjtOhSZVkXH+74sLTVt9mrdag==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1622473620;
+        s=2020e; t=1622473619;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=eJsc+fCoI7FcRfS0YrtvO77yKk0hWIfDD7peKlScexA=;
-        b=adF5jhDhgDRaK6clkpKjd15YV5bKu2e9JZW8aqGgoX5c5CjomypASzgL7L7KWIQ78GulPt
-        bFXHQSiDoDDg9fDw==
+        bh=oqJxugIkBiUoQPV+GVG8mSq5Br6LVmGhKP3ykT6gIPA=;
+        b=rWffDbD1XFS1UBkppsJhzCTCc+9J+3VWCvOr7MP2Gxb63kkAhdPOyDU98tBKVRSth2TPVb
+        ta4TzB0rAXQUm2AQ==
 From:   "tip-bot2 for Will Deacon" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] tick/broadcast: Prefer per-cpu oneshot wakeup
- timers to broadcast
+Subject: [tip: timers/core] tick/broadcast: Program wakeup timer when entering
+ idle if required
 Cc:     Will Deacon <will@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210524221818.15850-4-will@kernel.org>
-References: <20210524221818.15850-4-will@kernel.org>
+In-Reply-To: <20210524221818.15850-5-will@kernel.org>
+References: <20210524221818.15850-5-will@kernel.org>
 MIME-Version: 1.0
-Message-ID: <162247361943.29796.573636369763733195.tip-bot2@tip-bot2>
+Message-ID: <162247361903.29796.16135245441223506210.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,160 +62,107 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     c94a8537df12708cc03da9120c3c3561ae744ce1
-Gitweb:        https://git.kernel.org/tip/c94a8537df12708cc03da9120c3c3561ae744ce1
+Commit-ID:     ea5c7f1b9aa1a7c9d1bb9440084ac1256789fadb
+Gitweb:        https://git.kernel.org/tip/ea5c7f1b9aa1a7c9d1bb9440084ac1256789fadb
 Author:        Will Deacon <will@kernel.org>
-AuthorDate:    Mon, 24 May 2021 23:18:16 +01:00
+AuthorDate:    Mon, 24 May 2021 23:18:17 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 31 May 2021 17:04:45 +02:00
+CommitterDate: Mon, 31 May 2021 17:04:46 +02:00
 
-tick/broadcast: Prefer per-cpu oneshot wakeup timers to broadcast
+tick/broadcast: Program wakeup timer when entering idle if required
 
-Some SoCs have two per-cpu timer implementations where the timer with the
-higher rating stops in deep idle (i.e. suffers from CLOCK_EVT_FEAT_C3STOP)
-but is otherwise preferable to the timer with the lower rating. In such a
-design, selecting the higher rated devices relies on a global broadcast
-timer and IPIs to wake up from deep idle states.
+When configuring the broadcast timer on entry to and exit from deep idle
+states, prefer a per-CPU wakeup timer if one exists.
 
-To avoid the reliance on a global broadcast timer and also to reduce the
-overhead associated with the IPI wakeups, extend
-tick_install_broadcast_device() to manage per-cpu wakeup timers separately
-from the broadcast device.
-
-For now, these timers remain unused.
+On entry to idle, stop the tick device and transfer the next event into
+the oneshot wakeup device, which will serve as the wakeup from idle. To
+avoid the overhead of additional hardware accesses on exit from idle,
+leave the timer armed and treat the inevitable interrupt as a (possibly
+spurious) tick event.
 
 Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20210524221818.15850-4-will@kernel.org
+Link: https://lore.kernel.org/r/20210524221818.15850-5-will@kernel.org
 
 ---
- kernel/time/tick-broadcast.c | 59 ++++++++++++++++++++++++++++++++++-
- kernel/time/tick-common.c    |  2 +-
- kernel/time/tick-internal.h  |  4 +-
- 3 files changed, 61 insertions(+), 4 deletions(-)
+ kernel/time/tick-broadcast.c | 44 ++++++++++++++++++++++++++++++++++-
+ 1 file changed, 43 insertions(+), 1 deletion(-)
 
 diff --git a/kernel/time/tick-broadcast.c b/kernel/time/tick-broadcast.c
-index f3f2f4b..0e9e06d 100644
+index 0e9e06d..9b84521 100644
 --- a/kernel/time/tick-broadcast.c
 +++ b/kernel/time/tick-broadcast.c
-@@ -33,6 +33,8 @@ static int tick_broadcast_forced;
- static __cacheline_aligned_in_smp DEFINE_RAW_SPINLOCK(tick_broadcast_lock);
- 
- #ifdef CONFIG_TICK_ONESHOT
-+static DEFINE_PER_CPU(struct clock_event_device *, tick_oneshot_wakeup_device);
-+
- static void tick_broadcast_setup_oneshot(struct clock_event_device *bc);
- static void tick_broadcast_clear_oneshot(int cpu);
- static void tick_resume_broadcast_oneshot(struct clock_event_device *bc);
-@@ -88,13 +90,65 @@ static bool tick_check_broadcast_device(struct clock_event_device *curdev,
- 	return !curdev || newdev->rating > curdev->rating;
+@@ -96,6 +96,15 @@ static struct clock_event_device *tick_get_oneshot_wakeup_device(int cpu)
+ 	return per_cpu(tick_oneshot_wakeup_device, cpu);
  }
  
-+#ifdef CONFIG_TICK_ONESHOT
-+static struct clock_event_device *tick_get_oneshot_wakeup_device(int cpu)
++static void tick_oneshot_wakeup_handler(struct clock_event_device *wd)
 +{
-+	return per_cpu(tick_oneshot_wakeup_device, cpu);
++	/*
++	 * If we woke up early and the tick was reprogrammed in the
++	 * meantime then this may be spurious but harmless.
++	 */
++	tick_receive_broadcast();
 +}
 +
-+static bool tick_set_oneshot_wakeup_device(struct clock_event_device *newdev,
-+					   int cpu)
-+{
-+	struct clock_event_device *curdev = tick_get_oneshot_wakeup_device(cpu);
-+
-+	if (!newdev)
-+		goto set_device;
-+
-+	if ((newdev->features & CLOCK_EVT_FEAT_DUMMY) ||
-+	    (newdev->features & CLOCK_EVT_FEAT_C3STOP))
-+		 return false;
-+
-+	if (!(newdev->features & CLOCK_EVT_FEAT_PERCPU) ||
-+	    !(newdev->features & CLOCK_EVT_FEAT_ONESHOT))
-+		return false;
-+
-+	if (!cpumask_equal(newdev->cpumask, cpumask_of(cpu)))
-+		return false;
-+
-+	if (curdev && newdev->rating <= curdev->rating)
-+		return false;
-+
-+	if (!try_module_get(newdev->owner))
-+		return false;
-+
-+set_device:
-+	clockevents_exchange_device(curdev, newdev);
-+	per_cpu(tick_oneshot_wakeup_device, cpu) = newdev;
-+	return true;
-+}
-+#else
-+static struct clock_event_device *tick_get_oneshot_wakeup_device(int cpu)
-+{
-+	return NULL;
-+}
-+
-+static bool tick_set_oneshot_wakeup_device(struct clock_event_device *newdev,
-+					   int cpu)
-+{
-+	return false;
-+}
-+#endif
-+
- /*
-  * Conditionally install/replace broadcast device
-  */
--void tick_install_broadcast_device(struct clock_event_device *dev)
-+void tick_install_broadcast_device(struct clock_event_device *dev, int cpu)
+ static bool tick_set_oneshot_wakeup_device(struct clock_event_device *newdev,
+ 					   int cpu)
  {
- 	struct clock_event_device *cur = tick_broadcast_device.evtdev;
+@@ -121,6 +130,7 @@ static bool tick_set_oneshot_wakeup_device(struct clock_event_device *newdev,
+ 	if (!try_module_get(newdev->owner))
+ 		return false;
  
-+	if (tick_set_oneshot_wakeup_device(dev, cpu))
-+		return;
++	newdev->event_handler = tick_oneshot_wakeup_handler;
+ set_device:
+ 	clockevents_exchange_device(curdev, newdev);
+ 	per_cpu(tick_oneshot_wakeup_device, cpu) = newdev;
+@@ -909,16 +919,48 @@ out:
+ 	return ret;
+ }
+ 
++static int tick_oneshot_wakeup_control(enum tick_broadcast_state state,
++				       struct tick_device *td,
++				       int cpu)
++{
++	struct clock_event_device *dev, *wd;
 +
- 	if (!tick_check_broadcast_device(cur, dev))
- 		return;
- 
-@@ -996,6 +1050,9 @@ void hotplug_cpu__broadcast_tick_pull(int deadcpu)
-  */
- static void tick_broadcast_oneshot_offline(unsigned int cpu)
++	dev = td->evtdev;
++	if (td->mode != TICKDEV_MODE_ONESHOT)
++		return -EINVAL;
++
++	wd = tick_get_oneshot_wakeup_device(cpu);
++	if (!wd)
++		return -ENODEV;
++
++	switch (state) {
++	case TICK_BROADCAST_ENTER:
++		clockevents_switch_state(dev, CLOCK_EVT_STATE_ONESHOT_STOPPED);
++		clockevents_switch_state(wd, CLOCK_EVT_STATE_ONESHOT);
++		clockevents_program_event(wd, dev->next_event, 1);
++		break;
++	case TICK_BROADCAST_EXIT:
++		/* We may have transitioned to oneshot mode while idle */
++		if (clockevent_get_state(wd) != CLOCK_EVT_STATE_ONESHOT)
++			return -ENODEV;
++	}
++
++	return 0;
++}
++
+ int __tick_broadcast_oneshot_control(enum tick_broadcast_state state)
  {
-+	if (tick_get_oneshot_wakeup_device(cpu))
-+		tick_set_oneshot_wakeup_device(NULL, cpu);
+ 	struct tick_device *td = this_cpu_ptr(&tick_cpu_device);
+ 	int cpu = smp_processor_id();
+ 
++	if (!tick_oneshot_wakeup_control(state, td, cpu))
++		return 0;
 +
+ 	if (tick_broadcast_device.evtdev)
+ 		return ___tick_broadcast_oneshot_control(state, td, cpu);
+ 
  	/*
- 	 * Clear the broadcast masks for the dead cpu, but do not stop
- 	 * the broadcast device!
-diff --git a/kernel/time/tick-common.c b/kernel/time/tick-common.c
-index e15bc0e..d663249 100644
---- a/kernel/time/tick-common.c
-+++ b/kernel/time/tick-common.c
-@@ -373,7 +373,7 @@ out_bc:
- 	/*
- 	 * Can the new device be used as a broadcast device ?
+-	 * If there is no broadcast device, tell the caller not
++	 * If there is no broadcast or wakeup device, tell the caller not
+ 	 * to go into deep idle.
  	 */
--	tick_install_broadcast_device(newdev);
-+	tick_install_broadcast_device(newdev, cpu);
- }
- 
- /**
-diff --git a/kernel/time/tick-internal.h b/kernel/time/tick-internal.h
-index 7a981c9..30c8963 100644
---- a/kernel/time/tick-internal.h
-+++ b/kernel/time/tick-internal.h
-@@ -61,7 +61,7 @@ extern ssize_t sysfs_get_uname(const char *buf, char *dst, size_t cnt);
- /* Broadcasting support */
- # ifdef CONFIG_GENERIC_CLOCKEVENTS_BROADCAST
- extern int tick_device_uses_broadcast(struct clock_event_device *dev, int cpu);
--extern void tick_install_broadcast_device(struct clock_event_device *dev);
-+extern void tick_install_broadcast_device(struct clock_event_device *dev, int cpu);
- extern int tick_is_broadcast_device(struct clock_event_device *dev);
- extern void tick_suspend_broadcast(void);
- extern void tick_resume_broadcast(void);
-@@ -72,7 +72,7 @@ extern int tick_broadcast_update_freq(struct clock_event_device *dev, u32 freq);
- extern struct tick_device *tick_get_broadcast_device(void);
- extern struct cpumask *tick_get_broadcast_mask(void);
- # else /* !CONFIG_GENERIC_CLOCKEVENTS_BROADCAST: */
--static inline void tick_install_broadcast_device(struct clock_event_device *dev) { }
-+static inline void tick_install_broadcast_device(struct clock_event_device *dev, int cpu) { }
- static inline int tick_is_broadcast_device(struct clock_event_device *dev) { return 0; }
- static inline int tick_device_uses_broadcast(struct clock_event_device *dev, int cpu) { return 0; }
- static inline void tick_do_periodic_broadcast(struct clock_event_device *d) { }
+ 	return -EBUSY;
