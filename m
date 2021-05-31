@@ -2,56 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2199039591D
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 31 May 2021 12:41:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 48DF739633E
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 31 May 2021 17:09:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231490AbhEaKmv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 31 May 2021 06:42:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49256 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231382AbhEaKme (ORCPT
+        id S231778AbhEaPKt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 31 May 2021 11:10:49 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:54956 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234314AbhEaPIk (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 31 May 2021 06:42:34 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B35F8C061763;
-        Mon, 31 May 2021 03:40:54 -0700 (PDT)
-Date:   Mon, 31 May 2021 10:40:52 -0000
+        Mon, 31 May 2021 11:08:40 -0400
+Date:   Mon, 31 May 2021 15:06:58 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1622457653;
+        s=2020; t=1622473619;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=QeKNhkFqs7gIDgIuAoaYCM8/QPnhQFc6kqiCDgLyVJI=;
-        b=SMB9wsI7FtYHC7RV0+bR5rRrRV/o8Sg/MOzDndF6pYd5dbFxCC9hnItLnpOAnwxMlJMlXa
-        Pjf4bbOkJZ23pwgYGhk929fB++9ABhGHkT3GE3xVkIdomGXrq+9RsPJBHTtbZhTNixaJcy
-        Mspojrw3/5YFB9933Vl8idICE7EyyztG1qf+Mvg5p+2mYf4C6LFNtkdm5IremxDRfrqDbo
-        YZbUUvGkV2fzaREnquF+29vw0k7SgVAciXkdEoCyw4aVdq5SlWm2xXygkbQvjcw+QEBU7/
-        yu4y5mqrkj4zdRY0l1jZY1QH4/srVSAdCUeepRYsVEGh9MmoDCRpMF0Ivci6uA==
+        bh=0DGB+J48VICmPEFf3+0iQoTNpd3XdVmOmlambanNs5g=;
+        b=OmH2RP7qpGatnyET8zi19Yx75Yp8c7zPr3ThWsXHZM/OFsoX78y5GmskuyIVmdWBr7j6Sw
+        Va6NJxZ+1aBBJqRFpc8evcGUTYO6w5bjgXNm5SIwhN2fvdu8zD09uVT+0U3STSeWC3jxiv
+        mH/VKpkzkd+Wv+fQjKhY0b3ckxmf+hq3jDJydGdKjNAYMWlbS10jGMuHfuBFDrpxhuzR4c
+        wWe8mqcYRjQEE7D3acOEmxPQNfbDyZ63EyeYGoInB1StEo0CGEIcV3KdDhGJR8dhY4SrbO
+        IbvHAfzpUBGMYkBezUrbXhJRXkG060qnmt9BjyYAOcJfaOaG2+QscAIpN8DfdQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1622457653;
+        s=2020e; t=1622473619;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=QeKNhkFqs7gIDgIuAoaYCM8/QPnhQFc6kqiCDgLyVJI=;
-        b=/RtxiQmKb0Qc/yCij6n/hKyDA7DjIID72zy8x0Y5XZfNHGYFn0Ds14pakoDrI30jZtlp3/
-        VHLSaXPtwIKWpIAQ==
-From:   "tip-bot2 for Vincent Guittot" <tip-bot2@linutronix.de>
+        bh=0DGB+J48VICmPEFf3+0iQoTNpd3XdVmOmlambanNs5g=;
+        b=ZHh2Ml89oxy7+GLon9uHS0+DI7pjuFnCsnPbc79c/E3Ddrb1Z/X+mOiiV4WXmSkraBzr9T
+        WRhYwUZd2LEvRHCg==
+From:   "tip-bot2 for Will Deacon" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] sched/fair: Keep load_avg and load_sum synced
-Cc:     Odin Ugedal <odin@uged.al>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: timers/core] timer_list: Print name of per-cpu wakeup device
+Cc:     Will Deacon <will@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210527122916.27683-2-vincent.guittot@linaro.org>
-References: <20210527122916.27683-2-vincent.guittot@linaro.org>
+In-Reply-To: <20210524221818.15850-6-will@kernel.org>
+References: <20210524221818.15850-6-will@kernel.org>
 MIME-Version: 1.0
-Message-ID: <162245765252.29796.17149761327843184245.tip-bot2@tip-bot2>
+Message-ID: <162247361850.29796.2040439369895392133.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,65 +56,86 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/urgent branch of tip:
+The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     7c7ad626d9a0ff0a36c1e2a3cfbbc6a13828d5eb
-Gitweb:        https://git.kernel.org/tip/7c7ad626d9a0ff0a36c1e2a3cfbbc6a13828d5eb
-Author:        Vincent Guittot <vincent.guittot@linaro.org>
-AuthorDate:    Thu, 27 May 2021 14:29:15 +02:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Mon, 31 May 2021 10:14:48 +02:00
+Commit-ID:     245a057fee18be08d6ac12357463579d06bea077
+Gitweb:        https://git.kernel.org/tip/245a057fee18be08d6ac12357463579d06bea077
+Author:        Will Deacon <will@kernel.org>
+AuthorDate:    Mon, 24 May 2021 23:18:18 +01:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Mon, 31 May 2021 17:04:49 +02:00
 
-sched/fair: Keep load_avg and load_sum synced
+timer_list: Print name of per-cpu wakeup device
 
-when removing a cfs_rq from the list we only check _sum value so we must
-ensure that _avg and _sum stay synced so load_sum can't be null whereas
-load_avg is not after propagating load in the cgroup hierarchy.
+With the introduction of per-cpu wakeup devices that can be used in
+preference to the broadcast timer, print the name of such devices when
+they are available.
 
-Use load_avg to compute load_sum similarly to what is done for util_sum
-and runnable_sum.
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20210524221818.15850-6-will@kernel.org
 
-Fixes: 0e2d2aaaae52 ("sched/fair: Rewrite PELT migration propagation")
-Reported-by: Odin Ugedal <odin@uged.al>
-Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Odin Ugedal <odin@uged.al>
-Link: https://lkml.kernel.org/r/20210527122916.27683-2-vincent.guittot@linaro.org
 ---
- kernel/sched/fair.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ kernel/time/tick-broadcast.c |  7 +++++++
+ kernel/time/tick-internal.h  |  1 +
+ kernel/time/timer_list.c     | 10 +++++++++-
+ 3 files changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 3248e24..f4795b8 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -3499,10 +3499,9 @@ update_tg_cfs_runnable(struct cfs_rq *cfs_rq, struct sched_entity *se, struct cf
- static inline void
- update_tg_cfs_load(struct cfs_rq *cfs_rq, struct sched_entity *se, struct cfs_rq *gcfs_rq)
- {
--	long delta_avg, running_sum, runnable_sum = gcfs_rq->prop_runnable_sum;
-+	long delta, running_sum, runnable_sum = gcfs_rq->prop_runnable_sum;
- 	unsigned long load_avg;
- 	u64 load_sum = 0;
--	s64 delta_sum;
- 	u32 divider;
- 
- 	if (!runnable_sum)
-@@ -3549,13 +3548,13 @@ update_tg_cfs_load(struct cfs_rq *cfs_rq, struct sched_entity *se, struct cfs_rq
- 	load_sum = (s64)se_weight(se) * runnable_sum;
- 	load_avg = div_s64(load_sum, divider);
- 
--	delta_sum = load_sum - (s64)se_weight(se) * se->avg.load_sum;
--	delta_avg = load_avg - se->avg.load_avg;
-+	delta = load_avg - se->avg.load_avg;
- 
- 	se->avg.load_sum = runnable_sum;
- 	se->avg.load_avg = load_avg;
--	add_positive(&cfs_rq->avg.load_avg, delta_avg);
--	add_positive(&cfs_rq->avg.load_sum, delta_sum);
-+
-+	add_positive(&cfs_rq->avg.load_avg, delta);
-+	cfs_rq->avg.load_sum = cfs_rq->avg.load_avg * divider;
+diff --git a/kernel/time/tick-broadcast.c b/kernel/time/tick-broadcast.c
+index 9b84521..f7fe6fe 100644
+--- a/kernel/time/tick-broadcast.c
++++ b/kernel/time/tick-broadcast.c
+@@ -63,6 +63,13 @@ struct cpumask *tick_get_broadcast_mask(void)
+ 	return tick_broadcast_mask;
  }
  
- static inline void add_tg_cfs_propagate(struct cfs_rq *cfs_rq, long runnable_sum)
++static struct clock_event_device *tick_get_oneshot_wakeup_device(int cpu);
++
++const struct clock_event_device *tick_get_wakeup_device(int cpu)
++{
++	return tick_get_oneshot_wakeup_device(cpu);
++}
++
+ /*
+  * Start the device in periodic mode
+  */
+diff --git a/kernel/time/tick-internal.h b/kernel/time/tick-internal.h
+index 30c8963..6a742a2 100644
+--- a/kernel/time/tick-internal.h
++++ b/kernel/time/tick-internal.h
+@@ -71,6 +71,7 @@ extern void tick_set_periodic_handler(struct clock_event_device *dev, int broadc
+ extern int tick_broadcast_update_freq(struct clock_event_device *dev, u32 freq);
+ extern struct tick_device *tick_get_broadcast_device(void);
+ extern struct cpumask *tick_get_broadcast_mask(void);
++extern const struct clock_event_device *tick_get_wakeup_device(int cpu);
+ # else /* !CONFIG_GENERIC_CLOCKEVENTS_BROADCAST: */
+ static inline void tick_install_broadcast_device(struct clock_event_device *dev, int cpu) { }
+ static inline int tick_is_broadcast_device(struct clock_event_device *dev) { return 0; }
+diff --git a/kernel/time/timer_list.c b/kernel/time/timer_list.c
+index 6939140..ed7d6ad 100644
+--- a/kernel/time/timer_list.c
++++ b/kernel/time/timer_list.c
+@@ -228,6 +228,14 @@ print_tickdevice(struct seq_file *m, struct tick_device *td, int cpu)
+ 	SEQ_printf(m, " event_handler:  %ps\n", dev->event_handler);
+ 	SEQ_printf(m, "\n");
+ 	SEQ_printf(m, " retries:        %lu\n", dev->retries);
++
++#ifdef CONFIG_GENERIC_CLOCKEVENTS_BROADCAST
++	if (cpu >= 0) {
++		const struct clock_event_device *wd = tick_get_wakeup_device(cpu);
++
++		SEQ_printf(m, "Wakeup Device: %s\n", wd ? wd->name : "<NULL>");
++	}
++#endif
+ 	SEQ_printf(m, "\n");
+ }
+ 
+@@ -248,7 +256,7 @@ static void timer_list_show_tickdevices_header(struct seq_file *m)
+ 
+ static inline void timer_list_header(struct seq_file *m, u64 now)
+ {
+-	SEQ_printf(m, "Timer List Version: v0.8\n");
++	SEQ_printf(m, "Timer List Version: v0.9\n");
+ 	SEQ_printf(m, "HRTIMER_MAX_CLOCK_BASES: %d\n", HRTIMER_MAX_CLOCK_BASES);
+ 	SEQ_printf(m, "now at %Ld nsecs\n", (unsigned long long)now);
+ 	SEQ_printf(m, "\n");
