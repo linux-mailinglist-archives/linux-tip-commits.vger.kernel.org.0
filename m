@@ -2,57 +2,51 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FADF394C08
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 29 May 2021 13:27:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6BE4C395794
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 31 May 2021 10:55:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229614AbhE2L2l (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 29 May 2021 07:28:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53160 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229602AbhE2L2l (ORCPT
+        id S230507AbhEaI5c (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 31 May 2021 04:57:32 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:53036 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230479AbhEaI5a (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 29 May 2021 07:28:41 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD87DC061574;
-        Sat, 29 May 2021 04:27:04 -0700 (PDT)
-Date:   Sat, 29 May 2021 11:27:01 -0000
+        Mon, 31 May 2021 04:57:30 -0400
+Date:   Mon, 31 May 2021 08:55:48 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1622287622;
+        s=2020; t=1622451349;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=wllJsNcibiIvAJWRjtmQE4qKSzwtR0YphipOcEnQVVU=;
-        b=sy7dCbmJMq4uZCGBTegkwtgM6tQduWwfU77ptvLe3u9abNosiHMihwbghFiWQ+MC80kW/f
-        Xxd+zD16jVey5GFbNHZ4DJF5ZxrY1CjDCnWtPgtL4GJqrtmAPi3aKN+5yrxuntSfrr9689
-        vMSNjENKynOCxXRCLZPqZPwnEj8Kya0nyF2bspGNR2M92NGLjzuSHxStkUAQvvSfUnW856
-        gV+N6nI2fYPSpuxPP3J618BhQVirBUKLtKEmJRUfhrRaG3tXh+9E2NY/fequ0cbqehepgQ
-        FRKRGIlGCwo86TCBFJHrX49tmi9VEopCQ7Cc4LfE/8OqXSr9xUR9HY5HWO4tHQ==
+        bh=OaXq7w/Q+KUtGPB7j8sfswDcr08nsePPn2APY7DbJQQ=;
+        b=2jiW/AV6I3VQtFwhTEOS+0GHY6tj3EEiU0h4dIt6Lhl+Lz+00FN5rxzXZRh6+t6R7LaTWL
+        SeKxTMvkwesva5BOsDaYGsLkoMw1bcg/sD9kiIZIn5eBOjzEamYIa/C6hex6uka8CtH1y9
+        H26qVpU8stksTzwvLe1N/Obg9uefENONSN6PfCudXsnHPz7HxEN9Rp+h6MFF3sW1ZGlf6Y
+        GYCnkgtahxWJ/NRN8geGdkRcvEu3K76d1K71MUeNhLsnvAMtrImkEWSmnxxsZs7rky5F2S
+        idqYTvR8TMnXEDo/oi0atTbr49hINLCNc545ZIe39Xk1ROvJd3hf6HOc8igj/g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1622287622;
+        s=2020e; t=1622451349;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=wllJsNcibiIvAJWRjtmQE4qKSzwtR0YphipOcEnQVVU=;
-        b=aNKGUi+h+JZmDcEr5YM5NtkAtQUbkHlcPd6vWwG8YPyLwh6g7vV9rx5FlZbosEIgjT/677
-        vY2yrXdTp78LVaDA==
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+        bh=OaXq7w/Q+KUtGPB7j8sfswDcr08nsePPn2APY7DbJQQ=;
+        b=oZNPuADqkZK3IMgBtYL2tEiz92qgeJOVER9MjeQ7wj90THfW9/ssyKICW5GR7exXJVX6gd
+        GexiStCp6SciLyDA==
+From:   "tip-bot2 for Pu Wen" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/apic: Mark _all_ legacy interrupts when IO/APIC
- is missing
-Cc:     Imran Khan <imran.f.khan@oracle.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Borislav Petkov <bp@suse.de>, stable@vger.kernel.org,
+Subject: [tip: x86/cpu] x86/cstate: Allow ACPI C1 FFH MWAIT use on Hygon systems
+Cc:     Pu Wen <puwen@hygon.cn>, Borislav Petkov <bp@suse.de>,
         x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20210519233928.2157496-1-imran.f.khan@oracle.com>
-References: <20210519233928.2157496-1-imran.f.khan@oracle.com>
+In-Reply-To: <20210528081417.31474-1-puwen@hygon.cn>
+References: <20210528081417.31474-1-puwen@hygon.cn>
 MIME-Version: 1.0
-Message-ID: <162228762181.29796.12251794167483746232.tip-bot2@tip-bot2>
+Message-ID: <162245134873.29796.1219713411989119535.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,105 +55,44 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the x86/cpu branch of tip:
 
-Commit-ID:     7d65f9e80646c595e8c853640a9d0768a33e204c
-Gitweb:        https://git.kernel.org/tip/7d65f9e80646c595e8c853640a9d0768a33e204c
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Tue, 25 May 2021 13:08:41 +02:00
+Commit-ID:     280b68a3b3b96b027fcdeb5a3916a8e2aaf84d03
+Gitweb:        https://git.kernel.org/tip/280b68a3b3b96b027fcdeb5a3916a8e2aaf84d03
+Author:        Pu Wen <puwen@hygon.cn>
+AuthorDate:    Fri, 28 May 2021 16:14:17 +08:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Sat, 29 May 2021 11:41:14 +02:00
+CommitterDate: Mon, 31 May 2021 10:47:04 +02:00
 
-x86/apic: Mark _all_ legacy interrupts when IO/APIC is missing
+x86/cstate: Allow ACPI C1 FFH MWAIT use on Hygon systems
 
-PIC interrupts do not support affinity setting and they can end up on
-any online CPU. Therefore, it's required to mark the associated vectors
-as system-wide reserved. Otherwise, the corresponding irq descriptors
-are copied to the secondary CPUs but the vectors are not marked as
-assigned or reserved. This works correctly for the IO/APIC case.
+Hygon systems support the MONITOR/MWAIT instructions and these can be
+used for ACPI C1 in the same way as on AMD and Intel systems.
 
-When the IO/APIC is disabled via config, kernel command line or lack of
-enumeration then all legacy interrupts are routed through the PIC, but
-nothing marks them as system-wide reserved vectors.
+The BIOS declares a C1 state in _CST to use FFH and CPUID_Fn00000005_EDX
+is non-zero on Hygon systems.
 
-As a consequence, a subsequent allocation on a secondary CPU can result in
-allocating one of these vectors, which triggers the BUG() in
-apic_update_vector() because the interrupt descriptor slot is not empty.
+Allow ffh_cstate_init() to succeed on Hygon systems to default using FFH
+MWAIT instead of HALT for ACPI C1.
 
-Imran tried to work around that by marking those interrupts as allocated
-when a CPU comes online. But that's wrong in case that the IO/APIC is
-available and one of the legacy interrupts, e.g. IRQ0, has been switched to
-PIC mode because then marking them as allocated will fail as they are
-already marked as system vectors.
-
-Stay consistent and update the legacy vectors after attempting IO/APIC
-initialization and mark them as system vectors in case that no IO/APIC is
-available.
-
-Fixes: 69cde0004a4b ("x86/vector: Use matrix allocator for vector assignment")
-Reported-by: Imran Khan <imran.f.khan@oracle.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Pu Wen <puwen@hygon.cn>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20210519233928.2157496-1-imran.f.khan@oracle.com
+Link: https://lkml.kernel.org/r/20210528081417.31474-1-puwen@hygon.cn
 ---
- arch/x86/include/asm/apic.h   |  1 +
- arch/x86/kernel/apic/apic.c   |  1 +
- arch/x86/kernel/apic/vector.c | 20 ++++++++++++++++++++
- 3 files changed, 22 insertions(+)
+ arch/x86/kernel/acpi/cstate.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/apic.h b/arch/x86/include/asm/apic.h
-index 412b51e..48067af 100644
---- a/arch/x86/include/asm/apic.h
-+++ b/arch/x86/include/asm/apic.h
-@@ -174,6 +174,7 @@ static inline int apic_is_clustered_box(void)
- extern int setup_APIC_eilvt(u8 lvt_off, u8 vector, u8 msg_type, u8 mask);
- extern void lapic_assign_system_vectors(void);
- extern void lapic_assign_legacy_vector(unsigned int isairq, bool replace);
-+extern void lapic_update_legacy_vectors(void);
- extern void lapic_online(void);
- extern void lapic_offline(void);
- extern bool apic_needs_pit(void);
-diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
-index 4a39fb4..d262811 100644
---- a/arch/x86/kernel/apic/apic.c
-+++ b/arch/x86/kernel/apic/apic.c
-@@ -2604,6 +2604,7 @@ static void __init apic_bsp_setup(bool upmode)
- 	end_local_APIC_setup();
- 	irq_remap_enable_fault_handling();
- 	setup_IO_APIC();
-+	lapic_update_legacy_vectors();
- }
+diff --git a/arch/x86/kernel/acpi/cstate.c b/arch/x86/kernel/acpi/cstate.c
+index 49ae4e1..7de599e 100644
+--- a/arch/x86/kernel/acpi/cstate.c
++++ b/arch/x86/kernel/acpi/cstate.c
+@@ -197,7 +197,8 @@ static int __init ffh_cstate_init(void)
+ 	struct cpuinfo_x86 *c = &boot_cpu_data;
  
- #ifdef CONFIG_UP_LATE_INIT
-diff --git a/arch/x86/kernel/apic/vector.c b/arch/x86/kernel/apic/vector.c
-index 6dbdc7c..fb67ed5 100644
---- a/arch/x86/kernel/apic/vector.c
-+++ b/arch/x86/kernel/apic/vector.c
-@@ -738,6 +738,26 @@ void lapic_assign_legacy_vector(unsigned int irq, bool replace)
- 	irq_matrix_assign_system(vector_matrix, ISA_IRQ_VECTOR(irq), replace);
- }
+ 	if (c->x86_vendor != X86_VENDOR_INTEL &&
+-	    c->x86_vendor != X86_VENDOR_AMD)
++	    c->x86_vendor != X86_VENDOR_AMD &&
++	    c->x86_vendor != X86_VENDOR_HYGON)
+ 		return -1;
  
-+void __init lapic_update_legacy_vectors(void)
-+{
-+	unsigned int i;
-+
-+	if (IS_ENABLED(CONFIG_X86_IO_APIC) && nr_ioapics > 0)
-+		return;
-+
-+	/*
-+	 * If the IO/APIC is disabled via config, kernel command line or
-+	 * lack of enumeration then all legacy interrupts are routed
-+	 * through the PIC. Make sure that they are marked as legacy
-+	 * vectors. PIC_CASCADE_IRQ has already been marked in
-+	 * lapic_assign_system_vectors().
-+	 */
-+	for (i = 0; i < nr_legacy_irqs(); i++) {
-+		if (i != PIC_CASCADE_IR)
-+			lapic_assign_legacy_vector(i, true);
-+	}
-+}
-+
- void __init lapic_assign_system_vectors(void)
- {
- 	unsigned int i, vector = 0;
+ 	cpu_cstate_entry = alloc_percpu(struct cstate_entry);
