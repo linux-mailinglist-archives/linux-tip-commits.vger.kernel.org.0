@@ -2,55 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E2AB03974EC
+	by mail.lfdr.de (Postfix) with ESMTP id 95C653974EB
 	for <lists+linux-tip-commits@lfdr.de>; Tue,  1 Jun 2021 16:04:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234184AbhFAOGk (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 1 Jun 2021 10:06:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48788 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234177AbhFAOGi (ORCPT
+        id S234160AbhFAOGj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 1 Jun 2021 10:06:39 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:33142 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234166AbhFAOGh (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 1 Jun 2021 10:06:38 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50E62C06174A;
-        Tue,  1 Jun 2021 07:04:56 -0700 (PDT)
+        Tue, 1 Jun 2021 10:06:37 -0400
 Date:   Tue, 01 Jun 2021 14:04:52 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1622556292;
+        s=2020; t=1622556293;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Nl9mFaXwdYjixZLJzgT6WmxN7SuKh+t3RLI17ECMaTg=;
-        b=gxEroV8h3FO3fR9BLGagXQs2hGni8aO6PqbnI6MiqYfEzJai9os9j+RRrcIJpTEFs4jHBs
-        NUJeSscI7lS5ES53lvlxyCBJokXN1qpP+dQejgKAv7slgnXCb8mgfO8vjzKSJ37jO+zzD6
-        CYkQKjPhOAgMCAUqaDUKT0lh4XiJ7xmjMiA+jH5Lh71CmgEsPgXX2N/KyBzxuGdRkPgG35
-        cojoff7YqclhcvjVlpoBPAZzv3Qyqj2Q1Y3nME6HFUjCS2j9gwT0hFEQa58pfvUT/MhrjP
-        RlgBQB0KihonJAXUIM6j1iY3ttDH0kmEkstLuVFwZEP/27Hi9f3qclrOfO4q5Q==
+        bh=xAa/sriNXmsB9CTfTHo+BJPpCraBW6KNndKIik3v31E=;
+        b=1HmF/kbnO5ZQkZl6xkGAVtPTSzHu4Id/o7vb6GAoC7MUfHKOWYkpTKDz4BO2gtiTbllaIc
+        VXrOMfyOdjRdrmrKN+Ceur0j0jPJOg5UpduRBe7zlCkAc0p9BPOmsv9qIb0nd11MqsyOMX
+        XdIpA6vLVQ9ZNWRqkReZ6q9v7G3RGBQzF7XCxeslvSfsjE+DjDdDL6niuNK/o8QwD2yuVD
+        cyN8A+9RsGsDstDjTCLnLtCw9TmrWTFcu2xkYfOh5saMuh3YbbpIxWh4vcgIedwOcCGpzY
+        QJ2F8LMIN1GPypC9kh4+wbYcDny+rBkq86Su0hsuNDkG1qVKhDGZI5zuA97dBA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1622556292;
+        s=2020e; t=1622556293;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Nl9mFaXwdYjixZLJzgT6WmxN7SuKh+t3RLI17ECMaTg=;
-        b=4a/FjvYOJLp/1AC6ksHkALPRpjOiOF0nFBMRuHbNfMlaFM2YTCeZKrN6/noouHrnRBj1yi
-        57OCLrGB9t4fLtAA==
-From:   "tip-bot2 for Qiujun Huang" <tip-bot2@linutronix.de>
+        bh=xAa/sriNXmsB9CTfTHo+BJPpCraBW6KNndKIik3v31E=;
+        b=ww+UziM5Mr97V8AwRzGEdaJkmg8jh61eus6t0KWZ+AHf5SmbhcRGf0fvp2k8/1kgc9yNMj
+        dOHb1TkE7ccn+BDg==
+From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] uprobes: Update uprobe_write_opcode() kernel-doc comment
-Cc:     Qiujun Huang <hqjagain@gmail.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: perf/urgent] perf/x86/intel/uncore: Fix M2M event umask for Ice
+ Lake server
+Cc:     Jin Yao <yao.jin@linux.intel.com>,
+        Kan Liang <kan.liang@linux.intel.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        stable@vger.kernel.org, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210524041411.157027-1-hqjagain@gmail.com>
-References: <20210524041411.157027-1-hqjagain@gmail.com>
+In-Reply-To: <1622552943-119174-1-git-send-email-kan.liang@linux.intel.com>
+References: <1622552943-119174-1-git-send-email-kan.liang@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <162255629209.29796.8459366310090862821.tip-bot2@tip-bot2>
+Message-ID: <162255629271.29796.7893738465861951742.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,36 +59,48 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/core branch of tip:
+The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     9ce4d216fe8b581e4da4406461a4cfc9acbfa679
-Gitweb:        https://git.kernel.org/tip/9ce4d216fe8b581e4da4406461a4cfc9acbfa679
-Author:        Qiujun Huang <hqjagain@gmail.com>
-AuthorDate:    Mon, 24 May 2021 04:14:11 
+Commit-ID:     848ff3768684701a4ce73a2ec0e5d438d4e2b0da
+Gitweb:        https://git.kernel.org/tip/848ff3768684701a4ce73a2ec0e5d438d4e2b0da
+Author:        Kan Liang <kan.liang@linux.intel.com>
+AuthorDate:    Tue, 01 Jun 2021 06:09:03 -07:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 01 Jun 2021 16:00:08 +02:00
+CommitterDate: Tue, 01 Jun 2021 16:00:05 +02:00
 
-uprobes: Update uprobe_write_opcode() kernel-doc comment
+perf/x86/intel/uncore: Fix M2M event umask for Ice Lake server
 
-commit 6d43743e9079 ("Uprobe: Additional argument arch_uprobe to
-uprobe_write_opcode()") added the parameter @auprobe.
+Perf tool errors out with the latest event list for the Ice Lake server.
 
-Signed-off-by: Qiujun Huang <hqjagain@gmail.com>
+event syntax error: 'unc_m2m_imc_reads.to_pmm'
+                           \___ value too big for format, maximum is 255
+
+The same as the Snow Ridge server, the M2M uncore unit in the Ice Lake
+server has the unit mask extension field as well.
+
+Fixes: 2b3b76b5ec67 ("perf/x86/intel/uncore: Add Ice Lake server uncore support")
+Reported-by: Jin Yao <yao.jin@linux.intel.com>
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20210524041411.157027-1-hqjagain@gmail.com
+Cc: stable@vger.kernel.org
+Link: https://lkml.kernel.org/r/1622552943-119174-1-git-send-email-kan.liang@linux.intel.com
 ---
- kernel/events/uprobes.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/events/intel/uncore_snbep.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
-index 6addc97..a481ef6 100644
---- a/kernel/events/uprobes.c
-+++ b/kernel/events/uprobes.c
-@@ -453,6 +453,7 @@ static int update_ref_ctr(struct uprobe *uprobe, struct mm_struct *mm,
-  * that have fixed length instructions.
-  *
-  * uprobe_write_opcode - write the opcode at a given virtual address.
-+ * @auprobe: arch specific probepoint information.
-  * @mm: the probed process address space.
-  * @vaddr: the virtual address to store the opcode.
-  * @opcode: opcode to be written at @vaddr.
+diff --git a/arch/x86/events/intel/uncore_snbep.c b/arch/x86/events/intel/uncore_snbep.c
+index 1587d32..3a75a2c 100644
+--- a/arch/x86/events/intel/uncore_snbep.c
++++ b/arch/x86/events/intel/uncore_snbep.c
+@@ -5099,9 +5099,10 @@ static struct intel_uncore_type icx_uncore_m2m = {
+ 	.perf_ctr	= SNR_M2M_PCI_PMON_CTR0,
+ 	.event_ctl	= SNR_M2M_PCI_PMON_CTL0,
+ 	.event_mask	= SNBEP_PMON_RAW_EVENT_MASK,
++	.event_mask_ext	= SNR_M2M_PCI_PMON_UMASK_EXT,
+ 	.box_ctl	= SNR_M2M_PCI_PMON_BOX_CTL,
+ 	.ops		= &snr_m2m_uncore_pci_ops,
+-	.format_group	= &skx_uncore_format_group,
++	.format_group	= &snr_m2m_uncore_format_group,
+ };
+ 
+ static struct attribute *icx_upi_uncore_formats_attr[] = {
