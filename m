@@ -2,52 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B686C399F74
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  3 Jun 2021 13:03:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0578139A0EC
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  3 Jun 2021 14:31:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229932AbhFCLFe (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 3 Jun 2021 07:05:34 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:45864 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229665AbhFCLFd (ORCPT
+        id S229966AbhFCMcp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 3 Jun 2021 08:32:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45780 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230177AbhFCMcp (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 3 Jun 2021 07:05:33 -0400
-Date:   Thu, 03 Jun 2021 11:03:47 -0000
+        Thu, 3 Jun 2021 08:32:45 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D9D6C06175F;
+        Thu,  3 Jun 2021 05:31:00 -0700 (PDT)
+Date:   Thu, 03 Jun 2021 12:30:53 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1622718228;
+        s=2020; t=1622723456;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=2pSoMEDGIPmsY+/ZdZ3O/svOoGfxunDIusb/oOZb+vQ=;
-        b=ahz2zOkQbRvZch9yxkFcS6JV459dCC2yNsUZbHnvbHjHvytDIrFr1+Gk3dE5MnGjeKVARw
-        WAeXwVuc/RoPCO5ptDUT65wWZH6xCojgB617vcnBE+fRVnZeIFZYFfJJq688b8dMuJJZQM
-        Ll/CN6n9MT1+QfkoB9OJpufpJOxwiKqE80y1PUoeNXq6QOa9KqlcE/dSrzO7EzBdKho9Tn
-        cmqWrGQ+Br/ENkaMS1xsBHD6gaJFDuiqCMk7mqHgbFsc8BuyBvs1Z9QvO1G/RsQGBi8I9H
-        o4R1D+K2DHNt2meB4sHAAdL70KFfnX8clMP8CghS7MjfeUKiPXUz9D90AhtwaQ==
+        bh=1BsNI20+MZK5coL/UFoj1BiGfxgXH5bhCmtTvq7Ak6s=;
+        b=Qdly8bUJauaWm+CTW2JMXnQFiqp4CRh74Fa5HhTrtaNaF6xTZ4RU3n0/oopVuC+GAS11cu
+        X1JJ0W3UV/Wy8oa7St0TbStE7JFlk/4/Bl7nNRhm+FeksYwXNONL9YjFOLul5vQABzJdhn
+        ORnHoLRi8YyxsB2sD64n7wmvs2AAEFfVWlLOK0FRIhrm5OYM+OUkoiOcUGBi+ZTwdWIXeV
+        JvJ0IuufUXoZ6o0pc0roaMF5IDuGzrOpnffTjDOEcN0yMaZGlgKtUx0//fuNABR5YPy0h2
+        kWqW12zuwj8SsS8jbpvvhxdfCJqfBqbjlObPSKXv1j/0C3b657Wv+HpWPqy6lw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1622718228;
+        s=2020e; t=1622723456;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=2pSoMEDGIPmsY+/ZdZ3O/svOoGfxunDIusb/oOZb+vQ=;
-        b=53Q9b4c2CiPXTBsXPM11CcAoXeDbbixdnmhfP6uFRMX3cZahvnSaiwZxs4IwofBWvYsfOV
-        mtvXI0Zy7FaF1XBQ==
-From:   "tip-bot2 for Vincent Guittot" <tip-bot2@linutronix.de>
+        bh=1BsNI20+MZK5coL/UFoj1BiGfxgXH5bhCmtTvq7Ak6s=;
+        b=HZfTD96XF5j0y2AreQnrDosPa+Ce8tpAyY0N0mfK+vMJpkxXfgBtDdwyZ1O/dj5p2zn7tQ
+        W8l5Rz72QUgTN8DQ==
+From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] sched/pelt: Ensure that *_sum is always synced with *_avg
-Cc:     Vincent Guittot <vincent.guittot@linaro.org>,
+Subject: [tip: x86/cleanups] x86/alternative: Align insn bytes vertically
+Cc:     Borislav Petkov <bp@suse.de>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210601085832.12626-1-vincent.guittot@linaro.org>
-References: <20210601085832.12626-1-vincent.guittot@linaro.org>
+In-Reply-To: <20210601193713.16190-1-bp@alien8.de>
+References: <20210601193713.16190-1-bp@alien8.de>
 MIME-Version: 1.0
-Message-ID: <162271822738.29796.10300371462032063368.tip-bot2@tip-bot2>
+Message-ID: <162272345374.29796.18139341467575813707.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -56,53 +59,47 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/urgent branch of tip:
+The following commit has been merged into the x86/cleanups branch of tip:
 
-Commit-ID:     fcf6631f3736985ec89bdd76392d3c7bfb60119f
-Gitweb:        https://git.kernel.org/tip/fcf6631f3736985ec89bdd76392d3c7bfb60119f
-Author:        Vincent Guittot <vincent.guittot@linaro.org>
-AuthorDate:    Tue, 01 Jun 2021 10:58:32 +02:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Thu, 03 Jun 2021 12:55:55 +02:00
+Commit-ID:     7ee0e638a526b2d1f09c714f86d82dfd7628f322
+Gitweb:        https://git.kernel.org/tip/7ee0e638a526b2d1f09c714f86d82dfd7628f322
+Author:        Borislav Petkov <bp@suse.de>
+AuthorDate:    Tue, 01 Jun 2021 21:30:56 +02:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Thu, 03 Jun 2021 14:24:44 +02:00
 
-sched/pelt: Ensure that *_sum is always synced with *_avg
+x86/alternative: Align insn bytes vertically
 
-Rounding in PELT calculation happening when entities are attached/detached
-of a cfs_rq can result into situations where util/runnable_avg is not null
-but util/runnable_sum is. This is normally not possible so we need to
-ensure that util/runnable_sum stays synced with util/runnable_avg.
+For easier inspection which bytes have changed.
 
-detach_entity_load_avg() is the last place where we don't sync
-util/runnable_sum with util/runnbale_avg when moving some sched_entities
+For example:
 
-Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20210601085832.12626-1-vincent.guittot@linaro.org
+  feat: 7*32+12, old: (__x86_indirect_thunk_r10+0x0/0x20 (ffffffff81c02480) len: 17), repl: (ffffffff897813aa, len: 17)
+  ffffffff81c02480:   old_insn: 41 ff e2 90 90 90 90 90 90 90 90 90 90 90 90 90 90
+  ffffffff897813aa:   rpl_insn: e8 07 00 00 00 f3 90 0f ae e8 eb f9 4c 89 14 24 c3
+  ffffffff81c02480: final_insn: e8 07 00 00 00 f3 90 0f ae e8 eb f9 4c 89 14 24 c3
+
+No functional changes.
+
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20210601193713.16190-1-bp@alien8.de
 ---
- kernel/sched/fair.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ arch/x86/kernel/alternative.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index e7c8277..7b98fb3 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -3765,11 +3765,17 @@ static void attach_entity_load_avg(struct cfs_rq *cfs_rq, struct sched_entity *s
-  */
- static void detach_entity_load_avg(struct cfs_rq *cfs_rq, struct sched_entity *se)
- {
-+	/*
-+	 * cfs_rq->avg.period_contrib can be used for both cfs_rq and se.
-+	 * See ___update_load_avg() for details.
-+	 */
-+	u32 divider = get_pelt_divider(&cfs_rq->avg);
-+
- 	dequeue_load_avg(cfs_rq, se);
- 	sub_positive(&cfs_rq->avg.util_avg, se->avg.util_avg);
--	sub_positive(&cfs_rq->avg.util_sum, se->avg.util_sum);
-+	cfs_rq->avg.util_sum = cfs_rq->avg.util_avg * divider;
- 	sub_positive(&cfs_rq->avg.runnable_avg, se->avg.runnable_avg);
--	sub_positive(&cfs_rq->avg.runnable_sum, se->avg.runnable_sum);
-+	cfs_rq->avg.runnable_sum = cfs_rq->avg.runnable_avg * divider;
+diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
+index 75c752b..227c4a8 100644
+--- a/arch/x86/kernel/alternative.c
++++ b/arch/x86/kernel/alternative.c
+@@ -273,8 +273,8 @@ void __init_or_module noinline apply_alternatives(struct alt_instr *start,
+ 			instr, instr, a->instrlen,
+ 			replacement, a->replacementlen);
  
- 	add_tg_cfs_propagate(cfs_rq, -se->avg.load_sum);
+-		DUMP_BYTES(instr, a->instrlen, "%px: old_insn: ", instr);
+-		DUMP_BYTES(replacement, a->replacementlen, "%px: rpl_insn: ", replacement);
++		DUMP_BYTES(instr, a->instrlen, "%px:   old_insn: ", instr);
++		DUMP_BYTES(replacement, a->replacementlen, "%px:   rpl_insn: ", replacement);
  
+ 		memcpy(insn_buff, replacement, a->replacementlen);
+ 		insn_buff_sz = a->replacementlen;
