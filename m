@@ -2,56 +2,58 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 80C193A052E
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  8 Jun 2021 22:35:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D8333A14F8
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Jun 2021 14:56:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234309AbhFHUhs (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 8 Jun 2021 16:37:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56468 "EHLO
+        id S231509AbhFIM6T (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 9 Jun 2021 08:58:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46156 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234000AbhFHUhs (ORCPT
+        with ESMTP id S231401AbhFIM6R (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 8 Jun 2021 16:37:48 -0400
+        Wed, 9 Jun 2021 08:58:17 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78D79C061574;
-        Tue,  8 Jun 2021 13:35:54 -0700 (PDT)
-Date:   Tue, 08 Jun 2021 20:35:51 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBF9DC061574;
+        Wed,  9 Jun 2021 05:56:22 -0700 (PDT)
+Date:   Wed, 09 Jun 2021 12:56:19 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1623184552;
+        s=2020; t=1623243380;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=7sRlTCEMFiILDT/as65fHemqYYsAH0re9GJwoPd5mC0=;
-        b=N1Li5HSF5xJ0sPfLank/Ql1hLD3s0gWmRRWqF9Bn1uXSRH3j3+PptFFrLUpJjtC7zHJiM3
-        fZMfcQsIDCWNkq2fRJq5WTr5XypMOKeF7bOkBYDMbqAEntomFco9tpTTjcemUdhbwvIhqQ
-        k4tUhNXlzkHywqii2RbsZ4zA+hiz3JZsuwPUfdysqClCK/8bmuXzZWddHlKyMZ3wfDfZSk
-        OdHiFUNiDbrgQXepy3Vcbi6MILZ+cg0VgiMBqiOAYdZSfydLhWHL9+9aNLxF1s2YWMRCOL
-        /3ElcrA8d5yQKQCYjL+Qye02jJqLi91TROZa1xHLYC8g0F0BmOCy3e0OUVwYvQ==
+        bh=MCQCaQyb0jTJ5LiNhvotdpCjdtNnWoHqjPLhWRxGJ/4=;
+        b=2sZg2B2ej5y6OjhDS6xrY5HXtoPtmn5ONhyqcVO+Mv0ehRIve6Oipdrf+m/usNF4TuNYmK
+        4oJ/SbAL34IoksPgEnbbWgAkF8xQ/xEerLwPHMLq+WmaFOCecsPv/OsUdfyXSfzMjt14/8
+        0qJ8B41HC11/Vy0LkL5DagvGYnwNMuYNeRSIJiPj8+ZXbYO/zlGr+EvsnaCPt6Rl7aQ9Ig
+        4CfbY/RgPtP1GMS32u/C+i508jOQJOjHLBhbLzjx8IvlI0BL7iOrajsQgFLQ859WU0Re57
+        aeej0xH12v9ibBhgD+OOLNJsjVp0kfGUYHXoc7Jf/4b82aDG91Lj8N6fZsuoyw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1623184552;
+        s=2020e; t=1623243380;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=7sRlTCEMFiILDT/as65fHemqYYsAH0re9GJwoPd5mC0=;
-        b=fmKHycqt8iQuRuXnUg5X+jgR5K4Y0O07T7FfRWHetSurypwcYalInV2y5u0m7ax5ExGa04
-        upBJJ2swnm0oEnAQ==
-From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
+        bh=MCQCaQyb0jTJ5LiNhvotdpCjdtNnWoHqjPLhWRxGJ/4=;
+        b=9246PAGfveGk+V35+UBkfrmnRiZpFpYn9g9/2W3EqwM4k3DK2JzCho6xnHcN/mxTSq4O+L
+        OvZ5iAAZbE3lJQBA==
+From:   "tip-bot2 for Andy Lutomirski" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cleanups] x86/setup: Document that Windows reserves the first MiB
-Cc:     Borislav Petkov <bp@suse.de>, x86@kernel.org,
+Subject: [tip: x86/fpu] x86/fpu: Add address range checks to copy_user_to_xstate()
+Cc:     Andy Lutomirski <luto@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Borislav Petkov <bp@suse.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Rik van Riel <riel@surriel.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: =?utf-8?q?=3CMWHPR21MB159330952629D36EEDE706B3D7379=40MWHPR21MB?=
- =?utf-8?q?1593=2Enamprd21=2Eprod=2Eoutlook=2Ecom=3E?=
-References: =?utf-8?q?=3CMWHPR21MB159330952629D36EEDE706B3D7379=40MWHPR21M?=
- =?utf-8?q?B1593=2Enamprd21=2Eprod=2Eoutlook=2Ecom=3E?=
+In-Reply-To: <20210608144346.140254130@linutronix.de>
+References: <20210608144346.140254130@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <162318455123.29796.8536472725477120608.tip-bot2@tip-bot2>
+Message-ID: <162324337978.29796.11158541383873203858.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,59 +62,68 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cleanups branch of tip:
+The following commit has been merged into the x86/fpu branch of tip:
 
-Commit-ID:     ec35d1d93bf8976f0668cb1026ea8c7d7bcad3c1
-Gitweb:        https://git.kernel.org/tip/ec35d1d93bf8976f0668cb1026ea8c7d7bcad3c1
-Author:        Borislav Petkov <bp@suse.de>
-AuthorDate:    Tue, 08 Jun 2021 22:17:10 +02:00
+Commit-ID:     f72a249b0ba85564c6bfa94d609a70567485a061
+Gitweb:        https://git.kernel.org/tip/f72a249b0ba85564c6bfa94d609a70567485a061
+Author:        Andy Lutomirski <luto@kernel.org>
+AuthorDate:    Tue, 08 Jun 2021 16:36:22 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 08 Jun 2021 22:26:43 +02:00
+CommitterDate: Wed, 09 Jun 2021 14:46:20 +02:00
 
-x86/setup: Document that Windows reserves the first MiB
+x86/fpu: Add address range checks to copy_user_to_xstate()
 
-It does so unconditionally too, on Intel and AMD machines, to work
-around BIOS bugs, as confirmed by Microsoft folks (see Link for full
-details).
+copy_user_to_xstate() uses __copy_from_user(), which provides a negligible
+speedup.  Fortunately, both call sites are at least almost correct.
 
-Reflow the paragraph, while at it.
+__fpu__restore_sig() checks access_ok() with xstate_sigframe_size()
+length and ptrace regset access uses fpu_user_xstate_size. These should
+be valid upper bounds on the length, so, at worst, this would cause
+spurious failures and not accesses to kernel memory.
 
+Nonetheless, this is far more fragile than necessary and none of these
+callers are in a hotpath.
+
+Use copy_from_user() instead.
+
+Signed-off-by: Andy Lutomirski <luto@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/MWHPR21MB159330952629D36EEDE706B3D7379@MWHPR21MB1593.namprd21.prod.outlook.com
+Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+Acked-by: Rik van Riel <riel@surriel.com>
+Link: https://lkml.kernel.org/r/20210608144346.140254130@linutronix.de
 ---
- arch/x86/kernel/setup.c | 21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ arch/x86/kernel/fpu/xstate.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
-index 7638ac6..85acd22 100644
---- a/arch/x86/kernel/setup.c
-+++ b/arch/x86/kernel/setup.c
-@@ -1060,17 +1060,18 @@ void __init setup_arch(char **cmdline_p)
- #endif
+diff --git a/arch/x86/kernel/fpu/xstate.c b/arch/x86/kernel/fpu/xstate.c
+index a85c640..8ac0f67 100644
+--- a/arch/x86/kernel/fpu/xstate.c
++++ b/arch/x86/kernel/fpu/xstate.c
+@@ -1190,7 +1190,7 @@ int copy_user_to_xstate(struct xregs_state *xsave, const void __user *ubuf)
+ 	offset = offsetof(struct xregs_state, header);
+ 	size = sizeof(hdr);
  
- 	/*
--	 * Find free memory for the real mode trampoline and place it
--	 * there.
--	 * If there is not enough free memory under 1M, on EFI-enabled
--	 * systems there will be additional attempt to reclaim the memory
--	 * for the real mode trampoline at efi_free_boot_services().
-+	 * Find free memory for the real mode trampoline and place it there. If
-+	 * there is not enough free memory under 1M, on EFI-enabled systems
-+	 * there will be additional attempt to reclaim the memory for the real
-+	 * mode trampoline at efi_free_boot_services().
- 	 *
--	 * Unconditionally reserve the entire first 1M of RAM because
--	 * BIOSes are know to corrupt low memory and several
--	 * hundred kilobytes are not worth complex detection what memory gets
--	 * clobbered. Moreover, on machines with SandyBridge graphics or in
--	 * setups that use crashkernel the entire 1M is reserved anyway.
-+	 * Unconditionally reserve the entire first 1M of RAM because BIOSes
-+	 * are known to corrupt low memory and several hundred kilobytes are not
-+	 * worth complex detection what memory gets clobbered. Windows does the
-+	 * same thing for very similar reasons.
-+	 *
-+	 * Moreover, on machines with SandyBridge graphics or in setups that use
-+	 * crashkernel the entire 1M is reserved anyway.
- 	 */
- 	reserve_real_mode();
+-	if (__copy_from_user(&hdr, ubuf + offset, size))
++	if (copy_from_user(&hdr, ubuf + offset, size))
+ 		return -EFAULT;
+ 
+ 	if (validate_user_xstate_header(&hdr))
+@@ -1205,7 +1205,7 @@ int copy_user_to_xstate(struct xregs_state *xsave, const void __user *ubuf)
+ 			offset = xstate_offsets[i];
+ 			size = xstate_sizes[i];
+ 
+-			if (__copy_from_user(dst, ubuf + offset, size))
++			if (copy_from_user(dst, ubuf + offset, size))
+ 				return -EFAULT;
+ 		}
+ 	}
+@@ -1213,7 +1213,7 @@ int copy_user_to_xstate(struct xregs_state *xsave, const void __user *ubuf)
+ 	if (xfeatures_mxcsr_quirk(hdr.xfeatures)) {
+ 		offset = offsetof(struct fxregs_state, mxcsr);
+ 		size = MXCSR_AND_FLAGS_SIZE;
+-		if (__copy_from_user(&xsave->i387.mxcsr, ubuf + offset, size))
++		if (copy_from_user(&xsave->i387.mxcsr, ubuf + offset, size))
+ 			return -EFAULT;
+ 	}
  
