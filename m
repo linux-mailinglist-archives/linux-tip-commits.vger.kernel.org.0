@@ -2,52 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 74C783A24F7
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Jun 2021 09:02:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 29A4A3A250A
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Jun 2021 09:09:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229980AbhFJHEs (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 10 Jun 2021 03:04:48 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:59122 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229778AbhFJHEr (ORCPT
+        id S229788AbhFJHLD (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 10 Jun 2021 03:11:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60636 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229725AbhFJHLC (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 10 Jun 2021 03:04:47 -0400
-Date:   Thu, 10 Jun 2021 07:02:50 -0000
+        Thu, 10 Jun 2021 03:11:02 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABE74C061574;
+        Thu, 10 Jun 2021 00:09:06 -0700 (PDT)
+Date:   Thu, 10 Jun 2021 07:09:04 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1623308570;
+        s=2020; t=1623308945;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=9yHwII1Yt2O91s68AJ1Te4JRbWkXThgkkz9g7TkMkQc=;
-        b=h2G0spDPUxcwvp9OEvB8qT11FQWu7uDxUNhWZDc88yvszGlyvMHai+x6m0HYjVsRoCY17Y
-        MwKM2/IF3Z3ND9K67Q/NRTMsBjVnzBuUEEOVchcFS8JBOnLsuc3UHmtRbKoII24kczBCB6
-        G6SGPqdsEwReJY7VpVNmkniO779Mm4oQ5wV/PniNlJlCnywBiVWEs3/nzSP8lpXjfxyXym
-        3g/XDMbjCdvqf4yTYqUhpz6R1TTXDZZXSZiFET0G1u4RtGBAZ84vajnhfl+6T2sEd/laIY
-        upjmYj4gqHh4GdtmS+c7QhKyzAjyBIvOY3D0MwnQNXhMFXvk/JjDI62yMPepDA==
+        bh=G6U6xdWOxkx89xGsforOnu8yvR/5Ov7V6ehYrAu4K7g=;
+        b=2gnd4GDTabfGWAQ9nZwRcZQNzwNSU/9rTHOPUEistQiJvcp4nwkk1qVFDccY+8l78M27s0
+        NiD1R9nNjJyP6f+uk8fyk5Wl3iNj1fA0Vi2IppyFSqXoqDPJB6hV1VRbqgUWcdArFsF1/j
+        4x5tJy5euEFFJgFDYGhPcX5HB+9RHAOR6Sz3c4ffzj0Jisv1RtMAzeVjQ6vBEGZ1+h4VVi
+        Zu3cqIInUNJBOYHkfhReWOXOCDOUfW0WAeYG/nVd+xnWpsjJ0vfTFVdQEj3/oJg7zdm8fT
+        +4zdrpF+a57xNb35Z/LxdtGv9xNlBz35NiNS59IOMp1qAp9EGLtjcPoe5XDPHg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1623308570;
+        s=2020e; t=1623308945;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=9yHwII1Yt2O91s68AJ1Te4JRbWkXThgkkz9g7TkMkQc=;
-        b=cr9dGACQD1qV8vSh+VnJg/5Z/TMl/iEkBqtWlf4VEUuy1Zpqhp6JHDS8RlqcSTiXQtwYNQ
-        Le0ESh3w4ZNsifBg==
+        bh=G6U6xdWOxkx89xGsforOnu8yvR/5Ov7V6ehYrAu4K7g=;
+        b=DBtX8pmWGcOqPrrPJRTA3WNpXIfaLlto6meo3/YycZg9hHdZXSopcNQvy6fdqKCYn471Yq
+        WITQTunrBiwcnzAA==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] irq_work: Make irq_work_queue() NMI-safe again
-Cc:     Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+Subject: [tip: objtool/urgent] objtool: Fix .symtab_shndx handling for
+ elf_create_undef_symbol()
+Cc:     Nick Desaulniers <ndesaulniers@google.com>,
+        Fangrui Song <maskray@google.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <YL+uBq8LzXXZsYVf@hirez.programming.kicks-ass.net>
-References: <YL+uBq8LzXXZsYVf@hirez.programming.kicks-ass.net>
+In-Reply-To: <BA@hirez.programming.kicks-ass.net>
+References: <BA@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-Message-ID: <162330857005.29796.2967900864699325697.tip-bot2@tip-bot2>
+Message-ID: <162330894430.29796.13585465645704694671.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -56,39 +61,77 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/urgent branch of tip:
+The following commit has been merged into the objtool/urgent branch of tip:
 
-Commit-ID:     dc6be79444d82d5b9d679c7d6bd77c672f1e28ca
-Gitweb:        https://git.kernel.org/tip/dc6be79444d82d5b9d679c7d6bd77c672f1e28ca
+Commit-ID:     f17777cc267523a21815a4ae7489f0d796b1fc07
+Gitweb:        https://git.kernel.org/tip/f17777cc267523a21815a4ae7489f0d796b1fc07
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Tue, 08 Jun 2021 19:54:15 +02:00
+AuthorDate:    Mon, 07 Jun 2021 11:45:58 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 08 Jun 2021 20:03:59 +02:00
+CommitterDate: Tue, 08 Jun 2021 20:04:02 +02:00
 
-irq_work: Make irq_work_queue() NMI-safe again
+objtool: Fix .symtab_shndx handling for elf_create_undef_symbol()
 
-Someone carelessly put NMI unsafe code in irq_work_queue(), breaking
-just about every single user. Also, someone has a terrible comment
-style.
+When an ELF object uses extended symbol section indexes (IOW it has a
+.symtab_shndx section), these must be kept in sync with the regular
+symbol table (.symtab).
 
-Reported-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+So for every new symbol we emit, make sure to also emit a
+.symtab_shndx value to keep the arrays of equal size.
+
+Note: since we're writing an UNDEF symbol, most GElf_Sym fields will
+be 0 and we can repurpose one (st_size) to host the 0 for the xshndx
+value.
+
+Reported-by: Nick Desaulniers <ndesaulniers@google.com>
+Suggested-by: Fangrui Song <maskray@google.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/YL+uBq8LzXXZsYVf@hirez.programming.kicks-ass.net
+Tested-by: Nick Desaulniers <ndesaulniers@google.com>
+Link: https://lkml.kernel.org/r/YL3q1qFO9QIRL/BA@hirez.programming.kicks-ass.net
 ---
- kernel/irq_work.c | 3 ---
- 1 file changed, 3 deletions(-)
+ tools/objtool/elf.c | 25 ++++++++++++++++++++++++-
+ 1 file changed, 24 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/irq_work.c b/kernel/irq_work.c
-index 23a7a0b..db8c248 100644
---- a/kernel/irq_work.c
-+++ b/kernel/irq_work.c
-@@ -70,9 +70,6 @@ bool irq_work_queue(struct irq_work *work)
- 	if (!irq_work_claim(work))
- 		return false;
+diff --git a/tools/objtool/elf.c b/tools/objtool/elf.c
+index 743c2e9..41bca1d 100644
+--- a/tools/objtool/elf.c
++++ b/tools/objtool/elf.c
+@@ -717,7 +717,7 @@ static int elf_add_string(struct elf *elf, struct section *strtab, char *str)
  
--	/*record irq_work call stack in order to print it in KASAN reports*/
--	kasan_record_aux_stack(work);
--
- 	/* Queue the entry and raise the IPI if needed. */
- 	preempt_disable();
- 	__irq_work_queue_local(work);
+ struct symbol *elf_create_undef_symbol(struct elf *elf, const char *name)
+ {
+-	struct section *symtab;
++	struct section *symtab, *symtab_shndx;
+ 	struct symbol *sym;
+ 	Elf_Data *data;
+ 	Elf_Scn *s;
+@@ -769,6 +769,29 @@ struct symbol *elf_create_undef_symbol(struct elf *elf, const char *name)
+ 	symtab->len += data->d_size;
+ 	symtab->changed = true;
+ 
++	symtab_shndx = find_section_by_name(elf, ".symtab_shndx");
++	if (symtab_shndx) {
++		s = elf_getscn(elf->elf, symtab_shndx->idx);
++		if (!s) {
++			WARN_ELF("elf_getscn");
++			return NULL;
++		}
++
++		data = elf_newdata(s);
++		if (!data) {
++			WARN_ELF("elf_newdata");
++			return NULL;
++		}
++
++		data->d_buf = &sym->sym.st_size; /* conveniently 0 */
++		data->d_size = sizeof(Elf32_Word);
++		data->d_align = 4;
++		data->d_type = ELF_T_WORD;
++
++		symtab_shndx->len += 4;
++		symtab_shndx->changed = true;
++	}
++
+ 	sym->sec = find_section_by_index(elf, 0);
+ 
+ 	elf_add_symbol(elf, sym);
