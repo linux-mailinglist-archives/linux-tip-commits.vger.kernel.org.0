@@ -2,57 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 29A4A3A250A
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Jun 2021 09:09:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B41A3A2536
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Jun 2021 09:20:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229788AbhFJHLD (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 10 Jun 2021 03:11:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60636 "EHLO
+        id S229910AbhFJHWs (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 10 Jun 2021 03:22:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229725AbhFJHLC (ORCPT
+        with ESMTP id S229705AbhFJHWs (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 10 Jun 2021 03:11:02 -0400
+        Thu, 10 Jun 2021 03:22:48 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABE74C061574;
-        Thu, 10 Jun 2021 00:09:06 -0700 (PDT)
-Date:   Thu, 10 Jun 2021 07:09:04 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 699DDC061574;
+        Thu, 10 Jun 2021 00:20:52 -0700 (PDT)
+Date:   Thu, 10 Jun 2021 07:20:50 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1623308945;
+        s=2020; t=1623309651;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=G6U6xdWOxkx89xGsforOnu8yvR/5Ov7V6ehYrAu4K7g=;
-        b=2gnd4GDTabfGWAQ9nZwRcZQNzwNSU/9rTHOPUEistQiJvcp4nwkk1qVFDccY+8l78M27s0
-        NiD1R9nNjJyP6f+uk8fyk5Wl3iNj1fA0Vi2IppyFSqXoqDPJB6hV1VRbqgUWcdArFsF1/j
-        4x5tJy5euEFFJgFDYGhPcX5HB+9RHAOR6Sz3c4ffzj0Jisv1RtMAzeVjQ6vBEGZ1+h4VVi
-        Zu3cqIInUNJBOYHkfhReWOXOCDOUfW0WAeYG/nVd+xnWpsjJ0vfTFVdQEj3/oJg7zdm8fT
-        +4zdrpF+a57xNb35Z/LxdtGv9xNlBz35NiNS59IOMp1qAp9EGLtjcPoe5XDPHg==
+        bh=qGZ3RpURnA8wRm2sDdPn6msKxg354ze+plbTik+8KKE=;
+        b=lUYXGueLaREjMatNvglWhwlodsy6IGtdos35qw9uebq71R7WjlOQ92o8WDxNSZ4t5i0Ilu
+        tdtMYi1J6lbrtxLysqAKgJAIkA9nzJizdiRRS8O0fhmn313at3jVcsgE+A78wnz0BoSChF
+        bWJBGhcJxtbYQyKrRQ+5i66rbp8y90kRi5j8aoIJDc4BY28jwOZZJ5EP4dWqR1Fns96wOJ
+        d66tzbXLtSH1yKkhz2KIkduHll+8Xue9QHBz+1oKKNPZtKf84oALl0tNZarNKSfdaXdz84
+        p6zG+Zikc5b+QsnIf9Ke1x5Aoc/R4JOFbkNEkKBDg5lpUuEcnBwIZD7mvvNVMQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1623308945;
+        s=2020e; t=1623309651;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=G6U6xdWOxkx89xGsforOnu8yvR/5Ov7V6ehYrAu4K7g=;
-        b=DBtX8pmWGcOqPrrPJRTA3WNpXIfaLlto6meo3/YycZg9hHdZXSopcNQvy6fdqKCYn471Yq
-        WITQTunrBiwcnzAA==
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+        bh=qGZ3RpURnA8wRm2sDdPn6msKxg354ze+plbTik+8KKE=;
+        b=TozlL5joE45pxEaFPckEMcCOdvx1eLjLLO0DIIawcjx8YlTMzhHpik2gwijPB+vdr69L3a
+        y0A9gUVYmAxaMpDw==
+From:   "tip-bot2 for CodyYao-oc" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/urgent] objtool: Fix .symtab_shndx handling for
- elf_create_undef_symbol()
-Cc:     Nick Desaulniers <ndesaulniers@google.com>,
-        Fangrui Song <maskray@google.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: perf/urgent] x86/nmi_watchdog: Fix old-style NMI watchdog
+ regression on old Intel CPUs
+Cc:     "CodyYao-oc" <CodyYao-oc@zhaoxin.com>,
+        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <BA@hirez.programming.kicks-ass.net>
-References: <BA@hirez.programming.kicks-ass.net>
+In-Reply-To: <20210607025335.9643-1-CodyYao-oc@zhaoxin.com>
+References: <20210607025335.9643-1-CodyYao-oc@zhaoxin.com>
 MIME-Version: 1.0
-Message-ID: <162330894430.29796.13585465645704694671.tip-bot2@tip-bot2>
+Message-ID: <162330965024.29796.13027483720549628002.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,77 +60,58 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the objtool/urgent branch of tip:
+The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     f17777cc267523a21815a4ae7489f0d796b1fc07
-Gitweb:        https://git.kernel.org/tip/f17777cc267523a21815a4ae7489f0d796b1fc07
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Mon, 07 Jun 2021 11:45:58 +02:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 08 Jun 2021 20:04:02 +02:00
+Commit-ID:     89326c72c9b343da20a221a7234850e2e94161b7
+Gitweb:        https://git.kernel.org/tip/89326c72c9b343da20a221a7234850e2e94161b7
+Author:        CodyYao-oc <CodyYao-oc@zhaoxin.com>
+AuthorDate:    Mon, 07 Jun 2021 10:53:35 +08:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Thu, 10 Jun 2021 09:19:00 +02:00
 
-objtool: Fix .symtab_shndx handling for elf_create_undef_symbol()
+x86/nmi_watchdog: Fix old-style NMI watchdog regression on old Intel CPUs
 
-When an ELF object uses extended symbol section indexes (IOW it has a
-.symtab_shndx section), these must be kept in sync with the regular
-symbol table (.symtab).
+The following commit:
 
-So for every new symbol we emit, make sure to also emit a
-.symtab_shndx value to keep the arrays of equal size.
+   3a4ac121c2ca ("x86/perf: Add hardware performance events support for Zhaoxin CPU.")
 
-Note: since we're writing an UNDEF symbol, most GElf_Sym fields will
-be 0 and we can repurpose one (st_size) to host the 0 for the xshndx
-value.
+Got the old-style NMI watchdog logic wrong and broke it for basically every
+Intel CPU where it was active. Which is only truly old CPUs, so few people noticed.
 
-Reported-by: Nick Desaulniers <ndesaulniers@google.com>
-Suggested-by: Fangrui Song <maskray@google.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: Nick Desaulniers <ndesaulniers@google.com>
-Link: https://lkml.kernel.org/r/YL3q1qFO9QIRL/BA@hirez.programming.kicks-ass.net
+On CPUs with perf events support we turn off the old-style NMI watchdog, so it
+was pretty pointless to add the logic for X86_VENDOR_ZHAOXIN to begin with ... :-/
+
+Anyway, the fix is to restore the old logic and add a 'break'.
+
+[ mingo: Wrote a new changelog. ]
+
+Fixes: 3a4ac121c2ca ("x86/perf: Add hardware performance events support for Zhaoxin CPU.")
+Signed-off-by: CodyYao-oc <CodyYao-oc@zhaoxin.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20210607025335.9643-1-CodyYao-oc@zhaoxin.com
 ---
- tools/objtool/elf.c | 25 ++++++++++++++++++++++++-
- 1 file changed, 24 insertions(+), 1 deletion(-)
+ arch/x86/kernel/cpu/perfctr-watchdog.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/objtool/elf.c b/tools/objtool/elf.c
-index 743c2e9..41bca1d 100644
---- a/tools/objtool/elf.c
-+++ b/tools/objtool/elf.c
-@@ -717,7 +717,7 @@ static int elf_add_string(struct elf *elf, struct section *strtab, char *str)
- 
- struct symbol *elf_create_undef_symbol(struct elf *elf, const char *name)
- {
--	struct section *symtab;
-+	struct section *symtab, *symtab_shndx;
- 	struct symbol *sym;
- 	Elf_Data *data;
- 	Elf_Scn *s;
-@@ -769,6 +769,29 @@ struct symbol *elf_create_undef_symbol(struct elf *elf, const char *name)
- 	symtab->len += data->d_size;
- 	symtab->changed = true;
- 
-+	symtab_shndx = find_section_by_name(elf, ".symtab_shndx");
-+	if (symtab_shndx) {
-+		s = elf_getscn(elf->elf, symtab_shndx->idx);
-+		if (!s) {
-+			WARN_ELF("elf_getscn");
-+			return NULL;
-+		}
-+
-+		data = elf_newdata(s);
-+		if (!data) {
-+			WARN_ELF("elf_newdata");
-+			return NULL;
-+		}
-+
-+		data->d_buf = &sym->sym.st_size; /* conveniently 0 */
-+		data->d_size = sizeof(Elf32_Word);
-+		data->d_align = 4;
-+		data->d_type = ELF_T_WORD;
-+
-+		symtab_shndx->len += 4;
-+		symtab_shndx->changed = true;
-+	}
-+
- 	sym->sec = find_section_by_index(elf, 0);
- 
- 	elf_add_symbol(elf, sym);
+diff --git a/arch/x86/kernel/cpu/perfctr-watchdog.c b/arch/x86/kernel/cpu/perfctr-watchdog.c
+index 3ef5868..7aecb2f 100644
+--- a/arch/x86/kernel/cpu/perfctr-watchdog.c
++++ b/arch/x86/kernel/cpu/perfctr-watchdog.c
+@@ -63,7 +63,7 @@ static inline unsigned int nmi_perfctr_msr_to_bit(unsigned int msr)
+ 		case 15:
+ 			return msr - MSR_P4_BPU_PERFCTR0;
+ 		}
+-		fallthrough;
++		break;
+ 	case X86_VENDOR_ZHAOXIN:
+ 	case X86_VENDOR_CENTAUR:
+ 		return msr - MSR_ARCH_PERFMON_PERFCTR0;
+@@ -96,7 +96,7 @@ static inline unsigned int nmi_evntsel_msr_to_bit(unsigned int msr)
+ 		case 15:
+ 			return msr - MSR_P4_BSU_ESCR0;
+ 		}
+-		fallthrough;
++		break;
+ 	case X86_VENDOR_ZHAOXIN:
+ 	case X86_VENDOR_CENTAUR:
+ 		return msr - MSR_ARCH_PERFMON_EVENTSEL0;
