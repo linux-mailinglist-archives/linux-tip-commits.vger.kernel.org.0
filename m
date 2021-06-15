@@ -2,48 +2,45 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E5603A8745
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 15 Jun 2021 19:14:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C52DD3A8744
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 15 Jun 2021 19:14:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229494AbhFORQo (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S229931AbhFORQo (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Tue, 15 Jun 2021 13:16:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49696 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229557AbhFORQn (ORCPT
+Received: from Galois.linutronix.de ([193.142.43.55]:34892 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229539AbhFORQn (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Tue, 15 Jun 2021 13:16:43 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34070C061574;
-        Tue, 15 Jun 2021 10:14:39 -0700 (PDT)
-Date:   Tue, 15 Jun 2021 17:14:36 -0000
+Date:   Tue, 15 Jun 2021 17:14:37 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1623777277;
+        s=2020; t=1623777278;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=mDR/YGyAZgSimPNRrDfBvwxLec5wq0fM6NlpkMaq+nk=;
-        b=0NGt/tJVPZGwB7GrcDDrBfYcqQEhjew8TS32WcHCz62w/g80gVN36dD2sMPFcmQ9sjrhZV
-        TOCcTIuOu6418PeAZJUootL+YH66eaHJc+l2KUPP97B4dcIgs3Pl1otmML4Svlpf6ufgG5
-        fQTA3QWhstxJV60QXmZddhunooFYStRyYd68z0wNTXsL4LaNcOvQJgAjqT5gtdC538awSx
-        rCGkIjghzVJjkzmy6GxLxsn+A4v5HfV18pTwzEpc9+Nnj8LUTiXR+gVmumXApyjv2GCG1w
-        +E80slQY+v755TP62wh2fg0ayeKcLFA2AJr5iIFryda3ZHDJeSORcDX7UIJC3A==
+        bh=EN44rp/l+iTpLRWA/25WHboruwRmJr4ZupLdHzInMw0=;
+        b=eL+2RYn1+yPVqpGRCTcdLKuEDRBKwuscj8VY/Y8sfOlGFSM0AhcAG4njep9biI6oaZdnQO
+        tfr/D8Y00P/Uc0uQFY03C2z9Z6vE4GEFDNCA3LZQqnyWYByC880VyrLiIZJ6jX/BJ3X9Gt
+        x0cB+lNMtoWDZwIMMZEbyt5stgNq3jmjguArTLrNq2HhSM/TM6aIqzTNK0DXoc9Q9T/izO
+        d3D9N4zPtRFJZIGmXjyPj3ZViO38L/JMZKed8i56ISimIcpJhynfxAyml0Yb59w/jsIEdz
+        aAMdIYrDoUFmMUP80FhBlc6yvxxLttDBSS/qxGORv44NpUBz/HHePzUgf0/krw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1623777277;
+        s=2020e; t=1623777278;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=mDR/YGyAZgSimPNRrDfBvwxLec5wq0fM6NlpkMaq+nk=;
-        b=7bXHTWaSMbMr/fP8Ozdm8O4TAkJ8cMmFqoi4m/LIC/wkf00nZFKQZ8LjpAsvojQviXlPIR
-        XnmGiYlm4Pk24uBA==
+        bh=EN44rp/l+iTpLRWA/25WHboruwRmJr4ZupLdHzInMw0=;
+        b=sIFfBjrQKDAjzVjunwy3tX7DaN532tJLgoEm1hMqinwnvVmUpyV6YZ9jH1NH/hjjqIl3U4
+        TClpEdEaJsYP+oBQ==
 From:   "tip-bot2 for Pawan Gupta" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cpu] x86/tsx: Clear CPUID bits when TSX always force aborts
+Subject: [tip: x86/cpu] x86/msr: Define new bits in TSX_FORCE_ABORT MSR
 Cc:     Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
         Borislav Petkov <bp@suse.de>,
         Thomas Gleixner <tglx@linutronix.de>,
@@ -51,14 +48,14 @@ Cc:     Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
         Tony Luck <tony.luck@intel.com>,
         Neelima Krishnan <neelima.krishnan@intel.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: =?utf-8?q?=3C5209b3d72ffe5bd3cafdcc803f5b883f785329c3=2E16237?=
+In-Reply-To: =?utf-8?q?=3C9add61915b4a4eedad74fbd869107863a28b428e=2E16237?=
  =?utf-8?q?04845=2Egit-series=2Epawan=2Ekumar=2Egupta=40linux=2Eintel=2Eco?=
  =?utf-8?q?m=3E?=
-References: =?utf-8?q?=3C5209b3d72ffe5bd3cafdcc803f5b883f785329c3=2E162370?=
+References: =?utf-8?q?=3C9add61915b4a4eedad74fbd869107863a28b428e=2E162370?=
  =?utf-8?q?4845=2Egit-series=2Epawan=2Ekumar=2Egupta=40linux=2Eintel=2Ecom?=
  =?utf-8?q?=3E?=
 MIME-Version: 1.0
-Message-ID: <162377727623.19906.1364963884098563436.tip-bot2@tip-bot2>
+Message-ID: <162377727757.19906.3940302915932711819.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -69,22 +66,48 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/cpu branch of tip:
 
-Commit-ID:     293649307ef9abcd4f83f6dac4d4400dfd97c936
-Gitweb:        https://git.kernel.org/tip/293649307ef9abcd4f83f6dac4d4400dfd97c936
+Commit-ID:     1348924ba8169f35cedfd0a0087872b81a632b8e
+Gitweb:        https://git.kernel.org/tip/1348924ba8169f35cedfd0a0087872b81a632b8e
 Author:        Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-AuthorDate:    Mon, 14 Jun 2021 14:14:25 -07:00
+AuthorDate:    Mon, 14 Jun 2021 14:12:22 -07:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 15 Jun 2021 17:46:48 +02:00
+CommitterDate: Tue, 15 Jun 2021 17:23:15 +02:00
 
-x86/tsx: Clear CPUID bits when TSX always force aborts
+x86/msr: Define new bits in TSX_FORCE_ABORT MSR
 
-As a result of TSX deprecation, some processors always abort TSX
-transactions by default after a microcode update.
+Intel client processors that support the IA32_TSX_FORCE_ABORT MSR
+related to perf counter interaction [1] received a microcode update that
+deprecates the Transactional Synchronization Extension (TSX) feature.
+The bit FORCE_ABORT_RTM now defaults to 1, writes to this bit are
+ignored. A new bit TSX_CPUID_CLEAR clears the TSX related CPUID bits.
 
-When TSX feature cannot be used it is better to hide it. Clear CPUID.RTM
-and CPUID.HLE bits when TSX transactions always abort.
+The summary of changes to the IA32_TSX_FORCE_ABORT MSR are:
 
- [ bp: Massage commit message and comments. ]
+  Bit 0: FORCE_ABORT_RTM (legacy bit, new default=1) Status bit that
+  indicates if RTM transactions are always aborted. This bit is
+  essentially !SDV_ENABLE_RTM(Bit 2). Writes to this bit are ignored.
+
+  Bit 1: TSX_CPUID_CLEAR (new bit, default=0) When set, CPUID.HLE = 0
+  and CPUID.RTM = 0.
+
+  Bit 2: SDV_ENABLE_RTM (new bit, default=0) When clear, XBEGIN will
+  always abort with EAX code 0. When set, XBEGIN will not be forced to
+  abort (but will always abort in SGX enclaves). This bit is intended to
+  be used on developer systems. If this bit is set, transactional
+  atomicity correctness is not certain. SDV = Software Development
+  Vehicle (SDV), i.e. developer systems.
+
+Performance monitoring counter 3 is usable in all cases, regardless of
+the value of above bits.
+
+Add support for a new CPUID bit - CPUID.RTM_ALWAYS_ABORT (CPUID 7.EDX[11])
+ - to indicate the status of always abort behavior.
+
+[1] [ bp: Look for document ID 604224, "Performance Monitoring Impact
+      of Intel Transactional Synchronization Extension Memory". Since
+      there's no way for us to have stable links to documents... ]
+
+ [ bp: Massage and extend commit message. ]
 
 Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
@@ -92,107 +115,36 @@ Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
 Reviewed-by: Andi Kleen <ak@linux.intel.com>
 Reviewed-by: Tony Luck <tony.luck@intel.com>
 Tested-by: Neelima Krishnan <neelima.krishnan@intel.com>
-Link: https://lkml.kernel.org/r/5209b3d72ffe5bd3cafdcc803f5b883f785329c3.1623704845.git-series.pawan.kumar.gupta@linux.intel.com
+Link: https://lkml.kernel.org/r/9add61915b4a4eedad74fbd869107863a28b428e.1623704845.git-series.pawan.kumar.gupta@linux.intel.com
 ---
- arch/x86/kernel/cpu/cpu.h   |  2 ++-
- arch/x86/kernel/cpu/intel.c |  4 +++-
- arch/x86/kernel/cpu/tsx.c   | 37 ++++++++++++++++++++++++++++++++++--
- 3 files changed, 40 insertions(+), 3 deletions(-)
+ arch/x86/include/asm/cpufeatures.h | 1 +
+ arch/x86/include/asm/msr-index.h   | 4 ++++
+ 2 files changed, 5 insertions(+)
 
-diff --git a/arch/x86/kernel/cpu/cpu.h b/arch/x86/kernel/cpu/cpu.h
-index 6794412..9552130 100644
---- a/arch/x86/kernel/cpu/cpu.h
-+++ b/arch/x86/kernel/cpu/cpu.h
-@@ -48,6 +48,7 @@ extern const struct cpu_dev *const __x86_cpu_dev_start[],
- enum tsx_ctrl_states {
- 	TSX_CTRL_ENABLE,
- 	TSX_CTRL_DISABLE,
-+	TSX_CTRL_RTM_ALWAYS_ABORT,
- 	TSX_CTRL_NOT_SUPPORTED,
- };
+diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
+index 81269c7..d0ce5cf 100644
+--- a/arch/x86/include/asm/cpufeatures.h
++++ b/arch/x86/include/asm/cpufeatures.h
+@@ -378,6 +378,7 @@
+ #define X86_FEATURE_AVX512_VP2INTERSECT (18*32+ 8) /* AVX-512 Intersect for D/Q */
+ #define X86_FEATURE_SRBDS_CTRL		(18*32+ 9) /* "" SRBDS mitigation MSR available */
+ #define X86_FEATURE_MD_CLEAR		(18*32+10) /* VERW clears CPU buffers */
++#define X86_FEATURE_RTM_ALWAYS_ABORT	(18*32+11) /* "" RTM transaction always aborts */
+ #define X86_FEATURE_TSX_FORCE_ABORT	(18*32+13) /* "" TSX_FORCE_ABORT */
+ #define X86_FEATURE_SERIALIZE		(18*32+14) /* SERIALIZE instruction */
+ #define X86_FEATURE_HYBRID_CPU		(18*32+15) /* "" This part has CPUs of more than one type */
+diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-index.h
+index 742d89a..2bc1600 100644
+--- a/arch/x86/include/asm/msr-index.h
++++ b/arch/x86/include/asm/msr-index.h
+@@ -772,6 +772,10 @@
  
-@@ -56,6 +57,7 @@ extern __ro_after_init enum tsx_ctrl_states tsx_ctrl_state;
- extern void __init tsx_init(void);
- extern void tsx_enable(void);
- extern void tsx_disable(void);
-+extern void tsx_clear_cpuid(void);
- #else
- static inline void tsx_init(void) { }
- #endif /* CONFIG_CPU_SUP_INTEL */
-diff --git a/arch/x86/kernel/cpu/intel.c b/arch/x86/kernel/cpu/intel.c
-index 8adffc1..861e919 100644
---- a/arch/x86/kernel/cpu/intel.c
-+++ b/arch/x86/kernel/cpu/intel.c
-@@ -717,8 +717,10 @@ static void init_intel(struct cpuinfo_x86 *c)
+ #define MSR_TFA_RTM_FORCE_ABORT_BIT	0
+ #define MSR_TFA_RTM_FORCE_ABORT		BIT_ULL(MSR_TFA_RTM_FORCE_ABORT_BIT)
++#define MSR_TFA_TSX_CPUID_CLEAR_BIT	1
++#define MSR_TFA_TSX_CPUID_CLEAR		BIT_ULL(MSR_TFA_TSX_CPUID_CLEAR_BIT)
++#define MSR_TFA_SDV_ENABLE_RTM_BIT	2
++#define MSR_TFA_SDV_ENABLE_RTM		BIT_ULL(MSR_TFA_SDV_ENABLE_RTM_BIT)
  
- 	if (tsx_ctrl_state == TSX_CTRL_ENABLE)
- 		tsx_enable();
--	if (tsx_ctrl_state == TSX_CTRL_DISABLE)
-+	else if (tsx_ctrl_state == TSX_CTRL_DISABLE)
- 		tsx_disable();
-+	else if (tsx_ctrl_state == TSX_CTRL_RTM_ALWAYS_ABORT)
-+		tsx_clear_cpuid();
- 
- 	split_lock_init();
- 	bus_lock_init();
-diff --git a/arch/x86/kernel/cpu/tsx.c b/arch/x86/kernel/cpu/tsx.c
-index e2ad30e..9c7a5f0 100644
---- a/arch/x86/kernel/cpu/tsx.c
-+++ b/arch/x86/kernel/cpu/tsx.c
-@@ -2,7 +2,7 @@
- /*
-  * Intel Transactional Synchronization Extensions (TSX) control.
-  *
-- * Copyright (C) 2019 Intel Corporation
-+ * Copyright (C) 2019-2021 Intel Corporation
-  *
-  * Author:
-  *	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-@@ -84,13 +84,46 @@ static enum tsx_ctrl_states x86_get_tsx_auto_mode(void)
- 	return TSX_CTRL_ENABLE;
- }
- 
-+void tsx_clear_cpuid(void)
-+{
-+	u64 msr;
-+
-+	/*
-+	 * MSR_TFA_TSX_CPUID_CLEAR bit is only present when both CPUID
-+	 * bits RTM_ALWAYS_ABORT and TSX_FORCE_ABORT are present.
-+	 */
-+	if (boot_cpu_has(X86_FEATURE_RTM_ALWAYS_ABORT) &&
-+	    boot_cpu_has(X86_FEATURE_TSX_FORCE_ABORT)) {
-+		rdmsrl(MSR_TSX_FORCE_ABORT, msr);
-+		msr |= MSR_TFA_TSX_CPUID_CLEAR;
-+		wrmsrl(MSR_TSX_FORCE_ABORT, msr);
-+	}
-+}
-+
- void __init tsx_init(void)
- {
- 	char arg[5] = {};
- 	int ret;
- 
--	if (!tsx_ctrl_is_supported())
-+	/*
-+	 * Hardware will always abort a TSX transaction if both CPUID bits
-+	 * RTM_ALWAYS_ABORT and TSX_FORCE_ABORT are set. In this case, it is
-+	 * better not to enumerate CPUID.RTM and CPUID.HLE bits. Clear them
-+	 * here.
-+	 */
-+	if (boot_cpu_has(X86_FEATURE_RTM_ALWAYS_ABORT) &&
-+	    boot_cpu_has(X86_FEATURE_TSX_FORCE_ABORT)) {
-+		tsx_ctrl_state = TSX_CTRL_RTM_ALWAYS_ABORT;
-+		tsx_clear_cpuid();
-+		setup_clear_cpu_cap(X86_FEATURE_RTM);
-+		setup_clear_cpu_cap(X86_FEATURE_HLE);
- 		return;
-+	}
-+
-+	if (!tsx_ctrl_is_supported()) {
-+		tsx_ctrl_state = TSX_CTRL_NOT_SUPPORTED;
-+		return;
-+	}
- 
- 	ret = cmdline_find_option(boot_command_line, "tsx", arg, sizeof(arg));
- 	if (ret >= 0) {
+ /* P4/Xeon+ specific */
+ #define MSR_IA32_MCG_EAX		0x00000180
