@@ -2,52 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1635A3A6796
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 14 Jun 2021 15:19:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0EB9A3A7C74
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 15 Jun 2021 12:52:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233450AbhFNNVc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 14 Jun 2021 09:21:32 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:54744 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232825AbhFNNVc (ORCPT
+        id S231726AbhFOKyH (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 15 Jun 2021 06:54:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45198 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231686AbhFOKyF (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 14 Jun 2021 09:21:32 -0400
-Date:   Mon, 14 Jun 2021 13:19:27 -0000
+        Tue, 15 Jun 2021 06:54:05 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD8ABC061574;
+        Tue, 15 Jun 2021 03:52:01 -0700 (PDT)
+Date:   Tue, 15 Jun 2021 10:51:55 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1623676768;
+        s=2020; t=1623754316;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=5q9+MaoHfV/mDKcaDuJodpqNRdwr+f/ZC3PEstNU0p8=;
-        b=1xkAbuHASmPAdqUvn4g0Eh6r3Nl1PpG5SGl8DPSscie1CSriIbf6C3SwXKpt8oVoc2RyKm
-        KZRn9VKfAUKGTz+f9sTKj31/aXbEG8HTGxXFoE8fIpPfL6DtXYH3rHk+TalRddj6KScVhn
-        6e9n0dhAZ1OZ2VxvFpFd2hlOecxqlrfuLYngntW62CINu695tpOuHcWsE7jrzAz7Ybg78f
-        wdSgASCSwp5ofUYMxxwMFVyXHdpy6zPhuh/SliEc0Cs6P5Rngy6WLN/Sfwz0C3QyuFcYdx
-        u3e93dOTEYJlcLf5gT3/pXKvO9dED4U9cm3dumIkTSUYYwbgg3ByTKaZ66p0mg==
+        bh=DHegQvt3cfTnKJX3SVNaRFA4QjL5I7lSJOFQNJlyBqU=;
+        b=jv35iWtIfZhIFhsfKohLOZY3Qyw8SeaWpzCRs5/O5oeL3gsAWRagkGvawaqlWceQudw37a
+        O2aXQD3boVkWvLvyQV1N5Xky+6rRsfiufNYKcDEsaKdpZfU0EcPy5vfg7jfdJKeV73Meeo
+        BcDRqydPR15BkgW6yulMrhIOAkATrEg+4ycezzlwGkDK7G9TWcPJZ/fkLUtxtdXsUC4rRL
+        OrjTHLgWyOx/206+lfVpI1VAC+ICQSE/YJZg35uO8HQ4RMSJjE+MIfEbC49TXPgYz2vkTH
+        ybvDW/QR7TMUHozb+LevZBjcBTKpN31nW11Fnr/VTmreyKZSwh4/XfArnOuXjw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1623676768;
+        s=2020e; t=1623754316;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=5q9+MaoHfV/mDKcaDuJodpqNRdwr+f/ZC3PEstNU0p8=;
-        b=WjTGenGbzUt7vZ0BaclYK7dg6cVjAYkRUKTSyu/M2b7oEWZKvwPctjA5PKB1Nf7sre9qbj
-        Q9609hNk6hK5mUBw==
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+        bh=DHegQvt3cfTnKJX3SVNaRFA4QjL5I7lSJOFQNJlyBqU=;
+        b=qhgNffPF+w1ZYuJmaOXEa5ygkzFcTVsx0PyDg8uUnF7V/Vn9J8bcvkUFJij7aKROw1Sg9I
+        t7ygeglkgBlwIVCA==
+From:   "tip-bot2 for Joerg Roedel" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] objtool: Improve reloc hash size guestimate
-Cc:     Nathan Chancellor <nathan@kernel.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <YMJpGLuGNsGtA5JJ@hirez.programming.kicks-ass.net>
-References: <YMJpGLuGNsGtA5JJ@hirez.programming.kicks-ass.net>
+Subject: [tip: x86/sev] x86/sev: Propagate #GP if getting linear instruction
+ address failed
+Cc:     Joerg Roedel <jroedel@suse.de>, Borislav Petkov <bp@suse.de>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20210614135327.9921-7-joro@8bytes.org>
+References: <20210614135327.9921-7-joro@8bytes.org>
 MIME-Version: 1.0
-Message-ID: <162367676767.19906.18401009799732706895.tip-bot2@tip-bot2>
+Message-ID: <162375431608.19906.8487681008973797088.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -56,74 +59,54 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the objtool/core branch of tip:
+The following commit has been merged into the x86/sev branch of tip:
 
-Commit-ID:     d33b9035e14a35f6f2a5f067f0b156a93581811d
-Gitweb:        https://git.kernel.org/tip/d33b9035e14a35f6f2a5f067f0b156a93581811d
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Fri, 11 Jun 2021 08:33:36 +02:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Mon, 14 Jun 2021 14:05:36 +02:00
+Commit-ID:     07570cef5e5c3fcec40f82a9075abb4c1da63319
+Gitweb:        https://git.kernel.org/tip/07570cef5e5c3fcec40f82a9075abb4c1da63319
+Author:        Joerg Roedel <jroedel@suse.de>
+AuthorDate:    Mon, 14 Jun 2021 15:53:27 +02:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Tue, 15 Jun 2021 11:55:26 +02:00
 
-objtool: Improve reloc hash size guestimate
+x86/sev: Propagate #GP if getting linear instruction address failed
 
-Nathan reported that LLVM ThinLTO builds have a performance regression
-with commit 25cf0d8aa2a3 ("objtool: Rewrite hashtable sizing"). Sami
-was quick to note that this is due to their use of -ffunction-sections.
+When an instruction is fetched from user-space, segmentation needs to
+be taken into account. This means that getting the linear address of an
+instruction can fail. Hardware would raise a #GP exception in that case,
+but the #VC exception handler would emulate it as a page-fault.
 
-As a result the .text section is small and basing the number of relocs
-off of that no longer works. Instead have read_sections() compute the
-sum of all SHF_EXECINSTR sections and use that.
+The insn_fetch_from_user*() functions now provide the relevant
+information in case of a failure. Use that and propagate a #GP when the
+linear address of an instruction to fetch could not be calculated.
 
-Fixes: 25cf0d8aa2a3 ("objtool: Rewrite hashtable sizing")
-Reported-by: Nathan Chancellor <nathan@kernel.org>
-Debugged-by: Sami Tolvanen <samitolvanen@google.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: Nathan Chancellor <nathan@kernel.org>
-Link: https://lkml.kernel.org/r/YMJpGLuGNsGtA5JJ@hirez.programming.kicks-ass.net
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lkml.kernel.org/r/20210614135327.9921-7-joro@8bytes.org
 ---
- tools/objtool/elf.c                 | 11 ++++-------
- tools/objtool/include/objtool/elf.h |  1 +
- 2 files changed, 5 insertions(+), 7 deletions(-)
+ arch/x86/kernel/sev.c |  9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/tools/objtool/elf.c b/tools/objtool/elf.c
-index a8a0ee2..2371ccc 100644
---- a/tools/objtool/elf.c
-+++ b/tools/objtool/elf.c
-@@ -288,6 +288,9 @@ static int read_sections(struct elf *elf)
- 		}
- 		sec->len = sec->sh.sh_size;
+diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
+index a1eeaa7..8178db0 100644
+--- a/arch/x86/kernel/sev.c
++++ b/arch/x86/kernel/sev.c
+@@ -261,11 +261,18 @@ static enum es_result __vc_decode_user_insn(struct es_em_ctxt *ctxt)
+ 	int insn_bytes;
  
-+		if (sec->sh.sh_flags & SHF_EXECINSTR)
-+			elf->text_size += sec->len;
-+
- 		list_add_tail(&sec->list, &elf->sections);
- 		elf_hash_add(section, &sec->hash, sec->idx);
- 		elf_hash_add(section_name, &sec->name_hash, str_hash(sec->name));
-@@ -581,13 +584,7 @@ static int read_relocs(struct elf *elf)
- 	unsigned int symndx;
- 	unsigned long nr_reloc, max_reloc = 0, tot_reloc = 0;
+ 	insn_bytes = insn_fetch_from_user_inatomic(ctxt->regs, buffer);
+-	if (insn_bytes <= 0) {
++	if (insn_bytes == 0) {
++		/* Nothing could be copied */
+ 		ctxt->fi.vector     = X86_TRAP_PF;
+ 		ctxt->fi.error_code = X86_PF_INSTR | X86_PF_USER;
+ 		ctxt->fi.cr2        = ctxt->regs->ip;
+ 		return ES_EXCEPTION;
++	} else if (insn_bytes == -EINVAL) {
++		/* Effective RIP could not be calculated */
++		ctxt->fi.vector     = X86_TRAP_GP;
++		ctxt->fi.error_code = 0;
++		ctxt->fi.cr2        = 0;
++		return ES_EXCEPTION;
+ 	}
  
--	sec = find_section_by_name(elf, ".text");
--	if (!sec) {
--		WARN("no .text");
--		return -1;
--	}
--
--	if (!elf_alloc_hash(reloc, sec->len / 16))
-+	if (!elf_alloc_hash(reloc, elf->text_size / 16))
- 		return -1;
- 
- 	list_for_each_entry(sec, &elf->sections, list) {
-diff --git a/tools/objtool/include/objtool/elf.h b/tools/objtool/include/objtool/elf.h
-index 9008275..e343950 100644
---- a/tools/objtool/include/objtool/elf.h
-+++ b/tools/objtool/include/objtool/elf.h
-@@ -83,6 +83,7 @@ struct elf {
- 	int fd;
- 	bool changed;
- 	char *name;
-+	unsigned int text_size;
- 	struct list_head sections;
- 
- 	int symbol_bits;
+ 	if (!insn_decode_from_regs(&ctxt->insn, ctxt->regs, buffer, insn_bytes))
