@@ -2,16 +2,19 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A388F3ACFAF
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 18 Jun 2021 18:03:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C02CA3ACFB2
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 18 Jun 2021 18:03:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234540AbhFRQFy (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 18 Jun 2021 12:05:54 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:57418 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233033AbhFRQFv (ORCPT
+        id S235663AbhFRQF4 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 18 Jun 2021 12:05:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38492 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233274AbhFRQFw (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 18 Jun 2021 12:05:51 -0400
+        Fri, 18 Jun 2021 12:05:52 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3323C061574;
+        Fri, 18 Jun 2021 09:03:42 -0700 (PDT)
 Date:   Fri, 18 Jun 2021 16:03:40 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1624032221;
@@ -20,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=s9NOyDN1Emmtcu9gsSsGTxEq1iVk0D7i6S4fpHLEpys=;
-        b=B6BYkRWZTADpLI500g2/qeElwG3Et+nMivxvRI8zn49j4w9iJCNF2+iiE8/El65lhSbhpv
-        Jzn3LR1/214gLpUdkIgIaAGAIHF4dNFcYzO+7RF6VywmKLGftaWRtjaqsNpE95hARvTRgZ
-        wLBWm2CjZwM+Sw9P9KeWS1Q36tmgDevpVemAVwsBn64ZxSL7cNn81i5s3jwhpnqlaprk2J
-        kbAfI910kdWgPUwrelM0LKKWUbMipIc6HqtKv4gX6xZ9LqzuGuvBRz+0D3eJntMwaq6+dQ
-        JTfBluit37Taj4bswKZzj+bgplLeTbIMpB8ak/yRTSEbFOUwSp8ixztvQ+FguA==
+        bh=s7e7IJaPXHeivxB/n1wou8c3uOjA/B4McYCVyvVbbvo=;
+        b=03RL5nsraAVwcxldr6YhXLOPz/Yc6XSOIbjf9m5SjglvdjiUxm/7nZdh7kP23uVojio0d8
+        oa1l9Ld9FTi6N9d+g+g6Vwg4aqYKYjArOtPSTzqDo0zeCe6ojFCH+ib+jc2kbGPjUaNVX2
+        G25SyKqMwFBbQN/WqhmoD4/3ldYklm/FjEiXN28JwpJbg0XaSxwxVgDqS6/isdRBaVdS+p
+        kgJCpcaxb9ogUr84xrjAQkXgCzSSgZJO+ODliDIv5IqvJcmq/1nYTb4AKRalGHdvY641dK
+        lODkPRJXIK7PV/lSmkhymLlf206SzekOdC2jSU0hm29nPYQPxLIGFSWRXadtMw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1624032221;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -33,27 +36,22 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=s9NOyDN1Emmtcu9gsSsGTxEq1iVk0D7i6S4fpHLEpys=;
-        b=FYzyokFUcUG2FeYJrNnu0H52rTmxqWTyM316WgQRmqT7a4nOPPqsrqN2oZ9oF5TkjZyFpB
-        ouydwUpYKJllP3AQ==
-From:   "tip-bot2 for Tony Lindgren" <tip-bot2@linutronix.de>
+        bh=s7e7IJaPXHeivxB/n1wou8c3uOjA/B4McYCVyvVbbvo=;
+        b=FjGCKEK+pdkPzfLjZGniUkIRSus7P+0Vnpi6SeGNK574YwSERKXfTie2RGBfP6hAxtwC/G
+        USEPj2Ks0WiNhrCg==
+From:   "tip-bot2 for Evan Benn" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] clocksource/drivers/timer-ti-dm: Save and restore
- timer TIOCP_CFG
-Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Adam Ford <aford173@gmail.com>,
-        Andreas Kemnade <andreas@kemnade.info>,
-        Lokesh Vutla <lokeshvutla@ti.com>,
-        Peter Ujfalusi <peter.ujfalusi@gmail.com>,
-        Tony Lindgren <tony@atomide.com>,
+Subject: [tip: timers/core] clocksource/drivers/mediatek: Ack and disable
+ interrupts on suspend
+Cc:     Evan Benn <evanbenn@chromium.org>,
         Daniel Lezcano <daniel.lezcano@linaro.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210415085506.56828-1-tony@atomide.com>
-References: <20210415085506.56828-1-tony@atomide.com>
+In-Reply-To: <20210512122528.v4.1.I1d9917047de06715da16e1620759f703fcfdcbcb@changeid>
+References: <20210512122528.v4.1.I1d9917047de06715da16e1620759f703fcfdcbcb@changeid>
 MIME-Version: 1.0
-Message-ID: <162403222040.19906.12782574837725084275.tip-bot2@tip-bot2>
+Message-ID: <162403222096.19906.10495814045933833626.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -64,66 +62,65 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     9517c577f9f722270584cfb1a7b4e1354e408658
-Gitweb:        https://git.kernel.org/tip/9517c577f9f722270584cfb1a7b4e1354e408658
-Author:        Tony Lindgren <tony@atomide.com>
-AuthorDate:    Thu, 15 Apr 2021 11:55:06 +03:00
+Commit-ID:     75ac5cc2ee6b499bc0225ad67302271772929f19
+Gitweb:        https://git.kernel.org/tip/75ac5cc2ee6b499bc0225ad67302271772929f19
+Author:        Evan Benn <evanbenn@chromium.org>
+AuthorDate:    Wed, 12 May 2021 12:25:44 +10:00
 Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
-CommitterDate: Tue, 15 Jun 2021 14:14:14 +02:00
+CommitterDate: Tue, 15 Jun 2021 14:14:03 +02:00
 
-clocksource/drivers/timer-ti-dm: Save and restore timer TIOCP_CFG
+clocksource/drivers/mediatek: Ack and disable interrupts on suspend
 
-As we are using cpu_pm to save and restore context, we must also save and
-restore the timer sysconfig register TIOCP_CFG. This is needed because
-we are not calling PM runtime functions at all with cpu_pm.
+Interrupts are disabled during suspend before this driver disables its
+timers. ARM trusted firmware will abort suspend if the timer irq is
+pending, so ack and disable the timer interrupt during suspend.
 
-Fixes: b34677b0999a ("clocksource/drivers/timer-ti-dm: Implement cpu_pm notifier for context save and restore")
-Cc: Aaro Koskinen <aaro.koskinen@iki.fi>
-Cc: Adam Ford <aford173@gmail.com>
-Cc: Andreas Kemnade <andreas@kemnade.info>
-Cc: Lokesh Vutla <lokeshvutla@ti.com>
-Cc: Peter Ujfalusi <peter.ujfalusi@gmail.com>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
+Signed-off-by: Evan Benn <evanbenn@chromium.org>
 Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20210415085506.56828-1-tony@atomide.com
+Link: https://lore.kernel.org/r/20210512122528.v4.1.I1d9917047de06715da16e1620759f703fcfdcbcb@changeid
 ---
- drivers/clocksource/timer-ti-dm.c | 6 ++++++
- include/clocksource/timer-ti-dm.h | 1 +
- 2 files changed, 7 insertions(+)
+ drivers/clocksource/timer-mediatek.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
-diff --git a/drivers/clocksource/timer-ti-dm.c b/drivers/clocksource/timer-ti-dm.c
-index 33eeabf..e5c631f 100644
---- a/drivers/clocksource/timer-ti-dm.c
-+++ b/drivers/clocksource/timer-ti-dm.c
-@@ -78,6 +78,9 @@ static void omap_dm_timer_write_reg(struct omap_dm_timer *timer, u32 reg,
+diff --git a/drivers/clocksource/timer-mediatek.c b/drivers/clocksource/timer-mediatek.c
+index 9318edc..ab63b95 100644
+--- a/drivers/clocksource/timer-mediatek.c
++++ b/drivers/clocksource/timer-mediatek.c
+@@ -241,6 +241,28 @@ static void mtk_gpt_enable_irq(struct timer_of *to, u8 timer)
+ 	       timer_of_base(to) + GPT_IRQ_EN_REG);
+ }
  
- static void omap_timer_restore_context(struct omap_dm_timer *timer)
- {
-+	__omap_dm_timer_write(timer, OMAP_TIMER_OCP_CFG_OFFSET,
-+			      timer->context.ocp_cfg, 0);
++static void mtk_gpt_resume(struct clock_event_device *clk)
++{
++	struct timer_of *to = to_timer_of(clk);
 +
- 	omap_dm_timer_write_reg(timer, OMAP_TIMER_WAKEUP_EN_REG,
- 				timer->context.twer);
- 	omap_dm_timer_write_reg(timer, OMAP_TIMER_COUNTER_REG,
-@@ -95,6 +98,9 @@ static void omap_timer_restore_context(struct omap_dm_timer *timer)
- 
- static void omap_timer_save_context(struct omap_dm_timer *timer)
- {
-+	timer->context.ocp_cfg =
-+		__omap_dm_timer_read(timer, OMAP_TIMER_OCP_CFG_OFFSET, 0);
++	mtk_gpt_enable_irq(to, TIMER_CLK_EVT);
++}
 +
- 	timer->context.tclr =
- 			omap_dm_timer_read_reg(timer, OMAP_TIMER_CTRL_REG);
- 	timer->context.twer =
-diff --git a/include/clocksource/timer-ti-dm.h b/include/clocksource/timer-ti-dm.h
-index 4c61dad..f6da8a1 100644
---- a/include/clocksource/timer-ti-dm.h
-+++ b/include/clocksource/timer-ti-dm.h
-@@ -74,6 +74,7 @@
- #define OMAP_TIMER_ERRATA_I103_I767			0x80000000
++static void mtk_gpt_suspend(struct clock_event_device *clk)
++{
++	struct timer_of *to = to_timer_of(clk);
++
++	/* Disable all interrupts */
++	writel(0x0, timer_of_base(to) + GPT_IRQ_EN_REG);
++
++	/*
++	 * This is called with interrupts disabled,
++	 * so we need to ack any interrupt that is pending
++	 * or for example ATF will prevent a suspend from completing.
++	 */
++	writel(0x3f, timer_of_base(to) + GPT_IRQ_ACK_REG);
++}
++
+ static struct timer_of to = {
+ 	.flags = TIMER_OF_IRQ | TIMER_OF_BASE | TIMER_OF_CLOCK,
  
- struct timer_regs {
-+	u32 ocp_cfg;
- 	u32 tidr;
- 	u32 tier;
- 	u32 twer;
+@@ -286,6 +308,8 @@ static int __init mtk_gpt_init(struct device_node *node)
+ 	to.clkevt.set_state_oneshot = mtk_gpt_clkevt_shutdown;
+ 	to.clkevt.tick_resume = mtk_gpt_clkevt_shutdown;
+ 	to.clkevt.set_next_event = mtk_gpt_clkevt_next_event;
++	to.clkevt.suspend = mtk_gpt_suspend;
++	to.clkevt.resume = mtk_gpt_resume;
+ 	to.of_irq.handler = mtk_gpt_interrupt;
+ 
+ 	ret = timer_of_init(node, &to);
