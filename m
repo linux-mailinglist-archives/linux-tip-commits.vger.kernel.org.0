@@ -2,140 +2,128 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 208433ACFAD
+	by mail.lfdr.de (Postfix) with ESMTP id A388F3ACFAF
 	for <lists+linux-tip-commits@lfdr.de>; Fri, 18 Jun 2021 18:03:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233396AbhFRQFw (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 18 Jun 2021 12:05:52 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:57364 "EHLO
+        id S234540AbhFRQFy (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 18 Jun 2021 12:05:54 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:57418 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232892AbhFRQFu (ORCPT
+        with ESMTP id S233033AbhFRQFv (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 18 Jun 2021 12:05:50 -0400
-Date:   Fri, 18 Jun 2021 16:03:39 -0000
+        Fri, 18 Jun 2021 12:05:51 -0400
+Date:   Fri, 18 Jun 2021 16:03:40 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1624032220;
+        s=2020; t=1624032221;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=bkLqHqRbisOTijuKbZJuSCTnQUGrENRO7n2FQmX32kU=;
-        b=PxyHhfc/0/+welrKEYfYy7xtp+Puvi9YVEwwX7axP2BcfMI362OadZfo8gC2OkZvv5K9bg
-        S96uHlcnM9KXrFT3sGPeG21wHhG3UkGmpXnWzXB5S19qvsYYC8RLCNsTSmQOgcWJHh/Bye
-        dXJNEzPrGz81UMY6EHDOKpuyVR5vL1+NHpMXbqTCw/oO2ibI5foZhmmg+5uhLFQJPdQmYr
-        /oEfERO2sBIXR+Aecc97TMed+AmDnW31/lMrUQJzKvwAKquA0SzqMYEUmry0cWhEFeO6gQ
-        0jbQmZUd71gy4Jx0CBqkRDqIrrdK+cM4gLP0K+be5aIem1B1jvVoPzfby+vXFg==
+        bh=s9NOyDN1Emmtcu9gsSsGTxEq1iVk0D7i6S4fpHLEpys=;
+        b=B6BYkRWZTADpLI500g2/qeElwG3Et+nMivxvRI8zn49j4w9iJCNF2+iiE8/El65lhSbhpv
+        Jzn3LR1/214gLpUdkIgIaAGAIHF4dNFcYzO+7RF6VywmKLGftaWRtjaqsNpE95hARvTRgZ
+        wLBWm2CjZwM+Sw9P9KeWS1Q36tmgDevpVemAVwsBn64ZxSL7cNn81i5s3jwhpnqlaprk2J
+        kbAfI910kdWgPUwrelM0LKKWUbMipIc6HqtKv4gX6xZ9LqzuGuvBRz+0D3eJntMwaq6+dQ
+        JTfBluit37Taj4bswKZzj+bgplLeTbIMpB8ak/yRTSEbFOUwSp8ixztvQ+FguA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1624032220;
+        s=2020e; t=1624032221;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=bkLqHqRbisOTijuKbZJuSCTnQUGrENRO7n2FQmX32kU=;
-        b=FOmkl3l7FoZCmSxZ3kjqcszm2m/IccXgZQZC1GgtpZAsr9codz8npBQbM8kdYhzHtij6jE
-        Fve6D5DfeXqGkzCw==
-From:   tip-bot2 for =?utf-8?b?5ZGo55Cw5p2w?= (Zhou Yanjie) 
-        <tip-bot2@linutronix.de>
+        bh=s9NOyDN1Emmtcu9gsSsGTxEq1iVk0D7i6S4fpHLEpys=;
+        b=FYzyokFUcUG2FeYJrNnu0H52rTmxqWTyM316WgQRmqT7a4nOPPqsrqN2oZ9oF5TkjZyFpB
+        ouydwUpYKJllP3AQ==
+From:   "tip-bot2 for Tony Lindgren" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] clocksource/drivers/ingenic: Rename unreasonable
- array names
-Cc:     zhouyanjie@wanyeetech.com,
+Subject: [tip: timers/core] clocksource/drivers/timer-ti-dm: Save and restore
+ timer TIOCP_CFG
+Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Adam Ford <aford173@gmail.com>,
+        Andreas Kemnade <andreas@kemnade.info>,
+        Lokesh Vutla <lokeshvutla@ti.com>,
+        Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+        Tony Lindgren <tony@atomide.com>,
         Daniel Lezcano <daniel.lezcano@linaro.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <1622824306-30987-2-git-send-email-zhouyanjie@wanyeetech.com>
-References: <1622824306-30987-2-git-send-email-zhouyanjie@wanyeetech.com>
+In-Reply-To: <20210415085506.56828-1-tony@atomide.com>
+References: <20210415085506.56828-1-tony@atomide.com>
 MIME-Version: 1.0
-Message-ID: <162403221983.19906.5878066725123528836.tip-bot2@tip-bot2>
+Message-ID: <162403222040.19906.12782574837725084275.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     870a6e1539829356baf70b57c933d0b309cfac21
-Gitweb:        https://git.kernel.org/tip/870a6e1539829356baf70b57c933d0b309c=
-fac21
-Author:        =E5=91=A8=E7=90=B0=E6=9D=B0 (Zhou Yanjie) <zhouyanjie@wanyeete=
-ch.com>
-AuthorDate:    Sat, 05 Jun 2021 00:31:45 +08:00
+Commit-ID:     9517c577f9f722270584cfb1a7b4e1354e408658
+Gitweb:        https://git.kernel.org/tip/9517c577f9f722270584cfb1a7b4e1354e408658
+Author:        Tony Lindgren <tony@atomide.com>
+AuthorDate:    Thu, 15 Apr 2021 11:55:06 +03:00
 Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
 CommitterDate: Tue, 15 Jun 2021 14:14:14 +02:00
 
-clocksource/drivers/ingenic: Rename unreasonable array names
+clocksource/drivers/timer-ti-dm: Save and restore timer TIOCP_CFG
 
-1.Rename the "ingenic_ost_clk_info[]" to "x1000_ost_clk_info[]" to
-  facilitate the addition of OST support for X2000 SoC in a later
-  commit
+As we are using cpu_pm to save and restore context, we must also save and
+restore the timer sysconfig register TIOCP_CFG. This is needed because
+we are not calling PM runtime functions at all with cpu_pm.
 
-2.When the OST support for X2000 SoC is added, there will be two
-  compatible strings, so renaming "ingenic_ost_of_match[]" to
-  "ingenic_ost_of_matches[]" is more reasonable
-
-3.Remove the unnecessary comma in "ingenic_ost_of_matches[]" to reduce
-  code size as much as possible.
-
-Signed-off-by: =E5=91=A8=E7=90=B0=E6=9D=B0 (Zhou Yanjie) <zhouyanjie@wanyeete=
-ch.com>
+Fixes: b34677b0999a ("clocksource/drivers/timer-ti-dm: Implement cpu_pm notifier for context save and restore")
+Cc: Aaro Koskinen <aaro.koskinen@iki.fi>
+Cc: Adam Ford <aford173@gmail.com>
+Cc: Andreas Kemnade <andreas@kemnade.info>
+Cc: Lokesh Vutla <lokeshvutla@ti.com>
+Cc: Peter Ujfalusi <peter.ujfalusi@gmail.com>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
 Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/1622824306-30987-2-git-send-email-zhouyanjie@=
-wanyeetech.com
+Link: https://lore.kernel.org/r/20210415085506.56828-1-tony@atomide.com
 ---
- drivers/clocksource/ingenic-sysost.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/clocksource/timer-ti-dm.c | 6 ++++++
+ include/clocksource/timer-ti-dm.h | 1 +
+ 2 files changed, 7 insertions(+)
 
-diff --git a/drivers/clocksource/ingenic-sysost.c b/drivers/clocksource/ingen=
-ic-sysost.c
-index e77d584..a129840 100644
---- a/drivers/clocksource/ingenic-sysost.c
-+++ b/drivers/clocksource/ingenic-sysost.c
-@@ -186,7 +186,7 @@ static const struct clk_ops ingenic_ost_global_timer_ops =
-=3D {
-=20
- static const char * const ingenic_ost_clk_parents[] =3D { "ext" };
-=20
--static const struct ingenic_ost_clk_info ingenic_ost_clk_info[] =3D {
-+static const struct ingenic_ost_clk_info x1000_ost_clk_info[] =3D {
- 	[OST_CLK_PERCPU_TIMER] =3D {
- 		.init_data =3D {
- 			.name =3D "percpu timer",
-@@ -414,14 +414,14 @@ static const struct ingenic_soc_info x1000_soc_info =3D=
+diff --git a/drivers/clocksource/timer-ti-dm.c b/drivers/clocksource/timer-ti-dm.c
+index 33eeabf..e5c631f 100644
+--- a/drivers/clocksource/timer-ti-dm.c
++++ b/drivers/clocksource/timer-ti-dm.c
+@@ -78,6 +78,9 @@ static void omap_dm_timer_write_reg(struct omap_dm_timer *timer, u32 reg,
+ 
+ static void omap_timer_restore_context(struct omap_dm_timer *timer)
  {
- 	.num_channels =3D 2,
- };
-=20
--static const struct of_device_id __maybe_unused ingenic_ost_of_match[] __ini=
-tconst =3D {
--	{ .compatible =3D "ingenic,x1000-ost", .data =3D &x1000_soc_info, },
-+static const struct of_device_id __maybe_unused ingenic_ost_of_matches[] __i=
-nitconst =3D {
-+	{ .compatible =3D "ingenic,x1000-ost", .data =3D &x1000_soc_info },
- 	{ /* sentinel */ }
- };
-=20
- static int __init ingenic_ost_probe(struct device_node *np)
++	__omap_dm_timer_write(timer, OMAP_TIMER_OCP_CFG_OFFSET,
++			      timer->context.ocp_cfg, 0);
++
+ 	omap_dm_timer_write_reg(timer, OMAP_TIMER_WAKEUP_EN_REG,
+ 				timer->context.twer);
+ 	omap_dm_timer_write_reg(timer, OMAP_TIMER_COUNTER_REG,
+@@ -95,6 +98,9 @@ static void omap_timer_restore_context(struct omap_dm_timer *timer)
+ 
+ static void omap_timer_save_context(struct omap_dm_timer *timer)
  {
--	const struct of_device_id *id =3D of_match_node(ingenic_ost_of_match, np);
-+	const struct of_device_id *id =3D of_match_node(ingenic_ost_of_matches, np);
- 	struct ingenic_ost *ost;
- 	unsigned int i;
- 	int ret;
-@@ -462,7 +462,7 @@ static int __init ingenic_ost_probe(struct device_node *n=
-p)
- 	ost->clocks->num =3D ost->soc_info->num_channels;
-=20
- 	for (i =3D 0; i < ost->clocks->num; i++) {
--		ret =3D ingenic_ost_register_clock(ost, i, &ingenic_ost_clk_info[i], ost->=
-clocks);
-+		ret =3D ingenic_ost_register_clock(ost, i, &x1000_ost_clk_info[i], ost->cl=
-ocks);
- 		if (ret) {
- 			pr_crit("%s: Cannot register clock %d\n", __func__, i);
- 			goto err_unregister_ost_clocks;
++	timer->context.ocp_cfg =
++		__omap_dm_timer_read(timer, OMAP_TIMER_OCP_CFG_OFFSET, 0);
++
+ 	timer->context.tclr =
+ 			omap_dm_timer_read_reg(timer, OMAP_TIMER_CTRL_REG);
+ 	timer->context.twer =
+diff --git a/include/clocksource/timer-ti-dm.h b/include/clocksource/timer-ti-dm.h
+index 4c61dad..f6da8a1 100644
+--- a/include/clocksource/timer-ti-dm.h
++++ b/include/clocksource/timer-ti-dm.h
+@@ -74,6 +74,7 @@
+ #define OMAP_TIMER_ERRATA_I103_I767			0x80000000
+ 
+ struct timer_regs {
++	u32 ocp_cfg;
+ 	u32 tidr;
+ 	u32 tier;
+ 	u32 twer;
