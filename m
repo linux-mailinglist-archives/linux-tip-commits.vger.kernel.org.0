@@ -2,52 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 493333ACFB3
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 18 Jun 2021 18:03:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 284013ACFB5
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 18 Jun 2021 18:03:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235667AbhFRQF4 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 18 Jun 2021 12:05:56 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:57448 "EHLO
+        id S235669AbhFRQF5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 18 Jun 2021 12:05:57 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:57418 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233341AbhFRQFx (ORCPT
+        with ESMTP id S233098AbhFRQFy (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 18 Jun 2021 12:05:53 -0400
-Date:   Fri, 18 Jun 2021 16:03:42 -0000
+        Fri, 18 Jun 2021 12:05:54 -0400
+Date:   Fri, 18 Jun 2021 16:03:43 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1624032222;
+        s=2020; t=1624032224;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=nSVHpH4GmdHHGiWo2kLV3HL6NDUO7/jJAglf7LwQqsE=;
-        b=wNhJLv4XOJ1TcSdUBjY6/K2UKdVLUmnb62x7T9wXv2/WLvmFbX9HOqNlK0TDeE5SlGvQEr
-        mik9DyLYxRb/SVT44qzBe3OgRl+4JEdwNHfVR8CKCdz8BqUAZdWec8jxFj3Waj3J0Qtobc
-        4HQB720W0imaiFQInPhDbm6zQhHQrG6AhxXJKGgLamFcnQWvph+/mUxYzNzqB0aFxqCDDn
-        dNzMxcaNahwU/4CPmJ+mlwdcwSsIRJ6Dxv+KpY+R6VZJCZmkBD8x1t0knLJkHFBAYNK/SY
-        8+RLDVfC6kCZ4uqczNHY2zQV2u5YKhJtDEK3LcgKGvksVdioHKqKWBJ3dJpuYw==
+        bh=csYDDTxqqcFbug0K46MJZVaaoNyFdNrrAOf+S7nZVN4=;
+        b=dFK31Rv3LLWkRYRnmt73bfSiMba2D4mRUK+wrvYdpiF9qFQwQ1B1AQmqbgpMXZNoTLJ0Zf
+        uePkfl3d+/PEw3qhr2g+++oeBtQVKA1tlKmHIUp8if71v5bpuaNcjhk8kPpY3VXkaDhtow
+        GlBIZ3fv02bNLDlPNBh0CZ6RgMPiCKcmrVZ8Lf/QaibNYvr3qjyR4qJ8aJy2cRWZOpD4HJ
+        ri9vO+tpDHetwPJWK/S1DcMMXIODyDjfSftwjNU8wOs7R5jFWg3rQ3haH6SaRu/2CvVESb
+        NEGXJ+W9atWdtsDTiabFLyD1unVt2UgbsrUr9Baff0aF/ta0QNoLF9lBMrt6ng==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1624032222;
+        s=2020e; t=1624032224;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=nSVHpH4GmdHHGiWo2kLV3HL6NDUO7/jJAglf7LwQqsE=;
-        b=oVopSOQTAirZ8w2Kcju43skIu+Ci19VC5uVZ7ZX1FxKsLm+A7x9uHBNVeW6+eSbLL5+A/N
-        /0BjnpG/IT/It1Bg==
+        bh=csYDDTxqqcFbug0K46MJZVaaoNyFdNrrAOf+S7nZVN4=;
+        b=ALhGl0OZXz01aMo73HhbL3t6BUZ0liUauoasYS+bhBbdfn6qqE0xTXbVWvwZg9ieXZq4b9
+        AlnnAl5ULzEEweCg==
 From:   "tip-bot2 for Krzysztof Kozlowski" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] clocksource/drivers/samsung_pwm: Cleanup on init error
+Subject: [tip: timers/core] clocksource/drivers/samsung_pwm: Minor whitespace cleanup
 Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
         Daniel Lezcano <daniel.lezcano@linaro.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210506202729.157260-3-krzysztof.kozlowski@canonical.com>
-References: <20210506202729.157260-3-krzysztof.kozlowski@canonical.com>
+In-Reply-To: <20210506202729.157260-1-krzysztof.kozlowski@canonical.com>
+References: <20210506202729.157260-1-krzysztof.kozlowski@canonical.com>
 MIME-Version: 1.0
-Message-ID: <162403222216.19906.916681281934309111.tip-bot2@tip-bot2>
+Message-ID: <162403222337.19906.3721651976027741839.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,67 +58,134 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     63e83bd8cd848a3d1b4777d90635a309fa9cb2c7
-Gitweb:        https://git.kernel.org/tip/63e83bd8cd848a3d1b4777d90635a309fa9cb2c7
+Commit-ID:     a0143f5ac0594d73ef91c2336d8172217ff9cd72
+Gitweb:        https://git.kernel.org/tip/a0143f5ac0594d73ef91c2336d8172217ff9cd72
 Author:        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-AuthorDate:    Thu, 06 May 2021 16:27:27 -04:00
+AuthorDate:    Thu, 06 May 2021 16:27:25 -04:00
 Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
-CommitterDate: Fri, 04 Jun 2021 10:12:12 +02:00
+CommitterDate: Fri, 04 Jun 2021 10:12:10 +02:00
 
-clocksource/drivers/samsung_pwm: Cleanup on init error
+clocksource/drivers/samsung_pwm: Minor whitespace cleanup
 
-Failure of timer initialization is likely to be fatal for the system, so
-cleanup in such case is not strictly necessary.  However the code might
-be refactored or reused, so better not to rely on such assumption that
-system won't continue init failure.
+Cleanup the code to be slightly more readable and follow coding
+convention - only whitespace.  This fixes checkpatch warnings:
 
-Unmap the IO memory and put the clock on initialization failures from
-devicetree.
+  WARNING: Block comments should align the * on each line
+  WARNING: please, no space before tabs
+  WARNING: Missing a blank line after declarations
+  CHECK: Alignment should match open parenthesis
 
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
 Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20210506202729.157260-3-krzysztof.kozlowski@canonical.com
+Link: https://lore.kernel.org/r/20210506202729.157260-1-krzysztof.kozlowski@canonical.com
 ---
- drivers/clocksource/samsung_pwm_timer.c | 20 +++++++++++++++++---
- 1 file changed, 17 insertions(+), 3 deletions(-)
+ drivers/clocksource/samsung_pwm_timer.c | 19 +++++++++++--------
+ include/clocksource/samsung_pwm.h       |  3 ++-
+ 2 files changed, 13 insertions(+), 9 deletions(-)
 
 diff --git a/drivers/clocksource/samsung_pwm_timer.c b/drivers/clocksource/samsung_pwm_timer.c
-index bfad61b..55e2f9f 100644
+index f760229..69bf79c 100644
 --- a/drivers/clocksource/samsung_pwm_timer.c
 +++ b/drivers/clocksource/samsung_pwm_timer.c
-@@ -421,7 +421,7 @@ static int __init samsung_pwm_alloc(struct device_node *np,
- 	struct property *prop;
- 	const __be32 *cur;
- 	u32 val;
--	int i;
-+	int i, ret;
+@@ -4,7 +4,7 @@
+  *		http://www.samsung.com/
+  *
+  * samsung - Common hr-timer support (s3c and s5p)
+-*/
++ */
  
- 	memcpy(&pwm.variant, variant, sizeof(pwm.variant));
- 	for (i = 0; i < SAMSUNG_PWM_NUM; ++i)
-@@ -444,10 +444,24 @@ static int __init samsung_pwm_alloc(struct device_node *np,
- 	pwm.timerclk = of_clk_get_by_name(np, "timers");
- 	if (IS_ERR(pwm.timerclk)) {
- 		pr_crit("failed to get timers clock for timer\n");
--		return PTR_ERR(pwm.timerclk);
-+		ret = PTR_ERR(pwm.timerclk);
-+		goto err_clk;
- 	}
+ #include <linux/interrupt.h>
+ #include <linux/irq.h>
+@@ -22,7 +22,6 @@
  
--	return _samsung_pwm_clocksource_init();
-+	ret = _samsung_pwm_clocksource_init();
-+	if (ret)
-+		goto err_clocksource;
-+
-+	return 0;
-+
-+err_clocksource:
-+	clk_put(pwm.timerclk);
-+	pwm.timerclk = NULL;
-+err_clk:
-+	iounmap(pwm.base);
-+	pwm.base = NULL;
-+
-+	return ret;
+ #include <clocksource/samsung_pwm.h>
+ 
+-
+ /*
+  * Clocksource driver
+  */
+@@ -38,8 +37,8 @@
+ #define TCFG0_PRESCALER_MASK		0xff
+ #define TCFG0_PRESCALER1_SHIFT		8
+ 
+-#define TCFG1_SHIFT(x)	  		((x) * 4)
+-#define TCFG1_MUX_MASK	  		0xf
++#define TCFG1_SHIFT(x)			((x) * 4)
++#define TCFG1_MUX_MASK			0xf
+ 
+ /*
+  * Each channel occupies 4 bits in TCON register, but there is a gap of 4
+@@ -183,7 +182,7 @@ static void samsung_time_start(unsigned int channel, bool periodic)
  }
  
- static const struct samsung_pwm_variant s3c24xx_variant = {
+ static int samsung_set_next_event(unsigned long cycles,
+-				struct clock_event_device *evt)
++				  struct clock_event_device *evt)
+ {
+ 	/*
+ 	 * This check is needed to account for internal rounding
+@@ -225,6 +224,7 @@ static void samsung_clockevent_resume(struct clock_event_device *cev)
+ 
+ 	if (pwm.variant.has_tint_cstat) {
+ 		u32 mask = (1 << pwm.event_id);
++
+ 		writel(mask | (mask << 5), pwm.base + REG_TINT_CSTAT);
+ 	}
+ }
+@@ -248,6 +248,7 @@ static irqreturn_t samsung_clock_event_isr(int irq, void *dev_id)
+ 
+ 	if (pwm.variant.has_tint_cstat) {
+ 		u32 mask = (1 << pwm.event_id);
++
+ 		writel(mask | (mask << 5), pwm.base + REG_TINT_CSTAT);
+ 	}
+ 
+@@ -272,7 +273,7 @@ static void __init samsung_clockevent_init(void)
+ 
+ 	time_event_device.cpumask = cpumask_of(0);
+ 	clockevents_config_and_register(&time_event_device,
+-						clock_rate, 1, pwm.tcnt_max);
++					clock_rate, 1, pwm.tcnt_max);
+ 
+ 	irq_number = pwm.irq[pwm.event_id];
+ 	if (request_irq(irq_number, samsung_clock_event_isr,
+@@ -282,6 +283,7 @@ static void __init samsung_clockevent_init(void)
+ 
+ 	if (pwm.variant.has_tint_cstat) {
+ 		u32 mask = (1 << pwm.event_id);
++
+ 		writel(mask | (mask << 5), pwm.base + REG_TINT_CSTAT);
+ 	}
+ }
+@@ -347,7 +349,7 @@ static int __init samsung_clocksource_init(void)
+ 		pwm.source_reg = pwm.base + pwm.source_id * 0x0c + 0x14;
+ 
+ 	sched_clock_register(samsung_read_sched_clock,
+-						pwm.variant.bits, clock_rate);
++			     pwm.variant.bits, clock_rate);
+ 
+ 	samsung_clocksource.mask = CLOCKSOURCE_MASK(pwm.variant.bits);
+ 	return clocksource_register_hz(&samsung_clocksource, clock_rate);
+@@ -398,7 +400,8 @@ static int __init _samsung_pwm_clocksource_init(void)
+ }
+ 
+ void __init samsung_pwm_clocksource_init(void __iomem *base,
+-			unsigned int *irqs, struct samsung_pwm_variant *variant)
++					 unsigned int *irqs,
++					 struct samsung_pwm_variant *variant)
+ {
+ 	pwm.base = base;
+ 	memcpy(&pwm.variant, variant, sizeof(pwm.variant));
+diff --git a/include/clocksource/samsung_pwm.h b/include/clocksource/samsung_pwm.h
+index c395238..7634198 100644
+--- a/include/clocksource/samsung_pwm.h
++++ b/include/clocksource/samsung_pwm.h
+@@ -27,6 +27,7 @@ struct samsung_pwm_variant {
+ };
+ 
+ void samsung_pwm_clocksource_init(void __iomem *base,
+-		unsigned int *irqs, struct samsung_pwm_variant *variant);
++				  unsigned int *irqs,
++				  struct samsung_pwm_variant *variant);
+ 
+ #endif /* __CLOCKSOURCE_SAMSUNG_PWM_H */
