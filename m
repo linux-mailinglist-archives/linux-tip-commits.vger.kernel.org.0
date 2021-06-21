@@ -2,56 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 15CA93AE505
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 21 Jun 2021 10:36:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CFF773AEB97
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 21 Jun 2021 16:42:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230121AbhFUIin (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 21 Jun 2021 04:38:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34484 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229890AbhFUIin (ORCPT
+        id S230118AbhFUOof (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 21 Jun 2021 10:44:35 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:44988 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229765AbhFUOod (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 21 Jun 2021 04:38:43 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30F9AC061574;
-        Mon, 21 Jun 2021 01:36:29 -0700 (PDT)
-Date:   Mon, 21 Jun 2021 08:36:26 -0000
+        Mon, 21 Jun 2021 10:44:33 -0400
+Date:   Mon, 21 Jun 2021 14:42:16 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1624264587;
+        s=2020; t=1624286537;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=eyBXpYH5u7fn8fJ8hrFdUCX8ICkIoQ0HYrBRNu3xLXY=;
-        b=znXYcMkPsdyCnX50whZbFP2HOVWAsi/Ou1vjrXUDzizDjOhX2GzaXSrWFnc7/1W0gWvqT8
-        FL9bCF2QN6QAqXmGIp5nZP7qrjAwYf81NVT6V3mFXlFfSVfVvm6KDrLW2HCRp1qxRTWUAq
-        2kdl8O6nKUE/WZYszV5HiGBWZy0l2qCxFhwecHUGSLetlt8taFcmc97DOz9hKMik0DdwjT
-        Gzld+EmRn9jVLEfbhiLKEUTskj3VIForG2VpMO7Y5jKrVetDPGF83E+Hm+b78yOUSJaB/0
-        ZjWv89IIPjSpBo2igfYdFvx6VdHQjjsIJjDFWt19mO3C+5Sw2kPjeUi+9y6y3Q==
+        bh=0YqSVyrsglW6dTHk6oCidlpX/yLK6iFfcH/ZfidF49I=;
+        b=J/d2TjDWiyrKItjY2BMZFSzuRxV0pd2aiADxKQaK1/Bf0k0x3CBAq68AaaYEXX0CmEOGZ5
+        ioRK64tuKHM53uI1ens7cyz9NNSAWbbN4LQKCUpeDHMpuMWl53N+fDCQSPnzhbjpPWG8Id
+        rVOx+p4MxnNO9C2yQQ1ou9iC/ypyTll64hwTJSj/u2kU4FIKLpzbbuSC3rV7vWJ0yR7Ubh
+        /1z+qTf/bKVG8NycZDlzvf2ONwgKDDhBc6d7yK8ZIGfxfzmQE9RgzlpMlRTLFnUsuLK1ow
+        sAdFzUywvTtrugYIlxw7t9/mhYg7+nsFRATg2uRXhpzvuVw1WhIy9M+fNwgjQw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1624264587;
+        s=2020e; t=1624286537;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=eyBXpYH5u7fn8fJ8hrFdUCX8ICkIoQ0HYrBRNu3xLXY=;
-        b=hU2mMOT+n/AWpjrwvpDqZ/DqwOTuWhKvwVkZmKZv6UtFft9PGlVeajHlh5TL2l9YOTHqeU
-        s6THK4ltZsx9OvDg==
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+        bh=0YqSVyrsglW6dTHk6oCidlpX/yLK6iFfcH/ZfidF49I=;
+        b=T7wbiCJQtLN/8si8ehobUE3HJ+E/2hLLdO6Bsm8lvwmF5ZyjuJsGgCucNF25eMo5MfWcOb
+        UUWbsDoHkRgHIWAw==
+From:   "tip-bot2 for Joerg Roedel" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: smp/urgent] cpu/hotplug: Cure the cpusets trainwreck
-Cc:     Alexey Klimov <aklimov@redhat.com>,
-        Joshua Baker <jobaker@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org,
+Subject: [tip: x86/sev] x86/sev: Split up runtime #VC handler for correct
+ state tracking
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        Joerg Roedel <jroedel@suse.de>, Borislav Petkov <bp@suse.de>,
         x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <87tuowcnv3.ffs@nanos.tec.linutronix.de>
-References: <87tuowcnv3.ffs@nanos.tec.linutronix.de>
+In-Reply-To: <20210618115409.22735-3-joro@8bytes.org>
+References: <20210618115409.22735-3-joro@8bytes.org>
 MIME-Version: 1.0
-Message-ID: <162426458610.395.17502837087837120048.tip-bot2@tip-bot2>
+Message-ID: <162428653674.395.10689341608906915650.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,162 +57,323 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the smp/urgent branch of tip:
+The following commit has been merged into the x86/sev branch of tip:
 
-Commit-ID:     b22afcdf04c96ca58327784e280e10288cfd3303
-Gitweb:        https://git.kernel.org/tip/b22afcdf04c96ca58327784e280e10288cfd3303
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Sat, 27 Mar 2021 22:01:36 +01:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 21 Jun 2021 10:31:06 +02:00
+Commit-ID:     be1a5408868af341f61f93c191b5e346ee88c82a
+Gitweb:        https://git.kernel.org/tip/be1a5408868af341f61f93c191b5e346ee88c82a
+Author:        Joerg Roedel <jroedel@suse.de>
+AuthorDate:    Fri, 18 Jun 2021 13:54:09 +02:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Mon, 21 Jun 2021 16:01:05 +02:00
 
-cpu/hotplug: Cure the cpusets trainwreck
+x86/sev: Split up runtime #VC handler for correct state tracking
 
-Alexey and Joshua tried to solve a cpusets related hotplug problem which is
-user space visible and results in unexpected behaviour for some time after
-a CPU has been plugged in and the corresponding uevent was delivered.
+Split up the #VC handler code into a from-user and a from-kernel part.
+This allows clean and correct state tracking, as the #VC handler needs
+to enter NMI-state when raised from kernel mode and plain IRQ state when
+raised from user-mode.
 
-cpusets delegate the hotplug work (rebuilding cpumasks etc.) to a
-workqueue. This is done because the cpusets code has already a lock
-nesting of cgroups_mutex -> cpu_hotplug_lock. A synchronous callback or
-waiting for the work to finish with cpu_hotplug_lock held can and will
-deadlock because that results in the reverse lock order.
-
-As a consequence the uevent can be delivered before cpusets have consistent
-state which means that a user space invocation of sched_setaffinity() to
-move a task to the plugged CPU fails up to the point where the scheduled
-work has been processed.
-
-The same is true for CPU unplug, but that does not create user observable
-failure (yet).
-
-It's still inconsistent to claim that an operation is finished before it
-actually is and that's the real issue at hand. uevents just make it
-reliably observable.
-
-Obviously the problem should be fixed in cpusets/cgroups, but untangling
-that is pretty much impossible because according to the changelog of the
-commit which introduced this 8 years ago:
-
- 3a5a6d0c2b03("cpuset: don't nest cgroup_mutex inside get_online_cpus()")
-
-the lock order cgroups_mutex -> cpu_hotplug_lock is a design decision and
-the whole code is built around that.
-
-So bite the bullet and invoke the relevant cpuset function, which waits for
-the work to finish, in _cpu_up/down() after dropping cpu_hotplug_lock and
-only when tasks are not frozen by suspend/hibernate because that would
-obviously wait forever.
-
-Waiting there with cpu_add_remove_lock, which is protecting the present
-and possible CPU maps, held is not a problem at all because neither work
-queues nor cpusets/cgroups have any lockchains related to that lock.
-
-Waiting in the hotplug machinery is not problematic either because there
-are already state callbacks which wait for hardware queues to drain. It
-makes the operations slightly slower, but hotplug is slow anyway.
-
-This ensures that state is consistent before returning from a hotplug
-up/down operation. It's still inconsistent during the operation, but that's
-a different story.
-
-Add a large comment which explains why this is done and why this is not a
-dump ground for the hack of the day to work around half thought out locking
-schemes. Document also the implications vs. hotplug operations and
-serialization or the lack of it.
-
-Thanks to Alexy and Joshua for analyzing why this temporary
-sched_setaffinity() failure happened.
-
-Fixes: 3a5a6d0c2b03("cpuset: don't nest cgroup_mutex inside get_online_cpus()")
-Reported-by: Alexey Klimov <aklimov@redhat.com>
-Reported-by: Joshua Baker <jobaker@redhat.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Alexey Klimov <aklimov@redhat.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/87tuowcnv3.ffs@nanos.tec.linutronix.de
+Fixes: 62441a1fb532 ("x86/sev-es: Correctly track IRQ states in runtime #VC handler")
+Suggested-by: Peter Zijlstra <peterz@infradead.org>
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20210618115409.22735-3-joro@8bytes.org
 ---
- kernel/cpu.c | 49 +++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 49 insertions(+)
+ arch/x86/entry/entry_64.S       |   4 +-
+ arch/x86/include/asm/idtentry.h |  29 ++----
+ arch/x86/kernel/sev.c           | 148 ++++++++++++++++---------------
+ 3 files changed, 91 insertions(+), 90 deletions(-)
 
-diff --git a/kernel/cpu.c b/kernel/cpu.c
-index e538518..d2e1692 100644
---- a/kernel/cpu.c
-+++ b/kernel/cpu.c
-@@ -32,6 +32,7 @@
- #include <linux/relay.h>
- #include <linux/slab.h>
- #include <linux/percpu-rwsem.h>
-+#include <linux/cpuset.h>
+diff --git a/arch/x86/entry/entry_64.S b/arch/x86/entry/entry_64.S
+index a16a529..1886aaf 100644
+--- a/arch/x86/entry/entry_64.S
++++ b/arch/x86/entry/entry_64.S
+@@ -506,7 +506,7 @@ SYM_CODE_START(\asmsym)
  
- #include <trace/events/power.h>
- #define CREATE_TRACE_POINTS
-@@ -873,6 +874,52 @@ void __init cpuhp_threads_init(void)
- 	kthread_unpark(this_cpu_read(cpuhp_state.thread));
+ 	movq	%rsp, %rdi		/* pt_regs pointer */
+ 
+-	call	\cfunc
++	call	kernel_\cfunc
+ 
+ 	/*
+ 	 * No need to switch back to the IST stack. The current stack is either
+@@ -517,7 +517,7 @@ SYM_CODE_START(\asmsym)
+ 
+ 	/* Switch to the regular task stack */
+ .Lfrom_usermode_switch_stack_\@:
+-	idtentry_body safe_stack_\cfunc, has_error_code=1
++	idtentry_body user_\cfunc, has_error_code=1
+ 
+ _ASM_NOKPROBE(\asmsym)
+ SYM_CODE_END(\asmsym)
+diff --git a/arch/x86/include/asm/idtentry.h b/arch/x86/include/asm/idtentry.h
+index 73d45b0..cd9f3e3 100644
+--- a/arch/x86/include/asm/idtentry.h
++++ b/arch/x86/include/asm/idtentry.h
+@@ -312,8 +312,8 @@ static __always_inline void __##func(struct pt_regs *regs)
+  */
+ #define DECLARE_IDTENTRY_VC(vector, func)				\
+ 	DECLARE_IDTENTRY_RAW_ERRORCODE(vector, func);			\
+-	__visible noinstr void ist_##func(struct pt_regs *regs, unsigned long error_code);	\
+-	__visible noinstr void safe_stack_##func(struct pt_regs *regs, unsigned long error_code)
++	__visible noinstr void kernel_##func(struct pt_regs *regs, unsigned long error_code);	\
++	__visible noinstr void   user_##func(struct pt_regs *regs, unsigned long error_code)
+ 
+ /**
+  * DEFINE_IDTENTRY_IST - Emit code for IST entry points
+@@ -355,33 +355,24 @@ static __always_inline void __##func(struct pt_regs *regs)
+ 	DEFINE_IDTENTRY_RAW_ERRORCODE(func)
+ 
+ /**
+- * DEFINE_IDTENTRY_VC_SAFE_STACK - Emit code for VMM communication handler
+-				   which runs on a safe stack.
++ * DEFINE_IDTENTRY_VC_KERNEL - Emit code for VMM communication handler
++			       when raised from kernel mode
+  * @func:	Function name of the entry point
+  *
+  * Maps to DEFINE_IDTENTRY_RAW_ERRORCODE
+  */
+-#define DEFINE_IDTENTRY_VC_SAFE_STACK(func)				\
+-	DEFINE_IDTENTRY_RAW_ERRORCODE(safe_stack_##func)
++#define DEFINE_IDTENTRY_VC_KERNEL(func)				\
++	DEFINE_IDTENTRY_RAW_ERRORCODE(kernel_##func)
+ 
+ /**
+- * DEFINE_IDTENTRY_VC_IST - Emit code for VMM communication handler
+-			    which runs on the VC fall-back stack
++ * DEFINE_IDTENTRY_VC_USER - Emit code for VMM communication handler
++			     when raised from user mode
+  * @func:	Function name of the entry point
+  *
+  * Maps to DEFINE_IDTENTRY_RAW_ERRORCODE
+  */
+-#define DEFINE_IDTENTRY_VC_IST(func)				\
+-	DEFINE_IDTENTRY_RAW_ERRORCODE(ist_##func)
+-
+-/**
+- * DEFINE_IDTENTRY_VC - Emit code for VMM communication handler
+- * @func:	Function name of the entry point
+- *
+- * Maps to DEFINE_IDTENTRY_RAW_ERRORCODE
+- */
+-#define DEFINE_IDTENTRY_VC(func)					\
+-	DEFINE_IDTENTRY_RAW_ERRORCODE(func)
++#define DEFINE_IDTENTRY_VC_USER(func)				\
++	DEFINE_IDTENTRY_RAW_ERRORCODE(user_##func)
+ 
+ #else	/* CONFIG_X86_64 */
+ 
+diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
+index 9f32cbb..87a4b00 100644
+--- a/arch/x86/kernel/sev.c
++++ b/arch/x86/kernel/sev.c
+@@ -793,7 +793,7 @@ void __init sev_es_init_vc_handling(void)
+ 	sev_es_setup_play_dead();
+ 
+ 	/* Secondary CPUs use the runtime #VC handler */
+-	initial_vc_handler = (unsigned long)safe_stack_exc_vmm_communication;
++	initial_vc_handler = (unsigned long)kernel_exc_vmm_communication;
  }
  
-+/*
-+ *
-+ * Serialize hotplug trainwrecks outside of the cpu_hotplug_lock
-+ * protected region.
-+ *
-+ * The operation is still serialized against concurrent CPU hotplug via
-+ * cpu_add_remove_lock, i.e. CPU map protection.  But it is _not_
-+ * serialized against other hotplug related activity like adding or
-+ * removing of state callbacks and state instances, which invoke either the
-+ * startup or the teardown callback of the affected state.
-+ *
-+ * This is required for subsystems which are unfixable vs. CPU hotplug and
-+ * evade lock inversion problems by scheduling work which has to be
-+ * completed _before_ cpu_up()/_cpu_down() returns.
-+ *
-+ * Don't even think about adding anything to this for any new code or even
-+ * drivers. It's only purpose is to keep existing lock order trainwrecks
-+ * working.
-+ *
-+ * For cpu_down() there might be valid reasons to finish cleanups which are
-+ * not required to be done under cpu_hotplug_lock, but that's a different
-+ * story and would be not invoked via this.
-+ */
-+static void cpu_up_down_serialize_trainwrecks(bool tasks_frozen)
-+{
-+	/*
-+	 * cpusets delegate hotplug operations to a worker to "solve" the
-+	 * lock order problems. Wait for the worker, but only if tasks are
-+	 * _not_ frozen (suspend, hibernate) as that would wait forever.
-+	 *
-+	 * The wait is required because otherwise the hotplug operation
-+	 * returns with inconsistent state, which could even be observed in
-+	 * user space when a new CPU is brought up. The CPU plug uevent
-+	 * would be delivered and user space reacting on it would fail to
-+	 * move tasks to the newly plugged CPU up to the point where the
-+	 * work has finished because up to that point the newly plugged CPU
-+	 * is not assignable in cpusets/cgroups. On unplug that's not
-+	 * necessarily a visible issue, but it is still inconsistent state,
-+	 * which is the real problem which needs to be "fixed". This can't
-+	 * prevent the transient state between scheduling the work and
-+	 * returning from waiting for it.
-+	 */
-+	if (!tasks_frozen)
-+		cpuset_wait_for_hotplug();
+ static void __init vc_early_forward_exception(struct es_em_ctxt *ctxt)
+@@ -1231,14 +1231,6 @@ static enum es_result vc_handle_trap_ac(struct ghcb *ghcb,
+ 	return ES_EXCEPTION;
+ }
+ 
+-static __always_inline void vc_handle_trap_db(struct pt_regs *regs)
+-{
+-	if (user_mode(regs))
+-		noist_exc_debug(regs);
+-	else
+-		exc_debug(regs);
+-}
+-
+ static enum es_result vc_handle_exitcode(struct es_em_ctxt *ctxt,
+ 					 struct ghcb *ghcb,
+ 					 unsigned long exit_code)
+@@ -1334,41 +1326,13 @@ static __always_inline bool on_vc_fallback_stack(struct pt_regs *regs)
+ 	return (sp >= __this_cpu_ist_bottom_va(VC2) && sp < __this_cpu_ist_top_va(VC2));
+ }
+ 
+-/*
+- * Main #VC exception handler. It is called when the entry code was able to
+- * switch off the IST to a safe kernel stack.
+- *
+- * With the current implementation it is always possible to switch to a safe
+- * stack because #VC exceptions only happen at known places, like intercepted
+- * instructions or accesses to MMIO areas/IO ports. They can also happen with
+- * code instrumentation when the hypervisor intercepts #DB, but the critical
+- * paths are forbidden to be instrumented, so #DB exceptions currently also
+- * only happen in safe places.
+- */
+-DEFINE_IDTENTRY_VC_SAFE_STACK(exc_vmm_communication)
++static bool vc_raw_handle_exception(struct pt_regs *regs, unsigned long error_code)
+ {
+-	irqentry_state_t irq_state;
+ 	struct ghcb_state state;
+ 	struct es_em_ctxt ctxt;
+ 	enum es_result result;
+ 	struct ghcb *ghcb;
+-
+-	/*
+-	 * Handle #DB before calling into !noinstr code to avoid recursive #DB.
+-	 */
+-	if (error_code == SVM_EXIT_EXCP_BASE + X86_TRAP_DB) {
+-		vc_handle_trap_db(regs);
+-		return;
+-	}
+-
+-	irq_state = irqentry_nmi_enter(regs);
+-	instrumentation_begin();
+-
+-	/*
+-	 * This is invoked through an interrupt gate, so IRQs are disabled. The
+-	 * code below might walk page-tables for user or kernel addresses, so
+-	 * keep the IRQs disabled to protect us against concurrent TLB flushes.
+-	 */
++	bool ret = true;
+ 
+ 	ghcb = __sev_get_ghcb(&state);
+ 
+@@ -1388,15 +1352,18 @@ DEFINE_IDTENTRY_VC_SAFE_STACK(exc_vmm_communication)
+ 	case ES_UNSUPPORTED:
+ 		pr_err_ratelimited("Unsupported exit-code 0x%02lx in #VC exception (IP: 0x%lx)\n",
+ 				   error_code, regs->ip);
+-		goto fail;
++		ret = false;
++		break;
+ 	case ES_VMM_ERROR:
+ 		pr_err_ratelimited("Failure in communication with VMM (exit-code 0x%02lx IP: 0x%lx)\n",
+ 				   error_code, regs->ip);
+-		goto fail;
++		ret = false;
++		break;
+ 	case ES_DECODE_FAILED:
+ 		pr_err_ratelimited("Failed to decode instruction (exit-code 0x%02lx IP: 0x%lx)\n",
+ 				   error_code, regs->ip);
+-		goto fail;
++		ret = false;
++		break;
+ 	case ES_EXCEPTION:
+ 		vc_forward_exception(&ctxt);
+ 		break;
+@@ -1412,24 +1379,52 @@ DEFINE_IDTENTRY_VC_SAFE_STACK(exc_vmm_communication)
+ 		BUG();
+ 	}
+ 
+-out:
+-	instrumentation_end();
+-	irqentry_nmi_exit(regs, irq_state);
++	return ret;
 +}
+ 
+-	return;
++static __always_inline bool vc_is_db(unsigned long error_code)
++{
++	return error_code == SVM_EXIT_EXCP_BASE + X86_TRAP_DB;
++}
+ 
+-fail:
+-	if (user_mode(regs)) {
+-		/*
+-		 * Do not kill the machine if user-space triggered the
+-		 * exception. Send SIGBUS instead and let user-space deal with
+-		 * it.
+-		 */
+-		force_sig_fault(SIGBUS, BUS_OBJERR, (void __user *)0);
+-	} else {
+-		pr_emerg("PANIC: Unhandled #VC exception in kernel space (result=%d)\n",
+-			 result);
++/*
++ * Runtime #VC exception handler when raised from kernel mode. Runs in NMI mode
++ * and will panic when an error happens.
++ */
++DEFINE_IDTENTRY_VC_KERNEL(exc_vmm_communication)
++{
++	irqentry_state_t irq_state;
 +
- #ifdef CONFIG_HOTPLUG_CPU
- #ifndef arch_clear_mm_cpumask_cpu
- #define arch_clear_mm_cpumask_cpu(cpu, mm) cpumask_clear_cpu(cpu, mm_cpumask(mm))
-@@ -1108,6 +1155,7 @@ out:
- 	 */
- 	lockup_detector_cleanup();
- 	arch_smt_update();
-+	cpu_up_down_serialize_trainwrecks(tasks_frozen);
- 	return ret;
++	/*
++	 * With the current implementation it is always possible to switch to a
++	 * safe stack because #VC exceptions only happen at known places, like
++	 * intercepted instructions or accesses to MMIO areas/IO ports. They can
++	 * also happen with code instrumentation when the hypervisor intercepts
++	 * #DB, but the critical paths are forbidden to be instrumented, so #DB
++	 * exceptions currently also only happen in safe places.
++	 *
++	 * But keep this here in case the noinstr annotations are violated due
++	 * to bug elsewhere.
++	 */
++	if (unlikely(on_vc_fallback_stack(regs))) {
++		instrumentation_begin();
++		panic("Can't handle #VC exception from unsupported context\n");
++		instrumentation_end();
++	}
++
++	/*
++	 * Handle #DB before calling into !noinstr code to avoid recursive #DB.
++	 */
++	if (vc_is_db(error_code)) {
++		exc_debug(regs);
++		return;
++	}
++
++	irq_state = irqentry_nmi_enter(regs);
+ 
++	instrumentation_begin();
++
++	if (!vc_raw_handle_exception(regs, error_code)) {
+ 		/* Show some debug info */
+ 		show_regs(regs);
+ 
+@@ -1440,23 +1435,38 @@ fail:
+ 		panic("Returned from Terminate-Request to Hypervisor\n");
+ 	}
+ 
+-	goto out;
++	instrumentation_end();
++	irqentry_nmi_exit(regs, irq_state);
  }
  
-@@ -1302,6 +1350,7 @@ static int _cpu_up(unsigned int cpu, int tasks_frozen, enum cpuhp_state target)
- out:
- 	cpus_write_unlock();
- 	arch_smt_update();
-+	cpu_up_down_serialize_trainwrecks(tasks_frozen);
- 	return ret;
+-/* This handler runs on the #VC fall-back stack. It can cause further #VC exceptions */
+-DEFINE_IDTENTRY_VC_IST(exc_vmm_communication)
++/*
++ * Runtime #VC exception handler when raised from user mode. Runs in IRQ mode
++ * and will kill the current task with SIGBUS when an error happens.
++ */
++DEFINE_IDTENTRY_VC_USER(exc_vmm_communication)
+ {
++	/*
++	 * Handle #DB before calling into !noinstr code to avoid recursive #DB.
++	 */
++	if (vc_is_db(error_code)) {
++		noist_exc_debug(regs);
++		return;
++	}
++
++	irqentry_enter_from_user_mode(regs);
+ 	instrumentation_begin();
+-	panic("Can't handle #VC exception from unsupported context\n");
+-	instrumentation_end();
+-}
+ 
+-DEFINE_IDTENTRY_VC(exc_vmm_communication)
+-{
+-	if (likely(!on_vc_fallback_stack(regs)))
+-		safe_stack_exc_vmm_communication(regs, error_code);
+-	else
+-		ist_exc_vmm_communication(regs, error_code);
++	if (!vc_raw_handle_exception(regs, error_code)) {
++		/*
++		 * Do not kill the machine if user-space triggered the
++		 * exception. Send SIGBUS instead and let user-space deal with
++		 * it.
++		 */
++		force_sig_fault(SIGBUS, BUS_OBJERR, (void __user *)0);
++	}
++
++	instrumentation_end();
++	irqentry_exit_to_user_mode(regs);
  }
  
+ bool __init handle_vc_boot_ghcb(struct pt_regs *regs)
