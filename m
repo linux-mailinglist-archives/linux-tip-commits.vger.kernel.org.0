@@ -2,43 +2,43 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9014C3ADBA8
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 19 Jun 2021 22:27:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 15CA93AE505
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 21 Jun 2021 10:36:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229521AbhFSU37 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 19 Jun 2021 16:29:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45140 "EHLO
+        id S230121AbhFUIin (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 21 Jun 2021 04:38:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34484 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229477AbhFSU36 (ORCPT
+        with ESMTP id S229890AbhFUIin (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 19 Jun 2021 16:29:58 -0400
+        Mon, 21 Jun 2021 04:38:43 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7ADFFC061574;
-        Sat, 19 Jun 2021 13:27:45 -0700 (PDT)
-Date:   Sat, 19 Jun 2021 20:27:40 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30F9AC061574;
+        Mon, 21 Jun 2021 01:36:29 -0700 (PDT)
+Date:   Mon, 21 Jun 2021 08:36:26 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1624134461;
+        s=2020; t=1624264587;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=JqcS98Guu8A/M7cu0Wkz0xvE48EQ/O7AvUv++fOEzr4=;
-        b=pKhSvM1Vyg/ygFlhkdF5RFv+n33s7N0AlNZnDe8+6gqOg6Mnmx6VDBds6sHJJ9vq/G3n97
-        gCwNXv2YzqcTOPxP4Mq/PLnn74dYZrgr/Z2ANenOsLChcBxn8BeF81JThaXy8mTxVeWYtf
-        kOZRBLEU7Nf/f0aHNw3FqjQTdO6U/4bea9RFcW2UnJh86c1IRi8pz3R+Eojdj4/rqjw0Pb
-        YKTlUhEjlacpfAv6RV5fgRAihxFgzQk45QfwX5GsJrCCrgEMPG3sQGmX/HhotufcVY2KKa
-        4PSrBtHauydASV5UAD/kttgn/8sxDOuNmY9gj+9C+MIcEHLQYvrKJjt3sfdPKA==
+        bh=eyBXpYH5u7fn8fJ8hrFdUCX8ICkIoQ0HYrBRNu3xLXY=;
+        b=znXYcMkPsdyCnX50whZbFP2HOVWAsi/Ou1vjrXUDzizDjOhX2GzaXSrWFnc7/1W0gWvqT8
+        FL9bCF2QN6QAqXmGIp5nZP7qrjAwYf81NVT6V3mFXlFfSVfVvm6KDrLW2HCRp1qxRTWUAq
+        2kdl8O6nKUE/WZYszV5HiGBWZy0l2qCxFhwecHUGSLetlt8taFcmc97DOz9hKMik0DdwjT
+        Gzld+EmRn9jVLEfbhiLKEUTskj3VIForG2VpMO7Y5jKrVetDPGF83E+Hm+b78yOUSJaB/0
+        ZjWv89IIPjSpBo2igfYdFvx6VdHQjjsIJjDFWt19mO3C+5Sw2kPjeUi+9y6y3Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1624134461;
+        s=2020e; t=1624264587;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=JqcS98Guu8A/M7cu0Wkz0xvE48EQ/O7AvUv++fOEzr4=;
-        b=vv7d/0J60Y4hAGbcRvB6wKr0ibLB9IlHhoaAkICizzLnSexFkH5Vq8ibTiY+REaXF2kc+3
-        MF29XDbxA6pKldDA==
+        bh=eyBXpYH5u7fn8fJ8hrFdUCX8ICkIoQ0HYrBRNu3xLXY=;
+        b=hU2mMOT+n/AWpjrwvpDqZ/DqwOTuWhKvwVkZmKZv6UtFft9PGlVeajHlh5TL2l9YOTHqeU
+        s6THK4ltZsx9OvDg==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
@@ -51,7 +51,7 @@ Cc:     Alexey Klimov <aklimov@redhat.com>,
 In-Reply-To: <87tuowcnv3.ffs@nanos.tec.linutronix.de>
 References: <87tuowcnv3.ffs@nanos.tec.linutronix.de>
 MIME-Version: 1.0
-Message-ID: <162413446009.19906.7301964706858048310.tip-bot2@tip-bot2>
+Message-ID: <162426458610.395.17502837087837120048.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -62,12 +62,12 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the smp/urgent branch of tip:
 
-Commit-ID:     64c71be97c02c3d3f24dea7c290912ad300538b9
-Gitweb:        https://git.kernel.org/tip/64c71be97c02c3d3f24dea7c290912ad300538b9
+Commit-ID:     b22afcdf04c96ca58327784e280e10288cfd3303
+Gitweb:        https://git.kernel.org/tip/b22afcdf04c96ca58327784e280e10288cfd3303
 Author:        Thomas Gleixner <tglx@linutronix.de>
 AuthorDate:    Sat, 27 Mar 2021 22:01:36 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sat, 19 Jun 2021 22:26:07 +02:00
+CommitterDate: Mon, 21 Jun 2021 10:31:06 +02:00
 
 cpu/hotplug: Cure the cpusets trainwreck
 
@@ -139,7 +139,7 @@ Link: https://lore.kernel.org/r/87tuowcnv3.ffs@nanos.tec.linutronix.de
  1 file changed, 49 insertions(+)
 
 diff --git a/kernel/cpu.c b/kernel/cpu.c
-index e538518..eccc8cf 100644
+index e538518..d2e1692 100644
 --- a/kernel/cpu.c
 +++ b/kernel/cpu.c
 @@ -32,6 +32,7 @@
@@ -150,8 +150,8 @@ index e538518..eccc8cf 100644
  
  #include <trace/events/power.h>
  #define CREATE_TRACE_POINTS
-@@ -919,6 +920,52 @@ void clear_tasks_mm_cpumask(int cpu)
- 	rcu_read_unlock();
+@@ -873,6 +874,52 @@ void __init cpuhp_threads_init(void)
+ 	kthread_unpark(this_cpu_read(cpuhp_state.thread));
  }
  
 +/*
@@ -200,9 +200,9 @@ index e538518..eccc8cf 100644
 +		cpuset_wait_for_hotplug();
 +}
 +
- /* Take this CPU down. */
- static int take_cpu_down(void *_param)
- {
+ #ifdef CONFIG_HOTPLUG_CPU
+ #ifndef arch_clear_mm_cpumask_cpu
+ #define arch_clear_mm_cpumask_cpu(cpu, mm) cpumask_clear_cpu(cpu, mm_cpumask(mm))
 @@ -1108,6 +1155,7 @@ out:
  	 */
  	lockup_detector_cleanup();
