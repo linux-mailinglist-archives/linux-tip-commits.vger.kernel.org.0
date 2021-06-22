@@ -2,53 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 586953B0320
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 22 Jun 2021 13:46:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 832303B0390
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 22 Jun 2021 14:03:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230300AbhFVLsQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 22 Jun 2021 07:48:16 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:56664 "EHLO
+        id S230402AbhFVMFy (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 22 Jun 2021 08:05:54 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:56742 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229948AbhFVLsP (ORCPT
+        with ESMTP id S230136AbhFVMFx (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 22 Jun 2021 07:48:15 -0400
-Date:   Tue, 22 Jun 2021 11:45:57 -0000
+        Tue, 22 Jun 2021 08:05:53 -0400
+Date:   Tue, 22 Jun 2021 12:03:36 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1624362358;
+        s=2020; t=1624363416;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=J3bk1RgaCmQnXTMB8X9258azBGCiHqHpM27KkOSNNsY=;
-        b=OQqaBb9WlZM6w9v8BFofJ0EU7quCLlhWExhsoLj1DXkftOzLbSwoArNyfb48u3JFqDychu
-        RG/kP2ruaiWdECulQIKl3awmGCx7CGmBq98wpNViAi6ELNiq0yEqbLSPT434gLSdosMBLU
-        uyPDPaDvwKPOwLkpRITH/WuO/srLvWBB02EdtTp25A6YgFnopnC8ngaswZwSXbdKdHdZ1q
-        40DZA6ZhfGDKsEvzcTlbyi2bHe4WEBi6FtB056PaS94GVHzTbCdnThDRnCtXFzKxqJX3Q3
-        Hmy4Cov39KsYg2+9+qy+CF2KQGDx63M6O6xc5IFjEKewE+wQyMUv1Xz9LIMFYw==
+        bh=Ybv9HrR8t4cVeDrUvO6k44DDQMd9IS0nzLsaT0bIEaU=;
+        b=W2Am6KzcWkJAf3PDTlAWv8B5LJ2jPpjTfGrLYZjINzQieeHamBYVCq7CZt5ALQ6lFpDi2N
+        Tw2mDkfBAN8iqqyeM0oVEU5zAFzvUZrpqnhrq5JhQy+kdzJRumKopjYZRBn+KQsNm8P2nL
+        G8d2O58UF7wCxM9o1MmsyJskQTuarGSrgSTzYzYlBfNLICoIi88VndgJi5WAJdbdOU+JKj
+        G+vR9X5ViFCTBgxY3VQmxBLn2yMitk5vdAmlzq8VHUEl8htEvV5bLSuvpPKR81zM7YD6gg
+        5037AI16WxBSrZOK+Sd0rtfmJ1//PWO4bvQHXoCOgVVD8u090SOihO4S4/2jbw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1624362358;
+        s=2020e; t=1624363416;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=J3bk1RgaCmQnXTMB8X9258azBGCiHqHpM27KkOSNNsY=;
-        b=sGNGce76zpzpZnEkzfyGHoASSpEFiqA12ldGp6sOVKCbN7d/JRvtQperCKcj0b5Pq2BvEK
-        n80Bvg2hUmaUWpBQ==
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+        bh=Ybv9HrR8t4cVeDrUvO6k44DDQMd9IS0nzLsaT0bIEaU=;
+        b=tmcQGi95XVD9TYx/Wj6/TjBQJBM6irhuw7aUOk2GnuPv1CU94A+13S1bif6K71AOAZbPtH
+        gSdtRPohKB4YP7Cg==
+From:   "tip-bot2 for Rik van Riel" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/fpu: Preserve supervisor states in
- sanitize_restored_user_xstate()
-Cc:     Thomas Gleixner <tglx@linutronix.de>, Borislav Petkov <bp@suse.de>,
-        stable@vger.kernel.org, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20210618143444.438635017@linutronix.de>
-References: <20210618143444.438635017@linutronix.de>
+Subject: [tip: sched/urgent] sched/fair: Ensure that the CFS parent is added
+ after unthrottling
+Cc:     Sachin Sant <sachinp@linux.vnet.ibm.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Rik van Riel <riel@surriel.com>,
+        Ingo Molnar <mingo@kernel.org>, Odin Ugedal <odin@uged.al>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20210621174330.11258-1-vincent.guittot@linaro.org>
+References: <20210621174330.11258-1-vincent.guittot@linaro.org>
 MIME-Version: 1.0
-Message-ID: <162436235798.395.14118811977860915293.tip-bot2@tip-bot2>
+Message-ID: <162436341605.395.5765576899693923114.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -57,72 +59,103 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     9301982c424a003c0095bf157154a85bf5322bd0
-Gitweb:        https://git.kernel.org/tip/9301982c424a003c0095bf157154a85bf5322bd0
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Fri, 18 Jun 2021 16:18:24 +02:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 22 Jun 2021 10:51:23 +02:00
+Commit-ID:     30ca4b4598a9d680917fe24df5451afecc028b5b
+Gitweb:        https://git.kernel.org/tip/30ca4b4598a9d680917fe24df5451afecc028b5b
+Author:        Rik van Riel <riel@surriel.com>
+AuthorDate:    Mon, 21 Jun 2021 19:43:30 +02:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Tue, 22 Jun 2021 14:00:53 +02:00
 
-x86/fpu: Preserve supervisor states in sanitize_restored_user_xstate()
+sched/fair: Ensure that the CFS parent is added after unthrottling
 
-sanitize_restored_user_xstate() preserves the supervisor states only
-when the fx_only argument is zero, which allows unprivileged user space
-to put supervisor states back into init state.
+Ensure that a CFS parent will be in the list whenever one of its children is also
+in the list.
 
-Preserve them unconditionally.
+A warning on rq->tmp_alone_branch != &rq->leaf_cfs_rq_list has been
+reported while running LTP test cfs_bandwidth01.
 
- [ bp: Fix a typo or two in the text. ]
+Odin Ugedal found the root cause:
 
-Fixes: 5d6b6a6f9b5c ("x86/fpu/xstate: Update sanitize_restored_xstate() for supervisor xstates")
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20210618143444.438635017@linutronix.de
+	$ tree /sys/fs/cgroup/ltp/ -d --charset=ascii
+	/sys/fs/cgroup/ltp/
+	|-- drain
+	`-- test-6851
+	    `-- level2
+		|-- level3a
+		|   |-- worker1
+		|   `-- worker2
+		`-- level3b
+		    `-- worker3
+
+Timeline (ish):
+- worker3 gets throttled
+- level3b is decayed, since it has no more load
+- level2 get throttled
+- worker3 get unthrottled
+- level2 get unthrottled
+  - worker3 is added to list
+  - level3b is not added to list, since nr_running==0 and is decayed
+
+ [ Vincent Guittot: Rebased and updated to fix for the reported warning. ]
+
+Fixes: a7b359fc6a37 ("sched/fair: Correctly insert cfs_rq's to list on unthrottle")
+Reported-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
+Suggested-by: Vincent Guittot <vincent.guittot@linaro.org>
+Signed-off-by: Rik van Riel <riel@surriel.com>
+Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Tested-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
+Acked-by: Odin Ugedal <odin@uged.al>
+Link: https://lore.kernel.org/r/20210621174330.11258-1-vincent.guittot@linaro.org
 ---
- arch/x86/kernel/fpu/signal.c | 26 ++++++++------------------
- 1 file changed, 8 insertions(+), 18 deletions(-)
+ kernel/sched/fair.c | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
-diff --git a/arch/x86/kernel/fpu/signal.c b/arch/x86/kernel/fpu/signal.c
-index ec3ae30..b7b92cd 100644
---- a/arch/x86/kernel/fpu/signal.c
-+++ b/arch/x86/kernel/fpu/signal.c
-@@ -221,28 +221,18 @@ sanitize_restored_user_xstate(union fpregs_state *state,
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index bfaa6e1..a56f646 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -3298,6 +3298,31 @@ static inline void cfs_rq_util_change(struct cfs_rq *cfs_rq, int flags)
  
- 	if (use_xsave()) {
- 		/*
--		 * Note: we don't need to zero the reserved bits in the
--		 * xstate_header here because we either didn't copy them at all,
--		 * or we checked earlier that they aren't set.
-+		 * Clear all feature bits which are not set in
-+		 * user_xfeatures and clear all extended features
-+		 * for fx_only mode.
- 		 */
-+		u64 mask = fx_only ? XFEATURE_MASK_FPSSE : user_xfeatures;
+ #ifdef CONFIG_SMP
+ #ifdef CONFIG_FAIR_GROUP_SCHED
++/*
++ * Because list_add_leaf_cfs_rq always places a child cfs_rq on the list
++ * immediately before a parent cfs_rq, and cfs_rqs are removed from the list
++ * bottom-up, we only have to test whether the cfs_rq before us on the list
++ * is our child.
++ * If cfs_rq is not on the list, test whether a child needs its to be added to
++ * connect a branch to the tree  * (see list_add_leaf_cfs_rq() for details).
++ */
++static inline bool child_cfs_rq_on_list(struct cfs_rq *cfs_rq)
++{
++	struct cfs_rq *prev_cfs_rq;
++	struct list_head *prev;
++
++	if (cfs_rq->on_list) {
++		prev = cfs_rq->leaf_cfs_rq_list.prev;
++	} else {
++		struct rq *rq = rq_of(cfs_rq);
++
++		prev = rq->tmp_alone_branch;
++	}
++
++	prev_cfs_rq = container_of(prev, struct cfs_rq, leaf_cfs_rq_list);
++
++	return (prev_cfs_rq->tg->parent == cfs_rq->tg);
++}
  
- 		/*
--		 * 'user_xfeatures' might have bits clear which are
--		 * set in header->xfeatures. This represents features that
--		 * were in init state prior to a signal delivery, and need
--		 * to be reset back to the init state.  Clear any user
--		 * feature bits which are set in the kernel buffer to get
--		 * them back to the init state.
--		 *
--		 * Supervisor state is unchanged by input from userspace.
--		 * Ensure supervisor state bits stay set and supervisor
--		 * state is not modified.
-+		 * Supervisor state has to be preserved. The sigframe
-+		 * restore can only modify user features, i.e. @mask
-+		 * cannot contain them.
- 		 */
--		if (fx_only)
--			header->xfeatures = XFEATURE_MASK_FPSSE;
--		else
--			header->xfeatures &= user_xfeatures |
--					     xfeatures_mask_supervisor();
-+		header->xfeatures &= mask | xfeatures_mask_supervisor();
- 	}
+ static inline bool cfs_rq_is_decayed(struct cfs_rq *cfs_rq)
+ {
+@@ -3334,6 +3359,9 @@ static inline void update_tg_load_avg(struct cfs_rq *cfs_rq)
+ {
+ 	long delta = cfs_rq->avg.load_avg - cfs_rq->tg_load_avg_contrib;
  
- 	if (use_fxsr()) {
++	if (child_cfs_rq_on_list(cfs_rq))
++		return false;
++
+ 	/*
+ 	 * No need to update load_avg for root_task_group as it is not used.
+ 	 */
