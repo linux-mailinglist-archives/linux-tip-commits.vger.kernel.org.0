@@ -2,55 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 832303B0390
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 22 Jun 2021 14:03:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D68F3B0391
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 22 Jun 2021 14:03:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230402AbhFVMFy (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 22 Jun 2021 08:05:54 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:56742 "EHLO
+        id S231218AbhFVMFz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 22 Jun 2021 08:05:55 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:56754 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230136AbhFVMFx (ORCPT
+        with ESMTP id S231126AbhFVMFy (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 22 Jun 2021 08:05:53 -0400
-Date:   Tue, 22 Jun 2021 12:03:36 -0000
+        Tue, 22 Jun 2021 08:05:54 -0400
+Date:   Tue, 22 Jun 2021 12:03:37 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1624363416;
+        s=2020; t=1624363418;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Ybv9HrR8t4cVeDrUvO6k44DDQMd9IS0nzLsaT0bIEaU=;
-        b=W2Am6KzcWkJAf3PDTlAWv8B5LJ2jPpjTfGrLYZjINzQieeHamBYVCq7CZt5ALQ6lFpDi2N
-        Tw2mDkfBAN8iqqyeM0oVEU5zAFzvUZrpqnhrq5JhQy+kdzJRumKopjYZRBn+KQsNm8P2nL
-        G8d2O58UF7wCxM9o1MmsyJskQTuarGSrgSTzYzYlBfNLICoIi88VndgJi5WAJdbdOU+JKj
-        G+vR9X5ViFCTBgxY3VQmxBLn2yMitk5vdAmlzq8VHUEl8htEvV5bLSuvpPKR81zM7YD6gg
-        5037AI16WxBSrZOK+Sd0rtfmJ1//PWO4bvQHXoCOgVVD8u090SOihO4S4/2jbw==
+        bh=Fgm8a0x8TCGg2DDg63XJ9btnZRlxOFIICSQMr28Rj2k=;
+        b=zWcnxhZp1kJugBEzADo87CUfTPHTxl6j/sVJS/zXMM7SnfgsBxdS+pEwNG1g+cEGO34bOz
+        EISz6syRXmQpQdUtC/WpGT3byOh8qL53GgrpIGuT6ZsBL7q/Z2sp+kSlstkbxg778Fr7I4
+        Dr6vCLyiaALlVdMTt1qiDlCSKIoHmrN6A5a9h9Zl9NA4wGzQ5xcysGABGEiFGbqVI88OT6
+        4qF8R8bcXy5+NAFU810NJBCDDfexEovk/f1g8uDOPMSb4dDIVHuvcPY+9UzM+LzU7GX7LN
+        Hdj/5p8NJZtJZRPlaDgSnoHvLiKdR43kQtNpNhdXZwDRC4LD/cv3ut3q2UfsGg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1624363416;
+        s=2020e; t=1624363418;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Ybv9HrR8t4cVeDrUvO6k44DDQMd9IS0nzLsaT0bIEaU=;
-        b=tmcQGi95XVD9TYx/Wj6/TjBQJBM6irhuw7aUOk2GnuPv1CU94A+13S1bif6K71AOAZbPtH
-        gSdtRPohKB4YP7Cg==
-From:   "tip-bot2 for Rik van Riel" <tip-bot2@linutronix.de>
+        bh=Fgm8a0x8TCGg2DDg63XJ9btnZRlxOFIICSQMr28Rj2k=;
+        b=asvci3BM876MBGAtAtMc3xpDPJUS2NTT+13evrGrrZ0FNwGttiNN3cZUTsy/77hy3+x278
+        2Bb0yFDLQvSVyMAQ==
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] sched/fair: Ensure that the CFS parent is added
- after unthrottling
-Cc:     Sachin Sant <sachinp@linux.vnet.ibm.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Rik van Riel <riel@surriel.com>,
-        Ingo Molnar <mingo@kernel.org>, Odin Ugedal <odin@uged.al>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20210621174330.11258-1-vincent.guittot@linaro.org>
-References: <20210621174330.11258-1-vincent.guittot@linaro.org>
+Subject: [tip: objtool/urgent] locking/lockdep: Improve noinstr vs errors
+Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20210621120120.784404944@infradead.org>
+References: <20210621120120.784404944@infradead.org>
 MIME-Version: 1.0
-Message-ID: <162436341605.395.5765576899693923114.tip-bot2@tip-bot2>
+Message-ID: <162436341730.395.6717706594403277990.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,103 +56,90 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/urgent branch of tip:
+The following commit has been merged into the objtool/urgent branch of tip:
 
-Commit-ID:     30ca4b4598a9d680917fe24df5451afecc028b5b
-Gitweb:        https://git.kernel.org/tip/30ca4b4598a9d680917fe24df5451afecc028b5b
-Author:        Rik van Riel <riel@surriel.com>
-AuthorDate:    Mon, 21 Jun 2021 19:43:30 +02:00
+Commit-ID:     49faa77759b211fff344898edc23bb780707fff5
+Gitweb:        https://git.kernel.org/tip/49faa77759b211fff344898edc23bb780707fff5
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Mon, 21 Jun 2021 13:12:38 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 22 Jun 2021 14:00:53 +02:00
+CommitterDate: Tue, 22 Jun 2021 13:56:43 +02:00
 
-sched/fair: Ensure that the CFS parent is added after unthrottling
+locking/lockdep: Improve noinstr vs errors
 
-Ensure that a CFS parent will be in the list whenever one of its children is also
-in the list.
+Better handle the failure paths.
 
-A warning on rq->tmp_alone_branch != &rq->leaf_cfs_rq_list has been
-reported while running LTP test cfs_bandwidth01.
+  vmlinux.o: warning: objtool: debug_locks_off()+0x23: call to console_verbose() leaves .noinstr.text section
+  vmlinux.o: warning: objtool: debug_locks_off()+0x19: call to __kasan_check_write() leaves .noinstr.text section
 
-Odin Ugedal found the root cause:
+  debug_locks_off+0x19/0x40:
+  instrument_atomic_write at include/linux/instrumented.h:86
+  (inlined by) __debug_locks_off at include/linux/debug_locks.h:17
+  (inlined by) debug_locks_off at lib/debug_locks.c:41
 
-	$ tree /sys/fs/cgroup/ltp/ -d --charset=ascii
-	/sys/fs/cgroup/ltp/
-	|-- drain
-	`-- test-6851
-	    `-- level2
-		|-- level3a
-		|   |-- worker1
-		|   `-- worker2
-		`-- level3b
-		    `-- worker3
-
-Timeline (ish):
-- worker3 gets throttled
-- level3b is decayed, since it has no more load
-- level2 get throttled
-- worker3 get unthrottled
-- level2 get unthrottled
-  - worker3 is added to list
-  - level3b is not added to list, since nr_running==0 and is decayed
-
- [ Vincent Guittot: Rebased and updated to fix for the reported warning. ]
-
-Fixes: a7b359fc6a37 ("sched/fair: Correctly insert cfs_rq's to list on unthrottle")
-Reported-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
-Suggested-by: Vincent Guittot <vincent.guittot@linaro.org>
-Signed-off-by: Rik van Riel <riel@surriel.com>
-Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
+Fixes: 6eebad1ad303 ("lockdep: __always_inline more for noinstr")
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
-Acked-by: Odin Ugedal <odin@uged.al>
-Link: https://lore.kernel.org/r/20210621174330.11258-1-vincent.guittot@linaro.org
+Link: https://lore.kernel.org/r/20210621120120.784404944@infradead.org
 ---
- kernel/sched/fair.c | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ include/linux/debug_locks.h | 2 ++
+ kernel/locking/lockdep.c    | 4 +++-
+ lib/debug_locks.c           | 2 +-
+ 3 files changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index bfaa6e1..a56f646 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -3298,6 +3298,31 @@ static inline void cfs_rq_util_change(struct cfs_rq *cfs_rq, int flags)
+diff --git a/include/linux/debug_locks.h b/include/linux/debug_locks.h
+index 2915f56..edb5c18 100644
+--- a/include/linux/debug_locks.h
++++ b/include/linux/debug_locks.h
+@@ -27,8 +27,10 @@ extern int debug_locks_off(void);
+ 	int __ret = 0;							\
+ 									\
+ 	if (!oops_in_progress && unlikely(c)) {				\
++		instrumentation_begin();				\
+ 		if (debug_locks_off() && !debug_locks_silent)		\
+ 			WARN(1, "DEBUG_LOCKS_WARN_ON(%s)", #c);		\
++		instrumentation_end();					\
+ 		__ret = 1;						\
+ 	}								\
+ 	__ret;								\
+diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
+index 7641bd4..e323130 100644
+--- a/kernel/locking/lockdep.c
++++ b/kernel/locking/lockdep.c
+@@ -843,7 +843,7 @@ static int count_matching_names(struct lock_class *new_class)
+ }
  
- #ifdef CONFIG_SMP
- #ifdef CONFIG_FAIR_GROUP_SCHED
-+/*
-+ * Because list_add_leaf_cfs_rq always places a child cfs_rq on the list
-+ * immediately before a parent cfs_rq, and cfs_rqs are removed from the list
-+ * bottom-up, we only have to test whether the cfs_rq before us on the list
-+ * is our child.
-+ * If cfs_rq is not on the list, test whether a child needs its to be added to
-+ * connect a branch to the tree  * (see list_add_leaf_cfs_rq() for details).
-+ */
-+static inline bool child_cfs_rq_on_list(struct cfs_rq *cfs_rq)
-+{
-+	struct cfs_rq *prev_cfs_rq;
-+	struct list_head *prev;
-+
-+	if (cfs_rq->on_list) {
-+		prev = cfs_rq->leaf_cfs_rq_list.prev;
-+	} else {
-+		struct rq *rq = rq_of(cfs_rq);
-+
-+		prev = rq->tmp_alone_branch;
-+	}
-+
-+	prev_cfs_rq = container_of(prev, struct cfs_rq, leaf_cfs_rq_list);
-+
-+	return (prev_cfs_rq->tg->parent == cfs_rq->tg);
-+}
- 
- static inline bool cfs_rq_is_decayed(struct cfs_rq *cfs_rq)
+ /* used from NMI context -- must be lockless */
+-static __always_inline struct lock_class *
++static noinstr struct lock_class *
+ look_up_lock_class(const struct lockdep_map *lock, unsigned int subclass)
  {
-@@ -3334,6 +3359,9 @@ static inline void update_tg_load_avg(struct cfs_rq *cfs_rq)
- {
- 	long delta = cfs_rq->avg.load_avg - cfs_rq->tg_load_avg_contrib;
+ 	struct lockdep_subclass_key *key;
+@@ -851,12 +851,14 @@ look_up_lock_class(const struct lockdep_map *lock, unsigned int subclass)
+ 	struct lock_class *class;
  
-+	if (child_cfs_rq_on_list(cfs_rq))
-+		return false;
-+
- 	/*
- 	 * No need to update load_avg for root_task_group as it is not used.
- 	 */
+ 	if (unlikely(subclass >= MAX_LOCKDEP_SUBCLASSES)) {
++		instrumentation_begin();
+ 		debug_locks_off();
+ 		printk(KERN_ERR
+ 			"BUG: looking up invalid subclass: %u\n", subclass);
+ 		printk(KERN_ERR
+ 			"turning off the locking correctness validator.\n");
+ 		dump_stack();
++		instrumentation_end();
+ 		return NULL;
+ 	}
+ 
+diff --git a/lib/debug_locks.c b/lib/debug_locks.c
+index 06d3135..a75ee30 100644
+--- a/lib/debug_locks.c
++++ b/lib/debug_locks.c
+@@ -36,7 +36,7 @@ EXPORT_SYMBOL_GPL(debug_locks_silent);
+ /*
+  * Generic 'turn off all lock debugging' function:
+  */
+-noinstr int debug_locks_off(void)
++int debug_locks_off(void)
+ {
+ 	if (debug_locks && __debug_locks_off()) {
+ 		if (!debug_locks_silent) {
