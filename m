@@ -2,313 +2,227 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 075133B0028
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 22 Jun 2021 11:26:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B4B93B031D
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 22 Jun 2021 13:46:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229828AbhFVJ2Y (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 22 Jun 2021 05:28:24 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:55992 "EHLO
+        id S230136AbhFVLsQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 22 Jun 2021 07:48:16 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:56656 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229490AbhFVJ2X (ORCPT
+        with ESMTP id S229913AbhFVLsP (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 22 Jun 2021 05:28:23 -0400
-Date:   Tue, 22 Jun 2021 09:26:05 -0000
+        Tue, 22 Jun 2021 07:48:15 -0400
+Date:   Tue, 22 Jun 2021 11:45:57 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1624353966;
+        s=2020; t=1624362358;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=1xd+HccFec4E0C+9o73D+3xQp59+JWn/FLDxbfMJm0k=;
-        b=V3qaey1a1G5O9IVdMYUR0zB6f29uOram3+c633PXZjYe2+4oLZfwelfRfkeQ2jN1/qWCba
-        A9k9EobF23PK//9CyZs6ZNqsI/OdqVrbu3HEaF58XmQGZyCe8YBXLvEaHrm9WvZ4+xNOgY
-        NprziMMBhpZzB9IG6ClCL+/RoDRmrhq29r22dcZMNIe3CBFItlQlen3eNJIKBogR34ZTEy
-        0TnoM7IBIpUMcysmXa7ecaeUGp5wMd7JXAUxzYzpogychOOhnLpwVni6OZyBgxeUqHHUFV
-        BJqoTzn6BrIMaCMf3msxaESy74wipo7mhN1nt+Pcj9obKeWhnirL1+oeN1+tiw==
+        bh=Ikw3rNQzT/JVPBq9JmPpeQnhZMS2RZF0tnvZdkN9ZFE=;
+        b=A6C6lxZ3YytXgJuv4aBMe1mCqAZqrPO65cetgHVijt1Kq5KnLD9uWHKJBIaDELobTMwDTX
+        kMQCcgof1xVE05noSsH9LG/JR7XJ50O0w+9ZXw1KXCWWfrvMrb94PqAlbje0W+ktwJ+q3i
+        hQMGp6NeNrblRRuoXDIPro+VCrqoeePJuIR1cLsCq/muJDFJ5MDIL9iIIap2a0f54HxXQ8
+        eY40Dj5q6y+CYcga+uzWBxlWWlAIXt905qLGdoBYX+5sjzNLYNS1ZgUkw6fO+6hu5I+EQf
+        XZeI2NiXlJsuqUc8/PFZSimGvhNdfQTGJi/PtmmJQ5OEJAa90T5qmQRYDSLfzw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1624353966;
+        s=2020e; t=1624362358;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=1xd+HccFec4E0C+9o73D+3xQp59+JWn/FLDxbfMJm0k=;
-        b=bXB/yacL6emGAIwHgbTAJdw59ncb3ZNLwwwsfWjlBDlE9QtkKc7AkLNZyHWMDFBBvisvjJ
-        GY51OUfBr2+hUlAA==
-From:   tip-bot2 for =?utf-8?q?Andr=C3=A9?= Almeida 
-        <tip-bot2@linutronix.de>
+        bh=Ikw3rNQzT/JVPBq9JmPpeQnhZMS2RZF0tnvZdkN9ZFE=;
+        b=/05FIth2upn+2LPYmT2i1Icjj7gIbb7k+Zqc7EOz9Z56k4F/QfNNJ4YMWB5+LUyIj9NKMR
+        K01s7trI6P5+4ABg==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] selftests: futex: Add futex wait test
-Cc:     andrealmeid@collabora.com, Thomas Gleixner <tglx@linutronix.de>,
-        Davidlohr Bueso <dbueso@suse.de>, x86@kernel.org,
+Subject: [tip: x86/urgent] x86/fpu: Make init_fpstate correct with optimized XSAVE
+Cc:     Thomas Gleixner <tglx@linutronix.de>, Borislav Petkov <bp@suse.de>,
+        stable@vger.kernel.org, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210531165036.41468-2-andrealmeid@collabora.com>
-References: <20210531165036.41468-2-andrealmeid@collabora.com>
+In-Reply-To: <20210618143444.587311343@linutronix.de>
+References: <20210618143444.587311343@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <162435396526.395.9420418857340307876.tip-bot2@tip-bot2>
+Message-ID: <162436235729.395.8630589911308222852.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the locking/core branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     c3d128581f64a9b3729e697a63760ff0a2c4a8fe
-Gitweb:        https://git.kernel.org/tip/c3d128581f64a9b3729e697a63760ff0a2c=
-4a8fe
-Author:        Andr=C3=A9 Almeida <andrealmeid@collabora.com>
-AuthorDate:    Mon, 31 May 2021 13:50:35 -03:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 22 Jun 2021 11:20:15 +02:00
+Commit-ID:     f9dfb5e390fab2df9f7944bb91e7705aba14cd26
+Gitweb:        https://git.kernel.org/tip/f9dfb5e390fab2df9f7944bb91e7705aba14cd26
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Fri, 18 Jun 2021 16:18:25 +02:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Tue, 22 Jun 2021 11:06:21 +02:00
 
-selftests: futex: Add futex wait test
+x86/fpu: Make init_fpstate correct with optimized XSAVE
 
-There are three different strategies to uniquely identify a futex in the
-kernel:
+The XSAVE init code initializes all enabled and supported components with
+XRSTOR(S) to init state. Then it XSAVEs the state of the components back
+into init_fpstate which is used in several places to fill in the init state
+of components.
 
- - Private futexes: uses the pointer to mm_struct and the page address
+This works correctly with XSAVE, but not with XSAVEOPT and XSAVES because
+those use the init optimization and skip writing state of components which
+are in init state. So init_fpstate.xsave still contains all zeroes after
+this operation.
 
- - Shared futexes: checks if the page containing the address is a PageAnon:
-   - If it is, uses the same data as a private futexes
-   - If it isn't, uses an inode sequence number from struct inode and
-      the page's index
+There are two ways to solve that:
 
-Create a selftest to check those three paths and basic wait/wake
-mechanism.
+   1) Use XSAVE unconditionally, but that requires to reshuffle the buffer when
+      XSAVES is enabled because XSAVES uses compacted format.
 
-Signed-off-by: Andr=C3=A9 Almeida <andrealmeid@collabora.com>
+   2) Save the components which are known to have a non-zero init state by other
+      means.
+
+Looking deeper, #2 is the right thing to do because all components the
+kernel supports have all-zeroes init state except the legacy features (FP,
+SSE). Those cannot be hard coded because the states are not identical on all
+CPUs, but they can be saved with FXSAVE which avoids all conditionals.
+
+Use FXSAVE to save the legacy FP/SSE components in init_fpstate along with
+a BUILD_BUG_ON() which reminds developers to validate that a newly added
+component has all zeroes init state. As a bonus remove the now unused
+copy_xregs_to_kernel_booting() crutch.
+
+The XSAVE and reshuffle method can still be implemented in the unlikely
+case that components are added which have a non-zero init state and no
+other means to save them. For now, FXSAVE is just simple and good enough.
+
+  [ bp: Fix a typo or two in the text. ]
+
+Fixes: 6bad06b76892 ("x86, xsave: Use xsaveopt in context-switch path when supported")
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Davidlohr Bueso <dbueso@suse.de>
-Link: https://lore.kernel.org/r/20210531165036.41468-2-andrealmeid@collabora.=
-com
-
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Reviewed-by: Borislav Petkov <bp@suse.de>
+Cc: stable@vger.kernel.org
+Link: https://lkml.kernel.org/r/20210618143444.587311343@linutronix.de
 ---
- tools/testing/selftests/futex/functional/.gitignore   |   1 +-
- tools/testing/selftests/futex/functional/Makefile     |   3 +-
- tools/testing/selftests/futex/functional/futex_wait.c | 171 +++++++++-
- tools/testing/selftests/futex/functional/run.sh       |   3 +-
- 4 files changed, 177 insertions(+), 1 deletion(-)
- create mode 100644 tools/testing/selftests/futex/functional/futex_wait.c
+ arch/x86/include/asm/fpu/internal.h | 30 +++++---------------
+ arch/x86/kernel/fpu/xstate.c        | 41 +++++++++++++++++++++++++---
+ 2 files changed, 46 insertions(+), 25 deletions(-)
 
-diff --git a/tools/testing/selftests/futex/functional/.gitignore b/tools/test=
-ing/selftests/futex/functional/.gitignore
-index 0efcd49..bd24699 100644
---- a/tools/testing/selftests/futex/functional/.gitignore
-+++ b/tools/testing/selftests/futex/functional/.gitignore
-@@ -6,3 +6,4 @@ futex_wait_private_mapped_file
- futex_wait_timeout
- futex_wait_uninitialized_heap
- futex_wait_wouldblock
-+futex_wait
-diff --git a/tools/testing/selftests/futex/functional/Makefile b/tools/testin=
-g/selftests/futex/functional/Makefile
-index 1d2b3b2..20a5b4a 100644
---- a/tools/testing/selftests/futex/functional/Makefile
-+++ b/tools/testing/selftests/futex/functional/Makefile
-@@ -15,7 +15,8 @@ TEST_GEN_FILES :=3D \
- 	futex_requeue_pi_signal_restart \
- 	futex_requeue_pi_mismatched_ops \
- 	futex_wait_uninitialized_heap \
--	futex_wait_private_mapped_file
-+	futex_wait_private_mapped_file \
-+	futex_wait
-=20
- TEST_PROGS :=3D run.sh
-=20
-diff --git a/tools/testing/selftests/futex/functional/futex_wait.c b/tools/te=
-sting/selftests/futex/functional/futex_wait.c
-new file mode 100644
-index 0000000..685140d
---- /dev/null
-+++ b/tools/testing/selftests/futex/functional/futex_wait.c
-@@ -0,0 +1,171 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * Copyright Collabora Ltd., 2021
-+ *
-+ * futex cmp requeue test by Andr=C3=A9 Almeida <andrealmeid@collabora.com>
+diff --git a/arch/x86/include/asm/fpu/internal.h b/arch/x86/include/asm/fpu/internal.h
+index fdee23e..16bf4d4 100644
+--- a/arch/x86/include/asm/fpu/internal.h
++++ b/arch/x86/include/asm/fpu/internal.h
+@@ -204,6 +204,14 @@ static inline void copy_fxregs_to_kernel(struct fpu *fpu)
+ 		asm volatile("fxsaveq %[fx]" : [fx] "=m" (fpu->state.fxsave));
+ }
+ 
++static inline void fxsave(struct fxregs_state *fx)
++{
++	if (IS_ENABLED(CONFIG_X86_32))
++		asm volatile( "fxsave %[fx]" : [fx] "=m" (*fx));
++	else
++		asm volatile("fxsaveq %[fx]" : [fx] "=m" (*fx));
++}
++
+ /* These macros all use (%edi)/(%rdi) as the single memory argument. */
+ #define XSAVE		".byte " REX_PREFIX "0x0f,0xae,0x27"
+ #define XSAVEOPT	".byte " REX_PREFIX "0x0f,0xae,0x37"
+@@ -272,28 +280,6 @@ static inline void copy_fxregs_to_kernel(struct fpu *fpu)
+  * This function is called only during boot time when x86 caps are not set
+  * up and alternative can not be used yet.
+  */
+-static inline void copy_xregs_to_kernel_booting(struct xregs_state *xstate)
+-{
+-	u64 mask = xfeatures_mask_all;
+-	u32 lmask = mask;
+-	u32 hmask = mask >> 32;
+-	int err;
+-
+-	WARN_ON(system_state != SYSTEM_BOOTING);
+-
+-	if (boot_cpu_has(X86_FEATURE_XSAVES))
+-		XSTATE_OP(XSAVES, xstate, lmask, hmask, err);
+-	else
+-		XSTATE_OP(XSAVE, xstate, lmask, hmask, err);
+-
+-	/* We should never fault when copying to a kernel buffer: */
+-	WARN_ON_FPU(err);
+-}
+-
+-/*
+- * This function is called only during boot time when x86 caps are not set
+- * up and alternative can not be used yet.
+- */
+ static inline void copy_kernel_to_xregs_booting(struct xregs_state *xstate)
+ {
+ 	u64 mask = -1;
+diff --git a/arch/x86/kernel/fpu/xstate.c b/arch/x86/kernel/fpu/xstate.c
+index d0eef96..1cadb2f 100644
+--- a/arch/x86/kernel/fpu/xstate.c
++++ b/arch/x86/kernel/fpu/xstate.c
+@@ -441,12 +441,35 @@ static void __init print_xstate_offset_size(void)
+ }
+ 
+ /*
++ * All supported features have either init state all zeros or are
++ * handled in setup_init_fpu() individually. This is an explicit
++ * feature list and does not use XFEATURE_MASK*SUPPORTED to catch
++ * newly added supported features at build time and make people
++ * actually look at the init state for the new feature.
 + */
++#define XFEATURES_INIT_FPSTATE_HANDLED		\
++	(XFEATURE_MASK_FP |			\
++	 XFEATURE_MASK_SSE |			\
++	 XFEATURE_MASK_YMM |			\
++	 XFEATURE_MASK_OPMASK |			\
++	 XFEATURE_MASK_ZMM_Hi256 |		\
++	 XFEATURE_MASK_Hi16_ZMM	 |		\
++	 XFEATURE_MASK_PKRU |			\
++	 XFEATURE_MASK_BNDREGS |		\
++	 XFEATURE_MASK_BNDCSR |			\
++	 XFEATURE_MASK_PASID)
 +
-+#include <pthread.h>
-+#include <sys/shm.h>
-+#include <sys/mman.h>
-+#include <fcntl.h>
-+#include "logging.h"
-+#include "futextest.h"
++/*
+  * setup the xstate image representing the init state
+  */
+ static void __init setup_init_fpu_buf(void)
+ {
+ 	static int on_boot_cpu __initdata = 1;
+ 
++	BUILD_BUG_ON((XFEATURE_MASK_USER_SUPPORTED |
++		      XFEATURE_MASK_SUPERVISOR_SUPPORTED) !=
++		     XFEATURES_INIT_FPSTATE_HANDLED);
 +
-+#define TEST_NAME "futex-wait"
-+#define timeout_ns  30000000
-+#define WAKE_WAIT_US 10000
-+#define SHM_PATH "futex_shm_file"
-+
-+void *futex;
-+
-+void usage(char *prog)
-+{
-+	printf("Usage: %s\n", prog);
-+	printf("  -c	Use color\n");
-+	printf("  -h	Display this help message\n");
-+	printf("  -v L	Verbosity level: %d=3DQUIET %d=3DCRITICAL %d=3DINFO\n",
-+	       VQUIET, VCRITICAL, VINFO);
-+}
-+
-+static void *waiterfn(void *arg)
-+{
-+	struct timespec to;
-+	unsigned int flags =3D 0;
-+
-+	if (arg)
-+		flags =3D *((unsigned int *) arg);
-+
-+	to.tv_sec =3D 0;
-+	to.tv_nsec =3D timeout_ns;
-+
-+	if (futex_wait(futex, 0, &to, flags))
-+		printf("waiter failed errno %d\n", errno);
-+
-+	return NULL;
-+}
-+
-+int main(int argc, char *argv[])
-+{
-+	int res, ret =3D RET_PASS, fd, c, shm_id;
-+	u_int32_t f_private =3D 0, *shared_data;
-+	unsigned int flags =3D FUTEX_PRIVATE_FLAG;
-+	pthread_t waiter;
-+	void *shm;
-+
-+	futex =3D &f_private;
-+
-+	while ((c =3D getopt(argc, argv, "cht:v:")) !=3D -1) {
-+		switch (c) {
-+		case 'c':
-+			log_color(1);
-+			break;
-+		case 'h':
-+			usage(basename(argv[0]));
-+			exit(0);
-+		case 'v':
-+			log_verbosity(atoi(optarg));
-+			break;
-+		default:
-+			usage(basename(argv[0]));
-+			exit(1);
-+		}
-+	}
-+
-+	ksft_print_header();
-+	ksft_set_plan(3);
-+	ksft_print_msg("%s: Test futex_wait\n", basename(argv[0]));
-+
-+	/* Testing a private futex */
-+	info("Calling private futex_wait on futex: %p\n", futex);
-+	if (pthread_create(&waiter, NULL, waiterfn, (void *) &flags))
-+		error("pthread_create failed\n", errno);
-+
-+	usleep(WAKE_WAIT_US);
-+
-+	info("Calling private futex_wake on futex: %p\n", futex);
-+	res =3D futex_wake(futex, 1, FUTEX_PRIVATE_FLAG);
-+	if (res !=3D 1) {
-+		ksft_test_result_fail("futex_wake private returned: %d %s\n",
-+				      errno, strerror(errno));
-+		ret =3D RET_FAIL;
-+	} else {
-+		ksft_test_result_pass("futex_wake private succeeds\n");
-+	}
-+
-+	/* Testing an anon page shared memory */
-+	shm_id =3D shmget(IPC_PRIVATE, 4096, IPC_CREAT | 0666);
-+	if (shm_id < 0) {
-+		perror("shmget");
-+		exit(1);
-+	}
-+
-+	shared_data =3D shmat(shm_id, NULL, 0);
-+
-+	*shared_data =3D 0;
-+	futex =3D shared_data;
-+
-+	info("Calling shared (page anon) futex_wait on futex: %p\n", futex);
-+	if (pthread_create(&waiter, NULL, waiterfn, NULL))
-+		error("pthread_create failed\n", errno);
-+
-+	usleep(WAKE_WAIT_US);
-+
-+	info("Calling shared (page anon) futex_wake on futex: %p\n", futex);
-+	res =3D futex_wake(futex, 1, 0);
-+	if (res !=3D 1) {
-+		ksft_test_result_fail("futex_wake shared (page anon) returned: %d %s\n",
-+				      errno, strerror(errno));
-+		ret =3D RET_FAIL;
-+	} else {
-+		ksft_test_result_pass("futex_wake shared (page anon) succeeds\n");
-+	}
-+
-+
-+	/* Testing a file backed shared memory */
-+	fd =3D open(SHM_PATH, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
-+	if (fd < 0) {
-+		perror("open");
-+		exit(1);
-+	}
-+
-+	if (ftruncate(fd, sizeof(f_private))) {
-+		perror("ftruncate");
-+		exit(1);
-+	}
-+
-+	shm =3D mmap(NULL, sizeof(f_private), PROT_READ | PROT_WRITE, MAP_SHARED, f=
-d, 0);
-+	if (shm =3D=3D MAP_FAILED) {
-+		perror("mmap");
-+		exit(1);
-+	}
-+
-+	memcpy(shm, &f_private, sizeof(f_private));
-+
-+	futex =3D shm;
-+
-+	info("Calling shared (file backed) futex_wait on futex: %p\n", futex);
-+	if (pthread_create(&waiter, NULL, waiterfn, NULL))
-+		error("pthread_create failed\n", errno);
-+
-+	usleep(WAKE_WAIT_US);
-+
-+	info("Calling shared (file backed) futex_wake on futex: %p\n", futex);
-+	res =3D futex_wake(shm, 1, 0);
-+	if (res !=3D 1) {
-+		ksft_test_result_fail("futex_wake shared (file backed) returned: %d %s\n",
-+				      errno, strerror(errno));
-+		ret =3D RET_FAIL;
-+	} else {
-+		ksft_test_result_pass("futex_wake shared (file backed) succeeds\n");
-+	}
-+
-+	/* Freeing resources */
-+	shmdt(shared_data);
-+	munmap(shm, sizeof(f_private));
-+	remove(SHM_PATH);
-+	close(fd);
-+
-+	ksft_print_cnts();
-+	return ret;
-+}
-diff --git a/tools/testing/selftests/futex/functional/run.sh b/tools/testing/=
-selftests/futex/functional/run.sh
-index 1acb6ac..d5e1430 100755
---- a/tools/testing/selftests/futex/functional/run.sh
-+++ b/tools/testing/selftests/futex/functional/run.sh
-@@ -73,3 +73,6 @@ echo
- echo
- ./futex_wait_uninitialized_heap $COLOR
- ./futex_wait_private_mapped_file $COLOR
-+
-+echo
-+./futex_wait $COLOR
+ 	WARN_ON_FPU(!on_boot_cpu);
+ 	on_boot_cpu = 0;
+ 
+@@ -466,10 +489,22 @@ static void __init setup_init_fpu_buf(void)
+ 	copy_kernel_to_xregs_booting(&init_fpstate.xsave);
+ 
+ 	/*
+-	 * Dump the init state again. This is to identify the init state
+-	 * of any feature which is not represented by all zero's.
++	 * All components are now in init state. Read the state back so
++	 * that init_fpstate contains all non-zero init state. This only
++	 * works with XSAVE, but not with XSAVEOPT and XSAVES because
++	 * those use the init optimization which skips writing data for
++	 * components in init state.
++	 *
++	 * XSAVE could be used, but that would require to reshuffle the
++	 * data when XSAVES is available because XSAVES uses xstate
++	 * compaction. But doing so is a pointless exercise because most
++	 * components have an all zeros init state except for the legacy
++	 * ones (FP and SSE). Those can be saved with FXSAVE into the
++	 * legacy area. Adding new features requires to ensure that init
++	 * state is all zeroes or if not to add the necessary handling
++	 * here.
+ 	 */
+-	copy_xregs_to_kernel_booting(&init_fpstate.xsave);
++	fxsave(&init_fpstate.fxsave);
+ }
+ 
+ static int xfeature_uncompacted_offset(int xfeature_nr)
