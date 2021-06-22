@@ -2,104 +2,272 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BEA753AF2E7
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 21 Jun 2021 19:56:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F21953B0027
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 22 Jun 2021 11:26:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231821AbhFUR5q (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 21 Jun 2021 13:57:46 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:45968 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231961AbhFURzr (ORCPT
+        id S229817AbhFVJ2X (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 22 Jun 2021 05:28:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60054 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229656AbhFVJ2W (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 21 Jun 2021 13:55:47 -0400
-Date:   Mon, 21 Jun 2021 17:53:29 -0000
+        Tue, 22 Jun 2021 05:28:22 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC2CEC061574;
+        Tue, 22 Jun 2021 02:26:06 -0700 (PDT)
+Date:   Tue, 22 Jun 2021 09:26:04 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1624298011;
+        s=2020; t=1624353965;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=YH3f6MBaqyU4MYEEOYfekfCSOLt9UeEUXfvYCYqWqdI=;
-        b=Y9qft6Mb00Mx+3gU6XUCpwxkF8t2cTyw3gzAPgmJISxilvS78kkuyHt56vaZVMgaDz9lgg
-        WuDyqMRaQctRL/5HJf4fAZ/awNd64L43v0aFRluduAkdU0GpSX06bHUwfcLkynHpZpdOmk
-        jgfFoc9AdJCz3yJK9wQEDHgtWhi2rYH0Vq9/HLkHsFeBm/LFO0w2R+VADi2aPmZR4bybJT
-        vczUV5P1PggmMlck5dgrzFIQrXi6NPmj+CwPMxr7H+75jL3zgHt7ICPiqDvgGoDoLvNiZU
-        u8G6RPzu6T3Q/J7//OhT7l3kICvB7+ndaQkwOw+5eEwpf3BRBMubaYiM+tTPVw==
+        bh=tSYr4ddWAsBkcdC3ZfyxfZQVW98Sf6QUw1RHZQqCwcQ=;
+        b=pIAH2TGUrWbNyltFaz3Rmzma7bFKzazBq+b8qx1GXpCVt3mheEcqAAosR8g6GsFS62ammP
+        QqBvIwV+RLdWtMQKen7gczDxmUFHH0XFbJq2fKLdLYFEimoExGnrF/vX8ebk0BIxi6Ulji
+        W/pyuToz07XGuR98qxJ/hYd+/pdnYWlGTT4HE6bygXYYrW1HsrEU9yz2EfzXyggYN+B8u2
+        XftMILYRV5ITAVgX17Keh0Ffw/LCkKJXyzWDKAVyQ9QF6DzvG+P4swJ6gntuVGsMyEPpTI
+        8qsQLRWDwEV/nQntGHXlW5/QCapNTnmHBZAtTC4EBDRf66deYhNOOpBMSRebrQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1624298011;
+        s=2020e; t=1624353965;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=YH3f6MBaqyU4MYEEOYfekfCSOLt9UeEUXfvYCYqWqdI=;
-        b=+NIRJTGY520NQltVup6Qt4/rKcc09Mc41xilWDXPLeXCEmGDDUUQSyV3fDr4Ybkx4lz05+
-        bEMr3a5nuhWV51CA==
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+        bh=tSYr4ddWAsBkcdC3ZfyxfZQVW98Sf6QUw1RHZQqCwcQ=;
+        b=1GHHI24/cVHyji6JheYPiNlNQeDzFNqbq7AUq3itNrJjlrggV/WYRyO9YVBHuLQe55QsF1
+        FdrDcojL08lCt2AQ==
+From:   tip-bot2 for =?utf-8?q?Andr=C3=A9?= Almeida 
+        <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/urgent] objtool/x86: Ignore __x86_indirect_alt_* symbols
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
+Subject: [tip: locking/core] selftests: futex: Add futex compare requeue test
+Cc:     andrealmeid@collabora.com, Thomas Gleixner <tglx@linutronix.de>,
+        Davidlohr Bueso <dbueso@suse.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <YNCgxwLBiK9wclYJ@hirez.programming.kicks-ass.net>
-References: <YNCgxwLBiK9wclYJ@hirez.programming.kicks-ass.net>
+In-Reply-To: <20210531165036.41468-3-andrealmeid@collabora.com>
+References: <20210531165036.41468-3-andrealmeid@collabora.com>
 MIME-Version: 1.0
-Message-ID: <162429800985.395.5319249290550367396.tip-bot2@tip-bot2>
+Message-ID: <162435396422.395.17379563097333004962.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the objtool/urgent branch of tip:
+The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     31197d3a0f1caeb60fb01f6755e28347e4f44037
-Gitweb:        https://git.kernel.org/tip/31197d3a0f1caeb60fb01f6755e28347e4f44037
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Mon, 21 Jun 2021 16:13:55 +02:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Mon, 21 Jun 2021 17:26:57 +02:00
+Commit-ID:     7cb5dd8e2c8ce2b8f778f37cfd8bb955d663d16d
+Gitweb:        https://git.kernel.org/tip/7cb5dd8e2c8ce2b8f778f37cfd8bb955d66=
+3d16d
+Author:        Andr=C3=A9 Almeida <andrealmeid@collabora.com>
+AuthorDate:    Mon, 31 May 2021 13:50:36 -03:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Tue, 22 Jun 2021 11:20:16 +02:00
 
-objtool/x86: Ignore __x86_indirect_alt_* symbols
+selftests: futex: Add futex compare requeue test
 
-Because the __x86_indirect_alt* symbols are just that, objtool will
-try and validate them as regular symbols, instead of the alternative
-replacements that they are.
+Add testing for futex_cmp_requeue(). The first test just requeues from one
+waiter to another one, and wakes it. The second performs both wake and
+requeue, and checks the return values to see if the operation woke/requeued
+the expected number of waiters.
 
-This goes sideways for FRAME_POINTER=y builds; which generate a fair
-amount of warnings.
+Signed-off-by: Andr=C3=A9 Almeida <andrealmeid@collabora.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Acked-by: Davidlohr Bueso <dbueso@suse.de>
+Link: https://lore.kernel.org/r/20210531165036.41468-3-andrealmeid@collabora.=
+com
 
-Fixes: 9bc0bb50727c ("objtool/x86: Rewrite retpoline thunk calls")
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/YNCgxwLBiK9wclYJ@hirez.programming.kicks-ass.net
 ---
- arch/x86/lib/retpoline.S | 4 ++++
- 1 file changed, 4 insertions(+)
+ tools/testing/selftests/futex/functional/.gitignore      |   1 +-
+ tools/testing/selftests/futex/functional/Makefile        |   3 +-
+ tools/testing/selftests/futex/functional/futex_requeue.c | 136 +++++++-
+ tools/testing/selftests/futex/functional/run.sh          |   3 +-
+ 4 files changed, 142 insertions(+), 1 deletion(-)
+ create mode 100644 tools/testing/selftests/futex/functional/futex_requeue.c
 
-diff --git a/arch/x86/lib/retpoline.S b/arch/x86/lib/retpoline.S
-index 4d32cb0..ec9922c 100644
---- a/arch/x86/lib/retpoline.S
-+++ b/arch/x86/lib/retpoline.S
-@@ -58,12 +58,16 @@ SYM_FUNC_START_NOALIGN(__x86_indirect_alt_call_\reg)
- 2:	.skip	5-(2b-1b), 0x90
- SYM_FUNC_END(__x86_indirect_alt_call_\reg)
- 
-+STACK_FRAME_NON_STANDARD(__x86_indirect_alt_call_\reg)
+diff --git a/tools/testing/selftests/futex/functional/.gitignore b/tools/test=
+ing/selftests/futex/functional/.gitignore
+index bd24699..0e78b49 100644
+--- a/tools/testing/selftests/futex/functional/.gitignore
++++ b/tools/testing/selftests/futex/functional/.gitignore
+@@ -7,3 +7,4 @@ futex_wait_timeout
+ futex_wait_uninitialized_heap
+ futex_wait_wouldblock
+ futex_wait
++futex_requeue
+diff --git a/tools/testing/selftests/futex/functional/Makefile b/tools/testin=
+g/selftests/futex/functional/Makefile
+index 20a5b4a..bd1fec5 100644
+--- a/tools/testing/selftests/futex/functional/Makefile
++++ b/tools/testing/selftests/futex/functional/Makefile
+@@ -16,7 +16,8 @@ TEST_GEN_FILES :=3D \
+ 	futex_requeue_pi_mismatched_ops \
+ 	futex_wait_uninitialized_heap \
+ 	futex_wait_private_mapped_file \
+-	futex_wait
++	futex_wait \
++	futex_requeue
+=20
+ TEST_PROGS :=3D run.sh
+=20
+diff --git a/tools/testing/selftests/futex/functional/futex_requeue.c b/tools=
+/testing/selftests/futex/functional/futex_requeue.c
+new file mode 100644
+index 0000000..51485be
+--- /dev/null
++++ b/tools/testing/selftests/futex/functional/futex_requeue.c
+@@ -0,0 +1,136 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/*
++ * Copyright Collabora Ltd., 2021
++ *
++ * futex cmp requeue test by Andr=C3=A9 Almeida <andrealmeid@collabora.com>
++ */
 +
- SYM_FUNC_START_NOALIGN(__x86_indirect_alt_jmp_\reg)
- 	ANNOTATE_RETPOLINE_SAFE
- 1:	jmp	*%\reg
- 2:	.skip	5-(2b-1b), 0x90
- SYM_FUNC_END(__x86_indirect_alt_jmp_\reg)
- 
-+STACK_FRAME_NON_STANDARD(__x86_indirect_alt_jmp_\reg)
++#include <pthread.h>
++#include <limits.h>
++#include "logging.h"
++#include "futextest.h"
 +
- .endm
- 
- /*
++#define TEST_NAME "futex-requeue"
++#define timeout_ns  30000000
++#define WAKE_WAIT_US 10000
++
++volatile futex_t *f1;
++
++void usage(char *prog)
++{
++	printf("Usage: %s\n", prog);
++	printf("  -c	Use color\n");
++	printf("  -h	Display this help message\n");
++	printf("  -v L	Verbosity level: %d=3DQUIET %d=3DCRITICAL %d=3DINFO\n",
++	       VQUIET, VCRITICAL, VINFO);
++}
++
++void *waiterfn(void *arg)
++{
++	struct timespec to;
++
++	to.tv_sec =3D 0;
++	to.tv_nsec =3D timeout_ns;
++
++	if (futex_wait(f1, *f1, &to, 0))
++		printf("waiter failed errno %d\n", errno);
++
++	return NULL;
++}
++
++int main(int argc, char *argv[])
++{
++	pthread_t waiter[10];
++	int res, ret =3D RET_PASS;
++	int c, i;
++	volatile futex_t _f1 =3D 0;
++	volatile futex_t f2 =3D 0;
++
++	f1 =3D &_f1;
++
++	while ((c =3D getopt(argc, argv, "cht:v:")) !=3D -1) {
++		switch (c) {
++		case 'c':
++			log_color(1);
++			break;
++		case 'h':
++			usage(basename(argv[0]));
++			exit(0);
++		case 'v':
++			log_verbosity(atoi(optarg));
++			break;
++		default:
++			usage(basename(argv[0]));
++			exit(1);
++		}
++	}
++
++	ksft_print_header();
++	ksft_set_plan(2);
++	ksft_print_msg("%s: Test futex_requeue\n",
++		       basename(argv[0]));
++
++	/*
++	 * Requeue a waiter from f1 to f2, and wake f2.
++	 */
++	if (pthread_create(&waiter[0], NULL, waiterfn, NULL))
++		error("pthread_create failed\n", errno);
++
++	usleep(WAKE_WAIT_US);
++
++	info("Requeuing 1 futex from f1 to f2\n");
++	res =3D futex_cmp_requeue(f1, 0, &f2, 0, 1, 0);
++	if (res !=3D 1) {
++		ksft_test_result_fail("futex_requeue simple returned: %d %s\n",
++				      res ? errno : res,
++				      res ? strerror(errno) : "");
++		ret =3D RET_FAIL;
++	}
++
++
++	info("Waking 1 futex at f2\n");
++	res =3D futex_wake(&f2, 1, 0);
++	if (res !=3D 1) {
++		ksft_test_result_fail("futex_requeue simple returned: %d %s\n",
++				      res ? errno : res,
++				      res ? strerror(errno) : "");
++		ret =3D RET_FAIL;
++	} else {
++		ksft_test_result_pass("futex_requeue simple succeeds\n");
++	}
++
++
++	/*
++	 * Create 10 waiters at f1. At futex_requeue, wake 3 and requeue 7.
++	 * At futex_wake, wake INT_MAX (should be exactly 7).
++	 */
++	for (i =3D 0; i < 10; i++) {
++		if (pthread_create(&waiter[i], NULL, waiterfn, NULL))
++			error("pthread_create failed\n", errno);
++	}
++
++	usleep(WAKE_WAIT_US);
++
++	info("Waking 3 futexes at f1 and requeuing 7 futexes from f1 to f2\n");
++	res =3D futex_cmp_requeue(f1, 0, &f2, 3, 7, 0);
++	if (res !=3D 10) {
++		ksft_test_result_fail("futex_requeue many returned: %d %s\n",
++				      res ? errno : res,
++				      res ? strerror(errno) : "");
++		ret =3D RET_FAIL;
++	}
++
++	info("Waking INT_MAX futexes at f2\n");
++	res =3D futex_wake(&f2, INT_MAX, 0);
++	if (res !=3D 7) {
++		ksft_test_result_fail("futex_requeue many returned: %d %s\n",
++				      res ? errno : res,
++				      res ? strerror(errno) : "");
++		ret =3D RET_FAIL;
++	} else {
++		ksft_test_result_pass("futex_requeue many succeeds\n");
++	}
++
++	ksft_print_cnts();
++	return ret;
++}
+diff --git a/tools/testing/selftests/futex/functional/run.sh b/tools/testing/=
+selftests/futex/functional/run.sh
+index d5e1430..11a9d62 100755
+--- a/tools/testing/selftests/futex/functional/run.sh
++++ b/tools/testing/selftests/futex/functional/run.sh
+@@ -76,3 +76,6 @@ echo
+=20
+ echo
+ ./futex_wait $COLOR
++
++echo
++./futex_requeue $COLOR
