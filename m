@@ -2,57 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A31C13B235E
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 24 Jun 2021 00:12:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 27DCA3B235F
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 24 Jun 2021 00:12:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229886AbhFWWOM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S231614AbhFWWOM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Wed, 23 Jun 2021 18:14:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50394 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50536 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231653AbhFWWMx (ORCPT
+        with ESMTP id S231656AbhFWWMx (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Wed, 23 Jun 2021 18:12:53 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB975C061145;
-        Wed, 23 Jun 2021 15:09:23 -0700 (PDT)
-Date:   Wed, 23 Jun 2021 22:09:20 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B758C061146;
+        Wed, 23 Jun 2021 15:09:24 -0700 (PDT)
+Date:   Wed, 23 Jun 2021 22:09:21 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1624486161;
+        s=2020; t=1624486162;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=/OIiMrG0YpUkxOo1CTO/tzA4ts9ugpnMgcny0KXdkDU=;
-        b=yT05Ohcsb+XTohwXstcZKGP03lxHXso+VntwQnlYrQAQziY0g/a9maMRch42v3a6uBzVTc
-        l5o0//pcDyOoatEV+mVYuU2T0m5ZZo6smNv7O00lQWbOYTYbqLq7J1+g8S2gzwHMvy2uJN
-        rwgy9cAdsae9IUrTq2A6muydGxTLZkWEyEu2QdxUGilrycOXfRbpuz0yalSvJeWg4mkH9x
-        YuumQoficA+2ZaJbshwc0qWH8CQPQ5pBAfGHHm2istAT60qRrTQADlfxd7oZG/ucSLhpi4
-        SzuM1AtgYxq+o28Q1q7ZJbjKGpTgR7nO6ujfjJxC0Wdc5+oS4Ljf+S9q1fTMJw==
+        bh=NPPzFGKLaVJXO0pFYEDCNkjcfrvgaY32ul7wWO4ZAkE=;
+        b=XE83ryiKo5x/+EdvaZdDZHK3fhEQte1WY2yIp1txAd1kVJFszhh5D3g00Kpo7z0PT6oZal
+        E4WWmvY8lxopd35DJpjuY7EXeNuibMYb2Tw1BRxLFKXt0zTrJPBvgibhiW7e1UPBz/GhOZ
+        f7JKskbkNQRhjiKRB9rQfNMpk4HoR9H/c5F0Gu/6Yypu6ASn2232mirlq1cjgiILen7Ehl
+        s+MubzFclXPwAilu19yu6D4JTTCOVgWglomRVWeOHzY7PmgBrowUw9VyqSUyiuhPQaJo7V
+        V/8zH0cA2f+4g6zyjRUyxpXhr9vC0WtndfkqZBS8RHmoLuwPgu830k+Ba+lDxg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1624486161;
+        s=2020e; t=1624486162;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=/OIiMrG0YpUkxOo1CTO/tzA4ts9ugpnMgcny0KXdkDU=;
-        b=2DX0aNrnQhPQiT3xtP3ysFfuA3qO0DLALbjk8J2lgQb1YHOFoOfoyL+UGUAeRBmjA30dHQ
-        U0lpO+4tESEj4IBw==
+        bh=NPPzFGKLaVJXO0pFYEDCNkjcfrvgaY32ul7wWO4ZAkE=;
+        b=HVG/4f9TeuL20zAvWNItdQPzwSGqdmWsuGeTiPKv8YIpEyscQPbQWvYRB7ROkvAju7FvMW
+        W8eQU44l0ZpLoVAw==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/fpu] x86/fpu: Rename xstate copy functions which are
- related to UABI
-Cc:     Andy Lutomirski <luto@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Borislav Petkov <bp@suse.de>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20210623121454.318485015@linutronix.de>
-References: <20210623121454.318485015@linutronix.de>
+Subject: [tip: x86/fpu] x86/fpu: Rename fregs-related copy functions
+Cc:     Thomas Gleixner <tglx@linutronix.de>, Borislav Petkov <bp@suse.de>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20210623121454.223594101@linutronix.de>
+References: <20210623121454.223594101@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <162448616075.395.12050105146268882331.tip-bot2@tip-bot2>
+Message-ID: <162448616157.395.7222806516706909436.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -63,96 +60,123 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/fpu branch of tip:
 
-Commit-ID:     1cc34413ff3f18c30e5df89fefd95cc0f3b3292e
-Gitweb:        https://git.kernel.org/tip/1cc34413ff3f18c30e5df89fefd95cc0f3b3292e
+Commit-ID:     6fdc908cb56123591baa4259400cfb0787582b11
+Gitweb:        https://git.kernel.org/tip/6fdc908cb56123591baa4259400cfb0787582b11
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Wed, 23 Jun 2021 14:01:57 +02:00
+AuthorDate:    Wed, 23 Jun 2021 14:01:56 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Wed, 23 Jun 2021 18:23:14 +02:00
+CommitterDate: Wed, 23 Jun 2021 18:20:27 +02:00
 
-x86/fpu: Rename xstate copy functions which are related to UABI
+x86/fpu: Rename fregs-related copy functions
 
-Rename them to reflect that these functions deal with user space format
-XSAVE buffers.
+The function names for fnsave/fnrstor operations are horribly named and
+a permanent source of confusion.
 
-      copy_kernel_to_xstate() -> copy_uabi_from_kernel_to_xstate()
-      copy_user_to_xstate()   -> copy_sigframe_from_user_to_xstate()
+Rename:
+	copy_kernel_to_fregs() to frstor()
+	copy_fregs_to_user()   to fnsave_to_user_sigframe()
+	copy_user_to_fregs()   to frstor_from_user_sigframe()
 
-Again a clear statement that these functions deal with user space ABI.
+so it's clear what these are doing. All these functions are really low
+level wrappers around the equally named instructions, so mapping to the
+documentation is just natural.
 
-Suggested-by: Andy Lutomirski <luto@kernel.org>
+No functional change.
+
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Borislav Petkov <bp@suse.de>
 Reviewed-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20210623121454.318485015@linutronix.de
+Link: https://lkml.kernel.org/r/20210623121454.223594101@linutronix.de
 ---
- arch/x86/include/asm/fpu/xstate.h | 4 ++--
- arch/x86/kernel/fpu/regset.c      | 2 +-
- arch/x86/kernel/fpu/signal.c      | 2 +-
- arch/x86/kernel/fpu/xstate.c      | 5 +++--
- 4 files changed, 7 insertions(+), 6 deletions(-)
+ arch/x86/include/asm/fpu/internal.h | 10 +++++-----
+ arch/x86/kernel/fpu/core.c          |  2 +-
+ arch/x86/kernel/fpu/signal.c        |  6 +++---
+ 3 files changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/arch/x86/include/asm/fpu/xstate.h b/arch/x86/include/asm/fpu/xstate.h
-index 6611e06..00e1a2a 100644
---- a/arch/x86/include/asm/fpu/xstate.h
-+++ b/arch/x86/include/asm/fpu/xstate.h
-@@ -102,8 +102,8 @@ extern void __init update_regset_xstate_info(unsigned int size,
+diff --git a/arch/x86/include/asm/fpu/internal.h b/arch/x86/include/asm/fpu/internal.h
+index 7806f39..cd88233 100644
+--- a/arch/x86/include/asm/fpu/internal.h
++++ b/arch/x86/include/asm/fpu/internal.h
+@@ -124,7 +124,7 @@ static inline void fpstate_init_soft(struct swregs_state *soft) {}
+ 		     _ASM_EXTABLE_HANDLE(1b, 2b, ex_handler_fprestore)	\
+ 		     : output : input)
  
- void *get_xsave_addr(struct xregs_state *xsave, int xfeature_nr);
- int xfeature_size(int xfeature_nr);
--int copy_kernel_to_xstate(struct xregs_state *xsave, const void *kbuf);
--int copy_user_to_xstate(struct xregs_state *xsave, const void __user *ubuf);
-+int copy_uabi_from_kernel_to_xstate(struct xregs_state *xsave, const void *kbuf);
-+int copy_sigframe_from_user_to_xstate(struct xregs_state *xsave, const void __user *ubuf);
- void copy_dynamic_supervisor_to_kernel(struct xregs_state *xstate, u64 mask);
- void copy_kernel_to_dynamic_supervisor(struct xregs_state *xstate, u64 mask);
+-static inline int copy_fregs_to_user(struct fregs_state __user *fx)
++static inline int fnsave_to_user_sigframe(struct fregs_state __user *fx)
+ {
+ 	return user_insn(fnsave %[fx]; fwait,  [fx] "=m" (*fx), "m" (*fx));
+ }
+@@ -162,17 +162,17 @@ static inline int fxrstor_from_user_sigframe(struct fxregs_state __user *fx)
+ 		return user_insn(fxrstorq %[fx], "=m" (*fx), [fx] "m" (*fx));
+ }
  
-diff --git a/arch/x86/kernel/fpu/regset.c b/arch/x86/kernel/fpu/regset.c
-index ddc290d..892aec1 100644
---- a/arch/x86/kernel/fpu/regset.c
-+++ b/arch/x86/kernel/fpu/regset.c
-@@ -166,7 +166,7 @@ int xstateregs_set(struct task_struct *target, const struct user_regset *regset,
+-static inline void copy_kernel_to_fregs(struct fregs_state *fx)
++static inline void frstor(struct fregs_state *fx)
+ {
+ 	kernel_insn(frstor %[fx], "=m" (*fx), [fx] "m" (*fx));
+ }
+ 
+-static inline int copy_kernel_to_fregs_err(struct fregs_state *fx)
++static inline int frstor_safe(struct fregs_state *fx)
+ {
+ 	return kernel_insn_err(frstor %[fx], "=m" (*fx), [fx] "m" (*fx));
+ }
+ 
+-static inline int copy_user_to_fregs(struct fregs_state __user *fx)
++static inline int frstor_from_user_sigframe(struct fregs_state __user *fx)
+ {
+ 	return user_insn(frstor %[fx], "=m" (*fx), [fx] "m" (*fx));
+ }
+@@ -385,7 +385,7 @@ static inline void __copy_kernel_to_fpregs(union fpregs_state *fpstate, u64 mask
+ 		if (use_fxsr())
+ 			fxrstor(&fpstate->fxsave);
+ 		else
+-			copy_kernel_to_fregs(&fpstate->fsave);
++			frstor(&fpstate->fsave);
  	}
+ }
  
- 	fpu_force_restore(fpu);
--	ret = copy_kernel_to_xstate(&fpu->state.xsave, kbuf ?: tmpbuf);
-+	ret = copy_uabi_from_kernel_to_xstate(&fpu->state.xsave, kbuf ?: tmpbuf);
+diff --git a/arch/x86/kernel/fpu/core.c b/arch/x86/kernel/fpu/core.c
+index 035487d..1d25876 100644
+--- a/arch/x86/kernel/fpu/core.c
++++ b/arch/x86/kernel/fpu/core.c
+@@ -318,7 +318,7 @@ static inline void copy_init_fpstate_to_fpregs(u64 features_mask)
+ 	else if (use_fxsr())
+ 		fxrstor(&init_fpstate.fxsave);
+ 	else
+-		copy_kernel_to_fregs(&init_fpstate.fsave);
++		frstor(&init_fpstate.fsave);
  
- out:
- 	vfree(tmpbuf);
+ 	if (boot_cpu_has(X86_FEATURE_OSPKE))
+ 		copy_init_pkru_to_fpregs();
 diff --git a/arch/x86/kernel/fpu/signal.c b/arch/x86/kernel/fpu/signal.c
-index 430c66d..fd4b58d 100644
+index 05f8445..430c66d 100644
 --- a/arch/x86/kernel/fpu/signal.c
 +++ b/arch/x86/kernel/fpu/signal.c
-@@ -422,7 +422,7 @@ static int __fpu__restore_sig(void __user *buf, void __user *buf_fx, int size)
- 	if (use_xsave() && !fx_only) {
- 		u64 init_bv = xfeatures_mask_user() & ~user_xfeatures;
+@@ -133,7 +133,7 @@ static inline int copy_fpregs_to_sigframe(struct xregs_state __user *buf)
+ 	else if (use_fxsr())
+ 		err = fxsave_to_user_sigframe((struct fxregs_state __user *) buf);
+ 	else
+-		err = copy_fregs_to_user((struct fregs_state __user *) buf);
++		err = fnsave_to_user_sigframe((struct fregs_state __user *) buf);
  
--		ret = copy_user_to_xstate(&fpu->state.xsave, buf_fx);
-+		ret = copy_sigframe_from_user_to_xstate(&fpu->state.xsave, buf_fx);
- 		if (ret)
+ 	if (unlikely(err) && __clear_user(buf, fpu_user_xstate_size))
+ 		err = -EFAULT;
+@@ -274,7 +274,7 @@ static int copy_user_to_fpregs_zeroing(void __user *buf, u64 xbv, int fx_only)
+ 	} else if (use_fxsr()) {
+ 		return fxrstor_from_user_sigframe(buf);
+ 	} else
+-		return copy_user_to_fregs(buf);
++		return frstor_from_user_sigframe(buf);
+ }
+ 
+ static int __fpu__restore_sig(void __user *buf, void __user *buf_fx, int size)
+@@ -465,7 +465,7 @@ static int __fpu__restore_sig(void __user *buf, void __user *buf_fx, int size)
  			goto out;
  
-diff --git a/arch/x86/kernel/fpu/xstate.c b/arch/x86/kernel/fpu/xstate.c
-index 4fca8a8..57674f8 100644
---- a/arch/x86/kernel/fpu/xstate.c
-+++ b/arch/x86/kernel/fpu/xstate.c
-@@ -1099,7 +1099,7 @@ static inline bool mxcsr_valid(struct xstate_header *hdr, const u32 *mxcsr)
-  * Convert from a ptrace standard-format kernel buffer to kernel XSAVE[S] format
-  * and copy to the target thread. This is called from xstateregs_set().
-  */
--int copy_kernel_to_xstate(struct xregs_state *xsave, const void *kbuf)
-+int copy_uabi_from_kernel_to_xstate(struct xregs_state *xsave, const void *kbuf)
- {
- 	unsigned int offset, size;
- 	int i;
-@@ -1154,7 +1154,8 @@ int copy_kernel_to_xstate(struct xregs_state *xsave, const void *kbuf)
-  * XSAVE[S] format and copy to the target thread. This is called from the
-  * sigreturn() and rt_sigreturn() system calls.
-  */
--int copy_user_to_xstate(struct xregs_state *xsave, const void __user *ubuf)
-+int copy_sigframe_from_user_to_xstate(struct xregs_state *xsave,
-+				      const void __user *ubuf)
- {
- 	unsigned int offset, size;
- 	int i;
+ 		fpregs_lock();
+-		ret = copy_kernel_to_fregs_err(&fpu->state.fsave);
++		ret = frstor_safe(&fpu->state.fsave);
+ 	}
+ 	if (!ret)
+ 		fpregs_mark_activate();
