@@ -2,53 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E05893B2335
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 24 Jun 2021 00:10:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A02833B2337
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 24 Jun 2021 00:10:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231630AbhFWWMs (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 23 Jun 2021 18:12:48 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:40230 "EHLO
+        id S231273AbhFWWMu (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 23 Jun 2021 18:12:50 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:40250 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231147AbhFWWL5 (ORCPT
+        with ESMTP id S231207AbhFWWMA (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 23 Jun 2021 18:11:57 -0400
-Date:   Wed, 23 Jun 2021 22:09:37 -0000
+        Wed, 23 Jun 2021 18:12:00 -0400
+Date:   Wed, 23 Jun 2021 22:09:38 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1624486178;
+        s=2020; t=1624486179;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=je5bbjZViGfGfs+4O9W+Fbt71G7+RMsgLKAxkwPKK6g=;
-        b=JuiEMoo12rVKu0GTMglirUW+ZhWwmFPKLA4QGB5vFhZHzXdUr6LGPrrWfE64tXohzIj9zR
-        azT7WC90th1Q3nuHpPqH8r/NHiGpaFfk59JXXE+b9P0I1z7gxoVFHXALvMgotspYsnqIzd
-        37Jh0iZKKDa2uR+sE+tpA4cuPjaxRfCeybJ00fcDHrbWZ9+lftzQBSXFo63HeGrFxOh8jn
-        m54J9agZLpkUqkiHM/OZ+we44MjCKbZe6NCJf8z4HJ+vQdve33DW8NCWJvRLtYU08doh2N
-        jBYJBs4D3/ukLIMEKlQadtCxvYTM0o0JzDaSnGHw8lGK5ZDamrrL4mcwRD08ew==
+        bh=O1jK/uvgtsEF8s7CNbb0A1lNAQJLEKIS0orkdT++wt0=;
+        b=hBanWkv6R77O+948FZp+mojTEIUPxB5ImPjdFRtqCeaueeEArtAa3Fpu4fW35VUovYH57n
+        aOMAaSFFVLkPYRbNF7pzvDP9edt1hj5USws+OmzX1diF8pwo79pGXqtW7BjD93qosfgkGJ
+        pkEbvSZj86b4fGETS/S9SLreuatK6hvhMFowsj5YKXx9V0uvRV4JoQ8t37mw8wGQ/1aem7
+        4c9MUUYx0XYfALZN5V89AEVS6ddJ3LNh0Qa9kN9PnMjShaUL9MO/QUrkPzkEbMzXk70Os+
+        m5ZsAVbqODTzlE7/JiH/GDTnv7xSqgeQMiYEvPW5DUR+hhH3Ibp0IugcY8L6Pg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1624486178;
+        s=2020e; t=1624486179;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=je5bbjZViGfGfs+4O9W+Fbt71G7+RMsgLKAxkwPKK6g=;
-        b=BXnDz2DpoQf2ex2dd6Xoq2YeyK8x5sZBbH1N9+c6Fv+VqininVL/3Wn3SwQYXHJ/738djY
-        LSmBqgAe4uPGkdBQ==
-From:   "tip-bot2 for Andy Lutomirski" <tip-bot2@linutronix.de>
+        bh=O1jK/uvgtsEF8s7CNbb0A1lNAQJLEKIS0orkdT++wt0=;
+        b=rlXhNGkX7j9BxTT2RsIc0XqkWhuONZQGDZisQZnYOLmDS98mwbOYKH8T0ogS1wV07Yi1AB
+        dv9lHHanZl2GlICw==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/fpu] x86/fpu: Rewrite xfpregs_set()
+Subject: [tip: x86/fpu] x86/fpu: Reject invalid MXCSR values in
+ copy_kernel_to_xstate()
 Cc:     Andy Lutomirski <luto@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         Borislav Petkov <bp@suse.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210623121452.504234607@linutronix.de>
-References: <20210623121452.504234607@linutronix.de>
+In-Reply-To: <20210623121452.308388343@linutronix.de>
+References: <20210623121452.308388343@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <162448617708.395.7302447964739522489.tip-bot2@tip-bot2>
+Message-ID: <162448617894.395.180251854478791721.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,90 +60,68 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/fpu branch of tip:
 
-Commit-ID:     6164331d15f7d912fb9369245368e9564ea49813
-Gitweb:        https://git.kernel.org/tip/6164331d15f7d912fb9369245368e9564ea49813
-Author:        Andy Lutomirski <luto@kernel.org>
-AuthorDate:    Wed, 23 Jun 2021 14:01:39 +02:00
+Commit-ID:     947f4947cf00ea1e6d319eb182c64ea51ba4de8d
+Gitweb:        https://git.kernel.org/tip/947f4947cf00ea1e6d319eb182c64ea51ba4de8d
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Wed, 23 Jun 2021 14:01:37 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
 CommitterDate: Wed, 23 Jun 2021 17:49:46 +02:00
 
-x86/fpu: Rewrite xfpregs_set()
+x86/fpu: Reject invalid MXCSR values in copy_kernel_to_xstate()
 
-xfpregs_set() was incomprehensible.  Almost all of the complexity was due
-to trying to support nonsensically sized writes or -EFAULT errors that
-would have partially or completely overwritten the destination before
-failing.  Nonsensically sized input would only have been possible using
-PTRACE_SETREGSET on REGSET_XFP.  Fortunately, it appears (based on Debian
-code search results) that no one uses that API at all, let alone with the
-wrong sized buffer.  Failed user access can be handled more cleanly by
-first copying to kernel memory.
+Instead of masking out reserved bits, check them and reject the provided
+state as invalid if not zero.
 
-Just rewrite it to require sensible input.
-
-Signed-off-by: Andy Lutomirski <luto@kernel.org>
+Suggested-by: Andy Lutomirski <luto@kernel.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Borislav Petkov <bp@suse.de>
 Reviewed-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20210623121452.504234607@linutronix.de
+Link: https://lkml.kernel.org/r/20210623121452.308388343@linutronix.de
 ---
- arch/x86/kernel/fpu/regset.c | 37 +++++++++++++++++++++--------------
- 1 file changed, 23 insertions(+), 14 deletions(-)
+ arch/x86/kernel/fpu/xstate.c | 19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/kernel/fpu/regset.c b/arch/x86/kernel/fpu/regset.c
-index d60e77d..f24ce87 100644
---- a/arch/x86/kernel/fpu/regset.c
-+++ b/arch/x86/kernel/fpu/regset.c
-@@ -47,30 +47,39 @@ int xfpregs_set(struct task_struct *target, const struct user_regset *regset,
- 		const void *kbuf, const void __user *ubuf)
- {
- 	struct fpu *fpu = &target->thread.fpu;
-+	struct user32_fxsr_struct newstate;
- 	int ret;
- 
--	if (!boot_cpu_has(X86_FEATURE_FXSR))
-+	BUILD_BUG_ON(sizeof(newstate) != sizeof(struct fxregs_state));
-+
-+	if (!cpu_feature_enabled(X86_FEATURE_FXSR))
- 		return -ENODEV;
- 
-+	/* No funny business with partial or oversized writes is permitted. */
-+	if (pos != 0 || count != sizeof(newstate))
-+		return -EINVAL;
-+
-+	ret = user_regset_copyin(&pos, &count, &kbuf, &ubuf, &newstate, 0, -1);
-+	if (ret)
-+		return ret;
-+
-+	/* Mask invalid MXCSR bits (for historical reasons). */
-+	newstate.mxcsr &= mxcsr_feature_mask;
-+
- 	fpu__prepare_write(fpu);
--	fpstate_sanitize_xstate(fpu);
- 
--	ret = user_regset_copyin(&pos, &count, &kbuf, &ubuf,
--				 &fpu->state.fxsave, 0, -1);
-+	/* Copy the state  */
-+	memcpy(&fpu->state.fxsave, &newstate, sizeof(newstate));
- 
--	/*
--	 * mxcsr reserved bits must be masked to zero for security reasons.
--	 */
--	fpu->state.fxsave.mxcsr &= mxcsr_feature_mask;
-+	/* Clear xmm8..15 */
-+	BUILD_BUG_ON(sizeof(fpu->state.fxsave.xmm_space) != 16 * 16);
-+	memset(&fpu->state.fxsave.xmm_space[8], 0, 8 * 16);
- 
--	/*
--	 * update the header bits in the xsave header, indicating the
--	 * presence of FP and SSE state.
--	 */
--	if (boot_cpu_has(X86_FEATURE_XSAVE))
-+	/* Mark FP and SSE as in use when XSAVE is enabled */
-+	if (use_xsave())
- 		fpu->state.xsave.header.xfeatures |= XFEATURE_MASK_FPSSE;
- 
--	return ret;
-+	return 0;
+diff --git a/arch/x86/kernel/fpu/xstate.c b/arch/x86/kernel/fpu/xstate.c
+index 2b7b579..9cf84c5 100644
+--- a/arch/x86/kernel/fpu/xstate.c
++++ b/arch/x86/kernel/fpu/xstate.c
+@@ -1154,6 +1154,19 @@ void copy_xstate_to_kernel(struct membuf to, struct xregs_state *xsave)
+ 		membuf_zero(&to, to.left);
  }
  
- int xstateregs_get(struct task_struct *target, const struct user_regset *regset,
++static inline bool mxcsr_valid(struct xstate_header *hdr, const u32 *mxcsr)
++{
++	u64 mask = XFEATURE_MASK_FP | XFEATURE_MASK_SSE | XFEATURE_MASK_YMM;
++
++	/* Only check if it is in use */
++	if (hdr->xfeatures & mask) {
++		/* Reserved bits in MXCSR must be zero. */
++		if (*mxcsr & ~mxcsr_feature_mask)
++			return false;
++	}
++	return true;
++}
++
+ /*
+  * Convert from a ptrace standard-format kernel buffer to kernel XSAVE[S] format
+  * and copy to the target thread. This is called from xstateregs_set().
+@@ -1172,6 +1185,9 @@ int copy_kernel_to_xstate(struct xregs_state *xsave, const void *kbuf)
+ 	if (validate_user_xstate_header(&hdr))
+ 		return -EINVAL;
+ 
++	if (!mxcsr_valid(&hdr, kbuf + offsetof(struct fxregs_state, mxcsr)))
++		return -EINVAL;
++
+ 	for (i = 0; i < XFEATURE_MAX; i++) {
+ 		u64 mask = ((u64)1 << i);
+ 
+@@ -1202,9 +1218,6 @@ int copy_kernel_to_xstate(struct xregs_state *xsave, const void *kbuf)
+ 	 */
+ 	xsave->header.xfeatures |= hdr.xfeatures;
+ 
+-	/* mxcsr reserved bits must be masked to zero for historical reasons. */
+-	xsave->i387.mxcsr &= mxcsr_feature_mask;
+-
+ 	return 0;
+ }
+ 
