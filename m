@@ -2,51 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 01BA13B231A
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 24 Jun 2021 00:10:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C2BC03B2340
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 24 Jun 2021 00:10:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231358AbhFWWMP (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 23 Jun 2021 18:12:15 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:40054 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230152AbhFWWLc (ORCPT
+        id S231269AbhFWWNL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 23 Jun 2021 18:13:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50544 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231270AbhFWWMD (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 23 Jun 2021 18:11:32 -0400
-Date:   Wed, 23 Jun 2021 22:09:12 -0000
+        Wed, 23 Jun 2021 18:12:03 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD69FC0611F8;
+        Wed, 23 Jun 2021 15:09:15 -0700 (PDT)
+Date:   Wed, 23 Jun 2021 22:09:13 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1624486153;
+        s=2020; t=1624486154;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Lj9aNjPI8t22BSqFKqWgFFZyNu0nwu4GYA/y+TSipZA=;
-        b=s+EfkOyl/hdK3wD0Eb1RHnG4XGiqqvaDtQrBeR7mXdrF6nATKDG/OJomREAmsJU776lF+R
-        K5wXQRy3BcdxB7n0qRLyqQM2EcpioK4NytA/Cs3lWXvp1qALTsLk0XzY1U1J0Arl3cnrGi
-        PmFl1KPHanTZVOHnwXqjXhKGG55XbUf+wVc/YaHSUMLJaLI7os0VzobbYXzZcWvC6gt3z8
-        9ru8F4VsTvY06l4Yy9w9jBhN70Bvwca9waTI/K3xCz64X+yOGugOSi4iwOCy6totMz2LmL
-        0vXywK4/xIt97eNksJ5gPpn9IyS25aWlFWxGhacUc0VqDUv9vm2Y8CwM5rn3IQ==
+        bh=Vy2mVTfQmzh+Gp+5jl8L81Z/8MWojRDxzebcCnQzwDY=;
+        b=rzQ4DetEkCfZpcjX56XZbcodo8NK5UwaYrHfrW4U3W2EoF9eglcQELiIWl6SBHFHmwMkXi
+        q/YxBEo6kY7x7QX8X0OV3LmI2UKtPR7U1SBpenLgMjMSYmkXfXRcyrcVq2l2/d3q6tAf6+
+        6gwcm/3b7qEFJjtRZE1avT6KQcwqyey4Lqsmk75kPJiHLyXBbLezfUmGsrcqW/A5vI5qIB
+        Bns1iBVc9m8HWiNI+25xNNVhOfidC8BDVCwMMNMWd2cyqpxhLHKWmNnTO3k1jQcLsYoKeJ
+        DutRffoet7ifSYeQLUHzJe4GReVij96iJeS09qx5twUnZawB54sUegJB/MIsPA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1624486153;
+        s=2020e; t=1624486154;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Lj9aNjPI8t22BSqFKqWgFFZyNu0nwu4GYA/y+TSipZA=;
-        b=GeurjUvjWAOjC9CYsR/jnHmRKb94CreBrDn4XshCL7VHIQqmbI7QyrLGl7VGs4dEX/4aaZ
-        s2G4FYb5gE/0leCg==
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+        bh=Vy2mVTfQmzh+Gp+5jl8L81Z/8MWojRDxzebcCnQzwDY=;
+        b=yx9J16RBBaCAKVFk35q7ZsHNYPsKxvpih4wQLQyuE/kxTA1IEU1lQkxuNMG7g5im/9Hqnx
+        UUAju34f0vziY5Dg==
+From:   "tip-bot2 for Dave Hansen" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/fpu] x86/fpu: Rename and sanitize fpu__save/copy()
-Cc:     Thomas Gleixner <tglx@linutronix.de>, Borislav Petkov <bp@suse.de>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20210623121455.196727450@linutronix.de>
-References: <20210623121455.196727450@linutronix.de>
+Subject: [tip: x86/fpu] x86/pkeys: Move read_pkru() and write_pkru()
+Cc:     Dave Hansen <dave.hansen@linux.intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Borislav Petkov <bp@suse.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20210623121455.102647114@linutronix.de>
+References: <20210623121455.102647114@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <162448615236.395.4081108305345528808.tip-bot2@tip-bot2>
+Message-ID: <162448615328.395.17643990036241916135.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -57,157 +62,246 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/fpu branch of tip:
 
-Commit-ID:     b2681e791dbcee6acb1dca7a5076a0285109ac4c
-Gitweb:        https://git.kernel.org/tip/b2681e791dbcee6acb1dca7a5076a0285109ac4c
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Wed, 23 Jun 2021 14:02:06 +02:00
+Commit-ID:     784a46618f634973a17535b7d3d03cd4ebc0ccbd
+Gitweb:        https://git.kernel.org/tip/784a46618f634973a17535b7d3d03cd4ebc0ccbd
+Author:        Dave Hansen <dave.hansen@linux.intel.com>
+AuthorDate:    Wed, 23 Jun 2021 14:02:05 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Wed, 23 Jun 2021 18:55:56 +02:00
+CommitterDate: Wed, 23 Jun 2021 18:52:57 +02:00
 
-x86/fpu: Rename and sanitize fpu__save/copy()
+x86/pkeys: Move read_pkru() and write_pkru()
 
-Both function names are a misnomer.
+write_pkru() was originally used just to write to the PKRU register.  It
+was mercifully short and sweet and was not out of place in pgtable.h with
+some other pkey-related code.
 
-fpu__save() is actually about synchronizing the hardware register state
-into the task's memory state so that either coredump or a math exception
-handler can inspect the state at the time where the problem happens.
+But, later work included a requirement to also modify the task XSAVE
+buffer when updating the register.  This really is more related to the
+XSAVE architecture than to paging.
 
-The function guarantees to preserve the register state, while "save" is a
-common terminology for saving the current state so it can be modified and
-restored later. This is clearly not the case here.
+Move the read/write_pkru() to asm/pkru.h.  pgtable.h won't miss them.
 
-Rename it to fpu_sync_fpstate().
-
-fpu__copy() is used to clone the current task's FPU state when duplicating
-task_struct. While the register state is a copy the rest of the FPU state
-is not.
-
-Name it accordingly and remove the really pointless @src argument along
-with the warning which comes along with it.
-
-Nothing can ever copy the FPU state of a non-current task. It's clearly
-just a consequence of arch_dup_task_struct(), but it makes no sense to
-proliferate that further.
-
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20210623121455.196727450@linutronix.de
+Link: https://lkml.kernel.org/r/20210623121455.102647114@linutronix.de
 ---
- arch/x86/include/asm/fpu/internal.h |  6 ++++--
- arch/x86/kernel/fpu/core.c          | 17 ++++++++---------
- arch/x86/kernel/fpu/regset.c        |  2 +-
- arch/x86/kernel/process.c           |  3 +--
- arch/x86/kernel/traps.c             |  5 +++--
- 5 files changed, 17 insertions(+), 16 deletions(-)
+ arch/x86/include/asm/fpu/xstate.h |  1 +-
+ arch/x86/include/asm/pgtable.h    | 57 +----------------------------
+ arch/x86/include/asm/pkru.h       | 61 ++++++++++++++++++++++++++++++-
+ arch/x86/kernel/process_64.c      |  1 +-
+ arch/x86/kvm/svm/sev.c            |  1 +-
+ arch/x86/kvm/x86.c                |  1 +-
+ arch/x86/mm/pkeys.c               |  1 +-
+ 7 files changed, 67 insertions(+), 56 deletions(-)
+ create mode 100644 arch/x86/include/asm/pkru.h
 
-diff --git a/arch/x86/include/asm/fpu/internal.h b/arch/x86/include/asm/fpu/internal.h
-index 3558cd0..f5da2e9 100644
---- a/arch/x86/include/asm/fpu/internal.h
-+++ b/arch/x86/include/asm/fpu/internal.h
-@@ -26,14 +26,16 @@
- /*
-  * High level FPU state handling functions:
-  */
--extern void fpu__save(struct fpu *fpu);
- extern int  fpu__restore_sig(void __user *buf, int ia32_frame);
- extern void fpu__drop(struct fpu *fpu);
--extern int  fpu__copy(struct task_struct *dst, struct task_struct *src);
- extern void fpu__clear_user_states(struct fpu *fpu);
- extern void fpu__clear_all(struct fpu *fpu);
- extern int  fpu__exception_code(struct fpu *fpu, int trap_nr);
+diff --git a/arch/x86/include/asm/fpu/xstate.h b/arch/x86/include/asm/fpu/xstate.h
+index 7de2384..5764cbe 100644
+--- a/arch/x86/include/asm/fpu/xstate.h
++++ b/arch/x86/include/asm/fpu/xstate.h
+@@ -6,6 +6,7 @@
+ #include <linux/types.h>
  
-+extern void fpu_sync_fpstate(struct fpu *fpu);
-+
-+extern int  fpu_clone(struct task_struct *dst);
-+
- /*
-  * Boot time FPU initialization functions:
-  */
-diff --git a/arch/x86/kernel/fpu/core.c b/arch/x86/kernel/fpu/core.c
-index 4a59e0f..8762b1a 100644
---- a/arch/x86/kernel/fpu/core.c
-+++ b/arch/x86/kernel/fpu/core.c
-@@ -159,11 +159,10 @@ void kernel_fpu_end(void)
- EXPORT_SYMBOL_GPL(kernel_fpu_end);
+ #include <asm/processor.h>
++#include <asm/fpu/api.h>
+ #include <asm/user.h>
  
- /*
-- * Save the FPU state (mark it for reload if necessary):
-- *
-- * This only ever gets called for the current task.
-+ * Sync the FPU register state to current's memory register state when the
-+ * current task owns the FPU. The hardware register state is preserved.
-  */
--void fpu__save(struct fpu *fpu)
-+void fpu_sync_fpstate(struct fpu *fpu)
- {
- 	WARN_ON_FPU(fpu != &current->thread.fpu);
+ /* Bit 63 of XCR0 is reserved for future expansion */
+diff --git a/arch/x86/include/asm/pgtable.h b/arch/x86/include/asm/pgtable.h
+index b1099f2..ec0d8e1 100644
+--- a/arch/x86/include/asm/pgtable.h
++++ b/arch/x86/include/asm/pgtable.h
+@@ -23,7 +23,7 @@
  
-@@ -221,18 +220,18 @@ void fpstate_init(union fpregs_state *state)
+ #ifndef __ASSEMBLY__
+ #include <asm/x86_init.h>
+-#include <asm/fpu/xstate.h>
++#include <asm/pkru.h>
+ #include <asm/fpu/api.h>
+ #include <asm-generic/pgtable_uffd.h>
+ 
+@@ -126,35 +126,6 @@ static inline int pte_dirty(pte_t pte)
+ 	return pte_flags(pte) & _PAGE_DIRTY;
  }
- EXPORT_SYMBOL_GPL(fpstate_init);
  
--int fpu__copy(struct task_struct *dst, struct task_struct *src)
-+/* Clone current's FPU state on fork */
-+int fpu_clone(struct task_struct *dst)
- {
-+	struct fpu *src_fpu = &current->thread.fpu;
- 	struct fpu *dst_fpu = &dst->thread.fpu;
--	struct fpu *src_fpu = &src->thread.fpu;
- 
-+	/* The new task's FPU state cannot be valid in the hardware. */
- 	dst_fpu->last_cpu = -1;
- 
--	if (!static_cpu_has(X86_FEATURE_FPU))
-+	if (!cpu_feature_enabled(X86_FEATURE_FPU))
- 		return 0;
- 
--	WARN_ON_FPU(src_fpu != &current->thread.fpu);
 -
- 	/*
- 	 * Don't let 'init optimized' areas of the XSAVE area
- 	 * leak into the child task:
-diff --git a/arch/x86/kernel/fpu/regset.c b/arch/x86/kernel/fpu/regset.c
-index 892aec1..4575796 100644
---- a/arch/x86/kernel/fpu/regset.c
-+++ b/arch/x86/kernel/fpu/regset.c
-@@ -41,7 +41,7 @@ int regset_xregset_fpregs_active(struct task_struct *target, const struct user_r
- static void sync_fpstate(struct fpu *fpu)
- {
- 	if (fpu == &current->thread.fpu)
--		fpu__save(fpu);
-+		fpu_sync_fpstate(fpu);
- }
- 
- /*
-diff --git a/arch/x86/kernel/process.c b/arch/x86/kernel/process.c
-index 5e1f381..af3db53 100644
---- a/arch/x86/kernel/process.c
-+++ b/arch/x86/kernel/process.c
-@@ -87,8 +87,7 @@ int arch_dup_task_struct(struct task_struct *dst, struct task_struct *src)
- #ifdef CONFIG_VM86
- 	dst->thread.vm86 = NULL;
- #endif
+-static inline u32 read_pkru(void)
+-{
+-	if (boot_cpu_has(X86_FEATURE_OSPKE))
+-		return rdpkru();
+-	return 0;
+-}
 -
--	return fpu__copy(dst, src);
-+	return fpu_clone(dst);
+-static inline void write_pkru(u32 pkru)
+-{
+-	struct pkru_state *pk;
+-
+-	if (!boot_cpu_has(X86_FEATURE_OSPKE))
+-		return;
+-
+-	pk = get_xsave_addr(&current->thread.fpu.state.xsave, XFEATURE_PKRU);
+-
+-	/*
+-	 * The PKRU value in xstate needs to be in sync with the value that is
+-	 * written to the CPU. The FPU restore on return to userland would
+-	 * otherwise load the previous value again.
+-	 */
+-	fpregs_lock();
+-	if (pk)
+-		pk->pkru = pkru;
+-	__write_pkru(pkru);
+-	fpregs_unlock();
+-}
+-
+ static inline int pte_young(pte_t pte)
+ {
+ 	return pte_flags(pte) & _PAGE_ACCESSED;
+@@ -1360,32 +1331,6 @@ static inline pmd_t pmd_swp_clear_uffd_wp(pmd_t pmd)
  }
+ #endif /* CONFIG_HAVE_ARCH_USERFAULTFD_WP */
  
- /*
-diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
-index 853ea7a..4c9c4aa 100644
---- a/arch/x86/kernel/traps.c
-+++ b/arch/x86/kernel/traps.c
-@@ -1046,9 +1046,10 @@ static void math_error(struct pt_regs *regs, int trapnr)
- 	}
+-#define PKRU_AD_BIT 0x1
+-#define PKRU_WD_BIT 0x2
+-#define PKRU_BITS_PER_PKEY 2
+-
+-#ifdef CONFIG_X86_INTEL_MEMORY_PROTECTION_KEYS
+-extern u32 init_pkru_value;
+-#else
+-#define init_pkru_value	0
+-#endif
+-
+-static inline bool __pkru_allows_read(u32 pkru, u16 pkey)
+-{
+-	int pkru_pkey_bits = pkey * PKRU_BITS_PER_PKEY;
+-	return !(pkru & (PKRU_AD_BIT << pkru_pkey_bits));
+-}
+-
+-static inline bool __pkru_allows_write(u32 pkru, u16 pkey)
+-{
+-	int pkru_pkey_bits = pkey * PKRU_BITS_PER_PKEY;
+-	/*
+-	 * Access-disable disables writes too so we need to check
+-	 * both bits here.
+-	 */
+-	return !(pkru & ((PKRU_AD_BIT|PKRU_WD_BIT) << pkru_pkey_bits));
+-}
+-
+ static inline u16 pte_flags_pkey(unsigned long pte_flags)
+ {
+ #ifdef CONFIG_X86_INTEL_MEMORY_PROTECTION_KEYS
+diff --git a/arch/x86/include/asm/pkru.h b/arch/x86/include/asm/pkru.h
+new file mode 100644
+index 0000000..35ffcfd
+--- /dev/null
++++ b/arch/x86/include/asm/pkru.h
+@@ -0,0 +1,61 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _ASM_X86_PKRU_H
++#define _ASM_X86_PKRU_H
++
++#include <asm/fpu/xstate.h>
++
++#define PKRU_AD_BIT 0x1
++#define PKRU_WD_BIT 0x2
++#define PKRU_BITS_PER_PKEY 2
++
++#ifdef CONFIG_X86_INTEL_MEMORY_PROTECTION_KEYS
++extern u32 init_pkru_value;
++#else
++#define init_pkru_value	0
++#endif
++
++static inline bool __pkru_allows_read(u32 pkru, u16 pkey)
++{
++	int pkru_pkey_bits = pkey * PKRU_BITS_PER_PKEY;
++	return !(pkru & (PKRU_AD_BIT << pkru_pkey_bits));
++}
++
++static inline bool __pkru_allows_write(u32 pkru, u16 pkey)
++{
++	int pkru_pkey_bits = pkey * PKRU_BITS_PER_PKEY;
++	/*
++	 * Access-disable disables writes too so we need to check
++	 * both bits here.
++	 */
++	return !(pkru & ((PKRU_AD_BIT|PKRU_WD_BIT) << pkru_pkey_bits));
++}
++
++static inline u32 read_pkru(void)
++{
++	if (boot_cpu_has(X86_FEATURE_OSPKE))
++		return rdpkru();
++	return 0;
++}
++
++static inline void write_pkru(u32 pkru)
++{
++	struct pkru_state *pk;
++
++	if (!boot_cpu_has(X86_FEATURE_OSPKE))
++		return;
++
++	pk = get_xsave_addr(&current->thread.fpu.state.xsave, XFEATURE_PKRU);
++
++	/*
++	 * The PKRU value in xstate needs to be in sync with the value that is
++	 * written to the CPU. The FPU restore on return to userland would
++	 * otherwise load the previous value again.
++	 */
++	fpregs_lock();
++	if (pk)
++		pk->pkru = pkru;
++	__write_pkru(pkru);
++	fpregs_unlock();
++}
++
++#endif
+diff --git a/arch/x86/kernel/process_64.c b/arch/x86/kernel/process_64.c
+index d08307d..4651ab0 100644
+--- a/arch/x86/kernel/process_64.c
++++ b/arch/x86/kernel/process_64.c
+@@ -41,6 +41,7 @@
+ #include <linux/syscalls.h>
  
- 	/*
--	 * Save the info for the exception handler and clear the error.
-+	 * Synchronize the FPU register state to the memory register state
-+	 * if necessary. This allows the exception handler to inspect it.
- 	 */
--	fpu__save(fpu);
-+	fpu_sync_fpstate(fpu);
+ #include <asm/processor.h>
++#include <asm/pkru.h>
+ #include <asm/fpu/internal.h>
+ #include <asm/mmu_context.h>
+ #include <asm/prctl.h>
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index 8d36f0c..62926f1 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -19,6 +19,7 @@
+ #include <linux/trace_events.h>
+ #include <asm/fpu/internal.h>
  
- 	task->thread.trap_nr	= trapnr;
- 	task->thread.error_code = 0;
++#include <asm/pkru.h>
+ #include <asm/trapnr.h>
+ 
+ #include "x86.h"
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 6f651b9..07f7888 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -65,6 +65,7 @@
+ #include <asm/msr.h>
+ #include <asm/desc.h>
+ #include <asm/mce.h>
++#include <asm/pkru.h>
+ #include <linux/kernel_stat.h>
+ #include <asm/fpu/internal.h> /* Ugh! */
+ #include <asm/pvclock.h>
+diff --git a/arch/x86/mm/pkeys.c b/arch/x86/mm/pkeys.c
+index a840ac7..a02cfcf 100644
+--- a/arch/x86/mm/pkeys.c
++++ b/arch/x86/mm/pkeys.c
+@@ -10,6 +10,7 @@
+ 
+ #include <asm/cpufeature.h>             /* boot_cpu_has, ...            */
+ #include <asm/mmu_context.h>            /* vma_pkey()                   */
++#include <asm/pkru.h>			/* read/write_pkru()		*/
+ 
+ int __execute_only_pkey(struct mm_struct *mm)
+ {
