@@ -2,53 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E5CDF3B234D
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 24 Jun 2021 00:12:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B79F3B2351
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 24 Jun 2021 00:12:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231815AbhFWWNa (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 23 Jun 2021 18:13:30 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:40076 "EHLO
+        id S231404AbhFWWNn (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 23 Jun 2021 18:13:43 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:40112 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231373AbhFWWMR (ORCPT
+        with ESMTP id S231426AbhFWWMV (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 23 Jun 2021 18:12:17 -0400
-Date:   Wed, 23 Jun 2021 22:09:44 -0000
+        Wed, 23 Jun 2021 18:12:21 -0400
+Date:   Wed, 23 Jun 2021 22:09:45 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1624486185;
+        s=2020; t=1624486187;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=GqjKEJyPmKau2Fik4RSJE7wewh5qpazD+oCMy7A21dE=;
-        b=Q0FXG56kxfLjwlWWeBYHAphA/TuBepNem2FZWbX9v8Jlomug8dVuN5ewinGAXVf8znrfyE
-        NtXPWp56SKJ97rEPhqSAwrfkbJ7aGfcDNgoeOeU5oeI5WAiTEt6drosWx3Ta6UqpwRQfpB
-        YGq9U1CSA/YY4Xw+BQ5kO02gc/8c0qSWb6I4RZPDDUvXPdvK1SJjmImCCRz3mAwWWeTx1+
-        9S0+5Bnm6iXlhcUUiVISV3Vf8vHwOr5ZxGj0JVEeG/T2BV/IzuMOaezjUb8v7M86KcE4j4
-        C93CZBMCs6MslgT6lT5c2bbhYSNvkIrLHP5e8gOlYvdut+kmYNWL7f+rv3gv9g==
+        bh=18/6NyEU205vs321c/cj0ajhWLhBAIPZX6HobiVaigk=;
+        b=n1hkhHRRf9bglJu0BV5U5Tpoz+MPvej9H5vB85tpxtmoJU2e+U9v387QJXh6BJq+ptRkSQ
+        AuAhmuI/s93LAfuezX//lGov0YSSiAUCDRdyyU1OR3cH62CFe0BJrDli9cmxQyatxtm3GY
+        byI/UK6szLEWfpTab98irgSWVvDWJf3ArhG7Sa1QOOopXyyPHi7H9lrtxVteP/IeDDTZ/s
+        fiUzfRXS+N2q23GuD3yMvMGNuRBtYoNvLxL+xB2PwqIPd5LVbP7GFqDilhawqjwLLKWj4y
+        doJ1hX003jS8AFrwCcjypvhFrV8ektccwL7I9QSBkhOuzceE8OdYiWYFDk5X0w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1624486185;
+        s=2020e; t=1624486187;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=GqjKEJyPmKau2Fik4RSJE7wewh5qpazD+oCMy7A21dE=;
-        b=zetmFMaqCIwzQNhKQEyVpCrEc+LQqfpuUugD0ukgBIhqon9tl0yx70NysdfWWCxQvawkOW
-        EAV8QpLXFM7rjqBw==
+        bh=18/6NyEU205vs321c/cj0ajhWLhBAIPZX6HobiVaigk=;
+        b=f2303QAKwprypE0KSPnEU6+LPehEWY0anhtDG3j2kmKswyNzPd8cu3DfKdMhMuRWHCIbd2
+        iha/xbIBZKCos4Cg==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/fpu] x86/fpu: Make xfeatures_mask_all __ro_after_init
-Cc:     Kan Liang <kan.liang@linux.intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Borislav Petkov <bp@suse.de>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20210623121451.712803952@linutronix.de>
-References: <20210623121451.712803952@linutronix.de>
+Subject: [tip: x86/fpu] x86/pkeys: Revert a5eff7259790 ("x86/pkeys: Add PKRU
+ value to init_fpstate")
+Cc:     Thomas Gleixner <tglx@linutronix.de>, Borislav Petkov <bp@suse.de>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20210623121451.451391598@linutronix.de>
+References: <20210623121451.451391598@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <162448618412.395.6928422174395166793.tip-bot2@tip-bot2>
+Message-ID: <162448618583.395.648073361055963857.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,111 +58,81 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/fpu branch of tip:
 
-Commit-ID:     4e8e4313cf81add679e1c57677d689c02e382a67
-Gitweb:        https://git.kernel.org/tip/4e8e4313cf81add679e1c57677d689c02e382a67
+Commit-ID:     b3607269ff57fd3c9690cb25962c5e4b91a0fd3b
+Gitweb:        https://git.kernel.org/tip/b3607269ff57fd3c9690cb25962c5e4b91a0fd3b
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Wed, 23 Jun 2021 14:01:31 +02:00
+AuthorDate:    Wed, 23 Jun 2021 14:01:29 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
 CommitterDate: Wed, 23 Jun 2021 17:49:45 +02:00
 
-x86/fpu: Make xfeatures_mask_all __ro_after_init
+x86/pkeys: Revert a5eff7259790 ("x86/pkeys: Add PKRU value to init_fpstate")
 
-Nothing has to modify this after init.
+This cannot work and it's unclear how that ever made a difference.
 
-But of course there is code which unconditionally masks
-xfeatures_mask_all on CPU hotplug. This goes unnoticed during boot
-hotplug because at that point the variable is still RW mapped.
+init_fpstate.xsave.header.xfeatures is always 0 so get_xsave_addr() will
+always return a NULL pointer, which will prevent storing the default PKRU
+value in init_fpstate.
 
-This is broken in several ways:
-
-  1) Masking this in post init CPU hotplug means that any
-     modification of this state goes unnoticed until actual hotplug
-     happens.
-
-  2) If that ever happens then these bogus feature bits are already
-     populated all over the place and the system is in inconsistent state
-     vs. the compacted XSTATE offsets. If at all then this has to panic the
-     machine because the inconsistency cannot be undone anymore.
-
-Make this a one-time paranoia check in xstate init code and disable
-xsave when this happens.
-
-Reported-by: Kan Liang <kan.liang@linux.intel.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Borislav Petkov <bp@suse.de>
 Reviewed-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20210623121451.712803952@linutronix.de
+Link: https://lkml.kernel.org/r/20210623121451.451391598@linutronix.de
 ---
- arch/x86/kernel/fpu/xstate.c | 28 +++++++++++++++-------------
- 1 file changed, 15 insertions(+), 13 deletions(-)
+ arch/x86/kernel/cpu/common.c | 5 -----
+ arch/x86/mm/pkeys.c          | 6 ------
+ 2 files changed, 11 deletions(-)
 
-diff --git a/arch/x86/kernel/fpu/xstate.c b/arch/x86/kernel/fpu/xstate.c
-index bcb9f56..a64f61a 100644
---- a/arch/x86/kernel/fpu/xstate.c
-+++ b/arch/x86/kernel/fpu/xstate.c
-@@ -59,7 +59,7 @@ static short xsave_cpuid_features[] __initdata = {
-  * This represents the full set of bits that should ever be set in a kernel
-  * XSAVE buffer, both supervisor and user xstates.
-  */
--u64 xfeatures_mask_all __read_mostly;
-+u64 xfeatures_mask_all __ro_after_init;
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index 9173dd4..dcbb11f 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -466,8 +466,6 @@ static bool pku_disabled;
  
- static unsigned int xstate_offsets[XFEATURE_MAX] __ro_after_init =
- 	{ [ 0 ... XFEATURE_MAX - 1] = -1};
-@@ -213,19 +213,8 @@ void fpstate_sanitize_xstate(struct fpu *fpu)
-  */
- void fpu__init_cpu_xstate(void)
+ static __always_inline void setup_pku(struct cpuinfo_x86 *c)
  {
--	u64 unsup_bits;
+-	struct pkru_state *pk;
 -
- 	if (!boot_cpu_has(X86_FEATURE_XSAVE) || !xfeatures_mask_all)
+ 	/* check the boot processor, plus compile options for PKU: */
+ 	if (!cpu_feature_enabled(X86_FEATURE_PKU))
  		return;
--	/*
--	 * Unsupported supervisor xstates should not be found in
--	 * the xfeatures mask.
--	 */
--	unsup_bits = xfeatures_mask_all & XFEATURE_MASK_SUPERVISOR_UNSUPPORTED;
--	WARN_ONCE(unsup_bits, "x86/fpu: Found unsupported supervisor xstates: 0x%llx\n",
--		  unsup_bits);
--
--	xfeatures_mask_all &= ~XFEATURE_MASK_SUPERVISOR_UNSUPPORTED;
+@@ -478,9 +476,6 @@ static __always_inline void setup_pku(struct cpuinfo_x86 *c)
+ 		return;
  
- 	cr4_set_bits(X86_CR4_OSXSAVE);
+ 	cr4_set_bits(X86_CR4_PKE);
+-	pk = get_xsave_addr(&init_fpstate.xsave, XFEATURE_PKRU);
+-	if (pk)
+-		pk->pkru = init_pkru_value;
+ 	/*
+ 	 * Setting X86_CR4_PKE will cause the X86_FEATURE_OSPKE
+ 	 * cpuid bit to be set.  We need to ensure that we
+diff --git a/arch/x86/mm/pkeys.c b/arch/x86/mm/pkeys.c
+index a2332ee..a840ac7 100644
+--- a/arch/x86/mm/pkeys.c
++++ b/arch/x86/mm/pkeys.c
+@@ -10,7 +10,6 @@
  
-@@ -825,6 +814,7 @@ void __init fpu__init_system_xstate(void)
+ #include <asm/cpufeature.h>             /* boot_cpu_has, ...            */
+ #include <asm/mmu_context.h>            /* vma_pkey()                   */
+-#include <asm/fpu/internal.h>		/* init_fpstate			*/
+ 
+ int __execute_only_pkey(struct mm_struct *mm)
  {
- 	unsigned int eax, ebx, ecx, edx;
- 	static int on_boot_cpu __initdata = 1;
-+	u64 xfeatures;
- 	int err;
- 	int i;
+@@ -154,7 +153,6 @@ static ssize_t init_pkru_read_file(struct file *file, char __user *user_buf,
+ static ssize_t init_pkru_write_file(struct file *file,
+ 		 const char __user *user_buf, size_t count, loff_t *ppos)
+ {
+-	struct pkru_state *pk;
+ 	char buf[32];
+ 	ssize_t len;
+ 	u32 new_init_pkru;
+@@ -177,10 +175,6 @@ static ssize_t init_pkru_write_file(struct file *file,
+ 		return -EINVAL;
  
-@@ -879,6 +869,8 @@ void __init fpu__init_system_xstate(void)
- 	}
+ 	WRITE_ONCE(init_pkru_value, new_init_pkru);
+-	pk = get_xsave_addr(&init_fpstate.xsave, XFEATURE_PKRU);
+-	if (!pk)
+-		return -EINVAL;
+-	pk->pkru = new_init_pkru;
+ 	return count;
+ }
  
- 	xfeatures_mask_all &= fpu__get_supported_xfeatures_mask();
-+	/* Store it for paranoia check at the end */
-+	xfeatures = xfeatures_mask_all;
- 
- 	/* Enable xstate instructions to be able to continue with initialization: */
- 	fpu__init_cpu_xstate();
-@@ -896,8 +888,18 @@ void __init fpu__init_system_xstate(void)
- 	setup_init_fpu_buf();
- 	setup_xstate_comp_offsets();
- 	setup_supervisor_only_offsets();
--	print_xstate_offset_size();
- 
-+	/*
-+	 * Paranoia check whether something in the setup modified the
-+	 * xfeatures mask.
-+	 */
-+	if (xfeatures != xfeatures_mask_all) {
-+		pr_err("x86/fpu: xfeatures modified from 0x%016llx to 0x%016llx during init, disabling XSAVE\n",
-+		       xfeatures, xfeatures_mask_all);
-+		goto out_disable;
-+	}
-+
-+	print_xstate_offset_size();
- 	pr_info("x86/fpu: Enabled xstate features 0x%llx, context size is %d bytes, using '%s' format.\n",
- 		xfeatures_mask_all,
- 		fpu_kernel_xstate_size,
