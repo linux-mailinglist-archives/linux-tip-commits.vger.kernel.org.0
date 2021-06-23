@@ -2,57 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D4D403B236E
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 24 Jun 2021 00:12:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E05893B2335
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 24 Jun 2021 00:10:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231810AbhFWWPI (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 23 Jun 2021 18:15:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50392 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230185AbhFWWOL (ORCPT
+        id S231630AbhFWWMs (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 23 Jun 2021 18:12:48 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:40230 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231147AbhFWWL5 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 23 Jun 2021 18:14:11 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC3E5C061153;
-        Wed, 23 Jun 2021 15:09:40 -0700 (PDT)
+        Wed, 23 Jun 2021 18:11:57 -0400
 Date:   Wed, 23 Jun 2021 22:09:37 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1624486179;
+        s=2020; t=1624486178;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=x5EWmVd0+smdN9HOChSX2nVA1fkRYxLBVpMUpkMhQH0=;
-        b=d/JYNaU5P9pqMPspJEyJKkBc4FB3PkaT6R+KKeINt1v3MvP0JkzaSTQTIvXCOe9jqPFQQa
-        3KYE2yS3rfPo/swGWjpJFPkzMKyIKTULYU5WQyMg18lZBNonDv3ajijJaRR1aRFlQRGQaI
-        CJ+ncOaGUJuXekAXcUPDW6drdh4extE6Ile68a+Xe0fB5y2lo4vSa0XHjnqcLROi3BReb3
-        xzmcIFmbPHL+ai9dtsDonf7MGJNlQHaSjKH29cIOquDwnkjSMccpYyVLlJsoZlI/8x6BY+
-        ocIE5BPfLm+wTwjA1R/YVg0mV8zy97GuOnl7a7Zzz7t5CEyrCA887nCqYIOGMw==
+        bh=je5bbjZViGfGfs+4O9W+Fbt71G7+RMsgLKAxkwPKK6g=;
+        b=JuiEMoo12rVKu0GTMglirUW+ZhWwmFPKLA4QGB5vFhZHzXdUr6LGPrrWfE64tXohzIj9zR
+        azT7WC90th1Q3nuHpPqH8r/NHiGpaFfk59JXXE+b9P0I1z7gxoVFHXALvMgotspYsnqIzd
+        37Jh0iZKKDa2uR+sE+tpA4cuPjaxRfCeybJ00fcDHrbWZ9+lftzQBSXFo63HeGrFxOh8jn
+        m54J9agZLpkUqkiHM/OZ+we44MjCKbZe6NCJf8z4HJ+vQdve33DW8NCWJvRLtYU08doh2N
+        jBYJBs4D3/ukLIMEKlQadtCxvYTM0o0JzDaSnGHw8lGK5ZDamrrL4mcwRD08ew==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1624486179;
+        s=2020e; t=1624486178;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=x5EWmVd0+smdN9HOChSX2nVA1fkRYxLBVpMUpkMhQH0=;
-        b=GzFO2em1LfXzSxjXB29KxyQnHMbDAqSv2B2CLx8xV60k4wEiU0eZLeAn0qZDRx6UNYh7jL
-        xI9UY35POOVSkyBQ==
-From:   "tip-bot2 for Dave Hansen" <tip-bot2@linutronix.de>
+        bh=je5bbjZViGfGfs+4O9W+Fbt71G7+RMsgLKAxkwPKK6g=;
+        b=BXnDz2DpoQf2ex2dd6Xoq2YeyK8x5sZBbH1N9+c6Fv+VqininVL/3Wn3SwQYXHJ/738djY
+        LSmBqgAe4uPGkdBQ==
+From:   "tip-bot2 for Andy Lutomirski" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/fpu] x86/fpu: Simplify PTRACE_GETREGS code
-Cc:     Dave Hansen <dave.hansen@linux.intel.com>,
+Subject: [tip: x86/fpu] x86/fpu: Rewrite xfpregs_set()
+Cc:     Andy Lutomirski <luto@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Borislav Petkov <bp@suse.de>,
-        Andy Lutomirski <luto@kernel.org>, x86@kernel.org,
+        Borislav Petkov <bp@suse.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210623121452.408457100@linutronix.de>
-References: <20210623121452.408457100@linutronix.de>
+In-Reply-To: <20210623121452.504234607@linutronix.de>
+References: <20210623121452.504234607@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <162448617793.395.65698642676508191.tip-bot2@tip-bot2>
+Message-ID: <162448617708.395.7302447964739522489.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -63,106 +59,90 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/fpu branch of tip:
 
-Commit-ID:     3a3351126ee8f1f1c86c4c79c60a650c1da89733
-Gitweb:        https://git.kernel.org/tip/3a3351126ee8f1f1c86c4c79c60a650c1da89733
-Author:        Dave Hansen <dave.hansen@linux.intel.com>
-AuthorDate:    Wed, 23 Jun 2021 14:01:38 +02:00
+Commit-ID:     6164331d15f7d912fb9369245368e9564ea49813
+Gitweb:        https://git.kernel.org/tip/6164331d15f7d912fb9369245368e9564ea49813
+Author:        Andy Lutomirski <luto@kernel.org>
+AuthorDate:    Wed, 23 Jun 2021 14:01:39 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
 CommitterDate: Wed, 23 Jun 2021 17:49:46 +02:00
 
-x86/fpu: Simplify PTRACE_GETREGS code
+x86/fpu: Rewrite xfpregs_set()
 
-ptrace() has interfaces that let a ptracer inspect a ptracee's register state.
-This includes XSAVE state.  The ptrace() ABI includes a hardware-format XSAVE
-buffer for both the SETREGS and GETREGS interfaces.
+xfpregs_set() was incomprehensible.  Almost all of the complexity was due
+to trying to support nonsensically sized writes or -EFAULT errors that
+would have partially or completely overwritten the destination before
+failing.  Nonsensically sized input would only have been possible using
+PTRACE_SETREGSET on REGSET_XFP.  Fortunately, it appears (based on Debian
+code search results) that no one uses that API at all, let alone with the
+wrong sized buffer.  Failed user access can be handled more cleanly by
+first copying to kernel memory.
 
-In the old days, the kernel buffer and the ptrace() ABI buffer were the
-same boring non-compacted format.  But, since the advent of supervisor
-states and the compacted format, the kernel buffer has diverged from the
-format presented in the ABI.
+Just rewrite it to require sensible input.
 
-This leads to two paths in the kernel:
-1. Effectively a verbatim copy_to_user() which just copies the kernel buffer
-   out to userspace.  This is used when the kernel buffer is kept in the
-   non-compacted form which means that it shares a format with the ptrace
-   ABI.
-2. A one-state-at-a-time path: copy_xstate_to_kernel().  This is theoretically
-   slower since it does a bunch of piecemeal copies.
-
-Remove the verbatim copy case.  Speed probably does not matter in this path,
-and the vast majority of new hardware will use the one-state-at-a-time path
-anyway.  This ensures greater testing for the "slow" path.
-
-This also makes enabling PKRU in this interface easier since a single path
-can be patched instead of two.
-
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Signed-off-by: Andy Lutomirski <luto@kernel.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Andy Lutomirski <luto@kernel.org>
 Reviewed-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20210623121452.408457100@linutronix.de
+Link: https://lkml.kernel.org/r/20210623121452.504234607@linutronix.de
 ---
- arch/x86/kernel/fpu/regset.c | 24 +++---------------------
- arch/x86/kernel/fpu/xstate.c |  6 +++---
- 2 files changed, 6 insertions(+), 24 deletions(-)
+ arch/x86/kernel/fpu/regset.c | 37 +++++++++++++++++++++--------------
+ 1 file changed, 23 insertions(+), 14 deletions(-)
 
 diff --git a/arch/x86/kernel/fpu/regset.c b/arch/x86/kernel/fpu/regset.c
-index a50c0a9..d60e77d 100644
+index d60e77d..f24ce87 100644
 --- a/arch/x86/kernel/fpu/regset.c
 +++ b/arch/x86/kernel/fpu/regset.c
-@@ -77,32 +77,14 @@ int xstateregs_get(struct task_struct *target, const struct user_regset *regset,
- 		struct membuf to)
+@@ -47,30 +47,39 @@ int xfpregs_set(struct task_struct *target, const struct user_regset *regset,
+ 		const void *kbuf, const void __user *ubuf)
  {
  	struct fpu *fpu = &target->thread.fpu;
--	struct xregs_state *xsave;
++	struct user32_fxsr_struct newstate;
+ 	int ret;
  
--	if (!boot_cpu_has(X86_FEATURE_XSAVE))
-+	if (!cpu_feature_enabled(X86_FEATURE_XSAVE))
+-	if (!boot_cpu_has(X86_FEATURE_FXSR))
++	BUILD_BUG_ON(sizeof(newstate) != sizeof(struct fxregs_state));
++
++	if (!cpu_feature_enabled(X86_FEATURE_FXSR))
  		return -ENODEV;
  
--	xsave = &fpu->state.xsave;
--
- 	fpu__prepare_read(fpu);
++	/* No funny business with partial or oversized writes is permitted. */
++	if (pos != 0 || count != sizeof(newstate))
++		return -EINVAL;
++
++	ret = user_regset_copyin(&pos, &count, &kbuf, &ubuf, &newstate, 0, -1);
++	if (ret)
++		return ret;
++
++	/* Mask invalid MXCSR bits (for historical reasons). */
++	newstate.mxcsr &= mxcsr_feature_mask;
++
+ 	fpu__prepare_write(fpu);
+-	fpstate_sanitize_xstate(fpu);
  
--	if (using_compacted_format()) {
--		copy_xstate_to_kernel(to, xsave);
--		return 0;
--	} else {
--		fpstate_sanitize_xstate(fpu);
--		/*
--		 * Copy the 48 bytes defined by the software into the xsave
--		 * area in the thread struct, so that we can copy the whole
--		 * area to user using one user_regset_copyout().
--		 */
--		memcpy(&xsave->i387.sw_reserved, xstate_fx_sw_bytes, sizeof(xstate_fx_sw_bytes));
--
--		/*
--		 * Copy the xstate memory layout.
--		 */
--		return membuf_write(&to, xsave, fpu_user_xstate_size);
--	}
-+	copy_xstate_to_kernel(to, &fpu->state.xsave);
+-	ret = user_regset_copyin(&pos, &count, &kbuf, &ubuf,
+-				 &fpu->state.fxsave, 0, -1);
++	/* Copy the state  */
++	memcpy(&fpu->state.fxsave, &newstate, sizeof(newstate));
+ 
+-	/*
+-	 * mxcsr reserved bits must be masked to zero for security reasons.
+-	 */
+-	fpu->state.fxsave.mxcsr &= mxcsr_feature_mask;
++	/* Clear xmm8..15 */
++	BUILD_BUG_ON(sizeof(fpu->state.fxsave.xmm_space) != 16 * 16);
++	memset(&fpu->state.fxsave.xmm_space[8], 0, 8 * 16);
+ 
+-	/*
+-	 * update the header bits in the xsave header, indicating the
+-	 * presence of FP and SSE state.
+-	 */
+-	if (boot_cpu_has(X86_FEATURE_XSAVE))
++	/* Mark FP and SSE as in use when XSAVE is enabled */
++	if (use_xsave())
+ 		fpu->state.xsave.header.xfeatures |= XFEATURE_MASK_FPSSE;
+ 
+-	return ret;
 +	return 0;
  }
  
- int xstateregs_set(struct task_struct *target, const struct user_regset *regset,
-diff --git a/arch/x86/kernel/fpu/xstate.c b/arch/x86/kernel/fpu/xstate.c
-index 9cf84c5..4203247 100644
---- a/arch/x86/kernel/fpu/xstate.c
-+++ b/arch/x86/kernel/fpu/xstate.c
-@@ -1069,11 +1069,11 @@ static void copy_feature(bool from_xstate, struct membuf *to, void *xstate,
- }
- 
- /*
-- * Convert from kernel XSAVES compacted format to standard format and copy
-- * to a kernel-space ptrace buffer.
-+ * Convert from kernel XSAVE or XSAVES compacted format to UABI
-+ * non-compacted format and copy to a kernel-space ptrace buffer.
-  *
-  * It supports partial copy but pos always starts from zero. This is called
-- * from xstateregs_get() and there we check the CPU has XSAVES.
-+ * from xstateregs_get() and there we check the CPU has XSAVE.
-  */
- void copy_xstate_to_kernel(struct membuf to, struct xregs_state *xsave)
- {
+ int xstateregs_get(struct task_struct *target, const struct user_regset *regset,
