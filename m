@@ -2,56 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 547753B2364
+	by mail.lfdr.de (Postfix) with ESMTP id E50E13B2366
 	for <lists+linux-tip-commits@lfdr.de>; Thu, 24 Jun 2021 00:12:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231668AbhFWWOf (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 23 Jun 2021 18:14:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50438 "EHLO
+        id S231246AbhFWWOp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 23 Jun 2021 18:14:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50386 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231825AbhFWWNd (ORCPT
+        with ESMTP id S230481AbhFWWNp (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 23 Jun 2021 18:13:33 -0400
+        Wed, 23 Jun 2021 18:13:45 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4A32C0617AD;
-        Wed, 23 Jun 2021 15:09:30 -0700 (PDT)
-Date:   Wed, 23 Jun 2021 22:09:28 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82C81C0617A8;
+        Wed, 23 Jun 2021 15:09:31 -0700 (PDT)
+Date:   Wed, 23 Jun 2021 22:09:29 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1624486169;
+        s=2020; t=1624486170;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=n6S6J4h5ZeKW0e8s70Ku2yVQatEsjPB0CvAfowXmf3s=;
-        b=VJ2uJ2LKR/741A0IkHnc1mtrP9WbzWpzjpr2Jik2nTgwal4/nsstF4xPrh3jr1U+RH9U3i
-        mDrrBKXRPQW5f6QydHC72gV8tbfQ0kuagAgpNVkPwhmEiimOql1KHdQ4tmnjqjKG6yaWO1
-        yGg278Rgl619y3FEgkBtsEGHVT46FQkJXDfKGyMsQX4zz79QcuUJa1ak2k9jYHLJD6I51d
-        Ddw3Fl2OPRO7dpqMAWkgOm9bfApSUpGmxffMYrF2h2HVmyJ7O5als2qzfDiVMcWpYiNu2C
-        cZ7HFCx+qriv0JlRThj5pwE6GJoxHmzih8VRB47Aawy7azesNj9yEPtUYNxOuA==
+        bh=HJIjIbpdXSUGURwsr2ClrWamHbcBp/3HOfY0DQHkcDs=;
+        b=E7QdA7zexLtuAjNNuC+s2LWzO+F4EWtPFh6hH62xluVgd9JEQF7GGq4SOgwSu15zC5/SMS
+        T8YwL8DRetxTrqr22gIIaeluM1AmFgOrG4c2OicBzzvGnhYpb5IAqhE76gyby76936YYuO
+        9YvBhQpaIqqRWAQ5/1RYm67xGMOz34Q4AAjI4IpjRLWHTLsVDJhwsrteo5b6Qk0aJ3wbsg
+        hs+QYp/8rXmXDhYKFltUoKcEMUKU2eatu49L/L6G0eVMRf2p2+2sF//mp1KDaXUN/td1bz
+        9uq8eschPnNcYRscqk8ki7mHEkJ0nn1RlWQH1Q3m3HMxf88CP5e0sIogARX57w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1624486169;
+        s=2020e; t=1624486170;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=n6S6J4h5ZeKW0e8s70Ku2yVQatEsjPB0CvAfowXmf3s=;
-        b=Uot6Uj6uyj52Vl2lO+y98FuKYtQmW6f0OHdpj6VA4YpZuYj8NlzPCN9+8XKxAv6Rh77NYY
-        1yjIdyCGggWphkCg==
-From:   "tip-bot2 for Dave Hansen" <tip-bot2@linutronix.de>
+        bh=HJIjIbpdXSUGURwsr2ClrWamHbcBp/3HOfY0DQHkcDs=;
+        b=EXqBQIasBNICfQBidBNy0uTMUwLqYCuHDNWRGZFi6SOSXKqtIrnoUthph2rU3y+wCivw9e
+        qtln2WnUC21i7WAw==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/fpu] x86/kvm: Avoid looking up PKRU in XSAVE buffer
-Cc:     Dave Hansen <dave.hansen@linux.intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Borislav Petkov <bp@suse.de>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20210623121453.541037562@linutronix.de>
-References: <20210623121453.541037562@linutronix.de>
+Subject: [tip: x86/fpu] x86/fpu: Get rid of using_compacted_format()
+Cc:     Thomas Gleixner <tglx@linutronix.de>, Borislav Petkov <bp@suse.de>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20210623121453.425493349@linutronix.de>
+References: <20210623121453.425493349@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <162448616821.395.11390575510895361251.tip-bot2@tip-bot2>
+Message-ID: <162448616902.395.11340261013461583078.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -62,103 +60,86 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/fpu branch of tip:
 
-Commit-ID:     71ef453355a9197fcfd8ff22391a4ad7861d79e6
-Gitweb:        https://git.kernel.org/tip/71ef453355a9197fcfd8ff22391a4ad7861d79e6
-Author:        Dave Hansen <dave.hansen@linux.intel.com>
-AuthorDate:    Wed, 23 Jun 2021 14:01:49 +02:00
+Commit-ID:     02b93c0b00df222b9ccf7a1fbd0eb59353d0a58c
+Gitweb:        https://git.kernel.org/tip/02b93c0b00df222b9ccf7a1fbd0eb59353d0a58c
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Wed, 23 Jun 2021 14:01:48 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
 CommitterDate: Wed, 23 Jun 2021 17:49:47 +02:00
 
-x86/kvm: Avoid looking up PKRU in XSAVE buffer
+x86/fpu: Get rid of using_compacted_format()
 
-PKRU is being removed from the kernel XSAVE/FPU buffers.  This removal
-will probably include warnings for code that look up PKRU in those
-buffers.
+This function is pointlessly global and a complete misnomer because it's
+usage is related to both supervisor state checks and compacted format
+checks. Remove it and just make the conditions check the XSAVES feature.
 
-KVM currently looks up the location of PKRU but doesn't even use the
-pointer that it gets back.  Rework the code to avoid calling
-get_xsave_addr() except in cases where its result is actually used.
-
-This makes the code more clear and also avoids the inevitable PKRU
-warnings.
-
-This is probably a good cleanup and could go upstream idependently
-of any PKRU rework.
-
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Borislav Petkov <bp@suse.de>
 Reviewed-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20210623121453.541037562@linutronix.de
+Link: https://lkml.kernel.org/r/20210623121453.425493349@linutronix.de
 ---
- arch/x86/kvm/x86.c | 45 ++++++++++++++++++++++++---------------------
- 1 file changed, 24 insertions(+), 21 deletions(-)
+ arch/x86/include/asm/fpu/xstate.h |  1 -
+ arch/x86/kernel/fpu/xstate.c      | 22 ++++------------------
+ 2 files changed, 4 insertions(+), 19 deletions(-)
 
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index e0f4a46..c25bf24 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -4604,20 +4604,21 @@ static void fill_xsave(u8 *dest, struct kvm_vcpu *vcpu)
- 	 */
- 	valid = xstate_bv & ~XFEATURE_MASK_FPSSE;
- 	while (valid) {
-+		u32 size, offset, ecx, edx;
- 		u64 xfeature_mask = valid & -valid;
- 		int xfeature_nr = fls64(xfeature_mask) - 1;
--		void *src = get_xsave_addr(xsave, xfeature_nr);
+diff --git a/arch/x86/include/asm/fpu/xstate.h b/arch/x86/include/asm/fpu/xstate.h
+index 732ae79..6e5ba42 100644
+--- a/arch/x86/include/asm/fpu/xstate.h
++++ b/arch/x86/include/asm/fpu/xstate.h
+@@ -101,7 +101,6 @@ extern void __init update_regset_xstate_info(unsigned int size,
+ 					     u64 xstate_mask);
+ 
+ void *get_xsave_addr(struct xregs_state *xsave, int xfeature_nr);
+-int using_compacted_format(void);
+ int xfeature_size(int xfeature_nr);
+ int copy_kernel_to_xstate(struct xregs_state *xsave, const void *kbuf);
+ int copy_user_to_xstate(struct xregs_state *xsave, const void __user *ubuf);
+diff --git a/arch/x86/kernel/fpu/xstate.c b/arch/x86/kernel/fpu/xstate.c
+index e17fde9..185cc5d 100644
+--- a/arch/x86/kernel/fpu/xstate.c
++++ b/arch/x86/kernel/fpu/xstate.c
+@@ -449,20 +449,6 @@ int xfeature_size(int xfeature_nr)
+ 	return eax;
+ }
+ 
+-/*
+- * 'XSAVES' implies two different things:
+- * 1. saving of supervisor/system state
+- * 2. using the compacted format
+- *
+- * Use this function when dealing with the compacted format so
+- * that it is obvious which aspect of 'XSAVES' is being handled
+- * by the calling code.
+- */
+-int using_compacted_format(void)
+-{
+-	return boot_cpu_has(X86_FEATURE_XSAVES);
+-}
 -
--		if (src) {
--			u32 size, offset, ecx, edx;
--			cpuid_count(XSTATE_CPUID, xfeature_nr,
--				    &size, &offset, &ecx, &edx);
--			if (xfeature_nr == XFEATURE_PKRU)
--				memcpy(dest + offset, &vcpu->arch.pkru,
--				       sizeof(vcpu->arch.pkru));
--			else
--				memcpy(dest + offset, src, size);
-+		void *src;
-+
-+		cpuid_count(XSTATE_CPUID, xfeature_nr,
-+			    &size, &offset, &ecx, &edx);
+ /* Validate an xstate header supplied by userspace (ptrace or sigreturn) */
+ static int validate_user_xstate_header(const struct xstate_header *hdr)
+ {
+@@ -581,9 +567,9 @@ static void do_extra_xstate_size_checks(void)
+ 		check_xstate_against_struct(i);
+ 		/*
+ 		 * Supervisor state components can be managed only by
+-		 * XSAVES, which is compacted-format only.
++		 * XSAVES.
+ 		 */
+-		if (!using_compacted_format())
++		if (!cpu_feature_enabled(X86_FEATURE_XSAVES))
+ 			XSTATE_WARN_ON(xfeature_is_supervisor(i));
  
-+		if (xfeature_nr == XFEATURE_PKRU) {
-+			memcpy(dest + offset, &vcpu->arch.pkru,
-+			       sizeof(vcpu->arch.pkru));
-+		} else {
-+			src = get_xsave_addr(xsave, xfeature_nr);
-+			if (src)
-+				memcpy(dest + offset, src, size);
- 		}
- 
- 		valid -= xfeature_mask;
-@@ -4647,18 +4648,20 @@ static void load_xsave(struct kvm_vcpu *vcpu, u8 *src)
- 	 */
- 	valid = xstate_bv & ~XFEATURE_MASK_FPSSE;
- 	while (valid) {
-+		u32 size, offset, ecx, edx;
- 		u64 xfeature_mask = valid & -valid;
- 		int xfeature_nr = fls64(xfeature_mask) - 1;
--		void *dest = get_xsave_addr(xsave, xfeature_nr);
--
--		if (dest) {
--			u32 size, offset, ecx, edx;
--			cpuid_count(XSTATE_CPUID, xfeature_nr,
--				    &size, &offset, &ecx, &edx);
--			if (xfeature_nr == XFEATURE_PKRU)
--				memcpy(&vcpu->arch.pkru, src + offset,
--				       sizeof(vcpu->arch.pkru));
--			else
-+
-+		cpuid_count(XSTATE_CPUID, xfeature_nr,
-+			    &size, &offset, &ecx, &edx);
-+
-+		if (xfeature_nr == XFEATURE_PKRU) {
-+			memcpy(&vcpu->arch.pkru, src + offset,
-+			       sizeof(vcpu->arch.pkru));
-+		} else {
-+			void *dest = get_xsave_addr(xsave, xfeature_nr);
-+
-+			if (dest)
- 				memcpy(dest, src + offset, size);
- 		}
- 
+ 		/* Align from the end of the previous feature */
+@@ -593,9 +579,9 @@ static void do_extra_xstate_size_checks(void)
+ 		 * The offset of a given state in the non-compacted
+ 		 * format is given to us in a CPUID leaf.  We check
+ 		 * them for being ordered (increasing offsets) in
+-		 * setup_xstate_features().
++		 * setup_xstate_features(). XSAVES uses compacted format.
+ 		 */
+-		if (!using_compacted_format())
++		if (!cpu_feature_enabled(X86_FEATURE_XSAVES))
+ 			paranoid_xstate_size = xfeature_uncompacted_offset(i);
+ 		/*
+ 		 * The compacted-format offset always depends on where
