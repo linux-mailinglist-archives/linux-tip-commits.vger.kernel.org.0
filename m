@@ -2,51 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 834843B232F
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 24 Jun 2021 00:10:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3896F3B2367
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 24 Jun 2021 00:12:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231598AbhFWWMn (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 23 Jun 2021 18:12:43 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:40188 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231143AbhFWWLu (ORCPT
+        id S231386AbhFWWOp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 23 Jun 2021 18:14:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50460 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229902AbhFWWNs (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 23 Jun 2021 18:11:50 -0400
+        Wed, 23 Jun 2021 18:13:48 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46733C06114C;
+        Wed, 23 Jun 2021 15:09:32 -0700 (PDT)
 Date:   Wed, 23 Jun 2021 22:09:30 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1624486171;
+        s=2020; t=1624486170;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=lKHhVnlFVxfyUN9n1y00gyt5AaXrHFMEAH09wQvZQys=;
-        b=no8R6V4+0Pm0wBEY7QfmSrmenS+wi4TZoJYKZLfDIf7yBHkfSqIVisFoJTjN4i7XdkEg3R
-        z1FpZCjO60/wJhaZPcpNjB9GRGUn5M6Ol4YjlcEzNkUhOKFOgV3ZE6awxSzCuq7TIYM4wO
-        yCHIoddeaR7E7AtWyz8qvs2355/V2O9M3Ncf3j5yVMuY20rybcaO45cYpvZDhCgZEc7fIO
-        S2dZ2H7TNa6y3AgzRi6AScwHEU8cTqdPntLFv8wxIQRr2x3w39dsBuDm8EQPlmoLaKLpU+
-        zVg+mkn4Sj6kK5NzsNQ9H9TmRXYpaQz1Xlmz5Opj0OLMzumzpU51egHIBYQcgQ==
+        bh=YzsxAQj9rJFo4rHX9dYK+RG6ql3ACgzoUxt5JtMSTcU=;
+        b=xSZohBS2DDvzjIV1CiLQ7/orhk64g30szwbNmXZ/sd/9rg3Do27x6eHMb4ZMi8lbet00c/
+        iORZDw9VmknN00FoGNq63IfR1Mdi5Yw9CbCYcAEQK9EOVFx1FmWAwiDPiKHk2EQootk+Ge
+        8oVDwKjoTRQGjFuJLhDeegEIWV9BV5ICgp4M2/zzwQyhJmobrAqfC6vJ8gczeHzdsz7t6m
+        zRFbNbwtjUXoOskSdz6PKttpheMjfXFd5AwuII/R5s4c0r/qsnxF2PamEvTPa1jDNGHjk6
+        VkCtR1+e0EklYEyzze6ZgjA55Nfyqye2T6SD1RhlEUrDpzvdQoPrVA57PtBJ3g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1624486171;
+        s=2020e; t=1624486170;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=lKHhVnlFVxfyUN9n1y00gyt5AaXrHFMEAH09wQvZQys=;
-        b=3FXP+DAJSbl0tqebJoH7dYryFc9QWerhcIn3+N1nK3FkF53fPozRKzGbz/vYA8+EcAMrq4
-        Oj07p6s6qY8N31Dw==
+        bh=YzsxAQj9rJFo4rHX9dYK+RG6ql3ACgzoUxt5JtMSTcU=;
+        b=2mfaiOh+kGj0+SgE3V4/B6IJCt9UrR24+tdyHDq6udRLsjhoQfxMmyd7syrGFwCDG59qmZ
+        2ma1oBq8UGmAX8DA==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/fpu] x86/fpu/regset: Move fpu__read_begin() into regset
+Subject: [tip: x86/fpu] x86/fpu: Move fpu__write_begin() to regset
 Cc:     Thomas Gleixner <tglx@linutronix.de>, Borislav Petkov <bp@suse.de>,
         x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20210623121453.234942936@linutronix.de>
-References: <20210623121453.234942936@linutronix.de>
+In-Reply-To: <20210623121453.328652975@linutronix.de>
+References: <20210623121453.328652975@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <162448617082.395.13202555998624495069.tip-bot2@tip-bot2>
+Message-ID: <162448617005.395.16836356982355899488.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -57,122 +60,132 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/fpu branch of tip:
 
-Commit-ID:     5a32fac8dbe8adc08c10e2c8770c95aebfc627cd
-Gitweb:        https://git.kernel.org/tip/5a32fac8dbe8adc08c10e2c8770c95aebfc627cd
+Commit-ID:     dbb60ac764581e62f2116c5a6b8926ba3a872dd4
+Gitweb:        https://git.kernel.org/tip/dbb60ac764581e62f2116c5a6b8926ba3a872dd4
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Wed, 23 Jun 2021 14:01:46 +02:00
+AuthorDate:    Wed, 23 Jun 2021 14:01:47 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
 CommitterDate: Wed, 23 Jun 2021 17:49:47 +02:00
 
-x86/fpu/regset: Move fpu__read_begin() into regset
+x86/fpu: Move fpu__write_begin() to regset
 
-The function can only be used from the regset get() callbacks safely. So
-there is no reason to have it globally exposed.
+The only usecase for fpu__write_begin is the set() callback of regset, so
+the function is pointlessly global.
+
+Move it to the regset code and rename it to fpu_force_restore() which is
+exactly decribing what the function does.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Borislav Petkov <bp@suse.de>
 Reviewed-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20210623121453.234942936@linutronix.de
+Link: https://lkml.kernel.org/r/20210623121453.328652975@linutronix.de
 ---
  arch/x86/include/asm/fpu/internal.h |  1 -
- arch/x86/kernel/fpu/core.c          | 20 --------------------
- arch/x86/kernel/fpu/regset.c        | 22 +++++++++++++++++++---
- 3 files changed, 19 insertions(+), 24 deletions(-)
+ arch/x86/kernel/fpu/core.c          | 24 ------------------------
+ arch/x86/kernel/fpu/regset.c        | 25 ++++++++++++++++++++++---
+ 3 files changed, 22 insertions(+), 28 deletions(-)
 
 diff --git a/arch/x86/include/asm/fpu/internal.h b/arch/x86/include/asm/fpu/internal.h
-index 0148791..4c669f3 100644
+index 4c669f3..854bfb0 100644
 --- a/arch/x86/include/asm/fpu/internal.h
 +++ b/arch/x86/include/asm/fpu/internal.h
 @@ -26,7 +26,6 @@
  /*
   * High level FPU state handling functions:
   */
--extern void fpu__prepare_read(struct fpu *fpu);
- extern void fpu__prepare_write(struct fpu *fpu);
+-extern void fpu__prepare_write(struct fpu *fpu);
  extern void fpu__save(struct fpu *fpu);
  extern int  fpu__restore_sig(void __user *buf, int ia32_frame);
+ extern void fpu__drop(struct fpu *fpu);
 diff --git a/arch/x86/kernel/fpu/core.c b/arch/x86/kernel/fpu/core.c
-index 9ff467b..d390644 100644
+index d390644..2243701 100644
 --- a/arch/x86/kernel/fpu/core.c
 +++ b/arch/x86/kernel/fpu/core.c
-@@ -282,26 +282,6 @@ static void fpu__initialize(struct fpu *fpu)
+@@ -282,30 +282,6 @@ static void fpu__initialize(struct fpu *fpu)
  }
  
  /*
-- * This function must be called before we read a task's fpstate.
+- * This function must be called before we write a task's fpstate.
 - *
-- * There's two cases where this gets called:
+- * Invalidate any cached FPU registers.
 - *
-- * - for the current task (when coredumping), in which case we have
-- *   to save the latest FPU registers into the fpstate,
-- *
-- * - or it's called for stopped tasks (ptrace), in which case the
-- *   registers were already saved by the context-switch code when
-- *   the task scheduled out.
-- *
-- * If the task has used the FPU before then save it.
+- * After this function call, after registers in the fpstate are
+- * modified and the child task has woken up, the child task will
+- * restore the modified FPU state from the modified context. If we
+- * didn't clear its cached status here then the cached in-registers
+- * state pending on its former CPU could be restored, corrupting
+- * the modifications.
 - */
--void fpu__prepare_read(struct fpu *fpu)
+-void fpu__prepare_write(struct fpu *fpu)
 -{
--	if (fpu == &current->thread.fpu)
--		fpu__save(fpu);
+-	/*
+-	 * Only stopped child tasks can be used to modify the FPU
+-	 * state in the fpstate buffer:
+-	 */
+-	WARN_ON_FPU(fpu == &current->thread.fpu);
+-
+-	/* Invalidate any cached state: */
+-	__fpu_invalidate_fpregs_state(fpu);
 -}
 -
 -/*
-  * This function must be called before we write a task's fpstate.
-  *
-  * Invalidate any cached FPU registers.
+  * Drops current FPU state: deactivates the fpregs and
+  * the fpstate. NOTE: it still leaves previous contents
+  * in the fpregs in the eager-FPU case.
 diff --git a/arch/x86/kernel/fpu/regset.c b/arch/x86/kernel/fpu/regset.c
-index 4b799e4..937adf7 100644
+index 937adf7..ddc290d 100644
 --- a/arch/x86/kernel/fpu/regset.c
 +++ b/arch/x86/kernel/fpu/regset.c
-@@ -28,6 +28,22 @@ int regset_xregset_fpregs_active(struct task_struct *target, const struct user_r
- 		return 0;
+@@ -44,6 +44,25 @@ static void sync_fpstate(struct fpu *fpu)
+ 		fpu__save(fpu);
  }
  
 +/*
-+ * The regset get() functions are invoked from:
++ * Invalidate cached FPU registers before modifying the stopped target
++ * task's fpstate.
 + *
-+ *   - coredump to dump the current task's fpstate. If the current task
-+ *     owns the FPU then the memory state has to be synchronized and the
-+ *     FPU register state preserved. Otherwise fpstate is already in sync.
-+ *
-+ *   - ptrace to dump fpstate of a stopped task, in which case the registers
-+ *     have already been saved to fpstate on context switch.
++ * This forces the target task on resume to restore the FPU registers from
++ * modified fpstate. Otherwise the task might skip the restore and operate
++ * with the cached FPU registers which discards the modifications.
 + */
-+static void sync_fpstate(struct fpu *fpu)
++static void fpu_force_restore(struct fpu *fpu)
 +{
-+	if (fpu == &current->thread.fpu)
-+		fpu__save(fpu);
++	/*
++	 * Only stopped child tasks can be used to modify the FPU
++	 * state in the fpstate buffer:
++	 */
++	WARN_ON_FPU(fpu == &current->thread.fpu);
++
++	__fpu_invalidate_fpregs_state(fpu);
 +}
 +
  int xfpregs_get(struct task_struct *target, const struct user_regset *regset,
  		struct membuf to)
  {
-@@ -36,7 +52,7 @@ int xfpregs_get(struct task_struct *target, const struct user_regset *regset,
- 	if (!cpu_feature_enabled(X86_FEATURE_FXSR))
- 		return -ENODEV;
+@@ -88,7 +107,7 @@ int xfpregs_set(struct task_struct *target, const struct user_regset *regset,
+ 	if (newstate.mxcsr & ~mxcsr_feature_mask)
+ 		return -EINVAL;
  
--	fpu__prepare_read(fpu);
-+	sync_fpstate(fpu);
+-	fpu__prepare_write(fpu);
++	fpu_force_restore(fpu);
  
- 	if (!use_xsave()) {
- 		return membuf_write(&to, &fpu->state.fxsave,
-@@ -96,7 +112,7 @@ int xstateregs_get(struct task_struct *target, const struct user_regset *regset,
- 	if (!cpu_feature_enabled(X86_FEATURE_XSAVE))
- 		return -ENODEV;
+ 	/* Copy the state  */
+ 	memcpy(&fpu->state.fxsave, &newstate, sizeof(newstate));
+@@ -146,7 +165,7 @@ int xstateregs_set(struct task_struct *target, const struct user_regset *regset,
+ 		}
+ 	}
  
--	fpu__prepare_read(fpu);
-+	sync_fpstate(fpu);
+-	fpu__prepare_write(fpu);
++	fpu_force_restore(fpu);
+ 	ret = copy_kernel_to_xstate(&fpu->state.xsave, kbuf ?: tmpbuf);
  
- 	copy_xstate_to_uabi_buf(to, &fpu->state.xsave, XSTATE_COPY_XSAVE);
- 	return 0;
-@@ -287,7 +303,7 @@ int fpregs_get(struct task_struct *target, const struct user_regset *regset,
- 	struct user_i387_ia32_struct env;
- 	struct fxregs_state fxsave, *fx;
+ out:
+@@ -346,7 +365,7 @@ int fpregs_set(struct task_struct *target, const struct user_regset *regset,
+ 	if (ret)
+ 		return ret;
  
--	fpu__prepare_read(fpu);
-+	sync_fpstate(fpu);
+-	fpu__prepare_write(fpu);
++	fpu_force_restore(fpu);
  
- 	if (!cpu_feature_enabled(X86_FEATURE_FPU))
- 		return fpregs_soft_get(target, regset, to);
+ 	if (cpu_feature_enabled(X86_FEATURE_FXSR))
+ 		convert_to_fxsr(&fpu->state.fxsave, &env);
