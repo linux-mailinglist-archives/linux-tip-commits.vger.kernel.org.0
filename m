@@ -2,52 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F8A53B2858
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 24 Jun 2021 09:09:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36B9C3B285B
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 24 Jun 2021 09:09:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231361AbhFXHMG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 24 Jun 2021 03:12:06 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:42588 "EHLO
+        id S231486AbhFXHMH (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 24 Jun 2021 03:12:07 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:42612 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231630AbhFXHMF (ORCPT
+        with ESMTP id S231501AbhFXHMG (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 24 Jun 2021 03:12:05 -0400
-Date:   Thu, 24 Jun 2021 07:09:45 -0000
+        Thu, 24 Jun 2021 03:12:06 -0400
+Date:   Thu, 24 Jun 2021 07:09:46 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1624518586;
+        s=2020; t=1624518587;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=PozzXPEnB2+xIlISFt7QOd4KfJHHRsNORUlbbhRyss8=;
-        b=BBHo8iR62WjNkM1p6OWxEoWnw5Ss5eTGHSbnXtcbevDUTgTviP/MduBZHB6pCUYlxFVOYi
-        vxXdVICFzruNTKx709eombKy81/cw1D8bL/xJzmtZhggC2hnl9whP8spokK6FkFbk3b/i3
-        LY3WKqKHNUJ01b4+CSbLKWb+m8eZyo2n9KvZsnd/4Eh+dn9UmKObJzLup4biKC+b1h/+hq
-        kbdUQyFyAVlD99G5Zx/j7gCwEsEmfNTudLGUhmuGMlXrmWTki0ALePcI/ByMHyZb5uCZ5f
-        VmKGC+jzAmMH+smcSX236beS1zGr0cNt2fziag4Ge77pRxzczeV+cq3ubBKVbw==
+        bh=nZb8bZcnTLvfByHJSritDmBT54k4IXWQmBfw9c44BjA=;
+        b=xdOQ7qxo97ku2fddubh7a1A7mqpGsEKgwg08BZACPCa3354Fsn+B52Ka9iv79RA5iIhPIO
+        Sjcum0Pp3HgoEhmRxwsvFpJych40gNIlATedUAKcJo/VDtJsIq/Fj8WFGx+XzBEvg8dpOH
+        Q/MIaPaTI8GI3nIRcu8ZvqhxTh/ah9sTru0cc0TXvhHhINnVTBNHt0x2psv7YTrOJfwK7a
+        5GtycJQFCgoH0OEGN31VC6KfR4/cT9vwySJEh9rF9sJ6Q7kjUalY9FNgA9fufn+xfQom7h
+        aYwlgyYon0p3eRWfev5GoVjv/9fDVl3rU/vvBN+3BZYS3SWmW/YJVpaURkelcg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1624518586;
+        s=2020e; t=1624518587;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=PozzXPEnB2+xIlISFt7QOd4KfJHHRsNORUlbbhRyss8=;
-        b=kck29R4yp5F3yhibCDkOmNJ58fK0r10eiMjt25CgbsNQ+vIfjusyjlLSQtMc/P25AstKyP
-        K4/E+I6ds4VzMrBw==
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+        bh=nZb8bZcnTLvfByHJSritDmBT54k4IXWQmBfw9c44BjA=;
+        b=/bvx6h+1d0PdABwBx8SS9FgEYTDYHLZb9YuQQCJyz4xUymQvlpjKi+sS8+0fb2zdPcuI1K
+        4z2KaivtV9IVc+BQ==
+From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf: Fix task context PMU for Hetero
+Subject: [tip: perf/core] perf/x86/intel: Add more events requires FRONTEND
+ MSR on Sapphire Rapids
 Cc:     Kan Liang <kan.liang@linux.intel.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        stable@vger.kernel.org, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <YMsy7BuGT8nBTspT@hirez.programming.kicks-ass.net>
-References: <YMsy7BuGT8nBTspT@hirez.programming.kicks-ass.net>
+In-Reply-To: <1624029174-122219-3-git-send-email-kan.liang@linux.intel.com>
+References: <1624029174-122219-3-git-send-email-kan.liang@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <162451858512.395.11784887696338727719.tip-bot2@tip-bot2>
+Message-ID: <162451858648.395.18261838774067039831.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,55 +60,40 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     012669c740e6e2afa8bdb95394d06676f933dd2d
-Gitweb:        https://git.kernel.org/tip/012669c740e6e2afa8bdb95394d06676f933dd2d
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Tue, 22 Jun 2021 16:21:01 +02:00
+Commit-ID:     d18216fafecf2a3a7c2b97086892269d6ab3cd5e
+Gitweb:        https://git.kernel.org/tip/d18216fafecf2a3a7c2b97086892269d6ab3cd5e
+Author:        Kan Liang <kan.liang@linux.intel.com>
+AuthorDate:    Fri, 18 Jun 2021 08:12:53 -07:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 23 Jun 2021 18:30:56 +02:00
+CommitterDate: Wed, 23 Jun 2021 18:30:55 +02:00
 
-perf: Fix task context PMU for Hetero
+perf/x86/intel: Add more events requires FRONTEND MSR on Sapphire Rapids
 
-On HETEROGENEOUS hardware (ARM big.Little, Intel Alderlake etc.) each
-CPU might have a different hardware PMU. Since each such PMU is
-represented by a different struct pmu, but we only have a single HW
-task context.
+On Sapphire Rapids, there are two more events 0x40ad and 0x04c2 which
+rely on the FRONTEND MSR. If the FRONTEND MSR is not set correctly, the
+count value is not correct.
 
-That means that the task context needs to switch PMU type when it
-switches CPUs.
+Update intel_spr_extra_regs[] to support them.
 
-Not doing this means that ctx->pmu calls (pmu_{dis,en}able(),
-{start,commit,cancel}_txn() etc.) are called against the wrong PMU and
-things will go wobbly.
-
-Fixes: f83d2f91d259 ("perf/x86/intel: Add Alder Lake Hybrid support")
-Reported-by: Kan Liang <kan.liang@linux.intel.com>
+Fixes: 61b985e3e775 ("perf/x86/intel: Add perf core PMU support for Sapphire Rapids")
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: Kan Liang <kan.liang@linux.intel.com>
-Link: https://lkml.kernel.org/r/YMsy7BuGT8nBTspT@hirez.programming.kicks-ass.net
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/1624029174-122219-3-git-send-email-kan.liang@linux.intel.com
 ---
- kernel/events/core.c |  9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ arch/x86/events/intel/core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 6c964de..0e125ae 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -3822,9 +3822,16 @@ static void perf_event_context_sched_in(struct perf_event_context *ctx,
- 					struct task_struct *task)
- {
- 	struct perf_cpu_context *cpuctx;
--	struct pmu *pmu = ctx->pmu;
-+	struct pmu *pmu;
+diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
+index d39991b..e442b55 100644
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -280,6 +280,8 @@ static struct extra_reg intel_spr_extra_regs[] __read_mostly = {
+ 	INTEL_UEVENT_EXTRA_REG(0x012b, MSR_OFFCORE_RSP_1, 0x3fffffffffull, RSP_1),
+ 	INTEL_UEVENT_PEBS_LDLAT_EXTRA_REG(0x01cd),
+ 	INTEL_UEVENT_EXTRA_REG(0x01c6, MSR_PEBS_FRONTEND, 0x7fff17, FE),
++	INTEL_UEVENT_EXTRA_REG(0x40ad, MSR_PEBS_FRONTEND, 0x7, FE),
++	INTEL_UEVENT_EXTRA_REG(0x04c2, MSR_PEBS_FRONTEND, 0x8, FE),
+ 	EVENT_EXTRA_END
+ };
  
- 	cpuctx = __get_cpu_context(ctx);
-+
-+	/*
-+	 * HACK: for HETEROGENEOUS the task context might have switched to a
-+	 * different PMU, force (re)set the context,
-+	 */
-+	pmu = ctx->pmu = cpuctx->ctx.pmu;
-+
- 	if (cpuctx->task_ctx == ctx) {
- 		if (cpuctx->sched_cb_usage)
- 			__perf_pmu_sched_task(cpuctx, true);
