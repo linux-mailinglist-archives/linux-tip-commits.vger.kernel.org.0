@@ -2,55 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A0BB3B2983
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 24 Jun 2021 09:39:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F1D63B2A4A
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 24 Jun 2021 10:26:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231709AbhFXHlw (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 24 Jun 2021 03:41:52 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:42810 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231617AbhFXHlr (ORCPT
+        id S231848AbhFXI2j (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 24 Jun 2021 04:28:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46042 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231713AbhFXI2h (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 24 Jun 2021 03:41:47 -0400
-Date:   Thu, 24 Jun 2021 07:39:27 -0000
+        Thu, 24 Jun 2021 04:28:37 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D23CC061574;
+        Thu, 24 Jun 2021 01:26:18 -0700 (PDT)
+Date:   Thu, 24 Jun 2021 08:26:14 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1624520367;
+        s=2020; t=1624523175;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=PmI9cZUSq26TXS8bMvhG03sj+FxJOsudhJo+QaObgq4=;
-        b=c8irdFzja4tS+30tlntcZGQe1snFRK52IRPOxilli4j9Ox8pMofgdY7pj6JCvwsXp/nUMJ
-        dTkSlLjcv+tU8VlBxPwdFL9hPdQ2NexLo7Lfzkg1mZr9GOh8W+ZmDbIboWuzq47TQ62SWk
-        zYEyO8dHhI8I/GCqHSLI0tFpSouhNmGej82G+qmX4nYldo0GEFDNZRRvWGp9djUtHYekOT
-        CiCio3ijfbMXgqJNO9xKpmbpMWUT/6G6vDqWrwsuZdX/w8lc7rUzSGkN2M0utYdtJpgLeN
-        5NzmEAb+7MlmgGvi6CjWNH5eNIyyd6YUC1TV4nMgOw9K+ddOBqfYxdAgpfDqXg==
+        bh=nMPQiwJHr7h6YPCaRxs8HKph9mp0KW/330q30rR8Upc=;
+        b=M2AnQ7Xyl76ENc4tNHn1p3FPqElzK8lWztWoqdEkJOxGsBfLTWZm11s6JUYIcfztc5O74q
+        XyMjS56k5c18wGzXZDZHtoX0RHng8o1bGPTxYp9djp4wQZ1cnFONFRtfSdO6JZOsjVn2BD
+        UqO1kzqG3OzHxryH81Sv8e+ybKSUsBb0mu/+2cLzFd6bXTa+Cbn0njye+ihESq0meSzTDX
+        12eK/PYaecbl7Q8/TqiNAvZJH878YXlKhK/rj8EBf1/PWKrlNcpuYgKZnBXBNskgUUz6IZ
+        KqxJqC5DycFNQOrh2KOTBfLW3b8iZmcNt3HG7L5J0xVdS6gN08b3vNPA6gMA5A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1624520367;
+        s=2020e; t=1624523175;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=PmI9cZUSq26TXS8bMvhG03sj+FxJOsudhJo+QaObgq4=;
-        b=gJrX7EIV5n553HGL+IXdBx6kd7b3/ZL9hmyREq4ajSLw0krN2XrV/J2yVBYZMVSDFHhb64
-        fSpOI9xhvmCyvdCQ==
-From:   "tip-bot2 for Huaixin Chang" <tip-bot2@linutronix.de>
+        bh=nMPQiwJHr7h6YPCaRxs8HKph9mp0KW/330q30rR8Upc=;
+        b=z+2PQpru56FbUr5MsbqbJUcCSE6xPUG65a40vaARPy9ZIvVzu383aLGshv1dYJjzQ94Pmq
+        CFEuui/QvqPDzSCw==
+From:   "tip-bot2 for Fabio M. De Francesco" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/fair: Introduce the burstable CFS controller
-Cc:     Shanpei Chen <shanpeic@linux.alibaba.com>,
-        Tianchen Ding <dtcccc@linux.alibaba.com>,
-        Huaixin Chang <changhuaixin@linux.alibaba.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Ben Segall <bsegall@google.com>, Tejun Heo <tj@kernel.org>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20210621092800.23714-2-changhuaixin@linux.alibaba.com>
-References: <20210621092800.23714-2-changhuaixin@linux.alibaba.com>
+Subject: [tip: x86/cache] x86/resctrl: Fix kernel-doc in internal.h
+Cc:     "Fabio M. De Francesco" <fmdefrancesco@gmail.com>,
+        Borislav Petkov <bp@suse.de>,
+        Reinette Chatre <reinette.chatre@intel.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20210618223206.29539-1-fmdefrancesco@gmail.com>
+References: <20210618223206.29539-1-fmdefrancesco@gmail.com>
 MIME-Version: 1.0
-Message-ID: <162452036714.395.9249272896491500398.tip-bot2@tip-bot2>
+Message-ID: <162452317423.395.6795057128472550443.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,330 +60,100 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the x86/cache branch of tip:
 
-Commit-ID:     f4183717b370ad28dd0c0d74760142b20e6e7931
-Gitweb:        https://git.kernel.org/tip/f4183717b370ad28dd0c0d74760142b20e6e7931
-Author:        Huaixin Chang <changhuaixin@linux.alibaba.com>
-AuthorDate:    Mon, 21 Jun 2021 17:27:58 +08:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Thu, 24 Jun 2021 09:07:50 +02:00
+Commit-ID:     fd2afa70eff057fab57c9e06708b68677b261a0c
+Gitweb:        https://git.kernel.org/tip/fd2afa70eff057fab57c9e06708b68677b261a0c
+Author:        Fabio M. De Francesco <fmdefrancesco@gmail.com>
+AuthorDate:    Sat, 19 Jun 2021 00:32:06 +02:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Thu, 24 Jun 2021 10:23:57 +02:00
 
-sched/fair: Introduce the burstable CFS controller
+x86/resctrl: Fix kernel-doc in internal.h
 
-The CFS bandwidth controller limits CPU requests of a task group to
-quota during each period. However, parallel workloads might be bursty
-so that they get throttled even when their average utilization is under
-quota. And they are latency sensitive at the same time so that
-throttling them is undesired.
+Add description of undocumented parameters. Issues detected by
+scripts/kernel-doc.
 
-We borrow time now against our future underrun, at the cost of increased
-interference against the other system users. All nicely bounded.
-
-Traditional (UP-EDF) bandwidth control is something like:
-
-  (U = \Sum u_i) <= 1
-
-This guaranteeds both that every deadline is met and that the system is
-stable. After all, if U were > 1, then for every second of walltime,
-we'd have to run more than a second of program time, and obviously miss
-our deadline, but the next deadline will be further out still, there is
-never time to catch up, unbounded fail.
-
-This work observes that a workload doesn't always executes the full
-quota; this enables one to describe u_i as a statistical distribution.
-
-For example, have u_i = {x,e}_i, where x is the p(95) and x+e p(100)
-(the traditional WCET). This effectively allows u to be smaller,
-increasing the efficiency (we can pack more tasks in the system), but at
-the cost of missing deadlines when all the odds line up. However, it
-does maintain stability, since every overrun must be paired with an
-underrun as long as our x is above the average.
-
-That is, suppose we have 2 tasks, both specify a p(95) value, then we
-have a p(95)*p(95) = 90.25% chance both tasks are within their quota and
-everything is good. At the same time we have a p(5)p(5) = 0.25% chance
-both tasks will exceed their quota at the same time (guaranteed deadline
-fail). Somewhere in between there's a threshold where one exceeds and
-the other doesn't underrun enough to compensate; this depends on the
-specific CDFs.
-
-At the same time, we can say that the worst case deadline miss, will be
-\Sum e_i; that is, there is a bounded tardiness (under the assumption
-that x+e is indeed WCET).
-
-The benefit of burst is seen when testing with schbench. Default value of
-kernel.sched_cfs_bandwidth_slice_us(5ms) and CONFIG_HZ(1000) is used.
-
-	mkdir /sys/fs/cgroup/cpu/test
-	echo $$ > /sys/fs/cgroup/cpu/test/cgroup.procs
-	echo 100000 > /sys/fs/cgroup/cpu/test/cpu.cfs_quota_us
-	echo 100000 > /sys/fs/cgroup/cpu/test/cpu.cfs_burst_us
-
-	./schbench -m 1 -t 3 -r 20 -c 80000 -R 10
-
-The average CPU usage is at 80%. I run this for 10 times, and got long tail
-latency for 6 times and got throttled for 8 times.
-
-Tail latencies are shown below, and it wasn't the worst case.
-
-	Latency percentiles (usec)
-		50.0000th: 19872
-		75.0000th: 21344
-		90.0000th: 22176
-		95.0000th: 22496
-		*99.0000th: 22752
-		99.5000th: 22752
-		99.9000th: 22752
-		min=0, max=22727
-	rps: 9.90 p95 (usec) 22496 p99 (usec) 22752 p95/cputime 28.12% p99/cputime 28.44%
-
-The interferenece when using burst is valued by the possibilities for
-missing the deadline and the average WCET. Test results showed that when
-there many cgroups or CPU is under utilized, the interference is
-limited. More details are shown in:
-https://lore.kernel.org/lkml/5371BD36-55AE-4F71-B9D7-B86DC32E3D2B@linux.alibaba.com/
-
-Co-developed-by: Shanpei Chen <shanpeic@linux.alibaba.com>
-Signed-off-by: Shanpei Chen <shanpeic@linux.alibaba.com>
-Co-developed-by: Tianchen Ding <dtcccc@linux.alibaba.com>
-Signed-off-by: Tianchen Ding <dtcccc@linux.alibaba.com>
-Signed-off-by: Huaixin Chang <changhuaixin@linux.alibaba.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Ben Segall <bsegall@google.com>
-Acked-by: Tejun Heo <tj@kernel.org>
-Link: https://lore.kernel.org/r/20210621092800.23714-2-changhuaixin@linux.alibaba.com
+Signed-off-by: Fabio M. De Francesco <fmdefrancesco@gmail.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
+Link: https://lkml.kernel.org/r/20210618223206.29539-1-fmdefrancesco@gmail.com
 ---
- kernel/sched/core.c  | 68 +++++++++++++++++++++++++++++++++++++++----
- kernel/sched/fair.c  | 14 ++++++---
- kernel/sched/sched.h |  1 +-
- 3 files changed, 73 insertions(+), 10 deletions(-)
+ arch/x86/kernel/cpu/resctrl/internal.h | 21 ++++++++++++++-------
+ 1 file changed, 14 insertions(+), 7 deletions(-)
 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index fc231d6..2883c22 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -9780,7 +9780,8 @@ static const u64 max_cfs_runtime = MAX_BW * NSEC_PER_USEC;
- 
- static int __cfs_schedulable(struct task_group *tg, u64 period, u64 runtime);
- 
--static int tg_set_cfs_bandwidth(struct task_group *tg, u64 period, u64 quota)
-+static int tg_set_cfs_bandwidth(struct task_group *tg, u64 period, u64 quota,
-+				u64 burst)
- {
- 	int i, ret = 0, runtime_enabled, runtime_was_enabled;
- 	struct cfs_bandwidth *cfs_b = &tg->cfs_bandwidth;
-@@ -9810,6 +9811,10 @@ static int tg_set_cfs_bandwidth(struct task_group *tg, u64 period, u64 quota)
- 	if (quota != RUNTIME_INF && quota > max_cfs_runtime)
- 		return -EINVAL;
- 
-+	if (quota != RUNTIME_INF && (burst > quota ||
-+				     burst + quota > max_cfs_runtime))
-+		return -EINVAL;
-+
- 	/*
- 	 * Prevent race between setting of cfs_rq->runtime_enabled and
- 	 * unthrottle_offline_cfs_rqs().
-@@ -9831,6 +9836,7 @@ static int tg_set_cfs_bandwidth(struct task_group *tg, u64 period, u64 quota)
- 	raw_spin_lock_irq(&cfs_b->lock);
- 	cfs_b->period = ns_to_ktime(period);
- 	cfs_b->quota = quota;
-+	cfs_b->burst = burst;
- 
- 	__refill_cfs_bandwidth_runtime(cfs_b);
- 
-@@ -9864,9 +9870,10 @@ out_unlock:
- 
- static int tg_set_cfs_quota(struct task_group *tg, long cfs_quota_us)
- {
--	u64 quota, period;
-+	u64 quota, period, burst;
- 
- 	period = ktime_to_ns(tg->cfs_bandwidth.period);
-+	burst = tg->cfs_bandwidth.burst;
- 	if (cfs_quota_us < 0)
- 		quota = RUNTIME_INF;
- 	else if ((u64)cfs_quota_us <= U64_MAX / NSEC_PER_USEC)
-@@ -9874,7 +9881,7 @@ static int tg_set_cfs_quota(struct task_group *tg, long cfs_quota_us)
- 	else
- 		return -EINVAL;
- 
--	return tg_set_cfs_bandwidth(tg, period, quota);
-+	return tg_set_cfs_bandwidth(tg, period, quota, burst);
- }
- 
- static long tg_get_cfs_quota(struct task_group *tg)
-@@ -9892,15 +9899,16 @@ static long tg_get_cfs_quota(struct task_group *tg)
- 
- static int tg_set_cfs_period(struct task_group *tg, long cfs_period_us)
- {
--	u64 quota, period;
-+	u64 quota, period, burst;
- 
- 	if ((u64)cfs_period_us > U64_MAX / NSEC_PER_USEC)
- 		return -EINVAL;
- 
- 	period = (u64)cfs_period_us * NSEC_PER_USEC;
- 	quota = tg->cfs_bandwidth.quota;
-+	burst = tg->cfs_bandwidth.burst;
- 
--	return tg_set_cfs_bandwidth(tg, period, quota);
-+	return tg_set_cfs_bandwidth(tg, period, quota, burst);
- }
- 
- static long tg_get_cfs_period(struct task_group *tg)
-@@ -9913,6 +9921,30 @@ static long tg_get_cfs_period(struct task_group *tg)
- 	return cfs_period_us;
- }
- 
-+static int tg_set_cfs_burst(struct task_group *tg, long cfs_burst_us)
-+{
-+	u64 quota, period, burst;
-+
-+	if ((u64)cfs_burst_us > U64_MAX / NSEC_PER_USEC)
-+		return -EINVAL;
-+
-+	burst = (u64)cfs_burst_us * NSEC_PER_USEC;
-+	period = ktime_to_ns(tg->cfs_bandwidth.period);
-+	quota = tg->cfs_bandwidth.quota;
-+
-+	return tg_set_cfs_bandwidth(tg, period, quota, burst);
-+}
-+
-+static long tg_get_cfs_burst(struct task_group *tg)
-+{
-+	u64 burst_us;
-+
-+	burst_us = tg->cfs_bandwidth.burst;
-+	do_div(burst_us, NSEC_PER_USEC);
-+
-+	return burst_us;
-+}
-+
- static s64 cpu_cfs_quota_read_s64(struct cgroup_subsys_state *css,
- 				  struct cftype *cft)
- {
-@@ -9937,6 +9969,18 @@ static int cpu_cfs_period_write_u64(struct cgroup_subsys_state *css,
- 	return tg_set_cfs_period(css_tg(css), cfs_period_us);
- }
- 
-+static u64 cpu_cfs_burst_read_u64(struct cgroup_subsys_state *css,
-+				  struct cftype *cft)
-+{
-+	return tg_get_cfs_burst(css_tg(css));
-+}
-+
-+static int cpu_cfs_burst_write_u64(struct cgroup_subsys_state *css,
-+				   struct cftype *cftype, u64 cfs_burst_us)
-+{
-+	return tg_set_cfs_burst(css_tg(css), cfs_burst_us);
-+}
-+
- struct cfs_schedulable_data {
- 	struct task_group *tg;
- 	u64 period, quota;
-@@ -10090,6 +10134,11 @@ static struct cftype cpu_legacy_files[] = {
- 		.write_u64 = cpu_cfs_period_write_u64,
- 	},
- 	{
-+		.name = "cfs_burst_us",
-+		.read_u64 = cpu_cfs_burst_read_u64,
-+		.write_u64 = cpu_cfs_burst_write_u64,
-+	},
-+	{
- 		.name = "stat",
- 		.seq_show = cpu_cfs_stat_show,
- 	},
-@@ -10254,12 +10303,13 @@ static ssize_t cpu_max_write(struct kernfs_open_file *of,
- {
- 	struct task_group *tg = css_tg(of_css(of));
- 	u64 period = tg_get_cfs_period(tg);
-+	u64 burst = tg_get_cfs_burst(tg);
- 	u64 quota;
- 	int ret;
- 
- 	ret = cpu_period_quota_parse(buf, &period, &quota);
- 	if (!ret)
--		ret = tg_set_cfs_bandwidth(tg, period, quota);
-+		ret = tg_set_cfs_bandwidth(tg, period, quota, burst);
- 	return ret ?: nbytes;
- }
- #endif
-@@ -10286,6 +10336,12 @@ static struct cftype cpu_files[] = {
- 		.seq_show = cpu_max_show,
- 		.write = cpu_max_write,
- 	},
-+	{
-+		.name = "max.burst",
-+		.flags = CFTYPE_NOT_ON_ROOT,
-+		.read_u64 = cpu_cfs_burst_read_u64,
-+		.write_u64 = cpu_cfs_burst_write_u64,
-+	},
- #endif
- #ifdef CONFIG_UCLAMP_TASK_GROUP
- 	{
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 7b8990f..4a3e61a 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -4626,8 +4626,11 @@ static inline u64 sched_cfs_bandwidth_slice(void)
+diff --git a/arch/x86/kernel/cpu/resctrl/internal.h b/arch/x86/kernel/cpu/resctrl/internal.h
+index c4d320d..6a5f60a 100644
+--- a/arch/x86/kernel/cpu/resctrl/internal.h
++++ b/arch/x86/kernel/cpu/resctrl/internal.h
+@@ -70,6 +70,7 @@ DECLARE_STATIC_KEY_FALSE(rdt_mon_enable_key);
+  * struct mon_evt - Entry in the event list of a resource
+  * @evtid:		event id
+  * @name:		name of the event
++ * @list:		entry in &rdt_resource->evt_list
   */
- void __refill_cfs_bandwidth_runtime(struct cfs_bandwidth *cfs_b)
- {
--	if (cfs_b->quota != RUNTIME_INF)
--		cfs_b->runtime = cfs_b->quota;
-+	if (unlikely(cfs_b->quota == RUNTIME_INF))
-+		return;
-+
-+	cfs_b->runtime += cfs_b->quota;
-+	cfs_b->runtime = min(cfs_b->runtime, cfs_b->quota + cfs_b->burst);
- }
+ struct mon_evt {
+ 	u32			evtid;
+@@ -78,10 +79,13 @@ struct mon_evt {
+ };
  
- static inline struct cfs_bandwidth *tg_cfs_bandwidth(struct task_group *tg)
-@@ -4988,6 +4991,9 @@ static int do_sched_cfs_period_timer(struct cfs_bandwidth *cfs_b, int overrun, u
- 	throttled = !list_empty(&cfs_b->throttled_cfs_rq);
- 	cfs_b->nr_periods += overrun;
+ /**
+- * struct mon_data_bits - Monitoring details for each event file
+- * @rid:               Resource id associated with the event file.
++ * union mon_data_bits - Monitoring details for each event file
++ * @priv:              Used to store monitoring event data in @u
++ *                     as kernfs private data
++ * @rid:               Resource id associated with the event file
+  * @evtid:             Event id associated with the event file
+  * @domid:             The domain to which the event file belongs
++ * @u:                 Name of the bit fields struct
+  */
+ union mon_data_bits {
+ 	void *priv;
+@@ -119,6 +123,7 @@ enum rdt_group_type {
+  * @RDT_MODE_PSEUDO_LOCKSETUP: Resource group will be used for Pseudo-Locking
+  * @RDT_MODE_PSEUDO_LOCKED: No sharing of this resource group's allocations
+  *                          allowed AND the allocations are Cache Pseudo-Locked
++ * @RDT_NUM_MODES: Total number of modes
+  *
+  * The mode of a resource group enables control over the allowed overlap
+  * between allocations associated with different resource groups (classes
+@@ -142,7 +147,7 @@ enum rdtgrp_mode {
  
-+	/* Refill extra burst quota even if cfs_b->idle */
-+	__refill_cfs_bandwidth_runtime(cfs_b);
-+
- 	/*
- 	 * idle depends on !throttled (for the case of a large deficit), and if
- 	 * we're going inactive then everything else can be deferred
-@@ -4995,8 +5001,6 @@ static int do_sched_cfs_period_timer(struct cfs_bandwidth *cfs_b, int overrun, u
- 	if (cfs_b->idle && !throttled)
- 		goto out_deactivate;
- 
--	__refill_cfs_bandwidth_runtime(cfs_b);
--
- 	if (!throttled) {
- 		/* mark as potentially idle for the upcoming period */
- 		cfs_b->idle = 1;
-@@ -5246,6 +5250,7 @@ static enum hrtimer_restart sched_cfs_period_timer(struct hrtimer *timer)
- 			if (new < max_cfs_quota_period) {
- 				cfs_b->period = ns_to_ktime(new);
- 				cfs_b->quota *= 2;
-+				cfs_b->burst *= 2;
- 
- 				pr_warn_ratelimited(
- 	"cfs_period_timer[cpu%d]: period too short, scaling up (new cfs_period_us = %lld, cfs_quota_us = %lld)\n",
-@@ -5277,6 +5282,7 @@ void init_cfs_bandwidth(struct cfs_bandwidth *cfs_b)
- 	cfs_b->runtime = 0;
- 	cfs_b->quota = RUNTIME_INF;
- 	cfs_b->period = ns_to_ktime(default_cfs_period());
-+	cfs_b->burst = 0;
- 
- 	INIT_LIST_HEAD(&cfs_b->throttled_cfs_rq);
- 	hrtimer_init(&cfs_b->period_timer, CLOCK_MONOTONIC, HRTIMER_MODE_ABS_PINNED);
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index 01e48f6..c80d42e 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -366,6 +366,7 @@ struct cfs_bandwidth {
- 	ktime_t			period;
- 	u64			quota;
- 	u64			runtime;
-+	u64			burst;
- 	s64			hierarchical_quota;
- 
- 	u8			idle;
+ /**
+  * struct mongroup - store mon group's data in resctrl fs.
+- * @mon_data_kn		kernlfs node for the mon_data directory
++ * @mon_data_kn:		kernfs node for the mon_data directory
+  * @parent:			parent rdtgrp
+  * @crdtgrp_list:		child rdtgroup node list
+  * @rmid:			rmid for this rdtgroup
+@@ -282,11 +287,11 @@ struct rftype {
+ /**
+  * struct mbm_state - status for each MBM counter in each domain
+  * @chunks:	Total data moved (multiply by rdt_group.mon_scale to get bytes)
+- * @prev_msr	Value of IA32_QM_CTR for this RMID last time we read it
++ * @prev_msr:	Value of IA32_QM_CTR for this RMID last time we read it
+  * @prev_bw_msr:Value of previous IA32_QM_CTR for bandwidth counting
+- * @prev_bw	The most recent bandwidth in MBps
+- * @delta_bw	Difference between the current and previous bandwidth
+- * @delta_comp	Indicates whether to compute the delta_bw
++ * @prev_bw:	The most recent bandwidth in MBps
++ * @delta_bw:	Difference between the current and previous bandwidth
++ * @delta_comp:	Indicates whether to compute the delta_bw
+  */
+ struct mbm_state {
+ 	u64	chunks;
+@@ -456,11 +461,13 @@ struct rdt_parse_data {
+  * @data_width:		Character width of data when displaying
+  * @domains:		All domains for this resource
+  * @cache:		Cache allocation related data
++ * @membw:		If the component has bandwidth controls, their properties.
+  * @format_str:		Per resource format string to show domain value
+  * @parse_ctrlval:	Per resource function pointer to parse control values
+  * @evt_list:		List of monitoring events
+  * @num_rmid:		Number of RMIDs available
+  * @mon_scale:		cqm counter * mon_scale = occupancy in bytes
++ * @mbm_width:		Monitor width, to detect and correct for overflow.
+  * @fflags:		flags to choose base and info files
+  */
+ struct rdt_resource {
