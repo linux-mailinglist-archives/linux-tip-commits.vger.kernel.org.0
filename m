@@ -2,54 +2,49 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 34EE03B32C1
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 24 Jun 2021 17:41:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A2F483B5021
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 26 Jun 2021 22:49:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231708AbhFXPnY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 24 Jun 2021 11:43:24 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:45664 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230008AbhFXPnX (ORCPT
+        id S230151AbhFZUwS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 26 Jun 2021 16:52:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58788 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230136AbhFZUwS (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 24 Jun 2021 11:43:23 -0400
-Date:   Thu, 24 Jun 2021 15:41:02 -0000
+        Sat, 26 Jun 2021 16:52:18 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55E91C061574;
+        Sat, 26 Jun 2021 13:49:55 -0700 (PDT)
+Date:   Sat, 26 Jun 2021 20:49:50 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1624549263;
+        s=2020; t=1624740591;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=NzA/hd3X5EAN6+Q/fB2qSxvWVQFzwGmUDPOJni4vE38=;
-        b=q83DmRDKvmqXoRm2Za8PRgMlAOTHm8F8IvKTwv042D6tRw5UavR1wyqrHQi6FzpeB9yQIV
-        GJlWmdYyU6orcyQMiXos5BJB5u8iTmmP+2r1GxJLN1AqnYnCd0SYqFPcdCM31ytx4j4PXq
-        AyMIdSkjlCFNj0bSe5Wy/daU8VYE2NGS7FP86MDqXPyVnbQOq7pT5XtMJfDcolz9V3pTkF
-        gKTVPDphOatm6Gxv0fYdb6cM0uvCE+iuauPCSSLE/nZhV8HSWHgO0/Xx4qTlehQlShJUO0
-        NWHgzNOk/t3hZCvxMcUyQgXXk+YwXCJDtARx5/f4m64L+U7oH1Axr7zIrwPshg==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=fkNDRwD+9YQ86N3dSd8BIzKrxCgJt2LslfoixRBHjKI=;
+        b=hpnLMS+f0fyngm+lbSo1sX1rsXyX+txZtHWR6NXH7Cn6ioHQkmAFDhrQjjxNwiZxq9WgWD
+        FoZgpI8t4c5uaoUqsg64DDjh3tGNn6CIvOvmqeaZxlU/UlI5UWF0qRPhf2N9XMMmnrUZCW
+        f+ELlLebLRF+rnwXUVWrth72yxDrUueckD14O8su/pY14ogMnf7dSI10luSPhqsdMwxn4q
+        ptX15KWsmR3emigkjX0rSIFr3tTJSMaz/guh6Db1qv2F5iyCMiv7e959anH/Qi18IAC9od
+        5TRtzSeallv+1akDLaWT2/uhO/sxRmZFN1snXIxCxpsMWEpLLj831OsjCyD+lQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1624549263;
+        s=2020e; t=1624740591;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=NzA/hd3X5EAN6+Q/fB2qSxvWVQFzwGmUDPOJni4vE38=;
-        b=pF5QzB61S0ImOU/ErduuinkoY/gCc+VePXFj5LdExwmGKpjr2M16/EtMvSggLb5QkTZTKo
-        q5y2ZGvX43l0q9BA==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=fkNDRwD+9YQ86N3dSd8BIzKrxCgJt2LslfoixRBHjKI=;
+        b=y29ZGSREQAvIS7muFkE2EK5GPh3cLnokJq/K4zp14VD8EWQm5cwU54ee7MrziuLwD97Pi0
+        k4U4lPLu7ZylzrBQ==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/fpu] x86/fpu/xstate: Clear xstate header in
- copy_xstate_to_uabi_buf() again
-Cc:     kernel test robot <oliver.sang@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Borislav Petkov <bp@suse.de>, x86@kernel.org,
+Subject: [tip: timers/core] time/kunit: Add missing MODULE_LICENSE()
+Cc:     Ingo Molnar <mingo@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <875yy3wb8h.ffs@nanos.tec.linutronix.de>
-References: <875yy3wb8h.ffs@nanos.tec.linutronix.de>
 MIME-Version: 1.0
-Message-ID: <162454926209.395.6930680604405562644.tip-bot2@tip-bot2>
+Message-ID: <162474059066.395.17544610641097100087.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,42 +53,29 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/fpu branch of tip:
+The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     93c2cdc975aab53c222472c5b96c2d41dbeb350c
-Gitweb:        https://git.kernel.org/tip/93c2cdc975aab53c222472c5b96c2d41dbeb350c
+Commit-ID:     34c7342ac1b4e496315fb615d2a1309df8400403
+Gitweb:        https://git.kernel.org/tip/34c7342ac1b4e496315fb615d2a1309df8400403
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Thu, 24 Jun 2021 17:09:18 +02:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Thu, 24 Jun 2021 17:19:51 +02:00
+AuthorDate:    Sat, 26 Jun 2021 22:44:11 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Sat, 26 Jun 2021 22:47:32 +02:00
 
-x86/fpu/xstate: Clear xstate header in copy_xstate_to_uabi_buf() again
+time/kunit: Add missing MODULE_LICENSE()
 
-The change which made copy_xstate_to_uabi_buf() usable for
-[x]fpregs_get() removed the zeroing of the header which means the
-header, which is copied to user space later, contains except for the
-xfeatures member, random stack content.
-
-Add the memset() back to zero it before usage.
-
-Fixes: eb6f51723f03 ("x86/fpu: Make copy_xstate_to_kernel() usable for [x]fpregs_get()")
-Reported-by: kernel test robot <oliver.sang@intel.com>
+Reported-by: Ingo Molnar <mingo@kernel.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/875yy3wb8h.ffs@nanos.tec.linutronix.de
 ---
- arch/x86/kernel/fpu/xstate.c | 1 +
+ kernel/time/time_test.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/kernel/fpu/xstate.c b/arch/x86/kernel/fpu/xstate.c
-index 21a10a6..c8def1b 100644
---- a/arch/x86/kernel/fpu/xstate.c
-+++ b/arch/x86/kernel/fpu/xstate.c
-@@ -982,6 +982,7 @@ void copy_xstate_to_uabi_buf(struct membuf to, struct task_struct *tsk,
- 	unsigned int zerofrom;
- 	int i;
+diff --git a/kernel/time/time_test.c b/kernel/time/time_test.c
+index 341ebfa..a064a7c 100644
+--- a/kernel/time/time_test.c
++++ b/kernel/time/time_test.c
+@@ -96,3 +96,4 @@ static struct kunit_suite time_test_suite = {
+ };
  
-+	memset(&header, 0, sizeof(header));
- 	header.xfeatures = xsave->header.xfeatures;
- 
- 	/* Mask out the feature bits depending on copy mode */
+ kunit_test_suite(time_test_suite);
++MODULE_LICENSE(GPL);
