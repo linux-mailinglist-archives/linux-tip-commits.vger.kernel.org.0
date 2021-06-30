@@ -2,90 +2,88 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 183403B8445
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 30 Jun 2021 15:51:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D254B3B8442
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 30 Jun 2021 15:51:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235082AbhF3NyA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 30 Jun 2021 09:54:00 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:33086 "EHLO
+        id S236515AbhF3Nx5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 30 Jun 2021 09:53:57 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:33060 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235354AbhF3NwJ (ORCPT
+        with ESMTP id S236292AbhF3NwE (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 30 Jun 2021 09:52:09 -0400
+        Wed, 30 Jun 2021 09:52:04 -0400
 Date:   Wed, 30 Jun 2021 13:48:21 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1625060902;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=OVYF6rcz5wlCrbLMYN3cPQM2s9aUhTFjgJ+LqNefDN8=;
-        b=kxf5/g3zMKbgy5olwZz7ZFt6GUKHjNF1Z1oL4wv6PSkFDq2oIACs5p8955tk4F9kbBW8p5
-        2HD/zF+aiGBAHVaKuxqbhFnF7Mwh08lsZf2CGbesXGDTmDVhAdeqgOcLy8OorNTs+7kiLo
-        rVjDmmVVi7JLDAmiyr5979FMoIkUEpB0bmLJBtd9+0PQMKh3H4E7myU8KV98vFJwNhY2Ex
-        U2vkEt7+mKpAbrLbLV+paOJj2EILCgRkA5IJk8wcqM7QBQ+QpFC6fMI6ddb9kEO9gOhMOq
-        ypEof0Ws2ADI3/M1URG32t8R3/yXhOaoNzCKE2XfO76a/UUJFWhB1jX/7ndcEw==
+        bh=ShDh6ieyzUFBqSQ8wetZp4jRCJccY7ABYkmLjDjbaOM=;
+        b=ItdItQYBs9D8UKHer9IwmuVfPPBCyyZh9q2VupK25zOnLc8jInfitQRSGKf++VDpW1TWUz
+        3p6h/4xSM8urGkyTdTWsp/nKCQi1mt6PFh5HiT26LWDTaYDnjYWDDQzr7z+SINOjrwj2vh
+        nowo5IqftEmD99elS+cNtzGgDr5N9sr8IhHBmLSpZjLaLZx3RHV0kByNuy8i5yLujzV13I
+        wppIxCPNPMZ2RmNXPXwx4WhdNi3DpX0rdmFWjnjlwBsFCBCgLj8qJDOvcvvahTiRQvcEk2
+        u57DHkoEAxGq3aTg+P3H5XWklN8OtDLbBFpT2LIbRZaLEQlNEohHxij/UbKl/g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1625060902;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=OVYF6rcz5wlCrbLMYN3cPQM2s9aUhTFjgJ+LqNefDN8=;
-        b=k2IGEgEjvZxhTxEjz69+2XwiQPz6SWom6RvT0iorvjSwRyeYk2nDQip6aV4iwK1ufcoZ/3
-        FeXSj6ARR4RHOCAw==
-From:   tip-bot2 for =?utf-8?q?Bj=C3=B6rn_T=C3=B6pel?= 
-        <tip-bot2@linutronix.de>
+        bh=ShDh6ieyzUFBqSQ8wetZp4jRCJccY7ABYkmLjDjbaOM=;
+        b=k1EHP92CohrxlvApzuKhgWrola4CWNM7SWPCF5f3yzQUVEQaJ/wzlrAZdNcST01WPXcAPj
+        ioKaOs473VKDhGBw==
+From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/urgent] tools/memory-model: Fix
- smp_mb__after_spinlock() spelling
-Cc:     bjorn.topel@intel.com, "Paul E. McKenney" <paulmck@kernel.org>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
+Subject: [tip: locking/urgent] kcsan: Add pointer to access-marking.txt to
+ data_race() bullet
+Cc:     Akira Yokosawa <akiyks@gmail.com>,
+        "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <162506090184.395.8692131748805186595.tip-bot2@tip-bot2>
+Message-ID: <162506090131.395.14968745337974466077.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/urgent branch of tip:
 
-Commit-ID:     d25fba0e34742f19b5ca307c60c4d260ca5a754a
-Gitweb:        https://git.kernel.org/tip/d25fba0e34742f19b5ca307c60c4d260ca5=
-a754a
-Author:        Bj=C3=B6rn T=C3=B6pel <bjorn.topel@intel.com>
-AuthorDate:    Fri, 05 Mar 2021 11:28:23 +01:00
+Commit-ID:     ea0484644e5b8486c8335f677fc1e2a4a5d76d3f
+Gitweb:        https://git.kernel.org/tip/ea0484644e5b8486c8335f677fc1e2a4a5d76d3f
+Author:        Paul E. McKenney <paulmck@kernel.org>
+AuthorDate:    Thu, 04 Mar 2021 16:04:09 -08:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Mon, 10 May 2021 16:27:20 -07:00
+CommitterDate: Tue, 18 May 2021 10:58:14 -07:00
 
-tools/memory-model: Fix smp_mb__after_spinlock() spelling
+kcsan: Add pointer to access-marking.txt to data_race() bullet
 
-A misspelled git-grep regex revealed that smp_mb__after_spinlock()
-was misspelled in explanation.txt.  This commit adds the missing "_".
+This commit references tools/memory-model/Documentation/access-marking.txt
+in the bullet introducing data_race().  The access-marking.txt file
+gives advice on when data_race() should and should not be used.
 
-Fixes: 1c27b644c0fd ("Automate memory-barriers.txt; provide Linux-kernel memo=
-ry model")
-[ paulmck: Apply Alan Stern commit-log feedback. ]
-Signed-off-by: Bj=C3=B6rn T=C3=B6pel <bjorn.topel@intel.com>
+Suggested-by: Akira Yokosawa <akiyks@gmail.com>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- tools/memory-model/Documentation/explanation.txt | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Documentation/dev-tools/kcsan.rst | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tools/memory-model/Documentation/explanation.txt b/tools/memory-=
-model/Documentation/explanation.txt
-index f9d610d..5d72f31 100644
---- a/tools/memory-model/Documentation/explanation.txt
-+++ b/tools/memory-model/Documentation/explanation.txt
-@@ -2510,7 +2510,7 @@ they behave as follows:
- 	smp_mb__after_atomic() orders po-earlier atomic updates and
- 	the events preceding them against all po-later events;
-=20
--	smp_mb_after_spinlock() orders po-earlier lock acquisition
-+	smp_mb__after_spinlock() orders po-earlier lock acquisition
- 	events and the events preceding them against all po-later
- 	events.
-=20
+diff --git a/Documentation/dev-tools/kcsan.rst b/Documentation/dev-tools/kcsan.rst
+index d85ce23..8089466 100644
+--- a/Documentation/dev-tools/kcsan.rst
++++ b/Documentation/dev-tools/kcsan.rst
+@@ -106,7 +106,9 @@ the below options are available:
+ 
+ * KCSAN understands the ``data_race(expr)`` annotation, which tells KCSAN that
+   any data races due to accesses in ``expr`` should be ignored and resulting
+-  behaviour when encountering a data race is deemed safe.
++  behaviour when encountering a data race is deemed safe.  Please see
++  ``tools/memory-model/Documentation/access-marking.txt`` in the kernel source
++  tree for more information.
+ 
+ * Disabling data race detection for entire functions can be accomplished by
+   using the function attribute ``__no_kcsan``::
