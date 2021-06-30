@@ -2,52 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CB7C03B83A8
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 30 Jun 2021 15:48:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 97DB63B83AD
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 30 Jun 2021 15:48:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235519AbhF3Nu2 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 30 Jun 2021 09:50:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45610 "EHLO
+        id S235836AbhF3Nub (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 30 Jun 2021 09:50:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45578 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235497AbhF3NuF (ORCPT
+        with ESMTP id S235542AbhF3NuG (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 30 Jun 2021 09:50:05 -0400
+        Wed, 30 Jun 2021 09:50:06 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1B71C06124C;
-        Wed, 30 Jun 2021 06:47:35 -0700 (PDT)
-Date:   Wed, 30 Jun 2021 13:47:33 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA319C0611C1;
+        Wed, 30 Jun 2021 06:47:36 -0700 (PDT)
+Date:   Wed, 30 Jun 2021 13:47:34 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1625060854;
+        s=2020; t=1625060855;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=Fc+IK9aSdZmE3eD+1az5ivtI40sGa+/BzSoAUk3+eBw=;
-        b=jDFIncR93Hu8Q1sayDIof9skh/2ZPR0INZRyhZCEHrC4XVNeZpJjM+cDn6oKnWFFC9J04r
-        OM5yhSDTSwa9oJZDoVtsEsa3/o1Vf5J3ZxvwS+EvX5sxre360lvYP790jjkN2gr/RqfPPQ
-        YsmUdzy6APH/DmTPq9mbvPF65kgR9mdRs6pq8aByB9JYPV3eUfuwasoGh+QDKu36AmwnRa
-        +Ea+SnGsRH7PuIVvdDkX+Vrq5TOuWWLyRfAmonTWQUXN88UKcxUTFrVs2bkqfPW4U67gt/
-        8x/6aEWaMAnyTap0yuXyDcBzxk9Lf4no6VpPh2GLO+Kzxi1SGFEocYscrrfYVw==
+        bh=DU+g2Br/5uhTVGutGXt2LRCn0Fiq5VLVEpXQidC0Hew=;
+        b=Blg27ED2vTo42MgWjS6frUKZpId3mTds0VMwuQAJn3IsVLrQGE07KYUV+kGYIJ0xm4WBne
+        mjtmAEd9hKu+c5byD/I1wB+6CM0eRL+toP/lDRhhdl5GP1Ti1pAxLvhwTViuZI84PvmFX7
+        D7Xp9gsvveap+WCekHdgs9QADBZxLJXCh0ST9uPa8Bbx13xtFHE+EEiGI7Jom/4pze62v9
+        e7zRelBZoiZ/tlhNdK+0vVch3vS989iwv5YoWrYVTcTqUwZpcmoCR1/yVic/RYZZvoGQVx
+        IA9OuZg76CjNcU6cnXuABugFH0Wwau60MbNr8KpjmCnc7Zj4TCvTly6rlalzng==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1625060854;
+        s=2020e; t=1625060855;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=Fc+IK9aSdZmE3eD+1az5ivtI40sGa+/BzSoAUk3+eBw=;
-        b=FtClR+1JA9GKCtEGkuIbH6YJbH9HHJMa/ZHD9scet9Wu5+I1YwQShPzbLxhPYTRDXvEdML
-        hkZtDImBi/QkkeCg==
+        bh=DU+g2Br/5uhTVGutGXt2LRCn0Fiq5VLVEpXQidC0Hew=;
+        b=OH+JKIsbDMU0mm7rEFxOCUkrzRGD1SB/K4QjBz/h4s7p14uXVVtpxnhJ8cxB56QWR4cbfn
+        pVpvLONVgvZDLaCg==
 From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcu: Make RCU priority boosting work on single-CPU
- rcu_node structures
-Cc:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Scott Wood <swood@redhat.com>,
+Subject: [tip: core/rcu] rcu: Reject RCU_LOCKDEP_WARN() false positives
+Cc:     syzbot+dde0cc33951735441301@syzkaller.appspotmail.com,
+        Matthew Wilcox <willy@infradead.org>,
+        syzbot+88e4f02896967fe1ab0d@syzkaller.appspotmail.com,
         Thomas Gleixner <tglx@linutronix.de>,
+        Boqun Feng <boqun.feng@gmail.com>,
         "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <162506085383.395.9442745506355183408.tip-bot2@tip-bot2>
+Message-ID: <162506085491.395.17524374219853971312.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,142 +59,81 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     3ef5a1c3821ab61da3e9fe0f4561be903ae2bc84
-Gitweb:        https://git.kernel.org/tip/3ef5a1c3821ab61da3e9fe0f4561be903ae2bc84
+Commit-ID:     3066820034b5dd4e89bd74a7739c51c2d6f5e554
+Gitweb:        https://git.kernel.org/tip/3066820034b5dd4e89bd74a7739c51c2d6f5e554
 Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Mon, 05 Apr 2021 20:42:09 -07:00
+AuthorDate:    Mon, 05 Apr 2021 09:51:05 -07:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Mon, 10 May 2021 16:22:54 -07:00
 
-rcu: Make RCU priority boosting work on single-CPU rcu_node structures
+rcu: Reject RCU_LOCKDEP_WARN() false positives
 
-When any CPU comes online, it checks to see if an RCU-boost kthread has
-already been created for that CPU's leaf rcu_node structure, and if
-not, it creates one.  Unfortunately, it also verifies that this leaf
-rcu_node structure actually has at least one online CPU, and if not,
-it declines to create the kthread.  Although this behavior makes sense
-during early boot, especially on systems that claim far more CPUs than
-they actually have, it makes no sense for the first CPU to come online
-for a given rcu_node structure.  There is no point in checking because
-we know there is a CPU on its way in.
+If another lockdep report runs concurrently with an RCU lockdep report
+from RCU_LOCKDEP_WARN(), the following sequence of events can occur:
 
-The problem is that timing differences can cause this incoming CPU to not
-yet be reflected in the various bit masks even at rcutree_online_cpu()
-time, and there is no chance at rcutree_prepare_cpu() time.  Plus it
-would be better to create the RCU-boost kthread at rcutree_prepare_cpu()
-to handle the case where the CPU is involved in an RCU priority inversion
-very shortly after it comes online.
+1.	debug_lockdep_rcu_enabled() sees that lockdep is enabled
+	when called from (say) synchronize_rcu().
 
-This commit therefore moves the checking to rcu_prepare_kthreads(), which
-is called only at early boot, when the check is appropriate.  In addition,
-it makes rcutree_prepare_cpu() invoke rcu_spawn_one_boost_kthread(), which
-no longer does any checking for online CPUs.
+2.	Lockdep is disabled by a concurrent lockdep report.
 
-With this change, RCU priority boosting tests now pass for short rcutorture
-runs, even with single-CPU leaf rcu_node structures.
+3.	debug_lockdep_rcu_enabled() evaluates its lockdep-expression
+	argument, for example, lock_is_held(&rcu_bh_lock_map).
 
-Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: Scott Wood <swood@redhat.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
+4.	Because lockdep is now disabled, lock_is_held() plays it safe and
+	returns the constant 1.
+
+5.	But in this case, the constant 1 is not safe, because invoking
+	synchronize_rcu() under rcu_read_lock_bh() is disallowed.
+
+6.	debug_lockdep_rcu_enabled() wrongly invokes lockdep_rcu_suspicious(),
+	resulting in a false-positive splat.
+
+This commit therefore changes RCU_LOCKDEP_WARN() to check
+debug_lockdep_rcu_enabled() after checking the lockdep expression,
+so that any "safe" returns from lock_is_held() are rejected by
+debug_lockdep_rcu_enabled().  This requires memory ordering, which is
+supplied by READ_ONCE(debug_locks).  The resulting volatile accesses
+prevent the compiler from reordering and the fact that only one variable
+is being accessed prevents the underlying hardware from reordering.
+The combination works for IA64, which can reorder reads to the same
+location, but this is defeated by the volatile accesses, which compile
+to load instructions that provide ordering.
+
+Reported-by: syzbot+dde0cc33951735441301@syzkaller.appspotmail.com
+Reported-by: Matthew Wilcox <willy@infradead.org>
+Reported-by: syzbot+88e4f02896967fe1ab0d@syzkaller.appspotmail.com
+Reported-by: Thomas Gleixner <tglx@linutronix.de>
+Suggested-by: Boqun Feng <boqun.feng@gmail.com>
+Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/rcu/tree.c        |  2 +-
- kernel/rcu/tree.h        |  2 +-
- kernel/rcu/tree_plugin.h | 29 +++++++----------------------
- 3 files changed, 9 insertions(+), 24 deletions(-)
+ include/linux/rcupdate.h | 2 +-
+ kernel/rcu/update.c      | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
-index 2532e58..00a3ebc 100644
---- a/kernel/rcu/tree.c
-+++ b/kernel/rcu/tree.c
-@@ -4166,7 +4166,7 @@ int rcutree_prepare_cpu(unsigned int cpu)
- 	rdp->rcu_iw_gp_seq = rdp->gp_seq - 1;
- 	trace_rcu_grace_period(rcu_state.name, rdp->gp_seq, TPS("cpuonl"));
- 	raw_spin_unlock_irqrestore_rcu_node(rnp, flags);
--	rcu_prepare_kthreads(cpu);
-+	rcu_spawn_one_boost_kthread(rnp);
- 	rcu_spawn_cpu_nocb_kthread(cpu);
- 	WRITE_ONCE(rcu_state.n_online_cpus, rcu_state.n_online_cpus + 1);
+diff --git a/include/linux/rcupdate.h b/include/linux/rcupdate.h
+index 9455476..1199ffd 100644
+--- a/include/linux/rcupdate.h
++++ b/include/linux/rcupdate.h
+@@ -315,7 +315,7 @@ static inline int rcu_read_lock_any_held(void)
+ #define RCU_LOCKDEP_WARN(c, s)						\
+ 	do {								\
+ 		static bool __section(".data.unlikely") __warned;	\
+-		if (debug_lockdep_rcu_enabled() && !__warned && (c)) {	\
++		if ((c) && debug_lockdep_rcu_enabled() && !__warned) {	\
+ 			__warned = true;				\
+ 			lockdep_rcu_suspicious(__FILE__, __LINE__, s);	\
+ 		}							\
+diff --git a/kernel/rcu/update.c b/kernel/rcu/update.c
+index b95ae86..dd94a60 100644
+--- a/kernel/rcu/update.c
++++ b/kernel/rcu/update.c
+@@ -277,7 +277,7 @@ EXPORT_SYMBOL_GPL(rcu_callback_map);
  
-diff --git a/kernel/rcu/tree.h b/kernel/rcu/tree.h
-index 5fd0c44..b5508f4 100644
---- a/kernel/rcu/tree.h
-+++ b/kernel/rcu/tree.h
-@@ -418,8 +418,8 @@ static void rcu_initiate_boost(struct rcu_node *rnp, unsigned long flags);
- static void rcu_preempt_boost_start_gp(struct rcu_node *rnp);
- static bool rcu_is_callbacks_kthread(void);
- static void rcu_cpu_kthread_setup(unsigned int cpu);
-+static void rcu_spawn_one_boost_kthread(struct rcu_node *rnp);
- static void __init rcu_spawn_boost_kthreads(void);
--static void rcu_prepare_kthreads(int cpu);
- static void rcu_cleanup_after_idle(void);
- static void rcu_prepare_for_idle(void);
- static bool rcu_preempt_has_tasks(struct rcu_node *rnp);
-diff --git a/kernel/rcu/tree_plugin.h b/kernel/rcu/tree_plugin.h
-index ef004cc..3c90dad 100644
---- a/kernel/rcu/tree_plugin.h
-+++ b/kernel/rcu/tree_plugin.h
-@@ -1198,22 +1198,16 @@ static void rcu_preempt_boost_start_gp(struct rcu_node *rnp)
-  */
- static void rcu_spawn_one_boost_kthread(struct rcu_node *rnp)
+ noinstr int notrace debug_lockdep_rcu_enabled(void)
  {
--	int rnp_index = rnp - rcu_get_root();
- 	unsigned long flags;
-+	int rnp_index = rnp - rcu_get_root();
- 	struct sched_param sp;
- 	struct task_struct *t;
- 
--	if (!IS_ENABLED(CONFIG_PREEMPT_RCU))
--		return;
--
--	if (!rcu_scheduler_fully_active || rcu_rnp_online_cpus(rnp) == 0)
-+	if (rnp->boost_kthread_task || !rcu_scheduler_fully_active)
- 		return;
- 
- 	rcu_state.boost = 1;
- 
--	if (rnp->boost_kthread_task != NULL)
--		return;
--
- 	t = kthread_create(rcu_boost_kthread, (void *)rnp,
- 			   "rcub/%d", rnp_index);
- 	if (WARN_ON_ONCE(IS_ERR(t)))
-@@ -1265,17 +1259,8 @@ static void __init rcu_spawn_boost_kthreads(void)
- 	struct rcu_node *rnp;
- 
- 	rcu_for_each_leaf_node(rnp)
--		rcu_spawn_one_boost_kthread(rnp);
--}
--
--static void rcu_prepare_kthreads(int cpu)
--{
--	struct rcu_data *rdp = per_cpu_ptr(&rcu_data, cpu);
--	struct rcu_node *rnp = rdp->mynode;
--
--	/* Fire up the incoming CPU's kthread and leaf rcu_node kthread. */
--	if (rcu_scheduler_fully_active)
--		rcu_spawn_one_boost_kthread(rnp);
-+		if (rcu_rnp_online_cpus(rnp))
-+			rcu_spawn_one_boost_kthread(rnp);
+-	return rcu_scheduler_active != RCU_SCHEDULER_INACTIVE && debug_locks &&
++	return rcu_scheduler_active != RCU_SCHEDULER_INACTIVE && READ_ONCE(debug_locks) &&
+ 	       current->lockdep_recursion == 0;
  }
- 
- #else /* #ifdef CONFIG_RCU_BOOST */
-@@ -1295,15 +1280,15 @@ static void rcu_preempt_boost_start_gp(struct rcu_node *rnp)
- {
- }
- 
--static void rcu_boost_kthread_setaffinity(struct rcu_node *rnp, int outgoingcpu)
-+static void rcu_spawn_one_boost_kthread(struct rcu_node *rnp)
- {
- }
- 
--static void __init rcu_spawn_boost_kthreads(void)
-+static void rcu_boost_kthread_setaffinity(struct rcu_node *rnp, int outgoingcpu)
- {
- }
- 
--static void rcu_prepare_kthreads(int cpu)
-+static void __init rcu_spawn_boost_kthreads(void)
- {
- }
- 
+ EXPORT_SYMBOL_GPL(debug_lockdep_rcu_enabled);
