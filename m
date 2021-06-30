@@ -2,46 +2,47 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 003553B8428
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 30 Jun 2021 15:50:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5BF893B842C
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 30 Jun 2021 15:50:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236005AbhF3NxA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 30 Jun 2021 09:53:00 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:33020 "EHLO
+        id S235851AbhF3NxB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 30 Jun 2021 09:53:01 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:33026 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236127AbhF3NvY (ORCPT
+        with ESMTP id S236058AbhF3NvZ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 30 Jun 2021 09:51:24 -0400
-Date:   Wed, 30 Jun 2021 13:48:16 -0000
+        Wed, 30 Jun 2021 09:51:25 -0400
+Date:   Wed, 30 Jun 2021 13:48:17 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1625060897;
+        s=2020; t=1625060898;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=QlgFrmuXYHshiJXHDoBNufwcE3iCKBEKLkTsM2VxV0A=;
-        b=kUNbxWTnGQJv1R4jSvLTv+JW9FnLtZsqamSORJzMwxq7e4H/6JH3jiqA309B6OsjckqhtH
-        vmD0bDOeg9i+0wX8eO0xK4QPZcZMZ2/83rVsCuwsHYRq2KnMDvobmtmj5qJsrjBiq4RS8k
-        Ly9YQZA4l66AwIqmZLH+5C+8OQVl8frqdjKtFwKP0DIT/wRp40al8EuzY/e67SgH0h6VHF
-        th461+XDPOQZolgmx2B5dK2zpyXixOWgbFwTJ266oYnzYxdwhLuh5Lox+W2ryhtvZa2Dtf
-        PmEfAAssvjP5e6jN4APCmRx5DCApw/zzYpVIgBy/3ekinIQl1AX4Ky+X9JHR0w==
+        bh=asIRImexd2CORy/ClBuX7rSZeaLYtiA101oYf6/P/Ag=;
+        b=a7UYWpLJQsX9R2z3J9R6ARTp+BWvgBUAAdNO5ryNZu5Z7g4i4pjgl4M0GaW+DLbMlyFBAc
+        rSbFkERaTE+msi6an2aFZAR8sMzKE6r9lWcomWbKvOviuzalOTLnazyk9KGBD22dzVMymd
+        gb6uE4TD69PqrO88oH8XcWzD0tWvjmXBS7ETwds75ZiRPytjDULyqbMx/EVGShmCb5HVjp
+        N92MxGpBDhDz8uHQzwTVDa3HoYTJpQT0qO4JdgLGd/M2WpAvNxLngtu1zNEQ7DOr3edeq6
+        LRAn007NVyn/cI1K3OHtO3sA6Pnpojde9ELa/zZ4Wk0Er8iBUm4M3/9J4Y/RgQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1625060897;
+        s=2020e; t=1625060898;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=QlgFrmuXYHshiJXHDoBNufwcE3iCKBEKLkTsM2VxV0A=;
-        b=4atIw9fuIvEw2a//Y6LCd2EMNguUF5tto0wJL/jUFuYDHqrR7ovJH02GvfZ57ylLtyF2JD
-        4+IMOreZe+vhbVDQ==
-From:   "tip-bot2 for Marco Elver" <tip-bot2@linutronix.de>
+        bh=asIRImexd2CORy/ClBuX7rSZeaLYtiA101oYf6/P/Ag=;
+        b=ckDAJ5OAFgXfYhygX2TTHsUFBsCruEEU9KbTPxej5HReztKPaC0reJ8Ny7XtGD/gA2bCz1
+        AqweOFFxR44c3LDg==
+From:   "tip-bot2 for Mark Rutland" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/urgent] kcsan: Document "value changed" line
-Cc:     Marco Elver <elver@google.com>,
+Subject: [tip: locking/urgent] kcsan: Remove kcsan_report_type
+Cc:     Mark Rutland <mark.rutland@arm.com>,
+        Marco Elver <elver@google.com>,
         "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <162506089664.395.11910199913057335235.tip-bot2@tip-bot2>
+Message-ID: <162506089763.395.5645478182976908324.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -52,137 +53,174 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/urgent branch of tip:
 
-Commit-ID:     b930226f3db870cfb683c2744aeb0d29deb4cddc
-Gitweb:        https://git.kernel.org/tip/b930226f3db870cfb683c2744aeb0d29deb4cddc
-Author:        Marco Elver <elver@google.com>
-AuthorDate:    Wed, 14 Apr 2021 13:28:25 +02:00
+Commit-ID:     609f809746458522a7a96132acf0ca7ee67c424c
+Gitweb:        https://git.kernel.org/tip/609f809746458522a7a96132acf0ca7ee67c424c
+Author:        Mark Rutland <mark.rutland@arm.com>
+AuthorDate:    Wed, 14 Apr 2021 13:28:23 +02:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Tue, 18 May 2021 10:58:15 -07:00
 
-kcsan: Document "value changed" line
+kcsan: Remove kcsan_report_type
 
-Update the example reports based on the latest reports generated by
-kcsan_test module, which now include the "value changed" line. Add a
-brief description of the "value changed" line.
+Now that the reporting code has been refactored, it's clear by
+construction that print_report() can only be passed
+KCSAN_REPORT_RACE_SIGNAL or KCSAN_REPORT_RACE_UNKNOWN_ORIGIN, and these
+can also be distinguished by the presence of `other_info`.
 
+Let's simplify things and remove the report type enum, and instead let's
+check `other_info` to distinguish these cases. This allows us to remove
+code for cases which are impossible and generally makes the code simpler.
+
+There should be no functional change as a result of this patch.
+
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+[ elver@google.com: add updated comments to kcsan_report_*() functions ]
 Signed-off-by: Marco Elver <elver@google.com>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- Documentation/dev-tools/kcsan.rst | 88 +++++++++++-------------------
- 1 file changed, 35 insertions(+), 53 deletions(-)
+ kernel/kcsan/kcsan.h  | 33 +++++++++++++--------------------
+ kernel/kcsan/report.c | 29 +++++++----------------------
+ 2 files changed, 20 insertions(+), 42 deletions(-)
 
-diff --git a/Documentation/dev-tools/kcsan.rst b/Documentation/dev-tools/kcsan.rst
-index 8089466..d1efd9c 100644
---- a/Documentation/dev-tools/kcsan.rst
-+++ b/Documentation/dev-tools/kcsan.rst
-@@ -27,75 +27,57 @@ Error reports
- A typical data race report looks like this::
+diff --git a/kernel/kcsan/kcsan.h b/kernel/kcsan/kcsan.h
+index 2ee43fd..572f119 100644
+--- a/kernel/kcsan/kcsan.h
++++ b/kernel/kcsan/kcsan.h
+@@ -116,32 +116,25 @@ enum kcsan_value_change {
+ 	KCSAN_VALUE_CHANGE_TRUE,
+ };
  
-     ==================================================================
--    BUG: KCSAN: data-race in generic_permission / kernfs_refresh_inode
+-enum kcsan_report_type {
+-	/*
+-	 * The thread that set up the watchpoint and briefly stalled was
+-	 * signalled that another thread triggered the watchpoint.
+-	 */
+-	KCSAN_REPORT_RACE_SIGNAL,
 -
--    write to 0xffff8fee4c40700c of 4 bytes by task 175 on cpu 4:
--     kernfs_refresh_inode+0x70/0x170
--     kernfs_iop_permission+0x4f/0x90
--     inode_permission+0x190/0x200
--     link_path_walk.part.0+0x503/0x8e0
--     path_lookupat.isra.0+0x69/0x4d0
--     filename_lookup+0x136/0x280
--     user_path_at_empty+0x47/0x60
--     vfs_statx+0x9b/0x130
--     __do_sys_newlstat+0x50/0xb0
--     __x64_sys_newlstat+0x37/0x50
--     do_syscall_64+0x85/0x260
--     entry_SYSCALL_64_after_hwframe+0x44/0xa9
+-	/*
+-	 * A thread found and consumed a matching watchpoint.
+-	 */
+-	KCSAN_REPORT_CONSUMED_WATCHPOINT,
 -
--    read to 0xffff8fee4c40700c of 4 bytes by task 166 on cpu 6:
--     generic_permission+0x5b/0x2a0
--     kernfs_iop_permission+0x66/0x90
--     inode_permission+0x190/0x200
--     link_path_walk.part.0+0x503/0x8e0
--     path_lookupat.isra.0+0x69/0x4d0
--     filename_lookup+0x136/0x280
--     user_path_at_empty+0x47/0x60
--     do_faccessat+0x11a/0x390
--     __x64_sys_access+0x3c/0x50
--     do_syscall_64+0x85/0x260
--     entry_SYSCALL_64_after_hwframe+0x44/0xa9
-+    BUG: KCSAN: data-race in test_kernel_read / test_kernel_write
-+
-+    write to 0xffffffffc009a628 of 8 bytes by task 487 on cpu 0:
-+     test_kernel_write+0x1d/0x30
-+     access_thread+0x89/0xd0
-+     kthread+0x23e/0x260
-+     ret_from_fork+0x22/0x30
-+
-+    read to 0xffffffffc009a628 of 8 bytes by task 488 on cpu 6:
-+     test_kernel_read+0x10/0x20
-+     access_thread+0x89/0xd0
-+     kthread+0x23e/0x260
-+     ret_from_fork+0x22/0x30
-+
-+    value changed: 0x00000000000009a6 -> 0x00000000000009b2
- 
-     Reported by Kernel Concurrency Sanitizer on:
--    CPU: 6 PID: 166 Comm: systemd-journal Not tainted 5.3.0-rc7+ #1
--    Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/01/2014
-+    CPU: 6 PID: 488 Comm: access_thread Not tainted 5.12.0-rc2+ #1
-+    Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.14.0-2 04/01/2014
-     ==================================================================
- 
- The header of the report provides a short summary of the functions involved in
- the race. It is followed by the access types and stack traces of the 2 threads
--involved in the data race.
-+involved in the data race. If KCSAN also observed a value change, the observed
-+old value and new value are shown on the "value changed" line respectively.
- 
- The other less common type of data race report looks like this::
- 
-     ==================================================================
--    BUG: KCSAN: data-race in e1000_clean_rx_irq+0x551/0xb10
+-	/*
+-	 * No other thread was observed to race with the access, but the data
+-	 * value before and after the stall differs.
+-	 */
+-	KCSAN_REPORT_RACE_UNKNOWN_ORIGIN,
+-};
 -
--    race at unknown origin, with read to 0xffff933db8a2ae6c of 1 bytes by interrupt on cpu 0:
--     e1000_clean_rx_irq+0x551/0xb10
--     e1000_clean+0x533/0xda0
--     net_rx_action+0x329/0x900
--     __do_softirq+0xdb/0x2db
--     irq_exit+0x9b/0xa0
--     do_IRQ+0x9c/0xf0
--     ret_from_intr+0x0/0x18
--     default_idle+0x3f/0x220
--     arch_cpu_idle+0x21/0x30
--     do_idle+0x1df/0x230
--     cpu_startup_entry+0x14/0x20
--     rest_init+0xc5/0xcb
--     arch_call_rest_init+0x13/0x2b
--     start_kernel+0x6db/0x700
-+    BUG: KCSAN: data-race in test_kernel_rmw_array+0x71/0xd0
+ /*
+- * Notify the report code that a race occurred.
++ * The calling thread hit and consumed a watchpoint: set the access information
++ * to be consumed by the reporting thread. No report is printed yet.
+  */
+ void kcsan_report_set_info(const volatile void *ptr, size_t size, int access_type,
+ 			   int watchpoint_idx);
 +
-+    race at unknown origin, with read to 0xffffffffc009bdb0 of 8 bytes by task 515 on cpu 2:
-+     test_kernel_rmw_array+0x71/0xd0
-+     access_thread+0x89/0xd0
-+     kthread+0x23e/0x260
-+     ret_from_fork+0x22/0x30
++/*
++ * The calling thread observed that the watchpoint it set up was hit and
++ * consumed: print the full report based on information set by the racing
++ * thread.
++ */
+ void kcsan_report_known_origin(const volatile void *ptr, size_t size, int access_type,
+ 			       enum kcsan_value_change value_change, int watchpoint_idx);
 +
-+    value changed: 0x0000000000002328 -> 0x0000000000002329
++/*
++ * No other thread was observed to race with the access, but the data value
++ * before and after the stall differs. Reports a race of "unknown origin".
++ */
+ void kcsan_report_unknown_origin(const volatile void *ptr, size_t size, int access_type);
  
-     Reported by Kernel Concurrency Sanitizer on:
--    CPU: 0 PID: 0 Comm: swapper/0 Not tainted 5.3.0-rc7+ #2
--    Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/01/2014
-+    CPU: 2 PID: 515 Comm: access_thread Not tainted 5.12.0-rc2+ #1
-+    Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.14.0-2 04/01/2014
-     ==================================================================
+ #endif /* _KERNEL_KCSAN_KCSAN_H */
+diff --git a/kernel/kcsan/report.c b/kernel/kcsan/report.c
+index ba924f1..50cee23 100644
+--- a/kernel/kcsan/report.c
++++ b/kernel/kcsan/report.c
+@@ -326,7 +326,6 @@ static void print_verbose_info(struct task_struct *task)
+ }
  
- This report is generated where it was not possible to determine the other
- racing thread, but a race was inferred due to the data value of the watched
--memory location having changed. These can occur either due to missing
--instrumentation or e.g. DMA accesses. These reports will only be generated if
--``CONFIG_KCSAN_REPORT_RACE_UNKNOWN_ORIGIN=y`` (selected by default).
-+memory location having changed. These reports always show a "value changed"
-+line. A common reason for reports of this type are missing instrumentation in
-+the racing thread, but could also occur due to e.g. DMA accesses. Such reports
-+are shown only if ``CONFIG_KCSAN_REPORT_RACE_UNKNOWN_ORIGIN=y``, which is
-+enabled by default.
+ static void print_report(enum kcsan_value_change value_change,
+-			 enum kcsan_report_type type,
+ 			 const struct access_info *ai,
+ 			 const struct other_info *other_info)
+ {
+@@ -343,7 +342,7 @@ static void print_report(enum kcsan_value_change value_change,
+ 	if (skip_report(KCSAN_VALUE_CHANGE_TRUE, stack_entries[skipnr]))
+ 		return;
  
- Selective analysis
- ~~~~~~~~~~~~~~~~~~
+-	if (type == KCSAN_REPORT_RACE_SIGNAL) {
++	if (other_info) {
+ 		other_skipnr = get_stack_skipnr(other_info->stack_entries,
+ 						other_info->num_stack_entries);
+ 		other_frame = other_info->stack_entries[other_skipnr];
+@@ -358,8 +357,7 @@ static void print_report(enum kcsan_value_change value_change,
+ 
+ 	/* Print report header. */
+ 	pr_err("==================================================================\n");
+-	switch (type) {
+-	case KCSAN_REPORT_RACE_SIGNAL: {
++	if (other_info) {
+ 		int cmp;
+ 
+ 		/*
+@@ -371,22 +369,15 @@ static void print_report(enum kcsan_value_change value_change,
+ 		       get_bug_type(ai->access_type | other_info->ai.access_type),
+ 		       (void *)(cmp < 0 ? other_frame : this_frame),
+ 		       (void *)(cmp < 0 ? this_frame : other_frame));
+-	} break;
+-
+-	case KCSAN_REPORT_RACE_UNKNOWN_ORIGIN:
++	} else {
+ 		pr_err("BUG: KCSAN: %s in %pS\n", get_bug_type(ai->access_type),
+ 		       (void *)this_frame);
+-		break;
+-
+-	default:
+-		BUG();
+ 	}
+ 
+ 	pr_err("\n");
+ 
+ 	/* Print information about the racing accesses. */
+-	switch (type) {
+-	case KCSAN_REPORT_RACE_SIGNAL:
++	if (other_info) {
+ 		pr_err("%s to 0x%px of %zu bytes by %s on cpu %i:\n",
+ 		       get_access_type(other_info->ai.access_type), other_info->ai.ptr,
+ 		       other_info->ai.size, get_thread_desc(other_info->ai.task_pid),
+@@ -404,16 +395,10 @@ static void print_report(enum kcsan_value_change value_change,
+ 		pr_err("%s to 0x%px of %zu bytes by %s on cpu %i:\n",
+ 		       get_access_type(ai->access_type), ai->ptr, ai->size,
+ 		       get_thread_desc(ai->task_pid), ai->cpu_id);
+-		break;
+-
+-	case KCSAN_REPORT_RACE_UNKNOWN_ORIGIN:
++	} else {
+ 		pr_err("race at unknown origin, with %s to 0x%px of %zu bytes by %s on cpu %i:\n",
+ 		       get_access_type(ai->access_type), ai->ptr, ai->size,
+ 		       get_thread_desc(ai->task_pid), ai->cpu_id);
+-		break;
+-
+-	default:
+-		BUG();
+ 	}
+ 	/* Print stack trace of this thread. */
+ 	stack_trace_print(stack_entries + skipnr, num_stack_entries - skipnr,
+@@ -623,7 +608,7 @@ void kcsan_report_known_origin(const volatile void *ptr, size_t size, int access
+ 	 * be done once we know the full stack trace in print_report().
+ 	 */
+ 	if (value_change != KCSAN_VALUE_CHANGE_FALSE)
+-		print_report(value_change, KCSAN_REPORT_RACE_SIGNAL, &ai, other_info);
++		print_report(value_change, &ai, other_info);
+ 
+ 	release_report(&flags, other_info);
+ out:
+@@ -640,7 +625,7 @@ void kcsan_report_unknown_origin(const volatile void *ptr, size_t size, int acce
+ 	lockdep_off(); /* See kcsan_report_known_origin(). */
+ 
+ 	raw_spin_lock_irqsave(&report_lock, flags);
+-	print_report(KCSAN_VALUE_CHANGE_TRUE, KCSAN_REPORT_RACE_UNKNOWN_ORIGIN, &ai, NULL);
++	print_report(KCSAN_VALUE_CHANGE_TRUE, &ai, NULL);
+ 	raw_spin_unlock_irqrestore(&report_lock, flags);
+ 
+ 	lockdep_on();
