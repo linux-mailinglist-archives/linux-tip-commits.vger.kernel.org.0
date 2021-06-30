@@ -2,46 +2,46 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 53F983B8426
+	by mail.lfdr.de (Postfix) with ESMTP id 003553B8428
 	for <lists+linux-tip-commits@lfdr.de>; Wed, 30 Jun 2021 15:50:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235714AbhF3Nw7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 30 Jun 2021 09:52:59 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:33014 "EHLO
+        id S236005AbhF3NxA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 30 Jun 2021 09:53:00 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:33020 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235841AbhF3NvW (ORCPT
+        with ESMTP id S236127AbhF3NvY (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 30 Jun 2021 09:51:22 -0400
+        Wed, 30 Jun 2021 09:51:24 -0400
 Date:   Wed, 30 Jun 2021 13:48:16 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1625060896;
+        s=2020; t=1625060897;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=Qlyhb3VdFrD6Q5rWKlKwtwnFyo5s3aDdmDV0WQyE/yw=;
-        b=GFU2VMcq/qQoQu/xsoahC4KON/tF9ycu9Uqk1hZG4QrBrtlETw2fUPNUxEXNWrjnoV9DJV
-        B5QaCqtj+ShSXB88Oge28aBPQAZBSRLXUhxm3p81/Fw8tGy29d5nFI4AlYroOP0ykvekZq
-        wDDrn+leFnuGGc6g34PfeoGBtJS0eNdnTKxPyqteVB7MWqHbdsA1kvp+vMrp7uuDq/FCiw
-        p77tUU2h4+I6qzafPB8wV8Z0XMzGOgIIzNDI2Qm04E0qmzdfdVAzyXItLUKoPyCiydn4mm
-        i5k8c0y+5qasgfJG6UVpXlK9Jv6AhPPNxPnTJw16GdKlCSU3kzmHqjnePTIEdw==
+        bh=QlgFrmuXYHshiJXHDoBNufwcE3iCKBEKLkTsM2VxV0A=;
+        b=kUNbxWTnGQJv1R4jSvLTv+JW9FnLtZsqamSORJzMwxq7e4H/6JH3jiqA309B6OsjckqhtH
+        vmD0bDOeg9i+0wX8eO0xK4QPZcZMZ2/83rVsCuwsHYRq2KnMDvobmtmj5qJsrjBiq4RS8k
+        Ly9YQZA4l66AwIqmZLH+5C+8OQVl8frqdjKtFwKP0DIT/wRp40al8EuzY/e67SgH0h6VHF
+        th461+XDPOQZolgmx2B5dK2zpyXixOWgbFwTJ266oYnzYxdwhLuh5Lox+W2ryhtvZa2Dtf
+        PmEfAAssvjP5e6jN4APCmRx5DCApw/zzYpVIgBy/3ekinIQl1AX4Ky+X9JHR0w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1625060896;
+        s=2020e; t=1625060897;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=Qlyhb3VdFrD6Q5rWKlKwtwnFyo5s3aDdmDV0WQyE/yw=;
-        b=WfLvFGB7CAg3JS5RsSpaC8uZjQO4G7v6RaphVnOKNYlXwvUg0WXFBDfsi2aS5U0woZQPXK
-        5Q9cttXfnLJGIxAw==
-From:   "tip-bot2 for Akira Yokosawa" <tip-bot2@linutronix.de>
+        bh=QlgFrmuXYHshiJXHDoBNufwcE3iCKBEKLkTsM2VxV0A=;
+        b=4atIw9fuIvEw2a//Y6LCd2EMNguUF5tto0wJL/jUFuYDHqrR7ovJH02GvfZ57ylLtyF2JD
+        4+IMOreZe+vhbVDQ==
+From:   "tip-bot2 for Marco Elver" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/urgent] kcsan: Use URL link for pointing access-marking.txt
-Cc:     Marco Elver <elver@google.com>, Akira Yokosawa <akiyks@gmail.com>,
+Subject: [tip: locking/urgent] kcsan: Document "value changed" line
+Cc:     Marco Elver <elver@google.com>,
         "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <162506089610.395.954946146241651282.tip-bot2@tip-bot2>
+Message-ID: <162506089664.395.11910199913057335235.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -52,45 +52,137 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/urgent branch of tip:
 
-Commit-ID:     117232c0b9126e254d84f38ccaf9e576ccfcd990
-Gitweb:        https://git.kernel.org/tip/117232c0b9126e254d84f38ccaf9e576ccfcd990
-Author:        Akira Yokosawa <akiyks@gmail.com>
-AuthorDate:    Thu, 13 May 2021 10:49:41 -07:00
+Commit-ID:     b930226f3db870cfb683c2744aeb0d29deb4cddc
+Gitweb:        https://git.kernel.org/tip/b930226f3db870cfb683c2744aeb0d29deb4cddc
+Author:        Marco Elver <elver@google.com>
+AuthorDate:    Wed, 14 Apr 2021 13:28:25 +02:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Tue, 18 May 2021 10:58:15 -07:00
 
-kcsan: Use URL link for pointing access-marking.txt
+kcsan: Document "value changed" line
 
-For consistency within kcsan.rst, use a URL link as the same as in
-section "Data Races".
+Update the example reports based on the latest reports generated by
+kcsan_test module, which now include the "value changed" line. Add a
+brief description of the "value changed" line.
 
-Acked-by: Marco Elver <elver@google.com>
-Signed-off-by: Akira Yokosawa <akiyks@gmail.com>
+Signed-off-by: Marco Elver <elver@google.com>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- Documentation/dev-tools/kcsan.rst | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ Documentation/dev-tools/kcsan.rst | 88 +++++++++++-------------------
+ 1 file changed, 35 insertions(+), 53 deletions(-)
 
 diff --git a/Documentation/dev-tools/kcsan.rst b/Documentation/dev-tools/kcsan.rst
-index d1efd9c..6a600cf 100644
+index 8089466..d1efd9c 100644
 --- a/Documentation/dev-tools/kcsan.rst
 +++ b/Documentation/dev-tools/kcsan.rst
-@@ -89,8 +89,7 @@ the below options are available:
- * KCSAN understands the ``data_race(expr)`` annotation, which tells KCSAN that
-   any data races due to accesses in ``expr`` should be ignored and resulting
-   behaviour when encountering a data race is deemed safe.  Please see
--  ``tools/memory-model/Documentation/access-marking.txt`` in the kernel source
--  tree for more information.
-+  `"Marking Shared-Memory Accesses" in the LKMM`_ for more information.
+@@ -27,75 +27,57 @@ Error reports
+ A typical data race report looks like this::
  
- * Disabling data race detection for entire functions can be accomplished by
-   using the function attribute ``__no_kcsan``::
-@@ -112,6 +111,8 @@ the below options are available:
- 
-     KCSAN_SANITIZE := n
- 
-+.. _"Marking Shared-Memory Accesses" in the LKMM: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/tools/memory-model/Documentation/access-marking.txt
+     ==================================================================
+-    BUG: KCSAN: data-race in generic_permission / kernfs_refresh_inode
+-
+-    write to 0xffff8fee4c40700c of 4 bytes by task 175 on cpu 4:
+-     kernfs_refresh_inode+0x70/0x170
+-     kernfs_iop_permission+0x4f/0x90
+-     inode_permission+0x190/0x200
+-     link_path_walk.part.0+0x503/0x8e0
+-     path_lookupat.isra.0+0x69/0x4d0
+-     filename_lookup+0x136/0x280
+-     user_path_at_empty+0x47/0x60
+-     vfs_statx+0x9b/0x130
+-     __do_sys_newlstat+0x50/0xb0
+-     __x64_sys_newlstat+0x37/0x50
+-     do_syscall_64+0x85/0x260
+-     entry_SYSCALL_64_after_hwframe+0x44/0xa9
+-
+-    read to 0xffff8fee4c40700c of 4 bytes by task 166 on cpu 6:
+-     generic_permission+0x5b/0x2a0
+-     kernfs_iop_permission+0x66/0x90
+-     inode_permission+0x190/0x200
+-     link_path_walk.part.0+0x503/0x8e0
+-     path_lookupat.isra.0+0x69/0x4d0
+-     filename_lookup+0x136/0x280
+-     user_path_at_empty+0x47/0x60
+-     do_faccessat+0x11a/0x390
+-     __x64_sys_access+0x3c/0x50
+-     do_syscall_64+0x85/0x260
+-     entry_SYSCALL_64_after_hwframe+0x44/0xa9
++    BUG: KCSAN: data-race in test_kernel_read / test_kernel_write
 +
- Furthermore, it is possible to tell KCSAN to show or hide entire classes of
- data races, depending on preferences. These can be changed via the following
- Kconfig options:
++    write to 0xffffffffc009a628 of 8 bytes by task 487 on cpu 0:
++     test_kernel_write+0x1d/0x30
++     access_thread+0x89/0xd0
++     kthread+0x23e/0x260
++     ret_from_fork+0x22/0x30
++
++    read to 0xffffffffc009a628 of 8 bytes by task 488 on cpu 6:
++     test_kernel_read+0x10/0x20
++     access_thread+0x89/0xd0
++     kthread+0x23e/0x260
++     ret_from_fork+0x22/0x30
++
++    value changed: 0x00000000000009a6 -> 0x00000000000009b2
+ 
+     Reported by Kernel Concurrency Sanitizer on:
+-    CPU: 6 PID: 166 Comm: systemd-journal Not tainted 5.3.0-rc7+ #1
+-    Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/01/2014
++    CPU: 6 PID: 488 Comm: access_thread Not tainted 5.12.0-rc2+ #1
++    Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.14.0-2 04/01/2014
+     ==================================================================
+ 
+ The header of the report provides a short summary of the functions involved in
+ the race. It is followed by the access types and stack traces of the 2 threads
+-involved in the data race.
++involved in the data race. If KCSAN also observed a value change, the observed
++old value and new value are shown on the "value changed" line respectively.
+ 
+ The other less common type of data race report looks like this::
+ 
+     ==================================================================
+-    BUG: KCSAN: data-race in e1000_clean_rx_irq+0x551/0xb10
+-
+-    race at unknown origin, with read to 0xffff933db8a2ae6c of 1 bytes by interrupt on cpu 0:
+-     e1000_clean_rx_irq+0x551/0xb10
+-     e1000_clean+0x533/0xda0
+-     net_rx_action+0x329/0x900
+-     __do_softirq+0xdb/0x2db
+-     irq_exit+0x9b/0xa0
+-     do_IRQ+0x9c/0xf0
+-     ret_from_intr+0x0/0x18
+-     default_idle+0x3f/0x220
+-     arch_cpu_idle+0x21/0x30
+-     do_idle+0x1df/0x230
+-     cpu_startup_entry+0x14/0x20
+-     rest_init+0xc5/0xcb
+-     arch_call_rest_init+0x13/0x2b
+-     start_kernel+0x6db/0x700
++    BUG: KCSAN: data-race in test_kernel_rmw_array+0x71/0xd0
++
++    race at unknown origin, with read to 0xffffffffc009bdb0 of 8 bytes by task 515 on cpu 2:
++     test_kernel_rmw_array+0x71/0xd0
++     access_thread+0x89/0xd0
++     kthread+0x23e/0x260
++     ret_from_fork+0x22/0x30
++
++    value changed: 0x0000000000002328 -> 0x0000000000002329
+ 
+     Reported by Kernel Concurrency Sanitizer on:
+-    CPU: 0 PID: 0 Comm: swapper/0 Not tainted 5.3.0-rc7+ #2
+-    Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/01/2014
++    CPU: 2 PID: 515 Comm: access_thread Not tainted 5.12.0-rc2+ #1
++    Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.14.0-2 04/01/2014
+     ==================================================================
+ 
+ This report is generated where it was not possible to determine the other
+ racing thread, but a race was inferred due to the data value of the watched
+-memory location having changed. These can occur either due to missing
+-instrumentation or e.g. DMA accesses. These reports will only be generated if
+-``CONFIG_KCSAN_REPORT_RACE_UNKNOWN_ORIGIN=y`` (selected by default).
++memory location having changed. These reports always show a "value changed"
++line. A common reason for reports of this type are missing instrumentation in
++the racing thread, but could also occur due to e.g. DMA accesses. Such reports
++are shown only if ``CONFIG_KCSAN_REPORT_RACE_UNKNOWN_ORIGIN=y``, which is
++enabled by default.
+ 
+ Selective analysis
+ ~~~~~~~~~~~~~~~~~~
