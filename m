@@ -2,18 +2,18 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 97DB63B83AD
+	by mail.lfdr.de (Postfix) with ESMTP id 47FA73B83AC
 	for <lists+linux-tip-commits@lfdr.de>; Wed, 30 Jun 2021 15:48:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235836AbhF3Nub (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 30 Jun 2021 09:50:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45578 "EHLO
+        id S235828AbhF3Nua (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 30 Jun 2021 09:50:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45574 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235542AbhF3NuG (ORCPT
+        with ESMTP id S235523AbhF3NuG (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Wed, 30 Jun 2021 09:50:06 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA319C0611C1;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68428C061226;
         Wed, 30 Jun 2021 06:47:36 -0700 (PDT)
 Date:   Wed, 30 Jun 2021 13:47:34 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
@@ -21,34 +21,30 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=DU+g2Br/5uhTVGutGXt2LRCn0Fiq5VLVEpXQidC0Hew=;
-        b=Blg27ED2vTo42MgWjS6frUKZpId3mTds0VMwuQAJn3IsVLrQGE07KYUV+kGYIJ0xm4WBne
-        mjtmAEd9hKu+c5byD/I1wB+6CM0eRL+toP/lDRhhdl5GP1Ti1pAxLvhwTViuZI84PvmFX7
-        D7Xp9gsvveap+WCekHdgs9QADBZxLJXCh0ST9uPa8Bbx13xtFHE+EEiGI7Jom/4pze62v9
-        e7zRelBZoiZ/tlhNdK+0vVch3vS989iwv5YoWrYVTcTqUwZpcmoCR1/yVic/RYZZvoGQVx
-        IA9OuZg76CjNcU6cnXuABugFH0Wwau60MbNr8KpjmCnc7Zj4TCvTly6rlalzng==
+        bh=gTXDBc/3nnzp/o5D1+NBHH6XfbtE9eJgjLbKuFjopzI=;
+        b=bGP9Boh9rQ8ptig5eVyjMEL12RiPwJRuQnbTEFum11Gph+wYOV0FJjdLi4e44E+FoyhDHo
+        8hpHPehmWPTwnb4MbVOmzwgbidIYWTv9uBphwUDmfjM5PngnP1h6dFWiozD6PU0Y0zxa08
+        rtP6ujBbVeev3CSg1wTB8FdJnV0ZxwUKQWhSuxXjgVCR2VxH6vlmFtWRQuMA1UwsNJNUOB
+        V5PrzA1Miwef2diFrDaahnR9ZpMBAdTCTQlPdpcYTD0iJn1A7O/AeyaGip2cIgopcDL0Vb
+        xiUL9NUERhaFYfTC8I6RG0UgQ0iSQItUGE3bXfAmWuXnCu0O5vyyPV1tmaoaJQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1625060855;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=DU+g2Br/5uhTVGutGXt2LRCn0Fiq5VLVEpXQidC0Hew=;
-        b=OH+JKIsbDMU0mm7rEFxOCUkrzRGD1SB/K4QjBz/h4s7p14uXVVtpxnhJ8cxB56QWR4cbfn
-        pVpvLONVgvZDLaCg==
+        bh=gTXDBc/3nnzp/o5D1+NBHH6XfbtE9eJgjLbKuFjopzI=;
+        b=wa+JGKnrWd9bHrw8hQWn8rKQZ14vXsRKPqgvJcnfWOV15k/0FNLmCxahLpeFT/CS075MGg
+        8j3AzznR67f/xwBQ==
 From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcu: Reject RCU_LOCKDEP_WARN() false positives
-Cc:     syzbot+dde0cc33951735441301@syzkaller.appspotmail.com,
-        Matthew Wilcox <willy@infradead.org>,
-        syzbot+88e4f02896967fe1ab0d@syzkaller.appspotmail.com,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
+Subject: [tip: core/rcu] rcu: Add quiescent states and boost states to
+ show_rcu_gp_kthreads() output
+Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <162506085491.395.17524374219853971312.tip-bot2@tip-bot2>
+Message-ID: <162506085433.395.10973768838290035872.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,81 +55,72 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     3066820034b5dd4e89bd74a7739c51c2d6f5e554
-Gitweb:        https://git.kernel.org/tip/3066820034b5dd4e89bd74a7739c51c2d6f5e554
+Commit-ID:     396eba65f62414ee8850ed5f7b5ce844719ebebf
+Gitweb:        https://git.kernel.org/tip/396eba65f62414ee8850ed5f7b5ce844719ebebf
 Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Mon, 05 Apr 2021 09:51:05 -07:00
+AuthorDate:    Tue, 06 Apr 2021 16:31:42 -07:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Mon, 10 May 2021 16:22:54 -07:00
 
-rcu: Reject RCU_LOCKDEP_WARN() false positives
+rcu: Add quiescent states and boost states to show_rcu_gp_kthreads() output
 
-If another lockdep report runs concurrently with an RCU lockdep report
-from RCU_LOCKDEP_WARN(), the following sequence of events can occur:
+This commit adds each rcu_node structure's ->qsmask and "bBEG" output
+indicating whether: (1) There is a boost kthread, (2) A reader needs
+to be (or is in the process of being) boosted, (3) A reader is blocking
+an expedited grace period, and (4) A reader is blocking a normal grace
+period.  This helps diagnose RCU priority boosting failures.
 
-1.	debug_lockdep_rcu_enabled() sees that lockdep is enabled
-	when called from (say) synchronize_rcu().
-
-2.	Lockdep is disabled by a concurrent lockdep report.
-
-3.	debug_lockdep_rcu_enabled() evaluates its lockdep-expression
-	argument, for example, lock_is_held(&rcu_bh_lock_map).
-
-4.	Because lockdep is now disabled, lock_is_held() plays it safe and
-	returns the constant 1.
-
-5.	But in this case, the constant 1 is not safe, because invoking
-	synchronize_rcu() under rcu_read_lock_bh() is disallowed.
-
-6.	debug_lockdep_rcu_enabled() wrongly invokes lockdep_rcu_suspicious(),
-	resulting in a false-positive splat.
-
-This commit therefore changes RCU_LOCKDEP_WARN() to check
-debug_lockdep_rcu_enabled() after checking the lockdep expression,
-so that any "safe" returns from lock_is_held() are rejected by
-debug_lockdep_rcu_enabled().  This requires memory ordering, which is
-supplied by READ_ONCE(debug_locks).  The resulting volatile accesses
-prevent the compiler from reordering and the fact that only one variable
-is being accessed prevents the underlying hardware from reordering.
-The combination works for IA64, which can reorder reads to the same
-location, but this is defeated by the volatile accesses, which compile
-to load instructions that provide ordering.
-
-Reported-by: syzbot+dde0cc33951735441301@syzkaller.appspotmail.com
-Reported-by: Matthew Wilcox <willy@infradead.org>
-Reported-by: syzbot+88e4f02896967fe1ab0d@syzkaller.appspotmail.com
-Reported-by: Thomas Gleixner <tglx@linutronix.de>
-Suggested-by: Boqun Feng <boqun.feng@gmail.com>
-Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- include/linux/rcupdate.h | 2 +-
- kernel/rcu/update.c      | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ kernel/rcu/tree.h        |  1 +
+ kernel/rcu/tree_plugin.h |  1 +
+ kernel/rcu/tree_stall.h  | 12 +++++++++---
+ 3 files changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/rcupdate.h b/include/linux/rcupdate.h
-index 9455476..1199ffd 100644
---- a/include/linux/rcupdate.h
-+++ b/include/linux/rcupdate.h
-@@ -315,7 +315,7 @@ static inline int rcu_read_lock_any_held(void)
- #define RCU_LOCKDEP_WARN(c, s)						\
- 	do {								\
- 		static bool __section(".data.unlikely") __warned;	\
--		if (debug_lockdep_rcu_enabled() && !__warned && (c)) {	\
-+		if ((c) && debug_lockdep_rcu_enabled() && !__warned) {	\
- 			__warned = true;				\
- 			lockdep_rcu_suspicious(__FILE__, __LINE__, s);	\
- 		}							\
-diff --git a/kernel/rcu/update.c b/kernel/rcu/update.c
-index b95ae86..dd94a60 100644
---- a/kernel/rcu/update.c
-+++ b/kernel/rcu/update.c
-@@ -277,7 +277,7 @@ EXPORT_SYMBOL_GPL(rcu_callback_map);
+diff --git a/kernel/rcu/tree.h b/kernel/rcu/tree.h
+index 71821d5..5fd0c44 100644
+--- a/kernel/rcu/tree.h
++++ b/kernel/rcu/tree.h
+@@ -115,6 +115,7 @@ struct rcu_node {
+ 				/*  boosting for this rcu_node structure. */
+ 	unsigned int boost_kthread_status;
+ 				/* State of boost_kthread_task for tracing. */
++	unsigned long n_boosts;	/* Number of boosts for this rcu_node structure. */
+ #ifdef CONFIG_RCU_NOCB_CPU
+ 	struct swait_queue_head nocb_gp_wq[2];
+ 				/* Place for rcu_nocb_kthread() to wait GP. */
+diff --git a/kernel/rcu/tree_plugin.h b/kernel/rcu/tree_plugin.h
+index 2cbe8f8..ef004cc 100644
+--- a/kernel/rcu/tree_plugin.h
++++ b/kernel/rcu/tree_plugin.h
+@@ -1098,6 +1098,7 @@ static int rcu_boost(struct rcu_node *rnp)
+ 	/* Lock only for side effect: boosts task t's priority. */
+ 	rt_mutex_lock(&rnp->boost_mtx);
+ 	rt_mutex_unlock(&rnp->boost_mtx);  /* Then keep lockdep happy. */
++	rnp->n_boosts++;
  
- noinstr int notrace debug_lockdep_rcu_enabled(void)
- {
--	return rcu_scheduler_active != RCU_SCHEDULER_INACTIVE && debug_locks &&
-+	return rcu_scheduler_active != RCU_SCHEDULER_INACTIVE && READ_ONCE(debug_locks) &&
- 	       current->lockdep_recursion == 0;
- }
- EXPORT_SYMBOL_GPL(debug_lockdep_rcu_enabled);
+ 	return READ_ONCE(rnp->exp_tasks) != NULL ||
+ 	       READ_ONCE(rnp->boost_tasks) != NULL;
+diff --git a/kernel/rcu/tree_stall.h b/kernel/rcu/tree_stall.h
+index a4e2bb3..c1f8386 100644
+--- a/kernel/rcu/tree_stall.h
++++ b/kernel/rcu/tree_stall.h
+@@ -749,9 +749,15 @@ void show_rcu_gp_kthreads(void)
+ 		if (ULONG_CMP_GE(READ_ONCE(rcu_state.gp_seq),
+ 				 READ_ONCE(rnp->gp_seq_needed)))
+ 			continue;
+-		pr_info("\trcu_node %d:%d ->gp_seq %ld ->gp_seq_needed %ld\n",
+-			rnp->grplo, rnp->grphi, (long)data_race(rnp->gp_seq),
+-			(long)data_race(rnp->gp_seq_needed));
++		pr_info("\trcu_node %d:%d ->gp_seq %ld ->gp_seq_needed %ld ->qsmask %#lx %c%c%c%c ->n_boosts %ld\n",
++			rnp->grplo, rnp->grphi,
++			(long)data_race(rnp->gp_seq), (long)data_race(rnp->gp_seq_needed),
++			data_race(rnp->qsmask),
++			".b"[!!data_race(rnp->boost_kthread_task)],
++			".B"[!!data_race(rnp->boost_tasks)],
++			".E"[!!data_race(rnp->exp_tasks)],
++			".G"[!!data_race(rnp->gp_tasks)],
++			data_race(rnp->n_boosts));
+ 		if (!rcu_is_leaf_node(rnp))
+ 			continue;
+ 		for_each_leaf_node_possible_cpu(rnp, cpu) {
