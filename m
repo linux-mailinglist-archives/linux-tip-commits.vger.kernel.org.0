@@ -2,50 +2,50 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 787873B838A
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 30 Jun 2021 15:47:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ECF983B8391
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 30 Jun 2021 15:47:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235370AbhF3NuA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 30 Jun 2021 09:50:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45530 "EHLO
+        id S235552AbhF3NuH (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 30 Jun 2021 09:50:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45548 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235256AbhF3Nt4 (ORCPT
+        with ESMTP id S235296AbhF3Nt6 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 30 Jun 2021 09:49:56 -0400
+        Wed, 30 Jun 2021 09:49:58 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55BE2C061766;
-        Wed, 30 Jun 2021 06:47:27 -0700 (PDT)
-Date:   Wed, 30 Jun 2021 13:47:25 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A54CC0613A3;
+        Wed, 30 Jun 2021 06:47:29 -0700 (PDT)
+Date:   Wed, 30 Jun 2021 13:47:26 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1625060846;
+        s=2020; t=1625060847;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=z+0O4gmSocSHIfxyCoDnZxujbzpjdQSoG2fmfZsXpEo=;
-        b=UwD0hXWEYeEk9mBsRfPlnmBpppmIsIzTqpOnNVhOq6A7QawJslX0txIwONyx/uQAUNvzsb
-        elSI6zETsHyRK0xDK6nLRhbyx//7UUZK5CH8VEvxF84j4//bMRk5arRAVXXSTr7YgykxxT
-        1zGhayexseKJgzm8lmOOoFDoHsnE5EX456AAykoND3WK0oq1vLph4yLBxjeVLEqrk0xLx4
-        /pqNcS70VrqEivkx9iW+K6VIhPCeHtvPOTnQNDape0C7KPTpMd7kuwrueA8BduynBtCcxy
-        R0Yzq0/mEstX/RzoJH7WVCQA0oF57Cigf4qMuIzGjn4IroGZLURiPlNQ9HZ2cw==
+        bh=ZHeoUZhbZabmrTUUbMclAsfWoD6nsZRwbPSj9wRJmtc=;
+        b=do1Q3pqQO3YamNFCjtGh6ES3d9jdYcWWW0uZ6zCbt+UJD43ZNOrCO/SiIjaVgiJlkYANeZ
+        Lnx25SoNmqZm6IEkBfA4GsN+xKD6wOyKdzmR2XDmLz9XsyH+SWX00hAThIMn6TgOB1lRc4
+        5y1X61En3QhWOaWrCH3OmH07t0w6s0Mk0MIbIL2tlWWuFcknqOr1pvCvljO3ZCYzECTmlJ
+        H4LJA1V2CkDON2+j0+9wNC7Hgf6T0glVJ3SHjpgkiLKULxXfrNqnD+PAAGzAEnGHKcjUvX
+        xDkWQ01p/iQbLXhg1v/sqRg777gmA7Lf3KR8w7tyFmusTt825V8N4uk6B6Z5JA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1625060846;
+        s=2020e; t=1625060847;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=z+0O4gmSocSHIfxyCoDnZxujbzpjdQSoG2fmfZsXpEo=;
-        b=+crS8kKm5C6TsO2k2Abe5FBnfrSHzfxW41BlJ5OBePeopt/9BAoUXMqGZF1d1Jom8PCBGF
-        tcLmz0mV44kS0nCg==
-From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
+        bh=ZHeoUZhbZabmrTUUbMclAsfWoD6nsZRwbPSj9wRJmtc=;
+        b=VV6sCY+sfWFps6N3c4LiXk/tBGd1rizWWHm0+EzsV+vMG28Zaf8/toryaCxA47MNoFCSYI
+        ZFiJ375ZzVusFJCw==
+From:   "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcu: Improve comments describing RCU read-side
- critical sections
-Cc:     Michel Lespinasse <michel@lespinasse.org>,
+Subject: [tip: core/rcu] rcu: Fix various typos in comments
+Cc:     Randy Dunlap <rdunlap@infradead.org>,
+        Ingo Molnar <mingo@kernel.org>,
         "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <162506084535.395.4381491579446685180.tip-bot2@tip-bot2>
+Message-ID: <162506084688.395.16277413984460958821.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -56,149 +56,170 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     1893afd63409111c6edcee9d6e1196fc06cf4fd7
-Gitweb:        https://git.kernel.org/tip/1893afd63409111c6edcee9d6e1196fc06cf4fd7
-Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Thu, 29 Apr 2021 11:18:01 -07:00
+Commit-ID:     a616aec9aa140ef1ca61b06cec467391cbef11d7
+Gitweb:        https://git.kernel.org/tip/a616aec9aa140ef1ca61b06cec467391cbef11d7
+Author:        Ingo Molnar <mingo@kernel.org>
+AuthorDate:    Mon, 22 Mar 2021 22:29:10 -07:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Thu, 13 May 2021 09:13:23 -07:00
+CommitterDate: Wed, 12 May 2021 12:11:05 -07:00
 
-rcu: Improve comments describing RCU read-side critical sections
+rcu: Fix various typos in comments
 
-There are a number of places that call out the fact that preempt-disable
-regions of code now act as RCU read-side critical sections, where
-preempt-disable regions of code include irq-disable regions of code,
-bh-disable regions of code, hardirq handlers, and NMI handlers.  However,
-someone relying solely on (for example) the call_rcu() header comment
-might well have no idea that preempt-disable regions of code have RCU
-semantics.
+Fix ~12 single-word typos in RCU code comments.
 
-This commit therefore updates the header comments for
-call_rcu(), synchronize_rcu(), rcu_dereference_bh_check(), and
-rcu_dereference_sched_check() to call out these new(ish) forms of RCU
-readers.
-
-Reported-by: Michel Lespinasse <michel@lespinasse.org>
-[ paulmck: Apply Matthew Wilcox and Michel Lespinasse feedback. ]
+[ paulmck: Apply feedback from Randy Dunlap. ]
+Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- include/linux/rcupdate.h | 35 ++++++++++++++++++++++++++++-------
- kernel/rcu/tree.c        | 24 ++++++++++++++----------
- 2 files changed, 42 insertions(+), 17 deletions(-)
+ kernel/rcu/srcutree.c                                           | 4 ++--
+ kernel/rcu/sync.c                                               | 4 ++--
+ kernel/rcu/tasks.h                                              | 8 +++----
+ kernel/rcu/tree.c                                               | 6 ++---
+ kernel/rcu/tree.h                                               | 2 +-
+ kernel/rcu/tree_plugin.h                                        | 2 +-
+ tools/testing/selftests/rcutorture/formal/srcu-cbmc/src/locks.h | 2 +-
+ 7 files changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/include/linux/rcupdate.h b/include/linux/rcupdate.h
-index b071d02..f0eecb9 100644
---- a/include/linux/rcupdate.h
-+++ b/include/linux/rcupdate.h
-@@ -532,7 +532,12 @@ do {									      \
-  * @p: The pointer to read, prior to dereferencing
-  * @c: The conditions under which the dereference will take place
+diff --git a/kernel/rcu/srcutree.c b/kernel/rcu/srcutree.c
+index e26547b..036ff54 100644
+--- a/kernel/rcu/srcutree.c
++++ b/kernel/rcu/srcutree.c
+@@ -777,9 +777,9 @@ static bool srcu_might_be_idle(struct srcu_struct *ssp)
+ 	spin_unlock_irqrestore_rcu_node(sdp, flags);
+ 
+ 	/*
+-	 * No local callbacks, so probabalistically probe global state.
++	 * No local callbacks, so probabilistically probe global state.
+ 	 * Exact information would require acquiring locks, which would
+-	 * kill scalability, hence the probabalistic nature of the probe.
++	 * kill scalability, hence the probabilistic nature of the probe.
+ 	 */
+ 
+ 	/* First, see if enough time has passed since the last GP. */
+diff --git a/kernel/rcu/sync.c b/kernel/rcu/sync.c
+index d4558ab..33d896d 100644
+--- a/kernel/rcu/sync.c
++++ b/kernel/rcu/sync.c
+@@ -94,9 +94,9 @@ static void rcu_sync_func(struct rcu_head *rhp)
+ 		rcu_sync_call(rsp);
+ 	} else {
+ 		/*
+-		 * We're at least a GP after the last rcu_sync_exit(); eveybody
++		 * We're at least a GP after the last rcu_sync_exit(); everybody
+ 		 * will now have observed the write side critical section.
+-		 * Let 'em rip!.
++		 * Let 'em rip!
+ 		 */
+ 		WRITE_ONCE(rsp->gp_state, GP_IDLE);
+ 	}
+diff --git a/kernel/rcu/tasks.h b/kernel/rcu/tasks.h
+index 350ebf5..da906b7 100644
+--- a/kernel/rcu/tasks.h
++++ b/kernel/rcu/tasks.h
+@@ -23,7 +23,7 @@ typedef void (*postgp_func_t)(struct rcu_tasks *rtp);
+  * struct rcu_tasks - Definition for a Tasks-RCU-like mechanism.
+  * @cbs_head: Head of callback list.
+  * @cbs_tail: Tail pointer for callback list.
+- * @cbs_wq: Wait queue allowning new callback to get kthread's attention.
++ * @cbs_wq: Wait queue allowing new callback to get kthread's attention.
+  * @cbs_lock: Lock protecting callback list.
+  * @kthread_ptr: This flavor's grace-period/callback-invocation kthread.
+  * @gp_func: This flavor's grace-period-wait function.
+@@ -504,7 +504,7 @@ DEFINE_RCU_TASKS(rcu_tasks, rcu_tasks_wait_gp, call_rcu_tasks, "RCU Tasks");
+  * or transition to usermode execution.  As such, there are no read-side
+  * primitives analogous to rcu_read_lock() and rcu_read_unlock() because
+  * this primitive is intended to determine that all tasks have passed
+- * through a safe state, not so much for data-strcuture synchronization.
++ * through a safe state, not so much for data-structure synchronization.
   *
-- * This is the RCU-bh counterpart to rcu_dereference_check().
-+ * This is the RCU-bh counterpart to rcu_dereference_check().  However,
-+ * please note that starting in v5.0 kernels, vanilla RCU grace periods
-+ * wait for local_bh_disable() regions of code in addition to regions of
-+ * code demarked by rcu_read_lock() and rcu_read_unlock().  This means
-+ * that synchronize_rcu(), call_rcu, and friends all take not only
-+ * rcu_read_lock() but also rcu_read_lock_bh() into account.
-  */
- #define rcu_dereference_bh_check(p, c) \
- 	__rcu_dereference_check((p), (c) || rcu_read_lock_bh_held(), __rcu)
-@@ -543,6 +548,11 @@ do {									      \
-  * @c: The conditions under which the dereference will take place
+  * See the description of call_rcu() for more detailed information on
+  * memory ordering guarantees.
+@@ -637,7 +637,7 @@ DEFINE_RCU_TASKS(rcu_tasks_rude, rcu_tasks_rude_wait_gp, call_rcu_tasks_rude,
+  * there are no read-side primitives analogous to rcu_read_lock() and
+  * rcu_read_unlock() because this primitive is intended to determine
+  * that all tasks have passed through a safe state, not so much for
+- * data-strcuture synchronization.
++ * data-structure synchronization.
   *
-  * This is the RCU-sched counterpart to rcu_dereference_check().
-+ * However, please note that starting in v5.0 kernels, vanilla RCU grace
-+ * periods wait for preempt_disable() regions of code in addition to
-+ * regions of code demarked by rcu_read_lock() and rcu_read_unlock().
-+ * This means that synchronize_rcu(), call_rcu, and friends all take not
-+ * only rcu_read_lock() but also rcu_read_lock_sched() into account.
-  */
- #define rcu_dereference_sched_check(p, c) \
- 	__rcu_dereference_check((p), (c) || rcu_read_lock_sched_held(), \
-@@ -634,6 +644,12 @@ do {									      \
-  * sections, invocation of the corresponding RCU callback is deferred
-  * until after the all the other CPUs exit their critical sections.
+  * See the description of call_rcu() for more detailed information on
+  * memory ordering guarantees.
+@@ -1163,7 +1163,7 @@ static void exit_tasks_rcu_finish_trace(struct task_struct *t)
+  * there are no read-side primitives analogous to rcu_read_lock() and
+  * rcu_read_unlock() because this primitive is intended to determine
+  * that all tasks have passed through a safe state, not so much for
+- * data-strcuture synchronization.
++ * data-structure synchronization.
   *
-+ * In v5.0 and later kernels, synchronize_rcu() and call_rcu() also
-+ * wait for regions of code with preemption disabled, including regions of
-+ * code with interrupts or softirqs disabled.  In pre-v5.0 kernels, which
-+ * define synchronize_sched(), only code enclosed within rcu_read_lock()
-+ * and rcu_read_unlock() are guaranteed to be waited for.
-+ *
-  * Note, however, that RCU callbacks are permitted to run concurrently
-  * with new RCU read-side critical sections.  One way that this can happen
-  * is via the following sequence of events: (1) CPU 0 enters an RCU
-@@ -728,9 +744,11 @@ static inline void rcu_read_unlock(void)
- /**
-  * rcu_read_lock_bh() - mark the beginning of an RCU-bh critical section
-  *
-- * This is equivalent of rcu_read_lock(), but also disables softirqs.
-- * Note that anything else that disables softirqs can also serve as
-- * an RCU read-side critical section.
-+ * This is equivalent to rcu_read_lock(), but also disables softirqs.
-+ * Note that anything else that disables softirqs can also serve as an RCU
-+ * read-side critical section.  However, please note that this equivalence
-+ * applies only to v5.0 and later.  Before v5.0, rcu_read_lock() and
-+ * rcu_read_lock_bh() were unrelated.
-  *
-  * Note that rcu_read_lock_bh() and the matching rcu_read_unlock_bh()
-  * must occur in the same context, for example, it is illegal to invoke
-@@ -763,9 +781,12 @@ static inline void rcu_read_unlock_bh(void)
- /**
-  * rcu_read_lock_sched() - mark the beginning of a RCU-sched critical section
-  *
-- * This is equivalent of rcu_read_lock(), but disables preemption.
-- * Read-side critical sections can also be introduced by anything else
-- * that disables preemption, including local_irq_disable() and friends.
-+ * This is equivalent to rcu_read_lock(), but also disables preemption.
-+ * Read-side critical sections can also be introduced by anything else that
-+ * disables preemption, including local_irq_disable() and friends.  However,
-+ * please note that the equivalence to rcu_read_lock() applies only to
-+ * v5.0 and later.  Before v5.0, rcu_read_lock() and rcu_read_lock_sched()
-+ * were unrelated.
-  *
-  * Note that rcu_read_lock_sched() and the matching rcu_read_unlock_sched()
-  * must occur in the same context, for example, it is illegal to invoke
+  * See the description of call_rcu() for more detailed information on
+  * memory ordering guarantees.
 diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
-index 2437960..4b00e4f 100644
+index 5f1545a..ed1b546 100644
 --- a/kernel/rcu/tree.c
 +++ b/kernel/rcu/tree.c
-@@ -3059,12 +3059,14 @@ __call_rcu(struct rcu_head *head, rcu_callback_t func)
-  * period elapses, in other words after all pre-existing RCU read-side
-  * critical sections have completed.  However, the callback function
-  * might well execute concurrently with RCU read-side critical sections
-- * that started after call_rcu() was invoked.  RCU read-side critical
-- * sections are delimited by rcu_read_lock() and rcu_read_unlock(), and
-- * may be nested.  In addition, regions of code across which interrupts,
-- * preemption, or softirqs have been disabled also serve as RCU read-side
-- * critical sections.  This includes hardware interrupt handlers, softirq
-- * handlers, and NMI handlers.
-+ * that started after call_rcu() was invoked.
-+ *
-+ * RCU read-side critical sections are delimited by rcu_read_lock()
-+ * and rcu_read_unlock(), and may be nested.  In addition, but only in
-+ * v5.0 and later, regions of code across which interrupts, preemption,
-+ * or softirqs have been disabled also serve as RCU read-side critical
-+ * sections.  This includes hardware interrupt handlers, softirq handlers,
-+ * and NMI handlers.
+@@ -2489,7 +2489,7 @@ int rcutree_dead_cpu(unsigned int cpu)
+ 
+ /*
+  * Invoke any RCU callbacks that have made it to the end of their grace
+- * period.  Thottle as specified by rdp->blimit.
++ * period.  Throttle as specified by rdp->blimit.
+  */
+ static void rcu_do_batch(struct rcu_data *rdp)
+ {
+@@ -3848,7 +3848,7 @@ EXPORT_SYMBOL_GPL(start_poll_synchronize_rcu);
   *
-  * Note that all CPUs must agree that the grace period extended beyond
-  * all pre-existing RCU read-side critical section.  On systems with more
-@@ -3730,10 +3732,12 @@ static int rcu_blocking_is_gp(void)
-  * read-side critical sections have completed.  Note, however, that
-  * upon return from synchronize_rcu(), the caller might well be executing
-  * concurrently with new RCU read-side critical sections that began while
-- * synchronize_rcu() was waiting.  RCU read-side critical sections are
-- * delimited by rcu_read_lock() and rcu_read_unlock(), and may be nested.
-- * In addition, regions of code across which interrupts, preemption, or
-- * softirqs have been disabled also serve as RCU read-side critical
-+ * synchronize_rcu() was waiting.
-+ *
-+ * RCU read-side critical sections are delimited by rcu_read_lock()
-+ * and rcu_read_unlock(), and may be nested.  In addition, but only in
-+ * v5.0 and later, regions of code across which interrupts, preemption,
-+ * or softirqs have been disabled also serve as RCU read-side critical
-  * sections.  This includes hardware interrupt handlers, softirq handlers,
-  * and NMI handlers.
-  *
+  * If a full RCU grace period has elapsed since the earlier call from
+  * which oldstate was obtained, return @true, otherwise return @false.
+- * If @false is returned, it is the caller's responsibilty to invoke this
++ * If @false is returned, it is the caller's responsibility to invoke this
+  * function later on until it does return @true.  Alternatively, the caller
+  * can explicitly wait for a grace period, for example, by passing @oldstate
+  * to cond_synchronize_rcu() or by directly invoking synchronize_rcu().
+@@ -4094,7 +4094,7 @@ EXPORT_SYMBOL_GPL(rcu_barrier);
+ /*
+  * Propagate ->qsinitmask bits up the rcu_node tree to account for the
+  * first CPU in a given leaf rcu_node structure coming online.  The caller
+- * must hold the corresponding leaf rcu_node ->lock with interrrupts
++ * must hold the corresponding leaf rcu_node ->lock with interrupts
+  * disabled.
+  */
+ static void rcu_init_new_rnp(struct rcu_node *rnp_leaf)
+diff --git a/kernel/rcu/tree.h b/kernel/rcu/tree.h
+index 9a16487..c1ed047 100644
+--- a/kernel/rcu/tree.h
++++ b/kernel/rcu/tree.h
+@@ -153,7 +153,7 @@ struct rcu_data {
+ 	unsigned long	gp_seq;		/* Track rsp->gp_seq counter. */
+ 	unsigned long	gp_seq_needed;	/* Track furthest future GP request. */
+ 	union rcu_noqs	cpu_no_qs;	/* No QSes yet for this CPU. */
+-	bool		core_needs_qs;	/* Core waits for quiesc state. */
++	bool		core_needs_qs;	/* Core waits for quiescent state. */
+ 	bool		beenonline;	/* CPU online at least once. */
+ 	bool		gpwrap;		/* Possible ->gp_seq wrap. */
+ 	bool		exp_deferred_qs; /* This CPU awaiting a deferred QS? */
+diff --git a/kernel/rcu/tree_plugin.h b/kernel/rcu/tree_plugin.h
+index dfb048e..b0c3fb4 100644
+--- a/kernel/rcu/tree_plugin.h
++++ b/kernel/rcu/tree_plugin.h
+@@ -2857,7 +2857,7 @@ static void show_rcu_nocb_state(struct rcu_data *rdp)
+ 	waslocked = raw_spin_is_locked(&rdp->nocb_gp_lock);
+ 	wassleep = swait_active(&rdp->nocb_gp_wq);
+ 	if (!rdp->nocb_gp_sleep && !waslocked && !wassleep)
+-		return;  /* Nothing untowards. */
++		return;  /* Nothing untoward. */
+ 
+ 	pr_info("   nocb GP activity on CB-only CPU!!! %c%c%c %c\n",
+ 		"lL"[waslocked],
+diff --git a/tools/testing/selftests/rcutorture/formal/srcu-cbmc/src/locks.h b/tools/testing/selftests/rcutorture/formal/srcu-cbmc/src/locks.h
+index cf6938d..1e24827 100644
+--- a/tools/testing/selftests/rcutorture/formal/srcu-cbmc/src/locks.h
++++ b/tools/testing/selftests/rcutorture/formal/srcu-cbmc/src/locks.h
+@@ -174,7 +174,7 @@ static inline bool spin_trylock(spinlock_t *lock)
+ }
+ 
+ struct completion {
+-	/* Hopefuly this won't overflow. */
++	/* Hopefully this won't overflow. */
+ 	unsigned int count;
+ };
+ 
