@@ -2,46 +2,45 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E23783B83C9
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 30 Jun 2021 15:48:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77EDD3B83C6
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 30 Jun 2021 15:48:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235982AbhF3Nuv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 30 Jun 2021 09:50:51 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:33100 "EHLO
+        id S235977AbhF3Nut (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 30 Jun 2021 09:50:49 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:32948 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235445AbhF3NuU (ORCPT
+        with ESMTP id S235726AbhF3NuT (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 30 Jun 2021 09:50:20 -0400
+        Wed, 30 Jun 2021 09:50:19 -0400
 Date:   Wed, 30 Jun 2021 13:47:49 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1625060870;
+        s=2020; t=1625060869;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=YioS2un3ZYLBbBpPQ8SXOOUnpBwYeU+oNN8dDnA2HDg=;
-        b=HP3gA+kT2p1BjlY+iYulwLWrIg+TVOIMw4t50S+d6rW9xc+TSKEC38GhSq624CZJ/9nQ0w
-        pXpcDibv11CfzIGTxaC4YrjZTUPhVP7XqKvweHcXOMegkt87dBzeZnwhYMcqoF5gAzrfo7
-        SiP6U7H6WSmMGsVoRkLz6RVjLmG+uD0+rSzQGmXkWA5GXmcuqcJQG+rkYwt5HcUheM7KXh
-        I0IhLnVi5IjT6cUB3Pk2dQCAvdeTIyEkgywMAiyhWxOUE/iPnvKlpZwQLqG52moJG4kee8
-        M4RRxSVN37anAwCrA6llsBiwqHFUGKQKIei6+EaRt531cJf+SF6s/cnL/RxF4g==
+        bh=1lw0oqyaTvt8g/76+r3QGB6eDMrmobBB1vkKyBb2FM8=;
+        b=1V6A8ONKfz00zc4+NcGPaOEVQV8qPSeBXUfQqYEOFW+I4N5mdCInhhoZ4cx8UXc10k18EW
+        FxD6vduLq6xttSJ6Zr9xApZDn0ZPdftXrFGwRxcblVT8zApxLIFqvZxBptS81BpB+mX8i2
+        Gh9n+hN9lJtEWm+4yeMkl1M6dk+gv4vwFgr3eVGt9p3l3mSiw7DZQlw2j225+OCb6OVFlt
+        2PIULkwolgUIA1j39tpSyOVKuMwVPgaqdfwwInMHLa79kYHn8D6iGzfXzrHqmhefO7R1mP
+        UGM2gHypCxRwGZ8lYLIh4UHTDBSkA2nbhRkAxkC/Z2EV+O2tzezeJkVMREcA9w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1625060870;
+        s=2020e; t=1625060869;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=YioS2un3ZYLBbBpPQ8SXOOUnpBwYeU+oNN8dDnA2HDg=;
-        b=Cn8lSW/rCYYLPu5ixQhnCkQJmzc7oVScz+XkM/Waa1fT66UbPDIEFfZlJMZJFf+J/jUygB
-        w0elg2NhpgjH/8Bg==
+        bh=1lw0oqyaTvt8g/76+r3QGB6eDMrmobBB1vkKyBb2FM8=;
+        b=aEA4asHfVYGHM/1MmT6F9mIVSAkSkbdsaTVo81tQxdUuxad5YJ5bbjtL+zxxo/2t6TeA5n
+        HJOTOSMkRv4CxVDg==
 From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] torture: Make kvm-again.sh use "scenarios" rather
- than "batches" file
+Subject: [tip: core/rcu] refscale: Allow CPU hotplug to be enabled
 Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <162506086971.395.8313118475534009388.tip-bot2@tip-bot2>
+Message-ID: <162506086920.395.7460514447042510441.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -52,68 +51,50 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     fb4855c36249b3609718d2b83f4756b748a83349
-Gitweb:        https://git.kernel.org/tip/fb4855c36249b3609718d2b83f4756b748a83349
+Commit-ID:     68d415f91ff2284828211e937f12a3f6d9a18cb9
+Gitweb:        https://git.kernel.org/tip/68d415f91ff2284828211e937f12a3f6d9a18cb9
 Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Thu, 04 Mar 2021 17:52:59 -08:00
+AuthorDate:    Fri, 05 Mar 2021 13:12:36 -08:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Mon, 10 May 2021 16:05:05 -07:00
 
-torture: Make kvm-again.sh use "scenarios" rather than "batches" file
+refscale: Allow CPU hotplug to be enabled
 
-This commit saves a few lines of code by making kvm-again.sh use the
-"scenarios" file rather than the "batches" file, both of which are
-generated by kvm.sh.
-
-This results in a break point because new versions of kvm-again.sh cannot
-handle "res" directories produced by old versions of kvm.sh, which lack
-the "scenarios" file.  In the unlikely event that this becomes a problem,
-a trivial script suffices to convert the "batches" file to a "scenarios"
-file, and this script may be easily extracted from kvm.sh.
+It is no longer possible to disable CPU hotplug in many configurations,
+which means that the CONFIG_HOTPLUG_CPU=n lines in refscale's Kconfig
+options are just a source of useless diagnostics.  In addition, refscale
+doesn't do CPU-hotplug operations in any case.  This commit therefore
+changes these lines to read CONFIG_HOTPLUG_CPU=y.
 
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- tools/testing/selftests/rcutorture/bin/kvm-again.sh | 22 +++---------
- 1 file changed, 6 insertions(+), 16 deletions(-)
+ tools/testing/selftests/rcutorture/configs/refscale/NOPREEMPT | 2 +-
+ tools/testing/selftests/rcutorture/configs/refscale/PREEMPT   | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/rcutorture/bin/kvm-again.sh b/tools/testing/selftests/rcutorture/bin/kvm-again.sh
-index 46e47a0..b74bb43 100755
---- a/tools/testing/selftests/rcutorture/bin/kvm-again.sh
-+++ b/tools/testing/selftests/rcutorture/bin/kvm-again.sh
-@@ -29,7 +29,7 @@ then
- 	echo "Usage: $scriptname /path/to/old/run [ options ]"
- 	exit 1
- fi
--if ! cp "$oldrun/batches" $T/batches.oldrun
-+if ! cp "$oldrun/scenarios" $T/scenarios.oldrun
- then
- 	# Later on, can reconstitute this from console.log files.
- 	echo Prior run batches file does not exist: $oldrun/batches
-@@ -165,22 +165,12 @@ done
- grep '^#' $i | sed -e 's/^# //' > $T/qemu-cmd-settings
- . $T/qemu-cmd-settings
- 
--grep -v '^#' $T/batches.oldrun | awk '
--BEGIN {
--	oldbatch = 1;
--}
--
-+grep -v '^#' $T/scenarios.oldrun | awk '
- {
--	if (oldbatch != $1) {
--		print "kvm-test-1-run-batch.sh" curbatch;
--		curbatch = "";
--		oldbatch = $1;
--	}
--	curbatch = curbatch " " $2;
--}
--
--END {
--	print "kvm-test-1-run-batch.sh" curbatch
-+	curbatch = "";
-+	for (i = 2; i <= NF; i++)
-+		curbatch = curbatch " " $i;
-+	print "kvm-test-1-run-batch.sh" curbatch;
- }' > $T/runbatches.sh
- 
- if test -n "$dryrun"
+diff --git a/tools/testing/selftests/rcutorture/configs/refscale/NOPREEMPT b/tools/testing/selftests/rcutorture/configs/refscale/NOPREEMPT
+index 1cd25b7..ad505a8 100644
+--- a/tools/testing/selftests/rcutorture/configs/refscale/NOPREEMPT
++++ b/tools/testing/selftests/rcutorture/configs/refscale/NOPREEMPT
+@@ -7,7 +7,7 @@ CONFIG_HZ_PERIODIC=n
+ CONFIG_NO_HZ_IDLE=y
+ CONFIG_NO_HZ_FULL=n
+ CONFIG_RCU_FAST_NO_HZ=n
+-CONFIG_HOTPLUG_CPU=n
++CONFIG_HOTPLUG_CPU=y
+ CONFIG_SUSPEND=n
+ CONFIG_HIBERNATION=n
+ CONFIG_RCU_NOCB_CPU=n
+diff --git a/tools/testing/selftests/rcutorture/configs/refscale/PREEMPT b/tools/testing/selftests/rcutorture/configs/refscale/PREEMPT
+index d10bc69..4f08e64 100644
+--- a/tools/testing/selftests/rcutorture/configs/refscale/PREEMPT
++++ b/tools/testing/selftests/rcutorture/configs/refscale/PREEMPT
+@@ -7,7 +7,7 @@ CONFIG_HZ_PERIODIC=n
+ CONFIG_NO_HZ_IDLE=y
+ CONFIG_NO_HZ_FULL=n
+ CONFIG_RCU_FAST_NO_HZ=n
+-CONFIG_HOTPLUG_CPU=n
++CONFIG_HOTPLUG_CPU=y
+ CONFIG_SUSPEND=n
+ CONFIG_HIBERNATION=n
+ CONFIG_RCU_NOCB_CPU=n
