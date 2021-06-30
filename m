@@ -2,45 +2,45 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 25D673B83B2
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 30 Jun 2021 15:48:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F4D73B83B4
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 30 Jun 2021 15:48:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235852AbhF3Nuf (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 30 Jun 2021 09:50:35 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:33022 "EHLO
+        id S235860AbhF3Nuh (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 30 Jun 2021 09:50:37 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:33026 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235585AbhF3NuJ (ORCPT
+        with ESMTP id S235614AbhF3NuJ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Wed, 30 Jun 2021 09:50:09 -0400
-Date:   Wed, 30 Jun 2021 13:47:38 -0000
+Date:   Wed, 30 Jun 2021 13:47:39 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1625060859;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=PDmxAqsZO6JsGndDwe3N93wlBkyUQ3Gr0Aa2UGJGxUw=;
-        b=o1LEgMGutg57rb71EJ+FCXagz21FTb0ROyPERVGewPjT7/Tb6P3Or0EdzAJVPeTLxgMcuC
-        6CQ9CIwjsIDtO2gJaaGRpmrVoHjxDE+YHcjyEJGtB7CCW9oKFKSb6//Aat1LTfH/VjGG41
-        4y6NJclbtG8KfI71NsqPK0Bszhx3nqSzejWIh+0cvgeVfTN71NLSvF5g3l0LSP3Zd/1Sy0
-        0qZcx0u8lE4+8K3/iYmzT9LmAlhrz3dHllquyVfjKJ5CWhVZBezf+naCAyQbMEeIGwp9RV
-        NSsWKT6cT5Gd2tW4f0C0stoRMKbu6hxYC8l21gizsBtVAYK+6YjRW4qatXOXGQ==
+        bh=kL6CVJ+s2DZDmxVIA4tmPAxbLtBvMygPURAXX4ePioQ=;
+        b=CurLAFm2TjdsHvQ1mRJSlK3WQ4zJg5ME+iUa1/6lwMKzSThsA7YLQNUQoN3oG77TzBWWrm
+        kSURm3YW5bpt2Zl3PvXYKw9pTBCoo3qV8V+8DHSASqNZHP35bwU4jddwPbjaRJzl5tRXRc
+        kvIFnNPc7Vv7N3/SzXzF1VDcM41CBdoZhETLGLJeZqrSrRkjNrDr/ROWUKviz4yvaFMa/a
+        svLwjMQNZ4pD1J8LBOj2Xlmh5ebW5fANucLoF9Zy6mvI7JTblihEw1UMonbXHk1F69iLpi
+        PlGvonahf6HS1nmgJgT4pmWQLe4WxaucBf1AjMifrH+ec2jFU9TvJaP/gGuEXA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1625060859;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=PDmxAqsZO6JsGndDwe3N93wlBkyUQ3Gr0Aa2UGJGxUw=;
-        b=Ky4iQFHZS7o404SLaiIQTYljuK2dNhtqn/EhtTgA0j88l6sMI52fHavlNB34QUCi2iTcNa
-        nm7jnD2wOnaImTAA==
+        bh=kL6CVJ+s2DZDmxVIA4tmPAxbLtBvMygPURAXX4ePioQ=;
+        b=Z19lvsLCUbNdd06uetwybguqEi64H15ewzsEiVEPJyyPG9lJ4pccYCxESQps8uXI3T5go2
+        pMp4thnQE6qZUcAA==
 From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcutorture: Move mem_dump_obj() tests into separate function
+Subject: [tip: core/rcu] torture: Don't cap remote runs by build-system number of CPUs
 Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <162506085853.395.5471683826443564751.tip-bot2@tip-bot2>
+Message-ID: <162506085903.395.9968620011066631581.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -51,123 +51,87 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     7ab2bd31df871408792eac871c4187e29d039315
-Gitweb:        https://git.kernel.org/tip/7ab2bd31df871408792eac871c4187e29d039315
+Commit-ID:     3d78668e5b50f1a28fdfd4293fc61b90eb10ba75
+Gitweb:        https://git.kernel.org/tip/3d78668e5b50f1a28fdfd4293fc61b90eb10ba75
 Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Sun, 02 May 2021 19:56:05 -07:00
+AuthorDate:    Tue, 27 Apr 2021 13:51:35 -07:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Mon, 10 May 2021 16:05:07 -07:00
 
-rcutorture: Move mem_dump_obj() tests into separate function
+torture: Don't cap remote runs by build-system number of CPUs
 
-To make the purpose of the code more apparent, this commit moves the
-tests of mem_dump_obj() to a new rcu_torture_mem_dump_obj() function
-and calls it from rcu_torture_cleanup().
+Currently, if a torture scenario requires more CPUs than are present
+on the build system, kvm.sh and friends limit the CPUs available to
+that scenario.  This makes total sense when the build system and the
+system running the scenarios are one and the same, but not so much when
+remote systems might well have more CPUs.
+
+This commit therefore introduces a --remote flag to kvm.sh that suppresses
+this CPU-limiting behavior, and causes kvm-remote.sh to use this flag.
 
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/rcu/rcutorture.c | 81 ++++++++++++++++++++--------------------
- 1 file changed, 42 insertions(+), 39 deletions(-)
+ tools/testing/selftests/rcutorture/bin/kvm-remote.sh |  2 +-
+ tools/testing/selftests/rcutorture/bin/kvm.sh        | 14 ++++++++---
+ 2 files changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/rcu/rcutorture.c b/kernel/rcu/rcutorture.c
-index 8b347b9..ec69273 100644
---- a/kernel/rcu/rcutorture.c
-+++ b/kernel/rcu/rcutorture.c
-@@ -1868,48 +1868,49 @@ rcu_torture_stats(void *arg)
- 		torture_shutdown_absorb("rcu_torture_stats");
- 	} while (!torture_must_stop());
- 	torture_kthread_stopping("rcu_torture_stats");
--
--	{
--		struct rcu_head *rhp;
--		struct kmem_cache *kcp;
--		static int z;
--
--		kcp = kmem_cache_create("rcuscale", 136, 8, SLAB_STORE_USER, NULL);
--		rhp = kmem_cache_alloc(kcp, GFP_KERNEL);
--		pr_alert("mem_dump_obj() slab test: rcu_torture_stats = %px, &rhp = %px, rhp = %px, &z = %px\n", stats_task, &rhp, rhp, &z);
--		pr_alert("mem_dump_obj(ZERO_SIZE_PTR):");
--		mem_dump_obj(ZERO_SIZE_PTR);
--		pr_alert("mem_dump_obj(NULL):");
--		mem_dump_obj(NULL);
--		pr_alert("mem_dump_obj(%px):", &rhp);
--		mem_dump_obj(&rhp);
--		pr_alert("mem_dump_obj(%px):", rhp);
--		mem_dump_obj(rhp);
--		pr_alert("mem_dump_obj(%px):", &rhp->func);
--		mem_dump_obj(&rhp->func);
--		pr_alert("mem_dump_obj(%px):", &z);
--		mem_dump_obj(&z);
--		kmem_cache_free(kcp, rhp);
--		kmem_cache_destroy(kcp);
--		rhp = kmalloc(sizeof(*rhp), GFP_KERNEL);
--		pr_alert("mem_dump_obj() kmalloc test: rcu_torture_stats = %px, &rhp = %px, rhp = %px\n", stats_task, &rhp, rhp);
--		pr_alert("mem_dump_obj(kmalloc %px):", rhp);
--		mem_dump_obj(rhp);
--		pr_alert("mem_dump_obj(kmalloc %px):", &rhp->func);
--		mem_dump_obj(&rhp->func);
--		kfree(rhp);
--		rhp = vmalloc(4096);
--		pr_alert("mem_dump_obj() vmalloc test: rcu_torture_stats = %px, &rhp = %px, rhp = %px\n", stats_task, &rhp, rhp);
--		pr_alert("mem_dump_obj(vmalloc %px):", rhp);
--		mem_dump_obj(rhp);
--		pr_alert("mem_dump_obj(vmalloc %px):", &rhp->func);
--		mem_dump_obj(&rhp->func);
--		vfree(rhp);
--	}
--
- 	return 0;
- }
- 
-+/* Test mem_dump_obj() and friends.  */
-+static void rcu_torture_mem_dump_obj(void)
-+{
-+	struct rcu_head *rhp;
-+	struct kmem_cache *kcp;
-+	static int z;
-+
-+	kcp = kmem_cache_create("rcuscale", 136, 8, SLAB_STORE_USER, NULL);
-+	rhp = kmem_cache_alloc(kcp, GFP_KERNEL);
-+	pr_alert("mem_dump_obj() slab test: rcu_torture_stats = %px, &rhp = %px, rhp = %px, &z = %px\n", stats_task, &rhp, rhp, &z);
-+	pr_alert("mem_dump_obj(ZERO_SIZE_PTR):");
-+	mem_dump_obj(ZERO_SIZE_PTR);
-+	pr_alert("mem_dump_obj(NULL):");
-+	mem_dump_obj(NULL);
-+	pr_alert("mem_dump_obj(%px):", &rhp);
-+	mem_dump_obj(&rhp);
-+	pr_alert("mem_dump_obj(%px):", rhp);
-+	mem_dump_obj(rhp);
-+	pr_alert("mem_dump_obj(%px):", &rhp->func);
-+	mem_dump_obj(&rhp->func);
-+	pr_alert("mem_dump_obj(%px):", &z);
-+	mem_dump_obj(&z);
-+	kmem_cache_free(kcp, rhp);
-+	kmem_cache_destroy(kcp);
-+	rhp = kmalloc(sizeof(*rhp), GFP_KERNEL);
-+	pr_alert("mem_dump_obj() kmalloc test: rcu_torture_stats = %px, &rhp = %px, rhp = %px\n", stats_task, &rhp, rhp);
-+	pr_alert("mem_dump_obj(kmalloc %px):", rhp);
-+	mem_dump_obj(rhp);
-+	pr_alert("mem_dump_obj(kmalloc %px):", &rhp->func);
-+	mem_dump_obj(&rhp->func);
-+	kfree(rhp);
-+	rhp = vmalloc(4096);
-+	pr_alert("mem_dump_obj() vmalloc test: rcu_torture_stats = %px, &rhp = %px, rhp = %px\n", stats_task, &rhp, rhp);
-+	pr_alert("mem_dump_obj(vmalloc %px):", rhp);
-+	mem_dump_obj(rhp);
-+	pr_alert("mem_dump_obj(vmalloc %px):", &rhp->func);
-+	mem_dump_obj(&rhp->func);
-+	vfree(rhp);
-+}
-+
- static void
- rcu_torture_print_module_parms(struct rcu_torture_ops *cur_ops, const char *tag)
- {
-@@ -2825,6 +2826,8 @@ rcu_torture_cleanup(void)
- 	if (cur_ops->cleanup != NULL)
- 		cur_ops->cleanup();
- 
-+	rcu_torture_mem_dump_obj();
-+
- 	rcu_torture_stats_print();  /* -After- the stats thread is stopped! */
- 
- 	if (err_segs_recorded) {
+diff --git a/tools/testing/selftests/rcutorture/bin/kvm-remote.sh b/tools/testing/selftests/rcutorture/bin/kvm-remote.sh
+index 20e848d..79e680e 100755
+--- a/tools/testing/selftests/rcutorture/bin/kvm-remote.sh
++++ b/tools/testing/selftests/rcutorture/bin/kvm-remote.sh
+@@ -66,7 +66,7 @@ then
+ 		if (ds != "")
+ 			print "--datestamp " ds;
+ 	}'`"
+-	kvm.sh "$@" $datestamp --buildonly > $T/kvm.sh.out 2>&1
++	kvm.sh --remote "$@" $datestamp --buildonly > $T/kvm.sh.out 2>&1
+ 	ret=$?
+ 	if test "$ret" -ne 0
+ 	then
+diff --git a/tools/testing/selftests/rcutorture/bin/kvm.sh b/tools/testing/selftests/rcutorture/bin/kvm.sh
+index 390bb97..b4ac4ee 100755
+--- a/tools/testing/selftests/rcutorture/bin/kvm.sh
++++ b/tools/testing/selftests/rcutorture/bin/kvm.sh
+@@ -44,6 +44,7 @@ TORTURE_KCONFIG_KASAN_ARG=""
+ TORTURE_KCONFIG_KCSAN_ARG=""
+ TORTURE_KMAKE_ARG=""
+ TORTURE_QEMU_MEM=512
++TORTURE_REMOTE=
+ TORTURE_SHUTDOWN_GRACE=180
+ TORTURE_SUITE=rcu
+ TORTURE_MOD=rcutorture
+@@ -80,6 +81,7 @@ usage () {
+ 	echo "       --no-initrd"
+ 	echo "       --qemu-args qemu-arguments"
+ 	echo "       --qemu-cmd qemu-system-..."
++	echo "       --remote"
+ 	echo "       --results absolute-pathname"
+ 	echo "       --torture lock|rcu|rcuscale|refscale|scf"
+ 	echo "       --trust-make"
+@@ -115,10 +117,13 @@ do
+ 		checkarg --cpus "(number)" "$#" "$2" '^[0-9]*$' '^--'
+ 		cpus=$2
+ 		TORTURE_ALLOTED_CPUS="$2"
+-		max_cpus="`identify_qemu_vcpus`"
+-		if test "$TORTURE_ALLOTED_CPUS" -gt "$max_cpus"
++		if test -z "$TORTURE_REMOTE"
+ 		then
+-			TORTURE_ALLOTED_CPUS=$max_cpus
++			max_cpus="`identify_qemu_vcpus`"
++			if test "$TORTURE_ALLOTED_CPUS" -gt "$max_cpus"
++			then
++				TORTURE_ALLOTED_CPUS=$max_cpus
++			fi
+ 		fi
+ 		shift
+ 		;;
+@@ -209,6 +214,9 @@ do
+ 		TORTURE_QEMU_CMD="$2"
+ 		shift
+ 		;;
++	--remote)
++		TORTURE_REMOTE=1
++		;;
+ 	--results)
+ 		checkarg --results "(absolute pathname)" "$#" "$2" '^/' '^error'
+ 		resdir=$2
