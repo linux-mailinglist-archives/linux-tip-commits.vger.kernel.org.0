@@ -2,49 +2,45 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CF8B53B83C1
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 30 Jun 2021 15:48:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 019D33B83B1
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 30 Jun 2021 15:48:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235933AbhF3Nur (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 30 Jun 2021 09:50:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45530 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235699AbhF3NuQ (ORCPT
+        id S235572AbhF3Nue (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 30 Jun 2021 09:50:34 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:33020 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235565AbhF3NuI (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 30 Jun 2021 09:50:16 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D461C0613A2;
-        Wed, 30 Jun 2021 06:47:38 -0700 (PDT)
-Date:   Wed, 30 Jun 2021 13:47:36 -0000
+        Wed, 30 Jun 2021 09:50:08 -0400
+Date:   Wed, 30 Jun 2021 13:47:37 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1625060857;
+        s=2020; t=1625060858;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=87VNtRz0rk0PvL/shGTVb/ZG3ocf4HVDpP4pgIXoHfk=;
-        b=GZWDDRkn1klghAAY+AZw1YmRfGRTfpFvRG6ZAdaobuOKQZzejANOYFxs3xkzG4TiMqpn7U
-        UV28DdwdOeUp9KBwbqTaFJu6Mjn9RM6sby2nd7h0FgOarnKO16Oyw6UjZYbb3Rgdfrmcdm
-        vYJ28usEz1fX6JgYYbRzGlMVeX47I3AlE4mPsJmKQDd91oiJnc4EUa2h5ZZyD4EGlUYISK
-        7XQm87fyEGNaqA/HCojY0f713M6rd+wznMf5fRE0jjtr07L65bAtkWez+i6giwHJ9qK1+I
-        sF2xItdBIVFJ7odFjP2Wjb43n+qJ7AHnnJvG4oibJH+weafpz0I2oe0ljTnEog==
+        bh=6YiS1pulqScNuPZKDXVSPn3BBlzKcdZshBdNz9hWAAg=;
+        b=CHA5KkebHJ2BZKywR/2guxsM66f1VdbhFXQUEE6VicBJ+dOVuocN7r9/VBWVZVG81Q5Gh+
+        ucMbwrYZ9O9AWhTnQ6ZlqenUV/eEFayodcLRFZPVCydS+zUdMfojjp/5QCNNn7ixhh7zpi
+        DQx9mlCaGvLO/BZ2o7/3gHb7lesbz4EvAvb4RMJinSHTHpdoAEh6DrjMW80Z0N7ZRJqmaI
+        yosRk9EDdL+7w9umLL58tMDqIaQ9iFKAIIIZaL6q6SW/w7WphwXZSg2W4QKhK1WhoaG9uW
+        zCguBe8IcEU6i3Rc5VqdHCHvr+XvYiijEL/hqY4xBNuZ7Twk+a+TBGf38D7eLg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1625060857;
+        s=2020e; t=1625060858;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=87VNtRz0rk0PvL/shGTVb/ZG3ocf4HVDpP4pgIXoHfk=;
-        b=1XMzqkY3+nxQKUf7lD+Cx3n13Cd6ukVuUBjWNlPTFsG+VCj4I2dZcOVSleIVA3/CMy/hns
-        ruXiZoxY5VjqY2AQ==
+        bh=6YiS1pulqScNuPZKDXVSPn3BBlzKcdZshBdNz9hWAAg=;
+        b=32HhjTwTumtslUvsJbVuyl2rhdC0LA0L5zX4+zZwXA7rFBbeBZajM9FghTpjzBz9OvGNFD
+        gsE7mnG2vrpQU8Cg==
 From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcu: Add ->rt_priority and ->gp_start to
- show_rcu_gp_kthreads() output
+Subject: [tip: core/rcu] rcu: Remove the unused rcu_irq_exit_preempt() function
 Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <162506085647.395.1864286528181295737.tip-bot2@tip-bot2>
+Message-ID: <162506085799.395.6842149329962326753.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -55,48 +51,82 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     e44111ed20d8b2d7b05b20d694358ae77d4e93e2
-Gitweb:        https://git.kernel.org/tip/e44111ed20d8b2d7b05b20d694358ae77d4e93e2
+Commit-ID:     ce7c169dee28866539abb0e603b9a23055d30fdc
+Gitweb:        https://git.kernel.org/tip/ce7c169dee28866539abb0e603b9a23055d30fdc
 Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Fri, 02 Apr 2021 21:51:50 -07:00
+AuthorDate:    Tue, 30 Mar 2021 13:23:49 -07:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
-CommitterDate: Mon, 10 May 2021 16:22:54 -07:00
+CommitterDate: Mon, 10 May 2021 16:22:53 -07:00
 
-rcu: Add ->rt_priority and ->gp_start to show_rcu_gp_kthreads() output
+rcu: Remove the unused rcu_irq_exit_preempt() function
 
-This commit adds ->rt_priority and ->gp_start to show_rcu_gp_kthreads()
-output in order to better diagnose RCU priority boosting failures.
+Commit 9ee01e0f69a9 ("x86/entry: Clean up idtentry_enter/exit()
+leftovers") left the rcu_irq_exit_preempt() in place in order to avoid
+conflicts with the -rcu tree.  Now that this change has long since hit
+mainline, this commit removes the no-longer-used rcu_irq_exit_preempt()
+function.
 
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/rcu/tree_stall.h | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ include/linux/rcutiny.h |  1 -
+ include/linux/rcutree.h |  1 -
+ kernel/rcu/tree.c       | 22 ----------------------
+ 3 files changed, 24 deletions(-)
 
-diff --git a/kernel/rcu/tree_stall.h b/kernel/rcu/tree_stall.h
-index 59b95cc..fb47025 100644
---- a/kernel/rcu/tree_stall.h
-+++ b/kernel/rcu/tree_stall.h
-@@ -726,6 +726,7 @@ void show_rcu_gp_kthreads(void)
- 	unsigned long j;
- 	unsigned long ja;
- 	unsigned long jr;
-+	unsigned long js;
- 	unsigned long jw;
- 	struct rcu_data *rdp;
- 	struct rcu_node *rnp;
-@@ -734,11 +735,12 @@ void show_rcu_gp_kthreads(void)
- 	j = jiffies;
- 	ja = j - data_race(rcu_state.gp_activity);
- 	jr = j - data_race(rcu_state.gp_req_activity);
-+	js = j - data_race(rcu_state.gp_start);
- 	jw = j - data_race(rcu_state.gp_wake_time);
--	pr_info("%s: wait state: %s(%d) ->state: %#lx delta ->gp_activity %lu ->gp_req_activity %lu ->gp_wake_time %lu ->gp_wake_seq %ld ->gp_seq %ld ->gp_seq_needed %ld ->gp_flags %#x\n",
-+	pr_info("%s: wait state: %s(%d) ->state: %#lx ->rt_priority %u delta ->gp_start %lu ->gp_activity %lu ->gp_req_activity %lu ->gp_wake_time %lu ->gp_wake_seq %ld ->gp_seq %ld ->gp_seq_needed %ld ->gp_flags %#x\n",
- 		rcu_state.name, gp_state_getname(rcu_state.gp_state),
--		rcu_state.gp_state, t ? t->state : 0x1ffffL,
--		ja, jr, jw, (long)data_race(rcu_state.gp_wake_seq),
-+		rcu_state.gp_state, t ? t->state : 0x1ffffL, t ? t->rt_priority : 0xffU,
-+		js, ja, jr, jw, (long)data_race(rcu_state.gp_wake_seq),
- 		(long)data_race(rcu_state.gp_seq),
- 		(long)data_race(rcu_get_root()->gp_seq_needed),
- 		data_race(rcu_state.gp_flags));
+diff --git a/include/linux/rcutiny.h b/include/linux/rcutiny.h
+index 35e0be3..953e70f 100644
+--- a/include/linux/rcutiny.h
++++ b/include/linux/rcutiny.h
+@@ -86,7 +86,6 @@ static inline void rcu_irq_enter(void) { }
+ static inline void rcu_irq_exit_irqson(void) { }
+ static inline void rcu_irq_enter_irqson(void) { }
+ static inline void rcu_irq_exit(void) { }
+-static inline void rcu_irq_exit_preempt(void) { }
+ static inline void rcu_irq_exit_check_preempt(void) { }
+ #define rcu_is_idle_cpu(cpu) \
+ 	(is_idle_task(current) && !in_nmi() && !in_irq() && !in_serving_softirq())
+diff --git a/include/linux/rcutree.h b/include/linux/rcutree.h
+index b89b541..53209d6 100644
+--- a/include/linux/rcutree.h
++++ b/include/linux/rcutree.h
+@@ -49,7 +49,6 @@ void rcu_idle_enter(void);
+ void rcu_idle_exit(void);
+ void rcu_irq_enter(void);
+ void rcu_irq_exit(void);
+-void rcu_irq_exit_preempt(void);
+ void rcu_irq_enter_irqson(void);
+ void rcu_irq_exit_irqson(void);
+ bool rcu_is_idle_cpu(int cpu);
+diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
+index 8e78b24..f6543b8 100644
+--- a/kernel/rcu/tree.c
++++ b/kernel/rcu/tree.c
+@@ -833,28 +833,6 @@ void noinstr rcu_irq_exit(void)
+ 	rcu_nmi_exit();
+ }
+ 
+-/**
+- * rcu_irq_exit_preempt - Inform RCU that current CPU is exiting irq
+- *			  towards in kernel preemption
+- *
+- * Same as rcu_irq_exit() but has a sanity check that scheduling is safe
+- * from RCU point of view. Invoked from return from interrupt before kernel
+- * preemption.
+- */
+-void rcu_irq_exit_preempt(void)
+-{
+-	lockdep_assert_irqs_disabled();
+-	rcu_nmi_exit();
+-
+-	RCU_LOCKDEP_WARN(__this_cpu_read(rcu_data.dynticks_nesting) <= 0,
+-			 "RCU dynticks_nesting counter underflow/zero!");
+-	RCU_LOCKDEP_WARN(__this_cpu_read(rcu_data.dynticks_nmi_nesting) !=
+-			 DYNTICK_IRQ_NONIDLE,
+-			 "Bad RCU  dynticks_nmi_nesting counter\n");
+-	RCU_LOCKDEP_WARN(rcu_dynticks_curr_cpu_in_eqs(),
+-			 "RCU in extended quiescent state!");
+-}
+-
+ #ifdef CONFIG_PROVE_RCU
+ /**
+  * rcu_irq_exit_check_preempt - Validate that scheduling is possible
