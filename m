@@ -2,45 +2,48 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F32D73B83A1
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 30 Jun 2021 15:47:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE62E3B83A6
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 30 Jun 2021 15:48:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235727AbhF3NuS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 30 Jun 2021 09:50:18 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:32948 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235418AbhF3NuC (ORCPT
+        id S235782AbhF3Nu1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 30 Jun 2021 09:50:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45596 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235454AbhF3NuD (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 30 Jun 2021 09:50:02 -0400
-Date:   Wed, 30 Jun 2021 13:47:31 -0000
+        Wed, 30 Jun 2021 09:50:03 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E4AAC0617AE;
+        Wed, 30 Jun 2021 06:47:34 -0700 (PDT)
+Date:   Wed, 30 Jun 2021 13:47:32 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1625060852;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=25K8v78IL2EpNF0iPF+3mJPzMbr3WIUtQBQzGQMt82o=;
-        b=OrpExOCVWH2ErHDM5VAoNVEzUXosRsFKNI2WWUm/tbAUMN0SZ3pTCERERhO2oNhhbHDX42
-        7NE89ae0L3214yGZ+WLOl4FUOX6er+InAsf0fRMozr3rmXCM6OGt9d4d1ADPTcbVMvhkcY
-        qQOWM1P+uaQQJKBS6qCe1tz+Dw704spL0QDlt00W92BhRUYkgjnL0ZNUT7eTnm955daVsC
-        4xMNXYYRWn0Lb7GhB11djxpprrb6zMQarH4jBqM2BZ6rPyLx3ikGgfSblQapI3885P+IbT
-        j7kRFHD+uJPMZ60Nxn6/oJdMJwGSk5OUxiA6XWfyLfSwTSsAO9Dx+C1/SAIPCg==
+        bh=R8kTnQwoEbSv1KgfxiIKdS5m5ASUPkG+NxYKS/vaKy4=;
+        b=JqBTNwMtV8QrMl20vZHIE5SJvpe/7xN8hLAq3YV7l0cCnN0aM4q/cwI0vgeJJ5UtTjA8iK
+        h2/fgNoweoTdzCaZE7OFxzEbq27YkEwMoSbMLEKri5deAmDEx1++ctAtMfY+EJ72idctQH
+        rn1b1oienMsuZSksuPjb6dRo8QxgnoVl4fDRuYkbMrSG4zS34N8yJQud8wbEOEWXDAJbxL
+        yREQiELFP/wYDS+shG3ZPJpFzrIVXff4ChG5Cm8XtPRXEOcyCfvGXTmmHiuGetH3/vDV+8
+        az9y/V+7cVwSgVzxKns87cAYXgCxM0US7O5Qah6IGpODCJO6jsQO4S04OenzOw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1625060852;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=25K8v78IL2EpNF0iPF+3mJPzMbr3WIUtQBQzGQMt82o=;
-        b=rh7FS6oKjvUZBBma4dJ9NjRVfTnwNw+HqwMpycIM3KjKXll+jAP7xHMrd/Gk81Ov0kIfyT
-        ELKwywYyZSPtUACw==
+        bh=R8kTnQwoEbSv1KgfxiIKdS5m5ASUPkG+NxYKS/vaKy4=;
+        b=xGp4FkeM3el9AAlF1S6z21n0rz3wbZzfzePaOgd4wYcga2Puj//oQI25vyWKtPe4q+h+j5
+        wGc1aARKKpRqFUDg==
 From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcu: Point to documentation of ordering guarantees
+Subject: [tip: core/rcu] rcu: Make rcu_gp_cleanup() be noinline for tracing
 Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <162506085167.395.4878331107023941526.tip-bot2@tip-bot2>
+Message-ID: <162506085229.395.12015743587088607685.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -51,101 +54,35 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     3d3a0d1b508dcc47e82b0e12cde6585bc088b0cc
-Gitweb:        https://git.kernel.org/tip/3d3a0d1b508dcc47e82b0e12cde6585bc088b0cc
+Commit-ID:     2f20de99a63b0de9bcceedafc3281e65fbf7d4fd
+Gitweb:        https://git.kernel.org/tip/2f20de99a63b0de9bcceedafc3281e65fbf7d4fd
 Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Fri, 16 Apr 2021 16:53:16 -07:00
+AuthorDate:    Sun, 11 Apr 2021 10:49:52 -07:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Mon, 10 May 2021 16:22:54 -07:00
 
-rcu: Point to documentation of ordering guarantees
+rcu: Make rcu_gp_cleanup() be noinline for tracing
 
-Add comments to synchronize_rcu() and friends that point to
-Documentation/RCU/Design/Memory-Ordering/Tree-RCU-Memory-Ordering.rst.
+Although there are trace events for RCU grace periods, these are only
+enabled in CONFIG_RCU_TRACE=y kernels.  This commit therefore marks
+rcu_gp_cleanup() noinline in order to provide a function that can be
+traced that is invoked near the end of each grace period.
 
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/rcu/srcutree.c |  3 +++
- kernel/rcu/tree.c     | 20 ++++++++++++++++++--
- 2 files changed, 21 insertions(+), 2 deletions(-)
+ kernel/rcu/tree.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/rcu/srcutree.c b/kernel/rcu/srcutree.c
-index e26547b..f8340c3 100644
---- a/kernel/rcu/srcutree.c
-+++ b/kernel/rcu/srcutree.c
-@@ -1000,6 +1000,9 @@ EXPORT_SYMBOL_GPL(synchronize_srcu_expedited);
-  * synchronize_srcu(), srcu_read_lock(), and srcu_read_unlock() are
-  * passed the same srcu_struct structure.
-  *
-+ * Implementation of these memory-ordering guarantees is similar to
-+ * that of synchronize_rcu().
-+ *
-  * If SRCU is likely idle, expedite the first request.  This semantic
-  * was provided by Classic SRCU, and is relied upon by its users, so TREE
-  * SRCU must also provide it.  Note that detecting idleness is heuristic
 diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
-index 6eb64e4..2437960 100644
+index 00a3ebc..6eb64e4 100644
 --- a/kernel/rcu/tree.c
 +++ b/kernel/rcu/tree.c
-@@ -3084,6 +3084,9 @@ __call_rcu(struct rcu_head *head, rcu_callback_t func)
-  * between the call to call_rcu() and the invocation of "func()" -- even
-  * if CPU A and CPU B are the same CPU (but again only if the system has
-  * more than one CPU).
-+ *
-+ * Implementation of these memory-ordering guarantees is described here:
-+ * Documentation/RCU/Design/Memory-Ordering/Tree-RCU-Memory-Ordering.rst.
+@@ -2026,7 +2026,7 @@ static void rcu_gp_fqs_loop(void)
+ /*
+  * Clean up after the old grace period.
   */
- void call_rcu(struct rcu_head *head, rcu_callback_t func)
+-static void rcu_gp_cleanup(void)
++static noinline void rcu_gp_cleanup(void)
  {
-@@ -3751,6 +3754,9 @@ static int rcu_blocking_is_gp(void)
-  * to have executed a full memory barrier during the execution of
-  * synchronize_rcu() -- even if CPU A and CPU B are the same CPU (but
-  * again only if the system has more than one CPU).
-+ *
-+ * Implementation of these memory-ordering guarantees is described here:
-+ * Documentation/RCU/Design/Memory-Ordering/Tree-RCU-Memory-Ordering.rst.
-  */
- void synchronize_rcu(void)
- {
-@@ -3821,7 +3827,7 @@ EXPORT_SYMBOL_GPL(start_poll_synchronize_rcu);
- /**
-  * poll_state_synchronize_rcu - Conditionally wait for an RCU grace period
-  *
-- * @oldstate: return from call to get_state_synchronize_rcu() or start_poll_synchronize_rcu()
-+ * @oldstate: value from get_state_synchronize_rcu() or start_poll_synchronize_rcu()
-  *
-  * If a full RCU grace period has elapsed since the earlier call from
-  * which oldstate was obtained, return @true, otherwise return @false.
-@@ -3837,6 +3843,11 @@ EXPORT_SYMBOL_GPL(start_poll_synchronize_rcu);
-  * (many hours even on 32-bit systems) should check them occasionally
-  * and either refresh them or set a flag indicating that the grace period
-  * has completed.
-+ *
-+ * This function provides the same memory-ordering guarantees that
-+ * would be provided by a synchronize_rcu() that was invoked at the call
-+ * to the function that provided @oldstate, and that returned at the end
-+ * of this function.
-  */
- bool poll_state_synchronize_rcu(unsigned long oldstate)
- {
-@@ -3851,7 +3862,7 @@ EXPORT_SYMBOL_GPL(poll_state_synchronize_rcu);
- /**
-  * cond_synchronize_rcu - Conditionally wait for an RCU grace period
-  *
-- * @oldstate: return value from earlier call to get_state_synchronize_rcu()
-+ * @oldstate: value from get_state_synchronize_rcu() or start_poll_synchronize_rcu()
-  *
-  * If a full RCU grace period has elapsed since the earlier call to
-  * get_state_synchronize_rcu() or start_poll_synchronize_rcu(), just return.
-@@ -3861,6 +3872,11 @@ EXPORT_SYMBOL_GPL(poll_state_synchronize_rcu);
-  * counter wrap is harmless.  If the counter wraps, we have waited for
-  * more than 2 billion grace periods (and way more on a 64-bit system!),
-  * so waiting for one additional grace period should be just fine.
-+ *
-+ * This function provides the same memory-ordering guarantees that
-+ * would be provided by a synchronize_rcu() that was invoked at the call
-+ * to the function that provided @oldstate, and that returned at the end
-+ * of this function.
-  */
- void cond_synchronize_rcu(unsigned long oldstate)
- {
+ 	int cpu;
+ 	bool needgp = false;
