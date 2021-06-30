@@ -2,46 +2,49 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E13EA3B83BF
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 30 Jun 2021 15:48:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2315E3B83DE
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 30 Jun 2021 15:48:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235416AbhF3Nuq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 30 Jun 2021 09:50:46 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:33050 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235672AbhF3NuN (ORCPT
+        id S236031AbhF3NvB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 30 Jun 2021 09:51:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45608 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235793AbhF3Nu2 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 30 Jun 2021 09:50:13 -0400
-Date:   Wed, 30 Jun 2021 13:47:42 -0000
+        Wed, 30 Jun 2021 09:50:28 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03CE3C0611FA;
+        Wed, 30 Jun 2021 06:47:45 -0700 (PDT)
+Date:   Wed, 30 Jun 2021 13:47:43 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1625060863;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=P/DH0qDZ8xWa0anTT3mAfSR7//2XDt8S5wV4O4kgPOU=;
-        b=G2gAr4CGcER94LxyUnNQ3kiGkbKx3Kocs+pfIaChWt0tG46/G7MWLEPm7Ob+flBCrGHBlO
-        HhWn+tpb+KjNtp2L2sxtAi+R4wUjjt/XgYtuVEUJlvDp7tIsRYGjuJ6LpCdiz7r69HpmvL
-        erCtsBkoWloVFIXX+S4zzqsWrsQSDduFOH4QcBsaFNUxBkASRygNc3YROEAaTozbpjHThf
-        Aj45QZIRHGtkNrF7+37FaQgH3IbzlEI9bKGOI3nm+CzRK4zefvwi795+vCnLL46m0JXvT8
-        cRAv4pcMc54R82c/q4sg0EC9OmnP8uaauJE1GfDrNVhuDJaiLOUW4SCQgfropA==
+        bh=fS4ytAepcpCvZpy7951mTjnruDx4TSWue2nVJYDoviA=;
+        b=l3UIa7VFzghspdNqcUqURyV+fpt3JNc0xrYNZqYcoPaz0kcGeBvGXUPfNk3+uWvek2FaNX
+        RDKPQ4nfKiUIxhJ0L2s7jQwBD1dJl9+/BM6x9mae07UszyDSFaim7T8BUx3L09gxhGSP+S
+        uRFOEgeLpsWkAffIOoXcjnDUb9/cdzqrbFfPmz4OoEu0tjjsNk+rOAlfw09OfGzAQJqnvU
+        mOqKin/NDtcrRzLOzjtsWezTMaKfQNxFAgUuU2weWyvfqJL64PZnP2uOaMJaa5p+/12eHf
+        vCIcbGo3BPalAE00DmH5PuHjGcQSOqKYf2ahlxFnP+4pOWIQvtsim918x2LZ/w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1625060863;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=P/DH0qDZ8xWa0anTT3mAfSR7//2XDt8S5wV4O4kgPOU=;
-        b=Ul22FD6042yf8nSzNRrqgjWttGJqkBoh2WYKgE2AE/4+IE4yzUnqFF09B8tI5ON7KyKNaX
-        bSxrOKzUXf4Dj9CA==
+        bh=fS4ytAepcpCvZpy7951mTjnruDx4TSWue2nVJYDoviA=;
+        b=drhXWnemVmDAJIwar+BZmr5z/JrJnOoLauDNhq/uABHdnlg2xDpSw9PmifUeHd2nACdeHX
+        CMsyLeC/UTq8eUDQ==
 From:   "tip-bot2 for Paul E. McKenney" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rcu] rcutorture: Delay-based false positives for RCU
- priority boosting tests
-Cc:     "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
+Subject: [tip: core/rcu] torture: Set kvm.sh language to English
+Cc:     Frederic Weisbecker <frederic@kernel.org>,
+        "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <162506086251.395.13930142443024003209.tip-bot2@tip-bot2>
+Message-ID: <162506086306.395.8587867830739240977.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -52,59 +55,39 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/rcu branch of tip:
 
-Commit-ID:     7b9dad7abad70750c7fbacd5eb5e917f73b42759
-Gitweb:        https://git.kernel.org/tip/7b9dad7abad70750c7fbacd5eb5e917f73b42759
+Commit-ID:     00ad25f6019b3bd61bd2ddc128509728b49ac589
+Gitweb:        https://git.kernel.org/tip/00ad25f6019b3bd61bd2ddc128509728b49ac589
 Author:        Paul E. McKenney <paulmck@kernel.org>
-AuthorDate:    Wed, 07 Apr 2021 17:09:37 -07:00
+AuthorDate:    Thu, 01 Apr 2021 15:26:56 -07:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Mon, 10 May 2021 16:05:06 -07:00
 
-rcutorture: Delay-based false positives for RCU priority boosting tests
+torture:  Set kvm.sh language to English
 
-If an rcu_torture_boost() kthread determines that its grace period
-has not yet ended, it invokes rcu_torture_boost_failed() which checks
-whether enough time has elapsed for this to be considered a failure of
-RCU priority boosting, and, if so, flags the error.
+Some of the code invoked directly and indirectly from kvm.sh parses
+the output of commands.  This parsing assumes English, which can cause
+failures if the user has set some other language.  In a few cases,
+there are language-independent commands available, but this is not
+always the case.  Therefore, as an alternative to polyglot parsing,
+this commit sets the LANG environment variable to en_US.UTF-8.
 
-Unfortunately, that kthread might be preempted for some seconds between
-the time that it checks the grace period and the time that it checks the
-time.  This delay can result in a false positive, featuring a complaint
-that a particular grace period has not ended, followed by a diagnostic
-dump featuring a much later grace period.
-
-This commit avoids these false positives by rechecking for the end of
-the grace period after the time check.
-
+Reported-by: Frederic Weisbecker <frederic@kernel.org>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/rcu/rcutorture.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ tools/testing/selftests/rcutorture/bin/kvm.sh | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/kernel/rcu/rcutorture.c b/kernel/rcu/rcutorture.c
-index 06d08f4..3defd0f 100644
---- a/kernel/rcu/rcutorture.c
-+++ b/kernel/rcu/rcutorture.c
-@@ -921,6 +921,10 @@ static bool rcu_torture_boost_failed(unsigned long gp_state, unsigned long start
- 	static int dbg_done;
+diff --git a/tools/testing/selftests/rcutorture/bin/kvm.sh b/tools/testing/selftests/rcutorture/bin/kvm.sh
+index fab3bd9..390bb97 100755
+--- a/tools/testing/selftests/rcutorture/bin/kvm.sh
++++ b/tools/testing/selftests/rcutorture/bin/kvm.sh
+@@ -20,6 +20,9 @@ mkdir $T
  
- 	if (end - start > test_boost_duration * HZ - HZ / 2) {
-+		// Recheck after checking time to avoid false positives.
-+		smp_mb(); // Time check before grace-period check.
-+		if (cur_ops->poll_gp_state(gp_state))
-+			return false; // passed, though perhaps just barely
- 		VERBOSE_TOROUT_STRING("rcu_torture_boost boosting failed");
- 		n_rcu_torture_boost_failure++;
- 		if (!xchg(&dbg_done, 1) && cur_ops->gp_kthread_dbg) {
-@@ -929,10 +933,10 @@ static bool rcu_torture_boost_failed(unsigned long gp_state, unsigned long start
- 			cur_ops->gp_kthread_dbg();
- 		}
+ cd `dirname $scriptname`/../../../../../
  
--		return true; /* failed */
-+		return true; // failed
- 	}
- 
--	return false; /* passed */
-+	return false; // passed
- }
- 
- static int rcu_torture_boost(void *arg)
++# This script knows only English.
++LANG=en_US.UTF-8; export LANG
++
+ dur=$((30*60))
+ dryrun=""
+ KVM="`pwd`/tools/testing/selftests/rcutorture"; export KVM
