@@ -2,118 +2,156 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B8FB23BE1D7
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  7 Jul 2021 06:06:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 557D73BE4C3
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  7 Jul 2021 10:53:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230034AbhGGEJ0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 7 Jul 2021 00:09:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42858 "EHLO
+        id S230467AbhGGI4K (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 7 Jul 2021 04:56:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49642 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230024AbhGGEJ0 (ORCPT
+        with ESMTP id S230446AbhGGI4J (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 7 Jul 2021 00:09:26 -0400
-Received: from mail-ot1-x334.google.com (mail-ot1-x334.google.com [IPv6:2607:f8b0:4864:20::334])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9515C061574;
-        Tue,  6 Jul 2021 21:06:45 -0700 (PDT)
-Received: by mail-ot1-x334.google.com with SMTP id 75-20020a9d08510000b02904acfe6bcccaso969017oty.12;
-        Tue, 06 Jul 2021 21:06:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=L9KXBAdgUdwykMSnUuubLWVOFEmtbnfz6/mlcwzGsLY=;
-        b=il07f4nS6JlA7KEIX9Jys5epGzx2NbrpnxrJImLWmbIxA+dZk0+cotlvZRBw1eQlxT
-         5EaWD0MUT/+u4JDF37OrD4tWPQQKMrDTtPjplpREebDVEe6M0Lk8IEgETFsDj59PlGEq
-         M3SveBp+dFN/nJbsJKL2qdJYEgPyAuXvJSHm8EHnIVBKDpEoLC6IjL+kyPVSB10M10ZG
-         uXI3HrfYrEttdnrRgSll0HvHtWMjIYbxwLjSew60ud3DelMzT6xrRbxUCwXXPPh+UqLe
-         CTeMZFv/QlvRznYhihQbDMjw/wsLMiscsi0I2/u53p0LFucqETQD0jEYupMBZDa9X34R
-         0YNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
-         :date:user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=L9KXBAdgUdwykMSnUuubLWVOFEmtbnfz6/mlcwzGsLY=;
-        b=OXw8sh7WfMcx2YV8ETW9/lce1Lofb9muWcP6vCVWI0KOahaiSOJ9n+t4PQiTIQ+LZp
-         aKbWUEhTeTa6Ve08hfBhlczuTFqdjOLZzYGHHG2kFVIKwTeUuXJpgyZ5F0XCRh7zdkMk
-         u90ZawO/5MZXkJumtnCRvs21uDsiW1hjVvUfrhAtv5UEeD+85Vzwmkae9DjUoS5OY52K
-         RhhU6rb1ofbeW9n78pZh+1/6pwzTyTLNr4b9ZKeeXxF1yGyRonfaLpdhy+qKiO/XC2a8
-         zPjlZTd78Zv+a/RuemqDSKw1pRkoTWOCz6XkwgGY0YPJsHBIIy4FaC1qFbmgUFLYdAma
-         cx4Q==
-X-Gm-Message-State: AOAM530ltD1NqZKmLL3UKbyn5d5Hlkz9flqyDxQqbPbMwg3YmJrgiCBc
-        V8SnZDAF6Jp1QfO/4joqrtm0e3qJiwg=
-X-Google-Smtp-Source: ABdhPJxa04pXBzuyZvNsWeQzYBspUwVL/EpCAtFtpEcrc4Y8XGzeed5fIqvuBA2TXEvkKL9Um1WsOg==
-X-Received: by 2002:a9d:63ca:: with SMTP id e10mr17776891otl.320.1625630805121;
-        Tue, 06 Jul 2021 21:06:45 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id l11sm3251068oou.0.2021.07.06.21.06.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 06 Jul 2021 21:06:44 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Subject: Re: [tip: sched/core] sched/core: Initialize the idle task with
- preemption disabled
-To:     Valentin Schneider <valentin.schneider@arm.com>,
+        Wed, 7 Jul 2021 04:56:09 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80FC7C061574;
+        Wed,  7 Jul 2021 01:53:29 -0700 (PDT)
+Date:   Wed, 07 Jul 2021 08:53:22 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1625648003;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=uCHCWp8ndiR6lOv98SSA62tiZhc4JfuP0/2leH5eEtw=;
+        b=rAaisTgJhJqgj2qjA0O6nWzA4nVGtiM/u7YN3G/68GpBzC+TOAssTTEjmYg98Mgmevhb6B
+        6tRiLvHjuccnZdg4UPqpuXeK3zeVRiN6gppWyNhkQdpuRX1mQcUV+WA1JDuKMPM/IVWU8K
+        pwkmoaPMITzV7qK1xHZti2K+4vYM24TNyargaAoCb+ngk8CqShFEATcFqdbHTWvWPYvwlI
+        MgfKm/xCeNSJ/hSEbVzMwq6OkJvf1p2Vw+pVdSv1PQSNCti8DlHIX5oNBRKY1vdXpCXEoa
+        7BHu0H1+3md0ufj1M06bXwYRPaZX/aahjM+bBXHWH7bxKJAwYJSK3NBv0E77xg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1625648003;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=uCHCWp8ndiR6lOv98SSA62tiZhc4JfuP0/2leH5eEtw=;
+        b=o0dghBrpePW7Sbd3aTpBjENR64n5Zb2aeyx16FanTV4dTEou3YjLPa900M2iItuyTYq+hC
+        pw1VOd0DY/6R1HDQ==
+From:   "tip-bot2 for Mark Rutland" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: locking/urgent] locking/atomic: sparc: Fix arch_cmpxchg64_local()
+Cc:     Anatoly Pugachev <matorola@gmail.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-Cc:     linux-tip-commits@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>, x86@kernel.org
-References: <20210512094636.2958515-1-valentin.schneider@arm.com>
- <162081815405.29796.14574924529325899839.tip-bot2@tip-bot2>
- <20210706194456.GA1823793@roeck-us.net> <87fswr6lqv.mognet@arm.com>
-From:   Guenter Roeck <linux@roeck-us.net>
-Message-ID: <0d792e69-8ba3-5658-16ea-c1090bffa410@roeck-us.net>
-Date:   Tue, 6 Jul 2021 21:06:40 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+In-Reply-To: <20210707083032.567-1-mark.rutland@arm.com>
+References: <20210707083032.567-1-mark.rutland@arm.com>
 MIME-Version: 1.0
-In-Reply-To: <87fswr6lqv.mognet@arm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+Message-ID: <162564800212.395.6261331440225066736.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On 7/6/21 4:55 PM, Valentin Schneider wrote:
-> 
-> Hi Guenter,
-> 
-> On 06/07/21 12:44, Guenter Roeck wrote:
->> This patch results in several messages similar to the following
->> when booting s390 images in qemu.
->>
->> [    1.690807] BUG: sleeping function called from invalid context at include/linux/percpu-rwsem.h:49
->> [    1.690925] in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 1, name: swapper/0
->> [    1.691053] no locks held by swapper/0/1.
->> [    1.691310] CPU: 0 PID: 1 Comm: swapper/0 Not tainted 5.13.0-11788-g79160a603bdb #1
->> [    1.691469] Hardware name: QEMU 2964 QEMU (KVM/Linux)
->> [    1.691612] Call Trace:
->> [    1.691718]  [<0000000000d98bb0>] show_stack+0x90/0xf8
->> [    1.692040]  [<0000000000da894c>] dump_stack_lvl+0x74/0xa8
->> [    1.692134]  [<0000000000187e52>] ___might_sleep+0x15a/0x170
->> [    1.692228]  [<000000000014f588>] cpus_read_lock+0x38/0xc0
->> [    1.692320]  [<0000000000182e8a>] smpboot_register_percpu_thread+0x2a/0x160
->> [    1.692412]  [<00000000014814b8>] cpuhp_threads_init+0x28/0x60
->> [    1.692505]  [<0000000001487a30>] smp_init+0x28/0x90
->> [    1.692597]  [<00000000014779a6>] kernel_init_freeable+0x1f6/0x270
->> [    1.692689]  [<0000000000db7466>] kernel_init+0x2e/0x160
->> [    1.692779]  [<0000000000103618>] __ret_from_fork+0x40/0x58
->> [    1.692870]  [<0000000000dc6e12>] ret_from_fork+0xa/0x30
->>
->> Reverting this patch fixes the problem.
->> Bisect log is attached.
->>
->> Guenter
->>
-> 
-> Thanks for the report.
-> 
-> So somehow the init task ends up with a non-zero preempt_count()? Per
-> FORK_PREEMPT_COUNT we should exit __ret_from_fork() with a zero count, are
-> you hitting the WARN_ONCE() in finish_task_switch()?
-> 
-> Does CONFIG_DEBUG_PREEMPT=y yield anything interesting?
-> 
+The following commit has been merged into the locking/urgent branch of tip:
 
-My configuration doesn't have CONFIG_PREEMPT enabled.
+Commit-ID:     7e1088760cfe0bb1fdb1f0bd155bfd52f080683a
+Gitweb:        https://git.kernel.org/tip/7e1088760cfe0bb1fdb1f0bd155bfd52f080683a
+Author:        Mark Rutland <mark.rutland@arm.com>
+AuthorDate:    Wed, 07 Jul 2021 09:30:32 +01:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Wed, 07 Jul 2021 10:47:21 +02:00
 
-Guenter
+locking/atomic: sparc: Fix arch_cmpxchg64_local()
+
+Anatoly reports that since commit:
+
+  ff5b4f1ed580c59d ("locking/atomic: sparc: move to ARCH_ATOMIC")
+
+... it's possible to reliably trigger an oops by running:
+
+  stress-ng -v --mmap 1 -t 30s
+
+... which results in a NULL pointer dereference in
+__split_huge_pmd_locked().
+
+The underlying problem is that commit ff5b4f1ed580c59d left
+arch_cmpxchg64_local() defined in terms of cmpxchg_local() rather than
+arch_cmpxchg_local(). In <asm-generic/atomic-instrumented.h> we wrap
+these with macros which use identically-named variables. When
+cmpxchg_local() nests inside cmpxchg64_local(), this casues it to use an
+unitialized variable as the pointer, which can be NULL.
+
+This can also be seen in pmdp_establish(), where the compiler can
+generate the pointer with a `clr` instruction:
+
+0000000000000360 <pmdp_establish>:
+ 360:   9d e3 bf 50     save  %sp, -176, %sp
+ 364:   fa 5e 80 00     ldx  [ %i2 ], %i5
+ 368:   82 10 00 1b     mov  %i3, %g1
+ 36c:   84 10 20 00     clr  %g2
+ 370:   c3 f0 90 1d     casx  [ %g2 ], %i5, %g1
+ 374:   80 a7 40 01     cmp  %i5, %g1
+ 378:   32 6f ff fc     bne,a   %xcc, 368 <pmdp_establish+0x8>
+ 37c:   fa 5e 80 00     ldx  [ %i2 ], %i5
+ 380:   d0 5e 20 40     ldx  [ %i0 + 0x40 ], %o0
+ 384:   96 10 00 1b     mov  %i3, %o3
+ 388:   94 10 00 1d     mov  %i5, %o2
+ 38c:   92 10 00 19     mov  %i1, %o1
+ 390:   7f ff ff 84     call  1a0 <__set_pmd_acct>
+ 394:   b0 10 00 1d     mov  %i5, %i0
+ 398:   81 cf e0 08     return  %i7 + 8
+ 39c:   01 00 00 00     nop
+
+This patch fixes the problem by defining arch_cmpxchg64_local() in terms
+of arch_cmpxchg_local(), avoiding potential shadowing, and resulting in
+working cmpxchg64_local() and variants, e.g.
+
+0000000000000360 <pmdp_establish>:
+ 360:   9d e3 bf 50     save  %sp, -176, %sp
+ 364:   fa 5e 80 00     ldx  [ %i2 ], %i5
+ 368:   82 10 00 1b     mov  %i3, %g1
+ 36c:   c3 f6 90 1d     casx  [ %i2 ], %i5, %g1
+ 370:   80 a7 40 01     cmp  %i5, %g1
+ 374:   32 6f ff fd     bne,a   %xcc, 368 <pmdp_establish+0x8>
+ 378:   fa 5e 80 00     ldx  [ %i2 ], %i5
+ 37c:   d0 5e 20 40     ldx  [ %i0 + 0x40 ], %o0
+ 380:   96 10 00 1b     mov  %i3, %o3
+ 384:   94 10 00 1d     mov  %i5, %o2
+ 388:   92 10 00 19     mov  %i1, %o1
+ 38c:   7f ff ff 85     call  1a0 <__set_pmd_acct>
+ 390:   b0 10 00 1d     mov  %i5, %i0
+ 394:   81 cf e0 08     return  %i7 + 8
+ 398:   01 00 00 00     nop
+ 39c:   01 00 00 00     nop
+
+Fixes: ff5b4f1ed580c59d ("locking/atomic: sparc: move to ARCH_ATOMIC")
+Reported-by: Anatoly Pugachev <matorola@gmail.com>
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Tested-by: Anatoly Pugachev <matorola@gmail.com>
+Link: https://lore.kernel.org/r/20210707083032.567-1-mark.rutland@arm.com
+---
+ arch/sparc/include/asm/cmpxchg_64.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/sparc/include/asm/cmpxchg_64.h b/arch/sparc/include/asm/cmpxchg_64.h
+index 8c39a99..12d00a4 100644
+--- a/arch/sparc/include/asm/cmpxchg_64.h
++++ b/arch/sparc/include/asm/cmpxchg_64.h
+@@ -201,7 +201,7 @@ static inline unsigned long __cmpxchg_local(volatile void *ptr,
+ #define arch_cmpxchg64_local(ptr, o, n)					\
+   ({									\
+ 	BUILD_BUG_ON(sizeof(*(ptr)) != 8);				\
+-	cmpxchg_local((ptr), (o), (n));					\
++	arch_cmpxchg_local((ptr), (o), (n));					\
+   })
+ #define arch_cmpxchg64(ptr, o, n)	arch_cmpxchg64_local((ptr), (o), (n))
+ 
