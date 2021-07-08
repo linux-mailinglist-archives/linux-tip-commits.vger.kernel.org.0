@@ -2,56 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E1043BF6FA
+	by mail.lfdr.de (Postfix) with ESMTP id B6C9E3BF6FB
 	for <lists+linux-tip-commits@lfdr.de>; Thu,  8 Jul 2021 10:42:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231258AbhGHIpU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 8 Jul 2021 04:45:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56044 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231173AbhGHIpS (ORCPT
+        id S231262AbhGHIpV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 8 Jul 2021 04:45:21 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:50206 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230414AbhGHIpT (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 8 Jul 2021 04:45:18 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AA76C061574;
-        Thu,  8 Jul 2021 01:42:37 -0700 (PDT)
-Date:   Thu, 08 Jul 2021 08:42:34 -0000
+        Thu, 8 Jul 2021 04:45:19 -0400
+Date:   Thu, 08 Jul 2021 08:42:35 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1625733755;
+        s=2020; t=1625733756;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=rU9QGQWZYfyAHMc3d+GKV9s6jrbfbu1BZTpeCF9esK4=;
-        b=NcrTq3i5NnaCyXWkiQ0UEtCSY2RTnEYwToSFjGDmdDYuVE/l9Fx7ewwpcjw22iH29XrtBW
-        9sbdqAPnxZSALqs2eKeTtPFjfoe+DCqlY/3XfY3uLrm8dqm2blaKu2Ifg9OkWa4l3+kEE2
-        HuFmjoRjVV5KjpK5DrvCd7FiUsIRqFV6b3LVehbCBjj7pyeQJr+TYQZgMjrBTy8ZBxTx4V
-        PjyywzLSPmSKihzcpDqYp4TRvPKKmSgCvEi4UVKdcMx0+x88s1ruyzccVIbVO+cVnpzqie
-        jMK8NVykGItK9KKLx+l/GCumRhMj5kJgpsXCzsJf1kDQnsfud2i7+TBhwI3jig==
+        bh=DcVliIRC5ZvODmWJUoFyF+Y+gGNDIorQYpII2ZqIcYQ=;
+        b=OqGOR33lS53Zt1ZsSzvUEPWCA/PWmY6xR52+EV5hhcUo5cBq/JJv29iAOMXz3miDr5G2N0
+        Yalxq0osn/tK+JL/WBFT4xt290NURa1RfG5cusmxaetf6LPv2UH9/jdjl58+wyqgBKYGF2
+        CAL1uiLS7CVksfTnqaorpV9G9bv93gumR24yiZyTXM7cCrXs6+RP+/oGK8PgKRDDv6b/6u
+        l3ymbDQVHZPnw1UtnHXCJOtTs6fsZGG5lor2CpyhYMSf6yYKMzEFgdvdK6ozbgeuRD0Fh1
+        KoMAZ/P9lly4+AC78dDGSMooYeEHzQA8pNjdg2+0n6NNNFCQ8ZJb4+AiFEZfVA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1625733755;
+        s=2020e; t=1625733756;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=rU9QGQWZYfyAHMc3d+GKV9s6jrbfbu1BZTpeCF9esK4=;
-        b=Rtu6yoMtAmGK3oous6+DFOQluTXH9JFSOJjRKzkkWURPipLksxHZrz71dbJV0O1zWu2qN8
-        eKeeNOp0oyrXq9BQ==
+        bh=DcVliIRC5ZvODmWJUoFyF+Y+gGNDIorQYpII2ZqIcYQ=;
+        b=lmvs33n6syJ0958hxisQ2sCMrp+CW0uMQt2qUR+QwM+b50YK0MxSbZMessTIeltrq7+L7a
+        pPUCRVTRIEoyFvAw==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] locking/mutex: Introduce __mutex_trylock_or_handoff()
-Cc:     Yanfei Xu <yanfei.xu@windriver.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Waiman Long <longman@redhat.com>, x86@kernel.org,
+Subject: [tip: locking/core] locking/mutex: Use try_cmpxchg()
+Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Waiman Long <longman@redhat.com>,
+        Yanfei Xu <yanfei.xu@windriver.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210630154114.958507900@infradead.org>
-References: <20210630154114.958507900@infradead.org>
+In-Reply-To: <20210630154114.834438545@infradead.org>
+References: <20210630154114.834438545@infradead.org>
 MIME-Version: 1.0
-Message-ID: <162573375491.395.6302178178874054170.tip-bot2@tip-bot2>
+Message-ID: <162573375592.395.17270740953253800450.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -62,146 +59,109 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     ad90880dc9625682a58897cba2ecff657a2aa60b
-Gitweb:        https://git.kernel.org/tip/ad90880dc9625682a58897cba2ecff657a2aa60b
+Commit-ID:     ab4e4d9f79b2c95ef268985d2a9625a03a73c49a
+Gitweb:        https://git.kernel.org/tip/ab4e4d9f79b2c95ef268985d2a9625a03a73c49a
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Wed, 30 Jun 2021 17:35:19 +02:00
+AuthorDate:    Wed, 30 Jun 2021 17:35:17 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 07 Jul 2021 13:53:25 +02:00
+CommitterDate: Wed, 07 Jul 2021 13:53:24 +02:00
 
-locking/mutex: Introduce __mutex_trylock_or_handoff()
+locking/mutex: Use try_cmpxchg()
 
-Yanfei reported that it is possible to loose HANDOFF when we race with
-mutex_unlock() and end up setting HANDOFF on an unlocked mutex. At
-that point anybody can steal it, losing HANDOFF in the process.
+For simpler and better code.
 
-If this happens often enough, we can in fact starve the top waiter.
-
-Solve this by folding the 'set HANDOFF' operation into the trylock
-operation, such that either we acquire the lock, or it gets HANDOFF
-set. This avoids having HANDOFF set on an unlocked mutex.
-
-Reported-by: Yanfei Xu <yanfei.xu@windriver.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Waiman Long <longman@redhat.com>
 Reviewed-by: Yanfei Xu <yanfei.xu@windriver.com>
-Link: https://lore.kernel.org/r/20210630154114.958507900@infradead.org
+Link: https://lore.kernel.org/r/20210630154114.834438545@infradead.org
 ---
- kernel/locking/mutex.c | 60 ++++++++++++++++++++++++-----------------
- 1 file changed, 36 insertions(+), 24 deletions(-)
+ kernel/locking/mutex.c | 27 ++++++---------------------
+ 1 file changed, 6 insertions(+), 21 deletions(-)
 
 diff --git a/kernel/locking/mutex.c b/kernel/locking/mutex.c
-index 8c3d499..b81ec97 100644
+index cb6b112..cab7163 100644
 --- a/kernel/locking/mutex.c
 +++ b/kernel/locking/mutex.c
-@@ -91,10 +91,7 @@ static inline unsigned long __owner_flags(unsigned long owner)
- 	return owner & MUTEX_FLAGS;
- }
+@@ -100,7 +100,7 @@ static inline struct task_struct *__mutex_trylock_or_owner(struct mutex *lock)
  
--/*
-- * Trylock variant that returns the owning task on failure.
-- */
--static inline struct task_struct *__mutex_trylock_or_owner(struct mutex *lock)
-+static inline struct task_struct *__mutex_trylock_common(struct mutex *lock, bool handoff)
- {
- 	unsigned long owner, curr = (unsigned long)current;
- 
-@@ -104,39 +101,48 @@ static inline struct task_struct *__mutex_trylock_or_owner(struct mutex *lock)
+ 	owner = atomic_long_read(&lock->owner);
+ 	for (;;) { /* must loop, can race against a flag */
+-		unsigned long old, flags = __owner_flags(owner);
++		unsigned long flags = __owner_flags(owner);
  		unsigned long task = owner & ~MUTEX_FLAGS;
  
  		if (task) {
--			if (likely(task != curr))
-+			if (flags & MUTEX_FLAG_PICKUP) {
-+				if (task != curr)
-+					break;
-+				flags &= ~MUTEX_FLAG_PICKUP;
-+			} else if (handoff) {
-+				if (flags & MUTEX_FLAG_HANDOFF)
-+					break;
-+				flags |= MUTEX_FLAG_HANDOFF;
-+			} else {
- 				break;
--
--			if (likely(!(flags & MUTEX_FLAG_PICKUP)))
--				break;
--
--			flags &= ~MUTEX_FLAG_PICKUP;
-+			}
- 		} else {
- #ifdef CONFIG_DEBUG_MUTEXES
--			DEBUG_LOCKS_WARN_ON(flags & MUTEX_FLAG_PICKUP);
-+			DEBUG_LOCKS_WARN_ON(flags & (MUTEX_FLAG_HANDOFF | MUTEX_FLAG_PICKUP));
- #endif
-+			task = curr;
- 		}
+@@ -124,11 +124,8 @@ static inline struct task_struct *__mutex_trylock_or_owner(struct mutex *lock)
+ 		 */
+ 		flags &= ~MUTEX_FLAG_HANDOFF;
  
--		/*
--		 * We set the HANDOFF bit, we must make sure it doesn't live
--		 * past the point where we acquire it. This would be possible
--		 * if we (accidentally) set the bit on an unlocked mutex.
--		 */
--		flags &= ~MUTEX_FLAG_HANDOFF;
+-		old = atomic_long_cmpxchg_acquire(&lock->owner, owner, curr | flags);
+-		if (old == owner)
++		if (atomic_long_try_cmpxchg_acquire(&lock->owner, &owner, curr | flags))
+ 			return NULL;
 -
--		if (atomic_long_try_cmpxchg_acquire(&lock->owner, &owner, curr | flags))
--			return NULL;
-+		if (atomic_long_try_cmpxchg_acquire(&lock->owner, &owner, task | flags)) {
-+			if (task == curr)
-+				return NULL;
-+			break;
-+		}
+-		owner = old;
  	}
  
  	return __owner_task(owner);
- }
- 
- /*
-+ * Trylock or set HANDOFF
-+ */
-+static inline bool __mutex_trylock_or_handoff(struct mutex *lock, bool handoff)
-+{
-+	return !__mutex_trylock_common(lock, handoff);
-+}
-+
-+/*
-  * Actual trylock that will work on any unlocked state.
-  */
- static inline bool __mutex_trylock(struct mutex *lock)
+@@ -168,10 +165,7 @@ static __always_inline bool __mutex_unlock_fast(struct mutex *lock)
  {
--	return !__mutex_trylock_or_owner(lock);
-+	return !__mutex_trylock_common(lock, false);
+ 	unsigned long curr = (unsigned long)current;
+ 
+-	if (atomic_long_cmpxchg_release(&lock->owner, curr, 0UL) == curr)
+-		return true;
+-
+-	return false;
++	return atomic_long_try_cmpxchg_release(&lock->owner, &curr, 0UL);
+ }
+ #endif
+ 
+@@ -216,7 +210,7 @@ static void __mutex_handoff(struct mutex *lock, struct task_struct *task)
+ 	unsigned long owner = atomic_long_read(&lock->owner);
+ 
+ 	for (;;) {
+-		unsigned long old, new;
++		unsigned long new;
+ 
+ #ifdef CONFIG_DEBUG_MUTEXES
+ 		DEBUG_LOCKS_WARN_ON(__owner_task(owner) != current);
+@@ -228,11 +222,8 @@ static void __mutex_handoff(struct mutex *lock, struct task_struct *task)
+ 		if (task)
+ 			new |= MUTEX_FLAG_PICKUP;
+ 
+-		old = atomic_long_cmpxchg_release(&lock->owner, owner, new);
+-		if (old == owner)
++		if (atomic_long_try_cmpxchg_release(&lock->owner, &owner, new))
+ 			break;
+-
+-		owner = old;
+ 	}
  }
  
- #ifndef CONFIG_DEBUG_LOCK_ALLOC
-@@ -479,6 +485,14 @@ ww_mutex_set_context_fastpath(struct ww_mutex *lock, struct ww_acquire_ctx *ctx)
- 
- #ifdef CONFIG_MUTEX_SPIN_ON_OWNER
- 
-+/*
-+ * Trylock variant that returns the owning task on failure.
-+ */
-+static inline struct task_struct *__mutex_trylock_or_owner(struct mutex *lock)
-+{
-+	return __mutex_trylock_common(lock, false);
-+}
-+
- static inline
- bool ww_mutex_spin_on_owner(struct mutex *lock, struct ww_acquire_ctx *ww_ctx,
- 			    struct mutex_waiter *waiter)
-@@ -1018,8 +1032,6 @@ __mutex_lock_common(struct mutex *lock, long state, unsigned int subclass,
- 		schedule_preempt_disabled();
- 
- 		first = __mutex_waiter_is_first(lock, &waiter);
--		if (first)
--			__mutex_set_flag(lock, MUTEX_FLAG_HANDOFF);
- 
- 		set_current_state(state);
- 		/*
-@@ -1027,7 +1039,7 @@ __mutex_lock_common(struct mutex *lock, long state, unsigned int subclass,
- 		 * state back to RUNNING and fall through the next schedule(),
- 		 * or we must see its unlock and acquire.
- 		 */
--		if (__mutex_trylock(lock) ||
-+		if (__mutex_trylock_or_handoff(lock, first) ||
- 		    (first && mutex_optimistic_spin(lock, ww_ctx, &waiter)))
+@@ -1229,8 +1220,6 @@ static noinline void __sched __mutex_unlock_slowpath(struct mutex *lock, unsigne
+ 	 */
+ 	owner = atomic_long_read(&lock->owner);
+ 	for (;;) {
+-		unsigned long old;
+-
+ #ifdef CONFIG_DEBUG_MUTEXES
+ 		DEBUG_LOCKS_WARN_ON(__owner_task(owner) != current);
+ 		DEBUG_LOCKS_WARN_ON(owner & MUTEX_FLAG_PICKUP);
+@@ -1239,16 +1228,12 @@ static noinline void __sched __mutex_unlock_slowpath(struct mutex *lock, unsigne
+ 		if (owner & MUTEX_FLAG_HANDOFF)
  			break;
  
+-		old = atomic_long_cmpxchg_release(&lock->owner, owner,
+-						  __owner_flags(owner));
+-		if (old == owner) {
++		if (atomic_long_try_cmpxchg_release(&lock->owner, &owner, __owner_flags(owner))) {
+ 			if (owner & MUTEX_FLAG_WAITERS)
+ 				break;
+ 
+ 			return;
+ 		}
+-
+-		owner = old;
+ 	}
+ 
+ 	spin_lock(&lock->wait_lock);
