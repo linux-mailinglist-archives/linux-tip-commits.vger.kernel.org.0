@@ -2,46 +2,49 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8262C3CF8EA
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 20 Jul 2021 13:37:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A20573CF8ED
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 20 Jul 2021 13:37:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232210AbhGTK47 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 20 Jul 2021 06:56:59 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:40344 "EHLO
+        id S236747AbhGTK5D (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 20 Jul 2021 06:57:03 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:40348 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236401AbhGTK4w (ORCPT
+        with ESMTP id S236461AbhGTK4w (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Tue, 20 Jul 2021 06:56:52 -0400
-Date:   Tue, 20 Jul 2021 11:37:18 -0000
+Date:   Tue, 20 Jul 2021 11:37:19 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1626781039;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=BzdAJmqWFDGPlX1pCwG3w6m/UxKMwlRCAmulfK4Lda0=;
-        b=VfTaw4vCRUogxm6IuOVS7RfACbHr1NrIAfLDujMp5pjJHjyacKQ8uVd2ojO2G+3XYgS/Up
-        aG5OLLMwVhSWs7JDskDoHUunuRUVxCIKTX51zrSIJF+q7NyarOWQOz7aImnzmOWnHcBpGU
-        VHdbXMTSPWkb3cLUb2Kyh+BHTKJDnGkJsyumh8U61GA0MjJ07zhteT+2d6nBflUqWGbFiJ
-        bY8ldke/gdBKrbj/cmejzNXNeN5aoDt4ze93GgYTLDHseh46DTAzR3dRnO6kHQM7k8nNRQ
-        yDTVKyz+H0ygLff/lPqsDuP+DT+UFQZ3QppXj0yfMJDSQMJTE/9tZAyZl2qV1A==
+        bh=ZC9D6on5M3V9NKbfuRjdCy1uKWGTOjYynoMjv4pWtos=;
+        b=jo/4MN5HfnInN2PskYnYV2ymcIMvr1dV3Lu6yiqxtavt/zkmpBfU4Xm6TA0PEjbQ7Cc4d2
+        XC75rI5KJmmtnzbO9jWqUlsy4/d2N7DPvEl3viJ3VEFZ2tGfcSuLYepVcOnOg/3wlHJNCS
+        j8o+VrQfGmOZXhkQ3QDi4BVwf+ZO70jtbOa5bz1wbDjirA6ivAkyMvfyQxBj4Jx9x+F6L3
+        7MA/xT4sTiboFxvz/RQ6YW2R1nyRM7GzsXPPCXaT3o0AwbK1YWUInLJywlZ+qFPdtzp39X
+        YKOEC6x6Urz1iSqUU2oeCS/hatGnnFB/8sM3nVtQZKxKpqMLSpkRyD6LYLfLwA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1626781039;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=BzdAJmqWFDGPlX1pCwG3w6m/UxKMwlRCAmulfK4Lda0=;
-        b=I3P0q0ADBRPiwveRpCpYtoU+hN9QH5mZRQeHvQMt8vUUFITrpk4toU8RX65/Sw19L0dQSL
-        GMB6h2tuxNfA9BCg==
-From:   "tip-bot2 for Atish Patra" <tip-bot2@linutronix.de>
+        bh=ZC9D6on5M3V9NKbfuRjdCy1uKWGTOjYynoMjv4pWtos=;
+        b=daq6/yEW6Hi7KdvwruSIlumyseFC/0fuF76rEsU4oE2dhlEo6mFE8sR0h/jiS6YFLF+75J
+        1naUoKYqZP7JV3BA==
+From:   "tip-bot2 for Marc Zyngier" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: efi/urgent] efi/libstub: Fix the efi_load_initrd function description
-Cc:     Atish Patra <atish.patra@wdc.com>,
-        Ard Biesheuvel <ardb@kernel.org>, x86@kernel.org,
+Subject: [tip: efi/urgent] firmware/efi: Tell memblock about EFI iomem reservations
+Cc:     Moritz Fischer <mdf@kernel.org>, Marc Zyngier <maz@kernel.org>,
+        stable@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
+        James Morse <james.morse@arm.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <162678103854.395.2517207053400940703.tip-bot2@tip-bot2>
+Message-ID: <162678103917.395.13758847379699183265.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -52,40 +55,70 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the efi/urgent branch of tip:
 
-Commit-ID:     947228cb9f1a2c69a5da5279c48f02bb4f49ce32
-Gitweb:        https://git.kernel.org/tip/947228cb9f1a2c69a5da5279c48f02bb4f49ce32
-Author:        Atish Patra <atish.patra@wdc.com>
-AuthorDate:    Fri, 02 Jul 2021 12:10:44 -07:00
+Commit-ID:     2bab693a608bdf614b9fcd44083c5100f34b9f77
+Gitweb:        https://git.kernel.org/tip/2bab693a608bdf614b9fcd44083c5100f34b9f77
+Author:        Marc Zyngier <maz@kernel.org>
+AuthorDate:    Tue, 13 Jul 2021 19:43:26 +01:00
 Committer:     Ard Biesheuvel <ardb@kernel.org>
-CommitterDate: Fri, 16 Jul 2021 18:18:15 +02:00
+CommitterDate: Fri, 16 Jul 2021 18:05:49 +02:00
 
-efi/libstub: Fix the efi_load_initrd function description
+firmware/efi: Tell memblock about EFI iomem reservations
 
-The soft_limit and hard_limit in the function efi_load_initrd describes
-the preferred and max address of initrd loading location respectively.
-However, the description wrongly describes it as the size of the
-allocated memory.
+kexec_load_file() relies on the memblock infrastructure to avoid
+stamping over regions of memory that are essential to the survival
+of the system.
 
-Fix the function description.
+However, nobody seems to agree how to flag these regions as reserved,
+and (for example) EFI only publishes its reservations in /proc/iomem
+for the benefit of the traditional, userspace based kexec tool.
 
-Signed-off-by: Atish Patra <atish.patra@wdc.com>
+On arm64 platforms with GICv3, this can result in the payload being
+placed at the location of the LPI tables. Shock, horror!
+
+Let's augment the EFI reservation code with a memblock_reserve() call,
+protecting our dear tables from the secondary kernel invasion.
+
+Reported-by: Moritz Fischer <mdf@kernel.org>
+Tested-by: Moritz Fischer <mdf@kernel.org>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Cc: stable@vger.kernel.org
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: James Morse <james.morse@arm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- drivers/firmware/efi/libstub/efi-stub-helper.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/firmware/efi/efi.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
-index aa8da0a..ae87dde 100644
---- a/drivers/firmware/efi/libstub/efi-stub-helper.c
-+++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
-@@ -630,8 +630,8 @@ efi_status_t efi_load_initrd_cmdline(efi_loaded_image_t *image,
-  * @image:	EFI loaded image protocol
-  * @load_addr:	pointer to loaded initrd
-  * @load_size:	size of loaded initrd
-- * @soft_limit:	preferred size of allocated memory for loading the initrd
-- * @hard_limit:	minimum size of allocated memory
-+ * @soft_limit:	preferred address for loading the initrd
-+ * @hard_limit:	upper limit address for loading the initrd
-  *
-  * Return:	status code
-  */
+diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+index 4b7ee3f..847f33f 100644
+--- a/drivers/firmware/efi/efi.c
++++ b/drivers/firmware/efi/efi.c
+@@ -896,6 +896,7 @@ static int __init efi_memreserve_map_root(void)
+ static int efi_mem_reserve_iomem(phys_addr_t addr, u64 size)
+ {
+ 	struct resource *res, *parent;
++	int ret;
+ 
+ 	res = kzalloc(sizeof(struct resource), GFP_ATOMIC);
+ 	if (!res)
+@@ -908,7 +909,17 @@ static int efi_mem_reserve_iomem(phys_addr_t addr, u64 size)
+ 
+ 	/* we expect a conflict with a 'System RAM' region */
+ 	parent = request_resource_conflict(&iomem_resource, res);
+-	return parent ? request_resource(parent, res) : 0;
++	ret = parent ? request_resource(parent, res) : 0;
++
++	/*
++	 * Given that efi_mem_reserve_iomem() can be called at any
++	 * time, only call memblock_reserve() if the architecture
++	 * keeps the infrastructure around.
++	 */
++	if (IS_ENABLED(CONFIG_ARCH_KEEP_MEMBLOCK) && !ret)
++		memblock_reserve(addr, size);
++
++	return ret;
+ }
+ 
+ int __ref efi_mem_reserve_persistent(phys_addr_t addr, u64 size)
