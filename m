@@ -2,52 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 763BC3D7799
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 27 Jul 2021 15:58:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 60C393D779C
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 27 Jul 2021 15:58:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232282AbhG0N6s (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 27 Jul 2021 09:58:48 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:51390 "EHLO
+        id S232480AbhG0N6v (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 27 Jul 2021 09:58:51 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:51426 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230500AbhG0N6q (ORCPT
+        with ESMTP id S231223AbhG0N6s (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 27 Jul 2021 09:58:46 -0400
-Date:   Tue, 27 Jul 2021 13:58:44 -0000
+        Tue, 27 Jul 2021 09:58:48 -0400
+Date:   Tue, 27 Jul 2021 13:58:45 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1627394325;
+        s=2020; t=1627394326;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=uCYUgEQIvSOQpd05d/mtEx+fvUKgCusFxBrcz+D13hQ=;
-        b=ZSOHNThh1/QgDkIMa7Gc1knLc36auR5fZm11vb1w8NbUzYwTyc6En29IjahxSUZEfgQACu
-        W4hzru8vfKvK2/iEj4mdA4SHBQzMLgV+9LygtXDlALkvW7kcWz/MKotGVx20lY7VNXFwf+
-        HjahnvIrecUJ0kmenAjhRLLdrfQqjD9Y6GL2jGS3jXaqcgqgYAi6c+V9xTj7vtCmtOX6lE
-        XBMkBm98Uz4AcrDXfhJ6GMo98H+CLfA1j4mJAq1Me2oSXFmSNTPzDyWu8UVR/NvJ4kNwqc
-        2EMMX4nJD9/1/avuWiDwnnZYGjJ8aAULyTPN63DgU0O3O9y0SAeP4QgmCB4aig==
+        bh=gg1C4gqvqs2JgwQ6TeXXPX5VgOeo/OUyBM1VR7CtlgU=;
+        b=I8JWmFQVSozWfFy1RH8jAgjvhrxwgmjLRiw2XyqU46PP9GvAhxL6DB3G303YVv+X40EVfl
+        AHzLbz02VHnrE4i19fHR8MwDjw5gbrjsrPo3LgpQ/CPYWEZq36nno3omGwixztbW3YT84g
+        GlFHRGf2TQWKc49a5jMIJ3QjjDaAxxJY8bsepFROOenxtA1ca6D38Kz4d0pG3rMfpZXJ1v
+        8K5Lo1ck71tN5P01q3jPYTHWeaLMigrWSndZTb6yulZRuKj7KoLPmFFGTGv7KssjgOGHWe
+        6KYQhgNeb3nWQPMfliXP8N/KYiZdT91aL+xfunvgF90UUP5wuddOhQ1tLYAgig==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1627394325;
+        s=2020e; t=1627394326;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=uCYUgEQIvSOQpd05d/mtEx+fvUKgCusFxBrcz+D13hQ=;
-        b=s436pX+B8lfB7CXm+Lm4BnggRreXqGg21ZhWcQg8YdBrkJoYp4J4OL1SNYciacocBx0piY
-        rhcy/cST862TM9Bg==
+        bh=gg1C4gqvqs2JgwQ6TeXXPX5VgOeo/OUyBM1VR7CtlgU=;
+        b=OqcbEg2PmCdEfopmEwwoos0W6PuEtoVvg2Hsg8OHTydPdRjJw/dkkjwM2KQnm8Qgu0zCX8
+        Zy2to2RZNPbZM7Ag==
 From:   "tip-bot2 for Mark Rutland" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] locking/atomic: add generic arch_*() bitops
+Subject: [tip: locking/core] locking/atomic: remove ARCH_ATOMIC remanants
 Cc:     Mark Rutland <mark.rutland@arm.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210713105253.7615-6-mark.rutland@arm.com>
-References: <20210713105253.7615-6-mark.rutland@arm.com>
+In-Reply-To: <20210713105253.7615-3-mark.rutland@arm.com>
+References: <20210713105253.7615-3-mark.rutland@arm.com>
 MIME-Version: 1.0
-Message-ID: <162739432417.395.3707177574186239363.tip-bot2@tip-bot2>
+Message-ID: <162739432590.395.3881700007508069068.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,441 +58,585 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     cf3ee3c8c29dc349b2cf52e5e72e8cb805ff5e57
-Gitweb:        https://git.kernel.org/tip/cf3ee3c8c29dc349b2cf52e5e72e8cb805ff5e57
+Commit-ID:     f3e615b4db1fb7034f1d76dc307b77cc848f040e
+Gitweb:        https://git.kernel.org/tip/f3e615b4db1fb7034f1d76dc307b77cc848f040e
 Author:        Mark Rutland <mark.rutland@arm.com>
-AuthorDate:    Tue, 13 Jul 2021 11:52:53 +01:00
+AuthorDate:    Tue, 13 Jul 2021 11:52:50 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Fri, 16 Jul 2021 18:46:45 +02:00
+CommitterDate: Fri, 16 Jul 2021 18:46:44 +02:00
 
-locking/atomic: add generic arch_*() bitops
+locking/atomic: remove ARCH_ATOMIC remanants
 
-Now that all architectures provide arch_atomic_long_*(), we can
-implement the generic bitops atop these rather than atop
-atomic_long_*(), and provide arch_*() forms of the bitops that are safe
-to use in noinstr code.
+Now that gen-atomic-fallback.sh is only used to generate the arch_*
+fallbacks, we don't need to also generate the non-arch_* forms, and can
+removethe infrastructure this needed.
 
-Now that all architectures provide arch_atomic_long_*(), we can
-build the generic arch_*() bitops atop these, which can be safely used
-in noinstr code. The regular bitop wrappers are built atop these.
-
-As the generic non-atomic bitops use plain accesses, these will be
-implicitly instrumented unless they are inlined into noinstr functions
-(which is similar to arch_atomic*_read() when based on READ_ONCE()).
-The wrappers are modified so that where the underlying arch_*() function
-uses a plain access, no explicit instrumentation is added, as this is
-redundant and could result in confusing reports.
-
-Since function prototypes get excessively long with both an `arch_`
-prefix and `__always_inline` attribute, the return type and function
-attributes have been split onto a separate line, matching the style of
-the generated atomic headers.
+There is no change to any of the generated headers as a result of this
+patch.
 
 Signed-off-by: Mark Rutland <mark.rutland@arm.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20210713105253.7615-6-mark.rutland@arm.com
+Link: https://lore.kernel.org/r/20210713105253.7615-3-mark.rutland@arm.com
 ---
- include/asm-generic/bitops/atomic.h                  | 32 +++++----
- include/asm-generic/bitops/instrumented-non-atomic.h | 21 ++++--
- include/asm-generic/bitops/lock.h                    | 39 +++++-----
- include/asm-generic/bitops/non-atomic.h              | 41 +++++++----
- 4 files changed, 83 insertions(+), 50 deletions(-)
+ scripts/atomic/fallbacks/acquire             |  4 +-
+ scripts/atomic/fallbacks/add_negative        |  6 +-
+ scripts/atomic/fallbacks/add_unless          |  6 +-
+ scripts/atomic/fallbacks/andnot              |  4 +-
+ scripts/atomic/fallbacks/dec                 |  4 +-
+ scripts/atomic/fallbacks/dec_and_test        |  6 +-
+ scripts/atomic/fallbacks/dec_if_positive     |  6 +-
+ scripts/atomic/fallbacks/dec_unless_positive |  6 +-
+ scripts/atomic/fallbacks/fence               |  4 +-
+ scripts/atomic/fallbacks/fetch_add_unless    |  8 +-
+ scripts/atomic/fallbacks/inc                 |  4 +-
+ scripts/atomic/fallbacks/inc_and_test        |  6 +-
+ scripts/atomic/fallbacks/inc_not_zero        |  6 +-
+ scripts/atomic/fallbacks/inc_unless_negative |  6 +-
+ scripts/atomic/fallbacks/read_acquire        |  2 +-
+ scripts/atomic/fallbacks/release             |  4 +-
+ scripts/atomic/fallbacks/set_release         |  2 +-
+ scripts/atomic/fallbacks/sub_and_test        |  6 +-
+ scripts/atomic/fallbacks/try_cmpxchg         |  4 +-
+ scripts/atomic/gen-atomic-fallback.sh        | 66 ++++++-------------
+ scripts/atomic/gen-atomics.sh                |  2 +-
+ 21 files changed, 71 insertions(+), 91 deletions(-)
 
-diff --git a/include/asm-generic/bitops/atomic.h b/include/asm-generic/bitops/atomic.h
-index 0e7316a..3096f08 100644
---- a/include/asm-generic/bitops/atomic.h
-+++ b/include/asm-generic/bitops/atomic.h
-@@ -11,25 +11,29 @@
-  * See Documentation/atomic_bitops.txt for details.
-  */
- 
--static __always_inline void set_bit(unsigned int nr, volatile unsigned long *p)
-+static __always_inline void
-+arch_set_bit(unsigned int nr, volatile unsigned long *p)
+diff --git a/scripts/atomic/fallbacks/acquire b/scripts/atomic/fallbacks/acquire
+index 59c0052..ef76408 100755
+--- a/scripts/atomic/fallbacks/acquire
++++ b/scripts/atomic/fallbacks/acquire
+@@ -1,8 +1,8 @@
+ cat <<EOF
+ static __always_inline ${ret}
+-${arch}${atomic}_${pfx}${name}${sfx}_acquire(${params})
++arch_${atomic}_${pfx}${name}${sfx}_acquire(${params})
  {
- 	p += BIT_WORD(nr);
--	atomic_long_or(BIT_MASK(nr), (atomic_long_t *)p);
-+	arch_atomic_long_or(BIT_MASK(nr), (atomic_long_t *)p);
+-	${ret} ret = ${arch}${atomic}_${pfx}${name}${sfx}_relaxed(${args});
++	${ret} ret = arch_${atomic}_${pfx}${name}${sfx}_relaxed(${args});
+ 	__atomic_acquire_fence();
+ 	return ret;
  }
- 
--static __always_inline void clear_bit(unsigned int nr, volatile unsigned long *p)
-+static __always_inline void
-+arch_clear_bit(unsigned int nr, volatile unsigned long *p)
- {
- 	p += BIT_WORD(nr);
--	atomic_long_andnot(BIT_MASK(nr), (atomic_long_t *)p);
-+	arch_atomic_long_andnot(BIT_MASK(nr), (atomic_long_t *)p);
- }
- 
--static __always_inline void change_bit(unsigned int nr, volatile unsigned long *p)
-+static __always_inline void
-+arch_change_bit(unsigned int nr, volatile unsigned long *p)
- {
- 	p += BIT_WORD(nr);
--	atomic_long_xor(BIT_MASK(nr), (atomic_long_t *)p);
-+	arch_atomic_long_xor(BIT_MASK(nr), (atomic_long_t *)p);
- }
- 
--static inline int test_and_set_bit(unsigned int nr, volatile unsigned long *p)
-+static __always_inline int
-+arch_test_and_set_bit(unsigned int nr, volatile unsigned long *p)
- {
- 	long old;
- 	unsigned long mask = BIT_MASK(nr);
-@@ -38,11 +42,12 @@ static inline int test_and_set_bit(unsigned int nr, volatile unsigned long *p)
- 	if (READ_ONCE(*p) & mask)
- 		return 1;
- 
--	old = atomic_long_fetch_or(mask, (atomic_long_t *)p);
-+	old = arch_atomic_long_fetch_or(mask, (atomic_long_t *)p);
- 	return !!(old & mask);
- }
- 
--static inline int test_and_clear_bit(unsigned int nr, volatile unsigned long *p)
-+static __always_inline int
-+arch_test_and_clear_bit(unsigned int nr, volatile unsigned long *p)
- {
- 	long old;
- 	unsigned long mask = BIT_MASK(nr);
-@@ -51,18 +56,21 @@ static inline int test_and_clear_bit(unsigned int nr, volatile unsigned long *p)
- 	if (!(READ_ONCE(*p) & mask))
- 		return 0;
- 
--	old = atomic_long_fetch_andnot(mask, (atomic_long_t *)p);
-+	old = arch_atomic_long_fetch_andnot(mask, (atomic_long_t *)p);
- 	return !!(old & mask);
- }
- 
--static inline int test_and_change_bit(unsigned int nr, volatile unsigned long *p)
-+static __always_inline int
-+arch_test_and_change_bit(unsigned int nr, volatile unsigned long *p)
- {
- 	long old;
- 	unsigned long mask = BIT_MASK(nr);
- 
- 	p += BIT_WORD(nr);
--	old = atomic_long_fetch_xor(mask, (atomic_long_t *)p);
-+	old = arch_atomic_long_fetch_xor(mask, (atomic_long_t *)p);
- 	return !!(old & mask);
- }
- 
-+#include <asm-generic/bitops/instrumented-atomic.h>
-+
- #endif /* _ASM_GENERIC_BITOPS_ATOMIC_H */
-diff --git a/include/asm-generic/bitops/instrumented-non-atomic.h b/include/asm-generic/bitops/instrumented-non-atomic.h
-index 37363d5..e6c1540 100644
---- a/include/asm-generic/bitops/instrumented-non-atomic.h
-+++ b/include/asm-generic/bitops/instrumented-non-atomic.h
-@@ -24,7 +24,8 @@
-  */
- static inline void __set_bit(long nr, volatile unsigned long *addr)
- {
--	instrument_write(addr + BIT_WORD(nr), sizeof(long));
-+	if (!__is_defined(arch___set_bit_uses_plain_access))
-+		instrument_write(addr + BIT_WORD(nr), sizeof(long));
- 	arch___set_bit(nr, addr);
- }
- 
-@@ -39,7 +40,8 @@ static inline void __set_bit(long nr, volatile unsigned long *addr)
-  */
- static inline void __clear_bit(long nr, volatile unsigned long *addr)
- {
--	instrument_write(addr + BIT_WORD(nr), sizeof(long));
-+	if (!__is_defined(arch___clear_bit_uses_plain_access))
-+		instrument_write(addr + BIT_WORD(nr), sizeof(long));
- 	arch___clear_bit(nr, addr);
- }
- 
-@@ -54,7 +56,8 @@ static inline void __clear_bit(long nr, volatile unsigned long *addr)
-  */
- static inline void __change_bit(long nr, volatile unsigned long *addr)
- {
--	instrument_write(addr + BIT_WORD(nr), sizeof(long));
-+	if (!__is_defined(arch___change_bit_uses_plain_access))
-+		instrument_write(addr + BIT_WORD(nr), sizeof(long));
- 	arch___change_bit(nr, addr);
- }
- 
-@@ -92,7 +95,8 @@ static inline void __instrument_read_write_bitop(long nr, volatile unsigned long
-  */
- static inline bool __test_and_set_bit(long nr, volatile unsigned long *addr)
- {
--	__instrument_read_write_bitop(nr, addr);
-+	if (!__is_defined(arch___test_and_set_bit_uses_plain_access))
-+		__instrument_read_write_bitop(nr, addr);
- 	return arch___test_and_set_bit(nr, addr);
- }
- 
-@@ -106,7 +110,8 @@ static inline bool __test_and_set_bit(long nr, volatile unsigned long *addr)
-  */
- static inline bool __test_and_clear_bit(long nr, volatile unsigned long *addr)
- {
--	__instrument_read_write_bitop(nr, addr);
-+	if (!__is_defined(arch___test_and_clear_bit_uses_plain_access))
-+		__instrument_read_write_bitop(nr, addr);
- 	return arch___test_and_clear_bit(nr, addr);
- }
- 
-@@ -120,7 +125,8 @@ static inline bool __test_and_clear_bit(long nr, volatile unsigned long *addr)
-  */
- static inline bool __test_and_change_bit(long nr, volatile unsigned long *addr)
- {
--	__instrument_read_write_bitop(nr, addr);
-+	if (!__is_defined(arch___test_and_change_bit_uses_plain_access))
-+		__instrument_read_write_bitop(nr, addr);
- 	return arch___test_and_change_bit(nr, addr);
- }
- 
-@@ -131,7 +137,8 @@ static inline bool __test_and_change_bit(long nr, volatile unsigned long *addr)
-  */
- static inline bool test_bit(long nr, const volatile unsigned long *addr)
- {
--	instrument_atomic_read(addr + BIT_WORD(nr), sizeof(long));
-+	if (!__is_defined(arch_test_bit_uses_plain_access))
-+		instrument_atomic_read(addr + BIT_WORD(nr), sizeof(long));
- 	return arch_test_bit(nr, addr);
- }
- 
-diff --git a/include/asm-generic/bitops/lock.h b/include/asm-generic/bitops/lock.h
-index 3ae0213..630f2f6 100644
---- a/include/asm-generic/bitops/lock.h
-+++ b/include/asm-generic/bitops/lock.h
-@@ -7,7 +7,7 @@
- #include <asm/barrier.h>
- 
+diff --git a/scripts/atomic/fallbacks/add_negative b/scripts/atomic/fallbacks/add_negative
+index a66635b..15caa2e 100755
+--- a/scripts/atomic/fallbacks/add_negative
++++ b/scripts/atomic/fallbacks/add_negative
+@@ -1,6 +1,6 @@
+ cat <<EOF
  /**
-- * test_and_set_bit_lock - Set a bit and return its old value, for lock
-+ * arch_test_and_set_bit_lock - Set a bit and return its old value, for lock
-  * @nr: Bit to set
-  * @addr: Address to count from
+- * ${arch}${atomic}_add_negative - add and test if negative
++ * arch_${atomic}_add_negative - add and test if negative
+  * @i: integer value to add
+  * @v: pointer of type ${atomic}_t
   *
-@@ -15,8 +15,8 @@
-  * the returned value is 0.
-  * It can be used to implement bit locks.
+@@ -9,8 +9,8 @@ cat <<EOF
+  * result is greater than or equal to zero.
   */
--static inline int test_and_set_bit_lock(unsigned int nr,
--					volatile unsigned long *p)
-+static __always_inline int
-+arch_test_and_set_bit_lock(unsigned int nr, volatile unsigned long *p)
+ static __always_inline bool
+-${arch}${atomic}_add_negative(${int} i, ${atomic}_t *v)
++arch_${atomic}_add_negative(${int} i, ${atomic}_t *v)
  {
- 	long old;
- 	unsigned long mask = BIT_MASK(nr);
-@@ -25,26 +25,27 @@ static inline int test_and_set_bit_lock(unsigned int nr,
- 	if (READ_ONCE(*p) & mask)
- 		return 1;
- 
--	old = atomic_long_fetch_or_acquire(mask, (atomic_long_t *)p);
-+	old = arch_atomic_long_fetch_or_acquire(mask, (atomic_long_t *)p);
- 	return !!(old & mask);
+-	return ${arch}${atomic}_add_return(i, v) < 0;
++	return arch_${atomic}_add_return(i, v) < 0;
  }
- 
- 
+ EOF
+diff --git a/scripts/atomic/fallbacks/add_unless b/scripts/atomic/fallbacks/add_unless
+index 2ff598a..9e5159c 100755
+--- a/scripts/atomic/fallbacks/add_unless
++++ b/scripts/atomic/fallbacks/add_unless
+@@ -1,6 +1,6 @@
+ cat << EOF
  /**
-- * clear_bit_unlock - Clear a bit in memory, for unlock
-+ * arch_clear_bit_unlock - Clear a bit in memory, for unlock
-  * @nr: the bit to set
-  * @addr: the address to start counting from
-  *
-  * This operation is atomic and provides release barrier semantics.
+- * ${arch}${atomic}_add_unless - add unless the number is already a given value
++ * arch_${atomic}_add_unless - add unless the number is already a given value
+  * @v: pointer of type ${atomic}_t
+  * @a: the amount to add to v...
+  * @u: ...unless v is equal to u.
+@@ -9,8 +9,8 @@ cat << EOF
+  * Returns true if the addition was done.
   */
--static inline void clear_bit_unlock(unsigned int nr, volatile unsigned long *p)
-+static __always_inline void
-+arch_clear_bit_unlock(unsigned int nr, volatile unsigned long *p)
+ static __always_inline bool
+-${arch}${atomic}_add_unless(${atomic}_t *v, ${int} a, ${int} u)
++arch_${atomic}_add_unless(${atomic}_t *v, ${int} a, ${int} u)
  {
- 	p += BIT_WORD(nr);
--	atomic_long_fetch_andnot_release(BIT_MASK(nr), (atomic_long_t *)p);
-+	arch_atomic_long_fetch_andnot_release(BIT_MASK(nr), (atomic_long_t *)p);
+-	return ${arch}${atomic}_fetch_add_unless(v, a, u) != u;
++	return arch_${atomic}_fetch_add_unless(v, a, u) != u;
  }
- 
+ EOF
+diff --git a/scripts/atomic/fallbacks/andnot b/scripts/atomic/fallbacks/andnot
+index 3f18663..5a42f54 100755
+--- a/scripts/atomic/fallbacks/andnot
++++ b/scripts/atomic/fallbacks/andnot
+@@ -1,7 +1,7 @@
+ cat <<EOF
+ static __always_inline ${ret}
+-${arch}${atomic}_${pfx}andnot${sfx}${order}(${int} i, ${atomic}_t *v)
++arch_${atomic}_${pfx}andnot${sfx}${order}(${int} i, ${atomic}_t *v)
+ {
+-	${retstmt}${arch}${atomic}_${pfx}and${sfx}${order}(~i, v);
++	${retstmt}arch_${atomic}_${pfx}and${sfx}${order}(~i, v);
+ }
+ EOF
+diff --git a/scripts/atomic/fallbacks/dec b/scripts/atomic/fallbacks/dec
+index e2e01f0..8c144c8 100755
+--- a/scripts/atomic/fallbacks/dec
++++ b/scripts/atomic/fallbacks/dec
+@@ -1,7 +1,7 @@
+ cat <<EOF
+ static __always_inline ${ret}
+-${arch}${atomic}_${pfx}dec${sfx}${order}(${atomic}_t *v)
++arch_${atomic}_${pfx}dec${sfx}${order}(${atomic}_t *v)
+ {
+-	${retstmt}${arch}${atomic}_${pfx}sub${sfx}${order}(1, v);
++	${retstmt}arch_${atomic}_${pfx}sub${sfx}${order}(1, v);
+ }
+ EOF
+diff --git a/scripts/atomic/fallbacks/dec_and_test b/scripts/atomic/fallbacks/dec_and_test
+index e8a5e49..8549f35 100755
+--- a/scripts/atomic/fallbacks/dec_and_test
++++ b/scripts/atomic/fallbacks/dec_and_test
+@@ -1,6 +1,6 @@
+ cat <<EOF
  /**
-- * __clear_bit_unlock - Clear a bit in memory, for unlock
-+ * arch___clear_bit_unlock - Clear a bit in memory, for unlock
-  * @nr: the bit to set
-  * @addr: the address to start counting from
+- * ${arch}${atomic}_dec_and_test - decrement and test
++ * arch_${atomic}_dec_and_test - decrement and test
+  * @v: pointer of type ${atomic}_t
   *
-@@ -54,38 +55,40 @@ static inline void clear_bit_unlock(unsigned int nr, volatile unsigned long *p)
-  *
-  * See for example x86's implementation.
+  * Atomically decrements @v by 1 and
+@@ -8,8 +8,8 @@ cat <<EOF
+  * cases.
   */
--static inline void __clear_bit_unlock(unsigned int nr,
--				      volatile unsigned long *p)
-+static inline void
-+arch___clear_bit_unlock(unsigned int nr, volatile unsigned long *p)
+ static __always_inline bool
+-${arch}${atomic}_dec_and_test(${atomic}_t *v)
++arch_${atomic}_dec_and_test(${atomic}_t *v)
  {
- 	unsigned long old;
- 
- 	p += BIT_WORD(nr);
- 	old = READ_ONCE(*p);
- 	old &= ~BIT_MASK(nr);
--	atomic_long_set_release((atomic_long_t *)p, old);
-+	arch_atomic_long_set_release((atomic_long_t *)p, old);
+-	return ${arch}${atomic}_dec_return(v) == 0;
++	return arch_${atomic}_dec_return(v) == 0;
  }
+ EOF
+diff --git a/scripts/atomic/fallbacks/dec_if_positive b/scripts/atomic/fallbacks/dec_if_positive
+index 527adec..86bdced 100755
+--- a/scripts/atomic/fallbacks/dec_if_positive
++++ b/scripts/atomic/fallbacks/dec_if_positive
+@@ -1,14 +1,14 @@
+ cat <<EOF
+ static __always_inline ${ret}
+-${arch}${atomic}_dec_if_positive(${atomic}_t *v)
++arch_${atomic}_dec_if_positive(${atomic}_t *v)
+ {
+-	${int} dec, c = ${arch}${atomic}_read(v);
++	${int} dec, c = arch_${atomic}_read(v);
  
+ 	do {
+ 		dec = c - 1;
+ 		if (unlikely(dec < 0))
+ 			break;
+-	} while (!${arch}${atomic}_try_cmpxchg(v, &c, dec));
++	} while (!arch_${atomic}_try_cmpxchg(v, &c, dec));
+ 
+ 	return dec;
+ }
+diff --git a/scripts/atomic/fallbacks/dec_unless_positive b/scripts/atomic/fallbacks/dec_unless_positive
+index dcab684..c531d5a 100755
+--- a/scripts/atomic/fallbacks/dec_unless_positive
++++ b/scripts/atomic/fallbacks/dec_unless_positive
+@@ -1,13 +1,13 @@
+ cat <<EOF
+ static __always_inline bool
+-${arch}${atomic}_dec_unless_positive(${atomic}_t *v)
++arch_${atomic}_dec_unless_positive(${atomic}_t *v)
+ {
+-	${int} c = ${arch}${atomic}_read(v);
++	${int} c = arch_${atomic}_read(v);
+ 
+ 	do {
+ 		if (unlikely(c > 0))
+ 			return false;
+-	} while (!${arch}${atomic}_try_cmpxchg(v, &c, c - 1));
++	} while (!arch_${atomic}_try_cmpxchg(v, &c, c - 1));
+ 
+ 	return true;
+ }
+diff --git a/scripts/atomic/fallbacks/fence b/scripts/atomic/fallbacks/fence
+index 3764fc8..07757d8 100755
+--- a/scripts/atomic/fallbacks/fence
++++ b/scripts/atomic/fallbacks/fence
+@@ -1,10 +1,10 @@
+ cat <<EOF
+ static __always_inline ${ret}
+-${arch}${atomic}_${pfx}${name}${sfx}(${params})
++arch_${atomic}_${pfx}${name}${sfx}(${params})
+ {
+ 	${ret} ret;
+ 	__atomic_pre_full_fence();
+-	ret = ${arch}${atomic}_${pfx}${name}${sfx}_relaxed(${args});
++	ret = arch_${atomic}_${pfx}${name}${sfx}_relaxed(${args});
+ 	__atomic_post_full_fence();
+ 	return ret;
+ }
+diff --git a/scripts/atomic/fallbacks/fetch_add_unless b/scripts/atomic/fallbacks/fetch_add_unless
+index 0e0b9ae..68ce13c 100755
+--- a/scripts/atomic/fallbacks/fetch_add_unless
++++ b/scripts/atomic/fallbacks/fetch_add_unless
+@@ -1,6 +1,6 @@
+ cat << EOF
  /**
-- * clear_bit_unlock_is_negative_byte - Clear a bit in memory and test if bottom
-- *                                     byte is negative, for unlock.
-+ * arch_clear_bit_unlock_is_negative_byte - Clear a bit in memory and test if bottom
-+ *                                          byte is negative, for unlock.
-  * @nr: the bit to clear
-  * @addr: the address to start counting from
-  *
-  * This is a bit of a one-trick-pony for the filemap code, which clears
-  * PG_locked and tests PG_waiters,
+- * ${arch}${atomic}_fetch_add_unless - add unless the number is already a given value
++ * arch_${atomic}_fetch_add_unless - add unless the number is already a given value
+  * @v: pointer of type ${atomic}_t
+  * @a: the amount to add to v...
+  * @u: ...unless v is equal to u.
+@@ -9,14 +9,14 @@ cat << EOF
+  * Returns original value of @v
   */
--#ifndef clear_bit_unlock_is_negative_byte
--static inline bool clear_bit_unlock_is_negative_byte(unsigned int nr,
--						     volatile unsigned long *p)
-+#ifndef arch_clear_bit_unlock_is_negative_byte
-+static inline bool arch_clear_bit_unlock_is_negative_byte(unsigned int nr,
-+							  volatile unsigned long *p)
+ static __always_inline ${int}
+-${arch}${atomic}_fetch_add_unless(${atomic}_t *v, ${int} a, ${int} u)
++arch_${atomic}_fetch_add_unless(${atomic}_t *v, ${int} a, ${int} u)
  {
- 	long old;
- 	unsigned long mask = BIT_MASK(nr);
+-	${int} c = ${arch}${atomic}_read(v);
++	${int} c = arch_${atomic}_read(v);
  
- 	p += BIT_WORD(nr);
--	old = atomic_long_fetch_andnot_release(mask, (atomic_long_t *)p);
-+	old = arch_atomic_long_fetch_andnot_release(mask, (atomic_long_t *)p);
- 	return !!(old & BIT(7));
+ 	do {
+ 		if (unlikely(c == u))
+ 			break;
+-	} while (!${arch}${atomic}_try_cmpxchg(v, &c, c + a));
++	} while (!arch_${atomic}_try_cmpxchg(v, &c, c + a));
+ 
+ 	return c;
  }
--#define clear_bit_unlock_is_negative_byte clear_bit_unlock_is_negative_byte
-+#define arch_clear_bit_unlock_is_negative_byte arch_clear_bit_unlock_is_negative_byte
- #endif
- 
-+#include <asm-generic/bitops/instrumented-lock.h>
-+
- #endif /* _ASM_GENERIC_BITOPS_LOCK_H_ */
-diff --git a/include/asm-generic/bitops/non-atomic.h b/include/asm-generic/bitops/non-atomic.h
-index 7e10c4b..c8149cd 100644
---- a/include/asm-generic/bitops/non-atomic.h
-+++ b/include/asm-generic/bitops/non-atomic.h
-@@ -5,7 +5,7 @@
- #include <asm/types.h>
- 
+diff --git a/scripts/atomic/fallbacks/inc b/scripts/atomic/fallbacks/inc
+index 15ec629..3c2c373 100755
+--- a/scripts/atomic/fallbacks/inc
++++ b/scripts/atomic/fallbacks/inc
+@@ -1,7 +1,7 @@
+ cat <<EOF
+ static __always_inline ${ret}
+-${arch}${atomic}_${pfx}inc${sfx}${order}(${atomic}_t *v)
++arch_${atomic}_${pfx}inc${sfx}${order}(${atomic}_t *v)
+ {
+-	${retstmt}${arch}${atomic}_${pfx}add${sfx}${order}(1, v);
++	${retstmt}arch_${atomic}_${pfx}add${sfx}${order}(1, v);
+ }
+ EOF
+diff --git a/scripts/atomic/fallbacks/inc_and_test b/scripts/atomic/fallbacks/inc_and_test
+index cecc832..0cf23fe 100755
+--- a/scripts/atomic/fallbacks/inc_and_test
++++ b/scripts/atomic/fallbacks/inc_and_test
+@@ -1,6 +1,6 @@
+ cat <<EOF
  /**
-- * __set_bit - Set a bit in memory
-+ * arch___set_bit - Set a bit in memory
-  * @nr: the bit to set
-  * @addr: the address to start counting from
+- * ${arch}${atomic}_inc_and_test - increment and test
++ * arch_${atomic}_inc_and_test - increment and test
+  * @v: pointer of type ${atomic}_t
   *
-@@ -13,24 +13,28 @@
-  * If it's called on the same region of memory simultaneously, the effect
-  * may be that only one operation succeeds.
+  * Atomically increments @v by 1
+@@ -8,8 +8,8 @@ cat <<EOF
+  * other cases.
   */
--static inline void __set_bit(int nr, volatile unsigned long *addr)
-+static __always_inline void
-+arch___set_bit(int nr, volatile unsigned long *addr)
+ static __always_inline bool
+-${arch}${atomic}_inc_and_test(${atomic}_t *v)
++arch_${atomic}_inc_and_test(${atomic}_t *v)
  {
- 	unsigned long mask = BIT_MASK(nr);
- 	unsigned long *p = ((unsigned long *)addr) + BIT_WORD(nr);
- 
- 	*p  |= mask;
+-	return ${arch}${atomic}_inc_return(v) == 0;
++	return arch_${atomic}_inc_return(v) == 0;
  }
-+#define arch___set_bit_uses_plain_access
- 
--static inline void __clear_bit(int nr, volatile unsigned long *addr)
-+static __always_inline void
-+arch___clear_bit(int nr, volatile unsigned long *addr)
- {
- 	unsigned long mask = BIT_MASK(nr);
- 	unsigned long *p = ((unsigned long *)addr) + BIT_WORD(nr);
- 
- 	*p &= ~mask;
- }
-+#define arch___clear_bit_uses_plain_access
- 
+ EOF
+diff --git a/scripts/atomic/fallbacks/inc_not_zero b/scripts/atomic/fallbacks/inc_not_zero
+index 50f2d4d..ed8a1f5 100755
+--- a/scripts/atomic/fallbacks/inc_not_zero
++++ b/scripts/atomic/fallbacks/inc_not_zero
+@@ -1,14 +1,14 @@
+ cat <<EOF
  /**
-- * __change_bit - Toggle a bit in memory
-+ * arch___change_bit - Toggle a bit in memory
-  * @nr: the bit to change
-  * @addr: the address to start counting from
+- * ${arch}${atomic}_inc_not_zero - increment unless the number is zero
++ * arch_${atomic}_inc_not_zero - increment unless the number is zero
+  * @v: pointer of type ${atomic}_t
   *
-@@ -38,16 +42,18 @@ static inline void __clear_bit(int nr, volatile unsigned long *addr)
-  * If it's called on the same region of memory simultaneously, the effect
-  * may be that only one operation succeeds.
+  * Atomically increments @v by 1, if @v is non-zero.
+  * Returns true if the increment was done.
   */
--static inline void __change_bit(int nr, volatile unsigned long *addr)
-+static __always_inline
-+void arch___change_bit(int nr, volatile unsigned long *addr)
+ static __always_inline bool
+-${arch}${atomic}_inc_not_zero(${atomic}_t *v)
++arch_${atomic}_inc_not_zero(${atomic}_t *v)
  {
- 	unsigned long mask = BIT_MASK(nr);
- 	unsigned long *p = ((unsigned long *)addr) + BIT_WORD(nr);
- 
- 	*p ^= mask;
+-	return ${arch}${atomic}_add_unless(v, 1, 0);
++	return arch_${atomic}_add_unless(v, 1, 0);
  }
-+#define arch___change_bit_uses_plain_access
+ EOF
+diff --git a/scripts/atomic/fallbacks/inc_unless_negative b/scripts/atomic/fallbacks/inc_unless_negative
+index 87629e0..95d8ce4 100755
+--- a/scripts/atomic/fallbacks/inc_unless_negative
++++ b/scripts/atomic/fallbacks/inc_unless_negative
+@@ -1,13 +1,13 @@
+ cat <<EOF
+ static __always_inline bool
+-${arch}${atomic}_inc_unless_negative(${atomic}_t *v)
++arch_${atomic}_inc_unless_negative(${atomic}_t *v)
+ {
+-	${int} c = ${arch}${atomic}_read(v);
++	${int} c = arch_${atomic}_read(v);
  
+ 	do {
+ 		if (unlikely(c < 0))
+ 			return false;
+-	} while (!${arch}${atomic}_try_cmpxchg(v, &c, c + 1));
++	} while (!arch_${atomic}_try_cmpxchg(v, &c, c + 1));
+ 
+ 	return true;
+ }
+diff --git a/scripts/atomic/fallbacks/read_acquire b/scripts/atomic/fallbacks/read_acquire
+index 341a88d..803ba75 100755
+--- a/scripts/atomic/fallbacks/read_acquire
++++ b/scripts/atomic/fallbacks/read_acquire
+@@ -1,6 +1,6 @@
+ cat <<EOF
+ static __always_inline ${ret}
+-${arch}${atomic}_read_acquire(const ${atomic}_t *v)
++arch_${atomic}_read_acquire(const ${atomic}_t *v)
+ {
+ 	return smp_load_acquire(&(v)->counter);
+ }
+diff --git a/scripts/atomic/fallbacks/release b/scripts/atomic/fallbacks/release
+index f8906d5..b46feb5 100755
+--- a/scripts/atomic/fallbacks/release
++++ b/scripts/atomic/fallbacks/release
+@@ -1,8 +1,8 @@
+ cat <<EOF
+ static __always_inline ${ret}
+-${arch}${atomic}_${pfx}${name}${sfx}_release(${params})
++arch_${atomic}_${pfx}${name}${sfx}_release(${params})
+ {
+ 	__atomic_release_fence();
+-	${retstmt}${arch}${atomic}_${pfx}${name}${sfx}_relaxed(${args});
++	${retstmt}arch_${atomic}_${pfx}${name}${sfx}_relaxed(${args});
+ }
+ EOF
+diff --git a/scripts/atomic/fallbacks/set_release b/scripts/atomic/fallbacks/set_release
+index 7606827..86ede75 100755
+--- a/scripts/atomic/fallbacks/set_release
++++ b/scripts/atomic/fallbacks/set_release
+@@ -1,6 +1,6 @@
+ cat <<EOF
+ static __always_inline void
+-${arch}${atomic}_set_release(${atomic}_t *v, ${int} i)
++arch_${atomic}_set_release(${atomic}_t *v, ${int} i)
+ {
+ 	smp_store_release(&(v)->counter, i);
+ }
+diff --git a/scripts/atomic/fallbacks/sub_and_test b/scripts/atomic/fallbacks/sub_and_test
+index c580f4c..260f373 100755
+--- a/scripts/atomic/fallbacks/sub_and_test
++++ b/scripts/atomic/fallbacks/sub_and_test
+@@ -1,6 +1,6 @@
+ cat <<EOF
  /**
-- * __test_and_set_bit - Set a bit and return its old value
-+ * arch___test_and_set_bit - Set a bit and return its old value
-  * @nr: Bit to set
-  * @addr: Address to count from
+- * ${arch}${atomic}_sub_and_test - subtract value from variable and test result
++ * arch_${atomic}_sub_and_test - subtract value from variable and test result
+  * @i: integer value to subtract
+  * @v: pointer of type ${atomic}_t
   *
-@@ -55,7 +61,8 @@ static inline void __change_bit(int nr, volatile unsigned long *addr)
-  * If two examples of this operation race, one can appear to succeed
-  * but actually fail.  You must protect multiple accesses with a lock.
+@@ -9,8 +9,8 @@ cat <<EOF
+  * other cases.
   */
--static inline int __test_and_set_bit(int nr, volatile unsigned long *addr)
-+static __always_inline int
-+arch___test_and_set_bit(int nr, volatile unsigned long *addr)
+ static __always_inline bool
+-${arch}${atomic}_sub_and_test(${int} i, ${atomic}_t *v)
++arch_${atomic}_sub_and_test(${int} i, ${atomic}_t *v)
  {
- 	unsigned long mask = BIT_MASK(nr);
- 	unsigned long *p = ((unsigned long *)addr) + BIT_WORD(nr);
-@@ -64,9 +71,10 @@ static inline int __test_and_set_bit(int nr, volatile unsigned long *addr)
- 	*p = old | mask;
- 	return (old & mask) != 0;
+-	return ${arch}${atomic}_sub_return(i, v) == 0;
++	return arch_${atomic}_sub_return(i, v) == 0;
  }
-+#define arch___test_and_set_bit_uses_plain_access
- 
- /**
-- * __test_and_clear_bit - Clear a bit and return its old value
-+ * arch___test_and_clear_bit - Clear a bit and return its old value
-  * @nr: Bit to clear
-  * @addr: Address to count from
-  *
-@@ -74,7 +82,8 @@ static inline int __test_and_set_bit(int nr, volatile unsigned long *addr)
-  * If two examples of this operation race, one can appear to succeed
-  * but actually fail.  You must protect multiple accesses with a lock.
-  */
--static inline int __test_and_clear_bit(int nr, volatile unsigned long *addr)
-+static __always_inline int
-+arch___test_and_clear_bit(int nr, volatile unsigned long *addr)
+ EOF
+diff --git a/scripts/atomic/fallbacks/try_cmpxchg b/scripts/atomic/fallbacks/try_cmpxchg
+index 06db0f7..890f850 100755
+--- a/scripts/atomic/fallbacks/try_cmpxchg
++++ b/scripts/atomic/fallbacks/try_cmpxchg
+@@ -1,9 +1,9 @@
+ cat <<EOF
+ static __always_inline bool
+-${arch}${atomic}_try_cmpxchg${order}(${atomic}_t *v, ${int} *old, ${int} new)
++arch_${atomic}_try_cmpxchg${order}(${atomic}_t *v, ${int} *old, ${int} new)
  {
- 	unsigned long mask = BIT_MASK(nr);
- 	unsigned long *p = ((unsigned long *)addr) + BIT_WORD(nr);
-@@ -83,10 +92,11 @@ static inline int __test_and_clear_bit(int nr, volatile unsigned long *addr)
- 	*p = old & ~mask;
- 	return (old & mask) != 0;
- }
-+#define arch___test_and_clear_bit_uses_plain_access
+ 	${int} r, o = *old;
+-	r = ${arch}${atomic}_cmpxchg${order}(v, o, new);
++	r = arch_${atomic}_cmpxchg${order}(v, o, new);
+ 	if (unlikely(r != o))
+ 		*old = r;
+ 	return likely(r == o);
+diff --git a/scripts/atomic/gen-atomic-fallback.sh b/scripts/atomic/gen-atomic-fallback.sh
+index 2601ff4..8e2da71 100755
+--- a/scripts/atomic/gen-atomic-fallback.sh
++++ b/scripts/atomic/gen-atomic-fallback.sh
+@@ -2,11 +2,10 @@
+ # SPDX-License-Identifier: GPL-2.0
  
- /* WARNING: non atomic and it can be reordered! */
--static inline int __test_and_change_bit(int nr,
--					    volatile unsigned long *addr)
-+static __always_inline int
-+arch___test_and_change_bit(int nr, volatile unsigned long *addr)
+ ATOMICDIR=$(dirname $0)
+-ARCH=$2
+ 
+ . ${ATOMICDIR}/atomic-tbl.sh
+ 
+-#gen_template_fallback(template, meta, pfx, name, sfx, order, arch, atomic, int, args...)
++#gen_template_fallback(template, meta, pfx, name, sfx, order, atomic, int, args...)
+ gen_template_fallback()
  {
- 	unsigned long mask = BIT_MASK(nr);
- 	unsigned long *p = ((unsigned long *)addr) + BIT_WORD(nr);
-@@ -95,15 +105,20 @@ static inline int __test_and_change_bit(int nr,
- 	*p = old ^ mask;
- 	return (old & mask) != 0;
- }
-+#define arch___test_and_change_bit_uses_plain_access
+ 	local template="$1"; shift
+@@ -15,11 +14,10 @@ gen_template_fallback()
+ 	local name="$1"; shift
+ 	local sfx="$1"; shift
+ 	local order="$1"; shift
+-	local arch="$1"; shift
+ 	local atomic="$1"; shift
+ 	local int="$1"; shift
  
- /**
-- * test_bit - Determine whether a bit is set
-+ * arch_test_bit - Determine whether a bit is set
-  * @nr: bit number to test
-  * @addr: Address to start counting from
-  */
--static inline int test_bit(int nr, const volatile unsigned long *addr)
-+static __always_inline int
-+arch_test_bit(int nr, const volatile unsigned long *addr)
+-	local atomicname="${arch}${atomic}_${pfx}${name}${sfx}${order}"
++	local atomicname="arch_${atomic}_${pfx}${name}${sfx}${order}"
+ 
+ 	local ret="$(gen_ret_type "${meta}" "${int}")"
+ 	local retstmt="$(gen_ret_stmt "${meta}")"
+@@ -34,7 +32,7 @@ gen_template_fallback()
+ 	fi
+ }
+ 
+-#gen_proto_fallback(meta, pfx, name, sfx, order, arch, atomic, int, args...)
++#gen_proto_fallback(meta, pfx, name, sfx, order, atomic, int, args...)
+ gen_proto_fallback()
  {
- 	return 1UL & (addr[BIT_WORD(nr)] >> (nr & (BITS_PER_LONG-1)));
- }
-+#define arch_test_bit_uses_plain_access
-+
-+#include <asm-generic/bitops/instrumented-non-atomic.h>
+ 	local meta="$1"; shift
+@@ -65,44 +63,26 @@ gen_proto_order_variant()
+ 	local name="$1"; shift
+ 	local sfx="$1"; shift
+ 	local order="$1"; shift
+-	local arch="$1"
+-	local atomic="$2"
++	local atomic="$1"
  
- #endif /* _ASM_GENERIC_BITOPS_NON_ATOMIC_H_ */
+-	local basename="${arch}${atomic}_${pfx}${name}${sfx}"
++	local basename="arch_${atomic}_${pfx}${name}${sfx}"
+ 
+-	printf "#define arch_${basename}${order} ${basename}${order}\n"
++	printf "#define ${basename}${order} ${basename}${order}\n"
+ }
+ 
+-#gen_proto_order_variants(meta, pfx, name, sfx, arch, atomic, int, args...)
++#gen_proto_order_variants(meta, pfx, name, sfx, atomic, int, args...)
+ gen_proto_order_variants()
+ {
+ 	local meta="$1"; shift
+ 	local pfx="$1"; shift
+ 	local name="$1"; shift
+ 	local sfx="$1"; shift
+-	local arch="$1"
+-	local atomic="$2"
++	local atomic="$1"
+ 
+-	local basename="${arch}${atomic}_${pfx}${name}${sfx}"
++	local basename="arch_${atomic}_${pfx}${name}${sfx}"
+ 
+ 	local template="$(find_fallback_template "${pfx}" "${name}" "${sfx}" "${order}")"
+ 
+-	if [ -z "$arch" ]; then
+-		gen_proto_order_variant "${meta}" "${pfx}" "${name}" "${sfx}" "" "$@"
+-
+-		if meta_has_acquire "${meta}"; then
+-			gen_proto_order_variant "${meta}" "${pfx}" "${name}" "${sfx}" "_acquire" "$@"
+-		fi
+-		if meta_has_release "${meta}"; then
+-			gen_proto_order_variant "${meta}" "${pfx}" "${name}" "${sfx}" "_release" "$@"
+-		fi
+-		if meta_has_relaxed "${meta}"; then
+-			gen_proto_order_variant "${meta}" "${pfx}" "${name}" "${sfx}" "_relaxed" "$@"
+-		fi
+-
+-		echo ""
+-	fi
+-
+ 	# If we don't have relaxed atomics, then we don't bother with ordering fallbacks
+ 	# read_acquire and set_release need to be templated, though
+ 	if ! meta_has_relaxed "${meta}"; then
+@@ -187,38 +167,38 @@ gen_try_cmpxchg_fallback()
+ 	local order="$1"; shift;
+ 
+ cat <<EOF
+-#ifndef ${ARCH}try_cmpxchg${order}
+-#define ${ARCH}try_cmpxchg${order}(_ptr, _oldp, _new) \\
++#ifndef arch_try_cmpxchg${order}
++#define arch_try_cmpxchg${order}(_ptr, _oldp, _new) \\
+ ({ \\
+ 	typeof(*(_ptr)) *___op = (_oldp), ___o = *___op, ___r; \\
+-	___r = ${ARCH}cmpxchg${order}((_ptr), ___o, (_new)); \\
++	___r = arch_cmpxchg${order}((_ptr), ___o, (_new)); \\
+ 	if (unlikely(___r != ___o)) \\
+ 		*___op = ___r; \\
+ 	likely(___r == ___o); \\
+ })
+-#endif /* ${ARCH}try_cmpxchg${order} */
++#endif /* arch_try_cmpxchg${order} */
+ 
+ EOF
+ }
+ 
+ gen_try_cmpxchg_fallbacks()
+ {
+-	printf "#ifndef ${ARCH}try_cmpxchg_relaxed\n"
+-	printf "#ifdef ${ARCH}try_cmpxchg\n"
++	printf "#ifndef arch_try_cmpxchg_relaxed\n"
++	printf "#ifdef arch_try_cmpxchg\n"
+ 
+-	gen_basic_fallbacks "${ARCH}try_cmpxchg"
++	gen_basic_fallbacks "arch_try_cmpxchg"
+ 
+-	printf "#endif /* ${ARCH}try_cmpxchg */\n\n"
++	printf "#endif /* arch_try_cmpxchg */\n\n"
+ 
+ 	for order in "" "_acquire" "_release" "_relaxed"; do
+ 		gen_try_cmpxchg_fallback "${order}"
+ 	done
+ 
+-	printf "#else /* ${ARCH}try_cmpxchg_relaxed */\n"
++	printf "#else /* arch_try_cmpxchg_relaxed */\n"
+ 
+-	gen_order_fallbacks "${ARCH}try_cmpxchg"
++	gen_order_fallbacks "arch_try_cmpxchg"
+ 
+-	printf "#endif /* ${ARCH}try_cmpxchg_relaxed */\n\n"
++	printf "#endif /* arch_try_cmpxchg_relaxed */\n\n"
+ }
+ 
+ cat << EOF
+@@ -234,14 +214,14 @@ cat << EOF
+ 
+ EOF
+ 
+-for xchg in "${ARCH}xchg" "${ARCH}cmpxchg" "${ARCH}cmpxchg64"; do
++for xchg in "arch_xchg" "arch_cmpxchg" "arch_cmpxchg64"; do
+ 	gen_xchg_fallbacks "${xchg}"
+ done
+ 
+ gen_try_cmpxchg_fallbacks
+ 
+ grep '^[a-z]' "$1" | while read name meta args; do
+-	gen_proto "${meta}" "${name}" "${ARCH}" "atomic" "int" ${args}
++	gen_proto "${meta}" "${name}" "atomic" "int" ${args}
+ done
+ 
+ cat <<EOF
+@@ -252,7 +232,7 @@ cat <<EOF
+ EOF
+ 
+ grep '^[a-z]' "$1" | while read name meta args; do
+-	gen_proto "${meta}" "${name}" "${ARCH}" "atomic64" "s64" ${args}
++	gen_proto "${meta}" "${name}" "atomic64" "s64" ${args}
+ done
+ 
+ cat <<EOF
+diff --git a/scripts/atomic/gen-atomics.sh b/scripts/atomic/gen-atomics.sh
+index f776a57..56b119f 100755
+--- a/scripts/atomic/gen-atomics.sh
++++ b/scripts/atomic/gen-atomics.sh
+@@ -10,7 +10,7 @@ LINUXDIR=${ATOMICDIR}/../..
+ cat <<EOF |
+ gen-atomic-instrumented.sh      asm-generic/atomic-instrumented.h
+ gen-atomic-long.sh              asm-generic/atomic-long.h
+-gen-atomic-fallback.sh          linux/atomic-arch-fallback.h		arch_
++gen-atomic-fallback.sh          linux/atomic-arch-fallback.h
+ EOF
+ while read script header args; do
+ 	/bin/sh ${ATOMICDIR}/${script} ${ATOMICTBL} ${args} > ${LINUXDIR}/include/${header}
