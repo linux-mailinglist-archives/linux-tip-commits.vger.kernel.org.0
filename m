@@ -2,17 +2,20 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 85AB63D77A2
+	by mail.lfdr.de (Postfix) with ESMTP id C07953D77A3
 	for <lists+linux-tip-commits@lfdr.de>; Tue, 27 Jul 2021 15:59:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236700AbhG0N67 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 27 Jul 2021 09:58:59 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:51456 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236623AbhG0N64 (ORCPT
+        id S236576AbhG0N7A (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 27 Jul 2021 09:59:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41126 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236672AbhG0N65 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 27 Jul 2021 09:58:56 -0400
-Date:   Tue, 27 Jul 2021 13:58:54 -0000
+        Tue, 27 Jul 2021 09:58:57 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31135C061764;
+        Tue, 27 Jul 2021 06:58:57 -0700 (PDT)
+Date:   Tue, 27 Jul 2021 13:58:55 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1627394335;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -20,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=YhywEA2d2mjBpb3j+rb+RQgkPBW26w/xgVV6kvrWA7c=;
-        b=q6ZCv/l9yj6ury/RtHtXQSXi7S1r4Yl67RszFYayve40+wfJoQsXCHH0vcLm2ciLIits2W
-        XxsJvKyDoTb4xJf5QEF4M/JmUMUDk5/nKn6VwarL1HEBpu8oZtMYKy4x7ETYEyt8ZgqnNp
-        sE+yo+wUrMliuCxZ4OMdplnL70Vwj0mNt6aQWZeIizw9DkQUfe8PqEJ2BiQjgp4Oi/FkLm
-        LlQPfLC/V3VBzPpI8AXD2IC1Uu8WZ38ae6K/toh8C6ELZS9YP8Kvtdb/ZEEXYiATVQcQiv
-        0p6puucNmUSl1Q6zpGkXkmvA9m4R4xyS7impCMp1V6XTUXR5hLXUSrIOANCMkg==
+        bh=Y2nR+5jMfkCJTHfxk2uZxnrbhPjucYhJrPlcEnost6Y=;
+        b=WqGd4+t0om6tc9QtCtcwmZwwCmxvRdqeGFti+Z/9AOVMyE5J0z6JqRLEq2en2zHE7x6vOp
+        AQUb6HY1GBBgeRnCh7u7zFKt8IE68oyQXoA/lr4kf1/rVwzepKVOMPD6VPs6LIFgtJSV3e
+        NNcIY02Z0l7RMnV07GfrMKFMdYGcb74V5j7KW3w4axQhA23tcK2X4jKL/1j8hoiD/okj6F
+        DwnC7awRJ+LvCebN1rP9iDGziR63txIg2wYR3v3Pi1WzXkD3ZBTS5X7teY8DaBa47Qlyge
+        T5/2TiWSp9n0JkSKA4upPSntHBs7a3jkKwHEMJIfZh1Iy73/hg/iZx6obFP7OQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1627394335;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -33,23 +36,23 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=YhywEA2d2mjBpb3j+rb+RQgkPBW26w/xgVV6kvrWA7c=;
-        b=q/w5lJkcKYk5NaN4uRpzn6sdC1AuMiIGgCHyyKeqQ7l6+kicnFjJd4hGKtQLZUer1rykTu
-        NUMOpWDyBnVLQIBQ==
-From:   "tip-bot2 for Colin Ian King" <tip-bot2@linutronix.de>
+        bh=Y2nR+5jMfkCJTHfxk2uZxnrbhPjucYhJrPlcEnost6Y=;
+        b=RHWKnyvOhMJYFNl6YGztLDEQ/g5gEfwqVJWVTfyWS2gyGCjULaou3+ASBJVUHB+nGk2kAL
+        PeNgPvGYvbjozDDg==
+From:   "tip-bot2 for Alexander Antonov" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/x86/intel/uncore: Fix integer overflow on 23
- bit left shift of a u32
-Cc:     Colin Ian King <colin.king@canonical.com>,
+Subject: [tip: perf/core] perf/x86/intel/uncore: Fix IIO cleanup mapping
+ procedure for SNR/ICX
+Cc:     Alexander Antonov <alexander.antonov@linux.intel.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Kan Liang <kan.liang@linux.intel.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20210706114553.28249-1-colin.king@canonical.com>
-References: <20210706114553.28249-1-colin.king@canonical.com>
+        Kan Liang <kan.liang@linux.intel.com>, stable@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20210706090723.41850-1-alexander.antonov@linux.intel.com>
+References: <20210706090723.41850-1-alexander.antonov@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <162739433456.395.16686146185253041437.tip-bot2@tip-bot2>
+Message-ID: <162739433514.395.10272219341326813838.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,46 +63,117 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     92279a3b11a0a8486ce6b92384ddc0849eb4060f
-Gitweb:        https://git.kernel.org/tip/92279a3b11a0a8486ce6b92384ddc0849eb4060f
-Author:        Colin Ian King <colin.king@canonical.com>
-AuthorDate:    Tue, 06 Jul 2021 12:45:53 +01:00
+Commit-ID:     3f2cbe3810a60111a33f5f6267bd5a237b826fc9
+Gitweb:        https://git.kernel.org/tip/3f2cbe3810a60111a33f5f6267bd5a237b826fc9
+Author:        Alexander Antonov <alexander.antonov@linux.intel.com>
+AuthorDate:    Tue, 06 Jul 2021 12:07:23 +03:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Fri, 16 Jul 2021 18:46:48 +02:00
 
-perf/x86/intel/uncore: Fix integer overflow on 23 bit left shift of a u32
+perf/x86/intel/uncore: Fix IIO cleanup mapping procedure for SNR/ICX
 
-The u32 variable pci_dword is being masked with 0x1fffffff and then left
-shifted 23 places. The shift is a u32 operation,so a value of 0x200 or
-more in pci_dword will overflow the u32 and only the bottow 32 bits
-are assigned to addr. I don't believe this was the original intent.
-Fix this by casting pci_dword to a resource_size_t to ensure no
-overflow occurs.
+skx_iio_cleanup_mapping() is re-used for snr and icx, but in those
+cases it fails to use the appropriate XXX_iio_mapping_group and as
+such fails to free previously allocated resources, leading to memory
+leaks.
 
-Note that the mask and 12 bit left shift operation does not need this
-because the mask SNR_IMC_MMIO_MEM0_MASK and shift is always a 32 bit
-value.
-
-Fixes: ee49532b38dd ("perf/x86/intel/uncore: Add IMC uncore support for Snow Ridge")
-Addresses-Coverity: ("Unintentional integer overflow")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Fixes: 10337e95e04c ("perf/x86/intel/uncore: Enable I/O stacks to IIO PMON mapping on ICX")
+Signed-off-by: Alexander Antonov <alexander.antonov@linux.intel.com>
+[peterz: Changelog]
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
-Link: https://lore.kernel.org/r/20210706114553.28249-1-colin.king@canonical.com
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20210706090723.41850-1-alexander.antonov@linux.intel.com
 ---
- arch/x86/events/intel/uncore_snbep.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/events/intel/uncore_snbep.c | 40 ++++++++++++++++++---------
+ 1 file changed, 28 insertions(+), 12 deletions(-)
 
 diff --git a/arch/x86/events/intel/uncore_snbep.c b/arch/x86/events/intel/uncore_snbep.c
-index f665b16..9a178a9 100644
+index 2558e26..f665b16 100644
 --- a/arch/x86/events/intel/uncore_snbep.c
 +++ b/arch/x86/events/intel/uncore_snbep.c
-@@ -4834,7 +4834,7 @@ static int snr_uncore_mmio_map(struct intel_uncore_box *box,
- 		return -ENODEV;
+@@ -3847,26 +3847,32 @@ clear_attr_update:
+ 	return ret;
+ }
  
- 	pci_read_config_dword(pdev, SNR_IMC_MMIO_BASE_OFFSET, &pci_dword);
--	addr = (pci_dword & SNR_IMC_MMIO_BASE_MASK) << 23;
-+	addr = ((resource_size_t)pci_dword & SNR_IMC_MMIO_BASE_MASK) << 23;
+-static int skx_iio_set_mapping(struct intel_uncore_type *type)
+-{
+-	return pmu_iio_set_mapping(type, &skx_iio_mapping_group);
+-}
+-
+-static void skx_iio_cleanup_mapping(struct intel_uncore_type *type)
++static void
++pmu_iio_cleanup_mapping(struct intel_uncore_type *type, struct attribute_group *ag)
+ {
+-	struct attribute **attr = skx_iio_mapping_group.attrs;
++	struct attribute **attr = ag->attrs;
  
- 	pci_read_config_dword(pdev, mem_offset, &pci_dword);
- 	addr |= (pci_dword & SNR_IMC_MMIO_MEM0_MASK) << 12;
+ 	if (!attr)
+ 		return;
+ 
+ 	for (; *attr; attr++)
+ 		kfree((*attr)->name);
+-	kfree(attr_to_ext_attr(*skx_iio_mapping_group.attrs));
+-	kfree(skx_iio_mapping_group.attrs);
+-	skx_iio_mapping_group.attrs = NULL;
++	kfree(attr_to_ext_attr(*ag->attrs));
++	kfree(ag->attrs);
++	ag->attrs = NULL;
+ 	kfree(type->topology);
+ }
+ 
++static int skx_iio_set_mapping(struct intel_uncore_type *type)
++{
++	return pmu_iio_set_mapping(type, &skx_iio_mapping_group);
++}
++
++static void skx_iio_cleanup_mapping(struct intel_uncore_type *type)
++{
++	pmu_iio_cleanup_mapping(type, &skx_iio_mapping_group);
++}
++
+ static struct intel_uncore_type skx_uncore_iio = {
+ 	.name			= "iio",
+ 	.num_counters		= 4,
+@@ -4510,6 +4516,11 @@ static int snr_iio_set_mapping(struct intel_uncore_type *type)
+ 	return pmu_iio_set_mapping(type, &snr_iio_mapping_group);
+ }
+ 
++static void snr_iio_cleanup_mapping(struct intel_uncore_type *type)
++{
++	pmu_iio_cleanup_mapping(type, &snr_iio_mapping_group);
++}
++
+ static struct intel_uncore_type snr_uncore_iio = {
+ 	.name			= "iio",
+ 	.num_counters		= 4,
+@@ -4526,7 +4537,7 @@ static struct intel_uncore_type snr_uncore_iio = {
+ 	.attr_update		= snr_iio_attr_update,
+ 	.get_topology		= snr_iio_get_topology,
+ 	.set_mapping		= snr_iio_set_mapping,
+-	.cleanup_mapping	= skx_iio_cleanup_mapping,
++	.cleanup_mapping	= snr_iio_cleanup_mapping,
+ };
+ 
+ static struct intel_uncore_type snr_uncore_irp = {
+@@ -5113,6 +5124,11 @@ static int icx_iio_set_mapping(struct intel_uncore_type *type)
+ 	return pmu_iio_set_mapping(type, &icx_iio_mapping_group);
+ }
+ 
++static void icx_iio_cleanup_mapping(struct intel_uncore_type *type)
++{
++	pmu_iio_cleanup_mapping(type, &icx_iio_mapping_group);
++}
++
+ static struct intel_uncore_type icx_uncore_iio = {
+ 	.name			= "iio",
+ 	.num_counters		= 4,
+@@ -5130,7 +5146,7 @@ static struct intel_uncore_type icx_uncore_iio = {
+ 	.attr_update		= icx_iio_attr_update,
+ 	.get_topology		= icx_iio_get_topology,
+ 	.set_mapping		= icx_iio_set_mapping,
+-	.cleanup_mapping	= skx_iio_cleanup_mapping,
++	.cleanup_mapping	= icx_iio_cleanup_mapping,
+ };
+ 
+ static struct intel_uncore_type icx_uncore_irp = {
