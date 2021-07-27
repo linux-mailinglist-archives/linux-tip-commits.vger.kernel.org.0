@@ -2,57 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C07953D77A3
+	by mail.lfdr.de (Postfix) with ESMTP id C2C0F3D77A4
 	for <lists+linux-tip-commits@lfdr.de>; Tue, 27 Jul 2021 15:59:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236576AbhG0N7A (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S236658AbhG0N7A (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Tue, 27 Jul 2021 09:59:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41126 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236672AbhG0N65 (ORCPT
+Received: from Galois.linutronix.de ([193.142.43.55]:51476 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236661AbhG0N65 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Tue, 27 Jul 2021 09:58:57 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31135C061764;
-        Tue, 27 Jul 2021 06:58:57 -0700 (PDT)
 Date:   Tue, 27 Jul 2021 13:58:55 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1627394335;
+        s=2020; t=1627394336;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Y2nR+5jMfkCJTHfxk2uZxnrbhPjucYhJrPlcEnost6Y=;
-        b=WqGd4+t0om6tc9QtCtcwmZwwCmxvRdqeGFti+Z/9AOVMyE5J0z6JqRLEq2en2zHE7x6vOp
-        AQUb6HY1GBBgeRnCh7u7zFKt8IE68oyQXoA/lr4kf1/rVwzepKVOMPD6VPs6LIFgtJSV3e
-        NNcIY02Z0l7RMnV07GfrMKFMdYGcb74V5j7KW3w4axQhA23tcK2X4jKL/1j8hoiD/okj6F
-        DwnC7awRJ+LvCebN1rP9iDGziR63txIg2wYR3v3Pi1WzXkD3ZBTS5X7teY8DaBa47Qlyge
-        T5/2TiWSp9n0JkSKA4upPSntHBs7a3jkKwHEMJIfZh1Iy73/hg/iZx6obFP7OQ==
+        bh=G/NERakUa3tNBRiJaH0wo8QN/gj+iXhgbtmLMYOHAr0=;
+        b=N2pztbHEGumMB56D/GZ1mFVaV1QzKKpudw8w7y7B3oDDn8hdeI8YGrJxqnV8ofVTVgGLFy
+        YdA4OWGEz6Tsdry8NO/hyJQa4yxPTQG58uif5+hYrNfxSpJOOesq8LFGfL8n6Db5e/Hc2s
+        TVKVuhqJ4ZrsMHeIxG6UWPbT0HnByESrRUSIoTf+sA6y59U5wub8bcF/9nrsu4AVZOxc3y
+        B5AdzItcXfCAv+hAMJ2csB4cFXNCAVwy+z2piLvkuy2eEHzQOviPhniaon+lLB0zSNvTG8
+        dRwd79gp/6NekQXaFYjjofcnV4fJXZhH3sio9d+YchbB8fDo081apnJHiCP8Eg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1627394335;
+        s=2020e; t=1627394336;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Y2nR+5jMfkCJTHfxk2uZxnrbhPjucYhJrPlcEnost6Y=;
-        b=RHWKnyvOhMJYFNl6YGztLDEQ/g5gEfwqVJWVTfyWS2gyGCjULaou3+ASBJVUHB+nGk2kAL
-        PeNgPvGYvbjozDDg==
-From:   "tip-bot2 for Alexander Antonov" <tip-bot2@linutronix.de>
+        bh=G/NERakUa3tNBRiJaH0wo8QN/gj+iXhgbtmLMYOHAr0=;
+        b=DYukTkVwtc9YdZh/ybLr/qt2So5poRJg5zKg1TFb9syf4dIy5Ld2Q2f4630fuK01vjUiUx
+        e9iBmZRFmpJNyvDw==
+From:   "tip-bot2 for Marco Elver" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/x86/intel/uncore: Fix IIO cleanup mapping
- procedure for SNR/ICX
-Cc:     Alexander Antonov <alexander.antonov@linux.intel.com>,
+Subject: [tip: perf/urgent] perf: Refactor permissions check into
+ perf_check_permission()
+Cc:     Marco Elver <elver@google.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Kan Liang <kan.liang@linux.intel.com>, stable@vger.kernel.org,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20210706090723.41850-1-alexander.antonov@linux.intel.com>
-References: <20210706090723.41850-1-alexander.antonov@linux.intel.com>
+        Dmitry Vyukov <dvyukov@google.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20210705084453.2151729-2-elver@google.com>
+References: <20210705084453.2151729-2-elver@google.com>
 MIME-Version: 1.0
-Message-ID: <162739433514.395.10272219341326813838.tip-bot2@tip-bot2>
+Message-ID: <162739433584.395.14125645089713310487.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,119 +58,116 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/core branch of tip:
+The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     3f2cbe3810a60111a33f5f6267bd5a237b826fc9
-Gitweb:        https://git.kernel.org/tip/3f2cbe3810a60111a33f5f6267bd5a237b826fc9
-Author:        Alexander Antonov <alexander.antonov@linux.intel.com>
-AuthorDate:    Tue, 06 Jul 2021 12:07:23 +03:00
+Commit-ID:     b068fc04de10fff8974f6ef32b861ad134d94ba4
+Gitweb:        https://git.kernel.org/tip/b068fc04de10fff8974f6ef32b861ad134d94ba4
+Author:        Marco Elver <elver@google.com>
+AuthorDate:    Mon, 05 Jul 2021 10:44:53 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Fri, 16 Jul 2021 18:46:48 +02:00
+CommitterDate: Fri, 16 Jul 2021 18:46:38 +02:00
 
-perf/x86/intel/uncore: Fix IIO cleanup mapping procedure for SNR/ICX
+perf: Refactor permissions check into perf_check_permission()
 
-skx_iio_cleanup_mapping() is re-used for snr and icx, but in those
-cases it fails to use the appropriate XXX_iio_mapping_group and as
-such fails to free previously allocated resources, leading to memory
-leaks.
+Refactor the permission check in perf_event_open() into a helper
+perf_check_permission(). This makes the permission check logic more
+readable (because we no longer have a negated disjunction). Add a
+comment mentioning the ptrace check also checks the uid.
 
-Fixes: 10337e95e04c ("perf/x86/intel/uncore: Enable I/O stacks to IIO PMON mapping on ICX")
-Signed-off-by: Alexander Antonov <alexander.antonov@linux.intel.com>
-[peterz: Changelog]
+No functional change intended.
+
+Signed-off-by: Marco Elver <elver@google.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20210706090723.41850-1-alexander.antonov@linux.intel.com
+Reviewed-by: Dmitry Vyukov <dvyukov@google.com>
+Link: https://lore.kernel.org/r/20210705084453.2151729-2-elver@google.com
 ---
- arch/x86/events/intel/uncore_snbep.c | 40 ++++++++++++++++++---------
- 1 file changed, 28 insertions(+), 12 deletions(-)
+ kernel/events/core.c | 58 +++++++++++++++++++++++--------------------
+ 1 file changed, 32 insertions(+), 26 deletions(-)
 
-diff --git a/arch/x86/events/intel/uncore_snbep.c b/arch/x86/events/intel/uncore_snbep.c
-index 2558e26..f665b16 100644
---- a/arch/x86/events/intel/uncore_snbep.c
-+++ b/arch/x86/events/intel/uncore_snbep.c
-@@ -3847,26 +3847,32 @@ clear_attr_update:
- 	return ret;
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index c13730b..1cb1f9b 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -11917,6 +11917,37 @@ again:
+ 	return gctx;
  }
  
--static int skx_iio_set_mapping(struct intel_uncore_type *type)
--{
--	return pmu_iio_set_mapping(type, &skx_iio_mapping_group);
--}
++static bool
++perf_check_permission(struct perf_event_attr *attr, struct task_struct *task)
++{
++	unsigned int ptrace_mode = PTRACE_MODE_READ_REALCREDS;
++	bool is_capable = perfmon_capable();
++
++	if (attr->sigtrap) {
++		/*
++		 * perf_event_attr::sigtrap sends signals to the other task.
++		 * Require the current task to also have CAP_KILL.
++		 */
++		rcu_read_lock();
++		is_capable &= ns_capable(__task_cred(task)->user_ns, CAP_KILL);
++		rcu_read_unlock();
++
++		/*
++		 * If the required capabilities aren't available, checks for
++		 * ptrace permissions: upgrade to ATTACH, since sending signals
++		 * can effectively change the target task.
++		 */
++		ptrace_mode = PTRACE_MODE_ATTACH_REALCREDS;
++	}
++
++	/*
++	 * Preserve ptrace permission check for backwards compatibility. The
++	 * ptrace check also includes checks that the current task and other
++	 * task have matching uids, and is therefore not done here explicitly.
++	 */
++	return is_capable || ptrace_may_access(task, ptrace_mode);
++}
++
+ /**
+  * sys_perf_event_open - open a performance event, associate it to a task/cpu
+  *
+@@ -12158,43 +12189,18 @@ SYSCALL_DEFINE5(perf_event_open,
+ 	}
+ 
+ 	if (task) {
+-		unsigned int ptrace_mode = PTRACE_MODE_READ_REALCREDS;
+-		bool is_capable;
 -
--static void skx_iio_cleanup_mapping(struct intel_uncore_type *type)
-+static void
-+pmu_iio_cleanup_mapping(struct intel_uncore_type *type, struct attribute_group *ag)
- {
--	struct attribute **attr = skx_iio_mapping_group.attrs;
-+	struct attribute **attr = ag->attrs;
+ 		err = down_read_interruptible(&task->signal->exec_update_lock);
+ 		if (err)
+ 			goto err_file;
  
- 	if (!attr)
- 		return;
+-		is_capable = perfmon_capable();
+-		if (attr.sigtrap) {
+-			/*
+-			 * perf_event_attr::sigtrap sends signals to the other
+-			 * task. Require the current task to also have
+-			 * CAP_KILL.
+-			 */
+-			rcu_read_lock();
+-			is_capable &= ns_capable(__task_cred(task)->user_ns, CAP_KILL);
+-			rcu_read_unlock();
+-
+-			/*
+-			 * If the required capabilities aren't available, checks
+-			 * for ptrace permissions: upgrade to ATTACH, since
+-			 * sending signals can effectively change the target
+-			 * task.
+-			 */
+-			ptrace_mode = PTRACE_MODE_ATTACH_REALCREDS;
+-		}
+-
+ 		/*
+-		 * Preserve ptrace permission check for backwards compatibility.
+-		 *
+ 		 * We must hold exec_update_lock across this and any potential
+ 		 * perf_install_in_context() call for this new event to
+ 		 * serialize against exec() altering our credentials (and the
+ 		 * perf_event_exit_task() that could imply).
+ 		 */
+ 		err = -EACCES;
+-		if (!is_capable && !ptrace_may_access(task, ptrace_mode))
++		if (!perf_check_permission(&attr, task))
+ 			goto err_cred;
+ 	}
  
- 	for (; *attr; attr++)
- 		kfree((*attr)->name);
--	kfree(attr_to_ext_attr(*skx_iio_mapping_group.attrs));
--	kfree(skx_iio_mapping_group.attrs);
--	skx_iio_mapping_group.attrs = NULL;
-+	kfree(attr_to_ext_attr(*ag->attrs));
-+	kfree(ag->attrs);
-+	ag->attrs = NULL;
- 	kfree(type->topology);
- }
- 
-+static int skx_iio_set_mapping(struct intel_uncore_type *type)
-+{
-+	return pmu_iio_set_mapping(type, &skx_iio_mapping_group);
-+}
-+
-+static void skx_iio_cleanup_mapping(struct intel_uncore_type *type)
-+{
-+	pmu_iio_cleanup_mapping(type, &skx_iio_mapping_group);
-+}
-+
- static struct intel_uncore_type skx_uncore_iio = {
- 	.name			= "iio",
- 	.num_counters		= 4,
-@@ -4510,6 +4516,11 @@ static int snr_iio_set_mapping(struct intel_uncore_type *type)
- 	return pmu_iio_set_mapping(type, &snr_iio_mapping_group);
- }
- 
-+static void snr_iio_cleanup_mapping(struct intel_uncore_type *type)
-+{
-+	pmu_iio_cleanup_mapping(type, &snr_iio_mapping_group);
-+}
-+
- static struct intel_uncore_type snr_uncore_iio = {
- 	.name			= "iio",
- 	.num_counters		= 4,
-@@ -4526,7 +4537,7 @@ static struct intel_uncore_type snr_uncore_iio = {
- 	.attr_update		= snr_iio_attr_update,
- 	.get_topology		= snr_iio_get_topology,
- 	.set_mapping		= snr_iio_set_mapping,
--	.cleanup_mapping	= skx_iio_cleanup_mapping,
-+	.cleanup_mapping	= snr_iio_cleanup_mapping,
- };
- 
- static struct intel_uncore_type snr_uncore_irp = {
-@@ -5113,6 +5124,11 @@ static int icx_iio_set_mapping(struct intel_uncore_type *type)
- 	return pmu_iio_set_mapping(type, &icx_iio_mapping_group);
- }
- 
-+static void icx_iio_cleanup_mapping(struct intel_uncore_type *type)
-+{
-+	pmu_iio_cleanup_mapping(type, &icx_iio_mapping_group);
-+}
-+
- static struct intel_uncore_type icx_uncore_iio = {
- 	.name			= "iio",
- 	.num_counters		= 4,
-@@ -5130,7 +5146,7 @@ static struct intel_uncore_type icx_uncore_iio = {
- 	.attr_update		= icx_iio_attr_update,
- 	.get_topology		= icx_iio_get_topology,
- 	.set_mapping		= icx_iio_set_mapping,
--	.cleanup_mapping	= skx_iio_cleanup_mapping,
-+	.cleanup_mapping	= icx_iio_cleanup_mapping,
- };
- 
- static struct intel_uncore_type icx_uncore_irp = {
