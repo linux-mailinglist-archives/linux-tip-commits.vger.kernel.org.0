@@ -2,130 +2,104 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CA8C53D8B3F
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 28 Jul 2021 11:58:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6554F3DC01E
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 30 Jul 2021 23:10:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235918AbhG1J6O (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 28 Jul 2021 05:58:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60860 "EHLO
+        id S231984AbhG3VKo (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 30 Jul 2021 17:10:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59482 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235520AbhG1J6N (ORCPT
+        with ESMTP id S231982AbhG3VKo (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 28 Jul 2021 05:58:13 -0400
+        Fri, 30 Jul 2021 17:10:44 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 566A4C061764;
-        Wed, 28 Jul 2021 02:58:12 -0700 (PDT)
-Date:   Wed, 28 Jul 2021 09:58:10 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4ED25C061765;
+        Fri, 30 Jul 2021 14:10:39 -0700 (PDT)
+Date:   Fri, 30 Jul 2021 21:10:35 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1627466291;
+        s=2020; t=1627679436;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=HRT/lQKu2JlkJqOgynCQAChHgIv41T2kO+6q9tvSNCw=;
-        b=sgagafx0MiJ5Qb9QYJZlAEycuPP7f1ORJoTkuDtF7qdwHV80k/ZXyn+vZS15CfKN2+gylg
-        dKtLjBqpEYiqY0W5rcgnOYJFPDz2v5G4/5g7YEHQW6vYGwl3UgTHPQ3+gayBfT9HrfEtDd
-        KTqsd2NkXR4/9igQh2ePeXcdfImAD9pnDJuRcvJbcqr1qLPdsHpVWUKn2PL4GY1uzp4RUd
-        aMaJbmiS2GjDvSV08nbaypPfew7RHjkLw7r3Y4otiwQIGmLZZAqURmZMzCrEQ2fb1WBFHT
-        eN6h0Zpc6GXjv4sJuTorTeNnvPsxBnxDRmj3Bn8SObbvWbFfXT3qAlJvSreoqw==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=qMLj7LoyKYMS7jxdCGqk9QKiXWPC4NuhSIGwaA6lW2U=;
+        b=naKH4D3FibfFDBa0cEljlmlfJkBWop6acTRZ40KDcTqBIHjpfA3ipvRxRqvNpe2QWv632n
+        yNi4HE0YEOMjp7UEbxH+gGi/K8a0MzfXPnFVasLcsyLMra64DCIArABeGU/AP0KPc+YB+f
+        Nm1vkShJ6JFS+of7RsymB3uGUXsk6TPqZuLGpssC6ZJioXgaSBy0F0Qh5+6tz+EyFCnsk+
+        iXAuSY5lxk/BRbv4QLj+e/cCblVQ5d3DkJvNU2zSHNYKd7LVvG9zTfdx+5/Ahl8gmMqTcN
+        4BjcOD7GVcZvaUAaaFEzvfasy4utZmo6J6zFEI2u3XANWM1c+VYBxdiI1txwZA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1627466291;
+        s=2020e; t=1627679436;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=HRT/lQKu2JlkJqOgynCQAChHgIv41T2kO+6q9tvSNCw=;
-        b=JI1f0HwsXLxrKpv8ggUSgRsQpBoiv+vjGDg8N0hE1KLr4DwASlwDdowZrfxAOxyUXBBWOr
-        E/Bn2NDDNhV3meAQ==
-From:   "tip-bot2 for Balbir Singh" <tip-bot2@linutronix.de>
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=qMLj7LoyKYMS7jxdCGqk9QKiXWPC4NuhSIGwaA6lW2U=;
+        b=XINCMXWg2rW2UlCmCw7nxp/3XOB4l3m/BiaAYUpAMnCIi3E88tBySfnblZHzq6XRfZKalp
+        sr106biNvoRfW9CA==
+From:   tip-bot2 for =?utf-8?q?C=C3=A9dric?= Le Goater 
+        <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cpu] x86/smp: Add a per-cpu view of SMT state
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Balbir Singh <sblbir@amazon.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20210108121056.21940-2-sblbir@amazon.com>
-References: <20210108121056.21940-2-sblbir@amazon.com>
+Subject: [tip: irq/core] genirq: Improve "hwirq" output in /proc and /sys/
+Cc:     clg@kaod.org, Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org, maz@kernel.org
 MIME-Version: 1.0
-Message-ID: <162746629028.395.4183635884229640325.tip-bot2@tip-bot2>
+Message-ID: <162767943540.395.16803004880839169459.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cpu branch of tip:
+The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     c52787b590634646d4da3d8f23c4532ba050d40d
-Gitweb:        https://git.kernel.org/tip/c52787b590634646d4da3d8f23c4532ba050d40d
-Author:        Balbir Singh <sblbir@amazon.com>
-AuthorDate:    Fri, 08 Jan 2021 23:10:52 +11:00
+Commit-ID:     d92df42d7685445a2b6c815d9230d9699d9d400b
+Gitweb:        https://git.kernel.org/tip/d92df42d7685445a2b6c815d9230d9699d9=
+d400b
+Author:        C=C3=A9dric Le Goater <clg@kaod.org>
+AuthorDate:    Thu, 01 Jul 2021 15:27:50 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 28 Jul 2021 11:42:23 +02:00
+CommitterDate: Fri, 30 Jul 2021 23:07:31 +02:00
 
-x86/smp: Add a per-cpu view of SMT state
+genirq: Improve "hwirq" output in /proc and /sys/
 
-A new field smt_active in cpuinfo_x86 identifies if the current core/cpu
-is in SMT mode or not.
+The HW IRQ numbers generated by the PCI MSI layer can be quite large
+on a pSeries machine when running under the IBM Hypervisor and they
+appear as negative. Use '%lu' instead to show them correctly.
 
-This is helpful when the system has some of its cores with threads offlined
-and can be used for cases where action is taken based on the state of SMT.
-
-The upcoming support for paranoid L1D flush will make use of this information.
-
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Balbir Singh <sblbir@amazon.com>
+Signed-off-by: C=C3=A9dric Le Goater <clg@kaod.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20210108121056.21940-2-sblbir@amazon.com
----
- arch/x86/include/asm/processor.h |  2 ++
- arch/x86/kernel/smpboot.c        | 10 +++++++++-
- 2 files changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
-index f3020c5..1e0d13c 100644
---- a/arch/x86/include/asm/processor.h
-+++ b/arch/x86/include/asm/processor.h
-@@ -136,6 +136,8 @@ struct cpuinfo_x86 {
- 	u16			logical_die_id;
- 	/* Index into per_cpu list: */
- 	u16			cpu_index;
-+	/*  Is SMT active on this core? */
-+	bool			smt_active;
- 	u32			microcode;
- 	/* Address space bits used by the cache internally */
- 	u8			x86_cache_bits;
-diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
-index 9320285..85f6e24 100644
---- a/arch/x86/kernel/smpboot.c
-+++ b/arch/x86/kernel/smpboot.c
-@@ -610,6 +610,9 @@ void set_cpu_sibling_map(int cpu)
- 	if (threads > __max_smt_threads)
- 		__max_smt_threads = threads;
- 
-+	for_each_cpu(i, topology_sibling_cpumask(cpu))
-+		cpu_data(i).smt_active = threads > 1;
-+
- 	/*
- 	 * This needs a separate iteration over the cpus because we rely on all
- 	 * topology_sibling_cpumask links to be set-up.
-@@ -1552,8 +1555,13 @@ static void remove_siblinginfo(int cpu)
- 
- 	for_each_cpu(sibling, topology_die_cpumask(cpu))
- 		cpumask_clear_cpu(cpu, topology_die_cpumask(sibling));
--	for_each_cpu(sibling, topology_sibling_cpumask(cpu))
-+
-+	for_each_cpu(sibling, topology_sibling_cpumask(cpu)) {
- 		cpumask_clear_cpu(cpu, topology_sibling_cpumask(sibling));
-+		if (cpumask_weight(topology_sibling_cpumask(sibling)) == 1)
-+			cpu_data(sibling).smt_active = false;
-+	}
-+
- 	for_each_cpu(sibling, cpu_llc_shared_mask(cpu))
- 		cpumask_clear_cpu(cpu, cpu_llc_shared_mask(sibling));
- 	cpumask_clear(cpu_llc_shared_mask(cpu));
+---
+ kernel/irq/irqdesc.c | 2 +-
+ kernel/irq/proc.c    | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/kernel/irq/irqdesc.c b/kernel/irq/irqdesc.c
+index fadb937..4e3c29b 100644
+--- a/kernel/irq/irqdesc.c
++++ b/kernel/irq/irqdesc.c
+@@ -188,7 +188,7 @@ static ssize_t hwirq_show(struct kobject *kobj,
+=20
+ 	raw_spin_lock_irq(&desc->lock);
+ 	if (desc->irq_data.domain)
+-		ret =3D sprintf(buf, "%d\n", (int)desc->irq_data.hwirq);
++		ret =3D sprintf(buf, "%lu\n", desc->irq_data.hwirq);
+ 	raw_spin_unlock_irq(&desc->lock);
+=20
+ 	return ret;
+diff --git a/kernel/irq/proc.c b/kernel/irq/proc.c
+index 7c5cd42..ee595ec 100644
+--- a/kernel/irq/proc.c
++++ b/kernel/irq/proc.c
+@@ -513,7 +513,7 @@ int show_interrupts(struct seq_file *p, void *v)
+ 		seq_printf(p, " %8s", "None");
+ 	}
+ 	if (desc->irq_data.domain)
+-		seq_printf(p, " %*d", prec, (int) desc->irq_data.hwirq);
++		seq_printf(p, " %*lu", prec, desc->irq_data.hwirq);
+ 	else
+ 		seq_printf(p, " %*s", prec, "");
+ #ifdef CONFIG_GENERIC_IRQ_SHOW_LEVEL
