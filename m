@@ -2,104 +2,98 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6554F3DC01E
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 30 Jul 2021 23:10:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E6E33E1157
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  5 Aug 2021 11:34:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231984AbhG3VKo (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 30 Jul 2021 17:10:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59482 "EHLO
+        id S238372AbhHEJep (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 5 Aug 2021 05:34:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58780 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231982AbhG3VKo (ORCPT
+        with ESMTP id S237469AbhHEJeo (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 30 Jul 2021 17:10:44 -0400
+        Thu, 5 Aug 2021 05:34:44 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4ED25C061765;
-        Fri, 30 Jul 2021 14:10:39 -0700 (PDT)
-Date:   Fri, 30 Jul 2021 21:10:35 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE643C061765;
+        Thu,  5 Aug 2021 02:34:30 -0700 (PDT)
+Date:   Thu, 05 Aug 2021 09:34:27 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1627679436;
+        s=2020; t=1628156069;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=qMLj7LoyKYMS7jxdCGqk9QKiXWPC4NuhSIGwaA6lW2U=;
-        b=naKH4D3FibfFDBa0cEljlmlfJkBWop6acTRZ40KDcTqBIHjpfA3ipvRxRqvNpe2QWv632n
-        yNi4HE0YEOMjp7UEbxH+gGi/K8a0MzfXPnFVasLcsyLMra64DCIArABeGU/AP0KPc+YB+f
-        Nm1vkShJ6JFS+of7RsymB3uGUXsk6TPqZuLGpssC6ZJioXgaSBy0F0Qh5+6tz+EyFCnsk+
-        iXAuSY5lxk/BRbv4QLj+e/cCblVQ5d3DkJvNU2zSHNYKd7LVvG9zTfdx+5/Ahl8gmMqTcN
-        4BjcOD7GVcZvaUAaaFEzvfasy4utZmo6J6zFEI2u3XANWM1c+VYBxdiI1txwZA==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=6XbCgTl5w8QLCcz16XQmvLycNsbxxrobmRVN4aHmUjA=;
+        b=N0Iq6/elG3pSK1lyelG96HNlvpG0/wbL4FKWzRgXNq26OBTNGdXgHjSDnmmD7Ebi69daN4
+        5dXDi2Q1Yl5Gk3EAoG+HArvp666gUZ9la7Lo1JVLtkDpP6RgfEcYHu/DtRGWJsNmiY9Xk7
+        LrqgamN7NLdFf3kSJj3t7jNOuOM3PcqGUEPllOSSSLsPgkM707H0MQuhK7sVzJAWr7pfG2
+        g9iNL6WicU/nssF6EDfWyL/XBqgnTC5wSGt4Y0QuJgwCxnnDfOJfxlN1GgwnMvmO91r8mu
+        drPL7gPOnUzJbXfpYPU/4C7x1uZYThmddHfK2wzClgwAIKB3lrfyB3JyF79cSw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1627679436;
+        s=2020e; t=1628156069;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=qMLj7LoyKYMS7jxdCGqk9QKiXWPC4NuhSIGwaA6lW2U=;
-        b=XINCMXWg2rW2UlCmCw7nxp/3XOB4l3m/BiaAYUpAMnCIi3E88tBySfnblZHzq6XRfZKalp
-        sr106biNvoRfW9CA==
-From:   tip-bot2 for =?utf-8?q?C=C3=A9dric?= Le Goater 
-        <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=6XbCgTl5w8QLCcz16XQmvLycNsbxxrobmRVN4aHmUjA=;
+        b=bIv9O4jfmRqyb2JvFIMTR036icwNWxs4MjAGxltEvskj22YKX9nS/ar/c1Ksm4laDzls4j
+        xmdkceQKutE76lDw==
+From:   "tip-bot2 for Colin Ian King" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] genirq: Improve "hwirq" output in /proc and /sys/
-Cc:     clg@kaod.org, Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
-        linux-kernel@vger.kernel.org, maz@kernel.org
+Subject: [tip: perf/core] perf/x86: remove unused assignment to pointer e
+Cc:     Colin Ian King <colin.king@canonical.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20210804115710.109608-1-colin.king@canonical.com>
+References: <20210804115710.109608-1-colin.king@canonical.com>
 MIME-Version: 1.0
-Message-ID: <162767943540.395.16803004880839169459.tip-bot2@tip-bot2>
+Message-ID: <162815606779.395.10577182627193770345.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the irq/core branch of tip:
+The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     d92df42d7685445a2b6c815d9230d9699d9d400b
-Gitweb:        https://git.kernel.org/tip/d92df42d7685445a2b6c815d9230d9699d9=
-d400b
-Author:        C=C3=A9dric Le Goater <clg@kaod.org>
-AuthorDate:    Thu, 01 Jul 2021 15:27:50 +02:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 30 Jul 2021 23:07:31 +02:00
+Commit-ID:     79551ec0782895af27d6aa9b3abb6d547b7260d3
+Gitweb:        https://git.kernel.org/tip/79551ec0782895af27d6aa9b3abb6d547b7260d3
+Author:        Colin Ian King <colin.king@canonical.com>
+AuthorDate:    Wed, 04 Aug 2021 12:57:10 +01:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Wed, 04 Aug 2021 15:16:39 +02:00
 
-genirq: Improve "hwirq" output in /proc and /sys/
+perf/x86: remove unused assignment to pointer e
 
-The HW IRQ numbers generated by the PCI MSI layer can be quite large
-on a pSeries machine when running under the IBM Hypervisor and they
-appear as negative. Use '%lu' instead to show them correctly.
+The pointer e is being assigned a value that is never read, the assignment
+is redundant and can be removed.
 
-Signed-off-by: C=C3=A9dric Le Goater <clg@kaod.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-
+Addresses-Coverity: ("Unused value")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20210804115710.109608-1-colin.king@canonical.com
 ---
- kernel/irq/irqdesc.c | 2 +-
- kernel/irq/proc.c    | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/events/core.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/kernel/irq/irqdesc.c b/kernel/irq/irqdesc.c
-index fadb937..4e3c29b 100644
---- a/kernel/irq/irqdesc.c
-+++ b/kernel/irq/irqdesc.c
-@@ -188,7 +188,7 @@ static ssize_t hwirq_show(struct kobject *kobj,
-=20
- 	raw_spin_lock_irq(&desc->lock);
- 	if (desc->irq_data.domain)
--		ret =3D sprintf(buf, "%d\n", (int)desc->irq_data.hwirq);
-+		ret =3D sprintf(buf, "%lu\n", desc->irq_data.hwirq);
- 	raw_spin_unlock_irq(&desc->lock);
-=20
- 	return ret;
-diff --git a/kernel/irq/proc.c b/kernel/irq/proc.c
-index 7c5cd42..ee595ec 100644
---- a/kernel/irq/proc.c
-+++ b/kernel/irq/proc.c
-@@ -513,7 +513,7 @@ int show_interrupts(struct seq_file *p, void *v)
- 		seq_printf(p, " %8s", "None");
- 	}
- 	if (desc->irq_data.domain)
--		seq_printf(p, " %*d", prec, (int) desc->irq_data.hwirq);
-+		seq_printf(p, " %*lu", prec, desc->irq_data.hwirq);
- 	else
- 		seq_printf(p, " %*s", prec, "");
- #ifdef CONFIG_GENERIC_IRQ_SHOW_LEVEL
+diff --git a/arch/x86/events/core.c b/arch/x86/events/core.c
+index c0167d5..f4e5fa7 100644
+--- a/arch/x86/events/core.c
++++ b/arch/x86/events/core.c
+@@ -1085,10 +1085,8 @@ int x86_schedule_events(struct cpu_hw_events *cpuc, int n, int *assign)
+ 	 * validate an event group (assign == NULL)
+ 	 */
+ 	if (!unsched && assign) {
+-		for (i = 0; i < n; i++) {
+-			e = cpuc->event_list[i];
++		for (i = 0; i < n; i++)
+ 			static_call_cond(x86_pmu_commit_scheduling)(cpuc, i, assign[i]);
+-		}
+ 	} else {
+ 		for (i = n0; i < n; i++) {
+ 			e = cpuc->event_list[i];
