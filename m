@@ -2,53 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DCED63E1158
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  5 Aug 2021 11:34:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A91AB3E115C
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  5 Aug 2021 11:34:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238744AbhHEJep (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 5 Aug 2021 05:34:45 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:41630 "EHLO
+        id S239135AbhHEJeu (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 5 Aug 2021 05:34:50 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:41640 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237180AbhHEJep (ORCPT
+        with ESMTP id S238958AbhHEJet (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 5 Aug 2021 05:34:45 -0400
-Date:   Thu, 05 Aug 2021 09:34:29 -0000
+        Thu, 5 Aug 2021 05:34:49 -0400
+Date:   Thu, 05 Aug 2021 09:34:33 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1628156070;
+        s=2020; t=1628156074;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=rEAHZknF++Et7N8+LwWQnUXsoaB7469nwKfdX4QQoTA=;
-        b=KXNxVZfXYpYhHr05LzUIqGM42KBxJH3flMxIywt5AwkY8iobeisYZ8n4iyEmMNK3CP3rxY
-        Eqc8/IzcZ4SkSu7yI4+Qz/ulOI94mjt5Oxb2vk79whf9ayJQ4DasUMKd6JUZrhaFMc2d3b
-        U8yEMCXwn9Go0lp6Nl8YifUrkNMBjj0z+vEUzgGgkSrKFD6/CZ1Ww9+heBbwXOJTzYevqk
-        +tYX/Z0aO/0vG5OoUiipbkn8x+nOdKoKdnQVOTFbuwznVnX3Lsmn+rz8+MAMP/EsSfQAYh
-        bamuGAXpEavRn44CzSlZflAlkuke1Yr66FH6xlMf8LBoHWkhPNIJaWFX3KUzfQ==
+        bh=RjvlCLNLQMEOHBa4pu2I3ZAxvthgoW66trV7b8hD6Uk=;
+        b=C/hCXucQV80Bmp4D96mP2A8ZOMXUl8t357O+acl9ORP3z2ZFH+XSAU7vb+cPRCvhBsuhub
+        EK+yTCDiFzY+Fb+ACQYFUKCoaIzpja6P2MJcGDkfvtc+KG24hx+195DncAo2sbRrkl6wNv
+        Xen2rRKvfoFpMKRH7/OvsbFjHQfHnZdpG+97F7B0MUAR5gdzMSprnuUHIwJBVz4ocg695V
+        MTyWQbwzlrt3D+t2lea2WvLLun40VPxwdSzoV7GT46ByWkgFcptEcraCw517cgebY5yhal
+        hjSsM/AEtTgo1Su7HW/pO+IgvIVeQzEXP/Czc7yl+TqsyjzRS6YWQMltf2f55g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1628156070;
+        s=2020e; t=1628156074;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=rEAHZknF++Et7N8+LwWQnUXsoaB7469nwKfdX4QQoTA=;
-        b=VPXJBGkHNebI83ClPXjyJ0LGM6Kr4Yh3/x4k2eFWgRDLFugGf+Tg7gEw9dQJeim/OChS+M
-        FPS/O/+UdSFqVmAw==
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+        bh=RjvlCLNLQMEOHBa4pu2I3ZAxvthgoW66trV7b8hD6Uk=;
+        b=G0HGVM3+AGl3gYdquN6e1mkG20kOGJ5w4lskYpVTHkaV5lBrEuJDBWkjkcAYvgF6yhghOq
+        UmRFL7le44kfnCDg==
+From:   "tip-bot2 for Mel Gorman" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf/x86: Fix out of bound MSR access
-Cc:     Vince Weaver <vincent.weaver@maine.edu>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Like Xu <likexu@tencent.com>, x86@kernel.org,
+Subject: [tip: sched/core] sched/fair: Avoid a second scan of target in
+ select_idle_cpu
+Cc:     Mel Gorman <mgorman@techsingularity.net>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <YQJxka3dxgdIdebG@hirez.programming.kicks-ass.net>
-References: <YQJxka3dxgdIdebG@hirez.programming.kicks-ass.net>
+In-Reply-To: <20210804115857.6253-3-mgorman@techsingularity.net>
+References: <20210804115857.6253-3-mgorman@techsingularity.net>
 MIME-Version: 1.0
-Message-ID: <162815606939.395.6416699769104597019.tip-bot2@tip-bot2>
+Message-ID: <162815607370.395.4560583728552595431.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -57,57 +57,38 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/urgent branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     f4b4b45652578357031fbbef7f7a1b04f6fa2dc3
-Gitweb:        https://git.kernel.org/tip/f4b4b45652578357031fbbef7f7a1b04f6fa2dc3
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Thu, 29 Jul 2021 11:14:57 +02:00
+Commit-ID:     56498cfb045d7147cdcba33795d19429afcd1d00
+Gitweb:        https://git.kernel.org/tip/56498cfb045d7147cdcba33795d19429afcd1d00
+Author:        Mel Gorman <mgorman@techsingularity.net>
+AuthorDate:    Wed, 04 Aug 2021 12:58:57 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 04 Aug 2021 15:16:33 +02:00
+CommitterDate: Wed, 04 Aug 2021 15:16:44 +02:00
 
-perf/x86: Fix out of bound MSR access
+sched/fair: Avoid a second scan of target in select_idle_cpu
 
-On Wed, Jul 28, 2021 at 12:49:43PM -0400, Vince Weaver wrote:
-> [32694.087403] unchecked MSR access error: WRMSR to 0x318 (tried to write 0x0000000000000000) at rIP: 0xffffffff8106f854 (native_write_msr+0x4/0x20)
-> [32694.101374] Call Trace:
-> [32694.103974]  perf_clear_dirty_counters+0x86/0x100
+When select_idle_cpu starts scanning for an idle CPU, it starts with
+a target CPU that has already been checked by select_idle_sibling.
+This patch starts with the next CPU instead.
 
-The problem being that it doesn't filter out all fake counters, in
-specific the above (erroneously) tries to use FIXED_BTS. Limit the
-fixed counters indexes to the hardware supplied number.
-
-Reported-by: Vince Weaver <vincent.weaver@maine.edu>
+Signed-off-by: Mel Gorman <mgorman@techsingularity.net>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: Vince Weaver <vincent.weaver@maine.edu>
-Tested-by: Like Xu <likexu@tencent.com>
-Link: https://lkml.kernel.org/r/YQJxka3dxgdIdebG@hirez.programming.kicks-ass.net
+Link: https://lkml.kernel.org/r/20210804115857.6253-3-mgorman@techsingularity.net
 ---
- arch/x86/events/core.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ kernel/sched/fair.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/events/core.c b/arch/x86/events/core.c
-index 1eb4513..3092fbf 100644
---- a/arch/x86/events/core.c
-+++ b/arch/x86/events/core.c
-@@ -2489,13 +2489,15 @@ void perf_clear_dirty_counters(void)
- 		return;
- 
- 	for_each_set_bit(i, cpuc->dirty, X86_PMC_IDX_MAX) {
--		/* Metrics and fake events don't have corresponding HW counters. */
--		if (is_metric_idx(i) || (i == INTEL_PMC_IDX_FIXED_VLBR))
--			continue;
--		else if (i >= INTEL_PMC_IDX_FIXED)
-+		if (i >= INTEL_PMC_IDX_FIXED) {
-+			/* Metrics and fake events don't have corresponding HW counters. */
-+			if ((i - INTEL_PMC_IDX_FIXED) >= hybrid(cpuc->pmu, num_counters_fixed))
-+				continue;
-+
- 			wrmsrl(MSR_ARCH_PERFMON_FIXED_CTR0 + (i - INTEL_PMC_IDX_FIXED), 0);
--		else
-+		} else {
- 			wrmsrl(x86_pmu_event_addr(i), 0);
-+		}
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 7ee394b..47a0fbf 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -6220,7 +6220,7 @@ static int select_idle_cpu(struct task_struct *p, struct sched_domain *sd, bool 
+ 		time = cpu_clock(this);
  	}
  
- 	bitmap_zero(cpuc->dirty, X86_PMC_IDX_MAX);
+-	for_each_cpu_wrap(cpu, cpus, target) {
++	for_each_cpu_wrap(cpu, cpus, target + 1) {
+ 		if (has_idle_core) {
+ 			i = select_idle_core(p, cpu, cpus, &idle_cpu);
+ 			if ((unsigned int)i < nr_cpumask_bits)
