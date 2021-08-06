@@ -2,56 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 416833E2AF8
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Aug 2021 14:51:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CEC453E2B00
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Aug 2021 14:57:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236250AbhHFMvn (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 6 Aug 2021 08:51:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36148 "EHLO
+        id S244074AbhHFM6I (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 6 Aug 2021 08:58:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37708 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229604AbhHFMvn (ORCPT
+        with ESMTP id S243972AbhHFM6H (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 6 Aug 2021 08:51:43 -0400
+        Fri, 6 Aug 2021 08:58:07 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94BCEC061798;
-        Fri,  6 Aug 2021 05:51:27 -0700 (PDT)
-Date:   Fri, 06 Aug 2021 12:51:24 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A294C061798;
+        Fri,  6 Aug 2021 05:57:52 -0700 (PDT)
+Date:   Fri, 06 Aug 2021 12:57:49 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1628254286;
+        s=2020; t=1628254670;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=x2fJw3SRKQ3YnDxmO+jjHfO86GMycdOIpUrD1oQCj5U=;
-        b=lLdLBAjnHXAr59QdagVKzR2sSEAkuFrj+XH/rSSnlORG+ipS5tWdefyhMRgUiFBX02kca+
-        jNfVnl7wUaEhpQ30HjZob4dv4mMbNmLLSTqqShociDACx0JrC+p9m2RIHBlsnkuODLvhQ5
-        nF+DZNd/s7oXRayxSwuc1CNDQtvA1Rrb6joC2Q1oKzabRBC9Fbndr+ovlcz0stfzz+PCsX
-        CMExlNjbGE17uK3n6nFjd0lN4rQdiKcG5lzHkRbWFdf/O0zZML+DcXkHaGtLvoH7JSaf3E
-        UtAPJ+Np37dJLtuW8tfpD2toUeSmBmO/BjKjI0Wdd386tYeBcKncRnHzdDUkBw==
+        bh=MXnRYru3PUT2Wn4h1hMFC8JEYKBY4GGgj5noxIzwVo0=;
+        b=RoGkc6wtChXUUMNq1vuFxFhGeU7cdO9yJupxDPwE963fD9WaORrFU7eQEP+Ll9VChds1tj
+        5wxn014vopQx1GIxS6PP/tEEwWPeX5n9OiGicJEvdc+p+mrbrfzUjJHX2S0k5StZ+ht/Up
+        Tss4S+x7Ux72OSg/s+/dJoTuvFBEl4tOQTDr+Vppf9Z2U72fV+Gk90IxBunJoovpaM9iT9
+        WjCrqPw/Zmvl38Q0utP4367zSYkam59eKtrr0rBpp9UwH1h1CyyYlmQjyVT4MAy9vNvKUm
+        AT3vIPViVgrbLKQrpsAYnr++rybKVdgv923wldsfeA9rVbWQSSMbxB8EGC4S6Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1628254286;
+        s=2020e; t=1628254670;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=x2fJw3SRKQ3YnDxmO+jjHfO86GMycdOIpUrD1oQCj5U=;
-        b=nuuu6CUNWAp7lulhKnLcCptxIf5WkK1/paeOmqMTbdT6nPFEOdnKKvjdObQSkmsRw7HFFo
-        c+l7dQictkgv2hCA==
-From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
+        bh=MXnRYru3PUT2Wn4h1hMFC8JEYKBY4GGgj5noxIzwVo0=;
+        b=8T5GxpRNCQ2rL5no9RtTbBkdHMJvHaUCKYjh7Ruw8Jrj30GjwvkvwqpFXzXpk9KnamjwqN
+        3eNkNiPlG3wmMzDw==
+From:   "tip-bot2 for Quentin Perret" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf/x86/intel: Apply mid ACK for small core
-Cc:     Ammy Yi <ammy.yi@intel.com>, Kan Liang <kan.liang@linux.intel.com>,
+Subject: [tip: sched/core] sched: Skip priority checks with SCHED_FLAG_KEEP_PARAMS
+Cc:     Wei Wang <wvw@google.com>, Quentin Perret <qperret@google.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Andi Kleen <ak@linux.intel.com>, x86@kernel.org,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Qais Yousef <qais.yousef@arm.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <1627997128-57891-1-git-send-email-kan.liang@linux.intel.com>
-References: <1627997128-57891-1-git-send-email-kan.liang@linux.intel.com>
+In-Reply-To: <20210805102154.590709-3-qperret@google.com>
+References: <20210805102154.590709-3-qperret@google.com>
 MIME-Version: 1.0
-Message-ID: <162825428489.395.90520755660551249.tip-bot2@tip-bot2>
+Message-ID: <162825466988.395.169396099784504532.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,176 +61,88 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/urgent branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     acade6379930dfa7987f4bd9b26d1a701cc1b542
-Gitweb:        https://git.kernel.org/tip/acade6379930dfa7987f4bd9b26d1a701cc1b542
-Author:        Kan Liang <kan.liang@linux.intel.com>
-AuthorDate:    Tue, 03 Aug 2021 06:25:28 -07:00
+Commit-ID:     f4dddf90d58d77b48492b775868af4041a217f4c
+Gitweb:        https://git.kernel.org/tip/f4dddf90d58d77b48492b775868af4041a217f4c
+Author:        Quentin Perret <qperret@google.com>
+AuthorDate:    Thu, 05 Aug 2021 11:21:54 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Fri, 06 Aug 2021 14:25:15 +02:00
+CommitterDate: Fri, 06 Aug 2021 14:25:25 +02:00
 
-perf/x86/intel: Apply mid ACK for small core
+sched: Skip priority checks with SCHED_FLAG_KEEP_PARAMS
 
-A warning as below may be occasionally triggered in an ADL machine when
-these conditions occur:
+SCHED_FLAG_KEEP_PARAMS can be passed to sched_setattr to specify that
+the call must not touch scheduling parameters (nice or priority). This
+is particularly handy for uclamp when used in conjunction with
+SCHED_FLAG_KEEP_POLICY as that allows to issue a syscall that only
+impacts uclamp values.
 
- - Two perf record commands run one by one. Both record a PEBS event.
- - Both runs on small cores.
- - They have different adaptive PEBS configuration (PEBS_DATA_CFG).
+However, sched_setattr always checks whether the priorities and nice
+values passed in sched_attr are valid first, even if those never get
+used down the line. This is useless at best since userspace can
+trivially bypass this check to set the uclamp values by specifying low
+priorities. However, it is cumbersome to do so as there is no single
+expression of this that skips both RT and CFS checks at once. As such,
+userspace needs to query the task policy first with e.g. sched_getattr
+and then set sched_attr.sched_priority accordingly. This is racy and
+slower than a single call.
 
-  [ ] WARNING: CPU: 4 PID: 9874 at arch/x86/events/intel/ds.c:1743 setup_pebs_adaptive_sample_data+0x55e/0x5b0
-  [ ] RIP: 0010:setup_pebs_adaptive_sample_data+0x55e/0x5b0
-  [ ] Call Trace:
-  [ ]  <NMI>
-  [ ]  intel_pmu_drain_pebs_icl+0x48b/0x810
-  [ ]  perf_event_nmi_handler+0x41/0x80
-  [ ]  </NMI>
-  [ ]  __perf_event_task_sched_in+0x2c2/0x3a0
+As the priority and nice checks are useless when SCHED_FLAG_KEEP_PARAMS
+is specified, simply inherit them in this case to match the policy
+inheritance of SCHED_FLAG_KEEP_POLICY.
 
-Different from the big core, the small core requires the ACK right
-before re-enabling counters in the NMI handler, otherwise a stale PEBS
-record may be dumped into the later NMI handler, which trigger the
-warning.
-
-Add a new mid_ack flag to track the case. Add all PMI handler bits in
-the struct x86_hybrid_pmu to track the bits for different types of
-PMUs.  Apply mid ACK for the small cores on an Alder Lake machine.
-
-The existing hybrid() macro has a compile error when taking address of
-a bit-field variable. Add a new macro hybrid_bit() to get the
-bit-field value of a given PMU.
-
-Fixes: f83d2f91d259 ("perf/x86/intel: Add Alder Lake Hybrid support")
-Reported-by: Ammy Yi <ammy.yi@intel.com>
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Reported-by: Wei Wang <wvw@google.com>
+Signed-off-by: Quentin Perret <qperret@google.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Andi Kleen <ak@linux.intel.com>
-Tested-by: Ammy Yi <ammy.yi@intel.com>
-Link: https://lkml.kernel.org/r/1627997128-57891-1-git-send-email-kan.liang@linux.intel.com
+Reviewed-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Reviewed-by: Qais Yousef <qais.yousef@arm.com>
+Link: https://lore.kernel.org/r/20210805102154.590709-3-qperret@google.com
 ---
- arch/x86/events/intel/core.c | 23 +++++++++++++++--------
- arch/x86/events/perf_event.h | 15 +++++++++++++++
- 2 files changed, 30 insertions(+), 8 deletions(-)
+ kernel/sched/core.c | 19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-index fca7a6e..ac6fd2d 100644
---- a/arch/x86/events/intel/core.c
-+++ b/arch/x86/events/intel/core.c
-@@ -2904,24 +2904,28 @@ static int handle_pmi_common(struct pt_regs *regs, u64 status)
-  */
- static int intel_pmu_handle_irq(struct pt_regs *regs)
- {
--	struct cpu_hw_events *cpuc;
-+	struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
-+	bool late_ack = hybrid_bit(cpuc->pmu, late_ack);
-+	bool mid_ack = hybrid_bit(cpuc->pmu, mid_ack);
- 	int loops;
- 	u64 status;
- 	int handled;
- 	int pmu_enabled;
- 
--	cpuc = this_cpu_ptr(&cpu_hw_events);
--
- 	/*
- 	 * Save the PMU state.
- 	 * It needs to be restored when leaving the handler.
- 	 */
- 	pmu_enabled = cpuc->enabled;
- 	/*
--	 * No known reason to not always do late ACK,
--	 * but just in case do it opt-in.
-+	 * In general, the early ACK is only applied for old platforms.
-+	 * For the big core starts from Haswell, the late ACK should be
-+	 * applied.
-+	 * For the small core after Tremont, we have to do the ACK right
-+	 * before re-enabling counters, which is in the middle of the
-+	 * NMI handler.
- 	 */
--	if (!x86_pmu.late_ack)
-+	if (!late_ack && !mid_ack)
- 		apic_write(APIC_LVTPC, APIC_DM_NMI);
- 	intel_bts_disable_local();
- 	cpuc->enabled = 0;
-@@ -2958,6 +2962,8 @@ again:
- 		goto again;
- 
- done:
-+	if (mid_ack)
-+		apic_write(APIC_LVTPC, APIC_DM_NMI);
- 	/* Only restore PMU state when it's active. See x86_pmu_disable(). */
- 	cpuc->enabled = pmu_enabled;
- 	if (pmu_enabled)
-@@ -2969,7 +2975,7 @@ done:
- 	 * have been reset. This avoids spurious NMIs on
- 	 * Haswell CPUs.
- 	 */
--	if (x86_pmu.late_ack)
-+	if (late_ack)
- 		apic_write(APIC_LVTPC, APIC_DM_NMI);
- 	return handled;
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index df0480a..433b400 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -7328,6 +7328,16 @@ err_size:
+ 	return -E2BIG;
  }
-@@ -6129,7 +6135,6 @@ __init int intel_pmu_init(void)
- 		static_branch_enable(&perf_is_hybrid);
- 		x86_pmu.num_hybrid_pmus = X86_HYBRID_NUM_PMUS;
  
--		x86_pmu.late_ack = true;
- 		x86_pmu.pebs_aliases = NULL;
- 		x86_pmu.pebs_prec_dist = true;
- 		x86_pmu.pebs_block = true;
-@@ -6167,6 +6172,7 @@ __init int intel_pmu_init(void)
- 		pmu = &x86_pmu.hybrid_pmu[X86_HYBRID_PMU_CORE_IDX];
- 		pmu->name = "cpu_core";
- 		pmu->cpu_type = hybrid_big;
-+		pmu->late_ack = true;
- 		if (cpu_feature_enabled(X86_FEATURE_HYBRID_CPU)) {
- 			pmu->num_counters = x86_pmu.num_counters + 2;
- 			pmu->num_counters_fixed = x86_pmu.num_counters_fixed + 1;
-@@ -6192,6 +6198,7 @@ __init int intel_pmu_init(void)
- 		pmu = &x86_pmu.hybrid_pmu[X86_HYBRID_PMU_ATOM_IDX];
- 		pmu->name = "cpu_atom";
- 		pmu->cpu_type = hybrid_small;
-+		pmu->mid_ack = true;
- 		pmu->num_counters = x86_pmu.num_counters;
- 		pmu->num_counters_fixed = x86_pmu.num_counters_fixed;
- 		pmu->max_pebs_events = x86_pmu.max_pebs_events;
-diff --git a/arch/x86/events/perf_event.h b/arch/x86/events/perf_event.h
-index 2938c90..e3ac05c 100644
---- a/arch/x86/events/perf_event.h
-+++ b/arch/x86/events/perf_event.h
-@@ -656,6 +656,10 @@ struct x86_hybrid_pmu {
- 	struct event_constraint		*event_constraints;
- 	struct event_constraint		*pebs_constraints;
- 	struct extra_reg		*extra_regs;
++static void get_params(struct task_struct *p, struct sched_attr *attr)
++{
++	if (task_has_dl_policy(p))
++		__getparam_dl(p, attr);
++	else if (task_has_rt_policy(p))
++		attr->sched_priority = p->rt_priority;
++	else
++		attr->sched_nice = task_nice(p);
++}
 +
-+	unsigned int			late_ack	:1,
-+					mid_ack		:1,
-+					enabled_ack	:1;
- };
+ /**
+  * sys_sched_setscheduler - set/change the scheduler policy and RT priority
+  * @pid: the pid in question.
+@@ -7389,6 +7399,8 @@ SYSCALL_DEFINE3(sched_setattr, pid_t, pid, struct sched_attr __user *, uattr,
+ 	rcu_read_unlock();
  
- static __always_inline struct x86_hybrid_pmu *hybrid_pmu(struct pmu *pmu)
-@@ -686,6 +690,16 @@ extern struct static_key_false perf_is_hybrid;
- 	__Fp;						\
- }))
+ 	if (likely(p)) {
++		if (attr.sched_flags & SCHED_FLAG_KEEP_PARAMS)
++			get_params(p, &attr);
+ 		retval = sched_setattr(p, &attr);
+ 		put_task_struct(p);
+ 	}
+@@ -7537,12 +7549,7 @@ SYSCALL_DEFINE4(sched_getattr, pid_t, pid, struct sched_attr __user *, uattr,
+ 	kattr.sched_policy = p->policy;
+ 	if (p->sched_reset_on_fork)
+ 		kattr.sched_flags |= SCHED_FLAG_RESET_ON_FORK;
+-	if (task_has_dl_policy(p))
+-		__getparam_dl(p, &kattr);
+-	else if (task_has_rt_policy(p))
+-		kattr.sched_priority = p->rt_priority;
+-	else
+-		kattr.sched_nice = task_nice(p);
++	get_params(p, &kattr);
+ 	kattr.sched_flags &= SCHED_FLAG_ALL;
  
-+#define hybrid_bit(_pmu, _field)			\
-+({							\
-+	bool __Fp = x86_pmu._field;			\
-+							\
-+	if (is_hybrid() && (_pmu))			\
-+		__Fp = hybrid_pmu(_pmu)->_field;	\
-+							\
-+	__Fp;						\
-+})
-+
- enum hybrid_pmu_type {
- 	hybrid_big		= 0x40,
- 	hybrid_small		= 0x20,
-@@ -755,6 +769,7 @@ struct x86_pmu {
- 
- 	/* PMI handler bits */
- 	unsigned int	late_ack		:1,
-+			mid_ack			:1,
- 			enabled_ack		:1;
- 	/*
- 	 * sysfs attrs
+ #ifdef CONFIG_UCLAMP_TASK
