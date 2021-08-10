@@ -2,57 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F0203E5A6D
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 10 Aug 2021 14:52:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F3903E5A89
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 10 Aug 2021 14:58:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240916AbhHJMwb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 10 Aug 2021 08:52:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40898 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240885AbhHJMw3 (ORCPT
+        id S235161AbhHJM6a (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 10 Aug 2021 08:58:30 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:43224 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233409AbhHJM63 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 10 Aug 2021 08:52:29 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9389C061799;
-        Tue, 10 Aug 2021 05:52:06 -0700 (PDT)
-Date:   Tue, 10 Aug 2021 12:52:02 -0000
+        Tue, 10 Aug 2021 08:58:29 -0400
+Date:   Tue, 10 Aug 2021 12:58:04 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1628599923;
+        s=2020; t=1628600285;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=+eIpb0vOlbpVqVTU7rA2WjdajhZ9TvXLCW4nfI3UtNI=;
-        b=eEtYZOWsS1WpyAthUXKhsC2+iqxs4kXyr/czM4qQVVNMB2k/+oVR9heooBTHMv8RgA5Iko
-        f5bP9hVa94OZfNnvmtBFLBVg6YrUkVq6oVPn3ECRFMSzXwaqA5uanjk4IbB0ouHnGsasJx
-        EPAqStYLA/F2WWvsl6WmQqtfOjwblNQufo0/ZduX7BsAFlLtayyl3FfvxKyJzVb4wKLRoI
-        Eh82zaFoh2EfVfulv6O1HNf9789LqwF/iLQXiaq0sDxlEp5yXK6CQSpUPWI6JxHV/8Z416
-        UCHCuaA6ZtcasrsezZg1nL/8SbWkmA4X9eCJMr7c68pmuH9oFayJ9r5IT+puWg==
+        bh=8IHdTih3UvPgqzcgKF8mDheJ/3CfnNs3H+PU8niFfV4=;
+        b=dD11aroumibX8f+QMsutE4CkqD5YMHRvMxr3yGn0cAsF3kMliZB52eglDBu9a2jzjqs9eK
+        OrBiEhXqc81I0xNLdFg5i6vNLQKdGhApFo87OfoGLgNrp587uN/am0yR1uxD3xNxCigMc0
+        wwRyzG+5gVvmjObTjvSG3QAQKVX/XgG6gvF7AVNBAumPoa+gXBOnZl2XrJN6XxYwPTVU2/
+        SZAMs7OlflEaRIcMAvWEOt62VVULs+zmMl/vW3jpwRPMEM8a3n01uEJcIMRqSDi8PicHDQ
+        5ZuV//6AiUQglS+Hf5xYqSQK1aRga3rVjZAJ+99L2QDioDUdfCGjbMOVpECOLQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1628599923;
+        s=2020e; t=1628600285;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=+eIpb0vOlbpVqVTU7rA2WjdajhZ9TvXLCW4nfI3UtNI=;
-        b=BLuBA7iU8+DERR/QqQ5kQaM90NRVtvPECgTgSuppEdNkrZ2IDYhiZVOQ9q1+dddBEJEhWM
-        9Eu0mmpIWq9gpQAQ==
+        bh=8IHdTih3UvPgqzcgKF8mDheJ/3CfnNs3H+PU8niFfV4=;
+        b=sVsdZ3OHfurphrm2qlpTJyvA/GE6gQ72c/PC825qnUEOtWLTX2XezyVNgIYkXGTVSTa1IP
+        HVGCGBzvKjdjgfAw==
 From:   "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cleanups] x86/mmiotrace: Replace deprecated CPU-hotplug functions.
+Subject: [tip: irq/core] genirq/affinity: Replace deprecated CPU-hotplug functions.
 Cc:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Karol Herbst <kherbst@redhat.com>,
-        "Steven Rostedt (VMware)" <rostedt@goodmis.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20210803141621.780504-7-bigeasy@linutronix.de>
-References: <20210803141621.780504-7-bigeasy@linutronix.de>
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org, maz@kernel.org
+In-Reply-To: <20210803141621.780504-26-bigeasy@linutronix.de>
+References: <20210803141621.780504-26-bigeasy@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <162859992216.395.2044972567536937336.tip-bot2@tip-bot2>
+Message-ID: <162860028441.395.2862243717696898128.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,16 +56,16 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cleanups branch of tip:
+The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     77ad320cfb2ac172eeba32a77a388281b003ec17
-Gitweb:        https://git.kernel.org/tip/77ad320cfb2ac172eeba32a77a388281b003ec17
+Commit-ID:     428e211641ed808b55cdc7d880a0ee349eff354b
+Gitweb:        https://git.kernel.org/tip/428e211641ed808b55cdc7d880a0ee349eff354b
 Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-AuthorDate:    Tue, 03 Aug 2021 16:15:49 +02:00
+AuthorDate:    Tue, 03 Aug 2021 16:16:08 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 10 Aug 2021 14:46:27 +02:00
+CommitterDate: Tue, 10 Aug 2021 14:51:26 +02:00
 
-x86/mmiotrace: Replace deprecated CPU-hotplug functions.
+genirq/affinity: Replace deprecated CPU-hotplug functions.
 
 The functions get_online_cpus() and put_online_cpus() have been
 deprecated during the CPU hotplug rework. They map directly to
@@ -81,30 +76,43 @@ The behavior remains unchanged.
 
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Karol Herbst <kherbst@redhat.com>
-Reviewed-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
-Link: https://lore.kernel.org/r/20210803141621.780504-7-bigeasy@linutronix.de
+Link: https://lore.kernel.org/r/20210803141621.780504-26-bigeasy@linutronix.de
 
 ---
- arch/x86/mm/mmio-mod.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/irq/affinity.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/mm/mmio-mod.c b/arch/x86/mm/mmio-mod.c
-index cd768da..933a2eb 100644
---- a/arch/x86/mm/mmio-mod.c
-+++ b/arch/x86/mm/mmio-mod.c
-@@ -376,12 +376,12 @@ static void enter_uniprocessor(void)
- 		goto out;
- 	}
+diff --git a/kernel/irq/affinity.c b/kernel/irq/affinity.c
+index 4d89ad4..f7ff891 100644
+--- a/kernel/irq/affinity.c
++++ b/kernel/irq/affinity.c
+@@ -355,7 +355,7 @@ static int irq_build_affinity_masks(unsigned int startvec, unsigned int numvecs,
+ 		goto fail_npresmsk;
  
+ 	/* Stabilize the cpumasks */
 -	get_online_cpus();
 +	cpus_read_lock();
- 	cpumask_copy(downed_cpus, cpu_online_mask);
- 	cpumask_clear_cpu(cpumask_first(cpu_online_mask), downed_cpus);
- 	if (num_online_cpus() > 1)
- 		pr_notice("Disabling non-boot CPUs...\n");
+ 	build_node_to_cpumask(node_to_cpumask);
+ 
+ 	/* Spread on present CPUs starting from affd->pre_vectors */
+@@ -384,7 +384,7 @@ static int irq_build_affinity_masks(unsigned int startvec, unsigned int numvecs,
+ 		nr_others = ret;
+ 
+  fail_build_affinity:
 -	put_online_cpus();
 +	cpus_read_unlock();
  
- 	for_each_cpu(cpu, downed_cpus) {
- 		err = remove_cpu(cpu);
+ 	if (ret >= 0)
+ 		WARN_ON(nr_present + nr_others < numvecs);
+@@ -505,9 +505,9 @@ unsigned int irq_calc_affinity_vectors(unsigned int minvec, unsigned int maxvec,
+ 	if (affd->calc_sets) {
+ 		set_vecs = maxvec - resv;
+ 	} else {
+-		get_online_cpus();
++		cpus_read_lock();
+ 		set_vecs = cpumask_weight(cpu_possible_mask);
+-		put_online_cpus();
++		cpus_read_unlock();
+ 	}
+ 
+ 	return resv + min(set_vecs, maxvec - resv);
