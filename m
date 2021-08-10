@@ -2,55 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D6013E5642
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 10 Aug 2021 11:07:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D2FB3E5636
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 10 Aug 2021 11:07:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238607AbhHJJIH (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 10 Aug 2021 05:08:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44604 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238589AbhHJJIF (ORCPT
+        id S238542AbhHJJID (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 10 Aug 2021 05:08:03 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:41858 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235034AbhHJJID (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 10 Aug 2021 05:08:05 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92878C0613D3;
-        Tue, 10 Aug 2021 02:07:43 -0700 (PDT)
-Date:   Tue, 10 Aug 2021 09:07:37 -0000
+        Tue, 10 Aug 2021 05:08:03 -0400
+Date:   Tue, 10 Aug 2021 09:07:38 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1628586458;
+        s=2020; t=1628586459;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=+RLdgZaWEGLFnS06KFRWGy9jo006WGSGBqjogq6j0Ao=;
-        b=0LPlezplRQQBS6tYezru1OC0YvRMyo87kCPKEEILTwbtePhVwCsNqZ4NVhNeUGwXMAyrsA
-        pAdVXjQsCHMwgpmFyRDqsnNMV6CzxBD9GwnIJhevyCSZZu1Zpe7s7gUNvqb7eA4jffF2Kj
-        bFDtkKS5ySx5LPwBWadbfo+/IpDcvfLWeGw4iWKPmYCYEdXeJo2kil04FaL9RPvqAPkDEt
-        ZwLTCOtiP20nOLknvLvZ1yryOWLR0NNDvk6RvEYG5tcvTlp6vpfvCvfbYpV8pilcIZZOUU
-        44TJ+z0luUZMms5x+BBdRT1fuGyDuu1pqYwJyBCtiS14GQSOM/euNaoArTrJSQ==
+        bh=gS/nYgS3bsaEMEVPCUduZ3SuL+pMxWzU/1Q03h6t2ag=;
+        b=WLuwO47GMr8J+iT8nytpL9IoNMtDDlCLGFLjRkHY5cZIte7ZlKB0LuTswDkYkpNpiQc6x+
+        1Wj4E1xlzki2K4E7gTkEB59TwLAzIZDz0PJjOBA8gExcyj8xr/tS2JO2PHRA487rM2EgG9
+        I24uPyLhZn5Sg8+6P5qOctSlcgjMMvKQbggglK/61X9ySIV/EpCEQYUnejAwI7VTLM/9Zi
+        AqjvJpvBWRLiqTo+D1eoM0Rd1ldJC1GpdKeZCvPZTtl4pApSy/yy/DXNtrx4FOaqDjAJVw
+        TU7JrobMtRZEGanp0kEUode16vZyrXlEiVZV2yr6gnvxwwFRmaQQfRhWXW0jTg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1628586458;
+        s=2020e; t=1628586459;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=+RLdgZaWEGLFnS06KFRWGy9jo006WGSGBqjogq6j0Ao=;
-        b=jo7j7gyUKsFhktnCCa3VQlxR0WkNGRZHvgczp/gwP85DewFwKEGeQW8SSfU2Xz/9lnP2Re
-        SOvuD3KRiPTWyqCw==
+        bh=gS/nYgS3bsaEMEVPCUduZ3SuL+pMxWzU/1Q03h6t2ag=;
+        b=Hf6w6XYvC3WzCFf5DUFiUp25gHQljnW6mJbwrk80QNPHpeKoV1P8/vruMnrZesP9DSSkBw
+        bVNgaVUzu4DkPOBA==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] PCI/MSI: Use new mask/unmask functions
+Subject: [tip: irq/core] PCI/MSI: Cleanup msi_mask()
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Marc Zyngier <maz@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210729222543.311207034@linutronix.de>
-References: <20210729222543.311207034@linutronix.de>
+In-Reply-To: <20210729222543.203905260@linutronix.de>
+References: <20210729222543.203905260@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <162858645768.395.7496269682616644206.tip-bot2@tip-bot2>
+Message-ID: <162858645885.395.1880441423425826045.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,227 +58,98 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     446a98b19fd6da97a1fb148abb1766ad89c9b767
-Gitweb:        https://git.kernel.org/tip/446a98b19fd6da97a1fb148abb1766ad89c9b767
+Commit-ID:     7327cefebb85d440fa6a589fdf53979d55b29a5a
+Gitweb:        https://git.kernel.org/tip/7327cefebb85d440fa6a589fdf53979d55b29a5a
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Thu, 29 Jul 2021 23:51:58 +02:00
+AuthorDate:    Thu, 29 Jul 2021 23:51:56 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Tue, 10 Aug 2021 11:03:30 +02:00
 
-PCI/MSI: Use new mask/unmask functions
+PCI/MSI: Cleanup msi_mask()
 
-Switch the PCI/MSI core to use the new mask/unmask functions. No functional
-change.
+msi_mask() is calculating the possible mask bits for MSI per vector
+masking.
+
+Rename it to msi_multi_mask() and hand the MSI descriptor pointer into it
+to simplify the call sites.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Tested-by: Marc Zyngier <maz@kernel.org>
 Reviewed-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20210729222543.311207034@linutronix.de
+Link: https://lore.kernel.org/r/20210729222543.203905260@linutronix.de
 
 ---
- drivers/pci/msi.c | 102 +++++++++------------------------------------
- 1 file changed, 21 insertions(+), 81 deletions(-)
+ drivers/pci/msi.c | 25 +++++++++++--------------
+ 1 file changed, 11 insertions(+), 14 deletions(-)
 
 diff --git a/drivers/pci/msi.c b/drivers/pci/msi.c
-index 26dd91f..ce841f3 100644
+index 1bde9ec..2eab07b 100644
 --- a/drivers/pci/msi.c
 +++ b/drivers/pci/msi.c
-@@ -135,74 +135,6 @@ void __weak arch_restore_msi_irqs(struct pci_dev *dev)
-  * reliably as devices without an INTx disable bit will then generate a
-  * level IRQ which will never be cleared.
-  */
--static void __pci_msi_desc_mask_irq(struct msi_desc *desc, u32 mask, u32 flag)
--{
--	raw_spinlock_t *lock = &desc->dev->msi_lock;
--	unsigned long flags;
--
--	if (pci_msi_ignore_mask || !desc->msi_attrib.maskbit)
--		return;
--
--	raw_spin_lock_irqsave(lock, flags);
--	desc->msi_mask &= ~mask;
--	desc->msi_mask |= flag;
--	pci_write_config_dword(msi_desc_to_pci_dev(desc), desc->mask_pos,
--			       desc->msi_mask);
--	raw_spin_unlock_irqrestore(lock, flags);
--}
--
--static void msi_mask_irq(struct msi_desc *desc, u32 mask, u32 flag)
--{
--	__pci_msi_desc_mask_irq(desc, mask, flag);
--}
--
--static void __iomem *pci_msix_desc_addr(struct msi_desc *desc)
--{
--	return desc->mask_base + desc->msi_attrib.entry_nr * PCI_MSIX_ENTRY_SIZE;
--}
--
--/*
-- * This internal function does not flush PCI writes to the device.
-- * All users must ensure that they read from the device before either
-- * assuming that the device state is up to date, or returning out of this
-- * file.  This saves a few milliseconds when initialising devices with lots
-- * of MSI-X interrupts.
-- */
--static u32 __pci_msix_desc_mask_irq(struct msi_desc *desc, u32 flag)
--{
--	void __iomem *desc_addr = pci_msix_desc_addr(desc);
--	u32 ctrl = desc->msix_ctrl;
--
--	if (pci_msi_ignore_mask || desc->msi_attrib.is_virtual)
--		return 0;
--
--	ctrl &= ~PCI_MSIX_ENTRY_CTRL_MASKBIT;
--	if (ctrl & PCI_MSIX_ENTRY_CTRL_MASKBIT)
--		ctrl |= PCI_MSIX_ENTRY_CTRL_MASKBIT;
--
--	writel(ctrl, desc_addr + PCI_MSIX_ENTRY_VECTOR_CTRL);
--
--	return ctrl;
--}
--
--static void msix_mask_irq(struct msi_desc *desc, u32 flag)
--{
--	desc->msix_ctrl = __pci_msix_desc_mask_irq(desc, flag);
--}
--
--static void msi_set_mask_bit(struct irq_data *data, u32 flag)
--{
--	struct msi_desc *desc = irq_data_get_msi_desc(data);
--
--	if (desc->msi_attrib.is_msix) {
--		msix_mask_irq(desc, flag);
--		readl(desc->mask_base);		/* Flush write to device */
--	} else {
--		unsigned offset = data->irq - desc->irq;
--		msi_mask_irq(desc, 1 << offset, flag << offset);
--	}
--}
--
- static inline __attribute_const__ u32 msi_multi_mask(struct msi_desc *desc)
- {
- 	/* Don't shift by >= width of type */
-@@ -234,6 +166,11 @@ static inline void pci_msi_unmask(struct msi_desc *desc, u32 mask)
- 	pci_msi_update_mask(desc, mask, 0);
+@@ -129,14 +129,6 @@ void __weak arch_restore_msi_irqs(struct pci_dev *dev)
+ 	return default_restore_msi_irqs(dev);
  }
  
-+static inline void __iomem *pci_msix_desc_addr(struct msi_desc *desc)
+-static inline __attribute_const__ u32 msi_mask(unsigned x)
+-{
+-	/* Don't shift by >= width of type */
+-	if (x >= 5)
+-		return 0xffffffff;
+-	return (1 << (1 << x)) - 1;
+-}
+-
+ /*
+  * PCI 2.3 does not specify mask bits for each MSI interrupt.  Attempting to
+  * mask all MSI interrupts by clearing the MSI enable bit does not work
+@@ -211,6 +203,14 @@ static void msi_set_mask_bit(struct irq_data *data, u32 flag)
+ 	}
+ }
+ 
++static inline __attribute_const__ u32 msi_multi_mask(struct msi_desc *desc)
 +{
-+	return desc->mask_base + desc->msi_attrib.entry_nr * PCI_MSIX_ENTRY_SIZE;
++	/* Don't shift by >= width of type */
++	if (desc->msi_attrib.multi_cap >= 5)
++		return 0xffffffff;
++	return (1 << (1 << desc->msi_attrib.multi_cap)) - 1;
 +}
 +
- /*
-  * This internal function does not flush PCI writes to the device.  All
-  * users must ensure that they read from the device before either assuming
-@@ -289,7 +226,9 @@ static void __pci_msi_unmask_desc(struct msi_desc *desc, u32 mask)
-  */
- void pci_msi_mask_irq(struct irq_data *data)
- {
--	msi_set_mask_bit(data, 1);
-+	struct msi_desc *desc = irq_data_get_msi_desc(data);
-+
-+	__pci_msi_mask_desc(desc, BIT(data->irq - desc->irq));
- }
- EXPORT_SYMBOL_GPL(pci_msi_mask_irq);
- 
-@@ -299,7 +238,9 @@ EXPORT_SYMBOL_GPL(pci_msi_mask_irq);
-  */
- void pci_msi_unmask_irq(struct irq_data *data)
- {
--	msi_set_mask_bit(data, 0);
-+	struct msi_desc *desc = irq_data_get_msi_desc(data);
-+
-+	__pci_msi_unmask_desc(desc, BIT(data->irq - desc->irq));
- }
- EXPORT_SYMBOL_GPL(pci_msi_unmask_irq);
- 
-@@ -352,7 +293,8 @@ void __pci_write_msi_msg(struct msi_desc *entry, struct msi_msg *msg)
- 		/* Don't touch the hardware now */
- 	} else if (entry->msi_attrib.is_msix) {
- 		void __iomem *base = pci_msix_desc_addr(entry);
--		bool unmasked = !(entry->msix_ctrl & PCI_MSIX_ENTRY_CTRL_MASKBIT);
-+		u32 ctrl = entry->msix_ctrl;
-+		bool unmasked = !(ctrl & PCI_MSIX_ENTRY_CTRL_MASKBIT);
- 
- 		if (entry->msi_attrib.is_virtual)
- 			goto skip;
-@@ -366,14 +308,14 @@ void __pci_write_msi_msg(struct msi_desc *entry, struct msi_msg *msg)
- 		 * undefined."
- 		 */
- 		if (unmasked)
--			__pci_msix_desc_mask_irq(entry, PCI_MSIX_ENTRY_CTRL_MASKBIT);
-+			pci_msix_write_vector_ctrl(entry, ctrl | PCI_MSIX_ENTRY_CTRL_MASKBIT);
- 
- 		writel(msg->address_lo, base + PCI_MSIX_ENTRY_LOWER_ADDR);
- 		writel(msg->address_hi, base + PCI_MSIX_ENTRY_UPPER_ADDR);
- 		writel(msg->data, base + PCI_MSIX_ENTRY_DATA);
- 
- 		if (unmasked)
--			__pci_msix_desc_mask_irq(entry, 0);
-+			pci_msix_write_vector_ctrl(entry, ctrl);
- 
- 		/* Ensure that the writes are visible in the device */
- 		readl(base + PCI_MSIX_ENTRY_DATA);
-@@ -491,7 +433,7 @@ static void __pci_restore_msi_state(struct pci_dev *dev)
+ /**
+  * pci_msi_mask_irq - Generic IRQ chip callback to mask PCI/MSI interrupts
+  * @data:	pointer to irqdata associated to that interrupt
+@@ -419,8 +419,7 @@ static void __pci_restore_msi_state(struct pci_dev *dev)
  	arch_restore_msi_irqs(dev);
  
  	pci_read_config_word(dev, dev->msi_cap + PCI_MSI_FLAGS, &control);
--	msi_mask_irq(entry, msi_multi_mask(entry), entry->msi_mask);
-+	pci_msi_update_mask(entry, 0, 0);
+-	msi_mask_irq(entry, msi_mask(entry->msi_attrib.multi_cap),
+-		     entry->msi_mask);
++	msi_mask_irq(entry, msi_multi_mask(entry), entry->msi_mask);
  	control &= ~PCI_MSI_FLAGS_QSIZE;
  	control |= (entry->msi_attrib.multiple << 4) | PCI_MSI_FLAGS_ENABLE;
  	pci_write_config_word(dev, dev->msi_cap + PCI_MSI_FLAGS, control);
-@@ -522,7 +464,7 @@ static void __pci_restore_msix_state(struct pci_dev *dev)
- 
- 	arch_restore_msi_irqs(dev);
- 	for_each_pci_msi_entry(entry, dev)
--		msix_mask_irq(entry, entry->msix_ctrl);
-+		pci_msix_write_vector_ctrl(entry, entry->msix_ctrl);
- 
- 	pci_msix_clear_and_set_ctrl(dev, PCI_MSIX_FLAGS_MASKALL, 0);
- }
-@@ -704,7 +646,6 @@ static int msi_capability_init(struct pci_dev *dev, int nvec,
- {
- 	struct msi_desc *entry;
- 	int ret;
--	unsigned mask;
- 
- 	pci_msi_set_enable(dev, 0);	/* Disable MSI during set up */
- 
-@@ -713,8 +654,7 @@ static int msi_capability_init(struct pci_dev *dev, int nvec,
+@@ -642,7 +641,7 @@ static int msi_capability_init(struct pci_dev *dev, int nvec,
  		return -ENOMEM;
  
  	/* All MSIs are unmasked by default; mask them all */
--	mask = msi_multi_mask(entry);
--	msi_mask_irq(entry, mask, mask);
-+	pci_msi_mask(entry, msi_multi_mask(entry));
+-	mask = msi_mask(entry->msi_attrib.multi_cap);
++	mask = msi_multi_mask(entry);
+ 	msi_mask_irq(entry, mask, mask);
  
  	list_add_tail(&entry->list, dev_to_msi_list(&dev->dev));
+@@ -938,7 +937,6 @@ EXPORT_SYMBOL(pci_msi_vec_count);
+ static void pci_msi_shutdown(struct pci_dev *dev)
+ {
+ 	struct msi_desc *desc;
+-	u32 mask;
  
-@@ -741,7 +681,7 @@ static int msi_capability_init(struct pci_dev *dev, int nvec,
- 	return 0;
- 
- err:
--	msi_mask_irq(entry, mask, 0);
-+	pci_msi_unmask(entry, msi_multi_mask(entry));
- 	free_msi_irqs(dev);
- 	return ret;
- }
-@@ -1021,7 +961,7 @@ static void pci_msi_shutdown(struct pci_dev *dev)
+ 	if (!pci_msi_enable || !dev || !dev->msi_enabled)
+ 		return;
+@@ -951,8 +949,7 @@ static void pci_msi_shutdown(struct pci_dev *dev)
  	dev->msi_enabled = 0;
  
  	/* Return the device with MSI unmasked as initial states */
--	msi_mask_irq(desc, msi_multi_mask(desc), 0);
-+	pci_msi_unmask(desc, msi_multi_mask(desc));
+-	mask = msi_mask(desc->msi_attrib.multi_cap);
+-	msi_mask_irq(desc, mask, 0);
++	msi_mask_irq(desc, msi_multi_mask(desc), 0);
  
  	/* Restore dev->irq to its default pin-assertion IRQ */
  	dev->irq = desc->msi_attrib.default_irq;
-@@ -1107,7 +1047,7 @@ static void pci_msix_shutdown(struct pci_dev *dev)
- 
- 	/* Return the device with MSI-X masked as initial states */
- 	for_each_pci_msi_entry(entry, dev)
--		__pci_msix_desc_mask_irq(entry, 1);
-+		pci_msix_mask(entry);
- 
- 	pci_msix_clear_and_set_ctrl(dev, PCI_MSIX_FLAGS_ENABLE, 0);
- 	pci_intx_for_msi(dev, 1);
