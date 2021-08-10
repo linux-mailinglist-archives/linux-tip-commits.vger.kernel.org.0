@@ -2,17 +2,17 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DCBDF3E5645
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 10 Aug 2021 11:07:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A192C3E564C
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 10 Aug 2021 11:07:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238612AbhHJJIM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 10 Aug 2021 05:08:12 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:41876 "EHLO
+        id S238677AbhHJJIP (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 10 Aug 2021 05:08:15 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:41874 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238610AbhHJJIJ (ORCPT
+        with ESMTP id S238628AbhHJJIK (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 10 Aug 2021 05:08:09 -0400
-Date:   Tue, 10 Aug 2021 09:07:45 -0000
+        Tue, 10 Aug 2021 05:08:10 -0400
+Date:   Tue, 10 Aug 2021 09:07:46 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1628586466;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -20,12 +20,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=towpk5A8eToUKr08Ctl4hG917wxhPOK70OYxWFFjB+I=;
-        b=bkIo4Car8qS7DVdHadq8/6iUcwG+AOlXOxLT/q9E+IiXst2FMNyYaWQqY8Ikk61wHJbEWY
-        mRwgnxLmQw0G1qnlElR7ONVSYoddgt/AJYVAenvwYRsFR6BtsG0jlEXDpEj/yk6C5j0EdU
-        QR5qce52aGU2/V9ABcRttv13BvPQqWfodQ/3f5gUaTRGqC8EUlEAfRNuv16NEuVDU4MpAT
-        e+dL59W3fm8elJElPBPIFKBT5kWPkxS0l/Bn9cI3ibcZXf1W2BGxl+aLDwmsR0E8wAICYk
-        dT3+pDam2IXE3So8b19pJWdBYXugUXQEeO0E+kZ+6M4m2Lc2GvJAdlQll+PrKQ==
+        bh=h6Gn03aDoUvJFxrpWmheTVCvJLR4JDX1gKgWkTybXzA=;
+        b=v7SeherpwONI238S+ymIsA57f63NRCenS5f4UITlZVzIUD9qyXkK0kfA9UfekisLNrmolj
+        QkFeMYsI43s4MABqIxwNOMHyhLxw0kubQQW9RaDk6QwAwJTsAOBRy7zWclkBLUyuTuodEL
+        400qm2RHwkqJ+Z208r8tWKIFyWdD7IeXN74H9bucx1KrwJzKGRKErvrfXb4LQeweIpfsZf
+        PjNE3L3egOO8ql0H+S2o68gsv/BeZAG9QW+/5ikNlJ/a9GPZxd9opMScRUiwd6qQxFcpPz
+        XtUgw8TNuihVWwYBRIMFRYePHcaf0rmZec8gVZGZYhkaYl0pcuj8qXpjBht7wQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1628586466;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -33,21 +33,22 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=towpk5A8eToUKr08Ctl4hG917wxhPOK70OYxWFFjB+I=;
-        b=3sbKYBwu4UyqX3LjmrO3iEqsyDxBmx7iUF6hW8yxNTOw2QH4hOn69p1mAqQVOla6CigtAv
-        e4NWBKXwgrbOXpAA==
+        bh=h6Gn03aDoUvJFxrpWmheTVCvJLR4JDX1gKgWkTybXzA=;
+        b=xYZup98//iXNiDGXAEDHTg6ME9b7Ps9LH6okpkhMnBemccBG4VAN4nudxflKP3WKbSVT+O
+        EmCtFfb6S11p6JCg==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] PCI/MSI: Do not set invalid bits in MSI mask
+Subject: [tip: irq/core] PCI/MSI: Enforce MSI[X] entry updates to be visible
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Marc Zyngier <maz@kernel.org>, stable@vger.kernel.org,
+        Marc Zyngier <maz@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>, stable@vger.kernel.org,
         x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20210729222542.568173099@linutronix.de>
-References: <20210729222542.568173099@linutronix.de>
+In-Reply-To: <20210729222542.515188147@linutronix.de>
+References: <20210729222542.515188147@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <162858646546.395.2579640768896644198.tip-bot2@tip-bot2>
+Message-ID: <162858646605.395.9862515344185034186.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,69 +59,59 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     361fd37397f77578735907341579397d5bed0a2d
-Gitweb:        https://git.kernel.org/tip/361fd37397f77578735907341579397d5bed0a2d
+Commit-ID:     b9255a7cb51754e8d2645b65dd31805e282b4f3e
+Gitweb:        https://git.kernel.org/tip/b9255a7cb51754e8d2645b65dd31805e282b4f3e
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Thu, 29 Jul 2021 23:51:44 +02:00
+AuthorDate:    Thu, 29 Jul 2021 23:51:43 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Tue, 10 Aug 2021 10:59:20 +02:00
 
-PCI/MSI: Do not set invalid bits in MSI mask
+PCI/MSI: Enforce MSI[X] entry updates to be visible
 
-msi_mask_irq() takes a mask and a flags argument. The mask argument is used
-to mask out bits from the cached mask and the flags argument to set bits.
+Nothing enforces the posted writes to be visible when the function
+returns. Flush them even if the flush might be redundant when the entry is
+masked already as the unmask will flush as well. This is either setup or a
+rare affinity change event so the extra flush is not the end of the world.
 
-Some places invoke it with a flags argument which sets bits which are not
-used by the device, i.e. when the device supports up to 8 vectors a full
-unmask in some places sets the mask to 0xFFFFFF00. While devices probably
-do not care, it's still bad practice.
+While this is more a theoretical issue especially the logic in the X86
+specific msi_set_affinity() function relies on the assumption that the
+update has reached the hardware when the function returns.
 
-Fixes: 7ba1930db02f ("PCI MSI: Unmask MSI if setup failed")
+Again, as this never has been enforced the Fixes tag refers to a commit in:
+   git://git.kernel.org/pub/scm/linux/kernel/git/tglx/history.git
+
+Fixes: f036d4ea5fa7 ("[PATCH] ia32 Message Signalled Interrupt support")
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Tested-by: Marc Zyngier <maz@kernel.org>
 Reviewed-by: Marc Zyngier <maz@kernel.org>
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20210729222542.568173099@linutronix.de
+Link: https://lore.kernel.org/r/20210729222542.515188147@linutronix.de
 
 ---
- drivers/pci/msi.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/pci/msi.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
 diff --git a/drivers/pci/msi.c b/drivers/pci/msi.c
-index 434c704..e27ac6b 100644
+index 7ee1ac4..434c704 100644
 --- a/drivers/pci/msi.c
 +++ b/drivers/pci/msi.c
-@@ -656,21 +656,21 @@ static int msi_capability_init(struct pci_dev *dev, int nvec,
- 	/* Configure MSI capability structure */
- 	ret = pci_msi_setup_msi_irqs(dev, nvec, PCI_CAP_ID_MSI);
- 	if (ret) {
--		msi_mask_irq(entry, mask, ~mask);
-+		msi_mask_irq(entry, mask, 0);
- 		free_msi_irqs(dev);
- 		return ret;
+@@ -311,6 +311,9 @@ void __pci_write_msi_msg(struct msi_desc *entry, struct msi_msg *msg)
+ 
+ 		if (unmasked)
+ 			__pci_msix_desc_mask_irq(entry, 0);
++
++		/* Ensure that the writes are visible in the device */
++		readl(base + PCI_MSIX_ENTRY_DATA);
+ 	} else {
+ 		int pos = dev->msi_cap;
+ 		u16 msgctl;
+@@ -331,6 +334,8 @@ void __pci_write_msi_msg(struct msi_desc *entry, struct msi_msg *msg)
+ 			pci_write_config_word(dev, pos + PCI_MSI_DATA_32,
+ 					      msg->data);
+ 		}
++		/* Ensure that the writes are visible in the device */
++		pci_read_config_word(dev, pos + PCI_MSI_FLAGS, &msgctl);
  	}
  
- 	ret = msi_verify_entries(dev);
- 	if (ret) {
--		msi_mask_irq(entry, mask, ~mask);
-+		msi_mask_irq(entry, mask, 0);
- 		free_msi_irqs(dev);
- 		return ret;
- 	}
- 
- 	ret = populate_msi_sysfs(dev);
- 	if (ret) {
--		msi_mask_irq(entry, mask, ~mask);
-+		msi_mask_irq(entry, mask, 0);
- 		free_msi_irqs(dev);
- 		return ret;
- 	}
-@@ -962,7 +962,7 @@ static void pci_msi_shutdown(struct pci_dev *dev)
- 	/* Return the device with MSI unmasked as initial states */
- 	mask = msi_mask(desc->msi_attrib.multi_cap);
- 	/* Keep cached state to be restored */
--	__pci_msi_desc_mask_irq(desc, mask, ~mask);
-+	__pci_msi_desc_mask_irq(desc, mask, 0);
- 
- 	/* Restore dev->irq to its default pin-assertion IRQ */
- 	dev->irq = desc->msi_attrib.default_irq;
+ skip:
