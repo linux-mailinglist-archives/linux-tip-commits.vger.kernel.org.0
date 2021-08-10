@@ -2,55 +2,46 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FC3A3E536C
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 10 Aug 2021 08:24:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2FBE23E5536
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 10 Aug 2021 10:31:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237771AbhHJGYf (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 10 Aug 2021 02:24:35 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:40966 "EHLO
+        id S237201AbhHJIbV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 10 Aug 2021 04:31:21 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:41652 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234937AbhHJGYe (ORCPT
+        with ESMTP id S233746AbhHJIbV (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 10 Aug 2021 02:24:34 -0400
-Date:   Tue, 10 Aug 2021 06:24:10 -0000
+        Tue, 10 Aug 2021 04:31:21 -0400
+Date:   Tue, 10 Aug 2021 08:30:56 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1628576652;
+        s=2020; t=1628584257;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=fnn2uGllU/uDP9M/5maKWBV/knLD9AVUGcT5bladcBk=;
-        b=RU69zWxAXIWfVNAEzbwPaiUbKNcdbF3AHIh2bLqp/TbER42JU/yut3IAuh7wtxhC0rAJ75
-        n0Eyvn52sO04vNG6jVJXCEkdI+awWYqVHmWAfox3pskd2fV9KTO8byh6Dm+XRj9p9kuiTN
-        o4EI9rBwxu3qJKWdiI/TcstCl/Lwnkqpi4Wsnjok5qLpW7u8SqFA76RPdUBSqIGeN9vCd/
-        uDOma7XiPmheLR1y94YgLwqWDLu1M1yj4/TGJDuxkF+WmD9HfXT/08F/7OX3b37BA5Ttwv
-        gENf3Ge39CkBaz9S9K1uGwADqCfcHIO3Fpfp3qO7Nqsa5MzQCBcgJf5VD2KUpg==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=R3+Z3k4bu+GGLrnbVnnpvaw14kwNMHvJNvXzsr4E370=;
+        b=lB02Bwl635FoaRbPQCTFEJcnasX6cewq9UY2SHKeLnX4rv1qoiQYg25X0aqiCUkvbH+Y26
+        v5I/ejkdMWfdFSmp3FdXHjGeg3WlJr6g+E0XvXxPrfAgX61iSWIF8kz5L4zkFjwiIWHrdd
+        uAXzte7MF/XYL3/uATLwkKZfLNGancqTdY11aLfwpfPJJQsaBW9oSeVbUaHUDvyfCitTFr
+        WXANnXG7gUrRXVEmux8AFwdIudYEGzcvntRHSBGiKRFhYFa5/Ru3EO2zeU+dZboHUOIPtX
+        4rY5ithqRZHP1Q3coOidmDaB2TCiN2Yb0v6kQROQVdVu4Pcq93qwSKBBkLdpzw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1628576652;
+        s=2020e; t=1628584257;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=fnn2uGllU/uDP9M/5maKWBV/knLD9AVUGcT5bladcBk=;
-        b=qyYK7gQdLaNbt+9UV38pAAlhYgyqe63fct1EPGJjuQuj9wnlBG6zjF4idiReFEZzvi3JL0
-        ZDVc9TF8qGOXw8Dg==
-From:   "tip-bot2 for Zhen Lei" <tip-bot2@linutronix.de>
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=R3+Z3k4bu+GGLrnbVnnpvaw14kwNMHvJNvXzsr4E370=;
+        b=ISUh3DWq+ottC6XRovQ6iO06OZELQivnDuu3XRScqEnc5JPPYMWttNpll+j4ExSxfpdvSF
+        FfW+dnHhog02pdCg==
+From:   "tip-bot2 for Ard Biesheuvel" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/urgent] locking/rtmutex: Use the correct rtmutex
- debugging config option
-Cc:     Zhen Lei <thunder.leizhen@huawei.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Will Deacon <will@kernel.org>,
-        Boqun Feng <boqun.feng@gmail.com>, stable@vger.kernel.org,
+Subject: [tip: efi/urgent] efi/libstub: arm64: Double check image alignment at entry
+Cc:     <stable@vger.kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
         x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20210731123011.4555-1-thunder.leizhen@huawei.com>
-References: <20210731123011.4555-1-thunder.leizhen@huawei.com>
 MIME-Version: 1.0
-Message-ID: <162857665079.395.8061796683786312705.tip-bot2@tip-bot2>
+Message-ID: <162858425681.395.14788450101078215076.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,41 +50,47 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the locking/urgent branch of tip:
+The following commit has been merged into the efi/urgent branch of tip:
 
-Commit-ID:     07d25971b220e477eb019fcb520a9f2e3ac966af
-Gitweb:        https://git.kernel.org/tip/07d25971b220e477eb019fcb520a9f2e3ac966af
-Author:        Zhen Lei <thunder.leizhen@huawei.com>
-AuthorDate:    Sat, 31 Jul 2021 20:30:11 +08:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 10 Aug 2021 08:21:52 +02:00
+Commit-ID:     c32ac11da3f83bb42b986702a9b92f0a14ed4182
+Gitweb:        https://git.kernel.org/tip/c32ac11da3f83bb42b986702a9b92f0a14ed4182
+Author:        Ard Biesheuvel <ardb@kernel.org>
+AuthorDate:    Mon, 26 Jul 2021 16:31:44 +02:00
+Committer:     Ard Biesheuvel <ardb@kernel.org>
+CommitterDate: Tue, 03 Aug 2021 07:43:13 +02:00
 
-locking/rtmutex: Use the correct rtmutex debugging config option
+efi/libstub: arm64: Double check image alignment at entry
 
-It's CONFIG_DEBUG_RT_MUTEXES not CONFIG_DEBUG_RT_MUTEX.
+On arm64, the stub only moves the kernel image around in memory if
+needed, which is typically only for KASLR, given that relocatable
+kernels (which is the default) can run from any 64k aligned address,
+which is also the minimum alignment communicated to EFI via the PE/COFF
+header.
 
-Fixes: f7efc4799f81 ("locking/rtmutex: Inline chainwalk depth check")
-Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Will Deacon <will@kernel.org>
-Acked-by: Boqun Feng <boqun.feng@gmail.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20210731123011.4555-1-thunder.leizhen@huawei.com
+Unfortunately, some loaders appear to ignore this header, and load the
+kernel at some arbitrary offset in memory. We can deal with this, but
+let's check for this condition anyway, so non-compliant code can be
+spotted and fixed.
 
+Cc: <stable@vger.kernel.org> # v5.10+
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Tested-by: Benjamin Herrenschmidt <benh@kernel.crashing.org>
 ---
- kernel/locking/rtmutex.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/firmware/efi/libstub/arm64-stub.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/kernel/locking/rtmutex.c b/kernel/locking/rtmutex.c
-index b5d9bb5..ad0db32 100644
---- a/kernel/locking/rtmutex.c
-+++ b/kernel/locking/rtmutex.c
-@@ -343,7 +343,7 @@ static __always_inline bool
- rt_mutex_cond_detect_deadlock(struct rt_mutex_waiter *waiter,
- 			      enum rtmutex_chainwalk chwalk)
- {
--	if (IS_ENABLED(CONFIG_DEBUG_RT_MUTEX))
-+	if (IS_ENABLED(CONFIG_DEBUG_RT_MUTEXES))
- 		return waiter != NULL;
- 	return chwalk == RT_MUTEX_FULL_CHAINWALK;
- }
+diff --git a/drivers/firmware/efi/libstub/arm64-stub.c b/drivers/firmware/efi/libstub/arm64-stub.c
+index 010564f..2363fee 100644
+--- a/drivers/firmware/efi/libstub/arm64-stub.c
++++ b/drivers/firmware/efi/libstub/arm64-stub.c
+@@ -119,6 +119,10 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
+ 	if (image->image_base != _text)
+ 		efi_err("FIRMWARE BUG: efi_loaded_image_t::image_base has bogus value\n");
+ 
++	if (!IS_ALIGNED((u64)_text, EFI_KIMG_ALIGN))
++		efi_err("FIRMWARE BUG: kernel image not aligned on %ldk boundary\n",
++			EFI_KIMG_ALIGN >> 10);
++
+ 	kernel_size = _edata - _text;
+ 	kernel_memsize = kernel_size + (_end - _edata);
+ 	*reserve_size = kernel_memsize;
