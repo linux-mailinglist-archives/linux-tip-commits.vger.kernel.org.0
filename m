@@ -2,54 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 30F913E5C9D
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 10 Aug 2021 16:12:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2AB8D3E5E5E
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 10 Aug 2021 16:50:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241386AbhHJOMa (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 10 Aug 2021 10:12:30 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:43654 "EHLO
+        id S242219AbhHJOvL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 10 Aug 2021 10:51:11 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:43854 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240580AbhHJOM3 (ORCPT
+        with ESMTP id S238617AbhHJOsy (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 10 Aug 2021 10:12:29 -0400
-Date:   Tue, 10 Aug 2021 14:12:04 -0000
+        Tue, 10 Aug 2021 10:48:54 -0400
+Date:   Tue, 10 Aug 2021 14:48:29 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1628604725;
+        s=2020; t=1628606910;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=9znJhSebKL+O+kQ08F7coI8c5qH+PXl+LIk3PxlRzU4=;
-        b=Cmit3Uc6dXZYPAwH6RiHwU4HuKHSzSyrjkrSOj4i9vTJqAbT/qP0/hDXWwtzkTP3ASPoG3
-        NQ0BpoiLd0xd7ssSHUHV3KswrNIMbh0WrWzVGW1x6b/4/d/vuUKA1yavTXOxv6d4Ckyyyr
-        DGXKGlz35pD0IG8JiCeOCw600ETlhCr7LT5I5eJTxqz9xzpQBEgIDNIzANImXR25hZzrh4
-        r8S+eY9QQN8yERZ9a0+5QnqjO934FshShm5Rom3UhfuD24Vpwm++xx/pCj9q30oDx/YAJo
-        Kqq6MPpKerqzqGhQlLp/L7e6ycgLooeZdeFEC8ve+BzuE91Qm/tNBi3MEIwiXQ==
+        bh=rQoXve8pZEefDfzy1MSlgSkrq0iQwG1KVUsJRu5Ya68=;
+        b=kxNzHV7VyWE9A95z2Z/K1DPwiEiN0sMSKqWcpX3hGpSof7XDRL0y2uNU3V914fxwZOhU8B
+        4Vk87UT10zEEjFuFecoYzBJC578Rsjwqd9TTXjaFCP2h4PN6+qFWzr7wrtXq6vgWEe11nS
+        evIJtt6zFPJNttFOb1PCMtG64c8zpqsPz6dBMFsGxeshf2Bjfvfq0gQKMmaVIrB+k1/BDU
+        NAiX3H50KtUfmvNOOy2J1tNunuruVylfKPhzn4iz+9mq/jU/gDzXMG5px2yv165rNNfJPt
+        /8zfl76ifD8f+tUgpbNkXZc9cj0auQh4uGtppDhOUrkQR8oGlu6PI1//xGzOTg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1628604725;
+        s=2020e; t=1628606910;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=9znJhSebKL+O+kQ08F7coI8c5qH+PXl+LIk3PxlRzU4=;
-        b=id/z09jZm30IiTrbi756FJ7yOnnB70tFvzbLssnEjvx/du3RbZw7KtL0py/JzgJ4vlY3Kb
-        otKT0d74MdR9GeDg==
-From:   "tip-bot2 for Tanner Love" <tip-bot2@linutronix.de>
+        bh=rQoXve8pZEefDfzy1MSlgSkrq0iQwG1KVUsJRu5Ya68=;
+        b=Z5hIJjOUJnlNz98AJWv9MGl+oFglOaK800xHR1qqzfL3LCqTNAOk6rqc6GeVozFBv8C0Ee
+        sX9dhP+SpgMy54AQ==
+From:   "tip-bot2 for Baokun Li" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] genirq: Change force_irqthreads to a static key
-Cc:     Eric Dumazet <edumazet@google.com>,
-        Tanner Love <tannerlove@google.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Kees Cook <keescook@chromium.org>, x86@kernel.org,
+Subject: [tip: irq/core] genirq/matrix: Fix kernel doc warnings for
+ irq_matrix_alloc_managed()
+Cc:     Baokun Li <libaokun1@huawei.com>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20210602180338.3324213-1-tannerlove.kernel@gmail.com>
-References: <20210602180338.3324213-1-tannerlove.kernel@gmail.com>
+In-Reply-To: <20210605063413.684085-1-libaokun1@huawei.com>
+References: <20210605063413.684085-1-libaokun1@huawei.com>
 MIME-Version: 1.0
-Message-ID: <162860472466.395.18404030703403232612.tip-bot2@tip-bot2>
+Message-ID: <162860690917.395.12740392525417806707.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,117 +59,45 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     af5b7fe6bb77ac775d446e2f25f013d5df551e9a
-Gitweb:        https://git.kernel.org/tip/af5b7fe6bb77ac775d446e2f25f013d5df551e9a
-Author:        Tanner Love <tannerlove@google.com>
-AuthorDate:    Wed, 02 Jun 2021 14:03:38 -04:00
+Commit-ID:     1d07a835819e2d3c85af8f093a02c2e6bca422d6
+Gitweb:        https://git.kernel.org/tip/1d07a835819e2d3c85af8f093a02c2e6bca422d6
+Author:        Baokun Li <libaokun1@huawei.com>
+AuthorDate:    Sat, 05 Jun 2021 14:34:13 +08:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 10 Aug 2021 16:06:55 +02:00
+CommitterDate: Tue, 10 Aug 2021 16:46:26 +02:00
 
-genirq: Change force_irqthreads to a static key
+genirq/matrix: Fix kernel doc warnings for irq_matrix_alloc_managed()
 
-With CONFIG_IRQ_FORCED_THREADING=y, testing the boolean force_irqthreads
-could incur a cache line miss in invoke_softirq() and other places.
+Describe the arguments correctly.
 
-Replace the test with a static key to avoid the potential cache miss.
+Fixes the following W=1 kernel build warning(s):
 
-[ tglx: Dropped the IDE part, removed the export and updated blk-mq ]
+kernel/irq/matrix.c:287: warning: Function parameter or
+ member 'msk' not described in 'irq_matrix_alloc_managed'
+kernel/irq/matrix.c:287: warning: Function parameter or
+ member 'mapped_cpu' not described in 'irq_matrix_alloc_managed'
+kernel/irq/matrix.c:287: warning: Excess function
+ parameter 'cpu' description in 'irq_matrix_alloc_managed'
 
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Tanner Love <tannerlove@google.com>
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Link: https://lore.kernel.org/r/20210602180338.3324213-1-tannerlove.kernel@gmail.com
----
- block/blk-mq.c            |  2 +-
- include/linux/interrupt.h |  8 +++++---
- kernel/irq/manage.c       |  9 ++++-----
- kernel/softirq.c          |  2 +-
- 4 files changed, 11 insertions(+), 10 deletions(-)
+Link: https://lore.kernel.org/r/20210605063413.684085-1-libaokun1@huawei.com
 
-diff --git a/block/blk-mq.c b/block/blk-mq.c
-index 2c4ac51..572d8ab 100644
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -606,7 +606,7 @@ static inline bool blk_mq_complete_need_ipi(struct request *rq)
- 	 * This is probably worse than completing the request on a different
- 	 * cache domain.
- 	 */
--	if (force_irqthreads)
-+	if (force_irqthreads())
- 		return false;
- 
- 	/* same CPU or cache domain?  Complete locally */
-diff --git a/include/linux/interrupt.h b/include/linux/interrupt.h
-index 2ed65b0..1f22a30 100644
---- a/include/linux/interrupt.h
-+++ b/include/linux/interrupt.h
-@@ -13,6 +13,7 @@
- #include <linux/hrtimer.h>
- #include <linux/kref.h>
- #include <linux/workqueue.h>
-+#include <linux/jump_label.h>
- 
- #include <linux/atomic.h>
- #include <asm/ptrace.h>
-@@ -474,12 +475,13 @@ extern int irq_set_irqchip_state(unsigned int irq, enum irqchip_irq_state which,
- 
- #ifdef CONFIG_IRQ_FORCED_THREADING
- # ifdef CONFIG_PREEMPT_RT
--#  define force_irqthreads	(true)
-+#  define force_irqthreads()	(true)
- # else
--extern bool force_irqthreads;
-+DECLARE_STATIC_KEY_FALSE(force_irqthreads_key);
-+#  define force_irqthreads()	(static_branch_unlikely(&force_irqthreads_key))
- # endif
- #else
--#define force_irqthreads	(0)
-+#define force_irqthreads()	(false)
- #endif
- 
- #ifndef local_softirq_pending
-diff --git a/kernel/irq/manage.c b/kernel/irq/manage.c
-index 766468a..bb3c51d 100644
---- a/kernel/irq/manage.c
-+++ b/kernel/irq/manage.c
-@@ -25,12 +25,11 @@
- #include "internals.h"
- 
- #if defined(CONFIG_IRQ_FORCED_THREADING) && !defined(CONFIG_PREEMPT_RT)
--__read_mostly bool force_irqthreads;
--EXPORT_SYMBOL_GPL(force_irqthreads);
-+DEFINE_STATIC_KEY_FALSE(force_irqthreads_key);
- 
- static int __init setup_forced_irqthreads(char *arg)
- {
--	force_irqthreads = true;
-+	static_branch_enable(&force_irqthreads_key);
- 	return 0;
- }
- early_param("threadirqs", setup_forced_irqthreads);
-@@ -1260,8 +1259,8 @@ static int irq_thread(void *data)
- 	irqreturn_t (*handler_fn)(struct irq_desc *desc,
- 			struct irqaction *action);
- 
--	if (force_irqthreads && test_bit(IRQTF_FORCED_THREAD,
--					&action->thread_flags))
-+	if (force_irqthreads() && test_bit(IRQTF_FORCED_THREAD,
-+					   &action->thread_flags))
- 		handler_fn = irq_forced_thread_fn;
- 	else
- 		handler_fn = irq_thread_fn;
-diff --git a/kernel/softirq.c b/kernel/softirq.c
-index f3a0121..322b65d 100644
---- a/kernel/softirq.c
-+++ b/kernel/softirq.c
-@@ -422,7 +422,7 @@ static inline void invoke_softirq(void)
- 	if (ksoftirqd_running(local_softirq_pending()))
- 		return;
- 
--	if (!force_irqthreads || !__this_cpu_read(ksoftirqd)) {
-+	if (!force_irqthreads() || !__this_cpu_read(ksoftirqd)) {
- #ifdef CONFIG_HAVE_IRQ_EXIT_ON_IRQ_STACK
- 		/*
- 		 * We can safely execute softirq on the current stack if
+---
+ kernel/irq/matrix.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/kernel/irq/matrix.c b/kernel/irq/matrix.c
+index 578596e..bbfb264 100644
+--- a/kernel/irq/matrix.c
++++ b/kernel/irq/matrix.c
+@@ -280,7 +280,8 @@ void irq_matrix_remove_managed(struct irq_matrix *m, const struct cpumask *msk)
+ /**
+  * irq_matrix_alloc_managed - Allocate a managed interrupt in a CPU map
+  * @m:		Matrix pointer
+- * @cpu:	On which CPU the interrupt should be allocated
++ * @msk:	Which CPUs to search in
++ * @mapped_cpu:	Pointer to store the CPU for which the irq was allocated
+  */
+ int irq_matrix_alloc_managed(struct irq_matrix *m, const struct cpumask *msk,
+ 			     unsigned int *mapped_cpu)
