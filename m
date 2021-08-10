@@ -2,57 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 10B7F3E84A9
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 10 Aug 2021 22:52:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF0D73E856C
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 10 Aug 2021 23:35:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233567AbhHJUxL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 10 Aug 2021 16:53:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40580 "EHLO
+        id S234652AbhHJVgK (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 10 Aug 2021 17:36:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50724 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233425AbhHJUxK (ORCPT
+        with ESMTP id S234705AbhHJVgH (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 10 Aug 2021 16:53:10 -0400
+        Tue, 10 Aug 2021 17:36:07 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AFFDC0613C1;
-        Tue, 10 Aug 2021 13:52:47 -0700 (PDT)
-Date:   Tue, 10 Aug 2021 20:52:45 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AE15C061765;
+        Tue, 10 Aug 2021 14:35:44 -0700 (PDT)
+Date:   Tue, 10 Aug 2021 21:35:40 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1628628766;
+        s=2020; t=1628631341;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=iqFdIjgtl1V4wrZcegB4vP02DI0oxXS4gcyhsKOffRw=;
-        b=E44gK5iq0L2v+V9GRSP1q+8dUjL0x6vLThCnh9Wq7YhaKLbiW9yigQqbSyfCEq+jdW0YL2
-        qcBb9SVzBVQd/caJeWi7qcdTVn+1pHIkVzjmLsVkF/cQfFNlSpoayRzF1jnh8soV74V6jy
-        VN+tmJBqcxARLr1N14PYdbi2rYdzIBrOt6NDBCf/McC4owBMtyy5QiB2S74dyq1NGg/RPR
-        7fJQM3FRXuCvIVUmgcQMAtRvjOY4v0X1gzs2nBnuySuTFXRPmSET2dv+cxlzmywxtiB4iD
-        qQoq8Tf+fuF8TyACJd6sss4gPHjMZRCwylnQ/lGDHIjj2gxwNCtnlgHFxG5WPg==
+        bh=YGhQVUZqbAzjoyKpP8UUCBukO2Ia9umsHGqPX2ZeiDU=;
+        b=T8VCgLEcIEHKbd6hJ0Sjfl7cRjwW7ForDbzOnV0klBoGLlLO+2nDIO/GHaJrhvO4wVB5mE
+        WQPpHB7cGzLalgoEmjeR+JD5qoyn9jzMbnUDq3S5nNRHjKntZPAerQ/uQlpUC+vHozAsq8
+        xL3zCPh7B3jDsz1/+hG24LcQqryZ+9Cu8N5Y3vlOH5otmBeFbiSCyN51JpeBQsM/dWNkN9
+        fMlDP6Nynopa9Q6Rdz7IKYK65aKsy706X2LDK9Z4hdmqw7qi5HXG7Fr4ab0CugNLkWINWK
+        CZT1GpPLEMMNbyz7WwrhsjqDkAwMDiKuEnI7JUW77cvFXBJR4EPwaboNdiZdeQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1628628766;
+        s=2020e; t=1628631341;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=iqFdIjgtl1V4wrZcegB4vP02DI0oxXS4gcyhsKOffRw=;
-        b=8E4wJ3njmv+czCkaObQ7QlulB8oHxuCSTRg0M3hxclAFRA6rDnm6tv2e4qJqqnMKK0KgQt
-        wKcKgJfLBrP9qeBw==
-From:   "tip-bot2 for Tanner Love" <tip-bot2@linutronix.de>
+        bh=YGhQVUZqbAzjoyKpP8UUCBukO2Ia9umsHGqPX2ZeiDU=;
+        b=hD+9/wVSy+8aeL/doRjk1XSSjKqn6JXSzUHZZudBNGpppX97U+2KP0cUauHtwyvXiWrYOa
+        IyWBahsf8OtUsEBw==
+From:   "tip-bot2 for Maciej W. Rozycki" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] genirq: Change force_irqthreads to a static key
-Cc:     Eric Dumazet <edumazet@google.com>,
-        Tanner Love <tannerlove@google.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Kees Cook <keescook@chromium.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20210602180338.3324213-1-tannerlove.kernel@gmail.com>
-References: <20210602180338.3324213-1-tannerlove.kernel@gmail.com>
+Subject: [tip: x86/irq] x86: Fix typo s/ECLR/ELCR/ for the PIC register
+Cc:     "Maciej W. Rozycki" <macro@orcam.me.uk>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <alpine.DEB.2.21.2107200251080.9461@angie.orcam.me.uk>
+References: <alpine.DEB.2.21.2107200251080.9461@angie.orcam.me.uk>
 MIME-Version: 1.0
-Message-ID: <162862876527.395.12764666556805454399.tip-bot2@tip-bot2>
+Message-ID: <162863134099.395.10038351399544662720.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,129 +59,125 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the irq/core branch of tip:
+The following commit has been merged into the x86/irq branch of tip:
 
-Commit-ID:     91cc470e797828d779cd4c1efbe8519bcb358bae
-Gitweb:        https://git.kernel.org/tip/91cc470e797828d779cd4c1efbe8519bcb358bae
-Author:        Tanner Love <tannerlove@google.com>
-AuthorDate:    Wed, 02 Jun 2021 14:03:38 -04:00
+Commit-ID:     34739a2809e1e5d54d41d93cfc6b074e8d781ee2
+Gitweb:        https://git.kernel.org/tip/34739a2809e1e5d54d41d93cfc6b074e8d781ee2
+Author:        Maciej W. Rozycki <macro@orcam.me.uk>
+AuthorDate:    Tue, 20 Jul 2021 05:28:15 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 10 Aug 2021 22:50:07 +02:00
+CommitterDate: Tue, 10 Aug 2021 23:31:44 +02:00
 
-genirq: Change force_irqthreads to a static key
+x86: Fix typo s/ECLR/ELCR/ for the PIC register
 
-With CONFIG_IRQ_FORCED_THREADING=y, testing the boolean force_irqthreads
-could incur a cache line miss in invoke_softirq() and other places.
+The proper spelling for the acronym referring to the Edge/Level Control 
+Register is ELCR rather than ECLR.  Adjust references accordingly.  No 
+functional change.
 
-Replace the test with a static key to avoid the potential cache miss.
-
-[ tglx: Dropped the IDE part, removed the export and updated blk-mq ]
-
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Tanner Love <tannerlove@google.com>
+Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Link: https://lore.kernel.org/r/20210602180338.3324213-1-tannerlove.kernel@gmail.com
+Link: https://lore.kernel.org/r/alpine.DEB.2.21.2107200251080.9461@angie.orcam.me.uk
 
 ---
- block/blk-mq.c            |  2 +-
- include/linux/interrupt.h |  8 +++++---
- kernel/irq/manage.c       | 11 +++++------
- kernel/softirq.c          |  2 +-
- 4 files changed, 12 insertions(+), 11 deletions(-)
+ arch/x86/kernel/acpi/boot.c |  6 +++---
+ arch/x86/kvm/i8259.c        | 20 ++++++++++----------
+ arch/x86/kvm/irq.h          |  2 +-
+ 3 files changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/block/blk-mq.c b/block/blk-mq.c
-index 2c4ac51..572d8ab 100644
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -606,7 +606,7 @@ static inline bool blk_mq_complete_need_ipi(struct request *rq)
- 	 * This is probably worse than completing the request on a different
- 	 * cache domain.
- 	 */
--	if (force_irqthreads)
-+	if (force_irqthreads())
- 		return false;
+diff --git a/arch/x86/kernel/acpi/boot.c b/arch/x86/kernel/acpi/boot.c
+index 7f59f83..14bcd59 100644
+--- a/arch/x86/kernel/acpi/boot.c
++++ b/arch/x86/kernel/acpi/boot.c
+@@ -558,10 +558,10 @@ acpi_parse_nmi_src(union acpi_subtable_headers * header, const unsigned long end
+  * If a PIC-mode SCI is not recognized or gives spurious IRQ7's
+  * it may require Edge Trigger -- use "acpi_sci=edge"
+  *
+- * Port 0x4d0-4d1 are ECLR1 and ECLR2, the Edge/Level Control Registers
++ * Port 0x4d0-4d1 are ELCR1 and ELCR2, the Edge/Level Control Registers
+  * for the 8259 PIC.  bit[n] = 1 means irq[n] is Level, otherwise Edge.
+- * ECLR1 is IRQs 0-7 (IRQ 0, 1, 2 must be 0)
+- * ECLR2 is IRQs 8-15 (IRQ 8, 13 must be 0)
++ * ELCR1 is IRQs 0-7 (IRQ 0, 1, 2 must be 0)
++ * ELCR2 is IRQs 8-15 (IRQ 8, 13 must be 0)
+  */
  
- 	/* same CPU or cache domain?  Complete locally */
-diff --git a/include/linux/interrupt.h b/include/linux/interrupt.h
-index 2ed65b0..1f22a30 100644
---- a/include/linux/interrupt.h
-+++ b/include/linux/interrupt.h
-@@ -13,6 +13,7 @@
- #include <linux/hrtimer.h>
- #include <linux/kref.h>
- #include <linux/workqueue.h>
-+#include <linux/jump_label.h>
- 
- #include <linux/atomic.h>
- #include <asm/ptrace.h>
-@@ -474,12 +475,13 @@ extern int irq_set_irqchip_state(unsigned int irq, enum irqchip_irq_state which,
- 
- #ifdef CONFIG_IRQ_FORCED_THREADING
- # ifdef CONFIG_PREEMPT_RT
--#  define force_irqthreads	(true)
-+#  define force_irqthreads()	(true)
- # else
--extern bool force_irqthreads;
-+DECLARE_STATIC_KEY_FALSE(force_irqthreads_key);
-+#  define force_irqthreads()	(static_branch_unlikely(&force_irqthreads_key))
- # endif
- #else
--#define force_irqthreads	(0)
-+#define force_irqthreads()	(false)
- #endif
- 
- #ifndef local_softirq_pending
-diff --git a/kernel/irq/manage.c b/kernel/irq/manage.c
-index 766468a..34a66c4 100644
---- a/kernel/irq/manage.c
-+++ b/kernel/irq/manage.c
-@@ -25,12 +25,11 @@
- #include "internals.h"
- 
- #if defined(CONFIG_IRQ_FORCED_THREADING) && !defined(CONFIG_PREEMPT_RT)
--__read_mostly bool force_irqthreads;
--EXPORT_SYMBOL_GPL(force_irqthreads);
-+DEFINE_STATIC_KEY_FALSE(force_irqthreads_key);
- 
- static int __init setup_forced_irqthreads(char *arg)
- {
--	force_irqthreads = true;
-+	static_branch_enable(&force_irqthreads_key);
- 	return 0;
+ void __init acpi_pic_sci_set_trigger(unsigned int irq, u16 trigger)
+diff --git a/arch/x86/kvm/i8259.c b/arch/x86/kvm/i8259.c
+index 629a09c..0b80263 100644
+--- a/arch/x86/kvm/i8259.c
++++ b/arch/x86/kvm/i8259.c
+@@ -541,17 +541,17 @@ static int picdev_slave_read(struct kvm_vcpu *vcpu, struct kvm_io_device *dev,
+ 			    addr, len, val);
  }
- early_param("threadirqs", setup_forced_irqthreads);
-@@ -1260,8 +1259,8 @@ static int irq_thread(void *data)
- 	irqreturn_t (*handler_fn)(struct irq_desc *desc,
- 			struct irqaction *action);
  
--	if (force_irqthreads && test_bit(IRQTF_FORCED_THREAD,
--					&action->thread_flags))
-+	if (force_irqthreads() && test_bit(IRQTF_FORCED_THREAD,
-+					   &action->thread_flags))
- 		handler_fn = irq_forced_thread_fn;
- 	else
- 		handler_fn = irq_thread_fn;
-@@ -1322,7 +1321,7 @@ EXPORT_SYMBOL_GPL(irq_wake_thread);
- 
- static int irq_setup_forced_threading(struct irqaction *new)
+-static int picdev_eclr_write(struct kvm_vcpu *vcpu, struct kvm_io_device *dev,
++static int picdev_elcr_write(struct kvm_vcpu *vcpu, struct kvm_io_device *dev,
+ 			     gpa_t addr, int len, const void *val)
  {
--	if (!force_irqthreads)
-+	if (!force_irqthreads())
- 		return 0;
- 	if (new->flags & (IRQF_NO_THREAD | IRQF_PERCPU | IRQF_ONESHOT))
- 		return 0;
-diff --git a/kernel/softirq.c b/kernel/softirq.c
-index f3a0121..322b65d 100644
---- a/kernel/softirq.c
-+++ b/kernel/softirq.c
-@@ -422,7 +422,7 @@ static inline void invoke_softirq(void)
- 	if (ksoftirqd_running(local_softirq_pending()))
- 		return;
+-	return picdev_write(container_of(dev, struct kvm_pic, dev_eclr),
++	return picdev_write(container_of(dev, struct kvm_pic, dev_elcr),
+ 			    addr, len, val);
+ }
  
--	if (!force_irqthreads || !__this_cpu_read(ksoftirqd)) {
-+	if (!force_irqthreads() || !__this_cpu_read(ksoftirqd)) {
- #ifdef CONFIG_HAVE_IRQ_EXIT_ON_IRQ_STACK
- 		/*
- 		 * We can safely execute softirq on the current stack if
+-static int picdev_eclr_read(struct kvm_vcpu *vcpu, struct kvm_io_device *dev,
++static int picdev_elcr_read(struct kvm_vcpu *vcpu, struct kvm_io_device *dev,
+ 			    gpa_t addr, int len, void *val)
+ {
+-	return picdev_read(container_of(dev, struct kvm_pic, dev_eclr),
++	return picdev_read(container_of(dev, struct kvm_pic, dev_elcr),
+ 			    addr, len, val);
+ }
+ 
+@@ -577,9 +577,9 @@ static const struct kvm_io_device_ops picdev_slave_ops = {
+ 	.write    = picdev_slave_write,
+ };
+ 
+-static const struct kvm_io_device_ops picdev_eclr_ops = {
+-	.read     = picdev_eclr_read,
+-	.write    = picdev_eclr_write,
++static const struct kvm_io_device_ops picdev_elcr_ops = {
++	.read     = picdev_elcr_read,
++	.write    = picdev_elcr_write,
+ };
+ 
+ int kvm_pic_init(struct kvm *kvm)
+@@ -602,7 +602,7 @@ int kvm_pic_init(struct kvm *kvm)
+ 	 */
+ 	kvm_iodevice_init(&s->dev_master, &picdev_master_ops);
+ 	kvm_iodevice_init(&s->dev_slave, &picdev_slave_ops);
+-	kvm_iodevice_init(&s->dev_eclr, &picdev_eclr_ops);
++	kvm_iodevice_init(&s->dev_elcr, &picdev_elcr_ops);
+ 	mutex_lock(&kvm->slots_lock);
+ 	ret = kvm_io_bus_register_dev(kvm, KVM_PIO_BUS, 0x20, 2,
+ 				      &s->dev_master);
+@@ -613,7 +613,7 @@ int kvm_pic_init(struct kvm *kvm)
+ 	if (ret < 0)
+ 		goto fail_unreg_2;
+ 
+-	ret = kvm_io_bus_register_dev(kvm, KVM_PIO_BUS, 0x4d0, 2, &s->dev_eclr);
++	ret = kvm_io_bus_register_dev(kvm, KVM_PIO_BUS, 0x4d0, 2, &s->dev_elcr);
+ 	if (ret < 0)
+ 		goto fail_unreg_1;
+ 
+@@ -647,7 +647,7 @@ void kvm_pic_destroy(struct kvm *kvm)
+ 	mutex_lock(&kvm->slots_lock);
+ 	kvm_io_bus_unregister_dev(vpic->kvm, KVM_PIO_BUS, &vpic->dev_master);
+ 	kvm_io_bus_unregister_dev(vpic->kvm, KVM_PIO_BUS, &vpic->dev_slave);
+-	kvm_io_bus_unregister_dev(vpic->kvm, KVM_PIO_BUS, &vpic->dev_eclr);
++	kvm_io_bus_unregister_dev(vpic->kvm, KVM_PIO_BUS, &vpic->dev_elcr);
+ 	mutex_unlock(&kvm->slots_lock);
+ 
+ 	kvm->arch.vpic = NULL;
+diff --git a/arch/x86/kvm/irq.h b/arch/x86/kvm/irq.h
+index 9b64abf..650642b 100644
+--- a/arch/x86/kvm/irq.h
++++ b/arch/x86/kvm/irq.h
+@@ -55,7 +55,7 @@ struct kvm_pic {
+ 	int output;		/* intr from master PIC */
+ 	struct kvm_io_device dev_master;
+ 	struct kvm_io_device dev_slave;
+-	struct kvm_io_device dev_eclr;
++	struct kvm_io_device dev_elcr;
+ 	void (*ack_notifier)(void *opaque, int irq);
+ 	unsigned long irq_states[PIC_NUM_PINS];
+ };
