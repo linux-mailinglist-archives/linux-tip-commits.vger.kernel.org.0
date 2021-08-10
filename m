@@ -2,53 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 95F9E3E5BF6
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 10 Aug 2021 15:41:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 816053E5C68
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 10 Aug 2021 15:59:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241417AbhHJNlp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 10 Aug 2021 09:41:45 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:43462 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239750AbhHJNlo (ORCPT
+        id S238335AbhHJOAJ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 10 Aug 2021 10:00:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57402 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229845AbhHJOAI (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 10 Aug 2021 09:41:44 -0400
-Date:   Tue, 10 Aug 2021 13:41:19 -0000
+        Tue, 10 Aug 2021 10:00:08 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 898ECC0A887F;
+        Tue, 10 Aug 2021 06:59:46 -0700 (PDT)
+Date:   Tue, 10 Aug 2021 13:59:41 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1628602880;
+        s=2020; t=1628603982;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=MvqNAUK9CzyqMGlZRxuxmPHmqua1EIZDIwIvRqbZ9Bk=;
-        b=GgeEf5g5ykpI5MAk24OIMq4lJo2NMR3CT6BzKj+Ma4rhYN7whocYg/AA2zJVv/vqjU86df
-        ytwHTKnfXO8vDaZwQJJiGmlQIdvfWMwKWB4QPj41H62VRGue18kIUwX8Kxj1CXXc1mnMxM
-        cqVCVXBk+sOSgE98kwZFALXUtfcUXJe/gvtVvdtzgRPrAhnHn1VUtq3ba1uLXYPSJvEPfh
-        fr/M4ytPgwgYfh54wC43ai+GXsjqfG6qiwIM66wzLYq9UZIM+zAOX5/iZEqDxyCLMrV1aw
-        v1ai/NKF/wHMmykQ0TC6H9vVgJoaWCr4N9hbm5IwG3KWRra/7Jkn/xDE2Ew3gA==
+        bh=+kgB85hbwoSGFaz51vxFO2dKhNt4cSN8a7gmxkX1+HU=;
+        b=lwDxD4c2ZqWR3W+o6GdEI4aAsdQsHrVbF1Nwk8KKwyJjrDgrbqF9oxDux+788XYhCHaRXh
+        dJHN04IPmx57IuuZcHsUaQoiulFEGwjElNCUB18qSvG/5OsgmN+PckqQwq4hgD1GYnP58i
+        Qreba5h21H1qYZ6jHVPj5acCx36euFayqHX0DbzdooM0TI5vxfF56ppucNjBfyJt8knzyZ
+        5n68iv77O8GI7Y4Q2eLaNyISIVQFp5Kl7VUTxgFuA+/LlX5TPnL+lR7TPddIzFQzni/1bU
+        qQZHFuoyHCDKni908qD7iKCgeBl6ahVCP5pyGvI8+Q49PNZW9Gmm2gOzvWGVog==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1628602880;
+        s=2020e; t=1628603982;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=MvqNAUK9CzyqMGlZRxuxmPHmqua1EIZDIwIvRqbZ9Bk=;
-        b=LnsEQIXg9/53TLmragVDvux0mbaSzlQs9tg4WttdGZWQ1zic2s6UMeFdCoYGZHGM4oLrM/
-        k3NuyIRnzKl6qoBg==
-From:   "tip-bot2 for Ben Dai" <tip-bot2@linutronix.de>
+        bh=+kgB85hbwoSGFaz51vxFO2dKhNt4cSN8a7gmxkX1+HU=;
+        b=DvPNOhw3BwIW2tUV9PcHn/2v3/U6RsXlOxCN6s+dJFBmqd7kFskyNXeaDWeGIYs6DFwTmW
+        9uTqD3NAaDhptSAw==
+From:   "tip-bot2 for Bixuan Cui" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/urgent] genirq/timings: Prevent potential array overflow in
- __irq_timings_store()
-Cc:     Ben Dai <ben.dai@unisoc.com>, Thomas Gleixner <tglx@linutronix.de>,
-        stable@vger.kernel.org, x86@kernel.org,
-        linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20210425150903.25456-1-ben.dai9703@gmail.com>
-References: <20210425150903.25456-1-ben.dai9703@gmail.com>
+Subject: [tip: irq/urgent] genirq/msi: Ensure deactivation on teardown
+Cc:     Bixuan Cui <cuibixuan@huawei.com>,
+        Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org, maz@kernel.org
+In-Reply-To: <20210518033117.78104-1-cuibixuan@huawei.com>
+References: <20210518033117.78104-1-cuibixuan@huawei.com>
 MIME-Version: 1.0
-Message-ID: <162860287930.395.16257613336849312790.tip-bot2@tip-bot2>
+Message-ID: <162860398138.395.5636562018420787103.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,43 +61,65 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/urgent branch of tip:
 
-Commit-ID:     b9cc7d8a4656a6e815852c27ab50365009cb69c1
-Gitweb:        https://git.kernel.org/tip/b9cc7d8a4656a6e815852c27ab50365009cb69c1
-Author:        Ben Dai <ben.dai@unisoc.com>
-AuthorDate:    Sun, 25 Apr 2021 23:09:03 +08:00
+Commit-ID:     dbbc93576e03fbe24b365fab0e901eb442237a8a
+Gitweb:        https://git.kernel.org/tip/dbbc93576e03fbe24b365fab0e901eb442237a8a
+Author:        Bixuan Cui <cuibixuan@huawei.com>
+AuthorDate:    Tue, 18 May 2021 11:31:17 +08:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 10 Aug 2021 15:39:00 +02:00
+CommitterDate: Tue, 10 Aug 2021 15:55:19 +02:00
 
-genirq/timings: Prevent potential array overflow in __irq_timings_store()
+genirq/msi: Ensure deactivation on teardown
 
-When the interrupt interval is greater than 2 ^ PREDICTION_BUFFER_SIZE *
-PREDICTION_FACTOR us and less than 1s, the calculated index will be greater
-than the length of irqs->ema_time[]. Check the calculated index before
-using it to prevent array overflow.
+msi_domain_alloc_irqs() invokes irq_domain_activate_irq(), but
+msi_domain_free_irqs() does not enforce deactivation before tearing down
+the interrupts.
 
-Fixes: 23aa3b9a6b7d ("genirq/timings: Encapsulate storing function")
-Signed-off-by: Ben Dai <ben.dai@unisoc.com>
+This happens when PCI/MSI interrupts are set up and never used before being
+torn down again, e.g. in error handling pathes. The only place which cleans
+that up is the error handling path in msi_domain_alloc_irqs().
+
+Move the cleanup from msi_domain_alloc_irqs() into msi_domain_free_irqs()
+to cure that.
+
+Fixes: f3b0946d629c ("genirq/msi: Make sure PCI MSIs are activated early")
+Signed-off-by: Bixuan Cui <cuibixuan@huawei.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20210425150903.25456-1-ben.dai9703@gmail.com
+Link: https://lore.kernel.org/r/20210518033117.78104-1-cuibixuan@huawei.com
 
 ---
- kernel/irq/timings.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ kernel/irq/msi.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/kernel/irq/timings.c b/kernel/irq/timings.c
-index d309d6f..4d2a702 100644
---- a/kernel/irq/timings.c
-+++ b/kernel/irq/timings.c
-@@ -453,6 +453,11 @@ static __always_inline void __irq_timings_store(int irq, struct irqt_stat *irqs,
- 	 */
- 	index = irq_timings_interval_index(interval);
+diff --git a/kernel/irq/msi.c b/kernel/irq/msi.c
+index c41965e..85df3ca 100644
+--- a/kernel/irq/msi.c
++++ b/kernel/irq/msi.c
+@@ -476,11 +476,6 @@ skip_activate:
+ 	return 0;
  
-+	if (index > PREDICTION_BUFFER_SIZE - 1) {
-+		irqs->count = 0;
-+		return;
-+	}
+ cleanup:
+-	for_each_msi_vector(desc, i, dev) {
+-		irq_data = irq_domain_get_irq_data(domain, i);
+-		if (irqd_is_activated(irq_data))
+-			irq_domain_deactivate_irq(irq_data);
+-	}
+ 	msi_domain_free_irqs(domain, dev);
+ 	return ret;
+ }
+@@ -505,7 +500,15 @@ int msi_domain_alloc_irqs(struct irq_domain *domain, struct device *dev,
+ 
+ void __msi_domain_free_irqs(struct irq_domain *domain, struct device *dev)
+ {
++	struct irq_data *irq_data;
+ 	struct msi_desc *desc;
++	int i;
 +
- 	/*
- 	 * Store the index as an element of the pattern in another
- 	 * circular array.
++	for_each_msi_vector(desc, i, dev) {
++		irq_data = irq_domain_get_irq_data(domain, i);
++		if (irqd_is_activated(irq_data))
++			irq_domain_deactivate_irq(irq_data);
++	}
+ 
+ 	for_each_msi_entry(desc, dev) {
+ 		/*
