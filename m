@@ -2,57 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4002C3E5655
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 10 Aug 2021 11:08:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E28DC3E565B
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 10 Aug 2021 11:08:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238740AbhHJJIW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 10 Aug 2021 05:08:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44648 "EHLO
+        id S237339AbhHJJI1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 10 Aug 2021 05:08:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44652 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238669AbhHJJIN (ORCPT
+        with ESMTP id S238659AbhHJJIM (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 10 Aug 2021 05:08:13 -0400
+        Tue, 10 Aug 2021 05:08:12 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F209C06179E;
-        Tue, 10 Aug 2021 02:07:51 -0700 (PDT)
-Date:   Tue, 10 Aug 2021 09:07:46 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A7A8C061799;
+        Tue, 10 Aug 2021 02:07:50 -0700 (PDT)
+Date:   Tue, 10 Aug 2021 09:07:47 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1628586467;
+        s=2020; t=1628586468;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=v9B2iJKY5UsIzUVkXaV2I1KSfhPQiX5qoXudaB1Q/Ek=;
-        b=aG+Jnsgw4RNSqdcJ98bm6dzIXkoK8+2Qz0jXnidXQRhFCh9cqdUUkUQNIR4mWslyJSOthG
-        YxZIv7cDHwX4CHWBju7awyzBvBY2Ks9510oRH1ETGmRpJqA1HPKHS++Cs+KPX7N86w/9cB
-        knDD6K1Dn/Oq7EEqSuaEsMvqS5+5YG5iME2nrtNQxWvit/3CWM0yhos/rMVBsZ+hIhhyjQ
-        0kpyKamMNK10FREGMV5aUmdGt6ega0EckR06tto5JtYKZx8qrcaEdzTwPBT2COSXium8JU
-        mo3kk6Z/unljnrqJNsmLn1jVwUJO3kHjMkJIDaSDjIM1rGA2D8bLZBzLfDPi2w==
+        bh=oNVHi/Mj3IoGqjXax8q9v2Mo/4dcGgd2i9RorAjZbE4=;
+        b=QPQGnqDFHUiT18K6fFa1U8WQ1AOvPXOgN6dAWK1HFjQzkrmSTIuYre8dc3DNVsB4TNauwp
+        bfKtCDvP2A49oIY8BXQkqU41BXqDNMw18UZMNbD6LnrDBpYJ0cq1V/jAfWs0ZCaLom2/3p
+        WmjiVAm0B27NPAMdwp0BP+HaPCxRp9JtpGmY6VO0oHRnR6mLaADZg9APnXLRBwMC4x1cQN
+        8OCsASIEIkBmVhilGs5UcSw+e2hNYI+a/IWwuNT0mdYWJgvcmG+vf0LaQW1GN797ZuGyT8
+        W9D6/QDWStgyrx/hl6c4TtdmVBQCxY3HHZYSdC8bMIAcGqAYvlAN87oB1Wya2g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1628586467;
+        s=2020e; t=1628586468;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=v9B2iJKY5UsIzUVkXaV2I1KSfhPQiX5qoXudaB1Q/Ek=;
-        b=CYpbpnjMEj/PPUKKau3ZAvnZSSE/vmx0ljffk2GBFWniiH3xOPTAK2nYTV+ZsjMmwVeY4W
-        GbWTDPOFAv83i1Bw==
+        bh=oNVHi/Mj3IoGqjXax8q9v2Mo/4dcGgd2i9RorAjZbE4=;
+        b=/K0+iqCQsBM1QWRjNb4N4L0wM6pCarLHjyzR8skT8kIRX236kQOWOk9OGQVMtZutTAl1+L
+        rBzLqzzkwsDlLKCQ==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] PCI/MSI: Enforce that MSI-X table entry is masked for update
-Cc:     Kevin Tian <kevin.tian@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Marc Zyngier <maz@kernel.org>,
+Subject: [tip: irq/core] PCI/MSI: Enable and mask MSI-X early
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Marc Zyngier <maz@kernel.org>, Ashok Raj <ashok.raj@intel.com>,
         Bjorn Helgaas <bhelgaas@google.com>, stable@vger.kernel.org,
         x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20210729222542.462096385@linutronix.de>
-References: <20210729222542.462096385@linutronix.de>
+In-Reply-To: <20210729222542.344136412@linutronix.de>
+References: <20210729222542.344136412@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <162858646659.395.16228332078065850367.tip-bot2@tip-bot2>
+Message-ID: <162858646777.395.4058447464180026703.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -63,78 +62,111 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     da181dc974ad667579baece33c2c8d2d1e4558d5
-Gitweb:        https://git.kernel.org/tip/da181dc974ad667579baece33c2c8d2d1e4558d5
+Commit-ID:     438553958ba19296663c6d6583d208dfb6792830
+Gitweb:        https://git.kernel.org/tip/438553958ba19296663c6d6583d208dfb6792830
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Thu, 29 Jul 2021 23:51:42 +02:00
+AuthorDate:    Thu, 29 Jul 2021 23:51:40 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Tue, 10 Aug 2021 10:59:20 +02:00
 
-PCI/MSI: Enforce that MSI-X table entry is masked for update
+PCI/MSI: Enable and mask MSI-X early
 
-The specification (PCIe r5.0, sec 6.1.4.5) states:
+The ordering of MSI-X enable in hardware is dysfunctional:
 
-    For MSI-X, a function is permitted to cache Address and Data values
-    from unmasked MSI-X Table entries. However, anytime software unmasks a
-    currently masked MSI-X Table entry either by clearing its Mask bit or
-    by clearing the Function Mask bit, the function must update any Address
-    or Data values that it cached from that entry. If software changes the
-    Address or Data value of an entry while the entry is unmasked, the
-    result is undefined.
+ 1) MSI-X is disabled in the control register
+ 2) Various setup functions
+ 3) pci_msi_setup_msi_irqs() is invoked which ends up accessing
+    the MSI-X table entries
+ 4) MSI-X is enabled and masked in the control register with the
+    comment that enabling is required for some hardware to access
+    the MSI-X table
 
-The Linux kernel's MSI-X support never enforced that the entry is masked
-before the entry is modified hence the Fixes tag refers to a commit in:
-      git://git.kernel.org/pub/scm/linux/kernel/git/tglx/history.git
+Step #4 obviously contradicts #3. The history of this is an issue with the
+NIU hardware. When #4 was introduced the table access actually happened in
+msix_program_entries() which was invoked after enabling and masking MSI-X.
 
-Enforce the entry to be masked across the update.
+This was changed in commit d71d6432e105 ("PCI/MSI: Kill redundant call of
+irq_set_msi_desc() for MSI-X interrupts") which removed the table write
+from msix_program_entries().
 
-There is no point in enforcing this to be handled at all possible call
-sites as this is just pointless code duplication and the common update
-function is the obvious place to enforce this.
+Interestingly enough nobody noticed and either NIU still works or it did
+not get any testing with a kernel 3.19 or later.
 
-Fixes: f036d4ea5fa7 ("[PATCH] ia32 Message Signalled Interrupt support")
-Reported-by: Kevin Tian <kevin.tian@intel.com>
+Nevertheless this is inconsistent and there is no reason why MSI-X can't be
+enabled and masked in the control register early on, i.e. move step #4
+above to step #1. This preserves the NIU workaround and has no side effects
+on other hardware.
+
+Fixes: d71d6432e105 ("PCI/MSI: Kill redundant call of irq_set_msi_desc() for MSI-X interrupts")
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Tested-by: Marc Zyngier <maz@kernel.org>
+Reviewed-by: Ashok Raj <ashok.raj@intel.com>
 Reviewed-by: Marc Zyngier <maz@kernel.org>
 Acked-by: Bjorn Helgaas <bhelgaas@google.com>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20210729222542.462096385@linutronix.de
+Link: https://lore.kernel.org/r/20210729222542.344136412@linutronix.de
 
 ---
- drivers/pci/msi.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/pci/msi.c | 28 +++++++++++++++-------------
+ 1 file changed, 15 insertions(+), 13 deletions(-)
 
 diff --git a/drivers/pci/msi.c b/drivers/pci/msi.c
-index 57c9ec9..7ee1ac4 100644
+index 9232255..5d39ed8 100644
 --- a/drivers/pci/msi.c
 +++ b/drivers/pci/msi.c
-@@ -289,13 +289,28 @@ void __pci_write_msi_msg(struct msi_desc *entry, struct msi_msg *msg)
- 		/* Don't touch the hardware now */
- 	} else if (entry->msi_attrib.is_msix) {
- 		void __iomem *base = pci_msix_desc_addr(entry);
-+		bool unmasked = !(entry->masked & PCI_MSIX_ENTRY_CTRL_MASKBIT);
+@@ -772,18 +772,25 @@ static int msix_capability_init(struct pci_dev *dev, struct msix_entry *entries,
+ 	u16 control;
+ 	void __iomem *base;
  
- 		if (!base)
- 			goto skip;
+-	/* Ensure MSI-X is disabled while it is set up */
+-	pci_msix_clear_and_set_ctrl(dev, PCI_MSIX_FLAGS_ENABLE, 0);
++	/*
++	 * Some devices require MSI-X to be enabled before the MSI-X
++	 * registers can be accessed.  Mask all the vectors to prevent
++	 * interrupts coming in before they're fully set up.
++	 */
++	pci_msix_clear_and_set_ctrl(dev, 0, PCI_MSIX_FLAGS_MASKALL |
++				    PCI_MSIX_FLAGS_ENABLE);
  
-+		/*
-+		 * The specification mandates that the entry is masked
-+		 * when the message is modified:
-+		 *
-+		 * "If software changes the Address or Data value of an
-+		 * entry while the entry is unmasked, the result is
-+		 * undefined."
-+		 */
-+		if (unmasked)
-+			__pci_msix_desc_mask_irq(entry, PCI_MSIX_ENTRY_CTRL_MASKBIT);
+ 	pci_read_config_word(dev, dev->msix_cap + PCI_MSIX_FLAGS, &control);
+ 	/* Request & Map MSI-X table region */
+ 	base = msix_map_region(dev, msix_table_size(control));
+-	if (!base)
+-		return -ENOMEM;
++	if (!base) {
++		ret = -ENOMEM;
++		goto out_disable;
++	}
+ 
+ 	ret = msix_setup_entries(dev, base, entries, nvec, affd);
+ 	if (ret)
+-		return ret;
++		goto out_disable;
+ 
+ 	ret = pci_msi_setup_msi_irqs(dev, nvec, PCI_CAP_ID_MSIX);
+ 	if (ret)
+@@ -794,14 +801,6 @@ static int msix_capability_init(struct pci_dev *dev, struct msix_entry *entries,
+ 	if (ret)
+ 		goto out_free;
+ 
+-	/*
+-	 * Some devices require MSI-X to be enabled before we can touch the
+-	 * MSI-X registers.  We need to mask all the vectors to prevent
+-	 * interrupts coming in before they're fully set up.
+-	 */
+-	pci_msix_clear_and_set_ctrl(dev, 0,
+-				PCI_MSIX_FLAGS_MASKALL | PCI_MSIX_FLAGS_ENABLE);
+-
+ 	msix_program_entries(dev, entries);
+ 
+ 	ret = populate_msi_sysfs(dev);
+@@ -836,6 +835,9 @@ out_avail:
+ out_free:
+ 	free_msi_irqs(dev);
+ 
++out_disable:
++	pci_msix_clear_and_set_ctrl(dev, PCI_MSIX_FLAGS_ENABLE, 0);
 +
- 		writel(msg->address_lo, base + PCI_MSIX_ENTRY_LOWER_ADDR);
- 		writel(msg->address_hi, base + PCI_MSIX_ENTRY_UPPER_ADDR);
- 		writel(msg->data, base + PCI_MSIX_ENTRY_DATA);
-+
-+		if (unmasked)
-+			__pci_msix_desc_mask_irq(entry, 0);
- 	} else {
- 		int pos = dev->msi_cap;
- 		u16 msgctl;
+ 	return ret;
+ }
+ 
