@@ -2,52 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A58113E5AA8
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 10 Aug 2021 15:04:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B3EF43E5AC0
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 10 Aug 2021 15:10:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241091AbhHJNFK (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 10 Aug 2021 09:05:10 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:43276 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241100AbhHJNFJ (ORCPT
+        id S237887AbhHJNLS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 10 Aug 2021 09:11:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45312 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237554AbhHJNLR (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 10 Aug 2021 09:05:09 -0400
-Date:   Tue, 10 Aug 2021 13:04:44 -0000
+        Tue, 10 Aug 2021 09:11:17 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B65A5C0613D3;
+        Tue, 10 Aug 2021 06:10:55 -0700 (PDT)
+Date:   Tue, 10 Aug 2021 13:10:51 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1628600685;
+        s=2020; t=1628601052;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=lpS7rLHiJW9ZgDds10K0Lwh5W/14sKn9OfhMZ6BmEzQ=;
-        b=DNTE+8mGuGqNpz/oJSET/ruBaR+2XNuUevI7huBI/53O6aOC8gbpDGYHrQLHUw7xKKVenJ
-        0WQOwLPv9ayfM07MRm/8E2Qoflca/cBpJJwABRGytWVVI/p5j218dd33jZ9sXHMiuXiN7l
-        Pmsyl+cmzgY35VuLGfvGg8aBpw/lV/EmmXrXKWG/cRbNo1cA8zdE0CziLO9C9bOW9b5VIw
-        uazO+nrS3ibTq8Abqu1kz+r4mk2sFq25xvfspeKZ6HDRN9z0lweZIjlzcW7doKPcGdyyvF
-        kMYBp4HeCoVbPGM6skwC4BlQ9w+laIwjNIE5X/ufoQP2yS5HiIILcH2dlBnOcQ==
+        bh=S6wvZUl7vB3iLjAZJZDQnNL7kyE2nf2rkaAzA0zmbr8=;
+        b=yyTBN0eeuixqPdVd8gV+cVdEWxokZ1p25VbNbpwiJMHiNozJKBlm4TuHwaSlHeyBQQSiMr
+        Hru5fU2mEP7sExGdGuK2w/IohkadZdsvVo/wbprx94G1IQQQA0ycAt6DdmiThtXHdrQwtg
+        S+a1BoQHJiKHg8X1FBPw46r6pKsUBgfQQ593uC/RjS+pik8xoa5j8xfuRHv0YWav5TmE8r
+        DDz6bDijRXYK0+GScDpOcuId6usmnw4xGCMPKDVaNp0XUewhvyBVtDMYMh7UyQakSnknCN
+        2kcbaqCPaS0dZuAScmuAs5EPrG96cWDBLnVForhGZsS65sDFXPrrJnbyp7CZPg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1628600685;
+        s=2020e; t=1628601052;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=lpS7rLHiJW9ZgDds10K0Lwh5W/14sKn9OfhMZ6BmEzQ=;
-        b=JVLFuooB8iBV1RKIXlf2ljI8LF7PZDXwqmxnAhBdza9OkgERqVT3wEOfxPuEYYNLd8Y0np
-        iGbvfkDhT+OvgAAw==
-From:   "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
+        bh=S6wvZUl7vB3iLjAZJZDQnNL7kyE2nf2rkaAzA0zmbr8=;
+        b=JKln8XsE+6XnCl6UGdQ8NfYryzNBKQa2OEh67/w6IEFDeVYSoOLbdgZNl9kWRnNmYOm2rp
+        RMrKTsv9EnF9kkDQ==
+From:   "tip-bot2 for Joel Savitz" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: smp/core] smpboot: Replace deprecated CPU-hotplug functions.
-Cc:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+Subject: [tip: irq/core] genirq: Clarify documentation for request_threaded_irq()
+Cc:     Joel Savitz <jsavitz@redhat.com>,
         Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20210803141621.780504-34-bigeasy@linutronix.de>
-References: <20210803141621.780504-34-bigeasy@linutronix.de>
+        linux-kernel@vger.kernel.org, maz@kernel.org
+In-Reply-To: <20210731050740.444454-1-jsavitz@redhat.com>
+References: <20210731050740.444454-1-jsavitz@redhat.com>
 MIME-Version: 1.0
-Message-ID: <162860068498.395.18082735088526071078.tip-bot2@tip-bot2>
+Message-ID: <162860105130.395.18111061787171768078.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -56,66 +59,50 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the smp/core branch of tip:
+The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     844d87871b6e0ac3ceb177535dcdf6e6a9f1fd4b
-Gitweb:        https://git.kernel.org/tip/844d87871b6e0ac3ceb177535dcdf6e6a9f1fd4b
-Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-AuthorDate:    Tue, 03 Aug 2021 16:16:16 +02:00
+Commit-ID:     61377ec144574313ebfbf31685895a7b9b9b7a9a
+Gitweb:        https://git.kernel.org/tip/61377ec144574313ebfbf31685895a7b9b9b7a9a
+Author:        Joel Savitz <jsavitz@redhat.com>
+AuthorDate:    Sat, 31 Jul 2021 01:07:40 -04:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 10 Aug 2021 14:57:42 +02:00
+CommitterDate: Tue, 10 Aug 2021 15:06:04 +02:00
 
-smpboot: Replace deprecated CPU-hotplug functions.
+genirq: Clarify documentation for request_threaded_irq()
 
-The functions get_online_cpus() and put_online_cpus() have been
-deprecated during the CPU hotplug rework. They map directly to
-cpus_read_lock() and cpus_read_unlock().
+Clarify wording and document commonly used IRQF_ONESHOT flag.
 
-Replace deprecated CPU-hotplug functions with the official version.
-The behavior remains unchanged.
-
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Joel Savitz <jsavitz@redhat.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20210803141621.780504-34-bigeasy@linutronix.de
+Link: https://lore.kernel.org/r/20210731050740.444454-1-jsavitz@redhat.com
 
 ---
- kernel/smpboot.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ kernel/irq/manage.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/smpboot.c b/kernel/smpboot.c
-index cf6acab..f6bc0bc 100644
---- a/kernel/smpboot.c
-+++ b/kernel/smpboot.c
-@@ -291,7 +291,7 @@ int smpboot_register_percpu_thread(struct smp_hotplug_thread *plug_thread)
- 	unsigned int cpu;
- 	int ret = 0;
- 
--	get_online_cpus();
-+	cpus_read_lock();
- 	mutex_lock(&smpboot_threads_lock);
- 	for_each_online_cpu(cpu) {
- 		ret = __smpboot_create_thread(plug_thread, cpu);
-@@ -304,7 +304,7 @@ int smpboot_register_percpu_thread(struct smp_hotplug_thread *plug_thread)
- 	list_add(&plug_thread->list, &hotplug_threads);
- out:
- 	mutex_unlock(&smpboot_threads_lock);
--	put_online_cpus();
-+	cpus_read_unlock();
- 	return ret;
- }
- EXPORT_SYMBOL_GPL(smpboot_register_percpu_thread);
-@@ -317,12 +317,12 @@ EXPORT_SYMBOL_GPL(smpboot_register_percpu_thread);
+diff --git a/kernel/irq/manage.c b/kernel/irq/manage.c
+index ef30b47..766468a 100644
+--- a/kernel/irq/manage.c
++++ b/kernel/irq/manage.c
+@@ -2072,9 +2072,9 @@ const void *free_nmi(unsigned int irq, void *dev_id)
+  *	request_threaded_irq - allocate an interrupt line
+  *	@irq: Interrupt line to allocate
+  *	@handler: Function to be called when the IRQ occurs.
+- *		  Primary handler for threaded interrupts
+- *		  If NULL and thread_fn != NULL the default
+- *		  primary handler is installed
++ *		  Primary handler for threaded interrupts.
++ *		  If handler is NULL and thread_fn != NULL
++ *		  the default primary handler is installed.
+  *	@thread_fn: Function called from the irq handler thread
+  *		    If NULL, no irq thread is created
+  *	@irqflags: Interrupt type flags
+@@ -2108,6 +2108,8 @@ const void *free_nmi(unsigned int irq, void *dev_id)
+  *
+  *	IRQF_SHARED		Interrupt is shared
+  *	IRQF_TRIGGER_*		Specify active edge(s) or level
++ *	IRQF_ONESHOT		Do not unmask interrupt line until
++ *				thread_fn returns
+  *
   */
- void smpboot_unregister_percpu_thread(struct smp_hotplug_thread *plug_thread)
- {
--	get_online_cpus();
-+	cpus_read_lock();
- 	mutex_lock(&smpboot_threads_lock);
- 	list_del(&plug_thread->list);
- 	smpboot_destroy_threads(plug_thread);
- 	mutex_unlock(&smpboot_threads_lock);
--	put_online_cpus();
-+	cpus_read_unlock();
- }
- EXPORT_SYMBOL_GPL(smpboot_unregister_percpu_thread);
- 
+ int request_threaded_irq(unsigned int irq, irq_handler_t handler,
