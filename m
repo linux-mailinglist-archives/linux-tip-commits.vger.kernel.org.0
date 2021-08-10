@@ -2,53 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E6B83E5644
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 10 Aug 2021 11:07:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05D433E5647
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 10 Aug 2021 11:07:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238651AbhHJJIL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 10 Aug 2021 05:08:11 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:41880 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238604AbhHJJII (ORCPT
+        id S238616AbhHJJIM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 10 Aug 2021 05:08:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44622 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238615AbhHJJII (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Tue, 10 Aug 2021 05:08:08 -0400
-Date:   Tue, 10 Aug 2021 09:07:41 -0000
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB90EC061798;
+        Tue, 10 Aug 2021 02:07:46 -0700 (PDT)
+Date:   Tue, 10 Aug 2021 09:07:42 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1628586462;
+        s=2020; t=1628586463;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=cTbMwutGVeokiwZy/kjRxaINYULtcx7erFFUBGKwecg=;
-        b=VaZNe6MpeKPBwcQd5Zn1qpNW2VETf4aEfp6aRSY+NRG7uCOJPBEDnl/afY95j8yfdRu1Z2
-        D+DLaMGXXADn81hQ0CN5qsdVfNS3WRdX7O+DIuE9Ku948cRgugpR9MY7w4+nBj5qjyP9IF
-        UpxVcLRJTiJhluPmr4Rt5sxKmer33HJE2EnR4gCQhx1AKxx3JedGJ9rsDiBMReBSudd6WT
-        JKh5D0G2nSFO/TuwAl9CjWmI3Bv0r+pRUBeanX5LFWJ1ANHqITTQn90YVbuBWDQpAgK8yx
-        Xht0/43mhM8U1Pukv5NJGpX63xGhuuPKjOOfskeqkGfdkOvpUCzzuk8t6NV2Fg==
+        bh=IuWigQeLnGaq31vRyhCNwa1Rq+IhfYNU1Rv5pSyk9rM=;
+        b=YaZnFr3eM+2yD+YhRUOnzjZZw5Mm049411iwutpfX0BCf7iPGFnfwex20pR9hIN8PgpvAw
+        CJWKG/wAV32ObZx6ihHH3J4E100a/DTjVZvZ9J1vyEOpBNaZj06xmPNyaCdE0WWw7ZwhzF
+        egHR5KJ9XVmeX/rw/ma8e/xjvJeIjetKxmIGM7TdJHUNvhRr8FAMGgojjYUOf+ix53NJ7V
+        fQPaA91m3BG7i8PQxPZnC9rdv/e2lUpkRdGWAWPtCdF3+H8pCJO95DS0KGiV8D+rmsDCFK
+        5ZBv/oMpWv7g4T5M6mZsexeSqCrfqsCU7tT24wTnngcncmgPQUOzjml4vapB9w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1628586462;
+        s=2020e; t=1628586463;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=cTbMwutGVeokiwZy/kjRxaINYULtcx7erFFUBGKwecg=;
-        b=sd6uPoNWRInjlTy2qzF8KNPTCCWGfKVpvaJo3EKuQrUYC9hdbdOzhVAupXr1htqavRR9ny
-        OWdSHQoklLNDZ8Dw==
+        bh=IuWigQeLnGaq31vRyhCNwa1Rq+IhfYNU1Rv5pSyk9rM=;
+        b=qif0DK8G4+HTgCi8mFeY615y1X+JU4Cvmlopvjt5peE910GJWkxqNyUQXA5EjB2trH9bVs
+        FLhWBax0xyj+GtCw==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] s390/pci: Do not mask MSI[-X] entries on teardown
+Subject: [tip: irq/core] x86/ioapic: Force affinity setup before startup
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Niklas Schnelle <schnelle@linux.ibm.com>,
-        Marc Zyngier <maz@kernel.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20210729222542.939798136@linutronix.de>
-References: <20210729222542.939798136@linutronix.de>
+        Marc Zyngier <maz@kernel.org>, stable@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20210729222542.832143400@linutronix.de>
+References: <20210729222542.832143400@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <162858646159.395.3903591994413187859.tip-bot2@tip-bot2>
+Message-ID: <162858646280.395.1270819604479337700.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,82 +61,56 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     3998527d2e3ee2bfdf710a45b7b90968ff87babc
-Gitweb:        https://git.kernel.org/tip/3998527d2e3ee2bfdf710a45b7b90968ff87babc
+Commit-ID:     0c0e37dc11671384e53ba6ede53a4d91162a2cc5
+Gitweb:        https://git.kernel.org/tip/0c0e37dc11671384e53ba6ede53a4d91162a2cc5
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Thu, 29 Jul 2021 23:51:51 +02:00
+AuthorDate:    Thu, 29 Jul 2021 23:51:49 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 10 Aug 2021 11:03:29 +02:00
+CommitterDate: Tue, 10 Aug 2021 10:59:21 +02:00
 
-s390/pci: Do not mask MSI[-X] entries on teardown
+x86/ioapic: Force affinity setup before startup
 
-The PCI core already ensures that the MSI[-X] state is correct when MSI[-X]
-is disabled. For MSI the reset state is all entries unmasked and for MSI-X
-all vectors are masked.
+The IO/APIC cannot handle interrupt affinity changes safely after startup
+other than from an interrupt handler. The startup sequence in the generic
+interrupt code violates that assumption.
 
-S390 masks all MSI entries and masks the already masked MSI-X entries
-again. Remove it and let the device in the correct state.
+Mark the irq chip with the new IRQCHIP_AFFINITY_PRE_STARTUP flag so that
+the default interrupt setting happens before the interrupt is started up
+for the first time.
 
+Fixes: 18404756765c ("genirq: Expose default irq affinity mask (take 3)")
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Niklas Schnelle <schnelle@linux.ibm.com>
 Tested-by: Marc Zyngier <maz@kernel.org>
 Reviewed-by: Marc Zyngier <maz@kernel.org>
-Acked-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Link: https://lore.kernel.org/r/20210729222542.939798136@linutronix.de
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20210729222542.832143400@linutronix.de
+
 
 ---
- arch/s390/pci/pci_irq.c | 4 ----
- drivers/pci/msi.c       | 4 ++--
- include/linux/msi.h     | 2 --
- 3 files changed, 2 insertions(+), 8 deletions(-)
+ arch/x86/kernel/apic/io_apic.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/arch/s390/pci/pci_irq.c b/arch/s390/pci/pci_irq.c
-index 9c7de90..3823e15 100644
---- a/arch/s390/pci/pci_irq.c
-+++ b/arch/s390/pci/pci_irq.c
-@@ -365,10 +365,6 @@ void arch_teardown_msi_irqs(struct pci_dev *pdev)
- 	for_each_pci_msi_entry(msi, pdev) {
- 		if (!msi->irq)
- 			continue;
--		if (msi->msi_attrib.is_msix)
--			__pci_msix_desc_mask_irq(msi, 1);
--		else
--			__pci_msi_desc_mask_irq(msi, 1, 1);
- 		irq_set_msi_desc(msi->irq, NULL);
- 		irq_free_desc(msi->irq);
- 		msi->msg.address_lo = 0;
-diff --git a/drivers/pci/msi.c b/drivers/pci/msi.c
-index e5e7533..95e6ce4 100644
---- a/drivers/pci/msi.c
-+++ b/drivers/pci/msi.c
-@@ -143,7 +143,7 @@ static inline __attribute_const__ u32 msi_mask(unsigned x)
-  * reliably as devices without an INTx disable bit will then generate a
-  * level IRQ which will never be cleared.
-  */
--void __pci_msi_desc_mask_irq(struct msi_desc *desc, u32 mask, u32 flag)
-+static void __pci_msi_desc_mask_irq(struct msi_desc *desc, u32 mask, u32 flag)
- {
- 	raw_spinlock_t *lock = &desc->dev->msi_lock;
- 	unsigned long flags;
-@@ -180,7 +180,7 @@ static void __iomem *pci_msix_desc_addr(struct msi_desc *desc)
-  * file.  This saves a few milliseconds when initialising devices with lots
-  * of MSI-X interrupts.
-  */
--u32 __pci_msix_desc_mask_irq(struct msi_desc *desc, u32 flag)
-+static u32 __pci_msix_desc_mask_irq(struct msi_desc *desc, u32 flag)
- {
- 	u32 mask_bits = desc->masked;
- 	void __iomem *desc_addr;
-diff --git a/include/linux/msi.h b/include/linux/msi.h
-index e8bdcb8..3d0e747 100644
---- a/include/linux/msi.h
-+++ b/include/linux/msi.h
-@@ -232,8 +232,6 @@ void free_msi_entry(struct msi_desc *entry);
- void __pci_read_msi_msg(struct msi_desc *entry, struct msi_msg *msg);
- void __pci_write_msi_msg(struct msi_desc *entry, struct msi_msg *msg);
+diff --git a/arch/x86/kernel/apic/io_apic.c b/arch/x86/kernel/apic/io_apic.c
+index d5c691a..39224e0 100644
+--- a/arch/x86/kernel/apic/io_apic.c
++++ b/arch/x86/kernel/apic/io_apic.c
+@@ -1986,7 +1986,8 @@ static struct irq_chip ioapic_chip __read_mostly = {
+ 	.irq_set_affinity	= ioapic_set_affinity,
+ 	.irq_retrigger		= irq_chip_retrigger_hierarchy,
+ 	.irq_get_irqchip_state	= ioapic_irq_get_chip_state,
+-	.flags			= IRQCHIP_SKIP_SET_WAKE,
++	.flags			= IRQCHIP_SKIP_SET_WAKE |
++				  IRQCHIP_AFFINITY_PRE_STARTUP,
+ };
  
--u32 __pci_msix_desc_mask_irq(struct msi_desc *desc, u32 flag);
--void __pci_msi_desc_mask_irq(struct msi_desc *desc, u32 mask, u32 flag);
- void pci_msi_mask_irq(struct irq_data *data);
- void pci_msi_unmask_irq(struct irq_data *data);
+ static struct irq_chip ioapic_ir_chip __read_mostly = {
+@@ -1999,7 +2000,8 @@ static struct irq_chip ioapic_ir_chip __read_mostly = {
+ 	.irq_set_affinity	= ioapic_set_affinity,
+ 	.irq_retrigger		= irq_chip_retrigger_hierarchy,
+ 	.irq_get_irqchip_state	= ioapic_irq_get_chip_state,
+-	.flags			= IRQCHIP_SKIP_SET_WAKE,
++	.flags			= IRQCHIP_SKIP_SET_WAKE |
++				  IRQCHIP_AFFINITY_PRE_STARTUP,
+ };
  
+ static inline void init_IO_APIC_traps(void)
