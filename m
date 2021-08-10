@@ -2,47 +2,50 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 13D6B3E553C
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 10 Aug 2021 10:31:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1FF6D3E553E
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 10 Aug 2021 10:31:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238220AbhHJIbZ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 10 Aug 2021 04:31:25 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:41674 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233746AbhHJIbY (ORCPT
+        id S238224AbhHJIb0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 10 Aug 2021 04:31:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35782 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238217AbhHJIbZ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 10 Aug 2021 04:31:24 -0400
+        Tue, 10 Aug 2021 04:31:25 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31361C061796;
+        Tue, 10 Aug 2021 01:31:03 -0700 (PDT)
 Date:   Tue, 10 Aug 2021 08:30:58 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1628584259;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=gjqGur3HwGNl9x7u7xjD1SYsbWGypIOJ8fDKB3mnwLk=;
-        b=eZH6gP+EiF3OcO1uovEpHFlHoCBo9l/PpflBxM/5pLZZZH2E8lP958bYXpL2cfpMnItph5
-        p8qaDLbaqbsUAY06GQWcTkVEtcbyPPTJ9LAU/Fav+qFArLHgo65ln/hTRt8f21ZJCnDN+/
-        7oJXCKJMmGx5q92HR6WwP6dz69aysoYAVD8BFq0FMRL0uKFCNsSIgEP+MZAWTFYOHgwZxo
-        d9psjR2aWuyd14tDcoV2exA98rpRG5N/HgFm28BeNwTPaCNNYrPh5U1f4Hmo+GOPgBsRyC
-        sgYEd7dcVQZvVE8zKNMwMfoootzPaXkUcN7vD3IT4SEq08f/lfQZH0257TX4SQ==
+        bh=hzWrZsLkMsPSeowdHiTK7nFPonyx8zo4sT9uM8rR0Fs=;
+        b=SkPxlxIzZmkaha7IFf36qyDFPoOtr67UMy5LCjLN23yHZ7AG8Nd6rAYMkPOOHGqUquVSdl
+        OhZ9yEsMxagBOxl25DN+gByF50sIW9EA77OlNSP3n3g/Gg4tAZZwk9FvbObpsW7oEH8Rvp
+        Km+e2pjGC2X1oqPNG8OV2c+xCv6Bk78JQNC1hbjhi/qfv/BdnOJdv2zjJiAo3nhUGV/9yn
+        dqsdupeacKsd5Y3Whfm5iws464lafjHUsBnEoB4XNknGG1NnchcMnkVBZuSog5c/44hkOR
+        q/hWqbfOqfHUOb9fGf15kKBVIcEpbfJ/KREIffy8m35nbjHPNnx+ukjZExSw0g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1628584259;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=gjqGur3HwGNl9x7u7xjD1SYsbWGypIOJ8fDKB3mnwLk=;
-        b=TIFRTCiwhdjRUn7dgwYG0nNwqdqZcR3epMV7ZZxE0QsMO94eNoODZAM3YmKRHGa4X7sef4
-        t7+al1pYmterUCBw==
+        bh=hzWrZsLkMsPSeowdHiTK7nFPonyx8zo4sT9uM8rR0Fs=;
+        b=RKQaOLxWbzhdYzm9YJ62eJAth92aST/FnwLRNXIdmHaQJEPPpjl6TNAYELbdadl6+jkyuu
+        7C8vCUn02DSOFzCA==
 From:   "tip-bot2 for Ard Biesheuvel" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: efi/urgent] efi/libstub: arm64: Force Image reallocation if BSS
- was not reserved
+Subject: [tip: efi/urgent] efi/libstub: arm64: Relax 2M alignment again for
+ relocatable kernels
 Cc:     Ard Biesheuvel <ardb@kernel.org>,
         Benjamin Herrenschmidt <benh@kernel.crashing.org>,
         x86@kernel.org, linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <162858425887.395.2364950892793141234.tip-bot2@tip-bot2>
+Message-ID: <162858425836.395.15945689610631319871.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -53,100 +56,102 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the efi/urgent branch of tip:
 
-Commit-ID:     5b94046efb4706b3429c9c8e7377bd8d1621d588
-Gitweb:        https://git.kernel.org/tip/5b94046efb4706b3429c9c8e7377bd8d1621d588
+Commit-ID:     3a262423755b83a5f85009ace415d6e7f572dfe8
+Gitweb:        https://git.kernel.org/tip/3a262423755b83a5f85009ace415d6e7f572dfe8
 Author:        Ard Biesheuvel <ardb@kernel.org>
-AuthorDate:    Mon, 26 Jul 2021 11:38:41 +02:00
+AuthorDate:    Thu, 22 Jul 2021 12:10:31 +02:00
 Committer:     Ard Biesheuvel <ardb@kernel.org>
-CommitterDate: Tue, 03 Aug 2021 07:41:53 +02:00
+CommitterDate: Tue, 03 Aug 2021 07:43:02 +02:00
 
-efi/libstub: arm64: Force Image reallocation if BSS was not reserved
+efi/libstub: arm64: Relax 2M alignment again for relocatable kernels
 
-Distro versions of GRUB replace the usual LoadImage/StartImage calls
-used to load the kernel image with some local code that fails to honor
-the allocation requirements described in the PE/COFF header, as it
-does not account for the image's BSS section at all: it fails to
-allocate space for it, and fails to zero initialize it.
+Commit 82046702e288 ("efi/libstub/arm64: Replace 'preferred' offset with
+alignment check") simplified the way the stub moves the kernel image
+around in memory before booting it, given that a relocatable image does
+not need to be copied to a 2M aligned offset if it was loaded on a 64k
+boundary by EFI.
 
-Since the EFI stub itself is allocated in the .init segment, which is
-in the middle of the image, its BSS section is not impacted by this,
-and the main consequence of this omission is that the BSS section may
-overlap with memory regions that are already used by the firmware.
+Commit d32de9130f6c ("efi/arm64: libstub: Deal gracefully with
+EFI_RNG_PROTOCOL failure") inadvertently defeated this logic by
+overriding the value of efi_nokaslr if EFI_RNG_PROTOCOL is not
+available, which was mistaken by the loader logic as an explicit request
+on the part of the user to disable KASLR and any associated relocation
+of an Image not loaded on a 2M boundary.
 
-So let's warn about this condition, and force image reallocation to
-occur in this case, which works around the problem.
+So let's reinstate this functionality, by capturing the value of
+efi_nokaslr at function entry to choose the minimum alignment.
 
-Fixes: 82046702e288 ("efi/libstub/arm64: Replace 'preferred' offset with alignment check")
+Fixes: d32de9130f6c ("efi/arm64: libstub: Deal gracefully with EFI_RNG_PROTOCOL failure")
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Tested-by: Benjamin Herrenschmidt <benh@kernel.crashing.org>
 ---
- drivers/firmware/efi/libstub/arm64-stub.c | 49 +++++++++++++++++++++-
- 1 file changed, 48 insertions(+), 1 deletion(-)
+ drivers/firmware/efi/libstub/arm64-stub.c | 28 ++++++++++------------
+ 1 file changed, 13 insertions(+), 15 deletions(-)
 
 diff --git a/drivers/firmware/efi/libstub/arm64-stub.c b/drivers/firmware/efi/libstub/arm64-stub.c
-index 7bf0a7a..3698c1c 100644
+index 3698c1c..6f214c9 100644
 --- a/drivers/firmware/efi/libstub/arm64-stub.c
 +++ b/drivers/firmware/efi/libstub/arm64-stub.c
-@@ -35,6 +35,51 @@ efi_status_t check_platform_features(void)
+@@ -79,18 +79,6 @@ static bool check_image_region(u64 base, u64 size)
+ 	return ret;
  }
  
- /*
-+ * Distro versions of GRUB may ignore the BSS allocation entirely (i.e., fail
-+ * to provide space, and fail to zero it). Check for this condition by double
-+ * checking that the first and the last byte of the image are covered by the
-+ * same EFI memory map entry.
-+ */
-+static bool check_image_region(u64 base, u64 size)
-+{
-+	unsigned long map_size, desc_size, buff_size;
-+	efi_memory_desc_t *memory_map;
-+	struct efi_boot_memmap map;
-+	efi_status_t status;
-+	bool ret = false;
-+	int map_offset;
-+
-+	map.map =	&memory_map;
-+	map.map_size =	&map_size;
-+	map.desc_size =	&desc_size;
-+	map.desc_ver =	NULL;
-+	map.key_ptr =	NULL;
-+	map.buff_size =	&buff_size;
-+
-+	status = efi_get_memory_map(&map);
-+	if (status != EFI_SUCCESS)
-+		return false;
-+
-+	for (map_offset = 0; map_offset < map_size; map_offset += desc_size) {
-+		efi_memory_desc_t *md = (void *)memory_map + map_offset;
-+		u64 end = md->phys_addr + md->num_pages * EFI_PAGE_SIZE;
-+
-+		/*
-+		 * Find the region that covers base, and return whether
-+		 * it covers base+size bytes.
-+		 */
-+		if (base >= md->phys_addr && base < end) {
-+			ret = (base + size) <= end;
-+			break;
-+		}
-+	}
-+
-+	efi_bs_call(free_pool, memory_map);
-+
-+	return ret;
-+}
-+
-+/*
-  * Although relocatable kernels can fix up the misalignment with respect to
-  * MIN_KIMG_ALIGN, the resulting virtual text addresses are subtly out of
-  * sync with those recorded in the vmlinux when kaslr is disabled but the
-@@ -92,7 +137,9 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
- 	}
+-/*
+- * Although relocatable kernels can fix up the misalignment with respect to
+- * MIN_KIMG_ALIGN, the resulting virtual text addresses are subtly out of
+- * sync with those recorded in the vmlinux when kaslr is disabled but the
+- * image required relocation anyway. Therefore retain 2M alignment unless
+- * KASLR is in use.
+- */
+-static u64 min_kimg_align(void)
+-{
+-	return efi_nokaslr ? MIN_KIMG_ALIGN : EFI_KIMG_ALIGN;
+-}
+-
+ efi_status_t handle_kernel_image(unsigned long *image_addr,
+ 				 unsigned long *image_size,
+ 				 unsigned long *reserve_addr,
+@@ -101,6 +89,16 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
+ 	unsigned long kernel_size, kernel_memsize = 0;
+ 	u32 phys_seed = 0;
  
++	/*
++	 * Although relocatable kernels can fix up the misalignment with
++	 * respect to MIN_KIMG_ALIGN, the resulting virtual text addresses are
++	 * subtly out of sync with those recorded in the vmlinux when kaslr is
++	 * disabled but the image required relocation anyway. Therefore retain
++	 * 2M alignment if KASLR was explicitly disabled, even if it was not
++	 * going to be activated to begin with.
++	 */
++	u64 min_kimg_align = efi_nokaslr ? MIN_KIMG_ALIGN : EFI_KIMG_ALIGN;
++
+ 	if (IS_ENABLED(CONFIG_RANDOMIZE_BASE)) {
+ 		if (!efi_nokaslr) {
+ 			status = efi_get_random_bytes(sizeof(phys_seed),
+@@ -130,7 +128,7 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
+ 		 * If KASLR is enabled, and we have some randomness available,
+ 		 * locate the kernel at a randomized offset in physical memory.
+ 		 */
+-		status = efi_random_alloc(*reserve_size, min_kimg_align(),
++		status = efi_random_alloc(*reserve_size, min_kimg_align,
+ 					  reserve_addr, phys_seed);
+ 	} else {
+ 		status = EFI_OUT_OF_RESOURCES;
+@@ -139,7 +137,7 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
  	if (status != EFI_SUCCESS) {
--		if (IS_ALIGNED((u64)_text, min_kimg_align())) {
-+		if (!check_image_region((u64)_text, kernel_memsize)) {
-+			efi_err("FIRMWARE BUG: Image BSS overlaps adjacent EFI memory region\n");
-+		} else if (IS_ALIGNED((u64)_text, min_kimg_align())) {
+ 		if (!check_image_region((u64)_text, kernel_memsize)) {
+ 			efi_err("FIRMWARE BUG: Image BSS overlaps adjacent EFI memory region\n");
+-		} else if (IS_ALIGNED((u64)_text, min_kimg_align())) {
++		} else if (IS_ALIGNED((u64)_text, min_kimg_align)) {
  			/*
  			 * Just execute from wherever we were loaded by the
  			 * UEFI PE/COFF loader if the alignment is suitable.
+@@ -150,7 +148,7 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
+ 		}
+ 
+ 		status = efi_allocate_pages_aligned(*reserve_size, reserve_addr,
+-						    ULONG_MAX, min_kimg_align());
++						    ULONG_MAX, min_kimg_align);
+ 
+ 		if (status != EFI_SUCCESS) {
+ 			efi_err("Failed to relocate kernel\n");
