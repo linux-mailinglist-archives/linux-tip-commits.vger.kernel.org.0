@@ -2,52 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2FE473E5637
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 10 Aug 2021 11:07:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E56B23E5639
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 10 Aug 2021 11:07:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238586AbhHJJIE (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 10 Aug 2021 05:08:04 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:41862 "EHLO
+        id S238598AbhHJJIG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 10 Aug 2021 05:08:06 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:41874 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238533AbhHJJIE (ORCPT
+        with ESMTP id S238583AbhHJJIF (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 10 Aug 2021 05:08:04 -0400
-Date:   Tue, 10 Aug 2021 09:07:39 -0000
+        Tue, 10 Aug 2021 05:08:05 -0400
+Date:   Tue, 10 Aug 2021 09:07:40 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1628586460;
+        s=2020; t=1628586461;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=8yTxOiFA9GbF97x7uuvq74y8EFVr0Ci19U/U/4WDl/o=;
-        b=D/o/DMBuQK4c0hD54W8OUFGl2gs9yXiuixc+nrzTHuYnKmemv9ThoMMuhu3sVOPwWgncCa
-        LUrYdDfjVckzMNlIGDD5HEqfwCFsdjkPL2EUy2kiobd03GoFb3KxS3//vQRylO03shcVrs
-        EzVt8xdyHlJoEg6ijJEkqtK2tmUf0eN9jOhYUHFQyQ2t9tIQklabKn8IGNeBBcy+rJe1E3
-        whGso1Xv295+Br6wqfoyIHorFImZ4lsswwUPn3ckk+eXgBRrl+0ROH1BoMt6osrieiWCHK
-        P+hgLMh1jShgQADbIwt8/j4w+QQgevq0ZuggLt5w+K3uuRBkveLMMVl0o634WQ==
+        bh=/OGv2fXwEoDW6ys3FbnQN0NNzxFGIbwzT8Z35jIu8yI=;
+        b=wxnHjfVdEHtYzP0mnIp6hzuClMnV4iFfCQM1WpAhgOE/dG1Vd7I4TECjU58hCswAMM2y0L
+        fWQkHX2DJgg8psoW0uvd9BxGHI6+Y+qycTjR1Z51LTixVEddTbgQhmuglFOZLp2Qbp1wVf
+        BL1hCGCROvHb12IpkedMsAKzOMYD7joCAjDQAwcilRhpR8NRUPK/N0wFT0maALKp1bnnyU
+        guhxiINzg+mMBtxjkoXyBBILa/nrvM0WFQVOE05W3PqXXJhLHwTQN3Wf/48YRzPkYzVl4q
+        lOjD9bf1s22wMRdBaRXT90lAR32pcRInvNYFvBd/UkVCIBur7ik/Bfi8PSBBSg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1628586460;
+        s=2020e; t=1628586461;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=8yTxOiFA9GbF97x7uuvq74y8EFVr0Ci19U/U/4WDl/o=;
-        b=xnLC1NBcFwcUdVSuN1z9UgBxBzlDyCGwl5X7lB5qEn6laLm60xZa4f7tYYHN32S2k/0PRw
-        B/mI5db5RFN3/3Bg==
+        bh=/OGv2fXwEoDW6ys3FbnQN0NNzxFGIbwzT8Z35jIu8yI=;
+        b=TuqeF4HNkHMXvtLWcT843HUkfy+9q3YstieAd/oNSTS0tRL/yABWoaoO6C8CxkSPBJSTPp
+        KmtSJp6lRVcaBQCA==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] PCI/MSI: Deobfuscate virtual MSI-X
+Subject: [tip: irq/core] PCI/MSI: Rename msi_desc::masked
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Marc Zyngier <maz@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210729222543.151522318@linutronix.de>
-References: <20210729222543.151522318@linutronix.de>
+In-Reply-To: <20210729222543.045993608@linutronix.de>
+References: <20210729222543.045993608@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <162858645939.395.3014962225125734205.tip-bot2@tip-bot2>
+Message-ID: <162858646048.395.1675569114537900488.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,97 +58,155 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     b296ababcc4bbf8efbb603d3aec6024a78662c1b
-Gitweb:        https://git.kernel.org/tip/b296ababcc4bbf8efbb603d3aec6024a78662c1b
+Commit-ID:     67961e77a39b8e975dd1906179b9224f29150357
+Gitweb:        https://git.kernel.org/tip/67961e77a39b8e975dd1906179b9224f29150357
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Thu, 29 Jul 2021 23:51:55 +02:00
+AuthorDate:    Thu, 29 Jul 2021 23:51:53 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 10 Aug 2021 11:03:30 +02:00
+CommitterDate: Tue, 10 Aug 2021 11:03:29 +02:00
 
-PCI/MSI: Deobfuscate virtual MSI-X
+PCI/MSI: Rename msi_desc::masked
 
-Handling of virtual MSI-X is obfuscated by letting pci_msix_desc_addr()
-return NULL and checking the pointer.
+msi_desc::masked is a misnomer. For MSI it's used to cache the MSI mask
+bits when the device supports per vector masking. For MSI-X it's used to
+cache the content of the vector control word which contains the mask bit
+for the vector.
 
-Just use msi_desc::msi_attrib.is_virtual at the call sites and get rid of
-that pointer check.
+Replace it with a union of msi_mask and msix_ctrl to make the purpose clear
+and fix up the usage sites.
 
-No functional change.
+No functional change
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Tested-by: Marc Zyngier <maz@kernel.org>
 Reviewed-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20210729222543.151522318@linutronix.de
+Link: https://lore.kernel.org/r/20210729222543.045993608@linutronix.de
 
 ---
- drivers/pci/msi.c | 25 ++++++++-----------------
- 1 file changed, 8 insertions(+), 17 deletions(-)
+ drivers/pci/msi.c   | 30 +++++++++++++++---------------
+ include/linux/msi.h |  8 ++++++--
+ 2 files changed, 21 insertions(+), 17 deletions(-)
 
 diff --git a/drivers/pci/msi.c b/drivers/pci/msi.c
-index d2821bb..1bde9ec 100644
+index b59957c..175f4d6 100644
 --- a/drivers/pci/msi.c
 +++ b/drivers/pci/msi.c
-@@ -166,11 +166,7 @@ static void msi_mask_irq(struct msi_desc *desc, u32 mask, u32 flag)
+@@ -152,10 +152,10 @@ static void __pci_msi_desc_mask_irq(struct msi_desc *desc, u32 mask, u32 flag)
+ 		return;
  
- static void __iomem *pci_msix_desc_addr(struct msi_desc *desc)
- {
--	if (desc->msi_attrib.is_virtual)
--		return NULL;
--
--	return desc->mask_base +
--		desc->msi_attrib.entry_nr * PCI_MSIX_ENTRY_SIZE;
-+	return desc->mask_base + desc->msi_attrib.entry_nr * PCI_MSIX_ENTRY_SIZE;
+ 	raw_spin_lock_irqsave(lock, flags);
+-	desc->masked &= ~mask;
+-	desc->masked |= flag;
++	desc->msi_mask &= ~mask;
++	desc->msi_mask |= flag;
+ 	pci_write_config_dword(msi_desc_to_pci_dev(desc), desc->mask_pos,
+-			       desc->masked);
++			       desc->msi_mask);
+ 	raw_spin_unlock_irqrestore(lock, flags);
  }
  
- /*
-@@ -182,14 +178,10 @@ static void __iomem *pci_msix_desc_addr(struct msi_desc *desc)
+@@ -182,7 +182,7 @@ static void __iomem *pci_msix_desc_addr(struct msi_desc *desc)
   */
  static u32 __pci_msix_desc_mask_irq(struct msi_desc *desc, u32 flag)
  {
-+	void __iomem *desc_addr = pci_msix_desc_addr(desc);
- 	u32 ctrl = desc->msix_ctrl;
--	void __iomem *desc_addr;
--
--	if (pci_msi_ignore_mask)
--		return 0;
+-	u32 mask_bits = desc->masked;
++	u32 ctrl = desc->msix_ctrl;
+ 	void __iomem *desc_addr;
  
--	desc_addr = pci_msix_desc_addr(desc);
--	if (!desc_addr)
-+	if (pci_msi_ignore_mask || desc->msi_attrib.is_virtual)
+ 	if (pci_msi_ignore_mask)
+@@ -192,18 +192,18 @@ static u32 __pci_msix_desc_mask_irq(struct msi_desc *desc, u32 flag)
+ 	if (!desc_addr)
  		return 0;
  
- 	ctrl &= ~PCI_MSIX_ENTRY_CTRL_MASKBIT;
-@@ -256,10 +248,8 @@ void __pci_read_msi_msg(struct msi_desc *entry, struct msi_msg *msg)
- 	if (entry->msi_attrib.is_msix) {
+-	mask_bits &= ~PCI_MSIX_ENTRY_CTRL_MASKBIT;
+-	if (flag & PCI_MSIX_ENTRY_CTRL_MASKBIT)
+-		mask_bits |= PCI_MSIX_ENTRY_CTRL_MASKBIT;
++	ctrl &= ~PCI_MSIX_ENTRY_CTRL_MASKBIT;
++	if (ctrl & PCI_MSIX_ENTRY_CTRL_MASKBIT)
++		ctrl |= PCI_MSIX_ENTRY_CTRL_MASKBIT;
+ 
+-	writel(mask_bits, desc_addr + PCI_MSIX_ENTRY_VECTOR_CTRL);
++	writel(ctrl, desc_addr + PCI_MSIX_ENTRY_VECTOR_CTRL);
+ 
+-	return mask_bits;
++	return ctrl;
+ }
+ 
+ static void msix_mask_irq(struct msi_desc *desc, u32 flag)
+ {
+-	desc->masked = __pci_msix_desc_mask_irq(desc, flag);
++	desc->msix_ctrl = __pci_msix_desc_mask_irq(desc, flag);
+ }
+ 
+ static void msi_set_mask_bit(struct irq_data *data, u32 flag)
+@@ -290,7 +290,7 @@ void __pci_write_msi_msg(struct msi_desc *entry, struct msi_msg *msg)
+ 		/* Don't touch the hardware now */
+ 	} else if (entry->msi_attrib.is_msix) {
  		void __iomem *base = pci_msix_desc_addr(entry);
+-		bool unmasked = !(entry->masked & PCI_MSIX_ENTRY_CTRL_MASKBIT);
++		bool unmasked = !(entry->msix_ctrl & PCI_MSIX_ENTRY_CTRL_MASKBIT);
  
--		if (!base) {
--			WARN_ON(1);
-+		if (WARN_ON_ONCE(entry->msi_attrib.is_virtual))
- 			return;
--		}
- 
- 		msg->address_lo = readl(base + PCI_MSIX_ENTRY_LOWER_ADDR);
- 		msg->address_hi = readl(base + PCI_MSIX_ENTRY_UPPER_ADDR);
-@@ -292,7 +282,7 @@ void __pci_write_msi_msg(struct msi_desc *entry, struct msi_msg *msg)
- 		void __iomem *base = pci_msix_desc_addr(entry);
- 		bool unmasked = !(entry->msix_ctrl & PCI_MSIX_ENTRY_CTRL_MASKBIT);
- 
--		if (!base)
-+		if (entry->msi_attrib.is_virtual)
+ 		if (!base)
  			goto skip;
+@@ -430,7 +430,7 @@ static void __pci_restore_msi_state(struct pci_dev *dev)
  
- 		/*
-@@ -744,9 +734,10 @@ static int msix_setup_entries(struct pci_dev *dev, void __iomem *base,
- 		entry->msi_attrib.default_irq	= dev->irq;
- 		entry->mask_base		= base;
+ 	pci_read_config_word(dev, dev->msi_cap + PCI_MSI_FLAGS, &control);
+ 	msi_mask_irq(entry, msi_mask(entry->msi_attrib.multi_cap),
+-		     entry->masked);
++		     entry->msi_mask);
+ 	control &= ~PCI_MSI_FLAGS_QSIZE;
+ 	control |= (entry->msi_attrib.multiple << 4) | PCI_MSI_FLAGS_ENABLE;
+ 	pci_write_config_word(dev, dev->msi_cap + PCI_MSI_FLAGS, control);
+@@ -461,7 +461,7 @@ static void __pci_restore_msix_state(struct pci_dev *dev)
  
--		addr = pci_msix_desc_addr(entry);
--		if (addr)
-+		if (!entry->msi_attrib.is_virtual) {
-+			addr = pci_msix_desc_addr(entry);
- 			entry->msix_ctrl = readl(addr + PCI_MSIX_ENTRY_VECTOR_CTRL);
-+		}
+ 	arch_restore_msi_irqs(dev);
+ 	for_each_pci_msi_entry(entry, dev)
+-		msix_mask_irq(entry, entry->masked);
++		msix_mask_irq(entry, entry->msix_ctrl);
+ 
+ 	pci_msix_clear_and_set_ctrl(dev, PCI_MSIX_FLAGS_MASKALL, 0);
+ }
+@@ -602,7 +602,7 @@ msi_setup_entry(struct pci_dev *dev, int nvec, struct irq_affinity *affd)
+ 
+ 	/* Save the initial mask status */
+ 	if (entry->msi_attrib.maskbit)
+-		pci_read_config_dword(dev, entry->mask_pos, &entry->masked);
++		pci_read_config_dword(dev, entry->mask_pos, &entry->msi_mask);
+ 
+ out:
+ 	kfree(masks);
+@@ -750,7 +750,7 @@ static int msix_setup_entries(struct pci_dev *dev, void __iomem *base,
+ 
+ 		addr = pci_msix_desc_addr(entry);
+ 		if (addr)
+-			entry->masked = readl(addr + PCI_MSIX_ENTRY_VECTOR_CTRL);
++			entry->msix_ctrl = readl(addr + PCI_MSIX_ENTRY_VECTOR_CTRL);
  
  		list_add_tail(&entry->list, dev_to_msi_list(&dev->dev));
  		if (masks)
+diff --git a/include/linux/msi.h b/include/linux/msi.h
+index 3d0e747..a20dc66 100644
+--- a/include/linux/msi.h
++++ b/include/linux/msi.h
+@@ -107,7 +107,8 @@ struct ti_sci_inta_msi_desc {
+  *			address or data changes
+  * @write_msi_msg_data:	Data parameter for the callback.
+  *
+- * @masked:	[PCI MSI/X] Mask bits
++ * @msi_mask:	[PCI MSI]   MSI cached mask bits
++ * @msix_ctrl:	[PCI MSI-X] MSI-X cached per vector control bits
+  * @is_msix:	[PCI MSI/X] True if MSI-X
+  * @multiple:	[PCI MSI/X] log2 num of messages allocated
+  * @multi_cap:	[PCI MSI/X] log2 num of messages supported
+@@ -139,7 +140,10 @@ struct msi_desc {
+ 	union {
+ 		/* PCI MSI/X specific data */
+ 		struct {
+-			u32 masked;
++			union {
++				u32 msi_mask;
++				u32 msix_ctrl;
++			};
+ 			struct {
+ 				u8	is_msix		: 1;
+ 				u8	multiple	: 3;
