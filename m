@@ -2,55 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2FEB23EA2D5
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 12 Aug 2021 12:11:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB90B3EA2D4
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 12 Aug 2021 12:11:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235227AbhHLKMF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S234677AbhHLKMF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Thu, 12 Aug 2021 06:12:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45256 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236151AbhHLKKQ (ORCPT
+Received: from Galois.linutronix.de ([193.142.43.55]:57478 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235686AbhHLKKR (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 12 Aug 2021 06:10:16 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB399C06179B;
-        Thu, 12 Aug 2021 03:09:45 -0700 (PDT)
+        Thu, 12 Aug 2021 06:10:17 -0400
 Date:   Thu, 12 Aug 2021 10:09:43 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1628762984;
+        s=2020; t=1628762983;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=EojEC9l2IEqu33hC1E1/r59YGBpO0jV1pcmU2rY27/A=;
-        b=BH6Y4lgJdFbgEH98fcTJF8V7SMEeF0Z9rwMQrH6jEtEi9n8aTFrXmQoauPKFkBz3vsdnTs
-        e9JwncsGhko6J3+/a9smFa2mtXgkADks3uBJXdjRuvZHBK6vTgJ4A7fuMFrLR6ULmdiM4d
-        xF46F5f2j29Ci/UFhKR8f8E+M5Xyex5KN2w9EuJrnSizKnac+TS3vAZXcMXTcgG6dOzSMm
-        cCXLjCFn1eGzb7ojmBcbMI1IJauu1X0JpBU6RX/a8x+E0mVCWSfMv24EZwd5YbO9bHd1Hu
-        LRa/+ISvwGCITC5iHOE+3AdoveLwZuldxEnzx+YyVR9D8j1gNgDYmIzSjiTfLw==
+        bh=I1prOnd7axUVldLY2mifFmYzGUM3E1GP8R1mRkSrx2k=;
+        b=ft34FX+GWEVJuF60uRseYJuywJ2S6GzVKhH+57FAcq2gMvPuHMrF860r1t4s3jAqc5ULFI
+        0o5ojfJPSGL0hPBtjahE+gLl9lnaXlxghw1A7hCslatp4ubykCvvqLrsyLgr9SVxgzftfs
+        PZ+sla13zgDAn+cMDnCyIU29J5RYCSOC++Aqx1WOMaVylXpmLWICr9qyGtpx5MKJSNocSX
+        ypZr119qMy7MTwyloKjYX0NM0CukPoXeMm19rlXXwgSIXfveJ06cJFBuwleZsHT5mJ6sd8
+        rpoZWqipUyM5ERiV3fE9na8eCQBjP09Lv5VFf+sV3+mQYLxxaHQ4uX0KLErnCA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1628762984;
+        s=2020e; t=1628762983;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=EojEC9l2IEqu33hC1E1/r59YGBpO0jV1pcmU2rY27/A=;
-        b=K/C0iZnbVwh+PUVkduI+hp4Pms50x53lCNvlINQXq3pZCBlTKNxfgvfjDzkeAriDTBFR2N
-        JA17qK0E/CiIWzDA==
+        bh=I1prOnd7axUVldLY2mifFmYzGUM3E1GP8R1mRkSrx2k=;
+        b=mxeOvvm19F4ayrF16JRS16E5ndC4WYrLGlDvYBYqSS0b+zchaQlDuhE/VIniGU0nNarIvh
+        JdgsNvqWJnfLzRCw==
 From:   "tip-bot2 for Paul Gortmaker" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/misc] x86/reboot: Document the "reboot=pci" option
+Subject: [tip: x86/misc] x86/reboot: Document how to override DMI platform quirks
 Cc:     Paul Gortmaker <paul.gortmaker@windriver.com>,
         Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210530162447.996461-2-paul.gortmaker@windriver.com>
-References: <20210530162447.996461-2-paul.gortmaker@windriver.com>
+In-Reply-To: <20210530162447.996461-3-paul.gortmaker@windriver.com>
+References: <20210530162447.996461-3-paul.gortmaker@windriver.com>
 MIME-Version: 1.0
-Message-ID: <162876298363.395.15945425696843293640.tip-bot2@tip-bot2>
+Message-ID: <162876298304.395.8685197228455259421.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,45 +58,74 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/misc branch of tip:
 
-Commit-ID:     162a5284faf41b2441b8f686f9ac4771c7a8f669
-Gitweb:        https://git.kernel.org/tip/162a5284faf41b2441b8f686f9ac4771c7a8f669
+Commit-ID:     12febc181886f0658ce3413f554203c255d338dd
+Gitweb:        https://git.kernel.org/tip/12febc181886f0658ce3413f554203c255d338dd
 Author:        Paul Gortmaker <paul.gortmaker@windriver.com>
-AuthorDate:    Sun, 30 May 2021 12:24:45 -04:00
+AuthorDate:    Sun, 30 May 2021 12:24:46 -04:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Thu, 12 Aug 2021 12:06:58 +02:00
 
-x86/reboot: Document the "reboot=pci" option
+x86/reboot: Document how to override DMI platform quirks
 
-It is mentioned in the top level non-arch specific file but it was
-overlooked here for x86.
+commit 5955633e91bf ("x86/reboot: Skip DMI checks if reboot set by user")
+made it so that it's not required to recompile the kernel in order to
+bypass broken reboot quirks compiled into an image:
+
+ * This variable is used privately to keep track of whether or not
+ * reboot_type is still set to its default value (i.e., reboot= hasn't
+ * been set on the command line).  This is needed so that we can
+ * suppress DMI scanning for reboot quirks.  Without it, it's
+ * impossible to override a faulty reboot quirk without recompiling.
+
+However, at the time it was not eally documented outside the source code,
+and so this information isn't really available to the average user out
+there.
+
+The change is a little white lie and invented "reboot=default" since it is
+easy to remember, and documents well.  The truth is that any random string
+that is *not* a currently accepted string will work.
+
+Since that doesn't document well for non-coders, and since it's unknown
+what the future additions might be, lay claim on "default" since that is
+exactly what it achieves.
 
 Signed-off-by: Paul Gortmaker <paul.gortmaker@windriver.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20210530162447.996461-2-paul.gortmaker@windriver.com
+Link: https://lore.kernel.org/r/20210530162447.996461-3-paul.gortmaker@windriver.com
 
 ---
- Documentation/x86/x86_64/boot-options.rst | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ Documentation/admin-guide/kernel-parameters.txt | 2 +-
+ Documentation/x86/x86_64/boot-options.rst       | 7 +++++++
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index bdb2200..34c8dd5 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -4777,7 +4777,7 @@
+ 
+ 	reboot=		[KNL]
+ 			Format (x86 or x86_64):
+-				[w[arm] | c[old] | h[ard] | s[oft] | g[pio]] \
++				[w[arm] | c[old] | h[ard] | s[oft] | g[pio]] | d[efault] \
+ 				[[,]s[mp]#### \
+ 				[[,]b[ios] | a[cpi] | k[bd] | t[riple] | e[fi] | p[ci]] \
+ 				[[,]f[orce]
 diff --git a/Documentation/x86/x86_64/boot-options.rst b/Documentation/x86/x86_64/boot-options.rst
-index 5f62b3b..482f3b2 100644
+index 482f3b2..ccb7e86 100644
 --- a/Documentation/x86/x86_64/boot-options.rst
 +++ b/Documentation/x86/x86_64/boot-options.rst
-@@ -126,7 +126,7 @@ Idle loop
- Rebooting
- =========
+@@ -157,6 +157,13 @@ Rebooting
+      Don't stop other CPUs on reboot. This can make reboot more reliable
+      in some cases.
  
--   reboot=b[ios] | t[riple] | k[bd] | a[cpi] | e[fi] [, [w]arm | [c]old]
-+   reboot=b[ios] | t[riple] | k[bd] | a[cpi] | e[fi] | p[ci] [, [w]arm | [c]old]
-       bios
-         Use the CPU reboot vector for warm reset
-       warm
-@@ -145,6 +145,8 @@ Rebooting
-         Use efi reset_system runtime service. If EFI is not configured or
-         the EFI reset does not work, the reboot path attempts the reset using
-         the keyboard controller.
-+      pci
-+        Use a write to the PCI config space register 0xcf9 to trigger reboot.
++   reboot=default
++     There are some built-in platform specific "quirks" - you may see:
++     "reboot: <name> series board detected. Selecting <type> for reboots."
++     In the case where you think the quirk is in error (e.g. you have
++     newer BIOS, or newer board) using this option will ignore the built-in
++     quirk table, and use the generic default reboot actions.
++
+ Non Executable Mappings
+ =======================
  
-    Using warm reset will be much faster especially on big memory
-    systems because the BIOS will not go through the memory check.
