@@ -2,99 +2,75 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DD9883EA766
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 12 Aug 2021 17:19:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A7E63EA771
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 12 Aug 2021 17:22:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236596AbhHLPTf (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 12 Aug 2021 11:19:35 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:59206 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235613AbhHLPTe (ORCPT
+        id S235924AbhHLPW4 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 12 Aug 2021 11:22:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60880 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235728AbhHLPWz (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 12 Aug 2021 11:19:34 -0400
-Date:   Thu, 12 Aug 2021 15:19:07 -0000
+        Thu, 12 Aug 2021 11:22:55 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B156FC061756;
+        Thu, 12 Aug 2021 08:22:30 -0700 (PDT)
+From:   Thomas Gleixner <tglx@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1628781548;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
+        s=2020; t=1628781749;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=V34GEmeJhrmpBln2XLTU/+83lUZ0Gkvd5BCyv+3tI18=;
-        b=RuwHP8+90y6nvwoI6rhY1t4oM5O5MbykHNKngkdMh24LxG3vBu8HnJ+yDBfrLM6SFEPVUF
-        V9nas9D5bvQLbyKUJNzql7t1PiFYgtbvvzE6qguROdgoMmdpyrQ5Yt9mPx3nqar48VAfPS
-        dNKL8u17tEIv6spgAKI04TgGJdpFsop+ivdgeYlzqwlCHTYsqXmUJ/+JdH3Ej+aLEWgLPd
-        de+SPbd6ilAaFhtH0FBQPWB8+55JBHYGpr2OjGX+Sh3uHeCHhG9NlOEAzQvcYnjVcgrOWB
-        PM5zie+K7b+nIcjg0CSeKfUW+D5sLlzt6iECVSfY5NYv8gt4hIpPygBqzKlVZw==
+        bh=jrg8BoginmIWT80KAp60mYuc3nXoFJZV7qu1CCM8wZg=;
+        b=e7gXoSgmDdXOmwz9EjwZoYE2nuJOEt9ZoruyVnn72o7AzQorqvIi1zol1ie2vqaZKH3PWN
+        xtjpQaOjZTcIgFZMdNGMVxqComhFg0M91ax8e7JK2+v+k7w5NMkIBY6Gsc+5DF/eYPyTUt
+        an+vZgKqp7PEarJjJIL95FEZzCLYk9skZbZzE9z8JSlkti/MfQYUIIrp8t4/sTsl5BPf+C
+        Qbb9lKw77SkcZet15ITerpAtZWR5ApVFuZHvgru+Qyg//f9/0g2eLdXS16hFGmkYHB0FWT
+        syt3bw4VRTLVyPa2nTdiB2naQT2LKc52dRkmJwtOx7N6mVNG6EpIVWAEeDjEvA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1628781548;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
+        s=2020e; t=1628781749;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=V34GEmeJhrmpBln2XLTU/+83lUZ0Gkvd5BCyv+3tI18=;
-        b=ZZX/m6X7FAyNPzO1CILXOVne4xCWMVP/rZ8eGy99/ih1XVhxf2UU5r11Wl3tI67cZzCkpT
-        oJwrUi6gA5GaKsDg==
-From:   "tip-bot2 for Randy Dunlap" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/tools: Fix objdump version check again
-Cc:     Randy Dunlap <rdunlap@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Masami Hiramatsu <mhiramat@kernel.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20210731000146.2720-1-rdunlap@infradead.org>
-References: <20210731000146.2720-1-rdunlap@infradead.org>
+        bh=jrg8BoginmIWT80KAp60mYuc3nXoFJZV7qu1CCM8wZg=;
+        b=wP8KaWssTL2dW5QxiVk8cO3frdKQGmSt46Xojm9YGQmTPb4NwXjsSf56+/S4/v77xiE7hz
+        EB8ELejdkXiBhrDw==
+To:     Mike Galbraith <efault@gmx.de>, linux-kernel@vger.kernel.org,
+        linux-tip-commits@vger.kernel.org
+Cc:     Peter Zijlstra <peterz@infradead.org>, x86@kernel.org
+Subject: Re: [tip: timers/core] hrtimer: Consolidate reprogramming code
+In-Reply-To: <bc6b74396cd6b5a4eb32ff90bcc1cb059216e0f3.camel@gmx.de>
+References: <20210713135158.054424875@linutronix.de>
+ <162861133759.395.7795246170325882103.tip-bot2@tip-bot2>
+ <7dfb3b15af67400227e7fa9e1916c8add0374ba9.camel@gmx.de>
+ <87a6lmiwi0.ffs@tglx> <877dgqivhy.ffs@tglx>
+ <bc6b74396cd6b5a4eb32ff90bcc1cb059216e0f3.camel@gmx.de>
+Date:   Thu, 12 Aug 2021 17:22:28 +0200
+Message-ID: <87v94ahemj.ffs@tglx>
 MIME-Version: 1.0
-Message-ID: <162878154758.395.4059560755319851621.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+On Thu, Aug 12 2021 at 17:04, Mike Galbraith wrote:
 
-Commit-ID:     839ad22f755132838f406751439363c07272ad87
-Gitweb:        https://git.kernel.org/tip/839ad22f755132838f406751439363c07272ad87
-Author:        Randy Dunlap <rdunlap@infradead.org>
-AuthorDate:    Fri, 30 Jul 2021 17:01:46 -07:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 12 Aug 2021 17:17:25 +02:00
+> On Thu, 2021-08-12 at 16:32 +0200, Thomas Gleixner wrote:
+>> 
+>> Can you please test whether the below fixes it for you?
+>
+> Yes, that boots.
 
-x86/tools: Fix objdump version check again
+Not that I'm surprised, but I still do not know why :)
 
-Skip (omit) any version string info that is parenthesized.
+>> I have yet to find a machine which reproduces it as I really want to
+>> understand which particular part is causing this.
+>
+> Config attached just in case.
 
-Warning: objdump version 15) is older than 2.19
-Warning: Skipping posttest.
+I rather assume it's a hardware dependency. What kind of machine are you
+using?
 
-where 'objdump -v' says:
-GNU objdump (GNU Binutils; SUSE Linux Enterprise 15) 2.35.1.20201123-7.18
+Thanks,
 
-Fixes: 8bee738bb1979 ("x86: Fix objdump version check in chkobjdump.awk for different formats.")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Masami Hiramatsu <mhiramat@kernel.org>
-Link: https://lore.kernel.org/r/20210731000146.2720-1-rdunlap@infradead.org
-
----
- arch/x86/tools/chkobjdump.awk | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/arch/x86/tools/chkobjdump.awk b/arch/x86/tools/chkobjdump.awk
-index fd1ab80..a4cf678 100644
---- a/arch/x86/tools/chkobjdump.awk
-+++ b/arch/x86/tools/chkobjdump.awk
-@@ -10,6 +10,7 @@ BEGIN {
- 
- /^GNU objdump/ {
- 	verstr = ""
-+	gsub(/\(.*\)/, "");
- 	for (i = 3; i <= NF; i++)
- 		if (match($(i), "^[0-9]")) {
- 			verstr = $(i);
+        tglx
