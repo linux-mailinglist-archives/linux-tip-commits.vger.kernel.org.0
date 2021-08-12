@@ -2,56 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 070953EA2D0
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 12 Aug 2021 12:10:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2FEB23EA2D5
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 12 Aug 2021 12:11:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235970AbhHLKKW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 12 Aug 2021 06:10:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45254 "EHLO
+        id S235227AbhHLKMF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 12 Aug 2021 06:12:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45256 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236173AbhHLKKQ (ORCPT
+        with ESMTP id S236151AbhHLKKQ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Thu, 12 Aug 2021 06:10:16 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 574DDC061799;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB399C06179B;
         Thu, 12 Aug 2021 03:09:45 -0700 (PDT)
-Date:   Thu, 12 Aug 2021 10:09:42 -0000
+Date:   Thu, 12 Aug 2021 10:09:43 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1628762983;
+        s=2020; t=1628762984;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=MIc2D9bxHOWfX49qYEC3q6JpMD8s1z/PNmyXUyrZx/k=;
-        b=tuxjEWbiKVvygZpdPtxSGMZixBErPBb93btDGIPuqUwzJQTUMlKOsPi5jYUKxuiVH3SYOF
-        1SGaI2aGRPFG++pjIZSfqaqZ8svbN41KGwR3QiiFd5uubINsY0NT9DY2ZDgZH7EMDGZkvV
-        LHcEECzTAy3uYA97tP6q210NDhqHBnPTBh3sjOzN89MBCtgQlpinmJvztzopPLkjdHuzI5
-        5Kl2xv9oZOzA1OL/xsJVUrIu+u9OzSefYvTBSZekP0RoBpiSTcDDC29yzJzN01qrdv8pAu
-        FXC64Ir8PUE0kHMSk0n4Cn4jJWeIH5ZbHxNOhXNozJ814TTCcWU5Q+sEDXknvg==
+        bh=EojEC9l2IEqu33hC1E1/r59YGBpO0jV1pcmU2rY27/A=;
+        b=BH6Y4lgJdFbgEH98fcTJF8V7SMEeF0Z9rwMQrH6jEtEi9n8aTFrXmQoauPKFkBz3vsdnTs
+        e9JwncsGhko6J3+/a9smFa2mtXgkADks3uBJXdjRuvZHBK6vTgJ4A7fuMFrLR6ULmdiM4d
+        xF46F5f2j29Ci/UFhKR8f8E+M5Xyex5KN2w9EuJrnSizKnac+TS3vAZXcMXTcgG6dOzSMm
+        cCXLjCFn1eGzb7ojmBcbMI1IJauu1X0JpBU6RX/a8x+E0mVCWSfMv24EZwd5YbO9bHd1Hu
+        LRa/+ISvwGCITC5iHOE+3AdoveLwZuldxEnzx+YyVR9D8j1gNgDYmIzSjiTfLw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1628762983;
+        s=2020e; t=1628762984;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=MIc2D9bxHOWfX49qYEC3q6JpMD8s1z/PNmyXUyrZx/k=;
-        b=9PvtLAPEDYkzr1bZpfsrf5ak7qKJ/bB+RaFdDbqJCfHf1w9Dxb0g6gckkxC7XvuiVe5kz5
-        ng4Ts5mi+K9mW/Dw==
+        bh=EojEC9l2IEqu33hC1E1/r59YGBpO0jV1pcmU2rY27/A=;
+        b=K/C0iZnbVwh+PUVkduI+hp4Pms50x53lCNvlINQXq3pZCBlTKNxfgvfjDzkeAriDTBFR2N
+        JA17qK0E/CiIWzDA==
 From:   "tip-bot2 for Paul Gortmaker" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/misc] x86/reboot: Limit Dell Optiplex 990 quirk to early
- BIOS versions
+Subject: [tip: x86/misc] x86/reboot: Document the "reboot=pci" option
 Cc:     Paul Gortmaker <paul.gortmaker@windriver.com>,
-        Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20210530162447.996461-4-paul.gortmaker@windriver.com>
-References: <20210530162447.996461-4-paul.gortmaker@windriver.com>
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20210530162447.996461-2-paul.gortmaker@windriver.com>
+References: <20210530162447.996461-2-paul.gortmaker@windriver.com>
 MIME-Version: 1.0
-Message-ID: <162876298213.395.8927635127005087509.tip-bot2@tip-bot2>
+Message-ID: <162876298363.395.15945425696843293640.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -62,92 +61,45 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/misc branch of tip:
 
-Commit-ID:     a729691b541f6e63043beae72e635635abe5dc09
-Gitweb:        https://git.kernel.org/tip/a729691b541f6e63043beae72e635635abe5dc09
+Commit-ID:     162a5284faf41b2441b8f686f9ac4771c7a8f669
+Gitweb:        https://git.kernel.org/tip/162a5284faf41b2441b8f686f9ac4771c7a8f669
 Author:        Paul Gortmaker <paul.gortmaker@windriver.com>
-AuthorDate:    Sun, 30 May 2021 12:24:47 -04:00
+AuthorDate:    Sun, 30 May 2021 12:24:45 -04:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Thu, 12 Aug 2021 12:06:58 +02:00
 
-x86/reboot: Limit Dell Optiplex 990 quirk to early BIOS versions
+x86/reboot: Document the "reboot=pci" option
 
-When this platform was relatively new in November 2011, with early BIOS
-revisions, a reboot quirk was added in commit 6be30bb7d750 ("x86/reboot:
-Blacklist Dell OptiPlex 990 known to require PCI reboot")
+It is mentioned in the top level non-arch specific file but it was
+overlooked here for x86.
 
-However, this quirk (and several others) are open-ended to all BIOS
-versions and left no automatic expiry if/when the system BIOS fixed the
-issue, meaning that nobody is likely to come along and re-test.
-
-What is really problematic with using PCI reboot as this quirk does, is
-that it causes this platform to do a full power down, wait one second,
-and then power back on.  This is less than ideal if one is using it for
-boot testing and/or bisecting kernels when legacy rotating hard disks
-are installed.
-
-It was only by chance that the quirk was noticed in dmesg - and when
-disabled it turned out that it wasn't required anymore (BIOS A24), and a
-default reboot would work fine without the "harshness" of power cycling the
-machine (and disks) down and up like the PCI reboot does.
-
-Doing a bit more research, it seems that the "newest" BIOS for which the
-issue was reported[1] was version A06, however Dell[2] seemed to suggest
-only up to and including version A05, with the A06 having a large number of
-fixes[3] listed.
-
-As is typical with a new platform, the initial BIOS updates come frequently
-and then taper off (and in this case, with a revival for CPU CVEs); a
-search for O990-A<ver>.exe reveals the following dates:
-
-        A02     16 Mar 2011
-        A03     11 May 2011
-        A06     14 Sep 2011
-        A07     24 Oct 2011
-        A10     08 Dec 2011
-        A14     06 Sep 2012
-        A16     15 Oct 2012
-        A18     30 Sep 2013
-        A19     23 Sep 2015
-        A20     02 Jun 2017
-        A23     07 Mar 2018
-        A24     21 Aug 2018
-
-While it's overkill to flash and test each of the above, it would seem
-likely that the issue was contained within A0x BIOS versions, given the
-dates above and the dates of issue reports[4] from distros.  So rather than
-just throw out the quirk entirely, limit the scope to just those early BIOS
-versions, in case people are still running systems from 2011 with the
-original as-shipped early A0x BIOS versions.
-
-[1] https://lore.kernel.org/lkml/1320373471-3942-1-git-send-email-trenn@suse.de/
-[2] https://www.dell.com/support/kbdoc/en-ca/000131908/linux-based-operating-systems-stall-upon-reboot-on-optiplex-390-790-990-systems
-[3] https://www.dell.com/support/home/en-ca/drivers/driversdetails?driverid=85j10
-[4] https://bugs.launchpad.net/ubuntu/+source/linux/+bug/768039
-
-Fixes: 6be30bb7d750 ("x86/reboot: Blacklist Dell OptiPlex 990 known to require PCI reboot")
 Signed-off-by: Paul Gortmaker <paul.gortmaker@windriver.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20210530162447.996461-4-paul.gortmaker@windriver.com
+Link: https://lore.kernel.org/r/20210530162447.996461-2-paul.gortmaker@windriver.com
 
 ---
- arch/x86/kernel/reboot.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ Documentation/x86/x86_64/boot-options.rst | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/reboot.c b/arch/x86/kernel/reboot.c
-index ebfb911..0a40df6 100644
---- a/arch/x86/kernel/reboot.c
-+++ b/arch/x86/kernel/reboot.c
-@@ -388,10 +388,11 @@ static const struct dmi_system_id reboot_dmi_table[] __initconst = {
- 	},
- 	{	/* Handle problems with rebooting on the OptiPlex 990. */
- 		.callback = set_pci_reboot,
--		.ident = "Dell OptiPlex 990",
-+		.ident = "Dell OptiPlex 990 BIOS A0x",
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
- 			DMI_MATCH(DMI_PRODUCT_NAME, "OptiPlex 990"),
-+			DMI_MATCH(DMI_BIOS_VERSION, "A0"),
- 		},
- 	},
- 	{	/* Handle problems with rebooting on Dell 300's */
+diff --git a/Documentation/x86/x86_64/boot-options.rst b/Documentation/x86/x86_64/boot-options.rst
+index 5f62b3b..482f3b2 100644
+--- a/Documentation/x86/x86_64/boot-options.rst
++++ b/Documentation/x86/x86_64/boot-options.rst
+@@ -126,7 +126,7 @@ Idle loop
+ Rebooting
+ =========
+ 
+-   reboot=b[ios] | t[riple] | k[bd] | a[cpi] | e[fi] [, [w]arm | [c]old]
++   reboot=b[ios] | t[riple] | k[bd] | a[cpi] | e[fi] | p[ci] [, [w]arm | [c]old]
+       bios
+         Use the CPU reboot vector for warm reset
+       warm
+@@ -145,6 +145,8 @@ Rebooting
+         Use efi reset_system runtime service. If EFI is not configured or
+         the EFI reset does not work, the reboot path attempts the reset using
+         the keyboard controller.
++      pci
++        Use a write to the PCI config space register 0xcf9 to trigger reboot.
+ 
+    Using warm reset will be much faster especially on big memory
+    systems because the BIOS will not go through the memory check.
