@@ -2,52 +2,71 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DA7103EABCD
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 12 Aug 2021 22:32:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 298123EABE3
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 12 Aug 2021 22:40:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232315AbhHLUc6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 12 Aug 2021 16:32:58 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:60834 "EHLO
+        id S232106AbhHLUkh (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 12 Aug 2021 16:40:37 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:60886 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229677AbhHLUc5 (ORCPT
+        with ESMTP id S229531AbhHLUkg (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 12 Aug 2021 16:32:57 -0400
-From:   Thomas Gleixner <tglx@linutronix.de>
+        Thu, 12 Aug 2021 16:40:36 -0400
+Date:   Thu, 12 Aug 2021 20:40:08 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1628800351;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+        s=2020; t=1628800810;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=P0g6kaj3w3l8s66z1iLQpOYDO2iUHwY9sG7pabFyb34=;
-        b=DYKdHnUvdxnuxcXHyOctQBNAzVUGe/MdAiljNir0XmAdfJkJswzL1jCWknLQ8S9IKq7jiW
-        /mJgyYqZBmPnoAebGmfP2YbSDzSfsp2R+ve1YpkNqQAFhfq0YrikoyZwUF9q3qJbdMxywY
-        9RNl08VOqk1cHNFmCl7k8sCFBJAgYE+wH7nYp/spmdtdqzB4w1ZZ8XrT5+nbIO7IIgR3jY
-        6/j5cWEhrfCGlu2w9GWZc4nTYvc+D3jdDhEKJ2KAJ21mhDjdByXmzGiHhCh9ysGgvcSglW
-        jP73Kf0aiSpjLPfRqkdJOU6STCzb3kjQw5bf10NIqAXNugGDHJhCOqwfjjEImg==
+        bh=mLxOOJTgmBsH4ceEt7U7qAgU0ffA70LQGqLsn5SImwI=;
+        b=hUTk2+7qjuIn3bCp9fpDndmkCWduahGUgjgPItz+Il3y1G8VPmszMFheCnxKWKuRg9TDB7
+        Z4JF4A7krWS+jhe0em2HriokqR1H2SD3Bbp0SMtmHI7fgTY0Ek4XyXzz2d/4yIOxq2Mcl3
+        rkdXtsth3YrhcgR1ilvSsC3a3AUT46wEMz0mG9TImoKV2YUKRjSY6qagPdv1F262HiL5x8
+        wu3KnbOjTlEkVtOXxDMXEf5xB1TFjJ0nBkyLJr9RKUThLd6TuBgW9LFOQ9TApYMciQUrS9
+        f0NblH0T+EpxtjoT2y/NSFRsZCBUpV39BywroolTnKKPUOr5DlsMZFpgDRGRYA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1628800351;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+        s=2020e; t=1628800810;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=P0g6kaj3w3l8s66z1iLQpOYDO2iUHwY9sG7pabFyb34=;
-        b=lZ3p8zpAaDTY0wOmAI3HB0PocayVusZIVK1yN+a/OCs3DPncIdjTJ71/v9xZhrwyBlx91L
-        ucH9SccbnJnRdmBg==
-To:     Mike Galbraith <efault@gmx.de>, linux-kernel@vger.kernel.org,
-        linux-tip-commits@vger.kernel.org
-Cc:     Peter Zijlstra <peterz@infradead.org>, x86@kernel.org
-Subject: [PATCH] hrtimer: Unbreak hrtimer_force_reprogram()
-In-Reply-To: <877dgqivhy.ffs@tglx>
-References: <20210713135158.054424875@linutronix.de>
- <162861133759.395.7795246170325882103.tip-bot2@tip-bot2>
- <7dfb3b15af67400227e7fa9e1916c8add0374ba9.camel@gmx.de>
- <87a6lmiwi0.ffs@tglx> <877dgqivhy.ffs@tglx>
-Date:   Thu, 12 Aug 2021 22:32:30 +0200
-Message-ID: <8735recskh.ffs@tglx>
+        bh=mLxOOJTgmBsH4ceEt7U7qAgU0ffA70LQGqLsn5SImwI=;
+        b=3NhhrqElTBt9h4zjYrc54RA6lN4G/wbde4CzX+CpmXhlflIqcGnjIInyyM0qi++6flthaR
+        EnzkKK/to6IHmaAg==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: timers/core] hrtimer: Unbreak hrtimer_force_reprogram()
+Cc:     Mike Galbraith <efault@gmx.de>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <8735recskh.ffs@tglx>
+References: <8735recskh.ffs@tglx>
 MIME-Version: 1.0
-Content-Type: text/plain
+Message-ID: <162880080883.395.18131494384243612114.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
+
+The following commit has been merged into the timers/core branch of tip:
+
+Commit-ID:     f80e21489590c00f46226d5802d900e6f66e5633
+Gitweb:        https://git.kernel.org/tip/f80e21489590c00f46226d5802d900e6f66e5633
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Thu, 12 Aug 2021 22:32:30 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Thu, 12 Aug 2021 22:34:40 +02:00
+
+hrtimer: Unbreak hrtimer_force_reprogram()
 
 Since the recent consoliation of reprogramming functions,
 hrtimer_force_reprogram() is affected by a check whether the new expiry
@@ -68,13 +87,17 @@ Reported-by: Mike Galbraith <efault@gmx.de>
 Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Tested-by: Mike Galbraith <efault@gmx.de>
+Link: https://lore.kernel.org/r/8735recskh.ffs@tglx
+
 ---
- kernel/time/hrtimer.c |   40 ++++++++++++++++++++--------------------
+ kernel/time/hrtimer.c | 40 ++++++++++++++++++++--------------------
  1 file changed, 20 insertions(+), 20 deletions(-)
 
+diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
+index 33b00e2..0ea8702 100644
 --- a/kernel/time/hrtimer.c
 +++ b/kernel/time/hrtimer.c
-@@ -652,24 +652,10 @@ static inline int hrtimer_hres_active(vo
+@@ -652,24 +652,10 @@ static inline int hrtimer_hres_active(void)
  	return __hrtimer_hres_active(this_cpu_ptr(&hrtimer_bases));
  }
  
@@ -102,7 +125,7 @@ Tested-by: Mike Galbraith <efault@gmx.de>
  	cpu_base->expires_next = expires_next;
  
  	/*
-@@ -707,8 +693,10 @@ hrtimer_force_reprogram(struct hrtimer_c
+@@ -707,8 +693,10 @@ hrtimer_force_reprogram(struct hrtimer_cpu_base *cpu_base, int skip_equal)
  
  	expires_next = hrtimer_update_next_event(cpu_base);
  
@@ -115,7 +138,7 @@ Tested-by: Mike Galbraith <efault@gmx.de>
  }
  
  /* High resolution timer related functions */
-@@ -863,7 +851,19 @@ static void hrtimer_reprogram(struct hrt
+@@ -863,7 +851,19 @@ static void hrtimer_reprogram(struct hrtimer *timer, bool reprogram)
  	if (base->cpu_base != cpu_base)
  		return;
  
