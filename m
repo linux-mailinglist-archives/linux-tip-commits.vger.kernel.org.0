@@ -2,49 +2,46 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 65CBB3EB42A
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 13 Aug 2021 12:42:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6741A3EB446
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 13 Aug 2021 12:49:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239092AbhHMKnY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 13 Aug 2021 06:43:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41464 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239003AbhHMKnY (ORCPT
+        id S239139AbhHMKtl (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 13 Aug 2021 06:49:41 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:36290 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S239044AbhHMKtl (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 13 Aug 2021 06:43:24 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2E39C061756;
-        Fri, 13 Aug 2021 03:42:57 -0700 (PDT)
-Date:   Fri, 13 Aug 2021 10:42:54 -0000
+        Fri, 13 Aug 2021 06:49:41 -0400
+Date:   Fri, 13 Aug 2021 10:49:12 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1628851375;
+        s=2020; t=1628851753;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=gYaPQC1iR/8lxOIJ6UaW6f1/CfQJrXbXQIPCGSOB3wM=;
-        b=sqwsIftx4VKdad1QTzwLkw+nfRqIazNaJVtfpY5aJdgdxg/vjOUZ1KOc5fsvEmmWTfmd5G
-        s+XSIV4mCb4Q8i2jdhKEltXZLWcN/g4j0CVI2doo03AD3mSpjuRUB/asmX2wKkh5DFJA32
-        qEpk0YiRvbLp23QtTZaRq6OIl04qvJaJyfS2X+p3BXJUmVMmJ06kcAT63wJM6dJ23UiJXs
-        GQKejAWCZffilwpgq5inX61NIrh44r/HTTMPPfuQS95pQztvpX8hZ+LXQbb9FEXCb5+3Qr
-        g3VxjBc9efqTQ1uZleUjkIDHHH35su2MgWEb2PZPPrA2YU333ewAL6daoft3Jw==
+        bh=AMLllHMycNcC4hKfM/vOPH/POFQGseaOT5hx0towTLU=;
+        b=xLNxxVfTr0107P72SKWE0BCXpQiC0TPqAgtX+Y+HKl7lVbUpOWYbX/MXQSHnlSgmZBTUtW
+        zVaAt7Bv5aQLHGRPVz2kEsHUMW/0ZrTvoUOor6ed0V9WPLOi+KjRRIm+CnFCZOVTvg/wyW
+        rYtoGhKwjON315pgOdWjcCtv7JpFPPnqjBV1dlU8+A2+8X5tAk3GF/2o3k/qBiH7bn87vY
+        YleYCvpVOE6sZzwRCtmvF9fFvygqeZyTZ/EM2EvKSaIdR9SeFjj+GeVrccfYtSNcxpn7uL
+        MlYwLhYCykoJvPdTZW77KwD5PG3K+6X2psm2DDGHCHT5Azo7WuvnhsZiyfKW1g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1628851375;
+        s=2020e; t=1628851753;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=gYaPQC1iR/8lxOIJ6UaW6f1/CfQJrXbXQIPCGSOB3wM=;
-        b=WspQEkISx0C+Qgf1tHPsJiSWb+GqLi+M5sBaL2V1A8dn0M+nc3Fk/5jXP6e9DUVXTpbIDQ
-        oJYnpkXUU61nfwDQ==
+        bh=AMLllHMycNcC4hKfM/vOPH/POFQGseaOT5hx0towTLU=;
+        b=TGKpTh2OMo5rB2eGEhh1PXZ4vy6V6YFR2+eOrh7hEL8u4E4Rl4UH/dbATNMIs0jZISIz8m
+        gGj551PO1Rsv03Cg==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/urgent] driver core: Add missing kernel doc for device::msi_lock
+Subject: [tip: irq/core] genirq: Fix kernel doc indentation
 Cc:     Stephen Rothwell <sfr@canb.auug.org.au>,
         Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org, maz@kernel.org
 MIME-Version: 1.0
-Message-ID: <162885137454.395.4291921020038807852.tip-bot2@tip-bot2>
+Message-ID: <162885175277.395.17743129255104361597.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -53,33 +50,36 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the irq/urgent branch of tip:
+The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     7a3dc4f35bf8e1a07e5c3f8ecc8ac923f48493fe
-Gitweb:        https://git.kernel.org/tip/7a3dc4f35bf8e1a07e5c3f8ecc8ac923f48493fe
+Commit-ID:     04c2721d3530f0723b4c922a8fa9f26b202a20de
+Gitweb:        https://git.kernel.org/tip/04c2721d3530f0723b4c922a8fa9f26b202a20de
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Fri, 13 Aug 2021 12:36:14 +02:00
+AuthorDate:    Fri, 13 Aug 2021 12:40:04 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 13 Aug 2021 12:38:48 +02:00
+CommitterDate: Fri, 13 Aug 2021 12:45:13 +02:00
 
-driver core: Add missing kernel doc for device::msi_lock
+genirq: Fix kernel doc indentation
 
-Fixes: 77e89afc25f3 ("PCI/MSI: Protect msi_desc::masked for multi-MSI")
+Fixes: 61377ec14457 ("genirq: Clarify documentation for request_threaded_irq()")
 Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
- include/linux/device.h | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/irq/manage.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/include/linux/device.h b/include/linux/device.h
-index e53aa50..65d84b6 100644
---- a/include/linux/device.h
-+++ b/include/linux/device.h
-@@ -407,6 +407,7 @@ struct dev_links_info {
-  * @em_pd:	device's energy model performance domain
-  * @pins:	For device pin management.
-  *		See Documentation/driver-api/pin-control.rst for details.
-+ * @msi_lock:	Lock to protect MSI mask cache and mask register
-  * @msi_list:	Hosts MSI descriptors
-  * @msi_domain: The generic MSI domain this device is using.
-  * @numa_node:	NUMA node this device is close to.
+diff --git a/kernel/irq/manage.c b/kernel/irq/manage.c
+index 34a66c4..27667e8 100644
+--- a/kernel/irq/manage.c
++++ b/kernel/irq/manage.c
+@@ -2107,9 +2107,7 @@ const void *free_nmi(unsigned int irq, void *dev_id)
+  *
+  *	IRQF_SHARED		Interrupt is shared
+  *	IRQF_TRIGGER_*		Specify active edge(s) or level
+- *	IRQF_ONESHOT		Do not unmask interrupt line until
+- *				thread_fn returns
+- *
++ *	IRQF_ONESHOT		Run thread_fn with interrupt line masked
+  */
+ int request_threaded_irq(unsigned int irq, irq_handler_t handler,
+ 			 irq_handler_t thread_fn, unsigned long irqflags,
