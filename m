@@ -2,16 +2,19 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 396653EF348
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Aug 2021 22:15:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ECBD23EF34D
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Aug 2021 22:15:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234028AbhHQUOv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 17 Aug 2021 16:14:51 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:34720 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234688AbhHQUOr (ORCPT
+        id S234828AbhHQUOy (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 17 Aug 2021 16:14:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51432 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234546AbhHQUOs (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 17 Aug 2021 16:14:47 -0400
+        Tue, 17 Aug 2021 16:14:48 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6ABFC0613CF;
+        Tue, 17 Aug 2021 13:14:14 -0700 (PDT)
 Date:   Tue, 17 Aug 2021 20:14:12 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1629231253;
@@ -20,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=tlbyU7oabq6QJaRyxWtsQ1W+xWAp4FZ/8F43UowZAdI=;
-        b=gUKcWKsDuXm9JKUxGWo6QBmGGLKgTweOAoE9NKy+PPfUviDlamRqW+hgN2TcrzREKsdXrf
-        C9JYSvBx/2cjUt54R6julJ+navMmnRqQaM+MN06A/ujjH+OKgR5vx/CchNPFn4uiVFXuVM
-        WoDs7E3HX54tCreNX760RYHfCvMBIRZSGyvZjLP6JSk1Y7/YhkYsf4mgry6Cz/t6aFQl9P
-        2p5An/pS1rfIw2cEhcxSaLbO3K4t6rY5rT0QUzRV7o1SV5NOINM9mth/xpw7rhNYBUDz83
-        Ryb9hUG8zHgme5ddeA/SWzp6T3MDeE8F8nhEmJUQ5Hh9vamTAJPMUkINdmVYSA==
+        bh=RE4W23T6mWscYRtU3/FmEp7SMp9/IFzh8pjxHPo8rRE=;
+        b=TYpH3kyLVmIV4gGBc7Y8OYlSwZxQNUgrLKlhrxII7IJ9EUH5uoF6Yvp+gSQnWOmzik3Gd9
+        MSY0vlCAD9bBP1jTK5Sx9jEl8cpUEIwMjXYTks1owEpaXVxcrqzORNQk8uOJ9ZuHPPbmke
+        7gBkAX31KYBXC41ubFZjGfvsDgR0VjC5pfBcAxon5EJmB5OzS5HP6rtMJjOCLOXuiDpq8C
+        xxisqyUTBO1svFvO3mG/pbYvU7uaSM0x3pohdkSeWLnUxDdVHjfR4e/Zqk86xJ3ljYxZwk
+        oN/K7lR9he/Hq4kFlRNJTea+d4txUODgI8kBDr+kkgvcM7a77KD9hBVD5Wv8Ow==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1629231253;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -33,22 +36,23 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=tlbyU7oabq6QJaRyxWtsQ1W+xWAp4FZ/8F43UowZAdI=;
-        b=X0PUlP+SAdcrFVWQTtaeA5nUlk9ScSXU3P/3nVIpw0h8gEYLkrukmdXs8ibUSxTJg3W4Yy
-        WzCDb+G1/9LxtyDQ==
+        bh=RE4W23T6mWscYRtU3/FmEp7SMp9/IFzh8pjxHPo8rRE=;
+        b=+VRr25RMsyG0yl4DefCJz7Sb9O70lr1P6ijX3fXDE8vGagBLGBtUs0mWjneqmxPIMOmZ1G
+        qqGxOCXUUKLLFDBg==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] locking/ww_mutex: Abstract out the waiter iteration
+Subject: [tip: locking/core] locking/ww_mutex: Remove the __sched annotation
+ from ww_mutex APIs
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210815211304.509186185@linutronix.de>
-References: <20210815211304.509186185@linutronix.de>
+In-Reply-To: <20210815211304.453235952@linutronix.de>
+References: <20210815211304.453235952@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <162923125223.25758.10344291090591811028.tip-bot2@tip-bot2>
+Message-ID: <162923125280.25758.9542137274889127981.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,112 +63,82 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     23d599eb2377404100d0d1508e12b0a2c40b49b1
-Gitweb:        https://git.kernel.org/tip/23d599eb2377404100d0d1508e12b0a2c40b49b1
+Commit-ID:     5297ccb2c50916c59294a63fae79fe01a7fbb79a
+Gitweb:        https://git.kernel.org/tip/5297ccb2c50916c59294a63fae79fe01a7fbb79a
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Sun, 15 Aug 2021 23:28:45 +02:00
+AuthorDate:    Sun, 15 Aug 2021 23:28:44 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 17 Aug 2021 19:04:52 +02:00
+CommitterDate: Tue, 17 Aug 2021 19:04:49 +02:00
 
-locking/ww_mutex: Abstract out the waiter iteration
+locking/ww_mutex: Remove the __sched annotation from ww_mutex APIs
 
-Split out the waiter iteration functions so they can be substituted for a
-rtmutex based ww_mutex later.
+None of these functions will be on the stack when blocking in
+schedule(), hence __sched is not needed.
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20210815211304.509186185@linutronix.de
+Link: https://lore.kernel.org/r/20210815211304.453235952@linutronix.de
 ---
- kernel/locking/ww_mutex.h | 57 +++++++++++++++++++++++++++++++++++---
- 1 file changed, 53 insertions(+), 4 deletions(-)
+ kernel/locking/ww_mutex.h | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/kernel/locking/ww_mutex.h b/kernel/locking/ww_mutex.h
-index 6a98f3b..1cd178c 100644
+index dadc798..6a98f3b 100644
 --- a/kernel/locking/ww_mutex.h
 +++ b/kernel/locking/ww_mutex.h
-@@ -1,5 +1,49 @@
- /* SPDX-License-Identifier: GPL-2.0-only */
+@@ -62,7 +62,7 @@ ww_mutex_lock_acquired(struct ww_mutex *ww, struct ww_acquire_ctx *ww_ctx)
+  * transaction than @b and depending on algorithm either needs to wait for
+  * @b or die.
+  */
+-static inline bool __sched
++static inline bool
+ __ww_ctx_stamp_after(struct ww_acquire_ctx *a, struct ww_acquire_ctx *b)
+ {
  
-+static inline struct mutex_waiter *
-+__ww_waiter_first(struct mutex *lock)
-+{
-+	struct mutex_waiter *w;
-+
-+	w = list_first_entry(&lock->wait_list, struct mutex_waiter, list);
-+	if (list_entry_is_head(w, &lock->wait_list, list))
-+		return NULL;
-+
-+	return w;
-+}
-+
-+static inline struct mutex_waiter *
-+__ww_waiter_next(struct mutex *lock, struct mutex_waiter *w)
-+{
-+	w = list_next_entry(w, list);
-+	if (list_entry_is_head(w, &lock->wait_list, list))
-+		return NULL;
-+
-+	return w;
-+}
-+
-+static inline struct mutex_waiter *
-+__ww_waiter_prev(struct mutex *lock, struct mutex_waiter *w)
-+{
-+	w = list_prev_entry(w, list);
-+	if (list_entry_is_head(w, &lock->wait_list, list))
-+		return NULL;
-+
-+	return w;
-+}
-+
-+static inline struct mutex_waiter *
-+__ww_waiter_last(struct mutex *lock)
-+{
-+	struct mutex_waiter *w;
-+
-+	w = list_last_entry(&lock->wait_list, struct mutex_waiter, list);
-+	if (list_entry_is_head(w, &lock->wait_list, list))
-+		return NULL;
-+
-+	return w;
-+}
-+
- /*
-  * Wait-Die:
-  *   The newer transactions are killed when:
-@@ -161,7 +205,9 @@ __ww_mutex_check_waiters(struct mutex *lock, struct ww_acquire_ctx *ww_ctx)
+@@ -77,7 +77,7 @@ __ww_ctx_stamp_after(struct ww_acquire_ctx *a, struct ww_acquire_ctx *b)
+  * already (ctx->acquired > 0), because __ww_mutex_add_waiter() and
+  * __ww_mutex_check_kill() wake any but the earliest context.
+  */
+-static bool __sched
++static bool
+ __ww_mutex_die(struct mutex *lock, struct mutex_waiter *waiter,
+ 	       struct ww_acquire_ctx *ww_ctx)
+ {
+@@ -154,7 +154,7 @@ static bool __ww_mutex_wound(struct mutex *lock,
+  *
+  * The current task must not be on the wait list.
+  */
+-static void __sched
++static void
+ __ww_mutex_check_waiters(struct mutex *lock, struct ww_acquire_ctx *ww_ctx)
+ {
+ 	struct mutex_waiter *cur;
+@@ -210,7 +210,7 @@ ww_mutex_set_context_fastpath(struct ww_mutex *lock, struct ww_acquire_ctx *ctx)
+ 	raw_spin_unlock(&lock->base.wait_lock);
+ }
  
- 	lockdep_assert_held(&lock->wait_lock);
- 
--	list_for_each_entry(cur, &lock->wait_list, list) {
-+	for (cur = __ww_waiter_first(lock); cur;
-+	     cur = __ww_waiter_next(lock, cur)) {
-+
- 		if (!cur->ww_ctx)
- 			continue;
- 
-@@ -263,8 +309,9 @@ __ww_mutex_check_kill(struct mutex *lock, struct mutex_waiter *waiter,
- 	 * If there is a waiter in front of us that has a context, then its
- 	 * stamp is earlier than ours and we must kill ourself.
- 	 */
--	cur = waiter;
--	list_for_each_entry_continue_reverse(cur, &lock->wait_list, list) {
-+	for (cur = __ww_waiter_prev(lock, waiter); cur;
-+	     cur = __ww_waiter_prev(lock, cur)) {
-+
- 		if (!cur->ww_ctx)
- 			continue;
- 
-@@ -309,7 +356,9 @@ __ww_mutex_add_waiter(struct mutex_waiter *waiter,
- 	 * may wound the lock holder.
- 	 */
- 	pos = &lock->wait_list;
--	list_for_each_entry_reverse(cur, &lock->wait_list, list) {
-+	for (cur = __ww_waiter_last(lock); cur;
-+	     cur = __ww_waiter_prev(lock, cur)) {
-+
- 		if (!cur->ww_ctx)
- 			continue;
- 
+-static __always_inline int __sched
++static __always_inline int
+ __ww_mutex_kill(struct mutex *lock, struct ww_acquire_ctx *ww_ctx)
+ {
+ 	if (ww_ctx->acquired > 0) {
+@@ -238,7 +238,7 @@ __ww_mutex_kill(struct mutex *lock, struct ww_acquire_ctx *ww_ctx)
+  * Since __ww_mutex_add_waiter() orders the wait-list on stamp, we only have to
+  * look at waiters before us in the wait-list.
+  */
+-static inline int __sched
++static inline int
+ __ww_mutex_check_kill(struct mutex *lock, struct mutex_waiter *waiter,
+ 		      struct ww_acquire_ctx *ctx)
+ {
+@@ -285,7 +285,7 @@ __ww_mutex_check_kill(struct mutex *lock, struct mutex_waiter *waiter,
+  * older contexts already waiting) to avoid unnecessary waiting and for
+  * Wound-Wait ensure we wound the owning context when it is younger.
+  */
+-static inline int __sched
++static inline int
+ __ww_mutex_add_waiter(struct mutex_waiter *waiter,
+ 		      struct mutex *lock,
+ 		      struct ww_acquire_ctx *ww_ctx)
