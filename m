@@ -2,53 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BE87C3EF35E
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Aug 2021 22:15:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 153B13EF35F
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Aug 2021 22:15:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234833AbhHQUPX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 17 Aug 2021 16:15:23 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:34608 "EHLO
+        id S234843AbhHQUPY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 17 Aug 2021 16:15:24 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:34586 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234827AbhHQUOy (ORCPT
+        with ESMTP id S234835AbhHQUOz (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 17 Aug 2021 16:14:54 -0400
-Date:   Tue, 17 Aug 2021 20:14:19 -0000
+        Tue, 17 Aug 2021 16:14:55 -0400
+Date:   Tue, 17 Aug 2021 20:14:20 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1629231260;
+        s=2020; t=1629231261;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=TSf6sTg52gE4lbqamwI10g699CyE6uUqI1kk8qJ3pkE=;
-        b=ir5473G3ezoMTiqgIo+qWCVYqly+UF6mqYKabbLrKQBqnzgUSuOnmEcimcxmlrZ1u0jILd
-        Fxe0wG4rqhPrUnzhBvDjHE+kaCpXkXtRZXoA6+bubjdoy5ev62EZ8/UZFkqmttdDQauA0b
-        oqtYPYt648pPoevPcYMtqv4GlXDH47p2jSCafgWvNn47rSfCzLMfbKa96xbClUNSUEbbI9
-        gekI/9xokUTvSFs0/JWdnyayOZbSyOK5iK2XYgsJyPMWNbEQz2ztDudhUo7qKl113tG+DO
-        sL8p56VGLyUOsVrXpsIGzl2kwLsj8fby4svl3usyDPBb8h1shEvNYj6i1IFrvQ==
+        bh=EwdtG2Fmp0DrqLELRZD6Pv/gUzGWDcMPkUtK6ZVvHUU=;
+        b=ug3RBli96iTmAXGFZbp6pKLs9vGaDifYhVIxzT4iVDK+slg5b8iDGxG3M4/u22gm55uASd
+        2xkFnxx8jox0vxvll9euT18BWJJS3bn5YHvsETUsy4I/6TxpR8hamPj/muodafEi3vYah9
+        /tmaAIYylGBCab/kkk6YC3JmXKnfwOkW+Ia7miC1VucWsmk6roRCK2bPxl5yi/UZjt3RMJ
+        nJmpiPE5rhtY1GfCAPZlP4u/igFkFw34iaf9EcpkscW/A3YRUnQeYfh3A3T6zJpFnCs2vl
+        4slmY9odN6NQ5wS4ZcqFpZglu/5iiyE3l3MRVdgOBSOM+icJQMI7RcpIGEqhhQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1629231260;
+        s=2020e; t=1629231261;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=TSf6sTg52gE4lbqamwI10g699CyE6uUqI1kk8qJ3pkE=;
-        b=tOSL7AVXjn06a1DaLWGZ8kTXGqjjaphkaw6ZtEphKN/2aKB4ncpjoBPFJhrtZpi8wI4pMR
-        4+JgGqMfLTA8z8AA==
+        bh=EwdtG2Fmp0DrqLELRZD6Pv/gUzGWDcMPkUtK6ZVvHUU=;
+        b=n5C6nwZppk2U6IFo8/TiwQa+cypRUAcSKEkEW92bJY2JGp+KtgYEx9h0ZLg9Yv2gzZahHF
+        Ui3xS+wcLLztTpDw==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] locking/spinlock: Provide RT variant
+Subject: [tip: locking/core] locking/rtmutex: Provide the spin/rwlock core
+ lock function
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210815211303.826621464@linutronix.de>
-References: <20210815211303.826621464@linutronix.de>
+In-Reply-To: <20210815211303.770228446@linutronix.de>
+References: <20210815211303.770228446@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <162923125969.25758.6166313112326064815.tip-bot2@tip-bot2>
+Message-ID: <162923126024.25758.14251862058471582653.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,172 +60,106 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     0f383b6dc96e976dfbf2721b0bf10bd96103b341
-Gitweb:        https://git.kernel.org/tip/0f383b6dc96e976dfbf2721b0bf10bd96103b341
+Commit-ID:     1c143c4b65da09081d644110e619decc49c9dee4
+Gitweb:        https://git.kernel.org/tip/1c143c4b65da09081d644110e619decc49c9dee4
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Sun, 15 Aug 2021 23:28:27 +02:00
+AuthorDate:    Sun, 15 Aug 2021 23:28:25 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 17 Aug 2021 17:48:13 +02:00
+CommitterDate: Tue, 17 Aug 2021 17:45:37 +02:00
 
-locking/spinlock: Provide RT variant
+locking/rtmutex: Provide the spin/rwlock core lock function
 
-Provide the actual locking functions which make use of the general and
-spinlock specific rtmutex code.
+A simplified version of the rtmutex slowlock function, which neither handles
+signals nor timeouts, and is careful about preserving the state of the
+blocked task across the lock operation.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20210815211303.826621464@linutronix.de
+Link: https://lore.kernel.org/r/20210815211303.770228446@linutronix.de
 ---
- kernel/locking/Makefile      |   1 +-
- kernel/locking/spinlock_rt.c | 129 ++++++++++++++++++++++++++++++++++-
- 2 files changed, 130 insertions(+)
- create mode 100644 kernel/locking/spinlock_rt.c
+ kernel/locking/rtmutex.c        | 60 ++++++++++++++++++++++++++++++++-
+ kernel/locking/rtmutex_common.h |  2 +-
+ 2 files changed, 61 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/locking/Makefile b/kernel/locking/Makefile
-index 269f55e..683f0b7 100644
---- a/kernel/locking/Makefile
-+++ b/kernel/locking/Makefile
-@@ -25,6 +25,7 @@ obj-$(CONFIG_LOCK_SPIN_ON_OWNER) += osq_lock.o
- obj-$(CONFIG_PROVE_LOCKING) += spinlock.o
- obj-$(CONFIG_QUEUED_SPINLOCKS) += qspinlock.o
- obj-$(CONFIG_RT_MUTEXES) += rtmutex_api.o
-+obj-$(CONFIG_PREEMPT_RT) += spinlock_rt.o
- obj-$(CONFIG_DEBUG_SPINLOCK) += spinlock.o
- obj-$(CONFIG_DEBUG_SPINLOCK) += spinlock_debug.o
- obj-$(CONFIG_QUEUED_RWLOCKS) += qrwlock.o
-diff --git a/kernel/locking/spinlock_rt.c b/kernel/locking/spinlock_rt.c
-new file mode 100644
-index 0000000..edfa7b5
---- /dev/null
-+++ b/kernel/locking/spinlock_rt.c
-@@ -0,0 +1,129 @@
-+// SPDX-License-Identifier: GPL-2.0-only
+diff --git a/kernel/locking/rtmutex.c b/kernel/locking/rtmutex.c
+index 949781a..951bef0 100644
+--- a/kernel/locking/rtmutex.c
++++ b/kernel/locking/rtmutex.c
+@@ -1416,3 +1416,63 @@ static __always_inline int __rt_mutex_lock(struct rt_mutex_base *lock,
+ 	return rt_mutex_slowlock(lock, state);
+ }
+ #endif /* RT_MUTEX_BUILD_MUTEX */
++
++#ifdef RT_MUTEX_BUILD_SPINLOCKS
 +/*
-+ * PREEMPT_RT substitution for spin/rw_locks
-+ *
-+ * spinlocks and rwlocks on RT are based on rtmutexes, with a few twists to
-+ * resemble the non RT semantics:
-+ *
-+ * - Contrary to plain rtmutexes, spinlocks and rwlocks are state
-+ *   preserving. The task state is saved before blocking on the underlying
-+ *   rtmutex, and restored when the lock has been acquired. Regular wakeups
-+ *   during that time are redirected to the saved state so no wake up is
-+ *   missed.
-+ *
-+ * - Non RT spin/rwlocks disable preemption and eventually interrupts.
-+ *   Disabling preemption has the side effect of disabling migration and
-+ *   preventing RCU grace periods.
-+ *
-+ *   The RT substitutions explicitly disable migration and take
-+ *   rcu_read_lock() across the lock held section.
++ * Functions required for spin/rw_lock substitution on RT kernels
 + */
-+#include <linux/spinlock.h>
-+#include <linux/export.h>
 +
-+#define RT_MUTEX_BUILD_SPINLOCKS
-+#include "rtmutex.c"
-+
-+static __always_inline void rtlock_lock(struct rt_mutex_base *rtm)
-+{
-+	if (unlikely(!rt_mutex_cmpxchg_acquire(rtm, NULL, current)))
-+		rtlock_slowlock(rtm);
-+}
-+
-+static __always_inline void __rt_spin_lock(spinlock_t *lock)
-+{
-+	___might_sleep(__FILE__, __LINE__, 0);
-+	rtlock_lock(&lock->lock);
-+	rcu_read_lock();
-+	migrate_disable();
-+}
-+
-+void __sched rt_spin_lock(spinlock_t *lock)
-+{
-+	spin_acquire(&lock->dep_map, 0, 0, _RET_IP_);
-+	__rt_spin_lock(lock);
-+}
-+EXPORT_SYMBOL(rt_spin_lock);
-+
-+#ifdef CONFIG_DEBUG_LOCK_ALLOC
-+void __sched rt_spin_lock_nested(spinlock_t *lock, int subclass)
-+{
-+	spin_acquire(&lock->dep_map, subclass, 0, _RET_IP_);
-+	__rt_spin_lock(lock);
-+}
-+EXPORT_SYMBOL(rt_spin_lock_nested);
-+
-+void __sched rt_spin_lock_nest_lock(spinlock_t *lock,
-+				    struct lockdep_map *nest_lock)
-+{
-+	spin_acquire_nest(&lock->dep_map, 0, 0, nest_lock, _RET_IP_);
-+	__rt_spin_lock(lock);
-+}
-+EXPORT_SYMBOL(rt_spin_lock_nest_lock);
-+#endif
-+
-+void __sched rt_spin_unlock(spinlock_t *lock)
-+{
-+	spin_release(&lock->dep_map, _RET_IP_);
-+	migrate_enable();
-+	rcu_read_unlock();
-+
-+	if (unlikely(!rt_mutex_cmpxchg_release(&lock->lock, current, NULL)))
-+		rt_mutex_slowunlock(&lock->lock);
-+}
-+EXPORT_SYMBOL(rt_spin_unlock);
-+
-+/*
-+ * Wait for the lock to get unlocked: instead of polling for an unlock
-+ * (like raw spinlocks do), lock and unlock, to force the kernel to
-+ * schedule if there's contention:
++/**
++ * rtlock_slowlock_locked - Slow path lock acquisition for RT locks
++ * @lock:	The underlying RT mutex
 + */
-+void __sched rt_spin_lock_unlock(spinlock_t *lock)
++static void __sched rtlock_slowlock_locked(struct rt_mutex_base *lock)
 +{
-+	spin_lock(lock);
-+	spin_unlock(lock);
-+}
-+EXPORT_SYMBOL(rt_spin_lock_unlock);
++	struct rt_mutex_waiter waiter;
 +
-+static __always_inline int __rt_spin_trylock(spinlock_t *lock)
-+{
-+	int ret = 1;
++	lockdep_assert_held(&lock->wait_lock);
 +
-+	if (unlikely(!rt_mutex_cmpxchg_acquire(&lock->lock, NULL, current)))
-+		ret = rt_mutex_slowtrylock(&lock->lock);
++	if (try_to_take_rt_mutex(lock, current, NULL))
++		return;
 +
-+	if (ret) {
-+		spin_acquire(&lock->dep_map, 0, 1, _RET_IP_);
-+		rcu_read_lock();
-+		migrate_disable();
++	rt_mutex_init_rtlock_waiter(&waiter);
++
++	/* Save current state and set state to TASK_RTLOCK_WAIT */
++	current_save_and_set_rtlock_wait_state();
++
++	task_blocks_on_rt_mutex(lock, &waiter, current, RT_MUTEX_MIN_CHAINWALK);
++
++	for (;;) {
++		/* Try to acquire the lock again */
++		if (try_to_take_rt_mutex(lock, current, &waiter))
++			break;
++
++		raw_spin_unlock_irq(&lock->wait_lock);
++
++		schedule_rtlock();
++
++		raw_spin_lock_irq(&lock->wait_lock);
++		set_current_state(TASK_RTLOCK_WAIT);
 +	}
-+	return ret;
++
++	/* Restore the task state */
++	current_restore_rtlock_saved_state();
++
++	/*
++	 * try_to_take_rt_mutex() sets the waiter bit unconditionally.
++	 * We might have to fix that up:
++	 */
++	fixup_rt_mutex_waiters(lock);
++	debug_rt_mutex_free_waiter(&waiter);
 +}
 +
-+int __sched rt_spin_trylock(spinlock_t *lock)
++static __always_inline void __sched rtlock_slowlock(struct rt_mutex_base *lock)
 +{
-+	return __rt_spin_trylock(lock);
-+}
-+EXPORT_SYMBOL(rt_spin_trylock);
++	unsigned long flags;
 +
-+int __sched rt_spin_trylock_bh(spinlock_t *lock)
-+{
-+	int ret;
-+
-+	local_bh_disable();
-+	ret = __rt_spin_trylock(lock);
-+	if (!ret)
-+		local_bh_enable();
-+	return ret;
++	raw_spin_lock_irqsave(&lock->wait_lock, flags);
++	rtlock_slowlock_locked(lock);
++	raw_spin_unlock_irqrestore(&lock->wait_lock, flags);
 +}
-+EXPORT_SYMBOL(rt_spin_trylock_bh);
 +
-+#ifdef CONFIG_DEBUG_LOCK_ALLOC
-+void __rt_spin_lock_init(spinlock_t *lock, const char *name,
-+			 struct lock_class_key *key)
-+{
-+	debug_check_no_locks_freed((void *)lock, sizeof(*lock));
-+	lockdep_init_map_wait(&lock->dep_map, name, key, 0, LD_WAIT_CONFIG);
-+}
-+EXPORT_SYMBOL(__rt_spin_lock_init);
-+#endif
++#endif /* RT_MUTEX_BUILD_SPINLOCKS */
+diff --git a/kernel/locking/rtmutex_common.h b/kernel/locking/rtmutex_common.h
+index 424ee0f..ccf0e36 100644
+--- a/kernel/locking/rtmutex_common.h
++++ b/kernel/locking/rtmutex_common.h
+@@ -181,7 +181,7 @@ static inline void rt_mutex_init_waiter(struct rt_mutex_waiter *waiter)
+ 	waiter->task = NULL;
+ }
+ 
+-static inline void rtlock_init_rtmutex_waiter(struct rt_mutex_waiter *waiter)
++static inline void rt_mutex_init_rtlock_waiter(struct rt_mutex_waiter *waiter)
+ {
+ 	rt_mutex_init_waiter(waiter);
+ 	waiter->wake_state = TASK_RTLOCK_WAIT;
