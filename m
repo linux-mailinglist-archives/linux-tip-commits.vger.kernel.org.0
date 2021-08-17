@@ -2,57 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 292993EF345
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Aug 2021 22:15:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 877393EF343
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Aug 2021 22:15:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234579AbhHQUOt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S234550AbhHQUOt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Tue, 17 Aug 2021 16:14:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51442 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234594AbhHQUOn (ORCPT
+Received: from Galois.linutronix.de ([193.142.43.55]:34614 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234455AbhHQUOn (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Tue, 17 Aug 2021 16:14:43 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41F9EC0617AD;
-        Tue, 17 Aug 2021 13:14:10 -0700 (PDT)
-Date:   Tue, 17 Aug 2021 20:14:07 -0000
+Date:   Tue, 17 Aug 2021 20:14:08 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1629231248;
+        s=2020; t=1629231249;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=wy7ySavLHevfsF2krBMaZBGlEkJdUjZix8MQsdx1uO4=;
-        b=FE+EgQlHXgmxecqlF5zLM2x+PsZP0RiPjtOn9AVAN3k47lHN85xtqkVTkguUxq4r9MqPGJ
-        eV9iVErS0aw6KmEmT8tXNTV0N2IosZ1ud/RYH+P1vV107edrMcQLpowAuyW79e0PxusLCr
-        evXJ6ROgIaeWcxUcoJ0iylKRC0GUaFt55jR87AJOjto4ZokHc6Hj/i6e4HtBnXZtvW77yS
-        XeFtFDZb+lC8bwtewzGjhaZZSkLfI0nFoPe7wHXQBsegakiXN2pcm6atJxpzMF8B8KhtEK
-        rqNrvJT6Sc+RR4TLNAXx/OW1kLLC/oOM9qySaTcCxFRkAhqMd11v866fWTHGUA==
+        bh=ucziT0Apgm2nWVrP9p3I60LxjflSBIMwqs4U+tZT4kA=;
+        b=hbeaKuK4A8JwG75SRhCLH/UXZTwGevPSmQBm82Yztzueal9M1zxDRe4q8KBpi3Y8yFDLQF
+        8PG+b1/c4z6aSo6+rO5BAx5LWlTx6SUF6MYvnDivpL9scfcQWDFf/uNS9hGlv41DaL+vmU
+        /p2OZ7ESiqCXmCrbj4zqlfV+j3uYOn17lWK12LJeOx8P6TB5GtlM3lHe8ozrP4sQ7+2hpX
+        SgdE5Swy048QNo4Xpp3RzEXw8NFn6EBJaEwQ/PlisfdWgae6fzK5bY6SgDMeQLmi4h6Z50
+        kaLjHBwB0j1EEj+TIMsYW8H1Xqh5LAAK5jTq5KHwZWOcNgP+Pzt5kXk28JarAA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1629231248;
+        s=2020e; t=1629231249;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=wy7ySavLHevfsF2krBMaZBGlEkJdUjZix8MQsdx1uO4=;
-        b=HGM7qkICtj+9CJQPTfgt0moaPaJL+JL22uvwss/2VHHtgH62Y6JOjLhN+xoIOYOFSxRRdE
-        JDP5o8FWpOLuFLCw==
+        bh=ucziT0Apgm2nWVrP9p3I60LxjflSBIMwqs4U+tZT4kA=;
+        b=BHz3gVH19UDhGd87J7XVeABJ0+pCdO1f++OzKFAT/1H3oKGHm3xbjaVYYc0EOhxhNvQFtG
+        Bu0ZTfyeH0iKA5AQ==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] locking/ww_mutex: Add rt_mutex based lock type
- and accessors
+Subject: [tip: locking/core] locking/ww_mutex: Add RT priority to W/W order
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210815211304.908012566@linutronix.de>
-References: <20210815211304.908012566@linutronix.de>
+In-Reply-To: <20210815211304.847536630@linutronix.de>
+References: <20210815211304.847536630@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <162923124800.25758.14253419026562761404.tip-bot2@tip-bot2>
+Message-ID: <162923124867.25758.16331379250721685764.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -63,171 +59,150 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     2408f7a3782a6bfa69a573f5408b3a9666db78ca
-Gitweb:        https://git.kernel.org/tip/2408f7a3782a6bfa69a573f5408b3a9666db78ca
+Commit-ID:     8850d773703f8114d7c8a2421fd20bde8a558f96
+Gitweb:        https://git.kernel.org/tip/8850d773703f8114d7c8a2421fd20bde8a558f96
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Sun, 15 Aug 2021 23:28:56 +02:00
+AuthorDate:    Sun, 15 Aug 2021 23:28:55 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 17 Aug 2021 19:05:11 +02:00
+CommitterDate: Tue, 17 Aug 2021 19:05:08 +02:00
 
-locking/ww_mutex: Add rt_mutex based lock type and accessors
+locking/ww_mutex: Add RT priority to W/W order
 
-Provide the defines for RT mutex based ww_mutexes and fix up the debug logic
-so it's either enabled by DEBUG_MUTEXES or DEBUG_RT_MUTEXES on RT kernels.
+RT mutex based ww_mutexes cannot order based on timestamps. They have to
+order based on priority. Add the necessary decision logic.
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20210815211304.908012566@linutronix.de
+Link: https://lore.kernel.org/r/20210815211304.847536630@linutronix.de
 ---
- include/linux/ww_mutex.h  | 33 ++++++++++++++++++++++++---------
- kernel/locking/ww_mutex.h |  6 +++---
- 2 files changed, 27 insertions(+), 12 deletions(-)
+ kernel/locking/ww_mutex.h | 64 +++++++++++++++++++++++++++++---------
+ 1 file changed, 49 insertions(+), 15 deletions(-)
 
-diff --git a/include/linux/ww_mutex.h b/include/linux/ww_mutex.h
-index 3438e30..29db736 100644
---- a/include/linux/ww_mutex.h
-+++ b/include/linux/ww_mutex.h
-@@ -18,11 +18,24 @@
- #define __LINUX_WW_MUTEX_H
- 
- #include <linux/mutex.h>
-+#include <linux/rtmutex.h>
- 
-+#if defined(CONFIG_DEBUG_MUTEXES) || \
-+   (defined(CONFIG_PREEMPT_RT) && defined(CONFIG_DEBUG_RT_MUTEXES))
-+#define DEBUG_WW_MUTEXES
-+#endif
-+
-+#ifndef CONFIG_PREEMPT_RT
- #define WW_MUTEX_BASE			mutex
- #define ww_mutex_base_init(l,n,k)	__mutex_init(l,n,k)
- #define ww_mutex_base_trylock(l)	mutex_trylock(l)
- #define ww_mutex_base_is_locked(b)	mutex_is_locked((b))
-+#else
-+#define WW_MUTEX_BASE			rt_mutex
-+#define ww_mutex_base_init(l,n,k)	__rt_mutex_init(l,n,k)
-+#define ww_mutex_base_trylock(l)	rt_mutex_trylock(l)
-+#define ww_mutex_base_is_locked(b)	rt_mutex_base_is_locked(&(b)->rtmutex)
-+#endif
- 
- struct ww_class {
- 	atomic_long_t stamp;
-@@ -36,7 +49,7 @@ struct ww_class {
- struct ww_mutex {
- 	struct WW_MUTEX_BASE base;
- 	struct ww_acquire_ctx *ctx;
--#ifdef CONFIG_DEBUG_MUTEXES
-+#ifdef DEBUG_WW_MUTEXES
- 	struct ww_class *ww_class;
- #endif
- };
-@@ -47,10 +60,10 @@ struct ww_acquire_ctx {
- 	unsigned int acquired;
- 	unsigned short wounded;
- 	unsigned short is_wait_die;
--#ifdef CONFIG_DEBUG_MUTEXES
-+#ifdef DEBUG_WW_MUTEXES
- 	unsigned int done_acquire;
- 	struct ww_class *ww_class;
--	struct ww_mutex *contending_lock;
-+	void *contending_lock;
- #endif
- #ifdef CONFIG_DEBUG_LOCK_ALLOC
- 	struct lockdep_map dep_map;
-@@ -89,7 +102,7 @@ static inline void ww_mutex_init(struct ww_mutex *lock,
- {
- 	ww_mutex_base_init(&lock->base, ww_class->mutex_name, &ww_class->mutex_key);
- 	lock->ctx = NULL;
--#ifdef CONFIG_DEBUG_MUTEXES
-+#ifdef DEBUG_WW_MUTEXES
- 	lock->ww_class = ww_class;
- #endif
- }
-@@ -126,7 +139,7 @@ static inline void ww_acquire_init(struct ww_acquire_ctx *ctx,
- 	ctx->acquired = 0;
- 	ctx->wounded = false;
- 	ctx->is_wait_die = ww_class->is_wait_die;
--#ifdef CONFIG_DEBUG_MUTEXES
-+#ifdef DEBUG_WW_MUTEXES
- 	ctx->ww_class = ww_class;
- 	ctx->done_acquire = 0;
- 	ctx->contending_lock = NULL;
-@@ -156,7 +169,7 @@ static inline void ww_acquire_init(struct ww_acquire_ctx *ctx,
-  */
- static inline void ww_acquire_done(struct ww_acquire_ctx *ctx)
- {
--#ifdef CONFIG_DEBUG_MUTEXES
-+#ifdef DEBUG_WW_MUTEXES
- 	lockdep_assert_held(ctx);
- 
- 	DEBUG_LOCKS_WARN_ON(ctx->done_acquire);
-@@ -176,7 +189,7 @@ static inline void ww_acquire_fini(struct ww_acquire_ctx *ctx)
- #ifdef CONFIG_DEBUG_LOCK_ALLOC
- 	mutex_release(&ctx->dep_map, _THIS_IP_);
- #endif
--#ifdef CONFIG_DEBUG_MUTEXES
-+#ifdef DEBUG_WW_MUTEXES
- 	DEBUG_LOCKS_WARN_ON(ctx->acquired);
- 	if (!IS_ENABLED(CONFIG_PROVE_LOCKING))
- 		/*
-@@ -282,7 +295,7 @@ static inline void
- ww_mutex_lock_slow(struct ww_mutex *lock, struct ww_acquire_ctx *ctx)
- {
- 	int ret;
--#ifdef CONFIG_DEBUG_MUTEXES
-+#ifdef DEBUG_WW_MUTEXES
- 	DEBUG_LOCKS_WARN_ON(!ctx->contending_lock);
- #endif
- 	ret = ww_mutex_lock(lock, ctx);
-@@ -318,7 +331,7 @@ static inline int __must_check
- ww_mutex_lock_slow_interruptible(struct ww_mutex *lock,
- 				 struct ww_acquire_ctx *ctx)
- {
--#ifdef CONFIG_DEBUG_MUTEXES
-+#ifdef DEBUG_WW_MUTEXES
- 	DEBUG_LOCKS_WARN_ON(!ctx->contending_lock);
- #endif
- 	return ww_mutex_lock_interruptible(lock, ctx);
-@@ -348,7 +361,9 @@ static inline int __must_check ww_mutex_trylock(struct ww_mutex *lock)
-  */
- static inline void ww_mutex_destroy(struct ww_mutex *lock)
- {
-+#ifndef CONFIG_PREEMPT_RT
- 	mutex_destroy(&lock->base);
-+#endif
- }
- 
- /**
 diff --git a/kernel/locking/ww_mutex.h b/kernel/locking/ww_mutex.h
-index 2dce4f0..56f1392 100644
+index 7da9890..2dce4f0 100644
 --- a/kernel/locking/ww_mutex.h
 +++ b/kernel/locking/ww_mutex.h
-@@ -180,7 +180,7 @@ static inline void lockdep_assert_wait_lock_held(struct rt_mutex *lock)
- static __always_inline void
- ww_mutex_lock_acquired(struct ww_mutex *ww, struct ww_acquire_ctx *ww_ctx)
- {
--#ifdef CONFIG_DEBUG_MUTEXES
-+#ifdef DEBUG_WW_MUTEXES
- 	/*
- 	 * If this WARN_ON triggers, you used ww_mutex_lock to acquire,
- 	 * but released with a normal mutex_unlock in this call.
-@@ -413,7 +413,7 @@ static __always_inline int
- __ww_mutex_kill(struct MUTEX *lock, struct ww_acquire_ctx *ww_ctx)
- {
- 	if (ww_ctx->acquired > 0) {
--#ifdef CONFIG_DEBUG_MUTEXES
-+#ifdef DEBUG_WW_MUTEXES
- 		struct ww_mutex *ww;
+@@ -219,19 +219,54 @@ ww_mutex_lock_acquired(struct ww_mutex *ww, struct ww_acquire_ctx *ww_ctx)
+ }
  
- 		ww = container_of(lock, struct ww_mutex, base);
-@@ -559,7 +559,7 @@ __ww_mutex_add_waiter(struct MUTEX_WAITER *waiter,
- static inline void __ww_mutex_unlock(struct ww_mutex *lock)
+ /*
+- * Determine if context @a is 'after' context @b. IOW, @a is a younger
+- * transaction than @b and depending on algorithm either needs to wait for
+- * @b or die.
++ * Determine if @a is 'less' than @b. IOW, either @a is a lower priority task
++ * or, when of equal priority, a younger transaction than @b.
++ *
++ * Depending on the algorithm, @a will either need to wait for @b, or die.
+  */
+ static inline bool
+-__ww_ctx_stamp_after(struct ww_acquire_ctx *a, struct ww_acquire_ctx *b)
++__ww_ctx_less(struct ww_acquire_ctx *a, struct ww_acquire_ctx *b)
  {
- 	if (lock->ctx) {
--#ifdef CONFIG_DEBUG_MUTEXES
-+#ifdef DEBUG_WW_MUTEXES
- 		DEBUG_LOCKS_WARN_ON(!lock->ctx->acquired);
++/*
++ * Can only do the RT prio for WW_RT, because task->prio isn't stable due to PI,
++ * so the wait_list ordering will go wobbly. rt_mutex re-queues the waiter and
++ * isn't affected by this.
++ */
++#ifdef WW_RT
++	/* kernel prio; less is more */
++	int a_prio = a->task->prio;
++	int b_prio = b->task->prio;
++
++	if (rt_prio(a_prio) || rt_prio(b_prio)) {
++
++		if (a_prio > b_prio)
++			return true;
++
++		if (a_prio < b_prio)
++			return false;
++
++		/* equal static prio */
++
++		if (dl_prio(a_prio)) {
++			if (dl_time_before(b->task->dl.deadline,
++					   a->task->dl.deadline))
++				return true;
++
++			if (dl_time_before(a->task->dl.deadline,
++					   b->task->dl.deadline))
++				return false;
++		}
++
++		/* equal prio */
++	}
++#endif
+ 
++	/* FIFO order tie break -- bigger is younger */
+ 	return (signed long)(a->stamp - b->stamp) > 0;
+ }
+ 
+ /*
+- * Wait-Die; wake a younger waiter context (when locks held) such that it can
++ * Wait-Die; wake a lesser waiter context (when locks held) such that it can
+  * die.
+  *
+  * Among waiters with context, only the first one can have other locks acquired
+@@ -245,8 +280,7 @@ __ww_mutex_die(struct MUTEX *lock, struct MUTEX_WAITER *waiter,
+ 	if (!ww_ctx->is_wait_die)
+ 		return false;
+ 
+-	if (waiter->ww_ctx->acquired > 0 &&
+-			__ww_ctx_stamp_after(waiter->ww_ctx, ww_ctx)) {
++	if (waiter->ww_ctx->acquired > 0 && __ww_ctx_less(waiter->ww_ctx, ww_ctx)) {
+ #ifndef WW_RT
+ 		debug_mutex_wake_waiter(lock, waiter);
  #endif
- 		if (lock->ctx->acquired > 0)
+@@ -257,10 +291,10 @@ __ww_mutex_die(struct MUTEX *lock, struct MUTEX_WAITER *waiter,
+ }
+ 
+ /*
+- * Wound-Wait; wound a younger @hold_ctx if it holds the lock.
++ * Wound-Wait; wound a lesser @hold_ctx if it holds the lock.
+  *
+- * Wound the lock holder if there are waiters with older transactions than
+- * the lock holders. Even if multiple waiters may wound the lock holder,
++ * Wound the lock holder if there are waiters with more important transactions
++ * than the lock holders. Even if multiple waiters may wound the lock holder,
+  * it's sufficient that only one does.
+  */
+ static bool __ww_mutex_wound(struct MUTEX *lock,
+@@ -287,7 +321,7 @@ static bool __ww_mutex_wound(struct MUTEX *lock,
+ 	if (!owner)
+ 		return false;
+ 
+-	if (ww_ctx->acquired > 0 && __ww_ctx_stamp_after(hold_ctx, ww_ctx)) {
++	if (ww_ctx->acquired > 0 && __ww_ctx_less(hold_ctx, ww_ctx)) {
+ 		hold_ctx->wounded = 1;
+ 
+ 		/*
+@@ -306,8 +340,8 @@ static bool __ww_mutex_wound(struct MUTEX *lock,
+ }
+ 
+ /*
+- * We just acquired @lock under @ww_ctx, if there are later contexts waiting
+- * behind us on the wait-list, check if they need to die, or wound us.
++ * We just acquired @lock under @ww_ctx, if there are more important contexts
++ * waiting behind us on the wait-list, check if they need to die, or wound us.
+  *
+  * See __ww_mutex_add_waiter() for the list-order construction; basically the
+  * list is ordered by stamp, smallest (oldest) first.
+@@ -421,7 +455,7 @@ __ww_mutex_check_kill(struct MUTEX *lock, struct MUTEX_WAITER *waiter,
+ 		return 0;
+ 	}
+ 
+-	if (hold_ctx && __ww_ctx_stamp_after(ctx, hold_ctx))
++	if (hold_ctx && __ww_ctx_less(ctx, hold_ctx))
+ 		return __ww_mutex_kill(lock, ctx);
+ 
+ 	/*
+@@ -479,7 +513,7 @@ __ww_mutex_add_waiter(struct MUTEX_WAITER *waiter,
+ 		if (!cur->ww_ctx)
+ 			continue;
+ 
+-		if (__ww_ctx_stamp_after(ww_ctx, cur->ww_ctx)) {
++		if (__ww_ctx_less(ww_ctx, cur->ww_ctx)) {
+ 			/*
+ 			 * Wait-Die: if we find an older context waiting, there
+ 			 * is no point in queueing behind it, as we'd have to
