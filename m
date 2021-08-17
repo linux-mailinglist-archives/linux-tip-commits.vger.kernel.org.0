@@ -2,54 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B106E3EF35B
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Aug 2021 22:15:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 068733EF35C
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Aug 2021 22:15:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235322AbhHQUPU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S235345AbhHQUPU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Tue, 17 Aug 2021 16:15:20 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:34720 "EHLO
+Received: from Galois.linutronix.de ([193.142.43.55]:34752 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234787AbhHQUOw (ORCPT
+        with ESMTP id S234526AbhHQUOx (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 17 Aug 2021 16:14:52 -0400
-Date:   Tue, 17 Aug 2021 20:14:17 -0000
+        Tue, 17 Aug 2021 16:14:53 -0400
+Date:   Tue, 17 Aug 2021 20:14:18 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1629231258;
+        s=2020; t=1629231259;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=D/lakbxGb/V25iYB0O7VFwcnlQvAP+15XrNut9hLpl0=;
-        b=xHi3Gt/cmKdslVoRTLbicHlxjSyWsOtkvy9o//ShtyLXJzOMyaq7VxhzziG2XfPqGvTT1i
-        eoW5a+r64hzQssoZRmPIFYHPKKkC3HasSm9yhXYn67DBYNKLiVxjjlyQbsGKrIabz5SC3z
-        LQbNylsrXTDrA7vcq/ZbQigiBqZIPMV+blU8r/S/kRHcHgQMRQGXrxZV8njC9bnsZwrzOP
-        A8RaYYOXCsJSapsLbkjNwh7hfz0gg+L/hJh9MuFiY0y2r+GqDkbOxrvI4yjrERPj0JA8hO
-        vEqSeB76XKymF4rMq38ubZP2FG7LeFZwv7i9eQzwHuUBFR+RvjJcxw8zyMVuOQ==
+        bh=uwWnW4svONw2tyd4RPaVfJuMdc2arqgZ6QYFQakZySU=;
+        b=jd1Q1HbF2b9JWahum9XcZjkYeUnwCe2/6Xug0qf/Ya2BqoojE4H2lgMJfFxjiDa2nCCmzg
+        WnvCQTD3ymVu3Plv7d53raLNAuKXS+9Q4u8f+jBdoFugMbz1mcvQrOYYSZU7/fGPI1qyvQ
+        JhuiIkHaPkqBXZ+vAMENjMYvJSN/WN7pafuRTQtGduD504zeGQzSl3Q9n6t6nSqzMYdMy6
+        fx87tc/XDU+e4j5v3WiF+b6I5aOCebRwMY2Tr4FAdD7MAypFTmsz4q8O/2vfNq2ynRacqc
+        oQMQZiVuvR+Jx9r5kxAGKdEd3I374zYHT5uiu+iBbaNTARUPfwbu11aJ89Wfsw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1629231258;
+        s=2020e; t=1629231259;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=D/lakbxGb/V25iYB0O7VFwcnlQvAP+15XrNut9hLpl0=;
-        b=nVUMp2x7DO+JO6xGEbfxw1ZOdEkxArS+H1QehHWe1Vzt3oAXruwTydso7n23hAkCcYGtXo
-        g+OtSzhKw5mjo2AA==
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+        bh=uwWnW4svONw2tyd4RPaVfJuMdc2arqgZ6QYFQakZySU=;
+        b=kVXflVFUV9yUQOoyhPFNjuVyS2WKjphT9dTBZRiqNkWFp3QiITDVM7f+13JoNYaQXtJCJb
+        hssnOWA2/VHL5fCg==
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] locking/mutex: Consolidate core headers, remove
- kernel/locking/mutex-debug.h
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+Subject: [tip: locking/core] locking/rtmutex: Squash !RT tasks to DEFAULT_PRIO
+Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210815211303.995350521@linutronix.de>
-References: <20210815211303.995350521@linutronix.de>
+In-Reply-To: <20210815211303.938676930@linutronix.de>
+References: <20210815211303.938676930@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <162923125785.25758.2150823316735633711.tip-bot2@tip-bot2>
+Message-ID: <162923125846.25758.3743395437613314698.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,149 +59,82 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     a321fb9038b335f3c447d1810b97d5f7eec152ac
-Gitweb:        https://git.kernel.org/tip/a321fb9038b335f3c447d1810b97d5f7eec152ac
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Tue, 17 Aug 2021 16:17:38 +02:00
+Commit-ID:     715f7f9ece4685157bb59560f6c612340d730ab4
+Gitweb:        https://git.kernel.org/tip/715f7f9ece4685157bb59560f6c612340d730ab4
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Sun, 15 Aug 2021 23:28:30 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 17 Aug 2021 18:24:22 +02:00
+CommitterDate: Tue, 17 Aug 2021 17:51:02 +02:00
 
-locking/mutex: Consolidate core headers, remove kernel/locking/mutex-debug.h
+locking/rtmutex: Squash !RT tasks to DEFAULT_PRIO
 
-Having two header files which contain just the non-debug and debug variants
-is mostly waste of disc space and has no real value. Stick the debug
-variants into the common mutex.h file as counterpart to the stubs for the
-non-debug case.
+Ensure all !RT tasks have the same prio such that they end up in FIFO
+order and aren't split up according to nice level.
 
+The reason why nice levels were taken into account so far is historical. In
+the early days of the rtmutex code it was done to give the PI boosting and
+deboosting a larger coverage.
+
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20210815211303.995350521@linutronix.de
+Link: https://lore.kernel.org/r/20210815211303.938676930@linutronix.de
 ---
- kernel/locking/mutex-debug.c |  4 +---
- kernel/locking/mutex-debug.h | 29 +---------------------------
- kernel/locking/mutex.c       |  4 ++--
- kernel/locking/mutex.h       | 37 +++++++++++++++++++++--------------
- 4 files changed, 26 insertions(+), 48 deletions(-)
- delete mode 100644 kernel/locking/mutex-debug.h
+ kernel/locking/rtmutex.c | 25 ++++++++++++++++++++-----
+ 1 file changed, 20 insertions(+), 5 deletions(-)
 
-diff --git a/kernel/locking/mutex-debug.c b/kernel/locking/mutex-debug.c
-index db93015..7ef5a36 100644
---- a/kernel/locking/mutex-debug.c
-+++ b/kernel/locking/mutex-debug.c
-@@ -1,6 +1,4 @@
- /*
-- * kernel/mutex-debug.c
-- *
-  * Debugging code for mutexes
-  *
-  * Started by Ingo Molnar:
-@@ -22,7 +20,7 @@
- #include <linux/interrupt.h>
- #include <linux/debug_locks.h>
- 
--#include "mutex-debug.h"
-+#include "mutex.h"
- 
- /*
-  * Must be called with lock->wait_lock held.
-diff --git a/kernel/locking/mutex-debug.h b/kernel/locking/mutex-debug.h
-deleted file mode 100644
-index 53e631e..0000000
---- a/kernel/locking/mutex-debug.h
-+++ /dev/null
-@@ -1,29 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0 */
--/*
-- * Mutexes: blocking mutual exclusion locks
-- *
-- * started by Ingo Molnar:
-- *
-- *  Copyright (C) 2004, 2005, 2006 Red Hat, Inc., Ingo Molnar <mingo@redhat.com>
-- *
-- * This file contains mutex debugging related internal declarations,
-- * prototypes and inline functions, for the CONFIG_DEBUG_MUTEXES case.
-- * More details are in kernel/mutex-debug.c.
-- */
--
--/*
-- * This must be called with lock->wait_lock held.
-- */
--extern void debug_mutex_lock_common(struct mutex *lock,
--				    struct mutex_waiter *waiter);
--extern void debug_mutex_wake_waiter(struct mutex *lock,
--				    struct mutex_waiter *waiter);
--extern void debug_mutex_free_waiter(struct mutex_waiter *waiter);
--extern void debug_mutex_add_waiter(struct mutex *lock,
--				   struct mutex_waiter *waiter,
--				   struct task_struct *task);
--extern void debug_mutex_remove_waiter(struct mutex *lock, struct mutex_waiter *waiter,
--				struct task_struct *task);
--extern void debug_mutex_unlock(struct mutex *lock);
--extern void debug_mutex_init(struct mutex *lock, const char *name,
--			     struct lock_class_key *key);
-diff --git a/kernel/locking/mutex.c b/kernel/locking/mutex.c
-index 21c9e5d..acbe43d 100644
---- a/kernel/locking/mutex.c
-+++ b/kernel/locking/mutex.c
-@@ -30,11 +30,11 @@
- #include <linux/debug_locks.h>
- #include <linux/osq_lock.h>
- 
-+#include "mutex.h"
-+
- #ifdef CONFIG_DEBUG_MUTEXES
--# include "mutex-debug.h"
- # define MUTEX_WARN_ON(cond) DEBUG_LOCKS_WARN_ON(cond)
- #else
--# include "mutex.h"
- # define MUTEX_WARN_ON(cond)
+diff --git a/kernel/locking/rtmutex.c b/kernel/locking/rtmutex.c
+index 951bef0..ac8fb2f 100644
+--- a/kernel/locking/rtmutex.c
++++ b/kernel/locking/rtmutex.c
+@@ -244,11 +244,28 @@ static __always_inline bool unlock_rt_mutex_safe(struct rt_mutex_base *lock,
+ }
  #endif
  
-diff --git a/kernel/locking/mutex.h b/kernel/locking/mutex.h
-index f0c710b..586e4f1 100644
---- a/kernel/locking/mutex.h
-+++ b/kernel/locking/mutex.h
-@@ -5,19 +5,28 @@
-  * started by Ingo Molnar:
-  *
-  *  Copyright (C) 2004, 2005, 2006 Red Hat, Inc., Ingo Molnar <mingo@redhat.com>
-- *
-- * This file contains mutex debugging related internal prototypes, for the
-- * !CONFIG_DEBUG_MUTEXES case. Most of them are NOPs:
++static __always_inline int __waiter_prio(struct task_struct *task)
++{
++	int prio = task->prio;
++
++	if (!rt_prio(prio))
++		return DEFAULT_PRIO;
++
++	return prio;
++}
++
++static __always_inline void
++waiter_update_prio(struct rt_mutex_waiter *waiter, struct task_struct *task)
++{
++	waiter->prio = __waiter_prio(task);
++	waiter->deadline = task->dl.deadline;
++}
++
+ /*
+  * Only use with rt_mutex_waiter_{less,equal}()
   */
+ #define task_to_waiter(p)	\
+-	&(struct rt_mutex_waiter){ .prio = (p)->prio, .deadline = (p)->dl.deadline }
++	&(struct rt_mutex_waiter){ .prio = __waiter_prio(p), .deadline = (p)->dl.deadline }
  
--#define debug_mutex_wake_waiter(lock, waiter)		do { } while (0)
--#define debug_mutex_free_waiter(waiter)			do { } while (0)
--#define debug_mutex_add_waiter(lock, waiter, ti)	do { } while (0)
--#define debug_mutex_remove_waiter(lock, waiter, ti)     do { } while (0)
--#define debug_mutex_unlock(lock)			do { } while (0)
--#define debug_mutex_init(lock, name, key)		do { } while (0)
--
--static inline void
--debug_mutex_lock_common(struct mutex *lock, struct mutex_waiter *waiter)
--{
--}
-+#ifdef CONFIG_DEBUG_MUTEXES
-+extern void debug_mutex_lock_common(struct mutex *lock,
-+				    struct mutex_waiter *waiter);
-+extern void debug_mutex_wake_waiter(struct mutex *lock,
-+				    struct mutex_waiter *waiter);
-+extern void debug_mutex_free_waiter(struct mutex_waiter *waiter);
-+extern void debug_mutex_add_waiter(struct mutex *lock,
-+				   struct mutex_waiter *waiter,
-+				   struct task_struct *task);
-+extern void debug_mutex_remove_waiter(struct mutex *lock, struct mutex_waiter *waiter,
-+				      struct task_struct *task);
-+extern void debug_mutex_unlock(struct mutex *lock);
-+extern void debug_mutex_init(struct mutex *lock, const char *name,
-+			     struct lock_class_key *key);
-+#else /* CONFIG_DEBUG_MUTEXES */
-+# define debug_mutex_lock_common(lock, waiter)		do { } while (0)
-+# define debug_mutex_wake_waiter(lock, waiter)		do { } while (0)
-+# define debug_mutex_free_waiter(waiter)		do { } while (0)
-+# define debug_mutex_add_waiter(lock, waiter, ti)	do { } while (0)
-+# define debug_mutex_remove_waiter(lock, waiter, ti)	do { } while (0)
-+# define debug_mutex_unlock(lock)			do { } while (0)
-+# define debug_mutex_init(lock, name, key)		do { } while (0)
-+#endif /* !CONFIG_DEBUG_MUTEXES */
+ static __always_inline int rt_mutex_waiter_less(struct rt_mutex_waiter *left,
+ 						struct rt_mutex_waiter *right)
+@@ -698,8 +715,7 @@ static int __sched rt_mutex_adjust_prio_chain(struct task_struct *task,
+ 	 * serializes all pi_waiters access and rb_erase() does not care about
+ 	 * the values of the node being removed.
+ 	 */
+-	waiter->prio = task->prio;
+-	waiter->deadline = task->dl.deadline;
++	waiter_update_prio(waiter, task);
+ 
+ 	rt_mutex_enqueue(lock, waiter);
+ 
+@@ -969,8 +985,7 @@ static int __sched task_blocks_on_rt_mutex(struct rt_mutex_base *lock,
+ 	raw_spin_lock(&task->pi_lock);
+ 	waiter->task = task;
+ 	waiter->lock = lock;
+-	waiter->prio = task->prio;
+-	waiter->deadline = task->dl.deadline;
++	waiter_update_prio(waiter, task);
+ 
+ 	/* Get the top priority waiter on the lock */
+ 	if (rt_mutex_has_waiters(lock))
