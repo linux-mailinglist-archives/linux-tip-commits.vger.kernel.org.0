@@ -2,54 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F40FA3EF32B
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Aug 2021 22:15:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65F733EF331
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Aug 2021 22:15:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234214AbhHQUOe (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 17 Aug 2021 16:14:34 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:34586 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234120AbhHQUOd (ORCPT
+        id S234142AbhHQUOh (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 17 Aug 2021 16:14:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51386 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234233AbhHQUOf (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 17 Aug 2021 16:14:33 -0400
-Date:   Tue, 17 Aug 2021 20:13:58 -0000
+        Tue, 17 Aug 2021 16:14:35 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DB04C061764;
+        Tue, 17 Aug 2021 13:14:01 -0700 (PDT)
+Date:   Tue, 17 Aug 2021 20:13:59 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1629231239;
+        s=2020; t=1629231240;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=o5/C9s4BlOf4NhAuxugeefjxljfJNCvTCU//Hbla9WI=;
-        b=0JbX6CEmJko6vOS5ED4xI8OtI3O12L8i5/bFcztSTi1vZ9J+d2a4DAUeP7/xqDdti3rwd2
-        G7ANCOTw0KLVXG8mwxebrCLUuv0wX3cMASLX561JmEPW3eNiKbaVwK2X6ktR9yhixPKsVo
-        U4f2Kvjnf/tS3oXKAdmCXdQ4ULO/pGXv8GW2P82ijNbBkkKIwdlFUDNvX8GTTrom/vJE9/
-        S2jegMzchBBHzXwl8oAUggByPEdOjKu7LjmjHIZG3PiIn3NQt80g4aUeGNVUIAn8ihJXqh
-        9P3bvAiAjhZXTCIDxnIFY6PSpf4BpskL5ZvdAdgdBXJI+rKD8sAj0XhGcqdsRg==
+        bh=AURNQ+yiagu9X2hXcAFpZEaShxSNZxa0lW5mHAwBfMA=;
+        b=ZlkMLRahd5IYEncIMcmuQLpDgcnJYxkQtXjRAF2/se2lTM59NTvxY869cVIl6v6LgSXu7D
+        eSheQlUtGxSgyv/Yo9B56t6+5Xg+b9keQlMmhW3IM2Oq7n8Q4r0/d49U6Vhfb/FvOLrOoN
+        t1KoV/288H4TRtUIiScDXmRKSJbluy77fdEYEqONGy/zE9pqzaMZyH+QdYdGw19hzle5d9
+        Ho9Qz6wTN5qGPCAgWjCYodddQuFm6kJ8PJJTXQUhaQu2DSrLiizdNI7UT7x72xRfWLncdW
+        LxZVqxyGiL5Zk9MolI9sldvVWdIgRdYdj+965g8Zu2ModC01tExox5Fko4aiXw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1629231239;
+        s=2020e; t=1629231240;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=o5/C9s4BlOf4NhAuxugeefjxljfJNCvTCU//Hbla9WI=;
-        b=FKN/+hTF1R/xOMnqlMs3oOERTPBLugW/L9OHH8USSseUiKxy5c6O3K0ujHkz8mXPXIS3Se
-        tLQjh9aZf9RB/MCw==
-From:   "tip-bot2 for Gregory Haskins" <tip-bot2@linutronix.de>
+        bh=AURNQ+yiagu9X2hXcAFpZEaShxSNZxa0lW5mHAwBfMA=;
+        b=dq85VKXHgUSv46E9aI5FMgnp8h/hNyzjF10fGEny6313uy+GFJQpDBBosWLvv7WvdV/IgJ
+        ZO+B3LsLq2kawIBw==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] locking/rtmutex: Implement equal priority lock stealing
-Cc:     Gregory Haskins <ghaskins@novell.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
+Subject: [tip: locking/core] locking/rtmutex: Prevent lockdep false positive
+ with PI futexes
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210815211305.857240222@linutronix.de>
-References: <20210815211305.857240222@linutronix.de>
+In-Reply-To: <20210815211305.750701219@linutronix.de>
+References: <20210815211305.750701219@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <162923123818.25758.13559046048201252355.tip-bot2@tip-bot2>
+Message-ID: <162923123934.25758.12789675236369119207.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,119 +63,53 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     48eb3f4fcfd35495a8357459aa6fe437aa430b00
-Gitweb:        https://git.kernel.org/tip/48eb3f4fcfd35495a8357459aa6fe437aa430b00
-Author:        Gregory Haskins <ghaskins@novell.com>
-AuthorDate:    Sun, 15 Aug 2021 23:29:23 +02:00
+Commit-ID:     51711e825a6d1b2fe7ca46bb06d08c25d97656ee
+Gitweb:        https://git.kernel.org/tip/51711e825a6d1b2fe7ca46bb06d08c25d97656ee
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Sun, 15 Aug 2021 23:29:20 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 17 Aug 2021 19:06:07 +02:00
+CommitterDate: Tue, 17 Aug 2021 19:06:02 +02:00
 
-locking/rtmutex: Implement equal priority lock stealing
+locking/rtmutex: Prevent lockdep false positive with PI futexes
 
-The current logic only allows lock stealing to occur if the current task is
-of higher priority than the pending owner.
+On PREEMPT_RT the futex hashbucket spinlock becomes 'sleeping' and rtmutex
+based. That causes a lockdep false positive because some of the futex
+functions invoke spin_unlock(&hb->lock) with the wait_lock of the rtmutex
+associated to the pi_futex held.  spin_unlock() in turn takes wait_lock of
+the rtmutex on which the spinlock is based which makes lockdep notice a
+lock recursion.
 
-Significant throughput improvements can be gained by allowing the lock
-stealing to include tasks of equal priority when the contended lock is a
-spin_lock or a rw_lock and the tasks are not in a RT scheduling task.
+Give the futex/rtmutex wait_lock a separate key.
 
-The assumption was that the system will make faster progress by allowing
-the task already on the CPU to take the lock rather than waiting for the
-system to wake up a different task.
-
-This does add a degree of unfairness, but in reality no negative side
-effects have been observed in the many years that this has been used in the
-RT kernel.
-
-[ tglx: Refactored and rewritten several times by Steve Rostedt, Sebastian
-  	Siewior and myself ]
-
-Signed-off-by: Gregory Haskins <ghaskins@novell.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20210815211305.857240222@linutronix.de
+Link: https://lore.kernel.org/r/20210815211305.750701219@linutronix.de
 ---
- kernel/locking/rtmutex.c | 52 ++++++++++++++++++++++++++-------------
- 1 file changed, 35 insertions(+), 17 deletions(-)
+ kernel/locking/rtmutex_api.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/kernel/locking/rtmutex.c b/kernel/locking/rtmutex.c
-index af7e3af..3eaf636 100644
---- a/kernel/locking/rtmutex.c
-+++ b/kernel/locking/rtmutex.c
-@@ -338,6 +338,26 @@ static __always_inline int rt_mutex_waiter_equal(struct rt_mutex_waiter *left,
- 	return 1;
+diff --git a/kernel/locking/rtmutex_api.c b/kernel/locking/rtmutex_api.c
+index 92b7d28..5c9299a 100644
+--- a/kernel/locking/rtmutex_api.c
++++ b/kernel/locking/rtmutex_api.c
+@@ -214,7 +214,19 @@ EXPORT_SYMBOL_GPL(__rt_mutex_init);
+ void __sched rt_mutex_init_proxy_locked(struct rt_mutex_base *lock,
+ 					struct task_struct *proxy_owner)
+ {
++	static struct lock_class_key pi_futex_key;
++
+ 	__rt_mutex_base_init(lock);
++	/*
++	 * On PREEMPT_RT the futex hashbucket spinlock becomes 'sleeping'
++	 * and rtmutex based. That causes a lockdep false positive, because
++	 * some of the futex functions invoke spin_unlock(&hb->lock) with
++	 * the wait_lock of the rtmutex associated to the pi_futex held.
++	 * spin_unlock() in turn takes wait_lock of the rtmutex on which
++	 * the spinlock is based, which makes lockdep notice a lock
++	 * recursion. Give the futex/rtmutex wait_lock a separate key.
++	 */
++	lockdep_set_class(&lock->wait_lock, &pi_futex_key);
+ 	rt_mutex_set_owner(lock, proxy_owner);
  }
  
-+static inline bool rt_mutex_steal(struct rt_mutex_waiter *waiter,
-+				  struct rt_mutex_waiter *top_waiter)
-+{
-+	if (rt_mutex_waiter_less(waiter, top_waiter))
-+		return true;
-+
-+#ifdef RT_MUTEX_BUILD_SPINLOCKS
-+	/*
-+	 * Note that RT tasks are excluded from same priority (lateral)
-+	 * steals to prevent the introduction of an unbounded latency.
-+	 */
-+	if (rt_prio(waiter->prio) || dl_prio(waiter->prio))
-+		return false;
-+
-+	return rt_mutex_waiter_equal(waiter, top_waiter);
-+#else
-+	return false;
-+#endif
-+}
-+
- #define __node_2_waiter(node) \
- 	rb_entry((node), struct rt_mutex_waiter, tree_entry)
- 
-@@ -932,19 +952,21 @@ try_to_take_rt_mutex(struct rt_mutex_base *lock, struct task_struct *task,
- 	 * trylock attempt.
- 	 */
- 	if (waiter) {
--		/*
--		 * If waiter is not the highest priority waiter of
--		 * @lock, give up.
--		 */
--		if (waiter != rt_mutex_top_waiter(lock))
--			return 0;
-+		struct rt_mutex_waiter *top_waiter = rt_mutex_top_waiter(lock);
- 
- 		/*
--		 * We can acquire the lock. Remove the waiter from the
--		 * lock waiters tree.
-+		 * If waiter is the highest priority waiter of @lock,
-+		 * or allowed to steal it, take it over.
- 		 */
--		rt_mutex_dequeue(lock, waiter);
--
-+		if (waiter == top_waiter || rt_mutex_steal(waiter, top_waiter)) {
-+			/*
-+			 * We can acquire the lock. Remove the waiter from the
-+			 * lock waiters tree.
-+			 */
-+			rt_mutex_dequeue(lock, waiter);
-+		} else {
-+			return 0;
-+		}
- 	} else {
- 		/*
- 		 * If the lock has waiters already we check whether @task is
-@@ -955,13 +977,9 @@ try_to_take_rt_mutex(struct rt_mutex_base *lock, struct task_struct *task,
- 		 * not need to be dequeued.
- 		 */
- 		if (rt_mutex_has_waiters(lock)) {
--			/*
--			 * If @task->prio is greater than or equal to
--			 * the top waiter priority (kernel view),
--			 * @task lost.
--			 */
--			if (!rt_mutex_waiter_less(task_to_waiter(task),
--						  rt_mutex_top_waiter(lock)))
-+			/* Check whether the trylock can steal it. */
-+			if (!rt_mutex_steal(task_to_waiter(task),
-+					    rt_mutex_top_waiter(lock)))
- 				return 0;
- 
- 			/*
