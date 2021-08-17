@@ -2,16 +2,16 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5883E3EF337
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Aug 2021 22:15:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AED293EF332
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Aug 2021 22:15:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234418AbhHQUOj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 17 Aug 2021 16:14:39 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:34620 "EHLO
+        id S234315AbhHQUOh (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 17 Aug 2021 16:14:37 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:34586 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234244AbhHQUOi (ORCPT
+        with ESMTP id S234229AbhHQUOh (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 17 Aug 2021 16:14:38 -0400
+        Tue, 17 Aug 2021 16:14:37 -0400
 Date:   Tue, 17 Aug 2021 20:14:02 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1629231243;
@@ -20,12 +20,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=lwvmQBYbxXL0i3yQwky+gRpqRuU3fjcDVAR8vmH1qag=;
-        b=vk+0/qyX9jQ4CkdxZwtCiuMHxEQY9l2JnUgMJAFcEABmKBKNzwM24lyZvMclysO3pivWIv
-        JGaduz4wNQh0+p90oYFflN3emGrle463XOK78iQytY3LmWvkclyvREKmb/1aLyODrVqeig
-        wklkBAJo2uooIfiAhzbynXL2w/32qKQZS/H2eA/I223JAcc1tcXL0+/fN0rZaOwse99dC8
-        Piru23/6D+6jWvs7jbXoKtQ2S+T6V4NZbkBBA5ggkSLuQJPa6zP1W7wfr9Ps2Y3ugKP9/F
-        kkMRHonyA2awgV4CtyqGaWw3mxUAfWt+doV88bVkViqDSt0MUWVZ/a1fsI9cAg==
+        bh=3uMqG0HDLsf7C0B4o5ErmK7vnMV6hs8REyQ738vq/ck=;
+        b=0j735FVNV93CBpakwf1sRAmdsFUPvVCjurkLkRHZLM0RSNmFuNjz/V5bMQSFB+7kurFaf8
+        EeugCboPQvZbDLIboCAEPcLIXJyxFm8EOIxDtKFp10KKNnASikb4i8HdW4mq7b6LDPoWJg
+        zvhuQMgnIKP9sZKr7HgiizALYQc2UPCj3loqkAIKPzVNa5q3w7tWTSqUPtCnVjZzMI4NpX
+        fYPuk4uv4trQqrnWtztBk0xW+wbTxVvx6exDUape2uf13AGV6tLOgI7lqMhiD0HWTUKffI
+        h3SH1ZSJ2aExqHkavngPPCSn8DUznjA9ckCrqTj9Js+1EyqBsmrDIxS1MJb0LQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1629231243;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -33,22 +33,22 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=lwvmQBYbxXL0i3yQwky+gRpqRuU3fjcDVAR8vmH1qag=;
-        b=RWhrDoMNwYIvv5Yq7Vn1mo5/TDYP6XeBD1a4QkrmwZyaPP6rD40lBZFC7LKaUYyDvIUHnF
-        m/IW2hx19fcsDVAg==
+        bh=3uMqG0HDLsf7C0B4o5ErmK7vnMV6hs8REyQ738vq/ck=;
+        b=6NbAdjP7n7VEZ84pS+y+ug0CEeWC6dFV/t9TSbmXGogCgYaZAmgsJGqQGZCvhC06HA3HHZ
+        AYZt8s9J0nFSxoCw==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] futex: Correct the number of requeued waiters for PI
+Subject: [tip: locking/core] futex: Restructure futex_requeue()
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210815211305.416427548@linutronix.de>
-References: <20210815211305.416427548@linutronix.de>
+In-Reply-To: <20210815211305.468835790@linutronix.de>
+References: <20210815211305.468835790@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <162923124287.25758.5175526164956598130.tip-bot2@tip-bot2>
+Message-ID: <162923124225.25758.7500739087491943920.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,47 +59,142 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     59c7ecf1544e1841b5be8847e81bc9842f838e7e
-Gitweb:        https://git.kernel.org/tip/59c7ecf1544e1841b5be8847e81bc9842f838e7e
+Commit-ID:     64b7b715f7f92ae3233446b4a4cdda3524fcd4b0
+Gitweb:        https://git.kernel.org/tip/64b7b715f7f92ae3233446b4a4cdda3524fcd4b0
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Sun, 15 Aug 2021 23:29:10 +02:00
+AuthorDate:    Sun, 15 Aug 2021 23:29:12 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 17 Aug 2021 19:05:46 +02:00
+CommitterDate: Tue, 17 Aug 2021 19:05:49 +02:00
 
-futex: Correct the number of requeued waiters for PI
+futex: Restructure futex_requeue()
 
-The accounting is wrong when either the PI sanity check or the
-requeue PI operation fails. Adjust it in the failure path.
+No point in taking two more 'requeue_pi' conditionals just to get to the
+requeue. Same for the requeue_pi case just the other way round.
 
-Will be simplified in the next step.
+No functional change.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20210815211305.416427548@linutronix.de
+Link: https://lore.kernel.org/r/20210815211305.468835790@linutronix.de
 ---
- kernel/futex.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ kernel/futex.c | 90 ++++++++++++++++++++++---------------------------
+ 1 file changed, 41 insertions(+), 49 deletions(-)
 
 diff --git a/kernel/futex.c b/kernel/futex.c
-index 8ddc87c..5439742 100644
+index 5439742..6cb6b5d 100644
 --- a/kernel/futex.c
 +++ b/kernel/futex.c
-@@ -2116,6 +2116,8 @@ retry_private:
+@@ -2104,20 +2104,17 @@ retry_private:
+ 			break;
+ 		}
+ 
+-		/*
+-		 * Wake nr_wake waiters.  For requeue_pi, if we acquired the
+-		 * lock, we already woke the top_waiter.  If not, it will be
+-		 * woken by futex_unlock_pi().
+-		 */
+-		if (++task_count <= nr_wake && !requeue_pi) {
+-			mark_wake_futex(&wake_q, this);
++		/* Plain futexes just wake or requeue and are done */
++		if (!requeue_pi) {
++			if (++task_count <= nr_wake)
++				mark_wake_futex(&wake_q, this);
++			else
++				requeue_futex(this, hb1, hb2, &key2);
+ 			continue;
+ 		}
  
  		/* Ensure we requeue to the expected futex for requeue_pi. */
- 		if (requeue_pi && !match_futex(this->requeue_pi_key, &key2)) {
-+			/* Don't account for it */
-+			task_count--;
+-		if (requeue_pi && !match_futex(this->requeue_pi_key, &key2)) {
+-			/* Don't account for it */
+-			task_count--;
++		if (!match_futex(this->requeue_pi_key, &key2)) {
  			ret = -EINVAL;
  			break;
  		}
-@@ -2157,6 +2159,8 @@ retry_private:
- 				 */
- 				this->pi_state = NULL;
- 				put_pi_state(pi_state);
-+				/* Don't account for it */
-+				task_count--;
- 				/*
- 				 * We stop queueing more waiters and let user
- 				 * space deal with the mess.
+@@ -2125,50 +2122,45 @@ retry_private:
+ 		/*
+ 		 * Requeue nr_requeue waiters and possibly one more in the case
+ 		 * of requeue_pi if we couldn't acquire the lock atomically.
++		 *
++		 * Prepare the waiter to take the rt_mutex. Take a refcount
++		 * on the pi_state and store the pointer in the futex_q
++		 * object of the waiter.
+ 		 */
+-		if (requeue_pi) {
++		get_pi_state(pi_state);
++		this->pi_state = pi_state;
++		ret = rt_mutex_start_proxy_lock(&pi_state->pi_mutex,
++						this->rt_waiter, this->task);
++		if (ret == 1) {
+ 			/*
+-			 * Prepare the waiter to take the rt_mutex. Take a
+-			 * refcount on the pi_state and store the pointer in
+-			 * the futex_q object of the waiter.
++			 * We got the lock. We do neither drop the refcount
++			 * on pi_state nor clear this->pi_state because the
++			 * waiter needs the pi_state for cleaning up the
++			 * user space value. It will drop the refcount
++			 * after doing so.
+ 			 */
+-			get_pi_state(pi_state);
+-			this->pi_state = pi_state;
+-			ret = rt_mutex_start_proxy_lock(&pi_state->pi_mutex,
+-							this->rt_waiter,
+-							this->task);
+-			if (ret == 1) {
+-				/*
+-				 * We got the lock. We do neither drop the
+-				 * refcount on pi_state nor clear
+-				 * this->pi_state because the waiter needs the
+-				 * pi_state for cleaning up the user space
+-				 * value. It will drop the refcount after
+-				 * doing so.
+-				 */
+-				requeue_pi_wake_futex(this, &key2, hb2);
+-				continue;
+-			} else if (ret) {
+-				/*
+-				 * rt_mutex_start_proxy_lock() detected a
+-				 * potential deadlock when we tried to queue
+-				 * that waiter. Drop the pi_state reference
+-				 * which we took above and remove the pointer
+-				 * to the state from the waiters futex_q
+-				 * object.
+-				 */
+-				this->pi_state = NULL;
+-				put_pi_state(pi_state);
+-				/* Don't account for it */
+-				task_count--;
+-				/*
+-				 * We stop queueing more waiters and let user
+-				 * space deal with the mess.
+-				 */
+-				break;
+-			}
++			requeue_pi_wake_futex(this, &key2, hb2);
++			task_count++;
++			continue;
++		} else if (ret) {
++			/*
++			 * rt_mutex_start_proxy_lock() detected a potential
++			 * deadlock when we tried to queue that waiter.
++			 * Drop the pi_state reference which we took above
++			 * and remove the pointer to the state from the
++			 * waiters futex_q object.
++			 */
++			this->pi_state = NULL;
++			put_pi_state(pi_state);
++			/*
++			 * We stop queueing more waiters and let user space
++			 * deal with the mess.
++			 */
++			break;
+ 		}
++		/* Waiter is queued, move it to hb2 */
+ 		requeue_futex(this, hb1, hb2, &key2);
++		task_count++;
+ 	}
+ 
+ 	/*
