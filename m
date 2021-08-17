@@ -2,17 +2,20 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C44463EF327
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Aug 2021 22:15:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AAD013EF32A
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Aug 2021 22:15:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233866AbhHQUOc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 17 Aug 2021 16:14:32 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:34542 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233110AbhHQUOb (ORCPT
+        id S234163AbhHQUOd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 17 Aug 2021 16:14:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51372 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234142AbhHQUOd (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 17 Aug 2021 16:14:31 -0400
-Date:   Tue, 17 Aug 2021 20:13:55 -0000
+        Tue, 17 Aug 2021 16:14:33 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1712C061764;
+        Tue, 17 Aug 2021 13:13:59 -0700 (PDT)
+Date:   Tue, 17 Aug 2021 20:13:56 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1629231237;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -20,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=h1zVwYA69SWhGYXWVxA6O0Yyf7TV48d/4Qb1uxXRKV0=;
-        b=NLc2BCR0mlEa/2jPZu2sWpvshmRYG5xDBRSqy47HeDx4HVZjsWyt3HXiYpUly87vuXE9kT
-        PbxOUn5kTPtGnHNtcMBICUf9i7naNVkHRm3w59lB6K2HIS+ZFttL12cs/12TnRB37qSbWj
-        ZFzAKsPaibfEe2ztfWpc5OhfVqnJE3bWr1DrHLa/H9rl8kl+UQ87Gatl7YwGdpqepMarTv
-        BvqIfWt49Rmz04J+BvD6RFsKSS6ymZRNfUVdNOAbW2dnctyaKablqL3xGKA6n5LJbILpGG
-        aJML7niintLSvER7M/adab2LgRfR6ofarml4+WHlIVoYJt22Iu2HupMNPsv3hQ==
+        bh=QCiN/8ES4XK5dFfq5NTjwHSufKLI1m8EYMQjqUavrKQ=;
+        b=IEIHu5DUq6EwoUzvfa5/Uz79U8//R+TfiIRoRBqKQDwNksfSetdUW5S5vblHfFcjWHz4Io
+        uoPEX/aXCxVqg54DPfU6IgS0aoH243jsYz+28N5hHxt6HMLN+C2ALqhRgtqQnPgg9CXEDD
+        flmct6qjjc9Otk6fo5+kd+LUMIadCJyJJ6A46NKuCKhnWK4jloxgUCNqCSyEx6YAycbdpa
+        gqRu12W9+W3AP3HFp9tOMv4g42av6XrdQ7MWyfH5fuZWuSuKvJOLYWHyaU75GZ2Wr8qJks
+        2eT3LPx1+Fa9t2Uyz8VYWK8zmQbDiMe6aEMknblOYp3EMkc4ucnkFbSVD1VSdA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1629231237;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -33,23 +36,23 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=h1zVwYA69SWhGYXWVxA6O0Yyf7TV48d/4Qb1uxXRKV0=;
-        b=xPkWFA7RR6keQPbVDosIxKOORdP7WYCjvArIrCgl/eFG+irLzBnkY+tTMDGSP82THEuqq4
-        xzPA7BIEQLAmy+Dg==
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+        bh=QCiN/8ES4XK5dFfq5NTjwHSufKLI1m8EYMQjqUavrKQ=;
+        b=tB3G1jfreH1y/K2deWLPuioS5MylTeJ27Oogmx+GMrpi+uThCG8C10yNk4bWZc0CeU73kY
+        aTsTK0blseraRMCg==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] static_call: Update API documentation
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
-        Josh Poimboeuf <jpoimboe@redhat.com>, x86@kernel.org,
+Subject: [tip: locking/core] locking/local_lock: Add PREEMPT_RT support
+Cc:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <YQwIorQBHEq+s73b@hirez.programming.kicks-ass.net>
-References: <YQwIorQBHEq+s73b@hirez.programming.kicks-ass.net>
+In-Reply-To: <20210815211306.023630962@linutronix.de>
+References: <20210815211306.023630962@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <162923123566.25758.13896123511356080788.tip-bot2@tip-bot2>
+Message-ID: <162923123648.25758.6097638559084736237.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,79 +63,87 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     9ae6ab27f44ee0da47520011afc04218f90e8b12
-Gitweb:        https://git.kernel.org/tip/9ae6ab27f44ee0da47520011afc04218f90e8b12
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Thu, 05 Aug 2021 17:49:54 +02:00
+Commit-ID:     026659b9774e4c586baeb457557fcfc4e0ad144b
+Gitweb:        https://git.kernel.org/tip/026659b9774e4c586baeb457557fcfc4e0ad144b
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Sun, 15 Aug 2021 23:29:28 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 17 Aug 2021 19:09:27 +02:00
+CommitterDate: Tue, 17 Aug 2021 19:08:49 +02:00
 
-static_call: Update API documentation
+locking/local_lock: Add PREEMPT_RT support
 
-Update the comment with the new features.
+On PREEMPT_RT enabled kernels local_lock maps to a per CPU 'sleeping'
+spinlock which protects the critical section while staying preemptible. CPU
+locality is established by disabling migration.
 
+Provide the necessary types and macros to substitute the non-RT variant.
+
+Co-developed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
-Acked-by: Josh Poimboeuf <jpoimboe@redhat.com>
-Link: https://lore.kernel.org/r/YQwIorQBHEq+s73b@hirez.programming.kicks-ass.net
+Link: https://lore.kernel.org/r/20210815211306.023630962@linutronix.de
 ---
- include/linux/static_call.h | 33 +++++++++++++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
+ include/linux/local_lock_internal.h | 44 ++++++++++++++++++++++++++++-
+ 1 file changed, 44 insertions(+)
 
-diff --git a/include/linux/static_call.h b/include/linux/static_call.h
-index fc94faa..3e56a97 100644
---- a/include/linux/static_call.h
-+++ b/include/linux/static_call.h
-@@ -17,11 +17,17 @@
-  *   DECLARE_STATIC_CALL(name, func);
-  *   DEFINE_STATIC_CALL(name, func);
-  *   DEFINE_STATIC_CALL_NULL(name, typename);
-+ *   DEFINE_STATIC_CALL_RET0(name, typename);
-+ *
-+ *   __static_call_return0;
-+ *
-  *   static_call(name)(args...);
-  *   static_call_cond(name)(args...);
-  *   static_call_update(name, func);
-  *   static_call_query(name);
-  *
-+ *   EXPORT_STATIC_CALL{,_TRAMP}{,_GPL}()
-+ *
-  * Usage example:
-  *
-  *   # Start with the following functions (with identical prototypes):
-@@ -96,6 +102,33 @@
-  *   To query which function is currently set to be called, use:
-  *
-  *   func = static_call_query(name);
-+ *
-+ *
-+ * DEFINE_STATIC_CALL_RET0 / __static_call_return0:
-+ *
-+ *   Just like how DEFINE_STATIC_CALL_NULL() / static_call_cond() optimize the
-+ *   conditional void function call, DEFINE_STATIC_CALL_RET0 /
-+ *   __static_call_return0 optimize the do nothing return 0 function.
-+ *
-+ *   This feature is strictly UB per the C standard (since it casts a function
-+ *   pointer to a different signature) and relies on the architecture ABI to
-+ *   make things work. In particular it relies on Caller Stack-cleanup and the
-+ *   whole return register being clobbered for short return values. All normal
-+ *   CDECL style ABIs conform.
-+ *
-+ *   In particular the x86_64 implementation replaces the 5 byte CALL
-+ *   instruction at the callsite with a 5 byte clear of the RAX register,
-+ *   completely eliding any function call overhead.
-+ *
-+ *   Notably argument setup is unconditional.
-+ *
-+ *
-+ * EXPORT_STATIC_CALL() vs EXPORT_STATIC_CALL_TRAMP():
-+ *
-+ *   The difference is that the _TRAMP variant tries to only export the
-+ *   trampoline with the result that a module can use static_call{,_cond}() but
-+ *   not static_call_update().
-+ *
-  */
+diff --git a/include/linux/local_lock_internal.h b/include/linux/local_lock_internal.h
+index 3f02b81..975e33b 100644
+--- a/include/linux/local_lock_internal.h
++++ b/include/linux/local_lock_internal.h
+@@ -6,6 +6,8 @@
+ #include <linux/percpu-defs.h>
+ #include <linux/lockdep.h>
  
- #include <linux/types.h>
++#ifndef CONFIG_PREEMPT_RT
++
+ typedef struct {
+ #ifdef CONFIG_DEBUG_LOCK_ALLOC
+ 	struct lockdep_map	dep_map;
+@@ -95,3 +97,45 @@ do {								\
+ 		local_lock_release(this_cpu_ptr(lock));		\
+ 		local_irq_restore(flags);			\
+ 	} while (0)
++
++#else /* !CONFIG_PREEMPT_RT */
++
++/*
++ * On PREEMPT_RT local_lock maps to a per CPU spinlock, which protects the
++ * critical section while staying preemptible.
++ */
++typedef spinlock_t local_lock_t;
++
++#define INIT_LOCAL_LOCK(lockname) __LOCAL_SPIN_LOCK_UNLOCKED((lockname))
++
++#define __local_lock_init(l)					\
++	do {							\
++		local_spin_lock_init((l));			\
++	} while (0)
++
++#define __local_lock(__lock)					\
++	do {							\
++		migrate_disable();				\
++		spin_lock(this_cpu_ptr((__lock)));		\
++	} while (0)
++
++#define __local_lock_irq(lock)			__local_lock(lock)
++
++#define __local_lock_irqsave(lock, flags)			\
++	do {							\
++		typecheck(unsigned long, flags);		\
++		flags = 0;					\
++		__local_lock(lock);				\
++	} while (0)
++
++#define __local_unlock(__lock)					\
++	do {							\
++		spin_unlock(this_cpu_ptr((__lock)));		\
++		migrate_enable();				\
++	} while (0)
++
++#define __local_unlock_irq(lock)		__local_unlock(lock)
++
++#define __local_unlock_irqrestore(lock, flags)	__local_unlock(lock)
++
++#endif /* CONFIG_PREEMPT_RT */
