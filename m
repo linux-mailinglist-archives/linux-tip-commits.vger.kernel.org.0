@@ -2,53 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B171F3EF36D
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Aug 2021 22:15:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D207A3EF3B5
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Aug 2021 22:49:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234474AbhHQUPe (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 17 Aug 2021 16:15:34 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:34948 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235074AbhHQUPJ (ORCPT
+        id S234570AbhHQURc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 17 Aug 2021 16:17:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51538 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234785AbhHQUP7 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 17 Aug 2021 16:15:09 -0400
-Date:   Tue, 17 Aug 2021 20:14:34 -0000
+        Tue, 17 Aug 2021 16:15:59 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AC3DC061147;
+        Tue, 17 Aug 2021 13:14:38 -0700 (PDT)
+Date:   Tue, 17 Aug 2021 20:14:35 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1629231274;
+        s=2020; t=1629231276;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=85jCURS+uUIpDeyi2xBgDFqpqVeNqobXzUvp0z9xz28=;
-        b=lsE6TAqAp3dSNLOr1lBq/PmuBrSYkuRRl9ppa3MjkuniWUWrho/sIk0hbdb/nmYMZaKgme
-        PUaYEkGtct7rPBiA1WHWkJzJQ8lPGtlP1JAbjhzf0N865dQCxmX9VkATgM8rcylaz4V7bX
-        AP5HyGYv/iI6K/0KA8sUU/Eun3HZHJnNOQxJSRvRS8PRpwju8KQtZWerxEdVvZyhteTsML
-        Db27LbRjY1nBAP4kkj4qmrp0J4J5Y/UVJ+7ucUmQbh3C4HkpMKduOj3LH9g2JACwmPRkNs
-        LByXovsx7cJN4/Ry7fInkXk7tpq6HhZMQ3IM7ID1cXsfTvfGCOVVJqaSPvt1eg==
+        bh=GkJ1UXyQD2odoeQxZvwm91HcaSycrk8aQFQdmEvJHaA=;
+        b=AbhiG7JBrSTLkr0mU/UsCO3/9memIQRCZQG3KDytoPocN5sd5WzBVrfj3aWq3pINq++MRo
+        M+PeBzoJJNUyOb50a1hAB9K4TAiNBv28dY0HWjZiJvT3tEnutXgn/ySvTD3JOaWJCfZWez
+        wrTBqG3nMGjU5oe2mx5E5BwRyQHkSflLONrbF5UbV3AMjGREht7BLeBY8XKxkkIB2DyMFt
+        W8soUcquA/U1sWjsg4alMOPUNHPcKYSGjX1v+RhxlYTH5PVzCRON9RYHoKr6jkmbEHh0Jg
+        r91phSWRpNx0GZGclkKbehfeNQaclKytCGciOTrnKU/AD8hAPnOi0GPVBbWSyA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1629231274;
+        s=2020e; t=1629231276;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=85jCURS+uUIpDeyi2xBgDFqpqVeNqobXzUvp0z9xz28=;
-        b=MxHYUOfA9F7KBvllDwyV6NwJb5mzqa6BJi5UFt8r5Wm2QK8GIJtTbv9aWzFoEdPpw9qYpz
-        H1XSUinSClXUscAw==
+        bh=GkJ1UXyQD2odoeQxZvwm91HcaSycrk8aQFQdmEvJHaA=;
+        b=iqBUZMcmJlOqdUESMRPHaDqYYo6zbuRlAuZgwQVgMnW6xCbZmqvmXdE/BTVluCAmcD2Pxb
+        9SPnA+CTScEqMtBw==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] sched/core: Provide a scheduling point for RT locks
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
+Subject: [tip: locking/core] sched/wakeup: Reorganize the current::__state helpers
+Cc:     Waiman Long <longman@redhat.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210815211302.372319055@linutronix.de>
-References: <20210815211302.372319055@linutronix.de>
+In-Reply-To: <20210815211302.200898048@linutronix.de>
+References: <20210815211302.200898048@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <162923127400.25758.17723198410739193727.tip-bot2@tip-bot2>
+Message-ID: <162923127591.25758.17662255410637011047.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,88 +63,121 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     6991436c2b5d91d5358d9914ae2df22b9a1d1dc9
-Gitweb:        https://git.kernel.org/tip/6991436c2b5d91d5358d9914ae2df22b9a1d1dc9
+Commit-ID:     85019c1674890fa0408e324589e20803b3241755
+Gitweb:        https://git.kernel.org/tip/85019c1674890fa0408e324589e20803b3241755
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Sun, 15 Aug 2021 23:27:48 +02:00
+AuthorDate:    Sun, 15 Aug 2021 23:27:43 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 17 Aug 2021 16:57:17 +02:00
+CommitterDate: Tue, 17 Aug 2021 16:45:28 +02:00
 
-sched/core: Provide a scheduling point for RT locks
+sched/wakeup: Reorganize the current::__state helpers
 
-RT enabled kernels substitute spin/rwlocks with 'sleeping' variants based
-on rtmutexes. Blocking on such a lock is similar to preemption versus:
+In order to avoid more duplicate implementations for the debug and
+non-debug variants of the state change macros, split the debug portion out
+and make that conditional on CONFIG_DEBUG_ATOMIC_SLEEP=y.
 
- - I/O scheduling and worker handling, because these functions might block
-   on another substituted lock, or come from a lock contention within these
-   functions.
-
- - RCU considers this like a preemption, because the task might be in a read
-   side critical section.
-
-Add a separate scheduling point for this, and hand a new scheduling mode
-argument to __schedule() which allows, along with separate mode masks, to
-handle this gracefully from within the scheduler, without proliferating that
-to other subsystems like RCU.
-
+Suggested-by: Waiman Long <longman@redhat.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20210815211302.372319055@linutronix.de
+Link: https://lore.kernel.org/r/20210815211302.200898048@linutronix.de
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- include/linux/sched.h |  3 +++
- kernel/sched/core.c   | 20 +++++++++++++++++++-
- 2 files changed, 22 insertions(+), 1 deletion(-)
+ include/linux/sched.h | 48 ++++++++++++++++++++----------------------
+ 1 file changed, 23 insertions(+), 25 deletions(-)
 
 diff --git a/include/linux/sched.h b/include/linux/sched.h
-index 02714b9..746dfc0 100644
+index 9a9f606..4c72cf6 100644
 --- a/include/linux/sched.h
 +++ b/include/linux/sched.h
-@@ -288,6 +288,9 @@ extern long schedule_timeout_idle(long timeout);
- asmlinkage void schedule(void);
- extern void schedule_preempt_disabled(void);
- asmlinkage void preempt_schedule_irq(void);
-+#ifdef CONFIG_PREEMPT_RT
-+ extern void schedule_rtlock(void);
-+#endif
+@@ -123,8 +123,6 @@ struct task_group;
  
- extern int __must_check io_schedule_prepare(void);
- extern void io_schedule_finish(int token);
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index ebc24e1..c89c1d4 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -5829,7 +5829,13 @@ pick_next_task(struct rq *rq, struct task_struct *prev, struct rq_flags *rf)
-  */
- #define SM_NONE			0x0
- #define SM_PREEMPT		0x1
--#define SM_MASK_PREEMPT		(~0U)
-+#define SM_RTLOCK_WAIT		0x2
+ #define task_is_stopped_or_traced(task)	((READ_ONCE(task->__state) & (__TASK_STOPPED | __TASK_TRACED)) != 0)
+ 
+-#ifdef CONFIG_DEBUG_ATOMIC_SLEEP
+-
+ /*
+  * Special states are those that do not use the normal wait-loop pattern. See
+  * the comment with set_special_state().
+@@ -132,30 +130,24 @@ struct task_group;
+ #define is_special_task_state(state)				\
+ 	((state) & (__TASK_STOPPED | __TASK_TRACED | TASK_PARKED | TASK_DEAD))
+ 
+-#define __set_current_state(state_value)			\
+-	do {							\
+-		WARN_ON_ONCE(is_special_task_state(state_value));\
+-		current->task_state_change = _THIS_IP_;		\
+-		WRITE_ONCE(current->__state, (state_value));	\
+-	} while (0)
+-
+-#define set_current_state(state_value)				\
+-	do {							\
+-		WARN_ON_ONCE(is_special_task_state(state_value));\
+-		current->task_state_change = _THIS_IP_;		\
+-		smp_store_mb(current->__state, (state_value));	\
++#ifdef CONFIG_DEBUG_ATOMIC_SLEEP
++# define debug_normal_state_change(state_value)				\
++	do {								\
++		WARN_ON_ONCE(is_special_task_state(state_value));	\
++		current->task_state_change = _THIS_IP_;			\
+ 	} while (0)
+ 
+-#define set_special_state(state_value)					\
++# define debug_special_state_change(state_value)			\
+ 	do {								\
+-		unsigned long flags; /* may shadow */			\
+ 		WARN_ON_ONCE(!is_special_task_state(state_value));	\
+-		raw_spin_lock_irqsave(&current->pi_lock, flags);	\
+ 		current->task_state_change = _THIS_IP_;			\
+-		WRITE_ONCE(current->__state, (state_value));		\
+-		raw_spin_unlock_irqrestore(&current->pi_lock, flags);	\
+ 	} while (0)
 +
-+#ifndef CONFIG_PREEMPT_RT
-+# define SM_MASK_PREEMPT	(~0U)
-+#else
-+# define SM_MASK_PREEMPT	SM_PREEMPT
+ #else
++# define debug_normal_state_change(cond)	do { } while (0)
++# define debug_special_state_change(cond)	do { } while (0)
 +#endif
++
+ /*
+  * set_current_state() includes a barrier so that the write of current->state
+  * is correctly serialised wrt the caller's subsequent test of whether to
+@@ -194,27 +186,33 @@ struct task_group;
+  * Also see the comments of try_to_wake_up().
+  */
+ #define __set_current_state(state_value)				\
+-	WRITE_ONCE(current->__state, (state_value))
++	do {								\
++		debug_normal_state_change((state_value));		\
++		WRITE_ONCE(current->__state, (state_value));		\
++	} while (0)
+ 
+ #define set_current_state(state_value)					\
+-	smp_store_mb(current->__state, (state_value))
++	do {								\
++		debug_normal_state_change((state_value));		\
++		smp_store_mb(current->__state, (state_value));		\
++	} while (0)
  
  /*
-  * __schedule() is the main scheduler function.
-@@ -6134,6 +6140,18 @@ void __sched schedule_preempt_disabled(void)
- 	preempt_disable();
- }
+  * set_special_state() should be used for those states when the blocking task
+  * can not use the regular condition based wait-loop. In that case we must
+- * serialize against wakeups such that any possible in-flight TASK_RUNNING stores
+- * will not collide with our state change.
++ * serialize against wakeups such that any possible in-flight TASK_RUNNING
++ * stores will not collide with our state change.
+  */
+ #define set_special_state(state_value)					\
+ 	do {								\
+ 		unsigned long flags; /* may shadow */			\
++									\
+ 		raw_spin_lock_irqsave(&current->pi_lock, flags);	\
++		debug_special_state_change((state_value));		\
+ 		WRITE_ONCE(current->__state, (state_value));		\
+ 		raw_spin_unlock_irqrestore(&current->pi_lock, flags);	\
+ 	} while (0)
  
-+#ifdef CONFIG_PREEMPT_RT
-+void __sched notrace schedule_rtlock(void)
-+{
-+	do {
-+		preempt_disable();
-+		__schedule(SM_RTLOCK_WAIT);
-+		sched_preempt_enable_no_resched();
-+	} while (need_resched());
-+}
-+NOKPROBE_SYMBOL(schedule_rtlock);
-+#endif
-+
- static void __sched notrace preempt_schedule_common(void)
- {
- 	do {
+-#endif
+-
+ #define get_current_state()	READ_ONCE(current->__state)
+ 
+ /* Task command name length: */
