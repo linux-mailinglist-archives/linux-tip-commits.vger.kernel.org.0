@@ -2,47 +2,50 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3181C3EFE6C
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 18 Aug 2021 09:58:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4B783EFE70
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 18 Aug 2021 09:58:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239328AbhHRH7Y (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 18 Aug 2021 03:59:24 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:38754 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239148AbhHRH7U (ORCPT
+        id S239407AbhHRH70 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 18 Aug 2021 03:59:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42476 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237962AbhHRH7V (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 18 Aug 2021 03:59:20 -0400
+        Wed, 18 Aug 2021 03:59:21 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9D59C061764;
+        Wed, 18 Aug 2021 00:58:46 -0700 (PDT)
 Date:   Wed, 18 Aug 2021 07:58:44 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1629273524;
+        s=2020; t=1629273525;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=JUKmlS1y6feA7sE1A4EWYn4h2WeWPHRaUyNWdEncuO8=;
-        b=330xk8+VZ0TTp5rHsLa7fao1M+bzih/yYI23pAYevCPPy4Vl7JNfURYVVMq44a+AsiF/JJ
-        snriVbbPi+fq+2exXNaKHubC2T4ebSEdPpMBNepMTCUEX/RwEqwL4PrY4rkJ0d9sZpSpof
-        D4eWqDKaLUG0TPFAnKeuoqamy/B2ELgLi9atMV+lbbOcjoY4LNN1N/kg7N91wUuMzI72Yo
-        pn4rWC1UBDT6MQql1HtneT6bNt7N8Ip8Um3AOeQYRZeuYqNNYjOcY3ijBbDBYvARa6QLYr
-        bRpr8xdYEmLwdb1dYfDK/hPCOqhifmVEnTv3g5hyhsv2sjE+M7IUBNAK5MyoPQ==
+        bh=eIhIpwE6U/SNQl9kMW+lq4Bq4RrHOAPxo1DY0Pzt3y0=;
+        b=zZrHRRQ5lUBHsPlfHPgC91yBVj9bCdP9Z+5awQkP9JBz7bldPvi7+K5a//etjJbTDAT0+M
+        bFw0qcEqMqmkrAhBDqA0cHt9Su0LZxGfDAiSEytbz7KjOfCDHrpqxP7YJhRFyv9YBU+rFV
+        T8N6hSUftsRWyP1eNX2rZVflcuYtBDaWDZFfBcWhXIePZgDOMW1fGEhZBNV9x458n0EzjV
+        U05W0DqmDXbEXkxk7mT9/Lv9o/nQLDGtlPmFX/5i4FpT1Wxp3uQD+oyQtz5n+zGmha1L8y
+        Lxqbh2sP8k9sKDK1dCNol60zBN2aI3+b2QS6naU8SOj8BYX8+TBxRkamt0Q9LA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1629273524;
+        s=2020e; t=1629273525;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=JUKmlS1y6feA7sE1A4EWYn4h2WeWPHRaUyNWdEncuO8=;
-        b=Zk1wfqOBZuw2UFb//FEeQhD/MZ8elfXcQq68pltC3WyQVexaeAnmmu6Yt0sZZSkBItW+A5
-        7kCEqOz9xg6jMpDA==
+        bh=eIhIpwE6U/SNQl9kMW+lq4Bq4RrHOAPxo1DY0Pzt3y0=;
+        b=iyKKqVtZHAcjObRzem4kDt3cpEzCHsOZa1ySEBoSaV3U5n3kCI2MzOlO8frzeR+AKHt64h
+        ypmbk1SqN0VQnBCg==
 From:   "tip-bot2 for Marco Elver" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/debug] kcsan: Rework atomic.h into permissive.h
+Subject: [tip: locking/debug] kcsan: Reduce get_ctx() uses in kcsan_found_watchpoint()
 Cc:     Marco Elver <elver@google.com>,
         Mark Rutland <mark.rutland@arm.com>,
         "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <162927352407.25758.1233185703893160119.tip-bot2@tip-bot2>
+Message-ID: <162927352470.25758.1087604458737673053.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -53,243 +56,108 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/debug branch of tip:
 
-Commit-ID:     49f72d5358dd3c0d28bcd2232c513000b15480f0
-Gitweb:        https://git.kernel.org/tip/49f72d5358dd3c0d28bcd2232c513000b15480f0
+Commit-ID:     08cac6049412061e571fadadc3e23464dc46d0f2
+Gitweb:        https://git.kernel.org/tip/08cac6049412061e571fadadc3e23464dc46d0f2
 Author:        Marco Elver <elver@google.com>
-AuthorDate:    Mon, 07 Jun 2021 14:56:51 +02:00
+AuthorDate:    Mon, 07 Jun 2021 14:56:50 +02:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Tue, 20 Jul 2021 13:49:43 -07:00
 
-kcsan: Rework atomic.h into permissive.h
+kcsan: Reduce get_ctx() uses in kcsan_found_watchpoint()
 
-Rework atomic.h into permissive.h to better reflect its purpose, and
-introduce kcsan_ignore_address() and kcsan_ignore_data_race().
+There are a number get_ctx() calls that are close to each other, which
+results in poor codegen (repeated preempt_count loads).
 
-Introduce CONFIG_KCSAN_PERMISSIVE and update the stub functions in
-preparation for subsequent changes.
+Specifically in kcsan_found_watchpoint() (even though it's a slow-path)
+it is beneficial to keep the race-window small until the watchpoint has
+actually been consumed to avoid missed opportunities to report a race.
 
-As before, developers who choose to use KCSAN in "strict" mode will see
-all data races and are not affected. Furthermore, by relying on the
-value-change filter logic for kcsan_ignore_data_race(), even if the
-permissive rules are enabled, the opt-outs in report.c:skip_report()
-override them (such as for RCU-related functions by default).
-
-The option CONFIG_KCSAN_PERMISSIVE is disabled by default, so that the
-documented default behaviour of KCSAN does not change. Instead, like
-CONFIG_KCSAN_IGNORE_ATOMICS, the option needs to be explicitly opted in.
+Let's clean it up a bit before we add more code in
+kcsan_found_watchpoint().
 
 Signed-off-by: Marco Elver <elver@google.com>
 Acked-by: Mark Rutland <mark.rutland@arm.com>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- Documentation/dev-tools/kcsan.rst |  8 +++++-
- kernel/kcsan/atomic.h             | 23 +---------------
- kernel/kcsan/core.c               | 33 +++++++++++++++------
- kernel/kcsan/permissive.h         | 47 ++++++++++++++++++++++++++++++-
- lib/Kconfig.kcsan                 | 10 ++++++-
- 5 files changed, 89 insertions(+), 32 deletions(-)
- delete mode 100644 kernel/kcsan/atomic.h
- create mode 100644 kernel/kcsan/permissive.h
+ kernel/kcsan/core.c | 26 ++++++++++++++++----------
+ 1 file changed, 16 insertions(+), 10 deletions(-)
 
-diff --git a/Documentation/dev-tools/kcsan.rst b/Documentation/dev-tools/kcsan.rst
-index 69dc9c5..7db43c7 100644
---- a/Documentation/dev-tools/kcsan.rst
-+++ b/Documentation/dev-tools/kcsan.rst
-@@ -127,6 +127,14 @@ Kconfig options:
-   causes KCSAN to not report data races due to conflicts where the only plain
-   accesses are aligned writes up to word size.
- 
-+* ``CONFIG_KCSAN_PERMISSIVE``: Enable additional permissive rules to ignore
-+  certain classes of common data races. Unlike the above, the rules are more
-+  complex involving value-change patterns, access type, and address. This
-+  option depends on ``CONFIG_KCSAN_REPORT_VALUE_CHANGE_ONLY=y``. For details
-+  please see the ``kernel/kcsan/permissive.h``. Testers and maintainers that
-+  only focus on reports from specific subsystems and not the whole kernel are
-+  recommended to disable this option.
-+
- To use the strictest possible rules, select ``CONFIG_KCSAN_STRICT=y``, which
- configures KCSAN to follow the Linux-kernel memory consistency model (LKMM) as
- closely as possible.
-diff --git a/kernel/kcsan/atomic.h b/kernel/kcsan/atomic.h
-deleted file mode 100644
-index 530ae1b..0000000
---- a/kernel/kcsan/atomic.h
-+++ /dev/null
-@@ -1,23 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0 */
--/*
-- * Rules for implicitly atomic memory accesses.
-- *
-- * Copyright (C) 2019, Google LLC.
-- */
--
--#ifndef _KERNEL_KCSAN_ATOMIC_H
--#define _KERNEL_KCSAN_ATOMIC_H
--
--#include <linux/types.h>
--
--/*
-- * Special rules for certain memory where concurrent conflicting accesses are
-- * common, however, the current convention is to not mark them; returns true if
-- * access to @ptr should be considered atomic. Called from slow-path.
-- */
--static bool kcsan_is_atomic_special(const volatile void *ptr)
--{
--	return false;
--}
--
--#endif /* _KERNEL_KCSAN_ATOMIC_H */
 diff --git a/kernel/kcsan/core.c b/kernel/kcsan/core.c
-index 9061009..439edb9 100644
+index d92977e..9061009 100644
 --- a/kernel/kcsan/core.c
 +++ b/kernel/kcsan/core.c
-@@ -20,9 +20,9 @@
- #include <linux/sched.h>
- #include <linux/uaccess.h>
+@@ -301,9 +301,9 @@ static inline void reset_kcsan_skip(void)
+ 	this_cpu_write(kcsan_skip, skip_count);
+ }
  
--#include "atomic.h"
- #include "encoding.h"
- #include "kcsan.h"
-+#include "permissive.h"
+-static __always_inline bool kcsan_is_enabled(void)
++static __always_inline bool kcsan_is_enabled(struct kcsan_ctx *ctx)
+ {
+-	return READ_ONCE(kcsan_enabled) && get_ctx()->disable_count == 0;
++	return READ_ONCE(kcsan_enabled) && !ctx->disable_count;
+ }
  
- static bool kcsan_early_enable = IS_ENABLED(CONFIG_KCSAN_EARLY_ENABLE);
- unsigned int kcsan_udelay_task = CONFIG_KCSAN_UDELAY_TASK;
-@@ -353,6 +353,7 @@ static noinline void kcsan_found_watchpoint(const volatile void *ptr,
+ /* Introduce delay depending on context and configuration. */
+@@ -353,10 +353,17 @@ static noinline void kcsan_found_watchpoint(const volatile void *ptr,
  					    atomic_long_t *watchpoint,
  					    long encoded_watchpoint)
  {
-+	const bool is_assert = (type & KCSAN_ACCESS_ASSERT) != 0;
- 	struct kcsan_ctx *ctx = get_ctx();
++	struct kcsan_ctx *ctx = get_ctx();
  	unsigned long flags;
  	bool consumed;
-@@ -375,6 +376,16 @@ static noinline void kcsan_found_watchpoint(const volatile void *ptr,
+ 
+-	if (!kcsan_is_enabled())
++	/*
++	 * We know a watchpoint exists. Let's try to keep the race-window
++	 * between here and finally consuming the watchpoint below as small as
++	 * possible -- avoid unneccessarily complex code until consumed.
++	 */
++
++	if (!kcsan_is_enabled(ctx))
  		return;
  
  	/*
-+	 * If the other thread does not want to ignore the access, and there was
-+	 * a value change as a result of this thread's operation, we will still
-+	 * generate a report of unknown origin.
-+	 *
-+	 * Use CONFIG_KCSAN_REPORT_RACE_UNKNOWN_ORIGIN=n to filter.
-+	 */
-+	if (!is_assert && kcsan_ignore_address(ptr))
-+		return;
-+
-+	/*
- 	 * Consuming the watchpoint must be guarded by kcsan_is_enabled() to
- 	 * avoid erroneously triggering reports if the context is disabled.
+@@ -364,14 +371,12 @@ static noinline void kcsan_found_watchpoint(const volatile void *ptr,
+ 	 * reporting a race where e.g. the writer set up the watchpoint, but the
+ 	 * reader has access_mask!=0, we have to ignore the found watchpoint.
  	 */
-@@ -396,7 +407,7 @@ static noinline void kcsan_found_watchpoint(const volatile void *ptr,
- 		atomic_long_inc(&kcsan_counters[KCSAN_COUNTER_REPORT_RACES]);
- 	}
+-	if (get_ctx()->access_mask != 0)
++	if (ctx->access_mask)
+ 		return;
  
--	if ((type & KCSAN_ACCESS_ASSERT) != 0)
-+	if (is_assert)
- 		atomic_long_inc(&kcsan_counters[KCSAN_COUNTER_ASSERT_FAILURES]);
- 	else
- 		atomic_long_inc(&kcsan_counters[KCSAN_COUNTER_DATA_RACES]);
-@@ -427,12 +438,10 @@ kcsan_setup_watchpoint(const volatile void *ptr, size_t size, int type)
+ 	/*
+-	 * Consume the watchpoint as soon as possible, to minimize the chances
+-	 * of !consumed. Consuming the watchpoint must always be guarded by
+-	 * kcsan_is_enabled() check, as otherwise we might erroneously
+-	 * triggering reports when disabled.
++	 * Consuming the watchpoint must be guarded by kcsan_is_enabled() to
++	 * avoid erroneously triggering reports if the context is disabled.
+ 	 */
+ 	consumed = try_consume_watchpoint(watchpoint, encoded_watchpoint);
+ 
+@@ -409,6 +414,7 @@ kcsan_setup_watchpoint(const volatile void *ptr, size_t size, int type)
+ 	unsigned long access_mask;
+ 	enum kcsan_value_change value_change = KCSAN_VALUE_CHANGE_MAYBE;
+ 	unsigned long ua_flags = user_access_save();
++	struct kcsan_ctx *ctx = get_ctx();
+ 	unsigned long irq_flags = 0;
+ 
+ 	/*
+@@ -417,7 +423,7 @@ kcsan_setup_watchpoint(const volatile void *ptr, size_t size, int type)
+ 	 */
+ 	reset_kcsan_skip();
+ 
+-	if (!kcsan_is_enabled())
++	if (!kcsan_is_enabled(ctx))
  		goto out;
  
  	/*
--	 * Special atomic rules: unlikely to be true, so we check them here in
--	 * the slow-path, and not in the fast-path in is_atomic(). Call after
--	 * kcsan_is_enabled(), as we may access memory that is not yet
--	 * initialized during early boot.
-+	 * Check to-ignore addresses after kcsan_is_enabled(), as we may access
-+	 * memory that is not yet initialized during early boot.
+@@ -489,7 +495,7 @@ kcsan_setup_watchpoint(const volatile void *ptr, size_t size, int type)
+ 	 * Re-read value, and check if it is as expected; if not, we infer a
+ 	 * racy access.
  	 */
--	if (!is_assert && kcsan_is_atomic_special(ptr))
-+	if (!is_assert && kcsan_ignore_address(ptr))
- 		goto out;
- 
- 	if (!check_encodable((unsigned long)ptr, size)) {
-@@ -518,8 +527,14 @@ kcsan_setup_watchpoint(const volatile void *ptr, size_t size, int type)
- 	if (access_mask)
- 		diff &= access_mask;
- 
--	/* Were we able to observe a value-change? */
--	if (diff != 0)
-+	/*
-+	 * Check if we observed a value change.
-+	 *
-+	 * Also check if the data race should be ignored (the rules depend on
-+	 * non-zero diff); if it is to be ignored, the below rules for
-+	 * KCSAN_VALUE_CHANGE_MAYBE apply.
-+	 */
-+	if (diff && !kcsan_ignore_data_race(size, type, old, new, diff))
- 		value_change = KCSAN_VALUE_CHANGE_TRUE;
- 
- 	/* Check if this access raced with another. */
-diff --git a/kernel/kcsan/permissive.h b/kernel/kcsan/permissive.h
-new file mode 100644
-index 0000000..f90e308
---- /dev/null
-+++ b/kernel/kcsan/permissive.h
-@@ -0,0 +1,47 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * Special rules for ignoring entire classes of data-racy memory accesses. None
-+ * of the rules here imply that such data races are generally safe!
-+ *
-+ * All rules in this file can be configured via CONFIG_KCSAN_PERMISSIVE. Keep
-+ * them separate from core code to make it easier to audit.
-+ *
-+ * Copyright (C) 2019, Google LLC.
-+ */
-+
-+#ifndef _KERNEL_KCSAN_PERMISSIVE_H
-+#define _KERNEL_KCSAN_PERMISSIVE_H
-+
-+#include <linux/types.h>
-+
-+/*
-+ * Access ignore rules based on address.
-+ */
-+static __always_inline bool kcsan_ignore_address(const volatile void *ptr)
-+{
-+	if (!IS_ENABLED(CONFIG_KCSAN_PERMISSIVE))
-+		return false;
-+
-+	return false;
-+}
-+
-+/*
-+ * Data race ignore rules based on access type and value change patterns.
-+ */
-+static bool
-+kcsan_ignore_data_race(size_t size, int type, u64 old, u64 new, u64 diff)
-+{
-+	if (!IS_ENABLED(CONFIG_KCSAN_PERMISSIVE))
-+		return false;
-+
-+	/*
-+	 * Rules here are only for plain read accesses, so that we still report
-+	 * data races between plain read-write accesses.
-+	 */
-+	if (type || size > sizeof(long))
-+		return false;
-+
-+	return false;
-+}
-+
-+#endif /* _KERNEL_KCSAN_PERMISSIVE_H */
-diff --git a/lib/Kconfig.kcsan b/lib/Kconfig.kcsan
-index c76fbb3..26f03c7 100644
---- a/lib/Kconfig.kcsan
-+++ b/lib/Kconfig.kcsan
-@@ -231,4 +231,14 @@ config KCSAN_IGNORE_ATOMICS
- 	  due to two conflicting plain writes will be reported (aligned and
- 	  unaligned, if CONFIG_KCSAN_ASSUME_PLAIN_WRITES_ATOMIC=n).
- 
-+config KCSAN_PERMISSIVE
-+	bool "Enable all additional permissive rules"
-+	depends on KCSAN_REPORT_VALUE_CHANGE_ONLY
-+	help
-+	  Enable additional permissive rules to ignore certain classes of data
-+	  races (also see kernel/kcsan/permissive.h). None of the permissive
-+	  rules imply that such data races are generally safe, but can be used
-+	  to further reduce reported data races due to data-racy patterns
-+	  common across the kernel.
-+
- endif # KCSAN
+-	access_mask = get_ctx()->access_mask;
++	access_mask = ctx->access_mask;
+ 	new = 0;
+ 	switch (size) {
+ 	case 1:
