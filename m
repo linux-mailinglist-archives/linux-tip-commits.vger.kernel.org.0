@@ -2,50 +2,50 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A4B783EFE70
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 18 Aug 2021 09:58:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F1333EFE6F
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 18 Aug 2021 09:58:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239407AbhHRH70 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 18 Aug 2021 03:59:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42476 "EHLO
+        id S238670AbhHRH7Z (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 18 Aug 2021 03:59:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42478 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237962AbhHRH7V (ORCPT
+        with ESMTP id S238650AbhHRH7V (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Wed, 18 Aug 2021 03:59:21 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9D59C061764;
-        Wed, 18 Aug 2021 00:58:46 -0700 (PDT)
-Date:   Wed, 18 Aug 2021 07:58:44 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C2D6C0613CF;
+        Wed, 18 Aug 2021 00:58:47 -0700 (PDT)
+Date:   Wed, 18 Aug 2021 07:58:45 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1629273525;
+        s=2020; t=1629273526;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=eIhIpwE6U/SNQl9kMW+lq4Bq4RrHOAPxo1DY0Pzt3y0=;
-        b=zZrHRRQ5lUBHsPlfHPgC91yBVj9bCdP9Z+5awQkP9JBz7bldPvi7+K5a//etjJbTDAT0+M
-        bFw0qcEqMqmkrAhBDqA0cHt9Su0LZxGfDAiSEytbz7KjOfCDHrpqxP7YJhRFyv9YBU+rFV
-        T8N6hSUftsRWyP1eNX2rZVflcuYtBDaWDZFfBcWhXIePZgDOMW1fGEhZBNV9x458n0EzjV
-        U05W0DqmDXbEXkxk7mT9/Lv9o/nQLDGtlPmFX/5i4FpT1Wxp3uQD+oyQtz5n+zGmha1L8y
-        Lxqbh2sP8k9sKDK1dCNol60zBN2aI3+b2QS6naU8SOj8BYX8+TBxRkamt0Q9LA==
+        bh=eGoVw0Ybvi4GjfzrkEV/IPERfl3L9l4lN8LXB4O4jvo=;
+        b=3c5NlLNBrMnL4mBXUZ7gAytQoxfkPU6rW/yfLdw4dNDXTdiDqzZhY+r1UBIGEjto4vy9DQ
+        wsWY2ByURprHfanbKiIzSMDxFnUFoRc0Yp9bm07t5U2Ua18tmNrhDLNZ0OgvAvJ1wIehAv
+        qrNOSnlO0666qChS1mXpa+x0KzE98UWdXooLFMdb3JXtat7nGKwnHLwD7Zby4aDz3JOKRB
+        cN/qfXPJXyE8LdTldSLis3nd2hWq4F8v/e/WLcKw3O1gg+pW9PZ/crA080UqxbCUYIpGVo
+        5e0SmrUNK2Qa4ahrWoL//eHKqJuCzlBKUn2c8qSxwlDj5qpieRycyY4gQ3oDIg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1629273525;
+        s=2020e; t=1629273526;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=eIhIpwE6U/SNQl9kMW+lq4Bq4RrHOAPxo1DY0Pzt3y0=;
-        b=iyKKqVtZHAcjObRzem4kDt3cpEzCHsOZa1ySEBoSaV3U5n3kCI2MzOlO8frzeR+AKHt64h
-        ypmbk1SqN0VQnBCg==
+        bh=eGoVw0Ybvi4GjfzrkEV/IPERfl3L9l4lN8LXB4O4jvo=;
+        b=mR+yzyW6/3Q7RCAMNmfOE7IzWwY6XRNwuFEArsug/AvuCTgvMDXp3snSJ5QmluQ7UchkCc
+        0vkWIHf5UBGBYODg==
 From:   "tip-bot2 for Marco Elver" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/debug] kcsan: Reduce get_ctx() uses in kcsan_found_watchpoint()
+Subject: [tip: locking/debug] kcsan: Introduce CONFIG_KCSAN_STRICT
 Cc:     Marco Elver <elver@google.com>,
         Mark Rutland <mark.rutland@arm.com>,
         "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <162927352470.25758.1087604458737673053.tip-bot2@tip-bot2>
+Message-ID: <162927352528.25758.9839549022962931479.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -56,108 +56,78 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/debug branch of tip:
 
-Commit-ID:     08cac6049412061e571fadadc3e23464dc46d0f2
-Gitweb:        https://git.kernel.org/tip/08cac6049412061e571fadadc3e23464dc46d0f2
+Commit-ID:     e675d2533a74acfa95c62e7bb088335866f44fd2
+Gitweb:        https://git.kernel.org/tip/e675d2533a74acfa95c62e7bb088335866f44fd2
 Author:        Marco Elver <elver@google.com>
-AuthorDate:    Mon, 07 Jun 2021 14:56:50 +02:00
+AuthorDate:    Mon, 07 Jun 2021 14:56:49 +02:00
 Committer:     Paul E. McKenney <paulmck@kernel.org>
 CommitterDate: Tue, 20 Jul 2021 13:49:43 -07:00
 
-kcsan: Reduce get_ctx() uses in kcsan_found_watchpoint()
+kcsan: Introduce CONFIG_KCSAN_STRICT
 
-There are a number get_ctx() calls that are close to each other, which
-results in poor codegen (repeated preempt_count loads).
-
-Specifically in kcsan_found_watchpoint() (even though it's a slow-path)
-it is beneficial to keep the race-window small until the watchpoint has
-actually been consumed to avoid missed opportunities to report a race.
-
-Let's clean it up a bit before we add more code in
-kcsan_found_watchpoint().
+Add a simpler Kconfig variable to configure KCSAN's "strict" mode. This
+makes it simpler in documentation or messages to suggest just a single
+configuration option to select the strictest checking mode (vs.
+currently having to list several options).
 
 Signed-off-by: Marco Elver <elver@google.com>
 Acked-by: Mark Rutland <mark.rutland@arm.com>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- kernel/kcsan/core.c | 26 ++++++++++++++++----------
- 1 file changed, 16 insertions(+), 10 deletions(-)
+ Documentation/dev-tools/kcsan.rst |  4 ++++
+ lib/Kconfig.kcsan                 | 10 ++++++++++
+ 2 files changed, 14 insertions(+)
 
-diff --git a/kernel/kcsan/core.c b/kernel/kcsan/core.c
-index d92977e..9061009 100644
---- a/kernel/kcsan/core.c
-+++ b/kernel/kcsan/core.c
-@@ -301,9 +301,9 @@ static inline void reset_kcsan_skip(void)
- 	this_cpu_write(kcsan_skip, skip_count);
- }
+diff --git a/Documentation/dev-tools/kcsan.rst b/Documentation/dev-tools/kcsan.rst
+index 6a600cf..69dc9c5 100644
+--- a/Documentation/dev-tools/kcsan.rst
++++ b/Documentation/dev-tools/kcsan.rst
+@@ -127,6 +127,10 @@ Kconfig options:
+   causes KCSAN to not report data races due to conflicts where the only plain
+   accesses are aligned writes up to word size.
  
--static __always_inline bool kcsan_is_enabled(void)
-+static __always_inline bool kcsan_is_enabled(struct kcsan_ctx *ctx)
- {
--	return READ_ONCE(kcsan_enabled) && get_ctx()->disable_count == 0;
-+	return READ_ONCE(kcsan_enabled) && !ctx->disable_count;
- }
- 
- /* Introduce delay depending on context and configuration. */
-@@ -353,10 +353,17 @@ static noinline void kcsan_found_watchpoint(const volatile void *ptr,
- 					    atomic_long_t *watchpoint,
- 					    long encoded_watchpoint)
- {
-+	struct kcsan_ctx *ctx = get_ctx();
- 	unsigned long flags;
- 	bool consumed;
- 
--	if (!kcsan_is_enabled())
-+	/*
-+	 * We know a watchpoint exists. Let's try to keep the race-window
-+	 * between here and finally consuming the watchpoint below as small as
-+	 * possible -- avoid unneccessarily complex code until consumed.
-+	 */
++To use the strictest possible rules, select ``CONFIG_KCSAN_STRICT=y``, which
++configures KCSAN to follow the Linux-kernel memory consistency model (LKMM) as
++closely as possible.
 +
-+	if (!kcsan_is_enabled(ctx))
- 		return;
+ DebugFS interface
+ ~~~~~~~~~~~~~~~~~
  
- 	/*
-@@ -364,14 +371,12 @@ static noinline void kcsan_found_watchpoint(const volatile void *ptr,
- 	 * reporting a race where e.g. the writer set up the watchpoint, but the
- 	 * reader has access_mask!=0, we have to ignore the found watchpoint.
- 	 */
--	if (get_ctx()->access_mask != 0)
-+	if (ctx->access_mask)
- 		return;
+diff --git a/lib/Kconfig.kcsan b/lib/Kconfig.kcsan
+index 5304f21..c76fbb3 100644
+--- a/lib/Kconfig.kcsan
++++ b/lib/Kconfig.kcsan
+@@ -183,9 +183,17 @@ config KCSAN_REPORT_RACE_UNKNOWN_ORIGIN
+ 	  reported if it was only possible to infer a race due to a data value
+ 	  change while an access is being delayed on a watchpoint.
  
- 	/*
--	 * Consume the watchpoint as soon as possible, to minimize the chances
--	 * of !consumed. Consuming the watchpoint must always be guarded by
--	 * kcsan_is_enabled() check, as otherwise we might erroneously
--	 * triggering reports when disabled.
-+	 * Consuming the watchpoint must be guarded by kcsan_is_enabled() to
-+	 * avoid erroneously triggering reports if the context is disabled.
- 	 */
- 	consumed = try_consume_watchpoint(watchpoint, encoded_watchpoint);
++config KCSAN_STRICT
++	bool "Strict data-race checking"
++	help
++	  KCSAN will report data races with the strictest possible rules, which
++	  closely aligns with the rules defined by the Linux-kernel memory
++	  consistency model (LKMM).
++
+ config KCSAN_REPORT_VALUE_CHANGE_ONLY
+ 	bool "Only report races where watcher observed a data value change"
+ 	default y
++	depends on !KCSAN_STRICT
+ 	help
+ 	  If enabled and a conflicting write is observed via a watchpoint, but
+ 	  the data value of the memory location was observed to remain
+@@ -194,6 +202,7 @@ config KCSAN_REPORT_VALUE_CHANGE_ONLY
+ config KCSAN_ASSUME_PLAIN_WRITES_ATOMIC
+ 	bool "Assume that plain aligned writes up to word size are atomic"
+ 	default y
++	depends on !KCSAN_STRICT
+ 	help
+ 	  Assume that plain aligned writes up to word size are atomic by
+ 	  default, and also not subject to other unsafe compiler optimizations
+@@ -206,6 +215,7 @@ config KCSAN_ASSUME_PLAIN_WRITES_ATOMIC
  
-@@ -409,6 +414,7 @@ kcsan_setup_watchpoint(const volatile void *ptr, size_t size, int type)
- 	unsigned long access_mask;
- 	enum kcsan_value_change value_change = KCSAN_VALUE_CHANGE_MAYBE;
- 	unsigned long ua_flags = user_access_save();
-+	struct kcsan_ctx *ctx = get_ctx();
- 	unsigned long irq_flags = 0;
- 
- 	/*
-@@ -417,7 +423,7 @@ kcsan_setup_watchpoint(const volatile void *ptr, size_t size, int type)
- 	 */
- 	reset_kcsan_skip();
- 
--	if (!kcsan_is_enabled())
-+	if (!kcsan_is_enabled(ctx))
- 		goto out;
- 
- 	/*
-@@ -489,7 +495,7 @@ kcsan_setup_watchpoint(const volatile void *ptr, size_t size, int type)
- 	 * Re-read value, and check if it is as expected; if not, we infer a
- 	 * racy access.
- 	 */
--	access_mask = get_ctx()->access_mask;
-+	access_mask = ctx->access_mask;
- 	new = 0;
- 	switch (size) {
- 	case 1:
+ config KCSAN_IGNORE_ATOMICS
+ 	bool "Do not instrument marked atomic accesses"
++	depends on !KCSAN_STRICT
+ 	help
+ 	  Never instrument marked atomic accesses. This option can be used for
+ 	  additional filtering. Conflicting marked atomic reads and plain
