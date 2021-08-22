@@ -2,192 +2,134 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F03E73F3B58
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 21 Aug 2021 18:04:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF17F3F3E4A
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 22 Aug 2021 09:26:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229741AbhHUQEy (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 21 Aug 2021 12:04:54 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:59250 "EHLO
+        id S230272AbhHVH0e (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 22 Aug 2021 03:26:34 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:33328 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229643AbhHUQEy (ORCPT
+        with ESMTP id S229934AbhHVH0e (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 21 Aug 2021 12:04:54 -0400
-Date:   Sat, 21 Aug 2021 16:04:12 -0000
+        Sun, 22 Aug 2021 03:26:34 -0400
+Date:   Sun, 22 Aug 2021 07:25:50 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1629561853;
+        s=2020; t=1629617152;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=62aTtqrzgmwTmii6G9WD9NGB+2mGa715lza6oAKvJug=;
-        b=BMnjdwJPWHtOTOTwX6sggBxrND7ySX0//0bg8pjeuwelEy+Wo4HRa85TvYZ9cGm2eFJqri
-        YS5KPAauiUHk9Kq1fM7MjtymeXUS+HLi0IVq9Ege7Sth6bqVk6ynmpFjbGSFAiV8Zx9AuW
-        3Sx4D1GsPT6/DpXf3SDBNkjKngL+b7tUdSzDbp2pAucMIB3HcvFqgA03DR6ym90qzoGwu/
-        DRP0R0HfSUZUPEH2NMVOZxWBn2hO7pZPc+1++DnVIjzv3FbfMDyXnROAhfHVitzr1RcjW5
-        XPtxd0XETS4WigW0EKAJFg9rU4fF7CTAfB8iYQX81s33fW1HtFHCZMX9L6HvOA==
+        bh=BDaJ8gq1y2CCb9HbdovkJsuoTT2Ott+UnFGCWMcbZ1s=;
+        b=j8J2xDUjqMbDZ8tLD4Ns7KzQnGOC6+VfXjaJpfd5g26eM66Cu75J7Wzn5aBzcoRKIr3CZw
+        qHrZrUBI10rNNesoqjvvknfdjL6nh1NxGsFWcO+T2KS676JEH/mtnn/pT3zJtc/zhkVN5H
+        mMEjdQ+BQ3zqfWyIqdB7JWkeFGoctRxRTBYVDsKNf3tLMHNouvIQ5FcjpB18u8najg+jUW
+        utdBJ1mfmBNy2zEoOj0BFALFXKf/MWjotDth4cGZ/UFIeHqaoEMqWPcxwUoDosrXGTQkJg
+        3QKotZ8uGNPCkQ2TwzuUOfm9BCiDBlRn4uY5ftnEcleyx21RbhdDt7+E789LqQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1629561853;
+        s=2020e; t=1629617152;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=62aTtqrzgmwTmii6G9WD9NGB+2mGa715lza6oAKvJug=;
-        b=lIAc2GJukDzGZi0IEX/zs2NmiKnjQ9WGpySEP/8IVfpgiZuoXAP9dpvTB14GF/CeB0/Hu+
-        dvdY7epCxIOqaNDg==
-From:   "tip-bot2 for Joerg Roedel" <tip-bot2@linutronix.de>
+        bh=BDaJ8gq1y2CCb9HbdovkJsuoTT2Ott+UnFGCWMcbZ1s=;
+        b=2mJQQJ9rWYEBE+ORbmghjg6TfLrGLBac0hveQpFvheUL0Pu7xehOS/xacJbwGUSZ+GknMY
+        +xk8xA070kmmhmBg==
+From:   "tip-bot2 for Babu Moger" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/efi: Restore Firmware IDT before calling
- ExitBootServices()
-Cc:     Fabio Aiuto <fabioaiuto83@gmail.com>,
-        Joerg Roedel <jroedel@suse.de>, Borislav Petkov <bp@suse.de>,
-        Ard Biesheuvel <ardb@kernel.org>, stable@vger.kernel.org,
-        #@tip-bot2.tec.linutronix.de, 5.13+@tip-bot2.tec.linutronix.de,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20210820125703.32410-1-joro@8bytes.org>
-References: <20210820125703.32410-1-joro@8bytes.org>
+Subject: [tip: x86/urgent] x86/resctrl: Fix a maybe-uninitialized build
+ warning treated as error
+Cc:     Terry Bowman <Terry.Bowman@amd.com>,
+        kernel test robot <lkp@intel.com>,
+        Babu Moger <babu.moger@amd.com>, Borislav Petkov <bp@suse.de>,
+        Reinette Chatre <reinette.chatre@intel.com>,
+        stable@vger.kernel.org, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <162949631908.23903.17090272726012848523.stgit@bmoger-ubuntu>
+References: <162949631908.23903.17090272726012848523.stgit@bmoger-ubuntu>
 MIME-Version: 1.0
-Message-ID: <162956185258.25758.4225222196830359114.tip-bot2@tip-bot2>
+Message-ID: <162961715100.25758.14486039318102865041.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     22aa45cb465be474e97666b3f7587ccb06ee411b
-Gitweb:        https://git.kernel.org/tip/22aa45cb465be474e97666b3f7587ccb06ee411b
-Author:        Joerg Roedel <jroedel@suse.de>
-AuthorDate:    Fri, 20 Aug 2021 14:57:03 +02:00
+Commit-ID:     527f721478bce3f49b513a733bacd19d6f34b08c
+Gitweb:        https://git.kernel.org/tip/527f721478bce3f49b513a733bacd19d6f3=
+4b08c
+Author:        Babu Moger <babu.moger@amd.com>
+AuthorDate:    Fri, 20 Aug 2021 16:52:42 -05:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Sat, 21 Aug 2021 17:57:04 +02:00
+CommitterDate: Sun, 22 Aug 2021 09:11:29 +02:00
 
-x86/efi: Restore Firmware IDT before calling ExitBootServices()
+x86/resctrl: Fix a maybe-uninitialized build warning treated as error
 
-Commit
+The recent commit
 
-  79419e13e808 ("x86/boot/compressed/64: Setup IDT in startup_32 boot path")
+  064855a69003 ("x86/resctrl: Fix default monitoring groups reporting")
 
-introduced an IDT into the 32-bit boot path of the decompressor stub.
-But the IDT is set up before ExitBootServices() is called, and some UEFI
-firmwares rely on their own IDT.
+caused a RHEL build failure with an uninitialized variable warning
+treated as an error because it removed the default case snippet.
 
-Save the firmware IDT on boot and restore it before calling into EFI
-functions to fix boot failures introduced by above commit.
+The RHEL Makefile uses '-Werror=3Dmaybe-uninitialized' to force possibly
+uninitialized variable warnings to be treated as errors. This is also
+reported by smatch via the 0day robot.
 
-Fixes: 79419e13e808 ("x86/boot/compressed/64: Setup IDT in startup_32 boot path")
-Reported-by: Fabio Aiuto <fabioaiuto83@gmail.com>
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+The error from the RHEL build is:
+
+  arch/x86/kernel/cpu/resctrl/monitor.c: In function =E2=80=98__mon_event_cou=
+nt=E2=80=99:
+  arch/x86/kernel/cpu/resctrl/monitor.c:261:12: error: =E2=80=98m=E2=80=99 ma=
+y be used
+  uninitialized in this function [-Werror=3Dmaybe-uninitialized]
+    m->chunks +=3D chunks;
+              ^~
+
+The upstream Makefile does not build using '-Werror=3Dmaybe-uninitialized'.
+So, the problem is not seen there. Fix the problem by putting back the
+default case snippet.
+
+ [ bp: note that there's nothing wrong with the code and other compilers
+   do not trigger this warning - this is being done just so the RHEL compiler
+   is happy. ]
+
+Fixes: 064855a69003 ("x86/resctrl: Fix default monitoring groups reporting")
+Reported-by: Terry Bowman <Terry.Bowman@amd.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Babu Moger <babu.moger@amd.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Cc: stable@vger.kernel.org # 5.13+
-Link: https://lkml.kernel.org/r/20210820125703.32410-1-joro@8bytes.org
+Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lkml.kernel.org/r/162949631908.23903.17090272726012848523.stgit=
+@bmoger-ubuntu
 ---
- arch/x86/boot/compressed/efi_thunk_64.S | 30 ++++++++++++++++--------
- arch/x86/boot/compressed/head_64.S      |  3 ++-
- 2 files changed, 24 insertions(+), 9 deletions(-)
+ arch/x86/kernel/cpu/resctrl/monitor.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/arch/x86/boot/compressed/efi_thunk_64.S b/arch/x86/boot/compressed/efi_thunk_64.S
-index 95a223b..8bb92e9 100644
---- a/arch/x86/boot/compressed/efi_thunk_64.S
-+++ b/arch/x86/boot/compressed/efi_thunk_64.S
-@@ -5,9 +5,8 @@
-  * Early support for invoking 32-bit EFI services from a 64-bit kernel.
-  *
-  * Because this thunking occurs before ExitBootServices() we have to
-- * restore the firmware's 32-bit GDT before we make EFI service calls,
-- * since the firmware's 32-bit IDT is still currently installed and it
-- * needs to be able to service interrupts.
-+ * restore the firmware's 32-bit GDT and IDT before we make EFI service
-+ * calls.
-  *
-  * On the plus side, we don't have to worry about mangling 64-bit
-  * addresses into 32-bits because we're executing with an identity
-@@ -39,7 +38,7 @@ SYM_FUNC_START(__efi64_thunk)
- 	/*
- 	 * Convert x86-64 ABI params to i386 ABI
- 	 */
--	subq	$32, %rsp
-+	subq	$64, %rsp
- 	movl	%esi, 0x0(%rsp)
- 	movl	%edx, 0x4(%rsp)
- 	movl	%ecx, 0x8(%rsp)
-@@ -49,14 +48,19 @@ SYM_FUNC_START(__efi64_thunk)
- 	leaq	0x14(%rsp), %rbx
- 	sgdt	(%rbx)
- 
-+	addq	$16, %rbx
-+	sidt	(%rbx)
-+
- 	/*
--	 * Switch to gdt with 32-bit segments. This is the firmware GDT
--	 * that was installed when the kernel started executing. This
--	 * pointer was saved at the EFI stub entry point in head_64.S.
-+	 * Switch to IDT and GDT with 32-bit segments. This is the firmware GDT
-+	 * and IDT that was installed when the kernel started executing. The
-+	 * pointers were saved at the EFI stub entry point in head_64.S.
- 	 *
- 	 * Pass the saved DS selector to the 32-bit code, and use far return to
- 	 * restore the saved CS selector.
- 	 */
-+	leaq	efi32_boot_idt(%rip), %rax
-+	lidt	(%rax)
- 	leaq	efi32_boot_gdt(%rip), %rax
- 	lgdt	(%rax)
- 
-@@ -67,7 +71,7 @@ SYM_FUNC_START(__efi64_thunk)
- 	pushq	%rax
- 	lretq
- 
--1:	addq	$32, %rsp
-+1:	addq	$64, %rsp
- 	movq	%rdi, %rax
- 
- 	pop	%rbx
-@@ -128,10 +132,13 @@ SYM_FUNC_START_LOCAL(efi_enter32)
- 
- 	/*
- 	 * Some firmware will return with interrupts enabled. Be sure to
--	 * disable them before we switch GDTs.
-+	 * disable them before we switch GDTs and IDTs.
- 	 */
- 	cli
- 
-+	lidtl	(%ebx)
-+	subl	$16, %ebx
-+
- 	lgdtl	(%ebx)
- 
- 	movl	%cr4, %eax
-@@ -166,6 +173,11 @@ SYM_DATA_START(efi32_boot_gdt)
- 	.quad	0
- SYM_DATA_END(efi32_boot_gdt)
- 
-+SYM_DATA_START(efi32_boot_idt)
-+	.word	0
-+	.quad	0
-+SYM_DATA_END(efi32_boot_idt)
-+
- SYM_DATA_START(efi32_boot_cs)
- 	.word	0
- SYM_DATA_END(efi32_boot_cs)
-diff --git a/arch/x86/boot/compressed/head_64.S b/arch/x86/boot/compressed/head_64.S
-index a2347de..572c535 100644
---- a/arch/x86/boot/compressed/head_64.S
-+++ b/arch/x86/boot/compressed/head_64.S
-@@ -319,6 +319,9 @@ SYM_INNER_LABEL(efi32_pe_stub_entry, SYM_L_LOCAL)
- 	movw	%cs, rva(efi32_boot_cs)(%ebp)
- 	movw	%ds, rva(efi32_boot_ds)(%ebp)
- 
-+	/* Store firmware IDT descriptor */
-+	sidtl	rva(efi32_boot_idt)(%ebp)
-+
- 	/* Disable paging */
- 	movl	%cr0, %eax
- 	btrl	$X86_CR0_PG_BIT, %eax
+diff --git a/arch/x86/kernel/cpu/resctrl/monitor.c b/arch/x86/kernel/cpu/resc=
+trl/monitor.c
+index 57e4bb6..8caf871 100644
+--- a/arch/x86/kernel/cpu/resctrl/monitor.c
++++ b/arch/x86/kernel/cpu/resctrl/monitor.c
+@@ -304,6 +304,12 @@ static u64 __mon_event_count(u32 rmid, struct rmid_read =
+*rr)
+ 	case QOS_L3_MBM_LOCAL_EVENT_ID:
+ 		m =3D &rr->d->mbm_local[rmid];
+ 		break;
++	default:
++		/*
++		 * Code would never reach here because an invalid
++		 * event id would fail the __rmid_read.
++		 */
++		return RMID_VAL_ERROR;
+ 	}
+=20
+ 	if (rr->first) {
