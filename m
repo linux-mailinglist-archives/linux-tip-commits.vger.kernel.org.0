@@ -2,52 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E3B33F479E
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 23 Aug 2021 11:32:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F2E63F47BE
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 23 Aug 2021 11:39:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236019AbhHWJdd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 23 Aug 2021 05:33:33 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:39214 "EHLO
+        id S231679AbhHWJjq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 23 Aug 2021 05:39:46 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:39282 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235951AbhHWJdc (ORCPT
+        with ESMTP id S230265AbhHWJjp (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 23 Aug 2021 05:33:32 -0400
-Date:   Mon, 23 Aug 2021 09:32:48 -0000
+        Mon, 23 Aug 2021 05:39:45 -0400
+Date:   Mon, 23 Aug 2021 09:39:01 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1629711168;
+        s=2020; t=1629711542;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=4ckrqYImqmHdR82uwvDZsc8Mo9VNLpaFZ6UD4e056Yg=;
-        b=n6J+h+7lD931EkuUEZ8yMipaqxxybW9+iBIhZvdx1aHO3MgpEmwpWQDKD4IxT77qXPCatP
-        sePyPLK5nu1ibtHchUtJ5MgtxmguSHm175PwpUWy8Qji3ejrpS7WRa92HZjGTRCRKQdxto
-        flGTAW9zIaNMrNFzlI3CyT+V09/P645UF8n+m+1tANOY0mWtQcuxBf5Q3Nl7Y4OaZDZq5b
-        V9J/EEeepa2x9gYZdzEBmzs2wLDC91epEg4lj837Vw4JWcV5Pa5I4lH0tSNOFablyHxI6R
-        AW982sB998qO/o+dlaDHPAHenL4TL4YOO+Dc80pEAhNQCEbh/McpQp0q5DmJEA==
+        bh=F1KxiDcXAsN6avrtYAJ86uY9l59Vr3FTTpCQ9FaH5G0=;
+        b=wgURdIpWfBRSsP5+bpNI82v+9cEz9571eY38vChZObnTI6H5M3BCKOx7Xjn1860qffr2eL
+        cQ/j2PmrsictAncWlOWtK3V1yFo2bnBFzOfPGGvFY6AeJRrkn1hAi4Lx63c04CTw+jxEBm
+        YCNzw98Eh+A0Zyxm8o9+2aYRkL8BtmthUoB5a+AMHG16R5EVc8XPcC5DotmyOFa0b/vE1I
+        vwBnq/mtOmTlHD8ajF0WHYi02NP6+0IfAhYOojTIuWCY/FQx3dNI8fMlan1xwZB4+tSD2l
+        nZl9YK1JxxbO1/acapOM5ca5dVfjlbCsyRZwofd9FVfRbSBjufAUmiCt0g9JPw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1629711168;
+        s=2020e; t=1629711542;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=4ckrqYImqmHdR82uwvDZsc8Mo9VNLpaFZ6UD4e056Yg=;
-        b=MLC/FR9rwce+OK5RqKsvxWBddn195O6qrh8xLrHYUGYzjobDW/uYxMNlGN6mQJc6eRgWF5
-        griHoN70nV9eMGAQ==
-From:   "tip-bot2 for Kim Phillips" <tip-bot2@linutronix.de>
+        bh=F1KxiDcXAsN6avrtYAJ86uY9l59Vr3FTTpCQ9FaH5G0=;
+        b=tdl+ZanOD0HqLuHLbZAHO/F/uJnBgbYeKvSM2roD56JPD+3FSax7LT8Wpd4wp0h28D0j4V
+        9fLbz+RliYS4D1BQ==
+From:   "tip-bot2 for Xiaoming Ni" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/x86/amd/ibs: Add workaround for erratum #1,197
-Cc:     Kim Phillips <kim.phillips@amd.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: locking/core] locking/semaphore: Add might_sleep() to down_*() family
+Cc:     Xiaoming Ni <nixiaoming@huawei.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Will Deacon <will@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210817221048.88063-3-kim.phillips@amd.com>
-References: <20210817221048.88063-3-kim.phillips@amd.com>
+In-Reply-To: <20210809021215.19991-1-nixiaoming@huawei.com>
+References: <20210809021215.19991-1-nixiaoming@huawei.com>
 MIME-Version: 1.0
-Message-ID: <162971116811.25758.8933785673409400346.tip-bot2@tip-bot2>
+Message-ID: <162971154151.25758.3817473813262421389.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -56,64 +57,61 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/core branch of tip:
+The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     ba02a6dc5693d1db817850f4ba5602d003d0cefb
-Gitweb:        https://git.kernel.org/tip/ba02a6dc5693d1db817850f4ba5602d003d0cefb
-Author:        Kim Phillips <kim.phillips@amd.com>
-AuthorDate:    Tue, 17 Aug 2021 17:10:42 -05:00
+Commit-ID:     99409b935c9ac5ea36ab5218954115c52449234d
+Gitweb:        https://git.kernel.org/tip/99409b935c9ac5ea36ab5218954115c52449234d
+Author:        Xiaoming Ni <nixiaoming@huawei.com>
+AuthorDate:    Mon, 09 Aug 2021 10:12:15 +08:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Fri, 20 Aug 2021 12:33:12 +02:00
+CommitterDate: Fri, 20 Aug 2021 12:33:17 +02:00
 
-perf/x86/amd/ibs: Add workaround for erratum #1,197
+locking/semaphore: Add might_sleep() to down_*() family
 
-Erratum #1197 "IBS (Instruction Based Sampling) Register State May be
-Incorrect After Restore From CC6" is published in a document:
+Semaphore is sleeping lock. Add might_sleep() to down*() family
+(with exception of down_trylock()) to detect atomic context sleep.
 
-  "Revision Guide for AMD Family 19h Models 00h-0Fh Processors" 56683 Rev. 1.04 July 2021
-
-  https://bugzilla.kernel.org/show_bug.cgi?id=206537
-
-Implement the erratum's suggested workaround and ignore IBS samples if
-MSRC001_1031 == 0.
-
-Signed-off-by: Kim Phillips <kim.phillips@amd.com>
+Signed-off-by: Xiaoming Ni <nixiaoming@huawei.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20210817221048.88063-3-kim.phillips@amd.com
+Acked-by: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/r/20210809021215.19991-1-nixiaoming@huawei.com
 ---
- arch/x86/events/amd/ibs.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ kernel/locking/semaphore.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/x86/events/amd/ibs.c b/arch/x86/events/amd/ibs.c
-index 8c25fbd..222c890 100644
---- a/arch/x86/events/amd/ibs.c
-+++ b/arch/x86/events/amd/ibs.c
-@@ -90,6 +90,7 @@ struct perf_ibs {
- 	unsigned long			offset_mask[1];
- 	int				offset_max;
- 	unsigned int			fetch_count_reset_broken : 1;
-+	unsigned int			fetch_ignore_if_zero_rip : 1;
- 	struct cpu_perf_ibs __percpu	*pcpu;
+diff --git a/kernel/locking/semaphore.c b/kernel/locking/semaphore.c
+index 9aa855a..9ee381e 100644
+--- a/kernel/locking/semaphore.c
++++ b/kernel/locking/semaphore.c
+@@ -54,6 +54,7 @@ void down(struct semaphore *sem)
+ {
+ 	unsigned long flags;
  
- 	struct attribute		**format_attrs;
-@@ -673,6 +674,10 @@ fail:
- 	if (check_rip && (ibs_data.regs[2] & IBS_RIP_INVALID)) {
- 		regs.flags &= ~PERF_EFLAGS_EXACT;
- 	} else {
-+		/* Workaround for erratum #1,197 */
-+		if (perf_ibs->fetch_ignore_if_zero_rip && !(ibs_data.regs[1]))
-+			goto out;
-+
- 		set_linear_ip(&regs, ibs_data.regs[1]);
- 		regs.flags |= PERF_EFLAGS_EXACT;
- 	}
-@@ -770,6 +775,9 @@ static __init void perf_event_ibs_init(void)
- 	if (boot_cpu_data.x86 >= 0x16 && boot_cpu_data.x86 <= 0x18)
- 		perf_ibs_fetch.fetch_count_reset_broken = 1;
++	might_sleep();
+ 	raw_spin_lock_irqsave(&sem->lock, flags);
+ 	if (likely(sem->count > 0))
+ 		sem->count--;
+@@ -77,6 +78,7 @@ int down_interruptible(struct semaphore *sem)
+ 	unsigned long flags;
+ 	int result = 0;
  
-+	if (boot_cpu_data.x86 == 0x19 && boot_cpu_data.x86_model < 0x10)
-+		perf_ibs_fetch.fetch_ignore_if_zero_rip = 1;
-+
- 	perf_ibs_pmu_init(&perf_ibs_fetch, "ibs_fetch");
++	might_sleep();
+ 	raw_spin_lock_irqsave(&sem->lock, flags);
+ 	if (likely(sem->count > 0))
+ 		sem->count--;
+@@ -103,6 +105,7 @@ int down_killable(struct semaphore *sem)
+ 	unsigned long flags;
+ 	int result = 0;
  
- 	if (ibs_caps & IBS_CAPS_OPCNT) {
++	might_sleep();
+ 	raw_spin_lock_irqsave(&sem->lock, flags);
+ 	if (likely(sem->count > 0))
+ 		sem->count--;
+@@ -157,6 +160,7 @@ int down_timeout(struct semaphore *sem, long timeout)
+ 	unsigned long flags;
+ 	int result = 0;
+ 
++	might_sleep();
+ 	raw_spin_lock_irqsave(&sem->lock, flags);
+ 	if (likely(sem->count > 0))
+ 		sem->count--;
