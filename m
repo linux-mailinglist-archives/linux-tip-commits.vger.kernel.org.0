@@ -2,52 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D9613F479C
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 23 Aug 2021 11:32:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D9A543F47A1
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 23 Aug 2021 11:33:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236002AbhHWJdd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 23 Aug 2021 05:33:33 -0400
+        id S235986AbhHWJdj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 23 Aug 2021 05:33:39 -0400
 Received: from Galois.linutronix.de ([193.142.43.55]:39208 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235925AbhHWJdb (ORCPT
+        with ESMTP id S235963AbhHWJdd (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 23 Aug 2021 05:33:31 -0400
-Date:   Mon, 23 Aug 2021 09:32:47 -0000
+        Mon, 23 Aug 2021 05:33:33 -0400
+Date:   Mon, 23 Aug 2021 09:32:48 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1629711168;
+        s=2020; t=1629711169;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=dUq9xCygggOTFb6UxVPlBq454KbJy1bwYVtsXOM120k=;
-        b=Je/ftLReeGvyIZdfBiFA84kPhuoBnvJAOqDbFtG2k5yeOyLUHLndPQUR5LEBBkEKq/RbFs
-        jqapOoo0IdFP+FkbOmZ24Zg8x0ThT0di6ikB8xplSkT7H0rkFY6mIQVUacaG3F4jfHYS7c
-        9f45wp0uiICvneZMfAl00AhtZ8hPJzxKOhci0JibQ69A6ee5ILLjN2kXMGVVNF5nIkIpT3
-        Gtj3g4pHz5EjCzDVyUuAp0YVFqSKzit8AY7O+zwdIiiZbHz7SxyhIf2YbngHVDynSlvuha
-        VoVMaXfAbWT5xkp0Euzw05x6V8YP+URhBpkFheRzAxf/dVMy5S4Hp9m0egFcDg==
+        bh=ww4vxget9G6Vzl6PKi1K2aPZYIQ1e0uDlZ5uHoc2P+I=;
+        b=Grzr9LxgOG89MW+tqkM7AWCMvY2dPDipR9TJYfv5q9pP82Vsr5ECpcES1i/kafNfG3YUOE
+        ZtnluP5w3jS/eIXtAXXJW99W4E99pTV9lpx75H1EFCYFE6U60DMI6BJ3lr5GJJLGlFbPCg
+        7/TOlbytNoRbcSnhlDIGaio2pCNpMPpJQFBA1lnB3SU3MzWl7+AjArGfG8XhKGaqReE6PT
+        E1vcKaJlH1YAxED00yM5LZZ3pqiJa6IxCXaIMQy7jTfJdAqfaMJ3w/PbTeoxNwSFHyU5xR
+        z2fmmPYQUDzj3DC0wvTbDYI0nm1MZQlHtkoWquXGqtU7yzdiEsv01yHgzB4qfA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1629711168;
+        s=2020e; t=1629711169;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=dUq9xCygggOTFb6UxVPlBq454KbJy1bwYVtsXOM120k=;
-        b=XQAHdPgY6gULhaAjww3ODtBcckhGaFI+vWKJyfZVKyzeWmQ2QBKg0GtRjsFULYhbGWGAMJ
-        53yLEhyQc8SFgPAg==
+        bh=ww4vxget9G6Vzl6PKi1K2aPZYIQ1e0uDlZ5uHoc2P+I=;
+        b=ZHIBK2HNeyYiShEyv8qpPAdU3V15mXPQdSo4Ap4sd9uuBg6aT7GpzyCj0PvMl8IQx7Gi86
+        WxM1PjKT+zpb1VCg==
 From:   "tip-bot2 for Kim Phillips" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/x86/amd/power: Assign pmu.module
+Subject: [tip: perf/core] perf/amd/ibs: Extend PERF_PMU_CAP_NO_EXCLUDE to IBS Op
 Cc:     Kim Phillips <kim.phillips@amd.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        stable@vger.kernel.org, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210817221048.88063-4-kim.phillips@amd.com>
-References: <20210817221048.88063-4-kim.phillips@amd.com>
+In-Reply-To: <20210817221048.88063-2-kim.phillips@amd.com>
+References: <20210817221048.88063-2-kim.phillips@amd.com>
 MIME-Version: 1.0
-Message-ID: <162971116730.25758.1147991214565796429.tip-bot2@tip-bot2>
+Message-ID: <162971116886.25758.9267225679528727844.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,33 +59,36 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     b159f2ed7a712ae24b22414cda22ed93db7033bb
-Gitweb:        https://git.kernel.org/tip/b159f2ed7a712ae24b22414cda22ed93db7033bb
+Commit-ID:     969d38d62fde952d57720e384fb09f60d9ad08d9
+Gitweb:        https://git.kernel.org/tip/969d38d62fde952d57720e384fb09f60d9ad08d9
 Author:        Kim Phillips <kim.phillips@amd.com>
-AuthorDate:    Tue, 17 Aug 2021 17:10:43 -05:00
+AuthorDate:    Tue, 17 Aug 2021 17:10:41 -05:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Fri, 20 Aug 2021 12:33:12 +02:00
 
-perf/x86/amd/power: Assign pmu.module
+perf/amd/ibs: Extend PERF_PMU_CAP_NO_EXCLUDE to IBS Op
 
-Assign pmu.module so the driver can't be unloaded whilst in use.
+Commit 2ff40250691e ("perf/core, arch/x86: Use PERF_PMU_CAP_NO_EXCLUDE for
+exclusion incapable PMUs") neglected to do so.
 
+Fixes: 2ff40250691e ("perf/core, arch/x86: Use PERF_PMU_CAP_NO_EXCLUDE for exclusion incapable PMUs")
 Signed-off-by: Kim Phillips <kim.phillips@amd.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20210817221048.88063-4-kim.phillips@amd.com
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20210817221048.88063-2-kim.phillips@amd.com
 ---
- arch/x86/events/amd/power.c | 1 +
+ arch/x86/events/amd/ibs.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/events/amd/power.c b/arch/x86/events/amd/power.c
-index 16a2369..37d5b38 100644
---- a/arch/x86/events/amd/power.c
-+++ b/arch/x86/events/amd/power.c
-@@ -213,6 +213,7 @@ static struct pmu pmu_class = {
- 	.stop		= pmu_event_stop,
- 	.read		= pmu_event_read,
- 	.capabilities	= PERF_PMU_CAP_NO_EXCLUDE,
-+	.module		= THIS_MODULE,
- };
- 
- static int power_cpu_exit(unsigned int cpu)
+diff --git a/arch/x86/events/amd/ibs.c b/arch/x86/events/amd/ibs.c
+index 40669ea..8c25fbd 100644
+--- a/arch/x86/events/amd/ibs.c
++++ b/arch/x86/events/amd/ibs.c
+@@ -570,6 +570,7 @@ static struct perf_ibs perf_ibs_op = {
+ 		.start		= perf_ibs_start,
+ 		.stop		= perf_ibs_stop,
+ 		.read		= perf_ibs_read,
++		.capabilities	= PERF_PMU_CAP_NO_EXCLUDE,
+ 	},
+ 	.msr			= MSR_AMD64_IBSOPCTL,
+ 	.config_mask		= IBS_OP_CONFIG_MASK,
