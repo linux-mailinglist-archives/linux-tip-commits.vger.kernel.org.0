@@ -2,52 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B8D0A3F3EA4
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 22 Aug 2021 10:32:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44E453F4498
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 23 Aug 2021 07:12:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231147AbhHVIdJ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 22 Aug 2021 04:33:09 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:33550 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232234AbhHVIdJ (ORCPT
+        id S232088AbhHWFNJ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 23 Aug 2021 01:13:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42668 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231276AbhHWFNI (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 22 Aug 2021 04:33:09 -0400
-Date:   Sun, 22 Aug 2021 08:32:26 -0000
+        Mon, 23 Aug 2021 01:13:08 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 520B5C061575;
+        Sun, 22 Aug 2021 22:12:26 -0700 (PDT)
+Date:   Mon, 23 Aug 2021 05:12:21 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1629621147;
+        s=2020; t=1629695542;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=FVlGwdAnf6SbZauMA0rtceYxx5hZpUnfvg/b2rTSSwE=;
-        b=RUVPDMCxN17DUMKQ7uG8jagsPxtwWosQXuM7c5WEi1XwydUm3cLBT+F1zdFSSKzldnryt2
-        1b1scveWRuJcQdlz5CendKrA0YniQlVsnirTA27/j06zQjPlbLiH5Wc0Fq6Kwk4EVUm6G5
-        /PX05lZDS6uTuEBzTr7G2ymtQVempXpn6Dg8mVcF8Rq2QfxYUhh8aDTjy0BQ+cC9GNc2i8
-        nwGrjtE+NTG0V/A5WWlEBAQpe9quzRcJNX1ryUuLGC8wHUqTndHL8io/ufxksiTV1mwB/m
-        ms6FEHMn8V+YojASzV+x6MiHS31Rate9rkTqAe/BtJgi3FWs3lzRHxojD9v1Rw==
+        bh=c7kO42+nZL9e9p1MTgZCRoeLci+c9EeHs3/LG4KjRws=;
+        b=2I1w9mr2hnXY1F3G0EFGkDPA+VLIKvsCUauEhO5HdIEjAaO38NsfpOzWplwpXodlQrcOm9
+        CGX0nzAGqSBKfCYHy2onnVQF448JQkiuq3GvPnC8sEPaSORT4z/dgusUy1e47Hu80bG/Lb
+        kGeYKftI8aqcFUePnNGa2MKtkdpxqkT98SpwXhgrwbddRYbL9Kivt5cfq4XwuFB+YTGzzl
+        KIPLQt5Q9iFTxbaE7BG/0yWPfkoA5rfaCzjybk7VGMyvQTw2lyCAlaOh9HvpjWIzKoWvsh
+        M7S039U5Wc0jPXjz/afd/t4034IQxOqqAlm/wkzUMHT3AhMgObRdn1B5Dryy8A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1629621147;
+        s=2020e; t=1629695542;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=FVlGwdAnf6SbZauMA0rtceYxx5hZpUnfvg/b2rTSSwE=;
-        b=Y/JBk/vfE/e/ftN5IGjQv9flvtrd59PZUdKMLQR6JHdeihdwQqklSEfkt04E0CRgFHDAav
-        fjwGidxARwl44aAA==
-From:   "tip-bot2 for Nick Desaulniers" <tip-bot2@linutronix.de>
+        bh=c7kO42+nZL9e9p1MTgZCRoeLci+c9EeHs3/LG4KjRws=;
+        b=kVuD+6QbMPkeU9OL96PPpgbBpM7VYISmnZoXpezifvbRBwZCQLEVc7yP4BDizeqUlc38zL
+        +/NFRQkUYZ0AyhCA==
+From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/build] x86/build: Remove stale cc-option checks
-Cc:     Nick Desaulniers <ndesaulniers@google.com>,
-        Borislav Petkov <bp@suse.de>, Ingo Molnar <mingo@kernel.org>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20210812183848.1519994-1-ndesaulniers@google.com>
-References: <20210812183848.1519994-1-ndesaulniers@google.com>
+Subject: [tip: x86/build] x86/tools/relocs: Mark die() with the printf
+ function attr format
+Cc:     Borislav Petkov <bp@suse.de>,
+        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <YNnb6Q4QHtNYC049@zn.tnic>
+References: <YNnb6Q4QHtNYC049@zn.tnic>
 MIME-Version: 1.0
-Message-ID: <162962114644.25758.8101743104715367194.tip-bot2@tip-bot2>
+Message-ID: <162969554111.25758.6281531919074323037.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,164 +62,136 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/build branch of tip:
 
-Commit-ID:     989ceac799cb28a477304cdc9ee72995191c6378
-Gitweb:        https://git.kernel.org/tip/989ceac799cb28a477304cdc9ee72995191c6378
-Author:        Nick Desaulniers <ndesaulniers@google.com>
-AuthorDate:    Thu, 12 Aug 2021 11:38:48 -07:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sun, 22 Aug 2021 10:24:27 +02:00
+Commit-ID:     03dca99e200f4d268f70079cf54e3b1200c9eb9d
+Gitweb:        https://git.kernel.org/tip/03dca99e200f4d268f70079cf54e3b1200c9eb9d
+Author:        Borislav Petkov <bp@suse.de>
+AuthorDate:    Fri, 25 Jun 2021 17:10:16 +02:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Mon, 23 Aug 2021 05:58:02 +02:00
 
-x86/build: Remove stale cc-option checks
+x86/tools/relocs: Mark die() with the printf function attr format
 
-cc-option, __cc-option, cc-option-yn, and cc-disable-warning all invoke
-the compiler during build time, and can slow down the build when these
-checks become stale for our supported compilers, whose minimally
-supported versions increases over time.
+Mark die() as a function which accepts printf-style arguments so that
+the compiler can typecheck them against the supplied format string.
 
-See Documentation/process/changes.rst for the current supported minimal
-versions (GCC 4.9+, clang 10.0.1+). Compiler version support for these
-flags may be verified on godbolt.org.
+Use the C99 inttypes.h format specifiers as relocs.c gets built for both
+32- and 64-bit.
 
-The following flags are supported by all supported versions of GCC and
-Clang. Remove their cc-option, __cc-option, and cc-option-yn tests.
+Original version of the patch by Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-  -Wno-address-of-packed-member
-  -mno-avx
-  -m32
-  -mno-80387
-  -march=k8
-  -march=nocona
-  -march=core2
-  -march=atom
-  -mtune=generic
-  -mfentry
-
-[ mingo: Fixed regression on GCC, via partial revert of the stack-boundary changes.  ]
-
-Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://github.com/ClangBuiltLinux/linux/issues/1436
-Link: https://lkml.kernel.org/r/20210812183848.1519994-1-ndesaulniers@google.com
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: http://lkml.kernel.org/r/YNnb6Q4QHtNYC049@zn.tnic
 ---
- arch/x86/Makefile | 46 ++++++++++++++--------------------------------
- 1 file changed, 14 insertions(+), 32 deletions(-)
+ arch/x86/tools/relocs.c | 37 ++++++++++++++++++++-----------------
+ arch/x86/tools/relocs.h |  1 +
+ 2 files changed, 21 insertions(+), 17 deletions(-)
 
-diff --git a/arch/x86/Makefile b/arch/x86/Makefile
-index 307fd00..88fb2bc 100644
---- a/arch/x86/Makefile
-+++ b/arch/x86/Makefile
-@@ -31,8 +31,8 @@ REALMODE_CFLAGS	:= -m16 -g -Os -DDISABLE_BRANCH_PROFILING \
+diff --git a/arch/x86/tools/relocs.c b/arch/x86/tools/relocs.c
+index 9ba700d..27c8220 100644
+--- a/arch/x86/tools/relocs.c
++++ b/arch/x86/tools/relocs.c
+@@ -26,6 +26,9 @@ static struct relocs relocs32;
+ #if ELF_BITS == 64
+ static struct relocs relocs32neg;
+ static struct relocs relocs64;
++#define FMT PRIu64
++#else
++#define FMT PRIu32
+ #endif
  
- REALMODE_CFLAGS += -ffreestanding
- REALMODE_CFLAGS += -fno-stack-protector
--REALMODE_CFLAGS += $(call __cc-option, $(CC), $(REALMODE_CFLAGS), -Wno-address-of-packed-member)
--REALMODE_CFLAGS += $(call __cc-option, $(CC), $(REALMODE_CFLAGS), $(cc_stack_align4))
-+REALMODE_CFLAGS += -Wno-address-of-packed-member
-+REALMODE_CFLAGS += $(cc_stack_align4)
- REALMODE_CFLAGS += $(CLANG_FLAGS)
- export REALMODE_CFLAGS
+ struct section {
+@@ -389,7 +392,7 @@ static void read_ehdr(FILE *fp)
+ 		Elf_Shdr shdr;
  
-@@ -48,8 +48,7 @@ export BITS
- #
- #    https://gcc.gnu.org/bugzilla/show_bug.cgi?id=53383
- #
--KBUILD_CFLAGS += -mno-sse -mno-mmx -mno-sse2 -mno-3dnow
--KBUILD_CFLAGS += $(call cc-option,-mno-avx,)
-+KBUILD_CFLAGS += -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx
+ 		if (fseek(fp, ehdr.e_shoff, SEEK_SET) < 0)
+-			die("Seek to %d failed: %s\n", ehdr.e_shoff, strerror(errno));
++			die("Seek to %" FMT " failed: %s\n", ehdr.e_shoff, strerror(errno));
  
- # Intel CET isn't enabled in the kernel
- KBUILD_CFLAGS += $(call cc-option,-fcf-protection=none)
-@@ -59,9 +58,8 @@ ifeq ($(CONFIG_X86_32),y)
-         UTS_MACHINE := i386
-         CHECKFLAGS += -D__i386__
+ 		if (fread(&shdr, sizeof(shdr), 1, fp) != 1)
+ 			die("Cannot read initial ELF section header: %s\n", strerror(errno));
+@@ -412,17 +415,17 @@ static void read_shdrs(FILE *fp)
  
--        biarch := $(call cc-option,-m32)
--        KBUILD_AFLAGS += $(biarch)
--        KBUILD_CFLAGS += $(biarch)
-+        KBUILD_AFLAGS += -m32
-+        KBUILD_CFLAGS += -m32
+ 	secs = calloc(shnum, sizeof(struct section));
+ 	if (!secs) {
+-		die("Unable to allocate %d section headers\n",
++		die("Unable to allocate %ld section headers\n",
+ 		    shnum);
+ 	}
+ 	if (fseek(fp, ehdr.e_shoff, SEEK_SET) < 0) {
+-		die("Seek to %d failed: %s\n",
+-			ehdr.e_shoff, strerror(errno));
++		die("Seek to %" FMT " failed: %s\n",
++		    ehdr.e_shoff, strerror(errno));
+ 	}
+ 	for (i = 0; i < shnum; i++) {
+ 		struct section *sec = &secs[i];
+ 		if (fread(&shdr, sizeof(shdr), 1, fp) != 1)
+-			die("Cannot read ELF section headers %d/%d: %s\n",
++			die("Cannot read ELF section headers %d/%ld: %s\n",
+ 			    i, shnum, strerror(errno));
+ 		sec->shdr.sh_name      = elf_word_to_cpu(shdr.sh_name);
+ 		sec->shdr.sh_type      = elf_word_to_cpu(shdr.sh_type);
+@@ -450,12 +453,12 @@ static void read_strtabs(FILE *fp)
+ 		}
+ 		sec->strtab = malloc(sec->shdr.sh_size);
+ 		if (!sec->strtab) {
+-			die("malloc of %d bytes for strtab failed\n",
+-				sec->shdr.sh_size);
++			die("malloc of %" FMT " bytes for strtab failed\n",
++			    sec->shdr.sh_size);
+ 		}
+ 		if (fseek(fp, sec->shdr.sh_offset, SEEK_SET) < 0) {
+-			die("Seek to %d failed: %s\n",
+-				sec->shdr.sh_offset, strerror(errno));
++			die("Seek to %" FMT " failed: %s\n",
++			    sec->shdr.sh_offset, strerror(errno));
+ 		}
+ 		if (fread(sec->strtab, 1, sec->shdr.sh_size, fp)
+ 		    != sec->shdr.sh_size) {
+@@ -475,12 +478,12 @@ static void read_symtabs(FILE *fp)
+ 		}
+ 		sec->symtab = malloc(sec->shdr.sh_size);
+ 		if (!sec->symtab) {
+-			die("malloc of %d bytes for symtab failed\n",
+-				sec->shdr.sh_size);
++			die("malloc of %" FMT " bytes for symtab failed\n",
++			    sec->shdr.sh_size);
+ 		}
+ 		if (fseek(fp, sec->shdr.sh_offset, SEEK_SET) < 0) {
+-			die("Seek to %d failed: %s\n",
+-				sec->shdr.sh_offset, strerror(errno));
++			die("Seek to %" FMT " failed: %s\n",
++			    sec->shdr.sh_offset, strerror(errno));
+ 		}
+ 		if (fread(sec->symtab, 1, sec->shdr.sh_size, fp)
+ 		    != sec->shdr.sh_size) {
+@@ -508,12 +511,12 @@ static void read_relocs(FILE *fp)
+ 		}
+ 		sec->reltab = malloc(sec->shdr.sh_size);
+ 		if (!sec->reltab) {
+-			die("malloc of %d bytes for relocs failed\n",
+-				sec->shdr.sh_size);
++			die("malloc of %" FMT " bytes for relocs failed\n",
++			    sec->shdr.sh_size);
+ 		}
+ 		if (fseek(fp, sec->shdr.sh_offset, SEEK_SET) < 0) {
+-			die("Seek to %d failed: %s\n",
+-				sec->shdr.sh_offset, strerror(errno));
++			die("Seek to %" FMT " failed: %s\n",
++			    sec->shdr.sh_offset, strerror(errno));
+ 		}
+ 		if (fread(sec->reltab, 1, sec->shdr.sh_size, fp)
+ 		    != sec->shdr.sh_size) {
+diff --git a/arch/x86/tools/relocs.h b/arch/x86/tools/relocs.h
+index 43c83c0..4c49c82 100644
+--- a/arch/x86/tools/relocs.h
++++ b/arch/x86/tools/relocs.h
+@@ -17,6 +17,7 @@
+ #include <regex.h>
+ #include <tools/le_byteshift.h>
  
-         KBUILD_CFLAGS += -msoft-float -mregparm=3 -freg-struct-return
++__attribute__((__format__(printf, 1, 2)))
+ void die(char *fmt, ...) __attribute__((noreturn));
  
-@@ -72,7 +70,7 @@ ifeq ($(CONFIG_X86_32),y)
-         # Align the stack to the register width instead of using the default
-         # alignment of 16 bytes. This reduces stack usage and the number of
-         # alignment instructions.
--        KBUILD_CFLAGS += $(call cc-option,$(cc_stack_align4))
-+        KBUILD_CFLAGS += $(cc_stack_align4)
- 
-         # CPU-specific tuning. Anything which can be shared with UML should go here.
-         include arch/x86/Makefile_32.cpu
-@@ -93,7 +91,6 @@ else
-         UTS_MACHINE := x86_64
-         CHECKFLAGS += -D__x86_64__
- 
--        biarch := -m64
-         KBUILD_AFLAGS += -m64
-         KBUILD_CFLAGS += -m64
- 
-@@ -104,7 +101,7 @@ else
-         KBUILD_CFLAGS += $(call cc-option,-falign-loops=1)
- 
-         # Don't autogenerate traditional x87 instructions
--        KBUILD_CFLAGS += $(call cc-option,-mno-80387)
-+        KBUILD_CFLAGS += -mno-80387
-         KBUILD_CFLAGS += $(call cc-option,-mno-fp-ret-in-387)
- 
-         # By default gcc and clang use a stack alignment of 16 bytes for x86.
-@@ -114,20 +111,17 @@ else
-         # default alignment which keep the stack *mis*aligned.
-         # Furthermore an alignment to the register width reduces stack usage
-         # and the number of alignment instructions.
--        KBUILD_CFLAGS += $(call cc-option,$(cc_stack_align8))
-+        KBUILD_CFLAGS += $(cc_stack_align8)
- 
- 	# Use -mskip-rax-setup if supported.
- 	KBUILD_CFLAGS += $(call cc-option,-mskip-rax-setup)
- 
-         # FIXME - should be integrated in Makefile.cpu (Makefile_32.cpu)
--        cflags-$(CONFIG_MK8) += $(call cc-option,-march=k8)
--        cflags-$(CONFIG_MPSC) += $(call cc-option,-march=nocona)
--
--        cflags-$(CONFIG_MCORE2) += \
--                $(call cc-option,-march=core2,$(call cc-option,-mtune=generic))
--	cflags-$(CONFIG_MATOM) += $(call cc-option,-march=atom) \
--		$(call cc-option,-mtune=atom,$(call cc-option,-mtune=generic))
--        cflags-$(CONFIG_GENERIC_CPU) += $(call cc-option,-mtune=generic)
-+        cflags-$(CONFIG_MK8)		+= -march=k8
-+        cflags-$(CONFIG_MPSC)		+= -march=nocona
-+        cflags-$(CONFIG_MCORE2)		+= -march=core2
-+        cflags-$(CONFIG_MATOM)		+= -march=atom
-+        cflags-$(CONFIG_GENERIC_CPU)	+= -mtune=generic
-         KBUILD_CFLAGS += $(cflags-y)
- 
-         KBUILD_CFLAGS += -mno-red-zone
-@@ -158,18 +152,6 @@ export CONFIG_X86_X32_ABI
- ifdef CONFIG_FUNCTION_GRAPH_TRACER
-   ifndef CONFIG_HAVE_FENTRY
- 	ACCUMULATE_OUTGOING_ARGS := 1
--  else
--    ifeq ($(call cc-option-yn, -mfentry), n)
--	ACCUMULATE_OUTGOING_ARGS := 1
--
--	# GCC ignores '-maccumulate-outgoing-args' when used with '-Os'.
--	# If '-Os' is enabled, disable it and print a warning.
--        ifdef CONFIG_CC_OPTIMIZE_FOR_SIZE
--          undefine CONFIG_CC_OPTIMIZE_FOR_SIZE
--          $(warning Disabling CONFIG_CC_OPTIMIZE_FOR_SIZE.  Your compiler does not have -mfentry so you cannot optimize for size with CONFIG_FUNCTION_GRAPH_TRACER.)
--        endif
--
--    endif
-   endif
- endif
- 
-@@ -193,7 +175,7 @@ ifdef CONFIG_RETPOLINE
-   # only been fixed starting from gcc stable version 8.4.0 and
-   # onwards, but not for older ones. See gcc bug #86952.
-   ifndef CONFIG_CC_IS_CLANG
--    KBUILD_CFLAGS += $(call cc-option,-fno-jump-tables)
-+    KBUILD_CFLAGS += -fno-jump-tables
-   endif
- endif
- 
+ #define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
