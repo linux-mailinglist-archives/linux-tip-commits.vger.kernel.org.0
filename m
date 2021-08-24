@@ -2,53 +2,58 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F2E63F47BE
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 23 Aug 2021 11:39:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 70B933F58D4
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Aug 2021 09:20:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231679AbhHWJjq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 23 Aug 2021 05:39:46 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:39282 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230265AbhHWJjp (ORCPT
+        id S232173AbhHXHVP (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 24 Aug 2021 03:21:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33388 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234672AbhHXHVO (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 23 Aug 2021 05:39:45 -0400
-Date:   Mon, 23 Aug 2021 09:39:01 -0000
+        Tue, 24 Aug 2021 03:21:14 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DCFAC061575;
+        Tue, 24 Aug 2021 00:20:30 -0700 (PDT)
+Date:   Tue, 24 Aug 2021 07:20:27 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1629711542;
+        s=2020; t=1629789629;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=F1KxiDcXAsN6avrtYAJ86uY9l59Vr3FTTpCQ9FaH5G0=;
-        b=wgURdIpWfBRSsP5+bpNI82v+9cEz9571eY38vChZObnTI6H5M3BCKOx7Xjn1860qffr2eL
-        cQ/j2PmrsictAncWlOWtK3V1yFo2bnBFzOfPGGvFY6AeJRrkn1hAi4Lx63c04CTw+jxEBm
-        YCNzw98Eh+A0Zyxm8o9+2aYRkL8BtmthUoB5a+AMHG16R5EVc8XPcC5DotmyOFa0b/vE1I
-        vwBnq/mtOmTlHD8ajF0WHYi02NP6+0IfAhYOojTIuWCY/FQx3dNI8fMlan1xwZB4+tSD2l
-        nZl9YK1JxxbO1/acapOM5ca5dVfjlbCsyRZwofd9FVfRbSBjufAUmiCt0g9JPw==
+        bh=koFu0mLGCF6o2X/1LaBNrEmvRKzB76SFAIX0nAbd/oU=;
+        b=LUo+mxaBS5JvKi+GtINXy1O62wi9hx1c2vcRelXcsh+MM7uhX1gcUwsmw4JjjO/JGy1inU
+        KkzwHjMpFI8HkFLCR92J/7x5SCHd77RsslFtgMKaeOPOOJetAdjPOPBX7ouqXcfMjlaa+c
+        heemABojBLboc3FN6ghsQazj+qImeK4MMDLnHu7qcKH2otL3LTDfVKJkaAuJIBHmNy6mKH
+        i/5mlotyBIeOENDmC36zv43I5YQoh7AhAmJ66BP9Wry40frX0SnD9OLRdCkqNkRWAFNtsk
+        NtnxwbsyU2Zgb3v47eAC5PgVadayUSXlUWrveVGM0RGZtY1OBE2XoeDAiX9fzA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1629711542;
+        s=2020e; t=1629789629;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=F1KxiDcXAsN6avrtYAJ86uY9l59Vr3FTTpCQ9FaH5G0=;
-        b=tdl+ZanOD0HqLuHLbZAHO/F/uJnBgbYeKvSM2roD56JPD+3FSax7LT8Wpd4wp0h28D0j4V
-        9fLbz+RliYS4D1BQ==
-From:   "tip-bot2 for Xiaoming Ni" <tip-bot2@linutronix.de>
+        bh=koFu0mLGCF6o2X/1LaBNrEmvRKzB76SFAIX0nAbd/oU=;
+        b=LCjkg8BCDOFMvgjvNso3B963G5DwjlByVsb79aRHCUCSRXvAZM8McRhLaAUtxRfOpgwzJa
+        Pb2H9cxKcXEvQUBg==
+From:   "tip-bot2 for Barry Song" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] locking/semaphore: Add might_sleep() to down_*() family
-Cc:     Xiaoming Ni <nixiaoming@huawei.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Will Deacon <will@kernel.org>, x86@kernel.org,
+Subject: [tip: irq/core] platform-msi: Add ABI to show msi_irqs of platform devices
+Cc:     Barry Song <song.bao.hua@hisilicon.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Marc Zyngier <maz@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210809021215.19991-1-nixiaoming@huawei.com>
-References: <20210809021215.19991-1-nixiaoming@huawei.com>
+In-Reply-To: <20210813035628.6844-3-21cnbao@gmail.com>
+References: <20210813035628.6844-3-21cnbao@gmail.com>
 MIME-Version: 1.0
-Message-ID: <162971154151.25758.3817473813262421389.tip-bot2@tip-bot2>
+Message-ID: <162978962795.25758.15709206714387292964.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -57,61 +62,102 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the locking/core branch of tip:
+The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     99409b935c9ac5ea36ab5218954115c52449234d
-Gitweb:        https://git.kernel.org/tip/99409b935c9ac5ea36ab5218954115c52449234d
-Author:        Xiaoming Ni <nixiaoming@huawei.com>
-AuthorDate:    Mon, 09 Aug 2021 10:12:15 +08:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Fri, 20 Aug 2021 12:33:17 +02:00
+Commit-ID:     00ed1401a0058e8cca4cc1b6ba14b893e5df746e
+Gitweb:        https://git.kernel.org/tip/00ed1401a0058e8cca4cc1b6ba14b893e5df746e
+Author:        Barry Song <song.bao.hua@hisilicon.com>
+AuthorDate:    Fri, 13 Aug 2021 15:56:28 +12:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Tue, 24 Aug 2021 09:16:20 +02:00
 
-locking/semaphore: Add might_sleep() to down_*() family
+platform-msi: Add ABI to show msi_irqs of platform devices
 
-Semaphore is sleeping lock. Add might_sleep() to down*() family
-(with exception of down_trylock()) to detect atomic context sleep.
+PCI devices expose the associated MSI interrupts via sysfs, but platform
+devices which utilize MSI interrupts do not. This information is important
+for user space tools to optimize affinity settings.
 
-Signed-off-by: Xiaoming Ni <nixiaoming@huawei.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Will Deacon <will@kernel.org>
-Link: https://lore.kernel.org/r/20210809021215.19991-1-nixiaoming@huawei.com
+Utilize the generic MSI sysfs facility to expose this information for
+platform MSI.
+
+Signed-off-by: Barry Song <song.bao.hua@hisilicon.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+Acked-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20210813035628.6844-3-21cnbao@gmail.com
+
 ---
- kernel/locking/semaphore.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ Documentation/ABI/testing/sysfs-bus-platform | 14 +++++++++++++-
+ drivers/base/platform-msi.c                  | 20 ++++++++++++++-----
+ 2 files changed, 29 insertions(+), 5 deletions(-)
 
-diff --git a/kernel/locking/semaphore.c b/kernel/locking/semaphore.c
-index 9aa855a..9ee381e 100644
---- a/kernel/locking/semaphore.c
-+++ b/kernel/locking/semaphore.c
-@@ -54,6 +54,7 @@ void down(struct semaphore *sem)
- {
- 	unsigned long flags;
+diff --git a/Documentation/ABI/testing/sysfs-bus-platform b/Documentation/ABI/testing/sysfs-bus-platform
+index 194ca70..ff30728 100644
+--- a/Documentation/ABI/testing/sysfs-bus-platform
++++ b/Documentation/ABI/testing/sysfs-bus-platform
+@@ -28,3 +28,17 @@ Description:
+ 		value comes from an ACPI _PXM method or a similar firmware
+ 		source. Initial users for this file would be devices like
+ 		arm smmu which are populated by arm64 acpi_iort.
++
++What:		/sys/bus/platform/devices/.../msi_irqs/
++Date:		August 2021
++Contact:	Barry Song <song.bao.hua@hisilicon.com>
++Description:
++		The /sys/devices/.../msi_irqs directory contains a variable set
++		of files, with each file being named after a corresponding msi
++		irq vector allocated to that device.
++
++What:		/sys/bus/platform/devices/.../msi_irqs/<N>
++Date:		August 2021
++Contact:	Barry Song <song.bao.hua@hisilicon.com>
++Description:
++		This attribute will show "msi" if <N> is a valid msi irq
+diff --git a/drivers/base/platform-msi.c b/drivers/base/platform-msi.c
+index 0b72b13..3d6c8f9 100644
+--- a/drivers/base/platform-msi.c
++++ b/drivers/base/platform-msi.c
+@@ -21,11 +21,12 @@
+  * and the callback to write the MSI message.
+  */
+ struct platform_msi_priv_data {
+-	struct device		*dev;
+-	void 			*host_data;
+-	msi_alloc_info_t	arg;
+-	irq_write_msi_msg_t	write_msg;
+-	int			devid;
++	struct device			*dev;
++	void				*host_data;
++	const struct attribute_group    **msi_irq_groups;
++	msi_alloc_info_t		arg;
++	irq_write_msi_msg_t		write_msg;
++	int				devid;
+ };
  
-+	might_sleep();
- 	raw_spin_lock_irqsave(&sem->lock, flags);
- 	if (likely(sem->count > 0))
- 		sem->count--;
-@@ -77,6 +78,7 @@ int down_interruptible(struct semaphore *sem)
- 	unsigned long flags;
- 	int result = 0;
+ /* The devid allocator */
+@@ -272,8 +273,16 @@ int platform_msi_domain_alloc_irqs(struct device *dev, unsigned int nvec,
+ 	if (err)
+ 		goto out_free_desc;
  
-+	might_sleep();
- 	raw_spin_lock_irqsave(&sem->lock, flags);
- 	if (likely(sem->count > 0))
- 		sem->count--;
-@@ -103,6 +105,7 @@ int down_killable(struct semaphore *sem)
- 	unsigned long flags;
- 	int result = 0;
++	priv_data->msi_irq_groups = msi_populate_sysfs(dev);
++	if (IS_ERR(priv_data->msi_irq_groups)) {
++		err = PTR_ERR(priv_data->msi_irq_groups);
++		goto out_free_irqs;
++	}
++
+ 	return 0;
  
-+	might_sleep();
- 	raw_spin_lock_irqsave(&sem->lock, flags);
- 	if (likely(sem->count > 0))
- 		sem->count--;
-@@ -157,6 +160,7 @@ int down_timeout(struct semaphore *sem, long timeout)
- 	unsigned long flags;
- 	int result = 0;
++out_free_irqs:
++	msi_domain_free_irqs(dev->msi_domain, dev);
+ out_free_desc:
+ 	platform_msi_free_descs(dev, 0, nvec);
+ out_free_priv_data:
+@@ -293,6 +302,7 @@ void platform_msi_domain_free_irqs(struct device *dev)
+ 		struct msi_desc *desc;
  
-+	might_sleep();
- 	raw_spin_lock_irqsave(&sem->lock, flags);
- 	if (likely(sem->count > 0))
- 		sem->count--;
+ 		desc = first_msi_entry(dev);
++		msi_destroy_sysfs(dev, desc->platform.msi_priv_data->msi_irq_groups);
+ 		platform_msi_free_priv_data(desc->platform.msi_priv_data);
+ 	}
+ 
