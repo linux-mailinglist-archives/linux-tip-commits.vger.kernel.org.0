@@ -2,55 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E331A3F59FD
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Aug 2021 10:45:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 891AB3F5AFE
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Aug 2021 11:27:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235023AbhHXIpp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 24 Aug 2021 04:45:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53068 "EHLO
+        id S234569AbhHXJ2c (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 24 Aug 2021 05:28:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35028 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235016AbhHXIpo (ORCPT
+        with ESMTP id S233910AbhHXJ2c (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 24 Aug 2021 04:45:44 -0400
+        Tue, 24 Aug 2021 05:28:32 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27388C061757;
-        Tue, 24 Aug 2021 01:45:00 -0700 (PDT)
-Date:   Tue, 24 Aug 2021 08:44:55 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7EB32C061757;
+        Tue, 24 Aug 2021 02:27:48 -0700 (PDT)
+Date:   Tue, 24 Aug 2021 09:27:46 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1629794696;
+        s=2020; t=1629797267;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=rrFaOxYVVG7V2TCw0YOncQAAUO9yzBIGwqHSLqakzr8=;
-        b=RcVMOQXHQRDqJD+V8wE8YNs72fgPoB1nIxoHgSeKjdMuOw+iwLEFx1pmGlpIqu3hZMC7sU
-        aconNc9aOHo+IZeNiq7us3DmBvYS85O4U82Q7EaQXLIiVazFhl74l/IWdsTI4b6YmbBBFC
-        4ghk+q7c3Vbmy5hJ5PxFeOj+pojsdMXAa49SsFxFeI8k4pSzhz044dPRoBlLvR7QaJ46gF
-        XJBSBIOR3blp1MO+FaoRDhnXMgwoJ58vGv0984DQxzLRPb4AfmSsUXGF266BBBXrvJGOLO
-        8EMLc5FLCduzU2Cc+qKFiIAxvKlQxRYDyBxZveuS9qk2QrjAJhG1dYqSknz5bw==
+        bh=CPhM15sS7uHWi7ZsroKW7dkJMk1jrQ9AzQx0QYOhu1s=;
+        b=GBX56r566UpwQHsD30/8BUxcBK3QYkoLgPo0l8mwkiDwXS03QJ6c/ijMC7N4bgAHR1WycG
+        U3YavPb8emQUPLU/krzTmLk47aoDGjUgp62NyodUZFVGItuayeQuaawlFBnmCBOpqbwNQz
+        YHHqZ2MP0gTqjxi2Jjm+zl/UCdEWGjn6UvqcOl/uleP9YsIi1Re88YfJbqgNKMO6TyfcMf
+        z53Dr2uxj5gHYKCLmA6GJl31+HQs2uipOjy1eUAE91l+h/TKEPz3Kl698P3UtQnIdar36e
+        qFW4Dj/GcULmDxZ8SRLIWV8yON7cM2VPyn9uu5Yvb/B0/kvOq+veVL8ZjDIJ/Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1629794696;
+        s=2020e; t=1629797267;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=rrFaOxYVVG7V2TCw0YOncQAAUO9yzBIGwqHSLqakzr8=;
-        b=Zf/olNzxZdbu4K8KRi+ApQ4YTEuk6V07NUqkcYyfmHqgPLUOTKW9Kich2Eb4ueVCM+pfHc
-        4d27qJkL/Tp4AeAg==
-From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
+        bh=CPhM15sS7uHWi7ZsroKW7dkJMk1jrQ9AzQx0QYOhu1s=;
+        b=YJ6WNCKNC7cdFcMUoMaVPjXi4NtUcA+Ei9+EqnKXoFRncxnd9A9QD7nkuL06FT74lTGeGb
+        HuJ0scB0fOYA5tAA==
+From:   "tip-bot2 for Jing Yangyang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: ras/core] x86/mce: Defer processing of early errors
-Cc:     Sumanth Kamatala <skamatala@juniper.net>,
-        Borislav Petkov <bp@suse.de>, Tony Luck <tony.luck@intel.com>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20210824003129.GA1642753@agluck-desk2.amr.corp.intel.com>
-References: <20210824003129.GA1642753@agluck-desk2.amr.corp.intel.com>
+Subject: [tip: x86/cleanups] x86/kaslr: Have process_mem_region() return a boolean
+Cc:     Zeal Robot <zealci@zte.com.cn>,
+        Jing Yangyang <jing.yangyang@zte.com.cn>,
+        Borislav Petkov <bp@suse.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20210824070515.61065-1-deng.changcheng@zte.com.cn>
+References: <20210824070515.61065-1-deng.changcheng@zte.com.cn>
 MIME-Version: 1.0
-Message-ID: <162979469521.25758.12563962635907560846.tip-bot2@tip-bot2>
+Message-ID: <162979726622.25758.13276488886487213050.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,101 +60,42 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the ras/core branch of tip:
+The following commit has been merged into the x86/cleanups branch of tip:
 
-Commit-ID:     3bff147b187d5dfccfca1ee231b0761a89f1eff5
-Gitweb:        https://git.kernel.org/tip/3bff147b187d5dfccfca1ee231b0761a89f1eff5
-Author:        Borislav Petkov <bp@alien8.de>
-AuthorDate:    Mon, 23 Aug 2021 17:31:29 -07:00
+Commit-ID:     5b3fd8aa5df0244fc19f2572598dee406bcc6b07
+Gitweb:        https://git.kernel.org/tip/5b3fd8aa5df0244fc19f2572598dee406bcc6b07
+Author:        Jing Yangyang <jing.yangyang@zte.com.cn>
+AuthorDate:    Tue, 24 Aug 2021 00:05:15 -07:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 24 Aug 2021 10:40:58 +02:00
+CommitterDate: Tue, 24 Aug 2021 10:54:15 +02:00
 
-x86/mce: Defer processing of early errors
+x86/kaslr: Have process_mem_region() return a boolean
 
-When a fatal machine check results in a system reset, Linux does not
-clear the error(s) from machine check bank(s) - hardware preserves the
-machine check banks across a warm reset.
+Fix the following coccicheck warning:
 
-During initialization of the kernel after the reboot, Linux reads, logs,
-and clears all machine check banks.
+  ./arch/x86/boot/compressed/kaslr.c:671:10-11:WARNING:return of 0/1
+  in function 'process_mem_region' with return type bool
 
-But there is a problem. In:
+Generated by: scripts/coccinelle/misc/boolreturn.cocci
 
-  5de97c9f6d85 ("x86/mce: Factor out and deprecate the /dev/mcelog driver")
-
-the call to mce_register_decode_chain() moved later in the boot
-sequence. This means that /dev/mcelog doesn't see those early error
-logs.
-
-This was partially fixed by:
-
-  cd9c57cad3fe ("x86/MCE: Dump MCE to dmesg if no consumers")
-
-which made sure that the logs were not lost completely by printing
-to the console. But parsing console logs is error prone. Users of
-/dev/mcelog should expect to find any early errors logged to standard
-places.
-
-Add a new flag MCP_QUEUE_LOG to machine_check_poll() to be used in early
-machine check initialization to indicate that any errors found should
-just be queued to genpool. When mcheck_late_init() is called it will
-call mce_schedule_work() to actually log and flush any errors queued in
-the genpool.
-
- [ Based on an original patch, commit message by and completely
-   productized by Tony Luck. ]
-
-Fixes: 5de97c9f6d85 ("x86/mce: Factor out and deprecate the /dev/mcelog driver")
-Reported-by: Sumanth Kamatala <skamatala@juniper.net>
+Reported-by: Zeal Robot <zealci@zte.com.cn>
+Signed-off-by: Jing Yangyang <jing.yangyang@zte.com.cn>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Signed-off-by: Tony Luck <tony.luck@intel.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20210824003129.GA1642753@agluck-desk2.amr.corp.intel.com
+Link: https://lkml.kernel.org/r/20210824070515.61065-1-deng.changcheng@zte.com.cn
 ---
- arch/x86/include/asm/mce.h     |  1 +
- arch/x86/kernel/cpu/mce/core.c | 11 ++++++++---
- 2 files changed, 9 insertions(+), 3 deletions(-)
+ arch/x86/boot/compressed/kaslr.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/mce.h b/arch/x86/include/asm/mce.h
-index 0607ec4..da93215 100644
---- a/arch/x86/include/asm/mce.h
-+++ b/arch/x86/include/asm/mce.h
-@@ -265,6 +265,7 @@ enum mcp_flags {
- 	MCP_TIMESTAMP	= BIT(0),	/* log time stamp */
- 	MCP_UC		= BIT(1),	/* log uncorrected errors */
- 	MCP_DONTLOG	= BIT(2),	/* only clear, don't log */
-+	MCP_QUEUE_LOG	= BIT(3),	/* only queue to genpool */
- };
- bool machine_check_poll(enum mcp_flags flags, mce_banks_t *b);
+diff --git a/arch/x86/boot/compressed/kaslr.c b/arch/x86/boot/compressed/kaslr.c
+index e366907..67c3208 100644
+--- a/arch/x86/boot/compressed/kaslr.c
++++ b/arch/x86/boot/compressed/kaslr.c
+@@ -668,7 +668,7 @@ static bool process_mem_region(struct mem_vector *region,
  
-diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
-index 22791aa..8cb7816 100644
---- a/arch/x86/kernel/cpu/mce/core.c
-+++ b/arch/x86/kernel/cpu/mce/core.c
-@@ -817,7 +817,10 @@ log_it:
- 		if (mca_cfg.dont_log_ce && !mce_usable_address(&m))
- 			goto clear_it;
- 
--		mce_log(&m);
-+		if (flags & MCP_QUEUE_LOG)
-+			mce_gen_pool_add(&m);
-+		else
-+			mce_log(&m);
- 
- clear_it:
- 		/*
-@@ -1639,10 +1642,12 @@ static void __mcheck_cpu_init_generic(void)
- 		m_fl = MCP_DONTLOG;
- 
- 	/*
--	 * Log the machine checks left over from the previous reset.
-+	 * Log the machine checks left over from the previous reset. Log them
-+	 * only, do not start processing them. That will happen in mcheck_late_init()
-+	 * when all consumers have been registered on the notifier chain.
- 	 */
- 	bitmap_fill(all_banks, MAX_NR_BANKS);
--	machine_check_poll(MCP_UC | m_fl, &all_banks);
-+	machine_check_poll(MCP_UC | MCP_QUEUE_LOG | m_fl, &all_banks);
- 
- 	cr4_set_bits(X86_CR4_MCE);
- 
+ 		if (slot_area_index == MAX_SLOT_AREA) {
+ 			debug_putstr("Aborted e820/efi memmap scan when walking immovable regions(slot_areas full)!\n");
+-			return 1;
++			return true;
+ 		}
+ 	}
+ #endif
