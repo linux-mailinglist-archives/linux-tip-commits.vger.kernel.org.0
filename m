@@ -2,57 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 60BF93F8387
+	by mail.lfdr.de (Postfix) with ESMTP id E64B23F8388
 	for <lists+linux-tip-commits@lfdr.de>; Thu, 26 Aug 2021 10:10:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240456AbhHZIKn (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 26 Aug 2021 04:10:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56082 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240433AbhHZIKm (ORCPT
+        id S240492AbhHZIKo (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 26 Aug 2021 04:10:44 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:58832 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S240424AbhHZIKm (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Thu, 26 Aug 2021 04:10:42 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 939A9C061757;
-        Thu, 26 Aug 2021 01:09:54 -0700 (PDT)
-Date:   Thu, 26 Aug 2021 08:09:52 -0000
+Date:   Thu, 26 Aug 2021 08:09:53 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1629965393;
+        s=2020; t=1629965394;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ENUOH5Lqkr5/5/3huaRKNy0+GNqokCsj1dHZPZUdvOE=;
-        b=tWoCVvBjUcwJwkGskZPicLfTYhSuIRQvh9JfgxnnCxxtgZpuUj8ZChiBF2zZ5TltZhck0Y
-        KPxNFLBhFLh/ZrRnX9hd2713Xo0Lk5jxz4waYCcQ5ZL4ydIR2f05Zu5/WChVZ9AROjqKkr
-        3WIhVtdv+hnvcBVc8N/c2WkJBdCUpJYlhPfszFRW9gRxQMEI/EgxPzcAcQE8wGNs0ScMXG
-        L6JUFXc8wz8ZnE31XCW7KBvGIVZQE8jIvmMlGN0PMSUQOtDfqHE12B6YGrdF71exLtmKtI
-        k79LudJnH4q0G2bZ19CsowmW2xhbP3Hv4xjBBfs5Iaja9qh7YNmjTv54jy6b+A==
+        bh=2xW22BvzKXSIcTkkwxxIqSs/O1b+k3n3aAajqyRG6qQ=;
+        b=KyTZhNugltlpqzA/dJQFifrSAwkfC17Wzvh/gDbFEpT9lfr7NWkm8oTbiRv/sPWdQ1yR/9
+        kqptpfj7dExtiBLQto0MPipW9O1EBTEaRw2DbaBeETdC/o+SlcmcYUKcRHyVuIN0VQ0ftR
+        sj4TF1aZkcQQiNT5e7xnWBK8R2yww+0tnfg7+2UUy6pWwgFlM7kRVwoA6Jz2XCVvJOgrPY
+        Zzu7W77ZXyI+6QvuPyV41gD1GjxpeI2on66Q1WlUrlvoYmh6gptRglrnmOH0KPbzq2Pgwt
+        SFI1OvWD/ZBamdk1e6V2IU+dX2jPxkeFsVPOj7bHn2DfrESk8aqUk1S1cRvEeQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1629965393;
+        s=2020e; t=1629965394;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ENUOH5Lqkr5/5/3huaRKNy0+GNqokCsj1dHZPZUdvOE=;
-        b=0gfq9HcMHS5N8uXIn2aIexoKR+Ad5duLG8IjRd2MK2dVRcAI47gu2gPbalCd2291dQIkS6
-        2zytcTgALDdzR0DA==
-From:   "tip-bot2 for Kim Phillips" <tip-bot2@linutronix.de>
+        bh=2xW22BvzKXSIcTkkwxxIqSs/O1b+k3n3aAajqyRG6qQ=;
+        b=6d2f70QXcYp3j+8ER7fgQZlx9gLGNTlrtQfEZKBt0KMV/RSxdxdcDQvHpCi8FDRMcKUCK5
+        Cxn1yi6FkWz1IUDA==
+From:   "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/amd/uncore: Simplify code, use free_percpu()'s
- built-in check for NULL
-Cc:     Kim Phillips <kim.phillips@amd.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+Subject: [tip: perf/core] perf/x86/intel: Replace deprecated CPU-hotplug functions
+Cc:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210817221048.88063-5-kim.phillips@amd.com>
-References: <20210817221048.88063-5-kim.phillips@amd.com>
+In-Reply-To: <20210803141621.780504-11-bigeasy@linutronix.de>
+References: <20210803141621.780504-11-bigeasy@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <162996539227.25758.7141307840286911102.tip-bot2@tip-bot2>
+Message-ID: <162996539374.25758.14860453072920511618.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -63,40 +59,78 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     6cf295b21608f9253037335f47cd0dfcce812d81
-Gitweb:        https://git.kernel.org/tip/6cf295b21608f9253037335f47cd0dfcce812d81
-Author:        Kim Phillips <kim.phillips@amd.com>
-AuthorDate:    Tue, 17 Aug 2021 17:10:44 -05:00
+Commit-ID:     eda8a2c599d1ff874a63de7684b430740e747dea
+Gitweb:        https://git.kernel.org/tip/eda8a2c599d1ff874a63de7684b430740e747dea
+Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+AuthorDate:    Tue, 03 Aug 2021 16:15:53 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Thu, 26 Aug 2021 09:14:36 +02:00
 
-perf/amd/uncore: Simplify code, use free_percpu()'s built-in check for NULL
+perf/x86/intel: Replace deprecated CPU-hotplug functions
 
-free_percpu() has its own check for NULL, no need to open-code it.
+The functions get_online_cpus() and put_online_cpus() have been
+deprecated during the CPU hotplug rework. They map directly to
+cpus_read_lock() and cpus_read_unlock().
 
-Signed-off-by: Kim Phillips <kim.phillips@amd.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Replace deprecated CPU-hotplug functions with the official version.
+The behavior remains unchanged.
+
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20210817221048.88063-5-kim.phillips@amd.com
+Link: https://lore.kernel.org/r/20210803141621.780504-11-bigeasy@linutronix.de
 ---
- arch/x86/events/amd/uncore.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ arch/x86/events/intel/core.c | 8 ++++----
+ arch/x86/events/intel/pt.c   | 4 ++--
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/events/amd/uncore.c b/arch/x86/events/amd/uncore.c
-index 582c0ff..05bdb4c 100644
---- a/arch/x86/events/amd/uncore.c
-+++ b/arch/x86/events/amd/uncore.c
-@@ -659,11 +659,9 @@ fail_prep:
- fail_llc:
- 	if (boot_cpu_has(X86_FEATURE_PERFCTR_NB))
- 		perf_pmu_unregister(&amd_nb_pmu);
--	if (amd_uncore_llc)
--		free_percpu(amd_uncore_llc);
-+	free_percpu(amd_uncore_llc);
- fail_nb:
--	if (amd_uncore_nb)
--		free_percpu(amd_uncore_nb);
-+	free_percpu(amd_uncore_nb);
+diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
+index ac6fd2d..7011e87 100644
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -5032,9 +5032,9 @@ static ssize_t freeze_on_smi_store(struct device *cdev,
  
- 	return ret;
+ 	x86_pmu.attr_freeze_on_smi = val;
+ 
+-	get_online_cpus();
++	cpus_read_lock();
+ 	on_each_cpu(flip_smm_bit, &val, 1);
+-	put_online_cpus();
++	cpus_read_unlock();
+ done:
+ 	mutex_unlock(&freeze_on_smi_mutex);
+ 
+@@ -5077,9 +5077,9 @@ static ssize_t set_sysctl_tfa(struct device *cdev,
+ 
+ 	allow_tsx_force_abort = val;
+ 
+-	get_online_cpus();
++	cpus_read_lock();
+ 	on_each_cpu(update_tfa_sched, NULL, 1);
+-	put_online_cpus();
++	cpus_read_unlock();
+ 
+ 	return count;
  }
+diff --git a/arch/x86/events/intel/pt.c b/arch/x86/events/intel/pt.c
+index b044577..7f406c1 100644
+--- a/arch/x86/events/intel/pt.c
++++ b/arch/x86/events/intel/pt.c
+@@ -1708,7 +1708,7 @@ static __init int pt_init(void)
+ 	if (!boot_cpu_has(X86_FEATURE_INTEL_PT))
+ 		return -ENODEV;
+ 
+-	get_online_cpus();
++	cpus_read_lock();
+ 	for_each_online_cpu(cpu) {
+ 		u64 ctl;
+ 
+@@ -1716,7 +1716,7 @@ static __init int pt_init(void)
+ 		if (!ret && (ctl & RTIT_CTL_TRACEEN))
+ 			prior_warn++;
+ 	}
+-	put_online_cpus();
++	cpus_read_unlock();
+ 
+ 	if (prior_warn) {
+ 		x86_add_exclusive(x86_lbr_exclusive_pt);
