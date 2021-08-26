@@ -2,97 +2,96 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B1EE3F8389
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 26 Aug 2021 10:10:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 885A33F83F4
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 26 Aug 2021 10:52:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240501AbhHZIKp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 26 Aug 2021 04:10:45 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:58836 "EHLO
+        id S232957AbhHZIxj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 26 Aug 2021 04:53:39 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:59004 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240461AbhHZIKn (ORCPT
+        with ESMTP id S229785AbhHZIxi (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 26 Aug 2021 04:10:43 -0400
-Date:   Thu, 26 Aug 2021 08:09:54 -0000
+        Thu, 26 Aug 2021 04:53:38 -0400
+Date:   Thu, 26 Aug 2021 08:52:48 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1629965395;
+        s=2020; t=1629967970;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=HAqW8T8xhvkfJM7DfZyLLgPU0ptDgIHYveKLys7kjFo=;
-        b=OSF/r8XPUEwRVyl/4sb5R3oupC1I4flm/ooBV5pBW2Os5eGg+qLA4SDC7zrkX7+UumRD3i
-        T5XDg4ttqn3ScBNktMFtefED1kDwJT3gF36YhAItOuJUy9zNiRyVO8ACx77gnLs5I9R6mw
-        vMudrXn9l96Xe6P1jCThu97UMPzl79PiICkYc+j7swvENN8yuVpndbP4zz9nhf7tMLd/nX
-        yDQ3N5a9teg3gfbGFGXVYAhqothC3ByJY2eEbWtEKcmTBbaXt5v9Xc//I3oGCJIrxyConb
-        gyY+yhyOv13NrZjPpYl9R2T79yn+1j1XX14+yW1iCB4CuiJznlvTE081ikwDwQ==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=6Xt6Przfl6hLW/hd9jDL1kMMgFq98n0E9M1rqxXnm2o=;
+        b=iRpdAheCxMXmuBpHI9P51C0bjT8FijeuUoBs7WGrPAwBg7fFOREQvtBUPdo7Gcl6VZkrvt
+        qi8rZOSu6Fxv4Uz7mPC6krkVGzIQUXdXza1L4SjaCffLNj5zYotOB5PXBq/aKoFxgboYBY
+        zYH1g9ZXUp8ZHDQaFcxr1QipuPGPoZNsDAOZPm2Hv6eCYYp6M+lVZ3DLIXI7RHbXPDwhvT
+        0UQSLnaps2a1L8hlT8escAMd0mx8TbUTZGV+Y7viRIx7tDtJbLULKhB8wrkS6I1cj4ldFU
+        YFroLlcDMTsFsb2/ccSs5nu9uFyQz+Zok4ge6GRH7J2x+tLvNLYHZN2it0io+g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1629965395;
+        s=2020e; t=1629967970;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=HAqW8T8xhvkfJM7DfZyLLgPU0ptDgIHYveKLys7kjFo=;
-        b=8eB1/rJ+102TCMIlovzCDxY0/B97GLdUEgd6E4g1XoHwzu4QuGyTfQNMDkcHesnFJYIbuM
-        3jjItgR2kZZYXkBg==
-From:   "tip-bot2 for Colin Ian King" <tip-bot2@linutronix.de>
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=6Xt6Przfl6hLW/hd9jDL1kMMgFq98n0E9M1rqxXnm2o=;
+        b=+TENeSKatgsf9HrmF/EOLGvlrzcjKKZ17Pzk+DCOFxKwzDlTuT/9kzmB1fT3Oy3uHOWPhJ
+        SiNftDzf4bgyIKBA==
+From:   "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/x86: Remove unused assignment to pointer 'e'
-Cc:     Colin Ian King <colin.king@canonical.com>,
+Subject: [tip: sched/core] sched/fair: Mark tg_is_idle() an inline in the
+ !CONFIG_FAIR_GROUP_SCHED case
+Cc:     Ingo Molnar <mingo@kernel.org>, Josh Don <joshdon@google.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
+        Vincent Guittot <vincent.guittot@linaro.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210804115710.109608-1-colin.king@canonical.com>
-References: <20210804115710.109608-1-colin.king@canonical.com>
 MIME-Version: 1.0
-Message-ID: <162996539449.25758.14195988009283240730.tip-bot2@tip-bot2>
+Message-ID: <162996796861.25758.17874636915047083802.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/core branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     4f32da76a1401dcd088930f0ac8658425524368b
-Gitweb:        https://git.kernel.org/tip/4f32da76a1401dcd088930f0ac8658425524368b
-Author:        Colin Ian King <colin.king@canonical.com>
-AuthorDate:    Wed, 04 Aug 2021 12:57:10 +01:00
+Commit-ID:     366e7ad6ba5f4cb2ffd0b7316e404d6ee9c0f401
+Gitweb:        https://git.kernel.org/tip/366e7ad6ba5f4cb2ffd0b7316e404d6ee9c=
+0f401
+Author:        Ingo Molnar <mingo@kernel.org>
+AuthorDate:    Thu, 26 Aug 2021 10:47:09 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 26 Aug 2021 09:14:36 +02:00
+CommitterDate: Thu, 26 Aug 2021 10:49:24 +02:00
 
-perf/x86: Remove unused assignment to pointer 'e'
+sched/fair: Mark tg_is_idle() an inline in the !CONFIG_FAIR_GROUP_SCHED case
 
-The pointer 'e' is being assigned a value that is never read, the assignment
-is redundant and can be removed.
+It's not actually used in the !CONFIG_FAIR_GROUP_SCHED case:
 
-Addresses-Coverity: ("Unused value")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+  kernel/sched/fair.c:488:12: warning: =E2=80=98tg_is_idle=E2=80=99 defined b=
+ut not used [-Wunused-function]
+
+Keep around a placeholder nevertheless, for API completeness. Mark it inline,
+so the compiler doesn't think it must be used.
+
+Fixes: 304000390f88: ("sched: Cgroup SCHED_IDLE support")
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lkml.kernel.org/r/20210804115710.109608-1-colin.king@canonical.com
+Cc: Josh Don <joshdon@google.com>
+Cc: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: Vincent Guittot <vincent.guittot@linaro.org>
 ---
- arch/x86/events/core.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ kernel/sched/fair.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/events/core.c b/arch/x86/events/core.c
-index 3092fbf..2a57dbe 100644
---- a/arch/x86/events/core.c
-+++ b/arch/x86/events/core.c
-@@ -1087,10 +1087,8 @@ int x86_schedule_events(struct cpu_hw_events *cpuc, int n, int *assign)
- 	 * validate an event group (assign == NULL)
- 	 */
- 	if (!unsched && assign) {
--		for (i = 0; i < n; i++) {
--			e = cpuc->event_list[i];
-+		for (i = 0; i < n; i++)
- 			static_call_cond(x86_pmu_commit_scheduling)(cpuc, i, assign[i]);
--		}
- 	} else {
- 		for (i = n0; i < n; i++) {
- 			e = cpuc->event_list[i];
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 6cd05f1..7b3e859 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -485,7 +485,7 @@ find_matching_se(struct sched_entity **se, struct sched_e=
+ntity **pse)
+ {
+ }
+=20
+-static int tg_is_idle(struct task_group *tg)
++static inline int tg_is_idle(struct task_group *tg)
+ {
+ 	return 0;
+ }
