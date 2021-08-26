@@ -2,58 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 176143F8C17
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 26 Aug 2021 18:25:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B37353F8CB5
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 26 Aug 2021 19:08:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243134AbhHZQ0N (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 26 Aug 2021 12:26:13 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:33198 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243109AbhHZQ0J (ORCPT
+        id S233005AbhHZRIi (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 26 Aug 2021 13:08:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40538 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229986AbhHZRIh (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 26 Aug 2021 12:26:09 -0400
-Date:   Thu, 26 Aug 2021 16:25:20 -0000
+        Thu, 26 Aug 2021 13:08:37 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FE31C061757;
+        Thu, 26 Aug 2021 10:07:50 -0700 (PDT)
+Date:   Thu, 26 Aug 2021 17:07:45 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1629995120;
+        s=2020; t=1629997666;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=VAdo3aAIEd8rdIkb8bPvTnhqCoD4Ebes64JZqj1AMpo=;
-        b=l8oD2Oh2Ml1N3N5Rx4yuMDEiKFz8skrSbISaWwYOqJmSH8kTjKhBUeT/vv6DbPsN+VOhFX
-        4dj3QC33Jtg1LFjS6oV9rceRTcebnvaLsBqPiBlqewJRshHCyQ7gGVFsQsj/pLBQsB+z3E
-        UqFyZ0mehemQ9hefhI4Yv4iTSPwxFHSD0zqIlPvGLPJIra07SvnqlSua6aZbU5+oOODRbK
-        t6Ylx7c9H/vpHA2Lay5AtSPtAXtmRSQHiFJLGYUw9qiansQGrlOvNxrfDqJaSl2itUPH53
-        LkLusp2ViP53K+c3RuUE/LHaTYUMB4HcTY26jV1DkN9K84Mmy+5ZYOPZBH8PXg==
+        bh=eLAv6LYW78MokONVcjZKx/Uxo+7iqbxuyr+edxCR5Yg=;
+        b=c3IYZvasz7yc/NWUxL4b4NAdDYO5I5cXyRY2O/KDVxN4UoD+qIZVILiaZ9iBukGB+XZw73
+        /CTx66383NdER+G23yR37PIheNJ3Dzmk1dptNqjU8uSoRTqaRWrp0EIUulz39euJwyb5CX
+        pj9lm8+sdWqP1kA/MihTAUuAytSe+MyBGDQliGz8Of7NPG3sycTEB1vQVRdJQpkiyCYUf5
+        ACqEg5RbK9Er1g+3kIbIcwSQ0lumI17zQwwkHQgDs3wqDI2QE8nRscMh9n+M9a+Dx+r0o9
+        5i8IGSIiv83oCQI2kMUsEQm/7r8XYx9b+1wFbSIQ3iN+HAXoojS0uTjwi/FsoQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1629995120;
+        s=2020e; t=1629997666;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=VAdo3aAIEd8rdIkb8bPvTnhqCoD4Ebes64JZqj1AMpo=;
-        b=WydwjeOLOnTkuPWmj8kAkcxaj/WLeqrVCjF5bz0DZB0NtDYsNyrNuHZ80Rsfx1yYXM7YPN
-        WD8A03RcP2KIKHDw==
-From:   "tip-bot2 for Will Deacon" <tip-bot2@linutronix.de>
+        bh=eLAv6LYW78MokONVcjZKx/Uxo+7iqbxuyr+edxCR5Yg=;
+        b=yG9eALEXOPUTPAcTUtsBRQ2RcUzMAWidQVhSA7QJ73/32FxZvm5mGaWYd46OR25gEwID0H
+        l2PDPJaaCzIWc5Bg==
+From:   "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] clocksource/drivers/exynos_mct: Prioritise Arm
- arch timer on arm64
-Cc:     Marek Szyprowski <m.szyprowski@samsung.com>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Will Deacon <will@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>, x86@kernel.org,
+Subject: [tip: sched/urgent] sched: Fix get_push_task() vs migrate_disable()
+Cc:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210608154341.10794-2-will@kernel.org>
-References: <20210608154341.10794-2-will@kernel.org>
+In-Reply-To: <20210826133738.yiotqbtdaxzjsnfj@linutronix.de>
+References: <20210826133738.yiotqbtdaxzjsnfj@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <162999512006.25758.16639424534256456858.tip-bot2@tip-bot2>
+Message-ID: <162999766586.25758.3269412583101742484.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -62,80 +59,49 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/core branch of tip:
+The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     ae460fd9164b16654d8ec06cbc280b832f840eac
-Gitweb:        https://git.kernel.org/tip/ae460fd9164b16654d8ec06cbc280b832f840eac
-Author:        Will Deacon <will@kernel.org>
-AuthorDate:    Tue, 08 Jun 2021 16:43:40 +01:00
-Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
-CommitterDate: Fri, 13 Aug 2021 09:24:22 +02:00
+Commit-ID:     e681dcbaa4b284454fecd09617f8b24231448446
+Gitweb:        https://git.kernel.org/tip/e681dcbaa4b284454fecd09617f8b24231448446
+Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+AuthorDate:    Thu, 26 Aug 2021 15:37:38 +02:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Thu, 26 Aug 2021 19:02:00 +02:00
 
-clocksource/drivers/exynos_mct: Prioritise Arm arch timer on arm64
+sched: Fix get_push_task() vs migrate_disable()
 
-All arm64 CPUs feature an architected timer, which offers a relatively
-low-latency interface to a per-cpu clocksource and timer. For the most
-part, using this interface is a no-brainer, with the exception of SoCs
-where it cannot be used to wake up from deep idle state (i.e.
-CLOCK_EVT_FEAT_C3STOP is set).
+push_rt_task() attempts to move the currently running task away if the
+next runnable task has migration disabled and therefore is pinned on the
+current CPU.
 
-On the contrary, the Exynos MCT is extremely slow to access yet can be
-used as a wakeup source. In preparation for using the Exynos MCT as a
-potential wakeup timer for the Arm architected timer, reduce its ratings
-so that the architected timer is preferred.
+The current task is retrieved via get_push_task() which only checks for
+nr_cpus_allowed == 1, but does not check whether the task has migration
+disabled and therefore cannot be moved either. The consequence is a
+pointless invocation of the migration thread which correctly observes
+that the task cannot be moved.
 
-This effectively reverts the decision made in 6282edb72bed
-("clocksource/drivers/exynos_mct: Increase priority over ARM arch timer")
-for arm64, as the reasoning for the original change was to work around
-a 32-bit SoC design.
+Return NULL if the task has migration disabled and cannot be moved to
+another CPU.
 
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Chanwoo Choi <cw00.choi@samsung.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Will Deacon <will@kernel.org>
-Tested-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com> # exynos-5422
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20210608154341.10794-2-will@kernel.org
+Fixes: a7c81556ec4d3 ("sched: Fix migrate_disable() vs rt/dl balancing")
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20210826133738.yiotqbtdaxzjsnfj@linutronix.de
 ---
- drivers/clocksource/exynos_mct.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ kernel/sched/sched.h | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/clocksource/exynos_mct.c b/drivers/clocksource/exynos_mct.c
-index fabad79..804d3e0 100644
---- a/drivers/clocksource/exynos_mct.c
-+++ b/drivers/clocksource/exynos_mct.c
-@@ -51,6 +51,15 @@
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index da4295f..ddefb04 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -2255,6 +2255,9 @@ static inline struct task_struct *get_push_task(struct rq *rq)
+ 	if (p->nr_cpus_allowed == 1)
+ 		return NULL;
  
- #define TICK_BASE_CNT	1
- 
-+#ifdef CONFIG_ARM
-+/* Use values higher than ARM arch timer. See 6282edb72bed. */
-+#define MCT_CLKSOURCE_RATING		450
-+#define MCT_CLKEVENTS_RATING		500
-+#else
-+#define MCT_CLKSOURCE_RATING		350
-+#define MCT_CLKEVENTS_RATING		350
-+#endif
++	if (p->migration_disabled)
++		return NULL;
 +
- enum {
- 	MCT_INT_SPI,
- 	MCT_INT_PPI
-@@ -206,7 +215,7 @@ static void exynos4_frc_resume(struct clocksource *cs)
- 
- static struct clocksource mct_frc = {
- 	.name		= "mct-frc",
--	.rating		= 450,	/* use value higher than ARM arch timer */
-+	.rating		= MCT_CLKSOURCE_RATING,
- 	.read		= exynos4_frc_read,
- 	.mask		= CLOCKSOURCE_MASK(32),
- 	.flags		= CLOCK_SOURCE_IS_CONTINUOUS,
-@@ -457,7 +466,7 @@ static int exynos4_mct_starting_cpu(unsigned int cpu)
- 	evt->set_state_oneshot_stopped = set_state_shutdown;
- 	evt->tick_resume = set_state_shutdown;
- 	evt->features = CLOCK_EVT_FEAT_PERIODIC | CLOCK_EVT_FEAT_ONESHOT;
--	evt->rating = 500;	/* use value higher than ARM arch timer */
-+	evt->rating = MCT_CLKEVENTS_RATING,
- 
- 	exynos4_mct_write(TICK_BASE_CNT, mevt->base + MCT_L_TCNTB_OFFSET);
- 
+ 	rq->push_busy = true;
+ 	return get_task_struct(p);
+ }
