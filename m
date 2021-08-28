@@ -2,113 +2,86 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6477C3FA508
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 28 Aug 2021 12:38:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5745E3FA580
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 28 Aug 2021 13:31:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233853AbhH1Kij (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 28 Aug 2021 06:38:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36736 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233807AbhH1Kih (ORCPT
+        id S234047AbhH1LcC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 28 Aug 2021 07:32:02 -0400
+Received: from smtprelay0062.hostedemail.com ([216.40.44.62]:52394 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S234247AbhH1LcB (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 28 Aug 2021 06:38:37 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49ECCC061756;
-        Sat, 28 Aug 2021 03:37:47 -0700 (PDT)
-Date:   Sat, 28 Aug 2021 10:37:44 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1630147064;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=z1MH+SPX7s30rIq5HTVkXckgHonnETEjsXmBd215+I0=;
-        b=QXFYQFuMeE6koz+XvAuRb1x7ZGzECfb4W33kEWYqggi/VYNl1SheOCZ7IYYalxvqIrFwkb
-        Vrs+aswMB78wIJ3RTZ0pWEVrocLsvXcNgYRqs1gaUm4R9tFoaTlq/oPTY9Qac2qkUbr3An
-        gCHpY4p+yaTKhZyqByth3qdTXGeB9D9qiv2r1E0CQ8C+Z1IepOwcodD2y6/wg7KIGaSooc
-        /0Sia2m82aDgpWwPeBqGla+4ih8zh0jg3Bh3p/rkH1ZNOCAzuv2Uoaz3rD7D391A8O1qKu
-        oGv2ZbuTGasjRoM8OjgXAT7c9AQ9OBWRErXOEEW/llHyZGBWJV8+gB/lHjcXZQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1630147064;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=z1MH+SPX7s30rIq5HTVkXckgHonnETEjsXmBd215+I0=;
-        b=3ivK08grzrRh0KlTyAV/YnQuyFYZjgxj65Z+joKwyjSBLaiEBbzf2oD8utJ6kXic2WAMfz
-        OHpO73JrhQzd3tDw==
-From:   "tip-bot2 for Rasmus Villemoes" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: efi/core] efi: cper: fix scnprintf() use in cper_mem_err_location()
+        Sat, 28 Aug 2021 07:32:01 -0400
+X-Greylist: delayed 521 seconds by postgrey-1.27 at vger.kernel.org; Sat, 28 Aug 2021 07:32:01 EDT
+Received: from smtprelay.hostedemail.com (10.5.19.251.rfc1918.com [10.5.19.251])
+        by smtpgrave04.hostedemail.com (Postfix) with ESMTP id 64A901807DC1D
+        for <linux-tip-commits@vger.kernel.org>; Sat, 28 Aug 2021 11:22:34 +0000 (UTC)
+Received: from omf18.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay04.hostedemail.com (Postfix) with ESMTP id BC7011809579F;
+        Sat, 28 Aug 2021 11:22:26 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf18.hostedemail.com (Postfix) with ESMTPA id C87962EBFAA;
+        Sat, 28 Aug 2021 11:22:25 +0000 (UTC)
+Message-ID: <d18d2c6fd87f552def3210930da34fd276b4fd6d.camel@perches.com>
+Subject: Re: [tip: efi/core] efi: cper: fix scnprintf() use in
+ cper_mem_err_location()
+From:   Joe Perches <joe@perches.com>
+To:     linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org
 Cc:     Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Ard Biesheuvel <ardb@kernel.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
+        Ard Biesheuvel <ardb@kernel.org>, x86@kernel.org
+Date:   Sat, 28 Aug 2021 04:22:24 -0700
+In-Reply-To: <163014706409.25758.9928933953235257712.tip-bot2@tip-bot2>
+References: <163014706409.25758.9928933953235257712.tip-bot2@tip-bot2>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.40.0-1 
 MIME-Version: 1.0
-Message-ID: <163014706409.25758.9928933953235257712.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.21
+X-Stat-Signature: 7uetgy9b5emkj3oiuubiwcgypyi8eaa9
+X-Rspamd-Server: rspamout02
+X-Rspamd-Queue-Id: C87962EBFAA
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Session-ID: U2FsdGVkX18pUxn2alZBBCM1l+xnT4V9kNXDsxRmRQs=
+X-HE-Tag: 1630149745-356633
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the efi/core branch of tip:
+On Sat, 2021-08-28 at 10:37 +0000, tip-bot2 for Rasmus Villemoes wrote:
+> The following commit has been merged into the efi/core branch of tip:
+[]
+> efi: cper: fix scnprintf() use in cper_mem_err_location()
+> 
+> The last two if-clauses fail to update n, so whatever they might have
+> written at &msg[n] would be cut off by the final nul-termination.
+> 
+> That nul-termination is redundant; scnprintf(), just like snprintf(),
+> guarantees a nul-terminated output buffer, provided the buffer size is
+> positive.
+> 
+> And there's no need to discount one byte from the initial buffer;
+> vsnprintf() expects to be given the full buffer size - it's not going
+> to write the nul-terminator one beyond the given (buffer, size) pair.
+[]
+> diff --git a/drivers/firmware/efi/cper.c b/drivers/firmware/efi/cper.c
+[]
+> @@ -221,7 +221,7 @@ static int cper_mem_err_location(struct cper_mem_err_compact *mem, char *msg)
+>  		return 0;
+>  
+> 
+>  	n = 0;
+> -	len = CPER_REC_LEN - 1;
+> +	len = CPER_REC_LEN;
+>  	if (mem->validation_bits & CPER_MEM_VALID_NODE)
+>  		n += scnprintf(msg + n, len - n, "node: %d ", mem->node);
+>  	if (mem->validation_bits & CPER_MEM_VALID_CARD)
 
-Commit-ID:     5eff88dd6b4badd664d7d3b648103d540b390248
-Gitweb:        https://git.kernel.org/tip/5eff88dd6b4badd664d7d3b648103d540b390248
-Author:        Rasmus Villemoes <linux@rasmusvillemoes.dk>
-AuthorDate:    Wed, 21 Apr 2021 21:31:46 +02:00
-Committer:     Ard Biesheuvel <ardb@kernel.org>
-CommitterDate: Fri, 27 Aug 2021 16:01:27 +02:00
+[etc...]
 
-efi: cper: fix scnprintf() use in cper_mem_err_location()
+Is this always single threaded?
 
-The last two if-clauses fail to update n, so whatever they might have
-written at &msg[n] would be cut off by the final nul-termination.
+It doesn't seem this is safe for reentry as the output buffer
+being written into is a single static
 
-That nul-termination is redundant; scnprintf(), just like snprintf(),
-guarantees a nul-terminated output buffer, provided the buffer size is
-positive.
+static char rcd_decode_str[CPER_REC_LEN];
 
-And there's no need to discount one byte from the initial buffer;
-vsnprintf() expects to be given the full buffer size - it's not going
-to write the nul-terminator one beyond the given (buffer, size) pair.
 
-Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
- drivers/firmware/efi/cper.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/firmware/efi/cper.c b/drivers/firmware/efi/cper.c
-index ea7ca74..1cb7097 100644
---- a/drivers/firmware/efi/cper.c
-+++ b/drivers/firmware/efi/cper.c
-@@ -221,7 +221,7 @@ static int cper_mem_err_location(struct cper_mem_err_compact *mem, char *msg)
- 		return 0;
- 
- 	n = 0;
--	len = CPER_REC_LEN - 1;
-+	len = CPER_REC_LEN;
- 	if (mem->validation_bits & CPER_MEM_VALID_NODE)
- 		n += scnprintf(msg + n, len - n, "node: %d ", mem->node);
- 	if (mem->validation_bits & CPER_MEM_VALID_CARD)
-@@ -258,13 +258,12 @@ static int cper_mem_err_location(struct cper_mem_err_compact *mem, char *msg)
- 		n += scnprintf(msg + n, len - n, "responder_id: 0x%016llx ",
- 			       mem->responder_id);
- 	if (mem->validation_bits & CPER_MEM_VALID_TARGET_ID)
--		scnprintf(msg + n, len - n, "target_id: 0x%016llx ",
--			  mem->target_id);
-+		n += scnprintf(msg + n, len - n, "target_id: 0x%016llx ",
-+			       mem->target_id);
- 	if (mem->validation_bits & CPER_MEM_VALID_CHIP_ID)
--		scnprintf(msg + n, len - n, "chip_id: %d ",
--			  mem->extended >> CPER_MEM_CHIP_ID_SHIFT);
-+		n += scnprintf(msg + n, len - n, "chip_id: %d ",
-+			       mem->extended >> CPER_MEM_CHIP_ID_SHIFT);
- 
--	msg[n] = '\0';
- 	return n;
- }
- 
