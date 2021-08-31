@@ -2,54 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 426A73FAE03
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 29 Aug 2021 21:28:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 07C3A3FC552
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 31 Aug 2021 12:28:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230500AbhH2T3a (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 29 Aug 2021 15:29:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45552 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230459AbhH2T3a (ORCPT
+        id S240801AbhHaJzo (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 31 Aug 2021 05:55:44 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:57744 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S240676AbhHaJzn (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 29 Aug 2021 15:29:30 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A10CFC061575;
-        Sun, 29 Aug 2021 12:28:37 -0700 (PDT)
-Date:   Sun, 29 Aug 2021 19:28:33 -0000
+        Tue, 31 Aug 2021 05:55:43 -0400
+Date:   Tue, 31 Aug 2021 09:54:46 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1630265314;
+        s=2020; t=1630403687;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=iuZBXIGF3gU4xhLyoJf+sJ78djKKn5izyrGC0zoExVs=;
-        b=d12GBYtjXJHehAsrciEuzcMA3TK837iUXzNADu+3vtcKkv6WgsVvZkeJ6bvttnVfl0lKu7
-        A28WpnKwKwRFbbgUFGyoCG+gCL4qBhmB1YrJWmF/m3bDwl+IYH5J73Ys3WjTPT4UqtF9pv
-        aGX5YHOWNwSPqIa+6lIYUtLAJ9xKeovKMlNsdreg89Z7XFDR7QxhiEQLXDyezY4XpMBN+x
-        vZZSw2Ju/ewFLGZczjHnyPZjSKKOq/U4AcyKvtepqEhcKlspPStCx3sMT8pEzzbwLo3jYd
-        VZibVVN0V/tmIhTi7mlHFAWF4d2v7O8gpwXk7CbitwT4ZIVFxXIOBqTIfO9Otw==
+        bh=rfm5Dh5SK6+9u4dz2ZAmFeyk24/gOoWdWSWO6BRymwQ=;
+        b=UJgHJMFuxENaq3TWdmZNJ6HpuomFb8hfAZIBo/RLm9Xe4tJTMYP108WZt9tf8/hM9Vczid
+        vtWBAAyuDBssFEV+767a4sjKVhHt8zl8aNMCOO69hfA7UdhuXd2ElPDxzAid215Lhd3Run
+        1c8g7HjwEpFiW+HSdE5qa/UQiUXw0m1L6QDMI4xXWY71NNJIUfmJlH0N0jJE95b8IoqWXs
+        sn7LwZdHBi/it2dic5ybA7K8mUWSVUSaocGP7iYu2pU2YnDDTtMiD/1ihZN47a+nL8AAeg
+        d8Vl/ya0YKHB/VjUPMoFSVdcsS550FA370XNRltVtdupeKksjzfL4+55RTYjQg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1630265314;
+        s=2020e; t=1630403687;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=iuZBXIGF3gU4xhLyoJf+sJ78djKKn5izyrGC0zoExVs=;
-        b=4M7mmnAvdbTvwVSW2rp4bl9KVfwMoafYQZ/svua32vzRaXSwlTd8w7udrUGZgwtlu2+U2r
-        kHbkh8R1p+eOtxAg==
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+        bh=rfm5Dh5SK6+9u4dz2ZAmFeyk24/gOoWdWSWO6BRymwQ=;
+        b=OYJxC3P57AWyrtV0QBszwRgNtNZ3aFMimk6ReJhbuhY8fuiS5mgm1dVMyXYeh122qajMeV
+        cgwVrM71Vcc7xSDA==
+From:   "tip-bot2 for Mike Galbraith" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] Merge tag 'irqchip-5.15' of
- git://git.kernel.org/pub/scm/linux/kernel/git/maz/arm-platforms into irq/core
-Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20210828121013.2647964-1-maz@kernel.org>
-References: <20210828121013.2647964-1-maz@kernel.org>
+Subject: [tip: locking/urgent] locking/rwsem: Add missing __init_rwsem() for
+ PREEMPT_RT
+Cc:     Mike Galbraith <efault@gmx.de>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <50a936b7d8f12277d6ec7ed2ef0421a381056909.camel@gmx.de>
+References: <50a936b7d8f12277d6ec7ed2ef0421a381056909.camel@gmx.de>
 MIME-Version: 1.0
-Message-ID: <163026531340.25758.15073464033059744433.tip-bot2@tip-bot2>
+Message-ID: <163040368671.25758.17254317330050347174.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,44 +57,81 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the irq/core branch of tip:
+The following commit has been merged into the locking/urgent branch of tip:
 
-Commit-ID:     47fb0cfdb7a71a8a0ff8fe1d117363dc81f6ca77
-Gitweb:        https://git.kernel.org/tip/47fb0cfdb7a71a8a0ff8fe1d117363dc81f6ca77
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Sun, 29 Aug 2021 21:19:50 +02:00
+Commit-ID:     453624fa68444c9b93addb4325c9db59b6a43e21
+Gitweb:        https://git.kernel.org/tip/453624fa68444c9b93addb4325c9db59b6a43e21
+Author:        Mike Galbraith <efault@gmx.de>
+AuthorDate:    Tue, 31 Aug 2021 08:38:19 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sun, 29 Aug 2021 21:19:50 +02:00
+CommitterDate: Tue, 31 Aug 2021 11:53:12 +02:00
 
-Merge tag 'irqchip-5.15' of git://git.kernel.org/pub/scm/linux/kernel/git/maz/arm-platforms into irq/core
+locking/rwsem: Add missing __init_rwsem() for PREEMPT_RT
 
-Pull irqchip updates from Marc Zyngier:
+730633f0b7f95 became the first direct caller of __init_rwsem() vs the
+usual init_rwsem(), exposing PREEMPT_RT's lack thereof.  Add it.
 
-- API updates:
+[ tglx: Move it out of line ]
 
-  - Treewide conversion to generic_handle_domain_irq() for anything
-    that looks like a chained interrupt controller
-
-  - Update the irqdomain documentation
-
-  - Use of bitmap_zalloc() throughout the tree
-
-- New functionalities:
-
-  - Support for GICv3 EPPI partitions
-
-- Fixes:
-
-  - Qualcomm PDC hierarchy fixes
-
-  - Yet another priority decoding fix for the GICv3 pseudo-NMIs
-
-  - Fix the apple-aic driver irq_eoi() callback to always unmask
-    the interrupt
-
-  - Properly handle edge interrupts on loongson-pch-pic
-
-  - Let the mtk-sysirq driver advertise IRQCHIP_SKIP_SET_WAKE
-
-Link: https://lore.kernel.org/r/20210828121013.2647964-1-maz@kernel.org
+Signed-off-by: Mike Galbraith <efault@gmx.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/50a936b7d8f12277d6ec7ed2ef0421a381056909.camel@gmx.de
 ---
+ include/linux/rwsem.h  | 12 ++----------
+ kernel/locking/rwsem.c |  8 +++++---
+ 2 files changed, 7 insertions(+), 13 deletions(-)
+
+diff --git a/include/linux/rwsem.h b/include/linux/rwsem.h
+index 426e98e..352c612 100644
+--- a/include/linux/rwsem.h
++++ b/include/linux/rwsem.h
+@@ -142,22 +142,14 @@ struct rw_semaphore {
+ #define DECLARE_RWSEM(lockname) \
+ 	struct rw_semaphore lockname = __RWSEM_INITIALIZER(lockname)
+ 
+-#ifdef CONFIG_DEBUG_LOCK_ALLOC
+-extern void  __rwsem_init(struct rw_semaphore *rwsem, const char *name,
++extern void  __init_rwsem(struct rw_semaphore *rwsem, const char *name,
+ 			  struct lock_class_key *key);
+-#else
+-static inline void  __rwsem_init(struct rw_semaphore *rwsem, const char *name,
+-				 struct lock_class_key *key)
+-{
+-}
+-#endif
+ 
+ #define init_rwsem(sem)						\
+ do {								\
+ 	static struct lock_class_key __key;			\
+ 								\
+-	init_rwbase_rt(&(sem)->rwbase);			\
+-	__rwsem_init((sem), #sem, &__key);			\
++	__init_rwsem((sem), #sem, &__key);			\
+ } while (0)
+ 
+ static __always_inline int rwsem_is_locked(struct rw_semaphore *sem)
+diff --git a/kernel/locking/rwsem.c b/kernel/locking/rwsem.c
+index 9215b4d..f18bbe8 100644
+--- a/kernel/locking/rwsem.c
++++ b/kernel/locking/rwsem.c
+@@ -1376,15 +1376,17 @@ static inline void __downgrade_write(struct rw_semaphore *sem)
+ 
+ #include "rwbase_rt.c"
+ 
+-#ifdef CONFIG_DEBUG_LOCK_ALLOC
+ void __rwsem_init(struct rw_semaphore *sem, const char *name,
+ 		  struct lock_class_key *key)
+ {
++	init_rwbase_rt(&(sem)->rwbase);
++
++#ifdef CONFIG_DEBUG_LOCK_ALLOC
+ 	debug_check_no_locks_freed((void *)sem, sizeof(*sem));
+ 	lockdep_init_map_wait(&sem->dep_map, name, key, 0, LD_WAIT_SLEEP);
+-}
+-EXPORT_SYMBOL(__rwsem_init);
+ #endif
++}
++EXPORT_SYMBOL(__init_rwsem);
+ 
+ static inline void __down_read(struct rw_semaphore *sem)
+ {
