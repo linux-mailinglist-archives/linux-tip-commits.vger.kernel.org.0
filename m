@@ -2,77 +2,122 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 66C563FCFC5
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  1 Sep 2021 01:06:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5BA353FD3FD
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  1 Sep 2021 08:51:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241028AbhHaXEA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 31 Aug 2021 19:04:00 -0400
-Received: from mout.gmx.net ([212.227.17.21]:60507 "EHLO mout.gmx.net"
+        id S241096AbhIAGwE (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 1 Sep 2021 02:52:04 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48610 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235659AbhHaXD7 (ORCPT
+        id S242018AbhIAGvz (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 31 Aug 2021 19:03:59 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1630450970;
-        bh=VMY9oIXrpgixVLgEGZSgjconPootgdM6kHEuUgEUwno=;
-        h=X-UI-Sender-Class:Subject:From:To:Cc:Date:In-Reply-To:References;
-        b=IuTqikVePCEVSo9FlAAsyOcck+QTD2DWCBRUngy3vLmL3eRe77FQKOZ0YQqmboJbu
-         1FK3eNDaNNYcH0BbqFn60pm5EtqIZbb0REM2bu2DLRsvN56BTQMyvMsIfMYD4F2LLa
-         2X0wdIVk+hefWuYhsKDy8XfngCYTZ+yCoNA6P7cI=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from homer.fritz.box ([185.191.218.4]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1N2E1G-1mzFyu20GU-013iIT; Wed, 01
- Sep 2021 01:02:50 +0200
-Message-ID: <6fbb733f35f058b1c1c64116bf7018d8ee56229e.camel@gmx.de>
-Subject: Re: [tip: locking/urgent] locking/rwsem: Add missing __init_rwsem()
- for PREEMPT_RT
-From:   Mike Galbraith <efault@gmx.de>
-To:     linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org
-Cc:     Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org
-Date:   Wed, 01 Sep 2021 01:02:49 +0200
-In-Reply-To: <163040368671.25758.17254317330050347174.tip-bot2@tip-bot2>
-References: <50a936b7d8f12277d6ec7ed2ef0421a381056909.camel@gmx.de>
-         <163040368671.25758.17254317330050347174.tip-bot2@tip-bot2>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.41.2 
+        Wed, 1 Sep 2021 02:51:55 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 1972761026;
+        Wed,  1 Sep 2021 06:50:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1630479059;
+        bh=nuifr3ris37q+Y5JGJfMUBRYEWniYo1DWffXeGtMmxU=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=i9IqqT94pUcFlO/OH1o/g+x3IP8QKvFP9vtmlNJi04OuOuwUtMcllybisPsv0bF4o
+         T9R2fydFMFBOoQ4IQgBz7fMeHlX9/ubAdGzcDRFAnaMPlavofriJ1ZT+cIGEqEkXOy
+         JutgAwBM1B2EsIfywt6295cr+1GvGqClzkZe9bSifF4OqkrVsGrvyHy04dKt//f5l3
+         86ChPbHsHmSltPolXxnezMyL8jKzZ4d4jIwObwQ+mPivabAtgSVhjVh0P0FuxE3mJ/
+         0hUnSdxyfGck+zSg963UtENyWzQwQjaO0ydVW4LxxbryM7XLfaV7IbvHhZdIE7KZ9g
+         Ekz23d3r1dy8g==
+Received: by mail-oi1-f173.google.com with SMTP id n27so2646589oij.0;
+        Tue, 31 Aug 2021 23:50:59 -0700 (PDT)
+X-Gm-Message-State: AOAM533+Xifd2xNoXxwcb7Vmap4GH/mhiIU/0vv8ptU53R4Fou6kOM/Y
+        tmVQc6D5fan8GQSiLOBh5iF/efGtCUl1jNp7EM0=
+X-Google-Smtp-Source: ABdhPJyNLgCZp34W88Uie1F+sI5ioPLOVxDGAn9K5700mn+kYeeNw0qY9yRJOgR99xJKKif2ULpG7mguhuhucd6g+EY=
+X-Received: by 2002:aca:eb97:: with SMTP id j145mr6118513oih.33.1630479058436;
+ Tue, 31 Aug 2021 23:50:58 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:9VE4g0BGlwZSag+QcJLm1h7Lsvjc+DWp/YMXLFsd959vsTD9b1h
- aCqeejMz6vNitk1PruvnsjNEkPrxqGlwxqAftdu7OOFyg8058btMDJNwOK0aVPV3AfdwX9r
- w7tPQ2dwlEt1M3UXhIoC8wrFt7WFlTBclK5FxSLtvqWT9JCtmswi3ON5quhZyCGje7+Udlr
- CUB8dI+Oc8zK+N5Lrrilw==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:qubAVZrw+vw=:ipEFZxi9EI3MV511nBRDPF
- 1k+LFBhuNIneaIl6XFqkdAJW12FaAGEal6mHVGNS4Cn37hejzmev5FNvTyJUWU7ekjtE7pn6o
- beI8IjmEqxblxdn3QQbfd48msGOTePTsA7aYqJmS/MEURqiaLmnGwmyIZdjDtjGTsKK3WlhWI
- 7wWZLGjTa02TyqreiTWgsch0wZr5Zxcnw3NpqECsy3aMqcvwYJkH31HKZNonhipa5JygW2wpQ
- iTXk8P0mumVVtUoEOi36vm2nW8Z0of552fx31AnyVNOEDY1pXcVM71GGCYAeydH7D/xw+AKhS
- q/zlPCSb/9gb0tJ1uRxi5kzDEUmPV04kvjRPsAmJwRiS2vwN19R4q61P1X9wfVC/N+b21RxHH
- /bqIuVAhCAozTaSkRMXAjGkxopDKTB6Eb/YPYgzwRu4DgdadqEY/iURladeRxjhs/sIWw9a5C
- S9U4XpZp+hB+trTdM5QczkAFj35MMcD5yrsTx9VVPkCQIrR2u0aLRT3RB0BPlkk3yp0DeyXJY
- DF37oClBBSjdm50YcXvvCqBVHyMSrVr3PjDYkSj6tQkA6HY8DvwFxwX38yBWmpuR3AbeieZ8/
- Q/kdQs9ONqmWVePhUawIqPmEF9Dqnf23AcJ5yyO/q086+u9FBbPDyVV2LM1DmOAxxbODI+YbD
- 94X2jaGDNjHX8dRBFnd0s888uRCLombnl9AgX+AMPxeU8GAt/6FsDPr2LXCN2K3fUKaQJ2NBd
- TwHQJe6EbK3OPeJXxiBAzlkOOUgZHwlmiFWTKxepWzbSAQ0koPnjwrr//5NWqukiJ58y30C4+
- VNf7WLdDBhPWguYft9CyYXOrswDvrldf9gwkAkHrs+lTWNrxtZMZ3yZMakIZ2/UnosebAmNXd
- aYUyzGQPPBAe08FqJv9s884cFlrPn3aIaEhP4o0ZNaIS6QUdCOCLKW9XSWJ23ahHPmA5xd3oP
- fj7qJzruuxaNO0s4qDzMKuUT4t7qPPbjWafAyvu+QsmyP7MED1mMBXBF/byeYGLReRiMu1TYd
- U2Q64Nb3nr/aKjvUjNim7lnmZTCIcwSc3oarSep3163//gdStoNGRWW2C7EpZXQN5K2a+Dxm7
- psLyJc8I7RSZ1it2BcrkLFPxR9+KxLC3N4S
+References: <163014706409.25758.9928933953235257712.tip-bot2@tip-bot2>
+ <d18d2c6fd87f552def3210930da34fd276b4fd6d.camel@perches.com>
+ <CAMj1kXGhnzwP2OP=ECwNK4sG383wvmybCbvUz5YrqNUHSPgOBQ@mail.gmail.com> <44c6c9b3-bade-41ab-2166-b4cd1ed97408@arm.com>
+In-Reply-To: <44c6c9b3-bade-41ab-2166-b4cd1ed97408@arm.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Wed, 1 Sep 2021 08:50:47 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXGs36bL111qfv8HsOxuZ_GAHTkCSij7qzp7E_mprk=EgQ@mail.gmail.com>
+Message-ID: <CAMj1kXGs36bL111qfv8HsOxuZ_GAHTkCSij7qzp7E_mprk=EgQ@mail.gmail.com>
+Subject: Re: [tip: efi/core] efi: cper: fix scnprintf() use in cper_mem_err_location()
+To:     James Morse <james.morse@arm.com>
+Cc:     Joe Perches <joe@perches.com>, Borislav Petkov <bp@alien8.de>,
+        Tony Luck <tony.luck@intel.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-tip-commits@vger.kernel.org,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        X86 ML <x86@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Tue, 2021-08-31 at 09:54 +0000, tip-bot2 for Mike Galbraith wrote:
-> --- a/kernel/locking/rwsem.c
-> +++ b/kernel/locking/rwsem.c
-> @@ -1376,15 +1376,17 @@ static inline void __downgrade_write(struct rw_s=
-emaphore *sem)
-> =C2=A0
-> =C2=A0#include "rwbase_rt.c"
-> =C2=A0
-> -#ifdef CONFIG_DEBUG_LOCK_ALLOC
-> =C2=A0void __rwsem_init(struct rw_semaphore *sem, const char *name,
-        ^^^^^^^^^^^^ this line dodged your key tapping.
+On Tue, 31 Aug 2021 at 18:02, James Morse <james.morse@arm.com> wrote:
+>
+> Hi guys,
+>
+> On 28/08/2021 13:18, Ard Biesheuvel wrote:
+> > (add RAS/APEI folks)
+> >
+> > On Sat, 28 Aug 2021 at 13:31, Joe Perches <joe@perches.com> wrote:
+> >>
+> >> On Sat, 2021-08-28 at 10:37 +0000, tip-bot2 for Rasmus Villemoes wrote:
+> >>> The following commit has been merged into the efi/core branch of tip:
+> >> []
+> >>> efi: cper: fix scnprintf() use in cper_mem_err_location()
+> >>>
+> >>> The last two if-clauses fail to update n, so whatever they might have
+> >>> written at &msg[n] would be cut off by the final nul-termination.
+> >>>
+> >>> That nul-termination is redundant; scnprintf(), just like snprintf(),
+> >>> guarantees a nul-terminated output buffer, provided the buffer size is
+> >>> positive.
+> >>>
+> >>> And there's no need to discount one byte from the initial buffer;
+> >>> vsnprintf() expects to be given the full buffer size - it's not going
+> >>> to write the nul-terminator one beyond the given (buffer, size) pair.
+> >> []
+> >>> diff --git a/drivers/firmware/efi/cper.c b/drivers/firmware/efi/cper.c
+> >> []
+> >>> @@ -221,7 +221,7 @@ static int cper_mem_err_location(struct cper_mem_err_compact *mem, char *msg)
+> >>>               return 0;
+> >>>
+> >>>
+> >>>       n = 0;
+> >>> -     len = CPER_REC_LEN - 1;
+> >>> +     len = CPER_REC_LEN;
+> >>>       if (mem->validation_bits & CPER_MEM_VALID_NODE)
+> >>>               n += scnprintf(msg + n, len - n, "node: %d ", mem->node);
+> >>>       if (mem->validation_bits & CPER_MEM_VALID_CARD)
+> >>
+> >> [etc...]
+> >>
+> >> Is this always single threaded?
+> >>
+> >> It doesn't seem this is safe for reentry as the output buffer
+> >> being written into is a single static
+> >>
+> >> static char rcd_decode_str[CPER_REC_LEN];
+>
+> > Good question. CPER error record decoding typically occurs in response
+> > to an error event raised by firmware, so I think this happens to work
+> > fine in practice. Whether this is guaranteed, I'm not so sure ...
+>
+> There is locking to prevent concurrent access to the firmware buffer, but that only
+> serialises the CPER records being copied. The printing may happen in parallel on different
+> CPUs if there are multiple errors.
+>
+> cper_estatus_print() is called in NMI context if an NMI indicates a fatal error. See
+> __ghes_panic().
+>
 
-	-Mike
+OK, better to fix it then - there does not seem to be a good reason
+for using a buffer in BSS here anyway.
+
+I'll send out a patch.
+
+Thanks,
+Ard.
