@@ -2,122 +2,248 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BA353FD3FD
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  1 Sep 2021 08:51:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 466963FD5BC
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  1 Sep 2021 10:37:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241096AbhIAGwE (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 1 Sep 2021 02:52:04 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48610 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S242018AbhIAGvz (ORCPT
+        id S243257AbhIAIiX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 1 Sep 2021 04:38:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60192 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S243017AbhIAIiW (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 1 Sep 2021 02:51:55 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 1972761026;
-        Wed,  1 Sep 2021 06:50:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1630479059;
-        bh=nuifr3ris37q+Y5JGJfMUBRYEWniYo1DWffXeGtMmxU=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=i9IqqT94pUcFlO/OH1o/g+x3IP8QKvFP9vtmlNJi04OuOuwUtMcllybisPsv0bF4o
-         T9R2fydFMFBOoQ4IQgBz7fMeHlX9/ubAdGzcDRFAnaMPlavofriJ1ZT+cIGEqEkXOy
-         JutgAwBM1B2EsIfywt6295cr+1GvGqClzkZe9bSifF4OqkrVsGrvyHy04dKt//f5l3
-         86ChPbHsHmSltPolXxnezMyL8jKzZ4d4jIwObwQ+mPivabAtgSVhjVh0P0FuxE3mJ/
-         0hUnSdxyfGck+zSg963UtENyWzQwQjaO0ydVW4LxxbryM7XLfaV7IbvHhZdIE7KZ9g
-         Ekz23d3r1dy8g==
-Received: by mail-oi1-f173.google.com with SMTP id n27so2646589oij.0;
-        Tue, 31 Aug 2021 23:50:59 -0700 (PDT)
-X-Gm-Message-State: AOAM533+Xifd2xNoXxwcb7Vmap4GH/mhiIU/0vv8ptU53R4Fou6kOM/Y
-        tmVQc6D5fan8GQSiLOBh5iF/efGtCUl1jNp7EM0=
-X-Google-Smtp-Source: ABdhPJyNLgCZp34W88Uie1F+sI5ioPLOVxDGAn9K5700mn+kYeeNw0qY9yRJOgR99xJKKif2ULpG7mguhuhucd6g+EY=
-X-Received: by 2002:aca:eb97:: with SMTP id j145mr6118513oih.33.1630479058436;
- Tue, 31 Aug 2021 23:50:58 -0700 (PDT)
+        Wed, 1 Sep 2021 04:38:22 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25DF6C061575;
+        Wed,  1 Sep 2021 01:37:25 -0700 (PDT)
+Date:   Wed, 01 Sep 2021 08:37:22 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1630485444;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=JZDxDK9nRAs2KhLIgG+POPxwfXHm7rkShl/vFNhjo/4=;
+        b=y1/WvtAgIK+jq0Qqa6DoPkJC5bix/ei8Qgil4jd+T7DWdu9DMqkKhKntKU8sJp/tPeb2J3
+        vXXXtT9wbixR3fYQX3enwuaU3ZzGRwUW3bhtBEDq8a1t5nbfOeP3MJjVQCH6Lu6JSb7ba7
+        fIugeImIlfl23bY7LqUEkw1ppRXrhWmaYSsyJThCYV8IWvXXHg5nmARKKRg1UWqY3+EZCe
+        CO+opLgIyPknNiKIZoidhobDYMjswrzDozUGk2TpyTfez4SvkWaEOGKGHyvULqoU4Y6GBH
+        b/7niXuCagOik6UlotXuogLxSrQj0kUkLzfLKHLtumu0LnFGbp1r2eTKNTG2uw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1630485444;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=JZDxDK9nRAs2KhLIgG+POPxwfXHm7rkShl/vFNhjo/4=;
+        b=lR9eCb1SHDwmLZ0dmoxl9uqDzReiqTW4+AHDmau6SIVTplIexhgxZIiAI5kTfiMSspD7HM
+        Mx0xSqDAh5JnRFAA==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: smp/urgent] drivers: base: cacheinfo: Get rid of
+ DEFINE_SMP_CALL_CACHE_FUNCTION()
+Cc:     Guenter Roeck <linux@roeck-us.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Will Deacon <will@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <871r69ersb.ffs@tglx>
+References: <871r69ersb.ffs@tglx>
 MIME-Version: 1.0
-References: <163014706409.25758.9928933953235257712.tip-bot2@tip-bot2>
- <d18d2c6fd87f552def3210930da34fd276b4fd6d.camel@perches.com>
- <CAMj1kXGhnzwP2OP=ECwNK4sG383wvmybCbvUz5YrqNUHSPgOBQ@mail.gmail.com> <44c6c9b3-bade-41ab-2166-b4cd1ed97408@arm.com>
-In-Reply-To: <44c6c9b3-bade-41ab-2166-b4cd1ed97408@arm.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Wed, 1 Sep 2021 08:50:47 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXGs36bL111qfv8HsOxuZ_GAHTkCSij7qzp7E_mprk=EgQ@mail.gmail.com>
-Message-ID: <CAMj1kXGs36bL111qfv8HsOxuZ_GAHTkCSij7qzp7E_mprk=EgQ@mail.gmail.com>
-Subject: Re: [tip: efi/core] efi: cper: fix scnprintf() use in cper_mem_err_location()
-To:     James Morse <james.morse@arm.com>
-Cc:     Joe Perches <joe@perches.com>, Borislav Petkov <bp@alien8.de>,
-        Tony Luck <tony.luck@intel.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-tip-commits@vger.kernel.org,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        X86 ML <x86@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Message-ID: <163048544295.25758.14907139415224306667.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Tue, 31 Aug 2021 at 18:02, James Morse <james.morse@arm.com> wrote:
->
-> Hi guys,
->
-> On 28/08/2021 13:18, Ard Biesheuvel wrote:
-> > (add RAS/APEI folks)
-> >
-> > On Sat, 28 Aug 2021 at 13:31, Joe Perches <joe@perches.com> wrote:
-> >>
-> >> On Sat, 2021-08-28 at 10:37 +0000, tip-bot2 for Rasmus Villemoes wrote:
-> >>> The following commit has been merged into the efi/core branch of tip:
-> >> []
-> >>> efi: cper: fix scnprintf() use in cper_mem_err_location()
-> >>>
-> >>> The last two if-clauses fail to update n, so whatever they might have
-> >>> written at &msg[n] would be cut off by the final nul-termination.
-> >>>
-> >>> That nul-termination is redundant; scnprintf(), just like snprintf(),
-> >>> guarantees a nul-terminated output buffer, provided the buffer size is
-> >>> positive.
-> >>>
-> >>> And there's no need to discount one byte from the initial buffer;
-> >>> vsnprintf() expects to be given the full buffer size - it's not going
-> >>> to write the nul-terminator one beyond the given (buffer, size) pair.
-> >> []
-> >>> diff --git a/drivers/firmware/efi/cper.c b/drivers/firmware/efi/cper.c
-> >> []
-> >>> @@ -221,7 +221,7 @@ static int cper_mem_err_location(struct cper_mem_err_compact *mem, char *msg)
-> >>>               return 0;
-> >>>
-> >>>
-> >>>       n = 0;
-> >>> -     len = CPER_REC_LEN - 1;
-> >>> +     len = CPER_REC_LEN;
-> >>>       if (mem->validation_bits & CPER_MEM_VALID_NODE)
-> >>>               n += scnprintf(msg + n, len - n, "node: %d ", mem->node);
-> >>>       if (mem->validation_bits & CPER_MEM_VALID_CARD)
-> >>
-> >> [etc...]
-> >>
-> >> Is this always single threaded?
-> >>
-> >> It doesn't seem this is safe for reentry as the output buffer
-> >> being written into is a single static
-> >>
-> >> static char rcd_decode_str[CPER_REC_LEN];
->
-> > Good question. CPER error record decoding typically occurs in response
-> > to an error event raised by firmware, so I think this happens to work
-> > fine in practice. Whether this is guaranteed, I'm not so sure ...
->
-> There is locking to prevent concurrent access to the firmware buffer, but that only
-> serialises the CPER records being copied. The printing may happen in parallel on different
-> CPUs if there are multiple errors.
->
-> cper_estatus_print() is called in NMI context if an NMI indicates a fatal error. See
-> __ghes_panic().
->
+The following commit has been merged into the smp/urgent branch of tip:
 
-OK, better to fix it then - there does not seem to be a good reason
-for using a buffer in BSS here anyway.
+Commit-ID:     4b92d4add5f6dcf21275185c997d6ecb800054cd
+Gitweb:        https://git.kernel.org/tip/4b92d4add5f6dcf21275185c997d6ecb800054cd
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Tue, 31 Aug 2021 13:48:34 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Wed, 01 Sep 2021 10:29:10 +02:00
 
-I'll send out a patch.
+drivers: base: cacheinfo: Get rid of DEFINE_SMP_CALL_CACHE_FUNCTION()
 
-Thanks,
-Ard.
+DEFINE_SMP_CALL_CACHE_FUNCTION() was usefel before the CPU hotplug rework
+to ensure that the cache related functions are called on the upcoming CPU
+because the notifier itself could run on any online CPU.
+
+The hotplug state machine guarantees that the callbacks are invoked on the
+upcoming CPU. So there is no need to have this SMP function call
+obfuscation. That indirection was missed when the hotplug notifiers were
+converted.
+
+This also solves the problem of ARM64 init_cache_level() invoking ACPI
+functions which take a semaphore in that context. That's invalid as SMP
+function calls run with interrupts disabled. Running it just from the
+callback in context of the CPU hotplug thread solves this.
+
+Fixes: 8571890e1513 ("arm64: Add support for ACPI based firmware tables")
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Guenter Roeck <linux@roeck-us.net>
+Acked-by: Will Deacon <will@kernel.org>
+Acked-by: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/871r69ersb.ffs@tglx
+---
+ arch/arm64/kernel/cacheinfo.c   |  7 ++-----
+ arch/mips/kernel/cacheinfo.c    |  7 ++-----
+ arch/riscv/kernel/cacheinfo.c   |  7 ++-----
+ arch/x86/kernel/cpu/cacheinfo.c |  7 ++-----
+ include/linux/cacheinfo.h       | 18 ------------------
+ 5 files changed, 8 insertions(+), 38 deletions(-)
+
+diff --git a/arch/arm64/kernel/cacheinfo.c b/arch/arm64/kernel/cacheinfo.c
+index 7fa6828..587543c 100644
+--- a/arch/arm64/kernel/cacheinfo.c
++++ b/arch/arm64/kernel/cacheinfo.c
+@@ -43,7 +43,7 @@ static void ci_leaf_init(struct cacheinfo *this_leaf,
+ 	this_leaf->type = type;
+ }
+ 
+-static int __init_cache_level(unsigned int cpu)
++int init_cache_level(unsigned int cpu)
+ {
+ 	unsigned int ctype, level, leaves, fw_level;
+ 	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
+@@ -78,7 +78,7 @@ static int __init_cache_level(unsigned int cpu)
+ 	return 0;
+ }
+ 
+-static int __populate_cache_leaves(unsigned int cpu)
++int populate_cache_leaves(unsigned int cpu)
+ {
+ 	unsigned int level, idx;
+ 	enum cache_type type;
+@@ -97,6 +97,3 @@ static int __populate_cache_leaves(unsigned int cpu)
+ 	}
+ 	return 0;
+ }
+-
+-DEFINE_SMP_CALL_CACHE_FUNCTION(init_cache_level)
+-DEFINE_SMP_CALL_CACHE_FUNCTION(populate_cache_leaves)
+diff --git a/arch/mips/kernel/cacheinfo.c b/arch/mips/kernel/cacheinfo.c
+index 53d8ea7..495dd05 100644
+--- a/arch/mips/kernel/cacheinfo.c
++++ b/arch/mips/kernel/cacheinfo.c
+@@ -17,7 +17,7 @@ do {								\
+ 	leaf++;							\
+ } while (0)
+ 
+-static int __init_cache_level(unsigned int cpu)
++int init_cache_level(unsigned int cpu)
+ {
+ 	struct cpuinfo_mips *c = &current_cpu_data;
+ 	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
+@@ -74,7 +74,7 @@ static void fill_cpumask_cluster(int cpu, cpumask_t *cpu_map)
+ 			cpumask_set_cpu(cpu1, cpu_map);
+ }
+ 
+-static int __populate_cache_leaves(unsigned int cpu)
++int populate_cache_leaves(unsigned int cpu)
+ {
+ 	struct cpuinfo_mips *c = &current_cpu_data;
+ 	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
+@@ -114,6 +114,3 @@ static int __populate_cache_leaves(unsigned int cpu)
+ 
+ 	return 0;
+ }
+-
+-DEFINE_SMP_CALL_CACHE_FUNCTION(init_cache_level)
+-DEFINE_SMP_CALL_CACHE_FUNCTION(populate_cache_leaves)
+diff --git a/arch/riscv/kernel/cacheinfo.c b/arch/riscv/kernel/cacheinfo.c
+index d867813..90deabf 100644
+--- a/arch/riscv/kernel/cacheinfo.c
++++ b/arch/riscv/kernel/cacheinfo.c
+@@ -113,7 +113,7 @@ static void fill_cacheinfo(struct cacheinfo **this_leaf,
+ 	}
+ }
+ 
+-static int __init_cache_level(unsigned int cpu)
++int init_cache_level(unsigned int cpu)
+ {
+ 	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
+ 	struct device_node *np = of_cpu_device_node_get(cpu);
+@@ -155,7 +155,7 @@ static int __init_cache_level(unsigned int cpu)
+ 	return 0;
+ }
+ 
+-static int __populate_cache_leaves(unsigned int cpu)
++int populate_cache_leaves(unsigned int cpu)
+ {
+ 	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
+ 	struct cacheinfo *this_leaf = this_cpu_ci->info_list;
+@@ -187,6 +187,3 @@ static int __populate_cache_leaves(unsigned int cpu)
+ 
+ 	return 0;
+ }
+-
+-DEFINE_SMP_CALL_CACHE_FUNCTION(init_cache_level)
+-DEFINE_SMP_CALL_CACHE_FUNCTION(populate_cache_leaves)
+diff --git a/arch/x86/kernel/cpu/cacheinfo.c b/arch/x86/kernel/cpu/cacheinfo.c
+index d66af29..b5e36bd 100644
+--- a/arch/x86/kernel/cpu/cacheinfo.c
++++ b/arch/x86/kernel/cpu/cacheinfo.c
+@@ -985,7 +985,7 @@ static void ci_leaf_init(struct cacheinfo *this_leaf,
+ 	this_leaf->priv = base->nb;
+ }
+ 
+-static int __init_cache_level(unsigned int cpu)
++int init_cache_level(unsigned int cpu)
+ {
+ 	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
+ 
+@@ -1014,7 +1014,7 @@ static void get_cache_id(int cpu, struct _cpuid4_info_regs *id4_regs)
+ 	id4_regs->id = c->apicid >> index_msb;
+ }
+ 
+-static int __populate_cache_leaves(unsigned int cpu)
++int populate_cache_leaves(unsigned int cpu)
+ {
+ 	unsigned int idx, ret;
+ 	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
+@@ -1033,6 +1033,3 @@ static int __populate_cache_leaves(unsigned int cpu)
+ 
+ 	return 0;
+ }
+-
+-DEFINE_SMP_CALL_CACHE_FUNCTION(init_cache_level)
+-DEFINE_SMP_CALL_CACHE_FUNCTION(populate_cache_leaves)
+diff --git a/include/linux/cacheinfo.h b/include/linux/cacheinfo.h
+index 4f72b47..2f909ed 100644
+--- a/include/linux/cacheinfo.h
++++ b/include/linux/cacheinfo.h
+@@ -79,24 +79,6 @@ struct cpu_cacheinfo {
+ 	bool cpu_map_populated;
+ };
+ 
+-/*
+- * Helpers to make sure "func" is executed on the cpu whose cache
+- * attributes are being detected
+- */
+-#define DEFINE_SMP_CALL_CACHE_FUNCTION(func)			\
+-static inline void _##func(void *ret)				\
+-{								\
+-	int cpu = smp_processor_id();				\
+-	*(int *)ret = __##func(cpu);				\
+-}								\
+-								\
+-int func(unsigned int cpu)					\
+-{								\
+-	int ret;						\
+-	smp_call_function_single(cpu, _##func, &ret, true);	\
+-	return ret;						\
+-}
+-
+ struct cpu_cacheinfo *get_cpu_cacheinfo(unsigned int cpu);
+ int init_cache_level(unsigned int cpu);
+ int populate_cache_leaves(unsigned int cpu);
