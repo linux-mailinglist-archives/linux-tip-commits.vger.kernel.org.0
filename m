@@ -2,55 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AFD2E3FF47E
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  2 Sep 2021 22:01:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4AFA93FF4A8
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  2 Sep 2021 22:14:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244445AbhIBUCs (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 2 Sep 2021 16:02:48 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:45980 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231203AbhIBUCp (ORCPT
+        id S234544AbhIBUPa (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 2 Sep 2021 16:15:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44424 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232006AbhIBUP3 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 2 Sep 2021 16:02:45 -0400
-Date:   Thu, 02 Sep 2021 20:01:44 -0000
+        Thu, 2 Sep 2021 16:15:29 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A7F6C061575;
+        Thu,  2 Sep 2021 13:14:31 -0700 (PDT)
+Date:   Thu, 02 Sep 2021 20:14:28 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1630612905;
+        s=2020; t=1630613669;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=oGZysDwQ3+M7Bx6ShM7b+Caqlrc/7mmenZ/odx/GLyE=;
-        b=G0lu2HQkLmToM+x58zvSAYqOBiYQdWCfuyX6URsBKwZw2LSrYRTGrP+hYPGJuZXHlz3Pmo
-        yGLfKjlasTyNKNtkIqGt0rD26epWswp094y9gKIoZfzmX+eDRQohmtoRwAMS9EvmDg5qnp
-        9VQMURqLcumQT76RLozu1vdQqKNx+BSuJhMxjJXhzqF5EFaL2sZL5tQNsKOtiLAQ5j2dW1
-        hGQoJSmwifvyhJSAEoUANaUOQAPUWUVhGndUykYKpXh2USKOMRmrv3CONoNB+VLQd/A/f2
-        04TV3uycoR98lVhxEp6sx0e5zw+EIjAitF15rvxiQ4yrrpslH6E8FeRshTYTEA==
+        bh=8M5OQNfh6zIuqhmTJRFXBuA6eSxSmLe7bUbOqe0KhGk=;
+        b=Mv8WomProfj1Ikx1VhD6kwujiI0KhKA+wmR98+vDWx1QuzF/JA8iYrBV58BfHRKXudsjKP
+        U6UVzY0mMwwvGo++oWgAdiiZjyez9kX6LZzXJpQwp7CQAcIzpdRN8jQzv6WHIwXZD2DfTx
+        y9qTam3b0FLf4SzSUqHIarbtlpeS22okYkDUhfbITeggo6HdtRR2eSNxa10N11+bBHOUfg
+        SBbdvRLOgcnl3HtnMjMtXTGEeODPfyG4aN7+tVO4OGZsqqakFIp8Mzw10iz9+6TxV1qOkl
+        46Dl9T3XSkE7ym2QZe8AjK4F3G0dD36GhkwWbrs6nRpGVURf1jwQMfBODNiR5A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1630612905;
+        s=2020e; t=1630613669;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=oGZysDwQ3+M7Bx6ShM7b+Caqlrc/7mmenZ/odx/GLyE=;
-        b=Q4hP0u1A0bqCqw1nwia0VgeMplvI8A7cCX29+fhtr5IOHv8SNvPN5g5HX7a+f8xOSncrgQ
-        /LU75gi2FppXf/Dw==
-From:   "tip-bot2 for Jeff Moyer" <tip-bot2@linutronix.de>
+        bh=8M5OQNfh6zIuqhmTJRFXBuA6eSxSmLe7bUbOqe0KhGk=;
+        b=6oBeH9jxbZ9oUWgb7+r+ure11B+aKwhLeL1NHspGDT3/XMhBFI1R8SBlwR1YaDbb9Ctv9R
+        3kUiDfGNhjrQhIBQ==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/pat: Pass valid address to sanitize_phys()
-Cc:     Jeff Moyer <jmoyer@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        David Hildenbrand <david@redhat.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        stable@vger.kernel.org, x86@kernel.org,
+Subject: [tip: locking/urgent] futex: Avoid redundant task lookup
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <x49o8a3pu5i.fsf@segfault.boston.devel.redhat.com>
-References: <x49o8a3pu5i.fsf@segfault.boston.devel.redhat.com>
+In-Reply-To: <20210902094414.676104881@linutronix.de>
+References: <20210902094414.676104881@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <163061290453.25758.3837946651745818105.tip-bot2@tip-bot2>
+Message-ID: <163061366865.25758.11390998302035041038.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,63 +59,136 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the locking/urgent branch of tip:
 
-Commit-ID:     aeef8b5089b76852bd84889f2809e69a7cfb414e
-Gitweb:        https://git.kernel.org/tip/aeef8b5089b76852bd84889f2809e69a7cfb414e
-Author:        Jeff Moyer <jmoyer@redhat.com>
-AuthorDate:    Wed, 11 Aug 2021 17:07:37 -04:00
+Commit-ID:     340576590dac4bb58d532a8ad5bfa806d8ab473c
+Gitweb:        https://git.kernel.org/tip/340576590dac4bb58d532a8ad5bfa806d8ab473c
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Thu, 02 Sep 2021 11:48:51 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 02 Sep 2021 21:53:18 +02:00
+CommitterDate: Thu, 02 Sep 2021 22:07:18 +02:00
 
-x86/pat: Pass valid address to sanitize_phys()
+futex: Avoid redundant task lookup
 
-The end address passed to memtype_reserve() is handed directly to
-sanitize_phys().  However, end is exclusive and sanitize_phys() expects
-an inclusive address.  If end falls at the end of the physical address
-space, sanitize_phys() will return 0.  This can result in drivers
-failing to load, and the following warning:
+No need to do the full VPID based task lookup and validation of the top
+waiter when the user space futex was acquired on it's behalf during the
+requeue_pi operation. The task is known already and it cannot go away
+before requeue_pi_wake_futex() has been invoked.
 
- WARNING: CPU: 26 PID: 749 at arch/x86/mm/pat.c:354 reserve_memtype+0x262/0x450
- reserve_memtype failed: [mem 0x3ffffff00000-0xffffffffffffffff], req uncached-minus
- Call Trace:
-  [<ffffffffa427b1f2>] reserve_memtype+0x262/0x450
-  [<ffffffffa42764aa>] ioremap_nocache+0x1a/0x20
-  [<ffffffffc04620a1>] mpt3sas_base_map_resources+0x151/0xa60 [mpt3sas]
-  [<ffffffffc0465555>] mpt3sas_base_attach+0xf5/0xa50 [mpt3sas]
- ---[ end trace 6d6eea4438db89ef ]---
- ioremap reserve_memtype failed -22
- mpt3sas_cm0: unable to map adapter memory! or resource not found
- mpt3sas_cm0: failure at drivers/scsi/mpt3sas/mpt3sas_scsih.c:10597/_scsih_probe()!
+Split out the actual attach code from attach_pi_state_owner() and use that
+instead of the full blown variant.
 
-Fix this by passing the inclusive end address to sanitize_phys().
-
-Fixes: 510ee090abc3 ("x86/mm/pat: Prepare {reserve, free}_memtype() for "decoy" addresses")
-Signed-off-by: Jeff Moyer <jmoyer@redhat.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/x49o8a3pu5i.fsf@segfault.boston.devel.redhat.com
----
- arch/x86/mm/pat/memtype.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20210902094414.676104881@linutronix.de
 
-diff --git a/arch/x86/mm/pat/memtype.c b/arch/x86/mm/pat/memtype.c
-index 3112ca7..4ba2a3e 100644
---- a/arch/x86/mm/pat/memtype.c
-+++ b/arch/x86/mm/pat/memtype.c
-@@ -583,7 +583,12 @@ int memtype_reserve(u64 start, u64 end, enum page_cache_mode req_type,
- 	int err = 0;
+
+---
+ kernel/futex.c | 67 +++++++++++++++++++++++++++----------------------
+ 1 file changed, 37 insertions(+), 30 deletions(-)
+
+diff --git a/kernel/futex.c b/kernel/futex.c
+index 82cd270..a316dce 100644
+--- a/kernel/futex.c
++++ b/kernel/futex.c
+@@ -1263,6 +1263,36 @@ static int handle_exit_race(u32 __user *uaddr, u32 uval,
+ 	return -ESRCH;
+ }
  
- 	start = sanitize_phys(start);
--	end = sanitize_phys(end);
++static void __attach_to_pi_owner(struct task_struct *p, union futex_key *key,
++				 struct futex_pi_state **ps)
++{
++	/*
++	 * No existing pi state. First waiter. [2]
++	 *
++	 * This creates pi_state, we have hb->lock held, this means nothing can
++	 * observe this state, wait_lock is irrelevant.
++	 */
++	struct futex_pi_state *pi_state = alloc_pi_state();
 +
 +	/*
-+	 * The end address passed into this function is exclusive, but
-+	 * sanitize_phys() expects an inclusive address.
++	 * Initialize the pi_mutex in locked state and make @p
++	 * the owner of it:
 +	 */
-+	end = sanitize_phys(end - 1) + 1;
- 	if (start >= end) {
- 		WARN(1, "%s failed: [mem %#010Lx-%#010Lx], req %s\n", __func__,
- 				start, end - 1, cattr_name(req_type));
++	rt_mutex_init_proxy_locked(&pi_state->pi_mutex, p);
++
++	/* Store the key for possible exit cleanups: */
++	pi_state->key = *key;
++
++	WARN_ON(!list_empty(&pi_state->list));
++	list_add(&pi_state->list, &p->pi_state_list);
++	/*
++	 * Assignment without holding pi_state->pi_mutex.wait_lock is safe
++	 * because there is no concurrency as the object is not published yet.
++	 */
++	pi_state->owner = p;
++
++	*ps = pi_state;
++}
+ /*
+  * Lookup the task for the TID provided from user space and attach to
+  * it after doing proper sanity checks.
+@@ -1272,7 +1302,6 @@ static int attach_to_pi_owner(u32 __user *uaddr, u32 uval, union futex_key *key,
+ 			      struct task_struct **exiting)
+ {
+ 	pid_t pid = uval & FUTEX_TID_MASK;
+-	struct futex_pi_state *pi_state;
+ 	struct task_struct *p;
+ 
+ 	/*
+@@ -1324,36 +1353,11 @@ static int attach_to_pi_owner(u32 __user *uaddr, u32 uval, union futex_key *key,
+ 		return ret;
+ 	}
+ 
+-	/*
+-	 * No existing pi state. First waiter. [2]
+-	 *
+-	 * This creates pi_state, we have hb->lock held, this means nothing can
+-	 * observe this state, wait_lock is irrelevant.
+-	 */
+-	pi_state = alloc_pi_state();
+-
+-	/*
+-	 * Initialize the pi_mutex in locked state and make @p
+-	 * the owner of it:
+-	 */
+-	rt_mutex_init_proxy_locked(&pi_state->pi_mutex, p);
+-
+-	/* Store the key for possible exit cleanups: */
+-	pi_state->key = *key;
+-
+-	WARN_ON(!list_empty(&pi_state->list));
+-	list_add(&pi_state->list, &p->pi_state_list);
+-	/*
+-	 * Assignment without holding pi_state->pi_mutex.wait_lock is safe
+-	 * because there is no concurrency as the object is not published yet.
+-	 */
+-	pi_state->owner = p;
++	__attach_to_pi_owner(p, key, ps);
+ 	raw_spin_unlock_irq(&p->pi_lock);
+ 
+ 	put_task_struct(p);
+ 
+-	*ps = pi_state;
+-
+ 	return 0;
+ }
+ 
+@@ -1464,11 +1468,14 @@ static int futex_lock_pi_atomic(u32 __user *uaddr, struct futex_hash_bucket *hb,
+ 		 * @task is guaranteed to be alive and it cannot be exiting
+ 		 * because it is either sleeping or waiting in
+ 		 * futex_requeue_pi_wakeup_sync().
++		 *
++		 * No need to do the full attach_to_pi_owner() exercise
++		 * because @task is known and valid.
+ 		 */
+ 		if (set_waiters) {
+-			 ret = attach_to_pi_owner(uaddr, newval, key, ps,
+-						  exiting);
+-			 WARN_ON(ret);
++			raw_spin_lock_irq(&task->pi_lock);
++			__attach_to_pi_owner(task, key, ps);
++			raw_spin_unlock_irq(&task->pi_lock);
+ 		}
+ 		return 1;
+ 	}
