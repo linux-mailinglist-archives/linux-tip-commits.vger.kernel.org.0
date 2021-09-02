@@ -2,20 +2,17 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D44F53FF47D
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  2 Sep 2021 22:01:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AFD2E3FF47E
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  2 Sep 2021 22:01:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243119AbhIBUCs (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S244445AbhIBUCs (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Thu, 2 Sep 2021 16:02:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41402 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243699AbhIBUCp (ORCPT
+Received: from Galois.linutronix.de ([193.142.43.55]:45980 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231203AbhIBUCp (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Thu, 2 Sep 2021 16:02:45 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DC1DC061575;
-        Thu,  2 Sep 2021 13:01:46 -0700 (PDT)
-Date:   Thu, 02 Sep 2021 20:01:43 -0000
+Date:   Thu, 02 Sep 2021 20:01:44 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1630612905;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -23,12 +20,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=nKqhmry3tcl7EBL7AhD/CKgMfo8ukKXy8ENd4JPactY=;
-        b=H90QqLU2YaFTxmGl6yEVfQqB+INzQtfpZUl9lznsLQ9eCkGKTB8MgkKHyEbdYiHvscts6y
-        /JZNl+Xy9lCjsGm8eQeiCtc3iHRo23NbRY+W00rnIkjNfL1t5l2sJSE+hDNjdlxg7aUlZ/
-        fiNfb1TXh3344CXIEpVg9+UohBqRANmZ0iSYHgDJecd+ugi1bD7AQits/uhy2FuS7J+yRY
-        S0ODy/siC5c6fueFrUnYU/Y62xEle2nlZw2qD6D2K5XIvG1ktxlMsaYpLsXD1zYaS0lYG3
-        Eddfl2SoIOtkkfqkIb2W1Z7GHHXCmoQ9RnQF9iKT3gEcpFDD0ZfltTj7EdStKw==
+        bh=oGZysDwQ3+M7Bx6ShM7b+Caqlrc/7mmenZ/odx/GLyE=;
+        b=G0lu2HQkLmToM+x58zvSAYqOBiYQdWCfuyX6URsBKwZw2LSrYRTGrP+hYPGJuZXHlz3Pmo
+        yGLfKjlasTyNKNtkIqGt0rD26epWswp094y9gKIoZfzmX+eDRQohmtoRwAMS9EvmDg5qnp
+        9VQMURqLcumQT76RLozu1vdQqKNx+BSuJhMxjJXhzqF5EFaL2sZL5tQNsKOtiLAQ5j2dW1
+        hGQoJSmwifvyhJSAEoUANaUOQAPUWUVhGndUykYKpXh2USKOMRmrv3CONoNB+VLQd/A/f2
+        04TV3uycoR98lVhxEp6sx0e5zw+EIjAitF15rvxiQ4yrrpslH6E8FeRshTYTEA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1630612905;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,23 +33,24 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=nKqhmry3tcl7EBL7AhD/CKgMfo8ukKXy8ENd4JPactY=;
-        b=9712TxCSRm8IE3BfIkzng1GD4yPJyFnmF3esnqSe3yap7UetFG68TtYeGa/mEWr10ioE87
-        ftpLoy0DBETp/UBg==
-From:   "tip-bot2 for Andy Shevchenko" <tip-bot2@linutronix.de>
+        bh=oGZysDwQ3+M7Bx6ShM7b+Caqlrc/7mmenZ/odx/GLyE=;
+        b=Q4hP0u1A0bqCqw1nwia0VgeMplvI8A7cCX29+fhtr5IOHv8SNvPN5g5HX7a+f8xOSncrgQ
+        /LU75gi2FppXf/Dw==
+From:   "tip-bot2 for Jeff Moyer" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/platform: Increase maximum GPIO number for X86_64
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+Subject: [tip: x86/urgent] x86/pat: Pass valid address to sanitize_phys()
+Cc:     Jeff Moyer <jmoyer@redhat.com>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, x86@kernel.org,
+        David Hildenbrand <david@redhat.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        stable@vger.kernel.org, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210826150317.29435-1-andriy.shevchenko@linux.intel.com>
-References: <20210826150317.29435-1-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <x49o8a3pu5i.fsf@segfault.boston.devel.redhat.com>
+References: <x49o8a3pu5i.fsf@segfault.boston.devel.redhat.com>
 MIME-Version: 1.0
-Message-ID: <163061290388.25758.6559432378047396977.tip-bot2@tip-bot2>
+Message-ID: <163061290453.25758.3837946651745818105.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -63,44 +61,61 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     d7109fe3a0991a0f7b4ac099b78c908e3b619787
-Gitweb:        https://git.kernel.org/tip/d7109fe3a0991a0f7b4ac099b78c908e3b619787
-Author:        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-AuthorDate:    Thu, 26 Aug 2021 18:03:17 +03:00
+Commit-ID:     aeef8b5089b76852bd84889f2809e69a7cfb414e
+Gitweb:        https://git.kernel.org/tip/aeef8b5089b76852bd84889f2809e69a7cfb414e
+Author:        Jeff Moyer <jmoyer@redhat.com>
+AuthorDate:    Wed, 11 Aug 2021 17:07:37 -04:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 02 Sep 2021 21:57:57 +02:00
+CommitterDate: Thu, 02 Sep 2021 21:53:18 +02:00
 
-x86/platform: Increase maximum GPIO number for X86_64
+x86/pat: Pass valid address to sanitize_phys()
 
-By default the 512 GPIOs is the maximum on any x86 platform.
-With, for example, Intel Tiger Lake-H the SoC based controller
-occupies up to 480 pins. This leaves only 32 available for
-GPIO expanders or other drivers, like PMIC. Hence, bump the
-maximum GPIO number to 1024 for X86_64 and leave 512 for X86_32.
+The end address passed to memtype_reserve() is handed directly to
+sanitize_phys().  However, end is exclusive and sanitize_phys() expects
+an inclusive address.  If end falls at the end of the physical address
+space, sanitize_phys() will return 0.  This can result in drivers
+failing to load, and the following warning:
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+ WARNING: CPU: 26 PID: 749 at arch/x86/mm/pat.c:354 reserve_memtype+0x262/0x450
+ reserve_memtype failed: [mem 0x3ffffff00000-0xffffffffffffffff], req uncached-minus
+ Call Trace:
+  [<ffffffffa427b1f2>] reserve_memtype+0x262/0x450
+  [<ffffffffa42764aa>] ioremap_nocache+0x1a/0x20
+  [<ffffffffc04620a1>] mpt3sas_base_map_resources+0x151/0xa60 [mpt3sas]
+  [<ffffffffc0465555>] mpt3sas_base_attach+0xf5/0xa50 [mpt3sas]
+ ---[ end trace 6d6eea4438db89ef ]---
+ ioremap reserve_memtype failed -22
+ mpt3sas_cm0: unable to map adapter memory! or resource not found
+ mpt3sas_cm0: failure at drivers/scsi/mpt3sas/mpt3sas_scsih.c:10597/_scsih_probe()!
+
+Fix this by passing the inclusive end address to sanitize_phys().
+
+Fixes: 510ee090abc3 ("x86/mm/pat: Prepare {reserve, free}_memtype() for "decoy" addresses")
+Signed-off-by: Jeff Moyer <jmoyer@redhat.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://lore.kernel.org/r/20210826150317.29435-1-andriy.shevchenko@linux.intel.com
-
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/x49o8a3pu5i.fsf@segfault.boston.devel.redhat.com
 ---
- arch/x86/Kconfig | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/x86/mm/pat/memtype.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 421fa9e..1016388 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -340,6 +340,11 @@ config NEED_PER_CPU_PAGE_FIRST_CHUNK
- config ARCH_HIBERNATION_POSSIBLE
- 	def_bool y
+diff --git a/arch/x86/mm/pat/memtype.c b/arch/x86/mm/pat/memtype.c
+index 3112ca7..4ba2a3e 100644
+--- a/arch/x86/mm/pat/memtype.c
++++ b/arch/x86/mm/pat/memtype.c
+@@ -583,7 +583,12 @@ int memtype_reserve(u64 start, u64 end, enum page_cache_mode req_type,
+ 	int err = 0;
  
-+config ARCH_NR_GPIO
-+	int
-+	default 1024 if X86_64
-+	default 512
+ 	start = sanitize_phys(start);
+-	end = sanitize_phys(end);
 +
- config ARCH_SUSPEND_POSSIBLE
- 	def_bool y
- 
++	/*
++	 * The end address passed into this function is exclusive, but
++	 * sanitize_phys() expects an inclusive address.
++	 */
++	end = sanitize_phys(end - 1) + 1;
+ 	if (start >= end) {
+ 		WARN(1, "%s failed: [mem %#010Lx-%#010Lx], req %s\n", __func__,
+ 				start, end - 1, cattr_name(req_type));
