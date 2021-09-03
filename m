@@ -2,108 +2,94 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C25083FF4AD
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  2 Sep 2021 22:14:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D5DF40073E
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  3 Sep 2021 23:06:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345517AbhIBUPc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 2 Sep 2021 16:15:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44436 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345418AbhIBUPc (ORCPT
+        id S233315AbhICVHB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 3 Sep 2021 17:07:01 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:52922 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232927AbhICVHB (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 2 Sep 2021 16:15:32 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57D89C061575;
-        Thu,  2 Sep 2021 13:14:33 -0700 (PDT)
-Date:   Thu, 02 Sep 2021 20:14:31 -0000
+        Fri, 3 Sep 2021 17:07:01 -0400
+Date:   Fri, 03 Sep 2021 21:05:58 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1630613671;
+        s=2020; t=1630703159;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=9I8OlriWSRjNHUXRiqNwrgJsUjSPy3bhZS7GrgiHUgE=;
-        b=UtpGUechQGiFRtEq3SAQSqir6YMnHMYfzpXAD6C4jvlth/qmXT/5TPYGv2V7q1MTC5YRR3
-        j75rgCswR5oquFcKKSXg/aEe5RYNxfbxym/k4Uq+bFpVMbglJLBSfzVf2QPqHnvAxZam1g
-        2JGiDov/DsFWs2aG4qgnnMdiS1pnQaygse9tpi0gsmEHnQtdYNWbOJU4P7cP0exWSClwi9
-        tb6uyAp1R8mdD2togCbxRD0ppohKEezXTcA0+b4jHsUJGvzTP0uAAaIV3ypzaUtntJC7yU
-        H8q7qzQ9lLwnBpSEzQiRCccUDoAT8YBBi2+Rh2Fq0AYFGF2Ecfxfjr0qYTJy2w==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=EUnjBpEMZ7i4sY4cYTSFcAbg/ETtTZieay4ENTVaTas=;
+        b=MDr+WwdB6Fff+XNg9UzOEIrByFd3xWXI5REb84rL2G6+6ZuOs0KQNjXWQW3EjZdHGpJD/1
+        qnkOUSh/02ziSE3zKBCRpkZZAW44Q47ChauuJEc1BIbZOTmUXF6JOPMA6hJYeVmFPypE+9
+        Q41gdOP4wCWr81d6LXiztDES4hhi/t0NpA/7RJlAjUnXWbjtZPVlNCVkn8fVxqcaUOM0vp
+        C1tPh4ssiPrKsjhP6x6YyA+98TAFipEGzDhz0d8KFEJelNtiPKSFrU/+Gg8Nw7wvJ0fUxU
+        ukKYYmloiRkX5ZG7VOCuDKrDr7NZa0plQAHxcY8knqIMKIWsjUtJHg9bUl4Gfw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1630613671;
+        s=2020e; t=1630703159;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=9I8OlriWSRjNHUXRiqNwrgJsUjSPy3bhZS7GrgiHUgE=;
-        b=BA8udAARbqDBZ7JJHK8hwbRnrMPZuelttSZPBjGgAVt4/mulciOszMAP4G8oYrw52fFIUS
-        Qod8z3kzL3XFpGBQ==
-From:   "tip-bot2 for Colin Ian King" <tip-bot2@linutronix.de>
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=EUnjBpEMZ7i4sY4cYTSFcAbg/ETtTZieay4ENTVaTas=;
+        b=f/oXY2K6AZVKvI3AP1sZcjcTj7BphyPocCqTZrX/2QWxIrhYznilKXpC6ttD7NoUZTu4CX
+        5g0bwoBqIYEgQvAw==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/urgent] futex: Return error code instead of assigning
- it without effect
-Cc:     Colin Ian King <colin.king@canonical.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        andrealmeid@collabora.com, x86@kernel.org,
+Subject: [tip: locking/urgent] futex: Remove unused variable 'vpid' in
+ futex_proxy_trylock_atomic()
+Cc:     Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210818131840.34262-1-colin.king@canonical.com>
-References: <20210818131840.34262-1-colin.king@canonical.com>
 MIME-Version: 1.0
-Message-ID: <163061367113.25758.10441165083274844287.tip-bot2@tip-bot2>
+Message-ID: <163070315821.25758.10852043423900886118.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/urgent branch of tip:
 
-Commit-ID:     a974b54036f79dd5e395e9f6c80c3decb4661a14
-Gitweb:        https://git.kernel.org/tip/a974b54036f79dd5e395e9f6c80c3decb46=
-61a14
-Author:        Colin Ian King <colin.king@canonical.com>
-AuthorDate:    Wed, 18 Aug 2021 14:18:40 +01:00
+Commit-ID:     d66e3edee7af87fe212df611ab9846b987a5070f
+Gitweb:        https://git.kernel.org/tip/d66e3edee7af87fe212df611ab9846b987a5070f
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Fri, 03 Sep 2021 22:47:06 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 02 Sep 2021 22:07:18 +02:00
+CommitterDate: Fri, 03 Sep 2021 23:00:22 +02:00
 
-futex: Return error code instead of assigning it without effect
+futex: Remove unused variable 'vpid' in futex_proxy_trylock_atomic()
 
-The check on the rt_waiter and top_waiter->pi_state is assigning an error
-return code to ret but this later gets re-assigned, hence the check is
-ineffective.
+The recent bug fix left the variable 'vpid' and an assignment to it around,
+but the variable is otherwise unused.
 
-Return -EINVAL rather than assigning it to ret which was the original
-intent.
+clang dose not complain even with W=1, but gcc exposed this.
 
-Fixes: dc7109aaa233 ("futex: Validate waiter correctly in futex_proxy_trylock=
-_atomic()")
-Addresses-Coverity: ("Unused value")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Fixes: 4f07ec0d76f2 ("futex: Prevent inconsistent state and exit race")
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Andr=C3=A9 Almeida <andrealmeid@collabora.com>
-Link: https://lore.kernel.org/r/20210818131840.34262-1-colin.king@canonical.c=
-om
-
 ---
- kernel/futex.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/futex.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/kernel/futex.c b/kernel/futex.c
-index e7b4c61..30e7dae 100644
+index a316dce..c15ad27 100644
 --- a/kernel/futex.c
 +++ b/kernel/futex.c
-@@ -2025,7 +2025,7 @@ futex_proxy_trylock_atomic(u32 __user *pifutex, struct =
-futex_hash_bucket *hb1,
- 	 * and waiting on the 'waitqueue' futex which is always !PI.
+@@ -2034,7 +2034,7 @@ futex_proxy_trylock_atomic(u32 __user *pifutex, struct futex_hash_bucket *hb1,
+ {
+ 	struct futex_q *top_waiter = NULL;
+ 	u32 curval;
+-	int ret, vpid;
++	int ret;
+ 
+ 	if (get_futex_value_locked(&curval, pifutex))
+ 		return -EFAULT;
+@@ -2079,7 +2079,6 @@ futex_proxy_trylock_atomic(u32 __user *pifutex, struct futex_hash_bucket *hb1,
+ 	 * the user space lock can be acquired then PI state is attached to
+ 	 * the new owner (@top_waiter->task) when @set_waiters is true.
  	 */
- 	if (!top_waiter->rt_waiter || top_waiter->pi_state)
--		ret =3D -EINVAL;
-+		return -EINVAL;
-=20
- 	/* Ensure we requeue to the expected futex. */
- 	if (!match_futex(top_waiter->requeue_pi_key, key2))
+-	vpid = task_pid_vnr(top_waiter->task);
+ 	ret = futex_lock_pi_atomic(pifutex, hb2, key2, ps, top_waiter->task,
+ 				   exiting, set_waiters);
+ 	if (ret == 1) {
