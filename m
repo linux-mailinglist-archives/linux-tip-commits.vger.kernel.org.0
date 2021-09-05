@@ -2,94 +2,76 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D5DF40073E
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  3 Sep 2021 23:06:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E15D94011E9
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  6 Sep 2021 00:21:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233315AbhICVHB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 3 Sep 2021 17:07:01 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:52922 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232927AbhICVHB (ORCPT
+        id S234277AbhIEWJs (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 5 Sep 2021 18:09:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38426 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234072AbhIEWJr (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 3 Sep 2021 17:07:01 -0400
-Date:   Fri, 03 Sep 2021 21:05:58 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1630703159;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=EUnjBpEMZ7i4sY4cYTSFcAbg/ETtTZieay4ENTVaTas=;
-        b=MDr+WwdB6Fff+XNg9UzOEIrByFd3xWXI5REb84rL2G6+6ZuOs0KQNjXWQW3EjZdHGpJD/1
-        qnkOUSh/02ziSE3zKBCRpkZZAW44Q47ChauuJEc1BIbZOTmUXF6JOPMA6hJYeVmFPypE+9
-        Q41gdOP4wCWr81d6LXiztDES4hhi/t0NpA/7RJlAjUnXWbjtZPVlNCVkn8fVxqcaUOM0vp
-        C1tPh4ssiPrKsjhP6x6YyA+98TAFipEGzDhz0d8KFEJelNtiPKSFrU/+Gg8Nw7wvJ0fUxU
-        ukKYYmloiRkX5ZG7VOCuDKrDr7NZa0plQAHxcY8knqIMKIWsjUtJHg9bUl4Gfw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1630703159;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=EUnjBpEMZ7i4sY4cYTSFcAbg/ETtTZieay4ENTVaTas=;
-        b=f/oXY2K6AZVKvI3AP1sZcjcTj7BphyPocCqTZrX/2QWxIrhYznilKXpC6ttD7NoUZTu4CX
-        5g0bwoBqIYEgQvAw==
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/urgent] futex: Remove unused variable 'vpid' in
- futex_proxy_trylock_atomic()
-Cc:     Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
+        Sun, 5 Sep 2021 18:09:47 -0400
+Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4297C061757
+        for <linux-tip-commits@vger.kernel.org>; Sun,  5 Sep 2021 15:08:43 -0700 (PDT)
+Received: by mail-ed1-x542.google.com with SMTP id s25so6820758edw.0
+        for <linux-tip-commits@vger.kernel.org>; Sun, 05 Sep 2021 15:08:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
+        bh=UWVukDYpnouo2TmAsoiK3YFI/UCntBVDF8OdhEqH+sQ=;
+        b=mhbMyjIs+IurYsa+ZFILfHldwfuyD6972QSL+wnoUPLnMGmc3oGzxbUc7SoBs+h/KR
+         7V/VT6TVgLV1L5DLfFxxmM8aEEeWpatTDbynGfJQllgPeLVCr7dlWX9b5CDwqdcs47Hv
+         6DKnpFPgaD1dwVLndpKVzC6nq4dx8ei4zph9BnhLH06vJD3r5cEDxF5fUgNAb420CXGP
+         GEVPx8sSA6Yw7zZc8GsUCvzw++22yMVfeg8RBolpvjAnZEleQyhRtvtjCMUMGwOVAnE0
+         xZ9trru3QOgNzhq+XAD+kfdmu7gr5rO+tXwS+ShHHGiUjqC800/AW350GLvoJz9Viv9f
+         649g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:sender:from:date
+         :message-id:subject:to;
+        bh=UWVukDYpnouo2TmAsoiK3YFI/UCntBVDF8OdhEqH+sQ=;
+        b=gmUqwUeHPQ0itMBYu+ysVW1FIXyw+JZ2PkYDIjxUROWYdJ7fL0gCaNlWOJW1ZcwfvW
+         ISr4GDc3PhubRJj+CIxKSYIVhWohFN4aDUHk/SlPMZeufKfD3Do+i4/7TaGRuKd6i5z8
+         evycGEELeFrBXImQiXbSLUW5j4KAwxgb0E2nQ3oEsa3631c18YqykByxGNrao7IStioA
+         k05t0Rl42dOWQ2wBDn6wdth/iFK7CXEHojswGfnKseGFQNbmgqkZCfluViRHuvNomhzm
+         vC1ra58n0fulxOFz0kN5AaiFwDzeTp/G6uSniWUF9elRqG2EOp9nib++oyc/BWIAnVv1
+         nxTg==
+X-Gm-Message-State: AOAM533VoQX+/z7FwM6A7jtfHQsS+JG9MrPpOrUnkpNrIDRDc4Xhy1US
+        tA6UNgDYs/GSeaIEiVWqGUGD2I2pXFxMSIXoYuY=
+X-Google-Smtp-Source: ABdhPJwclA7y7b909In3IRs0oNy7VjPQ/HxVgVtZQ99b7ntLZVy6q5HydyrbRzsypu68H3ImOGZezmBnutpv2PNigwI=
+X-Received: by 2002:aa7:c993:: with SMTP id c19mr10284054edt.239.1630879722292;
+ Sun, 05 Sep 2021 15:08:42 -0700 (PDT)
 MIME-Version: 1.0
-Message-ID: <163070315821.25758.10852043423900886118.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Reply-To: aliuhuadams@gmail.com
+Sender: mrtyiacalidmar@gmail.com
+Received: by 2002:a55:f60b:0:b0:118:63d4:dc05 with HTTP; Sun, 5 Sep 2021
+ 15:08:41 -0700 (PDT)
+From:   Aliuhu Adams <aliuhuadamss@gmail.com>
+Date:   Sun, 5 Sep 2021 22:08:41 +0000
+X-Google-Sender-Auth: ZSv_ocvko_SdRhOluVm_gytmp3k
+Message-ID: <CAFMfcugjuVadcS8zEgp0McDSqbevfKnByU3K6A5SN7CkCroQbw@mail.gmail.com>
+Subject: From Aliuhu Adams
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the locking/urgent branch of tip:
+-- 
+From Aliuhu Adams,
 
-Commit-ID:     d66e3edee7af87fe212df611ab9846b987a5070f
-Gitweb:        https://git.kernel.org/tip/d66e3edee7af87fe212df611ab9846b987a5070f
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Fri, 03 Sep 2021 22:47:06 +02:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 03 Sep 2021 23:00:22 +02:00
+My name is Aliuhu Adams, from Burkina Faso
 
-futex: Remove unused variable 'vpid' in futex_proxy_trylock_atomic()
+Please, I am contacting you for urgent assistance to help me move my
+inheritance to your country and help me to invest in your country.
 
-The recent bug fix left the variable 'vpid' and an assignment to it around,
-but the variable is otherwise unused.
+The amount is 14 million dollars and I want this money to be moved to your
+country urgently with me because of the fear of the killer of my parents.
 
-clang dose not complain even with W=1, but gcc exposed this.
+I shall give you more details when I hear from you.
 
-Fixes: 4f07ec0d76f2 ("futex: Prevent inconsistent state and exit race")
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
----
- kernel/futex.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+Thank you,
 
-diff --git a/kernel/futex.c b/kernel/futex.c
-index a316dce..c15ad27 100644
---- a/kernel/futex.c
-+++ b/kernel/futex.c
-@@ -2034,7 +2034,7 @@ futex_proxy_trylock_atomic(u32 __user *pifutex, struct futex_hash_bucket *hb1,
- {
- 	struct futex_q *top_waiter = NULL;
- 	u32 curval;
--	int ret, vpid;
-+	int ret;
- 
- 	if (get_futex_value_locked(&curval, pifutex))
- 		return -EFAULT;
-@@ -2079,7 +2079,6 @@ futex_proxy_trylock_atomic(u32 __user *pifutex, struct futex_hash_bucket *hb1,
- 	 * the user space lock can be acquired then PI state is attached to
- 	 * the new owner (@top_waiter->task) when @set_waiters is true.
- 	 */
--	vpid = task_pid_vnr(top_waiter->task);
- 	ret = futex_lock_pi_atomic(pifutex, hb2, key2, ps, top_waiter->task,
- 				   exiting, set_waiters);
- 	if (ret == 1) {
+Aliuhu Adams
