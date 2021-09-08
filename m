@@ -2,117 +2,178 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DA3C2403D5E
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  8 Sep 2021 18:09:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 440EB403F56
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  8 Sep 2021 21:03:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232842AbhIHQKI (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 8 Sep 2021 12:10:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54750 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232667AbhIHQKH (ORCPT
+        id S1349824AbhIHTEX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 8 Sep 2021 15:04:23 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:54086 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230044AbhIHTEW (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 8 Sep 2021 12:10:07 -0400
-Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45FCBC061575
-        for <linux-tip-commits@vger.kernel.org>; Wed,  8 Sep 2021 09:08:59 -0700 (PDT)
-Received: by mail-lf1-x12a.google.com with SMTP id t19so5398803lfe.13
-        for <linux-tip-commits@vger.kernel.org>; Wed, 08 Sep 2021 09:08:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=F5ZeFAknLDpJj0gufvdFHOmCevevfl6tESN6kJ6gAYQ=;
-        b=K7yBmZ5ODUwzJy0G0jcYOAQOAvzjZ2K4Y7BSVXC/PKjsSnt1W/esVP6NG0CrPEqZLv
-         vl4EG3Oho6nNuiO8w8cWwRpynP/MON/EPcKbZHzGYWwDVVwQZqCDcHY5KbbkKxwnRGzQ
-         FQmC6QIVNuaqe/2ky5dtaOZcTd7jTkqvfEY6Y=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=F5ZeFAknLDpJj0gufvdFHOmCevevfl6tESN6kJ6gAYQ=;
-        b=DT3rYCEWkoofLLdAEQbSbIGdfdqfwciSr8wRKROcIcfRjwacx3HtsA5IJTiXIkK6V2
-         5mnHvNb0bQ5Xvb1WhwRqeWpXs3xRq915zRwrsLJWONFbsOl1VA3rDE5bQssZCPhlUvH7
-         j1GByrN3+mdrlG0ErbcboEFyK9OPSfZq7BCZThpKPkfBWh5ug3YVBlbNoSrYyChgN5MZ
-         G3+IrCnl9n1m8szgMUcjwv5K5Jb5ar213r5HFNtkI6+S2vPHeYcU6LCSwR9lg7yLwwgF
-         Cf4UWCpSMc8GkNHZTYmfBVgxw/p/+FP11svgo+xYOxtE1iiAiBg43iLYz9TSJDevmMq0
-         zGxQ==
-X-Gm-Message-State: AOAM530FYIhiCTOnQzCe19UfPJEFCMQVqx4Gso9bTrK144kJ9M/cJ719
-        C0CvCTU0aOxqiUM+DqViTY8dQpYHCPR4NVTqXkk=
-X-Google-Smtp-Source: ABdhPJxsrUJB9YMPQR9IY51U6mQ14jyPVe8Jw6RhR4zrWd5E75rRpgCefNsItg9k0WYQ2nPV0sZMNA==
-X-Received: by 2002:a19:f00a:: with SMTP id p10mr3047985lfc.37.1631117335690;
-        Wed, 08 Sep 2021 09:08:55 -0700 (PDT)
-Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com. [209.85.208.174])
-        by smtp.gmail.com with ESMTPSA id g16sm229342lfb.13.2021.09.08.09.08.50
-        for <linux-tip-commits@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 08 Sep 2021 09:08:54 -0700 (PDT)
-Received: by mail-lj1-f174.google.com with SMTP id m4so4381586ljq.8
-        for <linux-tip-commits@vger.kernel.org>; Wed, 08 Sep 2021 09:08:50 -0700 (PDT)
-X-Received: by 2002:a2e:8107:: with SMTP id d7mr3580653ljg.68.1631117329470;
- Wed, 08 Sep 2021 09:08:49 -0700 (PDT)
+        Wed, 8 Sep 2021 15:04:22 -0400
+Date:   Wed, 08 Sep 2021 19:03:11 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1631127793;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=Cc4XKzlAxS2JV3J1f8eqsKquDD1+Lo6QrqMckR6OU9E=;
+        b=2a9isP1SrMzoKsMARCnOodf/AOZ4OZtCWOdXAC1t+/rWl6OvwXl26r4/KFYZKnaTiuoXd9
+        xAuzMdfiZ07CKIdOTJEUycBlhcEaZwEk75weluEC6m5wChahDeuET4euXuTs5oFYUHLZcz
+        PZDqbxYdnZksqK3LRVoFN1E6KZOaQWssSlPEHyV8Z9hFMuFfubt19RQbrdPsEhvfS6OUs8
+        ccmI+bOH62lRUEsew9wkjEgF0B6EcrQYr33hhTtKolWH11TsLeuxfxVeTLsATdyGMm3kgo
+        HXE1dc3/XLsQsf7kMVol79UmncR5IshfRbeCy5kR9F54SGlXifz1Bpt8ImVIlw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1631127793;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=Cc4XKzlAxS2JV3J1f8eqsKquDD1+Lo6QrqMckR6OU9E=;
+        b=mrTXsTWCaeOhZ6ev+EEwpnC9sR5WC5nHWYBli36E25xcC8vdjA2gJGqbebGKjmju251SWJ
+        obpS3wTu0wVfmrCg==
+From:   "tip-bot2 for Mike Rapoport" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/urgent] x86/mm: Fix kern_addr_valid() to cope with existing
+ but not present entries
+Cc:     Jiri Olsa <jolsa@redhat.com>, Mike Rapoport <rppt@linux.ibm.com>,
+        Borislav Petkov <bp@suse.de>,
+        David Hildenbrand <david@redhat.com>,
+        Dave Hansen <dave.hansen@intel.com>, <stable@vger.kernel.org>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20210819132717.19358-1-rppt@kernel.org>
+References: <20210819132717.19358-1-rppt@kernel.org>
 MIME-Version: 1.0
-References: <20180926182920.27644-2-paulmck@linux.ibm.com> <tip-6e89e831a90172bc3d34ecbba52af5b9c4a447d1@git.kernel.org>
- <YTiXyiA92dM9726M@hirez.programming.kicks-ass.net> <YTiiC1mxzHyUJ47F@hirez.programming.kicks-ass.net>
- <20210908144217.GA603644@rowland.harvard.edu>
-In-Reply-To: <20210908144217.GA603644@rowland.harvard.edu>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Wed, 8 Sep 2021 09:08:33 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wiXJygbW+_1BdSX6M8j6z4w8gRSHVcaD5saihaNJApnoQ@mail.gmail.com>
-Message-ID: <CAHk-=wiXJygbW+_1BdSX6M8j6z4w8gRSHVcaD5saihaNJApnoQ@mail.gmail.com>
-Subject: Re: [tip:locking/core] tools/memory-model: Add extra ordering for
- locks and remove it for ordinary release/acquire
-To:     Alan Stern <stern@rowland.harvard.edu>
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Peter Anvin <hpa@zytor.com>,
-        Andrea Parri <parri.andrea@gmail.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Vince Weaver <vincent.weaver@maine.edu>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jiri Olsa <jolsa@redhat.com>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Stephane Eranian <eranian@google.com>,
-        Will Deacon <will@kernel.org>,
-        linux-tip-commits@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Message-ID: <163112779151.25758.9291514239160548248.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Wed, Sep 8, 2021 at 7:42 AM Alan Stern <stern@rowland.harvard.edu> wrote:
->
-> there is no reason _in theory_ why a CPU shouldn't reorder and interleave
-> the operations to get:
+The following commit has been merged into the x86/urgent branch of tip:
 
-I agree about the theory part.
+Commit-ID:     34b1999da935a33be6239226bfa6cd4f704c5c88
+Gitweb:        https://git.kernel.org/tip/34b1999da935a33be6239226bfa6cd4f704c5c88
+Author:        Mike Rapoport <rppt@linux.ibm.com>
+AuthorDate:    Thu, 19 Aug 2021 16:27:17 +03:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Wed, 08 Sep 2021 20:50:32 +02:00
 
-But I think the LKMM should be the strongest ordering that is reasonable.
+x86/mm: Fix kern_addr_valid() to cope with existing but not present entries
 
-And it should take common architecture behavior into account.
+Jiri Olsa reported a fault when running:
 
-IOW, if there is some rare architecture where the above can happen,
-but no common sane one allows it in practice, we should strive to make
-the LKMM the _stronger_ one.
+  # cat /proc/kallsyms | grep ksys_read
+  ffffffff8136d580 T ksys_read
+  # objdump -d --start-address=0xffffffff8136d580 --stop-address=0xffffffff8136d590 /proc/kcore
 
-We sure as hell shouldn't say "RISC-V is potentially very weakly
-ordered, so we'll allow that weak ordering".
+  /proc/kcore:     file format elf64-x86-64
 
-Because overly weak ordering only causes problems for others. And the
-performance arguments for it have historically been garbage anyway.
-See the pain powerpc goes through because of bad ordering (and even
-more so alpha), and see how arm actually strengthened their ordering
-to make everybody happier.
+  Segmentation fault
 
-So if this is purely a RISC-V thing, then I think it's entirely reasonable to
+  general protection fault, probably for non-canonical address 0xf887ffcbff000: 0000 [#1] SMP PTI
+  CPU: 12 PID: 1079 Comm: objdump Not tainted 5.14.0-rc5qemu+ #508
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.14.0-4.fc34 04/01/2014
+  RIP: 0010:kern_addr_valid
+  Call Trace:
+   read_kcore
+   ? rcu_read_lock_sched_held
+   ? rcu_read_lock_sched_held
+   ? rcu_read_lock_sched_held
+   ? trace_hardirqs_on
+   ? rcu_read_lock_sched_held
+   ? lock_acquire
+   ? lock_acquire
+   ? rcu_read_lock_sched_held
+   ? lock_acquire
+   ? rcu_read_lock_sched_held
+   ? rcu_read_lock_sched_held
+   ? rcu_read_lock_sched_held
+   ? lock_release
+   ? _raw_spin_unlock
+   ? __handle_mm_fault
+   ? rcu_read_lock_sched_held
+   ? lock_acquire
+   ? rcu_read_lock_sched_held
+   ? lock_release
+   proc_reg_read
+   ? vfs_read
+   vfs_read
+   ksys_read
+   do_syscall_64
+   entry_SYSCALL_64_after_hwframe
 
-        spin_unlock(&r);
-        spin_lock(&s);
+The fault happens because kern_addr_valid() dereferences existent but not
+present PMD in the high kernel mappings.
 
-cannot be reordered.
+Such PMDs are created when free_kernel_image_pages() frees regions larger
+than 2Mb. In this case, a part of the freed memory is mapped with PMDs and
+the set_memory_np_noalias() -> ... -> __change_page_attr() sequence will
+mark the PMD as not present rather than wipe it completely.
 
-Strict specifications are not a bad thing, and weak memory ordering is
-not inherently good.
+Have kern_addr_valid() check whether higher level page table entries are
+present before trying to dereference them to fix this issue and to avoid
+similar issues in the future.
 
-             Linus
+Stable backporting note:
+------------------------
+
+Note that the stable marking is for all active stable branches because
+there could be cases where pagetable entries exist but are not valid -
+see 9a14aefc1d28 ("x86: cpa, fix lookup_address"), for example. So make
+sure to be on the safe side here and use pXY_present() accessors rather
+than pXY_none() which could #GP when accessing pages in the direct map.
+
+Also see:
+
+  c40a56a7818c ("x86/mm/init: Remove freed kernel image areas from alias mapping")
+
+for more info.
+
+Reported-by: Jiri Olsa <jolsa@redhat.com>
+Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Acked-by: Dave Hansen <dave.hansen@intel.com>
+Tested-by: Jiri Olsa <jolsa@redhat.com>
+Cc: <stable@vger.kernel.org>	# 4.4+
+Link: https://lkml.kernel.org/r/20210819132717.19358-1-rppt@kernel.org
+---
+ arch/x86/mm/init_64.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
+index ddeaba9..879886c 100644
+--- a/arch/x86/mm/init_64.c
++++ b/arch/x86/mm/init_64.c
+@@ -1433,18 +1433,18 @@ int kern_addr_valid(unsigned long addr)
+ 		return 0;
+ 
+ 	p4d = p4d_offset(pgd, addr);
+-	if (p4d_none(*p4d))
++	if (!p4d_present(*p4d))
+ 		return 0;
+ 
+ 	pud = pud_offset(p4d, addr);
+-	if (pud_none(*pud))
++	if (!pud_present(*pud))
+ 		return 0;
+ 
+ 	if (pud_large(*pud))
+ 		return pfn_valid(pud_pfn(*pud));
+ 
+ 	pmd = pmd_offset(pud, addr);
+-	if (pmd_none(*pmd))
++	if (!pmd_present(*pmd))
+ 		return 0;
+ 
+ 	if (pmd_large(*pmd))
