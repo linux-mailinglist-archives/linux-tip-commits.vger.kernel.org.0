@@ -2,106 +2,117 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BDF19403D34
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  8 Sep 2021 18:01:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA3C2403D5E
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  8 Sep 2021 18:09:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346618AbhIHQC4 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 8 Sep 2021 12:02:56 -0400
-Received: from eu-smtp-delivery-151.mimecast.com ([185.58.85.151]:36786 "EHLO
-        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1346472AbhIHQCz (ORCPT
+        id S232842AbhIHQKI (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 8 Sep 2021 12:10:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54750 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232667AbhIHQKH (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 8 Sep 2021 12:02:55 -0400
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) (Using
- TLS) by relay.mimecast.com with ESMTP id
- uk-mta-228-r6fXZtf1PPeuGpV28TwQBA-1; Wed, 08 Sep 2021 17:01:45 +0100
-X-MC-Unique: r6fXZtf1PPeuGpV28TwQBA-1
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) with Microsoft SMTP
- Server (TLS) id 15.0.1497.23; Wed, 8 Sep 2021 17:01:43 +0100
-Received: from AcuMS.Aculab.com ([fe80::994c:f5c2:35d6:9b65]) by
- AcuMS.aculab.com ([fe80::994c:f5c2:35d6:9b65%12]) with mapi id
- 15.00.1497.023; Wed, 8 Sep 2021 17:01:43 +0100
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-tip-commits@vger.kernel.org" 
-        <linux-tip-commits@vger.kernel.org>
-CC:     Lukas Hannen <lukas.hannen@opensource.tttech-industrial.com>,
-        "Thomas Gleixner" <tglx@linutronix.de>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        "x86@kernel.org" <x86@kernel.org>
-Subject: RE: [tip: timers/urgent] time: Handle negative seconds correctly in
- timespec64_to_ns()
-Thread-Topic: [tip: timers/urgent] time: Handle negative seconds correctly in
- timespec64_to_ns()
-Thread-Index: AQHXpMkzlZUT75FKtkqpqy/t13Z0QquaSvLg
-Date:   Wed, 8 Sep 2021 16:01:43 +0000
-Message-ID: <a4bbf640306c42429afda8a4fc396f98@AcuMS.aculab.com>
-References: =?utf-8?q?=3CAM6PR01MB541637BD6F336B8FFB72AF80EEC69=40AM6PR01M?=
- =?utf-8?q?B5416=2Eeurprd01=2Eprod=2Eexchangelabs=2Ecom=3E?=
- <163111620295.25758.18154572095175068828.tip-bot2@tip-bot2>
-In-Reply-To: <163111620295.25758.18154572095175068828.tip-bot2@tip-bot2>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+        Wed, 8 Sep 2021 12:10:07 -0400
+Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45FCBC061575
+        for <linux-tip-commits@vger.kernel.org>; Wed,  8 Sep 2021 09:08:59 -0700 (PDT)
+Received: by mail-lf1-x12a.google.com with SMTP id t19so5398803lfe.13
+        for <linux-tip-commits@vger.kernel.org>; Wed, 08 Sep 2021 09:08:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=F5ZeFAknLDpJj0gufvdFHOmCevevfl6tESN6kJ6gAYQ=;
+        b=K7yBmZ5ODUwzJy0G0jcYOAQOAvzjZ2K4Y7BSVXC/PKjsSnt1W/esVP6NG0CrPEqZLv
+         vl4EG3Oho6nNuiO8w8cWwRpynP/MON/EPcKbZHzGYWwDVVwQZqCDcHY5KbbkKxwnRGzQ
+         FQmC6QIVNuaqe/2ky5dtaOZcTd7jTkqvfEY6Y=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=F5ZeFAknLDpJj0gufvdFHOmCevevfl6tESN6kJ6gAYQ=;
+        b=DT3rYCEWkoofLLdAEQbSbIGdfdqfwciSr8wRKROcIcfRjwacx3HtsA5IJTiXIkK6V2
+         5mnHvNb0bQ5Xvb1WhwRqeWpXs3xRq915zRwrsLJWONFbsOl1VA3rDE5bQssZCPhlUvH7
+         j1GByrN3+mdrlG0ErbcboEFyK9OPSfZq7BCZThpKPkfBWh5ug3YVBlbNoSrYyChgN5MZ
+         G3+IrCnl9n1m8szgMUcjwv5K5Jb5ar213r5HFNtkI6+S2vPHeYcU6LCSwR9lg7yLwwgF
+         Cf4UWCpSMc8GkNHZTYmfBVgxw/p/+FP11svgo+xYOxtE1iiAiBg43iLYz9TSJDevmMq0
+         zGxQ==
+X-Gm-Message-State: AOAM530FYIhiCTOnQzCe19UfPJEFCMQVqx4Gso9bTrK144kJ9M/cJ719
+        C0CvCTU0aOxqiUM+DqViTY8dQpYHCPR4NVTqXkk=
+X-Google-Smtp-Source: ABdhPJxsrUJB9YMPQR9IY51U6mQ14jyPVe8Jw6RhR4zrWd5E75rRpgCefNsItg9k0WYQ2nPV0sZMNA==
+X-Received: by 2002:a19:f00a:: with SMTP id p10mr3047985lfc.37.1631117335690;
+        Wed, 08 Sep 2021 09:08:55 -0700 (PDT)
+Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com. [209.85.208.174])
+        by smtp.gmail.com with ESMTPSA id g16sm229342lfb.13.2021.09.08.09.08.50
+        for <linux-tip-commits@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 08 Sep 2021 09:08:54 -0700 (PDT)
+Received: by mail-lj1-f174.google.com with SMTP id m4so4381586ljq.8
+        for <linux-tip-commits@vger.kernel.org>; Wed, 08 Sep 2021 09:08:50 -0700 (PDT)
+X-Received: by 2002:a2e:8107:: with SMTP id d7mr3580653ljg.68.1631117329470;
+ Wed, 08 Sep 2021 09:08:49 -0700 (PDT)
 MIME-Version: 1.0
-Authentication-Results: relay.mimecast.com;
-        auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
+References: <20180926182920.27644-2-paulmck@linux.ibm.com> <tip-6e89e831a90172bc3d34ecbba52af5b9c4a447d1@git.kernel.org>
+ <YTiXyiA92dM9726M@hirez.programming.kicks-ass.net> <YTiiC1mxzHyUJ47F@hirez.programming.kicks-ass.net>
+ <20210908144217.GA603644@rowland.harvard.edu>
+In-Reply-To: <20210908144217.GA603644@rowland.harvard.edu>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Wed, 8 Sep 2021 09:08:33 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wiXJygbW+_1BdSX6M8j6z4w8gRSHVcaD5saihaNJApnoQ@mail.gmail.com>
+Message-ID: <CAHk-=wiXJygbW+_1BdSX6M8j6z4w8gRSHVcaD5saihaNJApnoQ@mail.gmail.com>
+Subject: Re: [tip:locking/core] tools/memory-model: Add extra ordering for
+ locks and remove it for ordinary release/acquire
+To:     Alan Stern <stern@rowland.harvard.edu>
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Peter Anvin <hpa@zytor.com>,
+        Andrea Parri <parri.andrea@gmail.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Vince Weaver <vincent.weaver@maine.edu>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jiri Olsa <jolsa@redhat.com>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Stephane Eranian <eranian@google.com>,
+        Will Deacon <will@kernel.org>,
+        linux-tip-commits@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-PiBDb21taXR0ZXI6ICAgICBUaG9tYXMgR2xlaXhuZXIgPHRnbHhAbGludXRyb25peC5kZT4NCj4g
-Q29tbWl0dGVyRGF0ZTogV2VkLCAwOCBTZXAgMjAyMSAxNzo0NDoyNiArMDI6MDANCj4gDQo+IHRp
-bWU6IEhhbmRsZSBuZWdhdGl2ZSBzZWNvbmRzIGNvcnJlY3RseSBpbiB0aW1lc3BlYzY0X3RvX25z
-KCkNCj4gDQo+IHRpbWVzcGVjNjRfbnMoKSBwcmV2ZW50cyBtdWx0aXBsaWNhdGlvbiBvdmVyZmxv
-d3MgYnkgY29tcGFyaW5nIHRoZSBzZWNvbmRzDQo+IHZhbHVlIG9mIHRoZSB0aW1lc3BlYyB0byBL
-VElNRV9TRUNfTUFYLiBJZiB0aGUgdmFsdWUgaXMgZ3JlYXRlciBvciBlcXVhbCBpdA0KPiByZXR1
-cm5zIEtUSU1FX01BWC4NCj4gDQo+IEJ1dCB0aGF0IGNoZWNrIGNhc3RzIHRoZSBzaWduZWQgc2Vj
-b25kcyB2YWx1ZSB0byB1bnNpZ25lZCB3aGljaCBtYWtlcyB0aGUNCj4gY29tcGFyaXNpb24gdHJ1
-ZSBmb3IgYWxsIG5lZ2F0aXZlIHZhbHVlcyBhbmQgdGhlcmVmb3JlIHJldHVybiB3cm9uZ2x5DQo+
-IEtUSU1FX01BWC4NCj4gDQo+IE5lZ2F0aXZlIHNlY29uZCB2YWx1ZXMgYXJlIHBlcmZlY3RseSB2
-YWxpZCBhbmQgcmVxdWlyZWQgaW4gc29tZSBwbGFjZXMsDQo+IGUuZy4gcHRwX2Nsb2NrX2FkanRp
-bWUoKS4NCj4gDQo+IFJlbW92ZSB0aGUgY2FzdCBhbmQgYWRkIGEgY2hlY2sgZm9yIHRoZSBuZWdh
-dGl2ZSBib3VuZGFyeSB3aGljaCBpcyByZXF1aXJlZA0KPiB0byBwcmV2ZW50IHVuZGVmaW5lZCBi
-ZWhhdmlvdXIgZHVlIHRvIG11bHRpcGxpY2F0aW9uIHVuZGVyZmxvdy4NCj4gDQo+IEZpeGVzOiBj
-YjQ3NzU1NzI1ZGEgKCJ0aW1lOiBQcmV2ZW50IHVuZGVmaW5lZCBiZWhhdmlvdXIgaW4gdGltZXNw
-ZWM2NF90b19ucygpIiknDQo+IFNpZ25lZC1vZmYtYnk6IEx1a2FzIEhhbm5lbiA8bHVrYXMuaGFu
-bmVuQG9wZW5zb3VyY2UudHR0ZWNoLWluZHVzdHJpYWwuY29tPg0KPiBTaWduZWQtb2ZmLWJ5OiBU
-aG9tYXMgR2xlaXhuZXIgPHRnbHhAbGludXRyb25peC5kZT4NCj4gQ2M6IHN0YWJsZUB2Z2VyLmtl
-cm5lbC5vcmcNCj4gTGluazoNCj4gaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvci9BTTZQUjAxTUI1
-NDE2MzdCRDZGMzM2QjhGRkI3MkFGODBFRUM2OUBBTTZQUjAxTUI1NDE2LmV1cnByZDAxLnByb2Qu
-ZXhjaGFuZ2VsDQo+IGFicy5jb20NCj4gLS0tDQo+ICBpbmNsdWRlL2xpbnV4L3RpbWU2NC5oIHwg
-IDkgKysrKysrKy0tDQo+ICAxIGZpbGUgY2hhbmdlZCwgNyBpbnNlcnRpb25zKCspLCAyIGRlbGV0
-aW9ucygtKQ0KPiANCj4gZGlmZiAtLWdpdCBhL2luY2x1ZGUvbGludXgvdGltZTY0LmggYi9pbmNs
-dWRlL2xpbnV4L3RpbWU2NC5oDQo+IGluZGV4IDUxMTdjYjUuLjgxYjk2ODYgMTAwNjQ0DQo+IC0t
-LSBhL2luY2x1ZGUvbGludXgvdGltZTY0LmgNCj4gKysrIGIvaW5jbHVkZS9saW51eC90aW1lNjQu
-aA0KPiBAQCAtMjUsNyArMjUsOSBAQCBzdHJ1Y3QgaXRpbWVyc3BlYzY0IHsNCj4gICNkZWZpbmUg
-VElNRTY0X01JTgkJCSgtVElNRTY0X01BWCAtIDEpDQo+IA0KPiAgI2RlZmluZSBLVElNRV9NQVgJ
-CQkoKHM2NCl+KCh1NjQpMSA8PCA2MykpDQo+ICsjZGVmaW5lIEtUSU1FX01JTgkJCSgtS1RJTUVf
-TUFYIC0gMSkNCj4gICNkZWZpbmUgS1RJTUVfU0VDX01BWAkJCShLVElNRV9NQVggLyBOU0VDX1BF
-Ul9TRUMpDQo+ICsjZGVmaW5lIEtUSU1FX1NFQ19NSU4JCQkoS1RJTUVfTUlOIC8gTlNFQ19QRVJf
-U0VDKQ0KPiANCj4gIC8qDQo+ICAgKiBMaW1pdHMgZm9yIHNldHRpbWVvZmRheSgpOg0KPiBAQCAt
-MTI0LDEwICsxMjYsMTMgQEAgc3RhdGljIGlubGluZSBib29sIHRpbWVzcGVjNjRfdmFsaWRfc2V0
-dG9kKGNvbnN0IHN0cnVjdCB0aW1lc3BlYzY0ICp0cykNCj4gICAqLw0KPiAgc3RhdGljIGlubGlu
-ZSBzNjQgdGltZXNwZWM2NF90b19ucyhjb25zdCBzdHJ1Y3QgdGltZXNwZWM2NCAqdHMpDQo+ICB7
-DQo+IC0JLyogUHJldmVudCBtdWx0aXBsaWNhdGlvbiBvdmVyZmxvdyAqLw0KPiAtCWlmICgodW5z
-aWduZWQgbG9uZyBsb25nKXRzLT50dl9zZWMgPj0gS1RJTUVfU0VDX01BWCkNCj4gKwkvKiBQcmV2
-ZW50IG11bHRpcGxpY2F0aW9uIG92ZXJmbG93IC8gdW5kZXJmbG93ICovDQo+ICsJaWYgKHRzLT50
-dl9zZWMgPj0gS1RJTUVfU0VDX01BWCkNCj4gIAkJcmV0dXJuIEtUSU1FX01BWDsNCj4gDQo+ICsJ
-aWYgKHRzLT50dl9zZWMgPD0gS1RJTUVfU0VDX01JTikNCj4gKwkJcmV0dXJuIEtUSU1FX01JTjsN
-Cj4gKw0KPiAgCXJldHVybiAoKHM2NCkgdHMtPnR2X3NlYyAqIE5TRUNfUEVSX1NFQykgKyB0cy0+
-dHZfbnNlYzsNCj4gIH0NCg0KQWRkaW5nIHR2X25zZWMgY2FuIHN0aWxsIG92ZXJmbG93IC0gIGV2
-ZW4gaWYgdHZfbnNlYyBpcyBib3VuZGVkIHRvICsvLSAxIHNlY29uZC4NClRoaXMgaXMgbm8gbW9y
-ZSAnZ2FyYmFnZSBpbicgPT4gJ2dhcmJhZ2Ugb3V0JyB0aGFuIHRoZSBjb2RlIHdpdGhvdXQgdGhl
-DQptdWx0aXBseSB1bmRlci9vdmVyZmxvdyBjaGVjay4NCg0KCURhdmlkDQoNCi0NClJlZ2lzdGVy
-ZWQgQWRkcmVzcyBMYWtlc2lkZSwgQnJhbWxleSBSb2FkLCBNb3VudCBGYXJtLCBNaWx0b24gS2V5
-bmVzLCBNSzEgMVBULCBVSw0KUmVnaXN0cmF0aW9uIE5vOiAxMzk3Mzg2IChXYWxlcykNCg==
+On Wed, Sep 8, 2021 at 7:42 AM Alan Stern <stern@rowland.harvard.edu> wrote:
+>
+> there is no reason _in theory_ why a CPU shouldn't reorder and interleave
+> the operations to get:
 
+I agree about the theory part.
+
+But I think the LKMM should be the strongest ordering that is reasonable.
+
+And it should take common architecture behavior into account.
+
+IOW, if there is some rare architecture where the above can happen,
+but no common sane one allows it in practice, we should strive to make
+the LKMM the _stronger_ one.
+
+We sure as hell shouldn't say "RISC-V is potentially very weakly
+ordered, so we'll allow that weak ordering".
+
+Because overly weak ordering only causes problems for others. And the
+performance arguments for it have historically been garbage anyway.
+See the pain powerpc goes through because of bad ordering (and even
+more so alpha), and see how arm actually strengthened their ordering
+to make everybody happier.
+
+So if this is purely a RISC-V thing, then I think it's entirely reasonable to
+
+        spin_unlock(&r);
+        spin_lock(&s);
+
+cannot be reordered.
+
+Strict specifications are not a bad thing, and weak memory ordering is
+not inherently good.
+
+             Linus
