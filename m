@@ -2,145 +2,124 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 56400403C5B
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  8 Sep 2021 17:14:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E9B0403CD7
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  8 Sep 2021 17:50:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351931AbhIHPP7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 8 Sep 2021 11:15:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42158 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348450AbhIHPP6 (ORCPT
+        id S1349633AbhIHPvO (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 8 Sep 2021 11:51:14 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:52988 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1349660AbhIHPvN (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 8 Sep 2021 11:15:58 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6449C061575;
-        Wed,  8 Sep 2021 08:14:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=LdTCvAteTIAmo7w6m1ecGTY5uPdtHi24nvN2i0a75rI=; b=YUSTFx7+UfC3oU1Xp6HK7G8bc+
-        sGOMbvASiPDft4YZzY+32pPX7CYwyDvANpscYyk9qiZvUR13UPOeQXLN4Wc/eDj0ccQLqrPsUvuml
-        I0dxQXWspMhp5t3w5YQTWwJiuIiHe47Z04iB2DvOqyXFxjoL/WWeo5Ms3jh5Lm8SEqSJPe/bHUWNI
-        KpqcmjR95XyrF7WpZ+FZByaPGyCOARYA/mMxzHW7LTzr0bWuV9rULCqOtPvsLPDeRjGYbbxzEE5OC
-        fvHnWxhktAdbFZrWWkNmfus2FApBkQ+aemYCMdgLx3GsmQphOmSYeLFpH97s6mc1t/Vm1ivEVX5EC
-        bF5LZDaw==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
-        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1mNzFJ-008usm-Ed; Wed, 08 Sep 2021 15:12:54 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 0F74F300314;
-        Wed,  8 Sep 2021 17:12:16 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id EF7CA20800161; Wed,  8 Sep 2021 17:12:15 +0200 (CEST)
-Date:   Wed, 8 Sep 2021 17:12:15 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Alan Stern <stern@rowland.harvard.edu>
-Cc:     alexander.shishkin@linux.intel.com, hpa@zytor.com,
-        parri.andrea@gmail.com, mingo@kernel.org, paulmck@kernel.org,
-        vincent.weaver@maine.edu, tglx@linutronix.de, jolsa@redhat.com,
-        acme@redhat.com, torvalds@linux-foundation.org,
-        linux-kernel@vger.kernel.org, eranian@google.com, will@kernel.org,
-        linux-tip-commits@vger.kernel.org
-Subject: Re: [tip:locking/core] tools/memory-model: Add extra ordering for
- locks and remove it for ordinary release/acquire
-Message-ID: <YTjSz/dE2g96t8ja@hirez.programming.kicks-ass.net>
-References: <20180926182920.27644-2-paulmck@linux.ibm.com>
- <tip-6e89e831a90172bc3d34ecbba52af5b9c4a447d1@git.kernel.org>
- <YTiXyiA92dM9726M@hirez.programming.kicks-ass.net>
- <YTiiC1mxzHyUJ47F@hirez.programming.kicks-ass.net>
- <20210908144217.GA603644@rowland.harvard.edu>
+        Wed, 8 Sep 2021 11:51:13 -0400
+Date:   Wed, 08 Sep 2021 15:50:02 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1631116204;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=7t9TbDcVf8dPQh6cAvl+s+/BeeyFeZw4VocU+Hrytok=;
+        b=pUK76Wrv3r5p30GnB1ROuGZl47ydMAnfCOttM2yvrI6EGTJT08kWMHq81yucfCeU6q4Kit
+        1hGvrkpidqlpihysHoWtS4Cceyl+teKtM2kALO6dgKHGyrDjLE9iRTjv78dmjjAl67HLAY
+        3mKp6nBT4tYTiy7BpUBjAIe2okmcYNRggLOwZib0lqcSiZtuYAihuSahj6dzXVUe0+CbAf
+        3T6QDCLQnk2ZfVdoZDOT18Ul2KzV2EQjqgvEah9z8kmqHCsZFAdnMcTvVzsNKCIWtvAsC7
+        xTLP3YEvGdzv3aFM7cCqBLNQB7zT8Mg9F4BNFsq4zAL99tZ3MgplLq+DVR66/Q==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1631116204;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=7t9TbDcVf8dPQh6cAvl+s+/BeeyFeZw4VocU+Hrytok=;
+        b=rXralnTHJaVQBiP89xLwqLqqs3hRVD/S3BDl2M8fGBZ7HauR3iTq9nsmSAreMD67L+NCqC
+        Spzxkg1pNCmQwBCg==
+From:   "tip-bot2 for Lukas Hannen" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: timers/urgent] time: Handle negative seconds correctly in
+ timespec64_to_ns()
+Cc:     Lukas Hannen <lukas.hannen@opensource.tttech-industrial.com>,
+        Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: =?utf-8?q?=3CAM6PR01MB541637BD6F336B8FFB72AF80EEC69=40AM6PR01MB?=
+ =?utf-8?q?5416=2Eeurprd01=2Eprod=2Eexchangelabs=2Ecom=3E?=
+References: =?utf-8?q?=3CAM6PR01MB541637BD6F336B8FFB72AF80EEC69=40AM6PR01M?=
+ =?utf-8?q?B5416=2Eeurprd01=2Eprod=2Eexchangelabs=2Ecom=3E?=
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210908144217.GA603644@rowland.harvard.edu>
+Message-ID: <163111620295.25758.18154572095175068828.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Wed, Sep 08, 2021 at 10:42:17AM -0400, Alan Stern wrote:
-> On Wed, Sep 08, 2021 at 01:44:11PM +0200, Peter Zijlstra wrote:
+The following commit has been merged into the timers/urgent branch of tip:
 
-> > > Is this an error/oversight of the memory model, or did I miss a subtlety
-> > > somewhere?
-> 
-> There's the question of what we think the LKMM should do in principle, and 
-> the question of how far it should go in mirroring the limitations of the 
-> various kernel hardware implementations.  These are obviously separate 
-> questions, but they both should influence the design of the memory model.  
-> But to what extent?
-> 
-> Given:
-> 
-> 	spin_lock(&r);
-> 	WRITE_ONCE(x, 1);
-> 	spin_unlock(&r);
-> 	spin_lock(&s);
-> 	WRITE_ONCE(y, 1);
-> 	spin_unlock(&s);
-> 
-> there is no reason _in theory_ why a CPU shouldn't reorder and interleave 
-> the operations to get:
-> 
-> 	spin_lock(&r);
-> 	spin_lock(&s);
-> 	WRITE_ONCE(x, 1);
-> 	WRITE_ONCE(y, 1);
-> 	spin_unlock(&r);
-> 	spin_unlock(&s);
-> 
-> (Of course, this wouldn't happen if some other CPU was holding the s lock 
-> while waiting for r to be released.  In that case the spin loop for s above 
-> wouldn't be able to end until after the unlock operation on r was complete, 
-> so this reordering couldn't occur.  But if there was no such contention then 
-> the reordering is possible in theory -- ignoring restrictions imposed by the 
-> actual implementations of the operations.)
-> 
-> Given such a reordering, nothing will prevent other CPUs from observing the 
-> write to y before the write to x.
+Commit-ID:     39ff83f2f6cc5cc1458dfcea9697f96338210beb
+Gitweb:        https://git.kernel.org/tip/39ff83f2f6cc5cc1458dfcea9697f96338210beb
+Author:        Lukas Hannen <lukas.hannen@opensource.tttech-industrial.com>
+AuthorDate:    Wed, 25 Aug 2021 10:12:43 
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Wed, 08 Sep 2021 17:44:26 +02:00
 
-To a very small degree the Risc-V implementation actually does some of
-that. It allows the stores from unlock and lock to be observed out of
-order. But in general we have very weak rules about where the store of
-the lock is visible in any case.
+time: Handle negative seconds correctly in timespec64_to_ns()
 
-(revisit the spin_is_locked() saga for more details there)
+timespec64_ns() prevents multiplication overflows by comparing the seconds
+value of the timespec to KTIME_SEC_MAX. If the value is greater or equal it
+returns KTIME_MAX.
 
-> > Hmm.. that argument isn't strong enough for Risc-V if I read that FENCE
-> > thing right. That's just R->RW ordering, which doesn't constrain the
-> > first WRITE_ONCE().
-> > 
-> > However, that spin_unlock has "fence rw, w" with a subsequent write. So
-> > the whole thing then becomes something like:
-> > 
-> > 
-> > 	WRITE_ONCE(x, 1);
-> > 	FENCE RW, W
-> > 	WRITE_ONCE(s.lock, 0);
-> > 	AMOSWAP %0, 1, r.lock
-> > 	FENCE R, WR
-> > 	WRITE_ONCE(y, 1);
-> > 
-> > 
-> > Which I think is still sufficient, irrespective of the whole s!=r thing.
-> 
-> To me, this argument feels like an artificial, unintended consequence of the 
-> individual implementations, not something that should be considered a 
-> systematic architectural requirement.  Perhaps one could say the same thing 
-> about the case where the two spinlock_t variables are the same, but at least 
-> in that case there is a good argument for inherent ordering of atomic 
-> accesses to a single variable.
+But that check casts the signed seconds value to unsigned which makes the
+comparision true for all negative values and therefore return wrongly
+KTIME_MAX.
 
-Possibly :-) The way I got here is that my brain seems to have produced
-the rule that UNLOCK+LOCK -> TSO order (an improvement, because for a
-time it said SC), and it completely forgot about this subtlely. And in
-general I feel that less subtlety is more better, but I understand your
-counter argument :/
+Negative second values are perfectly valid and required in some places,
+e.g. ptp_clock_adjtime().
 
-In any case, it looks like we had to put an smp_mb() in there anyway due
-to other reasons and the whole argument is moot again.
+Remove the cast and add a check for the negative boundary which is required
+to prevent undefined behaviour due to multiplication underflow.
 
-I'll try and remember for next time :-)
+Fixes: cb47755725da ("time: Prevent undefined behaviour in timespec64_to_ns()")'
+Signed-off-by: Lukas Hannen <lukas.hannen@opensource.tttech-industrial.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/AM6PR01MB541637BD6F336B8FFB72AF80EEC69@AM6PR01MB5416.eurprd01.prod.exchangelabs.com
+---
+ include/linux/time64.h |  9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/include/linux/time64.h b/include/linux/time64.h
+index 5117cb5..81b9686 100644
+--- a/include/linux/time64.h
++++ b/include/linux/time64.h
+@@ -25,7 +25,9 @@ struct itimerspec64 {
+ #define TIME64_MIN			(-TIME64_MAX - 1)
+ 
+ #define KTIME_MAX			((s64)~((u64)1 << 63))
++#define KTIME_MIN			(-KTIME_MAX - 1)
+ #define KTIME_SEC_MAX			(KTIME_MAX / NSEC_PER_SEC)
++#define KTIME_SEC_MIN			(KTIME_MIN / NSEC_PER_SEC)
+ 
+ /*
+  * Limits for settimeofday():
+@@ -124,10 +126,13 @@ static inline bool timespec64_valid_settod(const struct timespec64 *ts)
+  */
+ static inline s64 timespec64_to_ns(const struct timespec64 *ts)
+ {
+-	/* Prevent multiplication overflow */
+-	if ((unsigned long long)ts->tv_sec >= KTIME_SEC_MAX)
++	/* Prevent multiplication overflow / underflow */
++	if (ts->tv_sec >= KTIME_SEC_MAX)
+ 		return KTIME_MAX;
+ 
++	if (ts->tv_sec <= KTIME_SEC_MIN)
++		return KTIME_MIN;
++
+ 	return ((s64) ts->tv_sec * NSEC_PER_SEC) + ts->tv_nsec;
+ }
+ 
