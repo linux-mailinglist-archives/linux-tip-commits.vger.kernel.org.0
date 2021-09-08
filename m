@@ -2,124 +2,106 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E9B0403CD7
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  8 Sep 2021 17:50:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BDF19403D34
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  8 Sep 2021 18:01:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349633AbhIHPvO (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 8 Sep 2021 11:51:14 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:52988 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349660AbhIHPvN (ORCPT
+        id S1346618AbhIHQC4 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 8 Sep 2021 12:02:56 -0400
+Received: from eu-smtp-delivery-151.mimecast.com ([185.58.85.151]:36786 "EHLO
+        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1346472AbhIHQCz (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 8 Sep 2021 11:51:13 -0400
-Date:   Wed, 08 Sep 2021 15:50:02 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1631116204;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=7t9TbDcVf8dPQh6cAvl+s+/BeeyFeZw4VocU+Hrytok=;
-        b=pUK76Wrv3r5p30GnB1ROuGZl47ydMAnfCOttM2yvrI6EGTJT08kWMHq81yucfCeU6q4Kit
-        1hGvrkpidqlpihysHoWtS4Cceyl+teKtM2kALO6dgKHGyrDjLE9iRTjv78dmjjAl67HLAY
-        3mKp6nBT4tYTiy7BpUBjAIe2okmcYNRggLOwZib0lqcSiZtuYAihuSahj6dzXVUe0+CbAf
-        3T6QDCLQnk2ZfVdoZDOT18Ul2KzV2EQjqgvEah9z8kmqHCsZFAdnMcTvVzsNKCIWtvAsC7
-        xTLP3YEvGdzv3aFM7cCqBLNQB7zT8Mg9F4BNFsq4zAL99tZ3MgplLq+DVR66/Q==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1631116204;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=7t9TbDcVf8dPQh6cAvl+s+/BeeyFeZw4VocU+Hrytok=;
-        b=rXralnTHJaVQBiP89xLwqLqqs3hRVD/S3BDl2M8fGBZ7HauR3iTq9nsmSAreMD67L+NCqC
-        Spzxkg1pNCmQwBCg==
-From:   "tip-bot2 for Lukas Hannen" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/urgent] time: Handle negative seconds correctly in
+        Wed, 8 Sep 2021 12:02:55 -0400
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) (Using
+ TLS) by relay.mimecast.com with ESMTP id
+ uk-mta-228-r6fXZtf1PPeuGpV28TwQBA-1; Wed, 08 Sep 2021 17:01:45 +0100
+X-MC-Unique: r6fXZtf1PPeuGpV28TwQBA-1
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) with Microsoft SMTP
+ Server (TLS) id 15.0.1497.23; Wed, 8 Sep 2021 17:01:43 +0100
+Received: from AcuMS.Aculab.com ([fe80::994c:f5c2:35d6:9b65]) by
+ AcuMS.aculab.com ([fe80::994c:f5c2:35d6:9b65%12]) with mapi id
+ 15.00.1497.023; Wed, 8 Sep 2021 17:01:43 +0100
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-tip-commits@vger.kernel.org" 
+        <linux-tip-commits@vger.kernel.org>
+CC:     Lukas Hannen <lukas.hannen@opensource.tttech-industrial.com>,
+        "Thomas Gleixner" <tglx@linutronix.de>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        "x86@kernel.org" <x86@kernel.org>
+Subject: RE: [tip: timers/urgent] time: Handle negative seconds correctly in
  timespec64_to_ns()
-Cc:     Lukas Hannen <lukas.hannen@opensource.tttech-industrial.com>,
-        Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: =?utf-8?q?=3CAM6PR01MB541637BD6F336B8FFB72AF80EEC69=40AM6PR01MB?=
- =?utf-8?q?5416=2Eeurprd01=2Eprod=2Eexchangelabs=2Ecom=3E?=
+Thread-Topic: [tip: timers/urgent] time: Handle negative seconds correctly in
+ timespec64_to_ns()
+Thread-Index: AQHXpMkzlZUT75FKtkqpqy/t13Z0QquaSvLg
+Date:   Wed, 8 Sep 2021 16:01:43 +0000
+Message-ID: <a4bbf640306c42429afda8a4fc396f98@AcuMS.aculab.com>
 References: =?utf-8?q?=3CAM6PR01MB541637BD6F336B8FFB72AF80EEC69=40AM6PR01M?=
  =?utf-8?q?B5416=2Eeurprd01=2Eprod=2Eexchangelabs=2Ecom=3E?=
+ <163111620295.25758.18154572095175068828.tip-bot2@tip-bot2>
+In-Reply-To: <163111620295.25758.18154572095175068828.tip-bot2@tip-bot2>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-Message-ID: <163111620295.25758.18154572095175068828.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Authentication-Results: relay.mimecast.com;
+        auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/urgent branch of tip:
+PiBDb21taXR0ZXI6ICAgICBUaG9tYXMgR2xlaXhuZXIgPHRnbHhAbGludXRyb25peC5kZT4NCj4g
+Q29tbWl0dGVyRGF0ZTogV2VkLCAwOCBTZXAgMjAyMSAxNzo0NDoyNiArMDI6MDANCj4gDQo+IHRp
+bWU6IEhhbmRsZSBuZWdhdGl2ZSBzZWNvbmRzIGNvcnJlY3RseSBpbiB0aW1lc3BlYzY0X3RvX25z
+KCkNCj4gDQo+IHRpbWVzcGVjNjRfbnMoKSBwcmV2ZW50cyBtdWx0aXBsaWNhdGlvbiBvdmVyZmxv
+d3MgYnkgY29tcGFyaW5nIHRoZSBzZWNvbmRzDQo+IHZhbHVlIG9mIHRoZSB0aW1lc3BlYyB0byBL
+VElNRV9TRUNfTUFYLiBJZiB0aGUgdmFsdWUgaXMgZ3JlYXRlciBvciBlcXVhbCBpdA0KPiByZXR1
+cm5zIEtUSU1FX01BWC4NCj4gDQo+IEJ1dCB0aGF0IGNoZWNrIGNhc3RzIHRoZSBzaWduZWQgc2Vj
+b25kcyB2YWx1ZSB0byB1bnNpZ25lZCB3aGljaCBtYWtlcyB0aGUNCj4gY29tcGFyaXNpb24gdHJ1
+ZSBmb3IgYWxsIG5lZ2F0aXZlIHZhbHVlcyBhbmQgdGhlcmVmb3JlIHJldHVybiB3cm9uZ2x5DQo+
+IEtUSU1FX01BWC4NCj4gDQo+IE5lZ2F0aXZlIHNlY29uZCB2YWx1ZXMgYXJlIHBlcmZlY3RseSB2
+YWxpZCBhbmQgcmVxdWlyZWQgaW4gc29tZSBwbGFjZXMsDQo+IGUuZy4gcHRwX2Nsb2NrX2FkanRp
+bWUoKS4NCj4gDQo+IFJlbW92ZSB0aGUgY2FzdCBhbmQgYWRkIGEgY2hlY2sgZm9yIHRoZSBuZWdh
+dGl2ZSBib3VuZGFyeSB3aGljaCBpcyByZXF1aXJlZA0KPiB0byBwcmV2ZW50IHVuZGVmaW5lZCBi
+ZWhhdmlvdXIgZHVlIHRvIG11bHRpcGxpY2F0aW9uIHVuZGVyZmxvdy4NCj4gDQo+IEZpeGVzOiBj
+YjQ3NzU1NzI1ZGEgKCJ0aW1lOiBQcmV2ZW50IHVuZGVmaW5lZCBiZWhhdmlvdXIgaW4gdGltZXNw
+ZWM2NF90b19ucygpIiknDQo+IFNpZ25lZC1vZmYtYnk6IEx1a2FzIEhhbm5lbiA8bHVrYXMuaGFu
+bmVuQG9wZW5zb3VyY2UudHR0ZWNoLWluZHVzdHJpYWwuY29tPg0KPiBTaWduZWQtb2ZmLWJ5OiBU
+aG9tYXMgR2xlaXhuZXIgPHRnbHhAbGludXRyb25peC5kZT4NCj4gQ2M6IHN0YWJsZUB2Z2VyLmtl
+cm5lbC5vcmcNCj4gTGluazoNCj4gaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvci9BTTZQUjAxTUI1
+NDE2MzdCRDZGMzM2QjhGRkI3MkFGODBFRUM2OUBBTTZQUjAxTUI1NDE2LmV1cnByZDAxLnByb2Qu
+ZXhjaGFuZ2VsDQo+IGFicy5jb20NCj4gLS0tDQo+ICBpbmNsdWRlL2xpbnV4L3RpbWU2NC5oIHwg
+IDkgKysrKysrKy0tDQo+ICAxIGZpbGUgY2hhbmdlZCwgNyBpbnNlcnRpb25zKCspLCAyIGRlbGV0
+aW9ucygtKQ0KPiANCj4gZGlmZiAtLWdpdCBhL2luY2x1ZGUvbGludXgvdGltZTY0LmggYi9pbmNs
+dWRlL2xpbnV4L3RpbWU2NC5oDQo+IGluZGV4IDUxMTdjYjUuLjgxYjk2ODYgMTAwNjQ0DQo+IC0t
+LSBhL2luY2x1ZGUvbGludXgvdGltZTY0LmgNCj4gKysrIGIvaW5jbHVkZS9saW51eC90aW1lNjQu
+aA0KPiBAQCAtMjUsNyArMjUsOSBAQCBzdHJ1Y3QgaXRpbWVyc3BlYzY0IHsNCj4gICNkZWZpbmUg
+VElNRTY0X01JTgkJCSgtVElNRTY0X01BWCAtIDEpDQo+IA0KPiAgI2RlZmluZSBLVElNRV9NQVgJ
+CQkoKHM2NCl+KCh1NjQpMSA8PCA2MykpDQo+ICsjZGVmaW5lIEtUSU1FX01JTgkJCSgtS1RJTUVf
+TUFYIC0gMSkNCj4gICNkZWZpbmUgS1RJTUVfU0VDX01BWAkJCShLVElNRV9NQVggLyBOU0VDX1BF
+Ul9TRUMpDQo+ICsjZGVmaW5lIEtUSU1FX1NFQ19NSU4JCQkoS1RJTUVfTUlOIC8gTlNFQ19QRVJf
+U0VDKQ0KPiANCj4gIC8qDQo+ICAgKiBMaW1pdHMgZm9yIHNldHRpbWVvZmRheSgpOg0KPiBAQCAt
+MTI0LDEwICsxMjYsMTMgQEAgc3RhdGljIGlubGluZSBib29sIHRpbWVzcGVjNjRfdmFsaWRfc2V0
+dG9kKGNvbnN0IHN0cnVjdCB0aW1lc3BlYzY0ICp0cykNCj4gICAqLw0KPiAgc3RhdGljIGlubGlu
+ZSBzNjQgdGltZXNwZWM2NF90b19ucyhjb25zdCBzdHJ1Y3QgdGltZXNwZWM2NCAqdHMpDQo+ICB7
+DQo+IC0JLyogUHJldmVudCBtdWx0aXBsaWNhdGlvbiBvdmVyZmxvdyAqLw0KPiAtCWlmICgodW5z
+aWduZWQgbG9uZyBsb25nKXRzLT50dl9zZWMgPj0gS1RJTUVfU0VDX01BWCkNCj4gKwkvKiBQcmV2
+ZW50IG11bHRpcGxpY2F0aW9uIG92ZXJmbG93IC8gdW5kZXJmbG93ICovDQo+ICsJaWYgKHRzLT50
+dl9zZWMgPj0gS1RJTUVfU0VDX01BWCkNCj4gIAkJcmV0dXJuIEtUSU1FX01BWDsNCj4gDQo+ICsJ
+aWYgKHRzLT50dl9zZWMgPD0gS1RJTUVfU0VDX01JTikNCj4gKwkJcmV0dXJuIEtUSU1FX01JTjsN
+Cj4gKw0KPiAgCXJldHVybiAoKHM2NCkgdHMtPnR2X3NlYyAqIE5TRUNfUEVSX1NFQykgKyB0cy0+
+dHZfbnNlYzsNCj4gIH0NCg0KQWRkaW5nIHR2X25zZWMgY2FuIHN0aWxsIG92ZXJmbG93IC0gIGV2
+ZW4gaWYgdHZfbnNlYyBpcyBib3VuZGVkIHRvICsvLSAxIHNlY29uZC4NClRoaXMgaXMgbm8gbW9y
+ZSAnZ2FyYmFnZSBpbicgPT4gJ2dhcmJhZ2Ugb3V0JyB0aGFuIHRoZSBjb2RlIHdpdGhvdXQgdGhl
+DQptdWx0aXBseSB1bmRlci9vdmVyZmxvdyBjaGVjay4NCg0KCURhdmlkDQoNCi0NClJlZ2lzdGVy
+ZWQgQWRkcmVzcyBMYWtlc2lkZSwgQnJhbWxleSBSb2FkLCBNb3VudCBGYXJtLCBNaWx0b24gS2V5
+bmVzLCBNSzEgMVBULCBVSw0KUmVnaXN0cmF0aW9uIE5vOiAxMzk3Mzg2IChXYWxlcykNCg==
 
-Commit-ID:     39ff83f2f6cc5cc1458dfcea9697f96338210beb
-Gitweb:        https://git.kernel.org/tip/39ff83f2f6cc5cc1458dfcea9697f96338210beb
-Author:        Lukas Hannen <lukas.hannen@opensource.tttech-industrial.com>
-AuthorDate:    Wed, 25 Aug 2021 10:12:43 
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 08 Sep 2021 17:44:26 +02:00
-
-time: Handle negative seconds correctly in timespec64_to_ns()
-
-timespec64_ns() prevents multiplication overflows by comparing the seconds
-value of the timespec to KTIME_SEC_MAX. If the value is greater or equal it
-returns KTIME_MAX.
-
-But that check casts the signed seconds value to unsigned which makes the
-comparision true for all negative values and therefore return wrongly
-KTIME_MAX.
-
-Negative second values are perfectly valid and required in some places,
-e.g. ptp_clock_adjtime().
-
-Remove the cast and add a check for the negative boundary which is required
-to prevent undefined behaviour due to multiplication underflow.
-
-Fixes: cb47755725da ("time: Prevent undefined behaviour in timespec64_to_ns()")'
-Signed-off-by: Lukas Hannen <lukas.hannen@opensource.tttech-industrial.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/AM6PR01MB541637BD6F336B8FFB72AF80EEC69@AM6PR01MB5416.eurprd01.prod.exchangelabs.com
----
- include/linux/time64.h |  9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
-
-diff --git a/include/linux/time64.h b/include/linux/time64.h
-index 5117cb5..81b9686 100644
---- a/include/linux/time64.h
-+++ b/include/linux/time64.h
-@@ -25,7 +25,9 @@ struct itimerspec64 {
- #define TIME64_MIN			(-TIME64_MAX - 1)
- 
- #define KTIME_MAX			((s64)~((u64)1 << 63))
-+#define KTIME_MIN			(-KTIME_MAX - 1)
- #define KTIME_SEC_MAX			(KTIME_MAX / NSEC_PER_SEC)
-+#define KTIME_SEC_MIN			(KTIME_MIN / NSEC_PER_SEC)
- 
- /*
-  * Limits for settimeofday():
-@@ -124,10 +126,13 @@ static inline bool timespec64_valid_settod(const struct timespec64 *ts)
-  */
- static inline s64 timespec64_to_ns(const struct timespec64 *ts)
- {
--	/* Prevent multiplication overflow */
--	if ((unsigned long long)ts->tv_sec >= KTIME_SEC_MAX)
-+	/* Prevent multiplication overflow / underflow */
-+	if (ts->tv_sec >= KTIME_SEC_MAX)
- 		return KTIME_MAX;
- 
-+	if (ts->tv_sec <= KTIME_SEC_MIN)
-+		return KTIME_MIN;
-+
- 	return ((s64) ts->tv_sec * NSEC_PER_SEC) + ts->tv_nsec;
- }
- 
