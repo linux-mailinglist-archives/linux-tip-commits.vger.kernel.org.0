@@ -2,76 +2,108 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E15D94011E9
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  6 Sep 2021 00:21:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C082C40387B
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  8 Sep 2021 13:01:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234277AbhIEWJs (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 5 Sep 2021 18:09:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38426 "EHLO
+        id S232630AbhIHLCP (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 8 Sep 2021 07:02:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40362 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234072AbhIEWJr (ORCPT
+        with ESMTP id S233694AbhIHLCM (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 5 Sep 2021 18:09:47 -0400
-Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4297C061757
-        for <linux-tip-commits@vger.kernel.org>; Sun,  5 Sep 2021 15:08:43 -0700 (PDT)
-Received: by mail-ed1-x542.google.com with SMTP id s25so6820758edw.0
-        for <linux-tip-commits@vger.kernel.org>; Sun, 05 Sep 2021 15:08:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
-        bh=UWVukDYpnouo2TmAsoiK3YFI/UCntBVDF8OdhEqH+sQ=;
-        b=mhbMyjIs+IurYsa+ZFILfHldwfuyD6972QSL+wnoUPLnMGmc3oGzxbUc7SoBs+h/KR
-         7V/VT6TVgLV1L5DLfFxxmM8aEEeWpatTDbynGfJQllgPeLVCr7dlWX9b5CDwqdcs47Hv
-         6DKnpFPgaD1dwVLndpKVzC6nq4dx8ei4zph9BnhLH06vJD3r5cEDxF5fUgNAb420CXGP
-         GEVPx8sSA6Yw7zZc8GsUCvzw++22yMVfeg8RBolpvjAnZEleQyhRtvtjCMUMGwOVAnE0
-         xZ9trru3QOgNzhq+XAD+kfdmu7gr5rO+tXwS+ShHHGiUjqC800/AW350GLvoJz9Viv9f
-         649g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:sender:from:date
-         :message-id:subject:to;
-        bh=UWVukDYpnouo2TmAsoiK3YFI/UCntBVDF8OdhEqH+sQ=;
-        b=gmUqwUeHPQ0itMBYu+ysVW1FIXyw+JZ2PkYDIjxUROWYdJ7fL0gCaNlWOJW1ZcwfvW
-         ISr4GDc3PhubRJj+CIxKSYIVhWohFN4aDUHk/SlPMZeufKfD3Do+i4/7TaGRuKd6i5z8
-         evycGEELeFrBXImQiXbSLUW5j4KAwxgb0E2nQ3oEsa3631c18YqykByxGNrao7IStioA
-         k05t0Rl42dOWQ2wBDn6wdth/iFK7CXEHojswGfnKseGFQNbmgqkZCfluViRHuvNomhzm
-         vC1ra58n0fulxOFz0kN5AaiFwDzeTp/G6uSniWUF9elRqG2EOp9nib++oyc/BWIAnVv1
-         nxTg==
-X-Gm-Message-State: AOAM533VoQX+/z7FwM6A7jtfHQsS+JG9MrPpOrUnkpNrIDRDc4Xhy1US
-        tA6UNgDYs/GSeaIEiVWqGUGD2I2pXFxMSIXoYuY=
-X-Google-Smtp-Source: ABdhPJwclA7y7b909In3IRs0oNy7VjPQ/HxVgVtZQ99b7ntLZVy6q5HydyrbRzsypu68H3ImOGZezmBnutpv2PNigwI=
-X-Received: by 2002:aa7:c993:: with SMTP id c19mr10284054edt.239.1630879722292;
- Sun, 05 Sep 2021 15:08:42 -0700 (PDT)
+        Wed, 8 Sep 2021 07:02:12 -0400
+Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 461B6C061575;
+        Wed,  8 Sep 2021 04:01:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=NBB/pE6kVFPym7y5im4H4R75sKk+SHXomtuzG57X2fg=; b=OTNXMORpOInjk+Ph5RpPeN2/aY
+        rZiZp9Ef9TC++jLN8rIHqpe8ByMJtm2QR0MUo0qs0wEA3W5/IbDa1sMRe+FSqg3zpuV+8weXgUMYg
+        edAz0BkHy1kg8onASopvMCrRmO0ea1xtENHFmY/okEJPU9Qh0lr5mgxwTe3qrZq34BXiMtn5vBEJV
+        k3pF0HsPyvdBk104yry6D+Uf2PDFKJfMsAg9MM4sPoBG9a433U8gl6ct4g6Si/mUTPgkmWvoSeuyh
+        NrpIjA0r2pYPuh1H2Ap/OT4/3EAqge+2cgoWZvkchvmJhfCEXXm3aFNDdeNt3xsjDB+K5rxKUwi1v
+        nYVYybFg==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
+        by desiato.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1mNvJb-001cqL-Jy; Wed, 08 Sep 2021 11:00:27 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 431D0300362;
+        Wed,  8 Sep 2021 13:00:26 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 11D81212EAB69; Wed,  8 Sep 2021 13:00:26 +0200 (CEST)
+Date:   Wed, 8 Sep 2021 13:00:26 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     stern@rowland.harvard.edu, alexander.shishkin@linux.intel.com,
+        hpa@zytor.com, andrea.parri@amarulasolutions.com, mingo@kernel.org,
+        paulmck@kernel.org, vincent.weaver@maine.edu, tglx@linutronix.de,
+        jolsa@redhat.com, acme@redhat.com, torvalds@linux-foundation.org,
+        linux-kernel@vger.kernel.org, eranian@google.com, will@kernel.org
+Cc:     linux-tip-commits@vger.kernel.org
+Subject: Re: [tip:locking/core] tools/memory-model: Add extra ordering for
+ locks and remove it for ordinary release/acquire
+Message-ID: <YTiXyiA92dM9726M@hirez.programming.kicks-ass.net>
+References: <20180926182920.27644-2-paulmck@linux.ibm.com>
+ <tip-6e89e831a90172bc3d34ecbba52af5b9c4a447d1@git.kernel.org>
 MIME-Version: 1.0
-Reply-To: aliuhuadams@gmail.com
-Sender: mrtyiacalidmar@gmail.com
-Received: by 2002:a55:f60b:0:b0:118:63d4:dc05 with HTTP; Sun, 5 Sep 2021
- 15:08:41 -0700 (PDT)
-From:   Aliuhu Adams <aliuhuadamss@gmail.com>
-Date:   Sun, 5 Sep 2021 22:08:41 +0000
-X-Google-Sender-Auth: ZSv_ocvko_SdRhOluVm_gytmp3k
-Message-ID: <CAFMfcugjuVadcS8zEgp0McDSqbevfKnByU3K6A5SN7CkCroQbw@mail.gmail.com>
-Subject: From Aliuhu Adams
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <tip-6e89e831a90172bc3d34ecbba52af5b9c4a447d1@git.kernel.org>
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
--- 
-From Aliuhu Adams,
+On Tue, Oct 02, 2018 at 03:11:10AM -0700, tip-bot for Alan Stern wrote:
+> Commit-ID:  6e89e831a90172bc3d34ecbba52af5b9c4a447d1
+> Gitweb:     https://git.kernel.org/tip/6e89e831a90172bc3d34ecbba52af5b9c4a447d1
+> Author:     Alan Stern <stern@rowland.harvard.edu>
+> AuthorDate: Wed, 26 Sep 2018 11:29:17 -0700
+> Committer:  Ingo Molnar <mingo@kernel.org>
+> CommitDate: Tue, 2 Oct 2018 10:28:01 +0200
+> 
+> tools/memory-model: Add extra ordering for locks and remove it for ordinary release/acquire
+> 
+> More than one kernel developer has expressed the opinion that the LKMM
+> should enforce ordering of writes by locking.  In other words, given
+> the following code:
+> 
+> 	WRITE_ONCE(x, 1);
+> 	spin_unlock(&s):
+> 	spin_lock(&s);
+> 	WRITE_ONCE(y, 1);
+> 
+> the stores to x and y should be propagated in order to all other CPUs,
+> even though those other CPUs might not access the lock s.  In terms of
+> the memory model, this means expanding the cumul-fence relation.
 
-My name is Aliuhu Adams, from Burkina Faso
+Let me revive this old thread... recently we ran into the case:
 
-Please, I am contacting you for urgent assistance to help me move my
-inheritance to your country and help me to invest in your country.
+	WRITE_ONCE(x, 1);
+	spin_unlock(&s):
+	spin_lock(&r);
+	WRITE_ONCE(y, 1);
 
-The amount is 14 million dollars and I want this money to be moved to your
-country urgently with me because of the fear of the killer of my parents.
+which is distinct from the original in that UNLOCK and LOCK are not on
+the same variable.
 
-I shall give you more details when I hear from you.
+I'm arguing this should still be RCtso by reason of:
 
-Thank you,
+  spin_lock() requires an atomic-acquire which:
 
-Aliuhu Adams
+    TSO-arch)		implies smp_mb()
+    ARM64)		is RCsc for any stlr/ldar
+    Power)		LWSYNC
+    Risc-V)		fence r , rw
+    *)			explicitly has smp_mb()
+
+
+However, Boqun points out that the memory model disagrees, per:
+
+  https://lkml.kernel.org/r/YTI2UjKy+C7LeIf+@boqun-archlinux
+
+Is this an error/oversight of the memory model, or did I miss a subtlety
+somewhere?
