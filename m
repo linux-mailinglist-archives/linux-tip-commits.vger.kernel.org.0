@@ -2,114 +2,110 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 44CB7404625
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  9 Sep 2021 09:28:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 880CD404717
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  9 Sep 2021 10:34:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352572AbhIIH3c (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 9 Sep 2021 03:29:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34860 "EHLO
+        id S231436AbhIIIfy (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 9 Sep 2021 04:35:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49926 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350906AbhIIH3b (ORCPT
+        with ESMTP id S230250AbhIIIfx (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 9 Sep 2021 03:29:31 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 762FBC061575;
-        Thu,  9 Sep 2021 00:28:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=6l+bVRkZAR24KpvUarH2ZXKDkGOGMuRedBuOO37bodQ=; b=cyvi8oh3sb3R7ofchE9i+XMLVo
-        efFEzwsvzCAxstqvZGzEkbH9IIF1L7SgHkRqw4vDdImw2c/0q+0upl0jb/oR7FhIVgZiRkwOHcpHc
-        PGmocsa8SzH9WTdgs7sHLzjK13Hn8/VqVNGhHZzIgEWmoLJmojyuE9Xp8S1aTstN+Mtqomf9T1tJg
-        o8ThcJdGWoLvXpb3xtLtI9cjN9AWLLWfc2Z7yo8fYBrRF1zbWttQdb48On5GFQI6SaHv8C04+Kv95
-        d+533NK6TyzHCLVlIbT1nsJhhsIXjixvSVxK2SdyzmmPHt8iKJi+r/Pp1SpSpqUr/yYPJzD8eG/Z5
-        oJq2ikLw==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
-        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1mOERB-009a4c-CB; Thu, 09 Sep 2021 07:25:49 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 049853001C0;
-        Thu,  9 Sep 2021 09:25:30 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id DA90B2015E4B3; Thu,  9 Sep 2021 09:25:30 +0200 (CEST)
-Date:   Thu, 9 Sep 2021 09:25:30 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Alan Stern <stern@rowland.harvard.edu>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Peter Anvin <hpa@zytor.com>,
-        Andrea Parri <parri.andrea@gmail.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Vince Weaver <vincent.weaver@maine.edu>,
+        Thu, 9 Sep 2021 04:35:53 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 889C6C061575;
+        Thu,  9 Sep 2021 01:34:44 -0700 (PDT)
+Date:   Thu, 09 Sep 2021 08:34:41 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1631176482;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=80QALolpCs7AaTRTKPDWXh+r0eyW85Gk82eTC53eMPI=;
+        b=WUCpLxMzdK3se/kKe+cGQdxJecKcpXqI/3a5bpJ6ab5CtD86aXHJ+wVL2s6iIhPsn1VIIf
+        hLjeuSW/5JjLfGcBUFMCA/ztYcmp1OvSmmMWxK7gj/3EU0KFuKKbhPYkRlH2/8LU0zgLqB
+        vOk7yOtb9iG956q+Un/q4n8mNr2R4xNpl+2jRTvZ9UMM3gKOjWZFpuIC+l8kZrDLA09Uvn
+        DbQvh8Vo5lQdfj9S3MWDUkTJQTEKvfxeYk65kYO8HhNHnMgcq/hs0lEQh+GA8N8PgxypwL
+        DrrmODycdhTsBsdEeQEMCbB5y02qqzT6dtRiBLpS/NJjyy28ti4ksi5dBCNk3Q==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1631176482;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=80QALolpCs7AaTRTKPDWXh+r0eyW85Gk82eTC53eMPI=;
+        b=AFZ5wdrtNb/depnNpKLuv0tU30vHuHBqydht30pbQqaBCPk542QrgSlWQ54c45FnOVr3A4
+        149EmsIc7zPm9tCA==
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: locking/urgent] locking/rtmutex: Fix ww_mutex deadlock check
+Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Jiri Olsa <jolsa@redhat.com>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Stephane Eranian <eranian@google.com>,
-        Will Deacon <will@kernel.org>,
-        linux-tip-commits@vger.kernel.org
-Subject: Re: [tip:locking/core] tools/memory-model: Add extra ordering for
- locks and remove it for ordinary release/acquire
-Message-ID: <YTm26u9i3hpjrNpr@hirez.programming.kicks-ass.net>
-References: <20180926182920.27644-2-paulmck@linux.ibm.com>
- <tip-6e89e831a90172bc3d34ecbba52af5b9c4a447d1@git.kernel.org>
- <YTiXyiA92dM9726M@hirez.programming.kicks-ass.net>
- <YTiiC1mxzHyUJ47F@hirez.programming.kicks-ass.net>
- <20210908144217.GA603644@rowland.harvard.edu>
- <CAHk-=wiXJygbW+_1BdSX6M8j6z4w8gRSHVcaD5saihaNJApnoQ@mail.gmail.com>
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <YS9La56fHMiCCo75@hirez.programming.kicks-ass.net>
+References: <YS9La56fHMiCCo75@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHk-=wiXJygbW+_1BdSX6M8j6z4w8gRSHVcaD5saihaNJApnoQ@mail.gmail.com>
+Message-ID: <163117648132.25758.8161104732621115882.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Wed, Sep 08, 2021 at 09:08:33AM -0700, Linus Torvalds wrote:
+The following commit has been merged into the locking/urgent branch of tip:
 
-> So if this is purely a RISC-V thing,
+Commit-ID:     e5480572706da1b2c2dc2c6484eab64f92b9263b
+Gitweb:        https://git.kernel.org/tip/e5480572706da1b2c2dc2c6484eab64f92b9263b
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Wed, 01 Sep 2021 11:44:11 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Thu, 09 Sep 2021 10:31:22 +02:00
 
-Just to clarify, I think the current RISC-V thing is stonger than
-PowerPC, but maybe not as strong as say ARM64, but RISC-V memory
-ordering is still somewhat hazy to me.
+locking/rtmutex: Fix ww_mutex deadlock check
 
-Specifically, the sequence:
+Dan reported that rt_mutex_adjust_prio_chain() can be called with
+.orig_waiter == NULL however commit a055fcc132d4 ("locking/rtmutex: Return
+success on deadlock for ww_mutex waiters") unconditionally dereferences it.
 
-	/* critical section s */
-	WRITE_ONCE(x, 1);
-	FENCE RW, W
-	WRITE_ONCE(s.lock, 0);		/* store S */
-	AMOSWAP %0, 1, r.lock		/* store R */
-	FENCE R, RW
-	WRITE_ONCE(y, 1);
-	/* critical section r */
+Since both call-sites that have .orig_waiter == NULL don't care for the
+return value, simply disable the deadlock squash by adding the NULL check.
 
-fully separates section s from section r, as in RW->RW ordering
-(possibly not as strong as smp_mb() though), while on PowerPC it would
-only impose TSO ordering between sections.
+Notably, both callers use the deadlock condition as a termination condition
+for the iteration; once detected, it is sure that (de)boosting is done.
+Arguably step [3] would be a more natural termination point, but it's
+dubious whether adding a third deadlock detection state would improve the
+code.
 
-The AMOSWAP is a RmW and as such matches the W from the RW->W fence,
-similarly it marches the R from the R->RW fence, yielding an:
+Fixes: a055fcc132d4 ("locking/rtmutex: Return success on deadlock for ww_mutex waiters")
+Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Acked-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Link: https://lore.kernel.org/r/YS9La56fHMiCCo75@hirez.programming.kicks-ass.net
 
-	RW->  W
-	    RmW
-	    R  ->RW
+---
+ kernel/locking/rtmutex.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-ordering. It's the stores S and R that can be re-ordered, but not the
-sections themselves (same on PowerPC and many others).
-
-Clarification from a RISC-V enabled person would be appreciated.
-
-> then I think it's entirely reasonable to
-> 
->         spin_unlock(&r);
->         spin_lock(&s);
-> 
-> cannot be reordered.
-
-I'm obviously completely in favour of that :-)
+diff --git a/kernel/locking/rtmutex.c b/kernel/locking/rtmutex.c
+index 8eabdc7..6bb116c 100644
+--- a/kernel/locking/rtmutex.c
++++ b/kernel/locking/rtmutex.c
+@@ -753,7 +753,7 @@ static int __sched rt_mutex_adjust_prio_chain(struct task_struct *task,
+ 		 * other configuration and we fail to report; also, see
+ 		 * lockdep.
+ 		 */
+-		if (IS_ENABLED(CONFIG_PREEMPT_RT) && orig_waiter->ww_ctx)
++		if (IS_ENABLED(CONFIG_PREEMPT_RT) && orig_waiter && orig_waiter->ww_ctx)
+ 			ret = 0;
+ 
+ 		raw_spin_unlock(&lock->wait_lock);
