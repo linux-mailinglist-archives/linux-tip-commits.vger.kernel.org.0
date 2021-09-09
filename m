@@ -2,54 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EFC7A40490F
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  9 Sep 2021 13:18:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A87C404911
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  9 Sep 2021 13:18:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234862AbhIILTg (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 9 Sep 2021 07:19:36 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:58478 "EHLO
+        id S235048AbhIILTh (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 9 Sep 2021 07:19:37 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:58502 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234529AbhIILTf (ORCPT
+        with ESMTP id S234953AbhIILTh (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 9 Sep 2021 07:19:35 -0400
-Date:   Thu, 09 Sep 2021 11:18:24 -0000
+        Thu, 9 Sep 2021 07:19:37 -0400
+Date:   Thu, 09 Sep 2021 11:18:25 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1631186305;
+        s=2020; t=1631186306;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=oTTxEH8xFSQJF9A0O70Kwt77HWgnbVfMMOOrB3eogkw=;
-        b=D/AlaiBDvKahiXtecxqOWnUnCRJTZay5PTPywrKhTUZDN3yX1bn6G6rqTAxPraEwfZrb52
-        kDnDWLPg51P612oEbQ2PgcEJ12hM5enOKDstmECP3DyhJFWA1+Q0c5BqY28DWMEVhk7fI6
-        urfDA6mefQ14VT3/9hnEpPsWi2hmweUalVQt2PjrPf5iPiZVlytatIqkC9+9WvAY5fDtcH
-        nURpcSBj0FcYF2pGpzJxa26xtWYwRtRFYaYOXiY40g1m6l9I3VOrApmlelW82aHX32wjbC
-        ppDl9sMlZdxgnuWrKVe8JC5+tqi1tY3ahkP1mUOk8qKySugxCsOLzuzKwWWgnw==
+        bh=c9LxyIzT7tbuE9vPDKoSKeP6OATfuYQLOjfEXQqOtGM=;
+        b=UgjlAaLTc5LqdeuENifE4uic9vfRcjmNtAVrfpNwTnJczSR6sGYanwwGvkJgkkvR4lJ9pI
+        Z2pResiM2v+ZOT/D63Lzv4U6+Xz8RJfllH5TzpZelwpchtgkhylv1+3hRpX5RTsCeGWW5p
+        zyu8A87kp+qKufQD1krVe6Nd88tqPSEyZZpcTWWkm8J5UpfhRllVTDuvjngnug7kyhwCJj
+        SGtgKuavbHdqkaNOxWQK3+X2Z0FYOuaQdVJR971DTBIe6o2FdlKjN9qiEOFsyfJ+iSJ1in
+        xOQ3UFh7v62ra0epWSW3gVWDfiKpcV2+6Y1bCAQTmZXEpp29zqgg6RXs+RWo5Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1631186305;
+        s=2020e; t=1631186306;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=oTTxEH8xFSQJF9A0O70Kwt77HWgnbVfMMOOrB3eogkw=;
-        b=5Bqj1pOVPAf6yQWeL58or2WTrtg03Tk+n7DzvqhJxn3Jrgz+uOqWpgoNDxFObQHCbEafDN
-        4VtCC3RQp1gI5fCA==
-From:   "tip-bot2 for Li Zhijian" <tip-bot2@linutronix.de>
+        bh=c9LxyIzT7tbuE9vPDKoSKeP6OATfuYQLOjfEXQqOtGM=;
+        b=5/HdnwIURWHjfScaRNspGpl7yI59aBRb5SVnL4cDPh27Vlral8xcMmoKd9aW7fjAAVhqnJ
+        oOT0+uWPG6nTuoBw==
+From:   "tip-bot2 for Huaixin Chang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] kselftests/sched: cleanup the child processes
-Cc:     kernel test robot <lkp@intel.com>,
-        Li Zhijian <lizhijian@cn.fujitsu.com>,
+Subject: [tip: sched/core] sched/fair: Add cfs bandwidth burst statistics
+Cc:     Shanpei Chen <shanpeic@linux.alibaba.com>,
+        Tianchen Ding <dtcccc@linux.alibaba.com>,
+        Huaixin Chang <changhuaixin@linux.alibaba.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Chris Hyser <chris.hyser@oracle.com>, x86@kernel.org,
+        Daniel Jordan <daniel.m.jordan@oracle.com>,
+        Tejun Heo <tj@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210902024333.75983-1-lizhijian@cn.fujitsu.com>
-References: <20210902024333.75983-1-lizhijian@cn.fujitsu.com>
+In-Reply-To: <20210830032215.16302-2-changhuaixin@linux.alibaba.com>
+References: <20210830032215.16302-2-changhuaixin@linux.alibaba.com>
 MIME-Version: 1.0
-Message-ID: <163118630434.25758.9828481837978815456.tip-bot2@tip-bot2>
+Message-ID: <163118630598.25758.15834865249735555102.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,131 +62,119 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     9964e5cf7598cbef7ebd34f8c3a760019dfb55e3
-Gitweb:        https://git.kernel.org/tip/9964e5cf7598cbef7ebd34f8c3a760019dfb55e3
-Author:        Li Zhijian <lizhijian@cn.fujitsu.com>
-AuthorDate:    Thu, 02 Sep 2021 10:43:33 +08:00
+Commit-ID:     9525616d056e29f7900796cb0c19b38ad274b0eb
+Gitweb:        https://git.kernel.org/tip/9525616d056e29f7900796cb0c19b38ad274b0eb
+Author:        Huaixin Chang <changhuaixin@linux.alibaba.com>
+AuthorDate:    Mon, 30 Aug 2021 11:22:14 +08:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Thu, 09 Sep 2021 11:27:32 +02:00
 
-kselftests/sched: cleanup the child processes
+sched/fair: Add cfs bandwidth burst statistics
 
-Previously, 'make -C sched run_tests' will block forever when it occurs
-something wrong where the *selftests framework* is waiting for its child
-processes to exit.
+Two new statistics are introduced to show the internal of burst feature
+and explain why burst helps or not.
 
-[root@iaas-rpma sched]# ./cs_prctl_test
+nr_bursts:  number of periods bandwidth burst occurs
+burst_time: cumulative wall-time (in nanoseconds) that any cpus has
+	    used above quota in respective periods
 
- ## Create a thread/process/process group hiearchy
-Not a core sched system
-tid=74985, / tgid=74985 / pgid=74985: ffffffffffffffff
-Not a core sched system
-    tid=74986, / tgid=74986 / pgid=74985: ffffffffffffffff
-Not a core sched system
-        tid=74988, / tgid=74986 / pgid=74985: ffffffffffffffff
-Not a core sched system
-        tid=74989, / tgid=74986 / pgid=74985: ffffffffffffffff
-Not a core sched system
-        tid=74990, / tgid=74986 / pgid=74985: ffffffffffffffff
-Not a core sched system
-    tid=74987, / tgid=74987 / pgid=74985: ffffffffffffffff
-Not a core sched system
-        tid=74991, / tgid=74987 / pgid=74985: ffffffffffffffff
-Not a core sched system
-        tid=74992, / tgid=74987 / pgid=74985: ffffffffffffffff
-Not a core sched system
-        tid=74993, / tgid=74987 / pgid=74985: ffffffffffffffff
-
-Not a core sched system
-(268) FAILED: get_cs_cookie(0) == 0
-
- ## Set a cookie on entire process group
--1 = prctl(62, 1, 0, 2, 0)
-core_sched create failed -- PGID: Invalid argument
-(cs_prctl_test.c:272) -
-[root@iaas-rpma sched]# ps
-    PID TTY          TIME CMD
-   4605 pts/2    00:00:00 bash
-  74986 pts/2    00:00:00 cs_prctl_test
-  74987 pts/2    00:00:00 cs_prctl_test
-  74999 pts/2    00:00:00 ps
-
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Li Zhijian <lizhijian@cn.fujitsu.com>
+Co-developed-by: Shanpei Chen <shanpeic@linux.alibaba.com>
+Signed-off-by: Shanpei Chen <shanpeic@linux.alibaba.com>
+Co-developed-by: Tianchen Ding <dtcccc@linux.alibaba.com>
+Signed-off-by: Tianchen Ding <dtcccc@linux.alibaba.com>
+Signed-off-by: Huaixin Chang <changhuaixin@linux.alibaba.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Chris Hyser <chris.hyser@oracle.com>
-Link: https://lore.kernel.org/r/20210902024333.75983-1-lizhijian@cn.fujitsu.com
+Reviewed-by: Daniel Jordan <daniel.m.jordan@oracle.com>
+Acked-by: Tejun Heo <tj@kernel.org>
+Link: https://lore.kernel.org/r/20210830032215.16302-2-changhuaixin@linux.alibaba.com
 ---
- tools/testing/selftests/sched/cs_prctl_test.c | 28 +++++++++++-------
- 1 file changed, 18 insertions(+), 10 deletions(-)
+ kernel/sched/core.c  | 13 ++++++++++---
+ kernel/sched/fair.c  |  9 +++++++++
+ kernel/sched/sched.h |  3 +++
+ 3 files changed, 22 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/sched/cs_prctl_test.c b/tools/testing/selftests/sched/cs_prctl_test.c
-index 63fe652..1829383 100644
---- a/tools/testing/selftests/sched/cs_prctl_test.c
-+++ b/tools/testing/selftests/sched/cs_prctl_test.c
-@@ -64,6 +64,17 @@ enum pid_type {PIDTYPE_PID = 0, PIDTYPE_TGID, PIDTYPE_PGID};
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 953ff36..2877138 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -10244,6 +10244,9 @@ static int cpu_cfs_stat_show(struct seq_file *sf, void *v)
+ 		seq_printf(sf, "wait_sum %llu\n", ws);
+ 	}
  
- const int THREAD_CLONE_FLAGS = CLONE_THREAD | CLONE_SIGHAND | CLONE_FS | CLONE_VM | CLONE_FILES;
++	seq_printf(sf, "nr_bursts %d\n", cfs_b->nr_burst);
++	seq_printf(sf, "burst_time %llu\n", cfs_b->burst_time);
++
+ 	return 0;
+ }
+ #endif /* CONFIG_CFS_BANDWIDTH */
+@@ -10359,16 +10362,20 @@ static int cpu_extra_stat_show(struct seq_file *sf,
+ 	{
+ 		struct task_group *tg = css_tg(css);
+ 		struct cfs_bandwidth *cfs_b = &tg->cfs_bandwidth;
+-		u64 throttled_usec;
++		u64 throttled_usec, burst_usec;
  
-+struct child_args {
-+	int num_threads;
-+	int pfd[2];
-+	int cpid;
-+	int thr_tids[MAX_THREADS];
-+};
-+
-+static struct child_args procs[MAX_PROCESSES];
-+static int num_processes = 2;
-+static int need_cleanup = 0;
-+
- static int _prctl(int option, unsigned long arg2, unsigned long arg3, unsigned long arg4,
- 		  unsigned long arg5)
+ 		throttled_usec = cfs_b->throttled_time;
+ 		do_div(throttled_usec, NSEC_PER_USEC);
++		burst_usec = cfs_b->burst_time;
++		do_div(burst_usec, NSEC_PER_USEC);
+ 
+ 		seq_printf(sf, "nr_periods %d\n"
+ 			   "nr_throttled %d\n"
+-			   "throttled_usec %llu\n",
++			   "throttled_usec %llu\n"
++			   "nr_bursts %d\n"
++			   "burst_usec %llu\n",
+ 			   cfs_b->nr_periods, cfs_b->nr_throttled,
+-			   throttled_usec);
++			   throttled_usec, cfs_b->nr_burst, burst_usec);
+ 	}
+ #endif
+ 	return 0;
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index b27ed8b..3594884 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -4686,11 +4686,20 @@ static inline u64 sched_cfs_bandwidth_slice(void)
+  */
+ void __refill_cfs_bandwidth_runtime(struct cfs_bandwidth *cfs_b)
  {
-@@ -80,8 +91,14 @@ static int _prctl(int option, unsigned long arg2, unsigned long arg3, unsigned l
- #define handle_error(msg) __handle_error(__FILE__, __LINE__, msg)
- static void __handle_error(char *fn, int ln, char *msg)
- {
-+	int pidx;
- 	printf("(%s:%d) - ", fn, ln);
- 	perror(msg);
-+	if (need_cleanup) {
-+		for (pidx = 0; pidx < num_processes; ++pidx)
-+			kill(procs[pidx].cpid, 15);
-+		need_cleanup = 0;
++	s64 runtime;
++
+ 	if (unlikely(cfs_b->quota == RUNTIME_INF))
+ 		return;
+ 
+ 	cfs_b->runtime += cfs_b->quota;
++	runtime = cfs_b->runtime_snap - cfs_b->runtime;
++	if (runtime > 0) {
++		cfs_b->burst_time += runtime;
++		cfs_b->nr_burst++;
 +	}
- 	exit(EXIT_FAILURE);
++
+ 	cfs_b->runtime = min(cfs_b->runtime, cfs_b->quota + cfs_b->burst);
++	cfs_b->runtime_snap = cfs_b->runtime;
  }
  
-@@ -108,13 +125,6 @@ static unsigned long get_cs_cookie(int pid)
- 	return cookie;
- }
+ static inline struct cfs_bandwidth *tg_cfs_bandwidth(struct task_group *tg)
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index 6b2d8b7..094ea86 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -369,6 +369,7 @@ struct cfs_bandwidth {
+ 	u64			quota;
+ 	u64			runtime;
+ 	u64			burst;
++	u64			runtime_snap;
+ 	s64			hierarchical_quota;
  
--struct child_args {
--	int num_threads;
--	int pfd[2];
--	int cpid;
--	int thr_tids[MAX_THREADS];
--};
--
- static int child_func_thread(void __attribute__((unused))*arg)
- {
- 	while (1)
-@@ -214,10 +224,7 @@ void _validate(int line, int val, char *msg)
- 
- int main(int argc, char *argv[])
- {
--	struct child_args procs[MAX_PROCESSES];
--
- 	int keypress = 0;
--	int num_processes = 2;
- 	int num_threads = 3;
- 	int delay = 0;
- 	int res = 0;
-@@ -264,6 +271,7 @@ int main(int argc, char *argv[])
- 
- 	printf("\n## Create a thread/process/process group hiearchy\n");
- 	create_processes(num_processes, num_threads, procs);
-+	need_cleanup = 1;
- 	disp_processes(num_processes, procs);
- 	validate(get_cs_cookie(0) == 0);
+ 	u8			idle;
+@@ -381,7 +382,9 @@ struct cfs_bandwidth {
+ 	/* Statistics: */
+ 	int			nr_periods;
+ 	int			nr_throttled;
++	int			nr_burst;
+ 	u64			throttled_time;
++	u64			burst_time;
+ #endif
+ };
  
