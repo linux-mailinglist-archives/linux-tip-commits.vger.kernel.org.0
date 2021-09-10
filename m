@@ -2,52 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C3BD407379
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 11 Sep 2021 00:45:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 15CD640737B
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 11 Sep 2021 00:45:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230210AbhIJWq0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 10 Sep 2021 18:46:26 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:41358 "EHLO
+        id S232455AbhIJWq2 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 10 Sep 2021 18:46:28 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:41364 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230018AbhIJWq0 (ORCPT
+        with ESMTP id S231225AbhIJWq1 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 10 Sep 2021 18:46:26 -0400
-Date:   Fri, 10 Sep 2021 22:45:12 -0000
+        Fri, 10 Sep 2021 18:46:27 -0400
+Date:   Fri, 10 Sep 2021 22:45:13 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1631313913;
+        s=2020; t=1631313914;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=/Czemq6M7VuzZauK9Ub7w1sd6p0om74tLjiFnNA9SH4=;
-        b=u6l/cH754WFAEbhQi3ggKTM8r4Aw3NgFMYo+Lw0slTSKfKXhO+CoyWDOW4G60VpgXcwess
-        Fc6aTLlQjodjoySKVrN3+gHOmg0CE81PhPaMAZZ0eo6YYZwFFZYddjMpxQQNK2irANnefV
-        8oRjCoDNr/BZKLvqAoPPTAiPMcf6b32RNamt1r+tO0p5i6jWWq6q01tRCDjtYPby66CF+9
-        l6bOrX8H84hnCNXZG1gh0J2H1Ce4X045kGWVe1bSaH+saC4ABG8rEpoLec6ghJiEsuTMgk
-        6kZ0Zrizv7Ah8HfV2k102e81wREojaimd/4PcApYLjrZEa7Vtkli7UHlZId1Lg==
+        bh=XY59VXYolSV0S9iwLnVywnc5P8orSXzToQx88qpUIio=;
+        b=zz4KtExef62sWIUAocnQUE1EhY6nLxssNzcdP8M3fe0fR9wSNeX/RBTaFgmdIoW2hhHPP0
+        VMatbYaxCYD92SKi5bdQAAuYHdYueRYWGz1EeHvWj4DYk5GIYxA14w6zOQ44O1iX3bn4+C
+        jh6uqlBmU7pG+2tjdyRFl3JlVj1QaWzJHEvXA+MNMKtmvzOFtfw4QBEh6V8V1ImYQLIfhx
+        GTcXyWCihzxkgofZPwvSij3cP2v6rpeEF2HteIe4gVjlwBm0UWtz0Jn1jQqB03EhauzWBj
+        n/dzkTvSF5iOQhqZCwD6tS4gNpc4ZIT2ChT++oGzzqkwsZVcMFYMcVrG5OCQ6A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1631313913;
+        s=2020e; t=1631313914;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=/Czemq6M7VuzZauK9Ub7w1sd6p0om74tLjiFnNA9SH4=;
-        b=CjJRDTHO7q0mES5UqqADTJcAzEOWz03R1Z3YN1PNxxzdpCJ2tm7V3oC4wpCnQ0wksnKmvB
-        lZFOcobVkxIlenAQ==
+        bh=XY59VXYolSV0S9iwLnVywnc5P8orSXzToQx88qpUIio=;
+        b=SQWyCGEFcreEDudAKzyxLI+q7VyMdQu678at5fOQ2nPF8OSTD/+6CDvmMjvPEaxx+R78F5
+        jmcYWXn4TI3T3wCA==
 From:   "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: smp/urgent] cpu/hotplug: Remove deprecated CPU-hotplug functions.
+Subject: [tip: smp/urgent] thermal: Replace deprecated CPU-hotplug functions.
 Cc:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
         Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210803141621.780504-39-bigeasy@linutronix.de>
-References: <20210803141621.780504-39-bigeasy@linutronix.de>
+In-Reply-To: <20210803141621.780504-20-bigeasy@linutronix.de>
+References: <20210803141621.780504-20-bigeasy@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <163131391233.25758.7903234378099925474.tip-bot2@tip-bot2>
+Message-ID: <163131391331.25758.7108415411921343282.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,41 +58,49 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the smp/urgent branch of tip:
 
-Commit-ID:     8c854303ce0e38e5bbedd725ff39da7e235865d8
-Gitweb:        https://git.kernel.org/tip/8c854303ce0e38e5bbedd725ff39da7e235865d8
+Commit-ID:     c122358ea1e510d3def876abb7872f1b2b7365c9
+Gitweb:        https://git.kernel.org/tip/c122358ea1e510d3def876abb7872f1b2b7365c9
 Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-AuthorDate:    Tue, 03 Aug 2021 16:16:21 +02:00
+AuthorDate:    Tue, 03 Aug 2021 16:16:02 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Sat, 11 Sep 2021 00:41:21 +02:00
 
-cpu/hotplug: Remove deprecated CPU-hotplug functions.
+thermal: Replace deprecated CPU-hotplug functions.
 
-No users in tree use the deprecated CPU-hotplug functions anymore.
+The functions get_online_cpus() and put_online_cpus() have been
+deprecated during the CPU hotplug rework. They map directly to
+cpus_read_lock() and cpus_read_unlock().
 
-Remove them.
+Replace deprecated CPU-hotplug functions with the official version.
+The behavior remains unchanged.
 
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20210803141621.780504-39-bigeasy@linutronix.de
+Link: https://lore.kernel.org/r/20210803141621.780504-20-bigeasy@linutronix.de
 
 ---
- include/linux/cpu.h | 6 ------
- 1 file changed, 6 deletions(-)
+ drivers/thermal/intel/intel_powerclamp.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/cpu.h b/include/linux/cpu.h
-index 94a578a..9cf51e4 100644
---- a/include/linux/cpu.h
-+++ b/include/linux/cpu.h
-@@ -143,12 +143,6 @@ static inline int remove_cpu(unsigned int cpu) { return -EPERM; }
- static inline void smp_shutdown_nonboot_cpus(unsigned int primary_cpu) { }
- #endif	/* !CONFIG_HOTPLUG_CPU */
+diff --git a/drivers/thermal/intel/intel_powerclamp.c b/drivers/thermal/intel/intel_powerclamp.c
+index b0eb5ec..a5b58ea 100644
+--- a/drivers/thermal/intel/intel_powerclamp.c
++++ b/drivers/thermal/intel/intel_powerclamp.c
+@@ -528,7 +528,7 @@ static int start_power_clamp(void)
  
--/* Wrappers which go away once all code is converted */
--static inline void cpu_hotplug_begin(void) { cpus_write_lock(); }
--static inline void cpu_hotplug_done(void) { cpus_write_unlock(); }
--static inline void get_online_cpus(void) { cpus_read_lock(); }
--static inline void put_online_cpus(void) { cpus_read_unlock(); }
--
- #ifdef CONFIG_PM_SLEEP_SMP
- extern int freeze_secondary_cpus(int primary);
- extern void thaw_secondary_cpus(void);
+ 	set_target_ratio = clamp(set_target_ratio, 0U, MAX_TARGET_RATIO - 1);
+ 	/* prevent cpu hotplug */
+-	get_online_cpus();
++	cpus_read_lock();
+ 
+ 	/* prefer BSP */
+ 	control_cpu = 0;
+@@ -542,7 +542,7 @@ static int start_power_clamp(void)
+ 	for_each_online_cpu(cpu) {
+ 		start_power_clamp_worker(cpu);
+ 	}
+-	put_online_cpus();
++	cpus_read_unlock();
+ 
+ 	return 0;
+ }
