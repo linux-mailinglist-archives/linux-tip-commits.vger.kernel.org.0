@@ -2,203 +2,273 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E7F54406E36
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 10 Sep 2021 17:33:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F3CA406FC0
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 10 Sep 2021 18:36:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234312AbhIJPfC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 10 Sep 2021 11:35:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43604 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234308AbhIJPfC (ORCPT
+        id S229531AbhIJQho (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 10 Sep 2021 12:37:44 -0400
+Received: from netrider.rowland.org ([192.131.102.5]:50139 "HELO
+        netrider.rowland.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with SMTP id S229481AbhIJQho (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 10 Sep 2021 11:35:02 -0400
-Received: from mail-qt1-x82e.google.com (mail-qt1-x82e.google.com [IPv6:2607:f8b0:4864:20::82e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C944CC061756
-        for <linux-tip-commits@vger.kernel.org>; Fri, 10 Sep 2021 08:33:50 -0700 (PDT)
-Received: by mail-qt1-x82e.google.com with SMTP id s15so1742445qta.10
-        for <linux-tip-commits@vger.kernel.org>; Fri, 10 Sep 2021 08:33:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dabbelt-com.20150623.gappssmtp.com; s=20150623;
-        h=date:subject:in-reply-to:cc:from:to:message-id:mime-version
-         :content-transfer-encoding;
-        bh=EWICIH/bq9+JnJ6UbUy8392Y6bG2Wmd0DTEhVvgAdSk=;
-        b=RrZz3pmDMkUm2WvqXyeQVkaDx75dgcj9ymJQXb5PlhEEPG2EAPKR2dFWGAGU7Au6Dx
-         TI/CsBAdHPunzz8wdXp3ewRkKr0yiO/CjhbvcxyxKpVwztbF3HhybZQCTArPHAo4nv98
-         UqZJpTBKmPIB6Rtyeyxnry0F4tn9hAI38OtDjaDCukQXAA+dTvb1z/dFCgk/zHNrzf8S
-         H+pyj4rKT3mTIdbxvyOrIal4A6meO/ThftqIOlUE1myNQ+lZNFd2QGX0R/c8YAFiZaqU
-         nnpKY2E82Q2pab2qHnE3cCern2KSeJ7UKGj1mIEnSvfeY1T8bYq2uUtPH7/mEPKqwLf/
-         JFdA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:subject:in-reply-to:cc:from:to:message-id
-         :mime-version:content-transfer-encoding;
-        bh=EWICIH/bq9+JnJ6UbUy8392Y6bG2Wmd0DTEhVvgAdSk=;
-        b=4hRrO/jonOvGkxfcmAP/z2Q29Vlqqh95UBqTzg0jZAR9jFODp+0QZhZEko7hL9NzC7
-         TSOgJ/oQmPaS7mbIra2399pw+3GCmk99EErlu5wcREU78Bm5QI0wbGaoz6YehXbdkwj/
-         kCTTrRmK+6zfFgHOCdgO24/84C5vj5v28uI5ycCwRhbyXRUzh3eWY1MO5MPk6jK9SRoi
-         Kc9UWxDO7qxZVBx04neovOVcTwZyTGppziKwFy01N/rm9k2EMXN8RE/5hZL1P9UxiZXA
-         7QvxRrN/j66ge7vHSQWVbRp09SfTI/y5sSvtgkGKAzI3tzCOZ9qcU01JAdLwf0QSukCo
-         478g==
-X-Gm-Message-State: AOAM531+xBWgKbB6LByW6QQJGwGzlWe6jQWX7v6Let0kenUjztyBMV7U
-        cE0fZeLm+JwWmP2sOMpzQ0aG5g==
-X-Google-Smtp-Source: ABdhPJzyQYhHdQGKVKbI/i75l3yvzFJEcnugJidFZIkDTkUZgqF5Z8sJDxShrGNeA4vhOAU8AGHrog==
-X-Received: by 2002:ac8:5a08:: with SMTP id n8mr8889673qta.58.1631288029683;
-        Fri, 10 Sep 2021 08:33:49 -0700 (PDT)
-Received: from localhost (76-210-143-223.lightspeed.sntcca.sbcglobal.net. [76.210.143.223])
-        by smtp.gmail.com with ESMTPSA id q18sm3361829qtx.73.2021.09.10.08.33.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Sep 2021 08:33:49 -0700 (PDT)
-Date:   Fri, 10 Sep 2021 08:33:49 -0700 (PDT)
-X-Google-Original-Date: Fri, 10 Sep 2021 08:33:43 PDT (-0700)
-Subject:     Re: [tip:locking/core] tools/memory-model: Add extra ordering for locks and remove it for ordinary release/acquire
-In-Reply-To: <YTtpnZuSId9yDUjB@boqun-archlinux>
-CC:     paulmck@kernel.org, Daniel Lustig <dlustig@nvidia.com>,
-        will@kernel.org, peterz@infradead.org,
+        Fri, 10 Sep 2021 12:37:44 -0400
+Received: (qmail 43535 invoked by uid 1000); 10 Sep 2021 12:36:32 -0400
+Date:   Fri, 10 Sep 2021 12:36:32 -0400
+From:   Alan Stern <stern@rowland.harvard.edu>
+To:     Boqun Feng <boqun.feng@gmail.com>
+Cc:     "Paul E. McKenney" <paulmck@kernel.org>,
+        Dan Lustig <dlustig@nvidia.com>, Will Deacon <will@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
-        stern@rowland.harvard.edu, alexander.shishkin@linux.intel.com,
-        hpa@zytor.com, parri.andrea@gmail.com, mingo@kernel.org,
-        vincent.weaver@maine.edu, tglx@linutronix.de, jolsa@redhat.com,
-        acme@redhat.com, linux-kernel@vger.kernel.org, eranian@google.com,
-        linux-tip-commits@vger.kernel.org,
-        Paul Walmsley <paul.walmsley@sifive.com>, mpe@ellerman.id.au
-From:   Palmer Dabbelt <palmer@dabbelt.com>
-To:     boqun.feng@gmail.com
-Message-ID: <mhng-8110fb1f-a92b-454e-8f12-3868a60efcc7@palmerdabbelt-glaptop>
-Mime-Version: 1.0 (MHng)
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Peter Anvin <hpa@zytor.com>,
+        Andrea Parri <parri.andrea@gmail.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        Vince Weaver <vincent.weaver@maine.edu>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jiri Olsa <jolsa@redhat.com>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Stephane Eranian <eranian@google.com>,
+        linux-tip-commits@vger.kernel.org, palmer@dabbelt.com,
+        paul.walmsley@sifive.com, mpe@ellerman.id.au
+Subject: Re: [tip:locking/core] tools/memory-model: Add extra ordering for
+ locks and remove it for ordinary release/acquire
+Message-ID: <20210910163632.GC39858@rowland.harvard.edu>
+References: <tip-6e89e831a90172bc3d34ecbba52af5b9c4a447d1@git.kernel.org>
+ <YTiXyiA92dM9726M@hirez.programming.kicks-ass.net>
+ <YTiiC1mxzHyUJ47F@hirez.programming.kicks-ass.net>
+ <20210908144217.GA603644@rowland.harvard.edu>
+ <CAHk-=wiXJygbW+_1BdSX6M8j6z4w8gRSHVcaD5saihaNJApnoQ@mail.gmail.com>
+ <YTm26u9i3hpjrNpr@hirez.programming.kicks-ass.net>
+ <20210909133535.GA9722@willie-the-truck>
+ <5412ab37-2979-5717-4951-6a61366df0f2@nvidia.com>
+ <20210909180005.GA2230712@paulmck-ThinkPad-P17-Gen-1>
+ <YTtpnZuSId9yDUjB@boqun-archlinux>
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="OgqxwSJOaUobr8KG"
+Content-Disposition: inline
+In-Reply-To: <YTtpnZuSId9yDUjB@boqun-archlinux>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Fri, 10 Sep 2021 07:20:13 PDT (-0700), boqun.feng@gmail.com wrote:
+
+--OgqxwSJOaUobr8KG
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Fri, Sep 10, 2021 at 10:20:13PM +0800, Boqun Feng wrote:
 > On Thu, Sep 09, 2021 at 11:00:05AM -0700, Paul E. McKenney wrote:
 > [...]
->>
->> Boqun, I vaguely remember a suggested change from you along these lines,
->> but now I cannot find it.  Could you please send it as a formal patch
->> if you have not already done so or point me at it if you have?
->>
->
+> > 
+> > Boqun, I vaguely remember a suggested change from you along these lines,
+> > but now I cannot find it.  Could you please send it as a formal patch
+> > if you have not already done so or point me at it if you have?
+> > 
+> 
 > Here is a draft patch based on the change I did when I discussed with
 > Peter, and I really want to hear Alan's thought first. Ideally, we
 > should also have related litmus tests and send to linux-arch list so
 > that we know the ordering is provided by every architecture.
->
+> 
 > Regards,
 > Boqun
->
+> 
 > --------------------------------->8
 > Subject: [PATCH] tools/memory-model: Provide extra ordering for
 >  lock-{release,acquire} on the same CPU
->
+> 
 > A recent discussion[1] shows that we are in favor of strengthening the
 > ordering of lock-release + lock-acquire on the same CPU: a lock-release
 > and a po-after lock-acquire should provide the so-called RCtso ordering,
 > that is a memory access S po-before the lock-release should be ordered
 > against a memory access R po-after the lock-acquire, unless S is a store
 > and R is a load.
->
+> 
 > The strengthening meets programmers' expection that "sequence of two
 > locked regions to be ordered wrt each other" (from Linus), and can
 > reduce the mental burden when using locks. Therefore add it in LKMM.
->
+> 
 > [1]: https://lore.kernel.org/lkml/20210909185937.GA12379@rowland.harvard.edu/
->
+> 
 > Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
 > ---
->  .../Documentation/explanation.txt             | 28 +++++++++++++++++++
->  tools/memory-model/linux-kernel.cat           |  6 ++--
->  2 files changed, 31 insertions(+), 3 deletions(-)
->
-> diff --git a/tools/memory-model/Documentation/explanation.txt b/tools/memory-model/Documentation/explanation.txt
-> index 5d72f3112e56..d62de21f32c4 100644
-> --- a/tools/memory-model/Documentation/explanation.txt
-> +++ b/tools/memory-model/Documentation/explanation.txt
-> @@ -1847,6 +1847,34 @@ therefore the load of x must execute before the load of y.  Thus we
->  cannot have r1 = 1 and r2 = 0 at the end (this is an instance of the
->  MP pattern).
->
-> +This requirement also applies to a lock-release and a lock-acquire
-> +on different locks, as long as the lock-acquire is po-after the
-> +lock-release. Note that "po-after" means the lock-acquire and the
-> +lock-release are on the same cpu. An example simliar to the above:
-> +
-> +	int x, y;
-> +	spinlock_t s;
-> +	spinlock_t t;
-> +
-> +	P0()
-> +	{
-> +		int r1, r2;
-> +
-> +		spin_lock(&s);
-> +		r1 = READ_ONCE(x);
-> +		spin_unlock(&s);
-> +		spin_lock(&t);
-> +		r2 = READ_ONCE(y);
-> +		spin_unlock(&t);
-> +	}
-> +
-> +	P1()
-> +	{
-> +		WRITE_ONCE(y, 1);
-> +		smp_wmb();
-> +		WRITE_ONCE(x, 1);
-> +	}
-> +
->  This requirement does not apply to ordinary release and acquire
->  fences, only to lock-related operations.  For instance, suppose P0()
->  in the example had been written as:
-> diff --git a/tools/memory-model/linux-kernel.cat b/tools/memory-model/linux-kernel.cat
-> index 2a9b4fe4a84e..d70315fddef6 100644
-> --- a/tools/memory-model/linux-kernel.cat
-> +++ b/tools/memory-model/linux-kernel.cat
-> @@ -27,7 +27,7 @@ include "lock.cat"
->  (* Release Acquire *)
->  let acq-po = [Acquire] ; po ; [M]
->  let po-rel = [M] ; po ; [Release]
-> -let po-unlock-rf-lock-po = po ; [UL] ; rf ; [LKR] ; po
-> +let po-unlock-lock-po = po ; [UL] ; (po|rf) ; [LKR] ; po
->
->  (* Fences *)
->  let R4rmb = R \ Noreturn	(* Reads for which rmb works *)
-> @@ -70,12 +70,12 @@ let rwdep = (dep | ctrl) ; [W]
->  let overwrite = co | fr
->  let to-w = rwdep | (overwrite & int) | (addr ; [Plain] ; wmb)
->  let to-r = addr | (dep ; [Marked] ; rfi)
-> -let ppo = to-r | to-w | fence | (po-unlock-rf-lock-po & int)
-> +let ppo = to-r | to-w | fence | (po-unlock-lock-po & int)
->
->  (* Propagation: Ordering from release operations and strong fences. *)
->  let A-cumul(r) = (rfe ; [Marked])? ; r
->  let cumul-fence = [Marked] ; (A-cumul(strong-fence | po-rel) | wmb |
-> -	po-unlock-rf-lock-po) ; [Marked]
-> +	po-unlock-lock-po) ; [Marked]
->  let prop = [Marked] ; (overwrite & ext)? ; cumul-fence* ;
->  	[Marked] ; rfe? ; [Marked]
 
-I'm not a memory model person so I don't really feel comfortable 
-reviewing this, but I can follow the non-formal discussion so
+The change to linux-kernel.cat looks fine.  However, I didn't like your 
+update to explanation.txt.  Instead I wrote my own, given below.
 
-Acked-by: Palmer Dabbelt <palmerdabbelt@google.com> # For the RISC-V fallout
+I also wrote a couple of litmus tests which Paul can add to the 
+appropriate archive.  They are attached to this email.  As expected, 
+they fail (result Sometimes) with the current LKMM and succeed (Never) 
+with Boqun's updated model.
 
-So far we've been sticking with the "fastest implementation allowed by 
-the spec" mentality, but TBH I think we'd have ended up moving to RCsc 
-locks regardless of where LKMM ended up just to be in line with the more 
-popular architectures.  With mmiowb gone I think this was the last bit 
-of memory model weirdness we'd been carrying around in the RISC-V port, 
-so it would have always just been a worry.
+Alan
 
-We don't really have any hardware to evaluate the performance 
-implications of this change, as there are no interestingly aggressive 
-implementations of the memory model availiable today.  Like Dan said 
-we've got all the ISA mechanisms in place to adequently describe these 
-orderings to hardware, so in theory implementations should be able to 
-handle this without falling off any performance cliffs.
 
-Happy to take a look and an implementation of this on RISC-V, but if 
-nothing arises I'll go sort it out.  It does remind me that we were 
-supposed to move over to those generic ticket spinlocks, though...
+--- usb-devel.orig/tools/memory-model/Documentation/explanation.txt
++++ usb-devel/tools/memory-model/Documentation/explanation.txt
+@@ -1813,15 +1813,16 @@ spin_trylock() -- we can call these thin
+ lock-acquires -- have two properties beyond those of ordinary releases
+ and acquires.
+ 
+-First, when a lock-acquire reads from a lock-release, the LKMM
+-requires that every instruction po-before the lock-release must
+-execute before any instruction po-after the lock-acquire.  This would
+-naturally hold if the release and acquire operations were on different
+-CPUs, but the LKMM says it holds even when they are on the same CPU.
+-For example:
++First, when a lock-acquire reads from or is po-after a lock-release,
++the LKMM requires that every instruction po-before the lock-release
++must execute before any instruction po-after the lock-acquire.  This
++would naturally hold if the release and acquire operations were on
++different CPUs and accessed the same lock variable, but the LKMM says
++it also holds when they are on the same CPU, even if they access
++different lock variables.  For example:
+ 
+ 	int x, y;
+-	spinlock_t s;
++	spinlock_t s, t;
+ 
+ 	P0()
+ 	{
+@@ -1830,9 +1831,9 @@ For example:
+ 		spin_lock(&s);
+ 		r1 = READ_ONCE(x);
+ 		spin_unlock(&s);
+-		spin_lock(&s);
++		spin_lock(&t);
+ 		r2 = READ_ONCE(y);
+-		spin_unlock(&s);
++		spin_unlock(&t);
+ 	}
+ 
+ 	P1()
+@@ -1842,10 +1843,10 @@ For example:
+ 		WRITE_ONCE(x, 1);
+ 	}
+ 
+-Here the second spin_lock() reads from the first spin_unlock(), and
+-therefore the load of x must execute before the load of y.  Thus we
+-cannot have r1 = 1 and r2 = 0 at the end (this is an instance of the
+-MP pattern).
++Here the second spin_lock() is po-after the first spin_unlock(), and
++therefore the load of x must execute before the load of y, even tbough
++the two locking operations use different locks.  Thus we cannot have
++r1 = 1 and r2 = 0 at the end (this is an instance of the MP pattern).
+ 
+ This requirement does not apply to ordinary release and acquire
+ fences, only to lock-related operations.  For instance, suppose P0()
+@@ -1872,13 +1873,13 @@ instructions in the following order:
+ 
+ and thus it could load y before x, obtaining r2 = 0 and r1 = 1.
+ 
+-Second, when a lock-acquire reads from a lock-release, and some other
+-stores W and W' occur po-before the lock-release and po-after the
+-lock-acquire respectively, the LKMM requires that W must propagate to
+-each CPU before W' does.  For example, consider:
++Second, when a lock-acquire reads from or is po-after a lock-release,
++and some other stores W and W' occur po-before the lock-release and
++po-after the lock-acquire respectively, the LKMM requires that W must
++propagate to each CPU before W' does.  For example, consider:
+ 
+ 	int x, y;
+-	spinlock_t x;
++	spinlock_t s;
+ 
+ 	P0()
+ 	{
+@@ -1908,7 +1909,12 @@ each CPU before W' does.  For example, c
+ 
+ If r1 = 1 at the end then the spin_lock() in P1 must have read from
+ the spin_unlock() in P0.  Hence the store to x must propagate to P2
+-before the store to y does, so we cannot have r2 = 1 and r3 = 0.
++before the store to y does, so we cannot have r2 = 1 and r3 = 0.  But
++if P1 had used a lock variable different from s, the writes could have
++propagated in either order.  (On the other hand, if the code in P0 and
++P1 had all executed on a single CPU, as in the example before this
++one, then the writes would have propagated in order even if the two
++critical sections used different lock variables.)
+ 
+ These two special requirements for lock-release and lock-acquire do
+ not arise from the operational model.  Nevertheless, kernel developers
 
-Thanks!
+
+--OgqxwSJOaUobr8KG
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment; filename="ullk-rw.litmus"
+
+C ullk-rw
+
+(*
+ * Result: Never
+ *
+ * If two locked critical sections execute on the same CPU, all accesses
+ * in the first must execute before any accesses in the second, even if
+ * the critical sections are protected by different locks.
+ *)
+
+{}
+
+P0(spinlock_t *s, spinlock_t *t, int *x, int *y)
+{
+	int r1;
+
+	spin_lock(s);
+	r1 = READ_ONCE(*x);
+	spin_unlock(s);
+	spin_lock(t);
+	WRITE_ONCE(*y, 1);
+	spin_unlock(t);
+}
+
+P1(int *x, int *y)
+{
+	int r2;
+
+	r2 = smp_load_acquire(y);
+	WRITE_ONCE(*x, 1);
+}
+
+exists (0:r1=1 /\ 1:r2=1)
+
+--OgqxwSJOaUobr8KG
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment; filename="ullk-ww.litmus"
+
+C ullk-ww
+
+(*
+ * Result: Never
+ *
+ * If two locked critical sections execute on the same CPU, stores in the
+ * first must propagate to each CPU before stores in the second do, even if
+ * the critical sections are protected by different locks.
+ *)
+
+{}
+
+P0(spinlock_t *s, spinlock_t *t, int *x, int *y)
+{
+	spin_lock(s);
+	WRITE_ONCE(*x, 1);
+	spin_unlock(s);
+	spin_lock(t);
+	WRITE_ONCE(*y, 1);
+	spin_unlock(t);
+}
+
+P1(int *x, int *y)
+{
+	int r1;
+	int r2;
+
+	r1 = READ_ONCE(*y);
+	smp_rmb();
+	r2 = READ_ONCE(*x);
+}
+
+exists (1:r1=1 /\ 1:r2=0)
+
+--OgqxwSJOaUobr8KG--
