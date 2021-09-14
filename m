@@ -2,57 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ECE2F40B7D5
+	by mail.lfdr.de (Postfix) with ESMTP id 3533240B7D3
 	for <lists+linux-tip-commits@lfdr.de>; Tue, 14 Sep 2021 21:20:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233252AbhINTUz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 14 Sep 2021 15:20:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51112 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233007AbhINTUu (ORCPT
+        id S233096AbhINTUx (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 14 Sep 2021 15:20:53 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:35346 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232984AbhINTUu (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Tue, 14 Sep 2021 15:20:50 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE0EAC061574;
-        Tue, 14 Sep 2021 12:19:31 -0700 (PDT)
-Date:   Tue, 14 Sep 2021 19:19:29 -0000
+Date:   Tue, 14 Sep 2021 19:19:30 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1631647170;
+        s=2020; t=1631647171;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=EdPgAdfBR7E9CncrdDdAhyeo2fJ2w1PbAeQ0hGR7Z84=;
-        b=ksx9E6u8ekIxZyUkPhbMiIdyget8qk3MyKd46eE/RdZtczdWGGsJejYxsafSQN3vfPbVnC
-        hgJkk5iNBSK1DtcBVWv6X7/1Wc+jKAt6vsJPzMmeNkNTrjW84JsRD3B9+vpzT9DAO3YEZO
-        Us61n1nlafCl4ev1ZdQQ1wUa9THuau70WbyURYmDP8b8/9dR1cQ7cTBTNR4ej+nzW+iV3T
-        5o7u4Ns8MJMDw20eaTneitp2UWTHUg6HgDkG6g4FmZDibTZfPnQw+W9B8R2c7p/D38gz7H
-        frgxhGGWKGihaPI9iSqmwlysf+4OqjwfqwylcfdmC6E8MvmoRt31ryG5ocYsqQ==
+        bh=3JZLVsFXHkNIURkEvPx08cZTRIwfmcaWZXCKcmYjxqk=;
+        b=mIgDb58o75LVA7eCQ7KV7BedisIXdgzKlZ7DEu83Z8v8cboMWal3cBa468QcnXie8M+LbS
+        bcZbopxHzO34X0T4ayQA/9wNDfHX/5U7q5+EQlsOqKQShSfMGDLKEstHkBgdb5bLxJPp95
+        i2D+Fwy5czh49IvOFpYj1DePd1vBTqRGY1xE+hCpdRrYMKQveYsvFJ7npVkqWuSuzWFSPu
+        GrQ6RBrJ3i+6hp+Bv+R0p0hdvOtaJET13/VD+gPZxnyIiYBK+sGhuUwgX+TBG18kPGz2ae
+        7R+4WTH4ZK9vokQh2kJxYPilzoE9zfcIckGKMJjc4xLLgHqK3vdQ8aeYluSDnQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1631647170;
+        s=2020e; t=1631647171;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=EdPgAdfBR7E9CncrdDdAhyeo2fJ2w1PbAeQ0hGR7Z84=;
-        b=i2qlvv1iJFhnzz1o0hp+kQ8/tyL/7ArmcMJkA7Lw6XAYZHFr6GnqsgJ2a8ekuVvlqHGMqh
-        sj/qrhXr4dkDvABw==
+        bh=3JZLVsFXHkNIURkEvPx08cZTRIwfmcaWZXCKcmYjxqk=;
+        b=1Yc6SEFgnUzQzcIicu8Knb/pK0jPoZ+MBNZiyyqmtXzda//HgT6KcvYKTQy27VGNK8wn4e
+        cBlTncYF78shKGDQ==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/fpu] x86/fpu/signal: Move xstate clearing out of
- copy_fpregs_to_sigframe()
+Subject: [tip: x86/fpu] x86/fpu/signal: Clarify exception handling in
+ restore_fpregs_from_user()
 Cc:     Al Viro <viro@zeniv.linux.org.uk>,
         Thomas Gleixner <tglx@linutronix.de>,
         Borislav Petkov <bp@suse.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210908132525.679356300@linutronix.de>
-References: <20210908132525.679356300@linutronix.de>
+In-Reply-To: <20210908132525.506192488@linutronix.de>
+References: <20210908132525.506192488@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <163164716939.25758.6732472654287211248.tip-bot2@tip-bot2>
+Message-ID: <163164717094.25758.9209973996162434229.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -63,71 +60,117 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/fpu branch of tip:
 
-Commit-ID:     fcfb7163329ce832aafef31f26345ef5e8642a17
-Gitweb:        https://git.kernel.org/tip/fcfb7163329ce832aafef31f26345ef5e8642a17
+Commit-ID:     4339d0c63c2d5bea1fe6de4091ee2fe9eeea09a7
+Gitweb:        https://git.kernel.org/tip/4339d0c63c2d5bea1fe6de4091ee2fe9eeea09a7
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Wed, 08 Sep 2021 15:29:30 +02:00
+AuthorDate:    Wed, 08 Sep 2021 15:29:26 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 14 Sep 2021 21:10:03 +02:00
+CommitterDate: Mon, 13 Sep 2021 18:26:05 +02:00
 
-x86/fpu/signal: Move xstate clearing out of copy_fpregs_to_sigframe()
+x86/fpu/signal: Clarify exception handling in restore_fpregs_from_user()
 
-When the direct saving of the FPU registers to the user space sigframe
-fails, copy_fpregs_to_sigframe() attempts to clear the user buffer.
+FPU restore from a signal frame can trigger various exceptions. The
+exceptions are caught with an exception table entry. The handler of this
+entry stores the trap number in EAX. The FPU specific fixup negates that
+trap number to convert it into an negative error code.
 
-The most likely reason for such a fail is a page fault. As
-copy_fpregs_to_sigframe() is invoked with pagefaults disabled the chance
-that __clear_user() succeeds is minuscule.
+Any other exception than #PF is fatal and recovery is not possible. This
+relies on the fact that the #PF exception number is the same as EFAULT, but
+that's not really obvious.
 
-Move the clearing out into the caller which replaces the
-fault_in_pages_writeable() in that error handling path.
+Remove the negation from the exception fixup as it really has no value and
+check for X86_TRAP_PF at the call site.
 
-The return value confusion will be cleaned up separately.
+There is still confusion due to the return code conversion for the error
+case which will be cleaned up separately.
 
 Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20210908132525.679356300@linutronix.de
+Link: https://lkml.kernel.org/r/20210908132525.506192488@linutronix.de
 ---
- arch/x86/kernel/fpu/signal.c | 18 ++++++------------
- 1 file changed, 6 insertions(+), 12 deletions(-)
+ arch/x86/include/asm/fpu/internal.h | 21 ++++++++-------------
+ arch/x86/kernel/fpu/signal.c        |  5 +++--
+ 2 files changed, 11 insertions(+), 15 deletions(-)
 
-diff --git a/arch/x86/kernel/fpu/signal.c b/arch/x86/kernel/fpu/signal.c
-index 5ca3ce9..c4abbd9 100644
---- a/arch/x86/kernel/fpu/signal.c
-+++ b/arch/x86/kernel/fpu/signal.c
-@@ -136,18 +136,12 @@ static inline int save_xstate_epilog(void __user *buf, int ia32_frame)
+diff --git a/arch/x86/include/asm/fpu/internal.h b/arch/x86/include/asm/fpu/internal.h
+index cb1ca60..4cfd40d 100644
+--- a/arch/x86/include/asm/fpu/internal.h
++++ b/arch/x86/include/asm/fpu/internal.h
+@@ -88,7 +88,10 @@ static inline void fpstate_init_soft(struct swregs_state *soft) {}
+ #endif
+ extern void save_fpregs_to_fpstate(struct fpu *fpu);
  
- static inline int copy_fpregs_to_sigframe(struct xregs_state __user *buf)
- {
--	int err;
--
- 	if (use_xsave())
--		err = xsave_to_user_sigframe(buf);
--	else if (use_fxsr())
--		err = fxsave_to_user_sigframe((struct fxregs_state __user *) buf);
-+		return xsave_to_user_sigframe(buf);
-+	if (use_fxsr())
-+		return fxsave_to_user_sigframe((struct fxregs_state __user *) buf);
- 	else
--		err = fnsave_to_user_sigframe((struct fregs_state __user *) buf);
--
--	if (unlikely(err) && __clear_user(buf, fpu_user_xstate_size))
--		err = -EFAULT;
--	return err;
-+		return fnsave_to_user_sigframe((struct fregs_state __user *) buf);
- }
+-/* Returns 0 or the negated trap number, which results in -EFAULT for #PF */
++/*
++ * Returns 0 on success or the trap number when the operation raises an
++ * exception.
++ */
+ #define user_insn(insn, output, input...)				\
+ ({									\
+ 	int err;							\
+@@ -98,11 +101,7 @@ extern void save_fpregs_to_fpstate(struct fpu *fpu);
+ 	asm volatile(ASM_STAC "\n"					\
+ 		     "1: " #insn "\n"					\
+ 		     "2: " ASM_CLAC "\n"				\
+-		     ".section .fixup,\"ax\"\n"				\
+-		     "3:  negl %%eax\n"					\
+-		     "    jmp  2b\n"					\
+-		     ".previous\n"					\
+-		     _ASM_EXTABLE_TYPE(1b, 3b, EX_TYPE_FAULT_MCE_SAFE)	\
++		     _ASM_EXTABLE_TYPE(1b, 2b, EX_TYPE_FAULT_MCE_SAFE)	\
+ 		     : [err] "=a" (err), output				\
+ 		     : "0"(0), input);					\
+ 	err;								\
+@@ -198,18 +197,14 @@ static inline void fxsave(struct fxregs_state *fx)
+ #define XRSTORS		".byte " REX_PREFIX "0x0f,0xc7,0x1f"
  
  /*
-@@ -218,9 +212,9 @@ retry:
- 	fpregs_unlock();
+- * After this @err contains 0 on success or the negated trap number when
+- * the operation raises an exception. For faults this results in -EFAULT.
++ * After this @err contains 0 on success or the trap number when the
++ * operation raises an exception.
+  */
+ #define XSTATE_OP(op, st, lmask, hmask, err)				\
+ 	asm volatile("1:" op "\n\t"					\
+ 		     "xor %[err], %[err]\n"				\
+ 		     "2:\n\t"						\
+-		     ".pushsection .fixup,\"ax\"\n\t"			\
+-		     "3: negl %%eax\n\t"				\
+-		     "jmp 2b\n\t"					\
+-		     ".popsection\n\t"					\
+-		     _ASM_EXTABLE_TYPE(1b, 3b, EX_TYPE_FAULT_MCE_SAFE)	\
++		     _ASM_EXTABLE_TYPE(1b, 2b, EX_TYPE_FAULT_MCE_SAFE)	\
+ 		     : [err] "=a" (err)					\
+ 		     : "D" (st), "m" (*st), "a" (lmask), "d" (hmask)	\
+ 		     : "memory")
+diff --git a/arch/x86/kernel/fpu/signal.c b/arch/x86/kernel/fpu/signal.c
+index 445c57c..9bfffdb 100644
+--- a/arch/x86/kernel/fpu/signal.c
++++ b/arch/x86/kernel/fpu/signal.c
+@@ -13,6 +13,7 @@
+ #include <asm/fpu/xstate.h>
  
- 	if (ret) {
--		if (!fault_in_pages_writeable(buf_fx, fpu_user_xstate_size))
-+		if (!__clear_user(buf_fx, fpu_user_xstate_size))
- 			goto retry;
--		return -EFAULT;
-+		return -1;
+ #include <asm/sigframe.h>
++#include <asm/trapnr.h>
+ #include <asm/trace/fpu.h>
+ 
+ static struct _fpx_sw_bytes fx_sw_reserved __ro_after_init;
+@@ -275,7 +276,7 @@ retry:
+ 		fpregs_unlock();
+ 
+ 		/* Try to handle #PF, but anything else is fatal. */
+-		if (ret != -EFAULT)
++		if (ret != X86_TRAP_PF)
+ 			return -EINVAL;
+ 
+ 		ret = fault_in_pages_readable(buf, size);
+@@ -405,7 +406,7 @@ static int __fpu_restore_sig(void __user *buf, void __user *buf_fx,
+ 		u64 mask = user_xfeatures | xfeatures_mask_supervisor();
+ 
+ 		fpu->state.xsave.header.xfeatures &= mask;
+-		ret = os_xrstor_safe(&fpu->state.xsave, xfeatures_mask_all);
++		ret = os_xrstor_safe(&fpu->state.xsave, xfeatures_mask_all) ? -EINVAL : 0;
+ 	} else {
+ 		ret = fxrstor_safe(&fpu->state.fxsave);
  	}
- 
- 	/* Save the fsave header for the 32-bit frames. */
