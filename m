@@ -2,52 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D6B740C8BB
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 15 Sep 2021 17:50:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98DC840C8B9
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 15 Sep 2021 17:50:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238271AbhIOPuw (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 15 Sep 2021 11:50:52 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:41556 "EHLO
+        id S234381AbhIOPur (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 15 Sep 2021 11:50:47 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:41562 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234607AbhIOPuo (ORCPT
+        with ESMTP id S238006AbhIOPup (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 15 Sep 2021 11:50:44 -0400
-Date:   Wed, 15 Sep 2021 15:49:23 -0000
+        Wed, 15 Sep 2021 11:50:45 -0400
+Date:   Wed, 15 Sep 2021 15:49:24 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1631720964;
+        s=2020; t=1631720965;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=kIweRmImDVhzjCoAbKJafgYIdUJ0XsApku0Sa2x/oXY=;
-        b=tB61tDEyn6EzMP7Nmp9nCsc8A36cY6DkcKWtV4JPh9TTaK9apURcr1L3c/7PMzzN6mCk7u
-        R5EivVM9ymRlSM/3Af84rCTt/mG8V+l5/R5W8HL1PRhj2DhGc2BgOd8RGTqUBVGfCYf6RV
-        Yvb/slM5jtOdDrA7CAiLW23XdOMourx8u0+Vl2Ypv2YR/qZk42Ie8UDd3OYzvHNHYeZzZg
-        0Y7yxNpYs54olLpUufkX24mXkjnN8/p8Ymqb52PxzpLwFPQKgc6AT42lyNwJ6jqT0vwe6L
-        a8pAVOuUH8NuBkNZQn/Ut1z1i0lt217rVnw3/6JjWTHlc+0RaHALY73xOrtUlw==
+        bh=RhHtcCHO+2Y/FDEObJkFWJHOd6DliC/iVyIqLVaRLpk=;
+        b=aVPq7nvwWXL/NZu3eGNKCTp0skdCMNwgQxOTSRopPNkYY3AiwroMgTeQv48+/jr/MK9bes
+        SI9g9EFzl0VZK3mmfqlkQRwf3jGhuoe5dePxEDniRbAHv867N1uhd5rnKAYohS6Dw2u7Uc
+        sFmnMS6JouEw2uktbXTJpb6Scl0kvjajgBhr5ChodszvAjQElJvyhPPBNVfGH/O+uTK7ri
+        nxZ+tCMhDKAallo4/6BCTyKmDCXql/xb4NH1OdIaImNHCfIthiz5uyBkUb9ijhajJJ4YYo
+        Ntq4DKJ8zZZQjh05UzuPVhpHe3O0+4ofSmrykWCcvi16Nkgpe2Aupeu+6MsoTg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1631720964;
+        s=2020e; t=1631720965;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=kIweRmImDVhzjCoAbKJafgYIdUJ0XsApku0Sa2x/oXY=;
-        b=S/4KGTBmgsyi6fXafjT9gsdCyEvcRc2iT1ZvxHn7wHYkV0C0qWirNCqnaNXJggNLMis3a1
-        sRwKoUTbPUbD3hAg==
+        bh=RhHtcCHO+2Y/FDEObJkFWJHOd6DliC/iVyIqLVaRLpk=;
+        b=dxlH4OsQwAenVuLzk938kA3q5aJFH7/B7HSaQDAXjG/Tbykmnxz1P+Cki7WtgJsC08Y71E
+        o0rDy2P0Mv9ALyDg==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] x86/xen: Make write_cr2() noinstr
+Subject: [tip: objtool/core] x86/xen: Make read_cr2() noinstr
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Juergen Gross <jgross@suse.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210624095148.563524913@infradead.org>
-References: <20210624095148.563524913@infradead.org>
+In-Reply-To: <20210624095148.500331616@infradead.org>
+References: <20210624095148.500331616@infradead.org>
 MIME-Version: 1.0
-Message-ID: <163172096354.25758.15657044015294451060.tip-bot2@tip-bot2>
+Message-ID: <163172096438.25758.8681674473725174430.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,77 +58,84 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     80de642654653a8f86b34e9072a4d2fb95c32683
-Gitweb:        https://git.kernel.org/tip/80de642654653a8f86b34e9072a4d2fb95c32683
+Commit-ID:     ee6781aba03fc3040e3dfaa57fe8c2cea751ee35
+Gitweb:        https://git.kernel.org/tip/ee6781aba03fc3040e3dfaa57fe8c2cea751ee35
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Thu, 24 Jun 2021 11:41:14 +02:00
+AuthorDate:    Thu, 24 Jun 2021 11:41:13 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Wed, 15 Sep 2021 15:51:48 +02:00
 
-x86/xen: Make write_cr2() noinstr
+x86/xen: Make read_cr2() noinstr
 
-vmlinux.o: warning: objtool: pv_ops[42]: native_write_cr2
-vmlinux.o: warning: objtool: pv_ops[42]: xen_write_cr2
-vmlinux.o: warning: objtool: exc_nmi()+0x127: call to pv_ops[42]() leaves .noinstr.text section
+vmlinux.o: warning: objtool: pv_ops[41]: native_read_cr2
+vmlinux.o: warning: objtool: pv_ops[41]: xen_read_cr2
+vmlinux.o: warning: objtool: pv_ops[41]: xen_read_cr2_direct
+vmlinux.o: warning: objtool: exc_double_fault()+0x15: call to pv_ops[41]() leaves .noinstr.text section
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Juergen Gross <jgross@suse.com>
-Link: https://lore.kernel.org/r/20210624095148.563524913@infradead.org
+Link: https://lore.kernel.org/r/20210624095148.500331616@infradead.org
 ---
  arch/x86/include/asm/paravirt.h | 2 +-
  arch/x86/kernel/paravirt.c      | 7 ++++++-
- arch/x86/xen/mmu_pv.c           | 3 ++-
- 3 files changed, 9 insertions(+), 3 deletions(-)
+ arch/x86/xen/xen-asm.S          | 2 ++
+ 3 files changed, 9 insertions(+), 2 deletions(-)
 
 diff --git a/arch/x86/include/asm/paravirt.h b/arch/x86/include/asm/paravirt.h
-index 8878065..be82b52 100644
+index a13a9a3..8878065 100644
 --- a/arch/x86/include/asm/paravirt.h
 +++ b/arch/x86/include/asm/paravirt.h
-@@ -140,7 +140,7 @@ static __always_inline unsigned long read_cr2(void)
- 				ALT_NOT(X86_FEATURE_XENPV));
+@@ -133,7 +133,7 @@ static inline void write_cr0(unsigned long x)
+ 	PVOP_VCALL1(cpu.write_cr0, x);
  }
  
--static inline void write_cr2(unsigned long x)
-+static __always_inline void write_cr2(unsigned long x)
+-static inline unsigned long read_cr2(void)
++static __always_inline unsigned long read_cr2(void)
  {
- 	PVOP_VCALL1(mmu.write_cr2, x);
- }
+ 	return PVOP_ALT_CALLEE0(unsigned long, mmu.read_cr2,
+ 				"mov %%cr2, %%rax;",
 diff --git a/arch/x86/kernel/paravirt.c b/arch/x86/kernel/paravirt.c
-index ff4ade8..78f08e1 100644
+index 04cafc0..ff4ade8 100644
 --- a/arch/x86/kernel/paravirt.c
 +++ b/arch/x86/kernel/paravirt.c
-@@ -243,6 +243,11 @@ static noinstr unsigned long pv_native_read_cr2(void)
- 	return native_read_cr2();
- }
+@@ -238,6 +238,11 @@ struct pv_info pv_info = {
+ /* 64-bit pagetable entries */
+ #define PTE_IDENT	__PV_IS_CALLEE_SAVE(_paravirt_ident_64)
  
-+static noinstr void pv_native_write_cr2(unsigned long val)
++static noinstr unsigned long pv_native_read_cr2(void)
 +{
-+	native_write_cr2(val);
++	return native_read_cr2();
 +}
 +
  struct paravirt_patch_template pv_ops = {
  	/* Cpu ops. */
  	.cpu.io_delay		= native_io_delay,
-@@ -304,7 +309,7 @@ struct paravirt_patch_template pv_ops = {
+@@ -298,7 +303,7 @@ struct paravirt_patch_template pv_ops = {
+ 	.mmu.exit_mmap		= paravirt_nop,
  
  #ifdef CONFIG_PARAVIRT_XXL
- 	.mmu.read_cr2		= __PV_IS_CALLEE_SAVE(pv_native_read_cr2),
--	.mmu.write_cr2		= native_write_cr2,
-+	.mmu.write_cr2		= pv_native_write_cr2,
+-	.mmu.read_cr2		= __PV_IS_CALLEE_SAVE(native_read_cr2),
++	.mmu.read_cr2		= __PV_IS_CALLEE_SAVE(pv_native_read_cr2),
+ 	.mmu.write_cr2		= native_write_cr2,
  	.mmu.read_cr3		= __native_read_cr3,
  	.mmu.write_cr3		= native_write_cr3,
+diff --git a/arch/x86/xen/xen-asm.S b/arch/x86/xen/xen-asm.S
+index 1e62644..aef4a1e 100644
+--- a/arch/x86/xen/xen-asm.S
++++ b/arch/x86/xen/xen-asm.S
+@@ -102,6 +102,7 @@ SYM_FUNC_START(check_events)
+ 	ret
+ SYM_FUNC_END(check_events)
  
-diff --git a/arch/x86/xen/mmu_pv.c b/arch/x86/xen/mmu_pv.c
-index 1df5f01..f3cafe5 100644
---- a/arch/x86/xen/mmu_pv.c
-+++ b/arch/x86/xen/mmu_pv.c
-@@ -1204,7 +1204,8 @@ static void __init xen_pagetable_init(void)
- 	xen_remap_memory();
- 	xen_setup_mfn_list_list();
- }
--static void xen_write_cr2(unsigned long cr2)
-+
-+static noinstr void xen_write_cr2(unsigned long cr2)
- {
- 	this_cpu_read(xen_vcpu)->arch.cr2 = cr2;
- }
++.pushsection .noinstr.text, "ax"
+ SYM_FUNC_START(xen_read_cr2)
+ 	FRAME_BEGIN
+ 	_ASM_MOV PER_CPU_VAR(xen_vcpu), %_ASM_AX
+@@ -116,6 +117,7 @@ SYM_FUNC_START(xen_read_cr2_direct)
+ 	FRAME_END
+ 	ret
+ SYM_FUNC_END(xen_read_cr2_direct);
++.popsection
+ 
+ .macro xen_pv_trap name
+ SYM_CODE_START(xen_\name)
