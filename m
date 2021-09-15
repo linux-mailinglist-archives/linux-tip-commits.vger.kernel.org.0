@@ -2,55 +2,51 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D02740C8BF
+	by mail.lfdr.de (Postfix) with ESMTP id F30F940C8C1
 	for <lists+linux-tip-commits@lfdr.de>; Wed, 15 Sep 2021 17:50:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237842AbhIOPu5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 15 Sep 2021 11:50:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50126 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238134AbhIOPuq (ORCPT
+        id S238202AbhIOPu6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 15 Sep 2021 11:50:58 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:41602 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238147AbhIOPur (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 15 Sep 2021 11:50:46 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93996C061574;
-        Wed, 15 Sep 2021 08:49:27 -0700 (PDT)
-Date:   Wed, 15 Sep 2021 15:49:25 -0000
+        Wed, 15 Sep 2021 11:50:47 -0400
+Date:   Wed, 15 Sep 2021 15:49:26 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1631720966;
+        s=2020; t=1631720967;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=nfevancG/WIpPk7uwULjF6GCfI3TksMJePcKJVL2cFA=;
-        b=PO9ATf6DPzJEoFQNV/vamVQUhl7QptOE++yuxsRP+v1OMIxC76zbqogMIoyJDu/y9xzzKr
-        KBvrTXOddX3tJ1GMKMQZDkba1Pdyy3MvdAfBRF10L1d4xHBi1eiFCvcIQ65Rsg1jZiZC7P
-        BvPVFPtpznsVaBxOeYotEOsRrJ+oE01Gl4SbNpNQTQtO5nB5CfrnUixzgCHYY1MY0VWHK/
-        GmbCliPbASmIxbnZLkUJXYeQd89VngMoJI6sdm3GBgbQwnltnc4Xwwr+53zOd5ghiyubyI
-        2Xs8pSVQXZzot+tlsrQCK7+l5akN8WCvQmPX7Y+T2l+CuN5hPJKugOUqw9QLEg==
+        bh=RNvQnmLRcVPFVS+v9zpGVWAuxfKpT7Ro1TH29S1Dwpo=;
+        b=bMiMVAgysumQaD2+uPgJc1S7sohbzrYgbhg17jg0BOU+6TEglpamAtCaoKM+PJZt0JoLSn
+        SpHZRbXVMmWhPaY7r40aOWUjsP6a0UCamEwcz3Hhd1i2xq8BKNDEiy6aEXNNSYN1cM2ocq
+        51dvAfuou4ZiCoUSwT/wmkuI3EPd11CbIC3eFHCdJKm8sWkq/u8XsZo6Zbnr5nBveE14j1
+        VtcSWrkbZblavlXQ72MnUHe8SsuE2RV+1bChbo4c1AA8KhNOIU96syn/SP2NaOO2cgcalH
+        WwRmbANIgkmlrEfxicXld1rp44s2plGxAboX6tDwMvnSUWjSUvXhblUc/4IKnQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1631720966;
+        s=2020e; t=1631720967;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=nfevancG/WIpPk7uwULjF6GCfI3TksMJePcKJVL2cFA=;
-        b=z79U+zmxdM1dI10oc0JsFC6wVtiIu1cEk2uA9obBCqhTpx+p76Go5finvkQNpm1UfbXrlw
-        dw6rznjIif0lauAg==
+        bh=RNvQnmLRcVPFVS+v9zpGVWAuxfKpT7Ro1TH29S1Dwpo=;
+        b=xHT4OiC+bhjL1mFzUDOAw8KFaotp56+UMHjCxTpVN/N+2+S6W+h2QzMpst5ZFdm1oJxgFG
+        ai8N+dTznzOVGXBw==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] x86/paravirt: Use PVOP_* for paravirt calls
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Juergen Gross <jgross@suse.com>, x86@kernel.org,
+Subject: [tip: objtool/core] locking/lockdep: Avoid RCU-induced noinstr fail
+Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210624095148.437720419@infradead.org>
-References: <20210624095148.437720419@infradead.org>
+In-Reply-To: <20210624095148.311980536@infradead.org>
+References: <20210624095148.311980536@infradead.org>
 MIME-Version: 1.0
-Message-ID: <163172096518.25758.13590444988787565916.tip-bot2@tip-bot2>
+Message-ID: <163172096674.25758.986050044326739617.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,41 +57,33 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     eac46b323b28215ad19d53390737df4aa336ac14
-Gitweb:        https://git.kernel.org/tip/eac46b323b28215ad19d53390737df4aa336ac14
+Commit-ID:     ce0b9c805dd66d5e49fd53ec5415ae398f4c56e6
+Gitweb:        https://git.kernel.org/tip/ce0b9c805dd66d5e49fd53ec5415ae398f4c56e6
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Thu, 24 Jun 2021 11:41:12 +02:00
+AuthorDate:    Thu, 24 Jun 2021 11:41:10 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 15 Sep 2021 15:51:48 +02:00
+CommitterDate: Wed, 15 Sep 2021 15:51:47 +02:00
 
-x86/paravirt: Use PVOP_* for paravirt calls
+locking/lockdep: Avoid RCU-induced noinstr fail
 
-Doing unconditional indirect calls through the pv_ops vector is weird.
+vmlinux.o: warning: objtool: look_up_lock_class()+0xc7: call to rcu_read_lock_any_held() leaves .noinstr.text section
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Link: https://lore.kernel.org/r/20210624095148.437720419@infradead.org
+Link: https://lore.kernel.org/r/20210624095148.311980536@infradead.org
 ---
- arch/x86/include/asm/paravirt.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ kernel/locking/lockdep.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/paravirt.h b/arch/x86/include/asm/paravirt.h
-index 89a5322..a13a9a3 100644
---- a/arch/x86/include/asm/paravirt.h
-+++ b/arch/x86/include/asm/paravirt.h
-@@ -52,11 +52,11 @@ void __init paravirt_set_cap(void);
- /* The paravirtualized I/O functions */
- static inline void slow_down_io(void)
- {
--	pv_ops.cpu.io_delay();
-+	PVOP_VCALL0(cpu.io_delay);
- #ifdef REALLY_SLOW_IO
--	pv_ops.cpu.io_delay();
--	pv_ops.cpu.io_delay();
--	pv_ops.cpu.io_delay();
-+	PVOP_VCALL0(cpu.io_delay);
-+	PVOP_VCALL0(cpu.io_delay);
-+	PVOP_VCALL0(cpu.io_delay);
- #endif
- }
+diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
+index bf1c00c..8a50967 100644
+--- a/kernel/locking/lockdep.c
++++ b/kernel/locking/lockdep.c
+@@ -888,7 +888,7 @@ look_up_lock_class(const struct lockdep_map *lock, unsigned int subclass)
+ 	if (DEBUG_LOCKS_WARN_ON(!irqs_disabled()))
+ 		return NULL;
  
+-	hlist_for_each_entry_rcu(class, hash_head, hash_entry) {
++	hlist_for_each_entry_rcu_notrace(class, hash_head, hash_entry) {
+ 		if (class->key == key) {
+ 			/*
+ 			 * Huh! same key, different name? Did someone trample
