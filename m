@@ -2,136 +2,162 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6697E40D7D5
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Sep 2021 12:50:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DC9340D92A
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Sep 2021 13:59:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235627AbhIPKwJ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 16 Sep 2021 06:52:09 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:47102 "EHLO
+        id S238580AbhIPMAp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 16 Sep 2021 08:00:45 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:47486 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235487AbhIPKwJ (ORCPT
+        with ESMTP id S238558AbhIPMAn (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 16 Sep 2021 06:52:09 -0400
-Date:   Thu, 16 Sep 2021 10:50:46 -0000
+        Thu, 16 Sep 2021 08:00:43 -0400
+Date:   Thu, 16 Sep 2021 11:59:18 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1631789447;
+        s=2020; t=1631793559;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=qR1o3qe0xaqHgLlXyLMRXicOoSOA+g6lTO49OyfrGAQ=;
-        b=R6M0LEvYdc2aywanBaQn+mbk4Tv55KBzU3sjq64ngLZEaldo3ptgcV80ORdf9SDbGwPhZK
-        bprFMNwlrH1KP813+qB4n1IT37Q9kGkv9mYOvF5XW3O7BJ/4XkOyKMZHBkiQgKwxSsfdxT
-        EuKWMyb9/QVmH31WoPUcbovdi5iyw2fuoRLHwUj1xHdA2OazUy6ZdMW20zx1S2JZp5LHwU
-        VSEh8qGxQQ4qL86tvRHWTsjhQj/ZIj/ozk9u2ssT73EaIdzkUmP1y9L8m6vuDjmwYfIPbh
-        yWvwOTZ8R0EDj+3J8bq0dQ6zfhtw/pNsjXFuM/YpAnkjBHrOKCEx370DfyZUaQ==
+        bh=itYHqY3gHZkcYz6Iqxhy5QlbwoSsT+monGa4y5nc82A=;
+        b=fjPdSVBjGWUmOIuZN0HP1Ie2mJh9GswnOGSzk0TH+gMJ3+IVb0Zl6Y+5zRZgx6Bo0fiQiL
+        5mySVs/lbh/KdjRjFis0SwAB6q2k2C5aq660PbbusCJZh7cgD2wFgIl9zAe6IMf5BZ7yJr
+        DIOxiSZF55FUJ7m9Khpj4nh6fi4YPoW3eq8yFZm7UNYVaJc3HYtoRYOlPYwZcYlCdfhvDk
+        Nx+z1DNRMUDSn7gJgjI1HEyVJWbvcW/QxdK8ez3+8kqub/MWeX9Q5iuClOuKuOXyPyxjIr
+        1mf/fAm2s4wNIwiVAFJc7+JMJinht46iHOc9t5n/4RfpOEzLPShBaeSrKb+QRA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1631789447;
+        s=2020e; t=1631793559;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=qR1o3qe0xaqHgLlXyLMRXicOoSOA+g6lTO49OyfrGAQ=;
-        b=StJFRR0j2Icv+Cby3CODw4/gjzno25NRun6FXjkoZKbrHbLCOPTjUQJmYUlY71Q9yGZVcy
-        VzTUz5rtNqVzWfBg==
-From:   "tip-bot2 for Juergen Gross" <tip-bot2@linutronix.de>
+        bh=itYHqY3gHZkcYz6Iqxhy5QlbwoSsT+monGa4y5nc82A=;
+        b=0kQ2Di4aR3ZL53dyGbFCLE+9bQf2Tt4yR2FCTj1OXlzwN6r3nxPjWEHA9pKvWxxUbyoVXc
+        xFqRdp6J4LUuBNAQ==
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/setup: Call early_reserve_memory() earlier
-Cc:     marmarek@invisiblethingslab.com, Juergen Gross <jgross@suse.com>,
-        Borislav Petkov <bp@suse.de>,
-        Mike Rapoport <rppt@linux.ibm.com>, stable@vger.kernel.org,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20210914094108.22482-1-jgross@suse.com>
-References: <20210914094108.22482-1-jgross@suse.com>
+Subject: [tip: locking/urgent] locking/rwbase: Extract __rwbase_write_trylock()
+Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <YUCq3L+u44NDieEJ@hirez.programming.kicks-ass.net>
+References: <YUCq3L+u44NDieEJ@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-Message-ID: <163178944634.25758.17304720937855121489.tip-bot2@tip-bot2>
+Message-ID: <163179355883.25758.5450895206052550685.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the locking/urgent branch of tip:
 
-Commit-ID:     1c1046581f1a3809e075669a3df0191869d96dd1
-Gitweb:        https://git.kernel.org/tip/1c1046581f1a3809e075669a3df0191869d=
-96dd1
-Author:        Juergen Gross <jgross@suse.com>
-AuthorDate:    Tue, 14 Sep 2021 11:41:08 +02:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Thu, 16 Sep 2021 12:38:05 +02:00
+Commit-ID:     616be87eac9fa2ab2dca1069712f7236e50f3bf6
+Gitweb:        https://git.kernel.org/tip/616be87eac9fa2ab2dca1069712f7236e50f3bf6
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Thu, 09 Sep 2021 12:59:18 +02:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Wed, 15 Sep 2021 17:49:15 +02:00
 
-x86/setup: Call early_reserve_memory() earlier
+locking/rwbase: Extract __rwbase_write_trylock()
 
-Commit in Fixes introduced early_reserve_memory() to do all needed
-initial memblock_reserve() calls in one function. Unfortunately, the call
-of early_reserve_memory() is done too late for Xen dom0, as in some
-cases a Xen hook called by e820__memory_setup() will need those memory
-reservations to have happened already.
+The code in rwbase_write_lock() is a little non-obvious vs the
+read+set 'trylock', extract the sequence into a helper function to
+clarify the code.
 
-Move the call of early_reserve_memory() to the beginning of setup_arch()
-in order to avoid such problems.
+This also provides a single site to fix fast-path ordering.
 
-Fixes: a799c2bd29d1 ("x86/setup: Consolidate early memory reservations")
-Reported-by: Marek Marczykowski-G=C3=B3recki <marmarek@invisiblethingslab.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Acked-by: Mike Rapoport <rppt@linux.ibm.com>
-Tested-by: Marek Marczykowski-G=C3=B3recki <marmarek@invisiblethingslab.com>
-Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20210914094108.22482-1-jgross@suse.com
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lkml.kernel.org/r/YUCq3L+u44NDieEJ@hirez.programming.kicks-ass.net
 ---
- arch/x86/kernel/setup.c | 26 ++++++++++++++------------
- 1 file changed, 14 insertions(+), 12 deletions(-)
+ kernel/locking/rwbase_rt.c | 44 +++++++++++++++++++++----------------
+ 1 file changed, 26 insertions(+), 18 deletions(-)
 
-diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
-index bff3a78..9095158 100644
---- a/arch/x86/kernel/setup.c
-+++ b/arch/x86/kernel/setup.c
-@@ -766,6 +766,20 @@ dump_kernel_offset(struct notifier_block *self, unsigned=
- long v, void *p)
-=20
- void __init setup_arch(char **cmdline_p)
- {
-+	/*
-+	 * Do some memory reservations *before* memory is added to memblock, so
-+	 * memblock allocations won't overwrite it.
-+	 *
-+	 * After this point, everything still needed from the boot loader or
-+	 * firmware or kernel text should be early reserved or marked not RAM in
-+	 * e820. All other memory is free game.
-+	 *
-+	 * This call needs to happen before e820__memory_setup() which calls
-+	 * xen_memory_setup() on Xen dom0 which relies on the fact that those
-+	 * early reservations have happened already.
-+	 */
-+	early_reserve_memory();
+diff --git a/kernel/locking/rwbase_rt.c b/kernel/locking/rwbase_rt.c
+index 542b017..48fbbcc 100644
+--- a/kernel/locking/rwbase_rt.c
++++ b/kernel/locking/rwbase_rt.c
+@@ -196,6 +196,19 @@ static inline void rwbase_write_downgrade(struct rwbase_rt *rwb)
+ 	__rwbase_write_unlock(rwb, WRITER_BIAS - 1, flags);
+ }
+ 
++static inline bool __rwbase_write_trylock(struct rwbase_rt *rwb)
++{
++	/* Can do without CAS because we're serialized by wait_lock. */
++	lockdep_assert_held(&rwb->rtmutex.wait_lock);
 +
- #ifdef CONFIG_X86_32
- 	memcpy(&boot_cpu_data, &new_cpu_data, sizeof(new_cpu_data));
-=20
-@@ -885,18 +899,6 @@ void __init setup_arch(char **cmdline_p)
-=20
- 	parse_early_param();
-=20
++	if (!atomic_read(&rwb->readers)) {
++		atomic_set(&rwb->readers, WRITER_BIAS);
++		return 1;
++	}
++
++	return 0;
++}
++
+ static int __sched rwbase_write_lock(struct rwbase_rt *rwb,
+ 				     unsigned int state)
+ {
+@@ -210,34 +223,30 @@ static int __sched rwbase_write_lock(struct rwbase_rt *rwb,
+ 	atomic_sub(READER_BIAS, &rwb->readers);
+ 
+ 	raw_spin_lock_irqsave(&rtm->wait_lock, flags);
 -	/*
--	 * Do some memory reservations *before* memory is added to
--	 * memblock, so memblock allocations won't overwrite it.
--	 * Do it after early param, so we could get (unlikely) panic from
--	 * serial.
--	 *
--	 * After this point everything still needed from the boot loader or
--	 * firmware or kernel text should be early reserved or marked not
--	 * RAM in e820. All other memory is free game.
+-	 * set_current_state() for rw_semaphore
+-	 * current_save_and_set_rtlock_wait_state() for rwlock
 -	 */
--	early_reserve_memory();
+-	rwbase_set_and_save_current_state(state);
++	if (__rwbase_write_trylock(rwb))
++		goto out_unlock;
+ 
+-	/* Block until all readers have left the critical section. */
+-	for (; atomic_read(&rwb->readers);) {
++	rwbase_set_and_save_current_state(state);
++	for (;;) {
+ 		/* Optimized out for rwlocks */
+ 		if (rwbase_signal_pending_state(state, current)) {
+ 			rwbase_restore_current_state();
+ 			__rwbase_write_unlock(rwb, 0, flags);
+ 			return -EINTR;
+ 		}
++
++		if (__rwbase_write_trylock(rwb))
++			break;
++
+ 		raw_spin_unlock_irqrestore(&rtm->wait_lock, flags);
++		rwbase_schedule();
++		raw_spin_lock_irqsave(&rtm->wait_lock, flags);
+ 
+-		/*
+-		 * Schedule and wait for the readers to leave the critical
+-		 * section. The last reader leaving it wakes the waiter.
+-		 */
+-		if (atomic_read(&rwb->readers) != 0)
+-			rwbase_schedule();
+ 		set_current_state(state);
+-		raw_spin_lock_irqsave(&rtm->wait_lock, flags);
+ 	}
 -
- #ifdef CONFIG_MEMORY_HOTPLUG
- 	/*
- 	 * Memory used by the kernel cannot be hot-removed because Linux
+-	atomic_set(&rwb->readers, WRITER_BIAS);
+ 	rwbase_restore_current_state();
++
++out_unlock:
+ 	raw_spin_unlock_irqrestore(&rtm->wait_lock, flags);
+ 	return 0;
+ }
+@@ -253,8 +262,7 @@ static inline int rwbase_write_trylock(struct rwbase_rt *rwb)
+ 	atomic_sub(READER_BIAS, &rwb->readers);
+ 
+ 	raw_spin_lock_irqsave(&rtm->wait_lock, flags);
+-	if (!atomic_read(&rwb->readers)) {
+-		atomic_set(&rwb->readers, WRITER_BIAS);
++	if (__rwbase_write_trylock(rwb)) {
+ 		raw_spin_unlock_irqrestore(&rtm->wait_lock, flags);
+ 		return 1;
+ 	}
