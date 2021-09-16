@@ -2,52 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D9E440D935
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Sep 2021 14:00:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 45AAA40D93B
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Sep 2021 14:00:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238782AbhIPMAw (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 16 Sep 2021 08:00:52 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:47556 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238726AbhIPMAu (ORCPT
+        id S238863AbhIPMA5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 16 Sep 2021 08:00:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41172 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238778AbhIPMAw (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 16 Sep 2021 08:00:50 -0400
-Date:   Thu, 16 Sep 2021 11:59:28 -0000
+        Thu, 16 Sep 2021 08:00:52 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA1E1C061764;
+        Thu, 16 Sep 2021 04:59:31 -0700 (PDT)
+Date:   Thu, 16 Sep 2021 11:59:29 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1631793569;
+        s=2020; t=1631793570;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=kPBEu+QzY1WlKnHZKg//U6RYs4h5GU/p8+9NiBCdbVE=;
-        b=ahvLE8Ox2KZ5NJ3hIFCFb8svjoxsIiqoRH6+r/ssbAxkhOnW7q5GMiZx03t3Z0B+mG1YyY
-        9bJ85kJedCP1JFdzirtFKkOLBNnwsdC5yk64SsCwWKt1sMdfUTK4np6nx6nQtIlhEDGmyz
-        6D/fUlmdBBqvdtR6J8E40btczizdOEKioaJ/FpUqDiNKcznaWs7R71H/oj0X4QfEag/kkD
-        awgz7SSg3GAheh6yFUpyfp/UQpJlS133E1yUhRb1iA5Pms1BO6s+Ipl8zqB8NV9Z6RX147
-        ZpKIqSbdtnoHS2Nf8Qr+J6te4JJLx68egDzV6s7aXxFaDPhWvZxTGqGX+Msrrw==
+        bh=BSDU1TtyZagcqyOboLaL62+Bw73cOugdGNlT67jjNiU=;
+        b=HEmlZVFZid8L5XThFKUwK++5ZrkJ5pxpJdWkg1qQK2QXuBYw7a5RNRiZby7MdnYQOMYOx9
+        BctB85JjA0+7NAYyF2DQusvb54QUO3WLlYcwZXXyxfZ0LQ3vAX/99ZjSeLxQFs4Cv1wuEZ
+        vSOG5Cl1aZOIDCwGVNIC6qtGwLS8m96Ay8CrZLEoGmfoEmN77ax8H5a52/F+xOnGvxq12Z
+        feuzMiAzZsyagy+oSTqjXtF+CaEKJhb6Rz4f9d709DHnJHSfCDEspKld0R5YHMqtLuq0oi
+        Acpr2wUfI2DSPZ3pIQUVpTn3fRktXGzZsQ4wIyF9PsCa7TtIviKd9yehkOutRQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1631793569;
+        s=2020e; t=1631793570;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=kPBEu+QzY1WlKnHZKg//U6RYs4h5GU/p8+9NiBCdbVE=;
-        b=mP4cC+BLqxxUmpJlf4hA05VrwKfG/G+pZ5JVJWmv+cJY3vwwzXBMQgIuW46+OPpDossQ40
-        NZLgbJt8NeppjxDA==
+        bh=BSDU1TtyZagcqyOboLaL62+Bw73cOugdGNlT67jjNiU=;
+        b=JwcKyeYFgrxAiqFgPUQ21UOD95j499kNTNh2IlnGT2Jbzobd53phYIqh2brsrfuz0+PSP/
+        30uKg1XB23yvL6Ag==
 From:   "tip-bot2 for Yafang Shao" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/rt: Support schedstats for RT sched class
+Subject: [tip: sched/core] sched: Introduce task block time in schedstats
 Cc:     Yafang Shao <laoar.shao@gmail.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210905143547.4668-7-laoar.shao@gmail.com>
-References: <20210905143547.4668-7-laoar.shao@gmail.com>
+In-Reply-To: <20210905143547.4668-5-laoar.shao@gmail.com>
+References: <20210905143547.4668-5-laoar.shao@gmail.com>
 MIME-Version: 1.0
-Message-ID: <163179356832.25758.14611339996645758626.tip-bot2@tip-bot2>
+Message-ID: <163179356957.25758.2603980497962275087.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,272 +61,79 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     1ff69baabc2f0f3b098ad94429d3d3cb2897f097
-Gitweb:        https://git.kernel.org/tip/1ff69baabc2f0f3b098ad94429d3d3cb2897f097
+Commit-ID:     a95f0507a1a4d6de8e9c8b2b61cb733947e9422b
+Gitweb:        https://git.kernel.org/tip/a95f0507a1a4d6de8e9c8b2b61cb733947e9422b
 Author:        Yafang Shao <laoar.shao@gmail.com>
-AuthorDate:    Sun, 05 Sep 2021 14:35:45 
+AuthorDate:    Sun, 05 Sep 2021 14:35:43 
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 15 Sep 2021 17:49:00 +02:00
+CommitterDate: Wed, 15 Sep 2021 17:48:59 +02:00
 
-sched/rt: Support schedstats for RT sched class
+sched: Introduce task block time in schedstats
 
-We want to measure the latency of RT tasks in our production
-environment with schedstats facility, but currently schedstats is only
-supported for fair sched class. This patch enable it for RT sched class
-as well.
-
-After we make the struct sched_statistics and the helpers of it
-independent of fair sched class, we can easily use the schedstats
-facility for RT sched class.
-
-The schedstat usage in RT sched class is similar with fair sched class,
-for example,
-                fair                        RT
-enqueue         update_stats_enqueue_fair   update_stats_enqueue_rt
-dequeue         update_stats_dequeue_fair   update_stats_dequeue_rt
-put_prev_task   update_stats_wait_start     update_stats_wait_start_rt
-set_next_task   update_stats_wait_end       update_stats_wait_end_rt
-
-The user can get the schedstats information in the same way in fair sched
-class. For example,
-       fair                            RT
-       /proc/[pid]/sched               /proc/[pid]/sched
-
-schedstats is not supported for RT group.
-
-The output of a RT task's schedstats as follows,
-$ cat /proc/10349/sched
-...
-sum_sleep_runtime                            :           972.434535
-sum_block_runtime                            :           960.433522
-wait_start                                   :        188510.871584
-sleep_start                                  :             0.000000
-block_start                                  :             0.000000
-sleep_max                                    :            12.001013
-block_max                                    :           952.660622
-exec_max                                     :             0.049629
-slice_max                                    :             0.000000
-wait_max                                     :             0.018538
-wait_sum                                     :             0.424340
-wait_count                                   :                   49
-iowait_sum                                   :           956.495640
-iowait_count                                 :                   24
-nr_migrations_cold                           :                    0
-nr_failed_migrations_affine                  :                    0
-nr_failed_migrations_running                 :                    0
-nr_failed_migrations_hot                     :                    0
-nr_forced_migrations                         :                    0
-nr_wakeups                                   :                   49
-nr_wakeups_sync                              :                    0
-nr_wakeups_migrate                           :                    0
-nr_wakeups_local                             :                   49
-nr_wakeups_remote                            :                    0
-nr_wakeups_affine                            :                    0
-nr_wakeups_affine_attempts                   :                    0
-nr_wakeups_passive                           :                    0
-nr_wakeups_idle                              :                    0
-...
-
-The sched:sched_stat_{wait, sleep, iowait, blocked} tracepoints can
-be used to trace RT tasks as well. The output of these tracepoints for a
-RT tasks as follows,
-
-- runtime
-          stress-10352   [004] d.h.  1035.382286: sched_stat_runtime: comm=stress pid=10352 runtime=995769 [ns] vruntime=0 [ns]
-          [vruntime=0 means it is a RT task]
-
-- wait
-          <idle>-0       [004] dN..  1227.688544: sched_stat_wait: comm=stress pid=10352 delay=46849882 [ns]
-
-- blocked
-     kworker/4:1-465     [004] dN..  1585.676371: sched_stat_blocked: comm=stress pid=17194 delay=189963 [ns]
-
-- iowait
-     kworker/4:1-465     [004] dN..  1585.675330: sched_stat_iowait: comm=stress pid=17189 delay=182848 [ns]
-
-- sleep
-           sleep-18194   [023] dN..  1780.891840: sched_stat_sleep: comm=sleep.sh pid=17767 delay=1001160770 [ns]
-           sleep-18196   [023] dN..  1781.893208: sched_stat_sleep: comm=sleep.sh pid=17767 delay=1001161970 [ns]
-           sleep-18197   [023] dN..  1782.894544: sched_stat_sleep: comm=sleep.sh pid=17767 delay=1001128840 [ns]
-           [ In sleep.sh, it sleeps 1 sec each time. ]
-
-[lkp@intel.com: reported build failure in earlier version]
+Currently in schedstats we have sum_sleep_runtime and iowait_sum, but
+there's no metric to show how long the task is in D state.  Once a task in
+D state, it means the task is blocked in the kernel, for example the
+task may be waiting for a mutex. The D state is more frequent than
+iowait, and it is more critital than S state. So it is worth to add a
+metric to measure it.
 
 Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20210905143547.4668-7-laoar.shao@gmail.com
+Link: https://lore.kernel.org/r/20210905143547.4668-5-laoar.shao@gmail.com
 ---
- kernel/sched/rt.c | 124 +++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 124 insertions(+)
+ include/linux/sched.h | 2 ++
+ kernel/sched/debug.c  | 6 ++++--
+ kernel/sched/stats.c  | 1 +
+ 3 files changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/sched/rt.c b/kernel/sched/rt.c
-index 5d25111..bb945f8 100644
---- a/kernel/sched/rt.c
-+++ b/kernel/sched/rt.c
-@@ -1273,6 +1273,112 @@ static void __delist_rt_entity(struct sched_rt_entity *rt_se, struct rt_prio_arr
- 	rt_se->on_list = 0;
- }
+diff --git a/include/linux/sched.h b/include/linux/sched.h
+index 518e19c..549018e 100644
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -441,6 +441,8 @@ struct sched_statistics {
  
-+static inline struct sched_statistics *
-+__schedstats_from_rt_se(struct sched_rt_entity *rt_se)
-+{
-+#ifdef CONFIG_RT_GROUP_SCHED
-+	/* schedstats is not supported for rt group. */
-+	if (!rt_entity_is_task(rt_se))
-+		return NULL;
-+#endif
+ 	u64				block_start;
+ 	u64				block_max;
++	s64				sum_block_runtime;
 +
-+	return &rt_task_of(rt_se)->stats;
-+}
-+
-+static inline void
-+update_stats_wait_start_rt(struct rt_rq *rt_rq, struct sched_rt_entity *rt_se)
-+{
-+	struct sched_statistics *stats;
-+	struct task_struct *p = NULL;
-+
-+	if (!schedstat_enabled())
-+		return;
-+
-+	if (rt_entity_is_task(rt_se))
-+		p = rt_task_of(rt_se);
-+
-+	stats = __schedstats_from_rt_se(rt_se);
-+	if (!stats)
-+		return;
-+
-+	__update_stats_wait_start(rq_of_rt_rq(rt_rq), p, stats);
-+}
-+
-+static inline void
-+update_stats_enqueue_sleeper_rt(struct rt_rq *rt_rq, struct sched_rt_entity *rt_se)
-+{
-+	struct sched_statistics *stats;
-+	struct task_struct *p = NULL;
-+
-+	if (!schedstat_enabled())
-+		return;
-+
-+	if (rt_entity_is_task(rt_se))
-+		p = rt_task_of(rt_se);
-+
-+	stats = __schedstats_from_rt_se(rt_se);
-+	if (!stats)
-+		return;
-+
-+	__update_stats_enqueue_sleeper(rq_of_rt_rq(rt_rq), p, stats);
-+}
-+
-+static inline void
-+update_stats_enqueue_rt(struct rt_rq *rt_rq, struct sched_rt_entity *rt_se,
-+			int flags)
-+{
-+	if (!schedstat_enabled())
-+		return;
-+
-+	if (flags & ENQUEUE_WAKEUP)
-+		update_stats_enqueue_sleeper_rt(rt_rq, rt_se);
-+}
-+
-+static inline void
-+update_stats_wait_end_rt(struct rt_rq *rt_rq, struct sched_rt_entity *rt_se)
-+{
-+	struct sched_statistics *stats;
-+	struct task_struct *p = NULL;
-+
-+	if (!schedstat_enabled())
-+		return;
-+
-+	if (rt_entity_is_task(rt_se))
-+		p = rt_task_of(rt_se);
-+
-+	stats = __schedstats_from_rt_se(rt_se);
-+	if (!stats)
-+		return;
-+
-+	__update_stats_wait_end(rq_of_rt_rq(rt_rq), p, stats);
-+}
-+
-+static inline void
-+update_stats_dequeue_rt(struct rt_rq *rt_rq, struct sched_rt_entity *rt_se,
-+			int flags)
-+{
-+	struct task_struct *p = NULL;
-+
-+	if (!schedstat_enabled())
-+		return;
-+
-+	if (rt_entity_is_task(rt_se))
-+		p = rt_task_of(rt_se);
-+
-+	if ((flags & DEQUEUE_SLEEP) && p) {
-+		unsigned int state;
-+
-+		state = READ_ONCE(p->__state);
-+		if (state & TASK_INTERRUPTIBLE)
-+			__schedstat_set(p->stats.sleep_start,
-+					rq_clock(rq_of_rt_rq(rt_rq)));
-+
-+		if (state & TASK_UNINTERRUPTIBLE)
-+			__schedstat_set(p->stats.block_start,
-+					rq_clock(rq_of_rt_rq(rt_rq)));
-+	}
-+}
-+
- static void __enqueue_rt_entity(struct sched_rt_entity *rt_se, unsigned int flags)
- {
- 	struct rt_rq *rt_rq = rt_rq_of_se(rt_se);
-@@ -1346,6 +1452,8 @@ static void enqueue_rt_entity(struct sched_rt_entity *rt_se, unsigned int flags)
- {
- 	struct rq *rq = rq_of_rt_se(rt_se);
+ 	u64				exec_max;
+ 	u64				slice_max;
  
-+	update_stats_enqueue_rt(rt_rq_of_se(rt_se), rt_se, flags);
-+
- 	dequeue_rt_stack(rt_se, flags);
- 	for_each_sched_rt_entity(rt_se)
- 		__enqueue_rt_entity(rt_se, flags);
-@@ -1356,6 +1464,8 @@ static void dequeue_rt_entity(struct sched_rt_entity *rt_se, unsigned int flags)
- {
- 	struct rq *rq = rq_of_rt_se(rt_se);
+diff --git a/kernel/sched/debug.c b/kernel/sched/debug.c
+index ca0dd47..935dad7 100644
+--- a/kernel/sched/debug.c
++++ b/kernel/sched/debug.c
+@@ -534,10 +534,11 @@ print_task(struct seq_file *m, struct rq *rq, struct task_struct *p)
+ 		(long long)(p->nvcsw + p->nivcsw),
+ 		p->prio);
  
-+	update_stats_dequeue_rt(rt_rq_of_se(rt_se), rt_se, flags);
-+
- 	dequeue_rt_stack(rt_se, flags);
+-	SEQ_printf(m, "%9Ld.%06ld %9Ld.%06ld %9Ld.%06ld",
++	SEQ_printf(m, "%9lld.%06ld %9lld.%06ld %9lld.%06ld %9lld.%06ld",
+ 		SPLIT_NS(schedstat_val_or_zero(p->stats.wait_sum)),
+ 		SPLIT_NS(p->se.sum_exec_runtime),
+-		SPLIT_NS(schedstat_val_or_zero(p->stats.sum_sleep_runtime)));
++		SPLIT_NS(schedstat_val_or_zero(p->stats.sum_sleep_runtime)),
++		SPLIT_NS(schedstat_val_or_zero(p->stats.sum_block_runtime)));
  
- 	for_each_sched_rt_entity(rt_se) {
-@@ -1378,6 +1488,9 @@ enqueue_task_rt(struct rq *rq, struct task_struct *p, int flags)
- 	if (flags & ENQUEUE_WAKEUP)
- 		rt_se->timeout = 0;
+ #ifdef CONFIG_NUMA_BALANCING
+ 	SEQ_printf(m, " %d %d", task_node(p), task_numa_group_id(p));
+@@ -971,6 +972,7 @@ void proc_sched_show_task(struct task_struct *p, struct pid_namespace *ns,
+ 		u64 avg_atom, avg_per_cpu;
  
-+	check_schedstat_required();
-+	update_stats_wait_start_rt(rt_rq_of_se(rt_se), rt_se);
-+
- 	enqueue_rt_entity(rt_se, flags);
+ 		PN_SCHEDSTAT(sum_sleep_runtime);
++		PN_SCHEDSTAT(sum_block_runtime);
+ 		PN_SCHEDSTAT(wait_start);
+ 		PN_SCHEDSTAT(sleep_start);
+ 		PN_SCHEDSTAT(block_start);
+diff --git a/kernel/sched/stats.c b/kernel/sched/stats.c
+index fad781c..07dde29 100644
+--- a/kernel/sched/stats.c
++++ b/kernel/sched/stats.c
+@@ -82,6 +82,7 @@ void __update_stats_enqueue_sleeper(struct rq *rq, struct task_struct *p,
  
- 	if (!task_current(rq, p) && p->nr_cpus_allowed > 1)
-@@ -1578,7 +1691,12 @@ static void check_preempt_curr_rt(struct rq *rq, struct task_struct *p, int flag
+ 		__schedstat_set(stats->block_start, 0);
+ 		__schedstat_add(stats->sum_sleep_runtime, delta);
++		__schedstat_add(stats->sum_block_runtime, delta);
  
- static inline void set_next_task_rt(struct rq *rq, struct task_struct *p, bool first)
- {
-+	struct sched_rt_entity *rt_se = &p->rt;
-+	struct rt_rq *rt_rq = &rq->rt;
-+
- 	p->se.exec_start = rq_clock_task(rq);
-+	if (on_rt_rq(&p->rt))
-+		update_stats_wait_end_rt(rt_rq, rt_se);
- 
- 	/* The running task is never eligible for pushing */
- 	dequeue_pushable_task(rq, p);
-@@ -1652,6 +1770,12 @@ static struct task_struct *pick_next_task_rt(struct rq *rq)
- 
- static void put_prev_task_rt(struct rq *rq, struct task_struct *p)
- {
-+	struct sched_rt_entity *rt_se = &p->rt;
-+	struct rt_rq *rt_rq = &rq->rt;
-+
-+	if (on_rt_rq(&p->rt))
-+		update_stats_wait_start_rt(rt_rq, rt_se);
-+
- 	update_curr_rt(rq);
- 
- 	update_rt_rq_load_avg(rq_clock_pelt(rq), rq, 1);
+ 		if (p) {
+ 			if (p->in_iowait) {
