@@ -2,56 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 01C8E40D929
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Sep 2021 13:59:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A70340D931
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Sep 2021 14:00:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238665AbhIPMAp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 16 Sep 2021 08:00:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41136 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238657AbhIPMAo (ORCPT
+        id S238729AbhIPMAt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 16 Sep 2021 08:00:49 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:47516 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238693AbhIPMAs (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 16 Sep 2021 08:00:44 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F0E4C061764;
-        Thu, 16 Sep 2021 04:59:22 -0700 (PDT)
-Date:   Thu, 16 Sep 2021 11:59:20 -0000
+        Thu, 16 Sep 2021 08:00:48 -0400
+Date:   Thu, 16 Sep 2021 11:59:25 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1631793561;
+        s=2020; t=1631793566;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Y/W3cyHifpwKlK7kYcof3zIww/kpcaq54cqWjNPx6i0=;
-        b=2lIF4mbwJIGy6fUVUQ5bgZQMe2WBm+NMCzGMqYtupqyxy5x+YUrCNHURG7vm81mDHYFdTL
-        3He7Uh41/6w49mZV5AzzfJ0vfLQNDEQnyMbOWL0+nJCuahKXqkgem4qpFaguksCu6d6zYS
-        euNSXotT8xa+zjZ38CqUJSL55KFORIu2+9iRpahDKzp7LhFqojXHwmMIJux69jB4LswX5+
-        pBggpWFaaBL0UOVyvRSDAUP7iBkjUzth6ySeyl0AqYeECuKjxA9YaQiH+eoONLr4gunY/O
-        TRd5hXG1hceZOONMeUiivNrrjjI8h4XqSHXcWJx83VbgOe2VCTQl0dMqJdk5kw==
+        bh=YIsADEUqwNmNzW5LJZz5jVYVRaL7RS44v/2kCMycPB0=;
+        b=0ECp56J2GxOKbKAlN/HHOY9QJWCWXsefS1fKwOyu64AFFkZ7hhCyXMfy5oeXux84f0TqI7
+        J6YS+qs+w9N2FVpQdUHkCOeIbI5IirFzwkggl4A9CVBvS2U/KhV0w+SxiDJW1mES6BiIO6
+        82/K0TTxeZWqJTqOfVUD2l22H7YEKb+ZXaz5cJESqtACUGqiBugcuhcu+Ey+Lpkw+jM4Ae
+        yWBA2V7ioOxCXlnoX+cFS+AK/WLESpVWsVu+OBphkPaH8iGOmd0bjgOxwcpVv2BECjw+hR
+        CfqDlus00yHK68ekpAmPIPwZ7UsArOcJR0kCr3jcPT5a0cr16aue/OV/kHMdxg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1631793561;
+        s=2020e; t=1631793566;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Y/W3cyHifpwKlK7kYcof3zIww/kpcaq54cqWjNPx6i0=;
-        b=YhERpRROh7rSd9jmZpiduJv2YzjMZrJjytuuFj/oXy7a9pwtCiEWOInm6NQeSnSYWwefCC
-        ucMBqclg7zJ59pAQ==
-From:   "tip-bot2 for Baptiste Lepers" <tip-bot2@linutronix.de>
+        bh=YIsADEUqwNmNzW5LJZz5jVYVRaL7RS44v/2kCMycPB0=;
+        b=7kGwfbsi+BHRT+PCFNWV+eiTIHVF8GONp0LA8bPJxlvTQ4eNGL79El6X6pSaJbEblGD+LR
+        IOM1sw27CVLoEkBw==
+From:   "tip-bot2 for YueHaibing" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] events: Reuse value read using READ_ONCE instead
- of re-reading it
-Cc:     Baptiste Lepers <baptiste.lepers@gmail.com>,
+Subject: [tip: sched/core] sched: Remove unused inline function __rq_clock_broken()
+Cc:     YueHaibing <yuehaibing@huawei.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210906015310.12802-1-baptiste.lepers@gmail.com>
-References: <20210906015310.12802-1-baptiste.lepers@gmail.com>
+In-Reply-To: <20210914095244.52780-1-yuehaibing@huawei.com>
+References: <20210914095244.52780-1-yuehaibing@huawei.com>
 MIME-Version: 1.0
-Message-ID: <163179356028.25758.1740508579736783885.tip-bot2@tip-bot2>
+Message-ID: <163179356588.25758.7661405207431410606.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,42 +56,40 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/urgent branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     b89a05b21f46150ac10a962aa50109250b56b03b
-Gitweb:        https://git.kernel.org/tip/b89a05b21f46150ac10a962aa50109250b56b03b
-Author:        Baptiste Lepers <baptiste.lepers@gmail.com>
-AuthorDate:    Mon, 06 Sep 2021 11:53:10 +10:00
+Commit-ID:     33effaafbaf9c0070eac69a362120f4d1c26b5cf
+Gitweb:        https://git.kernel.org/tip/33effaafbaf9c0070eac69a362120f4d1c26b5cf
+Author:        YueHaibing <yuehaibing@huawei.com>
+AuthorDate:    Tue, 14 Sep 2021 17:52:44 +08:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 15 Sep 2021 17:49:06 +02:00
+CommitterDate: Wed, 15 Sep 2021 17:49:01 +02:00
 
-events: Reuse value read using READ_ONCE instead of re-reading it
+sched: Remove unused inline function __rq_clock_broken()
 
-In perf_event_addr_filters_apply, the task associated with
-the event (event->ctx->task) is read using READ_ONCE at the beginning
-of the function, checked, and then re-read from event->ctx->task,
-voiding all guarantees of the checks. Reuse the value that was read by
-READ_ONCE to ensure the consistency of the task struct throughout the
-function.
+These is no caller in tree since commit
+523e979d3164 ("sched/core: Use PELT for scale_rt_capacity()")
 
-Fixes: 375637bc52495 ("perf/core: Introduce address range filtering")
-Signed-off-by: Baptiste Lepers <baptiste.lepers@gmail.com>
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20210906015310.12802-1-baptiste.lepers@gmail.com
+Link: https://lkml.kernel.org/r/20210914095244.52780-1-yuehaibing@huawei.com
 ---
- kernel/events/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/sched/sched.h | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 744e872..0c000cb 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -10193,7 +10193,7 @@ static void perf_event_addr_filters_apply(struct perf_event *event)
- 		return;
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index 1d8bc76..eacc15d 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -1426,11 +1426,6 @@ static inline struct cfs_rq *group_cfs_rq(struct sched_entity *grp)
  
- 	if (ifh->nr_file_filters) {
--		mm = get_task_mm(event->ctx->task);
-+		mm = get_task_mm(task);
- 		if (!mm)
- 			goto restart;
+ extern void update_rq_clock(struct rq *rq);
  
+-static inline u64 __rq_clock_broken(struct rq *rq)
+-{
+-	return READ_ONCE(rq->clock);
+-}
+-
+ /*
+  * rq::clock_update_flags bits
+  *
