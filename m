@@ -2,106 +2,136 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 12F6940C8D9
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 15 Sep 2021 17:50:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6697E40D7D5
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Sep 2021 12:50:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238431AbhIOPv0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 15 Sep 2021 11:51:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50246 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238447AbhIOPvH (ORCPT
+        id S235627AbhIPKwJ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 16 Sep 2021 06:52:09 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:47102 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235487AbhIPKwJ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 15 Sep 2021 11:51:07 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12553C061793;
-        Wed, 15 Sep 2021 08:49:38 -0700 (PDT)
-Date:   Wed, 15 Sep 2021 15:49:35 -0000
+        Thu, 16 Sep 2021 06:52:09 -0400
+Date:   Thu, 16 Sep 2021 10:50:46 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1631720976;
+        s=2020; t=1631789447;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=W/rypC6pk5Uk2EYk7ngl7+gyXOA/wL8PMAWXrZrCVkc=;
-        b=x7AmVuQ4EwBAkiBVlk89WIb/CtRJk3NpqDzCUmCQf6YrXT3B4kEkdCJ+xVzun7xaTPAkgs
-        toGiIODPZBhbRosMAj6CznQH80hC5WCvTe/hBooQLdIWnX/UPbcR1ezPh7aig4+E0fbIp7
-        9+k7GYhsXMUMeF8evidXUo0qdfIx9Pw9WKGWujsMrS4ZGZagNkZL9v4SxtHa6bMZsSrfdP
-        rHCH3h9C0GbAvqQOFEPb2ANJBQqdlERqhNy+ovR6rRrYtPkLWmSPKWzhwT//EWnrUQqNKa
-        j2+uBY1yX+ZMSI20S8qqJKkum0Z7NIcAF2kMrYvy7uQ1HhforR+xgJsuD4f4iQ==
+        bh=qR1o3qe0xaqHgLlXyLMRXicOoSOA+g6lTO49OyfrGAQ=;
+        b=R6M0LEvYdc2aywanBaQn+mbk4Tv55KBzU3sjq64ngLZEaldo3ptgcV80ORdf9SDbGwPhZK
+        bprFMNwlrH1KP813+qB4n1IT37Q9kGkv9mYOvF5XW3O7BJ/4XkOyKMZHBkiQgKwxSsfdxT
+        EuKWMyb9/QVmH31WoPUcbovdi5iyw2fuoRLHwUj1xHdA2OazUy6ZdMW20zx1S2JZp5LHwU
+        VSEh8qGxQQ4qL86tvRHWTsjhQj/ZIj/ozk9u2ssT73EaIdzkUmP1y9L8m6vuDjmwYfIPbh
+        yWvwOTZ8R0EDj+3J8bq0dQ6zfhtw/pNsjXFuM/YpAnkjBHrOKCEx370DfyZUaQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1631720976;
+        s=2020e; t=1631789447;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=W/rypC6pk5Uk2EYk7ngl7+gyXOA/wL8PMAWXrZrCVkc=;
-        b=C47mhw99KnILZ/bsDoNRsLkz9CEjwl3wC+7eQEf7wL7jxGT9v9VpRFYmFIyto8KQsM9mdM
-        MkrxV3zVu4SP7CDw==
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+        bh=qR1o3qe0xaqHgLlXyLMRXicOoSOA+g6lTO49OyfrGAQ=;
+        b=StJFRR0j2Icv+Cby3CODw4/gjzno25NRun6FXjkoZKbrHbLCOPTjUQJmYUlY71Q9yGZVcy
+        VzTUz5rtNqVzWfBg==
+From:   "tip-bot2 for Juergen Gross" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] x86/xen: Mark cpu_bringup_and_idle() as dead_end_function
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Juergen Gross <jgross@suse.com>,
-        Miroslav Benes <mbenes@suse.cz>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20210624095147.693801717@infradead.org>
-References: <20210624095147.693801717@infradead.org>
+Subject: [tip: x86/urgent] x86/setup: Call early_reserve_memory() earlier
+Cc:     marmarek@invisiblethingslab.com, Juergen Gross <jgross@suse.com>,
+        Borislav Petkov <bp@suse.de>,
+        Mike Rapoport <rppt@linux.ibm.com>, stable@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20210914094108.22482-1-jgross@suse.com>
+References: <20210914094108.22482-1-jgross@suse.com>
 MIME-Version: 1.0
-Message-ID: <163172097591.25758.2170551014828183480.tip-bot2@tip-bot2>
+Message-ID: <163178944634.25758.17304720937855121489.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the objtool/core branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     9af9dcf11bda3e2c0e24c1acaacb8685ad974e93
-Gitweb:        https://git.kernel.org/tip/9af9dcf11bda3e2c0e24c1acaacb8685ad974e93
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Thu, 24 Jun 2021 11:41:00 +02:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 15 Sep 2021 15:51:44 +02:00
+Commit-ID:     1c1046581f1a3809e075669a3df0191869d96dd1
+Gitweb:        https://git.kernel.org/tip/1c1046581f1a3809e075669a3df0191869d=
+96dd1
+Author:        Juergen Gross <jgross@suse.com>
+AuthorDate:    Tue, 14 Sep 2021 11:41:08 +02:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Thu, 16 Sep 2021 12:38:05 +02:00
 
-x86/xen: Mark cpu_bringup_and_idle() as dead_end_function
+x86/setup: Call early_reserve_memory() earlier
 
-The asm_cpu_bringup_and_idle() function is required to push the return
-value on the stack in order to make ORC happy, but the only reason
-objtool doesn't complain is because of a happy accident.
+Commit in Fixes introduced early_reserve_memory() to do all needed
+initial memblock_reserve() calls in one function. Unfortunately, the call
+of early_reserve_memory() is done too late for Xen dom0, as in some
+cases a Xen hook called by e820__memory_setup() will need those memory
+reservations to have happened already.
 
-The thing is that asm_cpu_bringup_and_idle() doesn't return, so
-validate_branch() never terminates and falls through to the next
-function, which in the normal case is the hypercall_page. And that, as
-it happens, is 4095 NOPs and a RET.
+Move the call of early_reserve_memory() to the beginning of setup_arch()
+in order to avoid such problems.
 
-Make asm_cpu_bringup_and_idle() terminate on it's own, by making the
-function it calls as a dead-end. This way we no longer rely on what
-code happens to come after.
-
-Fixes: c3881eb58d56 ("x86/xen: Make the secondary CPU idle tasks reliable")
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Reviewed-by: Miroslav Benes <mbenes@suse.cz>
-Link: https://lore.kernel.org/r/20210624095147.693801717@infradead.org
+Fixes: a799c2bd29d1 ("x86/setup: Consolidate early memory reservations")
+Reported-by: Marek Marczykowski-G=C3=B3recki <marmarek@invisiblethingslab.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Acked-by: Mike Rapoport <rppt@linux.ibm.com>
+Tested-by: Marek Marczykowski-G=C3=B3recki <marmarek@invisiblethingslab.com>
+Cc: stable@vger.kernel.org
+Link: https://lkml.kernel.org/r/20210914094108.22482-1-jgross@suse.com
 ---
- tools/objtool/check.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/kernel/setup.c | 26 ++++++++++++++------------
+ 1 file changed, 14 insertions(+), 12 deletions(-)
 
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index e5947fb..0e3981d 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -173,6 +173,7 @@ static bool __dead_end_function(struct objtool_file *file, struct symbol *func,
- 		"rewind_stack_do_exit",
- 		"kunit_try_catch_throw",
- 		"xen_start_kernel",
-+		"cpu_bringup_and_idle",
- 	};
- 
- 	if (!func)
+diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
+index bff3a78..9095158 100644
+--- a/arch/x86/kernel/setup.c
++++ b/arch/x86/kernel/setup.c
+@@ -766,6 +766,20 @@ dump_kernel_offset(struct notifier_block *self, unsigned=
+ long v, void *p)
+=20
+ void __init setup_arch(char **cmdline_p)
+ {
++	/*
++	 * Do some memory reservations *before* memory is added to memblock, so
++	 * memblock allocations won't overwrite it.
++	 *
++	 * After this point, everything still needed from the boot loader or
++	 * firmware or kernel text should be early reserved or marked not RAM in
++	 * e820. All other memory is free game.
++	 *
++	 * This call needs to happen before e820__memory_setup() which calls
++	 * xen_memory_setup() on Xen dom0 which relies on the fact that those
++	 * early reservations have happened already.
++	 */
++	early_reserve_memory();
++
+ #ifdef CONFIG_X86_32
+ 	memcpy(&boot_cpu_data, &new_cpu_data, sizeof(new_cpu_data));
+=20
+@@ -885,18 +899,6 @@ void __init setup_arch(char **cmdline_p)
+=20
+ 	parse_early_param();
+=20
+-	/*
+-	 * Do some memory reservations *before* memory is added to
+-	 * memblock, so memblock allocations won't overwrite it.
+-	 * Do it after early param, so we could get (unlikely) panic from
+-	 * serial.
+-	 *
+-	 * After this point everything still needed from the boot loader or
+-	 * firmware or kernel text should be early reserved or marked not
+-	 * RAM in e820. All other memory is free game.
+-	 */
+-	early_reserve_memory();
+-
+ #ifdef CONFIG_MEMORY_HOTPLUG
+ 	/*
+ 	 * Memory used by the kernel cannot be hot-removed because Linux
