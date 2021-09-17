@@ -2,73 +2,151 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 85E4E40FF55
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 17 Sep 2021 20:26:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E5C840FF78
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 17 Sep 2021 20:37:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232492AbhIQS1q (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 17 Sep 2021 14:27:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35028 "EHLO
+        id S239130AbhIQSiZ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 17 Sep 2021 14:38:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37424 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231142AbhIQS1p (ORCPT
+        with ESMTP id S238995AbhIQSiY (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 17 Sep 2021 14:27:45 -0400
-Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64CDCC061574;
-        Fri, 17 Sep 2021 11:26:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=N7BdNz9Vf/o9bdJ+Yzke7wjYnqiO+rP/ebx3b0B6FZE=; b=Hf4VwZ/c5g4Tn5kwarU0Sy0m7j
-        g6/RDYv8EoyK+TAe/KbO33MPhEhTh8tGrkn/ivLABOnABPXEqfjcNsqx4lKzsVbL5N6HWxTOu5lWi
-        J7gG+logNAXxrjQBnctPEPNgdU+jFgHeVcLfRfH+IBvibxjCSOnA7ccj6z/QJd7XuMQle4OArpa3W
-        JoIOoRAFggBaxzvpogWPuvTRlqpjoIz3XdiR4EEj5wAKl28b/fvLOZqJi1wJkWbGPJdKxmcodgDLA
-        RbMDs5fF3/Uj98AkRgetfHnSJ7pCMrzoavWqV+LYcg2jLs4W02K4d/2Qkpr2cf8QRcl2xEr64gqrh
-        l3SYPddQ==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=worktop.programming.kicks-ass.net)
-        by desiato.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1mRIYz-003v7o-EJ; Fri, 17 Sep 2021 18:26:17 +0000
-Received: by worktop.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 22B4598625E; Fri, 17 Sep 2021 20:26:16 +0200 (CEST)
-Date:   Fri, 17 Sep 2021 20:26:16 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Peter Oskolkov <posk@posk.io>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-tip-commits@vger.kernel.org, x86@kernel.org
-Subject: Re: [tip: sched/core] sched: Fix -Wmissing-prototype
-Message-ID: <20210917182616.GH4323@worktop.programming.kicks-ass.net>
-References: <163179356649.25758.16036449513954806322.tip-bot2@tip-bot2>
- <CAFTs51Weqaig2tk-vMrSCzaQUch2Zr_Us0SPGutJAjMoYBK94A@mail.gmail.com>
+        Fri, 17 Sep 2021 14:38:24 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D956C061574;
+        Fri, 17 Sep 2021 11:37:02 -0700 (PDT)
+Date:   Fri, 17 Sep 2021 18:36:58 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1631903820;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=RpPH+Qsx2YORx1Co/TELFpdH2amUJb4SrHiH3YSN8Uk=;
+        b=YdaHO+MrOKosxXx8SCOfHfiuVcLtR0HSxEpok3LIkjVlKkxDvwx+jFwS3xFYGh6YNiNiYf
+        N2LT63q9SHxl1SEiiJuhj2uAkD+merhjG9SOiXawgLJieXCXqTXSCr4C+WFKJnuIpBDiw9
+        hFULwuM+VYlvuUURPPGHZud3LSJMVOmco4fDsXMSf+RdtBi+c5rI2RbPeGSfi7RBFyLXXQ
+        mpFlkyzHOoopx8+7V29fUCjBSjcz1ybx7TEysiUwZ+HuAlvfdXNDvr+mifhfdSd6bklWgz
+        vBunhNaf26XcPk3xoUmC5bRoQ8pZsrqxHHwW+FYpdH7C1XtSLrlhtTM9/rCyOQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1631903820;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=RpPH+Qsx2YORx1Co/TELFpdH2amUJb4SrHiH3YSN8Uk=;
+        b=UV4NNAz9boAFIAHCeo2+EBqwh4tqrBx6taHDFhugMItL+XG7N8AgMEehwL6nQEkzvAb2XS
+        UezB7Dx/OEhm9TBg==
+From:   "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: sched/core] kthread: Move prio/affinite change into the newly
+ created thread
+Cc:     Mike Galbraith <efault@gmx.de>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <a23a826af7c108ea5651e73b8fbae5e653f16e86.camel@gmx.de>
+References: <a23a826af7c108ea5651e73b8fbae5e653f16e86.camel@gmx.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAFTs51Weqaig2tk-vMrSCzaQUch2Zr_Us0SPGutJAjMoYBK94A@mail.gmail.com>
+Message-ID: <163190381894.25758.13534855734243016944.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Fri, Sep 17, 2021 at 09:57:37AM -0700, Peter Oskolkov wrote:
-> On Thu, Sep 16, 2021 at 4:59 AM tip-bot2 for Peter Zijlstra
-> <tip-bot2@linutronix.de> wrote:
-> >
-> > The following commit has been merged into the sched/core branch of tip:
-> >
-> > Commit-ID:     98a3270911f7abe2871a60799c20c95c9f991ddb
-> 
-> $ make defconfig
-> $ make -j16
-> 
-> ld: kernel/sched/core.o: in function `sched_free_group':
-> core.c:(.text+0x2cfd): undefined reference to `free_rt_sched_group'
-> ld: kernel/sched/core.o: in function `sched_create_group':
-> core.c:(.text+0xbdcb): undefined reference to `alloc_rt_sched_group'
-> ld: kernel/sched/core.o: in function `sched_init':
-> core.c:(.init.text+0x335): undefined reference to `init_cfs_bandwidth'
-> ld: kernel/sched/fair.o: in function `alloc_fair_sched_group':
-> fair.c:(.text+0x8427): undefined reference to `init_cfs_bandwidth'
-> make: *** [Makefile:1196: vmlinux] Error 1
-> 
-> Reverting this patch fixes the issue.
+The following commit has been merged into the sched/core branch of tip:
 
-Moo, ok, I'll go figure that out ... too damn many CONFIG_ knobs is
-what.
+Commit-ID:     4212bade2e86198ec84f1d65cbfb9023460f01bb
+Gitweb:        https://git.kernel.org/tip/4212bade2e86198ec84f1d65cbfb9023460f01bb
+Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+AuthorDate:    Tue, 10 Nov 2020 12:38:47 +01:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Fri, 17 Sep 2021 20:32:27 +02:00
+
+kthread: Move prio/affinite change into the newly created thread
+
+With enabled threaded interrupts the nouveau driver reported the
+following:
+
+| Chain exists of:
+|   &mm->mmap_lock#2 --> &device->mutex --> &cpuset_rwsem
+|
+|  Possible unsafe locking scenario:
+|
+|        CPU0                    CPU1
+|        ----                    ----
+|   lock(&cpuset_rwsem);
+|                                lock(&device->mutex);
+|                                lock(&cpuset_rwsem);
+|   lock(&mm->mmap_lock#2);
+
+The device->mutex is nvkm_device::mutex.
+
+Unblocking the lockchain at `cpuset_rwsem' is probably the easiest
+thing to do.  Move the priority reset to the start of the newly
+created thread.
+
+Fixes: 710da3c8ea7df ("sched/core: Prevent race condition between cpuset and __sched_setscheduler()")
+Reported-by: Mike Galbraith <efault@gmx.de>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/a23a826af7c108ea5651e73b8fbae5e653f16e86.camel@gmx.de
+---
+ kernel/kthread.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
+
+diff --git a/kernel/kthread.c b/kernel/kthread.c
+index 7bbfeeb..6f59e34 100644
+--- a/kernel/kthread.c
++++ b/kernel/kthread.c
+@@ -270,6 +270,7 @@ EXPORT_SYMBOL_GPL(kthread_parkme);
+ 
+ static int kthread(void *_create)
+ {
++	static const struct sched_param param = { .sched_priority = 0 };
+ 	/* Copy data: it's on kthread's stack */
+ 	struct kthread_create_info *create = _create;
+ 	int (*threadfn)(void *data) = create->threadfn;
+@@ -300,6 +301,13 @@ static int kthread(void *_create)
+ 	init_completion(&self->parked);
+ 	current->vfork_done = &self->exited;
+ 
++	/*
++	 * The new thread inherited kthreadd's priority and CPU mask. Reset
++	 * back to default in case they have been changed.
++	 */
++	sched_setscheduler_nocheck(current, SCHED_NORMAL, &param);
++	set_cpus_allowed_ptr(current, housekeeping_cpumask(HK_FLAG_KTHREAD));
++
+ 	/* OK, tell user we're spawned, wait for stop or wakeup */
+ 	__set_current_state(TASK_UNINTERRUPTIBLE);
+ 	create->result = current;
+@@ -397,7 +405,6 @@ struct task_struct *__kthread_create_on_node(int (*threadfn)(void *data),
+ 	}
+ 	task = create->result;
+ 	if (!IS_ERR(task)) {
+-		static const struct sched_param param = { .sched_priority = 0 };
+ 		char name[TASK_COMM_LEN];
+ 
+ 		/*
+@@ -406,13 +413,6 @@ struct task_struct *__kthread_create_on_node(int (*threadfn)(void *data),
+ 		 */
+ 		vsnprintf(name, sizeof(name), namefmt, args);
+ 		set_task_comm(task, name);
+-		/*
+-		 * root may have changed our (kthreadd's) priority or CPU mask.
+-		 * The kernel thread should not inherit these properties.
+-		 */
+-		sched_setscheduler_nocheck(task, SCHED_NORMAL, &param);
+-		set_cpus_allowed_ptr(task,
+-				     housekeeping_cpumask(HK_FLAG_KTHREAD));
+ 	}
+ 	kfree(create);
+ 	return task;
