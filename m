@@ -2,55 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D5F3540F88B
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 17 Sep 2021 14:59:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 96B8640F88D
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 17 Sep 2021 14:59:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344175AbhIQM7n (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 17 Sep 2021 08:59:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43558 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244959AbhIQM73 (ORCPT
+        id S1344195AbhIQM7p (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 17 Sep 2021 08:59:45 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:54508 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S245117AbhIQM7b (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 17 Sep 2021 08:59:29 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DE6FC061768;
-        Fri, 17 Sep 2021 05:58:07 -0700 (PDT)
-Date:   Fri, 17 Sep 2021 12:58:05 -0000
+        Fri, 17 Sep 2021 08:59:31 -0400
+Date:   Fri, 17 Sep 2021 12:58:06 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1631883486;
+        s=2020; t=1631883487;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=sYgWE68HdmPGjgheq4PuUpfSh3BpvRRLuHSStWiBZwc=;
-        b=BQBVhTv4jjsHxwX3DvlSDO0Ixo+qlQabEYX7uIO1jVZC+BwkixAyyOb97I518XYW2AMosM
-        BiZjmSD5GdMaayCyFLJ/U2uthigut4u8B87LS3cvOqDVVdMjQQjz5Vgm0PVEauEfLHRiP+
-        FWh5x5ClOsfEXjTLtF2Oqtza1bW3Dem4k2EMLWlz5g0aeyXtYU1qZ0jdq2KPymD56tQOzj
-        NN7BYftXzQh2wQI+EDK6e4RYvk5j7Ctt3obEtfDGjWRlKcAH4P4M7ypA1907caM0nCEoB6
-        Px5PXhd90g5Zaqf9fQsgqkyVlGX6kY3GpN/AY5frV2iwH2f1Syis4f6pLRJa2A==
+        bh=6gNTwKiakxYvJcnxlZpeFPm0UFbiDZB/3IuiJBHzNMU=;
+        b=i8JZQ/30z4ZzKGrupCTtJWiX6yaKb4PKswaXalGDPC3lWEwETG5s74v9de+GN1eoEMvqGc
+        loItVVLQQF+aO1T+xpRTWC+nfItxac8wVbBwhNVl5W2SkknEbv3GiJcl6cNQjR0XMooMuZ
+        YToo8hjOAwtuQMs85cjj9yz3H2eXTvI905Bqt0FzdXSIOnDyvA4Ft1tc7wJ7GcgC01AwMZ
+        z+cZDDYKk1d2HLK/P20ldPcnMXRrn9IBI19X6wTB+DOGylBmdTtMwYj35rwvSR5VxiFviY
+        xGbOl1lPdXEa+DvlV3Pmy7gn/72icJ97kHjiZumvE7qvP5HxMu9oxnDFjC45AQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1631883486;
+        s=2020e; t=1631883487;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=sYgWE68HdmPGjgheq4PuUpfSh3BpvRRLuHSStWiBZwc=;
-        b=54ebXT15nKzvG4Q3S6aXMt/gU/jVplKA7a7zYruxjyC7E/d/cFIDO3DCe3vyRTO2RjCVgC
-        1sfAt87SMR8sKiBw==
+        bh=6gNTwKiakxYvJcnxlZpeFPm0UFbiDZB/3IuiJBHzNMU=;
+        b=lmx4+2T52cmkU9QvKWaJ/7XuHwmu/8bDbgZpIrFzqrBuSlqrauiB/m6mpYiNIbbWB4WQIu
+        vozTAoXTmYw9oRDw==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] x86/xen: Make hypercall_page noinstr
+Subject: [tip: objtool/core] x86/xen: Make set_debugreg() noinstr
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Juergen Gross <jgross@suse.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210624095148.810950584@infradead.org>
-References: <20210624095148.810950584@infradead.org>
+In-Reply-To: <20210624095148.687755639@infradead.org>
+References: <20210624095148.687755639@infradead.org>
 MIME-Version: 1.0
-Message-ID: <163188348531.25758.3423530610234107435.tip-bot2@tip-bot2>
+Message-ID: <163188348691.25758.14757043160920496776.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,36 +58,99 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     74ea805b79d2b6eb472daa2540ed35ccb4ed23e7
-Gitweb:        https://git.kernel.org/tip/74ea805b79d2b6eb472daa2540ed35ccb4ed23e7
+Commit-ID:     7361fac0465ba96ec8f7559459e3c70818ba6c78
+Gitweb:        https://git.kernel.org/tip/7361fac0465ba96ec8f7559459e3c70818ba6c78
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Thu, 24 Jun 2021 11:41:18 +02:00
+AuthorDate:    Thu, 24 Jun 2021 11:41:16 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Fri, 17 Sep 2021 13:14:44 +02:00
+CommitterDate: Fri, 17 Sep 2021 13:14:39 +02:00
 
-x86/xen: Make hypercall_page noinstr
+x86/xen: Make set_debugreg() noinstr
 
-vmlinux.o: warning: objtool: xen_set_debugreg()+0x3: call to hypercall_page() leaves .noinstr.text section
-vmlinux.o: warning: objtool: xen_get_debugreg()+0x3: call to hypercall_page() leaves .noinstr.text section
-vmlinux.o: warning: objtool: xen_irq_enable()+0x24: call to hypercall_page() leaves .noinstr.text section
+vmlinux.o: warning: objtool: pv_ops[2]: xen_set_debugreg
+vmlinux.o: warning: objtool: pv_ops[2]: native_set_debugreg
+vmlinux.o: warning: objtool: exc_debug()+0x3b: call to pv_ops[2]() leaves .noinstr.text section
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Juergen Gross <jgross@suse.com>
-Link: https://lore.kernel.org/r/20210624095148.810950584@infradead.org
+Link: https://lore.kernel.org/r/20210624095148.687755639@infradead.org
 ---
- arch/x86/xen/xen-head.S | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/include/asm/paravirt.h      |  2 +-
+ arch/x86/include/asm/xen/hypercall.h |  2 +-
+ arch/x86/kernel/paravirt.c           |  9 ++++++---
+ arch/x86/xen/enlighten_pv.c          |  2 +-
+ 4 files changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/xen/xen-head.S b/arch/x86/xen/xen-head.S
-index 488944d..9e27b86 100644
---- a/arch/x86/xen/xen-head.S
-+++ b/arch/x86/xen/xen-head.S
-@@ -20,7 +20,7 @@
- #include <xen/interface/xen-mca.h>
- #include <asm/xen/interface.h>
+diff --git a/arch/x86/include/asm/paravirt.h b/arch/x86/include/asm/paravirt.h
+index f48465c..34da790 100644
+--- a/arch/x86/include/asm/paravirt.h
++++ b/arch/x86/include/asm/paravirt.h
+@@ -118,7 +118,7 @@ static __always_inline unsigned long paravirt_get_debugreg(int reg)
+ 	return PVOP_CALL1(unsigned long, cpu.get_debugreg, reg);
+ }
+ #define get_debugreg(var, reg) var = paravirt_get_debugreg(reg)
+-static inline void set_debugreg(unsigned long val, int reg)
++static __always_inline void set_debugreg(unsigned long val, int reg)
+ {
+ 	PVOP_VCALL2(cpu.set_debugreg, reg, val);
+ }
+diff --git a/arch/x86/include/asm/xen/hypercall.h b/arch/x86/include/asm/xen/hypercall.h
+index af92202..990b8aa 100644
+--- a/arch/x86/include/asm/xen/hypercall.h
++++ b/arch/x86/include/asm/xen/hypercall.h
+@@ -308,7 +308,7 @@ HYPERVISOR_platform_op(struct xen_platform_op *op)
+ 	return _hypercall1(int, platform_op, op);
+ }
  
--.pushsection .text
-+.pushsection .noinstr.text, "ax"
- 	.balign PAGE_SIZE
- SYM_CODE_START(hypercall_page)
- 	.rept (PAGE_SIZE / 32)
+-static inline int
++static __always_inline int
+ HYPERVISOR_set_debugreg(int reg, unsigned long value)
+ {
+ 	return _hypercall2(int, set_debugreg, reg, value);
+diff --git a/arch/x86/kernel/paravirt.c b/arch/x86/kernel/paravirt.c
+index 8af526c..cdaf862 100644
+--- a/arch/x86/kernel/paravirt.c
++++ b/arch/x86/kernel/paravirt.c
+@@ -233,6 +233,11 @@ static noinstr unsigned long pv_native_get_debugreg(int regno)
+ {
+ 	return native_get_debugreg(regno);
+ }
++
++static noinstr void pv_native_set_debugreg(int regno, unsigned long val)
++{
++	native_set_debugreg(regno, val);
++}
+ #endif
+ 
+ enum paravirt_lazy_mode paravirt_get_lazy_mode(void)
+@@ -260,7 +265,7 @@ struct paravirt_patch_template pv_ops = {
+ #ifdef CONFIG_PARAVIRT_XXL
+ 	.cpu.cpuid		= native_cpuid,
+ 	.cpu.get_debugreg	= pv_native_get_debugreg,
+-	.cpu.set_debugreg	= native_set_debugreg,
++	.cpu.set_debugreg	= pv_native_set_debugreg,
+ 	.cpu.read_cr0		= native_read_cr0,
+ 	.cpu.write_cr0		= native_write_cr0,
+ 	.cpu.write_cr4		= native_write_cr4,
+@@ -386,8 +391,6 @@ struct paravirt_patch_template pv_ops = {
+ };
+ 
+ #ifdef CONFIG_PARAVIRT_XXL
+-/* At this point, native_get/set_debugreg has real function entries */
+-NOKPROBE_SYMBOL(native_set_debugreg);
+ NOKPROBE_SYMBOL(native_load_idt);
+ 
+ void (*paravirt_iret)(void) = native_iret;
+diff --git a/arch/x86/xen/enlighten_pv.c b/arch/x86/xen/enlighten_pv.c
+index 273e1fa..2b1a8ba 100644
+--- a/arch/x86/xen/enlighten_pv.c
++++ b/arch/x86/xen/enlighten_pv.c
+@@ -311,7 +311,7 @@ static void __init xen_init_capabilities(void)
+ 	}
+ }
+ 
+-static void xen_set_debugreg(int reg, unsigned long val)
++static noinstr void xen_set_debugreg(int reg, unsigned long val)
+ {
+ 	HYPERVISOR_set_debugreg(reg, val);
+ }
