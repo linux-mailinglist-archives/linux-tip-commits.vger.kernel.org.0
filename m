@@ -2,148 +2,132 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E3CA840F8FA
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 17 Sep 2021 15:18:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8020740FA44
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 17 Sep 2021 16:36:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235661AbhIQNTF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 17 Sep 2021 09:19:05 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:54710 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241351AbhIQNS5 (ORCPT
+        id S230287AbhIQOhw (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 17 Sep 2021 10:37:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37906 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229923AbhIQOhw (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 17 Sep 2021 09:18:57 -0400
-Date:   Fri, 17 Sep 2021 13:17:33 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1631884654;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=9GpPcpO3H/f2tk60mVuVgdD0CNEjJXdSctWiUki9ggU=;
-        b=wXYCpWx/PxXw9p0xp1UzqbaC07x/s8EuqifKncN6bobx7dx5yvKnXS90TawWryl7a1+W5v
-        TOGeXh099q0dzJttg3cQLX3xFItSPtUBr7o2FHHSyok0l8lH392v37NPE15q99RFV6/UkV
-        gm0QCHti0yrAlunpFwh63Qisdr4rcfHOYDbCsfijeQAmXPNtw3wqAVxlwvtffV3jXpVn1I
-        SJKoK2rmcuX3y+K/l1EufAcb3ecdD/xJt3Ln478DIhJoWukU4mnNqTXtR/xa3XCCrF56od
-        AL6FjC+GLdlKfPqM3tB7O4gWm1KlPKdxM3znMtoLUy6/FIWZtpMdNwkMe9G8uA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1631884654;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=9GpPcpO3H/f2tk60mVuVgdD0CNEjJXdSctWiUki9ggU=;
-        b=C2ttMD32zh8XPg+0dkvmT/rI5GPyNn5gFmwct2GJp/ZYLAcmqXZoqnoWp+0wovOWBp17J1
-        ar2airZJ/IpdZIBw==
-From:   "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] kthread: Move prio/affinite change into the newly
- created thread
-Cc:     Mike Galbraith <efault@gmx.de>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <a23a826af7c108ea5651e73b8fbae5e653f16e86.camel@gmx.de>
-References: <a23a826af7c108ea5651e73b8fbae5e653f16e86.camel@gmx.de>
+        Fri, 17 Sep 2021 10:37:52 -0400
+Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E79BC061574;
+        Fri, 17 Sep 2021 07:36:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+        s=201909; t=1631889387;
+        bh=Um62tW04nD5lADJsNR/G1g4/H1dSt3UUggeF9CPCnIc=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=ONjH0bSxFa+Xu9EgXOZsy1OkN5fLq+gbP42A235UR5gJDet5ZRbp541b8Tg3EE0WG
+         i71yft1F5llyr4GGKh0MTVV6rDaUt8TgziyaltF6DTJMjSBnbnPl91XoWjx5GRnrvb
+         Ghz28rwQ31rLqkpzGV529yHZSFIjs4cYGyU2pHSasNLG6uXJFnCoHBRkG4DOmsCPl4
+         VrIc6fG+4IXwTQgJz1nUFKA343x1aYMKrHQQSUYNQuU9vzYkfTKlftGt4fv1JYARaz
+         WB3RlI7uiy0vyDJiBDD2h8ZPmFx2/+AybRB3/Sj+Gh5E6buLLTIU5yWqgKWGPLVLIS
+         9lcZdJzh2n3iw==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 4H9xN74tx5z9sSn;
+        Sat, 18 Sep 2021 00:36:23 +1000 (AEST)
+From:   Michael Ellerman <mpe@ellerman.id.au>
+To:     Will Deacon <will@kernel.org>,
+        "Paul E. McKenney" <paulmck@kernel.org>
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Peter Anvin <hpa@zytor.com>,
+        Andrea Parri <parri.andrea@gmail.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        Vince Weaver <vincent.weaver@maine.edu>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jiri Olsa <jolsa@redhat.com>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Stephane Eranian <eranian@google.com>,
+        linux-tip-commits@vger.kernel.org, palmer@dabbelt.com,
+        paul.walmsley@sifive.com, dlustig@nvidia.com, npiggin@gmail.com
+Subject: Re: [tip:locking/core] tools/memory-model: Add extra ordering for
+ locks and remove it for ordinary release/acquire
+In-Reply-To: <20210910110819.GA1027@willie-the-truck>
+References: <20180926182920.27644-2-paulmck@linux.ibm.com>
+ <tip-6e89e831a90172bc3d34ecbba52af5b9c4a447d1@git.kernel.org>
+ <YTiXyiA92dM9726M@hirez.programming.kicks-ass.net>
+ <YTiiC1mxzHyUJ47F@hirez.programming.kicks-ass.net>
+ <20210908144217.GA603644@rowland.harvard.edu>
+ <CAHk-=wiXJygbW+_1BdSX6M8j6z4w8gRSHVcaD5saihaNJApnoQ@mail.gmail.com>
+ <YTm26u9i3hpjrNpr@hirez.programming.kicks-ass.net>
+ <20210909133535.GA9722@willie-the-truck>
+ <20210909174635.GA2229215@paulmck-ThinkPad-P17-Gen-1>
+ <20210910110819.GA1027@willie-the-truck>
+Date:   Sat, 18 Sep 2021 00:36:20 +1000
+Message-ID: <87wnnfi80r.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Message-ID: <163188465388.25758.13569856472159323193.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+Will Deacon <will@kernel.org> writes:
+> On Thu, Sep 09, 2021 at 10:46:35AM -0700, Paul E. McKenney wrote:
+>> On Thu, Sep 09, 2021 at 02:35:36PM +0100, Will Deacon wrote:
+>> > On Thu, Sep 09, 2021 at 09:25:30AM +0200, Peter Zijlstra wrote:
+>> > > On Wed, Sep 08, 2021 at 09:08:33AM -0700, Linus Torvalds wrote:
+>> > > > then I think it's entirely reasonable to
+>> > > > 
+>> > > >         spin_unlock(&r);
+>> > > >         spin_lock(&s);
+>> > > > 
+>> > > > cannot be reordered.
+>> > > 
+>> > > I'm obviously completely in favour of that :-)
+>> > 
+>> > I don't think we should require the accesses to the actual lockwords to
+>> > be ordered here, as it becomes pretty onerous for relaxed LL/SC
+>> > architectures where you'd end up with an extra barrier either after the
+>> > unlock() or before the lock() operation. However, I remain absolutely in
+>> > favour of strengthening the ordering of the _critical sections_ guarded by
+>> > the locks to be RCsc.
+>> 
+>> If by this you mean the critical sections when observed only by other
+>> critical sections for a given lock, then everyone is already there.
+>
+> No, I mean the case where somebody without the lock (but using memory
+> barriers) can observe the critical sections out of order (i.e. W -> R
+> order is not maintained).
+>
+>> However...
+>> 
+>> > Last time this came up, I think the RISC-V folks were generally happy to
+>> > implement whatever was necessary for Linux [1]. The thing that was stopping
+>> > us was Power (see CONFIG_ARCH_WEAK_RELEASE_ACQUIRE), wasn't it? I think
+>> > Michael saw quite a bit of variety in the impact on benchmarks [2] across
+>> > different machines. So the question is whether newer Power machines are less
+>> > affected to the degree that we could consider making this change again.
+>> 
+>> Last I knew, on Power a pair of critical sections for a given lock could
+>> be observed out of order (writes from the earlier critical section vs.
+>> reads from the later critical section), but only by CPUs not holding
+>> that lock.  Also last I knew, tightening this would require upgrading
+>> some of the locking primitives' lwsync instructions to sync instructions.
+>> But I know very little about Power 10.
+>
+> Yup, that's the one. This is the primary reason why we have the confusing
+> "RCtso" model today so this is my periodic "Do we still need this?" poking
+> for the Power folks :)
+>
+> If the SYNC is a disaster for Power, then I'll ask again in another ~3 years
+> time in the hope that newer micro-architectures can swallow the instruction
+> more easily, but the results last time weren't hugely compelling and so _if_
+> there's an opportunity to make locking more "obvious" then I'm all for it.
 
-Commit-ID:     2b214a488b2c83d63c99c71d054273c1c2c07027
-Gitweb:        https://git.kernel.org/tip/2b214a488b2c83d63c99c71d054273c1c2c07027
-Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-AuthorDate:    Tue, 10 Nov 2020 12:38:47 +01:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Fri, 17 Sep 2021 15:08:18 +02:00
+I haven't had time to do the full set of numbers like I did last time,
+but a quick test shows it's still about a 20-25% drop switching to sync.
 
-kthread: Move prio/affinite change into the newly created thread
+So on that basis we'd definitely rather not :)
 
-With enabled threaded interrupts the nouveau driver reported the
-following:
+I'll try and get some more numbers next week.
 
-| Chain exists of:
-|   &mm->mmap_lock#2 --> &device->mutex --> &cpuset_rwsem
-|
-|  Possible unsafe locking scenario:
-|
-|        CPU0                    CPU1
-|        ----                    ----
-|   lock(&cpuset_rwsem);
-|                                lock(&device->mutex);
-|                                lock(&cpuset_rwsem);
-|   lock(&mm->mmap_lock#2);
-
-The device->mutex is nvkm_device::mutex.
-
-Unblocking the lockchain at `cpuset_rwsem' is probably the easiest
-thing to do.  Move the priority reset to the start of the newly
-created thread.
-
-Fixes: 710da3c8ea7df ("sched/core: Prevent race condition between cpuset and __sched_setscheduler()")
-Reported-by: Mike Galbraith <efault@gmx.de>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/a23a826af7c108ea5651e73b8fbae5e653f16e86.camel@gmx.de
----
- kernel/kthread.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
-
-diff --git a/kernel/kthread.c b/kernel/kthread.c
-index 7bbfeeb..6f59e34 100644
---- a/kernel/kthread.c
-+++ b/kernel/kthread.c
-@@ -270,6 +270,7 @@ EXPORT_SYMBOL_GPL(kthread_parkme);
- 
- static int kthread(void *_create)
- {
-+	static const struct sched_param param = { .sched_priority = 0 };
- 	/* Copy data: it's on kthread's stack */
- 	struct kthread_create_info *create = _create;
- 	int (*threadfn)(void *data) = create->threadfn;
-@@ -300,6 +301,13 @@ static int kthread(void *_create)
- 	init_completion(&self->parked);
- 	current->vfork_done = &self->exited;
- 
-+	/*
-+	 * The new thread inherited kthreadd's priority and CPU mask. Reset
-+	 * back to default in case they have been changed.
-+	 */
-+	sched_setscheduler_nocheck(current, SCHED_NORMAL, &param);
-+	set_cpus_allowed_ptr(current, housekeeping_cpumask(HK_FLAG_KTHREAD));
-+
- 	/* OK, tell user we're spawned, wait for stop or wakeup */
- 	__set_current_state(TASK_UNINTERRUPTIBLE);
- 	create->result = current;
-@@ -397,7 +405,6 @@ struct task_struct *__kthread_create_on_node(int (*threadfn)(void *data),
- 	}
- 	task = create->result;
- 	if (!IS_ERR(task)) {
--		static const struct sched_param param = { .sched_priority = 0 };
- 		char name[TASK_COMM_LEN];
- 
- 		/*
-@@ -406,13 +413,6 @@ struct task_struct *__kthread_create_on_node(int (*threadfn)(void *data),
- 		 */
- 		vsnprintf(name, sizeof(name), namefmt, args);
- 		set_task_comm(task, name);
--		/*
--		 * root may have changed our (kthreadd's) priority or CPU mask.
--		 * The kernel thread should not inherit these properties.
--		 */
--		sched_setscheduler_nocheck(task, SCHED_NORMAL, &param);
--		set_cpus_allowed_ptr(task,
--				     housekeeping_cpumask(HK_FLAG_KTHREAD));
- 	}
- 	kfree(create);
- 	return task;
+cheers
