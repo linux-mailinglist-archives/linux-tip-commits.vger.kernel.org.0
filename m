@@ -2,56 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C4CB40FF7B
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 17 Sep 2021 20:37:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8655A40FF79
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 17 Sep 2021 20:37:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241980AbhIQSi0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 17 Sep 2021 14:38:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37426 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239002AbhIQSiZ (ORCPT
+        id S240952AbhIQSiZ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 17 Sep 2021 14:38:25 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:56298 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231364AbhIQSiZ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Fri, 17 Sep 2021 14:38:25 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DBEEC061757;
-        Fri, 17 Sep 2021 11:37:02 -0700 (PDT)
-Date:   Fri, 17 Sep 2021 18:36:59 -0000
+Date:   Fri, 17 Sep 2021 18:37:00 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1631903820;
+        s=2020; t=1631903821;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=BA66kMexDEZ09wjGXg+7JJUsk0GiIhKRkjWEmHFd0yM=;
-        b=srYDKLLZ7uCj2qPfTSBa01Tnp5+2SWmn7CSTOUlyOZs5SV+LM5kRRAM5P31kEEwAjla4WZ
-        78/hKefsevu3Eo2Ezt/yyIVzrwqjL3RAYD1wD/Qh//2fkEKvtoai7RrU8TRD3SscORiweL
-        38cud0q/bZSglHvRphlRFzjqdbpy2JOYVnyvQ/0tveDsnXm5xmiyA7JFWA/pxKRGj7lyrK
-        pnIw76j30apnGdSEsGjWbCmRJclxCHVAy2BXvvK9JVFcuDiyNKtNzPuF5I0QIH0XT1xMTw
-        kbfczK/1ALSnofpJWPHYBN0CDr063tSq2Hp8DPgv6K32lNwt6zQ6iJ4vxr0Cfw==
+        bh=BOE455zCgHMRV2KtcMLJJjrjMSeHfZJ2aD7gAmLLL9E=;
+        b=RZh0FWMxxRIt+RezQeTESlmA/21VmeiFQk3m2W3dykj02a/wl1jjN3fJtgNJbbcprBjrwV
+        FnqR8vzFnYA0jdmd9A0Q81py8pAIUBWgFUAH6o1QnjvCsgVxETs/KBtd7MNjo5xTo+dD90
+        AHcsE9wVyjsZ3bxtYnIm0ZYlEpaPOffCRsrSCc7vMk9j2yiEpf+Dpb+LVGLEgPsaRE+hN8
+        SeHZUULyJ8XIAAHijbuJJVfB7vW3M4cYhSg3XxfeT1W+cBAIqca9nMtyD53WTJCFNC2ToF
+        F+HFP+g+TB9bxW802GXi4y8jEEYBo8eNSxxyjicaii4El0WEQ2BtsQy52OQ8bA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1631903820;
+        s=2020e; t=1631903821;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=BA66kMexDEZ09wjGXg+7JJUsk0GiIhKRkjWEmHFd0yM=;
-        b=Xlw/qGYBZFIwHEt9fkZss5C8gWSV7on9nQwGqPnDToHgGF+KTbkJLi5uosFyOKRriPvVTi
-        jkeHN/oidkJhIvCg==
-From:   "tip-bot2 for Frederic Weisbecker" <tip-bot2@linutronix.de>
+        bh=BOE455zCgHMRV2KtcMLJJjrjMSeHfZJ2aD7gAmLLL9E=;
+        b=KzbMJYo8gNsrByNQCYUCyHUJdrhyiVgFpJec+UBKYYJj3lK+9eQC6qA6tnHWTTmptwIUK5
+        Q6OVY9KTVQtXbTCQ==
+From:   "tip-bot2 for YueHaibing" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched: Provide Kconfig support for default dynamic
- preempt mode
-Cc:     Frederic Weisbecker <frederic@kernel.org>,
+Subject: [tip: sched/core] sched: Remove unused inline function __rq_clock_broken()
+Cc:     YueHaibing <yuehaibing@huawei.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210914103134.11309-1-frederic@kernel.org>
-References: <20210914103134.11309-1-frederic@kernel.org>
+In-Reply-To: <20210914095244.52780-1-yuehaibing@huawei.com>
+References: <20210914095244.52780-1-yuehaibing@huawei.com>
 MIME-Version: 1.0
-Message-ID: <163190381989.25758.10887444171064308695.tip-bot2@tip-bot2>
+Message-ID: <163190382071.25758.6548863054688812006.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -62,171 +58,38 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     682dc167b47ba4dba5d129fb528762343d659f83
-Gitweb:        https://git.kernel.org/tip/682dc167b47ba4dba5d129fb528762343d659f83
-Author:        Frederic Weisbecker <frederic@kernel.org>
-AuthorDate:    Tue, 14 Sep 2021 12:31:34 +02:00
+Commit-ID:     e23bc1e6d52e9b9ecca895b408a4eca742caed16
+Gitweb:        https://git.kernel.org/tip/e23bc1e6d52e9b9ecca895b408a4eca742caed16
+Author:        YueHaibing <yuehaibing@huawei.com>
+AuthorDate:    Tue, 14 Sep 2021 17:52:44 +08:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Fri, 17 Sep 2021 20:32:27 +02:00
+CommitterDate: Fri, 17 Sep 2021 20:32:26 +02:00
 
-sched: Provide Kconfig support for default dynamic preempt mode
+sched: Remove unused inline function __rq_clock_broken()
 
-Currently the boot defined preempt behaviour (aka dynamic preempt)
-selects full preemption by default when the "preempt=" boot parameter
-is omitted. However distros may rather want to default to either
-no preemption or voluntary preemption.
+These is no caller in tree since commit
+523e979d3164 ("sched/core: Use PELT for scale_rt_capacity()")
 
-To provide with this flexibility, make dynamic preemption a visible
-Kconfig option and adapt the preemption behaviour selected by the user
-to either static or dynamic preemption.
-
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20210914103134.11309-1-frederic@kernel.org
+Link: https://lkml.kernel.org/r/20210914095244.52780-1-yuehaibing@huawei.com
 ---
- kernel/Kconfig.preempt | 32 +++++++++++++++++++++++---------
- kernel/sched/core.c    | 29 ++++++++++++++++++++++++++---
- 2 files changed, 49 insertions(+), 12 deletions(-)
+ kernel/sched/sched.h | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/kernel/Kconfig.preempt b/kernel/Kconfig.preempt
-index bd7c414..aa9f78e 100644
---- a/kernel/Kconfig.preempt
-+++ b/kernel/Kconfig.preempt
-@@ -2,10 +2,11 @@
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index 094ea86..148d5d3 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -1426,11 +1426,6 @@ static inline struct cfs_rq *group_cfs_rq(struct sched_entity *grp)
  
- choice
- 	prompt "Preemption Model"
--	default PREEMPT_NONE
-+	default PREEMPT_NONE_BEHAVIOUR
+ extern void update_rq_clock(struct rq *rq);
  
--config PREEMPT_NONE
-+config PREEMPT_NONE_BEHAVIOUR
- 	bool "No Forced Preemption (Server)"
-+	select PREEMPT_NONE if !PREEMPT_DYNAMIC
- 	help
- 	  This is the traditional Linux preemption model, geared towards
- 	  throughput. It will still provide good latencies most of the
-@@ -17,9 +18,10 @@ config PREEMPT_NONE
- 	  raw processing power of the kernel, irrespective of scheduling
- 	  latencies.
- 
--config PREEMPT_VOLUNTARY
-+config PREEMPT_VOLUNTARY_BEHAVIOUR
- 	bool "Voluntary Kernel Preemption (Desktop)"
- 	depends on !ARCH_NO_PREEMPT
-+	select PREEMPT_VOLUNTARY if !PREEMPT_DYNAMIC
- 	help
- 	  This option reduces the latency of the kernel by adding more
- 	  "explicit preemption points" to the kernel code. These new
-@@ -35,12 +37,10 @@ config PREEMPT_VOLUNTARY
- 
- 	  Select this if you are building a kernel for a desktop system.
- 
--config PREEMPT
-+config PREEMPT_BEHAVIOUR
- 	bool "Preemptible Kernel (Low-Latency Desktop)"
- 	depends on !ARCH_NO_PREEMPT
--	select PREEMPTION
--	select UNINLINE_SPIN_UNLOCK if !ARCH_INLINE_SPIN_UNLOCK
--	select PREEMPT_DYNAMIC if HAVE_PREEMPT_DYNAMIC
-+	select PREEMPT
- 	help
- 	  This option reduces the latency of the kernel by making
- 	  all kernel code (that is not executing in a critical section)
-@@ -58,7 +58,7 @@ config PREEMPT
- 
- config PREEMPT_RT
- 	bool "Fully Preemptible Kernel (Real-Time)"
--	depends on EXPERT && ARCH_SUPPORTS_RT
-+	depends on EXPERT && ARCH_SUPPORTS_RT && !PREEMPT_DYNAMIC
- 	select PREEMPTION
- 	help
- 	  This option turns the kernel into a real-time kernel by replacing
-@@ -75,6 +75,17 @@ config PREEMPT_RT
- 
- endchoice
- 
-+config PREEMPT_NONE
-+	bool
-+
-+config PREEMPT_VOLUNTARY
-+	bool
-+
-+config PREEMPT
-+	bool
-+	select PREEMPTION
-+	select UNINLINE_SPIN_UNLOCK if !ARCH_INLINE_SPIN_UNLOCK
-+
- config PREEMPT_COUNT
-        bool
- 
-@@ -83,7 +94,10 @@ config PREEMPTION
-        select PREEMPT_COUNT
- 
- config PREEMPT_DYNAMIC
--	bool
-+	bool "Preemption behaviour defined on boot"
-+	depends on HAVE_PREEMPT_DYNAMIC
-+	select PREEMPT
-+	default y
- 	help
- 	  This option allows to define the preemption model on the kernel
- 	  command line parameter and thus override the default preemption
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 85e212d..b36b5d7 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -6354,12 +6354,13 @@ EXPORT_STATIC_CALL_TRAMP(preempt_schedule_notrace);
-  */
- 
- enum {
--	preempt_dynamic_none = 0,
-+	preempt_dynamic_undefined = -1,
-+	preempt_dynamic_none,
- 	preempt_dynamic_voluntary,
- 	preempt_dynamic_full,
- };
- 
--int preempt_dynamic_mode = preempt_dynamic_full;
-+int preempt_dynamic_mode = preempt_dynamic_undefined;
- 
- int sched_dynamic_mode(const char *str)
- {
-@@ -6432,7 +6433,27 @@ static int __init setup_preempt_mode(char *str)
- }
- __setup("preempt=", setup_preempt_mode);
- 
--#endif /* CONFIG_PREEMPT_DYNAMIC */
-+static void __init preempt_dynamic_init(void)
-+{
-+	if (preempt_dynamic_mode == preempt_dynamic_undefined) {
-+		if (IS_ENABLED(CONFIG_PREEMPT_NONE_BEHAVIOUR)) {
-+			sched_dynamic_update(preempt_dynamic_none);
-+		} else if (IS_ENABLED(CONFIG_PREEMPT_VOLUNTARY_BEHAVIOUR)) {
-+			sched_dynamic_update(preempt_dynamic_voluntary);
-+		} else {
-+			/* Default static call setting, nothing to do */
-+			WARN_ON_ONCE(!IS_ENABLED(CONFIG_PREEMPT_BEHAVIOUR));
-+			preempt_dynamic_mode = preempt_dynamic_full;
-+			pr_info("Dynamic Preempt: full\n");
-+		}
-+	}
-+}
-+
-+#else /* !CONFIG_PREEMPT_DYNAMIC */
-+
-+static inline void preempt_dynamic_init(void) { }
-+
-+#endif /* #ifdef CONFIG_PREEMPT_DYNAMIC */
- 
+-static inline u64 __rq_clock_broken(struct rq *rq)
+-{
+-	return READ_ONCE(rq->clock);
+-}
+-
  /*
-  * This is the entry point to schedule() from kernel preemption
-@@ -9236,6 +9257,8 @@ void __init sched_init(void)
- 
- 	init_uclamp();
- 
-+	preempt_dynamic_init();
-+
- 	scheduler_running = 1;
- }
- 
+  * rq::clock_update_flags bits
+  *
