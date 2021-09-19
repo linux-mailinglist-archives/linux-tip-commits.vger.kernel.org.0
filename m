@@ -2,72 +2,89 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C2C604108C2
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 18 Sep 2021 23:59:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 07847410C71
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 19 Sep 2021 18:55:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239290AbhIRWA7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 18 Sep 2021 18:00:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57136 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234140AbhIRWA7 (ORCPT
+        id S231416AbhISQ44 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 19 Sep 2021 12:56:56 -0400
+Received: from mout.gmx.net ([212.227.17.21]:36641 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229701AbhISQ4z (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 18 Sep 2021 18:00:59 -0400
-Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE2AFC061574
-        for <linux-tip-commits@vger.kernel.org>; Sat, 18 Sep 2021 14:59:34 -0700 (PDT)
-Received: by mail-ed1-x531.google.com with SMTP id g8so44380279edt.7
-        for <linux-tip-commits@vger.kernel.org>; Sat, 18 Sep 2021 14:59:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=AVuqCuI69lB47qlkpjuLyHlg8ssakPl2Ecl3HCf4XMg=;
-        b=KbLBBlRxCAjWT+R91Rnn8hWPC2TRubAju46MMclXdsp5CNYmqlJqWBqkDi2xOAyH/j
-         Dr4tEOlbxOGGxAIvB+EeDobwpYXnYYYhQC4lQFQxRx8iKbepmIxG+4/Vj3SkbelCG5IP
-         mPIowGLvFN8A7plFN++uDoQyRgiUwLWFgfEOwHRuDHUQlUGGnMJlefDn+YVwrsObV/tQ
-         SHm+VmaejAlMq5VWT5ombSzgWfEeDLbgkwi8AK7YKQ5xB92fYDykKgdOYxM/JdHGnkMR
-         AQXO0Q9WiZwKmRnwrOqVOt09Br9bHzJjdfjvt/l8PtXNNTBRQ0bZfM0I184jOvEvCgA9
-         5k7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=AVuqCuI69lB47qlkpjuLyHlg8ssakPl2Ecl3HCf4XMg=;
-        b=ZoOHFaLRG00EaoYfK/u7po6RA7JvN4ZXcShWTU2p2GpWYLwwwTfZYpYTAFWSP6ppu2
-         95HuOTQahsSsQ0qtyLjL0DIQ1cz7d51qhBWf7XBTxNbm2qgTGj93e3t6NdnOmGx7anbM
-         Y2vct8AumRE4DAnoNWmMXbcMGX17uoq9KLgCYByjIzriGotcc3f87kqyzNg7pu+5fViF
-         WlB6wLL7AlcsujYlV45SCiWLoZxWAL7DxrZMGXraEAREDtmuxH7AfcvL4FsVrPwlz8PF
-         AqLJHhTmhHJQZmMbv5/e1bsVPUFFBP/7d2S2hmq/ZQHKC0RYoZClDC6bEgEKW2SUB6vp
-         Osxw==
-X-Gm-Message-State: AOAM530BHg6lxNIVIw/q9OsXo5jnQxeLDUZs62S0Da1tu/zIEOq14Pa9
-        AUbs9VmxNlS55MkAGjKSMsYyfy84BBqLZJTkLVg=
-X-Google-Smtp-Source: ABdhPJyfBuceqYL426UuSDgkdLCoArjU2mZT86PK3lPsHLkSieneAgKN6ehCpMPnhVbiQ1X4lb1hrtEyMufxTCptmCY=
-X-Received: by 2002:aa7:c5d2:: with SMTP id h18mr20560088eds.218.1632002373213;
- Sat, 18 Sep 2021 14:59:33 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 2002:a54:3209:0:0:0:0:0 with HTTP; Sat, 18 Sep 2021 14:59:32
- -0700 (PDT)
-Reply-To: ms.lisahugh000@gmail.com
-From:   MS LISA HUGH <olivier.folly0@gmail.com>
-Date:   Sat, 18 Sep 2021 23:59:32 +0200
-Message-ID: <CAG_GOAtfq5ObnU9GHh30i-GiXorL_7Pw1HXRHRto1tBy72HPdg@mail.gmail.com>
-Subject: YOU WILL HAVE THE FULL DETAILS >>MS LISA HUGH.
-To:     undisclosed-recipients:;
+        Sun, 19 Sep 2021 12:56:55 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1632070518;
+        bh=MMjrYu/zC7Tgi67XG7i4Dm419Zv7v9Inp7LxkDjjX/w=;
+        h=X-UI-Sender-Class:Subject:From:To:Cc:Date:In-Reply-To:References;
+        b=DkwHJaaVFqu5rESo+sH1qvuYPxMFWRG7vl/8RfB2alF/owr6TzUeHyFSFx/rDP5E9
+         ZcB92nB5ShpQjzSh7//hJVU8wZDIoBwj0w4DeDRBbfnuU40V0q2Yb9JfKFIjiYZHIw
+         EzgNKCb29BJMtZn9CyO2PvD18rcBIDzydHmyPsGE=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from homer.fritz.box ([185.221.150.46]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MrQEx-1nCauH2KhD-00oYTx; Sun, 19
+ Sep 2021 18:55:18 +0200
+Message-ID: <4422257385dbee913eb5270bda5fded7fbb993ab.camel@gmx.de>
+Subject: Re: [tip: x86/urgent] x86/setup: Call early_reserve_memory() earlier
+From:   Mike Galbraith <efault@gmx.de>
+To:     linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org
+Cc:     marmarek@invisiblethingslab.com, Juergen Gross <jgross@suse.com>,
+        Borislav Petkov <bp@suse.de>,
+        Mike Rapoport <rppt@linux.ibm.com>, stable@vger.kernel.org,
+        x86@kernel.org
+Date:   Sun, 19 Sep 2021 18:55:16 +0200
+In-Reply-To: <163178944634.25758.17304720937855121489.tip-bot2@tip-bot2>
+References: <20210914094108.22482-1-jgross@suse.com>
+         <163178944634.25758.17304720937855121489.tip-bot2@tip-bot2>
 Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.0 
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:jKWpV1XWSTfXOn5OtO2QUBKJ0HZL8CyoQHP6lCtVD7cUs8QOBUJ
+ sMUh/SRsYtFjo7u2udyDpG2KmIU67K7PfN83tc+ApAPM3UNZBmgIsel9o1FdYQfltdsB8zB
+ GgMTXTHatsSkfe1t5YEzKkKADS59+MfYqMhBfI6CALLyXa1Z7L5yYWdTkRwg+mvN7f8uVT8
+ Wi8sNbt3lXPPiiou0QC1g==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:m/ovrb63xIM=:4irSzwqq5t+bK5sI2Do5PF
+ ZSj2BXASzqfcN6qZQ50psenHOvtAkSyy+RXMxACXNkOdiIwyGC2JbQcHaQ9ulDZasOB33X6Zg
+ 4KJ0tWp2cUrcPEvZSRraGtC9ICM3PmfzQ8w6045UJD5Injtv/TxZkBQI4ur+JLfpQne8B+noK
+ /tPDJGi50XtyYceRHDuKHOZTKbSbfFV60wyWEUu+A43zbRIqscyuDcOz4Y88JaJHiFmHDMpSO
+ xywDPLlgqPYUhSptNdt56ml0gaBF0ExXIFpLy3sYVCRUm3S3lBEQ+94RN5hQKR5gfTba5c7QS
+ 5x4z/yrfx7YatbDWNrLhAy6oc6D2JeHE8zIXfBD6xztroIKX6oEvrcZilgUBuaBIx2/H5XdWb
+ yncEkgLtoVf3Yj5H1m9HtUl1TYnyz3sXe0p8Vi91jS1JB2ZBbDNAEA2/y5V8AG4WcqxQJYyLJ
+ W4jb/j7Kkae6Aye6+Lt3mTACfU/xSXCiz7DA+4etSbuLfVLMwmoCIZW/TgrIivVw9Fjh110kB
+ qiW/GEyPodu/A+/bTvsfwvDcZ39r9FHBRcanvbrHJDis1C09dD5tVQ2ApIiyCFV64rcl6Oqng
+ cml+L2uGyi+0PzkuhEN/8v5NljbOhLeFqe2ytg8jIvVXo/qX1GtT7zMcirRHtiLdjRtGJWGaA
+ GuPyhA5TJf2Lic3EtitLSJu9TRzcDuW51e8VZcE1kv8rjI7hJGok4NvAhdZc/NIQnxojiXJr9
+ Ipxcbs3cWaWfPT2SsDfNfv3OYIbWhwxt77qgzs2Yb8mdnH94VktPebRIIwZ4IltsUc0T/1Rfk
+ 0aZQgCQmoTq9u6MXxIPUx4j/ZJJQeDGxHxaQa78OzGs1lrc1W6idyt8rYb78oDc/z/nQDj6Kx
+ JiCNoJbUi0w11OdcKqsCtBlvkOsb7JBeLOK4OfIQu3kfetqrCRghkr2MWonCP4R0Ds0WeomV4
+ UA8s324U270Drsym0IEzQ519IwdevZNby7uWzAeBMFBbW+qh21iG6GmC4USJ2M/kOnwVga9At
+ eq9dNDPlbsbK2LWx2LkZDLEWycxr0x7pdYQixWAESD/sl8nQhg8eXqqtzb2CmZ4Y9eZKNBU7I
+ TZlC6lbvVhXud0=
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-Dear Friend,
+On Thu, 2021-09-16 at 10:50 +0000, tip-bot2 for Juergen Gross wrote:
+> The following commit has been merged into the x86/urgent branch of
+> tip:
+>
+> Commit-ID:=C2=A0=C2=A0=C2=A0=C2=A0 1c1046581f1a3809e075669a3df0191869d96=
+dd1
+> Gitweb:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0
+> https://git.kernel.org/tip/1c1046581f1a3809e075669a3df0191869d96dd1
+> Author:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Juergen Gross <jgross@=
+suse.com>
+> AuthorDate:=C2=A0=C2=A0=C2=A0 Tue, 14 Sep 2021 11:41:08 +02:00
+> Committer:=C2=A0=C2=A0=C2=A0=C2=A0 Borislav Petkov <bp@suse.de>
+> CommitterDate: Thu, 16 Sep 2021 12:38:05 +02:00
+>
+> x86/setup: Call early_reserve_memory() earlier
 
-I am Ms Lisa Hugh, work in the department of Audit and accounting
-manager here in the Bank.
+This commit rendered tip toxic to my i4790 desktop box and i5-6200U
+lappy.  Boot for both is instantly over without so much as a twitch.
 
-I need Your help for this transfer($4,500,000,00 ,U.S.DOLLARS)to your
-bank account with your co-operation for both of us benefit.
+Post bisect revert made both all better.
 
-Please send the follow below,
 
-1)AGE....2)TELEPHONE NUMBER,,,,,...,3)COUNTRY.....4)OCCUPATION......
-
-Thanks.
-Ms Lisa Hugh
+	-Mike
