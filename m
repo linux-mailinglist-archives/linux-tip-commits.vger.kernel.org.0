@@ -2,177 +2,113 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D71B411309
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 20 Sep 2021 12:42:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 94DC741137C
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 20 Sep 2021 13:25:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233141AbhITKoO (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 20 Sep 2021 06:44:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55184 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236252AbhITKoK (ORCPT
+        id S236764AbhITL1E (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 20 Sep 2021 07:27:04 -0400
+Received: from mout.gmx.net ([212.227.15.19]:33593 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230138AbhITL1D (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 20 Sep 2021 06:44:10 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9F4FC061766;
-        Mon, 20 Sep 2021 03:42:43 -0700 (PDT)
-Date:   Mon, 20 Sep 2021 10:42:39 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1632134560;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=0V+QQL9VyuOkSc42xJV2bFPNvouhdN6olxPqBCM2QmA=;
-        b=edK9XsTm3t8Lj/7TrP7LJ7HsOK/W5RD/l10vsAzkYmJ1wSBz3yIJAlUYl0qTB0P0kcmn1r
-        Fn59Uxo/SkpngV7jpKu8PUrlhtLAf1cr51lORzEtKUOj/RmtGpjo0XDJXOE058oNmHPHk1
-        nvyUOpFQ7cUrhXXHbC8WJ6OUM6DZ8keekQzeEzNFyjckcsKUFSeIVJclTlQN//LeR5Szkj
-        y8jzL9rp/ku+9bHGqChExgLDYvsqt2sPX8vzwLaVqWb/O68xX7YmEt0BD6ad3RKg4FAdFN
-        AG9y6Q7tAdmhcuF5NnHKqyvcePgrmozK0Tv/vJSfgSpCcUu3ve2YRv6ZB/8xRg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1632134560;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=0V+QQL9VyuOkSc42xJV2bFPNvouhdN6olxPqBCM2QmA=;
-        b=Hc+vfinaC9YAFEw3NmUWYJwPT++73YCBJtE4VfyojeLrtST6MUZBfKSbU8acDXMXpYh0+u
-        sv2B/m5+as3TPeBQ==
-From:   "tip-bot2 for Jiashuo Liang" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/fault: Fix wrong signal when vsyscall fails with pkey
-Cc:     Jiashuo Liang <liangjs@pku.edu.cn>, Borislav Petkov <bp@suse.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20210730030152.249106-1-liangjs@pku.edu.cn>
-References: <20210730030152.249106-1-liangjs@pku.edu.cn>
+        Mon, 20 Sep 2021 07:27:03 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1632137126;
+        bh=B9gwt7sLGXtN17LhF++FdY8VbX/w+lp9LunStPlAZXY=;
+        h=X-UI-Sender-Class:Subject:From:To:Cc:Date:In-Reply-To:References;
+        b=HbNAJCaO3Axz49sDiw9+qcwm0iQ8n9C/pN7aUBwl+uoE5WMz6ZYQJPwFdVCr7hvIR
+         6awzxXujC+74Wiz2ZhlPabLMX0b5ek9aXmBxbBUuPy4hHIw9Z8X8E/aTK5023RlhyW
+         Y1mY0tv+FmfnDSZmF/AfGcZ2qF9c0d98WtTi7838=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from homer.fritz.box ([185.191.217.45]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1N1fis-1mqVIs0m0e-01242Z; Mon, 20
+ Sep 2021 13:25:26 +0200
+Message-ID: <65a61ffdb4c8090320ec98fe5004e6f7808fa4b9.camel@gmx.de>
+Subject: Re: [tip: x86/urgent] x86/setup: Call early_reserve_memory() earlier
+From:   Mike Galbraith <efault@gmx.de>
+To:     Mike Rapoport <rppt@linux.ibm.com>
+Cc:     linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
+        marmarek@invisiblethingslab.com, Juergen Gross <jgross@suse.com>,
+        Borislav Petkov <bp@suse.de>, stable@vger.kernel.org,
+        x86@kernel.org
+Date:   Mon, 20 Sep 2021 13:25:25 +0200
+In-Reply-To: <YUhTwPhva5olB87d@linux.ibm.com>
+References: <20210914094108.22482-1-jgross@suse.com>
+         <163178944634.25758.17304720937855121489.tip-bot2@tip-bot2>
+         <4422257385dbee913eb5270bda5fded7fbb993ab.camel@gmx.de>
+         <YUdtm8hVH0ps18BK@linux.ibm.com>
+         <fc21617d65338078366e70704eb55789a810e45e.camel@gmx.de>
+         <YUhTwPhva5olB87d@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.0 
 MIME-Version: 1.0
-Message-ID: <163213455900.25758.11915876484367505676.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:iEjsRv4P4g2ovFM2mp8YyGLSbNjPNeyq9zmAqZMjWIj4gvzRgSx
+ rxdywpB0+EybMYOQlSL7qeyYsN0KUzPPSOyFKSiR1/8UaKnC1i9Rvsi/DUnBJRowepgwwqJ
+ lKaS3A+gfX3wM9TMD5IgkSvjc0en8MU6akzJ2ueUY4+2qEXYCZl0tnlbkKYHPMD/yx/bnM+
+ BOoBQIEDrgYCepkSwp9Sg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:1iQ9fo7eVS0=:CxIg8wjRkFSEpwjNEm9TOD
+ uxvjEhYhzmMGeSV/uiAIC/MN2iCQnnVfzS9AuvffyGkdtNNF5qrOoXsT1pOdLJxkluQI69jZk
+ sPpChKLxxhKo4gdneu1FYxfOg6TLZQxq0l7zVhLAaGT2SXl0rGZ+cAzG/YgCQBclettjZBb7e
+ apunpDwxhwSBzVwTD6KzWyVKabqmziiVboXjVb45nT+6aE2W+YVI/5C6aCyAFLVY1wEn/32k+
+ 2xn++RYr9SivED/OPl6XkFgH+Q7sqc+n9C3zC58DOYJ5o7AavD4XrLqLJqjXrwEZmOo0FTQij
+ CmKhXWHwcC3p0jycscFptflz2+R7PR+LpdXbEdzc4ydzMTJuMrAP+Qoaxy4hbSUjRVm/i838S
+ YdC/hOK5KEguw9p+lfxe9CmCT74Prf7/G+LTqexs+EoJfFUiuBywYwf9ZWRp1asVJFvfcC0ED
+ 25UAkcC7X+rSRMRYuchIMtGkLhwC3LuPxOTqvYBmj4KGlk3o0h9t4nYM7oILfo6V0WaKPWVJe
+ qL9diHJEHQrbRSEc9hzyfsH0s0iPR3RMIYsr7F6XZoq8XqbDB0N8bYirQSlrxPV3D8+OhPHYh
+ VlM5HOtKW6qFCnigIkW3BiK4JQ54s7L5748EBzupblB36OD8Z6nMn2p6h/OTijoXXnBMJbdrQ
+ GWpanUxLZ784SUE0PWZIDPy6qImMe6kARgNCzhKG46D3LTfPapMOo9Dmfi3Y2T2ikeFtsiasl
+ J/vdHAM+v2j8l/2KN+2zQKaBFHiuWbvK/WxUdjSWYQawVseHXNzAQXUabrFny9o2Hsc6CN8sC
+ Z4sePR01+w9DMe4InKhelpYptmNXji/NKAMe8G8s9hhCR+qRe88PABUuo/EN1zgYTN1XhM9yy
+ uOeCZjjarAeunFVWmp/Kvt61YUwaUvmthFe46W+4gZxauANUK7oA57pQAqrnQltneP5yRgGDL
+ rxVnCHFeQg2EXhYDK6gDxFpT1RTEzl7ofsQfkcQnPjN2xf3sB+sWMshAK6nDcecATxgT8fFim
+ uVzD+3MACH6tVDNlvjF9AgGnDwXCYXlyy3cvOV1QLlmB6lQSoq0hRbTrPr4g4/rziOjMdyILk
+ 9BQZyIxTrH6Whc=
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+On Mon, 2021-09-20 at 12:26 +0300, Mike Rapoport wrote:
+>
+> Can't say anything caught my eye, except the early microcode update.
+> Just to rule that out, can you try booting without the early microcode
+> update?
 
-Commit-ID:     0829d0b6bf0fb3453608798442deaf00c4a1abec
-Gitweb:        https://git.kernel.org/tip/0829d0b6bf0fb3453608798442deaf00c4a1abec
-Author:        Jiashuo Liang <liangjs@pku.edu.cn>
-AuthorDate:    Fri, 30 Jul 2021 11:01:52 +08:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Mon, 20 Sep 2021 12:31:06 +02:00
+Nogo.
 
-x86/fault: Fix wrong signal when vsyscall fails with pkey
+> And, to check Juergen's suggestion about failure in
+> memblock_x86_reserve_range_setup_data(), can you try this patch on top o=
+f
+> the failing tip:
 
-The function __bad_area_nosemaphore() calls kernelmode_fixup_or_oops()
-with the parameter @signal being actually @pkey, which will send a
-signal numbered with the argument in @pkey.
+Yup, patchlet detoxified it for both boxen.
 
-This bug can be triggered when the kernel fails to access user-given
-memory pages that are protected by a pkey, so it can go down the
-do_user_addr_fault() path and pass the !user_mode() check in
-__bad_area_nosemaphore().
+> diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
+> index 25425edc81a4..78162d9e90cf 100644
+> --- a/arch/x86/kernel/setup.c
+> +++ b/arch/x86/kernel/setup.c
+> @@ -716,8 +716,6 @@ static void __init early_reserve_memory(void)
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (efi_enabled(EFI_BOOT=
+))
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0efi_memblock_x86_reserve_range();
+> =C2=A0
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0memblock_x86_reserve_range_se=
+tup_data();
+> -
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0reserve_ibft_region();
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0reserve_bios_regions();
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0trim_snb_memory();
+> @@ -888,6 +886,8 @@ void __init setup_arch(char **cmdline_p)
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 */
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0x86_configure_nx();
+> =C2=A0
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0memblock_x86_reserve_range_se=
+tup_data();
+> +
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0parse_early_param();
+> =C2=A0
+> =C2=A0#ifdef CONFIG_MEMORY_HOTPLUG
+>
 
-Most cases will simply run the kernel fixup code to make an -EFAULT. But
-when another condition current->thread.sig_on_uaccess_err is met, which
-is only used to emulate vsyscall, the kernel will generate the wrong
-signal.
-
-Add a new parameter @pkey to kernelmode_fixup_or_oops() to fix this.
-
- [ bp: Massage commit message. ]
-
-Fixes: 5042d40a264c ("x86/fault: Bypass no_context() for implicit kernel faults from usermode")
-Signed-off-by: Jiashuo Liang <liangjs@pku.edu.cn>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lkml.kernel.org/r/20210730030152.249106-1-liangjs@pku.edu.cn
----
- arch/x86/mm/fault.c | 26 ++++++++++++++++++--------
- 1 file changed, 18 insertions(+), 8 deletions(-)
-
-diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
-index b2eefde..84a2c8c 100644
---- a/arch/x86/mm/fault.c
-+++ b/arch/x86/mm/fault.c
-@@ -710,7 +710,8 @@ oops:
- 
- static noinline void
- kernelmode_fixup_or_oops(struct pt_regs *regs, unsigned long error_code,
--			 unsigned long address, int signal, int si_code)
-+			 unsigned long address, int signal, int si_code,
-+			 u32 pkey)
- {
- 	WARN_ON_ONCE(user_mode(regs));
- 
-@@ -735,8 +736,12 @@ kernelmode_fixup_or_oops(struct pt_regs *regs, unsigned long error_code,
- 
- 			set_signal_archinfo(address, error_code);
- 
--			/* XXX: hwpoison faults will set the wrong code. */
--			force_sig_fault(signal, si_code, (void __user *)address);
-+			if (si_code == SEGV_PKUERR) {
-+				force_sig_pkuerr((void __user *)address, pkey);
-+			} else {
-+				/* XXX: hwpoison faults will set the wrong code. */
-+				force_sig_fault(signal, si_code, (void __user *)address);
-+			}
- 		}
- 
- 		/*
-@@ -798,7 +803,8 @@ __bad_area_nosemaphore(struct pt_regs *regs, unsigned long error_code,
- 	struct task_struct *tsk = current;
- 
- 	if (!user_mode(regs)) {
--		kernelmode_fixup_or_oops(regs, error_code, address, pkey, si_code);
-+		kernelmode_fixup_or_oops(regs, error_code, address,
-+					 SIGSEGV, si_code, pkey);
- 		return;
- 	}
- 
-@@ -930,7 +936,8 @@ do_sigbus(struct pt_regs *regs, unsigned long error_code, unsigned long address,
- {
- 	/* Kernel mode? Handle exceptions or die: */
- 	if (!user_mode(regs)) {
--		kernelmode_fixup_or_oops(regs, error_code, address, SIGBUS, BUS_ADRERR);
-+		kernelmode_fixup_or_oops(regs, error_code, address,
-+					 SIGBUS, BUS_ADRERR, ARCH_DEFAULT_PKEY);
- 		return;
- 	}
- 
-@@ -1396,7 +1403,8 @@ good_area:
- 		 */
- 		if (!user_mode(regs))
- 			kernelmode_fixup_or_oops(regs, error_code, address,
--						 SIGBUS, BUS_ADRERR);
-+						 SIGBUS, BUS_ADRERR,
-+						 ARCH_DEFAULT_PKEY);
- 		return;
- 	}
- 
-@@ -1416,7 +1424,8 @@ good_area:
- 		return;
- 
- 	if (fatal_signal_pending(current) && !user_mode(regs)) {
--		kernelmode_fixup_or_oops(regs, error_code, address, 0, 0);
-+		kernelmode_fixup_or_oops(regs, error_code, address,
-+					 0, 0, ARCH_DEFAULT_PKEY);
- 		return;
- 	}
- 
-@@ -1424,7 +1433,8 @@ good_area:
- 		/* Kernel mode? Handle exceptions or die: */
- 		if (!user_mode(regs)) {
- 			kernelmode_fixup_or_oops(regs, error_code, address,
--						 SIGSEGV, SEGV_MAPERR);
-+						 SIGSEGV, SEGV_MAPERR,
-+						 ARCH_DEFAULT_PKEY);
- 			return;
- 		}
- 
