@@ -2,56 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C6B6414EE9
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Sep 2021 19:19:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E0824414EEC
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Sep 2021 19:19:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236747AbhIVRUa (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 22 Sep 2021 13:20:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40730 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236701AbhIVRU3 (ORCPT
+        id S236747AbhIVRUn (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 22 Sep 2021 13:20:43 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:56872 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236701AbhIVRUm (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 22 Sep 2021 13:20:29 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1D47C061574;
-        Wed, 22 Sep 2021 10:18:59 -0700 (PDT)
-Date:   Wed, 22 Sep 2021 17:18:56 -0000
+        Wed, 22 Sep 2021 13:20:42 -0400
+Date:   Wed, 22 Sep 2021 17:19:10 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1632331137;
+        s=2020; t=1632331151;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=zqj7IcfjJOmv/J61U6IgvJMO0Ih8YuG/LFZTvW7FxmY=;
-        b=vVdz8med9+wY4IZRf4lqE6Vqb8jkcygNfBzhp+VDUn5dszX1EJzbHAJodGDogCEUjmj/n9
-        S24WgFZ080Xp9K7SV9pTkUytNfKjs/h6Ztu0AK8QEBBr3oqW9hE9eTSk3/HW0jmFFO1v4y
-        GdaSjlUzoNsJoPIFC5xQdFeHkgvXvz0rqQM6nXnZVRqP456A0WWAE4saQ78PiucJ2v9B+/
-        rZSLWdUTCX7zx05MkSRwRQdRDNFJyYHRn+hwCaBSnsOXM2EjPenmtEMb7Yf6G+efCx6Xqq
-        GKnE7nMmhY9jyxiFEwFVX5Gazbbboj91fWyx/QRfECk1IvH6VcYp8CKNhV6uXg==
+        bh=M8sGgJ+s5czYLK9wLGjOAGzyMWGNI8XL8H5NwfPZl4Y=;
+        b=oLntkA3bfcLUyZkS5avVqJ0P5eEo3atbxihEijSKpMZSsv8ejCT6gI3c0PRgqvDjgnDLwx
+        uDhPlykP9mh3JqEvSr8SboR5drq3MN6YFdX/gxOYbCbP1CBVPClEt6OB6ApGkhkD5YWJiN
+        csSPKlAq/uRSj7sp3Ql29IfqDvZBb9gJS9Qf7JRtHpmZEMntjgPTToI+rAoRboqhoXbKni
+        GvZhVFzdMbqEiUxzlqV8HVxhIpr6jb+aaqn/YWvU+JtYtwUe03bBtJsYyZ+TwK2ZtuTlwS
+        cRJ9SKeaYwimwtQezbkYUzds47jF/i4Acew7zl78+nFj4EujBJKs6nzTfCwGtw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1632331137;
+        s=2020e; t=1632331151;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=zqj7IcfjJOmv/J61U6IgvJMO0Ih8YuG/LFZTvW7FxmY=;
-        b=LK/61yZrDt+zJ9CFP0v6C2I4/LDNPoAOO/oLZb73mr6W4UZKAVGYG4/hFZexeWeP1lNnoA
-        upBecXMB18RTu/BQ==
-From:   "tip-bot2 for Juergen Gross" <tip-bot2@linutronix.de>
+        bh=M8sGgJ+s5czYLK9wLGjOAGzyMWGNI8XL8H5NwfPZl4Y=;
+        b=zV2xSHKcbx5EmDdzSq+TDWdWhlBR14n5sHrDI2+EpcOLEd+TwWqujEidGplsOiRRwAR+v3
+        ijnccO4HxLe+0WDg==
+From:   "tip-bot2 for Randy Dunlap" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/setup: Call early_reserve_memory() earlier
-Cc:     marmarek@invisiblethingslab.com, Juergen Gross <jgross@suse.com>,
+Subject: [tip: x86/misc] x86/Kconfig: Fix an unused variable error in dell-smm-hwmon
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Randy Dunlap <rdunlap@infradead.org>,
         Borislav Petkov <bp@suse.de>,
-        Nathan Chancellor <nathan@kernel.org>, stable@vger.kernel.org,
+        Guenter Roeck <linux@roeck-us.net>, pali@kernel.org,
         x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20210920120421.29276-1-jgross@suse.com>
-References: <20210920120421.29276-1-jgross@suse.com>
+In-Reply-To: <20210910071921.16777-1-rdunlap@infradead.org>
+References: <20210910071921.16777-1-rdunlap@infradead.org>
 MIME-Version: 1.0
-Message-ID: <163233113662.25758.10031107028271701591.tip-bot2@tip-bot2>
+Message-ID: <163233115058.25758.6853656807950257652.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,80 +58,56 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the x86/misc branch of tip:
 
-Commit-ID:     8aa83e6395ce047a506f0b16edca45f36c1ae7f8
-Gitweb:        https://git.kernel.org/tip/8aa83e6395ce047a506f0b16edca45f36c1=
-ae7f8
-Author:        Juergen Gross <jgross@suse.com>
-AuthorDate:    Mon, 20 Sep 2021 14:04:21 +02:00
+Commit-ID:     64c76a84337a5678009155fafe98c5cd8ec673f0
+Gitweb:        https://git.kernel.org/tip/64c76a84337a5678009155fafe98c5cd8ec=
+673f0
+Author:        Randy Dunlap <rdunlap@infradead.org>
+AuthorDate:    Fri, 10 Sep 2021 00:19:21 -07:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 21 Sep 2021 09:52:08 +02:00
+CommitterDate: Wed, 22 Sep 2021 19:09:56 +02:00
 
-x86/setup: Call early_reserve_memory() earlier
+x86/Kconfig: Fix an unused variable error in dell-smm-hwmon
 
-Commit in Fixes introduced early_reserve_memory() to do all needed
-initial memblock_reserve() calls in one function. Unfortunately, the call
-of early_reserve_memory() is done too late for Xen dom0, as in some
-cases a Xen hook called by e820__memory_setup() will need those memory
-reservations to have happened already.
+When CONFIG_PROC_FS is not set, there is a build warning (turned
+into an error):
 
-Move the call of early_reserve_memory() before the call of
-e820__memory_setup() in order to avoid such problems.
+  ../drivers/hwmon/dell-smm-hwmon.c: In function 'i8k_init_procfs':
+  ../drivers/hwmon/dell-smm-hwmon.c:624:24: error: unused variable 'data' [-W=
+error=3Dunused-variable]
+    struct dell_smm_data *data =3D dev_get_drvdata(dev);
 
-Fixes: a799c2bd29d1 ("x86/setup: Consolidate early memory reservations")
-Reported-by: Marek Marczykowski-G=C3=B3recki <marmarek@invisiblethingslab.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
+Make I8K depend on PROC_FS and HWMON (instead of selecting HWMON -- it
+is strongly preferred to not select entire subsystems).
+
+Build tested in all possible combinations of SENSORS_DELL_SMM, I8K, and
+PROC_FS.
+
+Fixes: 039ae58503f3 ("hwmon: Allow to compile dell-smm-hwmon driver without /=
+proc/i8k")
+Reported-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Tested-by: Marek Marczykowski-G=C3=B3recki <marmarek@invisiblethingslab.com>
-Tested-by: Nathan Chancellor <nathan@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20210920120421.29276-1-jgross@suse.com
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+Acked-by: Guenter Roeck <linux@roeck-us.net>
+Acked-by: Pali Roh=C3=A1r <pali@kernel.org>
+Link: https://lkml.kernel.org/r/20210910071921.16777-1-rdunlap@infradead.org
 ---
- arch/x86/kernel/setup.c | 26 ++++++++++++++------------
- 1 file changed, 14 insertions(+), 12 deletions(-)
+ arch/x86/Kconfig | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
-index 79f1641..40ed44e 100644
---- a/arch/x86/kernel/setup.c
-+++ b/arch/x86/kernel/setup.c
-@@ -830,6 +830,20 @@ void __init setup_arch(char **cmdline_p)
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index dad7f85..e5ba8af 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -1256,7 +1256,8 @@ config TOSHIBA
 =20
- 	x86_init.oem.arch_setup();
-=20
-+	/*
-+	 * Do some memory reservations *before* memory is added to memblock, so
-+	 * memblock allocations won't overwrite it.
-+	 *
-+	 * After this point, everything still needed from the boot loader or
-+	 * firmware or kernel text should be early reserved or marked not RAM in
-+	 * e820. All other memory is free game.
-+	 *
-+	 * This call needs to happen before e820__memory_setup() which calls the
-+	 * xen_memory_setup() on Xen dom0 which relies on the fact that those
-+	 * early reservations have happened already.
-+	 */
-+	early_reserve_memory();
-+
- 	iomem_resource.end =3D (1ULL << boot_cpu_data.x86_phys_bits) - 1;
- 	e820__memory_setup();
- 	parse_setup_data();
-@@ -876,18 +890,6 @@ void __init setup_arch(char **cmdline_p)
-=20
- 	parse_early_param();
-=20
--	/*
--	 * Do some memory reservations *before* memory is added to
--	 * memblock, so memblock allocations won't overwrite it.
--	 * Do it after early param, so we could get (unlikely) panic from
--	 * serial.
--	 *
--	 * After this point everything still needed from the boot loader or
--	 * firmware or kernel text should be early reserved or marked not
--	 * RAM in e820. All other memory is free game.
--	 */
--	early_reserve_memory();
--
- #ifdef CONFIG_MEMORY_HOTPLUG
- 	/*
- 	 * Memory used by the kernel cannot be hot-removed because Linux
+ config I8K
+ 	tristate "Dell i8k legacy laptop support"
+-	select HWMON
++	depends on HWMON
++	depends on PROC_FS
+ 	select SENSORS_DELL_SMM
+ 	help
+ 	  This option enables legacy /proc/i8k userspace interface in hwmon
