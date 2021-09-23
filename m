@@ -2,101 +2,129 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A76A415B91
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 23 Sep 2021 11:57:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 993714161A5
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 23 Sep 2021 17:03:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240233AbhIWJ7T (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 23 Sep 2021 05:59:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40356 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240310AbhIWJ7T (ORCPT
+        id S241883AbhIWPFE (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 23 Sep 2021 11:05:04 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:35056 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S241892AbhIWPFA (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 23 Sep 2021 05:59:19 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F22FBC061756;
-        Thu, 23 Sep 2021 02:57:47 -0700 (PDT)
-Date:   Thu, 23 Sep 2021 09:57:45 -0000
+        Thu, 23 Sep 2021 11:05:00 -0400
+Date:   Thu, 23 Sep 2021 15:03:26 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1632391066;
+        s=2020; t=1632409407;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=5UltBQHhMoF8Yb7sKIN4Z42AUWMPW8NPyidd7V7lcc4=;
-        b=T1NdHgzlIpt4/6CXDIMM714cSrHQbFwp6tC94NNjNcNT8prIllNAqk7IxXBDu8/bGJMePq
-        0R6eQ+Yzc3NelHW2oMCfuEwH4L+Rscb7p11ztmuj+Y4mq0P2pNE3Gh9rwysZ/kLTZEMl1V
-        Wr22ZY0yt6BNprKMZRJFq87Q4akKFjl6Wn6aAmxZ09oTXxlsgKm2L3fJAMuyBKnmsG7wKm
-        CWrrquhn2VP8fI+0hYZSpEBcNEorOn0FAQ/tNDHwPK8k68oR/WbXvXg1Uu68adRMkCGqMG
-        Lk46f3c/D+TfOoB/yVuITdefrG560Z4xItszjxdhHhKcdFa+jSQFJuM14EhZZw==
+        bh=9a3HKppqTFE1kQSQshaEGhBBvbgpNg6MnwDGLPFNqy4=;
+        b=khxc163DWoMdQll/4D6dQG7LFhXfjY7+szyrqzYtKsld49AYCVoUhFb8aR/bM4Ku10lHlm
+        tvvtQiFzXUoRMLulmoqUGv2kArZ8ASa+DBGhePVG55qSSSwepByAl9CnyeOy2hsLBKkE64
+        nbzxDeWlkVnz+Ad68J2myteUDnNmvMaYLt+Q+mjEwBKUueKIOUPlWNXsDWS/5zWHB4VUot
+        PXCighvSNDceP7VtFmF4GiPh6VZ9/ZadkHL/lBDjaCN9schsxeC4Kuv0TWqDkCCPryiyHW
+        qJtzYzBK8i481/E3GEjW2XmXIHCxV3G7wWFfb24pBZtEO5hoYKZtJKMK7MTJEw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1632391066;
+        s=2020e; t=1632409407;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=5UltBQHhMoF8Yb7sKIN4Z42AUWMPW8NPyidd7V7lcc4=;
-        b=CZhwIi2VSDDJ4+K/k07WzFaRDZIIGQse08AQJ2WaYpwueaEFWDrEsEEdfZYN0Z1R7tCzsx
-        zlBCkS6nO74tJBCw==
-From:   "tip-bot2 for Kees Cook" <tip-bot2@linutronix.de>
+        bh=9a3HKppqTFE1kQSQshaEGhBBvbgpNg6MnwDGLPFNqy4=;
+        b=sP7tt7P6rvVfN9WsE+i+6QniBzWgk+gV8BY2/l69bKUaeUXX5XfWEwJF/SM0xKaumZpcnA
+        o1/fom81okzHFtDQ==
+From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/asm: Fix SETZ size enqcmds() build failure
-Cc:     Arnd Bergmann <arnd@arndb.de>, Kees Cook <keescook@chromium.org>,
-        Borislav Petkov <bp@suse.de>, x86@kernel.org,
+Subject: [tip: x86/cpu] x86/umip: Downgrade warning messages to debug loglevel
+Cc:     mrueckert@suse.com, Borislav Petkov <bp@suse.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210910223332.3224851-1-keescook@chromium.org>
-References: <20210910223332.3224851-1-keescook@chromium.org>
+In-Reply-To: <20210907200454.30458-1-bp@alien8.de>
+References: <20210907200454.30458-1-bp@alien8.de>
 MIME-Version: 1.0
-Message-ID: <163239106571.25758.1553748717788924474.tip-bot2@tip-bot2>
+Message-ID: <163240940683.25758.12927273059878995672.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the x86/cpu branch of tip:
 
-Commit-ID:     d81ff5fe14a950f53e2833cfa196e7bb3fd5d4e3
-Gitweb:        https://git.kernel.org/tip/d81ff5fe14a950f53e2833cfa196e7bb3fd5d4e3
-Author:        Kees Cook <keescook@chromium.org>
-AuthorDate:    Fri, 10 Sep 2021 15:33:32 -07:00
+Commit-ID:     1eefe7a85678a056951cd9efb09820c1b0a1b4da
+Gitweb:        https://git.kernel.org/tip/1eefe7a85678a056951cd9efb09820c1b0a=
+1b4da
+Author:        Borislav Petkov <bp@suse.de>
+AuthorDate:    Wed, 15 Sep 2021 16:39:18 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Wed, 22 Sep 2021 19:45:48 +02:00
+CommitterDate: Thu, 23 Sep 2021 16:30:11 +02:00
 
-x86/asm: Fix SETZ size enqcmds() build failure
+x86/umip: Downgrade warning messages to debug loglevel
 
-When building under GCC 4.9 and 5.5:
+After four years in the wild, those have not fullfilled their
+initial purpose of pushing people to fix their software to not use
+UMIP-emulated instructions, and to warn users about the degraded
+emulation performance.
 
-  arch/x86/include/asm/special_insns.h: Assembler messages:
-  arch/x86/include/asm/special_insns.h:286: Error: operand size mismatch for `setz'
+Yet, the only thing that "degrades" performance is overflowing dmesg
+with those:
 
-Change the type to "bool" for condition code arguments, as documented.
+  [Di Sep  7 00:24:05 2021] umip_printk: 1345 callbacks suppressed
+  [Di Sep  7 00:24:05 2021] umip: someapp.exe[29231] ip:14064cdba sp:11b7c0: =
+SIDT instruction cannot be used by applications.
+  [Di Sep  7 00:24:05 2021] umip: someapp.exe[29231] ip:14064cdba sp:11b7c0: =
+For now, expensive software emulation returns the result.
+  ...
+  [Di Sep  7 00:26:06 2021] umip_printk: 2227 callbacks suppressed
+  [Di Sep  7 00:26:06 2021] umip: someapp.exe[29231] ip:14064cdba sp:11b940: =
+SIDT instruction cannot be used by applications.
 
-Fixes: 7f5933f81bd8 ("x86/asm: Add an enqcmds() wrapper for the ENQCMDS instruction")
-Co-developed-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Kees Cook <keescook@chromium.org>
+and users don't really care about that - they just want to play their
+games in wine.
+
+So convert those to debug loglevel - in case someone is still interested
+in them, someone can boot with "debug" on the kernel cmdline.
+
+Reported-by: Marcus R=C3=BCckert <mrueckert@suse.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20210910223332.3224851-1-keescook@chromium.org
+Link: https://lkml.kernel.org/r/20210907200454.30458-1-bp@alien8.de
 ---
- arch/x86/include/asm/special_insns.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/umip.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/include/asm/special_insns.h b/arch/x86/include/asm/special_insns.h
-index f3fbb84..68c257a 100644
---- a/arch/x86/include/asm/special_insns.h
-+++ b/arch/x86/include/asm/special_insns.h
-@@ -275,7 +275,7 @@ static inline int enqcmds(void __iomem *dst, const void *src)
- {
- 	const struct { char _[64]; } *__src = src;
- 	struct { char _[64]; } __iomem *__dst = dst;
--	int zf;
-+	bool zf;
- 
- 	/*
- 	 * ENQCMDS %(rdx), rax
+diff --git a/arch/x86/kernel/umip.c b/arch/x86/kernel/umip.c
+index 576b47e..5a4b213 100644
+--- a/arch/x86/kernel/umip.c
++++ b/arch/x86/kernel/umip.c
+@@ -92,8 +92,8 @@ static const char * const umip_insns[5] =3D {
+=20
+ #define umip_pr_err(regs, fmt, ...) \
+ 	umip_printk(regs, KERN_ERR, fmt, ##__VA_ARGS__)
+-#define umip_pr_warn(regs, fmt, ...) \
+-	umip_printk(regs, KERN_WARNING, fmt,  ##__VA_ARGS__)
++#define umip_pr_debug(regs, fmt, ...) \
++	umip_printk(regs, KERN_DEBUG, fmt,  ##__VA_ARGS__)
+=20
+ /**
+  * umip_printk() - Print a rate-limited message
+@@ -361,10 +361,10 @@ bool fixup_umip_exception(struct pt_regs *regs)
+ 	if (umip_inst < 0)
+ 		return false;
+=20
+-	umip_pr_warn(regs, "%s instruction cannot be used by applications.\n",
++	umip_pr_debug(regs, "%s instruction cannot be used by applications.\n",
+ 			umip_insns[umip_inst]);
+=20
+-	umip_pr_warn(regs, "For now, expensive software emulation returns the resul=
+t.\n");
++	umip_pr_debug(regs, "For now, expensive software emulation returns the resu=
+lt.\n");
+=20
+ 	if (emulate_umip_insn(&insn, umip_inst, dummy_data, &dummy_data_size,
+ 			      user_64bit_mode(regs)))
