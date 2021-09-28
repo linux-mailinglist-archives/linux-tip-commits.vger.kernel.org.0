@@ -2,91 +2,84 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 667D6419DD6
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 27 Sep 2021 20:07:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BCEB741A5FE
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 28 Sep 2021 05:18:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235962AbhI0SJQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 27 Sep 2021 14:09:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52534 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235974AbhI0SJO (ORCPT
+        id S238801AbhI1DUP (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 27 Sep 2021 23:20:15 -0400
+Received: from mout.gmx.net ([212.227.17.20]:47417 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S238795AbhI1DUP (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 27 Sep 2021 14:09:14 -0400
-Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2394BC061769
-        for <linux-tip-commits@vger.kernel.org>; Mon, 27 Sep 2021 11:07:36 -0700 (PDT)
-Received: from zn.tnic (p200300ec2f088a00001d5161ddbeebf1.dip0.t-ipconnect.de [IPv6:2003:ec:2f08:8a00:1d:5161:ddbe:ebf1])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 6B8FB1EC0664;
-        Mon, 27 Sep 2021 20:07:29 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1632766049;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=sFHvoCwSiMjhuMQMg6HHyZ/GDpAr2Z9UdOuS/I9lnko=;
-        b=MrTfrRNlj17FvM3zi46tWdMr8JhpGdxMtLeTuUWwxm3TR/o/RX606HVdjLARFbnApUFdRS
-        Ij3xsI5Eb3GXyFvJOcJ7dicMebo6dx+1mK0Jl6YaUlR9ZIMG0tUOec5iUDr6ClEP/pGdTW
-        y8uM1/VNXeazo8QgYMUWVElywuK9vow=
-Date:   Mon, 27 Sep 2021 20:07:24 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     Mike Galbraith <efault@gmx.de>
+        Mon, 27 Sep 2021 23:20:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1632799102;
+        bh=sMhuMTnngPM0UVYP6uaxBgEzAqjUHAW6jLcyZDyRrZ8=;
+        h=X-UI-Sender-Class:Subject:From:To:Cc:Date:In-Reply-To:References;
+        b=cXdlr5XxFjXowi3rs8+RsRSUAd08stQiZrf9nqNSRoVVQduzgY3TCri0ZPJvX9mx+
+         iTBwMLh36LIWBdfp/C5SUexj8uy9IcJd8X63ZsSmW4AFCIkIyOYr/yoZDamyE8BNsu
+         iLkGBhg5tIwdM6fts7VbxktkjdgLSI7/yvROeegg=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from homer.fritz.box ([185.221.150.235]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MgesG-1n32013wJo-00h9je; Tue, 28
+ Sep 2021 05:18:22 +0200
+Message-ID: <3dac2fe735de34497dc5fe465337f2d61bbf2a46.camel@gmx.de>
+Subject: Re: [bisected] endless sd card reader polling in tip
+From:   Mike Galbraith <efault@gmx.de>
+To:     Borislav Petkov <bp@alien8.de>
 Cc:     linux-tip-commits <linux-tip-commits@vger.kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [bisected] endless sd card reader polling in tip
-Message-ID: <YVIIXKmrw02FS13T@zn.tnic>
+Date:   Tue, 28 Sep 2021 05:18:21 +0200
+In-Reply-To: <YVIIXKmrw02FS13T@zn.tnic>
 References: <688ffe368375270f6e71f0bbfac9d004cfd39867.camel@gmx.de>
+         <YVIIXKmrw02FS13T@zn.tnic>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.0 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <688ffe368375270f6e71f0bbfac9d004cfd39867.camel@gmx.de>
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:sgBEL70Gge8lSJyVytnxC2ERaEffGOYjps+SBCof5BA0UqBF9rj
+ ffbkykCEAfYzUnIajeJ+vM4FKcSK9+K+Sx8++J3H0PfXvFu9+7ucM8sgEkm3Dv6Mo9MLaNL
+ /0ailgndgD8T0XUDy+uPgCmKtlK8jGNCOqhu4+wEfgIviNhFo64fpQxAE33jw/BL6qkwNBE
+ HFIxHtayghVKE8+OPoahA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:Aq96sejxiFA=:L0gKrWkS/loIRO7fejRKA/
+ tpQQpzOp7SeHbgsoPsU2ftWsnKgINohR+LM9ZfD2RjQZbB7b5LU2N4tN8vP+LZkO9nolMJ/Mt
+ UTKgqpCZgdf+pTfGZQqG2x8S6lUXrrYPJuWfGLerHHeZpJife66Y9/G/CU+39sXVZYC9lZpEk
+ FuyMRpsp5B0b59rj+z9sel6tFqOl4ZX4UGXx82javvCrJonhUXfMSGtA/Tgwo4mG5R9JtoZQ4
+ Wh99w9axQSGlr7cqkIeucmbdo5T/nJB8fTvoQ33NQhcZRVmdwD5bZHLQWpjd2Mb0v+kk8dUmL
+ GcXmKHqsqPVOIEXDBBoRZQnzvlXPgtMAr+OEVdAJ9DvJEon97ofudGLG+9tLD/2ouhXiC1zNt
+ 21rYbnSq6bPn6GKrYqeP7IWOz8/e2eQEYrfEPEtf4TMsNtciZvvmKE7aKVCjIRw4kn5Z+l9fP
+ i9SlB02LF24MkdH1ix9VTtvEkA8m9dROTXcaIf45c4NIXuZuS/M1kR3ehBkZ/V6nzDFPAl3KL
+ 3gM1Bih3k377FZnhdT4uRlu/GQZ8tgkCaksOv3UoYUZN7d9h+v47SvI+yNe8mrQtIW96kByhr
+ yFqj0h1v1bcVbDZ/etYRu+pq9TEimqomrWrHh6Mcgm0mvTUJzTBF9Dy2HLOTyTp92JTUmnY4+
+ gKCV/igg4MPDt9R/TdMbGKZojW0Rb1f//qyYdvU2UwPFRgU84H68dOLoK7JmDBEhldgObQ16I
+ zPIpJ2loFWbeVTudGYhaC32/WDIGeASrl9+dAbVZ3FpRZ+GK/a728+W0157WI4goKjyjyRwz/
+ 71ijyA+xDAlVZy3O4NBEK9GKKA5I1eVHIt+FJ2rbMUM26xzfZhmwM3BbGPRh7Cc/w/ZynYgnV
+ xfr6aS1OoR4Om2v2ocMYoYfrhDnir31QviNZQWhB6Vame2poUhV79JfdEd2V2lAphpkk2E936
+ HcTcihxTvYyOuWtWw7oMQBPdtSXqTNTlj4hZzb6a/RfW2KWFNogWOUZPvqeDDjNtRz7xMIfBR
+ DTfRkwvOMC+BCNnB5SWvb1VDLgL+JeEcfEkacu/qAUK1G0Q71tlPb7PiwQ3HlnrMIckrAhF9t
+ 0enVpUeEIxtBiw=
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Mon, Sep 27, 2021 at 06:56:39PM +0200, Mike Galbraith wrote:
-> I then perfectly cleanly bisected the little bugger to the below.
-> Mmm.. not convinced. Suggestions?
+On Mon, 2021-09-27 at 20:07 +0200, Borislav Petkov wrote:
+> On Mon, Sep 27, 2021 at 06:56:39PM +0200, Mike Galbraith wrote:
+> > I then perfectly cleanly bisected the little bugger to the below.
+> > Mmm.. not convinced. Suggestions?
+>
+> Yah, that doesn't look like a tip commit to me. Hmm, maybe we've pulled
+> in some broken stuff.
 
-Yah, that doesn't look like a tip commit to me. Hmm, maybe we've pulled
-in some broken stuff.
+Well, looks like it's gotta be a timing Fairy tickling my hardware or
+such.  Who knows, maybe the thing has been intermittently behaving this
+way and the new to this cycle printk just made it visible.
 
-So what I do in such cases is bisect the tip merge commits:
+I merged tip into master, and it works fine.  Thinking maybe there's a
+merge artifact in the tip clone, I merged master into it, and diffed
+the result of both merged trees - they're identical, and work fine.
+Build freshly cloned tip/master (d478ddf4e3cf), and it's bad.
 
-$ git log --oneline --merges tip/master
-d478ddf4e3cf Merge remote-tracking branch 'tip/irq/urgent' into tip-master
-f9bfed3ad5b1 Merge tag 'irqchip-fixes-5.15-1' of git://git.kernel.org/pub/scm/linux/kernel/git/maz/arm-platforms into irq/urgent
-430117f4e609 Merge branch 'tip-x86-urgent' into tip-master
-d2134885549e Merge remote-tracking branch 'tip/x86/cpu' into tip-master
-723c56e57a63 Merge remote-tracking branch 'tip/timers/urgent' into tip-master
-f1dfe445713e Merge remote-tracking branch 'tip/ras/core' into tip-master
-ad214c6bf962 Merge remote-tracking branch 'tip/x86/fpu' into tip-master
-b93350f79ec6 Merge remote-tracking branch 'tip/x86/urgent' into tip-master
-f6d58d7648d4 Merge remote-tracking branch 'tip/x86/misc' into tip-master
-b386cdf52519 Merge remote-tracking branch 'tip/x86/core' into tip-master
-9a91b66ea202 Merge remote-tracking branch 'tip/irq/core' into tip-master
-9665682cd5c3 Merge remote-tracking branch 'tip/sched/core' into tip-master
-2e0f59f0ccbd Merge remote-tracking branch 'tip/x86/cleanups' into tip-master
-66dced5982db Merge remote-tracking branch 'tip/locking/core' into tip-master
-0a3dd0c68cfd Merge remote-tracking branch 'tip/locking/wwmutex' into tip-master
-bec64008cfba Merge remote-tracking branch 'tip/perf/core' into tip-master
-c6999a0491f7 Merge remote-tracking branch 'tip/objtool/core' into tip-master
-9261e152ecf4 Merge remote-tracking branch 'tip/x86/cpu' into tip-master
-...
+Elves 'n Gremlins, crap hardware, even crappier bios... <shrug>.
 
-You can either start in the middle of that list above and jot down in a
-text file which merge is ok and which is not ok or you can simply get
-the latest master, and start merging bottom to top, one by one and test
-each merge in the process.
-
-That would at least tell us which branch introduces the problem and then
-we can drill down deeper.
-
-HTH.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+	-Mike
