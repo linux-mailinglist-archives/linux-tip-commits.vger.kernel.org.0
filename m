@@ -2,19 +2,19 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 83F2641F061
+	by mail.lfdr.de (Postfix) with ESMTP id 76A9341F060
 	for <lists+linux-tip-commits@lfdr.de>; Fri,  1 Oct 2021 17:05:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354852AbhJAPH0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 1 Oct 2021 11:07:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34322 "EHLO
+        id S1354854AbhJAPH1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 1 Oct 2021 11:07:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34318 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354827AbhJAPHV (ORCPT
+        with ESMTP id S1354823AbhJAPHV (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Fri, 1 Oct 2021 11:07:21 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 904CCC0613E4;
-        Fri,  1 Oct 2021 08:05:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A93CBC0613E3;
+        Fri,  1 Oct 2021 08:05:35 -0700 (PDT)
 Date:   Fri, 01 Oct 2021 15:05:33 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1633100734;
@@ -23,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=b1GcB3oG9NqGusbKrUGSQKD+G28ahqfAw2Cr3bjhI4c=;
-        b=P4K+BKZmhTT0xvPgfsd3Z9ZDhkFi4OLyEt/9GdJlW11TycgioK6lk2rEAqmZz/Rp56kHtf
-        vXR8KAgiCenUqeeAz6lFoBsIpBw5r4KbpfrdClS9/S5G+6p5iSOatzxb/TDdYKYrfJ9gYD
-        ga22olwceMUWEdhAIV1ixM6KYiDtH5D+SsqNm5+LCe1HFzMO0OIsMBeWOB1N3XZPyEcZVX
-        gei+GVc3piXAtHweXJmYqunZ7ZZSL79nVxmY4cipClo33d0vWQnpjk+fKA5+knCmLoeOyB
-        qrBgXeqwXl2G1EtxoAPCcvE4c/BeTevuHCwJHBe0aZooLMovtdDuhblRJIxbCQ==
+        bh=9IxePFpz2ZKeOBPBxHylyzKq4Z2uegB5A42NvbaMi38=;
+        b=BhmC6uOc687I7/vMDYyLkiy/1UJ9t2FITlzn3sc40E3MipTbe0FTe17X4hAL8C23UPGPDK
+        m+MRCoOqwRJFlIgvOHNbOl+/I1VATaG1Ce6yb5PrQO68k2U6pCRZ6+BRnV8RJyZKsMIAIh
+        iQCEoK2Fu8zNfYg6qBp2jN4fhW15C782+XvXwnHjbIk6UuIkkZutL2C8A+2OyBgrs+qd8h
+        Pk2e4yPbG8qZif2iGfntf46VtjDUc4l79SjQihoOfwT+zUbxmuWgR44twulft/2Gs6hwn6
+        F5MlIU6X+1RMEi8TA4xC7XF9SQg0hxKBy4z5v4wKnjmhlFCiSQfOhWZr+nX0Bw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1633100734;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,25 +36,21 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=b1GcB3oG9NqGusbKrUGSQKD+G28ahqfAw2Cr3bjhI4c=;
-        b=utpQs1RaCqB5hiE0ithLxDCWNPo5IxUUSczskoOGqBbaoZbjavf6/fb8FzNf1vLBHU0jui
-        N580p1F9U0HYPIBw==
-From:   "tip-bot2 for Nathan Chancellor" <tip-bot2@linutronix.de>
+        bh=9IxePFpz2ZKeOBPBxHylyzKq4Z2uegB5A42NvbaMi38=;
+        b=nqBDx9FPwQ/owOo499Nk/tV33AFutxntXAyucXGU/1RlVitKYY6XqgAnv8VxBkGuvcNwP6
+        2N66yH5VEiBG+XCA==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] locking/ww-mutex: Fix uninitialized use of ret in
- test_aa()
-Cc:     "kernelci.org bot" <bot@kernelci.org>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Nathan Chancellor <nathan@kernel.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Waiman Long <longman@redhat.com>, x86@kernel.org,
+Subject: [tip: locking/core] sched: Clean up the might_sleep() underscore zoo
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210922145822.3935141-1-nathan@kernel.org>
-References: <20210922145822.3935141-1-nathan@kernel.org>
+In-Reply-To: <20210923165357.928693482@linutronix.de>
+References: <20210923165357.928693482@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <163310073387.25758.2474180500160006249.tip-bot2@tip-bot2>
+Message-ID: <163310073320.25758.15346473778130672854.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,56 +61,148 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     1415b49bcd321bca7347f43f8b269c91ec46d1dc
-Gitweb:        https://git.kernel.org/tip/1415b49bcd321bca7347f43f8b269c91ec46d1dc
-Author:        Nathan Chancellor <nathan@kernel.org>
-AuthorDate:    Wed, 22 Sep 2021 07:58:22 -07:00
+Commit-ID:     874f670e6088d3bff3972ecd44c1cb00610f9183
+Gitweb:        https://git.kernel.org/tip/874f670e6088d3bff3972ecd44c1cb00610f9183
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Thu, 23 Sep 2021 18:54:35 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Fri, 01 Oct 2021 13:57:49 +02:00
 
-locking/ww-mutex: Fix uninitialized use of ret in test_aa()
+sched: Clean up the might_sleep() underscore zoo
 
-Clang warns:
+__might_sleep() vs. ___might_sleep() is hard to distinguish. Aside of that
+the three underscore variant is exposed to provide a checkpoint for
+rescheduling points which are distinct from blocking points.
 
-kernel/locking/test-ww_mutex.c:138:7: error: variable 'ret' is used uninitialized whenever 'if' condition is true [-Werror,-Wsometimes-uninitialized]
-                if (!ww_mutex_trylock(&mutex, &ctx)) {
-                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-kernel/locking/test-ww_mutex.c:172:9: note: uninitialized use occurs here
-        return ret;
-               ^~~
-kernel/locking/test-ww_mutex.c:138:3: note: remove the 'if' if its condition is always false
-                if (!ww_mutex_trylock(&mutex, &ctx)) {
-                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-kernel/locking/test-ww_mutex.c:125:9: note: initialize the variable 'ret' to silence this warning
-        int ret;
-               ^
-                = 0
-1 error generated.
+They are semantically a preemption point which means that scheduling is
+state preserving. A real blocking operation, e.g. mutex_lock(), wait*(),
+which cannot preserve a task state which is not equal to RUNNING.
 
-Assign !ww_mutex_trylock(...) to ret so that it is always initialized.
+While technically blocking on a "sleeping" spinlock in RT enabled kernels
+falls into the voluntary scheduling category because it has to wait until
+the contended spin/rw lock becomes available, the RT lock substitution code
+can semantically be mapped to a voluntary preemption because the RT lock
+substitution code and the scheduler are providing mechanisms to preserve
+the task state and to take regular non-lock related wakeups into account.
 
-Fixes: 12235da8c80a ("kernel/locking: Add context to ww_mutex_trylock()")
-Reported-by: "kernelci.org bot" <bot@kernelci.org>
-Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Rename ___might_sleep() to __might_resched() to make the distinction of
+these functions clear.
+
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Waiman Long <longman@redhat.com>
-Link: https://lore.kernel.org/r/20210922145822.3935141-1-nathan@kernel.org
+Link: https://lkml.kernel.org/r/20210923165357.928693482@linutronix.de
 ---
- kernel/locking/test-ww_mutex.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/linux/kernel.h       | 6 +++---
+ include/linux/sched.h        | 8 ++++----
+ kernel/locking/spinlock_rt.c | 6 +++---
+ kernel/sched/core.c          | 6 +++---
+ 4 files changed, 13 insertions(+), 13 deletions(-)
 
-diff --git a/kernel/locking/test-ww_mutex.c b/kernel/locking/test-ww_mutex.c
-index d63ac41..3530041 100644
---- a/kernel/locking/test-ww_mutex.c
-+++ b/kernel/locking/test-ww_mutex.c
-@@ -135,7 +135,8 @@ static int test_aa(bool trylock)
- 			goto out;
- 		}
- 	} else {
--		if (!ww_mutex_trylock(&mutex, &ctx)) {
-+		ret = !ww_mutex_trylock(&mutex, &ctx);
-+		if (ret) {
- 			pr_err("%s: initial trylock failed!\n", __func__);
- 			goto out;
- 		}
+diff --git a/include/linux/kernel.h b/include/linux/kernel.h
+index 2776423..5e4ae54 100644
+--- a/include/linux/kernel.h
++++ b/include/linux/kernel.h
+@@ -111,7 +111,7 @@ static __always_inline void might_resched(void)
+ #endif /* CONFIG_PREEMPT_* */
+ 
+ #ifdef CONFIG_DEBUG_ATOMIC_SLEEP
+-extern void ___might_sleep(const char *file, int line, int preempt_offset);
++extern void __might_resched(const char *file, int line, int preempt_offset);
+ extern void __might_sleep(const char *file, int line, int preempt_offset);
+ extern void __cant_sleep(const char *file, int line, int preempt_offset);
+ extern void __cant_migrate(const char *file, int line);
+@@ -168,8 +168,8 @@ extern void __cant_migrate(const char *file, int line);
+  */
+ # define non_block_end() WARN_ON(current->non_block_count-- == 0)
+ #else
+-  static inline void ___might_sleep(const char *file, int line,
+-				   int preempt_offset) { }
++  static inline void __might_resched(const char *file, int line,
++				     int preempt_offset) { }
+   static inline void __might_sleep(const char *file, int line,
+ 				   int preempt_offset) { }
+ # define might_sleep() do { might_resched(); } while (0)
+diff --git a/include/linux/sched.h b/include/linux/sched.h
+index e12b524..b38f002 100644
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -2038,7 +2038,7 @@ static inline int _cond_resched(void) { return 0; }
+ #endif /* !defined(CONFIG_PREEMPTION) || defined(CONFIG_PREEMPT_DYNAMIC) */
+ 
+ #define cond_resched() ({			\
+-	___might_sleep(__FILE__, __LINE__, 0);	\
++	__might_resched(__FILE__, __LINE__, 0);	\
+ 	_cond_resched();			\
+ })
+ 
+@@ -2046,9 +2046,9 @@ extern int __cond_resched_lock(spinlock_t *lock);
+ extern int __cond_resched_rwlock_read(rwlock_t *lock);
+ extern int __cond_resched_rwlock_write(rwlock_t *lock);
+ 
+-#define cond_resched_lock(lock) ({				\
+-	___might_sleep(__FILE__, __LINE__, PREEMPT_LOCK_OFFSET);\
+-	__cond_resched_lock(lock);				\
++#define cond_resched_lock(lock) ({					\
++	__might_resched(__FILE__, __LINE__, PREEMPT_LOCK_OFFSET);	\
++	__cond_resched_lock(lock);					\
+ })
+ 
+ #define cond_resched_rwlock_read(lock) ({			\
+diff --git a/kernel/locking/spinlock_rt.c b/kernel/locking/spinlock_rt.c
+index d2912e4..c528924 100644
+--- a/kernel/locking/spinlock_rt.c
++++ b/kernel/locking/spinlock_rt.c
+@@ -32,7 +32,7 @@ static __always_inline void rtlock_lock(struct rt_mutex_base *rtm)
+ 
+ static __always_inline void __rt_spin_lock(spinlock_t *lock)
+ {
+-	___might_sleep(__FILE__, __LINE__, 0);
++	__might_resched(__FILE__, __LINE__, 0);
+ 	rtlock_lock(&lock->lock);
+ 	rcu_read_lock();
+ 	migrate_disable();
+@@ -210,7 +210,7 @@ EXPORT_SYMBOL(rt_write_trylock);
+ 
+ void __sched rt_read_lock(rwlock_t *rwlock)
+ {
+-	___might_sleep(__FILE__, __LINE__, 0);
++	__might_resched(__FILE__, __LINE__, 0);
+ 	rwlock_acquire_read(&rwlock->dep_map, 0, 0, _RET_IP_);
+ 	rwbase_read_lock(&rwlock->rwbase, TASK_RTLOCK_WAIT);
+ 	rcu_read_lock();
+@@ -220,7 +220,7 @@ EXPORT_SYMBOL(rt_read_lock);
+ 
+ void __sched rt_write_lock(rwlock_t *rwlock)
+ {
+-	___might_sleep(__FILE__, __LINE__, 0);
++	__might_resched(__FILE__, __LINE__, 0);
+ 	rwlock_acquire(&rwlock->dep_map, 0, 0, _RET_IP_);
+ 	rwbase_write_lock(&rwlock->rwbase, TASK_RTLOCK_WAIT);
+ 	rcu_read_lock();
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 1bba412..c3943aa 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -9489,11 +9489,11 @@ void __might_sleep(const char *file, int line, int preempt_offset)
+ 			(void *)current->task_state_change,
+ 			(void *)current->task_state_change);
+ 
+-	___might_sleep(file, line, preempt_offset);
++	__might_resched(file, line, preempt_offset);
+ }
+ EXPORT_SYMBOL(__might_sleep);
+ 
+-void ___might_sleep(const char *file, int line, int preempt_offset)
++void __might_resched(const char *file, int line, int preempt_offset)
+ {
+ 	/* Ratelimiting timestamp: */
+ 	static unsigned long prev_jiffy;
+@@ -9538,7 +9538,7 @@ void ___might_sleep(const char *file, int line, int preempt_offset)
+ 	dump_stack();
+ 	add_taint(TAINT_WARN, LOCKDEP_STILL_OK);
+ }
+-EXPORT_SYMBOL(___might_sleep);
++EXPORT_SYMBOL(__might_resched);
+ 
+ void __cant_sleep(const char *file, int line, int preempt_offset)
+ {
