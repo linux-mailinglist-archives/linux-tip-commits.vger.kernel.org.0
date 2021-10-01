@@ -2,55 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F77D41F072
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  1 Oct 2021 17:06:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FB8441F074
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  1 Oct 2021 17:06:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354989AbhJAPIF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 1 Oct 2021 11:08:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34444 "EHLO
+        id S1354993AbhJAPII (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 1 Oct 2021 11:08:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34412 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354930AbhJAPHn (ORCPT
+        with ESMTP id S1354910AbhJAPHr (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 1 Oct 2021 11:07:43 -0400
+        Fri, 1 Oct 2021 11:07:47 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0294EC0613EB;
-        Fri,  1 Oct 2021 08:05:52 -0700 (PDT)
-Date:   Fri, 01 Oct 2021 15:05:50 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB170C0613EC;
+        Fri,  1 Oct 2021 08:05:53 -0700 (PDT)
+Date:   Fri, 01 Oct 2021 15:05:51 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1633100750;
+        s=2020; t=1633100752;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Ejq7LH+/BbXYM7l44xf3ksOLX3/cmV75exWX5cXN0zM=;
-        b=jcfrjwPYZ1FHBXJQyDTaBLCOi/en1RddLOOpkge/u4sNQUBc+A2+W2HuCuWE2W6BVR70KB
-        3Ng5w+rJ0jbNfQlGcBj5RVAUeOpRXSUG70i1QI7EKmHXTm7th50lhDpdaFOFezin1Gf8w6
-        qDqzn8J7gygM8lLm6B2DJdsO2SBnN9qqVZ1ikLP/v6Yjw9UvzoXUcsX9lfJYa9hxHzmZXt
-        g1mGDvgfyChwIdz1SZbEdL8meP3bHwWl94bRCrcyyW/qtBoFH5lBdscylY+sXsvBKrA7lj
-        bhVT+P3447oAkC8H9+mqo3BExK0/ZRDjGWLIktjkzlNpaldXlZ7e3a6/KucN1A==
+        bh=zLrJ8oBhRoOGHAvO/vfr78vQiyZkSw3otCkPOsi1/nk=;
+        b=vTfeMdoAshiQl7fPDlYkdwauNA9+QMynacCjOXLqgjB8Eh+pG6fb2zu+kzZE11+a33BXQp
+        PSTeXXdmWqgGmn+VjxbB4JYvHIRd64OSkHgWekiHNx6HxR2bmcWtA91P6ublpzFKyQF8Kh
+        cXxO9rd+eF8UdBnaHKe+I0sAyGrwOTLpSsXrCNUe/Pd1Th1ij1ASET3U2RKup28T1MsndQ
+        HCmUyTnj7WIYlGqrQeEieIVAzNwrjbipuli36LiUUq7IFjnrifYhxt9VFxzVWoQw4HqXAE
+        yHWgxCWEumTxrdQkpMiuo0/spqLyQJdNMS0PmXTPwFkGgVNGb6fK87jMvDlhwA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1633100750;
+        s=2020e; t=1633100752;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Ejq7LH+/BbXYM7l44xf3ksOLX3/cmV75exWX5cXN0zM=;
-        b=zNChg8fD0o1knv4Xh7DJqI3DYJFMkblfRmMXNFjNwcTySRzLjV9UiIDk8GYCgMP0L4n/A4
-        hrSxN9avcnIUMpBQ==
+        bh=zLrJ8oBhRoOGHAvO/vfr78vQiyZkSw3otCkPOsi1/nk=;
+        b=KWbael7laDvQI3FC2VQu4tGZedL3NJPM/w+AZDrgvptkAXjYFVvm2ELGCYcbezzO4WTQ9j
+        FbBG7Uoj7CzeIhCA==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched: Move kprobes cleanup out of finish_task_switch()
+Subject: [tip: sched/core] sched: Limit the number of task migrations per batch on RT
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210928122411.537994026@linutronix.de>
-References: <20210928122411.537994026@linutronix.de>
+In-Reply-To: <20210928122411.425097596@linutronix.de>
+References: <20210928122411.425097596@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <163310075007.25758.9589191273271590112.tip-bot2@tip-bot2>
+Message-ID: <163310075145.25758.10821100401474045244.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,84 +61,41 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     d428aac9dff0a0d217f3449884ac958dbf3f232b
-Gitweb:        https://git.kernel.org/tip/d428aac9dff0a0d217f3449884ac958dbf3f232b
+Commit-ID:     92add3a897e9e923acde0f2c5e69705818076d69
+Gitweb:        https://git.kernel.org/tip/92add3a897e9e923acde0f2c5e69705818076d69
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Tue, 28 Sep 2021 14:24:28 +02:00
+AuthorDate:    Tue, 28 Sep 2021 14:24:25 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Fri, 01 Oct 2021 13:58:07 +02:00
 
-sched: Move kprobes cleanup out of finish_task_switch()
+sched: Limit the number of task migrations per batch on RT
 
-Doing cleanups in the tail of schedule() is a latency punishment for the
-incoming task. The point of invoking kprobes_task_flush() for a dead task
-is that the instances are returned and cannot leak when __schedule() is
-kprobed.
+Batched task migrations are a source for large latencies as they keep the
+scheduler from running while processing the migrations.
 
-Move it into the delayed cleanup.
+Limit the batch size to 8 instead of 32 when running on a RT enabled
+kernel.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20210928122411.537994026@linutronix.de
+Link: https://lkml.kernel.org/r/20210928122411.425097596@linutronix.de
 ---
- kernel/exit.c       | 2 ++
- kernel/kprobes.c    | 8 ++++----
- kernel/sched/core.c | 6 ------
- 3 files changed, 6 insertions(+), 10 deletions(-)
+ kernel/sched/core.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/kernel/exit.c b/kernel/exit.c
-index fd1c041..df281b4 100644
---- a/kernel/exit.c
-+++ b/kernel/exit.c
-@@ -64,6 +64,7 @@
- #include <linux/rcuwait.h>
- #include <linux/compat.h>
- #include <linux/io_uring.h>
-+#include <linux/kprobes.h>
- 
- #include <linux/uaccess.h>
- #include <asm/unistd.h>
-@@ -169,6 +170,7 @@ static void delayed_put_task_struct(struct rcu_head *rhp)
- {
- 	struct task_struct *tsk = container_of(rhp, struct task_struct, rcu);
- 
-+	kprobe_flush_task(tsk);
- 	perf_event_delayed_put(tsk);
- 	trace_sched_process_free(tsk);
- 	put_task_struct(tsk);
-diff --git a/kernel/kprobes.c b/kernel/kprobes.c
-index 745f08f..89194e5 100644
---- a/kernel/kprobes.c
-+++ b/kernel/kprobes.c
-@@ -1256,10 +1256,10 @@ void kprobe_busy_end(void)
- }
- 
- /*
-- * This function is called from finish_task_switch when task tk becomes dead,
-- * so that we can recycle any function-return probe instances associated
-- * with this task. These left over instances represent probed functions
-- * that have been called but will never return.
-+ * This function is called from delayed_put_task_struct() when a task is
-+ * dead and cleaned up to recycle any function-return probe instances
-+ * associated with this task. These left over instances represent probed
-+ * functions that have been called but will never return.
-  */
- void kprobe_flush_task(struct task_struct *tk)
- {
 diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 8d844d0..8e49b17 100644
+index bb70a07..8d844d0 100644
 --- a/kernel/sched/core.c
 +++ b/kernel/sched/core.c
-@@ -4783,12 +4783,6 @@ static struct rq *finish_task_switch(struct task_struct *prev)
- 		if (prev->sched_class->task_dead)
- 			prev->sched_class->task_dead(prev);
+@@ -74,7 +74,11 @@ __read_mostly int sysctl_resched_latency_warn_once = 1;
+  * Number of tasks to iterate in a single balance run.
+  * Limited because this is done with IRQs disabled.
+  */
++#ifdef CONFIG_PREEMPT_RT
++const_debug unsigned int sysctl_sched_nr_migrate = 8;
++#else
+ const_debug unsigned int sysctl_sched_nr_migrate = 32;
++#endif
  
--		/*
--		 * Remove function-return probe instances associated with this
--		 * task and put them back on the free list.
--		 */
--		kprobe_flush_task(prev);
--
- 		/* Task is done with its stack. */
- 		put_task_stack(prev);
- 
+ /*
+  * period over which we measure -rt task CPU usage in us.
