@@ -2,53 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DC30641F06C
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  1 Oct 2021 17:06:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3130441F06D
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  1 Oct 2021 17:06:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354885AbhJAPHo (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S1354892AbhJAPHo (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Fri, 1 Oct 2021 11:07:44 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:58050 "EHLO
+Received: from Galois.linutronix.de ([193.142.43.55]:58060 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354896AbhJAPHe (ORCPT
+        with ESMTP id S1354855AbhJAPHf (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 1 Oct 2021 11:07:34 -0400
-Date:   Fri, 01 Oct 2021 15:05:48 -0000
+        Fri, 1 Oct 2021 11:07:35 -0400
+Date:   Fri, 01 Oct 2021 15:05:49 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1633100749;
+        s=2020; t=1633100750;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ZUmFATD4gDQYSNRQUDDhyLHPjpwH2BqkDjAYToaiYQw=;
-        b=qmjHo5QJcxdM9tNavc7UDOQdUjiYDlSfyKLkkALzJBgYoH3wnrIT3GUvLZXrBd0cLEguiI
-        eXHyTSjc+ZDPsno6lJy89SfHzJcTMF1GQlZN/4qALVyQbNcO88yQpcS/NezJdcb+vNC5I3
-        l3DzTPiAg3jB+VCe7YZW3T4r1GE7AhNi/ilGEhGgLVUzjTnRVik/iNtw2Wt1iG12YliDI+
-        tNNxCbvE64VbztbD/qCYL7NmaXBZjzTRYQ1szTzq/5mON6SCshGFklGQ2J2bB0r/OUrt6U
-        HY/PTFhqi90VyfmokI0OwO4PHZZQE5LD1nFTUyCGWB6D7JXiH4R7KO1PMniu3A==
+        bh=8fqwxnzpBpUMQmoHLbPiAek+Iahlpht2tcL4eSGmVbk=;
+        b=4BhKNgQn9s13tqotKK4V2RUz1lUMZOFrMwPL5M02OVUjgP4I/4elSTT6o1XR55ILGWuubw
+        ywwtbmypDEligXF6cs9ZK+AkFXMF8sEnmvcFSdXpxQ+me9saFm5eEQPf2gshEcJkgjWYXX
+        MA/D7H8pVQmMopu/Gax8g/06YyrZJNDvNsF6h4WlReFwoSbMEWQ/SvGOYMO7yHjuS1vEsd
+        /Q2DwEQ19OKWxgWW6ob2n4C/qhX3pahTaew7488CrBUWJS2SbBd8nb5kj2WJcHdt4FhbsW
+        jmrDtq9NRUlzLuJZZb9WBrFwJuBXa+PaqwWHu6W87gCbdw4Grm01pmxTvfpURw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1633100749;
+        s=2020e; t=1633100750;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ZUmFATD4gDQYSNRQUDDhyLHPjpwH2BqkDjAYToaiYQw=;
-        b=2Ur6u5b/shPXKO7c3gTTvCF3eqqiu4sNPo2GzygCVd1HO6nq+MZRpnL1/ZuEW/KjQ0dz03
-        KP1z0EkTAJ5rzOCw==
-From:   "tip-bot2 for Vincent Guittot" <tip-bot2@linutronix.de>
+        bh=8fqwxnzpBpUMQmoHLbPiAek+Iahlpht2tcL4eSGmVbk=;
+        b=LcIECGtkc9fsU8qraLD22RVKPqSPZ2TSldKUz44RxnsZP7MD8liM0y3GOvpkcjDlZXJ2y8
+        MEnibcAxUBvvdzCQ==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/fair: Removed useless update of p->recent_used_cpu
-Cc:     Vincent Guittot <vincent.guittot@linaro.org>,
+Subject: [tip: sched/core] sched: Remove pointless preemption disable in
+ sched_submit_work()
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Mel Gorman <mgorman@suse.de>, x86@kernel.org,
+        Lai Jiangshan <jiangshanlai@gmail.com>,
+        Jens Axboe <axboe@kernel.dk>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210928103544.27489-1-vincent.guittot@linaro.org>
-References: <20210928103544.27489-1-vincent.guittot@linaro.org>
+In-Reply-To: <8735pnafj7.ffs@tglx>
+References: <8735pnafj7.ffs@tglx>
 MIME-Version: 1.0
-Message-ID: <163310074833.25758.3229584088214293831.tip-bot2@tip-bot2>
+Message-ID: <163310074937.25758.2495577289305556588.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,40 +61,59 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     959fc676791b91088b96341b644b92c8c52c7455
-Gitweb:        https://git.kernel.org/tip/959fc676791b91088b96341b644b92c8c52c7455
-Author:        Vincent Guittot <vincent.guittot@linaro.org>
-AuthorDate:    Tue, 28 Sep 2021 12:35:44 +02:00
+Commit-ID:     579df3f2325191322b96906a5898462253a45ede
+Gitweb:        https://git.kernel.org/tip/579df3f2325191322b96906a5898462253a45ede
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Wed, 29 Sep 2021 11:37:32 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Fri, 01 Oct 2021 13:58:08 +02:00
+CommitterDate: Fri, 01 Oct 2021 13:58:07 +02:00
 
-sched/fair: Removed useless update of p->recent_used_cpu
+sched: Remove pointless preemption disable in sched_submit_work()
 
-Since commit 89aafd67f28c ("sched/fair: Use prev instead of new target as recent_used_cpu"),
-p->recent_used_cpu is unconditionnaly set with prev.
+Neither wq_worker_sleeping() nor io_wq_worker_sleeping() require to be invoked
+with preemption disabled:
 
-Fixes: 89aafd67f28c ("sched/fair: Use prev instead of new target as recent_used_cpu")
-Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
+  - The worker flag checks operations only need to be serialized against
+    the worker thread itself.
+
+  - The accounting and worker pool operations are serialized with locks.
+
+which means that disabling preemption has neither a reason nor a
+value. Remove it and update the stale comment.
+
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Mel Gorman <mgorman@suse.de>
-Link: https://lkml.kernel.org/r/20210928103544.27489-1-vincent.guittot@linaro.org
+Reviewed-by: Lai Jiangshan <jiangshanlai@gmail.com>
+Reviewed-by: Jens Axboe <axboe@kernel.dk>
+Link: https://lkml.kernel.org/r/8735pnafj7.ffs@tglx
 ---
- kernel/sched/fair.c | 5 -----
- 1 file changed, 5 deletions(-)
+ kernel/sched/core.c | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 2ce015c..8943dbb 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -6380,11 +6380,6 @@ static int select_idle_sibling(struct task_struct *p, int prev, int target)
- 	    (available_idle_cpu(recent_used_cpu) || sched_idle_cpu(recent_used_cpu)) &&
- 	    cpumask_test_cpu(p->recent_used_cpu, p->cpus_ptr) &&
- 	    asym_fits_capacity(task_util, recent_used_cpu)) {
--		/*
--		 * Replace recent_used_cpu with prev as it is a potential
--		 * candidate for the next wake:
--		 */
--		p->recent_used_cpu = prev;
- 		return recent_used_cpu;
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 8e49b17..d469c7b 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -6097,20 +6097,14 @@ static inline void sched_submit_work(struct task_struct *tsk)
+ 
+ 	task_flags = tsk->flags;
+ 	/*
+-	 * If a worker went to sleep, notify and ask workqueue whether
+-	 * it wants to wake up a task to maintain concurrency.
+-	 * As this function is called inside the schedule() context,
+-	 * we disable preemption to avoid it calling schedule() again
+-	 * in the possible wakeup of a kworker and because wq_worker_sleeping()
+-	 * requires it.
++	 * If a worker goes to sleep, notify and ask workqueue whether it
++	 * wants to wake up a task to maintain concurrency.
+ 	 */
+ 	if (task_flags & (PF_WQ_WORKER | PF_IO_WORKER)) {
+-		preempt_disable();
+ 		if (task_flags & PF_WQ_WORKER)
+ 			wq_worker_sleeping(tsk);
+ 		else
+ 			io_wq_worker_sleeping(tsk);
+-		preempt_enable_no_resched();
  	}
  
+ 	if (tsk_is_pi_blocked(tsk))
