@@ -2,20 +2,17 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 79EC3420A39
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  4 Oct 2021 13:41:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB1DB420A36
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  4 Oct 2021 13:41:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233074AbhJDLnX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 4 Oct 2021 07:43:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38258 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232493AbhJDLnT (ORCPT
-        <rfc822;linux-tip-commits@vger.kernel.org>);
+        id S232539AbhJDLnT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Mon, 4 Oct 2021 07:43:19 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF847C061746;
-        Mon,  4 Oct 2021 04:41:29 -0700 (PDT)
-Date:   Mon, 04 Oct 2021 11:41:27 -0000
+Received: from Galois.linutronix.de ([193.142.43.55]:43652 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232382AbhJDLnS (ORCPT
+        <rfc822;linux-tip-commits@vger.kernel.org>);
+        Mon, 4 Oct 2021 07:43:18 -0400
+Date:   Mon, 04 Oct 2021 11:41:28 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1633347688;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -23,12 +20,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=vh/mYJNXZUjHDjgGG5FoHjKKcJCfRH9bO3JtihMk5CA=;
-        b=ruj0ASlpSwBBYvtNosy5GbOMLI9kh2bSRhf127U88O7RN/gzA8sog2uD3oUm4Zy01KW4B8
-        P1EzNVvgg+Soo7AWIsDYB/wKOb6bYXAE3GDAXLawgjQvgEw3LPUzwThl33trXPo9pfwrs7
-        1RkGDb9kcqXJV148lOPZqjPSTtFyYsWXoZEz2shLqEBtYkQ67y4HGb12QVo/x0qmlD5M2X
-        wo3ordaO7Gi1iQKvA46ZHuxFRDrBHRVbxJK8/QE2wmFTrUfVB4nmvnvpz0TPR7jCu9qzPv
-        BEiHZBptWAFU8vUcouzMJn7y/6oswlhbBXt5aunqK69/rp2yDtlo9wwQt4EbnQ==
+        bh=Z5OT2XITwIPV65TZQ5p4MQfbwl2F0VrYI7/c2gjY58w=;
+        b=yFKUbNYv1BWVcL1VGvWMyAoCSE4TZdLmDmw+SHKAtsZxK+3New9lmESPUIeDFjFqmnjgm3
+        q8TEYUlEVV/LQOyk5U91Pb2JXpcs9iNVq5AbkiHwvHIu3neZluopg54lXKBSSSrTngoBBy
+        6p927l0omGl4hY0ro2xT971fgvxk8tQ3aA4KDRY/lXovPu8kirGaXomtfVwDE/S7tMq9NL
+        npbp5hqLte+011HZqBT/rA8f47Ee6IVY0lYoijaWUVkUrJe4aCPdIs/NYCnpR9FuULaeg0
+        KxkK4oE21Fyc3KQHJJEmWf20OvTA1agkv0cyT5GC+UrsT/a1LLlIB25Iq9IAJA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1633347688;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,22 +33,22 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=vh/mYJNXZUjHDjgGG5FoHjKKcJCfRH9bO3JtihMk5CA=;
-        b=KRnwlbXsIiPyi4V/gwYHw8ElQqu5d0C35ovEmvU6f0r3ne4LpyCPZrq+1LLYcUCEIdRB0D
-        38O23DNi+S6F9VDw==
+        bh=Z5OT2XITwIPV65TZQ5p4MQfbwl2F0VrYI7/c2gjY58w=;
+        b=CKFagAT2bTPc3SeKF6VJcyiNgx+OMGswxGAaScNXvMwGEw3I8Dsl7wolPhtOoWHR01QNSt
+        23izXMSuBvUeMJBw==
 From:   "tip-bot2 for Tom Lendacky" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cc] x86/sev: Replace occurrences of sev_active() with
+Subject: [tip: x86/cc] x86/sme: Replace occurrences of sme_active() with
  cc_platform_has()
 Cc:     Tom Lendacky <thomas.lendacky@amd.com>,
         Borislav Petkov <bp@suse.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210928191009.32551-7-bp@alien8.de>
-References: <20210928191009.32551-7-bp@alien8.de>
+In-Reply-To: <20210928191009.32551-6-bp@alien8.de>
+References: <20210928191009.32551-6-bp@alien8.de>
 MIME-Version: 1.0
-Message-ID: <163334768737.25758.17852945597971823979.tip-bot2@tip-bot2>
+Message-ID: <163334768801.25758.1480760844945576892.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -62,312 +59,335 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/cc branch of tip:
 
-Commit-ID:     4d96f9109109be93618050a50cabb8df7c931ba7
-Gitweb:        https://git.kernel.org/tip/4d96f9109109be93618050a50cabb8df7c931ba7
+Commit-ID:     32cb4d02fb02cae2e0696c1ce92d8195574faf59
+Gitweb:        https://git.kernel.org/tip/32cb4d02fb02cae2e0696c1ce92d8195574faf59
 Author:        Tom Lendacky <thomas.lendacky@amd.com>
-AuthorDate:    Wed, 08 Sep 2021 17:58:37 -05:00
+AuthorDate:    Wed, 08 Sep 2021 17:58:36 -05:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Mon, 04 Oct 2021 11:46:58 +02:00
+CommitterDate: Mon, 04 Oct 2021 11:46:46 +02:00
 
-x86/sev: Replace occurrences of sev_active() with cc_platform_has()
+x86/sme: Replace occurrences of sme_active() with cc_platform_has()
 
-Replace uses of sev_active() with the more generic cc_platform_has()
-using CC_ATTR_GUEST_MEM_ENCRYPT. If future support is added for other
-memory encryption technologies, the use of CC_ATTR_GUEST_MEM_ENCRYPT
+Replace uses of sme_active() with the more generic cc_platform_has()
+using CC_ATTR_HOST_MEM_ENCRYPT. If future support is added for other
+memory encryption technologies, the use of CC_ATTR_HOST_MEM_ENCRYPT
 can be updated, as required.
+
+This also replaces two usages of sev_active() that are really geared
+towards detecting if SME is active.
 
 Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20210928191009.32551-7-bp@alien8.de
+Link: https://lkml.kernel.org/r/20210928191009.32551-6-bp@alien8.de
 ---
- arch/x86/include/asm/mem_encrypt.h |  2 --
- arch/x86/kernel/crash_dump_64.c    |  4 +++-
- arch/x86/kernel/kvm.c              |  3 ++-
- arch/x86/kernel/kvmclock.c         |  4 ++--
- arch/x86/kernel/machine_kexec_64.c |  4 ++--
- arch/x86/kvm/svm/svm.c             |  3 ++-
- arch/x86/mm/ioremap.c              |  6 +++---
- arch/x86/mm/mem_encrypt.c          | 21 ++++++++-------------
- arch/x86/platform/efi/efi_64.c     |  9 +++++----
- 9 files changed, 27 insertions(+), 29 deletions(-)
+ arch/x86/include/asm/kexec.h         |  2 +-
+ arch/x86/include/asm/mem_encrypt.h   |  2 --
+ arch/x86/kernel/machine_kexec_64.c   | 15 ++++++++-------
+ arch/x86/kernel/pci-swiotlb.c        |  9 ++++-----
+ arch/x86/kernel/relocate_kernel_64.S |  2 +-
+ arch/x86/mm/ioremap.c                |  6 +++---
+ arch/x86/mm/mem_encrypt.c            | 13 ++++---------
+ arch/x86/mm/mem_encrypt_identity.c   |  9 ++++++++-
+ arch/x86/realmode/init.c             |  5 +++--
+ drivers/iommu/amd/init.c             |  7 ++++---
+ 10 files changed, 36 insertions(+), 34 deletions(-)
 
+diff --git a/arch/x86/include/asm/kexec.h b/arch/x86/include/asm/kexec.h
+index 0a6e34b..11b7c06 100644
+--- a/arch/x86/include/asm/kexec.h
++++ b/arch/x86/include/asm/kexec.h
+@@ -129,7 +129,7 @@ relocate_kernel(unsigned long indirection_page,
+ 		unsigned long page_list,
+ 		unsigned long start_address,
+ 		unsigned int preserve_context,
+-		unsigned int sme_active);
++		unsigned int host_mem_enc_active);
+ #endif
+ 
+ #define ARCH_HAS_KIMAGE_ARCH
 diff --git a/arch/x86/include/asm/mem_encrypt.h b/arch/x86/include/asm/mem_encrypt.h
-index 63c5b99..a5a58cc 100644
+index 3fb9f5e..63c5b99 100644
 --- a/arch/x86/include/asm/mem_encrypt.h
 +++ b/arch/x86/include/asm/mem_encrypt.h
 @@ -51,7 +51,6 @@ void __init mem_encrypt_free_decrypted_mem(void);
  void __init mem_encrypt_init(void);
  
  void __init sev_es_init_vc_handling(void);
--bool sev_active(void);
+-bool sme_active(void);
+ bool sev_active(void);
  bool sev_es_active(void);
  
- #define __bss_decrypted __section(".bss..decrypted")
-@@ -75,7 +74,6 @@ static inline void __init sme_encrypt_kernel(struct boot_params *bp) { }
+@@ -76,7 +75,6 @@ static inline void __init sme_encrypt_kernel(struct boot_params *bp) { }
  static inline void __init sme_enable(struct boot_params *bp) { }
  
  static inline void sev_es_init_vc_handling(void) { }
--static inline bool sev_active(void) { return false; }
+-static inline bool sme_active(void) { return false; }
+ static inline bool sev_active(void) { return false; }
  static inline bool sev_es_active(void) { return false; }
  
- static inline int __init
-diff --git a/arch/x86/kernel/crash_dump_64.c b/arch/x86/kernel/crash_dump_64.c
-index 045e82e..a7f617a 100644
---- a/arch/x86/kernel/crash_dump_64.c
-+++ b/arch/x86/kernel/crash_dump_64.c
-@@ -10,6 +10,7 @@
- #include <linux/crash_dump.h>
- #include <linux/uaccess.h>
- #include <linux/io.h>
-+#include <linux/cc_platform.h>
- 
- static ssize_t __copy_oldmem_page(unsigned long pfn, char *buf, size_t csize,
- 				  unsigned long offset, int userbuf,
-@@ -73,5 +74,6 @@ ssize_t copy_oldmem_page_encrypted(unsigned long pfn, char *buf, size_t csize,
- 
- ssize_t elfcorehdr_read(char *buf, size_t count, u64 *ppos)
- {
--	return read_from_oldmem(buf, count, ppos, 0, sev_active());
-+	return read_from_oldmem(buf, count, ppos, 0,
-+				cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT));
- }
-diff --git a/arch/x86/kernel/kvm.c b/arch/x86/kernel/kvm.c
-index b656456..8863d19 100644
---- a/arch/x86/kernel/kvm.c
-+++ b/arch/x86/kernel/kvm.c
-@@ -27,6 +27,7 @@
- #include <linux/nmi.h>
- #include <linux/swait.h>
- #include <linux/syscore_ops.h>
-+#include <linux/cc_platform.h>
- #include <asm/timer.h>
- #include <asm/cpu.h>
- #include <asm/traps.h>
-@@ -418,7 +419,7 @@ static void __init sev_map_percpu_data(void)
- {
- 	int cpu;
- 
--	if (!sev_active())
-+	if (!cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
- 		return;
- 
- 	for_each_possible_cpu(cpu) {
-diff --git a/arch/x86/kernel/kvmclock.c b/arch/x86/kernel/kvmclock.c
-index 73c74b9..462dd8e 100644
---- a/arch/x86/kernel/kvmclock.c
-+++ b/arch/x86/kernel/kvmclock.c
-@@ -16,9 +16,9 @@
- #include <linux/mm.h>
- #include <linux/slab.h>
- #include <linux/set_memory.h>
-+#include <linux/cc_platform.h>
- 
- #include <asm/hypervisor.h>
--#include <asm/mem_encrypt.h>
- #include <asm/x86_init.h>
- #include <asm/kvmclock.h>
- 
-@@ -223,7 +223,7 @@ static void __init kvmclock_init_mem(void)
- 	 * hvclock is shared between the guest and the hypervisor, must
- 	 * be mapped decrypted.
- 	 */
--	if (sev_active()) {
-+	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT)) {
- 		r = set_memory_decrypted((unsigned long) hvclock_mem,
- 					 1UL << order);
- 		if (r) {
 diff --git a/arch/x86/kernel/machine_kexec_64.c b/arch/x86/kernel/machine_kexec_64.c
-index 7040c0f..f5da4a1 100644
+index 131f30f..7040c0f 100644
 --- a/arch/x86/kernel/machine_kexec_64.c
 +++ b/arch/x86/kernel/machine_kexec_64.c
-@@ -167,7 +167,7 @@ static int init_transition_pgtable(struct kimage *image, pgd_t *pgd)
- 	}
- 	pte = pte_offset_kernel(pmd, vaddr);
- 
--	if (sev_active())
-+	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
- 		prot = PAGE_KERNEL_EXEC;
- 
- 	set_pte(pte, pfn_pte(paddr >> PAGE_SHIFT, prot));
-@@ -207,7 +207,7 @@ static int init_pgtable(struct kimage *image, unsigned long start_pgtable)
- 	level4p = (pgd_t *)__va(start_pgtable);
- 	clear_page(level4p);
- 
--	if (sev_active()) {
-+	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT)) {
- 		info.page_flag   |= _PAGE_ENC;
- 		info.kernpg_flag |= _PAGE_ENC;
- 	}
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index 9896850..aa48282 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -25,6 +25,7 @@
- #include <linux/pagemap.h>
- #include <linux/swap.h>
- #include <linux/rwsem.h>
+@@ -17,6 +17,7 @@
+ #include <linux/suspend.h>
+ #include <linux/vmalloc.h>
+ #include <linux/efi.h>
 +#include <linux/cc_platform.h>
  
- #include <asm/apic.h>
- #include <asm/perf_event.h>
-@@ -455,7 +456,7 @@ static int has_svm(void)
- 		return 0;
- 	}
+ #include <asm/init.h>
+ #include <asm/tlbflush.h>
+@@ -358,7 +359,7 @@ void machine_kexec(struct kimage *image)
+ 				       (unsigned long)page_list,
+ 				       image->start,
+ 				       image->preserve_context,
+-				       sme_active());
++				       cc_platform_has(CC_ATTR_HOST_MEM_ENCRYPT));
  
--	if (sev_active()) {
-+	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT)) {
- 		pr_info("KVM is unsupported when running as an SEV guest\n");
- 		return 0;
- 	}
-diff --git a/arch/x86/mm/ioremap.c b/arch/x86/mm/ioremap.c
-index a7250fa..b59a5cb 100644
---- a/arch/x86/mm/ioremap.c
-+++ b/arch/x86/mm/ioremap.c
-@@ -92,7 +92,7 @@ static unsigned int __ioremap_check_ram(struct resource *res)
+ #ifdef CONFIG_KEXEC_JUMP
+ 	if (image->preserve_context)
+@@ -569,12 +570,12 @@ void arch_kexec_unprotect_crashkres(void)
   */
- static unsigned int __ioremap_check_encrypted(struct resource *res)
+ int arch_kexec_post_alloc_pages(void *vaddr, unsigned int pages, gfp_t gfp)
  {
--	if (!sev_active())
-+	if (!cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
- 		return 0;
- 
- 	switch (res->desc) {
-@@ -112,7 +112,7 @@ static unsigned int __ioremap_check_encrypted(struct resource *res)
-  */
- static void __ioremap_check_other(resource_size_t addr, struct ioremap_desc *desc)
- {
--	if (!sev_active())
-+	if (!cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
- 		return;
- 
- 	if (!IS_ENABLED(CONFIG_EFI))
-@@ -556,7 +556,7 @@ static bool memremap_should_map_decrypted(resource_size_t phys_addr,
- 	case E820_TYPE_NVS:
- 	case E820_TYPE_UNUSABLE:
- 		/* For SEV, these areas are encrypted */
--		if (sev_active())
-+		if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
- 			break;
- 		fallthrough;
- 
-diff --git a/arch/x86/mm/mem_encrypt.c b/arch/x86/mm/mem_encrypt.c
-index 2163485..932007a 100644
---- a/arch/x86/mm/mem_encrypt.c
-+++ b/arch/x86/mm/mem_encrypt.c
-@@ -194,7 +194,7 @@ void __init sme_early_init(void)
- 	for (i = 0; i < ARRAY_SIZE(protection_map); i++)
- 		protection_map[i] = pgprot_encrypted(protection_map[i]);
- 
 -	if (sev_active())
-+	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
- 		swiotlb_force = SWIOTLB_FORCE;
- }
++	if (!cc_platform_has(CC_ATTR_HOST_MEM_ENCRYPT))
+ 		return 0;
  
-@@ -203,7 +203,7 @@ void __init sev_setup_arch(void)
- 	phys_addr_t total_mem = memblock_phys_mem_size();
- 	unsigned long size;
+ 	/*
+-	 * If SME is active we need to be sure that kexec pages are
+-	 * not encrypted because when we boot to the new kernel the
++	 * If host memory encryption is active we need to be sure that kexec
++	 * pages are not encrypted because when we boot to the new kernel the
+ 	 * pages won't be accessed encrypted (initially).
+ 	 */
+ 	return set_memory_decrypted((unsigned long)vaddr, pages);
+@@ -582,12 +583,12 @@ int arch_kexec_post_alloc_pages(void *vaddr, unsigned int pages, gfp_t gfp)
  
--	if (!sev_active())
-+	if (!cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
+ void arch_kexec_pre_free_pages(void *vaddr, unsigned int pages)
+ {
+-	if (sev_active())
++	if (!cc_platform_has(CC_ATTR_HOST_MEM_ENCRYPT))
  		return;
  
  	/*
-@@ -364,8 +364,8 @@ int __init early_set_memory_encrypted(unsigned long vaddr, unsigned long size)
- /*
-  * SME and SEV are very similar but they are not the same, so there are
-  * times that the kernel will need to distinguish between SME and SEV. The
-- * sme_active() and sev_active() functions are used for this.  When a
-- * distinction isn't needed, the mem_encrypt_active() function can be used.
-+ * cc_platform_has() function is used for this.  When a distinction isn't
-+ * needed, the CC_ATTR_MEM_ENCRYPT attribute can be used.
-  *
-  * The trampoline code is a good example for this requirement.  Before
-  * paging is activated, SME will access all memory as decrypted, but SEV
-@@ -373,11 +373,6 @@ int __init early_set_memory_encrypted(unsigned long vaddr, unsigned long size)
-  * up under SME the trampoline area cannot be encrypted, whereas under SEV
-  * the trampoline area must be encrypted.
-  */
--bool sev_active(void)
--{
--	return sev_status & MSR_AMD64_SEV_ENABLED;
--}
--EXPORT_SYMBOL_GPL(sev_active);
- 
- /* Needs to be called from non-instrumentable code */
- bool noinstr sev_es_active(void)
-@@ -391,7 +386,7 @@ bool force_dma_unencrypted(struct device *dev)
- 	/*
- 	 * For SEV, all DMA must be to unencrypted addresses.
+-	 * If SME is active we need to reset the pages back to being
+-	 * an encrypted mapping before freeing them.
++	 * If host memory encryption is active we need to reset the pages back
++	 * to being an encrypted mapping before freeing them.
  	 */
--	if (sev_active())
-+	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
- 		return true;
- 
- 	/*
-@@ -450,7 +445,7 @@ static void print_mem_encrypt_feature_info(void)
- 	}
- 
- 	/* Secure Encrypted Virtualization */
--	if (sev_active())
-+	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
- 		pr_cont(" SEV");
- 
- 	/* Encrypted Register State */
-@@ -473,7 +468,7 @@ void __init mem_encrypt_init(void)
- 	 * With SEV, we need to unroll the rep string I/O instructions,
- 	 * but SEV-ES supports them through the #VC handler.
- 	 */
--	if (sev_active() && !sev_es_active())
-+	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT) && !sev_es_active())
- 		static_branch_enable(&sev_enable_key);
- 
- 	print_mem_encrypt_feature_info();
-@@ -481,6 +476,6 @@ void __init mem_encrypt_init(void)
- 
- int arch_has_restricted_virtio_memory_access(void)
- {
--	return sev_active();
-+	return cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT);
+ 	set_memory_encrypted((unsigned long)vaddr, pages);
  }
- EXPORT_SYMBOL_GPL(arch_has_restricted_virtio_memory_access);
-diff --git a/arch/x86/platform/efi/efi_64.c b/arch/x86/platform/efi/efi_64.c
-index 7515e78..1f36754 100644
---- a/arch/x86/platform/efi/efi_64.c
-+++ b/arch/x86/platform/efi/efi_64.c
-@@ -33,7 +33,7 @@
- #include <linux/reboot.h>
- #include <linux/slab.h>
- #include <linux/ucs2_string.h>
+diff --git a/arch/x86/kernel/pci-swiotlb.c b/arch/x86/kernel/pci-swiotlb.c
+index c2cfa5e..814ab46 100644
+--- a/arch/x86/kernel/pci-swiotlb.c
++++ b/arch/x86/kernel/pci-swiotlb.c
+@@ -6,7 +6,7 @@
+ #include <linux/swiotlb.h>
+ #include <linux/memblock.h>
+ #include <linux/dma-direct.h>
 -#include <linux/mem_encrypt.h>
 +#include <linux/cc_platform.h>
- #include <linux/sched/task.h>
+ 
+ #include <asm/iommu.h>
+ #include <asm/swiotlb.h>
+@@ -45,11 +45,10 @@ int __init pci_swiotlb_detect_4gb(void)
+ 		swiotlb = 1;
+ 
+ 	/*
+-	 * If SME is active then swiotlb will be set to 1 so that bounce
+-	 * buffers are allocated and used for devices that do not support
+-	 * the addressing range required for the encryption mask.
++	 * Set swiotlb to 1 so that bounce buffers are allocated and used for
++	 * devices that can't support DMA to encrypted memory.
+ 	 */
+-	if (sme_active())
++	if (cc_platform_has(CC_ATTR_HOST_MEM_ENCRYPT))
+ 		swiotlb = 1;
+ 
+ 	return swiotlb;
+diff --git a/arch/x86/kernel/relocate_kernel_64.S b/arch/x86/kernel/relocate_kernel_64.S
+index c53271a..c8fe74a 100644
+--- a/arch/x86/kernel/relocate_kernel_64.S
++++ b/arch/x86/kernel/relocate_kernel_64.S
+@@ -47,7 +47,7 @@ SYM_CODE_START_NOALIGN(relocate_kernel)
+ 	 * %rsi page_list
+ 	 * %rdx start address
+ 	 * %rcx preserve_context
+-	 * %r8  sme_active
++	 * %r8  host_mem_enc_active
+ 	 */
+ 
+ 	/* Save the CPU context, used for jumping back */
+diff --git a/arch/x86/mm/ioremap.c b/arch/x86/mm/ioremap.c
+index ccff76c..a7250fa 100644
+--- a/arch/x86/mm/ioremap.c
++++ b/arch/x86/mm/ioremap.c
+@@ -14,7 +14,7 @@
+ #include <linux/slab.h>
+ #include <linux/vmalloc.h>
+ #include <linux/mmiotrace.h>
+-#include <linux/mem_encrypt.h>
++#include <linux/cc_platform.h>
+ #include <linux/efi.h>
+ #include <linux/pgtable.h>
+ 
+@@ -703,7 +703,7 @@ bool arch_memremap_can_ram_remap(resource_size_t phys_addr, unsigned long size,
+ 	if (flags & MEMREMAP_DEC)
+ 		return false;
+ 
+-	if (sme_active()) {
++	if (cc_platform_has(CC_ATTR_HOST_MEM_ENCRYPT)) {
+ 		if (memremap_is_setup_data(phys_addr, size) ||
+ 		    memremap_is_efi_data(phys_addr, size))
+ 			return false;
+@@ -729,7 +729,7 @@ pgprot_t __init early_memremap_pgprot_adjust(resource_size_t phys_addr,
+ 
+ 	encrypted_prot = true;
+ 
+-	if (sme_active()) {
++	if (cc_platform_has(CC_ATTR_HOST_MEM_ENCRYPT)) {
+ 		if (early_memremap_is_setup_data(phys_addr, size) ||
+ 		    memremap_is_efi_data(phys_addr, size))
+ 			encrypted_prot = false;
+diff --git a/arch/x86/mm/mem_encrypt.c b/arch/x86/mm/mem_encrypt.c
+index e29b141..2163485 100644
+--- a/arch/x86/mm/mem_encrypt.c
++++ b/arch/x86/mm/mem_encrypt.c
+@@ -144,7 +144,7 @@ void __init sme_unmap_bootdata(char *real_mode_data)
+ 	struct boot_params *boot_data;
+ 	unsigned long cmdline_paddr;
+ 
+-	if (!sme_active())
++	if (!cc_platform_has(CC_ATTR_HOST_MEM_ENCRYPT))
+ 		return;
+ 
+ 	/* Get the command line address before unmapping the real_mode_data */
+@@ -164,7 +164,7 @@ void __init sme_map_bootdata(char *real_mode_data)
+ 	struct boot_params *boot_data;
+ 	unsigned long cmdline_paddr;
+ 
+-	if (!sme_active())
++	if (!cc_platform_has(CC_ATTR_HOST_MEM_ENCRYPT))
+ 		return;
+ 
+ 	__sme_early_map_unmap_mem(real_mode_data, sizeof(boot_params), true);
+@@ -377,11 +377,6 @@ bool sev_active(void)
+ {
+ 	return sev_status & MSR_AMD64_SEV_ENABLED;
+ }
+-
+-bool sme_active(void)
+-{
+-	return sme_me_mask && !sev_active();
+-}
+ EXPORT_SYMBOL_GPL(sev_active);
+ 
+ /* Needs to be called from non-instrumentable code */
+@@ -404,7 +399,7 @@ bool force_dma_unencrypted(struct device *dev)
+ 	 * device does not support DMA to addresses that include the
+ 	 * encryption mask.
+ 	 */
+-	if (sme_active()) {
++	if (cc_platform_has(CC_ATTR_HOST_MEM_ENCRYPT)) {
+ 		u64 dma_enc_mask = DMA_BIT_MASK(__ffs64(sme_me_mask));
+ 		u64 dma_dev_mask = min_not_zero(dev->coherent_dma_mask,
+ 						dev->bus_dma_limit);
+@@ -445,7 +440,7 @@ static void print_mem_encrypt_feature_info(void)
+ 	pr_info("AMD Memory Encryption Features active:");
+ 
+ 	/* Secure Memory Encryption */
+-	if (sme_active()) {
++	if (cc_platform_has(CC_ATTR_HOST_MEM_ENCRYPT)) {
+ 		/*
+ 		 * SME is mutually exclusive with any of the SEV
+ 		 * features below.
+diff --git a/arch/x86/mm/mem_encrypt_identity.c b/arch/x86/mm/mem_encrypt_identity.c
+index 470b202..f8c6129 100644
+--- a/arch/x86/mm/mem_encrypt_identity.c
++++ b/arch/x86/mm/mem_encrypt_identity.c
+@@ -30,6 +30,7 @@
+ #include <linux/kernel.h>
+ #include <linux/mm.h>
+ #include <linux/mem_encrypt.h>
++#include <linux/cc_platform.h>
  
  #include <asm/setup.h>
-@@ -284,7 +284,8 @@ static void __init __map_region(efi_memory_desc_t *md, u64 va)
- 	if (!(md->attribute & EFI_MEMORY_WB))
- 		flags |= _PAGE_PCD;
+ #include <asm/sections.h>
+@@ -287,7 +288,13 @@ void __init sme_encrypt_kernel(struct boot_params *bp)
+ 	unsigned long pgtable_area_len;
+ 	unsigned long decrypted_base;
  
--	if (sev_active() && md->type != EFI_MEMORY_MAPPED_IO)
-+	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT) &&
-+	    md->type != EFI_MEMORY_MAPPED_IO)
- 		flags |= _PAGE_ENC;
+-	if (!sme_active())
++	/*
++	 * This is early code, use an open coded check for SME instead of
++	 * using cc_platform_has(). This eliminates worries about removing
++	 * instrumentation or checking boot_cpu_data in the cc_platform_has()
++	 * function.
++	 */
++	if (!sme_get_me_mask() || sev_status & MSR_AMD64_SEV_ENABLED)
+ 		return;
  
- 	pfn = md->phys_addr >> PAGE_SHIFT;
-@@ -390,7 +391,7 @@ static int __init efi_update_mem_attr(struct mm_struct *mm, efi_memory_desc_t *m
- 	if (!(md->attribute & EFI_MEMORY_RO))
- 		pf |= _PAGE_RW;
+ 	/*
+diff --git a/arch/x86/realmode/init.c b/arch/x86/realmode/init.c
+index 31b5856..c878c5e 100644
+--- a/arch/x86/realmode/init.c
++++ b/arch/x86/realmode/init.c
+@@ -3,6 +3,7 @@
+ #include <linux/slab.h>
+ #include <linux/memblock.h>
+ #include <linux/mem_encrypt.h>
++#include <linux/cc_platform.h>
+ #include <linux/pgtable.h>
  
--	if (sev_active())
-+	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
- 		pf |= _PAGE_ENC;
+ #include <asm/set_memory.h>
+@@ -44,7 +45,7 @@ void __init reserve_real_mode(void)
+ static void sme_sev_setup_real_mode(struct trampoline_header *th)
+ {
+ #ifdef CONFIG_AMD_MEM_ENCRYPT
+-	if (sme_active())
++	if (cc_platform_has(CC_ATTR_HOST_MEM_ENCRYPT))
+ 		th->flags |= TH_FLAGS_SME_ACTIVE;
  
- 	return efi_update_mappings(md, pf);
-@@ -438,7 +439,7 @@ void __init efi_runtime_update_mappings(void)
- 			(md->type != EFI_RUNTIME_SERVICES_CODE))
- 			pf |= _PAGE_RW;
+ 	if (sev_es_active()) {
+@@ -81,7 +82,7 @@ static void __init setup_real_mode(void)
+ 	 * decrypted memory in order to bring up other processors
+ 	 * successfully. This is not needed for SEV.
+ 	 */
+-	if (sme_active())
++	if (cc_platform_has(CC_ATTR_HOST_MEM_ENCRYPT))
+ 		set_memory_decrypted((unsigned long)base, size >> PAGE_SHIFT);
  
--		if (sev_active())
-+		if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
- 			pf |= _PAGE_ENC;
+ 	memcpy(base, real_mode_blob, size);
+diff --git a/drivers/iommu/amd/init.c b/drivers/iommu/amd/init.c
+index 2a822b2..c6c53e1 100644
+--- a/drivers/iommu/amd/init.c
++++ b/drivers/iommu/amd/init.c
+@@ -20,7 +20,7 @@
+ #include <linux/amd-iommu.h>
+ #include <linux/export.h>
+ #include <linux/kmemleak.h>
+-#include <linux/mem_encrypt.h>
++#include <linux/cc_platform.h>
+ #include <asm/pci-direct.h>
+ #include <asm/iommu.h>
+ #include <asm/apic.h>
+@@ -964,7 +964,7 @@ static bool copy_device_table(void)
+ 		pr_err("The address of old device table is above 4G, not trustworthy!\n");
+ 		return false;
+ 	}
+-	old_devtb = (sme_active() && is_kdump_kernel())
++	old_devtb = (cc_platform_has(CC_ATTR_HOST_MEM_ENCRYPT) && is_kdump_kernel())
+ 		    ? (__force void *)ioremap_encrypted(old_devtb_phys,
+ 							dev_table_size)
+ 		    : memremap(old_devtb_phys, dev_table_size, MEMREMAP_WB);
+@@ -3032,7 +3032,8 @@ static int __init amd_iommu_init(void)
  
- 		efi_update_mappings(md, pf);
+ static bool amd_iommu_sme_check(void)
+ {
+-	if (!sme_active() || (boot_cpu_data.x86 != 0x17))
++	if (!cc_platform_has(CC_ATTR_HOST_MEM_ENCRYPT) ||
++	    (boot_cpu_data.x86 != 0x17))
+ 		return true;
+ 
+ 	/* For Fam17h, a specific level of support is required */
