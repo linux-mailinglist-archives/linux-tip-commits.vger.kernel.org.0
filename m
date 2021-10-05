@@ -2,53 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 467B9422A66
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  5 Oct 2021 16:12:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 679CF422A6A
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  5 Oct 2021 16:12:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235951AbhJEOOK (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 5 Oct 2021 10:14:10 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:51144 "EHLO
+        id S235544AbhJEOOM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 5 Oct 2021 10:14:12 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:51328 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235478AbhJEON6 (ORCPT
+        with ESMTP id S235302AbhJEOOA (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 5 Oct 2021 10:13:58 -0400
-Date:   Tue, 05 Oct 2021 14:12:06 -0000
+        Tue, 5 Oct 2021 10:14:00 -0400
+Date:   Tue, 05 Oct 2021 14:12:07 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1633443127;
+        s=2020; t=1633443128;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=F6lIHKspeBO1zB67nNBKNb8KTrAIbqQkNmvMeBAhd8w=;
-        b=oSr8SRbjLf+xrBE5cpsHoSq6rw4DmBrTSkTcF4M7Ym3OZlkNw5rzLPQh4RiGDaTRyRLDiv
-        A1xgagQ2SmlaJP7lwQkw8p8S+qJviATo7Avp/cYajgSU/8HbOqqS/xh+15ryjc3+Td5gLo
-        cgiFQlQkc/Bqp0IY5cy0v0Ffk9R+RVR6JtvdakJb6nekYkg2N18x3gyPyZ2Kh1LKCupDxp
-        dlKnaKfRvRN5fxHusTkoUQBeLNSTE1Fs0XQ0s+2LRXVfUr/ZsCDLz4Cw0EfR4/pqQE6C2/
-        xZGbKW1AGYA5+clCCVS1gcrkAxoPVZqNLobTTomYuuJL5vNoRu1vlCND+StW3A==
+        bh=5LbmlTMyhAyy+4IodFqJpZp/kv+c0QJufYRXZCIU4Nc=;
+        b=VseMxB5LF4h+p9cN2EspA2ZlSpZXd/7ihQH2hLSXVFDSL+Xx2cGaWgNnLXM4K7JN2EtFXD
+        qR4xQjOiB0QfqRbCweJu20c4Fb6FKwtPGkZvL8QNiCnwBHf3PwTeeGJ8XlsyFIUkCz0ITo
+        +EBoAl/lc1htNTmiWo6uSO/NLFKkUheFtgmyqFsouNITMJfnH4bJNp8XCpNiAS7WoNpY12
+        5lna3v410lazwtU58IhfF+gPrvcs4Cv7XzefWsgsfm5IGsUsIH6naa+V9L1o0cMhmihEr4
+        bZVNCQDmCcyiD4A3uvEURhvv37WtZLbVJPvQQa/h9jefK6uYWxgNLhvXeFFqJQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1633443127;
+        s=2020e; t=1633443128;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=F6lIHKspeBO1zB67nNBKNb8KTrAIbqQkNmvMeBAhd8w=;
-        b=djPomEc6aCCUrIafRyiNOL2tNuaYvI5pWqlk4dXIV56XiyX31U1xJ2I7kLglguFsRsmJxk
-        B7Cl5Q5Van7J2dAQ==
+        bh=5LbmlTMyhAyy+4IodFqJpZp/kv+c0QJufYRXZCIU4Nc=;
+        b=rDRrB00/n/wwL+eaklc6M/QjOJSjllf4lIilVWFjCCsGxx0xqzcsnJvVcAm04/B7lEZfxm
+        w1W+QiFsQExK6pBw==
 From:   "tip-bot2 for Yafang Shao" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/dl: Support sched_stat_runtime tracepoint for
- deadline sched class
+Subject: [tip: sched/core] sched/rt: Support sched_stat_runtime tracepoint for
+ RT sched class
 Cc:     Yafang Shao <laoar.shao@gmail.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210905143547.4668-8-laoar.shao@gmail.com>
-References: <20210905143547.4668-8-laoar.shao@gmail.com>
+In-Reply-To: <20210905143547.4668-6-laoar.shao@gmail.com>
+References: <20210905143547.4668-6-laoar.shao@gmail.com>
 MIME-Version: 1.0
-Message-ID: <163344312649.25758.13684886466720357839.tip-bot2@tip-bot2>
+Message-ID: <163344312778.25758.1766433794457376552.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,37 +59,39 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     95fd58e8dadb7aa707628a2187c626bb897c49ec
-Gitweb:        https://git.kernel.org/tip/95fd58e8dadb7aa707628a2187c626bb897c49ec
+Commit-ID:     ed7b564cfdd0668efbd739d0b4e2d67797293f32
+Gitweb:        https://git.kernel.org/tip/ed7b564cfdd0668efbd739d0b4e2d67797293f32
 Author:        Yafang Shao <laoar.shao@gmail.com>
-AuthorDate:    Sun, 05 Sep 2021 14:35:46 
+AuthorDate:    Sun, 05 Sep 2021 14:35:44 
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 05 Oct 2021 15:51:52 +02:00
+CommitterDate: Tue, 05 Oct 2021 15:51:49 +02:00
 
-sched/dl: Support sched_stat_runtime tracepoint for deadline sched class
+sched/rt: Support sched_stat_runtime tracepoint for RT sched class
 
-The runtime of a DL task has already been there, so we only need to
+The runtime of a RT task has already been there, so we only need to
 add a tracepoint.
 
-One difference between fair task and DL task is that there is no vruntime
-in dl task. To reuse the sched_stat_runtime tracepoint, '0' is passed as
-vruntime for DL task.
+One difference between fair task and RT task is that there is no vruntime
+in RT task. To reuse the sched_stat_runtime tracepoint, '0' is passed as
+vruntime for RT task.
 
-The output of this tracepoint for DL task as follows,
-             top-36462   [047] d.h.  6083.452103: sched_stat_runtime: comm=top pid=36462 runtime=409898 [ns] vruntime=0 [ns]
+The output of this tracepoint for RT task as follows,
+          stress-9748    [039] d.h.   113.519352: sched_stat_runtime: comm=stress pid=9748 runtime=997573 [ns] vruntime=0 [ns]
+          stress-9748    [039] d.h.   113.520352: sched_stat_runtime: comm=stress pid=9748 runtime=997627 [ns] vruntime=0 [ns]
+          stress-9748    [039] d.h.   113.521352: sched_stat_runtime: comm=stress pid=9748 runtime=998203 [ns] vruntime=0 [ns]
 
 Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20210905143547.4668-8-laoar.shao@gmail.com
+Link: https://lore.kernel.org/r/20210905143547.4668-6-laoar.shao@gmail.com
 ---
- kernel/sched/deadline.c | 2 ++
+ kernel/sched/rt.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
-index 51dd309..73fb33e 100644
---- a/kernel/sched/deadline.c
-+++ b/kernel/sched/deadline.c
-@@ -1268,6 +1268,8 @@ static void update_curr_dl(struct rq *rq)
+diff --git a/kernel/sched/rt.c b/kernel/sched/rt.c
+index 95a7c3a..5d25111 100644
+--- a/kernel/sched/rt.c
++++ b/kernel/sched/rt.c
+@@ -1012,6 +1012,8 @@ static void update_curr_rt(struct rq *rq)
  	schedstat_set(curr->stats.exec_max,
  		      max(curr->stats.exec_max, delta_exec));
  
