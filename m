@@ -2,54 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CE7EA422A62
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  5 Oct 2021 16:12:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 959FC422A64
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  5 Oct 2021 16:12:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235884AbhJEOOI (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 5 Oct 2021 10:14:08 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:51268 "EHLO
+        id S235480AbhJEOOJ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 5 Oct 2021 10:14:09 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:51280 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235381AbhJEON4 (ORCPT
+        with ESMTP id S235417AbhJEON5 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 5 Oct 2021 10:13:56 -0400
-Date:   Tue, 05 Oct 2021 14:12:03 -0000
+        Tue, 5 Oct 2021 10:13:57 -0400
+Date:   Tue, 05 Oct 2021 14:12:04 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1633443124;
+        s=2020; t=1633443125;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=2g+YWsoX4gSlJTCtfLRdDdYRrDA+MXdHiZNRQhuWFlg=;
-        b=O6tHBqdyLiI+bJ+aZ20fB/dWMVigRHg8XEOG7yXpuz4Mi7Kty8km5k/zX5/MddtlwG4OZk
-        y2K5q+AE2+L5RAeRDBPG+06ASQgRvgk+lbH/FkXxY5Rwdu5dj/mdzICflvrojMEBX73LBg
-        EsEmBqfd9yCHMaK57/6yQF6MH1+BPGEcby7lO9Z87tBnBG4e6SlWNtMAg/ZF/DNbUvPPrz
-        PDegXZ1qjrW5UvOz0Lf73vJadFU/i2E7xDAiqyR3Jg2PDaCtk0cByQB9aFoMNuL7ZIft4O
-        dqo/oy1oau7QQEzNlzOj6I58nMwZpdup5iq1BZQUmpBxPWLPjpZ9WPTFyQ18kw==
+        bh=3QgXlyK4yh0y1akJ+TiaB4oGx9UYMojXgse965nP9K8=;
+        b=B6Hky9L96GnX8YiG8oS+MlLQyf1FbHKTZeEdO5maRlag6sdEJdXE3F/mGNi3/hF1tRUONQ
+        /jwzr7q1fwAIjuMThmOaZjfEF+5Wk8GXbeTYdf19ANMO91ICb7b+sVOK6OGsFtF0h7hajd
+        f69AICCwGSIDSqk5Y3ur9g8jQihEu3pUJnnOiCAXjWOlwOZvRKAoj/AYCIaHalBmYKER7S
+        B9v6SWvZ0sl7+H8CA3KKnkjJjKcqdR0/DHzv8huS9BqUqr6kh3/NgUp6ixqZxp898rV7vJ
+        oWERBQJ9Qsgcc1ZNkLV2pfGKu3CxPCqrRXocWwozXLuT3PPfxZife5hvTU3BlQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1633443124;
+        s=2020e; t=1633443125;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=2g+YWsoX4gSlJTCtfLRdDdYRrDA+MXdHiZNRQhuWFlg=;
-        b=HYsQwiJaJ/OIZEkTym3WJy4sxgKA2CjlULnFJnGzmAcl8iKFBMaVq/T/rrkhqQ/qiip3FN
-        qVvdQYS41WyeB3Bg==
-From:   "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
+        bh=3QgXlyK4yh0y1akJ+TiaB4oGx9UYMojXgse965nP9K8=;
+        b=BJUGwLe85L194pZ+xBheRkj9ZxymwzFtGDSR1VGQNI3sVhAhP9UpCbz8cVKQv82XN2/nyC
+        c3fxa5MhOgAda2Bg==
+From:   "tip-bot2 for Frederic Weisbecker" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] kthread: Move prio/affinite change into the newly
- created thread
-Cc:     Mike Galbraith <efault@gmx.de>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+Subject: [tip: sched/core] sched: Provide Kconfig support for default dynamic
+ preempt mode
+Cc:     Frederic Weisbecker <frederic@kernel.org>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <a23a826af7c108ea5651e73b8fbae5e653f16e86.camel@gmx.de>
-References: <a23a826af7c108ea5651e73b8fbae5e653f16e86.camel@gmx.de>
+In-Reply-To: <20210914103134.11309-1-frederic@kernel.org>
+References: <20210914103134.11309-1-frederic@kernel.org>
 MIME-Version: 1.0
-Message-ID: <163344312383.25758.1066352412988968295.tip-bot2@tip-bot2>
+Message-ID: <163344312450.25758.17799728166210849123.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,90 +59,171 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     1a7243ca4074beed97b68d7235a6e34862fc2cd6
-Gitweb:        https://git.kernel.org/tip/1a7243ca4074beed97b68d7235a6e34862fc2cd6
-Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-AuthorDate:    Tue, 10 Nov 2020 12:38:47 +01:00
+Commit-ID:     c597bfddc9e9e8a63817252b67c3ca0e544ace26
+Gitweb:        https://git.kernel.org/tip/c597bfddc9e9e8a63817252b67c3ca0e544ace26
+Author:        Frederic Weisbecker <frederic@kernel.org>
+AuthorDate:    Tue, 14 Sep 2021 12:31:34 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 05 Oct 2021 15:51:58 +02:00
+CommitterDate: Tue, 05 Oct 2021 15:51:56 +02:00
 
-kthread: Move prio/affinite change into the newly created thread
+sched: Provide Kconfig support for default dynamic preempt mode
 
-With enabled threaded interrupts the nouveau driver reported the
-following:
+Currently the boot defined preempt behaviour (aka dynamic preempt)
+selects full preemption by default when the "preempt=" boot parameter
+is omitted. However distros may rather want to default to either
+no preemption or voluntary preemption.
 
-| Chain exists of:
-|   &mm->mmap_lock#2 --> &device->mutex --> &cpuset_rwsem
-|
-|  Possible unsafe locking scenario:
-|
-|        CPU0                    CPU1
-|        ----                    ----
-|   lock(&cpuset_rwsem);
-|                                lock(&device->mutex);
-|                                lock(&cpuset_rwsem);
-|   lock(&mm->mmap_lock#2);
+To provide with this flexibility, make dynamic preemption a visible
+Kconfig option and adapt the preemption behaviour selected by the user
+to either static or dynamic preemption.
 
-The device->mutex is nvkm_device::mutex.
-
-Unblocking the lockchain at `cpuset_rwsem' is probably the easiest
-thing to do.  Move the priority reset to the start of the newly
-created thread.
-
-Fixes: 710da3c8ea7df ("sched/core: Prevent race condition between cpuset and __sched_setscheduler()")
-Reported-by: Mike Galbraith <efault@gmx.de>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/a23a826af7c108ea5651e73b8fbae5e653f16e86.camel@gmx.de
+Link: https://lkml.kernel.org/r/20210914103134.11309-1-frederic@kernel.org
 ---
- kernel/kthread.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ kernel/Kconfig.preempt | 32 +++++++++++++++++++++++---------
+ kernel/sched/core.c    | 29 ++++++++++++++++++++++++++---
+ 2 files changed, 49 insertions(+), 12 deletions(-)
 
-diff --git a/kernel/kthread.c b/kernel/kthread.c
-index 5b37a85..4a4d709 100644
---- a/kernel/kthread.c
-+++ b/kernel/kthread.c
-@@ -270,6 +270,7 @@ EXPORT_SYMBOL_GPL(kthread_parkme);
+diff --git a/kernel/Kconfig.preempt b/kernel/Kconfig.preempt
+index 5876e30..60f1bfc 100644
+--- a/kernel/Kconfig.preempt
++++ b/kernel/Kconfig.preempt
+@@ -2,10 +2,11 @@
  
- static int kthread(void *_create)
- {
-+	static const struct sched_param param = { .sched_priority = 0 };
- 	/* Copy data: it's on kthread's stack */
- 	struct kthread_create_info *create = _create;
- 	int (*threadfn)(void *data) = create->threadfn;
-@@ -300,6 +301,13 @@ static int kthread(void *_create)
- 	init_completion(&self->parked);
- 	current->vfork_done = &self->exited;
+ choice
+ 	prompt "Preemption Model"
+-	default PREEMPT_NONE
++	default PREEMPT_NONE_BEHAVIOUR
  
-+	/*
-+	 * The new thread inherited kthreadd's priority and CPU mask. Reset
-+	 * back to default in case they have been changed.
-+	 */
-+	sched_setscheduler_nocheck(current, SCHED_NORMAL, &param);
-+	set_cpus_allowed_ptr(current, housekeeping_cpumask(HK_FLAG_KTHREAD));
+-config PREEMPT_NONE
++config PREEMPT_NONE_BEHAVIOUR
+ 	bool "No Forced Preemption (Server)"
++	select PREEMPT_NONE if !PREEMPT_DYNAMIC
+ 	help
+ 	  This is the traditional Linux preemption model, geared towards
+ 	  throughput. It will still provide good latencies most of the
+@@ -17,9 +18,10 @@ config PREEMPT_NONE
+ 	  raw processing power of the kernel, irrespective of scheduling
+ 	  latencies.
+ 
+-config PREEMPT_VOLUNTARY
++config PREEMPT_VOLUNTARY_BEHAVIOUR
+ 	bool "Voluntary Kernel Preemption (Desktop)"
+ 	depends on !ARCH_NO_PREEMPT
++	select PREEMPT_VOLUNTARY if !PREEMPT_DYNAMIC
+ 	help
+ 	  This option reduces the latency of the kernel by adding more
+ 	  "explicit preemption points" to the kernel code. These new
+@@ -35,12 +37,10 @@ config PREEMPT_VOLUNTARY
+ 
+ 	  Select this if you are building a kernel for a desktop system.
+ 
+-config PREEMPT
++config PREEMPT_BEHAVIOUR
+ 	bool "Preemptible Kernel (Low-Latency Desktop)"
+ 	depends on !ARCH_NO_PREEMPT
+-	select PREEMPTION
+-	select UNINLINE_SPIN_UNLOCK if !ARCH_INLINE_SPIN_UNLOCK
+-	select PREEMPT_DYNAMIC if HAVE_PREEMPT_DYNAMIC
++	select PREEMPT
+ 	help
+ 	  This option reduces the latency of the kernel by making
+ 	  all kernel code (that is not executing in a critical section)
+@@ -58,7 +58,7 @@ config PREEMPT
+ 
+ config PREEMPT_RT
+ 	bool "Fully Preemptible Kernel (Real-Time)"
+-	depends on EXPERT && ARCH_SUPPORTS_RT
++	depends on EXPERT && ARCH_SUPPORTS_RT && !PREEMPT_DYNAMIC
+ 	select PREEMPTION
+ 	help
+ 	  This option turns the kernel into a real-time kernel by replacing
+@@ -75,6 +75,17 @@ config PREEMPT_RT
+ 
+ endchoice
+ 
++config PREEMPT_NONE
++	bool
 +
- 	/* OK, tell user we're spawned, wait for stop or wakeup */
- 	__set_current_state(TASK_UNINTERRUPTIBLE);
- 	create->result = current;
-@@ -397,7 +405,6 @@ struct task_struct *__kthread_create_on_node(int (*threadfn)(void *data),
- 	}
- 	task = create->result;
- 	if (!IS_ERR(task)) {
--		static const struct sched_param param = { .sched_priority = 0 };
- 		char name[TASK_COMM_LEN];
++config PREEMPT_VOLUNTARY
++	bool
++
++config PREEMPT
++	bool
++	select PREEMPTION
++	select UNINLINE_SPIN_UNLOCK if !ARCH_INLINE_SPIN_UNLOCK
++
+ config PREEMPT_COUNT
+        bool
  
- 		/*
-@@ -406,13 +413,6 @@ struct task_struct *__kthread_create_on_node(int (*threadfn)(void *data),
- 		 */
- 		vsnprintf(name, sizeof(name), namefmt, args);
- 		set_task_comm(task, name);
--		/*
--		 * root may have changed our (kthreadd's) priority or CPU mask.
--		 * The kernel thread should not inherit these properties.
--		 */
--		sched_setscheduler_nocheck(task, SCHED_NORMAL, &param);
--		set_cpus_allowed_ptr(task,
--				     housekeeping_cpumask(HK_FLAG_KTHREAD));
- 	}
- 	kfree(create);
- 	return task;
+@@ -83,7 +94,10 @@ config PREEMPTION
+        select PREEMPT_COUNT
+ 
+ config PREEMPT_DYNAMIC
+-	bool
++	bool "Preemption behaviour defined on boot"
++	depends on HAVE_PREEMPT_DYNAMIC
++	select PREEMPT
++	default y
+ 	help
+ 	  This option allows to define the preemption model on the kernel
+ 	  command line parameter and thus override the default preemption
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index a1741e0..95f4e16 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -6520,12 +6520,13 @@ EXPORT_STATIC_CALL_TRAMP(preempt_schedule_notrace);
+  */
+ 
+ enum {
+-	preempt_dynamic_none = 0,
++	preempt_dynamic_undefined = -1,
++	preempt_dynamic_none,
+ 	preempt_dynamic_voluntary,
+ 	preempt_dynamic_full,
+ };
+ 
+-int preempt_dynamic_mode = preempt_dynamic_full;
++int preempt_dynamic_mode = preempt_dynamic_undefined;
+ 
+ int sched_dynamic_mode(const char *str)
+ {
+@@ -6598,7 +6599,27 @@ static int __init setup_preempt_mode(char *str)
+ }
+ __setup("preempt=", setup_preempt_mode);
+ 
+-#endif /* CONFIG_PREEMPT_DYNAMIC */
++static void __init preempt_dynamic_init(void)
++{
++	if (preempt_dynamic_mode == preempt_dynamic_undefined) {
++		if (IS_ENABLED(CONFIG_PREEMPT_NONE_BEHAVIOUR)) {
++			sched_dynamic_update(preempt_dynamic_none);
++		} else if (IS_ENABLED(CONFIG_PREEMPT_VOLUNTARY_BEHAVIOUR)) {
++			sched_dynamic_update(preempt_dynamic_voluntary);
++		} else {
++			/* Default static call setting, nothing to do */
++			WARN_ON_ONCE(!IS_ENABLED(CONFIG_PREEMPT_BEHAVIOUR));
++			preempt_dynamic_mode = preempt_dynamic_full;
++			pr_info("Dynamic Preempt: full\n");
++		}
++	}
++}
++
++#else /* !CONFIG_PREEMPT_DYNAMIC */
++
++static inline void preempt_dynamic_init(void) { }
++
++#endif /* #ifdef CONFIG_PREEMPT_DYNAMIC */
+ 
+ /*
+  * This is the entry point to schedule() from kernel preemption
+@@ -9398,6 +9419,8 @@ void __init sched_init(void)
+ 
+ 	init_uclamp();
+ 
++	preempt_dynamic_init();
++
+ 	scheduler_running = 1;
+ }
+ 
