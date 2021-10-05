@@ -2,53 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D88A6422A73
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  5 Oct 2021 16:12:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 355FD422A7A
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  5 Oct 2021 16:13:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235433AbhJEOOh (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 5 Oct 2021 10:14:37 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:51436 "EHLO
+        id S235592AbhJEOOn (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 5 Oct 2021 10:14:43 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:51450 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235404AbhJEOOF (ORCPT
+        with ESMTP id S235772AbhJEOOG (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 5 Oct 2021 10:14:05 -0400
-Date:   Tue, 05 Oct 2021 14:12:13 -0000
+        Tue, 5 Oct 2021 10:14:06 -0400
+Date:   Tue, 05 Oct 2021 14:12:14 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1633443134;
+        s=2020; t=1633443135;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=z2Kqrea5LSiFhthfywBtyS34f/Ubx+dQJiDZwlOrMrY=;
-        b=c4y14jCcyIOwHk1ybmKsYgIkdVBEYTv81ptzuz4EylNpcuIKBgSA+hSRtOUmGb3WjD1SSh
-        WoZIUFeNXwz4oV7YAG1PAB160pcQmI1gC7IgLLxIxOw2c2Xeln++pFMyq4uk2zW+6HB0Zc
-        +GSYibslX5gkDojYvhNnJAF2sUr/SgWjUH94UT54Bu3bdUuI3y9Mm/dCdO4FuSO5a01XS1
-        nUbqWDc8cZOFzqzLnyUgHpothuCqiJzD7bwURYvWwKthTYYh+49YFLnOJ6kehYchgTYqn5
-        QbGAhyGN1P16kVULQktg6ieAZikiBkyqpDrlXZtSTdg9nrW0nW46ktmogaQEeA==
+        bh=SEEFXF0eIt9E1eVyqgciSyLaI8/n13IoGCGBRDW//98=;
+        b=KfLrT4eN1DwYVEylIdZs4DCsJ/m9w9Hk3ziwnMQadW/DQI3Tl5J5ATEr5lYvy9LLcIpvjj
+        Sy8frzSxXPBweEQ5uWHW9QPGImq+GCqwokv1XiR/alIinNB7R0/27QvQ5ARTEUrEVOFvvb
+        q2WysL73Nfrkl8rmpSyE+t/9DgSkCKpalMv/+PJDXmAQu7W1kdZKxr6shGo2i1LZOyZ6mR
+        LC2m5jICbcil66g16784LNxqd89ntir0Gummr5jX0U2UMr1Y0gSeclxJM5+bp4vCjMt3aU
+        3ws1aL3pMxCLcQk8nUZdECyXB+mrx4+F9WjGg+4NamhYoe4jP9tHHZU3Ycc/ZA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1633443134;
+        s=2020e; t=1633443135;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=z2Kqrea5LSiFhthfywBtyS34f/Ubx+dQJiDZwlOrMrY=;
-        b=uiAxR7zZYkvtWQuA4AQOV7+g4jaIVBBeDAL2gEKryIlw1YykX1QeF8WtqITBJl2hmYzX8F
-        k4DDUgmbO+2NbdCg==
+        bh=SEEFXF0eIt9E1eVyqgciSyLaI8/n13IoGCGBRDW//98=;
+        b=Vy4rGL+8IkD+Ktot0h01CvbYZZ50EkBALtjbjkA+/XN6QyxaEgIT99T6z8QnJ1rTsdDjfK
+        w+U6ZnwIsQcYZcBA==
 From:   "tip-bot2 for Josh Don" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched: reduce sched slice for SCHED_IDLE entities
+Subject: [tip: sched/core] sched: Account number of SCHED_IDLE entities on each cfs_rq
 Cc:     Josh Don <joshdon@google.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Vincent Guittot <vincent.guittot@linaro.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210820010403.946838-4-joshdon@google.com>
-References: <20210820010403.946838-4-joshdon@google.com>
+In-Reply-To: <20210820010403.946838-3-joshdon@google.com>
+References: <20210820010403.946838-3-joshdon@google.com>
 MIME-Version: 1.0
-Message-ID: <163344313361.25758.8819363470719415059.tip-bot2@tip-bot2>
+Message-ID: <163344313422.25758.278041965196407269.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,138 +59,114 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     51ce83ed523b00d58f2937ec014b12daaad55185
-Gitweb:        https://git.kernel.org/tip/51ce83ed523b00d58f2937ec014b12daaad55185
+Commit-ID:     a480addecc0d89c200ec0b41da62ae8ceddca8d7
+Gitweb:        https://git.kernel.org/tip/a480addecc0d89c200ec0b41da62ae8ceddca8d7
 Author:        Josh Don <joshdon@google.com>
-AuthorDate:    Thu, 19 Aug 2021 18:04:02 -07:00
+AuthorDate:    Thu, 19 Aug 2021 18:04:01 -07:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 05 Oct 2021 15:51:37 +02:00
+CommitterDate: Tue, 05 Oct 2021 15:51:36 +02:00
 
-sched: reduce sched slice for SCHED_IDLE entities
+sched: Account number of SCHED_IDLE entities on each cfs_rq
 
-Use a small, non-scaled min granularity for SCHED_IDLE entities, when
-competing with normal entities. This reduces the latency of getting
-a normal entity back on cpu, at the expense of increased context
-switch frequency of SCHED_IDLE entities.
-
-The benefit of this change is to reduce the round-robin latency for
-normal entities when competing with a SCHED_IDLE entity.
-
-Example: on a machine with HZ=1000, spawned two threads, one of which is
-SCHED_IDLE, and affined to one cpu. Without this patch, the SCHED_IDLE
-thread runs for 4ms then waits for 1.4s. With this patch, it runs for
-1ms and waits 340ms (as it round-robins with the other thread).
+Adds cfs_rq->idle_nr_running, which accounts the number of idle entities
+directly enqueued on the cfs_rq.
 
 Signed-off-by: Josh Don <joshdon@google.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
-Link: https://lore.kernel.org/r/20210820010403.946838-4-joshdon@google.com
+Link: https://lore.kernel.org/r/20210820010403.946838-3-joshdon@google.com
 ---
  kernel/sched/debug.c |  2 ++
- kernel/sched/fair.c  | 29 ++++++++++++++++++++++++-----
+ kernel/sched/fair.c  | 25 ++++++++++++++++++++++++-
  kernel/sched/sched.h |  1 +
- 3 files changed, 27 insertions(+), 5 deletions(-)
+ 3 files changed, 27 insertions(+), 1 deletion(-)
 
 diff --git a/kernel/sched/debug.c b/kernel/sched/debug.c
-index 2e5fdd9..34913a7 100644
+index 17a653b..2e5fdd9 100644
 --- a/kernel/sched/debug.c
 +++ b/kernel/sched/debug.c
-@@ -311,6 +311,7 @@ static __init int sched_init_debug(void)
- 
- 	debugfs_create_u32("latency_ns", 0644, debugfs_sched, &sysctl_sched_latency);
- 	debugfs_create_u32("min_granularity_ns", 0644, debugfs_sched, &sysctl_sched_min_granularity);
-+	debugfs_create_u32("idle_min_granularity_ns", 0644, debugfs_sched, &sysctl_sched_idle_min_granularity);
- 	debugfs_create_u32("wakeup_granularity_ns", 0644, debugfs_sched, &sysctl_sched_wakeup_granularity);
- 
- 	debugfs_create_u32("latency_warn_ms", 0644, debugfs_sched, &sysctl_resched_latency_warn_ms);
-@@ -812,6 +813,7 @@ static void sched_debug_header(struct seq_file *m)
- 	SEQ_printf(m, "  .%-40s: %Ld.%06ld\n", #x, SPLIT_NS(x))
- 	PN(sysctl_sched_latency);
- 	PN(sysctl_sched_min_granularity);
-+	PN(sysctl_sched_idle_min_granularity);
- 	PN(sysctl_sched_wakeup_granularity);
- 	P(sysctl_sched_child_runs_first);
- 	P(sysctl_sched_features);
+@@ -614,6 +614,8 @@ void print_cfs_rq(struct seq_file *m, int cpu, struct cfs_rq *cfs_rq)
+ 			cfs_rq->nr_spread_over);
+ 	SEQ_printf(m, "  .%-30s: %d\n", "nr_running", cfs_rq->nr_running);
+ 	SEQ_printf(m, "  .%-30s: %d\n", "h_nr_running", cfs_rq->h_nr_running);
++	SEQ_printf(m, "  .%-30s: %d\n", "idle_nr_running",
++			cfs_rq->idle_nr_running);
+ 	SEQ_printf(m, "  .%-30s: %d\n", "idle_h_nr_running",
+ 			cfs_rq->idle_h_nr_running);
+ 	SEQ_printf(m, "  .%-30s: %ld\n", "load", cfs_rq->load.weight);
 diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 9c78c16..d835061 100644
+index 6cc958e..9c78c16 100644
 --- a/kernel/sched/fair.c
 +++ b/kernel/sched/fair.c
-@@ -60,6 +60,14 @@ unsigned int sysctl_sched_min_granularity			= 750000ULL;
- static unsigned int normalized_sysctl_sched_min_granularity	= 750000ULL;
- 
- /*
-+ * Minimal preemption granularity for CPU-bound SCHED_IDLE tasks.
-+ * Applies only when SCHED_IDLE tasks compete with normal tasks.
-+ *
-+ * (default: 0.75 msec)
-+ */
-+unsigned int sysctl_sched_idle_min_granularity			= 750000ULL;
-+
-+/*
-  * This value is kept at sysctl_sched_latency/sysctl_sched_min_granularity
-  */
- static unsigned int sched_nr_latency = 8;
-@@ -665,6 +673,8 @@ static u64 __sched_period(unsigned long nr_running)
- 		return sysctl_sched_latency;
- }
- 
-+static bool sched_idle_cfs_rq(struct cfs_rq *cfs_rq);
-+
- /*
-  * We calculate the wall-time slice from the period by taking a part
-  * proportional to the weight.
-@@ -674,6 +684,8 @@ static u64 __sched_period(unsigned long nr_running)
- static u64 sched_slice(struct cfs_rq *cfs_rq, struct sched_entity *se)
- {
- 	unsigned int nr_running = cfs_rq->nr_running;
-+	struct sched_entity *init_se = se;
-+	unsigned int min_gran;
- 	u64 slice;
- 
- 	if (sched_feat(ALT_PERIOD))
-@@ -684,12 +696,13 @@ static u64 sched_slice(struct cfs_rq *cfs_rq, struct sched_entity *se)
- 	for_each_sched_entity(se) {
- 		struct load_weight *load;
- 		struct load_weight lw;
-+		struct cfs_rq *qcfs_rq;
- 
--		cfs_rq = cfs_rq_of(se);
--		load = &cfs_rq->load;
-+		qcfs_rq = cfs_rq_of(se);
-+		load = &qcfs_rq->load;
- 
- 		if (unlikely(!se->on_rq)) {
--			lw = cfs_rq->load;
-+			lw = qcfs_rq->load;
- 
- 			update_load_add(&lw, se->load.weight);
- 			load = &lw;
-@@ -697,8 +710,14 @@ static u64 sched_slice(struct cfs_rq *cfs_rq, struct sched_entity *se)
- 		slice = __calc_delta(slice, se->load.weight, load);
+@@ -2995,6 +2995,8 @@ account_entity_enqueue(struct cfs_rq *cfs_rq, struct sched_entity *se)
  	}
- 
--	if (sched_feat(BASE_SLICE))
--		slice = max(slice, (u64)sysctl_sched_min_granularity);
-+	if (sched_feat(BASE_SLICE)) {
-+		if (se_is_idle(init_se) && !sched_idle_cfs_rq(cfs_rq))
-+			min_gran = sysctl_sched_idle_min_granularity;
-+		else
-+			min_gran = sysctl_sched_min_granularity;
-+
-+		slice = max_t(u64, slice, min_gran);
-+	}
- 
- 	return slice;
+ #endif
+ 	cfs_rq->nr_running++;
++	if (se_is_idle(se))
++		cfs_rq->idle_nr_running++;
  }
+ 
+ static void
+@@ -3008,6 +3010,8 @@ account_entity_dequeue(struct cfs_rq *cfs_rq, struct sched_entity *se)
+ 	}
+ #endif
+ 	cfs_rq->nr_running--;
++	if (se_is_idle(se))
++		cfs_rq->idle_nr_running--;
+ }
+ 
+ /*
+@@ -5577,6 +5581,17 @@ static int sched_idle_rq(struct rq *rq)
+ 			rq->nr_running);
+ }
+ 
++/*
++ * Returns true if cfs_rq only has SCHED_IDLE entities enqueued. Note the use
++ * of idle_nr_running, which does not consider idle descendants of normal
++ * entities.
++ */
++static bool sched_idle_cfs_rq(struct cfs_rq *cfs_rq)
++{
++	return cfs_rq->nr_running &&
++		cfs_rq->nr_running == cfs_rq->idle_nr_running;
++}
++
+ #ifdef CONFIG_SMP
+ static int sched_idle_cpu(int cpu)
+ {
+@@ -11575,7 +11590,7 @@ int sched_group_set_idle(struct task_group *tg, long idle)
+ 	for_each_possible_cpu(i) {
+ 		struct rq *rq = cpu_rq(i);
+ 		struct sched_entity *se = tg->se[i];
+-		struct cfs_rq *grp_cfs_rq = tg->cfs_rq[i];
++		struct cfs_rq *parent_cfs_rq, *grp_cfs_rq = tg->cfs_rq[i];
+ 		bool was_idle = cfs_rq_is_idle(grp_cfs_rq);
+ 		long idle_task_delta;
+ 		struct rq_flags rf;
+@@ -11586,6 +11601,14 @@ int sched_group_set_idle(struct task_group *tg, long idle)
+ 		if (WARN_ON_ONCE(was_idle == cfs_rq_is_idle(grp_cfs_rq)))
+ 			goto next_cpu;
+ 
++		if (se->on_rq) {
++			parent_cfs_rq = cfs_rq_of(se);
++			if (cfs_rq_is_idle(grp_cfs_rq))
++				parent_cfs_rq->idle_nr_running++;
++			else
++				parent_cfs_rq->idle_nr_running--;
++		}
++
+ 		idle_task_delta = grp_cfs_rq->h_nr_running -
+ 				  grp_cfs_rq->idle_h_nr_running;
+ 		if (!cfs_rq_is_idle(grp_cfs_rq))
 diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index f2965b5..15a8895 100644
+index 1fec313..f2965b5 100644
 --- a/kernel/sched/sched.h
 +++ b/kernel/sched/sched.h
-@@ -2403,6 +2403,7 @@ extern const_debug unsigned int sysctl_sched_migration_cost;
- #ifdef CONFIG_SCHED_DEBUG
- extern unsigned int sysctl_sched_latency;
- extern unsigned int sysctl_sched_min_granularity;
-+extern unsigned int sysctl_sched_idle_min_granularity;
- extern unsigned int sysctl_sched_wakeup_granularity;
- extern int sysctl_resched_latency_warn_ms;
- extern int sysctl_resched_latency_warn_once;
+@@ -530,6 +530,7 @@ struct cfs_rq {
+ 	struct load_weight	load;
+ 	unsigned int		nr_running;
+ 	unsigned int		h_nr_running;      /* SCHED_{NORMAL,BATCH,IDLE} */
++	unsigned int		idle_nr_running;   /* SCHED_IDLE */
+ 	unsigned int		idle_h_nr_running; /* SCHED_IDLE */
+ 
+ 	u64			exec_clock;
