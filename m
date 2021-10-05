@@ -2,57 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 048FE422A87
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  5 Oct 2021 16:13:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DED5D4233E0
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  6 Oct 2021 00:52:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235652AbhJEOPL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 5 Oct 2021 10:15:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40936 "EHLO
+        id S236818AbhJEWy2 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 5 Oct 2021 18:54:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50380 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236253AbhJEOOa (ORCPT
+        with ESMTP id S236810AbhJEWy2 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 5 Oct 2021 10:14:30 -0400
+        Tue, 5 Oct 2021 18:54:28 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7DC7C061753;
-        Tue,  5 Oct 2021 07:12:19 -0700 (PDT)
-Date:   Tue, 05 Oct 2021 14:12:17 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AFAEC061749;
+        Tue,  5 Oct 2021 15:52:37 -0700 (PDT)
+Date:   Tue, 05 Oct 2021 22:52:33 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1633443138;
+        s=2020; t=1633474355;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=eOkrHdNlPrgixVaL03EuvuVh9Kuwmjo/1R5phpwQnyY=;
-        b=1B4H+8Tr60u6tD+ruiveQkSJnQbQfKIAPSMIDt2KUGiM8RfiuuNPMWzp75SM7W2EAIT4Au
-        zkfGa7Goekto87RnNpZItgmOr1fIRXUa/35SUdElEjOZQgZrQOLw2mOPoMPvTURGO9gIiH
-        PhgdKXpmfHScMmfJuR/F46VtjZBeiWFe4fpzABgoCqPSfQliWCuZn7pNglPcKQL7pgi6Ar
-        MpYDLuy5/3cdCYxKUwNrhgG+af0ObYz8JXSoIj43bsGZ0O7MiYZCwxF3qSWlA8kFSiOuE8
-        rrjY8RzU5NvBZD4MauOyEocvrvHVJBtbsZH9kVSmfqpaGnfy5dBcZt9c8DggIQ==
+        bh=pEBtN2cfC4BYMywORJN4oVkV0S4K96K1JD1KKNtOe7I=;
+        b=sftG08wxpl5XlprtBczyDVJTr3LEz8qyYkTu7jaKWKouGCIVeNGRkueUla9WLZ8BGn9ui+
+        m8AQQOgoaEO2DpWBTnN57K/J3xIomvOkzvSXn5S8DaZwjOxyNbbcsDZ8VK+g0Oeh2YguMw
+        LaYS4zZp2nG1/WJnQH9tmf4k9cekYFlZu81kkZDzyHxDz0Z5o7lHjviLpkH/R8rFR/wk8P
+        oF6D8Yc3OdVcw7SPhxQUbKB8mQUEpZ20RW4piSOWG8mwLSRkmsJmnVxjVSCRgy4tkHAovu
+        fjldRsP/UFCsbXajqXyKZr7kResrPEAFMuihnw2PVR6iIBojNeMXI9dxO66gvQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1633443138;
+        s=2020e; t=1633474355;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=eOkrHdNlPrgixVaL03EuvuVh9Kuwmjo/1R5phpwQnyY=;
-        b=Y7B1HU/Qzlqu+/MyeLalWDcKIbwSgNw385UK7r3mpuHwBPVQudf/7L0HfGApHLmi7Kpr1e
-        WL/GI0PGsXOaTaCQ==
-From:   "tip-bot2 for Valentin Schneider" <tip-bot2@linutronix.de>
+        bh=pEBtN2cfC4BYMywORJN4oVkV0S4K96K1JD1KKNtOe7I=;
+        b=p6BSzfA/SM95Be2G5eG4AICuiDlBPfmnzcKSANn2lYrJjQRgbuiJvgMb1epsI7puzPbHKK
+        jPg/+HQuPc2mYIDg==
+From:   "tip-bot2 for Lukas Bulwahn" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/fair: Add NOHZ balancer flag for
- nohz.next_balance updates
-Cc:     Vincent Guittot <vincent.guittot@linaro.org>,
-        Valentin Schneider <valentin.schneider@arm.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20210823111700.2842997-2-valentin.schneider@arm.com>
-References: <20210823111700.2842997-2-valentin.schneider@arm.com>
+Subject: [tip: x86/urgent] x86/Kconfig: Correct reference to MWINCHIP3D
+Cc:     Randy Dunlap <rdunlap@infradead.org>,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        Borislav Petkov <bp@suse.de>, <stable@vger.kernel.org>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20210803113531.30720-4-lukas.bulwahn@gmail.com>
+References: <20210803113531.30720-4-lukas.bulwahn@gmail.com>
 MIME-Version: 1.0
-Message-ID: <163344313747.25758.9373643662177952195.tip-bot2@tip-bot2>
+Message-ID: <163347435383.25758.16809029826947705585.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,147 +60,47 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     efd984c481abb516fab8bafb25bf41fd9397a43c
-Gitweb:        https://git.kernel.org/tip/efd984c481abb516fab8bafb25bf41fd9397a43c
-Author:        Valentin Schneider <valentin.schneider@arm.com>
-AuthorDate:    Mon, 23 Aug 2021 12:16:59 +01:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 05 Oct 2021 15:51:30 +02:00
+Commit-ID:     9608312f03f412eafa1630b134db710b4473d62a
+Gitweb:        https://git.kernel.org/tip/9608312f03f412eafa1630b134db710b4473d62a
+Author:        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+AuthorDate:    Tue, 03 Aug 2021 13:35:25 +02:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Wed, 06 Oct 2021 00:46:44 +02:00
 
-sched/fair: Add NOHZ balancer flag for nohz.next_balance updates
+x86/Kconfig: Correct reference to MWINCHIP3D
 
-A following patch will trigger NOHZ idle balances as a means to update
-nohz.next_balance. Vincent noted that blocked load updates can have
-non-negligible overhead, which should be avoided if the intent is to only
-update nohz.next_balance.
+Commit in Fixes intended to exclude the Winchip series and referred to
+CONFIG_WINCHIP3D, but the config symbol is called CONFIG_MWINCHIP3D.
 
-Add a new NOHZ balance kick flag, NOHZ_NEXT_KICK. Gate NOHZ blocked load
-update by the presence of NOHZ_STATS_KICK - currently all NOHZ balance
-kicks will have the NOHZ_STATS_KICK flag set, so no change in behaviour is
-expected.
+Hence, scripts/checkkconfigsymbols.py warns:
 
-Suggested-by: Vincent Guittot <vincent.guittot@linaro.org>
-Signed-off-by: Valentin Schneider <valentin.schneider@arm.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
-Link: https://lkml.kernel.org/r/20210823111700.2842997-2-valentin.schneider@arm.com
+WINCHIP3D
+Referencing files: arch/x86/Kconfig
+
+Correct the reference to the intended config symbol.
+
+Fixes: 69b8d3fcabdc ("x86/Kconfig: Exclude i586-class CPUs lacking PAE support from the HIGHMEM64G Kconfig group")
+Suggested-by: Randy Dunlap <rdunlap@infradead.org>
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Cc: <stable@vger.kernel.org>
+Link: https://lkml.kernel.org/r/20210803113531.30720-4-lukas.bulwahn@gmail.com
 ---
- kernel/sched/fair.c  | 24 ++++++++++++++----------
- kernel/sched/sched.h |  8 +++++++-
- 2 files changed, 21 insertions(+), 11 deletions(-)
+ arch/x86/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index f6a05d9..f4de7f5 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -10375,7 +10375,7 @@ static void nohz_balancer_kick(struct rq *rq)
- 		goto out;
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index ab83c22..8055da4 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -1405,7 +1405,7 @@ config HIGHMEM4G
  
- 	if (rq->nr_running >= 2) {
--		flags = NOHZ_KICK_MASK;
-+		flags = NOHZ_STATS_KICK | NOHZ_BALANCE_KICK;
- 		goto out;
- 	}
- 
-@@ -10389,7 +10389,7 @@ static void nohz_balancer_kick(struct rq *rq)
- 		 * on.
- 		 */
- 		if (rq->cfs.h_nr_running >= 1 && check_cpu_capacity(rq, sd)) {
--			flags = NOHZ_KICK_MASK;
-+			flags = NOHZ_STATS_KICK | NOHZ_BALANCE_KICK;
- 			goto unlock;
- 		}
- 	}
-@@ -10403,7 +10403,7 @@ static void nohz_balancer_kick(struct rq *rq)
- 		 */
- 		for_each_cpu_and(i, sched_domain_span(sd), nohz.idle_cpus_mask) {
- 			if (sched_asym_prefer(i, cpu)) {
--				flags = NOHZ_KICK_MASK;
-+				flags = NOHZ_STATS_KICK | NOHZ_BALANCE_KICK;
- 				goto unlock;
- 			}
- 		}
-@@ -10416,7 +10416,7 @@ static void nohz_balancer_kick(struct rq *rq)
- 		 * to run the misfit task on.
- 		 */
- 		if (check_misfit_status(rq, sd)) {
--			flags = NOHZ_KICK_MASK;
-+			flags = NOHZ_STATS_KICK | NOHZ_BALANCE_KICK;
- 			goto unlock;
- 		}
- 
-@@ -10443,7 +10443,7 @@ static void nohz_balancer_kick(struct rq *rq)
- 		 */
- 		nr_busy = atomic_read(&sds->nr_busy_cpus);
- 		if (nr_busy > 1) {
--			flags = NOHZ_KICK_MASK;
-+			flags = NOHZ_STATS_KICK | NOHZ_BALANCE_KICK;
- 			goto unlock;
- 		}
- 	}
-@@ -10605,7 +10605,8 @@ static void _nohz_idle_balance(struct rq *this_rq, unsigned int flags,
- 	 * setting the flag, we are sure to not clear the state and not
- 	 * check the load of an idle cpu.
- 	 */
--	WRITE_ONCE(nohz.has_blocked, 0);
-+	if (flags & NOHZ_STATS_KICK)
-+		WRITE_ONCE(nohz.has_blocked, 0);
- 
- 	/*
- 	 * Ensures that if we miss the CPU, we must see the has_blocked
-@@ -10627,13 +10628,15 @@ static void _nohz_idle_balance(struct rq *this_rq, unsigned int flags,
- 		 * balancing owner will pick it up.
- 		 */
- 		if (need_resched()) {
--			has_blocked_load = true;
-+			if (flags & NOHZ_STATS_KICK)
-+				has_blocked_load = true;
- 			goto abort;
- 		}
- 
- 		rq = cpu_rq(balance_cpu);
- 
--		has_blocked_load |= update_nohz_stats(rq);
-+		if (flags & NOHZ_STATS_KICK)
-+			has_blocked_load |= update_nohz_stats(rq);
- 
- 		/*
- 		 * If time for next balance is due,
-@@ -10664,8 +10667,9 @@ static void _nohz_idle_balance(struct rq *this_rq, unsigned int flags,
- 	if (likely(update_next_balance))
- 		nohz.next_balance = next_balance;
- 
--	WRITE_ONCE(nohz.next_blocked,
--		now + msecs_to_jiffies(LOAD_AVG_PERIOD));
-+	if (flags & NOHZ_STATS_KICK)
-+		WRITE_ONCE(nohz.next_blocked,
-+			   now + msecs_to_jiffies(LOAD_AVG_PERIOD));
- 
- abort:
- 	/* There is still blocked load, enable periodic update */
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index 3d3e579..1fec313 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -2709,12 +2709,18 @@ extern void cfs_bandwidth_usage_dec(void);
- #define NOHZ_BALANCE_KICK_BIT	0
- #define NOHZ_STATS_KICK_BIT	1
- #define NOHZ_NEWILB_KICK_BIT	2
-+#define NOHZ_NEXT_KICK_BIT	3
- 
-+/* Run rebalance_domains() */
- #define NOHZ_BALANCE_KICK	BIT(NOHZ_BALANCE_KICK_BIT)
-+/* Update blocked load */
- #define NOHZ_STATS_KICK		BIT(NOHZ_STATS_KICK_BIT)
-+/* Update blocked load when entering idle */
- #define NOHZ_NEWILB_KICK	BIT(NOHZ_NEWILB_KICK_BIT)
-+/* Update nohz.next_balance */
-+#define NOHZ_NEXT_KICK		BIT(NOHZ_NEXT_KICK_BIT)
- 
--#define NOHZ_KICK_MASK	(NOHZ_BALANCE_KICK | NOHZ_STATS_KICK)
-+#define NOHZ_KICK_MASK	(NOHZ_BALANCE_KICK | NOHZ_STATS_KICK | NOHZ_NEXT_KICK)
- 
- #define nohz_flags(cpu)	(&cpu_rq(cpu)->nohz_flags)
- 
+ config HIGHMEM64G
+ 	bool "64GB"
+-	depends on !M486SX && !M486 && !M586 && !M586TSC && !M586MMX && !MGEODE_LX && !MGEODEGX1 && !MCYRIXIII && !MELAN && !MWINCHIPC6 && !WINCHIP3D && !MK6
++	depends on !M486SX && !M486 && !M586 && !M586TSC && !M586MMX && !MGEODE_LX && !MGEODEGX1 && !MCYRIXIII && !MELAN && !MWINCHIPC6 && !MWINCHIP3D && !MK6
+ 	select X86_PAE
+ 	help
+ 	  Select this if you have a 32-bit processor and more than 4
