@@ -2,56 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C846421460
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  4 Oct 2021 18:47:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D453422399
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  5 Oct 2021 12:32:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237436AbhJDQt3 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 4 Oct 2021 12:49:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54392 "EHLO
+        id S233290AbhJEKe2 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 5 Oct 2021 06:34:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45572 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237351AbhJDQt0 (ORCPT
+        with ESMTP id S233077AbhJEKe2 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 4 Oct 2021 12:49:26 -0400
+        Tue, 5 Oct 2021 06:34:28 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E6FFC061755;
-        Mon,  4 Oct 2021 09:47:36 -0700 (PDT)
-Date:   Mon, 04 Oct 2021 16:47:33 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2B4AC06161C;
+        Tue,  5 Oct 2021 03:32:37 -0700 (PDT)
+Date:   Tue, 05 Oct 2021 10:32:35 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1633366054;
+        s=2020; t=1633429956;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=hbgsBquHLSmuP9prM46Wd43WD9vRuVbV0f6dN+7oNI4=;
-        b=glpQJU53X4yZGzlAu0j9VuVLgSA9cvEyhdoNe+NF8lp8ulPA5VCn9zaAu09NCJw0deaLao
-        einw/1vpAZGiU/Q3WYW+gyxag/MID5/jeiGG4FycIBl2pzE19ResSCPqp+KqhxJ/vmWlYW
-        7ea9kAZUZ9844/2Fk8lTSB6J9xuHMiC2Sf+IFQZSMp4yAoTapVaP9dZpLEYozGcl0Aqc9e
-        fuYh328tI8ixOzgUmarmLZKgh4zVJERGqqFHbw3hzuinKuyzB0WtwizTclOO8E5+XCNgKC
-        Hw1O5VC53n9Bl9yBfmziU38yS2RTZ8zcE9GrzEHfTPdyqVlRHAnbyyB6R5KtFA==
+        bh=YJsXPZvCT1QH2N6CtrKUIp+7vL0DCRxtWZike5cM/Ms=;
+        b=0CvdxiRUrFVmLMMqGDPWuCbYX8g32XIrEsl0yz+qDSHh5EqnTzWHcWuTntZGupzfdg66s8
+        7sx8c7CeJYK5iBPncHq7807v5hSWS69OMjt9oa0G+2J3s6F4II3eCium8gMgr7/g4NHw6w
+        1NG1balxTkbsy53Yy9C/bXIKl8aLag+gKrV77Yx5XLoS+/QsBZKJ4j7Y24vlBFkDPSRZ0w
+        7HhJjstKnNTZ0ZbM6j84B4go6Kmyk8HCjqNAaWhgLK4LY/K0xl6Gj7dEkH2hD7DpfgEaaV
+        jZheVFaK/vMbHbiBJbLr9XaVTQ11rheT5EaYVtnS49sQXK4NIVU1caySi1ZWng==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1633366054;
+        s=2020e; t=1633429956;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=hbgsBquHLSmuP9prM46Wd43WD9vRuVbV0f6dN+7oNI4=;
-        b=v2biMlA6ZIArhCXn3lQ7f2pUbqdQG7QcvhA/2ngilcDaVErVe0QGeiP5MHBLovffaVjDIb
-        CTJlr27hP6yvEdCA==
-From:   "tip-bot2 for James Morse" <tip-bot2@linutronix.de>
+        bh=YJsXPZvCT1QH2N6CtrKUIp+7vL0DCRxtWZike5cM/Ms=;
+        b=g9mlaeH2TEQWHYjAiM7BZp3YnWRVfTNqdtUiEYs6+sFa1q4jeJw66PxEmMeJ+JW0SbQlEa
+        9R/iC+3MdatQcVAA==
+From:   "tip-bot2 for Lukas Bulwahn" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/resctrl: Free the ctrlval arrays when
- domain_setup_mon_state() fails
-Cc:     James Morse <james.morse@arm.com>, Borislav Petkov <bp@suse.de>,
-        Reinette Chatre <reinette.chatre@intel.com>, x86@kernel.org,
+Subject: [tip: x86/urgent] x86/entry: Correct reference to intended CONFIG_64_BIT
+Cc:     Randy Dunlap <rdunlap@infradead.org>,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        Borislav Petkov <bp@suse.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210917165958.28313-1-james.morse@arm.com>
-References: <20210917165958.28313-1-james.morse@arm.com>
+In-Reply-To: <20210803113531.30720-2-lukas.bulwahn@gmail.com>
+References: <20210803113531.30720-2-lukas.bulwahn@gmail.com>
 MIME-Version: 1.0
-Message-ID: <163336605365.25758.3996074729220568354.tip-bot2@tip-bot2>
+Message-ID: <163342995542.25758.18109528027795851140.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -62,44 +62,45 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     7adeda06ac6c30d6f13f474974225143ff1eecf3
-Gitweb:        https://git.kernel.org/tip/7adeda06ac6c30d6f13f474974225143ff1eecf3
-Author:        James Morse <james.morse@arm.com>
-AuthorDate:    Fri, 17 Sep 2021 16:59:58 
+Commit-ID:     b2c238397b8f737590a7f1b4e8f9dbbd5043e340
+Gitweb:        https://git.kernel.org/tip/b2c238397b8f737590a7f1b4e8f9dbbd5043e340
+Author:        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+AuthorDate:    Tue, 03 Aug 2021 13:35:23 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Mon, 04 Oct 2021 18:32:08 +02:00
+CommitterDate: Tue, 05 Oct 2021 11:10:21 +02:00
 
-x86/resctrl: Free the ctrlval arrays when domain_setup_mon_state() fails
+x86/entry: Correct reference to intended CONFIG_64_BIT
 
-domain_add_cpu() is called whenever a CPU is brought online. The
-earlier call to domain_setup_ctrlval() allocates the control value
-arrays.
+Commit in Fixes adds a condition with IS_ENABLED(CONFIG_64_BIT),
+but the intended config item is called CONFIG_64BIT, as defined in
+arch/x86/Kconfig.
 
-If domain_setup_mon_state() fails, the control value arrays are not
-freed.
+Fortunately, scripts/checkkconfigsymbols.py warns:
 
-Add the missing kfree() calls.
+64_BIT
+Referencing files: arch/x86/include/asm/entry-common.h
 
-Fixes: 1bd2a63b4f0de ("x86/intel_rdt/mba_sc: Add initialization support")
-Fixes: edf6fa1c4a951 ("x86/intel_rdt/cqm: Add RMID (Resource monitoring ID) management")
-Signed-off-by: James Morse <james.morse@arm.com>
+Correct the reference to the intended config symbol.
+
+Fixes: 662a0221893a ("x86/entry: Fix AC assertion")
+Suggested-by: Randy Dunlap <rdunlap@infradead.org>
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Acked-by: Reinette Chatre <reinette.chatre@intel.com>
-Link: https://lkml.kernel.org/r/20210917165958.28313-1-james.morse@arm.com
+Link: https://lkml.kernel.org/r/20210803113531.30720-2-lukas.bulwahn@gmail.com
 ---
- arch/x86/kernel/cpu/resctrl/core.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/include/asm/entry-common.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/cpu/resctrl/core.c b/arch/x86/kernel/cpu/resctrl/core.c
-index 4b8813b..b5de5a6 100644
---- a/arch/x86/kernel/cpu/resctrl/core.c
-+++ b/arch/x86/kernel/cpu/resctrl/core.c
-@@ -532,6 +532,8 @@ static void domain_add_cpu(int cpu, struct rdt_resource *r)
- 	}
+diff --git a/arch/x86/include/asm/entry-common.h b/arch/x86/include/asm/entry-common.h
+index 14ebd21..4318464 100644
+--- a/arch/x86/include/asm/entry-common.h
++++ b/arch/x86/include/asm/entry-common.h
+@@ -25,7 +25,7 @@ static __always_inline void arch_check_user_regs(struct pt_regs *regs)
+ 		 * For !SMAP hardware we patch out CLAC on entry.
+ 		 */
+ 		if (boot_cpu_has(X86_FEATURE_SMAP) ||
+-		    (IS_ENABLED(CONFIG_64_BIT) && boot_cpu_has(X86_FEATURE_XENPV)))
++		    (IS_ENABLED(CONFIG_64BIT) && boot_cpu_has(X86_FEATURE_XENPV)))
+ 			mask |= X86_EFLAGS_AC;
  
- 	if (r->mon_capable && domain_setup_mon_state(r, d)) {
-+		kfree(hw_dom->ctrl_val);
-+		kfree(hw_dom->mbps_val);
- 		kfree(d);
- 		return;
- 	}
+ 		WARN_ON_ONCE(flags & mask);
