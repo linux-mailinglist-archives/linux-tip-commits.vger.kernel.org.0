@@ -2,54 +2,46 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E32174233E2
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  6 Oct 2021 00:52:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3839C4239D2
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  6 Oct 2021 10:34:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236885AbhJEWy3 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 5 Oct 2021 18:54:29 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:54142 "EHLO
+        id S237593AbhJFIgF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 6 Oct 2021 04:36:05 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:56800 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230113AbhJEWy2 (ORCPT
+        with ESMTP id S237543AbhJFIgE (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 5 Oct 2021 18:54:28 -0400
-Date:   Tue, 05 Oct 2021 22:52:34 -0000
+        Wed, 6 Oct 2021 04:36:04 -0400
+Date:   Wed, 06 Oct 2021 08:34:10 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1633474356;
+        s=2020; t=1633509251;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=1mORWf0172sm+BisG0N1WyeXognkoKrkSS5hBAwMsiw=;
-        b=tH3y/KAeFNmeJJ/GjLKSh/u3X/IMWu+WoXBAby1XAoRV9Lwfs7maTtAAbAXfJT9hZc9ouW
-        ReYmKkP7BuJo9kGue0APLB5LVUlYhjrBGNQa1bx3R66TXyuzs1ppQ+XEQIybzlL7dPQn22
-        vkthMHO7KeG8Rn1dndqWfHNWh7dtmcOIdPJ0ixbYiswon498a0va5k22vsS3/UitrtbW0Z
-        HEF8ZfEjrhr1FOBAbAwfw2I4HA44zrAJVztogVPt1Xrkt5XiCPaBKPmh2eEMO+DYtJLdO+
-        WZpZrtGd7a6Jm6mR+4Zkic6asKHcbzk1+BPQAgH6aN/vTrimncbuTxzM9/Es2A==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=oVi+lpnpsrEDEqMdnl3rHrC/2waG/Ksk5IfPk2Ukxys=;
+        b=mvj1eL+0cuyOS6ZJQvTeXPeGWqRu8FD/K/IWMvysEk3OVgpW7VN/xJB95GAuN6KfvyXsHm
+        POdRgpVz0UAITIoVuRLx3qujWCRJoysnhk2GZqxBOEn3yKo1RGsu6XCoNM8HfImL5y54nW
+        8Tvc0HWiqAIGLbxY5IIY2WabYotqxhYOMx9/hfyq6/OWSxtSYUMkAQi6izY3HH8GloVgOO
+        Lyss77To9/TGB8y7sseiwNOELgbx+IrYyQz03Fj05Btj/XkhRidAbVUvYxtlj1VnlxR3Rl
+        YlyUYHDrtC8P3WTdwjbTk4f0bdTuXJR2WzUE4zanNOzqYKLlEGO5+TL6xm1Qcw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1633474356;
+        s=2020e; t=1633509251;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=1mORWf0172sm+BisG0N1WyeXognkoKrkSS5hBAwMsiw=;
-        b=mkb5io2L+ohG9AQZbzQ1gn0bSD0YWtXjwq1Kv39jR6T3lo2Yu1ADuloYiBoxUOKSwi+BVe
-        qj+xoIERAjVTx+Cg==
-From:   "tip-bot2 for Lukas Bulwahn" <tip-bot2@linutronix.de>
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=oVi+lpnpsrEDEqMdnl3rHrC/2waG/Ksk5IfPk2Ukxys=;
+        b=m4nguNnDpepW0JvZ9z6IlZG03hZZIKqOkgQSvDpVH+kM6Dr7srLWkcJQsDZ5/PKgDS6bOl
+        zqdq/oWB5ismdCCw==
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/platform/olpc: Correct ifdef symbol to intended
- CONFIG_OLPC_XO15_SCI
-Cc:     Randy Dunlap <rdunlap@infradead.org>,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        Borislav Petkov <bp@suse.de>, <stable@vger.kernel.org>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20210803113531.30720-3-lukas.bulwahn@gmail.com>
-References: <20210803113531.30720-3-lukas.bulwahn@gmail.com>
+Subject: [tip: sched/core] sched: Fix DEBUG && !SCHEDSTATS warn
+Cc:     Stephen Rothwell <sfr@canb.auug.org.au>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <163347435478.25758.5867182553865653470.tip-bot2@tip-bot2>
+Message-ID: <163350925087.25758.549028012827953790.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,48 +50,47 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     4f90c68790aaa260fb5852406c28e25018872e45
-Gitweb:        https://git.kernel.org/tip/4f90c68790aaa260fb5852406c28e25018872e45
-Author:        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-AuthorDate:    Tue, 03 Aug 2021 13:35:24 +02:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Wed, 06 Oct 2021 00:46:10 +02:00
+Commit-ID:     769fdf83df57b373660343ef4270b3ada91ef434
+Gitweb:        https://git.kernel.org/tip/769fdf83df57b373660343ef4270b3ada91ef434
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Wed, 06 Oct 2021 10:12:05 +02:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Wed, 06 Oct 2021 10:30:57 +02:00
 
-x86/platform/olpc: Correct ifdef symbol to intended CONFIG_OLPC_XO15_SCI
+sched: Fix DEBUG && !SCHEDSTATS warn
 
-The refactoring in the commit in Fixes introduced an ifdef
-CONFIG_OLPC_XO1_5_SCI, however the config symbol is actually called
-"CONFIG_OLPC_XO15_SCI".
+When !SCHEDSTATS schedstat_enabled() is an unconditional 0 and the
+whole block doesn't exist, however GCC figures the scoped variable
+'stats' is unused and complains about it.
 
-Fortunately, ./scripts/checkkconfigsymbols.py warns:
+Upgrade the warning from -Wunused-variable to -Wunused-but-set-variable
+by writing it in two statements. This fixes the build because the new
+warning is in W=1.
 
-OLPC_XO1_5_SCI
-Referencing files: arch/x86/platform/olpc/olpc.c
+Given that whole if(0) {} thing, I don't feel motivated to change
+things overly much and quite strongly feel this is the compiler being
+daft.
 
-Correct this ifdef condition to the intended config symbol.
-
-Fixes: ec9964b48033 ("Platform: OLPC: Move EC-specific functionality out from x86")
-Suggested-by: Randy Dunlap <rdunlap@infradead.org>
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Cc: <stable@vger.kernel.org>
-Link: https://lkml.kernel.org/r/20210803113531.30720-3-lukas.bulwahn@gmail.com
+Fixes: cb3e971c435d ("sched: Make struct sched_statistics independent of fair sched class")
+Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 ---
- arch/x86/platform/olpc/olpc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/sched/debug.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/platform/olpc/olpc.c b/arch/x86/platform/olpc/olpc.c
-index ee2beda..1d4a00e 100644
---- a/arch/x86/platform/olpc/olpc.c
-+++ b/arch/x86/platform/olpc/olpc.c
-@@ -274,7 +274,7 @@ static struct olpc_ec_driver ec_xo1_driver = {
+diff --git a/kernel/sched/debug.c b/kernel/sched/debug.c
+index 26fac5e..7dcbaa3 100644
+--- a/kernel/sched/debug.c
++++ b/kernel/sched/debug.c
+@@ -463,7 +463,8 @@ static void print_cfs_group_stats(struct seq_file *m, int cpu, struct task_group
+ 	PN(se->sum_exec_runtime);
  
- static struct olpc_ec_driver ec_xo1_5_driver = {
- 	.ec_cmd = olpc_xo1_ec_cmd,
--#ifdef CONFIG_OLPC_XO1_5_SCI
-+#ifdef CONFIG_OLPC_XO15_SCI
- 	/*
- 	 * XO-1.5 EC wakeups are available when olpc-xo15-sci driver is
- 	 * compiled in
+ 	if (schedstat_enabled()) {
+-               struct sched_statistics *stats =  __schedstats_from_se(se);
++		struct sched_statistics *stats;
++		stats = __schedstats_from_se(se);
+ 
+ 		PN_SCHEDSTAT(wait_start);
+ 		PN_SCHEDSTAT(sleep_start);
