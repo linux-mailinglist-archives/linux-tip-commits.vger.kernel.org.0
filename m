@@ -2,54 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 58F7F423B2D
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  6 Oct 2021 12:02:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FC85423FC6
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  6 Oct 2021 16:06:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237846AbhJFKEO (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 6 Oct 2021 06:04:14 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:57210 "EHLO
+        id S231540AbhJFOIP (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 6 Oct 2021 10:08:15 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:58466 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230143AbhJFKEN (ORCPT
+        with ESMTP id S230131AbhJFOIP (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 6 Oct 2021 06:04:13 -0400
-Date:   Wed, 06 Oct 2021 10:02:19 -0000
+        Wed, 6 Oct 2021 10:08:15 -0400
+Date:   Wed, 06 Oct 2021 14:06:20 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1633514541;
+        s=2020; t=1633529181;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=UI/Mzq+FwvZPWInV3jzYfY50nLqU5dLTfnuRsinHP9Q=;
-        b=oPhrfpkCgnylLF7xVcRX89tHojqQX5eMU4d0jNjr5IaM4NeHdO/krXGY/m53VIG2vdu3ai
-        AGqd8XwUigPnmIyh6nUXOFRzVSsSR78P3j2Jug36/578KXd3P3y99kJ2dysIzF5FxYyFTg
-        97nrdAZRmV6qab1uZ9ZRFYy71znP5Ath+PuAmH2UErtNtQC0ANDyQFmcQIPRF5VB1EMjgf
-        EKKF0/oV8RKl7RegXHSrd3X2rd7qQcrg2vSNzuDek3y5Q7Zl/mofGI8yskZkv/wcn8fbsl
-        B86Lq3Nn2yfZAurqOmMWarsMd1BKLu4LmT7HlBJ21Wj4Ljhqb3COyFhGjY/ovQ==
+        bh=7TnqXDE+epmRCsb/NQwigc92wqJaLY9A6+4Ozd7SRXw=;
+        b=aaJrKCFBtbFNaHnmLNM2mCeuidhqzM1i+KNpUYSFSb8KRYipfXBcwXrKjeQM3mK2Vuol4V
+        lT+1k7y9lCYlFFMrJOhpULzFkDdi/wexhlYOMW7u4Bq+QEkBqc3iwpu4Ei/Gu/G3NImrB7
+        rD56oOxkMIOb1HStjtFcHiwtDGdAXoIiQIZ/YkVVbZs/dmoIlk4eCaamPcl87/7KGPRaOK
+        leCCCBlox2HSNVeYdBjbuGieiMRBeUoWAOJ1rXQzQs46p8xsU2shEVx6uClsN3904aJYlb
+        xxrRmqRVJ074juuHBzOotXFWiib7TPDDG/oGRl7jNHDzyT92HTj81s6ylzuqTw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1633514541;
+        s=2020e; t=1633529181;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=UI/Mzq+FwvZPWInV3jzYfY50nLqU5dLTfnuRsinHP9Q=;
-        b=TfQ37z1SVlYETyTvPmvagmgVBVVhzTuZd9Zw1ddRhUGPc4r0y1QVphpOnK+Z93N5ybSf/c
-        lYSr9wWf/X96/dCA==
-From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
+        bh=7TnqXDE+epmRCsb/NQwigc92wqJaLY9A6+4Ozd7SRXw=;
+        b=BCysXDsA7Q1aKbPNCpIFVTnBKLcBOVwdJAl2B3/phq0RYmEBwbOt8TNUf/Vt5llMMbwSDJ
+        o1Etsvwv+w4IvuCg==
+From:   "tip-bot2 for Lukas Bulwahn" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/misc] x86/insn: Use get_unaligned() instead of memcpy()
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Borislav Petkov <bp@suse.de>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Stephen Rothwell <sfr@canb.auug.org.au>, x86@kernel.org,
+Subject: [tip: x86/cleanups] x86: Fix misspelled Kconfig symbols
+Cc:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        Borislav Petkov <bp@suse.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <YVSsIkj9Z29TyUjE@zn.tnic>
-References: <YVSsIkj9Z29TyUjE@zn.tnic>
+In-Reply-To: <20210803113531.30720-7-lukas.bulwahn@gmail.com>
+References: <20210803113531.30720-7-lukas.bulwahn@gmail.com>
 MIME-Version: 1.0
-Message-ID: <163351453975.25758.13801400058796282579.tip-bot2@tip-bot2>
+Message-ID: <163352918036.25758.5930935592079646342.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,138 +56,80 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/misc branch of tip:
+The following commit has been merged into the x86/cleanups branch of tip:
 
-Commit-ID:     f96b4675839b66168f5a07bf964dde6c2f1c4885
-Gitweb:        https://git.kernel.org/tip/f96b4675839b66168f5a07bf964dde6c2f1c4885
-Author:        Borislav Petkov <bp@suse.de>
-AuthorDate:    Wed, 29 Sep 2021 16:37:53 +02:00
+Commit-ID:     6bf8a55d8344df1f61a29b18c398bcdf3539e163
+Gitweb:        https://git.kernel.org/tip/6bf8a55d8344df1f61a29b18c398bcdf3539e163
+Author:        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+AuthorDate:    Tue, 05 Oct 2021 21:48:30 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Wed, 06 Oct 2021 11:56:37 +02:00
+CommitterDate: Tue, 05 Oct 2021 21:48:30 +02:00
 
-x86/insn: Use get_unaligned() instead of memcpy()
+x86: Fix misspelled Kconfig symbols
 
-Use get_unaligned() instead of memcpy() to access potentially unaligned
-memory, which, when accessed through a pointer, leads to undefined
-behavior. get_unaligned() describes much better what is happening there
-anyway even if memcpy() does the job.
+Fix misspelled Kconfig symbols as detected by
+scripts/checkkconfigsymbols.py.
 
-In addition, since perf tool builds with -Werror, it would fire with:
+ [ bp: Combine into a single patch. ]
 
-  util/intel-pt-decoder/../../../arch/x86/lib/insn.c: In function '__insn_get_emulate_prefix':
-  tools/include/../include/asm-generic/unaligned.h:10:15: error: packed attribute is unnecessary [-Werror=packed]
-     10 |  const struct { type x; } __packed *__pptr = (typeof(__pptr))(ptr); \
-
-because -Werror=packed would complain if the packed attribute would have
-no effect on the layout of the structure.
-
-In this case, that is intentional so disable the warning only for that
-compilation unit.
-
-That part is Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-
-No functional changes.
-
-Fixes: 5ba1071f7554 ("x86/insn, tools/x86: Fix undefined behavior due to potential unaligned accesses")
-Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Acked-by: Masami Hiramatsu <mhiramat@kernel.org>
-Tested-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Link: https://lkml.kernel.org/r/YVSsIkj9Z29TyUjE@zn.tnic
+Link: https://lkml.kernel.org/r/20210803113531.30720-7-lukas.bulwahn@gmail.com
 ---
- arch/x86/lib/insn.c                    |  5 +++--
- tools/arch/x86/lib/insn.c              |  5 +++--
- tools/include/asm-generic/unaligned.h  | 23 +++++++++++++++++++++++
- tools/perf/util/intel-pt-decoder/Build |  2 ++
- 4 files changed, 31 insertions(+), 4 deletions(-)
- create mode 100644 tools/include/asm-generic/unaligned.h
+ arch/x86/include/asm/ia32.h      | 2 +-
+ arch/x86/include/asm/irq_stack.h | 2 +-
+ arch/x86/include/asm/page_32.h   | 2 +-
+ arch/x86/include/asm/uaccess.h   | 2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/lib/insn.c b/arch/x86/lib/insn.c
-index c565def..55e371c 100644
---- a/arch/x86/lib/insn.c
-+++ b/arch/x86/lib/insn.c
-@@ -13,6 +13,7 @@
+diff --git a/arch/x86/include/asm/ia32.h b/arch/x86/include/asm/ia32.h
+index 2c5f786..fada857 100644
+--- a/arch/x86/include/asm/ia32.h
++++ b/arch/x86/include/asm/ia32.h
+@@ -68,6 +68,6 @@ extern void ia32_pick_mmap_layout(struct mm_struct *mm);
+ 
  #endif
- #include <asm/inat.h> /*__ignore_sync_check__ */
- #include <asm/insn.h> /* __ignore_sync_check__ */
-+#include <asm/unaligned.h> /* __ignore_sync_check__ */
  
- #include <linux/errno.h>
- #include <linux/kconfig.h>
-@@ -37,10 +38,10 @@
- 	((insn)->next_byte + sizeof(t) + n <= (insn)->end_kaddr)
+-#endif /* !CONFIG_IA32_SUPPORT */
++#endif /* CONFIG_IA32_EMULATION */
  
- #define __get_next(t, insn)	\
--	({ t r; memcpy(&r, insn->next_byte, sizeof(t)); insn->next_byte += sizeof(t); leXX_to_cpu(t, r); })
-+	({ t r = get_unaligned((t *)(insn)->next_byte); (insn)->next_byte += sizeof(t); leXX_to_cpu(t, r); })
+ #endif /* _ASM_X86_IA32_H */
+diff --git a/arch/x86/include/asm/irq_stack.h b/arch/x86/include/asm/irq_stack.h
+index 562854c..8912492 100644
+--- a/arch/x86/include/asm/irq_stack.h
++++ b/arch/x86/include/asm/irq_stack.h
+@@ -58,7 +58,7 @@
+  *     the output constraints to make the compiler aware that R11 cannot be
+  *     reused after the asm() statement.
+  *
+- *     For builds with CONFIG_UNWIND_FRAME_POINTER ASM_CALL_CONSTRAINT is
++ *     For builds with CONFIG_UNWINDER_FRAME_POINTER, ASM_CALL_CONSTRAINT is
+  *     required as well as this prevents certain creative GCC variants from
+  *     misplacing the ASM code.
+  *
+diff --git a/arch/x86/include/asm/page_32.h b/arch/x86/include/asm/page_32.h
+index 94dbd51..b13f848 100644
+--- a/arch/x86/include/asm/page_32.h
++++ b/arch/x86/include/asm/page_32.h
+@@ -43,7 +43,7 @@ static inline void copy_page(void *to, void *from)
+ {
+ 	memcpy(to, from, PAGE_SIZE);
+ }
+-#endif	/* CONFIG_X86_3DNOW */
++#endif	/* CONFIG_X86_USE_3DNOW */
+ #endif	/* !__ASSEMBLY__ */
  
- #define __peek_nbyte_next(t, insn, n)	\
--	({ t r; memcpy(&r, (insn)->next_byte + n, sizeof(t)); leXX_to_cpu(t, r); })
-+	({ t r = get_unaligned((t *)(insn)->next_byte + n); leXX_to_cpu(t, r); })
+ #endif /* _ASM_X86_PAGE_32_H */
+diff --git a/arch/x86/include/asm/uaccess.h b/arch/x86/include/asm/uaccess.h
+index c9fa7be..e7fc2c5 100644
+--- a/arch/x86/include/asm/uaccess.h
++++ b/arch/x86/include/asm/uaccess.h
+@@ -411,7 +411,7 @@ do {									\
+ 		     : [umem] "m" (__m(addr)),				\
+ 		       [efault] "i" (-EFAULT), "0" (err))
  
- #define get_next(t, insn)	\
- 	({ if (unlikely(!validate_next(t, insn, 0))) goto err_out; __get_next(t, insn); })
-diff --git a/tools/arch/x86/lib/insn.c b/tools/arch/x86/lib/insn.c
-index 7976994..8fd63a0 100644
---- a/tools/arch/x86/lib/insn.c
-+++ b/tools/arch/x86/lib/insn.c
-@@ -13,6 +13,7 @@
- #endif
- #include "../include/asm/inat.h" /* __ignore_sync_check__ */
- #include "../include/asm/insn.h" /* __ignore_sync_check__ */
-+#include "../include/asm-generic/unaligned.h" /* __ignore_sync_check__ */
+-#endif // CONFIG_CC_ASM_GOTO_OUTPUT
++#endif // CONFIG_CC_HAS_ASM_GOTO_OUTPUT
  
- #include <linux/errno.h>
- #include <linux/kconfig.h>
-@@ -37,10 +38,10 @@
- 	((insn)->next_byte + sizeof(t) + n <= (insn)->end_kaddr)
- 
- #define __get_next(t, insn)	\
--	({ t r; memcpy(&r, insn->next_byte, sizeof(t)); insn->next_byte += sizeof(t); leXX_to_cpu(t, r); })
-+	({ t r = get_unaligned((t *)(insn)->next_byte); (insn)->next_byte += sizeof(t); leXX_to_cpu(t, r); })
- 
- #define __peek_nbyte_next(t, insn, n)	\
--	({ t r; memcpy(&r, (insn)->next_byte + n, sizeof(t)); leXX_to_cpu(t, r); })
-+	({ t r = get_unaligned((t *)(insn)->next_byte + n); leXX_to_cpu(t, r); })
- 
- #define get_next(t, insn)	\
- 	({ if (unlikely(!validate_next(t, insn, 0))) goto err_out; __get_next(t, insn); })
-diff --git a/tools/include/asm-generic/unaligned.h b/tools/include/asm-generic/unaligned.h
-new file mode 100644
-index 0000000..47387c6
---- /dev/null
-+++ b/tools/include/asm-generic/unaligned.h
-@@ -0,0 +1,23 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/*
-+ * Copied from the kernel sources to tools/perf/:
-+ */
-+
-+#ifndef __TOOLS_LINUX_ASM_GENERIC_UNALIGNED_H
-+#define __TOOLS_LINUX_ASM_GENERIC_UNALIGNED_H
-+
-+#define __get_unaligned_t(type, ptr) ({						\
-+	const struct { type x; } __packed *__pptr = (typeof(__pptr))(ptr);	\
-+	__pptr->x;								\
-+})
-+
-+#define __put_unaligned_t(type, val, ptr) do {					\
-+	struct { type x; } __packed *__pptr = (typeof(__pptr))(ptr);		\
-+	__pptr->x = (val);							\
-+} while (0)
-+
-+#define get_unaligned(ptr)	__get_unaligned_t(typeof(*(ptr)), (ptr))
-+#define put_unaligned(val, ptr) __put_unaligned_t(typeof(*(ptr)), (val), (ptr))
-+
-+#endif /* __TOOLS_LINUX_ASM_GENERIC_UNALIGNED_H */
-+
-diff --git a/tools/perf/util/intel-pt-decoder/Build b/tools/perf/util/intel-pt-decoder/Build
-index bc62935..b41c2e9 100644
---- a/tools/perf/util/intel-pt-decoder/Build
-+++ b/tools/perf/util/intel-pt-decoder/Build
-@@ -18,3 +18,5 @@ CFLAGS_intel-pt-insn-decoder.o += -I$(OUTPUT)util/intel-pt-decoder
- ifeq ($(CC_NO_CLANG), 1)
-   CFLAGS_intel-pt-insn-decoder.o += -Wno-override-init
- endif
-+
-+CFLAGS_intel-pt-insn-decoder.o += -Wno-packed
+ /* FIXME: this hack is definitely wrong -AK */
+ struct __large_struct { unsigned long buf[100]; };
