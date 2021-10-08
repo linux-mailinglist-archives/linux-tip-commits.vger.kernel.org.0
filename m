@@ -2,122 +2,150 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C71FA4260A2
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 Oct 2021 01:40:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A1B8426743
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 Oct 2021 11:58:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233169AbhJGXmL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 7 Oct 2021 19:42:11 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:40324 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231373AbhJGXmK (ORCPT
+        id S239500AbhJHKAx (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 8 Oct 2021 06:00:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41378 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238917AbhJHKAw (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 7 Oct 2021 19:42:10 -0400
-From:   Thomas Gleixner <tglx@linutronix.de>
+        Fri, 8 Oct 2021 06:00:52 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 058F4C061570;
+        Fri,  8 Oct 2021 02:58:56 -0700 (PDT)
+Date:   Fri, 08 Oct 2021 09:58:53 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1633650015;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+        s=2020; t=1633687134;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=9641XH6wBjWKqS4wnknUNssteTZImIDG9FGAAxiK/lE=;
-        b=4E5bi0F3l/eICG5udutOIMRYo/TcPS4IzqeIYgvzMf8CCHCeycOyRwdGOEMYPHccmsnalC
-        YsPSyiwasz4AeVgyejSDus1XIF2DRb25kCUX5tdLxkaPR1oL/jkEgKRu86uVxsFeVtX7Ws
-        oDMdK+zp5+W46vYjgkVCQkyxovcNbptKCTl5Yvy25b/4HqtKVmGn3+8Zw+8WLyUfwq3Jcc
-        7sl0gJCSb+1JyiAIQe1S3ptN8wiqlWYDmAYxkEQrtwtHwe1kJZQZVcjVkgSOn9XTk6vsw1
-        wZThNH/ImAWkeVe611ZvdIbTyDGR0xLPOtr7tAURzlBstABriev8+092P+/yLA==
+        bh=HkaEHRILfubdoOT6X98a6xdXk/Gxl5tQm58DK03ukdo=;
+        b=34iVcs2Q3buVbs22dpGC1ml+Q+GFlSFBPT91GsSqD8UrbsX5Gd0qF3JyLU0MqunF911E58
+        Lkccj9NAqIKaRGZUUA2jhjjz42ASfRn+kmfDDVUq0DCDq/+XMYELo5jvmlPbu3wdZhrhh3
+        02dAu0kMtKMDi8KlSg646xcSLvsbP0IwiElnZfTKUOE8qWak2wxO3dCUD80IDBMUGd3Wwf
+        c6PC+KH9SJC+kT1vxg+K0KHCnNmkuxNZvGr8wbuQ6WC3Mmf0YBj29GZV29uFALsgx67wb+
+        Yd4RQSJM2ZzMAUbzyb7e9thc1onKawm4l0l02Q/9q+rGe+gd/45MqAEiBKj9rw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1633650015;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+        s=2020e; t=1633687134;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=9641XH6wBjWKqS4wnknUNssteTZImIDG9FGAAxiK/lE=;
-        b=p0KHo6mP03uvLpZG9IYjafM6wZKg2LloS/O1j4DyWlBw86xDAKizjJkKzpvsBZq2IU47sA
-        dPb8Qn79lH98RCBw==
-To:     tip-bot2 for Borislav Petkov <tip-bot2@linutronix.de>,
-        linux-tip-commits@vger.kernel.org
+        bh=HkaEHRILfubdoOT6X98a6xdXk/Gxl5tQm58DK03ukdo=;
+        b=LwsgU2FQs1eERt37rvaumQyrspKAVAmYYW9JomsKQGoZ+4PN9OvR0vqHQ2T/OJWj8bUBL9
+        Dic6Jas9It9XX2DA==
+From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/urgent] x86/fpu: Restore the masking out of reserved MXCSR bits
 Cc:     Ser Olmy <ser.olmy@protonmail.com>, Borislav Petkov <bp@suse.de>,
-        stable@vger.kernel.org, x86@kernel.org,
+        <stable@vger.kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [tip: x86/urgent] x86/fpu: Restore the masking out of reserved
- MXCSR bits
-In-Reply-To: <163354193576.25758.8132624386883258818.tip-bot2@tip-bot2>
+In-Reply-To: <YVtA67jImg3KlBTw@zn.tnic>
 References: <YVtA67jImg3KlBTw@zn.tnic>
- <163354193576.25758.8132624386883258818.tip-bot2@tip-bot2>
-Date:   Fri, 08 Oct 2021 01:40:14 +0200
-Message-ID: <87mtnke74x.ffs@tglx>
 MIME-Version: 1.0
-Content-Type: text/plain
+Message-ID: <163368713375.25758.3020127637765994658.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Wed, Oct 06 2021 at 17:38, tip-bot wrote:
-> Ser bisected the problem to the commit in Fixes.
->
-> tglx suggested reverting the rejection of invalid MXCSR values which
-> this commit introduced and replacing it with what the old code did -
-> simply masking them out to zero.
->
-> Further debugging confirmed his suggestion:
->
->   fpu->state.fxsave.mxcsr: 0xb7be13b4, mxcsr_feature_mask: 0xffbf
->   WARNING: CPU: 0 PID: 1 at arch/x86/kernel/fpu/signal.c:384 __fpu_restore_sig+0x51f/0x540
->
-> so restore the original behavior.
->
-> Fixes: 6f9866a166cd ("x86/fpu/signal: Let xrstor handle the features to init")
-> Reported-by: Ser Olmy <ser.olmy@protonmail.com>
-> Signed-off-by: Borislav Petkov <bp@suse.de>
-> Tested-by: Ser Olmy <ser.olmy@protonmail.com>
-> Cc: <stable@vger.kernel.org>
-> Link: https://lkml.kernel.org/r/YVtA67jImg3KlBTw@zn.tnic
-> ---
->  arch/x86/kernel/fpu/signal.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
->
-> diff --git a/arch/x86/kernel/fpu/signal.c b/arch/x86/kernel/fpu/signal.c
-> index 445c57c..684be34 100644
-> --- a/arch/x86/kernel/fpu/signal.c
-> +++ b/arch/x86/kernel/fpu/signal.c
-> @@ -379,9 +379,8 @@ static int __fpu_restore_sig(void __user *buf, void __user *buf_fx,
->  				     sizeof(fpu->state.fxsave)))
->  			return -EFAULT;
->  
-> -		/* Reject invalid MXCSR values. */
-> -		if (fpu->state.fxsave.mxcsr & ~mxcsr_feature_mask)
-> -			return -EINVAL;
-> +		/* Mask out reserved MXCSR bits. */
-> +		fpu->state.fxsave.mxcsr &= mxcsr_feature_mask;
+The following commit has been merged into the x86/urgent branch of tip:
 
-can we please make this:
+Commit-ID:     d298b03506d3e161f7492c440babb0bfae35e650
+Gitweb:        https://git.kernel.org/tip/d298b03506d3e161f7492c440babb0bfae35e650
+Author:        Borislav Petkov <bp@suse.de>
+AuthorDate:    Wed, 06 Oct 2021 18:33:52 +02:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Fri, 08 Oct 2021 11:12:17 +02:00
 
+x86/fpu: Restore the masking out of reserved MXCSR bits
+
+Ser Olmy reported a boot failure:
+
+  init[1] bad frame in sigreturn frame:(ptrval) ip:b7c9fbe6 sp:bf933310 orax:ffffffff \
+	  in libc-2.33.so[b7bed000+156000]
+  Kernel panic - not syncing: Attempted to kill init! exitcode=0x0000000b
+  CPU: 0 PID: 1 Comm: init Tainted: G        W         5.14.9 #1
+  Hardware name: Hewlett-Packard HP PC/HP Board, BIOS  JD.00.06 12/06/2001
+  Call Trace:
+   dump_stack_lvl
+   dump_stack
+   panic
+   do_exit.cold
+   do_group_exit
+   get_signal
+   arch_do_signal_or_restart
+   ? force_sig_info_to_task
+   ? force_sig
+   exit_to_user_mode_prepare
+   syscall_exit_to_user_mode
+   do_int80_syscall_32
+   entry_INT80_32
+
+on an old 32-bit Intel CPU:
+
+  vendor_id       : GenuineIntel
+  cpu family      : 6
+  model           : 6
+  model name      : Celeron (Mendocino)
+  stepping        : 5
+  microcode       : 0x3
+
+Ser bisected the problem to the commit in Fixes.
+
+tglx suggested reverting the rejection of invalid MXCSR values which
+this commit introduced and replacing it with what the old code did -
+simply masking them out to zero.
+
+Further debugging confirmed his suggestion:
+
+  fpu->state.fxsave.mxcsr: 0xb7be13b4, mxcsr_feature_mask: 0xffbf
+  WARNING: CPU: 0 PID: 1 at arch/x86/kernel/fpu/signal.c:384 __fpu_restore_sig+0x51f/0x540
+
+so restore the original behavior only for 32-bit kernels where you have
+ancient machines with buggy hardware. For 32-bit programs on 64-bit
+kernels, user space which supplies wrong MXCSR values is considered
+malicious so fail the sigframe restoration there.
+
+Fixes: 6f9866a166cd ("x86/fpu/signal: Let xrstor handle the features to init")
+Reported-by: Ser Olmy <ser.olmy@protonmail.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Tested-by: Ser Olmy <ser.olmy@protonmail.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lkml.kernel.org/r/YVtA67jImg3KlBTw@zn.tnic
+---
+ arch/x86/kernel/fpu/signal.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
+
+diff --git a/arch/x86/kernel/fpu/signal.c b/arch/x86/kernel/fpu/signal.c
+index 445c57c..fa17a27 100644
 --- a/arch/x86/kernel/fpu/signal.c
 +++ b/arch/x86/kernel/fpu/signal.c
-@@ -384,9 +384,14 @@ static bool __fpu_restore_sig(void __use
+@@ -379,9 +379,14 @@ static int __fpu_restore_sig(void __user *buf, void __user *buf_fx,
  				     sizeof(fpu->state.fxsave)))
- 			return false;
+ 			return -EFAULT;
  
 -		/* Reject invalid MXCSR values. */
 -		if (fpu->state.fxsave.mxcsr & ~mxcsr_feature_mask)
--			return false;
+-			return -EINVAL;
 +		if (IS_ENABLED(CONFIG_X86_64)) {
 +			/* Reject invalid MXCSR values. */
 +			if (fpu->state.fxsave.mxcsr & ~mxcsr_feature_mask)
-+				return false;
++				return -EINVAL;
 +		} else {
-+			/* Mask invalid bits out for historical reasons (broken hardware) */
++			/* Mask invalid bits out for historical reasons (broken hardware). */
 +			fpu->state.fxsave.mxcsr &= ~mxcsr_feature_mask;
 +		}
  
  		/* Enforce XFEATURE_MASK_FPSSE when XSAVE is enabled */
  		if (use_xsave())
-
-On a 64 bit kernel even 32bit user space which supplies broken mxcsr
-values has to be considered malicious.
-
-The 32bit story on those stone age machines is different because the
-hardware is simply buggy and we can't differentiate between broken
-hardware and broken or malicious software.
-
-Thanks,
-
-        tglx
