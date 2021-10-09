@@ -2,54 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 02CC94278DA
+	by mail.lfdr.de (Postfix) with ESMTP id 6F7064278DB
 	for <lists+linux-tip-commits@lfdr.de>; Sat,  9 Oct 2021 12:08:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244885AbhJIKKL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S244887AbhJIKKL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Sat, 9 Oct 2021 06:10:11 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:49610 "EHLO
+Received: from Galois.linutronix.de ([193.142.43.55]:49620 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244783AbhJIKJg (ORCPT
+        with ESMTP id S244706AbhJIKJg (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Sat, 9 Oct 2021 06:09:36 -0400
-Date:   Sat, 09 Oct 2021 10:07:37 -0000
+Date:   Sat, 09 Oct 2021 10:07:38 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1633774058;
+        s=2020; t=1633774059;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=m54HmauTfJyDhMz+3BwljSv9nHwcDn58lgjMVccyOPA=;
-        b=A0mS4dAKZj7SOhSCQ2e5SyTXLh72ECYS4NSxFV73x3WwEJxfyVQ5BIEsHfJUs+nCqOG2xG
-        cCU5hNC4wF7rkgheB+PjkWGPqa9NBYg7cP98lE20cESPcibZ3nf6DEWZ/SLj64QU6vPyCS
-        /uetmzS0TzK7aRM4p0nCe8QDATfUCjB1MzszVjI8uGvFlDkMX9sLjw+yK+6wT2psWCvKt+
-        D1mp2lYtheZBD4NPKbiSuu7ZeQC8fEdE1lJo3Ez7yy9XcSIyRK3crtTgqETo2daZpPQErD
-        kaCiyHsQgBlfsZtowrJHLB3gUrOzcaln45cdOzCi+fJPlrm0Su+07MXZs4KDug==
+        bh=pU7OlDsRy/o682Zt01xRzlowEyfGs+MYw8QBWIkHcGE=;
+        b=qNOa0CZpaalG85wn/zVu5/avQh3DDRRTW6FZvewMdMHFNYzVX2L2ZjSNAPhJ2wlWZ0wf5O
+        6TuVHgL6HFpDhrrncYNF9UOrQNQQq8syxQP75nkN4SkTX8IQKXfX04UzroRdIDjzNuSg1g
+        kujKYwYoK65QlW6cHh4/Wz0HsvwLK9nv2Sm9b6QGoKff5FcR7dfFJQao+ZPR9ESxRbSfR3
+        1HvlFt/0xX0V9mJZXU+fpykYXk9MSVmnIqVKOLZ7rDuPVUzKX2ucTpgnUB2W7vmSTbexdM
+        Av4PZ1nzocDacWo5EpBGddOTADa1bMwDeYKRTDmEdL2oGdbMEzXfIsDJWy8kmQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1633774058;
+        s=2020e; t=1633774059;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=m54HmauTfJyDhMz+3BwljSv9nHwcDn58lgjMVccyOPA=;
-        b=31PLFUN5SxDdP3i8tcwErXtw2T+lW3pAeqXEpv0qMQkdOSPhz9VFo3BT5hp0bZhn9zZuhq
-        w+7IxiC5BJafMdBA==
-From:   "tip-bot2 for Bharata B Rao" <tip-bot2@linutronix.de>
+        bh=pU7OlDsRy/o682Zt01xRzlowEyfGs+MYw8QBWIkHcGE=;
+        b=UIe0VBNZG+C3J4BwwjHvFcg53/tNsUQOprce6B/KiAaZKDky+SW4D2ZnFVluM7nVcDOR6H
+        oaMejXWhBqyldACQ==
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/numa: Replace hard-coded number by a define
- in numa_task_group()
-Cc:     Bharata B Rao <bharata@amd.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Mel Gorman <mgorman@suse.de>, x86@kernel.org,
+Subject: [tip: sched/core] sched,livepatch: Use wake_up_if_idle()
+Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Petr Mladek <pmladek@suse.com>,
+        Miroslav Benes <mbenes@suse.cz>,
+        Vasily Gorbik <gor@linux.ibm.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20211004105706.3669-2-bharata@amd.com>
-References: <20211004105706.3669-2-bharata@amd.com>
+In-Reply-To: <20210929151723.162004989@infradead.org>
+References: <20210929151723.162004989@infradead.org>
 MIME-Version: 1.0
-Message-ID: <163377405761.25758.2274556193360842826.tip-bot2@tip-bot2>
+Message-ID: <163377405832.25758.6730763114934839783.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,40 +60,42 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     b6153093de41186e2c534ffffb8ce81b1666b110
-Gitweb:        https://git.kernel.org/tip/b6153093de41186e2c534ffffb8ce81b1666b110
-Author:        Bharata B Rao <bharata@amd.com>
-AuthorDate:    Mon, 04 Oct 2021 16:27:03 +05:30
+Commit-ID:     2aa45be430a031c10d5f4a5bf3329ff8413a9187
+Gitweb:        https://git.kernel.org/tip/2aa45be430a031c10d5f4a5bf3329ff8413a9187
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Tue, 21 Sep 2021 22:16:02 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Thu, 07 Oct 2021 13:51:16 +02:00
 
-sched/numa: Replace hard-coded number by a define in numa_task_group()
+sched,livepatch: Use wake_up_if_idle()
 
-While allocating group fault stats, task_numa_group()
-is using a hard coded number 4. Replace this by
-NR_NUMA_HINT_FAULT_STATS.
+Make sure to prod idle CPUs so they call klp_update_patch_state().
 
-No functionality change in this commit.
-
-Signed-off-by: Bharata B Rao <bharata@amd.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Mel Gorman <mgorman@suse.de>
-Link: https://lkml.kernel.org/r/20211004105706.3669-2-bharata@amd.com
+Reviewed-by: Petr Mladek <pmladek@suse.com>
+Acked-by: Miroslav Benes <mbenes@suse.cz>
+Acked-by: Vasily Gorbik <gor@linux.ibm.com>
+Tested-by: Petr Mladek <pmladek@suse.com>
+Tested-by: Vasily Gorbik <gor@linux.ibm.com> # on s390
+Link: https://lkml.kernel.org/r/20210929151723.162004989@infradead.org
 ---
- kernel/sched/fair.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/livepatch/transition.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 2468d1d..fc0a0ed 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -2438,7 +2438,8 @@ static void task_numa_group(struct task_struct *p, int cpupid, int flags,
- 
- 	if (unlikely(!deref_curr_numa_group(p))) {
- 		unsigned int size = sizeof(struct numa_group) +
--				    4*nr_node_ids*sizeof(unsigned long);
-+				    NR_NUMA_HINT_FAULT_STATS *
-+				    nr_node_ids * sizeof(unsigned long);
- 
- 		grp = kzalloc(size, GFP_KERNEL | __GFP_NOWARN);
- 		if (!grp)
+diff --git a/kernel/livepatch/transition.c b/kernel/livepatch/transition.c
+index 75251e9..5683ac0 100644
+--- a/kernel/livepatch/transition.c
++++ b/kernel/livepatch/transition.c
+@@ -413,8 +413,11 @@ void klp_try_complete_transition(void)
+ 	for_each_possible_cpu(cpu) {
+ 		task = idle_task(cpu);
+ 		if (cpu_online(cpu)) {
+-			if (!klp_try_switch_task(task))
++			if (!klp_try_switch_task(task)) {
+ 				complete = false;
++				/* Make idle task go through the main loop. */
++				wake_up_if_idle(cpu);
++			}
+ 		} else if (task->patch_state != klp_target_state) {
+ 			/* offline idle tasks can be switched immediately */
+ 			clear_tsk_thread_flag(task, TIF_PATCH_PENDING);
