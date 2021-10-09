@@ -2,53 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 596704278C5
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  9 Oct 2021 12:07:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F8C74278D3
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  9 Oct 2021 12:08:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244659AbhJIKJ3 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 9 Oct 2021 06:09:29 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:49538 "EHLO
+        id S244854AbhJIKKB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 9 Oct 2021 06:10:01 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:49544 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244657AbhJIKJR (ORCPT
+        with ESMTP id S244750AbhJIKJb (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 9 Oct 2021 06:09:17 -0400
-Date:   Sat, 09 Oct 2021 10:07:19 -0000
+        Sat, 9 Oct 2021 06:09:31 -0400
+Date:   Sat, 09 Oct 2021 10:07:32 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1633774040;
+        s=2020; t=1633774053;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=g3pCBjl2e8Da4p/V5bnaKUuPbwpFUMahEuvVM8sY/DQ=;
-        b=JWvu76gdJK4gakbpZXUsiXssoLjGVFF68PWDzVDaz+bvWmiIjCu8+/rZIQiwFuIwxSelYH
-        QDxsfEHwOs2HAi+0A9k+V5KlX5dcRjSH5G5JIsrwAkvxh6NninVQOg7LYqa93yNUanmfoq
-        +hOqUxrngflxDDozIV7TvyCLiyVI5ue+cp76hkXI/on+bQlFuKxc9D5BnDIz/LhNlnKMz4
-        zko9ZhKNpTH2fgwuQrqGUsIGBifR9YyDmlxJwivZWL9JvOR7wUFlo7QovKd0EvpAQniUEm
-        hiHaXYstA3G7yJ2gJVL2npE+acokJ1HOb3x/AbEHsjUPoWJ0yynPNBnidC5T3Q==
+        bh=TsmLx22RdeJXOzDhfJMDcgUCQc92VIsYk0FbQu69TCA=;
+        b=HrwE8uGHgqUUGpEkfE2hUKxD46wPRib6D9uq/8ZCy3sep8//aO4h8yX2aNIWQUq02oe+j2
+        GIuIVAfO+po335rfftRMgtz6Cl60SDUk/xwO8RFetSImzNDmGMTiJgKDm5iMfdx7OUrTvC
+        kpQbxelyEMGNBaTcJb5VYmaqT6VIy3QYh04vfd5GS4YBnYj7GDMSEqhyAl4P7sRyY73n62
+        SvjcCqWflaq4lfeXzsgxYODIltmxEIF0ymBDillTnk3e6c3e3qGHkiUQS9RA+kV3ClZjZv
+        HDg63sLqltUGIh3zlJOJg4pSabm1zt/yq3rPITjjBOcDhdFvh6ghcJmKN3KAJg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1633774040;
+        s=2020e; t=1633774053;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=g3pCBjl2e8Da4p/V5bnaKUuPbwpFUMahEuvVM8sY/DQ=;
-        b=oUt1K8HkA3xxfbv3X0XycH3RojsFD3JBVyND763c59RhE1NYAR9spqB0kdyWQlzdgV23D1
-        XoaxaLLdS5tarWCQ==
-From:   "tip-bot2 for Davidlohr Bueso" <tip-bot2@linutronix.de>
+        bh=TsmLx22RdeJXOzDhfJMDcgUCQc92VIsYk0FbQu69TCA=;
+        b=43p78LGifadB3k1ayikYtnwvaeJk8HL8f6aIRHSzI/q2RkitDvPNsHp4R7+ltK/V8ev5l0
+        G5FJPRRcdFjPCwBw==
+From:   "tip-bot2 for Kees Cook" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] locking/rwbase: Optimize rwbase_read_trylock
-Cc:     Davidlohr Bueso <dbueso@suse.de>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Waiman Long <longman@redhat.com>, x86@kernel.org,
+Subject: [tip: sched/core] sched: Fill unconditional hole induced by sched_entity
+Cc:     Kees Cook <keescook@chromium.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210920052031.54220-2-dave@stgolabs.net>
-References: <20210920052031.54220-2-dave@stgolabs.net>
+In-Reply-To: <20210924025450.4138503-1-keescook@chromium.org>
+References: <20210924025450.4138503-1-keescook@chromium.org>
 MIME-Version: 1.0
-Message-ID: <163377403924.25758.18240935726439029694.tip-bot2@tip-bot2>
+Message-ID: <163377405280.25758.581808828384380024.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -57,49 +56,75 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the locking/core branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     c78416d122243c92992a1d1063f17ddd0bc80e6c
-Gitweb:        https://git.kernel.org/tip/c78416d122243c92992a1d1063f17ddd0bc80e6c
-Author:        Davidlohr Bueso <dave@stgolabs.net>
-AuthorDate:    Sun, 19 Sep 2021 22:20:30 -07:00
+Commit-ID:     b2d5b9cec60fecc72a13191c2c6c05acf60975a5
+Gitweb:        https://git.kernel.org/tip/b2d5b9cec60fecc72a13191c2c6c05acf60975a5
+Author:        Kees Cook <keescook@chromium.org>
+AuthorDate:    Thu, 23 Sep 2021 19:54:50 -07:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Thu, 07 Oct 2021 13:51:07 +02:00
+CommitterDate: Thu, 07 Oct 2021 13:51:17 +02:00
 
-locking/rwbase: Optimize rwbase_read_trylock
+sched: Fill unconditional hole induced by sched_entity
 
-Instead of a full barrier around the Rmw insn, micro-optimize
-for weakly ordered archs such that we only provide the required
-ACQUIRE semantics when taking the read lock.
+With struct sched_entity before the other sched entities, its alignment
+won't induce a struct hole. This saves 64 bytes in defconfig task_struct:
 
-Signed-off-by: Davidlohr Bueso <dbueso@suse.de>
+Before:
+	...
+        unsigned int               rt_priority;          /*   120     4 */
+
+        /* XXX 4 bytes hole, try to pack */
+
+        /* --- cacheline 2 boundary (128 bytes) --- */
+        const struct sched_class  * sched_class;         /*   128     8 */
+
+        /* XXX 56 bytes hole, try to pack */
+
+        /* --- cacheline 3 boundary (192 bytes) --- */
+        struct sched_entity        se __attribute__((__aligned__(64))); /*   192   448 */
+        /* --- cacheline 10 boundary (640 bytes) --- */
+        struct sched_rt_entity     rt;                   /*   640    48 */
+        struct sched_dl_entity     dl __attribute__((__aligned__(8))); /*   688   224 */
+        /* --- cacheline 14 boundary (896 bytes) was 16 bytes ago --- */
+
+After:
+	...
+        unsigned int               rt_priority;          /*   120     4 */
+
+        /* XXX 4 bytes hole, try to pack */
+
+        /* --- cacheline 2 boundary (128 bytes) --- */
+        struct sched_entity        se __attribute__((__aligned__(64))); /*   128   448 */
+        /* --- cacheline 9 boundary (576 bytes) --- */
+        struct sched_rt_entity     rt;                   /*   576    48 */
+        struct sched_dl_entity     dl __attribute__((__aligned__(8))); /*   624   224 */
+        /* --- cacheline 13 boundary (832 bytes) was 16 bytes ago --- */
+
+Summary diff:
+-	/* size: 7040, cachelines: 110, members: 188 */
++	/* size: 6976, cachelines: 109, members: 188 */
+
+Signed-off-by: Kees Cook <keescook@chromium.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Waiman Long <longman@redhat.com>
-Link: https://lkml.kernel.org/r/20210920052031.54220-2-dave@stgolabs.net
+Link: https://lkml.kernel.org/r/20210924025450.4138503-1-keescook@chromium.org
 ---
- kernel/locking/rwbase_rt.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ include/linux/sched.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/locking/rwbase_rt.c b/kernel/locking/rwbase_rt.c
-index 15c8110..6fd3162 100644
---- a/kernel/locking/rwbase_rt.c
-+++ b/kernel/locking/rwbase_rt.c
-@@ -59,8 +59,7 @@ static __always_inline int rwbase_read_trylock(struct rwbase_rt *rwb)
- 	 * set.
- 	 */
- 	for (r = atomic_read(&rwb->readers); r < 0;) {
--		/* Fully-ordered if cmpxchg() succeeds, provides ACQUIRE */
--		if (likely(atomic_try_cmpxchg(&rwb->readers, &r, r + 1)))
-+		if (likely(atomic_try_cmpxchg_acquire(&rwb->readers, &r, r + 1)))
- 			return 1;
- 	}
- 	return 0;
-@@ -187,7 +186,7 @@ static inline void __rwbase_write_unlock(struct rwbase_rt *rwb, int bias,
+diff --git a/include/linux/sched.h b/include/linux/sched.h
+index 193e16e..343603f 100644
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -775,10 +775,10 @@ struct task_struct {
+ 	int				normal_prio;
+ 	unsigned int			rt_priority;
  
- 	/*
- 	 * _release() is needed in case that reader is in fast path, pairing
--	 * with atomic_try_cmpxchg() in rwbase_read_trylock(), provides RELEASE
-+	 * with atomic_try_cmpxchg_acquire() in rwbase_read_trylock().
- 	 */
- 	(void)atomic_add_return_release(READER_BIAS - bias, &rwb->readers);
- 	raw_spin_unlock_irqrestore(&rtm->wait_lock, flags);
+-	const struct sched_class	*sched_class;
+ 	struct sched_entity		se;
+ 	struct sched_rt_entity		rt;
+ 	struct sched_dl_entity		dl;
++	const struct sched_class	*sched_class;
+ 
+ #ifdef CONFIG_SCHED_CORE
+ 	struct rb_node			core_node;
