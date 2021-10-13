@@ -2,55 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 74E00429575
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 11 Oct 2021 19:18:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 57FF942C0B2
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 13 Oct 2021 14:56:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233961AbhJKRUH (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 11 Oct 2021 13:20:07 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:41290 "EHLO
+        id S232949AbhJMM6j (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 13 Oct 2021 08:58:39 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:34616 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233954AbhJKRUH (ORCPT
+        with ESMTP id S234152AbhJMM6j (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 11 Oct 2021 13:20:07 -0400
-Date:   Mon, 11 Oct 2021 17:18:04 -0000
+        Wed, 13 Oct 2021 08:58:39 -0400
+Date:   Wed, 13 Oct 2021 12:56:32 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1633972685;
+        s=2020; t=1634129794;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=60pRUpMDA+d0VcX1H7ww0x5DaVSA92hmwjZ9mCQf1Mo=;
-        b=HkO1FYSo7FfAakTh+UgUfO4Ukfx8G5uuFBLFP+Z+8ktbiDoeXjBjQPkRMd6ouI8QuUWAwM
-        V18xUnDgULDC2uwomqhuoG1kAUtoFL5h/aQ1hv6lXAMDnC+ZzqMw1G944ACEiTsn3niT00
-        3CygRme2bbm1OY3nbYelVi4Xjv3szKajOAEQuHpp+XM3uZxH1/D4uLQR496S0OUkmwKmhT
-        FTfg+nVpDNIYgcbzpUHSVMgbu0jQMEiwAOR5g47RNTNetZorQ3HNYrlpsJtZU9FOwamb59
-        N9Lryg6adMIfZxFi9yQs3IaLBCH29NX8iuf/ny/Dd07fir1fFn0zA6fRGnxn6g==
+        bh=/Nm+nzMa68X/wrBkOvkMjLmOViE9gmFSjoU3qCmh5W8=;
+        b=tK/I9Nm3n8EvNNN8CGFlGpr3sIPP0wdaor5I9cbzjF8+ZzRWXEdDzGayFxn7cdpNKLo7jt
+        07zcbMrL7ly7Cm0s1o9OIK/o+pLe42H1vzJ5s4/KbhjUWB1ls/F5+fk8F34PGZG3PJnmHg
+        nJkR81dZOk9QavwTzBLc4IbNXidXv1QjSQbKTijaPmT5jnDXJ+BkzvzzZiCOzNNSCtfGoC
+        9+kmCA2e/f3ysC5CeLqo7xi2r3CuOamp1zMVzJDUG8ANUGGIeaHiLnGQxWUCUvWNJ0gyUi
+        BxUiSNtKCsMbsxtmKvJEC52lrF2mZx2Jhdg7ZLkGwGsXnJAABukN7COJzdDZHg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1633972685;
+        s=2020e; t=1634129794;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=60pRUpMDA+d0VcX1H7ww0x5DaVSA92hmwjZ9mCQf1Mo=;
-        b=z7de5qiL2C5baehYTfx/6xFFJst0w1v35iNbiGWPOAZ1ee7PlhEUWTu9mGz8qRDcDjmkYA
-        MzJf3NhV4tLXfTCg==
-From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
+        bh=/Nm+nzMa68X/wrBkOvkMjLmOViE9gmFSjoU3qCmh5W8=;
+        b=zQNFsMFuqkrcdtT+30MNRkRcrTq4rEVqsHuqnt+zzsYbGZ8NBy6NmivEPN+hQY4HyOyKWb
+        hb/7Ufb6WDTDtmBQ==
+From:   "tip-bot2 for Paolo Bonzini" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/Kconfig: Do not enable
- AMD_MEM_ENCRYPT_ACTIVE_BY_DEFAULT automatically
-Cc:     Paul Menzel <pmenzel@molgen.mpg.de>, Borislav Petkov <bp@suse.de>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        <stable@vger.kernel.org>, x86@kernel.org,
+Subject: [tip: x86/sgx] x86/sgx/virt: Implement SGX_IOC_VEPC_REMOVE ioctl
+Cc:     Paolo Bonzini <pbonzini@redhat.com>, Borislav Petkov <bp@suse.de>,
+        Jarkko Sakkinen <jarkko@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <8bbacd0e-4580-3194-19d2-a0ecad7df09c@molgen.mpg.de>
-References: <8bbacd0e-4580-3194-19d2-a0ecad7df09c@molgen.mpg.de>
+In-Reply-To: <20211012105708.2070480-3-pbonzini@redhat.com>
+References: <20211012105708.2070480-3-pbonzini@redhat.com>
 MIME-Version: 1.0
-Message-ID: <163397268455.25758.9385335529425752157.tip-bot2@tip-bot2>
+Message-ID: <163412979290.25758.2405858058111244615.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,74 +56,194 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the x86/sgx branch of tip:
 
-Commit-ID:     711885906b5c2df90746a51f4cd674f1ab9fbb1d
-Gitweb:        https://git.kernel.org/tip/711885906b5c2df90746a51f4cd674f1ab9fbb1d
-Author:        Borislav Petkov <bp@suse.de>
-AuthorDate:    Wed, 06 Oct 2021 19:34:55 +02:00
+Commit-ID:     71eba1c0939e3b1ad1b71fe0171de30e265437e3
+Gitweb:        https://git.kernel.org/tip/71eba1c0939e3b1ad1b71fe0171de30e265437e3
+Author:        Paolo Bonzini <pbonzini@redhat.com>
+AuthorDate:    Tue, 12 Oct 2021 06:57:08 -04:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Mon, 11 Oct 2021 19:14:22 +02:00
+CommitterDate: Wed, 13 Oct 2021 11:57:53 +02:00
 
-x86/Kconfig: Do not enable AMD_MEM_ENCRYPT_ACTIVE_BY_DEFAULT automatically
+x86/sgx/virt: Implement SGX_IOC_VEPC_REMOVE ioctl
 
-This Kconfig option was added initially so that memory encryption is
-enabled by default on machines which support it.
+For bare-metal SGX on real hardware, the hardware provides guaranteed
+SGX state at reboot.  For instance, all pages start out uninitialized.
+The vepc driver provides a similar guarantee today for freshly-opened
+vepc instances, but guests such as Windows expect all pages to be in
+uninitialized state on startup, including after every guest reboot.
 
-However, devices which have DMA masks that are less than the bit
-position of the encryption bit, aka C-bit, require the use of an IOMMU
-or the use of SWIOTLB.
+Some userspace implementations of virtual SGX would rather avoid having
+to close and reopen the /dev/sgx_vepc file descriptor and re-mmap the
+virtual EPC.  For example, they could sandbox themselves after the guest
+starts and forbid further calls to open(), in order to mitigate exploits
+from untrusted guests.
 
-If the IOMMU is disabled or in passthrough mode, the kernel would switch
-to SWIOTLB bounce-buffering for those transfers.
+Therefore, add a ioctl that does this with EREMOVE.  Userspace can
+invoke the ioctl to bring its vEPC pages back to uninitialized state.
+There is a possibility that some pages fail to be removed if they are
+SECS pages, and the child and SECS pages could be in separate vEPC
+regions.  Therefore, the ioctl returns the number of EREMOVE failures,
+telling userspace to try the ioctl again after it's done with all
+vEPC regions.  A more verbose description of the correct usage and
+the possible error conditions is documented in sgx.rst.
 
-In order to avoid that,
+ [ bp: Minor massaging. ]
 
-  2cc13bb4f59f ("iommu: Disable passthrough mode when SME is active")
-
-disables the default IOMMU passthrough mode so that devices for which the
-default 256K DMA is insufficient, can use the IOMMU instead.
-
-However 2, there are cases where the IOMMU is disabled in the BIOS, etc.
-(think the usual hardware folk "oops, I dropped the ball there" cases) or a
-driver doesn't properly use the DMA APIs or a device has a firmware or
-hardware bug, e.g.:
-
-  ea68573d408f ("drm/amdgpu: Fail to load on RAVEN if SME is active")
-
-However 3, in the above GPU use case, there are APIs like Vulkan and
-some OpenGL/OpenCL extensions which are under the assumption that
-user-allocated memory can be passed in to the kernel driver and both the
-GPU and CPU can do coherent and concurrent access to the same memory.
-That cannot work with SWIOTLB bounce buffers, of course.
-
-So, in order for those devices to function, drop the "default y" for the
-SME by default active option so that users who want to have SME enabled,
-will need to either enable it in their config or use "mem_encrypt=on" on
-the kernel command line.
-
- [ tlendacky: Generalize commit message. ]
-
-Fixes: 7744ccdbc16f ("x86/mm: Add Secure Memory Encryption (SME) support")
-Reported-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Acked-by: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lkml.kernel.org/r/8bbacd0e-4580-3194-19d2-a0ecad7df09c@molgen.mpg.de
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Link: https://lkml.kernel.org/r/20211012105708.2070480-3-pbonzini@redhat.com
 ---
- arch/x86/Kconfig | 1 -
- 1 file changed, 1 deletion(-)
+ Documentation/x86/sgx.rst       | 26 +++++++++++++++-
+ arch/x86/include/asm/sgx.h      |  3 ++-
+ arch/x86/include/uapi/asm/sgx.h |  2 +-
+ arch/x86/kernel/cpu/sgx/virt.c  | 57 ++++++++++++++++++++++++++++++++-
+ 4 files changed, 88 insertions(+)
 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index bd70e8a..d9830e7 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -1525,7 +1525,6 @@ config AMD_MEM_ENCRYPT
+diff --git a/Documentation/x86/sgx.rst b/Documentation/x86/sgx.rst
+index dd0ac96..7bc9c3b 100644
+--- a/Documentation/x86/sgx.rst
++++ b/Documentation/x86/sgx.rst
+@@ -250,3 +250,29 @@ user wants to deploy SGX applications both on the host and in guests
+ on the same machine, the user should reserve enough EPC (by taking out
+ total virtual EPC size of all SGX VMs from the physical EPC size) for
+ host SGX applications so they can run with acceptable performance.
++
++Architectural behavior is to restore all EPC pages to an uninitialized
++state also after a guest reboot.  Because this state can be reached only
++through the privileged ``ENCLS[EREMOVE]`` instruction, ``/dev/sgx_vepc``
++provides the ``SGX_IOC_VEPC_REMOVE_ALL`` ioctl to execute the instruction
++on all pages in the virtual EPC.
++
++``EREMOVE`` can fail for two reasons, which Linux relays to userspace
++in a different manner:
++
++1. Page removal will always fail when any thread is running in the
++   enclave to which the page belongs.  In this case the ioctl will
++   return ``EBUSY`` independent of whether it has successfully removed
++   some pages; userspace can avoid these failures by preventing execution
++   of any vcpu which maps the virtual EPC.
++
++2) Page removal will also fail for SGX "SECS" metadata pages which still
++   have child pages.  Child pages can be removed by executing
++   ``SGX_IOC_VEPC_REMOVE_ALL`` on all ``/dev/sgx_vepc`` file descriptors
++   mapped into the guest.  This means that the ioctl() must be called
++   twice: an initial set of calls to remove child pages and a subsequent
++   set of calls to remove SECS pages.  The second set of calls is only
++   required for those mappings that returned a nonzero value from the
++   first call.  It indicates a bug in the kernel or the userspace client
++   if any of the second round of ``SGX_IOC_VEPC_REMOVE_ALL`` calls has
++   a return code other than 0.
+diff --git a/arch/x86/include/asm/sgx.h b/arch/x86/include/asm/sgx.h
+index 05f3e21..2e5d8c9 100644
+--- a/arch/x86/include/asm/sgx.h
++++ b/arch/x86/include/asm/sgx.h
+@@ -50,6 +50,8 @@ enum sgx_encls_function {
+  * %SGX_NOT_TRACKED:		Previous ETRACK's shootdown sequence has not
+  *				been completed yet.
+  * %SGX_CHILD_PRESENT		SECS has child pages present in the EPC.
++ * %SGX_ENCLAVE_ACT		One or more logical processors are executing
++ *				inside the enclave.
+  * %SGX_INVALID_EINITTOKEN:	EINITTOKEN is invalid and enclave signer's
+  *				public key does not match IA32_SGXLEPUBKEYHASH.
+  * %SGX_UNMASKED_EVENT:		An unmasked event, e.g. INTR, was received
+@@ -57,6 +59,7 @@ enum sgx_encls_function {
+ enum sgx_return_code {
+ 	SGX_NOT_TRACKED			= 11,
+ 	SGX_CHILD_PRESENT		= 13,
++	SGX_ENCLAVE_ACT			= 14,
+ 	SGX_INVALID_EINITTOKEN		= 16,
+ 	SGX_UNMASKED_EVENT		= 128,
+ };
+diff --git a/arch/x86/include/uapi/asm/sgx.h b/arch/x86/include/uapi/asm/sgx.h
+index 9690d68..f4b8158 100644
+--- a/arch/x86/include/uapi/asm/sgx.h
++++ b/arch/x86/include/uapi/asm/sgx.h
+@@ -27,6 +27,8 @@ enum sgx_page_flags {
+ 	_IOW(SGX_MAGIC, 0x02, struct sgx_enclave_init)
+ #define SGX_IOC_ENCLAVE_PROVISION \
+ 	_IOW(SGX_MAGIC, 0x03, struct sgx_enclave_provision)
++#define SGX_IOC_VEPC_REMOVE_ALL \
++	_IO(SGX_MAGIC, 0x04)
  
- config AMD_MEM_ENCRYPT_ACTIVE_BY_DEFAULT
- 	bool "Activate AMD Secure Memory Encryption (SME) by default"
--	default y
- 	depends on AMD_MEM_ENCRYPT
- 	help
- 	  Say yes to have system memory encrypted by default if running on
+ /**
+  * struct sgx_enclave_create - parameter structure for the
+diff --git a/arch/x86/kernel/cpu/sgx/virt.c b/arch/x86/kernel/cpu/sgx/virt.c
+index 59cdf3f..4465253 100644
+--- a/arch/x86/kernel/cpu/sgx/virt.c
++++ b/arch/x86/kernel/cpu/sgx/virt.c
+@@ -150,6 +150,46 @@ static int sgx_vepc_free_page(struct sgx_epc_page *epc_page)
+ 	return 0;
+ }
+ 
++static long sgx_vepc_remove_all(struct sgx_vepc *vepc)
++{
++	struct sgx_epc_page *entry;
++	unsigned long index;
++	long failures = 0;
++
++	xa_for_each(&vepc->page_array, index, entry) {
++		int ret = sgx_vepc_remove_page(entry);
++		switch (ret) {
++		case 0:
++			break;
++
++		case SGX_CHILD_PRESENT:
++			failures++;
++			break;
++
++		case SGX_ENCLAVE_ACT:
++			/*
++			 * Unlike in sgx_vepc_free_page, userspace could be calling
++			 * the ioctl while logical processors are running in the
++			 * enclave; do not warn.
++			 */
++			return -EBUSY;
++
++		default:
++			WARN_ONCE(1, EREMOVE_ERROR_MESSAGE, ret, ret);
++			failures++;
++			break;
++		}
++		cond_resched();
++	}
++
++	/*
++	 * Return the number of pages that failed to be removed, so
++	 * userspace knows that there are still SECS pages lying
++	 * around.
++	 */
++	return failures;
++}
++
+ static int sgx_vepc_release(struct inode *inode, struct file *file)
+ {
+ 	struct sgx_vepc *vepc = file->private_data;
+@@ -235,9 +275,26 @@ static int sgx_vepc_open(struct inode *inode, struct file *file)
+ 	return 0;
+ }
+ 
++static long sgx_vepc_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
++{
++	struct sgx_vepc *vepc = file->private_data;
++
++	switch (cmd) {
++	case SGX_IOC_VEPC_REMOVE_ALL:
++		if (arg)
++			return -EINVAL;
++		return sgx_vepc_remove_all(vepc);
++
++	default:
++		return -ENOTTY;
++	}
++}
++
+ static const struct file_operations sgx_vepc_fops = {
+ 	.owner		= THIS_MODULE,
+ 	.open		= sgx_vepc_open,
++	.unlocked_ioctl	= sgx_vepc_ioctl,
++	.compat_ioctl	= sgx_vepc_ioctl,
+ 	.release	= sgx_vepc_release,
+ 	.mmap		= sgx_vepc_mmap,
+ };
