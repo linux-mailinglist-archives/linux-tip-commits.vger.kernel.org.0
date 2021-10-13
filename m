@@ -2,136 +2,86 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6566742C0B4
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 13 Oct 2021 14:56:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D625342C708
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 13 Oct 2021 18:58:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233368AbhJMM6k (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 13 Oct 2021 08:58:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56076 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234186AbhJMM6k (ORCPT
+        id S238055AbhJMQ7w (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 13 Oct 2021 12:59:52 -0400
+Received: from mout.gmx.net ([212.227.17.21]:50943 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S238047AbhJMQ7f (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 13 Oct 2021 08:58:40 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3380AC061570;
-        Wed, 13 Oct 2021 05:56:37 -0700 (PDT)
-Date:   Wed, 13 Oct 2021 12:56:33 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1634129794;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=yrIeds/TVlfcjqsL7Y2yNbwNao3EblKRHIG8Z7Kz18I=;
-        b=P69m9Lvio5hD2hin7wd8KOIH+4VVEI7Z0xnjYfJGebuB5YyOgGeHGP9+JMiDMshgrwa5Ho
-        CWLSTUGUsltUuyp/vrXcA4lGbo2omMdE2dzudCP9bssH6L+L9ctXVHmzTlx4RiEJVLyi92
-        kcR7xcQVHJ3sxvNfQghuF4QSF2tr10UtJg6OwmbztPS93P5lBwCsr6QHRJsMeY9pxezaFG
-        26u0xqpxUfil+cmsdVJcFj3fSd8Jk0FfmpIl3wJrGUT27ai4O6qfq+JQNrwoTg3b5r95TN
-        zRxcXvdZnDXR+OaARmLaa2aQmF+ptHIMgcYNMnNUJ5B7/wmraT9lVf34f9MNrA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1634129794;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=yrIeds/TVlfcjqsL7Y2yNbwNao3EblKRHIG8Z7Kz18I=;
-        b=QoVFLucd/jWjmzuTwgMzhwlZxEmJ5oN0c994NXxokZP6IqZjAbwQqAooarVSBqKzD4uJsW
-        Dj96ZEzI70dYmbBw==
-From:   "tip-bot2 for Paolo Bonzini" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/sgx] x86/sgx/virt: Extract sgx_vepc_remove_page()
-Cc:     Paolo Bonzini <pbonzini@redhat.com>, Borislav Petkov <bp@suse.de>,
-        Jarkko Sakkinen <jarkko@kernel.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20211012105708.2070480-2-pbonzini@redhat.com>
-References: <20211012105708.2070480-2-pbonzini@redhat.com>
+        Wed, 13 Oct 2021 12:59:35 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1634144237;
+        bh=H0NVNpK0fftAT3BEIq4Q/VjiBME4Ggj1xdbyrhLlOkQ=;
+        h=X-UI-Sender-Class:Subject:From:To:Cc:Date:In-Reply-To:References;
+        b=LRr+HyzCtbWESFIv+4bu0tz/iCA4pq+eCcWDI9UNt9Akm+V7syl/N3UokJTupbtIc
+         rQA2NyPnekrF6/jqJ7jUySP/9p8iauTKt6d4EAQyAvhtTUqvnp8MIgyP6X+FLuI9jO
+         oxGvL7pHRBKIQk/nT2YDu295bG/o4V+wMHemL6Tc=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from homer.fritz.box ([185.221.148.85]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MLQxX-1mILKo2zDv-00ITjh; Wed, 13
+ Oct 2021 18:57:17 +0200
+Message-ID: <16b0ac0a69615ecd3ae59b0c32161a0b26b8b3ca.camel@gmx.de>
+Subject: Re: [tip: locking/core] futex: Split out requeue
+From:   Mike Galbraith <efault@gmx.de>
+To:     linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org
+Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        andrealmeid@collabora.com, x86@kernel.org
+Date:   Wed, 13 Oct 2021 18:57:15 +0200
+In-Reply-To: <163377402732.25758.10591795748827044017.tip-bot2@tip-bot2>
+References: <20210923171111.300673-14-andrealmeid@collabora.com>
+         <163377402732.25758.10591795748827044017.tip-bot2@tip-bot2>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.0 
 MIME-Version: 1.0
-Message-ID: <163412979365.25758.7879693193208918421.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:Cza89XcjD9J4b/9j4noVjjK/fGwDE7SUc2IiAqxLAFgFrUiw9WW
+ dqqJqmfyn5fLoDCmTcSAtjclacxTviWpmawRPfRZ/shiFM5gljWzNokShC/1ra4q9Fai6pq
+ tcKPufTOX5EEnhWhjGijM2k1aY5Yk3EudcdN59YQ+aAMWcvTcSvBpS+OvxzSTLS64UcLB5a
+ 4MgKT4SJcqYk7FiT32kGQ==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:kAdNmo8vxGU=:G3gVttsKAvscRBZ8iyZ//M
+ xqnl1WFlt5RGhf+dTA2q1YmiKZT2XAbzNpl852gE2Ej+WxznhVDryjgkf0wpxGdXP0qVQa7By
+ sAac/TSmQgtWbWv6uSg6ejM7VhpckqVCfbubyx7jk0emYpwZzkZbUgmCzMe17ZZds72lZ8iDV
+ BOzc1ctl/9ntQGEzxHKBcymbe1D9IgvFXQ4P7ayueFBqOdpRv1IBW2ng5WpTkKxz518GgqD7B
+ +2hI4COI6Wx9CMEDQKcpMKjhN8XwxXSizjWtQW7p2DcpzbIWsJRHuF4Cewr7RqmYiSo6BEThY
+ 66yNbBLIYutHpCPJxJGOqSBzK/SrpGYV4woBLHJP0XuCzNNZWra8HjBUYAeOLnCctJYwmuCqE
+ 36TlHKW9P8LTycRj2nKtbk3r6jOIVdK4AnZAPR282njWwgjsoa5AM9MeY1eZ3P0E74CJia8u5
+ 4mgFQAN7EtcXLkGzG0bbPKLj3qrpWHAnZbh6PZ9ORT0v2MjZ4q6QHQTk2vVUkd+9EVAS+EfSc
+ vZna7/JQTXrFF6A7ZbeBW5AgQBVRsjDP6oyk8MxSBzty+P3+8uFRxQv//7ZoVRFgIKwP7NbBj
+ r4W56SxDvu6vlxfYzsRD0b5o3vWefDeEL+WMymkDo+sILxFJYRP1yDQIp7IulGcmO3qmvTU16
+ HlkLk3BUG+N67iG/w4YMgJsUlyZjLb8VYYeRLkTTZdOY8evjHEcC+RShH/3SHQ0Vzb1H9Tan+
+ jdDuYGgL5Bmc97TI5TSAmQU+NagVoz75eLzd5rpdCu7aP2ttJtTItEJHx4xtYYjvJPoYmLeds
+ Uq1ju5QZ1j7tdXnO7FO/03wlhFV2LNfJJ4urOPpmDkEC8GoMsz5qW1eJKHwXpJyL1ucCSdA4w
+ xod646pnKIWOa4lvINUUr5eoGW07TmwiZuKv3x8NBSEZgvmtuphJ2UqA0jBfmziTCPClV8js6
+ FCWaaXEGNurqBg5LwijbNtZaXTCCIJDiFnjVVdqu0amIkq14avLtbWjvM4OIrgpXj6v8lC6e8
+ P7clCUfo8f0JyOz+VGKFt7FrNCNqFi4Ly4P+DdgPqtqoe+UO34NMiG/RzARa5suZq7iFewJck
+ GmbUuqLBt4lhQY=
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/sgx branch of tip:
+On Sat, 2021-10-09 at 10:07 +0000, tip-bot2 for Peter Zijlstra wrote:
+>
+> diff --git a/kernel/futex/futex.h b/kernel/futex/futex.h
+> index 4969e96..840302a 100644
+> --- a/kernel/futex/futex.h
+> +++ b/kernel/futex/futex.h
+> @@ -3,6 +3,8 @@
+> =C2=A0#define _FUTEX_H
+> =C2=A0
+> =C2=A0#include <linux/futex.h>
+> +#include <linux/sched/wake_q.h>
 
-Commit-ID:     33633b20e0da301f9009cc9aa00282acbc282a1f
-Gitweb:        https://git.kernel.org/tip/33633b20e0da301f9009cc9aa00282acbc282a1f
-Author:        Paolo Bonzini <pbonzini@redhat.com>
-AuthorDate:    Tue, 12 Oct 2021 06:57:07 -04:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Wed, 13 Oct 2021 11:57:44 +02:00
++#ifdef CONFIG_PREEMPT_RT
++#include <linux/rcuwait.h>
++#endif
 
-x86/sgx/virt: Extract sgx_vepc_remove_page()
+?
 
-For bare-metal SGX on real hardware, the hardware provides guaranteed
-SGX state at reboot.  For instance, all pages start out uninitialized.
-The vepc driver provides a similar guarantee today for freshly-opened
-vepc instances, but guests such as Windows expect all pages to be in
-uninitialized state on startup, including after every guest reboot.
+I needed that for tip-rt to build. It also boots, and futextests are
+happy (whew, futexes hard).
 
-One way to do this is to simply close and reopen the /dev/sgx_vepc file
-descriptor and re-mmap the virtual EPC.  However, this is problematic
-because it prevents sandboxing the userspace (for example forbidding
-open() after the guest starts; this is doable with heavy use of SCM_RIGHTS
-file descriptor passing).
-
-In order to implement this, an ioctl will be needed that performs
-EREMOVE on all pages mapped by a /dev/sgx_vepc file descriptor: other
-possibilities, such as closing and reopening the device, are racy.
-
-Start the implementation by creating a separate function with just
-the __eremove() wrapper.
-
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Link: https://lkml.kernel.org/r/20211012105708.2070480-2-pbonzini@redhat.com
----
- arch/x86/kernel/cpu/sgx/virt.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
-
-diff --git a/arch/x86/kernel/cpu/sgx/virt.c b/arch/x86/kernel/cpu/sgx/virt.c
-index 64511c4..59cdf3f 100644
---- a/arch/x86/kernel/cpu/sgx/virt.c
-+++ b/arch/x86/kernel/cpu/sgx/virt.c
-@@ -111,10 +111,8 @@ static int sgx_vepc_mmap(struct file *file, struct vm_area_struct *vma)
- 	return 0;
- }
- 
--static int sgx_vepc_free_page(struct sgx_epc_page *epc_page)
-+static int sgx_vepc_remove_page(struct sgx_epc_page *epc_page)
- {
--	int ret;
--
- 	/*
- 	 * Take a previously guest-owned EPC page and return it to the
- 	 * general EPC page pool.
-@@ -124,7 +122,12 @@ static int sgx_vepc_free_page(struct sgx_epc_page *epc_page)
- 	 * case that a guest properly EREMOVE'd this page, a superfluous
- 	 * EREMOVE is harmless.
- 	 */
--	ret = __eremove(sgx_get_epc_virt_addr(epc_page));
-+	return __eremove(sgx_get_epc_virt_addr(epc_page));
-+}
-+
-+static int sgx_vepc_free_page(struct sgx_epc_page *epc_page)
-+{
-+	int ret = sgx_vepc_remove_page(epc_page);
- 	if (ret) {
- 		/*
- 		 * Only SGX_CHILD_PRESENT is expected, which is because of
-@@ -144,7 +147,6 @@ static int sgx_vepc_free_page(struct sgx_epc_page *epc_page)
- 	}
- 
- 	sgx_free_epc_page(epc_page);
--
- 	return 0;
- }
- 
+	-Mike
