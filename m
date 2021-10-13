@@ -2,86 +2,213 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D625342C708
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 13 Oct 2021 18:58:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3971142CCFB
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 13 Oct 2021 23:42:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238055AbhJMQ7w (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 13 Oct 2021 12:59:52 -0400
-Received: from mout.gmx.net ([212.227.17.21]:50943 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S238047AbhJMQ7f (ORCPT
+        id S229730AbhJMVor (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 13 Oct 2021 17:44:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37712 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229702AbhJMVor (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 13 Oct 2021 12:59:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1634144237;
-        bh=H0NVNpK0fftAT3BEIq4Q/VjiBME4Ggj1xdbyrhLlOkQ=;
-        h=X-UI-Sender-Class:Subject:From:To:Cc:Date:In-Reply-To:References;
-        b=LRr+HyzCtbWESFIv+4bu0tz/iCA4pq+eCcWDI9UNt9Akm+V7syl/N3UokJTupbtIc
-         rQA2NyPnekrF6/jqJ7jUySP/9p8iauTKt6d4EAQyAvhtTUqvnp8MIgyP6X+FLuI9jO
-         oxGvL7pHRBKIQk/nT2YDu295bG/o4V+wMHemL6Tc=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from homer.fritz.box ([185.221.148.85]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MLQxX-1mILKo2zDv-00ITjh; Wed, 13
- Oct 2021 18:57:17 +0200
-Message-ID: <16b0ac0a69615ecd3ae59b0c32161a0b26b8b3ca.camel@gmx.de>
-Subject: Re: [tip: locking/core] futex: Split out requeue
-From:   Mike Galbraith <efault@gmx.de>
-To:     linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        andrealmeid@collabora.com, x86@kernel.org
-Date:   Wed, 13 Oct 2021 18:57:15 +0200
-In-Reply-To: <163377402732.25758.10591795748827044017.tip-bot2@tip-bot2>
-References: <20210923171111.300673-14-andrealmeid@collabora.com>
-         <163377402732.25758.10591795748827044017.tip-bot2@tip-bot2>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.0 
+        Wed, 13 Oct 2021 17:44:47 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6BE7C061570;
+        Wed, 13 Oct 2021 14:42:43 -0700 (PDT)
+Date:   Wed, 13 Oct 2021 21:42:41 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1634161362;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=6IIsrHKxHFuYkKL8EijlX0RS2UHCeNbh801MLICqzr0=;
+        b=ol8jNUShAj+WJ9MWhuXsjeXj42bESb+mEbDLMSIO3IF8V8uLdGr2yXx1jNzdf5kbW+IBYX
+        g+I1KA7wngjqt0HA5LPQ28F6hyRFjFC0II09CQjmI7ZihqlkAPOlVk9UpRTt/vP2NVRsoM
+        T955lOi3alcOaZlUxB++O+fQhO8wOyectzzAvtKQcV5rQEpD3OTgJxUwKO4UaZ4AF0A7rH
+        RZL1XFJ1+wRji2fyC1Zr5t3nUjgg4k5UI4vYZ3/VhfCZGBW13ibIWSeQkvc228inlYHTTj
+        0hGZe/vU2x48pHbVLFXK4+Q50xXmMvIkkqCF5St4kka1L3ffioDqa8I7ej/Upw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1634161362;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=6IIsrHKxHFuYkKL8EijlX0RS2UHCeNbh801MLICqzr0=;
+        b=Ba3J8E6Pb0LMuhlfhVakAYyEgJXIy9oYqN0EXC5A5R9ENQC85VY/2aA7oBCobfbcqqDQ9r
+        9c2nQaLm5cXm90Bw==
+From:   "tip-bot2 for Michael Forney" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: objtool/urgent] objtool: Update section header before relocations
+Cc:     Michael Forney <mforney@mforney.org>,
+        Miroslav Benes <mbenes@suse.cz>,
+        Josh Poimboeuf <jpoimboe@redhat.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20210509000103.11008-2-mforney@mforney.org>
+References: <20210509000103.11008-2-mforney@mforney.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:Cza89XcjD9J4b/9j4noVjjK/fGwDE7SUc2IiAqxLAFgFrUiw9WW
- dqqJqmfyn5fLoDCmTcSAtjclacxTviWpmawRPfRZ/shiFM5gljWzNokShC/1ra4q9Fai6pq
- tcKPufTOX5EEnhWhjGijM2k1aY5Yk3EudcdN59YQ+aAMWcvTcSvBpS+OvxzSTLS64UcLB5a
- 4MgKT4SJcqYk7FiT32kGQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:kAdNmo8vxGU=:G3gVttsKAvscRBZ8iyZ//M
- xqnl1WFlt5RGhf+dTA2q1YmiKZT2XAbzNpl852gE2Ej+WxznhVDryjgkf0wpxGdXP0qVQa7By
- sAac/TSmQgtWbWv6uSg6ejM7VhpckqVCfbubyx7jk0emYpwZzkZbUgmCzMe17ZZds72lZ8iDV
- BOzc1ctl/9ntQGEzxHKBcymbe1D9IgvFXQ4P7ayueFBqOdpRv1IBW2ng5WpTkKxz518GgqD7B
- +2hI4COI6Wx9CMEDQKcpMKjhN8XwxXSizjWtQW7p2DcpzbIWsJRHuF4Cewr7RqmYiSo6BEThY
- 66yNbBLIYutHpCPJxJGOqSBzK/SrpGYV4woBLHJP0XuCzNNZWra8HjBUYAeOLnCctJYwmuCqE
- 36TlHKW9P8LTycRj2nKtbk3r6jOIVdK4AnZAPR282njWwgjsoa5AM9MeY1eZ3P0E74CJia8u5
- 4mgFQAN7EtcXLkGzG0bbPKLj3qrpWHAnZbh6PZ9ORT0v2MjZ4q6QHQTk2vVUkd+9EVAS+EfSc
- vZna7/JQTXrFF6A7ZbeBW5AgQBVRsjDP6oyk8MxSBzty+P3+8uFRxQv//7ZoVRFgIKwP7NbBj
- r4W56SxDvu6vlxfYzsRD0b5o3vWefDeEL+WMymkDo+sILxFJYRP1yDQIp7IulGcmO3qmvTU16
- HlkLk3BUG+N67iG/w4YMgJsUlyZjLb8VYYeRLkTTZdOY8evjHEcC+RShH/3SHQ0Vzb1H9Tan+
- jdDuYGgL5Bmc97TI5TSAmQU+NagVoz75eLzd5rpdCu7aP2ttJtTItEJHx4xtYYjvJPoYmLeds
- Uq1ju5QZ1j7tdXnO7FO/03wlhFV2LNfJJ4urOPpmDkEC8GoMsz5qW1eJKHwXpJyL1ucCSdA4w
- xod646pnKIWOa4lvINUUr5eoGW07TmwiZuKv3x8NBSEZgvmtuphJ2UqA0jBfmziTCPClV8js6
- FCWaaXEGNurqBg5LwijbNtZaXTCCIJDiFnjVVdqu0amIkq14avLtbWjvM4OIrgpXj6v8lC6e8
- P7clCUfo8f0JyOz+VGKFt7FrNCNqFi4Ly4P+DdgPqtqoe+UO34NMiG/RzARa5suZq7iFewJck
- GmbUuqLBt4lhQY=
+Message-ID: <163416136123.25758.14592305159373285844.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Sat, 2021-10-09 at 10:07 +0000, tip-bot2 for Peter Zijlstra wrote:
->
-> diff --git a/kernel/futex/futex.h b/kernel/futex/futex.h
-> index 4969e96..840302a 100644
-> --- a/kernel/futex/futex.h
-> +++ b/kernel/futex/futex.h
-> @@ -3,6 +3,8 @@
-> =C2=A0#define _FUTEX_H
-> =C2=A0
-> =C2=A0#include <linux/futex.h>
-> +#include <linux/sched/wake_q.h>
+The following commit has been merged into the objtool/urgent branch of tip:
 
-+#ifdef CONFIG_PREEMPT_RT
-+#include <linux/rcuwait.h>
-+#endif
+Commit-ID:     86e1e054e0d2105cf32b0266cf1a64e6c26424f7
+Gitweb:        https://git.kernel.org/tip/86e1e054e0d2105cf32b0266cf1a64e6c26424f7
+Author:        Michael Forney <mforney@mforney.org>
+AuthorDate:    Sat, 08 May 2021 17:01:03 -07:00
+Committer:     Josh Poimboeuf <jpoimboe@redhat.com>
+CommitterDate: Wed, 06 Oct 2021 20:11:57 -07:00
 
-?
+objtool: Update section header before relocations
 
-I needed that for tip-rt to build. It also boots, and futextests are
-happy (whew, futexes hard).
+The libelf implementation from elftoolchain has a safety check in
+gelf_update_rel[a] to check that the data corresponds to a section
+that has type SHT_REL[A] [0]. If the relocation is updated before
+the section header is updated with the proper type, this check
+fails.
 
-	-Mike
+To fix this, update the section header first, before the relocations.
+Previously, the section size was calculated in elf_rebuild_reloc_section
+by counting the number of entries in the reloc_list. However, we
+now need the size during elf_write so instead keep a running total
+and add to it for every new relocation.
+
+[0] https://sourceforge.net/p/elftoolchain/mailman/elftoolchain-developers/thread/CAGw6cBtkZro-8wZMD2ULkwJ39J+tHtTtAWXufMjnd3cQ7XG54g@mail.gmail.com/
+
+Signed-off-by: Michael Forney <mforney@mforney.org>
+Reviewed-by: Miroslav Benes <mbenes@suse.cz>
+Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
+Link: https://lore.kernel.org/r/20210509000103.11008-2-mforney@mforney.org
+---
+ tools/objtool/elf.c | 46 ++++++++++++++++----------------------------
+ 1 file changed, 17 insertions(+), 29 deletions(-)
+
+diff --git a/tools/objtool/elf.c b/tools/objtool/elf.c
+index d1d4491..fee03b7 100644
+--- a/tools/objtool/elf.c
++++ b/tools/objtool/elf.c
+@@ -508,6 +508,7 @@ int elf_add_reloc(struct elf *elf, struct section *sec, unsigned long offset,
+ 	list_add_tail(&reloc->list, &sec->reloc->reloc_list);
+ 	elf_hash_add(reloc, &reloc->hash, reloc_hash(reloc));
+ 
++	sec->reloc->sh.sh_size += sec->reloc->sh.sh_entsize;
+ 	sec->reloc->changed = true;
+ 
+ 	return 0;
+@@ -977,26 +978,23 @@ static struct section *elf_create_reloc_section(struct elf *elf,
+ 	}
+ }
+ 
+-static int elf_rebuild_rel_reloc_section(struct section *sec, int nr)
++static int elf_rebuild_rel_reloc_section(struct section *sec)
+ {
+ 	struct reloc *reloc;
+-	int idx = 0, size;
++	int idx = 0;
+ 	void *buf;
+ 
+ 	/* Allocate a buffer for relocations */
+-	size = nr * sizeof(GElf_Rel);
+-	buf = malloc(size);
++	buf = malloc(sec->sh.sh_size);
+ 	if (!buf) {
+ 		perror("malloc");
+ 		return -1;
+ 	}
+ 
+ 	sec->data->d_buf = buf;
+-	sec->data->d_size = size;
++	sec->data->d_size = sec->sh.sh_size;
+ 	sec->data->d_type = ELF_T_REL;
+ 
+-	sec->sh.sh_size = size;
+-
+ 	idx = 0;
+ 	list_for_each_entry(reloc, &sec->reloc_list, list) {
+ 		reloc->rel.r_offset = reloc->offset;
+@@ -1011,26 +1009,23 @@ static int elf_rebuild_rel_reloc_section(struct section *sec, int nr)
+ 	return 0;
+ }
+ 
+-static int elf_rebuild_rela_reloc_section(struct section *sec, int nr)
++static int elf_rebuild_rela_reloc_section(struct section *sec)
+ {
+ 	struct reloc *reloc;
+-	int idx = 0, size;
++	int idx = 0;
+ 	void *buf;
+ 
+ 	/* Allocate a buffer for relocations with addends */
+-	size = nr * sizeof(GElf_Rela);
+-	buf = malloc(size);
++	buf = malloc(sec->sh.sh_size);
+ 	if (!buf) {
+ 		perror("malloc");
+ 		return -1;
+ 	}
+ 
+ 	sec->data->d_buf = buf;
+-	sec->data->d_size = size;
++	sec->data->d_size = sec->sh.sh_size;
+ 	sec->data->d_type = ELF_T_RELA;
+ 
+-	sec->sh.sh_size = size;
+-
+ 	idx = 0;
+ 	list_for_each_entry(reloc, &sec->reloc_list, list) {
+ 		reloc->rela.r_offset = reloc->offset;
+@@ -1048,16 +1043,9 @@ static int elf_rebuild_rela_reloc_section(struct section *sec, int nr)
+ 
+ static int elf_rebuild_reloc_section(struct elf *elf, struct section *sec)
+ {
+-	struct reloc *reloc;
+-	int nr;
+-
+-	nr = 0;
+-	list_for_each_entry(reloc, &sec->reloc_list, list)
+-		nr++;
+-
+ 	switch (sec->sh.sh_type) {
+-	case SHT_REL:  return elf_rebuild_rel_reloc_section(sec, nr);
+-	case SHT_RELA: return elf_rebuild_rela_reloc_section(sec, nr);
++	case SHT_REL:  return elf_rebuild_rel_reloc_section(sec);
++	case SHT_RELA: return elf_rebuild_rela_reloc_section(sec);
+ 	default:       return -1;
+ 	}
+ }
+@@ -1117,12 +1105,6 @@ int elf_write(struct elf *elf)
+ 	/* Update changed relocation sections and section headers: */
+ 	list_for_each_entry(sec, &elf->sections, list) {
+ 		if (sec->changed) {
+-			if (sec->base &&
+-			    elf_rebuild_reloc_section(elf, sec)) {
+-				WARN("elf_rebuild_reloc_section");
+-				return -1;
+-			}
+-
+ 			s = elf_getscn(elf->elf, sec->idx);
+ 			if (!s) {
+ 				WARN_ELF("elf_getscn");
+@@ -1133,6 +1115,12 @@ int elf_write(struct elf *elf)
+ 				return -1;
+ 			}
+ 
++			if (sec->base &&
++			    elf_rebuild_reloc_section(elf, sec)) {
++				WARN("elf_rebuild_reloc_section");
++				return -1;
++			}
++
+ 			sec->changed = false;
+ 			elf->changed = true;
+ 		}
