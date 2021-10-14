@@ -2,52 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 083FE42D7F1
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 14 Oct 2021 13:16:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ECBB442D7F5
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 14 Oct 2021 13:16:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230032AbhJNLSY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 14 Oct 2021 07:18:24 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:41814 "EHLO
+        id S230365AbhJNLS0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 14 Oct 2021 07:18:26 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:41842 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229513AbhJNLSY (ORCPT
+        with ESMTP id S230246AbhJNLSZ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 14 Oct 2021 07:18:24 -0400
-Date:   Thu, 14 Oct 2021 11:16:17 -0000
+        Thu, 14 Oct 2021 07:18:25 -0400
+Date:   Thu, 14 Oct 2021 11:16:18 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1634210178;
+        s=2020; t=1634210179;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=y5MyxG7fCwcsTwH1dNybKC0jDrFIaBRVOjsoYdFlqjQ=;
-        b=sbPSu3IBatFVN3G7DQdOvxkN7z1J5JOUfiVqaLFznNEAEbnNXP3tmNnCU8BEmS1DKcgdz5
-        w3imaV/xjhjCLRA1W0dRzpS66Yv71NX0Rr/w2O6tHU7nyCpZDTZ4nM6fPbzQgXxdZJ3Q1+
-        jleYYpL+AT4c3EosgbeBLZhcZ7WFN2yL7XdsVA+S3nCxmJ8V0T0bLFUAkehtuDtc4RDnvg
-        A3IjszriOZQ+5ZR0drq4l1BDdotdlzvdU2cy0wM0NMXwkxdxKhD1FWCbg2kVVNAUANZMgG
-        2PZ7a6nyzBxYC88lxsqtOu+38yStx80vLd8/tPA1GJhRnPxh5Pa+EH+RoQxcLw==
+        bh=lSfDRYjVAhYKBi2CxYttpEMHrSSVjZ08QilZrB6ZAs4=;
+        b=ZxajTEY6bJTxFU7RZx/agj6AXQS90crKdolE6TYlPscQ6Z5AjR0NhpLnog70LlOOf9zS0z
+        4piMncWn2tCj+09U/eia9thvPlyDesg7uJ+iCGvdTI2oWSlDkTeMAQdWt4ArwOR/qucemN
+        f2BL/RWj/A1Fv3Kesyu3q9qcG7bWbZ/hvsmil+dAm7wf6oCCSUsoXkA0DEAJ6l28QiTYyz
+        qw7gW2IGY0Aqgb6cXl3i/YsKdG4JQqOjopCUS/Hb8Hs/CX0EH7olN9XiBGZPMEAn+ylLmr
+        UNCXOMBRrwnOCQLqhjuEwGfHS2Ut4W178ApCDQyvOqo4DbkbvVMOZ+RZaW+ubQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1634210178;
+        s=2020e; t=1634210179;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=y5MyxG7fCwcsTwH1dNybKC0jDrFIaBRVOjsoYdFlqjQ=;
-        b=cNV/u5+HlHXXbV0H9Tqv2/iGSBptw+eeWHcv5SZFakSNaATt4gz8kDH48ThXKEiFnKouXG
-        Y3bJPHT+X941fZCw==
-From:   "tip-bot2 for Kees Cook" <tip-bot2@linutronix.de>
+        bh=lSfDRYjVAhYKBi2CxYttpEMHrSSVjZ08QilZrB6ZAs4=;
+        b=e97ueWGi4TLOf3wzvKm8oyWhdlUkkQfyF5fBE9Arzhmz85UStr0EqcgrRb7rqH7G+0ztiH
+        nKdiq5HcQrmoFMCw==
+From:   "tip-bot2 for Yicong Yang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched: Fill unconditional hole induced by sched_entity
-Cc:     Kees Cook <keescook@chromium.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20210924025450.4138503-1-keescook@chromium.org>
-References: <20210924025450.4138503-1-keescook@chromium.org>
+Subject: [tip: sched/core] sched/topology: Remove unused numa_distance in
+ cpu_attach_domain()
+Cc:     Yicong Yang <yangyicong@hisilicon.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Barry Song <baohua@kernel.org>,
+        Valentin Schneider <valentin.schneider@arm.com>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20210915063158.80639-1-yangyicong@hisilicon.com>
+References: <20210915063158.80639-1-yangyicong@hisilicon.com>
 MIME-Version: 1.0
-Message-ID: <163421017704.25758.5310890692010248228.tip-bot2@tip-bot2>
+Message-ID: <163421017898.25758.6737691887512703032.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,73 +61,51 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     804bccba71a57e7e5deb507a4c8ebbab730909c0
-Gitweb:        https://git.kernel.org/tip/804bccba71a57e7e5deb507a4c8ebbab730909c0
-Author:        Kees Cook <keescook@chromium.org>
-AuthorDate:    Thu, 23 Sep 2021 19:54:50 -07:00
+Commit-ID:     f9ec6fea201429b5a3f76319e943989f1a1e25ef
+Gitweb:        https://git.kernel.org/tip/f9ec6fea201429b5a3f76319e943989f1a1e25ef
+Author:        Yicong Yang <yangyicong@hisilicon.com>
+AuthorDate:    Wed, 15 Sep 2021 14:31:58 +08:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Thu, 14 Oct 2021 13:09:58 +02:00
 
-sched: Fill unconditional hole induced by sched_entity
+sched/topology: Remove unused numa_distance in cpu_attach_domain()
 
-With struct sched_entity before the other sched entities, its alignment
-won't induce a struct hole. This saves 64 bytes in defconfig task_struct:
+numa_distance in cpu_attach_domain() is introduced in
+commit b5b217346de8 ("sched/topology: Warn when NUMA diameter > 2")
+to warn user when NUMA diameter > 2 as we'll misrepresent
+the scheduler topology structures at that time. This is
+fixed by Barry in commit 585b6d2723dc ("sched/topology: fix the issue
+groups don't span domain->span for NUMA diameter > 2") and
+numa_distance is unused now. So remove it.
 
-Before:
-	...
-        unsigned int               rt_priority;          /*   120     4 */
-
-        /* XXX 4 bytes hole, try to pack */
-
-        /* --- cacheline 2 boundary (128 bytes) --- */
-        const struct sched_class  * sched_class;         /*   128     8 */
-
-        /* XXX 56 bytes hole, try to pack */
-
-        /* --- cacheline 3 boundary (192 bytes) --- */
-        struct sched_entity        se __attribute__((__aligned__(64))); /*   192   448 */
-        /* --- cacheline 10 boundary (640 bytes) --- */
-        struct sched_rt_entity     rt;                   /*   640    48 */
-        struct sched_dl_entity     dl __attribute__((__aligned__(8))); /*   688   224 */
-        /* --- cacheline 14 boundary (896 bytes) was 16 bytes ago --- */
-
-After:
-	...
-        unsigned int               rt_priority;          /*   120     4 */
-
-        /* XXX 4 bytes hole, try to pack */
-
-        /* --- cacheline 2 boundary (128 bytes) --- */
-        struct sched_entity        se __attribute__((__aligned__(64))); /*   128   448 */
-        /* --- cacheline 9 boundary (576 bytes) --- */
-        struct sched_rt_entity     rt;                   /*   576    48 */
-        struct sched_dl_entity     dl __attribute__((__aligned__(8))); /*   624   224 */
-        /* --- cacheline 13 boundary (832 bytes) was 16 bytes ago --- */
-
-Summary diff:
--	/* size: 7040, cachelines: 110, members: 188 */
-+	/* size: 6976, cachelines: 109, members: 188 */
-
-Signed-off-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20210924025450.4138503-1-keescook@chromium.org
+Reviewed-by: Barry Song <baohua@kernel.org>
+Reviewed-by: Valentin Schneider <valentin.schneider@arm.com>
+Link: https://lore.kernel.org/r/20210915063158.80639-1-yangyicong@hisilicon.com
 ---
- include/linux/sched.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/sched/topology.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/include/linux/sched.h b/include/linux/sched.h
-index 193e16e..343603f 100644
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -775,10 +775,10 @@ struct task_struct {
- 	int				normal_prio;
- 	unsigned int			rt_priority;
+diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
+index c56faae..5af3edd 100644
+--- a/kernel/sched/topology.c
++++ b/kernel/sched/topology.c
+@@ -688,7 +688,6 @@ cpu_attach_domain(struct sched_domain *sd, struct root_domain *rd, int cpu)
+ {
+ 	struct rq *rq = cpu_rq(cpu);
+ 	struct sched_domain *tmp;
+-	int numa_distance = 0;
  
--	const struct sched_class	*sched_class;
- 	struct sched_entity		se;
- 	struct sched_rt_entity		rt;
- 	struct sched_dl_entity		dl;
-+	const struct sched_class	*sched_class;
+ 	/* Remove the sched domains which do not contribute to scheduling. */
+ 	for (tmp = sd; tmp; ) {
+@@ -732,9 +731,6 @@ cpu_attach_domain(struct sched_domain *sd, struct root_domain *rd, int cpu)
+ 		}
+ 	}
  
- #ifdef CONFIG_SCHED_CORE
- 	struct rb_node			core_node;
+-	for (tmp = sd; tmp; tmp = tmp->parent)
+-		numa_distance += !!(tmp->flags & SD_NUMA);
+-
+ 	sched_domain_debug(sd, cpu);
+ 
+ 	rq_attach_root(rq, rd);
