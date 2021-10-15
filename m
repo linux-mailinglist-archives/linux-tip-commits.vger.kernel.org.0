@@ -2,54 +2,50 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E8B242D7FB
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 14 Oct 2021 13:16:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C15642ED1A
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 Oct 2021 11:06:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230447AbhJNLSb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 14 Oct 2021 07:18:31 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:41842 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230370AbhJNLS2 (ORCPT
+        id S236626AbhJOJIc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 15 Oct 2021 05:08:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37104 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236424AbhJOJIa (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 14 Oct 2021 07:18:28 -0400
-Date:   Thu, 14 Oct 2021 11:16:22 -0000
+        Fri, 15 Oct 2021 05:08:30 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC24BC061753;
+        Fri, 15 Oct 2021 02:06:23 -0700 (PDT)
+Date:   Fri, 15 Oct 2021 09:06:20 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1634210183;
+        s=2020; t=1634288781;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=zH3seKDaWZaonrwoUsgAgpKAGBRA0J9C0WdC66iknEo=;
-        b=LSNg8RADO54irUYU+J2WS2IT/0/nXFdxxA89J5iFHMJHYs1twoXjYeQvwhKAf5M0Z2Yuc/
-        CEw8rh2wVGYUuWvNutq2YhYS07MKPqsz676W7G7bU0PC/+Va0dnleAEjkaH7VMokBeNF/+
-        4n4WB3B0go46x18EHJnOuEoJiad9/YtlW/Q74Y53aEhJ0a9+SA7jgDDEhXA6EV26O2P83I
-        3VroN3lOGiIwWYNyRvp3mIF+Ol7qZw8N/hwmnOuj1fvSq8vQU1k/3ga0QluoPsY4muD8Mq
-        4/p4Y1p9ChT4siqvvImKiiHXtQVW/PnNdQXPhmnrUVuQYMR8mISZvOcEVP42lQ==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=+2tGzUuCki1uvCxJfZMZhaA69QU6J2Z00UwYaGmBrck=;
+        b=QyPrnwxwav0j6pdRh445bM/zv0qrCupS/BaEKheXhpRXShgFg+jicmcTOJjN9p1dX7qQPj
+        h0jnyOe7eP5UcvXElVdmVcJgib7BTwNiPPEIFr6BKckrZApZKBmMAuRofuFaz4JitlPW61
+        BpYmgasx/LAWRzi8jo05rYPUpCK5rZ4cbmspz0DWH2ESwJBnre9WTpWqWG8s0RtVScMvVa
+        KU0Gs3+Lf+QkRlY8cz/dmLyP9+c1e5vI5eHs8CILki094LC9Y3EQbf/fxcgeKMj8GYrVxJ
+        chi741/UHFni9RbnJXNKD0BPT15O+Q8IMnyjvfC+2SMW5Ll2txDQ1ssLmRnKVQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1634210183;
+        s=2020e; t=1634288781;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=zH3seKDaWZaonrwoUsgAgpKAGBRA0J9C0WdC66iknEo=;
-        b=tIMnMANlAxPQET5wrw3ONC9REr9L5l553FRlSRC3ArMDEf126cUkSco0CkY2NUFGypHq7O
-        EA/DdWA8CllgIKCA==
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=+2tGzUuCki1uvCxJfZMZhaA69QU6J2Z00UwYaGmBrck=;
+        b=yhwwa3NWMU74eNHNjIP402okqVUHNFtEFOkBd39PZJjHsh+d+yoA/3u3cV40iaFOF0wIUz
+        KKaHlI0o+hyZscBg==
+From:   "tip-bot2 for Zhang Jianhua" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched,livepatch: Use wake_up_if_idle()
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Petr Mladek <pmladek@suse.com>,
-        Miroslav Benes <mbenes@suse.cz>,
-        Vasily Gorbik <gor@linux.ibm.com>, x86@kernel.org,
+Subject: [tip: efi/urgent] efi: Change down_interruptible() in
+ virt_efi_reset_system() to down_trylock()
+Cc:     <stable@vger.kernel.org>, Zhang Jianhua <chris.zjh@huawei.com>,
+        Ard Biesheuvel <ardb@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20210929151723.162004989@infradead.org>
-References: <20210929151723.162004989@infradead.org>
 MIME-Version: 1.0
-Message-ID: <163421018265.25758.5701287622030890933.tip-bot2@tip-bot2>
+Message-ID: <163428878052.25758.826531191991941318.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,61 +54,73 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the efi/urgent branch of tip:
 
-Commit-ID:     5de62ea84abd732ded7c5569426fd71c0420f83e
-Gitweb:        https://git.kernel.org/tip/5de62ea84abd732ded7c5569426fd71c0420f83e
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Tue, 21 Sep 2021 22:16:02 +02:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Thu, 14 Oct 2021 13:09:25 +02:00
+Commit-ID:     38fa3206bf441911258e5001ac8b6738693f8d82
+Gitweb:        https://git.kernel.org/tip/38fa3206bf441911258e5001ac8b6738693f8d82
+Author:        Zhang Jianhua <chris.zjh@huawei.com>
+AuthorDate:    Thu, 23 Sep 2021 10:53:40 +08:00
+Committer:     Ard Biesheuvel <ardb@kernel.org>
+CommitterDate: Tue, 05 Oct 2021 13:07:01 +02:00
 
-sched,livepatch: Use wake_up_if_idle()
+efi: Change down_interruptible() in virt_efi_reset_system() to down_trylock()
 
-Make sure to prod idle CPUs so they call klp_update_patch_state().
+While reboot the system by sysrq, the following bug will be occur.
 
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Petr Mladek <pmladek@suse.com>
-Acked-by: Miroslav Benes <mbenes@suse.cz>
-Acked-by: Vasily Gorbik <gor@linux.ibm.com>
-Tested-by: Petr Mladek <pmladek@suse.com>
-Tested-by: Vasily Gorbik <gor@linux.ibm.com> # on s390
-Link: https://lkml.kernel.org/r/20210929151723.162004989@infradead.org
+BUG: sleeping function called from invalid context at kernel/locking/semaphore.c:90
+in_atomic(): 0, irqs_disabled(): 128, non_block: 0, pid: 10052, name: rc.shutdown
+CPU: 3 PID: 10052 Comm: rc.shutdown Tainted: G        W O      5.10.0 #1
+Call trace:
+ dump_backtrace+0x0/0x1c8
+ show_stack+0x18/0x28
+ dump_stack+0xd0/0x110
+ ___might_sleep+0x14c/0x160
+ __might_sleep+0x74/0x88
+ down_interruptible+0x40/0x118
+ virt_efi_reset_system+0x3c/0xd0
+ efi_reboot+0xd4/0x11c
+ machine_restart+0x60/0x9c
+ emergency_restart+0x1c/0x2c
+ sysrq_handle_reboot+0x1c/0x2c
+ __handle_sysrq+0xd0/0x194
+ write_sysrq_trigger+0xbc/0xe4
+ proc_reg_write+0xd4/0xf0
+ vfs_write+0xa8/0x148
+ ksys_write+0x6c/0xd8
+ __arm64_sys_write+0x18/0x28
+ el0_svc_common.constprop.3+0xe4/0x16c
+ do_el0_svc+0x1c/0x2c
+ el0_svc+0x20/0x30
+ el0_sync_handler+0x80/0x17c
+ el0_sync+0x158/0x180
+
+The reason for this problem is that irq has been disabled in
+machine_restart() and then it calls down_interruptible() in
+virt_efi_reset_system(), which would occur sleep in irq context,
+it is dangerous! Commit 99409b935c9a("locking/semaphore: Add
+might_sleep() to down_*() family") add might_sleep() in
+down_interruptible(), so the bug info is here. down_trylock()
+can solve this problem, cause there is no might_sleep.
+
+--------
+
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Zhang Jianhua <chris.zjh@huawei.com>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- include/linux/sched/idle.h    | 4 ++++
- kernel/livepatch/transition.c | 5 ++++-
- 2 files changed, 8 insertions(+), 1 deletion(-)
+ drivers/firmware/efi/runtime-wrappers.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/sched/idle.h b/include/linux/sched/idle.h
-index 22873d2..d73d314 100644
---- a/include/linux/sched/idle.h
-+++ b/include/linux/sched/idle.h
-@@ -11,7 +11,11 @@ enum cpu_idle_type {
- 	CPU_MAX_IDLE_TYPES
- };
- 
-+#ifdef CONFIG_SMP
- extern void wake_up_if_idle(int cpu);
-+#else
-+static inline void wake_up_if_idle(int cpu) { }
-+#endif
- 
- /*
-  * Idle thread specific functions to determine the need_resched
-diff --git a/kernel/livepatch/transition.c b/kernel/livepatch/transition.c
-index 75251e9..5683ac0 100644
---- a/kernel/livepatch/transition.c
-+++ b/kernel/livepatch/transition.c
-@@ -413,8 +413,11 @@ void klp_try_complete_transition(void)
- 	for_each_possible_cpu(cpu) {
- 		task = idle_task(cpu);
- 		if (cpu_online(cpu)) {
--			if (!klp_try_switch_task(task))
-+			if (!klp_try_switch_task(task)) {
- 				complete = false;
-+				/* Make idle task go through the main loop. */
-+				wake_up_if_idle(cpu);
-+			}
- 		} else if (task->patch_state != klp_target_state) {
- 			/* offline idle tasks can be switched immediately */
- 			clear_tsk_thread_flag(task, TIF_PATCH_PENDING);
+diff --git a/drivers/firmware/efi/runtime-wrappers.c b/drivers/firmware/efi/runtime-wrappers.c
+index 1410bea..f3e54f6 100644
+--- a/drivers/firmware/efi/runtime-wrappers.c
++++ b/drivers/firmware/efi/runtime-wrappers.c
+@@ -414,7 +414,7 @@ static void virt_efi_reset_system(int reset_type,
+ 				  unsigned long data_size,
+ 				  efi_char16_t *data)
+ {
+-	if (down_interruptible(&efi_runtime_lock)) {
++	if (down_trylock(&efi_runtime_lock)) {
+ 		pr_warn("failed to invoke the reset_system() runtime service:\n"
+ 			"could not get exclusive access to the firmware\n");
+ 		return;
