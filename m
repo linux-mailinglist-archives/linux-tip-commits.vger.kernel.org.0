@@ -2,104 +2,105 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ADF9C42EEA6
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 Oct 2021 12:16:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 093E1430290
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 16 Oct 2021 14:22:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237929AbhJOKSg (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 15 Oct 2021 06:18:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53482 "EHLO
+        id S240387AbhJPMYn (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 16 Oct 2021 08:24:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37182 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237894AbhJOKSe (ORCPT
+        with ESMTP id S235147AbhJPMYn (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 15 Oct 2021 06:18:34 -0400
+        Sat, 16 Oct 2021 08:24:43 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46FE5C061753;
-        Fri, 15 Oct 2021 03:16:27 -0700 (PDT)
-Date:   Fri, 15 Oct 2021 10:16:25 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02782C061570;
+        Sat, 16 Oct 2021 05:22:34 -0700 (PDT)
+Date:   Sat, 16 Oct 2021 12:22:31 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1634292986;
+        s=2020; t=1634386952;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=Bmg97JKUcyzet1kFgFTdjKQLYMVhBefL/dVN2V8koko=;
-        b=UKgjm7y1mpk8tYuNjuIEz7E8iqsgffL/+qIKA0NJ7ZeM/KweXe1Sv2j6i5kDitYgqenbp2
-        TwwP28jYzZzd2orBDae9+wFe8N7rCC97LsTQWKHxELN6NzCuVcQWsHaHPf4/nPY2e0mfZ0
-        56hFP+C1GnjEGzcDjoXh0RE4mLVLnGqdQPdunzq0NCX7OULTwL/+CMScBfbMPP5soTQ8zn
-        wyVtBb9zqUcUECHZQPSmW5+OVxf9T+B/UTopzMFmcJBfgMG1ccNCjBbT07jcstzyrvh35y
-        7NDwWhXbMfl/5yK7Su68dGUb3fJClGPF9o2qSL/60NPD95+zoUjj2OesWzPwWg==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=PAajLHzkK+bz/d1vGmfCT4vXEyfeEfkH7hLzQJ3hlBk=;
+        b=LFEYoZzg8rMl1VAiqNczs4I0l5tJm3esM8io65zJX40/OWp5CyCQBKWSPh/sRtOHaidVEP
+        9KwDJIXq4bKGCnrc7EUvA5jEVRWyrbYPOcfKULnwLRJY2EkqoNAdmQXsCfWhPsnpKrPXPB
+        xJfMRqNMLTs56W3hvJooo9udF/k4OT4YzWQ/XPvEqlFbE+w0awI/Z7bMKwOk1p64vlBWqo
+        RZv1nVSJ4XcVXRDuCAJdd4JTUS6Dh8hq4ZcW+66svmDRRxA2+yBu+g6XK0b1jE2qKmkxoI
+        n7Tuwq/bjKbVmE4R2IIz3kQRDeH0voT60niL3NENq6dlNeXV68A2qG8ZwSKMNQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1634292986;
+        s=2020e; t=1634386952;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=Bmg97JKUcyzet1kFgFTdjKQLYMVhBefL/dVN2V8koko=;
-        b=VHUmMbc479fjKwZTNvEbUieIvvig4c1Pyl+ifGLRgwhAbxFAg/RhfHekVLaHJvHTU3Kn7r
-        NC9UutRKfIMp8mBQ==
-From:   "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=PAajLHzkK+bz/d1vGmfCT4vXEyfeEfkH7hLzQJ3hlBk=;
+        b=KnqC0+7gnsp+r+o310imQ+wY/sOt0J4cVQMmLWefoki0BfCxh4zEk010IB4OipDZF2SVlA
+        V+OXpQedI9R0SXDQ==
+From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: efi/core] efi: Disable runtime services on RT
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Ard Biesheuvel <ardb@kernel.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
+Subject: [tip: x86/urgent] x86/fpu: Mask out the invalid MXCSR bits properly
+Cc:     Borislav Petkov <bp@suse.de>, ville.syrjala@linux.intel.com,
+        Ser Olmy <ser.olmy@protonmail.com>, <stable@vger.kernel.org>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <YWgYIYXLriayyezv@intel.com>
+References: <YWgYIYXLriayyezv@intel.com>
 MIME-Version: 1.0
-Message-ID: <163429298558.25758.6363484092944199023.tip-bot2@tip-bot2>
+Message-ID: <163438695111.25758.6599528756955601567.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the efi/core branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     d9f283ae71afef6560a7101c0a31d7ddb5b0f29a
-Gitweb:        https://git.kernel.org/tip/d9f283ae71afef6560a7101c0a31d7ddb5b0f29a
-Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-AuthorDate:    Fri, 24 Sep 2021 15:49:18 +02:00
-Committer:     Ard Biesheuvel <ardb@kernel.org>
-CommitterDate: Tue, 28 Sep 2021 22:43:53 +02:00
+Commit-ID:     b2381acd3fd9bacd2c63f53b2c610c89959b31cc
+Gitweb:        https://git.kernel.org/tip/b2381acd3fd9bacd2c63f53b2c610c89959=
+b31cc
+Author:        Borislav Petkov <bp@suse.de>
+AuthorDate:    Fri, 15 Oct 2021 12:46:25 +02:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Sat, 16 Oct 2021 12:37:50 +02:00
 
-efi: Disable runtime services on RT
+x86/fpu: Mask out the invalid MXCSR bits properly
 
-Based on measurements the EFI functions get_variable /
-get_next_variable take up to 2us which looks okay.
-The functions get_time, set_time take around 10ms. These 10ms are too
-much. Even one ms would be too much.
-Ard mentioned that SetVariable might even trigger larger latencies if
-the firmware will erase flash blocks on NOR.
+This is a fix for the fix (yeah, /facepalm).
 
-The time-functions are used by efi-rtc and can be triggered during
-run-time (either via explicit read/write or ntp sync).
+The correct mask to use is not the negation of the MXCSR_MASK but the
+actual mask which contains the supported bits in the MXCSR register.
 
-The variable write could be used by pstore.
-These functions can be disabled without much of a loss. The poweroff /
-reboot hooks may be provided by PSCI.
+Reported and debugged by Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.c=
+om>
 
-Disable EFI's runtime wrappers on PREEMPT_RT.
-
-This was observed on "EFI v2.60 by SoftIron Overdrive 1000".
-
-Acked-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Fixes: d298b03506d3 ("x86/fpu: Restore the masking out of reserved MXCSR bits=
+")
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Tested-by: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
+Tested-by: Ser Olmy <ser.olmy@protonmail.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/YWgYIYXLriayyezv@intel.com
 ---
- drivers/firmware/efi/efi.c | 2 +-
+ arch/x86/kernel/fpu/signal.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-index 847f33f..39031cf 100644
---- a/drivers/firmware/efi/efi.c
-+++ b/drivers/firmware/efi/efi.c
-@@ -66,7 +66,7 @@ struct mm_struct efi_mm = {
- 
- struct workqueue_struct *efi_rts_wq;
- 
--static bool disable_runtime;
-+static bool disable_runtime = IS_ENABLED(CONFIG_PREEMPT_RT);
- static int __init setup_noefi(char *arg)
- {
- 	disable_runtime = true;
+diff --git a/arch/x86/kernel/fpu/signal.c b/arch/x86/kernel/fpu/signal.c
+index fa17a27..831b25c 100644
+--- a/arch/x86/kernel/fpu/signal.c
++++ b/arch/x86/kernel/fpu/signal.c
+@@ -385,7 +385,7 @@ static int __fpu_restore_sig(void __user *buf, void __use=
+r *buf_fx,
+ 				return -EINVAL;
+ 		} else {
+ 			/* Mask invalid bits out for historical reasons (broken hardware). */
+-			fpu->state.fxsave.mxcsr &=3D ~mxcsr_feature_mask;
++			fpu->state.fxsave.mxcsr &=3D mxcsr_feature_mask;
+ 		}
+=20
+ 		/* Enforce XFEATURE_MASK_FPSSE when XSAVE is enabled */
