@@ -2,20 +2,17 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 402A843372A
+	by mail.lfdr.de (Postfix) with ESMTP id D6F2443372D
 	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 Oct 2021 15:36:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235743AbhJSNik (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 19 Oct 2021 09:38:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52484 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231616AbhJSNik (ORCPT
+        id S235791AbhJSNil (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 19 Oct 2021 09:38:41 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:45840 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231564AbhJSNik (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Tue, 19 Oct 2021 09:38:40 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 283B5C06161C;
-        Tue, 19 Oct 2021 06:36:26 -0700 (PDT)
-Date:   Tue, 19 Oct 2021 13:36:23 -0000
+Date:   Tue, 19 Oct 2021 13:36:24 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1634650585;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -23,12 +20,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=H9vpxmc3uoQ8BzIH6Nuu1RVcNf73jIVZb5PSf9M3I+k=;
-        b=sXycVEHeQCfBmTUNG9uBHQULwgUIT6TzsDn3MdPw7ZeBe7gkKpVOPJxivGWQsc4YXoVlUM
-        9f5X6dB3/OBQRsnzKJJTkdURUJTTIwDfetxoY7E0z7uaoj2RgOTw4Nt4+ncaAw9AMfIzrp
-        ypJxnnT04TlnAEmqV9iDa9zwQjXCnkt4iSBuAR/nJo+kGEaZ9jiFdV9xbAYZUPZ9zlYzlf
-        zrXeH7ZUqpjjSoXLjYH4geMO/QDCCsL2YSdfPq62Qceke6AZwBZ5lzxmXjoIrVzLjSABHW
-        rtBUF2BJ5mKbJjb9QvDMFwO1vI7UabSJ6woJi5sJenu5C5iHwTquGjG9TvYUEw==
+        bh=ddMplWsx5Jnv3cNbAH/TPxYeco5WlIjAVBoZfAiLe7s=;
+        b=DMk3Nz83OnUtWembeKAdGitVg478FyURRez2Kpku0ODa9dtLP+/Isi9/LeHw6LHbrIZwb5
+        5UYdEYxMa8Rxid/Zr0FM4TmJiTcKFNKJ+wG1jrbsR2c5XRICFOw9nF7kMaXeUggeu2KYo6
+        knnNE48k+VsnGrbJq+T2cG0Kn96wA1CZtaX7nSzG3qulu0wIif/hU9BdeiffC+mKEerzY5
+        HVCURmU0aD8+U/I61e42qN4fKchnOK4QfebRjet1Xy5mv3ED6yB4WJzWDK9HdZmhEBChMT
+        N8Ik050bHmrOph3C65EUeSo7oNKCe0429QLmK5jlTn/eB3nhAHHW2VEOqBvbMA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1634650585;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,26 +33,20 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=H9vpxmc3uoQ8BzIH6Nuu1RVcNf73jIVZb5PSf9M3I+k=;
-        b=+dh2SRXsJDtKxX9us6obRvON0aD2CJ32gl4cQZ4weOkgN8WMeJMmzyvAdZV1VSvSEK3Urx
-        Jl4eJUEX7kF1ImCg==
-From:   "tip-bot2 for Tom Lendacky" <tip-bot2@linutronix.de>
+        bh=ddMplWsx5Jnv3cNbAH/TPxYeco5WlIjAVBoZfAiLe7s=;
+        b=SUXncjcu03fipAPS/n+zK+qz4tZOvOA+4oPKuG4/cM5FCQQ/4/Y/ZGfxw2clLI+5yDd91p
+        cdAmvrlfSdlCRwCQ==
+From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/sev] x86/sme: Use #define USE_EARLY_PGTABLE_L5 in
- mem_encrypt_identity.c
-Cc:     Tom Lendacky <thomas.lendacky@amd.com>,
-        Borislav Petkov <bp@suse.de>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        <stable@vger.kernel.org>, x86@kernel.org,
+Subject: [tip: x86/sev] x86/sev: Carve out HV call's return value verification
+Cc:     Borislav Petkov <bp@suse.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: =?utf-8?q?=3C2cb8329655f5c753905812d951e212022a480475=2E16343?=
- =?utf-8?q?18656=2Egit=2Ethomas=2Elendacky=40amd=2Ecom=3E?=
-References: =?utf-8?q?=3C2cb8329655f5c753905812d951e212022a480475=2E163431?=
- =?utf-8?q?8656=2Egit=2Ethomas=2Elendacky=40amd=2Ecom=3E?=
+In-Reply-To: <YVbYWz%2B8J7iMTJjc@zn.tnic>
+References: <YVbYWz%2B8J7iMTJjc@zn.tnic>
 MIME-Version: 1.0
-Message-ID: <163465058366.25758.3434027960137456326.tip-bot2@tip-bot2>
+Message-ID: <163465058466.25758.6018389976856003730.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,61 +57,102 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/sev branch of tip:
 
-Commit-ID:     e7d445ab26db833d6640d4c9a08bee176777cc82
-Gitweb:        https://git.kernel.org/tip/e7d445ab26db833d6640d4c9a08bee176777cc82
-Author:        Tom Lendacky <thomas.lendacky@amd.com>
-AuthorDate:    Fri, 15 Oct 2021 12:24:16 -05:00
+Commit-ID:     c688bd5dc94ee2677f820e4a566fbe98018847ff
+Gitweb:        https://git.kernel.org/tip/c688bd5dc94ee2677f820e4a566fbe98018847ff
+Author:        Borislav Petkov <bp@suse.de>
+AuthorDate:    Fri, 01 Oct 2021 11:41:05 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 19 Oct 2021 14:07:17 +02:00
+CommitterDate: Tue, 19 Oct 2021 13:54:47 +02:00
 
-x86/sme: Use #define USE_EARLY_PGTABLE_L5 in mem_encrypt_identity.c
+x86/sev: Carve out HV call's return value verification
 
-When runtime support for converting between 4-level and 5-level pagetables
-was added to the kernel, the SME code that built pagetables was updated
-to use the pagetable functions, e.g. p4d_offset(), etc., in order to
-simplify the code. However, the use of the pagetable functions in early
-boot code requires the use of the USE_EARLY_PGTABLE_L5 #define in order to
-ensure that the proper definition of pgtable_l5_enabled() is used.
+Carve out the verification of the HV call return value into a separate
+helper and make it more readable.
 
-Without the #define, pgtable_l5_enabled() is #defined as
-cpu_feature_enabled(X86_FEATURE_LA57). In early boot, the CPU features
-have not yet been discovered and populated, so pgtable_l5_enabled() will
-return false even when 5-level paging is enabled. This causes the SME code
-to always build 4-level pagetables to perform the in-place encryption.
-If 5-level paging is enabled, switching to the SME pagetables results in
-a page-fault that kills the boot.
+No functional changes.
 
-Adding the #define results in pgtable_l5_enabled() using the
-__pgtable_l5_enabled variable set in early boot and the SME code building
-pagetables for the proper paging level.
-
-Fixes: aad983913d77 ("x86/mm/encrypt: Simplify sme_populate_pgd() and sme_populate_pgd_large()")
-Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Cc: <stable@vger.kernel.org> # 4.18.x
-Link: https://lkml.kernel.org/r/2cb8329655f5c753905812d951e212022a480475.1634318656.git.thomas.lendacky@amd.com
+Link: https://lore.kernel.org/r/YVbYWz%2B8J7iMTJjc@zn.tnic
 ---
- arch/x86/mm/mem_encrypt_identity.c |  9 +++++++++
- 1 file changed, 9 insertions(+)
+ arch/x86/kernel/sev-shared.c | 53 +++++++++++++++++++----------------
+ 1 file changed, 29 insertions(+), 24 deletions(-)
 
-diff --git a/arch/x86/mm/mem_encrypt_identity.c b/arch/x86/mm/mem_encrypt_identity.c
-index 470b202..700ce8f 100644
---- a/arch/x86/mm/mem_encrypt_identity.c
-+++ b/arch/x86/mm/mem_encrypt_identity.c
-@@ -27,6 +27,15 @@
- #undef CONFIG_PARAVIRT_XXL
- #undef CONFIG_PARAVIRT_SPINLOCKS
+diff --git a/arch/x86/kernel/sev-shared.c b/arch/x86/kernel/sev-shared.c
+index bf1033a..4579c38 100644
+--- a/arch/x86/kernel/sev-shared.c
++++ b/arch/x86/kernel/sev-shared.c
+@@ -94,25 +94,15 @@ static void vc_finish_insn(struct es_em_ctxt *ctxt)
+ 	ctxt->regs->ip += ctxt->insn.length;
+ }
  
-+/*
-+ * This code runs before CPU feature bits are set. By default, the
-+ * pgtable_l5_enabled() function uses bit X86_FEATURE_LA57 to determine if
-+ * 5-level paging is active, so that won't work here. USE_EARLY_PGTABLE_L5
-+ * is provided to handle this situation and, instead, use a variable that
-+ * has been set by the early boot code.
-+ */
-+#define USE_EARLY_PGTABLE_L5
+-static enum es_result sev_es_ghcb_hv_call(struct ghcb *ghcb,
+-					  struct es_em_ctxt *ctxt,
+-					  u64 exit_code, u64 exit_info_1,
+-					  u64 exit_info_2)
++static enum es_result verify_exception_info(struct ghcb *ghcb, struct es_em_ctxt *ctxt)
+ {
+-	enum es_result ret;
++	u32 ret;
+ 
+-	/* Fill in protocol and format specifiers */
+-	ghcb->protocol_version = GHCB_PROTOCOL_MAX;
+-	ghcb->ghcb_usage       = GHCB_DEFAULT_USAGE;
++	ret = ghcb->save.sw_exit_info_1 & GENMASK_ULL(31, 0);
++	if (!ret)
++		return ES_OK;
+ 
+-	ghcb_set_sw_exit_code(ghcb, exit_code);
+-	ghcb_set_sw_exit_info_1(ghcb, exit_info_1);
+-	ghcb_set_sw_exit_info_2(ghcb, exit_info_2);
+-
+-	sev_es_wr_ghcb_msr(__pa(ghcb));
+-	VMGEXIT();
+-
+-	if ((ghcb->save.sw_exit_info_1 & 0xffffffff) == 1) {
++	if (ret == 1) {
+ 		u64 info = ghcb->save.sw_exit_info_2;
+ 		unsigned long v;
+ 
+@@ -124,19 +114,34 @@ static enum es_result sev_es_ghcb_hv_call(struct ghcb *ghcb,
+ 		    ((v == X86_TRAP_GP) || (v == X86_TRAP_UD)) &&
+ 		    ((info & SVM_EVTINJ_TYPE_MASK) == SVM_EVTINJ_TYPE_EXEPT)) {
+ 			ctxt->fi.vector = v;
 +
- #include <linux/kernel.h>
- #include <linux/mm.h>
- #include <linux/mem_encrypt.h>
+ 			if (info & SVM_EVTINJ_VALID_ERR)
+ 				ctxt->fi.error_code = info >> 32;
+-			ret = ES_EXCEPTION;
+-		} else {
+-			ret = ES_VMM_ERROR;
++
++			return ES_EXCEPTION;
+ 		}
+-	} else if (ghcb->save.sw_exit_info_1 & 0xffffffff) {
+-		ret = ES_VMM_ERROR;
+-	} else {
+-		ret = ES_OK;
+ 	}
+ 
+-	return ret;
++	return ES_VMM_ERROR;
++}
++
++static enum es_result sev_es_ghcb_hv_call(struct ghcb *ghcb,
++					  struct es_em_ctxt *ctxt,
++					  u64 exit_code, u64 exit_info_1,
++					  u64 exit_info_2)
++{
++	/* Fill in protocol and format specifiers */
++	ghcb->protocol_version = GHCB_PROTOCOL_MAX;
++	ghcb->ghcb_usage       = GHCB_DEFAULT_USAGE;
++
++	ghcb_set_sw_exit_code(ghcb, exit_code);
++	ghcb_set_sw_exit_info_1(ghcb, exit_info_1);
++	ghcb_set_sw_exit_info_2(ghcb, exit_info_2);
++
++	sev_es_wr_ghcb_msr(__pa(ghcb));
++	VMGEXIT();
++
++	return verify_exception_info(ghcb, ctxt);
+ }
+ 
+ /*
