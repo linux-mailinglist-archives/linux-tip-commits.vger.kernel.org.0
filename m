@@ -2,54 +2,51 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B862C436564
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 21 Oct 2021 17:12:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0EEE5436565
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 21 Oct 2021 17:12:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231890AbhJUPOy (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 21 Oct 2021 11:14:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49562 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231891AbhJUPOs (ORCPT
+        id S231864AbhJUPOz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 21 Oct 2021 11:14:55 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:60782 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231887AbhJUPOt (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 21 Oct 2021 11:14:48 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E25CEC061348;
-        Thu, 21 Oct 2021 08:12:32 -0700 (PDT)
-Date:   Thu, 21 Oct 2021 15:12:30 -0000
+        Thu, 21 Oct 2021 11:14:49 -0400
+Date:   Thu, 21 Oct 2021 15:12:31 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1634829151;
+        s=2020; t=1634829152;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=qJMw53f+phiMRL6URP59CAjuawKMUXWtEKTAGr1dtRc=;
-        b=x3L0mXsFnY9wBopTqjmTTYsN7EkTMlbvUx6u0diI1tNPK7KhypwJ8fy53meruP3BRy5zJd
-        2cVaIXOOf4fkHIjwP4kRW7uW/AmVLNqylLiSA1p03EXaxUXYVOMa+5ZSSqyibTEMsET3SY
-        YvGIg1a0+LznaJJnVMaOvaOWZnBdOEYWY+5+JH/cbT+y4ZBQ19dl5IoAraPgKPyiaflSdV
-        +kkBsDwIR+/lMtwZdr2wa57cH5+TFPGxRmPJ3a0OXbWr1fWMLspFqIe8kS8HqbUeNNg7VB
-        1bqwJVzCDagJ9X9EU016ehknpD/qtpRmq5vXYTivkGU8vH5Qjufjtxx8PV2skQ==
+        bh=JWmMIgje3kCNVNAM6KyVr+i7erC+6mI2PBaCTEQcScw=;
+        b=nlcySJ4O9IZFhbSiwNZyURrOrulKgnlFyexJ61lFhui1tLYYDcck7kjoHgOV4LicFhjwDj
+        rH/TUL2nScY13WS4vHpKlAjQUdhoY8uGBRdNcg8qS/m2XUr29O7V7F4Cb9qw6VB3Navam+
+        q+UJueFRTggKinj0SUQZUXAXJKSTOMC2f62hF3jHPWxE6PuzAOfuQuvcEWmaFIQRZqIU6w
+        O4pIVsfiGyKzS9AEuBXdQPYWs5CDyKqFjYPgI2oXrv5UrCaRLYcrZF69ZEvwlOrVyNg97E
+        bjiaQzeyjsCD+nMDl6gv2BahJyb55jh++4L7Csgbw7/HiDSRlC65XeaFaZpyag==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1634829151;
+        s=2020e; t=1634829152;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=qJMw53f+phiMRL6URP59CAjuawKMUXWtEKTAGr1dtRc=;
-        b=iO3Rn8JyZpZ5F2y3ejQ9S55z5xgGjvaLsas9mFCgHdNpQy+uD0PbMBf3DvyrSUoZ241Vct
-        r0ihWiTWNM16NDAg==
+        bh=JWmMIgje3kCNVNAM6KyVr+i7erC+6mI2PBaCTEQcScw=;
+        b=ht9FocV2p2KNMPbKt5qaqO2DA87l7C1Dcnbb2sbHopuWLgc7x+volTsmdw/IBT063QThnY
+        nptQPSb+rHJzzHBw==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/fpu] x86/fpu: Remove fpu::state
+Subject: [tip: x86/fpu] x86/math-emu: Convert to fpstate
 Cc:     Thomas Gleixner <tglx@linutronix.de>, Borislav Petkov <bp@suse.de>,
         x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20211013145322.765063318@linutronix.de>
-References: <20211013145322.765063318@linutronix.de>
+In-Reply-To: <20211013145322.711347464@linutronix.de>
+References: <20211013145322.711347464@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <163482915071.25758.11992072412602139420.tip-bot2@tip-bot2>
+Message-ID: <163482915140.25758.6638128318451756940.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,69 +57,74 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/fpu branch of tip:
 
-Commit-ID:     2f27b5034244c4ebd70c90066defa771a99a5320
-Gitweb:        https://git.kernel.org/tip/2f27b5034244c4ebd70c90066defa771a99a5320
+Commit-ID:     63d6bdf36ce1541e656966604c12ac4d9fc5d1f0
+Gitweb:        https://git.kernel.org/tip/63d6bdf36ce1541e656966604c12ac4d9fc5d1f0
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Wed, 13 Oct 2021 16:55:42 +02:00
+AuthorDate:    Wed, 13 Oct 2021 16:55:40 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Wed, 20 Oct 2021 23:58:29 +02:00
+CommitterDate: Wed, 20 Oct 2021 23:57:54 +02:00
 
-x86/fpu: Remove fpu::state
+x86/math-emu: Convert to fpstate
 
-All users converted. Remove it along with the sanity checks.
+Convert math emulation code to the new register storage
+mechanism in preparation for dynamically sized buffers.
+
+No functional change.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20211013145322.765063318@linutronix.de
+Link: https://lkml.kernel.org/r/20211013145322.711347464@linutronix.de
 ---
- arch/x86/include/asm/fpu/types.h | 18 +++++++-----------
- arch/x86/kernel/fpu/init.c       |  4 ----
- 2 files changed, 7 insertions(+), 15 deletions(-)
+ arch/x86/math-emu/fpu_aux.c    | 2 +-
+ arch/x86/math-emu/fpu_entry.c  | 4 ++--
+ arch/x86/math-emu/fpu_system.h | 2 +-
+ 3 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/include/asm/fpu/types.h b/arch/x86/include/asm/fpu/types.h
-index 3bb6277..297e3b4 100644
---- a/arch/x86/include/asm/fpu/types.h
-+++ b/arch/x86/include/asm/fpu/types.h
-@@ -352,20 +352,16 @@ struct fpu {
- 	struct fpstate			*fpstate;
+diff --git a/arch/x86/math-emu/fpu_aux.c b/arch/x86/math-emu/fpu_aux.c
+index 0347484..d62662b 100644
+--- a/arch/x86/math-emu/fpu_aux.c
++++ b/arch/x86/math-emu/fpu_aux.c
+@@ -53,7 +53,7 @@ void fpstate_init_soft(struct swregs_state *soft)
  
- 	/*
--	 * @state:
-+	 * @__fpstate:
- 	 *
--	 * In-memory copy of all FPU registers that we save/restore
--	 * over context switches. If the task is using the FPU then
--	 * the registers in the FPU are more recent than this state
--	 * copy. If the task context-switches away then they get
--	 * saved here and represent the FPU state.
-+	 * Initial in-memory storage for FPU registers which are saved in
-+	 * context switch and when the kernel uses the FPU. The registers
-+	 * are restored from this storage on return to user space if they
-+	 * are not longer containing the tasks FPU register state.
- 	 */
--	union {
--		struct fpstate			__fpstate;
--		union fpregs_state		state;
--	};
-+	struct fpstate			__fpstate;
- 	/*
--	 * WARNING: 'state' is dynamically-sized.  Do not put
-+	 * WARNING: '__fpstate' is dynamically-sized.  Do not put
- 	 * anything after it here.
- 	 */
- };
-diff --git a/arch/x86/kernel/fpu/init.c b/arch/x86/kernel/fpu/init.c
-index b524cd0..cffbaf4 100644
---- a/arch/x86/kernel/fpu/init.c
-+++ b/arch/x86/kernel/fpu/init.c
-@@ -184,10 +184,6 @@ static void __init fpu__init_task_struct_size(void)
- 	CHECK_MEMBER_AT_END_OF(struct thread_struct, fpu);
- 	CHECK_MEMBER_AT_END_OF(struct task_struct, thread);
- 
--	BUILD_BUG_ON(sizeof(struct fpstate) != sizeof(union fpregs_state));
--	BUILD_BUG_ON(offsetof(struct thread_struct, fpu.state) !=
--		     offsetof(struct thread_struct, fpu.__fpstate));
--
- 	arch_task_struct_size = task_size;
+ void finit(void)
+ {
+-	fpstate_init_soft(&current->thread.fpu.state.soft);
++	fpstate_init_soft(&current->thread.fpu.fpstate->regs.soft);
  }
  
+ /*
+diff --git a/arch/x86/math-emu/fpu_entry.c b/arch/x86/math-emu/fpu_entry.c
+index 50195e2..7fe56c5 100644
+--- a/arch/x86/math-emu/fpu_entry.c
++++ b/arch/x86/math-emu/fpu_entry.c
+@@ -640,7 +640,7 @@ int fpregs_soft_set(struct task_struct *target,
+ 		    unsigned int pos, unsigned int count,
+ 		    const void *kbuf, const void __user *ubuf)
+ {
+-	struct swregs_state *s387 = &target->thread.fpu.state.soft;
++	struct swregs_state *s387 = &target->thread.fpu.fpstate->regs.soft;
+ 	void *space = s387->st_space;
+ 	int ret;
+ 	int offset, other, i, tags, regnr, tag, newtop;
+@@ -691,7 +691,7 @@ int fpregs_soft_get(struct task_struct *target,
+ 		    const struct user_regset *regset,
+ 		    struct membuf to)
+ {
+-	struct swregs_state *s387 = &target->thread.fpu.state.soft;
++	struct swregs_state *s387 = &target->thread.fpu.fpstate->regs.soft;
+ 	const void *space = s387->st_space;
+ 	int offset = (S387->ftop & 7) * 10, other = 80 - offset;
+ 
+diff --git a/arch/x86/math-emu/fpu_system.h b/arch/x86/math-emu/fpu_system.h
+index 9b41391..eec3e48 100644
+--- a/arch/x86/math-emu/fpu_system.h
++++ b/arch/x86/math-emu/fpu_system.h
+@@ -73,7 +73,7 @@ static inline bool seg_writable(struct desc_struct *d)
+ 	return (d->type & SEG_TYPE_EXECUTE_MASK) == SEG_TYPE_WRITABLE;
+ }
+ 
+-#define I387			(&current->thread.fpu.state)
++#define I387			(&current->thread.fpu.fpstate->regs)
+ #define FPU_info		(I387->soft.info)
+ 
+ #define FPU_CS			(*(unsigned short *) &(FPU_info->regs->cs))
