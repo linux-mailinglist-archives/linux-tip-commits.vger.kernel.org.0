@@ -2,213 +2,152 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A64F6436BE0
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 21 Oct 2021 22:16:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 46AAA436D64
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 22 Oct 2021 00:23:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231503AbhJUUSl (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 21 Oct 2021 16:18:41 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:34174 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231873AbhJUUSk (ORCPT
+        id S231515AbhJUWZ0 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 21 Oct 2021 18:25:26 -0400
+Received: from szxga01-in.huawei.com ([45.249.212.187]:13968 "EHLO
+        szxga01-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230500AbhJUWZ0 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 21 Oct 2021 16:18:40 -0400
-Date:   Thu, 21 Oct 2021 20:16:21 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1634847383;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=I8oVPU2ecfm2x4YzUDO5qmLIA/yFKhNaAVEG0PFeDYI=;
-        b=xKaYpCx1567ghXI0eF7MDsI8FBN4kkTBVdxFXBG3vPUx5/mJ4V/C6BEVU0oFYITCKRDAIq
-        O/7W/jW+aauBZ3rUht+cbvn+g+KVWzJmKli87DHrNTryWqan0fW4JZaUAGLCRqLQv3jTPz
-        b6nkCPSYNSGt7WheL4jzNakNv10wvAJIIpXlVLWBP5oYh+rEStcLYDSO42A3o2Hj+ehmZE
-        x0+HeUGWR1tkJO/+2+2bbSKvzaRGaGU8e4R6GtGYBuCXCS5SQ9XrM3jaNdbqeXFE0apVl7
-        +rYVpFLZvfmFKx/Ft9llhfq/hYEyzOdnFgHdCxJkbBD1C22tc08X/K4r2HEl6Q==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1634847383;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=I8oVPU2ecfm2x4YzUDO5qmLIA/yFKhNaAVEG0PFeDYI=;
-        b=IC6yuEEOAnrRN8Z9DPlnIuhB8u58JhSvfRLzeYghcaKyhiDSQfheOimXxgc+0qn2M7ikQs
-        F4OjSmLqT/SGdkCw==
-From:   "tip-bot2 for Jane Malalane" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cpu] x86/cpu: Fix migration safety with X86_BUG_NULL_SEL
-Cc:     Jane Malalane <jane.malalane@citrix.com>,
-        Borislav Petkov <bp@suse.de>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20211021104744.24126-1-jane.malalane@citrix.com>
-References: <20211021104744.24126-1-jane.malalane@citrix.com>
+        Thu, 21 Oct 2021 18:25:26 -0400
+Received: from dggemv704-chm.china.huawei.com (unknown [172.30.72.54])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4Hb24v2pgTzZcJc;
+        Fri, 22 Oct 2021 06:21:19 +0800 (CST)
+Received: from kwepemm000014.china.huawei.com (7.193.23.6) by
+ dggemv704-chm.china.huawei.com (10.3.19.47) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.15; Fri, 22 Oct 2021 06:23:07 +0800
+Received: from kwepemm600014.china.huawei.com (7.193.23.54) by
+ kwepemm000014.china.huawei.com (7.193.23.6) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.15; Fri, 22 Oct 2021 06:23:07 +0800
+Received: from kwepemm600014.china.huawei.com ([7.193.23.54]) by
+ kwepemm600014.china.huawei.com ([7.193.23.54]) with mapi id 15.01.2308.015;
+ Fri, 22 Oct 2021 06:23:07 +0800
+From:   "Song Bao Hua (Barry Song)" <song.bao.hua@hisilicon.com>
+To:     Peter Zijlstra <peterz@infradead.org>,
+        Barry Song <21cnbao@gmail.com>
+CC:     Tom Lendacky <thomas.lendacky@amd.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        "linux-tip-commits@vger.kernel.org" 
+        <linux-tip-commits@vger.kernel.org>,
+        Tim Chen <tim.c.chen@linux.intel.com>, x86 <x86@kernel.org>
+Subject: RE: [tip: sched/core] sched: Add cluster scheduler level for x86
+Thread-Topic: [tip: sched/core] sched: Add cluster scheduler level for x86
+Thread-Index: AQHXwalo/RpU/FhCiUKur45aRWVHFKvbXu+AgABvY4CAAATMgIAABMEAgAAC94CAAAFLAIAA6F0AgAAvmgCAARqoMA==
+Date:   Thu, 21 Oct 2021 22:23:07 +0000
+Message-ID: <73dec318e90d45ae93f2931f0e25171b@hisilicon.com>
+References: <20210924085104.44806-4-21cnbao@gmail.com>
+ <163429109791.25758.3107620034958821511.tip-bot2@tip-bot2>
+ <9e7b0c92-5a3b-8099-8c69-83a9d62aced4@amd.com>
+ <20211020195131.GT174703@worktop.programming.kicks-ass.net>
+ <df3f2127-47be-cfd6-9c19-5f0aacf014f4@amd.com>
+ <20211020202542.GU174703@worktop.programming.kicks-ass.net>
+ <20211020203619.GC174730@worktop.programming.kicks-ass.net>
+ <20211020204056.GD174730@worktop.programming.kicks-ass.net>
+ <CAGsJ_4xNYz8ZpLz_1Fyd-FzTWG9HuoONqCGApX+to5Zpw5P67g@mail.gmail.com>
+ <YXFpsiw16OeQEtFQ@hirez.programming.kicks-ass.net>
+In-Reply-To: <YXFpsiw16OeQEtFQ@hirez.programming.kicks-ass.net>
+Accept-Language: en-GB, zh-CN, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.126.203.9]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Message-ID: <163484738198.25758.4229009775942106574.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cpu branch of tip:
 
-Commit-ID:     415de44076640483648d6c0f6d645a9ee61328ad
-Gitweb:        https://git.kernel.org/tip/415de44076640483648d6c0f6d645a9ee61328ad
-Author:        Jane Malalane <jane.malalane@citrix.com>
-AuthorDate:    Thu, 21 Oct 2021 11:47:44 +01:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Thu, 21 Oct 2021 20:49:16 +02:00
 
-x86/cpu: Fix migration safety with X86_BUG_NULL_SEL
+> -----Original Message-----
+> From: Peter Zijlstra [mailto:peterz@infradead.org]
+> Sent: Friday, October 22, 2021 2:23 AM
+> To: Barry Song <21cnbao@gmail.com>
+> Cc: Tom Lendacky <thomas.lendacky@amd.com>; LKML
+> <linux-kernel@vger.kernel.org>; linux-tip-commits@vger.kernel.org; Tim Chen
+> <tim.c.chen@linux.intel.com>; Song Bao Hua (Barry Song)
+> <song.bao.hua@hisilicon.com>; x86 <x86@kernel.org>
+> Subject: Re: [tip: sched/core] sched: Add cluster scheduler level for x86
+> 
+> On Thu, Oct 21, 2021 at 11:32:36PM +1300, Barry Song wrote:
+> > On Thu, Oct 21, 2021 at 9:43 AM Peter Zijlstra <peterz@infradead.org> wrote:
+> > >
+> > > On Wed, Oct 20, 2021 at 10:36:19PM +0200, Peter Zijlstra wrote:
+> > >
+> > > > OK, I think I see what's happening.
+> > > >
+> > > > AFAICT cacheinfo.c does *NOT* set l2c_id on AMD/Hygon hardware, this
+> > > > means it's set to BAD_APICID.
+> > > >
+> > > > This then results in match_l2c() to never match. And as a direct
+> > > > consequence set_cpu_sibling_map() will generate cpu_l2c_shared_mask with
+> > > > just the one CPU set.
+> > > >
+> > > > And we have the above result and things come unstuck if we assume:
+> > > >   SMT <= L2 <= LLC
+> > > >
+> > > > Now, the big question, how to fix this... Does AMD have means of
+> > > > actually setting l2c_id or should we fall back to using match_smt() for
+> > > > l2c_id == BAD_APICID ?
+> > >
+> > > The latter looks something like the below and ought to make EPYC at
+> > > least function as it did before.
+> > >
+> > >
+> > > ---
+> > >  arch/x86/kernel/smpboot.c | 2 +-
+> > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > >
+> > > diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
+> > > index 849159797101..c2671b2333d1 100644
+> > > --- a/arch/x86/kernel/smpboot.c
+> > > +++ b/arch/x86/kernel/smpboot.c
+> > > @@ -472,7 +472,7 @@ static bool match_l2c(struct cpuinfo_x86 *c, struct
+> cpuinfo_x86 *o)
+> > >
+> > >         /* Do not match if we do not have a valid APICID for cpu: */
+> > >         if (per_cpu(cpu_l2c_id, cpu1) == BAD_APICID)
+> > > -               return false;
+> > > +               return match_smt(c, o); /* assume at least SMT shares L2 */
+> >
+> > Rather than making a fake cluster_cpus and cluster_cpus_list which
+> > will expose to userspace
+> > through /sys/devices/cpus/cpux/topology, could we just fix the
+> > sched_domain mask by the
+> > below?
+> 
+> I don't think it's fake; SMT fundamentally has to share all cache
+> levels. And having the sched domains differ in setup from the reported
+> (nonsensical) topology also isn't appealing.
 
-Currently, Linux probes for X86_BUG_NULL_SEL unconditionally which
-makes it unsafe to migrate in a virtualised environment as the
-properties across the migration pool might differ.
+Fair enough. I was actually inspired by cpu_coregroup_mask() which
+is a combination of a couple of cpumask set:
+drivers/base/arch_topology.c
 
-To be specific, the case which goes wrong is:
+const struct cpumask *cpu_coregroup_mask(int cpu)
+{
+	const cpumask_t *core_mask = cpumask_of_node(cpu_to_node(cpu));
 
-1. Zen1 (or earlier) and Zen2 (or later) in a migration pool
-2. Linux boots on Zen2, probes and finds the absence of X86_BUG_NULL_SEL
-3. Linux is then migrated to Zen1
+	/* Find the smaller of NUMA, core or LLC siblings */
+	if (cpumask_subset(&cpu_topology[cpu].core_sibling, core_mask)) {
+		/* not numa in package, lets use the package siblings */
+		core_mask = &cpu_topology[cpu].core_sibling;
+	}
+	if (cpu_topology[cpu].llc_id != -1) {
+		if (cpumask_subset(&cpu_topology[cpu].llc_sibling, core_mask))
+			core_mask = &cpu_topology[cpu].llc_sibling;
+	}
 
-Linux is now running on a X86_BUG_NULL_SEL-impacted CPU while believing
-that the bug is fixed.
+	return core_mask;
+}
 
-The only way to address the problem is to fully trust the "no longer
-affected" CPUID bit when virtualised, because in the above case it would
-be clear deliberately to indicate the fact "you might migrate to
-somewhere which has this behaviour".
+Thanks
+Barry
 
-Zen3 adds the NullSelectorClearsBase CPUID bit to indicate that loading
-a NULL segment selector zeroes the base and limit fields, as well as
-just attributes. Zen2 also has this behaviour but doesn't have the NSCB
-bit.
-
- [ bp: Minor touchups. ]
-
-Signed-off-by: Jane Malalane <jane.malalane@citrix.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-CC: <stable@vger.kernel.org>
-Link: https://lkml.kernel.org/r/20211021104744.24126-1-jane.malalane@citrix.com
----
- arch/x86/kernel/cpu/amd.c    |  2 ++-
- arch/x86/kernel/cpu/common.c | 44 +++++++++++++++++++++++++++++------
- arch/x86/kernel/cpu/cpu.h    |  1 +-
- arch/x86/kernel/cpu/hygon.c  |  2 ++-
- 4 files changed, 42 insertions(+), 7 deletions(-)
-
-diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
-index 2131af9..4edb6f0 100644
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -989,6 +989,8 @@ static void init_amd(struct cpuinfo_x86 *c)
- 	if (cpu_has(c, X86_FEATURE_IRPERF) &&
- 	    !cpu_has_amd_erratum(c, amd_erratum_1054))
- 		msr_set_bit(MSR_K7_HWCR, MSR_K7_HWCR_IRPERF_EN_BIT);
-+
-+	check_null_seg_clears_base(c);
- }
- 
- #ifdef CONFIG_X86_32
-diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index 325d602..1bfeb18 100644
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -1397,9 +1397,8 @@ void __init early_cpu_init(void)
- 	early_identify_cpu(&boot_cpu_data);
- }
- 
--static void detect_null_seg_behavior(struct cpuinfo_x86 *c)
-+static bool detect_null_seg_behavior(void)
- {
--#ifdef CONFIG_X86_64
- 	/*
- 	 * Empirically, writing zero to a segment selector on AMD does
- 	 * not clear the base, whereas writing zero to a segment
-@@ -1420,10 +1419,43 @@ static void detect_null_seg_behavior(struct cpuinfo_x86 *c)
- 	wrmsrl(MSR_FS_BASE, 1);
- 	loadsegment(fs, 0);
- 	rdmsrl(MSR_FS_BASE, tmp);
--	if (tmp != 0)
--		set_cpu_bug(c, X86_BUG_NULL_SEG);
- 	wrmsrl(MSR_FS_BASE, old_base);
--#endif
-+	return tmp == 0;
-+}
-+
-+void check_null_seg_clears_base(struct cpuinfo_x86 *c)
-+{
-+	/* BUG_NULL_SEG is only relevant with 64bit userspace */
-+	if (!IS_ENABLED(CONFIG_X86_64))
-+		return;
-+
-+	/* Zen3 CPUs advertise Null Selector Clears Base in CPUID. */
-+	if (c->extended_cpuid_level >= 0x80000021 &&
-+	    cpuid_eax(0x80000021) & BIT(6))
-+		return;
-+
-+	/*
-+	 * CPUID bit above wasn't set. If this kernel is still running
-+	 * as a HV guest, then the HV has decided not to advertize
-+	 * that CPUID bit for whatever reason.	For example, one
-+	 * member of the migration pool might be vulnerable.  Which
-+	 * means, the bug is present: set the BUG flag and return.
-+	 */
-+	if (cpu_has(c, X86_FEATURE_HYPERVISOR)) {
-+		set_cpu_bug(c, X86_BUG_NULL_SEG);
-+		return;
-+	}
-+
-+	/*
-+	 * Zen2 CPUs also have this behaviour, but no CPUID bit.
-+	 * 0x18 is the respective family for Hygon.
-+	 */
-+	if ((c->x86 == 0x17 || c->x86 == 0x18) &&
-+	    detect_null_seg_behavior())
-+		return;
-+
-+	/* All the remaining ones are affected */
-+	set_cpu_bug(c, X86_BUG_NULL_SEG);
- }
- 
- static void generic_identify(struct cpuinfo_x86 *c)
-@@ -1459,8 +1491,6 @@ static void generic_identify(struct cpuinfo_x86 *c)
- 
- 	get_model_name(c); /* Default name */
- 
--	detect_null_seg_behavior(c);
--
- 	/*
- 	 * ESPFIX is a strange bug.  All real CPUs have it.  Paravirt
- 	 * systems that run Linux at CPL > 0 may or may not have the
-diff --git a/arch/x86/kernel/cpu/cpu.h b/arch/x86/kernel/cpu/cpu.h
-index 9552130..ee6f23f 100644
---- a/arch/x86/kernel/cpu/cpu.h
-+++ b/arch/x86/kernel/cpu/cpu.h
-@@ -75,6 +75,7 @@ extern int detect_extended_topology_early(struct cpuinfo_x86 *c);
- extern int detect_extended_topology(struct cpuinfo_x86 *c);
- extern int detect_ht_early(struct cpuinfo_x86 *c);
- extern void detect_ht(struct cpuinfo_x86 *c);
-+extern void check_null_seg_clears_base(struct cpuinfo_x86 *c);
- 
- unsigned int aperfmperf_get_khz(int cpu);
- 
-diff --git a/arch/x86/kernel/cpu/hygon.c b/arch/x86/kernel/cpu/hygon.c
-index 6d50136..3fcdda4 100644
---- a/arch/x86/kernel/cpu/hygon.c
-+++ b/arch/x86/kernel/cpu/hygon.c
-@@ -335,6 +335,8 @@ static void init_hygon(struct cpuinfo_x86 *c)
- 	/* Hygon CPUs don't reset SS attributes on SYSRET, Xen does. */
- 	if (!cpu_has(c, X86_FEATURE_XENPV))
- 		set_cpu_bug(c, X86_BUG_SYSRET_SS_ATTRS);
-+
-+	check_null_seg_clears_base(c);
- }
- 
- static void cpu_detect_tlb_hygon(struct cpuinfo_x86 *c)
