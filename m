@@ -2,17 +2,20 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 13C0F436562
+	by mail.lfdr.de (Postfix) with ESMTP id 61053436563
 	for <lists+linux-tip-commits@lfdr.de>; Thu, 21 Oct 2021 17:12:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231897AbhJUPOt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 21 Oct 2021 11:14:49 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:60788 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231769AbhJUPOq (ORCPT
+        id S231839AbhJUPOx (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 21 Oct 2021 11:14:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49558 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231880AbhJUPOs (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 21 Oct 2021 11:14:46 -0400
-Date:   Thu, 21 Oct 2021 15:12:29 -0000
+        Thu, 21 Oct 2021 11:14:48 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 380A5C0613B9;
+        Thu, 21 Oct 2021 08:12:32 -0700 (PDT)
+Date:   Thu, 21 Oct 2021 15:12:30 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1634829150;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -20,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=biD6AN3t4iq1yWmfuTYmVcGuzbrNHHwHgg6DwTq9Gik=;
-        b=HI1EArdXcKJnivUJ5QY2W773iTtTEL0YZzRdw0yorc/1BUlYO+cqjkNBD3oO4KD3KGpmCR
-        IVYJjSXpK/yS/jg2DsQyYJswDXTMDiBb77M/iB15eQMmkifBz6VU48quoTgj6NEgzvoXJW
-        RdcAr82526ahLLJOLWNHhIVXp+EDjrDjqwJ94jK1Q9GDbmF/fZN0eVTZRQbzMYUpyil1Bb
-        RFwDZAvUeRcZEgkvoBnvimwDHX0zLOqVQHp2sMZgBD4Y0G2wkC27FSWaaQaH0f/GRPM5bh
-        dtfg6AIWhdfialg/wZheltWII5V5egPubmbkPXw/LMVKUi82v8/OguIZkRBxkA==
+        bh=5MVvkxsX+NFR6SZcqmBzIAL0XMaytlycG9PiXLVFtBM=;
+        b=USo6RIX01DPh2R3+e8/apV8j8LQHV+H1hZy9c2LZ4FZ8J0xnVAYBXIdFxSv3m0SddcM+VP
+        7MVcoCN6bv8FAOTj6B59j7S7I6CcljLThaRe4xzxhyEnsXlD2KdLw2j8WhPXbKewwArjw5
+        2s/yYY90WFmHKPKvD6JZh+6MspNrm3lFiQeQazSe4kPAKQGvyssbUCLndnxvYZQtF6PKgs
+        LuohMsCGk8vpqrNFdRwjuqgW7ATQ6gsNCIdXCzj1yqIi4WnLML1aBdmNkJlHH4uAdgsKcw
+        Itj+2zjBXiikLQBgLwTCk1TEgCcQfTKYwGHubFMEotUvcjHVKOnhXgulDgy7cg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1634829150;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -33,20 +36,20 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=biD6AN3t4iq1yWmfuTYmVcGuzbrNHHwHgg6DwTq9Gik=;
-        b=tM0Jtk8KPkNEzC0wwjTRK5NGs13bsEe5TGjZhsqcuKS65zDnkYN19PsVTF1XERI6kVjYQm
-        rmy+1qLh6DlSIGBA==
+        bh=5MVvkxsX+NFR6SZcqmBzIAL0XMaytlycG9PiXLVFtBM=;
+        b=WKJYm8aJazjI5a9k4TR48FaX7wSrnnZUvQy9tqgSGhQN7VBbXevvU7qBhePOJj8pk/A0O6
+        4Pnb2MIwHpqSamBw==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/fpu] x86/process: Move arch_thread_struct_whitelist() out of line
+Subject: [tip: x86/fpu] x86/fpu: Do not leak fpstate pointer on fork
 Cc:     Thomas Gleixner <tglx@linutronix.de>, Borislav Petkov <bp@suse.de>,
         x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20211013145322.869001791@linutronix.de>
-References: <20211013145322.869001791@linutronix.de>
+In-Reply-To: <20211013145322.817101108@linutronix.de>
+References: <20211013145322.817101108@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <163482914934.25758.14955770516847538749.tip-bot2@tip-bot2>
+Message-ID: <163482915002.25758.6686457809921904021.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -57,88 +60,41 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/fpu branch of tip:
 
-Commit-ID:     2dd8eedc80b184bb16aad697ae60367c5bf07299
-Gitweb:        https://git.kernel.org/tip/2dd8eedc80b184bb16aad697ae60367c5bf07299
+Commit-ID:     f0cbc8b3cdf7d1c724155cd9cecffe329bb96119
+Gitweb:        https://git.kernel.org/tip/f0cbc8b3cdf7d1c724155cd9cecffe329bb96119
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Wed, 13 Oct 2021 16:55:45 +02:00
+AuthorDate:    Wed, 13 Oct 2021 16:55:43 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Thu, 21 Oct 2021 09:33:41 +02:00
+CommitterDate: Thu, 21 Oct 2021 09:32:41 +02:00
 
-x86/process: Move arch_thread_struct_whitelist() out of line
+x86/fpu: Do not leak fpstate pointer on fork
 
-In preparation for dynamically enabled FPU features move the function
-out of line as the goal is to expose less and not more information.
+If fork fails early then the copied task struct would carry the fpstate
+pointer of the parent task.
+
+Not a problem right now, but later when dynamically allocated buffers
+are available, keeping the pointer might result in freeing the
+parent's buffer. Set it to NULL which prevents that. If fork reaches
+clone_thread(), the pointer will be correctly set to the new task
+context.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20211013145322.869001791@linutronix.de
+Link: https://lkml.kernel.org/r/20211013145322.817101108@linutronix.de
 ---
- arch/x86/include/asm/processor.h |  9 +++------
- arch/x86/kernel/fpu/core.c       | 10 ++++++++++
- arch/x86/kernel/fpu/internal.h   |  2 ++
- 3 files changed, 15 insertions(+), 6 deletions(-)
+ arch/x86/kernel/process.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
-index 4519d33..1bd3e8d 100644
---- a/arch/x86/include/asm/processor.h
-+++ b/arch/x86/include/asm/processor.h
-@@ -461,9 +461,6 @@ DECLARE_PER_CPU(struct irq_stack *, hardirq_stack_ptr);
- DECLARE_PER_CPU(struct irq_stack *, softirq_stack_ptr);
- #endif	/* !X86_64 */
- 
--extern unsigned int fpu_kernel_xstate_size;
--extern unsigned int fpu_user_xstate_size;
--
- struct perf_event;
- 
- struct thread_struct {
-@@ -537,12 +534,12 @@ struct thread_struct {
- 	 */
- };
- 
--/* Whitelist the FPU register state from the task_struct for hardened usercopy. */
-+extern void fpu_thread_struct_whitelist(unsigned long *offset, unsigned long *size);
-+
- static inline void arch_thread_struct_whitelist(unsigned long *offset,
- 						unsigned long *size)
- {
--	*offset = offsetof(struct thread_struct, fpu.__fpstate.regs);
--	*size = fpu_kernel_xstate_size;
-+	fpu_thread_struct_whitelist(offset, size);
+diff --git a/arch/x86/kernel/process.c b/arch/x86/kernel/process.c
+index 5cd8208..c74c7e8 100644
+--- a/arch/x86/kernel/process.c
++++ b/arch/x86/kernel/process.c
+@@ -87,6 +87,8 @@ int arch_dup_task_struct(struct task_struct *dst, struct task_struct *src)
+ #ifdef CONFIG_VM86
+ 	dst->thread.vm86 = NULL;
+ #endif
++	/* Drop the copied pointer to current's fpstate */
++	dst->thread.fpu.fpstate = NULL;
+ 	return 0;
  }
  
- static inline void
-diff --git a/arch/x86/kernel/fpu/core.c b/arch/x86/kernel/fpu/core.c
-index 14560fd..c6df975 100644
---- a/arch/x86/kernel/fpu/core.c
-+++ b/arch/x86/kernel/fpu/core.c
-@@ -405,6 +405,16 @@ int fpu_clone(struct task_struct *dst)
- }
- 
- /*
-+ * Whitelist the FPU register state embedded into task_struct for hardened
-+ * usercopy.
-+ */
-+void fpu_thread_struct_whitelist(unsigned long *offset, unsigned long *size)
-+{
-+	*offset = offsetof(struct thread_struct, fpu.__fpstate.regs);
-+	*size = fpu_kernel_xstate_size;
-+}
-+
-+/*
-  * Drops current FPU state: deactivates the fpregs and
-  * the fpstate. NOTE: it still leaves previous contents
-  * in the fpregs in the eager-FPU case.
-diff --git a/arch/x86/kernel/fpu/internal.h b/arch/x86/kernel/fpu/internal.h
-index e1d8a35..5c4f71f 100644
---- a/arch/x86/kernel/fpu/internal.h
-+++ b/arch/x86/kernel/fpu/internal.h
-@@ -2,6 +2,8 @@
- #ifndef __X86_KERNEL_FPU_INTERNAL_H
- #define __X86_KERNEL_FPU_INTERNAL_H
- 
-+extern unsigned int fpu_kernel_xstate_size;
-+extern unsigned int fpu_user_xstate_size;
- extern struct fpstate init_fpstate;
- 
- /* CPU feature check wrappers */
