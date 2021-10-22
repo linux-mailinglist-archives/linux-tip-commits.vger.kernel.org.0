@@ -2,17 +2,20 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E094F437C5B
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 22 Oct 2021 19:58:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 79743437C5D
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 22 Oct 2021 19:59:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232936AbhJVSBQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 22 Oct 2021 14:01:16 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:40816 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233278AbhJVSBQ (ORCPT
+        id S233955AbhJVSBS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 22 Oct 2021 14:01:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45612 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233278AbhJVSBS (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 22 Oct 2021 14:01:16 -0400
-Date:   Fri, 22 Oct 2021 17:58:55 -0000
+        Fri, 22 Oct 2021 14:01:18 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A22FEC061764;
+        Fri, 22 Oct 2021 10:59:00 -0700 (PDT)
+Date:   Fri, 22 Oct 2021 17:58:56 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1634925537;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -20,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=sCcpap8OVe3PPIHU8LWOB8VyXxCtSLtVw5cEKKnSTnY=;
-        b=dJ/e1xxyzXGJiMBwcbtyXwJLka6n310ezkco2TK9nWQGnYixLyrmbaWe2cV28TIBGGitOj
-        ZAYQqP1pO08wvB7G1sVRN0HvSJw5TmWPrcVbGuiU7fSy1IP5suN98rwL+pUqmL6ytx1pdp
-        u7itTOu0ig6Rru4VmSH79wl+NVjQW7pcMnuybY77f6nPu1EB5Wy384+SEkMIbjwYgNB/Jt
-        pbVcKJ6eOyIrGd7UUdF7qqSWFdko4Ke8tRHnkgtRwEKG387sgniXiAafVchj3y+IoRF1Qw
-        YWvXpdInoUtclpe1efS7gjH8mvLHl/zk0C73wYWGvca4PklIifqJQofN9Q261Q==
+        bh=Nhe4mHxk08itAma4b2EHBCAyffbnDrJfV4Yu4cCu7Jw=;
+        b=Qh0TCZzAWuAX7SpbU4udtnYMZjgwH3citmlXSzkIxeonN4xoPJf5cigENIeR5di+IOGMez
+        bYBupcWqb8GiQOQTJFN7tXQEeAuk7qD7z56B46nvB/KsBwRaG1E/lVwmalbxKmoHRtP6Pt
+        y7jxJunRJJavg4Bl5VH6S2D0uRSep91oMCu6ett0JB8AgwrHtPPgIGvYzh2NczuOoLNhUh
+        7lQAGyfCsjQ3GcYCJLF2eMABs9V5zdl7VjAeT60MyyE4G4yuV1XLeWxcJxb2/+XrOyOZOI
+        SVBBfBhNN5X6CDRGnzhxshSelEa56hH9hwjjgitBuEhv5HSo9ToIuHwIoDDK7w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1634925537;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -33,23 +36,22 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=sCcpap8OVe3PPIHU8LWOB8VyXxCtSLtVw5cEKKnSTnY=;
-        b=bjRBRef1aHst1RhocHLaaOQwFA+QrqmzNXQfiQpqdDjK3RJ12MIaa+RIKr3UEaGUZvi7kd
-        Zgu3Sa3lnXt0uyDA==
+        bh=Nhe4mHxk08itAma4b2EHBCAyffbnDrJfV4Yu4cCu7Jw=;
+        b=612pysDJ/9CGQ2MIib3AYHui1dZCF/4kbMtt+4JuP0x1kJhCdeIahPRE70fd7urEUSOVXU
+        +5s2B0my+lrmSCBQ==
 From:   "tip-bot2 for Paolo Bonzini" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/sgx] x86/sgx/virt: implement SGX_IOC_VEPC_REMOVE ioctl
+Subject: [tip: x86/sgx] x86/sgx/virt: extract sgx_vepc_remove_page
 Cc:     Jarkko Sakkinen <jarkko@kernel.org>,
         Dave Hansen <dave.hansen@linux.intel.com>,
-        Sean Christopherson <seanjc@google.com>,
         Paolo Bonzini <pbonzini@redhat.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20211021201155.1523989-3-pbonzini@redhat.com>
-References: <20211021201155.1523989-3-pbonzini@redhat.com>
+In-Reply-To: <20211021201155.1523989-2-pbonzini@redhat.com>
+References: <20211021201155.1523989-2-pbonzini@redhat.com>
 MIME-Version: 1.0
-Message-ID: <163492553586.626.6203146268884288075.tip-bot2@tip-bot2>
+Message-ID: <163492553677.626.4984122142334893368.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,14 +62,14 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/sgx branch of tip:
 
-Commit-ID:     ae095b16fc652f459e6c16a256834985c85ecc4d
-Gitweb:        https://git.kernel.org/tip/ae095b16fc652f459e6c16a256834985c85ecc4d
+Commit-ID:     fd5128e622d7834bb3f7ee23c2bbea8db63cebaf
+Gitweb:        https://git.kernel.org/tip/fd5128e622d7834bb3f7ee23c2bbea8db63cebaf
 Author:        Paolo Bonzini <pbonzini@redhat.com>
-AuthorDate:    Thu, 21 Oct 2021 16:11:55 -04:00
+AuthorDate:    Thu, 21 Oct 2021 16:11:54 -04:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Fri, 22 Oct 2021 08:32:12 -07:00
+CommitterDate: Fri, 22 Oct 2021 08:30:09 -07:00
 
-x86/sgx/virt: implement SGX_IOC_VEPC_REMOVE ioctl
+x86/sgx/virt: extract sgx_vepc_remove_page
 
 For bare-metal SGX on real hardware, the hardware provides guarantees
 SGX state at reboot.  For instance, all pages start out uninitialized.
@@ -75,160 +77,64 @@ The vepc driver provides a similar guarantee today for freshly-opened
 vepc instances, but guests such as Windows expect all pages to be in
 uninitialized state on startup, including after every guest reboot.
 
-Some userspace implementations of virtual SGX would rather avoid having
-to close and reopen the /dev/sgx_vepc file descriptor and re-mmap the
-virtual EPC.  For example, they could sandbox themselves after the guest
-starts and forbid further calls to open(), in order to mitigate exploits
-from untrusted guests.
+One way to do this is to simply close and reopen the /dev/sgx_vepc file
+descriptor and re-mmap the virtual EPC.  However, this is problematic
+because it prevents sandboxing the userspace (for example forbidding
+open() after the guest starts; this is doable with heavy use of SCM_RIGHTS
+file descriptor passing).
 
-Therefore, add a ioctl that does this with EREMOVE.  Userspace can
-invoke the ioctl to bring its vEPC pages back to uninitialized state.
-There is a possibility that some pages fail to be removed if they are
-SECS pages, and the child and SECS pages could be in separate vEPC
-regions.  Therefore, the ioctl returns the number of EREMOVE failures,
-telling userspace to try the ioctl again after it's done with all
-vEPC regions.  A more verbose description of the correct usage and
-the possible error conditions is documented in sgx.rst.
+In order to implement this, we will need a ioctl that performs
+EREMOVE on all pages mapped by a /dev/sgx_vepc file descriptor:
+other possibilities, such as closing and reopening the device,
+are racy.
+
+Start the implementation by creating a separate function with just
+the __eremove wrapper.
 
 Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
 Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lkml.kernel.org/r/20211021201155.1523989-3-pbonzini@redhat.com
+Link: https://lkml.kernel.org/r/20211021201155.1523989-2-pbonzini@redhat.com
 ---
- Documentation/x86/sgx.rst       | 35 +++++++++++++++++++++-
- arch/x86/include/uapi/asm/sgx.h |  2 +-
- arch/x86/kernel/cpu/sgx/virt.c  | 53 ++++++++++++++++++++++++++++++++-
- 3 files changed, 90 insertions(+)
+ arch/x86/kernel/cpu/sgx/virt.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/Documentation/x86/sgx.rst b/Documentation/x86/sgx.rst
-index dd0ac96..a608f66 100644
---- a/Documentation/x86/sgx.rst
-+++ b/Documentation/x86/sgx.rst
-@@ -250,3 +250,38 @@ user wants to deploy SGX applications both on the host and in guests
- on the same machine, the user should reserve enough EPC (by taking out
- total virtual EPC size of all SGX VMs from the physical EPC size) for
- host SGX applications so they can run with acceptable performance.
-+
-+Architectural behavior is to restore all EPC pages to an uninitialized
-+state also after a guest reboot.  Because this state can be reached only
-+through the privileged ``ENCLS[EREMOVE]`` instruction, ``/dev/sgx_vepc``
-+provides the ``SGX_IOC_VEPC_REMOVE_ALL`` ioctl to execute the instruction
-+on all pages in the virtual EPC.
-+
-+``EREMOVE`` can fail for three reasons.  Userspace must pay attention
-+to expected failures and handle them as follows:
-+
-+1. Page removal will always fail when any thread is running in the
-+   enclave to which the page belongs.  In this case the ioctl will
-+   return ``EBUSY`` independent of whether it has successfully removed
-+   some pages; userspace can avoid these failures by preventing execution
-+   of any vcpu which maps the virtual EPC.
-+
-+2. Page removal will cause a general protection fault if two calls to
-+   ``EREMOVE`` happen concurrently for pages that refer to the same
-+   "SECS" metadata pages.  This can happen if there are concurrent
-+   invocations to ``SGX_IOC_VEPC_REMOVE_ALL``, or if a ``/dev/sgx_vepc``
-+   file descriptor in the guest is closed at the same time as
-+   ``SGX_IOC_VEPC_REMOVE_ALL``; it will also be reported as ``EBUSY``.
-+   This can be avoided in userspace by serializing calls to the ioctl()
-+   and to close(), but in general it should not be a problem.
-+
-+3. Finally, page removal will fail for SECS metadata pages which still
-+   have child pages.  Child pages can be removed by executing
-+   ``SGX_IOC_VEPC_REMOVE_ALL`` on all ``/dev/sgx_vepc`` file descriptors
-+   mapped into the guest.  This means that the ioctl() must be called
-+   twice: an initial set of calls to remove child pages and a subsequent
-+   set of calls to remove SECS pages.  The second set of calls is only
-+   required for those mappings that returned a nonzero value from the
-+   first call.  It indicates a bug in the kernel or the userspace client
-+   if any of the second round of ``SGX_IOC_VEPC_REMOVE_ALL`` calls has
-+   a return code other than 0.
-diff --git a/arch/x86/include/uapi/asm/sgx.h b/arch/x86/include/uapi/asm/sgx.h
-index 9690d68..f4b8158 100644
---- a/arch/x86/include/uapi/asm/sgx.h
-+++ b/arch/x86/include/uapi/asm/sgx.h
-@@ -27,6 +27,8 @@ enum sgx_page_flags {
- 	_IOW(SGX_MAGIC, 0x02, struct sgx_enclave_init)
- #define SGX_IOC_ENCLAVE_PROVISION \
- 	_IOW(SGX_MAGIC, 0x03, struct sgx_enclave_provision)
-+#define SGX_IOC_VEPC_REMOVE_ALL \
-+	_IO(SGX_MAGIC, 0x04)
- 
- /**
-  * struct sgx_enclave_create - parameter structure for the
 diff --git a/arch/x86/kernel/cpu/sgx/virt.c b/arch/x86/kernel/cpu/sgx/virt.c
-index 59cdf3f..6a77a14 100644
+index 64511c4..59cdf3f 100644
 --- a/arch/x86/kernel/cpu/sgx/virt.c
 +++ b/arch/x86/kernel/cpu/sgx/virt.c
-@@ -150,6 +150,41 @@ static int sgx_vepc_free_page(struct sgx_epc_page *epc_page)
+@@ -111,10 +111,8 @@ static int sgx_vepc_mmap(struct file *file, struct vm_area_struct *vma)
  	return 0;
  }
  
-+static long sgx_vepc_remove_all(struct sgx_vepc *vepc)
-+{
-+	struct sgx_epc_page *entry;
-+	unsigned long index;
-+	long failures = 0;
-+
-+	xa_for_each(&vepc->page_array, index, entry) {
-+		int ret = sgx_vepc_remove_page(entry);
-+		if (ret) {
-+			if (ret == SGX_CHILD_PRESENT) {
-+				/* The page is a SECS, userspace will retry.  */
-+				failures++;
-+			} else {
-+				/*
-+				 * Report errors due to #GP or SGX_ENCLAVE_ACT; do not
-+				 * WARN, as userspace can induce said failures by
-+				 * calling the ioctl concurrently on multiple vEPCs or
-+				 * while one or more CPUs is running the enclave.  Only
-+				 * a #PF on EREMOVE indicates a kernel/hardware issue.
-+				 */
-+				WARN_ON_ONCE(encls_faulted(ret) &&
-+					     ENCLS_TRAPNR(ret) != X86_TRAP_GP);
-+				return -EBUSY;
-+			}
-+		}
-+		cond_resched();
-+	}
-+
-+	/*
-+	 * Return the number of SECS pages that failed to be removed, so
-+	 * userspace knows that it has to retry.
-+	 */
-+	return failures;
-+}
-+
- static int sgx_vepc_release(struct inode *inode, struct file *file)
+-static int sgx_vepc_free_page(struct sgx_epc_page *epc_page)
++static int sgx_vepc_remove_page(struct sgx_epc_page *epc_page)
  {
- 	struct sgx_vepc *vepc = file->private_data;
-@@ -235,9 +270,27 @@ static int sgx_vepc_open(struct inode *inode, struct file *file)
+-	int ret;
+-
+ 	/*
+ 	 * Take a previously guest-owned EPC page and return it to the
+ 	 * general EPC page pool.
+@@ -124,7 +122,12 @@ static int sgx_vepc_free_page(struct sgx_epc_page *epc_page)
+ 	 * case that a guest properly EREMOVE'd this page, a superfluous
+ 	 * EREMOVE is harmless.
+ 	 */
+-	ret = __eremove(sgx_get_epc_virt_addr(epc_page));
++	return __eremove(sgx_get_epc_virt_addr(epc_page));
++}
++
++static int sgx_vepc_free_page(struct sgx_epc_page *epc_page)
++{
++	int ret = sgx_vepc_remove_page(epc_page);
+ 	if (ret) {
+ 		/*
+ 		 * Only SGX_CHILD_PRESENT is expected, which is because of
+@@ -144,7 +147,6 @@ static int sgx_vepc_free_page(struct sgx_epc_page *epc_page)
+ 	}
+ 
+ 	sgx_free_epc_page(epc_page);
+-
  	return 0;
  }
  
-+static long sgx_vepc_ioctl(struct file *file,
-+			   unsigned int cmd, unsigned long arg)
-+{
-+	struct sgx_vepc *vepc = file->private_data;
-+
-+	switch (cmd) {
-+	case SGX_IOC_VEPC_REMOVE_ALL:
-+		if (arg)
-+			return -EINVAL;
-+		return sgx_vepc_remove_all(vepc);
-+
-+	default:
-+		return -ENOTTY;
-+	}
-+}
-+
- static const struct file_operations sgx_vepc_fops = {
- 	.owner		= THIS_MODULE,
- 	.open		= sgx_vepc_open,
-+	.unlocked_ioctl	= sgx_vepc_ioctl,
-+	.compat_ioctl	= sgx_vepc_ioctl,
- 	.release	= sgx_vepc_release,
- 	.mmap		= sgx_vepc_mmap,
- };
