@@ -2,54 +2,51 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2ADFD437EE7
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 22 Oct 2021 21:56:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D90EE43847A
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 23 Oct 2021 19:35:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234270AbhJVT6y (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 22 Oct 2021 15:58:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44054 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234235AbhJVT6w (ORCPT
+        id S230419AbhJWRiN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 23 Oct 2021 13:38:13 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:45418 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230051AbhJWRiM (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 22 Oct 2021 15:58:52 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1AA5C061766;
-        Fri, 22 Oct 2021 12:56:33 -0700 (PDT)
-Date:   Fri, 22 Oct 2021 19:56:31 -0000
+        Sat, 23 Oct 2021 13:38:12 -0400
+Date:   Sat, 23 Oct 2021 17:35:50 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1634932592;
+        s=2020; t=1635010551;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Jfje8YW+0qsmZLq0Poj+O1v9foCTTHwZk0N5bqDooj8=;
-        b=V5CztjpAG8FYbI5jEjsoCTBRAiHnQVCRIQkfAsv2qi1xg4W4oQPkM8KR1KdL6OSkaGbXAn
-        RUqYgOKTa/9nnE7t7aEPa+tMXq+rqn72PFbHc5UbFUZ8IlGQ6gPTa+FQ2ToP6B0QZ/JP4h
-        ZFnOqefjDtMap7iktovH+M2xMJBbQLTvDNV6PgzYQZ0vYWnpnv2IgcsB00F9n5pWlBTWHM
-        PIYzxMQaeWhXEnwtY4BqOAG/H7KdgO3t0OGMuEc5CBWBXwNbFRsILUkmevjDaWLuIcNznz
-        P+m3DdgTRwlWNWG3HivsEJ/Oh0xtxEUzYG8uZBfSHb+n5Z8hoHakVX5xnqajLA==
+        bh=5FS2cPBt5yP84j8yAK8Wa+8EPVDKcPO123/waYiUBDc=;
+        b=eujwDhM2Y2WVcdAMnENwD9fqwzo0J/ZMVaPVxJBh9VCib6ABaAeWsyTzrtYuzUXaWUzaX5
+        1dHPT7x+WTSP2Z3C9U1lQzrA8VF6WTBNKH7bXr8e6O1OoQZOpUjErQuo8UxukNgEuvxmR9
+        j+Shx9a0n9oUO8N3F6xLFV4/61vutC9ztwJaKdjgoy/HlisnKgzYlKgHL9+AYf3Y30gCHw
+        8zGNDJvCWiyVWDhSj4+Wf5mmEoVy6uLRPiCDPo4PIeK2K2Ma2NSkko2b3O9QwdQd2vh9Lo
+        s8dSyhrB4s9ACOlmHt+q9x6y4fKjdCFd5p1gaDHw3/RX6YHuZYydHaeQEZ477g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1634932592;
+        s=2020e; t=1635010551;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Jfje8YW+0qsmZLq0Poj+O1v9foCTTHwZk0N5bqDooj8=;
-        b=eVbzgI+vNvoUrd+AQhF7wtdZaxn0UpD/+2g3pl3RKV2FgHdVpGQss94LfgT9oJ+NF8CCbT
-        U2c+ZnMLiXFkzGAQ==
+        bh=5FS2cPBt5yP84j8yAK8Wa+8EPVDKcPO123/waYiUBDc=;
+        b=r8erWlil6kUcWpeVikbJrAKvvOfk0iH6WRG7zTTncgLJmxz1kpPv4uCUHti3eNYuVPOd31
+        LUuuB2y48D5d+uBA==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/fpu] x86/fpu: Provide struct fpu_config
+Subject: [tip: x86/fpu] x86/fpu: Remove old KVM FPU interface
 Cc:     Thomas Gleixner <tglx@linutronix.de>, Borislav Petkov <bp@suse.de>,
         x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20211014230739.126107370@linutronix.de>
-References: <20211014230739.126107370@linutronix.de>
+In-Reply-To: <20211022185313.074853631@linutronix.de>
+References: <20211022185313.074853631@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <163493259162.626.9826889378679636793.tip-bot2@tip-bot2>
+Message-ID: <163501055012.626.9422814218488225986.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,94 +57,91 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/fpu branch of tip:
 
-Commit-ID:     578971f4e228f386ad4d7ce16e979f2ed922de54
-Gitweb:        https://git.kernel.org/tip/578971f4e228f386ad4d7ce16e979f2ed922de54
+Commit-ID:     582b01b6ab2714a0a4d554cea7f0d4efeaa2154d
+Gitweb:        https://git.kernel.org/tip/582b01b6ab2714a0a4d554cea7f0d4efeaa2154d
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Fri, 15 Oct 2021 01:09:29 +02:00
+AuthorDate:    Fri, 22 Oct 2021 20:55:54 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Thu, 21 Oct 2021 19:17:58 +02:00
+CommitterDate: Sat, 23 Oct 2021 17:05:19 +02:00
 
-x86/fpu: Provide struct fpu_config
+x86/fpu: Remove old KVM FPU interface
 
-Provide a struct to store information about the maximum supported and the
-default feature set and buffer sizes for both user and kernel space.
-
-This allows quick retrieval of this information for the upcoming support
-for dynamically enabled features.
-
- [ bp: Add vertical spacing between the struct members. ]
+No more users.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20211014230739.126107370@linutronix.de
+Link: https://lkml.kernel.org/r/20211022185313.074853631@linutronix.de
 ---
- arch/x86/include/asm/fpu/types.h | 42 +++++++++++++++++++++++++++++++-
- arch/x86/kernel/fpu/core.c       |  4 +++-
- 2 files changed, 46 insertions(+)
+ arch/x86/include/asm/fpu/api.h |  2 --
+ arch/x86/kernel/fpu/core.c     | 32 --------------------------------
+ 2 files changed, 34 deletions(-)
 
-diff --git a/arch/x86/include/asm/fpu/types.h b/arch/x86/include/asm/fpu/types.h
-index 3a12e97..a32be07 100644
---- a/arch/x86/include/asm/fpu/types.h
-+++ b/arch/x86/include/asm/fpu/types.h
-@@ -378,4 +378,46 @@ struct fpu {
- 	 */
- };
+diff --git a/arch/x86/include/asm/fpu/api.h b/arch/x86/include/asm/fpu/api.h
+index 5e5f172..e9379d7 100644
+--- a/arch/x86/include/asm/fpu/api.h
++++ b/arch/x86/include/asm/fpu/api.h
+@@ -131,14 +131,12 @@ static inline void fpstate_init_soft(struct swregs_state *soft) {}
+ DECLARE_PER_CPU(struct fpu *, fpu_fpregs_owner_ctx);
  
-+/*
-+ * FPU state configuration data. Initialized at boot time. Read only after init.
-+ */
-+struct fpu_state_config {
-+	/*
-+	 * @max_size:
-+	 *
-+	 * The maximum size of the register state buffer. Includes all
-+	 * supported features except independent managed features.
-+	 */
-+	unsigned int		max_size;
-+
-+	/*
-+	 * @default_size:
-+	 *
-+	 * The default size of the register state buffer. Includes all
-+	 * supported features except independent managed features and
-+	 * features which have to be requested by user space before usage.
-+	 */
-+	unsigned int		default_size;
-+
-+	/*
-+	 * @max_features:
-+	 *
-+	 * The maximum supported features bitmap. Does not include
-+	 * independent managed features.
-+	 */
-+	u64 max_features;
-+
-+	/*
-+	 * @default_features:
-+	 *
-+	 * The default supported features bitmap. Does not include
-+	 * independent managed features and features which have to
-+	 * be requested by user space before usage.
-+	 */
-+	u64 default_features;
-+};
-+
-+/* FPU state configuration information */
-+extern struct fpu_state_config fpu_kernel_cfg, fpu_user_cfg;
-+
- #endif /* _ASM_X86_FPU_H */
+ /* fpstate-related functions which are exported to KVM */
+-extern void fpu_init_fpstate_user(struct fpu *fpu);
+ extern void fpstate_clear_xstate_component(struct fpstate *fps, unsigned int xfeature);
+ 
+ /* KVM specific functions */
+ extern bool fpu_alloc_guest_fpstate(struct fpu_guest *gfpu);
+ extern void fpu_free_guest_fpstate(struct fpu_guest *gfpu);
+ extern int fpu_swap_kvm_fpstate(struct fpu_guest *gfpu, bool enter_guest);
+-extern void fpu_swap_kvm_fpu(struct fpu *save, struct fpu *rstor, u64 restore_mask);
+ 
+ extern void fpu_copy_guest_fpstate_to_uabi(struct fpu_guest *gfpu, void *buf, unsigned int size, u32 pkru);
+ extern int fpu_copy_uabi_to_guest_fpstate(struct fpu_guest *gfpu, const void *buf, u64 xcr0, u32 *vpkru);
 diff --git a/arch/x86/kernel/fpu/core.c b/arch/x86/kernel/fpu/core.c
-index b497eca..3512bb2 100644
+index 01fbf7c..9c475e2 100644
 --- a/arch/x86/kernel/fpu/core.c
 +++ b/arch/x86/kernel/fpu/core.c
-@@ -25,6 +25,10 @@
- #define CREATE_TRACE_POINTS
- #include <asm/trace/fpu.h>
+@@ -245,29 +245,6 @@ int fpu_swap_kvm_fpstate(struct fpu_guest *guest_fpu, bool enter_guest)
+ }
+ EXPORT_SYMBOL_GPL(fpu_swap_kvm_fpstate);
  
-+/* The FPU state configuration data for kernel and user space */
-+struct fpu_state_config	fpu_kernel_cfg __ro_after_init;
-+struct fpu_state_config fpu_user_cfg __ro_after_init;
-+
- /*
-  * Represents the initial FPU state. It's mostly (but not completely) zeroes,
-  * depending on the FPU hardware format:
+-void fpu_swap_kvm_fpu(struct fpu *save, struct fpu *rstor, u64 restore_mask)
+-{
+-	fpregs_lock();
+-
+-	if (save) {
+-		struct fpstate *fpcur = current->thread.fpu.fpstate;
+-
+-		if (test_thread_flag(TIF_NEED_FPU_LOAD))
+-			memcpy(&save->fpstate->regs, &fpcur->regs, fpcur->size);
+-		else
+-			save_fpregs_to_fpstate(save);
+-	}
+-
+-	if (rstor) {
+-		restore_mask &= XFEATURE_MASK_FPSTATE;
+-		restore_fpregs_from_fpstate(rstor->fpstate, restore_mask);
+-	}
+-
+-	fpregs_mark_activate();
+-	fpregs_unlock();
+-}
+-EXPORT_SYMBOL_GPL(fpu_swap_kvm_fpu);
+-
+ void fpu_copy_guest_fpstate_to_uabi(struct fpu_guest *gfpu, void *buf,
+ 				    unsigned int size, u32 pkru)
+ {
+@@ -437,15 +414,6 @@ void fpstate_reset(struct fpu *fpu)
+ 	__fpstate_reset(fpu->fpstate);
+ }
+ 
+-#if IS_ENABLED(CONFIG_KVM)
+-void fpu_init_fpstate_user(struct fpu *fpu)
+-{
+-	fpstate_reset(fpu);
+-	fpstate_init_user(fpu->fpstate);
+-}
+-EXPORT_SYMBOL_GPL(fpu_init_fpstate_user);
+-#endif
+-
+ /* Clone current's FPU state on fork */
+ int fpu_clone(struct task_struct *dst)
+ {
