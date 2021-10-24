@@ -2,53 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E81DC4389F7
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 24 Oct 2021 17:40:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B34D54389FB
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 24 Oct 2021 17:40:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231710AbhJXPmV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 24 Oct 2021 11:42:21 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:49280 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229788AbhJXPmU (ORCPT
+        id S231772AbhJXPmX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 24 Oct 2021 11:42:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45746 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231724AbhJXPmW (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 24 Oct 2021 11:42:20 -0400
-Date:   Sun, 24 Oct 2021 15:39:58 -0000
+        Sun, 24 Oct 2021 11:42:22 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46E84C061764;
+        Sun, 24 Oct 2021 08:40:01 -0700 (PDT)
+Date:   Sun, 24 Oct 2021 15:39:59 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1635089999;
+        s=2020; t=1635090000;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=lI0+pYO+2wpUprd/7Q04qf9pA/n+JUwomMW7QIeyL1A=;
-        b=Z68wGDyuajtJqNYVEzEWOoLxqGN8k0tes3+WjpZVLw/mko1oTcd2nsQ6OOpJ6+hXWGPnew
-        8zcuwONWqHP7EkMvziLHwIFAqJ0NM9NSGzGLgF1oFqp30Y33eBn9Az3VFPhz2oB8QiW8eg
-        8QrmFiNOvePvVPvz0uFggQbOySTzp6h4bCcP+9zG/qEcVQwetWP4ewgxQgSN1yFH19rEKY
-        2oST+jFDqKmi/OnxVvJ6WDT3K4bzSGWYjzLOHmK6Qj/IZmKBhG2weDLSwn9gHnBeP7sX5h
-        n1gicsvihozR3jpXKIcsdtlbeFpucnrl3vatWam5NHFvWCvsLbcYDoxFsRzsQQ==
+        bh=7szFJThxGwNXMsuYN2mc7IRV7ZJA9gCMMTMkB0rbC4s=;
+        b=ePbDdtc0bxjYSU6CHruw9VsBh+7u2DAu/qCPhItaslnRD97dhyqATpzs+qHpSZOAc3wpUv
+        E5kCWziHXWr6o5traaECkHDg8xTwAy8SXOajD+l3mspD5Mu2Rzi10prUVK5W58CTcyBYqr
+        snXP1ogLvyAS/+vX2wLFaLqN3gI/uIF/nBlcO0naJSYarJXoyajnhxlEcCkZMleuoXeVAt
+        R2TXkC1s84jWGB1apu7LapWEuXmQ+chEouoXBWEU7DXX18Equ6FEtmD96uW4p5teLYcVo4
+        XxlLNQpkxH1LuEXVcKAqVSMQ0nu2qtOojr1GYdTlly8s2cfvStgqjBzVKy12pQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1635089999;
+        s=2020e; t=1635090000;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=lI0+pYO+2wpUprd/7Q04qf9pA/n+JUwomMW7QIeyL1A=;
-        b=Dh/Q0UllEbfYA8crUjw4DLBvUrxVpOJLcOiyeVrRJImCQ4mwAtTK2rmqNVk/P1VuAQqlHA
-        ab1sQWw/d4hrPuBw==
-From:   "tip-bot2 for Marc Zyngier" <tip-bot2@linutronix.de>
+        bh=7szFJThxGwNXMsuYN2mc7IRV7ZJA9gCMMTMkB0rbC4s=;
+        b=bMHKbKcTOMROiiJJ2bpXeBUfuT70gTEM3e79Nnt4q7YAiMue1UEP5bQcxcRBVyM4dRnvGl
+        ddtyxgQ9eaX4cqAQ==
+From:   "tip-bot2 for Oliver Upton" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] clocksource/drivers/arch_arm_timer: Move
- workaround synchronisation around
-Cc:     Marc Zyngier <maz@kernel.org>,
+Subject: [tip: timers/core] clocksource/drivers/arm_arch_timer: Fix masking
+ for high freq counters
+Cc:     Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@google.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
         Daniel Lezcano <daniel.lezcano@linaro.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20211017124225.3018098-14-maz@kernel.org>
-References: <20211017124225.3018098-14-maz@kernel.org>
+In-Reply-To: <20210807191428.3488948-1-oupton@google.com>
+References: <20210807191428.3488948-1-oupton@google.com>
 MIME-Version: 1.0
-Message-ID: <163508999837.626.7470689598244228406.tip-bot2@tip-bot2>
+Message-ID: <163508999905.626.14613108278482809454.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,70 +63,140 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     db26f8f2da92471e9f7f71ec78d6fa455cd9c821
-Gitweb:        https://git.kernel.org/tip/db26f8f2da92471e9f7f71ec78d6fa455cd9c821
-Author:        Marc Zyngier <maz@kernel.org>
-AuthorDate:    Sun, 17 Oct 2021 13:42:21 +01:00
+Commit-ID:     c1153d52c4140424a5e31a5916fca3edd91fe13a
+Gitweb:        https://git.kernel.org/tip/c1153d52c4140424a5e31a5916fca3edd91fe13a
+Author:        Oliver Upton <oupton@google.com>
+AuthorDate:    Sun, 17 Oct 2021 13:42:20 +01:00
 Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
-CommitterDate: Mon, 18 Oct 2021 09:20:57 +02:00
+CommitterDate: Mon, 18 Oct 2021 09:20:02 +02:00
 
-clocksource/drivers/arch_arm_timer: Move workaround synchronisation around
+clocksource/drivers/arm_arch_timer: Fix masking for high freq counters
 
-We currently handle synchronisation when workarounds are enabled
-by having an ISB in the __arch_counter_get_cnt?ct_stable() helpers.
+Unfortunately, the architecture provides no means to determine the bit
+width of the system counter. However, we do know the following from the
+specification:
 
-While this works, this prevents us from relaxing this synchronisation.
+ - the system counter is at least 56 bits wide
+ - Roll-over time of not less than 40 years
 
-Instead, move it closer to the point where the synchronisation is
-actually needed. Further patches will subsequently relax this.
+To date, the arch timer driver has depended on the first property,
+assuming any system counter to be 56 bits wide and masking off the rest.
+However, combining a narrow clocksource mask with a high frequency
+counter could result in prematurely wrapping the system counter by a
+significant margin. For example, a 56 bit wide, 1GHz system counter
+would wrap in a mere 2.28 years!
 
+This is a problem for two reasons: v8.6+ implementations are required to
+provide a 64 bit, 1GHz system counter. Furthermore, before v8.6,
+implementers may select a counter frequency of their choosing.
+
+Fix the issue by deriving a valid clock mask based on the second
+property from above. Set the floor at 56 bits, since we know no system
+counter is narrower than that.
+
+[maz: fixed width computation not to lose the last bit, added
+      max delta generation for the timer]
+
+Suggested-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Oliver Upton <oupton@google.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20211017124225.3018098-14-maz@kernel.org
+Link: https://lore.kernel.org/r/20210807191428.3488948-1-oupton@google.com
+Link: https://lore.kernel.org/r/20211017124225.3018098-13-maz@kernel.org
 Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 ---
- arch/arm64/include/asm/arch_timer.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/clocksource/arm_arch_timer.c | 34 +++++++++++++++++++++++----
+ 1 file changed, 29 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm64/include/asm/arch_timer.h b/arch/arm64/include/asm/arch_timer.h
-index b8000ef..519ac1f 100644
---- a/arch/arm64/include/asm/arch_timer.h
-+++ b/arch/arm64/include/asm/arch_timer.h
-@@ -32,7 +32,7 @@
- 	({								\
- 		const struct arch_timer_erratum_workaround *__wa;	\
- 		__wa = __this_cpu_read(timer_unstable_counter_workaround); \
--		(__wa && __wa->h) ? __wa->h : arch_timer_##h;		\
-+		(__wa && __wa->h) ? ({ isb(); __wa->h;}) : arch_timer_##h; \
- 	})
+diff --git a/drivers/clocksource/arm_arch_timer.c b/drivers/clocksource/arm_arch_timer.c
+index 6e20bc1..9a04eac 100644
+--- a/drivers/clocksource/arm_arch_timer.c
++++ b/drivers/clocksource/arm_arch_timer.c
+@@ -52,6 +52,12 @@
+ #define CNTV_CVAL_LO	0x30
+ #define CNTV_CTL	0x3c
  
- #else
-@@ -64,11 +64,13 @@ DECLARE_PER_CPU(const struct arch_timer_erratum_workaround *,
++/*
++ * The minimum amount of time a generic counter is guaranteed to not roll over
++ * (40 years)
++ */
++#define MIN_ROLLOVER_SECS	(40ULL * 365 * 24 * 3600)
++
+ static unsigned arch_timers_present __initdata;
  
- static inline notrace u64 arch_timer_read_cntpct_el0(void)
- {
-+	isb();
- 	return read_sysreg(cntpct_el0);
+ struct arch_timer {
+@@ -96,6 +102,22 @@ static int __init early_evtstrm_cfg(char *buf)
+ early_param("clocksource.arm_arch_timer.evtstrm", early_evtstrm_cfg);
+ 
+ /*
++ * Makes an educated guess at a valid counter width based on the Generic Timer
++ * specification. Of note:
++ *   1) the system counter is at least 56 bits wide
++ *   2) a roll-over time of not less than 40 years
++ *
++ * See 'ARM DDI 0487G.a D11.1.2 ("The system counter")' for more details.
++ */
++static int arch_counter_get_width(void)
++{
++	u64 min_cycles = MIN_ROLLOVER_SECS * arch_timer_rate;
++
++	/* guarantee the returned width is within the valid range */
++	return clamp_val(ilog2(min_cycles - 1) + 1, 56, 64);
++}
++
++/*
+  * Architected system timer support.
+  */
+ 
+@@ -212,13 +234,11 @@ static struct clocksource clocksource_counter = {
+ 	.id	= CSID_ARM_ARCH_COUNTER,
+ 	.rating	= 400,
+ 	.read	= arch_counter_read,
+-	.mask	= CLOCKSOURCE_MASK(56),
+ 	.flags	= CLOCK_SOURCE_IS_CONTINUOUS,
+ };
+ 
+ static struct cyclecounter cyclecounter __ro_after_init = {
+ 	.read	= arch_counter_read_cc,
+-	.mask	= CLOCKSOURCE_MASK(56),
+ };
+ 
+ struct ate_acpi_oem_info {
+@@ -790,7 +810,7 @@ static u64 __arch_timer_check_delta(void)
+ 		return CLOCKSOURCE_MASK(32);
+ 	}
+ #endif
+-	return CLOCKSOURCE_MASK(56);
++	return CLOCKSOURCE_MASK(arch_counter_get_width());
  }
  
- static inline notrace u64 arch_timer_read_cntvct_el0(void)
+ static void __arch_timer_setup(unsigned type,
+@@ -1035,6 +1055,7 @@ struct arch_timer_kvm_info *arch_timer_get_kvm_info(void)
+ static void __init arch_counter_register(unsigned type)
  {
-+	isb();
- 	return read_sysreg(cntvct_el0);
+ 	u64 start_count;
++	int width;
+ 
+ 	/* Register the CP15 based counter if we have one */
+ 	if (type & ARCH_TIMER_TYPE_CP15) {
+@@ -1059,6 +1080,10 @@ static void __init arch_counter_register(unsigned type)
+ 		arch_timer_read_counter = arch_counter_get_cntvct_mem;
+ 	}
+ 
++	width = arch_counter_get_width();
++	clocksource_counter.mask = CLOCKSOURCE_MASK(width);
++	cyclecounter.mask = CLOCKSOURCE_MASK(width);
++
+ 	if (!arch_counter_suspend_stop)
+ 		clocksource_counter.flags |= CLOCK_SOURCE_SUSPEND_NONSTOP;
+ 	start_count = arch_timer_read_counter();
+@@ -1068,8 +1093,7 @@ static void __init arch_counter_register(unsigned type)
+ 	timecounter_init(&arch_timer_kvm_info.timecounter,
+ 			 &cyclecounter, start_count);
+ 
+-	/* 56 bits minimum, so we assume worst case rollover */
+-	sched_clock_register(arch_timer_read_counter, 56, arch_timer_rate);
++	sched_clock_register(arch_timer_read_counter, width, arch_timer_rate);
  }
  
-@@ -163,7 +165,6 @@ static __always_inline u64 __arch_counter_get_cntpct_stable(void)
- {
- 	u64 cnt;
- 
--	isb();
- 	cnt = arch_timer_reg_read_stable(cntpct_el0);
- 	arch_counter_enforce_ordering(cnt);
- 	return cnt;
-@@ -183,7 +184,6 @@ static __always_inline u64 __arch_counter_get_cntvct_stable(void)
- {
- 	u64 cnt;
- 
--	isb();
- 	cnt = arch_timer_reg_read_stable(cntvct_el0);
- 	arch_counter_enforce_ordering(cnt);
- 	return cnt;
+ static void arch_timer_stop(struct clock_event_device *clk)
