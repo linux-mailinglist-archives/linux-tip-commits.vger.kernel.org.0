@@ -2,51 +2,61 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B414D43847B
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 23 Oct 2021 19:35:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D9634389F8
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 24 Oct 2021 17:40:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230253AbhJWRiO (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 23 Oct 2021 13:38:14 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:45440 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230359AbhJWRiN (ORCPT
+        id S231730AbhJXPmW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 24 Oct 2021 11:42:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45740 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231699AbhJXPmV (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 23 Oct 2021 13:38:13 -0400
-Date:   Sat, 23 Oct 2021 17:35:52 -0000
+        Sun, 24 Oct 2021 11:42:21 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B94A1C061745;
+        Sun, 24 Oct 2021 08:40:00 -0700 (PDT)
+Date:   Sun, 24 Oct 2021 15:39:56 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1635010553;
+        s=2020; t=1635089998;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=5Fja5qldszSaJ0+J+GjVM/sW2hidboEw5PkDM/GY4zs=;
-        b=U2dkuO44Vd1bxC7PFdlHR9mYh7hXyVhLOAnUjE7AbWxIrsNc5Mt3iPvS9jHo/nyOYDdMNQ
-        HhYzs+Bx4EUmf+C1SE6a4lQK8BbUlQqhMyPfUenyGXvT0l5o1SDeKwrgfEeMkE9yOgmsSl
-        HhUrW+V2P3VnR0Bu8/8brNigAhVWqbKvpUjW7XoxSlShCOtoYYIAwsTvcSJpCjDhBQROY0
-        rCV68exaXIydHL/hpGPczlOf9F1SXLIl7x2/PlGclic5BDsD4ebxZybSiqFquY8mB93ujX
-        RltDzBNdoPoR3ACdH7AeS1RNsQqimX63GzLLA4gG/6FtUzw1Trw5ddtF1PWSvQ==
+        bh=g50gduEGBSY+ideoguu6iU1dmhxEDVh8QVKLPEg9Oeo=;
+        b=CsVMZpm6hdgD/5NuTaY1alTSWTbWYN2h+ClvF5mdjZqqhAx8cHYVAssRW1dUJbd4cAbwm3
+        /1dkq6CNLGOYwDqzIa3klpgqF6GkPSdD2fYLGerOZRhLCBZH1HrfcSx+8fMJ1L0gOsTy82
+        UjOgyIJW7B/wLENOBWkjMc5ZAlw05Zusuor7yMGMsnnGep0UM3LmtnC0f+eoDdM/EsFk5R
+        txM0OXMGEGtS1oKaDbZq2pFkwBAS7oBsi/E5pLPfr/K2+k2oM8jsa0n3eJ3JCyq4FmEn37
+        wqs3A3doCMfxpvB2gAGhO/o/aYkki2ibRDvznpoIsLSARp04VkEQNmdCYedGVA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1635010553;
+        s=2020e; t=1635089998;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=5Fja5qldszSaJ0+J+GjVM/sW2hidboEw5PkDM/GY4zs=;
-        b=07Fp35OMOUL7Gr2X2QGb6x2KX8zayAtE2pfpszjKWlP9JHKTjIfgQcpgTtFWVaK8EJTgD6
-        sJM1M6lXeg2Sb3BA==
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+        bh=g50gduEGBSY+ideoguu6iU1dmhxEDVh8QVKLPEg9Oeo=;
+        b=cOxnKr/R5BKbzLzg4MmHuHmPih1NErUgpm4/WeW2lc9voj2RxnNTF1T1ZhifElnH7DtyWE
+        6HvMZtMtvc470ODQ==
+From:   "tip-bot2 for Kees Cook" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/fpu] x86/fpu: Prepare for sanitizing KVM FPU code
-Cc:     Thomas Gleixner <tglx@linutronix.de>, Borislav Petkov <bp@suse.de>,
+Subject: [tip: timers/core] clocksource/drivers/timer-ti-dm: Select TIMER_OF
+Cc:     kernel test robot <lkp@intel.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Keerthy <j-keerthy@ti.com>,
+        Sebastian Reichel <sebastian.reichel@collabora.co.uk>,
+        Ladislav Michl <ladis@linux-mips.org>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        linux-omap@vger.kernel.org, Kees Cook <keescook@chromium.org>,
         x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20211022185312.896403942@linutronix.de>
-References: <20211022185312.896403942@linutronix.de>
+In-Reply-To: <20210828175747.3777891-1-keescook@chromium.org>
+References: <20210828175747.3777891-1-keescook@chromium.org>
 MIME-Version: 1.0
-Message-ID: <163501055253.626.9913899365996278545.tip-bot2@tip-bot2>
+Message-ID: <163508999694.626.15597528223513744347.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -55,110 +65,50 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/fpu branch of tip:
+The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     75c52dad5e327605f1025f399dafdf4aaf5dae9c
-Gitweb:        https://git.kernel.org/tip/75c52dad5e327605f1025f399dafdf4aaf5dae9c
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Fri, 22 Oct 2021 20:55:49 +02:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Sat, 23 Oct 2021 13:14:50 +02:00
+Commit-ID:     eda9a4f7af6ee47e9e131f20e4f8a41a97379293
+Gitweb:        https://git.kernel.org/tip/eda9a4f7af6ee47e9e131f20e4f8a41a97379293
+Author:        Kees Cook <keescook@chromium.org>
+AuthorDate:    Sat, 28 Aug 2021 10:57:47 -07:00
+Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
+CommitterDate: Thu, 21 Oct 2021 14:18:53 +02:00
 
-x86/fpu: Prepare for sanitizing KVM FPU code
+clocksource/drivers/timer-ti-dm: Select TIMER_OF
 
-For the upcoming AMX support it's necessary to do a proper integration with
-KVM. To avoid more nasty hackery in KVM which violate encapsulation extend
-struct fpu and fpstate so the fpstate switching can be consolidated and
-simplified.
+When building OMAP_DM_TIMER without TIMER_OF, there are orphan sections
+due to the use of TIMER_OF_DELCARE() without CONFIG_TIMER_OF. Select
+CONFIG_TIMER_OF when enaling OMAP_DM_TIMER:
 
-Currently KVM allocates two FPU structs which are used for saving the user
-state of the vCPU thread and restoring the guest state when entering
-vcpu_run() and doing the reverse operation before leaving vcpu_run().
+arm-linux-gnueabi-ld: warning: orphan section `__timer_of_table' from `drivers/clocksource/timer-ti-dm-systimer.o' being placed in section `__timer_of_table'
 
-With the new fpstate mechanism this can be reduced to one extra buffer by
-swapping the fpstate pointer in current::thread::fpu. This makes the
-upcoming support for AMX and XFD simpler because then fpstate information
-(features, sizes, xfd) are always consistent and it does not require any
-nasty workarounds.
-
-Add fpu::__task_fpstate to save the regular fpstate pointer while the task
-is inside vcpu_run(). Add some state fields to fpstate to indicate the
-nature of the state.
-
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20211022185312.896403942@linutronix.de
+Reported-by: kernel test robot <lkp@intel.com>
+Link: https://lore.kernel.org/lkml/202108282255.tkdt4ani-lkp@intel.com/
+Cc: Tony Lindgren <tony@atomide.com>
+Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc: Keerthy <j-keerthy@ti.com>
+Cc: Sebastian Reichel <sebastian.reichel@collabora.co.uk>
+Cc: Ladislav Michl <ladis@linux-mips.org>
+Cc: Grygorii Strashko <grygorii.strashko@ti.com>
+Cc: linux-omap@vger.kernel.org
+Fixes: 52762fbd1c47 ("clocksource/drivers/timer-ti-dm: Add clockevent and clocksource support")
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Acked-by: Tony Lindgren <tony@atomide.com>
+Link: https://lore.kernel.org/r/20210828175747.3777891-1-keescook@chromium.org
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 ---
- arch/x86/include/asm/fpu/types.h | 44 ++++++++++++++++++++++++++++++-
- 1 file changed, 43 insertions(+), 1 deletion(-)
+ drivers/clocksource/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/include/asm/fpu/types.h b/arch/x86/include/asm/fpu/types.h
-index a32be07..c72cb22 100644
---- a/arch/x86/include/asm/fpu/types.h
-+++ b/arch/x86/include/asm/fpu/types.h
-@@ -322,8 +322,32 @@ struct fpstate {
- 	/* @user_xfeatures:	xfeatures valid in UABI buffers */
- 	u64			user_xfeatures;
+diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
+index ac56b56..e71ac54 100644
+--- a/drivers/clocksource/Kconfig
++++ b/drivers/clocksource/Kconfig
+@@ -24,6 +24,7 @@ config I8253_LOCK
  
-+	/* @is_valloc:		Indicator for dynamically allocated state */
-+	unsigned int		is_valloc	: 1;
-+
-+	/* @is_guest:		Indicator for guest state (KVM) */
-+	unsigned int		is_guest	: 1;
-+
-+	/*
-+	 * @is_confidential:	Indicator for KVM confidential mode.
-+	 *			The FPU registers are restored by the
-+	 *			vmentry firmware from encrypted guest
-+	 *			memory. On vmexit the FPU registers are
-+	 *			saved by firmware to encrypted guest memory
-+	 *			and the registers are scrubbed before
-+	 *			returning to the host. So there is no
-+	 *			content which is worth saving and restoring.
-+	 *			The fpstate has to be there so that
-+	 *			preemption and softirq FPU usage works
-+	 *			without special casing.
-+	 */
-+	unsigned int		is_confidential	: 1;
-+
-+	/* @in_use:		State is in use */
-+	unsigned int		in_use		: 1;
-+
- 	/* @regs: The register state union for all supported formats */
--	union fpregs_state		regs;
-+	union fpregs_state	regs;
+ config OMAP_DM_TIMER
+ 	bool
++	select TIMER_OF
  
- 	/* @regs is dynamically sized! Don't add anything after @regs! */
- } __aligned(64);
-@@ -364,6 +388,14 @@ struct fpu {
- 	struct fpstate			*fpstate;
- 
- 	/*
-+	 * @__task_fpstate:
-+	 *
-+	 * Pointer to an inactive struct fpstate. Initialized to NULL. Is
-+	 * used only for KVM support to swap out the regular task fpstate.
-+	 */
-+	struct fpstate			*__task_fpstate;
-+
-+	/*
- 	 * @__fpstate:
- 	 *
- 	 * Initial in-memory storage for FPU registers which are saved in
-@@ -379,6 +411,16 @@ struct fpu {
- };
- 
- /*
-+ * Guest pseudo FPU container
-+ */
-+struct fpu_guest {
-+	/*
-+	 * @fpstate:			Pointer to the allocated guest fpstate
-+	 */
-+	struct fpstate			*fpstate;
-+};
-+
-+/*
-  * FPU state configuration data. Initialized at boot time. Read only after init.
-  */
- struct fpu_state_config {
+ config CLKBLD_I8253
+ 	def_bool y if CLKSRC_I8253 || CLKEVT_I8253 || I8253_LOCK
