@@ -2,53 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 77B7F4389F6
+	by mail.lfdr.de (Postfix) with ESMTP id E81DC4389F7
 	for <lists+linux-tip-commits@lfdr.de>; Sun, 24 Oct 2021 17:40:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231535AbhJXPmV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S231710AbhJXPmV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Sun, 24 Oct 2021 11:42:21 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:49270 "EHLO
+Received: from Galois.linutronix.de ([193.142.43.55]:49280 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229782AbhJXPmU (ORCPT
+        with ESMTP id S229788AbhJXPmU (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Sun, 24 Oct 2021 11:42:20 -0400
-Date:   Sun, 24 Oct 2021 15:39:57 -0000
+Date:   Sun, 24 Oct 2021 15:39:58 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1635089998;
+        s=2020; t=1635089999;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=0PHCa7Ue+Y1cFGyZFeG5JFAiT39ub1Qqe9HEj8dRcjU=;
-        b=KbzQgFnnKcMI4yda3Dh6SbgyTsyC2v/qlQhQfkfjv/EG4PsZCBeJDsNljvH5N/zjy90Q9H
-        zBiYiTWcQmC8DBevS3RJwjua8NpB08CrgdWcDg92hzT60Q/MNTDxXw5xrUBMedxPttg5aK
-        GCIX3S0zNCUur6Pbngbez6HZbq5dOMEqz41Z9lULapvckecvF5Av/44z7d6cY4YPCpPBoa
-        tFpKov3QLyWJnXzjfb9eYHWLBRb3Cu01koIe+ZCZa+5b394Pj0OurfoE5dKGTIZZkDYEHD
-        TGz9RFdQP5/f90U12ArpyeoAkuDYbtDoutuRIFth12BJWX62FEIMqoT7p3soLw==
+        bh=lI0+pYO+2wpUprd/7Q04qf9pA/n+JUwomMW7QIeyL1A=;
+        b=Z68wGDyuajtJqNYVEzEWOoLxqGN8k0tes3+WjpZVLw/mko1oTcd2nsQ6OOpJ6+hXWGPnew
+        8zcuwONWqHP7EkMvziLHwIFAqJ0NM9NSGzGLgF1oFqp30Y33eBn9Az3VFPhz2oB8QiW8eg
+        8QrmFiNOvePvVPvz0uFggQbOySTzp6h4bCcP+9zG/qEcVQwetWP4ewgxQgSN1yFH19rEKY
+        2oST+jFDqKmi/OnxVvJ6WDT3K4bzSGWYjzLOHmK6Qj/IZmKBhG2weDLSwn9gHnBeP7sX5h
+        n1gicsvihozR3jpXKIcsdtlbeFpucnrl3vatWam5NHFvWCvsLbcYDoxFsRzsQQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1635089998;
+        s=2020e; t=1635089999;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=0PHCa7Ue+Y1cFGyZFeG5JFAiT39ub1Qqe9HEj8dRcjU=;
-        b=Wve/+Q//rfXo936tiNMn27uemt0fxDWbTIeHoS1NcaDRC+hxUmdvC6K0fd23Y3tWauiCU6
-        Q95OxS49oGdW3ADg==
-From:   "tip-bot2 for Krzysztof Kozlowski" <tip-bot2@linutronix.de>
+        bh=lI0+pYO+2wpUprd/7Q04qf9pA/n+JUwomMW7QIeyL1A=;
+        b=Dh/Q0UllEbfYA8crUjw4DLBvUrxVpOJLcOiyeVrRJImCQ4mwAtTK2rmqNVk/P1VuAQqlHA
+        ab1sQWw/d4hrPuBw==
+From:   "tip-bot2 for Marc Zyngier" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] clocksource/drivers/exynosy: Depend on
- sub-architecture for Exynos MCT and Samsung PWM
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+Subject: [tip: timers/core] clocksource/drivers/arch_arm_timer: Move
+ workaround synchronisation around
+Cc:     Marc Zyngier <maz@kernel.org>,
         Daniel Lezcano <daniel.lezcano@linaro.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20211021063500.39314-1-krzysztof.kozlowski@canonical.com>
-References: <20211021063500.39314-1-krzysztof.kozlowski@canonical.com>
+In-Reply-To: <20211017124225.3018098-14-maz@kernel.org>
+References: <20211017124225.3018098-14-maz@kernel.org>
 MIME-Version: 1.0
-Message-ID: <163508999769.626.1747216680300353727.tip-bot2@tip-bot2>
+Message-ID: <163508999837.626.7470689598244228406.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,48 +59,70 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     8602a80bb85e3840a7bbafca069e25735ba237b3
-Gitweb:        https://git.kernel.org/tip/8602a80bb85e3840a7bbafca069e25735ba237b3
-Author:        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-AuthorDate:    Thu, 21 Oct 2021 08:35:00 +02:00
+Commit-ID:     db26f8f2da92471e9f7f71ec78d6fa455cd9c821
+Gitweb:        https://git.kernel.org/tip/db26f8f2da92471e9f7f71ec78d6fa455cd9c821
+Author:        Marc Zyngier <maz@kernel.org>
+AuthorDate:    Sun, 17 Oct 2021 13:42:21 +01:00
 Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
-CommitterDate: Thu, 21 Oct 2021 12:54:28 +02:00
+CommitterDate: Mon, 18 Oct 2021 09:20:57 +02:00
 
-clocksource/drivers/exynosy: Depend on sub-architecture for Exynos MCT and Samsung PWM
+clocksource/drivers/arch_arm_timer: Move workaround synchronisation around
 
-The Exynos MCT and Samsung PWM Timer clocksource drivers are not usable
-on anything else than Samsung Exynos, S3C or S5P SoC platforms.  These
-are integral parts of a SoC.  Even though the drivers are not user
-selectable, still document the hardware architecture explicitly with
-depends on ARCH_EXYNOS and others.  This also serves a purpose of
-documenting use-case, if someone ever wonders whether to select the
-driver for his platform.  No functional change, because drivers are
-already selected by the platform described in depends. We follow similar
-approach also for other SoC-specific drivers.
+We currently handle synchronisation when workarounds are enabled
+by having an ISB in the __arch_counter_get_cnt?ct_stable() helpers.
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-Link: https://lore.kernel.org/r/20211021063500.39314-1-krzysztof.kozlowski@canonical.com
+While this works, this prevents us from relaxing this synchronisation.
+
+Instead, move it closer to the point where the synchronisation is
+actually needed. Further patches will subsequently relax this.
+
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20211017124225.3018098-14-maz@kernel.org
 Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 ---
- drivers/clocksource/Kconfig | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/include/asm/arch_timer.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
-index eb661b5..ac56b56 100644
---- a/drivers/clocksource/Kconfig
-+++ b/drivers/clocksource/Kconfig
-@@ -417,12 +417,14 @@ config ATMEL_TCB_CLKSRC
- config CLKSRC_EXYNOS_MCT
- 	bool "Exynos multi core timer driver" if COMPILE_TEST
- 	depends on ARM || ARM64
-+	depends on ARCH_EXYNOS || COMPILE_TEST
- 	help
- 	  Support for Multi Core Timer controller on Exynos SoCs.
+diff --git a/arch/arm64/include/asm/arch_timer.h b/arch/arm64/include/asm/arch_timer.h
+index b8000ef..519ac1f 100644
+--- a/arch/arm64/include/asm/arch_timer.h
++++ b/arch/arm64/include/asm/arch_timer.h
+@@ -32,7 +32,7 @@
+ 	({								\
+ 		const struct arch_timer_erratum_workaround *__wa;	\
+ 		__wa = __this_cpu_read(timer_unstable_counter_workaround); \
+-		(__wa && __wa->h) ? __wa->h : arch_timer_##h;		\
++		(__wa && __wa->h) ? ({ isb(); __wa->h;}) : arch_timer_##h; \
+ 	})
  
- config CLKSRC_SAMSUNG_PWM
- 	bool "PWM timer driver for Samsung S3C, S5P" if COMPILE_TEST
- 	depends on HAS_IOMEM
-+	depends on ARCH_EXYNOS || ARCH_S3C24XX || ARCH_S3C64XX || ARCH_S5PV210 || COMPILE_TEST
- 	help
- 	  This is a new clocksource driver for the PWM timer found in
- 	  Samsung S3C, S5P and Exynos SoCs, replacing an earlier driver
+ #else
+@@ -64,11 +64,13 @@ DECLARE_PER_CPU(const struct arch_timer_erratum_workaround *,
+ 
+ static inline notrace u64 arch_timer_read_cntpct_el0(void)
+ {
++	isb();
+ 	return read_sysreg(cntpct_el0);
+ }
+ 
+ static inline notrace u64 arch_timer_read_cntvct_el0(void)
+ {
++	isb();
+ 	return read_sysreg(cntvct_el0);
+ }
+ 
+@@ -163,7 +165,6 @@ static __always_inline u64 __arch_counter_get_cntpct_stable(void)
+ {
+ 	u64 cnt;
+ 
+-	isb();
+ 	cnt = arch_timer_reg_read_stable(cntpct_el0);
+ 	arch_counter_enforce_ordering(cnt);
+ 	return cnt;
+@@ -183,7 +184,6 @@ static __always_inline u64 __arch_counter_get_cntvct_stable(void)
+ {
+ 	u64 cnt;
+ 
+-	isb();
+ 	cnt = arch_timer_reg_read_stable(cntvct_el0);
+ 	arch_counter_enforce_ordering(cnt);
+ 	return cnt;
