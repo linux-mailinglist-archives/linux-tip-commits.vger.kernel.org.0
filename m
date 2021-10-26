@@ -2,19 +2,19 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 018BD43B6C6
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 26 Oct 2021 18:17:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A9BA43B6C5
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 26 Oct 2021 18:17:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237342AbhJZQTG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 26 Oct 2021 12:19:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52578 "EHLO
+        id S235319AbhJZQTF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 26 Oct 2021 12:19:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52572 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237333AbhJZQTE (ORCPT
+        with ESMTP id S237328AbhJZQTD (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 26 Oct 2021 12:19:04 -0400
+        Tue, 26 Oct 2021 12:19:03 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 041EAC061348;
-        Tue, 26 Oct 2021 09:16:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67BFCC061745;
+        Tue, 26 Oct 2021 09:16:39 -0700 (PDT)
 Date:   Tue, 26 Oct 2021 16:16:37 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1635264998;
@@ -23,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=2IFospdMQwT3hk87Fl43Kc/Kz6SQXL4EM/nIFoTxDUw=;
-        b=NNsGnU4a/VFmPIauypVPCu5DWiFNJH4SoYvrufpzYpGrG4E+hSYrKwDgWHyuVgx5UCd3mk
-        0h87O+38j3qd0hXDnIOr+cNT/MPF2mNfDn5YfQKZg2JPbN+MeYCNUWamuahLyCDFfDjeNr
-        r+LQMAwa/0CvLPLW1wuMDIm3VyhI6JLtZR+DWUC2UOtfS1aOaZ8NA4g3EeaHi+f9XKqIeP
-        sCg3kqUYfUKZ41IXWrw3SzHT4aQSn/x9eVCjwTemHVuYEScnX8JAz1r3ueqndmcHW7T1DY
-        ZF50YVUcbnmMsVHPtba65y1ZcG0IUZOWP2qRoXf4F1a7eI6nloT0S5lp6CQkrw==
+        bh=Ql270qTxrzyG3AZEzepMbfMO5ffbMneVdAnwa/MQLc4=;
+        b=Y3jg6yNfvAt29/fQWppCzG2Dw5YR34FqU+so9ZzMhdAe8S8b1RCbZjDnotIIiT66AUg5OI
+        qRV+anqipAnJqBIfuq9MjOtOq/6C8pOsGeKGAtRPcLO2z30JpIlqz1hJs5Dlm+vLcRLQoY
+        moS7+Uz8/sfgi+GqTD3PO+t4AUabhFRaz+TKiN1lAB5jeYta4X61U/wAP0RyffU/PgeUZa
+        EZO/gR3q44iTkRru77czEuF+rrJnb3hiliUbjNKF58AbUntx35GNzAQcLO3uEMpjdbw3NN
+        PEt9f/AMXNRajLLbjawEK3hVpoBQKWEUEK/pE0zvZlT4pes0L3Nz9E65vhnk8g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1635264998;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,22 +36,22 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=2IFospdMQwT3hk87Fl43Kc/Kz6SQXL4EM/nIFoTxDUw=;
-        b=XjOE/X5sBewjJzbGPhTeoGSoKLyZZNIBMRNWQ8UtGIKvudnfiDYqFacZv60vMAzdN3RHZP
-        Hg5PGLImKFhY1bCQ==
+        bh=Ql270qTxrzyG3AZEzepMbfMO5ffbMneVdAnwa/MQLc4=;
+        b=PSE3jAjvu+lsldzV8p4dx0mFm7tYSR/teJ6j3d525E9KwoMHsfe0KwbBoNmIn6aJrn3VJY
+        tdImkUWzSmQ8e+CQ==
 From:   "tip-bot2 for Chang S. Bae" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/fpu] x86/fpu/xstate: Add XFD #NM handler
+Subject: [tip: x86/fpu] x86/fpu/xstate: Add fpstate_realloc()/free()
 Cc:     "Chang S. Bae" <chang.seok.bae@intel.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         Borislav Petkov <bp@suse.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20211021225527.10184-18-chang.seok.bae@intel.com>
-References: <20211021225527.10184-18-chang.seok.bae@intel.com>
+In-Reply-To: <20211021225527.10184-19-chang.seok.bae@intel.com>
+References: <20211021225527.10184-19-chang.seok.bae@intel.com>
 MIME-Version: 1.0
-Message-ID: <163526499778.626.15421277580798736019.tip-bot2@tip-bot2>
+Message-ID: <163526499714.626.7471812823908594787.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -62,161 +62,225 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/fpu branch of tip:
 
-Commit-ID:     783e87b404956f8958657aed8a6a72aa98d5b7e1
-Gitweb:        https://git.kernel.org/tip/783e87b404956f8958657aed8a6a72aa98d5b7e1
+Commit-ID:     500afbf645a040a39e1af0dba2fdf6ebf224bd47
+Gitweb:        https://git.kernel.org/tip/500afbf645a040a39e1af0dba2fdf6ebf224bd47
 Author:        Chang S. Bae <chang.seok.bae@intel.com>
-AuthorDate:    Thu, 21 Oct 2021 15:55:21 -07:00
+AuthorDate:    Thu, 21 Oct 2021 15:55:22 -07:00
 Committer:     Borislav Petkov <bp@suse.de>
 CommitterDate: Tue, 26 Oct 2021 10:53:02 +02:00
 
-x86/fpu/xstate: Add XFD #NM handler
+x86/fpu/xstate: Add fpstate_realloc()/free()
 
-If the XFD MSR has feature bits set then #NM will be raised when user space
-attempts to use an instruction related to one of these features.
+The fpstate embedded in struct fpu is the default state for storing the FPU
+registers. It's sized so that the default supported features can be stored.
+For dynamically enabled features the register buffer is too small.
 
-When the task has no permissions to use that feature, raise SIGILL, which
-is the same behavior as #UD.
+The #NM handler detects first use of a feature which is disabled in the
+XFD MSR. After handling permission checks it recalculates the size for
+kernel space and user space state and invokes fpstate_realloc() which
+tries to reallocate fpstate and install it.
 
-If the task has permissions, calculate the new buffer size for the extended
-feature set and allocate a larger fpstate. In the unlikely case that
-vzalloc() fails, SIGSEGV is raised.
+Provide the allocator function which checks whether the current buffer size
+is sufficient and if not allocates one. If allocation is successful the new
+fpstate is initialized with the new features and sizes and the now enabled
+features is removed from the task's XFD mask.
 
-The allocation function will be added in the next step. Provide a stub
-which fails for now.
-
-  [ tglx: Updated serialization ]
+realloc_fpstate() uses vzalloc(). If use of this mechanism grows to
+re-allocate buffers larger than 64KB, a more sophisticated allocation
+scheme that includes purpose-built reclaim capability might be justified.
 
 Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lore.kernel.org/r/20211021225527.10184-18-chang.seok.bae@intel.com
+Link: https://lore.kernel.org/r/20211021225527.10184-19-chang.seok.bae@intel.com
 ---
- arch/x86/include/asm/fpu/xstate.h |  2 +-
- arch/x86/kernel/fpu/xstate.c      | 47 ++++++++++++++++++++++++++++++-
- arch/x86/kernel/traps.c           | 38 ++++++++++++++++++++++++-
- 3 files changed, 87 insertions(+)
+ arch/x86/include/asm/fpu/api.h |  7 ++-
+ arch/x86/kernel/fpu/xstate.c   | 97 ++++++++++++++++++++++++++++++---
+ arch/x86/kernel/process.c      | 10 +++-
+ 3 files changed, 106 insertions(+), 8 deletions(-)
 
-diff --git a/arch/x86/include/asm/fpu/xstate.h b/arch/x86/include/asm/fpu/xstate.h
-index cf28546..b7b145c 100644
---- a/arch/x86/include/asm/fpu/xstate.h
-+++ b/arch/x86/include/asm/fpu/xstate.h
-@@ -99,6 +99,8 @@ int xfeature_size(int xfeature_nr);
- void xsaves(struct xregs_state *xsave, u64 mask);
- void xrstors(struct xregs_state *xsave, u64 mask);
+diff --git a/arch/x86/include/asm/fpu/api.h b/arch/x86/include/asm/fpu/api.h
+index 798ae92..b7267b9 100644
+--- a/arch/x86/include/asm/fpu/api.h
++++ b/arch/x86/include/asm/fpu/api.h
+@@ -130,6 +130,13 @@ static inline void fpstate_init_soft(struct swregs_state *soft) {}
+ /* State tracking */
+ DECLARE_PER_CPU(struct fpu *, fpu_fpregs_owner_ctx);
  
-+int xfd_enable_feature(u64 xfd_err);
++/* Process cleanup */
++#ifdef CONFIG_X86_64
++extern void fpstate_free(struct fpu *fpu);
++#else
++static inline void fpstate_free(struct fpu *fpu) { }
++#endif
 +
- #ifdef CONFIG_X86_64
- DECLARE_STATIC_KEY_FALSE(__fpu_state_size_dynamic);
- #endif
+ /* fpstate-related functions which are exported to KVM */
+ extern void fpstate_clear_xstate_component(struct fpstate *fps, unsigned int xfeature);
+ 
 diff --git a/arch/x86/kernel/fpu/xstate.c b/arch/x86/kernel/fpu/xstate.c
-index 77739b0..3d38558 100644
+index 3d38558..db0bfc2 100644
 --- a/arch/x86/kernel/fpu/xstate.c
 +++ b/arch/x86/kernel/fpu/xstate.c
-@@ -1464,6 +1464,53 @@ static int xstate_request_perm(unsigned long idx)
- 	spin_unlock_irq(&current->sighand->siglock);
- 	return ret;
+@@ -12,6 +12,7 @@
+ #include <linux/pkeys.h>
+ #include <linux/seq_file.h>
+ #include <linux/proc_fs.h>
++#include <linux/vmalloc.h>
+ 
+ #include <asm/fpu/api.h>
+ #include <asm/fpu/regset.h>
+@@ -22,6 +23,7 @@
+ #include <asm/prctl.h>
+ #include <asm/elf.h>
+ 
++#include "context.h"
+ #include "internal.h"
+ #include "legacy.h"
+ #include "xstate.h"
+@@ -1371,6 +1373,91 @@ void xfd_validate_state(struct fpstate *fpstate, u64 mask, bool rstor)
  }
+ #endif /* CONFIG_X86_DEBUG_FPU */
+ 
++void fpstate_free(struct fpu *fpu)
++{
++	if (fpu->fpstate || fpu->fpstate != &fpu->__fpstate)
++		vfree(fpu->fpstate);
++}
 +
-+/* Place holder for now */
++/**
++ * fpu_install_fpstate - Update the active fpstate in the FPU
++ *
++ * @fpu:	A struct fpu * pointer
++ * @newfps:	A struct fpstate * pointer
++ *
++ * Returns:	A null pointer if the last active fpstate is the embedded
++ *		one or the new fpstate is already installed;
++ *		otherwise, a pointer to the old fpstate which has to
++ *		be freed by the caller.
++ */
++static struct fpstate *fpu_install_fpstate(struct fpu *fpu,
++					   struct fpstate *newfps)
++{
++	struct fpstate *oldfps = fpu->fpstate;
++
++	if (fpu->fpstate == newfps)
++		return NULL;
++
++	fpu->fpstate = newfps;
++	return oldfps != &fpu->__fpstate ? oldfps : NULL;
++}
++
++/**
++ * fpstate_realloc - Reallocate struct fpstate for the requested new features
++ *
++ * @xfeatures:	A bitmap of xstate features which extend the enabled features
++ *		of that task
++ * @ksize:	The required size for the kernel buffer
++ * @usize:	The required size for user space buffers
++ *
++ * Note vs. vmalloc(): If the task with a vzalloc()-allocated buffer
++ * terminates quickly, vfree()-induced IPIs may be a concern, but tasks
++ * with large states are likely to live longer.
++ *
++ * Returns: 0 on success, -ENOMEM on allocation error.
++ */
 +static int fpstate_realloc(u64 xfeatures, unsigned int ksize,
 +			   unsigned int usize)
 +{
-+	return -ENOMEM;
-+}
++	struct fpu *fpu = &current->thread.fpu;
++	struct fpstate *curfps, *newfps = NULL;
++	unsigned int fpsize;
 +
-+int xfd_enable_feature(u64 xfd_err)
-+{
-+	u64 xfd_event = xfd_err & XFEATURE_MASK_USER_DYNAMIC;
-+	unsigned int ksize, usize;
-+	struct fpu *fpu;
++	curfps = fpu->fpstate;
++	fpsize = ksize + ALIGN(offsetof(struct fpstate, regs), 64);
 +
-+	if (!xfd_event) {
-+		pr_err_once("XFD: Invalid xfd error: %016llx\n", xfd_err);
-+		return 0;
-+	}
++	newfps = vzalloc(fpsize);
++	if (!newfps)
++		return -ENOMEM;
++	newfps->size = ksize;
++	newfps->user_size = usize;
++	newfps->is_valloc = true;
 +
-+	/* Protect against concurrent modifications */
-+	spin_lock_irq(&current->sighand->siglock);
-+
-+	/* If not permitted let it die */
-+	if ((xstate_get_host_group_perm() & xfd_event) != xfd_event) {
-+		spin_unlock_irq(&current->sighand->siglock);
-+		return -EPERM;
-+	}
-+
-+	fpu = &current->group_leader->thread.fpu;
-+	ksize = fpu->perm.__state_size;
-+	usize = fpu->perm.__user_state_size;
++	fpregs_lock();
 +	/*
-+	 * The feature is permitted. State size is sufficient.  Dropping
-+	 * the lock is safe here even if more features are added from
-+	 * another task, the retrieved buffer sizes are valid for the
-+	 * currently requested feature(s).
++	 * Ensure that the current state is in the registers before
++	 * swapping fpstate as that might invalidate it due to layout
++	 * changes.
 +	 */
-+	spin_unlock_irq(&current->sighand->siglock);
++	if (test_thread_flag(TIF_NEED_FPU_LOAD))
++		fpregs_restore_userregs();
 +
-+	/*
-+	 * Try to allocate a new fpstate. If that fails there is no way
-+	 * out.
-+	 */
-+	if (fpstate_realloc(xfd_event, ksize, usize))
-+		return -EFAULT;
++	newfps->xfeatures = curfps->xfeatures | xfeatures;
++	newfps->user_xfeatures = curfps->user_xfeatures | xfeatures;
++	newfps->xfd = curfps->xfd & ~xfeatures;
++
++	curfps = fpu_install_fpstate(fpu, newfps);
++
++	/* Do the final updates within the locked region */
++	xstate_init_xcomp_bv(&newfps->regs.xsave, newfps->xfeatures);
++	xfd_update_state(newfps);
++
++	fpregs_unlock();
++
++	vfree(curfps);
 +	return 0;
 +}
- #else /* CONFIG_X86_64 */
- static inline int xstate_request_perm(unsigned long idx)
++
+ static int validate_sigaltstack(unsigned int usize)
  {
-diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
-index bae7582..6ca1454 100644
---- a/arch/x86/kernel/traps.c
-+++ b/arch/x86/kernel/traps.c
-@@ -1108,10 +1108,48 @@ DEFINE_IDTENTRY(exc_spurious_interrupt_bug)
+ 	struct task_struct *thread, *leader = current->group_leader;
+@@ -1393,7 +1480,8 @@ static int __xstate_request_perm(u64 permitted, u64 requested)
+ 	/*
+ 	 * This deliberately does not exclude !XSAVES as we still might
+ 	 * decide to optionally context switch XCR0 or talk the silicon
+-	 * vendors into extending XFD for the pre AMX states.
++	 * vendors into extending XFD for the pre AMX states, especially
++	 * AVX512.
  	 */
+ 	bool compacted = cpu_feature_enabled(X86_FEATURE_XSAVES);
+ 	struct fpu *fpu = &current->group_leader->thread.fpu;
+@@ -1465,13 +1553,6 @@ static int xstate_request_perm(unsigned long idx)
+ 	return ret;
  }
  
-+static bool handle_xfd_event(struct pt_regs *regs)
-+{
-+	u64 xfd_err;
-+	int err;
-+
-+	if (!IS_ENABLED(CONFIG_X86_64) || !cpu_feature_enabled(X86_FEATURE_XFD))
-+		return false;
-+
-+	rdmsrl(MSR_IA32_XFD_ERR, xfd_err);
-+	if (!xfd_err)
-+		return false;
-+
-+	wrmsrl(MSR_IA32_XFD_ERR, 0);
-+
-+	/* Die if that happens in kernel space */
-+	if (WARN_ON(!user_mode(regs)))
-+		return false;
-+
-+	local_irq_enable();
-+
-+	err = xfd_enable_feature(xfd_err);
-+
-+	switch (err) {
-+	case -EPERM:
-+		force_sig_fault(SIGILL, ILL_ILLOPC, error_get_trap_addr(regs));
-+		break;
-+	case -EFAULT:
-+		force_sig(SIGSEGV);
-+		break;
-+	}
-+
-+	local_irq_disable();
-+	return true;
-+}
-+
- DEFINE_IDTENTRY(exc_device_not_available)
+-/* Place holder for now */
+-static int fpstate_realloc(u64 xfeatures, unsigned int ksize,
+-			   unsigned int usize)
+-{
+-	return -ENOMEM;
+-}
+-
+ int xfd_enable_feature(u64 xfd_err)
  {
- 	unsigned long cr0 = read_cr0();
- 
-+	if (handle_xfd_event(regs))
-+		return;
+ 	u64 xfd_event = xfd_err & XFEATURE_MASK_USER_DYNAMIC;
+diff --git a/arch/x86/kernel/process.c b/arch/x86/kernel/process.c
+index 99025e3..f3f2517 100644
+--- a/arch/x86/kernel/process.c
++++ b/arch/x86/kernel/process.c
+@@ -32,6 +32,7 @@
+ #include <asm/mwait.h>
+ #include <asm/fpu/api.h>
+ #include <asm/fpu/sched.h>
++#include <asm/fpu/xstate.h>
+ #include <asm/debugreg.h>
+ #include <asm/nmi.h>
+ #include <asm/tlbflush.h>
+@@ -90,9 +91,18 @@ int arch_dup_task_struct(struct task_struct *dst, struct task_struct *src)
+ #endif
+ 	/* Drop the copied pointer to current's fpstate */
+ 	dst->thread.fpu.fpstate = NULL;
 +
- #ifdef CONFIG_MATH_EMULATION
- 	if (!boot_cpu_has(X86_FEATURE_FPU) && (cr0 & X86_CR0_EM)) {
- 		struct math_emu_info info = { };
+ 	return 0;
+ }
+ 
++#ifdef CONFIG_X86_64
++void arch_release_task_struct(struct task_struct *tsk)
++{
++	if (fpu_state_size_dynamic())
++		fpstate_free(&tsk->thread.fpu);
++}
++#endif
++
+ /*
+  * Free thread data structures etc..
+  */
