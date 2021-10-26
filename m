@@ -2,56 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A9BA43B6C5
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 26 Oct 2021 18:17:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BFB643B6C7
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 26 Oct 2021 18:17:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235319AbhJZQTF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 26 Oct 2021 12:19:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52572 "EHLO
+        id S237350AbhJZQTH (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 26 Oct 2021 12:19:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52580 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237328AbhJZQTD (ORCPT
+        with ESMTP id S237317AbhJZQTE (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 26 Oct 2021 12:19:03 -0400
+        Tue, 26 Oct 2021 12:19:04 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67BFCC061745;
-        Tue, 26 Oct 2021 09:16:39 -0700 (PDT)
-Date:   Tue, 26 Oct 2021 16:16:37 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA666C061745;
+        Tue, 26 Oct 2021 09:16:40 -0700 (PDT)
+Date:   Tue, 26 Oct 2021 16:16:38 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1635264998;
+        s=2020; t=1635264999;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Ql270qTxrzyG3AZEzepMbfMO5ffbMneVdAnwa/MQLc4=;
-        b=Y3jg6yNfvAt29/fQWppCzG2Dw5YR34FqU+so9ZzMhdAe8S8b1RCbZjDnotIIiT66AUg5OI
-        qRV+anqipAnJqBIfuq9MjOtOq/6C8pOsGeKGAtRPcLO2z30JpIlqz1hJs5Dlm+vLcRLQoY
-        moS7+Uz8/sfgi+GqTD3PO+t4AUabhFRaz+TKiN1lAB5jeYta4X61U/wAP0RyffU/PgeUZa
-        EZO/gR3q44iTkRru77czEuF+rrJnb3hiliUbjNKF58AbUntx35GNzAQcLO3uEMpjdbw3NN
-        PEt9f/AMXNRajLLbjawEK3hVpoBQKWEUEK/pE0zvZlT4pes0L3Nz9E65vhnk8g==
+        bh=hjMVMaSd1cRm5tRiZs3sfaU7kf8/hkVYfG0LzbFjdHM=;
+        b=KfzPW6ofATwq7MkLf3JkXvhy291Rp0+nk+d00u5w0P5xWCnV0l7GYoyERBndbbBVwxty+y
+        jS5Bq3JSoYkMWXvaDCexfKdMKClMVf7YDaPTFtLYz1YkomgIkhrjFXzgs6UZkF6nt6VOnv
+        eKO1mHmz4zvBSY8aNo5G4EjMMb2qq/tYsnf7BH7Ik0Y9BPQNY5/KOknbyFzU8i9U08PqXP
+        JT65N16MAZSjvwLyVMGmQGXZGTrMk24YppMub8KonezZ8KthK6VkDhD710ckdCocQdnfm6
+        xSXqjvy0MYnxFIwbM/O5mGRBWfDpCvDeri/9qD0vzZOCMu0W4NAJbFeTtdi2Sw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1635264998;
+        s=2020e; t=1635264999;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Ql270qTxrzyG3AZEzepMbfMO5ffbMneVdAnwa/MQLc4=;
-        b=PSE3jAjvu+lsldzV8p4dx0mFm7tYSR/teJ6j3d525E9KwoMHsfe0KwbBoNmIn6aJrn3VJY
-        tdImkUWzSmQ8e+CQ==
+        bh=hjMVMaSd1cRm5tRiZs3sfaU7kf8/hkVYfG0LzbFjdHM=;
+        b=ovkSN3zpK3zSNd8kAs6eNOddskMYJE/Hf6ayHpD4+LwoI325FS/YquNoQZAABW/enhxWbh
+        u6Z/s83dxERFPJCQ==
 From:   "tip-bot2 for Chang S. Bae" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/fpu] x86/fpu/xstate: Add fpstate_realloc()/free()
+Subject: [tip: x86/fpu] x86/fpu: Update XFD state where required
 Cc:     "Chang S. Bae" <chang.seok.bae@intel.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         Borislav Petkov <bp@suse.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20211021225527.10184-19-chang.seok.bae@intel.com>
-References: <20211021225527.10184-19-chang.seok.bae@intel.com>
+In-Reply-To: <20211021225527.10184-17-chang.seok.bae@intel.com>
+References: <20211021225527.10184-17-chang.seok.bae@intel.com>
 MIME-Version: 1.0
-Message-ID: <163526499714.626.7471812823908594787.tip-bot2@tip-bot2>
+Message-ID: <163526499843.626.4047176410968465505.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -62,225 +62,178 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/fpu branch of tip:
 
-Commit-ID:     500afbf645a040a39e1af0dba2fdf6ebf224bd47
-Gitweb:        https://git.kernel.org/tip/500afbf645a040a39e1af0dba2fdf6ebf224bd47
+Commit-ID:     672365477ae8afca5a1cca98c1deb733235e4525
+Gitweb:        https://git.kernel.org/tip/672365477ae8afca5a1cca98c1deb733235e4525
 Author:        Chang S. Bae <chang.seok.bae@intel.com>
-AuthorDate:    Thu, 21 Oct 2021 15:55:22 -07:00
+AuthorDate:    Thu, 21 Oct 2021 15:55:20 -07:00
 Committer:     Borislav Petkov <bp@suse.de>
 CommitterDate: Tue, 26 Oct 2021 10:53:02 +02:00
 
-x86/fpu/xstate: Add fpstate_realloc()/free()
+x86/fpu: Update XFD state where required
 
-The fpstate embedded in struct fpu is the default state for storing the FPU
-registers. It's sized so that the default supported features can be stored.
-For dynamically enabled features the register buffer is too small.
+The IA32_XFD_MSR allows to arm #NM traps for XSTATE components which are
+enabled in XCR0. The register has to be restored before the tasks XSTATE is
+restored. The life time rules are the same as for FPU state.
 
-The #NM handler detects first use of a feature which is disabled in the
-XFD MSR. After handling permission checks it recalculates the size for
-kernel space and user space state and invokes fpstate_realloc() which
-tries to reallocate fpstate and install it.
+XFD is updated on return to userspace only when the FPU state of the task
+is not up to date in the registers. It's updated before the XRSTORS so
+that eventually enabled dynamic features are restored as well and not
+brought into init state.
 
-Provide the allocator function which checks whether the current buffer size
-is sufficient and if not allocates one. If allocation is successful the new
-fpstate is initialized with the new features and sizes and the now enabled
-features is removed from the task's XFD mask.
+Also in signal handling for restoring FPU state from user space the
+correctness of the XFD state has to be ensured.
 
-realloc_fpstate() uses vzalloc(). If use of this mechanism grows to
-re-allocate buffers larger than 64KB, a more sophisticated allocation
-scheme that includes purpose-built reclaim capability might be justified.
+Add it to CPU initialization and resume as well.
 
 Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lore.kernel.org/r/20211021225527.10184-19-chang.seok.bae@intel.com
+Link: https://lore.kernel.org/r/20211021225527.10184-17-chang.seok.bae@intel.com
 ---
- arch/x86/include/asm/fpu/api.h |  7 ++-
- arch/x86/kernel/fpu/xstate.c   | 97 ++++++++++++++++++++++++++++++---
- arch/x86/kernel/process.c      | 10 +++-
- 3 files changed, 106 insertions(+), 8 deletions(-)
+ arch/x86/kernel/fpu/context.h |  2 ++
+ arch/x86/kernel/fpu/core.c    | 28 +++++++++++++++++++++++++++-
+ arch/x86/kernel/fpu/signal.c  |  2 ++
+ arch/x86/kernel/fpu/xstate.c  | 12 ++++++++++++
+ arch/x86/kernel/fpu/xstate.h  | 19 ++++++++++++++++++-
+ 5 files changed, 61 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/include/asm/fpu/api.h b/arch/x86/include/asm/fpu/api.h
-index 798ae92..b7267b9 100644
---- a/arch/x86/include/asm/fpu/api.h
-+++ b/arch/x86/include/asm/fpu/api.h
-@@ -130,6 +130,13 @@ static inline void fpstate_init_soft(struct swregs_state *soft) {}
- /* State tracking */
- DECLARE_PER_CPU(struct fpu *, fpu_fpregs_owner_ctx);
+diff --git a/arch/x86/kernel/fpu/context.h b/arch/x86/kernel/fpu/context.h
+index a06ebf3..958accf 100644
+--- a/arch/x86/kernel/fpu/context.h
++++ b/arch/x86/kernel/fpu/context.h
+@@ -69,6 +69,8 @@ static inline void fpregs_restore_userregs(void)
+ 		 * correct because it was either set in switch_to() or in
+ 		 * flush_thread(). So it is excluded because it might be
+ 		 * not up to date in current->thread.fpu.xsave state.
++		 *
++		 * XFD state is handled in restore_fpregs_from_fpstate().
+ 		 */
+ 		restore_fpregs_from_fpstate(fpu->fpstate, XFEATURE_MASK_FPSTATE);
  
-+/* Process cleanup */
-+#ifdef CONFIG_X86_64
-+extern void fpstate_free(struct fpu *fpu);
-+#else
-+static inline void fpstate_free(struct fpu *fpu) { }
-+#endif
+diff --git a/arch/x86/kernel/fpu/core.c b/arch/x86/kernel/fpu/core.c
+index b5f5b08..12ca174 100644
+--- a/arch/x86/kernel/fpu/core.c
++++ b/arch/x86/kernel/fpu/core.c
+@@ -156,6 +156,23 @@ void restore_fpregs_from_fpstate(struct fpstate *fpstate, u64 mask)
+ 
+ 	if (use_xsave()) {
+ 		/*
++		 * Dynamically enabled features are enabled in XCR0, but
++		 * usage requires also that the corresponding bits in XFD
++		 * are cleared.  If the bits are set then using a related
++		 * instruction will raise #NM. This allows to do the
++		 * allocation of the larger FPU buffer lazy from #NM or if
++		 * the task has no permission to kill it which would happen
++		 * via #UD if the feature is disabled in XCR0.
++		 *
++		 * XFD state is following the same life time rules as
++		 * XSTATE and to restore state correctly XFD has to be
++		 * updated before XRSTORS otherwise the component would
++		 * stay in or go into init state even if the bits are set
++		 * in fpstate::regs::xsave::xfeatures.
++		 */
++		xfd_update_state(fpstate);
 +
- /* fpstate-related functions which are exported to KVM */
- extern void fpstate_clear_xstate_component(struct fpstate *fps, unsigned int xfeature);
++		/*
+ 		 * Restoring state always needs to modify all features
+ 		 * which are in @mask even if the current task cannot use
+ 		 * extended features.
+@@ -241,8 +258,17 @@ int fpu_swap_kvm_fpstate(struct fpu_guest *guest_fpu, bool enter_guest)
  
+ 	cur_fps = fpu->fpstate;
+ 
+-	if (!cur_fps->is_confidential)
++	if (!cur_fps->is_confidential) {
++		/* Includes XFD update */
+ 		restore_fpregs_from_fpstate(cur_fps, XFEATURE_MASK_FPSTATE);
++	} else {
++		/*
++		 * XSTATE is restored by firmware from encrypted
++		 * memory. Make sure XFD state is correct while
++		 * running with guest fpstate
++		 */
++		xfd_update_state(cur_fps);
++	}
+ 
+ 	fpregs_mark_activate();
+ 	fpregs_unlock();
+diff --git a/arch/x86/kernel/fpu/signal.c b/arch/x86/kernel/fpu/signal.c
+index 16fdecd..cc977da 100644
+--- a/arch/x86/kernel/fpu/signal.c
++++ b/arch/x86/kernel/fpu/signal.c
+@@ -282,6 +282,8 @@ static bool restore_fpregs_from_user(void __user *buf, u64 xrestore,
+ 
+ retry:
+ 	fpregs_lock();
++	/* Ensure that XFD is up to date */
++	xfd_update_state(fpu->fpstate);
+ 	pagefault_disable();
+ 	ret = __restore_fpregs_from_user(buf, fpu->fpstate->user_xfeatures,
+ 					 xrestore, fx_only);
 diff --git a/arch/x86/kernel/fpu/xstate.c b/arch/x86/kernel/fpu/xstate.c
-index 3d38558..db0bfc2 100644
+index 603edeb..77739b0 100644
 --- a/arch/x86/kernel/fpu/xstate.c
 +++ b/arch/x86/kernel/fpu/xstate.c
-@@ -12,6 +12,7 @@
- #include <linux/pkeys.h>
- #include <linux/seq_file.h>
- #include <linux/proc_fs.h>
-+#include <linux/vmalloc.h>
+@@ -137,6 +137,15 @@ void fpu__init_cpu_xstate(void)
+ 	cr4_set_bits(X86_CR4_OSXSAVE);
  
- #include <asm/fpu/api.h>
- #include <asm/fpu/regset.h>
-@@ -22,6 +23,7 @@
- #include <asm/prctl.h>
- #include <asm/elf.h>
- 
-+#include "context.h"
- #include "internal.h"
- #include "legacy.h"
- #include "xstate.h"
-@@ -1371,6 +1373,91 @@ void xfd_validate_state(struct fpstate *fpstate, u64 mask, bool rstor)
- }
- #endif /* CONFIG_X86_DEBUG_FPU */
- 
-+void fpstate_free(struct fpu *fpu)
-+{
-+	if (fpu->fpstate || fpu->fpstate != &fpu->__fpstate)
-+		vfree(fpu->fpstate);
-+}
-+
-+/**
-+ * fpu_install_fpstate - Update the active fpstate in the FPU
-+ *
-+ * @fpu:	A struct fpu * pointer
-+ * @newfps:	A struct fpstate * pointer
-+ *
-+ * Returns:	A null pointer if the last active fpstate is the embedded
-+ *		one or the new fpstate is already installed;
-+ *		otherwise, a pointer to the old fpstate which has to
-+ *		be freed by the caller.
-+ */
-+static struct fpstate *fpu_install_fpstate(struct fpu *fpu,
-+					   struct fpstate *newfps)
-+{
-+	struct fpstate *oldfps = fpu->fpstate;
-+
-+	if (fpu->fpstate == newfps)
-+		return NULL;
-+
-+	fpu->fpstate = newfps;
-+	return oldfps != &fpu->__fpstate ? oldfps : NULL;
-+}
-+
-+/**
-+ * fpstate_realloc - Reallocate struct fpstate for the requested new features
-+ *
-+ * @xfeatures:	A bitmap of xstate features which extend the enabled features
-+ *		of that task
-+ * @ksize:	The required size for the kernel buffer
-+ * @usize:	The required size for user space buffers
-+ *
-+ * Note vs. vmalloc(): If the task with a vzalloc()-allocated buffer
-+ * terminates quickly, vfree()-induced IPIs may be a concern, but tasks
-+ * with large states are likely to live longer.
-+ *
-+ * Returns: 0 on success, -ENOMEM on allocation error.
-+ */
-+static int fpstate_realloc(u64 xfeatures, unsigned int ksize,
-+			   unsigned int usize)
-+{
-+	struct fpu *fpu = &current->thread.fpu;
-+	struct fpstate *curfps, *newfps = NULL;
-+	unsigned int fpsize;
-+
-+	curfps = fpu->fpstate;
-+	fpsize = ksize + ALIGN(offsetof(struct fpstate, regs), 64);
-+
-+	newfps = vzalloc(fpsize);
-+	if (!newfps)
-+		return -ENOMEM;
-+	newfps->size = ksize;
-+	newfps->user_size = usize;
-+	newfps->is_valloc = true;
-+
-+	fpregs_lock();
-+	/*
-+	 * Ensure that the current state is in the registers before
-+	 * swapping fpstate as that might invalidate it due to layout
-+	 * changes.
-+	 */
-+	if (test_thread_flag(TIF_NEED_FPU_LOAD))
-+		fpregs_restore_userregs();
-+
-+	newfps->xfeatures = curfps->xfeatures | xfeatures;
-+	newfps->user_xfeatures = curfps->user_xfeatures | xfeatures;
-+	newfps->xfd = curfps->xfd & ~xfeatures;
-+
-+	curfps = fpu_install_fpstate(fpu, newfps);
-+
-+	/* Do the final updates within the locked region */
-+	xstate_init_xcomp_bv(&newfps->regs.xsave, newfps->xfeatures);
-+	xfd_update_state(newfps);
-+
-+	fpregs_unlock();
-+
-+	vfree(curfps);
-+	return 0;
-+}
-+
- static int validate_sigaltstack(unsigned int usize)
- {
- 	struct task_struct *thread, *leader = current->group_leader;
-@@ -1393,7 +1480,8 @@ static int __xstate_request_perm(u64 permitted, u64 requested)
  	/*
- 	 * This deliberately does not exclude !XSAVES as we still might
- 	 * decide to optionally context switch XCR0 or talk the silicon
--	 * vendors into extending XFD for the pre AMX states.
-+	 * vendors into extending XFD for the pre AMX states, especially
-+	 * AVX512.
- 	 */
- 	bool compacted = cpu_feature_enabled(X86_FEATURE_XSAVES);
- 	struct fpu *fpu = &current->group_leader->thread.fpu;
-@@ -1465,13 +1553,6 @@ static int xstate_request_perm(unsigned long idx)
- 	return ret;
++	 * Must happen after CR4 setup and before xsetbv() to allow KVM
++	 * lazy passthrough.  Write independent of the dynamic state static
++	 * key as that does not work on the boot CPU. This also ensures
++	 * that any stale state is wiped out from XFD.
++	 */
++	if (cpu_feature_enabled(X86_FEATURE_XFD))
++		wrmsrl(MSR_IA32_XFD, init_fpstate.xfd);
++
++	/*
+ 	 * XCR_XFEATURE_ENABLED_MASK (aka. XCR0) sets user features
+ 	 * managed by XSAVE{C, OPT, S} and XRSTOR{S}.  Only XSAVE user
+ 	 * states can be set here.
+@@ -875,6 +884,9 @@ void fpu__resume_cpu(void)
+ 		wrmsrl(MSR_IA32_XSS, xfeatures_mask_supervisor()  |
+ 				     xfeatures_mask_independent());
+ 	}
++
++	if (fpu_state_size_dynamic())
++		wrmsrl(MSR_IA32_XFD, current->thread.fpu.fpstate->xfd);
  }
  
--/* Place holder for now */
--static int fpstate_realloc(u64 xfeatures, unsigned int ksize,
--			   unsigned int usize)
--{
--	return -ENOMEM;
--}
--
- int xfd_enable_feature(u64 xfd_err)
- {
- 	u64 xfd_event = xfd_err & XFEATURE_MASK_USER_DYNAMIC;
-diff --git a/arch/x86/kernel/process.c b/arch/x86/kernel/process.c
-index 99025e3..f3f2517 100644
---- a/arch/x86/kernel/process.c
-+++ b/arch/x86/kernel/process.c
-@@ -32,6 +32,7 @@
- #include <asm/mwait.h>
- #include <asm/fpu/api.h>
- #include <asm/fpu/sched.h>
-+#include <asm/fpu/xstate.h>
- #include <asm/debugreg.h>
- #include <asm/nmi.h>
- #include <asm/tlbflush.h>
-@@ -90,9 +91,18 @@ int arch_dup_task_struct(struct task_struct *dst, struct task_struct *src)
+ /*
+diff --git a/arch/x86/kernel/fpu/xstate.h b/arch/x86/kernel/fpu/xstate.h
+index 2902424..e18210d 100644
+--- a/arch/x86/kernel/fpu/xstate.h
++++ b/arch/x86/kernel/fpu/xstate.h
+@@ -136,6 +136,22 @@ extern void xfd_validate_state(struct fpstate *fpstate, u64 mask, bool rstor);
+ static inline void xfd_validate_state(struct fpstate *fpstate, u64 mask, bool rstor) { }
  #endif
- 	/* Drop the copied pointer to current's fpstate */
- 	dst->thread.fpu.fpstate = NULL;
-+
- 	return 0;
- }
  
 +#ifdef CONFIG_X86_64
-+void arch_release_task_struct(struct task_struct *tsk)
++static inline void xfd_update_state(struct fpstate *fpstate)
 +{
-+	if (fpu_state_size_dynamic())
-+		fpstate_free(&tsk->thread.fpu);
++	if (fpu_state_size_dynamic()) {
++		u64 xfd = fpstate->xfd;
++
++		if (__this_cpu_read(xfd_state) != xfd) {
++			wrmsrl(MSR_IA32_XFD, xfd);
++			__this_cpu_write(xfd_state, xfd);
++		}
++	}
 +}
++#else
++static inline void xfd_update_state(struct fpstate *fpstate) { }
 +#endif
 +
  /*
-  * Free thread data structures etc..
-  */
+  * Save processor xstate to xsave area.
+  *
+@@ -247,7 +263,8 @@ static inline int os_xrstor_safe(struct fpstate *fpstate, u64 mask)
+ 	u32 hmask = mask >> 32;
+ 	int err;
+ 
+-	/* Must enforce XFD update here */
++	/* Ensure that XFD is up to date */
++	xfd_update_state(fpstate);
+ 
+ 	if (cpu_feature_enabled(X86_FEATURE_XSAVES))
+ 		XSTATE_OP(XRSTORS, xstate, lmask, hmask, err);
