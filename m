@@ -2,90 +2,173 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 691CC43DF5A
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 28 Oct 2021 12:52:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E8F343E1B5
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 28 Oct 2021 15:11:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230226AbhJ1Kyt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 28 Oct 2021 06:54:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37532 "EHLO
+        id S230379AbhJ1NMx (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 28 Oct 2021 09:12:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41238 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230191AbhJ1Kys (ORCPT
+        with ESMTP id S230346AbhJ1NMs (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 28 Oct 2021 06:54:48 -0400
-Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E22B5C061348
-        for <linux-tip-commits@vger.kernel.org>; Thu, 28 Oct 2021 03:52:21 -0700 (PDT)
-Received: by mail-ed1-x542.google.com with SMTP id ee16so10053879edb.10
-        for <linux-tip-commits@vger.kernel.org>; Thu, 28 Oct 2021 03:52:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=vprh3gRT3Cegcj0K7Fy7tqOfLGKK384XjLMkCZvF/BY=;
-        b=MqgQiMnth4O6zLvpsYbAhVLW1BorpgoCleWwfkY0/i+i6OSDuXRZO1jIKzpTTrmehO
-         XtsLWdXiTcL+XCe4naFtf2tTUJnbwwmDpuUkpvRhLd+LEnuxY7nNr11hmTRUVX1WOHsO
-         bN0u1arCg4gm9LHdXRMZFcXOD22U5gDGuBOuhPo6qvWbt6nA2j/p/5IZ88XFHrEsiSW3
-         12hentYJMlWeUfa2lUQkLm+5/fvMSizrI7wGoF2taOa3dgGUV5HKZWb0yAAH7nAXVevJ
-         tDC/xbHNLzSn310XeD3Gkoobjl6MPBQzT5DSLzerNBdTKOdmyp3xvfvOyo80qVUTZIED
-         gaRg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=vprh3gRT3Cegcj0K7Fy7tqOfLGKK384XjLMkCZvF/BY=;
-        b=b4YWKFoNbRMjQCklz3drebqjyMDIgMszPQGw6PZgKMrcyc2kuAQCkaw6L9frixf2rC
-         Q88jO5hYP5me1ruZcTTGOGrOp+1H06/fGB4y2pgB8zwNYfEJZGImCwGkGZkC1VW1/1mS
-         P+94wZ2xUyWDFk0hNGeZDHAtcx+/G9dF/ly/Nvf+r1QAc6fUdTJ0pdV+1OfDjU6pBn4I
-         r9r12f21etOo4XbasIZYsZXesHCsKkt6nhNxTH6cAS3lpwBv2g5LzDTtQy5vEe2t1ylV
-         sqWB7/Q/cVcoynTxoNRjdRdUjUKk5B5rmxpMTdTdaddLg5RW/TQHoPy9qcQ2aUcEVLFu
-         xhPg==
-X-Gm-Message-State: AOAM530w4oNAUZ2OxkHzC60I2AOEeVcuLcPnojk0Y4Cnkdcn0ZZ8qpEo
-        AL/ifjSBQSQP/EC8/OfQZEMMe3ipOi3wbOI3LnfIqBr5EehK+yo5
-X-Google-Smtp-Source: ABdhPJw39EF9dJlXS9lAFrZ3adXxB8DVzXcygVzA3uRLiZxWlggxaB9ElCxkEB0P82xisoA6G442GD5iqMe2hCgLIt8=
-X-Received: by 2002:a2e:9a83:: with SMTP id p3mr3750290lji.145.1635418330269;
- Thu, 28 Oct 2021 03:52:10 -0700 (PDT)
+        Thu, 28 Oct 2021 09:12:48 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF906C061767;
+        Thu, 28 Oct 2021 06:10:21 -0700 (PDT)
+Date:   Thu, 28 Oct 2021 13:10:17 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1635426619;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=im9jhiPJYFao419tKqNmbXjMw4iduiXE/cZrz5JeEDI=;
+        b=WbO03QiCN7XpCNz2OqvI8WAxo9G8zGTYbkCn7eELocmDIWk9a0P9E+C0yw4C0LER6XJNKA
+        CAQfaXz+7Qv+mOoRbltDBmMipOUAX+wSdJBxvQwTRUoEKjg7T+U2BwdBoSPkXj+fyp9YW/
+        CXkU4ZsGUYN+IgL5y3dET7ctJFSnr++qFBQ6UfqGjwku9+tvE3jWwtLzGr69CbZV/as4rp
+        q7y2Poatc0O24j5ClfaF08p5XN3rOlESovAtIqOukKnqnqAWZUJDyuI+5CXOibixuk6cKo
+        28y4hmuImNY55Vx8Fr8nVpHZYobT+cpKHSGIE7YVuXFpgMu8IADpj+DthC3E8w==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1635426619;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=im9jhiPJYFao419tKqNmbXjMw4iduiXE/cZrz5JeEDI=;
+        b=KRkFnvCMcgYXQIlAyOj2hy7iFg09Vyp+/PSY9lTTxBv03JUFia1eUgrYLB2CVvlTkLKHpi
+        4kg6sNKAo2pitgCw==
+From:   "tip-bot2 for Chang S. Bae" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/fpu] Documentation/x86: Add documentation for using dynamic
+ XSTATE features
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        "Chang S. Bae" <chang.seok.bae@intel.com>,
+        Borislav Petkov <bp@suse.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20211026091157.16711-1-chang.seok.bae@intel.com>
+References: <20211026091157.16711-1-chang.seok.bae@intel.com>
 MIME-Version: 1.0
-Received: by 2002:ab3:6f89:0:0:0:0:0 with HTTP; Thu, 28 Oct 2021 03:52:09
- -0700 (PDT)
-Reply-To: aabdulwalialhashmi@gmail.com
-From:   Abdulwali Alhashmi <husamalsayed.hs@gmail.com>
-Date:   Thu, 28 Oct 2021 03:52:09 -0700
-Message-ID: <CAF6yYCeS=rm8=_71-kMjVo4oaVK57w9X52R_yv1HDrBe7vh-sA@mail.gmail.com>
-Subject: PLEASE GET BACK TO ME IF I CAN I TRUST YOU
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Message-ID: <163542661798.626.3173189186523619420.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
--- 
-Greetings,
+The following commit has been merged into the x86/fpu branch of tip:
 
-Firstly, I apologize for encroaching into your privacy in this manner
-as it may seem unethical though it is a matter of great importance.
+Commit-ID:     d7a9590f608dbedd917eb0857a074accdf0d3919
+Gitweb:        https://git.kernel.org/tip/d7a9590f608dbedd917eb0857a074accdf0d3919
+Author:        Chang S. Bae <chang.seok.bae@intel.com>
+AuthorDate:    Tue, 26 Oct 2021 02:11:57 -07:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Thu, 28 Oct 2021 14:54:58 +02:00
 
-I am Abdulwali Alhashmi, I work with Cayman National Bank (Cayman Islands).
+Documentation/x86: Add documentation for using dynamic XSTATE features
 
-I am contacting you because my status would not permit me to do this
-alone as it is concerning our customer and an investment placed under
-our bank's management over 5 years ago.
+Explain how dynamic XSTATE features can be enabled via the
+architecture-specific prctl() along with dynamic sigframe size and
+first use trap handling.
 
-I have a proposal I would love to discuss with you which will be very
-beneficial to both of us. It's regarding my late client who has a huge
-deposit with my bank.
+Fix:
 
-He is from your country and shares the same last name with you.
+Documentation/x86/xstate.rst:15: WARNING: Title underline too short.
 
-I want to seek your consent to present you as the next of kin to my
-late client who died and left a huge deposit with my bank.
+as reported by Stephen Rothwell <sfr@canb.auug.org.au>
 
-I would respectfully request that you keep the contents of this mail
-confidential and respect the integrity of the information you come by
-as a result of this mail.
+Originally-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lkml.kernel.org/r/20211026091157.16711-1-chang.seok.bae@intel.com
+---
+ Documentation/x86/index.rst  |  1 +-
+ Documentation/x86/xstate.rst | 65 +++++++++++++++++++++++++++++++++++-
+ 2 files changed, 66 insertions(+)
+ create mode 100644 Documentation/x86/xstate.rst
 
-Please kindly get back to me for more details if I can TRUST YOU.{
-aabdulwalialhashmi@gmail.com }
-
-Regards
-Abdulwali Alhashmi
-Treasury and Deposit Management,
-Cayman National Bank Cayman Islands
+diff --git a/Documentation/x86/index.rst b/Documentation/x86/index.rst
+index 3830483..f498f1d 100644
+--- a/Documentation/x86/index.rst
++++ b/Documentation/x86/index.rst
+@@ -37,3 +37,4 @@ x86-specific Documentation
+    sgx
+    features
+    elf_auxvec
++   xstate
+diff --git a/Documentation/x86/xstate.rst b/Documentation/x86/xstate.rst
+new file mode 100644
+index 0000000..65de3f0
+--- /dev/null
++++ b/Documentation/x86/xstate.rst
+@@ -0,0 +1,65 @@
++Using XSTATE features in user space applications
++================================================
++
++The x86 architecture supports floating-point extensions which are
++enumerated via CPUID. Applications consult CPUID and use XGETBV to
++evaluate which features have been enabled by the kernel XCR0.
++
++Up to AVX-512 and PKRU states, these features are automatically enabled by
++the kernel if available. Features like AMX TILE_DATA (XSTATE component 18)
++are enabled by XCR0 as well, but the first use of related instruction is
++trapped by the kernel because by default the required large XSTATE buffers
++are not allocated automatically.
++
++Using dynamically enabled XSTATE features in user space applications
++--------------------------------------------------------------------
++
++The kernel provides an arch_prctl(2) based mechanism for applications to
++request the usage of such features. The arch_prctl(2) options related to
++this are:
++
++-ARCH_GET_XCOMP_SUPP
++
++ arch_prctl(ARCH_GET_XCOMP_SUPP, &features);
++
++ ARCH_GET_XCOMP_SUPP stores the supported features in userspace storage of
++ type uint64_t. The second argument is a pointer to that storage.
++
++-ARCH_GET_XCOMP_PERM
++
++ arch_prctl(ARCH_GET_XCOMP_PERM, &features);
++
++ ARCH_GET_XCOMP_PERM stores the features for which the userspace process
++ has permission in userspace storage of type uint64_t. The second argument
++ is a pointer to that storage.
++
++-ARCH_REQ_XCOMP_PERM
++
++ arch_prctl(ARCH_REQ_XCOMP_PERM, feature_nr);
++
++ ARCH_REQ_XCOMP_PERM allows to request permission for a dynamically enabled
++ feature or a feature set. A feature set can be mapped to a facility, e.g.
++ AMX, and can require one or more XSTATE components to be enabled.
++
++ The feature argument is the number of the highest XSTATE component which
++ is required for a facility to work.
++
++When requesting permission for a feature, the kernel checks the
++availability. The kernel ensures that sigaltstacks in the process's tasks
++are large enough to accommodate the resulting large signal frame. It
++enforces this both during ARCH_REQ_XCOMP_SUPP and during any subsequent
++sigaltstack(2) calls. If an installed sigaltstack is smaller than the
++resulting sigframe size, ARCH_REQ_XCOMP_SUPP results in -ENOSUPP. Also,
++sigaltstack(2) results in -ENOMEM if the requested altstack is too small
++for the permitted features.
++
++Permission, when granted, is valid per process. Permissions are inherited
++on fork(2) and cleared on exec(3).
++
++The first use of an instruction related to a dynamically enabled feature is
++trapped by the kernel. The trap handler checks whether the process has
++permission to use the feature. If the process has no permission then the
++kernel sends SIGILL to the application. If the process has permission then
++the handler allocates a larger xstate buffer for the task so the large
++state can be context switched. In the unlikely cases that the allocation
++fails, the kernel sends SIGSEGV.
