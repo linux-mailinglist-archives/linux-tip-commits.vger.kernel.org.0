@@ -2,99 +2,90 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 83D8643DCF0
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 28 Oct 2021 10:30:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 691CC43DF5A
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 28 Oct 2021 12:52:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230030AbhJ1Ic3 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 28 Oct 2021 04:32:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33640 "EHLO
+        id S230226AbhJ1Kyt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 28 Oct 2021 06:54:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37532 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229800AbhJ1Ic2 (ORCPT
+        with ESMTP id S230191AbhJ1Kys (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 28 Oct 2021 04:32:28 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0571C061570;
-        Thu, 28 Oct 2021 01:30:01 -0700 (PDT)
-Date:   Thu, 28 Oct 2021 08:29:57 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1635409799;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=TCOxPPu0wAhGq4BhYH0OeM0Eb5ykRbeBvM2nzDSMAj0=;
-        b=E12TZgKLMH8pmjzvbqISYRHIAfV2XPkCyand2eJv2ypLBHwmPhVHuy1Zj8xvf4KLk/p2ei
-        opimE9hwmT2nAKMIowjxYhSw+FB/UBG2xj02pgB3BpDnhya0JfQjPCF//seJ3BQpTKW9+R
-        R3Z1GtVl9wGZisUsyxpH9Naz9sSMmy9Kma/58TrCdSe83NqGKwnqgrYTce+TlvtzaayH9v
-        R5FQUN7ALbB2cR3F81BFnAQM+k2CNThSIm5Xg14bNHlo92WQVbJAMlFfVIg/cfPrN1WzTL
-        89p4kzBqnetm/X1V0HyJrWPW0ntALyTXYkYRHAAEQEJNfF+/Ng5mGyM3o1+yCg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1635409799;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=TCOxPPu0wAhGq4BhYH0OeM0Eb5ykRbeBvM2nzDSMAj0=;
-        b=M0dmY6omFH/HP5kKLd7L09fRgDBa23TFl7uU1RLaRYD8Bd5hx6mV6LB+QBR1np/hWterfm
-        KmeO6ivK7MtdM3AQ==
-From:   "tip-bot2 for Stephen Rothwell" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/fpu] x86/fpu: Include vmalloc.h for vzalloc()
-Cc:     Stephen Rothwell <sfr@canb.auug.org.au>,
-        Borislav Petkov <bp@suse.de>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20211025151144.552c60ca@canb.auug.org.au>
-References: <20211025151144.552c60ca@canb.auug.org.au>
+        Thu, 28 Oct 2021 06:54:48 -0400
+Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E22B5C061348
+        for <linux-tip-commits@vger.kernel.org>; Thu, 28 Oct 2021 03:52:21 -0700 (PDT)
+Received: by mail-ed1-x542.google.com with SMTP id ee16so10053879edb.10
+        for <linux-tip-commits@vger.kernel.org>; Thu, 28 Oct 2021 03:52:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=vprh3gRT3Cegcj0K7Fy7tqOfLGKK384XjLMkCZvF/BY=;
+        b=MqgQiMnth4O6zLvpsYbAhVLW1BorpgoCleWwfkY0/i+i6OSDuXRZO1jIKzpTTrmehO
+         XtsLWdXiTcL+XCe4naFtf2tTUJnbwwmDpuUkpvRhLd+LEnuxY7nNr11hmTRUVX1WOHsO
+         bN0u1arCg4gm9LHdXRMZFcXOD22U5gDGuBOuhPo6qvWbt6nA2j/p/5IZ88XFHrEsiSW3
+         12hentYJMlWeUfa2lUQkLm+5/fvMSizrI7wGoF2taOa3dgGUV5HKZWb0yAAH7nAXVevJ
+         tDC/xbHNLzSn310XeD3Gkoobjl6MPBQzT5DSLzerNBdTKOdmyp3xvfvOyo80qVUTZIED
+         gaRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=vprh3gRT3Cegcj0K7Fy7tqOfLGKK384XjLMkCZvF/BY=;
+        b=b4YWKFoNbRMjQCklz3drebqjyMDIgMszPQGw6PZgKMrcyc2kuAQCkaw6L9frixf2rC
+         Q88jO5hYP5me1ruZcTTGOGrOp+1H06/fGB4y2pgB8zwNYfEJZGImCwGkGZkC1VW1/1mS
+         P+94wZ2xUyWDFk0hNGeZDHAtcx+/G9dF/ly/Nvf+r1QAc6fUdTJ0pdV+1OfDjU6pBn4I
+         r9r12f21etOo4XbasIZYsZXesHCsKkt6nhNxTH6cAS3lpwBv2g5LzDTtQy5vEe2t1ylV
+         sqWB7/Q/cVcoynTxoNRjdRdUjUKk5B5rmxpMTdTdaddLg5RW/TQHoPy9qcQ2aUcEVLFu
+         xhPg==
+X-Gm-Message-State: AOAM530w4oNAUZ2OxkHzC60I2AOEeVcuLcPnojk0Y4Cnkdcn0ZZ8qpEo
+        AL/ifjSBQSQP/EC8/OfQZEMMe3ipOi3wbOI3LnfIqBr5EehK+yo5
+X-Google-Smtp-Source: ABdhPJw39EF9dJlXS9lAFrZ3adXxB8DVzXcygVzA3uRLiZxWlggxaB9ElCxkEB0P82xisoA6G442GD5iqMe2hCgLIt8=
+X-Received: by 2002:a2e:9a83:: with SMTP id p3mr3750290lji.145.1635418330269;
+ Thu, 28 Oct 2021 03:52:10 -0700 (PDT)
 MIME-Version: 1.0
-Message-ID: <163540979775.626.10330094278722511919.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Received: by 2002:ab3:6f89:0:0:0:0:0 with HTTP; Thu, 28 Oct 2021 03:52:09
+ -0700 (PDT)
+Reply-To: aabdulwalialhashmi@gmail.com
+From:   Abdulwali Alhashmi <husamalsayed.hs@gmail.com>
+Date:   Thu, 28 Oct 2021 03:52:09 -0700
+Message-ID: <CAF6yYCeS=rm8=_71-kMjVo4oaVK57w9X52R_yv1HDrBe7vh-sA@mail.gmail.com>
+Subject: PLEASE GET BACK TO ME IF I CAN I TRUST YOU
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/fpu branch of tip:
+-- 
+Greetings,
 
-Commit-ID:     6ccd63f07775961b3212c098abad05bcda931045
-Gitweb:        https://git.kernel.org/tip/6ccd63f07775961b3212c098abad05bcda931045
-Author:        Stephen Rothwell <sfr@canb.auug.org.au>
-AuthorDate:    Mon, 25 Oct 2021 15:04:13 +11:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Thu, 28 Oct 2021 10:12:54 +02:00
+Firstly, I apologize for encroaching into your privacy in this manner
+as it may seem unethical though it is a matter of great importance.
 
-x86/fpu: Include vmalloc.h for vzalloc()
+I am Abdulwali Alhashmi, I work with Cayman National Bank (Cayman Islands).
 
-Explicitly include that header to avoid build errors when vzalloc()
-becomes "invisible" to the compiler due to header reorganizations.
+I am contacting you because my status would not permit me to do this
+alone as it is concerning our customer and an investment placed under
+our bank's management over 5 years ago.
 
-This is not a problem in the tip tree but occurred when integrating
-linux-next.
+I have a proposal I would love to discuss with you which will be very
+beneficial to both of us. It's regarding my late client who has a huge
+deposit with my bank.
 
- [ bp: Commit message. ]
+He is from your country and shares the same last name with you.
 
-Link: https://lore.kernel.org/r/20211025151144.552c60ca@canb.auug.org.au
-Fixes: 69f6ed1d14c6 ("x86/fpu: Provide infrastructure for KVM FPU cleanup")
-Signed-off-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Signed-off-by: Borislav Petkov <bp@suse.de>
----
- arch/x86/kernel/fpu/core.c | 1 +
- 1 file changed, 1 insertion(+)
+I want to seek your consent to present you as the next of kin to my
+late client who died and left a huge deposit with my bank.
 
-diff --git a/arch/x86/kernel/fpu/core.c b/arch/x86/kernel/fpu/core.c
-index 290836d..8ea306b 100644
---- a/arch/x86/kernel/fpu/core.c
-+++ b/arch/x86/kernel/fpu/core.c
-@@ -16,6 +16,7 @@
- 
- #include <linux/hardirq.h>
- #include <linux/pkeys.h>
-+#include <linux/vmalloc.h>
- 
- #include "context.h"
- #include "internal.h"
+I would respectfully request that you keep the contents of this mail
+confidential and respect the integrity of the information you come by
+as a result of this mail.
+
+Please kindly get back to me for more details if I can TRUST YOU.{
+aabdulwalialhashmi@gmail.com }
+
+Regards
+Abdulwali Alhashmi
+Treasury and Deposit Management,
+Cayman National Bank Cayman Islands
