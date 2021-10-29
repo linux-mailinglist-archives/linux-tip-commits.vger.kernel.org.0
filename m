@@ -2,57 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E01843F867
+	by mail.lfdr.de (Postfix) with ESMTP id F0DB243F869
 	for <lists+linux-tip-commits@lfdr.de>; Fri, 29 Oct 2021 10:03:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232341AbhJ2IFf (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 29 Oct 2021 04:05:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42048 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232360AbhJ2IF3 (ORCPT
+        id S232394AbhJ2IFg (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 29 Oct 2021 04:05:36 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:53216 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232363AbhJ2IFa (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 29 Oct 2021 04:05:29 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AC7EC061570;
-        Fri, 29 Oct 2021 01:03:01 -0700 (PDT)
-Date:   Fri, 29 Oct 2021 08:02:59 -0000
+        Fri, 29 Oct 2021 04:05:30 -0400
+Date:   Fri, 29 Oct 2021 08:03:00 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1635494580;
+        s=2020; t=1635494581;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=frPN6S8Z9/jNFGBwkYKQCrX6eHRqdWDN5HvK2S4HyD0=;
-        b=wWc5ECP1OBRQc8ycYguySQfXyx73K4TW0qArPwIcW/FTO6nTSOZzXXU5cCQ+bJ/d3HZ7eR
-        6J16v3LYYVZ450LdPxMGcWGsKFEhpv5G808TH/d4bp1EnTAv4UdSvMTGGaBXikVEbMTTZH
-        qpNwx/8WhEbuA1nyEtTd/BLgRVIDwPMnKS+Y/rxidI19KTWgobV6VK8MCNcqXqaNVlciXo
-        LYTvguhshLIs68V3QY8XivIobZDJYuZ7nBXDotJ1wKGAR8hmta6ykwcsF/TIhRmrJRIY0S
-        2TLmPNZ9fyFnzPOh2X+G0+NRAAs6wO0GM3eCqPevT7iqDFOq6hLMf9t6XE3XSg==
+        bh=+We7BbFia016++ILQ/sj6Tmb0TrrdMWkMdb4cVvMdcY=;
+        b=4cgbJq0X83msgFasJvolpe4i8bTHY/cPrQmAHk7guFcqOQb5WimyJapt/qioQ77D+0MULR
+        Hl6QDCdZT08UaWM0Gkgwr9cQ9apIEFGTpnBps7pq343vI0NQ7qQGStUGTwU5rxkAwoUsb8
+        +q1d134KtpLxfULp9fcMTLkUsSLIcTyM3G/BjCsksa28D4AWygSHFJLnG/oFu/unmQtmRf
+        uUGBh5hzKQWChA6Lz2/B8zsHMPeQebePtjEFoSFiamrmCEeBhs4JGe8CJbZQZZn7jxlH20
+        4APYzgEmYQ3WpaOUBsY9qTAmOWXmGk6EEABuA1vMYR3+S/I+zTmPp4AtQ0Mzyg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1635494580;
+        s=2020e; t=1635494581;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=frPN6S8Z9/jNFGBwkYKQCrX6eHRqdWDN5HvK2S4HyD0=;
-        b=Z90oN6APn8YxzYbeX502EWLh/ngoPIq5TkNlTB7ksWVRvFpbRHkxF0H4cIcb1E7qrK9l4I
-        ikg3053je17I+UBw==
+        bh=+We7BbFia016++ILQ/sj6Tmb0TrrdMWkMdb4cVvMdcY=;
+        b=77lQ1fP+jWCiyAYAL7yZqijMaTeYC9I5tP4cSTnh9KERxCLdtPtCkgc7bv8dmnakhx55Ne
+        iI6055RtnsxvG5BQ==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] x86/alternative: Handle Jcc __x86_indirect_thunk_\reg
+Subject: [tip: objtool/core] x86/retpoline: Create a retpoline thunk array
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Borislav Petkov <bp@suse.de>,
         Josh Poimboeuf <jpoimboe@redhat.com>,
         Alexei Starovoitov <ast@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20211026120310.296470217@infradead.org>
-References: <20211026120310.296470217@infradead.org>
+In-Reply-To: <20211026120310.169659320@infradead.org>
+References: <20211026120310.169659320@infradead.org>
 MIME-Version: 1.0
-Message-ID: <163549457910.626.10715211618290814624.tip-bot2@tip-bot2>
+Message-ID: <163549458053.626.14549304782977337531.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -63,99 +60,109 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     2f0cbb2a8e5bbf101e9de118fc0eb168111a5e1e
-Gitweb:        https://git.kernel.org/tip/2f0cbb2a8e5bbf101e9de118fc0eb168111a5e1e
+Commit-ID:     1a6f74429c42a3854980359a758e222005712aee
+Gitweb:        https://git.kernel.org/tip/1a6f74429c42a3854980359a758e222005712aee
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Tue, 26 Oct 2021 14:01:43 +02:00
+AuthorDate:    Tue, 26 Oct 2021 14:01:41 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Thu, 28 Oct 2021 23:25:28 +02:00
+CommitterDate: Thu, 28 Oct 2021 23:25:27 +02:00
 
-x86/alternative: Handle Jcc __x86_indirect_thunk_\reg
+x86/retpoline: Create a retpoline thunk array
 
-Handle the rare cases where the compiler (clang) does an indirect
-conditional tail-call using:
+Stick all the retpolines in a single symbol and have the individual
+thunks as inner labels, this should guarantee thunk order and layout.
 
-  Jcc __x86_indirect_thunk_\reg
+Previously there were 16 (or rather 15 without rsp) separate symbols and
+a toolchain might reasonably expect it could displace them however it
+liked, with disregard for their relative position.
 
-For the !RETPOLINE case this can be rewritten to fit the original (6
-byte) instruction like:
+However, now they're part of a larger symbol. Any change to their
+relative position would disrupt this larger _array symbol and thus not
+be sound.
 
-  Jncc.d8	1f
-  JMP		*%\reg
-  NOP
-1:
+This is the same reasoning used for data symbols. On their own there
+is no guarantee about their relative position wrt to one aonther, but
+we're still able to do arrays because an array as a whole is a single
+larger symbol.
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Borislav Petkov <bp@suse.de>
 Acked-by: Josh Poimboeuf <jpoimboe@redhat.com>
 Tested-by: Alexei Starovoitov <ast@kernel.org>
-Link: https://lore.kernel.org/r/20211026120310.296470217@infradead.org
+Link: https://lore.kernel.org/r/20211026120310.169659320@infradead.org
 ---
- arch/x86/kernel/alternative.c | 40 ++++++++++++++++++++++++++++++----
- 1 file changed, 36 insertions(+), 4 deletions(-)
+ arch/x86/include/asm/nospec-branch.h |  8 +++++++-
+ arch/x86/lib/retpoline.S             | 14 +++++++++-----
+ 2 files changed, 16 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
-index 5df4034..1dea2f6 100644
---- a/arch/x86/kernel/alternative.c
-+++ b/arch/x86/kernel/alternative.c
-@@ -393,7 +393,8 @@ static int emit_indirect(int op, int reg, u8 *bytes)
- static int patch_retpoline(void *addr, struct insn *insn, u8 *bytes)
- {
- 	retpoline_thunk_t *target;
--	int reg, i = 0;
-+	int reg, ret, i = 0;
-+	u8 op, cc;
+diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/nospec-branch.h
+index 14053cd..e22aedb 100644
+--- a/arch/x86/include/asm/nospec-branch.h
++++ b/arch/x86/include/asm/nospec-branch.h
+@@ -12,6 +12,8 @@
+ #include <asm/msr-index.h>
+ #include <asm/unwind_hints.h>
  
- 	target = addr + insn->length + insn->immediate.value;
- 	reg = target - __x86_indirect_thunk_array;
-@@ -407,9 +408,36 @@ static int patch_retpoline(void *addr, struct insn *insn, u8 *bytes)
- 	if (cpu_feature_enabled(X86_FEATURE_RETPOLINE))
- 		return -1;
++#define RETPOLINE_THUNK_SIZE	32
++
+ /*
+  * Fill the CPU return stack buffer.
+  *
+@@ -120,11 +122,15 @@
  
--	i = emit_indirect(insn->opcode.bytes[0], reg, bytes);
--	if (i < 0)
--		return i;
-+	op = insn->opcode.bytes[0];
-+
-+	/*
-+	 * Convert:
-+	 *
-+	 *   Jcc.d32 __x86_indirect_thunk_\reg
-+	 *
-+	 * into:
-+	 *
-+	 *   Jncc.d8 1f
-+	 *   JMP *%\reg
-+	 *   NOP
-+	 * 1:
-+	 */
-+	/* Jcc.d32 second opcode byte is in the range: 0x80-0x8f */
-+	if (op == 0x0f && (insn->opcode.bytes[1] & 0xf0) == 0x80) {
-+		cc = insn->opcode.bytes[1] & 0xf;
-+		cc ^= 1; /* invert condition */
-+
-+		bytes[i++] = 0x70 + cc;        /* Jcc.d8 */
-+		bytes[i++] = insn->length - 2; /* sizeof(Jcc.d8) == 2 */
-+
-+		/* Continue as if: JMP.d32 __x86_indirect_thunk_\reg */
-+		op = JMP32_INSN_OPCODE;
-+	}
-+
-+	ret = emit_indirect(op, reg, bytes + i);
-+	if (ret < 0)
-+		return ret;
-+	i += ret;
+ #ifdef CONFIG_RETPOLINE
  
- 	for (; i < insn->length;)
- 		bytes[i++] = BYTES_NOP1;
-@@ -443,6 +471,10 @@ void __init_or_module noinline apply_retpolines(s32 *start, s32 *end)
- 		case JMP32_INSN_OPCODE:
- 			break;
++typedef u8 retpoline_thunk_t[RETPOLINE_THUNK_SIZE];
++
+ #define GEN(reg) \
+-	extern asmlinkage void __x86_indirect_thunk_ ## reg (void);
++	extern retpoline_thunk_t __x86_indirect_thunk_ ## reg;
+ #include <asm/GEN-for-each-reg.h>
+ #undef GEN
  
-+		case 0x0f: /* escape */
-+			if (op2 >= 0x80 && op2 <= 0x8f)
-+				break;
-+			fallthrough;
- 		default:
- 			WARN_ON_ONCE(1);
- 			continue;
++extern retpoline_thunk_t __x86_indirect_thunk_array[];
++
+ #ifdef CONFIG_X86_64
+ 
+ /*
+diff --git a/arch/x86/lib/retpoline.S b/arch/x86/lib/retpoline.S
+index 4c910fa..cf0b39f 100644
+--- a/arch/x86/lib/retpoline.S
++++ b/arch/x86/lib/retpoline.S
+@@ -28,16 +28,14 @@
+ 
+ .macro THUNK reg
+ 
+-	.align 32
+-
+-SYM_FUNC_START(__x86_indirect_thunk_\reg)
++	.align RETPOLINE_THUNK_SIZE
++SYM_INNER_LABEL(__x86_indirect_thunk_\reg, SYM_L_GLOBAL)
++	UNWIND_HINT_EMPTY
+ 
+ 	ALTERNATIVE_2 __stringify(ANNOTATE_RETPOLINE_SAFE; jmp *%\reg), \
+ 		      __stringify(RETPOLINE \reg), X86_FEATURE_RETPOLINE, \
+ 		      __stringify(lfence; ANNOTATE_RETPOLINE_SAFE; jmp *%\reg), X86_FEATURE_RETPOLINE_AMD
+ 
+-SYM_FUNC_END(__x86_indirect_thunk_\reg)
+-
+ .endm
+ 
+ /*
+@@ -55,10 +53,16 @@ SYM_FUNC_END(__x86_indirect_thunk_\reg)
+ #define __EXPORT_THUNK(sym)	_ASM_NOKPROBE(sym); EXPORT_SYMBOL(sym)
+ #define EXPORT_THUNK(reg)	__EXPORT_THUNK(__x86_indirect_thunk_ ## reg)
+ 
++	.align RETPOLINE_THUNK_SIZE
++SYM_CODE_START(__x86_indirect_thunk_array)
++
+ #define GEN(reg) THUNK reg
+ #include <asm/GEN-for-each-reg.h>
+ #undef GEN
+ 
++	.align RETPOLINE_THUNK_SIZE
++SYM_CODE_END(__x86_indirect_thunk_array)
++
+ #define GEN(reg) EXPORT_THUNK(reg)
+ #include <asm/GEN-for-each-reg.h>
+ #undef GEN
