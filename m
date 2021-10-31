@@ -2,20 +2,20 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B73FC440DC4
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 31 Oct 2021 11:16:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 10CDD440DC5
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 31 Oct 2021 11:16:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230505AbhJaKTB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 31 Oct 2021 06:19:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52064 "EHLO
+        id S231317AbhJaKTC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 31 Oct 2021 06:19:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52070 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230309AbhJaKTA (ORCPT
+        with ESMTP id S230426AbhJaKTA (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Sun, 31 Oct 2021 06:19:00 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A106C061570;
-        Sun, 31 Oct 2021 03:16:28 -0700 (PDT)
-Date:   Sun, 31 Oct 2021 10:16:26 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47869C061570;
+        Sun, 31 Oct 2021 03:16:29 -0700 (PDT)
+Date:   Sun, 31 Oct 2021 10:16:27 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1635675387;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -23,38 +23,37 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=3/aqh/hDBvKlRDYUag7BPNoidPusmkWpvk8Q5e4Ty+k=;
-        b=BcOE4Ji567zelabrZ+PuRygx/GPgbUOy+c4tpDwu0yuRDYv4LOLLGkPJZYvPKXK3RG5lbM
-        tm0waMOdps0QfXirzHsQHqPXUtCI0RfdV2Ybu/83JHUgfmHCCpgk4QLbAjfQZxjdL3jcy5
-        FN6ZcBv/2PnJUqjEuq/sh/VrAMKQ5H/XKnyeuEaHspQX+Ok+aiL3IyujWW9wwZB9wTgqQ1
-        unS8/C5c/FiHHQM950js1clH68Ro7WrLU3s09j3O2lA89sGr1rDss5CKF93Jj9SULN2nK1
-        n6Ivu3hqReN6uKYmh1NzjNS5fQ6OeSEr89QOmpDUW9gI4vRKEZmqqqMMBlss+g==
+        bh=OjADXqmyOVWvfdpc7LfCdHWZSHlCAZUfg6bYVb8JAfk=;
+        b=mo55E2fAg+4j5T/ZZMPPYFovJC1t+a68cAqIXQNAmdkRDG68xuobG4VF6TMF8gvM3YW5aM
+        SQ3Rb/fG09THEYLs5+T/qk1lBFlKpCz1oc3Sh7z8Tzop/cbvzv+KH9gTJfzZxXEsPlDkrW
+        X1HVGVcRh57oJKSWr5ADvHP0ROkVU4+tZS+nn3ClX8Ln1lpla4fXCh95eNjOXR3Usg802c
+        yj64Z7H7ZkUlneTo9UisdX7J45ubDgKtpboXOGVeDyA95OItjIsGorA5WrVJV6brc8pa8w
+        C0cRye69G0n9z2MOgKKKA63wYbqra7tFXU6sxJk2AUgBK0nIq59iEva0zMJQjw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1635675387;
+        s=2020e; t=1635675388;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=3/aqh/hDBvKlRDYUag7BPNoidPusmkWpvk8Q5e4Ty+k=;
-        b=Bbrn25AvaFL7m7nOcWORsuDBtoSlzj3HHqNWTVpEIS0y4DiA9Ni1ZF8Hl5tRG6fkoZ/a7K
-        P1N5X/h0vJDCTQBA==
+        bh=OjADXqmyOVWvfdpc7LfCdHWZSHlCAZUfg6bYVb8JAfk=;
+        b=DW9Voe4XaFF3+kjEosd9JlL77yPZxdsh8EjAyRoDtdiats9qKh63VmGYe6WUDlnoCahq8X
+        B8ajXs7rCqDnKBDw==
 From:   "tip-bot2 for Vincent Guittot" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/fair: Skip update_blocked_averages if we are
- defering load balance
+Subject: [tip: sched/core] sched/fair: Account update_blocked_averages in
+ newidle_balance cost
 Cc:     Vincent Guittot <vincent.guittot@linaro.org>,
-        Tim Chen <tim.c.chen@linux.intel.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Dietmar Eggemann <dietmar.eggemann@arm.com>,
         Mel Gorman <mgorman@suse.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20211019123537.17146-3-vincent.guittot@linaro.org>
-References: <20211019123537.17146-3-vincent.guittot@linaro.org>
+In-Reply-To: <20211019123537.17146-2-vincent.guittot@linaro.org>
+References: <20211019123537.17146-2-vincent.guittot@linaro.org>
 MIME-Version: 1.0
-Message-ID: <163567538617.626.6566030882638028616.tip-bot2@tip-bot2>
+Message-ID: <163567538702.626.3632817965971500674.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,61 +64,79 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     9d783c8dd112ad4b619e74e4bf57d2be0b400693
-Gitweb:        https://git.kernel.org/tip/9d783c8dd112ad4b619e74e4bf57d2be0b400693
+Commit-ID:     9e9af819db5dbe4bf99101628955a26e2a41a1a5
+Gitweb:        https://git.kernel.org/tip/9e9af819db5dbe4bf99101628955a26e2a41a1a5
 Author:        Vincent Guittot <vincent.guittot@linaro.org>
-AuthorDate:    Tue, 19 Oct 2021 14:35:34 +02:00
+AuthorDate:    Tue, 19 Oct 2021 14:35:33 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Sun, 31 Oct 2021 11:11:37 +01:00
 
-sched/fair: Skip update_blocked_averages if we are defering load balance
+sched/fair: Account update_blocked_averages in newidle_balance cost
 
-In newidle_balance(), the scheduler skips load balance to the new idle cpu
-when the 1st sd of this_rq is:
+The time spent to update the blocked load can be significant depending of
+the complexity fo the cgroup hierarchy. Take this time into account in
+the cost of the 1st load balance of a newly idle cpu.
 
-   this_rq->avg_idle < sd->max_newidle_lb_cost
-
-Doing a costly call to update_blocked_averages() will not be useful and
-simply adds overhead when this condition is true.
-
-Check the condition early in newidle_balance() to skip
-update_blocked_averages() when possible.
+Also reduce the number of call to sched_clock_cpu() and track more actual
+work.
 
 Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
-Signed-off-by: Tim Chen <tim.c.chen@linux.intel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
 Acked-by: Mel Gorman <mgorman@suse.de>
-Link: https://lore.kernel.org/r/20211019123537.17146-3-vincent.guittot@linaro.org
+Link: https://lore.kernel.org/r/20211019123537.17146-2-vincent.guittot@linaro.org
 ---
- kernel/sched/fair.c |  9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ kernel/sched/fair.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
 diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index c014567..c4c3686 100644
+index 87db481..c014567 100644
 --- a/kernel/sched/fair.c
 +++ b/kernel/sched/fair.c
-@@ -10873,17 +10873,20 @@ static int newidle_balance(struct rq *this_rq, struct rq_flags *rf)
- 	 */
- 	rq_unpin_lock(this_rq, rf);
+@@ -10840,9 +10840,9 @@ static int newidle_balance(struct rq *this_rq, struct rq_flags *rf)
+ {
+ 	unsigned long next_balance = jiffies + HZ;
+ 	int this_cpu = this_rq->cpu;
++	u64 t0, t1, curr_cost = 0;
+ 	struct sched_domain *sd;
+ 	int pulled_task = 0;
+-	u64 curr_cost = 0;
  
-+	rcu_read_lock();
-+	sd = rcu_dereference_check_sched_domain(this_rq->sd);
-+
- 	if (this_rq->avg_idle < sysctl_sched_migration_cost ||
--	    !READ_ONCE(this_rq->rd->overload)) {
-+	    !READ_ONCE(this_rq->rd->overload) ||
-+	    (sd && this_rq->avg_idle < sd->max_newidle_lb_cost)) {
+ 	update_misfit_status(NULL, this_rq);
  
--		rcu_read_lock();
--		sd = rcu_dereference_check_sched_domain(this_rq->sd);
- 		if (sd)
- 			update_next_balance(sd, &next_balance);
- 		rcu_read_unlock();
- 
- 		goto out;
- 	}
-+	rcu_read_unlock();
+@@ -10887,11 +10887,13 @@ static int newidle_balance(struct rq *this_rq, struct rq_flags *rf)
  
  	raw_spin_rq_unlock(this_rq);
  
++	t0 = sched_clock_cpu(this_cpu);
+ 	update_blocked_averages(this_cpu);
++
+ 	rcu_read_lock();
+ 	for_each_domain(this_cpu, sd) {
+ 		int continue_balancing = 1;
+-		u64 t0, domain_cost;
++		u64 domain_cost;
+ 
+ 		if (this_rq->avg_idle < curr_cost + sd->max_newidle_lb_cost) {
+ 			update_next_balance(sd, &next_balance);
+@@ -10899,17 +10901,18 @@ static int newidle_balance(struct rq *this_rq, struct rq_flags *rf)
+ 		}
+ 
+ 		if (sd->flags & SD_BALANCE_NEWIDLE) {
+-			t0 = sched_clock_cpu(this_cpu);
+ 
+ 			pulled_task = load_balance(this_cpu, this_rq,
+ 						   sd, CPU_NEWLY_IDLE,
+ 						   &continue_balancing);
+ 
+-			domain_cost = sched_clock_cpu(this_cpu) - t0;
++			t1 = sched_clock_cpu(this_cpu);
++			domain_cost = t1 - t0;
+ 			if (domain_cost > sd->max_newidle_lb_cost)
+ 				sd->max_newidle_lb_cost = domain_cost;
+ 
+ 			curr_cost += domain_cost;
++			t0 = t1;
+ 		}
+ 
+ 		update_next_balance(sd, &next_balance);
