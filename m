@@ -2,54 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D9692440BE1
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 30 Oct 2021 23:34:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CCE5C440DC1
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 31 Oct 2021 11:16:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232168AbhJ3Vgu (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 30 Oct 2021 17:36:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57838 "EHLO
+        id S229982AbhJaKS7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 31 Oct 2021 06:18:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52058 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232042AbhJ3VgK (ORCPT
+        with ESMTP id S229660AbhJaKS7 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 30 Oct 2021 17:36:10 -0400
+        Sun, 31 Oct 2021 06:18:59 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84597C0797B6;
-        Sat, 30 Oct 2021 14:32:25 -0700 (PDT)
-Date:   Sat, 30 Oct 2021 21:32:23 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81149C061714;
+        Sun, 31 Oct 2021 03:16:27 -0700 (PDT)
+Date:   Sun, 31 Oct 2021 10:16:23 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1635629544;
+        s=2020; t=1635675385;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=v4DkWvVjThW7duWCs5Ez/pFvXLxLx9Y5fu5BNHGrb1I=;
-        b=t6ZW9ycARmb0nsyYHfsc3p+p1yd1db9BhJANnSy1u5xUh3AmPIn3nQLXnU+Kf4K3+NysfR
-        0S67xyOkGygphtr9wzFqJucjek78RJMN0MYNnc6Ktmq6HMn3yZC047IFN1RMWDeNkZVT7H
-        g4w2RbfUD37Ws6n7S3LDNKCKxWKYWEUOi5h5vIM8BFlt3las7pGaz+xtooYURkALhN+JBs
-        p+NYXl7md+TkrabF4PWIGDEyoPoR75NpGyx34J+sKCAhtkwuYyNK93R1g7btdkwnk9Hubk
-        yfaUavKc06rIR3FhDuwvoVi1znje1F5wvGsJ53jUH7s0AksRQ6zGEg2DNCE+Sg==
+        bh=7ZLpN3sHVB4W40wqrPn0vVBgzb8YZ4HVDFiUeXMVVh4=;
+        b=Zk3JvXiMqln8G8roUGM5rQ9TcdX69IdXTyR41jgYL5zaOoNAxg91ODO1Bn7VhNI9g3Sy8q
+        jNwas8F0GPRMS/VWtc7gMI0iqNjP7KMFyJCeAZSkoZWVkmT0elsU/unYEZ3Xvibn4OG5Gr
+        LwrJ3CoaoRZvxsT7ovUNAWXgUbsf9codrR9OlPvxg+Axyc52JyKfggKd+LZ6YS+y8Pe45W
+        AmLvCLcT87PoUwU82zkaEviupQ3wBD4hds9KBwep/o2fSZz8KeSvzzlbIHWEvLXjdnSi1F
+        ZmojOdb9Pckg6syqP/jcx8Fp0JLjKWbHG/dqsOrr48IPkE2K6dIXKMxKDnAWDA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1635629544;
+        s=2020e; t=1635675385;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=v4DkWvVjThW7duWCs5Ez/pFvXLxLx9Y5fu5BNHGrb1I=;
-        b=7PPObh6W6P4/wK/f0Oaedylmh67O0Ox8Ph0Yh+wPkrygLScQaK1rj90JC092ZtuXxSFlcB
-        kI/qC6u9GixFklDw==
-From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
+        bh=7ZLpN3sHVB4W40wqrPn0vVBgzb8YZ4HVDFiUeXMVVh4=;
+        b=t9JN2r8IdyTC6BX9qTI0+xNArY+Jh56ojnsTwF+4NPfuIr06+hwlFGwgxzGETjnJKmaBzj
+        uJRLUbWecC6f8EAg==
+From:   "tip-bot2 for Vincent Guittot" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/core] selftests/x86/iopl: Adjust to the faked iopl CLI/STI usage
-Cc:     Thomas Gleixner <tglx@linutronix.de>, Borislav Petkov <bp@suse.de>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20211030083939.13073-1-bp@alien8.de>
-References: <20211030083939.13073-1-bp@alien8.de>
+Subject: [tip: sched/core] sched/fair: Cleanup newidle_balance
+Cc:     Vincent Guittot <vincent.guittot@linaro.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Mel Gorman <mgorman@suse.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20211019123537.17146-6-vincent.guittot@linaro.org>
+References: <20211019123537.17146-6-vincent.guittot@linaro.org>
 MIME-Version: 1.0
-Message-ID: <163562954308.626.8903154576094573633.tip-bot2@tip-bot2>
+Message-ID: <163567538377.626.7918130057155925733.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,166 +61,55 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/core branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     a72fdfd21e01c626273ddcf5ab740d4caef4be54
-Gitweb:        https://git.kernel.org/tip/a72fdfd21e01c626273ddcf5ab740d4caef4be54
-Author:        Borislav Petkov <bp@suse.de>
-AuthorDate:    Fri, 29 Oct 2021 19:27:32 +02:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Sat, 30 Oct 2021 23:18:04 +02:00
+Commit-ID:     8ea9183db4ad8afbcb7089a77c23eaf965b0cacd
+Gitweb:        https://git.kernel.org/tip/8ea9183db4ad8afbcb7089a77c23eaf965b0cacd
+Author:        Vincent Guittot <vincent.guittot@linaro.org>
+AuthorDate:    Tue, 19 Oct 2021 14:35:37 +02:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Sun, 31 Oct 2021 11:11:38 +01:00
 
-selftests/x86/iopl: Adjust to the faked iopl CLI/STI usage
+sched/fair: Cleanup newidle_balance
 
-Commit in Fixes changed the iopl emulation to not #GP on CLI and STI
-because it would break some insane luserspace tools which would toggle
-interrupts.
+update_next_balance() uses sd->last_balance which is not modified by
+load_balance() so we can merge the 2 calls in one place.
 
-The corresponding selftest would rely on the fact that executing CLI/STI
-would trigger a #GP and thus detect it this way but since that #GP is
-not happening anymore, the detection is now wrong too.
+No functional change
 
-Extend the test to actually look at the IF flag and whether executing
-those insns had any effect on it. The STI detection needs to have the
-fact that interrupts were previously disabled, passed in so do that from
-the previous CLI test, i.e., STI test needs to follow a previous CLI one
-for it to make sense.
-
-Fixes: b968e84b509d ("x86/iopl: Fake iopl(3) CLI/STI usage")
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Acked-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20211030083939.13073-1-bp@alien8.de
+Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Acked-by: Mel Gorman <mgorman@suse.de>
+Link: https://lore.kernel.org/r/20211019123537.17146-6-vincent.guittot@linaro.org
 ---
- tools/testing/selftests/x86/iopl.c | 78 +++++++++++++++++++++--------
- 1 file changed, 58 insertions(+), 20 deletions(-)
+ kernel/sched/fair.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/tools/testing/selftests/x86/iopl.c b/tools/testing/selftests/x86/iopl.c
-index bab2f6e..7e3e09c 100644
---- a/tools/testing/selftests/x86/iopl.c
-+++ b/tools/testing/selftests/x86/iopl.c
-@@ -85,48 +85,88 @@ static void expect_gp_outb(unsigned short port)
- 	printf("[OK]\toutb to 0x%02hx failed\n", port);
- }
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 57eae0e..13950be 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -10916,10 +10916,10 @@ static int newidle_balance(struct rq *this_rq, struct rq_flags *rf)
+ 		int continue_balancing = 1;
+ 		u64 domain_cost;
  
--static bool try_cli(void)
-+#define RET_FAULTED	0
-+#define RET_FAIL	1
-+#define RET_EMUL	2
+-		if (this_rq->avg_idle < curr_cost + sd->max_newidle_lb_cost) {
+-			update_next_balance(sd, &next_balance);
++		update_next_balance(sd, &next_balance);
 +
-+static int try_cli(void)
- {
-+	unsigned long flags;
-+
- 	sethandler(SIGSEGV, sigsegv, SA_RESETHAND);
- 	if (sigsetjmp(jmpbuf, 1) != 0) {
--		return false;
-+		return RET_FAULTED;
- 	} else {
--		asm volatile ("cli");
--		return true;
-+		asm volatile("cli; pushf; pop %[flags]"
-+				: [flags] "=rm" (flags));
-+
-+		/* X86_FLAGS_IF */
-+		if (!(flags & (1 << 9)))
-+			return RET_FAIL;
-+		else
-+			return RET_EMUL;
- 	}
- 	clearhandler(SIGSEGV);
- }
++		if (this_rq->avg_idle < curr_cost + sd->max_newidle_lb_cost)
+ 			break;
+-		}
  
--static bool try_sti(void)
-+static int try_sti(bool irqs_off)
- {
-+	unsigned long flags;
-+
- 	sethandler(SIGSEGV, sigsegv, SA_RESETHAND);
- 	if (sigsetjmp(jmpbuf, 1) != 0) {
--		return false;
-+		return RET_FAULTED;
- 	} else {
--		asm volatile ("sti");
--		return true;
-+		asm volatile("sti; pushf; pop %[flags]"
-+				: [flags] "=rm" (flags));
-+
-+		/* X86_FLAGS_IF */
-+		if (irqs_off && (flags & (1 << 9)))
-+			return RET_FAIL;
-+		else
-+			return RET_EMUL;
- 	}
- 	clearhandler(SIGSEGV);
- }
+ 		if (sd->flags & SD_BALANCE_NEWIDLE) {
  
--static void expect_gp_sti(void)
-+static void expect_gp_sti(bool irqs_off)
- {
--	if (try_sti()) {
-+	int ret = try_sti(irqs_off);
-+
-+	switch (ret) {
-+	case RET_FAULTED:
-+		printf("[OK]\tSTI faulted\n");
-+		break;
-+	case RET_EMUL:
-+		printf("[OK]\tSTI NOPped\n");
-+		break;
-+	default:
- 		printf("[FAIL]\tSTI worked\n");
- 		nerrs++;
--	} else {
--		printf("[OK]\tSTI faulted\n");
- 	}
- }
+@@ -10935,8 +10935,6 @@ static int newidle_balance(struct rq *this_rq, struct rq_flags *rf)
+ 			t0 = t1;
+ 		}
  
--static void expect_gp_cli(void)
-+/*
-+ * Returns whether it managed to disable interrupts.
-+ */
-+static bool test_cli(void)
- {
--	if (try_cli()) {
-+	int ret = try_cli();
-+
-+	switch (ret) {
-+	case RET_FAULTED:
-+		printf("[OK]\tCLI faulted\n");
-+		break;
-+	case RET_EMUL:
-+		printf("[OK]\tCLI NOPped\n");
-+		break;
-+	default:
- 		printf("[FAIL]\tCLI worked\n");
- 		nerrs++;
--	} else {
--		printf("[OK]\tCLI faulted\n");
-+		return true;
- 	}
-+
-+	return false;
- }
- 
- int main(void)
-@@ -152,8 +192,7 @@ int main(void)
- 	}
- 
- 	/* Make sure that CLI/STI are blocked even with IOPL level 3 */
--	expect_gp_cli();
--	expect_gp_sti();
-+	expect_gp_sti(test_cli());
- 	expect_ok_outb(0x80);
- 
- 	/* Establish an I/O bitmap to test the restore */
-@@ -204,8 +243,7 @@ int main(void)
- 	printf("[RUN]\tparent: write to 0x80 (should fail)\n");
- 
- 	expect_gp_outb(0x80);
--	expect_gp_cli();
--	expect_gp_sti();
-+	expect_gp_sti(test_cli());
- 
- 	/* Test the capability checks. */
- 	printf("\tiopl(3)\n");
+-		update_next_balance(sd, &next_balance);
+-
+ 		/*
+ 		 * Stop searching for tasks to pull if there are
+ 		 * now runnable tasks on this rq.
