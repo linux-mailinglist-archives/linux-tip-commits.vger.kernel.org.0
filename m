@@ -2,53 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A11A6443141
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  2 Nov 2021 16:09:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DA136444A77
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  3 Nov 2021 22:48:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233624AbhKBPLv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 2 Nov 2021 11:11:51 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:49542 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232707AbhKBPLv (ORCPT
+        id S229968AbhKCVvX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 3 Nov 2021 17:51:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45772 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229893AbhKCVvX (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 2 Nov 2021 11:11:51 -0400
-Date:   Tue, 02 Nov 2021 15:09:12 -0000
+        Wed, 3 Nov 2021 17:51:23 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31484C061714;
+        Wed,  3 Nov 2021 14:48:46 -0700 (PDT)
+Date:   Wed, 03 Nov 2021 21:48:41 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1635865753;
+        s=2020; t=1635976123;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=15VzYUG4Tu7ISK4xnUctzikT/wvw61Aa9s3NHbWnv3c=;
-        b=eib+bDeGPIqiETitc8b0aC22pCOIOW9p5UYX9WkYwCMRcOjq1bmMHcGNfzDqzo4K5NQlNS
-        cDtwFOPsNpH62kcnn05e8cWhBBjwe/dIo01KURneciCbNvsNLv8P+mgkcqPLrgrHn1OtVi
-        SALhs8gBT1PFROjyDDJxWj29L/6Sj3w6qNOi29ZM3Pddto7twcKvCGGTIauoau+xpTZsM+
-        ZFQGpa6nNffxmqHiwmORGrn3HwilPidDxlkDNTsp3WgEIp6OrqcknIVeZp2icXKWaHwi3q
-        SuQj6drtxu1aPwbbGWi2HY6KLjk1MWR2asQorqcufdM6+EwI8yoyCdWpz0AYEA==
+        bh=WZ1ThKKV6+L5ZvB+T+QMPLsypQGTp0xWXbjjY4y9Bks=;
+        b=e+CtlNwlajVAPuSpwyCJsinVE/+Nk8g7O7ZpLAWPWDYRUUKmvLs3kMwsHJKYHNZ3amqEV+
+        GiMeTVk6zfz8G8PSBq8CLYc4//u9TKHkiLrm5HZ8MxfMPaNXXcwx6kob+uUNQB9MTh+9dN
+        bfcxW3mS3clyov2NKwCWb/SiUo2kEb4p0tE5FPNSbD5oUiRlBymWaDV5U/81x8ZMbrpD3Y
+        UO+E6wlZTZ2/raQfUGOR61MHB8E1AvYheX2CNf2k8QQkjSOmI5mxg9XwW3KGDkerdDid9i
+        +AuLnY2dbJBnJheAczTyMCmd2KTL9XToK8ogCiL9WUhhrhDdqxIKSYsum15uww==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1635865753;
+        s=2020e; t=1635976123;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=15VzYUG4Tu7ISK4xnUctzikT/wvw61Aa9s3NHbWnv3c=;
-        b=ty9oHGGsQtxQ1EqoxlyPVg17kwR8WvDrdk0QgjL1TcEF44rvqQA22CX+aBNBguFNe49rvq
-        dnFYMXla1ps7alBw==
-From:   "tip-bot2 for Michael Pratt" <tip-bot2@linutronix.de>
+        bh=WZ1ThKKV6+L5ZvB+T+QMPLsypQGTp0xWXbjjY4y9Bks=;
+        b=THxykxH315xX/RqWmnQk4XKoWnJEZhjesLeOzCloZSbN7KTVTJIBkggP96ezcrExOVo3Xw
+        mXHBhIlBTfgXdMAw==
+From:   "tip-bot2 for Dave Hansen" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/urgent] posix-cpu-timers: Clear
- task::posix_cputimers_work in copy_process()
-Cc:     Rhys Hiltner <rhys@justin.tv>, Michael Pratt <mpratt@google.com>,
-        Thomas Gleixner <tglx@linutronix.de>, <stable@vger.kernel.org>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20211101210615.716522-1-mpratt@google.com>
-References: <20211101210615.716522-1-mpratt@google.com>
+Subject: [tip: x86/urgent] x86/fpu: Optimize out sigframe xfeatures when in init state
+Cc:     Dave Hansen <dave.hansen@linux.intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "Chang S. Bae" <chang.seok.bae@intel.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20211102224750.FA412E26@davehans-spike.ostc.intel.com>
+References: <20211102224750.FA412E26@davehans-spike.ostc.intel.com>
 MIME-Version: 1.0
-Message-ID: <163586575225.626.2794170078411470152.tip-bot2@tip-bot2>
+Message-ID: <163597612165.626.15614463658086299478.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -57,122 +60,238 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/urgent branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     ca7752caeaa70bd31d1714af566c9809688544af
-Gitweb:        https://git.kernel.org/tip/ca7752caeaa70bd31d1714af566c9809688544af
-Author:        Michael Pratt <mpratt@google.com>
-AuthorDate:    Mon, 01 Nov 2021 17:06:15 -04:00
+Commit-ID:     30d02551ba4f681cfa605cedacf231b8641169f0
+Gitweb:        https://git.kernel.org/tip/30d02551ba4f681cfa605cedacf231b8641169f0
+Author:        Dave Hansen <dave.hansen@linux.intel.com>
+AuthorDate:    Tue, 02 Nov 2021 15:47:50 -07:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 02 Nov 2021 12:52:17 +01:00
+CommitterDate: Wed, 03 Nov 2021 22:42:35 +01:00
 
-posix-cpu-timers: Clear task::posix_cputimers_work in copy_process()
+x86/fpu: Optimize out sigframe xfeatures when in init state
 
-copy_process currently copies task_struct.posix_cputimers_work as-is. If a
-timer interrupt arrives while handling clone and before dup_task_struct
-completes then the child task will have:
+tl;dr: AMX state is ~8k.  Signal frames can have space for this
+~8k and each signal entry writes out all 8k even if it is zeros.
+Skip writing zeros for AMX to speed up signal delivery by about
+4% overall when AMX is in its init state.
 
-1. posix_cputimers_work.scheduled = true
-2. posix_cputimers_work.work queued.
+This is a user-visible change to the sigframe ABI.
 
-copy_process clears task_struct.task_works, so (2) will have no effect and
-posix_cpu_timers_work will never run (not to mention it doesn't make sense
-for two tasks to share a common linked list).
+== Hardware XSAVE Background ==
 
-Since posix_cpu_timers_work never runs, posix_cputimers_work.scheduled is
-never cleared. Since scheduled is set, future timer interrupts will skip
-scheduling work, with the ultimate result that the task will never receive
-timer expirations.
+XSAVE state components may be tracked by the processor as being
+in their initial configuration.  Software can detect which
+features are in this configuration by looking at the XSTATE_BV
+field in an XSAVE buffer or with the XGETBV(1) instruction.
 
-Together, the complete flow is:
+Both the XSAVE and XSAVEOPT instructions enumerate features s
+being in the initial configuration via the XSTATE_BV field in the
+XSAVE header,  However, XSAVEOPT declines to actually write
+features in their initial configuration to the buffer.  XSAVE
+writes the feature unconditionally, regardless of whether it is
+in the initial configuration or not.
 
-1. Task 1 calls clone(), enters kernel.
-2. Timer interrupt fires, schedules task work on Task 1.
-   2a. task_struct.posix_cputimers_work.scheduled = true
-   2b. task_struct.posix_cputimers_work.work added to
-       task_struct.task_works.
-3. dup_task_struct() copies Task 1 to Task 2.
-4. copy_process() clears task_struct.task_works for Task 2.
-5. Future timer interrupts on Task 2 see
-   task_struct.posix_cputimers_work.scheduled = true and skip scheduling
-   work.
+Basically, XSAVE users never need to inspect XSTATE_BV to
+determine if the feature has been written to the buffer.
+XSAVEOPT users *do* need to inspect XSTATE_BV.  They might also
+need to clear out the buffer if they want to make an isolated
+change to the state, like modifying one register.
 
-Fix this by explicitly clearing contents of task_struct.posix_cputimers_work
-in copy_process(). This was never meant to be shared or inherited across
-tasks in the first place.
+== Software Signal / XSAVE Background ==
 
-Fixes: 1fb497dd0030 ("posix-cpu-timers: Provide mechanisms to defer timer handling to task_work")
-Reported-by: Rhys Hiltner <rhys@justin.tv>
-Signed-off-by: Michael Pratt <mpratt@google.com>
+Signal frames have historically been written with XSAVE itself.
+Each state is written in its entirety, regardless of being in its
+initial configuration.
+
+In other words, the signal frame ABI uses the XSAVE behavior, not
+the XSAVEOPT behavior.
+
+== Problem ==
+
+This means that any application which has acquired permission to
+use AMX via ARCH_REQ_XCOMP_PERM will write 8k of state to the
+signal frame.  This 8k write will occur even when AMX was in its
+initial configuration and software *knows* this because of
+XSTATE_BV.
+
+This problem also exists to a lesser degree with AVX-512 and its
+2k of state.  However, AVX-512 use does not require
+ARCH_REQ_XCOMP_PERM and is more likely to have existing users
+which would be impacted by any change in behavior.
+
+== Solution ==
+
+Stop writing out AMX xfeatures which are in their initial state
+to the signal frame.  This effectively makes the signal frame
+XSAVE buffer look as if it were written with a combination of
+XSAVEOPT and XSAVE behavior.  Userspace which handles XSAVEOPT-
+style buffers should be able to handle this naturally.
+
+For now, include only the AMX xfeatures: XTILE and XTILEDATA in
+this new behavior.  These require new ABI to use anyway, which
+makes their users very unlikely to be broken.  This XSAVEOPT-like
+behavior should be expected for all future dynamic xfeatures.  It
+may also be extended to legacy features like AVX-512 in the
+future.
+
+Only attempt this optimization on systems with dynamic features.
+Disable dynamic feature support (XFD) if XGETBV1 is unavailable
+by adding a CPUID dependency.
+
+This has been measured to reduce the *overall* cycle cost of
+signal delivery by about 4%.
+
+Fixes: 2308ee57d93d ("x86/fpu/amx: Enable the AMX feature in 64-bit mode")
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20211101210615.716522-1-mpratt@google.com
+Tested-by: "Chang S. Bae" <chang.seok.bae@intel.com>
+Link: https://lore.kernel.org/r/20211102224750.FA412E26@davehans-spike.ostc.intel.com
 
 ---
- include/linux/posix-timers.h   |  2 ++
- kernel/fork.c                  |  1 +
- kernel/time/posix-cpu-timers.c | 19 +++++++++++++++++--
- 3 files changed, 20 insertions(+), 2 deletions(-)
+ Documentation/x86/xstate.rst      |  9 +++++++-
+ arch/x86/include/asm/fpu/xcr.h    | 12 ++++++++++-
+ arch/x86/include/asm/fpu/xstate.h |  7 ++++++-
+ arch/x86/kernel/cpu/cpuid-deps.c  |  1 +-
+ arch/x86/kernel/fpu/xstate.h      | 37 ++++++++++++++++++++++++++++--
+ 5 files changed, 64 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/posix-timers.h b/include/linux/posix-timers.h
-index 00fef00..5bbcd28 100644
---- a/include/linux/posix-timers.h
-+++ b/include/linux/posix-timers.h
-@@ -184,8 +184,10 @@ static inline void posix_cputimers_group_init(struct posix_cputimers *pct,
- #endif
+diff --git a/Documentation/x86/xstate.rst b/Documentation/x86/xstate.rst
+index 65de3f0..5cec7fb 100644
+--- a/Documentation/x86/xstate.rst
++++ b/Documentation/x86/xstate.rst
+@@ -63,3 +63,12 @@ kernel sends SIGILL to the application. If the process has permission then
+ the handler allocates a larger xstate buffer for the task so the large
+ state can be context switched. In the unlikely cases that the allocation
+ fails, the kernel sends SIGSEGV.
++
++Dynamic features in signal frames
++---------------------------------
++
++Dynamcally enabled features are not written to the signal frame upon signal
++entry if the feature is in its initial configuration.  This differs from
++non-dynamic features which are always written regardless of their
++configuration.  Signal handlers can examine the XSAVE buffer's XSTATE_BV
++field to determine if a features was written.
+diff --git a/arch/x86/include/asm/fpu/xcr.h b/arch/x86/include/asm/fpu/xcr.h
+index 79f95d3..9656a5b 100644
+--- a/arch/x86/include/asm/fpu/xcr.h
++++ b/arch/x86/include/asm/fpu/xcr.h
+@@ -3,6 +3,7 @@
+ #define _ASM_X86_FPU_XCR_H
  
- #ifdef CONFIG_POSIX_CPU_TIMERS_TASK_WORK
-+void clear_posix_cputimers_work(struct task_struct *p);
- void posix_cputimers_init_work(void);
- #else
-+static inline void clear_posix_cputimers_work(struct task_struct *p) { }
- static inline void posix_cputimers_init_work(void) { }
- #endif
+ #define XCR_XFEATURE_ENABLED_MASK	0x00000000
++#define XCR_XFEATURE_IN_USE_MASK	0x00000001
  
-diff --git a/kernel/fork.c b/kernel/fork.c
-index 8e9feee..8269ae2 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -2279,6 +2279,7 @@ static __latent_entropy struct task_struct *copy_process(
- 	p->pdeath_signal = 0;
- 	INIT_LIST_HEAD(&p->thread_group);
- 	p->task_works = NULL;
-+	clear_posix_cputimers_work(p);
+ static inline u64 xgetbv(u32 index)
+ {
+@@ -20,4 +21,15 @@ static inline void xsetbv(u32 index, u64 value)
+ 	asm volatile("xsetbv" :: "a" (eax), "d" (edx), "c" (index));
+ }
  
- #ifdef CONFIG_KRETPROBES
- 	p->kretprobe_instances.first = NULL;
-diff --git a/kernel/time/posix-cpu-timers.c b/kernel/time/posix-cpu-timers.c
-index 643d412..96b4e78 100644
---- a/kernel/time/posix-cpu-timers.c
-+++ b/kernel/time/posix-cpu-timers.c
-@@ -1159,13 +1159,28 @@ static void posix_cpu_timers_work(struct callback_head *work)
++/*
++ * Return a mask of xfeatures which are currently being tracked
++ * by the processor as being in the initial configuration.
++ *
++ * Callers should check X86_FEATURE_XGETBV1.
++ */
++static inline u64 xfeatures_in_use(void)
++{
++	return xgetbv(XCR_XFEATURE_IN_USE_MASK);
++}
++
+ #endif /* _ASM_X86_FPU_XCR_H */
+diff --git a/arch/x86/include/asm/fpu/xstate.h b/arch/x86/include/asm/fpu/xstate.h
+index 0f8b90a..cd3dd17 100644
+--- a/arch/x86/include/asm/fpu/xstate.h
++++ b/arch/x86/include/asm/fpu/xstate.h
+@@ -92,6 +92,13 @@
+ #define XFEATURE_MASK_FPSTATE	(XFEATURE_MASK_USER_RESTORE | \
+ 				 XFEATURE_MASK_SUPERVISOR_SUPPORTED)
+ 
++/*
++ * Features in this mask have space allocated in the signal frame, but may not
++ * have that space initialized when the feature is in its init state.
++ */
++#define XFEATURE_MASK_SIGFRAME_INITOPT	(XFEATURE_MASK_XTILE | \
++					 XFEATURE_MASK_USER_DYNAMIC)
++
+ extern u64 xstate_fx_sw_bytes[USER_XSTATE_FX_SW_WORDS];
+ 
+ extern void __init update_regset_xstate_info(unsigned int size,
+diff --git a/arch/x86/kernel/cpu/cpuid-deps.c b/arch/x86/kernel/cpu/cpuid-deps.c
+index cb2fdd1..c881bca 100644
+--- a/arch/x86/kernel/cpu/cpuid-deps.c
++++ b/arch/x86/kernel/cpu/cpuid-deps.c
+@@ -76,6 +76,7 @@ static const struct cpuid_dep cpuid_deps[] = {
+ 	{ X86_FEATURE_SGX1,			X86_FEATURE_SGX       },
+ 	{ X86_FEATURE_SGX2,			X86_FEATURE_SGX1      },
+ 	{ X86_FEATURE_XFD,			X86_FEATURE_XSAVES    },
++	{ X86_FEATURE_XFD,			X86_FEATURE_XGETBV1   },
+ 	{ X86_FEATURE_AMX_TILE,			X86_FEATURE_XFD       },
+ 	{}
+ };
+diff --git a/arch/x86/kernel/fpu/xstate.h b/arch/x86/kernel/fpu/xstate.h
+index e18210d..86ea7c0 100644
+--- a/arch/x86/kernel/fpu/xstate.h
++++ b/arch/x86/kernel/fpu/xstate.h
+@@ -4,6 +4,7 @@
+ 
+ #include <asm/cpufeature.h>
+ #include <asm/fpu/xstate.h>
++#include <asm/fpu/xcr.h>
+ 
+ #ifdef CONFIG_X86_64
+ DECLARE_PER_CPU(u64, xfd_state);
+@@ -199,6 +200,32 @@ static inline void os_xrstor_supervisor(struct fpstate *fpstate)
  }
  
  /*
-+ * Clear existing posix CPU timers task work.
++ * XSAVE itself always writes all requested xfeatures.  Removing features
++ * from the request bitmap reduces the features which are written.
++ * Generate a mask of features which must be written to a sigframe.  The
++ * unset features can be optimized away and not written.
++ *
++ * This optimization is user-visible.  Only use for states where
++ * uninitialized sigframe contents are tolerable, like dynamic features.
++ *
++ * Users of buffers produced with this optimization must check XSTATE_BV
++ * to determine which features have been optimized out.
 + */
-+void clear_posix_cputimers_work(struct task_struct *p)
++static inline u64 xfeatures_need_sigframe_write(void)
 +{
-+	/*
-+	 * A copied work entry from the old task is not meaningful, clear it.
-+	 * N.B. init_task_work will not do this.
-+	 */
-+	memset(&p->posix_cputimers_work.work, 0,
-+	       sizeof(p->posix_cputimers_work.work));
-+	init_task_work(&p->posix_cputimers_work.work,
-+		       posix_cpu_timers_work);
-+	p->posix_cputimers_work.scheduled = false;
++	u64 xfeaures_to_write;
++
++	/* In-use features must be written: */
++	xfeaures_to_write = xfeatures_in_use();
++
++	/* Also write all non-optimizable sigframe features: */
++	xfeaures_to_write |= XFEATURE_MASK_USER_SUPPORTED &
++			     ~XFEATURE_MASK_SIGFRAME_INITOPT;
++
++	return xfeaures_to_write;
 +}
 +
 +/*
-  * Initialize posix CPU timers task work in init task. Out of line to
-  * keep the callback static and to avoid header recursion hell.
-  */
- void __init posix_cputimers_init_work(void)
- {
--	init_task_work(&current->posix_cputimers_work.work,
--		       posix_cpu_timers_work);
-+	clear_posix_cputimers_work(current);
- }
+  * Save xstate to user space xsave area.
+  *
+  * We don't use modified optimization because xrstor/xrstors might track
+@@ -220,10 +247,16 @@ static inline int xsave_to_user_sigframe(struct xregs_state __user *buf)
+ 	 */
+ 	struct fpstate *fpstate = current->thread.fpu.fpstate;
+ 	u64 mask = fpstate->user_xfeatures;
+-	u32 lmask = mask;
+-	u32 hmask = mask >> 32;
++	u32 lmask;
++	u32 hmask;
+ 	int err;
  
- /*
++	/* Optimize away writing unnecessary xfeatures: */
++	if (fpu_state_size_dynamic())
++		mask &= xfeatures_need_sigframe_write();
++
++	lmask = mask;
++	hmask = mask >> 32;
+ 	xfd_validate_state(fpstate, mask, false);
+ 
+ 	stac();
