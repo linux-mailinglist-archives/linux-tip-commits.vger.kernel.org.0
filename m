@@ -2,296 +2,234 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DA136444A77
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  3 Nov 2021 22:48:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 25966444E69
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  4 Nov 2021 06:38:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229968AbhKCVvX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 3 Nov 2021 17:51:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45772 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229893AbhKCVvX (ORCPT
+        id S229994AbhKDFlf (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 4 Nov 2021 01:41:35 -0400
+Received: from mga11.intel.com ([192.55.52.93]:10743 "EHLO mga11.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229866AbhKDFlf (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 3 Nov 2021 17:51:23 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31484C061714;
-        Wed,  3 Nov 2021 14:48:46 -0700 (PDT)
-Date:   Wed, 03 Nov 2021 21:48:41 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1635976123;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=WZ1ThKKV6+L5ZvB+T+QMPLsypQGTp0xWXbjjY4y9Bks=;
-        b=e+CtlNwlajVAPuSpwyCJsinVE/+Nk8g7O7ZpLAWPWDYRUUKmvLs3kMwsHJKYHNZ3amqEV+
-        GiMeTVk6zfz8G8PSBq8CLYc4//u9TKHkiLrm5HZ8MxfMPaNXXcwx6kob+uUNQB9MTh+9dN
-        bfcxW3mS3clyov2NKwCWb/SiUo2kEb4p0tE5FPNSbD5oUiRlBymWaDV5U/81x8ZMbrpD3Y
-        UO+E6wlZTZ2/raQfUGOR61MHB8E1AvYheX2CNf2k8QQkjSOmI5mxg9XwW3KGDkerdDid9i
-        +AuLnY2dbJBnJheAczTyMCmd2KTL9XToK8ogCiL9WUhhrhDdqxIKSYsum15uww==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1635976123;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=WZ1ThKKV6+L5ZvB+T+QMPLsypQGTp0xWXbjjY4y9Bks=;
-        b=THxykxH315xX/RqWmnQk4XKoWnJEZhjesLeOzCloZSbN7KTVTJIBkggP96ezcrExOVo3Xw
-        mXHBhIlBTfgXdMAw==
-From:   "tip-bot2 for Dave Hansen" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/fpu: Optimize out sigframe xfeatures when in init state
-Cc:     Dave Hansen <dave.hansen@linux.intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "Chang S. Bae" <chang.seok.bae@intel.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20211102224750.FA412E26@davehans-spike.ostc.intel.com>
-References: <20211102224750.FA412E26@davehans-spike.ostc.intel.com>
-MIME-Version: 1.0
-Message-ID: <163597612165.626.15614463658086299478.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+        Thu, 4 Nov 2021 01:41:35 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10157"; a="229107755"
+X-IronPort-AV: E=Sophos;i="5.87,208,1631602800"; 
+   d="scan'208";a="229107755"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2021 22:38:57 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.87,208,1631602800"; 
+   d="scan'208";a="578451098"
+Received: from fmsmsx604.amr.corp.intel.com ([10.18.126.84])
+  by FMSMGA003.fm.intel.com with ESMTP; 03 Nov 2021 22:38:57 -0700
+Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx604.amr.corp.intel.com (10.18.126.84) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2242.12; Wed, 3 Nov 2021 22:38:57 -0700
+Received: from fmsmsx605.amr.corp.intel.com (10.18.126.85) by
+ fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2242.12; Wed, 3 Nov 2021 22:38:56 -0700
+Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
+ fmsmsx605.amr.corp.intel.com (10.18.126.85) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2242.12 via Frontend Transport; Wed, 3 Nov 2021 22:38:56 -0700
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (104.47.70.102)
+ by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2242.12; Wed, 3 Nov 2021 22:38:56 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=cEZhH32FjYMNSTpdL3rhYTASxOaplHZnDsIRXF8Yw8YQ31d4m2aRfuGy9Mp5Okq3AmKTmblgnalmEXXxn9zt0Xvl3WFhCIonIP2D0ySxIBNo28PAwMrinRjzrUAmc7dcsPm0rFpxjGFquOgWKbjJcUDVD2/6GdYB09iUPWtrcTfSVKaqNGXt3SNu38xE1AGIkVMflBjep+am2Ioh3VM0zWgzqspF2BYVzyu2Cb2cZl2NGtmsFFV56cw5j6ZjH6U7HZf6vSt/EcegWjQlgUEEp5lK4Mk84gcZhZIa9MfIY1zf4NCFLjXrUh0hhtzoD8cA1nZ9kXr6bbtlSZSJHZ2Osg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=PJ2xJa5AajVJoVAySKa8mecOlSWgHkO0+2nNa0eLotI=;
+ b=mdE/iXV/iA34tC7Yzz1CIv/s0963e6355tmb9HYrf3O7eQXE31th1ryQEHjg06ev0F7SQyXWNVXyUx6dQ+Yd9LDClmHEzFSPNiny71cm2SX5Db2o+Th2gMGvNLRKBOpMWiQynDiXnyL31jJnfgcR2dkd2pXTW/bY1iokWXqzk6WWPdGrssT/Pi79Zxx1RG/NVrrw5obWRnw4e+4KsFuEFm/4b4ZYJHCmW7fAZvH68Kg49cIYSGeMU//K2NnzW+ccTTidkl9dF+6raQcGI05jQYPUc8VkMUuK3FtDLZqQ/oIiLIrgJSbb4T9/UEECc0/nheqyfQFM+O73w1jxFMAmPg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=intel.onmicrosoft.com;
+ s=selector2-intel-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=PJ2xJa5AajVJoVAySKa8mecOlSWgHkO0+2nNa0eLotI=;
+ b=H8yWy0mawdkYI3hb2vSDS3rY6HC+ljpuIvCTK+TOreF+ufzK9E4oLfXKdXJcppMeMYz+SEKB/fjALRyE27JKEqN/lGHKQf/MwdZG9D9Gud39E4ihw6jnWipK328lQhMcAHa+JW/BFgzGBsMXkTs4zGj7MKkr5UgOc2slsJ1Hnes=
+Received: from SJ0PR11MB5150.namprd11.prod.outlook.com (2603:10b6:a03:2d4::18)
+ by SJ0PR11MB5166.namprd11.prod.outlook.com (2603:10b6:a03:2d8::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4649.15; Thu, 4 Nov
+ 2021 05:38:55 +0000
+Received: from SJ0PR11MB5150.namprd11.prod.outlook.com
+ ([fe80::1c99:cc97:391:1406]) by SJ0PR11MB5150.namprd11.prod.outlook.com
+ ([fe80::1c99:cc97:391:1406%9]) with mapi id 15.20.4649.019; Thu, 4 Nov 2021
+ 05:38:54 +0000
+From:   "Williams, Dan J" <dan.j.williams@intel.com>
+To:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-tip-commits@vger.kernel.org" 
+        <linux-tip-commits@vger.kernel.org>
+CC:     "nathan@kernel.org" <nathan@kernel.org>,
+        "Gross, Jurgen" <jgross@suse.com>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        "marmarek@invisiblethingslab.com" <marmarek@invisiblethingslab.com>,
+        "Chagam, Anjaneya" <anjaneya.chagam@intel.com>,
+        "bp@suse.de" <bp@suse.de>, "x86@kernel.org" <x86@kernel.org>
+Subject: Re: [tip: x86/urgent] x86/setup: Call early_reserve_memory() earlier
+Thread-Topic: [tip: x86/urgent] x86/setup: Call early_reserve_memory() earlier
+Thread-Index: AQHX0T5BODHF8DSF6EqfFZFgYvTybA==
+Date:   Thu, 4 Nov 2021 05:38:54 +0000
+Message-ID: <e8dd8993c38702ee6dd73b3c11f158617e665607.camel@intel.com>
+References: <20210920120421.29276-1-jgross@suse.com>
+         <163233113662.25758.10031107028271701591.tip-bot2@tip-bot2>
+In-Reply-To: <163233113662.25758.10031107028271701591.tip-bot2@tip-bot2>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.40.4 (3.40.4-2.fc34) 
+authentication-results: vger.kernel.org; dkim=none (message not signed)
+ header.d=none;vger.kernel.org; dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: a64d44d0-39de-45c8-5d40-08d99f556417
+x-ms-traffictypediagnostic: SJ0PR11MB5166:
+x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+x-microsoft-antispam-prvs: <SJ0PR11MB51664F3029ECD1F36E85DEBBC68D9@SJ0PR11MB5166.namprd11.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:5516;
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: kUjeaKikm+mV0267D0/kaqKZ7PZ/QIKLUzaEfSjZ8Ss0MyTUF+2l9KppTnrJvGbzSdOiHmjQYHmR3C6MMie52gXLZuFWVxyRJJFXJ2cXzu8obzqEShzDYQHvQShJBs6I9OHrnTK/DFy9Z1kj0XVHsYXvUMvWfZ5DBzshoHypHkX+o54cQpd6oN/hWlB/zOgIk0+J3K8Ago7Jo9Cv+OP+4Yk6IVkdKDYaUxeeOUD1YB6pVGlf5nq6zdgoeEER0W1GMAqNmjfB0MOBI1PY+1BPeNrzdD/gXmHcA1g1XBWTG4eUwfhQXIBF13dIKsvNhiyx17Bt7t0UKOcM5xOuIBtPXvH+JTfgAQ36xeIR3O2xGbsHppPe/s92xSzRL/VuHZ9sMTeeK6Qw7fzn4hA0RZNNGSmGoHf62H2IXHPxc6K4dOZOj5f6Ib7S7t13pEEl44MQrg+yS6Vzpczgtx/HY/mbU1+qcBne8LJjgOuCzfOisSj7dyLInnBEiFljCFoI2wc+El/rXH0Lb5npLAO6aTrJHeHDn++SVRngjrG+Wo1MknQoo6MU+IUeDC8tY2Po5vA1dr1GuElFFAO4yWQbBw2MU9o0IsQujHbskKJ1pBhCasDqaEioy+Mu0QGq43vJnZylS6VeVEKt3Jz91FpMMomYmgI6dzEhMceXupzS81Zu7y3cq7onq1mefTL7OyTEV+l4SnPMSp1vm2WJWk8CHIbqxBnqFRPR1o7vXcKMUAg1WIhT6+zJ64O+2CGn1fK6/Nal1/46LVBXHtO7SbTUAC0HJ4X66clrmc6wXANLqsZs7WTZKEVTFw2OKnAEz8dRUOoPI/69E9wXa3Sec+KP8o1kXQ==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR11MB5150.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(366004)(316002)(54906003)(2616005)(38100700002)(86362001)(71200400001)(6512007)(26005)(83380400001)(110136005)(186003)(966005)(5660300002)(66556008)(36756003)(76116006)(66446008)(64756008)(508600001)(6486002)(82960400001)(122000001)(66574015)(8676002)(66476007)(2906002)(4326008)(66946007)(38070700005)(8936002)(6506007)(91956017);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?RmdoVXJVbVM3a0k5dDdLWnRRdlJCaWs0TUxEN2VOTmVIV0xRUWRIZGhGbHNV?=
+ =?utf-8?B?TnJ2dHV6Rm9kd2QrenUyWE94bnJxck01dHlNdmhqckpRNTBjYlJjLzhZZC9u?=
+ =?utf-8?B?Q3g3K3Z3blY1aG9uZEJWMFRWWW1mbzlJTzFSdGtaSGpFMHcvOE5NTlVSK2tB?=
+ =?utf-8?B?MVhJSjZrTjIvckNoS09iRVA4SW1pYWt6cW5BMlZTSGxVK0YwcXZYSm1VUlRO?=
+ =?utf-8?B?Kzl3aDZOd3NzSlh5amhzajBMYlhHdUxsR3VoME5WOHVFQk9qUzJqejRHV0tn?=
+ =?utf-8?B?WERDSGtQanZIeXdiLzVKd2tkZ015c09jS2kyYXBNUzdieVA4SW1nbFpLbTJu?=
+ =?utf-8?B?Q1dYWVZKT3Rpcmt4Qnh0dlZkZUpzaVZrSkc0K3l0cVJRaW1VcUNwc2dkYTFX?=
+ =?utf-8?B?VlNHZWhVTytQTDhoUXdiWTRieURKQ0tEdTRFRlVHdm5kN0JNTWNjYzVpWEw0?=
+ =?utf-8?B?cXhEcEpYTzlmdTdVMTloM0lTUllvZVdqeU1ZKzBrSUpXMHd6RkR2MGk1RUoy?=
+ =?utf-8?B?K2JMcVljNjdOSXdleUdzN2NlQTNQdjdLQ0cvSzNHdlNXeVJ2Zm1SeEpOUm96?=
+ =?utf-8?B?VWxwYnhlNi9pVGlhdSt5RkFFNU54K0htTzdxMUg1MWN6MGhTT2lzbHd0aFFi?=
+ =?utf-8?B?aWFJclFEdUMxVVNnaGNscFNWbnFtOFRKQjZOZXpBVERkTURwSFlBNW03a0pR?=
+ =?utf-8?B?NWNVVHZxNUI2ZWZkNi9aV0NvanNsNnFuSmwrU0Z1T2pXMUFXQW9lODNiQXhR?=
+ =?utf-8?B?SllDU3Fqc3BvaDk4aS9vcUxhVnJPOHNyaHFla1I2cDJJTmphRWdOOWFEeG55?=
+ =?utf-8?B?V3U5Z24rL05NU2xzeVE4WTQ1OGVkUDBCaUhBZ1N3M3pJSUxLcUoyN2tUREYr?=
+ =?utf-8?B?N09CZ1k4N0JadUpFRjNaMU9oODFOczNsVU9VQ2RVVXk2MTl0UnhHUnpEKzBj?=
+ =?utf-8?B?dTNOL0FBSW9EcE9EQjhaLy9QNEIwQjIvTnRSQzBnYUtXZTVmdis0dnNiWi9n?=
+ =?utf-8?B?ck5KWnc5L0pmclorL1FCZDBsaU1qWVEyRlpVWS9zNG51Q2dNdjhDRllOQVJk?=
+ =?utf-8?B?UXJEYmc3RFFZM0ZkYmw1c1p0VVZNS1ZaUlpnQTNqL2VBVWZVVGljOFI1QWVK?=
+ =?utf-8?B?ellaQlR3dFJWMXhhUS9RejhrNVRCc0FpdWdlRnExZmtQWkdIdlpWNGdWUkdv?=
+ =?utf-8?B?Y1V4Y1R4cktMVVhpbEFVcUVMSFhwdTdxTjdHeDR4VDVZbWt2blloM0lQY1Zi?=
+ =?utf-8?B?QTlRa1FlTEg5Y2FlU2gyK1Z2SXhEbGx6Wmh1WXJoc3ZCK294QVBFYkJGSjZ5?=
+ =?utf-8?B?RjllTWVWSndZRU55MXZBTE8xN1FLazNJSFBzWTFsTFVXOHJNOWdGbzRTRTFO?=
+ =?utf-8?B?M1NHRHVYeGRsdHVzL1dBV0lKOFlKSU01M2FLc2k3ZlVXcDFZL25HZmg4YURy?=
+ =?utf-8?B?dDJScEhla0JQTmxVU1hxeEdlZ0lnT3lJRVJmanJ0VmY3VDR4UFpmdXNOaW8w?=
+ =?utf-8?B?WGk1MnVlUVRlOEdkd1B0ZDFWbGtJM0QyTTBLZ2RWTDdTaGViRDJpMDkwc0tr?=
+ =?utf-8?B?dmM1Sjlad1czTUF6QzFjV2hPU1VhRzJZaDBJRHJ4ZHRmclhZRkRSd1FvTE93?=
+ =?utf-8?B?ejBIajJQS0VHWTkyU2J3aERJUXlwbkUyZXhQQ3Y0TzRFZWlmSVVVcXZ5SEpk?=
+ =?utf-8?B?WGFmVzR6YmhtcEtXUTdLdkhjK28vbEg3aGszbTFDTlYrQnBTV1ZTNjJYak85?=
+ =?utf-8?B?NWtRckZSMDNYaTNEVXFHaVRLaVhveVQxUXp6U2NlUzJPZkZZSGJONTlYcFc5?=
+ =?utf-8?B?UXltYVFHTHdydFFQcFJ0Ym5MLzhpR2JvZFRBQmZQV09ub3VrWnVuN0N1Rkpx?=
+ =?utf-8?B?STNYd3VNS1JYcU5LazhMWUs2L0krdXFwaSs5Y0RHVmJyWk1GOFM4SjE2am5V?=
+ =?utf-8?B?dzJxSnYvWFM3bU4ydmJPVFVQcUVmcUNOSjZyTVB4OUhxd1BtNWgvM1BKK2E4?=
+ =?utf-8?B?ZlYvemF6VVlFSjkyeHZwTEVhaU5kUEpTa2R2Q0owVUN0ZU9vMFlraDFMSUVj?=
+ =?utf-8?B?U0ZLSld6M01lZXluRDJwczNGcWEvUVNxb2xkUlF1aWdFd25zSlM3dnhFbENp?=
+ =?utf-8?B?czYvcWk4eEUwK3ovaXJpc1Y4aWpiMER3b2U2c1JjUGJsekFvOTZTZTBvVU1C?=
+ =?utf-8?B?YVNYZGZlc01UZDM4MnRuc2MzT1dicDR2QXlFUFBUMTlpWWxIL2lCYmZzQm9I?=
+ =?utf-8?Q?FSZ35c7btv0MR9tdsWUhyzQXOwFe7GVnT1IwfQS7mw=3D?=
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-ID: <B7A8A723DF23724EAC9DE39EC9E037D1@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB5150.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a64d44d0-39de-45c8-5d40-08d99f556417
+X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Nov 2021 05:38:54.8571
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 3joytCDL8oAiNKGXSN4LblfHAlDU+ZuxoZU8lfBz6h4+6Mjbg3bCiVyd+HZ4Jt9RyXtWqt3vtslYFdFlXGJi12GBdXi0Iw9XAUfS7OnuZu0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB5166
+X-OriginatorOrg: intel.com
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
-
-Commit-ID:     30d02551ba4f681cfa605cedacf231b8641169f0
-Gitweb:        https://git.kernel.org/tip/30d02551ba4f681cfa605cedacf231b8641169f0
-Author:        Dave Hansen <dave.hansen@linux.intel.com>
-AuthorDate:    Tue, 02 Nov 2021 15:47:50 -07:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 03 Nov 2021 22:42:35 +01:00
-
-x86/fpu: Optimize out sigframe xfeatures when in init state
-
-tl;dr: AMX state is ~8k.  Signal frames can have space for this
-~8k and each signal entry writes out all 8k even if it is zeros.
-Skip writing zeros for AMX to speed up signal delivery by about
-4% overall when AMX is in its init state.
-
-This is a user-visible change to the sigframe ABI.
-
-== Hardware XSAVE Background ==
-
-XSAVE state components may be tracked by the processor as being
-in their initial configuration.  Software can detect which
-features are in this configuration by looking at the XSTATE_BV
-field in an XSAVE buffer or with the XGETBV(1) instruction.
-
-Both the XSAVE and XSAVEOPT instructions enumerate features s
-being in the initial configuration via the XSTATE_BV field in the
-XSAVE header,  However, XSAVEOPT declines to actually write
-features in their initial configuration to the buffer.  XSAVE
-writes the feature unconditionally, regardless of whether it is
-in the initial configuration or not.
-
-Basically, XSAVE users never need to inspect XSTATE_BV to
-determine if the feature has been written to the buffer.
-XSAVEOPT users *do* need to inspect XSTATE_BV.  They might also
-need to clear out the buffer if they want to make an isolated
-change to the state, like modifying one register.
-
-== Software Signal / XSAVE Background ==
-
-Signal frames have historically been written with XSAVE itself.
-Each state is written in its entirety, regardless of being in its
-initial configuration.
-
-In other words, the signal frame ABI uses the XSAVE behavior, not
-the XSAVEOPT behavior.
-
-== Problem ==
-
-This means that any application which has acquired permission to
-use AMX via ARCH_REQ_XCOMP_PERM will write 8k of state to the
-signal frame.  This 8k write will occur even when AMX was in its
-initial configuration and software *knows* this because of
-XSTATE_BV.
-
-This problem also exists to a lesser degree with AVX-512 and its
-2k of state.  However, AVX-512 use does not require
-ARCH_REQ_XCOMP_PERM and is more likely to have existing users
-which would be impacted by any change in behavior.
-
-== Solution ==
-
-Stop writing out AMX xfeatures which are in their initial state
-to the signal frame.  This effectively makes the signal frame
-XSAVE buffer look as if it were written with a combination of
-XSAVEOPT and XSAVE behavior.  Userspace which handles XSAVEOPT-
-style buffers should be able to handle this naturally.
-
-For now, include only the AMX xfeatures: XTILE and XTILEDATA in
-this new behavior.  These require new ABI to use anyway, which
-makes their users very unlikely to be broken.  This XSAVEOPT-like
-behavior should be expected for all future dynamic xfeatures.  It
-may also be extended to legacy features like AVX-512 in the
-future.
-
-Only attempt this optimization on systems with dynamic features.
-Disable dynamic feature support (XFD) if XGETBV1 is unavailable
-by adding a CPUID dependency.
-
-This has been measured to reduce the *overall* cycle cost of
-signal delivery by about 4%.
-
-Fixes: 2308ee57d93d ("x86/fpu/amx: Enable the AMX feature in 64-bit mode")
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: "Chang S. Bae" <chang.seok.bae@intel.com>
-Link: https://lore.kernel.org/r/20211102224750.FA412E26@davehans-spike.ostc.intel.com
-
----
- Documentation/x86/xstate.rst      |  9 +++++++-
- arch/x86/include/asm/fpu/xcr.h    | 12 ++++++++++-
- arch/x86/include/asm/fpu/xstate.h |  7 ++++++-
- arch/x86/kernel/cpu/cpuid-deps.c  |  1 +-
- arch/x86/kernel/fpu/xstate.h      | 37 ++++++++++++++++++++++++++++--
- 5 files changed, 64 insertions(+), 2 deletions(-)
-
-diff --git a/Documentation/x86/xstate.rst b/Documentation/x86/xstate.rst
-index 65de3f0..5cec7fb 100644
---- a/Documentation/x86/xstate.rst
-+++ b/Documentation/x86/xstate.rst
-@@ -63,3 +63,12 @@ kernel sends SIGILL to the application. If the process has permission then
- the handler allocates a larger xstate buffer for the task so the large
- state can be context switched. In the unlikely cases that the allocation
- fails, the kernel sends SIGSEGV.
-+
-+Dynamic features in signal frames
-+---------------------------------
-+
-+Dynamcally enabled features are not written to the signal frame upon signal
-+entry if the feature is in its initial configuration.  This differs from
-+non-dynamic features which are always written regardless of their
-+configuration.  Signal handlers can examine the XSAVE buffer's XSTATE_BV
-+field to determine if a features was written.
-diff --git a/arch/x86/include/asm/fpu/xcr.h b/arch/x86/include/asm/fpu/xcr.h
-index 79f95d3..9656a5b 100644
---- a/arch/x86/include/asm/fpu/xcr.h
-+++ b/arch/x86/include/asm/fpu/xcr.h
-@@ -3,6 +3,7 @@
- #define _ASM_X86_FPU_XCR_H
- 
- #define XCR_XFEATURE_ENABLED_MASK	0x00000000
-+#define XCR_XFEATURE_IN_USE_MASK	0x00000001
- 
- static inline u64 xgetbv(u32 index)
- {
-@@ -20,4 +21,15 @@ static inline void xsetbv(u32 index, u64 value)
- 	asm volatile("xsetbv" :: "a" (eax), "d" (edx), "c" (index));
- }
- 
-+/*
-+ * Return a mask of xfeatures which are currently being tracked
-+ * by the processor as being in the initial configuration.
-+ *
-+ * Callers should check X86_FEATURE_XGETBV1.
-+ */
-+static inline u64 xfeatures_in_use(void)
-+{
-+	return xgetbv(XCR_XFEATURE_IN_USE_MASK);
-+}
-+
- #endif /* _ASM_X86_FPU_XCR_H */
-diff --git a/arch/x86/include/asm/fpu/xstate.h b/arch/x86/include/asm/fpu/xstate.h
-index 0f8b90a..cd3dd17 100644
---- a/arch/x86/include/asm/fpu/xstate.h
-+++ b/arch/x86/include/asm/fpu/xstate.h
-@@ -92,6 +92,13 @@
- #define XFEATURE_MASK_FPSTATE	(XFEATURE_MASK_USER_RESTORE | \
- 				 XFEATURE_MASK_SUPERVISOR_SUPPORTED)
- 
-+/*
-+ * Features in this mask have space allocated in the signal frame, but may not
-+ * have that space initialized when the feature is in its init state.
-+ */
-+#define XFEATURE_MASK_SIGFRAME_INITOPT	(XFEATURE_MASK_XTILE | \
-+					 XFEATURE_MASK_USER_DYNAMIC)
-+
- extern u64 xstate_fx_sw_bytes[USER_XSTATE_FX_SW_WORDS];
- 
- extern void __init update_regset_xstate_info(unsigned int size,
-diff --git a/arch/x86/kernel/cpu/cpuid-deps.c b/arch/x86/kernel/cpu/cpuid-deps.c
-index cb2fdd1..c881bca 100644
---- a/arch/x86/kernel/cpu/cpuid-deps.c
-+++ b/arch/x86/kernel/cpu/cpuid-deps.c
-@@ -76,6 +76,7 @@ static const struct cpuid_dep cpuid_deps[] = {
- 	{ X86_FEATURE_SGX1,			X86_FEATURE_SGX       },
- 	{ X86_FEATURE_SGX2,			X86_FEATURE_SGX1      },
- 	{ X86_FEATURE_XFD,			X86_FEATURE_XSAVES    },
-+	{ X86_FEATURE_XFD,			X86_FEATURE_XGETBV1   },
- 	{ X86_FEATURE_AMX_TILE,			X86_FEATURE_XFD       },
- 	{}
- };
-diff --git a/arch/x86/kernel/fpu/xstate.h b/arch/x86/kernel/fpu/xstate.h
-index e18210d..86ea7c0 100644
---- a/arch/x86/kernel/fpu/xstate.h
-+++ b/arch/x86/kernel/fpu/xstate.h
-@@ -4,6 +4,7 @@
- 
- #include <asm/cpufeature.h>
- #include <asm/fpu/xstate.h>
-+#include <asm/fpu/xcr.h>
- 
- #ifdef CONFIG_X86_64
- DECLARE_PER_CPU(u64, xfd_state);
-@@ -199,6 +200,32 @@ static inline void os_xrstor_supervisor(struct fpstate *fpstate)
- }
- 
- /*
-+ * XSAVE itself always writes all requested xfeatures.  Removing features
-+ * from the request bitmap reduces the features which are written.
-+ * Generate a mask of features which must be written to a sigframe.  The
-+ * unset features can be optimized away and not written.
-+ *
-+ * This optimization is user-visible.  Only use for states where
-+ * uninitialized sigframe contents are tolerable, like dynamic features.
-+ *
-+ * Users of buffers produced with this optimization must check XSTATE_BV
-+ * to determine which features have been optimized out.
-+ */
-+static inline u64 xfeatures_need_sigframe_write(void)
-+{
-+	u64 xfeaures_to_write;
-+
-+	/* In-use features must be written: */
-+	xfeaures_to_write = xfeatures_in_use();
-+
-+	/* Also write all non-optimizable sigframe features: */
-+	xfeaures_to_write |= XFEATURE_MASK_USER_SUPPORTED &
-+			     ~XFEATURE_MASK_SIGFRAME_INITOPT;
-+
-+	return xfeaures_to_write;
-+}
-+
-+/*
-  * Save xstate to user space xsave area.
-  *
-  * We don't use modified optimization because xrstor/xrstors might track
-@@ -220,10 +247,16 @@ static inline int xsave_to_user_sigframe(struct xregs_state __user *buf)
- 	 */
- 	struct fpstate *fpstate = current->thread.fpu.fpstate;
- 	u64 mask = fpstate->user_xfeatures;
--	u32 lmask = mask;
--	u32 hmask = mask >> 32;
-+	u32 lmask;
-+	u32 hmask;
- 	int err;
- 
-+	/* Optimize away writing unnecessary xfeatures: */
-+	if (fpu_state_size_dynamic())
-+		mask &= xfeatures_need_sigframe_write();
-+
-+	lmask = mask;
-+	hmask = mask >> 32;
- 	xfd_validate_state(fpstate, mask, false);
- 
- 	stac();
+T24gV2VkLCAyMDIxLTA5LTIyIGF0IDE3OjE4ICswMDAwLCB0aXAtYm90MiBmb3IgSnVlcmdlbiBH
+cm9zcyB3cm90ZToNCj4gVGhlIGZvbGxvd2luZyBjb21taXQgaGFzIGJlZW4gbWVyZ2VkIGludG8g
+dGhlIHg4Ni91cmdlbnQgYnJhbmNoIG9mDQo+IHRpcDoNCj4gDQo+IENvbW1pdC1JRDrCoMKgwqDC
+oCA4YWE4M2U2Mzk1Y2UwNDdhNTA2ZjBiMTZlZGNhNDVmMzZjMWFlN2Y4DQo+IEdpdHdlYjrCoMKg
+wqDCoMKgwqDCoA0KPiBodHRwczovL2dpdC5rZXJuZWwub3JnL3RpcC84YWE4M2U2Mzk1Y2UwNDdh
+NTA2ZjBiMTZlZGNhNDVmMzZjMWFlN2Y4DQo+IEF1dGhvcjrCoMKgwqDCoMKgwqDCoCBKdWVyZ2Vu
+IEdyb3NzIDxqZ3Jvc3NAc3VzZS5jb20+DQo+IEF1dGhvckRhdGU6wqDCoMKgIE1vbiwgMjAgU2Vw
+IDIwMjEgMTQ6MDQ6MjEgKzAyOjAwDQo+IENvbW1pdHRlcjrCoMKgwqDCoCBCb3Jpc2xhdiBQZXRr
+b3YgPGJwQHN1c2UuZGU+DQo+IENvbW1pdHRlckRhdGU6IFR1ZSwgMjEgU2VwIDIwMjEgMDk6NTI6
+MDggKzAyOjAwDQo+IA0KPiB4ODYvc2V0dXA6IENhbGwgZWFybHlfcmVzZXJ2ZV9tZW1vcnkoKSBl
+YXJsaWVyDQoNCkhpLA0KDQpJIGdvdCBhIHJlcG9ydCBmcm9tIEFuamFuZXlhIHRoYXQgc3RhcnRp
+bmcgd2l0aCB0aGUgdjUuMTUga2VybmVsIGhlIGNhbg0Kbm8gbG9uZ2VyIHVzZSB0aGUgImVmaT1u
+b3NvZnRyZXNlcnZlIiBrZXJuZWwgY29tbWFuZCBsaW5lIHBhcmFtZXRlciB0bw0Kc3VwcHJlc3Mg
+InNvZnQgcmVzZXJ2YXRpb24iIGJlaGF2aW9yLiBSZWNhbGwgdGhhdCAic29mdCByZXNlcnZlZCIg
+aXMNCnRoZSBMaW51eCBkZXNpZ25hdGlvbiBmb3IgbWVtb3J5IHRoYXQgaXMgbWFya2VkIHdpdGgg
+dGhlIEVGSSAiU3BlY2lhbA0KUHVycG9zZSIgYXR0cmlidXRlLg0KDQpCeSBpbnNwZWN0aW9uLCB0
+aGlzIGNvbW1pdCBsb29rcyBsaWtlIHRoZSBzb3VyY2Ugb2YgdGhlIHByb2JsZW0gYmVjYXVzZQ0K
+ZWFybHlfcmVzZXJ2ZV9tZW1vcnkoKSBub3cgcnVucyBiZWZvcmUgcGFyc2VfZWFybHlfcGFyYW0o
+KS4gSSBzdXNwZWN0DQp0aGF0IHRoaXMgYWxzbyBhZmZlY3RzIG1lbW1hcD0gc2luY2UgaXQgaXMg
+YWxzbyBhbiBlYXJseV9wYXJhbSgpLiBJJ2xsDQp2ZXJpZnkgdGhhdCB0b21vcnJvdyB3aGVuIEkn
+bSBtb3JlIGF3YWtlLCBidXQgd2FudGVkIHRvIGdpdmUgYSBoZWFkcyB1cA0KaW4gdGhlIG1lYW50
+aW1lLg0KDQoNCj4gDQo+IENvbW1pdCBpbiBGaXhlcyBpbnRyb2R1Y2VkIGVhcmx5X3Jlc2VydmVf
+bWVtb3J5KCkgdG8gZG8gYWxsIG5lZWRlZA0KPiBpbml0aWFsIG1lbWJsb2NrX3Jlc2VydmUoKSBj
+YWxscyBpbiBvbmUgZnVuY3Rpb24uIFVuZm9ydHVuYXRlbHksIHRoZSBjYWxsDQo+IG9mIGVhcmx5
+X3Jlc2VydmVfbWVtb3J5KCkgaXMgZG9uZSB0b28gbGF0ZSBmb3IgWGVuIGRvbTAsIGFzIGluIHNv
+bWUNCj4gY2FzZXMgYSBYZW4gaG9vayBjYWxsZWQgYnkgZTgyMF9fbWVtb3J5X3NldHVwKCkgd2ls
+bCBuZWVkIHRob3NlIG1lbW9yeQ0KPiByZXNlcnZhdGlvbnMgdG8gaGF2ZSBoYXBwZW5lZCBhbHJl
+YWR5Lg0KPiANCj4gTW92ZSB0aGUgY2FsbCBvZiBlYXJseV9yZXNlcnZlX21lbW9yeSgpIGJlZm9y
+ZSB0aGUgY2FsbCBvZg0KPiBlODIwX19tZW1vcnlfc2V0dXAoKSBpbiBvcmRlciB0byBhdm9pZCBz
+dWNoIHByb2JsZW1zLg0KPiANCj4gRml4ZXM6IGE3OTljMmJkMjlkMSAoIng4Ni9zZXR1cDogQ29u
+c29saWRhdGUgZWFybHkgbWVtb3J5IHJlc2VydmF0aW9ucyIpDQo+IFJlcG9ydGVkLWJ5OiBNYXJl
+ayBNYXJjenlrb3dza2ktR8OzcmVja2kgPG1hcm1hcmVrQGludmlzaWJsZXRoaW5nc2xhYi5jb20+
+DQo+IFNpZ25lZC1vZmYtYnk6IEp1ZXJnZW4gR3Jvc3MgPGpncm9zc0BzdXNlLmNvbT4NCj4gU2ln
+bmVkLW9mZi1ieTogQm9yaXNsYXYgUGV0a292IDxicEBzdXNlLmRlPg0KPiBUZXN0ZWQtYnk6IE1h
+cmVrIE1hcmN6eWtvd3NraS1Hw7NyZWNraSA8bWFybWFyZWtAaW52aXNpYmxldGhpbmdzbGFiLmNv
+bT4NCj4gVGVzdGVkLWJ5OiBOYXRoYW4gQ2hhbmNlbGxvciA8bmF0aGFuQGtlcm5lbC5vcmc+DQo+
+IENjOiBzdGFibGVAdmdlci5rZXJuZWwub3JnDQo+IExpbms6IGh0dHBzOi8vbGttbC5rZXJuZWwu
+b3JnL3IvMjAyMTA5MjAxMjA0MjEuMjkyNzYtMS1qZ3Jvc3NAc3VzZS5jb20NCj4gLS0tDQo+IMKg
+YXJjaC94ODYva2VybmVsL3NldHVwLmMgfCAyNiArKysrKysrKysrKysrKy0tLS0tLS0tLS0tLQ0K
+PiDCoDEgZmlsZSBjaGFuZ2VkLCAxNCBpbnNlcnRpb25zKCspLCAxMiBkZWxldGlvbnMoLSkNCj4g
+DQo+IGRpZmYgLS1naXQgYS9hcmNoL3g4Ni9rZXJuZWwvc2V0dXAuYyBiL2FyY2gveDg2L2tlcm5l
+bC9zZXR1cC5jDQo+IGluZGV4IDc5ZjE2NDEuLjQwZWQ0NGUgMTAwNjQ0DQo+IC0tLSBhL2FyY2gv
+eDg2L2tlcm5lbC9zZXR1cC5jDQo+ICsrKyBiL2FyY2gveDg2L2tlcm5lbC9zZXR1cC5jDQo+IEBA
+IC04MzAsNiArODMwLDIwIEBAIHZvaWQgX19pbml0IHNldHVwX2FyY2goY2hhciAqKmNtZGxpbmVf
+cCkNCj4gwqANCj4gwqDCoMKgwqDCoMKgwqDCoHg4Nl9pbml0Lm9lbS5hcmNoX3NldHVwKCk7DQo+
+IMKgDQo+ICvCoMKgwqDCoMKgwqDCoC8qDQo+ICvCoMKgwqDCoMKgwqDCoCAqIERvIHNvbWUgbWVt
+b3J5IHJlc2VydmF0aW9ucyAqYmVmb3JlKiBtZW1vcnkgaXMgYWRkZWQgdG8gbWVtYmxvY2ssIHNv
+DQo+ICvCoMKgwqDCoMKgwqDCoCAqIG1lbWJsb2NrIGFsbG9jYXRpb25zIHdvbid0IG92ZXJ3cml0
+ZSBpdC4NCj4gK8KgwqDCoMKgwqDCoMKgICoNCj4gK8KgwqDCoMKgwqDCoMKgICogQWZ0ZXIgdGhp
+cyBwb2ludCwgZXZlcnl0aGluZyBzdGlsbCBuZWVkZWQgZnJvbSB0aGUgYm9vdCBsb2FkZXIgb3IN
+Cj4gK8KgwqDCoMKgwqDCoMKgICogZmlybXdhcmUgb3Iga2VybmVsIHRleHQgc2hvdWxkIGJlIGVh
+cmx5IHJlc2VydmVkIG9yIG1hcmtlZCBub3QgUkFNIGluDQo+ICvCoMKgwqDCoMKgwqDCoCAqIGU4
+MjAuIEFsbCBvdGhlciBtZW1vcnkgaXMgZnJlZSBnYW1lLg0KPiArwqDCoMKgwqDCoMKgwqAgKg0K
+PiArwqDCoMKgwqDCoMKgwqAgKiBUaGlzIGNhbGwgbmVlZHMgdG8gaGFwcGVuIGJlZm9yZSBlODIw
+X19tZW1vcnlfc2V0dXAoKSB3aGljaCBjYWxscyB0aGUNCj4gK8KgwqDCoMKgwqDCoMKgICogeGVu
+X21lbW9yeV9zZXR1cCgpIG9uIFhlbiBkb20wIHdoaWNoIHJlbGllcyBvbiB0aGUgZmFjdCB0aGF0
+IHRob3NlDQo+ICvCoMKgwqDCoMKgwqDCoCAqIGVhcmx5IHJlc2VydmF0aW9ucyBoYXZlIGhhcHBl
+bmVkIGFscmVhZHkuDQo+ICvCoMKgwqDCoMKgwqDCoCAqLw0KPiArwqDCoMKgwqDCoMKgwqBlYXJs
+eV9yZXNlcnZlX21lbW9yeSgpOw0KPiArDQo+IMKgwqDCoMKgwqDCoMKgwqBpb21lbV9yZXNvdXJj
+ZS5lbmQgPSAoMVVMTCA8PCBib290X2NwdV9kYXRhLng4Nl9waHlzX2JpdHMpIC0gMTsNCj4gwqDC
+oMKgwqDCoMKgwqDCoGU4MjBfX21lbW9yeV9zZXR1cCgpOw0KPiDCoMKgwqDCoMKgwqDCoMKgcGFy
+c2Vfc2V0dXBfZGF0YSgpOw0KPiBAQCAtODc2LDE4ICs4OTAsNiBAQCB2b2lkIF9faW5pdCBzZXR1
+cF9hcmNoKGNoYXIgKipjbWRsaW5lX3ApDQo+IMKgDQo+IMKgwqDCoMKgwqDCoMKgwqBwYXJzZV9l
+YXJseV9wYXJhbSgpOw0KPiDCoA0KPiAtwqDCoMKgwqDCoMKgwqAvKg0KPiAtwqDCoMKgwqDCoMKg
+wqAgKiBEbyBzb21lIG1lbW9yeSByZXNlcnZhdGlvbnMgKmJlZm9yZSogbWVtb3J5IGlzIGFkZGVk
+IHRvDQo+IC3CoMKgwqDCoMKgwqDCoCAqIG1lbWJsb2NrLCBzbyBtZW1ibG9jayBhbGxvY2F0aW9u
+cyB3b24ndCBvdmVyd3JpdGUgaXQuDQo+IC3CoMKgwqDCoMKgwqDCoCAqIERvIGl0IGFmdGVyIGVh
+cmx5IHBhcmFtLCBzbyB3ZSBjb3VsZCBnZXQgKHVubGlrZWx5KSBwYW5pYyBmcm9tDQo+IC3CoMKg
+wqDCoMKgwqDCoCAqIHNlcmlhbC4NCj4gLcKgwqDCoMKgwqDCoMKgICoNCj4gLcKgwqDCoMKgwqDC
+oMKgICogQWZ0ZXIgdGhpcyBwb2ludCBldmVyeXRoaW5nIHN0aWxsIG5lZWRlZCBmcm9tIHRoZSBi
+b290IGxvYWRlciBvcg0KPiAtwqDCoMKgwqDCoMKgwqAgKiBmaXJtd2FyZSBvciBrZXJuZWwgdGV4
+dCBzaG91bGQgYmUgZWFybHkgcmVzZXJ2ZWQgb3IgbWFya2VkIG5vdA0KPiAtwqDCoMKgwqDCoMKg
+wqAgKiBSQU0gaW4gZTgyMC4gQWxsIG90aGVyIG1lbW9yeSBpcyBmcmVlIGdhbWUuDQo+IC3CoMKg
+wqDCoMKgwqDCoCAqLw0KPiAtwqDCoMKgwqDCoMKgwqBlYXJseV9yZXNlcnZlX21lbW9yeSgpOw0K
+PiAtDQo+IMKgI2lmZGVmIENPTkZJR19NRU1PUllfSE9UUExVRw0KPiDCoMKgwqDCoMKgwqDCoMKg
+LyoNCj4gwqDCoMKgwqDCoMKgwqDCoCAqIE1lbW9yeSB1c2VkIGJ5IHRoZSBrZXJuZWwgY2Fubm90
+IGJlIGhvdC1yZW1vdmVkIGJlY2F1c2UgTGludXgNCg0K
