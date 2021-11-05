@@ -2,217 +2,99 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 281F44458A4
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  4 Nov 2021 18:36:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 26117446405
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  5 Nov 2021 14:20:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233932AbhKDRjW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 4 Nov 2021 13:39:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58702 "EHLO
+        id S232969AbhKENWn (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 5 Nov 2021 09:22:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39496 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233936AbhKDRjV (ORCPT
+        with ESMTP id S232781AbhKENWf (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 4 Nov 2021 13:39:21 -0400
-Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B983C061205
-        for <linux-tip-commits@vger.kernel.org>; Thu,  4 Nov 2021 10:36:43 -0700 (PDT)
-Received: by mail-pl1-x62e.google.com with SMTP id p18so8350947plf.13
-        for <linux-tip-commits@vger.kernel.org>; Thu, 04 Nov 2021 10:36:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20210112.gappssmtp.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=JE7BWh7EPof2q1qNnDyfyKa+RjN00TLgKWFmUR6xPto=;
-        b=s4ImMsgGQUm6mPzKM3B7NN46K9mZpThq5Ex5NXxELwvAQv//gJkb4OoJtyk5iSzmpJ
-         I3mUqa9VU+FgsWW4eNq0E4V7DBBnLF25zbym4s98B02IKYUoSPfPj1BB4YzC1qo7K7e1
-         F8jpINNbsAP8yMlNfJafwBgadBd8zcPhur4Z2vkwy2W9QNtrtM7+gkb903YGkJCxe8iN
-         6KMSxmUCQVTgc+DflfDvjhll8s9mck6+NRGbQaeVC2SOY+zcKv3+9PjY4HIgqGSGD/BX
-         lQWt6XNSDiGQnx8Jy4M+Y4En33jGcYPby6DS7HsWd/4tD4V2VUNhWEuYojKIx0iN9S+0
-         XgGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=JE7BWh7EPof2q1qNnDyfyKa+RjN00TLgKWFmUR6xPto=;
-        b=CNzLBZOEdTFxla0twzmUTN3tDPnChoGYeP9pTAJgizppPgEtG8pBe8scG+K6kruhGD
-         EyvBgItN+krcDB+euisVqG/PBNKWCzs3KVIti2egXeEHdGY5kn3sS4PgFZyjfJoovc/9
-         FGvs3Qv7icqj94eP6I5iHilXWNGarKd6ipwaOQsfB83SGcvp86dvqfzTkzUtqvcPfhgm
-         S+fx5CBtdDq2wK+awW8xC5W4dyN28Hca4UT0ZkjRz13FFUYup0YZ5qfoGerFD68dGXlf
-         mmRlYBgQjHT2LXu4G0kzdBVt++i/xCPFYwvAqJXnFUqd1v9LR4ueQ5oACNXM5/gijFof
-         F9MA==
-X-Gm-Message-State: AOAM531S1NlWLBx6zdIU92Ae6f1UnI+NVPicO5Hliac9pMsyhhLNX7zO
-        msGLWv0WWcRCj9q3dz3GWuPmsUtq2DX/GinHePoKjQ==
-X-Google-Smtp-Source: ABdhPJxhy9V27nPMVN+tx+tjsLztlj8rfRnBWeo/tBj0oVDBrpNcAk5x1jeblAAtaMT+o1c3DeS+/bIsOjJYVJqUKEA=
-X-Received: by 2002:a17:902:aa84:b0:142:36cb:2a47 with SMTP id
- d4-20020a170902aa8400b0014236cb2a47mr4251518plr.89.1636047402658; Thu, 04 Nov
- 2021 10:36:42 -0700 (PDT)
+        Fri, 5 Nov 2021 09:22:35 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92D9FC06120D;
+        Fri,  5 Nov 2021 06:19:41 -0700 (PDT)
+Date:   Fri, 05 Nov 2021 13:19:38 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1636118380;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=p99QONqqFlhmJhGB4cU3v/TOmqtcFhGoVJvHxocSo/k=;
+        b=SPHiRcyAnwiHJcOJ6ljv9RWoxBo3FeldVPh1Y4c1wcVJqoqBPD9fTlg/cA+N/kIDchYVyC
+        7xI56up8bxKSSyGD/1A4DCybzlOe//VCEUejc490JACAXSntDUdw/1Drq3KIgl0H7SIlYY
+        MAMHire81zwm6RB19/If7zDSshfB/i8SYPghJevMF3TNMoOBuGId7fjpvcQ0uNMIZULaIA
+        VknPprwThwRB7lKV6EZDi2UO1ChWURIPt1nMy5dgZubxeAjLqAykkOpgCQyh8wfG8Rac2G
+        jP61tG+dRtAwNNbyu/5lW+4jI9E6AQQmu4Z1P0y1lVafFYPKYa0n0gI9UxDrSA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1636118380;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=p99QONqqFlhmJhGB4cU3v/TOmqtcFhGoVJvHxocSo/k=;
+        b=uX1fWfUjQRcLjmc6bVszOQL2flmi1/jkTJozBhX13P3FmBsRyTnwIV7+ERCwlA/2MaHnAx
+        Dyjn6EL3GTRMhHAQ==
+From:   "tip-bot2 for Juergen Gross" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/urgent] MAINTAINERS: Add some information to PARAVIRT_OPS entry
+Cc:     Juergen Gross <jgross@suse.com>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20211104095955.4813-1-jgross@suse.com>
+References: <20211104095955.4813-1-jgross@suse.com>
 MIME-Version: 1.0
-References: <20210920120421.29276-1-jgross@suse.com> <163233113662.25758.10031107028271701591.tip-bot2@tip-bot2>
- <e8dd8993c38702ee6dd73b3c11f158617e665607.camel@intel.com> <YYPGsUNm0UXcYKOA@zn.tnic>
-In-Reply-To: <YYPGsUNm0UXcYKOA@zn.tnic>
-From:   Dan Williams <dan.j.williams@intel.com>
-Date:   Thu, 4 Nov 2021 10:36:32 -0700
-Message-ID: <CAPcyv4jG359gnhJz=RdX_cKuh8awcBCzyRCJ1uKyfKCj-nFqvg@mail.gmail.com>
-Subject: Re: [tip: x86/urgent] x86/setup: Call early_reserve_memory() earlier
-To:     Borislav Petkov <bp@alien8.de>
-Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-tip-commits@vger.kernel.org" 
-        <linux-tip-commits@vger.kernel.org>,
-        "nathan@kernel.org" <nathan@kernel.org>,
-        "Gross, Jurgen" <jgross@suse.com>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        "marmarek@invisiblethingslab.com" <marmarek@invisiblethingslab.com>,
-        "Chagam, Anjaneya" <anjaneya.chagam@intel.com>,
-        "bp@suse.de" <bp@suse.de>, "x86@kernel.org" <x86@kernel.org>,
-        Mike Rapoport <rppt@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Message-ID: <163611837895.626.6157744222328526514.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Thu, Nov 4, 2021 at 4:40 AM Borislav Petkov <bp@alien8.de> wrote:
->
-> + Mike.
->
-> On Thu, Nov 04, 2021 at 05:38:54AM +0000, Williams, Dan J wrote:
-> > By inspection, this commit looks like the source of the problem because
-> > early_reserve_memory() now runs before parse_early_param().
->
-> Yah, I see it too:
->
-> early_reserve_memory
-> |-> efi_memblock_x86_reserve_range
->     |-> efi_fake_memmap_early
->
-> which does
->
->         if (!efi_soft_reserve_enabled())
->                 return;
->
-> and that would have set EFI_MEM_NO_SOFT_RESERVE after having parsed
-> "nosoftreserve".
->
-> And parse_early_param() happens later.
->
-> Uuuf, that early memory reservation dance is not going to be over,
-> ever...
->
-> Well, I guess we can do something like this below. The intent being to
-> carve out the command line preparation into a separate function which
-> does the early param parsing too. So that it all goes together.
->
-> And then call that function before early_reserve_memory() so that the
-> params have been parsed by then.
->
-> Looking at the changed flow, I think we should be ok but I've said that
-> a bunch of times already regarding this memory reservation early and
-> something in our house of cards called early boot order always broke.
->
-> Damn.
+The following commit has been merged into the x86/urgent branch of tip:
 
-Thanks Boris!
+Commit-ID:     43d3b7f6a362c06a19f14ff432993780aaad7ffd
+Gitweb:        https://git.kernel.org/tip/43d3b7f6a362c06a19f14ff432993780aaad7ffd
+Author:        Juergen Gross <jgross@suse.com>
+AuthorDate:    Thu, 04 Nov 2021 10:59:55 +01:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Fri, 05 Nov 2021 14:16:44 +01:00
 
-You can add:
+MAINTAINERS: Add some information to PARAVIRT_OPS entry
 
-Tested-by: Anjaneya Chagam <anjaneya.chagam@intel.com>
-Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+Most patches for paravirt_ops are going through the tip tree, as those
+patches tend to touch x86 specific files a lot.
 
->
-> ---
-> diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
-> index 40ed44ead063..05f69e7d84dc 100644
-> --- a/arch/x86/kernel/setup.c
-> +++ b/arch/x86/kernel/setup.c
-> @@ -742,6 +742,28 @@ dump_kernel_offset(struct notifier_block *self, unsigned long v, void *p)
->         return 0;
->  }
->
-> +static char *prepare_command_line(void)
-> +{
-> +#ifdef CONFIG_CMDLINE_BOOL
-> +#ifdef CONFIG_CMDLINE_OVERRIDE
-> +       strlcpy(boot_command_line, builtin_cmdline, COMMAND_LINE_SIZE);
-> +#else
-> +       if (builtin_cmdline[0]) {
-> +               /* append boot loader cmdline to builtin */
-> +               strlcat(builtin_cmdline, " ", COMMAND_LINE_SIZE);
-> +               strlcat(builtin_cmdline, boot_command_line, COMMAND_LINE_SIZE);
-> +               strlcpy(boot_command_line, builtin_cmdline, COMMAND_LINE_SIZE);
-> +       }
-> +#endif
-> +#endif
-> +
-> +       strlcpy(command_line, boot_command_line, COMMAND_LINE_SIZE);
-> +
-> +       parse_early_param();
-> +
-> +       return command_line;
-> +}
-> +
->  /*
->   * Determine if we were loaded by an EFI loader.  If so, then we have also been
->   * passed the efi memmap, systab, etc., so we should use these data structures
-> @@ -830,6 +852,23 @@ void __init setup_arch(char **cmdline_p)
->
->         x86_init.oem.arch_setup();
->
-> +       /*
-> +        * x86_configure_nx() is called before parse_early_param() (called by
-> +        * prepare_command_line()) to detect whether hardware doesn't support
-> +        * NX (so that the early EHCI debug console setup can safely call
-> +        * set_fixmap()). It may then be called again from within noexec_setup()
-> +        * during parsing early parameters to honor the respective command line
-> +        * option.
-> +        */
-> +       x86_configure_nx();
-> +
-> +       /*
-> +        * This parses early params and it needs to run before
-> +        * early_reserve_memory() because latter relies on such settings
-> +        * supplies as early params.
-> +        */
-> +       *cmdline_p = prepare_command_line();
-> +
->         /*
->          * Do some memory reservations *before* memory is added to memblock, so
->          * memblock allocations won't overwrite it.
-> @@ -863,33 +902,6 @@ void __init setup_arch(char **cmdline_p)
->         bss_resource.start = __pa_symbol(__bss_start);
->         bss_resource.end = __pa_symbol(__bss_stop)-1;
->
-> -#ifdef CONFIG_CMDLINE_BOOL
-> -#ifdef CONFIG_CMDLINE_OVERRIDE
-> -       strlcpy(boot_command_line, builtin_cmdline, COMMAND_LINE_SIZE);
-> -#else
-> -       if (builtin_cmdline[0]) {
-> -               /* append boot loader cmdline to builtin */
-> -               strlcat(builtin_cmdline, " ", COMMAND_LINE_SIZE);
-> -               strlcat(builtin_cmdline, boot_command_line, COMMAND_LINE_SIZE);
-> -               strlcpy(boot_command_line, builtin_cmdline, COMMAND_LINE_SIZE);
-> -       }
-> -#endif
-> -#endif
-> -
-> -       strlcpy(command_line, boot_command_line, COMMAND_LINE_SIZE);
-> -       *cmdline_p = command_line;
-> -
-> -       /*
-> -        * x86_configure_nx() is called before parse_early_param() to detect
-> -        * whether hardware doesn't support NX (so that the early EHCI debug
-> -        * console setup can safely call set_fixmap()). It may then be called
-> -        * again from within noexec_setup() during parsing early parameters
-> -        * to honor the respective command line option.
-> -        */
-> -       x86_configure_nx();
-> -
-> -       parse_early_param();
-> -
->  #ifdef CONFIG_MEMORY_HOTPLUG
->         /*
->          * Memory used by the kernel cannot be hot-removed because Linux
->
->
-> --
-> Regards/Gruss,
->     Boris.
->
-> https://people.kernel.org/tglx/notes-about-netiquette
+Add the x86 ML and the tip tree to the PARAVIRT_OPS MAINTAINERS entry
+in order to reflect that.
+
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20211104095955.4813-1-jgross@suse.com
+
+---
+ MAINTAINERS | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 96a96b1..0ad926b 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -14191,7 +14191,9 @@ M:	Juergen Gross <jgross@suse.com>
+ M:	Deep Shah <sdeep@vmware.com>
+ M:	"VMware, Inc." <pv-drivers@vmware.com>
+ L:	virtualization@lists.linux-foundation.org
++L:	x86@kernel.org
+ S:	Supported
++T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git x86/core
+ F:	Documentation/virt/paravirt_ops.rst
+ F:	arch/*/include/asm/paravirt*.h
+ F:	arch/*/kernel/paravirt*
