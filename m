@@ -2,55 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 26117446405
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  5 Nov 2021 14:20:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5239A44D396
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 11 Nov 2021 09:57:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232969AbhKENWn (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 5 Nov 2021 09:22:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39496 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232781AbhKENWf (ORCPT
+        id S231667AbhKKJAh (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 11 Nov 2021 04:00:37 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:48230 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230256AbhKKJAh (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 5 Nov 2021 09:22:35 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92D9FC06120D;
-        Fri,  5 Nov 2021 06:19:41 -0700 (PDT)
-Date:   Fri, 05 Nov 2021 13:19:38 -0000
+        Thu, 11 Nov 2021 04:00:37 -0500
+Date:   Thu, 11 Nov 2021 08:57:45 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1636118380;
+        s=2020; t=1636621067;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=p99QONqqFlhmJhGB4cU3v/TOmqtcFhGoVJvHxocSo/k=;
-        b=SPHiRcyAnwiHJcOJ6ljv9RWoxBo3FeldVPh1Y4c1wcVJqoqBPD9fTlg/cA+N/kIDchYVyC
-        7xI56up8bxKSSyGD/1A4DCybzlOe//VCEUejc490JACAXSntDUdw/1Drq3KIgl0H7SIlYY
-        MAMHire81zwm6RB19/If7zDSshfB/i8SYPghJevMF3TNMoOBuGId7fjpvcQ0uNMIZULaIA
-        VknPprwThwRB7lKV6EZDi2UO1ChWURIPt1nMy5dgZubxeAjLqAykkOpgCQyh8wfG8Rac2G
-        jP61tG+dRtAwNNbyu/5lW+4jI9E6AQQmu4Z1P0y1lVafFYPKYa0n0gI9UxDrSA==
+        bh=DbcwKz3W3qN9osp6n/72imrTqJ43KA0UAlr6lcDjls0=;
+        b=ATev9VUTGEhsUSCsAKfnGbjk6v5rkVse1ZynDcR6smx4PuH745NPk6Rj3nvtvajz0NiCon
+        l5EuXWxIxyqtLsDkJkyaxrw93YBFvifpu247JEkMunneeaZL/6GBlYZjbmV31g973dcBPX
+        I0ZtXa4YCQo65NygwueJ155RHtjOs+teu38UzTryhiHCErXaO/5Jzt9I44JC5dR0m4Tp+F
+        eQDbnK0DkxTVz0IbNWdoQV/8+Sla6wQvEyCfV3DlZSXNZTEQu26ie2ZP5rk69pgfvjyqKg
+        qmQtXTRuP4RZpIqX5x4wrAZLt24ACFLRPsUy7+3AD/NdPKZwiPq7urdB06DSuQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1636118380;
+        s=2020e; t=1636621067;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=p99QONqqFlhmJhGB4cU3v/TOmqtcFhGoVJvHxocSo/k=;
-        b=uX1fWfUjQRcLjmc6bVszOQL2flmi1/jkTJozBhX13P3FmBsRyTnwIV7+ERCwlA/2MaHnAx
-        Dyjn6EL3GTRMhHAQ==
-From:   "tip-bot2 for Juergen Gross" <tip-bot2@linutronix.de>
+        bh=DbcwKz3W3qN9osp6n/72imrTqJ43KA0UAlr6lcDjls0=;
+        b=VPENRKzIanxu8WC9rVuWg1Cze5LR+qGyPazoK3VVYpA/vwZxzp+7gXCNSWbUXFS1F2GzB2
+        wqmIaXw5tuIhoADw==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] MAINTAINERS: Add some information to PARAVIRT_OPS entry
-Cc:     Juergen Gross <jgross@suse.com>,
-        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20211104095955.4813-1-jgross@suse.com>
-References: <20211104095955.4813-1-jgross@suse.com>
+Subject: [tip: irq/urgent] PCI/MSI: Destroy sysfs before freeing entries
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+        Bjorn Helgaas <helgaas@kernel.org>, stable@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org, maz@kernel.org
+In-Reply-To: <87sfw5305m.ffs@tglx>
+References: <87sfw5305m.ffs@tglx>
 MIME-Version: 1.0
-Message-ID: <163611837895.626.6157744222328526514.tip-bot2@tip-bot2>
+Message-ID: <163662106535.414.10271441206287447086.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,42 +57,59 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the irq/urgent branch of tip:
 
-Commit-ID:     43d3b7f6a362c06a19f14ff432993780aaad7ffd
-Gitweb:        https://git.kernel.org/tip/43d3b7f6a362c06a19f14ff432993780aaad7ffd
-Author:        Juergen Gross <jgross@suse.com>
-AuthorDate:    Thu, 04 Nov 2021 10:59:55 +01:00
+Commit-ID:     3735459037114d31e5acd9894fad9aed104231a0
+Gitweb:        https://git.kernel.org/tip/3735459037114d31e5acd9894fad9aed104231a0
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Tue, 09 Nov 2021 14:53:57 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 05 Nov 2021 14:16:44 +01:00
+CommitterDate: Thu, 11 Nov 2021 09:50:31 +01:00
 
-MAINTAINERS: Add some information to PARAVIRT_OPS entry
+PCI/MSI: Destroy sysfs before freeing entries
 
-Most patches for paravirt_ops are going through the tip tree, as those
-patches tend to touch x86 specific files a lot.
+free_msi_irqs() frees the MSI entries before destroying the sysfs entries
+which are exposing them. Nothing prevents a concurrent free while a sysfs
+file is read and accesses the possibly freed entry.
 
-Add the x86 ML and the tip tree to the PARAVIRT_OPS MAINTAINERS entry
-in order to reflect that.
+Move the sysfs release ahead of freeing the entries.
 
-Signed-off-by: Juergen Gross <jgross@suse.com>
+Fixes: 1c51b50c2995 ("PCI/MSI: Export MSI mode using attributes, not kobjects")
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20211104095955.4813-1-jgross@suse.com
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Bjorn Helgaas <helgaas@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/87sfw5305m.ffs@tglx
 
 ---
- MAINTAINERS | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/pci/msi.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 96a96b1..0ad926b 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -14191,7 +14191,9 @@ M:	Juergen Gross <jgross@suse.com>
- M:	Deep Shah <sdeep@vmware.com>
- M:	"VMware, Inc." <pv-drivers@vmware.com>
- L:	virtualization@lists.linux-foundation.org
-+L:	x86@kernel.org
- S:	Supported
-+T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git x86/core
- F:	Documentation/virt/paravirt_ops.rst
- F:	arch/*/include/asm/paravirt*.h
- F:	arch/*/kernel/paravirt*
+diff --git a/drivers/pci/msi.c b/drivers/pci/msi.c
+index 7043301..48e3f4e 100644
+--- a/drivers/pci/msi.c
++++ b/drivers/pci/msi.c
+@@ -368,6 +368,11 @@ static void free_msi_irqs(struct pci_dev *dev)
+ 			for (i = 0; i < entry->nvec_used; i++)
+ 				BUG_ON(irq_has_action(entry->irq + i));
+ 
++	if (dev->msi_irq_groups) {
++		msi_destroy_sysfs(&dev->dev, dev->msi_irq_groups);
++		dev->msi_irq_groups = NULL;
++	}
++
+ 	pci_msi_teardown_msi_irqs(dev);
+ 
+ 	list_for_each_entry_safe(entry, tmp, msi_list, list) {
+@@ -379,11 +384,6 @@ static void free_msi_irqs(struct pci_dev *dev)
+ 		list_del(&entry->list);
+ 		free_msi_entry(entry);
+ 	}
+-
+-	if (dev->msi_irq_groups) {
+-		msi_destroy_sysfs(&dev->dev, dev->msi_irq_groups);
+-		dev->msi_irq_groups = NULL;
+-	}
+ }
+ 
+ static void pci_intx_for_msi(struct pci_dev *dev, int enable)
