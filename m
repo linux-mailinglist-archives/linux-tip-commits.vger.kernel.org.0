@@ -2,53 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5239A44D396
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 11 Nov 2021 09:57:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E065244D39B
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 11 Nov 2021 09:58:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231667AbhKKJAh (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 11 Nov 2021 04:00:37 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:48230 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230256AbhKKJAh (ORCPT
+        id S232528AbhKKJAm (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 11 Nov 2021 04:00:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37416 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232347AbhKKJAk (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 11 Nov 2021 04:00:37 -0500
-Date:   Thu, 11 Nov 2021 08:57:45 -0000
+        Thu, 11 Nov 2021 04:00:40 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37632C061766;
+        Thu, 11 Nov 2021 00:57:51 -0800 (PST)
+Date:   Thu, 11 Nov 2021 08:57:47 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1636621067;
+        s=2020; t=1636621068;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=DbcwKz3W3qN9osp6n/72imrTqJ43KA0UAlr6lcDjls0=;
-        b=ATev9VUTGEhsUSCsAKfnGbjk6v5rkVse1ZynDcR6smx4PuH745NPk6Rj3nvtvajz0NiCon
-        l5EuXWxIxyqtLsDkJkyaxrw93YBFvifpu247JEkMunneeaZL/6GBlYZjbmV31g973dcBPX
-        I0ZtXa4YCQo65NygwueJ155RHtjOs+teu38UzTryhiHCErXaO/5Jzt9I44JC5dR0m4Tp+F
-        eQDbnK0DkxTVz0IbNWdoQV/8+Sla6wQvEyCfV3DlZSXNZTEQu26ie2ZP5rk69pgfvjyqKg
-        qmQtXTRuP4RZpIqX5x4wrAZLt24ACFLRPsUy7+3AD/NdPKZwiPq7urdB06DSuQ==
+        bh=X3her4b2W0InOLTQZVJXk0zXoqbmmg6n/wjz0E4dGFo=;
+        b=QUu3QEiWgLvqhKhvPgdgb9MCcb0d5565goCLi79OvePeYofJT8kp2RI+idl2foeGAPSSmt
+        kQfldOqFPhF3uGA/NtnhQr6ACniut3+Hd7XUHatehbOD/lZTkQFUFxPknMn20W/R/q8wJ2
+        hs4a1wvzPrW042KK6anNqUa7icmVTc2VnuJ4zBuyn5tE4lFQ13EfXG3npI4EZcKTgxK2x8
+        LXkazoiiPEiEvJDBb6asZXwKGl6X0rlWYFhLez34Opkits8Ta+USkE132Db6rwkBiQVYjI
+        V5GFtCJsdHqTo+LkOITjOoOd7ybZpGTGx8to2eqdHoJZzlRcNUD5Qa1FjazT9A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1636621067;
+        s=2020e; t=1636621068;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=DbcwKz3W3qN9osp6n/72imrTqJ43KA0UAlr6lcDjls0=;
-        b=VPENRKzIanxu8WC9rVuWg1Cze5LR+qGyPazoK3VVYpA/vwZxzp+7gXCNSWbUXFS1F2GzB2
-        wqmIaXw5tuIhoADw==
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+        bh=X3her4b2W0InOLTQZVJXk0zXoqbmmg6n/wjz0E4dGFo=;
+        b=JEwyQsLMWbg9AzTb+I+bu8Jy6ZSu6KjoqcZA4aEQAlc17M4F8t/Ntvs4SsRieEht+FGtPN
+        ragZfJxNhAllvPAg==
+From:   "tip-bot2 for Marc Zyngier" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/urgent] PCI/MSI: Destroy sysfs before freeing entries
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
-        Bjorn Helgaas <helgaas@kernel.org>, stable@vger.kernel.org,
-        x86@kernel.org, linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <87sfw5305m.ffs@tglx>
-References: <87sfw5305m.ffs@tglx>
+Subject: [tip: irq/urgent] PCI: Add MSI masking quirk for Nvidia ION AHCI
+Cc:     Rui Salvaterra <rsalvaterra@gmail.com>,
+        Marc Zyngier <maz@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Bjorn Helgaas <helgaas@kernel.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <CALjTZvbzYfBuLB+H=fj2J+9=DxjQ2Uqcy0if_PvmJ-nU-qEgkg@mail.gmail.com>
+References: <CALjTZvbzYfBuLB+H=fj2J+9=DxjQ2Uqcy0if_PvmJ-nU-qEgkg@mail.gmail.com>
 MIME-Version: 1.0
-Message-ID: <163662106535.414.10271441206287447086.tip-bot2@tip-bot2>
+Message-ID: <163662106738.414.16460014997838326648.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,57 +63,42 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/urgent branch of tip:
 
-Commit-ID:     3735459037114d31e5acd9894fad9aed104231a0
-Gitweb:        https://git.kernel.org/tip/3735459037114d31e5acd9894fad9aed104231a0
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Tue, 09 Nov 2021 14:53:57 +01:00
+Commit-ID:     f21082fb20dbfb3e42b769b59ef21c2a7f2c7c1f
+Gitweb:        https://git.kernel.org/tip/f21082fb20dbfb3e42b769b59ef21c2a7f2c7c1f
+Author:        Marc Zyngier <maz@kernel.org>
+AuthorDate:    Thu, 04 Nov 2021 18:01:30 
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Thu, 11 Nov 2021 09:50:31 +01:00
 
-PCI/MSI: Destroy sysfs before freeing entries
+PCI: Add MSI masking quirk for Nvidia ION AHCI
 
-free_msi_irqs() frees the MSI entries before destroying the sysfs entries
-which are exposing them. Nothing prevents a concurrent free while a sysfs
-file is read and accesses the possibly freed entry.
+The ION AHCI device pretends that MSI masking isn't a thing, while it
+actually implements it and needs MSIs to be unmasked to work. Add a quirk
+to that effect.
 
-Move the sysfs release ahead of freeing the entries.
-
-Fixes: 1c51b50c2995 ("PCI/MSI: Export MSI mode using attributes, not kobjects")
+Reported-by: Rui Salvaterra <rsalvaterra@gmail.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Tested-by: Rui Salvaterra <rsalvaterra@gmail.com>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
 Cc: Bjorn Helgaas <helgaas@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/87sfw5305m.ffs@tglx
-
+Link: https://lore.kernel.org/r/CALjTZvbzYfBuLB+H=fj2J+9=DxjQ2Uqcy0if_PvmJ-nU-qEgkg@mail.gmail.com
+Link: https://lore.kernel.org/r/20211104180130.3825416-3-maz@kernel.org
 ---
- drivers/pci/msi.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/pci/quirks.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/pci/msi.c b/drivers/pci/msi.c
-index 7043301..48e3f4e 100644
---- a/drivers/pci/msi.c
-+++ b/drivers/pci/msi.c
-@@ -368,6 +368,11 @@ static void free_msi_irqs(struct pci_dev *dev)
- 			for (i = 0; i < entry->nvec_used; i++)
- 				BUG_ON(irq_has_action(entry->irq + i));
- 
-+	if (dev->msi_irq_groups) {
-+		msi_destroy_sysfs(&dev->dev, dev->msi_irq_groups);
-+		dev->msi_irq_groups = NULL;
-+	}
+diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+index aedb78c..003950c 100644
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -5851,3 +5851,9 @@ DECLARE_PCI_FIXUP_ENABLE(PCI_VENDOR_ID_PERICOM, 0x2303,
+ 			 pci_fixup_pericom_acs_store_forward);
+ DECLARE_PCI_FIXUP_RESUME(PCI_VENDOR_ID_PERICOM, 0x2303,
+ 			 pci_fixup_pericom_acs_store_forward);
 +
- 	pci_msi_teardown_msi_irqs(dev);
- 
- 	list_for_each_entry_safe(entry, tmp, msi_list, list) {
-@@ -379,11 +384,6 @@ static void free_msi_irqs(struct pci_dev *dev)
- 		list_del(&entry->list);
- 		free_msi_entry(entry);
- 	}
--
--	if (dev->msi_irq_groups) {
--		msi_destroy_sysfs(&dev->dev, dev->msi_irq_groups);
--		dev->msi_irq_groups = NULL;
--	}
- }
- 
- static void pci_intx_for_msi(struct pci_dev *dev, int enable)
++static void nvidia_ion_ahci_fixup(struct pci_dev *pdev)
++{
++	pdev->dev_flags |= PCI_DEV_FLAGS_HAS_MSI_MASKING;
++}
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_NVIDIA, 0x0ab8, nvidia_ion_ahci_fixup);
