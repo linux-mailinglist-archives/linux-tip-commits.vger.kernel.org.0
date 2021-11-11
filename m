@@ -2,169 +2,147 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B8C344D692
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 11 Nov 2021 13:22:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E151844D7CA
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 11 Nov 2021 15:04:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233381AbhKKMZV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 11 Nov 2021 07:25:21 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:49464 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233352AbhKKMZU (ORCPT
+        id S233466AbhKKOHj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 11 Nov 2021 09:07:39 -0500
+Received: from szxga02-in.huawei.com ([45.249.212.188]:26302 "EHLO
+        szxga02-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233500AbhKKOHi (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 11 Nov 2021 07:25:20 -0500
-Date:   Thu, 11 Nov 2021 12:22:29 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1636633350;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=fDe7CFc2WvF8UNQCpj/xuE20HOk+koIDIKh9ZkiK2Qs=;
-        b=UXUA44pyo+K2KnmwUFg4z2S2yJg96sD5tLHGzOt/xGaQiJqpLlCHaKdvkiSEGi29eODwYI
-        rgA/lOg4klFRJc0f+PlF4FOVmvjOCbikphLjU/c27D3ZMYG0uSEwjr4WzBoWkFISaU1ZoO
-        39jU7SVN4ZZ1PzcVu5Ua6L+bavHHzmmvbWjXCdI0bld30ZEd2WTPB6hZFJphZSxxPNiD8B
-        OJfz3lJJTeCUdTZvvGbd2v/4VJzUlHHe7NvO2/CLXP5uwazF+LD6DEake4L3IAAEWJDkBC
-        UQhAgrHEuGioIqCHRsdsxs2+i4KzdzZv5R+L+apW2af1v170mdLdDCPEhe6Nsw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1636633350;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=fDe7CFc2WvF8UNQCpj/xuE20HOk+koIDIKh9ZkiK2Qs=;
-        b=7/2eG8wD3EyK8tFCbIkQALuQBF4F17/rH90K/hjPWV60kLwz49UMo3TD+NdzkrG2a786pf
-        QXsuhDXOTuSAWcDA==
-From:   "tip-bot2 for Boris Ostrovsky" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] x86/smp: Factor out parts of native_smp_prepare_cpus()
-Cc:     Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Juergen Gross <jgross@suse.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <1635896196-18961-1-git-send-email-boris.ostrovsky@oracle.com>
-References: <1635896196-18961-1-git-send-email-boris.ostrovsky@oracle.com>
+        Thu, 11 Nov 2021 09:07:38 -0500
+Received: from dggemv703-chm.china.huawei.com (unknown [172.30.72.57])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4Hqjyh02GCzbhtD;
+        Thu, 11 Nov 2021 21:59:56 +0800 (CST)
+Received: from dggpemm500015.china.huawei.com (7.185.36.181) by
+ dggemv703-chm.china.huawei.com (10.3.19.46) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.15; Thu, 11 Nov 2021 22:04:46 +0800
+Received: from [10.174.177.123] (10.174.177.123) by
+ dggpemm500015.china.huawei.com (7.185.36.181) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.15; Thu, 11 Nov 2021 22:04:46 +0800
+Subject: Re: [tip: sched/urgent] arch_topology: Fix missing clear
+ cluster_cpumask in remove_cpu_topology()
+To:     "Peter Zijlstra (Intel)" <peterz@infradead.org>
+CC:     <linux-kernel@vger.kernel.org>,
+        <linux-tip-commits@vger.kernel.org>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Barry Song <song.bao.hua@hisilicon.com>, <x86@kernel.org>,
+        "chengjian (D)" <cj.chengjian@huawei.com>,
+        "Libin (Huawei)" <huawei.libin@huawei.com>
+References: <20211110095856.469360-1-bobo.shaobowang@huawei.com>
+ <163663334743.414.10124522817525306307.tip-bot2@tip-bot2>
+From:   "Wangshaobo (bobo)" <bobo.shaobowang@huawei.com>
+Message-ID: <08ab122c-efbb-982a-ed9d-15e05f5bec0d@huawei.com>
+Date:   Thu, 11 Nov 2021 22:04:44 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.0
 MIME-Version: 1.0
-Message-ID: <163663334963.414.3620852464841533978.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <163663334743.414.10124522817525306307.tip-bot2@tip-bot2>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.174.177.123]
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ dggpemm500015.china.huawei.com (7.185.36.181)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/urgent branch of tip:
+Hi Peter,
 
-Commit-ID:     ce2612b6706b4d0a70732795253722e3bd4ed953
-Gitweb:        https://git.kernel.org/tip/ce2612b6706b4d0a70732795253722e3bd4ed953
-Author:        Boris Ostrovsky <boris.ostrovsky@oracle.com>
-AuthorDate:    Tue, 02 Nov 2021 19:36:36 -04:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Thu, 11 Nov 2021 13:09:32 +01:00
+      I have sent v2 with adding Fixes flag and reproduce method,
 
-x86/smp: Factor out parts of native_smp_prepare_cpus()
+      merging v2 version patch can be more appropriate.
 
-Commit 66558b730f25 ("sched: Add cluster scheduler level for x86")
-introduced cpu_l2c_shared_map mask which is expected to be initialized
-by smp_op.smp_prepare_cpus(). That commit only updated
-native_smp_prepare_cpus() version but not xen_pv_smp_prepare_cpus().
-As result Xen PV guests crash in set_cpu_sibling_map().
+      Thanks.
 
-While the new mask can be allocated in xen_pv_smp_prepare_cpus() one can
-see that both versions of smp_prepare_cpus ops share a number of common
-operations that can be factored out. So do that instead.
+- Wang ShaoBo
 
-Fixes: 66558b730f25 ("sched: Add cluster scheduler level for x86")
-Signed-off-by: Boris Ostrovsky <boris.ostrovsky@oracle.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Link: https://lkml.kernel.org/r/1635896196-18961-1-git-send-email-boris.ostrovsky@oracle.com
----
- arch/x86/include/asm/smp.h |  1 +
- arch/x86/kernel/smpboot.c  | 18 ++++++++++++------
- arch/x86/xen/smp_pv.c      | 12 ++----------
- 3 files changed, 15 insertions(+), 16 deletions(-)
-
-diff --git a/arch/x86/include/asm/smp.h b/arch/x86/include/asm/smp.h
-index 08b0e90..81a0211 100644
---- a/arch/x86/include/asm/smp.h
-+++ b/arch/x86/include/asm/smp.h
-@@ -126,6 +126,7 @@ static inline void arch_send_call_function_ipi_mask(const struct cpumask *mask)
- 
- void cpu_disable_common(void);
- void native_smp_prepare_boot_cpu(void);
-+void smp_prepare_cpus_common(void);
- void native_smp_prepare_cpus(unsigned int max_cpus);
- void calculate_max_logical_packages(void);
- void native_smp_cpus_done(unsigned int max_cpus);
-diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
-index 8241927..ac2909f 100644
---- a/arch/x86/kernel/smpboot.c
-+++ b/arch/x86/kernel/smpboot.c
-@@ -1350,12 +1350,7 @@ static void __init smp_get_logical_apicid(void)
- 		cpu0_logical_apicid = GET_APIC_LOGICAL_ID(apic_read(APIC_LDR));
- }
- 
--/*
-- * Prepare for SMP bootup.
-- * @max_cpus: configured maximum number of CPUs, It is a legacy parameter
-- *            for common interface support.
-- */
--void __init native_smp_prepare_cpus(unsigned int max_cpus)
-+void __init smp_prepare_cpus_common(void)
- {
- 	unsigned int i;
- 
-@@ -1386,6 +1381,17 @@ void __init native_smp_prepare_cpus(unsigned int max_cpus)
- 	set_sched_topology(x86_topology);
- 
- 	set_cpu_sibling_map(0);
-+}
-+
-+/*
-+ * Prepare for SMP bootup.
-+ * @max_cpus: configured maximum number of CPUs, It is a legacy parameter
-+ *            for common interface support.
-+ */
-+void __init native_smp_prepare_cpus(unsigned int max_cpus)
-+{
-+	smp_prepare_cpus_common();
-+
- 	init_freq_invariance(false, false);
- 	smp_sanity_check();
- 
-diff --git a/arch/x86/xen/smp_pv.c b/arch/x86/xen/smp_pv.c
-index 9e55bcb..6a8f3b5 100644
---- a/arch/x86/xen/smp_pv.c
-+++ b/arch/x86/xen/smp_pv.c
-@@ -225,7 +225,6 @@ static void __init xen_pv_smp_prepare_boot_cpu(void)
- static void __init xen_pv_smp_prepare_cpus(unsigned int max_cpus)
- {
- 	unsigned cpu;
--	unsigned int i;
- 
- 	if (skip_ioapic_setup) {
- 		char *m = (max_cpus == 0) ?
-@@ -238,16 +237,9 @@ static void __init xen_pv_smp_prepare_cpus(unsigned int max_cpus)
- 	}
- 	xen_init_lock_cpu(0);
- 
--	smp_store_boot_cpu_info();
--	cpu_data(0).x86_max_cores = 1;
-+	smp_prepare_cpus_common();
- 
--	for_each_possible_cpu(i) {
--		zalloc_cpumask_var(&per_cpu(cpu_sibling_map, i), GFP_KERNEL);
--		zalloc_cpumask_var(&per_cpu(cpu_core_map, i), GFP_KERNEL);
--		zalloc_cpumask_var(&per_cpu(cpu_die_map, i), GFP_KERNEL);
--		zalloc_cpumask_var(&per_cpu(cpu_llc_shared_map, i), GFP_KERNEL);
--	}
--	set_cpu_sibling_map(0);
-+	cpu_data(0).x86_max_cores = 1;
- 
- 	speculative_store_bypass_ht_init();
- 
+在 2021/11/11 20:22, tip-bot2 for Wang ShaoBo 写道:
+> The following commit has been merged into the sched/urgent branch of tip:
+>
+> Commit-ID:     4cc4cc28ec4154c4f1395648ab67ac9fd3e71fdc
+> Gitweb:        https://git.kernel.org/tip/4cc4cc28ec4154c4f1395648ab67ac9fd3e71fdc
+> Author:        Wang ShaoBo <bobo.shaobowang@huawei.com>
+> AuthorDate:    Wed, 10 Nov 2021 17:58:56 +08:00
+> Committer:     Peter Zijlstra <peterz@infradead.org>
+> CommitterDate: Thu, 11 Nov 2021 13:09:33 +01:00
+>
+> arch_topology: Fix missing clear cluster_cpumask in remove_cpu_topology()
+>
+> When testing cpu online and offline, warning happened like this:
+>
+> [  146.746743] WARNING: CPU: 92 PID: 974 at kernel/sched/topology.c:2215 build_sched_domains+0x81c/0x11b0
+> [  146.749988] CPU: 92 PID: 974 Comm: kworker/92:2 Not tainted 5.15.0 #9
+> [  146.750402] Hardware name: Huawei TaiShan 2280 V2/BC82AMDDA, BIOS 1.79 08/21/2021
+> [  146.751213] Workqueue: events cpuset_hotplug_workfn
+> [  146.751629] pstate: 00400009 (nzcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+> [  146.752048] pc : build_sched_domains+0x81c/0x11b0
+> [  146.752461] lr : build_sched_domains+0x414/0x11b0
+> [  146.752860] sp : ffff800040a83a80
+> [  146.753247] x29: ffff800040a83a80 x28: ffff20801f13a980 x27: ffff20800448ae00
+> [  146.753644] x26: ffff800012a858e8 x25: ffff800012ea48c0 x24: 0000000000000000
+> [  146.754039] x23: ffff800010ab7d60 x22: ffff800012f03758 x21: 000000000000005f
+> [  146.754427] x20: 000000000000005c x19: ffff004080012840 x18: ffffffffffffffff
+> [  146.754814] x17: 3661613030303230 x16: 30303078303a3239 x15: ffff800011f92b48
+> [  146.755197] x14: ffff20be3f95cef6 x13: 2e6e69616d6f642d x12: 6465686373204c4c
+> [  146.755578] x11: ffff20bf7fc83a00 x10: 0000000000000040 x9 : 0000000000000000
+> [  146.755957] x8 : 0000000000000002 x7 : ffffffffe0000000 x6 : 0000000000000002
+> [  146.756334] x5 : 0000000090000000 x4 : 00000000f0000000 x3 : 0000000000000001
+> [  146.756705] x2 : 0000000000000080 x1 : ffff800012f03860 x0 : 0000000000000001
+> [  146.757070] Call trace:
+> [  146.757421]  build_sched_domains+0x81c/0x11b0
+> [  146.757771]  partition_sched_domains_locked+0x57c/0x978
+> [  146.758118]  rebuild_sched_domains_locked+0x44c/0x7f0
+> [  146.758460]  rebuild_sched_domains+0x2c/0x48
+> [  146.758791]  cpuset_hotplug_workfn+0x3fc/0x888
+> [  146.759114]  process_one_work+0x1f4/0x480
+> [  146.759429]  worker_thread+0x48/0x460
+> [  146.759734]  kthread+0x158/0x168
+> [  146.760030]  ret_from_fork+0x10/0x20
+> [  146.760318] ---[ end trace 82c44aad6900e81a ]---
+>
+> For some architectures like risc-v and arm64 which use common code
+> clear_cpu_topology() in shutting down CPUx, When CONFIG_SCHED_CLUSTER
+> is set, cluster_sibling in cpu_topology of each sibling adjacent
+> to CPUx is missed clearing, this causes checking failed in
+> topology_span_sane() and rebuilding topology failure at end when CPU online.
+>
+> Different sibling's cluster_sibling in cpu_topology[] when CPU92 offline
+> (CPU 92, 93, 94, 95 are in one cluster):
+>
+> Before revision:
+> CPU                 [92]      [93]      [94]      [95]
+> cluster_sibling     [92]     [92-95]   [92-95]   [92-95]
+>
+> After revision:
+> CPU                 [92]      [93]      [94]      [95]
+> cluster_sibling     [92]     [93-95]   [93-95]   [93-95]
+>
+> Signed-off-by: Wang ShaoBo <bobo.shaobowang@huawei.com>
+> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> Reviewed-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
+> Acked-by: Barry Song <song.bao.hua@hisilicon.com>
+> Tested-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
+> Link: https://lore.kernel.org/r/20211110095856.469360-1-bobo.shaobowang@huawei.com
+> ---
+>   drivers/base/arch_topology.c | 2 ++
+>   1 file changed, 2 insertions(+)
+>
+> diff --git a/drivers/base/arch_topology.c b/drivers/base/arch_topology.c
+> index 981e72a..ff16a36 100644
+> --- a/drivers/base/arch_topology.c
+> +++ b/drivers/base/arch_topology.c
+> @@ -677,6 +677,8 @@ void remove_cpu_topology(unsigned int cpu)
+>   		cpumask_clear_cpu(cpu, topology_core_cpumask(sibling));
+>   	for_each_cpu(sibling, topology_sibling_cpumask(cpu))
+>   		cpumask_clear_cpu(cpu, topology_sibling_cpumask(sibling));
+> +	for_each_cpu(sibling, topology_cluster_cpumask(cpu))
+> +		cpumask_clear_cpu(cpu, topology_cluster_cpumask(sibling));
+>   	for_each_cpu(sibling, topology_llc_cpumask(cpu))
+>   		cpumask_clear_cpu(cpu, topology_llc_cpumask(sibling));
+>   
+> .
