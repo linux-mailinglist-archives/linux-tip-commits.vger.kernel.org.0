@@ -2,55 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A07A44EE4A
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 12 Nov 2021 22:03:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E143844EE4B
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 12 Nov 2021 22:03:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235699AbhKLVGB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 12 Nov 2021 16:06:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46130 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235694AbhKLVGB (ORCPT
+        id S235723AbhKLVGC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 12 Nov 2021 16:06:02 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:58928 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232902AbhKLVGB (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Fri, 12 Nov 2021 16:06:01 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20996C061766;
-        Fri, 12 Nov 2021 13:03:10 -0800 (PST)
-Date:   Fri, 12 Nov 2021 21:03:07 -0000
+Date:   Fri, 12 Nov 2021 21:03:08 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1636750988;
+        s=2020; t=1636750989;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=y+0eCd/uTf3OkYcn+N0cg5m3bti9dC+FFsLPssvtWEs=;
-        b=gbUxfdcgQdG+fqoJurkdVJftSWAhEEsQFvxgA+PdNq7x71EjQedOUaVPpQz2sPmVOFVPaA
-        pPoCZ32iWu/lAph5RPlvl5ytMBGTb0g1VsPPkKfa6xz/s5KMzPlCWV9vRyf+vzcFElfvZe
-        GAyopuPqTSg/t3+mtAgeZvQAN9Ma4FLflmeuXQob9BlvxloSQBd1f4Eu4XVb1Hw791G8A9
-        o2iOHwo42uVhc8XGkl1p2TxGBqd0HiP6kLMjQxfIJiIhB3LLpYO356AjuTtPg54ixhyHF/
-        MWILE8LHEiM6X7gAGei9ZZj0EvPFuLY6hQfxfFcM5Lxx2fPSRV01dr4jlx8SUQ==
+        bh=O0NXfuL+eTLYI6EaXNCoAYISE5pssQLczx2u9g7Yc8Y=;
+        b=WXUinH+PGvWA3rxGvx2qAj/+uSTb61/BM9qETnID/toWV4PnIT67g/EsaXtrDSsiadggf3
+        mgi4lVL1iU9214HBZdqs93oWov+5LLQrR5CBHcsxEDfHrISnMb1bjkoMakLY+34aFpkAfN
+        2bhm+ZstG5kKvEnRXm1F7zPira9JjmnAcr1j97uwARcF830g1bhHGc0aCDDTIj7aLDYTnW
+        /k3B1mgdUgSDmVy0VMJejgS0IOjyeU+BSAr20cvvy+yH/4SKN3ttjbQkVuor4nranm37pu
+        MLTyDDvsQBypOIlSjWBxJBYTdOxqs9QnDnG/FXlW54QPmz4eq7HGDeqA13xpNQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1636750988;
+        s=2020e; t=1636750989;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=y+0eCd/uTf3OkYcn+N0cg5m3bti9dC+FFsLPssvtWEs=;
-        b=EQJf8Gl9Dn926bS8ssxY6wbvOltIRnsmEZt558NoDkQ2xx38mMeALRVO24CRXy8ebOPKAG
-        OWC7bu/unOk3LmBA==
-From:   "tip-bot2 for Tony Luck" <tip-bot2@linutronix.de>
+        bh=O0NXfuL+eTLYI6EaXNCoAYISE5pssQLczx2u9g7Yc8Y=;
+        b=WYx0N7NsdcWvJYGOoQtEYnrUIO83FfwEzkCtnwN73kMnikCOK+BZcN/dkeTsRlLX00nJDW
+        jcZ8ZPjNCJv9tKDg==
+From:   "tip-bot2 for Dave Jones" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/cpu: Add Raptor Lake to Intel family
-Cc:     Tony Luck <tony.luck@intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20211112182835.924977-1-tony.luck@intel.com>
-References: <20211112182835.924977-1-tony.luck@intel.com>
+Subject: [tip: x86/urgent] x86/mce: Add errata workaround for Skylake SKX37
+Cc:     Dave Jones <davej@codemonkey.org.uk>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Tony Luck <tony.luck@intel.com>, <stable@vger.kernel.org>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20211029205759.GA7385@codemonkey.org.uk>
+References: <20211029205759.GA7385@codemonkey.org.uk>
 MIME-Version: 1.0
-Message-ID: <163675098743.414.13524984324100742080.tip-bot2@tip-bot2>
+Message-ID: <163675098841.414.15295584691020015692.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,37 +59,47 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     fbdb5e8f2926ae9636c9fa6f42c7426132ddeeb2
-Gitweb:        https://git.kernel.org/tip/fbdb5e8f2926ae9636c9fa6f42c7426132ddeeb2
-Author:        Tony Luck <tony.luck@intel.com>
-AuthorDate:    Fri, 12 Nov 2021 10:28:35 -08:00
+Commit-ID:     e629fc1407a63dbb748f828f9814463ffc2a0af0
+Gitweb:        https://git.kernel.org/tip/e629fc1407a63dbb748f828f9814463ffc2a0af0
+Author:        Dave Jones <davej@codemonkey.org.uk>
+AuthorDate:    Fri, 29 Oct 2021 16:57:59 -04:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Fri, 12 Nov 2021 11:46:06 -08:00
+CommitterDate: Fri, 12 Nov 2021 11:43:35 -08:00
 
-x86/cpu: Add Raptor Lake to Intel family
+x86/mce: Add errata workaround for Skylake SKX37
 
-Add model ID for Raptor Lake.
+Errata SKX37 is word-for-word identical to the other errata listed in
+this workaround.   I happened to notice this after investigating a CMCI
+storm on a Skylake host.  While I can't confirm this was the root cause,
+spurious corrected errors does sound like a likely suspect.
 
-[ dhansen: These get added as soon as possible so that folks doing
-  development can leverage them. ]
-
-Signed-off-by: Tony Luck <tony.luck@intel.com>
+Fixes: 2976908e4198 ("x86/mce: Do not log spurious corrected mce errors")
+Signed-off-by: Dave Jones <davej@codemonkey.org.uk>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lkml.kernel.org/r/20211112182835.924977-1-tony.luck@intel.com
+Reviewed-by: Tony Luck <tony.luck@intel.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lkml.kernel.org/r/20211029205759.GA7385@codemonkey.org.uk
 ---
- arch/x86/include/asm/intel-family.h | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/kernel/cpu/mce/intel.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/include/asm/intel-family.h b/arch/x86/include/asm/intel-family.h
-index 2715843..5a0bcf8 100644
---- a/arch/x86/include/asm/intel-family.h
-+++ b/arch/x86/include/asm/intel-family.h
-@@ -108,6 +108,8 @@
- #define INTEL_FAM6_ALDERLAKE		0x97	/* Golden Cove / Gracemont */
- #define INTEL_FAM6_ALDERLAKE_L		0x9A	/* Golden Cove / Gracemont */
+diff --git a/arch/x86/kernel/cpu/mce/intel.c b/arch/x86/kernel/cpu/mce/intel.c
+index acfd5d9..bb9a46a 100644
+--- a/arch/x86/kernel/cpu/mce/intel.c
++++ b/arch/x86/kernel/cpu/mce/intel.c
+@@ -547,12 +547,13 @@ bool intel_filter_mce(struct mce *m)
+ {
+ 	struct cpuinfo_x86 *c = &boot_cpu_data;
  
-+#define INTEL_FAM6_RAPTOR_LAKE		0xB7
-+
- /* "Small Core" Processors (Atom) */
- 
- #define INTEL_FAM6_ATOM_BONNELL		0x1C /* Diamondville, Pineview */
+-	/* MCE errata HSD131, HSM142, HSW131, BDM48, and HSM142 */
++	/* MCE errata HSD131, HSM142, HSW131, BDM48, HSM142 and SKX37 */
+ 	if ((c->x86 == 6) &&
+ 	    ((c->x86_model == INTEL_FAM6_HASWELL) ||
+ 	     (c->x86_model == INTEL_FAM6_HASWELL_L) ||
+ 	     (c->x86_model == INTEL_FAM6_BROADWELL) ||
+-	     (c->x86_model == INTEL_FAM6_HASWELL_G)) &&
++	     (c->x86_model == INTEL_FAM6_HASWELL_G) ||
++	     (c->x86_model == INTEL_FAM6_SKYLAKE_X)) &&
+ 	    (m->bank == 0) &&
+ 	    ((m->status & 0xa0000000ffffffff) == 0x80000000000f0005))
+ 		return true;
