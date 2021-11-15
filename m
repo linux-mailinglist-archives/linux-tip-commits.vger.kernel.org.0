@@ -2,57 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C782451618
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 15 Nov 2021 22:09:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 72B84451612
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 15 Nov 2021 22:09:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347943AbhKOVMA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 15 Nov 2021 16:12:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52292 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347419AbhKOUe7 (ORCPT
+        id S240714AbhKOVLk (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 15 Nov 2021 16:11:40 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:47080 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1345982AbhKOUZh (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 15 Nov 2021 15:34:59 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B188C043199;
-        Mon, 15 Nov 2021 12:22:39 -0800 (PST)
-Date:   Mon, 15 Nov 2021 20:22:31 -0000
+        Mon, 15 Nov 2021 15:25:37 -0500
+Date:   Mon, 15 Nov 2021 20:22:32 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1637007752;
+        s=2020; t=1637007753;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=U0poEbGRIAIQwnalG99rOoeDiTmGZoMifsJsnzTCb9M=;
-        b=06iMdouW2NHax6Hd5CVoVh2VT+/al1gQPu1naHFWny4sn9QlBGLZtV5C706Wo3xedvc60A
-        HQQZ9qnM4a0bpZ69KhXoCFr9KvJkdkMHRJPBI9L0ONHn4elAc5XxSUiwSo/aEtybY5EKZa
-        6dqsOjqJttb/CmqbSI+fe66HLbvtESX78JE7vj2R2GKKGes9pXTvSA6UTXCQMo2J+nEv8G
-        5MkbqiNRDckAdBHGCfGUeaRGb4etNFr7DD0zCJLxtUctrbUzHzSZezJB24B3Ck4+9RvYPA
-        QrcotRhVKsrKfAsKlJKqalOUpzfI5xqWeyrxhu1dSKmpNe0Ja7/o/9zWKXkOvg==
+        bh=CLK+9YU8UUwPmzWLdn/X0NQ1zxJU2afVaEfKnJrA3NM=;
+        b=07LXuHKXvOfTm5WBSP8szPw7p2TkeziuQP5BcU3W698leCoaqN2RpkzCif8bpyRdiE5Sgw
+        x/GaMnrjyK9eEh4mqKv7ka686XsE0a392kSiq/W/Lcu8rLL0jMslQmr4kLodSMz8TjW9z8
+        pKmG55Sr8TYBs6Kgc9JHFjH/2POnPXiNG6VFIDMrYk/7JL8IzG3Nf96UPx7KCdvhEODRoW
+        nP39H0iHbi8aMAnGuwe24CdLI96/9b0FqtHJ8oVgtK/AP5LNm4WdjsU3SJxJeYYBfhS30O
+        yhRcuC9AZLswlrUkSqHRiGZYPP4WT0s3SdZDILBIzf59szQRiSoqKrHTA2lhPA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1637007752;
+        s=2020e; t=1637007753;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=U0poEbGRIAIQwnalG99rOoeDiTmGZoMifsJsnzTCb9M=;
-        b=pI61CcWJpMd+VHhqSPJRbR9DvxqJctBG68fWCC6xRp08UHB4NzZNmpb84YfPM4tjYArXHn
-        /qhhX13kLdVjFODg==
+        bh=CLK+9YU8UUwPmzWLdn/X0NQ1zxJU2afVaEfKnJrA3NM=;
+        b=0bEXPYbnUNbkOUYTAqjIx6Hcz00V61OuA8XGae1uI0VbcCWQrK1yZ5L9kR7Bhsi3+e/5tp
+        Q50D45SlDlrvBuCw==
 From:   "tip-bot2 for Tony Luck" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/sgx] x86/sgx: Add SGX infrastructure to recover from poison
+Subject: [tip: x86/sgx] x86/sgx: Add infrastructure to identify SGX EPC pages
 Cc:     Tony Luck <tony.luck@intel.com>,
         Dave Hansen <dave.hansen@linux.intel.com>,
         Jarkko Sakkinen <jarkko@kernel.org>,
         Reinette Chatre <reinette.chatre@intel.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20211026220050.697075-5-tony.luck@intel.com>
-References: <20211026220050.697075-5-tony.luck@intel.com>
+In-Reply-To: <20211026220050.697075-3-tony.luck@intel.com>
+References: <20211026220050.697075-3-tony.luck@intel.com>
 MIME-Version: 1.0
-Message-ID: <163700775140.414.1869416199298479421.tip-bot2@tip-bot2>
+Message-ID: <163700775275.414.16538578736369961562.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -63,117 +60,92 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/sgx branch of tip:
 
-Commit-ID:     a495cbdffa30558b34f3c95555cecc4fd9688039
-Gitweb:        https://git.kernel.org/tip/a495cbdffa30558b34f3c95555cecc4fd9688039
+Commit-ID:     40e0e7843e23d164625b9031514f5672f8758bf4
+Gitweb:        https://git.kernel.org/tip/40e0e7843e23d164625b9031514f5672f8758bf4
 Author:        Tony Luck <tony.luck@intel.com>
-AuthorDate:    Tue, 26 Oct 2021 15:00:47 -07:00
+AuthorDate:    Tue, 26 Oct 2021 15:00:45 -07:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
 CommitterDate: Mon, 15 Nov 2021 11:13:16 -08:00
 
-x86/sgx: Add SGX infrastructure to recover from poison
+x86/sgx: Add infrastructure to identify SGX EPC pages
 
-Provide a recovery function sgx_memory_failure(). If the poison was
-consumed synchronously then send a SIGBUS. Note that the virtual
-address of the access is not included with the SIGBUS as is the case
-for poison outside of SGX enclaves. This doesn't matter as addresses
-of code/data inside an enclave is of little to no use to code executing
-outside the (now dead) enclave.
+X86 machine check architecture reports a physical address when there
+is a memory error. Handling that error requires a method to determine
+whether the physical address reported is in any of the areas reserved
+for EPC pages by BIOS.
 
-Poison found in a free page results in the page being moved from the
-free list to the per-node poison page list.
+SGX EPC pages do not have Linux "struct page" associated with them.
+
+Keep track of the mapping from ranges of EPC pages to the sections
+that contain them using an xarray. N.B. adds CONFIG_XARRAY_MULTI to
+the SGX dependecies. So "select" that in arch/x86/Kconfig for X86/SGX.
+
+Create a function arch_is_platform_page() that simply reports whether an
+address is an EPC page for use elsewhere in the kernel. The ACPI error
+injection code needs this function and is typically built as a module,
+so export it.
+
+Note that arch_is_platform_page() will be slower than other similar
+"what type is this page" functions that can simply check bits in the
+"struct page".  If there is some future performance critical user of
+this function it may need to be implemented in a more efficient way.
+
+Note also that the current implementation of xarray allocates a few
+hundred kilobytes for this usage on a system with 4GB of SGX EPC memory
+configured. This isn't ideal, but worth it for the code simplicity.
 
 Signed-off-by: Tony Luck <tony.luck@intel.com>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
 Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
 Tested-by: Reinette Chatre <reinette.chatre@intel.com>
-Link: https://lkml.kernel.org/r/20211026220050.697075-5-tony.luck@intel.com
+Link: https://lkml.kernel.org/r/20211026220050.697075-3-tony.luck@intel.com
 ---
- arch/x86/kernel/cpu/sgx/main.c | 76 +++++++++++++++++++++++++++++++++-
- 1 file changed, 76 insertions(+)
+ arch/x86/Kconfig               |  1 +
+ arch/x86/kernel/cpu/sgx/main.c |  9 +++++++++
+ 2 files changed, 10 insertions(+)
 
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 95dd1ee..b9281fa 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -1917,6 +1917,7 @@ config X86_SGX
+ 	select SRCU
+ 	select MMU_NOTIFIER
+ 	select NUMA_KEEP_MEMINFO if NUMA
++	select XARRAY_MULTI
+ 	help
+ 	  Intel(R) Software Guard eXtensions (SGX) is a set of CPU instructions
+ 	  that can be used by applications to set aside private regions of code
 diff --git a/arch/x86/kernel/cpu/sgx/main.c b/arch/x86/kernel/cpu/sgx/main.c
-index e5fcb83..231c494 100644
+index 825aa91..5c02cff 100644
 --- a/arch/x86/kernel/cpu/sgx/main.c
 +++ b/arch/x86/kernel/cpu/sgx/main.c
-@@ -693,6 +693,82 @@ bool arch_is_platform_page(u64 paddr)
- }
- EXPORT_SYMBOL_GPL(arch_is_platform_page);
+@@ -20,6 +20,7 @@ struct sgx_epc_section sgx_epc_sections[SGX_MAX_EPC_SECTIONS];
+ static int sgx_nr_epc_sections;
+ static struct task_struct *ksgxd_tsk;
+ static DECLARE_WAIT_QUEUE_HEAD(ksgxd_waitq);
++static DEFINE_XARRAY(sgx_epc_address_space);
  
-+static struct sgx_epc_page *sgx_paddr_to_page(u64 paddr)
+ /*
+  * These variables are part of the state of the reclaimer, and must be accessed
+@@ -650,6 +651,8 @@ static bool __init sgx_setup_epc_section(u64 phys_addr, u64 size,
+ 	}
+ 
+ 	section->phys_addr = phys_addr;
++	xa_store_range(&sgx_epc_address_space, section->phys_addr,
++		       phys_addr + size - 1, section, GFP_KERNEL);
+ 
+ 	for (i = 0; i < nr_pages; i++) {
+ 		section->pages[i].section = index;
+@@ -661,6 +664,12 @@ static bool __init sgx_setup_epc_section(u64 phys_addr, u64 size,
+ 	return true;
+ }
+ 
++bool arch_is_platform_page(u64 paddr)
 +{
-+	struct sgx_epc_section *section;
-+
-+	section = xa_load(&sgx_epc_address_space, paddr);
-+	if (!section)
-+		return NULL;
-+
-+	return &section->pages[PFN_DOWN(paddr - section->phys_addr)];
++	return !!xa_load(&sgx_epc_address_space, paddr);
 +}
-+
-+/*
-+ * Called in process context to handle a hardware reported
-+ * error in an SGX EPC page.
-+ * If the MF_ACTION_REQUIRED bit is set in flags, then the
-+ * context is the task that consumed the poison data. Otherwise
-+ * this is called from a kernel thread unrelated to the page.
-+ */
-+int arch_memory_failure(unsigned long pfn, int flags)
-+{
-+	struct sgx_epc_page *page = sgx_paddr_to_page(pfn << PAGE_SHIFT);
-+	struct sgx_epc_section *section;
-+	struct sgx_numa_node *node;
-+
-+	/*
-+	 * mm/memory-failure.c calls this routine for all errors
-+	 * where there isn't a "struct page" for the address. But that
-+	 * includes other address ranges besides SGX.
-+	 */
-+	if (!page)
-+		return -ENXIO;
-+
-+	/*
-+	 * If poison was consumed synchronously. Send a SIGBUS to
-+	 * the task. Hardware has already exited the SGX enclave and
-+	 * will not allow re-entry to an enclave that has a memory
-+	 * error. The signal may help the task understand why the
-+	 * enclave is broken.
-+	 */
-+	if (flags & MF_ACTION_REQUIRED)
-+		force_sig(SIGBUS);
-+
-+	section = &sgx_epc_sections[page->section];
-+	node = section->node;
-+
-+	spin_lock(&node->lock);
-+
-+	/* Already poisoned? Nothing more to do */
-+	if (page->poison)
-+		goto out;
-+
-+	page->poison = 1;
-+
-+	/*
-+	 * If the page is on a free list, move it to the per-node
-+	 * poison page list.
-+	 */
-+	if (page->flags & SGX_EPC_PAGE_IS_FREE) {
-+		list_move(&page->list, &node->sgx_poison_page_list);
-+		goto out;
-+	}
-+
-+	/*
-+	 * TBD: Add additional plumbing to enable pre-emptive
-+	 * action for asynchronous poison notification. Until
-+	 * then just hope that the poison:
-+	 * a) is not accessed - sgx_free_epc_page() will deal with it
-+	 *    when the user gives it back
-+	 * b) results in a recoverable machine check rather than
-+	 *    a fatal one
-+	 */
-+out:
-+	spin_unlock(&node->lock);
-+	return 0;
-+}
++EXPORT_SYMBOL_GPL(arch_is_platform_page);
 +
  /**
   * A section metric is concatenated in a way that @low bits 12-31 define the
