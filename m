@@ -2,53 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 79BF64535E3
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 16 Nov 2021 16:34:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E006E453B94
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 16 Nov 2021 22:25:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238334AbhKPPg3 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 16 Nov 2021 10:36:29 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:53394 "EHLO
+        id S229862AbhKPV2N (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 16 Nov 2021 16:28:13 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:55162 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238316AbhKPPgR (ORCPT
+        with ESMTP id S229605AbhKPV2N (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 16 Nov 2021 10:36:17 -0500
-Date:   Tue, 16 Nov 2021 15:33:17 -0000
+        Tue, 16 Nov 2021 16:28:13 -0500
+Date:   Tue, 16 Nov 2021 21:25:13 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1637076798;
+        s=2020; t=1637097914;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=vdRHgA78C5xanu7zc7yu09mGJ5PHiPdLeadUGewLgZ0=;
-        b=ZNoF29uNFCq07HtqeYiQnoqSP8yPktILp7euyB2mx5xdUevubgk5yPgsxuEELjdvauAnIh
-        130hSliN1hC7WZu7ti4R0Mi61Hp5DzEtfWzN158dPDwM20WARNY7RhOt27Kflthbji5+7f
-        UNZuulGU8ZpTy0QeO3zyHr4wzgW2gV0hwcL5dt8HbOUW57vrDlyKUIlIXdivRi5sr9EiAC
-        4XdpfLFtrflNoE/w2JeQUjt5JGg8iLK4fUnnqego9sCujFz60DYME9OnZ7i0vnyTCeULsh
-        Lf4URUPwXLzBRzGZST9PwSzNUoZHCzgEfmd9kiFyKEBS/bB6v0nP/xUnsoCwFg==
+        bh=5nxUrK/hTSDv6R/0wGYisup3X3LUWG1GgdUO+2f8fwE=;
+        b=Ubas76CGF44ySGXKpCXPuSMV+NroD8jvIqUWJNjf/n/LaEQ4Za7lzH7lAx2SuwGD7BKVTJ
+        trOzZn7Bl91tj8WZp+VEocZU0gaJT4vXMnew3CxrxXN2yJ8gccigO6lCGYeXaAnoqLiNDA
+        jYK2RYLFYrujSAYh8RFRkWC9qX8/EaVZBuqY82t66w9V4p6MIDcEn3dbxJL0upnZ/xZ8Y+
+        ikUKZ14JWZaktL8EZ8ywiMTejeljwkAwHKGBhKkM8fyACLdIN2tegVsOyvGKIt/hh0DJ0m
+        kgbC7hDT83JuPcKgSPeDfYYW6FX3C962Xn/zX4I5Zc/z1jVFwPY5GiE7NyGAHQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1637076798;
+        s=2020e; t=1637097914;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=vdRHgA78C5xanu7zc7yu09mGJ5PHiPdLeadUGewLgZ0=;
-        b=/ZrUaXrEnibGEQteaOtFcerG+0n7RjdyPv+Jo1p2gKa+tVgGCodWPbvfMdnMvhxoUF+0zw
-        wVqqSLq/DvDBmrDg==
-From:   "tip-bot2 for Brijesh Singh" <tip-bot2@linutronix.de>
+        bh=5nxUrK/hTSDv6R/0wGYisup3X3LUWG1GgdUO+2f8fwE=;
+        b=34KDUw1o+oFgFlPussrsI4iKylROsqomJUI8gfBhb3KfKh7G+TegQMayzGWdqNdlLB4CK2
+        uock7EvweU7XKpDw==
+From:   "tip-bot2 for Reinette Chatre" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/sev] x86/sev: Shorten GHCB terminate macro names
-Cc:     Borislav Petkov <bp@suse.de>,
-        Brijesh Singh <brijesh.singh@amd.com>,
-        Venu Busireddy <venu.busireddy@oracle.com>, x86@kernel.org,
+Subject: [tip: x86/urgent] x86/sgx: Fix free page accounting
+Cc:     stable@vger.kernel.org, Dave Hansen <dave.hansen@linux.intel.com>,
+        Reinette Chatre <reinette.chatre@intel.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20211110220731.2396491-5-brijesh.singh@amd.com>
-References: <20211110220731.2396491-5-brijesh.singh@amd.com>
+In-Reply-To: =?utf-8?q?=3Ca95a40743bbd3f795b465f30922dde7f1ea9e0eb=2E16370?=
+ =?utf-8?q?04094=2Egit=2Ereinette=2Echatre=40intel=2Ecom=3E?=
+References: =?utf-8?q?=3Ca95a40743bbd3f795b465f30922dde7f1ea9e0eb=2E163700?=
+ =?utf-8?q?4094=2Egit=2Ereinette=2Echatre=40intel=2Ecom=3E?=
 MIME-Version: 1.0
-Message-ID: <163707679720.414.12558898794883795973.tip-bot2@tip-bot2>
+Message-ID: <163709791320.414.3161205179225001373.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -57,107 +60,173 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/sev branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     18c3933c1983157df9dc06d4f3bfc764f161ed7a
-Gitweb:        https://git.kernel.org/tip/18c3933c1983157df9dc06d4f3bfc764f161ed7a
-Author:        Brijesh Singh <brijesh.singh@amd.com>
-AuthorDate:    Wed, 10 Nov 2021 16:06:50 -06:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Mon, 15 Nov 2021 20:31:16 +01:00
+Commit-ID:     ac5d272a0ad0419f52e08c91953356e32b075af7
+Gitweb:        https://git.kernel.org/tip/ac5d272a0ad0419f52e08c91953356e32b075af7
+Author:        Reinette Chatre <reinette.chatre@intel.com>
+AuthorDate:    Mon, 15 Nov 2021 11:29:04 -08:00
+Committer:     Dave Hansen <dave.hansen@linux.intel.com>
+CommitterDate: Tue, 16 Nov 2021 11:17:43 -08:00
 
-x86/sev: Shorten GHCB terminate macro names
+x86/sgx: Fix free page accounting
 
-Shorten macro names for improved readability.
+The SGX driver maintains a single global free page counter,
+sgx_nr_free_pages, that reflects the number of free pages available
+across all NUMA nodes. Correspondingly, a list of free pages is
+associated with each NUMA node and sgx_nr_free_pages is updated
+every time a page is added or removed from any of the free page
+lists. The main usage of sgx_nr_free_pages is by the reclaimer
+that runs when it (sgx_nr_free_pages) goes below a watermark
+to ensure that there are always some free pages available to, for
+example, support efficient page faults.
 
-Suggested-by: Borislav Petkov <bp@suse.de>
-Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Venu Busireddy <venu.busireddy@oracle.com>
-Link: https://lkml.kernel.org/r/20211110220731.2396491-5-brijesh.singh@amd.com
+With sgx_nr_free_pages accessed and modified from a few places
+it is essential to ensure that these accesses are done safely but
+this is not the case. sgx_nr_free_pages is read without any
+protection and updated with inconsistent protection by any one
+of the spin locks associated with the individual NUMA nodes.
+For example:
+
+      CPU_A                                 CPU_B
+      -----                                 -----
+ spin_lock(&nodeA->lock);              spin_lock(&nodeB->lock);
+ ...                                   ...
+ sgx_nr_free_pages--;  /* NOT SAFE */  sgx_nr_free_pages--;
+
+ spin_unlock(&nodeA->lock);            spin_unlock(&nodeB->lock);
+
+Since sgx_nr_free_pages may be protected by different spin locks
+while being modified from different CPUs, the following scenario
+is possible:
+
+      CPU_A                                CPU_B
+      -----                                -----
+{sgx_nr_free_pages = 100}
+ spin_lock(&nodeA->lock);              spin_lock(&nodeB->lock);
+ sgx_nr_free_pages--;                  sgx_nr_free_pages--;
+ /* LOAD sgx_nr_free_pages = 100 */    /* LOAD sgx_nr_free_pages = 100 */
+ /* sgx_nr_free_pages--          */    /* sgx_nr_free_pages--          */
+ /* STORE sgx_nr_free_pages = 99 */    /* STORE sgx_nr_free_pages = 99 */
+ spin_unlock(&nodeA->lock);            spin_unlock(&nodeB->lock);
+
+In the above scenario, sgx_nr_free_pages is decremented from two CPUs
+but instead of sgx_nr_free_pages ending with a value that is two less
+than it started with, it was only decremented by one while the number
+of free pages were actually reduced by two. The consequence of
+sgx_nr_free_pages not being protected is that its value may not
+accurately reflect the actual number of free pages on the system,
+impacting the availability of free pages in support of many flows.
+
+The problematic scenario is when the reclaimer does not run because it
+believes there to be sufficient free pages while any attempt to allocate
+a page fails because there are no free pages available. In the SGX driver
+the reclaimer's watermark is only 32 pages so after encountering the
+above example scenario 32 times a user space hang is possible when there
+are no more free pages because of repeated page faults caused by no
+free pages made available.
+
+The following flow was encountered:
+asm_exc_page_fault
+ ...
+   sgx_vma_fault()
+     sgx_encl_load_page()
+       sgx_encl_eldu() // Encrypted page needs to be loaded from backing
+                       // storage into newly allocated SGX memory page
+         sgx_alloc_epc_page() // Allocate a page of SGX memory
+           __sgx_alloc_epc_page() // Fails, no free SGX memory
+           ...
+           if (sgx_should_reclaim(SGX_NR_LOW_PAGES)) // Wake reclaimer
+             wake_up(&ksgxd_waitq);
+           return -EBUSY; // Return -EBUSY giving reclaimer time to run
+       return -EBUSY;
+     return -EBUSY;
+   return VM_FAULT_NOPAGE;
+
+The reclaimer is triggered in above flow with the following code:
+
+static bool sgx_should_reclaim(unsigned long watermark)
+{
+        return sgx_nr_free_pages < watermark &&
+               !list_empty(&sgx_active_page_list);
+}
+
+In the problematic scenario there were no free pages available yet the
+value of sgx_nr_free_pages was above the watermark. The allocation of
+SGX memory thus always failed because of a lack of free pages while no
+free pages were made available because the reclaimer is never started
+because of sgx_nr_free_pages' incorrect value. The consequence was that
+user space kept encountering VM_FAULT_NOPAGE that caused the same
+address to be accessed repeatedly with the same result.
+
+Change the global free page counter to an atomic type that
+ensures simultaneous updates are done safely. While doing so, move
+the updating of the variable outside of the spin lock critical
+section to which it does not belong.
+
+Cc: stable@vger.kernel.org
+Fixes: 901ddbb9ecf5 ("x86/sgx: Add a basic NUMA allocation scheme to sgx_alloc_epc_page()")
+Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
+Signed-off-by: Reinette Chatre <reinette.chatre@intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Tony Luck <tony.luck@intel.com>
+Acked-by: Jarkko Sakkinen <jarkko@kernel.org>
+Link: https://lkml.kernel.org/r/a95a40743bbd3f795b465f30922dde7f1ea9e0eb.1637004094.git.reinette.chatre@intel.com
 ---
- arch/x86/boot/compressed/sev.c    | 6 +++---
- arch/x86/include/asm/sev-common.h | 4 ++--
- arch/x86/kernel/sev-shared.c      | 2 +-
- arch/x86/kernel/sev.c             | 4 ++--
- 4 files changed, 8 insertions(+), 8 deletions(-)
+ arch/x86/kernel/cpu/sgx/main.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
-index 670e998..28bcf04 100644
---- a/arch/x86/boot/compressed/sev.c
-+++ b/arch/x86/boot/compressed/sev.c
-@@ -122,7 +122,7 @@ static enum es_result vc_read_mem(struct es_em_ctxt *ctxt,
- static bool early_setup_sev_es(void)
+diff --git a/arch/x86/kernel/cpu/sgx/main.c b/arch/x86/kernel/cpu/sgx/main.c
+index 63d3de0..8471a8b 100644
+--- a/arch/x86/kernel/cpu/sgx/main.c
++++ b/arch/x86/kernel/cpu/sgx/main.c
+@@ -28,8 +28,7 @@ static DECLARE_WAIT_QUEUE_HEAD(ksgxd_waitq);
+ static LIST_HEAD(sgx_active_page_list);
+ static DEFINE_SPINLOCK(sgx_reclaimer_lock);
+ 
+-/* The free page list lock protected variables prepend the lock. */
+-static unsigned long sgx_nr_free_pages;
++static atomic_long_t sgx_nr_free_pages = ATOMIC_LONG_INIT(0);
+ 
+ /* Nodes with one or more EPC sections. */
+ static nodemask_t sgx_numa_mask;
+@@ -403,14 +402,15 @@ skip:
+ 
+ 		spin_lock(&node->lock);
+ 		list_add_tail(&epc_page->list, &node->free_page_list);
+-		sgx_nr_free_pages++;
+ 		spin_unlock(&node->lock);
++		atomic_long_inc(&sgx_nr_free_pages);
+ 	}
+ }
+ 
+ static bool sgx_should_reclaim(unsigned long watermark)
  {
- 	if (!sev_es_negotiate_protocol())
--		sev_es_terminate(GHCB_SEV_ES_REASON_PROTOCOL_UNSUPPORTED);
-+		sev_es_terminate(GHCB_SEV_ES_PROT_UNSUPPORTED);
- 
- 	if (set_page_decrypted((unsigned long)&boot_ghcb_page))
- 		return false;
-@@ -175,7 +175,7 @@ void do_boot_stage2_vc(struct pt_regs *regs, unsigned long exit_code)
- 	enum es_result result;
- 
- 	if (!boot_ghcb && !early_setup_sev_es())
--		sev_es_terminate(GHCB_SEV_ES_REASON_GENERAL_REQUEST);
-+		sev_es_terminate(GHCB_SEV_ES_GEN_REQ);
- 
- 	vc_ghcb_invalidate(boot_ghcb);
- 	result = vc_init_em_ctxt(&ctxt, regs, exit_code);
-@@ -202,5 +202,5 @@ finish:
- 	if (result == ES_OK)
- 		vc_finish_insn(&ctxt);
- 	else if (result != ES_RETRY)
--		sev_es_terminate(GHCB_SEV_ES_REASON_GENERAL_REQUEST);
-+		sev_es_terminate(GHCB_SEV_ES_GEN_REQ);
- }
-diff --git a/arch/x86/include/asm/sev-common.h b/arch/x86/include/asm/sev-common.h
-index 2cef6c5..855b0ec 100644
---- a/arch/x86/include/asm/sev-common.h
-+++ b/arch/x86/include/asm/sev-common.h
-@@ -68,8 +68,8 @@
- 	(((((u64)reason_set) &  GHCB_MSR_TERM_REASON_SET_MASK) << GHCB_MSR_TERM_REASON_SET_POS) | \
- 	((((u64)reason_val) & GHCB_MSR_TERM_REASON_MASK) << GHCB_MSR_TERM_REASON_POS))
- 
--#define GHCB_SEV_ES_REASON_GENERAL_REQUEST	0
--#define GHCB_SEV_ES_REASON_PROTOCOL_UNSUPPORTED	1
-+#define GHCB_SEV_ES_GEN_REQ		0
-+#define GHCB_SEV_ES_PROT_UNSUPPORTED	1
- 
- #define GHCB_RESP_CODE(v)		((v) & GHCB_MSR_INFO_MASK)
- 
-diff --git a/arch/x86/kernel/sev-shared.c b/arch/x86/kernel/sev-shared.c
-index 787dc5f..ce98768 100644
---- a/arch/x86/kernel/sev-shared.c
-+++ b/arch/x86/kernel/sev-shared.c
-@@ -221,7 +221,7 @@ void __init do_vc_no_ghcb(struct pt_regs *regs, unsigned long exit_code)
- 
- fail:
- 	/* Terminate the guest */
--	sev_es_terminate(GHCB_SEV_ES_REASON_GENERAL_REQUEST);
-+	sev_es_terminate(GHCB_SEV_ES_GEN_REQ);
+-	return sgx_nr_free_pages < watermark && !list_empty(&sgx_active_page_list);
++	return atomic_long_read(&sgx_nr_free_pages) < watermark &&
++	       !list_empty(&sgx_active_page_list);
  }
  
- static enum es_result vc_insn_string_read(struct es_em_ctxt *ctxt,
-diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
-index 74f0ec9..0a6c82e 100644
---- a/arch/x86/kernel/sev.c
-+++ b/arch/x86/kernel/sev.c
-@@ -1411,7 +1411,7 @@ DEFINE_IDTENTRY_VC_KERNEL(exc_vmm_communication)
- 		show_regs(regs);
+ static int ksgxd(void *p)
+@@ -471,9 +471,9 @@ static struct sgx_epc_page *__sgx_alloc_epc_page_from_node(int nid)
  
- 		/* Ask hypervisor to sev_es_terminate */
--		sev_es_terminate(GHCB_SEV_ES_REASON_GENERAL_REQUEST);
-+		sev_es_terminate(GHCB_SEV_ES_GEN_REQ);
+ 	page = list_first_entry(&node->free_page_list, struct sgx_epc_page, list);
+ 	list_del_init(&page->list);
+-	sgx_nr_free_pages--;
  
- 		/* If that fails and we get here - just panic */
- 		panic("Returned from Terminate-Request to Hypervisor\n");
-@@ -1459,7 +1459,7 @@ bool __init handle_vc_boot_ghcb(struct pt_regs *regs)
+ 	spin_unlock(&node->lock);
++	atomic_long_dec(&sgx_nr_free_pages);
  
- 	/* Do initial setup or terminate the guest */
- 	if (unlikely(boot_ghcb == NULL && !sev_es_setup_ghcb()))
--		sev_es_terminate(GHCB_SEV_ES_REASON_GENERAL_REQUEST);
-+		sev_es_terminate(GHCB_SEV_ES_GEN_REQ);
+ 	return page;
+ }
+@@ -625,9 +625,9 @@ void sgx_free_epc_page(struct sgx_epc_page *page)
+ 	spin_lock(&node->lock);
  
- 	vc_ghcb_invalidate(boot_ghcb);
+ 	list_add_tail(&page->list, &node->free_page_list);
+-	sgx_nr_free_pages++;
  
+ 	spin_unlock(&node->lock);
++	atomic_long_inc(&sgx_nr_free_pages);
+ }
+ 
+ static bool __init sgx_setup_epc_section(u64 phys_addr, u64 size,
