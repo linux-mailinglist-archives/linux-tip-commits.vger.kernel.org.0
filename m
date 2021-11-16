@@ -2,40 +2,43 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E006E453B94
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 16 Nov 2021 22:25:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C2017453C3F
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 16 Nov 2021 23:35:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229862AbhKPV2N (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 16 Nov 2021 16:28:13 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:55162 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229605AbhKPV2N (ORCPT
+        id S232035AbhKPWiA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 16 Nov 2021 17:38:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38624 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232034AbhKPWh7 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 16 Nov 2021 16:28:13 -0500
-Date:   Tue, 16 Nov 2021 21:25:13 -0000
+        Tue, 16 Nov 2021 17:37:59 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CF16C061570;
+        Tue, 16 Nov 2021 14:35:01 -0800 (PST)
+Date:   Tue, 16 Nov 2021 22:34:57 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1637097914;
+        s=2020; t=1637102099;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
         bh=5nxUrK/hTSDv6R/0wGYisup3X3LUWG1GgdUO+2f8fwE=;
-        b=Ubas76CGF44ySGXKpCXPuSMV+NroD8jvIqUWJNjf/n/LaEQ4Za7lzH7lAx2SuwGD7BKVTJ
-        trOzZn7Bl91tj8WZp+VEocZU0gaJT4vXMnew3CxrxXN2yJ8gccigO6lCGYeXaAnoqLiNDA
-        jYK2RYLFYrujSAYh8RFRkWC9qX8/EaVZBuqY82t66w9V4p6MIDcEn3dbxJL0upnZ/xZ8Y+
-        ikUKZ14JWZaktL8EZ8ywiMTejeljwkAwHKGBhKkM8fyACLdIN2tegVsOyvGKIt/hh0DJ0m
-        kgbC7hDT83JuPcKgSPeDfYYW6FX3C962Xn/zX4I5Zc/z1jVFwPY5GiE7NyGAHQ==
+        b=lnaFTtsrO4MmzYj2p6mBm7f7hz362ZGse1/mcxKe8kI9HHCXA3QGhlxPKMV7PmBVL54Idn
+        hmPsLjjoqXT6GQO9iqUjfD7uQFVdpty0h0H6NwTZEePDIRFUN+Il0YV+0ar1GcdeC2Rt9f
+        0VEoSCYzwMiB5tnBcUT6BFyzapdStVlhTCgQuWXDzZwyNES8IfqrXx2qF5mmj1H0DUJ22i
+        qy/AnlkkvJ/4vayh2rv3dijujm6N14bAS494KmpoI/fokAbJ4RUWP/NtXmA/cu4BSmwLvQ
+        gjfOzArWTTqetcv9IxaxnT3ycR81dTc4+I1QXHAKiEMd80aRIv40G+Dq1nSP4w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1637097914;
+        s=2020e; t=1637102099;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
         bh=5nxUrK/hTSDv6R/0wGYisup3X3LUWG1GgdUO+2f8fwE=;
-        b=34KDUw1o+oFgFlPussrsI4iKylROsqomJUI8gfBhb3KfKh7G+TegQMayzGWdqNdlLB4CK2
-        uock7EvweU7XKpDw==
+        b=/p8/iE3O86CM0TlMIExBhdGyOl8x5YyOS+EVXtihGiRZx+hES2TmXDG1dHtmy0mfJxcYbO
+        XHZBATJQhkKVGxCA==
 From:   "tip-bot2 for Reinette Chatre" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
@@ -51,7 +54,7 @@ In-Reply-To: =?utf-8?q?=3Ca95a40743bbd3f795b465f30922dde7f1ea9e0eb=2E16370?=
 References: =?utf-8?q?=3Ca95a40743bbd3f795b465f30922dde7f1ea9e0eb=2E163700?=
  =?utf-8?q?4094=2Egit=2Ereinette=2Echatre=40intel=2Ecom=3E?=
 MIME-Version: 1.0
-Message-ID: <163709791320.414.3161205179225001373.tip-bot2@tip-bot2>
+Message-ID: <163710209793.28908.5790533119442240898.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
