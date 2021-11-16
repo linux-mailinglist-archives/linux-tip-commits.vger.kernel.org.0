@@ -2,234 +2,165 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C2017453C3F
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 16 Nov 2021 23:35:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C54AA453CC0
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 17 Nov 2021 00:39:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232035AbhKPWiA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 16 Nov 2021 17:38:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38624 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232034AbhKPWh7 (ORCPT
+        id S231877AbhKPXme (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 16 Nov 2021 18:42:34 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:55802 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229532AbhKPXme (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 16 Nov 2021 17:37:59 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CF16C061570;
-        Tue, 16 Nov 2021 14:35:01 -0800 (PST)
-Date:   Tue, 16 Nov 2021 22:34:57 -0000
+        Tue, 16 Nov 2021 18:42:34 -0500
+Date:   Tue, 16 Nov 2021 23:39:33 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1637102099;
+        s=2020; t=1637105975;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=5nxUrK/hTSDv6R/0wGYisup3X3LUWG1GgdUO+2f8fwE=;
-        b=lnaFTtsrO4MmzYj2p6mBm7f7hz362ZGse1/mcxKe8kI9HHCXA3QGhlxPKMV7PmBVL54Idn
-        hmPsLjjoqXT6GQO9iqUjfD7uQFVdpty0h0H6NwTZEePDIRFUN+Il0YV+0ar1GcdeC2Rt9f
-        0VEoSCYzwMiB5tnBcUT6BFyzapdStVlhTCgQuWXDzZwyNES8IfqrXx2qF5mmj1H0DUJ22i
-        qy/AnlkkvJ/4vayh2rv3dijujm6N14bAS494KmpoI/fokAbJ4RUWP/NtXmA/cu4BSmwLvQ
-        gjfOzArWTTqetcv9IxaxnT3ycR81dTc4+I1QXHAKiEMd80aRIv40G+Dq1nSP4w==
+        bh=6+FaXmNPmjRJ5fC7niCX2y+F85puwbi9kxfPQuleBPw=;
+        b=RuuphIXegNmeubGVnXHBprPAq1L9+2UWiX/jOMKIXTDJHWSeKzPjbHjpVLkD+Y3yQ1y9pK
+        7evpI4Eq1HsfiwUdVS2qcZnkL/4XrSJsTFF6Gw9l7wrfJIlTjIIY6+d00yq5THBCHKmvT6
+        4Xqo/vYLevGrI1TRcD58ci6+JC9rSvl9UB7TeScCylA33BAHFCww4RVZ0Vyu+zwMSTRK0K
+        pZmzzvgJSC2pcMNL0eLhrFefMNfdS4IxuY5i2mLfVvJWSej2TQ+tObR102bDXeVSzskxBo
+        Cl3ihHUEL9juVDYCy7pF/Z0wB3W4vCwDJvP2W3gYyF0/39iwfVRqJZK6bYzxVw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1637102099;
+        s=2020e; t=1637105975;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=5nxUrK/hTSDv6R/0wGYisup3X3LUWG1GgdUO+2f8fwE=;
-        b=/p8/iE3O86CM0TlMIExBhdGyOl8x5YyOS+EVXtihGiRZx+hES2TmXDG1dHtmy0mfJxcYbO
-        XHZBATJQhkKVGxCA==
+        bh=6+FaXmNPmjRJ5fC7niCX2y+F85puwbi9kxfPQuleBPw=;
+        b=Zf8rYNfgb6/cAc3GZicDdIJWPPuQrktSR0nyhEMfSGQ6SjakWbZT3+LOVnrl9RTQ7uSAO+
+        Ud2FaF6fKIuWmICw==
 From:   "tip-bot2 for Reinette Chatre" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/sgx: Fix free page accounting
-Cc:     stable@vger.kernel.org, Dave Hansen <dave.hansen@linux.intel.com>,
-        Reinette Chatre <reinette.chatre@intel.com>,
-        Tony Luck <tony.luck@intel.com>,
+Subject: [tip: x86/sgx] x86/sgx: SGX documentation fixes
+Cc:     Reinette Chatre <reinette.chatre@intel.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
         Jarkko Sakkinen <jarkko@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: =?utf-8?q?=3Ca95a40743bbd3f795b465f30922dde7f1ea9e0eb=2E16370?=
- =?utf-8?q?04094=2Egit=2Ereinette=2Echatre=40intel=2Ecom=3E?=
-References: =?utf-8?q?=3Ca95a40743bbd3f795b465f30922dde7f1ea9e0eb=2E163700?=
- =?utf-8?q?4094=2Egit=2Ereinette=2Echatre=40intel=2Ecom=3E?=
+In-Reply-To: =?utf-8?q?=3Cab99a87368eef69e3fb96f073368becff3eff874=2E16355?=
+ =?utf-8?q?29506=2Egit=2Ereinette=2Echatre=40intel=2Ecom=3E?=
+References: =?utf-8?q?=3Cab99a87368eef69e3fb96f073368becff3eff874=2E163552?=
+ =?utf-8?q?9506=2Egit=2Ereinette=2Echatre=40intel=2Ecom=3E?=
 MIME-Version: 1.0
-Message-ID: <163710209793.28908.5790533119442240898.tip-bot2@tip-bot2>
+Message-ID: <163710597339.28908.4197151114476408668.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the x86/sgx branch of tip:
 
-Commit-ID:     ac5d272a0ad0419f52e08c91953356e32b075af7
-Gitweb:        https://git.kernel.org/tip/ac5d272a0ad0419f52e08c91953356e32b075af7
+Commit-ID:     c4d61a51f055928021af32f34853eba8a05be41d
+Gitweb:        https://git.kernel.org/tip/c4d61a51f055928021af32f34853eba8a05=
+be41d
 Author:        Reinette Chatre <reinette.chatre@intel.com>
-AuthorDate:    Mon, 15 Nov 2021 11:29:04 -08:00
+AuthorDate:    Fri, 29 Oct 2021 10:49:56 -07:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Tue, 16 Nov 2021 11:17:43 -08:00
+CommitterDate: Tue, 16 Nov 2021 13:45:14 -08:00
 
-x86/sgx: Fix free page accounting
+x86/sgx: SGX documentation fixes
 
-The SGX driver maintains a single global free page counter,
-sgx_nr_free_pages, that reflects the number of free pages available
-across all NUMA nodes. Correspondingly, a list of free pages is
-associated with each NUMA node and sgx_nr_free_pages is updated
-every time a page is added or removed from any of the free page
-lists. The main usage of sgx_nr_free_pages is by the reclaimer
-that runs when it (sgx_nr_free_pages) goes below a watermark
-to ensure that there are always some free pages available to, for
-example, support efficient page faults.
+SGX documentation fixes are:
 
-With sgx_nr_free_pages accessed and modified from a few places
-it is essential to ensure that these accesses are done safely but
-this is not the case. sgx_nr_free_pages is read without any
-protection and updated with inconsistent protection by any one
-of the spin locks associated with the individual NUMA nodes.
-For example:
+ * Remove capitalization from regular words in the middle of a sentence.
+ * Remove punctuation found in the middle of a sentence.
+ * Fix name of SGX daemon to consistently be ksgxd.
+ * Fix typo of SGX instruction: ENIT -> EINIT
 
-      CPU_A                                 CPU_B
-      -----                                 -----
- spin_lock(&nodeA->lock);              spin_lock(&nodeB->lock);
- ...                                   ...
- sgx_nr_free_pages--;  /* NOT SAFE */  sgx_nr_free_pages--;
-
- spin_unlock(&nodeA->lock);            spin_unlock(&nodeB->lock);
-
-Since sgx_nr_free_pages may be protected by different spin locks
-while being modified from different CPUs, the following scenario
-is possible:
-
-      CPU_A                                CPU_B
-      -----                                -----
-{sgx_nr_free_pages = 100}
- spin_lock(&nodeA->lock);              spin_lock(&nodeB->lock);
- sgx_nr_free_pages--;                  sgx_nr_free_pages--;
- /* LOAD sgx_nr_free_pages = 100 */    /* LOAD sgx_nr_free_pages = 100 */
- /* sgx_nr_free_pages--          */    /* sgx_nr_free_pages--          */
- /* STORE sgx_nr_free_pages = 99 */    /* STORE sgx_nr_free_pages = 99 */
- spin_unlock(&nodeA->lock);            spin_unlock(&nodeB->lock);
-
-In the above scenario, sgx_nr_free_pages is decremented from two CPUs
-but instead of sgx_nr_free_pages ending with a value that is two less
-than it started with, it was only decremented by one while the number
-of free pages were actually reduced by two. The consequence of
-sgx_nr_free_pages not being protected is that its value may not
-accurately reflect the actual number of free pages on the system,
-impacting the availability of free pages in support of many flows.
-
-The problematic scenario is when the reclaimer does not run because it
-believes there to be sufficient free pages while any attempt to allocate
-a page fails because there are no free pages available. In the SGX driver
-the reclaimer's watermark is only 32 pages so after encountering the
-above example scenario 32 times a user space hang is possible when there
-are no more free pages because of repeated page faults caused by no
-free pages made available.
-
-The following flow was encountered:
-asm_exc_page_fault
- ...
-   sgx_vma_fault()
-     sgx_encl_load_page()
-       sgx_encl_eldu() // Encrypted page needs to be loaded from backing
-                       // storage into newly allocated SGX memory page
-         sgx_alloc_epc_page() // Allocate a page of SGX memory
-           __sgx_alloc_epc_page() // Fails, no free SGX memory
-           ...
-           if (sgx_should_reclaim(SGX_NR_LOW_PAGES)) // Wake reclaimer
-             wake_up(&ksgxd_waitq);
-           return -EBUSY; // Return -EBUSY giving reclaimer time to run
-       return -EBUSY;
-     return -EBUSY;
-   return VM_FAULT_NOPAGE;
-
-The reclaimer is triggered in above flow with the following code:
-
-static bool sgx_should_reclaim(unsigned long watermark)
-{
-        return sgx_nr_free_pages < watermark &&
-               !list_empty(&sgx_active_page_list);
-}
-
-In the problematic scenario there were no free pages available yet the
-value of sgx_nr_free_pages was above the watermark. The allocation of
-SGX memory thus always failed because of a lack of free pages while no
-free pages were made available because the reclaimer is never started
-because of sgx_nr_free_pages' incorrect value. The consequence was that
-user space kept encountering VM_FAULT_NOPAGE that caused the same
-address to be accessed repeatedly with the same result.
-
-Change the global free page counter to an atomic type that
-ensures simultaneous updates are done safely. While doing so, move
-the updating of the variable outside of the spin lock critical
-section to which it does not belong.
-
-Cc: stable@vger.kernel.org
-Fixes: 901ddbb9ecf5 ("x86/sgx: Add a basic NUMA allocation scheme to sgx_alloc_epc_page()")
-Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
 Signed-off-by: Reinette Chatre <reinette.chatre@intel.com>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Tony Luck <tony.luck@intel.com>
-Acked-by: Jarkko Sakkinen <jarkko@kernel.org>
-Link: https://lkml.kernel.org/r/a95a40743bbd3f795b465f30922dde7f1ea9e0eb.1637004094.git.reinette.chatre@intel.com
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Link: https://lkml.kernel.org/r/ab99a87368eef69e3fb96f073368becff3eff874.1635=
+529506.git.reinette.chatre@intel.com
 ---
- arch/x86/kernel/cpu/sgx/main.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ Documentation/x86/sgx.rst | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/sgx/main.c b/arch/x86/kernel/cpu/sgx/main.c
-index 63d3de0..8471a8b 100644
---- a/arch/x86/kernel/cpu/sgx/main.c
-+++ b/arch/x86/kernel/cpu/sgx/main.c
-@@ -28,8 +28,7 @@ static DECLARE_WAIT_QUEUE_HEAD(ksgxd_waitq);
- static LIST_HEAD(sgx_active_page_list);
- static DEFINE_SPINLOCK(sgx_reclaimer_lock);
- 
--/* The free page list lock protected variables prepend the lock. */
--static unsigned long sgx_nr_free_pages;
-+static atomic_long_t sgx_nr_free_pages = ATOMIC_LONG_INIT(0);
- 
- /* Nodes with one or more EPC sections. */
- static nodemask_t sgx_numa_mask;
-@@ -403,14 +402,15 @@ skip:
- 
- 		spin_lock(&node->lock);
- 		list_add_tail(&epc_page->list, &node->free_page_list);
--		sgx_nr_free_pages++;
- 		spin_unlock(&node->lock);
-+		atomic_long_inc(&sgx_nr_free_pages);
- 	}
- }
- 
- static bool sgx_should_reclaim(unsigned long watermark)
- {
--	return sgx_nr_free_pages < watermark && !list_empty(&sgx_active_page_list);
-+	return atomic_long_read(&sgx_nr_free_pages) < watermark &&
-+	       !list_empty(&sgx_active_page_list);
- }
- 
- static int ksgxd(void *p)
-@@ -471,9 +471,9 @@ static struct sgx_epc_page *__sgx_alloc_epc_page_from_node(int nid)
- 
- 	page = list_first_entry(&node->free_page_list, struct sgx_epc_page, list);
- 	list_del_init(&page->list);
--	sgx_nr_free_pages--;
- 
- 	spin_unlock(&node->lock);
-+	atomic_long_dec(&sgx_nr_free_pages);
- 
- 	return page;
- }
-@@ -625,9 +625,9 @@ void sgx_free_epc_page(struct sgx_epc_page *page)
- 	spin_lock(&node->lock);
- 
- 	list_add_tail(&page->list, &node->free_page_list);
--	sgx_nr_free_pages++;
- 
- 	spin_unlock(&node->lock);
-+	atomic_long_inc(&sgx_nr_free_pages);
- }
- 
- static bool __init sgx_setup_epc_section(u64 phys_addr, u64 size,
+diff --git a/Documentation/x86/sgx.rst b/Documentation/x86/sgx.rst
+index a608f66..265568a 100644
+--- a/Documentation/x86/sgx.rst
++++ b/Documentation/x86/sgx.rst
+@@ -10,7 +10,7 @@ Overview
+ Software Guard eXtensions (SGX) hardware enables for user space applications
+ to set aside private memory regions of code and data:
+=20
+-* Privileged (ring-0) ENCLS functions orchestrate the construction of the.
++* Privileged (ring-0) ENCLS functions orchestrate the construction of the
+   regions.
+ * Unprivileged (ring-3) ENCLU functions allow an application to enter and
+   execute inside the regions.
+@@ -91,7 +91,7 @@ In addition to the traditional compiler and linker build pr=
+ocess, SGX has a
+ separate enclave =E2=80=9Cbuild=E2=80=9D process.  Enclaves must be built be=
+fore they can be
+ executed (entered). The first step in building an enclave is opening the
+ **/dev/sgx_enclave** device.  Since enclave memory is protected from direct
+-access, special privileged instructions are Then used to copy data into encl=
+ave
++access, special privileged instructions are then used to copy data into encl=
+ave
+ pages and establish enclave page permissions.
+=20
+ .. kernel-doc:: arch/x86/kernel/cpu/sgx/ioctl.c
+@@ -126,13 +126,13 @@ the need to juggle signal handlers.
+ ksgxd
+ =3D=3D=3D=3D=3D
+=20
+-SGX support includes a kernel thread called *ksgxwapd*.
++SGX support includes a kernel thread called *ksgxd*.
+=20
+ EPC sanitization
+ ----------------
+=20
+ ksgxd is started when SGX initializes.  Enclave memory is typically ready
+-For use when the processor powers on or resets.  However, if SGX has been in
++for use when the processor powers on or resets.  However, if SGX has been in
+ use since the reset, enclave pages may be in an inconsistent state.  This mi=
+ght
+ occur after a crash and kexec() cycle, for instance.  At boot, ksgxd
+ reinitializes all enclave pages so that they can be allocated and re-used.
+@@ -147,7 +147,7 @@ Page reclaimer
+=20
+ Similar to the core kswapd, ksgxd, is responsible for managing the
+ overcommitment of enclave memory.  If the system runs out of enclave memory,
+-*ksgxwapd* =E2=80=9Cswaps=E2=80=9D enclave memory to normal memory.
++*ksgxd* =E2=80=9Cswaps=E2=80=9D enclave memory to normal memory.
+=20
+ Launch Control
+ =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+@@ -156,7 +156,7 @@ SGX provides a launch control mechanism. After all enclav=
+e pages have been
+ copied, kernel executes EINIT function, which initializes the enclave. Only =
+after
+ this the CPU can execute inside the enclave.
+=20
+-ENIT function takes an RSA-3072 signature of the enclave measurement.  The f=
+unction
++EINIT function takes an RSA-3072 signature of the enclave measurement.  The =
+function
+ checks that the measurement is correct and signature is signed with the key
+ hashed to the four **IA32_SGXLEPUBKEYHASH{0, 1, 2, 3}** MSRs representing the
+ SHA256 of a public key.
+@@ -184,7 +184,7 @@ CPUs starting from Icelake use Total Memory Encryption (T=
+ME) in the place of
+ MEE. TME-based SGX implementations do not have an integrity Merkle tree, whi=
+ch
+ means integrity and replay-attacks are not mitigated.  B, it includes
+ additional changes to prevent cipher text from being returned and SW memory
+-aliases from being Created.
++aliases from being created.
+=20
+ DMA to enclave memory is blocked by range registers on both MEE and TME syst=
+ems
+ (SDM section 41.10).
