@@ -2,54 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 252B0454AD6
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 17 Nov 2021 17:21:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F4225454D35
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 17 Nov 2021 19:29:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231478AbhKQQYA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 17 Nov 2021 11:24:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54564 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229830AbhKQQX6 (ORCPT
+        id S231194AbhKQScg (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 17 Nov 2021 13:32:36 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:33262 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233890AbhKQScg (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 17 Nov 2021 11:23:58 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09539C061570;
-        Wed, 17 Nov 2021 08:20:59 -0800 (PST)
-Date:   Wed, 17 Nov 2021 16:20:55 -0000
+        Wed, 17 Nov 2021 13:32:36 -0500
+Date:   Wed, 17 Nov 2021 18:29:35 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1637166057;
+        s=2020; t=1637173776;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=dNi2yELSNcNJEROgf4kONbWUVibndhRvKFguMLCZEE4=;
-        b=RQ+ZBfaXD3w03lxQ4UoExO5Dwh6jRXmfjmnCt6SSxMcgdR+dJP8actu7r1Xi8oDiMgfb9W
-        bdbZt7l/Dd1bgPLXGhc84iME2NH4bVw23UIc+aZeulNG+COXsF+ZIIuGtruB3kIcFgr+ee
-        2KmbZ0EKPKpmVpi4j1wiw3nyDasnCOAmbCs2Q1ugU8uzi9ZMtUmY906+TKvmVFBtO6sYu0
-        1iHLbFiem2N21Iz/z/pJENu9t9taVZJN7VBXqbUoVYqT0nBFJ6LIvU9//wo6wcKggI/cWJ
-        PpfRuX8OqVTfu9Tn029+6W9StQh63oJsk13KShAt8ENKgi2rJ5HeVpMUJ5oUAQ==
+        bh=nOVhcHgI8g7zN42nh4pVJOp1nfrcdr3b6IpdBIKlais=;
+        b=wE04mu2twkM9aqGqNMRzVKtlPXqFt3ClWwGohclTHZfDA2MNNMLnRZNV2s9x4OV92LxIac
+        BhrI2veE/e3x8SGBZY9Ht9ycTYhPGSr4Cre6a2MVjbjBO1G9Uawdn6x4zErhaL93iqgjDu
+        SsaLHgNdsFPjb3HDwFcneyx4zLSzGS4qy/cud3tkWDNoToNH5YGC2oT0YrXb7Lfe6DNH/3
+        7XXiGSNyA7xfv6H4buTK4tUoBobeeY/eeiaubiPfxBoN0uytd29mA/3+iqILEt3QG/5d/M
+        txPUtWP+jr485POmM0VJVi/djWi4MV9rUTudVCkIBmsIrZBk7SbjM929d8GpLw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1637166057;
+        s=2020e; t=1637173776;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=dNi2yELSNcNJEROgf4kONbWUVibndhRvKFguMLCZEE4=;
-        b=wvatB4nQzrFugWPIG0b3GnIJAR/rceHyJV2PQid38LdvBeIP6xBocNSubhcbLGZSPjVEpH
-        a28mAQHy72lHUZCA==
-From:   "tip-bot2 for Zhaolong Zhang" <tip-bot2@linutronix.de>
+        bh=nOVhcHgI8g7zN42nh4pVJOp1nfrcdr3b6IpdBIKlais=;
+        b=jdh+M2kvkP1kXilkcOPbajYPMrg/W94s0Rf+t3tLFMZbCDK5ChAiafjT9/ZN5J/Ll0OW0R
+        +XW5G5OHWfzJaPAg==
+From:   "tip-bot2 for Noah Goldstein" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: ras/core] x86/mce: Get rid of cpu_missing
-Cc:     Borislav Petkov <bp@suse.de>, Zhaolong Zhang <zhangzl2013@126.com>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20211109112345.2673403-1-zhangzl2013@126.com>
-References: <20211109112345.2673403-1-zhangzl2013@126.com>
+Subject: [tip: x86/fpu] x86/fpu: Correct AVX512 state tracking
+Cc:     Noah Goldstein <goldstein.w.n@gmail.com>,
+        Borislav Petkov <bp@suse.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20210920053951.4093668-1-goldstein.w.n@gmail.com>
+References: <20210920053951.4093668-1-goldstein.w.n@gmail.com>
 MIME-Version: 1.0
-Message-ID: <163716605578.11128.8813948261185645198.tip-bot2@tip-bot2>
+Message-ID: <163717377532.11128.15112806017937850586.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,65 +56,69 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the ras/core branch of tip:
+The following commit has been merged into the x86/fpu branch of tip:
 
-Commit-ID:     2322b532ad9043336f36ba2634ab3620d5d5b4f5
-Gitweb:        https://git.kernel.org/tip/2322b532ad9043336f36ba2634ab3620d5d5b4f5
-Author:        Zhaolong Zhang <zhangzl2013@126.com>
-AuthorDate:    Tue, 09 Nov 2021 19:23:45 +08:00
+Commit-ID:     0fe4ff885f8a50082d9dc241b657472894caba16
+Gitweb:        https://git.kernel.org/tip/0fe4ff885f8a50082d9dc241b657472894caba16
+Author:        Noah Goldstein <goldstein.w.n@gmail.com>
+AuthorDate:    Tue, 16 Nov 2021 17:14:21 +01:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Wed, 17 Nov 2021 15:32:31 +01:00
+CommitterDate: Tue, 16 Nov 2021 17:19:41 +01:00
 
-x86/mce: Get rid of cpu_missing
+x86/fpu: Correct AVX512 state tracking
 
-Get rid of cpu_missing because
+Add a separate, local mask for tracking AVX512 usage which does not
+include the opmask xfeature set. Opmask registers usage does not cause
+frequency throttling so it is a completely unnecessary false positive.
 
-  7bb39313cd62 ("x86/mce: Make mce_timed_out() identify holdout CPUs")
+While at it, carve it out into a separate function to keep that
+abomination extracted out.
 
-provides a more detailed message about which CPUs are missing.
+ [ bp: Rediff and cleanup ontop of 5.16-rc1. ]
 
-Suggested-by: Borislav Petkov <bp@suse.de>
-Signed-off-by: Zhaolong Zhang <zhangzl2013@126.com>
+Signed-off-by: Noah Goldstein <goldstein.w.n@gmail.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20211109112345.2673403-1-zhangzl2013@126.com
+Link: https://lore.kernel.org/r/20210920053951.4093668-1-goldstein.w.n@gmail.com
 ---
- arch/x86/kernel/cpu/mce/core.c | 5 -----
- 1 file changed, 5 deletions(-)
+ arch/x86/kernel/fpu/core.c | 21 ++++++++++++++-------
+ 1 file changed, 14 insertions(+), 7 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
-index 6ed3653..30de00f 100644
---- a/arch/x86/kernel/cpu/mce/core.c
-+++ b/arch/x86/kernel/cpu/mce/core.c
-@@ -99,7 +99,6 @@ struct mca_config mca_cfg __read_mostly = {
- 
- static DEFINE_PER_CPU(struct mce, mces_seen);
- static unsigned long mce_need_notify;
--static int cpu_missing;
+diff --git a/arch/x86/kernel/fpu/core.c b/arch/x86/kernel/fpu/core.c
+index 8ea306b..dd3777a 100644
+--- a/arch/x86/kernel/fpu/core.c
++++ b/arch/x86/kernel/fpu/core.c
+@@ -99,6 +99,19 @@ bool irq_fpu_usable(void)
+ EXPORT_SYMBOL(irq_fpu_usable);
  
  /*
-  * MCA banks polled by the period polling timer for corrected events.
-@@ -314,8 +313,6 @@ static void mce_panic(const char *msg, struct mce *final, char *exp)
- 		if (!apei_err)
- 			apei_err = apei_write_mce(final);
- 	}
--	if (cpu_missing)
--		pr_emerg(HW_ERR "Some CPUs didn't answer in synchronization\n");
- 	if (exp)
- 		pr_emerg(HW_ERR "Machine check: %s\n", exp);
- 	if (!fake_panic) {
-@@ -891,7 +888,6 @@ static int mce_timed_out(u64 *t, const char *msg)
- 					 cpumask_pr_args(&mce_missing_cpus));
- 			mce_panic(msg, NULL, NULL);
- 		}
--		cpu_missing = 1;
- 		return 1;
- 	}
- 	*t -= SPINUNIT;
-@@ -2702,7 +2698,6 @@ struct dentry *mce_get_debugfs_dir(void)
- 
- static void mce_reset(void)
++ * Track AVX512 state use because it is known to slow the max clock
++ * speed of the core.
++ */
++static void update_avx_timestamp(struct fpu *fpu)
++{
++
++#define AVX512_TRACKING_MASK	(XFEATURE_MASK_ZMM_Hi256 | XFEATURE_MASK_Hi16_ZMM)
++
++	if (fpu->fpstate->regs.xsave.header.xfeatures & AVX512_TRACKING_MASK)
++		fpu->avx512_timestamp = jiffies;
++}
++
++/*
+  * Save the FPU register state in fpu->fpstate->regs. The register state is
+  * preserved.
+  *
+@@ -116,13 +129,7 @@ void save_fpregs_to_fpstate(struct fpu *fpu)
  {
--	cpu_missing = 0;
- 	atomic_set(&mce_fake_panicked, 0);
- 	atomic_set(&mce_executing, 0);
- 	atomic_set(&mce_callin, 0);
+ 	if (likely(use_xsave())) {
+ 		os_xsave(fpu->fpstate);
+-
+-		/*
+-		 * AVX512 state is tracked here because its use is
+-		 * known to slow the max clock speed of the core.
+-		 */
+-		if (fpu->fpstate->regs.xsave.header.xfeatures & XFEATURE_MASK_AVX512)
+-			fpu->avx512_timestamp = jiffies;
++		update_avx_timestamp(fpu);
+ 		return;
+ 	}
+ 
