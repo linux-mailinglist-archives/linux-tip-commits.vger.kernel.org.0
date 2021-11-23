@@ -2,57 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 98F98459EA4
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 23 Nov 2021 09:53:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A9820459EAA
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 23 Nov 2021 09:54:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233877AbhKWI4x (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 23 Nov 2021 03:56:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41576 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233966AbhKWI4v (ORCPT
+        id S235134AbhKWI5K (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 23 Nov 2021 03:57:10 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:36884 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235091AbhKWI5H (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 23 Nov 2021 03:56:51 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90F96C06173E;
-        Tue, 23 Nov 2021 00:53:43 -0800 (PST)
-Date:   Tue, 23 Nov 2021 08:53:40 -0000
+        Tue, 23 Nov 2021 03:57:07 -0500
+Date:   Tue, 23 Nov 2021 08:53:58 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1637657621;
+        s=2020; t=1637657638;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=c4E96g0nyz298wn9p6WYB+XBjEFy18cyOMUGEPhwMCA=;
-        b=gFFvEedGhqqbE8k7432hGJx4ov7YeTSB3SnFPuraO1w9OdN6weIw66hIojW/AHheyrFP5t
-        LjRjLmbG49IQcIa81YSw93OL7ASyLtrphlOI4M1LpSuf2mtnexLQyT0a8MhZR3qpUFETHL
-        7XhE6534OC1A/0+p47teYHtBWxwW2Dii4j5EGUzlEb0vEFIak4cMzAI+92Df8NjhvPDnh/
-        htDltVJ82twyfAnuUl/0Wf88/Fhh7WRQWO4jiSq84nWkdtwTAlEZATfmR3TToSUs4BKSN7
-        5+1rsmbWDEiQCXR2so9hdEEmYuSXG6azriUR0IxpmuJq2UmPpExgCdoNFGEnPg==
+        bh=86XwV19cLaTqgz/ogideYa3jgrtxwxVRZp/IC3UB2vc=;
+        b=lczDf3gXya9ujvB+VMHrM36Fna54kBINe7D8t9hitnpahNUK9KVd9X9wdnOyjU+EtuY9sY
+        s6C82/l4bN1ZtJF7iECkAZsyZwcKaptncxQ8MRl9VMxgiKTaRfk5BGL57prPsjS3hQ6Zrp
+        NivYN7rx3cmIeGL0LiNlBxWbjrhILqWoWw7WjnektuZCAqxN0fMmjfnt0EAEFuQXdKmzKT
+        1hc9LeWa7Dfr+NaGNKQfyBfUmjMSaB0TXT4A4w55EJqqXMdPE+AiFJwx4G8++DSw3ePr5R
+        32CtiVL5zSdYViaIfKtaMlOTTgoUJUmq7EACTnp/Sm2h0k9RwwG2p0UG0TmiQg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1637657621;
+        s=2020e; t=1637657638;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=c4E96g0nyz298wn9p6WYB+XBjEFy18cyOMUGEPhwMCA=;
-        b=6JJr/vI5lpr/BonqJ7PZBaeVuxQLyZ+QHIRe0fgyBB6Wn80xo/IMb4nMKcCGlRFcCCID/n
-        0fy1ZYpwB8fOZODw==
-From:   "tip-bot2 for Marco Elver" <tip-bot2@linutronix.de>
+        bh=86XwV19cLaTqgz/ogideYa3jgrtxwxVRZp/IC3UB2vc=;
+        b=ZLooa74KJKjN08gniMbZuS/EYGhvzTE3aMGMQNTdV+OdwTh80rXXzkeKG7+dQWes8zw/jP
+        CFudoGG2rqNKUICA==
+From:   "tip-bot2 for Eric Dumazet" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf: Ignore sigtrap for tracepoints destined for
- other tasks
-Cc:     syzbot+663359e32ce6f1a305ad@syzkaller.appspotmail.com,
-        Marco Elver <elver@google.com>,
+Subject: [tip: x86/core] x86/csum: Fix compilation error for UM
+Cc:     kernel test robot <lkp@intel.com>,
+        Eric Dumazet <edumazet@google.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <kJWfmI@elver.google.com>
-References: <kJWfmI@elver.google.com>
+In-Reply-To: <20211118175239.1525650-1-eric.dumazet@gmail.com>
+References: <20211118175239.1525650-1-eric.dumazet@gmail.com>
 MIME-Version: 1.0
-Message-ID: <163765762058.11128.9441697043522251183.tip-bot2@tip-bot2>
+Message-ID: <163765763802.11128.3296594000945475918.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,87 +57,74 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/urgent branch of tip:
+The following commit has been merged into the x86/core branch of tip:
 
-Commit-ID:     73743c3b092277febbf69b250ce8ebbca0525aa2
-Gitweb:        https://git.kernel.org/tip/73743c3b092277febbf69b250ce8ebbca0525aa2
-Author:        Marco Elver <elver@google.com>
-AuthorDate:    Tue, 09 Nov 2021 13:22:32 +01:00
+Commit-ID:     6b2ecb61bb106d3688b315178831ff40d1008591
+Gitweb:        https://git.kernel.org/tip/6b2ecb61bb106d3688b315178831ff40d1008591
+Author:        Eric Dumazet <edumazet@google.com>
+AuthorDate:    Thu, 18 Nov 2021 09:52:39 -08:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 23 Nov 2021 09:45:37 +01:00
+CommitterDate: Tue, 23 Nov 2021 09:45:32 +01:00
 
-perf: Ignore sigtrap for tracepoints destined for other tasks
+x86/csum: Fix compilation error for UM
 
-syzbot reported that the warning in perf_sigtrap() fires, saying that
-the event's task does not match current:
+load_unaligned_zeropad() is not yet universal.
 
- | WARNING: CPU: 0 PID: 9090 at kernel/events/core.c:6446 perf_pending_event+0x40d/0x4b0 kernel/events/core.c:6513
- | Modules linked in:
- | CPU: 0 PID: 9090 Comm: syz-executor.1 Not tainted 5.15.0-syzkaller #0
- | Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
- | RIP: 0010:perf_sigtrap kernel/events/core.c:6446 [inline]
- | RIP: 0010:perf_pending_event_disable kernel/events/core.c:6470 [inline]
- | RIP: 0010:perf_pending_event+0x40d/0x4b0 kernel/events/core.c:6513
- | ...
- | Call Trace:
- |  <IRQ>
- |  irq_work_single+0x106/0x220 kernel/irq_work.c:211
- |  irq_work_run_list+0x6a/0x90 kernel/irq_work.c:242
- |  irq_work_run+0x4f/0xd0 kernel/irq_work.c:251
- |  __sysvec_irq_work+0x95/0x3d0 arch/x86/kernel/irq_work.c:22
- |  sysvec_irq_work+0x8e/0xc0 arch/x86/kernel/irq_work.c:17
- |  </IRQ>
- |  <TASK>
- |  asm_sysvec_irq_work+0x12/0x20 arch/x86/include/asm/idtentry.h:664
- | RIP: 0010:__raw_spin_unlock_irqrestore include/linux/spinlock_api_smp.h:152 [inline]
- | RIP: 0010:_raw_spin_unlock_irqrestore+0x38/0x70 kernel/locking/spinlock.c:194
- | ...
- |  coredump_task_exit kernel/exit.c:371 [inline]
- |  do_exit+0x1865/0x25c0 kernel/exit.c:771
- |  do_group_exit+0xe7/0x290 kernel/exit.c:929
- |  get_signal+0x3b0/0x1ce0 kernel/signal.c:2820
- |  arch_do_signal_or_restart+0x2a9/0x1c40 arch/x86/kernel/signal.c:868
- |  handle_signal_work kernel/entry/common.c:148 [inline]
- |  exit_to_user_mode_loop kernel/entry/common.c:172 [inline]
- |  exit_to_user_mode_prepare+0x17d/0x290 kernel/entry/common.c:207
- |  __syscall_exit_to_user_mode_work kernel/entry/common.c:289 [inline]
- |  syscall_exit_to_user_mode+0x19/0x60 kernel/entry/common.c:300
- |  do_syscall_64+0x42/0xb0 arch/x86/entry/common.c:86
- |  entry_SYSCALL_64_after_hwframe+0x44/0xae
+ARCH=um SUBARCH=x86_64 builds do not have it.
 
-On x86 this shouldn't happen, which has arch_irq_work_raise().
+When CONFIG_DCACHE_WORD_ACCESS is not set, simply continue
+the bisection with 4, 2 and 1 byte steps.
 
-The test program sets up a perf event with sigtrap set to fire on the
-'sched_wakeup' tracepoint, which fired in ttwu_do_wakeup().
-
-This happened because the 'sched_wakeup' tracepoint also takes a task
-argument passed on to perf_tp_event(), which is used to deliver the
-event to that other task.
-
-Since we cannot deliver synchronous signals to other tasks, skip an event if
-perf_tp_event() is targeted at another task and perf_event_attr::sigtrap is
-set, which will avoid ever entering perf_sigtrap() for such events.
-
-Fixes: 97ba62b27867 ("perf: Add support for SIGTRAP on perf events")
-Reported-by: syzbot+663359e32ce6f1a305ad@syzkaller.appspotmail.com
-Signed-off-by: Marco Elver <elver@google.com>
+Fixes: df4554cebdaa ("x86/csum: Rewrite/optimize csum_partial()")
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/YYpoCOBmC/kJWfmI@elver.google.com
+Link: https://lkml.kernel.org/r/20211118175239.1525650-1-eric.dumazet@gmail.com
 ---
- kernel/events/core.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/x86/lib/csum-partial_64.c | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 523106a..30d94f6 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -9759,6 +9759,9 @@ void perf_tp_event(u16 event_type, u64 count, void *record, int entry_size,
- 				continue;
- 			if (event->attr.config != entry->type)
- 				continue;
-+			/* Cannot deliver synchronous signal to other task. */
-+			if (event->attr.sigtrap)
-+				continue;
- 			if (perf_tp_event_match(event, &data, regs))
- 				perf_swevent_event(event, count, &data, regs);
- 		}
+diff --git a/arch/x86/lib/csum-partial_64.c b/arch/x86/lib/csum-partial_64.c
+index 5ec3562..1eb8f2d 100644
+--- a/arch/x86/lib/csum-partial_64.c
++++ b/arch/x86/lib/csum-partial_64.c
+@@ -92,6 +92,7 @@ __wsum csum_partial(const void *buff, int len, __wsum sum)
+ 		buff += 8;
+ 	}
+ 	if (len & 7) {
++#ifdef CONFIG_DCACHE_WORD_ACCESS
+ 		unsigned int shift = (8 - (len & 7)) * 8;
+ 		unsigned long trail;
+ 
+@@ -101,6 +102,31 @@ __wsum csum_partial(const void *buff, int len, __wsum sum)
+ 		    "adcq $0,%[res]"
+ 			: [res] "+r" (temp64)
+ 			: [trail] "r" (trail));
++#else
++		if (len & 4) {
++			asm("addq %[val],%[res]\n\t"
++			    "adcq $0,%[res]"
++				: [res] "+r" (temp64)
++				: [val] "r" ((u64)*(u32 *)buff)
++				: "memory");
++			buff += 4;
++		}
++		if (len & 2) {
++			asm("addq %[val],%[res]\n\t"
++			    "adcq $0,%[res]"
++				: [res] "+r" (temp64)
++				: [val] "r" ((u64)*(u16 *)buff)
++				: "memory");
++			buff += 2;
++		}
++		if (len & 1) {
++			asm("addq %[val],%[res]\n\t"
++			    "adcq $0,%[res]"
++				: [res] "+r" (temp64)
++				: [val] "r" ((u64)*(u8 *)buff)
++				: "memory");
++		}
++#endif
+ 	}
+ 	result = add32_with_carry(temp64 >> 32, temp64 & 0xffffffff);
+ 	if (unlikely(odd)) { 
