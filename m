@@ -2,19 +2,19 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CE8745F5E2
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 26 Nov 2021 21:26:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 628BC45F5E4
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 26 Nov 2021 21:26:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243830AbhKZU3W (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 26 Nov 2021 15:29:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56902 "EHLO
+        id S244087AbhKZU3Z (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 26 Nov 2021 15:29:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56916 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234940AbhKZU1W (ORCPT
+        with ESMTP id S229793AbhKZU1Z (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 26 Nov 2021 15:27:22 -0500
+        Fri, 26 Nov 2021 15:27:25 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 920D1C06175D;
-        Fri, 26 Nov 2021 12:22:57 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4DD3C06175E;
+        Fri, 26 Nov 2021 12:22:58 -0800 (PST)
 Date:   Fri, 26 Nov 2021 20:22:55 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1637958176;
@@ -23,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=fVBYh1qUmPe5lTdhTdOr1mhFNvYWAK8W4vGjKSIG364=;
-        b=LRrqhu5Jtt/D/ts+jz6XDBS94TZKs2nja05bLNDtHAIGUatJ0FAiN2oqyc+CPqaRG4jMNJ
-        ojJAyICfPgd+LUBKw27CNp+TJDw9cu+oxEbD9khK2kLpgYhgIFn096E755JoVwS3ZXfCV3
-        ySJ6QPJ/gExiZsYsqrapbVegiZgdUQUd7cm1FbCMdRHlLbU6un2iSC7vylYDYHU2/NYTA2
-        rss0EnHsTgLTmQuKjpMETmJdYMlYN1908CbQt0Iwm0Xh4xkOYFh1HV4xDIpWIEwgLGg6Gd
-        7ArHMo7mqmQjcKZHomI03Wn5Z7nHIfgnC1/KaLXcBikNSqHWprSlkAGvg+SNhA==
+        bh=4wLFOGKUG6ipKnW3SPtORvpluPHKCjS0/7nHQVYNS/0=;
+        b=u1otSyCx1u8/p77mRlODHawZ9yPUoCEiztynGQkkRc8gcJNFpwzga/fZevlsAFrvv6qEH4
+        jKiUCGdReQsErAjl6SBzVlhdUcytL6kc0UhPDHXIwmrSgzJnb4+xr3GUTQ35p8MQWijp2p
+        yzsnLXzgpjVfCdxVArJ/9gNhAfdEABcwST1s5oVDOnWw0XKOW04EJnjtRVTOL/QPTlBi8H
+        Hkkqlu4kpjy8s9z5GRwTQrqwqKg/Kl/bwx7Lbc+kWkZTpevgdE1AQaS+R3teSLt1pA4PLz
+        AKE8UDnepFZL6kMVxjPrTZDHEbNlES+DVZqJDcTr5B9QLpdYyoNgsfxtN9WXtw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1637958176;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,25 +36,23 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=fVBYh1qUmPe5lTdhTdOr1mhFNvYWAK8W4vGjKSIG364=;
-        b=bMJRUp+qaKlVVLwheBvMGBlWz5ocx7qTCHwviBZOQynapKW0xusMQlr+X1JIcM4I8SJ8U0
-        tY6d/ptxSCPdYdDA==
+        bh=4wLFOGKUG6ipKnW3SPtORvpluPHKCjS0/7nHQVYNS/0=;
+        b=xnzYZlR8DY98L5iyehnBDVLuzawCQZDvtO+5BXh13+kZwUWEXRrINJVUHfBvCrvlIW4QBR
+        Rcyg66P3TGoJDkCg==
 From:   "tip-bot2 for Mark Rutland" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/entry] openrisc: Snapshot thread flags
+Subject: [tip: core/entry] microblaze: Snapshot thread flags
 Cc:     Mark Rutland <mark.rutland@arm.com>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Stafford Horne <shorne@gmail.com>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Jonas Bonn <jonas@southpole.se>,
-        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20211117163050.53986-9-mark.rutland@arm.com>
-References: <20211117163050.53986-9-mark.rutland@arm.com>
+        Michal Simek <michal.simek@xilinx.com>,
+        "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20211117163050.53986-8-mark.rutland@arm.com>
+References: <20211117163050.53986-8-mark.rutland@arm.com>
 MIME-Version: 1.0
-Message-ID: <163795817522.11128.15271812032660159571.tip-bot2@tip-bot2>
+Message-ID: <163795817599.11128.5350822384889066062.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,14 +63,14 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/entry branch of tip:
 
-Commit-ID:     b67c4b87d2a6893dd6bddc8b0400715cafc30cd5
-Gitweb:        https://git.kernel.org/tip/b67c4b87d2a6893dd6bddc8b0400715cafc30cd5
+Commit-ID:     a9455e33ce5f0516046ca0da3aedd80f147ecb38
+Gitweb:        https://git.kernel.org/tip/a9455e33ce5f0516046ca0da3aedd80f147ecb38
 Author:        Mark Rutland <mark.rutland@arm.com>
-AuthorDate:    Wed, 17 Nov 2021 16:30:46 
+AuthorDate:    Wed, 17 Nov 2021 16:30:45 
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Fri, 26 Nov 2021 21:20:13 +01:00
 
-openrisc: Snapshot thread flags
+microblaze: Snapshot thread flags
 
 Some thread flags can be set remotely, and so even when IRQs are
 disabled, the flags can change under our feet. Generally this is
@@ -86,25 +84,23 @@ Convert them all to the new flag accessor helpers.
 
 Signed-off-by: Mark Rutland <mark.rutland@arm.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Stafford Horne <shorne@gmail.com>
+Tested-by: Michal Simek <michal.simek@xilinx.com>
 Acked-by: Paul E. McKenney <paulmck@kernel.org>
-Cc: Jonas Bonn <jonas@southpole.se>
-Cc: Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>
-Link: https://lore.kernel.org/r/20211117163050.53986-9-mark.rutland@arm.com
+Link: https://lore.kernel.org/r/20211117163050.53986-8-mark.rutland@arm.com
 ---
- arch/openrisc/kernel/signal.c | 2 +-
+ arch/microblaze/kernel/signal.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/openrisc/kernel/signal.c b/arch/openrisc/kernel/signal.c
-index 99516c9..92c5b70 100644
---- a/arch/openrisc/kernel/signal.c
-+++ b/arch/openrisc/kernel/signal.c
-@@ -313,7 +313,7 @@ do_work_pending(struct pt_regs *regs, unsigned int thread_flags, int syscall)
- 			}
- 		}
- 		local_irq_disable();
--		thread_flags = current_thread_info()->flags;
-+		thread_flags = read_thread_flags();
- 	} while (thread_flags & _TIF_WORK_MASK);
- 	return 0;
- }
+diff --git a/arch/microblaze/kernel/signal.c b/arch/microblaze/kernel/signal.c
+index fc61eb0..23e8a93 100644
+--- a/arch/microblaze/kernel/signal.c
++++ b/arch/microblaze/kernel/signal.c
+@@ -283,7 +283,7 @@ static void do_signal(struct pt_regs *regs, int in_syscall)
+ #ifdef DEBUG_SIG
+ 	pr_info("do signal: %p %d\n", regs, in_syscall);
+ 	pr_info("do signal2: %lx %lx %ld [%lx]\n", regs->pc, regs->r1,
+-			regs->r12, current_thread_info()->flags);
++			regs->r12, read_thread_flags());
+ #endif
+ 
+ 	if (get_signal(&ksig)) {
