@@ -2,129 +2,130 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EF5B645D15B
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 25 Nov 2021 00:46:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 63EBD45F320
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 26 Nov 2021 18:42:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236706AbhKXXtN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 24 Nov 2021 18:49:13 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:48070 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235851AbhKXXtF (ORCPT
+        id S236883AbhKZRpp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 26 Nov 2021 12:45:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48572 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232126AbhKZRno (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 24 Nov 2021 18:49:05 -0500
-Date:   Wed, 24 Nov 2021 23:45:52 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1637797553;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Cj/yHF+aEiHT7ltO6bub750gmEGy0Oqz0iH7mf0KKrM=;
-        b=jaApxFdu9Sch9kohAlaXXRUAqBu7Swrs56sXjUXa3d1v9f0BEu5rGcDhjPOuPwyhb5QxsF
-        p7kGXC1rDHCxgIs6FCw+m1+nycHpx0CxcKhglGtLb/6r5EGGWg1bNAeq4bJcH8dJnYvHbY
-        xVBb20l4WMubZJgO1j3NZfys4kPONuAMUd0LIi/HRSECXADdSWOokjEqgd29W6p1qJxElT
-        4QuLQeefKy73MOCY1kP70aGYu1XQbEpoZ7wyozgl7JVuT83dck/Pjzhqyg7zbkXDYv75Q8
-        9nSto1lJoeyeol7M5TnBaAg07v8yTk6gUME03FJ28YTPb5DigsXhZ5k23aNSzg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1637797553;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Cj/yHF+aEiHT7ltO6bub750gmEGy0Oqz0iH7mf0KKrM=;
-        b=MoJf+WFR+VwIb2WOkzgE/lkp0jx4LAzMmcPnk6E/IgvKRjqsGfJw6ufx6eJ6m0UydxLl4x
-        RWwnP8h5C3DuJHBQ==
-From:   "tip-bot2 for Andi Kleen" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cpu] x86/cpu: Don't write CSTAR MSR on Intel CPUs
-Cc:     Andi Kleen <ak@linux.intel.com>,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tony Luck <tony.luck@intel.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20211119035803.4012145-1-sathyanarayanan.kuppuswamy@linux.intel.com>
-References: <20211119035803.4012145-1-sathyanarayanan.kuppuswamy@linux.intel.com>
+        Fri, 26 Nov 2021 12:43:44 -0500
+Received: from mail-oi1-x231.google.com (mail-oi1-x231.google.com [IPv6:2607:f8b0:4864:20::231])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 279B6C0619D9
+        for <linux-tip-commits@vger.kernel.org>; Fri, 26 Nov 2021 09:19:54 -0800 (PST)
+Received: by mail-oi1-x231.google.com with SMTP id t23so20021788oiw.3
+        for <linux-tip-commits@vger.kernel.org>; Fri, 26 Nov 2021 09:19:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=F8mAaNfSp1B2qpckgrUmaGov90eY6709B/lnYmhCEIU=;
+        b=Mc8N4qphMGEEwPKvKvmwaTJffvaDG2OqIipclLqvqjz0IEhASfTy6CKiWB7ef6nLHo
+         tZFNBm4hDc4X2GdhPLhcXnmXU0AYcncV9LrEjSKZqn8veeL9GGwngv20v7ta9whPfJ1d
+         AW/Zd+PJM9tNJFCsntBsw4PYuJ5W4DbNinotpBSmPpw1or5PgFgySKYxNCpGSGN0kp/b
+         5k/w3a+hhho9gszg1KM2I2j9G5uGFx/4F41PPaSOJeFEJ2KG+zxpZ23pA9otfh84xZnb
+         tTacgcc4vWoms0zvhxjdjMBsMyGA1UoweumCtI9hJGu1Kdbg55+B+7x5xVj+7VXzn/yU
+         7lhQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=F8mAaNfSp1B2qpckgrUmaGov90eY6709B/lnYmhCEIU=;
+        b=xguTarKpGlpp8dHR9ak5+OO21a7nkfYlZbjnJ93LuqFQDjkF+C0JFBlUtxdF9+sDMa
+         ch/sAJFVDdcrNFEuZFFkMh7Yyy/WnjKiTkV0gZlEsyb0Ig/u5tu0nHVWUPM7gC0otKfj
+         ub2odZT5nqblYdPyKTCtsYfhn7yWltJRSQBybGZZXEmfWLEVYEQtePZCx8fpSV78rPx/
+         Iv6icbkI1375r+TOSWBE56Veuhj+QTpEn4N+qGuTt/Pd1Z8QRrRBa3sXiT3bE6y0vPgW
+         zVlbwr8MCREp2PVidmD5YLidMmoYjNKYTtCUyvzkmgWIO8MlguccagBQaWZOOjVC6tR1
+         pNvA==
+X-Gm-Message-State: AOAM531SDsKRNeH/N600sOEJBivIeyJKKSiP7Flt2VJc8kX1TEVhNjAb
+        NCD0YYg3DXH4FvgqUSKY7dP8VkNYldmIJZmGtoQ=
+X-Google-Smtp-Source: ABdhPJz6/IDBY7oTVTYAPjqu72SIczRZbzlo2p14ATn/1/tNN3i+GyanzI/p3V7Ld3WC+D6qxGlBXNvEm08IbyqMKfA=
+X-Received: by 2002:a05:6808:c7:: with SMTP id t7mr24583411oic.30.1637947193466;
+ Fri, 26 Nov 2021 09:19:53 -0800 (PST)
 MIME-Version: 1.0
-Message-ID: <163779755239.11128.2009262993984624532.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Received: by 2002:a9d:65cd:0:0:0:0:0 with HTTP; Fri, 26 Nov 2021 09:19:53
+ -0800 (PST)
+Reply-To: msbelinaya892@gmail.com
+From:   msbelinaya <philipsteler0@gmail.com>
+Date:   Fri, 26 Nov 2021 17:19:53 +0000
+Message-ID: <CAKCDfUjO0mGZy7oPdX9G4fNT_0dQp0Poa=_VXLOmSkmHmBufDg@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cpu branch of tip:
+Ich biete meine Freundschaft an und glaube, dass Sie mich mit einem
+guten Herzen annehmen werden. Ich wurde gedr=C3=A4ngt, Sie zu kontaktieren
+und zu sehen, wie wir uns am besten unterst=C3=BCtzen k=C3=B6nnen. Ich bin =
+Frau
+Kodjovi Hegbor aus der T=C3=BCrkei und arbeite als Operations Division
+Manager bei der StandardBNP bank limited Turkey. Ich glaube, es ist
+Gottes Wille, dass ich Sie jetzt treffen werde. Ich habe ein wichtiges
+gesch=C3=A4ftliches Gespr=C3=A4ch, das ich mit Ihnen teilen m=C3=B6chte, vo=
+n dem ich
+glaube, dass es Sie interessiert, da es mit Ihrem Nachnamen
+zusammenh=C3=A4ngt und Sie davon profitieren wird.
 
-Commit-ID:     9c7e2634f647630db4e0719391dd80cd81132a66
-Gitweb:        https://git.kernel.org/tip/9c7e2634f647630db4e0719391dd80cd81132a66
-Author:        Andi Kleen <ak@linux.intel.com>
-AuthorDate:    Thu, 18 Nov 2021 19:58:03 -08:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 25 Nov 2021 00:40:34 +01:00
+ Im Jahr 2006 er=C3=B6ffnete ein B=C3=BCrger Ihres Landes bei meiner Bank e=
+in
+36-monatiges Nicht-Residentenkonto im Wert von =C2=A3 8.400.000,00. Das
+Ablaufdatum f=C3=BCr diese Hinterlegungsvereinbarung war der 16. Januar
+2009. Leider starb er am 12. Mai 2008 in Sichuan, China, bei einem
+t=C3=B6dlichen Erdbeben, bei dem auf einer Gesch=C3=A4ftsreise mindestens 6=
+8.000
+Menschen ums Leben kamen.
 
-x86/cpu: Don't write CSTAR MSR on Intel CPUs
+Die Gesch=C3=A4ftsleitung meiner Bank hat noch nichts von seinem Tod
+geh=C3=B6rt, ich wusste davon, weil er mein Freund war und ich sein
+Kontoverwalter war, als das Konto vor meiner Bef=C3=B6rderung er=C3=B6ffnet
+wurde. Aber Herr
+bei der Kontoer=C3=B6ffnung keine n=C3=A4chsten Verwandten/Erben erw=C3=A4h=
+nt hat und
+er nicht verheiratet war oder keine Kinder hatte. Letzte Woche bat
+mich meine Bankdirektion, Anweisungen zu geben, was mit seinem Geld zu
+tun sei, wenn der Vertrag verl=C3=A4ngert werden sollte.
 
-Intel CPUs do not support SYSCALL in 32-bit mode, but the kernel
-initializes MSR_CSTAR unconditionally. That MSR write is normally
-ignored by the CPU, but in a TDX guest it raises a #VE trap.
+Ich wei=C3=9F, dass dies passieren wird, und deshalb habe ich nach einem
+Mittel gesucht, um mit der Situation umzugehen, denn wenn meine
+Bankdirektoren wissen, dass sie tot sind und keinen Erben haben,
+nehmen sie das Geld f=C3=BCr ihren pers=C3=B6nlichen Gebrauch, also tue ich=
+ es
+nicht Ich m=C3=B6chte nicht, dass so etwas passiert. Da habe ich deinen
+Nachnamen gesehen, habe mich gefreut und suche nun deine Mitarbeit, um
+dich als n=C3=A4chsten Verwandten/Erben des Kontos zu pr=C3=A4sentieren, da=
+ du
+den gleichen Nachnamen wie er hast und meine Bankzentrale das Konto
+freigeben wird f=C3=BCr dich. Es besteht kein Risiko; die Transaktion
+erfolgt im Rahmen einer legitimen Vereinbarung, die Sie vor
+Rechtsverletzungen sch=C3=BCtzt.
 
-Exclude Intel CPUs from the MSR_CSTAR initialization.
+Es ist besser f=C3=BCr uns, das Geld zu beanspruchen, als es den
+Bankdirektoren zu =C3=BCberlassen, sie sind bereits reich. Ich bin kein
+gieriger Mensch, also schlage ich vor, dass wir das Geld gleichm=C3=A4=C3=
+=9Fig
+aufteilen, 50/50% auf beide Parteien. Mein Anteil wird mir helfen,
+mein eigenes Unternehmen zu gr=C3=BCnden und den Erl=C3=B6s f=C3=BCr wohlt=
+=C3=A4tige
+Zwecke zu verwenden, was mein Traum war.
 
-[ tglx: Fixed the subject line and removed the redundant comment. ]
-
-Signed-off-by: Andi Kleen <ak@linux.intel.com>
-Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Tony Luck <tony.luck@intel.com>
-Link: https://lore.kernel.org/r/20211119035803.4012145-1-sathyanarayanan.kuppuswamy@linux.intel.com
-
----
- arch/x86/kernel/cpu/common.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
-
-diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index 0083464..0663642 100644
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -1787,6 +1787,17 @@ EXPORT_PER_CPU_SYMBOL(__preempt_count);
- 
- DEFINE_PER_CPU(unsigned long, cpu_current_top_of_stack) = TOP_OF_INIT_STACK;
- 
-+static void wrmsrl_cstar(unsigned long val)
-+{
-+	/*
-+	 * Intel CPUs do not support 32-bit SYSCALL. Writing to MSR_CSTAR
-+	 * is so far ignored by the CPU, but raises a #VE trap in a TDX
-+	 * guest. Avoid the pointless write on all Intel CPUs.
-+	 */
-+	if (boot_cpu_data.x86_vendor != X86_VENDOR_INTEL)
-+		wrmsrl(MSR_CSTAR, val);
-+}
-+
- /* May not be marked __init: used by software suspend */
- void syscall_init(void)
- {
-@@ -1794,7 +1805,7 @@ void syscall_init(void)
- 	wrmsrl(MSR_LSTAR, (unsigned long)entry_SYSCALL_64);
- 
- #ifdef CONFIG_IA32_EMULATION
--	wrmsrl(MSR_CSTAR, (unsigned long)entry_SYSCALL_compat);
-+	wrmsrl_cstar((unsigned long)entry_SYSCALL_compat);
- 	/*
- 	 * This only works on Intel CPUs.
- 	 * On AMD CPUs these MSRs are 32-bit, CPU truncates MSR_IA32_SYSENTER_EIP.
-@@ -1806,7 +1817,7 @@ void syscall_init(void)
- 		    (unsigned long)(cpu_entry_stack(smp_processor_id()) + 1));
- 	wrmsrl_safe(MSR_IA32_SYSENTER_EIP, (u64)entry_SYSENTER_compat);
- #else
--	wrmsrl(MSR_CSTAR, (unsigned long)ignore_sysret);
-+	wrmsrl_cstar((unsigned long)ignore_sysret);
- 	wrmsrl_safe(MSR_IA32_SYSENTER_CS, (u64)GDT_ENTRY_INVALID_SEG);
- 	wrmsrl_safe(MSR_IA32_SYSENTER_ESP, 0ULL);
- 	wrmsrl_safe(MSR_IA32_SYSENTER_EIP, 0ULL);
+Bitte teilen Sie mir Ihre Meinung zu meinem Vorschlag mit, ich brauche
+wirklich Ihre Hilfe bei dieser Transaktion. Ich habe dich auserw=C3=A4hlt,
+mir zu helfen, nicht durch mein eigenes Tun, meine Liebe, sondern bei
+Gott, ich wollte, dass du wei=C3=9Ft, dass ich mir die Zeit genommen habe,
+f=C3=BCr diese Nachricht zu beten, bevor ich dich jemals kontaktiert habe,
+um deine Meinung mitzuteilen und bitte zu behandeln diese
+Informationen als STRENG GEHEIM. Nach Erhalt Ihrer Antwort
+ausschlie=C3=9Flich =C3=BCber meine pers=C3=B6nliche E-Mail-Adresse
+msbelinaya892@gmail.com
+gibt Ihnen Details zur Transaktion. Und eine Kopie der
+Einlagenbescheinigung des Fonds und der Gr=C3=BCndungsurkunde der
+Gesellschaft, die den Fonds gegr=C3=BCndet hat.
+Gott segne in Erwartung Ihrer dringenden Antwort
+Mit freundlichen Gr=C3=BC=C3=9Fen
+Frau Kodjovi Hegbor
+msbelinaya892@gmail.com
