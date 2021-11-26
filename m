@@ -2,55 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FAE245F5CB
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 26 Nov 2021 21:25:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DE7E45F5D0
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 26 Nov 2021 21:25:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240904AbhKZU2U (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 26 Nov 2021 15:28:20 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:33296 "EHLO
+        id S240953AbhKZU2V (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 26 Nov 2021 15:28:21 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:33302 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239601AbhKZU0L (ORCPT
+        with ESMTP id S239615AbhKZU0M (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 26 Nov 2021 15:26:11 -0500
-Date:   Fri, 26 Nov 2021 20:22:56 -0000
+        Fri, 26 Nov 2021 15:26:12 -0500
+Date:   Fri, 26 Nov 2021 20:22:57 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1637958177;
+        s=2020; t=1637958178;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=O9C03Wsmr4jqo0oG1QQpzdldjays0nreAkAivV+ikOI=;
-        b=3UbSCgj3SBF1OCeFs94DCYpjL1LIARrTxaXuK1TpM7nCQGJZji9LHT8muQcwQy/bU7fwe9
-        /GZKGIO9SlgfjHaqO4HIEZIbnAjWEPaomy5MdH3U+yYnQEVTs1FBTkUs61j/E3xoLr/2oQ
-        L+wqPKv0Y2kOCYj/XJs2ql+m2r6Uxl9W44c8ybl0GvQOc7smTt4sLk6yAxgISh2jRAAKmQ
-        cuGNLo6TZEfRzLXD2Nv8FNikaVCbqUu7hpwhTvXzghyBSH5h6l7Jig/Hkd+kHpSjt2Y7D+
-        zTgfdPx5AsSsAryoOabu+JyeB6GoD2uOSqm+5XOFVLRC/pHCXtihXza4hLpoNA==
+        bh=6ci8CAmqtULssZpjLJuV6qAm+TNGLRK6r0nE+1ouyd0=;
+        b=qtW59iuDWnauXCf6/sOgpePogbFMCIMN+pety2/chJyNRZ2qNw3vQEdJQdHl+pA0mdRjNu
+        Fqu2h9Sw3yjpqo9EqHGu+cYzcY0xy+TWdKU0aSI0UMIyxKE67XIIqlKpAauHYCyUFjZyyO
+        SwHqD9OyPelW9mVQ/a+QoHEjlO+sk+z3hEFDx5goVJBi1irQn7dl/7+9j9Z3aEh8EaO6Qw
+        D49ZaE1OjwlnC+mGkd57vgcYGqvQx8l6x+tRGAXvVpHX8keufhEXlGenf/1crhNVtBhFhD
+        tO2THSO1PnCqkSEtqkl/yRm3myEe42hG0lUeoeqGui3ef4tUPusK9JOn+s0csQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1637958177;
+        s=2020e; t=1637958178;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=O9C03Wsmr4jqo0oG1QQpzdldjays0nreAkAivV+ikOI=;
-        b=jgINBFN6vp9mYflYZUwlKvVUwb+E44ANj7ROBPq6fYNS9p4QarC7EjTQYOK+Gew1FK41da
-        o12709XrLAV1FYCg==
+        bh=6ci8CAmqtULssZpjLJuV6qAm+TNGLRK6r0nE+1ouyd0=;
+        b=udpTGiYXBbw16oQhi8jzP+cxBxOCvJUNmw7Os2BZUF/K2Y0ru49BTkdg3a/IHvDQCqeBiA
+        +7FNHDF6uw6z/8AQ==
 From:   "tip-bot2 for Mark Rutland" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/entry] arm64: snapshot thread flags
+Subject: [tip: core/entry] ARM: Snapshot thread flags
 Cc:     Mark Rutland <mark.rutland@arm.com>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Will Deacon <will@kernel.org>,
         "Paul E. McKenney" <paulmck@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>, x86@kernel.org,
+        Russell King <linux@armlinux.org.uk>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20211117163050.53986-7-mark.rutland@arm.com>
-References: <20211117163050.53986-7-mark.rutland@arm.com>
+In-Reply-To: <20211117163050.53986-6-mark.rutland@arm.com>
+References: <20211117163050.53986-6-mark.rutland@arm.com>
 MIME-Version: 1.0
-Message-ID: <163795817677.11128.14392009886950339362.tip-bot2@tip-bot2>
+Message-ID: <163795817763.11128.3056423618976237723.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,14 +60,14 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/entry branch of tip:
 
-Commit-ID:     67c76c3dc0ef46f44715e866c7d4ef81a5a2872d
-Gitweb:        https://git.kernel.org/tip/67c76c3dc0ef46f44715e866c7d4ef81a5a2872d
+Commit-ID:     3fe5dec062dfc8344356823457f5f43e0730c074
+Gitweb:        https://git.kernel.org/tip/3fe5dec062dfc8344356823457f5f43e0730c074
 Author:        Mark Rutland <mark.rutland@arm.com>
-AuthorDate:    Wed, 17 Nov 2021 16:30:44 
+AuthorDate:    Wed, 17 Nov 2021 16:30:43 
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Fri, 26 Nov 2021 21:20:13 +01:00
 
-arm64: snapshot thread flags
+ARM: Snapshot thread flags
 
 Some thread flags can be set remotely, and so even when IRQs are
 disabled, the flags can change under our feet. Generally this is
@@ -82,84 +81,37 @@ Convert them all to the new flag accessor helpers.
 
 Signed-off-by: Mark Rutland <mark.rutland@arm.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Will Deacon <will@kernel.org>
 Acked-by: Paul E. McKenney <paulmck@kernel.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Link: https://lore.kernel.org/r/20211117163050.53986-7-mark.rutland@arm.com
+Cc: Russell King <linux@armlinux.org.uk>
+Link: https://lore.kernel.org/r/20211117163050.53986-6-mark.rutland@arm.com
 ---
- arch/arm64/kernel/entry-common.c | 2 +-
- arch/arm64/kernel/ptrace.c       | 4 ++--
- arch/arm64/kernel/signal.c       | 2 +-
- arch/arm64/kernel/syscall.c      | 4 ++--
- 4 files changed, 6 insertions(+), 6 deletions(-)
+ arch/arm/kernel/signal.c | 2 +-
+ arch/arm/mm/alignment.c  | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/kernel/entry-common.c b/arch/arm64/kernel/entry-common.c
-index f7408ed..ef7fcef 100644
---- a/arch/arm64/kernel/entry-common.c
-+++ b/arch/arm64/kernel/entry-common.c
-@@ -129,7 +129,7 @@ static __always_inline void prepare_exit_to_user_mode(struct pt_regs *regs)
- 
- 	local_daif_mask();
- 
--	flags = READ_ONCE(current_thread_info()->flags);
-+	flags = read_thread_flags();
- 	if (unlikely(flags & _TIF_WORK_MASK))
- 		do_notify_resume(regs, flags);
- }
-diff --git a/arch/arm64/kernel/ptrace.c b/arch/arm64/kernel/ptrace.c
-index 88a9034..33cac3d 100644
---- a/arch/arm64/kernel/ptrace.c
-+++ b/arch/arm64/kernel/ptrace.c
-@@ -1839,7 +1839,7 @@ static void tracehook_report_syscall(struct pt_regs *regs,
- 
- int syscall_trace_enter(struct pt_regs *regs)
- {
--	unsigned long flags = READ_ONCE(current_thread_info()->flags);
-+	unsigned long flags = read_thread_flags();
- 
- 	if (flags & (_TIF_SYSCALL_EMU | _TIF_SYSCALL_TRACE)) {
- 		tracehook_report_syscall(regs, PTRACE_SYSCALL_ENTER);
-@@ -1862,7 +1862,7 @@ int syscall_trace_enter(struct pt_regs *regs)
- 
- void syscall_trace_exit(struct pt_regs *regs)
- {
--	unsigned long flags = READ_ONCE(current_thread_info()->flags);
-+	unsigned long flags = read_thread_flags();
- 
- 	audit_syscall_exit(regs);
- 
-diff --git a/arch/arm64/kernel/signal.c b/arch/arm64/kernel/signal.c
-index 8f6372b..d8aaf4b 100644
---- a/arch/arm64/kernel/signal.c
-+++ b/arch/arm64/kernel/signal.c
-@@ -948,7 +948,7 @@ void do_notify_resume(struct pt_regs *regs, unsigned long thread_flags)
+diff --git a/arch/arm/kernel/signal.c b/arch/arm/kernel/signal.c
+index a41e27a..c532a60 100644
+--- a/arch/arm/kernel/signal.c
++++ b/arch/arm/kernel/signal.c
+@@ -631,7 +631,7 @@ do_work_pending(struct pt_regs *regs, unsigned int thread_flags, int syscall)
+ 			}
  		}
- 
- 		local_daif_mask();
--		thread_flags = READ_ONCE(current_thread_info()->flags);
+ 		local_irq_disable();
+-		thread_flags = current_thread_info()->flags;
 +		thread_flags = read_thread_flags();
  	} while (thread_flags & _TIF_WORK_MASK);
+ 	return 0;
  }
+diff --git a/arch/arm/mm/alignment.c b/arch/arm/mm/alignment.c
+index ea81e89..adbb381 100644
+--- a/arch/arm/mm/alignment.c
++++ b/arch/arm/mm/alignment.c
+@@ -990,7 +990,7 @@ do_alignment(unsigned long addr, unsigned int fsr, struct pt_regs *regs)
+ 		 * there is no work pending for this thread.
+ 		 */
+ 		raw_local_irq_disable();
+-		if (!(current_thread_info()->flags & _TIF_WORK_MASK))
++		if (!(read_thread_flags() & _TIF_WORK_MASK))
+ 			set_cr(cr_no_alignment);
+ 	}
  
-diff --git a/arch/arm64/kernel/syscall.c b/arch/arm64/kernel/syscall.c
-index 50a0f1a..c938603 100644
---- a/arch/arm64/kernel/syscall.c
-+++ b/arch/arm64/kernel/syscall.c
-@@ -81,7 +81,7 @@ void syscall_trace_exit(struct pt_regs *regs);
- static void el0_svc_common(struct pt_regs *regs, int scno, int sc_nr,
- 			   const syscall_fn_t syscall_table[])
- {
--	unsigned long flags = current_thread_info()->flags;
-+	unsigned long flags = read_thread_flags();
- 
- 	regs->orig_x0 = regs->regs[0];
- 	regs->syscallno = scno;
-@@ -148,7 +148,7 @@ static void el0_svc_common(struct pt_regs *regs, int scno, int sc_nr,
- 	 */
- 	if (!has_syscall_work(flags) && !IS_ENABLED(CONFIG_DEBUG_RSEQ)) {
- 		local_daif_mask();
--		flags = current_thread_info()->flags;
-+		flags = read_thread_flags();
- 		if (!has_syscall_work(flags) && !(flags & _TIF_SINGLESTEP))
- 			return;
- 		local_daif_restore(DAIF_PROCCTX);
