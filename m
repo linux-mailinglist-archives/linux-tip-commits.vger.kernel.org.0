@@ -2,105 +2,64 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 81E2345F61B
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 26 Nov 2021 21:58:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A25F8461027
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 29 Nov 2021 09:28:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232243AbhKZVBM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 26 Nov 2021 16:01:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35586 "EHLO
+        id S242989AbhK2Ibt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 29 Nov 2021 03:31:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43660 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233208AbhKZU7L (ORCPT
+        with ESMTP id S242997AbhK2I3s (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 26 Nov 2021 15:59:11 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33742C06174A;
-        Fri, 26 Nov 2021 12:55:58 -0800 (PST)
-Date:   Fri, 26 Nov 2021 20:55:54 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1637960156;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=wWG8u+VOdeVWUeJIxU7klJtFOqo3OGvVQ4jHKlMKvEo=;
-        b=KQLcCkI9NwZjs4jwF8HX8SqS8EF70vPdu1V1s2W7arcVOwy8+mHtPaGFTX2b886PVOiGaU
-        v4TSabE/A7b2gH+c1+QWbY2/FnN8V4/gmyYSloNdzF1BxCT0bvA5UXu8ujKhDMJ+7ljMaK
-        dVPAX1bzB4Pd6mRaVhZ72dnQH9Mo6fxqVX9NZzYyG8dvWKY8trk9f3rdaMeQUXNbV6dYbC
-        8PkN4d1UINcmtwARd2GTbnY1O3ZQ+iEXR2uhQvkq52E1L4wEJ8r/YkU7mELfxUilivhViy
-        00l3Z/rEF1dfdS9xb44IaM/RxPAzgR1jHwRI+quSekTiOMFQmysT/CiWdPWs3w==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1637960156;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=wWG8u+VOdeVWUeJIxU7klJtFOqo3OGvVQ4jHKlMKvEo=;
-        b=yR2wbB7QazzBhkiOhT6EE8eYzGB5jLhN+GeKjLEx/OGRV9N2eEi/ac9TR8gxCGqGiLgV/6
-        TBRlXqaFgzVYK+DA==
-From:   "tip-bot2 for Arnd Bergmann" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] futex: Fix sparc32/m68k/nds32 build regression
-Cc:     Stephen Rothwell <sfr@canb.auug.org.au>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20211126095852.455492-1-arnd@kernel.org>
-References: <20211126095852.455492-1-arnd@kernel.org>
+        Mon, 29 Nov 2021 03:29:48 -0500
+Received: from mail-lj1-x234.google.com (mail-lj1-x234.google.com [IPv6:2a00:1450:4864:20::234])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1668C0613A1
+        for <linux-tip-commits@vger.kernel.org>; Mon, 29 Nov 2021 00:23:05 -0800 (PST)
+Received: by mail-lj1-x234.google.com with SMTP id e11so32785745ljo.13
+        for <linux-tip-commits@vger.kernel.org>; Mon, 29 Nov 2021 00:23:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=h5SGxromuDQtUoJTnxkhza7HXaouvO2qwEGMHxx3weM=;
+        b=TXPNJdC2r1iwoSZ/Y8M1XP+KzZCam0+qziJjQijxTu5aqUDFE6JJ5XRer9/5Z/weKl
+         rORkmJ++sjeg2i1Hs/e4qXTBGXFuyqZx8Eto8SzExPVFZPit/3uugPFSTfC/iRStp2dK
+         zTqkbs3TjOi/Mt/fUFQj0qyYvXesuYhHwPMnKaOCoi1bhK05rgj2Y7cIVdTMJ3lrAuVa
+         b/TnI3IHqUGTLOmN2hylhI2F6JGPG5YiMC6Ha0EJyd7y27iYMJmJAqJE0WPGc5hj05tR
+         7UHjb4JyMX+pzzs4clVFpy9qfb0LhrQnc8xAoy3dGMm+Z4lMEPyRiNH0ltaXklCgXiXR
+         E/qg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=h5SGxromuDQtUoJTnxkhza7HXaouvO2qwEGMHxx3weM=;
+        b=qwOeejhFFTMoJJr2I/CAOahPtdSSvcdmTAS4uEdLmctBVPrjeayMX6ZJa0C4R+Y5J2
+         M/MJFtJgzmSy99UHPXpOPQ/DDEVDLTuPe8eyIJ+ha/ZoXYUUvSxbyoZ+A9HnvRFQJ/HJ
+         eVn8C3cOhQtFABcx0n846uI7pDqkzjEtBUKcyWTtwv7gWV70Ip59Zvprz5MQ3mOBS88D
+         VOCb4tVF+carL7v7C7MyqFm4e2InYiiMJCvYDfnWda0uL5lEJ5XvodtaZ6CVpuvyeCW7
+         hw67mENBUIStQhGsTLgXAebMPmdR0+oGQxt/LMber7KctyyC7NaGHElZHMKkyuVYB8jI
+         J11A==
+X-Gm-Message-State: AOAM533UcKUEsZaOjDXAAVocUiFvishuECjhTEQCHcgWokXg/D8KHhay
+        lHmjcztuWG8zoA5gmpAQaTKeVn7c5+IZ6u3yow==
+X-Google-Smtp-Source: ABdhPJz4zItSG/eUm7nkCJe5HruRiFSBp317oc5/jeAcc+fKYmc5q3XsdUdGc1yGDz5u04vm+2YL+vhHeLjaa7ACIcI=
+X-Received: by 2002:a2e:2a43:: with SMTP id q64mr47923476ljq.102.1638174183800;
+ Mon, 29 Nov 2021 00:23:03 -0800 (PST)
 MIME-Version: 1.0
-Message-ID: <163796015486.11128.17847641744551445643.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Received: by 2002:ab3:7796:0:0:0:0:0 with HTTP; Mon, 29 Nov 2021 00:23:03
+ -0800 (PST)
+Reply-To: evelyngaby76@gmail.com
+From:   Evelyn Gaby <evelyngaby313@gmail.com>
+Date:   Mon, 29 Nov 2021 08:23:03 +0000
+Message-ID: <CAA63f6y83iyLQjiOT2wVUYfXgSveYedA0FqnM8oZbkQt9TJucw@mail.gmail.com>
+Subject: Hello
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the locking/core branch of tip:
+.
+Please get back to me for more details,
+I like to disclose something very important to you,
 
-Commit-ID:     4e0d84634445ed550498d613a49ea8f6cfa5e66c
-Gitweb:        https://git.kernel.org/tip/4e0d84634445ed550498d613a49ea8f6cfa5e66c
-Author:        Arnd Bergmann <arnd@arndb.de>
-AuthorDate:    Fri, 26 Nov 2021 10:58:40 +01:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 26 Nov 2021 21:50:36 +01:00
-
-futex: Fix sparc32/m68k/nds32 build regression
-
-The recent futex cleanup series, botched up a rename of some function
-names, breaking sparc32, m68k and nds32:
-
-include/asm-generic/futex.h:17:2: error: implicit declaration of function 'futex_atomic_cmpxchg_inatomic_local_generic'; did you mean 'futex_atomic_cmpxchg_inatomic_local'? [-Werror=implicit-function-declaration]
-
-Fix the macros to point to the correct functions.
-
-Fixes: 3f2bedabb62c ("futex: Ensure futex_atomic_cmpxchg_inatomic() is present")
-Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20211126095852.455492-1-arnd@kernel.org
-
----
- include/asm-generic/futex.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/include/asm-generic/futex.h b/include/asm-generic/futex.h
-index 30e7fa6..66d6843 100644
---- a/include/asm-generic/futex.h
-+++ b/include/asm-generic/futex.h
-@@ -14,9 +14,9 @@
-  *
-  */
- #define futex_atomic_cmpxchg_inatomic(uval, uaddr, oldval, newval) \
--	futex_atomic_cmpxchg_inatomic_local_generic(uval, uaddr, oldval, newval)
-+	futex_atomic_cmpxchg_inatomic_local(uval, uaddr, oldval, newval)
- #define arch_futex_atomic_op_inuser(op, oparg, oval, uaddr) \
--	arch_futex_atomic_op_inuser_local_generic(op, oparg, oval, uaddr)
-+	futex_atomic_op_inuser_local(op, oparg, oval, uaddr)
- #endif /* CONFIG_SMP */
- #endif
- 
+Regards.
+Mrs Evelyn Gaby.
