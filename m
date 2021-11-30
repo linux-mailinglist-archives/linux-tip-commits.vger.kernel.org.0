@@ -2,52 +2,59 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E39F46411D
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 30 Nov 2021 23:13:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 50A154641D5
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 30 Nov 2021 23:56:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344606AbhK3WRN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 30 Nov 2021 17:17:13 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:36118 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344592AbhK3WPH (ORCPT
+        id S243877AbhK3XAH (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 30 Nov 2021 18:00:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60844 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234695AbhK3XAA (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 30 Nov 2021 17:15:07 -0500
-Date:   Tue, 30 Nov 2021 22:11:32 -0000
+        Tue, 30 Nov 2021 18:00:00 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C68A3C061746;
+        Tue, 30 Nov 2021 14:56:38 -0800 (PST)
+Date:   Tue, 30 Nov 2021 22:56:34 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1638310293;
+        s=2020; t=1638312995;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Da4qoGLkXk4oc5CJFif4JE9e/icdZitIkAFfPm7Z7g8=;
-        b=DBzkjw/aaBCIab1lldv3KsWsoDjU/rq6MzqQ3r4l3vTkckDLcY3c2sWqVbyyiKhePqYKZN
-        w2ZMnx3AidTtvx86gnOiXbbdfWmam3bcj2IZoMqPJMmGDFqJFpwzFBK2CHjZafef/M7tLh
-        8FP5dXV4uiKBLAPfG0m5ggN8ZO+MR0TMVHsqCgnF+GXKY5zg2a5mOVXV7PwJyvDu63wG2r
-        bdObMlPlHBShGg5BrUzG6HS6QcLeg+7sSW5ImI67bjq4LN2eSY6jvmciPzV/DVND17+eDR
-        xdop2woLhtRyyLefZ/Iyo6UlAbT0SVWpmASen8PHr+oephvZQ5DVTfNa1kWvXw==
+        bh=xQef0IT6F70Va/5SjEb4lPGuqE0knLueD/JUk1SrsjU=;
+        b=2+urwjfVkzH3iUKeeMcgWB/X3E6gUuZj+tDOCESLvf6RlzcSoLt4wxjHz4vGphqCSGipZ/
+        0LLI+HPv5Rm4cobBnj1sblyfXojD+4xZhbxUmtLGJPA+n9IBv49e7DgXT07IHQF5eKf1Xm
+        MGTFPSQxnfKOvgVzE0mob/nv5mAr+DZ/ZlZ52AzwPdzGxj0vzgK0mdzrdvHWvlSledOrEH
+        QK+UNa4PIRRo3Mxd5osaJdI/8SXztwCC5Pnt+qtVMIR7a9KwuZMaT5RHFgtxiCDhwrPCs4
+        KI+xmKF8gN/51D6VGYw5ZTrxx0bYX29burX/9tKA9pZC1an8+svqGARMmvZ+gQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1638310293;
+        s=2020e; t=1638312995;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Da4qoGLkXk4oc5CJFif4JE9e/icdZitIkAFfPm7Z7g8=;
-        b=hy4bOutgmoJXj3Fy4vXN6poEEopxpceyQ2gB+TzfwREXEsPYh00pRFDmkuug9aDbOohTEs
-        yl4ryWEZIfWjSBCQ==
-From:   "tip-bot2 for Tony Luck" <tip-bot2@linutronix.de>
+        bh=xQef0IT6F70Va/5SjEb4lPGuqE0knLueD/JUk1SrsjU=;
+        b=6zBQMqvvLJMkncUfuoF7dZ6OzMwwZJ3GCjGj9/TohzBuiNK1IJZ2hyh5fM9RzF1QkZCZNW
+        vI1kBf/ehDGFprCQ==
+From:   "tip-bot2 for Kirill A. Shutemov" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/cpu: Drop spurious underscore from RAPTOR_LAKE #define
-Cc:     Rui Zhang <rui.zhang@intel.com>, Tony Luck <tony.luck@intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+Subject: [tip: x86/misc] x86/sev-es: Use insn_decode_mmio() for MMIO implementation
+Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Andi Kleen <ak@linux.intel.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Joerg Roedel <jroedel@suse.de>,
+        Tom Lendacky <thomas.lendacky@amd.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20211119170832.1034220-1-tony.luck@intel.com>
-References: <20211119170832.1034220-1-tony.luck@intel.com>
+In-Reply-To: <20211130184933.31005-5-kirill.shutemov@linux.intel.com>
+References: <20211130184933.31005-5-kirill.shutemov@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <163831029203.11128.6368283864833885477.tip-bot2@tip-bot2>
+Message-ID: <163831299453.11128.8997662164565612069.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -56,40 +63,259 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the x86/misc branch of tip:
 
-Commit-ID:     7d697f0d5737768fa1039b8953b67c08d8d406d1
-Gitweb:        https://git.kernel.org/tip/7d697f0d5737768fa1039b8953b67c08d8d406d1
-Author:        Tony Luck <tony.luck@intel.com>
-AuthorDate:    Fri, 19 Nov 2021 09:08:32 -08:00
+Commit-ID:     c494eb366dbfc5095c0f159bbb5c6d4ec3ed37ec
+Gitweb:        https://git.kernel.org/tip/c494eb366dbfc5095c0f159bbb5c6d4ec3ed37ec
+Author:        Kirill A. Shutemov <kirill@shutemov.name>
+AuthorDate:    Tue, 30 Nov 2021 21:49:33 +03:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Tue, 30 Nov 2021 14:05:48 -08:00
+CommitterDate: Tue, 30 Nov 2021 14:53:30 -08:00
 
-x86/cpu: Drop spurious underscore from RAPTOR_LAKE #define
+x86/sev-es: Use insn_decode_mmio() for MMIO implementation
 
-Convention for all the other "lake" CPUs is all one word.
+Switch SEV implementation to insn_decode_mmio(). The helper is going
+to be used by TDX too.
 
-So s/RAPTOR_LAKE/RAPTORLAKE/
+No functional changes.
 
-Fixes: fbdb5e8f2926 ("x86/cpu: Add Raptor Lake to Intel family")
-Reported-by: Rui Zhang <rui.zhang@intel.com>
-Signed-off-by: Tony Luck <tony.luck@intel.com>
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lkml.kernel.org/r/20211119170832.1034220-1-tony.luck@intel.com
+Reviewed-by: Andi Kleen <ak@linux.intel.com>
+Reviewed-by: Tony Luck <tony.luck@intel.com>
+Tested-by: Joerg Roedel <jroedel@suse.de>
+Acked-by: Tom Lendacky <thomas.lendacky@amd.com>
+Link: https://lkml.kernel.org/r/20211130184933.31005-5-kirill.shutemov@linux.intel.com
 ---
- arch/x86/include/asm/intel-family.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/sev.c | 172 +++++++++--------------------------------
+ 1 file changed, 41 insertions(+), 131 deletions(-)
 
-diff --git a/arch/x86/include/asm/intel-family.h b/arch/x86/include/asm/intel-family.h
-index 5a0bcf8..048b6d5 100644
---- a/arch/x86/include/asm/intel-family.h
-+++ b/arch/x86/include/asm/intel-family.h
-@@ -108,7 +108,7 @@
- #define INTEL_FAM6_ALDERLAKE		0x97	/* Golden Cove / Gracemont */
- #define INTEL_FAM6_ALDERLAKE_L		0x9A	/* Golden Cove / Gracemont */
+diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
+index 74f0ec9..09c06c0 100644
+--- a/arch/x86/kernel/sev.c
++++ b/arch/x86/kernel/sev.c
+@@ -776,22 +776,6 @@ static void __init vc_early_forward_exception(struct es_em_ctxt *ctxt)
+ 	do_early_exception(ctxt->regs, trapnr);
+ }
  
--#define INTEL_FAM6_RAPTOR_LAKE		0xB7
-+#define INTEL_FAM6_RAPTORLAKE		0xB7
+-static long *vc_insn_get_reg(struct es_em_ctxt *ctxt)
+-{
+-	long *reg_array;
+-	int offset;
+-
+-	reg_array = (long *)ctxt->regs;
+-	offset    = insn_get_modrm_reg_off(&ctxt->insn, ctxt->regs);
+-
+-	if (offset < 0)
+-		return NULL;
+-
+-	offset /= sizeof(long);
+-
+-	return reg_array + offset;
+-}
+-
+ static long *vc_insn_get_rm(struct es_em_ctxt *ctxt)
+ {
+ 	long *reg_array;
+@@ -839,76 +823,6 @@ static enum es_result vc_do_mmio(struct ghcb *ghcb, struct es_em_ctxt *ctxt,
+ 	return sev_es_ghcb_hv_call(ghcb, true, ctxt, exit_code, exit_info_1, exit_info_2);
+ }
  
- /* "Small Core" Processors (Atom) */
+-static enum es_result vc_handle_mmio_twobyte_ops(struct ghcb *ghcb,
+-						 struct es_em_ctxt *ctxt)
+-{
+-	struct insn *insn = &ctxt->insn;
+-	unsigned int bytes = 0;
+-	enum es_result ret;
+-	int sign_byte;
+-	long *reg_data;
+-
+-	switch (insn->opcode.bytes[1]) {
+-		/* MMIO Read w/ zero-extension */
+-	case 0xb6:
+-		bytes = 1;
+-		fallthrough;
+-	case 0xb7:
+-		if (!bytes)
+-			bytes = 2;
+-
+-		ret = vc_do_mmio(ghcb, ctxt, bytes, true);
+-		if (ret)
+-			break;
+-
+-		/* Zero extend based on operand size */
+-		reg_data = vc_insn_get_reg(ctxt);
+-		if (!reg_data)
+-			return ES_DECODE_FAILED;
+-
+-		memset(reg_data, 0, insn->opnd_bytes);
+-
+-		memcpy(reg_data, ghcb->shared_buffer, bytes);
+-		break;
+-
+-		/* MMIO Read w/ sign-extension */
+-	case 0xbe:
+-		bytes = 1;
+-		fallthrough;
+-	case 0xbf:
+-		if (!bytes)
+-			bytes = 2;
+-
+-		ret = vc_do_mmio(ghcb, ctxt, bytes, true);
+-		if (ret)
+-			break;
+-
+-		/* Sign extend based on operand size */
+-		reg_data = vc_insn_get_reg(ctxt);
+-		if (!reg_data)
+-			return ES_DECODE_FAILED;
+-
+-		if (bytes == 1) {
+-			u8 *val = (u8 *)ghcb->shared_buffer;
+-
+-			sign_byte = (*val & 0x80) ? 0xff : 0x00;
+-		} else {
+-			u16 *val = (u16 *)ghcb->shared_buffer;
+-
+-			sign_byte = (*val & 0x8000) ? 0xff : 0x00;
+-		}
+-		memset(reg_data, sign_byte, insn->opnd_bytes);
+-
+-		memcpy(reg_data, ghcb->shared_buffer, bytes);
+-		break;
+-
+-	default:
+-		ret = ES_UNSUPPORTED;
+-	}
+-
+-	return ret;
+-}
+-
+ /*
+  * The MOVS instruction has two memory operands, which raises the
+  * problem that it is not known whether the access to the source or the
+@@ -976,83 +890,79 @@ static enum es_result vc_handle_mmio_movs(struct es_em_ctxt *ctxt,
+ 		return ES_RETRY;
+ }
  
+-static enum es_result vc_handle_mmio(struct ghcb *ghcb,
+-				     struct es_em_ctxt *ctxt)
++static enum es_result vc_handle_mmio(struct ghcb *ghcb, struct es_em_ctxt *ctxt)
+ {
+ 	struct insn *insn = &ctxt->insn;
+ 	unsigned int bytes = 0;
++	enum mmio_type mmio;
+ 	enum es_result ret;
++	u8 sign_byte;
+ 	long *reg_data;
+ 
+-	switch (insn->opcode.bytes[0]) {
+-	/* MMIO Write */
+-	case 0x88:
+-		bytes = 1;
+-		fallthrough;
+-	case 0x89:
+-		if (!bytes)
+-			bytes = insn->opnd_bytes;
++	mmio = insn_decode_mmio(insn, &bytes);
++	if (mmio == MMIO_DECODE_FAILED)
++		return ES_DECODE_FAILED;
+ 
+-		reg_data = vc_insn_get_reg(ctxt);
++	if (mmio != MMIO_WRITE_IMM && mmio != MMIO_MOVS) {
++		reg_data = insn_get_modrm_reg_ptr(insn, ctxt->regs);
+ 		if (!reg_data)
+ 			return ES_DECODE_FAILED;
++	}
+ 
++	switch (mmio) {
++	case MMIO_WRITE:
+ 		memcpy(ghcb->shared_buffer, reg_data, bytes);
+-
+ 		ret = vc_do_mmio(ghcb, ctxt, bytes, false);
+ 		break;
+-
+-	case 0xc6:
+-		bytes = 1;
+-		fallthrough;
+-	case 0xc7:
+-		if (!bytes)
+-			bytes = insn->opnd_bytes;
+-
++	case MMIO_WRITE_IMM:
+ 		memcpy(ghcb->shared_buffer, insn->immediate1.bytes, bytes);
+-
+ 		ret = vc_do_mmio(ghcb, ctxt, bytes, false);
+ 		break;
+-
+-		/* MMIO Read */
+-	case 0x8a:
+-		bytes = 1;
+-		fallthrough;
+-	case 0x8b:
+-		if (!bytes)
+-			bytes = insn->opnd_bytes;
+-
++	case MMIO_READ:
+ 		ret = vc_do_mmio(ghcb, ctxt, bytes, true);
+ 		if (ret)
+ 			break;
+ 
+-		reg_data = vc_insn_get_reg(ctxt);
+-		if (!reg_data)
+-			return ES_DECODE_FAILED;
+-
+ 		/* Zero-extend for 32-bit operation */
+ 		if (bytes == 4)
+ 			*reg_data = 0;
+ 
+ 		memcpy(reg_data, ghcb->shared_buffer, bytes);
+ 		break;
++	case MMIO_READ_ZERO_EXTEND:
++		ret = vc_do_mmio(ghcb, ctxt, bytes, true);
++		if (ret)
++			break;
++
++		/* Zero extend based on operand size */
++		memset(reg_data, 0, insn->opnd_bytes);
++		memcpy(reg_data, ghcb->shared_buffer, bytes);
++		break;
++	case MMIO_READ_SIGN_EXTEND:
++		ret = vc_do_mmio(ghcb, ctxt, bytes, true);
++		if (ret)
++			break;
+ 
+-		/* MOVS instruction */
+-	case 0xa4:
+-		bytes = 1;
+-		fallthrough;
+-	case 0xa5:
+-		if (!bytes)
+-			bytes = insn->opnd_bytes;
++		if (bytes == 1) {
++			u8 *val = (u8 *)ghcb->shared_buffer;
+ 
+-		ret = vc_handle_mmio_movs(ctxt, bytes);
++			sign_byte = (*val & 0x80) ? 0xff : 0x00;
++		} else {
++			u16 *val = (u16 *)ghcb->shared_buffer;
++
++			sign_byte = (*val & 0x8000) ? 0xff : 0x00;
++		}
++
++		/* Sign extend based on operand size */
++		memset(reg_data, sign_byte, insn->opnd_bytes);
++		memcpy(reg_data, ghcb->shared_buffer, bytes);
+ 		break;
+-		/* Two-Byte Opcodes */
+-	case 0x0f:
+-		ret = vc_handle_mmio_twobyte_ops(ghcb, ctxt);
++	case MMIO_MOVS:
++		ret = vc_handle_mmio_movs(ctxt, bytes);
+ 		break;
+ 	default:
+ 		ret = ES_UNSUPPORTED;
++		break;
+ 	}
+ 
+ 	return ret;
