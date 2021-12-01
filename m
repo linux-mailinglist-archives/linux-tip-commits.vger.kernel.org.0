@@ -2,56 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 10918464239
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  1 Dec 2021 00:22:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A317E4643F3
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  1 Dec 2021 01:33:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239178AbhK3X0H (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 30 Nov 2021 18:26:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38572 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238891AbhK3X0D (ORCPT
+        id S1345771AbhLAAgZ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 30 Nov 2021 19:36:25 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:37018 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1345744AbhLAAgZ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 30 Nov 2021 18:26:03 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D38FC061574;
-        Tue, 30 Nov 2021 15:22:41 -0800 (PST)
-Date:   Tue, 30 Nov 2021 23:22:37 -0000
+        Tue, 30 Nov 2021 19:36:25 -0500
+Date:   Wed, 01 Dec 2021 00:33:02 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1638314559;
+        s=2020; t=1638318783;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=C8iMH2Ed8C2uouwXugRDlsoZFisgLCua+SBbCFNPpYs=;
-        b=2RWUod4yzv7on4mZFoMvC5lxBKojWFH9UHU22Z5kmkLCChi0+oFgtui2ZB0TjMjj8pNG2Z
-        eLPpUSxeP9wefDNbpHTmsl/hOkGLssR9/5iZvXEUJziQgbYH0wq4bY/NHpeAjazHBK3ueI
-        9NtI7YJ/dSYC5zus7B09sTj3bpdBlNbKiQLa4YWYcLP84jV/XXlcjBX2T8VZczHjyWrPTU
-        WDu5igx0FmdpGbi1EJXAUknZ50sZYy2RMMixD9f+LhKMtIed64sonmBDJy1YATDhcGjPb5
-        fxRcXBoHONVeh8Fl6YE4BtKWWRdLIqhM9skMqmITxPjwNYwPLxcc1mq3A5Ngag==
+        bh=rezJIXcD/bfCi74XzQZQj0U0qRybCQo491/BBzNqnj8=;
+        b=2QXb9qOlyp4NEMi8Y1O6UjLAijytKz18H159rubRJK5bcTR1flsOoQnqBGf2L6UsokOace
+        jAt2+i0yVs/dm2sFW9YJj9egXUOtzGRYsNgHkz3iKMtYRlK25ma01hG+gZ6Um0wrr40rAu
+        tUhrNe7JcS3YMI5wmXsKlvMppsF4j+PmMl/nFkkFLII1+n013xnIRHHSIDc5aEh8/3oNpi
+        98A4RNrhocXzRjIAYcTVTxPhYu+mzhZecO8vxpBdBLo42cA6DOzDRYKzRm+RbzB5rZ4rd8
+        RG0x2Kjw23MNWzaSIyI3f3EgDJeTjp/ba7bda/GyapWImABJr7MwtUGALPYVOA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1638314559;
+        s=2020e; t=1638318783;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=C8iMH2Ed8C2uouwXugRDlsoZFisgLCua+SBbCFNPpYs=;
-        b=/XDEIHdHmT9AC5SL+wt25TH7OL6fTvIBI4oBmrIwZplFi9mhnH8dtCZeVk+XUiRaaN9Fdv
-        Jn1hwYnryvzrdHAg==
-From:   "tip-bot2 for Marco Elver" <tip-bot2@linutronix.de>
+        bh=rezJIXcD/bfCi74XzQZQj0U0qRybCQo491/BBzNqnj8=;
+        b=JxywvDMW2JTOBct2r3p6eHiDE1jMHbRDaner2GTJmNE/vMpPwkVZdydrxLMBbhXUPLPQP/
+        eWeuJiAL2mlCzVAg==
+From:   "tip-bot2 for Eric Dumazet" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/fpu/signal: Initialize sw_bytes in save_xstate_epilog()
-Cc:     Alexander Potapenko <glider@google.com>,
-        Marco Elver <elver@google.com>,
+Subject: [tip: x86/core] x86/csum: Fix initial seed for odd buffers
+Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Noah Goldstein <goldstein.w.n@gmail.com>,
+        Eric Dumazet <edumazet@google.com>,
         Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20211126124746.761278-1-glider@google.com>
-References: <20211126124746.761278-1-glider@google.com>
+In-Reply-To: <20211125141817.3541501-1-eric.dumazet@gmail.com>
+References: <20211125141817.3541501-1-eric.dumazet@gmail.com>
 MIME-Version: 1.0
-Message-ID: <163831455793.11128.4485814974540705191.tip-bot2@tip-bot2>
+Message-ID: <163831878239.11128.3793034988701149763.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,75 +58,69 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the x86/core branch of tip:
 
-Commit-ID:     52d0b8b18776f184c53632c5e0068201491cdb61
-Gitweb:        https://git.kernel.org/tip/52d0b8b18776f184c53632c5e0068201491cdb61
-Author:        Marco Elver <elver@google.com>
-AuthorDate:    Fri, 26 Nov 2021 13:47:46 +01:00
+Commit-ID:     2a144bcd661c4f0a503e03f9280e88854ac0bb37
+Gitweb:        https://git.kernel.org/tip/2a144bcd661c4f0a503e03f9280e88854ac0bb37
+Author:        Eric Dumazet <edumazet@google.com>
+AuthorDate:    Thu, 25 Nov 2021 06:18:17 -08:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Tue, 30 Nov 2021 15:13:47 -08:00
+CommitterDate: Tue, 30 Nov 2021 16:26:03 -08:00
 
-x86/fpu/signal: Initialize sw_bytes in save_xstate_epilog()
+x86/csum: Fix initial seed for odd buffers
 
-save_sw_bytes() did not fully initialize sw_bytes, which caused KMSAN
-to report an infoleak (see below).
-Initialize sw_bytes explicitly to avoid this.
+When I folded do_csum() into csum_partial(), I missed that we
+had to swap odd/even bytes from @sum argument.
 
-KMSAN report follows:
+This is because this swap will happen again at the end of the function.
 
-=====================================================
-BUG: KMSAN: kernel-infoleak in instrument_copy_to_user ./include/linux/instrumented.h:121
-BUG: KMSAN: kernel-infoleak in __copy_to_user ./include/linux/uaccess.h:154
-BUG: KMSAN: kernel-infoleak in save_xstate_epilog+0x2df/0x510 arch/x86/kernel/fpu/signal.c:127
- instrument_copy_to_user ./include/linux/instrumented.h:121
- __copy_to_user ./include/linux/uaccess.h:154
- save_xstate_epilog+0x2df/0x510 arch/x86/kernel/fpu/signal.c:127
- copy_fpstate_to_sigframe+0x861/0xb60 arch/x86/kernel/fpu/signal.c:245
- get_sigframe+0x656/0x7e0 arch/x86/kernel/signal.c:296
- __setup_rt_frame+0x14d/0x2a60 arch/x86/kernel/signal.c:471
- setup_rt_frame arch/x86/kernel/signal.c:781
- handle_signal arch/x86/kernel/signal.c:825
- arch_do_signal_or_restart+0x417/0xdd0 arch/x86/kernel/signal.c:870
- handle_signal_work kernel/entry/common.c:149
- exit_to_user_mode_loop+0x1f6/0x490 kernel/entry/common.c:173
- exit_to_user_mode_prepare kernel/entry/common.c:208
- __syscall_exit_to_user_mode_work kernel/entry/common.c:290
- syscall_exit_to_user_mode+0x7e/0xc0 kernel/entry/common.c:302
- do_syscall_64+0x60/0xd0 arch/x86/entry/common.c:88
- entry_SYSCALL_64_after_hwframe+0x44/0xae ??:?
+[A, B, C, D] -> [B, A, D, C]
 
-Local variable sw_bytes created at:
- save_xstate_epilog+0x80/0x510 arch/x86/kernel/fpu/signal.c:121
- copy_fpstate_to_sigframe+0x861/0xb60 arch/x86/kernel/fpu/signal.c:245
+As far as Internet checksums (rfc 1071) are concerned, we can instead
+rotate the whole 32bit value by 8 (or 24)
 
-Bytes 20-47 of 48 are uninitialized
-Memory access of size 48 starts at ffff8880801d3a18
-Data copied to user address 00007ffd90e2ef50
-=====================================================
+-> [D, A, B, C]
 
-Link: https://lore.kernel.org/all/CAG_fn=V9T6OKPonSjsi9PmWB0hMHFC=yawozdft8i1-MSxrv=w@mail.gmail.com/
-Fixes: 53599b4d54b9b8dd ("x86/fpu/signal: Prepare for variable sigframe length")
-Reported-by: Alexander Potapenko <glider@google.com>
-Signed-off-by: Marco Elver <elver@google.com>
-Signed-off-by: Alexander Potapenko <glider@google.com>
+Note that I played with the idea of replacing this final swapping:
+
+    result = from32to16(result);
+    result = ((result >> 8) & 0xff) | ((result & 0xff) << 8);
+
+With:
+
+    result = ror32(result, 8);
+
+But while the generated code was definitely better for the odd case,
+run time cost for the more likely even case was not better for gcc.
+
+gcc is replacing a well predicted conditional branch
+with a cmov instruction after a ror instruction which adds
+a cost canceling the cmov gain.
+
+Many thanks to Noah Goldstein for reporting this issue.
+
+[ dhansen: * spelling: swaping => swapping
+	   * updated Fixes commit  ]
+
+Cc: Peter Zijlstra (Intel) <peterz@infradead.org>
+Fixes: d31c3c683ee6 ("x86/csum: Rewrite/optimize csum_partial()")
+Reported-by: Noah Goldstein <goldstein.w.n@gmail.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Tested-by: Alexander Potapenko <glider@google.com>
-Link: https://lkml.kernel.org/r/20211126124746.761278-1-glider@google.com
+Link: https://lkml.kernel.org/r/20211125141817.3541501-1-eric.dumazet@gmail.com
 ---
- arch/x86/kernel/fpu/signal.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/lib/csum-partial_64.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/kernel/fpu/signal.c b/arch/x86/kernel/fpu/signal.c
-index d595827..91d4b6d 100644
---- a/arch/x86/kernel/fpu/signal.c
-+++ b/arch/x86/kernel/fpu/signal.c
-@@ -118,7 +118,7 @@ static inline bool save_xstate_epilog(void __user *buf, int ia32_frame,
- 				      struct fpstate *fpstate)
- {
- 	struct xregs_state __user *x = buf;
--	struct _fpx_sw_bytes sw_bytes;
-+	struct _fpx_sw_bytes sw_bytes = {};
- 	u32 xfeatures;
- 	int err;
- 
+diff --git a/arch/x86/lib/csum-partial_64.c b/arch/x86/lib/csum-partial_64.c
+index 1eb8f2d..40b527b 100644
+--- a/arch/x86/lib/csum-partial_64.c
++++ b/arch/x86/lib/csum-partial_64.c
+@@ -41,6 +41,7 @@ __wsum csum_partial(const void *buff, int len, __wsum sum)
+ 	if (unlikely(odd)) {
+ 		if (unlikely(len == 0))
+ 			return sum;
++		temp64 = ror32((__force u32)sum, 8);
+ 		temp64 += (*(unsigned char *)buff << 8);
+ 		len--;
+ 		buff++;
