@@ -2,54 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A317E4643F3
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  1 Dec 2021 01:33:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CB614659F2
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  2 Dec 2021 00:47:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345771AbhLAAgZ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 30 Nov 2021 19:36:25 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:37018 "EHLO
+        id S1353853AbhLAXu3 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 1 Dec 2021 18:50:29 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:44084 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345744AbhLAAgZ (ORCPT
+        with ESMTP id S1353823AbhLAXu2 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 30 Nov 2021 19:36:25 -0500
-Date:   Wed, 01 Dec 2021 00:33:02 -0000
+        Wed, 1 Dec 2021 18:50:28 -0500
+Date:   Wed, 01 Dec 2021 23:47:03 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1638318783;
+        s=2020; t=1638402425;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=rezJIXcD/bfCi74XzQZQj0U0qRybCQo491/BBzNqnj8=;
-        b=2QXb9qOlyp4NEMi8Y1O6UjLAijytKz18H159rubRJK5bcTR1flsOoQnqBGf2L6UsokOace
-        jAt2+i0yVs/dm2sFW9YJj9egXUOtzGRYsNgHkz3iKMtYRlK25ma01hG+gZ6Um0wrr40rAu
-        tUhrNe7JcS3YMI5wmXsKlvMppsF4j+PmMl/nFkkFLII1+n013xnIRHHSIDc5aEh8/3oNpi
-        98A4RNrhocXzRjIAYcTVTxPhYu+mzhZecO8vxpBdBLo42cA6DOzDRYKzRm+RbzB5rZ4rd8
-        RG0x2Kjw23MNWzaSIyI3f3EgDJeTjp/ba7bda/GyapWImABJr7MwtUGALPYVOA==
+        bh=s59PtGQGPD2YRyZrbVk1TXoitco8b8rZhZ3+gHWGsqo=;
+        b=R7FM6oweFSDPD4+wcBd2I8YecZZ0bmCgiV5+l8nfno5ONgilLItrUyasfdusa7HEBkG1cV
+        hVpuKVggrTq6xBeUdDTs60+u6FIjCCy5tAyoVPcIqMXW+jxgeBzxwETVRKha7exOYVD5Iq
+        icstY4PYqbNVsgIHi7W1RO9rdS3ibUqKIHdhlHJaNvBNE5qfZWRMwgwxSXg1Qdpk0KFFYZ
+        1842eP9kr3CsA66vIbfXf6aoxPfQ36+tvNYW7s5BhosTQUnQCQpbh+v42DT9IuTVTmUTmB
+        b+7/rQbdkEE+SvcpO2wil8MVHWIScAK8MBXpz2wISzXDD7ahHEJXWknlS1+tGA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1638318783;
+        s=2020e; t=1638402425;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=rezJIXcD/bfCi74XzQZQj0U0qRybCQo491/BBzNqnj8=;
-        b=JxywvDMW2JTOBct2r3p6eHiDE1jMHbRDaner2GTJmNE/vMpPwkVZdydrxLMBbhXUPLPQP/
-        eWeuJiAL2mlCzVAg==
-From:   "tip-bot2 for Eric Dumazet" <tip-bot2@linutronix.de>
+        bh=s59PtGQGPD2YRyZrbVk1TXoitco8b8rZhZ3+gHWGsqo=;
+        b=Esk/omZLuT1/MG7r0zzjbiQye4XjD/PQutCW9M+BLqeFOWYF8KuQ0FYZ64l86rvyfTwr7p
+        4j5D/ckHQbkLwXBQ==
+From:   "tip-bot2 for Feng Tang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/core] x86/csum: Fix initial seed for odd buffers
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Noah Goldstein <goldstein.w.n@gmail.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20211125141817.3541501-1-eric.dumazet@gmail.com>
-References: <20211125141817.3541501-1-eric.dumazet@gmail.com>
+Subject: [tip: x86/urgent] x86/tsc: Disable clocksource watchdog for TSC on
+ qualified platorms
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Feng Tang <feng.tang@intel.com>,
+        "Paul E. McKenney" <paulmck@kernel.org>, stable@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20211117023751.24190-2-feng.tang@intel.com>
+References: <20211117023751.24190-2-feng.tang@intel.com>
 MIME-Version: 1.0
-Message-ID: <163831878239.11128.3793034988701149763.tip-bot2@tip-bot2>
+Message-ID: <163840242372.11128.2601584703913368347.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,69 +58,131 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/core branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     2a144bcd661c4f0a503e03f9280e88854ac0bb37
-Gitweb:        https://git.kernel.org/tip/2a144bcd661c4f0a503e03f9280e88854ac0bb37
-Author:        Eric Dumazet <edumazet@google.com>
-AuthorDate:    Thu, 25 Nov 2021 06:18:17 -08:00
-Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Tue, 30 Nov 2021 16:26:03 -08:00
+Commit-ID:     b50db7095fe002fa3e16605546cba66bf1b68a3e
+Gitweb:        https://git.kernel.org/tip/b50db7095fe002fa3e16605546cba66bf1b68a3e
+Author:        Feng Tang <feng.tang@intel.com>
+AuthorDate:    Wed, 17 Nov 2021 10:37:51 +08:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Thu, 02 Dec 2021 00:40:36 +01:00
 
-x86/csum: Fix initial seed for odd buffers
+x86/tsc: Disable clocksource watchdog for TSC on qualified platorms
 
-When I folded do_csum() into csum_partial(), I missed that we
-had to swap odd/even bytes from @sum argument.
+There are cases that the TSC clocksource is wrongly judged as unstable by
+the clocksource watchdog mechanism which tries to validate the TSC against
+HPET, PM_TIMER or jiffies. While there is hardly a general reliable way to
+check the validity of a watchdog, Thomas Gleixner proposed [1]:
 
-This is because this swap will happen again at the end of the function.
+"I'm inclined to lift that requirement when the CPU has:
 
-[A, B, C, D] -> [B, A, D, C]
+    1) X86_FEATURE_CONSTANT_TSC
+    2) X86_FEATURE_NONSTOP_TSC
+    3) X86_FEATURE_NONSTOP_TSC_S3
+    4) X86_FEATURE_TSC_ADJUST
+    5) At max. 4 sockets
 
-As far as Internet checksums (rfc 1071) are concerned, we can instead
-rotate the whole 32bit value by 8 (or 24)
+ After two decades of horrors we're finally at a point where TSC seems
+ to be halfway reliable and less abused by BIOS tinkerers. TSC_ADJUST
+ was really key as we can now detect even small modifications reliably
+ and the important point is that we can cure them as well (not pretty
+ but better than all other options)."
 
--> [D, A, B, C]
+As feature #3 X86_FEATURE_NONSTOP_TSC_S3 only exists on several generations
+of Atom processorz, and is always coupled with X86_FEATURE_CONSTANT_TSC
+and X86_FEATURE_NONSTOP_TSC, skip checking it, and also be more defensive
+to use maximal 2 sockets.
 
-Note that I played with the idea of replacing this final swapping:
+The check is done inside tsc_init() before registering 'tsc-early' and
+'tsc' clocksources, as there were cases that both of them had been
+wrongly judged as unreliable.
 
-    result = from32to16(result);
-    result = ((result >> 8) & 0xff) | ((result & 0xff) << 8);
+For more background of tsc/watchdog, there is a good summary in [2]
 
-With:
+[tglx} Update vs. jiffies:
 
-    result = ror32(result, 8);
+  On systems where the only remaining clocksource aside of TSC is jiffies
+  there is no way to make this work because that creates a circular
+  dependency. Jiffies accuracy depends on not missing a periodic timer
+  interrupt, which is not guaranteed. That could be detected by TSC, but as
+  TSC is not trusted this cannot be compensated. The consequence is a
+  circulus vitiosus which results in shutting down TSC and falling back to
+  the jiffies clocksource which is even more unreliable.
 
-But while the generated code was definitely better for the odd case,
-run time cost for the more likely even case was not better for gcc.
+[1]. https://lore.kernel.org/lkml/87eekfk8bd.fsf@nanos.tec.linutronix.de/
+[2]. https://lore.kernel.org/lkml/87a6pimt1f.ffs@nanos.tec.linutronix.de/
 
-gcc is replacing a well predicted conditional branch
-with a cmov instruction after a ror instruction which adds
-a cost canceling the cmov gain.
+[ tglx: Refine comment and amend changelog ]
 
-Many thanks to Noah Goldstein for reporting this issue.
+Fixes: 6e3cd95234dc ("x86/hpet: Use another crystalball to evaluate HPET usability")
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Feng Tang <feng.tang@intel.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: "Paul E. McKenney" <paulmck@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20211117023751.24190-2-feng.tang@intel.com
 
-[ dhansen: * spelling: swaping => swapping
-	   * updated Fixes commit  ]
-
-Cc: Peter Zijlstra (Intel) <peterz@infradead.org>
-Fixes: d31c3c683ee6 ("x86/csum: Rewrite/optimize csum_partial()")
-Reported-by: Noah Goldstein <goldstein.w.n@gmail.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lkml.kernel.org/r/20211125141817.3541501-1-eric.dumazet@gmail.com
 ---
- arch/x86/lib/csum-partial_64.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/kernel/tsc.c | 28 ++++++++++++++++++++++++----
+ 1 file changed, 24 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/lib/csum-partial_64.c b/arch/x86/lib/csum-partial_64.c
-index 1eb8f2d..40b527b 100644
---- a/arch/x86/lib/csum-partial_64.c
-+++ b/arch/x86/lib/csum-partial_64.c
-@@ -41,6 +41,7 @@ __wsum csum_partial(const void *buff, int len, __wsum sum)
- 	if (unlikely(odd)) {
- 		if (unlikely(len == 0))
- 			return sum;
-+		temp64 = ror32((__force u32)sum, 8);
- 		temp64 += (*(unsigned char *)buff << 8);
- 		len--;
- 		buff++;
+diff --git a/arch/x86/kernel/tsc.c b/arch/x86/kernel/tsc.c
+index 2e076a4..a698196 100644
+--- a/arch/x86/kernel/tsc.c
++++ b/arch/x86/kernel/tsc.c
+@@ -1180,6 +1180,12 @@ void mark_tsc_unstable(char *reason)
+ 
+ EXPORT_SYMBOL_GPL(mark_tsc_unstable);
+ 
++static void __init tsc_disable_clocksource_watchdog(void)
++{
++	clocksource_tsc_early.flags &= ~CLOCK_SOURCE_MUST_VERIFY;
++	clocksource_tsc.flags &= ~CLOCK_SOURCE_MUST_VERIFY;
++}
++
+ static void __init check_system_tsc_reliable(void)
+ {
+ #if defined(CONFIG_MGEODEGX1) || defined(CONFIG_MGEODE_LX) || defined(CONFIG_X86_GENERIC)
+@@ -1196,6 +1202,23 @@ static void __init check_system_tsc_reliable(void)
+ #endif
+ 	if (boot_cpu_has(X86_FEATURE_TSC_RELIABLE))
+ 		tsc_clocksource_reliable = 1;
++
++	/*
++	 * Disable the clocksource watchdog when the system has:
++	 *  - TSC running at constant frequency
++	 *  - TSC which does not stop in C-States
++	 *  - the TSC_ADJUST register which allows to detect even minimal
++	 *    modifications
++	 *  - not more than two sockets. As the number of sockets cannot be
++	 *    evaluated at the early boot stage where this has to be
++	 *    invoked, check the number of online memory nodes as a
++	 *    fallback solution which is an reasonable estimate.
++	 */
++	if (boot_cpu_has(X86_FEATURE_CONSTANT_TSC) &&
++	    boot_cpu_has(X86_FEATURE_NONSTOP_TSC) &&
++	    boot_cpu_has(X86_FEATURE_TSC_ADJUST) &&
++	    nr_online_nodes <= 2)
++		tsc_disable_clocksource_watchdog();
+ }
+ 
+ /*
+@@ -1387,9 +1410,6 @@ static int __init init_tsc_clocksource(void)
+ 	if (tsc_unstable)
+ 		goto unreg;
+ 
+-	if (tsc_clocksource_reliable || no_tsc_watchdog)
+-		clocksource_tsc.flags &= ~CLOCK_SOURCE_MUST_VERIFY;
+-
+ 	if (boot_cpu_has(X86_FEATURE_NONSTOP_TSC_S3))
+ 		clocksource_tsc.flags |= CLOCK_SOURCE_SUSPEND_NONSTOP;
+ 
+@@ -1527,7 +1547,7 @@ void __init tsc_init(void)
+ 	}
+ 
+ 	if (tsc_clocksource_reliable || no_tsc_watchdog)
+-		clocksource_tsc_early.flags &= ~CLOCK_SOURCE_MUST_VERIFY;
++		tsc_disable_clocksource_watchdog();
+ 
+ 	clocksource_register_khz(&clocksource_tsc_early, tsc_khz);
+ 	detect_art();
