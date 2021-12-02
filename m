@@ -2,54 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 64B084659F1
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  2 Dec 2021 00:47:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 19B414664ED
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  2 Dec 2021 15:12:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353850AbhLAXu3 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 1 Dec 2021 18:50:29 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:44080 "EHLO
+        id S1355133AbhLBOQB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 2 Dec 2021 09:16:01 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:48618 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1353824AbhLAXu2 (ORCPT
+        with ESMTP id S239448AbhLBOP7 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 1 Dec 2021 18:50:28 -0500
-Date:   Wed, 01 Dec 2021 23:47:04 -0000
+        Thu, 2 Dec 2021 09:15:59 -0500
+Date:   Thu, 02 Dec 2021 14:12:33 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1638402425;
+        s=2020; t=1638454355;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=UZW5YmBZqJbojMvF/ejvNn2IwF4kXk5VTaNUGceK7FA=;
-        b=1pDTfp+L8DVkhGJzqZTyjAD87ZyZ2ktkHzphUq9hQq14rk7wUU2Sdh4RLqbVNxkHNv3YQ3
-        1jqooiAD7dOG4QZAxQ6B+dLzCopF/9Zwd64zKvkHvAkVQ6RG7MWNpatVB73zkjaOAyXlzr
-        4QpuWqqWrWowr3dIKH50hP7d0xtyHLLeUWjBQqwqW7k1JIm684Mw+aEIZhqpZQYjb79acz
-        1pLik6MZ3HCEm+Z565AGMJiUgP44elcccWf5b0AIWZF29pjNPommyKe4wMvOJMfesddOlU
-        FibZ5eLco4nLYH7g/KJ2W0USyGlhsDmkibWNA3J59GoKYms3vtU14REnSBSHng==
+        bh=NuFwk2J9Qv7//sgGcuDGt+74MdZfbJfLkF7V7ZFfUj8=;
+        b=UONw5YVZquomqts/OANcejsap657H387QhVSJGh/5abTpG4+y8kTixsEwaDrGHaiJ6SMlC
+        L7rS04kml13r0ogWUc03FM/9gNo0ilMue75F7YJBkbYdLUjm9qZzgmMR1EVHTfLLwRMzMs
+        NDYjkBlQ5nktNEcZTFeYFlruKFwBFc9wORFOtW3mdvX/AFaeVfoFOaFQyAVGaUkvktPWpN
+        XgZgpx7CyYMEP8AuG90i1WsA8s22VWDZBNXSdQzwqIb1urvzwagxcPS3rt8L7QmiTclt3S
+        0dB91AYFjP/EGtWzr9YOYR9F4Mug07nhUFGueKcxLGestSpCFLFUVoipTzW9Fg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1638402425;
+        s=2020e; t=1638454355;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=UZW5YmBZqJbojMvF/ejvNn2IwF4kXk5VTaNUGceK7FA=;
-        b=aJqaaxhAfSBKwWdq8lOMevTQzxtygHPiX1sFIR8JXL68rqFlxZAtvyHU4vDB+i/ZyvBB3I
-        Fr2LDxm4hhjoj6BQ==
-From:   "tip-bot2 for Feng Tang" <tip-bot2@linutronix.de>
+        bh=NuFwk2J9Qv7//sgGcuDGt+74MdZfbJfLkF7V7ZFfUj8=;
+        b=JXQtZ9F9dz/vPCO+bY4GzO7xP+R0C4FvhcqEZnz6JOfhYX04woFE3chKqaJwSN9rH3MLlP
+        l0DTb/TNjRCizXAw==
+From:   "tip-bot2 for Frederic Weisbecker" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/tsc: Add a timer to make sure TSC_adjust is
- always checked
-Cc:     Feng Tang <feng.tang@intel.com>,
+Subject: [tip: sched/urgent] sched/cputime: Fix getrusage(RUSAGE_THREAD) with
+ nohz_full
+Cc:     Hasegawa Hitomi <hasegawa-hitomi@fujitsu.com>,
+        Frederic Weisbecker <frederic@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>,
-        "Paul E. McKenney" <paulmck@kernel.org>, stable@vger.kernel.org,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20211117023751.24190-1-feng.tang@intel.com>
-References: <20211117023751.24190-1-feng.tang@intel.com>
+        Masayoshi Mizuma <m.mizuma@jp.fujitsu.com>,
+        Phil Auld <pauld@redhat.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20211026141055.57358-3-frederic@kernel.org>
+References: <20211026141055.57358-3-frederic@kernel.org>
 MIME-Version: 1.0
-Message-ID: <163840242483.11128.8915758153074569974.tip-bot2@tip-bot2>
+Message-ID: <163845435389.11128.15096993127413247810.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,95 +60,119 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     c7719e79347803b8e3b6b50da8c6db410a3012b5
-Gitweb:        https://git.kernel.org/tip/c7719e79347803b8e3b6b50da8c6db410a3012b5
-Author:        Feng Tang <feng.tang@intel.com>
-AuthorDate:    Wed, 17 Nov 2021 10:37:50 +08:00
+Commit-ID:     e7f2be115f0746b969c0df14c0d182f65f005ca5
+Gitweb:        https://git.kernel.org/tip/e7f2be115f0746b969c0df14c0d182f65f005ca5
+Author:        Frederic Weisbecker <frederic@kernel.org>
+AuthorDate:    Tue, 26 Oct 2021 16:10:55 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 02 Dec 2021 00:40:35 +01:00
+CommitterDate: Thu, 02 Dec 2021 15:08:22 +01:00
 
-x86/tsc: Add a timer to make sure TSC_adjust is always checked
+sched/cputime: Fix getrusage(RUSAGE_THREAD) with nohz_full
 
-The TSC_ADJUST register is checked every time a CPU enters idle state, but
-Thomas Gleixner mentioned there is still a caveat that a system won't enter
-idle [1], either because it's too busy or configured purposely to not enter
-idle.
+getrusage(RUSAGE_THREAD) with nohz_full may return shorter utime/stime
+than the actual time.
 
-Setup a periodic timer (every 10 minutes) to make sure the check is
-happening on a regular base.
+task_cputime_adjusted() snapshots utime and stime and then adjust their
+sum to match the scheduler maintained cputime.sum_exec_runtime.
+Unfortunately in nohz_full, sum_exec_runtime is only updated once per
+second in the worst case, causing a discrepancy against utime and stime
+that can be updated anytime by the reader using vtime.
 
-[1] https://lore.kernel.org/lkml/875z286xtk.fsf@nanos.tec.linutronix.de/
+To fix this situation, perform an update of cputime.sum_exec_runtime
+when the cputime snapshot reports the task as actually running while
+the tick is disabled. The related overhead is then contained within the
+relevant situations.
 
-Fixes: 6e3cd95234dc ("x86/hpet: Use another crystalball to evaluate HPET usability")
-Requested-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Feng Tang <feng.tang@intel.com>
+Reported-by: Hasegawa Hitomi <hasegawa-hitomi@fujitsu.com>
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Signed-off-by: Hasegawa Hitomi <hasegawa-hitomi@fujitsu.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: "Paul E. McKenney" <paulmck@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20211117023751.24190-1-feng.tang@intel.com
+Tested-by: Masayoshi Mizuma <m.mizuma@jp.fujitsu.com>
+Acked-by: Phil Auld <pauld@redhat.com>
+Link: https://lore.kernel.org/r/20211026141055.57358-3-frederic@kernel.org
 
 ---
- arch/x86/kernel/tsc_sync.c | 41 +++++++++++++++++++++++++++++++++++++-
- 1 file changed, 41 insertions(+)
+ include/linux/sched/cputime.h |  5 +++--
+ kernel/sched/cputime.c        | 12 +++++++++---
+ 2 files changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/kernel/tsc_sync.c b/arch/x86/kernel/tsc_sync.c
-index 50a4515..9452dc9 100644
---- a/arch/x86/kernel/tsc_sync.c
-+++ b/arch/x86/kernel/tsc_sync.c
-@@ -30,6 +30,7 @@ struct tsc_adjust {
- };
+diff --git a/include/linux/sched/cputime.h b/include/linux/sched/cputime.h
+index 6c9f19a..ce3c582 100644
+--- a/include/linux/sched/cputime.h
++++ b/include/linux/sched/cputime.h
+@@ -18,15 +18,16 @@
+ #endif /* CONFIG_VIRT_CPU_ACCOUNTING_NATIVE */
  
- static DEFINE_PER_CPU(struct tsc_adjust, tsc_adjust);
-+static struct timer_list tsc_sync_check_timer;
- 
- /*
-  * TSC's on different sockets may be reset asynchronously.
-@@ -77,6 +78,46 @@ void tsc_verify_tsc_adjust(bool resume)
- 	}
+ #ifdef CONFIG_VIRT_CPU_ACCOUNTING_GEN
+-extern void task_cputime(struct task_struct *t,
++extern bool task_cputime(struct task_struct *t,
+ 			 u64 *utime, u64 *stime);
+ extern u64 task_gtime(struct task_struct *t);
+ #else
+-static inline void task_cputime(struct task_struct *t,
++static inline bool task_cputime(struct task_struct *t,
+ 				u64 *utime, u64 *stime)
+ {
+ 	*utime = t->utime;
+ 	*stime = t->stime;
++	return false;
  }
  
-+/*
-+ * Normally the tsc_sync will be checked every time system enters idle
-+ * state, but there is still caveat that a system won't enter idle,
-+ * either because it's too busy or configured purposely to not enter
-+ * idle.
-+ *
-+ * So setup a periodic timer (every 10 minutes) to make sure the check
-+ * is always on.
-+ */
-+
-+#define SYNC_CHECK_INTERVAL		(HZ * 600)
-+
-+static void tsc_sync_check_timer_fn(struct timer_list *unused)
-+{
-+	int next_cpu;
-+
-+	tsc_verify_tsc_adjust(false);
-+
-+	/* Run the check for all onlined CPUs in turn */
-+	next_cpu = cpumask_next(raw_smp_processor_id(), cpu_online_mask);
-+	if (next_cpu >= nr_cpu_ids)
-+		next_cpu = cpumask_first(cpu_online_mask);
-+
-+	tsc_sync_check_timer.expires += SYNC_CHECK_INTERVAL;
-+	add_timer_on(&tsc_sync_check_timer, next_cpu);
-+}
-+
-+static int __init start_sync_check_timer(void)
-+{
-+	if (!cpu_feature_enabled(X86_FEATURE_TSC_ADJUST) || tsc_clocksource_reliable)
-+		return 0;
-+
-+	timer_setup(&tsc_sync_check_timer, tsc_sync_check_timer_fn, 0);
-+	tsc_sync_check_timer.expires = jiffies + SYNC_CHECK_INTERVAL;
-+	add_timer(&tsc_sync_check_timer);
-+
-+	return 0;
-+}
-+late_initcall(start_sync_check_timer);
-+
- static void tsc_sanitize_first_cpu(struct tsc_adjust *cur, s64 bootval,
- 				   unsigned int cpu, bool bootcpu)
+ static inline u64 task_gtime(struct task_struct *t)
+diff --git a/kernel/sched/cputime.c b/kernel/sched/cputime.c
+index 872e481..9392aea 100644
+--- a/kernel/sched/cputime.c
++++ b/kernel/sched/cputime.c
+@@ -615,7 +615,8 @@ void task_cputime_adjusted(struct task_struct *p, u64 *ut, u64 *st)
+ 		.sum_exec_runtime = p->se.sum_exec_runtime,
+ 	};
+ 
+-	task_cputime(p, &cputime.utime, &cputime.stime);
++	if (task_cputime(p, &cputime.utime, &cputime.stime))
++		cputime.sum_exec_runtime = task_sched_runtime(p);
+ 	cputime_adjust(&cputime, &p->prev_cputime, ut, st);
+ }
+ EXPORT_SYMBOL_GPL(task_cputime_adjusted);
+@@ -828,19 +829,21 @@ u64 task_gtime(struct task_struct *t)
+  * add up the pending nohz execution time since the last
+  * cputime snapshot.
+  */
+-void task_cputime(struct task_struct *t, u64 *utime, u64 *stime)
++bool task_cputime(struct task_struct *t, u64 *utime, u64 *stime)
  {
+ 	struct vtime *vtime = &t->vtime;
+ 	unsigned int seq;
+ 	u64 delta;
++	int ret;
+ 
+ 	if (!vtime_accounting_enabled()) {
+ 		*utime = t->utime;
+ 		*stime = t->stime;
+-		return;
++		return false;
+ 	}
+ 
+ 	do {
++		ret = false;
+ 		seq = read_seqcount_begin(&vtime->seqcount);
+ 
+ 		*utime = t->utime;
+@@ -850,6 +853,7 @@ void task_cputime(struct task_struct *t, u64 *utime, u64 *stime)
+ 		if (vtime->state < VTIME_SYS)
+ 			continue;
+ 
++		ret = true;
+ 		delta = vtime_delta(vtime);
+ 
+ 		/*
+@@ -861,6 +865,8 @@ void task_cputime(struct task_struct *t, u64 *utime, u64 *stime)
+ 		else
+ 			*utime += vtime->utime + delta;
+ 	} while (read_seqcount_retry(&vtime->seqcount, seq));
++
++	return ret;
+ }
+ 
+ static int vtime_state_fetch(struct vtime *vtime, int cpu)
