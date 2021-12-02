@@ -2,57 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A5E084664EF
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  2 Dec 2021 15:12:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BA1B44669AD
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  2 Dec 2021 19:15:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358420AbhLBOQD (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 2 Dec 2021 09:16:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60894 "EHLO
+        id S244189AbhLBSSe (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 2 Dec 2021 13:18:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60696 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1358416AbhLBOQC (ORCPT
+        with ESMTP id S231128AbhLBSSd (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 2 Dec 2021 09:16:02 -0500
+        Thu, 2 Dec 2021 13:18:33 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD60AC06174A;
-        Thu,  2 Dec 2021 06:12:39 -0800 (PST)
-Date:   Thu, 02 Dec 2021 14:12:36 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEA48C06174A;
+        Thu,  2 Dec 2021 10:15:10 -0800 (PST)
+Date:   Thu, 02 Dec 2021 18:15:07 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1638454357;
+        s=2020; t=1638468908;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=csYVQafTdx01GSKRuFhZr2eIZc8k+6uIMaIRkhSBh50=;
-        b=RWhfHfHA6dW7wwUc0L5BV7wftRYqCWcBwwVtxZe7RfGTAcHsQIO9yN+41TEOmukAuW4xAm
-        TWGlQ9MXglyxv0FHlAHggKuArIfvcG1NeMnnAYdj3izvpuj8PJ4EcuBxPtD5hV+R/td8PC
-        s2bh4hc+50cyzAQL0oLcXxq7isensfdCY5MbQBJ2PdJ1JX42MLfGsbJDKhsInBzWyte8Y+
-        hf28xIsGwI+VFjuEk7X/zgT6KW9r2NIoghgeMsxaFXHgYwSqNlDBTf35oFgkCzroa1HW4s
-        l5sCglI/HmgU8PR79KIBVPE3QUGosEUFAmayvmCOkSqn0YVhDqyo26dghhjQsQ==
+        bh=BrF3Lpl38xw4GjI5AYCD/2kHblDIHWUggd56B1HbR9s=;
+        b=QncW17azzEh9KJD/h8ABsFEJmlUESrmWiWaD7GHLSM4+UuStWlYAMv/CfAVHWX9Jnudgel
+        2FTfCSozbg9TKoKpRQchS6upAlVu4le5HFPnq68AWlQqXnBsQXuHN0Sc6hIlfCpg1iv2Qk
+        r1kaNS5I+YH4MJDx1iVIHuyFYYe8ggbVwuLYOcVhqZerrx36lIOXeHu6HmoW9P7hS4AZj/
+        QScxBKa+KacSCoN7OnZsPKThCl5VfwAP51rp8Mvnk3xPVvplXJ/1Eo0T5IPzWAoUspURVs
+        EiGsNz7DhTDx6ImIhvelp3ZcgiumctS0hqlpuHA1HsVgoi3KPelpHLT7kYsx4w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1638454357;
+        s=2020e; t=1638468908;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=csYVQafTdx01GSKRuFhZr2eIZc8k+6uIMaIRkhSBh50=;
-        b=q8FzAcrHB0XzAzvGgAUKM03qIKOoAOWn7ORUcmIfuEv8jpjloHLdsUmBpBUwYcMHtQN2fj
-        r9oTR2+uIcS+C/Aw==
-From:   "tip-bot2 for Frederic Weisbecker" <tip-bot2@linutronix.de>
+        bh=BrF3Lpl38xw4GjI5AYCD/2kHblDIHWUggd56B1HbR9s=;
+        b=Q/x7qj7bv2P2KvTx1mqMn7UGHWIam9uGt9SLYreQv4MgktpKDeF135rvJyelqiGpGNCY4a
+        41GST6JRNsJuXUDw==
+From:   "tip-bot2 for Joerg Roedel" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/urgent] timers/nohz: Last resort update jiffies on
- nohz_full IRQ entry
-Cc:     "Paul E. McKenney" <paulmck@kernel.org>,
-        Frederic Weisbecker <frederic@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+Subject: [tip: x86/mm] x86/mm: Fix PAGE_KERNEL_IO removal breakage
+Cc:     Joerg Roedel <jroedel@suse.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Lucas De Marchi <lucas.demarchi@intel.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20211026141055.57358-2-frederic@kernel.org>
-References: <20211026141055.57358-2-frederic@kernel.org>
+In-Reply-To: <20211202144646.23186-1-joro@8bytes.org>
+References: <20211202144646.23186-1-joro@8bytes.org>
 MIME-Version: 1.0
-Message-ID: <163845435662.11128.144783670493021780.tip-bot2@tip-bot2>
+Message-ID: <163846890716.11128.7464150139974319110.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,97 +61,89 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/urgent branch of tip:
+The following commit has been merged into the x86/mm branch of tip:
 
-Commit-ID:     53e87e3cdc155f20c3417b689df8d2ac88d79576
-Gitweb:        https://git.kernel.org/tip/53e87e3cdc155f20c3417b689df8d2ac88d79576
-Author:        Frederic Weisbecker <frederic@kernel.org>
-AuthorDate:    Tue, 26 Oct 2021 16:10:54 +02:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 02 Dec 2021 15:07:22 +01:00
+Commit-ID:     9a951429b2e1670a76b68c90880b01430fe509e4
+Gitweb:        https://git.kernel.org/tip/9a951429b2e1670a76b68c90880b01430fe509e4
+Author:        Joerg Roedel <jroedel@suse.de>
+AuthorDate:    Thu, 02 Dec 2021 15:46:46 +01:00
+Committer:     Dave Hansen <dave.hansen@linux.intel.com>
+CommitterDate: Thu, 02 Dec 2021 09:41:24 -08:00
 
-timers/nohz: Last resort update jiffies on nohz_full IRQ entry
+x86/mm: Fix PAGE_KERNEL_IO removal breakage
 
-When at least one CPU runs in nohz_full mode, a dedicated timekeeper CPU
-is guaranteed to stay online and to never stop its tick.
+The removal of PAGE_KERNEL_IO broke SEV-ES because it changed the
+mapping of ioremap and some fixmap areas (like the local APIC page)
+from unencrypted to encrypted. Change those mappings back to
+be unencrypted.
 
-Meanwhile on some rare case, the dedicated timekeeper may be running
-with interrupts disabled for a while, such as in stop_machine.
-
-If jiffies stop being updated, a nohz_full CPU may end up endlessly
-programming the next tick in the past, taking the last jiffies update
-monotonic timestamp as a stale base, resulting in an tick storm.
-
-Here is a scenario where it matters:
-
-0) CPU 0 is the timekeeper and CPU 1 a nohz_full CPU.
-
-1) A stop machine callback is queued to execute somewhere.
-
-2) CPU 0 reaches MULTI_STOP_DISABLE_IRQ while CPU 1 is still in
-   MULTI_STOP_PREPARE. Hence CPU 0 can't do its timekeeping duty. CPU 1
-   can still take IRQs.
-
-3) CPU 1 receives an IRQ which queues a timer callback one jiffy forward.
-
-4) On IRQ exit, CPU 1 schedules the tick one jiffy forward, taking
-   last_jiffies_update as a base. But last_jiffies_update hasn't been
-   updated for 2 jiffies since the timekeeper has interrupts disabled.
-
-5) clockevents_program_event(), which relies on ktime_get(), observes
-   that the expiration is in the past and therefore programs the min
-   delta event on the clock.
-
-6) The tick fires immediately, goto 3)
-
-7) Tick storm, the nohz_full CPU is drown and takes ages to reach
-   MULTI_STOP_DISABLE_IRQ, which is the only way out of this situation.
-
-Solve this with unconditionally updating jiffies if the value is stale
-on nohz_full IRQ entry. IRQs and other disturbances are expected to be
-rare enough on nohz_full for the unconditional call to ktime_get() to
-actually matter.
-
-Reported-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Paul E. McKenney <paulmck@kernel.org>
-Link: https://lore.kernel.org/r/20211026141055.57358-2-frederic@kernel.org
-
+Fixes: 27dff0f58bde ("x86/mm: Nuke PAGE_KERNEL_IO")
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Tested-by: Tom Lendacky <thomas.lendacky@amd.com>
+Link: https://lkml.kernel.org/r/20211202144646.23186-1-joro@8bytes.org
 ---
- kernel/softirq.c         | 3 ++-
- kernel/time/tick-sched.c | 7 +++++++
- 2 files changed, 9 insertions(+), 1 deletion(-)
+ arch/x86/include/asm/fixmap.h        |  2 +-
+ arch/x86/include/asm/pgtable_types.h | 21 +++++++++++----------
+ arch/x86/mm/ioremap.c                |  2 +-
+ 3 files changed, 13 insertions(+), 12 deletions(-)
 
-diff --git a/kernel/softirq.c b/kernel/softirq.c
-index 322b65d..41f4709 100644
---- a/kernel/softirq.c
-+++ b/kernel/softirq.c
-@@ -595,7 +595,8 @@ void irq_enter_rcu(void)
- {
- 	__irq_enter_raw();
+diff --git a/arch/x86/include/asm/fixmap.h b/arch/x86/include/asm/fixmap.h
+index 5e186a6..a2eaf26 100644
+--- a/arch/x86/include/asm/fixmap.h
++++ b/arch/x86/include/asm/fixmap.h
+@@ -173,7 +173,7 @@ static inline void __set_fixmap(enum fixed_addresses idx,
+  * supported for MMIO addresses, so make sure that the memory encryption
+  * mask is not part of the page attributes.
+  */
+-#define FIXMAP_PAGE_NOCACHE PAGE_KERNEL_NOCACHE
++#define FIXMAP_PAGE_NOCACHE PAGE_KERNEL_NOCACHE_NOENC
  
--	if (is_idle_task(current) && (irq_count() == HARDIRQ_OFFSET))
-+	if (tick_nohz_full_cpu(smp_processor_id()) ||
-+	    (is_idle_task(current) && (irq_count() == HARDIRQ_OFFSET)))
- 		tick_irq_enter();
+ /*
+  * Early memremap routines used for in-place encryption. The mappings created
+diff --git a/arch/x86/include/asm/pgtable_types.h b/arch/x86/include/asm/pgtable_types.h
+index a872247..fc9b699 100644
+--- a/arch/x86/include/asm/pgtable_types.h
++++ b/arch/x86/include/asm/pgtable_types.h
+@@ -208,16 +208,17 @@ enum page_cache_mode {
  
- 	account_hardirq_enter(current);
-diff --git a/kernel/time/tick-sched.c b/kernel/time/tick-sched.c
-index 6bffe5a..17a283c 100644
---- a/kernel/time/tick-sched.c
-+++ b/kernel/time/tick-sched.c
-@@ -1375,6 +1375,13 @@ static inline void tick_nohz_irq_enter(void)
- 	now = ktime_get();
- 	if (ts->idle_active)
- 		tick_nohz_stop_idle(ts, now);
-+	/*
-+	 * If all CPUs are idle. We may need to update a stale jiffies value.
-+	 * Note nohz_full is a special case: a timekeeper is guaranteed to stay
-+	 * alive but it might be busy looping with interrupts disabled in some
-+	 * rare case (typically stop machine). So we must make sure we have a
-+	 * last resort.
-+	 */
- 	if (ts->tick_stopped)
- 		tick_nohz_update_jiffies(now);
- }
+ #define __pgprot_mask(x)	__pgprot((x) & __default_kernel_pte_mask)
+ 
+-#define PAGE_KERNEL		__pgprot_mask(__PAGE_KERNEL            | _ENC)
+-#define PAGE_KERNEL_NOENC	__pgprot_mask(__PAGE_KERNEL            |    0)
+-#define PAGE_KERNEL_RO		__pgprot_mask(__PAGE_KERNEL_RO         | _ENC)
+-#define PAGE_KERNEL_EXEC	__pgprot_mask(__PAGE_KERNEL_EXEC       | _ENC)
+-#define PAGE_KERNEL_EXEC_NOENC	__pgprot_mask(__PAGE_KERNEL_EXEC       |    0)
+-#define PAGE_KERNEL_ROX		__pgprot_mask(__PAGE_KERNEL_ROX        | _ENC)
+-#define PAGE_KERNEL_NOCACHE	__pgprot_mask(__PAGE_KERNEL_NOCACHE    | _ENC)
+-#define PAGE_KERNEL_LARGE	__pgprot_mask(__PAGE_KERNEL_LARGE      | _ENC)
+-#define PAGE_KERNEL_LARGE_EXEC	__pgprot_mask(__PAGE_KERNEL_LARGE_EXEC | _ENC)
+-#define PAGE_KERNEL_VVAR	__pgprot_mask(__PAGE_KERNEL_VVAR       | _ENC)
++#define PAGE_KERNEL			__pgprot_mask(__PAGE_KERNEL            | _ENC)
++#define PAGE_KERNEL_NOENC		__pgprot_mask(__PAGE_KERNEL            |    0)
++#define PAGE_KERNEL_RO			__pgprot_mask(__PAGE_KERNEL_RO         | _ENC)
++#define PAGE_KERNEL_EXEC		__pgprot_mask(__PAGE_KERNEL_EXEC       | _ENC)
++#define PAGE_KERNEL_EXEC_NOENC		__pgprot_mask(__PAGE_KERNEL_EXEC       |    0)
++#define PAGE_KERNEL_ROX			__pgprot_mask(__PAGE_KERNEL_ROX        | _ENC)
++#define PAGE_KERNEL_NOCACHE		__pgprot_mask(__PAGE_KERNEL_NOCACHE    | _ENC)
++#define PAGE_KERNEL_NOCACHE_NOENC	__pgprot_mask(__PAGE_KERNEL_NOCACHE    |    0)
++#define PAGE_KERNEL_LARGE		__pgprot_mask(__PAGE_KERNEL_LARGE      | _ENC)
++#define PAGE_KERNEL_LARGE_EXEC		__pgprot_mask(__PAGE_KERNEL_LARGE_EXEC | _ENC)
++#define PAGE_KERNEL_VVAR		__pgprot_mask(__PAGE_KERNEL_VVAR       | _ENC)
+ 
+ #endif	/* __ASSEMBLY__ */
+ 
+diff --git a/arch/x86/mm/ioremap.c b/arch/x86/mm/ioremap.c
+index 3102dda..4fe8d43 100644
+--- a/arch/x86/mm/ioremap.c
++++ b/arch/x86/mm/ioremap.c
+@@ -243,7 +243,7 @@ __ioremap_caller(resource_size_t phys_addr, unsigned long size,
+ 	 * make sure the memory encryption attribute is enabled in the
+ 	 * resulting mapping.
+ 	 */
+-	prot = PAGE_KERNEL;
++	prot = PAGE_KERNEL_NOENC;
+ 	if ((io_desc.flags & IORES_MAP_ENCRYPTED) || encrypted)
+ 		prot = pgprot_encrypted(prot);
+ 
