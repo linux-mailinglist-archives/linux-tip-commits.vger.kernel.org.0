@@ -2,57 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BA1B44669AD
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  2 Dec 2021 19:15:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EDC9846747E
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  3 Dec 2021 11:04:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244189AbhLBSSe (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 2 Dec 2021 13:18:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60696 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231128AbhLBSSd (ORCPT
+        id S1379715AbhLCKIK (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 3 Dec 2021 05:08:10 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:54122 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1350895AbhLCKIK (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 2 Dec 2021 13:18:33 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEA48C06174A;
-        Thu,  2 Dec 2021 10:15:10 -0800 (PST)
-Date:   Thu, 02 Dec 2021 18:15:07 -0000
+        Fri, 3 Dec 2021 05:08:10 -0500
+Date:   Fri, 03 Dec 2021 10:04:43 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1638468908;
+        s=2020; t=1638525884;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=BrF3Lpl38xw4GjI5AYCD/2kHblDIHWUggd56B1HbR9s=;
-        b=QncW17azzEh9KJD/h8ABsFEJmlUESrmWiWaD7GHLSM4+UuStWlYAMv/CfAVHWX9Jnudgel
-        2FTfCSozbg9TKoKpRQchS6upAlVu4le5HFPnq68AWlQqXnBsQXuHN0Sc6hIlfCpg1iv2Qk
-        r1kaNS5I+YH4MJDx1iVIHuyFYYe8ggbVwuLYOcVhqZerrx36lIOXeHu6HmoW9P7hS4AZj/
-        QScxBKa+KacSCoN7OnZsPKThCl5VfwAP51rp8Mvnk3xPVvplXJ/1Eo0T5IPzWAoUspURVs
-        EiGsNz7DhTDx6ImIhvelp3ZcgiumctS0hqlpuHA1HsVgoi3KPelpHLT7kYsx4w==
+        bh=e3/eO0R/lBVGHYQRY2MVtI75vrN28oVSvaZP9PGsevs=;
+        b=uvQPIsbFD+5ElitLga/IA9qScSjaQHz3IPRmtQSvd4TSddv35R0jC5Con5QOhtNPUeizbc
+        DwVzW8MSs5eDBgZtbvdX1BON+UZSVZlSNujYVBF7oY1blQqfNzVRj+nOLcT9LY0NHC+qt6
+        TZR9xqRkq5JgwP5wOuXUku9U3DtJCsVkokHm+F5qZzG6ZqucuAqTwvlGbMg8QKudMgL0NZ
+        CSufXe70g+nNBL81ihKRr2iXxGcyxXIeTZtINaYR82MkezFQA6Dt2odHizTRQTCENE0bpk
+        /8r6DgEJxPQBZIzOtLAv7aciDHRUVhwXaV0pa+H40U2bJDbIaomxLGHi+1VOLw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1638468908;
+        s=2020e; t=1638525884;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=BrF3Lpl38xw4GjI5AYCD/2kHblDIHWUggd56B1HbR9s=;
-        b=Q/x7qj7bv2P2KvTx1mqMn7UGHWIam9uGt9SLYreQv4MgktpKDeF135rvJyelqiGpGNCY4a
-        41GST6JRNsJuXUDw==
+        bh=e3/eO0R/lBVGHYQRY2MVtI75vrN28oVSvaZP9PGsevs=;
+        b=py5d7wQ3+joZq+kWHP0fapAjSHiKa+uGXseNlGWmJwTSuukyALSLTAUg8jB2xY7QfXashN
+        z+kKIetcknpZUAAA==
 From:   "tip-bot2 for Joerg Roedel" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/mm] x86/mm: Fix PAGE_KERNEL_IO removal breakage
-Cc:     Joerg Roedel <jroedel@suse.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Lucas De Marchi <lucas.demarchi@intel.com>,
-        Tom Lendacky <thomas.lendacky@amd.com>, x86@kernel.org,
+Subject: [tip: x86/urgent] x86/64/mm: Map all kernel memory into trampoline_pgd
+Cc:     Joerg Roedel <jroedel@suse.de>, Borislav Petkov <bp@suse.de>,
+        stable@vger.kernel.org, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20211202144646.23186-1-joro@8bytes.org>
-References: <20211202144646.23186-1-joro@8bytes.org>
+In-Reply-To: <20211202153226.22946-5-joro@8bytes.org>
+References: <20211202153226.22946-5-joro@8bytes.org>
 MIME-Version: 1.0
-Message-ID: <163846890716.11128.7464150139974319110.tip-bot2@tip-bot2>
+Message-ID: <163852588365.11128.1827426019231141785.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,89 +56,99 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/mm branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     9a951429b2e1670a76b68c90880b01430fe509e4
-Gitweb:        https://git.kernel.org/tip/9a951429b2e1670a76b68c90880b01430fe509e4
+Commit-ID:     51523ed1c26758de1af7e58730a656875f72f783
+Gitweb:        https://git.kernel.org/tip/51523ed1c26758de1af7e58730a656875f72f783
 Author:        Joerg Roedel <jroedel@suse.de>
-AuthorDate:    Thu, 02 Dec 2021 15:46:46 +01:00
-Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Thu, 02 Dec 2021 09:41:24 -08:00
+AuthorDate:    Thu, 02 Dec 2021 16:32:26 +01:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Fri, 03 Dec 2021 09:11:43 +01:00
 
-x86/mm: Fix PAGE_KERNEL_IO removal breakage
+x86/64/mm: Map all kernel memory into trampoline_pgd
 
-The removal of PAGE_KERNEL_IO broke SEV-ES because it changed the
-mapping of ioremap and some fixmap areas (like the local APIC page)
-from unencrypted to encrypted. Change those mappings back to
-be unencrypted.
+The trampoline_pgd only maps the 0xfffffff000000000-0xffffffffffffffff
+range of kernel memory (with 4-level paging). This range contains the
+kernel's text+data+bss mappings and the module mapping space but not the
+direct mapping and the vmalloc area.
 
-Fixes: 27dff0f58bde ("x86/mm: Nuke PAGE_KERNEL_IO")
+This is enough to get the application processors out of real-mode, but
+for code that switches back to real-mode the trampoline_pgd is missing
+important parts of the address space. For example, consider this code
+from arch/x86/kernel/reboot.c, function machine_real_restart() for a
+64-bit kernel:
+
+  #ifdef CONFIG_X86_32
+  	load_cr3(initial_page_table);
+  #else
+  	write_cr3(real_mode_header->trampoline_pgd);
+
+  	/* Exiting long mode will fail if CR4.PCIDE is set. */
+  	if (boot_cpu_has(X86_FEATURE_PCID))
+  		cr4_clear_bits(X86_CR4_PCIDE);
+  #endif
+
+  	/* Jump to the identity-mapped low memory code */
+  #ifdef CONFIG_X86_32
+  	asm volatile("jmpl *%0" : :
+  		     "rm" (real_mode_header->machine_real_restart_asm),
+  		     "a" (type));
+  #else
+  	asm volatile("ljmpl *%0" : :
+  		     "m" (real_mode_header->machine_real_restart_asm),
+  		     "D" (type));
+  #endif
+
+The code switches to the trampoline_pgd, which unmaps the direct mapping
+and also the kernel stack. The call to cr4_clear_bits() will find no
+stack and crash the machine. The real_mode_header pointer below points
+into the direct mapping, and dereferencing it also causes a crash.
+
+The reason this does not crash always is only that kernel mappings are
+global and the CR3 switch does not flush those mappings. But if theses
+mappings are not in the TLB already, the above code will crash before it
+can jump to the real-mode stub.
+
+Extend the trampoline_pgd to contain all kernel mappings to prevent
+these crashes and to make code which runs on this page-table more
+robust.
+
 Signed-off-by: Joerg Roedel <jroedel@suse.de>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Tested-by: Tom Lendacky <thomas.lendacky@amd.com>
-Link: https://lkml.kernel.org/r/20211202144646.23186-1-joro@8bytes.org
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Cc: stable@vger.kernel.org
+Link: https://lkml.kernel.org/r/20211202153226.22946-5-joro@8bytes.org
 ---
- arch/x86/include/asm/fixmap.h        |  2 +-
- arch/x86/include/asm/pgtable_types.h | 21 +++++++++++----------
- arch/x86/mm/ioremap.c                |  2 +-
- 3 files changed, 13 insertions(+), 12 deletions(-)
+ arch/x86/realmode/init.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/fixmap.h b/arch/x86/include/asm/fixmap.h
-index 5e186a6..a2eaf26 100644
---- a/arch/x86/include/asm/fixmap.h
-+++ b/arch/x86/include/asm/fixmap.h
-@@ -173,7 +173,7 @@ static inline void __set_fixmap(enum fixed_addresses idx,
-  * supported for MMIO addresses, so make sure that the memory encryption
-  * mask is not part of the page attributes.
-  */
--#define FIXMAP_PAGE_NOCACHE PAGE_KERNEL_NOCACHE
-+#define FIXMAP_PAGE_NOCACHE PAGE_KERNEL_NOCACHE_NOENC
+diff --git a/arch/x86/realmode/init.c b/arch/x86/realmode/init.c
+index 4a3da75..38d24d2 100644
+--- a/arch/x86/realmode/init.c
++++ b/arch/x86/realmode/init.c
+@@ -72,6 +72,7 @@ static void __init setup_real_mode(void)
+ #ifdef CONFIG_X86_64
+ 	u64 *trampoline_pgd;
+ 	u64 efer;
++	int i;
+ #endif
  
- /*
-  * Early memremap routines used for in-place encryption. The mappings created
-diff --git a/arch/x86/include/asm/pgtable_types.h b/arch/x86/include/asm/pgtable_types.h
-index a872247..fc9b699 100644
---- a/arch/x86/include/asm/pgtable_types.h
-+++ b/arch/x86/include/asm/pgtable_types.h
-@@ -208,16 +208,17 @@ enum page_cache_mode {
+ 	base = (unsigned char *)real_mode_header;
+@@ -128,8 +129,17 @@ static void __init setup_real_mode(void)
+ 	trampoline_header->flags = 0;
  
- #define __pgprot_mask(x)	__pgprot((x) & __default_kernel_pte_mask)
+ 	trampoline_pgd = (u64 *) __va(real_mode_header->trampoline_pgd);
++
++	/* Map the real mode stub as virtual == physical */
+ 	trampoline_pgd[0] = trampoline_pgd_entry.pgd;
+-	trampoline_pgd[511] = init_top_pgt[511].pgd;
++
++	/*
++	 * Include the entirety of the kernel mapping into the trampoline
++	 * PGD.  This way, all mappings present in the normal kernel page
++	 * tables are usable while running on trampoline_pgd.
++	 */
++	for (i = pgd_index(__PAGE_OFFSET); i < PTRS_PER_PGD; i++)
++		trampoline_pgd[i] = init_top_pgt[i].pgd;
+ #endif
  
--#define PAGE_KERNEL		__pgprot_mask(__PAGE_KERNEL            | _ENC)
--#define PAGE_KERNEL_NOENC	__pgprot_mask(__PAGE_KERNEL            |    0)
--#define PAGE_KERNEL_RO		__pgprot_mask(__PAGE_KERNEL_RO         | _ENC)
--#define PAGE_KERNEL_EXEC	__pgprot_mask(__PAGE_KERNEL_EXEC       | _ENC)
--#define PAGE_KERNEL_EXEC_NOENC	__pgprot_mask(__PAGE_KERNEL_EXEC       |    0)
--#define PAGE_KERNEL_ROX		__pgprot_mask(__PAGE_KERNEL_ROX        | _ENC)
--#define PAGE_KERNEL_NOCACHE	__pgprot_mask(__PAGE_KERNEL_NOCACHE    | _ENC)
--#define PAGE_KERNEL_LARGE	__pgprot_mask(__PAGE_KERNEL_LARGE      | _ENC)
--#define PAGE_KERNEL_LARGE_EXEC	__pgprot_mask(__PAGE_KERNEL_LARGE_EXEC | _ENC)
--#define PAGE_KERNEL_VVAR	__pgprot_mask(__PAGE_KERNEL_VVAR       | _ENC)
-+#define PAGE_KERNEL			__pgprot_mask(__PAGE_KERNEL            | _ENC)
-+#define PAGE_KERNEL_NOENC		__pgprot_mask(__PAGE_KERNEL            |    0)
-+#define PAGE_KERNEL_RO			__pgprot_mask(__PAGE_KERNEL_RO         | _ENC)
-+#define PAGE_KERNEL_EXEC		__pgprot_mask(__PAGE_KERNEL_EXEC       | _ENC)
-+#define PAGE_KERNEL_EXEC_NOENC		__pgprot_mask(__PAGE_KERNEL_EXEC       |    0)
-+#define PAGE_KERNEL_ROX			__pgprot_mask(__PAGE_KERNEL_ROX        | _ENC)
-+#define PAGE_KERNEL_NOCACHE		__pgprot_mask(__PAGE_KERNEL_NOCACHE    | _ENC)
-+#define PAGE_KERNEL_NOCACHE_NOENC	__pgprot_mask(__PAGE_KERNEL_NOCACHE    |    0)
-+#define PAGE_KERNEL_LARGE		__pgprot_mask(__PAGE_KERNEL_LARGE      | _ENC)
-+#define PAGE_KERNEL_LARGE_EXEC		__pgprot_mask(__PAGE_KERNEL_LARGE_EXEC | _ENC)
-+#define PAGE_KERNEL_VVAR		__pgprot_mask(__PAGE_KERNEL_VVAR       | _ENC)
- 
- #endif	/* __ASSEMBLY__ */
- 
-diff --git a/arch/x86/mm/ioremap.c b/arch/x86/mm/ioremap.c
-index 3102dda..4fe8d43 100644
---- a/arch/x86/mm/ioremap.c
-+++ b/arch/x86/mm/ioremap.c
-@@ -243,7 +243,7 @@ __ioremap_caller(resource_size_t phys_addr, unsigned long size,
- 	 * make sure the memory encryption attribute is enabled in the
- 	 * resulting mapping.
- 	 */
--	prot = PAGE_KERNEL;
-+	prot = PAGE_KERNEL_NOENC;
- 	if ((io_desc.flags & IORES_MAP_ENCRYPTED) || encrypted)
- 		prot = pgprot_encrypted(prot);
- 
+ 	sme_sev_setup_real_mode(trampoline_header);
