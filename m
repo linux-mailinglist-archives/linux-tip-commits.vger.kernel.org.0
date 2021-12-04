@@ -2,56 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 92DDD468487
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  4 Dec 2021 12:45:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 88730468514
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  4 Dec 2021 14:40:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240665AbhLDLs5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 4 Dec 2021 06:48:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54502 "EHLO
+        id S1355161AbhLDNnd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 4 Dec 2021 08:43:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51240 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234132AbhLDLsz (ORCPT
+        with ESMTP id S1355050AbhLDNnc (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 4 Dec 2021 06:48:55 -0500
+        Sat, 4 Dec 2021 08:43:32 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50ED4C061354;
-        Sat,  4 Dec 2021 03:45:30 -0800 (PST)
-Date:   Sat, 04 Dec 2021 11:45:27 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E7FBC0613F8;
+        Sat,  4 Dec 2021 05:40:07 -0800 (PST)
+Date:   Sat, 04 Dec 2021 13:40:03 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1638618328;
+        s=2020; t=1638625204;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=IHdrmbcguTtQSIVO9y+Ktomr3vJVgk+MvIzxkFtJN+U=;
-        b=18mvdTg6g2wE1tGbNR9UQfGI5OGQd4OFZphEhcOFHCd8mChLlBqjsBkqbK4yn4InzG6L8H
-        YuTuBgqgY4OdQi9TGK1yMRsFRzRRlBlm+RoVYKHMt4MtcGLGHmTChJMzwOfxjKUyRxeWOs
-        S9TBSbOVD16Xv3DjDS5ZhS0AOJCyqxHhPw/znnpZmouo0uReY32cFMoDcHl7tgL+x0L74s
-        V9ZHLaaa2AU6uRCxCn4Gi6AqbIiR/vEXjXCS+/KqHNViDzEg+GLWwEqh9TU3vOPSdY5ej3
-        maBbT4Ogbu2Y5CFdhKQZWG5qfLih4mYe89hqjpqf7F9QA8WNEiDzvdDew7MOFg==
+        bh=iiFn0Zt7tRhKubu76IlAixV7MelnV7yQVyafuhDi/5s=;
+        b=RKYz6O1J9iTcgZtUUyhoPiuY2xvfPbx5cBVnhrmzC7Mm15lPQSJ1DjVIJzKCvVHGTmeeov
+        72vFKQjaNhezwDQHLCsq/SyNsU9Q0hRbgawbGRFKqS9R6SnIaLyvGHF45qFfnuJl6KApBV
+        8jk/UR1cUYLBo2eVhTogF10D2fe1HkAhigY0Q6KFML5rs6Fbg36pl07/0uuW/Vmce/YEI4
+        rCxXtbCeZYcc0JXT4lKG/rsBCDZ29b7xqBZPZxWE2vilQcv0brQ3hxz8jQ95xbN015o5/F
+        FqC83zos18iIMTrZbBuPZXDotA6bkKS3tWMNTGT6So3ni097c1I0pu3wEtZDMg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1638618328;
+        s=2020e; t=1638625204;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=IHdrmbcguTtQSIVO9y+Ktomr3vJVgk+MvIzxkFtJN+U=;
-        b=BNIIVVAHVPXtQbJ5qpD2yxhhaC3el82zSpq8gafJYLFxfbMKNKFBn59FOZRnUkfPG0CSq5
-        1ueulDz7JXX85QDg==
-From:   "tip-bot2 for Lai Jiangshan" <tip-bot2@linutronix.de>
+        bh=iiFn0Zt7tRhKubu76IlAixV7MelnV7yQVyafuhDi/5s=;
+        b=OiEl8LYhOgK+5/0ErU2ARl7WDAIBw8LJQjoA6OgWQvv9Lv5Mj+aLEhY/g2ZqsorT9Ad3Yy
+        bYG7JSCIw4Brl/DQ==
+From:   "tip-bot2 for Qais Yousef" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/entry: Add a fence for kernel entry SWAPGS in
- paranoid_entry()
-Cc:     Lai Jiangshan <laijs@linux.alibaba.com>,
-        Borislav Petkov <bp@suse.de>, x86@kernel.org,
+Subject: [tip: sched/urgent] sched/uclamp: Fix rq->uclamp_max not set on first enqueue
+Cc:     Qais Yousef <qais.yousef@arm.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Valentin Schneider <Valentin.Schneider@arm.com>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20211126101209.8613-2-jiangshanlai@gmail.com>
-References: <20211126101209.8613-2-jiangshanlai@gmail.com>
+In-Reply-To: <20211202112033.1705279-1-qais.yousef@arm.com>
+References: <20211202112033.1705279-1-qais.yousef@arm.com>
 MIME-Version: 1.0
-Message-ID: <163861832744.11128.13308101823885299337.tip-bot2@tip-bot2>
+Message-ID: <163862520343.11128.4390187951358390879.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,81 +61,67 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     c07e45553da1808aa802e9f0ffa8108cfeaf7a17
-Gitweb:        https://git.kernel.org/tip/c07e45553da1808aa802e9f0ffa8108cfeaf7a17
-Author:        Lai Jiangshan <laijs@linux.alibaba.com>
-AuthorDate:    Fri, 26 Nov 2021 18:11:21 +08:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Fri, 03 Dec 2021 18:55:47 +01:00
+Commit-ID:     315c4f884800c45cb6bd8c90422fad554a8b9588
+Gitweb:        https://git.kernel.org/tip/315c4f884800c45cb6bd8c90422fad554a8b9588
+Author:        Qais Yousef <qais.yousef@arm.com>
+AuthorDate:    Thu, 02 Dec 2021 11:20:33 
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Sat, 04 Dec 2021 10:56:18 +01:00
 
-x86/entry: Add a fence for kernel entry SWAPGS in paranoid_entry()
+sched/uclamp: Fix rq->uclamp_max not set on first enqueue
 
-Commit
+Commit d81ae8aac85c ("sched/uclamp: Fix initialization of struct
+uclamp_rq") introduced a bug where uclamp_max of the rq is not reset to
+match the woken up task's uclamp_max when the rq is idle.
 
-  18ec54fdd6d18 ("x86/speculation: Prepare entry code for Spectre v1 swapgs mitigations")
+The code was relying on rq->uclamp_max initialized to zero, so on first
+enqueue
 
-added FENCE_SWAPGS_{KERNEL|USER}_ENTRY for conditional SWAPGS. In
-paranoid_entry(), it uses only FENCE_SWAPGS_KERNEL_ENTRY for both
-branches. This is because the fence is required for both cases since the
-CR3 write is conditional even when PTI is enabled.
+	static inline void uclamp_rq_inc_id(struct rq *rq, struct task_struct *p,
+					    enum uclamp_id clamp_id)
+	{
+		...
 
-But
+		if (uc_se->value > READ_ONCE(uc_rq->value))
+			WRITE_ONCE(uc_rq->value, uc_se->value);
+	}
 
-  96b2371413e8f ("x86/entry/64: Switch CR3 before SWAPGS in paranoid entry")
+was actually resetting it. But since commit d81ae8aac85c changed the
+default to 1024, this no longer works. And since rq->uclamp_flags is
+also initialized to 0, neither above code path nor uclamp_idle_reset()
+update the rq->uclamp_max on first wake up from idle.
 
-changed the order of SWAPGS and the CR3 write. And it missed the needed
-FENCE_SWAPGS_KERNEL_ENTRY for the user gsbase case.
+This is only visible from first wake up(s) until the first dequeue to
+idle after enabling the static key. And it only matters if the
+uclamp_max of this task is < 1024 since only then its uclamp_max will be
+effectively ignored.
 
-Add it back by changing the branches so that FENCE_SWAPGS_KERNEL_ENTRY
-can cover both branches.
+Fix it by properly initializing rq->uclamp_flags = UCLAMP_FLAG_IDLE to
+ensure uclamp_idle_reset() is called which then will update the rq
+uclamp_max value as expected.
 
-  [ bp: Massage, fix typos, remove obsolete comment while at it. ]
-
-Fixes: 96b2371413e8f ("x86/entry/64: Switch CR3 before SWAPGS in paranoid entry")
-Signed-off-by: Lai Jiangshan <laijs@linux.alibaba.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20211126101209.8613-2-jiangshanlai@gmail.com
+Fixes: d81ae8aac85c ("sched/uclamp: Fix initialization of struct uclamp_rq")
+Signed-off-by: Qais Yousef <qais.yousef@arm.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Valentin Schneider <Valentin.Schneider@arm.com>
+Tested-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Link: https://lkml.kernel.org/r/20211202112033.1705279-1-qais.yousef@arm.com
 ---
- arch/x86/entry/entry_64.S | 16 +++++-----------
- 1 file changed, 5 insertions(+), 11 deletions(-)
+ kernel/sched/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/entry/entry_64.S b/arch/x86/entry/entry_64.S
-index e38a4cf..f1a8b5b 100644
---- a/arch/x86/entry/entry_64.S
-+++ b/arch/x86/entry/entry_64.S
-@@ -890,6 +890,7 @@ SYM_CODE_START_LOCAL(paranoid_entry)
- .Lparanoid_entry_checkgs:
- 	/* EBX = 1 -> kernel GSBASE active, no restore required */
- 	movl	$1, %ebx
-+
- 	/*
- 	 * The kernel-enforced convention is a negative GSBASE indicates
- 	 * a kernel value. No SWAPGS needed on entry and exit.
-@@ -897,21 +898,14 @@ SYM_CODE_START_LOCAL(paranoid_entry)
- 	movl	$MSR_GS_BASE, %ecx
- 	rdmsr
- 	testl	%edx, %edx
--	jns	.Lparanoid_entry_swapgs
--	ret
-+	js	.Lparanoid_kernel_gsbase
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 814c52d..7756310 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -1918,7 +1918,7 @@ static void __init init_uclamp_rq(struct rq *rq)
+ 		};
+ 	}
  
--.Lparanoid_entry_swapgs:
-+	/* EBX = 0 -> SWAPGS required on exit */
-+	xorl	%ebx, %ebx
- 	swapgs
-+.Lparanoid_kernel_gsbase:
+-	rq->uclamp_flags = 0;
++	rq->uclamp_flags = UCLAMP_FLAG_IDLE;
+ }
  
--	/*
--	 * The above SAVE_AND_SWITCH_TO_KERNEL_CR3 macro doesn't do an
--	 * unconditional CR3 write, even in the PTI case.  So do an lfence
--	 * to prevent GS speculation, regardless of whether PTI is enabled.
--	 */
- 	FENCE_SWAPGS_KERNEL_ENTRY
--
--	/* EBX = 0 -> SWAPGS required on exit */
--	xorl	%ebx, %ebx
- 	ret
- SYM_CODE_END(paranoid_entry)
- 
+ static void __init init_uclamp(void)
