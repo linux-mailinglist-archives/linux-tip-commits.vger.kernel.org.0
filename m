@@ -2,53 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 11771469C28
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  6 Dec 2021 16:18:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F0C44469C2A
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  6 Dec 2021 16:18:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349533AbhLFPVK (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 6 Dec 2021 10:21:10 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:42972 "EHLO
+        id S1349633AbhLFPVL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 6 Dec 2021 10:21:11 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:42974 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1356400AbhLFPTP (ORCPT
+        with ESMTP id S1357849AbhLFPTR (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 6 Dec 2021 10:19:15 -0500
-Date:   Mon, 06 Dec 2021 15:15:44 -0000
+        Mon, 6 Dec 2021 10:19:17 -0500
+Date:   Mon, 06 Dec 2021 15:15:45 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1638803745;
+        s=2020; t=1638803747;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=XiPdxskC41Qn5OTvyupEvpjSycavsgfwXJ56NTxJfu8=;
-        b=ejFAWDbphT412YfCJZuy/tTddD5wY4lV0Fh1xgLcfV1lCjNZ0GX5iX6PBxiA0yIvu9taP+
-        82imHEP1roxiQZEKenoB80ZV6tbEFtOUTyOGLzO9cy7XSr8XP92H+Fg7MQfLddbFEplzOH
-        Vf6ok3HaCydhTGmAATgrmfy0ARFR3OYIIpG+fdsyH2fjAFdbBoDXzo3SH180gAYKzvJmjm
-        CuAQ4X4ZkSa1Ov9xAKTHGkVYNRCDf6Rwg8x3q7f47CSborZOEiNdjKd681d0UioCnsXpPG
-        JTO+GlEn5sndJAmB58n8XEPcb6jZRcyHslKgngxOAIRgqz+UQDoexHOhuvyf9A==
+        bh=e+uW1Cga0RiD6Y1VOJLmIas/qAaIB454K+5a7GdGvFk=;
+        b=sGGVAJIglGn7RN/HGnJuFKyW3xmNLek29eRXmH+YXFA8lnO/XNbTBUkiM5Q0K0WKxVasn9
+        d1L5Ef/XNAHR/FQZnvog+BeqkDIEevlnuOcFptITtmAFSBjYSxF0KiCzscOY495PFgH0H/
+        eYg+Uy/u37cG58oeR1rtL7uXvzjxKZBu7v/yvx1wyP/PSaRBg7BSqmjYbMwGEERckouVgP
+        ag2jzuxW5UJDPGWAv2aTwe6iE5hQ81mnxdbaVrviRRW15EHLWgVRnN2JTb7NQumNEJU6e4
+        F8a+02+ur0zgO4C2CR1aH5rHxLagwsh+Lf3knJfIKnVCtTkq+MQrSagT0yh/MA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1638803745;
+        s=2020e; t=1638803747;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=XiPdxskC41Qn5OTvyupEvpjSycavsgfwXJ56NTxJfu8=;
-        b=RYkXWurT5z9qafIWOFn2aG2rNNEFTQtz5ea2srdR+/lmUvd5E8bDN7KYoSW5uwLZV5ld9L
-        7ACvf1gd76GG9CBA==
+        bh=e+uW1Cga0RiD6Y1VOJLmIas/qAaIB454K+5a7GdGvFk=;
+        b=gWVpxDfJvMQZHCsgG40ClSEC6YgMRB5F28lGJyCpoiLiEtJBpDHLta6UETqsYbPO9KM+Xk
+        014ADx79P40veDBQ==
 From:   "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] lockdep/selftests: Unbalanced migrate_disable() &
- rcu_read_lock().
+Subject: [tip: locking/core] lockdep/selftests: Avoid using
+ local_lock_{acquire|release}().
 Cc:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20211129174654.668506-8-bigeasy@linutronix.de>
-References: <20211129174654.668506-8-bigeasy@linutronix.de>
+In-Reply-To: <20211129174654.668506-7-bigeasy@linutronix.de>
+References: <20211129174654.668506-7-bigeasy@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <163880374446.11128.9971042846476247131.tip-bot2@tip-bot2>
+Message-ID: <163880374530.11128.14099889591098475504.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,92 +59,135 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     512bf713cb4c8a42ae76e5ba1a78e70a768af301
-Gitweb:        https://git.kernel.org/tip/512bf713cb4c8a42ae76e5ba1a78e70a768af301
+Commit-ID:     fc78dd08e64011865799764d5b641bf823f84c66
+Gitweb:        https://git.kernel.org/tip/fc78dd08e64011865799764d5b641bf823f84c66
 Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-AuthorDate:    Mon, 29 Nov 2021 18:46:50 +01:00
+AuthorDate:    Mon, 29 Nov 2021 18:46:49 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Sat, 04 Dec 2021 10:56:24 +01:00
 
-lockdep/selftests: Unbalanced migrate_disable() & rcu_read_lock().
+lockdep/selftests: Avoid using local_lock_{acquire|release}().
 
-The tests with unbalanced lock() + unlock() operation leave a modified
-preemption counter behind which is then reset to its original value
-after the test.
+The local_lock related functions
+  local_lock_acquire()
+  local_lock_release()
 
-The spin_lock() function on PREEMPT_RT does not include a
-preempt_disable() statement but migrate_disable() and read_rcu_lock().
-As a consequence both counter never get back to their original value
-and the system explodes later after the selftest.  In the
-double-unlock case on PREEMPT_RT, the migrate_disable() and RCU code
-will trigger a warning which should be avoided. These counter should
-not be decremented below their initial value.
-
-Save both counters and bring them back to their original value after
-the test.  In the double-unlock case, increment both counter in
-advance to they become balanced after the double unlock.
+are part of the internal implementation and should be avoided.
+Define the lock as DEFINE_PER_CPU so the normal local_lock() function
+can be used.
 
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20211129174654.668506-8-bigeasy@linutronix.de
+Link: https://lore.kernel.org/r/20211129174654.668506-7-bigeasy@linutronix.de
 ---
- lib/locking-selftest.c | 26 +++++++++++++++++++++++++-
- 1 file changed, 25 insertions(+), 1 deletion(-)
+ lib/locking-selftest.c | 32 ++++++++++++++++----------------
+ 1 file changed, 16 insertions(+), 16 deletions(-)
 
 diff --git a/lib/locking-selftest.c b/lib/locking-selftest.c
-index 4d614c7..417056b 100644
+index 71652e1..4d614c7 100644
 --- a/lib/locking-selftest.c
 +++ b/lib/locking-selftest.c
-@@ -712,12 +712,18 @@ GENERATE_TESTCASE(ABCDBCDA_rtmutex);
+@@ -139,7 +139,7 @@ static DEFINE_RT_MUTEX(rtmutex_Z2);
  
- #undef E
+ #endif
  
-+#ifdef CONFIG_PREEMPT_RT
-+# define RT_PREPARE_DBL_UNLOCK()	{ migrate_disable(); rcu_read_lock(); }
-+#else
-+# define RT_PREPARE_DBL_UNLOCK()
-+#endif
+-static local_lock_t local_A = INIT_LOCAL_LOCK(local_A);
++static DEFINE_PER_CPU(local_lock_t, local_A);
+ 
  /*
-  * Double unlock:
-  */
- #define E()					\
- 						\
- 	LOCK(A);				\
-+	RT_PREPARE_DBL_UNLOCK();		\
- 	UNLOCK(A);				\
- 	UNLOCK(A); /* fail */
+  * non-inlined runtime initializers, to let separate locks share
+@@ -1320,7 +1320,7 @@ GENERATE_PERMUTATIONS_3_EVENTS(irq_read_recursion3_soft_wlock)
+ # define I_MUTEX(x)	lockdep_reset_lock(&mutex_##x.dep_map)
+ # define I_RWSEM(x)	lockdep_reset_lock(&rwsem_##x.dep_map)
+ # define I_WW(x)	lockdep_reset_lock(&x.dep_map)
+-# define I_LOCAL_LOCK(x) lockdep_reset_lock(&local_##x.dep_map)
++# define I_LOCAL_LOCK(x) lockdep_reset_lock(this_cpu_ptr(&local_##x.dep_map))
+ #ifdef CONFIG_RT_MUTEXES
+ # define I_RTMUTEX(x)	lockdep_reset_lock(&rtmutex_##x.dep_map)
+ #endif
+@@ -1380,7 +1380,7 @@ static void reset_locks(void)
+ 	init_shared_classes();
+ 	raw_spin_lock_init(&raw_lock_A);
+ 	raw_spin_lock_init(&raw_lock_B);
+-	local_lock_init(&local_A);
++	local_lock_init(this_cpu_ptr(&local_A));
  
-@@ -1398,7 +1404,13 @@ static int unexpected_testcase_failures;
+ 	ww_mutex_init(&o, &ww_lockdep); ww_mutex_init(&o2, &ww_lockdep); ww_mutex_init(&o3, &ww_lockdep);
+ 	memset(&t, 0, sizeof(t)); memset(&t2, 0, sizeof(t2));
+@@ -2646,8 +2646,8 @@ static void wait_context_tests(void)
  
- static void dotest(void (*testcase_fn)(void), int expected, int lockclass_mask)
+ static void local_lock_2(void)
  {
--	unsigned long saved_preempt_count = preempt_count();
-+	int saved_preempt_count = preempt_count();
-+#ifdef CONFIG_PREEMPT_RT
-+#ifdef CONFIG_SMP
-+	int saved_mgd_count = current->migration_disabled;
-+#endif
-+	int saved_rcu_count = current->rcu_read_lock_nesting;
-+#endif
+-	local_lock_acquire(&local_A);	/* IRQ-ON */
+-	local_lock_release(&local_A);
++	local_lock(&local_A);	/* IRQ-ON */
++	local_unlock(&local_A);
  
- 	WARN_ON(irqs_disabled());
+ 	HARDIRQ_ENTER();
+ 	spin_lock(&lock_A);		/* IN-IRQ */
+@@ -2656,18 +2656,18 @@ static void local_lock_2(void)
  
-@@ -1432,6 +1444,18 @@ static void dotest(void (*testcase_fn)(void), int expected, int lockclass_mask)
- 	 * count, so restore it:
- 	 */
- 	preempt_count_set(saved_preempt_count);
-+
-+#ifdef CONFIG_PREEMPT_RT
-+#ifdef CONFIG_SMP
-+	while (current->migration_disabled > saved_mgd_count)
-+		migrate_enable();
-+#endif
-+
-+	while (current->rcu_read_lock_nesting > saved_rcu_count)
-+		rcu_read_unlock();
-+	WARN_ON_ONCE(current->rcu_read_lock_nesting < saved_rcu_count);
-+#endif
-+
- #ifdef CONFIG_TRACE_IRQFLAGS
- 	if (softirq_count())
- 		current->softirqs_enabled = 0;
+ 	HARDIRQ_DISABLE();
+ 	spin_lock(&lock_A);
+-	local_lock_acquire(&local_A);	/* IN-IRQ <-> IRQ-ON cycle, false */
+-	local_lock_release(&local_A);
++	local_lock(&local_A);	/* IN-IRQ <-> IRQ-ON cycle, false */
++	local_unlock(&local_A);
+ 	spin_unlock(&lock_A);
+ 	HARDIRQ_ENABLE();
+ }
+ 
+ static void local_lock_3A(void)
+ {
+-	local_lock_acquire(&local_A);	/* IRQ-ON */
++	local_lock(&local_A);	/* IRQ-ON */
+ 	spin_lock(&lock_B);		/* IRQ-ON */
+ 	spin_unlock(&lock_B);
+-	local_lock_release(&local_A);
++	local_unlock(&local_A);
+ 
+ 	HARDIRQ_ENTER();
+ 	spin_lock(&lock_A);		/* IN-IRQ */
+@@ -2676,18 +2676,18 @@ static void local_lock_3A(void)
+ 
+ 	HARDIRQ_DISABLE();
+ 	spin_lock(&lock_A);
+-	local_lock_acquire(&local_A);	/* IN-IRQ <-> IRQ-ON cycle only if we count local_lock(), false */
+-	local_lock_release(&local_A);
++	local_lock(&local_A);	/* IN-IRQ <-> IRQ-ON cycle only if we count local_lock(), false */
++	local_unlock(&local_A);
+ 	spin_unlock(&lock_A);
+ 	HARDIRQ_ENABLE();
+ }
+ 
+ static void local_lock_3B(void)
+ {
+-	local_lock_acquire(&local_A);	/* IRQ-ON */
++	local_lock(&local_A);	/* IRQ-ON */
+ 	spin_lock(&lock_B);		/* IRQ-ON */
+ 	spin_unlock(&lock_B);
+-	local_lock_release(&local_A);
++	local_unlock(&local_A);
+ 
+ 	HARDIRQ_ENTER();
+ 	spin_lock(&lock_A);		/* IN-IRQ */
+@@ -2696,8 +2696,8 @@ static void local_lock_3B(void)
+ 
+ 	HARDIRQ_DISABLE();
+ 	spin_lock(&lock_A);
+-	local_lock_acquire(&local_A);	/* IN-IRQ <-> IRQ-ON cycle only if we count local_lock(), false */
+-	local_lock_release(&local_A);
++	local_lock(&local_A);	/* IN-IRQ <-> IRQ-ON cycle only if we count local_lock(), false */
++	local_unlock(&local_A);
+ 	spin_unlock(&lock_A);
+ 	HARDIRQ_ENABLE();
+ 
+@@ -2812,7 +2812,7 @@ void locking_selftest(void)
+ 	printk("------------------------\n");
+ 	printk("| Locking API testsuite:\n");
+ 	printk("----------------------------------------------------------------------------\n");
+-	printk("                                 | spin |wlock |rlock |mutex | wsem | rsem |\n");
++	printk("                                 | spin |wlock |rlock |mutex | wsem | rsem |rtmutex\n");
+ 	printk("  --------------------------------------------------------------------------\n");
+ 
+ 	init_shared_classes();
