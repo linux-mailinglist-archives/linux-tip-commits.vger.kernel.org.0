@@ -2,57 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 27020469E7D
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  6 Dec 2021 16:39:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 17A9F46AB22
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  6 Dec 2021 22:57:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377399AbhLFPjR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 6 Dec 2021 10:39:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59966 "EHLO
+        id S1350566AbhLFWBT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 6 Dec 2021 17:01:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41698 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1378937AbhLFPgt (ORCPT
+        with ESMTP id S1344091AbhLFWBR (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 6 Dec 2021 10:36:49 -0500
+        Mon, 6 Dec 2021 17:01:17 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9941DC08EAD1;
-        Mon,  6 Dec 2021 07:22:47 -0800 (PST)
-Date:   Mon, 06 Dec 2021 15:22:45 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAAA6C0613FE;
+        Mon,  6 Dec 2021 13:57:48 -0800 (PST)
+Date:   Mon, 06 Dec 2021 21:57:44 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1638804166;
+        s=2020; t=1638827866;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=tSt8q/8e/nInyK8sJyI1ka7WCaym2KvVvp3HmPNl+2s=;
-        b=CIVp6gZu/J6oNj4nfWDHOqppJIfTbHqMxzNxfmEIKER+HyYpyWFHjUniuFmMEgu8h5eqBM
-        +Wip74wqKmtOiHZS3PbwdFP1LX6irvSeyQWnLadjzC/9J6seJBow6wM9dk7XFo6fSBpLh0
-        uZ31ABEs+8OOIhF18WWuIU4sf3wKV4l0/eGo0ZnLg4gPjAyB8ZnIZxwMX/dn2YhGbArXwd
-        wXfW0qyY4z41gHGk8ip6crSynX0/f1JkEbCCpeNdkpt+2n74mWsmKyErMq6mINhRUo3ZBq
-        ntRpAWpyOolhsSYbiHNVEjx8RZYLfEj3esU5ao8Rmxv2gGR9oVT3iO3VzYOF+Q==
+        bh=QjvAolElgLN2UoVLE0ULBn6BXUMiVW9SOvU/uPesDJI=;
+        b=0E3V9D/2SkCZsdLTFUOWt8gCFPIpKgS8v+cU4FDAjosVtPb1fi8G1sA9DhyYwOq5O0OfEA
+        tl69ugnrUsi1ARmKtfUNyU5fHy1W3SeDAYN9xCDWksxC2HLZxaKDCuoFuqwUbbJfGGolPa
+        Y5rRRPD+/ONAb5kkwTPD4/6YWqQbgpTBbgGkK7amhnNvj5Q1yNB/yBbgOKaPepIdzD5XA9
+        bVEm18Jk3TcrgF0BZAdH5MQ2YC1KrGASGL/ua+4iI5nR8awtu3A9I3nOGu/9BZGwDLJ6V3
+        2L6/P3O093J6YGFQMD+fZOK6JyBav/yG2qhdqPq1fHC+q4+7V9ZjqmELHo9z2Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1638804166;
+        s=2020e; t=1638827866;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=tSt8q/8e/nInyK8sJyI1ka7WCaym2KvVvp3HmPNl+2s=;
-        b=hvpH7VpWY3tYZ7sbfzk0dMzkAG41YzylqU8gZ5PBUDBTJ+1M2RdpmTf56QdPHnkZVWV7F1
-        LQs4TcZ6MTofdJBQ==
-From:   "tip-bot2 for Vincent Donnefort" <tip-bot2@linutronix.de>
+        bh=QjvAolElgLN2UoVLE0ULBn6BXUMiVW9SOvU/uPesDJI=;
+        b=HunI7Q+7ol9ZCFddjEZboVAwvRo7SzC/yqSbEeMQK0pAV6A1MV/B+rpAAGUgCkkgvo4aVD
+        ibnSxxVzXU2iJlBA==
+From:   "tip-bot2 for Joerg Roedel" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/fair: Fix detection of per-CPU kthreads waking a task
-Cc:     Vincent Donnefort <vincent.donnefort@arm.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Valentin Schneider <valentin.schneider@arm.com>,
+Subject: [tip: x86/mm] x86/mm: Flush global TLB when switching to trampoline
+ page-table
+Cc:     Joerg Roedel <jroedel@suse.de>, Borislav Petkov <bp@suse.de>,
         x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20211201143450.479472-1-vincent.donnefort@arm.com>
-References: <20211201143450.479472-1-vincent.donnefort@arm.com>
+In-Reply-To: <20211202153226.22946-4-joro@8bytes.org>
+References: <20211202153226.22946-4-joro@8bytes.org>
 MIME-Version: 1.0
-Message-ID: <163880416530.11128.2092614972887250600.tip-bot2@tip-bot2>
+Message-ID: <163882786459.11128.3328128025586592058.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,49 +59,104 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the x86/mm branch of tip:
 
-Commit-ID:     8b4e74ccb582797f6f0b0a50372ebd9fd2372a27
-Gitweb:        https://git.kernel.org/tip/8b4e74ccb582797f6f0b0a50372ebd9fd2372a27
-Author:        Vincent Donnefort <vincent.donnefort@arm.com>
-AuthorDate:    Wed, 01 Dec 2021 14:34:50 
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Sat, 04 Dec 2021 10:56:20 +01:00
+Commit-ID:     71d5049b053876afbde6c3273250b76935494ab2
+Gitweb:        https://git.kernel.org/tip/71d5049b053876afbde6c3273250b76935494ab2
+Author:        Joerg Roedel <jroedel@suse.de>
+AuthorDate:    Thu, 02 Dec 2021 16:32:25 +01:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Mon, 06 Dec 2021 09:54:10 +01:00
 
-sched/fair: Fix detection of per-CPU kthreads waking a task
+x86/mm: Flush global TLB when switching to trampoline page-table
 
-select_idle_sibling() has a special case for tasks woken up by a per-CPU
-kthread, where the selected CPU is the previous one. However, the current
-condition for this exit path is incomplete. A task can wake up from an
-interrupt context (e.g. hrtimer), while a per-CPU kthread is running. A
-such scenario would spuriously trigger the special case described above.
-Also, a recent change made the idle task like a regular per-CPU kthread,
-hence making that situation more likely to happen
-(is_per_cpu_kthread(swapper) being true now).
+Move the switching code into a function so that it can be re-used and
+add a global TLB flush. This makes sure that usage of memory which is
+not mapped in the trampoline page-table is reliably caught.
 
-Checking for task context makes sure select_idle_sibling() will not
-interpret a wake up from any other context as a wake up by a per-CPU
-kthread.
+Also move the clearing of CR4.PCIDE before the CR3 switch because the
+cr4_clear_bits() function will access data not mapped into the
+trampoline page-table.
 
-Fixes: 52262ee567ad ("sched/fair: Allow a per-CPU kthread waking a task to stack on the same CPU, to fix XFS performance regression")
-Signed-off-by: Vincent Donnefort <vincent.donnefort@arm.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
-Reviewed-by: Valentin Schneider <valentin.schneider@arm.com>
-Link: https://lore.kernel.org/r/20211201143450.479472-1-vincent.donnefort@arm.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lore.kernel.org/r/20211202153226.22946-4-joro@8bytes.org
 ---
- kernel/sched/fair.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/include/asm/realmode.h |  1 +
+ arch/x86/kernel/reboot.c        | 12 ++----------
+ arch/x86/realmode/init.c        | 26 ++++++++++++++++++++++++++
+ 3 files changed, 29 insertions(+), 10 deletions(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 884f29d..5cd2798 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -6398,6 +6398,7 @@ static int select_idle_sibling(struct task_struct *p, int prev, int target)
- 	 * pattern is IO completions.
+diff --git a/arch/x86/include/asm/realmode.h b/arch/x86/include/asm/realmode.h
+index 5db5d08..331474b 100644
+--- a/arch/x86/include/asm/realmode.h
++++ b/arch/x86/include/asm/realmode.h
+@@ -89,6 +89,7 @@ static inline void set_real_mode_mem(phys_addr_t mem)
+ }
+ 
+ void reserve_real_mode(void);
++void load_trampoline_pgtable(void);
+ 
+ #endif /* __ASSEMBLY__ */
+ 
+diff --git a/arch/x86/kernel/reboot.c b/arch/x86/kernel/reboot.c
+index 0a40df6..fa700b4 100644
+--- a/arch/x86/kernel/reboot.c
++++ b/arch/x86/kernel/reboot.c
+@@ -113,17 +113,9 @@ void __noreturn machine_real_restart(unsigned int type)
+ 	spin_unlock(&rtc_lock);
+ 
+ 	/*
+-	 * Switch back to the initial page table.
++	 * Switch to the trampoline page table.
  	 */
- 	if (is_per_cpu_kthread(current) &&
-+	    in_task() &&
- 	    prev == smp_processor_id() &&
- 	    this_rq()->nr_running <= 1) {
- 		return prev;
+-#ifdef CONFIG_X86_32
+-	load_cr3(initial_page_table);
+-#else
+-	write_cr3(real_mode_header->trampoline_pgd);
+-
+-	/* Exiting long mode will fail if CR4.PCIDE is set. */
+-	if (boot_cpu_has(X86_FEATURE_PCID))
+-		cr4_clear_bits(X86_CR4_PCIDE);
+-#endif
++	load_trampoline_pgtable();
+ 
+ 	/* Jump to the identity-mapped low memory code */
+ #ifdef CONFIG_X86_32
+diff --git a/arch/x86/realmode/init.c b/arch/x86/realmode/init.c
+index 4a3da75..6d98609 100644
+--- a/arch/x86/realmode/init.c
++++ b/arch/x86/realmode/init.c
+@@ -17,6 +17,32 @@ u32 *trampoline_cr4_features;
+ /* Hold the pgd entry used on booting additional CPUs */
+ pgd_t trampoline_pgd_entry;
+ 
++void load_trampoline_pgtable(void)
++{
++#ifdef CONFIG_X86_32
++	load_cr3(initial_page_table);
++#else
++	/*
++	 * This function is called before exiting to real-mode and that will
++	 * fail with CR4.PCIDE still set.
++	 */
++	if (boot_cpu_has(X86_FEATURE_PCID))
++		cr4_clear_bits(X86_CR4_PCIDE);
++
++	write_cr3(real_mode_header->trampoline_pgd);
++#endif
++
++	/*
++	 * The CR3 write above will not flush global TLB entries.
++	 * Stale, global entries from previous page tables may still be
++	 * present.  Flush those stale entries.
++	 *
++	 * This ensures that memory accessed while running with
++	 * trampoline_pgd is *actually* mapped into trampoline_pgd.
++	 */
++	__flush_tlb_all();
++}
++
+ void __init reserve_real_mode(void)
+ {
+ 	phys_addr_t mem;
