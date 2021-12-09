@@ -2,54 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BBD1E46EC9D
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  9 Dec 2021 17:07:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1CF6D46ECA4
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  9 Dec 2021 17:07:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240905AbhLIQKq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 9 Dec 2021 11:10:46 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:40098 "EHLO
+        id S240978AbhLIQKt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 9 Dec 2021 11:10:49 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:40094 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240899AbhLIQKo (ORCPT
+        with ESMTP id S240918AbhLIQKp (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 9 Dec 2021 11:10:44 -0500
-Date:   Thu, 09 Dec 2021 16:07:09 -0000
+        Thu, 9 Dec 2021 11:10:45 -0500
+Date:   Thu, 09 Dec 2021 16:07:10 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1639066030;
+        s=2020; t=1639066031;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=RKqBu5KD0X5AJyZflcem/E0kKVFhL2g3JJ35BtBzALc=;
-        b=4DYIIiq91Gq8agdNq0G5KZuHZHxIJzXDxiKjV+9U+jjlQQVxIpmSx0Atoocr/3TT3abHRI
-        HL+mmgBqnUnv9jcycA2GeeAX/naS6SZZ8kwSNRi5nD1WU2XOQrOGchx5npDwhJlnHpQTk8
-        JzFMOKc2es/cjRr3aoP3vKHtDRLXpBO43AI09K2qpERnP6Q7EnyihH7QT3mCg7tEmVpVt5
-        5nzGRYPox9vnvMgM63AXFG+IeNd64yCNngC+mEXyhKevsMR+CSPpjaCvEZJcJnOOxxP8Op
-        k39G0TZRdJbX2qaAfDmTsQiTwlHkreJ4q1remmGy4T9KTXiU3H6YL4h0CwAVHg==
+        bh=T4M0ACzm2q97AIqupAzGhLpK4qDK/RFzhvmFjIYN5Ao=;
+        b=Ys7PeK1uqFeeTN/XRK8lcMCEhHAAeIuuLG7BqDGGwD1hrvcbz6ZlgsLqh3gwjDi6UcsZfU
+        rTrfy/vKvL+kQJNXwf4lUDdJ+8Mffp1hW8S5c+n+AJY+apLORsRk5DMQWW4uHuzwDHt+5E
+        hVkZ7OSErgvwn80hfH8UHlQKlEBz7rhzLwyjkxigkfTpquVU+r/dcJl714iB4YMu9WjQJP
+        fTuN5WbPhC84klX1s8q4mYXn52GytrPzUlE1pqaAIAWVXjd47POWNt3zWa0XWgkt1Te/PE
+        a8YATWTUKNVCeu0MGZDbBKAfddf1HjBcd9kvAOQiNNhmTje58jYuF/e8IDxEug==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1639066030;
+        s=2020e; t=1639066031;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=RKqBu5KD0X5AJyZflcem/E0kKVFhL2g3JJ35BtBzALc=;
-        b=Bj04M8QMTn/tV2E2w5DAnTe+D33NP+fxMPQucdWMzYsm5a+MHFHyhEkGyVFNmvjwFQ5+S2
-        D0Vj8J9qX68CraCw==
+        bh=T4M0ACzm2q97AIqupAzGhLpK4qDK/RFzhvmFjIYN5Ao=;
+        b=8mQtqAP9FqHxOd0x6fLf3LqRgnmfNT5cL/dP7PEMN1EyCIZx1Y6iousp6F903gtmYmSWBV
+        I7w1ZNqwqxoJsgCQ==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/msi] PCI/MSI: Remove msi_desc_to_pci_sysdata()
+Subject: [tip: irq/msi] genirq/msi: Fixup includes
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Juergen Gross <jgross@suse.com>,
         Jason Gunthorpe <jgg@nvidia.com>,
-        Bjorn Helgaas <bhelgaas@google.com>, x86@kernel.org,
+        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20211206210224.210768199@linutronix.de>
-References: <20211206210224.210768199@linutronix.de>
+In-Reply-To: <20211206210224.103502021@linutronix.de>
+References: <20211206210224.103502021@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <163906602922.11128.8909973797028580799.tip-bot2@tip-bot2>
+Message-ID: <163906603072.11128.1404648433816016200.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,62 +60,51 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/msi branch of tip:
 
-Commit-ID:     ade044a3d0f0389e4f916337c505550acc3fd011
-Gitweb:        https://git.kernel.org/tip/ade044a3d0f0389e4f916337c505550acc3fd011
+Commit-ID:     3ba1f050c91d5ce3672dbf3a55dc2451c0b342e2
+Gitweb:        https://git.kernel.org/tip/3ba1f050c91d5ce3672dbf3a55dc2451c0b342e2
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Mon, 06 Dec 2021 23:27:34 +01:00
+AuthorDate:    Mon, 06 Dec 2021 23:27:31 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 09 Dec 2021 11:52:21 +01:00
+CommitterDate: Thu, 09 Dec 2021 11:52:20 +01:00
 
-PCI/MSI: Remove msi_desc_to_pci_sysdata()
+genirq/msi: Fixup includes
 
-Last user is gone long ago.
+Remove the kobject.h include from msi.h as it's not required and add a
+sysfs.h include to the core code instead.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Tested-by: Juergen Gross <jgross@suse.com>
 Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
-Link: https://lore.kernel.org/r/20211206210224.210768199@linutronix.de
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20211206210224.103502021@linutronix.de
 
 ---
- drivers/pci/msi.c   | 8 --------
- include/linux/msi.h | 5 -----
- 2 files changed, 13 deletions(-)
+ include/linux/msi.h | 2 +-
+ kernel/irq/msi.c    | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pci/msi.c b/drivers/pci/msi.c
-index afa8ba2..e1aecd9 100644
---- a/drivers/pci/msi.c
-+++ b/drivers/pci/msi.c
-@@ -1267,14 +1267,6 @@ struct pci_dev *msi_desc_to_pci_dev(struct msi_desc *desc)
- }
- EXPORT_SYMBOL(msi_desc_to_pci_dev);
- 
--void *msi_desc_to_pci_sysdata(struct msi_desc *desc)
--{
--	struct pci_dev *dev = msi_desc_to_pci_dev(desc);
--
--	return dev->bus->sysdata;
--}
--EXPORT_SYMBOL_GPL(msi_desc_to_pci_sysdata);
--
- #ifdef CONFIG_PCI_MSI_IRQ_DOMAIN
- /**
-  * pci_msi_domain_write_msg - Helper to write MSI message to PCI config space
 diff --git a/include/linux/msi.h b/include/linux/msi.h
-index d7b143a..ac6fec1 100644
+index 4b962f7..5c62775 100644
 --- a/include/linux/msi.h
 +++ b/include/linux/msi.h
-@@ -218,13 +218,8 @@ static inline void msi_desc_set_iommu_cookie(struct msi_desc *desc,
- 	for_each_msi_entry((desc), &(pdev)->dev)
+@@ -2,7 +2,7 @@
+ #ifndef LINUX_MSI_H
+ #define LINUX_MSI_H
  
- struct pci_dev *msi_desc_to_pci_dev(struct msi_desc *desc);
--void *msi_desc_to_pci_sysdata(struct msi_desc *desc);
- void pci_write_msi_msg(unsigned int irq, struct msi_msg *msg);
- #else /* CONFIG_PCI_MSI */
--static inline void *msi_desc_to_pci_sysdata(struct msi_desc *desc)
--{
--	return NULL;
--}
- static inline void pci_write_msi_msg(unsigned int irq, struct msi_msg *msg)
- {
- }
+-#include <linux/kobject.h>
++#include <linux/cpumask.h>
+ #include <linux/list.h>
+ #include <asm/msi.h>
+ 
+diff --git a/kernel/irq/msi.c b/kernel/irq/msi.c
+index cd4fa26..6718bab 100644
+--- a/kernel/irq/msi.c
++++ b/kernel/irq/msi.c
+@@ -14,6 +14,7 @@
+ #include <linux/irqdomain.h>
+ #include <linux/msi.h>
+ #include <linux/slab.h>
++#include <linux/sysfs.h>
+ #include <linux/pci.h>
+ 
+ #include "internals.h"
