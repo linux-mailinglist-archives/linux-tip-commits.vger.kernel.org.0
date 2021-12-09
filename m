@@ -2,17 +2,17 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B9B6846EC97
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  9 Dec 2021 17:07:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6434946EC99
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  9 Dec 2021 17:07:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240870AbhLIQKl (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 9 Dec 2021 11:10:41 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:40098 "EHLO
+        id S240881AbhLIQKm (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 9 Dec 2021 11:10:42 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:40094 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240835AbhLIQKj (ORCPT
+        with ESMTP id S240831AbhLIQKk (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 9 Dec 2021 11:10:39 -0500
-Date:   Thu, 09 Dec 2021 16:07:03 -0000
+        Thu, 9 Dec 2021 11:10:40 -0500
+Date:   Thu, 09 Dec 2021 16:07:04 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1639066025;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -20,12 +20,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=P91S7wLpB0Uc8sVbh5LbQfyZGxUkGtiZXczHWdeqhZ0=;
-        b=kvi7i3jJkZ6LAQadk7PGVkSvA0qW3kYxsXSBv8f/Y9Fy8tF1sIAwNyVs0BxZj/GXO3kn7v
-        wVZCPktlLfrQ/aPT21fzLG5NE8ezKkZP+ePNbdhy2RZ7nxSlNvCGesTs6TH1wAv/y3FA5O
-        0Cc7jM5lH2zI4fZAVGi1zRW1OzDLwHtLAHAfN7RI2lgiOVhc+gSrR/4C2jN6k3nag2LH6d
-        vdA7smBd+d3bOKgs9Kn5INfrhuWZtoiBhvTvtvJcBWbQYnmPXAHW8KmjSUZknsKdDcrkDp
-        61GuNes4DZ0MsPL8m/32YIeEeX+qO766GdjvERyHHCDdjwMIzxLHNvdk6fl7Jw==
+        bh=iWvxX7TdK56u7tL9I/yYMlaUUDCtn/cWEXSuc2tGEYk=;
+        b=GtZqi1/TS6PIXuO8/D+01bcQkLDK03JtrBm6Vint6ZFioV/wdFvB8sGc5Yazbljc7wkzZJ
+        j/9jTfUDQTEdekHYhUktrKN2YsWqCsNPc/BcmrpBTSnGhkg72XKuSWhun8W/HrCQPxcJF2
+        UDQH+uHBQLEGMvaKvhxZGumqcGTiz02HmCVBM28cuqt4JXaz2Q8ceP7digJb+xo81muTSp
+        NI4Yu4RIntQSTquAPtU2Yrr2EUoF8hM6dO3dsKW5GiVrxoIGiEvlzf/Pv6ESBH3fQg1vVm
+        xF2IihHLoFtX9GfLbajOgt97ms/vhIhVL06Ym8s4ZYS+kcwC+X1dirfXALNfPQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1639066025;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -33,24 +33,23 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=P91S7wLpB0Uc8sVbh5LbQfyZGxUkGtiZXczHWdeqhZ0=;
-        b=y3cC5dltZ+zwxXoqoExyo8SYNsPBgY/Os9l37Y+DbCNw7x/GBpGyIXwIki2fIZflS0LyuF
-        qB6R9h57q+Sjb2DA==
+        bh=iWvxX7TdK56u7tL9I/yYMlaUUDCtn/cWEXSuc2tGEYk=;
+        b=wQVdlqYFmz29lPxxr6nhB593Xni6Lc2UXUXAYDsp8x+9jDb87yGgl1ACmt1IdG+iRVuqP8
+        3ZgxPDkNToCiHlCw==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/msi] PCI/MSI: Make msix_update_entries() smarter
+Subject: [tip: irq/msi] PCI/MSI: Cleanup include zoo
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Juergen Gross <jgross@suse.com>,
         Jason Gunthorpe <jgg@nvidia.com>,
-        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
         Bjorn Helgaas <bhelgaas@google.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20211206210224.600351129@linutronix.de>
-References: <20211206210224.600351129@linutronix.de>
+In-Reply-To: <20211206210224.539281124@linutronix.de>
+References: <20211206210224.539281124@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <163906602397.11128.4835509365516033620.tip-bot2@tip-bot2>
+Message-ID: <163906602485.11128.13473051346006830522.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,41 +60,55 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/msi branch of tip:
 
-Commit-ID:     7112158d97a1539b217c360d379724ac3ee99fa3
-Gitweb:        https://git.kernel.org/tip/7112158d97a1539b217c360d379724ac3ee99fa3
+Commit-ID:     29a03ada4a007067d5427a6a1b7ba1dc7566ea2e
+Gitweb:        https://git.kernel.org/tip/29a03ada4a007067d5427a6a1b7ba1dc7566ea2e
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Mon, 06 Dec 2021 23:27:46 +01:00
+AuthorDate:    Mon, 06 Dec 2021 23:27:44 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Thu, 09 Dec 2021 11:52:21 +01:00
 
-PCI/MSI: Make msix_update_entries() smarter
+PCI/MSI: Cleanup include zoo
 
-No need to walk the descriptors and check for each one whether the entries
-pointer function argument is NULL. Do it once.
+Get rid of the pile of unneeded includes which accumulated over time.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Tested-by: Juergen Gross <jgross@suse.com>
 Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Acked-by: Bjorn Helgaas <bhelgaas@google.com>
-Link: https://lore.kernel.org/r/20211206210224.600351129@linutronix.de
+Link: https://lore.kernel.org/r/20211206210224.539281124@linutronix.de
 
 ---
- drivers/pci/msi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/pci/msi.c | 16 ++++------------
+ 1 file changed, 4 insertions(+), 12 deletions(-)
 
 diff --git a/drivers/pci/msi.c b/drivers/pci/msi.c
-index a76fcf4..1573091 100644
+index 8260b06..a76fcf4 100644
 --- a/drivers/pci/msi.c
 +++ b/drivers/pci/msi.c
-@@ -642,8 +642,8 @@ static void msix_update_entries(struct pci_dev *dev, struct msix_entry *entries)
- {
- 	struct msi_desc *entry;
+@@ -7,22 +7,14 @@
+  * Copyright (C) 2016 Christoph Hellwig.
+  */
  
--	for_each_pci_msi_entry(entry, dev) {
--		if (entries) {
-+	if (entries) {
-+		for_each_pci_msi_entry(entry, dev) {
- 			entries->vector = entry->irq;
- 			entries++;
- 		}
++#include <linux/acpi_iort.h>
+ #include <linux/err.h>
+-#include <linux/mm.h>
+-#include <linux/irq.h>
+-#include <linux/interrupt.h>
+ #include <linux/export.h>
+-#include <linux/ioport.h>
+-#include <linux/pci.h>
+-#include <linux/proc_fs.h>
+-#include <linux/msi.h>
+-#include <linux/smp.h>
+-#include <linux/errno.h>
+-#include <linux/io.h>
+-#include <linux/acpi_iort.h>
+-#include <linux/slab.h>
++#include <linux/irq.h>
+ #include <linux/irqdomain.h>
++#include <linux/msi.h>
+ #include <linux/of_irq.h>
++#include <linux/pci.h>
+ 
+ #include "pci.h"
+ 
