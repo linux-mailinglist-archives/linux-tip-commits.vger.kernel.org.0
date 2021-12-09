@@ -2,122 +2,130 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1606C46DD9E
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  8 Dec 2021 22:27:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9856746EA25
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  9 Dec 2021 15:38:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234365AbhLHVbM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 8 Dec 2021 16:31:12 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:34636 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234766AbhLHVbM (ORCPT
+        id S233235AbhLIOmO (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 9 Dec 2021 09:42:14 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124]:38069 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S238788AbhLIOlw (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 8 Dec 2021 16:31:12 -0500
-Date:   Wed, 08 Dec 2021 21:27:37 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1638998858;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
+        Thu, 9 Dec 2021 09:41:52 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1639060698;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=nIW81LCscbQfpQyvAJskFFL+jw1I3jY7/dxmCWQuu7Y=;
-        b=uHlbtG9XYg+merTvNw+9wF4F8NQ4bWOp/PgenmeVg1cDE00GjjZ6C5PpdPQqbpAUycVyMj
-        MatP4F9vhqZgwvZrQVSGRuHTQn84rV271ruNVaIyMotJ8XHjLfNx6nFupa+X26MSzPd2Ve
-        omErmco0UroW1EbyuoV0x4JppXMr+basL5SrheWNW+RGGQpGcDRZ4oGwk5U0EDDRlbPmVL
-        ViSdDdoWg5XM7uoaeN2jhjDHL3Z2aBeHZapvdOR8B8npNawk+B+6wFdTDclXVux3ebBYu7
-        WbQxhKYCrwymkukh1NAq1JbbMjrszla3wHZ+ag09xXDya9VtAu++EnPQyCQOqw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1638998858;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=nIW81LCscbQfpQyvAJskFFL+jw1I3jY7/dxmCWQuu7Y=;
-        b=7bItRWt+mJTG3POca2825RrrlOehf5w5TTIgQCqbizXIpWU6jh73gmtAWlDdT/W3/OIkYr
-        V6dKbqc4Y3LFvDDA==
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] sched,x86: Don't use cluster topology for x86 hybrid CPUs
-Cc:     Tim Chen <tim.c.chen@linux.intel.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Ricardo Neri <ricardo.neri-calderon@linux.intel.com>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20211204091402.GM16608@worktop.programming.kicks-ass.net>
-References: <20211204091402.GM16608@worktop.programming.kicks-ass.net>
+        bh=SicIl/F4FCwOSzdyMa6d5C5yjU3rVhalMXpaVFqCm/w=;
+        b=Nl4G4sOTGzJLn95uBiYm5oeeqoSkYyGxM7ibiOf97XFWVSqwM7i2SgfGC44ZzE0jkGRXzx
+        YAIgA2DMqsDQB72OECSTybALV8v2OoxLIeXeJdK0AfkjTZOSnKYko2YUGDaNp460KaIsN7
+        WtA+/7Xm7vqGwE9ipZRD3GlqSw0eHBQ=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-277-YSOIy4BJMvWg0__xuuhKnQ-1; Thu, 09 Dec 2021 09:38:15 -0500
+X-MC-Unique: YSOIy4BJMvWg0__xuuhKnQ-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 0BF65802C92;
+        Thu,  9 Dec 2021 14:38:13 +0000 (UTC)
+Received: from localhost.localdomain.com (unknown [10.22.16.78])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 18A9E694DF;
+        Thu,  9 Dec 2021 14:38:12 +0000 (UTC)
+From:   John Dorminy <jdorminy@redhat.com>
+To:     tip-bot2@linutronix.de
+Cc:     anjaneya.chagam@intel.com, bp@suse.de, dan.j.williams@intel.com,
+        linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
+        stable@vger.kernel.org, x86@kernel.org
+Subject: Re: [tip: x86/urgent] x86/boot: Pull up cmdline preparation and early param parsing
+Date:   Thu,  9 Dec 2021 09:38:10 -0500
+Message-Id: <20211209143810.452527-1-jdorminy@redhat.com>
+In-Reply-To: <163697618022.414.12673958553611696646.tip-bot2@tip-bot2>
+References: <163697618022.414.12673958553611696646.tip-bot2@tip-bot2>
 MIME-Version: 1.0
-Message-ID: <163899885798.11128.4032422680527135079.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/urgent branch of tip:
+Greetings;
 
-Commit-ID:     cabdc3a8475b918e55744f43719b26a82dc8fa6b
-Gitweb:        https://git.kernel.org/tip/cabdc3a8475b918e55744f43719b26a82dc8fa6b
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Sat, 04 Dec 2021 10:14:02 +01:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 08 Dec 2021 22:15:37 +01:00
+It seems that this patch causes a mem= parameter to the kernel to have no effect, unfortunately... 
 
-sched,x86: Don't use cluster topology for x86 hybrid CPUs
+As far as I understand, the x86 mem parameter handler parse_memopt() (called by parse_early_param()) relies on being called after e820__memory_setup(): it simply removes any memory above the specified limit at that moment, allowing memory to later be hotplugged without regard for the initial limit. However, the initial non-hotplugged memory must already have been set up, in e820__memory_setup(), so that it can be removed in parse_memopt(); if parse_early_param() is called before e820__memory_setup(), as this change does, the parameter ends up having no effect.
 
-For x86 hybrid CPUs like Alder Lake, the order of CPU selection should
-be based strictly on CPU priority.  Don't include cluster topology for
-hybrid CPUs to avoid interference with such CPU selection order.
+I apologize that I don't know how to fix this, but I'm happy to test patches.
 
-On Alder Lake, the Atom CPU cluster has more capacity (4 Atom CPUs) vs
-Big core cluster (2 hyperthread CPUs). This could potentially bias CPU
-selection towards Atom over Big Core, when Big core CPU has higher
-priority.
+Typical dmesg output showing the lack of effect, built from the prior change and this change:
 
-Fixes: 66558b730f25 ("sched: Add cluster scheduler level for x86")
-Suggested-by: Tim Chen <tim.c.chen@linux.intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Tim Chen <tim.c.chen@linux.intel.com>
-Tested-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-Link: https://lkml.kernel.org/r/20211204091402.GM16608@worktop.programming.kicks-ass.net
----
- arch/x86/kernel/smpboot.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+With a git tree synced to 8d48bf8206f77aa8687f0e241e901e5197e52423^ (working):
+[    0.000000] Command line: BOOT_IMAGE=(hd0,msdos1)/boot/vmlinuz-5.16.0-rc1 root=UUID=a4f7bd84-4f29-40bc-8c98-f4a72d0856c4 ro net.ifnames=0 crashkernel=128M mem=4G
+...
+[    0.000000] BIOS-provided physical RAM map:
+[    0.000000] BIOS-e820: [mem 0x0000000000000000-0x000000000009abff] usable
+[    0.000000] BIOS-e820: [mem 0x000000000009ac00-0x000000000009ffff] reserved
+[    0.000000] BIOS-e820: [mem 0x00000000000e0000-0x00000000000fffff] reserved
+[    0.000000] BIOS-e820: [mem 0x0000000000100000-0x000000007dd3afff] usable
+[    0.000000] BIOS-e820: [mem 0x000000007dd3b000-0x000000007deeffff] reserved
+[    0.000000] BIOS-e820: [mem 0x000000007def0000-0x000000007e0d3fff] ACPI NVS
+[    0.000000] BIOS-e820: [mem 0x000000007e0d4000-0x000000007f367fff] reserved
+[    0.000000] BIOS-e820: [mem 0x000000007f368000-0x000000007f7fffff] ACPI NVS
+[    0.000000] BIOS-e820: [mem 0x0000000080000000-0x000000008fffffff] reserved
+[    0.000000] BIOS-e820: [mem 0x00000000fed1c000-0x00000000fed3ffff] reserved
+[    0.000000] BIOS-e820: [mem 0x00000000ff000000-0x00000000ffffffff] reserved
+[    0.000000] BIOS-e820: [mem 0x0000000100000000-0x000000207fffffff] usable
+[    0.000000] e820: remove [mem 0x100000000-0xfffffffffffffffe] usable
+[    0.000000] NX (Execute Disable) protection: active
+[    0.000000] user-defined physical RAM map:
+[    0.000000] user: [mem 0x0000000000000000-0x000000000009abff] usable
+[    0.000000] user: [mem 0x000000000009ac00-0x000000000009ffff] reserved
+[    0.000000] user: [mem 0x00000000000e0000-0x00000000000fffff] reserved
+[    0.000000] user: [mem 0x0000000000100000-0x000000007dd3afff] usable
+[    0.000000] user: [mem 0x000000007dd3b000-0x000000007deeffff] reserved
+[    0.000000] user: [mem 0x000000007def0000-0x000000007e0d3fff] ACPI NVS
+[    0.000000] user: [mem 0x000000007e0d4000-0x000000007f367fff] reserved
+[    0.000000] user: [mem 0x000000007f368000-0x000000007f7fffff] ACPI NVS
+[    0.000000] user: [mem 0x0000000080000000-0x000000008fffffff] reserved
+[    0.000000] user: [mem 0x00000000fed1c000-0x00000000fed3ffff] reserved
+[    0.000000] user: [mem 0x00000000ff000000-0x00000000ffffffff] reserved
+...
+[    0.025617] Memory: 1762876K/2061136K available (16394K kernel code, 3568K rwdata, 10324K rodata, 2676K init, 4924K bss, 298000K reserved, 0K cma-reserved)
 
-diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
-index ac2909f..617012f 100644
---- a/arch/x86/kernel/smpboot.c
-+++ b/arch/x86/kernel/smpboot.c
-@@ -579,6 +579,17 @@ static struct sched_domain_topology_level x86_numa_in_package_topology[] = {
- 	{ NULL, },
- };
- 
-+static struct sched_domain_topology_level x86_hybrid_topology[] = {
-+#ifdef CONFIG_SCHED_SMT
-+	{ cpu_smt_mask, x86_smt_flags, SD_INIT_NAME(SMT) },
-+#endif
-+#ifdef CONFIG_SCHED_MC
-+	{ cpu_coregroup_mask, x86_core_flags, SD_INIT_NAME(MC) },
-+#endif
-+	{ cpu_cpu_mask, SD_INIT_NAME(DIE) },
-+	{ NULL, },
-+};
-+
- static struct sched_domain_topology_level x86_topology[] = {
- #ifdef CONFIG_SCHED_SMT
- 	{ cpu_smt_mask, x86_smt_flags, SD_INIT_NAME(SMT) },
-@@ -1469,8 +1480,11 @@ void __init native_smp_cpus_done(unsigned int max_cpus)
- 
- 	calculate_max_logical_packages();
- 
-+	/* XXX for now assume numa-in-package and hybrid don't overlap */
- 	if (x86_has_numa_in_package)
- 		set_sched_topology(x86_numa_in_package_topology);
-+	if (cpu_feature_enabled(X86_FEATURE_HYBRID_CPU))
-+		set_sched_topology(x86_hybrid_topology);
- 
- 	nmi_selftest();
- 	impress_friends();
+Synced 8d48bf8206f77aa8687f0e241e901e5197e52423 (not working):
+
+[    0.000000] Command line: BOOT_IMAGE=(hd0,msdos1)/boot/vmlinuz-5.16.0-rc4+ root=UUID=0e750e61-b92e-4708-a974-c50a3fb7e969 ro net.ifnames=0 crashkernel=128M mem=4G
+[    0.000000] e820: remove [mem 0x100000000-0xfffffffffffffffe] usable
+[    0.000000] BIOS-provided physical RAM map:
+[    0.000000] BIOS-e820: [mem 0x0000000000000000-0x000000000009abff] usable
+[    0.000000] BIOS-e820: [mem 0x000000000009ac00-0x000000000009ffff] reserved
+[    0.000000] BIOS-e820: [mem 0x00000000000e0000-0x00000000000fffff] reserved
+[    0.000000] BIOS-e820: [mem 0x0000000000100000-0x000000007dd3afff] usable
+[    0.000000] BIOS-e820: [mem 0x000000007dd3b000-0x000000007deeffff] reserved
+[    0.000000] BIOS-e820: [mem 0x000000007def0000-0x000000007e0d3fff] ACPI NVS
+[    0.000000] BIOS-e820: [mem 0x000000007e0d4000-0x000000007f367fff] reserved
+[    0.000000] BIOS-e820: [mem 0x000000007f368000-0x000000007f7fffff] ACPI NVS
+[    0.000000] BIOS-e820: [mem 0x0000000080000000-0x000000008fffffff] reserved
+[    0.000000] BIOS-e820: [mem 0x00000000fed1c000-0x00000000fed3ffff] reserved
+[    0.000000] BIOS-e820: [mem 0x00000000ff000000-0x00000000ffffffff] reserved
+[    0.000000] BIOS-e820: [mem 0x0000000100000000-0x000000207fffffff] usable
+[    0.000000] NX (Execute Disable) protection: active
+[    0.000000] user-defined physical RAM map:
+[    0.000000] user: [mem 0x0000000000000000-0x000000000009abff] usable
+[    0.000000] user: [mem 0x000000000009ac00-0x000000000009ffff] reserved
+[    0.000000] user: [mem 0x00000000000e0000-0x00000000000fffff] reserved
+[    0.000000] user: [mem 0x0000000000100000-0x000000007dd3afff] usable
+[    0.000000] user: [mem 0x000000007dd3b000-0x000000007deeffff] reserved
+[    0.000000] user: [mem 0x000000007def0000-0x000000007e0d3fff] ACPI NVS
+[    0.000000] user: [mem 0x000000007e0d4000-0x000000007f367fff] reserved
+[    0.000000] user: [mem 0x000000007f368000-0x000000007f7fffff] ACPI NVS
+[    0.000000] user: [mem 0x0000000080000000-0x000000008fffffff] reserved
+[    0.000000] user: [mem 0x00000000fed1c000-0x00000000fed3ffff] reserved
+[    0.000000] user: [mem 0x00000000ff000000-0x00000000ffffffff] reserved
+[    0.000000] user: [mem 0x0000000100000000-0x000000207fffffff] usable
+...
+[    0.695267] Memory: 131657608K/134181712K available (16394K kernel code, 3568K rwdata, 10328K rodata, 2676K init, 4924K bss, 2523844K reserved, 0K cma-reserved)
+
