@@ -2,53 +2,58 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B3E0046ECA6
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  9 Dec 2021 17:07:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 077B146ECA1
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  9 Dec 2021 17:07:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240867AbhLIQKv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 9 Dec 2021 11:10:51 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:40094 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240887AbhLIQKn (ORCPT
+        id S240921AbhLIQKr (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 9 Dec 2021 11:10:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57436 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S240808AbhLIQKo (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 9 Dec 2021 11:10:43 -0500
-Date:   Thu, 09 Dec 2021 16:07:07 -0000
+        Thu, 9 Dec 2021 11:10:44 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9A59C0617A1;
+        Thu,  9 Dec 2021 08:07:10 -0800 (PST)
+Date:   Thu, 09 Dec 2021 16:07:08 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1639066028;
+        s=2020; t=1639066029;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=027+Jg90PtMMnu3BxbxQ3HZOZsR3izxJDSk11JbDpp4=;
-        b=mLiByutjQZjukFS9cQhTrQfYKbHA49k83WQezAekLiLt8llxqTuEhN3ll1VSqi1AYr3rbd
-        J7i6G13A+jDtMWAliSxYE9ooREb6NXcKubalF7VSRtCA+YDtwP5WAfoMhuSerFsbKs53RN
-        gCBRsFmvLDlk7c6J5Ly4kdVk4ASF9trxq1F1oJtvnlL3em0wGPgT6tQm9UuVeoP/a7vfbC
-        2WjSlz64rFE/sRBUaEtUnS6AK1uG/lo6+YaZxoMlGH9uPMhn7Z7ut8sqB+VB5RpBJ8gdCM
-        RG6Xtu9vDGm2U5IhDJtN6Oc+m9vxkSQPuH/0eTOmKhyo9MC5ZmCrZVj2vR4s8g==
+        bh=RUz5pIv+0D83MgGXGMwLNebQu0KZZRAiksB0n9xqhIE=;
+        b=iKvYZp0zxSpLIULwLALh71lj85Pq/c9PrduARj+Dq8lOaKFB/lxxbIEJUREcvjPxsYsBuu
+        xUA8wcyGrdESR+E/IbXGqXRfUjgq9l8Gsq3lJEZZiDPH3oefHu4pb9lW/DGz6L33Epe2c2
+        mFJ23sB/XhqZl9MVqjtzxz0u3j//OiV0G/VSCo06toWtbY/5d7pEgXy9xn9pr/fc3dz5hF
+        uWk6SgCe5OOkFdpGdIimfo87xUi3AoiynZtggE5Ewobzb1dz90X/P1+R1WCa7wZx3Pl+g1
+        T8cuLooylbihEnmydH9HlvzB+T3sgdVe4miZBnM73w1JZQLP14ISDwpVC2vcGw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1639066028;
+        s=2020e; t=1639066029;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=027+Jg90PtMMnu3BxbxQ3HZOZsR3izxJDSk11JbDpp4=;
-        b=DIkuHvQS8ZQnOaSX2u+zbnKVQB3ILeCNBVRuE+w2PwlPMwUBahnqgpQxBWphydY/xn7WwB
-        AEtAQ0oNun439BBw==
+        bh=RUz5pIv+0D83MgGXGMwLNebQu0KZZRAiksB0n9xqhIE=;
+        b=dxvysYbQ5h83uhBthpPw3TWLfDVKMJZQjsBmqYeb33ZU1IpPFOG/npLDlswjrH3lpzqPet
+        cgQ5y8pH4nKlrQBA==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/msi] MIPS: Octeon: Use arch_setup_msi_irq()
+Subject: [tip: irq/msi] PCI/sysfs: Use pci_irq_vector()
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Juergen Gross <jgross@suse.com>,
         Jason Gunthorpe <jgg@nvidia.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20211206210224.319201379@linutronix.de>
-References: <20211206210224.319201379@linutronix.de>
+        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+        Bjorn Helgaas <bhelgaas@google.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20211206210224.265589103@linutronix.de>
+References: <20211206210224.265589103@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <163906602778.11128.297787168075793928.tip-bot2@tip-bot2>
+Message-ID: <163906602849.11128.5747033327682594759.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,76 +64,43 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/msi branch of tip:
 
-Commit-ID:     bec61847cdc7ff22d6d85e6e6436d4b7416c1f9b
-Gitweb:        https://git.kernel.org/tip/bec61847cdc7ff22d6d85e6e6436d4b7416c1f9b
+Commit-ID:     793c5006769d77b8148236bc124b75e391110531
+Gitweb:        https://git.kernel.org/tip/793c5006769d77b8148236bc124b75e391110531
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Mon, 06 Dec 2021 23:27:38 +01:00
+AuthorDate:    Mon, 06 Dec 2021 23:27:36 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Thu, 09 Dec 2021 11:52:21 +01:00
 
-MIPS: Octeon: Use arch_setup_msi_irq()
+PCI/sysfs: Use pci_irq_vector()
 
-The core code provides the same loop code except for the MSI-X reject. Move
-that to arch_setup_msi_irq() and remove the duplicated code.
-
-No functional change.
+instead of fiddling with MSI descriptors.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Juergen Gross <jgross@suse.com>
 Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Acked-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Link: https://lore.kernel.org/r/20211206210224.319201379@linutronix.de
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+Link: https://lore.kernel.org/r/20211206210224.265589103@linutronix.de
 
 ---
- arch/mips/pci/msi-octeon.c | 32 +++-----------------------------
- 1 file changed, 3 insertions(+), 29 deletions(-)
+ drivers/pci/pci-sysfs.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/arch/mips/pci/msi-octeon.c b/arch/mips/pci/msi-octeon.c
-index 288b58b..c2860eb 100644
---- a/arch/mips/pci/msi-octeon.c
-+++ b/arch/mips/pci/msi-octeon.c
-@@ -68,6 +68,9 @@ int arch_setup_msi_irq(struct pci_dev *dev, struct msi_desc *desc)
- 	u64 search_mask;
- 	int index;
- 
-+	if (desc->pci.msi_attrib.is_msix)
-+		return -EINVAL;
-+
- 	/*
- 	 * Read the MSI config to figure out how many IRQs this device
- 	 * wants.  Most devices only want 1, which will give
-@@ -182,35 +185,6 @@ msi_irq_allocated:
- 	return 0;
- }
- 
--int arch_setup_msi_irqs(struct pci_dev *dev, int nvec, int type)
--{
--	struct msi_desc *entry;
--	int ret;
+diff --git a/drivers/pci/pci-sysfs.c b/drivers/pci/pci-sysfs.c
+index cfe2f85..602f0fb 100644
+--- a/drivers/pci/pci-sysfs.c
++++ b/drivers/pci/pci-sysfs.c
+@@ -62,11 +62,8 @@ static ssize_t irq_show(struct device *dev,
+ 	 * For MSI, show the first MSI IRQ; for all other cases including
+ 	 * MSI-X, show the legacy INTx IRQ.
+ 	 */
+-	if (pdev->msi_enabled) {
+-		struct msi_desc *desc = first_pci_msi_entry(pdev);
 -
--	/*
--	 * MSI-X is not supported.
--	 */
--	if (type == PCI_CAP_ID_MSIX)
--		return -EINVAL;
--
--	/*
--	 * If an architecture wants to support multiple MSI, it needs to
--	 * override arch_setup_msi_irqs()
--	 */
--	if (type == PCI_CAP_ID_MSI && nvec > 1)
--		return 1;
--
--	for_each_pci_msi_entry(entry, dev) {
--		ret = arch_setup_msi_irq(dev, entry);
--		if (ret < 0)
--			return ret;
--		if (ret > 0)
--			return -ENOSPC;
+-		return sysfs_emit(buf, "%u\n", desc->irq);
 -	}
--
--	return 0;
--}
--
- /**
-  * Called when a device no longer needs its MSI interrupts. All
-  * MSI interrupts for the device are freed.
++	if (pdev->msi_enabled)
++		return sysfs_emit(buf, "%u\n", pci_irq_vector(pdev, 0));
+ #endif
+ 
+ 	return sysfs_emit(buf, "%u\n", pdev->irq);
