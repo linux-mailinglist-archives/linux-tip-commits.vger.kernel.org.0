@@ -2,54 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C676846ECA3
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  9 Dec 2021 17:07:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C51B46ECA7
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  9 Dec 2021 17:07:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240962AbhLIQKs (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 9 Dec 2021 11:10:48 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:40208 "EHLO
+        id S240886AbhLIQKv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 9 Dec 2021 11:10:51 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:40098 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240864AbhLIQKp (ORCPT
+        with ESMTP id S240929AbhLIQKq (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 9 Dec 2021 11:10:45 -0500
-Date:   Thu, 09 Dec 2021 16:07:10 -0000
+        Thu, 9 Dec 2021 11:10:46 -0500
+Date:   Thu, 09 Dec 2021 16:07:11 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1639066030;
+        s=2020; t=1639066032;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=SFWFOWbFemN8XJTLkndsJvx/N8i+2dKo53mY5kG0aQU=;
-        b=b2jkqUKd89W9foVAPOyWIaISs9jTXgc7cfxWsNjGjC/33xdak2Pm7oCeXz2oL+q8HWoJUX
-        xdEjdjupeCrBfii6b9OKewwfKw4LiaYvhRveDoDA5gGb+0sZq5wpy/YZicN6e1W6dK0OnJ
-        pvXgUt352BE/lpwCrvv48oOIwTPrm32RZJTxmIPDLw6Cfh68rzZ+YHJDjunx87qLdDHx++
-        3P5olS7csZJWAf4hcoNu+yObJ93ELCVbDxyBN/TTCoP6AfRH9tgiIjbtMqJ4Pue71xFloz
-        ZJGAPdvoPOsdWi5i7GG4KaU/m+F2Z6IAWt/idmbrK9TbH5o8b+6fJDw6lueUsA==
+        bh=Ablos0pD0xOVJAzo8aCxAsLfcdRnzvcjku4MBQCPXJw=;
+        b=1dj0Sk9qc21YChXmLYxrQYK6y0CGhch5z7tBOH7RerkkKuiLILgCUF4jENs3wec/DoKm4w
+        1TJlr9KW63EH9npc46lAbKyGN47D9A1CyJoRr6J8mLGj4k8OPL23zA+d0Q2usD0tequT0U
+        F1LZVyeCU4jup19Vzph7vHgvZApwBfD09VEyWkXmoJp6lvsn80wX4sM4bZHZMeBROkGiL6
+        FEgENDakpdcXBhdnbzMFa6JLh40OVizHRGqrpuaciShDqjgwMiYgAoDUmeO9GFoBz4d9TR
+        M1NM5TVFT1h7Sc0pv6e9kYb8Mhru2nZi2HDQPVWSvxRCqJ2Hk0gJsfGU6ss29w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1639066030;
+        s=2020e; t=1639066032;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=SFWFOWbFemN8XJTLkndsJvx/N8i+2dKo53mY5kG0aQU=;
-        b=IaVsVfC1M9E/RpuoNgGPFDLdKFgwU1srlQdj2e74csMY2tWi9t3j6JH+1DA+Ybhj9M8YG4
-        9FxaBgwePttsnxDg==
+        bh=Ablos0pD0xOVJAzo8aCxAsLfcdRnzvcjku4MBQCPXJw=;
+        b=8kCs03Ms+hUTYL/gLwf5UFU/6neiZDPWxINziTEgYuneCTLFZ3bRQyKnO8ipG4zJ3Gr8uY
+        v6HopjsDo0R4UoAA==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/msi] PCI/MSI: Make pci_msi_domain_write_msg() static
+Subject: [tip: irq/msi] genirq/msi: Remove unused domain callbacks
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Juergen Gross <jgross@suse.com>,
-        Jason Gunthorpe <jgg@nvidia.com>,
-        Bjorn Helgaas <bhelgaas@google.com>, x86@kernel.org,
+        Jason Gunthorpe <jgg@nvidia.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20211206210224.157070464@linutronix.de>
-References: <20211206210224.157070464@linutronix.de>
+In-Reply-To: <20211126223824.322987915@linutronix.de>
+References: <20211126223824.322987915@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <163906603000.11128.7815741930460435159.tip-bot2@tip-bot2>
+Message-ID: <163906603144.11128.3225742767932206586.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,90 +59,85 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/msi branch of tip:
 
-Commit-ID:     9e8688c5f2990dadcf83728cd00a7e8497fc6aa9
-Gitweb:        https://git.kernel.org/tip/9e8688c5f2990dadcf83728cd00a7e8497fc6aa9
+Commit-ID:     1dd2c6a0817fd08f80dee75d7d3bd99a0c4b828d
+Gitweb:        https://git.kernel.org/tip/1dd2c6a0817fd08f80dee75d7d3bd99a0c4b828d
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Mon, 06 Dec 2021 23:27:33 +01:00
+AuthorDate:    Mon, 06 Dec 2021 23:27:29 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Thu, 09 Dec 2021 11:52:20 +01:00
 
-PCI/MSI: Make pci_msi_domain_write_msg() static
+genirq/msi: Remove unused domain callbacks
 
-There is no point to have this function public as it is set by the PCI core
-anyway when a PCI/MSI irqdomain is created.
+No users and there is no need to grow them.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Tested-by: Juergen Gross <jgross@suse.com>
 Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>	# PCI
-Link: https://lore.kernel.org/r/20211206210224.157070464@linutronix.de
+Link: https://lore.kernel.org/r/20211126223824.322987915@linutronix.de
+Link: https://lore.kernel.org/r/20211206210224.041777889@linutronix.de
 
 ---
- drivers/irqchip/irq-gic-v2m.c            | 1 -
- drivers/irqchip/irq-gic-v3-its-pci-msi.c | 1 -
- drivers/irqchip/irq-gic-v3-mbi.c         | 1 -
- drivers/pci/msi.c                        | 2 +-
- include/linux/msi.h                      | 1 -
- 5 files changed, 1 insertion(+), 5 deletions(-)
+ include/linux/msi.h | 11 ++++-------
+ kernel/irq/msi.c    |  5 -----
+ 2 files changed, 4 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/irqchip/irq-gic-v2m.c b/drivers/irqchip/irq-gic-v2m.c
-index 9349fc6..62cc78e 100644
---- a/drivers/irqchip/irq-gic-v2m.c
-+++ b/drivers/irqchip/irq-gic-v2m.c
-@@ -88,7 +88,6 @@ static struct irq_chip gicv2m_msi_irq_chip = {
- 	.irq_mask		= gicv2m_mask_msi_irq,
- 	.irq_unmask		= gicv2m_unmask_msi_irq,
- 	.irq_eoi		= irq_chip_eoi_parent,
--	.irq_write_msi_msg	= pci_msi_domain_write_msg,
- };
- 
- static struct msi_domain_info gicv2m_msi_domain_info = {
-diff --git a/drivers/irqchip/irq-gic-v3-its-pci-msi.c b/drivers/irqchip/irq-gic-v3-its-pci-msi.c
-index ad2810c..93f77a8 100644
---- a/drivers/irqchip/irq-gic-v3-its-pci-msi.c
-+++ b/drivers/irqchip/irq-gic-v3-its-pci-msi.c
-@@ -28,7 +28,6 @@ static struct irq_chip its_msi_irq_chip = {
- 	.irq_unmask		= its_unmask_msi_irq,
- 	.irq_mask		= its_mask_msi_irq,
- 	.irq_eoi		= irq_chip_eoi_parent,
--	.irq_write_msi_msg	= pci_msi_domain_write_msg,
- };
- 
- static int its_pci_msi_vec_count(struct pci_dev *pdev, void *data)
-diff --git a/drivers/irqchip/irq-gic-v3-mbi.c b/drivers/irqchip/irq-gic-v3-mbi.c
-index b84c9c2..a2163d3 100644
---- a/drivers/irqchip/irq-gic-v3-mbi.c
-+++ b/drivers/irqchip/irq-gic-v3-mbi.c
-@@ -171,7 +171,6 @@ static struct irq_chip mbi_msi_irq_chip = {
- 	.irq_unmask		= mbi_unmask_msi_irq,
- 	.irq_eoi		= irq_chip_eoi_parent,
- 	.irq_compose_msi_msg	= mbi_compose_msi_msg,
--	.irq_write_msi_msg	= pci_msi_domain_write_msg,
- };
- 
- static struct msi_domain_info mbi_msi_domain_info = {
-diff --git a/drivers/pci/msi.c b/drivers/pci/msi.c
-index 00ed45f..afa8ba2 100644
---- a/drivers/pci/msi.c
-+++ b/drivers/pci/msi.c
-@@ -1281,7 +1281,7 @@ EXPORT_SYMBOL_GPL(msi_desc_to_pci_sysdata);
-  * @irq_data:	Pointer to interrupt data of the MSI interrupt
-  * @msg:	Pointer to the message
-  */
--void pci_msi_domain_write_msg(struct irq_data *irq_data, struct msi_msg *msg)
-+static void pci_msi_domain_write_msg(struct irq_data *irq_data, struct msi_msg *msg)
- {
- 	struct msi_desc *desc = irq_data_get_msi_desc(irq_data);
- 
 diff --git a/include/linux/msi.h b/include/linux/msi.h
-index 5c62775..d7b143a 100644
+index d43b946..4b962f7 100644
 --- a/include/linux/msi.h
 +++ b/include/linux/msi.h
-@@ -455,7 +455,6 @@ void *platform_msi_get_host_data(struct irq_domain *domain);
- #endif /* CONFIG_GENERIC_MSI_IRQ_DOMAIN */
+@@ -304,7 +304,6 @@ struct msi_domain_info;
+  * @msi_free:		Domain specific function to free a MSI interrupts
+  * @msi_check:		Callback for verification of the domain/info/dev data
+  * @msi_prepare:	Prepare the allocation of the interrupts in the domain
+- * @msi_finish:		Optional callback to finalize the allocation
+  * @set_desc:		Set the msi descriptor for an interrupt
+  * @handle_error:	Optional error handler if the allocation fails
+  * @domain_alloc_irqs:	Optional function to override the default allocation
+@@ -312,12 +311,11 @@ struct msi_domain_info;
+  * @domain_free_irqs:	Optional function to override the default free
+  *			function.
+  *
+- * @get_hwirq, @msi_init and @msi_free are callbacks used by
+- * msi_create_irq_domain() and related interfaces
++ * @get_hwirq, @msi_init and @msi_free are callbacks used by the underlying
++ * irqdomain.
+  *
+- * @msi_check, @msi_prepare, @msi_finish, @set_desc and @handle_error
+- * are callbacks used by msi_domain_alloc_irqs() and related
+- * interfaces which are based on msi_desc.
++ * @msi_check, @msi_prepare, @handle_error and @set_desc are callbacks used by
++ * msi_domain_alloc/free_irqs().
+  *
+  * @domain_alloc_irqs, @domain_free_irqs can be used to override the
+  * default allocation/free functions (__msi_domain_alloc/free_irqs). This
+@@ -351,7 +349,6 @@ struct msi_domain_ops {
+ 	int		(*msi_prepare)(struct irq_domain *domain,
+ 				       struct device *dev, int nvec,
+ 				       msi_alloc_info_t *arg);
+-	void		(*msi_finish)(msi_alloc_info_t *arg, int retval);
+ 	void		(*set_desc)(msi_alloc_info_t *arg,
+ 				    struct msi_desc *desc);
+ 	int		(*handle_error)(struct irq_domain *domain,
+diff --git a/kernel/irq/msi.c b/kernel/irq/msi.c
+index a8a0dae..cd4fa26 100644
+--- a/kernel/irq/msi.c
++++ b/kernel/irq/msi.c
+@@ -562,8 +562,6 @@ int __msi_domain_alloc_irqs(struct irq_domain *domain, struct device *dev,
+ 			ret = -ENOSPC;
+ 			if (ops->handle_error)
+ 				ret = ops->handle_error(domain, desc, ret);
+-			if (ops->msi_finish)
+-				ops->msi_finish(&arg, ret);
+ 			return ret;
+ 		}
  
- #ifdef CONFIG_PCI_MSI_IRQ_DOMAIN
--void pci_msi_domain_write_msg(struct irq_data *irq_data, struct msi_msg *msg);
- struct irq_domain *pci_msi_create_irq_domain(struct fwnode_handle *fwnode,
- 					     struct msi_domain_info *info,
- 					     struct irq_domain *parent);
+@@ -573,9 +571,6 @@ int __msi_domain_alloc_irqs(struct irq_domain *domain, struct device *dev,
+ 		}
+ 	}
+ 
+-	if (ops->msi_finish)
+-		ops->msi_finish(&arg, 0);
+-
+ 	can_reserve = msi_check_reservation_mode(domain, info, dev);
+ 
+ 	/*
