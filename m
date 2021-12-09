@@ -2,115 +2,98 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 71E8A46ED3B
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  9 Dec 2021 17:37:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 580EE46F2B3
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  9 Dec 2021 19:02:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240997AbhLIQlV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 9 Dec 2021 11:41:21 -0500
-Received: from mail.skyhub.de ([5.9.137.197]:33878 "EHLO mail.skyhub.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S239675AbhLIQlT (ORCPT
+        id S243164AbhLISFw (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 9 Dec 2021 13:05:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58554 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229803AbhLISFw (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 9 Dec 2021 11:41:19 -0500
-Received: from zn.tnic (dslb-088-067-202-008.088.067.pools.vodafone-ip.de [88.67.202.8])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 13FC61EC04D3;
-        Thu,  9 Dec 2021 17:37:40 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1639067860;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+        Thu, 9 Dec 2021 13:05:52 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C56FDC061746;
+        Thu,  9 Dec 2021 10:02:18 -0800 (PST)
+Date:   Thu, 09 Dec 2021 18:02:15 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1639072937;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=t0nLQ0BMqQ23yc81J1J+FHAbSSeprtKANW3l+l71OuQ=;
-        b=XsiLRniZfsshKpCSL78DEBz7Y6xMDdigdCADTE++5aGBZjYaZt4IwEfpS8HXovg53YDA8l
-        ftyNhquX9ok4X2TlBHPQKk4ZaTMPUD45KTZxu+MDPfjzBMVydmbo83556Wt/MKlrOJ0UvF
-        sp4stXlUKHo7xpagGrPT7t0i7aBTNYA=
-Date:   Thu, 9 Dec 2021 17:37:42 +0100
-From:   Borislav Petkov <bp@alien8.de>
-To:     Mike Rapoport <rppt@kernel.org>
-Cc:     Juergen Gross <jgross@suse.com>,
-        John Dorminy <jdorminy@redhat.com>, tip-bot2@linutronix.de,
-        anjaneya.chagam@intel.com, dan.j.williams@intel.com,
-        linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-        stable@vger.kernel.org, x86@kernel.org,
-        Hugh Dickins <hughd@google.com>,
-        "Patrick J. Volkerding" <volkerdi@gmail.com>
-Subject: Re: [tip: x86/urgent] x86/boot: Pull up cmdline preparation and
- early param parsing
-Message-ID: <YbIw1nUYJ3KlkjJQ@zn.tnic>
-References: <163697618022.414.12673958553611696646.tip-bot2@tip-bot2>
- <20211209143810.452527-1-jdorminy@redhat.com>
- <YbIeYIM6JEBgO3tG@zn.tnic>
- <50f25412-d616-1cc6-f07f-a29d80b4bd3b@suse.com>
- <YbIgsO/7oQW9h6wv@zn.tnic>
- <YbIu55LZKoK3IVaF@kernel.org>
+        bh=LDHPldRWYu0AJwOvQF4mSEuydyx2IFn+k1caMyajHpM=;
+        b=Z0yyGRkq1ieUQDIX9sD7jWmtYw7avRE+wtOOkDXmuYWEXjCHuptaCKZXhozVPHeAnRZPPb
+        FclXmYloVbwdJyKY4b7Ir4Z6DRk47CTML+Qv0UcpJ6vFNOLZoK8mUb69cFDl90LZZd8zqY
+        LrPmhj6KRi5i08zPNX1iCM9tquAKrYbFKNUFNxEWrCThWMxTMjl5mbRdYVTC7PK/9+lv7m
+        5K3LLFQLjVFTASHSbZKFn+L8Lqdckw8mt/41BnnWzOrBsX71ab9uE0O23/DjFro56JQBqH
+        MdJL9QQ7BqMVb5m0AF98AikcSo+QuBIyFiy7j3nA3eLseD4Pm+MvytR8uD92HQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1639072937;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=LDHPldRWYu0AJwOvQF4mSEuydyx2IFn+k1caMyajHpM=;
+        b=iDayt/p6r9m4dOqkcScSmPM/sP5j+L2CTkneutQFeRPFUL8okQh678nE2b3xEsjXs2zkGP
+        NZrKYEigiBkPdMBQ==
+From:   "tip-bot2 for Colin Ian King" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/cache] x86/resctrl: Remove redundant assignment to variable chunks
+Cc:     Colin Ian King <colin.i.king@gmail.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20211207223735.35173-1-colin.i.king@gmail.com>
+References: <20211207223735.35173-1-colin.i.king@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <YbIu55LZKoK3IVaF@kernel.org>
+Message-ID: <163907293500.11128.5399694627664847434.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Thu, Dec 09, 2021 at 06:29:27PM +0200, Mike Rapoport wrote:
-> On Thu, Dec 09, 2021 at 04:28:48PM +0100, Borislav Petkov wrote:
-> > On Thu, Dec 09, 2021 at 04:26:55PM +0100, Juergen Gross wrote:
-> > > Sigh. This will break Xen PV. Again. The comment above the call of
-> > > early_reserve_memory() tells you why.
-> > 
-> > I know. I was just looking at how to fix that particular thing and was
-> > going to find you on IRC to talk to you about it...
-> 
-> The memory reservation in arch/x86/platform/efi/efi.c depends on at least
-> two command line parameters, I think it's better put it back later in the
-> boot process and move efi_memblock_x86_reserve_range() out of
-> early_memory_reserve().
-> 
-> I.e. revert c0f2077baa41 ("x86/boot: Mark prepare_command_line() __init")
-> and 8d48bf8206f7 ("x86/boot: Pull up cmdline preparation and early param
-> parsing") and add the patch below on top.
-> 
-> diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
-> index 49b596db5631..da36b8f8430b 100644
-> --- a/arch/x86/kernel/setup.c
-> +++ b/arch/x86/kernel/setup.c
-> @@ -713,9 +713,6 @@ static void __init early_reserve_memory(void)
->  
->  	early_reserve_initrd();
->  
-> -	if (efi_enabled(EFI_BOOT))
-> -		efi_memblock_x86_reserve_range();
-> -
->  	memblock_x86_reserve_range_setup_data();
->  
->  	reserve_ibft_region();
-> @@ -890,6 +887,9 @@ void __init setup_arch(char **cmdline_p)
->  
->  	parse_early_param();
->  
-> +	if (efi_enabled(EFI_BOOT)) {
-> +		efi_memblock_x86_reserve_range();
-> +
->  #ifdef CONFIG_MEMORY_HOTPLUG
->  	/*
->  	 * Memory used by the kernel cannot be hot-removed because Linux
-> 
-> -- 
+The following commit has been merged into the x86/cache branch of tip:
 
-Jürgen and I were thinking about a different fix but that's probably
-ok too. But I've said that already about this mess and there's always
-something we haven't thought about.
+Commit-ID:     df0114f1f8711dbf481324c44cf5a8349130b913
+Gitweb:        https://git.kernel.org/tip/df0114f1f8711dbf481324c44cf5a8349130b913
+Author:        Colin Ian King <colin.i.king@gmail.com>
+AuthorDate:    Tue, 07 Dec 2021 22:37:35 
+Committer:     Dave Hansen <dave.hansen@linux.intel.com>
+CommitterDate: Thu, 09 Dec 2021 09:57:16 -08:00
 
-Whatever we do, it needs to be tested by all folks on Cc who already
-reported regressions, i.e., Anjaneya, Hugh, John and Patrick.
+x86/resctrl: Remove redundant assignment to variable chunks
 
-Thx.
+The variable chunks is being shifted right and re-assinged the shifted
+value which is then returned. Since chunks is not being read afterwards
+the assignment is redundant and the >>= operator can be replaced with a
+shift >> operator instead.
 
--- 
-Regards/Gruss,
-    Boris.
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Fenghua Yu <fenghua.yu@intel.com>
+Link: https://lkml.kernel.org/r/20211207223735.35173-1-colin.i.king@gmail.com
+---
+ arch/x86/kernel/cpu/resctrl/monitor.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-https://people.kernel.org/tglx/notes-about-netiquette
+diff --git a/arch/x86/kernel/cpu/resctrl/monitor.c b/arch/x86/kernel/cpu/resctrl/monitor.c
+index c9f0f3d..eaf25a2 100644
+--- a/arch/x86/kernel/cpu/resctrl/monitor.c
++++ b/arch/x86/kernel/cpu/resctrl/monitor.c
+@@ -282,7 +282,7 @@ static u64 mbm_overflow_count(u64 prev_msr, u64 cur_msr, unsigned int width)
+ 	u64 shift = 64 - width, chunks;
+ 
+ 	chunks = (cur_msr << shift) - (prev_msr << shift);
+-	return chunks >>= shift;
++	return chunks >> shift;
+ }
+ 
+ static u64 __mon_event_count(u32 rmid, struct rmid_read *rr)
