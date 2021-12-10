@@ -2,57 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 24F2346FF5C
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 10 Dec 2021 12:05:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B5B7146FF5F
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 10 Dec 2021 12:05:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240316AbhLJLI6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 10 Dec 2021 06:08:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36918 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240284AbhLJLI5 (ORCPT
+        id S240348AbhLJLJB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 10 Dec 2021 06:09:01 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:45792 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S240295AbhLJLI6 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 10 Dec 2021 06:08:57 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AE9CC061353;
-        Fri, 10 Dec 2021 03:05:22 -0800 (PST)
-Date:   Fri, 10 Dec 2021 11:05:19 -0000
+        Fri, 10 Dec 2021 06:08:58 -0500
+Date:   Fri, 10 Dec 2021 11:05:20 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1639134320;
+        s=2020; t=1639134321;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=MssHXMCrQN31dY2N3/ceydmP1UXuME7QpiDNl8chhYY=;
-        b=LuNZcMVG1c6/3LXsoSZGnQvGTDFRQHjGltCOZaBEXUbitzboWlvi6IpoZL/oC5PWJ1C+c/
-        sFgNQwqc9tBXTMFEd2SrztB/cjXZJmlOQrx9d5xzx+ttXLwgA1oWicaE5YhRoTTgNtZMkj
-        CTC5F1kW5xENw+sbbCkY1QCH/2MItG7+GixjgqeLbKBUhrUsBKVsDaD7ILZEA8VdKluoIF
-        LDebmG2QUfXaBWiaG1Snc65oOoe7F53vwNq3t89FT+Kk+YgHiVhLBqD7e+eOIrbZML4nun
-        saFuDdtteBVFgJFihQVf+bb9jKikVrF1CKtd8N9s8auA0qrFtzhoAHNC59y+GA==
+        bh=DVlDFOW24XJ6bkcLC8DsFpdLwlCu4BLQ4fnuUqgDOnU=;
+        b=3YpzOPoRMf3ItRPvn3fqveDyYjhLgEjlPl/eqR4BHFyEtJNwyhnobRhQkpvbmDg2xEkUgE
+        XJFOpdGQ/0ca9qZrKq56cKSdbMtCPpTvxQWkmPx/kg6iCYGe62QHojls4f4cIAnTzj4ggg
+        nSlQVnvi7lQ4EJpIMdCxQFmVmEcB9Ko/YXIFoEBgZ6IMKzLTd4s0WWOTfbT3/GE1r54s7M
+        FC3PieTizr5Ptw7e1r6v9s57fImNh1rwZOvLTJyyjmespdvLIHPZHVDW+vGP3VP+pJYq54
+        nyuoQWUi5ndlflDJMcdxuCiFvvIJw3SCoCYoUvOEKDLpXHul3Rbh2yDKVJuPhQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1639134320;
+        s=2020e; t=1639134321;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=MssHXMCrQN31dY2N3/ceydmP1UXuME7QpiDNl8chhYY=;
-        b=2BWq/gjlIr8Pz2pDS7IrHSvXs6cudXIh7SUvWBfL+rEUtSjuvMhoqKn2vNCcmnN9uBLRov
-        uqUNT66Kn9CNQgBQ==
+        bh=DVlDFOW24XJ6bkcLC8DsFpdLwlCu4BLQ4fnuUqgDOnU=;
+        b=QoZTREpX4Mce0erLhOmB2ZtyzBA4qbnfPGjBjUvo/t6cq9hPbF6Rz3QCayT0Q7FSq3a9v7
+        zc1KKdrFQnmZrTAw==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/core] x86: Use -mindirect-branch-cs-prefix for RETPOLINE builds
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+Subject: [tip: x86/core] x86: Move RETPOLINE*_CFLAGS to arch Makefile
+Cc:     Nick Desaulniers <ndesaulniers@google.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Borislav Petkov <bp@suse.de>,
-        Kees Cook <keescook@chromium.org>,
-        Nick Desaulniers <ndesaulniers@google.com>, x86@kernel.org,
+        Kees Cook <keescook@chromium.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20211119165630.276205624@infradead.org>
-References: <20211119165630.276205624@infradead.org>
+In-Reply-To: <20211119165630.219152765@infradead.org>
+References: <20211119165630.219152765@infradead.org>
 MIME-Version: 1.0
-Message-ID: <163913431994.23020.11976140208986700884.tip-bot2@tip-bot2>
+Message-ID: <163913432083.23020.8355879993745940811.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -63,46 +60,73 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/core branch of tip:
 
-Commit-ID:     68cf4f2a72ef8786e6b7af6fd9a89f27ac0f520d
-Gitweb:        https://git.kernel.org/tip/68cf4f2a72ef8786e6b7af6fd9a89f27ac0f520d
+Commit-ID:     b2f825bfeda884f9d40386cc7d089d023017d2dd
+Gitweb:        https://git.kernel.org/tip/b2f825bfeda884f9d40386cc7d089d023017d2dd
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Fri, 19 Nov 2021 17:50:25 +01:00
+AuthorDate:    Fri, 19 Nov 2021 17:50:24 +01:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Wed, 08 Dec 2021 11:57:04 +01:00
+CommitterDate: Wed, 08 Dec 2021 11:39:42 +01:00
 
-x86: Use -mindirect-branch-cs-prefix for RETPOLINE builds
+x86: Move RETPOLINE*_CFLAGS to arch Makefile
 
-In order to further enable commit:
+Currently, RETPOLINE*_CFLAGS are defined in the top-level Makefile
+but only x86 makes use of them. Move them there. If ever another
+architecture finds the need, it can be reconsidered.
 
-  bbe2df3f6b6d ("x86/alternative: Try inline spectre_v2=retpoline,amd")
+  [ bp: Massage a bit. ]
 
-add the new GCC flag -mindirect-branch-cs-prefix:
-
-  https://gcc.gnu.org/g:2196a681d7810ad8b227bf983f38ba716620545e
-  https://gcc.gnu.org/bugzilla/show_bug.cgi?id=102952
-  https://bugs.llvm.org/show_bug.cgi?id=52323
-
-to RETPOLINE=y builds. This should allow fully inlining retpoline,amd
-for GCC builds.
-
+Suggested-by: Nick Desaulniers <ndesaulniers@google.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Borislav Petkov <bp@suse.de>
 Reviewed-by: Kees Cook <keescook@chromium.org>
-Acked-by: Nick Desaulniers <ndesaulniers@google.com>
-Link: https://lkml.kernel.org/r/20211119165630.276205624@infradead.org
+Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
+Link: https://lkml.kernel.org/r/20211119165630.219152765@infradead.org
 ---
- arch/x86/Makefile | 1 +
- 1 file changed, 1 insertion(+)
+ Makefile          | 11 -----------
+ arch/x86/Makefile | 11 +++++++++++
+ 2 files changed, 11 insertions(+), 11 deletions(-)
 
+diff --git a/Makefile b/Makefile
+index 8e35d78..b9ee63d 100644
+--- a/Makefile
++++ b/Makefile
+@@ -688,17 +688,6 @@ ifdef CONFIG_FUNCTION_TRACER
+   CC_FLAGS_FTRACE := -pg
+ endif
+ 
+-ifdef CONFIG_CC_IS_GCC
+-RETPOLINE_CFLAGS	:= $(call cc-option,-mindirect-branch=thunk-extern -mindirect-branch-register)
+-RETPOLINE_VDSO_CFLAGS	:= $(call cc-option,-mindirect-branch=thunk-inline -mindirect-branch-register)
+-endif
+-ifdef CONFIG_CC_IS_CLANG
+-RETPOLINE_CFLAGS	:= -mretpoline-external-thunk
+-RETPOLINE_VDSO_CFLAGS	:= -mretpoline
+-endif
+-export RETPOLINE_CFLAGS
+-export RETPOLINE_VDSO_CFLAGS
+-
+ include $(srctree)/arch/$(SRCARCH)/Makefile
+ 
+ ifdef need-config
 diff --git a/arch/x86/Makefile b/arch/x86/Makefile
-index 2f40de5..c38b657 100644
+index 4224386..2f40de5 100644
 --- a/arch/x86/Makefile
 +++ b/arch/x86/Makefile
-@@ -14,6 +14,7 @@ endif
- 
- ifdef CONFIG_CC_IS_GCC
- RETPOLINE_CFLAGS	:= $(call cc-option,-mindirect-branch=thunk-extern -mindirect-branch-register)
-+RETPOLINE_CFLAGS	+= $(call cc-option,-mindirect-branch-cs-prefix)
- RETPOLINE_VDSO_CFLAGS	:= $(call cc-option,-mindirect-branch=thunk-inline -mindirect-branch-register)
+@@ -12,6 +12,17 @@ else
+         KBUILD_DEFCONFIG := $(ARCH)_defconfig
  endif
- ifdef CONFIG_CC_IS_CLANG
+ 
++ifdef CONFIG_CC_IS_GCC
++RETPOLINE_CFLAGS	:= $(call cc-option,-mindirect-branch=thunk-extern -mindirect-branch-register)
++RETPOLINE_VDSO_CFLAGS	:= $(call cc-option,-mindirect-branch=thunk-inline -mindirect-branch-register)
++endif
++ifdef CONFIG_CC_IS_CLANG
++RETPOLINE_CFLAGS	:= -mretpoline-external-thunk
++RETPOLINE_VDSO_CFLAGS	:= -mretpoline
++endif
++export RETPOLINE_CFLAGS
++export RETPOLINE_VDSO_CFLAGS
++
+ # For gcc stack alignment is specified with -mpreferred-stack-boundary,
+ # clang has the option -mstack-alignment for that purpose.
+ ifneq ($(call cc-option, -mpreferred-stack-boundary=4),)
