@@ -2,206 +2,92 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C7125470B0F
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 10 Dec 2021 20:54:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F04C470B94
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 10 Dec 2021 21:11:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343780AbhLJT5u (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 10 Dec 2021 14:57:50 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:48860 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343779AbhLJT5t (ORCPT
+        id S1344098AbhLJUOv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 10 Dec 2021 15:14:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53720 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238898AbhLJUOu (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 10 Dec 2021 14:57:49 -0500
-Date:   Fri, 10 Dec 2021 19:54:11 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1639166052;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=AhuZLjaXNETPNuyIXfO5dGKKj820T0EIvZoXECLRHsQ=;
-        b=B5tn0C0+nIoX9oWsqSl7m5ff6pKVNHq6/nxUhkhDxW+WzpbXbjPuwpY25sBN+h8+QxIq1H
-        0/rmYI0wKVfaRPsc4Yv7TCsqcUK/DBHi0lXD8VF58QmXMmtpwmZzXUZWBXtoMt1kxt3mEa
-        Z7doJut58n4jIcRq7a14Kp+fhRYuioWncg7nvQECyXB4rkfnKPce9CsR/pfZ1bbsrruOAR
-        sRDu3JQXgzvXZy25zkRoKc9RuJgA8wbZ+dZ8oE/vw3IwWzpxA8oIPsAaodBclfy9GWD5gj
-        r8wKbQp+38VY+e6xxqltAODTSz570FAmi87iGKhkQ7tBlc/hRPAa/CcIRLf2Kg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1639166052;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=AhuZLjaXNETPNuyIXfO5dGKKj820T0EIvZoXECLRHsQ=;
-        b=xFmzRyHGgxGhbzn8wiRt3gGI0/OgmnYg5Azn2t8k7VytEnm3g6bzdz3hM11bHh7vIC4zXe
-        cYVsKw+h6GywHGBA==
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] genirq: Provide new interfaces for affinity hints
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Nitesh Narayan Lal <nitesh@redhat.com>,
-        Ming Lei <ming.lei@redhat.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20210501021832.743094-1-jesse.brandeburg@intel.com>
-References: <20210501021832.743094-1-jesse.brandeburg@intel.com>
+        Fri, 10 Dec 2021 15:14:50 -0500
+Received: from mail-oi1-x22a.google.com (mail-oi1-x22a.google.com [IPv6:2607:f8b0:4864:20::22a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B805C0617A2
+        for <linux-tip-commits@vger.kernel.org>; Fri, 10 Dec 2021 12:11:15 -0800 (PST)
+Received: by mail-oi1-x22a.google.com with SMTP id n66so14690059oia.9
+        for <linux-tip-commits@vger.kernel.org>; Fri, 10 Dec 2021 12:11:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=date:from:to:cc:subject:in-reply-to:message-id:references
+         :mime-version;
+        bh=KOuxIJMKNYTeFBZJypgba4fX+/Q0qIYXKhuuL8rsgx0=;
+        b=jVoZIrcMIhcs34MqmEu4ybtJ5mLwAIvoFS0tyZsRHN4vdJAK/w845YZOVWqDs0cTJ9
+         zyZqSqx4fdy9fgwK5vH4S+kbFps3bK2u+/N34wWhw5m9GiKK5/JsNEvB5noC2KjZCY3F
+         Xqb+ha3f/RuGPuLBdlIDA3m2rXEfI0QOkqwmn4Iil6ZoshZlDPnAMQhpGISk2HbeumEX
+         Unit1NJWJd3ryBpOJKu5EMDpLo/4/Cjl3i6TCaOHcWmh0GamQpWIXnzjtmbU89W+c+nt
+         0x68acITGXIkgSXRJkuzZUwV6BTrVCDCYMNJTDKK/9bWdlX+i20vygzsV62Qz14DvYYN
+         Y6ng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:in-reply-to:message-id
+         :references:mime-version;
+        bh=KOuxIJMKNYTeFBZJypgba4fX+/Q0qIYXKhuuL8rsgx0=;
+        b=w9aZ2l9h+GfX97aCujyQ72bDR5aXE+GU3XhQ0/UO1Nia6NxZJgyNsdshiGAjepFIgB
+         QkgSDkWwWXyF2Eamn5L1/+Iuthli5Y/LpI/IWROhLY1rwU0HLVFKLkQNXKhDjApRkRu4
+         KJUVReKa/6FH5C/2vdWzR/DyGxFKR4GCYFdCsDJMlMWB5Rf6++Mc10s/7tnjQfqg1noJ
+         5Rity7rJE0G+304YuN7g0j4KOsTIbDFFfFpUnc0Mwo7r6xPtwaUZDJOLC09ME7E+TTj8
+         cm+d8rLVAYZVIAdMwPR0VnIL00TOdCUBBK0coJpMl764bnJI46dYfGTKlifspFj79Q3X
+         ip2A==
+X-Gm-Message-State: AOAM531J5KmjIiq5weeB7T64PBFtRFX5HCiv/sBNskn1AF49bkVIJ+rJ
+        X+TDaSvknHNUnUvrAZ74cHaHLw==
+X-Google-Smtp-Source: ABdhPJyii/gnYmnJibARTLGKVefuQ1oitr4zcIVcaAzq7IipapeLfzuP8rfZ9812r9rqo2jWSqft+g==
+X-Received: by 2002:a54:480b:: with SMTP id j11mr14297800oij.102.1639167074440;
+        Fri, 10 Dec 2021 12:11:14 -0800 (PST)
+Received: from ripple.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
+        by smtp.gmail.com with ESMTPSA id f20sm991153oiw.48.2021.12.10.12.11.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Dec 2021 12:11:14 -0800 (PST)
+Date:   Fri, 10 Dec 2021 12:11:02 -0800 (PST)
+From:   Hugh Dickins <hughd@google.com>
+X-X-Sender: hugh@ripple.anvils
+To:     Borislav Petkov <bp@alien8.de>
+cc:     Mike Rapoport <rppt@kernel.org>, Juergen Gross <jgross@suse.com>,
+        John Dorminy <jdorminy@redhat.com>, tip-bot2@linutronix.de,
+        anjaneya.chagam@intel.com, dan.j.williams@intel.com,
+        linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
+        stable@vger.kernel.org, x86@kernel.org,
+        Hugh Dickins <hughd@google.com>,
+        "Patrick J. Volkerding" <volkerdi@gmail.com>
+Subject: Re: [tip: x86/urgent] x86/boot: Pull up cmdline preparation and
+ early param parsing
+In-Reply-To: <YbM5yR+Hy+kwmMFU@zn.tnic>
+Message-ID: <297f4912-907-bb45-75df-a030b0d88a8e@google.com>
+References: <163697618022.414.12673958553611696646.tip-bot2@tip-bot2> <20211209143810.452527-1-jdorminy@redhat.com> <YbIeYIM6JEBgO3tG@zn.tnic> <50f25412-d616-1cc6-f07f-a29d80b4bd3b@suse.com> <YbIgsO/7oQW9h6wv@zn.tnic> <YbIu55LZKoK3IVaF@kernel.org>
+ <YbIw1nUYJ3KlkjJQ@zn.tnic> <YbM5yR+Hy+kwmMFU@zn.tnic>
 MIME-Version: 1.0
-Message-ID: <163916605172.23020.5428721347678222727.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=US-ASCII
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the irq/core branch of tip:
+On Fri, 10 Dec 2021, Borislav Petkov wrote:
+> On Thu, Dec 09, 2021 at 05:37:42PM +0100, Borislav Petkov wrote:
+> > Whatever we do, it needs to be tested by all folks on Cc who already
+> > reported regressions, i.e., Anjaneya, Hugh, John and Patrick.
+> 
+> Ok, Mike is busy so here are some patches for testing:
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/bp/bp.git/log/?h=rc4-boot
+> 
+> I'd appreciate it if folks who reported an issue, verify those.
+> 
+> The first two are reverts which should address the issues with mem=
+> folks have reported. And the last one should address Anjaneya's issue.
+> 
+> I guess doing it the way as Mike suggested is cleaner/better.
 
-Commit-ID:     65c7cdedeb3026fabcc967a7aae2f755ad4d0783
-Gitweb:        https://git.kernel.org/tip/65c7cdedeb3026fabcc967a7aae2f755ad4d0783
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Fri, 03 Sep 2021 11:24:17 -04:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 10 Dec 2021 20:47:38 +01:00
+Yes, mem= works fine for me, on both machines, 64-bit and 32-bit,
+thanks; but I'm not exercising the troublesome EFI case at all.
 
-genirq: Provide new interfaces for affinity hints
-
-The discussion about removing the side effect of irq_set_affinity_hint() of
-actually applying the cpumask (if not NULL) as affinity to the interrupt,
-unearthed a few unpleasantries:
-
-  1) The modular perf drivers rely on the current behaviour for the very
-     wrong reasons.
-
-  2) While none of the other drivers prevents user space from changing
-     the affinity, a cursorily inspection shows that there are at least
-     expectations in some drivers.
-
-#1 needs to be cleaned up anyway, so that's not a problem
-
-#2 might result in subtle regressions especially when irqbalanced (which
-   nowadays ignores the affinity hint) is disabled.
-
-Provide new interfaces:
-
-  irq_update_affinity_hint()  - Only sets the affinity hint pointer
-  irq_set_affinity_and_hint() - Set the pointer and apply the affinity to
-                                the interrupt
-
-Make irq_set_affinity_hint() a wrapper around irq_apply_affinity_hint() and
-document it to be phased out.
-
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Nitesh Narayan Lal <nitesh@redhat.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20210501021832.743094-1-jesse.brandeburg@intel.com
-Link: https://lore.kernel.org/r/20210903152430.244937-2-nitesh@redhat.com
-
----
- include/linux/interrupt.h | 53 +++++++++++++++++++++++++++++++++++++-
- kernel/irq/manage.c       |  8 +++---
- 2 files changed, 56 insertions(+), 5 deletions(-)
-
-diff --git a/include/linux/interrupt.h b/include/linux/interrupt.h
-index 1f22a30..9367f1c 100644
---- a/include/linux/interrupt.h
-+++ b/include/linux/interrupt.h
-@@ -329,7 +329,46 @@ extern int irq_force_affinity(unsigned int irq, const struct cpumask *cpumask);
- extern int irq_can_set_affinity(unsigned int irq);
- extern int irq_select_affinity(unsigned int irq);
- 
--extern int irq_set_affinity_hint(unsigned int irq, const struct cpumask *m);
-+extern int __irq_apply_affinity_hint(unsigned int irq, const struct cpumask *m,
-+				     bool setaffinity);
-+
-+/**
-+ * irq_update_affinity_hint - Update the affinity hint
-+ * @irq:	Interrupt to update
-+ * @m:		cpumask pointer (NULL to clear the hint)
-+ *
-+ * Updates the affinity hint, but does not change the affinity of the interrupt.
-+ */
-+static inline int
-+irq_update_affinity_hint(unsigned int irq, const struct cpumask *m)
-+{
-+	return __irq_apply_affinity_hint(irq, m, false);
-+}
-+
-+/**
-+ * irq_set_affinity_and_hint - Update the affinity hint and apply the provided
-+ *			     cpumask to the interrupt
-+ * @irq:	Interrupt to update
-+ * @m:		cpumask pointer (NULL to clear the hint)
-+ *
-+ * Updates the affinity hint and if @m is not NULL it applies it as the
-+ * affinity of that interrupt.
-+ */
-+static inline int
-+irq_set_affinity_and_hint(unsigned int irq, const struct cpumask *m)
-+{
-+	return __irq_apply_affinity_hint(irq, m, true);
-+}
-+
-+/*
-+ * Deprecated. Use irq_update_affinity_hint() or irq_set_affinity_and_hint()
-+ * instead.
-+ */
-+static inline int irq_set_affinity_hint(unsigned int irq, const struct cpumask *m)
-+{
-+	return irq_set_affinity_and_hint(irq, m);
-+}
-+
- extern int irq_update_affinity_desc(unsigned int irq,
- 				    struct irq_affinity_desc *affinity);
- 
-@@ -361,6 +400,18 @@ static inline int irq_can_set_affinity(unsigned int irq)
- 
- static inline int irq_select_affinity(unsigned int irq)  { return 0; }
- 
-+static inline int irq_update_affinity_hint(unsigned int irq,
-+					   const struct cpumask *m)
-+{
-+	return -EINVAL;
-+}
-+
-+static inline int irq_set_affinity_and_hint(unsigned int irq,
-+					    const struct cpumask *m)
-+{
-+	return -EINVAL;
-+}
-+
- static inline int irq_set_affinity_hint(unsigned int irq,
- 					const struct cpumask *m)
- {
-diff --git a/kernel/irq/manage.c b/kernel/irq/manage.c
-index 7405e38..f23ffd3 100644
---- a/kernel/irq/manage.c
-+++ b/kernel/irq/manage.c
-@@ -486,7 +486,8 @@ int irq_force_affinity(unsigned int irq, const struct cpumask *cpumask)
- }
- EXPORT_SYMBOL_GPL(irq_force_affinity);
- 
--int irq_set_affinity_hint(unsigned int irq, const struct cpumask *m)
-+int __irq_apply_affinity_hint(unsigned int irq, const struct cpumask *m,
-+			      bool setaffinity)
- {
- 	unsigned long flags;
- 	struct irq_desc *desc = irq_get_desc_lock(irq, &flags, IRQ_GET_DESC_CHECK_GLOBAL);
-@@ -495,12 +496,11 @@ int irq_set_affinity_hint(unsigned int irq, const struct cpumask *m)
- 		return -EINVAL;
- 	desc->affinity_hint = m;
- 	irq_put_desc_unlock(desc, flags);
--	/* set the initial affinity to prevent every interrupt being on CPU0 */
--	if (m)
-+	if (m && setaffinity)
- 		__irq_set_affinity(irq, m, false);
- 	return 0;
- }
--EXPORT_SYMBOL_GPL(irq_set_affinity_hint);
-+EXPORT_SYMBOL_GPL(__irq_apply_affinity_hint);
- 
- static void irq_affinity_notify(struct work_struct *work)
- {
+Hugh
