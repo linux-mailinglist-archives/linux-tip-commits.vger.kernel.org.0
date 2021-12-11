@@ -2,51 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 471454713E9
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 11 Dec 2021 14:05:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 91F3E471732
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 11 Dec 2021 23:37:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230292AbhLKNFQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 11 Dec 2021 08:05:16 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:54062 "EHLO
+        id S231516AbhLKWhR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 11 Dec 2021 17:37:17 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:55920 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230128AbhLKNFM (ORCPT
+        with ESMTP id S231378AbhLKWhR (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 11 Dec 2021 08:05:12 -0500
-Date:   Sat, 11 Dec 2021 13:05:10 -0000
+        Sat, 11 Dec 2021 17:37:17 -0500
+Date:   Sat, 11 Dec 2021 22:37:14 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1639227911;
+        s=2020; t=1639262235;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=+yKH03qOG5QF0/r8TSne1E+XiIekMYgNuMhVNJdPai0=;
-        b=mzYEzk1IoITj7EFhfQPmdE1NDiXE8uqV+e01MeXjyHeD3UwtHeIgv1jAypBMDNrLJhTCA3
-        fVnRuBMLMwpQkLkgDBY9DwWWZ88UR3wBimsKDvRTJOKZlL1SzTPUAuyFDJGf7arUltF2a6
-        pJZrMr9qNyU5VbZWds87T44EZh1MrBrWt4IxSJiBL2VYIy2p2IEe/R6QQ6loHSqM5cLvSZ
-        3BwyrEMENA88YCKp7V8RoJPh5NY7dH59OCpIEImm1dAlLvFAsBmK4LcK/EyR/SQtbBZhSw
-        WKBTq5UFM28DQ83xfeg1c+WTZmfLt4IHt1FfqL6qZFnpOWLrstgn7PtD1wjXPA==
+        bh=zaPE4ANCH7FWqn4qy0ahNiG+vNb6aYB3vSzNw38++7c=;
+        b=ipLaf5w+E18UCzfLYEHtKAdM62w86YksNbOgddd7j1N82OIfS7q5SBj98oOzMYR0C9F7vU
+        9BqaJaD2nh7Lp22XDsoF8Sp+kXOj+TqoG/Q8G/UsVBxkd08jrWcNPDjE+g79K9YeyPn4Rj
+        zgQcZhTv9fG/0zES/YzkhE9aJPm15EtYKJvBHa9Wzn2LXshPWdLLPpI4+P3rNgdRtcs2pw
+        Ye3E9ruh3ag3OlXjAFcW8SluDUEn3hQeuojNKc+DVXDR6RdhCDrTTHjtAdwylrQWhCCATs
+        NswTBS+XPlg0QK7wpsOwdxQFyrumrqdWN9NUXsws7kMTJltsu1RO7gC6oAdivQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1639227911;
+        s=2020e; t=1639262235;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=+yKH03qOG5QF0/r8TSne1E+XiIekMYgNuMhVNJdPai0=;
-        b=zFsNKPjFcLluySRdRsajsnSO6c2OnRr+Ny/+13HtJH8YEOZzZRsOYuDValxVx/B/fHMpA+
-        2dhnXkDEkmd7c9DA==
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+        bh=zaPE4ANCH7FWqn4qy0ahNiG+vNb6aYB3vSzNw38++7c=;
+        b=Nyy8jC6JMd9jqMKSm0R1lKGqydnJByjKmsProo5El/GVIX+nJNAIOLsVwi9eJ14fCBnJ8j
+        H9BJcD/xqRgcyVDA==
+From:   "tip-bot2 for Arnd Bergmann" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/urgent] Merge tag 'timers-v5.16-rc4' of
- https://git.linaro.org/people/daniel.lezcano/linux into timers/urgent
-Cc:     x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <429b796d-9395-4ca8-81f3-30911f80a9a9@linaro.org>
-References: <429b796d-9395-4ca8-81f3-30911f80a9a9@linaro.org>
+Subject: [tip: locking/core] futex: Fix additional regressions
+Cc:     Linux Kernel Functional Testing <lkft@linaro.org>,
+        Naresh Kamboju <naresh.kamboju@linaro.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20211203080823.2938839-1-arnd@kernel.org>
+References: <20211203080823.2938839-1-arnd@kernel.org>
 MIME-Version: 1.0
-Message-ID: <163922791058.23020.11227739373527480594.tip-bot2@tip-bot2>
+Message-ID: <163926223448.23020.4149362435419457461.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -55,25 +58,86 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/urgent branch of tip:
+The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     aa073d8b2a6308832de3cac18e7901ac60748e26
-Gitweb:        https://git.kernel.org/tip/aa073d8b2a6308832de3cac18e7901ac60748e26
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Sat, 11 Dec 2021 13:56:30 +01:00
+Commit-ID:     0f09c274698590d508c43f924d9dffc7130b782d
+Gitweb:        https://git.kernel.org/tip/0f09c274698590d508c43f924d9dffc7130b782d
+Author:        Arnd Bergmann <arnd@arndb.de>
+AuthorDate:    Fri, 03 Dec 2021 09:07:56 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sat, 11 Dec 2021 13:56:30 +01:00
+CommitterDate: Sat, 11 Dec 2021 23:31:51 +01:00
 
-Merge tag 'timers-v5.16-rc4' of https://git.linaro.org/people/daniel.lezcano/linux into timers/urgent
+futex: Fix additional regressions
 
-Pull timer fixes from Daniel Lezcano:
+Naresh reported another architecture that was broken by the same typo that
+was already fixed for three architectures: mips also refers to the
+futex_atomic_op_inuser_local() function by the wrong name and runs into a
+missing closing '}' as well.
 
-  - Fix build error with clang and some kernel configuration on the
-    arm64 architected timer by inlining the
-    erratum_set_next_event_generic() function (Marc Zyngier)
+Going through the source tree the same typo was found in the documentation
+as well as in the xtensa code, both of which ended up escaping the
+regression testing so far. In the case of xtensa, it appears that the
+broken code path is only used when building for platforms that are not
+supported by the default gcc configuration, so they are impossible to test
+for with default setups.
 
-  - Fix probe error on the dw_apb_timer_of driver by fixing the
-    incorrect condition previously introduced (Alexey Sheplyakov)
+After going through these more carefully and fixing up the typos, all
+architectures have been build-tested again to ensure that this is now
+complete.
 
-Link: https://lore.kernel.org/r/429b796d-9395-4ca8-81f3-30911f80a9a9@linaro.org
+Fixes: 4e0d84634445 ("futex: Fix sparc32/m68k/nds32 build regression")
+Fixes: 3f2bedabb62c ("futex: Ensure futex_atomic_cmpxchg_inatomic() is present")
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20211203080823.2938839-1-arnd@kernel.org
 ---
+ arch/mips/include/asm/futex.h   | 6 +++---
+ arch/xtensa/include/asm/futex.h | 2 +-
+ include/asm-generic/futex.h     | 2 +-
+ 3 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/arch/mips/include/asm/futex.h b/arch/mips/include/asm/futex.h
+index 9287110..8612a7e 100644
+--- a/arch/mips/include/asm/futex.h
++++ b/arch/mips/include/asm/futex.h
+@@ -86,9 +86,9 @@
+ 		: "memory");						\
+ 	} else {							\
+ 		/* fallback for non-SMP */				\
+-		ret = arch_futex_atomic_op_inuser_local(op, oparg, oval,\
+-							uaddr);	\
+-	}
++		ret = futex_atomic_op_inuser_local(op, oparg, oval, uaddr);	\
++	}								\
++}
+ 
+ static inline int
+ arch_futex_atomic_op_inuser(int op, int oparg, int *oval, u32 __user *uaddr)
+diff --git a/arch/xtensa/include/asm/futex.h b/arch/xtensa/include/asm/futex.h
+index fe8f315..a6f7d7a 100644
+--- a/arch/xtensa/include/asm/futex.h
++++ b/arch/xtensa/include/asm/futex.h
+@@ -109,7 +109,7 @@ static inline int arch_futex_atomic_op_inuser(int op, int oparg, int *oval,
+ 
+ 	return ret;
+ #else
+-	return arch_futex_atomic_op_inuser_local(op, oparg, oval, uaddr);
++	return futex_atomic_op_inuser_local(op, oparg, oval, uaddr);
+ #endif
+ }
+ 
+diff --git a/include/asm-generic/futex.h b/include/asm-generic/futex.h
+index 66d6843..2a19215 100644
+--- a/include/asm-generic/futex.h
++++ b/include/asm-generic/futex.h
+@@ -21,7 +21,7 @@
+ #endif
+ 
+ /**
+- * arch_futex_atomic_op_inuser_local() - Atomic arithmetic operation with constant
++ * futex_atomic_op_inuser_local() - Atomic arithmetic operation with constant
+  *			  argument and comparison of the previous
+  *			  futex value with another constant.
+  *
