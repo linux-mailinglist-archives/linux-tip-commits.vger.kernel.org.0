@@ -2,55 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 22BAE4728A1
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 13 Dec 2021 11:14:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A4D8B472A1B
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 13 Dec 2021 11:30:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239837AbhLMKOO (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 13 Dec 2021 05:14:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33492 "EHLO
+        id S236883AbhLMKac (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 13 Dec 2021 05:30:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38782 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241580AbhLMKEx (ORCPT
+        with ESMTP id S240426AbhLMK2h (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 13 Dec 2021 05:04:53 -0500
+        Mon, 13 Dec 2021 05:28:37 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43FECC0A8850;
-        Mon, 13 Dec 2021 01:50:28 -0800 (PST)
-Date:   Mon, 13 Dec 2021 09:50:25 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98CD8C0698E3;
+        Mon, 13 Dec 2021 02:03:22 -0800 (PST)
+Date:   Mon, 13 Dec 2021 10:03:20 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1639389026;
+        s=2020; t=1639389801;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=5+rm9KZWKsG0B7k2P1qa43D0aTRrf5ue7Cy428TnSA0=;
-        b=SfHgHNBk0GL8z+B9gbrf5xD7uZxm1WuR+0/OQ7G4CHpHhM6X+FlKQX1VvKr7BvcRKMHzar
-        7Cr/9rLTqG8Pg6GHExQV3tLZhD+oy8CGGId8tfLjvqbfrqd0Bt71WTiVi00+HyegF4b8ZI
-        l+Oh4ygCM3ywvAQKy/aRblir3kicC/7bLTP4GZH61SOkPoyI/oJrcttrvY+yt+kmP26wXB
-        ASRz5UhbuilwWRXJACkJLZmyozOciKBpE03I/WbNhQngRCSSw2UoMr98qjHtb3e12pe2qF
-        bzeJBStNvKL4zvSDbJthh5Bh9sptPUt2CroS4uxY5dTJrjLTzteuXX+4cbS+8Q==
+        bh=XVyz3qgfS+tVUwuLQhfSllaBpTS5B2jkB9eopZdDbRM=;
+        b=oZuLqofEy5xaTqyoi5YnjPuqGoMHV+YRA/PKgF6FYMoPfj0yOs9NAdCk5L5F3KZzGKpAr3
+        XW95ausH8lttgHyIoaoUJZ9i64Q5xkVY+2GGaZXcPXlRcJxSgZWJ9fVW3F4wq/qfsKKlai
+        ztG2okXp96YQN8h6sPUXMJFOGWyDimsIuSFeJou85jaXRU1kjL95vXDY1F1UJcNH1LGcQ/
+        ol2plA78MdOJZlSq7BzibAA8zgC/qO0ZX/1SGVen65Ccj3JsyQt3rwqAwFr9O7NVfkAD7x
+        G0P4u0TCaWpMhYNTrXNWRKjNuOem2tkrBk4zCkyexfHLKTvSjcifgskOX67VCg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1639389026;
+        s=2020e; t=1639389801;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=5+rm9KZWKsG0B7k2P1qa43D0aTRrf5ue7Cy428TnSA0=;
-        b=oBolnVId88ixsc2UBIfp+BjHSIzK8oxHI0ZgbjVhg2O317tabpQvrY5Ulb3aAees8PTWRd
-        Ho/J1pVlR59pe6Cw==
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+        bh=XVyz3qgfS+tVUwuLQhfSllaBpTS5B2jkB9eopZdDbRM=;
+        b=3//mC2lCHsejZ6/I//7c0d9mOdA4Sdz6Vil2GxeuNjnLPfzaHxQwUqiqAkDgCGHk+ByKbJ
+        3g+8IqMz64PiPdBA==
+From:   "tip-bot2 for Mark Rutland" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/core] bitfield.h: Fix "type of reg too small for mask" test
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Josh Poimboeuf <jpoimboe@redhat.com>, x86@kernel.org,
+Subject: [tip: locking/core] locking/atomic: atomic64: Remove unusable atomic ops
+Cc:     kernel test robot <lkp@intel.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Boqun Feng <boqun.feng@gmail.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20211110101324.950210584@infradead.org>
-References: <20211110101324.950210584@infradead.org>
+In-Reply-To: <20211126115923.41489-1-mark.rutland@arm.com>
+References: <20211126115923.41489-1-mark.rutland@arm.com>
 MIME-Version: 1.0
-Message-ID: <163938902513.23020.16367474186635885490.tip-bot2@tip-bot2>
+Message-ID: <163938980021.23020.4518866031238162814.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,64 +61,74 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/core branch of tip:
+The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     bff8c3848e071d387d8b0784dc91fa49cd563774
-Gitweb:        https://git.kernel.org/tip/bff8c3848e071d387d8b0784dc91fa49cd563774
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Wed, 10 Nov 2021 11:01:03 +01:00
+Commit-ID:     5fb6e8cf53b005d287d4c2d137a415ff7d025a81
+Gitweb:        https://git.kernel.org/tip/5fb6e8cf53b005d287d4c2d137a415ff7d025a81
+Author:        Mark Rutland <mark.rutland@arm.com>
+AuthorDate:    Fri, 26 Nov 2021 11:59:23 
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Sat, 11 Dec 2021 09:09:45 +01:00
+CommitterDate: Mon, 13 Dec 2021 10:56:09 +01:00
 
-bitfield.h: Fix "type of reg too small for mask" test
+locking/atomic: atomic64: Remove unusable atomic ops
 
-The test: 'mask > (typeof(_reg))~0ull' only works correctly when both
-sides are unsigned, consider:
+The generic atomic64 implementation provides:
 
- - 0xff000000 vs (int)~0ull
- - 0x000000ff vs (int)~0ull
+* atomic64_and_return()
+* atomic64_or_return()
+* atomic64_xor_return()
 
+... but none of these exist in the standard atomic64 API as described by
+scripts/atomic/atomics.tbl, and none of these have prototypes exposed by
+<asm-generic/atomic64.h>.
+
+The lkp kernel test robot noted this results in warnings when building with
+W=1:
+
+  lib/atomic64.c:82:5: warning: no previous prototype for 'generic_atomic64_and_return' [-Wmissing-prototypes]
+
+  lib/atomic64.c:82:5: warning: no previous prototype for 'generic_atomic64_or_return' [-Wmissing-prototypes]
+
+  lib/atomic64.c:82:5: warning: no previous prototype for 'generic_atomic64_xor_return' [-Wmissing-prototypes]
+
+This appears to have been a thinko in commit:
+
+  28aa2bda2211f432 ("locking/atomic: Implement atomic{,64,_long}_fetch_{add,sub,and,andnot,or,xor}{,_relaxed,_acquire,_release}()")
+
+... where we grouped add/sub separately from and/ox/xor, so that we could avoid
+implementing _return forms for the latter group, but forgot to remove
+ATOMIC64_OP_RETURN() for that group.
+
+This doesn't cause any functional problem, but it's pointless to build code
+which cannot be used. Remove the unusable code. This does not affect add/sub,
+for which _return forms will still be built.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Josh Poimboeuf <jpoimboe@redhat.com>
-Link: https://lore.kernel.org/r/20211110101324.950210584@infradead.org
+Acked-by: Boqun Feng <boqun.feng@gmail.com>
+Link: https://lore.kernel.org/r/20211126115923.41489-1-mark.rutland@arm.com
 ---
- include/linux/bitfield.h | 19 ++++++++++++++++++-
- 1 file changed, 18 insertions(+), 1 deletion(-)
+ lib/atomic64.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/include/linux/bitfield.h b/include/linux/bitfield.h
-index 4e035ac..6093fa6 100644
---- a/include/linux/bitfield.h
-+++ b/include/linux/bitfield.h
-@@ -41,6 +41,22 @@
+diff --git a/lib/atomic64.c b/lib/atomic64.c
+index 3df6539..caf8957 100644
+--- a/lib/atomic64.c
++++ b/lib/atomic64.c
+@@ -118,7 +118,6 @@ ATOMIC64_OPS(sub, -=)
+ #undef ATOMIC64_OPS
+ #define ATOMIC64_OPS(op, c_op)						\
+ 	ATOMIC64_OP(op, c_op)						\
+-	ATOMIC64_OP_RETURN(op, c_op)					\
+ 	ATOMIC64_FETCH_OP(op, c_op)
  
- #define __bf_shf(x) (__builtin_ffsll(x) - 1)
+ ATOMIC64_OPS(and, &=)
+@@ -127,7 +126,6 @@ ATOMIC64_OPS(xor, ^=)
  
-+#define __scalar_type_to_unsigned_cases(type)				\
-+		unsigned type:	(unsigned type)0,			\
-+		signed type:	(unsigned type)0
-+
-+#define __unsigned_scalar_typeof(x) typeof(				\
-+		_Generic((x),						\
-+			char:	(unsigned char)0,			\
-+			__scalar_type_to_unsigned_cases(char),		\
-+			__scalar_type_to_unsigned_cases(short),		\
-+			__scalar_type_to_unsigned_cases(int),		\
-+			__scalar_type_to_unsigned_cases(long),		\
-+			__scalar_type_to_unsigned_cases(long long),	\
-+			default: (x)))
-+
-+#define __bf_cast_unsigned(type, x)	((__unsigned_scalar_typeof(type))(x))
-+
- #define __BF_FIELD_CHECK(_mask, _reg, _val, _pfx)			\
- 	({								\
- 		BUILD_BUG_ON_MSG(!__builtin_constant_p(_mask),		\
-@@ -49,7 +65,8 @@
- 		BUILD_BUG_ON_MSG(__builtin_constant_p(_val) ?		\
- 				 ~((_mask) >> __bf_shf(_mask)) & (_val) : 0, \
- 				 _pfx "value too large for the field"); \
--		BUILD_BUG_ON_MSG((_mask) > (typeof(_reg))~0ull,		\
-+		BUILD_BUG_ON_MSG(__bf_cast_unsigned(_mask, _mask) >	\
-+				 __bf_cast_unsigned(_reg, ~0ull),	\
- 				 _pfx "type of reg too small for mask"); \
- 		__BUILD_BUG_ON_NOT_POWER_OF_2((_mask) +			\
- 					      (1ULL << __bf_shf(_mask))); \
+ #undef ATOMIC64_OPS
+ #undef ATOMIC64_FETCH_OP
+-#undef ATOMIC64_OP_RETURN
+ #undef ATOMIC64_OP
+ 
+ s64 generic_atomic64_dec_if_positive(atomic64_t *v)
