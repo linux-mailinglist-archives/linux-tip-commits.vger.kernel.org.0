@@ -2,57 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A4D8B472A1B
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 13 Dec 2021 11:30:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E3D7F47330B
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 13 Dec 2021 18:35:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236883AbhLMKac (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 13 Dec 2021 05:30:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38782 "EHLO
+        id S241421AbhLMRfG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 13 Dec 2021 12:35:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56516 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240426AbhLMK2h (ORCPT
+        with ESMTP id S241380AbhLMRfF (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 13 Dec 2021 05:28:37 -0500
+        Mon, 13 Dec 2021 12:35:05 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98CD8C0698E3;
-        Mon, 13 Dec 2021 02:03:22 -0800 (PST)
-Date:   Mon, 13 Dec 2021 10:03:20 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAF45C061574;
+        Mon, 13 Dec 2021 09:35:04 -0800 (PST)
+Date:   Mon, 13 Dec 2021 17:35:01 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1639389801;
+        s=2020; t=1639416902;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=XVyz3qgfS+tVUwuLQhfSllaBpTS5B2jkB9eopZdDbRM=;
-        b=oZuLqofEy5xaTqyoi5YnjPuqGoMHV+YRA/PKgF6FYMoPfj0yOs9NAdCk5L5F3KZzGKpAr3
-        XW95ausH8lttgHyIoaoUJZ9i64Q5xkVY+2GGaZXcPXlRcJxSgZWJ9fVW3F4wq/qfsKKlai
-        ztG2okXp96YQN8h6sPUXMJFOGWyDimsIuSFeJou85jaXRU1kjL95vXDY1F1UJcNH1LGcQ/
-        ol2plA78MdOJZlSq7BzibAA8zgC/qO0ZX/1SGVen65Ccj3JsyQt3rwqAwFr9O7NVfkAD7x
-        G0P4u0TCaWpMhYNTrXNWRKjNuOem2tkrBk4zCkyexfHLKTvSjcifgskOX67VCg==
+        bh=A1FQ+6DBhbJk6y3CYUZup+Q5bEfyhfek5LAwVSpFXYg=;
+        b=Rh61Mqoc4Fm1HjhoDTUe4zFU5SvB/93LCcW/Uy0IbHP1ajG/vWW60kX69jFxLM+8UmjPKb
+        a1YJfNBsJjQ8eSG4/fyjSQ9gsP1AW8nwjGLZ9VWVSj7UvDK2x2zl1SPr2aMkBjn2Yc1LU6
+        umNNxVKz+udEjSuUjhdaWUNtv0rI8mXFF3lRwyoz1ZLCNwRQSNoduJ6wkW4K1tiGK44xAN
+        jYdEPrZv5Kh2YTb0F6hXOipQscalLrF3+fn6ZmyFeZ6F1u64V4z3TXOzxdeUUsgcctmVGM
+        Bmvz/b2a9WlT9xpDT0/6QMJXxQauoIokR8ZJrJ2S7nmAyouexlmBQ5FCU9Ntkw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1639389801;
+        s=2020e; t=1639416902;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=XVyz3qgfS+tVUwuLQhfSllaBpTS5B2jkB9eopZdDbRM=;
-        b=3//mC2lCHsejZ6/I//7c0d9mOdA4Sdz6Vil2GxeuNjnLPfzaHxQwUqiqAkDgCGHk+ByKbJ
-        3g+8IqMz64PiPdBA==
-From:   "tip-bot2 for Mark Rutland" <tip-bot2@linutronix.de>
+        bh=A1FQ+6DBhbJk6y3CYUZup+Q5bEfyhfek5LAwVSpFXYg=;
+        b=hRdsO52F0ZFWn4xeGHv7PeNVtQvTVXlhTLDMfO2Xv90puXS+9mAKBmpRfMTTGnUK/bu8Qa
+        B8VI0Gto8/ABSSBg==
+From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] locking/atomic: atomic64: Remove unusable atomic ops
-Cc:     kernel test robot <lkp@intel.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Boqun Feng <boqun.feng@gmail.com>, x86@kernel.org,
+Subject: [tip: ras/core] x86/mce: Mark mce_start() noinstr
+Cc:     Borislav Petkov <bp@suse.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20211126115923.41489-1-mark.rutland@arm.com>
-References: <20211126115923.41489-1-mark.rutland@arm.com>
+In-Reply-To: <20211208111343.8130-13-bp@alien8.de>
+References: <20211208111343.8130-13-bp@alien8.de>
 MIME-Version: 1.0
-Message-ID: <163938980021.23020.4518866031238162814.tip-bot2@tip-bot2>
+Message-ID: <163941690127.23020.3906222687033378135.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,74 +58,87 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the locking/core branch of tip:
+The following commit has been merged into the ras/core branch of tip:
 
-Commit-ID:     5fb6e8cf53b005d287d4c2d137a415ff7d025a81
-Gitweb:        https://git.kernel.org/tip/5fb6e8cf53b005d287d4c2d137a415ff7d025a81
-Author:        Mark Rutland <mark.rutland@arm.com>
-AuthorDate:    Fri, 26 Nov 2021 11:59:23 
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Mon, 13 Dec 2021 10:56:09 +01:00
+Commit-ID:     e3d72e8eee53c55835ab4664920d83400ff5d6c2
+Gitweb:        https://git.kernel.org/tip/e3d72e8eee53c55835ab4664920d83400ff5d6c2
+Author:        Borislav Petkov <bp@suse.de>
+AuthorDate:    Wed, 03 Nov 2021 10:30:29 +01:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Mon, 13 Dec 2021 14:14:05 +01:00
 
-locking/atomic: atomic64: Remove unusable atomic ops
+x86/mce: Mark mce_start() noinstr
 
-The generic atomic64 implementation provides:
+Fixes
 
-* atomic64_and_return()
-* atomic64_or_return()
-* atomic64_xor_return()
+  vmlinux.o: warning: objtool: do_machine_check()+0x4ae: call to __const_udelay() leaves .noinstr.text section
 
-... but none of these exist in the standard atomic64 API as described by
-scripts/atomic/atomics.tbl, and none of these have prototypes exposed by
-<asm-generic/atomic64.h>.
-
-The lkp kernel test robot noted this results in warnings when building with
-W=1:
-
-  lib/atomic64.c:82:5: warning: no previous prototype for 'generic_atomic64_and_return' [-Wmissing-prototypes]
-
-  lib/atomic64.c:82:5: warning: no previous prototype for 'generic_atomic64_or_return' [-Wmissing-prototypes]
-
-  lib/atomic64.c:82:5: warning: no previous prototype for 'generic_atomic64_xor_return' [-Wmissing-prototypes]
-
-This appears to have been a thinko in commit:
-
-  28aa2bda2211f432 ("locking/atomic: Implement atomic{,64,_long}_fetch_{add,sub,and,andnot,or,xor}{,_relaxed,_acquire,_release}()")
-
-... where we grouped add/sub separately from and/ox/xor, so that we could avoid
-implementing _return forms for the latter group, but forgot to remove
-ATOMIC64_OP_RETURN() for that group.
-
-This doesn't cause any functional problem, but it's pointless to build code
-which cannot be used. Remove the unusable code. This does not affect add/sub,
-for which _return forms will still be built.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Boqun Feng <boqun.feng@gmail.com>
-Link: https://lore.kernel.org/r/20211126115923.41489-1-mark.rutland@arm.com
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lore.kernel.org/r/20211208111343.8130-13-bp@alien8.de
 ---
- lib/atomic64.c | 2 --
- 1 file changed, 2 deletions(-)
+ arch/x86/kernel/cpu/mce/core.c | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
-diff --git a/lib/atomic64.c b/lib/atomic64.c
-index 3df6539..caf8957 100644
---- a/lib/atomic64.c
-+++ b/lib/atomic64.c
-@@ -118,7 +118,6 @@ ATOMIC64_OPS(sub, -=)
- #undef ATOMIC64_OPS
- #define ATOMIC64_OPS(op, c_op)						\
- 	ATOMIC64_OP(op, c_op)						\
--	ATOMIC64_OP_RETURN(op, c_op)					\
- 	ATOMIC64_FETCH_OP(op, c_op)
+diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
+index 7023d65..5818b83 100644
+--- a/arch/x86/kernel/cpu/mce/core.c
++++ b/arch/x86/kernel/cpu/mce/core.c
+@@ -1007,13 +1007,13 @@ static atomic_t global_nwo;
+  * in the entry order.
+  * TBD double check parallel CPU hotunplug
+  */
+-static int mce_start(int *no_way_out)
++static noinstr int mce_start(int *no_way_out)
+ {
+-	int order;
+ 	u64 timeout = (u64)mca_cfg.monarch_timeout * NSEC_PER_USEC;
++	int order, ret = -1;
  
- ATOMIC64_OPS(and, &=)
-@@ -127,7 +126,6 @@ ATOMIC64_OPS(xor, ^=)
+ 	if (!timeout)
+-		return -1;
++		return ret;
  
- #undef ATOMIC64_OPS
- #undef ATOMIC64_FETCH_OP
--#undef ATOMIC64_OP_RETURN
- #undef ATOMIC64_OP
+ 	atomic_add(*no_way_out, &global_nwo);
+ 	/*
+@@ -1023,6 +1023,9 @@ static int mce_start(int *no_way_out)
+ 	order = atomic_inc_return(&mce_callin);
+ 	cpumask_clear_cpu(smp_processor_id(), &mce_missing_cpus);
  
- s64 generic_atomic64_dec_if_positive(atomic64_t *v)
++	/* Enable instrumentation around calls to external facilities */
++	instrumentation_begin();
++
+ 	/*
+ 	 * Wait for everyone.
+ 	 */
+@@ -1030,7 +1033,7 @@ static int mce_start(int *no_way_out)
+ 		if (mce_timed_out(&timeout,
+ 				  "Timeout: Not all CPUs entered broadcast exception handler")) {
+ 			atomic_set(&global_nwo, 0);
+-			return -1;
++			goto out;
+ 		}
+ 		ndelay(SPINUNIT);
+ 	}
+@@ -1056,7 +1059,7 @@ static int mce_start(int *no_way_out)
+ 			if (mce_timed_out(&timeout,
+ 					  "Timeout: Subject CPUs unable to finish machine check processing")) {
+ 				atomic_set(&global_nwo, 0);
+-				return -1;
++				goto out;
+ 			}
+ 			ndelay(SPINUNIT);
+ 		}
+@@ -1067,7 +1070,12 @@ static int mce_start(int *no_way_out)
+ 	 */
+ 	*no_way_out = atomic_read(&global_nwo);
+ 
+-	return order;
++	ret = order;
++
++out:
++	instrumentation_end();
++
++	return ret;
+ }
+ 
+ /*
