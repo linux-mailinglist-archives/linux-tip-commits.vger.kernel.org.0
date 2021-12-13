@@ -2,36 +2,33 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 92616472246
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 13 Dec 2021 09:20:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B115472426
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 13 Dec 2021 10:34:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232819AbhLMIUg (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 13 Dec 2021 03:20:36 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:38854 "EHLO
-        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232817AbhLMIUg (ORCPT
+        id S234229AbhLMJe1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 13 Dec 2021 04:34:27 -0500
+Received: from mail.skyhub.de ([5.9.137.197]:46294 "EHLO mail.skyhub.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S234110AbhLMJd6 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 13 Dec 2021 03:20:36 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        Mon, 13 Dec 2021 04:33:58 -0500
+Received: from zn.tnic (dslb-088-067-202-008.088.067.pools.vodafone-ip.de [88.67.202.8])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 92256B80DD9;
-        Mon, 13 Dec 2021 08:20:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B09FC00446;
-        Mon, 13 Dec 2021 08:20:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1639383633;
-        bh=hgp2kfj4sMh9M5IsmMQHKVZep1Z/4vAaLFQJLHd+DHA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=FN1txgq77CBgC6qc66+DTBt8mKPhyfVt1b3q+XHcpKxyVsxBOIK3CtQZU7nU12sIo
-         kFx7cCjFX61T4rNbPVMx+5mJlhsLHQLq1GW73ZZNmSD52Vr8CvwEufosh8HSgvLnxM
-         Z/lItCbAyhZHXcWJKYP4sUx+YcNND4Via17FZl8PSJDS+JpWnk3vyq+r1nPVDfVEOf
-         OCOrdrA7TtD4xn46PIozSRW2R7Dv+kw9tEUvK9b9D6C7wIsuD/GtFDxCWTXsZuuc9t
-         zLajLSTMCfpsKH9/kLKSrI1aU5PbhbAD5n2ELsE/2fQ6LfZzbSSbwFvXii4PL73+/h
-         BFUoFEwxslc9w==
-Date:   Mon, 13 Dec 2021 10:20:03 +0200
-From:   Mike Rapoport <rppt@kernel.org>
-To:     Borislav Petkov <bp@alien8.de>
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id BD41C1EC0453;
+        Mon, 13 Dec 2021 10:33:52 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1639388032;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=1huGVmkguuzzMxIZ2Dja7uTDx6LCZKFCFZ0VWUfUYIU=;
+        b=it0BEgU6aEhs9+HfPB1v/QGqueENQox0QLT0EkEyqtCdYJBuT8sVYAEo4af49viEz9bwxH
+        9ZifKJOTKYNreGa3RvnTO/XP3v5kOwQA7D2+ixnhCAHaBxWI8FoGvxlFjbxGGqcUDK9ZN+
+        cpinYkRWyxKRXX/taMzPnsqhHFtEqhA=
+Date:   Mon, 13 Dec 2021 10:33:53 +0100
+From:   Borislav Petkov <bp@alien8.de>
+To:     Mike Rapoport <rppt@kernel.org>
 Cc:     Juergen Gross <jgross@suse.com>,
         John Dorminy <jdorminy@redhat.com>, tip-bot2@linutronix.de,
         anjaneya.chagam@intel.com, dan.j.williams@intel.com,
@@ -41,7 +38,7 @@ Cc:     Juergen Gross <jgross@suse.com>,
         "Patrick J. Volkerding" <volkerdi@gmail.com>
 Subject: Re: [tip: x86/urgent] x86/boot: Pull up cmdline preparation and
  early param parsing
-Message-ID: <YbcCM81Fig3GC4Yi@kernel.org>
+Message-ID: <YbcTgQdTpJAHAZw4@zn.tnic>
 References: <163697618022.414.12673958553611696646.tip-bot2@tip-bot2>
  <20211209143810.452527-1-jdorminy@redhat.com>
  <YbIeYIM6JEBgO3tG@zn.tnic>
@@ -50,25 +47,27 @@ References: <163697618022.414.12673958553611696646.tip-bot2@tip-bot2>
  <YbIu55LZKoK3IVaF@kernel.org>
  <YbIw1nUYJ3KlkjJQ@zn.tnic>
  <YbM5yR+Hy+kwmMFU@zn.tnic>
+ <YbcCM81Fig3GC4Yi@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <YbM5yR+Hy+kwmMFU@zn.tnic>
+In-Reply-To: <YbcCM81Fig3GC4Yi@kernel.org>
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Fri, Dec 10, 2021 at 12:28:09PM +0100, Borislav Petkov wrote:
-> On Thu, Dec 09, 2021 at 05:37:42PM +0100, Borislav Petkov wrote:
-> > Whatever we do, it needs to be tested by all folks on Cc who already
-> > reported regressions, i.e., Anjaneya, Hugh, John and Patrick.
-> 
-> Ok, Mike is busy so here are some patches for testing:
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/bp/bp.git/log/?h=rc4-boot
+On Mon, Dec 13, 2021 at 10:20:03AM +0200, Mike Rapoport wrote:
+> Thanks for taking care of this!
 
-Thanks for taking care of this!
+Sure, no probs.
+
+Lemme send them out officially so they're on the list. Will queue them
+this week.
+
+Thx.
 
 -- 
-Sincerely yours,
-Mike.
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
