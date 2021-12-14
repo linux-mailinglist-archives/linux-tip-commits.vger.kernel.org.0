@@ -2,142 +2,126 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 77869474284
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 14 Dec 2021 13:28:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BA1E5474D1D
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 14 Dec 2021 22:12:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233971AbhLNM2K (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 14 Dec 2021 07:28:10 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:41450 "EHLO
+        id S234775AbhLNVMW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 14 Dec 2021 16:12:22 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:44060 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233949AbhLNM2I (ORCPT
+        with ESMTP id S234778AbhLNVMJ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 14 Dec 2021 07:28:08 -0500
-Date:   Tue, 14 Dec 2021 12:28:06 -0000
+        Tue, 14 Dec 2021 16:12:09 -0500
+Date:   Tue, 14 Dec 2021 21:12:06 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1639484887;
+        s=2020; t=1639516327;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=cUn08o1QICiur9KV3LhqTmENhFsY+P3nxHAkW5AK+zg=;
-        b=RhIizFlJzcemO/2q8YoquMaRKhNCoBB2Rvi6BRe/1h5VexBM5tzhs0nFrO04fWx+SlYYX3
-        c+cYV5i2VWR9IQm7UDcpQESGyo2ZqRbxW80Rtwx3C6MoiweOhdgoKvltfsp0h4iyB6GUT9
-        jTWk2iuA88jhSId6UPkNOmrq3oR7HDGnh2lLZjv7gpniydCpPFpaXvSTV6NfHdv8ZlFSeI
-        zNmokgBp2W2smvDpSraHmUZ5Y+GCZA+xh4Z/ME0SZZuADp26JBHoTOcv8FIFYTtooKJ4Py
-        EoUPHcwL7Z1ZqDwpIahHWIcpp9dHXYhK6JaXdRzZTWn1Ibb67EeyDJ2J4k4osw==
+        bh=rcii2iHyAkR9Kah3KUc4lSx3hIDJM4dLUBLakzw4z6E=;
+        b=B0rPXjbt1p4rP1GFra4RGExEArWK/VnsV3RQzG+kSZISyI8gUQklTnHVoHza/qViZ4xjSE
+        2rch1qW2B9EEoAkvSclf/c5dnC0leshpUBx8TCva0GYGlY7baBsDeRqjArN6bkAgw0fNko
+        YwQGpJAqlRLcC/TNCAGexGnJXT4BVQgXxjjX6GKtXd+XwU1LVgIwiBuosJznfP5YWh1MUH
+        V90pk7iC3QX+5sN+xLoWRXOmbH/+raJ+caNU5lsavdt8TNh/yYWEePeUhXt1BK7snKTzrY
+        6t/qR/7rPSkjUWLQbF/oCDy8a/sKHXprnJBLjkJhhFtcue0Ghize8MXhK5Ek9w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1639484887;
+        s=2020e; t=1639516327;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=cUn08o1QICiur9KV3LhqTmENhFsY+P3nxHAkW5AK+zg=;
-        b=g/vq/uy22LWZZk0jaSdYB9KYlRlNqYGiup292WCfU5Ow36EXZtvf7A2k+47nn9iQ3DXBNz
-        w2aBMumhy85m4lDA==
-From:   "tip-bot2 for Stefan Roese" <tip-bot2@linutronix.de>
+        bh=rcii2iHyAkR9Kah3KUc4lSx3hIDJM4dLUBLakzw4z6E=;
+        b=xZEw/zMk3g/IMoezgazY85RpvDxMaCvVQtFZs9lhvsFQB+8uOSZ8EV96YXK2x/k+Fxqmsm
+        GwjKrSqhtTykzJDg==
+From:   "tip-bot2 for Chang S. Bae" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/urgent] PCI/MSI: Mask MSI-X vectors only on success
-Cc:     Stefan Roese <sr@denx.de>, Thomas Gleixner <tglx@linutronix.de>,
-        linux-pci@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Marek Vasut <marex@denx.de>, stable@vger.kernel.org,
-        x86@kernel.org, linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20211210161025.3287927-1-sr@denx.de>
-References: <20211210161025.3287927-1-sr@denx.de>
+Subject: [tip: sched/urgent] signal: Skip the altstack update when not needed
+Cc:     kernel test robot <oliver.sang@intel.com>,
+        "Chang S. Bae" <chang.seok.bae@intel.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20211210225503.12734-1-chang.seok.bae@intel.com>
+References: <20211210225503.12734-1-chang.seok.bae@intel.com>
 MIME-Version: 1.0
-Message-ID: <163948488617.23020.3934435568065766936.tip-bot2@tip-bot2>
+Message-ID: <163951632633.23020.9347613990471336482.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the irq/urgent branch of tip:
+The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     83dbf898a2d45289be875deb580e93050ba67529
-Gitweb:        https://git.kernel.org/tip/83dbf898a2d45289be875deb580e93050ba=
-67529
-Author:        Stefan Roese <sr@denx.de>
-AuthorDate:    Tue, 14 Dec 2021 12:49:32 +01:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 14 Dec 2021 13:23:32 +01:00
+Commit-ID:     6c3118c32129b4197999a8928ba776bcabd0f5c4
+Gitweb:        https://git.kernel.org/tip/6c3118c32129b4197999a8928ba776bcabd0f5c4
+Author:        Chang S. Bae <chang.seok.bae@intel.com>
+AuthorDate:    Fri, 10 Dec 2021 14:55:03 -08:00
+Committer:     Dave Hansen <dave.hansen@linux.intel.com>
+CommitterDate: Tue, 14 Dec 2021 13:08:36 -08:00
 
-PCI/MSI: Mask MSI-X vectors only on success
+signal: Skip the altstack update when not needed
 
-Masking all unused MSI-X entries is done to ensure that a crash kernel
-starts from a clean slate, which correponds to the reset state of the
-device as defined in the PCI-E specificion 3.0 and later:
+== Background ==
 
- Vector Control for MSI-X Table Entries
- --------------------------------------
+Support for large, "dynamic" fpstates was recently merged.  This
+included code to ensure that sigaltstacks are sufficiently sized for
+these large states.  A new lock was added to remove races between
+enabling large features and setting up sigaltstacks.
 
- "00: Mask bit:  When this bit is set, the function is prohibited from
-                 sending a message using this MSI-X Table entry.
-                 ...
-                 This bit=E2=80=99s state after reset is 1 (entry is masked)."
+== Problem ==
 
-A Marvell NVME device fails to deliver MSI interrupts after trying to
-enable MSI-X interrupts due to that masking. It seems to take the MSI-X
-mask bits into account even when MSI-X is disabled.
+The new lock (sigaltstack_lock()) is acquired in the sigreturn path
+before restoring the old sigaltstack.  Unfortunately, contention on the
+new lock causes a measurable signal handling performance regression [1].
+However, the common case is that no *changes* are made to the
+sigaltstack state at sigreturn.
 
-While not specification compliant, this can be cured by moving the masking
-into the success path, so that the MSI-X table entries stay in device reset
-state when the MSI-X setup fails.
+== Solution ==
 
-[ tglx: Move it into the success path, add comment and amend changelog ]
+do_sigaltstack() acquires sigaltstack_lock() and is used for both
+sys_sigaltstack() and restoring the sigaltstack in sys_sigreturn().
+Check for changes to the sigaltstack before taking the lock.  If no
+changes were made, return before acquiring the lock.
 
-Fixes: aa8092c1d1f1 ("PCI/MSI: Mask all unused MSI-X entries")               =
-                                                                             =
-                                                                             =
-                                       =20
-Signed-off-by: Stefan Roese <sr@denx.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: linux-pci@vger.kernel.org
-Cc: Bjorn Helgaas <bhelgaas@google.com>
-Cc: Michal Simek <michal.simek@xilinx.com>
-Cc: Marek Vasut <marex@denx.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20211210161025.3287927-1-sr@denx.de
+This removes lock contention from the common-case sigreturn path.
+
+[1] https://lore.kernel.org/lkml/20211207012128.GA16074@xsang-OptiPlex-9020/
+
+Fixes: 3aac3ebea08f ("x86/signal: Implement sigaltstack size validation")
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lkml.kernel.org/r/20211210225503.12734-1-chang.seok.bae@intel.com
 ---
- drivers/pci/msi.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ kernel/signal.c |  9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/pci/msi.c b/drivers/pci/msi.c
-index 48e3f4e..6748cf9 100644
---- a/drivers/pci/msi.c
-+++ b/drivers/pci/msi.c
-@@ -722,9 +722,6 @@ static int msix_capability_init(struct pci_dev *dev, stru=
-ct msix_entry *entries,
- 		goto out_disable;
- 	}
-=20
--	/* Ensure that all table entries are masked. */
--	msix_mask_all(base, tsize);
--
- 	ret =3D msix_setup_entries(dev, base, entries, nvec, affd);
- 	if (ret)
- 		goto out_disable;
-@@ -751,6 +748,16 @@ static int msix_capability_init(struct pci_dev *dev, str=
-uct msix_entry *entries,
- 	/* Set MSI-X enabled bits and unmask the function */
- 	pci_intx_for_msi(dev, 0);
- 	dev->msix_enabled =3D 1;
+diff --git a/kernel/signal.c b/kernel/signal.c
+index a629b11..dfcee38 100644
+--- a/kernel/signal.c
++++ b/kernel/signal.c
+@@ -4185,6 +4185,15 @@ do_sigaltstack (const stack_t *ss, stack_t *oss, unsigned long sp,
+ 				ss_mode != 0))
+ 			return -EINVAL;
+ 
++		/*
++		 * Return before taking any locks if no actual
++		 * sigaltstack changes were requested.
++		 */
++		if (t->sas_ss_sp == (unsigned long)ss_sp &&
++		    t->sas_ss_size == ss_size &&
++		    t->sas_ss_flags == ss_flags)
++			return 0;
 +
-+	/*
-+	 * Ensure that all table entries are masked to prevent
-+	 * stale entries from firing in a crash kernel.
-+	 *
-+	 * Done late to deal with a broken Marvell NVME device
-+	 * which takes the MSI-X mask bits into account even
-+	 * when MSI-X is disabled, which prevents MSI delivery.
-+	 */
-+	msix_mask_all(base, tsize);
- 	pci_msix_clear_and_set_ctrl(dev, PCI_MSIX_FLAGS_MASKALL, 0);
-=20
- 	pcibios_free_irq(dev);
+ 		sigaltstack_lock();
+ 		if (ss_mode == SS_DISABLE) {
+ 			ss_size = 0;
