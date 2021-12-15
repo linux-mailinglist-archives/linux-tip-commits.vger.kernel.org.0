@@ -2,54 +2,51 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BA1E5474D1D
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 14 Dec 2021 22:12:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DE8147594E
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 15 Dec 2021 14:05:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234775AbhLNVMW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 14 Dec 2021 16:12:22 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:44060 "EHLO
+        id S234429AbhLONFv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 15 Dec 2021 08:05:51 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:47838 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234778AbhLNVMJ (ORCPT
+        with ESMTP id S232340AbhLONFu (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 14 Dec 2021 16:12:09 -0500
-Date:   Tue, 14 Dec 2021 21:12:06 -0000
+        Wed, 15 Dec 2021 08:05:50 -0500
+Date:   Wed, 15 Dec 2021 13:05:46 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1639516327;
+        s=2020; t=1639573548;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=rcii2iHyAkR9Kah3KUc4lSx3hIDJM4dLUBLakzw4z6E=;
-        b=B0rPXjbt1p4rP1GFra4RGExEArWK/VnsV3RQzG+kSZISyI8gUQklTnHVoHza/qViZ4xjSE
-        2rch1qW2B9EEoAkvSclf/c5dnC0leshpUBx8TCva0GYGlY7baBsDeRqjArN6bkAgw0fNko
-        YwQGpJAqlRLcC/TNCAGexGnJXT4BVQgXxjjX6GKtXd+XwU1LVgIwiBuosJznfP5YWh1MUH
-        V90pk7iC3QX+5sN+xLoWRXOmbH/+raJ+caNU5lsavdt8TNh/yYWEePeUhXt1BK7snKTzrY
-        6t/qR/7rPSkjUWLQbF/oCDy8a/sKHXprnJBLjkJhhFtcue0Ghize8MXhK5Ek9w==
+        bh=cJbh9RBDas7JBSFcpYKrkuMQYwvI0JIn1Tz/C8Xdh1U=;
+        b=mWcwSnrso1YyBJwI7vOf9iHU8jS5tLexWhg3YFwhLCS8rcQkxnmqdfzgF2oPHUOaGGh/V0
+        I7FMLE7iuzL1HFWe5o8hOLSJMrDgvskcIPrN4jnWiQSWQflDbzpaog+PvhsjM/HuZWYbIo
+        wtg4P946VH8U1gOCTlQEm4IA2f4pccEKozNNsz7HEQHq0G4rN9jrZAhIiuR+V6bCnv+Z79
+        8sGuH3AGkTWPWP3jZ0kHulPAYt5LzzJVa9lMDjocD0LuCPg2psJDRaT/4jAUH30EpGa3t1
+        BxON1w3jhm/XsHMyWs++9D0Iy51h4DpFmfxtTE/ZicINoFGRkay+WRniOlxqew==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1639516327;
+        s=2020e; t=1639573548;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=rcii2iHyAkR9Kah3KUc4lSx3hIDJM4dLUBLakzw4z6E=;
-        b=xZEw/zMk3g/IMoezgazY85RpvDxMaCvVQtFZs9lhvsFQB+8uOSZ8EV96YXK2x/k+Fxqmsm
-        GwjKrSqhtTykzJDg==
-From:   "tip-bot2 for Chang S. Bae" <tip-bot2@linutronix.de>
+        bh=cJbh9RBDas7JBSFcpYKrkuMQYwvI0JIn1Tz/C8Xdh1U=;
+        b=MEIJBb2mIdraEc2RxxzG0X5Meb+hkbo9AHPbVtqQT/KCR1lUzEw8FIRQan2g54Me/HpN1N
+        LMmNHUSBQXFAGeCg==
+From:   "tip-bot2 for Mike Rapoport" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] signal: Skip the altstack update when not needed
-Cc:     kernel test robot <oliver.sang@intel.com>,
-        "Chang S. Bae" <chang.seok.bae@intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20211210225503.12734-1-chang.seok.bae@intel.com>
-References: <20211210225503.12734-1-chang.seok.bae@intel.com>
+Subject: [tip: x86/urgent] x86/boot: Move EFI range reservation after cmdline parsing
+Cc:     Borislav Petkov <bp@suse.de>, Mike Rapoport <rppt@kernel.org>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <e8dd8993c38702ee6dd73b3c11f158617e665607.camel@intel.com>
+References: <e8dd8993c38702ee6dd73b3c11f158617e665607.camel@intel.com>
 MIME-Version: 1.0
-Message-ID: <163951632633.23020.9347613990471336482.tip-bot2@tip-bot2>
+Message-ID: <163957354693.23020.8537268805198191781.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,70 +55,81 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/urgent branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     6c3118c32129b4197999a8928ba776bcabd0f5c4
-Gitweb:        https://git.kernel.org/tip/6c3118c32129b4197999a8928ba776bcabd0f5c4
-Author:        Chang S. Bae <chang.seok.bae@intel.com>
-AuthorDate:    Fri, 10 Dec 2021 14:55:03 -08:00
-Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Tue, 14 Dec 2021 13:08:36 -08:00
+Commit-ID:     83757bbb9fe029b704fb28e80c3f2b92f23a1994
+Gitweb:        https://git.kernel.org/tip/83757bbb9fe029b704fb28e80c3f2b92f23a1994
+Author:        Mike Rapoport <rppt@kernel.org>
+AuthorDate:    Mon, 13 Dec 2021 12:27:57 +01:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Wed, 15 Dec 2021 12:36:47 +01:00
 
-signal: Skip the altstack update when not needed
+x86/boot: Move EFI range reservation after cmdline parsing
 
-== Background ==
+The memory reservation in arch/x86/platform/efi/efi.c depends on at
+least two command line parameters. Put it back later in the boot process
+and move efi_memblock_x86_reserve_range() out of early_memory_reserve().
 
-Support for large, "dynamic" fpstates was recently merged.  This
-included code to ensure that sigaltstacks are sufficiently sized for
-these large states.  A new lock was added to remove races between
-enabling large features and setting up sigaltstacks.
+An attempt to fix this was done in
 
-== Problem ==
+  8d48bf8206f7 ("x86/boot: Pull up cmdline preparation and early param parsing")
 
-The new lock (sigaltstack_lock()) is acquired in the sigreturn path
-before restoring the old sigaltstack.  Unfortunately, contention on the
-new lock causes a measurable signal handling performance regression [1].
-However, the common case is that no *changes* are made to the
-sigaltstack state at sigreturn.
+but that caused other troubles so it got reverted.
 
-== Solution ==
+The bug this is addressing is:
 
-do_sigaltstack() acquires sigaltstack_lock() and is used for both
-sys_sigaltstack() and restoring the sigaltstack in sys_sigreturn().
-Check for changes to the sigaltstack before taking the lock.  If no
-changes were made, return before acquiring the lock.
+Dan reports that Anjaneya Chagam can no longer use the efi=nosoftreserve
+kernel command line parameter to suppress "soft reservation" behavior.
 
-This removes lock contention from the common-case sigreturn path.
+This is due to the fact that the following call-chain happens at boot:
 
-[1] https://lore.kernel.org/lkml/20211207012128.GA16074@xsang-OptiPlex-9020/
+early_reserve_memory
+|-> efi_memblock_x86_reserve_range
+    |-> efi_fake_memmap_early
 
-Fixes: 3aac3ebea08f ("x86/signal: Implement sigaltstack size validation")
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20211210225503.12734-1-chang.seok.bae@intel.com
+which does
+
+        if (!efi_soft_reserve_enabled())
+                return;
+
+and that would have set EFI_MEM_NO_SOFT_RESERVE after having parsed
+"nosoftreserve".
+
+However, parse_early_param() gets called *after* it, leading to the boot
+cmdline not being taken into account.
+
+ [ bp: Produce into a proper patch. ]
+
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Signed-off-by: Mike Rapoport <rppt@kernel.org>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lore.kernel.org/r/e8dd8993c38702ee6dd73b3c11f158617e665607.camel@intel.com
+Link: https://lore.kernel.org/r/20211213112757.2612-4-bp@alien8.de
 ---
- kernel/signal.c |  9 +++++++++
- 1 file changed, 9 insertions(+)
+ arch/x86/kernel/setup.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/signal.c b/kernel/signal.c
-index a629b11..dfcee38 100644
---- a/kernel/signal.c
-+++ b/kernel/signal.c
-@@ -4185,6 +4185,15 @@ do_sigaltstack (const stack_t *ss, stack_t *oss, unsigned long sp,
- 				ss_mode != 0))
- 			return -EINVAL;
+diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
+index 49b596d..e04f5e6 100644
+--- a/arch/x86/kernel/setup.c
++++ b/arch/x86/kernel/setup.c
+@@ -713,9 +713,6 @@ static void __init early_reserve_memory(void)
  
-+		/*
-+		 * Return before taking any locks if no actual
-+		 * sigaltstack changes were requested.
-+		 */
-+		if (t->sas_ss_sp == (unsigned long)ss_sp &&
-+		    t->sas_ss_size == ss_size &&
-+		    t->sas_ss_flags == ss_flags)
-+			return 0;
+ 	early_reserve_initrd();
+ 
+-	if (efi_enabled(EFI_BOOT))
+-		efi_memblock_x86_reserve_range();
+-
+ 	memblock_x86_reserve_range_setup_data();
+ 
+ 	reserve_ibft_region();
+@@ -890,6 +887,9 @@ void __init setup_arch(char **cmdline_p)
+ 
+ 	parse_early_param();
+ 
++	if (efi_enabled(EFI_BOOT))
++		efi_memblock_x86_reserve_range();
 +
- 		sigaltstack_lock();
- 		if (ss_mode == SS_DISABLE) {
- 			ss_size = 0;
+ #ifdef CONFIG_MEMORY_HOTPLUG
+ 	/*
+ 	 * Memory used by the kernel cannot be hot-removed because Linux
