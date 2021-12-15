@@ -2,51 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B20E5475975
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 15 Dec 2021 14:12:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 33F59475BBC
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 15 Dec 2021 16:19:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233280AbhLONMb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 15 Dec 2021 08:12:31 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:47884 "EHLO
+        id S243899AbhLOPTo (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 15 Dec 2021 10:19:44 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:48598 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229680AbhLONMa (ORCPT
+        with ESMTP id S243891AbhLOPTn (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 15 Dec 2021 08:12:30 -0500
-Date:   Wed, 15 Dec 2021 13:12:28 -0000
+        Wed, 15 Dec 2021 10:19:43 -0500
+Date:   Wed, 15 Dec 2021 15:19:40 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1639573949;
+        s=2020; t=1639581581;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=BSmE6urDlzLoZsUUpW4NctKQD0GQ5jnp6Rx5IEXBS9w=;
-        b=AtPT0A6CQeXs5T4aVcKhRJdA/TIltHeQDrtXZ7wx0tjk+M5dyLFRfDw3ki+pU+amn79cum
-        /x5LLp+KqoDR/vcgzQqJf0GeqQWwmcwMvrjIpXl8p1+n0H8fVGFcxk+cdgQG7bCjljNGuz
-        JjAaGyTHY9fHDlFOC+er3R+e5S7RwrO6crKXbQ1H6beJttBw6LJFcOvZimqzai0pf1nmwh
-        C3ERcWW/YvEhVrUK+QxoLuA4Nqoov0IGRWyfSc7CqnliksueC31NCZweKTo2rB0k6xYlG/
-        8YT+5XGkjCru/uzB4MMiEr92BYEjiF0w0k3RDkQkN6dCfkvQJ+G4h8RzjcMcPA==
+        bh=8aw+dzbZV9sL0G2zG8PyRV9RCl/3aZAvEXoPr3WcNaY=;
+        b=eCyciDGq1LQvcNVKGxzMJBjz7Cc/Dz3RWBBAcGkDStswnspYLD7pbiU238KOrKJEJ0W35y
+        eQOkSOj/3p0uIjeYwQmhx3N4eSM5XpzYpay9Sb7U+e/ZyuYvpK4E92c/zKHyVSOdH2RrFy
+        5X3WekzMm2pyaAcGGjCkTpzQZAuI0pLLaHxDgTMxA+IJEDPxH6mbLRTiHzBV8qIPofVrJA
+        1tfXQXxIwJQq8Hj6q+YsR0voWEC416jufPAXlYxv6uYroyo7nnAk44cgzGesmOZxIkfmsJ
+        g7d5RuwVNQuEYH5v46h5FoN5+/Nl3gkfPg9uBnn2hDvFpAXs4Zy2ZZChXXTLPQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1639573949;
+        s=2020e; t=1639581581;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=BSmE6urDlzLoZsUUpW4NctKQD0GQ5jnp6Rx5IEXBS9w=;
-        b=dDeCCFHkvlCtjKtzdxpmZIlTfKdQ8FzK8U5D9aqSdO9ctZKieoVTBESkFAQsl6brizKNlI
-        wrlRxUHTEr51RcBg==
-From:   "tip-bot2 for Mike Rapoport" <tip-bot2@linutronix.de>
+        bh=8aw+dzbZV9sL0G2zG8PyRV9RCl/3aZAvEXoPr3WcNaY=;
+        b=8EKStKLIwjKDgP1fv4eibthHR17eq7YtEOtlRMmEV8WWHXymYO6HH7aghPBCkJvXtit+8k
+        kQgvnCCx7L3ZAhCA==
+From:   "tip-bot2 for Arnd Bergmann" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/boot: Move EFI range reservation after cmdline parsing
-Cc:     Mike Rapoport <rppt@kernel.org>, Borislav Petkov <bp@suse.de>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20211213112757.2612-4-bp@alien8.de>
-References: <20211213112757.2612-4-bp@alien8.de>
+Subject: [tip: irq/msi] x86/xen: Use correct #ifdef guard for
+ xen_initdom_restore_msi()
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20211215140209.451379-1-arnd@kernel.org>
+References: <20211215140209.451379-1-arnd@kernel.org>
 MIME-Version: 1.0
-Message-ID: <163957394846.23020.4896066797095894706.tip-bot2@tip-bot2>
+Message-ID: <163958158059.23020.1721008355650214462.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -55,81 +57,46 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the irq/msi branch of tip:
 
-Commit-ID:     2f5b3514c33fecad4003ce0f22ca9691492d310b
-Gitweb:        https://git.kernel.org/tip/2f5b3514c33fecad4003ce0f22ca9691492d310b
-Author:        Mike Rapoport <rppt@kernel.org>
-AuthorDate:    Mon, 13 Dec 2021 12:27:57 +01:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Wed, 15 Dec 2021 14:07:54 +01:00
+Commit-ID:     91f7d2dbf952f54442fa81bb62f78ee023179bf9
+Gitweb:        https://git.kernel.org/tip/91f7d2dbf952f54442fa81bb62f78ee023179bf9
+Author:        Arnd Bergmann <arnd@arndb.de>
+AuthorDate:    Wed, 15 Dec 2021 15:01:59 +01:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Wed, 15 Dec 2021 16:13:23 +01:00
 
-x86/boot: Move EFI range reservation after cmdline parsing
+x86/xen: Use correct #ifdef guard for xen_initdom_restore_msi()
 
-The memory reservation in arch/x86/platform/efi/efi.c depends on at
-least two command line parameters. Put it back later in the boot process
-and move efi_memblock_x86_reserve_range() out of early_memory_reserve().
+The #ifdef check around the definition doesn't match the one around the
+declaration, leading to a link failure when CONFIG_XEN_DOM0 is enabled
+but CONFIG_XEN_PV_DOM0 is not:
 
-An attempt to fix this was done in
+x86_64-linux-ld: arch/x86/kernel/apic/msi.o: in function `arch_restore_msi_irqs':
+msi.c:(.text+0x29a): undefined reference to `xen_initdom_restore_msi'
 
-  8d48bf8206f7 ("x86/boot: Pull up cmdline preparation and early param parsing")
+Change the declaration to use the same check that was already present
+around the function definition.
 
-but that caused other troubles so it got reverted.
+Fixes: ae72f3156729 ("PCI/MSI: Make arch_restore_msi_irqs() less horrible.")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20211215140209.451379-1-arnd@kernel.org
 
-The bug this is addressing is:
-
-Dan reports that Anjaneya Chagam can no longer use the efi=nosoftreserve
-kernel command line parameter to suppress "soft reservation" behavior.
-
-This is due to the fact that the following call-chain happens at boot:
-
-  early_reserve_memory
-  |-> efi_memblock_x86_reserve_range
-      |-> efi_fake_memmap_early
-
-which does
-
-        if (!efi_soft_reserve_enabled())
-                return;
-
-and that would have set EFI_MEM_NO_SOFT_RESERVE after having parsed
-"nosoftreserve".
-
-However, parse_early_param() gets called *after* it, leading to the boot
-cmdline not being taken into account.
-
-See also https://lore.kernel.org/r/e8dd8993c38702ee6dd73b3c11f158617e665607.camel@intel.com
-
-  [ bp: Turn into a proper patch. ]
-
-Signed-off-by: Mike Rapoport <rppt@kernel.org>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lore.kernel.org/r/20211213112757.2612-4-bp@alien8.de
 ---
- arch/x86/kernel/setup.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/x86/include/asm/xen/hypervisor.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
-index 49b596d..e04f5e6 100644
---- a/arch/x86/kernel/setup.c
-+++ b/arch/x86/kernel/setup.c
-@@ -713,9 +713,6 @@ static void __init early_reserve_memory(void)
+diff --git a/arch/x86/include/asm/xen/hypervisor.h b/arch/x86/include/asm/xen/hypervisor.h
+index 677f84d..1bf2ad3 100644
+--- a/arch/x86/include/asm/xen/hypervisor.h
++++ b/arch/x86/include/asm/xen/hypervisor.h
+@@ -59,7 +59,7 @@ static inline bool __init xen_x2apic_para_available(void)
  
- 	early_reserve_initrd();
+ struct pci_dev;
  
--	if (efi_enabled(EFI_BOOT))
--		efi_memblock_x86_reserve_range();
--
- 	memblock_x86_reserve_range_setup_data();
- 
- 	reserve_ibft_region();
-@@ -890,6 +887,9 @@ void __init setup_arch(char **cmdline_p)
- 
- 	parse_early_param();
- 
-+	if (efi_enabled(EFI_BOOT))
-+		efi_memblock_x86_reserve_range();
-+
- #ifdef CONFIG_MEMORY_HOTPLUG
- 	/*
- 	 * Memory used by the kernel cannot be hot-removed because Linux
+-#ifdef CONFIG_XEN_DOM0
++#ifdef CONFIG_XEN_PV_DOM0
+ bool xen_initdom_restore_msi(struct pci_dev *dev);
+ #else
+ static inline bool xen_initdom_restore_msi(struct pci_dev *dev) { return true; }
