@@ -2,40 +2,43 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 689F7477AD3
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Dec 2021 18:44:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EF42E477D1B
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Dec 2021 21:11:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239988AbhLPRoh (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 16 Dec 2021 12:44:37 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:55776 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239435AbhLPRoh (ORCPT
+        id S232724AbhLPULg (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 16 Dec 2021 15:11:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40796 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229867AbhLPULf (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 16 Dec 2021 12:44:37 -0500
-Date:   Thu, 16 Dec 2021 17:44:34 -0000
+        Thu, 16 Dec 2021 15:11:35 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47F91C061574;
+        Thu, 16 Dec 2021 12:11:35 -0800 (PST)
+Date:   Thu, 16 Dec 2021 20:11:31 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1639676676;
+        s=2020; t=1639685493;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=rMNzzdFVvHgGqj5PmCY/yhVB4p6193MGDumN7XAAmQI=;
-        b=umO2xTcPm7QhyESP7qn9sYzEzUbFtCFVTydl7c5BPjjDJKqngq/e4D1QyW1hpJm/C4nk4z
-        MdmBIh5+4O0D6jvDl38Pqt0nt1sIpHoewihaQCyHtXJTmVWDywk4z46YnKAAPGVoWRH/EI
-        sOfWjI+RUS0xpw3fSmCpYC5C5OTC5nTbKCH+wNhH6EleX6K1cTOp1fDBvWWjSa9xIwE1G2
-        y/t5fQPbIAYogDw3GlX8yi3+pA45teHuj7FRJQ7X42A5wDFk0wD+0x4+NgRyZZxgU6g0ZE
-        Fuu6hL9JTiN/7cV8Qe7c/MG9SXp8RLrWHvymzGobj+wRodWOquFLBMQB/NU7+w==
+        bh=3R1MearjRuzKQsksjtMQqm1pRBLsVpK+h4edj63V4K0=;
+        b=mgaSjt+QyYvAt1aVDGrRBrPbTF5/YHdogTWF9imCETqFsctVAjCFypZwHY3NuURKvOcKt2
+        qpvcZphYXi6CgBHYuhZ/hDMsazJTkwUOC8CN2wnbFgeVmd8NUsr2sC2esF11jlrYiMsNbC
+        3MuQYMZQ3bRhbCD1Zpd+lBKnTflUUCr+o2U7Kha1JjS7jFgV+KNrsIchlA8htitiDrrF+m
+        Mrd5mLj8yu69MCO4MTNvezWG5qBNxM4M9kBNNIJkc4X0St39bUoa9iWM/n41RI6imuOGqk
+        TFCdIb9Mu+9G48gVJbly6XJpojze49WdVEjniHACMuyi0TcY161gMzGFJG/Qfw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1639676676;
+        s=2020e; t=1639685493;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=rMNzzdFVvHgGqj5PmCY/yhVB4p6193MGDumN7XAAmQI=;
-        b=4K4LSGLuW7shkYTptQ2Ydg3Rew5jHpEpGxEfq81Wh2kjnoC9cadhw1a4Qy6HEE1wwD1e8F
-        CaYto0AmTPkY3bBw==
+        bh=3R1MearjRuzKQsksjtMQqm1pRBLsVpK+h4edj63V4K0=;
+        b=9ZZ+9PWhEAPn6IEMbnIJj12oDfDnoPWOHp1A8ueBuXofkhVOrZnlblQKSCneqid4/bH0Gf
+        utHgkDF5Nda1/sCw==
 From:   "tip-bot2 for Andrew Cooper" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
@@ -48,7 +51,7 @@ Cc:     Andrew Cooper <andrew.cooper3@citrix.com>,
 In-Reply-To: <20211216000856.4480-1-andrew.cooper3@citrix.com>
 References: <20211216000856.4480-1-andrew.cooper3@citrix.com>
 MIME-Version: 1.0
-Message-ID: <163967667491.23020.16476392644769811399.tip-bot2@tip-bot2>
+Message-ID: <163968549174.23020.3663830331237501153.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,12 +62,12 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     7aa3e3011ef3e0a9c36417eafca7894a028e5df6
-Gitweb:        https://git.kernel.org/tip/7aa3e3011ef3e0a9c36417eafca7894a028e5df6
+Commit-ID:     e9836ee0043ebd02ba1d049cf8b9e6daa30ad2cd
+Gitweb:        https://git.kernel.org/tip/e9836ee0043ebd02ba1d049cf8b9e6daa30ad2cd
 Author:        Andrew Cooper <andrew.cooper3@citrix.com>
 AuthorDate:    Thu, 16 Dec 2021 00:08:56 
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Thu, 16 Dec 2021 09:39:40 -08:00
+CommitterDate: Thu, 16 Dec 2021 11:55:51 -08:00
 
 x86/pkey: Fix undefined behaviour with PKRU_WD_BIT
 
@@ -78,7 +81,7 @@ Clearly pkey 15 has not been used in combination with UBSAN yet.
 
 Noticed by code inspection only.  I can't actually provoke the
 compiler into generating incorrect logic as far as this shift is
-concerned, so haven't included a fixes tag.
+concerned.
 
 [
   dhansen: add stable@ tag, plus minor changelog massaging,
