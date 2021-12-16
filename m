@@ -2,53 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 33F59475BBC
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 15 Dec 2021 16:19:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 689F7477AD3
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Dec 2021 18:44:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243899AbhLOPTo (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 15 Dec 2021 10:19:44 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:48598 "EHLO
+        id S239988AbhLPRoh (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 16 Dec 2021 12:44:37 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:55776 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243891AbhLOPTn (ORCPT
+        with ESMTP id S239435AbhLPRoh (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 15 Dec 2021 10:19:43 -0500
-Date:   Wed, 15 Dec 2021 15:19:40 -0000
+        Thu, 16 Dec 2021 12:44:37 -0500
+Date:   Thu, 16 Dec 2021 17:44:34 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1639581581;
+        s=2020; t=1639676676;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=8aw+dzbZV9sL0G2zG8PyRV9RCl/3aZAvEXoPr3WcNaY=;
-        b=eCyciDGq1LQvcNVKGxzMJBjz7Cc/Dz3RWBBAcGkDStswnspYLD7pbiU238KOrKJEJ0W35y
-        eQOkSOj/3p0uIjeYwQmhx3N4eSM5XpzYpay9Sb7U+e/ZyuYvpK4E92c/zKHyVSOdH2RrFy
-        5X3WekzMm2pyaAcGGjCkTpzQZAuI0pLLaHxDgTMxA+IJEDPxH6mbLRTiHzBV8qIPofVrJA
-        1tfXQXxIwJQq8Hj6q+YsR0voWEC416jufPAXlYxv6uYroyo7nnAk44cgzGesmOZxIkfmsJ
-        g7d5RuwVNQuEYH5v46h5FoN5+/Nl3gkfPg9uBnn2hDvFpAXs4Zy2ZZChXXTLPQ==
+        bh=rMNzzdFVvHgGqj5PmCY/yhVB4p6193MGDumN7XAAmQI=;
+        b=umO2xTcPm7QhyESP7qn9sYzEzUbFtCFVTydl7c5BPjjDJKqngq/e4D1QyW1hpJm/C4nk4z
+        MdmBIh5+4O0D6jvDl38Pqt0nt1sIpHoewihaQCyHtXJTmVWDywk4z46YnKAAPGVoWRH/EI
+        sOfWjI+RUS0xpw3fSmCpYC5C5OTC5nTbKCH+wNhH6EleX6K1cTOp1fDBvWWjSa9xIwE1G2
+        y/t5fQPbIAYogDw3GlX8yi3+pA45teHuj7FRJQ7X42A5wDFk0wD+0x4+NgRyZZxgU6g0ZE
+        Fuu6hL9JTiN/7cV8Qe7c/MG9SXp8RLrWHvymzGobj+wRodWOquFLBMQB/NU7+w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1639581581;
+        s=2020e; t=1639676676;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=8aw+dzbZV9sL0G2zG8PyRV9RCl/3aZAvEXoPr3WcNaY=;
-        b=8EKStKLIwjKDgP1fv4eibthHR17eq7YtEOtlRMmEV8WWHXymYO6HH7aghPBCkJvXtit+8k
-        kQgvnCCx7L3ZAhCA==
-From:   "tip-bot2 for Arnd Bergmann" <tip-bot2@linutronix.de>
+        bh=rMNzzdFVvHgGqj5PmCY/yhVB4p6193MGDumN7XAAmQI=;
+        b=4K4LSGLuW7shkYTptQ2Ydg3Rew5jHpEpGxEfq81Wh2kjnoC9cadhw1a4Qy6HEE1wwD1e8F
+        CaYto0AmTPkY3bBw==
+From:   "tip-bot2 for Andrew Cooper" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/msi] x86/xen: Use correct #ifdef guard for
- xen_initdom_restore_msi()
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+Subject: [tip: x86/urgent] x86/pkey: Fix undefined behaviour with PKRU_WD_BIT
+Cc:     Andrew Cooper <andrew.cooper3@citrix.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        stable@vger.kernel.org, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20211215140209.451379-1-arnd@kernel.org>
-References: <20211215140209.451379-1-arnd@kernel.org>
+In-Reply-To: <20211216000856.4480-1-andrew.cooper3@citrix.com>
+References: <20211216000856.4480-1-andrew.cooper3@citrix.com>
 MIME-Version: 1.0
-Message-ID: <163958158059.23020.1721008355650214462.tip-bot2@tip-bot2>
+Message-ID: <163967667491.23020.16476392644769811399.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -57,46 +57,57 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the irq/msi branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     91f7d2dbf952f54442fa81bb62f78ee023179bf9
-Gitweb:        https://git.kernel.org/tip/91f7d2dbf952f54442fa81bb62f78ee023179bf9
-Author:        Arnd Bergmann <arnd@arndb.de>
-AuthorDate:    Wed, 15 Dec 2021 15:01:59 +01:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 15 Dec 2021 16:13:23 +01:00
+Commit-ID:     7aa3e3011ef3e0a9c36417eafca7894a028e5df6
+Gitweb:        https://git.kernel.org/tip/7aa3e3011ef3e0a9c36417eafca7894a028e5df6
+Author:        Andrew Cooper <andrew.cooper3@citrix.com>
+AuthorDate:    Thu, 16 Dec 2021 00:08:56 
+Committer:     Dave Hansen <dave.hansen@linux.intel.com>
+CommitterDate: Thu, 16 Dec 2021 09:39:40 -08:00
 
-x86/xen: Use correct #ifdef guard for xen_initdom_restore_msi()
+x86/pkey: Fix undefined behaviour with PKRU_WD_BIT
 
-The #ifdef check around the definition doesn't match the one around the
-declaration, leading to a link failure when CONFIG_XEN_DOM0 is enabled
-but CONFIG_XEN_PV_DOM0 is not:
+Both __pkru_allows_write() and arch_set_user_pkey_access() shift
+PKRU_WD_BIT (a signed constant) by up to 30 bits, hitting the
+sign bit.
 
-x86_64-linux-ld: arch/x86/kernel/apic/msi.o: in function `arch_restore_msi_irqs':
-msi.c:(.text+0x29a): undefined reference to `xen_initdom_restore_msi'
+Use unsigned constants instead.
 
-Change the declaration to use the same check that was already present
-around the function definition.
+Clearly pkey 15 has not been used in combination with UBSAN yet.
 
-Fixes: ae72f3156729 ("PCI/MSI: Make arch_restore_msi_irqs() less horrible.")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20211215140209.451379-1-arnd@kernel.org
+Noticed by code inspection only.  I can't actually provoke the
+compiler into generating incorrect logic as far as this shift is
+concerned, so haven't included a fixes tag.
 
+[
+  dhansen: add stable@ tag, plus minor changelog massaging,
+
+           For anyone doing backports, these #defines were in
+	   arch/x86/include/asm/pgtable.h before 784a46618f6.
+]
+
+Fixes: 33a709b25a76 ("mm/gup, x86/mm/pkeys: Check VMAs and PTEs for protection keys")
+Signed-off-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lkml.kernel.org/r/20211216000856.4480-1-andrew.cooper3@citrix.com
 ---
- arch/x86/include/asm/xen/hypervisor.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/include/asm/pkru.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/include/asm/xen/hypervisor.h b/arch/x86/include/asm/xen/hypervisor.h
-index 677f84d..1bf2ad3 100644
---- a/arch/x86/include/asm/xen/hypervisor.h
-+++ b/arch/x86/include/asm/xen/hypervisor.h
-@@ -59,7 +59,7 @@ static inline bool __init xen_x2apic_para_available(void)
+diff --git a/arch/x86/include/asm/pkru.h b/arch/x86/include/asm/pkru.h
+index 4cd49af..74f0a2d 100644
+--- a/arch/x86/include/asm/pkru.h
++++ b/arch/x86/include/asm/pkru.h
+@@ -4,8 +4,8 @@
  
- struct pci_dev;
+ #include <asm/cpufeature.h>
  
--#ifdef CONFIG_XEN_DOM0
-+#ifdef CONFIG_XEN_PV_DOM0
- bool xen_initdom_restore_msi(struct pci_dev *dev);
- #else
- static inline bool xen_initdom_restore_msi(struct pci_dev *dev) { return true; }
+-#define PKRU_AD_BIT 0x1
+-#define PKRU_WD_BIT 0x2
++#define PKRU_AD_BIT 0x1u
++#define PKRU_WD_BIT 0x2u
+ #define PKRU_BITS_PER_PKEY 2
+ 
+ #ifdef CONFIG_X86_INTEL_MEMORY_PROTECTION_KEYS
