@@ -2,161 +2,119 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 16C3C477F47
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Dec 2021 22:42:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D29BF47921F
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 17 Dec 2021 17:58:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242413AbhLPVl5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 16 Dec 2021 16:41:57 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:57558 "EHLO
+        id S235963AbhLQQ6X (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 17 Dec 2021 11:58:23 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:34212 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241941AbhLPVlR (ORCPT
+        with ESMTP id S235918AbhLQQ6X (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 16 Dec 2021 16:41:17 -0500
-Date:   Thu, 16 Dec 2021 21:41:15 -0000
+        Fri, 17 Dec 2021 11:58:23 -0500
+Date:   Fri, 17 Dec 2021 16:58:20 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1639690876;
+        s=2020; t=1639760301;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ehjucClV0RZ8wwaHaSh0N8JcgLZ8rROkpZNSYCo1SI0=;
-        b=tHNL2nf7vcPU0/JCUqL3Z85vwBTWvZVFn0RZWqNyhc0yBMHmk7l3FZNjhn6xNR32GZgMLO
-        nzJlPGcNo2n6kpv73s877LUg2DlSMqc29v/Bhz1Yt6GHv3etZhdC0CoLEjSrjwlN+kgAVK
-        r6Ec3NTZEWNO9vUjeyRn9SP8UOGz+pAz0qCKVxYD0zUP8f0CpUE1mY0VWKgHh0QBH6aVo0
-        PnrQuesX5mTiwhgil29ezdDdwXMG2CxogxoqzyFSq7wmRtPNCtEaKdfhNlK44csxVYHR0S
-        OHfpLsMKV3gKDj8Eo/ZdYMyfhLPZ0uXKu9/1BPiM41ct2833v1kmDUpYbyCeLg==
+        bh=TZaBaSKdDGJVWV49FzuT/zwiUkGg7e5Gp1jvfFM/dtw=;
+        b=MVRvAs5QAkAbpLBzTw/lIBmwOFmsvK4NX/RJIWvTPrYMHDGdRgKlsK9S4dr45c7+oPJ+ZT
+        B0gmXHj4amBYufFHQ3rdeF7velSIVzUmCPNzKP55MFkmaFJyE5k0sfrOqYwRwUQhnJzaWY
+        GmLsKjZeiQsb3D1sZYC0NyQc8Ygss7wQAS4rayG8uYxZTmDGG1Mhju3PCchNQb2QuajnHi
+        wF/chEdErZ2EwpMJ/2tB37YR63+jQYJT4Rw9FXe2udHT00hihYFtCoJz7L9DXMD488DH3M
+        LH28ep+jbjfZzAjU6x0vgReIkGUCcfoiOcyf4KYlXwdownHuFJUZuuHHWfU7aA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1639690876;
+        s=2020e; t=1639760301;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ehjucClV0RZ8wwaHaSh0N8JcgLZ8rROkpZNSYCo1SI0=;
-        b=EGCCEI+nf5qqcbPj7ROSwklzv39qNFxlPLKMTUko5zBI48uwr2RbKPNdZ+Ff5WYUooCkOn
-        MG+nmIrTJZO7QJAA==
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+        bh=TZaBaSKdDGJVWV49FzuT/zwiUkGg7e5Gp1jvfFM/dtw=;
+        b=GX9LhBBUAZVxjprgmAfAzDpEIGo9ovQEEdNBPoKZkzThoN/In+EZbrNf3IfBcL8g7SvV4V
+        06Xl9nIdmYuPwODg==
+From:   "tip-bot2 for Jarkko Sakkinen" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/msi] PCI/MSI: Set pci_dev::msi[x]_enabled early
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Michael Kelley <mikelley@microsoft.com>,
-        Nishanth Menon <nm@ti.com>, Jason Gunthorpe <jgg@nvidia.com>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20211210221813.250049810@linutronix.de>
-References: <20211210221813.250049810@linutronix.de>
+Subject: [tip: x86/sgx] selftests/sgx: Fix corrupted cpuid macro invocation
+Cc:     Jarkko Sakkinen <jarkko@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Reinette Chatre <reinette.chatre@intel.com>,
+        Shuah Khan <shuah@kernel.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20211204202355.23005-1-jarkko@kernel.org>
+References: <20211204202355.23005-1-jarkko@kernel.org>
 MIME-Version: 1.0
-Message-ID: <163969087559.23020.12079408218134390263.tip-bot2@tip-bot2>
+Message-ID: <163976030036.23020.8521430577620802322.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the irq/msi branch of tip:
+The following commit has been merged into the x86/sgx branch of tip:
 
-Commit-ID:     c7ecb95ca6a80b29af0f41cc28c58e542637fbc6
-Gitweb:        https://git.kernel.org/tip/c7ecb95ca6a80b29af0f41cc28c58e542637fbc6
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Fri, 10 Dec 2021 23:18:44 +01:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 16 Dec 2021 22:16:37 +01:00
+Commit-ID:     572a0a647b9b491729d24c083c8410c55bf16326
+Gitweb:        https://git.kernel.org/tip/572a0a647b9b491729d24c083c8410c55bf=
+16326
+Author:        Jarkko Sakkinen <jarkko@kernel.org>
+AuthorDate:    Sat, 04 Dec 2021 22:23:55 +02:00
+Committer:     Dave Hansen <dave.hansen@linux.intel.com>
+CommitterDate: Fri, 17 Dec 2021 08:52:33 -08:00
 
-PCI/MSI: Set pci_dev::msi[x]_enabled early
+selftests/sgx: Fix corrupted cpuid macro invocation
 
-There are quite some places which retrieve the first MSI descriptor to
-evaluate whether the setup is for MSI or MSI-X. That's required because
-pci_dev::msi[x]_enabled is only set when the setup completed successfully.
+The SGX selftest fails to build on tip/x86/sgx:
 
-There is no real reason why msi[x]_enabled can't be set at the beginning of
-the setup sequence and cleared in case of a failure.
+	main.c: In function =E2=80=98get_total_epc_mem=E2=80=99:
+	main.c:296:17: error: implicit declaration of function =E2=80=98__cpuid=E2=
+=80=99 [-Werror=3Dimplicit-function-declaration]
+	  296 |                 __cpuid(&eax, &ebx, &ecx, &edx);
+	      |                 ^~~~~~~
 
-Implement that so the MSI descriptor evaluations can be converted to simple
-property queries.
+Include cpuid.h and use __cpuid_count() macro in order to fix the
+compilation issue.
 
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Michael Kelley <mikelley@microsoft.com>
-Tested-by: Nishanth Menon <nm@ti.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Link: https://lore.kernel.org/r/20211210221813.250049810@linutronix.de
+[ dhansen: tweak commit message ]
 
+Fixes: f0ff2447b861 ("selftests/sgx: Add a new kselftest: Unclobbered_vdso_ov=
+ersubscribed")
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Acked-by: Reinette Chatre <reinette.chatre@intel.com>
+Link: https://lkml.kernel.org/r/20211204202355.23005-1-jarkko@kernel.org
+Cc: Shuah Khan <shuah@kernel.org>
 ---
- drivers/pci/msi/msi.c | 23 +++++++++++++++++------
- 1 file changed, 17 insertions(+), 6 deletions(-)
+ tools/testing/selftests/sgx/main.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pci/msi/msi.c b/drivers/pci/msi/msi.c
-index eb917fe..5af8d9b 100644
---- a/drivers/pci/msi/msi.c
-+++ b/drivers/pci/msi/msi.c
-@@ -421,11 +421,18 @@ static int msi_capability_init(struct pci_dev *dev, int nvec,
- 	struct msi_desc *entry;
- 	int ret;
- 
--	pci_msi_set_enable(dev, 0);	/* Disable MSI during set up */
-+	/*
-+	 * Disable MSI during setup in the hardware, but mark it enabled
-+	 * so that setup code can evaluate it.
-+	 */
-+	pci_msi_set_enable(dev, 0);
-+	dev->msi_enabled = 1;
- 
- 	entry = msi_setup_entry(dev, nvec, affd);
--	if (!entry)
--		return -ENOMEM;
-+	if (!entry) {
-+		ret = -ENOMEM;
-+		goto fail;
-+	}
- 
- 	/* All MSIs are unmasked by default; mask them all */
- 	pci_msi_mask(entry, msi_multi_mask(entry));
-@@ -452,7 +459,6 @@ static int msi_capability_init(struct pci_dev *dev, int nvec,
- 	/* Set MSI enabled bits	*/
- 	pci_intx_for_msi(dev, 0);
- 	pci_msi_set_enable(dev, 1);
--	dev->msi_enabled = 1;
- 
- 	pcibios_free_irq(dev);
- 	dev->irq = entry->irq;
-@@ -461,6 +467,8 @@ static int msi_capability_init(struct pci_dev *dev, int nvec,
- err:
- 	pci_msi_unmask(entry, msi_multi_mask(entry));
- 	free_msi_irqs(dev);
-+fail:
-+	dev->msi_enabled = 0;
- 	return ret;
- }
- 
-@@ -589,6 +597,9 @@ static int msix_capability_init(struct pci_dev *dev, struct msix_entry *entries,
- 	pci_msix_clear_and_set_ctrl(dev, 0, PCI_MSIX_FLAGS_MASKALL |
- 				    PCI_MSIX_FLAGS_ENABLE);
- 
-+	/* Mark it enabled so setup functions can query it */
-+	dev->msix_enabled = 1;
-+
- 	pci_read_config_word(dev, dev->msix_cap + PCI_MSIX_FLAGS, &control);
- 	/* Request & Map MSI-X table region */
- 	tsize = msix_table_size(control);
-@@ -623,9 +634,8 @@ static int msix_capability_init(struct pci_dev *dev, struct msix_entry *entries,
- 
- 	dev->msi_irq_groups = groups;
- 
--	/* Set MSI-X enabled bits and unmask the function */
-+	/* Disable INTX */
- 	pci_intx_for_msi(dev, 0);
--	dev->msix_enabled = 1;
- 
- 	/*
- 	 * Ensure that all table entries are masked to prevent
-@@ -645,6 +655,7 @@ out_free:
- 	free_msi_irqs(dev);
- 
- out_disable:
-+	dev->msix_enabled = 0;
- 	pci_msix_clear_and_set_ctrl(dev, PCI_MSIX_FLAGS_MASKALL | PCI_MSIX_FLAGS_ENABLE, 0);
- 
- 	return ret;
+diff --git a/tools/testing/selftests/sgx/main.c b/tools/testing/selftests/sgx=
+/main.c
+index 7e912db..370c499 100644
+--- a/tools/testing/selftests/sgx/main.c
++++ b/tools/testing/selftests/sgx/main.c
+@@ -1,6 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0
+ /*  Copyright(c) 2016-20 Intel Corporation. */
+=20
++#include <cpuid.h>
+ #include <elf.h>
+ #include <errno.h>
+ #include <fcntl.h>
+@@ -291,9 +292,7 @@ static unsigned long get_total_epc_mem(void)
+ 	int section =3D 0;
+=20
+ 	while (true) {
+-		eax =3D SGX_CPUID;
+-		ecx =3D section + SGX_CPUID_EPC;
+-		__cpuid(&eax, &ebx, &ecx, &edx);
++		__cpuid_count(SGX_CPUID, section + SGX_CPUID_EPC, eax, ebx, ecx, edx);
+=20
+ 		type =3D eax & SGX_CPUID_EPC_MASK;
+ 		if (type =3D=3D SGX_CPUID_EPC_INVALID)
