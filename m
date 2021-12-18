@@ -2,56 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 58564479A1A
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 18 Dec 2021 11:01:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E6A30479C57
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 18 Dec 2021 20:39:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229782AbhLRKBN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 18 Dec 2021 05:01:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50472 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229632AbhLRKBN (ORCPT
+        id S232676AbhLRTja (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 18 Dec 2021 14:39:30 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:40070 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230209AbhLRTj3 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 18 Dec 2021 05:01:13 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBFA5C061574;
-        Sat, 18 Dec 2021 02:01:12 -0800 (PST)
-Date:   Sat, 18 Dec 2021 10:01:10 -0000
+        Sat, 18 Dec 2021 14:39:29 -0500
+Date:   Sat, 18 Dec 2021 19:39:26 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1639821671;
+        s=2020; t=1639856368;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=0yCvEbsyrvJ6VKe6uQfIaWCsjbOQ79tyCCplqP0sFUs=;
-        b=tPTJSbgppy133SNzO2IRrhgr/eZ6X3jcEza/z+0b+OG7OoQpJk3Pb5HeZaBS30sYpaRunt
-        AKc7z+EmZ4Cebj5tOkU8aU28x9vzXE6I53BH4rt2Wd0tyYgIKcColJgF+JC/chnjAUMC7r
-        iMpH9KXHWUyQ8GhxDuMipyjtSpax40Qfvii6Vz9pATDU5U9HAf6h9bp2+s7JYyl7cOoKeJ
-        aslRxAWNXFEgfMxezpxi5atB2qmvVefik99mGt/uaE1zeb+wj6ZHam6TfDfSRQ98KbRfsD
-        2y9WnRndy8cFxdJj7KxBBcCHNCJWgyJIcCaqXaBlDMhCs/84tciFmDgkdbvo8A==
+        bh=ildVUdGHtkDCq6TzbTw3Bge/LUgZu9LlUiguTv9Ha5c=;
+        b=FWtUjUPZIR+QsPkNjLhGnvF3/7ZY/cBGfWONbIb5csByMwKGKi5qKhcMwTVNepFEr2KKMh
+        p+MXLG3RZdHsW7Ix7eG+n2azODS6vPiXa/TfvvQFT+w9QylsFHWhiOs7KM4unhFDY2wHw2
+        C2ND1OJOSKMPqmtgZckALDiDnJ4ff3u8Pc9HIBVgfOTN8g1TbkyB1dy4dNynBr8Z7hQCEN
+        ccqkCsYSz/SrF5n1oeBpTWrIfI2vCATpeXXBNCwEoby6VfOl+LznP3R1c+3q3DviZBjVPz
+        j8hYMaxyLNRzKf1VFEdUTrVL36ulli1eq6kOBHRup8qzYjJx60ElmFTXZDrRPw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1639821671;
+        s=2020e; t=1639856368;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=0yCvEbsyrvJ6VKe6uQfIaWCsjbOQ79tyCCplqP0sFUs=;
-        b=VcIJiAkQAjfiGFZuTn6PlHVsU96IAOfR9rtdBupwxM/0DJad3ADvkY8s08vqI5OxSf7pZt
-        +/B5ffMPq78EB8BQ==
-From:   "tip-bot2 for Zqiang" <tip-bot2@linutronix.de>
+        bh=ildVUdGHtkDCq6TzbTw3Bge/LUgZu9LlUiguTv9Ha5c=;
+        b=9ylNR5bl43pLfVz/c66HZ/jVLLTm43iicZ7i/Yr5SvBzFj0pfL9xbyfn3sUPQRC8qVJwzH
+        2sSvqu8lLaL3UtCg==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] locking/rtmutex: Fix incorrect condition in
- rtmutex_spin_on_owner()
-Cc:     Zqiang <qiang1.zhang@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20211217074207.77425-1-qiang1.zhang@intel.com>
-References: <20211217074207.77425-1-qiang1.zhang@intel.com>
+Subject: [tip: irq/msi] PCI/MSI: Unbreak pci_irq_get_affinity()
+Cc:     Nathan Chancellor <nathan@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <87v8zm9pmd.ffs@tglx>
+References: <87v8zm9pmd.ffs@tglx>
 MIME-Version: 1.0
-Message-ID: <163982167017.23020.3158863463249807527.tip-bot2@tip-bot2>
+Message-ID: <163985636689.23020.17674623774839628047.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -60,41 +56,63 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the locking/core branch of tip:
+The following commit has been merged into the irq/msi branch of tip:
 
-Commit-ID:     8f556a326c93213927e683fc32bbf5be1b62540a
-Gitweb:        https://git.kernel.org/tip/8f556a326c93213927e683fc32bbf5be1b62540a
-Author:        Zqiang <qiang1.zhang@intel.com>
-AuthorDate:    Fri, 17 Dec 2021 15:42:07 +08:00
+Commit-ID:     d558285413ea2f934ab90223ba908c30c5113aee
+Gitweb:        https://git.kernel.org/tip/d558285413ea2f934ab90223ba908c30c5113aee
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Sat, 18 Dec 2021 11:25:14 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sat, 18 Dec 2021 10:55:51 +01:00
+CommitterDate: Sat, 18 Dec 2021 20:33:21 +01:00
 
-locking/rtmutex: Fix incorrect condition in rtmutex_spin_on_owner()
+PCI/MSI: Unbreak pci_irq_get_affinity()
 
-Optimistic spinning needs to be terminated when the spinning waiter is not
-longer the top waiter on the lock, but the condition is negated. It
-terminates if the waiter is the top waiter, which is defeating the whole
-purpose.
+The recent cleanup of pci_irq_get_affinity() broke the function for
+PCI/MSI-X and indices > 0. Only the MSI descriptor for PCI/MSI has more
+than one affinity mask which can be retrieved via the MSI index.
 
-Fixes: c3123c431447 ("locking/rtmutex: Dont dereference waiter lockless")
-Signed-off-by: Zqiang <qiang1.zhang@intel.com>
+PCI/MSI-X has one descriptor per vector and each has a single affinity
+mask.
+
+Use index 0 when accessing the affinity mask in the MSI descriptor when
+MSI-X is enabled.
+
+Fixes: f48235900182 ("PCI/MSI: Simplify pci_irq_get_affinity()")
+Reported-by: Nathan Chancellor <nathan@kernel.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20211217074207.77425-1-qiang1.zhang@intel.com
----
- kernel/locking/rtmutex.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Tested-by: Nathan Chancellor <nathan@kernel.org>
+Link: https://lore.kernel.org/r/87v8zm9pmd.ffs@tglx
 
-diff --git a/kernel/locking/rtmutex.c b/kernel/locking/rtmutex.c
-index 0c6a48d..1f25a4d 100644
---- a/kernel/locking/rtmutex.c
-+++ b/kernel/locking/rtmutex.c
-@@ -1380,7 +1380,7 @@ static bool rtmutex_spin_on_owner(struct rt_mutex_base *lock,
- 		 *  - the VCPU on which owner runs is preempted
- 		 */
- 		if (!owner->on_cpu || need_resched() ||
--		    rt_mutex_waiter_is_top_waiter(lock, waiter) ||
-+		    !rt_mutex_waiter_is_top_waiter(lock, waiter) ||
- 		    vcpu_is_preempted(task_cpu(owner))) {
- 			res = false;
- 			break;
+
+---
+ drivers/pci/msi/msi.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/pci/msi/msi.c b/drivers/pci/msi/msi.c
+index 7180241..c19c7ca 100644
+--- a/drivers/pci/msi/msi.c
++++ b/drivers/pci/msi/msi.c
+@@ -1100,7 +1100,7 @@ EXPORT_SYMBOL(pci_irq_vector);
+  */
+ const struct cpumask *pci_irq_get_affinity(struct pci_dev *dev, int nr)
+ {
+-	int irq = pci_irq_vector(dev, nr);
++	int idx, irq = pci_irq_vector(dev, nr);
+ 	struct msi_desc *desc;
+ 
+ 	if (WARN_ON_ONCE(irq <= 0))
+@@ -1113,7 +1113,13 @@ const struct cpumask *pci_irq_get_affinity(struct pci_dev *dev, int nr)
+ 
+ 	if (WARN_ON_ONCE(!desc->affinity))
+ 		return NULL;
+-	return &desc->affinity[nr].mask;
++
++	/*
++	 * MSI has a mask array in the descriptor.
++	 * MSI-X has a single mask.
++	 */
++	idx = dev->msi_enabled ? nr : 0;
++	return &desc->affinity[idx].mask;
+ }
+ EXPORT_SYMBOL(pci_irq_get_affinity);
+ 
