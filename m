@@ -2,43 +2,40 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D1B1347A099
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 19 Dec 2021 14:15:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CD6CE47A26E
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 19 Dec 2021 22:52:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233114AbhLSNPB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 19 Dec 2021 08:15:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35026 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233030AbhLSNPA (ORCPT
+        id S236697AbhLSVwC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 19 Dec 2021 16:52:02 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:44284 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231821AbhLSVwC (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 19 Dec 2021 08:15:00 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D72CC061574;
-        Sun, 19 Dec 2021 05:14:58 -0800 (PST)
-Date:   Sun, 19 Dec 2021 13:14:53 -0000
+        Sun, 19 Dec 2021 16:52:02 -0500
+Date:   Sun, 19 Dec 2021 21:51:59 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1639919695;
+        s=2020; t=1639950720;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=H+eLJBjyuR5qzC+EozPbCmqHBG49A4VYeh6FDJw/5Mk=;
-        b=zQzDBPxaGNA6LfyusHplw2SAiqLxkAiKXeZzCuei7siiBIkluQMdBiBCwb/GVJmNEkfYjM
-        k970SE5HxTMEdF2E5boNT49LzoPoH8W9agr7J641QgMcZw2Ds2y50tBsIIs1uCT7JLpXL8
-        jdH7t3OM493GKdNbP+iOKOPreDXl0AHLWKQGRNWWeC7GrgDwLVCVW9/haXoSbtcJeQLhp0
-        85NIxUEglTdTg6b/N0898MuOvrW1QojIf7OOyLju+Gc/TSyGNHSdn/DZn2a8W8ttxVeU2n
-        zJ5rbQuk2KD+SPcBMWvVhtfcd/oTo2EGP1p0IZsPJf8bkMaxW3SJ8C4/JEbfAg==
+        bh=kS5DQpA8phtBhbUduZG8Ao20a8ODo/sZsaA4W03+iQw=;
+        b=iXyi052YqjM9LOfmM/zl+aIlTmxy6vgy+JmoT4hHwnNDF8iPX+xhLJ8qp1MLAet5fcRjBX
+        3o4M6viGrdf5UWg9Iyts/4+rpoB0l8WfyP5UCf8PioY0bLaGAuI3eA5HDaQwmX8Xs+EGT2
+        0nq4vWNy2paMDJCkTEqIXIyHPPX10Xv4V+BZoHluko1I1Jou6Ev4iruNPVXWVkkneK4IOx
+        Q6vHxlayH17B32aPmZ6o0VEp/QDseR76tG7wvEX/8Y7uuhdf+ljb91FIILWUF/I91WAqTA
+        eqm3sAfzbc/iE4ZCGMk21E8GGhK6CX7XUJR9T7QRkYZtXG3EfxeTwTMK/UBCeA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1639919695;
+        s=2020e; t=1639950720;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=H+eLJBjyuR5qzC+EozPbCmqHBG49A4VYeh6FDJw/5Mk=;
-        b=+H4JDw2CLvwGikqY8dRDparYdFdcXC/BV+d/GT1euEy2QMisy2A7PXvdyTM35rep3a8qlg
-        zbDkcunDYjHC8lDw==
+        bh=kS5DQpA8phtBhbUduZG8Ao20a8ODo/sZsaA4W03+iQw=;
+        b=dTjKlHRhSEAFtwc7e+F4M/VX+deNg356h0La7cv3Ju7QNSBhZi79o3llyOimFAAqBBzMOT
+        fx/AsravM/M7mvBg==
 From:   "tip-bot2 for Andrew Cooper" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
@@ -46,12 +43,12 @@ To:     linux-tip-commits@vger.kernel.org
 Subject: [tip: x86/urgent] x86/pkey: Fix undefined behaviour with PKRU_WD_BIT
 Cc:     Andrew Cooper <andrew.cooper3@citrix.com>,
         Dave Hansen <dave.hansen@linux.intel.com>,
-        stable@vger.kernel.org, x86@kernel.org,
-        linux-kernel@vger.kernel.org
+        Borislav Petkov <bp@suse.de>, stable@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org
 In-Reply-To: <20211216000856.4480-1-andrew.cooper3@citrix.com>
 References: <20211216000856.4480-1-andrew.cooper3@citrix.com>
 MIME-Version: 1.0
-Message-ID: <163991969397.23020.2147480727226316518.tip-bot2@tip-bot2>
+Message-ID: <163995071955.23020.16415039634514233755.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -62,12 +59,12 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     aa1701e20a847dba6c406545dcba6a8755fa6406
-Gitweb:        https://git.kernel.org/tip/aa1701e20a847dba6c406545dcba6a8755fa6406
+Commit-ID:     57690554abe135fee81d6ac33cc94d75a7e224bb
+Gitweb:        https://git.kernel.org/tip/57690554abe135fee81d6ac33cc94d75a7e224bb
 Author:        Andrew Cooper <andrew.cooper3@citrix.com>
 AuthorDate:    Thu, 16 Dec 2021 00:08:56 
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Sun, 19 Dec 2021 14:09:41 +01:00
+CommitterDate: Sun, 19 Dec 2021 22:44:34 +01:00
 
 x86/pkey: Fix undefined behaviour with PKRU_WD_BIT
 
@@ -93,6 +90,7 @@ concerned.
 Fixes: 33a709b25a76 ("mm/gup, x86/mm/pkeys: Check VMAs and PTEs for protection keys")
 Signed-off-by: Andrew Cooper <andrew.cooper3@citrix.com>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
 Cc: stable@vger.kernel.org
 Link: https://lkml.kernel.org/r/20211216000856.4480-1-andrew.cooper3@citrix.com
 ---
