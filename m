@@ -2,52 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E6A30479C57
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 18 Dec 2021 20:39:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D1B1347A099
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 19 Dec 2021 14:15:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232676AbhLRTja (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 18 Dec 2021 14:39:30 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:40070 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230209AbhLRTj3 (ORCPT
+        id S233114AbhLSNPB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 19 Dec 2021 08:15:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35026 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233030AbhLSNPA (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 18 Dec 2021 14:39:29 -0500
-Date:   Sat, 18 Dec 2021 19:39:26 -0000
+        Sun, 19 Dec 2021 08:15:00 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D72CC061574;
+        Sun, 19 Dec 2021 05:14:58 -0800 (PST)
+Date:   Sun, 19 Dec 2021 13:14:53 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1639856368;
+        s=2020; t=1639919695;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ildVUdGHtkDCq6TzbTw3Bge/LUgZu9LlUiguTv9Ha5c=;
-        b=FWtUjUPZIR+QsPkNjLhGnvF3/7ZY/cBGfWONbIb5csByMwKGKi5qKhcMwTVNepFEr2KKMh
-        p+MXLG3RZdHsW7Ix7eG+n2azODS6vPiXa/TfvvQFT+w9QylsFHWhiOs7KM4unhFDY2wHw2
-        C2ND1OJOSKMPqmtgZckALDiDnJ4ff3u8Pc9HIBVgfOTN8g1TbkyB1dy4dNynBr8Z7hQCEN
-        ccqkCsYSz/SrF5n1oeBpTWrIfI2vCATpeXXBNCwEoby6VfOl+LznP3R1c+3q3DviZBjVPz
-        j8hYMaxyLNRzKf1VFEdUTrVL36ulli1eq6kOBHRup8qzYjJx60ElmFTXZDrRPw==
+        bh=H+eLJBjyuR5qzC+EozPbCmqHBG49A4VYeh6FDJw/5Mk=;
+        b=zQzDBPxaGNA6LfyusHplw2SAiqLxkAiKXeZzCuei7siiBIkluQMdBiBCwb/GVJmNEkfYjM
+        k970SE5HxTMEdF2E5boNT49LzoPoH8W9agr7J641QgMcZw2Ds2y50tBsIIs1uCT7JLpXL8
+        jdH7t3OM493GKdNbP+iOKOPreDXl0AHLWKQGRNWWeC7GrgDwLVCVW9/haXoSbtcJeQLhp0
+        85NIxUEglTdTg6b/N0898MuOvrW1QojIf7OOyLju+Gc/TSyGNHSdn/DZn2a8W8ttxVeU2n
+        zJ5rbQuk2KD+SPcBMWvVhtfcd/oTo2EGP1p0IZsPJf8bkMaxW3SJ8C4/JEbfAg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1639856368;
+        s=2020e; t=1639919695;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ildVUdGHtkDCq6TzbTw3Bge/LUgZu9LlUiguTv9Ha5c=;
-        b=9ylNR5bl43pLfVz/c66HZ/jVLLTm43iicZ7i/Yr5SvBzFj0pfL9xbyfn3sUPQRC8qVJwzH
-        2sSvqu8lLaL3UtCg==
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+        bh=H+eLJBjyuR5qzC+EozPbCmqHBG49A4VYeh6FDJw/5Mk=;
+        b=+H4JDw2CLvwGikqY8dRDparYdFdcXC/BV+d/GT1euEy2QMisy2A7PXvdyTM35rep3a8qlg
+        zbDkcunDYjHC8lDw==
+From:   "tip-bot2 for Andrew Cooper" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/msi] PCI/MSI: Unbreak pci_irq_get_affinity()
-Cc:     Nathan Chancellor <nathan@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+Subject: [tip: x86/urgent] x86/pkey: Fix undefined behaviour with PKRU_WD_BIT
+Cc:     Andrew Cooper <andrew.cooper3@citrix.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        stable@vger.kernel.org, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <87v8zm9pmd.ffs@tglx>
-References: <87v8zm9pmd.ffs@tglx>
+In-Reply-To: <20211216000856.4480-1-andrew.cooper3@citrix.com>
+References: <20211216000856.4480-1-andrew.cooper3@citrix.com>
 MIME-Version: 1.0
-Message-ID: <163985636689.23020.17674623774839628047.tip-bot2@tip-bot2>
+Message-ID: <163991969397.23020.2147480727226316518.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -56,63 +60,57 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the irq/msi branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     d558285413ea2f934ab90223ba908c30c5113aee
-Gitweb:        https://git.kernel.org/tip/d558285413ea2f934ab90223ba908c30c5113aee
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Sat, 18 Dec 2021 11:25:14 +01:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sat, 18 Dec 2021 20:33:21 +01:00
+Commit-ID:     aa1701e20a847dba6c406545dcba6a8755fa6406
+Gitweb:        https://git.kernel.org/tip/aa1701e20a847dba6c406545dcba6a8755fa6406
+Author:        Andrew Cooper <andrew.cooper3@citrix.com>
+AuthorDate:    Thu, 16 Dec 2021 00:08:56 
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Sun, 19 Dec 2021 14:09:41 +01:00
 
-PCI/MSI: Unbreak pci_irq_get_affinity()
+x86/pkey: Fix undefined behaviour with PKRU_WD_BIT
 
-The recent cleanup of pci_irq_get_affinity() broke the function for
-PCI/MSI-X and indices > 0. Only the MSI descriptor for PCI/MSI has more
-than one affinity mask which can be retrieved via the MSI index.
+Both __pkru_allows_write() and arch_set_user_pkey_access() shift
+PKRU_WD_BIT (a signed constant) by up to 30 bits, hitting the
+sign bit.
 
-PCI/MSI-X has one descriptor per vector and each has a single affinity
-mask.
+Use unsigned constants instead.
 
-Use index 0 when accessing the affinity mask in the MSI descriptor when
-MSI-X is enabled.
+Clearly pkey 15 has not been used in combination with UBSAN yet.
 
-Fixes: f48235900182 ("PCI/MSI: Simplify pci_irq_get_affinity()")
-Reported-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Nathan Chancellor <nathan@kernel.org>
-Link: https://lore.kernel.org/r/87v8zm9pmd.ffs@tglx
+Noticed by code inspection only.  I can't actually provoke the
+compiler into generating incorrect logic as far as this shift is
+concerned.
 
+[
+  dhansen: add stable@ tag, plus minor changelog massaging,
 
+           For anyone doing backports, these #defines were in
+	   arch/x86/include/asm/pgtable.h before 784a46618f6.
+]
+
+Fixes: 33a709b25a76 ("mm/gup, x86/mm/pkeys: Check VMAs and PTEs for protection keys")
+Signed-off-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lkml.kernel.org/r/20211216000856.4480-1-andrew.cooper3@citrix.com
 ---
- drivers/pci/msi/msi.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ arch/x86/include/asm/pkru.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/msi/msi.c b/drivers/pci/msi/msi.c
-index 7180241..c19c7ca 100644
---- a/drivers/pci/msi/msi.c
-+++ b/drivers/pci/msi/msi.c
-@@ -1100,7 +1100,7 @@ EXPORT_SYMBOL(pci_irq_vector);
-  */
- const struct cpumask *pci_irq_get_affinity(struct pci_dev *dev, int nr)
- {
--	int irq = pci_irq_vector(dev, nr);
-+	int idx, irq = pci_irq_vector(dev, nr);
- 	struct msi_desc *desc;
+diff --git a/arch/x86/include/asm/pkru.h b/arch/x86/include/asm/pkru.h
+index 4cd49af..74f0a2d 100644
+--- a/arch/x86/include/asm/pkru.h
++++ b/arch/x86/include/asm/pkru.h
+@@ -4,8 +4,8 @@
  
- 	if (WARN_ON_ONCE(irq <= 0))
-@@ -1113,7 +1113,13 @@ const struct cpumask *pci_irq_get_affinity(struct pci_dev *dev, int nr)
+ #include <asm/cpufeature.h>
  
- 	if (WARN_ON_ONCE(!desc->affinity))
- 		return NULL;
--	return &desc->affinity[nr].mask;
-+
-+	/*
-+	 * MSI has a mask array in the descriptor.
-+	 * MSI-X has a single mask.
-+	 */
-+	idx = dev->msi_enabled ? nr : 0;
-+	return &desc->affinity[idx].mask;
- }
- EXPORT_SYMBOL(pci_irq_get_affinity);
+-#define PKRU_AD_BIT 0x1
+-#define PKRU_WD_BIT 0x2
++#define PKRU_AD_BIT 0x1u
++#define PKRU_WD_BIT 0x2u
+ #define PKRU_BITS_PER_PKEY 2
  
+ #ifdef CONFIG_X86_INTEL_MEMORY_PROTECTION_KEYS
