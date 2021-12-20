@@ -2,31 +2,34 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DFCF647B34E
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 20 Dec 2021 19:59:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B2E447B372
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 20 Dec 2021 20:08:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240092AbhLTS7s (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 20 Dec 2021 13:59:48 -0500
-Received: from mail.skyhub.de ([5.9.137.197]:55208 "EHLO mail.skyhub.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235112AbhLTS7s (ORCPT
+        id S235705AbhLTTIo (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 20 Dec 2021 14:08:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37922 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234318AbhLTTIn (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 20 Dec 2021 13:59:48 -0500
+        Mon, 20 Dec 2021 14:08:43 -0500
+Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFD37C061574;
+        Mon, 20 Dec 2021 11:08:42 -0800 (PST)
 Received: from zn.tnic (dslb-088-067-202-008.088.067.pools.vodafone-ip.de [88.67.202.8])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 83E5A1EC03E3;
-        Mon, 20 Dec 2021 19:59:42 +0100 (CET)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 21DB61EC03E3;
+        Mon, 20 Dec 2021 20:08:36 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1640026782;
+        t=1640027316;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=fHiGX6yDgTud+wFWGgTd535xV9pRxQfKjBv0lrEdXcE=;
-        b=I5VNZB9WgwOMBwnubGIeQ5xqcnHsyR3yVUUhsHhyVqQWsMRum5bdMfgkRSBTi2qophZSVl
-        ub0fjIE3xohKYDw4ImclTVSX0Cxq+O4/rVL0fIH8MmU/WLziUwuSO4Dd0P90yCQuGigfwV
-        q/bxBz/++syOJ+v+CbDvNOeHtVDe5h0=
-Date:   Mon, 20 Dec 2021 19:59:49 +0100
+        bh=6Kj6fV3H5G8bJXHXRh1uQP+tqsb/ecR+wZMVk72GGEE=;
+        b=EYwPLfFpWSwzFjqAIXNVp0VMwqjZm5CCKfgtT6H/djUURQR98HE/Gs12Ba8rjDrU1qOe4T
+        oOGU+apSSjjNiYSXOvgn2FaHBCsn20DnVSt6Wtd+nv8hc047DpyC5wdrb8A0ulGbMotL1+
+        mzxDEf9CLRjb3CtHR6y6gdL7Bmn+Olg=
+Date:   Mon, 20 Dec 2021 20:08:43 +0100
 From:   Borislav Petkov <bp@alien8.de>
 To:     "Patrick J. Volkerding" <volkerdi@gmail.com>
 Cc:     Mike Rapoport <rppt@kernel.org>, Juergen Gross <jgross@suse.com>,
@@ -37,9 +40,8 @@ Cc:     Mike Rapoport <rppt@kernel.org>, Juergen Gross <jgross@suse.com>,
         x86@kernel.org, Hugh Dickins <hughd@google.com>
 Subject: Re: [tip: x86/urgent] x86/boot: Pull up cmdline preparation and
  early param parsing
-Message-ID: <YcDSpcO8giLoSMOn@zn.tnic>
-References: <YbIeYIM6JEBgO3tG@zn.tnic>
- <50f25412-d616-1cc6-f07f-a29d80b4bd3b@suse.com>
+Message-ID: <YcDUu4+YhyKsvVBA@zn.tnic>
+References: <50f25412-d616-1cc6-f07f-a29d80b4bd3b@suse.com>
  <YbIgsO/7oQW9h6wv@zn.tnic>
  <YbIu55LZKoK3IVaF@kernel.org>
  <YbIw1nUYJ3KlkjJQ@zn.tnic>
@@ -48,30 +50,22 @@ References: <YbIeYIM6JEBgO3tG@zn.tnic>
  <YbcTgQdTpJAHAZw4@zn.tnic>
  <CANGBn69pGb-nscv8tXN1UKDEQGEMWRKuPVPLgg+q2m7V_sBvHw@mail.gmail.com>
  <CANGBn6_cCd3ASh-9aec5qQkuK0s=mWbo90h0rMNwBiqsgb5AAA@mail.gmail.com>
+ <YcDSpcO8giLoSMOn@zn.tnic>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CANGBn6_cCd3ASh-9aec5qQkuK0s=mWbo90h0rMNwBiqsgb5AAA@mail.gmail.com>
+In-Reply-To: <YcDSpcO8giLoSMOn@zn.tnic>
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Mon, Dec 20, 2021 at 12:49:52PM -0600, Patrick J. Volkerding wrote:
-> Trying again since gmail didn't use plain text and the message got rejected.
-> 
-> We're waiting for these patches to appear in a 5.15 kernel so that we
-> can ship with an unpatched kernel. Will they be queued for the stable
-> kernels sometime soon?
+On Mon, Dec 20, 2021 at 07:59:49PM +0100, Borislav Petkov wrote:
+> Which reminds me - they need stable tags. Lemme add those.
 
-Yes, they're currently queued here:
+Actually, it'll be a lot easier if I send backporting instructions to
+the stable@ folks next week. Yap, I'll do that.
 
-https://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git/log/?h=x86/urgent
-
-and will go to Linus on the weekend.
-
-Which reminds me - they need stable tags. Lemme add those.
-
-Thx.
+/me adds a TODO.
 
 -- 
 Regards/Gruss,
