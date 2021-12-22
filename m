@@ -2,93 +2,143 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 27C9347BE21
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 21 Dec 2021 11:26:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BB5D647CEDC
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Dec 2021 10:10:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232989AbhLUK0x (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 21 Dec 2021 05:26:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46410 "EHLO
+        id S243726AbhLVJKg (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 22 Dec 2021 04:10:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45832 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232972AbhLUK0x (ORCPT
+        with ESMTP id S243700AbhLVJKf (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 21 Dec 2021 05:26:53 -0500
-Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 990EFC061401
-        for <linux-tip-commits@vger.kernel.org>; Tue, 21 Dec 2021 02:26:52 -0800 (PST)
-Received: by mail-lj1-x236.google.com with SMTP id i63so20612038lji.3
-        for <linux-tip-commits@vger.kernel.org>; Tue, 21 Dec 2021 02:26:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=ids4AWM8Oe8bvmwZACqn58s1QyO4JCELLUWg+7QKlyg=;
-        b=PZ3nu2B0RL1XmyIScXKtLobQ1JGXkiQIUcgwhgC3zgwiUXnmzCpw9H9ohDR5LVhkDK
-         l888MI3PiUpAkh+ZcaqsqeGxP46CcG0ymSLzjzzXaBP0K8SP2N8iQgjK1dsuLM5WGflg
-         3HqnBfz4X7uTQ8q0rh0mEPOrB4aN1GFoQL1qN9x19oCsjpswPFUU1EQgB8l5bBGsVT0X
-         HP4PzH32a7irO1Z/OMW2l5LCd1s/5E14LjvfWfPx6uepbMB/LgT8axusHc7tOsAt7kjp
-         bY3P2tOd0SEYFfuQMpRDbYVedW485qJHOXnnq2aeDzg6R9qp3grTqjWOmdn/BNsS8gE1
-         kKhA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=ids4AWM8Oe8bvmwZACqn58s1QyO4JCELLUWg+7QKlyg=;
-        b=dFUmXeaeb4o9m4yFruq9ax+jIEidPeqXmQB2NFFPDIEKLqiVSb5FS8g5sR2/vWJaKu
-         3Oe5ksmupF2P0ztP6mpvkxZoyxCVIdkq8dlbwBJl4NWCMXZ9ac01wKahcV5zuFsy/rNs
-         9L5kCzpUFJNzf/XyfIyXg8TQVg6tb/g8uGQem3Y+7v4yN90VZHFHDESJmsohd4Qe0c+e
-         +hzKgEuRTWivVWPfM5obgpkwClkuB+HOxKZDux3vb8DCrx5pHd+wZrPAUejCZlJdz632
-         NC6a89pvcVvrU8JNeSP9fGIVdSNOuo1BgA/f5VuGP81nVT8NWyYYtsuVlNLceWvisvTi
-         DQFA==
-X-Gm-Message-State: AOAM5303/rFvGISu+PXkgqiRVffkOJ2K+YClGB3BTeEZzwbkY0DQurkw
-        taPTsYrZiI6yJ2mwiWrUOYkia8zZOH8HEHvvT0M=
-X-Google-Smtp-Source: ABdhPJxjFxejGXTRrRkKGARPIVMo2JMSITKzzCMj6irvBgPPz+bbllstQkfada0oVM+SRMNFzjtDpt35uK6QAf8fJIc=
-X-Received: by 2002:a2e:9654:: with SMTP id z20mr2042517ljh.254.1640082410814;
- Tue, 21 Dec 2021 02:26:50 -0800 (PST)
+        Wed, 22 Dec 2021 04:10:35 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47FFAC06173F;
+        Wed, 22 Dec 2021 01:10:35 -0800 (PST)
+Date:   Wed, 22 Dec 2021 09:10:30 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1640164232;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=CIS67eOsyZbs7fLM7ezeiuDsHR8D8TOaFfw3jAdCzB0=;
+        b=0WrubRhBtKWrcrT4t2Q9Jd9yIysK2CF+qbiR2EUXqflAj6IszCQMuWN8r/sMs9xjxiu5de
+        xy3IjbH21JASRynLRIXdLZugnBv2QjQSvfQaFSL/r5dSx6DQmnPCoX3/RuHCIF0pqHqY00
+        zDhyffbXINLabJ33ScQdv8yBS15+ozIyuwx/2kB/KRrw3XhOiG4zrnNFD7jg9EgAJyK1s4
+        bKDPIEOKMyb2h21xrvrOboZejbR4SkliUBsIXeWd+3wjW+6B4goYVmMyu3QoAcIhxxAc5p
+        L4ineQVfqQxuf6q47orGrOVKeWN9XTJXA7D6z6m82I1al5qBfdmz6MNfuoKAzw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1640164232;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=CIS67eOsyZbs7fLM7ezeiuDsHR8D8TOaFfw3jAdCzB0=;
+        b=LOi7MG5xKvyoYuQ5yEmAhdroRzJZiooz7OScRXsJDlt0RauEjZ2JIaXXAnjBViQ5hkK/7H
+        kYXUegN4WvyIscCw==
+From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: objtool/urgent] compiler.h: Fix annotation macro misplacement
+ with Clang
+Cc:     kernel test robot <lkp@intel.com>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>, x86@kernel.org,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Miroslav Benes <mbenes@suse.cz>, linux-kernel@vger.kernel.org
+In-Reply-To: <0417e96909b97a406323409210de7bf13df0b170.1636410380.git.jpoimboe@redhat.com>
+References: <0417e96909b97a406323409210de7bf13df0b170.1636410380.git.jpoimboe@redhat.com>
 MIME-Version: 1.0
-Received: by 2002:a2e:a3d2:0:0:0:0:0 with HTTP; Tue, 21 Dec 2021 02:26:50
- -0800 (PST)
-Reply-To: mrssophiarobin252@gmail.com
-From:   "Mrs. Sophia Robin" <prophetsamueldc@gmail.com>
-Date:   Tue, 21 Dec 2021 02:26:50 -0800
-Message-ID: <CABvg+DLT+2vs9oBTYC15rubEpwdYU05PeUVr2xCfMH-_hM8dig@mail.gmail.com>
-Subject: hello dearest
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Message-ID: <164016423099.16921.16996655982787145621.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-My dearest
+The following commit has been merged into the objtool/urgent branch of tip:
 
-I am Mrs Sophia robin  a citizen of the united state of America,
+Commit-ID:     dcce50e6cc4d86a63dc0a9a6ee7d4f948ccd53a1
+Gitweb:        https://git.kernel.org/tip/dcce50e6cc4d86a63dc0a9a6ee7d4f948ccd53a1
+Author:        Josh Poimboeuf <jpoimboe@redhat.com>
+AuthorDate:    Mon, 08 Nov 2021 14:35:59 -08:00
+Committer:     Josh Poimboeuf <jpoimboe@redhat.com>
+CommitterDate: Tue, 21 Dec 2021 15:09:46 -08:00
 
-I am contacting you for an important and  urgent business transaction, I
-want the bank to transfer the money left by Dr. Cheng Chao,  A Chinese
-Politician who  died, March 17th 2020 without any trace of his family
-members,  he used our bank to launder money overseas through the help of
-their Political advisers. And most of the funds which they transferred out
-of the shores of China  were gold and oil money that was supposed to have
-been used to develop the continent.
-Can you invest this money and also help the poor ? The amount value at
-($US 15.500,000), left in his account still unclaimed,
-if you know that you are capable to invest this fund into any  profitable
-business in your country kindly send me your details information as listed
-below to enable me draft you an application form of claim along with the
-deposit certificate which you are going to fill with your bank account
-detail necessary and contact the HSBC Bank in Italy  for immediate transfer
-of the Amounted sum into your bank account direct.
+compiler.h: Fix annotation macro misplacement with Clang
 
-Percentage share will be 60,for me/ 40, for you.
+When building with Clang and CONFIG_TRACE_BRANCH_PROFILING, there are a
+lot of unreachable warnings, like:
 
-(1) Your full name..................................................
-(2) Your address....................................................
-(3) Your Nationality.................................................
-(4) Your Age / Sex.....................................................
-(5) Your  Occupation............................................
-(6) Your marital status......................................
-(7) Your direct telephone number..................
-(8) Your photo.......................................
+  arch/x86/kernel/traps.o: warning: objtool: handle_xfd_event()+0x134: unreachable instruction
 
-Thanks with my best regards.
-Mrs Sophia robin
-Telex Manager
-Milan Italy  (H.S.B.C)
+Without an input to the inline asm, 'volatile' is ignored for some
+reason and Clang feels free to move the reachable() annotation away from
+its intended location.
+
+Fix that by re-adding the counter value to the inputs.
+
+Fixes: f1069a8756b9 ("compiler.h: Avoid using inline asm operand modifiers")
+Fixes: c199f64ff93c ("instrumentation.h: Avoid using inline asm operand modifiers")
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
+Link: https://lore.kernel.org/r/0417e96909b97a406323409210de7bf13df0b170.1636410380.git.jpoimboe@redhat.com
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: x86@kernel.org
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: Miroslav Benes <mbenes@suse.cz>
+---
+ include/linux/compiler.h        | 4 ++--
+ include/linux/instrumentation.h | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/include/linux/compiler.h b/include/linux/compiler.h
+index 3d5af56..429dceb 100644
+--- a/include/linux/compiler.h
++++ b/include/linux/compiler.h
+@@ -121,7 +121,7 @@ void ftrace_likely_update(struct ftrace_likely_data *f, int val,
+ 	asm volatile(__stringify_label(c) ":\n\t"			\
+ 		     ".pushsection .discard.reachable\n\t"		\
+ 		     ".long " __stringify_label(c) "b - .\n\t"		\
+-		     ".popsection\n\t");				\
++		     ".popsection\n\t" : : "i" (c));			\
+ })
+ #define annotate_reachable() __annotate_reachable(__COUNTER__)
+ 
+@@ -129,7 +129,7 @@ void ftrace_likely_update(struct ftrace_likely_data *f, int val,
+ 	asm volatile(__stringify_label(c) ":\n\t"			\
+ 		     ".pushsection .discard.unreachable\n\t"		\
+ 		     ".long " __stringify_label(c) "b - .\n\t"		\
+-		     ".popsection\n\t");				\
++		     ".popsection\n\t" : : "i" (c));			\
+ })
+ #define annotate_unreachable() __annotate_unreachable(__COUNTER__)
+ 
+diff --git a/include/linux/instrumentation.h b/include/linux/instrumentation.h
+index fa2cd8c..24359b4 100644
+--- a/include/linux/instrumentation.h
++++ b/include/linux/instrumentation.h
+@@ -11,7 +11,7 @@
+ 	asm volatile(__stringify(c) ": nop\n\t"				\
+ 		     ".pushsection .discard.instr_begin\n\t"		\
+ 		     ".long " __stringify(c) "b - .\n\t"		\
+-		     ".popsection\n\t");				\
++		     ".popsection\n\t" : : "i" (c));			\
+ })
+ #define instrumentation_begin() __instrumentation_begin(__COUNTER__)
+ 
+@@ -50,7 +50,7 @@
+ 	asm volatile(__stringify(c) ": nop\n\t"				\
+ 		     ".pushsection .discard.instr_end\n\t"		\
+ 		     ".long " __stringify(c) "b - .\n\t"		\
+-		     ".popsection\n\t");				\
++		     ".popsection\n\t" : : "i" (c));			\
+ })
+ #define instrumentation_end() __instrumentation_end(__COUNTER__)
+ #else
