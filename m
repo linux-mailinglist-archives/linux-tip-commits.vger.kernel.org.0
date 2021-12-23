@@ -2,43 +2,43 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 467F447D85D
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Dec 2021 21:45:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 68BB347E3ED
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 23 Dec 2021 14:05:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232197AbhLVUpU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 22 Dec 2021 15:45:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34474 "EHLO
+        id S243610AbhLWNE6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 23 Dec 2021 08:04:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55774 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229548AbhLVUpU (ORCPT
+        with ESMTP id S243507AbhLWNE6 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 22 Dec 2021 15:45:20 -0500
+        Thu, 23 Dec 2021 08:04:58 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE0D6C061574;
-        Wed, 22 Dec 2021 12:45:19 -0800 (PST)
-Date:   Wed, 22 Dec 2021 20:45:15 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 169D5C061401;
+        Thu, 23 Dec 2021 05:04:58 -0800 (PST)
+Date:   Thu, 23 Dec 2021 13:04:53 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1640205916;
+        s=2020; t=1640264694;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=W4II0sqBpYZULLv29dW6QN4kvxHDOlKgqpJrrzTvrtM=;
-        b=IIaRyQMg8UUQGWy2N+1nt9VNHRbLW73X0cYeNM+a2FzcNfg8lncDFycPWhCK+yM/dpjP/r
-        mQ9TI6QrI1sXEFPlAJCdCjwgaWSyi3Hd4/Uo7oTcmQugZ4xx9WiPzyflQPD3CIwGoiKbF+
-        HOO8BkQuU/1RMt8W2fD/Q7c7JgJwl806ZYFXw1Iylu0GWBMSEhOeb3DgEWMf8SkJ0dEOAB
-        QQvvxibmM/RgSXI7oyuQlxGICMFWJkYCJ3Li6CZSKfUaw9v6btzyr2Mujjglv7CRO608iy
-        wMP9RpeVNPpJADgIj+6UOn+1I/muPqgmmtPKpaCJSl7OPuRWDP0kqVTDZ8AQUQ==
+        bh=MT9cYAAd9Lr6tneAhHYzpAZjJoKC/2uGsYURwIytO4k=;
+        b=HCmFZI8YyrPLcnWz9/sLBo7YooKrfDsJqgBSWWB+mUaA/IRhiGPJZ8nbeTjKgCDv4glTDc
+        zlMdWyLEPbGrOPweuGg452lnT62Cu90pwILbwoIi7pQskGeYDCOEtVjsNh9Gr5kRpJfh3q
+        y+v0DZAGcQPz1Evfr1XPHDgMcwNloctxs4lDkMlRP3yluK4WcVcmzebz9cj80VmYHXhZD2
+        h7AvByfV0D01bnPLxA/79ZXB8Obi2a4FZBn0KDS02PGSNomFBc/1ynAmGqmekvKR/SMN2j
+        Rh3zXqNrS5XbW1r9ai2cw29wOdkXKObvpsaBGi03gE0slL2V7TYK91Vaa0goQA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1640205916;
+        s=2020e; t=1640264694;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=W4II0sqBpYZULLv29dW6QN4kvxHDOlKgqpJrrzTvrtM=;
-        b=auA2TVqVkRnrw80f38gZ021A9+A17EHxat0eHYlDfVTTxeay0R6bxbY8Q/kwAZNT+Sl+wD
-        s09rpUs3VnT2f0DA==
+        bh=MT9cYAAd9Lr6tneAhHYzpAZjJoKC/2uGsYURwIytO4k=;
+        b=BSWuTc/91ka3LXZUhjI/Rj1tkacv7OjMargAli12ClWvhlVaPTCsbr+5q8Ei9rBqvQCSyb
+        Ct92KJvSIzKfFRBg==
 From:   "tip-bot2 for Nathan Chancellor" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
@@ -51,7 +51,7 @@ Cc:     Nathan Chancellor <nathan@kernel.org>,
 In-Reply-To: <20211222163040.1961481-1-nathan@kernel.org>
 References: <20211222163040.1961481-1-nathan@kernel.org>
 MIME-Version: 1.0
-Message-ID: <164020591546.16921.3525899379668390932.tip-bot2@tip-bot2>
+Message-ID: <164026469301.16921.16780722874157269511.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -62,12 +62,12 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/build branch of tip:
 
-Commit-ID:     9c42a8706f358ef6699f299916ad31acf2767c45
-Gitweb:        https://git.kernel.org/tip/9c42a8706f358ef6699f299916ad31acf2767c45
+Commit-ID:     5fe392ff9d1f7254a1fbb3f72d9893088e4d23eb
+Gitweb:        https://git.kernel.org/tip/5fe392ff9d1f7254a1fbb3f72d9893088e4d23eb
 Author:        Nathan Chancellor <nathan@kernel.org>
 AuthorDate:    Wed, 22 Dec 2021 09:30:41 -07:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Wed, 22 Dec 2021 19:39:55 +01:00
+CommitterDate: Thu, 23 Dec 2021 11:03:28 +01:00
 
 x86/boot/compressed: Move CLANG_FLAGS to beginning of KBUILD_CFLAGS
 
