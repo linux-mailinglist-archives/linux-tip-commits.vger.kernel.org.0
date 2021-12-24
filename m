@@ -2,128 +2,115 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 68BB347E3ED
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 23 Dec 2021 14:05:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B6C847EDFA
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 24 Dec 2021 10:44:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243610AbhLWNE6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 23 Dec 2021 08:04:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55774 "EHLO
+        id S241658AbhLXJo1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 24 Dec 2021 04:44:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46496 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243507AbhLWNE6 (ORCPT
+        with ESMTP id S241614AbhLXJo0 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 23 Dec 2021 08:04:58 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 169D5C061401;
-        Thu, 23 Dec 2021 05:04:58 -0800 (PST)
-Date:   Thu, 23 Dec 2021 13:04:53 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1640264694;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=MT9cYAAd9Lr6tneAhHYzpAZjJoKC/2uGsYURwIytO4k=;
-        b=HCmFZI8YyrPLcnWz9/sLBo7YooKrfDsJqgBSWWB+mUaA/IRhiGPJZ8nbeTjKgCDv4glTDc
-        zlMdWyLEPbGrOPweuGg452lnT62Cu90pwILbwoIi7pQskGeYDCOEtVjsNh9Gr5kRpJfh3q
-        y+v0DZAGcQPz1Evfr1XPHDgMcwNloctxs4lDkMlRP3yluK4WcVcmzebz9cj80VmYHXhZD2
-        h7AvByfV0D01bnPLxA/79ZXB8Obi2a4FZBn0KDS02PGSNomFBc/1ynAmGqmekvKR/SMN2j
-        Rh3zXqNrS5XbW1r9ai2cw29wOdkXKObvpsaBGi03gE0slL2V7TYK91Vaa0goQA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1640264694;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=MT9cYAAd9Lr6tneAhHYzpAZjJoKC/2uGsYURwIytO4k=;
-        b=BSWuTc/91ka3LXZUhjI/Rj1tkacv7OjMargAli12ClWvhlVaPTCsbr+5q8Ei9rBqvQCSyb
-        Ct92KJvSIzKfFRBg==
-From:   "tip-bot2 for Nathan Chancellor" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/build] x86/boot/compressed: Move CLANG_FLAGS to beginning
- of KBUILD_CFLAGS
-Cc:     Nathan Chancellor <nathan@kernel.org>,
-        Borislav Petkov <bp@suse.de>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20211222163040.1961481-1-nathan@kernel.org>
-References: <20211222163040.1961481-1-nathan@kernel.org>
+        Fri, 24 Dec 2021 04:44:26 -0500
+Received: from mail-qv1-xf42.google.com (mail-qv1-xf42.google.com [IPv6:2607:f8b0:4864:20::f42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88805C061401
+        for <linux-tip-commits@vger.kernel.org>; Fri, 24 Dec 2021 01:44:26 -0800 (PST)
+Received: by mail-qv1-xf42.google.com with SMTP id fq10so7403141qvb.10
+        for <linux-tip-commits@vger.kernel.org>; Fri, 24 Dec 2021 01:44:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=DA2RfWm5BfTc8dY4tRUxJejPvziWb2AgHmDwtjqgqi8=;
+        b=h9llVhcGL1X/mzo9mQpR9715LKb1viqPBzBAJQhem/zrOevl08JWLdrC1z/63Iz6e8
+         8zdtE47yzmV6f9q5rXaedaw0K5mb6SD7bKFdKaSHdrgztWol4sXbYaDngxLIYNCshabc
+         XXyzac5EsNIjeM6f4VqKbkC9nPR5CG6OfsLtaxK/3abAXaaVKqifd3Tyli3gM4SQ48sh
+         Jv7e3FZRghtiCBJwE4uVyHUx0FUp/0DvvHO7KtgZpiV3kfxWE3BlcAONDgcXMrXf0qaF
+         VrAhcugBQoj/rhOCGTUyRZvtY4ONQ35V409b4zCNEbcjUTbqS+WWOs7niy9Ww2NvURUE
+         qPeQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=DA2RfWm5BfTc8dY4tRUxJejPvziWb2AgHmDwtjqgqi8=;
+        b=x9/fFARPn6xptz+336CpGWLNc6Cd1EhSEShuLkWRFLteIjq7svZFkMB3EPhTY4ORAt
+         K9QdTOL0ZAzjOdrdLM1TdmwnedwqI7vaSOSCUsy+VsceV8n1ifeQ9aMWum46LjnA0uct
+         kE1GKyPJgHHJ1UUomyRPOs8yDOmBN0pvQNc40qJM8bx0lExbmoaVQC0gMzFo24cfa04O
+         oFtSMszGID8gNgDmUNBcWLaufIaLHdjN1aNXQ5rxUYAxhj85pDZFLY9RxiU8nsxWCmiG
+         yqiTEROuiWnaN6TA+eTb4xSYHWd6sACmdaG37+GkxK5Jgd//wrqWhQVJ1lGxrcBQ/IO+
+         4lZg==
+X-Gm-Message-State: AOAM531kk1iBfRhvde6mlTEPEmNa+Xjsuo7W2JFtp4yGrBHvxtIuQzbI
+        uN/SmZ9bPwT6A2+8O8OljZCg6USdY+vTuX0TshA=
+X-Google-Smtp-Source: ABdhPJztFT/rnPk4n5Tll7DzuW/93gJLD+ul2wl+64EQPy6nmqg1j2WmbqUiASnnhbLRXfAvHjzH4Xg+Q4hcVqiZse0=
+X-Received: by 2002:a0c:edca:: with SMTP id i10mr4924822qvr.62.1640339065737;
+ Fri, 24 Dec 2021 01:44:25 -0800 (PST)
 MIME-Version: 1.0
-Message-ID: <164026469301.16921.16780722874157269511.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Received: by 2002:ad4:5c62:0:0:0:0:0 with HTTP; Fri, 24 Dec 2021 01:44:25
+ -0800 (PST)
+Reply-To: williamsreneta2019@gmail.com
+From:   MISS WILLIAMS <info.turvateealfastar@gmail.com>
+Date:   Fri, 24 Dec 2021 01:44:25 -0800
+Message-ID: <CAM-qQYa=U=8S83QeT5SBFFKToLvq64_B+a=5T-oYhs7pFby57g@mail.gmail.com>
+Subject: Greetings Dearest One,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/build branch of tip:
+Greetings Dearest One,
 
-Commit-ID:     5fe392ff9d1f7254a1fbb3f72d9893088e4d23eb
-Gitweb:        https://git.kernel.org/tip/5fe392ff9d1f7254a1fbb3f72d9893088e4d23eb
-Author:        Nathan Chancellor <nathan@kernel.org>
-AuthorDate:    Wed, 22 Dec 2021 09:30:41 -07:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Thu, 23 Dec 2021 11:03:28 +01:00
+How are you today, together with your family?Hope fine.I would like to
+use this opportunity to introduce myself to you. I am Miss Reneta
+Williams, From Benin Republic, West Africa. And my late parents are
+Mr. and Mrs. Dikko Williams; my father was a highly reputable business
+magnet who operated in Benin Republic during his days.
 
-x86/boot/compressed: Move CLANG_FLAGS to beginning of KBUILD_CFLAGS
+I am writing this mail to you with tears and sorrow from my heart.
+With due respect trust and humanity, I know this mail will come to you
+as a surprise since we haven't known or come across each other before,
+considering the fact that I sourced your email contact through the
+Internet in search of trusted person who can be trusted and will
+assist me.
 
-When cross compiling i386_defconfig on an arm64 host with clang, there
-are a few instances of '-Waddress-of-packed-member' and
-'-Wgnu-variable-sized-type-not-at-end' in arch/x86/boot/compressed/,
-which should both be disabled with the cc-disable-warning calls in that
-directory's Makefile, which indicates that cc-disable-warning is failing
-at the point of testing these flags.
+It is sad to say that he passed away mysteriously in France during one
+of his business trips abroad. Though his sudden death was linked or
+rather suspected to have been masterminded by an uncle of his who
+traveled with him at that time. But God knows the truth! My mother
+died when I was just 6yrs old, and since then my father took me so
+special.
 
-The cc-disable-warning calls fail because at the point that the flags
-are tested, KBUILD_CFLAGS has '-march=i386' without $(CLANG_FLAGS),
-which has the '--target=' flag to tell clang what architecture it is
-targeting. Without the '--target=' flag, the host architecture (arm64)
-is used and i386 is not a valid value for '-march=' in that case. This
-error can be seen by adding some logging to try-run:
+Before his death, he called me and informed me that he has the sum of
+Eighteen Million Five Hundred , United State Dollar
+(USD$18.500,000.00) left in fixed deposit account in one of the
+leading banks in Africa. He further told me that he deposited the
+money in my name, and also gave me all the necessary but legal
+documents to this fund with the bank.
 
-  clang-14: error: the clang compiler does not support '-march=i386'
+I am 21 years old and a university undergraduate and really don't know
+what to do. Now I want an account overseas where I can transfer this
+funds and after the transaction I will come and reside permanently in
+your country till such a time that it will be convenient for me to
+return back home if I so desire.
 
-Invoking the compiler has to succeed prior to calling cc-option or
-cc-disable-warning in order to accurately test whether or not the flag
-is supported; if it doesn't, the requested flag can never be added to
-the compiler flags. Move $(CLANG_FLAGS) to the beginning of KBUILD_FLAGS
-so that any new flags that might be added in the future can be
-accurately tested.
+The death of my father actually brought sorrow to my life. I also want
+to invest the fund under your care because I am ignorant of business
+world. I am in a sincere desire of your humble assistance in this
+regards. Your suggestions and ideas will be highly regarded.
 
-Fixes: d5cbd80e302d ("x86/boot: Add $(CLANG_FLAGS) to compressed KBUILD_CFLAGS")
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lore.kernel.org/r/20211222163040.1961481-1-nathan@kernel.org
----
- arch/x86/boot/compressed/Makefile | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+Now permit me to ask these few questions:
 
-diff --git a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefile
-index 431bf7f..e118136 100644
---- a/arch/x86/boot/compressed/Makefile
-+++ b/arch/x86/boot/compressed/Makefile
-@@ -28,7 +28,11 @@ KCOV_INSTRUMENT		:= n
- targets := vmlinux vmlinux.bin vmlinux.bin.gz vmlinux.bin.bz2 vmlinux.bin.lzma \
- 	vmlinux.bin.xz vmlinux.bin.lzo vmlinux.bin.lz4 vmlinux.bin.zst
- 
--KBUILD_CFLAGS := -m$(BITS) -O2
-+# CLANG_FLAGS must come before any cc-disable-warning or cc-option calls in
-+# case of cross compiling, as it has the '--target=' flag, which is needed to
-+# avoid errors with '-march=i386', and future flags may depend on the target to
-+# be valid.
-+KBUILD_CFLAGS := -m$(BITS) -O2 $(CLANG_FLAGS)
- KBUILD_CFLAGS += -fno-strict-aliasing -fPIE
- KBUILD_CFLAGS += -Wundef
- KBUILD_CFLAGS += -DDISABLE_BRANCH_PROFILING
-@@ -47,7 +51,6 @@ KBUILD_CFLAGS += -D__DISABLE_EXPORTS
- # Disable relocation relaxation in case the link is not PIE.
- KBUILD_CFLAGS += $(call as-option,-Wa$(comma)-mrelax-relocations=no)
- KBUILD_CFLAGS += -include $(srctree)/include/linux/hidden.h
--KBUILD_CFLAGS += $(CLANG_FLAGS)
- 
- # sev.c indirectly inludes inat-table.h which is generated during
- # compilation and stored in $(objtree). Add the directory to the includes so
+1. Can you honestly help me from your heart?
+
+2. Can I completely trust you?
+
+3. What percentage of the total amount in question will be good for
+you after the money is in your account?
+
+Please, consider this and get back to me as soon as
+possible.Immediately and confirm your willingness on this my
+email(williamsreneta2019@gmail.com), here is one of my Picture and
+also i will inform you more details involved in this matter.
+
+Regards,
+
+Miss Reneta Williams.
