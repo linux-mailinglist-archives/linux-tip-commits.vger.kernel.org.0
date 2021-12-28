@@ -2,115 +2,106 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B6C847EDFA
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 24 Dec 2021 10:44:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 59FD84808B1
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 28 Dec 2021 12:07:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241658AbhLXJo1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 24 Dec 2021 04:44:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46496 "EHLO
+        id S236416AbhL1LHl (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 28 Dec 2021 06:07:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40096 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241614AbhLXJo0 (ORCPT
+        with ESMTP id S231721AbhL1LHl (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 24 Dec 2021 04:44:26 -0500
-Received: from mail-qv1-xf42.google.com (mail-qv1-xf42.google.com [IPv6:2607:f8b0:4864:20::f42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88805C061401
-        for <linux-tip-commits@vger.kernel.org>; Fri, 24 Dec 2021 01:44:26 -0800 (PST)
-Received: by mail-qv1-xf42.google.com with SMTP id fq10so7403141qvb.10
-        for <linux-tip-commits@vger.kernel.org>; Fri, 24 Dec 2021 01:44:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=DA2RfWm5BfTc8dY4tRUxJejPvziWb2AgHmDwtjqgqi8=;
-        b=h9llVhcGL1X/mzo9mQpR9715LKb1viqPBzBAJQhem/zrOevl08JWLdrC1z/63Iz6e8
-         8zdtE47yzmV6f9q5rXaedaw0K5mb6SD7bKFdKaSHdrgztWol4sXbYaDngxLIYNCshabc
-         XXyzac5EsNIjeM6f4VqKbkC9nPR5CG6OfsLtaxK/3abAXaaVKqifd3Tyli3gM4SQ48sh
-         Jv7e3FZRghtiCBJwE4uVyHUx0FUp/0DvvHO7KtgZpiV3kfxWE3BlcAONDgcXMrXf0qaF
-         VrAhcugBQoj/rhOCGTUyRZvtY4ONQ35V409b4zCNEbcjUTbqS+WWOs7niy9Ww2NvURUE
-         qPeQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=DA2RfWm5BfTc8dY4tRUxJejPvziWb2AgHmDwtjqgqi8=;
-        b=x9/fFARPn6xptz+336CpGWLNc6Cd1EhSEShuLkWRFLteIjq7svZFkMB3EPhTY4ORAt
-         K9QdTOL0ZAzjOdrdLM1TdmwnedwqI7vaSOSCUsy+VsceV8n1ifeQ9aMWum46LjnA0uct
-         kE1GKyPJgHHJ1UUomyRPOs8yDOmBN0pvQNc40qJM8bx0lExbmoaVQC0gMzFo24cfa04O
-         oFtSMszGID8gNgDmUNBcWLaufIaLHdjN1aNXQ5rxUYAxhj85pDZFLY9RxiU8nsxWCmiG
-         yqiTEROuiWnaN6TA+eTb4xSYHWd6sACmdaG37+GkxK5Jgd//wrqWhQVJ1lGxrcBQ/IO+
-         4lZg==
-X-Gm-Message-State: AOAM531kk1iBfRhvde6mlTEPEmNa+Xjsuo7W2JFtp4yGrBHvxtIuQzbI
-        uN/SmZ9bPwT6A2+8O8OljZCg6USdY+vTuX0TshA=
-X-Google-Smtp-Source: ABdhPJztFT/rnPk4n5Tll7DzuW/93gJLD+ul2wl+64EQPy6nmqg1j2WmbqUiASnnhbLRXfAvHjzH4Xg+Q4hcVqiZse0=
-X-Received: by 2002:a0c:edca:: with SMTP id i10mr4924822qvr.62.1640339065737;
- Fri, 24 Dec 2021 01:44:25 -0800 (PST)
+        Tue, 28 Dec 2021 06:07:41 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D539FC061574;
+        Tue, 28 Dec 2021 03:07:40 -0800 (PST)
+Date:   Tue, 28 Dec 2021 11:07:36 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1640689657;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=WG1XEyBl3EM/S+6dLGtTge8B/XvWO4KRht4pjAI5fbo=;
+        b=SqF1R/SO7dZtk7Gg2lF47XxXB6yMyGGki/0wOONHCgHZGI9Vl/WnWCEe5qyrTLjzcFWg5R
+        QuOYuLxNA/XJAuN/l+9dRSdCwuvUPVQDGmKB+9pU3YwTWqM7E0RnJ0dIGyoEvv/2NZYDgp
+        TRFsWU9fB2gz/W0dg3sn+8Gc8USFgYHxhsCV7FakeGhUVfAMSoNzLODNgzelRdJgsDNRN6
+        tIif8YH4j3yJLcp9iUa0hlA2Awp7tkGt26ILbuxIKCHucJyLta4LrAOoKFtxUacIvdldbD
+        t+0i5c7ZNJBSJWvbYiT7CcEgYEnFtPZAYOgrGc28691qUvJeZqaWkkHLf3y1HA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1640689657;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=WG1XEyBl3EM/S+6dLGtTge8B/XvWO4KRht4pjAI5fbo=;
+        b=5e3US/GWHvrBsa8jDnWVc2Dwwi6NFg50GgAWC/gptgOD8Rjja4onze3EoavB4Sh+Jjub27
+        pBOQvcUgy0/iSnAQ==
+From:   "tip-bot2 for Zhang Zixun" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: ras/core] x86/mce/inject: Avoid out-of-bounds write when setting flags
+Cc:     Zhang Zixun <zhang133010@icloud.com>, Borislav Petkov <bp@suse.de>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Received: by 2002:ad4:5c62:0:0:0:0:0 with HTTP; Fri, 24 Dec 2021 01:44:25
- -0800 (PST)
-Reply-To: williamsreneta2019@gmail.com
-From:   MISS WILLIAMS <info.turvateealfastar@gmail.com>
-Date:   Fri, 24 Dec 2021 01:44:25 -0800
-Message-ID: <CAM-qQYa=U=8S83QeT5SBFFKToLvq64_B+a=5T-oYhs7pFby57g@mail.gmail.com>
-Subject: Greetings Dearest One,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Message-ID: <164068965610.16921.13613259509987305525.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-Greetings Dearest One,
+The following commit has been merged into the ras/core branch of tip:
 
-How are you today, together with your family?Hope fine.I would like to
-use this opportunity to introduce myself to you. I am Miss Reneta
-Williams, From Benin Republic, West Africa. And my late parents are
-Mr. and Mrs. Dikko Williams; my father was a highly reputable business
-magnet who operated in Benin Republic during his days.
+Commit-ID:     de768416b203ac84e02a757b782a32efb388476f
+Gitweb:        https://git.kernel.org/tip/de768416b203ac84e02a757b782a32efb388476f
+Author:        Zhang Zixun <zhang133010@icloud.com>
+AuthorDate:    Mon, 27 Dec 2021 22:02:49 +01:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Tue, 28 Dec 2021 11:45:36 +01:00
 
-I am writing this mail to you with tears and sorrow from my heart.
-With due respect trust and humanity, I know this mail will come to you
-as a surprise since we haven't known or come across each other before,
-considering the fact that I sourced your email contact through the
-Internet in search of trusted person who can be trusted and will
-assist me.
+x86/mce/inject: Avoid out-of-bounds write when setting flags
 
-It is sad to say that he passed away mysteriously in France during one
-of his business trips abroad. Though his sudden death was linked or
-rather suspected to have been masterminded by an uncle of his who
-traveled with him at that time. But God knows the truth! My mother
-died when I was just 6yrs old, and since then my father took me so
-special.
+A contrived zero-length write, for example, by using write(2):
 
-Before his death, he called me and informed me that he has the sum of
-Eighteen Million Five Hundred , United State Dollar
-(USD$18.500,000.00) left in fixed deposit account in one of the
-leading banks in Africa. He further told me that he deposited the
-money in my name, and also gave me all the necessary but legal
-documents to this fund with the bank.
+  ...
+  ret = write(fd, str, 0);
+  ...
 
-I am 21 years old and a university undergraduate and really don't know
-what to do. Now I want an account overseas where I can transfer this
-funds and after the transaction I will come and reside permanently in
-your country till such a time that it will be convenient for me to
-return back home if I so desire.
+to the "flags" file causes:
 
-The death of my father actually brought sorrow to my life. I also want
-to invest the fund under your care because I am ignorant of business
-world. I am in a sincere desire of your humble assistance in this
-regards. Your suggestions and ideas will be highly regarded.
+  BUG: KASAN: stack-out-of-bounds in flags_write
+  Write of size 1 at addr ffff888019be7ddf by task writefile/3787
 
-Now permit me to ask these few questions:
+  CPU: 4 PID: 3787 Comm: writefile Not tainted 5.16.0-rc7+ #12
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.14.0-2 04/01/2014
 
-1. Can you honestly help me from your heart?
+due to accessing buf one char before its start.
 
-2. Can I completely trust you?
+Prevent such out-of-bounds access.
 
-3. What percentage of the total amount in question will be good for
-you after the money is in your account?
+  [ bp: Productize into a proper patch. Link below is the next best
+    thing because the original mail didn't get archived on lore. ]
 
-Please, consider this and get back to me as soon as
-possible.Immediately and confirm your willingness on this my
-email(williamsreneta2019@gmail.com), here is one of my Picture and
-also i will inform you more details involved in this matter.
+Fixes: 0451d14d0561 ("EDAC, mce_amd_inj: Modify flags attribute to use string arguments")
+Signed-off-by: Zhang Zixun <zhang133010@icloud.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lore.kernel.org/linux-edac/YcnePfF1OOqoQwrX@zn.tnic/
+---
+ arch/x86/kernel/cpu/mce/inject.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Regards,
-
-Miss Reneta Williams.
+diff --git a/arch/x86/kernel/cpu/mce/inject.c b/arch/x86/kernel/cpu/mce/inject.c
+index 6eac840..5fbd7ff 100644
+--- a/arch/x86/kernel/cpu/mce/inject.c
++++ b/arch/x86/kernel/cpu/mce/inject.c
+@@ -363,7 +363,7 @@ static ssize_t flags_write(struct file *filp, const char __user *ubuf,
+ 	char buf[MAX_FLAG_OPT_SIZE], *__buf;
+ 	int err;
+ 
+-	if (cnt > MAX_FLAG_OPT_SIZE)
++	if (!cnt || cnt > MAX_FLAG_OPT_SIZE)
+ 		return -EINVAL;
+ 
+ 	if (copy_from_user(&buf, ubuf, cnt))
