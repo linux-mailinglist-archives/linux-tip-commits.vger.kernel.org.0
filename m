@@ -2,48 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 59FD84808B1
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 28 Dec 2021 12:07:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 07E84480D11
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 28 Dec 2021 21:49:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236416AbhL1LHl (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 28 Dec 2021 06:07:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40096 "EHLO
+        id S237315AbhL1Utj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 28 Dec 2021 15:49:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55808 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231721AbhL1LHl (ORCPT
+        with ESMTP id S237314AbhL1Uti (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 28 Dec 2021 06:07:41 -0500
+        Tue, 28 Dec 2021 15:49:38 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D539FC061574;
-        Tue, 28 Dec 2021 03:07:40 -0800 (PST)
-Date:   Tue, 28 Dec 2021 11:07:36 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90261C061574;
+        Tue, 28 Dec 2021 12:49:38 -0800 (PST)
+Date:   Tue, 28 Dec 2021 20:49:34 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1640689657;
+        s=2020; t=1640724576;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=WG1XEyBl3EM/S+6dLGtTge8B/XvWO4KRht4pjAI5fbo=;
-        b=SqF1R/SO7dZtk7Gg2lF47XxXB6yMyGGki/0wOONHCgHZGI9Vl/WnWCEe5qyrTLjzcFWg5R
-        QuOYuLxNA/XJAuN/l+9dRSdCwuvUPVQDGmKB+9pU3YwTWqM7E0RnJ0dIGyoEvv/2NZYDgp
-        TRFsWU9fB2gz/W0dg3sn+8Gc8USFgYHxhsCV7FakeGhUVfAMSoNzLODNgzelRdJgsDNRN6
-        tIif8YH4j3yJLcp9iUa0hlA2Awp7tkGt26ILbuxIKCHucJyLta4LrAOoKFtxUacIvdldbD
-        t+0i5c7ZNJBSJWvbYiT7CcEgYEnFtPZAYOgrGc28691qUvJeZqaWkkHLf3y1HA==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=OEhdu6tuQCAmySDUOdX+JF9ICOs9lZ/DgOwAja0ItfY=;
+        b=pQfhq3Go06cyEu2kJOJ7KVa7d3CofO5r7wtLt5Te2804SOGwqRMBF8BYPVXgbb5afJ/5rY
+        ejvrmzpUxACoMDwIwqOaflYDv+bWLxVKuPkkMCtNmqaisnm4jz/mkwhAco2BiU8UEfT1Wr
+        Vdb1oWfiNJF3JIPNz7+a1dgrE2DpOJONmZqxbljCbzjzj+H1bOib+g0fRoOEqiEJnGUpcG
+        Ji2pNP5ixmDvtpEAriHArYoOegn1o+clnUqBUdhdFypE+/S9WJf9r6ce+eYepRRIy7hvo0
+        lXUQstmq7D+SmyO8D1ZKpBRI2e4A2B7nwyZR/dwsFIS8fhKVXb1p/f/hfsnV0g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1640689657;
+        s=2020e; t=1640724576;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=WG1XEyBl3EM/S+6dLGtTge8B/XvWO4KRht4pjAI5fbo=;
-        b=5e3US/GWHvrBsa8jDnWVc2Dwwi6NFg50GgAWC/gptgOD8Rjja4onze3EoavB4Sh+Jjub27
-        pBOQvcUgy0/iSnAQ==
-From:   "tip-bot2 for Zhang Zixun" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=OEhdu6tuQCAmySDUOdX+JF9ICOs9lZ/DgOwAja0ItfY=;
+        b=mGtMdhocbbphIjGYty/ikTGZ+hr+juwzW8gLkr+E6TOyojl9OX/g+lJh9YnxpUKdIAdyQU
+        NWI5ZPB70SKmVgBg==
+From:   "tip-bot2 for Colin Ian King" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: ras/core] x86/mce/inject: Avoid out-of-bounds write when setting flags
-Cc:     Zhang Zixun <zhang133010@icloud.com>, Borislav Petkov <bp@suse.de>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
+Subject: [tip: x86/cleanups] x86/events/amd/iommu: Remove redundant assignment
+ to variable shift
+Cc:     Colin Ian King <colin.i.king@gmail.com>,
+        Borislav Petkov <bp@suse.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20211207185001.1412413-1-colin.i.king@gmail.com>
+References: <20211207185001.1412413-1-colin.i.king@gmail.com>
 MIME-Version: 1.0
-Message-ID: <164068965610.16921.13613259509987305525.tip-bot2@tip-bot2>
+Message-ID: <164072457485.16921.17468682057656328578.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -52,56 +60,38 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the ras/core branch of tip:
+The following commit has been merged into the x86/cleanups branch of tip:
 
-Commit-ID:     de768416b203ac84e02a757b782a32efb388476f
-Gitweb:        https://git.kernel.org/tip/de768416b203ac84e02a757b782a32efb388476f
-Author:        Zhang Zixun <zhang133010@icloud.com>
-AuthorDate:    Mon, 27 Dec 2021 22:02:49 +01:00
+Commit-ID:     0be4838f018c10d7f138a213c006d345db35ef5b
+Gitweb:        https://git.kernel.org/tip/0be4838f018c10d7f138a213c006d345db35ef5b
+Author:        Colin Ian King <colin.i.king@gmail.com>
+AuthorDate:    Tue, 07 Dec 2021 18:50:01 
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 28 Dec 2021 11:45:36 +01:00
+CommitterDate: Tue, 28 Dec 2021 21:30:05 +01:00
 
-x86/mce/inject: Avoid out-of-bounds write when setting flags
+x86/events/amd/iommu: Remove redundant assignment to variable shift
 
-A contrived zero-length write, for example, by using write(2):
+Variable shift is being initialized with a value that is never read, it
+is being re-assigned later inside a loop. The assignment is redundant
+and can be removed.
 
-  ...
-  ret = write(fd, str, 0);
-  ...
-
-to the "flags" file causes:
-
-  BUG: KASAN: stack-out-of-bounds in flags_write
-  Write of size 1 at addr ffff888019be7ddf by task writefile/3787
-
-  CPU: 4 PID: 3787 Comm: writefile Not tainted 5.16.0-rc7+ #12
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.14.0-2 04/01/2014
-
-due to accessing buf one char before its start.
-
-Prevent such out-of-bounds access.
-
-  [ bp: Productize into a proper patch. Link below is the next best
-    thing because the original mail didn't get archived on lore. ]
-
-Fixes: 0451d14d0561 ("EDAC, mce_amd_inj: Modify flags attribute to use string arguments")
-Signed-off-by: Zhang Zixun <zhang133010@icloud.com>
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lore.kernel.org/linux-edac/YcnePfF1OOqoQwrX@zn.tnic/
+Link: https://lore.kernel.org/r/20211207185001.1412413-1-colin.i.king@gmail.com
 ---
- arch/x86/kernel/cpu/mce/inject.c | 2 +-
+ arch/x86/events/amd/iommu.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/cpu/mce/inject.c b/arch/x86/kernel/cpu/mce/inject.c
-index 6eac840..5fbd7ff 100644
---- a/arch/x86/kernel/cpu/mce/inject.c
-+++ b/arch/x86/kernel/cpu/mce/inject.c
-@@ -363,7 +363,7 @@ static ssize_t flags_write(struct file *filp, const char __user *ubuf,
- 	char buf[MAX_FLAG_OPT_SIZE], *__buf;
- 	int err;
+diff --git a/arch/x86/events/amd/iommu.c b/arch/x86/events/amd/iommu.c
+index 913745f..b15f7b9 100644
+--- a/arch/x86/events/amd/iommu.c
++++ b/arch/x86/events/amd/iommu.c
+@@ -161,7 +161,7 @@ static int get_next_avail_iommu_bnk_cntr(struct perf_event *event)
  
--	if (cnt > MAX_FLAG_OPT_SIZE)
-+	if (!cnt || cnt > MAX_FLAG_OPT_SIZE)
- 		return -EINVAL;
+ 	raw_spin_lock_irqsave(&piommu->lock, flags);
  
- 	if (copy_from_user(&buf, ubuf, cnt))
+-	for (bank = 0, shift = 0; bank < max_banks; bank++) {
++	for (bank = 0; bank < max_banks; bank++) {
+ 		for (cntr = 0; cntr < max_cntrs; cntr++) {
+ 			shift = bank + (bank*3) + cntr;
+ 			if (piommu->cntr_assign_mask & BIT_ULL(shift)) {
