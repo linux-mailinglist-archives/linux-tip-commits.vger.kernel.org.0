@@ -2,57 +2,52 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 67EC2481175
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 29 Dec 2021 10:58:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AC4EE4812F6
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 29 Dec 2021 13:57:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239629AbhL2J6u (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 29 Dec 2021 04:58:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59410 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235190AbhL2J6u (ORCPT
+        id S235517AbhL2M5G (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 29 Dec 2021 07:57:06 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:37196 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236046AbhL2M5G (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 29 Dec 2021 04:58:50 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBA14C061574;
-        Wed, 29 Dec 2021 01:58:49 -0800 (PST)
-Date:   Wed, 29 Dec 2021 09:58:45 -0000
+        Wed, 29 Dec 2021 07:57:06 -0500
+Date:   Wed, 29 Dec 2021 12:57:03 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1640771927;
+        s=2020; t=1640782625;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=lQ2GBaTDKY5phPpCNdXNkIkZnFzaDBEOC0/Hrz+M8Vs=;
-        b=c3jl0tibtSTnkiFmS0hNGAhL+KdF/9YOn+qZK1Rlyv+JtXOHWqU0d3k/nXDP3IQlkTjz/x
-        2NYadCDTZYMmlr93Gxm9lKJrQEsw516VPiTEU0qEnJmN/k/rI5UGyYTpDAJz8g6kWXyefU
-        /dvpCWDU1QLDVYKYN6AoKZXPF2wXWsh2TT1gTLwtddnGzWvXQVFAZRzHl4obbF7a6nXs4a
-        0r4cuDKrZOWnxofT4k1x7fVQvJlEdzZhxFLjr4t/r8T8W1ZqBIRPFMe0xqozPa/fJlVTId
-        B9F7FVCfk3/KMphxhfrJg60D0u3ISLJxeyV4K3F5j1OYcFaYCUlwBMhq8JogJQ==
+        bh=1HeKjxypRjQVj0YfMTfvkq5lcRc9uJj9O16NmBzUCGg=;
+        b=s7z+fj+9eFiBZvSiEpQFpcFPwytNdR1bQcuGDajysk//27dgIrKDqWfkUHsCULzS9JGbZk
+        zwv0NsSyEHrrpBgdB/c35qGzB7VvGAAoj5Sv4ZzugKtZnjMEsEj3SrCXuLzCVOy2lQwUIQ
+        66V3PxSZeT1AiQpH4rkUPPsQhtjgd8QdVC5DB0/IXxvIGMOQUwDFrhrLr0nXgZ2/SBwCtF
+        sNmsDMorRHx6xzmowyPhEe1oT09/qemu2ZOjxMCIyvGxcgi0JnDe4fstkclgkoonJYboxv
+        TLfWm7vsMKXaJkGzM36l8qKfFnMMBbrmQpKO1/R9s3iZgmLZbv1KEiJxs6CjgA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1640771927;
+        s=2020e; t=1640782625;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=lQ2GBaTDKY5phPpCNdXNkIkZnFzaDBEOC0/Hrz+M8Vs=;
-        b=Ix4yXRutdbjsX/roCG5OwSWxxoaLw10Mmi2jnMhJVCRk++Or+psHSQ9suul8BlQFhis03n
-        FasoWNAefVl18lAw==
-From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
+        bh=1HeKjxypRjQVj0YfMTfvkq5lcRc9uJj9O16NmBzUCGg=;
+        b=eAhGA7YtuuqR3M24bRvbDfqP6WaQubVw2NSMphY/yahuNXVbX9R4s8YB4xVgdHzTD9Qljp
+        dOGvE8LboB14EqBA==
+From:   "tip-bot2 for Tony Luck" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/core] notifier: Return an error when a callback has
- already been registered
-Cc:     Borislav Petkov <bp@suse.de>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Alan Stern <stern@rowland.harvard.edu>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <YcSWNdUBS8A2ZB3s@zn.tnic>
-References: <YcSWNdUBS8A2ZB3s@zn.tnic>
+Subject: [tip: x86/cpu] x86/lib: Add fast-short-rep-movs check to
+ copy_user_enhanced_fast_string()
+Cc:     Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@suse.de>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20211216172431.1396371-1-tony.luck@intel.com>
+References: <20211216172431.1396371-1-tony.luck@intel.com>
 MIME-Version: 1.0
-Message-ID: <164077192559.16921.2913213776082540007.tip-bot2@tip-bot2>
+Message-ID: <164078262396.16921.15044282056397514448.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,96 +56,49 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the core/core branch of tip:
+The following commit has been merged into the x86/cpu branch of tip:
 
-Commit-ID:     5abb065dca7301de90b7c44bbcdc378e49e4d362
-Gitweb:        https://git.kernel.org/tip/5abb065dca7301de90b7c44bbcdc378e49e4d362
-Author:        Borislav Petkov <bp@suse.de>
-AuthorDate:    Wed, 01 Dec 2021 22:28:14 +01:00
+Commit-ID:     244122b4d2e5221e6abd6e21d6a58170104db781
+Gitweb:        https://git.kernel.org/tip/244122b4d2e5221e6abd6e21d6a58170104db781
+Author:        Tony Luck <tony.luck@intel.com>
+AuthorDate:    Thu, 16 Dec 2021 09:24:31 -08:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Wed, 29 Dec 2021 10:37:33 +01:00
+CommitterDate: Wed, 29 Dec 2021 13:46:02 +01:00
 
-notifier: Return an error when a callback has already been registered
+x86/lib: Add fast-short-rep-movs check to copy_user_enhanced_fast_string()
 
-Return -EEXIST when a notifier callback has already been registered on a
-notifier chain.
+Commit
 
-This should avoid any homegrown registration tracking at the callsite
-like
+  f444a5ff95dc ("x86/cpufeatures: Add support for fast short REP; MOVSB")
 
-  https://lore.kernel.org/amd-gfx/20210512013058.6827-1-mukul.joshi@amd.com
+fixed memmove() with an ALTERNATIVE that will use REP MOVSB for all
+string lengths.
 
-for example.
+copy_user_enhanced_fast_string() has a similar run time check to avoid
+using REP MOVSB for copies less that 64 bytes.
 
-This version is an alternative of
+Add an ALTERNATIVE to patch out the short length check and always use
+REP MOVSB on X86_FEATURE_FSRM CPUs.
 
-  https://lore.kernel.org/r/20211108101157.15189-1-bp@alien8.de
-
-which needed to touch every caller not checking the registration
-routine's return value.
-
+Signed-off-by: Tony Luck <tony.luck@intel.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/YcSWNdUBS8A2ZB3s@zn.tnic
+Link: https://lore.kernel.org/r/20211216172431.1396371-1-tony.luck@intel.com
 ---
- kernel/notifier.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ arch/x86/lib/copy_user_64.S | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/notifier.c b/kernel/notifier.c
-index b8251dc..ba005eb 100644
---- a/kernel/notifier.c
-+++ b/kernel/notifier.c
-@@ -20,12 +20,13 @@ BLOCKING_NOTIFIER_HEAD(reboot_notifier_list);
+diff --git a/arch/x86/lib/copy_user_64.S b/arch/x86/lib/copy_user_64.S
+index 2797e63..1c429f0 100644
+--- a/arch/x86/lib/copy_user_64.S
++++ b/arch/x86/lib/copy_user_64.S
+@@ -200,8 +200,8 @@ EXPORT_SYMBOL(copy_user_generic_string)
   */
- 
- static int notifier_chain_register(struct notifier_block **nl,
--		struct notifier_block *n)
-+				   struct notifier_block *n)
- {
- 	while ((*nl) != NULL) {
- 		if (unlikely((*nl) == n)) {
--			WARN(1, "double register detected");
--			return 0;
-+			WARN(1, "notifier callback %ps already registered",
-+			     n->notifier_call);
-+			return -EEXIST;
- 		}
- 		if (n->priority > (*nl)->priority)
- 			break;
-@@ -134,7 +135,7 @@ static int notifier_call_chain_robust(struct notifier_block **nl,
-  *
-  *	Adds a notifier to an atomic notifier chain.
-  *
-- *	Currently always returns zero.
-+ *	Returns 0 on success, %-EEXIST on error.
-  */
- int atomic_notifier_chain_register(struct atomic_notifier_head *nh,
- 		struct notifier_block *n)
-@@ -216,7 +217,7 @@ NOKPROBE_SYMBOL(atomic_notifier_call_chain);
-  *	Adds a notifier to a blocking notifier chain.
-  *	Must be called in process context.
-  *
-- *	Currently always returns zero.
-+ *	Returns 0 on success, %-EEXIST on error.
-  */
- int blocking_notifier_chain_register(struct blocking_notifier_head *nh,
- 		struct notifier_block *n)
-@@ -335,7 +336,7 @@ EXPORT_SYMBOL_GPL(blocking_notifier_call_chain);
-  *	Adds a notifier to a raw notifier chain.
-  *	All locking must be provided by the caller.
-  *
-- *	Currently always returns zero.
-+ *	Returns 0 on success, %-EEXIST on error.
-  */
- int raw_notifier_chain_register(struct raw_notifier_head *nh,
- 		struct notifier_block *n)
-@@ -406,7 +407,7 @@ EXPORT_SYMBOL_GPL(raw_notifier_call_chain);
-  *	Adds a notifier to an SRCU notifier chain.
-  *	Must be called in process context.
-  *
-- *	Currently always returns zero.
-+ *	Returns 0 on success, %-EEXIST on error.
-  */
- int srcu_notifier_chain_register(struct srcu_notifier_head *nh,
- 		struct notifier_block *n)
+ SYM_FUNC_START(copy_user_enhanced_fast_string)
+ 	ASM_STAC
+-	cmpl $64,%edx
+-	jb .L_copy_short_string	/* less then 64 bytes, avoid the costly 'rep' */
++	/* CPUs without FSRM should avoid rep movsb for short copies */
++	ALTERNATIVE "cmpl $64, %edx; jb .L_copy_short_string", "", X86_FEATURE_FSRM
+ 	movl %edx,%ecx
+ 1:	rep
+ 	movsb
