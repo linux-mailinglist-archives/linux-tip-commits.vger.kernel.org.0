@@ -2,53 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 08CE0481F27
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 30 Dec 2021 19:22:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CD57E48256A
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 31 Dec 2021 18:34:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241683AbhL3SV6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 30 Dec 2021 13:21:58 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:43436 "EHLO
+        id S231189AbhLaReH (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 31 Dec 2021 12:34:07 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:47386 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241682AbhL3SV4 (ORCPT
+        with ESMTP id S229690AbhLaReG (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 30 Dec 2021 13:21:56 -0500
-Date:   Thu, 30 Dec 2021 18:21:54 -0000
+        Fri, 31 Dec 2021 12:34:06 -0500
+Date:   Fri, 31 Dec 2021 17:34:03 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1640888515;
+        s=2020; t=1640972045;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=0qS7vPYQwEelqx8sSc1aUhwH3v16sfIxJfOIWybu0hI=;
-        b=V/uWZgct52WYrnSXx6pIqL7KZcyEsaqjbg8pkhb6+hdxctklK1xidRCERVrLs4zn+6B4Vb
-        hs9I7zvLKeqbqvUllFh5Jg8SRd31cI7N1xG+25AxT4ftxnpn1uwcXn1mB1nIX+541oLNQe
-        O7E8E+GJkrM407A2p0BHe3w5CxWMt6FfQLd0070F781lvsb2OViRgJX/nPFT9XODRNMG56
-        qczdV0v0WcoeZZxOtJ5A/T7H8+e2pddHvM8EjjDerUbkHUyPX7wcNQcHR/DNfJgqFgCRwO
-        8dDYPXafQesiqvEOiQMuaeTIYRGttpBQVIz/U8dRXm2SrMgv/6omrEOr8oBTPg==
+        bh=szEq3NaEi/bcFMPMMLyxFsQDZatqO722Hc7D631C6fg=;
+        b=1zVP177epJyEoMs+jGEsw+m6TESYswwtfKIilfcf71R0n738+5hZDkqfOJxKqTym8e9fEx
+        dU477OxjYIJGgESx4qMFtlqcxQ/vDh2iHvN9ZpaPZV7LDIObBv9K/0BiRkW4AgP06YhyHc
+        iv7V6m+5K4fzWINjifvVvZQs3ZBiX2PZ6WxbnGmf0FrcEuuMBaoe4f1XDjnczbh8njwBLg
+        vwoj49fSXxPdZkURE6JGffDo+xEaJbvyKo47keSztLIrM5Re5eb71zGMSZdNrJQ91G3Rme
+        ry9tztiCDxJqbjK6UreN6Y5BsuNpGv1pTacHUnJQs6dgJQytnrf+fDEp+ElS1A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1640888515;
+        s=2020e; t=1640972045;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=0qS7vPYQwEelqx8sSc1aUhwH3v16sfIxJfOIWybu0hI=;
-        b=nLlbS6rrsoKkE2dcWCMY9PocWGaLrmOQIXimExI5lq0ViiCczJRMD9btZEvL4/CABFIBK7
-        2+ccFbGX9x+kymCQ==
-From:   "tip-bot2 for Masahiro Yamada" <tip-bot2@linutronix.de>
+        bh=szEq3NaEi/bcFMPMMLyxFsQDZatqO722Hc7D631C6fg=;
+        b=n4ep0a+32miksJcKSUiYZBFhU8TSdMIeW6XVpyalztBQRQ5tIAsYBSvJxNJacP+lAVtUFg
+        H5qKN+KchSL6ZzDQ==
+From:   "tip-bot2 for Youquan Song" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/vdso] x86/vdso: Remove -nostdlib compiler flag
-Cc:     Masahiro Yamada <masahiroy@kernel.org>,
-        Borislav Petkov <bp@suse.de>,
-        Nick Desaulniers <ndesaulniers@google.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20211107162641.324688-1-masahiroy@kernel.org>
-References: <20211107162641.324688-1-masahiroy@kernel.org>
+Subject: [tip: ras/core] x86/mce: Reduce number of machine checks taken during
+ recovery
+Cc:     Youquan Song <youquan.song@intel.com>,
+        Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@suse.de>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <YcTW5dh8yTGucDd+@agluck-desk2.amr.corp.intel.com>
+References: <YcTW5dh8yTGucDd+@agluck-desk2.amr.corp.intel.com>
 MIME-Version: 1.0
-Message-ID: <164088851429.16921.2918285742604804899.tip-bot2@tip-bot2>
+Message-ID: <164097204390.16921.8552003820708688632.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -57,45 +57,88 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/vdso branch of tip:
+The following commit has been merged into the ras/core branch of tip:
 
-Commit-ID:     a41f5b78ac5ba65986b31ddc6325a0b8cc8b8864
-Gitweb:        https://git.kernel.org/tip/a41f5b78ac5ba65986b31ddc6325a0b8cc8b8864
-Author:        Masahiro Yamada <masahiroy@kernel.org>
-AuthorDate:    Mon, 08 Nov 2021 01:26:40 +09:00
+Commit-ID:     3376136300a00df9a864b88fa969177d6c3be8e5
+Gitweb:        https://git.kernel.org/tip/3376136300a00df9a864b88fa969177d6c3be8e5
+Author:        Youquan Song <youquan.song@intel.com>
+AuthorDate:    Thu, 23 Dec 2021 12:07:01 -08:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Thu, 30 Dec 2021 14:08:20 +01:00
+CommitterDate: Fri, 31 Dec 2021 18:22:32 +01:00
 
-x86/vdso: Remove -nostdlib compiler flag
+x86/mce: Reduce number of machine checks taken during recovery
 
-The -nostdlib option requests the compiler to not use the standard
-system startup files or libraries when linking. It is effective only
-when $(CC) is used as a linker driver.
+When any of the copy functions in arch/x86/lib/copy_user_64.S take a
+fault, the fixup code copies the remaining byte count from %ecx to %edx
+and unconditionally jumps to .Lcopy_user_handle_tail to continue the
+copy in case any more bytes can be copied.
 
-Since
+If the fault was #PF this may copy more bytes (because the page fault
+handler might have fixed the fault). But when the fault is a machine
+check the original copy code will have copied all the way to the poisoned
+cache line. So .Lcopy_user_handle_tail will just take another machine
+check for no good reason.
 
-  379d98ddf413 ("x86: vdso: Use $LD instead of $CC to link")
+Every code path to .Lcopy_user_handle_tail comes from an exception fixup
+path, so add a check there to check the trap type (in %eax) and simply
+return the count of remaining bytes if the trap was a machine check.
 
-$(LD) is directly used, hence -nostdlib is unneeded.
+Doing this reduces the number of machine checks taken during synthetic
+tests from four to three.
 
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+As well as reducing the number of machine checks, this also allows
+Skylake generation Xeons to recover some cases that currently fail. The
+is because REP; MOVSB is only recoverable when source and destination
+are well aligned and the byte count is large. That useless call to
+.Lcopy_user_handle_tail may violate one or more of these conditions and
+generate a fatal machine check.
+
+  [ Tony: Add more details to commit message. ]
+  [ bp: Fixup comment.
+    Also, another tip patchset which is adding straight-line speculation
+    mitigation changes the "ret" instruction to an all-caps macro "RET".
+    But, since gas is case-insensitive, use "RET" in the newly added asm block
+    already in order to simplify tip branch merging on its way upstream.
+  ]
+
+Signed-off-by: Youquan Song <youquan.song@intel.com>
+Signed-off-by: Tony Luck <tony.luck@intel.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
-Link: https://lore.kernel.org/r/20211107162641.324688-1-masahiroy@kernel.org
+Link: https://lore.kernel.org/r/YcTW5dh8yTGucDd+@agluck-desk2.amr.corp.intel.com
 ---
- arch/x86/entry/vdso/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/lib/copy_user_64.S |  9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/arch/x86/entry/vdso/Makefile b/arch/x86/entry/vdso/Makefile
-index a2dddcc..693f8b9 100644
---- a/arch/x86/entry/vdso/Makefile
-+++ b/arch/x86/entry/vdso/Makefile
-@@ -172,7 +172,7 @@ $(obj)/vdso32.so.dbg: $(obj)/vdso32/vdso32.lds $(vobjs32) FORCE
- # The DSO images are built using a special linker script.
- #
- quiet_cmd_vdso = VDSO    $@
--      cmd_vdso = $(LD) -nostdlib -o $@ \
-+      cmd_vdso = $(LD) -o $@ \
- 		       $(VDSO_LDFLAGS) $(VDSO_LDFLAGS_$(filter %.lds,$(^F))) \
- 		       -T $(filter %.lds,$^) $(filter %.o,$^) && \
- 		 sh $(srctree)/$(src)/checkundef.sh '$(NM)' '$@'
+diff --git a/arch/x86/lib/copy_user_64.S b/arch/x86/lib/copy_user_64.S
+index 2797e63..e73b76e 100644
+--- a/arch/x86/lib/copy_user_64.S
++++ b/arch/x86/lib/copy_user_64.S
+@@ -225,6 +225,7 @@ EXPORT_SYMBOL(copy_user_enhanced_fast_string)
+  * Don't try to copy the tail if machine check happened
+  *
+  * Input:
++ * eax trap number written by ex_handler_copy()
+  * rdi destination
+  * rsi source
+  * rdx count
+@@ -233,12 +234,20 @@ EXPORT_SYMBOL(copy_user_enhanced_fast_string)
+  * eax uncopied bytes or 0 if successful.
+  */
+ SYM_CODE_START_LOCAL(.Lcopy_user_handle_tail)
++	cmp $X86_TRAP_MC,%eax
++	je 3f
++
+ 	movl %edx,%ecx
+ 1:	rep movsb
+ 2:	mov %ecx,%eax
+ 	ASM_CLAC
+ 	ret
+ 
++3:
++	movl %edx,%eax
++	ASM_CLAC
++	RET
++
+ 	_ASM_EXTABLE_CPY(1b, 2b)
+ SYM_CODE_END(.Lcopy_user_handle_tail)
+ 
