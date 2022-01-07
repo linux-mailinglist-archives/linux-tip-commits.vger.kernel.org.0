@@ -2,142 +2,220 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 28A7D48367E
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  3 Jan 2022 18:58:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 82F43487AAF
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  7 Jan 2022 17:48:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232303AbiACR6J (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 3 Jan 2022 12:58:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59878 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232091AbiACR6I (ORCPT
+        id S231161AbiAGQsw (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 7 Jan 2022 11:48:52 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:56550 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229483AbiAGQsw (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 3 Jan 2022 12:58:08 -0500
-Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B111CC061761;
-        Mon,  3 Jan 2022 09:58:08 -0800 (PST)
-Received: from zn.tnic (dslb-088-067-202-008.088.067.pools.vodafone-ip.de [88.67.202.8])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 28C1A1EC0118;
-        Mon,  3 Jan 2022 18:58:03 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1641232683;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=lg6/SYBjwUEm8ZWAi8vMp09yL3c8/qSiwWmVSfDOZsI=;
-        b=cigFZ3t+av441lOj6j6kLxBruXe7oY02YdcKvTWUtOdgK+yXsRxtr2QH6Ji1J5C6xMDYNI
-        3OT2Lyz79LWuY2XjIVwXoH12SqzYMa8NLLExRsTBhbb4mPdi51hkdpojujEj0mlU0WUt+L
-        69kmi6dje7xywQzF0lEj9yye60AiCPk=
-Date:   Mon, 3 Jan 2022 18:58:02 +0100
-From:   Borislav Petkov <bp@alien8.de>
-To:     llvm@lists.linux.dev
-Cc:     Josh Poimboeuf <jpoimboe@redhat.com>,
-        linux-tip-commits@vger.kernel.org,
-        kernel test robot <lkp@intel.com>,
-        Peter Zijlstra <peterz@infradead.org>, x86@kernel.org,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Miroslav Benes <mbenes@suse.cz>, linux-kernel@vger.kernel.org
-Subject: Re: [tip: objtool/urgent] compiler.h: Fix annotation macro
- misplacement with Clang
-Message-ID: <YdM5Kh1NOKEwDwAP@zn.tnic>
-References: <0417e96909b97a406323409210de7bf13df0b170.1636410380.git.jpoimboe@redhat.com>
- <164016423099.16921.16996655982787145621.tip-bot2@tip-bot2>
+        Fri, 7 Jan 2022 11:48:52 -0500
+Date:   Fri, 07 Jan 2022 16:48:49 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1641574130;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=OCY4EAlKlYnLHXZBeKTj2/unpIMOBS4Pq6lUTcCYIl0=;
+        b=rjBUoHDWalCGCjsf/UiUfB1ag84oZ5RNdGsxQskE0kzBe/ZhVEOgjBt3MxiddhU+sDhoox
+        BDmtCiBcKZ0qRcrWTOOIJyTToHlxnkbI7wrcEKCMRUbC/JIdGSoLrH2c+iZ2HXiOhMWSht
+        262sTU9IVx7/WW/XIuhvlCIkfU6JReJfzP8MSUdnVYSXWL3KCZXiFnevO7PwhpLIiUG3In
+        M9+g48d/uZReh5t2QHniSeCE/x/REMtaPAoH9GSRokRBpzAi/AZY/dinqu/liYZlPfUHDZ
+        qAbKmHH4n4euwgKfl4hWmRO3NnCZ4hSsBqUgKfVAjbrz694QETctQo2lKQo62g==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1641574130;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=OCY4EAlKlYnLHXZBeKTj2/unpIMOBS4Pq6lUTcCYIl0=;
+        b=6hGRLEEvyoOkhGhpiO952XR1I70VjKnq5gzb66euGUzvkqJpAFFCHRy0YXv7nIKRG8n33X
+        ooq+GmwiXsRMH/Cw==
+From:   "tip-bot2 for Dave Hansen" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/sgx] x86/sgx: Fix NULL pointer dereference on non-SGX systems
+Cc:     linux-sgx@vger.kernel.org, x86@kernel.org,
+        Nathan Chancellor <nathan@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20220104171527.5E8416A8@davehans-spike.ostc.intel.com>
+References: <20220104171527.5E8416A8@davehans-spike.ostc.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <164016423099.16921.16996655982787145621.tip-bot2@tip-bot2>
+Message-ID: <164157412947.16921.14651280675483708212.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-I wonder if clang folks have seen this and perhaps have a comment as to
-why the volatile gets ingored... Added.
+The following commit has been merged into the x86/sgx branch of tip:
 
-On Wed, Dec 22, 2021 at 09:10:30AM -0000, tip-bot2 for Josh Poimboeuf wrote:
-> The following commit has been merged into the objtool/urgent branch of tip:
-> 
-> Commit-ID:     dcce50e6cc4d86a63dc0a9a6ee7d4f948ccd53a1
-> Gitweb:        https://git.kernel.org/tip/dcce50e6cc4d86a63dc0a9a6ee7d4f948ccd53a1
-> Author:        Josh Poimboeuf <jpoimboe@redhat.com>
-> AuthorDate:    Mon, 08 Nov 2021 14:35:59 -08:00
-> Committer:     Josh Poimboeuf <jpoimboe@redhat.com>
-> CommitterDate: Tue, 21 Dec 2021 15:09:46 -08:00
-> 
-> compiler.h: Fix annotation macro misplacement with Clang
-> 
-> When building with Clang and CONFIG_TRACE_BRANCH_PROFILING, there are a
-> lot of unreachable warnings, like:
-> 
->   arch/x86/kernel/traps.o: warning: objtool: handle_xfd_event()+0x134: unreachable instruction
-> 
-> Without an input to the inline asm, 'volatile' is ignored for some
-> reason and Clang feels free to move the reachable() annotation away from
-> its intended location.
-> 
-> Fix that by re-adding the counter value to the inputs.
-> 
-> Fixes: f1069a8756b9 ("compiler.h: Avoid using inline asm operand modifiers")
-> Fixes: c199f64ff93c ("instrumentation.h: Avoid using inline asm operand modifiers")
-> Reported-by: kernel test robot <lkp@intel.com>
-> Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
-> Link: https://lore.kernel.org/r/0417e96909b97a406323409210de7bf13df0b170.1636410380.git.jpoimboe@redhat.com
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: x86@kernel.org
-> Cc: Vasily Gorbik <gor@linux.ibm.com>
-> Cc: Miroslav Benes <mbenes@suse.cz>
-> ---
->  include/linux/compiler.h        | 4 ++--
->  include/linux/instrumentation.h | 4 ++--
->  2 files changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/include/linux/compiler.h b/include/linux/compiler.h
-> index 3d5af56..429dceb 100644
-> --- a/include/linux/compiler.h
-> +++ b/include/linux/compiler.h
-> @@ -121,7 +121,7 @@ void ftrace_likely_update(struct ftrace_likely_data *f, int val,
->  	asm volatile(__stringify_label(c) ":\n\t"			\
->  		     ".pushsection .discard.reachable\n\t"		\
->  		     ".long " __stringify_label(c) "b - .\n\t"		\
-> -		     ".popsection\n\t");				\
-> +		     ".popsection\n\t" : : "i" (c));			\
->  })
->  #define annotate_reachable() __annotate_reachable(__COUNTER__)
->  
-> @@ -129,7 +129,7 @@ void ftrace_likely_update(struct ftrace_likely_data *f, int val,
->  	asm volatile(__stringify_label(c) ":\n\t"			\
->  		     ".pushsection .discard.unreachable\n\t"		\
->  		     ".long " __stringify_label(c) "b - .\n\t"		\
-> -		     ".popsection\n\t");				\
-> +		     ".popsection\n\t" : : "i" (c));			\
->  })
->  #define annotate_unreachable() __annotate_unreachable(__COUNTER__)
->  
-> diff --git a/include/linux/instrumentation.h b/include/linux/instrumentation.h
-> index fa2cd8c..24359b4 100644
-> --- a/include/linux/instrumentation.h
-> +++ b/include/linux/instrumentation.h
-> @@ -11,7 +11,7 @@
->  	asm volatile(__stringify(c) ": nop\n\t"				\
->  		     ".pushsection .discard.instr_begin\n\t"		\
->  		     ".long " __stringify(c) "b - .\n\t"		\
-> -		     ".popsection\n\t");				\
-> +		     ".popsection\n\t" : : "i" (c));			\
->  })
->  #define instrumentation_begin() __instrumentation_begin(__COUNTER__)
->  
-> @@ -50,7 +50,7 @@
->  	asm volatile(__stringify(c) ": nop\n\t"				\
->  		     ".pushsection .discard.instr_end\n\t"		\
->  		     ".long " __stringify(c) "b - .\n\t"		\
-> -		     ".popsection\n\t");				\
-> +		     ".popsection\n\t" : : "i" (c));			\
->  })
->  #define instrumentation_end() __instrumentation_end(__COUNTER__)
->  #else
+Commit-ID:     cebb880030045059e55d21cbe049cdfa18d3990d
+Gitweb:        https://git.kernel.org/tip/cebb880030045059e55d21cbe049cdfa18d3990d
+Author:        Dave Hansen <dave.hansen@linux.intel.com>
+AuthorDate:    Tue, 04 Jan 2022 09:15:27 -08:00
+Committer:     Dave Hansen <dave.hansen@linux.intel.com>
+CommitterDate: Fri, 07 Jan 2022 08:42:33 -08:00
 
--- 
-Regards/Gruss,
-    Boris.
+x86/sgx: Fix NULL pointer dereference on non-SGX systems
 
-https://people.kernel.org/tglx/notes-about-netiquette
+== Problem ==
+
+Nathan Chancellor reported an oops when aceessing the
+'sgx_total_bytes' sysfs file:
+
+	https://lore.kernel.org/all/YbzhBrimHGGpddDM@archlinux-ax161/
+
+The sysfs output code accesses the sgx_numa_nodes[] array
+unconditionally.  However, this array is allocated during SGX
+initialization, which only occurs on systems where SGX is
+supported.
+
+If the sysfs file is accessed on systems without SGX support,
+sgx_numa_nodes[] is NULL and an oops occurs.
+
+== Solution ==
+
+To fix this, hide the entire nodeX/x86/ attribute group on
+systems without SGX support using the ->is_visible attribute
+group callback.
+
+Unfortunately, SGX is initialized via a device_initcall() which
+occurs _after_ the ->is_visible() callback.  Instead of moving
+SGX initialization earlier, call sysfs_update_group() during
+SGX initialization to update the group visiblility.
+
+This update requires moving the SGX sysfs code earlier in
+sgx/main.c.  There are no code changes other than the addition of
+arch_update_sysfs_visibility() and a minor whitespace fixup to
+arch_node_attr_is_visible() which checkpatch caught.
+
+CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: linux-sgx@vger.kernel.org
+Cc: x86@kernel.org
+Fixes: 50468e431335 ("x86/sgx: Add an attribute for the amount of SGX memory in a NUMA node")
+Reported-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Tested-by: Nathan Chancellor <nathan@kernel.org>
+Tested-by: Jarkko Sakkinen <jarkko@kernel.org>
+Link: https://lkml.kernel.org/r/20220104171527.5E8416A8@davehans-spike.ostc.intel.com
+---
+ arch/x86/kernel/cpu/sgx/main.c | 65 +++++++++++++++++++++++----------
+ 1 file changed, 47 insertions(+), 18 deletions(-)
+
+diff --git a/arch/x86/kernel/cpu/sgx/main.c b/arch/x86/kernel/cpu/sgx/main.c
+index 2857a49..4b41efc 100644
+--- a/arch/x86/kernel/cpu/sgx/main.c
++++ b/arch/x86/kernel/cpu/sgx/main.c
+@@ -6,11 +6,13 @@
+ #include <linux/highmem.h>
+ #include <linux/kthread.h>
+ #include <linux/miscdevice.h>
++#include <linux/node.h>
+ #include <linux/pagemap.h>
+ #include <linux/ratelimit.h>
+ #include <linux/sched/mm.h>
+ #include <linux/sched/signal.h>
+ #include <linux/slab.h>
++#include <linux/sysfs.h>
+ #include <asm/sgx.h>
+ #include "driver.h"
+ #include "encl.h"
+@@ -780,6 +782,48 @@ static inline u64 __init sgx_calc_section_metric(u64 low, u64 high)
+ 	       ((high & GENMASK_ULL(19, 0)) << 32);
+ }
+ 
++#ifdef CONFIG_NUMA
++static ssize_t sgx_total_bytes_show(struct device *dev, struct device_attribute *attr, char *buf)
++{
++	return sysfs_emit(buf, "%lu\n", sgx_numa_nodes[dev->id].size);
++}
++static DEVICE_ATTR_RO(sgx_total_bytes);
++
++static umode_t arch_node_attr_is_visible(struct kobject *kobj,
++		struct attribute *attr, int idx)
++{
++	/* Make all x86/ attributes invisible when SGX is not initialized: */
++	if (nodes_empty(sgx_numa_mask))
++		return 0;
++
++	return attr->mode;
++}
++
++static struct attribute *arch_node_dev_attrs[] = {
++	&dev_attr_sgx_total_bytes.attr,
++	NULL,
++};
++
++const struct attribute_group arch_node_dev_group = {
++	.name = "x86",
++	.attrs = arch_node_dev_attrs,
++	.is_visible = arch_node_attr_is_visible,
++};
++
++static void __init arch_update_sysfs_visibility(int nid)
++{
++	struct node *node = node_devices[nid];
++	int ret;
++
++	ret = sysfs_update_group(&node->dev.kobj, &arch_node_dev_group);
++
++	if (ret)
++		pr_err("sysfs update failed (%d), files may be invisible", ret);
++}
++#else /* !CONFIG_NUMA */
++static void __init arch_update_sysfs_visibility(int nid) {}
++#endif
++
+ static bool __init sgx_page_cache_init(void)
+ {
+ 	u32 eax, ebx, ecx, edx, type;
+@@ -826,6 +870,9 @@ static bool __init sgx_page_cache_init(void)
+ 			INIT_LIST_HEAD(&sgx_numa_nodes[nid].sgx_poison_page_list);
+ 			node_set(nid, sgx_numa_mask);
+ 			sgx_numa_nodes[nid].size = 0;
++
++			/* Make SGX-specific node sysfs files visible: */
++			arch_update_sysfs_visibility(nid);
+ 		}
+ 
+ 		sgx_epc_sections[i].node =  &sgx_numa_nodes[nid];
+@@ -903,24 +950,6 @@ int sgx_set_attribute(unsigned long *allowed_attributes,
+ }
+ EXPORT_SYMBOL_GPL(sgx_set_attribute);
+ 
+-#ifdef CONFIG_NUMA
+-static ssize_t sgx_total_bytes_show(struct device *dev, struct device_attribute *attr, char *buf)
+-{
+-	return sysfs_emit(buf, "%lu\n", sgx_numa_nodes[dev->id].size);
+-}
+-static DEVICE_ATTR_RO(sgx_total_bytes);
+-
+-static struct attribute *arch_node_dev_attrs[] = {
+-	&dev_attr_sgx_total_bytes.attr,
+-	NULL,
+-};
+-
+-const struct attribute_group arch_node_dev_group = {
+-	.name = "x86",
+-	.attrs = arch_node_dev_attrs,
+-};
+-#endif /* CONFIG_NUMA */
+-
+ static int __init sgx_init(void)
+ {
+ 	int ret;
