@@ -2,51 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 133A248990E
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 10 Jan 2022 14:01:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6454548991D
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 10 Jan 2022 14:02:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235396AbiAJNBT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 10 Jan 2022 08:01:19 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:42888 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232349AbiAJNAH (ORCPT
+        id S234244AbiAJNCM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 10 Jan 2022 08:02:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41468 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234464AbiAJNA7 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 10 Jan 2022 08:00:07 -0500
-Date:   Mon, 10 Jan 2022 13:00:04 -0000
+        Mon, 10 Jan 2022 08:00:59 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41DBCC03400C;
+        Mon, 10 Jan 2022 04:59:55 -0800 (PST)
+Date:   Mon, 10 Jan 2022 12:59:51 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1641819605;
+        s=2020; t=1641819592;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=X2mLaJ7RL4FN3+vVGbUJLhzkPrpRoSqBiJWS2PShcXk=;
-        b=k1k1nr/WMIThs4njdGjmqTCre1xd8TrtZ7uT4+fAvgpThADX/zFpvSefwJh2uu2HHsGezc
-        j0C3a9cUz0lB89hs24N1w4nlwLXuL9ZMNw/5aLyk9NNFYTSyZP8UVxUCIZ5nnTGVUhqwEG
-        mkJr+n7QKLmiltGFX1Eaaj6lsGD/34a/SNKKd4e5+9ljDAsqjjr+ixlNiT4wl0PKDxYnR4
-        UR2uG9yOtQXHVzDgKKtv/42/ry/k+fYBSeMIRW0zTQXVMP5U+GOgzJ5sL/Bh73JuG/3krW
-        es+BNcstSHxJ1nW5El1qeXh+HVDQnQdtclGHJfDDFJSBbIMU/rncJIjknMk5kw==
+        bh=zSF1I+eyMOiYen7vFo64VXCbA7tJh3eJdjMbbky58Uc=;
+        b=HsXej0Z078IJwXpzVSBVEDgvcI2dBrs275jfXg7FZjlgzH1GerqTaoV2WggJJsTCe67V5K
+        unmopUVOmhuJUhjwkATKrH0JaOcKlMLaet765Yj9fQmT6HWvIXqbzGGAVVXVf00AvXLszK
+        FGdE4/72EDE9ZpfH1iKcJiAE4+qrLNbjPf5iISixNXRAsBdBeFfxDgjkl9mBFkXsSvTwKh
+        Ym25ColquADOYSzMoY5DNq6MaaOXbV106QBjYFycmKNXn7ZaC1g7lgwKxzYNOLEAhCvDPd
+        o5BXCPOJ/QdIlosNn+RSudz/PG+n9IhA0+1A4lB86vHS1Cfv2aiX/I5NaZ0fJg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1641819605;
+        s=2020e; t=1641819592;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=X2mLaJ7RL4FN3+vVGbUJLhzkPrpRoSqBiJWS2PShcXk=;
-        b=0SOgNesnxsUdSFj8yUBzSb8so95HrFqGr0bm3kj3evxvY0LXO+eYNRKke5BrEJ2bp3poGw
-        1qyDw1IotangjiAA==
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+        bh=zSF1I+eyMOiYen7vFo64VXCbA7tJh3eJdjMbbky58Uc=;
+        b=SvxvwnzcXNLNQGwj2+p1kWY75oCS+X7HRrTZDjFVgaEfMK5oOCarkULw1zWXye04AvQPO5
+        T4TP4Qhg2JDJirCQ==
+From:   "tip-bot2 for Romain Perier" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] Merge tag 'timers-v5.17-rc1' of
- https://git.linaro.org/people/daniel.lezcano/linux into timers/core
-Cc:     x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <e093c706-c98d-29ee-0102-78b6d41c6164@linaro.org>
-References: <e093c706-c98d-29ee-0102-78b6d41c6164@linaro.org>
+Subject: [tip: timers/core] dt-bindings: timer: Add Mstar MSC313e timer
+ devicetree bindings documentation
+Cc:     Romain Perier <romain.perier@gmail.com>,
+        Rob Herring <robh@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20211217195727.8955-5-romain.perier@gmail.com>
+References: <20211217195727.8955-5-romain.perier@gmail.com>
 MIME-Version: 1.0
-Message-ID: <164181960422.16921.7599880408437086645.tip-bot2@tip-bot2>
+Message-ID: <164181959116.16921.9126681287517696683.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -57,50 +63,76 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     6629c0769926306454b113effe1aad243bd49bde
-Gitweb:        https://git.kernel.org/tip/6629c0769926306454b113effe1aad243bd49bde
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Mon, 10 Jan 2022 13:53:16 +01:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 10 Jan 2022 13:53:16 +01:00
+Commit-ID:     7647204c2e81b28b4a7c4eec7d539f998d48eaf0
+Gitweb:        https://git.kernel.org/tip/7647204c2e81b28b4a7c4eec7d539f998d48eaf0
+Author:        Romain Perier <romain.perier@gmail.com>
+AuthorDate:    Fri, 17 Dec 2021 20:57:25 +01:00
+Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
+CommitterDate: Mon, 20 Dec 2021 13:28:47 +01:00
 
-Merge tag 'timers-v5.17-rc1' of https://git.linaro.org/people/daniel.lezcano/linux into timers/core
+dt-bindings: timer: Add Mstar MSC313e timer devicetree bindings documentation
 
-Pull clocksource/events updates from Daniel Lezcano:
+This adds the documentation for the devicetree bindings of the Mstar
+MSC313e timer driver, found from MSC313e SoCs and newer.
 
- - Refactor resource allocation on the Exynos_mct driver without
-   functional changes (Marek Szyprowski)
-
- - Add imx8ulp compatible string for NPX TPM driver (Jacky Bai)
-
- - Fix comma introduced by error by replacing it by the initial
-   semicolon on the Exynos_mct (Will Deacon)
-
- - Add OSTM driver support on Renesas. The reset line must be
-   deasserted before accessing the registers. This change depends on an
-   external change resulting in a shared immutable branch
-   'reset/of-get-optional-exclusive' from
-   git://git.pengutronix.de/pza/linux (Biju Das)
-
- - Make the OSTM Kconfig option visible to user in order to let him
-   disable it when ARM architected timers is enabled (Biju Das)
-
- - Tag two variables on iMX sysctr _ro_afterinit (Peng Fan)
-
- - Set the cpumask to cpu_possible_mask in order to have full benefit
-   of the DYNIRQ flag on iMX sysctr (Peng Fan)
-
- - Tag __maybe_unused a variable in the Pistachio timer driver in order
-   to fix a warning reported by the kernel test robot (Drew Fustini)
-
- - Add MStar MSC313e timer support and the ssd20xd-based variant, as
-   well as the DT bindings (Romain Perier)
-
- - Remove the incompatible compatible string for the rk3066 (Johan
-   Jonker)
-
- - Fix dts_check warnings on the cadence ttc driver by adding the power
-   domain bindings (Michal Simek)
-
-Link: https://lore.kernel.org/lkml/e093c706-c98d-29ee-0102-78b6d41c6164@linaro.org
+Signed-off-by: Romain Perier <romain.perier@gmail.com>
+Reviewed-by: Rob Herring <robh@kernel.org>
+Link: https://lore.kernel.org/r/20211217195727.8955-5-romain.perier@gmail.com
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 ---
+ Documentation/devicetree/bindings/timer/mstar,msc313e-timer.yaml | 46 ++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 46 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/timer/mstar,msc313e-timer.yaml
+
+diff --git a/Documentation/devicetree/bindings/timer/mstar,msc313e-timer.yaml b/Documentation/devicetree/bindings/timer/mstar,msc313e-timer.yaml
+new file mode 100644
+index 0000000..03d5dba
+--- /dev/null
++++ b/Documentation/devicetree/bindings/timer/mstar,msc313e-timer.yaml
+@@ -0,0 +1,46 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/timer/mstar,msc313e-timer.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Mstar MSC313e Timer Device Tree Bindings
++
++maintainers:
++  - Daniel Palmer <daniel@0x0f.com>
++  - Romain Perier <romain.perier@gmail.com>
++
++properties:
++  compatible:
++    enum:
++      - mstar,msc313e-timer
++      - sstar,ssd20xd-timer
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++  clocks:
++    maxItems: 1
++
++required:
++  - compatible
++  - reg
++  - interrupts
++  - clocks
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/arm-gic.h>
++
++    timer@6040 {
++        compatible = "mstar,msc313e-timer";
++        reg = <0x6040 0x40>;
++        clocks = <&xtal_div2>;
++        interrupts-extended = <&intc_fiq GIC_SPI 0 IRQ_TYPE_LEVEL_HIGH>;
++    };
++...
