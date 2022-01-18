@@ -2,79 +2,96 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 60F69492265
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 18 Jan 2022 10:16:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DDECC492480
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 18 Jan 2022 12:18:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345514AbiARJQk (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 18 Jan 2022 04:16:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40836 "EHLO
+        id S239285AbiARLRy (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 18 Jan 2022 06:17:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40478 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345468AbiARJQh (ORCPT
+        with ESMTP id S239125AbiARLRy (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 18 Jan 2022 04:16:37 -0500
-Received: from mail-io1-xd33.google.com (mail-io1-xd33.google.com [IPv6:2607:f8b0:4864:20::d33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64E98C06161C
-        for <linux-tip-commits@vger.kernel.org>; Tue, 18 Jan 2022 01:16:37 -0800 (PST)
-Received: by mail-io1-xd33.google.com with SMTP id s11so16606412ioe.12
-        for <linux-tip-commits@vger.kernel.org>; Tue, 18 Jan 2022 01:16:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=5JMhK9pOqseAjHRtHcU/HG4i5NuvupLcjaClPwT4ItM=;
-        b=jPdEscyjUq0GQ4qmNy8I798hmzuHIgNttG+SkkbkRII44t+nXTdrOnT7xBCGxx4xUv
-         DJmHienmcmhSXTAPgb8ez/Yx1tKvwP+1mMgLf2/smVB2uk9Yn8Fu8+OeN6qGRzRFnNAO
-         3iaKSJsod/2qISeaEapCvBr5f4kXRksj79+RSgu0ayotqm8076B6msENLX2C48k8Ul/c
-         vod5+eQy4qYmwFU/V+P94PwT0AoY54n5zuj45GXDjIDqGfKUwVcrMLdRy3v6kr0rpzMm
-         8+csubrlAoWjwWrLZJjMZZ+G+KhctEV33HqkA6X3djG+521UHzVGH41FkTdEYM18naX+
-         ZyCw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=5JMhK9pOqseAjHRtHcU/HG4i5NuvupLcjaClPwT4ItM=;
-        b=2SHVilFqdLNwoivoFI44w7uGnapbBsXTtAcx4jSMEgMUof+jQ+B+9Abo5xFZPV2mdD
-         p+nPJ36KDXIdc/FZe+ALHSAf6N9azTlRLatArVWcTarycy3/esM5HYFD8LlLBp3Vm8XE
-         thaIZNLVdEYldvjtMRUztnMcAb7/K/emRPA6q+LSjTHgfTAVafPtOWEk0us8jfWRgeFt
-         ffoaw2sW4tVEw7esnql+/bIsV/aQaPxKpoyWbBoDSBWuIKCRSgfakIzLFyS2kUDiLkSO
-         c6Rt9o4PCtpY3ul+EXLUORj1Hj2hMdKsV+JzPhhFqLEDW2tkPplnIDzNQtV15BVgG5xm
-         o6ag==
-X-Gm-Message-State: AOAM530JjB3lkgsEGdoCKXJAf7GdX4njmjxUqfeBMKQIg1kAuHrqE4kJ
-        3i0Nnknw6ZgoOltcJKiC1QwIxT7xNYsQrCOg7bI=
-X-Google-Smtp-Source: ABdhPJygeBXTi5I1nS+MFOVP8Dh//ODdkIjGyuvMjjUOoNo3pWsawhk/Qr8LTmwYYQWzQfCUIsAVFSH4NqAwttelx9s=
-X-Received: by 2002:a6b:591a:: with SMTP id n26mr11667601iob.101.1642497396467;
- Tue, 18 Jan 2022 01:16:36 -0800 (PST)
+        Tue, 18 Jan 2022 06:17:54 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5452BC061574;
+        Tue, 18 Jan 2022 03:17:53 -0800 (PST)
+Date:   Tue, 18 Jan 2022 11:17:48 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1642504670;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=fLzf2s+4QQWlsj3NdXrHo9g2Z2ZTEwjHLMXEx+8HKj4=;
+        b=sl/yO5Kku+VwTm75Knx4+iKxRWFLm24DfgrkFGaUNgQ4XYxcIREebkf7v9pLcW5mNV99iW
+        rQMLt7iPuUfHLo440pGwRBwwC+PvHKuD8ATadv38FOle6cG/jUdZEN+kCcEOM2hbOREX5l
+        8ouXcZG9k0p3GzcfBB9A77iyAVYWZfKAMKNNqVEdbrqYjFG/wEJAByzUIgIvVyrscgx/Ly
+        0LiFry4j9bTZ6mq47zGRcP/i9ljl2Yt0g6C3C7E+P2SM6GGvcY7GSPMPH2LHD55zWrcsPf
+        rIoltBQBS0XUafLOTtEwWTPGbWyFMOSlHrbUX6rmIbypFMLQf3D+bOQAXzH5Ug==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1642504670;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=fLzf2s+4QQWlsj3NdXrHo9g2Z2ZTEwjHLMXEx+8HKj4=;
+        b=auSM/Jp/jmvdPAgURUywZkAsNlgmxH8x+Bfq+Tw8pVzqXrVDmylxItfscLIKaahyG7Y5Eh
+        imQj1vcuU3VoLfDQ==
+From:   "tip-bot2 for Andi Kleen" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: perf/urgent] x86/perf: Avoid warning for Arch LBR without XSAVE
+Cc:     Andi Kleen <ak@linux.intel.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20211215204029.150686-1-ak@linux.intel.com>
+References: <20211215204029.150686-1-ak@linux.intel.com>
 MIME-Version: 1.0
-Received: by 2002:a05:6602:1401:0:0:0:0 with HTTP; Tue, 18 Jan 2022 01:16:35
- -0800 (PST)
-Reply-To: ayishagddafio@mail.ru
-From:   AISHA GADDAFI <dicksonsilva20017@gmail.com>
-Date:   Tue, 18 Jan 2022 01:16:35 -0800
-Message-ID: <CAPKPuhPJdYBth2qJh0NK1qT_E2eZo3YUjn+O5pbKMnLZR5GLgQ@mail.gmail.com>
-Subject: Liebster Freund,?
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Message-ID: <164250466897.16921.8103023739640458495.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
---=20
-Liebster Freund,
+The following commit has been merged into the perf/urgent branch of tip:
 
-Im Namen Gottes, des gn=C3=A4digsten, barmherzigsten.
+Commit-ID:     8c16dc047b5dd8f7b3bf4584fa75733ea0dde7dc
+Gitweb:        https://git.kernel.org/tip/8c16dc047b5dd8f7b3bf4584fa75733ea0dde7dc
+Author:        Andi Kleen <ak@linux.intel.com>
+AuthorDate:    Wed, 15 Dec 2021 12:40:29 -08:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Tue, 18 Jan 2022 12:09:49 +01:00
 
-Friede sei mit dir und Barmherzigkeit sei mit dir und Segen sei mit dir.
-Ich habe die Summe von 27,5 Millionen USD f=C3=BCr Investitionen, ich
-interessiere mich f=C3=BCr Sie f=C3=BCr die Unterst=C3=BCtzung von
-Investitionsprojekten in Ihrem Land. Mein Name ist Aisha Gaddafi und
-lebe derzeit im Oman, ich bin eine Witwe und alleinerziehende Mutter
-mit drei Kindern, die einzige leibliche Tochter des verstorbenen
-libyschen Pr=C3=A4sidenten (dem verstorbenen Oberst Muammar Gaddafi) und
-stehe derzeit unter politischem Asylschutz der omanischen Regierung.
+x86/perf: Avoid warning for Arch LBR without XSAVE
 
-Bitte antworten Sie dringend f=C3=BCr weitere Details.
+Some hypervisors support Arch LBR, but without the LBR XSAVE support.
+The current Arch LBR init code prints a warning when the xsave size (0) is
+unexpected. Avoid printing the warning for the "no LBR XSAVE" case.
 
-meine E-Mail-Adresse unten: ayishagddafio@mail.ru
-Vielen Dank
-Mit freundlichen Gr=C3=BC=C3=9Fen Aisha
+Signed-off-by: Andi Kleen <ak@linux.intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20211215204029.150686-1-ak@linux.intel.com
+---
+ arch/x86/events/intel/lbr.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/arch/x86/events/intel/lbr.c b/arch/x86/events/intel/lbr.c
+index f8fd255..669c2be 100644
+--- a/arch/x86/events/intel/lbr.c
++++ b/arch/x86/events/intel/lbr.c
+@@ -1751,6 +1751,9 @@ static bool is_arch_lbr_xsave_available(void)
+ 	 * Check the LBR state with the corresponding software structure.
+ 	 * Disable LBR XSAVES support if the size doesn't match.
+ 	 */
++	if (xfeature_size(XFEATURE_LBR) == 0)
++		return false;
++
+ 	if (WARN_ON(xfeature_size(XFEATURE_LBR) != get_lbr_state_size()))
+ 		return false;
+ 
