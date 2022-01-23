@@ -2,53 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C9594957A8
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 21 Jan 2022 02:19:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2ECFE497541
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 23 Jan 2022 20:37:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236787AbiAUBTB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 20 Jan 2022 20:19:01 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:52782 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235197AbiAUBTA (ORCPT
+        id S229729AbiAWThz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 23 Jan 2022 14:37:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38426 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229681AbiAWThy (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 20 Jan 2022 20:19:00 -0500
-Date:   Fri, 21 Jan 2022 01:18:57 -0000
+        Sun, 23 Jan 2022 14:37:54 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0E34C06173B;
+        Sun, 23 Jan 2022 11:37:53 -0800 (PST)
+Date:   Sun, 23 Jan 2022 19:37:49 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1642727938;
+        s=2020; t=1642966670;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=63eM+6UYuulfg+6WfwmqCNiumtTO6pPuHF2o3o8YG7o=;
-        b=r+kPgYH6ASn2GjJz3cXSdDsJUyoY4m1TAAaFtbnQGnnFECaYKtCngAzfbDx1p35XQ/drPd
-        bcwaIJ2/vW0vcRUUZmExQ8XVvV2XFcBR+9zGiLYke6VDhMnKdjmqQJseJY8EPwC6QLVs+M
-        dRDj31U/UDuye5jJ7MUyWMubwfCVBCxdH20252EyESKj/emK1YYdLIJu2Ns81Q/HMi4N5Y
-        cqIUuC5vBOACCNS8uYtwjoOXI6dVAZqv2C4EX9Oc4KUDR1apgfLUA4sExDw53aKHOP447M
-        qr5J6GckbGFMc1IN1DRKYQ1a9GVXJYTlNLZcHy1Vi7OITJwbJ2EASX1UmOKyTg==
+        bh=j9PJDDGsX+Gax6Ee5O2DMpYclOzeeXo4NHkRhjXmFkg=;
+        b=w9L1mGHIFt1oEMN/iWi8/Ai06qHwvRpW7/lWnnLp/MK+/SSEn2EjKO2ccPpW4IneBSy0lD
+        TzosknGcUqrLbd2Wxfid1OOoXMzcmBnCt03oU0dAw7x81btefiwp2QkhfgDNj9dfOskAqx
+        L/nIbfWMOsCwzXwoYJJHU+tETSTRXaay++trOWurnayDC5SW+7YpNtUUMwz0hJ2roza76y
+        RFAZNy+2AdHUPkd8I8hblA1lx4fBtmhSvZaR7Xj41t00rYznD4idow1zUrQhfgL1WnhMFy
+        vseDuloYe068cKSOMgYKkX8R8e4C+0rG0zjNMqIkgMUZCBqgyyDe5wWc7FWajw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1642727938;
+        s=2020e; t=1642966670;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=63eM+6UYuulfg+6WfwmqCNiumtTO6pPuHF2o3o8YG7o=;
-        b=Sbncv9byds/c2MR++Jcrd4QRKpO6SlfXrqmXBjK7hav6gZCoVC+kF+//R59efSFzRK+1PN
-        JdSHNh6/IhOS7IAg==
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+        bh=j9PJDDGsX+Gax6Ee5O2DMpYclOzeeXo4NHkRhjXmFkg=;
+        b=YM2yOecwL9FDKJ+K/XIhTfM+ao78yIyhZdNXlCCU8vA5yjJv+II8MSK4wKUE0nplVPjQpZ
+        YCOM2nLPH7oTKECQ==
+From:   "tip-bot2 for Greg Kroah-Hartman" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/urgent] PCI/MSI: Prevent UAF in error path
-Cc:     Tong Zhang <ztong0001@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Bjorn Helgaas <bhelgaas@google.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <87r1938vbn.ffs@tglx>
-References: <87r1938vbn.ffs@tglx>
+Subject: [tip: x86/cpu] x86/CPU/AMD: Use default_groups in kobj_type
+Cc:     "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+        Borislav Petkov <bp@suse.de>,
+        Yazen Ghannam <yazen.ghannam@amd.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20220106103537.3663852-1-gregkh@linuxfoundation.org>
+References: <20220106103537.3663852-1-gregkh@linuxfoundation.org>
 MIME-Version: 1.0
-Message-ID: <164272793734.16921.6900414168494720740.tip-bot2@tip-bot2>
+Message-ID: <164296666966.16921.15499044589039584350.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -57,64 +60,65 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the irq/urgent branch of tip:
+The following commit has been merged into the x86/cpu branch of tip:
 
-Commit-ID:     a0af3d1104f752b6d0dba71788e3fddd67c857a7
-Gitweb:        https://git.kernel.org/tip/a0af3d1104f752b6d0dba71788e3fddd67c857a7
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Wed, 19 Jan 2022 18:54:52 +01:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 21 Jan 2022 02:14:46 +01:00
+Commit-ID:     7237727f8c4415fa925c723fc03be373834c21b9
+Gitweb:        https://git.kernel.org/tip/7237727f8c4415fa925c723fc03be373834c21b9
+Author:        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+AuthorDate:    Thu, 06 Jan 2022 11:35:37 +01:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Sun, 23 Jan 2022 20:30:27 +01:00
 
-PCI/MSI: Prevent UAF in error path
+x86/CPU/AMD: Use default_groups in kobj_type
 
-When the core MSI allocation fails, then the PCI/MSI code uses an already
-freed MSI descriptor to unmask the MSI mask register in order to bring it back
-into reset state.
+There are currently 2 ways to create a set of sysfs files for a
+kobj_type, through the default_attrs field, and the default_groups
+field. Move the AMD mce sysfs code to use default_groups field which has
+been the preferred way since
 
-Remove MSI_FLAG_FREE_MSI_DESCS from the PCI/MSI irqdomain flags and let the
-PCI/MSI code free the MSI descriptors after usage.
+  aa30f47cf666 ("kobject: Add support for default attribute groups to kobj_type")
 
-Fixes: 0f62d941acf9 ("genirq/msi: Provide msi_domain_alloc/free_irqs_descs_locked()")
-Reported-by: Tong Zhang <ztong0001@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Tong Zhang <ztong0001@gmail.com>
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
-Link: https://lore.kernel.org/r/87r1938vbn.ffs@tglx
+so that the obsolete default_attrs field can be removed soon.
+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Tested-by: Yazen Ghannam <yazen.ghannam@amd.com>
+Link: https://lore.kernel.org/r/20220106103537.3663852-1-gregkh@linuxfoundation.org
 ---
- drivers/pci/msi/irqdomain.c | 4 ++--
- drivers/pci/msi/legacy.c    | 1 -
- 2 files changed, 2 insertions(+), 3 deletions(-)
+ arch/x86/kernel/cpu/mce/amd.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pci/msi/irqdomain.c b/drivers/pci/msi/irqdomain.c
-index 0d63541..e9cf318 100644
---- a/drivers/pci/msi/irqdomain.c
-+++ b/drivers/pci/msi/irqdomain.c
-@@ -28,6 +28,7 @@ void pci_msi_teardown_msi_irqs(struct pci_dev *dev)
- 		msi_domain_free_irqs_descs_locked(domain, &dev->dev);
- 	else
- 		pci_msi_legacy_teardown_msi_irqs(dev);
-+	msi_free_msi_descs(&dev->dev);
- }
+diff --git a/arch/x86/kernel/cpu/mce/amd.c b/arch/x86/kernel/cpu/mce/amd.c
+index a1e2f41..c0660c1 100644
+--- a/arch/x86/kernel/cpu/mce/amd.c
++++ b/arch/x86/kernel/cpu/mce/amd.c
+@@ -993,6 +993,7 @@ static struct attribute *default_attrs[] = {
+ 	NULL,	/* possibly interrupt_enable if supported, see below */
+ 	NULL,
+ };
++ATTRIBUTE_GROUPS(default);
  
- /**
-@@ -171,8 +172,7 @@ struct irq_domain *pci_msi_create_irq_domain(struct fwnode_handle *fwnode,
- 	if (info->flags & MSI_FLAG_USE_DEF_CHIP_OPS)
- 		pci_msi_domain_update_chip_ops(info);
+ #define to_block(k)	container_of(k, struct threshold_block, kobj)
+ #define to_attr(a)	container_of(a, struct threshold_attr, attr)
+@@ -1029,7 +1030,7 @@ static void threshold_block_release(struct kobject *kobj);
  
--	info->flags |= MSI_FLAG_ACTIVATE_EARLY | MSI_FLAG_DEV_SYSFS |
--		       MSI_FLAG_FREE_MSI_DESCS;
-+	info->flags |= MSI_FLAG_ACTIVATE_EARLY | MSI_FLAG_DEV_SYSFS;
- 	if (IS_ENABLED(CONFIG_GENERIC_IRQ_RESERVATION_MODE))
- 		info->flags |= MSI_FLAG_MUST_REACTIVATE;
+ static struct kobj_type threshold_ktype = {
+ 	.sysfs_ops		= &threshold_ops,
+-	.default_attrs		= default_attrs,
++	.default_groups		= default_groups,
+ 	.release		= threshold_block_release,
+ };
  
-diff --git a/drivers/pci/msi/legacy.c b/drivers/pci/msi/legacy.c
-index cdbb468..db761ad 100644
---- a/drivers/pci/msi/legacy.c
-+++ b/drivers/pci/msi/legacy.c
-@@ -77,5 +77,4 @@ void pci_msi_legacy_teardown_msi_irqs(struct pci_dev *dev)
- {
- 	msi_device_destroy_sysfs(&dev->dev);
- 	arch_teardown_msi_irqs(dev);
--	msi_free_msi_descs(&dev->dev);
- }
+@@ -1101,10 +1102,10 @@ static int allocate_threshold_blocks(unsigned int cpu, struct threshold_bank *tb
+ 	b->threshold_limit	= THRESHOLD_MAX;
+ 
+ 	if (b->interrupt_capable) {
+-		threshold_ktype.default_attrs[2] = &interrupt_enable.attr;
++		default_attrs[2] = &interrupt_enable.attr;
+ 		b->interrupt_enable = 1;
+ 	} else {
+-		threshold_ktype.default_attrs[2] = NULL;
++		default_attrs[2] = NULL;
+ 	}
+ 
+ 	INIT_LIST_HEAD(&b->miscj);
