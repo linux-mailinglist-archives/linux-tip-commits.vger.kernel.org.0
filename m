@@ -2,57 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 86DD2497551
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 23 Jan 2022 20:45:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C20C2497556
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 23 Jan 2022 20:45:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239643AbiAWTpA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 23 Jan 2022 14:45:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39978 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232401AbiAWTo5 (ORCPT
+        id S239709AbiAWTpC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 23 Jan 2022 14:45:02 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:38864 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S239585AbiAWTo7 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 23 Jan 2022 14:44:57 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81C6DC06173D;
-        Sun, 23 Jan 2022 11:44:57 -0800 (PST)
-Date:   Sun, 23 Jan 2022 19:44:55 -0000
+        Sun, 23 Jan 2022 14:44:59 -0500
+Date:   Sun, 23 Jan 2022 19:44:56 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1642967096;
+        s=2020; t=1642967097;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=TM9soNCJboITFmNVzU2NlgFaz9sCKFGG0XmUROJicDo=;
-        b=Prqi5Jhv8YE1Xv/wx5gZVwTDZVr93Fv12+ap/sfrceyBNNycKGWLidXqSSU82bTVKoVy8q
-        YoE3obI2ccuofYwHqfEz3xgGxNOI8A3od7uzymH1igrzywsRSrFbROUA+nPuqCoQJ6qrXx
-        Sle3166UU6teTC4bidTAvwHHE2tJhOCuQ2QGhg3tXDazntidEGcel0xRKFs4PQnVDWgU8H
-        mAuZsh4FIwu5p4ghvcc/QrQQboZ3UqaEhpJZpsGd4MCYislqmcpCspdEiFfWsi72h5kiJS
-        jZAdFVfPUltablyutswV0JuhzPzchr1i9lZo3tE209dQwNw9Qrok1oBTAQ7gfw==
+        bh=G2BgWfXOOYXNTF6VJE9y2Ah2MfQBWPK1+UzxlTeQjK8=;
+        b=O1tYuaGfXlthYK5nBcuNKLonrNDj/CMhfJZif5Vj1PwEG1kMoq0MiGJytlWJwPQT2GiRRl
+        vxKUeYUwFoZCNfwqWF/5KKDs4eWoGCOyQ67KKxpiHvXzCGLlxswtjC/SpyIbcZATtXcJcs
+        wskTJTmuT6Ix3kh3Mcf5u8hVfj4gLbg5og2XaO13+9XasDr7nd0KMnZRMlnR7iYzAsqjE8
+        0n0hyLh/vOIIM/faVtCX6s+TMfnUJIRpGiZGPJdm67p33a8/z9hCxXqiZ/4esMdCKHlROW
+        vQt1cQCcJgJwikOwyhTHAv5M7vAhW4+N6WM823SxoVK6mrohK2JxWB18EzN2Pw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1642967096;
+        s=2020e; t=1642967097;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=TM9soNCJboITFmNVzU2NlgFaz9sCKFGG0XmUROJicDo=;
-        b=uHQY6SX6jZJQKSRjj/ExybVsOX7GId7gaxAHVOCfDF2JC2bLGTJOjAh+SFkEtrQnLijfuY
-        1KqgBxPATIWOLtAA==
+        bh=G2BgWfXOOYXNTF6VJE9y2Ah2MfQBWPK1+UzxlTeQjK8=;
+        b=1KvLXPrWXpdXn9yGxGaDEA9qs/DBN05VLRKrYq9yqdMPRumEyfngkmpkS2+9jglphVhfJv
+        IMuuG2gbiz3kyPAQ==
 From:   "tip-bot2 for Adrian Hunter" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/misc] x86/insn: Add misc instructions to x86 instruction decoder
+Subject: [tip: x86/misc] x86/insn: Add AMX instructions to the x86 instruction decoder
 Cc:     Adrian Hunter <adrian.hunter@intel.com>,
         Borislav Petkov <bp@suse.de>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Masami Hiramatsu <mhiramat@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20211202095029.2165714-5-adrian.hunter@intel.com>
-References: <20211202095029.2165714-5-adrian.hunter@intel.com>
+In-Reply-To: <20211202095029.2165714-3-adrian.hunter@intel.com>
+References: <20211202095029.2165714-3-adrian.hunter@intel.com>
 MIME-Version: 1.0
-Message-ID: <164296709502.16921.15205293293969486611.tip-bot2@tip-bot2>
+Message-ID: <164296709676.16921.12025022630752089334.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -63,41 +60,20 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/misc branch of tip:
 
-Commit-ID:     0153d98f2dd6d5161fc4d496d785c10686d0d7b6
-Gitweb:        https://git.kernel.org/tip/0153d98f2dd6d5161fc4d496d785c10686d0d7b6
+Commit-ID:     9dd94df75b30eca03ed2151dd5bbc152a6f19abf
+Gitweb:        https://git.kernel.org/tip/9dd94df75b30eca03ed2151dd5bbc152a6f19abf
 Author:        Adrian Hunter <adrian.hunter@intel.com>
-AuthorDate:    Thu, 02 Dec 2021 11:50:27 +02:00
+AuthorDate:    Thu, 02 Dec 2021 11:50:25 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Sun, 23 Jan 2022 20:37:54 +01:00
+CommitterDate: Sun, 23 Jan 2022 20:37:46 +01:00
 
-x86/insn: Add misc instructions to x86 instruction decoder
+x86/insn: Add AMX instructions to the x86 instruction decoder
 
-x86 instruction decoder is used for both kernel instructions and user space
-instructions (e.g. uprobes, perf tools Intel PT), so it is good to update
-it with new instructions.
+The x86 instruction decoder is used for both kernel instructions and
+user space instructions (e.g. uprobes, perf tools Intel PT), so it is
+good to update it with new instructions.
 
-Add instructions to x86 instruction decoder:
-
-	User Interrupt
-
-		clui
-		senduipi
-		stui
-		testui
-		uiret
-
-	Prediction history reset
-
-		hreset
-
-	Serialize instruction execution
-
-		serialize
-
-	TSX suspend load address tracking
-
-		xresldtrk
-		xsusldtrk
+Add AMX instructions to the x86 instruction decoder.
 
 Reference:
 Intel Architecture Instruction Set Extensions and Future Features
@@ -107,79 +83,92 @@ Document Number: 319433-044
 
 Example using perf tools' x86 instruction decoder test:
 
-  $ perf test -v "x86 instruction decoder" |& grep -i hreset
-  Decoded ok: f3 0f 3a f0 c0 00           hreset $0x0
-  Decoded ok: f3 0f 3a f0 c0 00           hreset $0x0
+  $ INSN='ldtilecfg\|sttilecfg\|tdpbf16ps\|tdpbssd\|'
+  $ INSN+='tdpbsud\|tdpbusd\|'tdpbuud\|tileloadd\|'
+  $ INSN+='tileloaddt1\|tilerelease\|tilestored\|tilezero'
+  $ perf test -v "x86 instruction decoder" |& grep -i $INSN
+  Decoded ok: c4 e2 78 49 04 c8    	ldtilecfg (%rax,%rcx,8)
+  Decoded ok: c4 c2 78 49 04 c8    	ldtilecfg (%r8,%rcx,8)
+  Decoded ok: c4 e2 79 49 04 c8    	sttilecfg (%rax,%rcx,8)
+  Decoded ok: c4 c2 79 49 04 c8    	sttilecfg (%r8,%rcx,8)
+  Decoded ok: c4 e2 7a 5c d1       	tdpbf16ps %tmm0,%tmm1,%tmm2
+  Decoded ok: c4 e2 7b 5e d1       	tdpbssd %tmm0,%tmm1,%tmm2
+  Decoded ok: c4 e2 7a 5e d1       	tdpbsud %tmm0,%tmm1,%tmm2
+  Decoded ok: c4 e2 79 5e d1       	tdpbusd %tmm0,%tmm1,%tmm2
+  Decoded ok: c4 e2 78 5e d1       	tdpbuud %tmm0,%tmm1,%tmm2
+  Decoded ok: c4 e2 7b 4b 0c c8    	tileloadd (%rax,%rcx,8),%tmm1
+  Decoded ok: c4 c2 7b 4b 14 c8    	tileloadd (%r8,%rcx,8),%tmm2
+  Decoded ok: c4 e2 79 4b 0c c8    	tileloaddt1 (%rax,%rcx,8),%tmm1
+  Decoded ok: c4 c2 79 4b 14 c8    	tileloaddt1 (%r8,%rcx,8),%tmm2
+  Decoded ok: c4 e2 78 49 c0       	tilerelease
+  Decoded ok: c4 e2 7a 4b 0c c8    	tilestored %tmm1,(%rax,%rcx,8)
+  Decoded ok: c4 c2 7a 4b 14 c8    	tilestored %tmm2,(%r8,%rcx,8)
+  Decoded ok: c4 e2 7b 49 c0       	tilezero %tmm0
+  Decoded ok: c4 e2 7b 49 f8       	tilezero %tmm7
 
 Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
 Acked-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Acked-by: Masami Hiramatsu <mhiramat@kernel.org>
-Link: https://lore.kernel.org/r/20211202095029.2165714-5-adrian.hunter@intel.com
+Link: https://lore.kernel.org/r/20211202095029.2165714-3-adrian.hunter@intel.com
 ---
- arch/x86/lib/x86-opcode-map.txt       | 6 +++---
- tools/arch/x86/lib/x86-opcode-map.txt | 6 +++---
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ arch/x86/lib/x86-opcode-map.txt       | 10 ++++++++--
+ tools/arch/x86/lib/x86-opcode-map.txt | 10 ++++++++--
+ 2 files changed, 16 insertions(+), 4 deletions(-)
 
 diff --git a/arch/x86/lib/x86-opcode-map.txt b/arch/x86/lib/x86-opcode-map.txt
-index b2cc6c0..591797a 100644
+index ec31f5b..b2cc6c0 100644
 --- a/arch/x86/lib/x86-opcode-map.txt
 +++ b/arch/x86/lib/x86-opcode-map.txt
-@@ -893,7 +893,7 @@ cc: sha1rnds4 Vdq,Wdq,Ib
- ce: vgf2p8affineqb Vx,Wx,Ib (66)
- cf: vgf2p8affineinvqb Vx,Wx,Ib (66)
- df: VAESKEYGEN Vdq,Wdq,Ib (66),(v1)
--f0: RORX Gy,Ey,Ib (F2),(v)
-+f0: RORX Gy,Ey,Ib (F2),(v) | HRESET Gv,Ib (F3),(000),(11B)
- EndTable
- 
- GrpTable: Grp1
-@@ -976,7 +976,7 @@ GrpTable: Grp7
- 2: LGDT Ms | XGETBV (000),(11B) | XSETBV (001),(11B) | VMFUNC (100),(11B) | XEND (101)(11B) | XTEST (110)(11B) | ENCLU (111),(11B)
- 3: LIDT Ms
- 4: SMSW Mw/Rv
--5: rdpkru (110),(11B) | wrpkru (111),(11B) | SAVEPREVSSP (F3),(010),(11B) | RSTORSSP Mq (F3) | SETSSBSY (F3),(000),(11B)
-+5: rdpkru (110),(11B) | wrpkru (111),(11B) | SAVEPREVSSP (F3),(010),(11B) | RSTORSSP Mq (F3) | SETSSBSY (F3),(000),(11B) | CLUI (F3),(110),(11B) | SERIALIZE (000),(11B) | STUI (F3),(111),(11B) | TESTUI (F3)(101)(11B) | UIRET (F3),(100),(11B) | XRESLDTRK (F2),(000),(11B) | XSUSLDTRK (F2),(001),(11B)
- 6: LMSW Ew
- 7: INVLPG Mb | SWAPGS (o64),(000),(11B) | RDTSCP (001),(11B)
- EndTable
-@@ -993,7 +993,7 @@ GrpTable: Grp9
- 3: xrstors
- 4: xsavec
- 5: xsaves
--6: VMPTRLD Mq | VMCLEAR Mq (66) | VMXON Mq (F3) | RDRAND Rv (11B)
-+6: VMPTRLD Mq | VMCLEAR Mq (66) | VMXON Mq (F3) | RDRAND Rv (11B) | SENDUIPI Gq (F3)
- 7: VMPTRST Mq | VMPTRST Mq (F3) | RDSEED Rv (11B)
- EndTable
- 
+@@ -690,7 +690,10 @@ AVXcode: 2
+ 45: vpsrlvd/q Vx,Hx,Wx (66),(v)
+ 46: vpsravd Vx,Hx,Wx (66),(v) | vpsravd/q Vx,Hx,Wx (66),(evo)
+ 47: vpsllvd/q Vx,Hx,Wx (66),(v)
+-# Skip 0x48-0x4b
++# Skip 0x48
++49: TILERELEASE (v1),(000),(11B) | LDTILECFG Mtc (v1)(000) | STTILECFG Mtc (66),(v1),(000) | TILEZERO Vt (F2),(v1),(11B)
++# Skip 0x4a
++4b: TILELOADD Vt,Wsm (F2),(v1) | TILELOADDT1 Vt,Wsm (66),(v1) | TILESTORED Wsm,Vt (F3),(v)
+ 4c: vrcp14ps/d Vpd,Wpd (66),(ev)
+ 4d: vrcp14ss/d Vsd,Hpd,Wsd (66),(ev)
+ 4e: vrsqrt14ps/d Vpd,Wpd (66),(ev)
+@@ -705,7 +708,10 @@ AVXcode: 2
+ 59: vpbroadcastq Vx,Wx (66),(v) | vbroadcasti32x2 Vx,Wx (66),(evo)
+ 5a: vbroadcasti128 Vqq,Mdq (66),(v) | vbroadcasti32x4/64x2 Vx,Wx (66),(evo)
+ 5b: vbroadcasti32x8/64x4 Vqq,Mdq (66),(ev)
+-# Skip 0x5c-0x61
++5c: TDPBF16PS Vt,Wt,Ht (F3),(v1)
++# Skip 0x5d
++5e: TDPBSSD Vt,Wt,Ht (F2),(v1) | TDPBSUD Vt,Wt,Ht (F3),(v1) | TDPBUSD Vt,Wt,Ht (66),(v1) | TDPBUUD Vt,Wt,Ht (v1)
++# Skip 0x5f-0x61
+ 62: vpexpandb/w Vx,Wx (66),(ev)
+ 63: vpcompressb/w Wx,Vx (66),(ev)
+ 64: vpblendmd/q Vx,Hx,Wx (66),(ev)
 diff --git a/tools/arch/x86/lib/x86-opcode-map.txt b/tools/arch/x86/lib/x86-opcode-map.txt
-index b2cc6c0..591797a 100644
+index ec31f5b..b2cc6c0 100644
 --- a/tools/arch/x86/lib/x86-opcode-map.txt
 +++ b/tools/arch/x86/lib/x86-opcode-map.txt
-@@ -893,7 +893,7 @@ cc: sha1rnds4 Vdq,Wdq,Ib
- ce: vgf2p8affineqb Vx,Wx,Ib (66)
- cf: vgf2p8affineinvqb Vx,Wx,Ib (66)
- df: VAESKEYGEN Vdq,Wdq,Ib (66),(v1)
--f0: RORX Gy,Ey,Ib (F2),(v)
-+f0: RORX Gy,Ey,Ib (F2),(v) | HRESET Gv,Ib (F3),(000),(11B)
- EndTable
- 
- GrpTable: Grp1
-@@ -976,7 +976,7 @@ GrpTable: Grp7
- 2: LGDT Ms | XGETBV (000),(11B) | XSETBV (001),(11B) | VMFUNC (100),(11B) | XEND (101)(11B) | XTEST (110)(11B) | ENCLU (111),(11B)
- 3: LIDT Ms
- 4: SMSW Mw/Rv
--5: rdpkru (110),(11B) | wrpkru (111),(11B) | SAVEPREVSSP (F3),(010),(11B) | RSTORSSP Mq (F3) | SETSSBSY (F3),(000),(11B)
-+5: rdpkru (110),(11B) | wrpkru (111),(11B) | SAVEPREVSSP (F3),(010),(11B) | RSTORSSP Mq (F3) | SETSSBSY (F3),(000),(11B) | CLUI (F3),(110),(11B) | SERIALIZE (000),(11B) | STUI (F3),(111),(11B) | TESTUI (F3)(101)(11B) | UIRET (F3),(100),(11B) | XRESLDTRK (F2),(000),(11B) | XSUSLDTRK (F2),(001),(11B)
- 6: LMSW Ew
- 7: INVLPG Mb | SWAPGS (o64),(000),(11B) | RDTSCP (001),(11B)
- EndTable
-@@ -993,7 +993,7 @@ GrpTable: Grp9
- 3: xrstors
- 4: xsavec
- 5: xsaves
--6: VMPTRLD Mq | VMCLEAR Mq (66) | VMXON Mq (F3) | RDRAND Rv (11B)
-+6: VMPTRLD Mq | VMCLEAR Mq (66) | VMXON Mq (F3) | RDRAND Rv (11B) | SENDUIPI Gq (F3)
- 7: VMPTRST Mq | VMPTRST Mq (F3) | RDSEED Rv (11B)
- EndTable
- 
+@@ -690,7 +690,10 @@ AVXcode: 2
+ 45: vpsrlvd/q Vx,Hx,Wx (66),(v)
+ 46: vpsravd Vx,Hx,Wx (66),(v) | vpsravd/q Vx,Hx,Wx (66),(evo)
+ 47: vpsllvd/q Vx,Hx,Wx (66),(v)
+-# Skip 0x48-0x4b
++# Skip 0x48
++49: TILERELEASE (v1),(000),(11B) | LDTILECFG Mtc (v1)(000) | STTILECFG Mtc (66),(v1),(000) | TILEZERO Vt (F2),(v1),(11B)
++# Skip 0x4a
++4b: TILELOADD Vt,Wsm (F2),(v1) | TILELOADDT1 Vt,Wsm (66),(v1) | TILESTORED Wsm,Vt (F3),(v)
+ 4c: vrcp14ps/d Vpd,Wpd (66),(ev)
+ 4d: vrcp14ss/d Vsd,Hpd,Wsd (66),(ev)
+ 4e: vrsqrt14ps/d Vpd,Wpd (66),(ev)
+@@ -705,7 +708,10 @@ AVXcode: 2
+ 59: vpbroadcastq Vx,Wx (66),(v) | vbroadcasti32x2 Vx,Wx (66),(evo)
+ 5a: vbroadcasti128 Vqq,Mdq (66),(v) | vbroadcasti32x4/64x2 Vx,Wx (66),(evo)
+ 5b: vbroadcasti32x8/64x4 Vqq,Mdq (66),(ev)
+-# Skip 0x5c-0x61
++5c: TDPBF16PS Vt,Wt,Ht (F3),(v1)
++# Skip 0x5d
++5e: TDPBSSD Vt,Wt,Ht (F2),(v1) | TDPBSUD Vt,Wt,Ht (F3),(v1) | TDPBUSD Vt,Wt,Ht (66),(v1) | TDPBUUD Vt,Wt,Ht (v1)
++# Skip 0x5f-0x61
+ 62: vpexpandb/w Vx,Wx (66),(ev)
+ 63: vpcompressb/w Wx,Vx (66),(ev)
+ 64: vpblendmd/q Vx,Hx,Wx (66),(ev)
