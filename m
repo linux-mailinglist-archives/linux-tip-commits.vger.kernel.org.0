@@ -2,120 +2,111 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B534499072
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 24 Jan 2022 21:04:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A66E49B7AF
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 25 Jan 2022 16:34:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345306AbiAXUA3 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 24 Jan 2022 15:00:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57724 "EHLO
+        id S1357652AbiAYPet (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 25 Jan 2022 10:34:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52060 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1352791AbiAXTx1 (ORCPT
+        with ESMTP id S1353755AbiAYPck (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 24 Jan 2022 14:53:27 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EC76C06118F;
-        Mon, 24 Jan 2022 11:26:59 -0800 (PST)
-Date:   Mon, 24 Jan 2022 19:26:55 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1643052416;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Uc4CcyNeBy6pq/UPib+XtFLrqtsV8lin+EF3qDe9Xm4=;
-        b=L3+YLmiz1vcHCRmEVpY6owP6iftTzIaIeaGvoLb+BoXxODX1fKOyjebD8W4pTrCLmj6eQw
-        UrRz6FH8qnY8eOR/3vFXYdRSwlZiQ3IYPdLgnxCp9qk+02wbd9sGFsqLq3SxLaFHTlp3lA
-        rIGQ+GNNz4capz5SrJkROzbBh6u3aUoqy2MWgRkfLyj01IsA+48ZvFe+0rnw73w17MeJIl
-        0d2xks+Stngumz9J/zCFK2mBhtbl9CbLmjUwov4BX3kodKcV/JT79hmHg1nV/rgCQ60XWB
-        D3YUL7jOIfNfH/3dwlkwE73U0zGr4Hm+ZY3ixcPpXIoGKh9X9sbDdBMhwuIYxQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1643052416;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Uc4CcyNeBy6pq/UPib+XtFLrqtsV8lin+EF3qDe9Xm4=;
-        b=6s27vJdI13QJ7ZdwPmM9YNHs4Jmn7lQhYcFtJ/+t6dQ5K95+iyBfyTj6zY2hFcz8OvODua
-        HFT8BQ/xWk9gc6Dw==
-From:   "tip-bot2 for Jan Beulich" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/paravirt] x86/paravirt: Use %rip-relative addressing in hook calls
-Cc:     Jan Beulich <jbeulich@suse.com>, Borislav Petkov <bp@suse.de>,
-        Juergen Gross <jgross@suse.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <b8192e8a-13ef-6ac6-6364-8ba58992cd1d@suse.com>
-References: <b8192e8a-13ef-6ac6-6364-8ba58992cd1d@suse.com>
+        Tue, 25 Jan 2022 10:32:40 -0500
+Received: from mail-io1-xd34.google.com (mail-io1-xd34.google.com [IPv6:2607:f8b0:4864:20::d34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23B2AC06175B
+        for <linux-tip-commits@vger.kernel.org>; Tue, 25 Jan 2022 07:20:46 -0800 (PST)
+Received: by mail-io1-xd34.google.com with SMTP id e79so24030802iof.13
+        for <linux-tip-commits@vger.kernel.org>; Tue, 25 Jan 2022 07:20:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=IEMma1eGW5sQblzU1//BqOEn5E488+F+nzzq2q8j3TU=;
+        b=Ax85Rof6PBMBG+MGZzS0xiFN8n2vWSwUEcvoUa97lsR5/qokCV8HhkYfy+vXhRnPBX
+         LlEiIHnhXKYWNOMqyqgCHLJucHNCl8fpS9B7fV+rUmZetY6rz63+U5LJIMtdKCY71oKG
+         jKea6rI+oDY0PWphiDlK3bFvhw69wUhxbgoSnQrHwXV3xOD9oZPU6CaOxsuuO15fY9Vn
+         xZp82q6HTq2mu4e9ek0L2tJsFfjbsut6IqFoWhIgl+lY7eyiM8iRJIf1PRb7ZMkxGYoM
+         U74URDDvnKFjOZvzW7nwPQ8qYNySJsvtGFNUrcFYxJyJKX/So4oy56qEITZ9dPvK6faH
+         2EzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=IEMma1eGW5sQblzU1//BqOEn5E488+F+nzzq2q8j3TU=;
+        b=MSb77QhiYiOSXaZcbHE2HUG8pFh07/M6vdtqg7fPh0/QJ9qprSdu7/zkBrfH7RWZgz
+         DbWpby4IW95StEnqrDLU5Q8wDup06SY+dgzDp289If8GagYLCnrrv9069cvODYF6Ahuk
+         5Ge5XHYEh0xre0pZGJ6LyYsXZL0j+V5kMHhtEN6NEhXX+7wl1NtpEZO/t1SN1STgFLbK
+         PHHTlWfw4Jkcli8MRKeFy5Aw/EBJC1x4OmVrv6oF1yHLXJBXeFYZJeGYI9vTL24Q+0mw
+         5oZc/IkhcXStM3a2+Zj1L/+4dsJAwSVuyg+dNCSscLy0cxudBxGkQYxkuaX+FnyA8q9I
+         c1aQ==
+X-Gm-Message-State: AOAM530IhNqS/BVPWrVLwCJdKU0i7sWuaKNdDtE51QpuDIDclU/9C/d5
+        Z7IXlqwXrR8M3TBdKxzb7CqvJSsyvRgxf4p0KNc=
+X-Google-Smtp-Source: ABdhPJyOANnTMNkPnzQdJ7/VlcaN8SMh5oyOhqCSYzNcTJ/da2yiQ+3biKj36bhUI65nK+cp5oMSoSY6+0CXLQ9usCM=
+X-Received: by 2002:a02:cd1c:: with SMTP id g28mr4262141jaq.189.1643124045564;
+ Tue, 25 Jan 2022 07:20:45 -0800 (PST)
 MIME-Version: 1.0
-Message-ID: <164305241532.16921.6031632679880039280.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Received: by 2002:a05:6e02:1566:0:0:0:0 with HTTP; Tue, 25 Jan 2022 07:20:45
+ -0800 (PST)
+Reply-To: abrahammorrison443@gmail.com
+From:   Abraham Morrison <awochambers004@gmail.com>
+Date:   Tue, 25 Jan 2022 07:20:45 -0800
+Message-ID: <CAH2diS5sKKLres7iCGdCiSRqEKW=-m0zp0Jw=Oe0X4DWq=dsHw@mail.gmail.com>
+Subject: Good day!
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/paravirt branch of tip:
+Prosz=C4=99 o uwag=C4=99,
 
-Commit-ID:     2e1f8e55f9e054b4a49ffc06c7e33b5d4725f05e
-Gitweb:        https://git.kernel.org/tip/2e1f8e55f9e054b4a49ffc06c7e33b5d4725f05e
-Author:        Jan Beulich <jbeulich@suse.com>
-AuthorDate:    Thu, 30 Sep 2021 14:40:38 +02:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Mon, 24 Jan 2022 20:21:19 +01:00
+Jak si=C4=99 masz? Mam nadziej=C4=99, =C5=BCe jeste=C5=9B zdrowy i zdrowy? =
+Informuj=C4=99, =C5=BCe
+uda=C5=82o mi si=C4=99 zako=C5=84czy=C4=87 transakcj=C4=99 z pomoc=C4=85 no=
+wego partnera z Indii i
+teraz =C5=9Brodki zosta=C5=82y przelane do Indii na konto bankowe nowego
+partnera.
 
-x86/paravirt: Use %rip-relative addressing in hook calls
+W mi=C4=99dzyczasie zdecydowa=C5=82em si=C4=99 zrekompensowa=C4=87 ci sum=
+=C4=99 500 000 $
+(tylko pi=C4=99=C4=87set tysi=C4=99cy dolar=C3=B3w ameryka=C5=84skich) z po=
+wodu twoich
+wcze=C5=9Bniejszych wysi=C5=82k=C3=B3w, chocia=C5=BC mnie rozczarowa=C5=82e=
+=C5=9B. Niemniej jednak
+bardzo si=C4=99 ciesz=C4=99 z pomy=C5=9Blnego zako=C5=84czenia transakcji b=
+ez =C5=BCadnego
+problemu i dlatego postanowi=C5=82em zrekompensowa=C4=87 Ci kwot=C4=99 500 =
+000 $,
+aby=C5=9B podzieli=C5=82 si=C4=99 ze mn=C4=85 rado=C5=9Bci=C4=85.
 
-While using a plain (constant) address works, its use needlessly invokes
-a SIB addressing mode, making every call site one byte larger than
-necessary:
+Radz=C4=99 skontaktowa=C4=87 si=C4=99 z moj=C4=85 sekretark=C4=85 w sprawie=
+ karty bankomatowej
+o warto=C5=9Bci 500 000 $, kt=C3=B3r=C4=85 zachowa=C5=82em dla Ciebie. Skon=
+taktuj si=C4=99 z
+ni=C4=85 teraz bez zw=C5=82oki.
 
-  ff 14 25 98 89 42 82    call   *0xffffffff82428998
+Imi=C4=99: Linda Koffi
+E-mail: koffilinda785@gmail.com
 
-Instead of using an "i" constraint with address-of operator and a 'c'
-operand modifier, simply use an ordinary "m" constraint, which the
-64-bit compiler will translate to %rip-relative addressing:
 
-  ff 15 62 fb d2 00       call   *0xd2fb62(%rip)	# ffffffff82428998 <pv_ops+0x18>
+Uprzejmie potwierd=C5=BA jej nast=C4=99puj=C4=85ce informacje:
 
-This way the compiler is also told the truth about operand usage - the
-memory location gets actually read, after all.
+Twoje pe=C5=82ne imi=C4=99:........
+Tw=C3=B3j adres:..........
+Tw=C3=B3j kraj:..........
+Tw=C3=B3j wiek:.........
+Tw=C3=B3j zaw=C3=B3d:..........
+Tw=C3=B3j numer telefonu kom=C3=B3rkowego:..........
+Tw=C3=B3j paszport lub prawo jazdy:........
 
-32-bit code generation is unaffected by the change.
+Pami=C4=99taj, =C5=BCe je=C5=9Bli nie prze=C5=9Blesz jej powy=C5=BCszych in=
+formacji
+kompletnych, nie wyda ci karty bankomatowej, poniewa=C5=BC musi si=C4=99
+upewni=C4=87, =C5=BCe to ty. Popro=C5=9B j=C4=85, aby przes=C5=82a=C5=82a C=
+i ca=C5=82kowit=C4=85 sum=C4=99 (500 000
+USD) karty bankomatowej, kt=C3=B3r=C4=85 dla Ciebie zachowa=C5=82em.
 
-  [ bp: Remove "we", add examples. ]
+Z wyrazami szacunku,
 
-Signed-off-by: Jan Beulich <jbeulich@suse.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Link: https://lore.kernel.org/r/b8192e8a-13ef-6ac6-6364-8ba58992cd1d@suse.com
----
- arch/x86/include/asm/paravirt_types.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/arch/x86/include/asm/paravirt_types.h b/arch/x86/include/asm/paravirt_types.h
-index a69012e..e159146 100644
---- a/arch/x86/include/asm/paravirt_types.h
-+++ b/arch/x86/include/asm/paravirt_types.h
-@@ -279,7 +279,7 @@ extern void (*paravirt_iret)(void);
- 
- #define paravirt_type(op)				\
- 	[paravirt_typenum] "i" (PARAVIRT_PATCH(op)),	\
--	[paravirt_opptr] "i" (&(pv_ops.op))
-+	[paravirt_opptr] "m" (pv_ops.op)
- #define paravirt_clobber(clobber)		\
- 	[paravirt_clobber] "i" (clobber)
- 
-@@ -316,7 +316,7 @@ int paravirt_disable_iospace(void);
-  */
- #define PARAVIRT_CALL					\
- 	ANNOTATE_RETPOLINE_SAFE				\
--	"call *%c[paravirt_opptr];"
-+	"call *%[paravirt_opptr];"
- 
- /*
-  * These macros are intended to wrap calls through one of the paravirt
+Pan Abraham Morrison
