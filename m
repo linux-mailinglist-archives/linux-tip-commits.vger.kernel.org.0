@@ -2,111 +2,97 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A66E49B7AF
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 25 Jan 2022 16:34:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 456A549BAC7
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 25 Jan 2022 18:58:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1357652AbiAYPet (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 25 Jan 2022 10:34:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52060 "EHLO
+        id S1345691AbiAYR5Z (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 25 Jan 2022 12:57:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57354 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1353755AbiAYPck (ORCPT
+        with ESMTP id S1385267AbiAYRzh (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 25 Jan 2022 10:32:40 -0500
-Received: from mail-io1-xd34.google.com (mail-io1-xd34.google.com [IPv6:2607:f8b0:4864:20::d34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23B2AC06175B
-        for <linux-tip-commits@vger.kernel.org>; Tue, 25 Jan 2022 07:20:46 -0800 (PST)
-Received: by mail-io1-xd34.google.com with SMTP id e79so24030802iof.13
-        for <linux-tip-commits@vger.kernel.org>; Tue, 25 Jan 2022 07:20:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=IEMma1eGW5sQblzU1//BqOEn5E488+F+nzzq2q8j3TU=;
-        b=Ax85Rof6PBMBG+MGZzS0xiFN8n2vWSwUEcvoUa97lsR5/qokCV8HhkYfy+vXhRnPBX
-         LlEiIHnhXKYWNOMqyqgCHLJucHNCl8fpS9B7fV+rUmZetY6rz63+U5LJIMtdKCY71oKG
-         jKea6rI+oDY0PWphiDlK3bFvhw69wUhxbgoSnQrHwXV3xOD9oZPU6CaOxsuuO15fY9Vn
-         xZp82q6HTq2mu4e9ek0L2tJsFfjbsut6IqFoWhIgl+lY7eyiM8iRJIf1PRb7ZMkxGYoM
-         U74URDDvnKFjOZvzW7nwPQ8qYNySJsvtGFNUrcFYxJyJKX/So4oy56qEITZ9dPvK6faH
-         2EzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=IEMma1eGW5sQblzU1//BqOEn5E488+F+nzzq2q8j3TU=;
-        b=MSb77QhiYiOSXaZcbHE2HUG8pFh07/M6vdtqg7fPh0/QJ9qprSdu7/zkBrfH7RWZgz
-         DbWpby4IW95StEnqrDLU5Q8wDup06SY+dgzDp289If8GagYLCnrrv9069cvODYF6Ahuk
-         5Ge5XHYEh0xre0pZGJ6LyYsXZL0j+V5kMHhtEN6NEhXX+7wl1NtpEZO/t1SN1STgFLbK
-         PHHTlWfw4Jkcli8MRKeFy5Aw/EBJC1x4OmVrv6oF1yHLXJBXeFYZJeGYI9vTL24Q+0mw
-         5oZc/IkhcXStM3a2+Zj1L/+4dsJAwSVuyg+dNCSscLy0cxudBxGkQYxkuaX+FnyA8q9I
-         c1aQ==
-X-Gm-Message-State: AOAM530IhNqS/BVPWrVLwCJdKU0i7sWuaKNdDtE51QpuDIDclU/9C/d5
-        Z7IXlqwXrR8M3TBdKxzb7CqvJSsyvRgxf4p0KNc=
-X-Google-Smtp-Source: ABdhPJyOANnTMNkPnzQdJ7/VlcaN8SMh5oyOhqCSYzNcTJ/da2yiQ+3biKj36bhUI65nK+cp5oMSoSY6+0CXLQ9usCM=
-X-Received: by 2002:a02:cd1c:: with SMTP id g28mr4262141jaq.189.1643124045564;
- Tue, 25 Jan 2022 07:20:45 -0800 (PST)
+        Tue, 25 Jan 2022 12:55:37 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0541C061753;
+        Tue, 25 Jan 2022 09:55:36 -0800 (PST)
+Date:   Tue, 25 Jan 2022 17:55:32 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1643133334;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=XDyWzT40y6W7zz1MmiwXNMh+3a0HubyZ5kxWop7Bb1o=;
+        b=t5ohNN3ixcVkB53gYEyFF0Mg4UaL6z5v9wt3lW+p0XbZ5x0/Z9vJ2BAOUkzXl/LzcB3JRk
+        uNYqMQcmwRHmzn7T0U0conMen7a2qTFxLTgE0PLbNGKfYlnckQbwx/Rtbnn+hd96U7/K6V
+        CogTZ82bDfGOyTmeCRy7D99Vp7o5eIw5BdPrp17LN6lG7Fw3AuVJTIc4pRhyu0gPNmIx1q
+        /dcUUZ4SNCV2qKZisUBR99vvt74mqXqVKSVjAP2ClbJB4V0uL2UlhjT27Q4GF2pjqwlKWZ
+        JjU+5UYHF+tAY7zPh2JwpiYmjrX3nlRXCa+ZYpyRQioY+BqtUpbf17amHAfmKQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1643133334;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=XDyWzT40y6W7zz1MmiwXNMh+3a0HubyZ5kxWop7Bb1o=;
+        b=QQS0FmdAXDaFnKvH1x4TqdaUTckBMb+KbEzJH7hWQj45gInbbV41Ly9XAyGW5tJEr2Y1nS
+        2jkkUhVSR4BgryDw==
+From:   "tip-bot2 for Tony Luck" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/urgent] x86/cpu: Add Xeon Icelake-D to list of CPUs that
+ support PPIN
+Cc:     Ailin Xu <ailin.xu@intel.com>, Tony Luck <tony.luck@intel.com>,
+        Borislav Petkov <bp@suse.de>, <stable@vger.kernel.org>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20220121174743.1875294-2-tony.luck@intel.com>
+References: <20220121174743.1875294-2-tony.luck@intel.com>
 MIME-Version: 1.0
-Received: by 2002:a05:6e02:1566:0:0:0:0 with HTTP; Tue, 25 Jan 2022 07:20:45
- -0800 (PST)
-Reply-To: abrahammorrison443@gmail.com
-From:   Abraham Morrison <awochambers004@gmail.com>
-Date:   Tue, 25 Jan 2022 07:20:45 -0800
-Message-ID: <CAH2diS5sKKLres7iCGdCiSRqEKW=-m0zp0Jw=Oe0X4DWq=dsHw@mail.gmail.com>
-Subject: Good day!
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Message-ID: <164313333280.16921.9365038595618004818.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-Prosz=C4=99 o uwag=C4=99,
+The following commit has been merged into the x86/urgent branch of tip:
 
-Jak si=C4=99 masz? Mam nadziej=C4=99, =C5=BCe jeste=C5=9B zdrowy i zdrowy? =
-Informuj=C4=99, =C5=BCe
-uda=C5=82o mi si=C4=99 zako=C5=84czy=C4=87 transakcj=C4=99 z pomoc=C4=85 no=
-wego partnera z Indii i
-teraz =C5=9Brodki zosta=C5=82y przelane do Indii na konto bankowe nowego
-partnera.
+Commit-ID:     e464121f2d40eabc7d11823fb26db807ce945df4
+Gitweb:        https://git.kernel.org/tip/e464121f2d40eabc7d11823fb26db807ce945df4
+Author:        Tony Luck <tony.luck@intel.com>
+AuthorDate:    Fri, 21 Jan 2022 09:47:38 -08:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Tue, 25 Jan 2022 18:40:30 +01:00
 
-W mi=C4=99dzyczasie zdecydowa=C5=82em si=C4=99 zrekompensowa=C4=87 ci sum=
-=C4=99 500 000 $
-(tylko pi=C4=99=C4=87set tysi=C4=99cy dolar=C3=B3w ameryka=C5=84skich) z po=
-wodu twoich
-wcze=C5=9Bniejszych wysi=C5=82k=C3=B3w, chocia=C5=BC mnie rozczarowa=C5=82e=
-=C5=9B. Niemniej jednak
-bardzo si=C4=99 ciesz=C4=99 z pomy=C5=9Blnego zako=C5=84czenia transakcji b=
-ez =C5=BCadnego
-problemu i dlatego postanowi=C5=82em zrekompensowa=C4=87 Ci kwot=C4=99 500 =
-000 $,
-aby=C5=9B podzieli=C5=82 si=C4=99 ze mn=C4=85 rado=C5=9Bci=C4=85.
+x86/cpu: Add Xeon Icelake-D to list of CPUs that support PPIN
 
-Radz=C4=99 skontaktowa=C4=87 si=C4=99 z moj=C4=85 sekretark=C4=85 w sprawie=
- karty bankomatowej
-o warto=C5=9Bci 500 000 $, kt=C3=B3r=C4=85 zachowa=C5=82em dla Ciebie. Skon=
-taktuj si=C4=99 z
-ni=C4=85 teraz bez zw=C5=82oki.
+Missed adding the Icelake-D CPU to the list. It uses the same MSRs
+to control and read the inventory number as all the other models.
 
-Imi=C4=99: Linda Koffi
-E-mail: koffilinda785@gmail.com
+Fixes: dc6b025de95b ("x86/mce: Add Xeon Icelake to list of CPUs that support PPIN")
+Reported-by: Ailin Xu <ailin.xu@intel.com>
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20220121174743.1875294-2-tony.luck@intel.com
+---
+ arch/x86/kernel/cpu/mce/intel.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-
-Uprzejmie potwierd=C5=BA jej nast=C4=99puj=C4=85ce informacje:
-
-Twoje pe=C5=82ne imi=C4=99:........
-Tw=C3=B3j adres:..........
-Tw=C3=B3j kraj:..........
-Tw=C3=B3j wiek:.........
-Tw=C3=B3j zaw=C3=B3d:..........
-Tw=C3=B3j numer telefonu kom=C3=B3rkowego:..........
-Tw=C3=B3j paszport lub prawo jazdy:........
-
-Pami=C4=99taj, =C5=BCe je=C5=9Bli nie prze=C5=9Blesz jej powy=C5=BCszych in=
-formacji
-kompletnych, nie wyda ci karty bankomatowej, poniewa=C5=BC musi si=C4=99
-upewni=C4=87, =C5=BCe to ty. Popro=C5=9B j=C4=85, aby przes=C5=82a=C5=82a C=
-i ca=C5=82kowit=C4=85 sum=C4=99 (500 000
-USD) karty bankomatowej, kt=C3=B3r=C4=85 dla Ciebie zachowa=C5=82em.
-
-Z wyrazami szacunku,
-
-Pan Abraham Morrison
+diff --git a/arch/x86/kernel/cpu/mce/intel.c b/arch/x86/kernel/cpu/mce/intel.c
+index bb9a46a..baafbb3 100644
+--- a/arch/x86/kernel/cpu/mce/intel.c
++++ b/arch/x86/kernel/cpu/mce/intel.c
+@@ -486,6 +486,7 @@ static void intel_ppin_init(struct cpuinfo_x86 *c)
+ 	case INTEL_FAM6_BROADWELL_X:
+ 	case INTEL_FAM6_SKYLAKE_X:
+ 	case INTEL_FAM6_ICELAKE_X:
++	case INTEL_FAM6_ICELAKE_D:
+ 	case INTEL_FAM6_SAPPHIRERAPIDS_X:
+ 	case INTEL_FAM6_XEON_PHI_KNL:
+ 	case INTEL_FAM6_XEON_PHI_KNM:
