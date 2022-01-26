@@ -2,54 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DA15949CAD2
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 26 Jan 2022 14:30:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E08B49CAF5
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 26 Jan 2022 14:37:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229554AbiAZNag (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 26 Jan 2022 08:30:36 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:57088 "EHLO
+        id S235120AbiAZNhy (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 26 Jan 2022 08:37:54 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:57124 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239594AbiAZNad (ORCPT
+        with ESMTP id S240486AbiAZNhv (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 26 Jan 2022 08:30:33 -0500
-Date:   Wed, 26 Jan 2022 13:30:30 -0000
+        Wed, 26 Jan 2022 08:37:51 -0500
+Date:   Wed, 26 Jan 2022 13:37:48 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1643203832;
+        s=2020; t=1643204270;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=kwpsyTbb3pWxBC08bJQCOrjmcYrfudgHpnpWJhGSl2o=;
-        b=UIhnfZf7f2wuk7gqpGp2w5ZEqZj5drVnp/SRZRTudcq/aateTRL7V+H71/REL9ozxmCLuR
-        KMns3IpGnX8YAcdbON3kMiMUzGcar3z2bR9sK0u0GgTQYfEomCzSRQOsYo3rgk6ETKZjYo
-        H1O2zOU44lN/qKU8wB2QrWAf60dU+DWd67FdtuQfk+Mc2e73x+b3YlY7co5PndFHySbcTN
-        h96lb71PvQDkN9Vy0bi146eOyuQNngjD5x603bh2g/rzucZd8uJn9YR033A/z7u/3sIzY3
-        9evtdMZjYSfM96LcgiVPwDtctw0u5pdQO6e/dMzp2XvUMCw0hsylunK4ZZCIbQ==
+        bh=qgWC/j9vvHRiJ1aesc9zKJZuMQm1gEs0oXzGNKru0W4=;
+        b=arjDFbaRSKXd1stWtmza7naEckCt1YvzZc+myHg/2Gx7pYSEcm9aUkEFZIKGxb6hMuQlrS
+        sHezDT36D9Eg74Ni/OtnjzNSNxBbIOHEx7Z7PAMwYp8perajZl2hD9Gte3MUmhraBBxWST
+        91h9Ro/jw345pluhtqwuq9Ho0sy3jEeuFWw/I7CipEDza5l0uRd+2eaqqCoR2CweRVDQOK
+        g4Tfu0xNwi2kJspU7RwSpJ3w6M6kdzs7kG033BT80fe9RCEZPTCVvru24ELrKIF+It5GjI
+        RV/admGkKpJjQ5Fi/gifGiigfvRgPicvVsSc4opIY0ePWvb9CjC883SKepROfw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1643203832;
+        s=2020e; t=1643204270;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=kwpsyTbb3pWxBC08bJQCOrjmcYrfudgHpnpWJhGSl2o=;
-        b=wa6loCnYCPlRbna/IOyt6TE7ZjxV5qQpmyTFSdAY4aY9en5LW2v8XizVE0U/QuxeKBWf7z
-        IL55jCV9geWIRNCQ==
-From:   "tip-bot2 for Mark Rutland" <tip-bot2@linutronix.de>
+        bh=qgWC/j9vvHRiJ1aesc9zKJZuMQm1gEs0oXzGNKru0W4=;
+        b=T+Yf1LuTPDK6qQWDThdM0j/44vx6GtO9xrkNdU4966m/JXh/cJcJ4TeXBAPfodUsCjhxA8
+        TjJ3WOwnfgHRTgDQ==
+From:   "tip-bot2 for Mathieu Desnoyers" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] MAINTAINERS: add myself as reviewer for atomics
-Cc:     Mark Rutland <mark.rutland@arm.com>,
+Subject: [tip: sched/urgent] sched/membarrier: Fix membarrier-rseq fence
+ command missing from query bitmask
+Cc:     Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        Will Deacon <will@kernel.org>, x86@kernel.org,
+        <stable@vger.kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220104095018.1990058-1-mark.rutland@arm.com>
-References: <20220104095018.1990058-1-mark.rutland@arm.com>
+In-Reply-To: <20220117203010.30129-1-mathieu.desnoyers@efficios.com>
+References: <20220117203010.30129-1-mathieu.desnoyers@efficios.com>
 MIME-Version: 1.0
-Message-ID: <164320383081.16921.9909201595548579959.tip-bot2@tip-bot2>
+Message-ID: <164320426897.16921.6733520040853654052.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,41 +58,71 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the locking/core branch of tip:
+The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     54dff232142e255ff644d73de1c8d80122f5ad7b
-Gitweb:        https://git.kernel.org/tip/54dff232142e255ff644d73de1c8d80122f5ad7b
-Author:        Mark Rutland <mark.rutland@arm.com>
-AuthorDate:    Tue, 04 Jan 2022 09:50:18 
+Commit-ID:     809232619f5b15e31fb3563985e705454f32621f
+Gitweb:        https://git.kernel.org/tip/809232619f5b15e31fb3563985e705454f32621f
+Author:        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+AuthorDate:    Mon, 17 Jan 2022 15:30:10 -05:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 25 Jan 2022 22:30:27 +01:00
+CommitterDate: Tue, 25 Jan 2022 22:30:25 +01:00
 
-MAINTAINERS: add myself as reviewer for atomics
+sched/membarrier: Fix membarrier-rseq fence command missing from query bitmask
 
-As I've fiddled about with the atomic infrastructure a fair bit now,
-Peter suggested I should add myself as a reviewer or maintainer to make
-sure I'm Cc'd on anything I might have an opinion on.
+The membarrier command MEMBARRIER_CMD_QUERY allows querying the
+available membarrier commands. When the membarrier-rseq fence commands
+were added, a new MEMBARRIER_CMD_PRIVATE_EXPEDITED_RSEQ_BITMASK was
+introduced with the intent to expose them with the MEMBARRIER_CMD_QUERY
+command, the but it was never added to MEMBARRIER_CMD_BITMASK.
 
-For now, add myself as a reviewer.
+The membarrier-rseq fence commands are therefore not wired up with the
+query command.
 
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Rename MEMBARRIER_CMD_PRIVATE_EXPEDITED_RSEQ_BITMASK to
+MEMBARRIER_PRIVATE_EXPEDITED_RSEQ_BITMASK (the bitmask is not a command
+per-se), and change the erroneous
+MEMBARRIER_CMD_REGISTER_PRIVATE_EXPEDITED_RSEQ_BITMASK (which does not
+actually exist) to MEMBARRIER_CMD_REGISTER_PRIVATE_EXPEDITED_RSEQ.
+
+Wire up MEMBARRIER_PRIVATE_EXPEDITED_RSEQ_BITMASK in
+MEMBARRIER_CMD_BITMASK. Fixing this allows discovering availability of
+the membarrier-rseq fence feature.
+
+Fixes: 2a36ab717e8f ("rseq/membarrier: Add MEMBARRIER_CMD_PRIVATE_EXPEDITED_RSEQ")
+Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Boqun Feng <boqun.feng@gmail.com>
-Acked-by: Will Deacon <will@kernel.org>
-Link: https://lore.kernel.org/r/20220104095018.1990058-1-mark.rutland@arm.com
+Cc: <stable@vger.kernel.org> # 5.10+
+Link: https://lkml.kernel.org/r/20220117203010.30129-1-mathieu.desnoyers@efficios.com
 ---
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/sched/membarrier.c |  9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index ea3e6c9..bccca3e 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3193,6 +3193,7 @@ ATOMIC INFRASTRUCTURE
- M:	Will Deacon <will@kernel.org>
- M:	Peter Zijlstra <peterz@infradead.org>
- R:	Boqun Feng <boqun.feng@gmail.com>
-+R:	Mark Rutland <mark.rutland@arm.com>
- L:	linux-kernel@vger.kernel.org
- S:	Maintained
- F:	arch/*/include/asm/atomic*.h
+diff --git a/kernel/sched/membarrier.c b/kernel/sched/membarrier.c
+index b5add64..3d28254 100644
+--- a/kernel/sched/membarrier.c
++++ b/kernel/sched/membarrier.c
+@@ -147,11 +147,11 @@
+ #endif
+ 
+ #ifdef CONFIG_RSEQ
+-#define MEMBARRIER_CMD_PRIVATE_EXPEDITED_RSEQ_BITMASK		\
++#define MEMBARRIER_PRIVATE_EXPEDITED_RSEQ_BITMASK		\
+ 	(MEMBARRIER_CMD_PRIVATE_EXPEDITED_RSEQ			\
+-	| MEMBARRIER_CMD_REGISTER_PRIVATE_EXPEDITED_RSEQ_BITMASK)
++	| MEMBARRIER_CMD_REGISTER_PRIVATE_EXPEDITED_RSEQ)
+ #else
+-#define MEMBARRIER_CMD_PRIVATE_EXPEDITED_RSEQ_BITMASK	0
++#define MEMBARRIER_PRIVATE_EXPEDITED_RSEQ_BITMASK	0
+ #endif
+ 
+ #define MEMBARRIER_CMD_BITMASK						\
+@@ -159,7 +159,8 @@
+ 	| MEMBARRIER_CMD_REGISTER_GLOBAL_EXPEDITED			\
+ 	| MEMBARRIER_CMD_PRIVATE_EXPEDITED				\
+ 	| MEMBARRIER_CMD_REGISTER_PRIVATE_EXPEDITED			\
+-	| MEMBARRIER_PRIVATE_EXPEDITED_SYNC_CORE_BITMASK)
++	| MEMBARRIER_PRIVATE_EXPEDITED_SYNC_CORE_BITMASK		\
++	| MEMBARRIER_PRIVATE_EXPEDITED_RSEQ_BITMASK)
+ 
+ static void ipi_mb(void *info)
+ {
