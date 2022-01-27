@@ -2,54 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E08B49CAF5
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 26 Jan 2022 14:37:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 82ED649E195
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Jan 2022 12:50:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235120AbiAZNhy (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 26 Jan 2022 08:37:54 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:57124 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240486AbiAZNhv (ORCPT
+        id S232984AbiA0LuQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 27 Jan 2022 06:50:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40292 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230026AbiA0LuP (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 26 Jan 2022 08:37:51 -0500
-Date:   Wed, 26 Jan 2022 13:37:48 -0000
+        Thu, 27 Jan 2022 06:50:15 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CC56C061714;
+        Thu, 27 Jan 2022 03:50:15 -0800 (PST)
+Date:   Thu, 27 Jan 2022 11:50:12 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1643204270;
+        s=2020; t=1643284213;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=qgWC/j9vvHRiJ1aesc9zKJZuMQm1gEs0oXzGNKru0W4=;
-        b=arjDFbaRSKXd1stWtmza7naEckCt1YvzZc+myHg/2Gx7pYSEcm9aUkEFZIKGxb6hMuQlrS
-        sHezDT36D9Eg74Ni/OtnjzNSNxBbIOHEx7Z7PAMwYp8perajZl2hD9Gte3MUmhraBBxWST
-        91h9Ro/jw345pluhtqwuq9Ho0sy3jEeuFWw/I7CipEDza5l0uRd+2eaqqCoR2CweRVDQOK
-        g4Tfu0xNwi2kJspU7RwSpJ3w6M6kdzs7kG033BT80fe9RCEZPTCVvru24ELrKIF+It5GjI
-        RV/admGkKpJjQ5Fi/gifGiigfvRgPicvVsSc4opIY0ePWvb9CjC883SKepROfw==
+        bh=Uz3HSjIa9cRJSSIU4iaPkMhcTw6INU0OtISKFygmtwI=;
+        b=lIBp1+ZZR4tv7ixPBbbMMCftaVl0qCa2s7+gvfD/fh3nTpP1xyYwlGAkulnb0H8HaGwV5k
+        BIiuq7EB8PsAqrUz1lOfaHEvPdFiS6xYLlZsKzOG1KpojpztrHQMwbtqEDsUWlbmxwf1nL
+        MhHeIxOnsDyFwWZz829jOjUI3OIp4D1WnZ7hy5ijI5zUKKEsQOeAU2G9rmvApSKwi+mSTW
+        pruKxSm2TM5feFr9+d1vRKetOUkImAXoU8+gJ1+Ls2j21MNZ46PJ8Y5fH655kYc4UlaCxc
+        BDTrOhV3MVopL9Ib7SWilDXLD6dO1DqEEo7aw5SAItLgtD57ZP8neoSAVtlddw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1643204270;
+        s=2020e; t=1643284213;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=qgWC/j9vvHRiJ1aesc9zKJZuMQm1gEs0oXzGNKru0W4=;
-        b=T+Yf1LuTPDK6qQWDThdM0j/44vx6GtO9xrkNdU4966m/JXh/cJcJ4TeXBAPfodUsCjhxA8
-        TjJ3WOwnfgHRTgDQ==
-From:   "tip-bot2 for Mathieu Desnoyers" <tip-bot2@linutronix.de>
+        bh=Uz3HSjIa9cRJSSIU4iaPkMhcTw6INU0OtISKFygmtwI=;
+        b=j6TeOcvfljAFSS6+xaP2lQEKj8665qWyYmpLAA8NsyaeJygB9To3j7LBov5R++0XOqn3QW
+        pUVYsB8T6SALEfAQ==
+From:   "tip-bot2 for Namhyung Kim" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] sched/membarrier: Fix membarrier-rseq fence
- command missing from query bitmask
-Cc:     Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        <stable@vger.kernel.org>, x86@kernel.org,
+Subject: [tip: perf/urgent] perf/core: Fix cgroup event list management
+Cc:     Namhyung Kim <namhyung@kernel.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220117203010.30129-1-mathieu.desnoyers@efficios.com>
-References: <20220117203010.30129-1-mathieu.desnoyers@efficios.com>
+In-Reply-To: <20220124195808.2252071-1-namhyung@kernel.org>
+References: <20220124195808.2252071-1-namhyung@kernel.org>
 MIME-Version: 1.0
-Message-ID: <164320426897.16921.6733520040853654052.tip-bot2@tip-bot2>
+Message-ID: <164328421215.16921.8709898069420344232.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,71 +59,78 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/urgent branch of tip:
+The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     809232619f5b15e31fb3563985e705454f32621f
-Gitweb:        https://git.kernel.org/tip/809232619f5b15e31fb3563985e705454f32621f
-Author:        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-AuthorDate:    Mon, 17 Jan 2022 15:30:10 -05:00
+Commit-ID:     c5de60cd622a2607c043ba65e25a6e9998a369f9
+Gitweb:        https://git.kernel.org/tip/c5de60cd622a2607c043ba65e25a6e9998a369f9
+Author:        Namhyung Kim <namhyung@kernel.org>
+AuthorDate:    Mon, 24 Jan 2022 11:58:08 -08:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 25 Jan 2022 22:30:25 +01:00
+CommitterDate: Wed, 26 Jan 2022 15:06:06 +01:00
 
-sched/membarrier: Fix membarrier-rseq fence command missing from query bitmask
+perf/core: Fix cgroup event list management
 
-The membarrier command MEMBARRIER_CMD_QUERY allows querying the
-available membarrier commands. When the membarrier-rseq fence commands
-were added, a new MEMBARRIER_CMD_PRIVATE_EXPEDITED_RSEQ_BITMASK was
-introduced with the intent to expose them with the MEMBARRIER_CMD_QUERY
-command, the but it was never added to MEMBARRIER_CMD_BITMASK.
+The active cgroup events are managed in the per-cpu cgrp_cpuctx_list.
+This list is only accessed from current cpu and not protected by any
+locks.  But from the commit ef54c1a476ae ("perf: Rework
+perf_event_exit_event()"), it's possible to access (actually modify)
+the list from another cpu.
 
-The membarrier-rseq fence commands are therefore not wired up with the
-query command.
+In the perf_remove_from_context(), it can remove an event from the
+context without an IPI when the context is not active.  This is not
+safe with cgroup events which can have some active events in the
+context even if ctx->is_active is 0 at the moment.  The target cpu
+might be in the middle of list iteration at the same time.
 
-Rename MEMBARRIER_CMD_PRIVATE_EXPEDITED_RSEQ_BITMASK to
-MEMBARRIER_PRIVATE_EXPEDITED_RSEQ_BITMASK (the bitmask is not a command
-per-se), and change the erroneous
-MEMBARRIER_CMD_REGISTER_PRIVATE_EXPEDITED_RSEQ_BITMASK (which does not
-actually exist) to MEMBARRIER_CMD_REGISTER_PRIVATE_EXPEDITED_RSEQ.
+If the event is enabled when it's about to be closed, it might call
+perf_cgroup_event_disable() and list_del() with the cgrp_cpuctx_list
+on a different cpu.
 
-Wire up MEMBARRIER_PRIVATE_EXPEDITED_RSEQ_BITMASK in
-MEMBARRIER_CMD_BITMASK. Fixing this allows discovering availability of
-the membarrier-rseq fence feature.
+This resulted in a crash due to an invalid list pointer access during
+the cgroup list traversal on the cpu which the event belongs to.
 
-Fixes: 2a36ab717e8f ("rseq/membarrier: Add MEMBARRIER_CMD_PRIVATE_EXPEDITED_RSEQ")
-Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Let's fallback to IPI to access the cgrp_cpuctx_list from that cpu.
+Similarly, perf_install_in_context() should use IPI for the cgroup
+events too.
+
+Fixes: ef54c1a476ae ("perf: Rework perf_event_exit_event()")
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: <stable@vger.kernel.org> # 5.10+
-Link: https://lkml.kernel.org/r/20220117203010.30129-1-mathieu.desnoyers@efficios.com
+Link: https://lkml.kernel.org/r/20220124195808.2252071-1-namhyung@kernel.org
 ---
- kernel/sched/membarrier.c |  9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ kernel/events/core.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/sched/membarrier.c b/kernel/sched/membarrier.c
-index b5add64..3d28254 100644
---- a/kernel/sched/membarrier.c
-+++ b/kernel/sched/membarrier.c
-@@ -147,11 +147,11 @@
- #endif
- 
- #ifdef CONFIG_RSEQ
--#define MEMBARRIER_CMD_PRIVATE_EXPEDITED_RSEQ_BITMASK		\
-+#define MEMBARRIER_PRIVATE_EXPEDITED_RSEQ_BITMASK		\
- 	(MEMBARRIER_CMD_PRIVATE_EXPEDITED_RSEQ			\
--	| MEMBARRIER_CMD_REGISTER_PRIVATE_EXPEDITED_RSEQ_BITMASK)
-+	| MEMBARRIER_CMD_REGISTER_PRIVATE_EXPEDITED_RSEQ)
- #else
--#define MEMBARRIER_CMD_PRIVATE_EXPEDITED_RSEQ_BITMASK	0
-+#define MEMBARRIER_PRIVATE_EXPEDITED_RSEQ_BITMASK	0
- #endif
- 
- #define MEMBARRIER_CMD_BITMASK						\
-@@ -159,7 +159,8 @@
- 	| MEMBARRIER_CMD_REGISTER_GLOBAL_EXPEDITED			\
- 	| MEMBARRIER_CMD_PRIVATE_EXPEDITED				\
- 	| MEMBARRIER_CMD_REGISTER_PRIVATE_EXPEDITED			\
--	| MEMBARRIER_PRIVATE_EXPEDITED_SYNC_CORE_BITMASK)
-+	| MEMBARRIER_PRIVATE_EXPEDITED_SYNC_CORE_BITMASK		\
-+	| MEMBARRIER_PRIVATE_EXPEDITED_RSEQ_BITMASK)
- 
- static void ipi_mb(void *info)
- {
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index b1c1928..76c754e 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -2462,7 +2462,11 @@ static void perf_remove_from_context(struct perf_event *event, unsigned long fla
+ 	 * event_function_call() user.
+ 	 */
+ 	raw_spin_lock_irq(&ctx->lock);
+-	if (!ctx->is_active) {
++	/*
++	 * Cgroup events are per-cpu events, and must IPI because of
++	 * cgrp_cpuctx_list.
++	 */
++	if (!ctx->is_active && !is_cgroup_event(event)) {
+ 		__perf_remove_from_context(event, __get_cpu_context(ctx),
+ 					   ctx, (void *)flags);
+ 		raw_spin_unlock_irq(&ctx->lock);
+@@ -2895,11 +2899,14 @@ perf_install_in_context(struct perf_event_context *ctx,
+ 	 * perf_event_attr::disabled events will not run and can be initialized
+ 	 * without IPI. Except when this is the first event for the context, in
+ 	 * that case we need the magic of the IPI to set ctx->is_active.
++	 * Similarly, cgroup events for the context also needs the IPI to
++	 * manipulate the cgrp_cpuctx_list.
+ 	 *
+ 	 * The IOC_ENABLE that is sure to follow the creation of a disabled
+ 	 * event will issue the IPI and reprogram the hardware.
+ 	 */
+-	if (__perf_effective_state(event) == PERF_EVENT_STATE_OFF && ctx->nr_events) {
++	if (__perf_effective_state(event) == PERF_EVENT_STATE_OFF &&
++	    ctx->nr_events && !is_cgroup_event(event)) {
+ 		raw_spin_lock_irq(&ctx->lock);
+ 		if (ctx->task == TASK_TOMBSTONE) {
+ 			raw_spin_unlock_irq(&ctx->lock);
