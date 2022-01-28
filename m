@@ -2,53 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 392ED49E194
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Jan 2022 12:50:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 06A2249F479
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 28 Jan 2022 08:40:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230056AbiA0LuQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 27 Jan 2022 06:50:16 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:35906 "EHLO
+        id S1346900AbiA1HkR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 28 Jan 2022 02:40:17 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:41426 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229896AbiA0LuP (ORCPT
+        with ESMTP id S1346901AbiA1HkQ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 27 Jan 2022 06:50:15 -0500
-Date:   Thu, 27 Jan 2022 11:50:13 -0000
+        Fri, 28 Jan 2022 02:40:16 -0500
+Date:   Fri, 28 Jan 2022 07:40:13 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1643284214;
+        s=2020; t=1643355614;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=xxoBIIi2THpBDEX4AWHF0UKBEf7SvP/svreQCeoRNHo=;
-        b=pi6jf8nBA+/a8TY8KzXh5oYD+VNscMzihrZHEfJGYT0X1itYicpVkNzUaVxJVeOyjr9TEP
-        vVDQ9Fgk2W9ehlijMst4lQkYcx07Fh+JRhmqLj+D4KH6BOINC6zRm1u01NGtCkf3EKne/e
-        DZSqLg+4/ikIhL34E5giVSFyCeLzWc6mbXtFdCk7AG41lG9R8S/AjY8UOPH9N6CQJM1u5v
-        ln/XNZUUGEqODfhS37+FGgk/h2T+w2nJP68CXbml5VauBJp1N0mI6B7JfwP5ApNs4Qg3xT
-        5Q2quXaikU+g0e+gB8Nwd1jDUHE6dfquB2FXTf6NCYJdHm4Y9aR/6Pg+Vz+AAg==
+        bh=M9MSknl794TSjihMC8rAHjUSWpRj5V4NFEk22cJWKM4=;
+        b=tKGoYqLxgMQXQAt3qAwcfRR3TC36Mi6t1B66A5JCCVIgV8hQdFMkthUcgOZlnNFKGXsaGu
+        ww+hj3rpqL53XhDnKCZKGUmmv9fieYZOhN1Ag2+3KWsSBCiQzr2MJqXT2rkm5g8A5l+KYt
+        9BXobmK/nhimsqQYH3h3GtU0aszoSf3W/p3Gkc6zMeBjoP8ECpRM7blNVeh/NMSloqkidH
+        w0Vq3USINAMBfRZK50iYPvw0h2oi7bWCC8J/sf2OPXsY31ncbPaw6Nk0oaZ1aj231fTota
+        ZbhSTzGqhwisEbEX1sOiQIGbZOVeyZkhk0vYX0/5wNClNq74VUSBnoxfJHKH4A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1643284214;
+        s=2020e; t=1643355614;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=xxoBIIi2THpBDEX4AWHF0UKBEf7SvP/svreQCeoRNHo=;
-        b=9V/yQikwBCuUPPaPXo63xA3SiEY/+IPe+C1n89+oR03W1xYSdkzqtKBAyg1C9gnOsMjKqf
-        VuBx8CN7nYkC7QAQ==
-From:   "tip-bot2 for James Clark" <tip-bot2@linutronix.de>
+        bh=M9MSknl794TSjihMC8rAHjUSWpRj5V4NFEk22cJWKM4=;
+        b=jrwtoneHvyuJ9Yw2eYtRHtkI0s1sWfIzYHSjA6pzr0OXLlD1f/V3LEPdpFvsIwB0lP2/ut
+        GzlyHCC61jzpDmDg==
+From:   "tip-bot2 for Suren Baghdasaryan" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf: Always wake the parent event
-Cc:     Ruben Ayrapetyan <Ruben.Ayrapetyan@arm.com>,
-        James Clark <james.clark@arm.com>,
+Subject: [tip: sched/core] psi: Fix "no previous prototype" warnings when
+ CONFIG_CGROUPS=n
+Cc:     kernel test robot <lkp@intel.com>,
+        Suren Baghdasaryan <surenb@google.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20211206113840.130802-2-james.clark@arm.com>
-References: <20211206113840.130802-2-james.clark@arm.com>
+In-Reply-To: <20220119223940.787748-2-surenb@google.com>
+References: <20220119223940.787748-2-surenb@google.com>
 MIME-Version: 1.0
-Message-ID: <164328421307.16921.440649491005973301.tip-bot2@tip-bot2>
+Message-ID: <164335561323.16921.12837458753857472708.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -57,97 +58,66 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/urgent branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     961c39121759ad09a89598ec4ccdd34ae0468a19
-Gitweb:        https://git.kernel.org/tip/961c39121759ad09a89598ec4ccdd34ae0468a19
-Author:        James Clark <james.clark@arm.com>
-AuthorDate:    Mon, 06 Dec 2021 11:38:40 
+Commit-ID:     ec2444530612a886b406e2830d7f314d1a07d4bb
+Gitweb:        https://git.kernel.org/tip/ec2444530612a886b406e2830d7f314d1a07d4bb
+Author:        Suren Baghdasaryan <surenb@google.com>
+AuthorDate:    Wed, 19 Jan 2022 14:39:39 -08:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 26 Jan 2022 15:06:06 +01:00
+CommitterDate: Thu, 27 Jan 2022 12:57:19 +01:00
 
-perf: Always wake the parent event
+psi: Fix "no previous prototype" warnings when CONFIG_CGROUPS=n
 
-When using per-process mode and event inheritance is set to true,
-forked processes will create a new perf events via inherit_event() ->
-perf_event_alloc(). But these events will not have ring buffers
-assigned to them. Any call to wakeup will be dropped if it's called on
-an event with no ring buffer assigned because that's the object that
-holds the wakeup list.
+When CONFIG_CGROUPS is disabled psi code generates the following warnings:
 
-If the child event is disabled due to a call to
-perf_aux_output_begin() or perf_aux_output_end(), the wakeup is
-dropped leaving userspace hanging forever on the poll.
+kernel/sched/psi.c:1112:21: warning: no previous prototype for 'psi_trigger_create' [-Wmissing-prototypes]
+    1112 | struct psi_trigger *psi_trigger_create(struct psi_group *group,
+         |                     ^~~~~~~~~~~~~~~~~~
+kernel/sched/psi.c:1182:6: warning: no previous prototype for 'psi_trigger_destroy' [-Wmissing-prototypes]
+    1182 | void psi_trigger_destroy(struct psi_trigger *t)
+         |      ^~~~~~~~~~~~~~~~~~~
+kernel/sched/psi.c:1249:10: warning: no previous prototype for 'psi_trigger_poll' [-Wmissing-prototypes]
+    1249 | __poll_t psi_trigger_poll(void **trigger_ptr,
+         |          ^~~~~~~~~~~~~~~~
 
-Normally the event is explicitly re-enabled by userspace after it
-wakes up to read the aux data, but in this case it does not get woken
-up so the event remains disabled.
+Change declarations of these functions in the header to provide the
+prototypes even when they are unused.
 
-This can be reproduced when using Arm SPE and 'stress' which forks once
-before running the workload. By looking at the list of aux buffers read,
-it's apparent that they stop after the fork:
-
-  perf record -e arm_spe// -vvv -- stress -c 1
-
-With this patch applied they continue to be printed. This behaviour
-doesn't happen when using systemwide or per-cpu mode.
-
-Reported-by: Ruben Ayrapetyan <Ruben.Ayrapetyan@arm.com>
-Signed-off-by: James Clark <james.clark@arm.com>
+Fixes: 0e94682b73bf ("psi: introduce psi monitor")
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Suren Baghdasaryan <surenb@google.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20211206113840.130802-2-james.clark@arm.com
+Link: https://lkml.kernel.org/r/20220119223940.787748-2-surenb@google.com
 ---
- kernel/events/core.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ include/linux/psi.h | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 479c9e6..b1c1928 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -5985,6 +5985,8 @@ static void ring_buffer_attach(struct perf_event *event,
- 	struct perf_buffer *old_rb = NULL;
- 	unsigned long flags;
+diff --git a/include/linux/psi.h b/include/linux/psi.h
+index a70ca83..8279702 100644
+--- a/include/linux/psi.h
++++ b/include/linux/psi.h
+@@ -25,18 +25,17 @@ void psi_memstall_enter(unsigned long *flags);
+ void psi_memstall_leave(unsigned long *flags);
  
-+	WARN_ON_ONCE(event->parent);
+ int psi_show(struct seq_file *s, struct psi_group *group, enum psi_res res);
+-
+-#ifdef CONFIG_CGROUPS
+-int psi_cgroup_alloc(struct cgroup *cgrp);
+-void psi_cgroup_free(struct cgroup *cgrp);
+-void cgroup_move_task(struct task_struct *p, struct css_set *to);
+-
+ struct psi_trigger *psi_trigger_create(struct psi_group *group,
+ 			char *buf, size_t nbytes, enum psi_res res);
+ void psi_trigger_replace(void **trigger_ptr, struct psi_trigger *t);
+ 
+ __poll_t psi_trigger_poll(void **trigger_ptr, struct file *file,
+ 			poll_table *wait);
 +
- 	if (event->rb) {
- 		/*
- 		 * Should be impossible, we set this when removing
-@@ -6042,6 +6044,9 @@ static void ring_buffer_wakeup(struct perf_event *event)
- {
- 	struct perf_buffer *rb;
++#ifdef CONFIG_CGROUPS
++int psi_cgroup_alloc(struct cgroup *cgrp);
++void psi_cgroup_free(struct cgroup *cgrp);
++void cgroup_move_task(struct task_struct *p, struct css_set *to);
+ #endif
  
-+	if (event->parent)
-+		event = event->parent;
-+
- 	rcu_read_lock();
- 	rb = rcu_dereference(event->rb);
- 	if (rb) {
-@@ -6055,6 +6060,9 @@ struct perf_buffer *ring_buffer_get(struct perf_event *event)
- {
- 	struct perf_buffer *rb;
- 
-+	if (event->parent)
-+		event = event->parent;
-+
- 	rcu_read_lock();
- 	rb = rcu_dereference(event->rb);
- 	if (rb) {
-@@ -6763,7 +6771,7 @@ static unsigned long perf_prepare_sample_aux(struct perf_event *event,
- 	if (WARN_ON_ONCE(READ_ONCE(sampler->oncpu) != smp_processor_id()))
- 		goto out;
- 
--	rb = ring_buffer_get(sampler->parent ? sampler->parent : sampler);
-+	rb = ring_buffer_get(sampler);
- 	if (!rb)
- 		goto out;
- 
-@@ -6829,7 +6837,7 @@ static void perf_aux_sample_output(struct perf_event *event,
- 	if (WARN_ON_ONCE(!sampler || !data->aux_size))
- 		return;
- 
--	rb = ring_buffer_get(sampler->parent ? sampler->parent : sampler);
-+	rb = ring_buffer_get(sampler);
- 	if (!rb)
- 		return;
- 
+ #else /* CONFIG_PSI */
