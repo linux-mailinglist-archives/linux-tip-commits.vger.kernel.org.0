@@ -2,55 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B6A5B49F485
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 28 Jan 2022 08:40:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B860F4A31C7
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 29 Jan 2022 21:11:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346967AbiA1Hk0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 28 Jan 2022 02:40:26 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:41494 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346935AbiA1HkW (ORCPT
+        id S1346326AbiA2ULn (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 29 Jan 2022 15:11:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43390 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234289AbiA2ULn (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 28 Jan 2022 02:40:22 -0500
-Date:   Fri, 28 Jan 2022 07:40:20 -0000
+        Sat, 29 Jan 2022 15:11:43 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45117C061714;
+        Sat, 29 Jan 2022 12:11:43 -0800 (PST)
+Date:   Sat, 29 Jan 2022 20:11:39 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1643355621;
+        s=2020; t=1643487100;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=xhcGxnKCmlfNzOrnw6CWtPC5obKr0sOrWxGxQpuO7ZU=;
-        b=VbC0nuF3/gAU65zDmVRlI4QLnv2LnASX0uwGdVzU+L8lTIp7BpKGeCkM4VHHorqpaJqat3
-        j+rDQFh4leJnFaNckyYKDTYgFAOUkUNnNr2gry+8LgA90sU5tjbWSMMJRmTAGN+p1YkGXA
-        5UoPeLgi5b3G8u0P3elBwPedxGSz29SJEJXfNzy7w2nuhqE2wgjowzjm3Iokj2rMrk8bX2
-        hjbak/92eFFaWjFw6dOn4GxkB8ZBFcG6a9b6rKt2Ix7A5dkmHYMJd1wkM4mNgpTBy5g/QI
-        +BYmAge4b30kcZv0xAoRzRhMsToOKwY2zF9fsOgIjrSvdFp2OwwzSFo7u0J5fA==
+        bh=FYaQWgIvptgh10iYW/4FbMUdUbbw/s1ijxzyBKJ8MCU=;
+        b=ZFxLeQDiSsI4kLtzhgxHeyVlSu9cmfrP8gR3RF9Uu/nCqyi7E4L2XL9L031jWx0Gu2R9aS
+        teKhpVXxnDK7Qk03yrvk5PLq3gGDlk8Ke7gXTC7JBWtGOFcUzeNlem2dEQuk7i10+wxQFK
+        iOeqLQh0+F0L1gCKlkZrYyOmRNUjjRkLCVFzfmCeCrzxxX0pOxJOoD5X77hxjHwunGY/Bl
+        ZeqDZb92CoFGNaS7VMThe7rKqZpb31WUlsqV/n92AfxFYzgBiwufLA4rhFIRbaTQpOW+D5
+        i/HxQ+KtxAu4Ss7YEFo9zdvg6oKfuAJbauYgpbdpbzR0TLfVAcJHB3z7h3bZkA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1643355621;
+        s=2020e; t=1643487100;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=xhcGxnKCmlfNzOrnw6CWtPC5obKr0sOrWxGxQpuO7ZU=;
-        b=CqAtjgsBQXcwyU3fhkqCqgbszNnaS80MzALQzIBBcuJXCvkuUP956x5Ryc4BzQ8doAYBA8
-        ESGjZgVGvkdwZLCg==
-From:   "tip-bot2 for Bharata B Rao" <tip-bot2@linutronix.de>
+        bh=FYaQWgIvptgh10iYW/4FbMUdUbbw/s1ijxzyBKJ8MCU=;
+        b=eB/7M4EByB/3DWwnoZGugA2cqQOeJRUBURtB+HPB8CVHgj8udfO5xekZIgLpH3o+26H0ye
+        z2NyZ8geTqRvF0CQ==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/debug: Remove mpol_get/put and
- task_lock/unlock from sched_show_numa
-Cc:     Bharata B Rao <bharata@amd.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
-        Mel Gorman <mgorman@suse.de>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20220118050515.2973-1-bharata@amd.com>
-References: <20220118050515.2973-1-bharata@amd.com>
+Subject: [tip: irq/urgent] Merge tag 'irqchip-fixes-5.17-1' of
+ git://git.kernel.org/pub/scm/linux/kernel/git/maz/arm-platforms into
+ irq/urgent
+Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, maz@kernel.org
+In-Reply-To: <20220128174217.517041-1-maz@kernel.org>
+References: <20220128174217.517041-1-maz@kernel.org>
 MIME-Version: 1.0
-Message-ID: <164335562004.16921.7101642205825756998.tip-bot2@tip-bot2>
+Message-ID: <164348709902.16921.12003619101749886028.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,60 +59,30 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the irq/urgent branch of tip:
 
-Commit-ID:     28c988c3ec29db74a1dda631b18785958d57df4f
-Gitweb:        https://git.kernel.org/tip/28c988c3ec29db74a1dda631b18785958d57df4f
-Author:        Bharata B Rao <bharata@amd.com>
-AuthorDate:    Tue, 18 Jan 2022 10:35:15 +05:30
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Thu, 27 Jan 2022 12:57:18 +01:00
+Commit-ID:     243d30803744155a54bfb8a844cc964945cfd9a1
+Gitweb:        https://git.kernel.org/tip/243d30803744155a54bfb8a844cc964945cfd9a1
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Sat, 29 Jan 2022 21:03:20 +01:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Sat, 29 Jan 2022 21:03:20 +01:00
 
-sched/debug: Remove mpol_get/put and task_lock/unlock from sched_show_numa
+Merge tag 'irqchip-fixes-5.17-1' of git://git.kernel.org/pub/scm/linux/kernel/git/maz/arm-platforms into irq/urgent
 
-The older format of /proc/pid/sched printed home node info which
-required the mempolicy and task lock around mpol_get(). However
-the format has changed since then and there is no need for
-sched_show_numa() any more to have mempolicy argument,
-asssociated mpol_get/put and task_lock/unlock. Remove them.
+Pull irqchip fixes from Marc Zyngier:
 
-Fixes: 397f2378f1361 ("sched/numa: Fix numa balancing stats in /proc/pid/sched")
-Signed-off-by: Bharata B Rao <bharata@amd.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Acked-by: Mel Gorman <mgorman@suse.de>
-Link: https://lore.kernel.org/r/20220118050515.2973-1-bharata@amd.com
+  - Drop an unused private data field in the AIC driver
+
+  - Various fixes to the realtek-rtl driver
+
+  - Make the GICv3 ITS driver compile again in !SMP configurations
+
+  - Force reset of the GICv3 ITSs at probe time to avoid issues during kexec
+
+  - Yet another kfree/bitmap_free conversion
+
+  - Various DT updates (Renesas, SiFive)
+
+Link: https://lore.kernel.org/r/20220128174217.517041-1-maz@kernel.org
 ---
- kernel/sched/debug.c | 10 ----------
- 1 file changed, 10 deletions(-)
-
-diff --git a/kernel/sched/debug.c b/kernel/sched/debug.c
-index aa29211..102d6f7 100644
---- a/kernel/sched/debug.c
-+++ b/kernel/sched/debug.c
-@@ -931,25 +931,15 @@ void print_numa_stats(struct seq_file *m, int node, unsigned long tsf,
- static void sched_show_numa(struct task_struct *p, struct seq_file *m)
- {
- #ifdef CONFIG_NUMA_BALANCING
--	struct mempolicy *pol;
--
- 	if (p->mm)
- 		P(mm->numa_scan_seq);
- 
--	task_lock(p);
--	pol = p->mempolicy;
--	if (pol && !(pol->flags & MPOL_F_MORON))
--		pol = NULL;
--	mpol_get(pol);
--	task_unlock(p);
--
- 	P(numa_pages_migrated);
- 	P(numa_preferred_nid);
- 	P(total_numa_faults);
- 	SEQ_printf(m, "current_node=%d, numa_group_id=%d\n",
- 			task_node(p), task_numa_group_id(p));
- 	show_numa_stats(p, m);
--	mpol_put(pol);
- #endif
- }
- 
