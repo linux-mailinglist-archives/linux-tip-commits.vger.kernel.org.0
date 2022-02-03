@@ -2,52 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 22BFD4A7BD8
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  3 Feb 2022 00:46:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A6E64A8658
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  3 Feb 2022 15:33:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347978AbiBBXqP (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 2 Feb 2022 18:46:15 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:49814 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236839AbiBBXqP (ORCPT
+        id S1351267AbiBCOdn (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 3 Feb 2022 09:33:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58208 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1351255AbiBCOdb (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 2 Feb 2022 18:46:15 -0500
-Date:   Wed, 02 Feb 2022 23:46:11 -0000
+        Thu, 3 Feb 2022 09:33:31 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1009C06173D;
+        Thu,  3 Feb 2022 06:33:28 -0800 (PST)
+Date:   Thu, 03 Feb 2022 14:33:24 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1643845573;
+        s=2020; t=1643898806;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=V/7J6Whu3CFL+jNQDCUdQnraWwAMc9erfGD8AhWuac0=;
-        b=JNHfVYUGxRYCtfC+5e/fCpneet8smBAH0H7uOaZtWWgAsz0FN0bxS9WTjJvr7i9c4V0nrW
-        HF7yfisTQokEa1tuT9Dd1s0PbSDIWdirlIJ1tEjaKafTCEtSikErNjdx7oSSA+cDYhRm+K
-        RBdStHmiX45ywHlOt/PKciqOqblDJHU721wihsPU5EHJgLXqzA2vdf81Fqgh8oTmt+aks9
-        f2OTKrHs0ant7vkC4rBv1rtLmTcMcvjRC3avOrMpZy/iehvVIttYa8Ly1UkKeP6bDM5B7w
-        +xZMqWetmw0RjVNJM+zTz4zZXCuC5uvOPi9imnaWAZdSwvFxibCJwyHmj1LiQw==
+        bh=HT14HuhGCyRztC/jLqSJDtWvRkIQmRDoajpEtKu27yA=;
+        b=Nw245KOI2KOsm56VYgaBg8ryGObxi/7Ph9QWBHGMMXCHi7q8MsnW468ybUVPrxTZT1z4Nz
+        dASIdP8XUYrdYuWRHexLq9V+gelESWMSsEL8fhttV/LA8SdGp47s0mOkuercbaLPkUjrw9
+        WKtIfyx8KY1hCVVfXRzBRa65rOgfj3bgmL/gU1+VRV2lzlvVcaGa5y97fqiVsCNiND/Rqg
+        g4UbPb37ooAgjGC+0jmyPZ9H+mD0bJOtDFQ1Ry3w6nkTyw38dnXRdX/B5Nofyk7/HYHpka
+        WcoBleo7719JtwvFsOc6Tb40BGwEDbhyWKPGb2gA0Rrp/yvPp2ZRhCuI3mAECA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1643845573;
+        s=2020e; t=1643898806;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=V/7J6Whu3CFL+jNQDCUdQnraWwAMc9erfGD8AhWuac0=;
-        b=JpKPT4uR3gAtwzCBy3p9kd3Z1uWGQVtgAu03sBkXcXaANeVtl6nJSKa4fONqEgf+wZRbDi
-        ZqBiOD2/pWXdOLCg==
-From:   "tip-bot2 for Changbin Du" <tip-bot2@linutronix.de>
+        bh=HT14HuhGCyRztC/jLqSJDtWvRkIQmRDoajpEtKu27yA=;
+        b=kZj76hgSukAiQgD8bsnCy+itgFrO7kfiFalO24otzNH5+Vao5QBTqAMxotKfRy5Beltkb2
+        5LTdZvgUHwvcp5CA==
+From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] genirq, softirq: Use in_hardirq() instead of in_irq()
-Cc:     Changbin Du <changbin.du@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
-        linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20220128110727.5110-1-changbin.du@gmail.com>
-References: <20220128110727.5110-1-changbin.du@gmail.com>
+Subject: [tip: perf/core] perf/x86/intel: Increase max number of the fixed counters
+Cc:     Kan Liang <kan.liang@linux.intel.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Andi Kleen <ak@linux.intel.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <1643750603-100733-3-git-send-email-kan.liang@linux.intel.com>
+References: <1643750603-100733-3-git-send-email-kan.liang@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <164384557168.16921.14390759669030795809.tip-bot2@tip-bot2>
+Message-ID: <164389880492.16921.3490541855090565957.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -56,96 +60,115 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the irq/core branch of tip:
+The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     fe13889c390e14205e064d7e159e61eb5da4b1c3
-Gitweb:        https://git.kernel.org/tip/fe13889c390e14205e064d7e159e61eb5da4b1c3
-Author:        Changbin Du <changbin.du@gmail.com>
-AuthorDate:    Fri, 28 Jan 2022 19:07:27 +08:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 02 Feb 2022 21:34:19 +01:00
+Commit-ID:     ee28855a54493ce83bc2a3fbe30210be61b57bc7
+Gitweb:        https://git.kernel.org/tip/ee28855a54493ce83bc2a3fbe30210be61b57bc7
+Author:        Kan Liang <kan.liang@linux.intel.com>
+AuthorDate:    Tue, 01 Feb 2022 13:23:23 -08:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Wed, 02 Feb 2022 13:11:44 +01:00
 
-genirq, softirq: Use in_hardirq() instead of in_irq()
+perf/x86/intel: Increase max number of the fixed counters
 
-Replace the obsolete and ambiguos macro in_irq() with the new macro
-in_hardirq().
+The new PEBS format 5 implies that the number of the fixed counters can
+be up to 16. The current INTEL_PMC_MAX_FIXED is still 4. If the current
+kernel runs on a future platform which has more than 4 fixed counters,
+a warning will be triggered. The number of the fixed counters will be
+clipped to 4. Users have to upgrade the kernel to access the new fixed
+counters.
 
-Signed-off-by: Changbin Du <changbin.du@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20220128110727.5110-1-changbin.du@gmail.com
+Add a new default constraint for PerfMon v5 and up, which can support
+up to 16 fixed counters. The pseudo-encoding is applied for the fixed
+counters 4 and later. The user can have generic support for the new
+fixed counters on the future platfroms without updating the kernel.
 
+Increase the INTEL_PMC_MAX_FIXED to 16.
+
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Andi Kleen <ak@linux.intel.com>
+Link: https://lkml.kernel.org/r/1643750603-100733-3-git-send-email-kan.liang@linux.intel.com
 ---
- kernel/irq/irqdesc.c |  4 ++--
- kernel/softirq.c     | 10 +++++-----
- 2 files changed, 7 insertions(+), 7 deletions(-)
+ arch/x86/events/intel/core.c      | 40 +++++++++++++++++++++++++++++-
+ arch/x86/include/asm/perf_event.h |  2 +-
+ 2 files changed, 40 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/irq/irqdesc.c b/kernel/irq/irqdesc.c
-index 2267e65..6167d32 100644
---- a/kernel/irq/irqdesc.c
-+++ b/kernel/irq/irqdesc.c
-@@ -640,7 +640,7 @@ int handle_irq_desc(struct irq_desc *desc)
- 		return -EINVAL;
+diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
+index c914340..88dcfb4 100644
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -181,6 +181,27 @@ static struct event_constraint intel_gen_event_constraints[] __read_mostly =
+ 	EVENT_CONSTRAINT_END
+ };
  
- 	data = irq_desc_get_irq_data(desc);
--	if (WARN_ON_ONCE(!in_irq() && handle_enforce_irqctx(data)))
-+	if (WARN_ON_ONCE(!in_hardirq() && handle_enforce_irqctx(data)))
- 		return -EPERM;
- 
- 	generic_handle_irq_desc(desc);
-@@ -676,7 +676,7 @@ EXPORT_SYMBOL_GPL(generic_handle_irq);
-  */
- int generic_handle_domain_irq(struct irq_domain *domain, unsigned int hwirq)
++static struct event_constraint intel_v5_gen_event_constraints[] __read_mostly =
++{
++	FIXED_EVENT_CONSTRAINT(0x00c0, 0), /* INST_RETIRED.ANY */
++	FIXED_EVENT_CONSTRAINT(0x003c, 1), /* CPU_CLK_UNHALTED.CORE */
++	FIXED_EVENT_CONSTRAINT(0x0300, 2), /* CPU_CLK_UNHALTED.REF */
++	FIXED_EVENT_CONSTRAINT(0x0400, 3), /* SLOTS */
++	FIXED_EVENT_CONSTRAINT(0x0500, 4),
++	FIXED_EVENT_CONSTRAINT(0x0600, 5),
++	FIXED_EVENT_CONSTRAINT(0x0700, 6),
++	FIXED_EVENT_CONSTRAINT(0x0800, 7),
++	FIXED_EVENT_CONSTRAINT(0x0900, 8),
++	FIXED_EVENT_CONSTRAINT(0x0a00, 9),
++	FIXED_EVENT_CONSTRAINT(0x0b00, 10),
++	FIXED_EVENT_CONSTRAINT(0x0c00, 11),
++	FIXED_EVENT_CONSTRAINT(0x0d00, 12),
++	FIXED_EVENT_CONSTRAINT(0x0e00, 13),
++	FIXED_EVENT_CONSTRAINT(0x0f00, 14),
++	FIXED_EVENT_CONSTRAINT(0x1000, 15),
++	EVENT_CONSTRAINT_END
++};
++
+ static struct event_constraint intel_slm_event_constraints[] __read_mostly =
  {
--	WARN_ON_ONCE(!in_irq());
-+	WARN_ON_ONCE(!in_hardirq());
- 	return handle_irq_desc(irq_resolve_mapping(domain, hwirq));
- }
- EXPORT_SYMBOL_GPL(generic_handle_domain_irq);
-diff --git a/kernel/softirq.c b/kernel/softirq.c
-index 41f4709..fac8018 100644
---- a/kernel/softirq.c
-+++ b/kernel/softirq.c
-@@ -222,7 +222,7 @@ void __local_bh_enable_ip(unsigned long ip, unsigned int cnt)
- 	u32 pending;
- 	int curcnt;
- 
--	WARN_ON_ONCE(in_irq());
-+	WARN_ON_ONCE(in_hardirq());
- 	lockdep_assert_irqs_enabled();
- 
- 	local_irq_save(flags);
-@@ -305,7 +305,7 @@ void __local_bh_disable_ip(unsigned long ip, unsigned int cnt)
- {
- 	unsigned long flags;
- 
--	WARN_ON_ONCE(in_irq());
-+	WARN_ON_ONCE(in_hardirq());
- 
- 	raw_local_irq_save(flags);
- 	/*
-@@ -352,14 +352,14 @@ static void __local_bh_enable(unsigned int cnt)
-  */
- void _local_bh_enable(void)
- {
--	WARN_ON_ONCE(in_irq());
-+	WARN_ON_ONCE(in_hardirq());
- 	__local_bh_enable(SOFTIRQ_DISABLE_OFFSET);
- }
- EXPORT_SYMBOL(_local_bh_enable);
- 
- void __local_bh_enable_ip(unsigned long ip, unsigned int cnt)
- {
--	WARN_ON_ONCE(in_irq());
-+	WARN_ON_ONCE(in_hardirq());
- 	lockdep_assert_irqs_enabled();
- #ifdef CONFIG_TRACE_IRQFLAGS
- 	local_irq_disable();
-@@ -618,7 +618,7 @@ static inline void tick_irq_exit(void)
- 
- 	/* Make sure that timer wheel updates are propagated */
- 	if ((idle_cpu(cpu) && !need_resched()) || tick_nohz_full_cpu(cpu)) {
--		if (!in_irq())
-+		if (!in_hardirq())
- 			tick_nohz_irq_exit();
+ 	FIXED_EVENT_CONSTRAINT(0x00c0, 0), /* INST_RETIRED.ANY */
+@@ -6295,7 +6316,9 @@ __init int intel_pmu_init(void)
+ 			pr_cont("generic architected perfmon v1, ");
+ 			name = "generic_arch_v1";
+ 			break;
+-		default:
++		case 2:
++		case 3:
++		case 4:
+ 			/*
+ 			 * default constraints for v2 and up
+ 			 */
+@@ -6303,6 +6326,21 @@ __init int intel_pmu_init(void)
+ 			pr_cont("generic architected perfmon, ");
+ 			name = "generic_arch_v2+";
+ 			break;
++		default:
++			/*
++			 * The default constraints for v5 and up can support up to
++			 * 16 fixed counters. For the fixed counters 4 and later,
++			 * the pseudo-encoding is applied.
++			 * The constraints may be cut according to the CPUID enumeration
++			 * by inserting the EVENT_CONSTRAINT_END.
++			 */
++			if (x86_pmu.num_counters_fixed > INTEL_PMC_MAX_FIXED)
++				x86_pmu.num_counters_fixed = INTEL_PMC_MAX_FIXED;
++			intel_v5_gen_event_constraints[x86_pmu.num_counters_fixed].weight = -1;
++			x86_pmu.event_constraints = intel_v5_gen_event_constraints;
++			pr_cont("generic architected perfmon, ");
++			name = "generic_arch_v5+";
++			break;
+ 		}
  	}
- #endif
+ 
+diff --git a/arch/x86/include/asm/perf_event.h b/arch/x86/include/asm/perf_event.h
+index 8fc1b50..58d9e4b 100644
+--- a/arch/x86/include/asm/perf_event.h
++++ b/arch/x86/include/asm/perf_event.h
+@@ -7,7 +7,7 @@
+  */
+ 
+ #define INTEL_PMC_MAX_GENERIC				       32
+-#define INTEL_PMC_MAX_FIXED					4
++#define INTEL_PMC_MAX_FIXED				       16
+ #define INTEL_PMC_IDX_FIXED				       32
+ 
+ #define X86_PMC_IDX_MAX					       64
