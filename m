@@ -2,62 +2,61 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FEFF4AC12E
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  7 Feb 2022 15:31:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 821164AD6D5
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  8 Feb 2022 12:30:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231434AbiBGOWL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 7 Feb 2022 09:22:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44576 "EHLO
+        id S236069AbiBHLaE (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 8 Feb 2022 06:30:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47674 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1389301AbiBGNwK (ORCPT
+        with ESMTP id S235548AbiBHJyY (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 7 Feb 2022 08:52:10 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4701AC0401C8;
-        Mon,  7 Feb 2022 05:52:09 -0800 (PST)
-Date:   Mon, 07 Feb 2022 13:52:05 -0000
+        Tue, 8 Feb 2022 04:54:24 -0500
+X-Greylist: delayed 72149 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 08 Feb 2022 01:54:23 PST
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46EF1C03FEC0;
+        Tue,  8 Feb 2022 01:54:23 -0800 (PST)
+Date:   Tue, 08 Feb 2022 09:54:19 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1644241926;
+        s=2020; t=1644314060;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=NrTTwpwn5bIp2YK7PszkaXMvna76qOYCB+KkaAB6N+c=;
-        b=F/H2AaUCfMsk8jcztYvXMetU8hqaWq45VrA4c8wKxAawFIlMo7NU0fMyGarNgchSbkhWgL
-        /zeoArw5hhEERlo2F/rUf29tWUhDBWYhSNP9zKmmmTSIIKSJ7XHa2jxVThjXRRvIO0zTy0
-        9iimwWNjA0dNVZQsyyd+Ry5Ixuw+Y2ztoNK0xcqQGSuivbUYaput/vOjEtwvWBDHGaPr9q
-        9iDlrGxFBBEYj288SYVcB/p/YYi7f552+WKsbT+NsW1pw5brVHxE/uFwtKKqHHZ5CFfl8W
-        SFJHZTlakZvRNiphmyFUlg9zHkVy7E0u+7TVsgBbXGQ/bJvNHfNDVuSZSbVvKA==
+        bh=Q/IayFDBAyr/LKIzMEy3/M8i4irY95BKw7ZqHhR11ow=;
+        b=xuboOmy97j14wcvq9eS80iq6pJBoZULoTopvOYqJSY03DPsDSsCvYfNlPGhZpkYQZGKoxB
+        ibE/tsgwSNHMZeJ31l/9Cb0ST1CDDCvFY0hcb2zHjEdtOAYOiMWH8C1T4TUbT8EJ667H6t
+        vPA+M9iv0/cJqrwCVDVfqnE5ZDJlKAOhou9Y1h0RPGGA4xpCxwVoI00/6+TCiSINnjIE0o
+        7c1AmKo9CN3pql86cytKIodyrAwJi8Ji7IVNNJgfK14GdPwebZ6BUZyOv2xz35Nrv48ejf
+        phu7x8vq/GCX/tzzIy9wp3cYC/kcnUp+IlFLO3tarc7gHtYG4RQ8IApzZUq95Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1644241926;
+        s=2020e; t=1644314060;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=NrTTwpwn5bIp2YK7PszkaXMvna76qOYCB+KkaAB6N+c=;
-        b=Flk8l8A+rrGLENRcgfS4Ug4q8GEJPax2QwzIDDvKiwweICYrLpuv0i8XaVzBYMcCNBv4VK
-        BKHaBwfflP8+MsDg==
-From:   "tip-bot2 for Tadeusz Struk" <tip-bot2@linutronix.de>
+        bh=Q/IayFDBAyr/LKIzMEy3/M8i4irY95BKw7ZqHhR11ow=;
+        b=eWJF+bhAIK01aYIt+lNyZQElZZRX7nvgenZxiVT65ukw/CCl8rOCSEWdli5Viqb+eGth0a
+        kvKeeNQGlpq//GDQ==
+From:   "tip-bot2 for Jim Mattson" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] sched/fair: Fix fault in reweight_entity
-Cc:     syzbot+af7a719bc92395ee41b3@syzkaller.appspotmail.com,
-        Tadeusz Struk <tadeusz.struk@linaro.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        stable@vger.kernel.org, x86@kernel.org,
+Subject: [tip: x86/cpu] x86/cpufeatures: Put the AMX macros in the word 18 block
+Cc:     Jim Mattson <jmattson@google.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Borislav Petkov <bp@suse.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220203161846.1160750-1-tadeusz.struk@linaro.org>
-References: <20220203161846.1160750-1-tadeusz.struk@linaro.org>
+In-Reply-To: <20220203194308.2469117-1-jmattson@google.com>
+References: <20220203194308.2469117-1-jmattson@google.com>
 MIME-Version: 1.0
-Message-ID: <164424192533.16921.7865952180431807276.tip-bot2@tip-bot2>
+Message-ID: <164431405962.16921.15997082266702791882.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
@@ -68,107 +67,53 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/urgent branch of tip:
+The following commit has been merged into the x86/cpu branch of tip:
 
-Commit-ID:     13765de8148f71fa795e0a6607de37c49ea5915a
-Gitweb:        https://git.kernel.org/tip/13765de8148f71fa795e0a6607de37c49ea=
-5915a
-Author:        Tadeusz Struk <tadeusz.struk@linaro.org>
-AuthorDate:    Thu, 03 Feb 2022 08:18:46 -08:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Sun, 06 Feb 2022 22:37:26 +01:00
+Commit-ID:     fa31a4d669bd471e9510db1abf9b91e1a6be6ff7
+Gitweb:        https://git.kernel.org/tip/fa31a4d669bd471e9510db1abf9b91e1a6be6ff7
+Author:        Jim Mattson <jmattson@google.com>
+AuthorDate:    Thu, 03 Feb 2022 11:43:07 -08:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Tue, 08 Feb 2022 10:23:35 +01:00
 
-sched/fair: Fix fault in reweight_entity
+x86/cpufeatures: Put the AMX macros in the word 18 block
 
-Syzbot found a GPF in reweight_entity. This has been bisected to
-commit 4ef0c5c6b5ba ("kernel/sched: Fix sched_fork() access an invalid
-sched_task_group")
+These macros are for bits in CPUID.(EAX=7,ECX=0):EDX, not for bits in
+CPUID(EAX=7,ECX=1):EAX. Put them with their brethren.
 
-There=C2=A0is a race between sched_post_fork() and setpriority(PRIO_PGRP)
-within a thread group that causes a null-ptr-deref=C2=A0in
-reweight_entity() in CFS. The scenario is that the main process spawns
-number of new threads, which then call setpriority(PRIO_PGRP, 0, -20),
-wait, and exit.  For each of the new threads the copy_process() gets
-invoked, which adds the new task_struct and calls sched_post_fork()
-for it.
+  [ bp: Sort word 18 bits properly, as caught by Like Xu
+    <like.xu.linux@gmail.com> ]
 
-In the above scenario there is a possibility that
-setpriority(PRIO_PGRP) and set_one_prio() will be called for a thread
-in the group that is just being created by copy_process(), and for
-which the sched_post_fork() has not been executed yet. This will
-trigger a null pointer dereference in reweight_entity(),=C2=A0as it will
-try to access the run queue pointer, which hasn't been set.
-
-Before the mentioned change the cfs_rq pointer for the task  has been
-set in sched_fork(), which is called much earlier in copy_process(),
-before the new task is added to the thread_group.  Now it is done in
-the sched_post_fork(), which is called after that.  To fix the issue
-the remove the update_load param from the update_load param() function
-and call reweight_task() only if the task flag doesn't have the
-TASK_NEW flag set.
-
-Fixes: 4ef0c5c6b5ba ("kernel/sched: Fix sched_fork() access an invalid sched_=
-task_group")
-Reported-by: syzbot+af7a719bc92395ee41b3@syzkaller.appspotmail.com
-Signed-off-by: Tadeusz Struk <tadeusz.struk@linaro.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20220203161846.1160750-1-tadeusz.struk@linaro=
-.org
+Signed-off-by: Jim Mattson <jmattson@google.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lkml.kernel.org/r/20220203194308.2469117-1-jmattson@google.com
 ---
- kernel/sched/core.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ arch/x86/include/asm/cpufeatures.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 848eaa0..fcf0c18 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -1214,8 +1214,9 @@ int tg_nop(struct task_group *tg, void *data)
- }
- #endif
-=20
--static void set_load_weight(struct task_struct *p, bool update_load)
-+static void set_load_weight(struct task_struct *p)
- {
-+	bool update_load =3D !(READ_ONCE(p->__state) & TASK_NEW);
- 	int prio =3D p->static_prio - MAX_RT_PRIO;
- 	struct load_weight *load =3D &p->se.load;
-=20
-@@ -4406,7 +4407,7 @@ int sched_fork(unsigned long clone_flags, struct task_s=
-truct *p)
- 			p->static_prio =3D NICE_TO_PRIO(0);
-=20
- 		p->prio =3D p->normal_prio =3D p->static_prio;
--		set_load_weight(p, false);
-+		set_load_weight(p);
-=20
- 		/*
- 		 * We don't need the reset flag anymore after the fork. It has
-@@ -6921,7 +6922,7 @@ void set_user_nice(struct task_struct *p, long nice)
- 		put_prev_task(rq, p);
-=20
- 	p->static_prio =3D NICE_TO_PRIO(nice);
--	set_load_weight(p, true);
-+	set_load_weight(p);
- 	old_prio =3D p->prio;
- 	p->prio =3D effective_prio(p);
-=20
-@@ -7212,7 +7213,7 @@ static void __setscheduler_params(struct task_struct *p,
- 	 */
- 	p->rt_priority =3D attr->sched_priority;
- 	p->normal_prio =3D normal_prio(p);
--	set_load_weight(p, true);
-+	set_load_weight(p);
- }
-=20
- /*
-@@ -9445,7 +9446,7 @@ void __init sched_init(void)
- #endif
- 	}
-=20
--	set_load_weight(&init_task, false);
-+	set_load_weight(&init_task);
-=20
- 	/*
- 	 * The boot idle thread does lazy MMU switching as well:
+diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
+index 6db4e29..5cd2209 100644
+--- a/arch/x86/include/asm/cpufeatures.h
++++ b/arch/x86/include/asm/cpufeatures.h
+@@ -299,9 +299,6 @@
+ /* Intel-defined CPU features, CPUID level 0x00000007:1 (EAX), word 12 */
+ #define X86_FEATURE_AVX_VNNI		(12*32+ 4) /* AVX VNNI instructions */
+ #define X86_FEATURE_AVX512_BF16		(12*32+ 5) /* AVX512 BFLOAT16 instructions */
+-#define X86_FEATURE_AMX_BF16		(18*32+22) /* AMX bf16 Support */
+-#define X86_FEATURE_AMX_TILE		(18*32+24) /* AMX tile Support */
+-#define X86_FEATURE_AMX_INT8		(18*32+25) /* AMX int8 Support */
+ 
+ /* AMD-defined CPU features, CPUID level 0x80000008 (EBX), word 13 */
+ #define X86_FEATURE_CLZERO		(13*32+ 0) /* CLZERO instruction */
+@@ -390,7 +387,10 @@
+ #define X86_FEATURE_TSXLDTRK		(18*32+16) /* TSX Suspend Load Address Tracking */
+ #define X86_FEATURE_PCONFIG		(18*32+18) /* Intel PCONFIG */
+ #define X86_FEATURE_ARCH_LBR		(18*32+19) /* Intel ARCH LBR */
++#define X86_FEATURE_AMX_BF16		(18*32+22) /* AMX bf16 Support */
+ #define X86_FEATURE_AVX512_FP16		(18*32+23) /* AVX512 FP16 */
++#define X86_FEATURE_AMX_TILE		(18*32+24) /* AMX tile Support */
++#define X86_FEATURE_AMX_INT8		(18*32+25) /* AMX int8 Support */
+ #define X86_FEATURE_SPEC_CTRL		(18*32+26) /* "" Speculation Control (IBRS + IBPB) */
+ #define X86_FEATURE_INTEL_STIBP		(18*32+27) /* "" Single Thread Indirect Branch Predictors */
+ #define X86_FEATURE_FLUSH_L1D		(18*32+28) /* Flush L1D cache */
