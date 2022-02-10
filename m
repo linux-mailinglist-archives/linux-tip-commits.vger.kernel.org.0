@@ -2,57 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 821164AD6D5
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  8 Feb 2022 12:30:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D8964B0A36
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Feb 2022 11:03:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236069AbiBHLaE (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 8 Feb 2022 06:30:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47674 "EHLO
+        id S238071AbiBJKDY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 10 Feb 2022 05:03:24 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:50886 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235548AbiBHJyY (ORCPT
+        with ESMTP id S237267AbiBJKDY (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 8 Feb 2022 04:54:24 -0500
-X-Greylist: delayed 72149 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 08 Feb 2022 01:54:23 PST
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46EF1C03FEC0;
-        Tue,  8 Feb 2022 01:54:23 -0800 (PST)
-Date:   Tue, 08 Feb 2022 09:54:19 -0000
+        Thu, 10 Feb 2022 05:03:24 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1A77C55;
+        Thu, 10 Feb 2022 02:03:24 -0800 (PST)
+Date:   Thu, 10 Feb 2022 10:03:19 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1644314060;
+        s=2020; t=1644487401;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Q/IayFDBAyr/LKIzMEy3/M8i4irY95BKw7ZqHhR11ow=;
-        b=xuboOmy97j14wcvq9eS80iq6pJBoZULoTopvOYqJSY03DPsDSsCvYfNlPGhZpkYQZGKoxB
-        ibE/tsgwSNHMZeJ31l/9Cb0ST1CDDCvFY0hcb2zHjEdtOAYOiMWH8C1T4TUbT8EJ667H6t
-        vPA+M9iv0/cJqrwCVDVfqnE5ZDJlKAOhou9Y1h0RPGGA4xpCxwVoI00/6+TCiSINnjIE0o
-        7c1AmKo9CN3pql86cytKIodyrAwJi8Ji7IVNNJgfK14GdPwebZ6BUZyOv2xz35Nrv48ejf
-        phu7x8vq/GCX/tzzIy9wp3cYC/kcnUp+IlFLO3tarc7gHtYG4RQ8IApzZUq95Q==
+        bh=zc0xH8itYv/4XoUiMkxXEZ2R9+uDkizmJaSXvpSeCIo=;
+        b=34yaGaMrytbAQWmX09fJ0plL77KI4TQlAjY5yjLq8u4ATrk1WcG1+bDQAmd/DbtFNuksS+
+        7NPsKzihhbUGEPNavj1XVkuCfsU9vqPOYcNfO1nF21qjFOmSKPAJW3nbVps2yIOXOJXLfh
+        i/uNllBsItEnilaNKXY22ByEtCNVCK5QKbMKhw/aTGj/sv1TlJeLg6maLszjJYm0JUDRO/
+        u6jqnZhMqywKMw6w8VPbrnh8elZkijrr6mkuZQzcXGkESfXve1cPWIyk/s16OMozMWffU2
+        9zpoCcnEMAvyCGlLV28JCkCn4PT3DpAvLj8AH17Lkt9i+DoiyKvR8cqZlVk07g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1644314060;
+        s=2020e; t=1644487401;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Q/IayFDBAyr/LKIzMEy3/M8i4irY95BKw7ZqHhR11ow=;
-        b=eWJF+bhAIK01aYIt+lNyZQElZZRX7nvgenZxiVT65ukw/CCl8rOCSEWdli5Viqb+eGth0a
-        kvKeeNQGlpq//GDQ==
-From:   "tip-bot2 for Jim Mattson" <tip-bot2@linutronix.de>
+        bh=zc0xH8itYv/4XoUiMkxXEZ2R9+uDkizmJaSXvpSeCIo=;
+        b=PfnEDuSk2T2tSP6sNd9i2Zf5HMW9EPkMMzspNxQDKepGJRXFuqDP4aMYI0tx2I6PQ4FdT4
+        JVlWG5BsUGT4tbAg==
+From:   "tip-bot2 for Nick Desaulniers" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cpu] x86/cpufeatures: Put the AMX macros in the word 18 block
-Cc:     Jim Mattson <jmattson@google.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Borislav Petkov <bp@suse.de>, x86@kernel.org,
+Subject: [tip: objtool/urgent] x86/bug: Merge annotate_reachable() into
+ _BUG_FLAGS() asm
+Cc:     Nick Desaulniers <ndesaulniers@google.com>,
+        Josh Poimboeuf <jpoimboe@redhat.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220203194308.2469117-1-jmattson@google.com>
-References: <20220203194308.2469117-1-jmattson@google.com>
+In-Reply-To: <20220202205557.2260694-1-ndesaulniers@google.com>
+References: <20220202205557.2260694-1-ndesaulniers@google.com>
 MIME-Version: 1.0
-Message-ID: <164431405962.16921.15997082266702791882.tip-bot2@tip-bot2>
+Message-ID: <164448739969.16921.718126712933524460.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,53 +66,182 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cpu branch of tip:
+The following commit has been merged into the objtool/urgent branch of tip:
 
-Commit-ID:     fa31a4d669bd471e9510db1abf9b91e1a6be6ff7
-Gitweb:        https://git.kernel.org/tip/fa31a4d669bd471e9510db1abf9b91e1a6be6ff7
-Author:        Jim Mattson <jmattson@google.com>
-AuthorDate:    Thu, 03 Feb 2022 11:43:07 -08:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 08 Feb 2022 10:23:35 +01:00
+Commit-ID:     bfb1a7c91fb7758273b4a8d735313d9cc388b502
+Gitweb:        https://git.kernel.org/tip/bfb1a7c91fb7758273b4a8d735313d9cc388b502
+Author:        Nick Desaulniers <ndesaulniers@google.com>
+AuthorDate:    Wed, 02 Feb 2022 12:55:53 -08:00
+Committer:     Josh Poimboeuf <jpoimboe@redhat.com>
+CommitterDate: Wed, 02 Feb 2022 14:41:04 -08:00
 
-x86/cpufeatures: Put the AMX macros in the word 18 block
+x86/bug: Merge annotate_reachable() into _BUG_FLAGS() asm
 
-These macros are for bits in CPUID.(EAX=7,ECX=0):EDX, not for bits in
-CPUID(EAX=7,ECX=1):EAX. Put them with their brethren.
+In __WARN_FLAGS(), we had two asm statements (abbreviated):
 
-  [ bp: Sort word 18 bits properly, as caught by Like Xu
-    <like.xu.linux@gmail.com> ]
+  asm volatile("ud2");
+  asm volatile(".pushsection .discard.reachable");
 
-Signed-off-by: Jim Mattson <jmattson@google.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20220203194308.2469117-1-jmattson@google.com
+These pair of statements are used to trigger an exception, but then help
+objtool understand that for warnings, control flow will be restored
+immediately afterwards.
+
+The problem is that volatile is not a compiler barrier. GCC explicitly
+documents this:
+
+> Note that the compiler can move even volatile asm instructions
+> relative to other code, including across jump instructions.
+
+Also, no clobbers are specified to prevent instructions from subsequent
+statements from being scheduled by compiler before the second asm
+statement. This can lead to instructions from subsequent statements
+being emitted by the compiler before the second asm statement.
+
+Providing a scheduling model such as via -march= options enables the
+compiler to better schedule instructions with known latencies to hide
+latencies from data hazards compared to inline asm statements in which
+latencies are not estimated.
+
+If an instruction gets scheduled by the compiler between the two asm
+statements, then objtool will think that it is not reachable, producing
+a warning.
+
+To prevent instructions from being scheduled in between the two asm
+statements, merge them.
+
+Also remove an unnecessary unreachable() asm annotation from BUG() in
+favor of __builtin_unreachable(). objtool is able to track that the ud2
+from BUG() terminates control flow within the function.
+
+Link: https://gcc.gnu.org/onlinedocs/gcc/Extended-Asm.html#Volatile
+Link: https://github.com/ClangBuiltLinux/linux/issues/1483
+Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
+Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
+Link: https://lore.kernel.org/r/20220202205557.2260694-1-ndesaulniers@google.com
 ---
- arch/x86/include/asm/cpufeatures.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/x86/include/asm/bug.h | 20 +++++++++++---------
+ include/linux/compiler.h   | 21 +++++----------------
+ 2 files changed, 16 insertions(+), 25 deletions(-)
 
-diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
-index 6db4e29..5cd2209 100644
---- a/arch/x86/include/asm/cpufeatures.h
-+++ b/arch/x86/include/asm/cpufeatures.h
-@@ -299,9 +299,6 @@
- /* Intel-defined CPU features, CPUID level 0x00000007:1 (EAX), word 12 */
- #define X86_FEATURE_AVX_VNNI		(12*32+ 4) /* AVX VNNI instructions */
- #define X86_FEATURE_AVX512_BF16		(12*32+ 5) /* AVX512 BFLOAT16 instructions */
--#define X86_FEATURE_AMX_BF16		(18*32+22) /* AMX bf16 Support */
--#define X86_FEATURE_AMX_TILE		(18*32+24) /* AMX tile Support */
--#define X86_FEATURE_AMX_INT8		(18*32+25) /* AMX int8 Support */
+diff --git a/arch/x86/include/asm/bug.h b/arch/x86/include/asm/bug.h
+index 84b8753..bab883c 100644
+--- a/arch/x86/include/asm/bug.h
++++ b/arch/x86/include/asm/bug.h
+@@ -22,7 +22,7 @@
  
- /* AMD-defined CPU features, CPUID level 0x80000008 (EBX), word 13 */
- #define X86_FEATURE_CLZERO		(13*32+ 0) /* CLZERO instruction */
-@@ -390,7 +387,10 @@
- #define X86_FEATURE_TSXLDTRK		(18*32+16) /* TSX Suspend Load Address Tracking */
- #define X86_FEATURE_PCONFIG		(18*32+18) /* Intel PCONFIG */
- #define X86_FEATURE_ARCH_LBR		(18*32+19) /* Intel ARCH LBR */
-+#define X86_FEATURE_AMX_BF16		(18*32+22) /* AMX bf16 Support */
- #define X86_FEATURE_AVX512_FP16		(18*32+23) /* AVX512 FP16 */
-+#define X86_FEATURE_AMX_TILE		(18*32+24) /* AMX tile Support */
-+#define X86_FEATURE_AMX_INT8		(18*32+25) /* AMX int8 Support */
- #define X86_FEATURE_SPEC_CTRL		(18*32+26) /* "" Speculation Control (IBRS + IBPB) */
- #define X86_FEATURE_INTEL_STIBP		(18*32+27) /* "" Single Thread Indirect Branch Predictors */
- #define X86_FEATURE_FLUSH_L1D		(18*32+28) /* Flush L1D cache */
+ #ifdef CONFIG_DEBUG_BUGVERBOSE
+ 
+-#define _BUG_FLAGS(ins, flags)						\
++#define _BUG_FLAGS(ins, flags, extra)					\
+ do {									\
+ 	asm_inline volatile("1:\t" ins "\n"				\
+ 		     ".pushsection __bug_table,\"aw\"\n"		\
+@@ -31,7 +31,8 @@ do {									\
+ 		     "\t.word %c1"        "\t# bug_entry::line\n"	\
+ 		     "\t.word %c2"        "\t# bug_entry::flags\n"	\
+ 		     "\t.org 2b+%c3\n"					\
+-		     ".popsection"					\
++		     ".popsection\n"					\
++		     extra						\
+ 		     : : "i" (__FILE__), "i" (__LINE__),		\
+ 			 "i" (flags),					\
+ 			 "i" (sizeof(struct bug_entry)));		\
+@@ -39,14 +40,15 @@ do {									\
+ 
+ #else /* !CONFIG_DEBUG_BUGVERBOSE */
+ 
+-#define _BUG_FLAGS(ins, flags)						\
++#define _BUG_FLAGS(ins, flags, extra)					\
+ do {									\
+ 	asm_inline volatile("1:\t" ins "\n"				\
+ 		     ".pushsection __bug_table,\"aw\"\n"		\
+ 		     "2:\t" __BUG_REL(1b) "\t# bug_entry::bug_addr\n"	\
+ 		     "\t.word %c0"        "\t# bug_entry::flags\n"	\
+ 		     "\t.org 2b+%c1\n"					\
+-		     ".popsection"					\
++		     ".popsection\n"					\
++		     extra						\
+ 		     : : "i" (flags),					\
+ 			 "i" (sizeof(struct bug_entry)));		\
+ } while (0)
+@@ -55,7 +57,7 @@ do {									\
+ 
+ #else
+ 
+-#define _BUG_FLAGS(ins, flags)  asm volatile(ins)
++#define _BUG_FLAGS(ins, flags, extra)  asm volatile(ins)
+ 
+ #endif /* CONFIG_GENERIC_BUG */
+ 
+@@ -63,8 +65,8 @@ do {									\
+ #define BUG()							\
+ do {								\
+ 	instrumentation_begin();				\
+-	_BUG_FLAGS(ASM_UD2, 0);					\
+-	unreachable();						\
++	_BUG_FLAGS(ASM_UD2, 0, "");				\
++	__builtin_unreachable();				\
+ } while (0)
+ 
+ /*
+@@ -75,9 +77,9 @@ do {								\
+  */
+ #define __WARN_FLAGS(flags)					\
+ do {								\
++	__auto_type f = BUGFLAG_WARNING|(flags);		\
+ 	instrumentation_begin();				\
+-	_BUG_FLAGS(ASM_UD2, BUGFLAG_WARNING|(flags));		\
+-	annotate_reachable();					\
++	_BUG_FLAGS(ASM_UD2, f, ASM_REACHABLE);			\
+ 	instrumentation_end();					\
+ } while (0)
+ 
+diff --git a/include/linux/compiler.h b/include/linux/compiler.h
+index 429dceb..0f7fd20 100644
+--- a/include/linux/compiler.h
++++ b/include/linux/compiler.h
+@@ -117,14 +117,6 @@ void ftrace_likely_update(struct ftrace_likely_data *f, int val,
+  */
+ #define __stringify_label(n) #n
+ 
+-#define __annotate_reachable(c) ({					\
+-	asm volatile(__stringify_label(c) ":\n\t"			\
+-		     ".pushsection .discard.reachable\n\t"		\
+-		     ".long " __stringify_label(c) "b - .\n\t"		\
+-		     ".popsection\n\t" : : "i" (c));			\
+-})
+-#define annotate_reachable() __annotate_reachable(__COUNTER__)
+-
+ #define __annotate_unreachable(c) ({					\
+ 	asm volatile(__stringify_label(c) ":\n\t"			\
+ 		     ".pushsection .discard.unreachable\n\t"		\
+@@ -133,24 +125,21 @@ void ftrace_likely_update(struct ftrace_likely_data *f, int val,
+ })
+ #define annotate_unreachable() __annotate_unreachable(__COUNTER__)
+ 
+-#define ASM_UNREACHABLE							\
+-	"999:\n\t"							\
+-	".pushsection .discard.unreachable\n\t"				\
+-	".long 999b - .\n\t"						\
++#define ASM_REACHABLE							\
++	"998:\n\t"							\
++	".pushsection .discard.reachable\n\t"				\
++	".long 998b - .\n\t"						\
+ 	".popsection\n\t"
+ 
+ /* Annotate a C jump table to allow objtool to follow the code flow */
+ #define __annotate_jump_table __section(".rodata..c_jump_table")
+ 
+ #else
+-#define annotate_reachable()
+ #define annotate_unreachable()
++# define ASM_REACHABLE
+ #define __annotate_jump_table
+ #endif
+ 
+-#ifndef ASM_UNREACHABLE
+-# define ASM_UNREACHABLE
+-#endif
+ #ifndef unreachable
+ # define unreachable() do {		\
+ 	annotate_unreachable();		\
