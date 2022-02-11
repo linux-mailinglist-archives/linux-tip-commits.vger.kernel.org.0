@@ -2,60 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B9F184B1AFB
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 11 Feb 2022 02:10:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4473C4B241E
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 11 Feb 2022 12:17:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346664AbiBKBIy (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 10 Feb 2022 20:08:54 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:49406 "EHLO
+        id S1347643AbiBKLRE (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 11 Feb 2022 06:17:04 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:40532 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239061AbiBKBIx (ORCPT
+        with ESMTP id S1349350AbiBKLRD (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 10 Feb 2022 20:08:53 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FAE9B3F;
-        Thu, 10 Feb 2022 17:08:53 -0800 (PST)
-Date:   Fri, 11 Feb 2022 01:08:49 -0000
+        Fri, 11 Feb 2022 06:17:03 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B096E66;
+        Fri, 11 Feb 2022 03:17:02 -0800 (PST)
+Date:   Fri, 11 Feb 2022 11:16:58 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1644541730;
+        s=2020; t=1644578219;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=lJG2K6yK6beclfHEUgTRPm0L+hZjgYhcQ+rfNcW2yCA=;
-        b=ABdioSNRvNJ1NwBmAJkgqVWQSYABc8LKhsFmzstsNIY/sVsAVoi34QylwpKWfqv66Lubf7
-        1c2RhTfRDnJP+kqVip4b5SqnmCnE7JdlFEQjD46DvsAaKOglZpmj5s/hzkYS4FdE4qp5lp
-        vojGVwya2/AUZogY09q0JVeM3SRDOabiT/JDiBesUSm2336ULfUsTTJaGp1ERFy1FEw780
-        +uIo2VUk9PhgEKRV0nC3Myvjp892xRefrzLSIpXjOkUYRCv9AT6xv9xMUEEYufmE8JaMxy
-        LwB9Zqv70UAspG/YAe79wgs4ZdM1FWPyTV0BXolnygeBA2HmCj09y9FzBuN6Uw==
+        bh=epLaLQKvF19KwptYYUJgoUEUm7OX4ivS5s4r0mEQvNc=;
+        b=mh8Niq5AVApUNdlk34px0xCddnErfNmz/S6hY1K9YMboNCHIsvGODvg41PaYDURtS2YeYZ
+        OsRpGEeLYI5uoRiaLgFh8RwjK7MlfTr1P/sE7BV4g+hv1aFEi4aL9NqAghNv1/bM4iR+he
+        nw6/4bstCKYqgRTtywbYm5lnEO+eZpYGxZuXqdBtmzCeKgwtGfrnurzeKdOqkaInwD0GR0
+        LoahEKwiagr4Oy1fOrR1BFzRf9alYs2MwevM32Zf+/b9ojyTrdw4bzelgbdiZ2//kCWnoj
+        Oq9SdSymLNAu5i59P9tsqHATpiCh7sQ+PzYz3xoZbVOaV6ejRUkeJWoy3skFEA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1644541730;
+        s=2020e; t=1644578219;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=lJG2K6yK6beclfHEUgTRPm0L+hZjgYhcQ+rfNcW2yCA=;
-        b=glroVRquyhDYs+oEDXrq27+SnCMwxRe1Kxjs1scQvc3aPDCzXSwSZU8LwHGunyV2uJJk5o
-        Qbh8Oza/1zLNy4Dg==
-From:   "tip-bot2 for Reinette Chatre" <tip-bot2@linutronix.de>
+        bh=epLaLQKvF19KwptYYUJgoUEUm7OX4ivS5s4r0mEQvNc=;
+        b=2nf1oMfTvofom88OCfCUnEkwnRpPx/cXSIBvrja97eAzQYsaIg/w8r4iLSYw7q8QM5WzkL
+        CKdHG4Mw+Q/msiCA==
+From:   "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/sgx: Silence softlockup detection when
- releasing large enclaves
-Cc:     stable@vger.kernel.org, Vijay Dhanraj <vijay.dhanraj@intel.com>,
-        Reinette Chatre <reinette.chatre@intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>, x86@kernel.org,
+Subject: [tip: locking/core] locking: Enable RT_MUTEXES by default on PREEMPT_RT.
+Cc:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: =?utf-8?q?=3Cced01cac1e75f900251b0a4ae1150aa8ebd295ec=2E16443?=
- =?utf-8?q?45232=2Egit=2Ereinette=2Echatre=40intel=2Ecom=3E?=
-References: =?utf-8?q?=3Cced01cac1e75f900251b0a4ae1150aa8ebd295ec=2E164434?=
- =?utf-8?q?5232=2Egit=2Ereinette=2Echatre=40intel=2Ecom=3E?=
+In-Reply-To: <YgKmhjkcuqWXdUjQ@linutronix.de>
+References: <YgKmhjkcuqWXdUjQ@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <164454172947.16921.6907341093129074331.tip-bot2@tip-bot2>
+Message-ID: <164457821855.16921.12710951179676834018.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -70,54 +65,40 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     8795359e35bc33bf86b6d0765aa7f37431db3b9c
-Gitweb:        https://git.kernel.org/tip/8795359e35bc33bf86b6d0765aa7f37431db3b9c
-Author:        Reinette Chatre <reinette.chatre@intel.com>
-AuthorDate:    Tue, 08 Feb 2022 10:48:07 -08:00
-Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Thu, 10 Feb 2022 15:58:14 -08:00
+Commit-ID:     1c6f9ec0095459b5120a1cb059d442f56d3cb6e7
+Gitweb:        https://git.kernel.org/tip/1c6f9ec0095459b5120a1cb059d442f56d3cb6e7
+Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+AuthorDate:    Tue, 08 Feb 2022 18:21:10 +01:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Fri, 11 Feb 2022 12:13:56 +01:00
 
-x86/sgx: Silence softlockup detection when releasing large enclaves
+locking: Enable RT_MUTEXES by default on PREEMPT_RT.
 
-Vijay reported that the "unclobbered_vdso_oversubscribed" selftest
-triggers the softlockup detector.
+The CONFIG_RT_MUTEXES option is enabled by CONFIG_FUTEX and CONFIG_I2C.
+If both are disabled then a CONFIG_PREEMPT_RT build fails to compile.
+It is not possible to have a PREEMPT_RT kernel without RT_MUTEX support
+because RT_MUTEX based locking is always used.
 
-Actual SGX systems have 128GB of enclave memory or more.  The
-"unclobbered_vdso_oversubscribed" selftest creates one enclave which
-consumes all of the enclave memory on the system. Tearing down such a
-large enclave takes around a minute, most of it in the loop where
-the EREMOVE instruction is applied to each individual 4k enclave page.
+Enable CONFIG_RT_MUTEXES by default on PREEMPT_RT builds.
 
-Spending one minute in a loop triggers the softlockup detector.
-
-Add a cond_resched() to give other tasks a chance to run and placate
-the softlockup detector.
-
-Cc: stable@vger.kernel.org
-Fixes: 1728ab54b4be ("x86/sgx: Add a page reclaimer")
-Reported-by: Vijay Dhanraj <vijay.dhanraj@intel.com>
-Signed-off-by: Reinette Chatre <reinette.chatre@intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
-Tested-by: Jarkko Sakkinen <jarkko@kernel.org>  (kselftest as sanity check)
-Link: https://lkml.kernel.org/r/ced01cac1e75f900251b0a4ae1150aa8ebd295ec.1644345232.git.reinette.chatre@intel.com
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/YgKmhjkcuqWXdUjQ@linutronix.de
 ---
- arch/x86/kernel/cpu/sgx/encl.c | 2 ++
- 1 file changed, 2 insertions(+)
+ init/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/kernel/cpu/sgx/encl.c b/arch/x86/kernel/cpu/sgx/encl.c
-index 001808e..48afe96 100644
---- a/arch/x86/kernel/cpu/sgx/encl.c
-+++ b/arch/x86/kernel/cpu/sgx/encl.c
-@@ -410,6 +410,8 @@ void sgx_encl_release(struct kref *ref)
- 		}
+diff --git a/init/Kconfig b/init/Kconfig
+index e9119bf..beb5b86 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -2054,6 +2054,7 @@ source "arch/Kconfig"
  
- 		kfree(entry);
-+		/* Invoke scheduler to prevent soft lockups. */
-+		cond_resched();
- 	}
+ config RT_MUTEXES
+ 	bool
++	default y if PREEMPT_RT
  
- 	xa_destroy(&encl->page_array);
+ config BASE_SMALL
+ 	int
