@@ -2,56 +2,60 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D8964B0A36
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Feb 2022 11:03:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B9F184B1AFB
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 11 Feb 2022 02:10:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238071AbiBJKDY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 10 Feb 2022 05:03:24 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:50886 "EHLO
+        id S1346664AbiBKBIy (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 10 Feb 2022 20:08:54 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:49406 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237267AbiBJKDY (ORCPT
+        with ESMTP id S239061AbiBKBIx (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 10 Feb 2022 05:03:24 -0500
+        Thu, 10 Feb 2022 20:08:53 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1A77C55;
-        Thu, 10 Feb 2022 02:03:24 -0800 (PST)
-Date:   Thu, 10 Feb 2022 10:03:19 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FAE9B3F;
+        Thu, 10 Feb 2022 17:08:53 -0800 (PST)
+Date:   Fri, 11 Feb 2022 01:08:49 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1644487401;
+        s=2020; t=1644541730;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=zc0xH8itYv/4XoUiMkxXEZ2R9+uDkizmJaSXvpSeCIo=;
-        b=34yaGaMrytbAQWmX09fJ0plL77KI4TQlAjY5yjLq8u4ATrk1WcG1+bDQAmd/DbtFNuksS+
-        7NPsKzihhbUGEPNavj1XVkuCfsU9vqPOYcNfO1nF21qjFOmSKPAJW3nbVps2yIOXOJXLfh
-        i/uNllBsItEnilaNKXY22ByEtCNVCK5QKbMKhw/aTGj/sv1TlJeLg6maLszjJYm0JUDRO/
-        u6jqnZhMqywKMw6w8VPbrnh8elZkijrr6mkuZQzcXGkESfXve1cPWIyk/s16OMozMWffU2
-        9zpoCcnEMAvyCGlLV28JCkCn4PT3DpAvLj8AH17Lkt9i+DoiyKvR8cqZlVk07g==
+        bh=lJG2K6yK6beclfHEUgTRPm0L+hZjgYhcQ+rfNcW2yCA=;
+        b=ABdioSNRvNJ1NwBmAJkgqVWQSYABc8LKhsFmzstsNIY/sVsAVoi34QylwpKWfqv66Lubf7
+        1c2RhTfRDnJP+kqVip4b5SqnmCnE7JdlFEQjD46DvsAaKOglZpmj5s/hzkYS4FdE4qp5lp
+        vojGVwya2/AUZogY09q0JVeM3SRDOabiT/JDiBesUSm2336ULfUsTTJaGp1ERFy1FEw780
+        +uIo2VUk9PhgEKRV0nC3Myvjp892xRefrzLSIpXjOkUYRCv9AT6xv9xMUEEYufmE8JaMxy
+        LwB9Zqv70UAspG/YAe79wgs4ZdM1FWPyTV0BXolnygeBA2HmCj09y9FzBuN6Uw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1644487401;
+        s=2020e; t=1644541730;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=zc0xH8itYv/4XoUiMkxXEZ2R9+uDkizmJaSXvpSeCIo=;
-        b=PfnEDuSk2T2tSP6sNd9i2Zf5HMW9EPkMMzspNxQDKepGJRXFuqDP4aMYI0tx2I6PQ4FdT4
-        JVlWG5BsUGT4tbAg==
-From:   "tip-bot2 for Nick Desaulniers" <tip-bot2@linutronix.de>
+        bh=lJG2K6yK6beclfHEUgTRPm0L+hZjgYhcQ+rfNcW2yCA=;
+        b=glroVRquyhDYs+oEDXrq27+SnCMwxRe1Kxjs1scQvc3aPDCzXSwSZU8LwHGunyV2uJJk5o
+        Qbh8Oza/1zLNy4Dg==
+From:   "tip-bot2 for Reinette Chatre" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/urgent] x86/bug: Merge annotate_reachable() into
- _BUG_FLAGS() asm
-Cc:     Nick Desaulniers <ndesaulniers@google.com>,
-        Josh Poimboeuf <jpoimboe@redhat.com>, x86@kernel.org,
+Subject: [tip: x86/urgent] x86/sgx: Silence softlockup detection when
+ releasing large enclaves
+Cc:     stable@vger.kernel.org, Vijay Dhanraj <vijay.dhanraj@intel.com>,
+        Reinette Chatre <reinette.chatre@intel.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220202205557.2260694-1-ndesaulniers@google.com>
-References: <20220202205557.2260694-1-ndesaulniers@google.com>
+In-Reply-To: =?utf-8?q?=3Cced01cac1e75f900251b0a4ae1150aa8ebd295ec=2E16443?=
+ =?utf-8?q?45232=2Egit=2Ereinette=2Echatre=40intel=2Ecom=3E?=
+References: =?utf-8?q?=3Cced01cac1e75f900251b0a4ae1150aa8ebd295ec=2E164434?=
+ =?utf-8?q?5232=2Egit=2Ereinette=2Echatre=40intel=2Ecom=3E?=
 MIME-Version: 1.0
-Message-ID: <164448739969.16921.718126712933524460.tip-bot2@tip-bot2>
+Message-ID: <164454172947.16921.6907341093129074331.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,182 +70,54 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the objtool/urgent branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     bfb1a7c91fb7758273b4a8d735313d9cc388b502
-Gitweb:        https://git.kernel.org/tip/bfb1a7c91fb7758273b4a8d735313d9cc388b502
-Author:        Nick Desaulniers <ndesaulniers@google.com>
-AuthorDate:    Wed, 02 Feb 2022 12:55:53 -08:00
-Committer:     Josh Poimboeuf <jpoimboe@redhat.com>
-CommitterDate: Wed, 02 Feb 2022 14:41:04 -08:00
+Commit-ID:     8795359e35bc33bf86b6d0765aa7f37431db3b9c
+Gitweb:        https://git.kernel.org/tip/8795359e35bc33bf86b6d0765aa7f37431db3b9c
+Author:        Reinette Chatre <reinette.chatre@intel.com>
+AuthorDate:    Tue, 08 Feb 2022 10:48:07 -08:00
+Committer:     Dave Hansen <dave.hansen@linux.intel.com>
+CommitterDate: Thu, 10 Feb 2022 15:58:14 -08:00
 
-x86/bug: Merge annotate_reachable() into _BUG_FLAGS() asm
+x86/sgx: Silence softlockup detection when releasing large enclaves
 
-In __WARN_FLAGS(), we had two asm statements (abbreviated):
+Vijay reported that the "unclobbered_vdso_oversubscribed" selftest
+triggers the softlockup detector.
 
-  asm volatile("ud2");
-  asm volatile(".pushsection .discard.reachable");
+Actual SGX systems have 128GB of enclave memory or more.  The
+"unclobbered_vdso_oversubscribed" selftest creates one enclave which
+consumes all of the enclave memory on the system. Tearing down such a
+large enclave takes around a minute, most of it in the loop where
+the EREMOVE instruction is applied to each individual 4k enclave page.
 
-These pair of statements are used to trigger an exception, but then help
-objtool understand that for warnings, control flow will be restored
-immediately afterwards.
+Spending one minute in a loop triggers the softlockup detector.
 
-The problem is that volatile is not a compiler barrier. GCC explicitly
-documents this:
+Add a cond_resched() to give other tasks a chance to run and placate
+the softlockup detector.
 
-> Note that the compiler can move even volatile asm instructions
-> relative to other code, including across jump instructions.
-
-Also, no clobbers are specified to prevent instructions from subsequent
-statements from being scheduled by compiler before the second asm
-statement. This can lead to instructions from subsequent statements
-being emitted by the compiler before the second asm statement.
-
-Providing a scheduling model such as via -march= options enables the
-compiler to better schedule instructions with known latencies to hide
-latencies from data hazards compared to inline asm statements in which
-latencies are not estimated.
-
-If an instruction gets scheduled by the compiler between the two asm
-statements, then objtool will think that it is not reachable, producing
-a warning.
-
-To prevent instructions from being scheduled in between the two asm
-statements, merge them.
-
-Also remove an unnecessary unreachable() asm annotation from BUG() in
-favor of __builtin_unreachable(). objtool is able to track that the ud2
-from BUG() terminates control flow within the function.
-
-Link: https://gcc.gnu.org/onlinedocs/gcc/Extended-Asm.html#Volatile
-Link: https://github.com/ClangBuiltLinux/linux/issues/1483
-Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
-Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
-Link: https://lore.kernel.org/r/20220202205557.2260694-1-ndesaulniers@google.com
+Cc: stable@vger.kernel.org
+Fixes: 1728ab54b4be ("x86/sgx: Add a page reclaimer")
+Reported-by: Vijay Dhanraj <vijay.dhanraj@intel.com>
+Signed-off-by: Reinette Chatre <reinette.chatre@intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+Tested-by: Jarkko Sakkinen <jarkko@kernel.org>  (kselftest as sanity check)
+Link: https://lkml.kernel.org/r/ced01cac1e75f900251b0a4ae1150aa8ebd295ec.1644345232.git.reinette.chatre@intel.com
 ---
- arch/x86/include/asm/bug.h | 20 +++++++++++---------
- include/linux/compiler.h   | 21 +++++----------------
- 2 files changed, 16 insertions(+), 25 deletions(-)
+ arch/x86/kernel/cpu/sgx/encl.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/x86/include/asm/bug.h b/arch/x86/include/asm/bug.h
-index 84b8753..bab883c 100644
---- a/arch/x86/include/asm/bug.h
-+++ b/arch/x86/include/asm/bug.h
-@@ -22,7 +22,7 @@
+diff --git a/arch/x86/kernel/cpu/sgx/encl.c b/arch/x86/kernel/cpu/sgx/encl.c
+index 001808e..48afe96 100644
+--- a/arch/x86/kernel/cpu/sgx/encl.c
++++ b/arch/x86/kernel/cpu/sgx/encl.c
+@@ -410,6 +410,8 @@ void sgx_encl_release(struct kref *ref)
+ 		}
  
- #ifdef CONFIG_DEBUG_BUGVERBOSE
+ 		kfree(entry);
++		/* Invoke scheduler to prevent soft lockups. */
++		cond_resched();
+ 	}
  
--#define _BUG_FLAGS(ins, flags)						\
-+#define _BUG_FLAGS(ins, flags, extra)					\
- do {									\
- 	asm_inline volatile("1:\t" ins "\n"				\
- 		     ".pushsection __bug_table,\"aw\"\n"		\
-@@ -31,7 +31,8 @@ do {									\
- 		     "\t.word %c1"        "\t# bug_entry::line\n"	\
- 		     "\t.word %c2"        "\t# bug_entry::flags\n"	\
- 		     "\t.org 2b+%c3\n"					\
--		     ".popsection"					\
-+		     ".popsection\n"					\
-+		     extra						\
- 		     : : "i" (__FILE__), "i" (__LINE__),		\
- 			 "i" (flags),					\
- 			 "i" (sizeof(struct bug_entry)));		\
-@@ -39,14 +40,15 @@ do {									\
- 
- #else /* !CONFIG_DEBUG_BUGVERBOSE */
- 
--#define _BUG_FLAGS(ins, flags)						\
-+#define _BUG_FLAGS(ins, flags, extra)					\
- do {									\
- 	asm_inline volatile("1:\t" ins "\n"				\
- 		     ".pushsection __bug_table,\"aw\"\n"		\
- 		     "2:\t" __BUG_REL(1b) "\t# bug_entry::bug_addr\n"	\
- 		     "\t.word %c0"        "\t# bug_entry::flags\n"	\
- 		     "\t.org 2b+%c1\n"					\
--		     ".popsection"					\
-+		     ".popsection\n"					\
-+		     extra						\
- 		     : : "i" (flags),					\
- 			 "i" (sizeof(struct bug_entry)));		\
- } while (0)
-@@ -55,7 +57,7 @@ do {									\
- 
- #else
- 
--#define _BUG_FLAGS(ins, flags)  asm volatile(ins)
-+#define _BUG_FLAGS(ins, flags, extra)  asm volatile(ins)
- 
- #endif /* CONFIG_GENERIC_BUG */
- 
-@@ -63,8 +65,8 @@ do {									\
- #define BUG()							\
- do {								\
- 	instrumentation_begin();				\
--	_BUG_FLAGS(ASM_UD2, 0);					\
--	unreachable();						\
-+	_BUG_FLAGS(ASM_UD2, 0, "");				\
-+	__builtin_unreachable();				\
- } while (0)
- 
- /*
-@@ -75,9 +77,9 @@ do {								\
-  */
- #define __WARN_FLAGS(flags)					\
- do {								\
-+	__auto_type f = BUGFLAG_WARNING|(flags);		\
- 	instrumentation_begin();				\
--	_BUG_FLAGS(ASM_UD2, BUGFLAG_WARNING|(flags));		\
--	annotate_reachable();					\
-+	_BUG_FLAGS(ASM_UD2, f, ASM_REACHABLE);			\
- 	instrumentation_end();					\
- } while (0)
- 
-diff --git a/include/linux/compiler.h b/include/linux/compiler.h
-index 429dceb..0f7fd20 100644
---- a/include/linux/compiler.h
-+++ b/include/linux/compiler.h
-@@ -117,14 +117,6 @@ void ftrace_likely_update(struct ftrace_likely_data *f, int val,
-  */
- #define __stringify_label(n) #n
- 
--#define __annotate_reachable(c) ({					\
--	asm volatile(__stringify_label(c) ":\n\t"			\
--		     ".pushsection .discard.reachable\n\t"		\
--		     ".long " __stringify_label(c) "b - .\n\t"		\
--		     ".popsection\n\t" : : "i" (c));			\
--})
--#define annotate_reachable() __annotate_reachable(__COUNTER__)
--
- #define __annotate_unreachable(c) ({					\
- 	asm volatile(__stringify_label(c) ":\n\t"			\
- 		     ".pushsection .discard.unreachable\n\t"		\
-@@ -133,24 +125,21 @@ void ftrace_likely_update(struct ftrace_likely_data *f, int val,
- })
- #define annotate_unreachable() __annotate_unreachable(__COUNTER__)
- 
--#define ASM_UNREACHABLE							\
--	"999:\n\t"							\
--	".pushsection .discard.unreachable\n\t"				\
--	".long 999b - .\n\t"						\
-+#define ASM_REACHABLE							\
-+	"998:\n\t"							\
-+	".pushsection .discard.reachable\n\t"				\
-+	".long 998b - .\n\t"						\
- 	".popsection\n\t"
- 
- /* Annotate a C jump table to allow objtool to follow the code flow */
- #define __annotate_jump_table __section(".rodata..c_jump_table")
- 
- #else
--#define annotate_reachable()
- #define annotate_unreachable()
-+# define ASM_REACHABLE
- #define __annotate_jump_table
- #endif
- 
--#ifndef ASM_UNREACHABLE
--# define ASM_UNREACHABLE
--#endif
- #ifndef unreachable
- # define unreachable() do {		\
- 	annotate_unreachable();		\
+ 	xa_destroy(&encl->page_array);
