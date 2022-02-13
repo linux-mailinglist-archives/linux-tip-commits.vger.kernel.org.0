@@ -2,54 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BC63B4B3AFB
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 13 Feb 2022 12:00:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 967154B3B8F
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 13 Feb 2022 14:25:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235226AbiBMK74 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 13 Feb 2022 05:59:56 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:59026 "EHLO
+        id S236269AbiBMNZT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 13 Feb 2022 08:25:19 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:41300 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235209AbiBMK74 (ORCPT
+        with ESMTP id S230408AbiBMNZS (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 13 Feb 2022 05:59:56 -0500
+        Sun, 13 Feb 2022 08:25:18 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E5825E74F;
-        Sun, 13 Feb 2022 02:59:51 -0800 (PST)
-Date:   Sun, 13 Feb 2022 10:59:47 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 657EA5EDDD;
+        Sun, 13 Feb 2022 05:25:13 -0800 (PST)
+Date:   Sun, 13 Feb 2022 13:25:08 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1644749988;
+        s=2020; t=1644758709;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=CkyQjo0ugeftPsZyQjLZirnYBh2nhZlLJr53w+AvS3k=;
-        b=AM8xTou4Gmszu2WpoBrDFRpmA3tKx1SXU0XtJlmz3YiSmYjsNsEp6aA3lRgKpkIjw4LpwE
-        XQ7ukXenXWadTI3lM7uQH8mKl9Ldj1a5Nt4p/5susL+F29S5HMlKj/wIQsxeioBnki/tCl
-        8Y3zlESMClNgkYrm61AwyQb5jrOTyUjoxzCwcsqnFcmFyCvADjFrNU/99MNGOCWBEbYikP
-        21J4OoJVrnqi+PT3HkxhHiyX94H818FX7BP07YVVIQfrTNJthOGIDxgrimjYDF73N33ZYT
-        p0TTuoofEbTDAp03v3Y7+GWEXfAD7FTGyEy0l7DH1edftP7NEANNl3WwQ+Utfg==
+        bh=v7/pIjh0RL7n91EArZbPWWMW4/WSrDHP+MZcRXDIJgU=;
+        b=bPRxmL3S3Hl9FPOTw82dro4xvD1Z1v/mh6IVojdt/MENOV1g8V4Vul0Z5N3Q0uyTFt9+pz
+        Zri3ZHjKrb+V26OHQWxxT27u/ytZU6OD64uCieBqV8TaO9DYKFSkrQpYFXu2j/WM21PSPT
+        gkN101x/6U3UIa44rZiibCjPoxqub0kMlcN3f3v330j3kZtHGa0Qd17hEDmlAye9GSLj+B
+        lp3lrEcvD/FsHYLS/N3EeK20fKKGkvCYtghUYuEMK3anikbZW4DYqCYW1oPAiCQMeHl0HD
+        K0YuSdzzsODiosO6jGRwBefBGdhIZBUd3DEhQoKRQH7bsUmKYny1HHIpBoyF4g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1644749988;
+        s=2020e; t=1644758709;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=CkyQjo0ugeftPsZyQjLZirnYBh2nhZlLJr53w+AvS3k=;
-        b=gJrjxMb++vuI3tvdaX7j9Yhj+fSOapDDh8Wa2FHar/AMKJvHZkeP3Zc9KjKM7KBughtSaS
-        LpETmv9Irm2hFoBQ==
-From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
+        bh=v7/pIjh0RL7n91EArZbPWWMW4/WSrDHP+MZcRXDIJgU=;
+        b=2hKJTg8p6FWbo10OVCAMFl0iwfuwi776HGO66QBPMlq+phDEeI6N0nzssi9wVdRNrq53YT
+        +AbGWqDaoHGiCNBQ==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] cpumask: Add a x86-specific cpumask_clear_cpu() helper
-Cc:     Borislav Petkov <bp@suse.de>, Marco Elver <elver@google.com>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20220204083015.17317-2-bp@alien8.de>
-References: <20220204083015.17317-2-bp@alien8.de>
+Subject: [tip: irq/urgent] Merge tag 'irqchip-fixes-5.17-2' of
+ git://git.kernel.org/pub/scm/linux/kernel/git/maz/arm-platforms into
+ irq/urgent
+Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, maz@kernel.org
+In-Reply-To: <20220211110038.1179155-1-maz@kernel.org>
+References: <20220211110038.1179155-1-maz@kernel.org>
 MIME-Version: 1.0
-Message-ID: <164474998765.16921.8420399786345053314.tip-bot2@tip-bot2>
+Message-ID: <164475870802.16921.7505879140824625645.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -64,82 +65,24 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the locking/core branch of tip:
+The following commit has been merged into the irq/urgent branch of tip:
 
-Commit-ID:     f5c54f77b07b278cfde4a654e111c39996ac8b5b
-Gitweb:        https://git.kernel.org/tip/f5c54f77b07b278cfde4a654e111c39996ac8b5b
-Author:        Borislav Petkov <bp@suse.de>
-AuthorDate:    Fri, 04 Feb 2022 09:30:13 +01:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Sat, 12 Feb 2022 18:20:05 +01:00
+Commit-ID:     1e34064b60552616b2767d22f2e6f440ced09acb
+Gitweb:        https://git.kernel.org/tip/1e34064b60552616b2767d22f2e6f440ced09acb
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Sun, 13 Feb 2022 14:16:23 +01:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Sun, 13 Feb 2022 14:16:23 +01:00
 
-cpumask: Add a x86-specific cpumask_clear_cpu() helper
+Merge tag 'irqchip-fixes-5.17-2' of git://git.kernel.org/pub/scm/linux/kernel/git/maz/arm-platforms into irq/urgent
 
-Add a x86-specific cpumask_clear_cpu() helper which will be used in
-places where the explicit KASAN-instrumentation in the *_bit() helpers
-is unwanted.
+Pull irqchip fixes from Marc Zyngier:
 
-Also, always inline two more cpumask generic helpers.
+ - Don't register a hotplug notifier on GICv3 systems that advertise
+   LPI support, but have no ITS to make use of it
 
-allyesconfig:
+ - Add missing DT matching for the thead,c900-plic variant of the
+   SiFive PLIC
 
-     text    data     bss     dec     hex filename
-  190553143       159425889       32076404        382055436       16c5b40c vmlinux.before
-  190551812       159424945       32076404        382053161       16c5ab29 vmlinux.after
-
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Acked-by: Marco Elver <elver@google.com>
-Link: https://lore.kernel.org/r/20220204083015.17317-2-bp@alien8.de
+Link: https://lore.kernel.org/r/20220211110038.1179155-1-maz@kernel.org
 ---
- arch/x86/include/asm/cpumask.h | 10 ++++++++++
- include/linux/cpumask.h        |  4 ++--
- 2 files changed, 12 insertions(+), 2 deletions(-)
-
-diff --git a/arch/x86/include/asm/cpumask.h b/arch/x86/include/asm/cpumask.h
-index 3afa990..c5aed9e 100644
---- a/arch/x86/include/asm/cpumask.h
-+++ b/arch/x86/include/asm/cpumask.h
-@@ -20,11 +20,21 @@ static __always_inline bool arch_cpu_online(int cpu)
- {
- 	return arch_test_bit(cpu, cpumask_bits(cpu_online_mask));
- }
-+
-+static __always_inline void arch_cpumask_clear_cpu(int cpu, struct cpumask *dstp)
-+{
-+	arch_clear_bit(cpumask_check(cpu), cpumask_bits(dstp));
-+}
- #else
- static __always_inline bool arch_cpu_online(int cpu)
- {
- 	return cpu == 0;
- }
-+
-+static __always_inline void arch_cpumask_clear_cpu(int cpu, struct cpumask *dstp)
-+{
-+	return;
-+}
- #endif
- 
- #define arch_cpu_is_offline(cpu)	unlikely(!arch_cpu_online(cpu))
-diff --git a/include/linux/cpumask.h b/include/linux/cpumask.h
-index 6b06c69..fe29ac7 100644
---- a/include/linux/cpumask.h
-+++ b/include/linux/cpumask.h
-@@ -102,7 +102,7 @@ extern atomic_t __num_online_cpus;
- 
- extern cpumask_t cpus_booted_once_mask;
- 
--static inline void cpu_max_bits_warn(unsigned int cpu, unsigned int bits)
-+static __always_inline void cpu_max_bits_warn(unsigned int cpu, unsigned int bits)
- {
- #ifdef CONFIG_DEBUG_PER_CPU_MAPS
- 	WARN_ON_ONCE(cpu >= bits);
-@@ -110,7 +110,7 @@ static inline void cpu_max_bits_warn(unsigned int cpu, unsigned int bits)
- }
- 
- /* verify cpu argument to cpumask_* operators */
--static inline unsigned int cpumask_check(unsigned int cpu)
-+static __always_inline unsigned int cpumask_check(unsigned int cpu)
- {
- 	cpu_max_bits_warn(cpu, nr_cpumask_bits);
- 	return cpu;
