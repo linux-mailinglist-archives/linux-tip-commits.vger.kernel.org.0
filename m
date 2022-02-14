@@ -2,49 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E4114B4D40
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 14 Feb 2022 12:11:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A8E24B4CFC
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 14 Feb 2022 12:11:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349874AbiBNLCv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 14 Feb 2022 06:02:51 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:36262 "EHLO
+        id S1349837AbiBNLIQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 14 Feb 2022 06:08:16 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:40572 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349905AbiBNLCk (ORCPT
+        with ESMTP id S1350070AbiBNLHt (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 14 Feb 2022 06:02:40 -0500
+        Mon, 14 Feb 2022 06:07:49 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF5A16A397;
-        Mon, 14 Feb 2022 02:30:23 -0800 (PST)
-Date:   Mon, 14 Feb 2022 10:30:20 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A5B471597;
+        Mon, 14 Feb 2022 02:37:12 -0800 (PST)
+Date:   Mon, 14 Feb 2022 10:37:09 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1644834622;
+        s=2020; t=1644835030;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=WcHz/38kpUTRfTb1MH9FbvylA0vbgrpBypC2JHmxk+4=;
-        b=bftFilmpNl6keLxM+weEEVyQvj3JD1venPWBn1XTHa8e5ol5kiOUx+yFkk/mfIpd4nCnjE
-        8hR+VbwMP6DLF+T5/s8V2f8+XSPXMJrFlPVvP7xDoHgAmRcKpPnxP8cle91qVpqYg4SkQy
-        hX7FDdSUT93LdIP/oHYzwjt4kbY26YkYJRdzHZXO2clV3HLpBticP7L3J+t2PiKyOPJBs9
-        1uRghgkcTqs1D4iqp8e500LxPoeJZqOWc2xuc4N75eg6sUt8CtlVP6vC0rdzPC3vc7VATi
-        jQ92VSMcCvQXDA1i4ToHtZchoQ5DtQCjINwaYBnTQ6pJM17goEm6FkvSdGZrgA==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=vKt/WAuCNj+bvLGLjCVMNQYEW9Arn1l1s0yZ7NByIho=;
+        b=mQ3+VkCAOBMmVBmVPkb8kmJ1kiaFbGPaBBPspJhSDgtdH9vyF7EmDXjEU6ZQ+MAbd+bGGg
+        idRqoSdMHeKyBLkj+BaMOpntdMoOg/qZVpjRg5GQM+id7P9+RRT19cUxLEvLSLmkg0jPN2
+        /quxfatO2PRNZg3ekyrjoVSQ+P4qOkTa3k+uAJSdbgmDWaNPazxsHg6fcq6iW/I6u5PLho
+        EQk+fdISV+rvM2ubwAQISn39rnuPmS7EkvLW2p/PmuRitzBTSS4FnFBlvwaRE1DQYkjS40
+        GUy+VmvkanAWJ4rSTZ4rueSgnPQ13ZPvtDqw4HpIDS+eHOgXVQhMj0X8SURkRw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1644834622;
+        s=2020e; t=1644835030;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=WcHz/38kpUTRfTb1MH9FbvylA0vbgrpBypC2JHmxk+4=;
-        b=YG71odPBwRLX3jIV8YDYUz306gqbiojJHSlj4PJcjAoMD13LAeuNTC3P5xBd7zwQI4M0WP
-        goI2HaSSZZECciDA==
-From:   "tip-bot2 for Mathieu Desnoyers" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=vKt/WAuCNj+bvLGLjCVMNQYEW9Arn1l1s0yZ7NByIho=;
+        b=HZNCu23M/2RopYGDQNcMZq0x4rSMIpXmNGmPfk6gpVw/NecOyhsWAD76qrUEmPc9qIFtXQ
+        +tu2IVDCudEaudAg==
+From:   "tip-bot2 for Cheng Jui Wang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] selftests/rseq: Change type of rseq_offset to ptrdiff_t
-Cc:     Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: locking/urgent] lockdep: Correct lock_classes index mapping
+Cc:     Cheng Jui Wang <cheng-jui.wang@mediatek.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Boqun Feng <boqun.feng@gmail.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
+In-Reply-To: <20220210105011.21712-1-cheng-jui.wang@mediatek.com>
+References: <20220210105011.21712-1-cheng-jui.wang@mediatek.com>
 MIME-Version: 1.0
-Message-ID: <164483462094.16921.3179511861185610192.tip-bot2@tip-bot2>
+Message-ID: <164483502963.16921.13140671629073762108.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,140 +66,76 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the locking/urgent branch of tip:
 
-Commit-ID:     889c5d60fbcf332c8b6ab7054d45f2768914a375
-Gitweb:        https://git.kernel.org/tip/889c5d60fbcf332c8b6ab7054d45f2768914a375
-Author:        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-AuthorDate:    Thu, 03 Feb 2022 10:05:32 -05:00
+Commit-ID:     28df029d53a2fd80c1b8674d47895648ad26dcfb
+Gitweb:        https://git.kernel.org/tip/28df029d53a2fd80c1b8674d47895648ad26dcfb
+Author:        Cheng Jui Wang <cheng-jui.wang@mediatek.com>
+AuthorDate:    Thu, 10 Feb 2022 18:50:11 +08:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Fri, 11 Feb 2022 23:30:08 +01:00
+CommitterDate: Fri, 11 Feb 2022 23:30:02 +01:00
 
-selftests/rseq: Change type of rseq_offset to ptrdiff_t
+lockdep: Correct lock_classes index mapping
 
-Just before the 2.35 release of glibc, the __rseq_offset userspace ABI
-was changed from int to ptrdiff_t.
+A kernel exception was hit when trying to dump /proc/lockdep_chains after
+lockdep report "BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!":
 
-Adapt to this change in the kernel selftests.
+Unable to handle kernel paging request at virtual address 00054005450e05c3
+...
+00054005450e05c3] address between user and kernel address ranges
+...
+pc : [0xffffffece769b3a8] string+0x50/0x10c
+lr : [0xffffffece769ac88] vsnprintf+0x468/0x69c
+...
+ Call trace:
+  string+0x50/0x10c
+  vsnprintf+0x468/0x69c
+  seq_printf+0x8c/0xd8
+  print_name+0x64/0xf4
+  lc_show+0xb8/0x128
+  seq_read_iter+0x3cc/0x5fc
+  proc_reg_read_iter+0xdc/0x1d4
 
-Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+The cause of the problem is the function lock_chain_get_class() will
+shift lock_classes index by 1, but the index don't need to be shifted
+anymore since commit 01bb6f0af992 ("locking/lockdep: Change the range
+of class_idx in held_lock struct") already change the index to start
+from 0.
+
+The lock_classes[-1] located at chain_hlocks array. When printing
+lock_classes[-1] after the chain_hlocks entries are modified, the
+exception happened.
+
+The output of lockdep_chains are incorrect due to this problem too.
+
+Fixes: f611e8cf98ec ("lockdep: Take read/write status in consideration when generate chainkey")
+Signed-off-by: Cheng Jui Wang <cheng-jui.wang@mediatek.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://sourceware.org/pipermail/libc-alpha/2022-February/136024.html
+Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+Link: https://lore.kernel.org/r/20220210105011.21712-1-cheng-jui.wang@mediatek.com
 ---
- tools/testing/selftests/rseq/rseq-x86.h | 14 +++++++-------
- tools/testing/selftests/rseq/rseq.c     |  5 +++--
- tools/testing/selftests/rseq/rseq.h     |  3 ++-
- 3 files changed, 12 insertions(+), 10 deletions(-)
+ kernel/locking/lockdep.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/rseq/rseq-x86.h b/tools/testing/selftests/rseq/rseq-x86.h
-index f704d36..bd01dc4 100644
---- a/tools/testing/selftests/rseq/rseq-x86.h
-+++ b/tools/testing/selftests/rseq/rseq-x86.h
-@@ -143,7 +143,7 @@ int rseq_cmpeqv_storev(intptr_t *v, intptr_t expect, intptr_t newv, int cpu)
- 		RSEQ_ASM_DEFINE_ABORT(4, "", abort)
- 		: /* gcc asm goto does not allow outputs */
- 		: [cpu_id]		"r" (cpu),
--		  [rseq_offset]		"r" ((long)rseq_offset),
-+		  [rseq_offset]		"r" (rseq_offset),
- 		  [v]			"m" (*v),
- 		  [expect]		"r" (expect),
- 		  [newv]		"r" (newv)
-@@ -214,7 +214,7 @@ int rseq_cmpnev_storeoffp_load(intptr_t *v, intptr_t expectnot,
- 		RSEQ_ASM_DEFINE_ABORT(4, "", abort)
- 		: /* gcc asm goto does not allow outputs */
- 		: [cpu_id]		"r" (cpu),
--		  [rseq_offset]		"r" ((long)rseq_offset),
-+		  [rseq_offset]		"r" (rseq_offset),
- 		  /* final store input */
- 		  [v]			"m" (*v),
- 		  [expectnot]		"r" (expectnot),
-@@ -270,7 +270,7 @@ int rseq_addv(intptr_t *v, intptr_t count, int cpu)
- 		RSEQ_ASM_DEFINE_ABORT(4, "", abort)
- 		: /* gcc asm goto does not allow outputs */
- 		: [cpu_id]		"r" (cpu),
--		  [rseq_offset]		"r" ((long)rseq_offset),
-+		  [rseq_offset]		"r" (rseq_offset),
- 		  /* final store input */
- 		  [v]			"m" (*v),
- 		  [count]		"er" (count)
-@@ -329,7 +329,7 @@ int rseq_offset_deref_addv(intptr_t *ptr, long off, intptr_t inc, int cpu)
- 		RSEQ_ASM_DEFINE_ABORT(4, "", abort)
- 		: /* gcc asm goto does not allow outputs */
- 		: [cpu_id]		"r" (cpu),
--		  [rseq_offset]		"r" ((long)rseq_offset),
-+		  [rseq_offset]		"r" (rseq_offset),
- 		  /* final store input */
- 		  [ptr]			"m" (*ptr),
- 		  [off]			"er" (off),
-@@ -387,7 +387,7 @@ int rseq_cmpeqv_trystorev_storev(intptr_t *v, intptr_t expect,
- 		RSEQ_ASM_DEFINE_ABORT(4, "", abort)
- 		: /* gcc asm goto does not allow outputs */
- 		: [cpu_id]		"r" (cpu),
--		  [rseq_offset]		"r" ((long)rseq_offset),
-+		  [rseq_offset]		"r" (rseq_offset),
- 		  /* try store input */
- 		  [v2]			"m" (*v2),
- 		  [newv2]		"r" (newv2),
-@@ -469,7 +469,7 @@ int rseq_cmpeqv_cmpeqv_storev(intptr_t *v, intptr_t expect,
- 		RSEQ_ASM_DEFINE_ABORT(4, "", abort)
- 		: /* gcc asm goto does not allow outputs */
- 		: [cpu_id]		"r" (cpu),
--		  [rseq_offset]		"r" ((long)rseq_offset),
-+		  [rseq_offset]		"r" (rseq_offset),
- 		  /* cmp2 input */
- 		  [v2]			"m" (*v2),
- 		  [expect2]		"r" (expect2),
-@@ -581,7 +581,7 @@ int rseq_cmpeqv_trymemcpy_storev(intptr_t *v, intptr_t expect,
- #endif
- 		: /* gcc asm goto does not allow outputs */
- 		: [cpu_id]		"r" (cpu),
--		  [rseq_offset]		"r" ((long)rseq_offset),
-+		  [rseq_offset]		"r" (rseq_offset),
- 		  /* final store input */
- 		  [v]			"m" (*v),
- 		  [expect]		"r" (expect),
-diff --git a/tools/testing/selftests/rseq/rseq.c b/tools/testing/selftests/rseq/rseq.c
-index 07ba0d4..986b945 100644
---- a/tools/testing/selftests/rseq/rseq.c
-+++ b/tools/testing/selftests/rseq/rseq.c
-@@ -27,16 +27,17 @@
- #include <signal.h>
- #include <limits.h>
- #include <dlfcn.h>
-+#include <stddef.h>
+diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
+index 4a882f8..f8a0212 100644
+--- a/kernel/locking/lockdep.c
++++ b/kernel/locking/lockdep.c
+@@ -3462,7 +3462,7 @@ struct lock_class *lock_chain_get_class(struct lock_chain *chain, int i)
+ 	u16 chain_hlock = chain_hlocks[chain->base + i];
+ 	unsigned int class_idx = chain_hlock_class_idx(chain_hlock);
  
- #include "../kselftest.h"
- #include "rseq.h"
+-	return lock_classes + class_idx - 1;
++	return lock_classes + class_idx;
+ }
  
--static const int *libc_rseq_offset_p;
-+static const ptrdiff_t *libc_rseq_offset_p;
- static const unsigned int *libc_rseq_size_p;
- static const unsigned int *libc_rseq_flags_p;
+ /*
+@@ -3530,7 +3530,7 @@ static void print_chain_keys_chain(struct lock_chain *chain)
+ 		hlock_id = chain_hlocks[chain->base + i];
+ 		chain_key = print_chain_key_iteration(hlock_id, chain_key);
  
- /* Offset from the thread pointer to the rseq area.  */
--int rseq_offset;
-+ptrdiff_t rseq_offset;
- 
- /* Size of the registered rseq area.  0 if the registration was
-    unsuccessful.  */
-diff --git a/tools/testing/selftests/rseq/rseq.h b/tools/testing/selftests/rseq/rseq.h
-index 6bd0ac4..9d850b2 100644
---- a/tools/testing/selftests/rseq/rseq.h
-+++ b/tools/testing/selftests/rseq/rseq.h
-@@ -16,6 +16,7 @@
- #include <errno.h>
- #include <stdio.h>
- #include <stdlib.h>
-+#include <stddef.h>
- #include "rseq-abi.h"
- #include "compiler.h"
- 
-@@ -47,7 +48,7 @@
- #include "rseq-thread-pointer.h"
- 
- /* Offset from the thread pointer to the rseq area.  */
--extern int rseq_offset;
-+extern ptrdiff_t rseq_offset;
- /* Size of the registered rseq area.  0 if the registration was
-    unsuccessful.  */
- extern unsigned int rseq_size;
+-		print_lock_name(lock_classes + chain_hlock_class_idx(hlock_id) - 1);
++		print_lock_name(lock_classes + chain_hlock_class_idx(hlock_id));
+ 		printk("\n");
+ 	}
+ }
