@@ -2,56 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A8E24B4CFC
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 14 Feb 2022 12:11:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 089794B69CA
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 15 Feb 2022 11:54:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349837AbiBNLIQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 14 Feb 2022 06:08:16 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:40572 "EHLO
+        id S236711AbiBOKyj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 15 Feb 2022 05:54:39 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:46456 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350070AbiBNLHt (ORCPT
+        with ESMTP id S230356AbiBOKyi (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 14 Feb 2022 06:07:49 -0500
+        Tue, 15 Feb 2022 05:54:38 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A5B471597;
-        Mon, 14 Feb 2022 02:37:12 -0800 (PST)
-Date:   Mon, 14 Feb 2022 10:37:09 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CD42C6220;
+        Tue, 15 Feb 2022 02:54:28 -0800 (PST)
+Date:   Tue, 15 Feb 2022 10:54:24 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1644835030;
+        s=2020; t=1644922466;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=vKt/WAuCNj+bvLGLjCVMNQYEW9Arn1l1s0yZ7NByIho=;
-        b=mQ3+VkCAOBMmVBmVPkb8kmJ1kiaFbGPaBBPspJhSDgtdH9vyF7EmDXjEU6ZQ+MAbd+bGGg
-        idRqoSdMHeKyBLkj+BaMOpntdMoOg/qZVpjRg5GQM+id7P9+RRT19cUxLEvLSLmkg0jPN2
-        /quxfatO2PRNZg3ekyrjoVSQ+P4qOkTa3k+uAJSdbgmDWaNPazxsHg6fcq6iW/I6u5PLho
-        EQk+fdISV+rvM2ubwAQISn39rnuPmS7EkvLW2p/PmuRitzBTSS4FnFBlvwaRE1DQYkjS40
-        GUy+VmvkanAWJ4rSTZ4rueSgnPQ13ZPvtDqw4HpIDS+eHOgXVQhMj0X8SURkRw==
+        bh=Gq8JkGp7txklDWvEWlo9O1PgemKRDCD3AFK4Be8fUDU=;
+        b=zEByKY6nS3XXm6LTHvcMVlReoFpuigW47wjkpjjMfvsvehIlDtNDd57S3TpByMkWX9282u
+        uPKku3w2HzVt0xgDWT0A4SE2eTQmxGDe8WL7dozlD7gr7qv6EjDzkBiqP1tOXQK+5TEPag
+        t56nlrbriXQmKgHsO6p8s+PzfaiExdqwVCzQwB5D0fDwIKiiSgGNFpkvuT2cAB4dGXpvm9
+        D+DoYmwjke/Avwan72NNiR8FvyAhTF2TV/MoXP+3Gln5w91fu3Yg8OrbGo/9Vt14Jcax0Z
+        AUDwl2L4+2o+D8AUByedtSPdSYZO0lDNp04aO6r42XpNQy1O4sKpE68S66n4zA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1644835030;
+        s=2020e; t=1644922466;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=vKt/WAuCNj+bvLGLjCVMNQYEW9Arn1l1s0yZ7NByIho=;
-        b=HZNCu23M/2RopYGDQNcMZq0x4rSMIpXmNGmPfk6gpVw/NecOyhsWAD76qrUEmPc9qIFtXQ
-        +tu2IVDCudEaudAg==
-From:   "tip-bot2 for Cheng Jui Wang" <tip-bot2@linutronix.de>
+        bh=Gq8JkGp7txklDWvEWlo9O1PgemKRDCD3AFK4Be8fUDU=;
+        b=C4D+GLTgsQIqoy5nuB7I3KHx4MiI5Jlk1BUAes1XXd76zZXFU8l829xKs7t+BX1TFp5Odt
+        19WzDsuTcn0cQfBA==
+From:   "tip-bot2 for Fenghua Yu" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/urgent] lockdep: Correct lock_classes index mapping
-Cc:     Cheng Jui Wang <cheng-jui.wang@mediatek.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Boqun Feng <boqun.feng@gmail.com>, x86@kernel.org,
+Subject: [tip: x86/pasid] Documentation/x86: Update documentation for SVA
+ (Shared Virtual Addressing)
+Cc:     Fenghua Yu <fenghua.yu@intel.com>, Borislav Petkov <bp@suse.de>,
+        Tony Luck <tony.luck@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220210105011.21712-1-cheng-jui.wang@mediatek.com>
-References: <20220210105011.21712-1-cheng-jui.wang@mediatek.com>
+In-Reply-To: <20220207230254.3342514-12-fenghua.yu@intel.com>
+References: <20220207230254.3342514-12-fenghua.yu@intel.com>
 MIME-Version: 1.0
-Message-ID: <164483502963.16921.13140671629073762108.tip-bot2@tip-bot2>
+Message-ID: <164492246461.16921.16965885697297666355.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,76 +67,94 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the locking/urgent branch of tip:
+The following commit has been merged into the x86/pasid branch of tip:
 
-Commit-ID:     28df029d53a2fd80c1b8674d47895648ad26dcfb
-Gitweb:        https://git.kernel.org/tip/28df029d53a2fd80c1b8674d47895648ad26dcfb
-Author:        Cheng Jui Wang <cheng-jui.wang@mediatek.com>
-AuthorDate:    Thu, 10 Feb 2022 18:50:11 +08:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Fri, 11 Feb 2022 23:30:02 +01:00
+Commit-ID:     83aa52ffed5d35a08e24452d0471e1684075cdf8
+Gitweb:        https://git.kernel.org/tip/83aa52ffed5d35a08e24452d0471e1684075cdf8
+Author:        Fenghua Yu <fenghua.yu@intel.com>
+AuthorDate:    Mon, 07 Feb 2022 15:02:54 -08:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Tue, 15 Feb 2022 11:31:43 +01:00
 
-lockdep: Correct lock_classes index mapping
+Documentation/x86: Update documentation for SVA (Shared Virtual Addressing)
 
-A kernel exception was hit when trying to dump /proc/lockdep_chains after
-lockdep report "BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!":
+Adjust the documentation to the new way how a PASID is being allocated,
+freed and fixed up.
 
-Unable to handle kernel paging request at virtual address 00054005450e05c3
-...
-00054005450e05c3] address between user and kernel address ranges
-...
-pc : [0xffffffece769b3a8] string+0x50/0x10c
-lr : [0xffffffece769ac88] vsnprintf+0x468/0x69c
-...
- Call trace:
-  string+0x50/0x10c
-  vsnprintf+0x468/0x69c
-  seq_printf+0x8c/0xd8
-  print_name+0x64/0xf4
-  lc_show+0xb8/0x128
-  seq_read_iter+0x3cc/0x5fc
-  proc_reg_read_iter+0xdc/0x1d4
+Based on a patch by Ashok Raj <ashok.raj@intel.com>
 
-The cause of the problem is the function lock_chain_get_class() will
-shift lock_classes index by 1, but the index don't need to be shifted
-anymore since commit 01bb6f0af992 ("locking/lockdep: Change the range
-of class_idx in held_lock struct") already change the index to start
-from 0.
+  [ bp: Massage commit message, fix htmldocs build warning ]
 
-The lock_classes[-1] located at chain_hlocks array. When printing
-lock_classes[-1] after the chain_hlocks entries are modified, the
-exception happened.
-
-The output of lockdep_chains are incorrect due to this problem too.
-
-Fixes: f611e8cf98ec ("lockdep: Take read/write status in consideration when generate chainkey")
-Signed-off-by: Cheng Jui Wang <cheng-jui.wang@mediatek.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
-Link: https://lore.kernel.org/r/20220210105011.21712-1-cheng-jui.wang@mediatek.com
+Signed-off-by: Fenghua Yu <fenghua.yu@intel.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Reviewed-by: Tony Luck <tony.luck@intel.com>
+Acked-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20220207230254.3342514-12-fenghua.yu@intel.com
 ---
- kernel/locking/lockdep.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ Documentation/x86/sva.rst | 53 +++++++++++++++++++++++++++++---------
+ 1 file changed, 41 insertions(+), 12 deletions(-)
 
-diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
-index 4a882f8..f8a0212 100644
---- a/kernel/locking/lockdep.c
-+++ b/kernel/locking/lockdep.c
-@@ -3462,7 +3462,7 @@ struct lock_class *lock_chain_get_class(struct lock_chain *chain, int i)
- 	u16 chain_hlock = chain_hlocks[chain->base + i];
- 	unsigned int class_idx = chain_hlock_class_idx(chain_hlock);
+diff --git a/Documentation/x86/sva.rst b/Documentation/x86/sva.rst
+index 076efd5..2e9b8b0 100644
+--- a/Documentation/x86/sva.rst
++++ b/Documentation/x86/sva.rst
+@@ -104,18 +104,47 @@ The MSR must be configured on each logical CPU before any application
+ thread can interact with a device. Threads that belong to the same
+ process share the same page tables, thus the same MSR value.
  
--	return lock_classes + class_idx - 1;
-+	return lock_classes + class_idx;
- }
+-PASID is cleared when a process is created. The PASID allocation and MSR
+-programming may occur long after a process and its threads have been created.
+-One thread must call iommu_sva_bind_device() to allocate the PASID for the
+-process. If a thread uses ENQCMD without the MSR first being populated, a #GP
+-will be raised. The kernel will update the PASID MSR with the PASID for all
+-threads in the process. A single process PASID can be used simultaneously
+-with multiple devices since they all share the same address space.
+-
+-One thread can call iommu_sva_unbind_device() to free the allocated PASID.
+-The kernel will clear the PASID MSR for all threads belonging to the process.
+-
+-New threads inherit the MSR value from the parent.
++PASID Life Cycle Management
++===========================
++
++PASID is initialized as INVALID_IOASID (-1) when a process is created.
++
++Only processes that access SVA-capable devices need to have a PASID
++allocated. This allocation happens when a process opens/binds an SVA-capable
++device but finds no PASID for this process. Subsequent binds of the same, or
++other devices will share the same PASID.
++
++Although the PASID is allocated to the process by opening a device,
++it is not active in any of the threads of that process. It's loaded to the
++IA32_PASID MSR lazily when a thread tries to submit a work descriptor
++to a device using the ENQCMD.
++
++That first access will trigger a #GP fault because the IA32_PASID MSR
++has not been initialized with the PASID value assigned to the process
++when the device was opened. The Linux #GP handler notes that a PASID has
++been allocated for the process, and so initializes the IA32_PASID MSR
++and returns so that the ENQCMD instruction is re-executed.
++
++On fork(2) or exec(2) the PASID is removed from the process as it no
++longer has the same address space that it had when the device was opened.
++
++On clone(2) the new task shares the same address space, so will be
++able to use the PASID allocated to the process. The IA32_PASID is not
++preemptively initialized as the PASID value might not be allocated yet or
++the kernel does not know whether this thread is going to access the device
++and the cleared IA32_PASID MSR reduces context switch overhead by xstate
++init optimization. Since #GP faults have to be handled on any threads that
++were created before the PASID was assigned to the mm of the process, newly
++created threads might as well be treated in a consistent way.
++
++Due to complexity of freeing the PASID and clearing all IA32_PASID MSRs in
++all threads in unbind, free the PASID lazily only on mm exit.
++
++If a process does a close(2) of the device file descriptor and munmap(2)
++of the device MMIO portal, then the driver will unbind the device. The
++PASID is still marked VALID in the PASID_MSR for any threads in the
++process that accessed the device. But this is harmless as without the
++MMIO portal they cannot submit new work to the device.
  
- /*
-@@ -3530,7 +3530,7 @@ static void print_chain_keys_chain(struct lock_chain *chain)
- 		hlock_id = chain_hlocks[chain->base + i];
- 		chain_key = print_chain_key_iteration(hlock_id, chain_key);
- 
--		print_lock_name(lock_classes + chain_hlock_class_idx(hlock_id) - 1);
-+		print_lock_name(lock_classes + chain_hlock_class_idx(hlock_id));
- 		printk("\n");
- 	}
- }
+ Relationships
+ =============
