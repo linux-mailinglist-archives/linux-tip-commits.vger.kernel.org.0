@@ -2,57 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 311CD4B69DC
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 15 Feb 2022 11:55:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C0F94B8BE1
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 16 Feb 2022 15:58:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236773AbiBOKzC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 15 Feb 2022 05:55:02 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:46636 "EHLO
+        id S235250AbiBPO6Q (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 16 Feb 2022 09:58:16 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:36904 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236762AbiBOKyr (ORCPT
+        with ESMTP id S232406AbiBPO6P (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 15 Feb 2022 05:54:47 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78EC3D76E7;
-        Tue, 15 Feb 2022 02:54:37 -0800 (PST)
-Date:   Tue, 15 Feb 2022 10:54:34 -0000
+        Wed, 16 Feb 2022 09:58:15 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25FF96004F;
+        Wed, 16 Feb 2022 06:58:02 -0800 (PST)
+Date:   Wed, 16 Feb 2022 14:57:58 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1644922475;
+        s=2020; t=1645023479;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=9WLXWNwzM0R5KqI1zFxtan97Z/TsiLLMHcR38JZo594=;
-        b=YlpOw2ClLUkDVyEHpu8zNXzepJkC8ak2Ta5BxpbLHkh35kaGxbBsmsxvFAbXOCyQEzcWHR
-        i2WPM6YEcdWAZHjVh/zIotQBHmYaVPGRCerbLJsWY0/neIkyFh5tHAlYnvs0Vwt1piVJpH
-        ChXgyPAwVH4xhZN0DuG6ISCKI8kUr0VX1YKmuhYVcMEXUDAA3AYepFm0NL4s3RIN10BDWP
-        9aDIHw668k52ex+bmdZ76S6MIQU9mESsKu46iCEJnpNPMOAo4eDmxvECNL440LuNUWoq1Q
-        yOFEvXIfj3mnvJ3Uy6vW5uSiJEDtQv8gSEr5+LcfSOhaxMbeNHTHtzoxgfiwkA==
+        bh=EKs0Hzo9s/Ylg3jYir/Ngp+UMB3ioXvWouE0YNl2mtw=;
+        b=H0JXCL5CKMdTxtgvqVGXDPbaIOza7gqedMzvW8PIzxdV8jyP3PlwVkngDxLg1p3yRcEpt5
+        Fd7AtJhBLTrxfwzRBllmJkmcSY9rxm649ETmZD/RqWvAigRADIud8HI667CveUkxYNLHWI
+        iZ3bGlFtJmpwQqaVd9dqF8JwoqpWGD7bWNtgB/evCwjuyF6G8ykeG/HJcl1GcBNMLLIQ/P
+        fgn+tWEmg+VfaEdp8zXtYZd4VRKtbPJq3OulB+mtz+0979mKehzkSX7uSmE0nVVgKmNT1D
+        ATnCz1wwJJ0PdJpkunLs/+TKuditoMiu0o4yAhLQ4HmXcJ6gmYHTMpZwbu+KXQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1644922475;
+        s=2020e; t=1645023479;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=9WLXWNwzM0R5KqI1zFxtan97Z/TsiLLMHcR38JZo594=;
-        b=zD3UZxbZlTT3BxvcZbtadfA5nBuss1cogchnTNLlShFpPxObNZWK6jbMO7TZHKeX8/mlV0
-        588OdRkVNjKGRrCg==
-From:   "tip-bot2 for Fenghua Yu" <tip-bot2@linutronix.de>
+        bh=EKs0Hzo9s/Ylg3jYir/Ngp+UMB3ioXvWouE0YNl2mtw=;
+        b=KhpW36DMpD9ZSF5T/ikpawAFOlI7cGDfBmni34y7FupHJI13rF1DbmYkUGHoj/27J1bt8G
+        8vAnOtt0ZmOQuVAA==
+From:   "tip-bot2 for Alexander Shishkin" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/pasid] iommu/sva: Rename CONFIG_IOMMU_SVA_LIB to CONFIG_IOMMU_SVA
-Cc:     Fenghua Yu <fenghua.yu@intel.com>, Borislav Petkov <bp@suse.de>,
-        Tony Luck <tony.luck@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Lu Baolu <baolu.lu@linux.intel.com>, x86@kernel.org,
+Subject: [tip: perf/core] perf/x86/intel/pt: Add a capability and config bit
+ for disabling TNTs
+Cc:     Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220207230254.3342514-2-fenghua.yu@intel.com>
-References: <20220207230254.3342514-2-fenghua.yu@intel.com>
+In-Reply-To: <20220126104815.2807416-3-adrian.hunter@intel.com>
+References: <20220126104815.2807416-3-adrian.hunter@intel.com>
 MIME-Version: 1.0
-Message-ID: <164492247418.16921.12518467729688631427.tip-bot2@tip-bot2>
+Message-ID: <164502347832.16921.5715898038732914778.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,112 +67,105 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/pasid branch of tip:
+The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     7ba564722d98e3e7bc3922ad4f2885ca0336674e
-Gitweb:        https://git.kernel.org/tip/7ba564722d98e3e7bc3922ad4f2885ca0336674e
-Author:        Fenghua Yu <fenghua.yu@intel.com>
-AuthorDate:    Mon, 07 Feb 2022 15:02:44 -08:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Mon, 14 Feb 2022 19:17:46 +01:00
+Commit-ID:     161a9a33702a2e65a4118dacb449505ac8ce3122
+Gitweb:        https://git.kernel.org/tip/161a9a33702a2e65a4118dacb449505ac8ce3122
+Author:        Alexander Shishkin <alexander.shishkin@linux.intel.com>
+AuthorDate:    Wed, 26 Jan 2022 12:48:15 +02:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Tue, 15 Feb 2022 17:47:11 +01:00
 
-iommu/sva: Rename CONFIG_IOMMU_SVA_LIB to CONFIG_IOMMU_SVA
+perf/x86/intel/pt: Add a capability and config bit for disabling TNTs
 
-This CONFIG option originally only referred to the Shared
-Virtual Address (SVA) library. But it is now also used for
-non-library portions of code.
+As of Intel SDM (https://www.intel.com/sdm) version 076, there is a new
+Intel PT feature called TNT-Disable which is enabled config bit 55.
 
-Drop the "_LIB" suffix so that there is just one configuration
-option for all code relating to SVA.
+TNT-Disable disables Taken-Not-Taken packets to reduce the tracing
+overhead, but with the result that exact control flow information is
+lost.
 
-Signed-off-by: Fenghua Yu <fenghua.yu@intel.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Tony Luck <tony.luck@intel.com>
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
-Link: https://lore.kernel.org/r/20220207230254.3342514-2-fenghua.yu@intel.com
+Add a capability and config bit for TNT-Disable.
+
+Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Adrian Hunter <adrian.hunter@intel.com>
+Link: https://lore.kernel.org/r/20220126104815.2807416-3-adrian.hunter@intel.com
 ---
- drivers/iommu/Kconfig         | 6 +++---
- drivers/iommu/Makefile        | 2 +-
- drivers/iommu/intel/Kconfig   | 2 +-
- drivers/iommu/iommu-sva-lib.h | 6 +++---
- 4 files changed, 8 insertions(+), 8 deletions(-)
+ arch/x86/events/intel/pt.c       | 8 ++++++++
+ arch/x86/include/asm/intel_pt.h  | 1 +
+ arch/x86/include/asm/msr-index.h | 1 +
+ 3 files changed, 10 insertions(+)
 
-diff --git a/drivers/iommu/Kconfig b/drivers/iommu/Kconfig
-index 3eb68fa..c79a0df 100644
---- a/drivers/iommu/Kconfig
-+++ b/drivers/iommu/Kconfig
-@@ -144,8 +144,8 @@ config IOMMU_DMA
- 	select IRQ_MSI_IOMMU
- 	select NEED_SG_DMA_LENGTH
+diff --git a/arch/x86/events/intel/pt.c b/arch/x86/events/intel/pt.c
+index f339c88..aa66c0c 100644
+--- a/arch/x86/events/intel/pt.c
++++ b/arch/x86/events/intel/pt.c
+@@ -60,6 +60,7 @@ static struct pt_cap_desc {
+ 	PT_CAP(ptwrite,			0, CPUID_EBX, BIT(4)),
+ 	PT_CAP(power_event_trace,	0, CPUID_EBX, BIT(5)),
+ 	PT_CAP(event_trace,		0, CPUID_EBX, BIT(7)),
++	PT_CAP(tnt_disable,		0, CPUID_EBX, BIT(8)),
+ 	PT_CAP(topa_output,		0, CPUID_ECX, BIT(0)),
+ 	PT_CAP(topa_multiple_entries,	0, CPUID_ECX, BIT(1)),
+ 	PT_CAP(single_range_output,	0, CPUID_ECX, BIT(2)),
+@@ -112,6 +113,7 @@ PMU_FORMAT_ATTR(noretcomp,	"config:11"	);
+ PMU_FORMAT_ATTR(ptw,		"config:12"	);
+ PMU_FORMAT_ATTR(branch,		"config:13"	);
+ PMU_FORMAT_ATTR(event,		"config:31"	);
++PMU_FORMAT_ATTR(notnt,		"config:55"	);
+ PMU_FORMAT_ATTR(mtc_period,	"config:14-17"	);
+ PMU_FORMAT_ATTR(cyc_thresh,	"config:19-22"	);
+ PMU_FORMAT_ATTR(psb_period,	"config:24-27"	);
+@@ -121,6 +123,7 @@ static struct attribute *pt_formats_attr[] = {
+ 	&format_attr_cyc.attr,
+ 	&format_attr_pwr_evt.attr,
+ 	&format_attr_event.attr,
++	&format_attr_notnt.attr,
+ 	&format_attr_fup_on_ptw.attr,
+ 	&format_attr_mtc.attr,
+ 	&format_attr_tsc.attr,
+@@ -302,6 +305,7 @@ fail:
+ 			RTIT_CTL_MTC		| \
+ 			RTIT_CTL_PWR_EVT_EN	| \
+ 			RTIT_CTL_EVENT_EN	| \
++			RTIT_CTL_NOTNT		| \
+ 			RTIT_CTL_FUP_ON_PTW	| \
+ 			RTIT_CTL_PTW_EN)
  
--# Shared Virtual Addressing library
--config IOMMU_SVA_LIB
-+# Shared Virtual Addressing
-+config IOMMU_SVA
- 	bool
- 	select IOASID
+@@ -360,6 +364,10 @@ static bool pt_event_valid(struct perf_event *event)
+ 	    !intel_pt_validate_hw_cap(PT_CAP_event_trace))
+ 		return false;
  
-@@ -379,7 +379,7 @@ config ARM_SMMU_V3
- config ARM_SMMU_V3_SVA
- 	bool "Shared Virtual Addressing support for the ARM SMMUv3"
- 	depends on ARM_SMMU_V3
--	select IOMMU_SVA_LIB
-+	select IOMMU_SVA
- 	select MMU_NOTIFIER
- 	help
- 	  Support for sharing process address spaces with devices using the
-diff --git a/drivers/iommu/Makefile b/drivers/iommu/Makefile
-index bc7f730..44475a9 100644
---- a/drivers/iommu/Makefile
-+++ b/drivers/iommu/Makefile
-@@ -27,6 +27,6 @@ obj-$(CONFIG_FSL_PAMU) += fsl_pamu.o fsl_pamu_domain.o
- obj-$(CONFIG_S390_IOMMU) += s390-iommu.o
- obj-$(CONFIG_HYPERV_IOMMU) += hyperv-iommu.o
- obj-$(CONFIG_VIRTIO_IOMMU) += virtio-iommu.o
--obj-$(CONFIG_IOMMU_SVA_LIB) += iommu-sva-lib.o io-pgfault.o
-+obj-$(CONFIG_IOMMU_SVA) += iommu-sva-lib.o io-pgfault.o
- obj-$(CONFIG_SPRD_IOMMU) += sprd-iommu.o
- obj-$(CONFIG_APPLE_DART) += apple-dart.o
-diff --git a/drivers/iommu/intel/Kconfig b/drivers/iommu/intel/Kconfig
-index 247d0f2..39a06d2 100644
---- a/drivers/iommu/intel/Kconfig
-+++ b/drivers/iommu/intel/Kconfig
-@@ -52,7 +52,7 @@ config INTEL_IOMMU_SVM
- 	select PCI_PRI
- 	select MMU_NOTIFIER
- 	select IOASID
--	select IOMMU_SVA_LIB
-+	select IOMMU_SVA
- 	help
- 	  Shared Virtual Memory (SVM) provides a facility for devices
- 	  to access DMA resources through process address space by
-diff --git a/drivers/iommu/iommu-sva-lib.h b/drivers/iommu/iommu-sva-lib.h
-index 0311550..95dc3eb 100644
---- a/drivers/iommu/iommu-sva-lib.h
-+++ b/drivers/iommu/iommu-sva-lib.h
-@@ -17,7 +17,7 @@ struct device;
- struct iommu_fault;
- struct iopf_queue;
- 
--#ifdef CONFIG_IOMMU_SVA_LIB
-+#ifdef CONFIG_IOMMU_SVA
- int iommu_queue_iopf(struct iommu_fault *fault, void *cookie);
- 
- int iopf_queue_add_device(struct iopf_queue *queue, struct device *dev);
-@@ -28,7 +28,7 @@ struct iopf_queue *iopf_queue_alloc(const char *name);
- void iopf_queue_free(struct iopf_queue *queue);
- int iopf_queue_discard_partial(struct iopf_queue *queue);
- 
--#else /* CONFIG_IOMMU_SVA_LIB */
-+#else /* CONFIG_IOMMU_SVA */
- static inline int iommu_queue_iopf(struct iommu_fault *fault, void *cookie)
- {
- 	return -ENODEV;
-@@ -64,5 +64,5 @@ static inline int iopf_queue_discard_partial(struct iopf_queue *queue)
- {
- 	return -ENODEV;
- }
--#endif /* CONFIG_IOMMU_SVA_LIB */
-+#endif /* CONFIG_IOMMU_SVA */
- #endif /* _IOMMU_SVA_LIB_H */
++	if (config & RTIT_CTL_NOTNT &&
++	    !intel_pt_validate_hw_cap(PT_CAP_tnt_disable))
++		return false;
++
+ 	if (config & RTIT_CTL_PTW) {
+ 		if (!intel_pt_validate_hw_cap(PT_CAP_ptwrite))
+ 			return false;
+diff --git a/arch/x86/include/asm/intel_pt.h b/arch/x86/include/asm/intel_pt.h
+index d1ef9cb..c796e9b 100644
+--- a/arch/x86/include/asm/intel_pt.h
++++ b/arch/x86/include/asm/intel_pt.h
+@@ -14,6 +14,7 @@ enum pt_capabilities {
+ 	PT_CAP_ptwrite,
+ 	PT_CAP_power_event_trace,
+ 	PT_CAP_event_trace,
++	PT_CAP_tnt_disable,
+ 	PT_CAP_topa_output,
+ 	PT_CAP_topa_multiple_entries,
+ 	PT_CAP_single_range_output,
+diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-index.h
+index 79b392d..efd34cf 100644
+--- a/arch/x86/include/asm/msr-index.h
++++ b/arch/x86/include/asm/msr-index.h
+@@ -206,6 +206,7 @@
+ #define RTIT_CTL_PTW_EN			BIT(12)
+ #define RTIT_CTL_BRANCH_EN		BIT(13)
+ #define RTIT_CTL_EVENT_EN		BIT(31)
++#define RTIT_CTL_NOTNT			BIT_ULL(55)
+ #define RTIT_CTL_MTC_RANGE_OFFSET	14
+ #define RTIT_CTL_MTC_RANGE		(0x0full << RTIT_CTL_MTC_RANGE_OFFSET)
+ #define RTIT_CTL_CYC_THRESH_OFFSET	19
