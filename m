@@ -2,48 +2,48 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF06E4BA817
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 17 Feb 2022 19:25:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 351E64BA83C
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 17 Feb 2022 19:30:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244209AbiBQSXS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 17 Feb 2022 13:23:18 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:53562 "EHLO
+        id S230387AbiBQSaF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 17 Feb 2022 13:30:05 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:54192 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244189AbiBQSXR (ORCPT
+        with ESMTP id S242283AbiBQSaF (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 17 Feb 2022 13:23:17 -0500
+        Thu, 17 Feb 2022 13:30:05 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A538220196;
-        Thu, 17 Feb 2022 10:23:02 -0800 (PST)
-Date:   Thu, 17 Feb 2022 18:22:59 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 406513890;
+        Thu, 17 Feb 2022 10:29:50 -0800 (PST)
+Date:   Thu, 17 Feb 2022 18:29:47 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1645122181;
+        s=2020; t=1645122588;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=NQfR/4Bh3Na8ZE2qdjeZClIZpmTHDnvnT8L0QQMwGfg=;
-        b=AOZz+GNDbSJLpHnoP5mVaNbFNgVNidgsGep+JcXXWBcBzvhi9HQBXYmp1KyWry5z5RUYDx
-        tOzuKvGL86bu9b0Y1gT5CnzDattNQI4YTTGvcfhOHQBT682mhlu1TTHpxnMz2KrZJNk1i9
-        6lXhXuw1r00nO68SI8szSarklUkpUEPHJUPPYbWbpctLXA17RE0sNRO3q2U5/hv9AuzIp4
-        fE6617uahQ3x3a3aAqZGRyaQgSX5TCnNaVaSq8P1Jb3bZhgYqNylMxsU+4GDkyBDyj6QpC
-        Egln65X3RF7p+VnS7/Jb3J+36+4yfVt3S8MGKs24mLpSE8JDoG6WazNEOAD+lA==
+        bh=4mAfyT3r3b/mZeU2HWxfzCxZVwclMDOHtJIRyQNscTs=;
+        b=uLeVpMIQ+gGabaYYhXqFLzYeulU0t1F9q9KXi23j2/ysNZXu4vXkpae8Pe7q6ypaS/Z9XK
+        owx5PERg4KEZKCRR3+3C8XUQ6gtUgPqYKrFV6Hz2Prr/Vdl2TyGnthSQjozZvt69lo7ewr
+        xfhjIKKRop3XyIXVYXWyYiaHTUqbpDQ+E9wbFUM9BzTWpTu34/IxSD3gmYIqp4h0VQ4fP9
+        sw8Q2bNM+hbn8tUVygua8L4ZgF2egjoGQehuMrWxEBC3W5sJS7djqTGxvMs2ANttrTP716
+        4FlNCCHkPbJUAUXdRttCvSIMffVPL2BagKzjniyi8pZpEIMFe8pPn51zn2CRpw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1645122181;
+        s=2020e; t=1645122588;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=NQfR/4Bh3Na8ZE2qdjeZClIZpmTHDnvnT8L0QQMwGfg=;
-        b=YraBV9jHzeqPwWyEVejDv2H6MT9QO/tLW8wrNxMXuSQrS/hFQpOAoknZYxmucsa2jPt5Cy
-        muHisMgVx1eLlFCg==
+        bh=4mAfyT3r3b/mZeU2HWxfzCxZVwclMDOHtJIRyQNscTs=;
+        b=nbDwDhAgZ34ybxcHzW2B5k9sibNRVAMoFLjOKXaEQMMRCmiK761lYprmXLz3sD+ozaBYqS
+        0RHMZm6fOEglvpAQ==
 From:   "tip-bot2 for Reinette Chatre" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/sgx: Add poison handling to reclaimer
+Subject: [tip: x86/urgent] x86/sgx: Fix missing poison handling in reclaimer
 Cc:     Reinette Chatre <reinette.chatre@intel.com>,
         Dave Hansen <dave.hansen@linux.intel.com>,
         Jarkko Sakkinen <jarkko@kernel.org>, x86@kernel.org,
@@ -53,7 +53,7 @@ In-Reply-To: =?utf-8?q?=3Cdcc95eb2aaefb042527ac50d0a50738c7c160dac=2E16438?=
 References: =?utf-8?q?=3Cdcc95eb2aaefb042527ac50d0a50738c7c160dac=2E164383?=
  =?utf-8?q?0353=2Egit=2Ereinette=2Echatre=40intel=2Ecom=3E?=
 MIME-Version: 1.0
-Message-ID: <164512217993.16921.1720244213113719560.tip-bot2@tip-bot2>
+Message-ID: <164512258776.16921.11031964988584200739.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -70,14 +70,14 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     f4b2a4606a14ab0b697a4e21754c9ad19d39f8ca
-Gitweb:        https://git.kernel.org/tip/f4b2a4606a14ab0b697a4e21754c9ad19d39f8ca
+Commit-ID:     e5733d8c89c3b57c8fcd40b8acf508388fabaa42
+Gitweb:        https://git.kernel.org/tip/e5733d8c89c3b57c8fcd40b8acf508388fabaa42
 Author:        Reinette Chatre <reinette.chatre@intel.com>
 AuthorDate:    Wed, 02 Feb 2022 11:41:12 -08:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Thu, 17 Feb 2022 09:12:04 -08:00
+CommitterDate: Thu, 17 Feb 2022 10:24:50 -08:00
 
-x86/sgx: Add poison handling to reclaimer
+x86/sgx: Fix missing poison handling in reclaimer
 
 The SGX reclaimer code lacks page poison handling in its main
 free path. This can lead to avoidable machine checks if a
