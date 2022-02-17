@@ -2,57 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A88DB4BA8FD
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 17 Feb 2022 19:59:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E92E24BA8F8
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 17 Feb 2022 19:59:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244753AbiBQS5S (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 17 Feb 2022 13:57:18 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:38764 "EHLO
+        id S244742AbiBQS5N (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 17 Feb 2022 13:57:13 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:38854 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244704AbiBQS5I (ORCPT
+        with ESMTP id S235762AbiBQS5K (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 17 Feb 2022 13:57:08 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3861A5D642;
-        Thu, 17 Feb 2022 10:56:53 -0800 (PST)
-Date:   Thu, 17 Feb 2022 18:56:50 -0000
+        Thu, 17 Feb 2022 13:57:10 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F1B05D668;
+        Thu, 17 Feb 2022 10:56:54 -0800 (PST)
+Date:   Thu, 17 Feb 2022 18:56:51 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1645124211;
+        s=2020; t=1645124212;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=jvX3VcVTdDFf7XLd1SSfYubyFz74SefeqCtNmezfg4s=;
-        b=KLFLrl+7m5fbrPb6Zl9HQPrEPpJUJMBxhQsV6EmyAq0/99GOilk2o7u7iI4afgwLMD3NGd
-        QWTp1Cs1KIDoCLP4Cy/RcdzKTOtSBG7ZOu0E9mAcGyj7rsAKerCpJG3G7WAic1AizVGN7r
-        drMjxzRjUnTnS+PKz1Colgaq75fPI5Xe0S69QdogaUU69ytagbbF9lE4PfXHQgtSBxFA9j
-        bc52o9/694ni3tt/vmNxQKUYVuczjHRVUZP+rh68drLUvmkIoxJK6IHd1VUQg+kT+mJebE
-        +j0O0GM3vvTId0KJ8acgsZEqWjpEBwFk0K5Ce+3VgLrJzDH0FAPrasFrX6CzWg==
+        bh=MBMvQsiG2NvPPtzi/hVREDQBmKieIMZ8/hnkIeo5qAI=;
+        b=m5aicU8ilSs0PYwuPDPEWtL4fVvhC63oaoBwSdgHwLAIxYj9kQ7d8HwFCEsS6sLdqrQWps
+        zyIuo8AI/EcNVe8NpFwX2xc7Gs7j8Yc2gFMZBBVO8j7aGgOUn1MQm6Tag5zDmRmwfwe6RJ
+        8gQl73OXVhyWZxWsoFDyys8kn3XqdkZZvmOZTktAXTRG3GvUmDGvC0drEC60G0L4U5dvvE
+        fmhTGKWkxgdrhnKKGtp2N09lkPlBUJCypiNHo+R/JW8BEO4ik17X8gwMTBlWCOwt7JLKz/
+        5J8igOdGszXViTzaynSjUAxRFd4C+HUYrWx3Ngj2KkrmBenoVbb8WAkIgJZCoQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1645124211;
+        s=2020e; t=1645124212;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=jvX3VcVTdDFf7XLd1SSfYubyFz74SefeqCtNmezfg4s=;
-        b=OI3ztUFrmfgI9MHO6wpJ2NBlfSqg7DocyMaEKGJAcOG55gW3mzTeEH4JWuigpws2jukaSI
-        rrYHdSLa0nCGf0CQ==
-From:   "tip-bot2 for Frederic Weisbecker" <tip-bot2@linutronix.de>
+        bh=MBMvQsiG2NvPPtzi/hVREDQBmKieIMZ8/hnkIeo5qAI=;
+        b=GlTioHL4Z0gYLex3RV2RAxab5XgKvWZ9gRg0MbTtMIf7MOC20Pa3+jg7ZlyLY55GA0JPhP
+        tBK8n4URjEZpo+Dg==
+From:   "tip-bot2 for Zhaoyang Huang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] pci: Decouple HK_FLAG_WQ and HK_FLAG_DOMAIN cpumask fetch
-Cc:     Frederic Weisbecker <frederic@kernel.org>,
+Subject: [tip: sched/core] psi: fix possible trigger missing in the window
+Cc:     Suren Baghdasaryan <surenb@google.com>,
+        Zhaoyang Huang <zhaoyang.huang@unisoc.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Phil Auld <pauld@redhat.com>, x86@kernel.org,
+        Johannes Weiner <hannes@cmpxchg.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220207155910.527133-2-frederic@kernel.org>
-References: <20220207155910.527133-2-frederic@kernel.org>
+In-Reply-To: <1643093818-19835-1-git-send-email-huangzhaoyang@gmail.com>
+References: <1643093818-19835-1-git-send-email-huangzhaoyang@gmail.com>
 MIME-Version: 1.0
-Message-ID: <164512421082.16921.14468730232385715895.tip-bot2@tip-bot2>
+Message-ID: <164512421171.16921.5147262447831853726.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -69,77 +69,131 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     9d42ea0d6984044a82258f41d8407ee442687f30
-Gitweb:        https://git.kernel.org/tip/9d42ea0d6984044a82258f41d8407ee442687f30
-Author:        Frederic Weisbecker <frederic@kernel.org>
-AuthorDate:    Mon, 07 Feb 2022 16:59:03 +01:00
+Commit-ID:     e6df4ead85d9da1b07dd40bd4c6d2182f3e210c4
+Gitweb:        https://git.kernel.org/tip/e6df4ead85d9da1b07dd40bd4c6d2182f3e210c4
+Author:        Zhaoyang Huang <zhaoyang.huang@unisoc.com>
+AuthorDate:    Tue, 25 Jan 2022 14:56:58 +08:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Wed, 16 Feb 2022 15:57:54 +01:00
 
-pci: Decouple HK_FLAG_WQ and HK_FLAG_DOMAIN cpumask fetch
+psi: fix possible trigger missing in the window
 
-To prepare for supporting each feature of the housekeeping cpumask
-toward cpuset, prepare each of the HK_FLAG_* entries to move to their
-own cpumask with enforcing to fetch them individually. The new
-constraint is that multiple HK_FLAG_* entries can't be mixed together
-anymore in a single call to housekeeping cpumask().
+When a new threshold breaching stall happens after a psi event was
+generated and within the window duration, the new event is not
+generated because the events are rate-limited to one per window. If
+after that no new stall is recorded then the event will not be
+generated even after rate-limiting duration has passed. This is
+happening because with no new stall, window_update will not be called
+even though threshold was previously breached. To fix this, record
+threshold breaching occurrence and generate the event once window
+duration is passed.
 
-This will later allow, for example, to runtime modify the cpulist passed
-through "isolcpus=", "nohz_full=" and "rcu_nocbs=" kernel boot
-parameters.
-
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Suggested-by: Suren Baghdasaryan <surenb@google.com>
+Signed-off-by: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Juri Lelli <juri.lelli@redhat.com>
-Reviewed-by: Phil Auld <pauld@redhat.com>
-Link: https://lore.kernel.org/r/20220207155910.527133-2-frederic@kernel.org
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Acked-by: Suren Baghdasaryan <surenb@google.com>
+Link: https://lore.kernel.org/r/1643093818-19835-1-git-send-email-huangzhaoyang@gmail.com
 ---
- drivers/pci/pci-driver.c | 21 ++++++++++++++++-----
- 1 file changed, 16 insertions(+), 5 deletions(-)
+ include/linux/psi_types.h |  3 ++-
+ kernel/sched/psi.c        | 46 ++++++++++++++++++++++++--------------
+ 2 files changed, 33 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
-index 588588c..4a5792c 100644
---- a/drivers/pci/pci-driver.c
-+++ b/drivers/pci/pci-driver.c
-@@ -350,7 +350,6 @@ static int pci_call_probe(struct pci_driver *drv, struct pci_dev *dev,
- 			  const struct pci_device_id *id)
+diff --git a/include/linux/psi_types.h b/include/linux/psi_types.h
+index 516c0fe..dc3ec5e 100644
+--- a/include/linux/psi_types.h
++++ b/include/linux/psi_types.h
+@@ -144,6 +144,9 @@ struct psi_trigger {
+ 
+ 	/* Refcounting to prevent premature destruction */
+ 	struct kref refcount;
++
++	/* Deferred event(s) from previous ratelimit window */
++	bool pending_event;
+ };
+ 
+ struct psi_group {
+diff --git a/kernel/sched/psi.c b/kernel/sched/psi.c
+index cfe76f7..e9d623c 100644
+--- a/kernel/sched/psi.c
++++ b/kernel/sched/psi.c
+@@ -523,7 +523,7 @@ static void init_triggers(struct psi_group *group, u64 now)
+ static u64 update_triggers(struct psi_group *group, u64 now)
  {
- 	int error, node, cpu;
--	int hk_flags = HK_FLAG_DOMAIN | HK_FLAG_WQ;
- 	struct drv_dev_and_id ddi = { drv, dev, id };
+ 	struct psi_trigger *t;
+-	bool new_stall = false;
++	bool update_total = false;
+ 	u64 *total = group->total[PSI_POLL];
  
  	/*
-@@ -368,17 +367,29 @@ static int pci_call_probe(struct pci_driver *drv, struct pci_dev *dev,
- 	 * device is probed from work_on_cpu() of the Physical device.
+@@ -532,24 +532,35 @@ static u64 update_triggers(struct psi_group *group, u64 now)
  	 */
- 	if (node < 0 || node >= MAX_NUMNODES || !node_online(node) ||
--	    pci_physfn_is_probed(dev))
-+	    pci_physfn_is_probed(dev)) {
- 		cpu = nr_cpu_ids;
--	else
-+	} else {
-+		cpumask_var_t wq_domain_mask;
-+
-+		if (!zalloc_cpumask_var(&wq_domain_mask, GFP_KERNEL)) {
-+			error = -ENOMEM;
-+			goto out;
-+		}
-+		cpumask_and(wq_domain_mask,
-+			    housekeeping_cpumask(HK_FLAG_WQ),
-+			    housekeeping_cpumask(HK_FLAG_DOMAIN));
-+
- 		cpu = cpumask_any_and(cpumask_of_node(node),
--				      housekeeping_cpumask(hk_flags));
-+				      wq_domain_mask);
-+		free_cpumask_var(wq_domain_mask);
-+	}
+ 	list_for_each_entry(t, &group->triggers, node) {
+ 		u64 growth;
++		bool new_stall;
  
- 	if (cpu < nr_cpu_ids)
- 		error = work_on_cpu(cpu, local_pci_probe, &ddi);
- 	else
- 		error = local_pci_probe(&ddi);
+-		/* Check for stall activity */
+-		if (group->polling_total[t->state] == total[t->state])
+-			continue;
++		new_stall = group->polling_total[t->state] != total[t->state];
+ 
++		/* Check for stall activity or a previous threshold breach */
++		if (!new_stall && !t->pending_event)
++			continue;
+ 		/*
+-		 * Multiple triggers might be looking at the same state,
+-		 * remember to update group->polling_total[] once we've
+-		 * been through all of them. Also remember to extend the
+-		 * polling time if we see new stall activity.
++		 * Check for new stall activity, as well as deferred
++		 * events that occurred in the last window after the
++		 * trigger had already fired (we want to ratelimit
++		 * events without dropping any).
+ 		 */
+-		new_stall = true;
 -
-+out:
- 	dev->is_probed = 0;
- 	cpu_hotplug_enable();
- 	return error;
+-		/* Calculate growth since last update */
+-		growth = window_update(&t->win, now, total[t->state]);
+-		if (growth < t->threshold)
+-			continue;
+-
++		if (new_stall) {
++			/*
++			 * Multiple triggers might be looking at the same state,
++			 * remember to update group->polling_total[] once we've
++			 * been through all of them. Also remember to extend the
++			 * polling time if we see new stall activity.
++			 */
++			update_total = true;
++
++			/* Calculate growth since last update */
++			growth = window_update(&t->win, now, total[t->state]);
++			if (growth < t->threshold)
++				continue;
++
++			t->pending_event = true;
++		}
+ 		/* Limit event signaling to once per window */
+ 		if (now < t->last_event_time + t->win.size)
+ 			continue;
+@@ -558,9 +569,11 @@ static u64 update_triggers(struct psi_group *group, u64 now)
+ 		if (cmpxchg(&t->event, 0, 1) == 0)
+ 			wake_up_interruptible(&t->event_wait);
+ 		t->last_event_time = now;
++		/* Reset threshold breach flag once event got generated */
++		t->pending_event = false;
+ 	}
+ 
+-	if (new_stall)
++	if (update_total)
+ 		memcpy(group->polling_total, total,
+ 				sizeof(group->polling_total));
+ 
+@@ -1125,6 +1138,7 @@ struct psi_trigger *psi_trigger_create(struct psi_group *group,
+ 	t->last_event_time = 0;
+ 	init_waitqueue_head(&t->event_wait);
+ 	kref_init(&t->refcount);
++	t->pending_event = false;
+ 
+ 	mutex_lock(&group->trigger_lock);
+ 
