@@ -2,60 +2,59 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D0A34BAA8E
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 17 Feb 2022 21:04:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E3994BB6F8
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 18 Feb 2022 11:36:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245638AbiBQUDo (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 17 Feb 2022 15:03:44 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:56426 "EHLO
+        id S232454AbiBRKgX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 18 Feb 2022 05:36:23 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:46464 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237756AbiBQUDn (ORCPT
+        with ESMTP id S229694AbiBRKgX (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 17 Feb 2022 15:03:43 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A12CB46670;
-        Thu, 17 Feb 2022 12:03:27 -0800 (PST)
-Date:   Thu, 17 Feb 2022 20:03:24 -0000
+        Fri, 18 Feb 2022 05:36:23 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4570B2B3575;
+        Fri, 18 Feb 2022 02:36:05 -0800 (PST)
+Date:   Fri, 18 Feb 2022 10:36:01 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1645128205;
+        s=2020; t=1645180562;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=nFIhjWAJVh6ZFlc+OBY5UeqjJhMERGEWjl6aLS1HzUs=;
-        b=zDJPicaMV+JKic2iwEp2M1cgQbo0g1FmQQst2uzUi7jQNkwFKdX4LDIUqq35ti1J5IxesB
-        pBbwzKhYAuyKfrlcZSVoQ8ogl6OjjvrO+pMCYjIRUL8cP2nfBvGtd/wXK4bSa/KxD+7+4P
-        9/XrU0b7FchAcHgddklfZRUepMyxTui2F4tXv92aWoIUH+vN9EjU1wXHM6ORSDARxbE3gC
-        0V8FCAgNJv2qb1XmUPG0TeoeGXov9HuSrLO3PU7ybpXaiRY8jAdkmewVLkwFBQkj+GcrsM
-        +9rXBj60lyK/el7cwW+S6jnNl+KeUerGJNfL20vd4NvwYZFFpLe2bZGyECONYA==
+        bh=vrDjnYGriIcx9Ox1QC6AoQgMAAK0YnoxLVYtUNI8yIQ=;
+        b=43/GBuKy0U0w/+9/D/lAt4il4dHMluOl6XnW7S7rnpxWhW2Fyr33xbmUfTSz6xKT6AS++A
+        OafHmrqgTw7xLfWaC0Clp3ryTAFqpxYhHQJhYxNiy/su7amUuDKT5jJr0cYTbw92zUeiLQ
+        i0a5fI9e+SBxiixSPL69SaGEBHXkYQkX3gif/a6+dZ0JBv3EA7rX1+M1wI+mR8arYPnS1/
+        iNVsSsDcshmCmu4j9e5AYqnahswp5sLvlgR03LMKwHSfqnoaTcAmrOghDjXtwW//tHS4Hn
+        ysOER9Udk1E1zjnGxMjx9bFgJxXpcGdelNCr+v/xkK8UKmikOTH0/od53k2A1w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1645128205;
+        s=2020e; t=1645180562;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=nFIhjWAJVh6ZFlc+OBY5UeqjJhMERGEWjl6aLS1HzUs=;
-        b=o6XK3V/gSV+s1LmmYMS2znaGDOEOxlZvVugkpQDIzuxBILvKZxuCB8EyDxhIvoxoRn3Y9K
-        FGqac2eiFNF0uAAA==
-From:   "tip-bot2 for Muhammad Usama Anjum" <tip-bot2@linutronix.de>
+        bh=vrDjnYGriIcx9Ox1QC6AoQgMAAK0YnoxLVYtUNI8yIQ=;
+        b=j2IMPyqZipmgd30pxq3e8vN2JWUv9bHEvb/cPuIqtU2mejAbHAWvPOMdPz5kZP0a+tOibW
+        2Bka7hN1uXw6DzDg==
+From:   "tip-bot2 for Andy Lutomirski" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/sgx] selftests/x86: Add validity check and allow field splitting
-Cc:     "kernelci.org bot" <bot@kernelci.org>,
-        Muhammad Usama Anjum <usama.anjum@collabora.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20220214184109.3739179-2-usama.anjum@collabora.com>
-References: <20220214184109.3739179-2-usama.anjum@collabora.com>
+Subject: [tip: x86/urgent] x86/ptrace: Fix xfpregs_set()'s incorrect xmm clearing
+Cc:     contact@lsferreira.net, Andy Lutomirski <luto@kernel.org>,
+        Borislav Petkov <bp@suse.de>, <stable@vger.kernel.org>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <YgpFnZpF01WwR8wU@zn.tnic>
+References: <YgpFnZpF01WwR8wU@zn.tnic>
 MIME-Version: 1.0
-Message-ID: <164512820484.16921.11445103129239646952.tip-bot2@tip-bot2>
+Message-ID: <164518056109.16921.5538462519727377256.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
@@ -66,41 +65,99 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/sgx branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     b06e15ebd5bfb670f93c7f11a29b8299c1178bc6
-Gitweb:        https://git.kernel.org/tip/b06e15ebd5bfb670f93c7f11a29b8299c1178bc6
-Author:        Muhammad Usama Anjum <usama.anjum@collabora.com>
-AuthorDate:    Mon, 14 Feb 2022 23:41:08 +05:00
-Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Thu, 17 Feb 2022 11:55:17 -08:00
+Commit-ID:     44cad52cc14ae10062f142ec16ede489bccf4469
+Gitweb:        https://git.kernel.org/tip/44cad52cc14ae10062f142ec16ede489bcc=
+f4469
+Author:        Andy Lutomirski <luto@kernel.org>
+AuthorDate:    Mon, 14 Feb 2022 13:05:49 +01:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Fri, 18 Feb 2022 11:23:21 +01:00
 
-selftests/x86: Add validity check and allow field splitting
+x86/ptrace: Fix xfpregs_set()'s incorrect xmm clearing
 
-Add check to test if CC has a string. CC can have multiple sub-strings
-like "ccache gcc". Erorr pops up if it is treated as single string and
-double quotes are used around it. This can be fixed by removing the
-quotes and not treating CC as a single string.
+xfpregs_set() handles 32-bit REGSET_XFP and 64-bit REGSET_FP. The actual
+code treats these regsets as modern FX state (i.e. the beginning part of
+XSTATE). The declarations of the regsets thought they were the legacy
+i387 format. The code thought they were the 32-bit (no xmm8..15) variant
+of XSTATE and, for good measure, made the high bits disappear by zeroing
+the wrong part of the buffer. The latter broke ptrace, and everything
+else confused anyone trying to understand the code. In particular, the
+nonsense definitions of the regsets confused me when I wrote this code.
 
-Fixes: e9886ace222e ("selftests, x86: Rework x86 target architecture detection")
-Reported-by: "kernelci.org bot" <bot@kernelci.org>
-Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lkml.kernel.org/r/20220214184109.3739179-2-usama.anjum@collabora.com
+Clean this all up. Change the declarations to match reality (which
+shouldn't change the generated code, let alone the ABI) and fix
+xfpregs_set() to clear the correct bits and to only do so for 32-bit
+callers.
+
+Fixes: 6164331d15f7 ("x86/fpu: Rewrite xfpregs_set()")
+Reported-by: Lu=C3=ADs Ferreira <contact@lsferreira.net>
+Signed-off-by: Andy Lutomirski <luto@kernel.org>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Cc: <stable@vger.kernel.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=3D215524
+Link: https://lore.kernel.org/r/YgpFnZpF01WwR8wU@zn.tnic
 ---
- tools/testing/selftests/x86/check_cc.sh | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/fpu/regset.c |  9 ++++-----
+ arch/x86/kernel/ptrace.c     |  4 ++--
+ 2 files changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/tools/testing/selftests/x86/check_cc.sh b/tools/testing/selftests/x86/check_cc.sh
-index 3e2089c..8c669c0 100755
---- a/tools/testing/selftests/x86/check_cc.sh
-+++ b/tools/testing/selftests/x86/check_cc.sh
-@@ -7,7 +7,7 @@ CC="$1"
- TESTPROG="$2"
- shift 2
- 
--if "$CC" -o /dev/null "$TESTPROG" -O0 "$@" 2>/dev/null; then
-+if [ -n "$CC" ] && $CC -o /dev/null "$TESTPROG" -O0 "$@" 2>/dev/null; then
-     echo 1
- else
-     echo 0
+diff --git a/arch/x86/kernel/fpu/regset.c b/arch/x86/kernel/fpu/regset.c
+index 437d7c9..75ffaef 100644
+--- a/arch/x86/kernel/fpu/regset.c
++++ b/arch/x86/kernel/fpu/regset.c
+@@ -91,11 +91,9 @@ int xfpregs_set(struct task_struct *target, const struct u=
+ser_regset *regset,
+ 		const void *kbuf, const void __user *ubuf)
+ {
+ 	struct fpu *fpu =3D &target->thread.fpu;
+-	struct user32_fxsr_struct newstate;
++	struct fxregs_state newstate;
+ 	int ret;
+=20
+-	BUILD_BUG_ON(sizeof(newstate) !=3D sizeof(struct fxregs_state));
+-
+ 	if (!cpu_feature_enabled(X86_FEATURE_FXSR))
+ 		return -ENODEV;
+=20
+@@ -116,9 +114,10 @@ int xfpregs_set(struct task_struct *target, const struct=
+ user_regset *regset,
+ 	/* Copy the state  */
+ 	memcpy(&fpu->fpstate->regs.fxsave, &newstate, sizeof(newstate));
+=20
+-	/* Clear xmm8..15 */
++	/* Clear xmm8..15 for 32-bit callers */
+ 	BUILD_BUG_ON(sizeof(fpu->__fpstate.regs.fxsave.xmm_space) !=3D 16 * 16);
+-	memset(&fpu->fpstate->regs.fxsave.xmm_space[8], 0, 8 * 16);
++	if (in_ia32_syscall())
++		memset(&fpu->fpstate->regs.fxsave.xmm_space[8*4], 0, 8 * 16);
+=20
+ 	/* Mark FP and SSE as in use when XSAVE is enabled */
+ 	if (use_xsave())
+diff --git a/arch/x86/kernel/ptrace.c b/arch/x86/kernel/ptrace.c
+index 6d2244c..8d2f2f9 100644
+--- a/arch/x86/kernel/ptrace.c
++++ b/arch/x86/kernel/ptrace.c
+@@ -1224,7 +1224,7 @@ static struct user_regset x86_64_regsets[] __ro_after_i=
+nit =3D {
+ 	},
+ 	[REGSET_FP] =3D {
+ 		.core_note_type =3D NT_PRFPREG,
+-		.n =3D sizeof(struct user_i387_struct) / sizeof(long),
++		.n =3D sizeof(struct fxregs_state) / sizeof(long),
+ 		.size =3D sizeof(long), .align =3D sizeof(long),
+ 		.active =3D regset_xregset_fpregs_active, .regset_get =3D xfpregs_get, .se=
+t =3D xfpregs_set
+ 	},
+@@ -1271,7 +1271,7 @@ static struct user_regset x86_32_regsets[] __ro_after_i=
+nit =3D {
+ 	},
+ 	[REGSET_XFP] =3D {
+ 		.core_note_type =3D NT_PRXFPREG,
+-		.n =3D sizeof(struct user32_fxsr_struct) / sizeof(u32),
++		.n =3D sizeof(struct fxregs_state) / sizeof(u32),
+ 		.size =3D sizeof(u32), .align =3D sizeof(u32),
+ 		.active =3D regset_xregset_fpregs_active, .regset_get =3D xfpregs_get, .se=
+t =3D xfpregs_set
+ 	},
