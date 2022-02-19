@@ -2,57 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B80A4BC7A9
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 19 Feb 2022 11:30:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D6DF4BC9B6
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 19 Feb 2022 19:09:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241988AbiBSKVy (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 19 Feb 2022 05:21:54 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:35580 "EHLO
+        id S235751AbiBSSJl (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 19 Feb 2022 13:09:41 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:40864 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241959AbiBSKVu (ORCPT
+        with ESMTP id S242760AbiBSSJk (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 19 Feb 2022 05:21:50 -0500
+        Sat, 19 Feb 2022 13:09:40 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7F176316;
-        Sat, 19 Feb 2022 02:21:30 -0800 (PST)
-Date:   Sat, 19 Feb 2022 10:21:28 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50C2312AA6;
+        Sat, 19 Feb 2022 10:09:18 -0800 (PST)
+Date:   Sat, 19 Feb 2022 18:09:13 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1645266089;
+        s=2020; t=1645294155;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=zI2Q6n3of6P85/qCQUOyZ21T/+NmhFhsj3BbBT9kZAQ=;
-        b=DAFchMrBJcA29viPwqy30VN0nM2OP/OWMBs8zNUHZtLAoX1mRnTTGW6U2FLBOPlmm36MsL
-        NigrG5hz4VsiqkY92/ozXnJcQjYBnVSlHYrIxht9q0XBY7KIfifSdUqPXot/EmEkMe1+0x
-        Mv8NXLU03kJbSfGIrUXzlSTjMzwSivPQgGQw5YzfcOB0I+OcwwQ7djfdTCvjk1qtVZwz4w
-        D+A6tK6Dv/ra4d2An3iAuG06IWWNEr5irYscKVk1WJphbVSdSehOmtYI+39+ZTfotWkBmL
-        /qsB/84qnoX1BwyOXjsAmoyFgaxJwGMVXazH0dE0BTS4EJ+PAtM3YNxSthiBdg==
+        bh=KT2fuDd/2PirIuy3AtxiVnUjnCo2bXQnL7fxmMZK7E0=;
+        b=4wZDboyuA4Ndb5TrYKYo1T38Fh+GANBotzIzyfjsSK49uu3Dj+1G0x16m1brwNZ1dwftNB
+        1Km6doczk1EFhhOiMqOvDizxBcszr9BgCT9yQCSmN0dZ4aK4ZIMXKL8EV8DCxck0KOv4qA
+        ntRYdXS4U9q3RTp6kaP8+HOtaX+0xBBMVrBa1lq1RbS8mVvF+7bU7N/hUHa/rEWmNdDz2e
+        Rbylriz2Yi3xsYsS2784VBP59yW9mzpcU6yeGqYRe8hmeod08ilui2SvaYbiD3J+hHifDb
+        7G9NLub4kaRmWeMnW538Aa2hUiaP2p1qsZa8bIGeosCnc3O8m1Rk3YewMRmrzg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1645266089;
+        s=2020e; t=1645294155;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=zI2Q6n3of6P85/qCQUOyZ21T/+NmhFhsj3BbBT9kZAQ=;
-        b=os21Xt417A0bOvjbso9d4FGkvCOflq4mRye5OoeD3vUZCqJeKH1E2XNtY+PXBNauKj+5u0
-        8/J8Ioz05evVtYBQ==
-From:   "tip-bot2 for Mark Rutland" <tip-bot2@linutronix.de>
+        bh=KT2fuDd/2PirIuy3AtxiVnUjnCo2bXQnL7fxmMZK7E0=;
+        b=h4+WaCIuALhrMLcIaQ2CONyORPxdJ5HOEsmrb4N9TihJ9t9sIGjfVnNyXZ/6ydQcCu02H0
+        TOAs29WW5+yPzRCQ==
+From:   "tip-bot2 for Jue Wang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/preempt: Move PREEMPT_DYNAMIC logic later
-Cc:     Mark Rutland <mark.rutland@arm.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Frederic Weisbecker <frederic@kernel.org>, x86@kernel.org,
+Subject: [tip: ras/core] x86/mce: Work around an erratum on fast string copy
+ instructions
+Cc:     Jue Wang <juew@google.com>, Borislav Petkov <bp@suse.de>,
+        Tony Luck <tony.luck@intel.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220214165216.2231574-2-mark.rutland@arm.com>
-References: <20220214165216.2231574-2-mark.rutland@arm.com>
+In-Reply-To: <20220218013209.2436006-1-juew@google.com>
+References: <20220218013209.2436006-1-juew@google.com>
 MIME-Version: 1.0
-Message-ID: <164526608858.16921.4085095758644727666.tip-bot2@tip-bot2>
+Message-ID: <164529415398.16921.8042682039148828519.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,329 +66,190 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the ras/core branch of tip:
 
-Commit-ID:     4c7485584d48f60b1e742c7c6a3a1fa503d48d97
-Gitweb:        https://git.kernel.org/tip/4c7485584d48f60b1e742c7c6a3a1fa503d48d97
-Author:        Mark Rutland <mark.rutland@arm.com>
-AuthorDate:    Mon, 14 Feb 2022 16:52:10 
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Sat, 19 Feb 2022 11:11:07 +01:00
+Commit-ID:     8ca97812c3c830573f965a07bbd84223e8c5f5bd
+Gitweb:        https://git.kernel.org/tip/8ca97812c3c830573f965a07bbd84223e8c5f5bd
+Author:        Jue Wang <juew@google.com>
+AuthorDate:    Thu, 17 Feb 2022 17:32:09 -08:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Sat, 19 Feb 2022 14:26:42 +01:00
 
-sched/preempt: Move PREEMPT_DYNAMIC logic later
+x86/mce: Work around an erratum on fast string copy instructions
 
-The PREEMPT_DYNAMIC logic in kernel/sched/core.c patches static calls
-for a bunch of preemption functions. While most are defined prior to
-this, the definition of cond_resched() is later in the file, and so we
-only have its declarations from include/linux/sched.h.
+A rare kernel panic scenario can happen when the following conditions
+are met due to an erratum on fast string copy instructions:
 
-In subsequent patches we'd like to define some macros alongside the
-definition of each of the preemption functions, which we can use within
-sched_dynamic_update(). For this to be possible, the PREEMPT_DYNAMIC
-logic needs to be placed after the various preemption functions.
+1) An uncorrected error.
+2) That error must be in first cache line of a page.
+3) Kernel must execute page_copy from the page immediately before that
+page.
 
-As a preparatory step, this patch moves the PREEMPT_DYNAMIC logic after
-the various preemption functions, with no other changes -- this is
-purely a move.
+The fast string copy instructions ("REP; MOVS*") could consume an
+uncorrectable memory error in the cache line _right after_ the desired
+region to copy and raise an MCE.
 
-There should be no functional change as a result of this patch.
+Bit 0 of MSR_IA32_MISC_ENABLE can be cleared to disable fast string
+copy and will avoid such spurious machine checks. However, that is less
+preferable due to the permanent performance impact. Considering memory
+poison is rare, it's desirable to keep fast string copy enabled until an
+MCE is seen.
 
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Acked-by: Frederic Weisbecker <frederic@kernel.org>
-Link: https://lore.kernel.org/r/20220214165216.2231574-2-mark.rutland@arm.com
+Intel has confirmed the following:
+1. The CPU erratum of fast string copy only applies to Skylake,
+Cascade Lake and Cooper Lake generations.
+
+Directly return from the MCE handler:
+2. Will result in complete execution of the "REP; MOVS*" with no data
+loss or corruption.
+3. Will not result in another MCE firing on the next poisoned cache line
+due to "REP; MOVS*".
+4. Will resume execution from a correct point in code.
+5. Will result in the same instruction that triggered the MCE firing a
+second MCE immediately for any other software recoverable data fetch
+errors.
+6. Is not safe without disabling the fast string copy, as the next fast
+string copy of the same buffer on the same CPU would result in a PANIC
+MCE.
+
+This should mitigate the erratum completely with the only caveat that
+the fast string copy is disabled on the affected hyper thread thus
+performance degradation.
+
+This is still better than the OS crashing on MCEs raised on an
+irrelevant process due to "REP; MOVS*' accesses in a kernel context,
+e.g., copy_page.
+
+Tested:
+
+Injected errors on 1st cache line of 8 anonymous pages of process
+'proc1' and observed MCE consumption from 'proc2' with no panic
+(directly returned).
+
+Without the fix, the host panicked within a few minutes on a
+random 'proc2' process due to kernel access from copy_page.
+
+  [ bp: Fix comment style + touch ups, zap an unlikely(), improve the
+    quirk function's readability. ]
+
+Signed-off-by: Jue Wang <juew@google.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Reviewed-by: Tony Luck <tony.luck@intel.com>
+Link: https://lore.kernel.org/r/20220218013209.2436006-1-juew@google.com
 ---
- kernel/sched/core.c | 272 +++++++++++++++++++++----------------------
- 1 file changed, 136 insertions(+), 136 deletions(-)
+ arch/x86/kernel/cpu/mce/core.c     | 64 +++++++++++++++++++++++++++++-
+ arch/x86/kernel/cpu/mce/internal.h |  5 +-
+ 2 files changed, 68 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 1e08b02..a123ffa 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -6555,142 +6555,6 @@ EXPORT_STATIC_CALL_TRAMP(preempt_schedule_notrace);
- 
- #endif /* CONFIG_PREEMPTION */
- 
--#ifdef CONFIG_PREEMPT_DYNAMIC
--
--#include <linux/entry-common.h>
--
--/*
-- * SC:cond_resched
-- * SC:might_resched
-- * SC:preempt_schedule
-- * SC:preempt_schedule_notrace
-- * SC:irqentry_exit_cond_resched
-- *
-- *
-- * NONE:
-- *   cond_resched               <- __cond_resched
-- *   might_resched              <- RET0
-- *   preempt_schedule           <- NOP
-- *   preempt_schedule_notrace   <- NOP
-- *   irqentry_exit_cond_resched <- NOP
-- *
-- * VOLUNTARY:
-- *   cond_resched               <- __cond_resched
-- *   might_resched              <- __cond_resched
-- *   preempt_schedule           <- NOP
-- *   preempt_schedule_notrace   <- NOP
-- *   irqentry_exit_cond_resched <- NOP
-- *
-- * FULL:
-- *   cond_resched               <- RET0
-- *   might_resched              <- RET0
-- *   preempt_schedule           <- preempt_schedule
-- *   preempt_schedule_notrace   <- preempt_schedule_notrace
-- *   irqentry_exit_cond_resched <- irqentry_exit_cond_resched
-- */
--
--enum {
--	preempt_dynamic_undefined = -1,
--	preempt_dynamic_none,
--	preempt_dynamic_voluntary,
--	preempt_dynamic_full,
--};
--
--int preempt_dynamic_mode = preempt_dynamic_undefined;
--
--int sched_dynamic_mode(const char *str)
--{
--	if (!strcmp(str, "none"))
--		return preempt_dynamic_none;
--
--	if (!strcmp(str, "voluntary"))
--		return preempt_dynamic_voluntary;
--
--	if (!strcmp(str, "full"))
--		return preempt_dynamic_full;
--
--	return -EINVAL;
--}
--
--void sched_dynamic_update(int mode)
--{
--	/*
--	 * Avoid {NONE,VOLUNTARY} -> FULL transitions from ever ending up in
--	 * the ZERO state, which is invalid.
--	 */
--	static_call_update(cond_resched, __cond_resched);
--	static_call_update(might_resched, __cond_resched);
--	static_call_update(preempt_schedule, __preempt_schedule_func);
--	static_call_update(preempt_schedule_notrace, __preempt_schedule_notrace_func);
--	static_call_update(irqentry_exit_cond_resched, irqentry_exit_cond_resched);
--
--	switch (mode) {
--	case preempt_dynamic_none:
--		static_call_update(cond_resched, __cond_resched);
--		static_call_update(might_resched, (void *)&__static_call_return0);
--		static_call_update(preempt_schedule, NULL);
--		static_call_update(preempt_schedule_notrace, NULL);
--		static_call_update(irqentry_exit_cond_resched, NULL);
--		pr_info("Dynamic Preempt: none\n");
--		break;
--
--	case preempt_dynamic_voluntary:
--		static_call_update(cond_resched, __cond_resched);
--		static_call_update(might_resched, __cond_resched);
--		static_call_update(preempt_schedule, NULL);
--		static_call_update(preempt_schedule_notrace, NULL);
--		static_call_update(irqentry_exit_cond_resched, NULL);
--		pr_info("Dynamic Preempt: voluntary\n");
--		break;
--
--	case preempt_dynamic_full:
--		static_call_update(cond_resched, (void *)&__static_call_return0);
--		static_call_update(might_resched, (void *)&__static_call_return0);
--		static_call_update(preempt_schedule, __preempt_schedule_func);
--		static_call_update(preempt_schedule_notrace, __preempt_schedule_notrace_func);
--		static_call_update(irqentry_exit_cond_resched, irqentry_exit_cond_resched);
--		pr_info("Dynamic Preempt: full\n");
--		break;
--	}
--
--	preempt_dynamic_mode = mode;
--}
--
--static int __init setup_preempt_mode(char *str)
--{
--	int mode = sched_dynamic_mode(str);
--	if (mode < 0) {
--		pr_warn("Dynamic Preempt: unsupported mode: %s\n", str);
--		return 0;
--	}
--
--	sched_dynamic_update(mode);
--	return 1;
--}
--__setup("preempt=", setup_preempt_mode);
--
--static void __init preempt_dynamic_init(void)
--{
--	if (preempt_dynamic_mode == preempt_dynamic_undefined) {
--		if (IS_ENABLED(CONFIG_PREEMPT_NONE)) {
--			sched_dynamic_update(preempt_dynamic_none);
--		} else if (IS_ENABLED(CONFIG_PREEMPT_VOLUNTARY)) {
--			sched_dynamic_update(preempt_dynamic_voluntary);
--		} else {
--			/* Default static call setting, nothing to do */
--			WARN_ON_ONCE(!IS_ENABLED(CONFIG_PREEMPT));
--			preempt_dynamic_mode = preempt_dynamic_full;
--			pr_info("Dynamic Preempt: full\n");
--		}
--	}
--}
--
--#else /* !CONFIG_PREEMPT_DYNAMIC */
--
--static inline void preempt_dynamic_init(void) { }
--
--#endif /* #ifdef CONFIG_PREEMPT_DYNAMIC */
--
- /*
-  * This is the entry point to schedule() from kernel preemption
-  * off of irq context.
-@@ -8271,6 +8135,142 @@ int __cond_resched_rwlock_write(rwlock_t *lock)
+diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
+index 0e71474..3d766e6 100644
+--- a/arch/x86/kernel/cpu/mce/core.c
++++ b/arch/x86/kernel/cpu/mce/core.c
+@@ -815,6 +815,59 @@ quirk_sandybridge_ifu(int bank, struct mce *m, struct pt_regs *regs)
  }
- EXPORT_SYMBOL(__cond_resched_rwlock_write);
  
-+#ifdef CONFIG_PREEMPT_DYNAMIC
+ /*
++ * Disable fast string copy and return from the MCE handler upon the first SRAR
++ * MCE on bank 1 due to a CPU erratum on Intel Skylake/Cascade Lake/Cooper Lake
++ * CPUs.
++ * The fast string copy instructions ("REP; MOVS*") could consume an
++ * uncorrectable memory error in the cache line _right after_ the desired region
++ * to copy and raise an MCE with RIP pointing to the instruction _after_ the
++ * "REP; MOVS*".
++ * This mitigation addresses the issue completely with the caveat of performance
++ * degradation on the CPU affected. This is still better than the OS crashing on
++ * MCEs raised on an irrelevant process due to "REP; MOVS*" accesses from a
++ * kernel context (e.g., copy_page).
++ *
++ * Returns true when fast string copy on CPU has been disabled.
++ */
++static noinstr bool quirk_skylake_repmov(void)
++{
++	u64 mcgstatus   = mce_rdmsrl(MSR_IA32_MCG_STATUS);
++	u64 misc_enable = mce_rdmsrl(MSR_IA32_MISC_ENABLE);
++	u64 mc1_status;
 +
-+#include <linux/entry-common.h>
++	/*
++	 * Apply the quirk only to local machine checks, i.e., no broadcast
++	 * sync is needed.
++	 */
++	if (!(mcgstatus & MCG_STATUS_LMCES) ||
++	    !(misc_enable & MSR_IA32_MISC_ENABLE_FAST_STRING))
++		return false;
++
++	mc1_status = mce_rdmsrl(MSR_IA32_MCx_STATUS(1));
++
++	/* Check for a software-recoverable data fetch error. */
++	if ((mc1_status &
++	     (MCI_STATUS_VAL | MCI_STATUS_OVER | MCI_STATUS_UC | MCI_STATUS_EN |
++	      MCI_STATUS_ADDRV | MCI_STATUS_MISCV | MCI_STATUS_PCC |
++	      MCI_STATUS_AR | MCI_STATUS_S)) ==
++	     (MCI_STATUS_VAL |                   MCI_STATUS_UC | MCI_STATUS_EN |
++	      MCI_STATUS_ADDRV | MCI_STATUS_MISCV |
++	      MCI_STATUS_AR | MCI_STATUS_S)) {
++		misc_enable &= ~MSR_IA32_MISC_ENABLE_FAST_STRING;
++		mce_wrmsrl(MSR_IA32_MISC_ENABLE, misc_enable);
++		mce_wrmsrl(MSR_IA32_MCx_STATUS(1), 0);
++
++		instrumentation_begin();
++		pr_err_once("Erratum detected, disable fast string copy instructions.\n");
++		instrumentation_end();
++
++		return true;
++	}
++
++	return false;
++}
 +
 +/*
-+ * SC:cond_resched
-+ * SC:might_resched
-+ * SC:preempt_schedule
-+ * SC:preempt_schedule_notrace
-+ * SC:irqentry_exit_cond_resched
-+ *
-+ *
-+ * NONE:
-+ *   cond_resched               <- __cond_resched
-+ *   might_resched              <- RET0
-+ *   preempt_schedule           <- NOP
-+ *   preempt_schedule_notrace   <- NOP
-+ *   irqentry_exit_cond_resched <- NOP
-+ *
-+ * VOLUNTARY:
-+ *   cond_resched               <- __cond_resched
-+ *   might_resched              <- __cond_resched
-+ *   preempt_schedule           <- NOP
-+ *   preempt_schedule_notrace   <- NOP
-+ *   irqentry_exit_cond_resched <- NOP
-+ *
-+ * FULL:
-+ *   cond_resched               <- RET0
-+ *   might_resched              <- RET0
-+ *   preempt_schedule           <- preempt_schedule
-+ *   preempt_schedule_notrace   <- preempt_schedule_notrace
-+ *   irqentry_exit_cond_resched <- irqentry_exit_cond_resched
-+ */
+  * Do a quick check if any of the events requires a panic.
+  * This decides if we keep the events around or clear them.
+  */
+@@ -1383,6 +1436,9 @@ noinstr void do_machine_check(struct pt_regs *regs)
+ 	else if (unlikely(!mca_cfg.initialized))
+ 		return unexpected_machine_check(regs);
+ 
++	if (mce_flags.skx_repmov_quirk && quirk_skylake_repmov())
++		goto clear;
 +
-+enum {
-+	preempt_dynamic_undefined = -1,
-+	preempt_dynamic_none,
-+	preempt_dynamic_voluntary,
-+	preempt_dynamic_full,
-+};
+ 	/*
+ 	 * Establish sequential order between the CPUs entering the machine
+ 	 * check handler.
+@@ -1525,6 +1581,7 @@ noinstr void do_machine_check(struct pt_regs *regs)
+ out:
+ 	instrumentation_end();
+ 
++clear:
+ 	mce_wrmsrl(MSR_IA32_MCG_STATUS, 0);
+ }
+ EXPORT_SYMBOL_GPL(do_machine_check);
+@@ -1838,6 +1895,13 @@ static int __mcheck_cpu_apply_quirks(struct cpuinfo_x86 *c)
+ 
+ 		if (c->x86 == 6 && c->x86_model == 45)
+ 			mce_flags.snb_ifu_quirk = 1;
 +
-+int preempt_dynamic_mode = preempt_dynamic_undefined;
++		/*
++		 * Skylake, Cascacde Lake and Cooper Lake require a quirk on
++		 * rep movs.
++		 */
++		if (c->x86 == 6 && c->x86_model == INTEL_FAM6_SKYLAKE_X)
++			mce_flags.skx_repmov_quirk = 1;
+ 	}
+ 
+ 	if (c->x86_vendor == X86_VENDOR_ZHAOXIN) {
+diff --git a/arch/x86/kernel/cpu/mce/internal.h b/arch/x86/kernel/cpu/mce/internal.h
+index a04b61e..3efb503 100644
+--- a/arch/x86/kernel/cpu/mce/internal.h
++++ b/arch/x86/kernel/cpu/mce/internal.h
+@@ -170,7 +170,10 @@ struct mce_vendor_flags {
+ 	/* SandyBridge IFU quirk */
+ 	snb_ifu_quirk		: 1,
+ 
+-	__reserved_0		: 57;
++	/* Skylake, Cascade Lake, Cooper Lake REP;MOVS* quirk */
++	skx_repmov_quirk	: 1,
 +
-+int sched_dynamic_mode(const char *str)
-+{
-+	if (!strcmp(str, "none"))
-+		return preempt_dynamic_none;
-+
-+	if (!strcmp(str, "voluntary"))
-+		return preempt_dynamic_voluntary;
-+
-+	if (!strcmp(str, "full"))
-+		return preempt_dynamic_full;
-+
-+	return -EINVAL;
-+}
-+
-+void sched_dynamic_update(int mode)
-+{
-+	/*
-+	 * Avoid {NONE,VOLUNTARY} -> FULL transitions from ever ending up in
-+	 * the ZERO state, which is invalid.
-+	 */
-+	static_call_update(cond_resched, __cond_resched);
-+	static_call_update(might_resched, __cond_resched);
-+	static_call_update(preempt_schedule, __preempt_schedule_func);
-+	static_call_update(preempt_schedule_notrace, __preempt_schedule_notrace_func);
-+	static_call_update(irqentry_exit_cond_resched, irqentry_exit_cond_resched);
-+
-+	switch (mode) {
-+	case preempt_dynamic_none:
-+		static_call_update(cond_resched, __cond_resched);
-+		static_call_update(might_resched, (void *)&__static_call_return0);
-+		static_call_update(preempt_schedule, NULL);
-+		static_call_update(preempt_schedule_notrace, NULL);
-+		static_call_update(irqentry_exit_cond_resched, NULL);
-+		pr_info("Dynamic Preempt: none\n");
-+		break;
-+
-+	case preempt_dynamic_voluntary:
-+		static_call_update(cond_resched, __cond_resched);
-+		static_call_update(might_resched, __cond_resched);
-+		static_call_update(preempt_schedule, NULL);
-+		static_call_update(preempt_schedule_notrace, NULL);
-+		static_call_update(irqentry_exit_cond_resched, NULL);
-+		pr_info("Dynamic Preempt: voluntary\n");
-+		break;
-+
-+	case preempt_dynamic_full:
-+		static_call_update(cond_resched, (void *)&__static_call_return0);
-+		static_call_update(might_resched, (void *)&__static_call_return0);
-+		static_call_update(preempt_schedule, __preempt_schedule_func);
-+		static_call_update(preempt_schedule_notrace, __preempt_schedule_notrace_func);
-+		static_call_update(irqentry_exit_cond_resched, irqentry_exit_cond_resched);
-+		pr_info("Dynamic Preempt: full\n");
-+		break;
-+	}
-+
-+	preempt_dynamic_mode = mode;
-+}
-+
-+static int __init setup_preempt_mode(char *str)
-+{
-+	int mode = sched_dynamic_mode(str);
-+	if (mode < 0) {
-+		pr_warn("Dynamic Preempt: unsupported mode: %s\n", str);
-+		return 0;
-+	}
-+
-+	sched_dynamic_update(mode);
-+	return 1;
-+}
-+__setup("preempt=", setup_preempt_mode);
-+
-+static void __init preempt_dynamic_init(void)
-+{
-+	if (preempt_dynamic_mode == preempt_dynamic_undefined) {
-+		if (IS_ENABLED(CONFIG_PREEMPT_NONE)) {
-+			sched_dynamic_update(preempt_dynamic_none);
-+		} else if (IS_ENABLED(CONFIG_PREEMPT_VOLUNTARY)) {
-+			sched_dynamic_update(preempt_dynamic_voluntary);
-+		} else {
-+			/* Default static call setting, nothing to do */
-+			WARN_ON_ONCE(!IS_ENABLED(CONFIG_PREEMPT));
-+			preempt_dynamic_mode = preempt_dynamic_full;
-+			pr_info("Dynamic Preempt: full\n");
-+		}
-+	}
-+}
-+
-+#else /* !CONFIG_PREEMPT_DYNAMIC */
-+
-+static inline void preempt_dynamic_init(void) { }
-+
-+#endif /* #ifdef CONFIG_PREEMPT_DYNAMIC */
-+
- /**
-  * yield - yield the current processor to other threads.
-  *
++	__reserved_0		: 56;
+ };
+ 
+ extern struct mce_vendor_flags mce_flags;
