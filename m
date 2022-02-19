@@ -2,59 +2,62 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E3994BB6F8
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 18 Feb 2022 11:36:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B2EED4BC79D
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 19 Feb 2022 11:21:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232454AbiBRKgX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 18 Feb 2022 05:36:23 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:46464 "EHLO
+        id S233925AbiBSKPA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 19 Feb 2022 05:15:00 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:39434 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229694AbiBRKgX (ORCPT
+        with ESMTP id S232178AbiBSKO7 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 18 Feb 2022 05:36:23 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4570B2B3575;
-        Fri, 18 Feb 2022 02:36:05 -0800 (PST)
-Date:   Fri, 18 Feb 2022 10:36:01 -0000
+        Sat, 19 Feb 2022 05:14:59 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D01B197239;
+        Sat, 19 Feb 2022 02:14:40 -0800 (PST)
+Date:   Sat, 19 Feb 2022 10:14:37 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1645180562;
+        s=2020; t=1645265678;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=vrDjnYGriIcx9Ox1QC6AoQgMAAK0YnoxLVYtUNI8yIQ=;
-        b=43/GBuKy0U0w/+9/D/lAt4il4dHMluOl6XnW7S7rnpxWhW2Fyr33xbmUfTSz6xKT6AS++A
-        OafHmrqgTw7xLfWaC0Clp3ryTAFqpxYhHQJhYxNiy/su7amUuDKT5jJr0cYTbw92zUeiLQ
-        i0a5fI9e+SBxiixSPL69SaGEBHXkYQkX3gif/a6+dZ0JBv3EA7rX1+M1wI+mR8arYPnS1/
-        iNVsSsDcshmCmu4j9e5AYqnahswp5sLvlgR03LMKwHSfqnoaTcAmrOghDjXtwW//tHS4Hn
-        ysOER9Udk1E1zjnGxMjx9bFgJxXpcGdelNCr+v/xkK8UKmikOTH0/od53k2A1w==
+        bh=z6cpSbpb3HNg5OpcQztYBFwfVmZOjGqlCPweghhXxvs=;
+        b=hIYsuivXynaf9KpcC6Yv8Wt5GguG+7szHmuFUaDRwDvtHvOLMxLBx+0N/vadkoS3C0azjp
+        GJTaVI7IVnz0X5nenzr6pujpNYx86KZAVp6K2rzbpvXQojxNqf/77OChQgdsMGX+6MbySB
+        Dc1sGd1/amZGXqXlzKzgKiNRRoct6O9Dltfqx23jvaPoHl97DqcpM9hOaKH15BLyGQI1c8
+        OMvD7AQrlWbTUR2eSdgXOi8ernAbJp0qX5E7pTXSfLLVV210s5M5DJT84LKeDZ3sFD82cR
+        9Jlv+xhVRVGEP8DA3nKzNnWa2pdwUKUkgmQecTt4vQhrthtwWg57DrQ++iGznQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1645180562;
+        s=2020e; t=1645265678;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=vrDjnYGriIcx9Ox1QC6AoQgMAAK0YnoxLVYtUNI8yIQ=;
-        b=j2IMPyqZipmgd30pxq3e8vN2JWUv9bHEvb/cPuIqtU2mejAbHAWvPOMdPz5kZP0a+tOibW
-        2Bka7hN1uXw6DzDg==
-From:   "tip-bot2 for Andy Lutomirski" <tip-bot2@linutronix.de>
+        bh=z6cpSbpb3HNg5OpcQztYBFwfVmZOjGqlCPweghhXxvs=;
+        b=5SmZ5B+H5vAxzW8gUvklEfMjKAxoXwc+bqPGrjFOXwoy6mKlmalEafux9Qc+GD3TX6ccLr
+        yRy9Y64XduiKLOCQ==
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/ptrace: Fix xfpregs_set()'s incorrect xmm clearing
-Cc:     contact@lsferreira.net, Andy Lutomirski <luto@kernel.org>,
-        Borislav Petkov <bp@suse.de>, <stable@vger.kernel.org>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <YgpFnZpF01WwR8wU@zn.tnic>
-References: <YgpFnZpF01WwR8wU@zn.tnic>
+Subject: [tip: sched/urgent] sched: Fix yet more sched_fork() races
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Tadeusz Struk <tadeusz.struk@linaro.org>,
+        Zhang Qiao <zhangqiao22@huawei.com>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <YgoeCbwj5mbCR0qA@hirez.programming.kicks-ass.net>
+References: <YgoeCbwj5mbCR0qA@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-Message-ID: <164518056109.16921.5538462519727377256.tip-bot2@tip-bot2>
+Message-ID: <164526567729.16921.5416435160262961553.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
@@ -65,99 +68,183 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     44cad52cc14ae10062f142ec16ede489bccf4469
-Gitweb:        https://git.kernel.org/tip/44cad52cc14ae10062f142ec16ede489bcc=
-f4469
-Author:        Andy Lutomirski <luto@kernel.org>
-AuthorDate:    Mon, 14 Feb 2022 13:05:49 +01:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Fri, 18 Feb 2022 11:23:21 +01:00
+Commit-ID:     b1e8206582f9d680cff7d04828708c8b6ab32957
+Gitweb:        https://git.kernel.org/tip/b1e8206582f9d680cff7d04828708c8b6ab32957
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Mon, 14 Feb 2022 10:16:57 +01:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Sat, 19 Feb 2022 11:11:05 +01:00
 
-x86/ptrace: Fix xfpregs_set()'s incorrect xmm clearing
+sched: Fix yet more sched_fork() races
 
-xfpregs_set() handles 32-bit REGSET_XFP and 64-bit REGSET_FP. The actual
-code treats these regsets as modern FX state (i.e. the beginning part of
-XSTATE). The declarations of the regsets thought they were the legacy
-i387 format. The code thought they were the 32-bit (no xmm8..15) variant
-of XSTATE and, for good measure, made the high bits disappear by zeroing
-the wrong part of the buffer. The latter broke ptrace, and everything
-else confused anyone trying to understand the code. In particular, the
-nonsense definitions of the regsets confused me when I wrote this code.
+Where commit 4ef0c5c6b5ba ("kernel/sched: Fix sched_fork() access an
+invalid sched_task_group") fixed a fork race vs cgroup, it opened up a
+race vs syscalls by not placing the task on the runqueue before it
+gets exposed through the pidhash.
 
-Clean this all up. Change the declarations to match reality (which
-shouldn't change the generated code, let alone the ABI) and fix
-xfpregs_set() to clear the correct bits and to only do so for 32-bit
-callers.
+Commit 13765de8148f ("sched/fair: Fix fault in reweight_entity") is
+trying to fix a single instance of this, instead fix the whole class
+of issues, effectively reverting this commit.
 
-Fixes: 6164331d15f7 ("x86/fpu: Rewrite xfpregs_set()")
-Reported-by: Lu=C3=ADs Ferreira <contact@lsferreira.net>
-Signed-off-by: Andy Lutomirski <luto@kernel.org>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Cc: <stable@vger.kernel.org>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=3D215524
-Link: https://lore.kernel.org/r/YgpFnZpF01WwR8wU@zn.tnic
+Fixes: 4ef0c5c6b5ba ("kernel/sched: Fix sched_fork() access an invalid sched_task_group")
+Reported-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Tested-by: Tadeusz Struk <tadeusz.struk@linaro.org>
+Tested-by: Zhang Qiao <zhangqiao22@huawei.com>
+Tested-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Link: https://lkml.kernel.org/r/YgoeCbwj5mbCR0qA@hirez.programming.kicks-ass.net
 ---
- arch/x86/kernel/fpu/regset.c |  9 ++++-----
- arch/x86/kernel/ptrace.c     |  4 ++--
- 2 files changed, 6 insertions(+), 7 deletions(-)
+ include/linux/sched/task.h |  4 ++--
+ kernel/fork.c              | 13 ++++++++++++-
+ kernel/sched/core.c        | 34 +++++++++++++++++++++-------------
+ 3 files changed, 35 insertions(+), 16 deletions(-)
 
-diff --git a/arch/x86/kernel/fpu/regset.c b/arch/x86/kernel/fpu/regset.c
-index 437d7c9..75ffaef 100644
---- a/arch/x86/kernel/fpu/regset.c
-+++ b/arch/x86/kernel/fpu/regset.c
-@@ -91,11 +91,9 @@ int xfpregs_set(struct task_struct *target, const struct u=
-ser_regset *regset,
- 		const void *kbuf, const void __user *ubuf)
+diff --git a/include/linux/sched/task.h b/include/linux/sched/task.h
+index b9198a1..e84e54d 100644
+--- a/include/linux/sched/task.h
++++ b/include/linux/sched/task.h
+@@ -54,8 +54,8 @@ extern asmlinkage void schedule_tail(struct task_struct *prev);
+ extern void init_idle(struct task_struct *idle, int cpu);
+ 
+ extern int sched_fork(unsigned long clone_flags, struct task_struct *p);
+-extern void sched_post_fork(struct task_struct *p,
+-			    struct kernel_clone_args *kargs);
++extern void sched_cgroup_fork(struct task_struct *p, struct kernel_clone_args *kargs);
++extern void sched_post_fork(struct task_struct *p);
+ extern void sched_dead(struct task_struct *p);
+ 
+ void __noreturn do_task_dead(void);
+diff --git a/kernel/fork.c b/kernel/fork.c
+index d75a528..c607d23 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -2267,6 +2267,17 @@ static __latent_entropy struct task_struct *copy_process(
+ 		goto bad_fork_put_pidfd;
+ 
+ 	/*
++	 * Now that the cgroups are pinned, re-clone the parent cgroup and put
++	 * the new task on the correct runqueue. All this *before* the task
++	 * becomes visible.
++	 *
++	 * This isn't part of ->can_fork() because while the re-cloning is
++	 * cgroup specific, it unconditionally needs to place the task on a
++	 * runqueue.
++	 */
++	sched_cgroup_fork(p, args);
++
++	/*
+ 	 * From this point on we must avoid any synchronous user-space
+ 	 * communication until we take the tasklist-lock. In particular, we do
+ 	 * not want user-space to be able to predict the process start-time by
+@@ -2376,7 +2387,7 @@ static __latent_entropy struct task_struct *copy_process(
+ 	write_unlock_irq(&tasklist_lock);
+ 
+ 	proc_fork_connector(p);
+-	sched_post_fork(p, args);
++	sched_post_fork(p);
+ 	cgroup_post_fork(p, args);
+ 	perf_event_fork(p);
+ 
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index fcf0c18..9745613 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -1214,9 +1214,8 @@ int tg_nop(struct task_group *tg, void *data)
+ }
+ #endif
+ 
+-static void set_load_weight(struct task_struct *p)
++static void set_load_weight(struct task_struct *p, bool update_load)
  {
- 	struct fpu *fpu =3D &target->thread.fpu;
--	struct user32_fxsr_struct newstate;
-+	struct fxregs_state newstate;
- 	int ret;
-=20
--	BUILD_BUG_ON(sizeof(newstate) !=3D sizeof(struct fxregs_state));
--
- 	if (!cpu_feature_enabled(X86_FEATURE_FXSR))
- 		return -ENODEV;
-=20
-@@ -116,9 +114,10 @@ int xfpregs_set(struct task_struct *target, const struct=
- user_regset *regset,
- 	/* Copy the state  */
- 	memcpy(&fpu->fpstate->regs.fxsave, &newstate, sizeof(newstate));
-=20
--	/* Clear xmm8..15 */
-+	/* Clear xmm8..15 for 32-bit callers */
- 	BUILD_BUG_ON(sizeof(fpu->__fpstate.regs.fxsave.xmm_space) !=3D 16 * 16);
--	memset(&fpu->fpstate->regs.fxsave.xmm_space[8], 0, 8 * 16);
-+	if (in_ia32_syscall())
-+		memset(&fpu->fpstate->regs.fxsave.xmm_space[8*4], 0, 8 * 16);
-=20
- 	/* Mark FP and SSE as in use when XSAVE is enabled */
- 	if (use_xsave())
-diff --git a/arch/x86/kernel/ptrace.c b/arch/x86/kernel/ptrace.c
-index 6d2244c..8d2f2f9 100644
---- a/arch/x86/kernel/ptrace.c
-+++ b/arch/x86/kernel/ptrace.c
-@@ -1224,7 +1224,7 @@ static struct user_regset x86_64_regsets[] __ro_after_i=
-nit =3D {
- 	},
- 	[REGSET_FP] =3D {
- 		.core_note_type =3D NT_PRFPREG,
--		.n =3D sizeof(struct user_i387_struct) / sizeof(long),
-+		.n =3D sizeof(struct fxregs_state) / sizeof(long),
- 		.size =3D sizeof(long), .align =3D sizeof(long),
- 		.active =3D regset_xregset_fpregs_active, .regset_get =3D xfpregs_get, .se=
-t =3D xfpregs_set
- 	},
-@@ -1271,7 +1271,7 @@ static struct user_regset x86_32_regsets[] __ro_after_i=
-nit =3D {
- 	},
- 	[REGSET_XFP] =3D {
- 		.core_note_type =3D NT_PRXFPREG,
--		.n =3D sizeof(struct user32_fxsr_struct) / sizeof(u32),
-+		.n =3D sizeof(struct fxregs_state) / sizeof(u32),
- 		.size =3D sizeof(u32), .align =3D sizeof(u32),
- 		.active =3D regset_xregset_fpregs_active, .regset_get =3D xfpregs_get, .se=
-t =3D xfpregs_set
- 	},
+-	bool update_load = !(READ_ONCE(p->__state) & TASK_NEW);
+ 	int prio = p->static_prio - MAX_RT_PRIO;
+ 	struct load_weight *load = &p->se.load;
+ 
+@@ -4407,7 +4406,7 @@ int sched_fork(unsigned long clone_flags, struct task_struct *p)
+ 			p->static_prio = NICE_TO_PRIO(0);
+ 
+ 		p->prio = p->normal_prio = p->static_prio;
+-		set_load_weight(p);
++		set_load_weight(p, false);
+ 
+ 		/*
+ 		 * We don't need the reset flag anymore after the fork. It has
+@@ -4425,6 +4424,7 @@ int sched_fork(unsigned long clone_flags, struct task_struct *p)
+ 
+ 	init_entity_runnable_average(&p->se);
+ 
++
+ #ifdef CONFIG_SCHED_INFO
+ 	if (likely(sched_info_on()))
+ 		memset(&p->sched_info, 0, sizeof(p->sched_info));
+@@ -4440,18 +4440,23 @@ int sched_fork(unsigned long clone_flags, struct task_struct *p)
+ 	return 0;
+ }
+ 
+-void sched_post_fork(struct task_struct *p, struct kernel_clone_args *kargs)
++void sched_cgroup_fork(struct task_struct *p, struct kernel_clone_args *kargs)
+ {
+ 	unsigned long flags;
+-#ifdef CONFIG_CGROUP_SCHED
+-	struct task_group *tg;
+-#endif
+ 
++	/*
++	 * Because we're not yet on the pid-hash, p->pi_lock isn't strictly
++	 * required yet, but lockdep gets upset if rules are violated.
++	 */
+ 	raw_spin_lock_irqsave(&p->pi_lock, flags);
+ #ifdef CONFIG_CGROUP_SCHED
+-	tg = container_of(kargs->cset->subsys[cpu_cgrp_id],
+-			  struct task_group, css);
+-	p->sched_task_group = autogroup_task_group(p, tg);
++	if (1) {
++		struct task_group *tg;
++		tg = container_of(kargs->cset->subsys[cpu_cgrp_id],
++				  struct task_group, css);
++		tg = autogroup_task_group(p, tg);
++		p->sched_task_group = tg;
++	}
+ #endif
+ 	rseq_migrate(p);
+ 	/*
+@@ -4462,7 +4467,10 @@ void sched_post_fork(struct task_struct *p, struct kernel_clone_args *kargs)
+ 	if (p->sched_class->task_fork)
+ 		p->sched_class->task_fork(p);
+ 	raw_spin_unlock_irqrestore(&p->pi_lock, flags);
++}
+ 
++void sched_post_fork(struct task_struct *p)
++{
+ 	uclamp_post_fork(p);
+ }
+ 
+@@ -6922,7 +6930,7 @@ void set_user_nice(struct task_struct *p, long nice)
+ 		put_prev_task(rq, p);
+ 
+ 	p->static_prio = NICE_TO_PRIO(nice);
+-	set_load_weight(p);
++	set_load_weight(p, true);
+ 	old_prio = p->prio;
+ 	p->prio = effective_prio(p);
+ 
+@@ -7213,7 +7221,7 @@ static void __setscheduler_params(struct task_struct *p,
+ 	 */
+ 	p->rt_priority = attr->sched_priority;
+ 	p->normal_prio = normal_prio(p);
+-	set_load_weight(p);
++	set_load_weight(p, true);
+ }
+ 
+ /*
+@@ -9446,7 +9454,7 @@ void __init sched_init(void)
+ #endif
+ 	}
+ 
+-	set_load_weight(&init_task);
++	set_load_weight(&init_task, false);
+ 
+ 	/*
+ 	 * The boot idle thread does lazy MMU switching as well:
