@@ -2,56 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D6DF4BC9B6
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 19 Feb 2022 19:09:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7743D4BD720
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 21 Feb 2022 08:43:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235751AbiBSSJl (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 19 Feb 2022 13:09:41 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:40864 "EHLO
+        id S1344012AbiBUHbo (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 21 Feb 2022 02:31:44 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:48760 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242760AbiBSSJk (ORCPT
+        with ESMTP id S230132AbiBUHbn (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 19 Feb 2022 13:09:40 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50C2312AA6;
-        Sat, 19 Feb 2022 10:09:18 -0800 (PST)
-Date:   Sat, 19 Feb 2022 18:09:13 -0000
+        Mon, 21 Feb 2022 02:31:43 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43A162E7;
+        Sun, 20 Feb 2022 23:31:20 -0800 (PST)
+Date:   Mon, 21 Feb 2022 07:31:16 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1645294155;
+        s=2020; t=1645428677;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=KT2fuDd/2PirIuy3AtxiVnUjnCo2bXQnL7fxmMZK7E0=;
-        b=4wZDboyuA4Ndb5TrYKYo1T38Fh+GANBotzIzyfjsSK49uu3Dj+1G0x16m1brwNZ1dwftNB
-        1Km6doczk1EFhhOiMqOvDizxBcszr9BgCT9yQCSmN0dZ4aK4ZIMXKL8EV8DCxck0KOv4qA
-        ntRYdXS4U9q3RTp6kaP8+HOtaX+0xBBMVrBa1lq1RbS8mVvF+7bU7N/hUHa/rEWmNdDz2e
-        Rbylriz2Yi3xsYsS2784VBP59yW9mzpcU6yeGqYRe8hmeod08ilui2SvaYbiD3J+hHifDb
-        7G9NLub4kaRmWeMnW538Aa2hUiaP2p1qsZa8bIGeosCnc3O8m1Rk3YewMRmrzg==
+        bh=VPeVFRqXyH/qkyeIFa43p7nhy+n8Zng6FJUz7oizMQI=;
+        b=tK4RiO/ufs+nV/sBz4B0MjsW2UxZlm7O8bYpMrA9mczisjRaGkQNbnyyLvq+xzdxkjTklT
+        ipaP9pOiYksBMvXTymfR2m/W0aCA6UbpZIPDVx5Uc96AbOZHeti7MAZ8gRCLlJL15FEeOv
+        ZqnnonXJDH9lnQhGD/vyG6jv4F84MAWe++UhF2xPaaBurP7y0ZgspPTjFG0oikchSBIXmk
+        iSXeab3S6Uk+EAgTZjLawu/ylgwTe/opYHjRlqlj4f8262b9BoXToSC5p+vjbx2HL/nhvD
+        rH/5MdJ7M/8dgcKkkqHY07wHFD/fbqfRX9/UqyrwRzHPvJlFrD/aXTYyxcqRQQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1645294155;
+        s=2020e; t=1645428677;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=KT2fuDd/2PirIuy3AtxiVnUjnCo2bXQnL7fxmMZK7E0=;
-        b=h4+WaCIuALhrMLcIaQ2CONyORPxdJ5HOEsmrb4N9TihJ9t9sIGjfVnNyXZ/6ydQcCu02H0
-        TOAs29WW5+yPzRCQ==
-From:   "tip-bot2 for Jue Wang" <tip-bot2@linutronix.de>
+        bh=VPeVFRqXyH/qkyeIFa43p7nhy+n8Zng6FJUz7oizMQI=;
+        b=I11DarCzKKF4kFbIfwPnRaNMk42oeJlTjQTniqkBdH01dZVuYbcefrBSeXQj3DHWTLRQyQ
+        uImY5VgPS3eCeOCw==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: ras/core] x86/mce: Work around an erratum on fast string copy
- instructions
-Cc:     Jue Wang <juew@google.com>, Borislav Petkov <bp@suse.de>,
-        Tony Luck <tony.luck@intel.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20220218013209.2436006-1-juew@google.com>
-References: <20220218013209.2436006-1-juew@google.com>
+Subject: [tip: irq/urgent] PCI: vmd: Prevent recursive locking on interrupt allocation
+Cc:     "Surendrakumar Upadhyay, TejaskumarX" 
+        <tejaskumarx.surendrakumar.upadhyay@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-pci@vger.kernel.org, x86@kernel.org,
+        linux-kernel@vger.kernel.org, maz@kernel.org
+In-Reply-To: <87a6euub2a.ffs@tglx>
+References: <87a6euub2a.ffs@tglx>
 MIME-Version: 1.0
-Message-ID: <164529415398.16921.8042682039148828519.tip-bot2@tip-bot2>
+Message-ID: <164542867635.16921.13795049956787158926.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,190 +67,119 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the ras/core branch of tip:
+The following commit has been merged into the irq/urgent branch of tip:
 
-Commit-ID:     8ca97812c3c830573f965a07bbd84223e8c5f5bd
-Gitweb:        https://git.kernel.org/tip/8ca97812c3c830573f965a07bbd84223e8c5f5bd
-Author:        Jue Wang <juew@google.com>
-AuthorDate:    Thu, 17 Feb 2022 17:32:09 -08:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Sat, 19 Feb 2022 14:26:42 +01:00
+Commit-ID:     ba1366f3d039e7c3ca1fc29ed00ce3ed2b8fd32f
+Gitweb:        https://git.kernel.org/tip/ba1366f3d039e7c3ca1fc29ed00ce3ed2b8fd32f
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Sun, 13 Feb 2022 14:54:05 +01:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Mon, 21 Feb 2022 08:26:53 +01:00
 
-x86/mce: Work around an erratum on fast string copy instructions
+PCI: vmd: Prevent recursive locking on interrupt allocation
 
-A rare kernel panic scenario can happen when the following conditions
-are met due to an erratum on fast string copy instructions:
+Tejas reported the following recursive locking issue:
 
-1) An uncorrected error.
-2) That error must be in first cache line of a page.
-3) Kernel must execute page_copy from the page immediately before that
-page.
+ swapper/0/1 is trying to acquire lock:
+ ffff8881074fd0a0 (&md->mutex){+.+.}-{3:3}, at: msi_get_virq+0x30/0xc0
+ 
+ but task is already holding lock:
+ ffff8881017cd6a0 (&md->mutex){+.+.}-{3:3}, at: __pci_enable_msi_range+0xf2/0x290
+ 
+ stack backtrace:
+  __mutex_lock+0x9d/0x920
+  msi_get_virq+0x30/0xc0
+  pci_irq_vector+0x26/0x30
+  vmd_msi_init+0xcc/0x210
+  msi_domain_alloc+0xbf/0x150
+  msi_domain_alloc_irqs_descs_locked+0x3e/0xb0
+  __pci_enable_msi_range+0x155/0x290
+  pci_alloc_irq_vectors_affinity+0xba/0x100
+  pcie_port_device_register+0x307/0x550
+  pcie_portdrv_probe+0x3c/0xd0
+  pci_device_probe+0x95/0x110
 
-The fast string copy instructions ("REP; MOVS*") could consume an
-uncorrectable memory error in the cache line _right after_ the desired
-region to copy and raise an MCE.
+This is caused by the VMD MSI code which does a lookup of the Linux
+interrupt number for an VMD managed MSI[X] vector. The lookup function
+tries to acquire the already held mutex.
 
-Bit 0 of MSR_IA32_MISC_ENABLE can be cleared to disable fast string
-copy and will avoid such spurious machine checks. However, that is less
-preferable due to the permanent performance impact. Considering memory
-poison is rare, it's desirable to keep fast string copy enabled until an
-MCE is seen.
+Avoid that by caching the Linux interrupt number at initialization time
+instead of looking it up over and over.
 
-Intel has confirmed the following:
-1. The CPU erratum of fast string copy only applies to Skylake,
-Cascade Lake and Cooper Lake generations.
+Fixes: 82ff8e6b78fc ("PCI/MSI: Use msi_get_virq() in pci_get_vector()")
+Reported-by: "Surendrakumar Upadhyay, TejaskumarX" <tejaskumarx.surendrakumar.upadhyay@intel.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: "Surendrakumar Upadhyay, TejaskumarX" <tejaskumarx.surendrakumar.upadhyay@intel.com>
+Cc: linux-pci@vger.kernel.org
+Link: https://lore.kernel.org/r/87a6euub2a.ffs@tglx
 
-Directly return from the MCE handler:
-2. Will result in complete execution of the "REP; MOVS*" with no data
-loss or corruption.
-3. Will not result in another MCE firing on the next poisoned cache line
-due to "REP; MOVS*".
-4. Will resume execution from a correct point in code.
-5. Will result in the same instruction that triggered the MCE firing a
-second MCE immediately for any other software recoverable data fetch
-errors.
-6. Is not safe without disabling the fast string copy, as the next fast
-string copy of the same buffer on the same CPU would result in a PANIC
-MCE.
-
-This should mitigate the erratum completely with the only caveat that
-the fast string copy is disabled on the affected hyper thread thus
-performance degradation.
-
-This is still better than the OS crashing on MCEs raised on an
-irrelevant process due to "REP; MOVS*' accesses in a kernel context,
-e.g., copy_page.
-
-Tested:
-
-Injected errors on 1st cache line of 8 anonymous pages of process
-'proc1' and observed MCE consumption from 'proc2' with no panic
-(directly returned).
-
-Without the fix, the host panicked within a few minutes on a
-random 'proc2' process due to kernel access from copy_page.
-
-  [ bp: Fix comment style + touch ups, zap an unlikely(), improve the
-    quirk function's readability. ]
-
-Signed-off-by: Jue Wang <juew@google.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Tony Luck <tony.luck@intel.com>
-Link: https://lore.kernel.org/r/20220218013209.2436006-1-juew@google.com
 ---
- arch/x86/kernel/cpu/mce/core.c     | 64 +++++++++++++++++++++++++++++-
- arch/x86/kernel/cpu/mce/internal.h |  5 +-
- 2 files changed, 68 insertions(+), 1 deletion(-)
+ drivers/pci/controller/vmd.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
-index 0e71474..3d766e6 100644
---- a/arch/x86/kernel/cpu/mce/core.c
-+++ b/arch/x86/kernel/cpu/mce/core.c
-@@ -815,6 +815,59 @@ quirk_sandybridge_ifu(int bank, struct mce *m, struct pt_regs *regs)
- }
- 
- /*
-+ * Disable fast string copy and return from the MCE handler upon the first SRAR
-+ * MCE on bank 1 due to a CPU erratum on Intel Skylake/Cascade Lake/Cooper Lake
-+ * CPUs.
-+ * The fast string copy instructions ("REP; MOVS*") could consume an
-+ * uncorrectable memory error in the cache line _right after_ the desired region
-+ * to copy and raise an MCE with RIP pointing to the instruction _after_ the
-+ * "REP; MOVS*".
-+ * This mitigation addresses the issue completely with the caveat of performance
-+ * degradation on the CPU affected. This is still better than the OS crashing on
-+ * MCEs raised on an irrelevant process due to "REP; MOVS*" accesses from a
-+ * kernel context (e.g., copy_page).
-+ *
-+ * Returns true when fast string copy on CPU has been disabled.
-+ */
-+static noinstr bool quirk_skylake_repmov(void)
-+{
-+	u64 mcgstatus   = mce_rdmsrl(MSR_IA32_MCG_STATUS);
-+	u64 misc_enable = mce_rdmsrl(MSR_IA32_MISC_ENABLE);
-+	u64 mc1_status;
-+
-+	/*
-+	 * Apply the quirk only to local machine checks, i.e., no broadcast
-+	 * sync is needed.
-+	 */
-+	if (!(mcgstatus & MCG_STATUS_LMCES) ||
-+	    !(misc_enable & MSR_IA32_MISC_ENABLE_FAST_STRING))
-+		return false;
-+
-+	mc1_status = mce_rdmsrl(MSR_IA32_MCx_STATUS(1));
-+
-+	/* Check for a software-recoverable data fetch error. */
-+	if ((mc1_status &
-+	     (MCI_STATUS_VAL | MCI_STATUS_OVER | MCI_STATUS_UC | MCI_STATUS_EN |
-+	      MCI_STATUS_ADDRV | MCI_STATUS_MISCV | MCI_STATUS_PCC |
-+	      MCI_STATUS_AR | MCI_STATUS_S)) ==
-+	     (MCI_STATUS_VAL |                   MCI_STATUS_UC | MCI_STATUS_EN |
-+	      MCI_STATUS_ADDRV | MCI_STATUS_MISCV |
-+	      MCI_STATUS_AR | MCI_STATUS_S)) {
-+		misc_enable &= ~MSR_IA32_MISC_ENABLE_FAST_STRING;
-+		mce_wrmsrl(MSR_IA32_MISC_ENABLE, misc_enable);
-+		mce_wrmsrl(MSR_IA32_MCx_STATUS(1), 0);
-+
-+		instrumentation_begin();
-+		pr_err_once("Erratum detected, disable fast string copy instructions.\n");
-+		instrumentation_end();
-+
-+		return true;
-+	}
-+
-+	return false;
-+}
-+
-+/*
-  * Do a quick check if any of the events requires a panic.
-  * This decides if we keep the events around or clear them.
+diff --git a/drivers/pci/controller/vmd.c b/drivers/pci/controller/vmd.c
+index cc166c6..eb05cce 100644
+--- a/drivers/pci/controller/vmd.c
++++ b/drivers/pci/controller/vmd.c
+@@ -99,11 +99,13 @@ struct vmd_irq {
+  * @srcu:	SRCU struct for local synchronization.
+  * @count:	number of child IRQs assigned to this vector; used to track
+  *		sharing.
++ * @virq:	The underlying VMD Linux interrupt number
   */
-@@ -1383,6 +1436,9 @@ noinstr void do_machine_check(struct pt_regs *regs)
- 	else if (unlikely(!mca_cfg.initialized))
- 		return unexpected_machine_check(regs);
- 
-+	if (mce_flags.skx_repmov_quirk && quirk_skylake_repmov())
-+		goto clear;
-+
- 	/*
- 	 * Establish sequential order between the CPUs entering the machine
- 	 * check handler.
-@@ -1525,6 +1581,7 @@ noinstr void do_machine_check(struct pt_regs *regs)
- out:
- 	instrumentation_end();
- 
-+clear:
- 	mce_wrmsrl(MSR_IA32_MCG_STATUS, 0);
- }
- EXPORT_SYMBOL_GPL(do_machine_check);
-@@ -1838,6 +1895,13 @@ static int __mcheck_cpu_apply_quirks(struct cpuinfo_x86 *c)
- 
- 		if (c->x86 == 6 && c->x86_model == 45)
- 			mce_flags.snb_ifu_quirk = 1;
-+
-+		/*
-+		 * Skylake, Cascacde Lake and Cooper Lake require a quirk on
-+		 * rep movs.
-+		 */
-+		if (c->x86 == 6 && c->x86_model == INTEL_FAM6_SKYLAKE_X)
-+			mce_flags.skx_repmov_quirk = 1;
- 	}
- 
- 	if (c->x86_vendor == X86_VENDOR_ZHAOXIN) {
-diff --git a/arch/x86/kernel/cpu/mce/internal.h b/arch/x86/kernel/cpu/mce/internal.h
-index a04b61e..3efb503 100644
---- a/arch/x86/kernel/cpu/mce/internal.h
-+++ b/arch/x86/kernel/cpu/mce/internal.h
-@@ -170,7 +170,10 @@ struct mce_vendor_flags {
- 	/* SandyBridge IFU quirk */
- 	snb_ifu_quirk		: 1,
- 
--	__reserved_0		: 57;
-+	/* Skylake, Cascade Lake, Cooper Lake REP;MOVS* quirk */
-+	skx_repmov_quirk	: 1,
-+
-+	__reserved_0		: 56;
+ struct vmd_irq_list {
+ 	struct list_head	irq_list;
+ 	struct srcu_struct	srcu;
+ 	unsigned int		count;
++	unsigned int		virq;
  };
  
- extern struct mce_vendor_flags mce_flags;
+ struct vmd_dev {
+@@ -253,7 +255,6 @@ static int vmd_msi_init(struct irq_domain *domain, struct msi_domain_info *info,
+ 	struct msi_desc *desc = arg->desc;
+ 	struct vmd_dev *vmd = vmd_from_bus(msi_desc_to_pci_dev(desc)->bus);
+ 	struct vmd_irq *vmdirq = kzalloc(sizeof(*vmdirq), GFP_KERNEL);
+-	unsigned int index, vector;
+ 
+ 	if (!vmdirq)
+ 		return -ENOMEM;
+@@ -261,10 +262,8 @@ static int vmd_msi_init(struct irq_domain *domain, struct msi_domain_info *info,
+ 	INIT_LIST_HEAD(&vmdirq->node);
+ 	vmdirq->irq = vmd_next_irq(vmd, desc);
+ 	vmdirq->virq = virq;
+-	index = index_from_irqs(vmd, vmdirq->irq);
+-	vector = pci_irq_vector(vmd->dev, index);
+ 
+-	irq_domain_set_info(domain, virq, vector, info->chip, vmdirq,
++	irq_domain_set_info(domain, virq, vmdirq->irq->virq, info->chip, vmdirq,
+ 			    handle_untracked_irq, vmd, NULL);
+ 	return 0;
+ }
+@@ -685,7 +684,8 @@ static int vmd_alloc_irqs(struct vmd_dev *vmd)
+ 			return err;
+ 
+ 		INIT_LIST_HEAD(&vmd->irqs[i].irq_list);
+-		err = devm_request_irq(&dev->dev, pci_irq_vector(dev, i),
++		vmd->irqs[i].virq = pci_irq_vector(dev, i);
++		err = devm_request_irq(&dev->dev, vmd->irqs[i].virq,
+ 				       vmd_irq, IRQF_NO_THREAD,
+ 				       vmd->name, &vmd->irqs[i]);
+ 		if (err)
+@@ -969,7 +969,7 @@ static int vmd_suspend(struct device *dev)
+ 	int i;
+ 
+ 	for (i = 0; i < vmd->msix_count; i++)
+-		devm_free_irq(dev, pci_irq_vector(pdev, i), &vmd->irqs[i]);
++		devm_free_irq(dev, vmd->irqs[i].virq, &vmd->irqs[i]);
+ 
+ 	return 0;
+ }
+@@ -981,7 +981,7 @@ static int vmd_resume(struct device *dev)
+ 	int err, i;
+ 
+ 	for (i = 0; i < vmd->msix_count; i++) {
+-		err = devm_request_irq(dev, pci_irq_vector(pdev, i),
++		err = devm_request_irq(dev, vmd->irqs[i].virq,
+ 				       vmd_irq, IRQF_NO_THREAD,
+ 				       vmd->name, &vmd->irqs[i]);
+ 		if (err)
