@@ -2,57 +2,58 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7743D4BD720
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 21 Feb 2022 08:43:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1EC534BE2F9
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 21 Feb 2022 18:56:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344012AbiBUHbo (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 21 Feb 2022 02:31:44 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:48760 "EHLO
+        id S1356199AbiBULZa (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 21 Feb 2022 06:25:30 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:54610 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230132AbiBUHbn (ORCPT
+        with ESMTP id S1356207AbiBULYq (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 21 Feb 2022 02:31:43 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43A162E7;
-        Sun, 20 Feb 2022 23:31:20 -0800 (PST)
-Date:   Mon, 21 Feb 2022 07:31:16 -0000
+        Mon, 21 Feb 2022 06:24:46 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FE58C41;
+        Mon, 21 Feb 2022 03:19:47 -0800 (PST)
+Date:   Mon, 21 Feb 2022 11:19:44 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1645428677;
+        s=2020; t=1645442385;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=VPeVFRqXyH/qkyeIFa43p7nhy+n8Zng6FJUz7oizMQI=;
-        b=tK4RiO/ufs+nV/sBz4B0MjsW2UxZlm7O8bYpMrA9mczisjRaGkQNbnyyLvq+xzdxkjTklT
-        ipaP9pOiYksBMvXTymfR2m/W0aCA6UbpZIPDVx5Uc96AbOZHeti7MAZ8gRCLlJL15FEeOv
-        ZqnnonXJDH9lnQhGD/vyG6jv4F84MAWe++UhF2xPaaBurP7y0ZgspPTjFG0oikchSBIXmk
-        iSXeab3S6Uk+EAgTZjLawu/ylgwTe/opYHjRlqlj4f8262b9BoXToSC5p+vjbx2HL/nhvD
-        rH/5MdJ7M/8dgcKkkqHY07wHFD/fbqfRX9/UqyrwRzHPvJlFrD/aXTYyxcqRQQ==
+        bh=3C9EMptlshmlFrp7KuOawjBBSEBh/nqa78XFkZiqeqg=;
+        b=HI2b8Q3dMU51MXjCEthE0Q13fYsDYsj+x6c+oszZql/Ze/Gni5c9C7Q39PLiHyZ4H3IlUB
+        +R2RHT+/IzD5Dr3z3lwJ1VP20a5Pdz1emf9aWnHb8rCPqH/en4c1JS2QJEgHszOfzfnmdV
+        ZUkn4pWW6fK4EZ3oA2wXJe5aCoeFKkpw7a4XwpF8XgPUIylEAN90yur63ashQY6waBkll/
+        UiLmVId5jjBsqWKEwrV4Ae9Zmls2/Q4QdCru7oMYgxvPc7ujrCmB5Xs7EpjZe7IK6Eey7U
+        JHpotVejFa5dGg04+R7qWZhLaktDrvmfqln6SXwnJfe18YxMzOItspM5JDff+Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1645428677;
+        s=2020e; t=1645442385;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=VPeVFRqXyH/qkyeIFa43p7nhy+n8Zng6FJUz7oizMQI=;
-        b=I11DarCzKKF4kFbIfwPnRaNMk42oeJlTjQTniqkBdH01dZVuYbcefrBSeXQj3DHWTLRQyQ
-        uImY5VgPS3eCeOCw==
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+        bh=3C9EMptlshmlFrp7KuOawjBBSEBh/nqa78XFkZiqeqg=;
+        b=2htBa3reRHwcoJSJga/TPWCsolqoeZpXy0Y9VhXwdQoLKDh8gc5OBQLij8SeclcVsuOVtI
+        2NsRT91qMoeJyOAw==
+From:   "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/urgent] PCI: vmd: Prevent recursive locking on interrupt allocation
-Cc:     "Surendrakumar Upadhyay, TejaskumarX" 
-        <tejaskumarx.surendrakumar.upadhyay@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-pci@vger.kernel.org, x86@kernel.org,
-        linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <87a6euub2a.ffs@tglx>
-References: <87a6euub2a.ffs@tglx>
+Subject: [tip: irq/core] genirq: Provide generic_handle_irq_safe()
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Oleksandr Natalenko <oleksandr@natalenko.name>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        x86@kernel.org, linux-kernel@vger.kernel.org, maz@kernel.org
+In-Reply-To: <20220211181500.1856198-2-bigeasy@linutronix.de>
+References: <20220211181500.1856198-2-bigeasy@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <164542867635.16921.13795049956787158926.tip-bot2@tip-bot2>
+Message-ID: <164544238423.16921.14685093775166733539.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,119 +68,74 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the irq/urgent branch of tip:
+The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     ba1366f3d039e7c3ca1fc29ed00ce3ed2b8fd32f
-Gitweb:        https://git.kernel.org/tip/ba1366f3d039e7c3ca1fc29ed00ce3ed2b8fd32f
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Sun, 13 Feb 2022 14:54:05 +01:00
+Commit-ID:     509853f9e1e7b1490dc79f735a5dbafc9298f40d
+Gitweb:        https://git.kernel.org/tip/509853f9e1e7b1490dc79f735a5dbafc9298f40d
+Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+AuthorDate:    Fri, 11 Feb 2022 19:14:54 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 21 Feb 2022 08:26:53 +01:00
+CommitterDate: Mon, 21 Feb 2022 11:31:06 +01:00
 
-PCI: vmd: Prevent recursive locking on interrupt allocation
+genirq: Provide generic_handle_irq_safe()
 
-Tejas reported the following recursive locking issue:
+Provide generic_handle_irq_safe() which can used from any context.
 
- swapper/0/1 is trying to acquire lock:
- ffff8881074fd0a0 (&md->mutex){+.+.}-{3:3}, at: msi_get_virq+0x30/0xc0
- 
- but task is already holding lock:
- ffff8881017cd6a0 (&md->mutex){+.+.}-{3:3}, at: __pci_enable_msi_range+0xf2/0x290
- 
- stack backtrace:
-  __mutex_lock+0x9d/0x920
-  msi_get_virq+0x30/0xc0
-  pci_irq_vector+0x26/0x30
-  vmd_msi_init+0xcc/0x210
-  msi_domain_alloc+0xbf/0x150
-  msi_domain_alloc_irqs_descs_locked+0x3e/0xb0
-  __pci_enable_msi_range+0x155/0x290
-  pci_alloc_irq_vectors_affinity+0xba/0x100
-  pcie_port_device_register+0x307/0x550
-  pcie_portdrv_probe+0x3c/0xd0
-  pci_device_probe+0x95/0x110
-
-This is caused by the VMD MSI code which does a lookup of the Linux
-interrupt number for an VMD managed MSI[X] vector. The lookup function
-tries to acquire the already held mutex.
-
-Avoid that by caching the Linux interrupt number at initialization time
-instead of looking it up over and over.
-
-Fixes: 82ff8e6b78fc ("PCI/MSI: Use msi_get_virq() in pci_get_vector()")
-Reported-by: "Surendrakumar Upadhyay, TejaskumarX" <tejaskumarx.surendrakumar.upadhyay@intel.com>
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: "Surendrakumar Upadhyay, TejaskumarX" <tejaskumarx.surendrakumar.upadhyay@intel.com>
-Cc: linux-pci@vger.kernel.org
-Link: https://lore.kernel.org/r/87a6euub2a.ffs@tglx
-
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Oleksandr Natalenko <oleksandr@natalenko.name>
+Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Link: https://lore.kernel.org/r/20220211181500.1856198-2-bigeasy@linutronix.de
 ---
- drivers/pci/controller/vmd.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ include/linux/irqdesc.h |  1 +
+ kernel/irq/irqdesc.c    | 23 +++++++++++++++++++++++
+ 2 files changed, 24 insertions(+)
 
-diff --git a/drivers/pci/controller/vmd.c b/drivers/pci/controller/vmd.c
-index cc166c6..eb05cce 100644
---- a/drivers/pci/controller/vmd.c
-+++ b/drivers/pci/controller/vmd.c
-@@ -99,11 +99,13 @@ struct vmd_irq {
-  * @srcu:	SRCU struct for local synchronization.
-  * @count:	number of child IRQs assigned to this vector; used to track
-  *		sharing.
-+ * @virq:	The underlying VMD Linux interrupt number
-  */
- struct vmd_irq_list {
- 	struct list_head	irq_list;
- 	struct srcu_struct	srcu;
- 	unsigned int		count;
-+	unsigned int		virq;
- };
+diff --git a/include/linux/irqdesc.h b/include/linux/irqdesc.h
+index 93d270c..a775845 100644
+--- a/include/linux/irqdesc.h
++++ b/include/linux/irqdesc.h
+@@ -160,6 +160,7 @@ static inline void generic_handle_irq_desc(struct irq_desc *desc)
  
- struct vmd_dev {
-@@ -253,7 +255,6 @@ static int vmd_msi_init(struct irq_domain *domain, struct msi_domain_info *info,
- 	struct msi_desc *desc = arg->desc;
- 	struct vmd_dev *vmd = vmd_from_bus(msi_desc_to_pci_dev(desc)->bus);
- 	struct vmd_irq *vmdirq = kzalloc(sizeof(*vmdirq), GFP_KERNEL);
--	unsigned int index, vector;
+ int handle_irq_desc(struct irq_desc *desc);
+ int generic_handle_irq(unsigned int irq);
++int generic_handle_irq_safe(unsigned int irq);
  
- 	if (!vmdirq)
- 		return -ENOMEM;
-@@ -261,10 +262,8 @@ static int vmd_msi_init(struct irq_domain *domain, struct msi_domain_info *info,
- 	INIT_LIST_HEAD(&vmdirq->node);
- 	vmdirq->irq = vmd_next_irq(vmd, desc);
- 	vmdirq->virq = virq;
--	index = index_from_irqs(vmd, vmdirq->irq);
--	vector = pci_irq_vector(vmd->dev, index);
- 
--	irq_domain_set_info(domain, virq, vector, info->chip, vmdirq,
-+	irq_domain_set_info(domain, virq, vmdirq->irq->virq, info->chip, vmdirq,
- 			    handle_untracked_irq, vmd, NULL);
- 	return 0;
+ #ifdef CONFIG_IRQ_DOMAIN
+ /*
+diff --git a/kernel/irq/irqdesc.c b/kernel/irq/irqdesc.c
+index 2267e65..346d283 100644
+--- a/kernel/irq/irqdesc.c
++++ b/kernel/irq/irqdesc.c
+@@ -662,6 +662,29 @@ int generic_handle_irq(unsigned int irq)
  }
-@@ -685,7 +684,8 @@ static int vmd_alloc_irqs(struct vmd_dev *vmd)
- 			return err;
+ EXPORT_SYMBOL_GPL(generic_handle_irq);
  
- 		INIT_LIST_HEAD(&vmd->irqs[i].irq_list);
--		err = devm_request_irq(&dev->dev, pci_irq_vector(dev, i),
-+		vmd->irqs[i].virq = pci_irq_vector(dev, i);
-+		err = devm_request_irq(&dev->dev, vmd->irqs[i].virq,
- 				       vmd_irq, IRQF_NO_THREAD,
- 				       vmd->name, &vmd->irqs[i]);
- 		if (err)
-@@ -969,7 +969,7 @@ static int vmd_suspend(struct device *dev)
- 	int i;
- 
- 	for (i = 0; i < vmd->msix_count; i++)
--		devm_free_irq(dev, pci_irq_vector(pdev, i), &vmd->irqs[i]);
-+		devm_free_irq(dev, vmd->irqs[i].virq, &vmd->irqs[i]);
- 
- 	return 0;
- }
-@@ -981,7 +981,7 @@ static int vmd_resume(struct device *dev)
- 	int err, i;
- 
- 	for (i = 0; i < vmd->msix_count; i++) {
--		err = devm_request_irq(dev, pci_irq_vector(pdev, i),
-+		err = devm_request_irq(dev, vmd->irqs[i].virq,
- 				       vmd_irq, IRQF_NO_THREAD,
- 				       vmd->name, &vmd->irqs[i]);
- 		if (err)
++/**
++ * generic_handle_irq_safe - Invoke the handler for a particular irq from any
++ *			     context.
++ * @irq:	The irq number to handle
++ *
++ * Returns:	0 on success, a negative value on error.
++ *
++ * This function can be called from any context (IRQ or process context). It
++ * will report an error if not invoked from IRQ context and the irq has been
++ * marked to enforce IRQ-context only.
++ */
++int generic_handle_irq_safe(unsigned int irq)
++{
++	unsigned long flags;
++	int ret;
++
++	local_irq_save(flags);
++	ret = handle_irq_desc(irq_to_desc(irq));
++	local_irq_restore(flags);
++	return ret;
++}
++EXPORT_SYMBOL_GPL(generic_handle_irq_safe);
++
+ #ifdef CONFIG_IRQ_DOMAIN
+ /**
+  * generic_handle_domain_irq - Invoke the handler for a HW irq belonging
