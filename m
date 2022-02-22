@@ -2,58 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1EC534BE2F9
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 21 Feb 2022 18:56:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BAE714C03C0
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 22 Feb 2022 22:27:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1356199AbiBULZa (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 21 Feb 2022 06:25:30 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:54610 "EHLO
+        id S235745AbiBVV12 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 22 Feb 2022 16:27:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43668 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1356207AbiBULYq (ORCPT
+        with ESMTP id S231319AbiBVV11 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 21 Feb 2022 06:24:46 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FE58C41;
-        Mon, 21 Feb 2022 03:19:47 -0800 (PST)
-Date:   Mon, 21 Feb 2022 11:19:44 -0000
+        Tue, 22 Feb 2022 16:27:27 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACD2D710CA;
+        Tue, 22 Feb 2022 13:27:00 -0800 (PST)
+Date:   Tue, 22 Feb 2022 21:26:57 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1645442385;
+        s=2020; t=1645565218;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=3C9EMptlshmlFrp7KuOawjBBSEBh/nqa78XFkZiqeqg=;
-        b=HI2b8Q3dMU51MXjCEthE0Q13fYsDYsj+x6c+oszZql/Ze/Gni5c9C7Q39PLiHyZ4H3IlUB
-        +R2RHT+/IzD5Dr3z3lwJ1VP20a5Pdz1emf9aWnHb8rCPqH/en4c1JS2QJEgHszOfzfnmdV
-        ZUkn4pWW6fK4EZ3oA2wXJe5aCoeFKkpw7a4XwpF8XgPUIylEAN90yur63ashQY6waBkll/
-        UiLmVId5jjBsqWKEwrV4Ae9Zmls2/Q4QdCru7oMYgxvPc7ujrCmB5Xs7EpjZe7IK6Eey7U
-        JHpotVejFa5dGg04+R7qWZhLaktDrvmfqln6SXwnJfe18YxMzOItspM5JDff+Q==
+        bh=6WiCZNydujctLgPnBX854JnldmTGegwlAAABgUfJddY=;
+        b=VskNhBmIrgTc4lx2JETDXkQwhn4L6Xw88l+EyjKfXMyxU14D2l1IuzDD5tjE3XZFUNwlUr
+        oLTzrmbdgMIHfGJ9mKmoht7K+Wx3JpIAs46NF3tV1giWMH78oOK811i+cLiV9287K51s2d
+        ZwbW6n1h5pt4aMDE+bP8krKaW/KHXYjZKjomwgVXBKMpsKgphMgBfOkT+43p0PQqY6uIWh
+        Dr3246h9XCEL/lntvIxwpBoXKnYqLmidlcFETgMsOybf8PYWLVNvaIihHGvae2hQ3S7RNK
+        DX4T/4cb6qCeOzjKOHRKDBkKLGsFlMBTV4iSVGC3eP7yndXl0Rpxf13wgwwpZw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1645442385;
+        s=2020e; t=1645565218;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=3C9EMptlshmlFrp7KuOawjBBSEBh/nqa78XFkZiqeqg=;
-        b=2htBa3reRHwcoJSJga/TPWCsolqoeZpXy0Y9VhXwdQoLKDh8gc5OBQLij8SeclcVsuOVtI
-        2NsRT91qMoeJyOAw==
+        bh=6WiCZNydujctLgPnBX854JnldmTGegwlAAABgUfJddY=;
+        b=uF+6FK8wJTGaGK2hMN+yO4rXmmyLaw701/SBhTnmHMIQgkj8WcmVAKEeR8uhC/WSZCC+XL
+        VyeFfCzCRAQaW8DA==
 From:   "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] genirq: Provide generic_handle_irq_safe()
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Oleksandr Natalenko <oleksandr@natalenko.name>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        x86@kernel.org, linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20220211181500.1856198-2-bigeasy@linutronix.de>
-References: <20220211181500.1856198-2-bigeasy@linutronix.de>
+Subject: [tip: core/core] fork: Use IS_ENABLED() in account_kernel_stack()
+Cc:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Andy Lutomirski <luto@kernel.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20220217102406.3697941-9-bigeasy@linutronix.de>
+References: <20220217102406.3697941-9-bigeasy@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <164544238423.16921.14685093775166733539.tip-bot2@tip-bot2>
+Message-ID: <164556521749.16921.5599945951709302903.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -68,74 +66,54 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the irq/core branch of tip:
+The following commit has been merged into the core/core branch of tip:
 
-Commit-ID:     509853f9e1e7b1490dc79f735a5dbafc9298f40d
-Gitweb:        https://git.kernel.org/tip/509853f9e1e7b1490dc79f735a5dbafc9298f40d
+Commit-ID:     0ce055f85335e48bc571114d61a70ae217039362
+Gitweb:        https://git.kernel.org/tip/0ce055f85335e48bc571114d61a70ae217039362
 Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-AuthorDate:    Fri, 11 Feb 2022 19:14:54 +01:00
+AuthorDate:    Thu, 17 Feb 2022 11:24:06 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 21 Feb 2022 11:31:06 +01:00
+CommitterDate: Tue, 22 Feb 2022 22:25:02 +01:00
 
-genirq: Provide generic_handle_irq_safe()
+fork: Use IS_ENABLED() in account_kernel_stack()
 
-Provide generic_handle_irq_safe() which can used from any context.
+Not strickly needed but checking CONFIG_VMAP_STACK instead of
+task_stack_vm_area()' result allows the compiler the remove the else
+path in the CONFIG_VMAP_STACK case where the pointer can't be NULL.
 
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+Check for CONFIG_VMAP_STACK in order to use the proper path.
+
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Oleksandr Natalenko <oleksandr@natalenko.name>
-Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Link: https://lore.kernel.org/r/20220211181500.1856198-2-bigeasy@linutronix.de
----
- include/linux/irqdesc.h |  1 +
- kernel/irq/irqdesc.c    | 23 +++++++++++++++++++++++
- 2 files changed, 24 insertions(+)
+Acked-by: Andy Lutomirski <luto@kernel.org>
+Link: https://lore.kernel.org/r/20220217102406.3697941-9-bigeasy@linutronix.de
 
-diff --git a/include/linux/irqdesc.h b/include/linux/irqdesc.h
-index 93d270c..a775845 100644
---- a/include/linux/irqdesc.h
-+++ b/include/linux/irqdesc.h
-@@ -160,6 +160,7 @@ static inline void generic_handle_irq_desc(struct irq_desc *desc)
+---
+ kernel/fork.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/kernel/fork.c b/kernel/fork.c
+index 177bc64..1279b57 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -485,16 +485,16 @@ void vm_area_free(struct vm_area_struct *vma)
  
- int handle_irq_desc(struct irq_desc *desc);
- int generic_handle_irq(unsigned int irq);
-+int generic_handle_irq_safe(unsigned int irq);
+ static void account_kernel_stack(struct task_struct *tsk, int account)
+ {
+-	void *stack = task_stack_page(tsk);
+-	struct vm_struct *vm = task_stack_vm_area(tsk);
+-
+-	if (vm) {
++	if (IS_ENABLED(CONFIG_VMAP_STACK)) {
++		struct vm_struct *vm = task_stack_vm_area(tsk);
+ 		int i;
  
- #ifdef CONFIG_IRQ_DOMAIN
- /*
-diff --git a/kernel/irq/irqdesc.c b/kernel/irq/irqdesc.c
-index 2267e65..346d283 100644
---- a/kernel/irq/irqdesc.c
-+++ b/kernel/irq/irqdesc.c
-@@ -662,6 +662,29 @@ int generic_handle_irq(unsigned int irq)
- }
- EXPORT_SYMBOL_GPL(generic_handle_irq);
- 
-+/**
-+ * generic_handle_irq_safe - Invoke the handler for a particular irq from any
-+ *			     context.
-+ * @irq:	The irq number to handle
-+ *
-+ * Returns:	0 on success, a negative value on error.
-+ *
-+ * This function can be called from any context (IRQ or process context). It
-+ * will report an error if not invoked from IRQ context and the irq has been
-+ * marked to enforce IRQ-context only.
-+ */
-+int generic_handle_irq_safe(unsigned int irq)
-+{
-+	unsigned long flags;
-+	int ret;
+ 		for (i = 0; i < THREAD_SIZE / PAGE_SIZE; i++)
+ 			mod_lruvec_page_state(vm->pages[i], NR_KERNEL_STACK_KB,
+ 					      account * (PAGE_SIZE / 1024));
+ 	} else {
++		void *stack = task_stack_page(tsk);
 +
-+	local_irq_save(flags);
-+	ret = handle_irq_desc(irq_to_desc(irq));
-+	local_irq_restore(flags);
-+	return ret;
-+}
-+EXPORT_SYMBOL_GPL(generic_handle_irq_safe);
-+
- #ifdef CONFIG_IRQ_DOMAIN
- /**
-  * generic_handle_domain_irq - Invoke the handler for a HW irq belonging
+ 		/* All stack pages are in the same node. */
+ 		mod_lruvec_kmem_state(stack, NR_KERNEL_STACK_KB,
+ 				      account * (THREAD_SIZE / 1024));
