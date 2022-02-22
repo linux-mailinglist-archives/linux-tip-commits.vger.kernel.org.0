@@ -2,56 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 11B644C03C1
+	by mail.lfdr.de (Postfix) with ESMTP id 5CC8C4C03C2
 	for <lists+linux-tip-commits@lfdr.de>; Tue, 22 Feb 2022 22:27:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235783AbiBVV13 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 22 Feb 2022 16:27:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43670 "EHLO
+        id S235787AbiBVV1a (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 22 Feb 2022 16:27:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43714 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234356AbiBVV11 (ORCPT
+        with ESMTP id S235677AbiBVV12 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 22 Feb 2022 16:27:27 -0500
+        Tue, 22 Feb 2022 16:27:28 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5B657B550;
-        Tue, 22 Feb 2022 13:27:00 -0800 (PST)
-Date:   Tue, 22 Feb 2022 21:26:58 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 765E87B55B;
+        Tue, 22 Feb 2022 13:27:01 -0800 (PST)
+Date:   Tue, 22 Feb 2022 21:26:59 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1645565219;
+        s=2020; t=1645565220;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=1hnS8yXfEREgwfivWd8IfE/vOMfid7XfmJhvieSSweM=;
-        b=3iWQbzaRtH3Tq001IafeFx7BwVm/D9LfO/bCWjRPk6hIHX7Y9SJIKaYSflchRAWnmDFVh8
-        kNXWZInbH5KY8kP7DOaCpTwlr11kqPToaYIwA9JnNMP2ywKBRuZGEFrK8KJRAsOSZvQRhX
-        LbVhD2Dn4lxGhDjgljJTAe4kSHI1FfiamHQs5biCL6eq1J52kBAHyuNlAvpfpHx02OxpAe
-        H+B7+jmzc2bhrWCnH5d7ydVwxhJWWn9b1b51+XU/IxtvYCTO1c5PRgZpjqnyrN5F5ZqmPb
-        faV8Cz348s+6PHW1gnTZwNyYU1XreHD3fLCRHYoFOsX0Rzq4ZiH6k/Eq/uErvA==
+        bh=4TLEJCCLKrshPMeXgTvHmbuI9C8JCXQeV5MGfT+J0ig=;
+        b=l8Ngv5AZfh18Fu3cZq8Q5R2FSfY6BYzUFFlDS4ok7Vj1lNMd3IYKeNbg04KB4IEXxbfeBO
+        w/6Zh0dgUJGj7eFY4SG+1oHSGxf7PlRBjmYHBH6/uihPuejsXK54MSaimQUmj/fK7NqzhO
+        T8ot1LJFhhA4jBY+ABNQOnhRk5MCn7YYSOIoLtXnntxCx3mxS3XAmxKSRMGnCGAZCCIOTs
+        wjR5TgcG3wII/81slswKhObTXOefeot319s47EMMtHxJ53b2faK1zOcJRLAxkPOeLkdcgT
+        SIgqy7rLFoiMkl7MVqHXwKo/emW18f6ze8HvxggiBeqbFn40fENXr7Ct0usKgw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1645565219;
+        s=2020e; t=1645565220;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=1hnS8yXfEREgwfivWd8IfE/vOMfid7XfmJhvieSSweM=;
-        b=cFuU6nDrI6sFv0Cv3CZ9/VLDbiETQJQUJ2Q0lm8cN+22EuFc3AR3/3jhDXRvpDh/cUaWbH
-        udR5i+IiMGEPksDw==
+        bh=4TLEJCCLKrshPMeXgTvHmbuI9C8JCXQeV5MGfT+J0ig=;
+        b=ZQ8kdwfKuqCbO5A6uddWfAiqCUBM2HO8QjhaD9daoKjpO1wsMCpgWiRRxYbhWhgxilvL1/
+        MF7i6OPYJgKC7HDA==
 From:   "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/core] fork: Only cache the VMAP stack in finish_task_switch()
+Subject: [tip: core/core] fork: Move task stack accounting to do_exit()
 Cc:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
         Thomas Gleixner <tglx@linutronix.de>,
         Andy Lutomirski <luto@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220217102406.3697941-8-bigeasy@linutronix.de>
-References: <20220217102406.3697941-8-bigeasy@linutronix.de>
+In-Reply-To: <20220217102406.3697941-7-bigeasy@linutronix.de>
+References: <20220217102406.3697941-7-bigeasy@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <164556521837.16921.8430861751279136153.tip-bot2@tip-bot2>
+Message-ID: <164556521911.16921.1452756504269092176.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -68,157 +68,180 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the core/core branch of tip:
 
-Commit-ID:     e540bf3162e822d7a1f07e69e3bb1b4f925ca368
-Gitweb:        https://git.kernel.org/tip/e540bf3162e822d7a1f07e69e3bb1b4f925ca368
+Commit-ID:     1a03d3f13ffe5dd24142d6db629e72c11b704d99
+Gitweb:        https://git.kernel.org/tip/1a03d3f13ffe5dd24142d6db629e72c11b704d99
 Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-AuthorDate:    Thu, 17 Feb 2022 11:24:05 +01:00
+AuthorDate:    Thu, 17 Feb 2022 11:24:04 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Tue, 22 Feb 2022 22:25:02 +01:00
 
-fork: Only cache the VMAP stack in finish_task_switch()
+fork: Move task stack accounting to do_exit()
 
-The task stack could be deallocated later, but for fork()/exec() kind of
-workloads (say a shell script executing several commands) it is important
-that the stack is released in finish_task_switch() so that in VMAP_STACK
-case it can be cached and reused in the new task.
+There is no need to perform the stack accounting of the outgoing task in
+its final schedule() invocation which happens with preemption disabled.
+The task is leaving, the resources will be freed and the accounting can
+happen in do_exit() before the actual schedule invocation which
+frees the stack memory.
 
-For PREEMPT_RT it would be good if the wake-up in vfree_atomic() could
-be avoided in the scheduling path. Far worse are the other
-free_thread_stack() implementations which invoke __free_pages()/
-kmem_cache_free() with disabled preemption.
-
-Cache the stack in free_thread_stack() in the VMAP_STACK case and
-RCU-delay the free path otherwise. Free the stack in the RCU callback.
-In the VMAP_STACK case this is another opportunity to fill the cache.
+Move the accounting of the stack memory from release_task_stack() to
+exit_task_stack_account() which then can be invoked from do_exit().
 
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Acked-by: Andy Lutomirski <luto@kernel.org>
-Link: https://lore.kernel.org/r/20220217102406.3697941-8-bigeasy@linutronix.de
+Link: https://lore.kernel.org/r/20220217102406.3697941-7-bigeasy@linutronix.de
 
 ---
- kernel/fork.c | 76 +++++++++++++++++++++++++++++++++++++++++---------
- 1 file changed, 63 insertions(+), 13 deletions(-)
+ include/linux/sched/task_stack.h |  2 ++-
+ kernel/exit.c                    |  1 +-
+ kernel/fork.c                    | 35 ++++++++++++++++++++-----------
+ 3 files changed, 26 insertions(+), 12 deletions(-)
 
+diff --git a/include/linux/sched/task_stack.h b/include/linux/sched/task_stack.h
+index d101505..892562e 100644
+--- a/include/linux/sched/task_stack.h
++++ b/include/linux/sched/task_stack.h
+@@ -79,6 +79,8 @@ static inline void *try_get_task_stack(struct task_struct *tsk)
+ static inline void put_task_stack(struct task_struct *tsk) {}
+ #endif
+ 
++void exit_task_stack_account(struct task_struct *tsk);
++
+ #define task_stack_end_corrupted(task) \
+ 		(*(end_of_stack(task)) != STACK_END_MAGIC)
+ 
+diff --git a/kernel/exit.c b/kernel/exit.c
+index b00a25b..c303cff 100644
+--- a/kernel/exit.c
++++ b/kernel/exit.c
+@@ -845,6 +845,7 @@ void __noreturn do_exit(long code)
+ 		put_page(tsk->task_frag.page);
+ 
+ 	validate_creds_for_do_exit(tsk);
++	exit_task_stack_account(tsk);
+ 
+ 	check_stack_usage();
+ 	preempt_disable();
 diff --git a/kernel/fork.c b/kernel/fork.c
-index 2582812..177bc64 100644
+index ac63e7f..2582812 100644
 --- a/kernel/fork.c
 +++ b/kernel/fork.c
-@@ -193,6 +193,41 @@ static inline void free_task_struct(struct task_struct *tsk)
- #define NR_CACHED_STACKS 2
- static DEFINE_PER_CPU(struct vm_struct *, cached_stacks[NR_CACHED_STACKS]);
+@@ -211,9 +211,8 @@ static int free_vm_stack_cache(unsigned int cpu)
+ 	return 0;
+ }
  
-+struct vm_stack {
-+	struct rcu_head rcu;
-+	struct vm_struct *stack_vm_area;
-+};
-+
-+static bool try_release_thread_stack_to_cache(struct vm_struct *vm)
-+{
-+	unsigned int i;
-+
-+	for (i = 0; i < NR_CACHED_STACKS; i++) {
-+		if (this_cpu_cmpxchg(cached_stacks[i], NULL, vm) != NULL)
-+			continue;
-+		return true;
-+	}
-+	return false;
-+}
-+
-+static void thread_stack_free_rcu(struct rcu_head *rh)
-+{
-+	struct vm_stack *vm_stack = container_of(rh, struct vm_stack, rcu);
-+
-+	if (try_release_thread_stack_to_cache(vm_stack->stack_vm_area))
-+		return;
-+
-+	vfree(vm_stack);
-+}
-+
-+static void thread_stack_delayed_free(struct task_struct *tsk)
-+{
-+	struct vm_stack *vm_stack = tsk->stack;
-+
-+	vm_stack->stack_vm_area = tsk->stack_vm_area;
-+	call_rcu(&vm_stack->rcu, thread_stack_free_rcu);
-+}
-+
- static int free_vm_stack_cache(unsigned int cpu)
+-static int memcg_charge_kernel_stack(struct task_struct *tsk)
++static int memcg_charge_kernel_stack(struct vm_struct *vm)
  {
- 	struct vm_struct **cached_vm_stacks = per_cpu_ptr(cached_stacks, cpu);
-@@ -296,24 +331,27 @@ static int alloc_thread_stack_node(struct task_struct *tsk, int node)
+-	struct vm_struct *vm = task_stack_vm_area(tsk);
+ 	int i;
+ 	int ret;
+ 
+@@ -239,6 +238,7 @@ err:
+ 
+ static int alloc_thread_stack_node(struct task_struct *tsk, int node)
+ {
++	struct vm_struct *vm;
+ 	void *stack;
+ 	int i;
+ 
+@@ -256,7 +256,7 @@ static int alloc_thread_stack_node(struct task_struct *tsk, int node)
+ 		/* Clear stale pointers from reused stack. */
+ 		memset(s->addr, 0, THREAD_SIZE);
+ 
+-		if (memcg_charge_kernel_stack(tsk)) {
++		if (memcg_charge_kernel_stack(s)) {
+ 			vfree(s->addr);
+ 			return -ENOMEM;
+ 		}
+@@ -279,7 +279,8 @@ static int alloc_thread_stack_node(struct task_struct *tsk, int node)
+ 	if (!stack)
+ 		return -ENOMEM;
+ 
+-	if (memcg_charge_kernel_stack(tsk)) {
++	vm = find_vm_area(stack);
++	if (memcg_charge_kernel_stack(vm)) {
+ 		vfree(stack);
+ 		return -ENOMEM;
+ 	}
+@@ -288,19 +289,15 @@ static int alloc_thread_stack_node(struct task_struct *tsk, int node)
+ 	 * free_thread_stack() can be called in interrupt context,
+ 	 * so cache the vm_struct.
+ 	 */
+-	tsk->stack_vm_area = find_vm_area(stack);
++	tsk->stack_vm_area = vm;
+ 	tsk->stack = stack;
+ 	return 0;
+ }
  
  static void free_thread_stack(struct task_struct *tsk)
  {
--	int i;
-+	if (!try_release_thread_stack_to_cache(tsk->stack_vm_area))
-+		thread_stack_delayed_free(tsk);
+-	struct vm_struct *vm = task_stack_vm_area(tsk);
+ 	int i;
  
--	for (i = 0; i < NR_CACHED_STACKS; i++) {
--		if (this_cpu_cmpxchg(cached_stacks[i], NULL,
--				     tsk->stack_vm_area) != NULL)
--			continue;
+-	for (i = 0; i < THREAD_SIZE / PAGE_SIZE; i++)
+-		memcg_kmem_uncharge_page(vm->pages[i], 0);
 -
--		tsk->stack = NULL;
--		tsk->stack_vm_area = NULL;
--		return;
--	}
--	vfree_atomic(tsk->stack);
- 	tsk->stack = NULL;
- 	tsk->stack_vm_area = NULL;
+ 	for (i = 0; i < NR_CACHED_STACKS; i++) {
+ 		if (this_cpu_cmpxchg(cached_stacks[i], NULL,
+ 				     tsk->stack_vm_area) != NULL)
+@@ -454,12 +451,25 @@ static void account_kernel_stack(struct task_struct *tsk, int account)
+ 	}
  }
  
- #  else /* !CONFIG_VMAP_STACK */
- 
-+static void thread_stack_free_rcu(struct rcu_head *rh)
++void exit_task_stack_account(struct task_struct *tsk)
 +{
-+	__free_pages(virt_to_page(rh), THREAD_SIZE_ORDER);
++	account_kernel_stack(tsk, -1);
++
++	if (IS_ENABLED(CONFIG_VMAP_STACK)) {
++		struct vm_struct *vm;
++		int i;
++
++		vm = task_stack_vm_area(tsk);
++		for (i = 0; i < THREAD_SIZE / PAGE_SIZE; i++)
++			memcg_kmem_uncharge_page(vm->pages[i], 0);
++	}
 +}
 +
-+static void thread_stack_delayed_free(struct task_struct *tsk)
-+{
-+	struct rcu_head *rh = tsk->stack;
-+
-+	call_rcu(rh, thread_stack_free_rcu);
-+}
-+
- static int alloc_thread_stack_node(struct task_struct *tsk, int node)
+ static void release_task_stack(struct task_struct *tsk)
  {
- 	struct page *page = alloc_pages_node(node, THREADINFO_GFP,
-@@ -328,7 +366,7 @@ static int alloc_thread_stack_node(struct task_struct *tsk, int node)
+ 	if (WARN_ON(READ_ONCE(tsk->__state) != TASK_DEAD))
+ 		return;  /* Better to leak the stack than to free prematurely */
  
- static void free_thread_stack(struct task_struct *tsk)
- {
--	__free_pages(virt_to_page(tsk->stack), THREAD_SIZE_ORDER);
-+	thread_stack_delayed_free(tsk);
- 	tsk->stack = NULL;
+-	account_kernel_stack(tsk, -1);
+ 	free_thread_stack(tsk);
  }
  
-@@ -337,6 +375,18 @@ static void free_thread_stack(struct task_struct *tsk)
+@@ -918,6 +928,7 @@ static struct task_struct *dup_task_struct(struct task_struct *orig, int node)
+ #ifdef CONFIG_THREAD_INFO_IN_TASK
+ 	refcount_set(&tsk->stack_refcount, 1);
+ #endif
++	account_kernel_stack(tsk, 1);
  
- static struct kmem_cache *thread_stack_cache;
+ 	err = scs_prepare(tsk, node);
+ 	if (err)
+@@ -961,8 +972,6 @@ static struct task_struct *dup_task_struct(struct task_struct *orig, int node)
+ 	tsk->wake_q.next = NULL;
+ 	tsk->worker_private = NULL;
  
-+static void thread_stack_free_rcu(struct rcu_head *rh)
-+{
-+	kmem_cache_free(thread_stack_cache, rh);
-+}
-+
-+static void thread_stack_delayed_free(struct task_struct *tsk)
-+{
-+	struct rcu_head *rh = tsk->stack;
-+
-+	call_rcu(rh, thread_stack_free_rcu);
-+}
-+
- static int alloc_thread_stack_node(struct task_struct *tsk, int node)
- {
- 	unsigned long *stack;
-@@ -348,7 +398,7 @@ static int alloc_thread_stack_node(struct task_struct *tsk, int node)
+-	account_kernel_stack(tsk, 1);
+-
+ 	kcov_task_init(tsk);
+ 	kmap_local_fork(tsk);
  
- static void free_thread_stack(struct task_struct *tsk)
- {
--	kmem_cache_free(thread_stack_cache, tsk->stack);
-+	thread_stack_delayed_free(tsk);
- 	tsk->stack = NULL;
- }
+@@ -981,6 +990,7 @@ static struct task_struct *dup_task_struct(struct task_struct *orig, int node)
+ 	return tsk;
  
+ free_stack:
++	exit_task_stack_account(tsk);
+ 	free_thread_stack(tsk);
+ free_tsk:
+ 	free_task_struct(tsk);
+@@ -2459,6 +2469,7 @@ bad_fork_cleanup_count:
+ 	exit_creds(p);
+ bad_fork_free:
+ 	WRITE_ONCE(p->__state, TASK_DEAD);
++	exit_task_stack_account(p);
+ 	put_task_stack(p);
+ 	delayed_free_task(p);
+ fork_out:
