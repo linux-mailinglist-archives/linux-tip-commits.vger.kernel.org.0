@@ -2,54 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CA9774C8EE4
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  1 Mar 2022 16:24:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 607914C8EE5
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  1 Mar 2022 16:24:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233191AbiCAPZU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S235635AbiCAPZU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Tue, 1 Mar 2022 10:25:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54822 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54826 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234657AbiCAPZS (ORCPT
+        with ESMTP id S234830AbiCAPZS (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Tue, 1 Mar 2022 10:25:18 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5546489CC9;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87B7D8A6E9;
         Tue,  1 Mar 2022 07:24:34 -0800 (PST)
-Date:   Tue, 01 Mar 2022 15:24:31 -0000
+Date:   Tue, 01 Mar 2022 15:24:32 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1646148272;
+        s=2020; t=1646148273;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=N92mGDb6GVuJsBIZDQlvKtlqd1uINgZ6thYDsWHH2gk=;
-        b=u+UqpM0nwPvZwIatn7P9MLH3rQc83wtu6gY414fZfgAWbjOUf42uzWV7uZeRHF29kNTzA/
-        FoXVK8908pW/4j3bcXAD5JcYixaL3oLG9fyNkHklsmQIe3KWeTrT4gG9rlemODOqEh38+T
-        /H9ZKdQ0f8E+HY92/uDaqKO3vOnOO0lGU+XW0/jm2+gZ0pgvWJTOBwyKF55yS58tM2+BUR
-        1mNsiLY2HchYBU+1eyr46JzQp62Ov7B5R2GvTv/RxuUh0YuXzLfkbiFyKfjR4RVFVcO5b3
-        F3kBiVfarJJ53Yo6F7j/bWT5PaNuEFntdOUbw6dTKKzERLTOldcJMbPHBnEmFQ==
+        bh=GVJhdb2BS4mYDpLqZdxym+SAAYZWFezHhoTiZiDZMO8=;
+        b=zgC4GlhMFUt7XMJ0ft04Yo1Ehv+fENoDdxTJOSPOXwBUCVd9q6jb72yc5+QjA0KYKs7uk9
+        zPFUXo3IT+zvh+F/B1w8Mh59nlK3+GybzIIYm/A2/GMJL/TTS4m4yEB0i8Q6GT/E+/9IXs
+        IUXVXxqLPUjCGLEV1r2izpXORAyViVYKfBMwXb8ylvxqn773/OACHmGYO4aU1Clq+n6YAq
+        hWZ1jYl3yN0ET1RZHgRJQoL1V1GRdYVhYmG2XaOKs8aj/Knqbs/o88aNERlZbYa4/aN6Rp
+        XH/jAmDXisIvdZ96CfPyP1W2/UPZmv61GKaLHTkj1ti5cKFonN2QnKiWKmqrLg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1646148272;
+        s=2020e; t=1646148273;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=N92mGDb6GVuJsBIZDQlvKtlqd1uINgZ6thYDsWHH2gk=;
-        b=2GtfDlfnp0+H1fEHBMGyR3AA8cEEEcjQ9WY8NYghDrg8spzmRghjCm7hQjwur0ZP5uKBVc
-        sb4FQMPMt1Ozp2Dw==
-From:   "tip-bot2 for Anshuman Khandual" <tip-bot2@linutronix.de>
+        bh=GVJhdb2BS4mYDpLqZdxym+SAAYZWFezHhoTiZiDZMO8=;
+        b=UfQpL3L9XLcUjEl8FVpMYE7watjlZvtdDjIs7usO9C+s67PzCE4zglSr95u8OCiYbmkzee
+        920CHaQHxXFflgBg==
+From:   "tip-bot2 for Steve Wahl" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf: Add irq and exception return branch types
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: perf/core] perf/x86/intel/uncore: Make uncore_discovery clean
+ for 64 bit addresses
+Cc:     Steve Wahl <steve.wahl@hpe.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Kan Liang <kan.liang@linux.intel.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <1645681014-3346-1-git-send-email-anshuman.khandual@arm.com>
-References: <1645681014-3346-1-git-send-email-anshuman.khandual@arm.com>
+In-Reply-To: <20220218175418.421268-1-steve.wahl@hpe.com>
+References: <20220218175418.421268-1-steve.wahl@hpe.com>
 MIME-Version: 1.0
-Message-ID: <164614827120.16921.17856396164929219468.tip-bot2@tip-bot2>
+Message-ID: <164614827209.16921.9067840905142821813.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,85 +69,84 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     cedd3614e5d9c80908099c19f8716714ce0610b1
-Gitweb:        https://git.kernel.org/tip/cedd3614e5d9c80908099c19f8716714ce0610b1
-Author:        Anshuman Khandual <anshuman.khandual@arm.com>
-AuthorDate:    Thu, 24 Feb 2022 11:06:54 +05:30
+Commit-ID:     71a412ed4c104bcc239b1a8e06f90b58a4aee0bb
+Gitweb:        https://git.kernel.org/tip/71a412ed4c104bcc239b1a8e06f90b58a4aee0bb
+Author:        Steve Wahl <steve.wahl@hpe.com>
+AuthorDate:    Fri, 18 Feb 2022 11:54:18 -06:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Tue, 01 Mar 2022 16:19:01 +01:00
 
-perf: Add irq and exception return branch types
+perf/x86/intel/uncore: Make uncore_discovery clean for 64 bit addresses
 
-This expands generic branch type classification by adding two more entries
-there in i.e irq and exception return. Also updates the x86 implementation
-to process X86_BR_IRET and X86_BR_IRQ records as appropriate. This changes
-branch types reported to user space on x86 platform but it should not be a
-problem. The possible scenarios and impacts are enumerated here.
+Support 64-bit BAR size for discovery, and do not truncate return from
+generic_uncore_mmio_box_ctl() to 32 bits.
 
+Signed-off-by: Steve Wahl <steve.wahl@hpe.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/1645681014-3346-1-git-send-email-anshuman.khandual@arm.com
+Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
+Link: https://lore.kernel.org/r/20220218175418.421268-1-steve.wahl@hpe.com
 ---
- arch/x86/events/intel/lbr.c           | 4 ++--
- include/uapi/linux/perf_event.h       | 2 ++
- tools/include/uapi/linux/perf_event.h | 2 ++
- tools/perf/util/branch.c              | 4 +++-
- 4 files changed, 9 insertions(+), 3 deletions(-)
+ arch/x86/events/intel/uncore_discovery.c | 16 +++++++++++-----
+ arch/x86/events/intel/uncore_discovery.h |  2 --
+ 2 files changed, 11 insertions(+), 7 deletions(-)
 
-diff --git a/arch/x86/events/intel/lbr.c b/arch/x86/events/intel/lbr.c
-index 669c2be..fe1742c 100644
---- a/arch/x86/events/intel/lbr.c
-+++ b/arch/x86/events/intel/lbr.c
-@@ -1329,10 +1329,10 @@ static int branch_map[X86_BR_TYPE_MAP_MAX] = {
- 	PERF_BR_SYSCALL,	/* X86_BR_SYSCALL */
- 	PERF_BR_SYSRET,		/* X86_BR_SYSRET */
- 	PERF_BR_UNKNOWN,	/* X86_BR_INT */
--	PERF_BR_UNKNOWN,	/* X86_BR_IRET */
-+	PERF_BR_ERET,		/* X86_BR_IRET */
- 	PERF_BR_COND,		/* X86_BR_JCC */
- 	PERF_BR_UNCOND,		/* X86_BR_JMP */
--	PERF_BR_UNKNOWN,	/* X86_BR_IRQ */
-+	PERF_BR_IRQ,		/* X86_BR_IRQ */
- 	PERF_BR_IND_CALL,	/* X86_BR_IND_CALL */
- 	PERF_BR_UNKNOWN,	/* X86_BR_ABORT */
- 	PERF_BR_UNKNOWN,	/* X86_BR_IN_TX */
-diff --git a/include/uapi/linux/perf_event.h b/include/uapi/linux/perf_event.h
-index 1b65042..7dc7176 100644
---- a/include/uapi/linux/perf_event.h
-+++ b/include/uapi/linux/perf_event.h
-@@ -251,6 +251,8 @@ enum {
- 	PERF_BR_SYSRET		= 8,	/* syscall return */
- 	PERF_BR_COND_CALL	= 9,	/* conditional function call */
- 	PERF_BR_COND_RET	= 10,	/* conditional function return */
-+	PERF_BR_ERET		= 11,	/* exception return */
-+	PERF_BR_IRQ		= 12,	/* irq */
- 	PERF_BR_MAX,
- };
+diff --git a/arch/x86/events/intel/uncore_discovery.c b/arch/x86/events/intel/uncore_discovery.c
+index 6ddadb4..61185d1 100644
+--- a/arch/x86/events/intel/uncore_discovery.c
++++ b/arch/x86/events/intel/uncore_discovery.c
+@@ -210,15 +210,21 @@ static int parse_discovery_table(struct pci_dev *dev, int die,
+ 	void __iomem *io_addr;
+ 	resource_size_t addr;
+ 	unsigned long size;
+-	u32 val;
++	u32 val, val2;
+ 	int i;
  
-diff --git a/tools/include/uapi/linux/perf_event.h b/tools/include/uapi/linux/perf_event.h
-index 4cd39aa..d1324c4 100644
---- a/tools/include/uapi/linux/perf_event.h
-+++ b/tools/include/uapi/linux/perf_event.h
-@@ -251,6 +251,8 @@ enum {
- 	PERF_BR_SYSRET		= 8,	/* syscall return */
- 	PERF_BR_COND_CALL	= 9,	/* conditional function call */
- 	PERF_BR_COND_RET	= 10,	/* conditional function return */
-+	PERF_BR_ERET		= 11,	/* exception return */
-+	PERF_BR_IRQ		= 12,	/* irq */
- 	PERF_BR_MAX,
- };
+ 	pci_read_config_dword(dev, bar_offset, &val);
  
-diff --git a/tools/perf/util/branch.c b/tools/perf/util/branch.c
-index 2285b1e..a9a909d 100644
---- a/tools/perf/util/branch.c
-+++ b/tools/perf/util/branch.c
-@@ -49,7 +49,9 @@ const char *branch_type_name(int type)
- 		"SYSCALL",
- 		"SYSRET",
- 		"COND_CALL",
--		"COND_RET"
-+		"COND_RET",
-+		"ERET",
-+		"IRQ"
- 	};
+-	if (val & UNCORE_DISCOVERY_MASK)
++	if (val & ~PCI_BASE_ADDRESS_MEM_MASK & ~PCI_BASE_ADDRESS_MEM_TYPE_64)
+ 		return -EINVAL;
  
- 	if (type >= 0 && type < PERF_BR_MAX)
+-	addr = (resource_size_t)(val & ~UNCORE_DISCOVERY_MASK);
++	addr = (resource_size_t)(val & PCI_BASE_ADDRESS_MEM_MASK);
++#ifdef CONFIG_PHYS_ADDR_T_64BIT
++	if ((val & PCI_BASE_ADDRESS_MEM_TYPE_MASK) == PCI_BASE_ADDRESS_MEM_TYPE_64) {
++		pci_read_config_dword(dev, bar_offset + 4, &val2);
++		addr |= ((resource_size_t)val2) << 32;
++	}
++#endif
+ 	size = UNCORE_DISCOVERY_GLOBAL_MAP_SIZE;
+ 	io_addr = ioremap(addr, size);
+ 	if (!io_addr)
+@@ -444,7 +450,7 @@ static struct intel_uncore_ops generic_uncore_pci_ops = {
+ 
+ #define UNCORE_GENERIC_MMIO_SIZE		0x4000
+ 
+-static unsigned int generic_uncore_mmio_box_ctl(struct intel_uncore_box *box)
++static u64 generic_uncore_mmio_box_ctl(struct intel_uncore_box *box)
+ {
+ 	struct intel_uncore_type *type = box->pmu->type;
+ 
+@@ -456,7 +462,7 @@ static unsigned int generic_uncore_mmio_box_ctl(struct intel_uncore_box *box)
+ 
+ void intel_generic_uncore_mmio_init_box(struct intel_uncore_box *box)
+ {
+-	unsigned int box_ctl = generic_uncore_mmio_box_ctl(box);
++	u64 box_ctl = generic_uncore_mmio_box_ctl(box);
+ 	struct intel_uncore_type *type = box->pmu->type;
+ 	resource_size_t addr;
+ 
+diff --git a/arch/x86/events/intel/uncore_discovery.h b/arch/x86/events/intel/uncore_discovery.h
+index cfaf558..f443935 100644
+--- a/arch/x86/events/intel/uncore_discovery.h
++++ b/arch/x86/events/intel/uncore_discovery.h
+@@ -18,8 +18,6 @@
+ #define UNCORE_DISCOVERY_BIR_BASE		0x10
+ /* Discovery table BAR step */
+ #define UNCORE_DISCOVERY_BIR_STEP		0x4
+-/* Mask of the discovery table offset */
+-#define UNCORE_DISCOVERY_MASK			0xf
+ /* Global discovery table size */
+ #define UNCORE_DISCOVERY_GLOBAL_MAP_SIZE	0x20
+ 
