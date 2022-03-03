@@ -2,62 +2,53 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5ACA64CB16B
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  2 Mar 2022 22:35:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 17C4B4CB99F
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  3 Mar 2022 09:53:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245335AbiCBVgZ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 2 Mar 2022 16:36:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44128 "EHLO
+        id S231535AbiCCIyU (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 3 Mar 2022 03:54:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41930 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245324AbiCBVgX (ORCPT
+        with ESMTP id S229717AbiCCIyT (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 2 Mar 2022 16:36:23 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EFAC46B32;
-        Wed,  2 Mar 2022 13:35:39 -0800 (PST)
-Date:   Wed, 02 Mar 2022 21:35:36 -0000
+        Thu, 3 Mar 2022 03:54:19 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 124D7ECB09;
+        Thu,  3 Mar 2022 00:53:33 -0800 (PST)
+Date:   Thu, 03 Mar 2022 08:53:30 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1646256938;
+        s=2020; t=1646297612;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Gj4MAdJpqSWwDZaOYbPqatr1LmMEJp06NeXMN8Ht7jQ=;
-        b=smaz3OYmDHhy4TOn9ymVIbzb4ESiFhRxYosoxgoiv9WM2TTsWhvOyKcBOqI+dcYs0fEJGS
-        4kHsS7P0yrNgAszzXxe4zHFEe0k9mtz5GvbqL84oEnq5OOTQ4Jrl5YXQMAlBlAaJvpGy0+
-        C3pFRgQEpc2dsq6vK/2tjzlSdYSmTSIHdFgP78cZniestfpbZjha6usMVjxChBiBsoU2hN
-        UIwT1sH5FhkVdx/FS98P07HzMMYc13EvLfLHFKED5QyocvB60sGZaL05rAbr5FmHPNtHjb
-        tsQ2vy+jW/i70O0ULB9Amxme9L1rt2/0U4Y6d3pakbUnUhKHUm1krHAt/I5qLw==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=2TAbRctTTqetHFgNZ/dxnfVR4kDZIM4+M3pCcy2QaFg=;
+        b=m3BT+TLFmEv1pW2C11HREPkDQ27h8ffgq2q6j5iQOHCTumGGbqlQbsZQtNXFc66MNFVnDH
+        SwGnV69zJV41zrEJ79/uMZwwjc24Z2+lzqoVac6jCAWglKbltuKXgJRxHvSV88ZIUDVNBj
+        kCTm/rT66m5vQSmcP9r6cUrnANa3T5wYA1VRW6SCalnqBb5vj+LmcOGBsM8XbQ3j3j3EFW
+        fdG9/gnZvyh+Wzfg0tjpQ8uHNth+uJVZglQ38x6P/Fv/kQLbCsE0xYWsqkMM9d+dJM5tJb
+        thax+YQ7Aq60jIa1VHzkEmb00vTa4RN0nti+r+2RKZOFZNmeUunh0cgQpUaKKQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1646256938;
+        s=2020e; t=1646297612;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Gj4MAdJpqSWwDZaOYbPqatr1LmMEJp06NeXMN8Ht7jQ=;
-        b=klfnp3H6GZvyqX+KEEDvl2dBdN7NVvGS9owEy7bQr3EFbTaH6cpuutnGyP07cJmbLSp+nD
-        EsXNd9nBV4/UuZCQ==
-From:   "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=2TAbRctTTqetHFgNZ/dxnfVR4kDZIM4+M3pCcy2QaFg=;
+        b=aAlnosntwxNGXFOTFHB6T/HH6GpF9CG6ENO+Crh+O87bpPwP/DzS2lf5ASQzU0m0r2/mgW
+        4ABtqzKnoL1657Dg==
+From:   "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] misc: hi6421-spmi-pmic: Use generic_handle_irq_safe().
-Cc:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20220211181500.1856198-5-bigeasy@linutronix.de>
-References: <20220211181500.1856198-5-bigeasy@linutronix.de>
+Subject: [tip: perf/core] perf/x86/intel/uncore: Fix the build on
+ !CONFIG_PHYS_ADDR_T_64BIT
+Cc:     Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <164625693694.16921.15227620434324740318.tip-bot2@tip-bot2>
+Message-ID: <164629761097.16921.9969025085170581381.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
@@ -68,59 +59,51 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the irq/core branch of tip:
+The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     1b9855de1ef4a3f82119f9d8b054a588c7c315fb
-Gitweb:        https://git.kernel.org/tip/1b9855de1ef4a3f82119f9d8b054a588c7c315fb
-Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-AuthorDate:    Fri, 11 Feb 2022 19:14:57 +01:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 02 Mar 2022 22:28:50 +01:00
+Commit-ID:     02a08d78f5c429c7dc8e5b9417b4efb518b3d041
+Gitweb:        https://git.kernel.org/tip/02a08d78f5c429c7dc8e5b9417b4efb518b=
+3d041
+Author:        Ingo Molnar <mingo@kernel.org>
+AuthorDate:    Thu, 03 Mar 2022 08:57:08 +01:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Thu, 03 Mar 2022 08:58:22 +01:00
 
-misc: hi6421-spmi-pmic: Use generic_handle_irq_safe().
+perf/x86/intel/uncore: Fix the build on !CONFIG_PHYS_ADDR_T_64BIT
 
-generic_handle_irq() is invoked from a regular interrupt service
-routine. This handler will become a forced-threaded handler on
-PREEMPT_RT and will be invoked with enabled interrupts. The
-generic_handle_irq() must be invoked with disabled interrupts in order
-to avoid deadlocks.
+'val2' is unused if !CONFIG_PHYS_ADDR_T_64BIT:
 
-Instead of manually disabling interrupts before invoking use
-generic_handle_irq_safe() which can be invoked with enabled and disabled
-interrupts.
+  arch/x86/events/intel/uncore_discovery.c:213:18: error: unused variable =E2=
+=80=98val2=E2=80=99 [-Werror=3Dunused-variable]
 
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org> 
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://lore.kernel.org/r/20220211181500.1856198-5-bigeasy@linutronix.de
-
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
 ---
- drivers/misc/hi6421v600-irq.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/x86/events/intel/uncore_discovery.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/misc/hi6421v600-irq.c b/drivers/misc/hi6421v600-irq.c
-index 1c76379..caa3de3 100644
---- a/drivers/misc/hi6421v600-irq.c
-+++ b/drivers/misc/hi6421v600-irq.c
-@@ -117,8 +117,8 @@ static irqreturn_t hi6421v600_irq_handler(int irq, void *__priv)
- 			 * If both powerkey down and up IRQs are received,
- 			 * handle them at the right order
- 			 */
--			generic_handle_irq(priv->irqs[POWERKEY_DOWN]);
--			generic_handle_irq(priv->irqs[POWERKEY_UP]);
-+			generic_handle_irq_safe(priv->irqs[POWERKEY_DOWN]);
-+			generic_handle_irq_safe(priv->irqs[POWERKEY_UP]);
- 			pending &= ~HISI_IRQ_POWERKEY_UP_DOWN;
- 		}
- 
-@@ -126,7 +126,7 @@ static irqreturn_t hi6421v600_irq_handler(int irq, void *__priv)
- 			continue;
- 
- 		for_each_set_bit(offset, &pending, BITS_PER_BYTE) {
--			generic_handle_irq(priv->irqs[offset + i * BITS_PER_BYTE]);
-+			generic_handle_irq_safe(priv->irqs[offset + i * BITS_PER_BYTE]);
- 		}
+diff --git a/arch/x86/events/intel/uncore_discovery.c b/arch/x86/events/intel=
+/uncore_discovery.c
+index 61185d1..5fd72d4 100644
+--- a/arch/x86/events/intel/uncore_discovery.c
++++ b/arch/x86/events/intel/uncore_discovery.c
+@@ -210,7 +210,7 @@ static int parse_discovery_table(struct pci_dev *dev, int=
+ die,
+ 	void __iomem *io_addr;
+ 	resource_size_t addr;
+ 	unsigned long size;
+-	u32 val, val2;
++	u32 val;
+ 	int i;
+=20
+ 	pci_read_config_dword(dev, bar_offset, &val);
+@@ -221,6 +221,8 @@ static int parse_discovery_table(struct pci_dev *dev, int=
+ die,
+ 	addr =3D (resource_size_t)(val & PCI_BASE_ADDRESS_MEM_MASK);
+ #ifdef CONFIG_PHYS_ADDR_T_64BIT
+ 	if ((val & PCI_BASE_ADDRESS_MEM_TYPE_MASK) =3D=3D PCI_BASE_ADDRESS_MEM_TYPE=
+_64) {
++		u32 val2;
++
+ 		pci_read_config_dword(dev, bar_offset + 4, &val2);
+ 		addr |=3D ((resource_size_t)val2) << 32;
  	}
- 
