@@ -2,57 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FD844D243C
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  8 Mar 2022 23:27:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C88564D243B
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  8 Mar 2022 23:27:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350727AbiCHW0X (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 8 Mar 2022 17:26:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34852 "EHLO
+        id S1350733AbiCHW00 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 8 Mar 2022 17:26:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34876 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236364AbiCHW0W (ORCPT
+        with ESMTP id S1350729AbiCHW0X (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 8 Mar 2022 17:26:22 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2E14583B8;
-        Tue,  8 Mar 2022 14:25:24 -0800 (PST)
-Date:   Tue, 08 Mar 2022 22:25:22 -0000
+        Tue, 8 Mar 2022 17:26:23 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51D34583B8;
+        Tue,  8 Mar 2022 14:25:26 -0800 (PST)
+Date:   Tue, 08 Mar 2022 22:25:23 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1646778323;
+        s=2020; t=1646778325;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=2QB/pjbswHVZkoslsBgW+33JDvfUolZDAradLFmM+WE=;
-        b=FUk+Unsgm6yMlTn4npOufVbejd76OW4xZxU4uBZUtbv+Mnc1PNs9t3f/X81MFiElYidqA2
-        anlyGagMKAASDHeSSb4+1ZUdjdAJfiWLcLq6DNkZqdimWgrQjBYnCyMgwwavTbej6dW+og
-        4bW/lI00GpngshnOGQnOA6qf0CqkQ/UaR+hg3j3E/KOtH1C64A13Cl1AiBcgKvEbwv15Ao
-        xwb/RikRY8SNQgjohYYP9rNctzaGRyqiHfSdeY+6h/iCIlXj/jQkQfx5AbvSdBSvqenyNN
-        xYD93XkJ5RWn4IozJ4RLOjrz4QoqyTwzOfJ7H4vDtuu1tBmQIiZ6Xs7pvU78ng==
+        bh=bbuZJRANWRttBApNafCE2xDUdDf+IGSekYoAaklxqVI=;
+        b=q4/ydDLeZivDwQG8us9T7amvz2C2q7u4afrCWR7HimWKLSwYzujJU4zoX7+IdR19mWDzo2
+        hMWcXHhAzsEzzjGyy961mBi7Kv2H5CFDC9exm5hZH+P+CE7Ey3ly3WiciNffyfrYmTt56m
+        U93pn9NBp+KBVaECkKdxN4DqAtJtYpeQWMGR9v1599MGcyx757Gdj586eAaJtOfeS4JSB1
+        XjcaKZLbIuQ0V/szFw/xRehNxp+tdcZuKm3QLy1osBBSaC95+Xxx4wBYLoI7KUht7oWOlL
+        md1TFOphziJPgsVEIsmz+AxKD2bvMpVC8QYti+W1y9f66ireiR42hsMhXvewDw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1646778323;
+        s=2020e; t=1646778325;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=2QB/pjbswHVZkoslsBgW+33JDvfUolZDAradLFmM+WE=;
-        b=F5btkqwLMAFYwT4t5gmalcMCm3E6DVf2G3U1BvJKpQ/gYi/Cog+A4lSeWZ+MPY3fr/ub7b
-        hAQQVCg61gS3SlBw==
+        bh=bbuZJRANWRttBApNafCE2xDUdDf+IGSekYoAaklxqVI=;
+        b=8qJKZ7XJk3TMULsQ5d/rAZ2lE165UQSG4vLmfY6bcW99rILI57F5gw/Ae2nY5cHe8U7rEE
+        MIUsuyZTKp/A9aAQ==
 From:   "tip-bot2 for Dietmar Eggemann" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/deadline: Merge dl_task_can_attach() and
- dl_cpu_busy()
+Subject: [tip: sched/core] sched/deadline: Remove unused def_dl_bandwidth
 Cc:     Dietmar Eggemann <dietmar.eggemann@arm.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Juri Lelli <juri.lelli@redhat.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220302183433.333029-4-dietmar.eggemann@arm.com>
-References: <20220302183433.333029-4-dietmar.eggemann@arm.com>
+In-Reply-To: <20220302183433.333029-2-dietmar.eggemann@arm.com>
+References: <20220302183433.333029-2-dietmar.eggemann@arm.com>
 MIME-Version: 1.0
-Message-ID: <164677832223.16921.15292131794875687369.tip-bot2@tip-bot2>
+Message-ID: <164677832389.16921.264306598144344142.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -69,163 +68,86 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     772b6539fdda31462cc08368e78df60b31a58bab
-Gitweb:        https://git.kernel.org/tip/772b6539fdda31462cc08368e78df60b31a58bab
+Commit-ID:     eb77cf1c151c4a1c2147cbf24d84bcf0ba504e7c
+Gitweb:        https://git.kernel.org/tip/eb77cf1c151c4a1c2147cbf24d84bcf0ba504e7c
 Author:        Dietmar Eggemann <dietmar.eggemann@arm.com>
-AuthorDate:    Wed, 02 Mar 2022 19:34:30 +01:00
+AuthorDate:    Wed, 02 Mar 2022 19:34:28 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 08 Mar 2022 16:08:39 +01:00
+CommitterDate: Tue, 08 Mar 2022 16:08:38 +01:00
 
-sched/deadline: Merge dl_task_can_attach() and dl_cpu_busy()
+sched/deadline: Remove unused def_dl_bandwidth
 
-Both functions are doing almost the same, that is checking if admission
-control is still respected.
-
-With exclusive cpusets, dl_task_can_attach() checks if the destination
-cpuset (i.e. its root domain) has enough CPU capacity to accommodate the
-task.
-dl_cpu_busy() checks if there is enough CPU capacity in the cpuset in
-case the CPU is hot-plugged out.
-
-dl_task_can_attach() is used to check if a task can be admitted while
-dl_cpu_busy() is used to check if a CPU can be hotplugged out.
-
-Make dl_cpu_busy() able to deal with a task and use it instead of
-dl_task_can_attach() in task_can_attach().
+Since commit 1724813d9f2c ("sched/deadline: Remove the sysctl_sched_dl
+knobs") the default deadline bandwidth control structure has no purpose.
+Remove it.
 
 Signed-off-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Acked-by: Juri Lelli <juri.lelli@redhat.com>
-Link: https://lore.kernel.org/r/20220302183433.333029-4-dietmar.eggemann@arm.com
+Link: https://lore.kernel.org/r/20220302183433.333029-2-dietmar.eggemann@arm.com
 ---
- kernel/sched/core.c     | 13 ++++++----
- kernel/sched/deadline.c | 52 ++++++++++------------------------------
- kernel/sched/sched.h    |  3 +--
- 3 files changed, 24 insertions(+), 44 deletions(-)
+ kernel/sched/core.c     | 1 -
+ kernel/sched/deadline.c | 7 -------
+ kernel/sched/sched.h    | 1 -
+ 3 files changed, 9 deletions(-)
 
 diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index d342c4c..68736d1 100644
+index 3aafc15..d342c4c 100644
 --- a/kernel/sched/core.c
 +++ b/kernel/sched/core.c
-@@ -8805,8 +8805,11 @@ int task_can_attach(struct task_struct *p,
- 	}
+@@ -9420,7 +9420,6 @@ void __init sched_init(void)
+ #endif /* CONFIG_CPUMASK_OFFSTACK */
  
- 	if (dl_task(p) && !cpumask_intersects(task_rq(p)->rd->span,
--					      cs_cpus_allowed))
--		ret = dl_task_can_attach(p, cs_cpus_allowed);
-+					      cs_cpus_allowed)) {
-+		int cpu = cpumask_any_and(cpu_active_mask, cs_cpus_allowed);
-+
-+		ret = dl_cpu_busy(cpu, p);
-+	}
- 
- out:
- 	return ret;
-@@ -9090,8 +9093,10 @@ static void cpuset_cpu_active(void)
- static int cpuset_cpu_inactive(unsigned int cpu)
- {
- 	if (!cpuhp_tasks_frozen) {
--		if (dl_cpu_busy(cpu))
--			return -EBUSY;
-+		int ret = dl_cpu_busy(cpu, NULL);
-+
-+		if (ret)
-+			return ret;
- 		cpuset_update_active_cpus();
- 	} else {
- 		num_cpus_frozen++;
-diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
-index 81bf976..de677b1 100644
---- a/kernel/sched/deadline.c
-+++ b/kernel/sched/deadline.c
-@@ -2992,41 +2992,6 @@ bool dl_param_changed(struct task_struct *p, const struct sched_attr *attr)
- }
+ 	init_rt_bandwidth(&def_rt_bandwidth, global_rt_period(), global_rt_runtime());
+-	init_dl_bandwidth(&def_dl_bandwidth, global_rt_period(), global_rt_runtime());
  
  #ifdef CONFIG_SMP
--int dl_task_can_attach(struct task_struct *p, const struct cpumask *cs_cpus_allowed)
--{
--	unsigned long flags, cap;
--	unsigned int dest_cpu;
--	struct dl_bw *dl_b;
--	bool overflow;
--	int ret;
+ 	init_defrootdomain();
+diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
+index 62f0cf8..ed4251f 100644
+--- a/kernel/sched/deadline.c
++++ b/kernel/sched/deadline.c
+@@ -18,8 +18,6 @@
+ #include "sched.h"
+ #include "pelt.h"
+ 
+-struct dl_bandwidth def_dl_bandwidth;
 -
--	dest_cpu = cpumask_any_and(cpu_active_mask, cs_cpus_allowed);
--
--	rcu_read_lock_sched();
--	dl_b = dl_bw_of(dest_cpu);
--	raw_spin_lock_irqsave(&dl_b->lock, flags);
--	cap = dl_bw_capacity(dest_cpu);
--	overflow = __dl_overflow(dl_b, cap, 0, p->dl.dl_bw);
--	if (overflow) {
--		ret = -EBUSY;
--	} else {
--		/*
--		 * We reserve space for this task in the destination
--		 * root_domain, as we can't fail after this point.
--		 * We will free resources in the source root_domain
--		 * later on (see set_cpus_allowed_dl()).
--		 */
--		int cpus = dl_bw_cpus(dest_cpu);
--
--		__dl_add(dl_b, p->dl.dl_bw, cpus);
--		ret = 0;
--	}
--	raw_spin_unlock_irqrestore(&dl_b->lock, flags);
--	rcu_read_unlock_sched();
--
--	return ret;
--}
--
- int dl_cpuset_cpumask_can_shrink(const struct cpumask *cur,
- 				 const struct cpumask *trial)
+ static inline struct task_struct *dl_task_of(struct sched_dl_entity *dl_se)
  {
-@@ -3048,7 +3013,7 @@ int dl_cpuset_cpumask_can_shrink(const struct cpumask *cur,
- 	return ret;
+ 	return container_of(dl_se, struct task_struct, dl);
+@@ -423,12 +421,10 @@ void init_dl_bandwidth(struct dl_bandwidth *dl_b, u64 period, u64 runtime)
+ void init_dl_bw(struct dl_bw *dl_b)
+ {
+ 	raw_spin_lock_init(&dl_b->lock);
+-	raw_spin_lock(&def_dl_bandwidth.dl_runtime_lock);
+ 	if (global_rt_runtime() == RUNTIME_INF)
+ 		dl_b->bw = -1;
+ 	else
+ 		dl_b->bw = to_ratio(global_rt_period(), global_rt_runtime());
+-	raw_spin_unlock(&def_dl_bandwidth.dl_runtime_lock);
+ 	dl_b->total_bw = 0;
  }
  
--bool dl_cpu_busy(unsigned int cpu)
-+int dl_cpu_busy(int cpu, struct task_struct *p)
- {
- 	unsigned long flags, cap;
- 	struct dl_bw *dl_b;
-@@ -3058,11 +3023,22 @@ bool dl_cpu_busy(unsigned int cpu)
- 	dl_b = dl_bw_of(cpu);
- 	raw_spin_lock_irqsave(&dl_b->lock, flags);
- 	cap = dl_bw_capacity(cpu);
--	overflow = __dl_overflow(dl_b, cap, 0, 0);
-+	overflow = __dl_overflow(dl_b, cap, 0, p ? p->dl.dl_bw : 0);
-+
-+	if (!overflow && p) {
-+		/*
-+		 * We reserve space for this task in the destination
-+		 * root_domain, as we can't fail after this point.
-+		 * We will free resources in the source root_domain
-+		 * later on (see set_cpus_allowed_dl()).
-+		 */
-+		__dl_add(dl_b, p->dl.dl_bw, dl_bw_cpus(cpu));
-+	}
-+
- 	raw_spin_unlock_irqrestore(&dl_b->lock, flags);
- 	rcu_read_unlock_sched();
+@@ -2731,9 +2727,6 @@ void sched_dl_do_global(void)
+ 	int cpu;
+ 	unsigned long flags;
  
--	return overflow;
-+	return overflow ? -EBUSY : 0;
- }
- #endif
+-	def_dl_bandwidth.dl_period = global_rt_period();
+-	def_dl_bandwidth.dl_runtime = global_rt_runtime();
+-
+ 	if (global_rt_runtime() != RUNTIME_INF)
+ 		new_bw = to_ratio(global_rt_period(), global_rt_runtime());
  
 diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index 4dfc3b0..0720cf0 100644
+index 3da5718..a8b8516 100644
 --- a/kernel/sched/sched.h
 +++ b/kernel/sched/sched.h
-@@ -324,9 +324,8 @@ extern void __setparam_dl(struct task_struct *p, const struct sched_attr *attr);
- extern void __getparam_dl(struct task_struct *p, struct sched_attr *attr);
- extern bool __checkparam_dl(const struct sched_attr *attr);
- extern bool dl_param_changed(struct task_struct *p, const struct sched_attr *attr);
--extern int  dl_task_can_attach(struct task_struct *p, const struct cpumask *cs_cpus_allowed);
- extern int  dl_cpuset_cpumask_can_shrink(const struct cpumask *cur, const struct cpumask *trial);
--extern bool dl_cpu_busy(unsigned int cpu);
-+extern int  dl_cpu_busy(int cpu, struct task_struct *p);
+@@ -2333,7 +2333,6 @@ extern void resched_cpu(int cpu);
+ extern struct rt_bandwidth def_rt_bandwidth;
+ extern void init_rt_bandwidth(struct rt_bandwidth *rt_b, u64 period, u64 runtime);
  
- #ifdef CONFIG_CGROUP_SCHED
- 
+-extern struct dl_bandwidth def_dl_bandwidth;
+ extern void init_dl_bandwidth(struct dl_bandwidth *dl_b, u64 period, u64 runtime);
+ extern void init_dl_task_timer(struct sched_dl_entity *dl_se);
+ extern void init_dl_inactive_task_timer(struct sched_dl_entity *dl_se);
