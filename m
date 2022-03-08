@@ -2,97 +2,126 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 43D904D0CE7
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  8 Mar 2022 01:40:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DF9D4D19E3
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  8 Mar 2022 14:59:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244136AbiCHAlZ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 7 Mar 2022 19:41:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58256 "EHLO
+        id S1347297AbiCHOAI (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 8 Mar 2022 09:00:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45816 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244110AbiCHAlX (ORCPT
+        with ESMTP id S1347302AbiCHOAF (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 7 Mar 2022 19:41:23 -0500
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 809203DDF2;
-        Mon,  7 Mar 2022 16:40:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1646700027; x=1678236027;
-  h=from:to:cc:subject:references:date:in-reply-to:
-   message-id:mime-version;
-  bh=mLllPTDfXt60Bir+ikPy6cJJ1bK+rUaZ0Sed6I0eCbg=;
-  b=NITCLjlm4+dVU0oOfssmBPLhhUP1pVTQcPg1/9c3k8fw6Q7O+Pvd9bI3
-   JJ7VyDlh+24pMkLkUsZOQ9IbsqIydQlVpN5vT+dyK3psl09V01RqFbBsT
-   u0lkNyOjgKXKh9z7E2O9tp/YWwkPjho+hgwkTUgEhnsnyV9lWSV4o+UKB
-   U7MwwtL1Mdp0RqiKUbBUtjX6swDyTQY/d8kz5zPlXHjlOgezQLDw/MfIf
-   CRI9IkWT6cLFxAG+Am2HfeZ0ooZ3ZTCykOJ94sK8PoWA+aTl/xDnB5i3c
-   CMV9t6sdxOJnc3bX0KnbWUM25ldI8EOLRvURMk2ksMQg6A6ZOEPvk6UW1
-   A==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10279"; a="253376521"
-X-IronPort-AV: E=Sophos;i="5.90,163,1643702400"; 
-   d="scan'208";a="253376521"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2022 16:40:25 -0800
-X-IronPort-AV: E=Sophos;i="5.90,163,1643702400"; 
-   d="scan'208";a="553397703"
-Received: from yhuang6-desk2.sh.intel.com (HELO yhuang6-desk2.ccr.corp.intel.com) ([10.239.13.94])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2022 16:40:23 -0800
-From:   "Huang, Ying" <ying.huang@intel.com>
-To:     Qian Cai <quic_qiancai@quicinc.com>
-Cc:     <linux-kernel@vger.kernel.org>,
-        <linux-tip-commits@vger.kernel.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, <x86@kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [tip: sched/core] sched/numa: Avoid migrating task to CPU-less
- node
-References: <20220214121553.582248-2-ying.huang@intel.com>
-        <164512421264.16921.689831789198253265.tip-bot2@tip-bot2>
-        <Yh6H8SPSqpjv1dl7@qian>
-        <87v8wx1850.fsf@yhuang6-desk2.ccr.corp.intel.com>
-        <87wnh648ec.fsf@yhuang6-desk2.ccr.corp.intel.com>
-        <YiYOc0NFlzJocYt0@qian>
-Date:   Tue, 08 Mar 2022 08:40:21 +0800
-In-Reply-To: <YiYOc0NFlzJocYt0@qian> (Qian Cai's message of "Mon, 7 Mar 2022
-        08:53:55 -0500")
-Message-ID: <87ee3dmg3u.fsf@yhuang6-desk2.ccr.corp.intel.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.1 (gnu/linux)
+        Tue, 8 Mar 2022 09:00:05 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A2FB1A81A;
+        Tue,  8 Mar 2022 05:58:58 -0800 (PST)
+Date:   Tue, 08 Mar 2022 13:58:55 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1646747936;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=pMl034rKP4KtUY285VK2E6QJXRhnqapuqE6b3KEw77U=;
+        b=OuoNm45+FXMY2UTHFPsi1R/xlVnz5iCdQY7U55DRTAb/SZvD4Y52OpSydXmIHGblCCKMP+
+        KzmvRZvgRSSBFlj6qUV+fxVwdnC+bNSFIis38nSBmwEPIpnru1aIRksBx7Yzgi+SWYzMbS
+        q4mr81RLlvYjbRVv2V3UaNgZG4U/qrItwCJC/27LEGG6guGXRgDQhv47RXrgid51idaOXc
+        Ck37OqDPTmfTcfWfksEaWpW2iZAkO1AxpQlijNLAZjh3zGzYhe3C8kBBhlAsB7lFVlFznZ
+        592SoEy31cLmDralu3hQNlHq1SHUMlI2/0LPzcP8QWhnReZi2bIsS0xNgvTAyg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1646747936;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=pMl034rKP4KtUY285VK2E6QJXRhnqapuqE6b3KEw77U=;
+        b=1q4a2o1+w6yJb76iN1PLkJP0vJGIIqIhdm1LUBVZaJdNf1Zx7Cscd2Bvsab8NeQjTB0eBR
+        LtYAExP2CwTf2DCg==
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/urgent] x86/module: Fix the paravirt vs alternative order
+Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Borislav Petkov <bp@suse.de>, Miroslav Benes <mbenes@suse.cz>,
+        <stable@vger.kernel.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20220303112825.068773913@infradead.org>
+References: <20220303112825.068773913@infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ascii
-X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Message-ID: <164674793535.16921.13542564445645377142.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-Qian Cai <quic_qiancai@quicinc.com> writes:
+The following commit has been merged into the x86/urgent branch of tip:
 
-> On Mon, Mar 07, 2022 at 01:51:55PM +0800, Huang, Ying wrote:
->> > ---
->> >  kernel/sched/fair.c | 2 +-
->> >  1 file changed, 1 insertion(+), 1 deletion(-)
->> >
->> > diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
->> > index a3f0ea216ccb..1fe7a4510cca 100644
->> > --- a/kernel/sched/fair.c
->> > +++ b/kernel/sched/fair.c
->> > @@ -2405,7 +2405,7 @@ static void task_numa_placement(struct task_struct *p)
->> >  	}
->> >  
->> >  	/* Cannot migrate task to CPU-less node */
->> > -	if (!node_state(max_nid, N_CPU)) {
->> > +	if (max_nid != NUMA_NO_NODE && !node_state(max_nid, N_CPU)) {
->> >  		int near_nid = max_nid;
->> >  		int distance, near_distance = INT_MAX;
->> 
->> Do you have time to give this patch a try?
->
-> Ah, I thought I has already replied it a while ago. Anyway, it works fine.
+Commit-ID:     5adf349439d29f92467e864f728dfc23180f3ef9
+Gitweb:        https://git.kernel.org/tip/5adf349439d29f92467e864f728dfc23180f3ef9
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Thu, 03 Mar 2022 12:23:23 +01:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Tue, 08 Mar 2022 14:15:25 +01:00
 
-Thanks!
+x86/module: Fix the paravirt vs alternative order
 
-Best Regards,
-Huang, Ying
+Ever since commit
+
+  4e6292114c74 ("x86/paravirt: Add new features for paravirt patching")
+
+there is an ordering dependency between patching paravirt ops and
+patching alternatives, the module loader still violates this.
+
+Fixes: 4e6292114c74 ("x86/paravirt: Add new features for paravirt patching")
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Reviewed-by: Miroslav Benes <mbenes@suse.cz>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20220303112825.068773913@infradead.org
+---
+ arch/x86/kernel/module.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
+
+diff --git a/arch/x86/kernel/module.c b/arch/x86/kernel/module.c
+index 95fa745..96d7c27 100644
+--- a/arch/x86/kernel/module.c
++++ b/arch/x86/kernel/module.c
+@@ -273,6 +273,14 @@ int module_finalize(const Elf_Ehdr *hdr,
+ 			retpolines = s;
+ 	}
+ 
++	/*
++	 * See alternative_instructions() for the ordering rules between the
++	 * various patching types.
++	 */
++	if (para) {
++		void *pseg = (void *)para->sh_addr;
++		apply_paravirt(pseg, pseg + para->sh_size);
++	}
+ 	if (retpolines) {
+ 		void *rseg = (void *)retpolines->sh_addr;
+ 		apply_retpolines(rseg, rseg + retpolines->sh_size);
+@@ -290,11 +298,6 @@ int module_finalize(const Elf_Ehdr *hdr,
+ 					    tseg, tseg + text->sh_size);
+ 	}
+ 
+-	if (para) {
+-		void *pseg = (void *)para->sh_addr;
+-		apply_paravirt(pseg, pseg + para->sh_size);
+-	}
+-
+ 	/* make jump label nops */
+ 	jump_label_apply_nops(me);
+ 
