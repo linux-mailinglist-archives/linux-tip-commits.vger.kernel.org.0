@@ -2,120 +2,129 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 692244D20B4
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  8 Mar 2022 19:53:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C1F6E4D242D
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  8 Mar 2022 23:25:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233867AbiCHSx5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 8 Mar 2022 13:53:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53208 "EHLO
+        id S1350613AbiCHW0U (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 8 Mar 2022 17:26:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34812 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349823AbiCHSwo (ORCPT
+        with ESMTP id S236364AbiCHW0T (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 8 Mar 2022 13:52:44 -0500
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 512B457B34;
-        Tue,  8 Mar 2022 10:51:41 -0800 (PST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A4CB41516;
-        Tue,  8 Mar 2022 10:51:41 -0800 (PST)
-Received: from wubuntu (unknown [10.57.71.199])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 65FF13FA45;
-        Tue,  8 Mar 2022 10:51:40 -0800 (PST)
-Date:   Tue, 8 Mar 2022 18:51:38 +0000
-From:   Qais Yousef <qais.yousef@arm.com>
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-        Abhijeet Dharmapurikar <adharmap@quicinc.com>,
-        Valentin Schneider <valentin.schneider@arm.com>,
+        Tue, 8 Mar 2022 17:26:19 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F650583A3;
+        Tue,  8 Mar 2022 14:25:22 -0800 (PST)
+Date:   Tue, 08 Mar 2022 22:25:18 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1646778320;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=tDOCC6fJPsTkG+qvHEySw4J70C9xQqVLmfp1R+zQxdM=;
+        b=QyNquRJCeKmWWi6OBjvcRijufrstVJIhWI0PIpqpwRoAChCYOkvRpykiZ8uYK0LfPsxmHC
+        cQAsCZhk8I9zpsJ6IJQYeCG2AZ89PtqnTR9OK1ewvFpzu4yJCpdoQEZuf6vHlFRrrmd1vw
+        0W3WVpalOIhWmm/ezx5Z52TiHa703LcZT6ujGMPpIGLvK5ZKo47XoiZjZshxf6QYjoyzty
+        ntgHljM8niC1Gln6QscXGj4d7AROdNjSI/+CxFaygq8yJFEJsGWK9kgqhfItk5jVFZ6Mvu
+        vQmJNuamEe56HfiPg+ZGOQze7KpltD+Ey0fRO1hat2478gHwZsmQYsnCRk6rzQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1646778320;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=tDOCC6fJPsTkG+qvHEySw4J70C9xQqVLmfp1R+zQxdM=;
+        b=V4TzrgnOZHpQjOT1bND1xkE7DrP1U1thMEtEKk2+YP29vmOBrS60rBb/S1aBiPVIx+B+wY
+        W5+2BDMsg6F9YHBA==
+From:   "tip-bot2 for K Prateek Nayak" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: sched/core] sched/topology: Remove redundant variable and fix
+ incorrect type in build_sched_domains
+Cc:     kernel test robot <lkp@intel.com>,
+        K Prateek Nayak <kprateek.nayak@amd.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>, x86@kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [tip: sched/core] sched/tracing: Don't re-read p->state when
- emitting sched_switch event
-Message-ID: <20220308185138.ldxfqd242uxowymd@wubuntu>
-References: <20220120162520.570782-2-valentin.schneider@arm.com>
- <164614827941.16921.4995078681021904041.tip-bot2@tip-bot2>
- <20220308180240.qivyjdn4e3te3urm@wubuntu>
- <YiecMTy8ckUdXTQO@kroah.com>
+        Valentin Schneider <valentin.schneider@arm.com>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20220218162743.1134-1-kprateek.nayak@amd.com>
+References: <20220218162743.1134-1-kprateek.nayak@amd.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <YiecMTy8ckUdXTQO@kroah.com>
-X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Message-ID: <164677831883.16921.2209475420454417488.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On 03/08/22 19:10, Greg KH wrote:
-> On Tue, Mar 08, 2022 at 06:02:40PM +0000, Qais Yousef wrote:
-> > +CC stable
-> > 
-> > On 03/01/22 15:24, tip-bot2 for Valentin Schneider wrote:
-> > > The following commit has been merged into the sched/core branch of tip:
-> > > 
-> > > Commit-ID:     fa2c3254d7cfff5f7a916ab928a562d1165f17bb
-> > > Gitweb:        https://git.kernel.org/tip/fa2c3254d7cfff5f7a916ab928a562d1165f17bb
-> > > Author:        Valentin Schneider <valentin.schneider@arm.com>
-> > > AuthorDate:    Thu, 20 Jan 2022 16:25:19 
-> > > Committer:     Peter Zijlstra <peterz@infradead.org>
-> > > CommitterDate: Tue, 01 Mar 2022 16:18:39 +01:00
-> > > 
-> > > sched/tracing: Don't re-read p->state when emitting sched_switch event
-> > > 
-> > > As of commit
-> > > 
-> > >   c6e7bd7afaeb ("sched/core: Optimize ttwu() spinning on p->on_cpu")
-> > > 
-> > > the following sequence becomes possible:
-> > > 
-> > > 		      p->__state = TASK_INTERRUPTIBLE;
-> > > 		      __schedule()
-> > > 			deactivate_task(p);
-> > >   ttwu()
-> > >     READ !p->on_rq
-> > >     p->__state=TASK_WAKING
-> > > 			trace_sched_switch()
-> > > 			  __trace_sched_switch_state()
-> > > 			    task_state_index()
-> > > 			      return 0;
-> > > 
-> > > TASK_WAKING isn't in TASK_REPORT, so the task appears as TASK_RUNNING in
-> > > the trace event.
-> > > 
-> > > Prevent this by pushing the value read from __schedule() down the trace
-> > > event.
-> > > 
-> > > Reported-by: Abhijeet Dharmapurikar <adharmap@quicinc.com>
-> > > Signed-off-by: Valentin Schneider <valentin.schneider@arm.com>
-> > > Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> > > Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-> > > Link: https://lore.kernel.org/r/20220120162520.570782-2-valentin.schneider@arm.com
-> > 
-> > Any objection to picking this for stable? I'm interested in this one for some
-> > Android users but prefer if it can be taken by stable rather than backport it
-> > individually.
-> > 
-> > I think it makes sense to pick the next one in the series too.
-> 
-> What commit does this fix in Linus's tree?
+The following commit has been merged into the sched/core branch of tip:
 
-It should be this one: c6e7bd7afaeb ("sched/core: Optimize ttwu() spinning on p->on_cpu")
+Commit-ID:     7f434dff76215af00c26ba6449eaa4738fe9e2ab
+Gitweb:        https://git.kernel.org/tip/7f434dff76215af00c26ba6449eaa4738fe9e2ab
+Author:        K Prateek Nayak <kprateek.nayak@amd.com>
+AuthorDate:    Fri, 18 Feb 2022 21:57:43 +05:30
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Tue, 08 Mar 2022 16:08:40 +01:00
 
-Not sure about the 2nd patch, but I can try to figure it out.
+sched/topology: Remove redundant variable and fix incorrect type in build_sched_domains
 
-> Once it hits Linus's tree, let stable@vger.kernel.org know what the git
-> commit id is in Linus's tree.
+While investigating the sparse warning reported by the LKP bot [1],
+observed that we have a redundant variable "top" in the function
+build_sched_domains that was introduced in the recent commit
+e496132ebedd ("sched/fair: Adjust the allowed NUMA imbalance when
+SD_NUMA spans multiple LLCs")
 
-Sure. My bad if I rushed the request. I just wanted to know whether it's okay
-for this to go into stable. If no one shouts, I'll ping once it lands in
-Linus'.
+The existing variable "sd" suffices which allows us to remove the
+redundant variable "top" while annotating the other variable "top_p"
+with the "__rcu" annotation to silence the sparse warning.
 
+[1] https://lore.kernel.org/lkml/202202170853.9vofgC3O-lkp@intel.com/
 
-Thanks!
+Fixes: e496132ebedd ("sched/fair: Adjust the allowed NUMA imbalance when SD_NUMA spans multiple LLCs")
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: K Prateek Nayak <kprateek.nayak@amd.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Valentin Schneider <valentin.schneider@arm.com>
+Link: https://lore.kernel.org/r/20220218162743.1134-1-kprateek.nayak@amd.com
+---
+ kernel/sched/topology.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
---
-Qais Yousef
+diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
+index 32841c6..43f2899 100644
+--- a/kernel/sched/topology.c
++++ b/kernel/sched/topology.c
+@@ -2291,7 +2291,7 @@ build_sched_domains(const struct cpumask *cpu_map, struct sched_domain_attr *att
+ 
+ 			if (!(sd->flags & SD_SHARE_PKG_RESOURCES) && child &&
+ 			    (child->flags & SD_SHARE_PKG_RESOURCES)) {
+-				struct sched_domain *top, *top_p;
++				struct sched_domain __rcu *top_p;
+ 				unsigned int nr_llcs;
+ 
+ 				/*
+@@ -2316,11 +2316,9 @@ build_sched_domains(const struct cpumask *cpu_map, struct sched_domain_attr *att
+ 				sd->imb_numa_nr = imb;
+ 
+ 				/* Set span based on the first NUMA domain. */
+-				top = sd;
+-				top_p = top->parent;
++				top_p = sd->parent;
+ 				while (top_p && !(top_p->flags & SD_NUMA)) {
+-					top = top->parent;
+-					top_p = top->parent;
++					top_p = top_p->parent;
+ 				}
+ 				imb_span = top_p ? top_p->span_weight : sd->span_weight;
+ 			} else {
