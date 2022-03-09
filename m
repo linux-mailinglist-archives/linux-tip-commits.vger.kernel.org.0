@@ -2,55 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 102C84D29CA
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Mar 2022 08:56:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EB8454D29E2
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Mar 2022 08:56:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230188AbiCIH4h (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 9 Mar 2022 02:56:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53404 "EHLO
+        id S231172AbiCIH4j (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 9 Mar 2022 02:56:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50332 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230502AbiCIH41 (ORCPT
+        with ESMTP id S230503AbiCIH41 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Wed, 9 Mar 2022 02:56:27 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3464164D1A;
-        Tue,  8 Mar 2022 23:55:03 -0800 (PST)
-Date:   Wed, 09 Mar 2022 07:55:01 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33AA7164D28;
+        Tue,  8 Mar 2022 23:55:05 -0800 (PST)
+Date:   Wed, 09 Mar 2022 07:55:02 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1646812502;
+        s=2020; t=1646812503;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=8AhkZ6uQdHI1QK4NM5lUiDyQS4Yhy+pHWc0wT90NuQc=;
-        b=b1TXnqVE5WvLQTwoSnchjtL+fcBjfmmPT9/qHUEbbeDFQNyAd7f90qT3yU33OdPHpAi4eo
-        IwJL8r5ZlWy5ubqBVLr01HuzGJQD2xdcKWz7wRoojStwHdWITB+hTK9Da7TplF7RsO1Rpe
-        ZyZFmlD6Wa0lIOujrpfkWDuL2ykUOXtpnWPrBtiVr7drgDhotLNoobcE7K487EJNvI4IEp
-        Odefu47AqPOpQgcK6zgm9K9liVkARXbpUAmSm6iWZrb0lfYtsqHwTYHYMJap/2rITrN79U
-        1OihMusvHMd2O345vfOWjVAU+d4dwXKDaupL0ZVvKOeuvqJr7jRtlE6lSwCpGQ==
+        bh=NAOOTVdyFLLSHj+T8SOj7VrTcVBB4+7bSvjpVpQTj/g=;
+        b=lLYByy2iHKjsTQPBaa2THUadHuDDPOdd60FD/SSbfFko7x6eydSSzMGgdu9rqjyyLYUldp
+        AZKFazz2718ABj19OJTlji26m9VAdlrEbJRpyJU22Aaukrs+74o8Y6mpXgKIrRSaeJz9Ln
+        0/J03QdtkYhnoTQiYl68nvZIAEGFQM/w+AAJ+6CHAxp9A5DC1lQ3teo4C3wiRQpiTcpMD7
+        iD4oqqkv/19cioLQRJMz2zru+miakvuEq+PmeLEqQXhSSSlgd+rfZOd1Qw2uwsRtg7DO9g
+        8rN66pUCtKwY3kvxBZdG2txHPJyjEL6lTxl1cO6hTMCcjTBSFGxKXnUtEo4oaQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1646812502;
+        s=2020e; t=1646812503;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=8AhkZ6uQdHI1QK4NM5lUiDyQS4Yhy+pHWc0wT90NuQc=;
-        b=SWo8a1Zg6lfmu20e245h6pIVMq+oxpIqmoOGVlDTS1Rku/lVx4j5EbIQNQDqGlaOEupy8e
-        JHN4pA+IF7Th+eBA==
+        bh=NAOOTVdyFLLSHj+T8SOj7VrTcVBB4+7bSvjpVpQTj/g=;
+        b=5fk2mtUWXd1miOjvYusJiK6AXuLRip2w1xdpXpobGi+BUKcRBjrFFgAGsdjkYwwtv0FJqr
+        EfQ7+6VQwcCJIPBA==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/core] x86/ibt,ftrace: Make function-graph play nice
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+Subject: [tip: x86/core] x86/ibt,ftrace: Search for __fentry__ location
+Cc:     Steven Rostedt <rostedt@goodmis.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
         Josh Poimboeuf <jpoimboe@redhat.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220308154318.347296408@infradead.org>
-References: <20220308154318.347296408@infradead.org>
+In-Reply-To: <20220308154318.227581603@infradead.org>
+References: <20220308154318.227581603@infradead.org>
 MIME-Version: 1.0
-Message-ID: <164681250119.16921.11147534801857543829.tip-bot2@tip-bot2>
+Message-ID: <164681250278.16921.12889395224538939746.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,115 +69,204 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/core branch of tip:
 
-Commit-ID:     069cfa7285137030111dc78a3fcec091371da514
-Gitweb:        https://git.kernel.org/tip/069cfa7285137030111dc78a3fcec091371da514
+Commit-ID:     ee1a8cf8dd0f0b1a2adfb8aedf6c75568a411b0a
+Gitweb:        https://git.kernel.org/tip/ee1a8cf8dd0f0b1a2adfb8aedf6c75568a411b0a
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Tue, 08 Mar 2022 16:30:31 +01:00
+AuthorDate:    Tue, 08 Mar 2022 16:30:29 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 08 Mar 2022 23:53:32 +01:00
+CommitterDate: Tue, 08 Mar 2022 23:53:31 +01:00
 
-x86/ibt,ftrace: Make function-graph play nice
+x86/ibt,ftrace: Search for __fentry__ location
 
-Return trampoline must not use indirect branch to return; while this
-preserves the RSB, it is fundamentally incompatible with IBT. Instead
-use a retpoline like ROP gadget that defeats IBT while not unbalancing
-the RSB.
+Currently a lot of ftrace code assumes __fentry__ is at sym+0. However
+with Intel IBT enabled the first instruction of a function will most
+likely be ENDBR.
 
-And since ftrace_stub is no longer a plain RET, don't use it to copy
-from. Since RET is a trivial instruction, poke it directly.
+Change ftrace_location() to not only return the __fentry__ location
+when called for the __fentry__ location, but also when called for the
+sym+0 location.
 
+Then audit/update all callsites of this function to consistently use
+these new semantics.
+
+Suggested-by: Steven Rostedt <rostedt@goodmis.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Masami Hiramatsu <mhiramat@kernel.org>
 Acked-by: Josh Poimboeuf <jpoimboe@redhat.com>
-Link: https://lore.kernel.org/r/20220308154318.347296408@infradead.org
+Link: https://lore.kernel.org/r/20220308154318.227581603@infradead.org
 ---
- arch/x86/kernel/ftrace.c    |  9 ++-------
- arch/x86/kernel/ftrace_64.S | 21 +++++++++++++++++----
- 2 files changed, 19 insertions(+), 11 deletions(-)
+ arch/x86/kernel/kprobes/core.c | 11 +-------
+ kernel/bpf/trampoline.c        | 20 +++------------
+ kernel/kprobes.c               |  8 +-----
+ kernel/trace/ftrace.c          | 43 ++++++++++++++++++++++++++-------
+ 4 files changed, 43 insertions(+), 39 deletions(-)
 
-diff --git a/arch/x86/kernel/ftrace.c b/arch/x86/kernel/ftrace.c
-index 7cc540e..1e31c7d 100644
---- a/arch/x86/kernel/ftrace.c
-+++ b/arch/x86/kernel/ftrace.c
-@@ -316,12 +316,12 @@ create_trampoline(struct ftrace_ops *ops, unsigned int *tramp_size)
- 	unsigned long offset;
- 	unsigned long npages;
- 	unsigned long size;
--	unsigned long retq;
- 	unsigned long *ptr;
- 	void *trampoline;
- 	void *ip;
- 	/* 48 8b 15 <offset> is movq <offset>(%rip), %rdx */
- 	unsigned const char op_ref[] = { 0x48, 0x8b, 0x15 };
-+	unsigned const char retq[] = { RET_INSN_OPCODE, INT3_INSN_OPCODE };
- 	union ftrace_op_code_union op_ptr;
+diff --git a/arch/x86/kernel/kprobes/core.c b/arch/x86/kernel/kprobes/core.c
+index 6290712..4d8086a 100644
+--- a/arch/x86/kernel/kprobes/core.c
++++ b/arch/x86/kernel/kprobes/core.c
+@@ -193,17 +193,10 @@ static unsigned long
+ __recover_probed_insn(kprobe_opcode_t *buf, unsigned long addr)
+ {
+ 	struct kprobe *kp;
+-	unsigned long faddr;
++	bool faddr;
+ 
+ 	kp = get_kprobe((void *)addr);
+-	faddr = ftrace_location(addr);
+-	/*
+-	 * Addresses inside the ftrace location are refused by
+-	 * arch_check_ftrace_location(). Something went terribly wrong
+-	 * if such an address is checked here.
+-	 */
+-	if (WARN_ON(faddr && faddr != addr))
+-		return 0UL;
++	faddr = ftrace_location(addr) == addr;
+ 	/*
+ 	 * Use the current code if it is not modified by Kprobe
+ 	 * and it cannot be modified by ftrace.
+diff --git a/kernel/bpf/trampoline.c b/kernel/bpf/trampoline.c
+index 5e7edf9..455f1b4 100644
+--- a/kernel/bpf/trampoline.c
++++ b/kernel/bpf/trampoline.c
+@@ -117,18 +117,6 @@ static void bpf_trampoline_module_put(struct bpf_trampoline *tr)
+ 	tr->mod = NULL;
+ }
+ 
+-static int is_ftrace_location(void *ip)
+-{
+-	long addr;
+-
+-	addr = ftrace_location((long)ip);
+-	if (!addr)
+-		return 0;
+-	if (WARN_ON_ONCE(addr != (long)ip))
+-		return -EFAULT;
+-	return 1;
+-}
+-
+ static int unregister_fentry(struct bpf_trampoline *tr, void *old_addr)
+ {
+ 	void *ip = tr->func.addr;
+@@ -160,12 +148,12 @@ static int modify_fentry(struct bpf_trampoline *tr, void *old_addr, void *new_ad
+ static int register_fentry(struct bpf_trampoline *tr, void *new_addr)
+ {
+ 	void *ip = tr->func.addr;
++	unsigned long faddr;
  	int ret;
  
-@@ -359,12 +359,7 @@ create_trampoline(struct ftrace_ops *ops, unsigned int *tramp_size)
- 		goto fail;
+-	ret = is_ftrace_location(ip);
+-	if (ret < 0)
+-		return ret;
+-	tr->func.ftrace_managed = ret;
++	faddr = ftrace_location((unsigned long)ip);
++	if (faddr)
++		tr->func.ftrace_managed = true;
  
- 	ip = trampoline + size;
--
--	/* The trampoline ends with ret(q) */
--	retq = (unsigned long)ftrace_stub;
--	ret = copy_from_kernel_nofault(ip, (void *)retq, RET_SIZE);
--	if (WARN_ON(ret < 0))
--		goto fail;
-+	memcpy(ip, retq, RET_SIZE);
+ 	if (bpf_trampoline_module_get(tr))
+ 		return -ENOENT;
+diff --git a/kernel/kprobes.c b/kernel/kprobes.c
+index 94cab8c..6d1e11c 100644
+--- a/kernel/kprobes.c
++++ b/kernel/kprobes.c
+@@ -1562,14 +1562,10 @@ static inline int warn_kprobe_rereg(struct kprobe *p)
  
- 	/* No need to test direct calls on created trampolines */
- 	if (ops->flags & FTRACE_OPS_FL_SAVE_REGS) {
-diff --git a/arch/x86/kernel/ftrace_64.S b/arch/x86/kernel/ftrace_64.S
-index 11ac028..e32b5cd 100644
---- a/arch/x86/kernel/ftrace_64.S
-+++ b/arch/x86/kernel/ftrace_64.S
-@@ -176,10 +176,10 @@ SYM_FUNC_END(ftrace_caller);
- SYM_FUNC_START(ftrace_epilogue)
- /*
-  * This is weak to keep gas from relaxing the jumps.
-- * It is also used to copy the RET for trampolines.
+ static int check_ftrace_location(struct kprobe *p)
+ {
+-	unsigned long ftrace_addr;
++	unsigned long addr = (unsigned long)p->addr;
+ 
+-	ftrace_addr = ftrace_location((unsigned long)p->addr);
+-	if (ftrace_addr) {
++	if (ftrace_location(addr) == addr) {
+ #ifdef CONFIG_KPROBES_ON_FTRACE
+-		/* Given address is not on the instruction boundary */
+-		if ((unsigned long)p->addr != ftrace_addr)
+-			return -EILSEQ;
+ 		p->flags |= KPROBE_FLAG_FTRACE;
+ #else	/* !CONFIG_KPROBES_ON_FTRACE */
+ 		return -EINVAL;
+diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
+index a4b462b..ae0d9f6 100644
+--- a/kernel/trace/ftrace.c
++++ b/kernel/trace/ftrace.c
+@@ -1568,17 +1568,34 @@ unsigned long ftrace_location_range(unsigned long start, unsigned long end)
+ }
+ 
+ /**
+- * ftrace_location - return true if the ip giving is a traced location
++ * ftrace_location - return the ftrace location
+  * @ip: the instruction pointer to check
+  *
+- * Returns rec->ip if @ip given is a pointer to a ftrace location.
+- * That is, the instruction that is either a NOP or call to
+- * the function tracer. It checks the ftrace internal tables to
+- * determine if the address belongs or not.
++ * If @ip matches the ftrace location, return @ip.
++ * If @ip matches sym+0, return sym's ftrace location.
++ * Otherwise, return 0.
   */
- SYM_INNER_LABEL_ALIGN(ftrace_stub, SYM_L_WEAK)
- 	UNWIND_HINT_FUNC
-+	ENDBR
- 	RET
- SYM_FUNC_END(ftrace_epilogue)
- 
-@@ -284,6 +284,7 @@ SYM_FUNC_START(__fentry__)
- 	jnz trace
- 
- SYM_INNER_LABEL(ftrace_stub, SYM_L_GLOBAL)
-+	ENDBR
- 	RET
- 
- trace:
-@@ -307,7 +308,7 @@ EXPORT_SYMBOL(__fentry__)
- 
- #ifdef CONFIG_FUNCTION_GRAPH_TRACER
- SYM_FUNC_START(return_to_handler)
--	subq  $24, %rsp
-+	subq  $16, %rsp
- 
- 	/* Save the return values */
- 	movq %rax, (%rsp)
-@@ -319,7 +320,19 @@ SYM_FUNC_START(return_to_handler)
- 	movq %rax, %rdi
- 	movq 8(%rsp), %rdx
- 	movq (%rsp), %rax
--	addq $24, %rsp
--	JMP_NOSPEC rdi
+ unsigned long ftrace_location(unsigned long ip)
+ {
+-	return ftrace_location_range(ip, ip);
++	struct dyn_ftrace *rec;
++	unsigned long offset;
++	unsigned long size;
 +
-+	addq $16, %rsp
-+	/*
-+	 * Jump back to the old return address. This cannot be JMP_NOSPEC rdi
-+	 * since IBT would demand that contain ENDBR, which simply isn't so for
-+	 * return addresses. Use a retpoline here to keep the RSB balanced.
-+	 */
-+	ANNOTATE_INTRA_FUNCTION_CALL
-+	call .Ldo_rop
-+	int3
-+.Ldo_rop:
-+	mov %rdi, (%rsp)
-+	UNWIND_HINT_FUNC
-+	RET
- SYM_FUNC_END(return_to_handler)
- #endif
++	rec = lookup_rec(ip, ip);
++	if (!rec) {
++		if (!kallsyms_lookup_size_offset(ip, &size, &offset))
++			goto out;
++
++		/* map sym+0 to __fentry__ */
++		if (!offset)
++			rec = lookup_rec(ip, ip + size - 1);
++	}
++
++	if (rec)
++		return rec->ip;
++
++out:
++	return 0;
+ }
+ 
+ /**
+@@ -4962,7 +4979,8 @@ ftrace_match_addr(struct ftrace_hash *hash, unsigned long ip, int remove)
+ {
+ 	struct ftrace_func_entry *entry;
+ 
+-	if (!ftrace_location(ip))
++	ip = ftrace_location(ip);
++	if (!ip)
+ 		return -EINVAL;
+ 
+ 	if (remove) {
+@@ -5110,11 +5128,16 @@ int register_ftrace_direct(unsigned long ip, unsigned long addr)
+ 	struct ftrace_func_entry *entry;
+ 	struct ftrace_hash *free_hash = NULL;
+ 	struct dyn_ftrace *rec;
+-	int ret = -EBUSY;
++	int ret = -ENODEV;
+ 
+ 	mutex_lock(&direct_mutex);
+ 
++	ip = ftrace_location(ip);
++	if (!ip)
++		goto out_unlock;
++
+ 	/* See if there's a direct function at @ip already */
++	ret = -EBUSY;
+ 	if (ftrace_find_rec_direct(ip))
+ 		goto out_unlock;
+ 
+@@ -5222,6 +5245,10 @@ int unregister_ftrace_direct(unsigned long ip, unsigned long addr)
+ 
+ 	mutex_lock(&direct_mutex);
+ 
++	ip = ftrace_location(ip);
++	if (!ip)
++		goto out_unlock;
++
+ 	entry = find_direct_entry(&ip, NULL);
+ 	if (!entry)
+ 		goto out_unlock;
