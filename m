@@ -2,61 +2,58 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 974D24D2A10
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Mar 2022 08:56:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BF5E4D33AF
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Mar 2022 17:22:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230108AbiCIH53 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 9 Mar 2022 02:57:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54132 "EHLO
+        id S230119AbiCIQKa (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 9 Mar 2022 11:10:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37006 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230499AbiCIH45 (ORCPT
+        with ESMTP id S235767AbiCIQJJ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 9 Mar 2022 02:56:57 -0500
+        Wed, 9 Mar 2022 11:09:09 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB325167F82;
-        Tue,  8 Mar 2022 23:55:27 -0800 (PST)
-Date:   Wed, 09 Mar 2022 07:55:22 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48CCB141FD2;
+        Wed,  9 Mar 2022 08:06:40 -0800 (PST)
+Date:   Wed, 09 Mar 2022 16:06:09 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1646812523;
+        s=2020; t=1646841970;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=6iAXRFNlGiOuLkQ8n1Z/8wU15pH0555kDE8HKzUB5dk=;
-        b=Pno2KSMehfwqdh2jY2dV4El8ZGQFRVDisevFk1y1J4weEZaOwj1pEBozN4XKWxi1Vkf0bt
-        /w+S3eFtOwDGxbAirTpszNSX85H77Z5VjK2G/f+K+t1Zgp2zHBdJj+1gkHfwHVYYwbOrBD
-        bVx3OOHrdcFrIGlQ2ThYbn6+1rfygYfA5/+PLxa5yWqu+kNZI3TY61KJTPxW/nvVjWaZ8l
-        igyypia/iS+LPxbx+2BmEssSCWYhNrcbIQjFHaRkMFIxXGTCdbRs11RA7VXSR0wi1Vk1vo
-        8jHziolfvwIjisGn1lH6iDujz9a9eBPoS0aQlS6ZOEt7C+hPBGh5szOca7Lxmw==
+        bh=2g65x9ztxAkTmxo73uRO4aFARnGFyHbVJ087622A2Ok=;
+        b=jmdQpad5VseS6hwyAXD8a8jBDMN0kcIQdJu154U5pMayON69DaI6jQnBBCgS93lWYIfjTM
+        SGePqAnljpwIuHc8qEIsih0AzONxCenAqUeSfEc4UuLMlVQEmJiy1tsVofr/gdtzuvrII1
+        kJP34XkVEqXKrgwXe/mc7Ua5PpDvCbPA8nFZxQRc42HLuKcfC11lCtuQ9CYeQZOPB+bj/E
+        uvff3cSSSW2MZunbpss871RD97idHAHVBUUpZf8dlwTy3CO+iFzWHmmsmfNUSm1uYEqrNN
+        HYWb8kFsrME09kubk/ZW1pKTjgm2zKDxIg5sL8/RtRYW3Z3FjZSnm9gY+U4Gww==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1646812523;
+        s=2020e; t=1646841970;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=6iAXRFNlGiOuLkQ8n1Z/8wU15pH0555kDE8HKzUB5dk=;
-        b=NUMHpsceJNrKm6+IjI8/lqcfvTI67AQr2aJdAGmSOJtW1jKlpgPcKpYGaOVQ9W5eQPf7rJ
-        Fddods2Jdw42yKBQ==
-From:   "tip-bot2 for Mark Rutland" <tip-bot2@linutronix.de>
+        bh=2g65x9ztxAkTmxo73uRO4aFARnGFyHbVJ087622A2Ok=;
+        b=WEITcfV4TrSdeFAnQvLVAdZ6RJuXGKSnxuLX7A/8NpXOcarOHgIfS6xxlEbMfPxrNakVaB
+        30i6DAtk8/hKlwDA==
+From:   "tip-bot2 for Ross Philipson" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/core] linkage: add SYM_FUNC_ALIAS{,_LOCAL,_WEAK}()
-Cc:     Mark Rutland <mark.rutland@arm.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Mark Brown <broonie@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Borislav Petkov <bp@alien8.de>, Jiri Slaby <jslaby@suse.cz>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Will Deacon <will@kernel.org>, x86@kernel.org,
+Subject: [tip: x86/urgent] x86/boot: Add setup_indirect support in
+ early_memremap_is_setup_data()
+Cc:     Ross Philipson <ross.philipson@oracle.com>,
+        Borislav Petkov <bp@suse.de>,
+        Daniel Kiper <daniel.kiper@oracle.com>,
+        <stable@vger.kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220216162229.1076788-2-mark.rutland@arm.com>
-References: <20220216162229.1076788-2-mark.rutland@arm.com>
+In-Reply-To: <1645668456-22036-3-git-send-email-ross.philipson@oracle.com>
+References: <1645668456-22036-3-git-send-email-ross.philipson@oracle.com>
 MIME-Version: 1.0
-Message-ID: <164681252222.16921.2515658088729657001.tip-bot2@tip-bot2>
+Message-ID: <164684196918.16921.3379747739770954386.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -71,237 +68,88 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/core branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     e0891269a8c25715bd9510dc355326b00ab42db2
-Gitweb:        https://git.kernel.org/tip/e0891269a8c25715bd9510dc355326b00ab42db2
-Author:        Mark Rutland <mark.rutland@arm.com>
-AuthorDate:    Wed, 16 Feb 2022 16:22:26 
-Committer:     Will Deacon <will@kernel.org>
-CommitterDate: Tue, 22 Feb 2022 16:21:33 
+Commit-ID:     445c1470b6ef96440e7cfc42dfc160f5004fd149
+Gitweb:        https://git.kernel.org/tip/445c1470b6ef96440e7cfc42dfc160f5004fd149
+Author:        Ross Philipson <ross.philipson@oracle.com>
+AuthorDate:    Wed, 23 Feb 2022 21:07:36 -05:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Wed, 09 Mar 2022 12:49:46 +01:00
 
-linkage: add SYM_FUNC_ALIAS{,_LOCAL,_WEAK}()
+x86/boot: Add setup_indirect support in early_memremap_is_setup_data()
 
-Currently aliasing an asm function requires adding START and END
-annotations for each name, as per Documentation/asm-annotations.rst:
+The x86 boot documentation describes the setup_indirect structures and
+how they are used. Only one of the two functions in ioremap.c that needed
+to be modified to be aware of the introduction of setup_indirect
+functionality was updated. Adds comparable support to the other function
+where it was missing.
 
-	SYM_FUNC_START_ALIAS(__memset)
-	SYM_FUNC_START(memset)
-	    ... asm insns ...
-	SYM_FUNC_END(memset)
-	SYM_FUNC_END_ALIAS(__memset)
-
-This is more painful than necessary to maintain, especially where a
-function has many aliases, some of which we may wish to define
-conditionally. For example, arm64's memcpy/memmove implementation (which
-uses some arch-specific SYM_*() helpers) has:
-
-	SYM_FUNC_START_ALIAS(__memmove)
-	SYM_FUNC_START_ALIAS_WEAK_PI(memmove)
-	SYM_FUNC_START_ALIAS(__memcpy)
-	SYM_FUNC_START_WEAK_PI(memcpy)
-	    ... asm insns ...
-	SYM_FUNC_END_PI(memcpy)
-	EXPORT_SYMBOL(memcpy)
-	SYM_FUNC_END_ALIAS(__memcpy)
-	EXPORT_SYMBOL(__memcpy)
-	SYM_FUNC_END_ALIAS_PI(memmove)
-	EXPORT_SYMBOL(memmove)
-	SYM_FUNC_END_ALIAS(__memmove)
-	EXPORT_SYMBOL(__memmove)
-	SYM_FUNC_START(name)
-
-It would be much nicer if we could define the aliases *after* the
-standard function definition. This would avoid the need to specify each
-symbol name twice, and would make it easier to spot the canonical
-function definition.
-
-This patch adds new macros to allow us to do so, which allows the above
-example to be rewritten more succinctly as:
-
-	SYM_FUNC_START(__pi_memcpy)
-	    ... asm insns ...
-	SYM_FUNC_END(__pi_memcpy)
-
-	SYM_FUNC_ALIAS(__memcpy, __pi_memcpy)
-	EXPORT_SYMBOL(__memcpy)
-	SYM_FUNC_ALIAS_WEAK(memcpy, __memcpy)
-	EXPORT_SYMBOL(memcpy)
-
-	SYM_FUNC_ALIAS(__pi_memmove, __pi_memcpy)
-	SYM_FUNC_ALIAS(__memmove, __pi_memmove)
-	EXPORT_SYMBOL(__memmove)
-	SYM_FUNC_ALIAS_WEAK(memmove, __memmove)
-	EXPORT_SYMBOL(memmove)
-
-The reduction in duplication will also make it possible to replace some
-uses of WEAK with more accurate Kconfig guards, e.g.
-
-	#ifndef CONFIG_KASAN
-	SYM_FUNC_ALIAS(memmove, __memmove)
-	EXPORT_SYMBOL(memmove)
-	#endif
-
-... which should make it easier to ensure that symbols are neither used
-nor overidden unexpectedly.
-
-The existing SYM_FUNC_START_ALIAS() and SYM_FUNC_START_LOCAL_ALIAS() are
-marked as deprecated, and will be removed once existing users are moved
-over to the new scheme.
-
-The tools/perf/ copy of linkage.h is updated to match. A subsequent
-patch will depend upon this when updating the x86 asm annotations.
-
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Acked-by: Josh Poimboeuf <jpoimboe@redhat.com>
-Acked-by: Mark Brown <broonie@kernel.org>
-Cc: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Jiri Slaby <jslaby@suse.cz>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20220216162229.1076788-2-mark.rutland@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Fixes: b3c72fc9a78e ("x86/boot: Introduce setup_indirect")
+Signed-off-by: Ross Philipson <ross.philipson@oracle.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Reviewed-by: Daniel Kiper <daniel.kiper@oracle.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/1645668456-22036-3-git-send-email-ross.philipson@oracle.com
 ---
- Documentation/asm-annotations.rst       | 16 ++++++++--
- include/linux/linkage.h                 | 37 +++++++++++++++++++++++-
- tools/perf/util/include/linux/linkage.h | 35 +++++++++++++++++++++++-
- 3 files changed, 85 insertions(+), 3 deletions(-)
+ arch/x86/mm/ioremap.c | 33 +++++++++++++++++++++++++++++++--
+ 1 file changed, 31 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/asm-annotations.rst b/Documentation/asm-annotations.rst
-index f4bf0f6..4868b58 100644
---- a/Documentation/asm-annotations.rst
-+++ b/Documentation/asm-annotations.rst
-@@ -130,8 +130,20 @@ denoting a range of code via ``SYM_*_START/END`` annotations.
-   In fact, this kind of annotation corresponds to the now deprecated ``ENTRY``
-   and ``ENDPROC`` macros.
+diff --git a/arch/x86/mm/ioremap.c b/arch/x86/mm/ioremap.c
+index ab666c4..17a492c 100644
+--- a/arch/x86/mm/ioremap.c
++++ b/arch/x86/mm/ioremap.c
+@@ -676,22 +676,51 @@ static bool memremap_is_setup_data(resource_size_t phys_addr,
+ static bool __init early_memremap_is_setup_data(resource_size_t phys_addr,
+ 						unsigned long size)
+ {
++	struct setup_indirect *indirect;
+ 	struct setup_data *data;
+ 	u64 paddr, paddr_next;
  
--* ``SYM_FUNC_START_ALIAS`` and ``SYM_FUNC_START_LOCAL_ALIAS`` serve for those
--  who decided to have two or more names for one function. The typical use is::
-+* ``SYM_FUNC_ALIAS``, ``SYM_FUNC_ALIAS_LOCAL``, and ``SYM_FUNC_ALIAS_WEAK`` can
-+  be used to define multiple names for a function. The typical use is::
-+
-+    SYM_FUNC_START(__memset)
-+        ... asm insns ...
-+    SYN_FUNC_END(__memset)
-+    SYM_FUNC_ALIAS(memset, __memset)
-+
-+  In this example, one can call ``__memset`` or ``memset`` with the same
-+  result, except the debug information for the instructions is generated to
-+  the object file only once -- for the non-``ALIAS`` case.
-+
-+* ``SYM_FUNC_START_ALIAS`` and ``SYM_FUNC_START_LOCAL_ALIAS`` are deprecated
-+    ways to define two or more names for one function. The typical use is::
+ 	paddr = boot_params.hdr.setup_data;
+ 	while (paddr) {
+-		unsigned int len;
++		unsigned int len, size;
  
-     SYM_FUNC_START_ALIAS(__memset)
-     SYM_FUNC_START(memset)
-diff --git a/include/linux/linkage.h b/include/linux/linkage.h
-index dbf8506..e574a84 100644
---- a/include/linux/linkage.h
-+++ b/include/linux/linkage.h
-@@ -165,7 +165,18 @@
- #ifndef SYM_END
- #define SYM_END(name, sym_type)				\
- 	.type name sym_type ASM_NL			\
--	.size name, .-name
-+	.set .L__sym_size_##name, .-name ASM_NL		\
-+	.size name, .L__sym_size_##name
-+#endif
-+
-+/* SYM_ALIAS -- use only if you have to */
-+#ifndef SYM_ALIAS
-+#define SYM_ALIAS(alias, name, sym_type, linkage)			\
-+	linkage(alias) ASM_NL						\
-+	.set alias, name ASM_NL						\
-+	.type alias sym_type ASM_NL					\
-+	.set .L__sym_size_##alias, .L__sym_size_##name ASM_NL		\
-+	.size alias, .L__sym_size_##alias
- #endif
+ 		if (phys_addr == paddr)
+ 			return true;
  
- /* === code annotations === */
-@@ -275,6 +286,30 @@
- 	SYM_END(name, SYM_T_FUNC)
- #endif
+ 		data = early_memremap_decrypted(paddr, sizeof(*data));
++		if (!data) {
++			pr_warn("failed to early memremap setup_data entry\n");
++			return false;
++		}
++
++		size = sizeof(*data);
  
-+/*
-+ * SYM_FUNC_ALIAS -- define a global alias for an existing function
-+ */
-+#ifndef SYM_FUNC_ALIAS
-+#define SYM_FUNC_ALIAS(alias, name)					\
-+	SYM_ALIAS(alias, name, SYM_T_FUNC, SYM_L_GLOBAL)
-+#endif
-+
-+/*
-+ * SYM_FUNC_ALIAS_LOCAL -- define a local alias for an existing function
-+ */
-+#ifndef SYM_FUNC_ALIAS_LOCAL
-+#define SYM_FUNC_ALIAS_LOCAL(alias, name)				\
-+	SYM_ALIAS(alias, name, SYM_T_FUNC, SYM_L_LOCAL)
-+#endif
-+
-+/*
-+ * SYM_FUNC_ALIAS_WEAK -- define a weak global alias for an existing function
-+ */
-+#ifndef SYM_FUNC_ALIAS_WEAK
-+#define SYM_FUNC_ALIAS_WEAK(alias, name)				\
-+	SYM_ALIAS(alias, name, SYM_T_FUNC, SYM_L_WEAK)
-+#endif
-+
- /* SYM_CODE_START -- use for non-C (special) functions */
- #ifndef SYM_CODE_START
- #define SYM_CODE_START(name)				\
-diff --git a/tools/perf/util/include/linux/linkage.h b/tools/perf/util/include/linux/linkage.h
-index 5acf053..7b4cd79 100644
---- a/tools/perf/util/include/linux/linkage.h
-+++ b/tools/perf/util/include/linux/linkage.h
-@@ -50,9 +50,20 @@
- #ifndef SYM_END
- #define SYM_END(name, sym_type)				\
- 	.type name sym_type ASM_NL			\
-+	.set .L__sym_size_##name, .-name ASM_NL		\
- 	.size name, .-name
- #endif
+ 		paddr_next = data->next;
+ 		len = data->len;
  
-+/* SYM_ALIAS -- use only if you have to */
-+#ifndef SYM_ALIAS
-+#define SYM_ALIAS(alias, name, sym_type, linkage)			\
-+	linkage(alias) ASM_NL						\
-+	.set alias, name ASM_NL						\
-+	.type alias sym_type ASM_NL					\
-+	.set .L__sym_size_##alias, .L__sym_size_##name ASM_NL		\
-+	.size alias, .L__sym_size_##alias
-+#endif
+-		early_memunmap(data, sizeof(*data));
++		if ((phys_addr > paddr) && (phys_addr < (paddr + len))) {
++			early_memunmap(data, sizeof(*data));
++			return true;
++		}
 +
- /*
-  * SYM_FUNC_START_ALIAS -- use where there are two global names for one
-  * function
-@@ -101,4 +112,28 @@
- 	SYM_END(name, SYM_T_FUNC)
- #endif
++		if (data->type == SETUP_INDIRECT) {
++			size += len;
++			early_memunmap(data, sizeof(*data));
++			data = early_memremap_decrypted(paddr, size);
++			if (!data) {
++				pr_warn("failed to early memremap indirect setup_data\n");
++				return false;
++			}
++
++			indirect = (struct setup_indirect *)data->data;
++
++			if (indirect->type != SETUP_INDIRECT) {
++				paddr = indirect->addr;
++				len = indirect->len;
++			}
++		}
++
++		early_memunmap(data, size);
  
-+/*
-+ * SYM_FUNC_ALIAS -- define a global alias for an existing function
-+ */
-+#ifndef SYM_FUNC_ALIAS
-+#define SYM_FUNC_ALIAS(alias, name)					\
-+	SYM_ALIAS(alias, name, SYM_T_FUNC, SYM_L_GLOBAL)
-+#endif
-+
-+/*
-+ * SYM_FUNC_ALIAS_LOCAL -- define a local alias for an existing function
-+ */
-+#ifndef SYM_FUNC_ALIAS_LOCAL
-+#define SYM_FUNC_ALIAS_LOCAL(alias, name)				\
-+	SYM_ALIAS(alias, name, SYM_T_FUNC, SYM_L_LOCAL)
-+#endif
-+
-+/*
-+ * SYM_FUNC_ALIAS_WEAK -- define a weak global alias for an existing function
-+ */
-+#ifndef SYM_FUNC_ALIAS_WEAK
-+#define SYM_FUNC_ALIAS_WEAK(alias, name)				\
-+	SYM_ALIAS(alias, name, SYM_T_FUNC, SYM_L_WEAK)
-+#endif
-+
- #endif	/* PERF_LINUX_LINKAGE_H_ */
+ 		if ((phys_addr > paddr) && (phys_addr < (paddr + len)))
+ 			return true;
