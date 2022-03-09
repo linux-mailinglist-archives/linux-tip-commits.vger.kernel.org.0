@@ -2,55 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 924914D29CF
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Mar 2022 08:56:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BED1B4D29D9
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Mar 2022 08:56:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231267AbiCIH5N (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        id S231270AbiCIH5N (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
         Wed, 9 Mar 2022 02:57:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52318 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51054 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231182AbiCIH4q (ORCPT
+        with ESMTP id S230525AbiCIH4u (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 9 Mar 2022 02:56:46 -0500
+        Wed, 9 Mar 2022 02:56:50 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94D5216307A;
-        Tue,  8 Mar 2022 23:55:17 -0800 (PST)
-Date:   Wed, 09 Mar 2022 07:55:15 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 963C7166A7D;
+        Tue,  8 Mar 2022 23:55:19 -0800 (PST)
+Date:   Wed, 09 Mar 2022 07:55:16 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1646812516;
+        s=2020; t=1646812517;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=TfzTGlcUujJvCl42SOtzUGnx4onyvN51b7YdmOYIQDw=;
-        b=kCQtTlZx4u+FpYFBc17efhiQBEddqUBY5tKmoCJJ8rY4VsKR+d25zE+FOX+eksmDrpCJ/o
-        QPsRPAZdcddd3YVKY4kfhw5aheUuenTfy8btatOTRJEsPQU73rN8GWUiXv6BXmQJduOQVh
-        rvPYMdr/0I7z5el16wFzg/HIX4jPQP7fRywZAmpRJKqGQP6qXVHP0nShmVRsJMBGyL4irP
-        03yMXZHcaqVTFVEcyUKYCgr+DfyhnX1Atc7mlypr5A3ujn4Y4Kt2oVy/qJ5MMgcbbixhFK
-        ialgBl3L8kZxwglGUNYm2texBl3jdteHuH9lFSmDumr9ZyNTHYRx/NLkeiptRQ==
+        bh=1nJlz819/YLAysy3BcrBZdVcUf1he+TryJsVQ7RjF8A=;
+        b=kdf7AvTox8vlUA4dYvg7DYfvhlPHbQO0KSSrJLDLiXKZtFWi9eBnqkP3sCJ/9Cti7rO14X
+        HwlOdbSOb7G1iLWNuXbhZb5RNGlsRYNXoaEmwTOzcAuEiGIrcU4sXOXVoMz02buKl5+r78
+        b8zjRpIsWh5spxFKGp1ig1tQEWeCviV+JHNnX7KbTdFHqX71ctGxl0n55Fh0mq6YRdaXso
+        bAu5cmRR8GSjX4f9/0RxHUpPlPT3oMhq8GjE8oQwT/XxjSW0wcpEzBFAXcWn/dVeO5YXox
+        kbH/nX8FvIb918tfjokVKEBr1nD7oF28tvPmqqogB/l4rG28kLK/gUXBvrrBmA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1646812516;
+        s=2020e; t=1646812517;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=TfzTGlcUujJvCl42SOtzUGnx4onyvN51b7YdmOYIQDw=;
-        b=WffJGLd1smQzuyNsQszPsRL1116+a98xJpCUBMbeZUoqEzaqBQiS1J3cJ39r1fkJ2TbxNP
-        mq4BSAO/4u71qMCA==
+        bh=1nJlz819/YLAysy3BcrBZdVcUf1he+TryJsVQ7RjF8A=;
+        b=LtW4Si6OYsTzxfi2l0WDn8zDLXKsg+WEULmNzPZi99IXBNoqV2YgHZrZ8IShT84FicYzJw
+        S7EmgyBq6TgS/sAA==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/core] objtool: Default ignore INT3 for unreachable
+Subject: [tip: x86/core] static_call: Avoid building empty .static_call_sites
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Josh Poimboeuf <jpoimboe@redhat.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220308154317.343312938@infradead.org>
-References: <20220308154317.343312938@infradead.org>
+In-Reply-To: <20220308154317.223798256@infradead.org>
+References: <20220308154317.223798256@infradead.org>
 MIME-Version: 1.0
-Message-ID: <164681251517.16921.3649961493777847480.tip-bot2@tip-bot2>
+Message-ID: <164681251690.16921.6436251759629555723.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,59 +67,44 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/core branch of tip:
 
-Commit-ID:     def466688a10fe8a2e1da7d3a72b4a29ff6b1a9e
-Gitweb:        https://git.kernel.org/tip/def466688a10fe8a2e1da7d3a72b4a29ff6b1a9e
+Commit-ID:     01ddabda5a3e16eace6d61bcf1857eba8f015b13
+Gitweb:        https://git.kernel.org/tip/01ddabda5a3e16eace6d61bcf1857eba8f015b13
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Tue, 08 Mar 2022 16:30:14 +01:00
+AuthorDate:    Tue, 08 Mar 2022 16:30:12 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 08 Mar 2022 23:53:27 +01:00
+CommitterDate: Tue, 08 Mar 2022 23:53:26 +01:00
 
-objtool: Default ignore INT3 for unreachable
+static_call: Avoid building empty .static_call_sites
 
-Ignore all INT3 instructions for unreachable code warnings, similar to NOP.
-This allows using INT3 for various paddings instead of NOPs.
+Without CONFIG_HAVE_STATIC_CALL_INLINE there's no point in creating
+the .static_call_sites section and it's related symbols.
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Acked-by: Josh Poimboeuf <jpoimboe@redhat.com>
-Link: https://lore.kernel.org/r/20220308154317.343312938@infradead.org
+Link: https://lore.kernel.org/r/20220308154317.223798256@infradead.org
 ---
- tools/objtool/check.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ include/asm-generic/vmlinux.lds.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 7c33ec6..311bfc6 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -3115,9 +3115,8 @@ static int validate_branch(struct objtool_file *file, struct symbol *func,
- 		switch (insn->type) {
+diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
+index 42f3866..a41e623 100644
+--- a/include/asm-generic/vmlinux.lds.h
++++ b/include/asm-generic/vmlinux.lds.h
+@@ -404,6 +404,7 @@
+ 	KEEP(*(__jump_table))						\
+ 	__stop___jump_table = .;
  
- 		case INSN_RETURN:
--			if (next_insn && next_insn->type == INSN_TRAP) {
--				next_insn->ignore = true;
--			} else if (sls && !insn->retpoline_safe) {
-+			if (sls && !insn->retpoline_safe &&
-+			    next_insn && next_insn->type != INSN_TRAP) {
- 				WARN_FUNC("missing int3 after ret",
- 					  insn->sec, insn->offset);
- 			}
-@@ -3164,9 +3163,8 @@ static int validate_branch(struct objtool_file *file, struct symbol *func,
- 			break;
++#ifdef CONFIG_HAVE_STATIC_CALL_INLINE
+ #define STATIC_CALL_DATA						\
+ 	. = ALIGN(8);							\
+ 	__start_static_call_sites = .;					\
+@@ -412,6 +413,9 @@
+ 	__start_static_call_tramp_key = .;				\
+ 	KEEP(*(.static_call_tramp_key))					\
+ 	__stop_static_call_tramp_key = .;
++#else
++#define STATIC_CALL_DATA
++#endif
  
- 		case INSN_JUMP_DYNAMIC:
--			if (next_insn && next_insn->type == INSN_TRAP) {
--				next_insn->ignore = true;
--			} else if (sls && !insn->retpoline_safe) {
-+			if (sls && !insn->retpoline_safe &&
-+			    next_insn && next_insn->type != INSN_TRAP) {
- 				WARN_FUNC("missing int3 after indirect jump",
- 					  insn->sec, insn->offset);
- 			}
-@@ -3337,7 +3335,7 @@ static bool ignore_unreachable_insn(struct objtool_file *file, struct instructio
- 	int i;
- 	struct instruction *prev_insn;
- 
--	if (insn->ignore || insn->type == INSN_NOP)
-+	if (insn->ignore || insn->type == INSN_NOP || insn->type == INSN_TRAP)
- 		return true;
- 
- 	/*
+ /*
+  * Allow architectures to handle ro_after_init data on their
