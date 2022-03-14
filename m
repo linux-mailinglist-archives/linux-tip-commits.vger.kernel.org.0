@@ -2,55 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AD8914D6EAC
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 12 Mar 2022 13:37:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E9E074D7E70
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 14 Mar 2022 10:27:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231678AbiCLMi1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 12 Mar 2022 07:38:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41968 "EHLO
+        id S231899AbiCNJ3B (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 14 Mar 2022 05:29:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42174 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229745AbiCLMi0 (ORCPT
+        with ESMTP id S237949AbiCNJ3A (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 12 Mar 2022 07:38:26 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B54EB6161;
-        Sat, 12 Mar 2022 04:37:21 -0800 (PST)
-Date:   Sat, 12 Mar 2022 12:37:19 -0000
+        Mon, 14 Mar 2022 05:29:00 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1051726CF;
+        Mon, 14 Mar 2022 02:27:48 -0700 (PDT)
+Date:   Mon, 14 Mar 2022 09:27:46 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1647088640;
+        s=2020; t=1647250067;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=/qaTble2oQ+4Cpxf/5u7imIc/SVViBYoo9IryJwIXqc=;
-        b=P9YTw+4Ah7LBJy7Dmz2CQ/rSw3RvqHAuc+RcCJafH6YDNFBnpYtGvSa1zyJycOqDJ9Ejy7
-        w3BciebBb0PUVHIL58sEy5sjjv+dLM6KagalMkIkR3qXbGP7I4t5j+a197Oo5m31lAWut8
-        FwkuM/DmOMHoo1QBCpiq6oHuH3IZgN1OLyKKYmLDNiEWHdU1gyL44qLn0oM3IthcvtECl3
-        gHUmsp23LqvLBtjacrtLpHnTWn99r7O/BmC8xavtmkzBv4yagIZ3scOz4uvF6o5bwZft4d
-        YhP4OUNdgwW4bcI9CTNIdLsYxjNIUO5nQ9eI8Njtz81WP0cCy5aPfm5KWhklnQ==
+        bh=sR3nV2kv/09GVXOFZiO306BSvLFY+B0mvuMMSQsd4DE=;
+        b=pTEItVwPNHvmd7GP+AivQyk1MJv0tzfvZb84FT7wIKufMTiIgarQVlkAoU8Cf/TDHlw+1N
+        YVFPUQopgf+hOi1qRX4sEySelYDnKg6J1xGUgkudBx4vzQf5OG1q4Zp4Xo+HaW3uZ1ZgD5
+        2uekd3cLXCjDIdJe2jWtAocCOQ2V5gQu7ypX8Kxl8B746hFLNqbFaHk8CfHzbzWIzatamh
+        rc67MnFSbdnnUcYCcyrSWZs9IID5Q9smOzFjDq1k2ALE6sD0+LoDYPWfcruVjTw1vLuM+5
+        /Vcf3ro3vg+g45pvlB7iqxTkPX/iO/W/utgNwwmD4N+cYGfrxEdJYIXju6I00w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1647088640;
+        s=2020e; t=1647250067;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=/qaTble2oQ+4Cpxf/5u7imIc/SVViBYoo9IryJwIXqc=;
-        b=A/pylF72953rLAlSdgcC1nfBZ1q5fKwOBtT9ZblnCujotZtMMsBKu/sulMQGw5F9X4Gjw3
-        1qLyTryBpx23J+Dg==
-From:   "tip-bot2 for Nathan Chancellor" <tip-bot2@linutronix.de>
+        bh=sR3nV2kv/09GVXOFZiO306BSvLFY+B0mvuMMSQsd4DE=;
+        b=kYHH7+IELo3fDNRE7XJ634s7eGqRnMGSM8j0OyqiJvowVFMxhW6nyMhH/d52em2iv/M7iA
+        LqOXjB40R1u/0NBw==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/core] x86/ibt: Fix CC_HAS_IBT check for clang
-Cc:     Nathan Chancellor <nathan@kernel.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20220311195642.2033108-1-nathan@kernel.org>
-References: <20220311195642.2033108-1-nathan@kernel.org>
+Subject: [tip: irq/core] Merge tag 'irqchip-5.18' of
+ git://git.kernel.org/pub/scm/linux/kernel/git/maz/arm-platforms into irq/core
+Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, maz@kernel.org
+In-Reply-To: <20220313105142.704579-1-maz@kernel.org>
+References: <20220313105142.704579-1-maz@kernel.org>
 MIME-Version: 1.0
-Message-ID: <164708863928.16921.14086507228609940442.tip-bot2@tip-bot2>
+Message-ID: <164725006601.16921.2637757188708535130.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,61 +64,43 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/core branch of tip:
+The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     f8afc9d88e65d189653f363eacc1f3131216ef7c
-Gitweb:        https://git.kernel.org/tip/f8afc9d88e65d189653f363eacc1f3131216ef7c
-Author:        Nathan Chancellor <nathan@kernel.org>
-AuthorDate:    Fri, 11 Mar 2022 12:56:42 -07:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Sat, 12 Mar 2022 13:22:13 +01:00
+Commit-ID:     f0fae8a0edd445d042ee94153f127e8939fcf3d3
+Gitweb:        https://git.kernel.org/tip/f0fae8a0edd445d042ee94153f127e8939fcf3d3
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Mon, 14 Mar 2022 10:23:22 +01:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Mon, 14 Mar 2022 10:23:22 +01:00
 
-x86/ibt: Fix CC_HAS_IBT check for clang
+Merge tag 'irqchip-5.18' of git://git.kernel.org/pub/scm/linux/kernel/git/maz/arm-platforms into irq/core
 
-Commit 41c5ef31ad71 ("x86/ibt: Base IBT bits") added a check for a crash
-in clang. However, this check does not work for two reasons.
+Pull irqchip updates from Marc Zyngier:
 
-The first reason is that '-pg' is missing from the check, which is
-required for '-mfentry' to do anything.
+  - Add support for the STM32MP13 variant
 
-The second reason is that cc-option only uses /dev/null as the input
-file, which does not show a problem:
+  - Move parent device away from struct irq_chip
 
-$ clang --version | head -1
-Ubuntu clang version 12.0.1-8build1
+  - Remove all instances of non-const strings assigned to
+    struct irq_chip::name, enabling a nice cleanup for VIC and GIC)
 
-$ clang -fcf-protection=branch -mfentry -pg -c -x c /dev/null -o /dev/null
+  - Simplify the Qualcomm PDC driver
 
-$ echo $?
-0
+  - A bunch of SiFive PLIC cleanups
 
-$ echo "void a(void) {}" | clang -fcf-protection=branch -mfentry -pg -c -x c - -o /dev/null
-...
+  - Add support for a new variant of the Meson GPIO block
 
-$ echo $?
-139
+  - Add support for the irqchip side of the Apple M1 PMU
 
-Use this test instead so that the check works for older versions of
-clang.
+  - Add support for the Apple M1 Pro/Max AICv2 irqchip
 
-Fixes: 41c5ef31ad71 ("x86/ibt: Base IBT bits")
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20220311195642.2033108-1-nathan@kernel.org
+  - Add support for the Qualcomm MPM wakeup gadget
+
+  - Move the Xilinx driver over to the generic irqdomain handling
+
+  - Tiny speedup for IPIs on GICv3 systems
+
+  - The usual odd cleanups
+
+Link: https://lore.kernel.org/all/20220313105142.704579-1-maz@kernel.org
 ---
- arch/x86/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 4ca7bfe..870e0d1 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -1867,7 +1867,7 @@ config CC_HAS_IBT
- 	# Clang/LLVM >= 14
- 	# fentry check to work around https://reviews.llvm.org/D111108
- 	def_bool ((CC_IS_GCC && $(cc-option, -fcf-protection=branch -mindirect-branch-register)) || \
--		  (CC_IS_CLANG && $(cc-option, -fcf-protection=branch -mfentry))) && \
-+		  (CC_IS_CLANG && $(success,echo "void a(void) {}" | $(CC) -Werror $(CLANG_FLAGS) -fcf-protection=branch -mfentry -pg -x c - -c -o /dev/null))) && \
- 		  $(as-instr,endbr64)
- 
- config X86_KERNEL_IBT
