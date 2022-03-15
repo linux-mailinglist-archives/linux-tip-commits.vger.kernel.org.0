@@ -2,109 +2,74 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E4DAA4D9951
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 15 Mar 2022 11:46:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B76044D9EE2
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 15 Mar 2022 16:39:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347277AbiCOKqZ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 15 Mar 2022 06:46:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33334 "EHLO
+        id S243846AbiCOPlJ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 15 Mar 2022 11:41:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47652 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347439AbiCOKqR (ORCPT
+        with ESMTP id S242826AbiCOPlJ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 15 Mar 2022 06:46:17 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A34F8517EB;
-        Tue, 15 Mar 2022 03:44:20 -0700 (PDT)
-Date:   Tue, 15 Mar 2022 10:44:17 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1647341058;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=EZC3/kc1HTY+XXoQPROWdI9AV7DgxswUrZQiDvHRmSQ=;
-        b=wkP6R//JdhXK+fS9vM2rUcstzrQqroC6LZR2GQiK5FMghlmIztCfJaEJrJWFK4VigmrLv9
-        glsOHbL2kA9oCafyLbJJ/9sSUTaLQREDZVdL3LrbPeayoHYW1UoIxbYt8vjlRlwtN6G2fX
-        9NUduiowRx+KLuS5btXI8bSizZPCM1/h7/jZdRDv0EX06nANCtMdzBSjNpvh0ElqgMiEUw
-        bGdzWy7Z3pwPlHOjpsN+8cn3NeDuhVcUbD1ku2Pg/C3CI2NKKtStDWNZOPOGNa1GglcEeS
-        j0/E5GCfN337MAMTA2doevGTPpMzcQypPjzkii7w6h4jamPOcNU809m1Sj5Rww==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1647341058;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=EZC3/kc1HTY+XXoQPROWdI9AV7DgxswUrZQiDvHRmSQ=;
-        b=cHduqrcOx1GMlJBKhGL49kGdpyGFthsZb1S+ZUnIuaC89/I3LhjuNAF0I3+QPUWwt/pWm7
-        7CvQdXlgPwRxjLCw==
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/core] static_call: Avoid building empty .static_call_sites
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Josh Poimboeuf <jpoimboe@redhat.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20220308154317.223798256@infradead.org>
-References: <20220308154317.223798256@infradead.org>
+        Tue, 15 Mar 2022 11:41:09 -0400
+Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id B862D53718
+        for <linux-tip-commits@vger.kernel.org>; Tue, 15 Mar 2022 08:39:56 -0700 (PDT)
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mtapsc-2-X2iS_tTiOcWMWEmfNZDmhg-1; Tue, 15 Mar 2022 15:39:53 +0000
+X-MC-Unique: X2iS_tTiOcWMWEmfNZDmhg-1
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) with Microsoft SMTP
+ Server (TLS) id 15.0.1497.32; Tue, 15 Mar 2022 15:39:52 +0000
+Received: from AcuMS.Aculab.com ([fe80::994c:f5c2:35d6:9b65]) by
+ AcuMS.aculab.com ([fe80::994c:f5c2:35d6:9b65%12]) with mapi id
+ 15.00.1497.033; Tue, 15 Mar 2022 15:39:52 +0000
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-tip-commits@vger.kernel.org" 
+        <linux-tip-commits@vger.kernel.org>
+CC:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        "x86@kernel.org" <x86@kernel.org>
+Subject: RE: [tip: x86/core] objtool: Find unused ENDBR instructions
+Thread-Topic: [tip: x86/core] objtool: Find unused ENDBR instructions
+Thread-Index: AQHYOFmT3fMulR219kOHQpX/dLMyoazAlNEw
+Date:   Tue, 15 Mar 2022 15:39:52 +0000
+Message-ID: <a5fa50d9f00542de8a6ad7a3fe0c49b3@AcuMS.aculab.com>
+References: <20220308154319.763643193@infradead.org>
+ <164734101940.16921.11639161864874862247.tip-bot2@tip-bot2>
+In-Reply-To: <164734101940.16921.11639161864874862247.tip-bot2@tip-bot2>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-Message-ID: <164734105718.16921.7882247983946373837.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Authentication-Results: relay.mimecast.com;
+        auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/core branch of tip:
+RnJvbTogUGV0ZXIgWmlqbHN0cmENCj4gDQo+IG9ianRvb2w6IEZpbmQgdW51c2VkIEVOREJSIGlu
+c3RydWN0aW9ucw0KPiANCj4gRmluZCBhbGwgRU5EQlIgaW5zdHJ1Y3Rpb25zIHdoaWNoIGFyZSBu
+ZXZlciByZWZlcmVuY2VkIGFuZCBzdGljayB0aGVtDQo+IGluIGEgc2VjdGlvbiBzdWNoIHRoYXQg
+dGhlIGtlcm5lbCBjYW4gcG9pc29uIHRoZW0sIHNlYWxpbmcgdGhlDQo+IGZ1bmN0aW9ucyBmcm9t
+IGV2ZXIgYmVpbmcgYW4gaW5kaXJlY3QgY2FsbCB0YXJnZXQuDQoNClRob3VnaHQsIHdoYXQgaGFw
+cGVucyBpZiB0aGUgb25seSBpbmRpcmVjdCBjYWxsIGlzIGZyb20NCmNvZGUgaW4gYSBtb2R1bGU/
+DQoNCglEYXZpZA0KDQotDQpSZWdpc3RlcmVkIEFkZHJlc3MgTGFrZXNpZGUsIEJyYW1sZXkgUm9h
+ZCwgTW91bnQgRmFybSwgTWlsdG9uIEtleW5lcywgTUsxIDFQVCwgVUsNClJlZ2lzdHJhdGlvbiBO
+bzogMTM5NzM4NiAoV2FsZXMpDQo=
 
-Commit-ID:     b44544fe0298ee2224960a31f795e317029e2a60
-Gitweb:        https://git.kernel.org/tip/b44544fe0298ee2224960a31f795e317029e2a60
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Tue, 08 Mar 2022 16:30:12 +01:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 15 Mar 2022 10:32:31 +01:00
-
-static_call: Avoid building empty .static_call_sites
-
-Without CONFIG_HAVE_STATIC_CALL_INLINE there's no point in creating
-the .static_call_sites section and it's related symbols.
-
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Josh Poimboeuf <jpoimboe@redhat.com>
-Link: https://lore.kernel.org/r/20220308154317.223798256@infradead.org
----
- include/asm-generic/vmlinux.lds.h | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
-index 42f3866..a41e623 100644
---- a/include/asm-generic/vmlinux.lds.h
-+++ b/include/asm-generic/vmlinux.lds.h
-@@ -404,6 +404,7 @@
- 	KEEP(*(__jump_table))						\
- 	__stop___jump_table = .;
- 
-+#ifdef CONFIG_HAVE_STATIC_CALL_INLINE
- #define STATIC_CALL_DATA						\
- 	. = ALIGN(8);							\
- 	__start_static_call_sites = .;					\
-@@ -412,6 +413,9 @@
- 	__start_static_call_tramp_key = .;				\
- 	KEEP(*(.static_call_tramp_key))					\
- 	__stop_static_call_tramp_key = .;
-+#else
-+#define STATIC_CALL_DATA
-+#endif
- 
- /*
-  * Allow architectures to handle ro_after_init data on their
