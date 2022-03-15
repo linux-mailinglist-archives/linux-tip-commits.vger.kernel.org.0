@@ -2,57 +2,58 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2895C4D993F
+	by mail.lfdr.de (Postfix) with ESMTP id 827C34D9940
 	for <lists+linux-tip-commits@lfdr.de>; Tue, 15 Mar 2022 11:46:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347356AbiCOKqV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 15 Mar 2022 06:46:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33460 "EHLO
+        id S1347253AbiCOKq0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 15 Mar 2022 06:46:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33928 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347414AbiCOKpx (ORCPT
+        with ESMTP id S1347438AbiCOKqR (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 15 Mar 2022 06:45:53 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 017E65133A;
-        Tue, 15 Mar 2022 03:44:18 -0700 (PDT)
-Date:   Tue, 15 Mar 2022 10:44:16 -0000
+        Tue, 15 Mar 2022 06:46:17 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DFE6517E7;
+        Tue, 15 Mar 2022 03:44:20 -0700 (PDT)
+Date:   Tue, 15 Mar 2022 10:44:17 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1647341057;
+        s=2020; t=1647341059;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=q09XAzJjkLf7Xkw/YaQeeAhtQSprnJ4QqL0hxdYpv9w=;
-        b=jm+NsyMeVGDdT45J/XRWYZq7kUoPzTeVHqmRA5gK9JhSEo/tKkXzLcPJ3qGVkHKMivJOag
-        vJW3T5wZjIn7MWcAcOtiXytn+pKvER7x28ijfve48Xle+1NIDvPhAkfajl97zWeTZFAZIS
-        spL7xi2Ptk7My908+AQ0kO0YXbH+C3tuJ1R7Ls9hG7bUJrIAxdzHrOSTYnS/GBG4A541DZ
-        FjNK/Y6Ua0H+lh+8WkYuW4UHdg6zui+pdHAtB1RqDIB7wgzlHu6PwOoILcgX6px11haPo9
-        YfVgGJUsdjFkFMEXzrHTxoz7NO4KkoaimEyiJWOx+RVFFiH7Oz0/MvMFjawPgw==
+        bh=SlOx9SWUx1Hhq0QlJPBVYJg1CPjfdT4ygF4ZCKmUCbo=;
+        b=Ly+a37HeNZWjMbG756DlUv7hSmCh6828Culpd5llsr6k1LpSszQEwYAURFloYPB4gLNTxA
+        dbpr/oeZLBTl5iHfE6ou9+J/rTJZsZqW7AW7m6AN68J6rG0I1Fcr5V9Ss27L0mvaq9dH6m
+        jNN42ovki7UqNw/8RUxte3Oaeb5QBabXJVec/41T3VmBGG/mGMlErJ10xiMxPLd4GOu3+g
+        fBdqXosrb9WA4G9DQXue5INS3WLHvIyl6IQ+7pbSI6tzOgcY1FIHHIEj0Rl1CZUEGY76JK
+        Zh3RqagBhF1bzIMfjQXgli9IzDSd4LOVM/Lp9x0IkqcwGw4yKqGkjL3NZeL7nQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1647341057;
+        s=2020e; t=1647341059;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=q09XAzJjkLf7Xkw/YaQeeAhtQSprnJ4QqL0hxdYpv9w=;
-        b=7FyjIflxZqyWuiQm/1adrVylrNGVrMO/ek4XxSDTPaHR+FrQnwlVwc7uSVP40zdlEmTeGW
-        HWtPbufwadoI0tCg==
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+        bh=SlOx9SWUx1Hhq0QlJPBVYJg1CPjfdT4ygF4ZCKmUCbo=;
+        b=V6I4ZFwR5oA4oxYwC58ykR21mFjvjGy2f1CKeiivyO4rAk8bL0sfXdRA9CTcZq3txopp/4
+        2LQypuI4b/6FWECw==
+From:   "tip-bot2 for Fenghua Yu" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/core] objtool: Add --dry-run
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Kees Cook <keescook@chromium.org>,
-        Miroslav Benes <mbenes@suse.cz>,
-        Josh Poimboeuf <jpoimboe@redhat.com>, x86@kernel.org,
+Subject: [tip: x86/core] tools/objtool: Check for use of the ENQCMD
+ instruction in the kernel
+Cc:     Fenghua Yu <fenghua.yu@intel.com>, Borislav Petkov <bp@suse.de>,
+        Tony Luck <tony.luck@intel.com>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220308154317.282720146@infradead.org>
-References: <20220308154317.282720146@infradead.org>
+In-Reply-To: <20220207230254.3342514-11-fenghua.yu@intel.com>
+References: <20220207230254.3342514-11-fenghua.yu@intel.com>
 MIME-Version: 1.0
-Message-ID: <164734105637.16921.360308990098148427.tip-bot2@tip-bot2>
+Message-ID: <164734105799.16921.15931261118051615591.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -69,74 +70,69 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/core branch of tip:
 
-Commit-ID:     f2d3a250897133cc36c13a641bd6a9b4dd5ad234
-Gitweb:        https://git.kernel.org/tip/f2d3a250897133cc36c13a641bd6a9b4dd5ad234
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Tue, 08 Mar 2022 16:30:13 +01:00
+Commit-ID:     227a06553fe6c785f23d76eece3bb10e2db5059c
+Gitweb:        https://git.kernel.org/tip/227a06553fe6c785f23d76eece3bb10e2db5059c
+Author:        Fenghua Yu <fenghua.yu@intel.com>
+AuthorDate:    Mon, 07 Feb 2022 15:02:53 -08:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 15 Mar 2022 10:32:32 +01:00
+CommitterDate: Tue, 15 Mar 2022 10:32:30 +01:00
 
-objtool: Add --dry-run
+tools/objtool: Check for use of the ENQCMD instruction in the kernel
 
-Add a --dry-run argument to skip writing the modifications. This is
-convenient for debugging.
+The ENQCMD instruction implicitly accesses the PASID_MSR to fill in the
+pasid field of the descriptor being submitted to an accelerator. But
+there is no precise (and stable across kernel changes) point at which
+the PASID_MSR is updated from the value for one task to the next.
 
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Reviewed-by: Miroslav Benes <mbenes@suse.cz>
+Kernel code that uses accelerators must always use the ENQCMDS instruction
+which does not access the PASID_MSR.
+
+Check for use of the ENQCMD instruction in the kernel and warn on its
+usage.
+
+Signed-off-by: Fenghua Yu <fenghua.yu@intel.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Reviewed-by: Tony Luck <tony.luck@intel.com>
 Acked-by: Josh Poimboeuf <jpoimboe@redhat.com>
-Link: https://lore.kernel.org/r/20220308154317.282720146@infradead.org
+Link: https://lore.kernel.org/r/20220207230254.3342514-11-fenghua.yu@intel.com
+Signed-off-by: Peter Zijlstra <peterz@infradead.org>
 ---
- tools/objtool/builtin-check.c           | 3 ++-
- tools/objtool/elf.c                     | 3 +++
- tools/objtool/include/objtool/builtin.h | 2 +-
- 3 files changed, 6 insertions(+), 2 deletions(-)
+ tools/objtool/arch/x86/decode.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/tools/objtool/builtin-check.c b/tools/objtool/builtin-check.c
-index 38070f2..853af93 100644
---- a/tools/objtool/builtin-check.c
-+++ b/tools/objtool/builtin-check.c
-@@ -20,7 +20,7 @@
- #include <objtool/objtool.h>
+diff --git a/tools/objtool/arch/x86/decode.c b/tools/objtool/arch/x86/decode.c
+index c10ef78..479e769 100644
+--- a/tools/objtool/arch/x86/decode.c
++++ b/tools/objtool/arch/x86/decode.c
+@@ -112,7 +112,7 @@ int arch_decode_instruction(struct objtool_file *file, const struct section *sec
+ 	const struct elf *elf = file->elf;
+ 	struct insn insn;
+ 	int x86_64, ret;
+-	unsigned char op1, op2,
++	unsigned char op1, op2, op3,
+ 		      rex = 0, rex_b = 0, rex_r = 0, rex_w = 0, rex_x = 0,
+ 		      modrm = 0, modrm_mod = 0, modrm_rm = 0, modrm_reg = 0,
+ 		      sib = 0, /* sib_scale = 0, */ sib_index = 0, sib_base = 0;
+@@ -139,6 +139,7 @@ int arch_decode_instruction(struct objtool_file *file, const struct section *sec
  
- bool no_fp, no_unreachable, retpoline, module, backtrace, uaccess, stats,
--     validate_dup, vmlinux, mcount, noinstr, backup, sls;
-+     validate_dup, vmlinux, mcount, noinstr, backup, sls, dryrun;
+ 	op1 = insn.opcode.bytes[0];
+ 	op2 = insn.opcode.bytes[1];
++	op3 = insn.opcode.bytes[2];
  
- static const char * const check_usage[] = {
- 	"objtool check [<options>] file.o",
-@@ -46,6 +46,7 @@ const struct option check_options[] = {
- 	OPT_BOOLEAN('M', "mcount", &mcount, "generate __mcount_loc"),
- 	OPT_BOOLEAN('B', "backup", &backup, "create .orig files before modification"),
- 	OPT_BOOLEAN('S', "sls", &sls, "validate straight-line-speculation"),
-+	OPT_BOOLEAN(0, "dry-run", &dryrun, "don't write the modifications"),
- 	OPT_END(),
- };
+ 	if (insn.rex_prefix.nbytes) {
+ 		rex = insn.rex_prefix.bytes[0];
+@@ -491,6 +492,14 @@ int arch_decode_instruction(struct objtool_file *file, const struct section *sec
+ 			/* nopl/nopw */
+ 			*type = INSN_NOP;
  
-diff --git a/tools/objtool/elf.c b/tools/objtool/elf.c
-index 4b384c9..456ac22 100644
---- a/tools/objtool/elf.c
-+++ b/tools/objtool/elf.c
-@@ -1019,6 +1019,9 @@ int elf_write(struct elf *elf)
- 	struct section *sec;
- 	Elf_Scn *s;
- 
-+	if (dryrun)
-+		return 0;
++		} else if (op2 == 0x38 && op3 == 0xf8) {
++			if (insn.prefixes.nbytes == 1 &&
++			    insn.prefixes.bytes[0] == 0xf2) {
++				/* ENQCMD cannot be used in the kernel. */
++				WARN("ENQCMD instruction at %s:%lx", sec->name,
++				     offset);
++			}
 +
- 	/* Update changed relocation sections and section headers: */
- 	list_for_each_entry(sec, &elf->sections, list) {
- 		if (sec->changed) {
-diff --git a/tools/objtool/include/objtool/builtin.h b/tools/objtool/include/objtool/builtin.h
-index 89ba869..7b4b124 100644
---- a/tools/objtool/include/objtool/builtin.h
-+++ b/tools/objtool/include/objtool/builtin.h
-@@ -9,7 +9,7 @@
+ 		} else if (op2 == 0xa0 || op2 == 0xa8) {
  
- extern const struct option check_options[];
- extern bool no_fp, no_unreachable, retpoline, module, backtrace, uaccess, stats,
--            validate_dup, vmlinux, mcount, noinstr, backup, sls;
-+            validate_dup, vmlinux, mcount, noinstr, backup, sls, dryrun;
- 
- extern int cmd_parse_options(int argc, const char **argv, const char * const usage[]);
- 
+ 			/* push fs/gs */
