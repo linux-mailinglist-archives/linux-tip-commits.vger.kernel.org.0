@@ -2,55 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A8C924D9910
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 15 Mar 2022 11:44:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F0CD34D991E
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 15 Mar 2022 11:44:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347248AbiCOKpL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 15 Mar 2022 06:45:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59530 "EHLO
+        id S1347242AbiCOKpc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 15 Mar 2022 06:45:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59688 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347279AbiCOKpH (ORCPT
+        with ESMTP id S1347246AbiCOKpJ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 15 Mar 2022 06:45:07 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCD9634BAD;
-        Tue, 15 Mar 2022 03:43:52 -0700 (PDT)
-Date:   Tue, 15 Mar 2022 10:43:50 -0000
+        Tue, 15 Mar 2022 06:45:09 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFC1435867;
+        Tue, 15 Mar 2022 03:43:54 -0700 (PDT)
+Date:   Tue, 15 Mar 2022 10:43:51 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1647341031;
+        s=2020; t=1647341033;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=0Wq35/iZAlxdevVct8p5zefpE51UTE9bhbwDutgz3JM=;
-        b=k+k+Kz85a842PTFttpkgw8EvtZCgjNz5FZMQ31wANAHNwUoNqD/Khsv2TsCqQyq3KdTR42
-        FjlO/y8BukU+IykpMNoCvVOufFdjPnIP+zrd1w7+0P5S1P1q60fpTThGOsgZt03loBYmda
-        6UTMt9LKh19Llcx4G895hIOR8IjznypISC0BrV/ufdf6rbElo06MrnTtUwpp5+WnE0MxON
-        rmM2qZ6aJIqfHFKYadiAyk+hOvKZdoqvU6vGlBABBbSFatMibJPb89WT4zsn59Cqpv1a6E
-        01Kq5RDFdm7KD9kZ1FpcIvQnOP9wbziH/Dy7DbyMw/b/0qVghtjJ3W10c7Oexw==
+        bh=PyPfSNK7F9E0Re0Lyq39CuljWYLxINrwTkbxkDLqxw8=;
+        b=FRWoVL69dxaUNkB/De2Jsj4rYQExAcMIyvi1+znzVzY/tqumBzhLo9Ru42yr+iUufzkR2d
+        m6x/+qOBga62Oz9fILaiqZRBY3R1yCrmRcEDPfpDByKmPMrIuQKzbqfX8lBU2VEElHUSXB
+        L0v1Ssyb9FgY4DJEg0uGbGT3qvqPKlAJlcFCd9Coz23gXrbMPQVfBALzcK1ndz4o29sN8W
+        ll92fn7Blejt1gofd3aTiQj4VU57nPowFoQlQBTwSRFCB8u7wBH1T/ONJSm4VkOYZn9Qud
+        IlLQXdIHi92nG4CC7cwgkgs0v+69rdqR2dg9xJM4C2WNqYhDyuKi+Jr+b5L50w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1647341031;
+        s=2020e; t=1647341033;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=0Wq35/iZAlxdevVct8p5zefpE51UTE9bhbwDutgz3JM=;
-        b=okPoqpf+QoGLrKK4dGWbv9utckfOdwI0IfxTePjq747ECNT+TFrq3AP4eLHHb9+NhakcDU
-        yU5yytdeX/5UsfCw==
+        bh=PyPfSNK7F9E0Re0Lyq39CuljWYLxINrwTkbxkDLqxw8=;
+        b=K6HNccWu2zNmPfNOm8LyMsRjn/Hso7maEaQ2ym8z+PwOb+HrEjEEdomVGlLhJRg8KHEcNH
+        007TsFkbKTCzkNCw==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/core] objtool: Ignore extra-symbol code
+Subject: [tip: x86/core] x86/ibt: Ensure module init/exit points have references
 Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Josh Poimboeuf <jpoimboe@redhat.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220308154319.232019347@infradead.org>
-References: <20220308154319.232019347@infradead.org>
+In-Reply-To: <20220308154319.113767246@infradead.org>
+References: <20220308154319.113767246@infradead.org>
 MIME-Version: 1.0
-Message-ID: <164734103023.16921.6263492677430129555.tip-bot2@tip-bot2>
+Message-ID: <164734103192.16921.3948203360443496828.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,188 +67,46 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/core branch of tip:
 
-Commit-ID:     4adb23686795e9c88e3217b5d7b4524c0da9d04f
-Gitweb:        https://git.kernel.org/tip/4adb23686795e9c88e3217b5d7b4524c0da9d04f
+Commit-ID:     cb9010f87dcbcdbb51cc96b922c6260848cecbd1
+Gitweb:        https://git.kernel.org/tip/cb9010f87dcbcdbb51cc96b922c6260848cecbd1
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Tue, 08 Mar 2022 16:30:46 +01:00
+AuthorDate:    Tue, 08 Mar 2022 16:30:44 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 15 Mar 2022 10:32:43 +01:00
+CommitterDate: Tue, 15 Mar 2022 10:32:42 +01:00
 
-objtool: Ignore extra-symbol code
+x86/ibt: Ensure module init/exit points have references
 
-There's a fun implementation detail on linking STB_WEAK symbols. When
-the linker combines two translation units, where one contains a weak
-function and the other an override for it. It simply strips the
-STB_WEAK symbol from the symbol table, but doesn't actually remove the
-code.
-
-The result is that when objtool is ran in a whole-archive kind of way,
-it will encounter *heaps* of unused (and unreferenced) code. All
-rudiments of weak functions.
-
-Additionally, when a weak implementation is split into a .cold
-subfunction that .cold symbol is left in place, even though completely
-unused.
-
-Teach objtool to ignore such rudiments by searching for symbol holes;
-that is, code ranges that fall outside the given symbol bounds.
-Specifically, ignore a sequence of unreachable instruction iff they
-occupy a single hole, additionally ignore any .cold subfunctions
-referenced.
-
-Both ld.bfd and ld.lld behave like this. LTO builds otoh can (and do)
-properly DCE weak functions.
+Since the references to the module init/exit points only have external
+references, a module LTO run will consider them 'unused' and seal
+them, leading to an immediate fail on module load.
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Acked-by: Josh Poimboeuf <jpoimboe@redhat.com>
-Link: https://lore.kernel.org/r/20220308154319.232019347@infradead.org
+Link: https://lore.kernel.org/r/20220308154319.113767246@infradead.org
 ---
- tools/objtool/check.c               | 43 ++++++++++++++++++++-
- tools/objtool/elf.c                 | 60 ++++++++++++++++++++++++++++-
- tools/objtool/include/objtool/elf.h |  1 +-
- 3 files changed, 104 insertions(+)
+ include/linux/cfi.h | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index ae1d4f9..0e0e5b5 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -3346,6 +3346,49 @@ static bool ignore_unreachable_insn(struct objtool_file *file, struct instructio
- 	    !strcmp(insn->sec->name, ".altinstr_aux"))
- 		return true;
+diff --git a/include/linux/cfi.h b/include/linux/cfi.h
+index 879744a..c6dfc1e 100644
+--- a/include/linux/cfi.h
++++ b/include/linux/cfi.h
+@@ -34,8 +34,17 @@ static inline void cfi_module_remove(struct module *mod, unsigned long base_addr
  
-+	/*
-+	 * Whole archive runs might encounder dead code from weak symbols.
-+	 * This is where the linker will have dropped the weak symbol in
-+	 * favour of a regular symbol, but leaves the code in place.
-+	 *
-+	 * In this case we'll find a piece of code (whole function) that is not
-+	 * covered by a !section symbol. Ignore them.
-+	 */
-+	if (!insn->func && lto) {
-+		int size = find_symbol_hole_containing(insn->sec, insn->offset);
-+		unsigned long end = insn->offset + size;
-+
-+		if (!size) /* not a hole */
-+			return false;
-+
-+		if (size < 0) /* hole until the end */
-+			return true;
-+
-+		sec_for_each_insn_continue(file, insn) {
-+			/*
-+			 * If we reach a visited instruction at or before the
-+			 * end of the hole, ignore the unreachable.
-+			 */
-+			if (insn->visited)
-+				return true;
-+
-+			if (insn->offset >= end)
-+				break;
-+
-+			/*
-+			 * If this hole jumps to a .cold function, mark it ignore too.
-+			 */
-+			if (insn->jump_dest && insn->jump_dest->func &&
-+			    strstr(insn->jump_dest->func->name, ".cold")) {
-+				struct instruction *dest = insn->jump_dest;
-+				func_for_each_insn(file, dest->func, dest)
-+					dest->ignore = true;
-+			}
-+		}
-+
-+		return false;
-+	}
-+
- 	if (!insn->func)
- 		return false;
+ #else /* !CONFIG_CFI_CLANG */
  
-diff --git a/tools/objtool/elf.c b/tools/objtool/elf.c
-index 456ac22..d7b99a7 100644
---- a/tools/objtool/elf.c
-+++ b/tools/objtool/elf.c
-@@ -83,6 +83,31 @@ static int symbol_by_offset(const void *key, const struct rb_node *node)
- 	return 0;
- }
+-#define __CFI_ADDRESSABLE(fn, __attr)
++#ifdef CONFIG_X86_KERNEL_IBT
++
++#define __CFI_ADDRESSABLE(fn, __attr) \
++	const void *__cfi_jt_ ## fn __visible __attr = (void *)&fn
++
++#endif /* CONFIG_X86_KERNEL_IBT */
  
-+struct symbol_hole {
-+	unsigned long key;
-+	const struct symbol *sym;
-+};
-+
-+/*
-+ * Find !section symbol where @offset is after it.
-+ */
-+static int symbol_hole_by_offset(const void *key, const struct rb_node *node)
-+{
-+	const struct symbol *s = rb_entry(node, struct symbol, node);
-+	struct symbol_hole *sh = (void *)key;
-+
-+	if (sh->key < s->offset)
-+		return -1;
-+
-+	if (sh->key >= s->offset + s->len) {
-+		if (s->type != STT_SECTION)
-+			sh->sym = s;
-+		return 1;
-+	}
-+
-+	return 0;
-+}
-+
- struct section *find_section_by_name(const struct elf *elf, const char *name)
- {
- 	struct section *sec;
-@@ -162,6 +187,41 @@ struct symbol *find_symbol_containing(const struct section *sec, unsigned long o
- 	return NULL;
- }
+ #endif /* CONFIG_CFI_CLANG */
  
-+/*
-+ * Returns size of hole starting at @offset.
-+ */
-+int find_symbol_hole_containing(const struct section *sec, unsigned long offset)
-+{
-+	struct symbol_hole hole = {
-+		.key = offset,
-+		.sym = NULL,
-+	};
-+	struct rb_node *n;
-+	struct symbol *s;
++#ifndef __CFI_ADDRESSABLE
++#define __CFI_ADDRESSABLE(fn, __attr)
++#endif
 +
-+	/*
-+	 * Find the rightmost symbol for which @offset is after it.
-+	 */
-+	n = rb_find(&hole, &sec->symbol_tree, symbol_hole_by_offset);
-+
-+	/* found a symbol that contains @offset */
-+	if (n)
-+		return 0; /* not a hole */
-+
-+	/* didn't find a symbol for which @offset is after it */
-+	if (!hole.sym)
-+		return 0; /* not a hole */
-+
-+	/* @offset >= sym->offset + sym->len, find symbol after it */
-+	n = rb_next(&hole.sym->node);
-+	if (!n)
-+		return -1; /* until end of address space */
-+
-+	/* hole until start of next symbol */
-+	s = rb_entry(n, struct symbol, node);
-+	return s->offset - offset;
-+}
-+
- struct symbol *find_func_containing(struct section *sec, unsigned long offset)
- {
- 	struct rb_node *node;
-diff --git a/tools/objtool/include/objtool/elf.h b/tools/objtool/include/objtool/elf.h
-index d223367..22ba7e2 100644
---- a/tools/objtool/include/objtool/elf.h
-+++ b/tools/objtool/include/objtool/elf.h
-@@ -152,6 +152,7 @@ struct symbol *find_func_by_offset(struct section *sec, unsigned long offset);
- struct symbol *find_symbol_by_offset(struct section *sec, unsigned long offset);
- struct symbol *find_symbol_by_name(const struct elf *elf, const char *name);
- struct symbol *find_symbol_containing(const struct section *sec, unsigned long offset);
-+int find_symbol_hole_containing(const struct section *sec, unsigned long offset);
- struct reloc *find_reloc_by_dest(const struct elf *elf, struct section *sec, unsigned long offset);
- struct reloc *find_reloc_by_dest_range(const struct elf *elf, struct section *sec,
- 				     unsigned long offset, unsigned int len);
+ #endif /* _LINUX_CFI_H */
