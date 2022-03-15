@@ -2,74 +2,193 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B76044D9EE2
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 15 Mar 2022 16:39:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 25D504DA0D9
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 15 Mar 2022 18:07:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243846AbiCOPlJ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 15 Mar 2022 11:41:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47652 "EHLO
+        id S1350433AbiCORHM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 15 Mar 2022 13:07:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37812 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242826AbiCOPlJ (ORCPT
+        with ESMTP id S1350438AbiCORHL (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 15 Mar 2022 11:41:09 -0400
-Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id B862D53718
-        for <linux-tip-commits@vger.kernel.org>; Tue, 15 Mar 2022 08:39:56 -0700 (PDT)
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- uk-mtapsc-2-X2iS_tTiOcWMWEmfNZDmhg-1; Tue, 15 Mar 2022 15:39:53 +0000
-X-MC-Unique: X2iS_tTiOcWMWEmfNZDmhg-1
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) with Microsoft SMTP
- Server (TLS) id 15.0.1497.32; Tue, 15 Mar 2022 15:39:52 +0000
-Received: from AcuMS.Aculab.com ([fe80::994c:f5c2:35d6:9b65]) by
- AcuMS.aculab.com ([fe80::994c:f5c2:35d6:9b65%12]) with mapi id
- 15.00.1497.033; Tue, 15 Mar 2022 15:39:52 +0000
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-tip-commits@vger.kernel.org" 
-        <linux-tip-commits@vger.kernel.org>
-CC:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        "x86@kernel.org" <x86@kernel.org>
-Subject: RE: [tip: x86/core] objtool: Find unused ENDBR instructions
-Thread-Topic: [tip: x86/core] objtool: Find unused ENDBR instructions
-Thread-Index: AQHYOFmT3fMulR219kOHQpX/dLMyoazAlNEw
-Date:   Tue, 15 Mar 2022 15:39:52 +0000
-Message-ID: <a5fa50d9f00542de8a6ad7a3fe0c49b3@AcuMS.aculab.com>
-References: <20220308154319.763643193@infradead.org>
- <164734101940.16921.11639161864874862247.tip-bot2@tip-bot2>
-In-Reply-To: <164734101940.16921.11639161864874862247.tip-bot2@tip-bot2>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+        Tue, 15 Mar 2022 13:07:11 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC9EF580FE;
+        Tue, 15 Mar 2022 10:05:58 -0700 (PDT)
+Date:   Tue, 15 Mar 2022 17:05:54 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1647363956;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=mlXaSeWP66xNpLAMYFGcwVaODehcepISmjpSetFkRFw=;
+        b=LUYTAkb5h2Gf0bjvVIr2Tq8GIEScK6aXbFDH9t05gOKSiHeA/4ghUI71oVDVjYbVEklt26
+        b73SUpyRXMhWaz25/BcZgRtcwPf5W1k05Z3P132N4naR5E6xosKuSTtV8P6RFaqrb7MTLx
+        ndeF1QQHYs/D1sXwlg2M95UYi/QT1wNI6m3tJknuwTrMx2o4xH6TQVwJwcnw7XZriyn42L
+        eXgkcWcwc4FEl62ZuxTiXqltE+ZvyxzINHx7XAxtkixM+ejLWCHkQiXeHNwWnMkMTZ7Wn3
+        vwOkKLGzAzpRx45RSv2197/5Yjm757UZUpdT5RQd4QfduWK9THrQfNHMR+BNqA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1647363956;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=mlXaSeWP66xNpLAMYFGcwVaODehcepISmjpSetFkRFw=;
+        b=hLtjPLOkhVOW9xQIX9wCCek7rdBWzONjHpGWbRK4EOItey8fs7akv+wZAzH5T1a2kJLVYz
+        5Uv9Utie8HENheAQ==
+From:   "tip-bot2 for Srivatsa S. Bhat (VMware)" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/misc] MAINTAINERS: Mark VMware mailing list entries as
+ email aliases
+Cc:     "Srivatsa S. Bhat (VMware)" <srivatsa@csail.mit.edu>,
+        Borislav Petkov <bp@suse.de>, Juergen Gross <jgross@suse.com>,
+        Joe Perches <joe@perches.com>, Zack Rusin <zackr@vmware.com>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <164574148378.654750.15832494349474144706.stgit@csail.mit.edu>
+References: <164574148378.654750.15832494349474144706.stgit@csail.mit.edu>
 MIME-Version: 1.0
-Authentication-Results: relay.mimecast.com;
-        auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Message-ID: <164736395458.16921.2762087640279770080.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-RnJvbTogUGV0ZXIgWmlqbHN0cmENCj4gDQo+IG9ianRvb2w6IEZpbmQgdW51c2VkIEVOREJSIGlu
-c3RydWN0aW9ucw0KPiANCj4gRmluZCBhbGwgRU5EQlIgaW5zdHJ1Y3Rpb25zIHdoaWNoIGFyZSBu
-ZXZlciByZWZlcmVuY2VkIGFuZCBzdGljayB0aGVtDQo+IGluIGEgc2VjdGlvbiBzdWNoIHRoYXQg
-dGhlIGtlcm5lbCBjYW4gcG9pc29uIHRoZW0sIHNlYWxpbmcgdGhlDQo+IGZ1bmN0aW9ucyBmcm9t
-IGV2ZXIgYmVpbmcgYW4gaW5kaXJlY3QgY2FsbCB0YXJnZXQuDQoNClRob3VnaHQsIHdoYXQgaGFw
-cGVucyBpZiB0aGUgb25seSBpbmRpcmVjdCBjYWxsIGlzIGZyb20NCmNvZGUgaW4gYSBtb2R1bGU/
-DQoNCglEYXZpZA0KDQotDQpSZWdpc3RlcmVkIEFkZHJlc3MgTGFrZXNpZGUsIEJyYW1sZXkgUm9h
-ZCwgTW91bnQgRmFybSwgTWlsdG9uIEtleW5lcywgTUsxIDFQVCwgVUsNClJlZ2lzdHJhdGlvbiBO
-bzogMTM5NzM4NiAoV2FsZXMpDQo=
+The following commit has been merged into the x86/misc branch of tip:
 
+Commit-ID:     686016f732420f88dd2e1d67cf4bb5dffdb93c82
+Gitweb:        https://git.kernel.org/tip/686016f732420f88dd2e1d67cf4bb5dffdb93c82
+Author:        Srivatsa S. Bhat (VMware) <srivatsa@csail.mit.edu>
+AuthorDate:    Thu, 24 Feb 2022 14:24:49 -08:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Tue, 15 Mar 2022 17:46:15 +01:00
+
+MAINTAINERS: Mark VMware mailing list entries as email aliases
+
+VMware mailing lists in the MAINTAINERS file are private lists meant
+for VMware-internal review/notification for patches to the respective
+subsystems. Anyone can post to these addresses, but there is no public
+read access like open mailing lists, which makes them more like email
+aliases instead (to reach out to reviewers).
+
+So update all the VMware mailing list references in the MAINTAINERS
+file to mark them as such, using "R: email-alias@vmware.com".
+
+Signed-off-by: Srivatsa S. Bhat (VMware) <srivatsa@csail.mit.edu>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Acked-by: Juergen Gross <jgross@suse.com>
+Acked-by: Joe Perches <joe@perches.com>
+Acked-by: Zack Rusin <zackr@vmware.com>
+Link: https://lore.kernel.org/r/164574148378.654750.15832494349474144706.stgit@csail.mit.edu
+---
+ MAINTAINERS | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 630ac98..e6e5466 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -6301,8 +6301,8 @@ T:	git git://anongit.freedesktop.org/drm/drm-misc
+ F:	drivers/gpu/drm/vboxvideo/
+ 
+ DRM DRIVER FOR VMWARE VIRTUAL GPU
+-M:	"VMware Graphics" <linux-graphics-maintainer@vmware.com>
+ M:	Zack Rusin <zackr@vmware.com>
++R:	VMware Graphics Reviewers <linux-graphics-maintainer@vmware.com>
+ L:	dri-devel@lists.freedesktop.org
+ S:	Supported
+ T:	git git://anongit.freedesktop.org/drm/drm-misc
+@@ -14578,7 +14578,7 @@ PARAVIRT_OPS INTERFACE
+ M:	Juergen Gross <jgross@suse.com>
+ M:	Srivatsa S. Bhat (VMware) <srivatsa@csail.mit.edu>
+ R:	Alexey Makhalov <amakhalov@vmware.com>
+-M:	"VMware, Inc." <pv-drivers@vmware.com>
++R:	VMware PV-Drivers Reviewers <pv-drivers@vmware.com>
+ L:	virtualization@lists.linux-foundation.org
+ L:	x86@kernel.org
+ S:	Supported
+@@ -20580,7 +20580,7 @@ F:	tools/testing/vsock/
+ 
+ VMWARE BALLOON DRIVER
+ M:	Nadav Amit <namit@vmware.com>
+-M:	"VMware, Inc." <pv-drivers@vmware.com>
++R:	VMware PV-Drivers Reviewers <pv-drivers@vmware.com>
+ L:	linux-kernel@vger.kernel.org
+ S:	Maintained
+ F:	drivers/misc/vmw_balloon.c
+@@ -20588,7 +20588,7 @@ F:	drivers/misc/vmw_balloon.c
+ VMWARE HYPERVISOR INTERFACE
+ M:	Srivatsa S. Bhat (VMware) <srivatsa@csail.mit.edu>
+ M:	Alexey Makhalov <amakhalov@vmware.com>
+-M:	"VMware, Inc." <pv-drivers@vmware.com>
++R:	VMware PV-Drivers Reviewers <pv-drivers@vmware.com>
+ L:	virtualization@lists.linux-foundation.org
+ L:	x86@kernel.org
+ S:	Supported
+@@ -20599,14 +20599,14 @@ F:	arch/x86/kernel/cpu/vmware.c
+ VMWARE PVRDMA DRIVER
+ M:	Bryan Tan <bryantan@vmware.com>
+ M:	Vishnu Dasa <vdasa@vmware.com>
+-M:	VMware PV-Drivers <pv-drivers@vmware.com>
++R:	VMware PV-Drivers Reviewers <pv-drivers@vmware.com>
+ L:	linux-rdma@vger.kernel.org
+ S:	Maintained
+ F:	drivers/infiniband/hw/vmw_pvrdma/
+ 
+ VMware PVSCSI driver
+ M:	Vishal Bhakta <vbhakta@vmware.com>
+-M:	VMware PV-Drivers <pv-drivers@vmware.com>
++R:	VMware PV-Drivers Reviewers <pv-drivers@vmware.com>
+ L:	linux-scsi@vger.kernel.org
+ S:	Maintained
+ F:	drivers/scsi/vmw_pvscsi.c
+@@ -20614,7 +20614,7 @@ F:	drivers/scsi/vmw_pvscsi.h
+ 
+ VMWARE VIRTUAL PTP CLOCK DRIVER
+ M:	Vivek Thampi <vithampi@vmware.com>
+-M:	"VMware, Inc." <pv-drivers@vmware.com>
++R:	VMware PV-Drivers Reviewers <pv-drivers@vmware.com>
+ L:	netdev@vger.kernel.org
+ S:	Supported
+ F:	drivers/ptp/ptp_vmw.c
+@@ -20622,15 +20622,15 @@ F:	drivers/ptp/ptp_vmw.c
+ VMWARE VMCI DRIVER
+ M:	Jorgen Hansen <jhansen@vmware.com>
+ M:	Vishnu Dasa <vdasa@vmware.com>
++R:	VMware PV-Drivers Reviewers <pv-drivers@vmware.com>
+ L:	linux-kernel@vger.kernel.org
+-L:	pv-drivers@vmware.com (private)
+ S:	Maintained
+ F:	drivers/misc/vmw_vmci/
+ 
+ VMWARE VMMOUSE SUBDRIVER
+ M:	Zack Rusin <zackr@vmware.com>
+-M:	"VMware Graphics" <linux-graphics-maintainer@vmware.com>
+-M:	"VMware, Inc." <pv-drivers@vmware.com>
++R:	VMware Graphics Reviewers <linux-graphics-maintainer@vmware.com>
++R:	VMware PV-Drivers Reviewers <pv-drivers@vmware.com>
+ L:	linux-input@vger.kernel.org
+ S:	Maintained
+ F:	drivers/input/mouse/vmmouse.c
+@@ -20638,7 +20638,7 @@ F:	drivers/input/mouse/vmmouse.h
+ 
+ VMWARE VMXNET3 ETHERNET DRIVER
+ M:	Ronak Doshi <doshir@vmware.com>
+-M:	pv-drivers@vmware.com
++R:	VMware PV-Drivers Reviewers <pv-drivers@vmware.com>
+ L:	netdev@vger.kernel.org
+ S:	Maintained
+ F:	drivers/net/vmxnet3/
