@@ -2,49 +2,49 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D367F4D964F
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 15 Mar 2022 09:33:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E6BFA4D97C8
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 15 Mar 2022 10:37:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245421AbiCOIde (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 15 Mar 2022 04:33:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54984 "EHLO
+        id S240806AbiCOJiq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 15 Mar 2022 05:38:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59138 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345995AbiCOIcU (ORCPT
+        with ESMTP id S240794AbiCOJiq (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 15 Mar 2022 04:32:20 -0400
+        Tue, 15 Mar 2022 05:38:46 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 944E34C7BD;
-        Tue, 15 Mar 2022 01:31:07 -0700 (PDT)
-Date:   Tue, 15 Mar 2022 08:31:05 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D015B4BFF7;
+        Tue, 15 Mar 2022 02:37:34 -0700 (PDT)
+Date:   Tue, 15 Mar 2022 09:37:31 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1647333066;
+        s=2020; t=1647337052;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=PAIfHzuLRTya4FtPeZFGwa7r26FL64VKw4IcqyzpqZ8=;
-        b=f5zRCkxeIzLqsCRBSJcuttc8dFdhhIw2iTW+OQPH7BzLQd7UH05xj85P1E0S4BBjbjpISB
-        LenlNt9VDOVznP50bTywBh9kQfQCsDcSjHqGK4jl/DuQrSeHY30rLRC4UmbM34sSEa3zGM
-        SsEiLW5+20gIEuqlIY6lC0xplCfWTKA42cqBxuDbt5BZzhCQex074kKIFP8qCA8wzcKwtF
-        8yP47NDj5RzkPn1BKUXmALHtSdGyOe3oOgdirDQhJWfL9zzg5QodUXeNeim2On0gsFWTQA
-        20soWe1BdcfVdkZ8JKQQBSWm2FEQjzJJAa2n/JtM7DLUijKg4iol14ryPjt62w==
+        bh=3ia0ZuKoip7niW7Mhr46uK+h9ZAMkW+kBjY4r4FRun4=;
+        b=l+S9KaTSTUNeD4yQOqpNNRK6bXM706vYrwXWVwLDW3SQRZInOPQ+N3irGsdNeX4/NUDztR
+        p6fT6804tjzAzWsycpDKGBmAzPhUiRR5thjHVNISh22jTOxBq0YGbq3hlFeqc/2Vd0ydi8
+        kCk44iwk1D9KAe526gc++G6ShFJtKPn1/XBgffTWY9kMm6EVfU11hVpkwYFcIs+6xpcomt
+        +gpFW/euvn1+ilzAFoaYQ2GK1KpGhcA5MVkvCCr2iJIkPnkW739xbB/0WmhWkOl8PvalQT
+        gA75fOCRcNV7oIHI05E9TI1KgtJW1VJcI0qWanP2bCx1SRz1qxf8XS58KNISTw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1647333066;
+        s=2020e; t=1647337052;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=PAIfHzuLRTya4FtPeZFGwa7r26FL64VKw4IcqyzpqZ8=;
-        b=iTmzHV54KqmegI9+7xKYI1nr/g5BmLLjqFdLmjwFX7eCVMr2t79HBABkLYwIgzUQFPuktR
-        LX3KzkGIMG5nRRDg==
+        bh=3ia0ZuKoip7niW7Mhr46uK+h9ZAMkW+kBjY4r4FRun4=;
+        b=OXO3u/R67vk8o5tI0QT8q1Tqq76RiUZt7zGdz1GjFpRz5olpV4orM6OTKRCg8N6wvhXFc/
+        oW32MPH5Gy9GaIDQ==
 From:   "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/headers: Add header guard to kernel/sched/sched.h
-Cc:     Ingo Molnar <mingo@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: sched/core] sched/headers: Only include <linux/entry-common.h>
+ when CONFIG_GENERIC_ENTRY=y
+Cc:     Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <164733306511.16921.3387492917730056941.tip-bot2@tip-bot2>
+Message-ID: <164733705116.16921.7469552933423482732.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,39 +61,34 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     95458477f5b2dc436e3aa6aa25c0f84bb83e6195
-Gitweb:        https://git.kernel.org/tip/95458477f5b2dc436e3aa6aa25c0f84bb83e6195
+Commit-ID:     a7b2553b5ece1aba4b5994eef150d0a1269b5805
+Gitweb:        https://git.kernel.org/tip/a7b2553b5ece1aba4b5994eef150d0a1269b5805
 Author:        Ingo Molnar <mingo@kernel.org>
-AuthorDate:    Tue, 22 Feb 2022 14:50:43 +01:00
+AuthorDate:    Tue, 15 Mar 2022 10:33:53 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 23 Feb 2022 08:21:56 +01:00
+CommitterDate: Tue, 15 Mar 2022 10:33:53 +01:00
 
-sched/headers: Add header guard to kernel/sched/sched.h
+sched/headers: Only include <linux/entry-common.h> when CONFIG_GENERIC_ENTRY=y
 
-Use the canonical header guard naming of the full path to the header.
+This header is not (yet) standalone.
 
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Peter Zijlstra <peterz@infradead.org>
 ---
- kernel/sched/sched.h | 4 ++++
- 1 file changed, 4 insertions(+)
+ kernel/sched/core.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index 3da5718..eab4a18 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -2,6 +2,9 @@
- /*
-  * Scheduler internal types and methods:
-  */
-+#ifndef _KERNEL_SCHED_SCHED_H
-+#define _KERNEL_SCHED_SCHED_H
-+
- #include <linux/sched.h>
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index aa9e14c..bf443f4 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -63,7 +63,9 @@
+ #include <linux/workqueue_api.h>
  
- #include <linux/sched/autogroup.h>
-@@ -3137,3 +3140,4 @@ extern int sched_dynamic_mode(const char *str);
- extern void sched_dynamic_update(int mode);
+ #ifdef CONFIG_PREEMPT_DYNAMIC
+-# include <linux/entry-common.h>
++# ifdef CONFIG_GENERIC_ENTRY
++#  include <linux/entry-common.h>
++# endif
  #endif
  
-+#endif /* _KERNEL_SCHED_SCHED_H */
+ #include <uapi/linux/sched/types.h>
