@@ -2,49 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E6BFA4D97C8
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 15 Mar 2022 10:37:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 963F74D9905
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 15 Mar 2022 11:43:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240806AbiCOJiq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 15 Mar 2022 05:38:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59138 "EHLO
+        id S233770AbiCOKov (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 15 Mar 2022 06:44:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57948 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240794AbiCOJiq (ORCPT
+        with ESMTP id S1346790AbiCOKov (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 15 Mar 2022 05:38:46 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D015B4BFF7;
-        Tue, 15 Mar 2022 02:37:34 -0700 (PDT)
-Date:   Tue, 15 Mar 2022 09:37:31 -0000
+        Tue, 15 Mar 2022 06:44:51 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EFFE2A735;
+        Tue, 15 Mar 2022 03:43:39 -0700 (PDT)
+Date:   Tue, 15 Mar 2022 10:43:36 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1647337052;
+        s=2020; t=1647341017;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=3ia0ZuKoip7niW7Mhr46uK+h9ZAMkW+kBjY4r4FRun4=;
-        b=l+S9KaTSTUNeD4yQOqpNNRK6bXM706vYrwXWVwLDW3SQRZInOPQ+N3irGsdNeX4/NUDztR
-        p6fT6804tjzAzWsycpDKGBmAzPhUiRR5thjHVNISh22jTOxBq0YGbq3hlFeqc/2Vd0ydi8
-        kCk44iwk1D9KAe526gc++G6ShFJtKPn1/XBgffTWY9kMm6EVfU11hVpkwYFcIs+6xpcomt
-        +gpFW/euvn1+ilzAFoaYQ2GK1KpGhcA5MVkvCCr2iJIkPnkW739xbB/0WmhWkOl8PvalQT
-        gA75fOCRcNV7oIHI05E9TI1KgtJW1VJcI0qWanP2bCx1SRz1qxf8XS58KNISTw==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=Yl2fWHagBlaa+dT30ulQqwepkIMn7xa6saT0lFgJx04=;
+        b=Gk8VvIlIIltyW7GUgmrAzrf13Yx4BHMq5gRflI7Luxuy1qtsIPGdBNMnAVFF8B23njYArb
+        Ym5escHmMb6fU7NBcW3YGswClcH4sxmuXNBJwSouEGHCLsZ1MDvFhN+tevu0NicLsve3K7
+        SAU7q/ODmgwrfv9Ou72VgNWy+RtOwkzefqeen9tC683cwVE9tVvhZFq+NnwtIhLuHKIq1c
+        Z7hzJAPOZTxi6OWm8QqUJ02aQd15KK29pjEwWNzYW6/wUuScaXmSm/wjdE2pIreZtW3Ool
+        aQtzTqAkXyAJPgMqzl+4sq8ca5A+avdp2wfMVL6lrnb2aQwb7lKix5tynIQUnQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1647337052;
+        s=2020e; t=1647341017;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=3ia0ZuKoip7niW7Mhr46uK+h9ZAMkW+kBjY4r4FRun4=;
-        b=OXO3u/R67vk8o5tI0QT8q1Tqq76RiUZt7zGdz1GjFpRz5olpV4orM6OTKRCg8N6wvhXFc/
-        oW32MPH5Gy9GaIDQ==
-From:   "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=Yl2fWHagBlaa+dT30ulQqwepkIMn7xa6saT0lFgJx04=;
+        b=r5VZQBoBYta5GUxBreVgJT0AFviWIt3VapKTVGYVU7xdcsHufOo1gLRNfVf07gVG4jLbOh
+        BfFXuNEUrp3MBIBw==
+From:   "tip-bot2 for Nathan Chancellor" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/headers: Only include <linux/entry-common.h>
- when CONFIG_GENERIC_ENTRY=y
-Cc:     Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
+Subject: [tip: x86/core] x86/Kconfig: Do not allow CONFIG_X86_X32_ABI=y with
+ llvm-objcopy
+Cc:     Nathan Chancellor <nathan@kernel.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
+In-Reply-To: <20220314194842.3452-3-nathan@kernel.org>
+References: <20220314194842.3452-3-nathan@kernel.org>
 MIME-Version: 1.0
-Message-ID: <164733705116.16921.7469552933423482732.tip-bot2@tip-bot2>
+Message-ID: <164734101627.16921.6585192562159418257.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,36 +66,62 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the x86/core branch of tip:
 
-Commit-ID:     a7b2553b5ece1aba4b5994eef150d0a1269b5805
-Gitweb:        https://git.kernel.org/tip/a7b2553b5ece1aba4b5994eef150d0a1269b5805
-Author:        Ingo Molnar <mingo@kernel.org>
-AuthorDate:    Tue, 15 Mar 2022 10:33:53 +01:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 15 Mar 2022 10:33:53 +01:00
+Commit-ID:     aaeed6ecc1253ce1463fa1aca0b70a4ccbc9fa75
+Gitweb:        https://git.kernel.org/tip/aaeed6ecc1253ce1463fa1aca0b70a4ccbc9fa75
+Author:        Nathan Chancellor <nathan@kernel.org>
+AuthorDate:    Mon, 14 Mar 2022 12:48:42 -07:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Tue, 15 Mar 2022 10:32:48 +01:00
 
-sched/headers: Only include <linux/entry-common.h> when CONFIG_GENERIC_ENTRY=y
+x86/Kconfig: Do not allow CONFIG_X86_X32_ABI=y with llvm-objcopy
 
-This header is not (yet) standalone.
+There are two outstanding issues with CONFIG_X86_X32_ABI and
+llvm-objcopy, with similar root causes:
 
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
+1. llvm-objcopy does not properly convert .note.gnu.property when going
+   from x86_64 to x86_x32, resulting in a corrupted section when
+   linking:
+
+   https://github.com/ClangBuiltLinux/linux/issues/1141
+
+2. llvm-objcopy produces corrupted compressed debug sections when going
+   from x86_64 to x86_x32, also resulting in an error when linking:
+
+   https://github.com/ClangBuiltLinux/linux/issues/514
+
+After commit 41c5ef31ad71 ("x86/ibt: Base IBT bits"), the
+.note.gnu.property section is always generated when
+CONFIG_X86_KERNEL_IBT is enabled, which causes the first issue to become
+visible with an allmodconfig build:
+
+  ld.lld: error: arch/x86/entry/vdso/vclock_gettime-x32.o:(.note.gnu.property+0x1c): program property is too short
+
+To avoid this error, do not allow CONFIG_X86_X32_ABI to be selected when
+using llvm-objcopy. If the two issues ever get fixed in llvm-objcopy,
+this can be turned into a feature check.
+
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20220314194842.3452-3-nathan@kernel.org
 ---
- kernel/sched/core.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/x86/Kconfig | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index aa9e14c..bf443f4 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -63,7 +63,9 @@
- #include <linux/workqueue_api.h>
- 
- #ifdef CONFIG_PREEMPT_DYNAMIC
--# include <linux/entry-common.h>
-+# ifdef CONFIG_GENERIC_ENTRY
-+#  include <linux/entry-common.h>
-+# endif
- #endif
- 
- #include <uapi/linux/sched/types.h>
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index b903bfc..0f0672d 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -2864,6 +2864,11 @@ config IA32_AOUT
+ config X86_X32_ABI
+ 	bool "x32 ABI for 64-bit mode"
+ 	depends on X86_64
++	# llvm-objcopy does not convert x86_64 .note.gnu.property or
++	# compressed debug sections to x86_x32 properly:
++	# https://github.com/ClangBuiltLinux/linux/issues/514
++	# https://github.com/ClangBuiltLinux/linux/issues/1141
++	depends on $(success,$(OBJCOPY) --version | head -n1 | grep -qv llvm)
+ 	help
+ 	  Include code to run binaries for the x32 native 32-bit ABI
+ 	  for 64-bit processors.  An x32 process gets access to the
