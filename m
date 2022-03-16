@@ -2,124 +2,111 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BD0E04DA0DB
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 15 Mar 2022 18:07:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BD7254DAE1F
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 16 Mar 2022 11:16:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241445AbiCORHM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 15 Mar 2022 13:07:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37814 "EHLO
+        id S1353577AbiCPKSE (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 16 Mar 2022 06:18:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50096 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350439AbiCORHL (ORCPT
+        with ESMTP id S235251AbiCPKSE (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 15 Mar 2022 13:07:11 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E4125838F;
-        Tue, 15 Mar 2022 10:05:59 -0700 (PDT)
-Date:   Tue, 15 Mar 2022 17:05:56 -0000
+        Wed, 16 Mar 2022 06:18:04 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F2BC652E4;
+        Wed, 16 Mar 2022 03:16:50 -0700 (PDT)
+Date:   Wed, 16 Mar 2022 10:16:45 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1647363957;
+        s=2020; t=1647425808;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=pPbLF8wqrQxOrPBpwWkm500pyBsDWh/pxVvbE9yQs2o=;
-        b=FNkfEEXSZtWhxMsmccig9GVkb87TWZLXZciEnvpzV63/9Vi33WxB6oh2aQbbWa6a+LPcwM
-        kU4lBhWqY0Ekfs6nVrlPaL3AlSHuhEnfsN5Tn4Zp6Rq/sRvYXPfPSvZRiMeR//iikD6zlV
-        fRtgyc6ocmgq0jcWMloveTbr5WlsTBARCvJgdoYb6XhW/dIgoW1kQlaw2iwN4Pll8N5noK
-        SYS3YlO9fWXm/9TmJYn5quPJ/dTAzYCAqCVpgjXP7ezwCPOWAjnA2yZXKJGvI5eDGXbKCk
-        cYCueWQufR0/PLR/0EFPrcn3YTYOFLrjc+CJdTT4ymyq8lXsPq0X/sgHlwMhaw==
+        bh=/uhOLMazwC5SQwWzyqg971VyuPTFYQGWqUb9R9iSPZc=;
+        b=PgvlCi2YH1ObraubcB+gzHmMv0A88Q2PDrfOu1unEXr0sTRVFkILv3iA5qcTX1oBnCNr5c
+        PQGOJzIzuInonfsBBWvLZEruC7wDKJl33pzVVTZnjEVU80rUQPLIXO/Z/LmRIKSr21O+te
+        JgFG4KoeW0dwoEzBMXrgl/D68EqYzG/ut6KiIjiY8lzST31csA/JgAVRG7Gghpeot3OFW5
+        1M5DPdfnF/JW3GYK/46eoUKnOm4rjzQ4R6Vfbw3DnxuXXYCgmPge0mzfKXQ5npMzSRkErf
+        icQjHS28e7l5ovz80W4lBb1LVblRa/EKChpNdcs3caUJl1Pf6uHGeUu/HETmVA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1647363957;
+        s=2020e; t=1647425808;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=pPbLF8wqrQxOrPBpwWkm500pyBsDWh/pxVvbE9yQs2o=;
-        b=klkOeP0g45J64IvkX7y3BG64cR0fFKDIin8TBAkNMAWH7GR8i9QdhsnleBhb38jtQ2TqT6
-        yry31iORe/58cGDw==
-From:   "tip-bot2 for Srivatsa S. Bhat (VMware)" <tip-bot2@linutronix.de>
+        bh=/uhOLMazwC5SQwWzyqg971VyuPTFYQGWqUb9R9iSPZc=;
+        b=5zKPehMD0hQLzKP3bAxpYufgZKutXX1gHVdiFuVHJs2e8oCOOtO+L5kFfpmeZyxQGJjShp
+        pPCMkI8P4vfxk7Dw==
+From:   "tip-bot2 for Jiri Kosina" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/misc] MAINTAINERS: Update maintainers for paravirt ops and
- VMware hypervisor interface
-Cc:     "Srivatsa S. Bhat (VMware)" <srivatsa@csail.mit.edu>,
-        Borislav Petkov <bp@suse.de>,
-        Alexey Makhalov <amakhalov@vmware.com>,
-        Deep Shah <sdeep@vmware.com>, Juergen Gross <jgross@suse.com>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <164574143710.654750.17342470717937593195.stgit@csail.mit.edu>
-References: <164574143710.654750.17342470717937593195.stgit@csail.mit.edu>
+Subject: [tip: x86/cleanups] x86/nmi: Remove the 'strange power saving mode'
+ hint from unknown NMI handler
+Cc:     Jiri Kosina <jkosina@suse.cz>, Borislav Petkov <bp@suse.de>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <nycvar.YFH.7.76.2203140924120.24795@cbobk.fhfr.pm>
+References: <nycvar.YFH.7.76.2203140924120.24795@cbobk.fhfr.pm>
 MIME-Version: 1.0
-Message-ID: <164736395665.16921.16724160880437600840.tip-bot2@tip-bot2>
+Message-ID: <164742580521.16921.12855276450839401894.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        SPF_PASS,TVD_SUBJ_WIPE_DEBT,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/misc branch of tip:
+The following commit has been merged into the x86/cleanups branch of tip:
 
-Commit-ID:     01683580c65ffe0ce72d52cfb5225b80b477c598
-Gitweb:        https://git.kernel.org/tip/01683580c65ffe0ce72d52cfb5225b80b477c598
-Author:        Srivatsa S. Bhat (VMware) <srivatsa@csail.mit.edu>
-AuthorDate:    Thu, 24 Feb 2022 14:24:22 -08:00
+Commit-ID:     d4c9df20a37d128f6acb3c6286db7e694554a51b
+Gitweb:        https://git.kernel.org/tip/d4c9df20a37d128f6acb3c6286db7e694554a51b
+Author:        Jiri Kosina <jkosina@suse.cz>
+AuthorDate:    Mon, 14 Mar 2022 09:25:18 +01:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 15 Mar 2022 17:44:16 +01:00
+CommitterDate: Wed, 16 Mar 2022 11:02:41 +01:00
 
-MAINTAINERS: Update maintainers for paravirt ops and VMware hypervisor interface
+x86/nmi: Remove the 'strange power saving mode' hint from unknown NMI handler
 
-Deep has decided to transfer the joint-maintainership of paravirt ops
-to Srivatsa, and the maintainership of the VMware hypervisor interface
-to Srivatsa and Alexey. Update the MAINTAINERS file to reflect this
-change, and also add Alexey as a reviewer for paravirt ops.
+The
 
-Signed-off-by: Srivatsa S. Bhat (VMware) <srivatsa@csail.mit.edu>
+  Do you have a strange power saving mode enabled?
+
+hint when unknown NMI happens dates back to i386 stone age, and isn't
+currently really helpful.
+
+Unknown NMIs are coming for many different reasons (broken firmware,
+faulty hardware, ...) and rarely have anything to do with 'strange power
+saving mode' (whatever that even is).
+
+Just remove it as it's largerly misleading.
+
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Acked-by: Alexey Makhalov <amakhalov@vmware.com>
-Acked-by: Deep Shah <sdeep@vmware.com>
-Acked-by: Juergen Gross <jgross@suse.com>
-Link: https://lore.kernel.org/r/164574143710.654750.17342470717937593195.stgit@csail.mit.edu
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/nycvar.YFH.7.76.2203140924120.24795@cbobk.fhfr.pm
 ---
- MAINTAINERS | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ arch/x86/kernel/nmi.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index ea3e6c9..4f81c3d 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -14576,7 +14576,8 @@ F:	include/uapi/linux/ppdev.h
+diff --git a/arch/x86/kernel/nmi.c b/arch/x86/kernel/nmi.c
+index 4bce802..e73f7df 100644
+--- a/arch/x86/kernel/nmi.c
++++ b/arch/x86/kernel/nmi.c
+@@ -292,7 +292,6 @@ unknown_nmi_error(unsigned char reason, struct pt_regs *regs)
+ 	pr_emerg("Uhhuh. NMI received for unknown reason %02x on CPU %d.\n",
+ 		 reason, smp_processor_id());
  
- PARAVIRT_OPS INTERFACE
- M:	Juergen Gross <jgross@suse.com>
--M:	Deep Shah <sdeep@vmware.com>
-+M:	Srivatsa S. Bhat (VMware) <srivatsa@csail.mit.edu>
-+R:	Alexey Makhalov <amakhalov@vmware.com>
- M:	"VMware, Inc." <pv-drivers@vmware.com>
- L:	virtualization@lists.linux-foundation.org
- L:	x86@kernel.org
-@@ -20585,10 +20586,13 @@ S:	Maintained
- F:	drivers/misc/vmw_balloon.c
- 
- VMWARE HYPERVISOR INTERFACE
--M:	Deep Shah <sdeep@vmware.com>
-+M:	Srivatsa S. Bhat (VMware) <srivatsa@csail.mit.edu>
-+M:	Alexey Makhalov <amakhalov@vmware.com>
- M:	"VMware, Inc." <pv-drivers@vmware.com>
- L:	virtualization@lists.linux-foundation.org
-+L:	x86@kernel.org
- S:	Supported
-+T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git x86/vmware
- F:	arch/x86/include/asm/vmware.h
- F:	arch/x86/kernel/cpu/vmware.c
+-	pr_emerg("Do you have a strange power saving mode enabled?\n");
+ 	if (unknown_nmi_panic || panic_on_unrecovered_nmi)
+ 		nmi_panic(regs, "NMI: Not continuing");
  
