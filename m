@@ -2,111 +2,101 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BD7254DAE1F
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 16 Mar 2022 11:16:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C55174DD0A9
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 17 Mar 2022 23:23:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353577AbiCPKSE (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 16 Mar 2022 06:18:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50096 "EHLO
+        id S229469AbiCQWYV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 17 Mar 2022 18:24:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40644 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235251AbiCPKSE (ORCPT
+        with ESMTP id S229719AbiCQWYT (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 16 Mar 2022 06:18:04 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F2BC652E4;
-        Wed, 16 Mar 2022 03:16:50 -0700 (PDT)
-Date:   Wed, 16 Mar 2022 10:16:45 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1647425808;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
+        Thu, 17 Mar 2022 18:24:19 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id DAB66443E4
+        for <linux-tip-commits@vger.kernel.org>; Thu, 17 Mar 2022 15:23:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1647555781;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=/uhOLMazwC5SQwWzyqg971VyuPTFYQGWqUb9R9iSPZc=;
-        b=PgvlCi2YH1ObraubcB+gzHmMv0A88Q2PDrfOu1unEXr0sTRVFkILv3iA5qcTX1oBnCNr5c
-        PQGOJzIzuInonfsBBWvLZEruC7wDKJl33pzVVTZnjEVU80rUQPLIXO/Z/LmRIKSr21O+te
-        JgFG4KoeW0dwoEzBMXrgl/D68EqYzG/ut6KiIjiY8lzST31csA/JgAVRG7Gghpeot3OFW5
-        1M5DPdfnF/JW3GYK/46eoUKnOm4rjzQ4R6Vfbw3DnxuXXYCgmPge0mzfKXQ5npMzSRkErf
-        icQjHS28e7l5ovz80W4lBb1LVblRa/EKChpNdcs3caUJl1Pf6uHGeUu/HETmVA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1647425808;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=/uhOLMazwC5SQwWzyqg971VyuPTFYQGWqUb9R9iSPZc=;
-        b=5zKPehMD0hQLzKP3bAxpYufgZKutXX1gHVdiFuVHJs2e8oCOOtO+L5kFfpmeZyxQGJjShp
-        pPCMkI8P4vfxk7Dw==
-From:   "tip-bot2 for Jiri Kosina" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cleanups] x86/nmi: Remove the 'strange power saving mode'
- hint from unknown NMI handler
-Cc:     Jiri Kosina <jkosina@suse.cz>, Borislav Petkov <bp@suse.de>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <nycvar.YFH.7.76.2203140924120.24795@cbobk.fhfr.pm>
-References: <nycvar.YFH.7.76.2203140924120.24795@cbobk.fhfr.pm>
+        bh=Sv3UUAVB2KPZ5L0mxg1wFQw0ov6G6R3jsnNctmpYwvw=;
+        b=FAobd7dvev6D0aSt9yvgLuuwMkJliNX3Fjgi+TIwghAaY1OcI2DOOzjlVmGQAF6NmDLwzj
+        XjEfFNGXNfbTKyEycENOS4GX7TnZadyqJuoDH/HOp0NdQsQPHdy32p2yE1UI6CiAeukVVV
+        3yuqfNRWln1mK2SxoPFzsWvU3Yb0XuY=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-60-dbfnkSjvNQehw05h1KoLow-1; Thu, 17 Mar 2022 18:22:58 -0400
+X-MC-Unique: dbfnkSjvNQehw05h1KoLow-1
+Received: by mail-qk1-f198.google.com with SMTP id u17-20020a05620a431100b004765c0dc33cso4280181qko.14
+        for <linux-tip-commits@vger.kernel.org>; Thu, 17 Mar 2022 15:22:58 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=Sv3UUAVB2KPZ5L0mxg1wFQw0ov6G6R3jsnNctmpYwvw=;
+        b=D2BvXOctnN5HhUwm7neI01CyP7A3F+R6RqGZlmfEvoIo6oEpbqtDQ0gkExuxCBScNC
+         RMfnYabi3XzqWHp4X4lzslZ/mwCJgPXhKMDppKX4ku8tyoHnvez4nozF8xS2OhGKdDEt
+         MGyQWPUb4bYpvhvCVsdkSDTn9uf82rLkhNrpoC7RMDgx9LRiu9AImARv0bKfOo7oF9Wu
+         kINkzsiH7Ncla44r1cqGVPQei2MlwdawF32Eu+6Wc13xY+cZ2KnJ53z93uVSdeOGs6Fv
+         CP8gF8we3Z2oAKA1GxQsKvSwt6B4T4feEtQFl53UsHgG/L45F9YkU69aQv2z/Vy7Dq6W
+         lwkw==
+X-Gm-Message-State: AOAM532qOGOFci+yuOGYkY48Zn844KP1+aNwaYUtk+KOQ2NzOaPIOyNG
+        wMA4zu/PKlMiyLF3siBUs4NxUgrArSV5DLJ5YzmuKFoYZcWFhMwjyKz+kvnnKi9blYVzaG2mlAZ
+        BGC3fWHm9GfaEvUo4e1aqNKBWhf7Tgng=
+X-Received: by 2002:a05:620a:2481:b0:67b:39ef:b3eb with SMTP id i1-20020a05620a248100b0067b39efb3ebmr4245603qkn.188.1647555778246;
+        Thu, 17 Mar 2022 15:22:58 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJzB5EHpzybgcaF3fhLBPNrQL4vv70Dh880xKSomJoQSZ34rgt+KARoQMjBGMUhTqVX0eNgzUA==
+X-Received: by 2002:a05:620a:2481:b0:67b:39ef:b3eb with SMTP id i1-20020a05620a248100b0067b39efb3ebmr4245596qkn.188.1647555778037;
+        Thu, 17 Mar 2022 15:22:58 -0700 (PDT)
+Received: from treble ([2600:1700:6e32:6c00::15])
+        by smtp.gmail.com with ESMTPSA id h2-20020ac85842000000b002e1ec550506sm3755079qth.87.2022.03.17.15.22.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Mar 2022 15:22:57 -0700 (PDT)
+Date:   Thu, 17 Mar 2022 15:22:54 -0700
+From:   Josh Poimboeuf <jpoimboe@redhat.com>
+To:     David Laight <David.Laight@aculab.com>
+Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-tip-commits@vger.kernel.org" 
+        <linux-tip-commits@vger.kernel.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        "x86@kernel.org" <x86@kernel.org>
+Subject: Re: [tip: x86/core] objtool: Find unused ENDBR instructions
+Message-ID: <20220317222254.lm2f2337jejcf3uu@treble>
+References: <20220308154319.763643193@infradead.org>
+ <164734101940.16921.11639161864874862247.tip-bot2@tip-bot2>
+ <a5fa50d9f00542de8a6ad7a3fe0c49b3@AcuMS.aculab.com>
 MIME-Version: 1.0
-Message-ID: <164742580521.16921.12855276450839401894.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,TVD_SUBJ_WIPE_DEBT,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <a5fa50d9f00542de8a6ad7a3fe0c49b3@AcuMS.aculab.com>
+X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cleanups branch of tip:
+On Tue, Mar 15, 2022 at 03:39:52PM +0000, David Laight wrote:
+> From: Peter Zijlstra
+> > 
+> > objtool: Find unused ENDBR instructions
+> > 
+> > Find all ENDBR instructions which are never referenced and stick them
+> > in a section such that the kernel can poison them, sealing the
+> > functions from ever being an indirect call target.
+> 
+> Thought, what happens if the only indirect call is from
+> code in a module?
 
-Commit-ID:     d4c9df20a37d128f6acb3c6286db7e694554a51b
-Gitweb:        https://git.kernel.org/tip/d4c9df20a37d128f6acb3c6286db7e694554a51b
-Author:        Jiri Kosina <jkosina@suse.cz>
-AuthorDate:    Mon, 14 Mar 2022 09:25:18 +01:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Wed, 16 Mar 2022 11:02:41 +01:00
+Then <boom>, I guess.  Is it safe to assume in-tree modules don't need
+to do indirect calls to exported functions?  I guess we'll find out :-)
 
-x86/nmi: Remove the 'strange power saving mode' hint from unknown NMI handler
+-- 
+Josh
 
-The
-
-  Do you have a strange power saving mode enabled?
-
-hint when unknown NMI happens dates back to i386 stone age, and isn't
-currently really helpful.
-
-Unknown NMIs are coming for many different reasons (broken firmware,
-faulty hardware, ...) and rarely have anything to do with 'strange power
-saving mode' (whatever that even is).
-
-Just remove it as it's largerly misleading.
-
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/nycvar.YFH.7.76.2203140924120.24795@cbobk.fhfr.pm
----
- arch/x86/kernel/nmi.c | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/arch/x86/kernel/nmi.c b/arch/x86/kernel/nmi.c
-index 4bce802..e73f7df 100644
---- a/arch/x86/kernel/nmi.c
-+++ b/arch/x86/kernel/nmi.c
-@@ -292,7 +292,6 @@ unknown_nmi_error(unsigned char reason, struct pt_regs *regs)
- 	pr_emerg("Uhhuh. NMI received for unknown reason %02x on CPU %d.\n",
- 		 reason, smp_processor_id());
- 
--	pr_emerg("Do you have a strange power saving mode enabled?\n");
- 	if (unknown_nmi_panic || panic_on_unrecovered_nmi)
- 		nmi_panic(regs, "NMI: Not continuing");
- 
