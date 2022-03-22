@@ -2,52 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 29D794E3A0A
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 22 Mar 2022 09:03:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CF5554E4767
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 22 Mar 2022 21:24:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229758AbiCVIEP (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 22 Mar 2022 04:04:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39018 "EHLO
+        id S229558AbiCVUZe (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 22 Mar 2022 16:25:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37208 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229691AbiCVIEO (ORCPT
+        with ESMTP id S229603AbiCVUZd (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 22 Mar 2022 04:04:14 -0400
+        Tue, 22 Mar 2022 16:25:33 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BD545A5AC;
-        Tue, 22 Mar 2022 01:02:48 -0700 (PDT)
-Date:   Tue, 22 Mar 2022 08:02:45 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA0B513D03;
+        Tue, 22 Mar 2022 13:24:02 -0700 (PDT)
+Date:   Tue, 22 Mar 2022 20:23:58 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1647936166;
+        s=2020; t=1647980639;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=zC0KMgmR8oZmeDTsp0o5snXk5OZvrD4+E+WJEQEL2lM=;
-        b=weYR9844Ovn/YQAU5MiheVXb0GiSNSd+6KUcT2O7TYOASMk+2GvcJEt97j37VWJ4ZNsRaR
-        ltyv6zKJbGy9pqrSWVVDGl60hADE1zTnO1epER4s/m3x0Ay86jvMPdvlf+5YqardqgUH6c
-        iQks5vmL3MfSB5dNBWYW23p+RfYhtzTFnjicnyg831R/Moiq89wQsxA0nwyNVgSruu97Kl
-        cgwf/lyqFVgX3CywEkevPTPHIZ+UAiiFbDHC5zBh70DwLRATyOeG3oMbuEEgokRxQS55br
-        hL1XxWKKgxmDT5LlgcLJAGIfX7NOrZ5wHcdMk+Etdd7wd8wK8UzuQlBL78D28A==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=FpHf3J0IndPvb6SXBQNlzJ+ROW8V9+wZlTmcC3yDDs4=;
+        b=opHOCMceNZhVJGDsTfLP8xSrg6gxG88cM/NW9jmzVb1pmfEQ1/qMTCSLsJpeKvue0Wgyqw
+        R4KehqIV2YIeiDG5oRkzOd4kpqTt00iECzUU9LrEjRddpOCo9w0qxbjRWCdgKBSUzLs8s1
+        8vfzL8XHMoS6NkjrvSMzJx5j6mRLgLzz0X+hDVBpiPfVaU/KAcTBqJ/KXaVxHQOVuqaS4L
+        b6AyQwUjVsnja0PdcSKzkSDZvj4JsMndEoJHR+3RADUdiPyLW2AEd+4ouiGit3Nm6Ulmee
+        rKk2K5J8oM9miMcRrr1NhdUGDyRdpXWluBc/eZyQC9BKd/lZUgkwXyYk0Iq63g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1647936166;
+        s=2020e; t=1647980639;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=zC0KMgmR8oZmeDTsp0o5snXk5OZvrD4+E+WJEQEL2lM=;
-        b=oDvFMDpfyEmjxyLcabzaLyqCghHjL/XiqEUE2GP29BmBsSK1OReYVaCKD6cfUduQM8XAMA
-        0QIFt6XAiQuGPnCA==
-From:   "tip-bot2 for Huang, Ying" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=FpHf3J0IndPvb6SXBQNlzJ+ROW8V9+wZlTmcC3yDDs4=;
+        b=4qfXszj1baf3oHysagXadL4NXyMaV9VaZb/xJRl4aXBXMg9F5YYcnAb577GJRR1wwvaUgo
+        F4SxYL6bYlkMREDg==
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/numa: Fix boot crash on arm64 systems
-Cc:     Qian Cai <quic_qiancai@quicinc.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        "Huang, Ying" <ying.huang@intel.com>,
-        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
+Subject: [tip: x86/core] kvm/emulate: Fix SETcc emulation for ENDBR
+Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
+In-Reply-To: <YjMVpfe%2f9ldmWX8W@hirez.programming.kicks-ass.net>
+References: <YjMVpfe%2f9ldmWX8W@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-Message-ID: <164793616519.389.1981081124860525020.tip-bot2@tip-bot2>
+Message-ID: <164798063843.389.2521199357883501962.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -62,50 +64,57 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the x86/core branch of tip:
 
-Commit-ID:     ab31c7fd2d37bc3580d9d712d5f2dfb69901fca9
-Gitweb:        https://git.kernel.org/tip/ab31c7fd2d37bc3580d9d712d5f2dfb69901fca9
-Author:        Huang, Ying <ying.huang@intel.com>
-AuthorDate:    Tue, 22 Mar 2022 08:39:22 +01:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 22 Mar 2022 08:49:22 +01:00
+Commit-ID:     3986f65d4f408ce9d0a361e3226a3246a5fb701c
+Gitweb:        https://git.kernel.org/tip/3986f65d4f408ce9d0a361e3226a3246a5fb701c
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Mon, 21 Mar 2022 10:13:12 +01:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Tue, 22 Mar 2022 21:12:14 +01:00
 
-sched/numa: Fix boot crash on arm64 systems
+kvm/emulate: Fix SETcc emulation for ENDBR
 
-Qian Cai reported a boot crash on arm64 systems, caused by:
+Companion patch for commit fe83f5eae432 ("kvm/emulate: Fix SETcc
+emulation function offsets with SLS"), now extending it to cover the
+additional ENDBR instruction.
 
-  0fb3978b0aac ("sched/numa: Fix NUMA topology for systems with CPU-less nodes")
-
-The bug is that node_state() must be supplied a valid node_states[] array index,
-but in task_numa_placement() the max_nid search can fail with NUMA_NO_NODE,
-which is not a valid index.
-
-Fix it by checking that max_nid is a valid index.
-
-[ mingo: Added changelog. ]
-
-Fixes: 0fb3978b0aac ("sched/numa: Fix NUMA topology for systems with CPU-less nodes")
-Reported-by: Qian Cai <quic_qiancai@quicinc.com>
-Tested-by: Qian Cai <quic_qiancai@quicinc.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: "Huang, Ying" <ying.huang@intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/YjMVpfe%2f9ldmWX8W@hirez.programming.kicks-ass.net
 ---
- kernel/sched/fair.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kvm/emulate.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 89d21fd..ee0664c 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -2437,7 +2437,7 @@ static void task_numa_placement(struct task_struct *p)
- 	}
+diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
+index d98fb36..df5e6c0 100644
+--- a/arch/x86/kvm/emulate.c
++++ b/arch/x86/kvm/emulate.c
+@@ -24,6 +24,7 @@
+ #include <linux/stringify.h>
+ #include <asm/debugreg.h>
+ #include <asm/nospec-branch.h>
++#include <asm/ibt.h>
  
- 	/* Cannot migrate task to CPU-less node */
--	if (!node_state(max_nid, N_CPU)) {
-+	if (max_nid != NUMA_NO_NODE && !node_state(max_nid, N_CPU)) {
- 		int near_nid = max_nid;
- 		int distance, near_distance = INT_MAX;
+ #include "x86.h"
+ #include "tss.h"
+@@ -434,15 +435,16 @@ static int fastop(struct x86_emulate_ctxt *ctxt, fastop_t fop);
+ /*
+  * Depending on .config the SETcc functions look like:
+  *
++ * ENDBR       [4 bytes; CONFIG_X86_KERNEL_IBT]
+  * SETcc %al   [3 bytes]
+  * RET         [1 byte]
+  * INT3        [1 byte; CONFIG_SLS]
+  *
+- * Which gives possible sizes 4 or 5.  When rounded up to the
+- * next power-of-two alignment they become 4 or 8.
++ * Which gives possible sizes 4, 5, 8 or 9.  When rounded up to the
++ * next power-of-two alignment they become 4, 8 or 16 resp.
+  */
+-#define SETCC_LENGTH	(4 + IS_ENABLED(CONFIG_SLS))
+-#define SETCC_ALIGN	(4 << IS_ENABLED(CONFIG_SLS))
++#define SETCC_LENGTH	(ENDBR_INSN_SIZE + 4 + IS_ENABLED(CONFIG_SLS))
++#define SETCC_ALIGN	(4 << IS_ENABLED(CONFIG_SLS) << HAS_KERNEL_IBT)
+ static_assert(SETCC_LENGTH <= SETCC_ALIGN);
  
+ #define FOP_SETCC(op) \
