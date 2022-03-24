@@ -2,57 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F3094E5BD1
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 24 Mar 2022 00:31:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BD9754E6035
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 24 Mar 2022 09:17:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345506AbiCWXdR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 23 Mar 2022 19:33:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34652 "EHLO
+        id S233677AbiCXIS3 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 24 Mar 2022 04:18:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35720 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345405AbiCWXdQ (ORCPT
+        with ESMTP id S239836AbiCXIS2 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 23 Mar 2022 19:33:16 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A8FE90CD5;
-        Wed, 23 Mar 2022 16:31:44 -0700 (PDT)
-Date:   Wed, 23 Mar 2022 23:31:41 -0000
+        Thu, 24 Mar 2022 04:18:28 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCFF19BAD8;
+        Thu, 24 Mar 2022 01:16:55 -0700 (PDT)
+Date:   Thu, 24 Mar 2022 08:16:52 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1648078302;
+        s=2020; t=1648109813;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=PT1maxWW5NNo9X1wLuCr6EW7XZ21JWxdjhPR3iYLg6M=;
-        b=m97itk0cwVz2OFyFZgoHOLAehrle3xst6TRwYXT8Fzqs7/NftfylqFRIPfTc+YgMZyObr9
-        crPuhA1+A+w/zWr2L4yAmx38LcNY3Iztb3bvaGuK2Hl4AovskX11ess2hlolHOc2hTyGIQ
-        kEpJLFLvE4/X7fBAe29tFoTXJUBenf9wg6r1SFgqYkLh7iM+kE4JXWHFOStAuGEXZ44R9i
-        qBdjBWditqJ6rwuINo1Ff3tyEE2g81xZDNGVTR7qhz4V4GvQfO79hzfQ4CG/uGhAwyOuf3
-        nluERvh64gBEtId1k/6hdr0hI+0j3KP3hEtV7r7bP0CVYAL3R8e/m1n8QdHjow==
+        bh=QTxcOWxuZF08C7LwzQu1z3MgI4m/xWk8ZyLCOHh42dE=;
+        b=Cx9/rJR2KN8BjXrQXkwy94qb/2mU0uyMFCAwoNpf6rcucAoRy/0lJHsbT958kxt80BnmhQ
+        7S0JrpbWUsCuNfmOVwdwMDuxiMf3U8B8exBZ/ogk+4Rg1Y2/ONmpY+Ehuhdw39XBjt4WS2
+        emSKQPjTlCr7YMCUrsQJBXR/GPe7+Pe6Jch+PUsic25BUpfMskNT/r7q3VoMx/XWvEZq11
+        QXBsMi5hCzhkUOx13/j0be4rezo4ldItIiVoHCyLGdokgS9dcTZURE/sPkY4jeNnEjAlSx
+        E5hrR2TDHsyCgybvwmeaCbvoeEmTG2U5kKZfAK46X4tNgtV8j5B8Fa89rJgnow==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1648078302;
+        s=2020e; t=1648109813;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=PT1maxWW5NNo9X1wLuCr6EW7XZ21JWxdjhPR3iYLg6M=;
-        b=hoJySjsgFmvMf/dUsT0yWpvZELjWwCo2Pf/1Ylxr0fNeFVWgZ8FAnDJalRYPeHbclDhjFG
-        JTPc4jcuQ1XXuRCw==
-From:   "tip-bot2 for Yang Zhong" <tip-bot2@linutronix.de>
+        bh=QTxcOWxuZF08C7LwzQu1z3MgI4m/xWk8ZyLCOHh42dE=;
+        b=auqCzT6YcadE7TqnhYMsIlKFx2Bk4vpjBVlUtxPb9JZxCQ3P5jUcfCbgj6xG/XFl5qXvsV
+        LBcW5OYZQ5M10rCw==
+From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/fpu/xstate: Fix the ARCH_REQ_XCOMP_PERM implementation
-Cc:     Yang Zhong <yang.zhong@intel.com>,
-        "Chang S. Bae" <chang.seok.bae@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Paolo Bonzini <bonzini@gnu.org>, stable@vger.kernel.org,
+Subject: [tip: x86/urgent] x86/defconfig: Enable WERROR
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Borislav Petkov <bp@suse.de>, Ingo Molnar <mingo@kernel.org>,
         x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20220129173647.27981-2-chang.seok.bae@intel.com>
-References: <20220129173647.27981-2-chang.seok.bae@intel.com>
+In-Reply-To: <YjsCpoRK7W4l6tSh@zn.tnic>
+References: <YjsCpoRK7W4l6tSh@zn.tnic>
 MIME-Version: 1.0
-Message-ID: <164807830122.389.15178914175068421091.tip-bot2@tip-bot2>
+Message-ID: <164810981264.389.6376024733991867139.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -69,43 +67,50 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     063452fd94d153d4eb38ad58f210f3d37a09cca4
-Gitweb:        https://git.kernel.org/tip/063452fd94d153d4eb38ad58f210f3d37a09cca4
-Author:        Yang Zhong <yang.zhong@intel.com>
-AuthorDate:    Sat, 29 Jan 2022 09:36:46 -08:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 23 Mar 2022 21:28:34 +01:00
+Commit-ID:     b9080ba4a6ec56447f263082825a4fddb873316b
+Gitweb:        https://git.kernel.org/tip/b9080ba4a6ec56447f263082825a4fddb873316b
+Author:        Borislav Petkov <bp@suse.de>
+AuthorDate:    Wed, 23 Mar 2022 12:21:10 +01:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Thu, 24 Mar 2022 09:10:56 +01:00
 
-x86/fpu/xstate: Fix the ARCH_REQ_XCOMP_PERM implementation
+x86/defconfig: Enable WERROR
 
-ARCH_REQ_XCOMP_PERM is supposed to add the requested feature to the
-permission bitmap of thread_group_leader()->fpu. But the code overwrites
-the bitmap with the requested feature bit only rather than adding it.
+To quote Linus:
 
-Fix the code to add the requested feature bit to the master bitmask.
+  "EVERYBODY should have CONFIG_WERROR=y on at least x86-64 and other
+   serious architectures, unless you have some completely random
+   experimental (and broken) compiler.
 
-Fixes: db8268df0983 ("x86/arch_prctl: Add controls for dynamic XSTATE components")
-Signed-off-by: Yang Zhong <yang.zhong@intel.com>
-Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: Paolo Bonzini <bonzini@gnu.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20220129173647.27981-2-chang.seok.bae@intel.com
+New compiler warnings are not acceptable."
 
+So this should make at least the most obvious and common ones not go
+unnoticed.
+
+Acked-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/YjsCpoRK7W4l6tSh@zn.tnic
 ---
- arch/x86/kernel/fpu/xstate.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/configs/i386_defconfig   | 1 +
+ arch/x86/configs/x86_64_defconfig | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/arch/x86/kernel/fpu/xstate.c b/arch/x86/kernel/fpu/xstate.c
-index 7c7824a..dc6d5e9 100644
---- a/arch/x86/kernel/fpu/xstate.c
-+++ b/arch/x86/kernel/fpu/xstate.c
-@@ -1639,7 +1639,7 @@ static int __xstate_request_perm(u64 permitted, u64 requested, bool guest)
- 
- 	perm = guest ? &fpu->guest_perm : &fpu->perm;
- 	/* Pairs with the READ_ONCE() in xstate_get_group_perm() */
--	WRITE_ONCE(perm->__state_perm, requested);
-+	WRITE_ONCE(perm->__state_perm, mask);
- 	/* Protected by sighand lock */
- 	perm->__state_size = ksize;
- 	perm->__user_state_size = usize;
+diff --git a/arch/x86/configs/i386_defconfig b/arch/x86/configs/i386_defconfig
+index 71124cf..4b20852 100644
+--- a/arch/x86/configs/i386_defconfig
++++ b/arch/x86/configs/i386_defconfig
+@@ -262,3 +262,4 @@ CONFIG_PROVIDE_OHCI1394_DMA_INIT=y
+ CONFIG_EARLY_PRINTK_DBGP=y
+ CONFIG_DEBUG_BOOT_PARAMS=y
+ CONFIG_KALLSYMS_ALL=y
++CONFIG_WERROR=y
+diff --git a/arch/x86/configs/x86_64_defconfig b/arch/x86/configs/x86_64_defconfig
+index 92b1169..38c52e4 100644
+--- a/arch/x86/configs/x86_64_defconfig
++++ b/arch/x86/configs/x86_64_defconfig
+@@ -258,3 +258,4 @@ CONFIG_PROVIDE_OHCI1394_DMA_INIT=y
+ CONFIG_EARLY_PRINTK_DBGP=y
+ CONFIG_DEBUG_BOOT_PARAMS=y
+ CONFIG_KALLSYMS_ALL=y
++CONFIG_WERROR=y
