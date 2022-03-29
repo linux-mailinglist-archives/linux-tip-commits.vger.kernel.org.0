@@ -2,216 +2,179 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 026AB4EAF66
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 29 Mar 2022 16:39:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5E714EB001
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 29 Mar 2022 17:11:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234968AbiC2Oki (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 29 Mar 2022 10:40:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35676 "EHLO
+        id S238348AbiC2PNZ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 29 Mar 2022 11:13:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232360AbiC2Okh (ORCPT
+        with ESMTP id S233219AbiC2PNZ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 29 Mar 2022 10:40:37 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 284FA1BE8E;
-        Tue, 29 Mar 2022 07:38:54 -0700 (PDT)
-Date:   Tue, 29 Mar 2022 14:38:51 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1648564732;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=UKckQnJOCfFqfkTupAwTwDN05oNgl1gAN+rYy9bq1BI=;
-        b=p6X8I/iXjdvz6+wd+KAFnD9tBOy93HKq/k/FhRlMljpHBa9Ut4dRlWMtvAL1pm5O71aqpz
-        5v+4m943DfafWNggIPxMihH0x69HrmrYTTelb2+2xmNeGt6q7JE5lGydDpFXP23/HKt9yo
-        wnsd57y0s8B5U4LN1XbuYQQtOn4rqcghjmuc3HhGUOeN2Q/XVpkrrs6ovO598wrfuHbcd6
-        LQMjY39dmYrPd8hA/7V7q+9P9ibgDxZ3m5h94cC68zVHIRJT5qQylwVEAci9d4mDzUp+Lo
-        VK9rAoKF4U7a96CXHLKkF01qbyfSlqiKhnIv2QHM3Vh3f45uxUoeKelf1YPGAA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1648564732;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=UKckQnJOCfFqfkTupAwTwDN05oNgl1gAN+rYy9bq1BI=;
-        b=czlzVgzmPl7yrwhj24UTyxzAdUNvV6369/G6xbAHdpCdG2BrBz85+FI27cea7nBkP+kbCy
-        yE+Nc53q/iBbN9Dg==
-From:   "tip-bot2 for Joerg Roedel" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/sev: Unroll string mmio with
- CC_ATTR_GUEST_UNROLL_STRING_IO
-Cc:     Joerg Roedel <jroedel@suse.de>, Borislav Petkov <bp@suse.de>,
+        Tue, 29 Mar 2022 11:13:25 -0400
+Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id A488F22C6D8
+        for <linux-tip-commits@vger.kernel.org>; Tue, 29 Mar 2022 08:11:41 -0700 (PDT)
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mta-259-r5FGFD-GNYGMmQmbomJ2Yg-1; Tue, 29 Mar 2022 16:11:38 +0100
+X-MC-Unique: r5FGFD-GNYGMmQmbomJ2Yg-1
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) with Microsoft SMTP
+ Server (TLS) id 15.0.1497.32; Tue, 29 Mar 2022 16:11:37 +0100
+Received: from AcuMS.Aculab.com ([fe80::994c:f5c2:35d6:9b65]) by
+ AcuMS.aculab.com ([fe80::994c:f5c2:35d6:9b65%12]) with mapi id
+ 15.00.1497.033; Tue, 29 Mar 2022 16:11:36 +0100
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-tip-commits@vger.kernel.org" 
+        <linux-tip-commits@vger.kernel.org>
+CC:     Joerg Roedel <jroedel@suse.de>, Borislav Petkov <bp@suse.de>,
         Tom Lendacky <thomas.lendacky@amd.com>,
-        <stable@vger.kernel.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20220321093351.23976-1-joro@8bytes.org>
+        "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        "x86@kernel.org" <x86@kernel.org>
+Subject: RE: [tip: x86/urgent] x86/sev: Unroll string mmio with
+ CC_ATTR_GUEST_UNROLL_STRING_IO
+Thread-Topic: [tip: x86/urgent] x86/sev: Unroll string mmio with
+ CC_ATTR_GUEST_UNROLL_STRING_IO
+Thread-Index: AQHYQ3q5K+q7CKVgC0KvrzjgS2c7UKzWdi0w
+Date:   Tue, 29 Mar 2022 15:11:36 +0000
+Message-ID: <77dbe1d412dd4ade8cc666f5c2474665@AcuMS.aculab.com>
 References: <20220321093351.23976-1-joro@8bytes.org>
+ <164856473151.389.17789498051927031377.tip-bot2@tip-bot2>
+In-Reply-To: <164856473151.389.17789498051927031377.tip-bot2@tip-bot2>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-Message-ID: <164856473151.389.17789498051927031377.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Authentication-Results: relay.mimecast.com;
+        auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+SXNuJ3QgdGhpcyBwYXRjaCBlbnRpcmVseSBicm9rZW4/DQpFdmVuIHRoZSAnbm9ybWFsJyBrZXJu
+ZWwgZnVuY3Rpb25zIGFyZSBicm9rZW4uDQoNCm1lbWNweV90b2lvKCkgYW5kIG1lbWNweV9mcm9t
+aW8oKSBuZWVkIHRvIGJlIHVzaW5nIDY0Yml0DQphY2Nlc3NlcyB0byBJTyBzcGFjZS4NCg0KVGhl
+eSB1c2VkIHRvIGJlIGltcGxlbWVudGVkIHVzaW5nIG1lbWNweSgpIC0gYnV0IHRoYXQgY2FuIGVu
+ZA0KdXAgYmVpbmcgJ3JlcCBtb3ZzYicgd2hpY2ggaXMgYWx3YXlzIGJ5dGUgY29waWVzIG9uIHVu
+Y2FjaGVkDQptZW1vcnkuDQpJIHRob3VnaHQgdGhhdCBoYWQgYmVlbiBmaXhlZCB0byB1c2VkIGEg
+YmV0dGVyIGNvcHkgbG9vcC4NCg0KCURhdmlkDQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0t
+LS0NCj4gRnJvbTogdGlwLWJvdDJAbGludXRyb25peC5kZSA8dGlwLWJvdDJAbGludXRyb25peC5k
+ZT4NCj4gU2VudDogMjkgTWFyY2ggMjAyMiAxNTozOQ0KPiBUbzogbGludXgtdGlwLWNvbW1pdHNA
+dmdlci5rZXJuZWwub3JnDQo+IENjOiBKb2VyZyBSb2VkZWwgPGpyb2VkZWxAc3VzZS5kZT47IEJv
+cmlzbGF2IFBldGtvdiA8YnBAc3VzZS5kZT47IFRvbSBMZW5kYWNreQ0KPiA8dGhvbWFzLmxlbmRh
+Y2t5QGFtZC5jb20+OyBzdGFibGVAdmdlci5rZXJuZWwub3JnOyB4ODZAa2VybmVsLm9yZzsgbGlu
+dXgta2VybmVsQHZnZXIua2VybmVsLm9yZw0KPiBTdWJqZWN0OiBbdGlwOiB4ODYvdXJnZW50XSB4
+ODYvc2V2OiBVbnJvbGwgc3RyaW5nIG1taW8gd2l0aCBDQ19BVFRSX0dVRVNUX1VOUk9MTF9TVFJJ
+TkdfSU8NCj4gDQo+IFRoZSBmb2xsb3dpbmcgY29tbWl0IGhhcyBiZWVuIG1lcmdlZCBpbnRvIHRo
+ZSB4ODYvdXJnZW50IGJyYW5jaCBvZiB0aXA6DQo+IA0KPiBDb21taXQtSUQ6ICAgICA0MDA5YTRh
+YzgyZGQ5NWI4Y2QyYjYyYmQzMDAxOTQ3Njk4M2YwYWZmDQo+IEdpdHdlYjogICAgICAgIGh0dHBz
+Oi8vZ2l0Lmtlcm5lbC5vcmcvdGlwLzQwMDlhNGFjODJkZDk1YjhjZDJiNjJiZDMwMDE5NDc2OTgz
+ZjBhZmYNCj4gQXV0aG9yOiAgICAgICAgSm9lcmcgUm9lZGVsIDxqcm9lZGVsQHN1c2UuZGU+DQo+
+IEF1dGhvckRhdGU6ICAgIE1vbiwgMjEgTWFyIDIwMjIgMTA6MzM6NTEgKzAxOjAwDQo+IENvbW1p
+dHRlcjogICAgIEJvcmlzbGF2IFBldGtvdiA8YnBAc3VzZS5kZT4NCj4gQ29tbWl0dGVyRGF0ZTog
+VHVlLCAyOSBNYXIgMjAyMiAxNTo1OToxNiArMDI6MDANCj4gDQo+IHg4Ni9zZXY6IFVucm9sbCBz
+dHJpbmcgbW1pbyB3aXRoIENDX0FUVFJfR1VFU1RfVU5ST0xMX1NUUklOR19JTw0KPiANCj4gVGhl
+IGlvLXNwZWNpZmljIG1lbWNweS9tZW1zZXQgZnVuY3Rpb25zIHVzZSBzdHJpbmcgbW1pbyBhY2Nl
+c3NlcyB0byBkbw0KPiB0aGVpciB3b3JrLiBVbmRlciBTRVYsIHRoZSBoeXBlcnZpc29yIGNhbid0
+IGVtdWxhdGUgdGhlc2UgaW5zdHJ1Y3Rpb25zDQo+IGJlY2F1c2UgdGhleSByZWFkL3dyaXRlIGRp
+cmVjdGx5IGZyb20vdG8gZW5jcnlwdGVkIG1lbW9yeS4NCj4gDQo+IEtWTSB3aWxsIGluamVjdCBh
+IHBhZ2UgZmF1bHQgZXhjZXB0aW9uIGludG8gdGhlIGd1ZXN0IHdoZW4gaXQgaXMgYXNrZWQNCj4g
+dG8gZW11bGF0ZSBzdHJpbmcgbW1pbyBpbnN0cnVjdGlvbnMgZm9yIGFuIFNFViBndWVzdDoNCj4g
+DQo+ICAgQlVHOiB1bmFibGUgdG8gaGFuZGxlIHBhZ2UgZmF1bHQgZm9yIGFkZHJlc3M6IGZmZmZj
+OTAwMDAwNjUwNjgNCj4gICAjUEY6IHN1cGVydmlzb3IgcmVhZCBhY2Nlc3MgaW4ga2VybmVsIG1v
+ZGUNCj4gICAjUEY6IGVycm9yX2NvZGUoMHgwMDAwKSAtIG5vdC1wcmVzZW50IHBhZ2UNCj4gICBQ
+R0QgODAwMDEwMDAwMDA2NyBQNEQgODAwMDEwMDAwMDA2NyBQVUQgODAwMDEwMDBmYjA2NyBQTUQg
+ODAwMDEwMDBmYzA2NyBQVEUgODAwMDAwMDBmZWQ0MDE3Mw0KPiAgIE9vcHM6IDAwMDAgWyMxXSBQ
+UkVFTVBUIFNNUCBOT1BUSQ0KPiAgIENQVTogMCBQSUQ6IDEgQ29tbTogc3dhcHBlci8wIE5vdCB0
+YWludGVkIDUuMTcuMC1yYzcgIzMNCj4gDQo+IEFzIHN0cmluZyBtbWlvIGZvciBhbiBTRVYgZ3Vl
+c3QgY2FuIG5vdCBiZSBzdXBwb3J0ZWQgYnkgdGhlDQo+IGh5cGVydmlzb3IsIHVucm9sbCB0aGUg
+aW5zdHJ1Y3Rpb25zIGZvciBDQ19BVFRSX0dVRVNUX1VOUk9MTF9TVFJJTkdfSU8NCj4gZW5hYmxl
+ZCBrZXJuZWxzLg0KPiANCj4gVGhpcyBpc3N1ZSBhcHBlYXJzIHdoZW4ga2VybmVscyBhcmUgbGF1
+bmNoZWQgaW4gcmVjZW50IGxpYnZpcnQtbWFuYWdlZA0KPiBTRVYgdmlydHVhbCBtYWNoaW5lcywg
+YmVjYXVzZSB2aXJ0LWluc3RhbGwgc3RhcnRlZCB0byBhZGQgYSB0cG0tY3JiDQo+IGRldmljZSB0
+byB0aGUgZ3Vlc3QgYnkgZGVmYXVsdCBhbmQgcHJvYWN0aXZlbHkgYmVjYXVzZSwgcmFpc2luczoN
+Cj4gDQo+ICAgaHR0cHM6Ly9naXRodWIuY29tL3ZpcnQtbWFuYWdlci92aXJ0LW1hbmFnZXIvY29t
+bWl0L2ViNThjMDlmNDg4YjA2MzNlZDFlZWEwMTJjZDMxMWU0ODg2NDQwMWUNCj4gDQo+IGFuZCBh
+cyB0aGF0IGNvbW1pdCBzYXlzLCB0aGUgZGVmYXVsdCBhZGRpbmcgb2YgYSBUUE0gY2FuIGJlIGRp
+c2FibGVkDQo+IHdpdGggInZpcnQtaW5zdGFsbCAuLi4gLS10cG0gbm9uZSIuDQo+IA0KPiBUaGUg
+a2VybmVsIGRyaXZlciBmb3IgdHBtLWNyYiB1c2VzIG1lbWNweV90by9mcm9tX2lvKCkgZnVuY3Rp
+b25zIHRvDQo+IGFjY2VzcyBNTUlPIG1lbW9yeSwgcmVzdWx0aW5nIGluIGEgcGFnZS1mYXVsdCBp
+bmplY3RlZCBieSBLVk0gYW5kDQo+IGNyYXNoaW5nIHRoZSBrZXJuZWwgYXQgYm9vdC4NCj4gDQo+
+ICAgWyBicDogTWFzc2FnZSBhbmQgZXh0ZW5kIGNvbW1pdCBtZXNzYWdlLiBdDQo+IA0KPiBGaXhl
+czogZDhhYTdlZWE3OGExICgneDg2L21tOiBBZGQgU2VjdXJlIEVuY3J5cHRlZCBWaXJ0dWFsaXph
+dGlvbiAoU0VWKSBzdXBwb3J0JykNCj4gU2lnbmVkLW9mZi1ieTogSm9lcmcgUm9lZGVsIDxqcm9l
+ZGVsQHN1c2UuZGU+DQo+IFNpZ25lZC1vZmYtYnk6IEJvcmlzbGF2IFBldGtvdiA8YnBAc3VzZS5k
+ZT4NCj4gUmV2aWV3ZWQtYnk6IFRvbSBMZW5kYWNreSA8dGhvbWFzLmxlbmRhY2t5QGFtZC5jb20+
+DQo+IENjOiA8c3RhYmxlQHZnZXIua2VybmVsLm9yZz4NCj4gTGluazogaHR0cHM6Ly9sb3JlLmtl
+cm5lbC5vcmcvci8yMDIyMDMyMTA5MzM1MS4yMzk3Ni0xLWpvcm9AOGJ5dGVzLm9yZw0KPiAtLS0N
+Cj4gIGFyY2gveDg2L2xpYi9pb21lbS5jIHwgNjUgKysrKysrKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKysrKy0tLS0tLQ0KPiAgMSBmaWxlIGNoYW5nZWQsIDU3IGluc2VydGlvbnMoKyksIDgg
+ZGVsZXRpb25zKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvYXJjaC94ODYvbGliL2lvbWVtLmMgYi9h
+cmNoL3g4Ni9saWIvaW9tZW0uYw0KPiBpbmRleCBkZjUwNDUxLi4zZTJmMzNmIDEwMDY0NA0KPiAt
+LS0gYS9hcmNoL3g4Ni9saWIvaW9tZW0uYw0KPiArKysgYi9hcmNoL3g4Ni9saWIvaW9tZW0uYw0K
+PiBAQCAtMjIsNyArMjIsNyBAQCBzdGF0aWMgX19hbHdheXNfaW5saW5lIHZvaWQgcmVwX21vdnMo
+dm9pZCAqdG8sIGNvbnN0IHZvaWQgKmZyb20sIHNpemVfdCBuKQ0KPiAgCQkgICAgIDogIm1lbW9y
+eSIpOw0KPiAgfQ0KPiANCj4gLXZvaWQgbWVtY3B5X2Zyb21pbyh2b2lkICp0bywgY29uc3Qgdm9s
+YXRpbGUgdm9pZCBfX2lvbWVtICpmcm9tLCBzaXplX3QgbikNCj4gK3N0YXRpYyB2b2lkIHN0cmlu
+Z19tZW1jcHlfZnJvbWlvKHZvaWQgKnRvLCBjb25zdCB2b2xhdGlsZSB2b2lkIF9faW9tZW0gKmZy
+b20sIHNpemVfdCBuKQ0KPiAgew0KPiAgCWlmICh1bmxpa2VseSghbikpDQo+ICAJCXJldHVybjsN
+Cj4gQEAgLTM4LDkgKzM4LDggQEAgdm9pZCBtZW1jcHlfZnJvbWlvKHZvaWQgKnRvLCBjb25zdCB2
+b2xhdGlsZSB2b2lkIF9faW9tZW0gKmZyb20sIHNpemVfdCBuKQ0KPiAgCX0NCj4gIAlyZXBfbW92
+cyh0bywgKGNvbnN0IHZvaWQgKilmcm9tLCBuKTsNCj4gIH0NCj4gLUVYUE9SVF9TWU1CT0wobWVt
+Y3B5X2Zyb21pbyk7DQo+IA0KPiAtdm9pZCBtZW1jcHlfdG9pbyh2b2xhdGlsZSB2b2lkIF9faW9t
+ZW0gKnRvLCBjb25zdCB2b2lkICpmcm9tLCBzaXplX3QgbikNCj4gK3N0YXRpYyB2b2lkIHN0cmlu
+Z19tZW1jcHlfdG9pbyh2b2xhdGlsZSB2b2lkIF9faW9tZW0gKnRvLCBjb25zdCB2b2lkICpmcm9t
+LCBzaXplX3QgbikNCj4gIHsNCj4gIAlpZiAodW5saWtlbHkoIW4pKQ0KPiAgCQlyZXR1cm47DQo+
+IEBAIC01NiwxNCArNTUsNjQgQEAgdm9pZCBtZW1jcHlfdG9pbyh2b2xhdGlsZSB2b2lkIF9faW9t
+ZW0gKnRvLCBjb25zdCB2b2lkICpmcm9tLCBzaXplX3QgbikNCj4gIAl9DQo+ICAJcmVwX21vdnMo
+KHZvaWQgKil0bywgKGNvbnN0IHZvaWQgKikgZnJvbSwgbik7DQo+ICB9DQo+ICsNCj4gK3N0YXRp
+YyB2b2lkIHVucm9sbGVkX21lbWNweV9mcm9taW8odm9pZCAqdG8sIGNvbnN0IHZvbGF0aWxlIHZv
+aWQgX19pb21lbSAqZnJvbSwgc2l6ZV90IG4pDQo+ICt7DQo+ICsJY29uc3Qgdm9sYXRpbGUgY2hh
+ciBfX2lvbWVtICppbiA9IGZyb207DQo+ICsJY2hhciAqb3V0ID0gdG87DQo+ICsJaW50IGk7DQo+
+ICsNCj4gKwlmb3IgKGkgPSAwOyBpIDwgbjsgKytpKQ0KPiArCQlvdXRbaV0gPSByZWFkYigmaW5b
+aV0pOw0KPiArfQ0KPiArDQo+ICtzdGF0aWMgdm9pZCB1bnJvbGxlZF9tZW1jcHlfdG9pbyh2b2xh
+dGlsZSB2b2lkIF9faW9tZW0gKnRvLCBjb25zdCB2b2lkICpmcm9tLCBzaXplX3QgbikNCj4gK3sN
+Cj4gKwl2b2xhdGlsZSBjaGFyIF9faW9tZW0gKm91dCA9IHRvOw0KPiArCWNvbnN0IGNoYXIgKmlu
+ID0gZnJvbTsNCj4gKwlpbnQgaTsNCj4gKw0KPiArCWZvciAoaSA9IDA7IGkgPCBuOyArK2kpDQo+
+ICsJCXdyaXRlYihpbltpXSwgJm91dFtpXSk7DQo+ICt9DQo+ICsNCj4gK3N0YXRpYyB2b2lkIHVu
+cm9sbGVkX21lbXNldF9pbyh2b2xhdGlsZSB2b2lkIF9faW9tZW0gKmEsIGludCBiLCBzaXplX3Qg
+YykNCj4gK3sNCj4gKwl2b2xhdGlsZSBjaGFyIF9faW9tZW0gKm1lbSA9IGE7DQo+ICsJaW50IGk7
+DQo+ICsNCj4gKwlmb3IgKGkgPSAwOyBpIDwgYzsgKytpKQ0KPiArCQl3cml0ZWIoYiwgJm1lbVtp
+XSk7DQo+ICt9DQo+ICsNCj4gK3ZvaWQgbWVtY3B5X2Zyb21pbyh2b2lkICp0bywgY29uc3Qgdm9s
+YXRpbGUgdm9pZCBfX2lvbWVtICpmcm9tLCBzaXplX3QgbikNCj4gK3sNCj4gKwlpZiAoY2NfcGxh
+dGZvcm1faGFzKENDX0FUVFJfR1VFU1RfVU5ST0xMX1NUUklOR19JTykpDQo+ICsJCXVucm9sbGVk
+X21lbWNweV9mcm9taW8odG8sIGZyb20sIG4pOw0KPiArCWVsc2UNCj4gKwkJc3RyaW5nX21lbWNw
+eV9mcm9taW8odG8sIGZyb20sIG4pOw0KPiArfQ0KPiArRVhQT1JUX1NZTUJPTChtZW1jcHlfZnJv
+bWlvKTsNCj4gKw0KPiArdm9pZCBtZW1jcHlfdG9pbyh2b2xhdGlsZSB2b2lkIF9faW9tZW0gKnRv
+LCBjb25zdCB2b2lkICpmcm9tLCBzaXplX3QgbikNCj4gK3sNCj4gKwlpZiAoY2NfcGxhdGZvcm1f
+aGFzKENDX0FUVFJfR1VFU1RfVU5ST0xMX1NUUklOR19JTykpDQo+ICsJCXVucm9sbGVkX21lbWNw
+eV90b2lvKHRvLCBmcm9tLCBuKTsNCj4gKwllbHNlDQo+ICsJCXN0cmluZ19tZW1jcHlfdG9pbyh0
+bywgZnJvbSwgbik7DQo+ICt9DQo+ICBFWFBPUlRfU1lNQk9MKG1lbWNweV90b2lvKTsNCj4gDQo+
+ICB2b2lkIG1lbXNldF9pbyh2b2xhdGlsZSB2b2lkIF9faW9tZW0gKmEsIGludCBiLCBzaXplX3Qg
+YykNCj4gIHsNCj4gLQkvKg0KPiAtCSAqIFRPRE86IG1lbXNldCBjYW4gbWFuZ2xlIHRoZSBJTyBw
+YXR0ZXJucyBxdWl0ZSBhIGJpdC4NCj4gLQkgKiBwZXJoYXBzIGl0IHdvdWxkIGJlIGJldHRlciB0
+byB1c2UgYSBkdW1iIG9uZToNCj4gLQkgKi8NCj4gLQltZW1zZXQoKHZvaWQgKilhLCBiLCBjKTsN
+Cj4gKwlpZiAoY2NfcGxhdGZvcm1faGFzKENDX0FUVFJfR1VFU1RfVU5ST0xMX1NUUklOR19JTykp
+IHsNCj4gKwkJdW5yb2xsZWRfbWVtc2V0X2lvKGEsIGIsIGMpOw0KPiArCX0gZWxzZSB7DQo+ICsJ
+CS8qDQo+ICsJCSAqIFRPRE86IG1lbXNldCBjYW4gbWFuZ2xlIHRoZSBJTyBwYXR0ZXJucyBxdWl0
+ZSBhIGJpdC4NCj4gKwkJICogcGVyaGFwcyBpdCB3b3VsZCBiZSBiZXR0ZXIgdG8gdXNlIGEgZHVt
+YiBvbmU6DQo+ICsJCSAqLw0KPiArCQltZW1zZXQoKHZvaWQgKilhLCBiLCBjKTsNCj4gKwl9DQo+
+ICB9DQo+ICBFWFBPUlRfU1lNQk9MKG1lbXNldF9pbyk7DQoNCi0NClJlZ2lzdGVyZWQgQWRkcmVz
+cyBMYWtlc2lkZSwgQnJhbWxleSBSb2FkLCBNb3VudCBGYXJtLCBNaWx0b24gS2V5bmVzLCBNSzEg
+MVBULCBVSw0KUmVnaXN0cmF0aW9uIE5vOiAxMzk3Mzg2IChXYWxlcykNCg==
 
-Commit-ID:     4009a4ac82dd95b8cd2b62bd30019476983f0aff
-Gitweb:        https://git.kernel.org/tip/4009a4ac82dd95b8cd2b62bd30019476983f0aff
-Author:        Joerg Roedel <jroedel@suse.de>
-AuthorDate:    Mon, 21 Mar 2022 10:33:51 +01:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 29 Mar 2022 15:59:16 +02:00
-
-x86/sev: Unroll string mmio with CC_ATTR_GUEST_UNROLL_STRING_IO
-
-The io-specific memcpy/memset functions use string mmio accesses to do
-their work. Under SEV, the hypervisor can't emulate these instructions
-because they read/write directly from/to encrypted memory.
-
-KVM will inject a page fault exception into the guest when it is asked
-to emulate string mmio instructions for an SEV guest:
-
-  BUG: unable to handle page fault for address: ffffc90000065068
-  #PF: supervisor read access in kernel mode
-  #PF: error_code(0x0000) - not-present page
-  PGD 8000100000067 P4D 8000100000067 PUD 80001000fb067 PMD 80001000fc067 PTE 80000000fed40173
-  Oops: 0000 [#1] PREEMPT SMP NOPTI
-  CPU: 0 PID: 1 Comm: swapper/0 Not tainted 5.17.0-rc7 #3
-
-As string mmio for an SEV guest can not be supported by the
-hypervisor, unroll the instructions for CC_ATTR_GUEST_UNROLL_STRING_IO
-enabled kernels.
-
-This issue appears when kernels are launched in recent libvirt-managed
-SEV virtual machines, because virt-install started to add a tpm-crb
-device to the guest by default and proactively because, raisins:
-
-  https://github.com/virt-manager/virt-manager/commit/eb58c09f488b0633ed1eea012cd311e48864401e
-
-and as that commit says, the default adding of a TPM can be disabled
-with "virt-install ... --tpm none".
-
-The kernel driver for tpm-crb uses memcpy_to/from_io() functions to
-access MMIO memory, resulting in a page-fault injected by KVM and
-crashing the kernel at boot.
-
-  [ bp: Massage and extend commit message. ]
-
-Fixes: d8aa7eea78a1 ('x86/mm: Add Secure Encrypted Virtualization (SEV) support')
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20220321093351.23976-1-joro@8bytes.org
----
- arch/x86/lib/iomem.c | 65 +++++++++++++++++++++++++++++++++++++------
- 1 file changed, 57 insertions(+), 8 deletions(-)
-
-diff --git a/arch/x86/lib/iomem.c b/arch/x86/lib/iomem.c
-index df50451..3e2f33f 100644
---- a/arch/x86/lib/iomem.c
-+++ b/arch/x86/lib/iomem.c
-@@ -22,7 +22,7 @@ static __always_inline void rep_movs(void *to, const void *from, size_t n)
- 		     : "memory");
- }
- 
--void memcpy_fromio(void *to, const volatile void __iomem *from, size_t n)
-+static void string_memcpy_fromio(void *to, const volatile void __iomem *from, size_t n)
- {
- 	if (unlikely(!n))
- 		return;
-@@ -38,9 +38,8 @@ void memcpy_fromio(void *to, const volatile void __iomem *from, size_t n)
- 	}
- 	rep_movs(to, (const void *)from, n);
- }
--EXPORT_SYMBOL(memcpy_fromio);
- 
--void memcpy_toio(volatile void __iomem *to, const void *from, size_t n)
-+static void string_memcpy_toio(volatile void __iomem *to, const void *from, size_t n)
- {
- 	if (unlikely(!n))
- 		return;
-@@ -56,14 +55,64 @@ void memcpy_toio(volatile void __iomem *to, const void *from, size_t n)
- 	}
- 	rep_movs((void *)to, (const void *) from, n);
- }
-+
-+static void unrolled_memcpy_fromio(void *to, const volatile void __iomem *from, size_t n)
-+{
-+	const volatile char __iomem *in = from;
-+	char *out = to;
-+	int i;
-+
-+	for (i = 0; i < n; ++i)
-+		out[i] = readb(&in[i]);
-+}
-+
-+static void unrolled_memcpy_toio(volatile void __iomem *to, const void *from, size_t n)
-+{
-+	volatile char __iomem *out = to;
-+	const char *in = from;
-+	int i;
-+
-+	for (i = 0; i < n; ++i)
-+		writeb(in[i], &out[i]);
-+}
-+
-+static void unrolled_memset_io(volatile void __iomem *a, int b, size_t c)
-+{
-+	volatile char __iomem *mem = a;
-+	int i;
-+
-+	for (i = 0; i < c; ++i)
-+		writeb(b, &mem[i]);
-+}
-+
-+void memcpy_fromio(void *to, const volatile void __iomem *from, size_t n)
-+{
-+	if (cc_platform_has(CC_ATTR_GUEST_UNROLL_STRING_IO))
-+		unrolled_memcpy_fromio(to, from, n);
-+	else
-+		string_memcpy_fromio(to, from, n);
-+}
-+EXPORT_SYMBOL(memcpy_fromio);
-+
-+void memcpy_toio(volatile void __iomem *to, const void *from, size_t n)
-+{
-+	if (cc_platform_has(CC_ATTR_GUEST_UNROLL_STRING_IO))
-+		unrolled_memcpy_toio(to, from, n);
-+	else
-+		string_memcpy_toio(to, from, n);
-+}
- EXPORT_SYMBOL(memcpy_toio);
- 
- void memset_io(volatile void __iomem *a, int b, size_t c)
- {
--	/*
--	 * TODO: memset can mangle the IO patterns quite a bit.
--	 * perhaps it would be better to use a dumb one:
--	 */
--	memset((void *)a, b, c);
-+	if (cc_platform_has(CC_ATTR_GUEST_UNROLL_STRING_IO)) {
-+		unrolled_memset_io(a, b, c);
-+	} else {
-+		/*
-+		 * TODO: memset can mangle the IO patterns quite a bit.
-+		 * perhaps it would be better to use a dumb one:
-+		 */
-+		memset((void *)a, b, c);
-+	}
- }
- EXPORT_SYMBOL(memset_io);
