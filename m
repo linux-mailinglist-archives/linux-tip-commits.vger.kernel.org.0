@@ -2,55 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ADB5E4F1D67
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  4 Apr 2022 23:39:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4AF984F1D7C
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  4 Apr 2022 23:39:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1382550AbiDDVbM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 4 Apr 2022 17:31:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49072 "EHLO
+        id S1382598AbiDDVbd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 4 Apr 2022 17:31:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49074 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1380525AbiDDUVM (ORCPT
+        with ESMTP id S1380526AbiDDUVM (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Mon, 4 Apr 2022 16:21:12 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09A832AE9;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09CC317E19;
         Mon,  4 Apr 2022 13:19:14 -0700 (PDT)
-Date:   Mon, 04 Apr 2022 20:19:11 -0000
+Date:   Mon, 04 Apr 2022 20:19:12 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1649103552;
+        s=2020; t=1649103553;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=WNOBe1vWppvbexr1o50poyMJPOCbE2eiR5qK3R+vlbI=;
-        b=T067flIDohX2+TyixlVRL8HA7ygMbllJ/gZcGsZfe8mZPfN79lqkR9KxUfpTGzmqjJetPf
-        NQQlklPvSYAdShldT+ZnRCizyZqt/Bq3yhbKU3yNf3XtWHLBNyGpPVMi01N9OFJDTXtbnl
-        gTJJ0qn8JBntelxYiYhT2+Ap2NrMLSYRiMspZ5Z33caZEvi8BMHHJv4ACfFCf/ub6l9OPR
-        J6CA/x/gXgKPaoXNeGfy0ay2Lc0Eo22fjmzIfC/1SjmYPIFtMIS+EDpIyUk8nMAqbKqWQ9
-        Poe2552ePa/NNrGfzq+hPCWA4voDqbYvXehoWtSq1HA9zRYgnKzRnVg7ZvtHzg==
+        bh=QZQaYr09f3K/gGOi6unzAYjbezIKt+jwMzKppsteJ8g=;
+        b=di7iGq60peohiF1pGjIv56WNkKgziqE8Wge457uTEcrV+4r33kTjcbKK416KzLj6jKutKi
+        akPJGxr+Xjop0R6Ij/OV2cwyVVv7jpxg52rO784tx0OnWSOXcrseXW4L4qx7SFEjx5bqVw
+        QqD+LaTP0bXiRh3fF3Vrw9TjK3LTbMQhjeDCtlNgOj8tKuHjiVfwHXqFnSs8rr3pGxBBqN
+        e+KIb7C09JzZ/4/B7H0qJUlgbynHM1fo4duneeqk0I5v/1IuR3EaCmVY0+qtVPUBics1Fl
+        DgOQaiNzXa7xsQGDVE6HnbCLBVL7Czlx9HDLsV4kBMX88gN70ndSkXpl4KUblw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1649103552;
+        s=2020e; t=1649103553;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=WNOBe1vWppvbexr1o50poyMJPOCbE2eiR5qK3R+vlbI=;
-        b=Gc1nLM+EMvKNKUZ3Taubma8zjwasPWNQuC5Pm7+tt1Ye65s0W1SoLAV2JwtHnydm6+E3Q9
-        Fyy7DMYiOsP1miCQ==
+        bh=QZQaYr09f3K/gGOi6unzAYjbezIKt+jwMzKppsteJ8g=;
+        b=SgycpArjwOUpnjfW/PUk1RLKscUzwcYD9WsWHR12s51VvMpG8xytI1Knbvggq8u+z8fMBO
+        awZzRGTNCWR1PLBg==
 From:   "tip-bot2 for Mike Travis" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/platform] x86/platform/uv: Log gap hole end size
+Subject: [tip: x86/platform] x86/platform/uv: Update TSC sync state for UV5
 Cc:     Mike Travis <mike.travis@hpe.com>, Borislav Petkov <bp@suse.de>,
+        Dimitri Sivanich <dimitri.sivanich@hpe.com>,
         Steve Wahl <steve.wahl@hpe.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220318224304.174967-4-mike.travis@hpe.com>
-References: <20220318224304.174967-4-mike.travis@hpe.com>
+In-Reply-To: <20220318224304.174967-3-mike.travis@hpe.com>
+References: <20220318224304.174967-3-mike.travis@hpe.com>
 MIME-Version: 1.0
-Message-ID: <164910355134.389.13915883561213298641.tip-bot2@tip-bot2>
+Message-ID: <164910355241.389.1602942943819019467.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,57 +68,51 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/platform branch of tip:
 
-Commit-ID:     f93ba85de0d1ce1924b0752b6a7a784c11c36414
-Gitweb:        https://git.kernel.org/tip/f93ba85de0d1ce1924b0752b6a7a784c11c36414
+Commit-ID:     4395de040d24b40fb3cd7fb4f0b013748abe0a72
+Gitweb:        https://git.kernel.org/tip/4395de040d24b40fb3cd7fb4f0b013748abe0a72
 Author:        Mike Travis <mike.travis@hpe.com>
-AuthorDate:    Fri, 18 Mar 2022 17:43:04 -05:00
+AuthorDate:    Fri, 18 Mar 2022 17:43:03 -05:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Mon, 04 Apr 2022 20:21:47 +02:00
+CommitterDate: Mon, 04 Apr 2022 20:21:44 +02:00
 
-x86/platform/uv: Log gap hole end size
+x86/platform/uv: Update TSC sync state for UV5
 
-Show value of gap end in the kernel log which equates to number of physical
-address bits used by system.  The end address of the gap holds PA bits 56:26
-which gives the range up to 64PB max size with 64MB of granularity.
+Update TSC to not check TSC sync state for uv5+ as it is not available.
+It is assumed that TSC will always be in sync for multiple chassis and
+will pass the tests for the kernel to accept it as the clocksource.
+To disable this check use the kernel start options tsc=reliable
+clocksource=tsc.
 
 Signed-off-by: Mike Travis <mike.travis@hpe.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
+Reviewed-by: Dimitri Sivanich <dimitri.sivanich@hpe.com>
 Reviewed-by: Steve Wahl <steve.wahl@hpe.com>
-Link: https://lore.kernel.org/r/20220318224304.174967-4-mike.travis@hpe.com
+Link: https://lore.kernel.org/r/20220318224304.174967-3-mike.travis@hpe.com
 ---
- arch/x86/kernel/apic/x2apic_uv_x.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ arch/x86/kernel/apic/x2apic_uv_x.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
 diff --git a/arch/x86/kernel/apic/x2apic_uv_x.c b/arch/x86/kernel/apic/x2apic_uv_x.c
-index 387d653..146f0f6 100644
+index f5a48e6..387d653 100644
 --- a/arch/x86/kernel/apic/x2apic_uv_x.c
 +++ b/arch/x86/kernel/apic/x2apic_uv_x.c
-@@ -1346,7 +1346,7 @@ static void __init decode_gam_params(unsigned long ptr)
- static void __init decode_gam_rng_tbl(unsigned long ptr)
- {
- 	struct uv_gam_range_entry *gre = (struct uv_gam_range_entry *)ptr;
--	unsigned long lgre = 0;
-+	unsigned long lgre = 0, gend = 0;
- 	int index = 0;
- 	int sock_min = 999999, pnode_min = 99999;
- 	int sock_max = -1, pnode_max = -1;
-@@ -1380,6 +1380,9 @@ static void __init decode_gam_rng_tbl(unsigned long ptr)
- 			flag, size, suffix[order],
- 			gre->type, gre->nasid, gre->sockid, gre->pnode);
+@@ -199,10 +199,16 @@ static void __init uv_tsc_check_sync(void)
+ 	int mmr_shift;
+ 	char *state;
  
-+		if (gre->type == UV_GAM_RANGE_TYPE_HOLE)
-+			gend = (unsigned long)gre->limit << UV_GAM_RANGE_SHFT;
+-	/* Different returns from different UV BIOS versions */
++	/* UV5+, sync state from bios not available, assumed valid */
++	if (!is_uv(UV2|UV3|UV4)) {
++		pr_debug("UV: TSC sync state for UV5+ assumed valid\n");
++		mark_tsc_async_resets("UV5+");
++		return;
++	}
 +
- 		/* update to next range start */
- 		lgre = gre->limit;
- 		if (sock_min > gre->sockid)
-@@ -1397,7 +1400,8 @@ static void __init decode_gam_rng_tbl(unsigned long ptr)
- 	_max_pnode	= pnode_max;
- 	_gr_table_len	= index;
++	/* UV2,3,4, UV BIOS TSC sync state available */
+ 	mmr = uv_early_read_mmr(UVH_TSC_SYNC_MMR);
+-	mmr_shift =
+-		is_uv2_hub() ? UVH_TSC_SYNC_SHIFT_UV2K : UVH_TSC_SYNC_SHIFT;
++	mmr_shift = is_uv2_hub() ? UVH_TSC_SYNC_SHIFT_UV2K : UVH_TSC_SYNC_SHIFT;
+ 	sync_state = (mmr >> mmr_shift) & UVH_TSC_SYNC_MASK;
  
--	pr_info("UV: GRT: %d entries, sockets(min:%x,max:%x) pnodes(min:%x,max:%x)\n", index, _min_socket, _max_socket, _min_pnode, _max_pnode);
-+	pr_info("UV: GRT: %d entries, sockets(min:%x,max:%x), pnodes(min:%x,max:%x), gap_end(%d)\n",
-+	  index, _min_socket, _max_socket, _min_pnode, _max_pnode, fls64(gend));
- }
- 
- /* Walk through UVsystab decoding the fields */
+ 	/* Check if TSC is valid for all sockets */
