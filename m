@@ -2,56 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F2F824F1D7B
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  4 Apr 2022 23:39:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1292D4F2188
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  5 Apr 2022 06:09:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1382594AbiDDVbc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 4 Apr 2022 17:31:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49138 "EHLO
+        id S229777AbiDECqq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 4 Apr 2022 22:46:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40354 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1380527AbiDDUVM (ORCPT
+        with ESMTP id S230201AbiDECqL (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 4 Apr 2022 16:21:12 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D40117E35;
-        Mon,  4 Apr 2022 13:19:15 -0700 (PDT)
-Date:   Mon, 04 Apr 2022 20:19:13 -0000
+        Mon, 4 Apr 2022 22:46:11 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8ABB385F04;
+        Mon,  4 Apr 2022 18:51:52 -0700 (PDT)
+Date:   Mon, 04 Apr 2022 23:57:39 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1649103554;
+        s=2020; t=1649116660;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=85Z+l0B/Lj9CU4s/mFSaflkVGrA6AqdwHS9uRiRp8VI=;
-        b=JejzUKuEAcasSDsxDENPvC40qk6tXtnHSy0YPGnGu0zz7TIyedDnpyrTBruN+R40EiL1jD
-        0RYmlAS/HKMYDddhN3+iSo1Cj/ARUiJoqpOeLL31So66QHu7if//f5YSWG+45Fyz/hNotH
-        +Lfvo0n0B3gevZjpo5i1WH+ZnNqoTksDKOujk7U9WY6oPFfoEbOefUQeUa0TVxHoLUrILb
-        CzjtI6OrDDtAyYe1p7WrW3U2zIm89Ij6UTCn00FA0HkKUYW4b3R1e2IVIWYJYD6UoNMPnY
-        Zw8XUdylutEwfzhXKpp5MEtXvTXTxtZt8+U+3x7d3E1qZbNo6XSN2TJe+Pg4pQ==
+        bh=PwZ76pi+E1pphrWaO+JmzsmgfjzaPFORwHErcJhS/Zg=;
+        b=QrXbGUeSZ9tGnmphT8TVTod8Sqjxw3V58/+JVTiLk13f6s1wfOXsVmhLHXnCf/C/XLChI4
+        LEbyvkizoyR0OyEUhkZKbqZTYs4FmLacKYi4MoyuJ6RTmhuN/+Wt9coa8N+2LFDNKouYnL
+        VmfvfPpJFRkNF+qLNBohrSfDo3S097QY0M/IGnzqdmsZNHWlWo/GuDa8xKA1A7nGSejiNQ
+        wMuyo5MSC83tLnrPxM20urOX4YvrYiCiXwzqWd64i8yKYdbJiuvvBnz4iIUpySEQyR+oIB
+        lcJH/UP7CWF4quGMG7SBmTNujzv7neOt2zZ0phuIqAUXXV1u5JXynaNaBTTECQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1649103554;
+        s=2020e; t=1649116660;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=85Z+l0B/Lj9CU4s/mFSaflkVGrA6AqdwHS9uRiRp8VI=;
-        b=Dhymt3PXCGvOyJoQ9WDctUoe/ooMTOsPfeH87NULWzSJUu4WrJZbeh1qNniruIAkSWxTXY
-        1RKetKyQn6+WroAA==
-From:   "tip-bot2 for Mike Travis" <tip-bot2@linutronix.de>
+        bh=PwZ76pi+E1pphrWaO+JmzsmgfjzaPFORwHErcJhS/Zg=;
+        b=pOt0TEUAEEyXcTRvW6fkt+VJcvDDSV1Irqcmvzd8lD9nnCf34QCK+EqxzP5yG4FVoftznR
+        7/dBbdMaP0F6faAw==
+From:   "tip-bot2 for Ira Weiny" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/platform] x86/platform/uv: Update NMI Handler for UV5
-Cc:     Mike Travis <mike.travis@hpe.com>, Borislav Petkov <bp@suse.de>,
-        Dimitri Sivanich <dimitri.sivanich@hpe.com>,
-        Steve Wahl <steve.wahl@hpe.com>, x86@kernel.org,
+Subject: [tip: x86/cleanups] x86/pkeys: Remove __arch_set_user_pkey_access()
+ declaration
+Cc:     Ira Weiny <ira.weiny@intel.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220318224304.174967-2-mike.travis@hpe.com>
-References: <20220318224304.174967-2-mike.travis@hpe.com>
+In-Reply-To: <20220331180655.2946086-1-ira.weiny@intel.com>
+References: <20220331180655.2946086-1-ira.weiny@intel.com>
 MIME-Version: 1.0
-Message-ID: <164910355342.389.4879516551285813736.tip-bot2@tip-bot2>
+Message-ID: <164911665956.389.14418304758202721398.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,79 +66,50 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/platform branch of tip:
+The following commit has been merged into the x86/cleanups branch of tip:
 
-Commit-ID:     419074a49f3343004a8bf5122e2a9a7259d7e4dd
-Gitweb:        https://git.kernel.org/tip/419074a49f3343004a8bf5122e2a9a7259d7e4dd
-Author:        Mike Travis <mike.travis@hpe.com>
-AuthorDate:    Fri, 18 Mar 2022 17:43:02 -05:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Mon, 04 Apr 2022 20:21:41 +02:00
+Commit-ID:     5a0893088a20252cc268cbeabb25e883c2b6f94f
+Gitweb:        https://git.kernel.org/tip/5a0893088a20252cc268cbeabb25e883c2b6f94f
+Author:        Ira Weiny <ira.weiny@intel.com>
+AuthorDate:    Thu, 31 Mar 2022 11:06:55 -07:00
+Committer:     Dave Hansen <dave.hansen@linux.intel.com>
+CommitterDate: Mon, 04 Apr 2022 15:58:24 -07:00
 
-x86/platform/uv: Update NMI Handler for UV5
+x86/pkeys: Remove __arch_set_user_pkey_access() declaration
 
-Update NMI handler to interface with UV5 hardware. This involves changing
-the EVENT_OCCURRED MMR used by the hardware and removes the check for
-which NMI function is supported by UV BIOS.  The newer NMI function is
-assumed supported on UV5 and above.
+In the x86 code __arch_set_user_pkey_access() is not used and is not
+defined.
 
-Signed-off-by: Mike Travis <mike.travis@hpe.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Dimitri Sivanich <dimitri.sivanich@hpe.com>
-Reviewed-by: Steve Wahl <steve.wahl@hpe.com>
-Link: https://lore.kernel.org/r/20220318224304.174967-2-mike.travis@hpe.com
+Remove the dead declaration.
+
+Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Link: https://lkml.kernel.org/r/20220331180655.2946086-1-ira.weiny@intel.com
 ---
- arch/x86/platform/uv/uv_nmi.c | 21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ arch/x86/include/asm/pkeys.h | 6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/arch/x86/platform/uv/uv_nmi.c b/arch/x86/platform/uv/uv_nmi.c
-index 1e9ff28..6d2e9ae 100644
---- a/arch/x86/platform/uv/uv_nmi.c
-+++ b/arch/x86/platform/uv/uv_nmi.c
-@@ -244,8 +244,10 @@ static inline bool uv_nmi_action_is(const char *action)
- /* Setup which NMI support is present in system */
- static void uv_nmi_setup_mmrs(void)
+diff --git a/arch/x86/include/asm/pkeys.h b/arch/x86/include/asm/pkeys.h
+index 9c53053..2e6c04d 100644
+--- a/arch/x86/include/asm/pkeys.h
++++ b/arch/x86/include/asm/pkeys.h
+@@ -41,9 +41,6 @@ static inline int arch_override_mprotect_pkey(struct vm_area_struct *vma,
+ 	return __arch_override_mprotect_pkey(vma, prot, pkey);
+ }
+ 
+-extern int __arch_set_user_pkey_access(struct task_struct *tsk, int pkey,
+-		unsigned long init_val);
+-
+ #define ARCH_VM_PKEY_FLAGS (VM_PKEY_BIT0 | VM_PKEY_BIT1 | VM_PKEY_BIT2 | VM_PKEY_BIT3)
+ 
+ #define mm_pkey_allocation_map(mm)	(mm->context.pkey_allocation_map)
+@@ -118,9 +115,6 @@ int mm_pkey_free(struct mm_struct *mm, int pkey)
+ 	return 0;
+ }
+ 
+-extern int __arch_set_user_pkey_access(struct task_struct *tsk, int pkey,
+-		unsigned long init_val);
+-
+ static inline int vma_pkey(struct vm_area_struct *vma)
  {
-+	bool nmi_supported = false;
-+
- 	/* First determine arch specific MMRs to handshake with BIOS */
--	if (UVH_EVENT_OCCURRED0_EXTIO_INT0_MASK) {
-+	if (UVH_EVENT_OCCURRED0_EXTIO_INT0_MASK) {	/* UV2,3,4 setup */
- 		uvh_nmi_mmrx = UVH_EVENT_OCCURRED0;
- 		uvh_nmi_mmrx_clear = UVH_EVENT_OCCURRED0_ALIAS;
- 		uvh_nmi_mmrx_shift = UVH_EVENT_OCCURRED0_EXTIO_INT0_SHFT;
-@@ -255,26 +257,25 @@ static void uv_nmi_setup_mmrs(void)
- 		uvh_nmi_mmrx_req = UVH_BIOS_KERNEL_MMR_ALIAS_2;
- 		uvh_nmi_mmrx_req_shift = 62;
- 
--	} else if (UVH_EVENT_OCCURRED1_EXTIO_INT0_MASK) {
-+	} else if (UVH_EVENT_OCCURRED1_EXTIO_INT0_MASK) { /* UV5+ setup */
- 		uvh_nmi_mmrx = UVH_EVENT_OCCURRED1;
- 		uvh_nmi_mmrx_clear = UVH_EVENT_OCCURRED1_ALIAS;
- 		uvh_nmi_mmrx_shift = UVH_EVENT_OCCURRED1_EXTIO_INT0_SHFT;
- 		uvh_nmi_mmrx_type = "OCRD1-EXTIO_INT0";
- 
--		uvh_nmi_mmrx_supported = UVH_EXTIO_INT0_BROADCAST;
--		uvh_nmi_mmrx_req = UVH_BIOS_KERNEL_MMR_ALIAS_2;
--		uvh_nmi_mmrx_req_shift = 62;
-+		nmi_supported = true;		/* assume sync valid on UV5+ */
-+		uvh_nmi_mmrx_req = 0;		/* no request bit to clear */
- 
- 	} else {
--		pr_err("UV:%s:cannot find EVENT_OCCURRED*_EXTIO_INT0\n",
--			__func__);
-+		pr_err("UV:%s:NMI support not available on this system\n", __func__);
- 		return;
- 	}
- 
- 	/* Then find out if new NMI is supported */
--	if (likely(uv_read_local_mmr(uvh_nmi_mmrx_supported))) {
--		uv_write_local_mmr(uvh_nmi_mmrx_req,
--					1UL << uvh_nmi_mmrx_req_shift);
-+	if (likely(nmi_supported) || (uv_read_local_mmr(uvh_nmi_mmrx_supported))) {
-+		if (uvh_nmi_mmrx_req)
-+			uv_write_local_mmr(uvh_nmi_mmrx_req,
-+						1UL << uvh_nmi_mmrx_req_shift);
- 		nmi_mmr = uvh_nmi_mmrx;
- 		nmi_mmr_clear = uvh_nmi_mmrx_clear;
- 		nmi_mmr_pending = 1UL << uvh_nmi_mmrx_shift;
+ 	unsigned long vma_pkey_mask = VM_PKEY_BIT0 | VM_PKEY_BIT1 |
