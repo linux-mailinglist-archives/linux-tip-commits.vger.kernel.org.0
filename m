@@ -2,55 +2,58 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 98CB64F5461
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  6 Apr 2022 06:54:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CC26E4F5464
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  6 Apr 2022 06:54:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230134AbiDFEty (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 6 Apr 2022 00:49:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49240 "EHLO
+        id S241370AbiDFEuM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 6 Apr 2022 00:50:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53838 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1388343AbiDEVyD (ORCPT
+        with ESMTP id S1441972AbiDEWKZ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 5 Apr 2022 17:54:03 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D064114FEF;
-        Tue,  5 Apr 2022 13:50:18 -0700 (PDT)
-Date:   Tue, 05 Apr 2022 20:50:14 -0000
+        Tue, 5 Apr 2022 18:10:25 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF1D614A93A;
+        Tue,  5 Apr 2022 13:56:19 -0700 (PDT)
+Date:   Tue, 05 Apr 2022 20:56:16 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1649191816;
+        s=2020; t=1649192178;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=P9NEylB5TuZS1uQcuZiivIHTEA7/w5XCamuX+Zjn7SA=;
-        b=r69UORCsb3ybinH4tqd+de10IlVJYWVTvHqN0t6ctCOa2mLgLkRGMhNSQY8R5BEb3C+20R
-        8jMiVS8Mh6BFFvqhluXavjV/05wOc5p+fmRag6lqn07kULKxr5mh0x7/WC1ogdzl3FGWVn
-        MW4z9gE7FceO8Q1ZMP7ge1oh/DEmkm+g17t7EZYV7YHDcjpVrY02vH4G6VIBl3jTFLjkP0
-        8IO/hLjNdGfLs8/icta3QzFC1eWw7kzj1j2zl+rE+MI/6Yz/jOPlJU62qSdvuTE4UzyKFY
-        +NOpRO3ETOgVUofAw1MnZLkREF0MtrGwNrxhs7teD8K2hfx/Xm3nRu7Cqi2FGw==
+        bh=bVZNz50m5hLuQdgDd7OhfwNRqA0q9OGnmrTCKGq56TA=;
+        b=GMNxM4ZKIQqboBm5Vu3ycSDfyRnDudvMpc2g63+HDqry/GJ0xJ403Q5+1Q2lz28Weg1np7
+        Rjk2rDPZ3zBEY6rcE1X6f2gGlbz0tF5DBG2VRcv0oTdbsK9PrGEM2sChoQ4hMdCRqp7Miv
+        dXtaeERY+zXcKGsuEn+mHbN2dOE6zEJfSS0x+ywnrpor2sooFOLPFLbSh9YmwsP/Rs7vMl
+        vu9pXXjSqDM2/oldI+nppcfafN3XTj2G3NO0/Hevt4ejKyLULNO3FzOEQw6vZJuI1SIIJ8
+        KpAlmEJz9J0Uz4P1p4S1FeGg4jrYtgrsZrWfPrEYpn5wktubRqoOnd1gmwnC3Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1649191816;
+        s=2020e; t=1649192178;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=P9NEylB5TuZS1uQcuZiivIHTEA7/w5XCamuX+Zjn7SA=;
-        b=YRNXRje8iO7luFN9DfbfZW4izUXf+1bdcXyGI6jZkp3BcZL0mDjfqy/2anoWe1ILcbxMFR
-        PPPK5u7LeJMMGVCQ==
+        bh=bVZNz50m5hLuQdgDd7OhfwNRqA0q9OGnmrTCKGq56TA=;
+        b=b3xdYyspc0pGjEDAnw+4PHgXW7jrO4QBKXK4X7D2b1gr8Np+L3q6ilTjgeuv0M8z6XNcUY
+        tnPXQ+ZeubH6mEBA==
 From:   "tip-bot2 for Ammar Faizi" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/misc] x86/delay: Fix the wrong asm constraint in delay_loop()
-Cc:     Ammar Faizi <ammarfaizi2@gnuweeb.org>,
-        Borislav Petkov <bp@suse.de>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20220329104705.65256-2-ammarfaizi2@gnuweeb.org>
-References: <20220329104705.65256-2-ammarfaizi2@gnuweeb.org>
+Subject: [tip: ras/core] x86/MCE/AMD: Fix memory leak when
+ threshold_create_bank() fails
+Cc:     Alviro Iskandar Setiawan <alviro.iskandar@gnuweeb.org>,
+        Yazen Ghannam <yazen.ghannam@amd.com>,
+        Ammar Faizi <ammarfaizi2@gnuweeb.org>,
+        Borislav Petkov <bp@suse.de>, <stable@vger.kernel.org>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20220329104705.65256-3-ammarfaizi2@gnuweeb.org>
+References: <20220329104705.65256-3-ammarfaizi2@gnuweeb.org>
 MIME-Version: 1.0
-Message-ID: <164919181468.389.4278489978925909227.tip-bot2@tip-bot2>
+Message-ID: <164919217670.389.1735790360584795071.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,52 +68,106 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/misc branch of tip:
+The following commit has been merged into the ras/core branch of tip:
 
-Commit-ID:     b86eb74098a92afd789da02699b4b0dd3f73b889
-Gitweb:        https://git.kernel.org/tip/b86eb74098a92afd789da02699b4b0dd3f73b889
+Commit-ID:     e5f28623ceb103e13fc3d7bd45edf9818b227fd0
+Gitweb:        https://git.kernel.org/tip/e5f28623ceb103e13fc3d7bd45edf9818b227fd0
 Author:        Ammar Faizi <ammarfaizi2@gnuweeb.org>
-AuthorDate:    Tue, 29 Mar 2022 17:47:04 +07:00
+AuthorDate:    Tue, 29 Mar 2022 17:47:05 +07:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 05 Apr 2022 21:21:57 +02:00
+CommitterDate: Tue, 05 Apr 2022 21:24:37 +02:00
 
-x86/delay: Fix the wrong asm constraint in delay_loop()
+x86/MCE/AMD: Fix memory leak when threshold_create_bank() fails
 
-The asm constraint does not reflect the fact that the asm statement can
-modify the value of the local variable loops. Which it does.
+In mce_threshold_create_device(), if threshold_create_bank() fails, the
+previously allocated threshold banks array @bp will be leaked because
+the call to mce_threshold_remove_device() will not free it.
 
-Specifying the wrong constraint may lead to undefined behavior, it may
-clobber random stuff (e.g. local variable, important temporary value in
-regs, etc.). This is especially dangerous when the compiler decides to
-inline the function and since it doesn't know that the value gets
-modified, it might decide to use it from a register directly without
-reloading it.
+This happens because mce_threshold_remove_device() fetches the pointer
+through the threshold_banks per-CPU variable but bp is written there
+only after the bank creation is successful, and not before, when
+threshold_create_bank() fails.
 
-Change the constraint to "+a" to denote that the first argument is an
-input and an output argument.
+Add a helper which unwinds all the bank creation work previously done
+and pass into it the previously allocated threshold banks array for
+freeing.
 
-  [ bp: Fix typo, massage commit message. ]
+  [ bp: Massage. ]
 
-Fixes: e01b70ef3eb3 ("x86: fix bug in arch/i386/lib/delay.c file, delay_loop function")
+Fixes: 6458de97fc15 ("x86/mce/amd: Straighten CPU hotplug path")
+Co-developed-by: Alviro Iskandar Setiawan <alviro.iskandar@gnuweeb.org>
+Signed-off-by: Alviro Iskandar Setiawan <alviro.iskandar@gnuweeb.org>
+Co-developed-by: Yazen Ghannam <yazen.ghannam@amd.com>
+Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
 Signed-off-by: Ammar Faizi <ammarfaizi2@gnuweeb.org>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lore.kernel.org/r/20220329104705.65256-2-ammarfaizi2@gnuweeb.org
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20220329104705.65256-3-ammarfaizi2@gnuweeb.org
 ---
- arch/x86/lib/delay.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/kernel/cpu/mce/amd.c | 32 +++++++++++++++++++-------------
+ 1 file changed, 19 insertions(+), 13 deletions(-)
 
-diff --git a/arch/x86/lib/delay.c b/arch/x86/lib/delay.c
-index 65d15df..0e65d00 100644
---- a/arch/x86/lib/delay.c
-+++ b/arch/x86/lib/delay.c
-@@ -54,8 +54,8 @@ static void delay_loop(u64 __loops)
- 		"	jnz 2b		\n"
- 		"3:	dec %0		\n"
- 
--		: /* we don't need output */
--		:"a" (loops)
-+		: "+a" (loops)
-+		:
- 	);
+diff --git a/arch/x86/kernel/cpu/mce/amd.c b/arch/x86/kernel/cpu/mce/amd.c
+index 1940d30..1c87501 100644
+--- a/arch/x86/kernel/cpu/mce/amd.c
++++ b/arch/x86/kernel/cpu/mce/amd.c
+@@ -1294,10 +1294,23 @@ out_free:
+ 	kfree(bank);
  }
  
++static void __threshold_remove_device(struct threshold_bank **bp)
++{
++	unsigned int bank, numbanks = this_cpu_read(mce_num_banks);
++
++	for (bank = 0; bank < numbanks; bank++) {
++		if (!bp[bank])
++			continue;
++
++		threshold_remove_bank(bp[bank]);
++		bp[bank] = NULL;
++	}
++	kfree(bp);
++}
++
+ int mce_threshold_remove_device(unsigned int cpu)
+ {
+ 	struct threshold_bank **bp = this_cpu_read(threshold_banks);
+-	unsigned int bank, numbanks = this_cpu_read(mce_num_banks);
+ 
+ 	if (!bp)
+ 		return 0;
+@@ -1308,13 +1321,7 @@ int mce_threshold_remove_device(unsigned int cpu)
+ 	 */
+ 	this_cpu_write(threshold_banks, NULL);
+ 
+-	for (bank = 0; bank < numbanks; bank++) {
+-		if (bp[bank]) {
+-			threshold_remove_bank(bp[bank]);
+-			bp[bank] = NULL;
+-		}
+-	}
+-	kfree(bp);
++	__threshold_remove_device(bp);
+ 	return 0;
+ }
+ 
+@@ -1351,15 +1358,14 @@ int mce_threshold_create_device(unsigned int cpu)
+ 		if (!(this_cpu_read(bank_map) & (1 << bank)))
+ 			continue;
+ 		err = threshold_create_bank(bp, cpu, bank);
+-		if (err)
+-			goto out_err;
++		if (err) {
++			__threshold_remove_device(bp);
++			return err;
++		}
+ 	}
+ 	this_cpu_write(threshold_banks, bp);
+ 
+ 	if (thresholding_irq_en)
+ 		mce_threshold_vector = amd_threshold_interrupt;
+ 	return 0;
+-out_err:
+-	mce_threshold_remove_device(cpu);
+-	return err;
+ }
