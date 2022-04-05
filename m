@@ -2,49 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 668784F3260
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  5 Apr 2022 14:57:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 46AAD4F3216
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  5 Apr 2022 14:54:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240731AbiDEJPM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 5 Apr 2022 05:15:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37486 "EHLO
+        id S1343823AbiDEJOh (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 5 Apr 2022 05:14:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41304 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240830AbiDEIsE (ORCPT
+        with ESMTP id S240964AbiDEIsU (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 5 Apr 2022 04:48:04 -0400
+        Tue, 5 Apr 2022 04:48:20 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB6172611E;
-        Tue,  5 Apr 2022 01:36:28 -0700 (PDT)
-Date:   Tue, 05 Apr 2022 08:36:16 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC33527FE2;
+        Tue,  5 Apr 2022 01:36:38 -0700 (PDT)
+Date:   Tue, 05 Apr 2022 08:36:18 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1649147778;
+        s=2020; t=1649147779;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=EG76px1djD7LhuP2FsvVqSe9KJ1HtJ99tnTsa5NZMzM=;
-        b=pRMPOdbf0QVkChK0gP4+YCQuxX3+9WmS97X8OjgfTavV3P4RpeQKlW3Z6mH5xEeo66YKwf
-        NXSw0EuWvnuYD1k3h290JJGp/yjqEL+jxTzQdRORdc8gvzlxryOB8FCktkr03q1AIDTQLJ
-        K5io8KYm7foZk/U1/8zDQO8/FdfW08SKnSD40eW+8t0+v9/BbeX1qFYrlkB0X7oMKgjXV9
-        wektTMWaGEzJ6l++k/BvaAE7gr9gBy4Wmqk16l8Vfo21TEmEGkyINMQFasjnH9Bn6O7NpB
-        rfPkQQ9oj/blbyCRg+RstNgQIMD3d6VLW9xu/wLsIimaVQxMknHCu2l9aibGPg==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=nLr5NZ+XTqOLEeqR/li+1bApXh7Q5ne1YAbYSsiNIXA=;
+        b=ECouRvcdEhIa7PI5amX+ogvgsVt6zYwuxtiPrAuff40Q1QEVOFFuoM2XTudkANc298j+tt
+        G7hvkhVXV+zrAbUjWIsJYqXvTDbhpPrBTw1Q4UqgN9ltDedxYX9cFvmpZpHTmo1/Nd1ATk
+        MfYO43GHTJgtesLMjHTwrEcYdPHu5LqiVnmBEXPBge9RI1hf8xPqetJ9F+woR3vtwqvOUj
+        yOivw2BB4xH3uvwtMC4S7TWLSD5QSLLtvIazcj86ctLREwF6suhS3ObGzfvV862vzFF/8d
+        M2SxtsLCtg7UISLkoow1tErMZ472Iw2bbBTM/HxKTkPspIvDR8e72ZIwCLLEjQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1649147778;
+        s=2020e; t=1649147779;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=EG76px1djD7LhuP2FsvVqSe9KJ1HtJ99tnTsa5NZMzM=;
-        b=9dBD20I1CvVQmxYG2prEh5xPyuA5vlSWB/pWNwzTu1xMrpbUKf54pX53d0cY7aYDdg0kby
-        KoWo538drSLmjQDg==
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=nLr5NZ+XTqOLEeqR/li+1bApXh7Q5ne1YAbYSsiNIXA=;
+        b=rHOEZQQb+QHCRDkGnUcBYzZc8eFtugtY4K0QMYayCeKhHMtbbM/ShWrZQTk6k3PdrmM9cg
+        FhAZnEpbnEnWOiBQ==
+From:   "tip-bot2 for Namhyung Kim" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] locking/mutex: Make contention tracepoints more
- consistent wrt adaptive spinning
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: locking/core] locking: Add lock contention tracepoints
+Cc:     Namhyung Kim <namhyung@kernel.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Hyeonggon Yoo <42.hyeyoo@gmail.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
+In-Reply-To: <20220322185709.141236-2-namhyung@kernel.org>
+References: <20220322185709.141236-2-namhyung@kernel.org>
 MIME-Version: 1.0
-Message-ID: <164914777661.389.2436402911593584852.tip-bot2@tip-bot2>
+Message-ID: <164914777883.389.9880881024402369750.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -61,107 +68,143 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     dc1f7893a70fe403983bd8492f177bf993940e2c
-Gitweb:        https://git.kernel.org/tip/dc1f7893a70fe403983bd8492f177bf993940e2c
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Wed, 30 Mar 2022 13:06:54 +02:00
+Commit-ID:     16edd9b511a13e7760ed4b92ba4e39bacda5c86f
+Gitweb:        https://git.kernel.org/tip/16edd9b511a13e7760ed4b92ba4e39bacda5c86f
+Author:        Namhyung Kim <namhyung@kernel.org>
+AuthorDate:    Tue, 22 Mar 2022 11:57:08 -07:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 05 Apr 2022 10:24:36 +02:00
+CommitterDate: Tue, 05 Apr 2022 10:24:35 +02:00
 
-locking/mutex: Make contention tracepoints more consistent wrt adaptive spinning
+locking: Add lock contention tracepoints
 
-Have the trace_contention_*() tracepoints consistently include
-adaptive spinning. In order to differentiate between the spinning and
-non-spinning states add LCB_F_MUTEX and combine with LCB_F_SPIN.
+This adds two new lock contention tracepoints like below:
 
-The consequence is that a mutex contention can now triggler multiple
-_begin() tracepoints before triggering an _end().
+ * lock:contention_begin
+ * lock:contention_end
 
-Additionally, this fixes one path where mutex would trigger _end()
-without ever seeing a _begin().
+The lock:contention_begin takes a flags argument to classify locks.  I
+found it useful to identify what kind of locks it's tracing like if
+it's spinning or sleeping, reader-writer lock, real-time, and per-cpu.
 
+Move tracepoint definitions into mutex.c so that we can use them
+without lockdep.
+
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Tested-by: Hyeonggon Yoo <42.hyeyoo@gmail.com>
+Link: https://lkml.kernel.org/r/20220322185709.141236-2-namhyung@kernel.org
 ---
- include/trace/events/lock.h |  4 +++-
- kernel/locking/mutex.c      | 16 ++++++++++++----
- 2 files changed, 15 insertions(+), 5 deletions(-)
+ include/trace/events/lock.h | 61 ++++++++++++++++++++++++++++++++++--
+ kernel/locking/lockdep.c    |  1 +-
+ kernel/locking/mutex.c      |  3 ++-
+ 3 files changed, 61 insertions(+), 4 deletions(-)
 
 diff --git a/include/trace/events/lock.h b/include/trace/events/lock.h
-index b9b6e3e..9ebd081 100644
+index d751212..b9b6e3e 100644
 --- a/include/trace/events/lock.h
 +++ b/include/trace/events/lock.h
-@@ -14,6 +14,7 @@
- #define LCB_F_WRITE	(1U << 2)
- #define LCB_F_RT	(1U << 3)
- #define LCB_F_PERCPU	(1U << 4)
-+#define LCB_F_MUTEX	(1U << 5)
+@@ -5,11 +5,21 @@
+ #if !defined(_TRACE_LOCK_H) || defined(TRACE_HEADER_MULTI_READ)
+ #define _TRACE_LOCK_H
  
+-#include <linux/lockdep.h>
++#include <linux/sched.h>
+ #include <linux/tracepoint.h>
  
++/* flags for lock:contention_begin */
++#define LCB_F_SPIN	(1U << 0)
++#define LCB_F_READ	(1U << 1)
++#define LCB_F_WRITE	(1U << 2)
++#define LCB_F_RT	(1U << 3)
++#define LCB_F_PERCPU	(1U << 4)
++
++
  #ifdef CONFIG_LOCKDEP
-@@ -113,7 +114,8 @@ TRACE_EVENT(contention_begin,
- 				{ LCB_F_READ,		"READ" },
- 				{ LCB_F_WRITE,		"WRITE" },
- 				{ LCB_F_RT,		"RT" },
--				{ LCB_F_PERCPU,		"PERCPU" }
-+				{ LCB_F_PERCPU,		"PERCPU" },
-+				{ LCB_F_MUTEX,		"MUTEX" }
- 			  ))
+ 
++#include <linux/lockdep.h>
++
+ TRACE_EVENT(lock_acquire,
+ 
+ 	TP_PROTO(struct lockdep_map *lock, unsigned int subclass,
+@@ -78,8 +88,53 @@ DEFINE_EVENT(lock, lock_acquired,
+ 	TP_ARGS(lock, ip)
  );
  
+-#endif
+-#endif
++#endif /* CONFIG_LOCK_STAT */
++#endif /* CONFIG_LOCKDEP */
++
++TRACE_EVENT(contention_begin,
++
++	TP_PROTO(void *lock, unsigned int flags),
++
++	TP_ARGS(lock, flags),
++
++	TP_STRUCT__entry(
++		__field(void *, lock_addr)
++		__field(unsigned int, flags)
++	),
++
++	TP_fast_assign(
++		__entry->lock_addr = lock;
++		__entry->flags = flags;
++	),
++
++	TP_printk("%p (flags=%s)", __entry->lock_addr,
++		  __print_flags(__entry->flags, "|",
++				{ LCB_F_SPIN,		"SPIN" },
++				{ LCB_F_READ,		"READ" },
++				{ LCB_F_WRITE,		"WRITE" },
++				{ LCB_F_RT,		"RT" },
++				{ LCB_F_PERCPU,		"PERCPU" }
++			  ))
++);
++
++TRACE_EVENT(contention_end,
++
++	TP_PROTO(void *lock, int ret),
++
++	TP_ARGS(lock, ret),
++
++	TP_STRUCT__entry(
++		__field(void *, lock_addr)
++		__field(int, ret)
++	),
++
++	TP_fast_assign(
++		__entry->lock_addr = lock;
++		__entry->ret = ret;
++	),
++
++	TP_printk("%p (ret=%d)", __entry->lock_addr, __entry->ret)
++);
+ 
+ #endif /* _TRACE_LOCK_H */
+ 
+diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
+index 3cbd492..a6e671b 100644
+--- a/kernel/locking/lockdep.c
++++ b/kernel/locking/lockdep.c
+@@ -60,7 +60,6 @@
+ 
+ #include "lockdep_internals.h"
+ 
+-#define CREATE_TRACE_POINTS
+ #include <trace/events/lock.h>
+ 
+ #ifdef CONFIG_PROVE_LOCKING
 diff --git a/kernel/locking/mutex.c b/kernel/locking/mutex.c
-index c88deda..d973fe6 100644
+index 5e35859..ee2fd76 100644
 --- a/kernel/locking/mutex.c
 +++ b/kernel/locking/mutex.c
-@@ -602,12 +602,14 @@ __mutex_lock_common(struct mutex *lock, unsigned int state, unsigned int subclas
- 	preempt_disable();
- 	mutex_acquire_nest(&lock->dep_map, subclass, 0, nest_lock, ip);
+@@ -30,6 +30,9 @@
+ #include <linux/debug_locks.h>
+ #include <linux/osq_lock.h>
  
-+	trace_contention_begin(lock, LCB_F_MUTEX | LCB_F_SPIN);
- 	if (__mutex_trylock(lock) ||
- 	    mutex_optimistic_spin(lock, ww_ctx, NULL)) {
- 		/* got the lock, yay! */
- 		lock_acquired(&lock->dep_map, ip);
- 		if (ww_ctx)
- 			ww_mutex_set_context_fastpath(ww, ww_ctx);
-+		trace_contention_end(lock, 0);
- 		preempt_enable();
- 		return 0;
- 	}
-@@ -644,7 +646,7 @@ __mutex_lock_common(struct mutex *lock, unsigned int state, unsigned int subclas
- 	}
- 
- 	set_current_state(state);
--	trace_contention_begin(lock, 0);
-+	trace_contention_begin(lock, LCB_F_MUTEX);
- 	for (;;) {
- 		bool first;
- 
-@@ -684,10 +686,16 @@ __mutex_lock_common(struct mutex *lock, unsigned int state, unsigned int subclas
- 		 * state back to RUNNING and fall through the next schedule(),
- 		 * or we must see its unlock and acquire.
- 		 */
--		if (__mutex_trylock_or_handoff(lock, first) ||
--		    (first && mutex_optimistic_spin(lock, ww_ctx, &waiter)))
-+		if (__mutex_trylock_or_handoff(lock, first))
- 			break;
- 
-+		if (first) {
-+			trace_contention_begin(lock, LCB_F_MUTEX | LCB_F_SPIN);
-+			if (mutex_optimistic_spin(lock, ww_ctx, &waiter))
-+				break;
-+			trace_contention_begin(lock, LCB_F_MUTEX);
-+		}
++#define CREATE_TRACE_POINTS
++#include <trace/events/lock.h>
 +
- 		raw_spin_lock(&lock->wait_lock);
- 	}
- 	raw_spin_lock(&lock->wait_lock);
-@@ -723,8 +731,8 @@ skip_wait:
- err:
- 	__set_current_state(TASK_RUNNING);
- 	__mutex_remove_waiter(lock, &waiter);
--	trace_contention_end(lock, ret);
- err_early_kill:
-+	trace_contention_end(lock, ret);
- 	raw_spin_unlock(&lock->wait_lock);
- 	debug_mutex_free_waiter(&waiter);
- 	mutex_release(&lock->dep_map, ip);
+ #ifndef CONFIG_PREEMPT_RT
+ #include "mutex.h"
+ 
