@@ -2,55 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 31DCD4F316C
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  5 Apr 2022 14:43:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 74FFC4F2FDA
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  5 Apr 2022 14:18:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235798AbiDEIk1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 5 Apr 2022 04:40:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33840 "EHLO
+        id S234681AbiDEIkJ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 5 Apr 2022 04:40:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44562 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241188AbiDEIcy (ORCPT
+        with ESMTP id S241201AbiDEIcy (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Tue, 5 Apr 2022 04:32:54 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0CCD17079;
-        Tue,  5 Apr 2022 01:29:14 -0700 (PDT)
-Date:   Tue, 05 Apr 2022 08:29:12 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5153E11A3C;
+        Tue,  5 Apr 2022 01:29:23 -0700 (PDT)
+Date:   Tue, 05 Apr 2022 08:29:20 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1649147353;
+        s=2020; t=1649147361;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=E+FXe1f5zmjyKSWYJfD7CbEkVYcWfT20iHGjiGdqNXg=;
-        b=H+hhm3swfUasbQ76dTILXhrORpE72us0YDpYy7ERKA+xTmVO6Eb4WC9hOgfbDbdKD9y+4M
-        h8PZITFwW5z4aObV8HJfsPxjDnxJxCJSK1ElK+cNI23XFgplEQAIDyVUx/M8l2fSvcQkGq
-        O2WwG6bOryVc9WElSSk2D1pIdr6EDuHKK3z93roveCn/hckHrGelbYMxjxpesRqsQke2C6
-        544SCsLI/wWc7tTQ9JNDaTrOcf7fPYMLBW1UDu1w08SthfsnoTQk8C73xHWgemOzPoKJks
-        0qT23xsmSs2O8mslwMtBf0IXEA9tznK7s0zhm5r6RQul3WfsZ/wkcDsznxnrbA==
+        bh=wLAn9GLraFUF0+Wziqpwl6DlJuaDd5JyMsXt0a6TOUU=;
+        b=cguKSRAZKUVMmNDefWb3wIu0S8SqVj6IPTjWPL1RZRwkm2FKbXGK0SbqKxb/9EeTPSlgQr
+        ZmywhMLSyvzN8X9lIxfNDTkITUkJGZpvfue/FcvWw0K5RsNTqrp7bAhaIPHt1eo8NHV8LE
+        QHxkIQmclPIoHd6fQNLxLDQxeCP22d9M2KaFFsUL4EegR/BFnZ2/60kI78zw/XKPx4/zeX
+        sfJSTg6BBlZ130Qo8Z71M1+dzzHVUGAD7HDeiUXCchZbLg0XpXzyKryn1R92UadEGZuFYU
+        NLaiK6+HZ6rXJdGXwDLQOwLxLHcdnYaHTl3ik6BepTkRQJrIVc/rx51y+4Dw5w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1649147353;
+        s=2020e; t=1649147361;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=E+FXe1f5zmjyKSWYJfD7CbEkVYcWfT20iHGjiGdqNXg=;
-        b=InNndmzVcr4FtQN8848pcBnuPmGlThffrlr/JJioEVab9I+uIIST2zz9xPUdmD2+ejlZJt
-        dDQnSHJ0hhNk/ZBg==
-From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
+        bh=wLAn9GLraFUF0+Wziqpwl6DlJuaDd5JyMsXt0a6TOUU=;
+        b=4tV93tldwGS7gzj0I8Fa7BR+euyu+G5yX6w4jH9kw0wuFW/bG0ubsYMEdNsqnJDkChO1gz
+        nJXUaBugRbOI50AA==
+From:   "tip-bot2 for Valentin Schneider" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf/x86: Add Intel Raptor Lake support
-Cc:     Kan Liang <kan.liang@linux.intel.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: sched/core] kcsan: Use preemption model accessors
+Cc:     Valentin Schneider <valentin.schneider@arm.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Marco Elver <elver@google.com>,
+        Frederic Weisbecker <frederic@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <1647366360-82824-1-git-send-email-kan.liang@linux.intel.com>
-References: <1647366360-82824-1-git-send-email-kan.liang@linux.intel.com>
+In-Reply-To: <20211112185203.280040-4-valentin.schneider@arm.com>
+References: <20211112185203.280040-4-valentin.schneider@arm.com>
 MIME-Version: 1.0
-Message-ID: <164914735235.389.727657081152348358.tip-bot2@tip-bot2>
+Message-ID: <164914736082.389.472482358413646316.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,37 +67,48 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/urgent branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     c61759e581576d3330bd1d9490b4d7552e24da6b
-Gitweb:        https://git.kernel.org/tip/c61759e581576d3330bd1d9490b4d7552e24da6b
-Author:        Kan Liang <kan.liang@linux.intel.com>
-AuthorDate:    Tue, 15 Mar 2022 10:45:57 -07:00
+Commit-ID:     5693fa74f98afed5421ac0165e9e9291bde7d9e1
+Gitweb:        https://git.kernel.org/tip/5693fa74f98afed5421ac0165e9e9291bde7d9e1
+Author:        Valentin Schneider <valentin.schneider@arm.com>
+AuthorDate:    Fri, 12 Nov 2021 18:52:02 
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 05 Apr 2022 09:59:43 +02:00
+CommitterDate: Tue, 05 Apr 2022 10:24:42 +02:00
 
-perf/x86: Add Intel Raptor Lake support
+kcsan: Use preemption model accessors
 
->From PMU's perspective, Raptor Lake is the same as the Alder Lake. The
-only difference is the event list, which will be supported in the perf
-tool later.
+Per PREEMPT_DYNAMIC, checking CONFIG_PREEMPT doesn't tell you the actual
+preemption model of the live kernel. Use the newly-introduced accessors
+instead.
 
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Signed-off-by: Valentin Schneider <valentin.schneider@arm.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/1647366360-82824-1-git-send-email-kan.liang@linux.intel.com
+Reviewed-by: Marco Elver <elver@google.com>
+Acked-by: Frederic Weisbecker <frederic@kernel.org>
+Link: https://lore.kernel.org/r/20211112185203.280040-4-valentin.schneider@arm.com
 ---
- arch/x86/events/intel/core.c | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/kcsan/kcsan_test.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-index e88791b..28f075e 100644
---- a/arch/x86/events/intel/core.c
-+++ b/arch/x86/events/intel/core.c
-@@ -6212,6 +6212,7 @@ __init int intel_pmu_init(void)
+diff --git a/kernel/kcsan/kcsan_test.c b/kernel/kcsan/kcsan_test.c
+index a36fca0..767dfac 100644
+--- a/kernel/kcsan/kcsan_test.c
++++ b/kernel/kcsan/kcsan_test.c
+@@ -1380,13 +1380,14 @@ static const void *nthreads_gen_params(const void *prev, char *desc)
+ 	else
+ 		nthreads *= 2;
  
- 	case INTEL_FAM6_ALDERLAKE:
- 	case INTEL_FAM6_ALDERLAKE_L:
-+	case INTEL_FAM6_RAPTORLAKE:
+-	if (!IS_ENABLED(CONFIG_PREEMPT) || !IS_ENABLED(CONFIG_KCSAN_INTERRUPT_WATCHER)) {
++	if (!preempt_model_preemptible() ||
++	    !IS_ENABLED(CONFIG_KCSAN_INTERRUPT_WATCHER)) {
  		/*
- 		 * Alder Lake has 2 types of CPU, core and atom.
- 		 *
+ 		 * Without any preemption, keep 2 CPUs free for other tasks, one
+ 		 * of which is the main test case function checking for
+ 		 * completion or failure.
+ 		 */
+-		const long min_unused_cpus = IS_ENABLED(CONFIG_PREEMPT_NONE) ? 2 : 0;
++		const long min_unused_cpus = preempt_model_none() ? 2 : 0;
+ 		const long min_required_cpus = 2 + min_unused_cpus;
+ 
+ 		if (num_online_cpus() < min_required_cpus) {
