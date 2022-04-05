@@ -2,56 +2,58 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D4F3E4F2A2C
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  5 Apr 2022 12:53:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C8F574F2A56
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  5 Apr 2022 12:55:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235710AbiDEIkW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 5 Apr 2022 04:40:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43990 "EHLO
+        id S235660AbiDEIkO (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 5 Apr 2022 04:40:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33756 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241159AbiDEIcw (ORCPT
+        with ESMTP id S241160AbiDEIcw (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Tue, 5 Apr 2022 04:32:52 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F222167C7;
-        Tue,  5 Apr 2022 01:28:59 -0700 (PDT)
-Date:   Tue, 05 Apr 2022 08:28:56 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B7FE167E1;
+        Tue,  5 Apr 2022 01:29:00 -0700 (PDT)
+Date:   Tue, 05 Apr 2022 08:28:57 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1649147337;
+        s=2020; t=1649147338;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=aRspjOD+sp4wLkw4s0WLBmG5G07DJy71EvKofdBLPA4=;
-        b=gok3LcuSKj4zHHuSDoKXqImYIYgLzOiqWQmeaO0TT7se7k1AS6iHAf0DLX7gCwbSZ8So9o
-        3PSKYhQa+td4Dz5gi2y6hCbTg8mbMDjVO39IQfj4fU1lR6Teav0I6/Jo5cVpzz3pvHQ/f1
-        otDThHBB5ChCpFRrCZuOzlTHh2uz6tsKh8mE7BypSn4GgsDZoEe6yT9BrflLOL5zBmQRb8
-        Y4UGPw9EGMyHIKD3PD8fsK5LTe4/FngmAuofjAzR6hdlY8hsVtQfkt8ezHnR6cYENWz1Uy
-        0iLeDoF0pPk8kqrltGxJI3I3nSjwr0YR90BPow/iSpki8FEkybVBAU5SXqlvdw==
+        bh=9nurDYK5C/TNfM+pI70QrFow1rWlcdmAbhl+BhuPbTI=;
+        b=JDaO9YIdkp3LiZ5vkIvWLxakI39d/y9fwKX0B27LuDQ5TGcT7TgsEEsi3zQrTKqXSOvy1Z
+        pYU3Vj0OddWHot2+cVznVTza4LW+KxxnKGXTnddRUb5F/m93Mole7PveIWXkn2CVe4HB+u
+        bwDdvEKgPbewgnJtBZ306EfjSWAorJhT0MDWyUeN3rH5rSCy1UbQkJ7QkGmIomopUApnQe
+        slPzpGQPPO3BEZ0re9vWZAgYOXjPimuagueK5u+sq5euBXfmAo0tjtN5mR1FAWyRAI8d3i
+        QlpC4gZkcfs9w2qhdy4dj15wsEq/053nEBS5x7ifAhKAow4uLQCyyt6esLb6+g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1649147337;
+        s=2020e; t=1649147338;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=aRspjOD+sp4wLkw4s0WLBmG5G07DJy71EvKofdBLPA4=;
-        b=VxaaUtbIbDRsVByCzaPodikw8WVDkI1rGgzMxON0+tAuOIy8nh02YGsBmagANhYfrPGO0J
-        oo2+TPEhpRMsjrDA==
-From:   "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
+        bh=9nurDYK5C/TNfM+pI70QrFow1rWlcdmAbhl+BhuPbTI=;
+        b=llOd6f0j5yhcZVRBpl9KFo5wl1oVT7Hxw8jKqCXRg3B3GqSejtp2rphg71XgjklAfCMOjB
+        2ezDILUwnyYgrrCQ==
+From:   "tip-bot2 for Christophe Leroy" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/urgent] x86/percpu: Remove volatile from arch_raw_cpu_ptr().
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: locking/urgent] static_call: Remove __DEFINE_STATIC_CALL macro
+Cc:     Christophe Leroy <christophe.leroy@csgroup.eu>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Josh Poimboeuf <jpoimboe@redhat.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220328145810.86783-2-bigeasy@linutronix.de>
-References: <20220328145810.86783-2-bigeasy@linutronix.de>
+In-Reply-To: =?utf-8?q?=3C329074f92d96e3220ebe15da7bbe2779beee31eb=2E16472?=
+ =?utf-8?q?53456=2Egit=2Echristophe=2Eleroy=40csgroup=2Eeu=3E?=
+References: =?utf-8?q?=3C329074f92d96e3220ebe15da7bbe2779beee31eb=2E164725?=
+ =?utf-8?q?3456=2Egit=2Echristophe=2Eleroy=40csgroup=2Eeu=3E?=
 MIME-Version: 1.0
-Message-ID: <164914733657.389.13602692959226451396.tip-bot2@tip-bot2>
+Message-ID: <164914733763.389.2781184707273888130.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -68,71 +70,87 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the locking/urgent branch of tip:
 
-Commit-ID:     1c1e7e3c23dd25f938302428eeb22c3dda2c3427
-Gitweb:        https://git.kernel.org/tip/1c1e7e3c23dd25f938302428eeb22c3dda2c3427
-Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-AuthorDate:    Mon, 28 Mar 2022 16:58:08 +02:00
+Commit-ID:     df21c0d7a94db64a4e1a0d070e26fb02e60fefab
+Gitweb:        https://git.kernel.org/tip/df21c0d7a94db64a4e1a0d070e26fb02e60fefab
+Author:        Christophe Leroy <christophe.leroy@csgroup.eu>
+AuthorDate:    Mon, 14 Mar 2022 11:27:36 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Tue, 05 Apr 2022 09:59:38 +02:00
 
-x86/percpu: Remove volatile from arch_raw_cpu_ptr().
+static_call: Remove __DEFINE_STATIC_CALL macro
 
-The volatile attribute in the inline assembly of arch_raw_cpu_ptr()
-forces the compiler to always generate the code, even if the compiler
-can decide upfront that its result is not needed.
+Only DEFINE_STATIC_CALL use __DEFINE_STATIC_CALL macro now when
+CONFIG_HAVE_STATIC_CALL is selected.
 
-For instance invoking __intel_pmu_disable_all(false) (like
-intel_pmu_snapshot_arch_branch_stack() does) leads to loading the
-address of &cpu_hw_events into the register while compiler knows that it
-has no need for it. This ends up with code like:
+Only keep __DEFINE_STATIC_CALL() for the generic fallback, and
+also use it to implement DEFINE_STATIC_CALL_NULL() in that case.
 
-|	movq	$cpu_hw_events, %rax			#, tcp_ptr__
-|	add	%gs:this_cpu_off(%rip), %rax		# this_cpu_off, tcp_ptr__
-|	xorl	%eax, %eax				# tmp93
-
-It also creates additional code within local_lock() with !RT &&
-!LOCKDEP which is not desired.
-
-By removing the volatile attribute the compiler can place the
-function freely and avoid it if it is not needed in the end.
-By using the function twice the compiler properly caches only the
-variable offset and always loads the CPU-offset.
-
-this_cpu_ptr() also remains properly placed within a preempt_disable()
-sections because
-- arch_raw_cpu_ptr() assembly has a memory input ("m" (this_cpu_off))
-- prempt_{dis,en}able() fundamentally has a 'barrier()' in it
-
-Therefore this_cpu_ptr() is already properly serialized and does not
-rely on the 'volatile' attribute.
-
-Remove volatile from arch_raw_cpu_ptr().
-
-[ bigeasy: Added Linus' explanation why this_cpu_ptr() is not moved out
-  of a preempt_disable() section without the 'volatile' attribute. ]
-
-Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20220328145810.86783-2-bigeasy@linutronix.de
+Acked-by: Josh Poimboeuf <jpoimboe@redhat.com>
+Link: https://lore.kernel.org/r/329074f92d96e3220ebe15da7bbe2779beee31eb.1647253456.git.christophe.leroy@csgroup.eu
 ---
- arch/x86/include/asm/percpu.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ include/linux/static_call.h | 23 ++++++++++-------------
+ 1 file changed, 10 insertions(+), 13 deletions(-)
 
-diff --git a/arch/x86/include/asm/percpu.h b/arch/x86/include/asm/percpu.h
-index a3c33b7..13c0d63 100644
---- a/arch/x86/include/asm/percpu.h
-+++ b/arch/x86/include/asm/percpu.h
-@@ -38,9 +38,9 @@
- #define arch_raw_cpu_ptr(ptr)				\
- ({							\
- 	unsigned long tcp_ptr__;			\
--	asm volatile("add " __percpu_arg(1) ", %0"	\
--		     : "=r" (tcp_ptr__)			\
--		     : "m" (this_cpu_off), "0" (ptr));	\
-+	asm ("add " __percpu_arg(1) ", %0"		\
-+	     : "=r" (tcp_ptr__)				\
-+	     : "m" (this_cpu_off), "0" (ptr));		\
- 	(typeof(*(ptr)) __kernel __force *)tcp_ptr__;	\
- })
- #else
+diff --git a/include/linux/static_call.h b/include/linux/static_call.h
+index 3c50b0f..df53bed 100644
+--- a/include/linux/static_call.h
++++ b/include/linux/static_call.h
+@@ -180,13 +180,13 @@ extern int static_call_text_reserved(void *start, void *end);
+ 
+ extern long __static_call_return0(void);
+ 
+-#define __DEFINE_STATIC_CALL(name, _func, _func_init)			\
++#define DEFINE_STATIC_CALL(name, _func)					\
+ 	DECLARE_STATIC_CALL(name, _func);				\
+ 	struct static_call_key STATIC_CALL_KEY(name) = {		\
+-		.func = _func_init,					\
++		.func = _func,						\
+ 		.type = 1,						\
+ 	};								\
+-	ARCH_DEFINE_STATIC_CALL_TRAMP(name, _func_init)
++	ARCH_DEFINE_STATIC_CALL_TRAMP(name, _func)
+ 
+ #define DEFINE_STATIC_CALL_NULL(name, _func)				\
+ 	DECLARE_STATIC_CALL(name, _func);				\
+@@ -225,12 +225,12 @@ extern long __static_call_return0(void);
+ 
+ static inline int static_call_init(void) { return 0; }
+ 
+-#define __DEFINE_STATIC_CALL(name, _func, _func_init)			\
++#define DEFINE_STATIC_CALL(name, _func)					\
+ 	DECLARE_STATIC_CALL(name, _func);				\
+ 	struct static_call_key STATIC_CALL_KEY(name) = {		\
+-		.func = _func_init,					\
++		.func = _func,						\
+ 	};								\
+-	ARCH_DEFINE_STATIC_CALL_TRAMP(name, _func_init)
++	ARCH_DEFINE_STATIC_CALL_TRAMP(name, _func)
+ 
+ #define DEFINE_STATIC_CALL_NULL(name, _func)				\
+ 	DECLARE_STATIC_CALL(name, _func);				\
+@@ -292,11 +292,11 @@ static inline long __static_call_return0(void)
+ 		.func = _func_init,					\
+ 	}
+ 
++#define DEFINE_STATIC_CALL(name, _func)					\
++	__DEFINE_STATIC_CALL(name, _func, _func)
++
+ #define DEFINE_STATIC_CALL_NULL(name, _func)				\
+-	DECLARE_STATIC_CALL(name, _func);				\
+-	struct static_call_key STATIC_CALL_KEY(name) = {		\
+-		.func = NULL,						\
+-	}
++	__DEFINE_STATIC_CALL(name, _func, NULL)
+ 
+ #define DEFINE_STATIC_CALL_RET0(name, _func)				\
+ 	__DEFINE_STATIC_CALL(name, _func, __static_call_return0)
+@@ -341,7 +341,4 @@ static inline int static_call_text_reserved(void *start, void *end)
+ 
+ #endif /* CONFIG_HAVE_STATIC_CALL */
+ 
+-#define DEFINE_STATIC_CALL(name, _func)					\
+-	__DEFINE_STATIC_CALL(name, _func, _func)
+-
+ #endif /* _LINUX_STATIC_CALL_H */
