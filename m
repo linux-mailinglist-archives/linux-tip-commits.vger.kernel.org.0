@@ -2,55 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ED9924F3543
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  5 Apr 2022 15:49:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8118A4F5463
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  6 Apr 2022 06:54:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343810AbiDEJOR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 5 Apr 2022 05:14:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42514 "EHLO
+        id S235705AbiDFEuG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 6 Apr 2022 00:50:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32898 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241820AbiDEIsf (ORCPT
+        with ESMTP id S1573646AbiDET30 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 5 Apr 2022 04:48:35 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67CDB2DD64;
-        Tue,  5 Apr 2022 01:36:56 -0700 (PDT)
-Date:   Tue, 05 Apr 2022 08:36:44 -0000
+        Tue, 5 Apr 2022 15:29:26 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EF8BBE9FD;
+        Tue,  5 Apr 2022 12:27:27 -0700 (PDT)
+Date:   Tue, 05 Apr 2022 19:27:24 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1649147805;
+        s=2020; t=1649186846;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ucBsEPltY9eSC64DbQJ8DwlIx2reohOENUnQiBsi4YI=;
-        b=NK7hbBBtmULO3BJ9Aftd7/bJRk7SUJsz5wDu5GrjceHZOUMJsatEI1CjGXvIPhRuG/bNKl
-        sDncDgNsIQfGQdFcvmg7yCF1pfPs66hK3myyVJ+Ldr7lzOpNnEB/31NrzW5/erVzYMrZBA
-        3mUW06XEZ/ef86JcqnDsUKhelHKEkUyskXP/TiauVCfD5yUFGIS/LY97f41vEN7H0CiMqo
-        UpxSM+bLoaNwU8spdappRRQw5FGbEDLnRqCiNFy5OgV8S2O7zG1K2k16sr1vW0wQZTYfHN
-        Y/qeoX7ltqzYBT6L7wTpH+n66af055oOBXNZikMofYaVLxwc2tBUNaLgtO/3ow==
+        bh=Apj1WNSGkjJ8qBld0G1fRhqZVHswRua50ugsNNzGKZA=;
+        b=QPqFejLM6vWh5deYEFxaZoFIBFKWHoVyPGm85w6i7iuyvsSRDwtbqrivldew8s14epXpRO
+        AmIt6LPMpBS9YhYCnf12zzcRyvVubo0G1rfg52HgHjzQYeuHeLiKuop+5wETPAnq2nnnf1
+        d3YHJQSL5o71KwFZbuEuAqLABbsRE2WwHJobqN7o1dsgla+VQOaMJjJ51d39TCUBa5l2nE
+        O4SsX7eUofQEKU241+pTSWLG1bMCVdjkJu6jdzzfjTxOcmShZ8VBtMxM4U3oIXydtlG9Jq
+        E+6YhZdyANBwc2d9tbMygOvo29Qv40trnKzT+w8elvNr8lcuVzHqBccLp94nPA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1649147805;
+        s=2020e; t=1649186846;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ucBsEPltY9eSC64DbQJ8DwlIx2reohOENUnQiBsi4YI=;
-        b=w6lE2cz/ue6SwuyYrx+QGx0iYuo2uSBbCFCfNdbz6R9cl5vsHl+8mS0JWKsRZh4yATKN3l
-        XY+3xg8qGgPZasDA==
-From:   "tip-bot2 for Stephane Eranian" <tip-bot2@linutronix.de>
+        bh=Apj1WNSGkjJ8qBld0G1fRhqZVHswRua50ugsNNzGKZA=;
+        b=ClPuWOqOgjfUWaEacCw4zTvpCV5dZvv9YBZ3flIzRVJMPq4KC9Codtf7GaJI4RXocIs4D5
+        pNJWGQ/gyOq+IZCw==
+From:   "tip-bot2 for Muralidhara M K" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/core: Add perf_clear_branch_entry_bitfields() helper
-Cc:     Stephane Eranian <eranian@google.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: x86/misc] x86/amd_nb: Unexport amd_cache_northbridges()
+Cc:     Muralidhara M K <muralimk@amd.com>,
+        Naveen Krishna Chatradhi <nchatrad@amd.com>,
+        Borislav Petkov <bp@suse.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220322221517.2510440-2-eranian@google.com>
-References: <20220322221517.2510440-2-eranian@google.com>
+In-Reply-To: <20220324122729.221765-1-nchatrad@amd.com>
+References: <20220324122729.221765-1-nchatrad@amd.com>
 MIME-Version: 1.0
-Message-ID: <164914780435.389.4936921314797335229.tip-bot2@tip-bot2>
+Message-ID: <164918684484.389.10138844403913568515.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,137 +66,126 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/core branch of tip:
+The following commit has been merged into the x86/misc branch of tip:
 
-Commit-ID:     bfe4daf850f45d92dcd3da477f0b0456620294c3
-Gitweb:        https://git.kernel.org/tip/bfe4daf850f45d92dcd3da477f0b0456620294c3
-Author:        Stephane Eranian <eranian@google.com>
-AuthorDate:    Tue, 22 Mar 2022 15:15:05 -07:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 05 Apr 2022 10:24:36 +02:00
+Commit-ID:     e1907d37514b8564ba18b4a768a35beee71cb011
+Gitweb:        https://git.kernel.org/tip/e1907d37514b8564ba18b4a768a35beee71cb011
+Author:        Muralidhara M K <muralimk@amd.com>
+AuthorDate:    Thu, 24 Mar 2022 17:57:29 +05:30
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Tue, 05 Apr 2022 19:22:27 +02:00
 
-perf/core: Add perf_clear_branch_entry_bitfields() helper
+x86/amd_nb: Unexport amd_cache_northbridges()
 
-Make it simpler to reset all the info fields on the
-perf_branch_entry by adding a helper inline function.
+amd_cache_northbridges() is exported by amd_nb.c and is called by
+amd64-agp.c and amd64_edac.c modules at module_init() time so that NB
+descriptors are properly cached before those drivers can use them.
 
-The goal is to centralize the initialization to avoid missing
-a field in case more are added.
+However, the init_amd_nbs() initcall already does call
+amd_cache_northbridges() unconditionally and thus makes sure the NB
+descriptors are enumerated.
 
-Signed-off-by: Stephane Eranian <eranian@google.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20220322221517.2510440-2-eranian@google.com
+That initcall is a fs_initcall type which is on the 5th group (starting
+from 0) of initcalls that gets run in increasing numerical order by the
+init code.
+
+The module_init() call is turned into an __initcall() in the MODULE=n
+case and those are device-level initcalls, i.e., group 6.
+
+Therefore, the northbridges caching is already finished by the time
+module initialization starts and thus the correct initialization order
+is retained.
+
+Unexport amd_cache_northbridges(), update dependent modules to
+call amd_nb_num() instead. While at it, simplify the checks in
+amd_cache_northbridges().
+
+  [ bp: Heavily massage and *actually* explain why the change is ok. ]
+
+Signed-off-by: Muralidhara M K <muralimk@amd.com>
+Signed-off-by: Naveen Krishna Chatradhi <nchatrad@amd.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lore.kernel.org/r/20220324122729.221765-1-nchatrad@amd.com
 ---
- arch/x86/events/intel/lbr.c | 36 +++++++++++++++++-------------------
- include/linux/perf_event.h  | 16 ++++++++++++++++-
- 2 files changed, 33 insertions(+), 19 deletions(-)
+ arch/x86/include/asm/amd_nb.h | 1 -
+ arch/x86/kernel/amd_nb.c      | 7 +++----
+ drivers/char/agp/amd64-agp.c  | 2 +-
+ drivers/edac/amd64_edac.c     | 2 +-
+ 4 files changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/arch/x86/events/intel/lbr.c b/arch/x86/events/intel/lbr.c
-index fe1742c..13179f3 100644
---- a/arch/x86/events/intel/lbr.c
-+++ b/arch/x86/events/intel/lbr.c
-@@ -769,6 +769,7 @@ void intel_pmu_lbr_disable_all(void)
- void intel_pmu_lbr_read_32(struct cpu_hw_events *cpuc)
+diff --git a/arch/x86/include/asm/amd_nb.h b/arch/x86/include/asm/amd_nb.h
+index 00d1a40..ed0eaf6 100644
+--- a/arch/x86/include/asm/amd_nb.h
++++ b/arch/x86/include/asm/amd_nb.h
+@@ -16,7 +16,6 @@ extern const struct amd_nb_bus_dev_range amd_nb_bus_dev_ranges[];
+ 
+ extern bool early_is_amd_nb(u32 value);
+ extern struct resource *amd_get_mmconfig_range(struct resource *res);
+-extern int amd_cache_northbridges(void);
+ extern void amd_flush_garts(void);
+ extern int amd_numa_init(void);
+ extern int amd_get_subcaches(int);
+diff --git a/arch/x86/kernel/amd_nb.c b/arch/x86/kernel/amd_nb.c
+index 020c906..190e0f7 100644
+--- a/arch/x86/kernel/amd_nb.c
++++ b/arch/x86/kernel/amd_nb.c
+@@ -188,7 +188,7 @@ int amd_smn_write(u16 node, u32 address, u32 value)
+ EXPORT_SYMBOL_GPL(amd_smn_write);
+ 
+ 
+-int amd_cache_northbridges(void)
++static int amd_cache_northbridges(void)
  {
- 	unsigned long mask = x86_pmu.lbr_nr - 1;
-+	struct perf_branch_entry *br = cpuc->lbr_entries;
- 	u64 tos = intel_pmu_lbr_tos();
- 	int i;
- 
-@@ -784,15 +785,11 @@ void intel_pmu_lbr_read_32(struct cpu_hw_events *cpuc)
- 
- 		rdmsrl(x86_pmu.lbr_from + lbr_idx, msr_lastbranch.lbr);
- 
--		cpuc->lbr_entries[i].from	= msr_lastbranch.from;
--		cpuc->lbr_entries[i].to		= msr_lastbranch.to;
--		cpuc->lbr_entries[i].mispred	= 0;
--		cpuc->lbr_entries[i].predicted	= 0;
--		cpuc->lbr_entries[i].in_tx	= 0;
--		cpuc->lbr_entries[i].abort	= 0;
--		cpuc->lbr_entries[i].cycles	= 0;
--		cpuc->lbr_entries[i].type	= 0;
--		cpuc->lbr_entries[i].reserved	= 0;
-+		perf_clear_branch_entry_bitfields(br);
-+
-+		br->from	= msr_lastbranch.from;
-+		br->to		= msr_lastbranch.to;
-+		br++;
- 	}
- 	cpuc->lbr_stack.nr = i;
- 	cpuc->lbr_stack.hw_idx = tos;
-@@ -807,6 +804,7 @@ void intel_pmu_lbr_read_64(struct cpu_hw_events *cpuc)
- {
- 	bool need_info = false, call_stack = false;
- 	unsigned long mask = x86_pmu.lbr_nr - 1;
-+	struct perf_branch_entry *br = cpuc->lbr_entries;
- 	u64 tos = intel_pmu_lbr_tos();
- 	int i;
- 	int out = 0;
-@@ -878,15 +876,14 @@ void intel_pmu_lbr_read_64(struct cpu_hw_events *cpuc)
- 		if (abort && x86_pmu.lbr_double_abort && out > 0)
- 			out--;
- 
--		cpuc->lbr_entries[out].from	 = from;
--		cpuc->lbr_entries[out].to	 = to;
--		cpuc->lbr_entries[out].mispred	 = mis;
--		cpuc->lbr_entries[out].predicted = pred;
--		cpuc->lbr_entries[out].in_tx	 = in_tx;
--		cpuc->lbr_entries[out].abort	 = abort;
--		cpuc->lbr_entries[out].cycles	 = cycles;
--		cpuc->lbr_entries[out].type	 = 0;
--		cpuc->lbr_entries[out].reserved	 = 0;
-+		perf_clear_branch_entry_bitfields(br+out);
-+		br[out].from	 = from;
-+		br[out].to	 = to;
-+		br[out].mispred	 = mis;
-+		br[out].predicted = pred;
-+		br[out].in_tx	 = in_tx;
-+		br[out].abort	 = abort;
-+		br[out].cycles	 = cycles;
- 		out++;
- 	}
- 	cpuc->lbr_stack.nr = out;
-@@ -951,6 +948,8 @@ static void intel_pmu_store_lbr(struct cpu_hw_events *cpuc,
- 		to = rdlbr_to(i, lbr);
- 		info = rdlbr_info(i, lbr);
- 
-+		perf_clear_branch_entry_bitfields(e);
-+
- 		e->from		= from;
- 		e->to		= to;
- 		e->mispred	= get_lbr_mispred(info);
-@@ -959,7 +958,6 @@ static void intel_pmu_store_lbr(struct cpu_hw_events *cpuc,
- 		e->abort	= !!(info & LBR_INFO_ABORT);
- 		e->cycles	= get_lbr_cycles(info);
- 		e->type		= get_lbr_br_type(info);
--		e->reserved	= 0;
+ 	const struct pci_device_id *misc_ids = amd_nb_misc_ids;
+ 	const struct pci_device_id *link_ids = amd_nb_link_ids;
+@@ -210,14 +210,14 @@ int amd_cache_northbridges(void)
  	}
  
- 	cpuc->lbr_stack.nr = i;
-diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
-index af97dd4..a411080 100644
---- a/include/linux/perf_event.h
-+++ b/include/linux/perf_event.h
-@@ -1063,6 +1063,22 @@ static inline void perf_sample_data_init(struct perf_sample_data *data,
- 	data->txn = 0;
+ 	misc = NULL;
+-	while ((misc = next_northbridge(misc, misc_ids)) != NULL)
++	while ((misc = next_northbridge(misc, misc_ids)))
+ 		misc_count++;
+ 
+ 	if (!misc_count)
+ 		return -ENODEV;
+ 
+ 	root = NULL;
+-	while ((root = next_northbridge(root, root_ids)) != NULL)
++	while ((root = next_northbridge(root, root_ids)))
+ 		root_count++;
+ 
+ 	if (root_count) {
+@@ -290,7 +290,6 @@ int amd_cache_northbridges(void)
+ 
+ 	return 0;
  }
+-EXPORT_SYMBOL_GPL(amd_cache_northbridges);
  
-+/*
-+ * Clear all bitfields in the perf_branch_entry.
-+ * The to and from fields are not cleared because they are
-+ * systematically modified by caller.
-+ */
-+static inline void perf_clear_branch_entry_bitfields(struct perf_branch_entry *br)
-+{
-+	br->mispred = 0;
-+	br->predicted = 0;
-+	br->in_tx = 0;
-+	br->abort = 0;
-+	br->cycles = 0;
-+	br->type = 0;
-+	br->reserved = 0;
-+}
-+
- extern void perf_output_sample(struct perf_output_handle *handle,
- 			       struct perf_event_header *header,
- 			       struct perf_sample_data *data,
+ /*
+  * Ignores subdevice/subvendor but as far as I can figure out
+diff --git a/drivers/char/agp/amd64-agp.c b/drivers/char/agp/amd64-agp.c
+index dc78a4f..84a4aa9 100644
+--- a/drivers/char/agp/amd64-agp.c
++++ b/drivers/char/agp/amd64-agp.c
+@@ -327,7 +327,7 @@ static int cache_nbs(struct pci_dev *pdev, u32 cap_ptr)
+ {
+ 	int i;
+ 
+-	if (amd_cache_northbridges() < 0)
++	if (!amd_nb_num())
+ 		return -ENODEV;
+ 
+ 	if (!amd_nb_has_feature(AMD_NB_GART))
+diff --git a/drivers/edac/amd64_edac.c b/drivers/edac/amd64_edac.c
+index 812baa4..2f854fe 100644
+--- a/drivers/edac/amd64_edac.c
++++ b/drivers/edac/amd64_edac.c
+@@ -4336,7 +4336,7 @@ static int __init amd64_edac_init(void)
+ 	if (!x86_match_cpu(amd64_cpuids))
+ 		return -ENODEV;
+ 
+-	if (amd_cache_northbridges() < 0)
++	if (!amd_nb_num())
+ 		return -ENODEV;
+ 
+ 	opstate_init();
