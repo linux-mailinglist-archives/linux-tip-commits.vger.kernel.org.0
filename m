@@ -2,58 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 219F04F2D31
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  5 Apr 2022 13:36:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 287F94F2D42
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  5 Apr 2022 13:36:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237127AbiDEIlj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 5 Apr 2022 04:41:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46072 "EHLO
+        id S235887AbiDEIkh (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 5 Apr 2022 04:40:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33834 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241195AbiDEIcy (ORCPT
+        with ESMTP id S241197AbiDEIcy (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Tue, 5 Apr 2022 04:32:54 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E6061707C;
-        Tue,  5 Apr 2022 01:29:22 -0700 (PDT)
-Date:   Tue, 05 Apr 2022 08:29:19 -0000
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 358C917A86;
+        Tue,  5 Apr 2022 01:29:24 -0700 (PDT)
+Date:   Tue, 05 Apr 2022 08:29:21 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1649147360;
+        s=2020; t=1649147362;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=h5uCs7UENJtSoAUyE+dqZLYGf6l4slWoZDuxdKMo52E=;
-        b=JRjfzcFlUoFZZGkU8is1r9XXTk9IhNaiZC0opudsuTKbhpFMn/HzhilKR1mHHVTSC6qRPd
-        qYPh/GrNnF6yElLSP8EhXpiwisRL1sA7zGXwFh4Vs4uir8lxf5wBJrI+iEr6p/ECdhZFgt
-        z4SRL0qKJaOVXuq72qHC+NndJGMrRJRqpjk2N2xN7r85uLGmG2nzSb9iwukAbakTVPWA1N
-        OcxXV74b7e/LVP8UmDD+k3O/5H14fIeFItkQ90TRhdP/1KhbAP4c1/gIypUgEngw5UOV7C
-        Sjm1tv72HmuvKO+8V+mDxgh+e9MRMJvsihWg95odmnJNfYBGz1dGmj/gfvsVLA==
+        bh=weL/Y/0bLbSr89Udbwco2BymGNu3H+Z73Jcjq6NeTuI=;
+        b=PPDV1NnBtSFLvt+bcYKiG4rGphZi2oyC3AxUFgeFR9azd2m3bY5YILSwXRH9zUEYevKbSf
+        6TgHUz7gPyC36Cul2Lh5ecKuM5r5ro/ZQdDhljRgq9DFCZzp4G9O0ZtvACwMc3D68gyiz8
+        h7XSSH5vUz69vCQP90l9SjYJu2ZntIk/exYEPgyxhE0EFT3tGlfcGtBWovfZ68oqhoC9sN
+        JZmu52rUUAzhG/CzCo6u7t9Am9nNhfynUJHeG1wCDLmzQZUhig/dncBKOaGJmS2ExxdcY3
+        Oxa6g5ZnL0jwIHJmCgXwttzUvo8aSzXjrGEd8ZeRxFI7S+Bs+TgntsMNBwzpJA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1649147360;
+        s=2020e; t=1649147362;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=h5uCs7UENJtSoAUyE+dqZLYGf6l4slWoZDuxdKMo52E=;
-        b=Gy/z4LFcD2b8I+Q7AsCYEtIj8fOgLLPMK6LzdbStw38Q1KDqT58wrZ7FEr87kD/XvWPe7G
-        dyDezNv0xAoMu6Bg==
+        bh=weL/Y/0bLbSr89Udbwco2BymGNu3H+Z73Jcjq6NeTuI=;
+        b=f3PzWIp1F/sCFHuDCAPpTCS7V1P+VizleOlgVky2nSdFgu4dQLNEi8ZWjVFAk0V9bgVqmO
+        ElUnO1IoQ+aBq1AQ==
 From:   "tip-bot2 for Valentin Schneider" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] ftrace: Use preemption model accessors for trace
- header printout
-Cc:     Valentin Schneider <valentin.schneider@arm.com>,
+Subject: [tip: sched/core] preempt/dynamic: Introduce preemption model accessors
+Cc:     Marco Elver <elver@google.com>,
+        Valentin Schneider <valentin.schneider@arm.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
         Frederic Weisbecker <frederic@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20211112185203.280040-5-valentin.schneider@arm.com>
-References: <20211112185203.280040-5-valentin.schneider@arm.com>
+In-Reply-To: <20211112185203.280040-3-valentin.schneider@arm.com>
+References: <20211112185203.280040-3-valentin.schneider@arm.com>
 MIME-Version: 1.0
-Message-ID: <164914735969.389.308359767987530418.tip-bot2@tip-bot2>
+Message-ID: <164914736184.389.17168803226310097171.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -70,51 +69,109 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     089c02ae2771a14af2928c59c56abfb9b885a8d7
-Gitweb:        https://git.kernel.org/tip/089c02ae2771a14af2928c59c56abfb9b885a8d7
+Commit-ID:     cfe43f478b79ba45573ca22d52d0d8823be068fa
+Gitweb:        https://git.kernel.org/tip/cfe43f478b79ba45573ca22d52d0d8823be068fa
 Author:        Valentin Schneider <valentin.schneider@arm.com>
-AuthorDate:    Fri, 12 Nov 2021 18:52:03 
+AuthorDate:    Fri, 12 Nov 2021 18:52:01 
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Tue, 05 Apr 2022 10:24:42 +02:00
 
-ftrace: Use preemption model accessors for trace header printout
+preempt/dynamic: Introduce preemption model accessors
 
-Per PREEMPT_DYNAMIC, checking CONFIG_PREEMPT doesn't tell you the actual
-preemption model of the live kernel. Use the newly-introduced accessors
-instead.
+CONFIG_PREEMPT{_NONE, _VOLUNTARY} designate either:
+o The build-time preemption model when !PREEMPT_DYNAMIC
+o The default boot-time preemption model when PREEMPT_DYNAMIC
 
+IOW, using those on PREEMPT_DYNAMIC kernels is meaningless - the actual
+model could have been set to something else by the "preempt=foo" cmdline
+parameter. Same problem applies to CONFIG_PREEMPTION.
+
+Introduce a set of helpers to determine the actual preemption model used by
+the live kernel.
+
+Suggested-by: Marco Elver <elver@google.com>
 Signed-off-by: Valentin Schneider <valentin.schneider@arm.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
+Reviewed-by: Marco Elver <elver@google.com>
 Acked-by: Frederic Weisbecker <frederic@kernel.org>
-Link: https://lore.kernel.org/r/20211112185203.280040-5-valentin.schneider@arm.com
+Link: https://lore.kernel.org/r/20211112185203.280040-3-valentin.schneider@arm.com
 ---
- kernel/trace/trace.c | 14 ++++----------
- 1 file changed, 4 insertions(+), 10 deletions(-)
+ include/linux/sched.h | 41 +++++++++++++++++++++++++++++++++++++++++
+ kernel/sched/core.c   | 12 ++++++++++++
+ 2 files changed, 53 insertions(+)
 
-diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-index f4de111..124f189 100644
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -4289,17 +4289,11 @@ print_trace_header(struct seq_file *m, struct trace_iterator *iter)
- 		   entries,
- 		   total,
- 		   buf->cpu,
--#if defined(CONFIG_PREEMPT_NONE)
--		   "server",
--#elif defined(CONFIG_PREEMPT_VOLUNTARY)
--		   "desktop",
--#elif defined(CONFIG_PREEMPT)
--		   "preempt",
--#elif defined(CONFIG_PREEMPT_RT)
--		   "preempt_rt",
--#else
-+		   preempt_model_none()      ? "server" :
-+		   preempt_model_voluntary() ? "desktop" :
-+		   preempt_model_full()      ? "preempt" :
-+		   preempt_model_rt()        ? "preempt_rt" :
- 		   "unknown",
--#endif
- 		   /* These are reserved for later use */
- 		   0, 0, 0, 0);
- #ifdef CONFIG_SMP
+diff --git a/include/linux/sched.h b/include/linux/sched.h
+index d5e3c00..67f06f7 100644
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -2117,6 +2117,47 @@ static inline void cond_resched_rcu(void)
+ #endif
+ }
+ 
++#ifdef CONFIG_PREEMPT_DYNAMIC
++
++extern bool preempt_model_none(void);
++extern bool preempt_model_voluntary(void);
++extern bool preempt_model_full(void);
++
++#else
++
++static inline bool preempt_model_none(void)
++{
++	return IS_ENABLED(CONFIG_PREEMPT_NONE);
++}
++static inline bool preempt_model_voluntary(void)
++{
++	return IS_ENABLED(CONFIG_PREEMPT_VOLUNTARY);
++}
++static inline bool preempt_model_full(void)
++{
++	return IS_ENABLED(CONFIG_PREEMPT);
++}
++
++#endif
++
++static inline bool preempt_model_rt(void)
++{
++	return IS_ENABLED(CONFIG_PREEMPT_RT);
++}
++
++/*
++ * Does the preemption model allow non-cooperative preemption?
++ *
++ * For !CONFIG_PREEMPT_DYNAMIC kernels this is an exact match with
++ * CONFIG_PREEMPTION; for CONFIG_PREEMPT_DYNAMIC this doesn't work as the
++ * kernel is *built* with CONFIG_PREEMPTION=y but may run with e.g. the
++ * PREEMPT_NONE model.
++ */
++static inline bool preempt_model_preemptible(void)
++{
++	return preempt_model_full() || preempt_model_rt();
++}
++
+ /*
+  * Does a critical section need to be broken due to another
+  * task waiting?: (technically does not depend on CONFIG_PREEMPTION,
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index d575b49..068c088 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -8409,6 +8409,18 @@ static void __init preempt_dynamic_init(void)
+ 	}
+ }
+ 
++#define PREEMPT_MODEL_ACCESSOR(mode) \
++	bool preempt_model_##mode(void)						 \
++	{									 \
++		WARN_ON_ONCE(preempt_dynamic_mode == preempt_dynamic_undefined); \
++		return preempt_dynamic_mode == preempt_dynamic_##mode;		 \
++	}									 \
++	EXPORT_SYMBOL_GPL(preempt_model_##mode)
++
++PREEMPT_MODEL_ACCESSOR(none);
++PREEMPT_MODEL_ACCESSOR(voluntary);
++PREEMPT_MODEL_ACCESSOR(full);
++
+ #else /* !CONFIG_PREEMPT_DYNAMIC */
+ 
+ static inline void preempt_dynamic_init(void) { }
