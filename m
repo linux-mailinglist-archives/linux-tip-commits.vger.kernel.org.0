@@ -2,56 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 67CDB4F30DB
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  5 Apr 2022 14:35:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 636CC4F3115
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  5 Apr 2022 14:36:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236009AbiDEIlG (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 5 Apr 2022 04:41:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32902 "EHLO
+        id S235656AbiDEIlT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 5 Apr 2022 04:41:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33758 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241184AbiDEIcx (ORCPT
+        with ESMTP id S241205AbiDEIcy (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 5 Apr 2022 04:32:53 -0400
+        Tue, 5 Apr 2022 04:32:54 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B504917061;
-        Tue,  5 Apr 2022 01:29:10 -0700 (PDT)
-Date:   Tue, 05 Apr 2022 08:29:08 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC6A517072;
+        Tue,  5 Apr 2022 01:29:13 -0700 (PDT)
+Date:   Tue, 05 Apr 2022 08:29:11 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1649147349;
+        s=2020; t=1649147352;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=yt0rYyrwZxg63pG0971ROdocgPh4CTPB8CHSHPagIyA=;
-        b=p6iXMl/rfQ/Y7vvlKS1VEXu5kSfghGKVsqKGvbZ7SWsX+xNbCMpYpgZwwjJo0RiruMxy9/
-        Ih+UWOQ7YSjStiobddeOCMz9ptG1O9q9n5JpO/TplYdlZwORj/TC9gQXSPlko0Tnua529j
-        DK40lhSnIz0MkVxcodS1eRJyBSWxlfy5YKqqRCqC/p2DMnPC6I5WRg9wF7MLY6Vl4zwnMm
-        xE5e6uBFHxlzaySZrCKe46Q+kQQq+2ZKvr4th0WvLHJvga2UrqAtl2W/RlFZ0F8Cls7e7F
-        jkAtO1jId0KsGYXAqOR/N3+ro8Miq2BFS1qhgT2PvZYtQ2bbyEADQ2gFg8Ya+A==
+        bh=xVssBcL6rymXgzZTC6veDngOKwXKTJKSIcpdjfi2604=;
+        b=vDqsj8ydGq5mP5fsT7WPXhZCNpoUo5W7DjfVDWTFJaWPvg1nmQQ/GTIPuWx7h6VRsA/Wxi
+        161VH2u9zyvpAwAI4vSFC54c3hBUunQh0KOahGJuJijedg07NvKHruUKNapwoPOFD82m5Z
+        uNl69pdPt7IaJuaUBpoDAen8FUkgd3WhXPf/46waRx2hrd5n7S9FUe8hT/PPdiXB6oFcfF
+        lp/obselpup1DhzzoE3DGNKZ2FWtpr1WX+b94pVrhBr43VCY1KhWQKIONQSTyVE7DZOu3u
+        unCWvAsJcdtbgFW0iuQKe2VFLKvQ0qF/JP5e9hMYC0DXuaPQQnsyTGXW5GddxQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1649147349;
+        s=2020e; t=1649147352;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=yt0rYyrwZxg63pG0971ROdocgPh4CTPB8CHSHPagIyA=;
-        b=6FeYv2OHDQblpguOMp8R9bMIFDZRgJYQRIHrzJM8UMLF2/SCDGcUcaSdbNobM2UoTz0JiU
-        +oha2wS0j1IXC8AQ==
-From:   "tip-bot2 for Namhyung Kim" <tip-bot2@linutronix.de>
+        bh=xVssBcL6rymXgzZTC6veDngOKwXKTJKSIcpdjfi2604=;
+        b=SjfwP9bh2tMXm0dhIKtW5hnpkPz7A4pTqDXXCQjB0umXAw3rdo62jZvaeopDecODeLlgGs
+        Jvp/kwsxfaiF2JAg==
+From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf/core: Inherit event_caps
-Cc:     Namhyung Kim <namhyung@kernel.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        <stable@vger.kernel.org>, x86@kernel.org,
+Subject: [tip: perf/urgent] perf/x86/cstate: Add Raptor Lake support
+Cc:     Kan Liang <kan.liang@linux.intel.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220328200112.457740-1-namhyung@kernel.org>
-References: <20220328200112.457740-1-namhyung@kernel.org>
+In-Reply-To: <1647366360-82824-2-git-send-email-kan.liang@linux.intel.com>
+References: <1647366360-82824-2-git-send-email-kan.liang@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <164914734824.389.11482584782909269521.tip-bot2@tip-bot2>
+Message-ID: <164914735134.389.8966372231911344728.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -68,52 +67,107 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     e3265a4386428d3d157d9565bb520aabff8b4bf0
-Gitweb:        https://git.kernel.org/tip/e3265a4386428d3d157d9565bb520aabff8b4bf0
-Author:        Namhyung Kim <namhyung@kernel.org>
-AuthorDate:    Mon, 28 Mar 2022 13:01:12 -07:00
+Commit-ID:     2da202aa1c38bfe8841611a3d339892eb5579e2b
+Gitweb:        https://git.kernel.org/tip/2da202aa1c38bfe8841611a3d339892eb5579e2b
+Author:        Kan Liang <kan.liang@linux.intel.com>
+AuthorDate:    Tue, 15 Mar 2022 10:45:58 -07:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 05 Apr 2022 09:59:44 +02:00
+CommitterDate: Tue, 05 Apr 2022 09:59:43 +02:00
 
-perf/core: Inherit event_caps
+perf/x86/cstate: Add Raptor Lake support
 
-It was reported that some perf event setup can make fork failed on
-ARM64.  It was the case of a group of mixed hw and sw events and it
-failed in perf_event_init_task() due to armpmu_event_init().
+Raptor Lake is Intel's successor to Alder lake. From the perspective of
+Intel cstate residency counters, there is nothing changed compared with
+Alder lake.
 
-The ARM PMU code checks if all the events in a group belong to the
-same PMU except for software events.  But it didn't set the event_caps
-of inherited events and no longer identify them as software events.
-Therefore the test failed in a child process.
+Share adl_cstates with Alder lake.
+Update the comments for Raptor Lake.
 
-A simple reproducer is:
-
-  $ perf stat -e '{cycles,cs,instructions}' perf bench sched messaging
-  # Running 'sched/messaging' benchmark:
-  perf: fork(): Invalid argument
-
-The perf stat was fine but the perf bench failed in fork().  Let's
-inherit the event caps from the parent.
-
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: <stable@vger.kernel.org>
-Link: https://lkml.kernel.org/r/20220328200112.457740-1-namhyung@kernel.org
+Link: https://lore.kernel.org/r/1647366360-82824-2-git-send-email-kan.liang@linux.intel.com
 ---
- kernel/events/core.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/x86/events/intel/cstate.c | 22 ++++++++++++----------
+ 1 file changed, 12 insertions(+), 10 deletions(-)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index cfde994..3980efc 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -11635,6 +11635,9 @@ perf_event_alloc(struct perf_event_attr *attr, int cpu,
- 
- 	event->state		= PERF_EVENT_STATE_INACTIVE;
- 
-+	if (parent_event)
-+		event->event_caps = parent_event->event_caps;
-+
- 	if (event->attr.sigtrap)
- 		atomic_set(&event->event_limit, 1);
- 
+diff --git a/arch/x86/events/intel/cstate.c b/arch/x86/events/intel/cstate.c
+index c6262b1..5d77622 100644
+--- a/arch/x86/events/intel/cstate.c
++++ b/arch/x86/events/intel/cstate.c
+@@ -40,7 +40,7 @@
+  * Model specific counters:
+  *	MSR_CORE_C1_RES: CORE C1 Residency Counter
+  *			 perf code: 0x00
+- *			 Available model: SLM,AMT,GLM,CNL,ICX,TNT,ADL
++ *			 Available model: SLM,AMT,GLM,CNL,ICX,TNT,ADL,RPL
+  *			 Scope: Core (each processor core has a MSR)
+  *	MSR_CORE_C3_RESIDENCY: CORE C3 Residency Counter
+  *			       perf code: 0x01
+@@ -51,49 +51,50 @@
+  *			       perf code: 0x02
+  *			       Available model: SLM,AMT,NHM,WSM,SNB,IVB,HSW,BDW,
+  *						SKL,KNL,GLM,CNL,KBL,CML,ICL,ICX,
+- *						TGL,TNT,RKL,ADL
++ *						TGL,TNT,RKL,ADL,RPL
+  *			       Scope: Core
+  *	MSR_CORE_C7_RESIDENCY: CORE C7 Residency Counter
+  *			       perf code: 0x03
+  *			       Available model: SNB,IVB,HSW,BDW,SKL,CNL,KBL,CML,
+- *						ICL,TGL,RKL,ADL
++ *						ICL,TGL,RKL,ADL,RPL
+  *			       Scope: Core
+  *	MSR_PKG_C2_RESIDENCY:  Package C2 Residency Counter.
+  *			       perf code: 0x00
+  *			       Available model: SNB,IVB,HSW,BDW,SKL,KNL,GLM,CNL,
+- *						KBL,CML,ICL,ICX,TGL,TNT,RKL,ADL
++ *						KBL,CML,ICL,ICX,TGL,TNT,RKL,ADL,
++ *						RPL
+  *			       Scope: Package (physical package)
+  *	MSR_PKG_C3_RESIDENCY:  Package C3 Residency Counter.
+  *			       perf code: 0x01
+  *			       Available model: NHM,WSM,SNB,IVB,HSW,BDW,SKL,KNL,
+  *						GLM,CNL,KBL,CML,ICL,TGL,TNT,RKL,
+- *						ADL
++ *						ADL,RPL
+  *			       Scope: Package (physical package)
+  *	MSR_PKG_C6_RESIDENCY:  Package C6 Residency Counter.
+  *			       perf code: 0x02
+  *			       Available model: SLM,AMT,NHM,WSM,SNB,IVB,HSW,BDW,
+  *						SKL,KNL,GLM,CNL,KBL,CML,ICL,ICX,
+- *						TGL,TNT,RKL,ADL
++ *						TGL,TNT,RKL,ADL,RPL
+  *			       Scope: Package (physical package)
+  *	MSR_PKG_C7_RESIDENCY:  Package C7 Residency Counter.
+  *			       perf code: 0x03
+  *			       Available model: NHM,WSM,SNB,IVB,HSW,BDW,SKL,CNL,
+- *						KBL,CML,ICL,TGL,RKL,ADL
++ *						KBL,CML,ICL,TGL,RKL,ADL,RPL
+  *			       Scope: Package (physical package)
+  *	MSR_PKG_C8_RESIDENCY:  Package C8 Residency Counter.
+  *			       perf code: 0x04
+  *			       Available model: HSW ULT,KBL,CNL,CML,ICL,TGL,RKL,
+- *						ADL
++ *						ADL,RPL
+  *			       Scope: Package (physical package)
+  *	MSR_PKG_C9_RESIDENCY:  Package C9 Residency Counter.
+  *			       perf code: 0x05
+  *			       Available model: HSW ULT,KBL,CNL,CML,ICL,TGL,RKL,
+- *						ADL
++ *						ADL,RPL
+  *			       Scope: Package (physical package)
+  *	MSR_PKG_C10_RESIDENCY: Package C10 Residency Counter.
+  *			       perf code: 0x06
+  *			       Available model: HSW ULT,KBL,GLM,CNL,CML,ICL,TGL,
+- *						TNT,RKL,ADL
++ *						TNT,RKL,ADL,RPL
+  *			       Scope: Package (physical package)
+  *
+  */
+@@ -680,6 +681,7 @@ static const struct x86_cpu_id intel_cstates_match[] __initconst = {
+ 	X86_MATCH_INTEL_FAM6_MODEL(ROCKETLAKE,		&icl_cstates),
+ 	X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE,		&adl_cstates),
+ 	X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE_L,		&adl_cstates),
++	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE,		&adl_cstates),
+ 	{ },
+ };
+ MODULE_DEVICE_TABLE(x86cpu, intel_cstates_match);
