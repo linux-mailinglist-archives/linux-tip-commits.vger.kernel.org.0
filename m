@@ -2,57 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 287F94F2D42
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  5 Apr 2022 13:36:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 933274F2C72
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  5 Apr 2022 13:30:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235887AbiDEIkh (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 5 Apr 2022 04:40:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33834 "EHLO
+        id S235756AbiDEIkY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 5 Apr 2022 04:40:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45840 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241197AbiDEIcy (ORCPT
+        with ESMTP id S241212AbiDEIcz (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 5 Apr 2022 04:32:54 -0400
+        Tue, 5 Apr 2022 04:32:55 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 358C917A86;
-        Tue,  5 Apr 2022 01:29:24 -0700 (PDT)
-Date:   Tue, 05 Apr 2022 08:29:21 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 612A617AA7;
+        Tue,  5 Apr 2022 01:29:41 -0700 (PDT)
+Date:   Tue, 05 Apr 2022 08:29:38 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1649147362;
+        s=2020; t=1649147380;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=weL/Y/0bLbSr89Udbwco2BymGNu3H+Z73Jcjq6NeTuI=;
-        b=PPDV1NnBtSFLvt+bcYKiG4rGphZi2oyC3AxUFgeFR9azd2m3bY5YILSwXRH9zUEYevKbSf
-        6TgHUz7gPyC36Cul2Lh5ecKuM5r5ro/ZQdDhljRgq9DFCZzp4G9O0ZtvACwMc3D68gyiz8
-        h7XSSH5vUz69vCQP90l9SjYJu2ZntIk/exYEPgyxhE0EFT3tGlfcGtBWovfZ68oqhoC9sN
-        JZmu52rUUAzhG/CzCo6u7t9Am9nNhfynUJHeG1wCDLmzQZUhig/dncBKOaGJmS2ExxdcY3
-        Oxa6g5ZnL0jwIHJmCgXwttzUvo8aSzXjrGEd8ZeRxFI7S+Bs+TgntsMNBwzpJA==
+        bh=CG5YoLwVtENTsJI0ZrkElUF1kAUax6t9VUJ60RvhJyU=;
+        b=wffzHuT9w4t8vE4ER/eAMk+5e/hBQx8EcbUsg7pU3enhphts0JZ6s2zwslkkAlVo907big
+        2pXR+XvNOjDvv7UMspTmLAV3ns+Z2HH9F02PvJpSUV/C7gjSKgwzUgVmNGHAeRtFYbK8us
+        pPzBT1YKCWup5r0g8QqsALJ88HlSUY94h8UHi6NvP1sUW/ko+SFf3ObzVh+v6Lt0cEvlbx
+        Crpawo91PVuXsp97UCNud7km3qmxm8GnZLozaxNvdULMdo68xtFYUgU3/CrVjR0do93E9u
+        0vP9C83d70JL22GkLV/z4yps34Pbx5yN0HXie9y40wNFgBh9+TsncbFcpw8qIQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1649147362;
+        s=2020e; t=1649147380;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=weL/Y/0bLbSr89Udbwco2BymGNu3H+Z73Jcjq6NeTuI=;
-        b=f3PzWIp1F/sCFHuDCAPpTCS7V1P+VizleOlgVky2nSdFgu4dQLNEi8ZWjVFAk0V9bgVqmO
-        ElUnO1IoQ+aBq1AQ==
-From:   "tip-bot2 for Valentin Schneider" <tip-bot2@linutronix.de>
+        bh=CG5YoLwVtENTsJI0ZrkElUF1kAUax6t9VUJ60RvhJyU=;
+        b=JDN0WqxdBfxFnEc3qfli09GyeYL47oKKnegWtayfWO47xAP0wIs9aW6Vv1T4kDOiTI+k69
+        6PTMTx8rgs36CCDQ==
+From:   "tip-bot2 for Vincent Mailhol" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] preempt/dynamic: Introduce preemption model accessors
-Cc:     Marco Elver <elver@google.com>,
-        Valentin Schneider <valentin.schneider@arm.com>,
+Subject: [tip: x86/urgent] x86/bug: Prevent shadowing in __WARN_FLAGS
+Cc:     Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Frederic Weisbecker <frederic@kernel.org>, x86@kernel.org,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Josh Poimboeuf <jpoimboe@redhat.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20211112185203.280040-3-valentin.schneider@arm.com>
-References: <20211112185203.280040-3-valentin.schneider@arm.com>
+In-Reply-To: <20220324023742.106546-1-mailhol.vincent@wanadoo.fr>
+References: <20220324023742.106546-1-mailhol.vincent@wanadoo.fr>
 MIME-Version: 1.0
-Message-ID: <164914736184.389.17168803226310097171.tip-bot2@tip-bot2>
+Message-ID: <164914737896.389.7504824366044835648.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,111 +67,89 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     cfe43f478b79ba45573ca22d52d0d8823be068fa
-Gitweb:        https://git.kernel.org/tip/cfe43f478b79ba45573ca22d52d0d8823be068fa
-Author:        Valentin Schneider <valentin.schneider@arm.com>
-AuthorDate:    Fri, 12 Nov 2021 18:52:01 
+Commit-ID:     9ce02f0fc68326dd1f87a0a3a4c6ae7fdd39e6f6
+Gitweb:        https://git.kernel.org/tip/9ce02f0fc68326dd1f87a0a3a4c6ae7fdd39e6f6
+Author:        Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+AuthorDate:    Thu, 24 Mar 2022 11:37:42 +09:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 05 Apr 2022 10:24:42 +02:00
+CommitterDate: Tue, 05 Apr 2022 10:24:40 +02:00
 
-preempt/dynamic: Introduce preemption model accessors
+x86/bug: Prevent shadowing in __WARN_FLAGS
 
-CONFIG_PREEMPT{_NONE, _VOLUNTARY} designate either:
-o The build-time preemption model when !PREEMPT_DYNAMIC
-o The default boot-time preemption model when PREEMPT_DYNAMIC
+The macro __WARN_FLAGS() uses a local variable named "f". This being a
+common name, there is a risk of shadowing other variables.
 
-IOW, using those on PREEMPT_DYNAMIC kernels is meaningless - the actual
-model could have been set to something else by the "preempt=foo" cmdline
-parameter. Same problem applies to CONFIG_PREEMPTION.
+For example, GCC would yield:
 
-Introduce a set of helpers to determine the actual preemption model used by
-the live kernel.
+| In file included from ./include/linux/bug.h:5,
+|                  from ./include/linux/cpumask.h:14,
+|                  from ./arch/x86/include/asm/cpumask.h:5,
+|                  from ./arch/x86/include/asm/msr.h:11,
+|                  from ./arch/x86/include/asm/processor.h:22,
+|                  from ./arch/x86/include/asm/timex.h:5,
+|                  from ./include/linux/timex.h:65,
+|                  from ./include/linux/time32.h:13,
+|                  from ./include/linux/time.h:60,
+|                  from ./include/linux/stat.h:19,
+|                  from ./include/linux/module.h:13,
+|                  from virt/lib/irqbypass.mod.c:1:
+| ./include/linux/rcupdate.h: In function 'rcu_head_after_call_rcu':
+| ./arch/x86/include/asm/bug.h:80:21: warning: declaration of 'f' shadows a parameter [-Wshadow]
+|    80 |         __auto_type f = BUGFLAG_WARNING|(flags);                \
+|       |                     ^
+| ./include/asm-generic/bug.h:106:17: note: in expansion of macro '__WARN_FLAGS'
+|   106 |                 __WARN_FLAGS(BUGFLAG_ONCE |                     \
+|       |                 ^~~~~~~~~~~~
+| ./include/linux/rcupdate.h:1007:9: note: in expansion of macro 'WARN_ON_ONCE'
+|  1007 |         WARN_ON_ONCE(func != (rcu_callback_t)~0L);
+|       |         ^~~~~~~~~~~~
+| In file included from ./include/linux/rbtree.h:24,
+|                  from ./include/linux/mm_types.h:11,
+|                  from ./include/linux/buildid.h:5,
+|                  from ./include/linux/module.h:14,
+|                  from virt/lib/irqbypass.mod.c:1:
+| ./include/linux/rcupdate.h:1001:62: note: shadowed declaration is here
+|  1001 | rcu_head_after_call_rcu(struct rcu_head *rhp, rcu_callback_t f)
+|       |                                               ~~~~~~~~~~~~~~~^
 
-Suggested-by: Marco Elver <elver@google.com>
-Signed-off-by: Valentin Schneider <valentin.schneider@arm.com>
+For reference, sparse also warns about it, c.f. [1].
+
+This patch renames the variable from f to __flags (with two underscore
+prefixes as suggested in the Linux kernel coding style [2]) in order
+to prevent collisions.
+
+[1] https://lore.kernel.org/all/CAFGhKbyifH1a+nAMCvWM88TK6fpNPdzFtUXPmRGnnQeePV+1sw@mail.gmail.com/
+
+[2] Linux kernel coding style, section 12) Macros, Enums and RTL,
+paragraph 5) namespace collisions when defining local variables in
+macros resembling functions
+https://www.kernel.org/doc/html/latest/process/coding-style.html#macros-enums-and-rtl
+
+Fixes: bfb1a7c91fb7 ("x86/bug: Merge annotate_reachable() into_BUG_FLAGS() asm")
+Signed-off-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Marco Elver <elver@google.com>
-Acked-by: Frederic Weisbecker <frederic@kernel.org>
-Link: https://lore.kernel.org/r/20211112185203.280040-3-valentin.schneider@arm.com
+Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
+Acked-by: Josh Poimboeuf <jpoimboe@redhat.com>
+Link: https://lkml.kernel.org/r/20220324023742.106546-1-mailhol.vincent@wanadoo.fr
 ---
- include/linux/sched.h | 41 +++++++++++++++++++++++++++++++++++++++++
- kernel/sched/core.c   | 12 ++++++++++++
- 2 files changed, 53 insertions(+)
+ arch/x86/include/asm/bug.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/sched.h b/include/linux/sched.h
-index d5e3c00..67f06f7 100644
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -2117,6 +2117,47 @@ static inline void cond_resched_rcu(void)
- #endif
- }
+diff --git a/arch/x86/include/asm/bug.h b/arch/x86/include/asm/bug.h
+index 4d20a29..aaf0cb0 100644
+--- a/arch/x86/include/asm/bug.h
++++ b/arch/x86/include/asm/bug.h
+@@ -78,9 +78,9 @@ do {								\
+  */
+ #define __WARN_FLAGS(flags)					\
+ do {								\
+-	__auto_type f = BUGFLAG_WARNING|(flags);		\
++	__auto_type __flags = BUGFLAG_WARNING|(flags);		\
+ 	instrumentation_begin();				\
+-	_BUG_FLAGS(ASM_UD2, f, ASM_REACHABLE);			\
++	_BUG_FLAGS(ASM_UD2, __flags, ASM_REACHABLE);		\
+ 	instrumentation_end();					\
+ } while (0)
  
-+#ifdef CONFIG_PREEMPT_DYNAMIC
-+
-+extern bool preempt_model_none(void);
-+extern bool preempt_model_voluntary(void);
-+extern bool preempt_model_full(void);
-+
-+#else
-+
-+static inline bool preempt_model_none(void)
-+{
-+	return IS_ENABLED(CONFIG_PREEMPT_NONE);
-+}
-+static inline bool preempt_model_voluntary(void)
-+{
-+	return IS_ENABLED(CONFIG_PREEMPT_VOLUNTARY);
-+}
-+static inline bool preempt_model_full(void)
-+{
-+	return IS_ENABLED(CONFIG_PREEMPT);
-+}
-+
-+#endif
-+
-+static inline bool preempt_model_rt(void)
-+{
-+	return IS_ENABLED(CONFIG_PREEMPT_RT);
-+}
-+
-+/*
-+ * Does the preemption model allow non-cooperative preemption?
-+ *
-+ * For !CONFIG_PREEMPT_DYNAMIC kernels this is an exact match with
-+ * CONFIG_PREEMPTION; for CONFIG_PREEMPT_DYNAMIC this doesn't work as the
-+ * kernel is *built* with CONFIG_PREEMPTION=y but may run with e.g. the
-+ * PREEMPT_NONE model.
-+ */
-+static inline bool preempt_model_preemptible(void)
-+{
-+	return preempt_model_full() || preempt_model_rt();
-+}
-+
- /*
-  * Does a critical section need to be broken due to another
-  * task waiting?: (technically does not depend on CONFIG_PREEMPTION,
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index d575b49..068c088 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -8409,6 +8409,18 @@ static void __init preempt_dynamic_init(void)
- 	}
- }
- 
-+#define PREEMPT_MODEL_ACCESSOR(mode) \
-+	bool preempt_model_##mode(void)						 \
-+	{									 \
-+		WARN_ON_ONCE(preempt_dynamic_mode == preempt_dynamic_undefined); \
-+		return preempt_dynamic_mode == preempt_dynamic_##mode;		 \
-+	}									 \
-+	EXPORT_SYMBOL_GPL(preempt_model_##mode)
-+
-+PREEMPT_MODEL_ACCESSOR(none);
-+PREEMPT_MODEL_ACCESSOR(voluntary);
-+PREEMPT_MODEL_ACCESSOR(full);
-+
- #else /* !CONFIG_PREEMPT_DYNAMIC */
- 
- static inline void preempt_dynamic_init(void) { }
