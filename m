@@ -2,54 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 037C64F3130
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  5 Apr 2022 14:39:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 26A284F2F8C
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  5 Apr 2022 14:16:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235958AbiDEIkz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 5 Apr 2022 04:40:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44590 "EHLO
+        id S236980AbiDEIlY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 5 Apr 2022 04:41:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34436 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241211AbiDEIcy (ORCPT
+        with ESMTP id S241213AbiDEIcz (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 5 Apr 2022 04:32:54 -0400
+        Tue, 5 Apr 2022 04:32:55 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5676E17A9B;
-        Tue,  5 Apr 2022 01:29:39 -0700 (PDT)
-Date:   Tue, 05 Apr 2022 08:29:36 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6495217AA1;
+        Tue,  5 Apr 2022 01:29:40 -0700 (PDT)
+Date:   Tue, 05 Apr 2022 08:29:37 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1649147378;
+        s=2020; t=1649147379;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=rVp4aRHgsclhL8EJ9iZFPn/4+bvKhNrDLh1shDagL2c=;
-        b=zMlfh/PxrJOZ8vGaMmjA4p2/ZaPgx5r3H0AbHeZgRL4TIdsXUpNL+jY6SyJ07jSg/j2y/u
-        88x2iZ9oRzVP10AEyJ5biBeq8J2fusLom50Rk0fuRJaf1f8gWnUICBqsrlQK4E65H6xuW8
-        XLGg6mH+me+vOvEfct+IcRNicAQtnWHe1SbmPnNhzBAzIEEqqukCpyr5wpRKOCGlvD3XEC
-        qidd4D5Us92VNhSDN4oif6qwp8vQhfxzQhfw+U3jYpj+5u3hCxLLFjxTKy6ZvXr7KKJbiV
-        pLGFqNnfXgr6sbLdpFmS19fFTt1BkdFK2OrKn3hPHGftJc83ZAzl43y1+VyEwg==
+        bh=Xf02MVHN4JR7VuJJrUFdSIQZRkwuZ0C8MK8iLKWLcQk=;
+        b=IIn3vSJNaAs7G+1rR35chBNTwK5Uw3lmT3weRbX9ql7RW3fJpF5x/Mu41mvNaywrFod2fi
+        g/huQLKZ0oKi+IX5ETZ/tZjTzgFD5Ugw0GCyaufaEYvuR2K0WqafWUegg3p3LlNw4EQv3t
+        vf49Zqm7o98czxEGexiR/nxsmGLYs+nMs8nJsgOWtwLCCvRsaivbYGTtkepClDbEhTLT1W
+        +HyPOYSRQLz3E7ej2dbjvoMtvT0d4VUDtgnzH2lt77vlldTSsGbN+r12IYStBX9027jJHF
+        gx+kqQ4hIh9w13mcgemb5pRUYSsXE+5gE1f7S0s5qn/POpOY/rtUe62CBupjCQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1649147378;
+        s=2020e; t=1649147379;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=rVp4aRHgsclhL8EJ9iZFPn/4+bvKhNrDLh1shDagL2c=;
-        b=yaKJS7IpU3azwEtJ/GCcjVDTMoQMwXqhXPoCYVFBp11Ife3vzblPjEQ4gomMOEZmX9CK7d
-        pVzumFGcjVOvjDBA==
+        bh=Xf02MVHN4JR7VuJJrUFdSIQZRkwuZ0C8MK8iLKWLcQk=;
+        b=vQlsxWAg09eKYJSZLGOM+Z+mAKAtN6pDD+sf1WKGWzRS0mSznZQxyrT/pq0T36eUNLyfe7
+        l1LxaayzHjTqEQCw==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] objtool: Fix SLS validation for kcov tail-call replacement
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: x86/urgent] objtool: Fix IBT tail-call detection
+Cc:     Stephen Rothwell <sfr@canb.auug.org.au>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220323230712.GA8939@worktop.programming.kicks-ass.net>
-References: <20220323230712.GA8939@worktop.programming.kicks-ass.net>
+In-Reply-To: <20220322115125.811582125@infradead.org>
+References: <20220322115125.811582125@infradead.org>
 MIME-Version: 1.0
-Message-ID: <164914737698.389.9382250857229759152.tip-bot2@tip-bot2>
+Message-ID: <164914737798.389.68339904332129316.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,63 +67,89 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     7a53f408902d913cd541b4f8ad7dbcd4961f5b82
-Gitweb:        https://git.kernel.org/tip/7a53f408902d913cd541b4f8ad7dbcd4961f5b82
+Commit-ID:     d139bca4b824ffb9731763c31b271a24b595948a
+Gitweb:        https://git.kernel.org/tip/d139bca4b824ffb9731763c31b271a24b595948a
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Wed, 23 Mar 2022 23:35:01 +01:00
+AuthorDate:    Tue, 22 Mar 2022 12:33:31 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Tue, 05 Apr 2022 10:24:40 +02:00
 
-objtool: Fix SLS validation for kcov tail-call replacement
+objtool: Fix IBT tail-call detection
 
-Since not all compilers have a function attribute to disable KCOV
-instrumentation, objtool can rewrite KCOV instrumentation in noinstr
-functions as per commit:
+Objtool reports:
 
-  f56dae88a81f ("objtool: Handle __sanitize_cov*() tail calls")
+  arch/x86/crypto/poly1305-x86_64.o: warning: objtool: poly1305_blocks_avx() falls through to next function poly1305_blocks_x86_64()
+  arch/x86/crypto/poly1305-x86_64.o: warning: objtool: poly1305_emit_avx() falls through to next function poly1305_emit_x86_64()
+  arch/x86/crypto/poly1305-x86_64.o: warning: objtool: poly1305_blocks_avx2() falls through to next function poly1305_blocks_x86_64()
 
-However, this has subtle interaction with the SLS validation from
-commit:
+Which reads like:
 
-  1cc1e4c8aab4 ("objtool: Add straight-line-speculation validation")
+0000000000000040 <poly1305_blocks_x86_64>:
+	 40:       f3 0f 1e fa             endbr64
+	...
 
-In that when a tail-call instrucion is replaced with a RET an
-additional INT3 instruction is also written, but is not represented in
-the decoded instruction stream.
+0000000000000400 <poly1305_blocks_avx>:
+	400:       f3 0f 1e fa             endbr64
+	404:       44 8b 47 14             mov    0x14(%rdi),%r8d
+	408:       48 81 fa 80 00 00 00    cmp    $0x80,%rdx
+	40f:       73 09                   jae    41a <poly1305_blocks_avx+0x1a>
+	411:       45 85 c0                test   %r8d,%r8d
+	414:       0f 84 2a fc ff ff       je     44 <poly1305_blocks_x86_64+0x4>
+	...
 
-This then leads to false positive missing INT3 objtool warnings in
-noinstr code.
+These are simple conditional tail-calls and *should* be recognised as
+such by objtool, however due to a mistake in commit 08f87a93c8ec
+("objtool: Validate IBT assumptions") this is failing.
 
-Instead of adding additional struct instruction objects, mark the RET
-instruction with retpoline_safe to suppress the warning (since we know
-there really is an INT3).
+Specifically, the jump_dest is +4, this means the instruction pointed
+at will not be ENDBR and as such it will fail the second clause of
+is_first_func_insn() that was supposed to capture this exact case.
 
-Fixes: 1cc1e4c8aab4 ("objtool: Add straight-line-speculation validation")
+Instead, have is_first_func_insn() look at the previous instruction.
+
+Fixes: 08f87a93c8ec ("objtool: Validate IBT assumptions")
+Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20220323230712.GA8939@worktop.programming.kicks-ass.net
+Link: https://lkml.kernel.org/r/20220322115125.811582125@infradead.org
 ---
- tools/objtool/check.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ tools/objtool/check.c | 19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
 
 diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index b848e1d..bd0c2c8 100644
+index 6de5085..b848e1d 100644
 --- a/tools/objtool/check.c
 +++ b/tools/objtool/check.c
-@@ -1155,6 +1155,17 @@ static void annotate_call_site(struct objtool_file *file,
- 			               : arch_nop_insn(insn->len));
+@@ -1239,11 +1239,20 @@ static bool same_function(struct instruction *insn1, struct instruction *insn2)
+ 	return insn1->func->pfunc == insn2->func->pfunc;
+ }
  
- 		insn->type = sibling ? INSN_RETURN : INSN_NOP;
+-static bool is_first_func_insn(struct instruction *insn)
++static bool is_first_func_insn(struct objtool_file *file, struct instruction *insn)
+ {
+-	return insn->offset == insn->func->offset ||
+-	       (insn->type == INSN_ENDBR &&
+-		insn->offset == insn->func->offset + insn->len);
++	if (insn->offset == insn->func->offset)
++		return true;
 +
-+		if (sibling) {
-+			/*
-+			 * We've replaced the tail-call JMP insn by two new
-+			 * insn: RET; INT3, except we only have a single struct
-+			 * insn here. Mark it retpoline_safe to avoid the SLS
-+			 * warning, instead of adding another insn.
-+			 */
-+			insn->retpoline_safe = true;
-+		}
++	if (ibt) {
++		struct instruction *prev = prev_insn_same_sym(file, insn);
 +
- 		return;
- 	}
++		if (prev && prev->type == INSN_ENDBR &&
++		    insn->offset == insn->func->offset + prev->len)
++			return true;
++	}
++
++	return false;
+ }
  
+ /*
+@@ -1327,7 +1336,7 @@ static int add_jump_destinations(struct objtool_file *file)
+ 				insn->jump_dest->func->pfunc = insn->func;
+ 
+ 			} else if (!same_function(insn, insn->jump_dest) &&
+-				   is_first_func_insn(insn->jump_dest)) {
++				   is_first_func_insn(file, insn->jump_dest)) {
+ 				/* internal sibling call (without reloc) */
+ 				add_call_dest(file, insn, insn->jump_dest->func, true);
+ 			}
