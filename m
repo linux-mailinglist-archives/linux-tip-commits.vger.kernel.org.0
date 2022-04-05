@@ -2,55 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B9054F2D92
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  5 Apr 2022 13:44:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4F9F4F2ACD
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  5 Apr 2022 13:05:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235940AbiDEIkt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 5 Apr 2022 04:40:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46048 "EHLO
+        id S237040AbiDEIlb (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 5 Apr 2022 04:41:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44084 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241179AbiDEIcw (ORCPT
+        with ESMTP id S241182AbiDEIcx (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 5 Apr 2022 04:32:52 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B63AE10FC2;
-        Tue,  5 Apr 2022 01:29:07 -0700 (PDT)
-Date:   Tue, 05 Apr 2022 08:29:05 -0000
+        Tue, 5 Apr 2022 04:32:53 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A125A1705C;
+        Tue,  5 Apr 2022 01:29:09 -0700 (PDT)
+Date:   Tue, 05 Apr 2022 08:29:07 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1649147346;
+        s=2020; t=1649147348;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=fPYD5ZolEbkGH+EhuY0/H0+B93v4HcrMEWrGKmEgfjk=;
-        b=NoPpCL9D2M8KE0MpeeCKQwpmsK674tf4aCE6EF1D0NehnE11NSOi+UgAOFmRx22U1RYb9p
-        bwgU+iIW+CNa+0e0R3/gC9vTaPEB49dcnsezxY6pzj7ThvNipC/SE6DTzCFQ44EKhvQKVk
-        oO0Hd2oWg6z+qTRUEDCy1qefIM+dHW4nZlrz4cw0OM+Li7GECMoB5MbzlhxLQRs9n0YSL3
-        TzbKIZdHORRtkNGZ81m05njeKLT9D7sNM326NaqRRBqJifyLBBbYzXUxCff4TaIlYm1BUJ
-        +25neGhGpohbcvZq+EoCUqX4HbU9spJtPBpcfUOKo8AIvqFIpLgMgkw5lUC3AA==
+        bh=scYHAXGa/0fvVqkzj7iTiyF7lJ4/pkg20Qlu7GjepjI=;
+        b=cpcP8F7LKJ2xe564KJQOMvQW9g+lmF19TOrdMg9m2eBvu/a8VolzYOjgvM5+GiQC2BzQt2
+        4WnEjG6hAVARvnR7yBN3nkbnTqVctlbmGaJgt3rmgdlANrqs77KGcjQd7iweQmiPeQVeKE
+        LndjBITJNf74zDytn8FyX8xJeSWbPAB82WsgpR1xb2chm/XfKfKCLZr5EN94rDo0kdzJI6
+        +Bc+6Djm01nIj7iyf/e2UPh4wUQukJrCs2d/YOLCzMtMptvN7CFX8UnUqRO83IvckGYLE0
+        Zv0omSyDDpgPzlfAKXBFYLUGO+ZEx+mqGIM7h8Wxc0zTQZ+6+e2t6eXwMqW7nA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1649147346;
+        s=2020e; t=1649147348;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=fPYD5ZolEbkGH+EhuY0/H0+B93v4HcrMEWrGKmEgfjk=;
-        b=KF98DyjCtbUL523mRFbxmWU6He9+EW7KR2D4YiCjTc4+PX8R1N+reNKw1iu8qv64dYu6qZ
-        0t0JMxQIQ9tN3HCQ==
-From:   "tip-bot2 for Chengming Zhou" <tip-bot2@linutronix.de>
+        bh=scYHAXGa/0fvVqkzj7iTiyF7lJ4/pkg20Qlu7GjepjI=;
+        b=b1sD60hTqRFaVqSuR3AUswkaEWRFlsjtsAcVzzwN4tgFujyEkKWek/rzt7Ov+E5Py6FSHg
+        hb9c7isLyskLP6Dw==
+From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf/core: Don't pass task around when ctx sched in
-Cc:     Chengming Zhou <zhouchengming@bytedance.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: perf/urgent] perf/x86/intel: Don't extend the pseudo-encoding
+ to GP counters
+Cc:     Kan Liang <kan.liang@linux.intel.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        stable@vger.kernel.org, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220329154523.86438-2-zhouchengming@bytedance.com>
-References: <20220329154523.86438-2-zhouchengming@bytedance.com>
+In-Reply-To: <1648482543-14923-1-git-send-email-kan.liang@linux.intel.com>
+References: <1648482543-14923-1-git-send-email-kan.liang@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <164914734514.389.17929255348417765123.tip-bot2@tip-bot2>
+Message-ID: <164914734724.389.2883979109723202576.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,218 +69,79 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     a0827713e298d021d3c79ae7423aea408f3f7c3a
-Gitweb:        https://git.kernel.org/tip/a0827713e298d021d3c79ae7423aea408f3f7c3a
-Author:        Chengming Zhou <zhouchengming@bytedance.com>
-AuthorDate:    Tue, 29 Mar 2022 23:45:20 +08:00
+Commit-ID:     4a263bf331c512849062805ef1b4ac40301a9829
+Gitweb:        https://git.kernel.org/tip/4a263bf331c512849062805ef1b4ac40301a9829
+Author:        Kan Liang <kan.liang@linux.intel.com>
+AuthorDate:    Mon, 28 Mar 2022 08:49:02 -07:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Tue, 05 Apr 2022 09:59:44 +02:00
 
-perf/core: Don't pass task around when ctx sched in
+perf/x86/intel: Don't extend the pseudo-encoding to GP counters
 
-The current code pass task around for ctx_sched_in(), only
-to get perf_cgroup of the task, then update the timestamp
-of it and its ancestors and set them to active.
+The INST_RETIRED.PREC_DIST event (0x0100) doesn't count on SPR.
+perf stat -e cpu/event=0xc0,umask=0x0/,cpu/event=0x0,umask=0x1/ -C0
 
-But we can use cpuctx->cgrp to get active perf_cgroup and
-its ancestors since cpuctx->cgrp has been set before
-ctx_sched_in().
+ Performance counter stats for 'CPU(s) 0':
 
-This patch remove the task argument in ctx_sched_in()
-and cleanup related code.
+           607,246      cpu/event=0xc0,umask=0x0/
+                 0      cpu/event=0x0,umask=0x1/
 
-Signed-off-by: Chengming Zhou <zhouchengming@bytedance.com>
+The encoding for INST_RETIRED.PREC_DIST is pseudo-encoding, which
+doesn't work on the generic counters. However, current perf extends its
+mask to the generic counters.
+
+The pseudo event-code for a fixed counter must be 0x00. Check and avoid
+extending the mask for the fixed counter event which using the
+pseudo-encoding, e.g., ref-cycles and PREC_DIST event.
+
+With the patch,
+perf stat -e cpu/event=0xc0,umask=0x0/,cpu/event=0x0,umask=0x1/ -C0
+
+ Performance counter stats for 'CPU(s) 0':
+
+           583,184      cpu/event=0xc0,umask=0x0/
+           583,048      cpu/event=0x0,umask=0x1/
+
+Fixes: 2de71ee153ef ("perf/x86/intel: Fix ICL/SPR INST_RETIRED.PREC_DIST encodings")
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20220329154523.86438-2-zhouchengming@bytedance.com
+Cc: stable@vger.kernel.org
+Link: https://lkml.kernel.org/r/1648482543-14923-1-git-send-email-kan.liang@linux.intel.com
 ---
- kernel/events/core.c | 58 +++++++++++++++++++------------------------
- 1 file changed, 26 insertions(+), 32 deletions(-)
+ arch/x86/events/intel/core.c      | 6 +++++-
+ arch/x86/include/asm/perf_event.h | 5 +++++
+ 2 files changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 3980efc..6545020 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -574,8 +574,7 @@ static void cpu_ctx_sched_out(struct perf_cpu_context *cpuctx,
- 			      enum event_type_t event_type);
+diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
+index 28f075e..eb17b96 100644
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -5536,7 +5536,11 @@ static void intel_pmu_check_event_constraints(struct event_constraint *event_con
+ 			/* Disabled fixed counters which are not in CPUID */
+ 			c->idxmsk64 &= intel_ctrl;
  
- static void cpu_ctx_sched_in(struct perf_cpu_context *cpuctx,
--			     enum event_type_t event_type,
--			     struct task_struct *task);
-+			     enum event_type_t event_type);
- 
- static void update_context_time(struct perf_event_context *ctx);
- static u64 perf_event_time(struct perf_event *event);
-@@ -801,10 +800,10 @@ static inline void update_cgrp_time_from_event(struct perf_event *event)
- }
- 
- static inline void
--perf_cgroup_set_timestamp(struct task_struct *task,
--			  struct perf_event_context *ctx)
-+perf_cgroup_set_timestamp(struct perf_cpu_context *cpuctx)
- {
--	struct perf_cgroup *cgrp;
-+	struct perf_event_context *ctx = &cpuctx->ctx;
-+	struct perf_cgroup *cgrp = cpuctx->cgrp;
- 	struct perf_cgroup_info *info;
- 	struct cgroup_subsys_state *css;
- 
-@@ -813,10 +812,10 @@ perf_cgroup_set_timestamp(struct task_struct *task,
- 	 * ensure we do not access cgroup data
- 	 * unless we have the cgroup pinned (css_get)
- 	 */
--	if (!task || !ctx->nr_cgroups)
-+	if (!cgrp)
- 		return;
- 
--	cgrp = perf_cgroup_from_task(task, ctx);
-+	WARN_ON_ONCE(!ctx->nr_cgroups);
- 
- 	for (css = &cgrp->css; css; css = css->parent) {
- 		cgrp = container_of(css, struct perf_cgroup, css);
-@@ -869,14 +868,14 @@ static void perf_cgroup_switch(struct task_struct *task, int mode)
- 			WARN_ON_ONCE(cpuctx->cgrp);
- 			/*
- 			 * set cgrp before ctxsw in to allow
--			 * event_filter_match() to not have to pass
--			 * task around
-+			 * perf_cgroup_set_timestamp() in ctx_sched_in()
-+			 * to not have to pass task around
- 			 * we pass the cpuctx->ctx to perf_cgroup_from_task()
- 			 * because cgorup events are only per-cpu
- 			 */
- 			cpuctx->cgrp = perf_cgroup_from_task(task,
- 							     &cpuctx->ctx);
--			cpu_ctx_sched_in(cpuctx, EVENT_ALL, task);
-+			cpu_ctx_sched_in(cpuctx, EVENT_ALL);
+-			if (c->idxmsk64 != INTEL_PMC_MSK_FIXED_REF_CYCLES)
++			/*
++			 * Don't extend the pseudo-encoding to the
++			 * generic counters
++			 */
++			if (!use_fixed_pseudo_encoding(c->code))
+ 				c->idxmsk64 |= (1ULL << num_counters) - 1;
  		}
- 		perf_pmu_enable(cpuctx->ctx.pmu);
- 		perf_ctx_unlock(cpuctx, cpuctx->task_ctx);
-@@ -1118,8 +1117,7 @@ static inline int perf_cgroup_connect(pid_t pid, struct perf_event *event,
- }
+ 		c->idxmsk64 &=
+diff --git a/arch/x86/include/asm/perf_event.h b/arch/x86/include/asm/perf_event.h
+index 58d9e4b..b06e4c5 100644
+--- a/arch/x86/include/asm/perf_event.h
++++ b/arch/x86/include/asm/perf_event.h
+@@ -241,6 +241,11 @@ struct x86_pmu_capability {
+ #define INTEL_PMC_IDX_FIXED_SLOTS	(INTEL_PMC_IDX_FIXED + 3)
+ #define INTEL_PMC_MSK_FIXED_SLOTS	(1ULL << INTEL_PMC_IDX_FIXED_SLOTS)
  
- static inline void
--perf_cgroup_set_timestamp(struct task_struct *task,
--			  struct perf_event_context *ctx)
-+perf_cgroup_set_timestamp(struct perf_cpu_context *cpuctx)
- {
- }
- 
-@@ -2713,8 +2711,7 @@ static void ctx_sched_out(struct perf_event_context *ctx,
- static void
- ctx_sched_in(struct perf_event_context *ctx,
- 	     struct perf_cpu_context *cpuctx,
--	     enum event_type_t event_type,
--	     struct task_struct *task);
-+	     enum event_type_t event_type);
- 
- static void task_ctx_sched_out(struct perf_cpu_context *cpuctx,
- 			       struct perf_event_context *ctx,
-@@ -2730,15 +2727,14 @@ static void task_ctx_sched_out(struct perf_cpu_context *cpuctx,
- }
- 
- static void perf_event_sched_in(struct perf_cpu_context *cpuctx,
--				struct perf_event_context *ctx,
--				struct task_struct *task)
-+				struct perf_event_context *ctx)
- {
--	cpu_ctx_sched_in(cpuctx, EVENT_PINNED, task);
-+	cpu_ctx_sched_in(cpuctx, EVENT_PINNED);
- 	if (ctx)
--		ctx_sched_in(ctx, cpuctx, EVENT_PINNED, task);
--	cpu_ctx_sched_in(cpuctx, EVENT_FLEXIBLE, task);
-+		ctx_sched_in(ctx, cpuctx, EVENT_PINNED);
-+	cpu_ctx_sched_in(cpuctx, EVENT_FLEXIBLE);
- 	if (ctx)
--		ctx_sched_in(ctx, cpuctx, EVENT_FLEXIBLE, task);
-+		ctx_sched_in(ctx, cpuctx, EVENT_FLEXIBLE);
- }
- 
++static inline bool use_fixed_pseudo_encoding(u64 code)
++{
++	return !(code & 0xff);
++}
++
  /*
-@@ -2788,7 +2784,7 @@ static void ctx_resched(struct perf_cpu_context *cpuctx,
- 	else if (ctx_event_type & EVENT_PINNED)
- 		cpu_ctx_sched_out(cpuctx, EVENT_FLEXIBLE);
- 
--	perf_event_sched_in(cpuctx, task_ctx, current);
-+	perf_event_sched_in(cpuctx, task_ctx);
- 	perf_pmu_enable(cpuctx->ctx.pmu);
- }
- 
-@@ -3011,7 +3007,7 @@ static void __perf_event_enable(struct perf_event *event,
- 		return;
- 
- 	if (!event_filter_match(event)) {
--		ctx_sched_in(ctx, cpuctx, EVENT_TIME, current);
-+		ctx_sched_in(ctx, cpuctx, EVENT_TIME);
- 		return;
- 	}
- 
-@@ -3020,7 +3016,7 @@ static void __perf_event_enable(struct perf_event *event,
- 	 * then don't put it on unless the group is on.
- 	 */
- 	if (leader != event && leader->state != PERF_EVENT_STATE_ACTIVE) {
--		ctx_sched_in(ctx, cpuctx, EVENT_TIME, current);
-+		ctx_sched_in(ctx, cpuctx, EVENT_TIME);
- 		return;
- 	}
- 
-@@ -3865,8 +3861,7 @@ ctx_flexible_sched_in(struct perf_event_context *ctx,
- static void
- ctx_sched_in(struct perf_event_context *ctx,
- 	     struct perf_cpu_context *cpuctx,
--	     enum event_type_t event_type,
--	     struct task_struct *task)
-+	     enum event_type_t event_type)
- {
- 	int is_active = ctx->is_active;
- 
-@@ -3878,7 +3873,7 @@ ctx_sched_in(struct perf_event_context *ctx,
- 	if (is_active ^ EVENT_TIME) {
- 		/* start ctx time */
- 		__update_context_time(ctx, false);
--		perf_cgroup_set_timestamp(task, ctx);
-+		perf_cgroup_set_timestamp(cpuctx);
- 		/*
- 		 * CPU-release for the below ->is_active store,
- 		 * see __load_acquire() in perf_event_time_now()
-@@ -3909,12 +3904,11 @@ ctx_sched_in(struct perf_event_context *ctx,
- }
- 
- static void cpu_ctx_sched_in(struct perf_cpu_context *cpuctx,
--			     enum event_type_t event_type,
--			     struct task_struct *task)
-+			     enum event_type_t event_type)
- {
- 	struct perf_event_context *ctx = &cpuctx->ctx;
- 
--	ctx_sched_in(ctx, cpuctx, event_type, task);
-+	ctx_sched_in(ctx, cpuctx, event_type);
- }
- 
- static void perf_event_context_sched_in(struct perf_event_context *ctx,
-@@ -3956,7 +3950,7 @@ static void perf_event_context_sched_in(struct perf_event_context *ctx,
- 	 */
- 	if (!RB_EMPTY_ROOT(&ctx->pinned_groups.tree))
- 		cpu_ctx_sched_out(cpuctx, EVENT_FLEXIBLE);
--	perf_event_sched_in(cpuctx, ctx, task);
-+	perf_event_sched_in(cpuctx, ctx);
- 
- 	if (cpuctx->sched_cb_usage && pmu->sched_task)
- 		pmu->sched_task(cpuctx->task_ctx, true);
-@@ -4267,7 +4261,7 @@ static bool perf_rotate_context(struct perf_cpu_context *cpuctx)
- 	if (cpu_event)
- 		rotate_ctx(&cpuctx->ctx, cpu_event);
- 
--	perf_event_sched_in(cpuctx, task_ctx, current);
-+	perf_event_sched_in(cpuctx, task_ctx);
- 
- 	perf_pmu_enable(cpuctx->ctx.pmu);
- 	perf_ctx_unlock(cpuctx, cpuctx->task_ctx);
-@@ -4339,7 +4333,7 @@ static void perf_event_enable_on_exec(int ctxn)
- 		clone_ctx = unclone_ctx(ctx);
- 		ctx_resched(cpuctx, ctx, event_type);
- 	} else {
--		ctx_sched_in(ctx, cpuctx, EVENT_TIME, current);
-+		ctx_sched_in(ctx, cpuctx, EVENT_TIME);
- 	}
- 	perf_ctx_unlock(cpuctx, ctx);
- 
+  * We model BTS tracing as another fixed-mode PMC.
+  *
