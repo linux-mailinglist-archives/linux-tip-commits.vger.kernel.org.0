@@ -2,57 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C0094F20EE
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  5 Apr 2022 06:08:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 939404F2CE7
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  5 Apr 2022 13:34:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229781AbiDECqp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 4 Apr 2022 22:46:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40356 "EHLO
+        id S236706AbiDEJPA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 5 Apr 2022 05:15:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60902 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230203AbiDECqL (ORCPT
+        with ESMTP id S238287AbiDEIa1 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 4 Apr 2022 22:46:11 -0400
+        Tue, 5 Apr 2022 04:30:27 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 800FD37BA2E;
-        Mon,  4 Apr 2022 18:51:53 -0700 (PDT)
-Date:   Mon, 04 Apr 2022 23:57:40 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB36C245B7;
+        Tue,  5 Apr 2022 01:22:03 -0700 (PDT)
+Date:   Tue, 05 Apr 2022 08:22:01 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1649116661;
+        s=2020; t=1649146922;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=5xJqt6HFPzkzv5UcTuTc/+VNPIr1xBZCX9CZQWo2oqs=;
-        b=C3eTuKfK8nQ6bIy62qT8fMTq+c/WF2XqFJi7HALMoqVgysAVI+oitv53xXdEyT3jFICxtE
-        4n5/H8KPcjyAsh3S5n23ldsMB0Dj1FggTfo+GjivNzPumVbqGLrjSknvZTdIGHkfv93lEH
-        kvDzJIzMJnN8EFqhbOQ9hgCcq3CKiaWsDViEzr/AwFe33HwgtKapIqHyS/RiJNFzQObd+E
-        J0la+G8mQFBRkxPu1Xr42bTAHNFtY8vsfGMnKg+oxMVrNkBCmbH8fS6eDZ3ORuNey5izyK
-        3bP7aPMO+Yv0jncgxfCFID9HOQbzKacIrwjQsNo/Gq6LQN9MbLf/D/DFFiDSJg==
+        bh=l+xUYv6gdZsjBlMimQWLTKtSrNhHai4I0pW5bOZsXo4=;
+        b=o7a0WX1+82rPz7+R5wyQMyN3+HOr4Wz8RKw9ysNFrG2V4/gXB5JnAYrkH/Zt1Pi9F0zmwc
+        GUlQ6ROOqYycGL2PUCJCoaBad7NzII8NZJsO+gErN3hVlneu8J67pwwp64tW0EqAre8WDD
+        7hTu647GjwUr1glcwuI8VKPU3pgO8WEVc5rPuk4Xb//uDWZIk7+rRqoCUw+2evSOKlKhKK
+        I2GcWs+mgTqGvXnWMD0XOl5+ZR0cVjegjTp4kN8NU0PBMsqztoqQ6ISB9PnKXUDd8oPs2X
+        itBr3axY2d64RGTudrqgHFTx07wnJLMoiYCX2u921By3yCPthIENtkdWKe3BgA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1649116661;
+        s=2020e; t=1649146922;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=5xJqt6HFPzkzv5UcTuTc/+VNPIr1xBZCX9CZQWo2oqs=;
-        b=Z2pE5QAnGXnT2YEUQacnOmwxE/CxDTzTebK1CgF+Hwbcse7ol/tlYYCqNlWaGGjwT1AGVr
-        T7TEVLEMQ43vQbCA==
-From:   "tip-bot2 for Ira Weiny" <tip-bot2@linutronix.de>
+        bh=l+xUYv6gdZsjBlMimQWLTKtSrNhHai4I0pW5bOZsXo4=;
+        b=SuCYPPCkjJFGlSdOxpigCfqddH5Qmj0Tzj8uylBk29udUPKWXbi41L7A3cCHdFWfEdupsy
+        suz3BgVXaufUsxDw==
+From:   "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cleanups] x86/pkeys: Clean up arch_set_user_pkey_access()
- declaration
-Cc:     "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
-        Ira Weiny <ira.weiny@intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+Subject: [tip: sched/urgent] sched: Teach the forced-newidle balancer about
+ CPU affinity limitation.
+Cc:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220331180554.2945884-1-ira.weiny@intel.com>
-References: <20220331180554.2945884-1-ira.weiny@intel.com>
+In-Reply-To: <YjNK9El+3fzGmswf@linutronix.de>
+References: <YjNK9El+3fzGmswf@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <164911666067.389.6810895631188554028.tip-bot2@tip-bot2>
+Message-ID: <164914692120.389.11878203217805894208.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,39 +66,43 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cleanups branch of tip:
+The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     70431c63d7ed31baf18b0083ba5473274363a174
-Gitweb:        https://git.kernel.org/tip/70431c63d7ed31baf18b0083ba5473274363a174
-Author:        Ira Weiny <ira.weiny@intel.com>
-AuthorDate:    Thu, 31 Mar 2022 11:05:54 -07:00
-Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Mon, 04 Apr 2022 15:58:24 -07:00
+Commit-ID:     386ef214c3c6ab111d05e1790e79475363abaa05
+Gitweb:        https://git.kernel.org/tip/386ef214c3c6ab111d05e1790e79475363abaa05
+Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+AuthorDate:    Thu, 17 Mar 2022 15:51:32 +01:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Tue, 05 Apr 2022 09:59:36 +02:00
 
-x86/pkeys: Clean up arch_set_user_pkey_access() declaration
+sched: Teach the forced-newidle balancer about CPU affinity limitation.
 
-arch_set_user_pkey_access() was declared two times in the header.
+try_steal_cookie() looks at task_struct::cpus_mask to decide if the
+task could be moved to `this' CPU. It ignores that the task might be in
+a migration disabled section while not on the CPU. In this case the task
+must not be moved otherwise per-CPU assumption are broken.
 
-Remove the 2nd declaration.
+Use is_cpu_allowed(), as suggested by Peter Zijlstra, to decide if the a
+task can be moved.
 
-Suggested-by: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-Signed-off-by: Ira Weiny <ira.weiny@intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lkml.kernel.org/r/20220331180554.2945884-1-ira.weiny@intel.com
+Fixes: d2dfa17bc7de6 ("sched: Trivial forced-newidle balancer")
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/YjNK9El+3fzGmswf@linutronix.de
 ---
- arch/x86/include/asm/pkeys.h | 2 --
- 1 file changed, 2 deletions(-)
+ kernel/sched/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/pkeys.h b/arch/x86/include/asm/pkeys.h
-index 1d5f14a..9c53053 100644
---- a/arch/x86/include/asm/pkeys.h
-+++ b/arch/x86/include/asm/pkeys.h
-@@ -118,8 +118,6 @@ int mm_pkey_free(struct mm_struct *mm, int pkey)
- 	return 0;
- }
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 017ee78..51efaab 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -6006,7 +6006,7 @@ static bool try_steal_cookie(int this, int that)
+ 		if (p == src->core_pick || p == src->curr)
+ 			goto next;
  
--extern int arch_set_user_pkey_access(struct task_struct *tsk, int pkey,
--		unsigned long init_val);
- extern int __arch_set_user_pkey_access(struct task_struct *tsk, int pkey,
- 		unsigned long init_val);
+-		if (!cpumask_test_cpu(this, &p->cpus_mask))
++		if (!is_cpu_allowed(p, this))
+ 			goto next;
  
+ 		if (p->core_occupation > dst->idle->core_occupation)
