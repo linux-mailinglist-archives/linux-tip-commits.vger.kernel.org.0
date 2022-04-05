@@ -2,56 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DA844F2DDE
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  5 Apr 2022 13:47:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FCEC4F2CE1
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  5 Apr 2022 13:34:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343891AbiDEJOt (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 5 Apr 2022 05:14:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38076 "EHLO
+        id S236997AbiDEJPC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 5 Apr 2022 05:15:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38470 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241051AbiDEIsZ (ORCPT
+        with ESMTP id S241701AbiDEIsc (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 5 Apr 2022 04:48:25 -0400
+        Tue, 5 Apr 2022 04:48:32 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D6EF286F3;
-        Tue,  5 Apr 2022 01:36:40 -0700 (PDT)
-Date:   Tue, 05 Apr 2022 08:36:19 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31D462AE09;
+        Tue,  5 Apr 2022 01:36:49 -0700 (PDT)
+Date:   Tue, 05 Apr 2022 08:36:37 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1649147781;
+        s=2020; t=1649147798;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=H1j+1viOhjYFA2aOC4qMU0dl994UvA/jRgO733fewgY=;
-        b=qNwYHfonmBSk5z6ghXsoeVlY/xkLpuHa+EOzjxKm2nxSELm8pI0uQOTWk9m54Bn3CLI6Pg
-        KONDjw+PqYQdkTX+tuTIhgSqaC/veyFx3o0W0lvOplu6Nt4nv5ba2JPJJFrSppLX7EvQxx
-        jFgC93wuziiSWK1TOz1q/M6riiBXzh7vYMo/91TjIX8QMloGa72m/VAEBSbL73iJ/m0Yxp
-        tbhy39QXMrRm7gbTPrS7iZwd4Bv29M/0ejBCj+H3i8o6q6W5rDWnM9HaEF7bSpDkv4s6UT
-        6/oKISmppEwIOHYKUYakxSgkjbBJPbLLVV41wkawRU0hsb4OKmgm6WR7ww01Gg==
+        bh=A5geXpxjvPe814KNLb/sN9jiLCNyqM2BsadEeVroj2c=;
+        b=AQp4XHXLkBNLpKVS2ZkZTHBog9mm3OeJ0AO86QbOyKQNV11W+dRc+g9OYEQ+KcuRfSlXHI
+        0jn1nM/WdcC1/N8feEklIvZcgRsNMMSkAGndJXTzHL/3AGXJrT6TVByFGWavXfCF5uiuek
+        7RyEjVa+6kZ9/whJANOJnapATRVi4QC7T0Vt2fjKkk7YJWGudqnCKQM113rJ/UZj3DSN/9
+        bRpJJMHspABgfWTj7MjPS0tIdfUPc0JuvgUNpVwrJepVsy5koyWWtoD/1TUXGgTSk27CZb
+        WOdQ9xfyy98cge2vSigWWof3B32WbGPzQWyVekzIIWiVJdHnFY9v4/r9FdumaA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1649147781;
+        s=2020e; t=1649147798;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=H1j+1viOhjYFA2aOC4qMU0dl994UvA/jRgO733fewgY=;
-        b=uiWKXwtjrHq+Z35ZJSS6elAe7ucgfAE3xIfMzRzGdk2/EPXRF8ByJP6IKV1gVg812mA82f
-        RpF+GM9thTIbkKAw==
-From:   "tip-bot2 for Waiman Long" <tip-bot2@linutronix.de>
+        bh=A5geXpxjvPe814KNLb/sN9jiLCNyqM2BsadEeVroj2c=;
+        b=waW1gpvuNo7jZSe8lciWI4fELkaGayOA1mcmRu06XoXFoI1N07xPFGv3P7/wim9I+s5W0D
+        OdTxsFmmUWkqdjDw==
+From:   "tip-bot2 for Stephane Eranian" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] locking/rwsem: Always try to wake waiters in
- out_nolock path
-Cc:     Waiman Long <longman@redhat.com>,
+Subject: [tip: perf/core] perf/x86/amd: Add idle hooks for branch sampling
+Cc:     Stephane Eranian <eranian@google.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220322152059.2182333-4-longman@redhat.com>
-References: <20220322152059.2182333-4-longman@redhat.com>
+In-Reply-To: <20220322221517.2510440-10-eranian@google.com>
+References: <20220322221517.2510440-10-eranian@google.com>
 MIME-Version: 1.0
-Message-ID: <164914777984.389.6359255161349263835.tip-bot2@tip-bot2>
+Message-ID: <164914779753.389.8152356106310343006.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,125 +65,156 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the locking/core branch of tip:
+The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     1ee326196c66583006b0c95356a4b7dc51bf3531
-Gitweb:        https://git.kernel.org/tip/1ee326196c66583006b0c95356a4b7dc51bf3531
-Author:        Waiman Long <longman@redhat.com>
-AuthorDate:    Tue, 22 Mar 2022 11:20:59 -04:00
+Commit-ID:     d5616bac7adadbf42a3b63b8717e75eb82a2cc2c
+Gitweb:        https://git.kernel.org/tip/d5616bac7adadbf42a3b63b8717e75eb82a2cc2c
+Author:        Stephane Eranian <eranian@google.com>
+AuthorDate:    Tue, 22 Mar 2022 15:15:13 -07:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 05 Apr 2022 10:24:35 +02:00
+CommitterDate: Tue, 05 Apr 2022 10:24:38 +02:00
 
-locking/rwsem: Always try to wake waiters in out_nolock path
+perf/x86/amd: Add idle hooks for branch sampling
 
-For writers, the out_nolock path will always attempt to wake up waiters.
-This may not be really necessary if the waiter to be removed is not the
-first one.
+On AMD Fam19h Zen3, the branch sampling (BRS) feature must be disabled before
+entering low power and re-enabled (if was active) when returning from low
+power. Otherwise, the NMI interrupt may be held up for too long and cause
+problems. Stopping BRS will cause the NMI to be delivered if it was held up.
 
-For readers, no attempt to wake up waiter is being made. However, if
-the HANDOFF bit is set and the reader to be removed is the first waiter,
-the waiter behind it will inherit the HANDOFF bit and for a write lock
-waiter waking it up will allow it to spin on the lock to acquire it
-faster. So it can be beneficial to do a wakeup in this case.
+Define a perf_amd_brs_lopwr_cb() callback to stop/restart BRS.  The callback
+is protected by a jump label which is enabled only when AMD BRS is detected.
+In all other cases, the callback is never called.
 
-Add a new rwsem_del_wake_waiter() helper function to do that consistently
-for both reader and writer out_nolock paths.
-
-Signed-off-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Stephane Eranian <eranian@google.com>
+[peterz: static_call() and build fixes]
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20220322152059.2182333-4-longman@redhat.com
+Link: https://lore.kernel.org/r/20220322221517.2510440-10-eranian@google.com
 ---
- kernel/locking/rwsem.c | 44 +++++++++++++++++++++++++++++++----------
- 1 file changed, 34 insertions(+), 10 deletions(-)
+ arch/x86/events/amd/brs.c         | 33 ++++++++++++++++++++++++++++++-
+ arch/x86/events/amd/core.c        |  4 ++++-
+ arch/x86/events/perf_event.h      |  1 +-
+ arch/x86/include/asm/perf_event.h | 23 +++++++++++++++++++++-
+ 4 files changed, 61 insertions(+)
 
-diff --git a/kernel/locking/rwsem.c b/kernel/locking/rwsem.c
-index 03cb97a..16b532b 100644
---- a/kernel/locking/rwsem.c
-+++ b/kernel/locking/rwsem.c
-@@ -375,16 +375,19 @@ rwsem_add_waiter(struct rw_semaphore *sem, struct rwsem_waiter *waiter)
-  *
-  * Both rwsem_mark_wake() and rwsem_try_write_lock() contain a full 'copy' of
-  * this function. Modify with care.
-+ *
-+ * Return: true if wait_list isn't empty and false otherwise
+diff --git a/arch/x86/events/amd/brs.c b/arch/x86/events/amd/brs.c
+index 40461c3..895c821 100644
+--- a/arch/x86/events/amd/brs.c
++++ b/arch/x86/events/amd/brs.c
+@@ -7,6 +7,7 @@
+  * Contributed by Stephane Eranian <eranian@google.com>
   */
--static inline void
-+static inline bool
- rwsem_del_waiter(struct rw_semaphore *sem, struct rwsem_waiter *waiter)
- {
- 	lockdep_assert_held(&sem->wait_lock);
- 	list_del(&waiter->list);
- 	if (likely(!list_empty(&sem->wait_list)))
--		return;
-+		return true;
+ #include <linux/kernel.h>
++#include <linux/jump_label.h>
+ #include <asm/msr.h>
+ #include <asm/cpufeature.h>
  
- 	atomic_long_andnot(RWSEM_FLAG_HANDOFF | RWSEM_FLAG_WAITERS, &sem->count);
-+	return false;
+@@ -329,3 +330,35 @@ void amd_pmu_brs_sched_task(struct perf_event_context *ctx, bool sched_in)
+ 	if (sched_in)
+ 		amd_brs_poison_buffer();
  }
- 
- /*
-@@ -559,6 +562,33 @@ static void rwsem_mark_wake(struct rw_semaphore *sem,
- }
- 
- /*
-+ * Remove a waiter and try to wake up other waiters in the wait queue
-+ * This function is called from the out_nolock path of both the reader and
-+ * writer slowpaths with wait_lock held. It releases the wait_lock and
-+ * optionally wake up waiters before it returns.
-+ */
-+static inline void
-+rwsem_del_wake_waiter(struct rw_semaphore *sem, struct rwsem_waiter *waiter,
-+		      struct wake_q_head *wake_q)
-+		      __releases(&sem->wait_lock)
-+{
-+	bool first = rwsem_first_waiter(sem) == waiter;
-+
-+	wake_q_init(wake_q);
-+
-+	/*
-+	 * If the wait_list isn't empty and the waiter to be deleted is
-+	 * the first waiter, we wake up the remaining waiters as they may
-+	 * be eligible to acquire or spin on the lock.
-+	 */
-+	if (rwsem_del_waiter(sem, waiter) && first)
-+		rwsem_mark_wake(sem, RWSEM_WAKE_ANY, wake_q);
-+	raw_spin_unlock_irq(&sem->wait_lock);
-+	if (!wake_q_empty(wake_q))
-+		wake_up_q(wake_q);
-+}
 +
 +/*
-  * This function must be called with the sem->wait_lock held to prevent
-  * race conditions between checking the rwsem wait list and setting the
-  * sem->count accordingly.
-@@ -1050,8 +1080,7 @@ queue:
- 	return sem;
++ * called from ACPI processor_idle.c or acpi_pad.c
++ * with interrupts disabled
++ */
++void perf_amd_brs_lopwr_cb(bool lopwr_in)
++{
++	struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
++	union amd_debug_extn_cfg cfg;
++
++	/*
++	 * on mwait in, we may end up in non C0 state.
++	 * we must disable branch sampling to avoid holding the NMI
++	 * for too long. We disable it in hardware but we
++	 * keep the state in cpuc, so we can re-enable.
++	 *
++	 * The hardware will deliver the NMI if needed when brsmen cleared
++	 */
++	if (cpuc->brs_active) {
++		cfg.val = get_debug_extn_cfg();
++		cfg.brsmen = !lopwr_in;
++		set_debug_extn_cfg(cfg.val);
++	}
++}
++
++DEFINE_STATIC_CALL_NULL(perf_lopwr_cb, perf_amd_brs_lopwr_cb);
++EXPORT_STATIC_CALL_TRAMP_GPL(perf_lopwr_cb);
++
++void __init amd_brs_lopwr_init(void)
++{
++	static_call_update(perf_lopwr_cb, perf_amd_brs_lopwr_cb);
++}
+diff --git a/arch/x86/events/amd/core.c b/arch/x86/events/amd/core.c
+index f7bce83..8e1e818 100644
+--- a/arch/x86/events/amd/core.c
++++ b/arch/x86/events/amd/core.c
+@@ -1,5 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+ #include <linux/perf_event.h>
++#include <linux/jump_label.h>
+ #include <linux/export.h>
+ #include <linux/types.h>
+ #include <linux/init.h>
+@@ -1225,6 +1226,9 @@ static int __init amd_core_pmu_init(void)
+ 		/*
+ 		 * put_event_constraints callback same as Fam17h, set above
+ 		 */
++
++		/* branch sampling must be stopped when entering low power */
++		amd_brs_lopwr_init();
+ 	}
  
- out_nolock:
--	rwsem_del_waiter(sem, &waiter);
--	raw_spin_unlock_irq(&sem->wait_lock);
-+	rwsem_del_wake_waiter(sem, &waiter, &wake_q);
- 	__set_current_state(TASK_RUNNING);
- 	lockevent_inc(rwsem_rlock_fail);
- 	return ERR_PTR(-EINTR);
-@@ -1095,7 +1124,6 @@ rwsem_down_write_slowpath(struct rw_semaphore *sem, int state)
- 			 */
- 			raw_spin_unlock_irq(&sem->wait_lock);
- 			wake_up_q(&wake_q);
--			wake_q_init(&wake_q);	/* Used again, reinit */
- 			raw_spin_lock_irq(&sem->wait_lock);
- 		}
- 	} else {
-@@ -1148,11 +1176,7 @@ trylock_again:
- out_nolock:
- 	__set_current_state(TASK_RUNNING);
- 	raw_spin_lock_irq(&sem->wait_lock);
--	rwsem_del_waiter(sem, &waiter);
--	if (!list_empty(&sem->wait_list))
--		rwsem_mark_wake(sem, RWSEM_WAKE_ANY, &wake_q);
--	raw_spin_unlock_irq(&sem->wait_lock);
--	wake_up_q(&wake_q);
-+	rwsem_del_wake_waiter(sem, &waiter, &wake_q);
- 	lockevent_inc(rwsem_wlock_fail);
- 	return ERR_PTR(-EINTR);
- }
+ 	x86_pmu.attr_update = amd_attr_update;
+diff --git a/arch/x86/events/perf_event.h b/arch/x86/events/perf_event.h
+index ef27aee..3b03245 100644
+--- a/arch/x86/events/perf_event.h
++++ b/arch/x86/events/perf_event.h
+@@ -1226,6 +1226,7 @@ void amd_brs_enable(void);
+ void amd_brs_enable_all(void);
+ void amd_brs_disable_all(void);
+ void amd_brs_drain(void);
++void amd_brs_lopwr_init(void);
+ void amd_brs_disable_all(void);
+ int amd_brs_setup_filter(struct perf_event *event);
+ void amd_brs_reset(void);
+diff --git a/arch/x86/include/asm/perf_event.h b/arch/x86/include/asm/perf_event.h
+index 58d9e4b..8199fc5 100644
+--- a/arch/x86/include/asm/perf_event.h
++++ b/arch/x86/include/asm/perf_event.h
+@@ -2,6 +2,8 @@
+ #ifndef _ASM_X86_PERF_EVENT_H
+ #define _ASM_X86_PERF_EVENT_H
+ 
++#include <linux/static_call.h>
++
+ /*
+  * Performance event hw details:
+  */
+@@ -513,6 +515,27 @@ static inline void intel_pt_handle_vmx(int on)
+ #if defined(CONFIG_PERF_EVENTS) && defined(CONFIG_CPU_SUP_AMD)
+  extern void amd_pmu_enable_virt(void);
+  extern void amd_pmu_disable_virt(void);
++
++#if defined(CONFIG_PERF_EVENTS_AMD_BRS)
++
++#define PERF_NEEDS_LOPWR_CB 1
++
++/*
++ * architectural low power callback impacts
++ * drivers/acpi/processor_idle.c
++ * drivers/acpi/acpi_pad.c
++ */
++extern void perf_amd_brs_lopwr_cb(bool lopwr_in);
++
++DECLARE_STATIC_CALL(perf_lopwr_cb, perf_amd_brs_lopwr_cb);
++
++static inline void perf_lopwr_cb(bool lopwr_in)
++{
++	static_call_mod(perf_lopwr_cb)(lopwr_in);
++}
++
++#endif /* PERF_NEEDS_LOPWR_CB */
++
+ #else
+  static inline void amd_pmu_enable_virt(void) { }
+  static inline void amd_pmu_disable_virt(void) { }
