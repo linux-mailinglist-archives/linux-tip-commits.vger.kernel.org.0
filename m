@@ -2,118 +2,166 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CEF1D4F545F
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  6 Apr 2022 06:54:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1905C4F68FD
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  6 Apr 2022 20:19:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241437AbiDFEtj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 6 Apr 2022 00:49:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49116 "EHLO
+        id S240464AbiDFSTg (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 6 Apr 2022 14:19:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46258 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1442824AbiDEWTp (ORCPT
+        with ESMTP id S241016AbiDFSSS (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 5 Apr 2022 18:19:45 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBB4114FFF3;
-        Tue,  5 Apr 2022 13:57:13 -0700 (PDT)
-Date:   Tue, 05 Apr 2022 20:57:08 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1649192230;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=UgLzDdhreQ+Hp0Qdc8LWg04tmX4e8gJx2x/idoElhgE=;
-        b=qLeVRlQg2X9aJ243MX96Zvf1wLwbzCZEb3qjCAP2wVRBvMBcvVQcQo+ZJVgTQRp1wqmQJ9
-        QD2HtlJOyq1WEE4A7gNREB30SWb2rB1sYriHYV8g9cXCywcMU65zP7k5fKjm7ibzr/0lVn
-        58S21+ndzDdWsrjbCDWixtLdKLMJhWWs+IjrfgBz+RJ05VQFKNHeKjD4MIk2+nEPgKCo3U
-        3kzdvOaAmoXKd6VFmrDoKLV4rXFheymANM75SChVh1XnNjcA67+ggOMEpdptq7QQwObwnF
-        +HkT+Y/wI1wdrxl+QGnOIiyZkN/WAmC/nugJUZojY+Uil0HEJr6Y6IRsulIrxg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1649192230;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=UgLzDdhreQ+Hp0Qdc8LWg04tmX4e8gJx2x/idoElhgE=;
-        b=+SBGeY3+Kccqb2ETVxyB16Jef9O41UBvRpd+uNxIUvRscefEsz5zm6yFrEDa7qAczRXQ9E
-        AuJb3pk7WjcIW6DQ==
-From:   tip-bot2 for Ricardo =?utf-8?q?Ca=C3=B1uelo?= 
-        <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cpu] x86/speculation/srbds: Do not try to turn mitigation
- off when not supported
-Cc:     Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-        ricardo.canuelo@collabora.com, Borislav Petkov <bp@suse.de>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20220401074517.1848264-1-ricardo.canuelo@collabora.com>
-References: <20220401074517.1848264-1-ricardo.canuelo@collabora.com>
+        Wed, 6 Apr 2022 14:18:18 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40912112F;
+        Wed,  6 Apr 2022 09:55:41 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2C9F2617DC;
+        Wed,  6 Apr 2022 16:55:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37344C385A5;
+        Wed,  6 Apr 2022 16:55:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1649264140;
+        bh=EdN64zytqtRtf+0yxEZMWCmGr4dRXOvuVUDdm8D3KKk=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=ArvdI2qYUESktlzogGom7eVs8lJDuPaIvwDQVB2bIYTwsrbXtnXrTI4qrcyXDucsd
+         wcbcgsIpzXHevHzmIirKjyAW4ZZ6/ibx4URSL3/H9Egrlvh4GAXzbt0qkKTB/I/r33
+         TI4LPV1kVoAudV2AmT5vbAsipi5IDJswOyKlZ9pt9nHc9ScNiUJG9zu/YO1oXgia3O
+         YOccywLHTggPGABUApUKX/Z1WuNYN6yj8GFGz204akWGZ1fXCujk2cNEzHQERPWRKF
+         ZdtAnHillFYOtos6UJX4lK/h9j8oOBwp0lD1Jwe5KHKH9Eeoc7fn6qAenYQYDlYsbB
+         gHEIZlcE4jg/Q==
+Date:   Wed, 6 Apr 2022 09:55:38 -0700
+From:   Nathan Chancellor <nathan@kernel.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-tip-commits@vger.kernel.org,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Borislav Petkov <bp@suse.de>, x86@kernel.org
+Subject: Re: [tip: x86/build] x86/configs: Add x86 debugging Kconfig fragment
+ plus docs
+Message-ID: <Yk3GCnyA8rhy1Syj@thelio-3990X>
+References: <20220331175728.299103A0@davehans-spike.ostc.intel.com>
+ <164918891525.389.9920170532036101413.tip-bot2@tip-bot2>
 MIME-Version: 1.0
-Message-ID: <164919222889.389.6325233463959483512.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <164918891525.389.9920170532036101413.tip-bot2@tip-bot2>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cpu branch of tip:
+On Tue, Apr 05, 2022 at 08:01:55PM -0000, tip-bot2 for Dave Hansen wrote:
+> The following commit has been merged into the x86/build branch of tip:
+> 
+> Commit-ID:     9f61ccc85afb061f65dd8ede7b8d4845b2f2dfce
+> Gitweb:        https://git.kernel.org/tip/9f61ccc85afb061f65dd8ede7b8d4845b2f2dfce
+> Author:        Dave Hansen <dave.hansen@linux.intel.com>
+> AuthorDate:    Thu, 31 Mar 2022 10:57:28 -07:00
+> Committer:     Borislav Petkov <bp@suse.de>
+> CommitterDate: Tue, 05 Apr 2022 21:54:04 +02:00
+> 
+> x86/configs: Add x86 debugging Kconfig fragment plus docs
+> 
+> The kernel has a wide variety of debugging options to help catch
+> and squash bugs.  However, new debugging is added all the time and
+> the existing options can be hard to find.
+> 
+> Add a Kconfig fragment with the debugging options which tip
+> maintainers expect to be used to test contributions.
+> 
+> This should make it easier for contributors to test their code and
+> find issues before submission.
+> 
+>   [ bp: Add to "make help" output ]
+> 
+> Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+> Signed-off-by: Borislav Petkov <bp@suse.de>
+> Link: https://lore.kernel.org/r/20220331175728.299103A0@davehans-spike.ostc.intel.com
+> ---
+>  Documentation/process/maintainer-tip.rst | 14 ++++++++++++++
+>  arch/x86/Makefile                        |  1 +
+>  kernel/configs/x86_debug.config          | 18 ++++++++++++++++++
+>  3 files changed, 33 insertions(+)
+>  create mode 100644 kernel/configs/x86_debug.config
+> 
+> diff --git a/Documentation/process/maintainer-tip.rst b/Documentation/process/maintainer-tip.rst
+> index c74f4a8..572a328 100644
+> --- a/Documentation/process/maintainer-tip.rst
+> +++ b/Documentation/process/maintainer-tip.rst
+> @@ -437,6 +437,20 @@ in a private repository which allows interested people to easily pull the
+>  series for testing. The usual way to offer this is a git URL in the cover
+>  letter of the patch series.
+>  
+> +Testing
+> +^^^^^^^
+> +
+> +Code should be tested before submitting to the tip maintainers.  Anything
+> +other than minor changes should be built, booted and tested with
+> +comprehensive (and heavyweight) kernel debugging options enabled.
+> +
+> +These debugging options can be found in kernel/configs/x86_debug.config
+> +and can be added to an existing kernel config by running:
+> +
+> +	make x86_debug.config
+> +
+> +Some of these options are x86-specific and can be left out when testing
+> +on other architectures.
+>  
+>  Coding style notes
+>  ------------------
+> diff --git a/arch/x86/Makefile b/arch/x86/Makefile
+> index 63d50f6..1abd7cc 100644
+> --- a/arch/x86/Makefile
+> +++ b/arch/x86/Makefile
+> @@ -313,5 +313,6 @@ define archhelp
+>    echo  ''
+>    echo  '  kvm_guest.config	- Enable Kconfig items for running this kernel as a KVM guest'
+>    echo  '  xen.config		- Enable Kconfig items for running this kernel as a Xen guest'
+> +  echo  '  x86_debug.config	- Enable tip tree debugging options for testing'
+>  
+>  endef
+> diff --git a/kernel/configs/x86_debug.config b/kernel/configs/x86_debug.config
+> new file mode 100644
+> index 0000000..45498c0
+> --- /dev/null
+> +++ b/kernel/configs/x86_debug.config
+> @@ -0,0 +1,18 @@
+> +CONFIG_X86_DEBUG_FPU=y
+> +CONFIG_LOCK_STAT=y
+> +CONFIG_DEBUG_VM=y
+> +CONFIG_DEBUG_VM_VMACACHE=y
+> +CONFIG_DEBUG_VM_RB=y
+> +CONFIG_DEBUG_SLAB=y
+> +CONFIG_DEBUG_KMEMLEAK=y
+> +CONFIG_DEBUG_PAGEALLOC=y
+> +CONFIG_SLUB_DEBUG_ON=y
+> +CONFIG_KMEMCHECK=y
+> +CONFIG_DEBUG_OBJECTS=y
+> +CONFIG_DEBUG_OBJECTS_ENABLE_DEFAULT=1
+> +CONFIG_GCOV_KERNEL=y
+> +CONFIG_LOCKDEP=y
+> +CONFIG_PROVE_LOCKING=y
+> +CONFIG_SCHEDSTATS=y
+> +CONFIG_VMLINUX_VALIDATION=y
+> +CONFIG_DEBUG_INFO=y
 
-Commit-ID:     0205f8a738ab9e62d849e88e543cfa6ce4c13163
-Gitweb:        https://git.kernel.org/tip/0205f8a738ab9e62d849e88e543cfa6ce4c=
-13163
-Author:        Ricardo Ca=C3=B1uelo <ricardo.canuelo@collabora.com>
-AuthorDate:    Fri, 01 Apr 2022 09:45:17 +02:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 05 Apr 2022 21:55:57 +02:00
+I am replying to this message versus the original patch because this
+appears to be done during committing.
 
-x86/speculation/srbds: Do not try to turn mitigation off when not supported
+This "CONFIG_DEBUG_INFO=y" will not do anything, as the debug info
+Kconfig was turned into a choice in commit f9b3cd245784 ("Kconfig.debug:
+make DEBUG_INFO selectable from a choice").
 
-When SRBDS is mitigated by TSX OFF, update_srbds_msr() will still read
-and write to MSR_IA32_MCU_OPT_CTRL even when that MSR is not supported
-due to not having loaded the appropriate microcode.
+CONFIG_DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT=y
 
-Check for X86_FEATURE_SRBDS_CTRL which is set only when the respective
-microcode which adds MSR_IA32_MCU_OPT_CTRL is loaded.
+will do what "CONFIG_DEBUG_INFO=y" used to do.
 
-Based on a patch by Thadeu Lima de Souza Cascardo <cascardo@canonical.com>.
-
-  [ bp: Massage commit message. ]
-
-Suggested-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Signed-off-by: Ricardo Ca=C3=B1uelo <ricardo.canuelo@collabora.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lore.kernel.org/r/20220401074517.1848264-1-ricardo.canuelo@coll=
-abora.com
----
- arch/x86/kernel/cpu/bugs.c | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index 6296e1e..d879a6c 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -446,6 +446,13 @@ void update_srbds_msr(void)
- 	if (srbds_mitigation =3D=3D SRBDS_MITIGATION_UCODE_NEEDED)
- 		return;
-=20
-+	/*
-+	 * A MDS_NO CPU for which SRBDS mitigation is not needed due to TSX
-+	 * being disabled and it hasn't received the SRBDS MSR microcode.
-+	 */
-+	if (!boot_cpu_has(X86_FEATURE_SRBDS_CTRL))
-+		return;
-+
- 	rdmsrl(MSR_IA32_MCU_OPT_CTRL, mcu_ctrl);
-=20
- 	switch (srbds_mitigation) {
+Cheers,
+Nathan
