@@ -2,73 +2,160 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1378A4F6A51
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  6 Apr 2022 21:47:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B42F4F6AFB
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  6 Apr 2022 22:12:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231841AbiDFTtc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 6 Apr 2022 15:49:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59936 "EHLO
+        id S234102AbiDFUOg (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 6 Apr 2022 16:14:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58016 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232300AbiDFTtG (ORCPT
+        with ESMTP id S236999AbiDFUNz (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 6 Apr 2022 15:49:06 -0400
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36BA02E0A5;
-        Wed,  6 Apr 2022 10:59:51 -0700 (PDT)
-Received: from zn.tnic (p2e55dff8.dip0.t-ipconnect.de [46.85.223.248])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 9BD721EC058B;
-        Wed,  6 Apr 2022 19:59:46 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1649267986;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=YX86Bq1CunXRltFfq1Z3H5gzQ1SRlqU01eVuZwQdMXc=;
-        b=WVxBypOwpwKvq+pR7jm4wlRIgMWZQnwObfcYnm98A9gi1Aa8VpZNrL6xHVa3bhkpk0HKWV
-        ELHqHpXpd2DmCneiLxU5Jbib/LZ6jAxzjKf0tSCjMlByYXzyyAbjmsmedW58Yv+9zXj5fr
-        WvpPpx0Xte3P5m5tuaPkBQejSrM/sy8=
-Date:   Wed, 6 Apr 2022 19:59:44 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     Nathan Chancellor <nathan@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org
-Subject: Re: [tip: x86/build] x86/configs: Add x86 debugging Kconfig fragment
- plus docs
-Message-ID: <Yk3VEM9LoHozLt2g@zn.tnic>
+        Wed, 6 Apr 2022 16:13:55 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E8DC506EE;
+        Wed,  6 Apr 2022 11:01:09 -0700 (PDT)
+Date:   Wed, 06 Apr 2022 18:01:04 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1649268067;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=IndriNrjjKue7jTMRIVbOa6aEXgiAJs1mmKTKQU5o2k=;
+        b=n8LIvLG63fRvoYpG/xxua2e9y5DhIF/6fPG3gYpNwAP3J30WSQNKx0LECysc40M3oYfRzY
+        yEG//fH5BZvVv5CoKBiBpkPnmSmOzBmVPBK8RHhtwCySoserHElFnHn5CWvB1/ZSLrAVr4
+        qRE+voPF6nE/O8QTOLnAyCrhN3WQu0SmzscV8GcASLBlVVDDUclGR1FZLI0yO1fdaNQs+1
+        SrvNBfLqJtCcdxabccSWCqR6ihf/PkwizDvdhZBRFHu8wSJ3El4byEKRBe5MJdRkpiNRSm
+        xLmyZFG0ybEchdjl3DwVyByWcjHpqDut7ih453x4aol9yktuhNHtztU1NK8Tfg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1649268067;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=IndriNrjjKue7jTMRIVbOa6aEXgiAJs1mmKTKQU5o2k=;
+        b=ZAxYhEcigm5Sz65+61+nzBTrSsIfhWcIqJ6/Dhi7BNkxlk1HGqTkHyT9Js9Y1Cco8pnktV
+        svPF6NIKoT0lPhDA==
+From:   "tip-bot2 for Dave Hansen" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/build] x86/configs: Add x86 debugging Kconfig fragment plus docs
+Cc:     Dave Hansen <dave.hansen@linux.intel.com>,
+        Borislav Petkov <bp@suse.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20220331175728.299103A0@davehans-spike.ostc.intel.com>
 References: <20220331175728.299103A0@davehans-spike.ostc.intel.com>
- <164918891525.389.9920170532036101413.tip-bot2@tip-bot2>
- <Yk3GCnyA8rhy1Syj@thelio-3990X>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <Yk3GCnyA8rhy1Syj@thelio-3990X>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Message-ID: <164926806495.389.2039548073927168895.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Wed, Apr 06, 2022 at 09:55:38AM -0700, Nathan Chancellor wrote:
-> I am replying to this message versus the original patch because this
-> appears to be done during committing.
-> 
-> This "CONFIG_DEBUG_INFO=y" will not do anything, as the debug info
-> Kconfig was turned into a choice in commit f9b3cd245784 ("Kconfig.debug:
-> make DEBUG_INFO selectable from a choice").
-> 
-> CONFIG_DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT=y
-> 
-> will do what "CONFIG_DEBUG_INFO=y" used to do.
+The following commit has been merged into the x86/build branch of tip:
 
-Thanks Nathan, fixed.
+Commit-ID:     9b5a7f4a2a8dcda461f9c7a6671150f4a8a902e8
+Gitweb:        https://git.kernel.org/tip/9b5a7f4a2a8dcda461f9c7a6671150f4a8a902e8
+Author:        Dave Hansen <dave.hansen@linux.intel.com>
+AuthorDate:    Thu, 31 Mar 2022 10:57:28 -07:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Wed, 06 Apr 2022 19:56:29 +02:00
 
--- 
-Regards/Gruss,
-    Boris.
+x86/configs: Add x86 debugging Kconfig fragment plus docs
 
-https://people.kernel.org/tglx/notes-about-netiquette
+The kernel has a wide variety of debugging options to help catch
+and squash bugs.  However, new debugging is added all the time and
+the existing options can be hard to find.
+
+Add a Kconfig fragment with the debugging options which tip
+maintainers expect to be used to test contributions.
+
+This should make it easier for contributors to test their code and
+find issues before submission.
+
+  [ bp: Add to "make help" output, fix DEBUG_INFO selection as pointed
+        out by Nathan Chancellor <nathan@kernel.org>. ]
+
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lore.kernel.org/r/20220331175728.299103A0@davehans-spike.ostc.intel.com
+---
+ Documentation/process/maintainer-tip.rst | 14 ++++++++++++++
+ arch/x86/Makefile                        |  1 +
+ kernel/configs/x86_debug.config          | 18 ++++++++++++++++++
+ 3 files changed, 33 insertions(+)
+ create mode 100644 kernel/configs/x86_debug.config
+
+diff --git a/Documentation/process/maintainer-tip.rst b/Documentation/process/maintainer-tip.rst
+index c74f4a8..572a328 100644
+--- a/Documentation/process/maintainer-tip.rst
++++ b/Documentation/process/maintainer-tip.rst
+@@ -437,6 +437,20 @@ in a private repository which allows interested people to easily pull the
+ series for testing. The usual way to offer this is a git URL in the cover
+ letter of the patch series.
+ 
++Testing
++^^^^^^^
++
++Code should be tested before submitting to the tip maintainers.  Anything
++other than minor changes should be built, booted and tested with
++comprehensive (and heavyweight) kernel debugging options enabled.
++
++These debugging options can be found in kernel/configs/x86_debug.config
++and can be added to an existing kernel config by running:
++
++	make x86_debug.config
++
++Some of these options are x86-specific and can be left out when testing
++on other architectures.
+ 
+ Coding style notes
+ ------------------
+diff --git a/arch/x86/Makefile b/arch/x86/Makefile
+index 63d50f6..1abd7cc 100644
+--- a/arch/x86/Makefile
++++ b/arch/x86/Makefile
+@@ -313,5 +313,6 @@ define archhelp
+   echo  ''
+   echo  '  kvm_guest.config	- Enable Kconfig items for running this kernel as a KVM guest'
+   echo  '  xen.config		- Enable Kconfig items for running this kernel as a Xen guest'
++  echo  '  x86_debug.config	- Enable tip tree debugging options for testing'
+ 
+ endef
+diff --git a/kernel/configs/x86_debug.config b/kernel/configs/x86_debug.config
+new file mode 100644
+index 0000000..dcd86f3
+--- /dev/null
++++ b/kernel/configs/x86_debug.config
+@@ -0,0 +1,18 @@
++CONFIG_X86_DEBUG_FPU=y
++CONFIG_LOCK_STAT=y
++CONFIG_DEBUG_VM=y
++CONFIG_DEBUG_VM_VMACACHE=y
++CONFIG_DEBUG_VM_RB=y
++CONFIG_DEBUG_SLAB=y
++CONFIG_DEBUG_KMEMLEAK=y
++CONFIG_DEBUG_PAGEALLOC=y
++CONFIG_SLUB_DEBUG_ON=y
++CONFIG_KMEMCHECK=y
++CONFIG_DEBUG_OBJECTS=y
++CONFIG_DEBUG_OBJECTS_ENABLE_DEFAULT=1
++CONFIG_GCOV_KERNEL=y
++CONFIG_LOCKDEP=y
++CONFIG_PROVE_LOCKING=y
++CONFIG_SCHEDSTATS=y
++CONFIG_VMLINUX_VALIDATION=y
++CONFIG_DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT=y
