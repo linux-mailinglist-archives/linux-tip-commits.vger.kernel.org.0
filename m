@@ -2,143 +2,185 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BD9EB4F8405
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  7 Apr 2022 17:48:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C2EF74F8572
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  7 Apr 2022 19:02:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345175AbiDGPun (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 7 Apr 2022 11:50:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54724 "EHLO
+        id S235609AbiDGREN (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 7 Apr 2022 13:04:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35578 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245209AbiDGPuh (ORCPT
+        with ESMTP id S229447AbiDGREM (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 7 Apr 2022 11:50:37 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E989C55B4;
-        Thu,  7 Apr 2022 08:48:34 -0700 (PDT)
-Date:   Thu, 07 Apr 2022 15:48:31 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1649346513;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=mSV1Y0A1YFqBZyGZ5+k6dqhl1M9bVriVuqUTvC59O9s=;
-        b=HUBqG69MDoi41D91M1gJ5qTtImY+x37B2lO1PGinJW4hinxdcw0un00ARcUVJJpKUMqWjK
-        pHjlm3xC0p2sgskZeK8MyisRh96/7meRRZdFdayS8f/FUlO1tRdBOkmi9Ht4Jtte/xosDu
-        zy+esjLDuHxtIqtNUw3uzVOdpEZOo0UYDf5q7mhIT/jn6K70nb3jSYNDsRFaUjs74i6Gtq
-        eNSUGtQ3mzc35J2v9O1aqDfh8kBNQuaws3XBDh9TdQtJuY98RIgXoAmhlKOrtewNzIhCB0
-        iCntTHL1SbIZTH6vIsWjl+NiW/IrXS/bAZ8jadzrmK5iUbk7M3Y3+RiMJzDdag==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1649346513;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=mSV1Y0A1YFqBZyGZ5+k6dqhl1M9bVriVuqUTvC59O9s=;
-        b=lbWlV1rpOXTdno6LIjCxmr5P8DUda65y6kKUoPUacA7OM/5FK+EW1NTz84++kjxvAji9vb
-        KXvg1GQzSsBDhrBA==
-From:   "tip-bot2 for Mike Travis" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/platform] x86/platform/uv: Update NMI Handler for UV5
-Cc:     Mike Travis <mike.travis@hpe.com>, Steve Wahl <steve.wahl@hpe.com>,
-        Borislav Petkov <bp@suse.de>,
-        Dimitri Sivanich <dimitri.sivanich@hpe.com>,
-        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20220406195149.228164-2-steve.wahl@hpe.com>
-References: <20220406195149.228164-2-steve.wahl@hpe.com>
+        Thu, 7 Apr 2022 13:04:12 -0400
+Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 878741C8DA7
+        for <linux-tip-commits@vger.kernel.org>; Thu,  7 Apr 2022 10:02:00 -0700 (PDT)
+Received: by mail-lf1-x130.google.com with SMTP id t25so10718035lfg.7
+        for <linux-tip-commits@vger.kernel.org>; Thu, 07 Apr 2022 10:02:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=u4JoFgaKGIZUP7KITjsD6hBXU6fdMuUm3RdP1CdyCDI=;
+        b=OVFCZOWIp5y7/AJi9Et7KmPBLKPHMI36qDMx5PqDxixFE7nKxAFB4GSkDvapVcKwGH
+         hShmwrmClVvsoJYj+aqXjS6WHYq2lAvRR5bEboyWL6hSdQJSsAB+KOoAjgIi3nB2qHia
+         6tawm+6J/soBtpu0v0pGCB7uzMjqWRG0XLO3MyYn03zz1YGGFDHmvQayo952zlNCCStr
+         VkAHZrpMYryTpsRSpfaJqvthwMPf+SNbYWs6OIKZ8haYg/CiABHZ8Yrg5i3YN7LSnibd
+         ft1X7aZ1nxm8gfF5nNruiegzqRvvl5pnUDObIXjdV4uzRHVvlQWihHVPrpMG1/IIwaUv
+         WEuw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=u4JoFgaKGIZUP7KITjsD6hBXU6fdMuUm3RdP1CdyCDI=;
+        b=jH9Clcu5XBTBaHeeYkTAtAgWmkpeD8vfR68MtMp/aSrqt35dl8Man2TS4bKx4LvN+D
+         GsMeual4gZBW1YvrFoOhveMCZya31q8oxVoexVVhkzirGjzPFdijHyubEJGD3A86dvXD
+         Q5poZqSIX+AT01MGeAGjWRKNSTsDsVqF657zpEuy5o8vxdaqGo4Tv5c5stn6zN82rn+O
+         6A/fUgRDInMRLtNb6y1897OZCCQIGjH2DGsBavM+95TFrS/D1SVeEJvodLGstaLLC9I/
+         ASdJvLFWPl8awsZJfh/pgONKK9WQ6xPxzGFRocuYkRUBsPnlCSEE5lQ9iA3ECA7kDrg7
+         R0LQ==
+X-Gm-Message-State: AOAM530o+9PSNh+IcRxyeVwtFZ60+5qa65gXZy4ztbDEX4rXXRoCUeJ3
+        duNYpLBiXLpd0Jop3aYrqHvAv9TsjypD9EFuKpWRDg==
+X-Google-Smtp-Source: ABdhPJz5Gl+jcfh45pqIcsLd1pUzNDfnV5X1gA02I46jcuJRZaLI6bp0IsMOb1+4qK0VYSbp88a6e+tw52az3MO8Pb8=
+X-Received: by 2002:a05:6512:3092:b0:44a:e7bb:e961 with SMTP id
+ z18-20020a056512309200b0044ae7bbe961mr10059124lfd.190.1649350904021; Thu, 07
+ Apr 2022 10:01:44 -0700 (PDT)
 MIME-Version: 1.0
-Message-ID: <164934651199.389.15893962455606491477.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20200817220212.338670-5-ndesaulniers@google.com> <164934565464.389.2546833245037255032.tip-bot2@tip-bot2>
+In-Reply-To: <164934565464.389.2546833245037255032.tip-bot2@tip-bot2>
+From:   Nick Desaulniers <ndesaulniers@google.com>
+Date:   Thu, 7 Apr 2022 10:01:32 -0700
+Message-ID: <CAKwvOdkQeSx3uy25KaTrX=ywc26wDEefXHbCB_ifGot+yXGvHQ@mail.gmail.com>
+Subject: Re: [tip: x86/build] x86/build: Don't build CONFIG_X86_32 as -ffreestanding
+To:     linux-kernel@vger.kernel.org, Borislav Petkov <bp@suse.de>,
+        Kees Cook <keescook@chromium.org>
+Cc:     linux-tip-commits@vger.kernel.org,
+        Arvind Sankar <nivedita@alum.mit.edu>,
+        Fangrui Song <maskray@google.com>, x86@kernel.org,
+        clang-built-linux <llvm@lists.linux.dev>,
+        Nathan Chancellor <nathan@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/platform branch of tip:
+On Thu, Apr 7, 2022 at 8:34 AM tip-bot2 for Nick Desaulniers
+<tip-bot2@linutronix.de> wrote:
+>
+> The following commit has been merged into the x86/build branch of tip:
+>
+> Commit-ID:     9b2687f29bc1a050ffd63b425129aa9db987e4f3
+> Gitweb:        https://git.kernel.org/tip/9b2687f29bc1a050ffd63b425129aa9db987e4f3
+> Author:        Nick Desaulniers <ndesaulniers@google.com>
+> AuthorDate:    Thu, 03 Feb 2022 12:40:25 -08:00
+> Committer:     Borislav Petkov <bp@suse.de>
+> CommitterDate: Thu, 07 Apr 2022 11:55:42 +02:00
+>
+> x86/build: Don't build CONFIG_X86_32 as -ffreestanding
+>
+> -ffreestanding typically inhibits "libcall optimizations" where calls to
+> certain library functions can be replaced by the compiler in certain
+> cases to calls to other library functions that may be more efficient.
+> This can be problematic for embedded targets that don't provide full
+> libc implementations.
+>
+> -ffreestanding inhibits all such optimizations, which is the safe
+> choice, but generally we want the optimizations that are performed. The
+> Linux kernel does implement a fair amount of libc routines. Instead of
+> -ffreestanding (which makes more sense in smaller images like kexec's
+> purgatory image), prefer -fno-builtin-* flags to disable the compiler
+> from emitting calls to functions which may not be defined.
+>
+> If you see a linkage failure due to a missing symbol that's typically
+> defined in a libc, and not explicitly called from the source code, then
+> the compiler may have done such a transform. You can either implement
+> such a function (i.e. in lib/string.c) or disable the transform outright
+> via -fno-builtin-* flag (where * is the name of the library routine,
+> i.e. -fno-builtin-bcmp).
+>
+> i386_defconfig build+boot tested with GCC and Clang. Removes a pretty
+> old TODO from the code base.
+>
+> [kees: These libcall optimizations are specifically needed to allow Clang
+> to correctly optimize the string functions under CONFIG_FORTIFY_SOURCE.]
 
-Commit-ID:     d812f7c475c6a4dcfff02a85fbfd7a9c87e6a094
-Gitweb:        https://git.kernel.org/tip/d812f7c475c6a4dcfff02a85fbfd7a9c87e6a094
-Author:        Mike Travis <mike.travis@hpe.com>
-AuthorDate:    Wed, 06 Apr 2022 14:51:47 -05:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Thu, 07 Apr 2022 17:23:20 +02:00
+Right, but...
+I think we found that doing so leads to a boot regression for i386
+when built w/ clang because:
+https://github.com/ClangBuiltLinux/linux/issues/1583
+https://github.com/llvm/llvm-project/issues/53645
+TL;DR
+In doing such libcall optimizations, LLVM drops the -mregparm=3
+calling convention...on the caller's side and not the callee's.
 
-x86/platform/uv: Update NMI Handler for UV5
+Boris, Can I send you a patch to replace this one (with a guard for
+clang) or a patch on top? i.e. what base would you prefer me to use.
 
-Update NMI handler for UV5 hardware. A platform register changed, and
-UV5 only uses one of the two NMI methods used on previous hardware.
+Using mainline:
 
-Signed-off-by: Mike Travis <mike.travis@hpe.com>
-Signed-off-by: Steve Wahl <steve.wahl@hpe.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Dimitri Sivanich <dimitri.sivanich@hpe.com>
-Acked-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20220406195149.228164-2-steve.wahl@hpe.com
----
- arch/x86/platform/uv/uv_nmi.c | 21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+```
+diff --git a/arch/x86/Makefile b/arch/x86/Makefile
+index 63d50f65b828..c94de779e334 100644
+--- a/arch/x86/Makefile
++++ b/arch/x86/Makefile
+@@ -100,8 +100,13 @@ ifeq ($(CONFIG_X86_32),y)
+         include $(srctree)/arch/x86/Makefile_32.cpu
+         KBUILD_CFLAGS += $(cflags-y)
 
-diff --git a/arch/x86/platform/uv/uv_nmi.c b/arch/x86/platform/uv/uv_nmi.c
-index 1e9ff28..61ec3be 100644
---- a/arch/x86/platform/uv/uv_nmi.c
-+++ b/arch/x86/platform/uv/uv_nmi.c
-@@ -244,8 +244,10 @@ static inline bool uv_nmi_action_is(const char *action)
- /* Setup which NMI support is present in system */
- static void uv_nmi_setup_mmrs(void)
- {
-+	bool new_nmi_method_only = false;
-+
- 	/* First determine arch specific MMRs to handshake with BIOS */
--	if (UVH_EVENT_OCCURRED0_EXTIO_INT0_MASK) {
-+	if (UVH_EVENT_OCCURRED0_EXTIO_INT0_MASK) {	/* UV2,3,4 setup */
- 		uvh_nmi_mmrx = UVH_EVENT_OCCURRED0;
- 		uvh_nmi_mmrx_clear = UVH_EVENT_OCCURRED0_ALIAS;
- 		uvh_nmi_mmrx_shift = UVH_EVENT_OCCURRED0_EXTIO_INT0_SHFT;
-@@ -255,26 +257,25 @@ static void uv_nmi_setup_mmrs(void)
- 		uvh_nmi_mmrx_req = UVH_BIOS_KERNEL_MMR_ALIAS_2;
- 		uvh_nmi_mmrx_req_shift = 62;
- 
--	} else if (UVH_EVENT_OCCURRED1_EXTIO_INT0_MASK) {
-+	} else if (UVH_EVENT_OCCURRED1_EXTIO_INT0_MASK) { /* UV5+ setup */
- 		uvh_nmi_mmrx = UVH_EVENT_OCCURRED1;
- 		uvh_nmi_mmrx_clear = UVH_EVENT_OCCURRED1_ALIAS;
- 		uvh_nmi_mmrx_shift = UVH_EVENT_OCCURRED1_EXTIO_INT0_SHFT;
- 		uvh_nmi_mmrx_type = "OCRD1-EXTIO_INT0";
- 
--		uvh_nmi_mmrx_supported = UVH_EXTIO_INT0_BROADCAST;
--		uvh_nmi_mmrx_req = UVH_BIOS_KERNEL_MMR_ALIAS_2;
--		uvh_nmi_mmrx_req_shift = 62;
-+		new_nmi_method_only = true;		/* Newer nmi always valid on UV5+ */
-+		uvh_nmi_mmrx_req = 0;			/* no request bit to clear */
- 
- 	} else {
--		pr_err("UV:%s:cannot find EVENT_OCCURRED*_EXTIO_INT0\n",
--			__func__);
-+		pr_err("UV:%s:NMI support not available on this system\n", __func__);
- 		return;
- 	}
- 
- 	/* Then find out if new NMI is supported */
--	if (likely(uv_read_local_mmr(uvh_nmi_mmrx_supported))) {
--		uv_write_local_mmr(uvh_nmi_mmrx_req,
--					1UL << uvh_nmi_mmrx_req_shift);
-+	if (new_nmi_method_only || uv_read_local_mmr(uvh_nmi_mmrx_supported)) {
-+		if (uvh_nmi_mmrx_req)
-+			uv_write_local_mmr(uvh_nmi_mmrx_req,
-+						1UL << uvh_nmi_mmrx_req_shift);
- 		nmi_mmr = uvh_nmi_mmrx;
- 		nmi_mmr_clear = uvh_nmi_mmrx_clear;
- 		nmi_mmr_pending = 1UL << uvh_nmi_mmrx_shift;
+-        # temporary until string.h is fixed
++        # LLVM is dropping -mregparm=3 from callers when doing libcall
++        # optimization.
++        # https://github.com/ClangBuiltLinux/linux/issues/1583
++        # https://github.com/llvm/llvm-project/issues/53645
++        ifndef CONFIG_CC_IS_CLANG
+         KBUILD_CFLAGS += -ffreestanding
++        endif
+
+        ifeq ($(CONFIG_STACKPROTECTOR),y)
+                ifeq ($(CONFIG_SMP),y)
+```
+
+but happy to rebase onto whichever and put a commit message on that.
+We'll bump up the priority on getting that fixed.
+
+>
+> Fixes: 6edfba1b33c7 ("[PATCH] x86_64: Don't define string functions to builtin")
+> Suggested-by: Arvind Sankar <nivedita@alum.mit.edu>
+> Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
+> Signed-off-by: Kees Cook <keescook@chromium.org>
+> Signed-off-by: Borislav Petkov <bp@suse.de>
+> Reviewed-by: Fangrui Song <maskray@google.com>
+> Reviewed-by: Kees Cook <keescook@chromium.org>
+> Link: https://lore.kernel.org/r/20200817220212.338670-5-ndesaulniers@google.com
+> Link: https://lore.kernel.org/r/20220203204025.1153397-1-keescook@chromium.org
+> ---
+>  arch/x86/Makefile | 3 ---
+>  1 file changed, 3 deletions(-)
+>
+> diff --git a/arch/x86/Makefile b/arch/x86/Makefile
+> index 1abd7cc..670fe40 100644
+> --- a/arch/x86/Makefile
+> +++ b/arch/x86/Makefile
+> @@ -100,9 +100,6 @@ ifeq ($(CONFIG_X86_32),y)
+>          include $(srctree)/arch/x86/Makefile_32.cpu
+>          KBUILD_CFLAGS += $(cflags-y)
+>
+> -        # temporary until string.h is fixed
+> -        KBUILD_CFLAGS += -ffreestanding
+> -
+>         ifeq ($(CONFIG_STACKPROTECTOR),y)
+>                 ifeq ($(CONFIG_SMP),y)
+>                         KBUILD_CFLAGS += -mstack-protector-guard-reg=fs -mstack-protector-guard-symbol=__stack_chk_guard
+
+
+
+-- 
+Thanks,
+~Nick Desaulniers
