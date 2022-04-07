@@ -2,56 +2,58 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B3CB64F8074
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  7 Apr 2022 15:24:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65F6C4F8396
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  7 Apr 2022 17:34:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343642AbiDGN03 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 7 Apr 2022 09:26:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52094 "EHLO
+        id S230367AbiDGPge (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 7 Apr 2022 11:36:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54870 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242932AbiDGN02 (ORCPT
+        with ESMTP id S234048AbiDGPgb (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 7 Apr 2022 09:26:28 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C36AE7E0AD;
-        Thu,  7 Apr 2022 06:24:26 -0700 (PDT)
-Date:   Thu, 07 Apr 2022 13:24:22 -0000
+        Thu, 7 Apr 2022 11:36:31 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3F781011;
+        Thu,  7 Apr 2022 08:34:20 -0700 (PDT)
+Date:   Thu, 07 Apr 2022 15:34:14 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1649337864;
+        s=2020; t=1649345656;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=1gZ4m2zNzDyVcoPXjOKdtQUGnrDRHFfhbm516qp77oQ=;
-        b=3Q0XR3s+3mjWH+hP3ZbXv7r7BKi6PkFiPhgUWN9qPZOT3egzzVOJzHWuQLbVeS/kggWKeo
-        kEoUDKdX/tsOPzkFmHALBVUaBfHNlJO3MgAtJsXGuEzSshsOfFKaW1YGE8f/0Tw/Dq4TAh
-        7F9SMnfq8j++MTgWi5/odSqPkr0Pk0ayCJMzlIzb5Pl8E7lQuvorw18iym/deTTNxD9ADQ
-        uU3O9B+3z2Q3vFFgsvCA1xZHLHznHsNq0veblNl1BZRhflndTgPWlyoNquM9GpcuTFY5Nm
-        pwrDE0O6CEJk4czSGmF8LVprcWQJAWGlhpEuWTOo21gVlao7cJ97BW8Q6dfl7Q==
+        bh=d4NuBDNGqUwoS57MQGXuWKDq8DHCGD33bEpIIZe/pWM=;
+        b=dUUYxi3+LvHqHZtheNlklbBm7HfPX9GQLhn3IxzNdA0n0mkzUtVJHO86xzGzCX+bwXXYyq
+        ivU5RWtB1qP1PS1C/cEUryIbyrQatX2mQ1xQBogZjbxH92LUZdNi0yiByKi3Oim1mdK0NX
+        mOHioAk2KD4uIk5uToR4QbJMDaggHpYD8tjq9ljrz1t61yc9Pa5epXQO+rJGzOmbz1eB3f
+        7z1abh3A3iuIE6Xt5DweJfC0el/Ggi0AJ4ecMrjf7O1L5+uSD4IeYFkyGyPQRAp5ri+Ycw
+        gW5MTmMIwB1l0KiqPAHYe4U9j2QmNS+J8v0Av/HIXRWpwHZ12Sa5+u3Aq8om9Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1649337864;
+        s=2020e; t=1649345656;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=1gZ4m2zNzDyVcoPXjOKdtQUGnrDRHFfhbm516qp77oQ=;
-        b=hubg/0plHzphf01UH/D3BKoOoGNGAT3LC+Pdo4FJ/rXCLSUpeGBy7dv9CyAYOd/qVFd+/t
-        XtD/TBGQv71jVsAw==
-From:   "tip-bot2 for Reto Buerki" <tip-bot2@linutronix.de>
+        bh=d4NuBDNGqUwoS57MQGXuWKDq8DHCGD33bEpIIZe/pWM=;
+        b=EUjxVEqduqlfaMoOXW+3VWo90j3W4+Q1+pXDXKFsn78CwSbnZdnt9H5GRyu+Z3fJbhLS/Y
+        tnrTKJfylHQdGRCA==
+From:   "tip-bot2 for Nick Desaulniers" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/msi: Fix msi message data shadow struct
-Cc:     "Adrian-Ken Rueegsegger" <ken@codelabs.ch>,
-        Reto Buerki <reet@codelabs.ch>,
-        Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20220407110647.67372-1-reet@codelabs.ch>
-References: <20220407110647.67372-1-reet@codelabs.ch>
+Subject: [tip: x86/build] x86/build: Don't build CONFIG_X86_32 as -ffreestanding
+Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Kees Cook <keescook@chromium.org>,
+        Borislav Petkov <bp@suse.de>,
+        Fangrui Song <maskray@google.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20200817220212.338670-5-ndesaulniers@google.com>
+References: <20200817220212.338670-5-ndesaulniers@google.com>
 MIME-Version: 1.0
-Message-ID: <164933786279.389.13684586731676061391.tip-bot2@tip-bot2>
+Message-ID: <164934565464.389.2546833245037255032.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,59 +68,67 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the x86/build branch of tip:
 
-Commit-ID:     59b18a1e65b7a2134814106d0860010e10babe18
-Gitweb:        https://git.kernel.org/tip/59b18a1e65b7a2134814106d0860010e10babe18
-Author:        Reto Buerki <reet@codelabs.ch>
-AuthorDate:    Thu, 07 Apr 2022 13:06:47 +02:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 07 Apr 2022 15:19:32 +02:00
+Commit-ID:     9b2687f29bc1a050ffd63b425129aa9db987e4f3
+Gitweb:        https://git.kernel.org/tip/9b2687f29bc1a050ffd63b425129aa9db987e4f3
+Author:        Nick Desaulniers <ndesaulniers@google.com>
+AuthorDate:    Thu, 03 Feb 2022 12:40:25 -08:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Thu, 07 Apr 2022 11:55:42 +02:00
 
-x86/msi: Fix msi message data shadow struct
+x86/build: Don't build CONFIG_X86_32 as -ffreestanding
 
-The x86 MSI message data is 32 bits in total and is either in
-compatibility or remappable format, see Intel Virtualization Technology
-for Directed I/O, section 5.1.2.
+-ffreestanding typically inhibits "libcall optimizations" where calls to
+certain library functions can be replaced by the compiler in certain
+cases to calls to other library functions that may be more efficient.
+This can be problematic for embedded targets that don't provide full
+libc implementations.
 
-Fixes: 6285aa50736 ("x86/msi: Provide msi message shadow structs")
-Co-developed-by: Adrian-Ken Rueegsegger <ken@codelabs.ch>
-Signed-off-by: Adrian-Ken Rueegsegger <ken@codelabs.ch>
-Signed-off-by: Reto Buerki <reet@codelabs.ch>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20220407110647.67372-1-reet@codelabs.ch
+-ffreestanding inhibits all such optimizations, which is the safe
+choice, but generally we want the optimizations that are performed. The
+Linux kernel does implement a fair amount of libc routines. Instead of
+-ffreestanding (which makes more sense in smaller images like kexec's
+purgatory image), prefer -fno-builtin-* flags to disable the compiler
+from emitting calls to functions which may not be defined.
+
+If you see a linkage failure due to a missing symbol that's typically
+defined in a libc, and not explicitly called from the source code, then
+the compiler may have done such a transform. You can either implement
+such a function (i.e. in lib/string.c) or disable the transform outright
+via -fno-builtin-* flag (where * is the name of the library routine,
+i.e. -fno-builtin-bcmp).
+
+i386_defconfig build+boot tested with GCC and Clang. Removes a pretty
+old TODO from the code base.
+
+[kees: These libcall optimizations are specifically needed to allow Clang
+to correctly optimize the string functions under CONFIG_FORTIFY_SOURCE.]
+
+Fixes: 6edfba1b33c7 ("[PATCH] x86_64: Don't define string functions to builtin")
+Suggested-by: Arvind Sankar <nivedita@alum.mit.edu>
+Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Reviewed-by: Fangrui Song <maskray@google.com>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Link: https://lore.kernel.org/r/20200817220212.338670-5-ndesaulniers@google.com
+Link: https://lore.kernel.org/r/20220203204025.1153397-1-keescook@chromium.org
 ---
- arch/x86/include/asm/msi.h | 19 +++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
+ arch/x86/Makefile | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/arch/x86/include/asm/msi.h b/arch/x86/include/asm/msi.h
-index b85147d..d71c7e8 100644
---- a/arch/x86/include/asm/msi.h
-+++ b/arch/x86/include/asm/msi.h
-@@ -12,14 +12,17 @@ int pci_msi_prepare(struct irq_domain *domain, struct device *dev, int nvec,
- /* Structs and defines for the X86 specific MSI message format */
+diff --git a/arch/x86/Makefile b/arch/x86/Makefile
+index 1abd7cc..670fe40 100644
+--- a/arch/x86/Makefile
++++ b/arch/x86/Makefile
+@@ -100,9 +100,6 @@ ifeq ($(CONFIG_X86_32),y)
+         include $(srctree)/arch/x86/Makefile_32.cpu
+         KBUILD_CFLAGS += $(cflags-y)
  
- typedef struct x86_msi_data {
--	u32	vector			:  8,
--		delivery_mode		:  3,
--		dest_mode_logical	:  1,
--		reserved		:  2,
--		active_low		:  1,
--		is_level		:  1;
+-        # temporary until string.h is fixed
+-        KBUILD_CFLAGS += -ffreestanding
 -
--	u32	dmar_subhandle;
-+	union {
-+		struct {
-+			u32	vector			:  8,
-+				delivery_mode		:  3,
-+				dest_mode_logical	:  1,
-+				reserved		:  2,
-+				active_low		:  1,
-+				is_level		:  1;
-+		};
-+		u32	dmar_subhandle;
-+	};
- } __attribute__ ((packed)) arch_msi_msg_data_t;
- #define arch_msi_msg_data	x86_msi_data
- 
+ 	ifeq ($(CONFIG_STACKPROTECTOR),y)
+ 		ifeq ($(CONFIG_SMP),y)
+ 			KBUILD_CFLAGS += -mstack-protector-guard-reg=fs -mstack-protector-guard-symbol=__stack_chk_guard
