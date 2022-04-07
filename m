@@ -2,58 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 65F6C4F8396
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  7 Apr 2022 17:34:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E6A54F8400
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  7 Apr 2022 17:48:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230367AbiDGPge (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 7 Apr 2022 11:36:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54870 "EHLO
+        id S229669AbiDGPud (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 7 Apr 2022 11:50:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54470 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234048AbiDGPgb (ORCPT
+        with ESMTP id S232193AbiDGPud (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 7 Apr 2022 11:36:31 -0400
+        Thu, 7 Apr 2022 11:50:33 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3F781011;
-        Thu,  7 Apr 2022 08:34:20 -0700 (PDT)
-Date:   Thu, 07 Apr 2022 15:34:14 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F24A37017;
+        Thu,  7 Apr 2022 08:48:32 -0700 (PDT)
+Date:   Thu, 07 Apr 2022 15:48:29 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1649345656;
+        s=2020; t=1649346511;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=d4NuBDNGqUwoS57MQGXuWKDq8DHCGD33bEpIIZe/pWM=;
-        b=dUUYxi3+LvHqHZtheNlklbBm7HfPX9GQLhn3IxzNdA0n0mkzUtVJHO86xzGzCX+bwXXYyq
-        ivU5RWtB1qP1PS1C/cEUryIbyrQatX2mQ1xQBogZjbxH92LUZdNi0yiByKi3Oim1mdK0NX
-        mOHioAk2KD4uIk5uToR4QbJMDaggHpYD8tjq9ljrz1t61yc9Pa5epXQO+rJGzOmbz1eB3f
-        7z1abh3A3iuIE6Xt5DweJfC0el/Ggi0AJ4ecMrjf7O1L5+uSD4IeYFkyGyPQRAp5ri+Ycw
-        gW5MTmMIwB1l0KiqPAHYe4U9j2QmNS+J8v0Av/HIXRWpwHZ12Sa5+u3Aq8om9Q==
+        bh=0EUgoUyJOV+ytrCOJgy5gzgNTd08GKnxKCRhqyMu0nE=;
+        b=zdIl3g8UNSYqpd+vpQ9Qr829tlSM089AP1JhJEl080Mu66qQwKz0B3spXulKz8ovdGIVlt
+        NP2PDcKpDnNtyyE5Zo+oALPEjEl3ewOq3yjxC7aRdw/XjkenNopyDGs7Ykxk8iGZOunIX/
+        IeF3JFcyn+dCPTKCEUjXBTjne3j0oQEnLMg0UVvgnBl4954tBdvytTjM3/18Usnhzm7Gmm
+        x0pU9Dxn88faNGUTKahRveEmpVq+vYo4oQZAMA4YCDNB16z/gUzQOMQtBdOI2/aQGKMG3D
+        HfOKtTm3HT5+nMXXsuLfmMDcW3IVD+KzX0u1RwRn0hxyoc6gWHULoK0D5lGENA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1649345656;
+        s=2020e; t=1649346511;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=d4NuBDNGqUwoS57MQGXuWKDq8DHCGD33bEpIIZe/pWM=;
-        b=EUjxVEqduqlfaMoOXW+3VWo90j3W4+Q1+pXDXKFsn78CwSbnZdnt9H5GRyu+Z3fJbhLS/Y
-        tnrTKJfylHQdGRCA==
-From:   "tip-bot2 for Nick Desaulniers" <tip-bot2@linutronix.de>
+        bh=0EUgoUyJOV+ytrCOJgy5gzgNTd08GKnxKCRhqyMu0nE=;
+        b=KJ6NEmiMsfpundaRbK/3vT0U/er+WnvU4x5mWUeOO/OG3DZXN3qd5OMCYTnM8Ui9SD2SxM
+        AhHi9MyQ8RUBFZAw==
+From:   "tip-bot2 for Mike Travis" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/build] x86/build: Don't build CONFIG_X86_32 as -ffreestanding
-Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Kees Cook <keescook@chromium.org>,
+Subject: [tip: x86/platform] x86/platform/uv: Log gap hole end size
+Cc:     Mike Travis <mike.travis@hpe.com>, Steve Wahl <steve.wahl@hpe.com>,
         Borislav Petkov <bp@suse.de>,
-        Fangrui Song <maskray@google.com>, x86@kernel.org,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20200817220212.338670-5-ndesaulniers@google.com>
-References: <20200817220212.338670-5-ndesaulniers@google.com>
+In-Reply-To: <20220406195149.228164-4-steve.wahl@hpe.com>
+References: <20220406195149.228164-4-steve.wahl@hpe.com>
 MIME-Version: 1.0
-Message-ID: <164934565464.389.2546833245037255032.tip-bot2@tip-bot2>
+Message-ID: <164934650980.389.11541360930801701487.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -68,67 +66,59 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/build branch of tip:
+The following commit has been merged into the x86/platform branch of tip:
 
-Commit-ID:     9b2687f29bc1a050ffd63b425129aa9db987e4f3
-Gitweb:        https://git.kernel.org/tip/9b2687f29bc1a050ffd63b425129aa9db987e4f3
-Author:        Nick Desaulniers <ndesaulniers@google.com>
-AuthorDate:    Thu, 03 Feb 2022 12:40:25 -08:00
+Commit-ID:     327c348988c6f0bacd7abd29c151f37bdf1e2a02
+Gitweb:        https://git.kernel.org/tip/327c348988c6f0bacd7abd29c151f37bdf1e2a02
+Author:        Mike Travis <mike.travis@hpe.com>
+AuthorDate:    Wed, 06 Apr 2022 14:51:49 -05:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Thu, 07 Apr 2022 11:55:42 +02:00
+CommitterDate: Thu, 07 Apr 2022 17:25:15 +02:00
 
-x86/build: Don't build CONFIG_X86_32 as -ffreestanding
+x86/platform/uv: Log gap hole end size
 
--ffreestanding typically inhibits "libcall optimizations" where calls to
-certain library functions can be replaced by the compiler in certain
-cases to calls to other library functions that may be more efficient.
-This can be problematic for embedded targets that don't provide full
-libc implementations.
+Show value of gap end in the kernel log which equates to number of physical
+address bits used by system.
 
--ffreestanding inhibits all such optimizations, which is the safe
-choice, but generally we want the optimizations that are performed. The
-Linux kernel does implement a fair amount of libc routines. Instead of
--ffreestanding (which makes more sense in smaller images like kexec's
-purgatory image), prefer -fno-builtin-* flags to disable the compiler
-from emitting calls to functions which may not be defined.
-
-If you see a linkage failure due to a missing symbol that's typically
-defined in a libc, and not explicitly called from the source code, then
-the compiler may have done such a transform. You can either implement
-such a function (i.e. in lib/string.c) or disable the transform outright
-via -fno-builtin-* flag (where * is the name of the library routine,
-i.e. -fno-builtin-bcmp).
-
-i386_defconfig build+boot tested with GCC and Clang. Removes a pretty
-old TODO from the code base.
-
-[kees: These libcall optimizations are specifically needed to allow Clang
-to correctly optimize the string functions under CONFIG_FORTIFY_SOURCE.]
-
-Fixes: 6edfba1b33c7 ("[PATCH] x86_64: Don't define string functions to builtin")
-Suggested-by: Arvind Sankar <nivedita@alum.mit.edu>
-Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
-Signed-off-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Mike Travis <mike.travis@hpe.com>
+Signed-off-by: Steve Wahl <steve.wahl@hpe.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Fangrui Song <maskray@google.com>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Link: https://lore.kernel.org/r/20200817220212.338670-5-ndesaulniers@google.com
-Link: https://lore.kernel.org/r/20220203204025.1153397-1-keescook@chromium.org
+Acked-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20220406195149.228164-4-steve.wahl@hpe.com
 ---
- arch/x86/Makefile | 3 ---
- 1 file changed, 3 deletions(-)
+ arch/x86/kernel/apic/x2apic_uv_x.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/Makefile b/arch/x86/Makefile
-index 1abd7cc..670fe40 100644
---- a/arch/x86/Makefile
-+++ b/arch/x86/Makefile
-@@ -100,9 +100,6 @@ ifeq ($(CONFIG_X86_32),y)
-         include $(srctree)/arch/x86/Makefile_32.cpu
-         KBUILD_CFLAGS += $(cflags-y)
+diff --git a/arch/x86/kernel/apic/x2apic_uv_x.c b/arch/x86/kernel/apic/x2apic_uv_x.c
+index a6e9c27..4828552 100644
+--- a/arch/x86/kernel/apic/x2apic_uv_x.c
++++ b/arch/x86/kernel/apic/x2apic_uv_x.c
+@@ -1346,7 +1346,7 @@ static void __init decode_gam_params(unsigned long ptr)
+ static void __init decode_gam_rng_tbl(unsigned long ptr)
+ {
+ 	struct uv_gam_range_entry *gre = (struct uv_gam_range_entry *)ptr;
+-	unsigned long lgre = 0;
++	unsigned long lgre = 0, gend = 0;
+ 	int index = 0;
+ 	int sock_min = 999999, pnode_min = 99999;
+ 	int sock_max = -1, pnode_max = -1;
+@@ -1380,6 +1380,9 @@ static void __init decode_gam_rng_tbl(unsigned long ptr)
+ 			flag, size, suffix[order],
+ 			gre->type, gre->nasid, gre->sockid, gre->pnode);
  
--        # temporary until string.h is fixed
--        KBUILD_CFLAGS += -ffreestanding
--
- 	ifeq ($(CONFIG_STACKPROTECTOR),y)
- 		ifeq ($(CONFIG_SMP),y)
- 			KBUILD_CFLAGS += -mstack-protector-guard-reg=fs -mstack-protector-guard-symbol=__stack_chk_guard
++		if (gre->type == UV_GAM_RANGE_TYPE_HOLE)
++			gend = (unsigned long)gre->limit << UV_GAM_RANGE_SHFT;
++
+ 		/* update to next range start */
+ 		lgre = gre->limit;
+ 		if (sock_min > gre->sockid)
+@@ -1397,7 +1400,8 @@ static void __init decode_gam_rng_tbl(unsigned long ptr)
+ 	_max_pnode	= pnode_max;
+ 	_gr_table_len	= index;
+ 
+-	pr_info("UV: GRT: %d entries, sockets(min:%x,max:%x) pnodes(min:%x,max:%x)\n", index, _min_socket, _max_socket, _min_pnode, _max_pnode);
++	pr_info("UV: GRT: %d entries, sockets(min:%x,max:%x), pnodes(min:%x,max:%x), gap_end(%d)\n",
++	  index, _min_socket, _max_socket, _min_pnode, _max_pnode, fls64(gend));
+ }
+ 
+ /* Walk through UVsystab decoding the fields */
