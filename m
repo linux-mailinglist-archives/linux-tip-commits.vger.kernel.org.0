@@ -2,56 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6356A4F91AB
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 Apr 2022 11:12:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 29B084F919C
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 Apr 2022 11:12:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233101AbiDHJOV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 8 Apr 2022 05:14:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44390 "EHLO
+        id S233090AbiDHJOS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 8 Apr 2022 05:14:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43240 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233156AbiDHJMb (ORCPT
+        with ESMTP id S231335AbiDHJMM (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 8 Apr 2022 05:12:31 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAD3D24BD52;
-        Fri,  8 Apr 2022 02:09:17 -0700 (PDT)
-Date:   Fri, 08 Apr 2022 09:09:15 -0000
+        Fri, 8 Apr 2022 05:12:12 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E300824BD63;
+        Fri,  8 Apr 2022 02:09:19 -0700 (PDT)
+Date:   Fri, 08 Apr 2022 09:09:16 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1649408956;
+        s=2020; t=1649408958;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=rZp3DFyUl6wOs7StHaj5old/wdmCSVIRiMeVsd6IyEI=;
-        b=Y0CL0SNp09RHIZLsJql/PjqJOzq1RAtUscHN8XAs2uggOKCSoJ2yjB3UoXWRxgN/kFmFdW
-        9vD1lAYluUZLe28GPFSxiO7cc/7E3Yty4iE5H20NzcG16e69kBcK1odZdgvT7AuXnQHS0N
-        yA4V0mkDrPVevY5IZmRmnKbtK1l79PwyzEALbpfww8M/CCa16tjqXRdfcHEMkRfDMNabmD
-        4UEtcx3U1iabOeQu8KAx07SoMbUHe+mqGegD23y8RiGnAnLXvot7SM0I3Ft4llV57vu/m8
-        cD5T4r51DqW2WmkEkIf747fMcHbGWwSeBQDZCRlvvSHdCIQw/2QRaCU03WbgeA==
+        bh=uOqUilg6tFyX4vRcuZ2UavRfBhs/RsVfCBCNRu/MwrA=;
+        b=kySoZJo2GsyVqTqZzOuUSbrMj7coDYlLzyzhm7bSXv9kqMVAGkODBvb6JyMmryKlt7bhM8
+        F650uJr4gJOHFxPS19cTQ7BLHG7AUGjYFn5E3I3oi9B3i/uZx8QPiv6IIyc4f4kC+71Tg+
+        cx71vvlK4g9sXywhtcifC/6K3k0WD9DmyvkyEz9vUtMKGA16ZslQ2OjvLWUddjnZiPUqNK
+        wKnHV+zmbsaad+aAiI8j298T8VQpsTjVQutmlQglgnnb6dRrCHr1pyAZ2qX/qyhFa+k767
+        M2O5FuXymqOwag8KXEPHPEH1DN9VcMpC6L+rTtqpwSWYTPmPC1RKc3HIWhx67w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1649408956;
+        s=2020e; t=1649408958;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=rZp3DFyUl6wOs7StHaj5old/wdmCSVIRiMeVsd6IyEI=;
-        b=sojZxL9mGEvMTB4JRkXi4STnQQ4/e+A1zW9Y7lfmNzn9KAJa4kft4lLwm02CXpip05ZziM
-        3ZDirlyiRyLoGjAQ==
-From:   "tip-bot2 for Michael Roth" <tip-bot2@linutronix.de>
+        bh=uOqUilg6tFyX4vRcuZ2UavRfBhs/RsVfCBCNRu/MwrA=;
+        b=8PpysUvGRsbErlXMxzr9SZSnctpa9uj9hy3YImFdT4QCySNQsKQEG/sJRxhRlT6gR8mMnP
+        P8xLJKDSikpPkJDw==
+From:   "tip-bot2 for Tom Lendacky" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/sev] x86/boot: Introduce helpers for MSR reads/writes
-Cc:     Borislav Petkov <bp@alien8.de>,
-        Michael Roth <michael.roth@amd.com>,
-        Borislav Petkov <bp@suse.de>, x86@kernel.org,
+Subject: [tip: x86/sev] KVM: SVM: Create a separate mapping for the GHCB save area
+Cc:     Tom Lendacky <thomas.lendacky@amd.com>,
+        Brijesh Singh <brijesh.singh@amd.com>,
+        Borislav Petkov <bp@suse.de>,
+        Venu Busireddy <venu.busireddy@oracle.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220307213356.2797205-6-brijesh.singh@amd.com>
-References: <20220307213356.2797205-6-brijesh.singh@amd.com>
+In-Reply-To: <20220307213356.2797205-4-brijesh.singh@amd.com>
+References: <20220307213356.2797205-4-brijesh.singh@amd.com>
 MIME-Version: 1.0
-Message-ID: <164940895518.389.9359948563702984420.tip-bot2@tip-bot2>
+Message-ID: <164940895699.389.12284453023140266285.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -68,113 +69,114 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/sev branch of tip:
 
-Commit-ID:     176db622573f028f85221873ea4577e096785315
-Gitweb:        https://git.kernel.org/tip/176db622573f028f85221873ea4577e096785315
-Author:        Michael Roth <michael.roth@amd.com>
-AuthorDate:    Wed, 09 Feb 2022 12:09:59 -06:00
+Commit-ID:     a4690359eaec985a1351786da887df1ba92440a0
+Gitweb:        https://git.kernel.org/tip/a4690359eaec985a1351786da887df1ba92440a0
+Author:        Tom Lendacky <thomas.lendacky@amd.com>
+AuthorDate:    Mon, 07 Mar 2022 15:33:13 -06:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Wed, 06 Apr 2022 12:59:17 +02:00
+CommitterDate: Wed, 06 Apr 2022 12:13:34 +02:00
 
-x86/boot: Introduce helpers for MSR reads/writes
+KVM: SVM: Create a separate mapping for the GHCB save area
 
-The current set of helpers used throughout the run-time kernel have
-dependencies on code/facilities outside of the boot kernel, so there
-are a number of call-sites throughout the boot kernel where inline
-assembly is used instead. More will be added with subsequent patches
-that add support for SEV-SNP, so take the opportunity to provide a basic
-set of helpers that can be used by the boot kernel to reduce reliance on
-inline assembly.
+The initial implementation of the GHCB spec was based on trying to keep
+the register state offsets the same relative to the VM save area. However,
+the save area for SEV-ES has changed within the hardware causing the
+relation between the SEV-ES save area to change relative to the GHCB save
+area.
 
-Use boot_* prefix so that it's clear these are helpers specific to the
-boot kernel to avoid any confusion with the various other MSR read/write
-helpers.
+This is the second step in defining the multiple save areas to keep them
+separate and ensuring proper operation amongst the different types of
+guests. Create a GHCB save area that matches the GHCB specification.
 
-  [ bp: Disambiguate parameter names and trim comment. ]
-
-Suggested-by: Borislav Petkov <bp@alien8.de>
-Signed-off-by: Michael Roth <michael.roth@amd.com>
+Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
+Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lore.kernel.org/r/20220307213356.2797205-6-brijesh.singh@amd.com
+Reviewed-by: Venu Busireddy <venu.busireddy@oracle.com>
+Link: https://lore.kernel.org/r/20220307213356.2797205-4-brijesh.singh@amd.com
 ---
- arch/x86/boot/msr.h               | 26 ++++++++++++++++++++++++++
- arch/x86/include/asm/msr.h        | 11 +----------
- arch/x86/include/asm/shared/msr.h | 15 +++++++++++++++
- 3 files changed, 42 insertions(+), 10 deletions(-)
- create mode 100644 arch/x86/boot/msr.h
- create mode 100644 arch/x86/include/asm/shared/msr.h
+ arch/x86/include/asm/svm.h | 48 ++++++++++++++++++++++++++++++++++---
+ 1 file changed, 45 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/boot/msr.h b/arch/x86/boot/msr.h
-new file mode 100644
-index 0000000..aed66f7
---- /dev/null
-+++ b/arch/x86/boot/msr.h
-@@ -0,0 +1,26 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/*
-+ * Helpers/definitions related to MSR access.
-+ */
-+
-+#ifndef BOOT_MSR_H
-+#define BOOT_MSR_H
-+
-+#include <asm/shared/msr.h>
-+
-+/*
-+ * The kernel proper already defines rdmsr()/wrmsr(), but they are not for the
-+ * boot kernel since they rely on tracepoint/exception handling infrastructure
-+ * that's not available here.
-+ */
-+static inline void boot_rdmsr(unsigned int reg, struct msr *m)
-+{
-+	asm volatile("rdmsr" : "=a" (m->l), "=d" (m->h) : "c" (reg));
-+}
-+
-+static inline void boot_wrmsr(unsigned int reg, const struct msr *m)
-+{
-+	asm volatile("wrmsr" : : "c" (reg), "a"(m->l), "d" (m->h) : "memory");
-+}
-+
-+#endif /* BOOT_MSR_H */
-diff --git a/arch/x86/include/asm/msr.h b/arch/x86/include/asm/msr.h
-index d42e6c6..65ec196 100644
---- a/arch/x86/include/asm/msr.h
-+++ b/arch/x86/include/asm/msr.h
-@@ -10,16 +10,7 @@
- #include <asm/errno.h>
- #include <asm/cpumask.h>
- #include <uapi/asm/msr.h>
--
--struct msr {
--	union {
--		struct {
--			u32 l;
--			u32 h;
--		};
--		u64 q;
--	};
--};
-+#include <asm/shared/msr.h>
+diff --git a/arch/x86/include/asm/svm.h b/arch/x86/include/asm/svm.h
+index 788a43f..0789ad8 100644
+--- a/arch/x86/include/asm/svm.h
++++ b/arch/x86/include/asm/svm.h
+@@ -398,11 +398,51 @@ struct sev_es_save_area {
+ 	u64 x87_state_gpa;
+ } __packed;
  
- struct msr_info {
- 	u32 msr_no;
-diff --git a/arch/x86/include/asm/shared/msr.h b/arch/x86/include/asm/shared/msr.h
-new file mode 100644
-index 0000000..1e6ec10
---- /dev/null
-+++ b/arch/x86/include/asm/shared/msr.h
-@@ -0,0 +1,15 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _ASM_X86_SHARED_MSR_H
-+#define _ASM_X86_SHARED_MSR_H
++struct ghcb_save_area {
++	u8 reserved_1[203];
++	u8 cpl;
++	u8 reserved_2[116];
++	u64 xss;
++	u8 reserved_3[24];
++	u64 dr7;
++	u8 reserved_4[16];
++	u64 rip;
++	u8 reserved_5[88];
++	u64 rsp;
++	u8 reserved_6[24];
++	u64 rax;
++	u8 reserved_7[264];
++	u64 rcx;
++	u64 rdx;
++	u64 rbx;
++	u8 reserved_8[8];
++	u64 rbp;
++	u64 rsi;
++	u64 rdi;
++	u64 r8;
++	u64 r9;
++	u64 r10;
++	u64 r11;
++	u64 r12;
++	u64 r13;
++	u64 r14;
++	u64 r15;
++	u8 reserved_9[16];
++	u64 sw_exit_code;
++	u64 sw_exit_info_1;
++	u64 sw_exit_info_2;
++	u64 sw_scratch;
++	u8 reserved_10[56];
++	u64 xcr0;
++	u8 valid_bitmap[16];
++	u64 x87_state_gpa;
++} __packed;
 +
-+struct msr {
-+	union {
-+		struct {
-+			u32 l;
-+			u32 h;
-+		};
-+		u64 q;
-+	};
-+};
-+
-+#endif /* _ASM_X86_SHARED_MSR_H */
+ #define GHCB_SHARED_BUF_SIZE	2032
+ 
+ struct ghcb {
+-	struct sev_es_save_area save;
+-	u8 reserved_save[2048 - sizeof(struct sev_es_save_area)];
++	struct ghcb_save_area save;
++	u8 reserved_save[2048 - sizeof(struct ghcb_save_area)];
+ 
+ 	u8 shared_buffer[GHCB_SHARED_BUF_SIZE];
+ 
+@@ -413,6 +453,7 @@ struct ghcb {
+ 
+ 
+ #define EXPECTED_VMCB_SAVE_AREA_SIZE		740
++#define EXPECTED_GHCB_SAVE_AREA_SIZE		1032
+ #define EXPECTED_SEV_ES_SAVE_AREA_SIZE		1032
+ #define EXPECTED_VMCB_CONTROL_AREA_SIZE		1024
+ #define EXPECTED_GHCB_SIZE			PAGE_SIZE
+@@ -420,6 +461,7 @@ struct ghcb {
+ static inline void __unused_size_checks(void)
+ {
+ 	BUILD_BUG_ON(sizeof(struct vmcb_save_area)	!= EXPECTED_VMCB_SAVE_AREA_SIZE);
++	BUILD_BUG_ON(sizeof(struct ghcb_save_area)	!= EXPECTED_GHCB_SAVE_AREA_SIZE);
+ 	BUILD_BUG_ON(sizeof(struct sev_es_save_area)	!= EXPECTED_SEV_ES_SAVE_AREA_SIZE);
+ 	BUILD_BUG_ON(sizeof(struct vmcb_control_area)	!= EXPECTED_VMCB_CONTROL_AREA_SIZE);
+ 	BUILD_BUG_ON(sizeof(struct ghcb)		!= EXPECTED_GHCB_SIZE);
+@@ -490,7 +532,7 @@ struct vmcb {
+ /* GHCB Accessor functions */
+ 
+ #define GHCB_BITMAP_IDX(field)							\
+-	(offsetof(struct sev_es_save_area, field) / sizeof(u64))
++	(offsetof(struct ghcb_save_area, field) / sizeof(u64))
+ 
+ #define DEFINE_GHCB_ACCESSORS(field)						\
+ 	static inline bool ghcb_##field##_is_valid(const struct ghcb *ghcb)	\
