@@ -2,73 +2,60 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BFD594F8B77
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 Apr 2022 02:56:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 08F074F9167
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 Apr 2022 11:08:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229913AbiDGWaO (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 7 Apr 2022 18:30:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36380 "EHLO
+        id S232676AbiDHJKr (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 8 Apr 2022 05:10:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34240 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229824AbiDGWaN (ORCPT
+        with ESMTP id S232540AbiDHJKm (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 7 Apr 2022 18:30:13 -0400
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5C68307;
-        Thu,  7 Apr 2022 15:28:11 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id 79D7E1F85A;
-        Thu,  7 Apr 2022 22:28:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1649370490; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
+        Fri, 8 Apr 2022 05:10:42 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9331104A77;
+        Fri,  8 Apr 2022 02:08:38 -0700 (PDT)
+Date:   Fri, 08 Apr 2022 09:08:35 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1649408916;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=km6cLSvcevUTiMWx8bdylNikiJbG874gtpsaUOE+xKo=;
-        b=OQWeXtJtyDQCM4yM/PXITvLUzVSGb3pkrlHNB7HCBW1IUCYBcvcgcX5fZpLQofJ5y0xxHI
-        NaWZVbCb5mbYR7lf2jTuaG4s9JXMKiYF5sRqO58NQE0PR7LT1I+QoXt7+VnzXOb+AbnmKY
-        uGVfwrxZ9+t2AZVCltsN8hDV5SQ/QbI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1649370490;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
+        bh=6iT0dUCpKXd93Cim/gg7O05ni3UqWXOaBw9BFAlaO4k=;
+        b=TQvC8Gey5qQmq50Bflp5Hrcy67okTrJ+IjN/pdbOrDPnvXrpL+gJlqlloCel0RR30LvlE9
+        6bNRMFjDfEOx6CWTuDvCmtcWJS4iHI7qJDbOlVyLliNa1K33nKbhIUMqaZQAem/INcYYdu
+        jFz1Ww3xuqNABK8bIvNO9/Hev7dZ8DVFhWEbVva9RNeZnsKROH/iCi2b+Isq26ub/4UOwp
+        dofGrzxh48cl/ddpjl/t4CKvgEC0UGybg3Pf2F91LKW3aOg/YOfkndzHB6aPCge7ZIRCYn
+        RD53E0pq25uWvaVAwLaFDdXYyUxObNzL5NczMvrkc76piWDWfkkiOGTqwuBdTg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1649408916;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=km6cLSvcevUTiMWx8bdylNikiJbG874gtpsaUOE+xKo=;
-        b=QQ6ett+ZaKNSXw0mJnvlcfSPwRwWTQ7wqjNHS0CVcGJFtvV14risk0tkEMmqt6iJlcfFA4
-        oyFNRD5vx//WELDQ==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 6B52913A66;
-        Thu,  7 Apr 2022 22:28:10 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id pC4sGnplT2IGAwAAMHmgww
-        (envelope-from <bp@suse.de>); Thu, 07 Apr 2022 22:28:10 +0000
-Date:   Fri, 8 Apr 2022 00:28:09 +0200
-From:   Borislav Petkov <bp@suse.de>
-To:     Nick Desaulniers <ndesaulniers@google.com>
-Cc:     linux-kernel@vger.kernel.org, Kees Cook <keescook@chromium.org>,
-        linux-tip-commits@vger.kernel.org,
-        Arvind Sankar <nivedita@alum.mit.edu>,
-        Fangrui Song <maskray@google.com>, x86@kernel.org,
-        clang-built-linux <llvm@lists.linux.dev>,
-        Nathan Chancellor <nathan@kernel.org>
-Subject: Re: [tip: x86/build] x86/build: Don't build CONFIG_X86_32 as
- -ffreestanding
-Message-ID: <Yk9leWxNnnuJWKcI@zn.tnic>
-References: <20200817220212.338670-5-ndesaulniers@google.com>
- <164934565464.389.2546833245037255032.tip-bot2@tip-bot2>
- <CAKwvOdkQeSx3uy25KaTrX=ywc26wDEefXHbCB_ifGot+yXGvHQ@mail.gmail.com>
+        bh=6iT0dUCpKXd93Cim/gg7O05ni3UqWXOaBw9BFAlaO4k=;
+        b=Fxx7PfSLqRoiQ3+3HGf7gZBtobylCUU+Iv6bgMjXX16PMLKMe/LHT+QsMRUT4Q8u91TR/6
+        +nkJur9TZVRhROCA==
+From:   "tip-bot2 for Peter Gonda" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/sev] x86/sev-es: Replace open-coded hlt-loop with
+ sev_es_terminate()
+Cc:     Peter Gonda <pgonda@google.com>, Borislav Petkov <bp@suse.de>,
+        Joerg Roedel <jroedel@suse.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20220317211913.1397427-1-pgonda@google.com>
+References: <20220317211913.1397427-1-pgonda@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAKwvOdkQeSx3uy25KaTrX=ywc26wDEefXHbCB_ifGot+yXGvHQ@mail.gmail.com>
+Message-ID: <164940891535.389.15036684109710307726.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
@@ -79,25 +66,43 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Thu, Apr 07, 2022 at 10:01:32AM -0700, Nick Desaulniers wrote:
-> Boris, Can I send you a patch to replace this one (with a guard for
-> clang) or a patch on top? i.e. what base would you prefer me to use.
+The following commit has been merged into the x86/sev branch of tip:
 
-I don't mind much, whatever Kees wants. I can just as well drop this
-one completely and wait until you guys have fixed clang... or do the
-gcc-only thing... your call.
+Commit-ID:     e720ea52e85c9d00cf8c5769795d0a3e585524f6
+Gitweb:        https://git.kernel.org/tip/e720ea52e85c9d00cf8c5769795d0a3e585524f6
+Author:        Peter Gonda <pgonda@google.com>
+AuthorDate:    Thu, 17 Mar 2022 14:19:13 -07:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Fri, 08 Apr 2022 10:57:35 +02:00
 
-> Using mainline:
+x86/sev-es: Replace open-coded hlt-loop with sev_es_terminate()
 
-The branch to use is in the tip tree and there x86/build - it is in the
-subject of the tip-bot2 message:
+Replace the halt loop in handle_vc_boot_ghcb() with an
+sev_es_terminate(). The HLT gives the system no indication the guest is
+unhappy. The termination request will signal there was an error during
+VC handling during boot.
 
-[tip: x86/build] ...
+  [ bp: Update it to pass the reason set too. ]
 
-Thx.
+Signed-off-by: Peter Gonda <pgonda@google.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Reviewed-by: Joerg Roedel <jroedel@suse.de>
+Link: https://lore.kernel.org/r/20220317211913.1397427-1-pgonda@google.com
+---
+ arch/x86/kernel/sev.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
--- 
-Regards/Gruss,
-    Boris.
-
-SUSE Software Solutions Germany GmbH, GF: Ivo Totev, HRB 36809, AG Nürnberg
+diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
+index ace43e1..f01f455 100644
+--- a/arch/x86/kernel/sev.c
++++ b/arch/x86/kernel/sev.c
+@@ -1982,8 +1982,7 @@ bool __init handle_vc_boot_ghcb(struct pt_regs *regs)
+ fail:
+ 	show_regs(regs);
+ 
+-	while (true)
+-		halt();
++	sev_es_terminate(SEV_TERM_SET_GEN, GHCB_SEV_ES_GEN_REQ);
+ }
+ 
+ /*
