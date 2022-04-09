@@ -2,57 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D86F84FAAB3
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  9 Apr 2022 22:22:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D707E4FAAC2
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  9 Apr 2022 22:29:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231426AbiDIUYr (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 9 Apr 2022 16:24:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50766 "EHLO
+        id S231258AbiDIUbS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 9 Apr 2022 16:31:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46702 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231347AbiDIUYo (ORCPT
+        with ESMTP id S230294AbiDIUbR (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 9 Apr 2022 16:24:44 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F67814023;
-        Sat,  9 Apr 2022 13:22:35 -0700 (PDT)
-Date:   Sat, 09 Apr 2022 20:22:32 -0000
+        Sat, 9 Apr 2022 16:31:17 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A60392C49A1;
+        Sat,  9 Apr 2022 13:29:09 -0700 (PDT)
+Date:   Sat, 09 Apr 2022 20:29:07 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1649535754;
+        s=2020; t=1649536148;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=flmJT8g3LkPf5OFtHiIqbiCsqW93S7VEn9FZTSp2FNs=;
-        b=HHrFZRwepn6Z8zLuwababzH3L73AgF95BfVXPNLtdDjC+uKWNZZelJhk8GHW7TR6ov+S8M
-        WszoWZl91loxRyCLvvmXO3akJXw7q+UnOP9rzh3gny2Sa9rJO8dgE0G5Nd9oU1Q3SJwZ8j
-        OXNRrlyf3g9REnkjOfRF82Mzoa5UjVaK80GA6HvA0NiA6gfTcrtGKb+sMslRWi+Ibv9guw
-        wcXxQo7aHxBKRPqsmNI3s7Wz9NNm4/PGsDHQ9vYWzQ6QsvijXuhaxH+gRUrQvGlpQwgNRf
-        8oCkEsavrUtC1rlEYO7rYXsFU8WnOkebmcbP+g4ndI01fUuSmaaIqGQzEQtv6Q==
+        bh=7y+GAn8IiNbo6k7FckLBeAYS70B+Oe8m/iFrsO0IfcQ=;
+        b=cb7TnuF+fnFifGuXApW5ZXiRIneHKUBCIeNM0X4Na/SGm6aDcnjPIt1BkFWhIh14NTfTK2
+        K1BfAxZ78+hsDl6ylc9KTEZlNu3QR3OQiGNBjbbhfl7mv1vBUXmxXQOL0zQZLiyQo8jVHf
+        c+p3TNte8ftgxGqhqJP+dexMLWke7WgirJ0Zb2FE60+2DQ06KBtU6bLTdwx/Wyv8fYGhwP
+        IyoJa8JBSA0jjhr8W3JyCfgHbB5rHqwSsjGzVNKObxW+ZSLupqWsYE5LKQdWya1fVcEIIm
+        RQHbjQ7pI6xFcHIj8WKKwswXCEy3RffQICnC1PuGTdUH4vv4AFK+UxHjJlGpmA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1649535754;
+        s=2020e; t=1649536148;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=flmJT8g3LkPf5OFtHiIqbiCsqW93S7VEn9FZTSp2FNs=;
-        b=14Sz1roVOUAcxj4ffYhAjQ/EDeD3x0A4HoUyKV6Dea6cAKweVXDS3TIIV75WeIx6ijOZJ0
-        jEmaSClh7QpSsFDQ==
-From:   "tip-bot2 for Anna-Maria Behnsen" <tip-bot2@linutronix.de>
+        bh=7y+GAn8IiNbo6k7FckLBeAYS70B+Oe8m/iFrsO0IfcQ=;
+        b=mzbGVkxJR+BUP37AJNlEFPji5gRTv1eh/YZKm1uUeuN88o8M6OfhMSUv1rqnvCAexLSMuE
+        n8HoFco8zvznUBAQ==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] timers: Fix warning condition in __run_timers()
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        "Anna-Maria Behnsen" <anna-maria@linutronix.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Frederic Weisbecker <frederic@kernel.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20220405191732.7438-3-anna-maria@linutronix.de>
-References: <20220405191732.7438-3-anna-maria@linutronix.de>
+Subject: [tip: irq/urgent] Merge tag 'irqchip-fixes-5.18-1' of
+ git://git.kernel.org/pub/scm/linux/kernel/git/maz/arm-platforms into
+ irq/urgent
+Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, maz@kernel.org
+In-Reply-To: <20220409094229.267649-1-maz@kernel.org>
+References: <20220409094229.267649-1-maz@kernel.org>
 MIME-Version: 1.0
-Message-ID: <164953575293.4207.16304445982254847122.tip-bot2@tip-bot2>
+Message-ID: <164953614715.4207.13727291708188252137.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,57 +65,27 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/core branch of tip:
+The following commit has been merged into the irq/urgent branch of tip:
 
-Commit-ID:     c54bc0fc84214b203f7a0ebfd1bd308ce2abe920
-Gitweb:        https://git.kernel.org/tip/c54bc0fc84214b203f7a0ebfd1bd308ce2abe920
-Author:        Anna-Maria Behnsen <anna-maria@linutronix.de>
-AuthorDate:    Tue, 05 Apr 2022 21:17:32 +02:00
+Commit-ID:     63ef1a8a07ef64f802af1adadae3b05ba824c534
+Gitweb:        https://git.kernel.org/tip/63ef1a8a07ef64f802af1adadae3b05ba824c534
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Sat, 09 Apr 2022 22:21:55 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sat, 09 Apr 2022 22:17:47 +02:00
+CommitterDate: Sat, 09 Apr 2022 22:21:55 +02:00
 
-timers: Fix warning condition in __run_timers()
+Merge tag 'irqchip-fixes-5.18-1' of git://git.kernel.org/pub/scm/linux/kernel/git/maz/arm-platforms into irq/urgent
 
-When the timer base is empty, base::next_expiry is set to base::clk +
-NEXT_TIMER_MAX_DELTA and base::next_expiry_recalc is false. When no timer
-is queued until jiffies reaches base::next_expiry value, the warning for
-not finding any expired timer and base::next_expiry_recalc is false in
-__run_timers() triggers.
+Pull irqchip fixes from Marc Zyngier:
 
-To prevent triggering the warning in this valid scenario
-base::timers_pending needs to be added to the warning condition.
+ - Fix GICv3 polling for RWP in redistributors
 
-Fixes: 31cd0e119d50 ("timers: Recalculate next timer interrupt only when necessary")
-Reported-by: Johannes Berg <johannes@sipsolutions.net>
-Signed-off-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Link: https://lore.kernel.org/r/20220405191732.7438-3-anna-maria@linutronix.de
+ - Reject ACPI attempts to use SGIs on GIC/GICv3
 
+ - Fix unpredictible behaviour when making a VPE non-resident
+   with GICv4
+
+ - A couple of fixes for the newly merged qcom-mpm driver
+
+Link: https://lore.kernel.org/lkml/20220409094229.267649-1-maz@kernel.org
 ---
- kernel/time/timer.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
-
-diff --git a/kernel/time/timer.c b/kernel/time/timer.c
-index 85f1021..9dd2a39 100644
---- a/kernel/time/timer.c
-+++ b/kernel/time/timer.c
-@@ -1722,11 +1722,14 @@ static inline void __run_timers(struct timer_base *base)
- 	       time_after_eq(jiffies, base->next_expiry)) {
- 		levels = collect_expired_timers(base, heads);
- 		/*
--		 * The only possible reason for not finding any expired
--		 * timer at this clk is that all matching timers have been
--		 * dequeued.
-+		 * The two possible reasons for not finding any expired
-+		 * timer at this clk are that all matching timers have been
-+		 * dequeued or no timer has been queued since
-+		 * base::next_expiry was set to base::clk +
-+		 * NEXT_TIMER_MAX_DELTA.
- 		 */
--		WARN_ON_ONCE(!levels && !base->next_expiry_recalc);
-+		WARN_ON_ONCE(!levels && !base->next_expiry_recalc
-+			     && base->timers_pending);
- 		base->clk++;
- 		base->next_expiry = __next_timer_interrupt(base);
- 
