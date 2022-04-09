@@ -2,60 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 68BC84FA13D
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  9 Apr 2022 03:39:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 385574FAAB2
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  9 Apr 2022 22:22:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240410AbiDIBav (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 8 Apr 2022 21:30:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45500 "EHLO
+        id S231422AbiDIUYp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 9 Apr 2022 16:24:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50758 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240419AbiDIBa1 (ORCPT
+        with ESMTP id S231330AbiDIUYo (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 8 Apr 2022 21:30:27 -0400
+        Sat, 9 Apr 2022 16:24:44 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CA1511F7B3;
-        Fri,  8 Apr 2022 18:27:46 -0700 (PDT)
-Date:   Sat, 09 Apr 2022 01:27:43 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF2BE2BCE;
+        Sat,  9 Apr 2022 13:22:34 -0700 (PDT)
+Date:   Sat, 09 Apr 2022 20:22:31 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1649467664;
+        s=2020; t=1649535752;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=jCLyQzxs8GcSO5HFA9nS0D0i1pM8j4J5EtCby3Xnt4M=;
-        b=BfxwQ9Nmvh6ucJITv46bEHrLhCqS4HEyTKajBJFRmVR2qWMZ5qvAI6cLnOxoBtQsNlMCq6
-        eS2rMQii+0G5G5akLXwhWHVOzSBKkZEofatd8H7lYobbWbXyqZkc3nd3IDomgMgxglmh1a
-        fJn6wPAifZRt5ed1uE7dYFMuKCG7cJsGIz2y/afwl6Vjn12DHvHmX8e9Wl977aZ7BKz6L9
-        luWq8fqdtTz00CJHwd30W7+i8MXyGVpADdhMz7WthsPPhBJAQp7JnlPzMTl3JICZfA+KYJ
-        DJOmk98XcKXHqWSuYMQmm2oxU8i5pFvWfec9oIrAAQWASVuVDXPG2hj+DHzwHQ==
+        bh=8zaOcmLacimZqKKgJ63XfnGyUqu5Teh+3oLuqT1XOXc=;
+        b=10RPt3/QkNPy1Q6lI1vM1kB0GqlGn8ye3vu+/4RbBeHFIHRMA+uO1i6Vgguvd9SDXp4QwO
+        Egy33v8bPwmf71plab1c14WZMtth9rCTNVfP0tJpKoaMiDSnUWGsHB3W5STycLGfeBIIMv
+        NtUKHNG7NJtL0oTvLZEZ2XE5zo5GFlqmaWdVKDH8f22i3M8pU6tdd/Kgl7fI9hNQEjaAvF
+        iJ7YaNvzSt7yQcdHWkOQB9icb2ntyDXf3vZBUEhitsxVfcYn47TWde5pXE072M2LTT6zOE
+        EbzvvbWc0Mu3oGpQs0lckdl2ylfzN9o9cDKRjZWaUY2bgHBEbkmnL5AnRDcMOQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1649467664;
+        s=2020e; t=1649535752;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=jCLyQzxs8GcSO5HFA9nS0D0i1pM8j4J5EtCby3Xnt4M=;
-        b=pUhw7rHtnPSy1nmSMRSwwQgpLAbgAQbLZt/15BbOQu543rgrjfiEtnpN+37CYZpEGV5suu
-        wGbgRShd2v9znjCw==
-From:   "tip-bot2 for Kuppuswamy Sathyanarayanan" <tip-bot2@linutronix.de>
+        bh=8zaOcmLacimZqKKgJ63XfnGyUqu5Teh+3oLuqT1XOXc=;
+        b=GDVrwfohIS5ekAag54Ki7/L048J1H20Hm41fBGfjdcVuRUbFnnk9JDqvKF9zC7AdyGGY58
+        FLA8szonjkLYfDCw==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/tdx] x86/tdx: Detect running as a TDX guest in early boot
-Cc:     Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Andi Kleen <ak@linux.intel.com>,
-        Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@suse.de>,
-        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+Subject: [tip: timers/core] timers: Simplify calc_index()
+Cc:     Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220405232939.73860-2-kirill.shutemov@linux.intel.com>
-References: <20220405232939.73860-2-kirill.shutemov@linux.intel.com>
+In-Reply-To: <87h778j46c.ffs@tglx>
+References: <87h778j46c.ffs@tglx>
 MIME-Version: 1.0
-Message-ID: <164946766375.4207.9891279817932124985.tip-bot2@tip-bot2>
+Message-ID: <164953575112.4207.4558393487753239676.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -70,202 +64,47 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/tdx branch of tip:
+The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     59bd54a84d15e9335de5b8abe7b3b9713a36b99b
-Gitweb:        https://git.kernel.org/tip/59bd54a84d15e9335de5b8abe7b3b9713a36b99b
-Author:        Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-AuthorDate:    Wed, 06 Apr 2022 02:29:10 +03:00
-Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Thu, 07 Apr 2022 08:27:50 -07:00
+Commit-ID:     a2026e44eff5d74a83d7ffee6325a007bef85385
+Gitweb:        https://git.kernel.org/tip/a2026e44eff5d74a83d7ffee6325a007bef85385
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Mon, 04 Apr 2022 16:47:55 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Sat, 09 Apr 2022 22:19:39 +02:00
 
-x86/tdx: Detect running as a TDX guest in early boot
+timers: Simplify calc_index()
 
-In preparation of extending cc_platform_has() API to support TDX guest,
-use CPUID instruction to detect support for TDX guests in the early
-boot code (via tdx_early_init()). Since copy_bootdata() is the first
-user of cc_platform_has() API, detect the TDX guest status before it.
+The level granularity round up of calc_index() does:
 
-Define a synthetic feature flag (X86_FEATURE_TDX_GUEST) and set this
-bit in a valid TDX guest platform.
+   (x + (1 << n)) >> n
 
-Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Andi Kleen <ak@linux.intel.com>
-Reviewed-by: Tony Luck <tony.luck@intel.com>
-Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lkml.kernel.org/r/20220405232939.73860-2-kirill.shutemov@linux.intel.com
+which is obviously equivalent to
+
+   (x >> n) + 1
+
+but compilers can't figure that out despite the fact that the input range
+is known to not cause an overflow. It's neither intuitive to read.
+
+Just write out the obvious.
+
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/87h778j46c.ffs@tglx
+
 ---
- arch/x86/Kconfig                         | 12 ++++++++++++
- arch/x86/coco/Makefile                   |  2 ++
- arch/x86/coco/tdx/Makefile               |  3 +++
- arch/x86/coco/tdx/tdx.c                  | 22 ++++++++++++++++++++++
- arch/x86/include/asm/cpufeatures.h       |  1 +
- arch/x86/include/asm/disabled-features.h |  8 +++++++-
- arch/x86/include/asm/tdx.h               | 21 +++++++++++++++++++++
- arch/x86/kernel/head64.c                 |  4 ++++
- 8 files changed, 72 insertions(+), 1 deletion(-)
- create mode 100644 arch/x86/coco/tdx/Makefile
- create mode 100644 arch/x86/coco/tdx/tdx.c
- create mode 100644 arch/x86/include/asm/tdx.h
+ kernel/time/timer.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index b0142e0..4ae2732 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -878,6 +878,18 @@ config ACRN_GUEST
- 	  IOT with small footprint and real-time features. More details can be
- 	  found in https://projectacrn.org/.
- 
-+config INTEL_TDX_GUEST
-+	bool "Intel TDX (Trust Domain Extensions) - Guest Support"
-+	depends on X86_64 && CPU_SUP_INTEL
-+	depends on X86_X2APIC
-+	help
-+	  Support running as a guest under Intel TDX.  Without this support,
-+	  the guest kernel can not boot or run under TDX.
-+	  TDX includes memory encryption and integrity capabilities
-+	  which protect the confidentiality and integrity of guest
-+	  memory contents and CPU state. TDX guests are protected from
-+	  some attacks from the VMM.
-+
- endif #HYPERVISOR_GUEST
- 
- source "arch/x86/Kconfig.cpu"
-diff --git a/arch/x86/coco/Makefile b/arch/x86/coco/Makefile
-index c1ead00..c816acf 100644
---- a/arch/x86/coco/Makefile
-+++ b/arch/x86/coco/Makefile
-@@ -4,3 +4,5 @@ KASAN_SANITIZE_core.o	:= n
- CFLAGS_core.o		+= -fno-stack-protector
- 
- obj-y += core.o
-+
-+obj-$(CONFIG_INTEL_TDX_GUEST)	+= tdx/
-diff --git a/arch/x86/coco/tdx/Makefile b/arch/x86/coco/tdx/Makefile
-new file mode 100644
-index 0000000..c929d53
---- /dev/null
-+++ b/arch/x86/coco/tdx/Makefile
-@@ -0,0 +1,3 @@
-+# SPDX-License-Identifier: GPL-2.0
-+
-+obj-y += tdx.o
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-new file mode 100644
-index 0000000..9767447
---- /dev/null
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -0,0 +1,22 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright (C) 2021-2022 Intel Corporation */
-+
-+#undef pr_fmt
-+#define pr_fmt(fmt)     "tdx: " fmt
-+
-+#include <linux/cpufeature.h>
-+#include <asm/tdx.h>
-+
-+void __init tdx_early_init(void)
-+{
-+	u32 eax, sig[3];
-+
-+	cpuid_count(TDX_CPUID_LEAF_ID, 0, &eax, &sig[0], &sig[2],  &sig[1]);
-+
-+	if (memcmp(TDX_IDENT, sig, sizeof(sig)))
-+		return;
-+
-+	setup_force_cpu_cap(X86_FEATURE_TDX_GUEST);
-+
-+	pr_info("Guest detected\n");
-+}
-diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
-index 73e643a..20df73b 100644
---- a/arch/x86/include/asm/cpufeatures.h
-+++ b/arch/x86/include/asm/cpufeatures.h
-@@ -238,6 +238,7 @@
- #define X86_FEATURE_VMW_VMMCALL		( 8*32+19) /* "" VMware prefers VMMCALL hypercall instruction */
- #define X86_FEATURE_PVUNLOCK		( 8*32+20) /* "" PV unlock function */
- #define X86_FEATURE_VCPUPREEMPT		( 8*32+21) /* "" PV vcpu_is_preempted function */
-+#define X86_FEATURE_TDX_GUEST		( 8*32+22) /* Intel Trust Domain Extensions Guest */
- 
- /* Intel-defined CPU features, CPUID level 0x00000007:0 (EBX), word 9 */
- #define X86_FEATURE_FSGSBASE		( 9*32+ 0) /* RDFSBASE, WRFSBASE, RDGSBASE, WRGSBASE instructions*/
-diff --git a/arch/x86/include/asm/disabled-features.h b/arch/x86/include/asm/disabled-features.h
-index 1231d63..b37de82 100644
---- a/arch/x86/include/asm/disabled-features.h
-+++ b/arch/x86/include/asm/disabled-features.h
-@@ -68,6 +68,12 @@
- # define DISABLE_SGX	(1 << (X86_FEATURE_SGX & 31))
- #endif
- 
-+#ifdef CONFIG_INTEL_TDX_GUEST
-+# define DISABLE_TDX_GUEST	0
-+#else
-+# define DISABLE_TDX_GUEST	(1 << (X86_FEATURE_TDX_GUEST & 31))
-+#endif
-+
- /*
-  * Make sure to add features to the correct mask
-  */
-@@ -79,7 +85,7 @@
- #define DISABLED_MASK5	0
- #define DISABLED_MASK6	0
- #define DISABLED_MASK7	(DISABLE_PTI)
--#define DISABLED_MASK8	0
-+#define DISABLED_MASK8	(DISABLE_TDX_GUEST)
- #define DISABLED_MASK9	(DISABLE_SMAP|DISABLE_SGX)
- #define DISABLED_MASK10	0
- #define DISABLED_MASK11	0
-diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-new file mode 100644
-index 0000000..ba8042c
---- /dev/null
-+++ b/arch/x86/include/asm/tdx.h
-@@ -0,0 +1,21 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/* Copyright (C) 2021-2022 Intel Corporation */
-+#ifndef _ASM_X86_TDX_H
-+#define _ASM_X86_TDX_H
-+
-+#include <linux/init.h>
-+
-+#define TDX_CPUID_LEAF_ID	0x21
-+#define TDX_IDENT		"IntelTDX    "
-+
-+#ifdef CONFIG_INTEL_TDX_GUEST
-+
-+void __init tdx_early_init(void);
-+
-+#else
-+
-+static inline void tdx_early_init(void) { };
-+
-+#endif /* CONFIG_INTEL_TDX_GUEST */
-+
-+#endif /* _ASM_X86_TDX_H */
-diff --git a/arch/x86/kernel/head64.c b/arch/x86/kernel/head64.c
-index 4f5ecbb..6dff50c 100644
---- a/arch/x86/kernel/head64.c
-+++ b/arch/x86/kernel/head64.c
-@@ -40,6 +40,7 @@
- #include <asm/extable.h>
- #include <asm/trapnr.h>
- #include <asm/sev.h>
-+#include <asm/tdx.h>
- 
- /*
-  * Manage page tables very early on.
-@@ -514,6 +515,9 @@ asmlinkage __visible void __init x86_64_start_kernel(char * real_mode_data)
- 
- 	idt_setup_early_handler();
- 
-+	/* Needed before cc_platform_has() can be used for TDX */
-+	tdx_early_init();
-+
- 	copy_bootdata(__va(real_mode_data));
- 
- 	/*
+diff --git a/kernel/time/timer.c b/kernel/time/timer.c
+index 204d6cd..60aebf2 100644
+--- a/kernel/time/timer.c
++++ b/kernel/time/timer.c
+@@ -502,7 +502,7 @@ static inline unsigned calc_index(unsigned long expires, unsigned lvl,
+ 	 *
+ 	 * Round up with level granularity to prevent this.
+ 	 */
+-	expires = (expires + LVL_GRAN(lvl)) >> LVL_SHIFT(lvl);
++	expires = (expires >> LVL_SHIFT(lvl)) + 1;
+ 	*bucket_expiry = expires << LVL_SHIFT(lvl);
+ 	return LVL_OFFS(lvl) + (expires & LVL_MASK);
+ }
