@@ -2,58 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 127524FAFB2
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 10 Apr 2022 21:13:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 46B5B4FB013
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 10 Apr 2022 22:27:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241137AbiDJTPQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 10 Apr 2022 15:15:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34256 "EHLO
+        id S242055AbiDJU3z (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 10 Apr 2022 16:29:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41244 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234850AbiDJTPO (ORCPT
+        with ESMTP id S236950AbiDJU3y (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 10 Apr 2022 15:15:14 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 488EC60D80;
-        Sun, 10 Apr 2022 12:13:03 -0700 (PDT)
-Date:   Sun, 10 Apr 2022 19:13:00 -0000
+        Sun, 10 Apr 2022 16:29:54 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E38F93FD91;
+        Sun, 10 Apr 2022 13:27:42 -0700 (PDT)
+Date:   Sun, 10 Apr 2022 20:27:39 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1649617981;
+        s=2020; t=1649622461;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=rJoK25JDofhxRdIrTxLqJwZkQUXucj2lIQYsvAF0X+8=;
-        b=jole1FYhyfKKoR5cINqVJ6Ek/jQmDOke3tZ//kEBRTGm7DGKLTFG/WCoMIY8yoTd6C+mm1
-        o2icvxnkQySn5EO/4tfYU7uuEUxRLmnSkfCPTv+Ap3+Wr/s4GvSRCgGIA997G5UslDWCzP
-        VIVgpvVRlSKCVHFQXlcjL964j/44MIpSXWaWMz25DniNDGdSc+g/FH501gUjaTdBECI4iZ
-        iIQUzIgFzmVfafyT9SpckdDEIRFZ4/6qBOqnHT2jsTCRk2ULc7fK0Nm9/JNQcQ0lnSQuZg
-        KXY0yFqqnbqPdy8mwdc1k2m0ZJVuxWiJdYsiQVM1Clv1vCi5Z4c0qKG7QmcZcw==
+        bh=E1dSEgq02Yx+z4C2EEpCjyijDIgMlaQGjt5ftk5G6Uk=;
+        b=zZRnbUvpLsz2+Zp5PoaxCNPP5v58PvBjOQZiktrgptvjCfoLycMjO69JrK8WOsYeiZwBrs
+        h7eVdI+4Im7MvYUrNEpee9Efhqd9lUg6Lp/TX9zrYss7+41krMs6JMnBZ/LyoIAXYMCmEw
+        C70b53Nh/3ifVffmJIACqf+SDVzYMa98CaY1Jn2hio9tmage9Yy5y4Rpjr8Y8SR0dHS2Wm
+        izXlf5ZZjlRKrmdYhpzQiqKvFBBkhS8lLRKXSdLDMpWAFC3MbNfLjhjg3McTAs/fReVAiM
+        NPdFwhGUNsCGhFRqJLxwZ6KpIcTWMvTR5GyVpwrDWtuO7znjGZB/Mfe8oAj0jQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1649617981;
+        s=2020e; t=1649622461;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=rJoK25JDofhxRdIrTxLqJwZkQUXucj2lIQYsvAF0X+8=;
-        b=GRecYXDsYkIri9W6Ki84EQ0qTaeQESYddYfEQ2XT32ZGCmrwdcPxh6xIRLBePO+4fvaLuH
-        i9TmrcgUX2CDNxAQ==
-From:   "tip-bot2 for Marc Zyngier" <tip-bot2@linutronix.de>
+        bh=E1dSEgq02Yx+z4C2EEpCjyijDIgMlaQGjt5ftk5G6Uk=;
+        b=omSQdQJqlcOU5MU8saxs3hnJPsDA0ML6DulScsQ8K/0HgBRl0DeRT3BAAXbJUagbUMyjdz
+        i4QPTN1IycjtHtCw==
+From:   "tip-bot2 for Yury Norov" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] genirq/msi: Shutdown managed interrupts with
- unsatifiable affinities
-Cc:     John Garry <john.garry@huawei.com>,
-        David Decotigny <ddecotig@google.com>,
-        Marc Zyngier <maz@kernel.org>,
+Subject: [tip: irq/core] genirq/affinity: Replace cpumask_weight() with
+ cpumask_empty() where appropriate
+Cc:     Yury Norov <yury.norov@gmail.com>,
         Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20220405185040.206297-2-maz@kernel.org>
-References: <20220405185040.206297-2-maz@kernel.org>
+        linux-kernel@vger.kernel.org, maz@kernel.org
+In-Reply-To: <20220210224933.379149-22-yury.norov@gmail.com>
+References: <20220210224933.379149-22-yury.norov@gmail.com>
 MIME-Version: 1.0
-Message-ID: <164961798087.4207.9105739459698939975.tip-bot2@tip-bot2>
+Message-ID: <164962245994.4207.10090580398155704963.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -70,62 +68,40 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     d802057c7c553ad426520a053da9f9fe08e2c35a
-Gitweb:        https://git.kernel.org/tip/d802057c7c553ad426520a053da9f9fe08e2c35a
-Author:        Marc Zyngier <maz@kernel.org>
-AuthorDate:    Tue, 05 Apr 2022 19:50:38 +01:00
+Commit-ID:     911488de0565f1d53bd36174d20917ebc4b44c0e
+Gitweb:        https://git.kernel.org/tip/911488de0565f1d53bd36174d20917ebc4b44c0e
+Author:        Yury Norov <yury.norov@gmail.com>
+AuthorDate:    Thu, 10 Feb 2022 14:49:05 -08:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sun, 10 Apr 2022 21:06:30 +02:00
+CommitterDate: Sun, 10 Apr 2022 22:20:28 +02:00
 
-genirq/msi: Shutdown managed interrupts with unsatifiable affinities
+genirq/affinity: Replace cpumask_weight() with cpumask_empty() where appropriate
 
-When booting with maxcpus=<small number>, interrupt controllers
-such as the GICv3 ITS may not be able to satisfy the affinity of
-some managed interrupts, as some of the HW resources are simply
-not available.
+__irq_build_affinity_masks() calls cpumask_weight() to check if any bit of
+a given cpumask is set.
 
-The same thing happens when loading a driver using managed interrupts
-while CPUs are offline.
+This can be done more efficiently with cpumask_empty() because
+cpumask_empty() stops traversing the cpumask as soon as it finds first set
+bit, while cpumask_weight() counts all bits unconditionally.
 
-In order to deal with this, do not try to activate such interrupt
-if there is no online CPU capable of handling it. Instead, place
-it in shutdown state. Once a capable CPU shows up, it will be
-activated.
-
-Reported-by: John Garry <john.garry@huawei.com>
-Reported-by: David Decotigny <ddecotig@google.com>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Yury Norov <yury.norov@gmail.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: John Garry <john.garry@huawei.com>
-Link: https://lore.kernel.org/r/20220405185040.206297-2-maz@kernel.org
+Link: https://lore.kernel.org/r/20220210224933.379149-22-yury.norov@gmail.com
 
 ---
- kernel/irq/msi.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ kernel/irq/affinity.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/irq/msi.c b/kernel/irq/msi.c
-index 2bdfce5..a9ee535 100644
---- a/kernel/irq/msi.c
-+++ b/kernel/irq/msi.c
-@@ -818,6 +818,21 @@ static int msi_init_virq(struct irq_domain *domain, int virq, unsigned int vflag
- 		irqd_clr_can_reserve(irqd);
- 		if (vflags & VIRQ_NOMASK_QUIRK)
- 			irqd_set_msi_nomask_quirk(irqd);
-+
-+		/*
-+		 * If the interrupt is managed but no CPU is available to
-+		 * service it, shut it down until better times. Note that
-+		 * we only do this on the !RESERVE path as x86 (the only
-+		 * architecture using this flag) deals with this in a
-+		 * different way by using a catch-all vector.
-+		 */
-+		if ((vflags & VIRQ_ACTIVATE) &&
-+		    irqd_affinity_is_managed(irqd) &&
-+		    !cpumask_intersects(irq_data_get_affinity_mask(irqd),
-+					cpu_online_mask)) {
-+			    irqd_set_managed_shutdown(irqd);
-+			    return 0;
-+		    }
- 	}
+diff --git a/kernel/irq/affinity.c b/kernel/irq/affinity.c
+index f7ff891..18740fa 100644
+--- a/kernel/irq/affinity.c
++++ b/kernel/irq/affinity.c
+@@ -258,7 +258,7 @@ static int __irq_build_affinity_masks(unsigned int startvec,
+ 	nodemask_t nodemsk = NODE_MASK_NONE;
+ 	struct node_vectors *node_vectors;
  
- 	if (!(vflags & VIRQ_ACTIVATE))
+-	if (!cpumask_weight(cpu_mask))
++	if (cpumask_empty(cpu_mask))
+ 		return 0;
+ 
+ 	nodes = get_nodes_in_cpumask(node_to_cpumask, cpu_mask, &nodemsk);
