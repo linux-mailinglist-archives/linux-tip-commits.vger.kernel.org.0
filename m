@@ -2,55 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D4FB4FB02D
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 10 Apr 2022 22:35:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CCFA4FB032
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 10 Apr 2022 22:42:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243068AbiDJUha (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 10 Apr 2022 16:37:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32876 "EHLO
+        id S242279AbiDJUon (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 10 Apr 2022 16:44:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59992 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243948AbiDJUh0 (ORCPT
+        with ESMTP id S235427AbiDJUom (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 10 Apr 2022 16:37:26 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BF4656C31;
-        Sun, 10 Apr 2022 13:35:15 -0700 (PDT)
-Date:   Sun, 10 Apr 2022 20:35:13 -0000
+        Sun, 10 Apr 2022 16:44:42 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47D43109A;
+        Sun, 10 Apr 2022 13:42:30 -0700 (PDT)
+Date:   Sun, 10 Apr 2022 20:42:27 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1649622914;
+        s=2020; t=1649623348;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=3t40NLdDYvw3Dpwjzjb8Ib6K1WAHAfILhDYJdXKOTOY=;
-        b=Q0DDCid2QfRe4Bn0oejethBQQQ0SnYyqaWrBdHtvvjh/fTpdwHA/QmkRqB59Uig2yHhOrv
-        vRTuSnviJOefYHh1MwO3M6VLnITm+aIDXMzrrb3xQV8pWXSgsZ0WYcwuxquM05t5J9IGMw
-        Zar02WHO0BSUXhdOlPPq+nv9q5rs4msRNDixpNOFkLfvQL/BhI69A1fy4MgDGHGjup8ytp
-        PrYN+cG4nyY8454fIvwXOtB0jDXRmoG5YkgJk2v9H4Jyf/xtjIV8Q0mo/U0zv79ks5T9DK
-        2gtL6U/klYUHQ/UAqGaRZj5HOpTS7N+CEGRLDOfL6wEGPISnkckohVVNmdAVOw==
+        bh=L2zWUV+nMMwSggeVHi8blL9PevsrRBPc46LpSIX0ts0=;
+        b=PM7dI6nIWKaeiY/JSy+FE+dkvCPvMJC/ymmXVKNiuWENsiYqdEVakAkLWKW6jGDx8k90ez
+        V1fC04ZBi//d+rYjn6dspQkLYhS6N4RbG+xPyeJgEfJvik9qb+cRcDclamYhRbblaqfOLK
+        HzVuSTvZPUcVThAwpNlX5LFmEBAeaQwa6mBCAIiFrKEyyUFUCaHpwZchmozjXCyJ4uNgNk
+        Vxk6m++4HLWIBs/ZaFzvkf/kvZ6nZq1+wunj4LBkJ2QVK9HTLJQy+XZC0QquBK9Gp0Fjgw
+        DbDy6aznWrMoGfv5nnAAlP7v5HfmzSTdnMnYBWg5pVYgD1z1FVqyFiOFMqsmjg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1649622914;
+        s=2020e; t=1649623348;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=3t40NLdDYvw3Dpwjzjb8Ib6K1WAHAfILhDYJdXKOTOY=;
-        b=CzS8qnSnHdl4KlcxLipbVHSe38+9NiwRW2Sbl9IWRufOp5P2Ast+Aw591vCUX6dZCOD5ij
-        7dCxyDM6/89P4TDw==
+        bh=L2zWUV+nMMwSggeVHi8blL9PevsrRBPc46LpSIX0ts0=;
+        b=3fJfGIPy0dgtpv/OYyusdCOvZCvt+FYWZHIfe9Jsx2IE9nrf9V4f2ms4zzGFM0A8hSDqMQ
+        5XERuFby0/4eJYCA==
 From:   "tip-bot2 for Yury Norov" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] clocksource: Replace cpumask_weight() with cpumask_empty()
+Subject: [tip: x86/cleanups] x86/mm: Replace nodes_weight() with nodes_empty()
+ where appropriate
 Cc:     Yury Norov <yury.norov@gmail.com>,
         Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220210224933.379149-24-yury.norov@gmail.com>
-References: <20220210224933.379149-24-yury.norov@gmail.com>
+In-Reply-To: <20220210224933.379149-26-yury.norov@gmail.com>
+References: <20220210224933.379149-26-yury.norov@gmail.com>
 MIME-Version: 1.0
-Message-ID: <164962291319.4207.17949067919284421483.tip-bot2@tip-bot2>
+Message-ID: <164962334763.4207.6178679393836557321.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,42 +66,65 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/core branch of tip:
+The following commit has been merged into the x86/cleanups branch of tip:
 
-Commit-ID:     8afbcaf8690dac19ebf570a4e4fef9c59c75bf8e
-Gitweb:        https://git.kernel.org/tip/8afbcaf8690dac19ebf570a4e4fef9c59c75bf8e
+Commit-ID:     c2a911d302b0d014a4d0d732a2bfc319e643eb62
+Gitweb:        https://git.kernel.org/tip/c2a911d302b0d014a4d0d732a2bfc319e643eb62
 Author:        Yury Norov <yury.norov@gmail.com>
-AuthorDate:    Thu, 10 Feb 2022 14:49:07 -08:00
+AuthorDate:    Thu, 10 Feb 2022 14:49:09 -08:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sun, 10 Apr 2022 22:30:04 +02:00
+CommitterDate: Sun, 10 Apr 2022 22:35:38 +02:00
 
-clocksource: Replace cpumask_weight() with cpumask_empty()
+x86/mm: Replace nodes_weight() with nodes_empty() where appropriate
 
-clocksource_verify_percpu() calls cpumask_weight() to check if any bit of a
-given cpumask is set.
+Various mm code calls nodes_weight() to check if any bit of a given
+nodemask is set.
 
-This can be done more efficiently with cpumask_empty() because
-cpumask_empty() stops traversing the cpumask as soon as it finds first set
-bit, while cpumask_weight() counts all bits unconditionally.
+This can be done more efficiently with nodes_empty() because nodes_empty()
+stops traversing the nodemask as soon as it finds first set bit, while
+nodes_weight() counts all bits unconditionally.
 
 Signed-off-by: Yury Norov <yury.norov@gmail.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20220210224933.379149-24-yury.norov@gmail.com
+Link: https://lore.kernel.org/r/20220210224933.379149-26-yury.norov@gmail.com
 
 ---
- kernel/time/clocksource.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/mm/amdtopology.c    | 2 +-
+ arch/x86/mm/numa_emulation.c | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/time/clocksource.c b/kernel/time/clocksource.c
-index 95d7ca3..cee5da1 100644
---- a/kernel/time/clocksource.c
-+++ b/kernel/time/clocksource.c
-@@ -343,7 +343,7 @@ void clocksource_verify_percpu(struct clocksource *cs)
- 	cpus_read_lock();
- 	preempt_disable();
- 	clocksource_verify_choose_cpus();
--	if (cpumask_weight(&cpus_chosen) == 0) {
-+	if (cpumask_empty(&cpus_chosen)) {
- 		preempt_enable();
- 		cpus_read_unlock();
- 		pr_warn("Not enough CPUs to check clocksource '%s'.\n", cs->name);
+diff --git a/arch/x86/mm/amdtopology.c b/arch/x86/mm/amdtopology.c
+index 058b2f3..b3ca7d2 100644
+--- a/arch/x86/mm/amdtopology.c
++++ b/arch/x86/mm/amdtopology.c
+@@ -154,7 +154,7 @@ int __init amd_numa_init(void)
+ 		node_set(nodeid, numa_nodes_parsed);
+ 	}
+ 
+-	if (!nodes_weight(numa_nodes_parsed))
++	if (nodes_empty(numa_nodes_parsed))
+ 		return -ENOENT;
+ 
+ 	/*
+diff --git a/arch/x86/mm/numa_emulation.c b/arch/x86/mm/numa_emulation.c
+index 1a02b79..9a93053 100644
+--- a/arch/x86/mm/numa_emulation.c
++++ b/arch/x86/mm/numa_emulation.c
+@@ -123,7 +123,7 @@ static int __init split_nodes_interleave(struct numa_meminfo *ei,
+ 	 * Continue to fill physical nodes with fake nodes until there is no
+ 	 * memory left on any of them.
+ 	 */
+-	while (nodes_weight(physnode_mask)) {
++	while (!nodes_empty(physnode_mask)) {
+ 		for_each_node_mask(i, physnode_mask) {
+ 			u64 dma32_end = PFN_PHYS(MAX_DMA32_PFN);
+ 			u64 start, limit, end;
+@@ -270,7 +270,7 @@ static int __init split_nodes_size_interleave_uniform(struct numa_meminfo *ei,
+ 	 * Fill physical nodes with fake nodes of size until there is no memory
+ 	 * left on any of them.
+ 	 */
+-	while (nodes_weight(physnode_mask)) {
++	while (!nodes_empty(physnode_mask)) {
+ 		for_each_node_mask(i, physnode_mask) {
+ 			u64 dma32_end = PFN_PHYS(MAX_DMA32_PFN);
+ 			u64 start, limit, end;
