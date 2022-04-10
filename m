@@ -2,134 +2,112 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 564D34FB0C9
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 11 Apr 2022 01:23:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4846B4FB0D4
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 11 Apr 2022 01:32:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229727AbiDJXZQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 10 Apr 2022 19:25:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35186 "EHLO
+        id S236025AbiDJXea (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 10 Apr 2022 19:34:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52072 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229559AbiDJXZP (ORCPT
+        with ESMTP id S244270AbiDJXck (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 10 Apr 2022 19:25:15 -0400
-Received: from mail.itouring.de (mail.itouring.de [IPv6:2a01:4f8:a0:4463::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2940115810;
-        Sun, 10 Apr 2022 16:23:03 -0700 (PDT)
-Received: from tux.applied-asynchrony.com (p5ddd7616.dip0.t-ipconnect.de [93.221.118.22])
-        by mail.itouring.de (Postfix) with ESMTPSA id 91BD2124EC0;
-        Mon, 11 Apr 2022 01:22:58 +0200 (CEST)
-Received: from [192.168.100.221] (hho.applied-asynchrony.com [192.168.100.221])
-        by tux.applied-asynchrony.com (Postfix) with ESMTP id 4733CF01601;
-        Mon, 11 Apr 2022 01:22:58 +0200 (CEST)
-Subject: Re: [tip: sched/core] sched/tracing: Don't re-read p->state when
- emitting sched_switch event
-To:     Qais Yousef <qais.yousef@arm.com>,
-        Greg KH <gregkh@linuxfoundation.org>
-Cc:     linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-        Abhijeet Dharmapurikar <adharmap@quicinc.com>,
-        Valentin Schneider <valentin.schneider@arm.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>, x86@kernel.org,
-        stable@vger.kernel.org
-References: <20220120162520.570782-2-valentin.schneider@arm.com>
- <164614827941.16921.4995078681021904041.tip-bot2@tip-bot2>
- <20220308180240.qivyjdn4e3te3urm@wubuntu> <YiecMTy8ckUdXTQO@kroah.com>
- <20220308185138.ldxfqd242uxowymd@wubuntu>
- <20220409233829.o2s6tffuzujkx6w2@airbuntu>
- <20220410220608.cdf6hmf5mwcqzwun@airbuntu>
-From:   =?UTF-8?Q?Holger_Hoffst=c3=a4tte?= <holger@applied-asynchrony.com>
-Organization: Applied Asynchrony, Inc.
-Message-ID: <db6ec3a4-3ac9-e96b-d7a5-3e1b4de2adc8@applied-asynchrony.com>
-Date:   Mon, 11 Apr 2022 01:22:58 +0200
+        Sun, 10 Apr 2022 19:32:40 -0400
+Received: from mail-yw1-x1131.google.com (mail-yw1-x1131.google.com [IPv6:2607:f8b0:4864:20::1131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F1606316
+        for <linux-tip-commits@vger.kernel.org>; Sun, 10 Apr 2022 16:30:28 -0700 (PDT)
+Received: by mail-yw1-x1131.google.com with SMTP id 00721157ae682-2ebf3746f87so53239577b3.6
+        for <linux-tip-commits@vger.kernel.org>; Sun, 10 Apr 2022 16:30:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=282Vk2O0GAasg1b2VVKE2l0IwOAnFE95LqI3UeEiHmA=;
+        b=L/aNB0QuWtyYBGZcdZOMNR5XCGxPO31qEbtLYJmrA0sE28AUrRC/5Dd5LgAhVn1a10
+         1Jda0Up/OSi2zDaVaCyVw4q/7BOCSRmE3yKJcatIGNwxLOvUwPOHETt76uCNFVLO5+th
+         XfGftOcQ1+V+HQd61KS2cpWf3Or1nkjXIF7gUPmATTyI9zxsiyi0O1QYB51TtbBxbtOu
+         3dbgl993z9gSDmXR/cfQU+/kL/jlg52dVFsl6Vxv35VdwwZqwU5xKSKY3jCRzub0p5uG
+         94tG/p7w4M1aBSsJ5tSY7xo7Y2O/zlsPR6A2VURV36gKJSTyFb74Lye7OBKe4eEuqK6e
+         uUJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=282Vk2O0GAasg1b2VVKE2l0IwOAnFE95LqI3UeEiHmA=;
+        b=ekKcCh3lLdXLwQ1a9INLG6Hl8PAVrnhxCHcma4rOdC9cUcKDXz5UIxcSpVAwvmTNvY
+         bL4rZQhuMgTyfM6pMP1/5e0nCEVPyfod4U5ZnERFqpleBlZbGEj8Z3fpDVikgBB/6H+i
+         cP128XWZQ9TgdfRl7Rd+RHwqV11lYNzm7US1/Eb8B7uZLm/+EUCVmj2CWjVEyUd3Bshb
+         dmGOK5Apu2vj+GwmSQnlFiCaKjiplv1D3NaoKNc9C2v0s8Rh3ooSXB18i6Myp8KA2I5h
+         tatVldyeGs6NRsDU1C3tKWBkoq4Aj+tKurQS4q1YYje2Jf2ErPSlXf/+uq08c+8d6lKL
+         3wTg==
+X-Gm-Message-State: AOAM532aV9UOQIjbjqCdFuNN/cYM2cokL7eZtTG2lgfXSM6A8NvxuRsG
+        UIxmrsmH3NDPjF0op9cvB2vcfehDbDwQDBDx2rI=
+X-Google-Smtp-Source: ABdhPJwuSR7n2Yg+TEo5bX7cUbQcN5gcU8ar6SuGCEkS9kOGqjMixZGaS/Z+4oj78iDmFxd/3B4G31zVlqVkelZ4G5w=
+X-Received: by 2002:a81:14f:0:b0:2eb:ef50:beed with SMTP id
+ 76-20020a81014f000000b002ebef50beedmr8720985ywb.473.1649633427535; Sun, 10
+ Apr 2022 16:30:27 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20220410220608.cdf6hmf5mwcqzwun@airbuntu>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+Received: by 2002:a05:7000:828a:0:0:0:0 with HTTP; Sun, 10 Apr 2022 16:30:27
+ -0700 (PDT)
+From:   asante richard <r.a.k.agency.gha@gmail.com>
+Date:   Sun, 10 Apr 2022 16:30:27 -0700
+Message-ID: <CANJAFHEZPK-yo+tRKGUqeY2jr1v9XdgLRSmQWDfO+d1ZUHe3TA@mail.gmail.com>
+Subject: ONGOING COMPANIES SUPPLY TENDER IN GHANA..
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=5.7 required=5.0 tests=BAYES_50,DEAR_SOMETHING,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,SUBJ_ALL_CAPS,
+        T_SCC_BODY_TEXT_LINE,UNDISC_MONEY autolearn=no autolearn_force=no
         version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:1131 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5047]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [r.a.k.agency.gha[at]gmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
+        *  2.0 DEAR_SOMETHING BODY: Contains 'Dear (something)'
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  2.6 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On 2022-04-11 00:06, Qais Yousef wrote:
-> On 04/10/22 00:38, Qais Yousef wrote:
->> On 03/08/22 18:51, Qais Yousef wrote:
->>> On 03/08/22 19:10, Greg KH wrote:
->>>> On Tue, Mar 08, 2022 at 06:02:40PM +0000, Qais Yousef wrote:
->>>>> +CC stable
->>>>>
->>>>> On 03/01/22 15:24, tip-bot2 for Valentin Schneider wrote:
->>>>>> The following commit has been merged into the sched/core branch of tip:
->>>>>>
->>>>>> Commit-ID:     fa2c3254d7cfff5f7a916ab928a562d1165f17bb
->>>>>> Gitweb:        https://git.kernel.org/tip/fa2c3254d7cfff5f7a916ab928a562d1165f17bb
->>>>>> Author:        Valentin Schneider <valentin.schneider@arm.com>
->>>>>> AuthorDate:    Thu, 20 Jan 2022 16:25:19
->>>>>> Committer:     Peter Zijlstra <peterz@infradead.org>
->>>>>> CommitterDate: Tue, 01 Mar 2022 16:18:39 +01:00
->>>>>>
->>>>>> sched/tracing: Don't re-read p->state when emitting sched_switch event
->>>>>>
->>>>>> As of commit
->>>>>>
->>>>>>    c6e7bd7afaeb ("sched/core: Optimize ttwu() spinning on p->on_cpu")
->>>>>>
->>>>>> the following sequence becomes possible:
->>>>>>
->>>>>> 		      p->__state = TASK_INTERRUPTIBLE;
->>>>>> 		      __schedule()
->>>>>> 			deactivate_task(p);
->>>>>>    ttwu()
->>>>>>      READ !p->on_rq
->>>>>>      p->__state=TASK_WAKING
->>>>>> 			trace_sched_switch()
->>>>>> 			  __trace_sched_switch_state()
->>>>>> 			    task_state_index()
->>>>>> 			      return 0;
->>>>>>
->>>>>> TASK_WAKING isn't in TASK_REPORT, so the task appears as TASK_RUNNING in
->>>>>> the trace event.
->>>>>>
->>>>>> Prevent this by pushing the value read from __schedule() down the trace
->>>>>> event.
->>>>>>
->>>>>> Reported-by: Abhijeet Dharmapurikar <adharmap@quicinc.com>
->>>>>> Signed-off-by: Valentin Schneider <valentin.schneider@arm.com>
->>>>>> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
->>>>>> Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
->>>>>> Link: https://lore.kernel.org/r/20220120162520.570782-2-valentin.schneider@arm.com
->>>>>
->>>>> Any objection to picking this for stable? I'm interested in this one for some
->>>>> Android users but prefer if it can be taken by stable rather than backport it
->>>>> individually.
->>>>>
->>>>> I think it makes sense to pick the next one in the series too.
->>>>
->>>> What commit does this fix in Linus's tree?
->>>
->>> It should be this one: c6e7bd7afaeb ("sched/core: Optimize ttwu() spinning on p->on_cpu")
->>
->> Should this be okay to be picked up by stable now? I can see AUTOSEL has picked
->> it up for v5.15+, but it impacts v5.10 too.
-> 
-> commit: fa2c3254d7cfff5f7a916ab928a562d1165f17bb
-> subject: sched/tracing: Don't re-read p->state when emitting sched_switch event
-> 
-> This patch has an impact on Android 5.10 users who experience tooling breakage.
-> Is it possible to include in 5.10 LTS please?
-> 
-> It was already picked up for 5.15+ by AUTOSEL and only 5.10 is missing.
-> 
+Dear Sir,
 
-https://lore.kernel.org/stable/Yk2PQzynOVOzJdPo@kroah.com/
+We got your company information through an exhaustive search in the
+internet. We are authorized government/Business agent  based in Accra,
+Ghana.Please can you furnish me in full details about the standard of
+your products. I will appreciate it more if you can give me with
+detail specification.
 
-However, since then further investigation (still in progress) has shown that this
-may have been the fault of the tool in question, so if you can verify that tracing
-sched still works for you with this patch in 5.15.x then by all means
-let's merge it.
+1) Your company profile
+2) Your price list in CIF
+3) The Technical details of your products
 
--h
+As accredited commission agent, I am entitle to 2% commission from the
+total contract sum as soon as the contract money is paid to your bank
+account and I am looking for supplier whose products is of good
+quality, as your products are among the need items which will be
+purchase in a large quantities.
+
+You can reach me for business opportunities for the supply of your products.
+
+Best Regard,
+Mr. Asante Richard,
+R. A. K. Global Ghana.
+P. O. Box AN 520
+Accra North, Ghana
