@@ -2,132 +2,125 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0016B4FB055
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 10 Apr 2022 23:17:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 89A8A4FB09B
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 11 Apr 2022 00:06:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235789AbiDJVTp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 10 Apr 2022 17:19:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53244 "EHLO
+        id S229788AbiDJWIc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 10 Apr 2022 18:08:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38470 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236902AbiDJVTo (ORCPT
+        with ESMTP id S239481AbiDJWIb (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 10 Apr 2022 17:19:44 -0400
-Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com [IPv6:2607:f8b0:4864:20::430])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1D47424AE;
-        Sun, 10 Apr 2022 14:17:29 -0700 (PDT)
-Received: by mail-pf1-x430.google.com with SMTP id z16so12931688pfh.3;
-        Sun, 10 Apr 2022 14:17:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=amVR16GyPmaXgXRfnOWV2/JFp0ofkaxxky40KG8lyB0=;
-        b=QeMlkDEgxQjiSluao5CAZXhXOZu1x48Vh34v656xUcO5PPTcLwwZsEPlXyFu6P+3nj
-         hP7Wk8lubU6e1bD2nMvev7HdLtnb4u/QpbTJVEbHbbkrMnIOdfUjheg/rliZkJQYZgep
-         Q9SE3Sd251ehrXWBlCt0pp+BNR4dPIWmaZ/MTyQzH7E7gwT/f7JBagwoVu3j22z7OiHC
-         YUu5aWv/Tf2DEXiZ9iv7NdpUva668OlMl8EpuUagiIUDDS+sPngKpnhNE8o1sJ4kwfBv
-         io+/QC1JVlJ5mXTKI3iGdv4HEUinJJtWnxUoLj/Twe12gS1kw2ozIeTqwrX1+8Y8Ljsx
-         R55Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=amVR16GyPmaXgXRfnOWV2/JFp0ofkaxxky40KG8lyB0=;
-        b=m8O1SHzA7Od0aP0kg8AORRVaZ4O6pYS0mOc8WV9DR5uoZA0syTg4LClvPTLt00h0ow
-         JnFrCdgl36ckr7CXTAYBPl/AWjlRlSqxMEIR0GhcNLR7a5MYAtjLJII44UccPOBXvswY
-         mqVq6qYR93jJuAwgntVNZk0X3QtisEamXjnUb6qZwxJF5aGbE37aN2f6PH4VOL+9tmZA
-         jFRGIjCzagZNuVTkTVYshwbmpBJKAvKDDGTFaPX7hAyJM8sIAmOSrfiKJ8f7bzeUZK67
-         90Bm4iaJ+UMG7fezOYOfMrUbQE3dT0s4YrrLxCdXgffz5EpVKEMpAz9SbdSkHdTD/0Ct
-         WtJA==
-X-Gm-Message-State: AOAM532/iCTMlzqt8Hn8gVIYQW/ljYGGfertbLCLe1uJt4HKKXh0ilHD
-        dDDT/9AOjNjP5fJ3/h0UMCr7Ak+CcAqFmQOYHbU=
-X-Google-Smtp-Source: ABdhPJxNNRfj9YmDq1W26AK8eKZva0BjvIFLZ2HXbF10bTccLvZ+vTCpK6t+a6Wxi1K+TqgcHmYxHihYWheGfzm2hgw=
-X-Received: by 2002:a63:7c06:0:b0:398:31d5:f759 with SMTP id
- x6-20020a637c06000000b0039831d5f759mr24028460pgc.513.1649625449274; Sun, 10
- Apr 2022 14:17:29 -0700 (PDT)
+        Sun, 10 Apr 2022 18:08:31 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 4AFC526AE2;
+        Sun, 10 Apr 2022 15:06:20 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BA42DED1;
+        Sun, 10 Apr 2022 15:06:19 -0700 (PDT)
+Received: from airbuntu (unknown [172.31.20.19])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7DCF33F70D;
+        Sun, 10 Apr 2022 15:06:18 -0700 (PDT)
+Date:   Sun, 10 Apr 2022 23:06:08 +0100
+From:   Qais Yousef <qais.yousef@arm.com>
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
+        Abhijeet Dharmapurikar <adharmap@quicinc.com>,
+        Valentin Schneider <valentin.schneider@arm.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>, x86@kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [tip: sched/core] sched/tracing: Don't re-read p->state when
+ emitting sched_switch event
+Message-ID: <20220410220608.cdf6hmf5mwcqzwun@airbuntu>
+References: <20220120162520.570782-2-valentin.schneider@arm.com>
+ <164614827941.16921.4995078681021904041.tip-bot2@tip-bot2>
+ <20220308180240.qivyjdn4e3te3urm@wubuntu>
+ <YiecMTy8ckUdXTQO@kroah.com>
+ <20220308185138.ldxfqd242uxowymd@wubuntu>
+ <20220409233829.o2s6tffuzujkx6w2@airbuntu>
 MIME-Version: 1.0
-References: <20220210224933.379149-22-yury.norov@gmail.com>
- <164962245994.4207.10090580398155704963.tip-bot2@tip-bot2> <573841649622719@mail.yandex.com>
-In-Reply-To: <573841649622719@mail.yandex.com>
-From:   Yury Norov <yury.norov@gmail.com>
-Date:   Sun, 10 Apr 2022 14:17:18 -0700
-Message-ID: <CAAH8bW-=baSvb6pY+9t=5Fn6DA56G3eTJP0uBeXDZsVuDkHr9g@mail.gmail.com>
-Subject: Re: [tip: irq/core] genirq/affinity: Replace cpumask_weight() with
- cpumask_empty() where appropriate
-To:     Ozgur <ozgur@linux.com>
-Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-tip-commits@vger.kernel.org" 
-        <linux-tip-commits@vger.kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "x86@kernel.org" <x86@kernel.org>,
-        "maz@kernel.org" <maz@kernel.org>, Ming Lei <ming.lei@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20220409233829.o2s6tffuzujkx6w2@airbuntu>
+X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Sun, Apr 10, 2022 at 1:35 PM Ozgur <ozgur@linux.com> wrote:
->
->
->
-> 10.04.2022, 23:27, "tip-bot2 for Yury Norov" <tip-bot2@linutronix.de>:
->
-> The following commit has been merged into the irq/core branch of tip:
->
-> Commit-ID: 911488de0565f1d53bd36174d20917ebc4b44c0e
-> Gitweb: https://git.kernel.org/tip/911488de0565f1d53bd36174d20917ebc4b44c0e
-> Author: Yury Norov <yury.norov@gmail.com>
-> AuthorDate: Thu, 10 Feb 2022 14:49:05 -08:00
-> Committer: Thomas Gleixner <tglx@linutronix.de>
-> CommitterDate: Sun, 10 Apr 2022 22:20:28 +02:00
->
-> genirq/affinity: Replace cpumask_weight() with cpumask_empty() where appropriate
->
-> __irq_build_affinity_masks() calls cpumask_weight() to check if any bit of
-> a given cpumask is set.
->
-> This can be done more efficiently with cpumask_empty() because
-> cpumask_empty() stops traversing the cpumask as soon as it finds first set
-> bit, while cpumask_weight() counts all bits unconditionally.
->
-> Hello,
-> in this patch, struct cpumask *nmsk will also be affected because is called ncpus = cpumask_weight(nmsk);
-> right?
+On 04/10/22 00:38, Qais Yousef wrote:
+> On 03/08/22 18:51, Qais Yousef wrote:
+> > On 03/08/22 19:10, Greg KH wrote:
+> > > On Tue, Mar 08, 2022 at 06:02:40PM +0000, Qais Yousef wrote:
+> > > > +CC stable
+> > > > 
+> > > > On 03/01/22 15:24, tip-bot2 for Valentin Schneider wrote:
+> > > > > The following commit has been merged into the sched/core branch of tip:
+> > > > > 
+> > > > > Commit-ID:     fa2c3254d7cfff5f7a916ab928a562d1165f17bb
+> > > > > Gitweb:        https://git.kernel.org/tip/fa2c3254d7cfff5f7a916ab928a562d1165f17bb
+> > > > > Author:        Valentin Schneider <valentin.schneider@arm.com>
+> > > > > AuthorDate:    Thu, 20 Jan 2022 16:25:19 
+> > > > > Committer:     Peter Zijlstra <peterz@infradead.org>
+> > > > > CommitterDate: Tue, 01 Mar 2022 16:18:39 +01:00
+> > > > > 
+> > > > > sched/tracing: Don't re-read p->state when emitting sched_switch event
+> > > > > 
+> > > > > As of commit
+> > > > > 
+> > > > >   c6e7bd7afaeb ("sched/core: Optimize ttwu() spinning on p->on_cpu")
+> > > > > 
+> > > > > the following sequence becomes possible:
+> > > > > 
+> > > > > 		      p->__state = TASK_INTERRUPTIBLE;
+> > > > > 		      __schedule()
+> > > > > 			deactivate_task(p);
+> > > > >   ttwu()
+> > > > >     READ !p->on_rq
+> > > > >     p->__state=TASK_WAKING
+> > > > > 			trace_sched_switch()
+> > > > > 			  __trace_sched_switch_state()
+> > > > > 			    task_state_index()
+> > > > > 			      return 0;
+> > > > > 
+> > > > > TASK_WAKING isn't in TASK_REPORT, so the task appears as TASK_RUNNING in
+> > > > > the trace event.
+> > > > > 
+> > > > > Prevent this by pushing the value read from __schedule() down the trace
+> > > > > event.
+> > > > > 
+> > > > > Reported-by: Abhijeet Dharmapurikar <adharmap@quicinc.com>
+> > > > > Signed-off-by: Valentin Schneider <valentin.schneider@arm.com>
+> > > > > Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> > > > > Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+> > > > > Link: https://lore.kernel.org/r/20220120162520.570782-2-valentin.schneider@arm.com
+> > > > 
+> > > > Any objection to picking this for stable? I'm interested in this one for some
+> > > > Android users but prefer if it can be taken by stable rather than backport it
+> > > > individually.
+> > > > 
+> > > > I think it makes sense to pick the next one in the series too.
+> > > 
+> > > What commit does this fix in Linus's tree?
+> > 
+> > It should be this one: c6e7bd7afaeb ("sched/core: Optimize ttwu() spinning on p->on_cpu")
+> 
+> Should this be okay to be picked up by stable now? I can see AUTOSEL has picked
+> it up for v5.15+, but it impacts v5.10 too.
 
-Sorry, I don't understand that. The line that you mentioned can't
-modify nmsk neither before
-nor after this patch. Can you clarify your concern in greater details?
+commit: fa2c3254d7cfff5f7a916ab928a562d1165f17bb
+subject: sched/tracing: Don't re-read p->state when emitting sched_switch event
 
-Thanks,
-Yury
+This patch has an impact on Android 5.10 users who experience tooling breakage.
+Is it possible to include in 5.10 LTS please?
 
-> Signed-off-by: Yury Norov <yury.norov@gmail.com>
-> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-> Link: https://lore.kernel.org/r/20220210224933.379149-22-yury.norov@gmail.com
->
-> ---
->  kernel/irq/affinity.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/kernel/irq/affinity.c b/kernel/irq/affinity.c
-> index f7ff891..18740fa 100644
-> --- a/kernel/irq/affinity.c
-> +++ b/kernel/irq/affinity.c
-> @@ -258,7 +258,7 @@ static int __irq_build_affinity_masks(unsigned int startvec,
->          nodemask_t nodemsk = NODE_MASK_NONE;
->          struct node_vectors *node_vectors;
->
-> - if (!cpumask_weight(cpu_mask))
-> + if (cpumask_empty(cpu_mask))
->                  return 0;
->
->          nodes = get_nodes_in_cpumask(node_to_cpumask, cpu_mask, &nodemsk);
->
->
-> Ozgur
+It was already picked up for 5.15+ by AUTOSEL and only 5.10 is missing.
+
+Thanks
+
+--
+Qais Yousef
