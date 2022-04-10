@@ -2,56 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0319C4FAD43
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 10 Apr 2022 12:37:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 884A94FAD4E
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 10 Apr 2022 12:47:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233891AbiDJKfP (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 10 Apr 2022 06:35:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33148 "EHLO
+        id S234862AbiDJKtR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 10 Apr 2022 06:49:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233653AbiDJKfO (ORCPT
+        with ESMTP id S232051AbiDJKtQ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 10 Apr 2022 06:35:14 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55D53673C6;
-        Sun, 10 Apr 2022 03:33:04 -0700 (PDT)
-Date:   Sun, 10 Apr 2022 10:33:01 -0000
+        Sun, 10 Apr 2022 06:49:16 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5426E52B0C;
+        Sun, 10 Apr 2022 03:47:06 -0700 (PDT)
+Date:   Sun, 10 Apr 2022 10:47:03 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1649586782;
+        s=2020; t=1649587624;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=60Lfwzh0nAtHFcSVWbVw2y7ROX/9cN8agVJL8qXTZ+w=;
-        b=olLE6vPdCbJgJNxvvqrlDTs5gvaXAKVmPamzDz7CAZBmaUknR6tPcw3FhJL5WoLeI6Pcmz
-        BqrrtwUofoHrWAwTQ1qqfgWPkREaP4s9cHW0mxkGBzIt9l9KStjn1zSBLJqZMqAhj7QmJZ
-        2NgPNnQo2Jmdf/ia2+9IjsUKhZsy4DZekdGL6BD21fNfEtic7df8j3+ycizGbK6N0/TaN5
-        oJdYWFfnwPrQEvrjdCIQgrXCEw9kgAu6J8UqS4cG+M/48FAHeP/vmIqByD7xNfASCIFxYf
-        j2veZrATjFhvUB9SRGY4uiyfikLcU1Qe1Z6RushYiOx01d9NuA2BQ5eckyCCoA==
+        bh=IVt12kz468OQdrqCs2Kyi7NJJl5/6htYUwCxOHxUqIs=;
+        b=oRK6BWuh0i2aLqYZ1oTqUGVKgQlF/oPmvRq++IDnIdQg7N6XOYJAa9ra01DTt4g+dCOiOA
+        BqgGyc9JwgtKmbgBdZzyAHN0sc6PLQNyDdsXi9hneYisAUunnajqvYUOk2Jdfpp4PD4LTN
+        tfwjoTeZgXFjiRgnxFWf32e24gsIj88SW7jSiPQcp1N4xvULSvi4qn7SHJq0l3OM3mcLhS
+        C4GDB0/B2E3j6+uqFYEdXd/ed9k1Jes/yKmeDa2A956YuT1H/+tEGMXhLGIYLN0WlK1UeH
+        iCvdS3/q/jXksj2lM/TmOSdoz/YWVHZzRLG2RdibQU84Zzwr4Q3GLUrAQpKT1Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1649586782;
+        s=2020e; t=1649587624;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=60Lfwzh0nAtHFcSVWbVw2y7ROX/9cN8agVJL8qXTZ+w=;
-        b=0uRNVo9rYMkOmWY+Lo77BEMlbSc7IOTVMp3rUEtGXaKKGuCUiMY1UgCbGDQwh3WomDytT4
-        THIQg7RtOv4z02AA==
-From:   "tip-bot2 for Paul Gortmaker" <tip-bot2@linutronix.de>
+        bh=IVt12kz468OQdrqCs2Kyi7NJJl5/6htYUwCxOHxUqIs=;
+        b=YezGOUnpU/Ti/eHky2EbSnMO0mkYjcrObfBmSUyIAe5Ylxy8BHF/412ZLFLnVrpv40D24p
+        EGWxJiGEy1BK9QAA==
+From:   "tip-bot2 for tangmeng" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/urgent] tick/nohz: Use WARN_ON_ONCE() to prevent console
- saturation
-Cc:     Paul Gortmaker <paul.gortmaker@windriver.com>,
-        Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20211206145950.10927-3-paul.gortmaker@windriver.com>
-References: <20211206145950.10927-3-paul.gortmaker@windriver.com>
+Subject: [tip: timers/core] timers: Move timer sysctl into the timer code
+Cc:     tangmeng <tangmeng@uniontech.com>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20220215065019.7520-1-tangmeng@uniontech.com>
+References: <20220215065019.7520-1-tangmeng@uniontech.com>
 MIME-Version: 1.0
-Message-ID: <164958678121.4207.8216849655499016396.tip-bot2@tip-bot2>
+Message-ID: <164958762332.4207.10820440905687416367.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,50 +65,153 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/urgent branch of tip:
+The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     40e97e42961f8c6cc7bd5fe67cc18417e02d78f1
-Gitweb:        https://git.kernel.org/tip/40e97e42961f8c6cc7bd5fe67cc18417e02d78f1
-Author:        Paul Gortmaker <paul.gortmaker@windriver.com>
-AuthorDate:    Mon, 06 Dec 2021 09:59:50 -05:00
+Commit-ID:     efaa0227f6c6a5073951b20cf2f8c63c4155306c
+Gitweb:        https://git.kernel.org/tip/efaa0227f6c6a5073951b20cf2f8c63c4155306c
+Author:        tangmeng <tangmeng@uniontech.com>
+AuthorDate:    Tue, 15 Feb 2022 14:50:19 +08:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sun, 10 Apr 2022 12:23:34 +02:00
+CommitterDate: Sun, 10 Apr 2022 12:38:45 +02:00
 
-tick/nohz: Use WARN_ON_ONCE() to prevent console saturation
+timers: Move timer sysctl into the timer code
 
-While running some testing on code that happened to allow the variable
-tick_nohz_full_running to get set but with no "possible" NOHZ cores to
-back up that setting, this warning triggered:
+This is part of the effort to reduce kernel/sysctl.c to only contain the
+core logic.
 
-        if (unlikely(tick_do_timer_cpu == TICK_DO_TIMER_NONE))
-                WARN_ON(tick_nohz_full_running);
-
-The console was overwhemled with an endless stream of one WARN per tick
-per core and there was no way to even see what was going on w/o using a
-serial console to capture it and then trace it back to this.
-
-Change it to WARN_ON_ONCE().
-
-Fixes: 08ae95f4fd3b ("nohz_full: Allow the boot CPU to be nohz_full")
-Signed-off-by: Paul Gortmaker <paul.gortmaker@windriver.com>
+Signed-off-by: tangmeng <tangmeng@uniontech.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20211206145950.10927-3-paul.gortmaker@windriver.com
+Link: https://lore.kernel.org/r/20220215065019.7520-1-tangmeng@uniontech.com
 
 ---
- kernel/time/tick-sched.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/timer.h |  8 +------
+ kernel/sysctl.c       | 11 +---------
+ kernel/time/timer.c   | 53 ++++++++++++++++++++++++++++++------------
+ 3 files changed, 38 insertions(+), 34 deletions(-)
 
-diff --git a/kernel/time/tick-sched.c b/kernel/time/tick-sched.c
-index 2d76c91..3506f6e 100644
---- a/kernel/time/tick-sched.c
-+++ b/kernel/time/tick-sched.c
-@@ -188,7 +188,7 @@ static void tick_sched_do_timer(struct tick_sched *ts, ktime_t now)
- 	 */
- 	if (unlikely(tick_do_timer_cpu == TICK_DO_TIMER_NONE)) {
- #ifdef CONFIG_NO_HZ_FULL
--		WARN_ON(tick_nohz_full_running);
-+		WARN_ON_ONCE(tick_nohz_full_running);
- #endif
- 		tick_do_timer_cpu = cpu;
- 	}
+diff --git a/include/linux/timer.h b/include/linux/timer.h
+index fda13c9..648f001 100644
+--- a/include/linux/timer.h
++++ b/include/linux/timer.h
+@@ -196,14 +196,6 @@ extern void init_timers(void);
+ struct hrtimer;
+ extern enum hrtimer_restart it_real_fn(struct hrtimer *);
+ 
+-#if defined(CONFIG_SMP) && defined(CONFIG_NO_HZ_COMMON)
+-struct ctl_table;
+-
+-extern unsigned int sysctl_timer_migration;
+-int timer_migration_handler(struct ctl_table *table, int write,
+-			    void *buffer, size_t *lenp, loff_t *ppos);
+-#endif
+-
+ unsigned long __round_jiffies(unsigned long j, int cpu);
+ unsigned long __round_jiffies_relative(unsigned long j, int cpu);
+ unsigned long round_jiffies(unsigned long j);
+diff --git a/kernel/sysctl.c b/kernel/sysctl.c
+index 830aaf8..5b7b1a8 100644
+--- a/kernel/sysctl.c
++++ b/kernel/sysctl.c
+@@ -2288,17 +2288,6 @@ static struct ctl_table kern_table[] = {
+ 		.extra1		= SYSCTL_ZERO,
+ 		.extra2		= SYSCTL_ONE,
+ 	},
+-#if defined(CONFIG_SMP) && defined(CONFIG_NO_HZ_COMMON)
+-	{
+-		.procname	= "timer_migration",
+-		.data		= &sysctl_timer_migration,
+-		.maxlen		= sizeof(unsigned int),
+-		.mode		= 0644,
+-		.proc_handler	= timer_migration_handler,
+-		.extra1		= SYSCTL_ZERO,
+-		.extra2		= SYSCTL_ONE,
+-	},
+-#endif
+ #ifdef CONFIG_BPF_SYSCALL
+ 	{
+ 		.procname	= "unprivileged_bpf_disabled",
+diff --git a/kernel/time/timer.c b/kernel/time/timer.c
+index 60aebf2..ef082d4 100644
+--- a/kernel/time/timer.c
++++ b/kernel/time/timer.c
+@@ -44,6 +44,7 @@
+ #include <linux/slab.h>
+ #include <linux/compat.h>
+ #include <linux/random.h>
++#include <linux/sysctl.h>
+ 
+ #include <linux/uaccess.h>
+ #include <asm/unistd.h>
+@@ -223,7 +224,7 @@ static void timer_update_keys(struct work_struct *work);
+ static DECLARE_WORK(timer_update_work, timer_update_keys);
+ 
+ #ifdef CONFIG_SMP
+-unsigned int sysctl_timer_migration = 1;
++static unsigned int sysctl_timer_migration = 1;
+ 
+ DEFINE_STATIC_KEY_FALSE(timers_migration_enabled);
+ 
+@@ -234,7 +235,42 @@ static void timers_update_migration(void)
+ 	else
+ 		static_branch_disable(&timers_migration_enabled);
+ }
+-#else
++
++#ifdef CONFIG_SYSCTL
++static int timer_migration_handler(struct ctl_table *table, int write,
++			    void *buffer, size_t *lenp, loff_t *ppos)
++{
++	int ret;
++
++	mutex_lock(&timer_keys_mutex);
++	ret = proc_dointvec_minmax(table, write, buffer, lenp, ppos);
++	if (!ret && write)
++		timers_update_migration();
++	mutex_unlock(&timer_keys_mutex);
++	return ret;
++}
++
++static struct ctl_table timer_sysctl[] = {
++	{
++		.procname	= "timer_migration",
++		.data		= &sysctl_timer_migration,
++		.maxlen		= sizeof(unsigned int),
++		.mode		= 0644,
++		.proc_handler	= timer_migration_handler,
++		.extra1		= SYSCTL_ZERO,
++		.extra2		= SYSCTL_ONE,
++	},
++	{}
++};
++
++static int __init timer_sysctl_init(void)
++{
++	register_sysctl("kernel", timer_sysctl);
++	return 0;
++}
++device_initcall(timer_sysctl_init);
++#endif /* CONFIG_SYSCTL */
++#else /* CONFIG_SMP */
+ static inline void timers_update_migration(void) { }
+ #endif /* !CONFIG_SMP */
+ 
+@@ -251,19 +287,6 @@ void timers_update_nohz(void)
+ 	schedule_work(&timer_update_work);
+ }
+ 
+-int timer_migration_handler(struct ctl_table *table, int write,
+-			    void *buffer, size_t *lenp, loff_t *ppos)
+-{
+-	int ret;
+-
+-	mutex_lock(&timer_keys_mutex);
+-	ret = proc_dointvec_minmax(table, write, buffer, lenp, ppos);
+-	if (!ret && write)
+-		timers_update_migration();
+-	mutex_unlock(&timer_keys_mutex);
+-	return ret;
+-}
+-
+ static inline bool is_timers_nohz_active(void)
+ {
+ 	return static_branch_unlikely(&timers_nohz_active);
