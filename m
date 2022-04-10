@@ -2,55 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 147064FAD8C
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 10 Apr 2022 12:54:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C71BC4FAFB0
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 10 Apr 2022 21:13:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238198AbiDJK4y (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 10 Apr 2022 06:56:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35930 "EHLO
+        id S236171AbiDJTPO (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 10 Apr 2022 15:15:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34252 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238121AbiDJK4u (ORCPT
+        with ESMTP id S232947AbiDJTPO (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 10 Apr 2022 06:56:50 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 831AA1B7B6;
-        Sun, 10 Apr 2022 03:54:36 -0700 (PDT)
-Date:   Sun, 10 Apr 2022 10:54:34 -0000
+        Sun, 10 Apr 2022 15:15:14 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92F7D60CFE;
+        Sun, 10 Apr 2022 12:13:02 -0700 (PDT)
+Date:   Sun, 10 Apr 2022 19:12:59 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1649588075;
+        s=2020; t=1649617981;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=dVZimOGPhZ9XbPxXk8NkGwqh9ntSDqPjo83QjXqoQJU=;
-        b=cgi4KtFa2/HikoO+g9axYvwRdeRujT9LFCFq+dAY0WHWAq1YRTCQtiHi+tzsX1f7mhpnIm
-        72V2Tid5fxnbD4fjXGXtFTvrUUtXM85N0Hg47/2Hp/A2K+8YPsXKGeDlzXv452o6ommeUB
-        jhNjEFEAC5YE5Wk+PRG39bIRXd4AhgpgtkBaRTwwlu9BKSQ5tQhQOsN9pPa/D1WHgoQztk
-        XkqWe/fCybxKfNhRftw3iNZ0w6oIIg9GSxl4+5xDt6bm8MnDQxAmPAmz6NI6hkG6dzjLe7
-        zKvm9cT5ojyWHizPiMjmjTqe6buMmLhhIj9CTK3h8i4isDtn7TReHdV4yBHLIQ==
+        bh=mGHXjJncvoi9F9WOlrUAjS83FPKbyxCHc9YHBC9NpS0=;
+        b=WoVTjda+vR274+GnZ+rHqXYcdL67sfGLkHmRu5b4qs5LiZDDPomkjnfstQ0N4QgunDy+e0
+        grBCyDFzA/HbXz0HHUYmACCLKcVjXeSG2jX9K+AUIztsU5m57mn87oEFT1gmh1Nr6mCljk
+        pK2pyYw51c+m/SzfJW9GjEC4JId+fTWeWRUs925/upwyj1WcCSS84xEBSQ0Z5fZj8RNyiE
+        LBp4OIA/7CfdwOkqbqeyEPcttzvLSCApJqhXkYUH2tGQcXB253e28ZTtCqUKHxUOF1llxY
+        3ICg7BaW4JzQC4xbXvbBWai9ztMDv6L8t603s/BHQw0YiWDsvUleBLLaqpUYNQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1649588075;
+        s=2020e; t=1649617981;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=dVZimOGPhZ9XbPxXk8NkGwqh9ntSDqPjo83QjXqoQJU=;
-        b=g+bdYzY6d1LQiPXEXdBD+8JHRGQeaZC1ZM0YKx/Hn0IAUKRlUIT3GUpx374FXEfggLYJrk
-        lH04fsUJ8f07diDQ==
-From:   "tip-bot2 for Maciej W. Rozycki" <tip-bot2@linutronix.de>
+        bh=mGHXjJncvoi9F9WOlrUAjS83FPKbyxCHc9YHBC9NpS0=;
+        b=3QNV/QDIjFMDkTE9JGe14Z8lpG2dRmAVsZ4VLBX0BBwwodOHx4D/BsxEbxUyPbf7mdzjod
+        uX3ppsxRagf7WzBg==
+From:   "tip-bot2 for Marc Zyngier" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/irq] x86/PCI: Include function number in $PIR table dump
-Cc:     "Maciej W. Rozycki" <macro@orcam.me.uk>,
+Subject: [tip: irq/core] genirq: Always limit the affinity to online CPUs
+Cc:     Marc Zyngier <maz@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <alpine.DEB.2.21.2203301534440.22465@angie.orcam.me.uk>
-References: <alpine.DEB.2.21.2203301534440.22465@angie.orcam.me.uk>
+In-Reply-To: <20220405185040.206297-3-maz@kernel.org>
+References: <20220405185040.206297-3-maz@kernel.org>
 MIME-Version: 1.0
-Message-ID: <164958807403.4207.9539001645356998793.tip-bot2@tip-bot2>
+Message-ID: <164961797999.4207.6664692900996135522.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,120 +65,92 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/irq branch of tip:
+The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     dc0e64087213768a6232af980076a517aaaa4adb
-Gitweb:        https://git.kernel.org/tip/dc0e64087213768a6232af980076a517aaaa4adb
-Author:        Maciej W. Rozycki <macro@orcam.me.uk>
-AuthorDate:    Thu, 31 Mar 2022 08:10:17 +01:00
+Commit-ID:     33de0aa4bae982ed6f7c777f86b5af3e627ac937
+Gitweb:        https://git.kernel.org/tip/33de0aa4bae982ed6f7c777f86b5af3e627ac937
+Author:        Marc Zyngier <maz@kernel.org>
+AuthorDate:    Tue, 05 Apr 2022 19:50:39 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sun, 10 Apr 2022 12:48:14 +02:00
+CommitterDate: Sun, 10 Apr 2022 21:06:30 +02:00
 
-x86/PCI: Include function number in $PIR table dump
+genirq: Always limit the affinity to online CPUs
 
-Contrary to the PCI BIOS specification[1] some systems include the PCI 
-function number for motherboard devices in their $PIR table, e.g. this 
-is what the Tyan Tomcat IV S1564D board reports:
+When booting with maxcpus=<small number> (or even loading a driver
+while most CPUs are offline), it is pretty easy to observe managed
+affinities containing a mix of online and offline CPUs being passed
+to the irqchip driver.
 
-00:14 slot=01
- 0:60/deb8
- 1:61/deb8
- 2:62/deb8
- 3:63/deb8
+This means that the irqchip cannot trust the affinity passed down
+from the core code, which is a bit annoying and requires (at least
+in theory) all drivers to implement some sort of affinity narrowing.
 
-00:13 slot=02
- 0:61/deb8
- 1:62/deb8
- 2:63/deb8
- 3:60/deb8
+In order to address this, always limit the cpumask to the set of
+online CPUs.
 
-00:12 slot=03
- 0:62/deb8
- 1:63/deb8
- 2:60/deb8
- 3:61/deb8
-
-00:11 slot=04
- 0:63/deb8
- 1:60/deb8
- 2:61/deb8
- 3:62/deb8
-
-00:07 slot=00
- 0:00/deb8
- 1:00/deb8
- 2:00/deb8
- 3:00/deb8
-
-00:07 slot=00
- 0:00/deb8
- 1:00/deb8
- 2:00/deb8
- 3:63/deb8
-
-Print the function number then in the debug $PIR table dump:
-
-00:14.0 slot=01
- 0:60/deb8
- 1:61/deb8
- 2:62/deb8
- 3:63/deb8
-
-00:13.0 slot=02
- 0:61/deb8
- 1:62/deb8
- 2:63/deb8
- 3:60/deb8
-
-00:12.0 slot=03
- 0:62/deb8
- 1:63/deb8
- 2:60/deb8
- 3:61/deb8
-
-00:11.0 slot=04
- 0:63/deb8
- 1:60/deb8
- 2:61/deb8
- 3:62/deb8
-
-00:07.1 slot=00
- 0:00/deb8
- 1:00/deb8
- 2:00/deb8
- 3:00/deb8
-
-00:07.2 slot=00
- 0:00/deb8
- 1:00/deb8
- 2:00/deb8
- 3:63/deb8
-
-References:
-
-[1] "PCI BIOS Specification", Revision 2.1, PCI Special Interest Group, 
-    August 26, 1994, Table 4-1 "Layout of IRQ routing table entry.", p. 
-    12
-
-Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/alpine.DEB.2.21.2203301534440.22465@angie.orcam.me.uk
+Link: https://lore.kernel.org/r/20220405185040.206297-3-maz@kernel.org
 
 ---
- arch/x86/pci/irq.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/irq/manage.c | 25 +++++++++++++++++--------
+ 1 file changed, 17 insertions(+), 8 deletions(-)
 
-diff --git a/arch/x86/pci/irq.c b/arch/x86/pci/irq.c
-index a33fe9c..b6b9853 100644
---- a/arch/x86/pci/irq.c
-+++ b/arch/x86/pci/irq.c
-@@ -135,7 +135,8 @@ static void __init pirq_peer_trick(void)
- #ifdef DEBUG
- 		{
- 			int j;
--			DBG(KERN_DEBUG "%02x:%02x slot=%02x", e->bus, e->devfn/8, e->slot);
-+			DBG(KERN_DEBUG "%02x:%02x.%x slot=%02x",
-+			    e->bus, e->devfn / 8, e->devfn % 8, e->slot);
- 			for (j = 0; j < 4; j++)
- 				DBG(" %d:%02x/%04x", j, e->irq[j].link, e->irq[j].bitmap);
- 			DBG("\n");
+diff --git a/kernel/irq/manage.c b/kernel/irq/manage.c
+index c03f71d..f71ecc1 100644
+--- a/kernel/irq/manage.c
++++ b/kernel/irq/manage.c
+@@ -222,11 +222,16 @@ int irq_do_set_affinity(struct irq_data *data, const struct cpumask *mask,
+ {
+ 	struct irq_desc *desc = irq_data_to_desc(data);
+ 	struct irq_chip *chip = irq_data_get_irq_chip(data);
++	const struct cpumask  *prog_mask;
+ 	int ret;
+ 
++	static DEFINE_RAW_SPINLOCK(tmp_mask_lock);
++	static struct cpumask tmp_mask;
++
+ 	if (!chip || !chip->irq_set_affinity)
+ 		return -EINVAL;
+ 
++	raw_spin_lock(&tmp_mask_lock);
+ 	/*
+ 	 * If this is a managed interrupt and housekeeping is enabled on
+ 	 * it check whether the requested affinity mask intersects with
+@@ -248,24 +253,28 @@ int irq_do_set_affinity(struct irq_data *data, const struct cpumask *mask,
+ 	 */
+ 	if (irqd_affinity_is_managed(data) &&
+ 	    housekeeping_enabled(HK_TYPE_MANAGED_IRQ)) {
+-		const struct cpumask *hk_mask, *prog_mask;
+-
+-		static DEFINE_RAW_SPINLOCK(tmp_mask_lock);
+-		static struct cpumask tmp_mask;
++		const struct cpumask *hk_mask;
+ 
+ 		hk_mask = housekeeping_cpumask(HK_TYPE_MANAGED_IRQ);
+ 
+-		raw_spin_lock(&tmp_mask_lock);
+ 		cpumask_and(&tmp_mask, mask, hk_mask);
+ 		if (!cpumask_intersects(&tmp_mask, cpu_online_mask))
+ 			prog_mask = mask;
+ 		else
+ 			prog_mask = &tmp_mask;
+-		ret = chip->irq_set_affinity(data, prog_mask, force);
+-		raw_spin_unlock(&tmp_mask_lock);
+ 	} else {
+-		ret = chip->irq_set_affinity(data, mask, force);
++		prog_mask = mask;
+ 	}
++
++	/* Make sure we only provide online CPUs to the irqchip */
++	cpumask_and(&tmp_mask, prog_mask, cpu_online_mask);
++	if (!cpumask_empty(&tmp_mask))
++		ret = chip->irq_set_affinity(data, &tmp_mask, force);
++	else
++		ret = -EINVAL;
++
++	raw_spin_unlock(&tmp_mask_lock);
++
+ 	switch (ret) {
+ 	case IRQ_SET_MASK_OK:
+ 	case IRQ_SET_MASK_OK_DONE:
