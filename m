@@ -2,186 +2,132 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4539B4FB033
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 10 Apr 2022 22:42:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0016B4FB055
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 10 Apr 2022 23:17:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242314AbiDJUon (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 10 Apr 2022 16:44:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60026 "EHLO
+        id S235789AbiDJVTp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 10 Apr 2022 17:19:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53244 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237605AbiDJUom (ORCPT
+        with ESMTP id S236902AbiDJVTo (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 10 Apr 2022 16:44:42 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2101B2BC2;
-        Sun, 10 Apr 2022 13:42:31 -0700 (PDT)
-Date:   Sun, 10 Apr 2022 20:42:28 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1649623349;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=R6BBnVu8wzaCIqJ1ur2LhpDFOZ8Llfg8Elmbox5Ubp8=;
-        b=yE/1/j+ZB2kEjRWkKB4ihQpdqUn6Yk7yZa8pN1Ci1QqHJ5/3Jn72BZ98CoMKJE8zlaLxX4
-        TyX2hborFbjgjJSF9H1E93ca2RLrdqXkzB2aMIDzB7fvX+Kia2nFJ1MsZrDgn21T39rTZJ
-        UV/QYWvYVRjuNeFbByfJwj0GgQnHv537Zfs7YVORi8cfrK605Vk9pVZhhnN8s1JwqNAYpK
-        FsbKc6v3gRLI2PpkJyK2hqtG7cwpcPJPn8W6axasQRN82yqQf8bIM0CbnaM8qnKcNt7tDr
-        71Tmch/UD1PXHyyT3jvncDPkg4q0dZWfCZk532ay2oNivezY3TgYUM/vYabwKw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1649623349;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=R6BBnVu8wzaCIqJ1ur2LhpDFOZ8Llfg8Elmbox5Ubp8=;
-        b=vKU4ijpTkHuRFk0KX8w6LRUDZbp9ZjlL/RI3cnx0A/BfRJ3JoSP3pxCLYs/nYBC5Q1yGch
-        ebchjh+FPfBrBUAA==
-From:   "tip-bot2 for Yury Norov" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cleanups] x86: Replace cpumask_weight() with
- cpumask_empty() where appropriate
-Cc:     Yury Norov <yury.norov@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Steve Wahl <steve.wahl@hpe.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20220210224933.379149-17-yury.norov@gmail.com>
-References: <20220210224933.379149-17-yury.norov@gmail.com>
+        Sun, 10 Apr 2022 17:19:44 -0400
+Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com [IPv6:2607:f8b0:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1D47424AE;
+        Sun, 10 Apr 2022 14:17:29 -0700 (PDT)
+Received: by mail-pf1-x430.google.com with SMTP id z16so12931688pfh.3;
+        Sun, 10 Apr 2022 14:17:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=amVR16GyPmaXgXRfnOWV2/JFp0ofkaxxky40KG8lyB0=;
+        b=QeMlkDEgxQjiSluao5CAZXhXOZu1x48Vh34v656xUcO5PPTcLwwZsEPlXyFu6P+3nj
+         hP7Wk8lubU6e1bD2nMvev7HdLtnb4u/QpbTJVEbHbbkrMnIOdfUjheg/rliZkJQYZgep
+         Q9SE3Sd251ehrXWBlCt0pp+BNR4dPIWmaZ/MTyQzH7E7gwT/f7JBagwoVu3j22z7OiHC
+         YUu5aWv/Tf2DEXiZ9iv7NdpUva668OlMl8EpuUagiIUDDS+sPngKpnhNE8o1sJ4kwfBv
+         io+/QC1JVlJ5mXTKI3iGdv4HEUinJJtWnxUoLj/Twe12gS1kw2ozIeTqwrX1+8Y8Ljsx
+         R55Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=amVR16GyPmaXgXRfnOWV2/JFp0ofkaxxky40KG8lyB0=;
+        b=m8O1SHzA7Od0aP0kg8AORRVaZ4O6pYS0mOc8WV9DR5uoZA0syTg4LClvPTLt00h0ow
+         JnFrCdgl36ckr7CXTAYBPl/AWjlRlSqxMEIR0GhcNLR7a5MYAtjLJII44UccPOBXvswY
+         mqVq6qYR93jJuAwgntVNZk0X3QtisEamXjnUb6qZwxJF5aGbE37aN2f6PH4VOL+9tmZA
+         jFRGIjCzagZNuVTkTVYshwbmpBJKAvKDDGTFaPX7hAyJM8sIAmOSrfiKJ8f7bzeUZK67
+         90Bm4iaJ+UMG7fezOYOfMrUbQE3dT0s4YrrLxCdXgffz5EpVKEMpAz9SbdSkHdTD/0Ct
+         WtJA==
+X-Gm-Message-State: AOAM532/iCTMlzqt8Hn8gVIYQW/ljYGGfertbLCLe1uJt4HKKXh0ilHD
+        dDDT/9AOjNjP5fJ3/h0UMCr7Ak+CcAqFmQOYHbU=
+X-Google-Smtp-Source: ABdhPJxNNRfj9YmDq1W26AK8eKZva0BjvIFLZ2HXbF10bTccLvZ+vTCpK6t+a6Wxi1K+TqgcHmYxHihYWheGfzm2hgw=
+X-Received: by 2002:a63:7c06:0:b0:398:31d5:f759 with SMTP id
+ x6-20020a637c06000000b0039831d5f759mr24028460pgc.513.1649625449274; Sun, 10
+ Apr 2022 14:17:29 -0700 (PDT)
 MIME-Version: 1.0
-Message-ID: <164962334860.4207.11115767621323928557.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <20220210224933.379149-22-yury.norov@gmail.com>
+ <164962245994.4207.10090580398155704963.tip-bot2@tip-bot2> <573841649622719@mail.yandex.com>
+In-Reply-To: <573841649622719@mail.yandex.com>
+From:   Yury Norov <yury.norov@gmail.com>
+Date:   Sun, 10 Apr 2022 14:17:18 -0700
+Message-ID: <CAAH8bW-=baSvb6pY+9t=5Fn6DA56G3eTJP0uBeXDZsVuDkHr9g@mail.gmail.com>
+Subject: Re: [tip: irq/core] genirq/affinity: Replace cpumask_weight() with
+ cpumask_empty() where appropriate
+To:     Ozgur <ozgur@linux.com>
+Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-tip-commits@vger.kernel.org" 
+        <linux-tip-commits@vger.kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "x86@kernel.org" <x86@kernel.org>,
+        "maz@kernel.org" <maz@kernel.org>, Ming Lei <ming.lei@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cleanups branch of tip:
+On Sun, Apr 10, 2022 at 1:35 PM Ozgur <ozgur@linux.com> wrote:
+>
+>
+>
+> 10.04.2022, 23:27, "tip-bot2 for Yury Norov" <tip-bot2@linutronix.de>:
+>
+> The following commit has been merged into the irq/core branch of tip:
+>
+> Commit-ID: 911488de0565f1d53bd36174d20917ebc4b44c0e
+> Gitweb: https://git.kernel.org/tip/911488de0565f1d53bd36174d20917ebc4b44c0e
+> Author: Yury Norov <yury.norov@gmail.com>
+> AuthorDate: Thu, 10 Feb 2022 14:49:05 -08:00
+> Committer: Thomas Gleixner <tglx@linutronix.de>
+> CommitterDate: Sun, 10 Apr 2022 22:20:28 +02:00
+>
+> genirq/affinity: Replace cpumask_weight() with cpumask_empty() where appropriate
+>
+> __irq_build_affinity_masks() calls cpumask_weight() to check if any bit of
+> a given cpumask is set.
+>
+> This can be done more efficiently with cpumask_empty() because
+> cpumask_empty() stops traversing the cpumask as soon as it finds first set
+> bit, while cpumask_weight() counts all bits unconditionally.
+>
+> Hello,
+> in this patch, struct cpumask *nmsk will also be affected because is called ncpus = cpumask_weight(nmsk);
+> right?
 
-Commit-ID:     3a5ff1f6dd50f5e1c2aa87491910dd6d275af24b
-Gitweb:        https://git.kernel.org/tip/3a5ff1f6dd50f5e1c2aa87491910dd6d275af24b
-Author:        Yury Norov <yury.norov@gmail.com>
-AuthorDate:    Thu, 10 Feb 2022 14:49:00 -08:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sun, 10 Apr 2022 22:35:38 +02:00
+Sorry, I don't understand that. The line that you mentioned can't
+modify nmsk neither before
+nor after this patch. Can you clarify your concern in greater details?
 
-x86: Replace cpumask_weight() with cpumask_empty() where appropriate
+Thanks,
+Yury
 
-In some cases, x86 code calls cpumask_weight() to check if any bit of a
-given cpumask is set.
-
-This can be done more efficiently with cpumask_empty() because
-cpumask_empty() stops traversing the cpumask as soon as it finds first set
-bit, while cpumask_weight() counts all bits unconditionally.
-
-Signed-off-by: Yury Norov <yury.norov@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Steve Wahl <steve.wahl@hpe.com>
-Link: https://lore.kernel.org/r/20220210224933.379149-17-yury.norov@gmail.com
-
----
- arch/x86/kernel/cpu/resctrl/rdtgroup.c | 14 +++++++-------
- arch/x86/mm/mmio-mod.c                 |  2 +-
- arch/x86/platform/uv/uv_nmi.c          |  2 +-
- 3 files changed, 9 insertions(+), 9 deletions(-)
-
-diff --git a/arch/x86/kernel/cpu/resctrl/rdtgroup.c b/arch/x86/kernel/cpu/resctrl/rdtgroup.c
-index 83f901e..f276aff 100644
---- a/arch/x86/kernel/cpu/resctrl/rdtgroup.c
-+++ b/arch/x86/kernel/cpu/resctrl/rdtgroup.c
-@@ -341,14 +341,14 @@ static int cpus_mon_write(struct rdtgroup *rdtgrp, cpumask_var_t newmask,
- 
- 	/* Check whether cpus belong to parent ctrl group */
- 	cpumask_andnot(tmpmask, newmask, &prgrp->cpu_mask);
--	if (cpumask_weight(tmpmask)) {
-+	if (!cpumask_empty(tmpmask)) {
- 		rdt_last_cmd_puts("Can only add CPUs to mongroup that belong to parent\n");
- 		return -EINVAL;
- 	}
- 
- 	/* Check whether cpus are dropped from this group */
- 	cpumask_andnot(tmpmask, &rdtgrp->cpu_mask, newmask);
--	if (cpumask_weight(tmpmask)) {
-+	if (!cpumask_empty(tmpmask)) {
- 		/* Give any dropped cpus to parent rdtgroup */
- 		cpumask_or(&prgrp->cpu_mask, &prgrp->cpu_mask, tmpmask);
- 		update_closid_rmid(tmpmask, prgrp);
-@@ -359,7 +359,7 @@ static int cpus_mon_write(struct rdtgroup *rdtgrp, cpumask_var_t newmask,
- 	 * and update per-cpu rmid
- 	 */
- 	cpumask_andnot(tmpmask, newmask, &rdtgrp->cpu_mask);
--	if (cpumask_weight(tmpmask)) {
-+	if (!cpumask_empty(tmpmask)) {
- 		head = &prgrp->mon.crdtgrp_list;
- 		list_for_each_entry(crgrp, head, mon.crdtgrp_list) {
- 			if (crgrp == rdtgrp)
-@@ -394,7 +394,7 @@ static int cpus_ctrl_write(struct rdtgroup *rdtgrp, cpumask_var_t newmask,
- 
- 	/* Check whether cpus are dropped from this group */
- 	cpumask_andnot(tmpmask, &rdtgrp->cpu_mask, newmask);
--	if (cpumask_weight(tmpmask)) {
-+	if (!cpumask_empty(tmpmask)) {
- 		/* Can't drop from default group */
- 		if (rdtgrp == &rdtgroup_default) {
- 			rdt_last_cmd_puts("Can't drop CPUs from default group\n");
-@@ -413,12 +413,12 @@ static int cpus_ctrl_write(struct rdtgroup *rdtgrp, cpumask_var_t newmask,
- 	 * and update per-cpu closid/rmid.
- 	 */
- 	cpumask_andnot(tmpmask, newmask, &rdtgrp->cpu_mask);
--	if (cpumask_weight(tmpmask)) {
-+	if (!cpumask_empty(tmpmask)) {
- 		list_for_each_entry(r, &rdt_all_groups, rdtgroup_list) {
- 			if (r == rdtgrp)
- 				continue;
- 			cpumask_and(tmpmask1, &r->cpu_mask, tmpmask);
--			if (cpumask_weight(tmpmask1))
-+			if (!cpumask_empty(tmpmask1))
- 				cpumask_rdtgrp_clear(r, tmpmask1);
- 		}
- 		update_closid_rmid(tmpmask, rdtgrp);
-@@ -488,7 +488,7 @@ static ssize_t rdtgroup_cpus_write(struct kernfs_open_file *of,
- 
- 	/* check that user didn't specify any offline cpus */
- 	cpumask_andnot(tmpmask, newmask, cpu_online_mask);
--	if (cpumask_weight(tmpmask)) {
-+	if (!cpumask_empty(tmpmask)) {
- 		ret = -EINVAL;
- 		rdt_last_cmd_puts("Can only assign online CPUs\n");
- 		goto unlock;
-diff --git a/arch/x86/mm/mmio-mod.c b/arch/x86/mm/mmio-mod.c
-index 933a2eb..c3317f0 100644
---- a/arch/x86/mm/mmio-mod.c
-+++ b/arch/x86/mm/mmio-mod.c
-@@ -400,7 +400,7 @@ static void leave_uniprocessor(void)
- 	int cpu;
- 	int err;
- 
--	if (!cpumask_available(downed_cpus) || cpumask_weight(downed_cpus) == 0)
-+	if (!cpumask_available(downed_cpus) || cpumask_empty(downed_cpus))
- 		return;
- 	pr_notice("Re-enabling CPUs...\n");
- 	for_each_cpu(cpu, downed_cpus) {
-diff --git a/arch/x86/platform/uv/uv_nmi.c b/arch/x86/platform/uv/uv_nmi.c
-index 1e9ff28..ea277fc 100644
---- a/arch/x86/platform/uv/uv_nmi.c
-+++ b/arch/x86/platform/uv/uv_nmi.c
-@@ -985,7 +985,7 @@ static int uv_handle_nmi(unsigned int reason, struct pt_regs *regs)
- 
- 	/* Clear global flags */
- 	if (master) {
--		if (cpumask_weight(uv_nmi_cpu_mask))
-+		if (!cpumask_empty(uv_nmi_cpu_mask))
- 			uv_nmi_cleanup_mask();
- 		atomic_set(&uv_nmi_cpus_in_nmi, -1);
- 		atomic_set(&uv_nmi_cpu, -1);
+> Signed-off-by: Yury Norov <yury.norov@gmail.com>
+> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+> Link: https://lore.kernel.org/r/20220210224933.379149-22-yury.norov@gmail.com
+>
+> ---
+>  kernel/irq/affinity.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/kernel/irq/affinity.c b/kernel/irq/affinity.c
+> index f7ff891..18740fa 100644
+> --- a/kernel/irq/affinity.c
+> +++ b/kernel/irq/affinity.c
+> @@ -258,7 +258,7 @@ static int __irq_build_affinity_masks(unsigned int startvec,
+>          nodemask_t nodemsk = NODE_MASK_NONE;
+>          struct node_vectors *node_vectors;
+>
+> - if (!cpumask_weight(cpu_mask))
+> + if (cpumask_empty(cpu_mask))
+>                  return 0;
+>
+>          nodes = get_nodes_in_cpumask(node_to_cpumask, cpu_mask, &nodemsk);
+>
+>
+> Ozgur
