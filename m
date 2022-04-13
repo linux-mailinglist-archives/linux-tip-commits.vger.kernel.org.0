@@ -2,55 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A60A84FFF23
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 13 Apr 2022 21:25:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 925124FFF5D
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 13 Apr 2022 21:32:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236806AbiDMT2C (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 13 Apr 2022 15:28:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33402 "EHLO
+        id S233797AbiDMTe7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 13 Apr 2022 15:34:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41022 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235868AbiDMT2A (ORCPT
+        with ESMTP id S233005AbiDMTe6 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 13 Apr 2022 15:28:00 -0400
+        Wed, 13 Apr 2022 15:34:58 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91C0F48336;
-        Wed, 13 Apr 2022 12:25:38 -0700 (PDT)
-Date:   Wed, 13 Apr 2022 19:25:35 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 788EB76585;
+        Wed, 13 Apr 2022 12:32:36 -0700 (PDT)
+Date:   Wed, 13 Apr 2022 19:32:33 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1649877936;
+        s=2020; t=1649878355;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=+rfJQUa0/44uAbIlgxAG840bDwfG9M1kFMD2N1vFqpg=;
-        b=D2mvoFBpAT2zeTWstK8GioCjrMh3FTjV6uqAfJnC0UU86WPa1YbZYhKSHcsIVlaR69RcQp
-        HQVQ9ntLdCvg0u43dN2XGmC/8U3Wqca97TmW+o0MuBfjGGPrYzggPbkKBYXewhhbaW4Gcg
-        sIHsspZOLSIlVkWxnC5/y9o4o5Ile+baewwcP1W5xwTUvDJDE44c1ce9xdbG57Ham7Wn0z
-        o7zytQNuGBgic05dSBkQuRVFNsoFnBy5KKAUus7T1r4h0SX+Qhk8IeTbnc3VSqXJgJeVTU
-        pvmPHGVm4lYOfO4ajVTczg22WDDJuTJGCaCkx0UmC+chc9Z5LQmt3H8zjDsHyg==
+        bh=0iorNaHWnmbP15mgEIAifHH7Nvn7KVWv7GrX/fT9Fhg=;
+        b=SDjahuni5frp/d8eGi7NGXhKJJgca52DhTGRqJghvjGuWV+Z9wy6fjQ6agd/Bqrw8Xhr3A
+        hDny/qzNpK2/EtHkDWOldghdoA1IPw8H6glb1XlwGZsaVSGncLRCHEebRpxuuJk8CvBTAQ
+        26f+k6FOotwkeIyx/R2O0k2wsoYUHLSNgNitI7MAxcT3p3qU1TinmCWZqE5v3wJp0IWuiO
+        eaKZn2y7OzAztjY5HYDnZW3XXumylhoYbNSAsGMzQevTx56TE4HJr5uCrmPjBlFIv1pSO+
+        r4yx+of3qDHQhiI677H7IToPzYoJ2lojcGgm/FDLM0loFCDWcVJ+4JlDnHChZQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1649877936;
+        s=2020e; t=1649878355;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=+rfJQUa0/44uAbIlgxAG840bDwfG9M1kFMD2N1vFqpg=;
-        b=QdxHIPKerYUH0L9IeH4XAZI3n4SqDWNeaV05hWoxhcYgwoKhXoyuamI9lSy7RN0nhkdLnY
-        clInp99J6QfHj9CA==
+        bh=0iorNaHWnmbP15mgEIAifHH7Nvn7KVWv7GrX/fT9Fhg=;
+        b=ZyTrxx0hkn5OjKVf4CJbN55grN1ixO4TyvBSLWRc1MgWVLGZYaZWk21rFyXa6CGCoZ4Y45
+        4KnGQmf4FIutOQCg==
 From:   "tip-bot2 for Steven Price" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: smp/urgent] cpu/hotplug: Remove the 'cpu' member of cpuhp_cpu_state
-Cc:     Steven Price <steven.price@arm.com>,
-        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+Subject: [tip: smp/core] cpu/hotplug: Initialise all cpuhp_cpu_state structs earlier
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Steven Price <steven.price@arm.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220411152233.474129-2-steven.price@arm.com>
-References: <20220411152233.474129-2-steven.price@arm.com>
+In-Reply-To: <20220411152233.474129-3-steven.price@arm.com>
+References: <20220411152233.474129-3-steven.price@arm.com>
 MIME-Version: 1.0
-Message-ID: <164987793507.4207.7310458374496376666.tip-bot2@tip-bot2>
+Message-ID: <164987835389.4207.2665456331757900114.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,168 +65,77 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the smp/urgent branch of tip:
+The following commit has been merged into the smp/core branch of tip:
 
-Commit-ID:     acd508a1f8ab96e76ab4ec0e5679b60be0999cd2
-Gitweb:        https://git.kernel.org/tip/acd508a1f8ab96e76ab4ec0e5679b60be0999cd2
+Commit-ID:     d308077e5e4dc8c93f97f5ebc70274e7c7a92d49
+Gitweb:        https://git.kernel.org/tip/d308077e5e4dc8c93f97f5ebc70274e7c7a92d49
 Author:        Steven Price <steven.price@arm.com>
-AuthorDate:    Mon, 11 Apr 2022 16:22:32 +01:00
+AuthorDate:    Mon, 11 Apr 2022 16:22:33 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 13 Apr 2022 21:22:08 +02:00
+CommitterDate: Wed, 13 Apr 2022 21:27:41 +02:00
 
-cpu/hotplug: Remove the 'cpu' member of cpuhp_cpu_state
+cpu/hotplug: Initialise all cpuhp_cpu_state structs earlier
 
-Currently the setting of the 'cpu' member of struct cpuhp_cpu_state in
-cpuhp_create() is too late as it is used earlier in _cpu_up().
+Rather than waiting until a CPU is first brought online, do the
+initialisation of the cpuhp_cpu_state structure for each CPU during the
+__init phase. This saves a (small) amount of non-__init memory and
+avoids potential confusion about when the cpuhp_cpu_state struct is
+valid.
 
-If kzalloc_node() in __smpboot_create_thread() fails then the rollback will
-be done with st->cpu==0 causing CPU0 to be erroneously set to be dying,
-causing the scheduler to get mightily confused and throw its toys out of
-the pram.
-
-However the cpu number is actually available directly, so simply remove
-the 'cpu' member and avoid the problem in the first place.
-
-Fixes: 2ea46c6fc945 ("cpumask/hotplug: Fix cpu_dying() state tracking")
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Steven Price <steven.price@arm.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20220411152233.474129-2-steven.price@arm.com
+Link: https://lore.kernel.org/r/20220411152233.474129-3-steven.price@arm.com
 
 ---
- kernel/cpu.c | 35 ++++++++++++++++++-----------------
- 1 file changed, 18 insertions(+), 17 deletions(-)
+ kernel/cpu.c | 22 +++++++++++++---------
+ 1 file changed, 13 insertions(+), 9 deletions(-)
 
 diff --git a/kernel/cpu.c b/kernel/cpu.c
-index 5797c2a..33348c2 100644
+index d0a9aa0..02a77ac 100644
 --- a/kernel/cpu.c
 +++ b/kernel/cpu.c
-@@ -71,7 +71,6 @@ struct cpuhp_cpu_state {
- 	bool			rollback;
- 	bool			single;
- 	bool			bringup;
--	int			cpu;
- 	struct hlist_node	*node;
- 	struct hlist_node	*last;
- 	enum cpuhp_state	cb_state;
-@@ -475,7 +474,7 @@ static inline bool cpu_smt_allowed(unsigned int cpu) { return true; }
- #endif
- 
- static inline enum cpuhp_state
--cpuhp_set_state(struct cpuhp_cpu_state *st, enum cpuhp_state target)
-+cpuhp_set_state(int cpu, struct cpuhp_cpu_state *st, enum cpuhp_state target)
+@@ -716,14 +716,6 @@ static int cpuhp_up_callbacks(unsigned int cpu, struct cpuhp_cpu_state *st,
+ /*
+  * The cpu hotplug threads manage the bringup and teardown of the cpus
+  */
+-static void cpuhp_create(unsigned int cpu)
+-{
+-	struct cpuhp_cpu_state *st = per_cpu_ptr(&cpuhp_state, cpu);
+-
+-	init_completion(&st->done_up);
+-	init_completion(&st->done_down);
+-}
+-
+ static int cpuhp_should_run(unsigned int cpu)
  {
- 	enum cpuhp_state prev_state = st->state;
- 	bool bringup = st->state < target;
-@@ -486,14 +485,15 @@ cpuhp_set_state(struct cpuhp_cpu_state *st, enum cpuhp_state target)
- 	st->target = target;
- 	st->single = false;
- 	st->bringup = bringup;
--	if (cpu_dying(st->cpu) != !bringup)
--		set_cpu_dying(st->cpu, !bringup);
-+	if (cpu_dying(cpu) != !bringup)
-+		set_cpu_dying(cpu, !bringup);
+ 	struct cpuhp_cpu_state *st = this_cpu_ptr(&cpuhp_state);
+@@ -883,15 +875,27 @@ static int cpuhp_kick_ap_work(unsigned int cpu)
  
- 	return prev_state;
- }
+ static struct smp_hotplug_thread cpuhp_threads = {
+ 	.store			= &cpuhp_state.thread,
+-	.create			= &cpuhp_create,
+ 	.thread_should_run	= cpuhp_should_run,
+ 	.thread_fn		= cpuhp_thread_fun,
+ 	.thread_comm		= "cpuhp/%u",
+ 	.selfparking		= true,
+ };
  
- static inline void
--cpuhp_reset_state(struct cpuhp_cpu_state *st, enum cpuhp_state prev_state)
-+cpuhp_reset_state(int cpu, struct cpuhp_cpu_state *st,
-+		  enum cpuhp_state prev_state)
++static __init void cpuhp_init_state(void)
++{
++	struct cpuhp_cpu_state *st;
++	int cpu;
++
++	for_each_possible_cpu(cpu) {
++		st = per_cpu_ptr(&cpuhp_state, cpu);
++		init_completion(&st->done_up);
++		init_completion(&st->done_down);
++	}
++}
++
+ void __init cpuhp_threads_init(void)
  {
- 	bool bringup = !st->bringup;
- 
-@@ -520,8 +520,8 @@ cpuhp_reset_state(struct cpuhp_cpu_state *st, enum cpuhp_state prev_state)
- 	}
- 
- 	st->bringup = bringup;
--	if (cpu_dying(st->cpu) != !bringup)
--		set_cpu_dying(st->cpu, !bringup);
-+	if (cpu_dying(cpu) != !bringup)
-+		set_cpu_dying(cpu, !bringup);
++	cpuhp_init_state();
+ 	BUG_ON(smpboot_register_percpu_thread(&cpuhp_threads));
+ 	kthread_unpark(this_cpu_read(cpuhp_state.thread));
  }
- 
- /* Regular hotplug invocation of the AP hotplug thread */
-@@ -541,15 +541,16 @@ static void __cpuhp_kick_ap(struct cpuhp_cpu_state *st)
- 	wait_for_ap_thread(st, st->bringup);
- }
- 
--static int cpuhp_kick_ap(struct cpuhp_cpu_state *st, enum cpuhp_state target)
-+static int cpuhp_kick_ap(int cpu, struct cpuhp_cpu_state *st,
-+			 enum cpuhp_state target)
- {
- 	enum cpuhp_state prev_state;
- 	int ret;
- 
--	prev_state = cpuhp_set_state(st, target);
-+	prev_state = cpuhp_set_state(cpu, st, target);
- 	__cpuhp_kick_ap(st);
- 	if ((ret = st->result)) {
--		cpuhp_reset_state(st, prev_state);
-+		cpuhp_reset_state(cpu, st, prev_state);
- 		__cpuhp_kick_ap(st);
- 	}
- 
-@@ -581,7 +582,7 @@ static int bringup_wait_for_ap(unsigned int cpu)
- 	if (st->target <= CPUHP_AP_ONLINE_IDLE)
- 		return 0;
- 
--	return cpuhp_kick_ap(st, st->target);
-+	return cpuhp_kick_ap(cpu, st, st->target);
- }
- 
- static int bringup_cpu(unsigned int cpu)
-@@ -704,7 +705,7 @@ static int cpuhp_up_callbacks(unsigned int cpu, struct cpuhp_cpu_state *st,
- 			 ret, cpu, cpuhp_get_step(st->state)->name,
- 			 st->state);
- 
--		cpuhp_reset_state(st, prev_state);
-+		cpuhp_reset_state(cpu, st, prev_state);
- 		if (can_rollback_cpu(st))
- 			WARN_ON(cpuhp_invoke_callback_range(false, cpu, st,
- 							    prev_state));
-@@ -875,7 +876,7 @@ static int cpuhp_kick_ap_work(unsigned int cpu)
- 	cpuhp_lock_release(true);
- 
- 	trace_cpuhp_enter(cpu, st->target, prev_state, cpuhp_kick_ap_work);
--	ret = cpuhp_kick_ap(st, st->target);
-+	ret = cpuhp_kick_ap(cpu, st, st->target);
- 	trace_cpuhp_exit(cpu, st->state, prev_state, ret);
- 
- 	return ret;
-@@ -1107,7 +1108,7 @@ static int cpuhp_down_callbacks(unsigned int cpu, struct cpuhp_cpu_state *st,
- 			 ret, cpu, cpuhp_get_step(st->state)->name,
- 			 st->state);
- 
--		cpuhp_reset_state(st, prev_state);
-+		cpuhp_reset_state(cpu, st, prev_state);
- 
- 		if (st->state < prev_state)
- 			WARN_ON(cpuhp_invoke_callback_range(true, cpu, st,
-@@ -1134,7 +1135,7 @@ static int __ref _cpu_down(unsigned int cpu, int tasks_frozen,
- 
- 	cpuhp_tasks_frozen = tasks_frozen;
- 
--	prev_state = cpuhp_set_state(st, target);
-+	prev_state = cpuhp_set_state(cpu, st, target);
- 	/*
- 	 * If the current CPU state is in the range of the AP hotplug thread,
- 	 * then we need to kick the thread.
-@@ -1165,7 +1166,7 @@ static int __ref _cpu_down(unsigned int cpu, int tasks_frozen,
- 	ret = cpuhp_down_callbacks(cpu, st, target);
- 	if (ret && st->state < prev_state) {
- 		if (st->state == CPUHP_TEARDOWN_CPU) {
--			cpuhp_reset_state(st, prev_state);
-+			cpuhp_reset_state(cpu, st, prev_state);
- 			__cpuhp_kick_ap(st);
- 		} else {
- 			WARN(1, "DEAD callback error for CPU%d", cpu);
-@@ -1352,7 +1353,7 @@ static int _cpu_up(unsigned int cpu, int tasks_frozen, enum cpuhp_state target)
- 
- 	cpuhp_tasks_frozen = tasks_frozen;
- 
--	cpuhp_set_state(st, target);
-+	cpuhp_set_state(cpu, st, target);
- 	/*
- 	 * If the current CPU state is in the range of the AP hotplug thread,
- 	 * then we need to kick the thread once more.
