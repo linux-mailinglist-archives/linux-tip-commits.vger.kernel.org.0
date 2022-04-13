@@ -2,56 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A4C374FFBA4
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 13 Apr 2022 18:46:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 764074FFBC3
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 13 Apr 2022 18:51:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236968AbiDMQrT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 13 Apr 2022 12:47:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52402 "EHLO
+        id S237018AbiDMQyO (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 13 Apr 2022 12:54:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47300 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237016AbiDMQrQ (ORCPT
+        with ESMTP id S234566AbiDMQyM (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 13 Apr 2022 12:47:16 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC633DF6D;
-        Wed, 13 Apr 2022 09:44:53 -0700 (PDT)
-Date:   Wed, 13 Apr 2022 16:44:50 -0000
+        Wed, 13 Apr 2022 12:54:12 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E86F5674D3;
+        Wed, 13 Apr 2022 09:51:49 -0700 (PDT)
+Date:   Wed, 13 Apr 2022 16:51:46 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1649868291;
+        s=2020; t=1649868708;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=PEoInKY3J+Q/dILU0EoFdzYnt/qm3sY3315BF2UtcZ4=;
-        b=nzuGbfdxOIl53bG2GGnznOWnomzesAcXD8owfpyYlCUE5zXnnw9OQzf88BQwUFiBI/T63K
-        7r/OIagOeRe8QrQNiZz5sjWD0D75nNwFnybwOVKkyEqRbGmZOLgqRfy8I1fjbFGiZr9Svm
-        dm8dZaVXrEIn8Ji5b81aUwn0FdRzMaBMi/IdwjnCfMag2N0QInPXud1NPZ2LI5XgVi5bKl
-        78ZOkEKzA9iV3UvITFQQstB6QISY7Do/CgIpQsudZ06QSPEpgMjlWCUD12lAzSTk2opQ9z
-        rNWwDmHDKOCNoqEBEqz4AF9iPC7qgf50yl9HhBvIqugmJ0keoaV8iVi4+SvtlA==
+        bh=86mdrBQ5bfO1glHLGsv54Godblef0RidxRX59FMwf5I=;
+        b=Z7e5cleoO6eg1OHsYh8MGQDt4kQJtWEc5T2vuvJg4keutI1pHaPTZHKswNmbOhYFxwsH2L
+        aHbEqSzRaFFCDO5F4lTrUg27i2lx2RsT10ZfPCchfD7ISNlpHlIt1Yci3cQcRzan7oELC8
+        jztCizlRazjdrefhn/aqS3XZDJCMMCnBOi7NEVd4kAIP6G26flVaWbKbyh9HZ7UKAyXEvn
+        7kmEoUEQVG52ax81mditmA2DiEWb6EPbwgmyWXPZrtwR78b9ztSDyGSrRaFPwPHNLrFDbE
+        0yRrXqSZ29pJxyEZZru8hJ6EVd3TKr5H/VDxTmbB7RB7eTTwsFmGyCwq3zlE9A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1649868291;
+        s=2020e; t=1649868708;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=PEoInKY3J+Q/dILU0EoFdzYnt/qm3sY3315BF2UtcZ4=;
-        b=4ECKEncz0SYx5X0oD2nzBsxcjMHvsTROZ6c3iMVOmiK4rsU1Y/Gd8osjPltC57IrwqyzAa
-        rl2JeXvDhlXbv4Dw==
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+        bh=86mdrBQ5bfO1glHLGsv54Godblef0RidxRX59FMwf5I=;
+        b=VO85mUgLKDgwaHlvamH5Z0m/ETcRkGAOn9CfPFuZydie32geQn+MKKOX2cphuP3OyfQPnf
+        MuzD3Yc40ILH0nCg==
+From:   "tip-bot2 for Nadav Amit" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/apic] x86/apic: Clarify i82489DX bit overlap in APIC_LVT0
-Cc:     Daniel Vacek <neelx@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "Maciej W. Rozycki" <macro@orcam.me.uk>, x86@kernel.org,
+Subject: [tip: smp/urgent] smp: Fix offline cpu check in
+ flush_smp_call_function_queue()
+Cc:     Nadav Amit <namit@vmware.com>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <87ee22f3ci.ffs@tglx>
-References: <87ee22f3ci.ffs@tglx>
+In-Reply-To: <20220319072015.1495036-1-namit@vmware.com>
+References: <20220319072015.1495036-1-namit@vmware.com>
 MIME-Version: 1.0
-Message-ID: <164986829019.4207.675217037499219017.tip-bot2@tip-bot2>
+Message-ID: <164986870674.4207.3617586517028813554.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,78 +66,48 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/apic branch of tip:
+The following commit has been merged into the smp/urgent branch of tip:
 
-Commit-ID:     daf3af4705ba8f49d33ea9b7bafdc9fd9efd49e0
-Gitweb:        https://git.kernel.org/tip/daf3af4705ba8f49d33ea9b7bafdc9fd9efd49e0
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Tue, 12 Apr 2022 22:34:21 +02:00
+Commit-ID:     9e949a3886356fe9112c6f6f34a6e23d1d35407f
+Gitweb:        https://git.kernel.org/tip/9e949a3886356fe9112c6f6f34a6e23d1d35407f
+Author:        Nadav Amit <namit@vmware.com>
+AuthorDate:    Sat, 19 Mar 2022 00:20:15 -07:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 13 Apr 2022 18:39:48 +02:00
+CommitterDate: Wed, 13 Apr 2022 18:44:35 +02:00
 
-x86/apic: Clarify i82489DX bit overlap in APIC_LVT0
+smp: Fix offline cpu check in flush_smp_call_function_queue()
 
-Daniel stumbled over the bit overlap of the i82498DX external APIC and the
-TSC deadline timer configuration bit in modern APICs, which is neither
-documented in the code nor in the current SDM. Maciej provided links to
-the original i82489DX/486 documentation. See Link.
+The check in flush_smp_call_function_queue() for callbacks that are sent
+to offline CPUs currently checks whether the queue is empty.
 
-Remove the i82489DX macro maze, use a i82489DX specific define in the apic
-code and document the overlap in a comment.
+However, flush_smp_call_function_queue() has just deleted all the
+callbacks from the queue and moved all the entries into a local list.
+This checks would only be positive if some callbacks were added in the
+short time after llist_del_all() was called. This does not seem to be
+the intention of this check.
 
-Reported-by: Daniel Vacek <neelx@redhat.com>
+Change the check to look at the local list to which the entries were
+moved instead of the queue from which all the callbacks were just
+removed.
+
+Fixes: 8d056c48e4862 ("CPU hotplug, smp: flush any pending IPI callbacks before CPU offline")
+Signed-off-by: Nadav Amit <namit@vmware.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: Maciej W. Rozycki <macro@orcam.me.uk>
-Link: https://lore.kernel.org/r/87ee22f3ci.ffs@tglx
+Link: https://lore.kernel.org/r/20220319072015.1495036-1-namit@vmware.com
 ---
- arch/x86/include/asm/apicdef.h |  6 ------
- arch/x86/kernel/apic/apic.c    | 11 ++++++++++-
- 2 files changed, 10 insertions(+), 7 deletions(-)
+ kernel/smp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/apicdef.h b/arch/x86/include/asm/apicdef.h
-index 5716f22..92035eb 100644
---- a/arch/x86/include/asm/apicdef.h
-+++ b/arch/x86/include/asm/apicdef.h
-@@ -95,12 +95,6 @@
- #define	APIC_LVTTHMR	0x330
- #define	APIC_LVTPC	0x340
- #define	APIC_LVT0	0x350
--#define		APIC_LVT_TIMER_BASE_MASK	(0x3 << 18)
--#define		GET_APIC_TIMER_BASE(x)		(((x) >> 18) & 0x3)
--#define		SET_APIC_TIMER_BASE(x)		(((x) << 18))
--#define		APIC_TIMER_BASE_CLKIN		0x0
--#define		APIC_TIMER_BASE_TMBASE		0x1
--#define		APIC_TIMER_BASE_DIV		0x2
- #define		APIC_LVT_TIMER_ONESHOT		(0 << 17)
- #define		APIC_LVT_TIMER_PERIODIC		(1 << 17)
- #define		APIC_LVT_TIMER_TSCDEADLINE	(2 << 17)
-diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
-index b70344b..13819bf 100644
---- a/arch/x86/kernel/apic/apic.c
-+++ b/arch/x86/kernel/apic/apic.c
-@@ -320,6 +320,9 @@ int lapic_get_maxlvt(void)
- #define APIC_DIVISOR 16
- #define TSC_DIVISOR  8
+diff --git a/kernel/smp.c b/kernel/smp.c
+index 01a7c17..65a630f 100644
+--- a/kernel/smp.c
++++ b/kernel/smp.c
+@@ -579,7 +579,7 @@ static void flush_smp_call_function_queue(bool warn_cpu_offline)
  
-+/* i82489DX specific */
-+#define		I82489DX_BASE_DIVIDER		(((0x2) << 18))
-+
- /*
-  * This function sets up the local APIC timer, with a timeout of
-  * 'clocks' APIC bus clock. During calibration we actually call
-@@ -340,8 +343,14 @@ static void __setup_APIC_LVTT(unsigned int clocks, int oneshot, int irqen)
- 	else if (boot_cpu_has(X86_FEATURE_TSC_DEADLINE_TIMER))
- 		lvtt_value |= APIC_LVT_TIMER_TSCDEADLINE;
+ 	/* There shouldn't be any pending callbacks on an offline CPU. */
+ 	if (unlikely(warn_cpu_offline && !cpu_online(smp_processor_id()) &&
+-		     !warned && !llist_empty(head))) {
++		     !warned && entry != NULL)) {
+ 		warned = true;
+ 		WARN(1, "IPI on offline CPU %d\n", smp_processor_id());
  
-+	/*
-+	 * The i82489DX APIC uses bit 18 and 19 for the base divider.  This
-+	 * overlaps with bit 18 on integrated APICs, but is not documented
-+	 * in the SDM. No problem though. i82489DX equipped systems do not
-+	 * have TSC deadline timer.
-+	 */
- 	if (!lapic_is_integrated())
--		lvtt_value |= SET_APIC_TIMER_BASE(APIC_TIMER_BASE_DIV);
-+		lvtt_value |= I82489DX_BASE_DIVIDER;
- 
- 	if (!irqen)
- 		lvtt_value |= APIC_LVT_MASKED;
