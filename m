@@ -2,56 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 302DA4FE0FF
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 12 Apr 2022 14:52:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4C374FFBA4
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 13 Apr 2022 18:46:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231641AbiDLMu7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 12 Apr 2022 08:50:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41792 "EHLO
+        id S236968AbiDMQrT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 13 Apr 2022 12:47:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52402 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1355778AbiDLMsf (ORCPT
+        with ESMTP id S237016AbiDMQrQ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 12 Apr 2022 08:48:35 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 444883B012;
-        Tue, 12 Apr 2022 05:19:34 -0700 (PDT)
-Date:   Tue, 12 Apr 2022 12:19:31 -0000
+        Wed, 13 Apr 2022 12:47:16 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC633DF6D;
+        Wed, 13 Apr 2022 09:44:53 -0700 (PDT)
+Date:   Wed, 13 Apr 2022 16:44:50 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1649765972;
+        s=2020; t=1649868291;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=v5q536+xcLUMFhu65pWhMxgwQyw8MpnlpovYWdiwIs4=;
-        b=O9sgWJeuAG1KRxoZfkbBTlfdx2Zx298bIlvL1O9mBUhj0YSV8Vo6gqDks4gUJ67Njz83QN
-        oJzsHim//DguVLy+lPhXuRvzL5fTwvqwfZrItSY7HKMfuHVbbN4uZSACXuQGosOszw5vGL
-        QsXvRTj/TJ0AEC5TyM4OCzaLgP3c7efVKVtjrVEp+HbbNBPSAcJYN5X2Qe8FfxW/NfNxfS
-        tGe6hYhE0Pv394aQiBrNAFLXcCA8f4nuxl+ug8t6cebfn7GW/2slxVw4N0EZFVFoM5LBOF
-        NU46xBKLqOTY3diBrdY/fsY6uLIjal+1ZmVay761f89ugiNXv1K73MUbRhu7mg==
+        bh=PEoInKY3J+Q/dILU0EoFdzYnt/qm3sY3315BF2UtcZ4=;
+        b=nzuGbfdxOIl53bG2GGnznOWnomzesAcXD8owfpyYlCUE5zXnnw9OQzf88BQwUFiBI/T63K
+        7r/OIagOeRe8QrQNiZz5sjWD0D75nNwFnybwOVKkyEqRbGmZOLgqRfy8I1fjbFGiZr9Svm
+        dm8dZaVXrEIn8Ji5b81aUwn0FdRzMaBMi/IdwjnCfMag2N0QInPXud1NPZ2LI5XgVi5bKl
+        78ZOkEKzA9iV3UvITFQQstB6QISY7Do/CgIpQsudZ06QSPEpgMjlWCUD12lAzSTk2opQ9z
+        rNWwDmHDKOCNoqEBEqz4AF9iPC7qgf50yl9HhBvIqugmJ0keoaV8iVi4+SvtlA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1649765972;
+        s=2020e; t=1649868291;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=v5q536+xcLUMFhu65pWhMxgwQyw8MpnlpovYWdiwIs4=;
-        b=k96QegTOyLboiY8TQdGL/we1vM55u8S51MOHM4pvkMsaGxqCTDldmLPuD6r3Pzu7Ik3Biq
-        Lm4AQzRYfzuqmMCg==
-From:   "tip-bot2 for Boris Ostrovsky" <tip-bot2@linutronix.de>
+        bh=PEoInKY3J+Q/dILU0EoFdzYnt/qm3sY3315BF2UtcZ4=;
+        b=4ECKEncz0SYx5X0oD2nzBsxcjMHvsTROZ6c3iMVOmiK4rsU1Y/Gd8osjPltC57IrwqyzAa
+        rl2JeXvDhlXbv4Dw==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: smp/core] x86/xen: Allow to retry if cpu_initialize_context() failed.
-Cc:     Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+Subject: [tip: x86/apic] x86/apic: Clarify i82489DX bit overlap in APIC_LVT0
+Cc:     Daniel Vacek <neelx@redhat.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "Maciej W. Rozycki" <macro@orcam.me.uk>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220209080214.1439408-2-bigeasy@linutronix.de>
-References: <20220209080214.1439408-2-bigeasy@linutronix.de>
+In-Reply-To: <87ee22f3ci.ffs@tglx>
+References: <87ee22f3ci.ffs@tglx>
 MIME-Version: 1.0
-Message-ID: <164976597110.4207.17740112682185994045.tip-bot2@tip-bot2>
+Message-ID: <164986829019.4207.675217037499219017.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,52 +66,78 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the smp/core branch of tip:
+The following commit has been merged into the x86/apic branch of tip:
 
-Commit-ID:     e8a69f12f01f487c6a0e704eb14ccf2dd015277d
-Gitweb:        https://git.kernel.org/tip/e8a69f12f01f487c6a0e704eb14ccf2dd015277d
-Author:        Boris Ostrovsky <boris.ostrovsky@oracle.com>
-AuthorDate:    Wed, 09 Feb 2022 09:02:13 +01:00
+Commit-ID:     daf3af4705ba8f49d33ea9b7bafdc9fd9efd49e0
+Gitweb:        https://git.kernel.org/tip/daf3af4705ba8f49d33ea9b7bafdc9fd9efd49e0
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Tue, 12 Apr 2022 22:34:21 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 12 Apr 2022 14:13:01 +02:00
+CommitterDate: Wed, 13 Apr 2022 18:39:48 +02:00
 
-x86/xen: Allow to retry if cpu_initialize_context() failed.
+x86/apic: Clarify i82489DX bit overlap in APIC_LVT0
 
-If memory allocation in cpu_initialize_context() fails then it will
-bring up the VCPU and leave with the corresponding CPU bit set in
-xen_cpu_initialized_map.
+Daniel stumbled over the bit overlap of the i82498DX external APIC and the
+TSC deadline timer configuration bit in modern APICs, which is neither
+documented in the code nor in the current SDM. Maciej provided links to
+the original i82489DX/486 documentation. See Link.
 
-The following (presumably successful) CPU bring up will BUG in
-xen_pv_cpu_up() because nothing for that VCPU would be initialized.
+Remove the i82489DX macro maze, use a i82489DX specific define in the apic
+code and document the overlap in a comment.
 
-Clear the CPU bits, that were set in cpu_initialize_context() in case
-the memory allocation fails.
-
-[ bigeasy: Creating a patch from Boris' email. ]
-
-Signed-off-by: Boris Ostrovsky <boris.ostrovsky@oracle.com>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Reported-by: Daniel Vacek <neelx@redhat.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20220209080214.1439408-2-bigeasy@linutronix.de
-
+Cc: Maciej W. Rozycki <macro@orcam.me.uk>
+Link: https://lore.kernel.org/r/87ee22f3ci.ffs@tglx
 ---
- arch/x86/xen/smp_pv.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/x86/include/asm/apicdef.h |  6 ------
+ arch/x86/kernel/apic/apic.c    | 11 ++++++++++-
+ 2 files changed, 10 insertions(+), 7 deletions(-)
 
-diff --git a/arch/x86/xen/smp_pv.c b/arch/x86/xen/smp_pv.c
-index 688aa8b..ba7af2e 100644
---- a/arch/x86/xen/smp_pv.c
-+++ b/arch/x86/xen/smp_pv.c
-@@ -260,8 +260,11 @@ cpu_initialize_context(unsigned int cpu, struct task_struct *idle)
- 		return 0;
+diff --git a/arch/x86/include/asm/apicdef.h b/arch/x86/include/asm/apicdef.h
+index 5716f22..92035eb 100644
+--- a/arch/x86/include/asm/apicdef.h
++++ b/arch/x86/include/asm/apicdef.h
+@@ -95,12 +95,6 @@
+ #define	APIC_LVTTHMR	0x330
+ #define	APIC_LVTPC	0x340
+ #define	APIC_LVT0	0x350
+-#define		APIC_LVT_TIMER_BASE_MASK	(0x3 << 18)
+-#define		GET_APIC_TIMER_BASE(x)		(((x) >> 18) & 0x3)
+-#define		SET_APIC_TIMER_BASE(x)		(((x) << 18))
+-#define		APIC_TIMER_BASE_CLKIN		0x0
+-#define		APIC_TIMER_BASE_TMBASE		0x1
+-#define		APIC_TIMER_BASE_DIV		0x2
+ #define		APIC_LVT_TIMER_ONESHOT		(0 << 17)
+ #define		APIC_LVT_TIMER_PERIODIC		(1 << 17)
+ #define		APIC_LVT_TIMER_TSCDEADLINE	(2 << 17)
+diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
+index b70344b..13819bf 100644
+--- a/arch/x86/kernel/apic/apic.c
++++ b/arch/x86/kernel/apic/apic.c
+@@ -320,6 +320,9 @@ int lapic_get_maxlvt(void)
+ #define APIC_DIVISOR 16
+ #define TSC_DIVISOR  8
  
- 	ctxt = kzalloc(sizeof(*ctxt), GFP_KERNEL);
--	if (ctxt == NULL)
-+	if (ctxt == NULL) {
-+		cpumask_clear_cpu(cpu, xen_cpu_initialized_map);
-+		cpumask_clear_cpu(cpu, cpu_callout_mask);
- 		return -ENOMEM;
-+	}
++/* i82489DX specific */
++#define		I82489DX_BASE_DIVIDER		(((0x2) << 18))
++
+ /*
+  * This function sets up the local APIC timer, with a timeout of
+  * 'clocks' APIC bus clock. During calibration we actually call
+@@ -340,8 +343,14 @@ static void __setup_APIC_LVTT(unsigned int clocks, int oneshot, int irqen)
+ 	else if (boot_cpu_has(X86_FEATURE_TSC_DEADLINE_TIMER))
+ 		lvtt_value |= APIC_LVT_TIMER_TSCDEADLINE;
  
- 	gdt = get_cpu_gdt_rw(cpu);
++	/*
++	 * The i82489DX APIC uses bit 18 and 19 for the base divider.  This
++	 * overlaps with bit 18 on integrated APICs, but is not documented
++	 * in the SDM. No problem though. i82489DX equipped systems do not
++	 * have TSC deadline timer.
++	 */
+ 	if (!lapic_is_integrated())
+-		lvtt_value |= SET_APIC_TIMER_BASE(APIC_TIMER_BASE_DIV);
++		lvtt_value |= I82489DX_BASE_DIVIDER;
  
+ 	if (!irqen)
+ 		lvtt_value |= APIC_LVT_MASKED;
