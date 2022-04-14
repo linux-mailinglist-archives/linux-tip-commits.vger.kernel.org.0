@@ -2,57 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 533D9500B3A
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 14 Apr 2022 12:35:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 06DC2500CB2
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 14 Apr 2022 14:02:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240661AbiDNKhy (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 14 Apr 2022 06:37:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43824 "EHLO
+        id S242965AbiDNMEV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 14 Apr 2022 08:04:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40676 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242442AbiDNKhu (ORCPT
+        with ESMTP id S242918AbiDNMET (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 14 Apr 2022 06:37:50 -0400
+        Thu, 14 Apr 2022 08:04:19 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5208053B74;
-        Thu, 14 Apr 2022 03:35:26 -0700 (PDT)
-Date:   Thu, 14 Apr 2022 10:35:16 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D7C97668;
+        Thu, 14 Apr 2022 05:01:55 -0700 (PDT)
+Date:   Thu, 14 Apr 2022 12:01:51 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1649932517;
+        s=2020; t=1649937713;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=jEdXWOolFMpX310q7AURVkltiWxCj+2BxsZYXt8kQpA=;
-        b=kDxrbrnyHTOG+ioShl/gIQUbaSQSuenZhauiZ2E1eIsz209F3hyPhxk15zOIkMLQIctLHZ
-        Cs7IOXPGmNAtAyrtE6QQ9dqma5EoMVad2dA3j/IPAHly8Z3tQzLRWbu7mw/+YSs4VUji3z
-        Rp3/4S4WjTL2di/CJZL0AFEUCIL3ar3XH7qbuWok8+ECV/a9grSnw3KetTSvnsVCqRxapz
-        Jj4pI25DelSCsHVhuFRS9e1ViNxkMANo8SiyKYEZ484lKBkFlpGxGKcufF2WG/Sgbqf6a9
-        s3tqv47EfHe3vPp2Zfb3SHGPzNY9eAqIV1+ros59qH0BOsR8a38LBq4nf79PHA==
+        bh=irNbvxyJiOJgaVPVNK2gMVgCR2ECZ8V5k+AvUnmmvHA=;
+        b=Oie8G6ousjkqfvc7YbWJtVHE0at7lxDl+bCYiXMpbAv3izBEhPjZkJ+NTzXGg1PReri4tG
+        zDAysPr1rlDVbURS+xLDUUern0xVKXwM6iB/YVncTpge2ahb7O7XqtVYX1b3htQ/A3yR0C
+        OA21yxtGXwuF+frX74ogPAhg9l8w6uyMw4i/jZ+XkHM38dM127KNQ4ckBo6InrW0qJVsMA
+        K9vi4/ePd6MEinYAV+1ktY2MjsJr1joD5heLI0beW/RIEpys7VGdL7CrKMSUGqdz8W1Gkg
+        PzCkzWmDBTCp5f2pCgkbEbMmnekVzQ4LQCQWv7oz1tqqfUJQ40zJGqREh1YbkA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1649932517;
+        s=2020e; t=1649937713;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=jEdXWOolFMpX310q7AURVkltiWxCj+2BxsZYXt8kQpA=;
-        b=LAChuiDqlV5Qju9t+bTqshWgyMyxm/Pnlw8Ehbf2BRkOE9y7QnaYzySImholarTVkyTD8r
-        6uG/QQrdj9aIECCA==
-From:   "tip-bot2 for Jiapeng Chong" <tip-bot2@linutronix.de>
+        bh=irNbvxyJiOJgaVPVNK2gMVgCR2ECZ8V5k+AvUnmmvHA=;
+        b=1mG37d/0qY5EQW4Sj/TytzS1r/szavrXvAsgpfc8qjpTppp4AH5ASnxVD8ye4Zwt3IEP01
+        Vutvkw+V0uaLVdAg==
+From:   "tip-bot2 for Haowen Bai" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cleanups] x86/process: Fix kernel-doc warning due to a
- changed function name
-Cc:     Abaci Robot <abaci@linux.alibaba.com>,
-        Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
-        Borislav Petkov <bp@suse.de>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20220414062110.60343-1-jiapeng.chong@linux.alibaba.com>
-References: <20220414062110.60343-1-jiapeng.chong@linux.alibaba.com>
+Subject: [tip: x86/sev] virt: sevguest: Fix bool function returning negative value
+Cc:     Haowen Bai <baihaowen@meizu.com>, Borislav Petkov <bp@suse.de>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <1649930657-10837-1-git-send-email-baihaowen@meizu.com>
+References: <1649930657-10837-1-git-send-email-baihaowen@meizu.com>
 MIME-Version: 1.0
-Message-ID: <164993251625.4207.15885270496028960488.tip-bot2@tip-bot2>
+Message-ID: <164993771183.4207.3486210875608345661.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,42 +64,40 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cleanups branch of tip:
+The following commit has been merged into the x86/sev branch of tip:
 
-Commit-ID:     dbb5ab6d2c0a7397d77c9f60fe23844d4fe4e634
-Gitweb:        https://git.kernel.org/tip/dbb5ab6d2c0a7397d77c9f60fe23844d4fe4e634
-Author:        Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
-AuthorDate:    Thu, 14 Apr 2022 14:21:10 +08:00
+Commit-ID:     101826e02ac6c829bf4e768295e79ae9c37b4b2a
+Gitweb:        https://git.kernel.org/tip/101826e02ac6c829bf4e768295e79ae9c37b4b2a
+Author:        Haowen Bai <baihaowen@meizu.com>
+AuthorDate:    Thu, 14 Apr 2022 18:04:17 +08:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Thu, 14 Apr 2022 12:23:06 +02:00
+CommitterDate: Thu, 14 Apr 2022 13:53:35 +02:00
 
-x86/process: Fix kernel-doc warning due to a changed function name
+virt: sevguest: Fix bool function returning negative value
 
-Fix the following scripts/kernel-doc warning:
+The function enc_payload() is wrongly declared bool but returns an
+integer value. Correct it.
 
-  arch/x86/kernel/process.c:412: warning: expecting prototype for tss_update_io_bitmap().
-  Prototype was for native_tss_update_io_bitmap() instead.
+  [ bp: Massage commit message. ]
 
-  [ bp: Massage. ]
-
-Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+Fixes: fce96cf04430 ("virt: Add SEV-SNP guest driver")
+Signed-off-by: Haowen Bai <baihaowen@meizu.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lore.kernel.org/r/20220414062110.60343-1-jiapeng.chong@linux.alibaba.com
+Link: https://lore.kernel.org/r/1649930657-10837-1-git-send-email-baihaowen@meizu.com
 ---
- arch/x86/kernel/process.c | 2 +-
+ drivers/virt/coco/sevguest/sevguest.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/process.c b/arch/x86/kernel/process.c
-index b370767..b3d2d41 100644
---- a/arch/x86/kernel/process.c
-+++ b/arch/x86/kernel/process.c
-@@ -405,7 +405,7 @@ static void tss_copy_io_bitmap(struct tss_struct *tss, struct io_bitmap *iobm)
+diff --git a/drivers/virt/coco/sevguest/sevguest.c b/drivers/virt/coco/sevguest/sevguest.c
+index aaa6134..15f069e 100644
+--- a/drivers/virt/coco/sevguest/sevguest.c
++++ b/drivers/virt/coco/sevguest/sevguest.c
+@@ -276,7 +276,7 @@ static int verify_and_dec_payload(struct snp_guest_dev *snp_dev, void *payload, 
+ 	return dec_payload(snp_dev, resp, payload, resp_hdr->msg_sz + crypto->a_len);
  }
  
- /**
-- * tss_update_io_bitmap - Update I/O bitmap before exiting to usermode
-+ * native_tss_update_io_bitmap - Update I/O bitmap before exiting to user mode
-  */
- void native_tss_update_io_bitmap(void)
+-static bool enc_payload(struct snp_guest_dev *snp_dev, u64 seqno, int version, u8 type,
++static int enc_payload(struct snp_guest_dev *snp_dev, u64 seqno, int version, u8 type,
+ 			void *payload, size_t sz)
  {
+ 	struct snp_guest_msg *req = snp_dev->request;
