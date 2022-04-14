@@ -2,57 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CEEB65016A7
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 14 Apr 2022 17:50:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE7035016AB
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 14 Apr 2022 17:50:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239967AbiDNPJg (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 14 Apr 2022 11:09:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37902 "EHLO
+        id S244924AbiDNPJk (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 14 Apr 2022 11:09:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350468AbiDNOWW (ORCPT
+        with ESMTP id S1351684AbiDNOb1 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 14 Apr 2022 10:22:22 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0059C559C;
-        Thu, 14 Apr 2022 07:14:16 -0700 (PDT)
-Date:   Thu, 14 Apr 2022 14:14:13 -0000
+        Thu, 14 Apr 2022 10:31:27 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E81EB36AE;
+        Thu, 14 Apr 2022 07:21:50 -0700 (PDT)
+Date:   Thu, 14 Apr 2022 14:21:48 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1649945654;
+        s=2020; t=1649946109;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=zIr4M3QpkhZ27uYr8qH26LQUlJTGuaEdmvLzEra2awI=;
-        b=DQcQ0wBmY5ZEPT3/sRn62sx9BzIOfd6C24/BPV99lB4dKwkfSq+Tl+A0m1UOwWUjdnuv8x
-        CGm6tcs0C4I+PYmp5cmw8F0UZNI+Iy81NKUGobY79sthLFIWBnZ9Ly7D2bQoBdEXJK6Mrs
-        P5RNJPzjvlytUrNO8mMn9SjYvgOtfaTkQqmKMfAzRSQVWKwXaesfd/Q+cyNibkie8S/azx
-        da2KiPOs7jOm/hljdjfI+CFhaRCUeeVp3PIuYMPB7ciqRWMNX3WRPtOKteYuesrb2Wrflj
-        i/Wm9AL3IPjpt6jvBKY0GbT5UieaCavDUcxtYXhP+bKePISGq90c4cgoYBKWmw==
+        bh=xG0YNv6UpmTWIvybxRgaQrZpZmMJBavRFa1QDKMAijY=;
+        b=jAUaU3bf2lGKNCIiX7EWhCHJcoRDl03lRXP4cloKxnJOMdkvo3Dl2NZ2FwZJcUUnJkeBWa
+        JzqUJfgk2ukX2mkuokO2QjMnij6ke379QLH2rbBncIAE/7cuAX34AMtBQfaa5pVNelU0HG
+        5IcZMkCdWnk5aJ322sAcGx7X5ympD9ajDj61FLbj2nsBvGqYukfY7xSKb/bvOMUXNbp4Sw
+        4Z2i2cElzuClJ0rujbvM4L5zGPnQQznWv1TDP1CGQ8QEoTmVUoZTrwQriEiL2OvOG5IQEx
+        0Ib+1SltjZi2+r9FGnt67xIfumdPcfVdM8mOKKJwDy3Nci33pbdNNjTqWYfkaQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1649945654;
+        s=2020e; t=1649946109;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=zIr4M3QpkhZ27uYr8qH26LQUlJTGuaEdmvLzEra2awI=;
-        b=6mejPmbqNLlHFxDkB+3xJWMIrs32bqTE5xGhGMSZ2DxVixMOP0FYhT0mXsO8TJYGUF8UvP
-        VVGCp5SECrMO6zDw==
-From:   "tip-bot2 for Marc Zyngier" <tip-bot2@linutronix.de>
+        bh=xG0YNv6UpmTWIvybxRgaQrZpZmMJBavRFa1QDKMAijY=;
+        b=8dfz2LXEAG/kV/cIq6zkrIS+9+QfLuW2ZhYcZ1JJffnz2jQeSuvQ/SEXAwEw4q8Ikmn6Gp
+        yw4ctHzrbt0NBGDg==
+From:   "tip-bot2 for Anna-Maria Behnsen" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] genirq: Take the proposed affinity at face value if
- force==true
-Cc:     Marek Szyprowski <m.szyprowski@samsung.com>,
-        Marc Zyngier <maz@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+Subject: [tip: timers/core] tracing/timer: Add missing argument documentation
+ of trace points
+Cc:     "Anna-Maria Behnsen" <anna-maria@linutronix.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <4b7fc13c-887b-a664-26e8-45aed13f048a@samsung.com>
-References: <4b7fc13c-887b-a664-26e8-45aed13f048a@samsung.com>
+In-Reply-To: <20220411140115.24185-1-anna-maria@linutronix.de>
+References: <20220411140115.24185-1-anna-maria@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <164994565359.4207.6678120431812780133.tip-bot2@tip-bot2>
+Message-ID: <164994610801.4207.12614965303442956238.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,61 +67,57 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the irq/core branch of tip:
+The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     c48c8b829d2b966a6649827426bcdba082ccf922
-Gitweb:        https://git.kernel.org/tip/c48c8b829d2b966a6649827426bcdba082ccf922
-Author:        Marc Zyngier <maz@kernel.org>
-AuthorDate:    Thu, 14 Apr 2022 15:00:11 +01:00
+Commit-ID:     fde33ca4cb2bae6472714123b451475fdfd9995c
+Gitweb:        https://git.kernel.org/tip/fde33ca4cb2bae6472714123b451475fdfd9995c
+Author:        Anna-Maria Behnsen <anna-maria@linutronix.de>
+AuthorDate:    Mon, 11 Apr 2022 16:01:15 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 14 Apr 2022 16:11:25 +02:00
+CommitterDate: Thu, 14 Apr 2022 16:14:49 +02:00
 
-genirq: Take the proposed affinity at face value if force==true
+tracing/timer: Add missing argument documentation of trace points
 
-Although setting the affinity of an interrupt to a set of CPUs that doesn't
-have any online CPU is generally frowned apon, there are a few limited
-cases where such affinity is set from a CPUHP notifier, setting the
-affinity to a CPU that isn't online yet.
+Documentation of trace points timer_start, timer_expire_entry and
+hrtimer_start lack always the last argument. Add it to keep implementation
+and documentation in sync.
 
-The saving grace is that this is always done using the 'force' attribute,
-which gives a hint that the affinity setting can be outside of the online
-CPU mask and the callsite set this flag with the knowledge that the
-underlying interrupt controller knows to handle it.
-
-This restores the expected behaviour on Marek's system.
-
-Fixes: 33de0aa4bae9 ("genirq: Always limit the affinity to online CPUs")
-Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Link: https://lore.kernel.org/r/4b7fc13c-887b-a664-26e8-45aed13f048a@samsung.com
-Link: https://lore.kernel.org/r/20220414140011.541725-1-maz@kernel.org
+Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Link: https://lore.kernel.org/r/20220411140115.24185-1-anna-maria@linutronix.de
 
 ---
- kernel/irq/manage.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ include/trace/events/timer.h | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/irq/manage.c b/kernel/irq/manage.c
-index f71ecc1..f1d5a94 100644
---- a/kernel/irq/manage.c
-+++ b/kernel/irq/manage.c
-@@ -266,10 +266,16 @@ int irq_do_set_affinity(struct irq_data *data, const struct cpumask *mask,
- 		prog_mask = mask;
- 	}
+diff --git a/include/trace/events/timer.h b/include/trace/events/timer.h
+index 6ad031c..2e713a7 100644
+--- a/include/trace/events/timer.h
++++ b/include/trace/events/timer.h
+@@ -48,6 +48,7 @@ DEFINE_EVENT(timer_class, timer_init,
+  * timer_start - called when the timer is started
+  * @timer:	pointer to struct timer_list
+  * @expires:	the timers expiry time
++ * @flags:	the timers flags
+  */
+ TRACE_EVENT(timer_start,
  
--	/* Make sure we only provide online CPUs to the irqchip */
-+	/*
-+	 * Make sure we only provide online CPUs to the irqchip,
-+	 * unless we are being asked to force the affinity (in which
-+	 * case we do as we are told).
-+	 */
- 	cpumask_and(&tmp_mask, prog_mask, cpu_online_mask);
--	if (!cpumask_empty(&tmp_mask))
-+	if (!force && !cpumask_empty(&tmp_mask))
- 		ret = chip->irq_set_affinity(data, &tmp_mask, force);
-+	else if (force)
-+		ret = chip->irq_set_affinity(data, mask, force);
- 	else
- 		ret = -EINVAL;
+@@ -84,6 +85,7 @@ TRACE_EVENT(timer_start,
+ /**
+  * timer_expire_entry - called immediately before the timer callback
+  * @timer:	pointer to struct timer_list
++ * @baseclk:	value of timer_base::clk when timer expires
+  *
+  * Allows to determine the timer latency.
+  */
+@@ -190,7 +192,8 @@ TRACE_EVENT(hrtimer_init,
+ 
+ /**
+  * hrtimer_start - called when the hrtimer is started
+- * @hrtimer: pointer to struct hrtimer
++ * @hrtimer:	pointer to struct hrtimer
++ * @mode:	the hrtimers mode
+  */
+ TRACE_EVENT(hrtimer_start,
  
