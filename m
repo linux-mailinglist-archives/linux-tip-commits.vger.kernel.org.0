@@ -2,58 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BC63450716D
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 Apr 2022 17:10:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F0F9B507A53
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 Apr 2022 21:35:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353652AbiDSPMS (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 19 Apr 2022 11:12:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38100 "EHLO
+        id S1354061AbiDSThp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 19 Apr 2022 15:37:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51136 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1353594AbiDSPMR (ORCPT
+        with ESMTP id S1353383AbiDSThb (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 19 Apr 2022 11:12:17 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1217F3B289;
-        Tue, 19 Apr 2022 08:09:35 -0700 (PDT)
-Date:   Tue, 19 Apr 2022 15:09:27 -0000
+        Tue, 19 Apr 2022 15:37:31 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5BE1D92;
+        Tue, 19 Apr 2022 12:34:47 -0700 (PDT)
+Date:   Tue, 19 Apr 2022 19:34:43 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1650380973;
+        s=2020; t=1650396885;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=84SvmrYb0d8HI4VLeBxcmCnfHKheHm5ovGXtzvp9Ecw=;
-        b=JfP+RGq5b0StN+OQXrQKqaFyhL2P7TVTBh6qqeqrlcyeCtpPnnkbo1x2ZWmmjXH758xyaK
-        3Egafpg0AJXxBByBehQhBHGz2capGAVhg6yNN9RmTBfanF4G9sKav0yKsNyVbiuyBvxqa6
-        V3NbnqcTjSonPCUAf6AyJ3tRyiFMCCsUZRGtnG7TZM+6vpaCdyAylN5Xt+o6AyUzUZQHvL
-        57v8asmErJuAnkcN7L/zpuO0a8hLAaWxsauzVuG7LWSwMg2uiobB9zKfPtnF+1POX66+qc
-        4k0rEk7zW3sy1DzyKhVX/JgkrtT4OiEBsKk7QsF3SzSIyFr8ETgG0ahMny2YhQ==
+        bh=KRQQCuR5psNuEiEnoSIeznGIw1weg0S41N/l1rYRi6Y=;
+        b=gdDI/V/cL+VUL8d+Y7IDSxEJ4tzTGXdZ0SSl1TgG4p39R7Jr+nzapBvdxhTYOMU2wEGZmq
+        lxJBDtVlPsHqHpW9dEiGzNJi3tDmMe6m16i9BwgPdksBagFFooieaTasf3V/Ieul1CEefa
+        9OMLgIyldo7GsTgXZ2dNSoDbgIHTSsNJAfUxNjsdnabwSVn2TE3lYi3sckjO3K1tiwGBik
+        k21LepVYdoFkSxw34VrSN1fUrIpjr59QgmUIqxITuhDDmaSNaNxcEBHvFUnAwDXgDaKQYI
+        NtghqVISvvQ71lwFfdLT2YY3IVZbYBUubTKDTPehU8Uax/jqKs21hVEcVYYnDg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1650380973;
+        s=2020e; t=1650396885;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=84SvmrYb0d8HI4VLeBxcmCnfHKheHm5ovGXtzvp9Ecw=;
-        b=B5Go3lGitpt/ja7YVYopr5hPEapZK2gOKCqFypM7+4paiEYEX+5jCSJVBf11czAVfOn21Z
-        BHhnKASTcRlk3HAw==
-From:   "tip-bot2 for Tom Lendacky" <tip-bot2@linutronix.de>
+        bh=KRQQCuR5psNuEiEnoSIeznGIw1weg0S41N/l1rYRi6Y=;
+        b=0LRK1oFt4ul1dOERvtskPv9xPYSsxHx1kAkm5O1oBjKp8ya5QyCYuBLihzIQ4X8zMnQpqe
+        sW0WGQk5vB3bhTDQ==
+From:   "tip-bot2 for Zhang Rui" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/tdx] x86/mm: Fix spacing within memory encryption features message
-Cc:     Tom Lendacky <thomas.lendacky@amd.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: =?utf-8?q?=3C02401f3024b18e90bc2508147e22e729436cb6d9=2E16502?=
- =?utf-8?q?98573=2Egit=2Ethomas=2Elendacky=40amd=2Ecom=3E?=
-References: =?utf-8?q?=3C02401f3024b18e90bc2508147e22e729436cb6d9=2E165029?=
- =?utf-8?q?8573=2Egit=2Ethomas=2Elendacky=40amd=2Ecom=3E?=
+Subject: [tip: perf/urgent] perf/x86/cstate: Add SAPPHIRERAPIDS_X CPU support
+Cc:     Zhang Rui <rui.zhang@intel.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Kan Liang <kan.liang@linux.intel.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20220415104520.2737004-1-rui.zhang@intel.com>
+References: <20220415104520.2737004-1-rui.zhang@intel.com>
 MIME-Version: 1.0
-Message-ID: <165038096740.4207.11945503087935656353.tip-bot2@tip-bot2>
+Message-ID: <165039688387.4207.9627719799836247757.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -68,46 +66,66 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/tdx branch of tip:
+The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     51964015565d302fda63ce84ef151e1c9a5939cc
-Gitweb:        https://git.kernel.org/tip/51964015565d302fda63ce84ef151e1c9a5939cc
-Author:        Tom Lendacky <thomas.lendacky@amd.com>
-AuthorDate:    Mon, 18 Apr 2022 11:16:13 -05:00
-Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Tue, 19 Apr 2022 08:04:17 -07:00
+Commit-ID:     528c9f1daf20da14d3e7348dc4b1d7c55743ee64
+Gitweb:        https://git.kernel.org/tip/528c9f1daf20da14d3e7348dc4b1d7c55743ee64
+Author:        Zhang Rui <rui.zhang@intel.com>
+AuthorDate:    Fri, 15 Apr 2022 18:45:20 +08:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Tue, 19 Apr 2022 21:15:42 +02:00
 
-x86/mm: Fix spacing within memory encryption features message
+perf/x86/cstate: Add SAPPHIRERAPIDS_X CPU support
 
-The spacing is off in the memory encryption features message on AMD
-platforms that support memory encryption, e.g.:
+>From the perspective of Intel cstate residency counters,
+SAPPHIRERAPIDS_X is the same as ICELAKE_X.
 
-  "Memory Encryption Features active:AMD  SEV SEV-ES"
+Share the code with it. And update the comments for SAPPHIRERAPIDS_X.
 
-There is no space before "AMD" and two spaces after it. Fix this so that
-the message is spaced properly:
-
-  "Memory Encryption Features active: AMD SEV SEV-ES"
-
-Fixes: 968b493173ac ("x86/mm: Make DMA memory shared for TD guest")
-Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Link: https://lkml.kernel.org/r/02401f3024b18e90bc2508147e22e729436cb6d9.1650298573.git.thomas.lendacky@amd.com
+Signed-off-by: Zhang Rui <rui.zhang@intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
+Link: https://lkml.kernel.org/r/20220415104520.2737004-1-rui.zhang@intel.com
 ---
- arch/x86/mm/mem_encrypt.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/events/intel/cstate.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/mm/mem_encrypt.c b/arch/x86/mm/mem_encrypt.c
-index 10ee40b..1562f5e 100644
---- a/arch/x86/mm/mem_encrypt.c
-+++ b/arch/x86/mm/mem_encrypt.c
-@@ -49,7 +49,7 @@ static void print_mem_encrypt_feature_info(void)
- 		return;
- 	}
+diff --git a/arch/x86/events/intel/cstate.c b/arch/x86/events/intel/cstate.c
+index 5d77622..48e5db2 100644
+--- a/arch/x86/events/intel/cstate.c
++++ b/arch/x86/events/intel/cstate.c
+@@ -51,7 +51,7 @@
+  *			       perf code: 0x02
+  *			       Available model: SLM,AMT,NHM,WSM,SNB,IVB,HSW,BDW,
+  *						SKL,KNL,GLM,CNL,KBL,CML,ICL,ICX,
+- *						TGL,TNT,RKL,ADL,RPL
++ *						TGL,TNT,RKL,ADL,RPL,SPR
+  *			       Scope: Core
+  *	MSR_CORE_C7_RESIDENCY: CORE C7 Residency Counter
+  *			       perf code: 0x03
+@@ -62,7 +62,7 @@
+  *			       perf code: 0x00
+  *			       Available model: SNB,IVB,HSW,BDW,SKL,KNL,GLM,CNL,
+  *						KBL,CML,ICL,ICX,TGL,TNT,RKL,ADL,
+- *						RPL
++ *						RPL,SPR
+  *			       Scope: Package (physical package)
+  *	MSR_PKG_C3_RESIDENCY:  Package C3 Residency Counter.
+  *			       perf code: 0x01
+@@ -74,7 +74,7 @@
+  *			       perf code: 0x02
+  *			       Available model: SLM,AMT,NHM,WSM,SNB,IVB,HSW,BDW,
+  *						SKL,KNL,GLM,CNL,KBL,CML,ICL,ICX,
+- *						TGL,TNT,RKL,ADL,RPL
++ *						TGL,TNT,RKL,ADL,RPL,SPR
+  *			       Scope: Package (physical package)
+  *	MSR_PKG_C7_RESIDENCY:  Package C7 Residency Counter.
+  *			       perf code: 0x03
+@@ -675,6 +675,7 @@ static const struct x86_cpu_id intel_cstates_match[] __initconst = {
+ 	X86_MATCH_INTEL_FAM6_MODEL(ICELAKE,		&icl_cstates),
+ 	X86_MATCH_INTEL_FAM6_MODEL(ICELAKE_X,		&icx_cstates),
+ 	X86_MATCH_INTEL_FAM6_MODEL(ICELAKE_D,		&icx_cstates),
++	X86_MATCH_INTEL_FAM6_MODEL(SAPPHIRERAPIDS_X,	&icx_cstates),
  
--	pr_cont("AMD ");
-+	pr_cont(" AMD");
- 
- 	/* Secure Memory Encryption */
- 	if (cc_platform_has(CC_ATTR_HOST_MEM_ENCRYPT)) {
+ 	X86_MATCH_INTEL_FAM6_MODEL(TIGERLAKE_L,		&icl_cstates),
+ 	X86_MATCH_INTEL_FAM6_MODEL(TIGERLAKE,		&icl_cstates),
