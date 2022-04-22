@@ -2,57 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F116650B52C
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 22 Apr 2022 12:35:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D9DC50B527
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 22 Apr 2022 12:35:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230062AbiDVKiQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 22 Apr 2022 06:38:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34916 "EHLO
+        id S1446752AbiDVKiO (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 22 Apr 2022 06:38:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34868 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1446706AbiDVKiB (ORCPT
+        with ESMTP id S1446708AbiDVKiC (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 22 Apr 2022 06:38:01 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 953ED6448;
-        Fri, 22 Apr 2022 03:35:08 -0700 (PDT)
-Date:   Fri, 22 Apr 2022 10:35:06 -0000
+        Fri, 22 Apr 2022 06:38:02 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E09A7674;
+        Fri, 22 Apr 2022 03:35:09 -0700 (PDT)
+Date:   Fri, 22 Apr 2022 10:35:07 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1650623707;
+        s=2020; t=1650623708;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=xT+qLAoOfAcr2C66HVds9bCNQKTB8i7lZ6JommGwPcY=;
-        b=KaMq2FtGcceS3TdX7M7AylXLvtUbtwZiRVcxZAFu4w2coEErr77ojB37kZa/jqc7WjmNg1
-        v7eubYu+raccdPwClnqsclmOhB+O13vQQcBcjaiZX4+BoS3sjZHzeCuocjjo44Nv3t668v
-        US+vCJNtndaUfI09FZx3mW9/1TbzgityWTlVWvjP0vkfluJIabYCShUhGVMkGybYZRTxc7
-        p47OFNcuQxxMtVdp4bH1uIbvioOZxsHWstQWR5uTlStSm5GyJ6gNB7tossjh0H+/pisT+R
-        tDak9Az8AWkNMegBndDRBQx8bDZQ9OoO0ij0Q/Do5lmXZf73aykkgaAi547h1g==
+        bh=lPyAV1MQK6vytVePODRh9/qduZaNhbRreAY4EBfrXMo=;
+        b=Bk6NK/IZZElXoI7TNmU7qmjKqg167m1LcrY6KFzckexRj1rZQ7PV3vmGhAPM7w9qAiaNDZ
+        VgoosgITDn5QEeWgR7IX59ms4ZpzzidDaF0TNvyv/99FM5A3eQkZoVoEb1Yy1m3M7O03Ns
+        tk6seCB/2BGjZjyihlHwuMrfQ2eoMc9BcwsefhsGqiZMuhytzjHurhiXDCmYyG0WFku3+r
+        SS9QB2Fk9VRrzPSNbgArjFXVSOXE671NY82mETguPOObgV1TEuljKGD83Z2MB0UZw/eIiH
+        dYKCCbgPhGw2NrLWmEv37qApszGfCL3X/qkhKKRRwmfQf2rneJu4Kc6ltI02YQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1650623707;
+        s=2020e; t=1650623708;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=xT+qLAoOfAcr2C66HVds9bCNQKTB8i7lZ6JommGwPcY=;
-        b=6SXAVdMH2HSHJ8lW3obbdjsXamJEoaJqHGHVenkBw5R8lpeRIjQh5DvRTO+EfSq5H6O6gt
-        qnBG69BHjDnDKGDA==
+        bh=lPyAV1MQK6vytVePODRh9/qduZaNhbRreAY4EBfrXMo=;
+        b=r4fYhqEwlkOMy5Eb5nH/gV6qwLaQNeJ6QOFO1wnNH8aj7msCpdn/c3+GBZE7ldUWQ2IYhW
+        3SC3FJxOMZgwjoBQ==
 From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] objtool: Add option to print section addresses
-Cc:     Nick Desaulniers <ndesaulniers@google.com>,
+Subject: [tip: objtool/core] objtool: Don't print parentheses in function addresses
+Cc:     Peter Zijlstra <peterz@infradead.org>,
         Josh Poimboeuf <jpoimboe@redhat.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Miroslav Benes <mbenes@suse.cz>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <2cea4d5299d53d1a4c09212a6ad7820aa46fda7a.1650300597.git.jpoimboe@redhat.com>
-References: <2cea4d5299d53d1a4c09212a6ad7820aa46fda7a.1650300597.git.jpoimboe@redhat.com>
+In-Reply-To: <f2bec70312f62ef4f1ea21c134d9def627182ad3.1650300597.git.jpoimboe@redhat.com>
+References: <f2bec70312f62ef4f1ea21c134d9def627182ad3.1650300597.git.jpoimboe@redhat.com>
 MIME-Version: 1.0
-Message-ID: <165062370619.4207.17860193261058344743.tip-bot2@tip-bot2>
+Message-ID: <165062370707.4207.3964620644535103680.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -68,112 +67,42 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     99c0beb547a3e0ec3a63edeba0960c6ddf2226b0
-Gitweb:        https://git.kernel.org/tip/99c0beb547a3e0ec3a63edeba0960c6ddf2226b0
+Commit-ID:     2bc3dec7055e34c2c2e497f109da6748544c0791
+Gitweb:        https://git.kernel.org/tip/2bc3dec7055e34c2c2e497f109da6748544c0791
 Author:        Josh Poimboeuf <jpoimboe@redhat.com>
-AuthorDate:    Mon, 18 Apr 2022 09:50:31 -07:00
+AuthorDate:    Mon, 18 Apr 2022 09:50:28 -07:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Fri, 22 Apr 2022 12:32:02 +02:00
 
-objtool: Add option to print section addresses
+objtool: Don't print parentheses in function addresses
 
-To help prevent objtool users from having to do math to convert function
-addresses to section addresses, and to help out with finding data
-addresses reported by IBT validation, add an option to print the section
-address in addition to the function address.
+The parentheses in the "func()+off" address output are inconsistent with
+how the kernel prints function addresses, breaking Peter's scripts.
+Remove them.
 
-Normal:
-
-  vmlinux.o: warning: objtool: fixup_exception()+0x2d1: unreachable instruction
-
-With '--sec-address':
-
-  vmlinux.o: warning: objtool: fixup_exception()+0x2d1 (.text+0x76c51): unreachable instruction
-
-Suggested-by: Nick Desaulniers <ndesaulniers@google.com>
+Suggested-by: Peter Zijlstra <peterz@infradead.org>
 Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Miroslav Benes <mbenes@suse.cz>
-Link: https://lkml.kernel.org/r/2cea4d5299d53d1a4c09212a6ad7820aa46fda7a.1650300597.git.jpoimboe@redhat.com
+Link: https://lkml.kernel.org/r/f2bec70312f62ef4f1ea21c134d9def627182ad3.1650300597.git.jpoimboe@redhat.com
 ---
- tools/objtool/builtin-check.c           |  1 +-
- tools/objtool/include/objtool/builtin.h |  1 +-
- tools/objtool/include/objtool/warn.h    | 31 +++++++++++++-----------
- 3 files changed, 19 insertions(+), 14 deletions(-)
+ tools/objtool/include/objtool/warn.h | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/tools/objtool/builtin-check.c b/tools/objtool/builtin-check.c
-index 8c3eed5..6acfebd 100644
---- a/tools/objtool/builtin-check.c
-+++ b/tools/objtool/builtin-check.c
-@@ -50,6 +50,7 @@ const struct option check_options[] = {
- 	OPT_BOOLEAN(0, "module", &opts.module, "object is part of a kernel module"),
- 	OPT_BOOLEAN(0, "no-fp", &opts.no_fp, "skip frame pointer validation"),
- 	OPT_BOOLEAN(0, "no-unreachable", &opts.no_unreachable, "skip 'unreachable instruction' warnings"),
-+	OPT_BOOLEAN(0, "sec-address", &opts.sec_address, "print section addresses in warnings"),
- 	OPT_BOOLEAN(0, "stats", &opts.stats, "print statistics"),
- 	OPT_BOOLEAN(0, "vmlinux", &opts.vmlinux, "vmlinux.o validation"),
- 
-diff --git a/tools/objtool/include/objtool/builtin.h b/tools/objtool/include/objtool/builtin.h
-index 44548e2..e0972fb 100644
---- a/tools/objtool/include/objtool/builtin.h
-+++ b/tools/objtool/include/objtool/builtin.h
-@@ -28,6 +28,7 @@ struct opts {
- 	bool module;
- 	bool no_fp;
- 	bool no_unreachable;
-+	bool sec_address;
- 	bool stats;
- 	bool vmlinux;
- };
 diff --git a/tools/objtool/include/objtool/warn.h b/tools/objtool/include/objtool/warn.h
-index c4bde3e..a3e79ae 100644
+index 802cfda..c4bde3e 100644
 --- a/tools/objtool/include/objtool/warn.h
 +++ b/tools/objtool/include/objtool/warn.h
-@@ -11,30 +11,33 @@
- #include <sys/types.h>
- #include <sys/stat.h>
- #include <fcntl.h>
-+#include <objtool/builtin.h>
- #include <objtool/elf.h>
- 
- extern const char *objname;
- 
- static inline char *offstr(struct section *sec, unsigned long offset)
- {
--	struct symbol *func;
--	char *name, *str;
--	unsigned long name_off;
-+	bool is_text = (sec->sh.sh_flags & SHF_EXECINSTR);
-+	struct symbol *sym = NULL;
-+	char *str;
-+	int len;
- 
--	func = find_func_containing(sec, offset);
--	if (!func)
--		func = find_symbol_containing(sec, offset);
--	if (func) {
--		name = func->name;
--		name_off = offset - func->offset;
-+	if (is_text)
-+		sym = find_func_containing(sec, offset);
-+	if (!sym)
-+		sym = find_symbol_containing(sec, offset);
-+
-+	if (sym) {
-+		str = malloc(strlen(sym->name) + strlen(sec->name) + 40);
-+		len = sprintf(str, "%s+0x%lx", sym->name, offset - sym->offset);
-+		if (opts.sec_address)
-+			sprintf(str+len, " (%s+0x%lx)", sec->name, offset);
- 	} else {
--		name = sec->name;
--		name_off = offset;
-+		str = malloc(strlen(sec->name) + 20);
-+		sprintf(str, "%s+0x%lx", sec->name, offset);
+@@ -33,11 +33,7 @@ static inline char *offstr(struct section *sec, unsigned long offset)
  	}
  
--	str = malloc(strlen(name) + 20);
--	sprintf(str, "%s+0x%lx", name, name_off);
+ 	str = malloc(strlen(name) + 20);
 -
+-	if (func)
+-		sprintf(str, "%s()+0x%lx", name, name_off);
+-	else
+-		sprintf(str, "%s+0x%lx", name, name_off);
++	sprintf(str, "%s+0x%lx", name, name_off);
+ 
  	return str;
  }
- 
