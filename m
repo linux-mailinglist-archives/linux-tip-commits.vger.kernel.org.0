@@ -2,56 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6990B50B51F
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 22 Apr 2022 12:35:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0906550B529
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 22 Apr 2022 12:35:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1446641AbiDVKiK (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 22 Apr 2022 06:38:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34820 "EHLO
+        id S1446744AbiDVKiM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 22 Apr 2022 06:38:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34822 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1446677AbiDVKhx (ORCPT
+        with ESMTP id S1446678AbiDVKhx (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Fri, 22 Apr 2022 06:37:53 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD877DB0;
-        Fri, 22 Apr 2022 03:34:59 -0700 (PDT)
-Date:   Fri, 22 Apr 2022 10:34:57 -0000
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 791A3E1D;
+        Fri, 22 Apr 2022 03:35:00 -0700 (PDT)
+Date:   Fri, 22 Apr 2022 10:34:58 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1650623698;
+        s=2020; t=1650623699;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=7WFcaJ5qlrSo2qvNAjn7cVA2XbTWm0qebl64tNPAGd4=;
-        b=3XcpRXP3GztScaTGMMih8F97bc7JFxVrN4yl6BZkfKj30Fk2pm567okK61YyPYxnAwbZL3
-        yJHaMo0Apu61zYHj1t2PVkw+ne3awTSdVIQBx7qfyAOeQW1Y9EVIy5uZJKe4bEF69AAWuV
-        qNwokSo6P61yUsJ3Hxbo4I6CNl5i2L0sFJvLOeoUJSiFoxx2JRPMmH4PRynuraYFUDG/Tj
-        /1SqBwdaN17lcfQXpdjfrqYaasKSvWSfGK4Ffi6psQxheCawSyTIpq3SAFhtvJ9oCbQdJM
-        ApQDaQD8kJDEvzlqC6CgB52URneOLhFWH9gJYCiFIVKH54TYFJgD3vXUdVvssg==
+        bh=ixAqwzpengXwD5KICKFjJKuIpmCrhvRlPXj+034fpNk=;
+        b=2wZu5j4nSnVwp+jhHPVGIjMJhpcTH5VjJ6ayStKFVokznEMwE5BDyFX78UmiZd+3dlBgrV
+        yalNFNcrP1hUrz1WGn/yuJRjf54vQw/Dag1c7WUmB8LfsZTJbWqWVTF5x8EtS0nEJlZoto
+        0XF26dDePiflJC+LEbXdKmp5OnAscgaxGA1y0qwp54weEtWJwV+jSfqypJk7CxYfE2L1yK
+        2AYZN1YE1vp8/uOGksjF8QD5fgyRD+qRc+G3ESzdJvDFLqIYM5SvJ1JNyaVfdXIyJqpKBU
+        BkmQg1VJjWJX8/vL00yNxfm3EarksfLxttmpb2lyrvdKdr/cUl9jzkYwVcMxqQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1650623698;
+        s=2020e; t=1650623699;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=7WFcaJ5qlrSo2qvNAjn7cVA2XbTWm0qebl64tNPAGd4=;
-        b=sSeTs6Rbieg0BXOvWemAmcVnqDTRf3sEqWEygLmuQSxrtzdVoq9A0lDhyQW3XL9D9kLz2n
-        2xkkHKBsi8zcZFBA==
+        bh=ixAqwzpengXwD5KICKFjJKuIpmCrhvRlPXj+034fpNk=;
+        b=VaWWbS3T7MylzXJBezgLZEQnGnv3oDVh3ErPc0O5CkQiqsC1GRIPVwtcBOQrY+VU4LhTqO
+        FQ4DjCTW7aVjfGCQ==
 From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] objtool: Add HAVE_NOINSTR_VALIDATION
+Subject: [tip: objtool/core] objtool: Rename "VMLINUX_VALIDATION" ->
+ "NOINSTR_VALIDATION"
 Cc:     Josh Poimboeuf <jpoimboe@redhat.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Miroslav Benes <mbenes@suse.cz>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <488e94f69db4df154499bc098573d90e5db1c826.1650300597.git.jpoimboe@redhat.com>
-References: <488e94f69db4df154499bc098573d90e5db1c826.1650300597.git.jpoimboe@redhat.com>
+In-Reply-To: <173f07e2d6d1afc0874aed975a61783207c6a531.1650300597.git.jpoimboe@redhat.com>
+References: <173f07e2d6d1afc0874aed975a61783207c6a531.1650300597.git.jpoimboe@redhat.com>
 MIME-Version: 1.0
-Message-ID: <165062369721.4207.17877598871081772031.tip-bot2@tip-bot2>
+Message-ID: <165062369811.4207.16811054707894288843.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,64 +68,79 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     489e355b42255c5536a0ea3083a66b54a5e235c3
-Gitweb:        https://git.kernel.org/tip/489e355b42255c5536a0ea3083a66b54a5e235c3
+Commit-ID:     0f620cefd7753175b6258fed85f76c2014ec3799
+Gitweb:        https://git.kernel.org/tip/0f620cefd7753175b6258fed85f76c2014ec3799
 Author:        Josh Poimboeuf <jpoimboe@redhat.com>
-AuthorDate:    Mon, 18 Apr 2022 09:50:42 -07:00
+AuthorDate:    Mon, 18 Apr 2022 09:50:41 -07:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Fri, 22 Apr 2022 12:32:05 +02:00
+CommitterDate: Fri, 22 Apr 2022 12:32:04 +02:00
 
-objtool: Add HAVE_NOINSTR_VALIDATION
+objtool: Rename "VMLINUX_VALIDATION" -> "NOINSTR_VALIDATION"
 
-Remove CONFIG_NOINSTR_VALIDATION's dependency on HAVE_OBJTOOL, since
-other arches might want to implement objtool without it.
+CONFIG_VMLINUX_VALIDATION is just the validation of the "noinstr" rules.
+That name is a misnomer, because now objtool actually does vmlinux
+validation for other reasons.
+
+Rename CONFIG_VMLINUX_VALIDATION to CONFIG_NOINSTR_VALIDATION.
 
 Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Miroslav Benes <mbenes@suse.cz>
-Link: https://lkml.kernel.org/r/488e94f69db4df154499bc098573d90e5db1c826.1650300597.git.jpoimboe@redhat.com
+Link: https://lkml.kernel.org/r/173f07e2d6d1afc0874aed975a61783207c6a531.1650300597.git.jpoimboe@redhat.com
 ---
- arch/Kconfig      | 3 +++
- arch/x86/Kconfig  | 1 +
- lib/Kconfig.debug | 2 +-
- 3 files changed, 5 insertions(+), 1 deletion(-)
+ include/linux/instrumentation.h | 6 +++---
+ lib/Kconfig.debug               | 2 +-
+ scripts/link-vmlinux.sh         | 2 +-
+ 3 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/arch/Kconfig b/arch/Kconfig
-index 6ba6e34..1e19da7 100644
---- a/arch/Kconfig
-+++ b/arch/Kconfig
-@@ -1038,6 +1038,9 @@ config HAVE_JUMP_LABEL_HACK
- config HAVE_NOINSTR_HACK
- 	bool
+diff --git a/include/linux/instrumentation.h b/include/linux/instrumentation.h
+index 9111a37..bc7babe 100644
+--- a/include/linux/instrumentation.h
++++ b/include/linux/instrumentation.h
+@@ -2,7 +2,7 @@
+ #ifndef __LINUX_INSTRUMENTATION_H
+ #define __LINUX_INSTRUMENTATION_H
  
-+config HAVE_NOINSTR_VALIDATION
-+	bool
-+
- config HAVE_STACK_VALIDATION
- 	bool
- 	help
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 06e7cdd..1847d6e 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -233,6 +233,7 @@ config X86
- 	select HAVE_MOVE_PUD
- 	select HAVE_NOINSTR_HACK		if HAVE_OBJTOOL
- 	select HAVE_NMI
-+	select HAVE_NOINSTR_VALIDATION		if HAVE_OBJTOOL
- 	select HAVE_OBJTOOL			if X86_64
- 	select HAVE_OPTPROBES
- 	select HAVE_PCSPKR_PLATFORM
+-#ifdef CONFIG_VMLINUX_VALIDATION
++#ifdef CONFIG_NOINSTR_VALIDATION
+ 
+ #include <linux/stringify.h>
+ 
+@@ -53,9 +53,9 @@
+ 		     ".popsection\n\t" : : "i" (c));			\
+ })
+ #define instrumentation_end() __instrumentation_end(__COUNTER__)
+-#else /* !CONFIG_VMLINUX_VALIDATION */
++#else /* !CONFIG_NOINSTR_VALIDATION */
+ # define instrumentation_begin()	do { } while(0)
+ # define instrumentation_end()		do { } while(0)
+-#endif /* CONFIG_VMLINUX_VALIDATION */
++#endif /* CONFIG_NOINSTR_VALIDATION */
+ 
+ #endif /* __LINUX_INSTRUMENTATION_H */
 diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-index 73359d6..55b9acb 100644
+index 7d2bbc3..73359d6 100644
 --- a/lib/Kconfig.debug
 +++ b/lib/Kconfig.debug
-@@ -502,7 +502,7 @@ config STACK_VALIDATION
+@@ -500,7 +500,7 @@ config STACK_VALIDATION
+ 	  For more information, see
+ 	  tools/objtool/Documentation/stack-validation.txt.
  
- config NOINSTR_VALIDATION
+-config VMLINUX_VALIDATION
++config NOINSTR_VALIDATION
  	bool
--	depends on HAVE_OBJTOOL && DEBUG_ENTRY
-+	depends on HAVE_NOINSTR_VALIDATION && DEBUG_ENTRY
+ 	depends on HAVE_OBJTOOL && DEBUG_ENTRY
  	select OBJTOOL
- 	default y
+diff --git a/scripts/link-vmlinux.sh b/scripts/link-vmlinux.sh
+index 90c9c4c..fce4f41 100755
+--- a/scripts/link-vmlinux.sh
++++ b/scripts/link-vmlinux.sh
+@@ -160,7 +160,7 @@ objtool_link()
+ 		objtoolopt="${objtoolopt} --lto"
+ 	fi
+ 
+-	if is_enabled CONFIG_VMLINUX_VALIDATION; then
++	if is_enabled CONFIG_NOINSTR_VALIDATION; then
+ 		objtoolopt="${objtoolopt} --noinstr"
+ 	fi
  
