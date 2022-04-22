@@ -2,60 +2,60 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B238850B2FE
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 22 Apr 2022 10:34:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DDA7650B31B
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 22 Apr 2022 10:41:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1444991AbiDVIhW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 22 Apr 2022 04:37:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38294 "EHLO
+        id S233652AbiDVIoh (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 22 Apr 2022 04:44:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43178 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232080AbiDVIhW (ORCPT
+        with ESMTP id S231263AbiDVIog (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 22 Apr 2022 04:37:22 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 800E352E6B;
-        Fri, 22 Apr 2022 01:34:29 -0700 (PDT)
-Date:   Fri, 22 Apr 2022 08:34:25 -0000
+        Fri, 22 Apr 2022 04:44:36 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE3EC52E65;
+        Fri, 22 Apr 2022 01:41:43 -0700 (PDT)
+Date:   Fri, 22 Apr 2022 08:41:40 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1650616467;
+        s=2020; t=1650616901;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=gq1usa6UesRldL8zQcovKqyXols18bVc/b1E/9Ix0UU=;
-        b=oFb0/qQdOUQvtBihmftXbLZBnsAchJ81J5KqAEwoupWjza3D5w5eNVgUFSA1EFM0ilEobe
-        qhK/ITgu2+8io8KTVhWiC9YAC48iGBvkr6DZCjbGxbNgVvhhQyAfetlUgswje3LGvxi4jx
-        KHzZM47kXuBYCM8a+DfROjtabjNn/wubobPlqjASuS59hfUHwsx0fgqfpOsi/aoGtl0ir9
-        4TSAncyPKFtYNKXgyOXWnjNqyyfrKoecLcYoqAp7A/Zn8D9QPUmu9TDtdoXkexXLM9rodK
-        ZM3ySHxZZuqTV0vjpGfSxAB3QuPjj0PeRDVY16Hcr0S18Hc7rMtByje0mZWWCQ==
+        bh=j6cLxZ4kdjoHceVBuCa9zNiwaAJ9SgeXfp0i0CpsUqc=;
+        b=QJFs0v0fwlkYp0+0MPHFE5lzok5I0aGywAcbKL08LNA7b6SRtKOUINwOy0ipwt/ETEPt/D
+        kUlGkeEf0I0xC305FLH0Yp76zQEbp40beaK5+cfIkZRgX5tzG/D4vZHiz7iP009j4Rwffr
+        qqhTnlOwQIwJDqZp6rrK4LRd63h3tUh/iggBKNy2xXLPD1e8FBUFl9F6JNHdpKtuTxiNzk
+        IAhoyXRxEIbUTBY00KAyYeSZalrsV2mVeOkDtoMdiNwDF+6qGYKmEGxvWQrRHcyRbi+kqY
+        BCFtihesnDKMSPzEX660PeGfhijG5HsUEK9rK0bLbJpauOvRaDpiMJJ4ZtMpiw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1650616467;
+        s=2020e; t=1650616901;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=gq1usa6UesRldL8zQcovKqyXols18bVc/b1E/9Ix0UU=;
-        b=LcYfVAepCJCgrD9QDCDE2tOkmoZJl6VqGLTVPwoIRrmSfSY0YJBRhX/eGTvU6QHEGEcMz/
-        W5/WtQ8yYhLuVvBQ==
-From:   tip-bot2 for =?utf-8?q?Andr=C3=A9?= Almeida 
-        <tip-bot2@linutronix.de>
+        bh=j6cLxZ4kdjoHceVBuCa9zNiwaAJ9SgeXfp0i0CpsUqc=;
+        b=NWfMiudubAWkljK4kGIJANN1qJ47qcyRivTKmkzys3TlNBQ5z7wU1WuLmjd2G2KWLtcJKb
+        nMakoRAb8dx0f4CQ==
+From:   "tip-bot2 for John Stultz" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/urgent] futex: MAINTAINERS, .mailmap: Update 
- =?utf-8?q?Andr=C3=A9=27s?= email address
-Cc:     andrealmeid@igalia.com, Thomas Gleixner <tglx@linutronix.de>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20220421173254.29855-1-andrealmeid@igalia.com>
-References: <20220421173254.29855-1-andrealmeid@igalia.com>
+Subject: [tip: timers/urgent] MAINTAINERS: Update email address for John Stultz
+Cc:     John Stultz <jstultz@google.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Sumit Semwal <sumit.semwal@linaro.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20220418212016.2669086-1-jstultz@google.com>
+References: <20220418212016.2669086-1-jstultz@google.com>
 MIME-Version: 1.0
-Message-ID: <165061646567.4207.5776151541558788983.tip-bot2@tip-bot2>
+Message-ID: <165061690058.4207.9583814082499524209.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -65,52 +65,65 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the locking/urgent branch of tip:
+The following commit has been merged into the timers/urgent branch of tip:
 
-Commit-ID:     60cc5468daaefc18ffc081dc484bdaa1bd270561
-Gitweb:        https://git.kernel.org/tip/60cc5468daaefc18ffc081dc484bdaa1bd2=
-70561
-Author:        Andr=C3=A9 Almeida <andrealmeid@igalia.com>
-AuthorDate:    Thu, 21 Apr 2022 14:32:54 -03:00
+Commit-ID:     214cab6f8020a9ad4a5e9862a4e68088d5a79f08
+Gitweb:        https://git.kernel.org/tip/214cab6f8020a9ad4a5e9862a4e68088d5a79f08
+Author:        John Stultz <jstultz@google.com>
+AuthorDate:    Mon, 18 Apr 2022 21:20:16 
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 22 Apr 2022 10:30:20 +02:00
+CommitterDate: Fri, 22 Apr 2022 10:33:16 +02:00
 
-futex: MAINTAINERS, .mailmap: Update Andr=C3=A9's email address
+MAINTAINERS: Update email address for John Stultz
 
-Update futex entry to use my new professional email address.
+I've switched jobs, so update my email address in MAINTAINERS
 
-Signed-off-by: Andr=C3=A9 Almeida <andrealmeid@igalia.com>
+Signed-off-by: John Stultz <jstultz@google.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20220421173254.29855-1-andrealmeid@igalia.com
+Acked-by: Sumit Semwal <sumit.semwal@linaro.org>
+Link: https://lore.kernel.org/r/20220418212016.2669086-1-jstultz@google.com
 
 ---
- .mailmap    | 1 +
- MAINTAINERS | 2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ MAINTAINERS | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/.mailmap b/.mailmap
-index 9345815..ea1ba4a 100644
---- a/.mailmap
-+++ b/.mailmap
-@@ -45,6 +45,7 @@ Andrey Konovalov <andreyknvl@gmail.com> <andreyknvl@google.=
-com>
- Andrey Ryabinin <ryabinin.a.a@gmail.com> <a.ryabinin@samsung.com>
- Andrey Ryabinin <ryabinin.a.a@gmail.com> <aryabinin@virtuozzo.com>
- Andrzej Hajda <andrzej.hajda@intel.com> <a.hajda@samsung.com>
-+Andr=C3=A9 Almeida <andrealmeid@igalia.com> <andrealmeid@collabora.com>
- Andy Adamson <andros@citi.umich.edu>
- Antoine Tenart <atenart@kernel.org> <antoine.tenart@bootlin.com>
- Antoine Tenart <atenart@kernel.org> <antoine.tenart@free-electrons.com>
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 40fa195..35dea3d 100644
+index 40fa195..c2e1b72 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -8109,7 +8109,7 @@ M:	Ingo Molnar <mingo@redhat.com>
- R:	Peter Zijlstra <peterz@infradead.org>
- R:	Darren Hart <dvhart@infradead.org>
- R:	Davidlohr Bueso <dave@stgolabs.net>
--R:	Andr=C3=A9 Almeida <andrealmeid@collabora.com>
-+R:	Andr=C3=A9 Almeida <andrealmeid@igalia.com>
+@@ -5914,7 +5914,7 @@ R:	Benjamin Gaignard <benjamin.gaignard@collabora.com>
+ R:	Liam Mark <lmark@codeaurora.org>
+ R:	Laura Abbott <labbott@redhat.com>
+ R:	Brian Starkey <Brian.Starkey@arm.com>
+-R:	John Stultz <john.stultz@linaro.org>
++R:	John Stultz <jstultz@google.com>
+ L:	linux-media@vger.kernel.org
+ L:	dri-devel@lists.freedesktop.org
+ L:	linaro-mm-sig@lists.linaro.org (moderated for non-subscribers)
+@@ -6584,7 +6584,7 @@ F:	drivers/gpu/drm/gma500/
+ DRM DRIVERS FOR HISILICON
+ M:	Xinliang Liu <xinliang.liu@linaro.org>
+ M:	Tian Tao  <tiantao6@hisilicon.com>
+-R:	John Stultz <john.stultz@linaro.org>
++R:	John Stultz <jstultz@google.com>
+ R:	Xinwei Kong <kong.kongxinwei@hisilicon.com>
+ R:	Chen Feng <puck.chen@hisilicon.com>
+ L:	dri-devel@lists.freedesktop.org
+@@ -8845,7 +8845,7 @@ F:	Documentation/devicetree/bindings/net/hisilicon*.txt
+ F:	drivers/net/ethernet/hisilicon/
+ 
+ HIKEY960 ONBOARD USB GPIO HUB DRIVER
+-M:	John Stultz <john.stultz@linaro.org>
++M:	John Stultz <jstultz@google.com>
  L:	linux-kernel@vger.kernel.org
  S:	Maintained
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git locking/core
+ F:	drivers/misc/hisi_hikey_usb.c
+@@ -19784,7 +19784,7 @@ F:	drivers/net/wireless/ti/
+ F:	include/linux/wl12xx.h
+ 
+ TIMEKEEPING, CLOCKSOURCE CORE, NTP, ALARMTIMER
+-M:	John Stultz <john.stultz@linaro.org>
++M:	John Stultz <jstultz@google.com>
+ M:	Thomas Gleixner <tglx@linutronix.de>
+ R:	Stephen Boyd <sboyd@kernel.org>
+ L:	linux-kernel@vger.kernel.org
