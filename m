@@ -2,56 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B34950E0C4
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 25 Apr 2022 14:51:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 92A5150E132
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 25 Apr 2022 15:10:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241958AbiDYMyI (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 25 Apr 2022 08:54:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44160 "EHLO
+        id S235807AbiDYNNq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 25 Apr 2022 09:13:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47456 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242008AbiDYMyE (ORCPT
+        with ESMTP id S237671AbiDYNNp (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 25 Apr 2022 08:54:04 -0400
+        Mon, 25 Apr 2022 09:13:45 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EEEB1CB27;
-        Mon, 25 Apr 2022 05:50:59 -0700 (PDT)
-Date:   Mon, 25 Apr 2022 12:50:56 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78B9535DDD;
+        Mon, 25 Apr 2022 06:10:41 -0700 (PDT)
+Date:   Mon, 25 Apr 2022 13:10:38 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1650891057;
+        s=2020; t=1650892239;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ZOr8NZGy5gwYgHJYgd46ZelGZZzi7C8Ouk3t0T6VexQ=;
-        b=Lh5QGVP4Fb9K6umAzR8PupJ7EJoygkpstwG6+vZXJ6MFcsRQuEskr5U1YWAHO6IyUaDuvl
-        JY3WiJzxExvoxGnhZxXDPTNiSBc2kgcktmrwihSTXyI/h8H9nrDeTkdX5hjrbUcK+6y6bn
-        zXEIM8SiKZzaaWR1GIIZaxI18t7lvAsEYAIpz8POwEwvYTH1Gh6GKZ0LVn6xCq4XePjrkT
-        HAiX0Jh3G/ltrClhG6svZ8F6kztq96WqeaC2MseeurFuy/privhJrTSLJU2iQJHsOyaB46
-        VQGauM3XxXU6afdyCSBzeFo5bC5hjpxnKqIpO913j+PWBSLrxpH8lX+fIEHFFA==
+        bh=G6OEk80/8t8W77Fvu9cYNwGY2Q8QgDDy8rTXTFzVbjg=;
+        b=S2+6Z/2Oln7/6B+ToKRvK+cpfwPvYYbUUTBkNDigeXwadiufBHR4yaX2mmMGEv9kPzmGqR
+        X3mxxQHIvodsd//5HXmusQQo36opt8R+FdOFxe88vlLAt9OIKlooytgq4A4xiPln8vDUrB
+        8IgZz9OZ6LEF8XLQGfNXUM8D66Aig8JeqielezFQT4T7k+gZqstDU2LStHEKD5Op24iKom
+        IPl//3MWiRnthQQzzOUGcm2cr9ja695ly1MAdM4CGun8AEA5jckfpb59jwJ294Z+fVEFz9
+        PPDPkJtIRrYlHsPwFTxKT4IBVmzJ1ZHP0YaMVYaV3U5hcJIg1XCUYzdGMeGWEQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1650891057;
+        s=2020e; t=1650892239;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ZOr8NZGy5gwYgHJYgd46ZelGZZzi7C8Ouk3t0T6VexQ=;
-        b=WoDBts/BZsCdWFYmMC9lXvLOOpxB5Cr6AY2+Qmj4fWOdLrVb5LJFvvlLHlH2gnFjuR/v+W
-        6E2TktxWW1LvgdAQ==
-From:   "tip-bot2 for Nicholas Piggin" <tip-bot2@linutronix.de>
+        bh=G6OEk80/8t8W77Fvu9cYNwGY2Q8QgDDy8rTXTFzVbjg=;
+        b=LM4aUtQK/T/XQcFyKImxXQUELg8mgKRPIyi3ZYeqi30fhy9ijmogNilsnkMvlzpMh78xSz
+        AaDMIDQjPA3quMCg==
+From:   "tip-bot2 for Colin Ian King" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] timers/nohz: Switch to ONESHOT_STOPPED in the
- low-res handler when the tick is stopped
-Cc:     Nicholas Piggin <npiggin@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20220422141446.915024-1-npiggin@gmail.com>
-References: <20220422141446.915024-1-npiggin@gmail.com>
+Subject: [tip: irq/core] genirq/matrix: Remove redundant assignment to variable 'end'
+Cc:     Colin Ian King <colin.i.king@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tom Rix <trix@redhat.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org, maz@kernel.org
+In-Reply-To: <20220422110418.1264778-1-colin.i.king@gmail.com>
+References: <20220422110418.1264778-1-colin.i.king@gmail.com>
 MIME-Version: 1.0
-Message-ID: <165089105607.4207.3022534114716811208.tip-bot2@tip-bot2>
+Message-ID: <165089223820.4207.15088483701554526670.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,63 +65,44 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/core branch of tip:
+The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     62c1256d544747b38e77ca9b5bfe3a26f9592576
-Gitweb:        https://git.kernel.org/tip/62c1256d544747b38e77ca9b5bfe3a26f9592576
-Author:        Nicholas Piggin <npiggin@gmail.com>
-AuthorDate:    Sat, 23 Apr 2022 00:14:46 +10:00
+Commit-ID:     1adb4d7ad3a585b451f5cf6b0a90c5917af3eac5
+Gitweb:        https://git.kernel.org/tip/1adb4d7ad3a585b451f5cf6b0a90c5917af3eac5
+Author:        Colin Ian King <colin.i.king@gmail.com>
+AuthorDate:    Fri, 22 Apr 2022 12:04:18 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 25 Apr 2022 14:45:22 +02:00
+CommitterDate: Mon, 25 Apr 2022 15:02:57 +02:00
 
-timers/nohz: Switch to ONESHOT_STOPPED in the low-res handler when the tick is stopped
+genirq/matrix: Remove redundant assignment to variable 'end'
 
-When tick_nohz_stop_tick() stops the tick and high resolution timers are
-disabled, then the clock event device is not put into ONESHOT_STOPPED
-mode. This can lead to spurious timer interrupts with some clock event
-device drivers that don't shut down entirely after firing.
+Variable end is being initialized with a value that is never read, it
+is being re-assigned later with the same value. The initialization is
+redundant and can be removed.
 
-Eliminate these by putting the device into ONESHOT_STOPPED mode at points
-where it is not being reprogrammed. When there are no timers active, then
-tick_program_event() with KTIME_MAX can be used to stop the device. When
-there is a timer active, the device can be stopped at the next tick (any
-new timer added by timers will reprogram the tick).
+Cleans up clang scan build warning:
+kernel/irq/matrix.c:289:25: warning: Value stored to 'end' during its
+initialization is never read [deadcode.DeadStores]
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20220422141446.915024-1-npiggin@gmail.com
----
- kernel/time/tick-sched.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+Reviewed-by: Tom Rix <trix@redhat.com>
+Link: https://lore.kernel.org/r/20220422110418.1264778-1-colin.i.king@gmail.com
 
-diff --git a/kernel/time/tick-sched.c b/kernel/time/tick-sched.c
-index 2d76c91..b1b105d 100644
---- a/kernel/time/tick-sched.c
-+++ b/kernel/time/tick-sched.c
-@@ -928,6 +928,8 @@ static void tick_nohz_stop_tick(struct tick_sched *ts, int cpu)
- 	if (unlikely(expires == KTIME_MAX)) {
- 		if (ts->nohz_mode == NOHZ_MODE_HIGHRES)
- 			hrtimer_cancel(&ts->sched_timer);
-+		else
-+			tick_program_event(KTIME_MAX, 1);
- 		return;
- 	}
+---
+ kernel/irq/matrix.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/kernel/irq/matrix.c b/kernel/irq/matrix.c
+index bbfb264..1698e77 100644
+--- a/kernel/irq/matrix.c
++++ b/kernel/irq/matrix.c
+@@ -286,7 +286,7 @@ void irq_matrix_remove_managed(struct irq_matrix *m, const struct cpumask *msk)
+ int irq_matrix_alloc_managed(struct irq_matrix *m, const struct cpumask *msk,
+ 			     unsigned int *mapped_cpu)
+ {
+-	unsigned int bit, cpu, end = m->alloc_end;
++	unsigned int bit, cpu, end;
+ 	struct cpumap *cm;
  
-@@ -1364,9 +1366,15 @@ static void tick_nohz_handler(struct clock_event_device *dev)
- 	tick_sched_do_timer(ts, now);
- 	tick_sched_handle(ts, regs);
- 
--	/* No need to reprogram if we are running tickless  */
--	if (unlikely(ts->tick_stopped))
-+	if (unlikely(ts->tick_stopped)) {
-+		/*
-+		 * The clockevent device is not reprogrammed, so change the
-+		 * clock event device to ONESHOT_STOPPED to avoid spurious
-+		 * interrupts on devices which might not be truly one shot.
-+		 */
-+		tick_program_event(KTIME_MAX, 1);
- 		return;
-+	}
- 
- 	hrtimer_forward(&ts->sched_timer, now, TICK_NSEC);
- 	tick_program_event(hrtimer_get_expires(&ts->sched_timer), 1);
+ 	if (cpumask_empty(msk))
