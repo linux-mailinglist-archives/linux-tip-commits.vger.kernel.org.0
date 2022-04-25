@@ -2,98 +2,126 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 67C6950DD53
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 25 Apr 2022 11:55:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B34950E0C4
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 25 Apr 2022 14:51:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230259AbiDYJ6O (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 25 Apr 2022 05:58:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51934 "EHLO
+        id S241958AbiDYMyI (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 25 Apr 2022 08:54:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44160 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240518AbiDYJ5m (ORCPT
+        with ESMTP id S242008AbiDYMyE (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 25 Apr 2022 05:57:42 -0400
-Received: from mail-yw1-x1144.google.com (mail-yw1-x1144.google.com [IPv6:2607:f8b0:4864:20::1144])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 701A91AF1A
-        for <linux-tip-commits@vger.kernel.org>; Mon, 25 Apr 2022 02:54:38 -0700 (PDT)
-Received: by mail-yw1-x1144.google.com with SMTP id 00721157ae682-2f7d7e3b5bfso28699617b3.5
-        for <linux-tip-commits@vger.kernel.org>; Mon, 25 Apr 2022 02:54:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=s9IGPqOTuFEFxKMxMPq1P/MfyJrhGXNasZNiCUUGkGw=;
-        b=ATyrrXg7Zde9kNKDF5ZCIwB8sFwpTlj1alooHiv5B82ElZ6NtBEuNx95Avx3yfEG+v
-         SR3Pi9YiGn8JkKlYHD/qdytouxQeX3oJ0iJvxi83jqS7n6ODsQVEo3TYQchW3Es2L9VU
-         WpUkJmlaB6wVhppaQWj/4q6pjGxtcDa4HJW4QOfeOpSLK6Z6UVte2AgKSDjpTAjhaUvp
-         1vlu8JD8M0fsDcaE5ehzA10bFVyNVT/sZxFBm7wzmvCvDzerVUlRGvU96jP/8ljbUbru
-         odoIA7j0rE1KKiANkkvBpPl/x2AfmHungJLTzDrn645E4r+5rvRovpsE1TzToHsa3UvN
-         2Ivg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=s9IGPqOTuFEFxKMxMPq1P/MfyJrhGXNasZNiCUUGkGw=;
-        b=6g/eSpDhBefkOli1R6WBTiSLxpeH09kp4Ksi6j4b4IJp7vbbJ1Z+yCyvoFOrUVLoiL
-         kvwh5ScYHdT8tKh9EyUGSyT5bRmLoCNny4fqtui5VcCcI30uGTBq8+0Oj2T07PZ8vnez
-         9+XwX1llVHsMURGA9N24AhzFjyf46Cww1KEc2mCywbg7o5LX9tnBeJYNL6FF+8csr2fO
-         bzk2NZFipuJVI09UkhisaLw+hSWUqhI28okqatnDZ71Cq9Po33SwzsODUqeEcc+FGXGa
-         A/N+mt61RjYebL8NtqTAGWz7Py21lXEiYlfvuWmxn/vV09TfU8aKmCPHRF7pH8zAV5ZY
-         jKQg==
-X-Gm-Message-State: AOAM533hqnsNLc2mWul6OQnwzlrtXFCRuLeVP/CZHVOzvOKkMTJHJHkM
-        5uobKdzpFu6ntBO8xEE8G86dqKCr4CiH1zOVeiA=
-X-Google-Smtp-Source: ABdhPJxQijnkVqO46AP9dZFBb+zIV+lJgA02aHBxz50/JloNDj/GM6qY165L4Ew15qf1giwmqZ6pYLM3j+WeCcqd3IM=
-X-Received: by 2002:a0d:d787:0:b0:2f4:dfc5:9a70 with SMTP id
- z129-20020a0dd787000000b002f4dfc59a70mr16308194ywd.447.1650880477612; Mon, 25
- Apr 2022 02:54:37 -0700 (PDT)
+        Mon, 25 Apr 2022 08:54:04 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EEEB1CB27;
+        Mon, 25 Apr 2022 05:50:59 -0700 (PDT)
+Date:   Mon, 25 Apr 2022 12:50:56 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1650891057;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=ZOr8NZGy5gwYgHJYgd46ZelGZZzi7C8Ouk3t0T6VexQ=;
+        b=Lh5QGVP4Fb9K6umAzR8PupJ7EJoygkpstwG6+vZXJ6MFcsRQuEskr5U1YWAHO6IyUaDuvl
+        JY3WiJzxExvoxGnhZxXDPTNiSBc2kgcktmrwihSTXyI/h8H9nrDeTkdX5hjrbUcK+6y6bn
+        zXEIM8SiKZzaaWR1GIIZaxI18t7lvAsEYAIpz8POwEwvYTH1Gh6GKZ0LVn6xCq4XePjrkT
+        HAiX0Jh3G/ltrClhG6svZ8F6kztq96WqeaC2MseeurFuy/privhJrTSLJU2iQJHsOyaB46
+        VQGauM3XxXU6afdyCSBzeFo5bC5hjpxnKqIpO913j+PWBSLrxpH8lX+fIEHFFA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1650891057;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=ZOr8NZGy5gwYgHJYgd46ZelGZZzi7C8Ouk3t0T6VexQ=;
+        b=WoDBts/BZsCdWFYmMC9lXvLOOpxB5Cr6AY2+Qmj4fWOdLrVb5LJFvvlLHlH2gnFjuR/v+W
+        6E2TktxWW1LvgdAQ==
+From:   "tip-bot2 for Nicholas Piggin" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: timers/core] timers/nohz: Switch to ONESHOT_STOPPED in the
+ low-res handler when the tick is stopped
+Cc:     Nicholas Piggin <npiggin@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20220422141446.915024-1-npiggin@gmail.com>
+References: <20220422141446.915024-1-npiggin@gmail.com>
 MIME-Version: 1.0
-Received: by 2002:a05:7000:bf06:0:0:0:0 with HTTP; Mon, 25 Apr 2022 02:54:37
- -0700 (PDT)
-Reply-To: lawrencetansanco.y@gmail.com
-From:   Lawrence Tansanco <lt01102203@gmail.com>
-Date:   Mon, 25 Apr 2022 09:54:37 +0000
-Message-ID: <CAHP1huHfPzicY=hdR831QxbM-x=dFovv4_naSGV3EfxdN+Ra9g@mail.gmail.com>
-Subject: THANKS FOR YOUR RESPONSE AND GOD BLESS
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,SUBJ_ALL_CAPS,UNDISC_FREEM autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:1144 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.4926]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [lt01102203[at]gmail.com]
-        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [lt01102203[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        *  3.6 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+Message-ID: <165089105607.4207.3022534114716811208.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-.
-I will like to disclose something very important to you,
-get back for more details please.
+The following commit has been merged into the timers/core branch of tip:
 
-Regards.
-Mr Lawrence Tansanco Y.
+Commit-ID:     62c1256d544747b38e77ca9b5bfe3a26f9592576
+Gitweb:        https://git.kernel.org/tip/62c1256d544747b38e77ca9b5bfe3a26f9592576
+Author:        Nicholas Piggin <npiggin@gmail.com>
+AuthorDate:    Sat, 23 Apr 2022 00:14:46 +10:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Mon, 25 Apr 2022 14:45:22 +02:00
+
+timers/nohz: Switch to ONESHOT_STOPPED in the low-res handler when the tick is stopped
+
+When tick_nohz_stop_tick() stops the tick and high resolution timers are
+disabled, then the clock event device is not put into ONESHOT_STOPPED
+mode. This can lead to spurious timer interrupts with some clock event
+device drivers that don't shut down entirely after firing.
+
+Eliminate these by putting the device into ONESHOT_STOPPED mode at points
+where it is not being reprogrammed. When there are no timers active, then
+tick_program_event() with KTIME_MAX can be used to stop the device. When
+there is a timer active, the device can be stopped at the next tick (any
+new timer added by timers will reprogram the tick).
+
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20220422141446.915024-1-npiggin@gmail.com
+---
+ kernel/time/tick-sched.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
+
+diff --git a/kernel/time/tick-sched.c b/kernel/time/tick-sched.c
+index 2d76c91..b1b105d 100644
+--- a/kernel/time/tick-sched.c
++++ b/kernel/time/tick-sched.c
+@@ -928,6 +928,8 @@ static void tick_nohz_stop_tick(struct tick_sched *ts, int cpu)
+ 	if (unlikely(expires == KTIME_MAX)) {
+ 		if (ts->nohz_mode == NOHZ_MODE_HIGHRES)
+ 			hrtimer_cancel(&ts->sched_timer);
++		else
++			tick_program_event(KTIME_MAX, 1);
+ 		return;
+ 	}
+ 
+@@ -1364,9 +1366,15 @@ static void tick_nohz_handler(struct clock_event_device *dev)
+ 	tick_sched_do_timer(ts, now);
+ 	tick_sched_handle(ts, regs);
+ 
+-	/* No need to reprogram if we are running tickless  */
+-	if (unlikely(ts->tick_stopped))
++	if (unlikely(ts->tick_stopped)) {
++		/*
++		 * The clockevent device is not reprogrammed, so change the
++		 * clock event device to ONESHOT_STOPPED to avoid spurious
++		 * interrupts on devices which might not be truly one shot.
++		 */
++		tick_program_event(KTIME_MAX, 1);
+ 		return;
++	}
+ 
+ 	hrtimer_forward(&ts->sched_timer, now, TICK_NSEC);
+ 	tick_program_event(hrtimer_get_expires(&ts->sched_timer), 1);
