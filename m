@@ -2,129 +2,98 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DE8B050B555
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 22 Apr 2022 12:38:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 67C6950DD53
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 25 Apr 2022 11:55:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1446670AbiDVKia (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 22 Apr 2022 06:38:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34946 "EHLO
+        id S230259AbiDYJ6O (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 25 Apr 2022 05:58:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51934 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1446721AbiDVKiE (ORCPT
+        with ESMTP id S240518AbiDYJ5m (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 22 Apr 2022 06:38:04 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1943DFFE;
-        Fri, 22 Apr 2022 03:35:12 -0700 (PDT)
-Date:   Fri, 22 Apr 2022 10:35:09 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1650623710;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=NOFSd7rbHEQFd/HFnNhB9bHsxoqiRUzgDAeYs8Oe4o4=;
-        b=0RTFvP0/kvxiZFMVn2E7Uj53VePk+/OJ3mRZ/1z4S7ZDPPFxSv0HNll4/BOAus986tQVRf
-        w6w2TA6m3REctsS8eHm/z68BTOkTA1mBkETJYDAOSx/20mrisD//gGbQc6XRJDvwji122s
-        EownN0mUwfwqGLIfeMW03ef7/n4lq83YuiMrKCfNO/o5H98fW0/aIEhK7Ju94tH3LEnmaH
-        dmF8SuIGTOAafGP8+JtSvsLQx4iQPk1i+1EXpRSD7ecVK537lHbBPQzeHtNbwpkykI9ZQi
-        f8+/Dirf7bn4A19WF5VCQ/KMlYi9C6nXtPwCH0exbCmb0d5BLIIFS3SBJiPpGA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1650623710;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=NOFSd7rbHEQFd/HFnNhB9bHsxoqiRUzgDAeYs8Oe4o4=;
-        b=s/1GUisZBSplbmENbEGu6Fj8tBbHEObpEGdlAKB2nxVOkAbs2qWDcrQh9sX4uHK9V6lvyk
-        S1g2yEpdWCPPSTBQ==
-From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] libsubcmd: Fix OPTION_GROUP sorting
-Cc:     Josh Poimboeuf <jpoimboe@redhat.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Miroslav Benes <mbenes@suse.cz>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <e167ea3a11e2a9800eb062c1fd0f13e9cd05140c.1650300597.git.jpoimboe@redhat.com>
-References: <e167ea3a11e2a9800eb062c1fd0f13e9cd05140c.1650300597.git.jpoimboe@redhat.com>
+        Mon, 25 Apr 2022 05:57:42 -0400
+Received: from mail-yw1-x1144.google.com (mail-yw1-x1144.google.com [IPv6:2607:f8b0:4864:20::1144])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 701A91AF1A
+        for <linux-tip-commits@vger.kernel.org>; Mon, 25 Apr 2022 02:54:38 -0700 (PDT)
+Received: by mail-yw1-x1144.google.com with SMTP id 00721157ae682-2f7d7e3b5bfso28699617b3.5
+        for <linux-tip-commits@vger.kernel.org>; Mon, 25 Apr 2022 02:54:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=s9IGPqOTuFEFxKMxMPq1P/MfyJrhGXNasZNiCUUGkGw=;
+        b=ATyrrXg7Zde9kNKDF5ZCIwB8sFwpTlj1alooHiv5B82ElZ6NtBEuNx95Avx3yfEG+v
+         SR3Pi9YiGn8JkKlYHD/qdytouxQeX3oJ0iJvxi83jqS7n6ODsQVEo3TYQchW3Es2L9VU
+         WpUkJmlaB6wVhppaQWj/4q6pjGxtcDa4HJW4QOfeOpSLK6Z6UVte2AgKSDjpTAjhaUvp
+         1vlu8JD8M0fsDcaE5ehzA10bFVyNVT/sZxFBm7wzmvCvDzerVUlRGvU96jP/8ljbUbru
+         odoIA7j0rE1KKiANkkvBpPl/x2AfmHungJLTzDrn645E4r+5rvRovpsE1TzToHsa3UvN
+         2Ivg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=s9IGPqOTuFEFxKMxMPq1P/MfyJrhGXNasZNiCUUGkGw=;
+        b=6g/eSpDhBefkOli1R6WBTiSLxpeH09kp4Ksi6j4b4IJp7vbbJ1Z+yCyvoFOrUVLoiL
+         kvwh5ScYHdT8tKh9EyUGSyT5bRmLoCNny4fqtui5VcCcI30uGTBq8+0Oj2T07PZ8vnez
+         9+XwX1llVHsMURGA9N24AhzFjyf46Cww1KEc2mCywbg7o5LX9tnBeJYNL6FF+8csr2fO
+         bzk2NZFipuJVI09UkhisaLw+hSWUqhI28okqatnDZ71Cq9Po33SwzsODUqeEcc+FGXGa
+         A/N+mt61RjYebL8NtqTAGWz7Py21lXEiYlfvuWmxn/vV09TfU8aKmCPHRF7pH8zAV5ZY
+         jKQg==
+X-Gm-Message-State: AOAM533hqnsNLc2mWul6OQnwzlrtXFCRuLeVP/CZHVOzvOKkMTJHJHkM
+        5uobKdzpFu6ntBO8xEE8G86dqKCr4CiH1zOVeiA=
+X-Google-Smtp-Source: ABdhPJxQijnkVqO46AP9dZFBb+zIV+lJgA02aHBxz50/JloNDj/GM6qY165L4Ew15qf1giwmqZ6pYLM3j+WeCcqd3IM=
+X-Received: by 2002:a0d:d787:0:b0:2f4:dfc5:9a70 with SMTP id
+ z129-20020a0dd787000000b002f4dfc59a70mr16308194ywd.447.1650880477612; Mon, 25
+ Apr 2022 02:54:37 -0700 (PDT)
 MIME-Version: 1.0
-Message-ID: <165062370967.4207.4014236875289539210.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a05:7000:bf06:0:0:0:0 with HTTP; Mon, 25 Apr 2022 02:54:37
+ -0700 (PDT)
+Reply-To: lawrencetansanco.y@gmail.com
+From:   Lawrence Tansanco <lt01102203@gmail.com>
+Date:   Mon, 25 Apr 2022 09:54:37 +0000
+Message-ID: <CAHP1huHfPzicY=hdR831QxbM-x=dFovv4_naSGV3EfxdN+Ra9g@mail.gmail.com>
+Subject: THANKS FOR YOUR RESPONSE AND GOD BLESS
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=5.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,SUBJ_ALL_CAPS,UNDISC_FREEM autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:1144 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.4926]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [lt01102203[at]gmail.com]
+        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [lt01102203[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        *  3.6 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the objtool/core branch of tip:
+.
+I will like to disclose something very important to you,
+get back for more details please.
 
-Commit-ID:     aa3d60e050112ef1373d7216eabe0ee966615527
-Gitweb:        https://git.kernel.org/tip/aa3d60e050112ef1373d7216eabe0ee966615527
-Author:        Josh Poimboeuf <jpoimboe@redhat.com>
-AuthorDate:    Mon, 18 Apr 2022 09:50:21 -07:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Fri, 22 Apr 2022 12:32:01 +02:00
-
-libsubcmd: Fix OPTION_GROUP sorting
-
-The OPTION_GROUP option type is a way of grouping certain options
-together in the printed usage text.  It happens to be completely broken,
-thanks to the fact that the subcmd option sorting just sorts everything,
-without regard for grouping.  Luckily, nobody uses this option anyway,
-though that will change shortly.
-
-Fix it by sorting each group individually.
-
-Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Miroslav Benes <mbenes@suse.cz>
-Link: https://lkml.kernel.org/r/e167ea3a11e2a9800eb062c1fd0f13e9cd05140c.1650300597.git.jpoimboe@redhat.com
----
- tools/lib/subcmd/parse-options.c | 17 ++++++++++++++---
- 1 file changed, 14 insertions(+), 3 deletions(-)
-
-diff --git a/tools/lib/subcmd/parse-options.c b/tools/lib/subcmd/parse-options.c
-index 39ebf61..9fa7594 100644
---- a/tools/lib/subcmd/parse-options.c
-+++ b/tools/lib/subcmd/parse-options.c
-@@ -806,9 +806,9 @@ static int option__cmp(const void *va, const void *vb)
- 
- static struct option *options__order(const struct option *opts)
- {
--	int nr_opts = 0, len;
-+	int nr_opts = 0, nr_group = 0, len;
- 	const struct option *o = opts;
--	struct option *ordered;
-+	struct option *opt, *ordered, *group;
- 
- 	for (o = opts; o->type != OPTION_END; o++)
- 		++nr_opts;
-@@ -819,7 +819,18 @@ static struct option *options__order(const struct option *opts)
- 		goto out;
- 	memcpy(ordered, opts, len);
- 
--	qsort(ordered, nr_opts, sizeof(*o), option__cmp);
-+	/* sort each option group individually */
-+	for (opt = group = ordered; opt->type != OPTION_END; opt++) {
-+		if (opt->type == OPTION_GROUP) {
-+			qsort(group, nr_group, sizeof(*opt), option__cmp);
-+			group = opt + 1;
-+			nr_group = 0;
-+			continue;
-+		}
-+		nr_group++;
-+	}
-+	qsort(group, nr_group, sizeof(*opt), option__cmp);
-+
- out:
- 	return ordered;
- }
+Regards.
+Mr Lawrence Tansanco Y.
