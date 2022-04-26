@@ -2,60 +2,60 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 646F350E4E5
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 25 Apr 2022 17:57:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EE6650FB42
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 26 Apr 2022 12:44:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243111AbiDYP7e (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 25 Apr 2022 11:59:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41146 "EHLO
+        id S245525AbiDZKrF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 26 Apr 2022 06:47:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47522 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243121AbiDYP7c (ORCPT
+        with ESMTP id S1349285AbiDZKpT (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 25 Apr 2022 11:59:32 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFE32114FAE;
-        Mon, 25 Apr 2022 08:56:22 -0700 (PDT)
-Date:   Mon, 25 Apr 2022 15:56:20 -0000
+        Tue, 26 Apr 2022 06:45:19 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C123201A3;
+        Tue, 26 Apr 2022 03:35:42 -0700 (PDT)
+Date:   Tue, 26 Apr 2022 10:35:38 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1650902181;
+        s=2020; t=1650969340;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=2yTwPxv8H/dUOhfrqLiZHWdWH8T8aQb7iNOdHS/XIE4=;
-        b=QM/oyovEFP74DbhBQUiQArTi16JTpDv1T8KT1a9///cLClfSdaiiiIvGhWKnWf2N66Esms
-        EGvAqwqzRn4SWQP96r9Ell8BptCwln4X+BfyZwlfaOgieGam9P8rCHpAMCm1BCKSxZOjJ4
-        kFeeiHHuPFjEVCCaRX+ywmKmMV8ye+wbG3L8eRGgn6lxz5EWu2qaobWxFzyLD4RySFB4gq
-        IgKXLc+wFWktRgGJsrHStz7/Ijb9AYVaBNNdVmZuw+RAxZn8onAsxBpedWL24Ebvhl9Pq7
-        o7qNUZP6z/CWeYKAaOwd9N15Nx9jtgMU3OrmEH9KvyqP+bSzPl5idpeLMHzk5A==
+        bh=BnEoxcZPIV50wEqSslZb+Yzb5QH9TDtGA2PniSIhmC0=;
+        b=qj/GTbIM6pbxbMlgvvJzAczc/iCVR6V4n3/ExGLghXx9gQOXnW44XtzAc9kSjlU6n0mSws
+        9WImxviXTHdXzAoCCpK3rYAA/O7J8+CZ8rPhnQXJg+UDhUL/ZHcXjnxo0VZA9nenh9vsXQ
+        yFfz/JZPrFaKS7p5bv3xvjMV3l4stF5eXbQbulgNHvJzJ4NB3ZviHaQ2RsBNsqKZOkEa4r
+        0CGz9mBA0seU97WDgFMTSDiXefu8S2vlHx81jGY2P4RHapDOUw7sodyU4s+iUdsy9uoH5J
+        GTZ4nGJ+qKv+j97V52K7GRsXLWU/k9oJXe+YRIndGrfDjusXJt6pTyme9oTNLg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1650902181;
+        s=2020e; t=1650969340;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=2yTwPxv8H/dUOhfrqLiZHWdWH8T8aQb7iNOdHS/XIE4=;
-        b=zeD6UgsbVv9QIvZ0MOBD7VZMyGdm+HWz3GKTC5pwEujnyULwCo7IqO16+hqHfY2KoeGKcZ
-        FLiWQB9IuGoYknDQ==
-From:   "tip-bot2 for Carlos Bilbao" <tip-bot2@linutronix.de>
+        bh=BnEoxcZPIV50wEqSslZb+Yzb5QH9TDtGA2PniSIhmC0=;
+        b=YDy8mOXxkRf3jAakcO7jsd3rgJqhLpee95HjjhVqUXfaaD08Vzxl7gr8NMIBFrcFYbS75F
+        DJLK0RHJIXhC8YBg==
+From:   "tip-bot2 for Shida Zhang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: ras/core] x86/mce: Simplify AMD severity grading logic
-Cc:     Carlos Bilbao <carlos.bilbao@amd.com>,
-        Borislav Petkov <bp@suse.de>,
-        Yazen Ghannam <yazen.ghannam@amd.com>, x86@kernel.org,
+Subject: [tip: x86/urgent] bug: Have __warn() prototype defined unconditionally
+Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Shida Zhang <zhangshida@kylinos.cn>,
+        Borislav Petkov <bp@suse.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220405183212.354606-2-carlos.bilbao@amd.com>
-References: <20220405183212.354606-2-carlos.bilbao@amd.com>
+In-Reply-To: <20220426032007.510245-1-starzhangzsd@gmail.com>
+References: <20220426032007.510245-1-starzhangzsd@gmail.com>
 MIME-Version: 1.0
-Message-ID: <165090218047.4207.9735013762678136837.tip-bot2@tip-bot2>
+Message-ID: <165096933899.4207.3847577381859492159.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -65,155 +65,69 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the ras/core branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     70c459d915e838b7f536b8e26e0b3a6141bd2645
-Gitweb:        https://git.kernel.org/tip/70c459d915e838b7f536b8e26e0b3a6141bd2645
-Author:        Carlos Bilbao <carlos.bilbao@amd.com>
-AuthorDate:    Tue, 05 Apr 2022 13:32:13 -05:00
+Commit-ID:     1fa568e26f001e951b634d62ef3accdc80a87c7b
+Gitweb:        https://git.kernel.org/tip/1fa568e26f001e951b634d62ef3accdc80a=
+87c7b
+Author:        Shida Zhang <zhangshida@kylinos.cn>
+AuthorDate:    Tue, 26 Apr 2022 11:20:07 +08:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Mon, 25 Apr 2022 12:32:03 +02:00
+CommitterDate: Tue, 26 Apr 2022 10:59:57 +02:00
 
-x86/mce: Simplify AMD severity grading logic
+bug: Have __warn() prototype defined unconditionally
 
-The MCE handler needs to understand the severity of the machine errors to
-act accordingly. Simplify the AMD grading logic following a logic that
-closely resembles the descriptions of the public PPR documents. This will
-help include more fine-grained grading of errors in the future.
+The __warn() prototype is declared in CONFIG_BUG scope but the function
+definition in panic.c is unconditional. The IBT enablement started using
+it unconditionally but a CONFIG_X86_KERNEL_IBT=3Dy, CONFIG_BUG=3Dn .config
+will trigger a
 
-  [ bp: Touchups. ]
+  arch/x86/kernel/traps.c: In function =E2=80=98__exc_control_protection=E2=
+=80=99:
+  arch/x86/kernel/traps.c:249:17: error: implicit declaration of function \
+  	  =E2=80=98__warn=E2=80=99; did you mean =E2=80=98pr_warn=E2=80=99? [-Werr=
+or=3Dimplicit-function-declaration]
 
-Signed-off-by: Carlos Bilbao <carlos.bilbao@amd.com>
+Pull up the declarations so that they're unconditionally visible too.
+
+  [ bp: Rewrite commit message. ]
+
+Fixes: 991625f3dd2c ("x86/ibt: Add IBT feature, MSR and #CP handling")
+Suggested-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Shida Zhang <zhangshida@kylinos.cn>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Yazen Ghannam <yazen.ghannam@amd.com>
-Link: https://lore.kernel.org/r/20220405183212.354606-2-carlos.bilbao@amd.com
+Link: https://lore.kernel.org/r/20220426032007.510245-1-starzhangzsd@gmail.com
 ---
- arch/x86/kernel/cpu/mce/severity.c | 101 +++++++++-------------------
- 1 file changed, 36 insertions(+), 65 deletions(-)
+ include/asm-generic/bug.h | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/mce/severity.c b/arch/x86/kernel/cpu/mce/severity.c
-index 1add869..d842148 100644
---- a/arch/x86/kernel/cpu/mce/severity.c
-+++ b/arch/x86/kernel/cpu/mce/severity.c
-@@ -301,85 +301,56 @@ static noinstr int error_context(struct mce *m, struct pt_regs *regs)
- 	}
- }
- 
--static __always_inline int mce_severity_amd_smca(struct mce *m, enum context err_ctx)
-+/* See AMD PPR(s) section Machine Check Error Handling. */
-+static noinstr int mce_severity_amd(struct mce *m, struct pt_regs *regs, char **msg, bool is_excp)
- {
--	u64 mcx_cfg;
-+	int ret;
- 
- 	/*
--	 * We need to look at the following bits:
--	 * - "succor" bit (data poisoning support), and
--	 * - TCC bit (Task Context Corrupt)
--	 * in MCi_STATUS to determine error severity.
-+	 * Default return value: Action required, the error must be handled
-+	 * immediately.
- 	 */
--	if (!mce_flags.succor)
--		return MCE_PANIC_SEVERITY;
--
--	mcx_cfg = mce_rdmsrl(MSR_AMD64_SMCA_MCx_CONFIG(m->bank));
--
--	/* TCC (Task context corrupt). If set and if IN_KERNEL, panic. */
--	if ((mcx_cfg & MCI_CONFIG_MCAX) &&
--	    (m->status & MCI_STATUS_TCC) &&
--	    (err_ctx == IN_KERNEL))
--		return MCE_PANIC_SEVERITY;
--
--	 /* ...otherwise invoke hwpoison handler. */
--	return MCE_AR_SEVERITY;
--}
--
--/*
-- * See AMD Error Scope Hierarchy table in a newer BKDG. For example
-- * 49125_15h_Models_30h-3Fh_BKDG.pdf, section "RAS Features"
-- */
--static noinstr int mce_severity_amd(struct mce *m, struct pt_regs *regs, char **msg, bool is_excp)
--{
--	enum context ctx = error_context(m, regs);
-+	ret = MCE_AR_SEVERITY;
- 
- 	/* Processor Context Corrupt, no need to fumble too much, die! */
--	if (m->status & MCI_STATUS_PCC)
--		return MCE_PANIC_SEVERITY;
--
--	if (m->status & MCI_STATUS_UC) {
--
--		if (ctx == IN_KERNEL)
--			return MCE_PANIC_SEVERITY;
-+	if (m->status & MCI_STATUS_PCC) {
-+		ret = MCE_PANIC_SEVERITY;
-+		goto out;
-+	}
- 
--		/*
--		 * On older systems where overflow_recov flag is not present, we
--		 * should simply panic if an error overflow occurs. If
--		 * overflow_recov flag is present and set, then software can try
--		 * to at least kill process to prolong system operation.
--		 */
--		if (mce_flags.overflow_recov) {
--			if (mce_flags.smca)
--				return mce_severity_amd_smca(m, ctx);
--
--			/* kill current process */
--			return MCE_AR_SEVERITY;
--		} else {
--			/* at least one error was not logged */
--			if (m->status & MCI_STATUS_OVER)
--				return MCE_PANIC_SEVERITY;
--		}
--
--		/*
--		 * For any other case, return MCE_UC_SEVERITY so that we log the
--		 * error and exit #MC handler.
--		 */
--		return MCE_UC_SEVERITY;
-+	if (m->status & MCI_STATUS_DEFERRED) {
-+		ret = MCE_DEFERRED_SEVERITY;
-+		goto out;
- 	}
- 
- 	/*
--	 * deferred error: poll handler catches these and adds to mce_ring so
--	 * memory-failure can take recovery actions.
-+	 * If the UC bit is not set, the system either corrected or deferred
-+	 * the error. No action will be required after logging the error.
- 	 */
--	if (m->status & MCI_STATUS_DEFERRED)
--		return MCE_DEFERRED_SEVERITY;
-+	if (!(m->status & MCI_STATUS_UC)) {
-+		ret = MCE_KEEP_SEVERITY;
-+		goto out;
-+	}
- 
- 	/*
--	 * corrected error: poll handler catches these and passes responsibility
--	 * of decoding the error to EDAC
-+	 * On MCA overflow, without the MCA overflow recovery feature the
-+	 * system will not be able to recover, panic.
- 	 */
--	return MCE_KEEP_SEVERITY;
-+	if ((m->status & MCI_STATUS_OVER) && !mce_flags.overflow_recov) {
-+		ret = MCE_PANIC_SEVERITY;
-+		goto out;
-+	}
+diff --git a/include/asm-generic/bug.h b/include/asm-generic/bug.h
+index edb0e2a..ba1f860 100644
+--- a/include/asm-generic/bug.h
++++ b/include/asm-generic/bug.h
+@@ -21,6 +21,12 @@
+ #include <linux/panic.h>
+ #include <linux/printk.h>
+=20
++struct warn_args;
++struct pt_regs;
 +
-+	if (!mce_flags.succor) {
-+		ret = MCE_PANIC_SEVERITY;
-+		goto out;
-+	}
++void __warn(const char *file, int line, void *caller, unsigned taint,
++	    struct pt_regs *regs, struct warn_args *args);
 +
-+	if (error_context(m, regs) == IN_KERNEL)
-+		ret = MCE_PANIC_SEVERITY;
-+
-+out:
-+	return ret;
- }
- 
- static noinstr int mce_severity_intel(struct mce *m, struct pt_regs *regs, char **msg, bool is_excp)
+ #ifdef CONFIG_BUG
+=20
+ #ifdef CONFIG_GENERIC_BUG
+@@ -110,11 +116,6 @@ extern __printf(1, 2) void __warn_printk(const char *fmt=
+, ...);
+ #endif
+=20
+ /* used internally by panic.c */
+-struct warn_args;
+-struct pt_regs;
+-
+-void __warn(const char *file, int line, void *caller, unsigned taint,
+-	    struct pt_regs *regs, struct warn_args *args);
+=20
+ #ifndef WARN_ON
+ #define WARN_ON(condition) ({						\
