@@ -2,58 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ECF7251215F
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 27 Apr 2022 20:43:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DC2E51215A
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 27 Apr 2022 20:43:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229461AbiD0SqV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 27 Apr 2022 14:46:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49308 "EHLO
+        id S229548AbiD0SqP (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 27 Apr 2022 14:46:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229930AbiD0SqG (ORCPT
+        with ESMTP id S229964AbiD0SqG (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Wed, 27 Apr 2022 14:46:06 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6929C7C15F;
-        Wed, 27 Apr 2022 11:27:26 -0700 (PDT)
-Date:   Wed, 27 Apr 2022 18:27:23 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F338F1369;
+        Wed, 27 Apr 2022 11:27:27 -0700 (PDT)
+Date:   Wed, 27 Apr 2022 18:27:24 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1651084045;
+        s=2020; t=1651084046;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=iL4WkOI8ngg15v6zTaK965U+pABLt+J+frTAGInQhr0=;
-        b=VF5tkGFtBx+soKX9YWv00mPZSEWf5jlzRHCZ6I8ja5mbYIBbtIHsDxSIQh3FuCTAiwCQ+b
-        Dp91ETceoypZDdS1Azs0tq8c8rEyfRQsellto8GQMV5NNuZ5IBsp9UpAnJmwWrjtvb16Ia
-        Tz7SxxCZlrmeQYzXBBmnAh4IjfCzLrsay6C3dQBmhLDQnmvPFwwd1z86gvgdFhebbe3twA
-        A+BcCHrhkPV+rJMS/dQmWUAkxUmPjenMXS73A5m9KKRwZZYaPWH174LiT5Eoh657Ot+dW/
-        9KBx3FM8ydgmGX94gG0yiwF6HcoIEz7mUBqG7GuraE+pLuHsmtp9eZmjMDsIGg==
+        bh=EEgFvAkQSB8xlRo9PgqHLJRCeY0iIIXGnavqlRm0dUQ=;
+        b=S+i+LOBwWyBCCNyktLQRw/nMjXgK8FkX7tn9cvfIo/7bj6PiLCiY9zydKc8DKxUT+kcal7
+        plozlh/uiQ/zIUneq0hDTOk+46r5MvE1GFz77pfqI0qTKPjLiDQS3KHemN7VIkjUg4ii+E
+        vXeM8bjgRgmHJ+wp2tZeQEpbGdt8d9zfbFbrm6/FiD1P6Cz4K0mPTTV/KMySFeGG72uV7c
+        dUfNHQv8VnDz/Q+WSN3VwyNctFQt5iSBc3iQHU4mek6DHeVO9GLqvzPdmSG+7Nj0TauLXi
+        I6uaOwlnahctnA3G2axW0QIfN3rCArewVC4w4PuDUMxj9M0rEYjYzD91lQG9yQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1651084045;
+        s=2020e; t=1651084046;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=iL4WkOI8ngg15v6zTaK965U+pABLt+J+frTAGInQhr0=;
-        b=RNdK0qHHxvRRNOnNlrOW6B0+vHkmmPZMdgxpB6T3ydPD3lLKseUCgCCgbSdda/KctvIkMQ
-        I+BAQP2udVJFcHAg==
+        bh=EEgFvAkQSB8xlRo9PgqHLJRCeY0iIIXGnavqlRm0dUQ=;
+        b=I+ONisyiy0Qyn4q245P6YqmxswLZOz5mScqNaOfC8s4507tkMVnp6MGSooI2taN0A+UHOB
+        92OPasY/7BMX2+DQ==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cleanups] x86/aperfmperf: Make parts of the frequency
- invariance code unconditional
+Subject: [tip: x86/cleanups] x86/aperfmperf: Restructure arch_scale_freq_tick()
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220415161206.761988704@linutronix.de>
-References: <20220415161206.761988704@linutronix.de>
+In-Reply-To: <20220415161206.706185092@linutronix.de>
+References: <20220415161206.706185092@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <165108404397.4207.9938607757431373703.tip-bot2@tip-bot2>
+Message-ID: <165108404488.4207.1944029157798373313.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -69,220 +68,80 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/cleanups branch of tip:
 
-Commit-ID:     bb6e89df9028b2fab0ce6ac71cd9ef25b6ada32d
-Gitweb:        https://git.kernel.org/tip/bb6e89df9028b2fab0ce6ac71cd9ef25b6ada32d
+Commit-ID:     73a5fa7d51366a549a9f2e3ee875ae51aa0b5580
+Gitweb:        https://git.kernel.org/tip/73a5fa7d51366a549a9f2e3ee875ae51aa0b5580
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Fri, 15 Apr 2022 21:19:59 +02:00
+AuthorDate:    Fri, 15 Apr 2022 21:19:57 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Wed, 27 Apr 2022 20:22:19 +02:00
 
-x86/aperfmperf: Make parts of the frequency invariance code unconditional
+x86/aperfmperf: Restructure arch_scale_freq_tick()
 
-The frequency invariance support is currently limited to x86/64 and SMP,
-which is the vast majority of machines.
+Preparation for sharing code with the CPU frequency portion of the
+aperf/mperf code.
 
-arch_scale_freq_tick() is called every tick on all CPUs and reads the APERF
-and MPERF MSRs. The CPU frequency getters function do the same via dedicated
-IPIs.
-
-While it could be argued that on systems where frequency invariance support
-is disabled (32bit, !SMP) the per tick read of the APERF and MPERF MSRs can
-be avoided, it does not make sense to keep the extra code and the resulting
-runtime issues of mass IPIs around.
-
-As a first step split out the non frequency invariance specific
-initialization code and the read MSR portion of arch_scale_freq_tick(). The
-rest of the code is still conditional and guarded with a static key.
+No functional change.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Acked-by: Paul E. McKenney <paulmck@kernel.org>
-Link: https://lore.kernel.org/r/20220415161206.761988704@linutronix.de
+Link: https://lore.kernel.org/r/20220415161206.706185092@linutronix.de
 
 ---
- arch/x86/include/asm/cpu.h       |  2 +-
- arch/x86/include/asm/topology.h  |  4 +--
- arch/x86/kernel/cpu/aperfmperf.c | 63 ++++++++++++++++++-------------
- arch/x86/kernel/smpboot.c        |  3 +-
- 4 files changed, 41 insertions(+), 31 deletions(-)
+ arch/x86/kernel/cpu/aperfmperf.c | 36 ++++++++++++++++++-------------
+ 1 file changed, 21 insertions(+), 15 deletions(-)
 
-diff --git a/arch/x86/include/asm/cpu.h b/arch/x86/include/asm/cpu.h
-index 86e5e4e..e89772d 100644
---- a/arch/x86/include/asm/cpu.h
-+++ b/arch/x86/include/asm/cpu.h
-@@ -36,6 +36,8 @@ extern int _debug_hotplug_cpu(int cpu, int action);
- #endif
- #endif
- 
-+extern void ap_init_aperfmperf(void);
-+
- int mwait_usable(const struct cpuinfo_x86 *);
- 
- unsigned int x86_family(unsigned int sig);
-diff --git a/arch/x86/include/asm/topology.h b/arch/x86/include/asm/topology.h
-index cc31707..1b2553d 100644
---- a/arch/x86/include/asm/topology.h
-+++ b/arch/x86/include/asm/topology.h
-@@ -217,13 +217,9 @@ extern void arch_scale_freq_tick(void);
- 
- extern void arch_set_max_freq_ratio(bool turbo_disabled);
- extern void freq_invariance_set_perf_ratio(u64 ratio, bool turbo_disabled);
--extern void bp_init_freq_invariance(void);
--extern void ap_init_freq_invariance(void);
- #else
- static inline void arch_set_max_freq_ratio(bool turbo_disabled) { }
- static inline void freq_invariance_set_perf_ratio(u64 ratio, bool turbo_disabled) { }
--static inline void bp_init_freq_invariance(void) { }
--static inline void ap_init_freq_invariance(void) { }
- #endif
- 
- #ifdef CONFIG_ACPI_CPPC_LIB
 diff --git a/arch/x86/kernel/cpu/aperfmperf.c b/arch/x86/kernel/cpu/aperfmperf.c
-index 6220503..df528a4 100644
+index 6922c77..6220503 100644
 --- a/arch/x86/kernel/cpu/aperfmperf.c
 +++ b/arch/x86/kernel/cpu/aperfmperf.c
-@@ -17,6 +17,7 @@
- #include <linux/smp.h>
- #include <linux/syscore_ops.h>
+@@ -477,22 +477,9 @@ static DECLARE_WORK(disable_freq_invariance_work,
  
-+#include <asm/cpu.h>
- #include <asm/cpu_device_id.h>
- #include <asm/intel-family.h>
+ DEFINE_PER_CPU(unsigned long, arch_freq_scale) = SCHED_CAPACITY_SCALE;
  
-@@ -164,6 +165,17 @@ unsigned int arch_freq_get_on_cpu(int cpu)
- 	return per_cpu(samples.khz, cpu);
- }
- 
-+static void init_counter_refs(void)
-+{
-+	u64 aperf, mperf;
-+
-+	rdmsrl(MSR_IA32_APERF, aperf);
-+	rdmsrl(MSR_IA32_MPERF, mperf);
-+
-+	this_cpu_write(cpu_samples.aperf, aperf);
-+	this_cpu_write(cpu_samples.mperf, mperf);
-+}
-+
- #if defined(CONFIG_X86_64) && defined(CONFIG_SMP)
- /*
-  * APERF/MPERF frequency ratio computation.
-@@ -405,17 +417,6 @@ out:
- 	return true;
- }
- 
--static void init_counter_refs(void)
--{
--	u64 aperf, mperf;
+-void arch_scale_freq_tick(void)
++static void scale_freq_tick(u64 acnt, u64 mcnt)
+ {
+-	struct aperfmperf *s = this_cpu_ptr(&cpu_samples);
+-	u64 aperf, mperf, acnt, mcnt, freq_scale;
+-
+-	if (!arch_scale_freq_invariant())
+-		return;
 -
 -	rdmsrl(MSR_IA32_APERF, aperf);
 -	rdmsrl(MSR_IA32_MPERF, mperf);
 -
--	this_cpu_write(cpu_samples.aperf, aperf);
--	this_cpu_write(cpu_samples.mperf, mperf);
--}
+-	acnt = aperf - s->aperf;
+-	mcnt = mperf - s->mperf;
 -
- #ifdef CONFIG_PM_SLEEP
- static struct syscore_ops freq_invariance_syscore_ops = {
- 	.resume = init_counter_refs,
-@@ -447,13 +448,8 @@ void freq_invariance_set_perf_ratio(u64 ratio, bool turbo_disabled)
- 	freq_invariance_enable();
- }
+-	s->aperf = aperf;
+-	s->mperf = mperf;
++	u64 freq_scale;
  
--void __init bp_init_freq_invariance(void)
-+static void __init bp_init_freq_invariance(void)
- {
--	if (!cpu_feature_enabled(X86_FEATURE_APERFMPERF))
--		return;
--
--	init_counter_refs();
--
- 	if (boot_cpu_data.x86_vendor != X86_VENDOR_INTEL)
- 		return;
- 
-@@ -461,12 +457,6 @@ void __init bp_init_freq_invariance(void)
- 		freq_invariance_enable();
- }
- 
--void ap_init_freq_invariance(void)
--{
--	if (cpu_feature_enabled(X86_FEATURE_APERFMPERF))
--		init_counter_refs();
--}
--
- static void disable_freq_invariance_workfn(struct work_struct *work)
- {
- 	static_branch_disable(&arch_scale_freq_key);
-@@ -481,6 +471,9 @@ static void scale_freq_tick(u64 acnt, u64 mcnt)
- {
- 	u64 freq_scale;
- 
-+	if (!arch_scale_freq_invariant())
-+		return;
-+
  	if (check_shl_overflow(acnt, 2*SCHED_CAPACITY_SHIFT, &acnt))
  		goto error;
- 
-@@ -501,13 +494,17 @@ error:
+@@ -514,4 +501,23 @@ error:
  	pr_warn("Scheduler frequency invariance went wobbly, disabling!\n");
  	schedule_work(&disable_freq_invariance_work);
  }
-+#else
-+static inline void bp_init_freq_invariance(void) { }
-+static inline void scale_freq_tick(u64 acnt, u64 mcnt) { }
-+#endif /* CONFIG_X86_64 && CONFIG_SMP */
- 
- void arch_scale_freq_tick(void)
- {
- 	struct aperfmperf *s = this_cpu_ptr(&cpu_samples);
- 	u64 acnt, mcnt, aperf, mperf;
- 
--	if (!arch_scale_freq_invariant())
-+	if (!cpu_feature_enabled(X86_FEATURE_APERFMPERF))
- 		return;
- 
- 	rdmsrl(MSR_IA32_APERF, aperf);
-@@ -520,4 +517,20 @@ void arch_scale_freq_tick(void)
- 
- 	scale_freq_tick(acnt, mcnt);
- }
--#endif /* CONFIG_X86_64 && CONFIG_SMP */
 +
-+static int __init bp_init_aperfmperf(void)
++void arch_scale_freq_tick(void)
 +{
-+	if (!cpu_feature_enabled(X86_FEATURE_APERFMPERF))
-+		return 0;
++	struct aperfmperf *s = this_cpu_ptr(&cpu_samples);
++	u64 acnt, mcnt, aperf, mperf;
 +
-+	init_counter_refs();
-+	bp_init_freq_invariance();
-+	return 0;
-+}
-+early_initcall(bp_init_aperfmperf);
++	if (!arch_scale_freq_invariant())
++		return;
 +
-+void ap_init_aperfmperf(void)
-+{
-+	if (cpu_feature_enabled(X86_FEATURE_APERFMPERF))
-+		init_counter_refs();
++	rdmsrl(MSR_IA32_APERF, aperf);
++	rdmsrl(MSR_IA32_MPERF, mperf);
++	acnt = aperf - s->aperf;
++	mcnt = mperf - s->mperf;
++
++	s->aperf = aperf;
++	s->mperf = mperf;
++
++	scale_freq_tick(acnt, mcnt);
 +}
-diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
-index b1ba7dd..eb7de77 100644
---- a/arch/x86/kernel/smpboot.c
-+++ b/arch/x86/kernel/smpboot.c
-@@ -186,7 +186,7 @@ static void smp_callin(void)
- 	 */
- 	set_cpu_sibling_map(raw_smp_processor_id());
- 
--	ap_init_freq_invariance();
-+	ap_init_aperfmperf();
- 
- 	/*
- 	 * Get our bogomips.
-@@ -1396,7 +1396,6 @@ void __init native_smp_prepare_cpus(unsigned int max_cpus)
- {
- 	smp_prepare_cpus_common();
- 
--	bp_init_freq_invariance();
- 	smp_sanity_check();
- 
- 	switch (apic_intr_mode) {
+ #endif /* CONFIG_X86_64 && CONFIG_SMP */
