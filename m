@@ -2,58 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A48B511784
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 27 Apr 2022 14:46:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E16EB51197A
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 27 Apr 2022 16:55:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233329AbiD0MGX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 27 Apr 2022 08:06:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49054 "EHLO
+        id S236610AbiD0Nwi (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 27 Apr 2022 09:52:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33098 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233283AbiD0MGW (ORCPT
+        with ESMTP id S236555AbiD0Nwh (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 27 Apr 2022 08:06:22 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F18452E4F;
-        Wed, 27 Apr 2022 05:03:10 -0700 (PDT)
-Date:   Wed, 27 Apr 2022 12:03:06 -0000
+        Wed, 27 Apr 2022 09:52:37 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 214FA2D1FC;
+        Wed, 27 Apr 2022 06:49:25 -0700 (PDT)
+Date:   Wed, 27 Apr 2022 13:49:23 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1651060987;
+        s=2020; t=1651067364;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=mNLBChOzmeFIRIbadE2Y+tnl2fOrqIzLKxhl29s/cc8=;
-        b=iY0gmrqqZZya9EEfFmeSn0+f+RWGR2QCCizNjcvM3vScHayCGFrKrGivTeFkw2i22qYSju
-        4y8DYw5oq6yYLQqMjc/2x4tkpKQNnyW4WFgcRvRPhfu1gkrYnD+fkmvvMudMZqcudwMaM1
-        wtrVSO8MxLXtfZxTEIHtrPid+E5a3/7yqo8M62fhL1SEGxlTiDGW3CpHlKk/rBa6cf3M9i
-        mggV1rCPnUlyngUFqT/J2M9Ax2igDWGCJEQhNzKUpslMtOYd+94jxiPdc+hO0HJc2TqI5s
-        eiv4E7U39yhM9LY7zJDdA8EW+tji3v51NWflstsPOOQxUXwUOozFuVTq65eWAA==
+        bh=o09dgPtOiVRK9GaVotA4uOKUz1x/rmltdj8kFoTFHd8=;
+        b=OlF1KPcZdnL+a1kOLPOxFEYtgyUx6zu/FXlAnEIUAVPlMwwQdhFs3lnEIYQWndJpaYWAGA
+        8kVG5yEy+VMVilhFsOMpCw+ze38OjmcKmy+gBlrJncJYp/B4LzS7kfvJXbW6/gCTyJzCd1
+        gIbR6Z8jk/zmQUMntFocSwrg9EwZW5ROi8RuVz/9FTaJ1SQ9pjnOMZliT0PgsUPOaOa5Es
+        FAZH3gZ9QNuuGWIye8KxPhh5l7R8pA9hgWWrSfQd3xmJxu6ECXvpgpJh4Q9X5fzxUVPQJO
+        43E9hHmERptnVdMn1Sv0Gn+igHkEHZKqOk/mkuxmBHVPUiNvbsr6IrlK7hzaAw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1651060987;
+        s=2020e; t=1651067364;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=mNLBChOzmeFIRIbadE2Y+tnl2fOrqIzLKxhl29s/cc8=;
-        b=JifwPJ1PAXrIk4e5kBbXYnW+ceB38S5alse6BCX/Z4IVwZVzJMlIPOg1+SpLuOiNgFYvIp
-        cEUI3AhKCP3TRuDw==
-From:   "tip-bot2 for Matthieu Baerts" <tip-bot2@linutronix.de>
+        bh=o09dgPtOiVRK9GaVotA4uOKUz1x/rmltdj8kFoTFHd8=;
+        b=+qK/qTiWiW4er13TxRhEhdZFVEQ0SkHgq0CAArvz1H2+RqLp6XDzULVZVP9m2eSfS4/cVj
+        6AO/l/qsi5BgWjBQ==
+From:   "tip-bot2 for Tony Luck" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cpu] x86/pm: Fix false positive kmemleak report in
- msr_build_context()
-Cc:     Mat Martineau <mathew.j.martineau@linux.intel.com>,
-        Matthieu Baerts <matthieu.baerts@tessares.net>,
-        Borislav Petkov <bp@suse.de>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, x86@kernel.org,
+Subject: [tip: x86/splitlock] x86/split-lock: Remove unused TIF_SLD bit
+Cc:     Tony Luck <tony.luck@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220426202138.498310-1-matthieu.baerts@tessares.net>
-References: <20220426202138.498310-1-matthieu.baerts@tessares.net>
+In-Reply-To: <20220310204854.31752-3-tony.luck@intel.com>
+References: <20220310204854.31752-3-tony.luck@intel.com>
 MIME-Version: 1.0
-Message-ID: <165106098627.4207.9339334897773264387.tip-bot2@tip-bot2>
+Message-ID: <165106736325.4207.3606646429905878612.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,162 +64,115 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cpu branch of tip:
+The following commit has been merged into the x86/splitlock branch of tip:
 
-Commit-ID:     b0b592cf08367719e1d1ef07c9f136e8c17f7ec3
-Gitweb:        https://git.kernel.org/tip/b0b592cf08367719e1d1ef07c9f136e8c17f7ec3
-Author:        Matthieu Baerts <matthieu.baerts@tessares.net>
-AuthorDate:    Sat, 23 Apr 2022 20:24:10 +02:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Wed, 27 Apr 2022 13:55:19 +02:00
+Commit-ID:     ef79970d7ccdc4e8855aa6079fc2f4797a6807fb
+Gitweb:        https://git.kernel.org/tip/ef79970d7ccdc4e8855aa6079fc2f4797a6807fb
+Author:        Tony Luck <tony.luck@intel.com>
+AuthorDate:    Thu, 10 Mar 2022 12:48:54 -08:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Wed, 27 Apr 2022 15:43:39 +02:00
 
-x86/pm: Fix false positive kmemleak report in msr_build_context()
+x86/split-lock: Remove unused TIF_SLD bit
 
-Since
+Changes to the "warn" mode of split lock handling mean that TIF_SLD is
+never set.
 
-  e2a1256b17b1 ("x86/speculation: Restore speculation related MSRs during S3 resume")
+Remove the bit, and the functions that use it.
 
-kmemleak reports this issue:
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20220310204854.31752-3-tony.luck@intel.com
 
-  unreferenced object 0xffff888009cedc00 (size 256):
-    comm "swapper/0", pid 1, jiffies 4294693823 (age 73.764s)
-    hex dump (first 32 bytes):
-      00 00 00 00 00 00 00 00 48 00 00 00 00 00 00 00  ........H.......
-      00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-    backtrace:
-      msr_build_context (include/linux/slab.h:621)
-      pm_check_save_msr (arch/x86/power/cpu.c:520)
-      do_one_initcall (init/main.c:1298)
-      kernel_init_freeable (init/main.c:1370)
-      kernel_init (init/main.c:1504)
-      ret_from_fork (arch/x86/entry/entry_64.S:304)
-
-Reproducer:
-
-  - boot the VM with a debug kernel config (see
-    https://github.com/multipath-tcp/mptcp_net-next/issues/268)
-  - wait ~1 minute
-  - start a kmemleak scan
-
-The root cause here is alignment within the packed struct saved_context
-(from suspend_64.h). Kmemleak only searches for pointers that are
-aligned (see how pointers are scanned in kmemleak.c), but pahole shows
-that the saved_msrs struct member and all members after it in the
-structure are unaligned:
-
-  struct saved_context {
-    struct pt_regs             regs;                 /*     0   168 */
-    /* --- cacheline 2 boundary (128 bytes) was 40 bytes ago --- */
-    u16                        ds;                   /*   168     2 */
-
-    ...
-
-    u64                        misc_enable;          /*   232     8 */
-    bool                       misc_enable_saved;    /*   240     1 */
-
-   /* Note below odd offset values for the remainder of this struct */
-
-    struct saved_msrs          saved_msrs;           /*   241    16 */
-    /* --- cacheline 4 boundary (256 bytes) was 1 bytes ago --- */
-    long unsigned int          efer;                 /*   257     8 */
-    u16                        gdt_pad;              /*   265     2 */
-    struct desc_ptr            gdt_desc;             /*   267    10 */
-    u16                        idt_pad;              /*   277     2 */
-    struct desc_ptr            idt;                  /*   279    10 */
-    u16                        ldt;                  /*   289     2 */
-    u16                        tss;                  /*   291     2 */
-    long unsigned int          tr;                   /*   293     8 */
-    long unsigned int          safety;               /*   301     8 */
-    long unsigned int          return_address;       /*   309     8 */
-
-    /* size: 317, cachelines: 5, members: 25 */
-    /* last cacheline: 61 bytes */
-  } __attribute__((__packed__));
-
-Move misc_enable_saved to the end of the struct declaration so that
-saved_msrs fits in before the cacheline 4 boundary.
-
-The comment above the saved_context declaration says to fix wakeup_64.S
-file and __save/__restore_processor_state() if the struct is modified:
-it looks like all the accesses in wakeup_64.S are done through offsets
-which are computed at build-time. Update that comment accordingly.
-
-At the end, the false positive kmemleak report is due to a limitation
-from kmemleak but it is always good to avoid unaligned members for
-optimisation purposes.
-
-Please note that it looks like this issue is not new, e.g.
-
-  https://lore.kernel.org/all/9f1bb619-c4ee-21c4-a251-870bd4db04fa@lwfinger.net/
-  https://lore.kernel.org/all/94e48fcd-1dbd-ebd2-4c91-f39941735909@molgen.mpg.de/
-
-  [ bp: Massage + cleanup commit message. ]
-
-Fixes: 7a9c2dd08ead ("x86/pm: Introduce quirk framework to save/restore extra MSR registers around suspend/resume")
-Suggested-by: Mat Martineau <mathew.j.martineau@linux.intel.com>
-Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://lore.kernel.org/r/20220426202138.498310-1-matthieu.baerts@tessares.net
 ---
- arch/x86/include/asm/suspend_32.h |  2 +-
- arch/x86/include/asm/suspend_64.h | 12 ++++++++----
- 2 files changed, 9 insertions(+), 5 deletions(-)
+ arch/x86/include/asm/cpu.h         |  2 --
+ arch/x86/include/asm/thread_info.h |  4 +---
+ arch/x86/kernel/cpu/intel.c        | 12 ------------
+ arch/x86/kernel/process.c          |  3 ---
+ 4 files changed, 1 insertion(+), 20 deletions(-)
 
-diff --git a/arch/x86/include/asm/suspend_32.h b/arch/x86/include/asm/suspend_32.h
-index 7b132d0..a800abb 100644
---- a/arch/x86/include/asm/suspend_32.h
-+++ b/arch/x86/include/asm/suspend_32.h
-@@ -19,7 +19,6 @@ struct saved_context {
- 	u16 gs;
- 	unsigned long cr0, cr2, cr3, cr4;
- 	u64 misc_enable;
--	bool misc_enable_saved;
- 	struct saved_msrs saved_msrs;
- 	struct desc_ptr gdt_desc;
- 	struct desc_ptr idt;
-@@ -28,6 +27,7 @@ struct saved_context {
- 	unsigned long tr;
- 	unsigned long safety;
- 	unsigned long return_address;
-+	bool misc_enable_saved;
- } __attribute__((packed));
+diff --git a/arch/x86/include/asm/cpu.h b/arch/x86/include/asm/cpu.h
+index 86e5e4e..d1c86b2 100644
+--- a/arch/x86/include/asm/cpu.h
++++ b/arch/x86/include/asm/cpu.h
+@@ -43,14 +43,12 @@ unsigned int x86_model(unsigned int sig);
+ unsigned int x86_stepping(unsigned int sig);
+ #ifdef CONFIG_CPU_SUP_INTEL
+ extern void __init sld_setup(struct cpuinfo_x86 *c);
+-extern void switch_to_sld(unsigned long tifn);
+ extern bool handle_user_split_lock(struct pt_regs *regs, long error_code);
+ extern bool handle_guest_split_lock(unsigned long ip);
+ extern void handle_bus_lock(struct pt_regs *regs);
+ u8 get_this_hybrid_cpu_type(void);
+ #else
+ static inline void __init sld_setup(struct cpuinfo_x86 *c) {}
+-static inline void switch_to_sld(unsigned long tifn) {}
+ static inline bool handle_user_split_lock(struct pt_regs *regs, long error_code)
+ {
+ 	return false;
+diff --git a/arch/x86/include/asm/thread_info.h b/arch/x86/include/asm/thread_info.h
+index ebec69c..f0cb881 100644
+--- a/arch/x86/include/asm/thread_info.h
++++ b/arch/x86/include/asm/thread_info.h
+@@ -92,7 +92,6 @@ struct thread_info {
+ #define TIF_NOCPUID		15	/* CPUID is not accessible in userland */
+ #define TIF_NOTSC		16	/* TSC is not accessible in userland */
+ #define TIF_NOTIFY_SIGNAL	17	/* signal notifications exist */
+-#define TIF_SLD			18	/* Restore split lock detection on context switch */
+ #define TIF_MEMDIE		20	/* is terminating due to OOM killer */
+ #define TIF_POLLING_NRFLAG	21	/* idle is polling for TIF_NEED_RESCHED */
+ #define TIF_IO_BITMAP		22	/* uses I/O bitmap */
+@@ -116,7 +115,6 @@ struct thread_info {
+ #define _TIF_NOCPUID		(1 << TIF_NOCPUID)
+ #define _TIF_NOTSC		(1 << TIF_NOTSC)
+ #define _TIF_NOTIFY_SIGNAL	(1 << TIF_NOTIFY_SIGNAL)
+-#define _TIF_SLD		(1 << TIF_SLD)
+ #define _TIF_POLLING_NRFLAG	(1 << TIF_POLLING_NRFLAG)
+ #define _TIF_IO_BITMAP		(1 << TIF_IO_BITMAP)
+ #define _TIF_SPEC_FORCE_UPDATE	(1 << TIF_SPEC_FORCE_UPDATE)
+@@ -128,7 +126,7 @@ struct thread_info {
+ /* flags to check in __switch_to() */
+ #define _TIF_WORK_CTXSW_BASE					\
+ 	(_TIF_NOCPUID | _TIF_NOTSC | _TIF_BLOCKSTEP |		\
+-	 _TIF_SSBD | _TIF_SPEC_FORCE_UPDATE | _TIF_SLD)
++	 _TIF_SSBD | _TIF_SPEC_FORCE_UPDATE)
  
- /* routines for saving/restoring kernel state */
-diff --git a/arch/x86/include/asm/suspend_64.h b/arch/x86/include/asm/suspend_64.h
-index 35bb35d..54df066 100644
---- a/arch/x86/include/asm/suspend_64.h
-+++ b/arch/x86/include/asm/suspend_64.h
-@@ -14,9 +14,13 @@
-  * Image of the saved processor state, used by the low level ACPI suspend to
-  * RAM code and by the low level hibernation code.
-  *
-- * If you modify it, fix arch/x86/kernel/acpi/wakeup_64.S and make sure that
-- * __save/__restore_processor_state(), defined in arch/x86/kernel/suspend_64.c,
-- * still work as required.
-+ * If you modify it, check how it is used in arch/x86/kernel/acpi/wakeup_64.S
-+ * and make sure that __save/__restore_processor_state(), defined in
-+ * arch/x86/power/cpu.c, still work as required.
-+ *
-+ * Because the structure is packed, make sure to avoid unaligned members. For
-+ * optimisation purposes but also because tools like kmemleak only search for
-+ * pointers that are aligned.
-  */
- struct saved_context {
- 	struct pt_regs regs;
-@@ -36,7 +40,6 @@ struct saved_context {
+ /*
+  * Avoid calls to __switch_to_xtra() on UP as STIBP is not evaluated.
+diff --git a/arch/x86/kernel/cpu/intel.c b/arch/x86/kernel/cpu/intel.c
+index be2a0bd..672e253 100644
+--- a/arch/x86/kernel/cpu/intel.c
++++ b/arch/x86/kernel/cpu/intel.c
+@@ -1233,18 +1233,6 @@ void handle_bus_lock(struct pt_regs *regs)
+ }
  
- 	unsigned long cr0, cr2, cr3, cr4;
- 	u64 misc_enable;
--	bool misc_enable_saved;
- 	struct saved_msrs saved_msrs;
- 	unsigned long efer;
- 	u16 gdt_pad; /* Unused */
-@@ -48,6 +51,7 @@ struct saved_context {
- 	unsigned long tr;
- 	unsigned long safety;
- 	unsigned long return_address;
-+	bool misc_enable_saved;
- } __attribute__((packed));
+ /*
+- * This function is called only when switching between tasks with
+- * different split-lock detection modes. It sets the MSR for the
+- * mode of the new task. This is right most of the time, but since
+- * the MSR is shared by hyperthreads on a physical core there can
+- * be glitches when the two threads need different modes.
+- */
+-void switch_to_sld(unsigned long tifn)
+-{
+-	sld_update_msr(!(tifn & _TIF_SLD));
+-}
+-
+-/*
+  * Bits in the IA32_CORE_CAPABILITIES are not architectural, so they should
+  * only be trusted if it is confirmed that a CPU model implements a
+  * specific feature at a particular bit position.
+diff --git a/arch/x86/kernel/process.c b/arch/x86/kernel/process.c
+index b370767..bcc76c1 100644
+--- a/arch/x86/kernel/process.c
++++ b/arch/x86/kernel/process.c
+@@ -686,9 +686,6 @@ void __switch_to_xtra(struct task_struct *prev_p, struct task_struct *next_p)
+ 		/* Enforce MSR update to ensure consistent state */
+ 		__speculation_ctrl_update(~tifn, tifn);
+ 	}
+-
+-	if ((tifp ^ tifn) & _TIF_SLD)
+-		switch_to_sld(tifn);
+ }
  
- #define loaddebug(thread,register) \
+ /*
