@@ -2,58 +2,61 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B23A5162B0
-	for <lists+linux-tip-commits@lfdr.de>; Sun,  1 May 2022 10:25:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE1AD5167D8
+	for <lists+linux-tip-commits@lfdr.de>; Sun,  1 May 2022 22:46:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244489AbiEAI3G (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 1 May 2022 04:29:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55710 "EHLO
+        id S1354717AbiEAUtz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 1 May 2022 16:49:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49128 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244592AbiEAI2r (ORCPT
+        with ESMTP id S238355AbiEAUty (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 1 May 2022 04:28:47 -0400
+        Sun, 1 May 2022 16:49:54 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 056B617E10;
-        Sun,  1 May 2022 01:25:21 -0700 (PDT)
-Date:   Sun, 01 May 2022 08:25:19 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94C8559B87;
+        Sun,  1 May 2022 13:46:27 -0700 (PDT)
+Date:   Sun, 01 May 2022 20:46:23 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1651393520;
+        s=2020; t=1651437985;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=9twnfmTeQicWK61lPpH3y68atz1ooDKYw21C5/2KZno=;
-        b=JDk1Gc7Y81h1GwFUvPMI2BbOmjVPrE49rNNS/RripR4rhkfBXVjeQZx0cNzKgi9FDpJegF
-        9DgS6RcT03m63OQ3TQU64RrmMKPKHimyKYUM4AAIFrU/RPcphazW4ibdU2RVJc5mUbVoos
-        QaLYuHZepSUs+JWJ5M4hNTpiCmujnJaQudBm8VWvSbibm7u0zcFXgpxYo5mNK20gnzqp/c
-        1kZcCpGeumYajkZF4YDJ29gvDluCIQ8FSKKd6spFTMRfkmZqwl//AyO640O7x4kYAPtKm/
-        31aXcO/7lBpqi5BDfcdhYmDQqt6U/jHGSelvS0BLYh6KrVgBwDVTzmtox0uR0Q==
+        bh=557Zdz5NnkEbZAML/Rf00CcEcDkEAYNoO9M1iqJXXJg=;
+        b=BQCZ4I1GCX7u4Gxj7oF4nPU93AjM1MM4zWhkhZoP/SWkLz5imU30cuAeB0GZpE1GaokLSv
+        seALoXUqH07L8ri0N47rurJT8oq1zmSlHm3PFzP9Dj7kxIxlUvfAZr9Iz7OlrzrDZ8I/mF
+        fbOKkUfibi+jEM/IR0fd6sUntwwaBxeftVXOSvdtPaxjBjPKDjN3UFZvi3VvUVeM7KlUIv
+        wyx6yGFpFCum6VEUcY9ztmgDQZKku5R92IJw3KBDq0bdjoXhqJUcMa1NIYqs037AYgsn/0
+        PgQwhPswfQlDqXUvuYkAJPPYG/YYeG7uy/2+So2H6xG+F1td4MvXXcaVHfOk+Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1651393520;
+        s=2020e; t=1651437985;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=9twnfmTeQicWK61lPpH3y68atz1ooDKYw21C5/2KZno=;
-        b=WFdqINj3ETbfJvO2zo9K1OuUAWb8jVnqSmtxS2zpTrRmg2pxr6iZOXnEkzMbVMviEtcDD2
-        2VxekzgpvQgm+iBw==
-From:   "tip-bot2 for Fenghua Yu" <tip-bot2@linutronix.de>
+        bh=557Zdz5NnkEbZAML/Rf00CcEcDkEAYNoO9M1iqJXXJg=;
+        b=ZTZMmiKF/orzzHWjUFrPDJ7Jqp5HGrLTJatvmpHVMf3G7gAnaebeD3JI9p5sx0JY1BQQIa
+        lawFwMF+/1sZyABA==
+From:   "tip-bot2 for Kuppuswamy Sathyanarayanan" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: core/urgent] mm: Fix PASID use-after-free issue
-Cc:     Zhangfei Gao <zhangfei.gao@foxmail.com>,
-        "Jean-Philippe Brucker" <jean-philippe@linaro.org>,
-        Jacob Pan <jacob.jun.pan@linux.intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+Subject: [tip: x86/apic] x86/apic: Do apic driver probe for "nosmp" use case
+Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tony Luck <tony.luck@intel.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220428180041.806809-1-fenghua.yu@intel.com>
-References: <20220428180041.806809-1-fenghua.yu@intel.com>
+In-Reply-To: =?utf-8?q?=3Ca64f864e1114bcd63593286aaf61142cfce384ea=2E16500?=
+ =?utf-8?q?76869=2Egit=2Esathyanarayanan=2Ekuppuswamy=40intel=2Ecom=3E?=
+References: =?utf-8?q?=3Ca64f864e1114bcd63593286aaf61142cfce384ea=2E165007?=
+ =?utf-8?q?6869=2Egit=2Esathyanarayanan=2Ekuppuswamy=40intel=2Ecom=3E?=
 MIME-Version: 1.0
-Message-ID: <165139351922.4207.15523967417383711734.tip-bot2@tip-bot2>
+Message-ID: <165143798346.4207.13836898834353689685.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -68,75 +71,69 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the core/urgent branch of tip:
+The following commit has been merged into the x86/apic branch of tip:
 
-Commit-ID:     2667ed10d9f01e250ba806276740782c89d77fda
-Gitweb:        https://git.kernel.org/tip/2667ed10d9f01e250ba806276740782c89d77fda
-Author:        Fenghua Yu <fenghua.yu@intel.com>
-AuthorDate:    Thu, 28 Apr 2022 11:00:41 -07:00
+Commit-ID:     7a116a2dd32d96869f0f93bac00b900859ba0434
+Gitweb:        https://git.kernel.org/tip/7a116a2dd32d96869f0f93bac00b900859ba0434
+Author:        Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+AuthorDate:    Sat, 16 Apr 2022 02:45:32 
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sun, 01 May 2022 10:17:17 +02:00
+CommitterDate: Sun, 01 May 2022 22:40:29 +02:00
 
-mm: Fix PASID use-after-free issue
+x86/apic: Do apic driver probe for "nosmp" use case
 
-The PASID is being freed too early.  It needs to stay around until after
-device drivers that might be using it have had a chance to clear it out
-of the hardware.
+For the "nosmp" use case, the APIC initialization code selects
+"APIC_SYMMETRIC_IO_NO_ROUTING" as the default interrupt mode and avoids
+probing APIC drivers.
 
-The relevant refcounts are:
+This works well for the default APIC modes, but for the x2APIC case the
+probe function is required to allocate the cluster_hotplug mask. So in the
+APIC_SYMMETRIC_IO_NO_ROUTING case when the x2APIC is initialized it
+dereferences a NULL pointer and the kernel crashes.
 
-  mmget() /mmput()  refcount the mm's address space
-  mmgrab()/mmdrop() refcount the mm itself
+This was observed on a TDX platform where x2APIC is enabled and "nosmp"
+command line option is allowed.
 
-The PASID is currently tied to the life of the mm's address space and freed
-in __mmput().  This makes logical sense because the PASID can't be used
-once the address space is gone.
+To fix this issue, probe APIC drivers via default_setup_apic_routing() for
+the APIC_SYMMETRIC_IO_NO_ROUTING interrupt mode too.
 
-But, this misses an important point: even after the address space is gone,
-the PASID will still be programmed into a device.  Device drivers might,
-for instance, still need to flush operations that are outstanding and need
-to use that PASID.  They do this at file->release() time.
-
-Device drivers call the IOMMU driver to hold a reference on the mm itself
-and drop it at file->release() time.  But, the IOMMU driver holds a
-reference on the mm itself, not the address space.  The address space (and
-the PASID) is long gone by the time the driver tries to clean up.  This is
-effectively a use-after-free bug on the PASID.
-
-To fix this, move the PASID free operation from __mmput() to __mmdrop().
-This ensures that the IOMMU driver's existing mmgrab() keeps the PASID
-allocated until it drops its mm reference.
-
-Fixes: 701fac40384f ("iommu/sva: Assign a PASID to mm on PASID allocation and free it on mm exit")
-Reported-by: Zhangfei Gao <zhangfei.gao@foxmail.com>
-Suggested-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
-Suggested-by: Jacob Pan <jacob.jun.pan@linux.intel.com>
-Signed-off-by: Fenghua Yu <fenghua.yu@intel.com>
+Suggested-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Suggested-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Zhangfei Gao <zhangfei.gao@foxmail.com>
-Reviewed-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
-Link: https://lore.kernel.org/r/20220428180041.806809-1-fenghua.yu@intel.com
----
- kernel/fork.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Reviewed-by: Tony Luck <tony.luck@intel.com>
+Link: https://lore.kernel.org/r/a64f864e1114bcd63593286aaf61142cfce384ea.1650076869.git.sathyanarayanan.kuppuswamy@intel.com
 
-diff --git a/kernel/fork.c b/kernel/fork.c
-index 9796897..35a3bef 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -792,6 +792,7 @@ void __mmdrop(struct mm_struct *mm)
- 	mmu_notifier_subscriptions_destroy(mm);
- 	check_mm(mm);
- 	put_user_ns(mm->user_ns);
-+	mm_pasid_drop(mm);
- 	free_mm(mm);
- }
- EXPORT_SYMBOL_GPL(__mmdrop);
-@@ -1190,7 +1191,6 @@ static inline void __mmput(struct mm_struct *mm)
+---
+ arch/x86/kernel/apic/apic.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
+index 13819bf..25e92d7 100644
+--- a/arch/x86/kernel/apic/apic.c
++++ b/arch/x86/kernel/apic/apic.c
+@@ -1428,22 +1428,21 @@ void __init apic_intr_mode_init(void)
+ 		return;
+ 	case APIC_VIRTUAL_WIRE:
+ 		pr_info("APIC: Switch to virtual wire mode setup\n");
+-		default_setup_apic_routing();
+ 		break;
+ 	case APIC_VIRTUAL_WIRE_NO_CONFIG:
+ 		pr_info("APIC: Switch to virtual wire mode setup with no configuration\n");
+ 		upmode = true;
+-		default_setup_apic_routing();
+ 		break;
+ 	case APIC_SYMMETRIC_IO:
+ 		pr_info("APIC: Switch to symmetric I/O mode setup\n");
+-		default_setup_apic_routing();
+ 		break;
+ 	case APIC_SYMMETRIC_IO_NO_ROUTING:
+ 		pr_info("APIC: Switch to symmetric I/O mode setup in no SMP routine\n");
+ 		break;
  	}
- 	if (mm->binfmt)
- 		module_put(mm->binfmt->module);
--	mm_pasid_drop(mm);
- 	mmdrop(mm);
- }
+ 
++	default_setup_apic_routing();
++
+ 	if (x86_platform.apic_post_init)
+ 		x86_platform.apic_post_init();
  
