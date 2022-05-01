@@ -2,58 +2,58 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EFEAE516298
-	for <lists+linux-tip-commits@lfdr.de>; Sun,  1 May 2022 10:12:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B23A5162B0
+	for <lists+linux-tip-commits@lfdr.de>; Sun,  1 May 2022 10:25:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236013AbiEAIQE (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 1 May 2022 04:16:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60308 "EHLO
+        id S244489AbiEAI3G (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 1 May 2022 04:29:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55710 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229632AbiEAIQD (ORCPT
+        with ESMTP id S244592AbiEAI2r (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 1 May 2022 04:16:03 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AA131402A;
-        Sun,  1 May 2022 01:12:39 -0700 (PDT)
-Date:   Sun, 01 May 2022 08:12:36 -0000
+        Sun, 1 May 2022 04:28:47 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 056B617E10;
+        Sun,  1 May 2022 01:25:21 -0700 (PDT)
+Date:   Sun, 01 May 2022 08:25:19 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1651392757;
+        s=2020; t=1651393520;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Btm8cdhggXjho6O0WPgq4RkAAi9zylcOI/eBifzYWp8=;
-        b=WLK3Z36jq0QkP6HqWQgymJ+5w6nepgQbmdC4B5mau7rLZJjyyBC12c+ADWi3ALCCoEityh
-        9eQnaq4ASKphRUnPu5MTnOaWL3mwiFoSbvuB0Yj30ij3pHQax/vbsHjGE3fTpOW9qnjw6y
-        DHnz55tZKuHP4MbKyxtLHeDpP8vv7D/tiqedJ3ZNm0YCYFdpcK+1c1JUqYBvtQcGrnURZ2
-        sB+gkxJ+LXaFFYdm+bN1iY4cpaP9V1DlZaolPuvBHBlSvcpTWBXetQ8xS0lh7VgA+6PjhC
-        N0tFfedGbZvA3AtLNwZkqJn16qquyZzNzHkfyaiQSf2GmL7SFUdDrSFbb+3Fbw==
+        bh=9twnfmTeQicWK61lPpH3y68atz1ooDKYw21C5/2KZno=;
+        b=JDk1Gc7Y81h1GwFUvPMI2BbOmjVPrE49rNNS/RripR4rhkfBXVjeQZx0cNzKgi9FDpJegF
+        9DgS6RcT03m63OQ3TQU64RrmMKPKHimyKYUM4AAIFrU/RPcphazW4ibdU2RVJc5mUbVoos
+        QaLYuHZepSUs+JWJ5M4hNTpiCmujnJaQudBm8VWvSbibm7u0zcFXgpxYo5mNK20gnzqp/c
+        1kZcCpGeumYajkZF4YDJ29gvDluCIQ8FSKKd6spFTMRfkmZqwl//AyO640O7x4kYAPtKm/
+        31aXcO/7lBpqi5BDfcdhYmDQqt6U/jHGSelvS0BLYh6KrVgBwDVTzmtox0uR0Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1651392757;
+        s=2020e; t=1651393520;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Btm8cdhggXjho6O0WPgq4RkAAi9zylcOI/eBifzYWp8=;
-        b=eeGr6Yw/+j0xBR79JMNk1GCZz/kWWvkfLK/C4b0J2vxmG+Dq5rtg0ScHm4/RMH4N+s8RU5
-        LCvv3xTQOuFeBjBg==
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+        bh=9twnfmTeQicWK61lPpH3y68atz1ooDKYw21C5/2KZno=;
+        b=WFdqINj3ETbfJvO2zo9K1OuUAWb8jVnqSmtxS2zpTrRmg2pxr6iZOXnEkzMbVMviEtcDD2
+        2VxekzgpvQgm+iBw==
+From:   "tip-bot2 for Fenghua Yu" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/pci/xen: Disable PCI/MSI[-X] masking for XEN_HVM guests
-Cc:     Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>,
-        Dusty Mabe <dustymabe@redhat.com>,
-        Salvatore Bonaccorso <carnil@debian.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Noah Meyerhans <noahm@debian.org>, stable@vger.kernel.org,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <87tuaduxj5.ffs@tglx>
-References: <87tuaduxj5.ffs@tglx>
+Subject: [tip: core/urgent] mm: Fix PASID use-after-free issue
+Cc:     Zhangfei Gao <zhangfei.gao@foxmail.com>,
+        "Jean-Philippe Brucker" <jean-philippe@linaro.org>,
+        Jacob Pan <jacob.jun.pan@linux.intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20220428180041.806809-1-fenghua.yu@intel.com>
+References: <20220428180041.806809-1-fenghua.yu@intel.com>
 MIME-Version: 1.0
-Message-ID: <165139275608.4207.16060979873182920732.tip-bot2@tip-bot2>
+Message-ID: <165139351922.4207.15523967417383711734.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -68,64 +68,75 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the core/urgent branch of tip:
 
-Commit-ID:     7e0815b3e09986d2fe651199363e135b9358132a
-Gitweb:        https://git.kernel.org/tip/7e0815b3e09986d2fe651199363e135b9358132a
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Thu, 28 Apr 2022 15:50:54 +02:00
+Commit-ID:     2667ed10d9f01e250ba806276740782c89d77fda
+Gitweb:        https://git.kernel.org/tip/2667ed10d9f01e250ba806276740782c89d77fda
+Author:        Fenghua Yu <fenghua.yu@intel.com>
+AuthorDate:    Thu, 28 Apr 2022 11:00:41 -07:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 29 Apr 2022 14:37:39 +02:00
+CommitterDate: Sun, 01 May 2022 10:17:17 +02:00
 
-x86/pci/xen: Disable PCI/MSI[-X] masking for XEN_HVM guests
+mm: Fix PASID use-after-free issue
 
-When a XEN_HVM guest uses the XEN PIRQ/Eventchannel mechanism, then
-PCI/MSI[-X] masking is solely controlled by the hypervisor, but contrary to
-XEN_PV guests this does not disable PCI/MSI[-X] masking in the PCI/MSI
-layer.
+The PASID is being freed too early.  It needs to stay around until after
+device drivers that might be using it have had a chance to clear it out
+of the hardware.
 
-This can lead to a situation where the PCI/MSI layer masks an MSI[-X]
-interrupt and the hypervisor grants the write despite the fact that it
-already requested the interrupt. As a consequence interrupt delivery on the
-affected device is not happening ever.
+The relevant refcounts are:
 
-Set pci_msi_ignore_mask to prevent that like it's done for XEN_PV guests
-already.
+  mmget() /mmput()  refcount the mm's address space
+  mmgrab()/mmdrop() refcount the mm itself
 
-Fixes: 809f9267bbab ("xen: map MSIs into pirqs")
-Reported-by: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
-Reported-by: Dusty Mabe <dustymabe@redhat.com>
-Reported-by: Salvatore Bonaccorso <carnil@debian.org>
+The PASID is currently tied to the life of the mm's address space and freed
+in __mmput().  This makes logical sense because the PASID can't be used
+once the address space is gone.
+
+But, this misses an important point: even after the address space is gone,
+the PASID will still be programmed into a device.  Device drivers might,
+for instance, still need to flush operations that are outstanding and need
+to use that PASID.  They do this at file->release() time.
+
+Device drivers call the IOMMU driver to hold a reference on the mm itself
+and drop it at file->release() time.  But, the IOMMU driver holds a
+reference on the mm itself, not the address space.  The address space (and
+the PASID) is long gone by the time the driver tries to clean up.  This is
+effectively a use-after-free bug on the PASID.
+
+To fix this, move the PASID free operation from __mmput() to __mmdrop().
+This ensures that the IOMMU driver's existing mmgrab() keeps the PASID
+allocated until it drops its mm reference.
+
+Fixes: 701fac40384f ("iommu/sva: Assign a PASID to mm on PASID allocation and free it on mm exit")
+Reported-by: Zhangfei Gao <zhangfei.gao@foxmail.com>
+Suggested-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+Suggested-by: Jacob Pan <jacob.jun.pan@linux.intel.com>
+Signed-off-by: Fenghua Yu <fenghua.yu@intel.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Noah Meyerhans <noahm@debian.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/87tuaduxj5.ffs@tglx
-
+Tested-by: Zhangfei Gao <zhangfei.gao@foxmail.com>
+Reviewed-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+Link: https://lore.kernel.org/r/20220428180041.806809-1-fenghua.yu@intel.com
 ---
- arch/x86/pci/xen.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ kernel/fork.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/pci/xen.c b/arch/x86/pci/xen.c
-index 9bb1e29..b94f727 100644
---- a/arch/x86/pci/xen.c
-+++ b/arch/x86/pci/xen.c
-@@ -467,7 +467,6 @@ static __init void xen_setup_pci_msi(void)
- 		else
- 			xen_msi_ops.setup_msi_irqs = xen_setup_msi_irqs;
- 		xen_msi_ops.teardown_msi_irqs = xen_pv_teardown_msi_irqs;
--		pci_msi_ignore_mask = 1;
- 	} else if (xen_hvm_domain()) {
- 		xen_msi_ops.setup_msi_irqs = xen_hvm_setup_msi_irqs;
- 		xen_msi_ops.teardown_msi_irqs = xen_teardown_msi_irqs;
-@@ -481,6 +480,11 @@ static __init void xen_setup_pci_msi(void)
- 	 * in allocating the native domain and never use it.
- 	 */
- 	x86_init.irqs.create_pci_msi_domain = xen_create_pci_msi_domain;
-+	/*
-+	 * With XEN PIRQ/Eventchannels in use PCI/MSI[-X] masking is solely
-+	 * controlled by the hypervisor.
-+	 */
-+	pci_msi_ignore_mask = 1;
+diff --git a/kernel/fork.c b/kernel/fork.c
+index 9796897..35a3bef 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -792,6 +792,7 @@ void __mmdrop(struct mm_struct *mm)
+ 	mmu_notifier_subscriptions_destroy(mm);
+ 	check_mm(mm);
+ 	put_user_ns(mm->user_ns);
++	mm_pasid_drop(mm);
+ 	free_mm(mm);
+ }
+ EXPORT_SYMBOL_GPL(__mmdrop);
+@@ -1190,7 +1191,6 @@ static inline void __mmput(struct mm_struct *mm)
+ 	}
+ 	if (mm->binfmt)
+ 		module_put(mm->binfmt->module);
+-	mm_pasid_drop(mm);
+ 	mmdrop(mm);
  }
  
- #else /* CONFIG_PCI_MSI */
