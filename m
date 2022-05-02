@@ -2,57 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 76A90516F54
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  2 May 2022 14:11:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CC7B516F96
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  2 May 2022 14:31:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1384896AbiEBMOd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 2 May 2022 08:14:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38304 "EHLO
+        id S1384960AbiEBMfF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 2 May 2022 08:35:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32946 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1384622AbiEBMOc (ORCPT
+        with ESMTP id S1384872AbiEBMfE (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 2 May 2022 08:14:32 -0400
+        Mon, 2 May 2022 08:35:04 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 158F3BFA;
-        Mon,  2 May 2022 05:11:04 -0700 (PDT)
-Date:   Mon, 02 May 2022 12:11:01 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5923312A94;
+        Mon,  2 May 2022 05:31:35 -0700 (PDT)
+Date:   Mon, 02 May 2022 12:31:32 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1651493462;
+        s=2020; t=1651494694;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=DqLyU6eqOYm5mbsrgaYZRI+vMRTFZkpfrcGpvit8sCs=;
-        b=lfASwGypYDAxvZnjOsBm4ApDvAjAkjdu/FCKFjVtUiheCv+RHaBRPU0gndgZEpxnN9OEod
-        NCspsyMQEBIMdHG3CG0Jr3nemhpSHBvrDTDtanay/gDRhm+00c3UycX4GX2Tvkts2kf+an
-        q6qVwVKgsBUKHlyZWhN4uY8a2Gf3tL+ghNHaSFeUhVYetrt9yHOxA5UGZcgeFj7PcJskS9
-        aeePq6XOysgwj8tJsCh4SKwQ1qS9MFHAZESg1cMLmaIkNmeu47sDcuZq4Vt/wLMzTZQDk6
-        Ohph7tvNE6u3f/3+rQU2Hmyre8HfipgUhLwy/dGUwLYEtYPRTsX4MJnDdEZLng==
+        bh=M6819Ern8zQctjbgFOLq4zCoZZuTcZxoj2Eqm7eU0Us=;
+        b=WwsBHEsPuu50F3CEKNuvGvpTXLf7Dy1VI+ECB0jiVmTx1lZzYhfKTUumtMK7jFh7SQG/fQ
+        rlFE5R+Iivf9odHtmlRAfHldsQvWkypkaXOkOUT1rBWFpH7vcuNmrvzMjoCPvXPazL2hnK
+        QxU76FxbWO5AzW8jqd3LVKr5NOlIffqOK9YbeZ8AXUnv9zgP7bckY0fxSSw5cMbRV2+u2I
+        aBWs3NBSJTcDFIFQW6lJAYbcS6PIZj4RD1EM/8GO4lKraCT9yC1CoFkh9kdhcMhquX+nip
+        pjAaFF1h8EA92QfDuz0iwDw0B9M39PfhSdYkYMBee3QD28Yyr7g8u0kGXkZfMA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1651493462;
+        s=2020e; t=1651494694;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=DqLyU6eqOYm5mbsrgaYZRI+vMRTFZkpfrcGpvit8sCs=;
-        b=JcWQUm6Z51InkI7cK1DYUOhX1XFMuQ/ShJFozA3/cG5yHC5kBruHWnpslSV6NypSpCNpv/
-        NMLLHVkjZ/5kDUDQ==
-From:   "tip-bot2 for Minghao Chi" <tip-bot2@linutronix.de>
+        bh=M6819Ern8zQctjbgFOLq4zCoZZuTcZxoj2Eqm7eU0Us=;
+        b=tI2ceN7xQQ2uQKpwORSti2z2882PKNJhZ4ezNwrouic8NAqe7QIcDAMPTDO1iKm3I0z0gM
+        SXPQm/pHAYBB8iDw==
+From:   "tip-bot2 for Maciej W. Rozycki" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] genirq: Use pm_runtime_resume_and_get() instead of
- pm_runtime_get_sync()
-Cc:     Zeal Robot <zealci@zte.com.cn>,
-        Minghao Chi <chi.minghao@zte.com.cn>,
-        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
-        linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20220418110716.2559453-1-chi.minghao@zte.com.cn>
-References: <20220418110716.2559453-1-chi.minghao@zte.com.cn>
+Subject: [tip: timers/core] time/sched_clock: Fix formatting of frequency
+ reporting code
+Cc:     "Maciej W. Rozycki" <macro@orcam.me.uk>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        John Stultz <jstultz@google.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <alpine.DEB.2.21.2204240148220.9383@angie.orcam.me.uk>
+References: <alpine.DEB.2.21.2204240148220.9383@angie.orcam.me.uk>
 MIME-Version: 1.0
-Message-ID: <165149346127.4207.7891496748759999918.tip-bot2@tip-bot2>
+Message-ID: <165149469263.4207.2139248782239839767.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,52 +67,58 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the irq/core branch of tip:
+The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     ce4818957fdc5bca57fc2c92b0dfe109d26bcc47
-Gitweb:        https://git.kernel.org/tip/ce4818957fdc5bca57fc2c92b0dfe109d26bcc47
-Author:        Minghao Chi <chi.minghao@zte.com.cn>
-AuthorDate:    Mon, 18 Apr 2022 11:07:16 
+Commit-ID:     f4b62e1e1137507268c2c63dc4e6da279dc58e9f
+Gitweb:        https://git.kernel.org/tip/f4b62e1e1137507268c2c63dc4e6da279dc58e9f
+Author:        Maciej W. Rozycki <macro@orcam.me.uk>
+AuthorDate:    Sun, 24 Apr 2022 12:47:30 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 02 May 2022 14:08:08 +02:00
+CommitterDate: Mon, 02 May 2022 14:29:04 +02:00
 
-genirq: Use pm_runtime_resume_and_get() instead of pm_runtime_get_sync()
+time/sched_clock: Fix formatting of frequency reporting code
 
-pm_runtime_resume_and_get() achieves the same and simplifies the code.
+Use flat rather than nested indentation for chained else/if clauses as 
+per coding-style.rst:
 
-[ tglx: Simplify it further by presetting retval ]
+	if (x == y) {
+		..
+	} else if (x > y) {
+		...
+	} else {
+		....
+	}
 
-Reported-by: Zeal Robot <zealci@zte.com.cn>
-Signed-off-by: Minghao Chi <chi.minghao@zte.com.cn>
+This also improves readability.
+
+Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20220418110716.2559453-1-chi.minghao@zte.com.cn
----
- kernel/irq/chip.c | 13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
+Acked-by: John Stultz <jstultz@google.com>
+Link: https://lore.kernel.org/r/alpine.DEB.2.21.2204240148220.9383@angie.orcam.me.uk
 
-diff --git a/kernel/irq/chip.c b/kernel/irq/chip.c
-index 54af0de..e6b8e56 100644
---- a/kernel/irq/chip.c
-+++ b/kernel/irq/chip.c
-@@ -1573,17 +1573,12 @@ static struct device *irq_get_parent_device(struct irq_data *data)
- int irq_chip_pm_get(struct irq_data *data)
- {
- 	struct device *dev = irq_get_parent_device(data);
--	int retval;
-+	int retval = 0;
- 
--	if (IS_ENABLED(CONFIG_PM) && dev) {
--		retval = pm_runtime_get_sync(dev);
--		if (retval < 0) {
--			pm_runtime_put_noidle(dev);
--			return retval;
+---
+ kernel/time/sched_clock.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
+
+diff --git a/kernel/time/sched_clock.c b/kernel/time/sched_clock.c
+index 4a95c0b..8464c5a 100644
+--- a/kernel/time/sched_clock.c
++++ b/kernel/time/sched_clock.c
+@@ -202,13 +202,11 @@ sched_clock_register(u64 (*read)(void), int bits, unsigned long rate)
+ 	if (r >= 4000000) {
+ 		r = DIV_ROUND_CLOSEST(r, 1000000);
+ 		r_unit = 'M';
++	} else if (r >= 4000) {
++		r = DIV_ROUND_CLOSEST(r, 1000);
++		r_unit = 'k';
+ 	} else {
+-		if (r >= 4000) {
+-			r = DIV_ROUND_CLOSEST(r, 1000);
+-			r_unit = 'k';
+-		} else {
+-			r_unit = ' ';
 -		}
--	}
-+	if (IS_ENABLED(CONFIG_PM) && dev)
-+		retval = pm_runtime_resume_and_get(dev);
++		r_unit = ' ';
+ 	}
  
--	return 0;
-+	return retval;
- }
- 
- /**
+ 	/* Calculate the ns resolution of this counter */
