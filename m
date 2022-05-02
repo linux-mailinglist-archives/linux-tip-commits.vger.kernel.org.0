@@ -2,55 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A79C2516B4D
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  2 May 2022 09:34:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C3DA7516F41
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  2 May 2022 14:05:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353113AbiEBHh1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 2 May 2022 03:37:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35384 "EHLO
+        id S229658AbiEBMIE (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 2 May 2022 08:08:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57504 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242657AbiEBHh0 (ORCPT
+        with ESMTP id S1384862AbiEBMIE (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 2 May 2022 03:37:26 -0400
+        Mon, 2 May 2022 08:08:04 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E117F114D;
-        Mon,  2 May 2022 00:33:58 -0700 (PDT)
-Date:   Mon, 02 May 2022 07:33:55 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49BFA12AFA;
+        Mon,  2 May 2022 05:04:35 -0700 (PDT)
+Date:   Mon, 02 May 2022 12:04:31 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1651476837;
+        s=2020; t=1651493072;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=9Hl93BaP+6Fz4+/p8Q6tSarrF/dIp3vDcExxf3BnwgQ=;
-        b=YCPOc6+wufYjQF7S9TThe94SeQhsZ3wvWdNDDKfrkg75fbDytxgw+kBJeUFtJGK8hPMDE3
-        ITtTsMMFkA3BKSIytvbA1eACQCAotjDpR3QxkA5+9aw9jUBdBk2tY9BctO3/iaqbSm+eIU
-        Z1AT6Z2CxXRDSfJIpl6BcBTDR1qpPCTiBPI+yPNH3x5V7bZKRJ/j7cM5aW2AEZxe8sHDS3
-        uHtKUImduaY78T1trfyDVNbsObkAdznycru2MGj6IVxSs6IFYFC13IbEx6JzXCpX0PyNLq
-        XMYVM1DPR8ZhkIbJJ6ABeq2Aa7wN4wrJKtshRKnc/C3yf1gWrv/jrByBu9loHg==
+        bh=YATk2HB+C5fwK8D8cN/gu91IL0UXOJNedtSVFfvFfmc=;
+        b=YQCTJtMuvi4kUrtZ2UK05zVIn76iqKAGULzgVzbMMb9f4mZevp2G/rGlo0akG0rfe/adKx
+        D7KRdvpHhv+fR1wJ6Es7qpn2zsubI4quXlCH51uXwNL7Kfr0uF6EjjxQuw1BkTRInPgJuw
+        GU+2u61TcxcUbVudlGYrlPybNUFjdExAGUaFDDnhg6pRaF1knISG1iClneiD6F3kDpAWJA
+        49wtMLHCM9RLfLKxljNTzYbslV9ICtd/Xe5pEhZwG9cpCLDvjd3/RuTeuvuUMbvqkdQQfu
+        2eI7LcK+EGBWWGX/X8n79keOzGGvbeK0INQStxQiYBhGUSP8TA31W1mg+VRdEA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1651476837;
+        s=2020e; t=1651493072;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=9Hl93BaP+6Fz4+/p8Q6tSarrF/dIp3vDcExxf3BnwgQ=;
-        b=114+oRhU/Vz7aPBZa6iQlyCq0XTduTRToXwpNv0fdTQqypkGHRsyrX3WN+L1F5zFNjS+Tu
-        2XGkobkVWdBjv+Cw==
+        bh=YATk2HB+C5fwK8D8cN/gu91IL0UXOJNedtSVFfvFfmc=;
+        b=k3U2UU3Bwkbkv86MYlSSzwaHDvwhYTosOjA5Ouj//sgD95ZeVOaSCNUBnwzeA+lVKu01Cz
+        eT/acSOuNU5oYuDA==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/fpu] x86/fpu: Cleanup variable shadowing
-Cc:     kernel test robot <lkp@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+Subject: [tip: timers/core] timekeeping: Consolidate fast timekeeper
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <202204262032.jFYKit5j-lkp@intel.com>
-References: <202204262032.jFYKit5j-lkp@intel.com>
+In-Reply-To: <20220415091921.072296632@linutronix.de>
+References: <20220415091921.072296632@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <165147683595.4207.10467691801544326592.tip-bot2@tip-bot2>
+Message-ID: <165149307143.4207.5088655039432642801.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,40 +65,69 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/fpu branch of tip:
+The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     b91c0922bf1ed15b67a6faa404bc64e3ed532ec2
-Gitweb:        https://git.kernel.org/tip/b91c0922bf1ed15b67a6faa404bc64e3ed532ec2
+Commit-ID:     90be8d6c1f91e1e5121c219726524c91b52bfc20
+Gitweb:        https://git.kernel.org/tip/90be8d6c1f91e1e5121c219726524c91b52bfc20
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Mon, 02 May 2022 09:20:42 +02:00
+AuthorDate:    Fri, 15 Apr 2022 11:19:38 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 02 May 2022 09:28:31 +02:00
+CommitterDate: Mon, 02 May 2022 14:00:20 +02:00
 
-x86/fpu: Cleanup variable shadowing
+timekeeping: Consolidate fast timekeeper
 
-Addresses: warning: Local variable 'mask' shadows outer variable
+Provide a inline function which replaces the copy & pasta.
 
-Remove extra variable declaration and switch the bit mask assignment to use
-BIT_ULL() while at it.
-
-Fixes: 522e92743b35 ("x86/fpu: Deduplicate copy_uabi_from_user/kernel_to_xstate()")
-Reported-by: kernel test robot <lkp@intel.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/lkml/202204262032.jFYKit5j-lkp@intel.com
----
- arch/x86/kernel/fpu/xstate.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20220415091921.072296632@linutronix.de
 
-diff --git a/arch/x86/kernel/fpu/xstate.c b/arch/x86/kernel/fpu/xstate.c
-index 31c12f4..81fcd04 100644
---- a/arch/x86/kernel/fpu/xstate.c
-+++ b/arch/x86/kernel/fpu/xstate.c
-@@ -1233,7 +1233,7 @@ static int copy_uabi_to_xstate(struct fpstate *fpstate, const void *kbuf,
- 	}
+---
+ kernel/time/timekeeping.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
+
+diff --git a/kernel/time/timekeeping.c b/kernel/time/timekeeping.c
+index 3479804..8895ff2 100644
+--- a/kernel/time/timekeeping.c
++++ b/kernel/time/timekeeping.c
+@@ -429,6 +429,14 @@ static void update_fast_timekeeper(const struct tk_read_base *tkr,
+ 	memcpy(base + 1, base, sizeof(*base));
+ }
  
- 	for (i = 0; i < XFEATURE_MAX; i++) {
--		u64 mask = ((u64)1 << i);
-+		mask = BIT_ULL(i);
++static __always_inline u64 fast_tk_get_delta_ns(struct tk_read_base *tkr)
++{
++	u64 delta, cycles = tk_clock_read(tkr);
++
++	delta = clocksource_delta(cycles, tkr->cycle_last, tkr->mask);
++	return timekeeping_delta_to_ns(tkr, delta);
++}
++
+ static __always_inline u64 __ktime_get_fast_ns(struct tk_fast *tkf)
+ {
+ 	struct tk_read_base *tkr;
+@@ -439,12 +447,7 @@ static __always_inline u64 __ktime_get_fast_ns(struct tk_fast *tkf)
+ 		seq = raw_read_seqcount_latch(&tkf->seq);
+ 		tkr = tkf->base + (seq & 0x01);
+ 		now = ktime_to_ns(tkr->base);
+-
+-		now += timekeeping_delta_to_ns(tkr,
+-				clocksource_delta(
+-					tk_clock_read(tkr),
+-					tkr->cycle_last,
+-					tkr->mask));
++		now += fast_tk_get_delta_ns(tkr);
+ 	} while (read_seqcount_latch_retry(&tkf->seq, seq));
  
- 		if (hdr.xfeatures & mask) {
- 			void *dst = __raw_xsave_addr(xsave, i);
+ 	return now;
+@@ -560,10 +563,7 @@ static __always_inline u64 __ktime_get_real_fast(struct tk_fast *tkf, u64 *mono)
+ 		tkr = tkf->base + (seq & 0x01);
+ 		basem = ktime_to_ns(tkr->base);
+ 		baser = ktime_to_ns(tkr->base_real);
+-
+-		delta = timekeeping_delta_to_ns(tkr,
+-				clocksource_delta(tk_clock_read(tkr),
+-				tkr->cycle_last, tkr->mask));
++		delta = fast_tk_get_delta_ns(tkr);
+ 	} while (read_seqcount_latch_retry(&tkf->seq, seq));
+ 
+ 	if (mono)
