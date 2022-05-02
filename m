@@ -2,61 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE1AD5167D8
-	for <lists+linux-tip-commits@lfdr.de>; Sun,  1 May 2022 22:46:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98137516B3A
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  2 May 2022 09:27:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354717AbiEAUtz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 1 May 2022 16:49:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49128 "EHLO
+        id S1376579AbiEBHag (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 2 May 2022 03:30:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44644 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238355AbiEAUty (ORCPT
+        with ESMTP id S1358666AbiEBHae (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 1 May 2022 16:49:54 -0400
+        Mon, 2 May 2022 03:30:34 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94C8559B87;
-        Sun,  1 May 2022 13:46:27 -0700 (PDT)
-Date:   Sun, 01 May 2022 20:46:23 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66CEE183AD;
+        Mon,  2 May 2022 00:27:04 -0700 (PDT)
+Date:   Mon, 02 May 2022 07:27:00 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1651437985;
+        s=2020; t=1651476422;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=557Zdz5NnkEbZAML/Rf00CcEcDkEAYNoO9M1iqJXXJg=;
-        b=BQCZ4I1GCX7u4Gxj7oF4nPU93AjM1MM4zWhkhZoP/SWkLz5imU30cuAeB0GZpE1GaokLSv
-        seALoXUqH07L8ri0N47rurJT8oq1zmSlHm3PFzP9Dj7kxIxlUvfAZr9Iz7OlrzrDZ8I/mF
-        fbOKkUfibi+jEM/IR0fd6sUntwwaBxeftVXOSvdtPaxjBjPKDjN3UFZvi3VvUVeM7KlUIv
-        wyx6yGFpFCum6VEUcY9ztmgDQZKku5R92IJw3KBDq0bdjoXhqJUcMa1NIYqs037AYgsn/0
-        PgQwhPswfQlDqXUvuYkAJPPYG/YYeG7uy/2+So2H6xG+F1td4MvXXcaVHfOk+Q==
+        bh=+UxuM5f2tTJUDrv2jfqsdab0TsuFg0OcMG1oQ4Ohyjk=;
+        b=bJlQNwTeQHvmrAyDAwv0D25Bc3GR495DcIHdrffGI+0DIjpqQ/XMRQUuvxPt4k5ugCiVIn
+        xXYYNCMMogpfj6mhBq4Kq2/qMMxmMxwomCJXfeKFi5F10fVd3kY1d8h4nybh4FzAUztaLp
+        KMaBG4oZ7+SIfculXiDDJ//GsDC124pQWVfOTB+FakRAHyhlfzUdEw8t/4+87dRxAz05UF
+        xP3Cz1AwlAW0EaH2UulPFcwGRR1Gk0qfIVXorY9tfa8CV5deUQKsKB3pY05eBk/R+iQ76I
+        Hi0lFeKPGWMOpeJ2eEP5Aaf8WOGKA0w7ht+riRqRLhuRNEJlkPKUS4RTw1/aWg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1651437985;
+        s=2020e; t=1651476422;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=557Zdz5NnkEbZAML/Rf00CcEcDkEAYNoO9M1iqJXXJg=;
-        b=ZTZMmiKF/orzzHWjUFrPDJ7Jqp5HGrLTJatvmpHVMf3G7gAnaebeD3JI9p5sx0JY1BQQIa
-        lawFwMF+/1sZyABA==
-From:   "tip-bot2 for Kuppuswamy Sathyanarayanan" <tip-bot2@linutronix.de>
+        bh=+UxuM5f2tTJUDrv2jfqsdab0TsuFg0OcMG1oQ4Ohyjk=;
+        b=jaZvf79wgiqrquc/l4YYeJq6F+oXRPhInO4niag0dGpUOU0I7UEc1lYalq7sfkWBFSDr8K
+        f6Bl80xP2TbOezDg==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/apic] x86/apic: Do apic driver probe for "nosmp" use case
-Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tony Luck <tony.luck@intel.com>, x86@kernel.org,
+Subject: [tip: x86/cleanups] x86/aperfperf: Make it correct on 32bit and UP kernels
+Cc:     kernel test robot <lkp@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: =?utf-8?q?=3Ca64f864e1114bcd63593286aaf61142cfce384ea=2E16500?=
- =?utf-8?q?76869=2Egit=2Esathyanarayanan=2Ekuppuswamy=40intel=2Ecom=3E?=
-References: =?utf-8?q?=3Ca64f864e1114bcd63593286aaf61142cfce384ea=2E165007?=
- =?utf-8?q?6869=2Egit=2Esathyanarayanan=2Ekuppuswamy=40intel=2Ecom=3E?=
+In-Reply-To: <202205010106.06xRBR2C-lkp@intel.com>
+References: <202205010106.06xRBR2C-lkp@intel.com>
 MIME-Version: 1.0
-Message-ID: <165143798346.4207.13836898834353689685.tip-bot2@tip-bot2>
+Message-ID: <165147642077.4207.15451806111098153904.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -71,69 +65,52 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/apic branch of tip:
+The following commit has been merged into the x86/cleanups branch of tip:
 
-Commit-ID:     7a116a2dd32d96869f0f93bac00b900859ba0434
-Gitweb:        https://git.kernel.org/tip/7a116a2dd32d96869f0f93bac00b900859ba0434
-Author:        Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-AuthorDate:    Sat, 16 Apr 2022 02:45:32 
+Commit-ID:     1ff2fb982c52ed6c3478adc944441d6ea065d8fb
+Gitweb:        https://git.kernel.org/tip/1ff2fb982c52ed6c3478adc944441d6ea065d8fb
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Mon, 02 May 2022 09:01:55 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sun, 01 May 2022 22:40:29 +02:00
+CommitterDate: Mon, 02 May 2022 09:19:05 +02:00
 
-x86/apic: Do apic driver probe for "nosmp" use case
+x86/aperfperf: Make it correct on 32bit and UP kernels
 
-For the "nosmp" use case, the APIC initialization code selects
-"APIC_SYMMETRIC_IO_NO_ROUTING" as the default interrupt mode and avoids
-probing APIC drivers.
+The utilization of arch_scale_freq_tick() for CPU frequency readouts is
+incomplete as it failed to move the function prototype and the define
+out of the CONFIG_SMP && CONFIG_X86_64 #ifdef.
 
-This works well for the default APIC modes, but for the x2APIC case the
-probe function is required to allocate the cluster_hotplug mask. So in the
-APIC_SYMMETRIC_IO_NO_ROUTING case when the x2APIC is initialized it
-dereferences a NULL pointer and the kernel crashes.
+Make them unconditionally available.
 
-This was observed on a TDX platform where x2APIC is enabled and "nosmp"
-command line option is allowed.
-
-To fix this issue, probe APIC drivers via default_setup_apic_routing() for
-the APIC_SYMMETRIC_IO_NO_ROUTING interrupt mode too.
-
-Suggested-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Suggested-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Fixes: bb6e89df9028 ("x86/aperfmperf: Make parts of the frequency invariance code unconditional")
+Reported-by: kernel test robot <lkp@intel.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Tony Luck <tony.luck@intel.com>
-Link: https://lore.kernel.org/r/a64f864e1114bcd63593286aaf61142cfce384ea.1650076869.git.sathyanarayanan.kuppuswamy@intel.com
-
+Link: https://lore.kernel.org/lkml/202205010106.06xRBR2C-lkp@intel.com
 ---
- arch/x86/kernel/apic/apic.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ arch/x86/include/asm/topology.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
-index 13819bf..25e92d7 100644
---- a/arch/x86/kernel/apic/apic.c
-+++ b/arch/x86/kernel/apic/apic.c
-@@ -1428,22 +1428,21 @@ void __init apic_intr_mode_init(void)
- 		return;
- 	case APIC_VIRTUAL_WIRE:
- 		pr_info("APIC: Switch to virtual wire mode setup\n");
--		default_setup_apic_routing();
- 		break;
- 	case APIC_VIRTUAL_WIRE_NO_CONFIG:
- 		pr_info("APIC: Switch to virtual wire mode setup with no configuration\n");
- 		upmode = true;
--		default_setup_apic_routing();
- 		break;
- 	case APIC_SYMMETRIC_IO:
- 		pr_info("APIC: Switch to symmetric I/O mode setup\n");
--		default_setup_apic_routing();
- 		break;
- 	case APIC_SYMMETRIC_IO_NO_ROUTING:
- 		pr_info("APIC: Switch to symmetric I/O mode setup in no SMP routine\n");
- 		break;
- 	}
+diff --git a/arch/x86/include/asm/topology.h b/arch/x86/include/asm/topology.h
+index 1b2553d..458c891 100644
+--- a/arch/x86/include/asm/topology.h
++++ b/arch/x86/include/asm/topology.h
+@@ -212,9 +212,6 @@ static inline long arch_scale_freq_capacity(int cpu)
+ }
+ #define arch_scale_freq_capacity arch_scale_freq_capacity
  
-+	default_setup_apic_routing();
+-extern void arch_scale_freq_tick(void);
+-#define arch_scale_freq_tick arch_scale_freq_tick
+-
+ extern void arch_set_max_freq_ratio(bool turbo_disabled);
+ extern void freq_invariance_set_perf_ratio(u64 ratio, bool turbo_disabled);
+ #else
+@@ -222,6 +219,9 @@ static inline void arch_set_max_freq_ratio(bool turbo_disabled) { }
+ static inline void freq_invariance_set_perf_ratio(u64 ratio, bool turbo_disabled) { }
+ #endif
+ 
++extern void arch_scale_freq_tick(void);
++#define arch_scale_freq_tick arch_scale_freq_tick
 +
- 	if (x86_platform.apic_post_init)
- 		x86_platform.apic_post_init();
- 
+ #ifdef CONFIG_ACPI_CPPC_LIB
+ void init_freq_invariance_cppc(void);
+ #define arch_init_invariance_cppc init_freq_invariance_cppc
