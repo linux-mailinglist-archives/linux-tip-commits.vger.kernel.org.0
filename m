@@ -2,55 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA9FC518CC7
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  3 May 2022 21:01:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 662F8519B94
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  4 May 2022 11:24:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241689AbiECTE7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 3 May 2022 15:04:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33792 "EHLO
+        id S1347127AbiEDJ1C (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 4 May 2022 05:27:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33388 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241672AbiECTEr (ORCPT
+        with ESMTP id S1347133AbiEDJ1A (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 3 May 2022 15:04:47 -0400
+        Wed, 4 May 2022 05:27:00 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2305E3B01E;
-        Tue,  3 May 2022 12:01:10 -0700 (PDT)
-Date:   Tue, 03 May 2022 19:01:07 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D351B20BF1;
+        Wed,  4 May 2022 02:23:22 -0700 (PDT)
+Date:   Wed, 04 May 2022 09:23:18 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1651604468;
+        s=2020; t=1651656200;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=o4an8nouJOi1UeN6jSfrcUL6AB3XLL+Kmyly4IevalY=;
-        b=Zkv/CFlrSL5u0fiCSd8bhoyM6uddWVWsXbCqgZVtt2dtnArZPstOkk7BciOcP5lRTZJ9sd
-        h10jy6IgTw5aU+EZLrp0y8ckthap5G3rh6m548XBWARWhhApZD29yf5mInw9sJrV36A2E1
-        8aKLEir9SlMaFsroiT4KKolkS/gvuG399sr93M58NbbONwIMqfkYYoBA0BwneuM1Zr4Mys
-        uVrhzh8UmpE7mCY4ofxE/85fBGJECEA3Qoaj6zA5D93hPzk6L/C6RJ3UahtsBEYXmNS3pt
-        kTNibTGar0/xs2UiY2t1eOV2Zzl94LWP0YNTSXF3MMIv9ZP60eRbTorZBerMGQ==
+        bh=sFxXL6UDbo3wM6GIRrCU5DaWhDJcIhSj+zUbt+IaJF4=;
+        b=qkuR2qJtxR1tYYvSdmoK56ADxAeGgRNdZMHDmbziOVBxfcfDoMrG71AKqC7GP8hMZXJHaY
+        o8xh42pf3H2APEt+Mt7qTkSCoQem7WpAtIO4Csxh46Nv5mamg/SJLLlCmHuMf+8fPL2XB1
+        1wjFjWsjMX4mvinVQrNtxV3cz0bDP1+30u06XeoUqhTmMViekxBcK+4/6GfxlCh+5C8aPw
+        aFlwCpgyt4rDdc1jBxVRMlYDqwjC71T3u2GBdxpUbBD34PppGRaB0pMZwa77f41En3r3Dy
+        GR3Hhw9SupkSb1IYpgkD76byfCvuoJmnQsIphVB5siryjUsR2Y2mWnkNSIzlWQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1651604468;
+        s=2020e; t=1651656200;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=o4an8nouJOi1UeN6jSfrcUL6AB3XLL+Kmyly4IevalY=;
-        b=KSJImUp9GU3pEoVQHyh/4Inc3dVDwTg61x1ntC7JvZutM4CHgoIuU5ibkhhEjiX5GrPm61
-        fCk/84shED91IYCA==
-From:   "tip-bot2 for Lai Jiangshan" <tip-bot2@linutronix.de>
+        bh=sFxXL6UDbo3wM6GIRrCU5DaWhDJcIhSj+zUbt+IaJF4=;
+        b=cvUBzrCQJ1xmIHwgJVcSbD7Qc8RoqBvieRS4k54LSAKYk9Jb0SM/Bj6hwpP8IOS37W5ZXc
+        m8TggLxGdj7aK1CA==
+From:   "tip-bot2 for Ravi Bangoria" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/asm] x86/traps: Use pt_regs directly in fixup_bad_iret()
-Cc:     Lai Jiangshan <jiangshan.ljs@antgroup.com>,
-        Borislav Petkov <bp@suse.de>, x86@kernel.org,
+Subject: [tip: perf/core] perf/amd/ibs: Use interrupt regs ip for stack unwinding
+Cc:     Dmitry Monakhov <dmtrmonakhov@yandex-team.ru>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ravi Bangoria <ravi.bangoria@amd.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220503032107.680190-2-jiangshanlai@gmail.com>
-References: <20220503032107.680190-2-jiangshanlai@gmail.com>
+In-Reply-To: <20220429051441.14251-1-ravi.bangoria@amd.com>
+References: <20220429051441.14251-1-ravi.bangoria@amd.com>
 MIME-Version: 1.0
-Message-ID: <165160446765.4207.8207322357392212092.tip-bot2@tip-bot2>
+Message-ID: <165165619890.4207.17489201858185456103.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,109 +66,69 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/asm branch of tip:
+The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     0aca53c6b522f8d6e2681ca875acbbe105f5fdcf
-Gitweb:        https://git.kernel.org/tip/0aca53c6b522f8d6e2681ca875acbbe105f5fdcf
-Author:        Lai Jiangshan <jiangshan.ljs@antgroup.com>
-AuthorDate:    Thu, 21 Apr 2022 22:10:48 +08:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 03 May 2022 11:18:59 +02:00
+Commit-ID:     bd24325684029a48f20a188b899eb84900d0bc9c
+Gitweb:        https://git.kernel.org/tip/bd24325684029a48f20a188b899eb84900d0bc9c
+Author:        Ravi Bangoria <ravi.bangoria@amd.com>
+AuthorDate:    Fri, 29 Apr 2022 10:44:41 +05:30
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Wed, 04 May 2022 11:18:27 +02:00
 
-x86/traps: Use pt_regs directly in fixup_bad_iret()
+perf/amd/ibs: Use interrupt regs ip for stack unwinding
 
-Always stash the address error_entry() is going to return to, in %r12
-and get rid of the void *error_entry_ret; slot in struct bad_iret_stack
-which was supposed to account for it and pt_regs pushed on the stack.
+IbsOpRip is recorded when IBS interrupt is triggered. But there is
+a skid from the time IBS interrupt gets triggered to the time the
+interrupt is presented to the core. Meanwhile processor would have
+moved ahead and thus IbsOpRip will be inconsistent with rsp and rbp
+recorded as part of the interrupt regs. This causes issues while
+unwinding stack using the ORC unwinder as it needs consistent rip,
+rsp and rbp. Fix this by using rip from interrupt regs instead of
+IbsOpRip for stack unwinding.
 
-After this, both fixup_bad_iret() and sync_regs() can work on a struct
-pt_regs pointer directly.
-
-  [ bp: Rewrite commit message, touch ups. ]
-
-Signed-off-by: Lai Jiangshan <jiangshan.ljs@antgroup.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lore.kernel.org/r/20220503032107.680190-2-jiangshanlai@gmail.com
+Fixes: ee9f8fce99640 ("x86/unwind: Add the ORC unwinder")
+Reported-by: Dmitry Monakhov <dmtrmonakhov@yandex-team.ru>
+Suggested-by: Peter Zijlstra <peterz@infradead.org>
+Signed-off-by: Ravi Bangoria <ravi.bangoria@amd.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20220429051441.14251-1-ravi.bangoria@amd.com
 ---
- arch/x86/entry/entry_64.S    |  5 ++++-
- arch/x86/include/asm/traps.h |  2 +-
- arch/x86/kernel/traps.c      | 19 +++++++------------
- 3 files changed, 12 insertions(+), 14 deletions(-)
+ arch/x86/events/amd/ibs.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/arch/x86/entry/entry_64.S b/arch/x86/entry/entry_64.S
-index 73d9585..ecbfca3 100644
---- a/arch/x86/entry/entry_64.S
-+++ b/arch/x86/entry/entry_64.S
-@@ -1061,9 +1061,12 @@ SYM_CODE_START_LOCAL(error_entry)
- 	 * Pretend that the exception came from user mode: set up pt_regs
- 	 * as if we faulted immediately after IRET.
- 	 */
--	mov	%rsp, %rdi
-+	popq	%r12				/* save return addr in %12 */
-+	movq	%rsp, %rdi			/* arg0 = pt_regs pointer */
- 	call	fixup_bad_iret
- 	mov	%rax, %rsp
-+	ENCODE_FRAME_POINTER
-+	pushq	%r12
- 	jmp	.Lerror_entry_from_usermode_after_swapgs
- SYM_CODE_END(error_entry)
+diff --git a/arch/x86/events/amd/ibs.c b/arch/x86/events/amd/ibs.c
+index 9739019..11e8b49 100644
+--- a/arch/x86/events/amd/ibs.c
++++ b/arch/x86/events/amd/ibs.c
+@@ -304,6 +304,16 @@ static int perf_ibs_init(struct perf_event *event)
+ 	hwc->config_base = perf_ibs->msr;
+ 	hwc->config = config;
  
-diff --git a/arch/x86/include/asm/traps.h b/arch/x86/include/asm/traps.h
-index 35317c5..47ecfff 100644
---- a/arch/x86/include/asm/traps.h
-+++ b/arch/x86/include/asm/traps.h
-@@ -13,7 +13,7 @@
- #ifdef CONFIG_X86_64
- asmlinkage __visible notrace struct pt_regs *sync_regs(struct pt_regs *eregs);
- asmlinkage __visible notrace
--struct bad_iret_stack *fixup_bad_iret(struct bad_iret_stack *s);
-+struct pt_regs *fixup_bad_iret(struct pt_regs *bad_regs);
- void __init trap_init(void);
- asmlinkage __visible noinstr struct pt_regs *vc_switch_off_ist(struct pt_regs *eregs);
- #endif
-diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
-index 1563fb9..4167215 100644
---- a/arch/x86/kernel/traps.c
-+++ b/arch/x86/kernel/traps.c
-@@ -892,14 +892,10 @@ sync:
- }
- #endif
- 
--struct bad_iret_stack {
--	void *error_entry_ret;
--	struct pt_regs regs;
--};
--
--asmlinkage __visible noinstr
--struct bad_iret_stack *fixup_bad_iret(struct bad_iret_stack *s)
-+asmlinkage __visible noinstr struct pt_regs *fixup_bad_iret(struct pt_regs *bad_regs)
- {
-+	struct pt_regs tmp, *new_stack;
++	/*
++	 * rip recorded by IbsOpRip will not be consistent with rsp and rbp
++	 * recorded as part of interrupt regs. Thus we need to use rip from
++	 * interrupt regs while unwinding call stack. Setting _EARLY flag
++	 * makes sure we unwind call-stack before perf sample rip is set to
++	 * IbsOpRip.
++	 */
++	if (event->attr.sample_type & PERF_SAMPLE_CALLCHAIN)
++		event->attr.sample_type |= __PERF_SAMPLE_CALLCHAIN_EARLY;
 +
- 	/*
- 	 * This is called from entry_64.S early in handling a fault
- 	 * caused by a bad iret to user mode.  To handle the fault
-@@ -908,19 +904,18 @@ struct bad_iret_stack *fixup_bad_iret(struct bad_iret_stack *s)
- 	 * just below the IRET frame) and we want to pretend that the
- 	 * exception came from the IRET target.
- 	 */
--	struct bad_iret_stack tmp, *new_stack =
--		(struct bad_iret_stack *)__this_cpu_read(cpu_tss_rw.x86_tss.sp0) - 1;
-+	new_stack = (struct pt_regs *)__this_cpu_read(cpu_tss_rw.x86_tss.sp0) - 1;
- 
- 	/* Copy the IRET target to the temporary storage. */
--	__memcpy(&tmp.regs.ip, (void *)s->regs.sp, 5*8);
-+	__memcpy(&tmp.ip, (void *)bad_regs->sp, 5*8);
- 
- 	/* Copy the remainder of the stack from the current stack. */
--	__memcpy(&tmp, s, offsetof(struct bad_iret_stack, regs.ip));
-+	__memcpy(&tmp, bad_regs, offsetof(struct pt_regs, ip));
- 
- 	/* Update the entry stack */
- 	__memcpy(new_stack, &tmp, sizeof(tmp));
- 
--	BUG_ON(!user_mode(&new_stack->regs));
-+	BUG_ON(!user_mode(new_stack));
- 	return new_stack;
+ 	return 0;
  }
- #endif
+ 
+@@ -687,6 +697,14 @@ fail:
+ 		data.raw = &raw;
+ 	}
+ 
++	/*
++	 * rip recorded by IbsOpRip will not be consistent with rsp and rbp
++	 * recorded as part of interrupt regs. Thus we need to use rip from
++	 * interrupt regs while unwinding call stack.
++	 */
++	if (event->attr.sample_type & PERF_SAMPLE_CALLCHAIN)
++		data.callchain = perf_callchain(event, iregs);
++
+ 	throttle = perf_event_overflow(event, &data, &regs);
+ out:
+ 	if (throttle) {
