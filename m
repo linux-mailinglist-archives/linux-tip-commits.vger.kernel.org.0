@@ -2,57 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BDD4151A588
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  4 May 2022 18:28:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 69FAB51AD3F
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  4 May 2022 20:47:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346179AbiEDQcR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 4 May 2022 12:32:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36316 "EHLO
+        id S1377282AbiEDSuv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 4 May 2022 14:50:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49146 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236487AbiEDQcQ (ORCPT
+        with ESMTP id S1377285AbiEDSuv (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 4 May 2022 12:32:16 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3163BE2A;
-        Wed,  4 May 2022 09:28:39 -0700 (PDT)
-Date:   Wed, 04 May 2022 16:28:36 -0000
+        Wed, 4 May 2022 14:50:51 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BB6D165B1;
+        Wed,  4 May 2022 11:47:13 -0700 (PDT)
+Date:   Wed, 04 May 2022 18:47:10 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1651681718;
+        s=2020; t=1651690031;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=C1nhnUez3WutfniW4uOZh+IkzgM6frf+TCfMadffiaI=;
-        b=Ro4XiDXUnhs7V4iY6YrhGx9YioqDDpLREeR4sPTMjmYYGcnbrBP5DCLXqmD53Lke6cjzR5
-        RYTeWHEsOTm9TCUGZ9Q1wdFkEABfJR56timyoOmPV7pfBECvSfwb3B64g2haQ2hNPJknEO
-        0bDwiXl1d9AaBgiCb/pkFlUTQP6AcmvToBhOZ2+SeYHDSIXoTRaOjjlhUor1YhLlrPWObl
-        3YPj6hXwjyfrMzCRnj+9mg2mYtSrCxY0gJTpkOccNj9i2GyW48F9CUAjsESmfC6q48xNOU
-        XOe0SrxHV2uha+3kg64GSbR3GLn3V3lPC/+dejm75Bh4j970KZfCZRBaHAPGMA==
+        bh=zu5TSATSvCYYaY7Kn2lIzDaMbq7oFFxVQXH2iz93NOU=;
+        b=FT9XUPQSXNPAliWIwJWVv3GAtt+7uGyTD+RdDKElLRAS96W/MU3t3q/XtnJ1Rv1Y7OmGNb
+        IqZ0t3MxLwHFcLSTpM+JNNEVW1QIPj4HF7XQ+Zwfrl7UmAq/UqnVi6M3PK7Ol1wUvyzzkH
+        MqbUeBhA5V6xF2sVKfguup3Xkv8oFCWeGLhvkPOR7B4ozQ1Uy0//IQHkVDuyJnMvVpEgxi
+        7nhXTiSGPWqP6ehkHpwVShjO0Z8ibIKW+tYDamZE5OUAJsm0rSG3A6bb844H3cQPBH2I/q
+        6MB+FaDz+MORPCgVsQ2CkQylegh6DWWvwJXw9WorTmtyEEWOR3i3pO+RYY/ueA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1651681718;
+        s=2020e; t=1651690031;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=C1nhnUez3WutfniW4uOZh+IkzgM6frf+TCfMadffiaI=;
-        b=mLPJHLekMIXXwRv5w16tInYRDcfqGujR5SSUdl25tP+RPYcRm9TWjZbWWWNu3Z6uLy/ku9
-        A/FxUaSBmUHA7WDA==
-From:   "tip-bot2 for Randy Dunlap" <tip-bot2@linutronix.de>
+        bh=zu5TSATSvCYYaY7Kn2lIzDaMbq7oFFxVQXH2iz93NOU=;
+        b=L5OJ4IGTIFitrOyK09kyp0h2o+yt356Sl4YooRa8tmSRXqgNNxb9i5nLP7CslxZ1ThAUg4
+        ViZT4yarJJ9II4Bg==
+From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/misc] x86/mm: Cleanup the control_va_addr_alignment()
- __setup handler
-Cc:     Igor Zhbanov <i.zhbanov@omprussia.ru>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Borislav Petkov <bp@suse.de>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <64644a2f-4a20-bab3-1e15-3b2cdd0defe3@omprussia.ru>
-References: <64644a2f-4a20-bab3-1e15-3b2cdd0defe3@omprussia.ru>
+Subject: [tip: x86/urgent] MAINTAINERS: Update Josh Poimboeuf's email address
+Cc:     Josh Poimboeuf <jpoimboe@redhat.com>, Borislav Petkov <bp@suse.de>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <1abc3de4b00dc6f915ac975a2ec29ed545d96dc4.1651687652.git.jpoimboe@redhat.com>
+References: <1abc3de4b00dc6f915ac975a2ec29ed545d96dc4.1651687652.git.jpoimboe@redhat.com>
 MIME-Version: 1.0
-Message-ID: <165168171687.4207.3726639368956620183.tip-bot2@tip-bot2>
+Message-ID: <165169003042.4207.8052984123869654429.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,60 +64,72 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/misc branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     1ef64b1e89e6d4018da46e08ffc32779a31160c7
-Gitweb:        https://git.kernel.org/tip/1ef64b1e89e6d4018da46e08ffc32779a31160c7
-Author:        Randy Dunlap <rdunlap@infradead.org>
-AuthorDate:    Mon, 14 Mar 2022 17:10:45 -07:00
+Commit-ID:     770fb0942c338545f93a584342b64848cff31efe
+Gitweb:        https://git.kernel.org/tip/770fb0942c338545f93a584342b64848cff31efe
+Author:        Josh Poimboeuf <jpoimboe@redhat.com>
+AuthorDate:    Wed, 04 May 2022 11:07:45 -07:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Wed, 04 May 2022 18:20:42 +02:00
+CommitterDate: Wed, 04 May 2022 20:43:08 +02:00
 
-x86/mm: Cleanup the control_va_addr_alignment() __setup handler
+MAINTAINERS: Update Josh Poimboeuf's email address
 
-Clean up control_va_addr_alignment():
+Change to my kernel.org email address.
 
-a. Make '=' required instead of optional (as documented).
-b. Print a warning if an invalid option value is used.
-c. Return 1 from the __setup handler when an invalid option value is
-   used. This prevents the kernel from polluting init's (limited)
-   environment space with the entire string.
-
-Fixes: dfb09f9b7ab0 ("x86, amd: Avoid cache aliasing penalties on AMD family 15h")
-Reported-by: Igor Zhbanov <i.zhbanov@omprussia.ru>
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lore.kernel.org/r/64644a2f-4a20-bab3-1e15-3b2cdd0defe3@omprussia.ru
-Link: https://lore.kernel.org/r/20220315001045.7680-1-rdunlap@infradead.org
+Link: https://lore.kernel.org/r/1abc3de4b00dc6f915ac975a2ec29ed545d96dc4.1651687652.git.jpoimboe@redhat.com
 ---
- arch/x86/kernel/sys_x86_64.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ MAINTAINERS | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/kernel/sys_x86_64.c b/arch/x86/kernel/sys_x86_64.c
-index 660b788..8cc653f 100644
---- a/arch/x86/kernel/sys_x86_64.c
-+++ b/arch/x86/kernel/sys_x86_64.c
-@@ -68,9 +68,6 @@ static int __init control_va_addr_alignment(char *str)
- 	if (*str == 0)
- 		return 1;
+diff --git a/MAINTAINERS b/MAINTAINERS
+index edc96cd..1e1a226 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -7499,7 +7499,7 @@ F:	Documentation/hwmon/f71805f.rst
+ F:	drivers/hwmon/f71805f.c
  
--	if (*str == '=')
--		str++;
--
- 	if (!strcmp(str, "32"))
- 		va_align.flags = ALIGN_VA_32;
- 	else if (!strcmp(str, "64"))
-@@ -80,11 +77,11 @@ static int __init control_va_addr_alignment(char *str)
- 	else if (!strcmp(str, "on"))
- 		va_align.flags = ALIGN_VA_32 | ALIGN_VA_64;
- 	else
--		return 0;
-+		pr_warn("invalid option value: 'align_va_addr=%s'\n", str);
+ FADDR2LINE
+-M:	Josh Poimboeuf <jpoimboe@redhat.com>
++M:	Josh Poimboeuf <jpoimboe@kernel.org>
+ S:	Maintained
+ F:	scripts/faddr2line
  
- 	return 1;
- }
--__setup("align_va_addr", control_va_addr_alignment);
-+__setup("align_va_addr=", control_va_addr_alignment);
+@@ -11348,7 +11348,7 @@ F:	drivers/mmc/host/litex_mmc.c
+ N:	litex
  
- SYSCALL_DEFINE6(mmap, unsigned long, addr, unsigned long, len,
- 		unsigned long, prot, unsigned long, flags,
+ LIVE PATCHING
+-M:	Josh Poimboeuf <jpoimboe@redhat.com>
++M:	Josh Poimboeuf <jpoimboe@kernel.org>
+ M:	Jiri Kosina <jikos@kernel.org>
+ M:	Miroslav Benes <mbenes@suse.cz>
+ M:	Petr Mladek <pmladek@suse.com>
+@@ -14224,7 +14224,7 @@ F:	lib/objagg.c
+ F:	lib/test_objagg.c
+ 
+ OBJTOOL
+-M:	Josh Poimboeuf <jpoimboe@redhat.com>
++M:	Josh Poimboeuf <jpoimboe@kernel.org>
+ M:	Peter Zijlstra <peterz@infradead.org>
+ S:	Supported
+ F:	tools/objtool/
+@@ -18792,7 +18792,7 @@ F:	include/dt-bindings/reset/starfive-jh7100.h
+ 
+ STATIC BRANCH/CALL
+ M:	Peter Zijlstra <peterz@infradead.org>
+-M:	Josh Poimboeuf <jpoimboe@redhat.com>
++M:	Josh Poimboeuf <jpoimboe@kernel.org>
+ M:	Jason Baron <jbaron@akamai.com>
+ R:	Steven Rostedt <rostedt@goodmis.org>
+ R:	Ard Biesheuvel <ardb@kernel.org>
+@@ -21444,7 +21444,7 @@ F:	arch/x86/kernel/apic/x2apic_uv_x.c
+ F:	arch/x86/platform/uv/
+ 
+ X86 STACK UNWINDING
+-M:	Josh Poimboeuf <jpoimboe@redhat.com>
++M:	Josh Poimboeuf <jpoimboe@kernel.org>
+ M:	Peter Zijlstra <peterz@infradead.org>
+ S:	Supported
+ F:	arch/x86/include/asm/unwind*.h
