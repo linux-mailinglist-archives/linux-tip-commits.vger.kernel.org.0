@@ -2,54 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 69FAB51AD3F
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  4 May 2022 20:47:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 50BFE51B4CA
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  5 May 2022 02:43:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377282AbiEDSuv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 4 May 2022 14:50:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49146 "EHLO
+        id S232801AbiEEAqk (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 4 May 2022 20:46:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36278 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377285AbiEDSuv (ORCPT
+        with ESMTP id S232772AbiEEAqj (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 4 May 2022 14:50:51 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BB6D165B1;
-        Wed,  4 May 2022 11:47:13 -0700 (PDT)
-Date:   Wed, 04 May 2022 18:47:10 -0000
+        Wed, 4 May 2022 20:46:39 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 426311DA49;
+        Wed,  4 May 2022 17:43:01 -0700 (PDT)
+Date:   Thu, 05 May 2022 00:42:57 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1651690031;
+        s=2020; t=1651711378;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=zu5TSATSvCYYaY7Kn2lIzDaMbq7oFFxVQXH2iz93NOU=;
-        b=FT9XUPQSXNPAliWIwJWVv3GAtt+7uGyTD+RdDKElLRAS96W/MU3t3q/XtnJ1Rv1Y7OmGNb
-        IqZ0t3MxLwHFcLSTpM+JNNEVW1QIPj4HF7XQ+Zwfrl7UmAq/UqnVi6M3PK7Ol1wUvyzzkH
-        MqbUeBhA5V6xF2sVKfguup3Xkv8oFCWeGLhvkPOR7B4ozQ1Uy0//IQHkVDuyJnMvVpEgxi
-        7nhXTiSGPWqP6ehkHpwVShjO0Z8ibIKW+tYDamZE5OUAJsm0rSG3A6bb844H3cQPBH2I/q
-        6MB+FaDz+MORPCgVsQ2CkQylegh6DWWvwJXw9WorTmtyEEWOR3i3pO+RYY/ueA==
+        bh=eMX5uveEfhMAmowLmNC4/0zMLBt146piZZ8X4FSp4h0=;
+        b=c6w66Oc7AiYeK4pCe8crjP9DAF1hwniGOH88izGxNVuGbgiKgUnCq1A6SLrDSZjSIq1Ygm
+        n/taVe12Zr4B7zwx5DvpzKRjXC7gEeI/hD2FkifD814nFQczxqacrXMXnDA3k7DXNcrVCm
+        UlvnSUkI9Ln8cS/ArrJihEicGziI+k2febY7d0UmTn7BxfFI/JtF0kqfrzS0uteLR6qIgE
+        ctbAo0frQE1VST5drei3/Q5AQVvRF4qRubVbZvcoj6/JAQOZn+673bx9vKITEj8GVpN6Rm
+        +ed/SC8Z7/uE30payJvWsD/FXnMaLjW6Kg+SC72YMfJD4izruah2w7FKZ1d1BQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1651690031;
+        s=2020e; t=1651711378;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=zu5TSATSvCYYaY7Kn2lIzDaMbq7oFFxVQXH2iz93NOU=;
-        b=L5OJ4IGTIFitrOyK09kyp0h2o+yt356Sl4YooRa8tmSRXqgNNxb9i5nLP7CslxZ1ThAUg4
-        ViZT4yarJJ9II4Bg==
-From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
+        bh=eMX5uveEfhMAmowLmNC4/0zMLBt146piZZ8X4FSp4h0=;
+        b=EBrHlIq7f9XfFjPS1klMuQdO4242KUDPnzXU+908D960nVlAB6B4Rf5pHJd7icKxqYxnDV
+        v6Q1jL2vh3LtP/Dw==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] MAINTAINERS: Update Josh Poimboeuf's email address
-Cc:     Josh Poimboeuf <jpoimboe@redhat.com>, Borislav Petkov <bp@suse.de>,
+Subject: [tip: x86/urgent] x86/fpu: Prevent FPU state corruption
+Cc:     Filipe Manana <fdmanana@suse.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Borislav Petkov <bp@suse.de>, stable@vger.kernel.org,
         x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <1abc3de4b00dc6f915ac975a2ec29ed545d96dc4.1651687652.git.jpoimboe@redhat.com>
-References: <1abc3de4b00dc6f915ac975a2ec29ed545d96dc4.1651687652.git.jpoimboe@redhat.com>
+In-Reply-To: <20220501193102.588689270@linutronix.de>
+References: <20220501193102.588689270@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <165169003042.4207.8052984123869654429.tip-bot2@tip-bot2>
+Message-ID: <165171137765.4207.5136455788055472062.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,70 +68,145 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     770fb0942c338545f93a584342b64848cff31efe
-Gitweb:        https://git.kernel.org/tip/770fb0942c338545f93a584342b64848cff31efe
-Author:        Josh Poimboeuf <jpoimboe@redhat.com>
-AuthorDate:    Wed, 04 May 2022 11:07:45 -07:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Wed, 04 May 2022 20:43:08 +02:00
+Commit-ID:     59f5ede3bc0f00eb856425f636dab0c10feb06d8
+Gitweb:        https://git.kernel.org/tip/59f5ede3bc0f00eb856425f636dab0c10feb06d8
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Sun, 01 May 2022 21:31:43 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Thu, 05 May 2022 02:40:19 +02:00
 
-MAINTAINERS: Update Josh Poimboeuf's email address
+x86/fpu: Prevent FPU state corruption
 
-Change to my kernel.org email address.
+The FPU usage related to task FPU management is either protected by
+disabling interrupts (switch_to, return to user) or via fpregs_lock() which
+is a wrapper around local_bh_disable(). When kernel code wants to use the
+FPU then it has to check whether it is possible by calling irq_fpu_usable().
 
-Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lore.kernel.org/r/1abc3de4b00dc6f915ac975a2ec29ed545d96dc4.1651687652.git.jpoimboe@redhat.com
+But the condition in irq_fpu_usable() is wrong. It allows FPU to be used
+when:
+
+   !in_interrupt() || interrupted_user_mode() || interrupted_kernel_fpu_idle()
+
+The latter is checking whether some other context already uses FPU in the
+kernel, but if that's not the case then it allows FPU to be used
+unconditionally even if the calling context interrupted a fpregs_lock()
+critical region. If that happens then the FPU state of the interrupted
+context becomes corrupted.
+
+Allow in kernel FPU usage only when no other context has in kernel FPU
+usage and either the calling context is not hard interrupt context or the
+hard interrupt did not interrupt a local bottomhalf disabled region.
+
+It's hard to find a proper Fixes tag as the condition was broken in one way
+or the other for a very long time and the eager/lazy FPU changes caused a
+lot of churn. Picked something remotely connected from the history.
+
+This survived undetected for quite some time as FPU usage in interrupt
+context is rare, but the recent changes to the random code unearthed it at
+least on a kernel which had FPU debugging enabled. There is probably a
+higher rate of silent corruption as not all issues can be detected by the
+FPU debugging code. This will be addressed in a subsequent change.
+
+Fixes: 5d2bd7009f30 ("x86, fpu: decouple non-lazy/eager fpu restore from xsave")
+Reported-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: Borislav Petkov <bp@suse.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20220501193102.588689270@linutronix.de
+
 ---
- MAINTAINERS | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ arch/x86/kernel/fpu/core.c | 67 ++++++++++++++-----------------------
+ 1 file changed, 26 insertions(+), 41 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index edc96cd..1e1a226 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -7499,7 +7499,7 @@ F:	Documentation/hwmon/f71805f.rst
- F:	drivers/hwmon/f71805f.c
+diff --git a/arch/x86/kernel/fpu/core.c b/arch/x86/kernel/fpu/core.c
+index c049561..e28ab0e 100644
+--- a/arch/x86/kernel/fpu/core.c
++++ b/arch/x86/kernel/fpu/core.c
+@@ -41,17 +41,7 @@ struct fpu_state_config fpu_user_cfg __ro_after_init;
+  */
+ struct fpstate init_fpstate __ro_after_init;
  
- FADDR2LINE
--M:	Josh Poimboeuf <jpoimboe@redhat.com>
-+M:	Josh Poimboeuf <jpoimboe@kernel.org>
- S:	Maintained
- F:	scripts/faddr2line
+-/*
+- * Track whether the kernel is using the FPU state
+- * currently.
+- *
+- * This flag is used:
+- *
+- *   - by IRQ context code to potentially use the FPU
+- *     if it's unused.
+- *
+- *   - to debug kernel_fpu_begin()/end() correctness
+- */
++/* Track in-kernel FPU usage */
+ static DEFINE_PER_CPU(bool, in_kernel_fpu);
  
-@@ -11348,7 +11348,7 @@ F:	drivers/mmc/host/litex_mmc.c
- N:	litex
+ /*
+@@ -59,42 +49,37 @@ static DEFINE_PER_CPU(bool, in_kernel_fpu);
+  */
+ DEFINE_PER_CPU(struct fpu *, fpu_fpregs_owner_ctx);
  
- LIVE PATCHING
--M:	Josh Poimboeuf <jpoimboe@redhat.com>
-+M:	Josh Poimboeuf <jpoimboe@kernel.org>
- M:	Jiri Kosina <jikos@kernel.org>
- M:	Miroslav Benes <mbenes@suse.cz>
- M:	Petr Mladek <pmladek@suse.com>
-@@ -14224,7 +14224,7 @@ F:	lib/objagg.c
- F:	lib/test_objagg.c
+-static bool kernel_fpu_disabled(void)
+-{
+-	return this_cpu_read(in_kernel_fpu);
+-}
+-
+-static bool interrupted_kernel_fpu_idle(void)
+-{
+-	return !kernel_fpu_disabled();
+-}
+-
+-/*
+- * Were we in user mode (or vm86 mode) when we were
+- * interrupted?
+- *
+- * Doing kernel_fpu_begin/end() is ok if we are running
+- * in an interrupt context from user mode - we'll just
+- * save the FPU state as required.
+- */
+-static bool interrupted_user_mode(void)
+-{
+-	struct pt_regs *regs = get_irq_regs();
+-	return regs && user_mode(regs);
+-}
+-
+ /*
+  * Can we use the FPU in kernel mode with the
+  * whole "kernel_fpu_begin/end()" sequence?
+- *
+- * It's always ok in process context (ie "not interrupt")
+- * but it is sometimes ok even from an irq.
+  */
+ bool irq_fpu_usable(void)
+ {
+-	return !in_interrupt() ||
+-		interrupted_user_mode() ||
+-		interrupted_kernel_fpu_idle();
++	if (WARN_ON_ONCE(in_nmi()))
++		return false;
++
++	/* In kernel FPU usage already active? */
++	if (this_cpu_read(in_kernel_fpu))
++		return false;
++
++	/*
++	 * When not in NMI or hard interrupt context, FPU can be used in:
++	 *
++	 * - Task context except from within fpregs_lock()'ed critical
++	 *   regions.
++	 *
++	 * - Soft interrupt processing context which cannot happen
++	 *   while in a fpregs_lock()'ed critical region.
++	 */
++	if (!in_hardirq())
++		return true;
++
++	/*
++	 * In hard interrupt context it's safe when soft interrupts
++	 * are enabled, which means the interrupt did not hit in
++	 * a fpregs_lock()'ed critical region.
++	 */
++	return !softirq_count();
+ }
+ EXPORT_SYMBOL(irq_fpu_usable);
  
- OBJTOOL
--M:	Josh Poimboeuf <jpoimboe@redhat.com>
-+M:	Josh Poimboeuf <jpoimboe@kernel.org>
- M:	Peter Zijlstra <peterz@infradead.org>
- S:	Supported
- F:	tools/objtool/
-@@ -18792,7 +18792,7 @@ F:	include/dt-bindings/reset/starfive-jh7100.h
- 
- STATIC BRANCH/CALL
- M:	Peter Zijlstra <peterz@infradead.org>
--M:	Josh Poimboeuf <jpoimboe@redhat.com>
-+M:	Josh Poimboeuf <jpoimboe@kernel.org>
- M:	Jason Baron <jbaron@akamai.com>
- R:	Steven Rostedt <rostedt@goodmis.org>
- R:	Ard Biesheuvel <ardb@kernel.org>
-@@ -21444,7 +21444,7 @@ F:	arch/x86/kernel/apic/x2apic_uv_x.c
- F:	arch/x86/platform/uv/
- 
- X86 STACK UNWINDING
--M:	Josh Poimboeuf <jpoimboe@redhat.com>
-+M:	Josh Poimboeuf <jpoimboe@kernel.org>
- M:	Peter Zijlstra <peterz@infradead.org>
- S:	Supported
- F:	arch/x86/include/asm/unwind*.h
