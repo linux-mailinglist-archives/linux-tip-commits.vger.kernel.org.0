@@ -2,56 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 50BFE51B4CA
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  5 May 2022 02:43:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 621C051BCB2
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  5 May 2022 12:01:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232801AbiEEAqk (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 4 May 2022 20:46:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36278 "EHLO
+        id S1345313AbiEEKFT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 5 May 2022 06:05:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46382 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232772AbiEEAqj (ORCPT
+        with ESMTP id S229956AbiEEKFR (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 4 May 2022 20:46:39 -0400
+        Thu, 5 May 2022 06:05:17 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 426311DA49;
-        Wed,  4 May 2022 17:43:01 -0700 (PDT)
-Date:   Thu, 05 May 2022 00:42:57 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 853BE3FBE6;
+        Thu,  5 May 2022 03:01:37 -0700 (PDT)
+Date:   Thu, 05 May 2022 10:01:34 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1651711378;
+        s=2020; t=1651744895;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=eMX5uveEfhMAmowLmNC4/0zMLBt146piZZ8X4FSp4h0=;
-        b=c6w66Oc7AiYeK4pCe8crjP9DAF1hwniGOH88izGxNVuGbgiKgUnCq1A6SLrDSZjSIq1Ygm
-        n/taVe12Zr4B7zwx5DvpzKRjXC7gEeI/hD2FkifD814nFQczxqacrXMXnDA3k7DXNcrVCm
-        UlvnSUkI9Ln8cS/ArrJihEicGziI+k2febY7d0UmTn7BxfFI/JtF0kqfrzS0uteLR6qIgE
-        ctbAo0frQE1VST5drei3/Q5AQVvRF4qRubVbZvcoj6/JAQOZn+673bx9vKITEj8GVpN6Rm
-        +ed/SC8Z7/uE30payJvWsD/FXnMaLjW6Kg+SC72YMfJD4izruah2w7FKZ1d1BQ==
+        bh=Z4GOj4AlaUGIahgAX8O+PASWinkQN7XkOfhPgLMO7ZY=;
+        b=F/AAhowoiki3Y7LOBUdCOa2aLBUPgmZLQt196f2M2W7RN5crt3iNQt4OM4vlIySx7er66t
+        3uZqNQiBtK2p2tefemFi6WoWYPCsDzE3BHste1FhpDcRS67gw7EYylqvgbxKQ/IE3uTIOU
+        SXprWChiMNyMV4+ksxS6bR2Cq1DKVEeHcnEe29+Deh8SWaIBUBXo0S8mOTmErRghp5QYLl
+        nIARhxunO3ATGRFh1qKuYi4nxqePRhsMbBm/FqaXZuj2hmv3vPsQI7y1OQI4/fskUWD0Ug
+        u54+y5MAptKM+HacxKBveHRN3SY87BnSgtrHKFchX0lcaN2aAK8ghZ6bSlc+Cw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1651711378;
+        s=2020e; t=1651744895;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=eMX5uveEfhMAmowLmNC4/0zMLBt146piZZ8X4FSp4h0=;
-        b=EBrHlIq7f9XfFjPS1klMuQdO4242KUDPnzXU+908D960nVlAB6B4Rf5pHJd7icKxqYxnDV
-        v6Q1jL2vh3LtP/Dw==
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+        bh=Z4GOj4AlaUGIahgAX8O+PASWinkQN7XkOfhPgLMO7ZY=;
+        b=u7rkUkdE/5wdsEOifSbGd5duU2+TP/YlIoellLuMjLtaRUTDEvfyiIQT6iKep0P4GMqBr3
+        CM8xuFlhYLk1U/Aw==
+From:   "tip-bot2 for Thomas Pfaff" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/fpu: Prevent FPU state corruption
-Cc:     Filipe Manana <fdmanana@suse.com>,
+Subject: [tip: irq/urgent] genirq: Synchronize interrupt thread startup
+Cc:     Thomas Pfaff <tpfaff@pcs.com>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Borislav Petkov <bp@suse.de>, stable@vger.kernel.org,
+        Marc Zyngier <maz@kernel.org>, stable@vger.kernel.org,
         x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20220501193102.588689270@linutronix.de>
-References: <20220501193102.588689270@linutronix.de>
+In-Reply-To: <552fe7b4-9224-b183-bb87-a8f36d335690@pcs.com>
+References: <552fe7b4-9224-b183-bb87-a8f36d335690@pcs.com>
 MIME-Version: 1.0
-Message-ID: <165171137765.4207.5136455788055472062.tip-bot2@tip-bot2>
+Message-ID: <165174489401.4207.10702670782105619927.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,147 +66,183 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the irq/urgent branch of tip:
 
-Commit-ID:     59f5ede3bc0f00eb856425f636dab0c10feb06d8
-Gitweb:        https://git.kernel.org/tip/59f5ede3bc0f00eb856425f636dab0c10feb06d8
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Sun, 01 May 2022 21:31:43 +02:00
+Commit-ID:     8707898e22fd665bc1d7b18b809be4b56ce25bdd
+Gitweb:        https://git.kernel.org/tip/8707898e22fd665bc1d7b18b809be4b56ce25bdd
+Author:        Thomas Pfaff <tpfaff@pcs.com>
+AuthorDate:    Mon, 02 May 2022 13:28:29 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 05 May 2022 02:40:19 +02:00
+CommitterDate: Thu, 05 May 2022 11:54:05 +02:00
 
-x86/fpu: Prevent FPU state corruption
+genirq: Synchronize interrupt thread startup
 
-The FPU usage related to task FPU management is either protected by
-disabling interrupts (switch_to, return to user) or via fpregs_lock() which
-is a wrapper around local_bh_disable(). When kernel code wants to use the
-FPU then it has to check whether it is possible by calling irq_fpu_usable().
+A kernel hang can be observed when running setserial in a loop on a kernel
+with force threaded interrupts. The sequence of events is:
 
-But the condition in irq_fpu_usable() is wrong. It allows FPU to be used
-when:
+   setserial
+     open("/dev/ttyXXX")
+       request_irq()
+     do_stuff()
+      -> serial interrupt
+         -> wake(irq_thread)
+	      desc->threads_active++;
+     close()
+       free_irq()
+         kthread_stop(irq_thread)
+     synchronize_irq() <- hangs because desc->threads_active != 0
 
-   !in_interrupt() || interrupted_user_mode() || interrupted_kernel_fpu_idle()
+The thread is created in request_irq() and woken up, but does not get on a
+CPU to reach the actual thread function, which would handle the pending
+wake-up. kthread_stop() sets the should stop condition which makes the
+thread immediately exit, which in turn leaves the stale threads_active
+count around.
 
-The latter is checking whether some other context already uses FPU in the
-kernel, but if that's not the case then it allows FPU to be used
-unconditionally even if the calling context interrupted a fpregs_lock()
-critical region. If that happens then the FPU state of the interrupted
-context becomes corrupted.
+This problem was introduced with commit 519cc8652b3a, which addressed a
+interrupt sharing issue in the PCIe code.
 
-Allow in kernel FPU usage only when no other context has in kernel FPU
-usage and either the calling context is not hard interrupt context or the
-hard interrupt did not interrupt a local bottomhalf disabled region.
+Before that commit free_irq() invoked synchronize_irq(), which waits for
+the hard interrupt handler and also for associated threads to complete.
 
-It's hard to find a proper Fixes tag as the condition was broken in one way
-or the other for a very long time and the eager/lazy FPU changes caused a
-lot of churn. Picked something remotely connected from the history.
+To address the PCIe issue synchronize_irq() was replaced with
+__synchronize_hardirq(), which only waits for the hard interrupt handler to
+complete, but not for threaded handlers.
 
-This survived undetected for quite some time as FPU usage in interrupt
-context is rare, but the recent changes to the random code unearthed it at
-least on a kernel which had FPU debugging enabled. There is probably a
-higher rate of silent corruption as not all issues can be detected by the
-FPU debugging code. This will be addressed in a subsequent change.
+This was done under the assumption, that the interrupt thread already
+reached the thread function and waits for a wake-up, which is guaranteed to
+be handled before acting on the stop condition. The problematic case, that
+the thread would not reach the thread function, was obviously overlooked.
 
-Fixes: 5d2bd7009f30 ("x86, fpu: decouple non-lazy/eager fpu restore from xsave")
-Reported-by: Filipe Manana <fdmanana@suse.com>
+Make sure that the interrupt thread is really started and reaches
+thread_fn() before returning from __setup_irq().
+
+This utilizes the existing wait queue in the interrupt descriptor. The
+wait queue is unused for non-shared interrupts. For shared interrupts the
+usage might cause a spurious wake-up of a waiter in synchronize_irq() or the
+completion of a threaded handler might cause a spurious wake-up of the
+waiter for the ready flag. Both are harmless and have no functional impact.
+
+[ tglx: Amended changelog ]
+
+Fixes: 519cc8652b3a ("genirq: Synchronize only with single thread on free_irq()")
+Signed-off-by: Thomas Pfaff <tpfaff@pcs.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: Borislav Petkov <bp@suse.de>
+Reviewed-by: Marc Zyngier <maz@kernel.org>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20220501193102.588689270@linutronix.de
-
+Link: https://lore.kernel.org/r/552fe7b4-9224-b183-bb87-a8f36d335690@pcs.com
 ---
- arch/x86/kernel/fpu/core.c | 67 ++++++++++++++-----------------------
- 1 file changed, 26 insertions(+), 41 deletions(-)
+ kernel/irq/internals.h |  2 ++
+ kernel/irq/irqdesc.c   |  2 ++
+ kernel/irq/manage.c    | 39 +++++++++++++++++++++++++++++----------
+ 3 files changed, 33 insertions(+), 10 deletions(-)
 
-diff --git a/arch/x86/kernel/fpu/core.c b/arch/x86/kernel/fpu/core.c
-index c049561..e28ab0e 100644
---- a/arch/x86/kernel/fpu/core.c
-+++ b/arch/x86/kernel/fpu/core.c
-@@ -41,17 +41,7 @@ struct fpu_state_config fpu_user_cfg __ro_after_init;
+diff --git a/kernel/irq/internals.h b/kernel/irq/internals.h
+index 99cbdf5..f09c603 100644
+--- a/kernel/irq/internals.h
++++ b/kernel/irq/internals.h
+@@ -29,12 +29,14 @@ extern struct irqaction chained_action;
+  * IRQTF_WARNED    - warning "IRQ_WAKE_THREAD w/o thread_fn" has been printed
+  * IRQTF_AFFINITY  - irq thread is requested to adjust affinity
+  * IRQTF_FORCED_THREAD  - irq action is force threaded
++ * IRQTF_READY     - signals that irq thread is ready
   */
- struct fpstate init_fpstate __ro_after_init;
- 
--/*
-- * Track whether the kernel is using the FPU state
-- * currently.
-- *
-- * This flag is used:
-- *
-- *   - by IRQ context code to potentially use the FPU
-- *     if it's unused.
-- *
-- *   - to debug kernel_fpu_begin()/end() correctness
-- */
-+/* Track in-kernel FPU usage */
- static DEFINE_PER_CPU(bool, in_kernel_fpu);
+ enum {
+ 	IRQTF_RUNTHREAD,
+ 	IRQTF_WARNED,
+ 	IRQTF_AFFINITY,
+ 	IRQTF_FORCED_THREAD,
++	IRQTF_READY,
+ };
  
  /*
-@@ -59,42 +49,37 @@ static DEFINE_PER_CPU(bool, in_kernel_fpu);
-  */
- DEFINE_PER_CPU(struct fpu *, fpu_fpregs_owner_ctx);
+diff --git a/kernel/irq/irqdesc.c b/kernel/irq/irqdesc.c
+index 939d21c..0099b87 100644
+--- a/kernel/irq/irqdesc.c
++++ b/kernel/irq/irqdesc.c
+@@ -407,6 +407,7 @@ static struct irq_desc *alloc_desc(int irq, int node, unsigned int flags,
+ 	lockdep_set_class(&desc->lock, &irq_desc_lock_class);
+ 	mutex_init(&desc->request_mutex);
+ 	init_rcu_head(&desc->rcu);
++	init_waitqueue_head(&desc->wait_for_threads);
  
--static bool kernel_fpu_disabled(void)
--{
--	return this_cpu_read(in_kernel_fpu);
--}
--
--static bool interrupted_kernel_fpu_idle(void)
--{
--	return !kernel_fpu_disabled();
--}
--
--/*
-- * Were we in user mode (or vm86 mode) when we were
-- * interrupted?
-- *
-- * Doing kernel_fpu_begin/end() is ok if we are running
-- * in an interrupt context from user mode - we'll just
-- * save the FPU state as required.
-- */
--static bool interrupted_user_mode(void)
--{
--	struct pt_regs *regs = get_irq_regs();
--	return regs && user_mode(regs);
--}
--
- /*
-  * Can we use the FPU in kernel mode with the
-  * whole "kernel_fpu_begin/end()" sequence?
-- *
-- * It's always ok in process context (ie "not interrupt")
-- * but it is sometimes ok even from an irq.
-  */
- bool irq_fpu_usable(void)
- {
--	return !in_interrupt() ||
--		interrupted_user_mode() ||
--		interrupted_kernel_fpu_idle();
-+	if (WARN_ON_ONCE(in_nmi()))
-+		return false;
-+
-+	/* In kernel FPU usage already active? */
-+	if (this_cpu_read(in_kernel_fpu))
-+		return false;
-+
-+	/*
-+	 * When not in NMI or hard interrupt context, FPU can be used in:
-+	 *
-+	 * - Task context except from within fpregs_lock()'ed critical
-+	 *   regions.
-+	 *
-+	 * - Soft interrupt processing context which cannot happen
-+	 *   while in a fpregs_lock()'ed critical region.
-+	 */
-+	if (!in_hardirq())
-+		return true;
-+
-+	/*
-+	 * In hard interrupt context it's safe when soft interrupts
-+	 * are enabled, which means the interrupt did not hit in
-+	 * a fpregs_lock()'ed critical region.
-+	 */
-+	return !softirq_count();
+ 	desc_set_defaults(irq, desc, node, affinity, owner);
+ 	irqd_set(&desc->irq_data, flags);
+@@ -575,6 +576,7 @@ int __init early_irq_init(void)
+ 		raw_spin_lock_init(&desc[i].lock);
+ 		lockdep_set_class(&desc[i].lock, &irq_desc_lock_class);
+ 		mutex_init(&desc[i].request_mutex);
++		init_waitqueue_head(&desc[i].wait_for_threads);
+ 		desc_set_defaults(i, &desc[i], node, NULL, NULL);
+ 	}
+ 	return arch_early_irq_init();
+diff --git a/kernel/irq/manage.c b/kernel/irq/manage.c
+index c03f71d..e3e245a 100644
+--- a/kernel/irq/manage.c
++++ b/kernel/irq/manage.c
+@@ -1249,6 +1249,31 @@ static void irq_wake_secondary(struct irq_desc *desc, struct irqaction *action)
  }
- EXPORT_SYMBOL(irq_fpu_usable);
  
+ /*
++ * Internal function to notify that a interrupt thread is ready.
++ */
++static void irq_thread_set_ready(struct irq_desc *desc,
++				 struct irqaction *action)
++{
++	set_bit(IRQTF_READY, &action->thread_flags);
++	wake_up(&desc->wait_for_threads);
++}
++
++/*
++ * Internal function to wake up a interrupt thread and wait until it is
++ * ready.
++ */
++static void wake_up_and_wait_for_irq_thread_ready(struct irq_desc *desc,
++						  struct irqaction *action)
++{
++	if (!action || !action->thread)
++		return;
++
++	wake_up_process(action->thread);
++	wait_event(desc->wait_for_threads,
++		   test_bit(IRQTF_READY, &action->thread_flags));
++}
++
++/*
+  * Interrupt handler thread
+  */
+ static int irq_thread(void *data)
+@@ -1259,6 +1284,8 @@ static int irq_thread(void *data)
+ 	irqreturn_t (*handler_fn)(struct irq_desc *desc,
+ 			struct irqaction *action);
+ 
++	irq_thread_set_ready(desc, action);
++
+ 	sched_set_fifo(current);
+ 
+ 	if (force_irqthreads() && test_bit(IRQTF_FORCED_THREAD,
+@@ -1683,8 +1710,6 @@ __setup_irq(unsigned int irq, struct irq_desc *desc, struct irqaction *new)
+ 	}
+ 
+ 	if (!shared) {
+-		init_waitqueue_head(&desc->wait_for_threads);
+-
+ 		/* Setup the type (level, edge polarity) if configured: */
+ 		if (new->flags & IRQF_TRIGGER_MASK) {
+ 			ret = __irq_set_trigger(desc,
+@@ -1780,14 +1805,8 @@ __setup_irq(unsigned int irq, struct irq_desc *desc, struct irqaction *new)
+ 
+ 	irq_setup_timings(desc, new);
+ 
+-	/*
+-	 * Strictly no need to wake it up, but hung_task complains
+-	 * when no hard interrupt wakes the thread up.
+-	 */
+-	if (new->thread)
+-		wake_up_process(new->thread);
+-	if (new->secondary)
+-		wake_up_process(new->secondary->thread);
++	wake_up_and_wait_for_irq_thread_ready(desc, new);
++	wake_up_and_wait_for_irq_thread_ready(desc, new->secondary);
+ 
+ 	register_irq_proc(irq, desc);
+ 	new->dir = NULL;
