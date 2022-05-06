@@ -2,57 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8681A51DB90
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 May 2022 17:09:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D33251DB91
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 May 2022 17:09:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1386974AbiEFPMq (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 6 May 2022 11:12:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37444 "EHLO
+        id S1442687AbiEFPMr (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 6 May 2022 11:12:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37446 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344140AbiEFPMp (ORCPT
+        with ESMTP id S1384705AbiEFPMq (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 6 May 2022 11:12:45 -0400
+        Fri, 6 May 2022 11:12:46 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 738A76D186;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F18296D18A;
         Fri,  6 May 2022 08:09:02 -0700 (PDT)
-Date:   Fri, 06 May 2022 15:08:59 -0000
+Date:   Fri, 06 May 2022 15:09:00 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1651849740;
+        s=2020; t=1651849741;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=3/qm1Bgbdk5jyG9MGcq9sDGLukQ9iArUnuXSvy4egIc=;
-        b=m+Qo+sBTPmjaGhb60phEr1893lTkuNvKMQPAFBWm6TJL8yAs3mcM8WWtfWDLY5Gqx4Ekhu
-        crPkhjHPlNuiqkxq5sbfP6pH8pUHs0wvh6DWstpR9FmOhO++wH9lrUf1W6bU8SnZ0du/Fl
-        Wf9dCTncffObBQkQjEuTa59RvbDN3c5joVsbsDxqSoFx/zrVRLWie3TTjwerIcWf5/EEu1
-        N1pg/eJ+ZQS0sLQqWh0WVDo4JcCEmaYfRD903Hsy62mIHl9gUczc1/BtsHCN7BgcXb/1kz
-        2nq7NgM2vpTxm6PIS3LXdwiGHb4Uw8HvKUchSAqb1345o2p84Cj8c+cODeUe7A==
+        bh=U+sm8uFM7FbDhHcUsqKlMjO2L9gyZokheSMjZgtSp+U=;
+        b=wRDIGubs7mI17xtYSS0mLs6KbAY4NBlRX16QMExtxFuMtxX5tqPN6d/gr23dmn7cpZsDM9
+        p8oWgBOdibD9FQ3DXKiFDm/slsglbmyXTdoEh9oU2PXla2jA5KaRdoBWOggNivTGLUx+xI
+        K6QyQnjpBrTQvq0C+gs6ucAOrdXcQEE2kxmzNX/pf0nmGw6D5qONtDlPYC5aP49ua2nZ0R
+        WkB89YctWQkJUlP3gRj9C8F5UIlwhUCfNSlS0PiIUD8GpmYEXcdpqagxQGsNVcMDrhcGhi
+        08o+tH8UQOg90Iqx0ujyeVlO49MlxRetPV8xlpJ4+8kYcsOi+axVvpknuH/G0w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1651849740;
+        s=2020e; t=1651849741;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=3/qm1Bgbdk5jyG9MGcq9sDGLukQ9iArUnuXSvy4egIc=;
-        b=Idx+gpsAKxtbuSf+OATzFnsUzpu/J/U2nj9ZQDUuiq5GIo/CJu+Zy2hQ0tCbnp2qZ/jMjr
-        FQq3FD0YHtONTdCg==
+        bh=U+sm8uFM7FbDhHcUsqKlMjO2L9gyZokheSMjZgtSp+U=;
+        b=MmYkwjCGJ9cT+OwLFXVCugTA+GwUgYytuVR4CV54sXbBve/aZK/PVrFLiwiu/KgmPG92AU
+        yeZcEOV2l0XaCmAw==
 From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/asm] linkage: Fix issue with missing symbol size
-Cc:     Mark Rutland <mark.rutland@arm.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Borislav Petkov <bp@suse.de>,
-        Josh Poimboeuf <jpoimboe@redhat.com>, x86@kernel.org,
+Subject: [tip: x86/asm] x86/entry: Remove skip_r11rcx
+Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Borislav Petkov <bp@suse.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220506121631.437480085@infradead.org>
-References: <20220506121631.437480085@infradead.org>
+In-Reply-To: <20220506121631.365070674@infradead.org>
+References: <20220506121631.365070674@infradead.org>
 MIME-Version: 1.0
-Message-ID: <165184973961.4207.4733734646878690141.tip-bot2@tip-bot2>
+Message-ID: <165184974055.4207.14612212537129433465.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -69,80 +67,73 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/asm branch of tip:
 
-Commit-ID:     3ff5f7840979aa36d47a6a00694826c78d63bf3c
-Gitweb:        https://git.kernel.org/tip/3ff5f7840979aa36d47a6a00694826c78d63bf3c
+Commit-ID:     1b331eeea7b8676fc5dbdf80d0a07e41be226177
+Gitweb:        https://git.kernel.org/tip/1b331eeea7b8676fc5dbdf80d0a07e41be226177
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Fri, 06 May 2022 14:14:36 +02:00
+AuthorDate:    Fri, 06 May 2022 14:14:35 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Fri, 06 May 2022 15:59:39 +02:00
+CommitterDate: Fri, 06 May 2022 15:58:19 +02:00
 
-linkage: Fix issue with missing symbol size
+x86/entry: Remove skip_r11rcx
 
-Occasionally, typically when a function doesn't end with 'ret', an
-alias on that function will have 0 size.
+Yes, r11 and rcx have been restored previously, but since they're being
+popped anyway (into rsi) might as well pop them into their own regs --
+setting them to the value they already are.
 
-The difference between what GCC generates and our linkage magic, is
-that GCC doesn't appear to provide .size for the alias'ed symbol at
-all. And indeed, removing this directive cures the issue.
+Less magical code.
 
-Additionally, GCC also doesn't emit .type for alias symbols either, so
-also omit that.
-
-Fixes: e0891269a8c2 ("linkage: add SYM_FUNC_ALIAS{,_LOCAL,_WEAK}()")
-Suggested-by: Mark Rutland <mark.rutland@arm.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Mark Rutland <mark.rutland@arm.com>
-Acked-by: Josh Poimboeuf <jpoimboe@redhat.com>
-Link: https://lore.kernel.org/r/20220506121631.437480085@infradead.org
+Link: https://lore.kernel.org/r/20220506121631.365070674@infradead.org
 ---
- include/linux/linkage.h | 15 ++++++---------
- 1 file changed, 6 insertions(+), 9 deletions(-)
+ arch/x86/entry/calling.h  | 10 +---------
+ arch/x86/entry/entry_64.S |  3 +--
+ 2 files changed, 2 insertions(+), 11 deletions(-)
 
-diff --git a/include/linux/linkage.h b/include/linux/linkage.h
-index acb1ad2..1feab61 100644
---- a/include/linux/linkage.h
-+++ b/include/linux/linkage.h
-@@ -171,12 +171,9 @@
+diff --git a/arch/x86/entry/calling.h b/arch/x86/entry/calling.h
+index debbe94..a97cc78 100644
+--- a/arch/x86/entry/calling.h
++++ b/arch/x86/entry/calling.h
+@@ -120,27 +120,19 @@ For 32-bit we have the following conventions - kernel is built with
+ 	CLEAR_REGS
+ .endm
  
- /* SYM_ALIAS -- use only if you have to */
- #ifndef SYM_ALIAS
--#define SYM_ALIAS(alias, name, sym_type, linkage)			\
--	linkage(alias) ASM_NL						\
--	.set alias, name ASM_NL						\
--	.type alias sym_type ASM_NL					\
--	.set .L__sym_size_##alias, .L__sym_size_##name ASM_NL		\
--	.size alias, .L__sym_size_##alias
-+#define SYM_ALIAS(alias, name, linkage)			\
-+	linkage(alias) ASM_NL				\
-+	.set alias, name ASM_NL
- #endif
+-.macro POP_REGS pop_rdi=1 skip_r11rcx=0
++.macro POP_REGS pop_rdi=1
+ 	popq %r15
+ 	popq %r14
+ 	popq %r13
+ 	popq %r12
+ 	popq %rbp
+ 	popq %rbx
+-	.if \skip_r11rcx
+-	popq %rsi
+-	.else
+ 	popq %r11
+-	.endif
+ 	popq %r10
+ 	popq %r9
+ 	popq %r8
+ 	popq %rax
+-	.if \skip_r11rcx
+-	popq %rsi
+-	.else
+ 	popq %rcx
+-	.endif
+ 	popq %rdx
+ 	popq %rsi
+ 	.if \pop_rdi
+diff --git a/arch/x86/entry/entry_64.S b/arch/x86/entry/entry_64.S
+index 3121866..3a1e3f2 100644
+--- a/arch/x86/entry/entry_64.S
++++ b/arch/x86/entry/entry_64.S
+@@ -191,8 +191,7 @@ SYM_INNER_LABEL(entry_SYSCALL_64_after_hwframe, SYM_L_GLOBAL)
+ 	 * perf profiles. Nothing jumps here.
+ 	 */
+ syscall_return_via_sysret:
+-	/* rcx and r11 are already restored (see code above) */
+-	POP_REGS pop_rdi=0 skip_r11rcx=1
++	POP_REGS pop_rdi=0
  
- /* === code annotations === */
-@@ -261,7 +258,7 @@
-  */
- #ifndef SYM_FUNC_ALIAS
- #define SYM_FUNC_ALIAS(alias, name)					\
--	SYM_ALIAS(alias, name, SYM_T_FUNC, SYM_L_GLOBAL)
-+	SYM_ALIAS(alias, name, SYM_L_GLOBAL)
- #endif
- 
- /*
-@@ -269,7 +266,7 @@
-  */
- #ifndef SYM_FUNC_ALIAS_LOCAL
- #define SYM_FUNC_ALIAS_LOCAL(alias, name)				\
--	SYM_ALIAS(alias, name, SYM_T_FUNC, SYM_L_LOCAL)
-+	SYM_ALIAS(alias, name, SYM_L_LOCAL)
- #endif
- 
- /*
-@@ -277,7 +274,7 @@
-  */
- #ifndef SYM_FUNC_ALIAS_WEAK
- #define SYM_FUNC_ALIAS_WEAK(alias, name)				\
--	SYM_ALIAS(alias, name, SYM_T_FUNC, SYM_L_WEAK)
-+	SYM_ALIAS(alias, name, SYM_L_WEAK)
- #endif
- 
- /* SYM_CODE_START -- use for non-C (special) functions */
+ 	/*
+ 	 * Now all regs are restored except RSP and RDI.
