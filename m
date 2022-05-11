@@ -2,55 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F536523DAC
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 11 May 2022 21:39:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 20737523DD0
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 11 May 2022 21:47:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346960AbiEKTjw (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 11 May 2022 15:39:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37658 "EHLO
+        id S1347118AbiEKTrC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 11 May 2022 15:47:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59980 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233312AbiEKTjv (ORCPT
+        with ESMTP id S1347116AbiEKTrB (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 11 May 2022 15:39:51 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D110A219351;
-        Wed, 11 May 2022 12:39:50 -0700 (PDT)
-Date:   Wed, 11 May 2022 19:39:47 -0000
+        Wed, 11 May 2022 15:47:01 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 671273702A;
+        Wed, 11 May 2022 12:46:59 -0700 (PDT)
+Date:   Wed, 11 May 2022 19:46:56 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1652297988;
+        s=2020; t=1652298417;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=XWYeWYPGfGQOMPi48DV8c7ousN/h9sYcLxp8xQFypMU=;
-        b=bDSs1FyaPxRZKmQ6QC4YfIlk3HfjDP5TvzfknSZ6MJRnL6hutNeuRwvuFlSEm2bTSknEvy
-        gU0bp6vQ0hvzuZl9RtsSa8lC/gmQICtXfawa9I8/tyeUowrfH94W+HTJzpudK+zZto7zmq
-        pi27sA8w+tnYD2/87BztgGAKXDgVB78ps1UJADTFCfPkE9l/oZ7pAaw0V53/DzZlgtxApf
-        Gy3ajaoI7SW25YTmCTthiPZTeu+OY6dYMgJbaj3VC1wNrDV9zH5u8hBTSqIDxzGblZ5cEe
-        CcksRJLaRsgFZFLGwTe1RawncppNgDoxHBc6oEgih83oRX45EAQ2PMbQkIQsVQ==
+        bh=dOcs69Yu66kDZ9np1SfaNPgGsXdX4UAOF8Ra4sV6eLQ=;
+        b=iEXsQCTVevmDQph7qA2eOjHDP3MXmRyxdi92noB+JgjX8tnJpuA5bqqVDkHv/Dq6V7W7n8
+        kOgC6fMGWQrIiy9zRDInaR/OaRRLUbpYpKfZlTQy6q7SU9ujK5UAyxmmtOlB+sNzZqS+Hn
+        p1diYabL+131+uQdrPE1LX8fyXs9DhNI/hxDk5LpuHNkB5EUvFqKrucqZJaAGnhXzjW9Uk
+        4CycP/Y6BLVb61NiEOtgLcPNASqgxEzRKiZ/X+2hzLGMOl8yZWUfhmDl8r9R6u4y9GK12K
+        GyqgHSncJYMwE612PEdKTNyG9CRLnj+z49gixH03i23rWZkX2994S0jNmtEZSA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1652297988;
+        s=2020e; t=1652298417;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=XWYeWYPGfGQOMPi48DV8c7ousN/h9sYcLxp8xQFypMU=;
-        b=ZR1Epl4VnkVQlE++e1cOVwspRRqWVzRTIpaJwVhYrQlmEEQYs73G/RRDoT5bs5DK7czUS0
-        yWgosiN3c2D+XgDg==
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+        bh=dOcs69Yu66kDZ9np1SfaNPgGsXdX4UAOF8Ra4sV6eLQ=;
+        b=E2QyIC7n6lgGO8cxt1dNZqXBbUy/eO8JQMhG0xZ8WBxHMyqD5TcGhF3XdGZSE9KHdfmXeo
+        bTXrwsqrPgvdhBDA==
+From:   "tip-bot2 for Zucheng Zheng" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] lockdep: Delete local_irq_enable_in_hardirq()
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: perf/core] perf/x86/amd: Remove unused variable 'hwc'
+Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <8735hir0j4.ffs@tglx>
-References: <8735hir0j4.ffs@tglx>
+In-Reply-To: <20220421111031.174698-1-zhengzucheng@huawei.com>
+References: <20220421111031.174698-1-zhengzucheng@huawei.com>
 MIME-Version: 1.0
-Message-ID: <165229798773.4207.7897757507391012997.tip-bot2@tip-bot2>
+Message-ID: <165229841634.4207.1052240336880939148.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,52 +64,41 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the locking/core branch of tip:
+The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     deaf7c4b4bf8b802cc465bb9b33fe6c76e812924
-Gitweb:        https://git.kernel.org/tip/deaf7c4b4bf8b802cc465bb9b33fe6c76e812924
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Mon, 09 May 2022 21:03:43 +02:00
+Commit-ID:     2cc6edea3673e38fa96df5cf8a62ddc8b27c7217
+Gitweb:        https://git.kernel.org/tip/2cc6edea3673e38fa96df5cf8a62ddc8b27c7217
+Author:        Zucheng Zheng <zhengzucheng@huawei.com>
+AuthorDate:    Thu, 21 Apr 2022 19:10:31 +08:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 11 May 2022 16:27:04 +02:00
+CommitterDate: Wed, 11 May 2022 16:27:11 +02:00
 
-lockdep: Delete local_irq_enable_in_hardirq()
+perf/x86/amd: Remove unused variable 'hwc'
 
-No more users and there is no desire to grow new ones.
+'hwc' is never used in amd_pmu_enable_all(), so remove it.
 
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/8735hir0j4.ffs@tglx
+Link: https://lkml.kernel.org/r/20220421111031.174698-1-zhengzucheng@huawei.com
 ---
- include/linux/interrupt.h | 18 ------------------
- 1 file changed, 18 deletions(-)
+ arch/x86/events/amd/core.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/include/linux/interrupt.h b/include/linux/interrupt.h
-index f40754c..b5e06a6 100644
---- a/include/linux/interrupt.h
-+++ b/include/linux/interrupt.h
-@@ -222,24 +222,6 @@ devm_request_any_context_irq(struct device *dev, unsigned int irq,
+diff --git a/arch/x86/events/amd/core.c b/arch/x86/events/amd/core.c
+index 262e39a..d81eac2 100644
+--- a/arch/x86/events/amd/core.c
++++ b/arch/x86/events/amd/core.c
+@@ -771,14 +771,11 @@ static void amd_pmu_enable_event(struct perf_event *event)
+ static void amd_pmu_enable_all(int added)
+ {
+ 	struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
+-	struct hw_perf_event *hwc;
+ 	int idx;
  
- extern void devm_free_irq(struct device *dev, unsigned int irq, void *dev_id);
+ 	amd_brs_enable_all();
  
--/*
-- * On lockdep we dont want to enable hardirqs in hardirq
-- * context. Use local_irq_enable_in_hardirq() to annotate
-- * kernel code that has to do this nevertheless (pretty much
-- * the only valid case is for old/broken hardware that is
-- * insanely slow).
-- *
-- * NOTE: in theory this might break fragile code that relies
-- * on hardirq delivery - in practice we dont seem to have such
-- * places left. So the only effect should be slightly increased
-- * irqs-off latencies.
-- */
--#ifdef CONFIG_LOCKDEP
--# define local_irq_enable_in_hardirq()	do { } while (0)
--#else
--# define local_irq_enable_in_hardirq()	local_irq_enable()
--#endif
+ 	for (idx = 0; idx < x86_pmu.num_counters; idx++) {
+-		hwc = &cpuc->events[idx]->hw;
 -
- bool irq_has_action(unsigned int irq);
- extern void disable_irq_nosync(unsigned int irq);
- extern bool disable_hardirq(unsigned int irq);
+ 		/* only activate events which are marked as active */
+ 		if (!test_bit(idx, cpuc->active_mask))
+ 			continue;
