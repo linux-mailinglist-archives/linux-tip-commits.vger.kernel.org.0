@@ -2,55 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F43352500C
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 12 May 2022 16:33:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C84B52600B
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 13 May 2022 12:39:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355308AbiELOdI (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 12 May 2022 10:33:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51028 "EHLO
+        id S1379508AbiEMKhH (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 13 May 2022 06:37:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52080 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1355309AbiELOdG (ORCPT
+        with ESMTP id S1379459AbiEMKhG (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 12 May 2022 10:33:06 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B35D62120;
-        Thu, 12 May 2022 07:33:05 -0700 (PDT)
-Date:   Thu, 12 May 2022 14:33:02 -0000
+        Fri, 13 May 2022 06:37:06 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6883B60AAC;
+        Fri, 13 May 2022 03:37:03 -0700 (PDT)
+Date:   Fri, 13 May 2022 10:37:00 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1652365983;
+        s=2020; t=1652438222;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=/sMjHKaheJZJe0Qp/Rqj5FBaeAFOPJg3Cpk2FLh5NxE=;
-        b=PBMp50OGBXo6sYS6UK/XjKzbN7VU68SGBOdwmkkp3EyRxICDP/jNrHfwHZivOfSlMXZ/C9
-        H6cPEaqh2thU8MOMyGAqn+E3J4oCzKyvmeKUEe+nhR2jizIMzX82pCaDY8vWuOsdW/LjbD
-        aTtdPL5YhIRzIIxdG4YTNk/Uw9i523nE0tNkajBsD5MxFf2Tt71b1/dyjEZNIKXiJJInqQ
-        dLbpiMs6VLPtHOtOgXYhjvmd97Nhuy5Pjnplkux1tKiq9YDDHI7IwUYDFkg4EJWOGNLUDV
-        sDBWp/l54U0J0zBH/3F+v6n/b1FnA+6EKBuW/IQ12UecgBOEmNvzfLaSvhoo3g==
+        bh=3+6pwxEenLKGaPGjNNRp3SQ+cWg2Gm1CGru+j2rWuUc=;
+        b=tEtT506f+Vjk/eANx62GChQwQSFq2lO4QBzJCRco5iJ3P39eBvSJAG4CltUsMSzZmWgw0d
+        MT8BZ25bodbHgL6fxxPAmAd+Gg0+WmOqkSq0iEsHfRPTH9Bw+9xbL2w2q8xGnPPPDseaTH
+        GH5hWkOAnYqSdmHsbwFZiq6dWVqZZbaW0lhRv+aHqikfmOvC90c4jJXP7KupERZtnSFu59
+        LlHv6eHTSwObVxOu8rB27bb1Omse1FudWuTj92BV3l+3gwqmEtX7sfXUBtgnNbbBJN6u/s
+        sJIAvKjHjU95LZuRyYqpsHnULWcT+Jq09NKd9SFaeO+YxLzvSGGWaRCtM637bA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1652365983;
+        s=2020e; t=1652438222;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=/sMjHKaheJZJe0Qp/Rqj5FBaeAFOPJg3Cpk2FLh5NxE=;
-        b=tWKW9kF0zYH29jGkzdhjrgLZ+jaISzNVIQF7Y0gB3wWo2/5iypMY0Az3ZjiiKLpDlXkOU2
-        viuf6iV1ZB1ve9Ag==
-From:   "tip-bot2 for Zucheng Zheng" <tip-bot2@linutronix.de>
+        bh=3+6pwxEenLKGaPGjNNRp3SQ+cWg2Gm1CGru+j2rWuUc=;
+        b=bFGI4YeEEmrhtwSZsrav4AZ1klW3vfe4XWY2Ae6IE2JpJ5gQD3D43CFGGnt6lYjO89/YdP
+        cfJsnXfdkSxpH+AQ==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/x86/amd: Remove unused variable 'hwc'
-Cc:     Zucheng Zheng <zhengzucheng@huawei.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: core/debugobjects] debugobjects: Convert to SPDX license identifier
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Christoph Hellwig <hch@lst.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220421111031.174698-1-zhengzucheng@huawei.com>
-References: <20220421111031.174698-1-zhengzucheng@huawei.com>
+In-Reply-To: <87v8udpy3u.ffs@tglx>
+References: <87v8udpy3u.ffs@tglx>
 MIME-Version: 1.0
-Message-ID: <165236598210.4207.2040091786873679045.tip-bot2@tip-bot2>
+Message-ID: <165243822065.4207.13231431702184056192.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,42 +65,39 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/core branch of tip:
+The following commit has been merged into the core/debugobjects branch of tip:
 
-Commit-ID:     bc469ddf67154a4840267132e87ce0d8b72d4952
-Gitweb:        https://git.kernel.org/tip/bc469ddf67154a4840267132e87ce0d8b72d4952
-Author:        Zucheng Zheng <zhengzucheng@huawei.com>
-AuthorDate:    Thu, 21 Apr 2022 19:10:31 +08:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Thu, 12 May 2022 16:28:46 +02:00
+Commit-ID:     9e4a51ad8eee1d263666fd31ced39bd8e3770822
+Gitweb:        https://git.kernel.org/tip/9e4a51ad8eee1d263666fd31ced39bd8e3770822
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Tue, 10 May 2022 10:53:41 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Fri, 13 May 2022 12:35:17 +02:00
 
-perf/x86/amd: Remove unused variable 'hwc'
+debugobjects: Convert to SPDX license identifier
 
-'hwc' is never used in amd_pmu_enable_all(), so remove it.
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/87v8udpy3u.ffs@tglx
 
-Signed-off-by: Zucheng Zheng <zhengzucheng@huawei.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20220421111031.174698-1-zhengzucheng@huawei.com
 ---
- arch/x86/events/amd/core.c | 3 ---
- 1 file changed, 3 deletions(-)
+ lib/debugobjects.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/arch/x86/events/amd/core.c b/arch/x86/events/amd/core.c
-index 262e39a..d81eac2 100644
---- a/arch/x86/events/amd/core.c
-+++ b/arch/x86/events/amd/core.c
-@@ -771,14 +771,11 @@ static void amd_pmu_enable_event(struct perf_event *event)
- static void amd_pmu_enable_all(int added)
- {
- 	struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
--	struct hw_perf_event *hwc;
- 	int idx;
+diff --git a/lib/debugobjects.c b/lib/debugobjects.c
+index 6946f8e..337d797 100644
+--- a/lib/debugobjects.c
++++ b/lib/debugobjects.c
+@@ -1,11 +1,8 @@
++// SPDX-License-Identifier: GPL-2.0
+ /*
+  * Generic infrastructure for lifetime debugging of objects.
+  *
+- * Started by Thomas Gleixner
+- *
+  * Copyright (C) 2008, Thomas Gleixner <tglx@linutronix.de>
+- *
+- * For licencing details see kernel-base/COPYING
+  */
  
- 	amd_brs_enable_all();
- 
- 	for (idx = 0; idx < x86_pmu.num_counters; idx++) {
--		hwc = &cpuc->events[idx]->hw;
--
- 		/* only activate events which are marked as active */
- 		if (!test_bit(idx, cpuc->active_mask))
- 			continue;
+ #define pr_fmt(fmt) "ODEBUG: " fmt
