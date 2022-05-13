@@ -2,57 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B0BB52605D
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 13 May 2022 12:58:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ACEF15261DE
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 13 May 2022 14:30:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1379601AbiEMKpE (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 13 May 2022 06:45:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50804 "EHLO
+        id S1380256AbiEMMaT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 13 May 2022 08:30:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45374 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1379578AbiEMKpD (ORCPT
+        with ESMTP id S1350172AbiEMMaP (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 13 May 2022 06:45:03 -0400
+        Fri, 13 May 2022 08:30:15 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B305E2A0A53;
-        Fri, 13 May 2022 03:45:00 -0700 (PDT)
-Date:   Fri, 13 May 2022 10:44:57 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CCF14249A;
+        Fri, 13 May 2022 05:30:13 -0700 (PDT)
+Date:   Fri, 13 May 2022 12:30:08 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1652438699;
+        s=2020; t=1652445010;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=EkUKbhIzdWY6DspgZgLqMzIdvrE6pzQPrbY/UY1c64c=;
-        b=gqealpZhrinicZHEZ+BPg/kD3YKC7UeYXQsYz2q2XwynyzlvEOXSHlRoOsWafLtWmX6pPS
-        PW9PrNqAPIkh0o7SNonXLufZ1ZNAInfQMW39lfpAeIgvcg4Aq80jJweSd0a8JWTjRgATlm
-        iDGwuKK+tKDM2Wmuw1FHlFZJC5fFbbbBmZa87cAbOTH88j0brrp/RTqtKgEmhJ9vWpXCEM
-        mS3nrOKXRN/XE/ES7dx4Eg8b+p/epK4luKYeFpYKESzTjse3mP+tV2z75hKyVkzYz6BGjR
-        69bNqjPsZw9sthnQ2RsHJ/WnKBlZgVxFy5caMbNpYSrQNHa+2UJ2Iqz34u9ugQ==
+        bh=VPQ2hW+g443c1/58m1zWtLBd/8L9CEje+od8ufelfyU=;
+        b=O0a1SR3TXVJGd8p4VzQmk7Ee40+s1cji9+p+2ccrqrD3rlr2oEIX8++TzWAKVL0d8rqL41
+        DNTQCQLc8p3j6ORgeK9sX19bPGSalybZEx/l4qVT8uNMU/6x1CmFjC9kOpQkY1GSGPepPW
+        CxRmMPdesVaj5sMLDL6/s5oVd32GapVt2I2CWAGscM9pwUkYEg9Ha6XCQMKSsvjOt6p7ex
+        yhENC+Jc5nqZOtJXW8UawLudY/FZpfES7uRtfLm4PaVyaF6fa1u95PJBiYAYFgUZ+xM2QG
+        IaaN4ldXwWrLBmVpQTNzfp+wbwzqR3xJNO3ZXsmwi5dTkcZetNxu/QAqaaZ87w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1652438699;
+        s=2020e; t=1652445010;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=EkUKbhIzdWY6DspgZgLqMzIdvrE6pzQPrbY/UY1c64c=;
-        b=aWflv7Ujn7hIkDlXmn/LVtKU2E8C+Tm/4mKBJl8xl34p8Ojo+3wzvTsN0UQkmC8ydnGmZI
-        SlvceryQKdLXjsCQ==
-From:   "tip-bot2 for Adrian-Ken Rueegsegger" <tip-bot2@linutronix.de>
+        bh=VPQ2hW+g443c1/58m1zWtLBd/8L9CEje+od8ufelfyU=;
+        b=vFI8vIWzpXYFoeLyW6FvbG9Gg/id3iMpb9pRTxAYVdUSP8NV1+lDBVkygOF9k56Ri60iOL
+        KikmF7MLxRNWI1Cg==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/mm: Fix marking of unused sub-pmd ranges
-Cc:     "Adrian-Ken Rueegsegger" <ken@codelabs.ch>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Oscar Salvador <osalvador@suse.de>,
-        David Hildenbrand <david@redhat.com>, stable@vger.kernel.org,
+Subject: [tip: x86/cleanups] x86/prctl: Remove pointless task argument
+Cc:     Thomas Gleixner <tglx@linutronix.de>, Borislav Petkov <bp@suse.de>,
         x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20220509090637.24152-2-ken@codelabs.ch>
-References: <20220509090637.24152-2-ken@codelabs.ch>
+In-Reply-To: <87lev7vtxj.ffs@tglx>
+References: <87lev7vtxj.ffs@tglx>
 MIME-Version: 1.0
-Message-ID: <165243869785.4207.350965258098905435.tip-bot2@tip-bot2>
+Message-ID: <165244500878.4207.14888343701387601439.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,54 +64,147 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the x86/cleanups branch of tip:
 
-Commit-ID:     280abe14b6e0a38de9cc86fe6a019523aadd8f70
-Gitweb:        https://git.kernel.org/tip/280abe14b6e0a38de9cc86fe6a019523aadd8f70
-Author:        Adrian-Ken Rueegsegger <ken@codelabs.ch>
-AuthorDate:    Mon, 09 May 2022 11:06:37 +02:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 13 May 2022 12:41:21 +02:00
+Commit-ID:     f5c0b4f30416c670408a77be94703d04d22b57df
+Gitweb:        https://git.kernel.org/tip/f5c0b4f30416c670408a77be94703d04d22b57df
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Thu, 12 May 2022 14:04:08 +02:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Fri, 13 May 2022 12:56:28 +02:00
 
-x86/mm: Fix marking of unused sub-pmd ranges
+x86/prctl: Remove pointless task argument
 
-The unused part precedes the new range spanned by the start, end parameters
-of vmemmap_use_new_sub_pmd(). This means it actually goes from
-ALIGN_DOWN(start, PMD_SIZE) up to start.
+The functions invoked via do_arch_prctl_common() can only operate on
+the current task and none of these function uses the task argument.
 
-Use the correct address when applying the mark using memset.
-
-Fixes: 8d400913c231 ("x86/vmemmap: handle unpopulated sub-pmd ranges")
-Signed-off-by: Adrian-Ken Rueegsegger <ken@codelabs.ch>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20220509090637.24152-2-ken@codelabs.ch
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lore.kernel.org/r/87lev7vtxj.ffs@tglx
 ---
- arch/x86/mm/init_64.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/x86/include/asm/fpu/api.h |  3 +--
+ arch/x86/include/asm/proto.h   |  3 +--
+ arch/x86/kernel/fpu/xstate.c   |  5 +----
+ arch/x86/kernel/process.c      |  9 ++++-----
+ arch/x86/kernel/process_32.c   |  2 +-
+ arch/x86/kernel/process_64.c   |  4 ++--
+ 6 files changed, 10 insertions(+), 16 deletions(-)
 
-diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
-index 96d34eb..e294233 100644
---- a/arch/x86/mm/init_64.c
-+++ b/arch/x86/mm/init_64.c
-@@ -902,6 +902,8 @@ static void __meminit vmemmap_use_sub_pmd(unsigned long start, unsigned long end
+diff --git a/arch/x86/include/asm/fpu/api.h b/arch/x86/include/asm/fpu/api.h
+index c83b302..6b0f31f 100644
+--- a/arch/x86/include/asm/fpu/api.h
++++ b/arch/x86/include/asm/fpu/api.h
+@@ -162,7 +162,6 @@ static inline bool fpstate_is_confidential(struct fpu_guest *gfpu)
+ }
  
- static void __meminit vmemmap_use_new_sub_pmd(unsigned long start, unsigned long end)
+ /* prctl */
+-struct task_struct;
+-extern long fpu_xstate_prctl(struct task_struct *tsk, int option, unsigned long arg2);
++extern long fpu_xstate_prctl(int option, unsigned long arg2);
+ 
+ #endif /* _ASM_X86_FPU_API_H */
+diff --git a/arch/x86/include/asm/proto.h b/arch/x86/include/asm/proto.h
+index feed36d..80be803 100644
+--- a/arch/x86/include/asm/proto.h
++++ b/arch/x86/include/asm/proto.h
+@@ -39,7 +39,6 @@ void x86_report_nx(void);
+ 
+ extern int reboot_force;
+ 
+-long do_arch_prctl_common(struct task_struct *task, int option,
+-			  unsigned long arg2);
++long do_arch_prctl_common(int option, unsigned long arg2);
+ 
+ #endif /* _ASM_X86_PROTO_H */
+diff --git a/arch/x86/kernel/fpu/xstate.c b/arch/x86/kernel/fpu/xstate.c
+index 39e1c86..1b016a1 100644
+--- a/arch/x86/kernel/fpu/xstate.c
++++ b/arch/x86/kernel/fpu/xstate.c
+@@ -1687,16 +1687,13 @@ EXPORT_SYMBOL_GPL(xstate_get_guest_group_perm);
+  * e.g. for AMX which requires XFEATURE_XTILE_CFG(17) and
+  * XFEATURE_XTILE_DATA(18) this would be XFEATURE_XTILE_DATA(18).
+  */
+-long fpu_xstate_prctl(struct task_struct *tsk, int option, unsigned long arg2)
++long fpu_xstate_prctl(int option, unsigned long arg2)
  {
-+	const unsigned long page = ALIGN_DOWN(start, PMD_SIZE);
-+
- 	vmemmap_flush_unused_pmd();
+ 	u64 __user *uptr = (u64 __user *)arg2;
+ 	u64 permitted, supported;
+ 	unsigned long idx = arg2;
+ 	bool guest = false;
  
- 	/*
-@@ -914,8 +916,7 @@ static void __meminit vmemmap_use_new_sub_pmd(unsigned long start, unsigned long
- 	 * Mark with PAGE_UNUSED the unused parts of the new memmap range
- 	 */
- 	if (!IS_ALIGNED(start, PMD_SIZE))
--		memset((void *)start, PAGE_UNUSED,
--			start - ALIGN_DOWN(start, PMD_SIZE));
-+		memset((void *)page, PAGE_UNUSED, start - page);
+-	if (tsk != current)
+-		return -EPERM;
+-
+ 	switch (option) {
+ 	case ARCH_GET_XCOMP_SUPP:
+ 		supported = fpu_user_cfg.max_features |	fpu_user_cfg.legacy_features;
+diff --git a/arch/x86/kernel/process.c b/arch/x86/kernel/process.c
+index b3d2d41..e86d09a 100644
+--- a/arch/x86/kernel/process.c
++++ b/arch/x86/kernel/process.c
+@@ -334,7 +334,7 @@ static int get_cpuid_mode(void)
+ 	return !test_thread_flag(TIF_NOCPUID);
+ }
  
- 	/*
- 	 * We want to avoid memset(PAGE_UNUSED) when populating the vmemmap of
+-static int set_cpuid_mode(struct task_struct *task, unsigned long cpuid_enabled)
++static int set_cpuid_mode(unsigned long cpuid_enabled)
+ {
+ 	if (!boot_cpu_has(X86_FEATURE_CPUID_FAULT))
+ 		return -ENODEV;
+@@ -985,20 +985,19 @@ unsigned long __get_wchan(struct task_struct *p)
+ 	return addr;
+ }
+ 
+-long do_arch_prctl_common(struct task_struct *task, int option,
+-			  unsigned long arg2)
++long do_arch_prctl_common(int option, unsigned long arg2)
+ {
+ 	switch (option) {
+ 	case ARCH_GET_CPUID:
+ 		return get_cpuid_mode();
+ 	case ARCH_SET_CPUID:
+-		return set_cpuid_mode(task, arg2);
++		return set_cpuid_mode(arg2);
+ 	case ARCH_GET_XCOMP_SUPP:
+ 	case ARCH_GET_XCOMP_PERM:
+ 	case ARCH_REQ_XCOMP_PERM:
+ 	case ARCH_GET_XCOMP_GUEST_PERM:
+ 	case ARCH_REQ_XCOMP_GUEST_PERM:
+-		return fpu_xstate_prctl(task, option, arg2);
++		return fpu_xstate_prctl(option, arg2);
+ 	}
+ 
+ 	return -EINVAL;
+diff --git a/arch/x86/kernel/process_32.c b/arch/x86/kernel/process_32.c
+index 26edb1c..0faa5e2 100644
+--- a/arch/x86/kernel/process_32.c
++++ b/arch/x86/kernel/process_32.c
+@@ -222,5 +222,5 @@ __switch_to(struct task_struct *prev_p, struct task_struct *next_p)
+ 
+ SYSCALL_DEFINE2(arch_prctl, int, option, unsigned long, arg2)
+ {
+-	return do_arch_prctl_common(current, option, arg2);
++	return do_arch_prctl_common(option, arg2);
+ }
+diff --git a/arch/x86/kernel/process_64.c b/arch/x86/kernel/process_64.c
+index e459253..1962008 100644
+--- a/arch/x86/kernel/process_64.c
++++ b/arch/x86/kernel/process_64.c
+@@ -844,7 +844,7 @@ SYSCALL_DEFINE2(arch_prctl, int, option, unsigned long, arg2)
+ 
+ 	ret = do_arch_prctl_64(current, option, arg2);
+ 	if (ret == -EINVAL)
+-		ret = do_arch_prctl_common(current, option, arg2);
++		ret = do_arch_prctl_common(option, arg2);
+ 
+ 	return ret;
+ }
+@@ -852,7 +852,7 @@ SYSCALL_DEFINE2(arch_prctl, int, option, unsigned long, arg2)
+ #ifdef CONFIG_IA32_EMULATION
+ COMPAT_SYSCALL_DEFINE2(arch_prctl, int, option, unsigned long, arg2)
+ {
+-	return do_arch_prctl_common(current, option, arg2);
++	return do_arch_prctl_common(option, arg2);
+ }
+ #endif
+ 
