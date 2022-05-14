@@ -2,56 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BFE5B5272B5
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 14 May 2022 17:43:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 147225272BE
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 14 May 2022 17:56:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231912AbiENPnc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 14 May 2022 11:43:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57730 "EHLO
+        id S230264AbiENP4h (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 14 May 2022 11:56:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231569AbiENPnb (ORCPT
+        with ESMTP id S234100AbiENP41 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 14 May 2022 11:43:31 -0400
+        Sat, 14 May 2022 11:56:27 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CE8CFD3B;
-        Sat, 14 May 2022 08:43:27 -0700 (PDT)
-Date:   Sat, 14 May 2022 15:43:23 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 771E4192AB;
+        Sat, 14 May 2022 08:56:24 -0700 (PDT)
+Date:   Sat, 14 May 2022 15:56:21 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1652543004;
+        s=2020; t=1652543783;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ey17U1j0ae8/OyAMJAQzay89E2ztl5A31+9DlKk5bco=;
-        b=CIeAwenoIwr/d1cIyIdo73ERP3kVhpvHIMLliwD1g1zByIo6kFBSpiQ4WhLzGRCp7R28P9
-        /MDOw8KPHacs1Y5eIPDi91hYgv4sdhiHAa7D4f9qpsltqvpM+B3PF5kgTLNg+/itPGWMgu
-        C5cL3NXR3zvWZLnsjvQ33LWO/HAAHcptQdt7NqRiPLG4OV6XoSHsJvKbKxBshWCaqegwoQ
-        z/8eowUx4ubp5gbSts6H3ubrywzLfTehcCwNfc4uAACKENC64og/FaCm+Przdg9FvKafsb
-        IzmqR8NyZ4u116qdkP8Rv65APbN51IP2FFeDQSTbi48ZbckpvslS0ZgK1U2E/A==
+        bh=xND6KmN6BSQNF8fpie/dnjka5fx8M/s5vRbisDyIKtY=;
+        b=x/jBuCeMUokrtjGmLSg52fkW1+3AFLUb0fQagp1RtxpyeqkcLytObN4DEeGPat6XlRnuLa
+        aaGvUhMtz1Z5KsMeLGfrVC+h6IUp1MrpldQDFrAg5h+9okPN/FPcwnTtybabgPjOhGrM/e
+        Hau2kOrYCRVGcc1Nm3Ungetns4pnJRpsyfE2i/elZngdzAKOnM1bFGMIx8ce4j1/WkRpOp
+        c8r9chyGowhW5S5SlFA5dACKJCa3+87JN/xSybKpRfrVeTaemfUeEku2tnFRx78W7Dl70S
+        g8/rHb4PynxODIhTa4l7OUSG+PrKo2xaxqJ3WCveqBRQ0eMZ0fMYrX8WNV9hcA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1652543004;
+        s=2020e; t=1652543783;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ey17U1j0ae8/OyAMJAQzay89E2ztl5A31+9DlKk5bco=;
-        b=IKADpQYF7V8E3ak/V7wH/egrb1SxQ3IsvClJDqEiL4wR5CDlW1q/3lntF5cc7Pomd+4bA/
-        2EN+r4jysTGXXFDw==
-From:   "tip-bot2 for Stephen Boyd" <tip-bot2@linutronix.de>
+        bh=xND6KmN6BSQNF8fpie/dnjka5fx8M/s5vRbisDyIKtY=;
+        b=KJT4gwNpmwx3CXAGgvUcld4bpQeahxULUx6nW/TSQaTnjWdqqxUcXJKwwQtf/U40UnjR2v
+        lI7Zd8VcZU/LrVCA==
+From:   "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] timers: Provide a better debugobjects hint for
- delayed works
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Stephen Boyd <swboyd@chromium.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20220511201951.42408-1-swboyd@chromium.org>
-References: <20220511201951.42408-1-swboyd@chromium.org>
+Subject: [tip: irq/core] genirq/irq_sim: Make the irq_work always run in hard
+ irq context
+Cc:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org, maz@kernel.org
+In-Reply-To: <YnuZBoEVMGwKkLm+@linutronix.de>
+References: <YnuZBoEVMGwKkLm+@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <165254300323.4207.7727256341828519425.tip-bot2@tip-bot2>
+Message-ID: <165254378168.4207.12107565451886363340.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,84 +66,46 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the timers/core branch of tip:
+The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     317f29c14d0cca09952f1022491454b23455ebcb
-Gitweb:        https://git.kernel.org/tip/317f29c14d0cca09952f1022491454b23455ebcb
-Author:        Stephen Boyd <swboyd@chromium.org>
-AuthorDate:    Wed, 11 May 2022 13:19:51 -07:00
+Commit-ID:     21673fcb2532dcd189905ff5a5389eb7dcd0e57a
+Gitweb:        https://git.kernel.org/tip/21673fcb2532dcd189905ff5a5389eb7dcd0e57a
+Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+AuthorDate:    Wed, 11 May 2022 13:07:50 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sat, 14 May 2022 17:40:36 +02:00
+CommitterDate: Sat, 14 May 2022 17:48:27 +02:00
 
-timers: Provide a better debugobjects hint for delayed works
+genirq/irq_sim: Make the irq_work always run in hard irq context
 
-With debugobjects enabled the timer hint for freeing of active timers
-embedded inside delayed works is always the same, i.e. the hint is
-delayed_work_timer_fn, even though the function the delayed work is going
-to run can be wildly different depending on what work was queued.  Enabling
-workqueue debugobjects doesn't help either because the delayed work isn't
-considered active until it is actually queued to run on a workqueue. If the
-work is freed while the timer is pending the work isn't considered active
-so there is no information from workqueue debugobjects.
+The IRQ simulator uses irq_work to trigger an interrupt. Without the
+IRQ_WORK_HARD_IRQ flag the irq_work will be performed in thread context
+on PREEMPT_RT. This causes locking errors later in handle_simple_irq()
+which expects to be invoked with disabled interrupts.
 
-Special case delayed works in the timer debugobjects hint logic so that the
-delayed work function is returned instead of the delayed_work_timer_fn.
-This will help to understand which delayed work was pending that got
-freed.
+Triggering individual interrupts in hardirq context should not lead to
+unexpected high latencies since this is also what the hardware
+controller does. Also it is used as a simulator so...
 
-Apply the same treatment for kthread_delayed_work because it follows the
-same pattern.
+Use IRQ_WORK_INIT_HARD() to carry out the irq_work in hardirq context on
+PREEMPT_RT.
 
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Stephen Boyd <swboyd@chromium.org>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20220511201951.42408-1-swboyd@chromium.org
+Link: https://lore.kernel.org/r/YnuZBoEVMGwKkLm+@linutronix.de
 ---
- kernel/time/timer.c | 32 +++++++++++++++++++++++++++++++-
- 1 file changed, 31 insertions(+), 1 deletion(-)
+ kernel/irq/irq_sim.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/time/timer.c b/kernel/time/timer.c
-index ef082d4..a0666d9 100644
---- a/kernel/time/timer.c
-+++ b/kernel/time/timer.c
-@@ -638,9 +638,39 @@ static void internal_add_timer(struct timer_base *base, struct timer_list *timer
+diff --git a/kernel/irq/irq_sim.c b/kernel/irq/irq_sim.c
+index 0cd02ef..dd76323 100644
+--- a/kernel/irq/irq_sim.c
++++ b/kernel/irq/irq_sim.c
+@@ -181,7 +181,7 @@ struct irq_domain *irq_domain_create_sim(struct fwnode_handle *fwnode,
+ 		goto err_free_bitmap;
  
- static const struct debug_obj_descr timer_debug_descr;
+ 	work_ctx->irq_count = num_irqs;
+-	init_irq_work(&work_ctx->work, irq_sim_handle_irq);
++	work_ctx->work = IRQ_WORK_INIT_HARD(irq_sim_handle_irq);
  
-+struct timer_hint {
-+	void	(*function)(struct timer_list *t);
-+	long	offset;
-+};
-+
-+#define TIMER_HINT(fn, container, timr, hintfn)			\
-+	{							\
-+		.function = fn,					\
-+		.offset	  = offsetof(container, hintfn) -	\
-+			    offsetof(container, timr)		\
-+	}
-+
-+static const struct timer_hint timer_hints[] = {
-+	TIMER_HINT(delayed_work_timer_fn,
-+		   struct delayed_work, timer, work.func),
-+	TIMER_HINT(kthread_delayed_work_timer_fn,
-+		   struct kthread_delayed_work, timer, work.func),
-+};
-+
- static void *timer_debug_hint(void *addr)
- {
--	return ((struct timer_list *) addr)->function;
-+	struct timer_list *timer = addr;
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(timer_hints); i++) {
-+		if (timer_hints[i].function == timer->function) {
-+			void (**fn)(void) = addr + timer_hints[i].offset;
-+
-+			return *fn;
-+		}
-+	}
-+
-+	return timer->function;
- }
+ 	return work_ctx->domain;
  
- static bool timer_is_static_object(void *addr)
