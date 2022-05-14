@@ -2,55 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 76EB5526268
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 13 May 2022 14:56:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BFE5B5272B5
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 14 May 2022 17:43:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233178AbiEMM4o (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 13 May 2022 08:56:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44076 "EHLO
+        id S231912AbiENPnc (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 14 May 2022 11:43:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57730 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233058AbiEMM4m (ORCPT
+        with ESMTP id S231569AbiENPnb (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 13 May 2022 08:56:42 -0400
+        Sat, 14 May 2022 11:43:31 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A50A972A5;
-        Fri, 13 May 2022 05:56:41 -0700 (PDT)
-Date:   Fri, 13 May 2022 12:56:38 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CE8CFD3B;
+        Sat, 14 May 2022 08:43:27 -0700 (PDT)
+Date:   Sat, 14 May 2022 15:43:23 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1652446599;
+        s=2020; t=1652543004;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=c2Rc5VpqkX82WaIoIA+gihkv0EYEJSgha/ojItAr5FI=;
-        b=A6DEnqmQo5vBHWB9Xq4g/DR9HlDy1t1ZdZaT1TSTgF5HlS0qL3g5E3/kMxY8M/3w6D6sy9
-        z2+0FycNqvD8d5kiuHxOIk4t87YKAWEDtqbM1rUesXoezGGTbZ3tC47rY5/Pea0UVxedj4
-        VUUnXstbqqAHNVyFyQ5okvQwiSldz8tZagPORrKIMMkv5cLJJ1W4lWwTFpG75/Y7FlaFDS
-        9XexZa9djMcO3ruHXTHChdrRqpRelXV6Mneohzij2AftIRLyJ8MePe9Iw3uWcQIWNMCTg+
-        qhFIhTYpLWrlMFdryQ5kYNb30jiJulk8sEBg1P273mDI27Xb9TOxjjy+E+7wwQ==
+        bh=ey17U1j0ae8/OyAMJAQzay89E2ztl5A31+9DlKk5bco=;
+        b=CIeAwenoIwr/d1cIyIdo73ERP3kVhpvHIMLliwD1g1zByIo6kFBSpiQ4WhLzGRCp7R28P9
+        /MDOw8KPHacs1Y5eIPDi91hYgv4sdhiHAa7D4f9qpsltqvpM+B3PF5kgTLNg+/itPGWMgu
+        C5cL3NXR3zvWZLnsjvQ33LWO/HAAHcptQdt7NqRiPLG4OV6XoSHsJvKbKxBshWCaqegwoQ
+        z/8eowUx4ubp5gbSts6H3ubrywzLfTehcCwNfc4uAACKENC64og/FaCm+Przdg9FvKafsb
+        IzmqR8NyZ4u116qdkP8Rv65APbN51IP2FFeDQSTbi48ZbckpvslS0ZgK1U2E/A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1652446599;
+        s=2020e; t=1652543004;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=c2Rc5VpqkX82WaIoIA+gihkv0EYEJSgha/ojItAr5FI=;
-        b=GT2tb/epI/l5X0QUZuiNDh/UNXtofoPisl6/QJOkO2dt5BvwyFGyYwJuqgeQsWHKGIYFeR
-        BKdY27UXiMlCU7Bw==
-From:   "tip-bot2 for Xiao Yang" <tip-bot2@linutronix.de>
+        bh=ey17U1j0ae8/OyAMJAQzay89E2ztl5A31+9DlKk5bco=;
+        b=IKADpQYF7V8E3ak/V7wH/egrb1SxQ3IsvClJDqEiL4wR5CDlW1q/3lntF5cc7Pomd+4bA/
+        2EN+r4jysTGXXFDw==
+From:   "tip-bot2 for Stephen Boyd" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cleanups] x86/speculation: Add missing srbds=off to the
- mitigations= help text
-Cc:     Xiao Yang <yangx.jy@fujitsu.com>, Borislav Petkov <bp@suse.de>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20220513101637.216487-1-yangx.jy@fujitsu.com>
-References: <20220513101637.216487-1-yangx.jy@fujitsu.com>
+Subject: [tip: timers/core] timers: Provide a better debugobjects hint for
+ delayed works
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Stephen Boyd <swboyd@chromium.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20220511201951.42408-1-swboyd@chromium.org>
+References: <20220511201951.42408-1-swboyd@chromium.org>
 MIME-Version: 1.0
-Message-ID: <165244659875.4207.17281650412201582456.tip-bot2@tip-bot2>
+Message-ID: <165254300323.4207.7727256341828519425.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,38 +66,84 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cleanups branch of tip:
+The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     553b0cb30b5452198de3187f1a79989eba38df00
-Gitweb:        https://git.kernel.org/tip/553b0cb30b5452198de3187f1a79989eba38df00
-Author:        Xiao Yang <yangx.jy@fujitsu.com>
-AuthorDate:    Fri, 13 May 2022 18:16:37 +08:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Fri, 13 May 2022 14:48:50 +02:00
+Commit-ID:     317f29c14d0cca09952f1022491454b23455ebcb
+Gitweb:        https://git.kernel.org/tip/317f29c14d0cca09952f1022491454b23455ebcb
+Author:        Stephen Boyd <swboyd@chromium.org>
+AuthorDate:    Wed, 11 May 2022 13:19:51 -07:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Sat, 14 May 2022 17:40:36 +02:00
 
-x86/speculation: Add missing srbds=off to the mitigations= help text
+timers: Provide a better debugobjects hint for delayed works
 
-The mitigations= cmdline option help text misses the srbds=off option.
-Add it.
+With debugobjects enabled the timer hint for freeing of active timers
+embedded inside delayed works is always the same, i.e. the hint is
+delayed_work_timer_fn, even though the function the delayed work is going
+to run can be wildly different depending on what work was queued.  Enabling
+workqueue debugobjects doesn't help either because the delayed work isn't
+considered active until it is actually queued to run on a workqueue. If the
+work is freed while the timer is pending the work isn't considered active
+so there is no information from workqueue debugobjects.
 
-  [ bp: Add a commit message. ]
+Special case delayed works in the timer debugobjects hint logic so that the
+delayed work function is returned instead of the delayed_work_timer_fn.
+This will help to understand which delayed work was pending that got
+freed.
 
-Signed-off-by: Xiao Yang <yangx.jy@fujitsu.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lore.kernel.org/r/20220513101637.216487-1-yangx.jy@fujitsu.com
+Apply the same treatment for kthread_delayed_work because it follows the
+same pattern.
+
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Stephen Boyd <swboyd@chromium.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20220511201951.42408-1-swboyd@chromium.org
 ---
- Documentation/admin-guide/kernel-parameters.txt | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/time/timer.c | 32 +++++++++++++++++++++++++++++++-
+ 1 file changed, 31 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 3f1cc5e..93e9b15 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -3103,6 +3103,7 @@
- 					       mds=off [X86]
- 					       tsx_async_abort=off [X86]
- 					       kvm.nx_huge_pages=off [X86]
-+					       srbds=off [X86,INTEL]
- 					       no_entry_flush [PPC]
- 					       no_uaccess_flush [PPC]
+diff --git a/kernel/time/timer.c b/kernel/time/timer.c
+index ef082d4..a0666d9 100644
+--- a/kernel/time/timer.c
++++ b/kernel/time/timer.c
+@@ -638,9 +638,39 @@ static void internal_add_timer(struct timer_base *base, struct timer_list *timer
  
+ static const struct debug_obj_descr timer_debug_descr;
+ 
++struct timer_hint {
++	void	(*function)(struct timer_list *t);
++	long	offset;
++};
++
++#define TIMER_HINT(fn, container, timr, hintfn)			\
++	{							\
++		.function = fn,					\
++		.offset	  = offsetof(container, hintfn) -	\
++			    offsetof(container, timr)		\
++	}
++
++static const struct timer_hint timer_hints[] = {
++	TIMER_HINT(delayed_work_timer_fn,
++		   struct delayed_work, timer, work.func),
++	TIMER_HINT(kthread_delayed_work_timer_fn,
++		   struct kthread_delayed_work, timer, work.func),
++};
++
+ static void *timer_debug_hint(void *addr)
+ {
+-	return ((struct timer_list *) addr)->function;
++	struct timer_list *timer = addr;
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(timer_hints); i++) {
++		if (timer_hints[i].function == timer->function) {
++			void (**fn)(void) = addr + timer_hints[i].offset;
++
++			return *fn;
++		}
++	}
++
++	return timer->function;
+ }
+ 
+ static bool timer_is_static_object(void *addr)
