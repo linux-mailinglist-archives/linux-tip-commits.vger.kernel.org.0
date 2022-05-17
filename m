@@ -2,48 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D71A52ADE1
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 18 May 2022 00:14:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E288B52ADFB
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 18 May 2022 00:21:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230228AbiEQWOj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 17 May 2022 18:14:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50954 "EHLO
+        id S230105AbiEQWV1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 17 May 2022 18:21:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39540 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230234AbiEQWOi (ORCPT
+        with ESMTP id S229527AbiEQWV0 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 17 May 2022 18:14:38 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A747245523;
-        Tue, 17 May 2022 15:14:37 -0700 (PDT)
-Date:   Tue, 17 May 2022 22:14:34 -0000
+        Tue, 17 May 2022 18:21:26 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31DFD28E18;
+        Tue, 17 May 2022 15:21:25 -0700 (PDT)
+Date:   Tue, 17 May 2022 22:21:21 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1652825676;
+        s=2020; t=1652826082;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=ZkW25diCjZhhJiIeWzEaepfs+AscLxtkOsxOdut4Bxk=;
-        b=h5TezNhRyghH/9o4IflJ2M3p0L6N+YMUWGRO1Zdc3NAygyLs1vT/E0cbiCYWejFzw0QTjj
-        ZEldu3XxINxCdi+b7OieIMXq/aXSGAtGYXFxPvZCkRHM6es/sMr+XTyHsg9dZ81TDAbh4g
-        XAlPSzWyf4eNU+gUb6pQEam+Npk0JilGgQNBQx64RQoynwAD0GMlGRULrxCPfAS9r5Sm3p
-        9hCQibGAIud6PKXC3Fuxc7wuiU909vUqDCYeIFtodZXqHRSnNfBwpisa03NeMClcZmK5Nv
-        LL/+wv1TAPYcoTLGdQyXPvh4jCF+odJ3uvOf/Ffp1/nN4IQHLgx2EIdRVKvdpQ==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=JvThGW9rVy0Y7k8i4EwpLIQqeX5s0xfJpDrQQUJOyDU=;
+        b=IXSwyGFSHO4ns+FEmYrkmWjTHXnLOcStFOStsyc0d5XjgPj2KVCMWvALHptEL+U36enodN
+        wD/m+URpVwkJI520Th1vposIfKH7jeNKKOBnw3fx6NbHBiLd3I33NDuHes9aDtJIFik9Ee
+        LY60Y6vNG+1bOT48PXqH3xkyeLzmfiMyiGOKnb3p2wWCGHP4TvHDRz5fZ9IJjmu19XtZGS
+        conlonApUyuBaIwXsWmAhekaQmASArMntB3jmqRo2LKMiXzELcF1sTlCYAAXyBlVjIlXZY
+        6YlsfqWtsiA3HWq6U6fZXCJjqotpuSD6ofMGJLLw5pqk/iEz10d5tl3Bsov59g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1652825676;
+        s=2020e; t=1652826082;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=ZkW25diCjZhhJiIeWzEaepfs+AscLxtkOsxOdut4Bxk=;
-        b=iz9WaRRx9zxKx0zNPcIP4BOX5W1vUenA1F6c3Ff57rBO4HJjpYBvskTeY69AdwYperIAkZ
-        1/TvTIO9XjD465Cg==
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=JvThGW9rVy0Y7k8i4EwpLIQqeX5s0xfJpDrQQUJOyDU=;
+        b=+E8ZB2hhEGZhHVeI0xdvszJaknwjE4bg4ceHvZcpCkHMx7xbvzsFXh3YobJ1asvPCCTnYA
+        Obsk5BXw4MqlRtCA==
+From:   "tip-bot2 for Uros Bizjak" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/x86/amd: Fix AMD BRS period adjustment
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: locking/core] locking/atomic/x86: Introduce arch_try_cmpxchg64
+Cc:     Uros Bizjak <ubizjak@gmail.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
+In-Reply-To: <20220515184205.103089-3-ubizjak@gmail.com>
+References: <20220515184205.103089-3-ubizjak@gmail.com>
 MIME-Version: 1.0
-Message-ID: <165282567475.4207.12287002853279789468.tip-bot2@tip-bot2>
+Message-ID: <165282608130.4207.11491865757790296043.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -58,125 +65,110 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/core branch of tip:
+The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     3c27b0c6ea48bc61492a138c410e262735d660ab
-Gitweb:        https://git.kernel.org/tip/3c27b0c6ea48bc61492a138c410e262735d660ab
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Tue, 10 May 2022 21:22:04 +02:00
+Commit-ID:     c2df0a6af177b6c06a859806a876f92b072dc624
+Gitweb:        https://git.kernel.org/tip/c2df0a6af177b6c06a859806a876f92b072dc624
+Author:        Uros Bizjak <ubizjak@gmail.com>
+AuthorDate:    Sun, 15 May 2022 20:42:04 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 18 May 2022 00:08:25 +02:00
+CommitterDate: Wed, 18 May 2022 00:08:28 +02:00
 
-perf/x86/amd: Fix AMD BRS period adjustment
+locking/atomic/x86: Introduce arch_try_cmpxchg64
 
-There's two problems with the current amd_brs_adjust_period() code:
+Introduce arch_try_cmpxchg64 for 64-bit and 32-bit targets to improve
+code using cmpxchg64.  On 64-bit targets, the generated assembly improves
+from:
 
- - it isn't in fact AMD specific and wil always adjust the period;
+  ab:	89 c8                	mov    %ecx,%eax
+  ad:	48 89 4c 24 60       	mov    %rcx,0x60(%rsp)
+  b2:	83 e0 fd             	and    $0xfffffffd,%eax
+  b5:	89 54 24 64          	mov    %edx,0x64(%rsp)
+  b9:	88 44 24 60          	mov    %al,0x60(%rsp)
+  bd:	48 89 c8             	mov    %rcx,%rax
+  c0:	c6 44 24 62 f2       	movb   $0xf2,0x62(%rsp)
+  c5:	48 8b 74 24 60       	mov    0x60(%rsp),%rsi
+  ca:	f0 49 0f b1 34 24    	lock cmpxchg %rsi,(%r12)
+  d0:	48 39 c1             	cmp    %rax,%rcx
+  d3:	75 cf                	jne    a4 <t+0xa4>
 
- - it adjusts the period, while it should only adjust the event count,
-   resulting in repoting a short period.
+to:
 
-Fix this by using x86_pmu.limit_period, this makes it specific to the
-AMD BRS case and ensures only the event count is adjusted while the
-reported period is unmodified.
+  b3:	89 c2                	mov    %eax,%edx
+  b5:	48 89 44 24 60       	mov    %rax,0x60(%rsp)
+  ba:	83 e2 fd             	and    $0xfffffffd,%edx
+  bd:	89 4c 24 64          	mov    %ecx,0x64(%rsp)
+  c1:	88 54 24 60          	mov    %dl,0x60(%rsp)
+  c5:	c6 44 24 62 f2       	movb   $0xf2,0x62(%rsp)
+  ca:	48 8b 54 24 60       	mov    0x60(%rsp),%rdx
+  cf:	f0 48 0f b1 13       	lock cmpxchg %rdx,(%rbx)
+  d4:	75 d5                	jne    ab <t+0xab>
 
-Fixes: ba2fe7500845 ("perf/x86/amd: Add AMD branch sampling period adjustment")
+where a move and a compare after cmpxchg is saved.  The improvements
+for 32-bit targets are even more noticeable, because dual-word compare
+after cmpxchg8b gets eliminated.
+
+Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20220515184205.103089-3-ubizjak@gmail.com
 ---
- arch/x86/events/amd/core.c   | 13 +++++++++++++
- arch/x86/events/core.c       |  7 -------
- arch/x86/events/perf_event.h | 18 ------------------
- 3 files changed, 13 insertions(+), 25 deletions(-)
+ arch/x86/include/asm/cmpxchg_32.h | 21 +++++++++++++++++++++
+ arch/x86/include/asm/cmpxchg_64.h |  6 ++++++
+ 2 files changed, 27 insertions(+)
 
-diff --git a/arch/x86/events/amd/core.c b/arch/x86/events/amd/core.c
-index d81eac2..3eee59c 100644
---- a/arch/x86/events/amd/core.c
-+++ b/arch/x86/events/amd/core.c
-@@ -1255,6 +1255,18 @@ static void amd_pmu_sched_task(struct perf_event_context *ctx,
- 		amd_pmu_brs_sched_task(ctx, sched_in);
+diff --git a/arch/x86/include/asm/cmpxchg_32.h b/arch/x86/include/asm/cmpxchg_32.h
+index 0a7fe03..215f5a6 100644
+--- a/arch/x86/include/asm/cmpxchg_32.h
++++ b/arch/x86/include/asm/cmpxchg_32.h
+@@ -42,6 +42,9 @@ static inline void set_64bit(volatile u64 *ptr, u64 value)
+ #define arch_cmpxchg64_local(ptr, o, n)					\
+ 	((__typeof__(*(ptr)))__cmpxchg64_local((ptr), (unsigned long long)(o), \
+ 					       (unsigned long long)(n)))
++#define arch_try_cmpxchg64(ptr, po, n)					\
++	__try_cmpxchg64((ptr), (unsigned long long *)(po), \
++			(unsigned long long)(n))
+ #endif
+ 
+ static inline u64 __cmpxchg64(volatile u64 *ptr, u64 old, u64 new)
+@@ -70,6 +73,24 @@ static inline u64 __cmpxchg64_local(volatile u64 *ptr, u64 old, u64 new)
+ 	return prev;
  }
  
-+static u64 amd_pmu_limit_period(struct perf_event *event, u64 left)
++static inline bool __try_cmpxchg64(volatile u64 *ptr, u64 *pold, u64 new)
 +{
-+	/*
-+	 * Decrease period by the depth of the BRS feature to get the last N
-+	 * taken branches and approximate the desired period
-+	 */
-+	if (has_branch_stack(event) && left > x86_pmu.lbr_nr)
-+		left -= x86_pmu.lbr_nr;
++	bool success;
++	u64 old = *pold;
++	asm volatile(LOCK_PREFIX "cmpxchg8b %[ptr]"
++		     CC_SET(z)
++		     : CC_OUT(z) (success),
++		       [ptr] "+m" (*ptr),
++		       "+A" (old)
++		     : "b" ((u32)new),
++		       "c" ((u32)(new >> 32))
++		     : "memory");
 +
-+	return left;
++	if (unlikely(!success))
++		*pold = old;
++	return success;
 +}
 +
- static __initconst const struct x86_pmu amd_pmu = {
- 	.name			= "AMD",
- 	.handle_irq		= amd_pmu_handle_irq,
-@@ -1415,6 +1427,7 @@ static int __init amd_core_pmu_init(void)
- 	if (boot_cpu_data.x86 >= 0x19 && !amd_brs_init()) {
- 		x86_pmu.get_event_constraints = amd_get_event_constraints_f19h;
- 		x86_pmu.sched_task = amd_pmu_sched_task;
-+		x86_pmu.limit_period = amd_pmu_limit_period;
- 		/*
- 		 * put_event_constraints callback same as Fam17h, set above
- 		 */
-diff --git a/arch/x86/events/core.c b/arch/x86/events/core.c
-index b08052b..3078889 100644
---- a/arch/x86/events/core.c
-+++ b/arch/x86/events/core.c
-@@ -1375,13 +1375,6 @@ int x86_perf_event_set_period(struct perf_event *event)
- 		return x86_pmu.set_topdown_event_period(event);
+ #ifndef CONFIG_X86_CMPXCHG64
+ /*
+  * Building a kernel capable running on 80386 and 80486. It may be necessary
+diff --git a/arch/x86/include/asm/cmpxchg_64.h b/arch/x86/include/asm/cmpxchg_64.h
+index 072e545..250187a 100644
+--- a/arch/x86/include/asm/cmpxchg_64.h
++++ b/arch/x86/include/asm/cmpxchg_64.h
+@@ -19,6 +19,12 @@ static inline void set_64bit(volatile u64 *ptr, u64 val)
+ 	arch_cmpxchg_local((ptr), (o), (n));				\
+ })
  
- 	/*
--	 * decrease period by the depth of the BRS feature to get
--	 * the last N taken branches and approximate the desired period
--	 */
--	if (has_branch_stack(event))
--		period = amd_brs_adjust_period(period);
--
--	/*
- 	 * If we are way outside a reasonable range then just skip forward:
- 	 */
- 	if (unlikely(left <= -period)) {
-diff --git a/arch/x86/events/perf_event.h b/arch/x86/events/perf_event.h
-index 3b03245..21a5482 100644
---- a/arch/x86/events/perf_event.h
-+++ b/arch/x86/events/perf_event.h
-@@ -1254,14 +1254,6 @@ static inline void amd_pmu_brs_del(struct perf_event *event)
- }
++#define arch_try_cmpxchg64(ptr, po, n)					\
++({									\
++	BUILD_BUG_ON(sizeof(*(ptr)) != 8);				\
++	arch_try_cmpxchg((ptr), (po), (n));				\
++})
++
+ #define system_has_cmpxchg_double() boot_cpu_has(X86_FEATURE_CX16)
  
- void amd_pmu_brs_sched_task(struct perf_event_context *ctx, bool sched_in);
--
--static inline s64 amd_brs_adjust_period(s64 period)
--{
--	if (period > x86_pmu.lbr_nr)
--		return period - x86_pmu.lbr_nr;
--
--	return period;
--}
- #else
- static inline int amd_brs_init(void)
- {
-@@ -1290,11 +1282,6 @@ static inline void amd_pmu_brs_sched_task(struct perf_event_context *ctx, bool s
- {
- }
- 
--static inline s64 amd_brs_adjust_period(s64 period)
--{
--	return period;
--}
--
- static inline void amd_brs_enable_all(void)
- {
- }
-@@ -1324,11 +1311,6 @@ static inline void amd_brs_enable_all(void)
- static inline void amd_brs_disable_all(void)
- {
- }
--
--static inline s64 amd_brs_adjust_period(s64 period)
--{
--	return period;
--}
- #endif /* CONFIG_CPU_SUP_AMD */
- 
- static inline int is_pebs_pt(struct perf_event *event)
+ #endif /* _ASM_X86_CMPXCHG_64_H */
