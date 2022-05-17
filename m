@@ -2,55 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C7CE52ADFC
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 18 May 2022 00:21:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 901A352AE01
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 18 May 2022 00:22:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230390AbiEQWV1 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 17 May 2022 18:21:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39578 "EHLO
+        id S229943AbiEQWWA (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 17 May 2022 18:22:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42168 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229943AbiEQWV0 (ORCPT
+        with ESMTP id S230424AbiEQWV7 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 17 May 2022 18:21:26 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60E2128E38;
-        Tue, 17 May 2022 15:21:25 -0700 (PDT)
-Date:   Tue, 17 May 2022 22:21:22 -0000
+        Tue, 17 May 2022 18:21:59 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92F3828E38;
+        Tue, 17 May 2022 15:21:57 -0700 (PDT)
+Date:   Tue, 17 May 2022 22:21:54 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1652826083;
+        s=2020; t=1652826115;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=p40IlWUsYe19ibepCHY2XKMhknMLi/undpqdrFUrafY=;
-        b=SK5fCQgoYjRW5Xr7Hcx/y7EcTeqDv4zdZAPrcpl4HORjS+8kQLA+HW14mxVziBgYkfwDjJ
-        7tJy3C7EaYNucuNxWYMhe0kk5knvZ5DIORCbjW3wkT5HGG4xUFX9Q5V7YlkAosYqz9+NjZ
-        keDVADO8knesH1FzNI8Q3AMCuizaPanWVe6JLdXEvGqWKUgVXV0WfJOO923rd2IDKZZsje
-        aAZ3uc7VpRWWux6DCJWt2vKve9Uu/CBCuqUnsWs9l7Xc9kBGxBKBmGQ8tqEVpyyczl9Acs
-        xIOqc8bMPXkSppG/yjw3taRLP4bW/1AMMSx/HuSvJfo9jYj74xHhTsRHvJMclw==
+        bh=iafCGWGYKhqIDvXoUGN2B3JUN4kPCTFp4xJXTmnDBJs=;
+        b=FkDz7Wpq+DKmFInfUYslEDHQcX0cOMkN1hGABY7hH8w/DqOrUJXwfFg0p6HCTuavKfA0ag
+        +FvAhaYa3LqQNzyiledQHyfwtUxSJmgpJGbviqqSyRt1jVRReBj+JU9PeEX54KJ7gc/l/D
+        /opts3U/XXd6mcYXwIlulnd3INfR1tiDL74a4lzrEUtMNiuVC/iiiknzmBUNjk//8Xlksi
+        0jQUsq9iQypZKq6NK9yq3xPfAET2OKR1GVXLtilUM1Lb6W3wkFbq700bxOIWq5/vbrN7Fr
+        ACGlMG7Ji6DAx354wAZRzyXhDKlP5fJlRvzimHZIKni6siHvfqh040qAuQYb9A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1652826083;
+        s=2020e; t=1652826115;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=p40IlWUsYe19ibepCHY2XKMhknMLi/undpqdrFUrafY=;
-        b=1FVoc6XL8b7GZF0og5kqFgktFH3XRWeZQZ7tABogCZiFw44jYa+J74r5G+5EP2+Pg5YMPE
-        V/JYfiGPsAOwr3Bg==
-From:   "tip-bot2 for Uros Bizjak" <tip-bot2@linutronix.de>
+        bh=iafCGWGYKhqIDvXoUGN2B3JUN4kPCTFp4xJXTmnDBJs=;
+        b=xcCVuzz/VSchmSjpGO7y41gfjCNHpFxx/dyF32Rz+IefzFJWttSzF9r52AhzWjPPhocYOi
+        xP65Zv2HB+FWPECA==
+From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] locking/atomic: Add generic try_cmpxchg64 support
-Cc:     Uros Bizjak <ubizjak@gmail.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: objtool/core] scripts/faddr2line: Fix overlapping text section failures
+Cc:     Kaiwan N Billimoria <kaiwan.billimoria@gmail.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Josh Poimboeuf <jpoimboe@kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220515184205.103089-2-ubizjak@gmail.com>
-References: <20220515184205.103089-2-ubizjak@gmail.com>
+In-Reply-To: <29ff99f86e3da965b6e46c1cc2d72ce6528c17c3.1652382321.git.jpoimboe@kernel.org>
+References: <29ff99f86e3da965b6e46c1cc2d72ce6528c17c3.1652382321.git.jpoimboe@kernel.org>
 MIME-Version: 1.0
-Message-ID: <165282608247.4207.13301051850549186943.tip-bot2@tip-bot2>
+Message-ID: <165282611421.4207.7170580893951495841.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,254 +66,272 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the locking/core branch of tip:
+The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     0aa7be05d83cc584da0782405e8007e351dfb6cc
-Gitweb:        https://git.kernel.org/tip/0aa7be05d83cc584da0782405e8007e351dfb6cc
-Author:        Uros Bizjak <ubizjak@gmail.com>
-AuthorDate:    Sun, 15 May 2022 20:42:03 +02:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 18 May 2022 00:08:27 +02:00
+Commit-ID:     1d1a0e7c5100d332583e20b40aa8c0a8ed3d7849
+Gitweb:        https://git.kernel.org/tip/1d1a0e7c5100d332583e20b40aa8c0a8ed3d7849
+Author:        Josh Poimboeuf <jpoimboe@kernel.org>
+AuthorDate:    Thu, 12 May 2022 12:05:27 -07:00
+Committer:     Josh Poimboeuf <jpoimboe@kernel.org>
+CommitterDate: Thu, 12 May 2022 12:07:11 -07:00
 
-locking/atomic: Add generic try_cmpxchg64 support
+scripts/faddr2line: Fix overlapping text section failures
 
-Add generic support for try_cmpxchg64{,_acquire,_release,_relaxed}
-and their falbacks involving cmpxchg64.
+There have been some recent reports of faddr2line failures:
 
-Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20220515184205.103089-2-ubizjak@gmail.com
+  $ scripts/faddr2line sound/soundcore.ko sound_devnode+0x5/0x35
+  bad symbol size: base: 0x0000000000000000 end: 0x0000000000000000
+
+  $ ./scripts/faddr2line vmlinux.o enter_from_user_mode+0x24
+  bad symbol size: base: 0x0000000000005fe0 end: 0x0000000000005fe0
+
+The problem is that faddr2line is based on 'nm', which has a major
+limitation: it doesn't know how to distinguish between different text
+sections.  So if an offset exists in multiple text sections in the
+object, it may fail.
+
+Rewrite faddr2line to be section-aware, by basing it on readelf.
+
+Fixes: 67326666e2d4 ("scripts: add script for translating stack dump function offsets")
+Reported-by: Kaiwan N Billimoria <kaiwan.billimoria@gmail.com>
+Reported-by: Peter Zijlstra <peterz@infradead.org>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Link: https://lore.kernel.org/r/29ff99f86e3da965b6e46c1cc2d72ce6528c17c3.1652382321.git.jpoimboe@kernel.org
 ---
- include/linux/atomic/atomic-arch-fallback.h | 72 +++++++++++++++++++-
- include/linux/atomic/atomic-instrumented.h  | 40 ++++++++++-
- scripts/atomic/gen-atomic-fallback.sh       | 31 +++++----
- scripts/atomic/gen-atomic-instrumented.sh   |  2 +-
- 4 files changed, 129 insertions(+), 16 deletions(-)
+ scripts/faddr2line | 150 ++++++++++++++++++++++++++++----------------
+ 1 file changed, 97 insertions(+), 53 deletions(-)
 
-diff --git a/include/linux/atomic/atomic-arch-fallback.h b/include/linux/atomic/atomic-arch-fallback.h
-index 6db58d1..77bc552 100644
---- a/include/linux/atomic/atomic-arch-fallback.h
-+++ b/include/linux/atomic/atomic-arch-fallback.h
-@@ -147,6 +147,76 @@
+diff --git a/scripts/faddr2line b/scripts/faddr2line
+index 6c6439f..0e6268d 100755
+--- a/scripts/faddr2line
++++ b/scripts/faddr2line
+@@ -44,17 +44,6 @@
+ set -o errexit
+ set -o nounset
  
- #endif /* arch_try_cmpxchg_relaxed */
- 
-+#ifndef arch_try_cmpxchg64_relaxed
-+#ifdef arch_try_cmpxchg64
-+#define arch_try_cmpxchg64_acquire arch_try_cmpxchg64
-+#define arch_try_cmpxchg64_release arch_try_cmpxchg64
-+#define arch_try_cmpxchg64_relaxed arch_try_cmpxchg64
-+#endif /* arch_try_cmpxchg64 */
-+
-+#ifndef arch_try_cmpxchg64
-+#define arch_try_cmpxchg64(_ptr, _oldp, _new) \
-+({ \
-+	typeof(*(_ptr)) *___op = (_oldp), ___o = *___op, ___r; \
-+	___r = arch_cmpxchg64((_ptr), ___o, (_new)); \
-+	if (unlikely(___r != ___o)) \
-+		*___op = ___r; \
-+	likely(___r == ___o); \
-+})
-+#endif /* arch_try_cmpxchg64 */
-+
-+#ifndef arch_try_cmpxchg64_acquire
-+#define arch_try_cmpxchg64_acquire(_ptr, _oldp, _new) \
-+({ \
-+	typeof(*(_ptr)) *___op = (_oldp), ___o = *___op, ___r; \
-+	___r = arch_cmpxchg64_acquire((_ptr), ___o, (_new)); \
-+	if (unlikely(___r != ___o)) \
-+		*___op = ___r; \
-+	likely(___r == ___o); \
-+})
-+#endif /* arch_try_cmpxchg64_acquire */
-+
-+#ifndef arch_try_cmpxchg64_release
-+#define arch_try_cmpxchg64_release(_ptr, _oldp, _new) \
-+({ \
-+	typeof(*(_ptr)) *___op = (_oldp), ___o = *___op, ___r; \
-+	___r = arch_cmpxchg64_release((_ptr), ___o, (_new)); \
-+	if (unlikely(___r != ___o)) \
-+		*___op = ___r; \
-+	likely(___r == ___o); \
-+})
-+#endif /* arch_try_cmpxchg64_release */
-+
-+#ifndef arch_try_cmpxchg64_relaxed
-+#define arch_try_cmpxchg64_relaxed(_ptr, _oldp, _new) \
-+({ \
-+	typeof(*(_ptr)) *___op = (_oldp), ___o = *___op, ___r; \
-+	___r = arch_cmpxchg64_relaxed((_ptr), ___o, (_new)); \
-+	if (unlikely(___r != ___o)) \
-+		*___op = ___r; \
-+	likely(___r == ___o); \
-+})
-+#endif /* arch_try_cmpxchg64_relaxed */
-+
-+#else /* arch_try_cmpxchg64_relaxed */
-+
-+#ifndef arch_try_cmpxchg64_acquire
-+#define arch_try_cmpxchg64_acquire(...) \
-+	__atomic_op_acquire(arch_try_cmpxchg64, __VA_ARGS__)
-+#endif
-+
-+#ifndef arch_try_cmpxchg64_release
-+#define arch_try_cmpxchg64_release(...) \
-+	__atomic_op_release(arch_try_cmpxchg64, __VA_ARGS__)
-+#endif
-+
-+#ifndef arch_try_cmpxchg64
-+#define arch_try_cmpxchg64(...) \
-+	__atomic_op_fence(arch_try_cmpxchg64, __VA_ARGS__)
-+#endif
-+
-+#endif /* arch_try_cmpxchg64_relaxed */
-+
- #ifndef arch_atomic_read_acquire
- static __always_inline int
- arch_atomic_read_acquire(const atomic_t *v)
-@@ -2386,4 +2456,4 @@ arch_atomic64_dec_if_positive(atomic64_t *v)
- #endif
- 
- #endif /* _LINUX_ATOMIC_FALLBACK_H */
--// 8e2cc06bc0d2c0967d2f8424762bd48555ee40ae
-+// b5e87bdd5ede61470c29f7a7e4de781af3770f09
-diff --git a/include/linux/atomic/atomic-instrumented.h b/include/linux/atomic/atomic-instrumented.h
-index 5d69b14..7a139ec 100644
---- a/include/linux/atomic/atomic-instrumented.h
-+++ b/include/linux/atomic/atomic-instrumented.h
-@@ -2006,6 +2006,44 @@ atomic_long_dec_if_positive(atomic_long_t *v)
- 	arch_try_cmpxchg_relaxed(__ai_ptr, __ai_oldp, __VA_ARGS__); \
- })
- 
-+#define try_cmpxchg64(ptr, oldp, ...) \
-+({ \
-+	typeof(ptr) __ai_ptr = (ptr); \
-+	typeof(oldp) __ai_oldp = (oldp); \
-+	kcsan_mb(); \
-+	instrument_atomic_write(__ai_ptr, sizeof(*__ai_ptr)); \
-+	instrument_atomic_write(__ai_oldp, sizeof(*__ai_oldp)); \
-+	arch_try_cmpxchg64(__ai_ptr, __ai_oldp, __VA_ARGS__); \
-+})
-+
-+#define try_cmpxchg64_acquire(ptr, oldp, ...) \
-+({ \
-+	typeof(ptr) __ai_ptr = (ptr); \
-+	typeof(oldp) __ai_oldp = (oldp); \
-+	instrument_atomic_write(__ai_ptr, sizeof(*__ai_ptr)); \
-+	instrument_atomic_write(__ai_oldp, sizeof(*__ai_oldp)); \
-+	arch_try_cmpxchg64_acquire(__ai_ptr, __ai_oldp, __VA_ARGS__); \
-+})
-+
-+#define try_cmpxchg64_release(ptr, oldp, ...) \
-+({ \
-+	typeof(ptr) __ai_ptr = (ptr); \
-+	typeof(oldp) __ai_oldp = (oldp); \
-+	kcsan_release(); \
-+	instrument_atomic_write(__ai_ptr, sizeof(*__ai_ptr)); \
-+	instrument_atomic_write(__ai_oldp, sizeof(*__ai_oldp)); \
-+	arch_try_cmpxchg64_release(__ai_ptr, __ai_oldp, __VA_ARGS__); \
-+})
-+
-+#define try_cmpxchg64_relaxed(ptr, oldp, ...) \
-+({ \
-+	typeof(ptr) __ai_ptr = (ptr); \
-+	typeof(oldp) __ai_oldp = (oldp); \
-+	instrument_atomic_write(__ai_ptr, sizeof(*__ai_ptr)); \
-+	instrument_atomic_write(__ai_oldp, sizeof(*__ai_oldp)); \
-+	arch_try_cmpxchg64_relaxed(__ai_ptr, __ai_oldp, __VA_ARGS__); \
-+})
-+
- #define cmpxchg_local(ptr, ...) \
- ({ \
- 	typeof(ptr) __ai_ptr = (ptr); \
-@@ -2045,4 +2083,4 @@ atomic_long_dec_if_positive(atomic_long_t *v)
- })
- 
- #endif /* _LINUX_ATOMIC_INSTRUMENTED_H */
--// 87c974b93032afd42143613434d1a7788fa598f9
-+// 764f741eb77a7ad565dc8d99ce2837d5542e8aee
-diff --git a/scripts/atomic/gen-atomic-fallback.sh b/scripts/atomic/gen-atomic-fallback.sh
-index 8e2da71..3a07695 100755
---- a/scripts/atomic/gen-atomic-fallback.sh
-+++ b/scripts/atomic/gen-atomic-fallback.sh
-@@ -164,41 +164,44 @@ gen_xchg_fallbacks()
- 
- gen_try_cmpxchg_fallback()
- {
-+	local cmpxchg="$1"; shift;
- 	local order="$1"; shift;
- 
- cat <<EOF
--#ifndef arch_try_cmpxchg${order}
--#define arch_try_cmpxchg${order}(_ptr, _oldp, _new) \\
-+#ifndef arch_try_${cmpxchg}${order}
-+#define arch_try_${cmpxchg}${order}(_ptr, _oldp, _new) \\
- ({ \\
- 	typeof(*(_ptr)) *___op = (_oldp), ___o = *___op, ___r; \\
--	___r = arch_cmpxchg${order}((_ptr), ___o, (_new)); \\
-+	___r = arch_${cmpxchg}${order}((_ptr), ___o, (_new)); \\
- 	if (unlikely(___r != ___o)) \\
- 		*___op = ___r; \\
- 	likely(___r == ___o); \\
- })
--#endif /* arch_try_cmpxchg${order} */
-+#endif /* arch_try_${cmpxchg}${order} */
- 
- EOF
+-READELF="${CROSS_COMPILE:-}readelf"
+-ADDR2LINE="${CROSS_COMPILE:-}addr2line"
+-SIZE="${CROSS_COMPILE:-}size"
+-NM="${CROSS_COMPILE:-}nm"
+-
+-command -v awk >/dev/null 2>&1 || die "awk isn't installed"
+-command -v ${READELF} >/dev/null 2>&1 || die "readelf isn't installed"
+-command -v ${ADDR2LINE} >/dev/null 2>&1 || die "addr2line isn't installed"
+-command -v ${SIZE} >/dev/null 2>&1 || die "size isn't installed"
+-command -v ${NM} >/dev/null 2>&1 || die "nm isn't installed"
+-
+ usage() {
+ 	echo "usage: faddr2line [--list] <object file> <func+offset> <func+offset>..." >&2
+ 	exit 1
+@@ -69,6 +58,14 @@ die() {
+ 	exit 1
  }
  
- gen_try_cmpxchg_fallbacks()
- {
--	printf "#ifndef arch_try_cmpxchg_relaxed\n"
--	printf "#ifdef arch_try_cmpxchg\n"
-+	local cmpxchg="$1"; shift;
- 
--	gen_basic_fallbacks "arch_try_cmpxchg"
-+	printf "#ifndef arch_try_${cmpxchg}_relaxed\n"
-+	printf "#ifdef arch_try_${cmpxchg}\n"
- 
--	printf "#endif /* arch_try_cmpxchg */\n\n"
-+	gen_basic_fallbacks "arch_try_${cmpxchg}"
++READELF="${CROSS_COMPILE:-}readelf"
++ADDR2LINE="${CROSS_COMPILE:-}addr2line"
++AWK="awk"
 +
-+	printf "#endif /* arch_try_${cmpxchg} */\n\n"
++command -v ${AWK} >/dev/null 2>&1 || die "${AWK} isn't installed"
++command -v ${READELF} >/dev/null 2>&1 || die "${READELF} isn't installed"
++command -v ${ADDR2LINE} >/dev/null 2>&1 || die "${ADDR2LINE} isn't installed"
++
+ # Try to figure out the source directory prefix so we can remove it from the
+ # addr2line output.  HACK ALERT: This assumes that start_kernel() is in
+ # init/main.c!  This only works for vmlinux.  Otherwise it falls back to
+@@ -76,7 +73,7 @@ die() {
+ find_dir_prefix() {
+ 	local objfile=$1
  
- 	for order in "" "_acquire" "_release" "_relaxed"; do
--		gen_try_cmpxchg_fallback "${order}"
-+		gen_try_cmpxchg_fallback "${cmpxchg}" "${order}"
- 	done
+-	local start_kernel_addr=$(${READELF} -sW $objfile | awk '$8 == "start_kernel" {printf "0x%s", $2}')
++	local start_kernel_addr=$(${READELF} --symbols --wide $objfile | ${AWK} '$8 == "start_kernel" {printf "0x%s", $2}')
+ 	[[ -z $start_kernel_addr ]] && return
  
--	printf "#else /* arch_try_cmpxchg_relaxed */\n"
-+	printf "#else /* arch_try_${cmpxchg}_relaxed */\n"
+ 	local file_line=$(${ADDR2LINE} -e $objfile $start_kernel_addr)
+@@ -97,86 +94,133 @@ __faddr2line() {
+ 	local dir_prefix=$3
+ 	local print_warnings=$4
  
--	gen_order_fallbacks "arch_try_cmpxchg"
-+	gen_order_fallbacks "arch_try_${cmpxchg}"
+-	local func=${func_addr%+*}
++	local sym_name=${func_addr%+*}
+ 	local offset=${func_addr#*+}
+ 	offset=${offset%/*}
+-	local size=
+-	[[ $func_addr =~ "/" ]] && size=${func_addr#*/}
++	local user_size=
++	[[ $func_addr =~ "/" ]] && user_size=${func_addr#*/}
  
--	printf "#endif /* arch_try_cmpxchg_relaxed */\n\n"
-+	printf "#endif /* arch_try_${cmpxchg}_relaxed */\n\n"
+-	if [[ -z $func ]] || [[ -z $offset ]] || [[ $func = $func_addr ]]; then
++	if [[ -z $sym_name ]] || [[ -z $offset ]] || [[ $sym_name = $func_addr ]]; then
+ 		warn "bad func+offset $func_addr"
+ 		DONE=1
+ 		return
+ 	fi
+ 
+ 	# Go through each of the object's symbols which match the func name.
+-	# In rare cases there might be duplicates.
+-	file_end=$(${SIZE} -Ax $objfile | awk '$1 == ".text" {print $2}')
+-	while read symbol; do
+-		local fields=($symbol)
+-		local sym_base=0x${fields[0]}
+-		local sym_type=${fields[1]}
+-		local sym_end=${fields[3]}
+-
+-		# calculate the size
+-		local sym_size=$(($sym_end - $sym_base))
++	# In rare cases there might be duplicates, in which case we print all
++	# matches.
++	while read line; do
++		local fields=($line)
++		local sym_addr=0x${fields[1]}
++		local sym_elf_size=${fields[2]}
++		local sym_sec=${fields[6]}
++
++		# Get the section size:
++		local sec_size=$(${READELF} --section-headers --wide $objfile |
++			sed 's/\[ /\[/' |
++			${AWK} -v sec=$sym_sec '$1 == "[" sec "]" { print "0x" $6; exit }')
++
++		if [[ -z $sec_size ]]; then
++			warn "bad section size: section: $sym_sec"
++			DONE=1
++			return
++		fi
++
++		# Calculate the symbol size.
++		#
++		# Unfortunately we can't use the ELF size, because kallsyms
++		# also includes the padding bytes in its size calculation.  For
++		# kallsyms, the size calculation is the distance between the
++		# symbol and the next symbol in a sorted list.
++		local sym_size
++		local cur_sym_addr
++		local found=0
++		while read line; do
++			local fields=($line)
++			cur_sym_addr=0x${fields[1]}
++			local cur_sym_elf_size=${fields[2]}
++			local cur_sym_name=${fields[7]:-}
++
++			if [[ $cur_sym_addr = $sym_addr ]] &&
++			   [[ $cur_sym_elf_size = $sym_elf_size ]] &&
++			   [[ $cur_sym_name = $sym_name ]]; then
++				found=1
++				continue
++			fi
++
++			if [[ $found = 1 ]]; then
++				sym_size=$(($cur_sym_addr - $sym_addr))
++				[[ $sym_size -lt $sym_elf_size ]] && continue;
++				found=2
++				break
++			fi
++		done < <(${READELF} --symbols --wide $objfile | ${AWK} -v sec=$sym_sec '$7 == sec' | sort --key=2)
++
++		if [[ $found = 0 ]]; then
++			warn "can't find symbol: sym_name: $sym_name sym_sec: $sym_sec sym_addr: $sym_addr sym_elf_size: $sym_elf_size"
++			DONE=1
++			return
++		fi
++
++		# If nothing was found after the symbol, assume it's the last
++		# symbol in the section.
++		[[ $found = 1 ]] && sym_size=$(($sec_size - $sym_addr))
++
+ 		if [[ -z $sym_size ]] || [[ $sym_size -le 0 ]]; then
+-			warn "bad symbol size: base: $sym_base end: $sym_end"
++			warn "bad symbol size: sym_addr: $sym_addr cur_sym_addr: $cur_sym_addr"
+ 			DONE=1
+ 			return
+ 		fi
++
+ 		sym_size=0x$(printf %x $sym_size)
+ 
+-		# calculate the address
+-		local addr=$(($sym_base + $offset))
++		# Calculate the section address from user-supplied offset:
++		local addr=$(($sym_addr + $offset))
+ 		if [[ -z $addr ]] || [[ $addr = 0 ]]; then
+-			warn "bad address: $sym_base + $offset"
++			warn "bad address: $sym_addr + $offset"
+ 			DONE=1
+ 			return
+ 		fi
+ 		addr=0x$(printf %x $addr)
+ 
+-		# weed out non-function symbols
+-		if [[ $sym_type != t ]] && [[ $sym_type != T ]]; then
+-			[[ $print_warnings = 1 ]] &&
+-				echo "skipping $func address at $addr due to non-function symbol of type '$sym_type'"
+-			continue
+-		fi
+-
+-		# if the user provided a size, make sure it matches the symbol's size
+-		if [[ -n $size ]] && [[ $size -ne $sym_size ]]; then
++		# If the user provided a size, make sure it matches the symbol's size:
++		if [[ -n $user_size ]] && [[ $user_size -ne $sym_size ]]; then
+ 			[[ $print_warnings = 1 ]] &&
+-				echo "skipping $func address at $addr due to size mismatch ($size != $sym_size)"
++				echo "skipping $sym_name address at $addr due to size mismatch ($user_size != $sym_size)"
+ 			continue;
+ 		fi
+ 
+-		# make sure the provided offset is within the symbol's range
++		# Make sure the provided offset is within the symbol's range:
+ 		if [[ $offset -gt $sym_size ]]; then
+ 			[[ $print_warnings = 1 ]] &&
+-				echo "skipping $func address at $addr due to size mismatch ($offset > $sym_size)"
++				echo "skipping $sym_name address at $addr due to size mismatch ($offset > $sym_size)"
+ 			continue
+ 		fi
+ 
+-		# separate multiple entries with a blank line
++		# In case of duplicates or multiple addresses specified on the
++		# cmdline, separate multiple entries with a blank line:
+ 		[[ $FIRST = 0 ]] && echo
+ 		FIRST=0
+ 
+-		# pass real address to addr2line
+-		echo "$func+$offset/$sym_size:"
+-		local file_lines=$(${ADDR2LINE} -fpie $objfile $addr | sed "s; $dir_prefix\(\./\)*; ;")
+-		[[ -z $file_lines ]] && return
++		echo "$sym_name+$offset/$sym_size:"
+ 
++		# Pass section address to addr2line and strip absolute paths
++		# from the output:
++		local output=$(${ADDR2LINE} -fpie $objfile $addr | sed "s; $dir_prefix\(\./\)*; ;")
++		[[ -z $output ]] && continue
++
++		# Default output (non --list):
+ 		if [[ $LIST = 0 ]]; then
+-			echo "$file_lines" | while read -r line
++			echo "$output" | while read -r line
+ 			do
+ 				echo $line
+ 			done
+ 			DONE=1;
+-			return
++			continue
+ 		fi
+ 
+-		# show each line with context
+-		echo "$file_lines" | while read -r line
++		# For --list, show each line with its corresponding source code:
++		echo "$output" | while read -r line
+ 		do
+ 			echo
+ 			echo $line
+@@ -184,12 +228,12 @@ __faddr2line() {
+ 			n1=$[$n-5]
+ 			n2=$[$n+5]
+ 			f=$(echo $line | sed 's/.*at \(.\+\):.*/\1/g')
+-			awk 'NR>=strtonum("'$n1'") && NR<=strtonum("'$n2'") { if (NR=='$n') printf(">%d<", NR); else printf(" %d ", NR); printf("\t%s\n", $0)}' $f
++			${AWK} 'NR>=strtonum("'$n1'") && NR<=strtonum("'$n2'") { if (NR=='$n') printf(">%d<", NR); else printf(" %d ", NR); printf("\t%s\n", $0)}' $f
+ 		done
+ 
+ 		DONE=1
+ 
+-	done < <(${NM} -n $objfile | awk -v fn=$func -v end=$file_end '$3 == fn { found=1; line=$0; start=$1; next } found == 1 { found=0; print line, "0x"$1 } END {if (found == 1) print line, end; }')
++	done < <(${READELF} --symbols --wide $objfile | ${AWK} -v fn=$sym_name '$4 == "FUNC" && $8 == fn')
  }
  
- cat << EOF
-@@ -218,7 +221,9 @@ for xchg in "arch_xchg" "arch_cmpxchg" "arch_cmpxchg64"; do
- 	gen_xchg_fallbacks "${xchg}"
- done
- 
--gen_try_cmpxchg_fallbacks
-+for cmpxchg in "cmpxchg" "cmpxchg64"; do
-+	gen_try_cmpxchg_fallbacks "${cmpxchg}"
-+done
- 
- grep '^[a-z]' "$1" | while read name meta args; do
- 	gen_proto "${meta}" "${name}" "atomic" "int" ${args}
-diff --git a/scripts/atomic/gen-atomic-instrumented.sh b/scripts/atomic/gen-atomic-instrumented.sh
-index 68f9027..77c0652 100755
---- a/scripts/atomic/gen-atomic-instrumented.sh
-+++ b/scripts/atomic/gen-atomic-instrumented.sh
-@@ -166,7 +166,7 @@ grep '^[a-z]' "$1" | while read name meta args; do
- done
- 
- 
--for xchg in "xchg" "cmpxchg" "cmpxchg64" "try_cmpxchg"; do
-+for xchg in "xchg" "cmpxchg" "cmpxchg64" "try_cmpxchg" "try_cmpxchg64"; do
- 	for order in "" "_acquire" "_release" "_relaxed"; do
- 		gen_xchg "${xchg}" "${order}" ""
- 		printf "\n"
+ [[ $# -lt 2 ]] && usage
