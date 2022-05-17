@@ -2,55 +2,59 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 33F7B529FE6
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 May 2022 12:59:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B49CB52AA2F
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 May 2022 20:12:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236393AbiEQK73 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 17 May 2022 06:59:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59712 "EHLO
+        id S1351906AbiEQSMH (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 17 May 2022 14:12:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58804 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232650AbiEQK7Y (ORCPT
+        with ESMTP id S1352080AbiEQSME (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 17 May 2022 06:59:24 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB42B4B41B;
-        Tue, 17 May 2022 03:58:53 -0700 (PDT)
-Date:   Tue, 17 May 2022 10:58:48 -0000
+        Tue, 17 May 2022 14:12:04 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B68518E3F;
+        Tue, 17 May 2022 11:12:02 -0700 (PDT)
+Date:   Tue, 17 May 2022 18:11:59 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1652785130;
+        s=2020; t=1652811120;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=qq22VJKbqTDmP1HhOQj3CkRWDuZ6tAV0hl6p/bOyx3w=;
-        b=zZRNLb73NmYEHumOPqdjKTbdLGv4BcCFhaNdfmjLZXXU9Fy6m+r4o4DxaRpEu2xFdaLAwC
-        w1KxE0BlKQRCvw1bPW/vUvkSGw+/usor3Npa0MdwVsezfXBd6zFOaE224q/CDyMhM/a0ZU
-        5EcJodc9BTO6q2w2ejnCWkjwroYYQJtj/mHQqglicWzYemPtvyKRcxhpVm5le/Br0TyGzB
-        FaXfWQwKOlYB/b5Y72QwGYi4CYCiqhDVvDuBfuc44SkSFPoOeFxOe0BKNSvRZgtDEMXEn8
-        H0TvvahZW7xjdSQ/HAtelz18lSaEO3xxxQ7XWgyVgFm5M8Q9nzFGHbCjh7QaHQ==
+        bh=2dK1b3gnvWzB30FrYlVqyL4QjaG6ljPHKn4EyMVGiPU=;
+        b=feFr094iQSxl25E3vX86r6jDqq2qyUNJ07OYbra4bpXZhQKY3mxKOHo4W71GKrPe8NTtUd
+        T4x7TxACTnh2bf1Aw1rpbq86SbJYEbSEF3MYsH4GlZAclHAXn1jw4K7IiCzBkpjYMAf1xS
+        2vYjwBNNg9VWMBUEwD7FHCs+LigRX7JVSUBjH97+yDYwktaLbqc7nsqo2A34rck7kDL59E
+        L41teWz6dgAxpt8l3rlzujLRaXqtzbag3p6wFob0dsputt6xg6yicpr0JK5hsVqsIP9Zs0
+        zOfBsFezsMdBYm9+pzh4Kl2i/MDq/YNq1iWm2rNdkzrERgcMGr++Ot4kSGBzUA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1652785130;
+        s=2020e; t=1652811120;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=qq22VJKbqTDmP1HhOQj3CkRWDuZ6tAV0hl6p/bOyx3w=;
-        b=uY5vygZkyTTy69Ymlaxx8Mt3duXIZ8G2oNbML+FpIf0i0Ncze44jzHTa7+M+fNM0sRKIy6
-        FO4q7w+13CZn+0CA==
-From:   "tip-bot2 for Colin Ian King" <tip-bot2@linutronix.de>
+        bh=2dK1b3gnvWzB30FrYlVqyL4QjaG6ljPHKn4EyMVGiPU=;
+        b=AwY65UdllYU35deQQhMWWCc2nOgOXgj0DN4pmB+NfBleCZRKU59BXATJZrYQybN8nG+C1a
+        /yZIe5EImu/0M7BQ==
+From:   "tip-bot2 for Reinette Chatre" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/sev] x86/sev: Remove duplicated assignment to variable info
-Cc:     Colin Ian King <colin.i.king@gmail.com>,
-        Borislav Petkov <bp@suse.de>, x86@kernel.org,
+Subject: [tip: x86/sgx] x86/sgx: Ensure no data in PCMD page after truncate
+Cc:     Dave Hansen <dave.hansen@linux.intel.com>,
+        Reinette Chatre <reinette.chatre@intel.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Haitao Huang <haitao.huang@intel.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220516184215.51841-1-colin.i.king@gmail.com>
-References: <20220516184215.51841-1-colin.i.king@gmail.com>
+In-Reply-To: =?utf-8?q?=3C6495120fed43fafc1496d09dd23df922b9a32709=2E16523?=
+ =?utf-8?q?89823=2Egit=2Ereinette=2Echatre=40intel=2Ecom=3E?=
+References: =?utf-8?q?=3C6495120fed43fafc1496d09dd23df922b9a32709=2E165238?=
+ =?utf-8?q?9823=2Egit=2Ereinette=2Echatre=40intel=2Ecom=3E?=
 MIME-Version: 1.0
-Message-ID: <165278512876.4207.18026967254271145899.tip-bot2@tip-bot2>
+Message-ID: <165281111949.4207.13292386419056952708.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,59 +69,68 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/sev branch of tip:
+The following commit has been merged into the x86/sgx branch of tip:
 
-Commit-ID:     0621210ab7693e6d50585ca689d95d57df617455
-Gitweb:        https://git.kernel.org/tip/0621210ab7693e6d50585ca689d95d57df617455
-Author:        Colin Ian King <colin.i.king@gmail.com>
-AuthorDate:    Mon, 16 May 2022 19:42:15 +01:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 17 May 2022 12:52:37 +02:00
+Commit-ID:     e3a3bbe3e99de73043a1d32d36cf4d211dc58c7e
+Gitweb:        https://git.kernel.org/tip/e3a3bbe3e99de73043a1d32d36cf4d211dc58c7e
+Author:        Reinette Chatre <reinette.chatre@intel.com>
+AuthorDate:    Thu, 12 May 2022 14:51:01 -07:00
+Committer:     Dave Hansen <dave.hansen@linux.intel.com>
+CommitterDate: Mon, 16 May 2022 15:17:57 -07:00
 
-x86/sev: Remove duplicated assignment to variable info
+x86/sgx: Ensure no data in PCMD page after truncate
 
-Variable info is being assigned the same value twice, remove the
-redundant assignment. Also assign variable v in the declaration.
+A PCMD (Paging Crypto MetaData) page contains the PCMD
+structures of enclave pages that have been encrypted and
+moved to the shmem backing store. When all enclave pages
+sharing a PCMD page are loaded in the enclave, there is no
+need for the PCMD page and it can be truncated from the
+backing store.
 
-Cleans up clang scan warning:
-  warning: Value stored to 'info' during its initialization is never read [deadcode.DeadStores]
+A few issues appeared around the truncation of PCMD pages. The
+known issues have been addressed but the PCMD handling code could
+be made more robust by loudly complaining if any new issue appears
+in this area.
 
-No code changed:
+Add a check that will complain with a warning if the PCMD page is not
+actually empty after it has been truncated. There should never be data
+in the PCMD page at this point since it is was just checked to be empty
+and truncated with enclave mutex held and is updated with the
+enclave mutex held.
 
-  # arch/x86/kernel/sev.o:
-
-   text    data     bss     dec     hex filename
-  19878    4487    4112   28477    6f3d sev.o.before
-  19878    4487    4112   28477    6f3d sev.o.after
-
-md5:
-   bfbaa515af818615fd01fea91e7eba1b  sev.o.before.asm
-   bfbaa515af818615fd01fea91e7eba1b  sev.o.after.asm
-
-  [ bp: Running the before/after check on sev.c because sev-shared.c
-    gets included into it. ]
-
-Fixes: 597cfe48212a ("x86/boot/compressed/64: Setup a GHCB-based VC Exception handler")
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lore.kernel.org/r/20220516184215.51841-1-colin.i.king@gmail.com
+Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
+Signed-off-by: Reinette Chatre <reinette.chatre@intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Tested-by: Haitao Huang <haitao.huang@intel.com>
+Link: https://lkml.kernel.org/r/6495120fed43fafc1496d09dd23df922b9a32709.1652389823.git.reinette.chatre@intel.com
 ---
- arch/x86/kernel/sev-shared.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ arch/x86/kernel/cpu/sgx/encl.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/sev-shared.c b/arch/x86/kernel/sev-shared.c
-index 2b4270d..b478edf 100644
---- a/arch/x86/kernel/sev-shared.c
-+++ b/arch/x86/kernel/sev-shared.c
-@@ -201,10 +201,7 @@ static enum es_result verify_exception_info(struct ghcb *ghcb, struct es_em_ctxt
+diff --git a/arch/x86/kernel/cpu/sgx/encl.c b/arch/x86/kernel/cpu/sgx/encl.c
+index 243f3bd..3c24e61 100644
+--- a/arch/x86/kernel/cpu/sgx/encl.c
++++ b/arch/x86/kernel/cpu/sgx/encl.c
+@@ -187,12 +187,20 @@ static int __sgx_encl_eldu(struct sgx_encl_page *encl_page,
+ 	kunmap_atomic(pcmd_page);
+ 	kunmap_atomic((void *)(unsigned long)pginfo.contents);
  
- 	if (ret == 1) {
- 		u64 info = ghcb->save.sw_exit_info_2;
--		unsigned long v;
--
--		info = ghcb->save.sw_exit_info_2;
--		v = info & SVM_EVTINJ_VEC_MASK;
-+		unsigned long v = info & SVM_EVTINJ_VEC_MASK;
++	get_page(b.pcmd);
+ 	sgx_encl_put_backing(&b);
  
- 		/* Check if exception information from hypervisor is sane. */
- 		if ((info & SVM_EVTINJ_VALID) &&
+ 	sgx_encl_truncate_backing_page(encl, page_index);
+ 
+-	if (pcmd_page_empty && !reclaimer_writing_to_pcmd(encl, pcmd_first_page))
++	if (pcmd_page_empty && !reclaimer_writing_to_pcmd(encl, pcmd_first_page)) {
+ 		sgx_encl_truncate_backing_page(encl, PFN_DOWN(page_pcmd_off));
++		pcmd_page = kmap_atomic(b.pcmd);
++		if (memchr_inv(pcmd_page, 0, PAGE_SIZE))
++			pr_warn("PCMD page not empty after truncate.\n");
++		kunmap_atomic(pcmd_page);
++	}
++
++	put_page(b.pcmd);
+ 
+ 	return ret;
+ }
