@@ -2,265 +2,134 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 662C252DFAE
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 19 May 2022 23:57:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8074A52E3D3
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 20 May 2022 06:34:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245391AbiESV5q (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 19 May 2022 17:57:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39796 "EHLO
+        id S1344960AbiETEeR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 20 May 2022 00:34:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36722 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245394AbiESV5o (ORCPT
+        with ESMTP id S239676AbiETEeQ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 19 May 2022 17:57:44 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72446108AA7;
-        Thu, 19 May 2022 14:57:28 -0700 (PDT)
-Date:   Thu, 19 May 2022 21:57:26 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1652997447;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=PSPMLRw1pmQPK5o4VwMo09I8cSgfaQ+4eOpXqmuc8tw=;
-        b=VC7Ye8l//u6HVJt/u+VOwKoCodbsAIrNcmvzc92yIVGCV9iaUPyZQi9m+BFibEqxHy+1m2
-        wliuBhGX91jSHwEjutjjGyamzeQwkm4LqLLfob4mKgPsNPD9UJSBP/Yuofr53WqwhlLJET
-        YiPgPEiJRcGErGRZd/dmpqQEeU8F7XnTSG6tVbkS+uEkvQUoS/ozaL5Z5pqKiiu1x8fiJF
-        AqWtFHIPXp72hhNmWPBZZciE/FgLig/a0M1IkUpHpjT5D38QYhc8ip0iXPo0QMZA9U5s45
-        Sh5Q1AkrXHEATIjHv9v0DGwrMfE5rYJFoChxx/ElJ5sJbYkg0dAu46M6SDZvXQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1652997447;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=PSPMLRw1pmQPK5o4VwMo09I8cSgfaQ+4eOpXqmuc8tw=;
-        b=eQLof9jR5FQvyX758l2F/9GSXLS2ANoa0+Bor7XmyvB9hRsMjofrGtKDbBjeC4bkO8EmPa
-        IajtMgsD6ghwqVBw==
-From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/core] bug: Use normal relative pointers in 'struct bug_entry'
-Cc:     Josh Poimboeuf <jpoimboe@kernel.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Catalin Marinas <catalin.marinas@arm.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <f0e05be797a16f4fc2401eeb88c8450dcbe61df6.1652362951.git.jpoimboe@kernel.org>
-References: <f0e05be797a16f4fc2401eeb88c8450dcbe61df6.1652362951.git.jpoimboe@kernel.org>
+        Fri, 20 May 2022 00:34:16 -0400
+X-Greylist: delayed 856 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 19 May 2022 21:34:13 PDT
+Received: from CN01-BJB-obe.outbound.protection.partner.outlook.cn (mail-bjbhn0100.outbound.protection.partner.outlook.cn [42.159.36.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78CA559BBB;
+        Thu, 19 May 2022 21:34:12 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=JI+bH7JSEPe63a0ufZQe6Uh9ti30CYZ+hGWhBBMOIYbLxSLtg1nmJWY9V57t+TMbDXd1CI7D2VPJOZt3cHnf3T9XflYJcQZCUcOkNUAxoyfpB+6QjaKmp8W9qolyQNIiboFyvSBGnU/vUx51IaaBG9AbCeuCQpnvlWvPs3qi7zp+f4bC7CrflI7Ujw3QFYEYZxjyl6eM22IVuuXPw08+tQc7supWGK0wxd3MCPiU6FQODQKYE3OM07RaXsp/q2dJpfYuJ/hutvq29C500ECaf7cWw8FvD7OHtCAQk9qjDwqwagrTMgR8mVfsEgkhA3vH2KV9xg1JWPWZgm1BCIcG4A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=XHa7Vpxtm/u3S4otqoZTmpXUuVJNGmaT4A6UJUMDuKo=;
+ b=IEvfOjrIktHVaamCUzHdCl9/zcAcAn6N/0OiqL7lqSQR6aiOyAnt6G4lmbdOltyd6sz4SX/9YWucGUQkTjiZV2pEaDXtVdC5LnEBCuEac4H5z+6GTjg0IjwEqF2glibVb1lm5H/ubXY/iSJdcUBpEGO++TspTr21Qi/WVRpaZ/SYc3or+jDqvXtvsdZlgP5uPgmuyWiyuIIL4qNywODqE8kE2WBum+BO/Ymfq7NCD/sdkWKkysSVWeytCSBtzIbqeihbVQxrYWwHvQ+1FnMAKvTgESNP0xU/jFGiGzJYRLt7iGeC9QcqCL3DVMlTtzkDc4D8/7boVZfPu8Mf+xJVZA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=gientech.com; dmarc=pass action=none header.from=gientech.com;
+ dkim=pass header.d=gientech.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gientech.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=XHa7Vpxtm/u3S4otqoZTmpXUuVJNGmaT4A6UJUMDuKo=;
+ b=LWUiuZhuFO/ab7LpdcZEiKDGDWY50+xvO0R82C4AweoFRIgKFTSxMp+cV1DOkPf13p5RMGwg8Ul9HUmbovHgSf+5puGz/pN/8A2t52c4+Xhol7cPXn6c2qyoE4ov48Ph/LNEBh9HvX2eiEBxGsp+tYDyR2bfIkikNPVXeQZxfQfcVBGP68XXOW4Aw+ogxSIylm1WO0VVAq7L/wt0GX0dlRDoYJ8XJZLonVr0IRMnf1fr9WYccQWADOWMZAvtC6zJgP3AuSSpqwviCLm+aqgAhvxHyVH2dvpEYjd6jMA1QtbO3PTMimj5yXBY7bvVZoU4PT+HACEzPT+bm+DWNlSu3g==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=gientech.com;
+Received: from SHXPR01MB0623.CHNPR01.prod.partner.outlook.cn (10.43.110.19) by
+ SHXPR01MB0591.CHNPR01.prod.partner.outlook.cn (10.43.109.208) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.5273.14; Fri, 20 May 2022 04:19:53 +0000
+Received: from SHXPR01MB0623.CHNPR01.prod.partner.outlook.cn ([10.43.110.19])
+ by SHXPR01MB0623.CHNPR01.prod.partner.outlook.cn ([10.43.110.19]) with mapi
+ id 15.20.5273.017; Fri, 20 May 2022 04:19:53 +0000
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: Ree
+To:     Recipients <cuidong.liu@gientech.com>
+From:   "J Wu" <cuidong.liu@gientech.com>
+Date:   Wed, 18 May 2022 21:19:17 +0000
+Reply-To: contact@jimmywu.online
+X-ClientProxiedBy: BJSPR01CA0014.CHNPR01.prod.partner.outlook.cn
+ (10.43.34.154) To SHXPR01MB0623.CHNPR01.prod.partner.outlook.cn
+ (10.43.110.19)
+Message-ID: <SHXPR01MB0623D932EAA327E1D46275A289D19@SHXPR01MB0623.CHNPR01.prod.partner.outlook.cn>
 MIME-Version: 1.0
-Message-ID: <165299744635.4207.4995639142275371987.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: a216847a-0b26-495f-970d-08da39141f66
+X-MS-TrafficTypeDiagnostic: SHXPR01MB0591:EE_
+X-Microsoft-Antispam-PRVS: <SHXPR01MB0591204E54D6D40D0A000A1C89D39@SHXPR01MB0591.CHNPR01.prod.partner.outlook.cn>
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: =?iso-8859-1?Q?Sq6OYOtmcB9fCvS3Jvu8eTA4SttQ+QHkLKtYhGE7E2i7sR63wqb70uG2wu?=
+ =?iso-8859-1?Q?5Bxc+FgY56nqIh1Bkn0geK5SsnL32NPFPMvDCM1BwedeqR8MvVEO7PL42t?=
+ =?iso-8859-1?Q?mPQ/hDLcBO4wjbEPnPS/pocvJVJxCBYJvKx/QAyffVnamnKtO+VoZgRQjv?=
+ =?iso-8859-1?Q?5Fg/2r4+z1TTTPHydQOxNGoYYIuAPeVa6+shyFwj9d9kcvl3IVHv9gYP3U?=
+ =?iso-8859-1?Q?g5bW3P+bEvgPM1NJvz+mVBNna525ncZpZFhN6M/ej/BAfoD/x4rj+QdWEs?=
+ =?iso-8859-1?Q?fQ/vgafr8Y5HYeWTofgHIsPPW/94B9ATZP2jn4GmPHZtnUMXB09B5Enx1D?=
+ =?iso-8859-1?Q?rhYIrQYoD/12/P/yn2wEDoEypTV2dmQME14ISokFY30iu6YhLcweBUwHlH?=
+ =?iso-8859-1?Q?j8tGwph6xgKNiYKZCZhKqTUgRYh1GHIAOHmxDBRd+DslDIshCpbp/C1vQb?=
+ =?iso-8859-1?Q?8IAK1gp7erTbkVJKLsVm0y0rlnGKcHZk+vAYhfe9HL5Fr6RCL5q9og8hzO?=
+ =?iso-8859-1?Q?t0M0ldn2dZ82EMceC+ivJNO2wEAe3WBgkFP8xcJS+Q/FWbRRPXzWYVrI5F?=
+ =?iso-8859-1?Q?Ap/8jwS16k61SvBYV6w9CKl9ZT/ew4K793n1tS2SmSiTIz4IEa00N2Mk8e?=
+ =?iso-8859-1?Q?ygWj5JmfVZNcrl0QecW1SUZt8DV3BXx9VbGia3w7a5QxvLNzdFLnsCx9w2?=
+ =?iso-8859-1?Q?TFOU80N+6k6sNvNvcMJlLkAuSigf8ILINeE8Ccy1o6opYaHqBatvV6BYV3?=
+ =?iso-8859-1?Q?DLdoWKediH5qiAHeKUfIINml6yCvch7PyUXm1k4CWg4hIZLDGVwWbcLpET?=
+ =?iso-8859-1?Q?8xWgUGY/lo+eC6x2oWMUrolPTVKTzfvDa+1tCcufNjxOKhCzEb+sGfSpFx?=
+ =?iso-8859-1?Q?3gQjedKeUqIKPSNnnhGtwzNJypGOq7o7XRi/q5+f2eawXAWCwiRZZLdJnc?=
+ =?iso-8859-1?Q?owLMeWXgUaWySitqpEFcP5VPwIz4NyE2NML8ODFFtWTj0EQc9GyGjby6Tn?=
+ =?iso-8859-1?Q?QUI8HHBSaaiAmz9a3C+Ksz05PLMaPrGrfwSLcgZWRWLbD57bdY+C+mxLGZ?=
+ =?iso-8859-1?Q?Ng=3D=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:5;SRV:;IPV:NLI;SFV:SPM;H:SHXPR01MB0623.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:OSPM;SFS:(13230001)(366004)(8936002)(19618925003)(8676002)(6862004)(66946007)(558084003)(3480700007)(186003)(9686003)(4270600006)(7116003)(2906002)(6666004)(33656002)(40160700002)(7366002)(7406005)(7696005)(7416002)(66556008)(66476007)(38350700002)(508600001)(55016003)(38100700002)(86362001)(26005)(6200100001)(40180700001)(52116002)(62346012);DIR:OUT;SFP:1501;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?bCp9D4ddJVDwMwRZi/CmNBOGaYIG4rzgztThfGj9DwPa63a0QEDxkVd0Mm?=
+ =?iso-8859-1?Q?sBVLLQUgbIIaUsGPAhNo0ezk0yEFWjOYKTVLk1oApvq0mgiXwM0rB9eimX?=
+ =?iso-8859-1?Q?VAK54SR9YoXTbc/4Gl4gXRU0Uf0Q+xqZiBpnC7v9Z/EqdcpV4uFXpTxXjW?=
+ =?iso-8859-1?Q?uIM/xkA5lFjQ+WzpufANs2+LcPYygnX3tn0VJ0lCD6lAGirF6nYMh2a5F5?=
+ =?iso-8859-1?Q?r6V0FV1fXgPNnG5YNAXqpWru6YUhz/HaPUvS8QqRJ0i/ABcK/mtLHTH0it?=
+ =?iso-8859-1?Q?/38ilyFy36qwrGoOBYwwJ/I584EpUM8394bAgSM3r24OUZmfYMTBAii9+C?=
+ =?iso-8859-1?Q?Dl1h3B/cTZtPGberEYSLR/R+zzSFMn0CCBh5PlHktMOpsQ1Bx87V6xgMit?=
+ =?iso-8859-1?Q?AKJCjYlX20EsIcuqNrZqomDr+JcIq5zXqjOHZRHfJPXzD//qMydDbEL2f/?=
+ =?iso-8859-1?Q?yQ4KDWLcArl8aGTMbjRCP/ZSqTN68MkFnmH8GuTzWyphLbQRDZ4MZjNcUP?=
+ =?iso-8859-1?Q?mfWh8bFFDZeaiMkOBkq3l4Vyd8J8zHcq9vk+cMRGfVx/ZSkUzGi/izjIJ1?=
+ =?iso-8859-1?Q?wCIaqX6tmSlk6PmjGL9Gvt2jB02IaGydd2mGPJaoqsitDwl3USs6t1+ile?=
+ =?iso-8859-1?Q?wdNKd35iVOFcPlVSX9Zn360byDY0kAvFSTAarG+dC7KuAKzg1zs75AtadZ?=
+ =?iso-8859-1?Q?ouI1+d0bb+pVEC0RTaMVfv4zQ6I2/yrk3b5ne46I7NIwD2f+02KH6z8++Z?=
+ =?iso-8859-1?Q?JYla9SnJdZXJnun076HO7xJkHExaslOHoTmHC0u3Vd24E10WE3g2uoCBRa?=
+ =?iso-8859-1?Q?Y4gStEVIKpV+VTDOuX+Ibx+Mz8t4YIDYBXyHpJLp9BXSwN+1aL+YHjSjI1?=
+ =?iso-8859-1?Q?dezTjzWgogZdh1XfPswqV/+fScg7BXCOco9xRI0dvgbANvhn8BQ7me5zD9?=
+ =?iso-8859-1?Q?GBaxKA7dWkDNPwMrA5jU4Vp/ohrzyoDHgjJ6rpsFwJi0oqVdveKsbfPvrP?=
+ =?iso-8859-1?Q?38PVQuEPn4qRmUAsoKa1Zl8xENI7id3zk2QK9RwfOub09QSJuiWZTXnRKK?=
+ =?iso-8859-1?Q?LC+zSLxXh9fKVgLgdTcqX9Q5k0Q5dvP49gdBTHfZ6ZW/qlWvgnMk8JBHI7?=
+ =?iso-8859-1?Q?SLm+3+017mwTNSvh/ziIXAdEFjj37yH5QXVM31bW6jAYSZPoozeY9vryya?=
+ =?iso-8859-1?Q?I8IRkMAlzQP04NInPJv+Wz+mVjl/2xl5IQkF9GgMt/8EsROQ1PgfbehPKR?=
+ =?iso-8859-1?Q?57nE949UxXR6n/54DPnviC1IVN4VqyawvKpP0AbTq4hHvdAM4CcbRDvYYV?=
+ =?iso-8859-1?Q?+Nwi66XTGtYyFbz2WCbOjuAsML2jfYfCcqjBb02+ug+k9HLm82+ntWPxOq?=
+ =?iso-8859-1?Q?KonjaMQgNVxZqwbt27vtR/KhBaYZzofD0WRm6+wm2NrvZfGYMC3uOTiQm0?=
+ =?iso-8859-1?Q?s2Ed6pCe1pEhkAFXUBX5W285yTj5cTxv1ADMOQKeTJZPtrz45OKmJOr0vi?=
+ =?iso-8859-1?Q?WMGzlIWQ3RiHbeW+U8KQvezl6lfrYJ7Io17vEeyzULayrazIGkbkp+gMuC?=
+ =?iso-8859-1?Q?NlgU8H++P/lYtdHZeEwg/BMl4Lh9WWewAh6Jes3saY9IYRpfImN0CqvD82?=
+ =?iso-8859-1?Q?yeTQzbUwmeBwP8SZxd7vcuc357ikPrMOwr3TeZ3bZPYpG8IAyZ73tcLoJE?=
+ =?iso-8859-1?Q?08Vlin1m88ZafRHDZDvpZyz446Uyi3faLoXVxDOcMxIgiZ5Q+h0vm9//nm?=
+ =?iso-8859-1?Q?4wVQ=3D=3D?=
+X-OriginatorOrg: gientech.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a216847a-0b26-495f-970d-08da39141f66
+X-MS-Exchange-CrossTenant-AuthSource: SHXPR01MB0623.CHNPR01.prod.partner.outlook.cn
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 May 2022 21:19:41.6855
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 89592e53-6f9d-4b93-82b1-9f8da689f1b4
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: yAO4rU6vmUrHg9H2MXp3O42JJy1m4xg9SWP61llnnQJliwVAnJU3ehJqA+KGMcB3sEBPK+Fhp87LbPl5BYp8ZzPGJ5/bJQuCkAa2052Bz6M=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SHXPR01MB0591
+X-Spam-Status: No, score=2.3 required=5.0 tests=BAYES_50,DATE_IN_PAST_24_48,
+        DKIM_INVALID,DKIM_SIGNED,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: **
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/core branch of tip:
-
-Commit-ID:     69505e3d9a39a988aaed9b58aa6b3482238f6516
-Gitweb:        https://git.kernel.org/tip/69505e3d9a39a988aaed9b58aa6b3482238f6516
-Author:        Josh Poimboeuf <jpoimboe@kernel.org>
-AuthorDate:    Thu, 12 May 2022 06:56:23 -07:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Thu, 19 May 2022 23:46:10 +02:00
-
-bug: Use normal relative pointers in 'struct bug_entry'
-
-With CONFIG_GENERIC_BUG_RELATIVE_POINTERS, the addr/file relative
-pointers are calculated weirdly: based on the beginning of the bug_entry
-struct address, rather than their respective pointer addresses.
-
-Make the relative pointers less surprising to both humans and tools by
-calculating them the normal way.
-
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Mark Rutland <mark.rutland@arm.com>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Sven Schnelle <svens@linux.ibm.com> # s390
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
-Tested-by: Mark Rutland <mark.rutland@arm.com> [arm64]
-Link: https://lkml.kernel.org/r/f0e05be797a16f4fc2401eeb88c8450dcbe61df6.1652362951.git.jpoimboe@kernel.org
----
- arch/arm64/include/asm/asm-bug.h |  4 ++--
- arch/powerpc/include/asm/bug.h   | 14 ++++++++------
- arch/riscv/include/asm/bug.h     |  4 ++--
- arch/s390/include/asm/bug.h      |  5 +++--
- arch/x86/include/asm/bug.h       |  2 +-
- lib/bug.c                        | 15 +++++++--------
- 6 files changed, 23 insertions(+), 21 deletions(-)
-
-diff --git a/arch/arm64/include/asm/asm-bug.h b/arch/arm64/include/asm/asm-bug.h
-index 03f52f8..c762038 100644
---- a/arch/arm64/include/asm/asm-bug.h
-+++ b/arch/arm64/include/asm/asm-bug.h
-@@ -14,7 +14,7 @@
- 	14472:	.string file;					\
- 		.popsection;					\
- 								\
--		.long 14472b - 14470b;				\
-+		.long 14472b - .;				\
- 		.short line;
- #else
- #define _BUGVERBOSE_LOCATION(file, line)
-@@ -25,7 +25,7 @@
- #define __BUG_ENTRY(flags) 				\
- 		.pushsection __bug_table,"aw";		\
- 		.align 2;				\
--	14470:	.long 14471f - 14470b;			\
-+	14470:	.long 14471f - .;			\
- _BUGVERBOSE_LOCATION(__FILE__, __LINE__)		\
- 		.short flags; 				\
- 		.popsection;				\
-diff --git a/arch/powerpc/include/asm/bug.h b/arch/powerpc/include/asm/bug.h
-index ecbae18..61a4736 100644
---- a/arch/powerpc/include/asm/bug.h
-+++ b/arch/powerpc/include/asm/bug.h
-@@ -13,7 +13,8 @@
- #ifdef CONFIG_DEBUG_BUGVERBOSE
- .macro __EMIT_BUG_ENTRY addr,file,line,flags
- 	 .section __bug_table,"aw"
--5001:	 .4byte \addr - 5001b, 5002f - 5001b
-+5001:	 .4byte \addr - .
-+	 .4byte 5002f - .
- 	 .short \line, \flags
- 	 .org 5001b+BUG_ENTRY_SIZE
- 	 .previous
-@@ -24,7 +25,7 @@
- #else
- .macro __EMIT_BUG_ENTRY addr,file,line,flags
- 	 .section __bug_table,"aw"
--5001:	 .4byte \addr - 5001b
-+5001:	 .4byte \addr - .
- 	 .short \flags
- 	 .org 5001b+BUG_ENTRY_SIZE
- 	 .previous
-@@ -49,15 +50,16 @@
- #ifdef CONFIG_DEBUG_BUGVERBOSE
- #define _EMIT_BUG_ENTRY				\
- 	".section __bug_table,\"aw\"\n"		\
--	"2:\t.4byte 1b - 2b, %0 - 2b\n"		\
--	"\t.short %1, %2\n"			\
-+	"2:	.4byte 1b - .\n"		\
-+	"	.4byte %0 - .\n"		\
-+	"	.short %1, %2\n"		\
- 	".org 2b+%3\n"				\
- 	".previous\n"
- #else
- #define _EMIT_BUG_ENTRY				\
- 	".section __bug_table,\"aw\"\n"		\
--	"2:\t.4byte 1b - 2b\n"			\
--	"\t.short %2\n"				\
-+	"2:	.4byte 1b - .\n"		\
-+	"	.short %2\n"			\
- 	".org 2b+%3\n"				\
- 	".previous\n"
- #endif
-diff --git a/arch/riscv/include/asm/bug.h b/arch/riscv/include/asm/bug.h
-index d3804a2..1aaea81 100644
---- a/arch/riscv/include/asm/bug.h
-+++ b/arch/riscv/include/asm/bug.h
-@@ -30,8 +30,8 @@
- typedef u32 bug_insn_t;
- 
- #ifdef CONFIG_GENERIC_BUG_RELATIVE_POINTERS
--#define __BUG_ENTRY_ADDR	RISCV_INT " 1b - 2b"
--#define __BUG_ENTRY_FILE	RISCV_INT " %0 - 2b"
-+#define __BUG_ENTRY_ADDR	RISCV_INT " 1b - ."
-+#define __BUG_ENTRY_FILE	RISCV_INT " %0 - ."
- #else
- #define __BUG_ENTRY_ADDR	RISCV_PTR " 1b"
- #define __BUG_ENTRY_FILE	RISCV_PTR " %0"
-diff --git a/arch/s390/include/asm/bug.h b/arch/s390/include/asm/bug.h
-index 0b25f28..aebe1e2 100644
---- a/arch/s390/include/asm/bug.h
-+++ b/arch/s390/include/asm/bug.h
-@@ -15,7 +15,8 @@
- 		"1:	.asciz	\""__FILE__"\"\n"		\
- 		".previous\n"					\
- 		".section __bug_table,\"awM\",@progbits,%2\n"	\
--		"2:	.long	0b-2b,1b-2b\n"			\
-+		"2:	.long	0b-.\n"				\
-+		"	.long	1b-.\n"				\
- 		"	.short	%0,%1\n"			\
- 		"	.org	2b+%2\n"			\
- 		".previous\n"					\
-@@ -30,7 +31,7 @@
- 	asm_inline volatile(					\
- 		"0:	mc	0,0\n"				\
- 		".section __bug_table,\"awM\",@progbits,%1\n"	\
--		"1:	.long	0b-1b\n"			\
-+		"1:	.long	0b-.\n"				\
- 		"	.short	%0\n"				\
- 		"	.org	1b+%1\n"			\
- 		".previous\n"					\
-diff --git a/arch/x86/include/asm/bug.h b/arch/x86/include/asm/bug.h
-index 4d20a29..76fbe24 100644
---- a/arch/x86/include/asm/bug.h
-+++ b/arch/x86/include/asm/bug.h
-@@ -18,7 +18,7 @@
- #ifdef CONFIG_X86_32
- # define __BUG_REL(val)	".long " __stringify(val)
- #else
--# define __BUG_REL(val)	".long " __stringify(val) " - 2b"
-+# define __BUG_REL(val)	".long " __stringify(val) " - ."
- #endif
- 
- #ifdef CONFIG_DEBUG_BUGVERBOSE
-diff --git a/lib/bug.c b/lib/bug.c
-index 45a0584..c223a25 100644
---- a/lib/bug.c
-+++ b/lib/bug.c
-@@ -6,8 +6,7 @@
- 
-   CONFIG_BUG - emit BUG traps.  Nothing happens without this.
-   CONFIG_GENERIC_BUG - enable this code.
--  CONFIG_GENERIC_BUG_RELATIVE_POINTERS - use 32-bit pointers relative to
--	the containing struct bug_entry for bug_addr and file.
-+  CONFIG_GENERIC_BUG_RELATIVE_POINTERS - use 32-bit relative pointers for bug_addr and file
-   CONFIG_DEBUG_BUGVERBOSE - emit full file+line information for each BUG
- 
-   CONFIG_BUG and CONFIG_DEBUG_BUGVERBOSE are potentially user-settable
-@@ -53,10 +52,10 @@ extern struct bug_entry __start___bug_table[], __stop___bug_table[];
- 
- static inline unsigned long bug_addr(const struct bug_entry *bug)
- {
--#ifndef CONFIG_GENERIC_BUG_RELATIVE_POINTERS
--	return bug->bug_addr;
-+#ifdef CONFIG_GENERIC_BUG_RELATIVE_POINTERS
-+	return (unsigned long)&bug->bug_addr_disp + bug->bug_addr_disp;
- #else
--	return (unsigned long)bug + bug->bug_addr_disp;
-+	return bug->bug_addr;
- #endif
- }
- 
-@@ -131,10 +130,10 @@ void bug_get_file_line(struct bug_entry *bug, const char **file,
- 		       unsigned int *line)
- {
- #ifdef CONFIG_DEBUG_BUGVERBOSE
--#ifndef CONFIG_GENERIC_BUG_RELATIVE_POINTERS
--	*file = bug->file;
-+#ifdef CONFIG_GENERIC_BUG_RELATIVE_POINTERS
-+	*file = (const char *)&bug->file_disp + bug->file_disp;
- #else
--	*file = (const char *)bug + bug->file_disp;
-+	*file = bug->file;
- #endif
- 	*line = bug->line;
- #else
+Can you do a job with me?
