@@ -2,56 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E74E52C281
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 18 May 2022 20:45:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D867E52CF2B
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 19 May 2022 11:19:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241561AbiERSpF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 18 May 2022 14:45:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51688 "EHLO
+        id S230370AbiESJT2 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 19 May 2022 05:19:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51750 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241552AbiERSpE (ORCPT
+        with ESMTP id S230015AbiESJTX (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 18 May 2022 14:45:04 -0400
+        Thu, 19 May 2022 05:19:23 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BAD11EEE3D;
-        Wed, 18 May 2022 11:45:00 -0700 (PDT)
-Date:   Wed, 18 May 2022 18:44:57 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C1635D655;
+        Thu, 19 May 2022 02:19:22 -0700 (PDT)
+Date:   Thu, 19 May 2022 09:19:18 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1652899498;
+        s=2020; t=1652951960;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=23MV50GdPjU9m2HORd4/zgkwKvmwZmuEql50+DjTl+8=;
-        b=Nk/tgl2bLM9++qjna4dk270LJHDUFIfM2V2VYc8gfo+kBkuPAexRLDpL1gmYcvbf6QxR3H
-        BCLSE5ZCQmi3Iq5YhE9JDCM06tX2nIkU+HsqBvcVoZIScPVuofINNC372kyqWmPtR5InLq
-        EVcOeQpUxDPzEBEoayEQZuk4wQ5EemTiRGrPU4V7jo2iC7RFG1d2MphDF39n1dbEmjTS57
-        mARwAEbRQLMi0bIvWLDWeTR6FrOTSRyxZx17yqYt2s+R724HPJXotycOmQblR9RfCDVQiw
-        v4QU9nWO3EQsK1gGIHSac8wR9ziQG5L9hc5OT49O79M7ie7te2vlz1QBDEGAIA==
+        bh=OogGodAJ/EfN+S1wVJQ/owg91eLh2YYZVD9UPkSJkmE=;
+        b=4PR439hRQc/ZLWDst1YwoTdgyk1s59A5DbOx5l4Vk80R1ozK6Xsz5ZliaulVwJ5JWrx+M1
+        IlnsqZhL9m8TdHs43LXomRsp3pcl8zPYYEHkVx8pJtMlwxvdQQ+JW3aGeyxfWBAHA/eCB6
+        ESknoNWEXPIOFzxEh+GNXXQqpqcwrCq2l5Iq+7boAIxl62BHxoNZY7yPQtz2382Efka/4O
+        ftOycQvNVr90CNo1NrWsg419gO/+as83p6yBbLjuNEiST/M8oUyCQmXT/Si5k2J9G9maH4
+        NlfWn0R61RO1RLQl8uWjJBdCS4hgAFHbbBNWjIs5Xd3452LI5h+ezU27KwJJYg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1652899498;
+        s=2020e; t=1652951960;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=23MV50GdPjU9m2HORd4/zgkwKvmwZmuEql50+DjTl+8=;
-        b=FfWEri7H4tT4Zuk/hERpMczxP4ZAUGgsyKTbiwbyCVm8kyXYtUOxC6Tasm6qtFAWblocYY
-        Zp4qPpK1ql4dRTCg==
+        bh=OogGodAJ/EfN+S1wVJQ/owg91eLh2YYZVD9UPkSJkmE=;
+        b=t5qD3YA5Q87to+VxqKTAkP1oZ+dnBzmaxGdzEDUzbIZ6lzpgkPaeWsCH7tefdGrKifWq4I
+        SRlCP0Yd4xkE2wDw==
 From:   "tip-bot2 for Lai Jiangshan" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/sev] x86/sev: Annotate stack change in the #VC handler
+Subject: [tip: x86/sev] x86/sev: Mark the code returning to user space as syscall gap
 Cc:     Lai Jiangshan <jiangshan.ljs@antgroup.com>,
-        Borislav Petkov <bp@suse.de>,
-        Josh Poimboeuf <jpoimboe@redhat.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20220316041612.71357-1-jiangshanlai@gmail.com>
-References: <20220316041612.71357-1-jiangshanlai@gmail.com>
+        Borislav Petkov <bp@suse.de>, Joerg Roedel <jroedel@suse.de>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20220412124909.10467-1-jiangshanlai@gmail.com>
+References: <20220412124909.10467-1-jiangshanlai@gmail.com>
 MIME-Version: 1.0
-Message-ID: <165289949701.4207.10740205512652914837.tip-bot2@tip-bot2>
+Message-ID: <165295195868.4207.8139978466736431186.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -68,84 +67,106 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/sev branch of tip:
 
-Commit-ID:     c42b145181aafd59ed31ccd879493389e3ea5a08
-Gitweb:        https://git.kernel.org/tip/c42b145181aafd59ed31ccd879493389e3ea5a08
+Commit-ID:     47f33de4aafb2f5e43d480d590a939d0f1d566a9
+Gitweb:        https://git.kernel.org/tip/47f33de4aafb2f5e43d480d590a939d0f1d566a9
 Author:        Lai Jiangshan <jiangshan.ljs@antgroup.com>
-AuthorDate:    Wed, 16 Mar 2022 12:16:12 +08:00
+AuthorDate:    Tue, 12 Apr 2022 20:49:08 +08:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Wed, 18 May 2022 20:36:03 +02:00
+CommitterDate: Thu, 19 May 2022 10:56:46 +02:00
 
-x86/sev: Annotate stack change in the #VC handler
+x86/sev: Mark the code returning to user space as syscall gap
 
-In idtentry_vc(), vc_switch_off_ist() determines a safe stack to
-switch to, off of the IST stack. Annotate the new stack switch with
-ENCODE_FRAME_POINTER in case UNWINDER_FRAME_POINTER is used.
+When returning to user space, %rsp is user-controlled value.
 
-A stack walk before looks like this:
+If it is a SNP-guest and the hypervisor decides to mess with the
+code-page for this path while a CPU is executing it, a potential #VC
+could hit in the syscall return path and mislead the #VC handler.
 
-  CPU: 0 PID: 0 Comm: swapper Not tainted 5.18.0-rc7+ #2
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
-  Call Trace:
-   <TASK>
-   dump_stack_lvl
-   dump_stack
-   kernel_exc_vmm_communication
-   asm_exc_vmm_communication
-   ? native_read_msr
-   ? __x2apic_disable.part.0
-   ? x2apic_setup
-   ? cpu_init
-   ? trap_init
-   ? start_kernel
-   ? x86_64_start_reservations
-   ? x86_64_start_kernel
-   ? secondary_startup_64_no_verify
-   </TASK>
+So make ip_within_syscall_gap() return true in this case.
 
-and with the fix, the stack dump is exact:
-
-  CPU: 0 PID: 0 Comm: swapper Not tainted 5.18.0-rc7+ #3
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
-  Call Trace:
-   <TASK>
-   dump_stack_lvl
-   dump_stack
-   kernel_exc_vmm_communication
-   asm_exc_vmm_communication
-  RIP: 0010:native_read_msr
-  Code: ...
-  < snipped regs >
-   ? __x2apic_disable.part.0
-   x2apic_setup
-   cpu_init
-   trap_init
-   start_kernel
-   x86_64_start_reservations
-   x86_64_start_kernel
-   secondary_startup_64_no_verify
-   </TASK>
-
-  [ bp: Test in a SEV-ES guest and rewrite the commit message to
-    explain what exactly this does. ]
-
-Fixes: a13644f3a53d ("x86/entry/64: Add entry code for #VC handler")
 Signed-off-by: Lai Jiangshan <jiangshan.ljs@antgroup.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Acked-by: Josh Poimboeuf <jpoimboe@redhat.com>
-Link: https://lore.kernel.org/r/20220316041612.71357-1-jiangshanlai@gmail.com
+Acked-by: Joerg Roedel <jroedel@suse.de>
+Link: https://lore.kernel.org/r/20220412124909.10467-1-jiangshanlai@gmail.com
 ---
- arch/x86/entry/entry_64.S | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/entry/entry_64.S        | 2 ++
+ arch/x86/entry/entry_64_compat.S | 2 ++
+ arch/x86/include/asm/proto.h     | 4 ++++
+ arch/x86/include/asm/ptrace.h    | 4 ++++
+ 4 files changed, 12 insertions(+)
 
 diff --git a/arch/x86/entry/entry_64.S b/arch/x86/entry/entry_64.S
-index 4faac48..f7bd800 100644
+index f7bd800..2fd8a5c 100644
 --- a/arch/x86/entry/entry_64.S
 +++ b/arch/x86/entry/entry_64.S
-@@ -505,6 +505,7 @@ SYM_CODE_START(\asmsym)
- 	call	vc_switch_off_ist
- 	movq	%rax, %rsp		/* Switch to new stack */
+@@ -215,8 +215,10 @@ syscall_return_via_sysret:
  
-+	ENCODE_FRAME_POINTER
- 	UNWIND_HINT_REGS
+ 	popq	%rdi
+ 	popq	%rsp
++SYM_INNER_LABEL(entry_SYSRETQ_unsafe_stack, SYM_L_GLOBAL)
+ 	swapgs
+ 	sysretq
++SYM_INNER_LABEL(entry_SYSRETQ_end, SYM_L_GLOBAL)
+ SYM_CODE_END(entry_SYSCALL_64)
  
- 	/* Update pt_regs */
+ /*
+diff --git a/arch/x86/entry/entry_64_compat.S b/arch/x86/entry/entry_64_compat.S
+index 4fdb007..3c0e149 100644
+--- a/arch/x86/entry/entry_64_compat.S
++++ b/arch/x86/entry/entry_64_compat.S
+@@ -297,6 +297,7 @@ sysret32_from_system_call:
+ 	 * code.  We zero R8-R10 to avoid info leaks.
+          */
+ 	movq	RSP-ORIG_RAX(%rsp), %rsp
++SYM_INNER_LABEL(entry_SYSRETL_compat_unsafe_stack, SYM_L_GLOBAL)
+ 
+ 	/*
+ 	 * The original userspace %rsp (RSP-ORIG_RAX(%rsp)) is stored
+@@ -314,6 +315,7 @@ sysret32_from_system_call:
+ 	xorl	%r10d, %r10d
+ 	swapgs
+ 	sysretl
++SYM_INNER_LABEL(entry_SYSRETL_compat_end, SYM_L_GLOBAL)
+ SYM_CODE_END(entry_SYSCALL_compat)
+ 
+ /*
+diff --git a/arch/x86/include/asm/proto.h b/arch/x86/include/asm/proto.h
+index feed36d..f042cfc 100644
+--- a/arch/x86/include/asm/proto.h
++++ b/arch/x86/include/asm/proto.h
+@@ -13,6 +13,8 @@ void syscall_init(void);
+ #ifdef CONFIG_X86_64
+ void entry_SYSCALL_64(void);
+ void entry_SYSCALL_64_safe_stack(void);
++void entry_SYSRETQ_unsafe_stack(void);
++void entry_SYSRETQ_end(void);
+ long do_arch_prctl_64(struct task_struct *task, int option, unsigned long arg2);
+ #endif
+ 
+@@ -28,6 +30,8 @@ void entry_SYSENTER_compat(void);
+ void __end_entry_SYSENTER_compat(void);
+ void entry_SYSCALL_compat(void);
+ void entry_SYSCALL_compat_safe_stack(void);
++void entry_SYSRETL_compat_unsafe_stack(void);
++void entry_SYSRETL_compat_end(void);
+ void entry_INT80_compat(void);
+ #ifdef CONFIG_XEN_PV
+ void xen_entry_INT80_compat(void);
+diff --git a/arch/x86/include/asm/ptrace.h b/arch/x86/include/asm/ptrace.h
+index 4357e0f..f4db78b 100644
+--- a/arch/x86/include/asm/ptrace.h
++++ b/arch/x86/include/asm/ptrace.h
+@@ -186,9 +186,13 @@ static __always_inline bool ip_within_syscall_gap(struct pt_regs *regs)
+ 	bool ret = (regs->ip >= (unsigned long)entry_SYSCALL_64 &&
+ 		    regs->ip <  (unsigned long)entry_SYSCALL_64_safe_stack);
+ 
++	ret = ret || (regs->ip >= (unsigned long)entry_SYSRETQ_unsafe_stack &&
++		      regs->ip <  (unsigned long)entry_SYSRETQ_end);
+ #ifdef CONFIG_IA32_EMULATION
+ 	ret = ret || (regs->ip >= (unsigned long)entry_SYSCALL_compat &&
+ 		      regs->ip <  (unsigned long)entry_SYSCALL_compat_safe_stack);
++	ret = ret || (regs->ip >= (unsigned long)entry_SYSRETL_compat_unsafe_stack &&
++		      regs->ip <  (unsigned long)entry_SYSRETL_compat_end);
+ #endif
+ 
+ 	return ret;
