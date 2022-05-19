@@ -2,56 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E91A52DF90
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 19 May 2022 23:50:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E80652DFA0
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 19 May 2022 23:57:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245270AbiESVt7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 19 May 2022 17:49:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50046 "EHLO
+        id S230133AbiESV5E (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 19 May 2022 17:57:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35402 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229738AbiESVt4 (ORCPT
+        with ESMTP id S233223AbiESV5D (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 19 May 2022 17:49:56 -0400
+        Thu, 19 May 2022 17:57:03 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59407972BA;
-        Thu, 19 May 2022 14:49:55 -0700 (PDT)
-Date:   Thu, 19 May 2022 21:49:51 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9F60338A5;
+        Thu, 19 May 2022 14:57:01 -0700 (PDT)
+Date:   Thu, 19 May 2022 21:56:59 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1652996992;
+        s=2020; t=1652997420;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=hV2SaG1IK3wDUfs/GoFvzBuAP14waZ2g55indvNhtwk=;
-        b=DgSoJBY2DsC/lG5hhFyAdVLBkTDxhm879Is5Q9ulbJEGYBwPBnv4fIEUu/GUDAJDIWh3Ne
-        2QBdmIaBVMkzYIy/uJvhWkW0fB/nYavuOSIfTwxtN6wZwKJH/EgC53KADR9c0m5mA4x5Md
-        jAsWN4jc4jAZI+5UHaTfmUeRQ3fXVvhCOO1/7YYTNIPg/Z1fgzUUufXYZfUJ47Rqu8B68Y
-        3J51aLSfF4UhO/UcHgNrCHoIFWOUc8+4sj8zrHN5c1Ky5HqjuOETmY4g/0wAfYVN0OuBWx
-        fxrhOxGOxHVyj7M3sd14SdvH6lIk5fHjZAgWGs4cJsI7QoBtbmipWi0Bk9s9kQ==
+        bh=xdWuXze9gcxL84bfrGVJBQzWPBrU68xlmX5mr1x0iSs=;
+        b=bZP5qKSBWuUco8qx2FX96jMkP5AFp4uqJr6bhr1C6MUYPY6sF9Hxc4kXViTNIraWAnR1qn
+        sNYBd+WS9ua9NCoN4R6g7Ib6jA4fmMj6RZI4up0K1fsSwJkUlzMWfML1KktGJg5VhQ6BTk
+        pLcdrOIW8aGr3q+Jn2GSW8Xx9olMrX8blYW7e1kuWgsiYujKAXCoNGmKvOuYK7z7Ar3xeQ
+        b3seeTKrUUwYGepWVPYBLt8wt1wOo6xkAHVpOAOAg6nMhu7rnY2w0zSfk2QdWauvz7wjen
+        M5PAuoqPT1Q6w0Jha8pQ1Pn4FORPreO84IRLBaklDVEklaX9weD/rKCB2fJKHw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1652996992;
+        s=2020e; t=1652997420;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=hV2SaG1IK3wDUfs/GoFvzBuAP14waZ2g55indvNhtwk=;
-        b=W10vRmFydBMlsHgGA3iFZQRmb0CdxonPKRRanrxxBgFWZmELraBbid5fu4M3rH+tjpdnVE
-        XhvMfSpjCrnL4cAg==
-From:   "tip-bot2 for Uros Bizjak" <tip-bot2@linutronix.de>
+        bh=xdWuXze9gcxL84bfrGVJBQzWPBrU68xlmX5mr1x0iSs=;
+        b=/c4IOQQQ4/qMaUlrUypLvick6pgDEU+lyQP0QFjv3zrJAmtFLsAri33jE6rL7qIKTmvn2c
+        SzzV40s31wd45tCg==
+From:   "tip-bot2 for Sandipan Das" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] sched/clock: Use try_cmpxchg64 in
- sched_clock_{local,remote}
-Cc:     Uros Bizjak <ubizjak@gmail.com>,
+Subject: [tip: perf/core] perf/x86/amd/core: Fix reloading events for SVM
+Cc:     Like Xu <likexu@tencent.com>, Sandipan Das <sandipan.das@amd.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220518184953.3446778-1-ubizjak@gmail.com>
-References: <20220518184953.3446778-1-ubizjak@gmail.com>
+In-Reply-To: <20220518084327.464005-1-sandipan.das@amd.com>
+References: <20220518084327.464005-1-sandipan.das@amd.com>
 MIME-Version: 1.0
-Message-ID: <165299699122.4207.8125991535807221103.tip-bot2@tip-bot2>
+Message-ID: <165299741919.4207.12319617114014672063.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,48 +65,83 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the locking/core branch of tip:
+The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     8491d1bdf5de152f27fc941e2dcdc4e66c950542
-Gitweb:        https://git.kernel.org/tip/8491d1bdf5de152f27fc941e2dcdc4e66c950542
-Author:        Uros Bizjak <ubizjak@gmail.com>
-AuthorDate:    Wed, 18 May 2022 20:49:53 +02:00
+Commit-ID:     bae19fdd7e9e759580ac4693d2df3bc23ab415d7
+Gitweb:        https://git.kernel.org/tip/bae19fdd7e9e759580ac4693d2df3bc23ab415d7
+Author:        Sandipan Das <sandipan.das@amd.com>
+AuthorDate:    Wed, 18 May 2022 14:13:27 +05:30
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Thu, 19 May 2022 23:46:09 +02:00
+CommitterDate: Thu, 19 May 2022 23:46:14 +02:00
 
-sched/clock: Use try_cmpxchg64 in sched_clock_{local,remote}
+perf/x86/amd/core: Fix reloading events for SVM
 
-Use try_cmpxchg64 instead of cmpxchg64 (*ptr, old, new) != old in
-sched_clock_{local,remote}. x86 cmpxchg returns success in ZF flag,
-so this change saves a compare after cmpxchg (and related move
-instruction in front of cmpxchg).
+Commit 1018faa6cf23 ("perf/x86/kvm: Fix Host-Only/Guest-Only
+counting with SVM disabled") addresses an issue in which the
+Host-Only bit in the counter control registers needs to be
+masked off when SVM is not enabled.
 
-Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
+The events need to be reloaded whenever SVM is enabled or
+disabled for a CPU and this requires the PERF_CTL registers
+to be reprogrammed using {enable,disable}_all(). However,
+PerfMonV2 variants of these functions do not reprogram the
+PERF_CTL registers. Hence, the legacy enable_all() function
+should also be called.
+
+Fixes: 9622e67e3980 ("perf/x86/amd/core: Add PerfMonV2 counter control")
+Reported-by: Like Xu <likexu@tencent.com>
+Signed-off-by: Sandipan Das <sandipan.das@amd.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20220518184953.3446778-1-ubizjak@gmail.com
+Link: https://lkml.kernel.org/r/20220518084327.464005-1-sandipan.das@amd.com
 ---
- kernel/sched/clock.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/events/amd/core.c | 24 ++++++++++++++++++++----
+ 1 file changed, 20 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/sched/clock.c b/kernel/sched/clock.c
-index d9272d9..e374c0c 100644
---- a/kernel/sched/clock.c
-+++ b/kernel/sched/clock.c
-@@ -287,7 +287,7 @@ again:
- 	clock = wrap_max(clock, min_clock);
- 	clock = wrap_min(clock, max_clock);
+diff --git a/arch/x86/events/amd/core.c b/arch/x86/events/amd/core.c
+index 3eee59c..9ac3718 100644
+--- a/arch/x86/events/amd/core.c
++++ b/arch/x86/events/amd/core.c
+@@ -1472,6 +1472,24 @@ __init int amd_pmu_init(void)
+ 	return 0;
+ }
  
--	if (cmpxchg64(&scd->clock, old_clock, clock) != old_clock)
-+	if (!try_cmpxchg64(&scd->clock, &old_clock, clock))
- 		goto again;
++static inline void amd_pmu_reload_virt(void)
++{
++	if (x86_pmu.version >= 2) {
++		/*
++		 * Clear global enable bits, reprogram the PERF_CTL
++		 * registers with updated perf_ctr_virt_mask and then
++		 * set global enable bits once again
++		 */
++		amd_pmu_v2_disable_all();
++		amd_pmu_enable_all(0);
++		amd_pmu_v2_enable_all(0);
++		return;
++	}
++
++	amd_pmu_disable_all();
++	amd_pmu_enable_all(0);
++}
++
+ void amd_pmu_enable_virt(void)
+ {
+ 	struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
+@@ -1479,8 +1497,7 @@ void amd_pmu_enable_virt(void)
+ 	cpuc->perf_ctr_virt_mask = 0;
  
- 	return clock;
-@@ -349,7 +349,7 @@ again:
- 		val = remote_clock;
- 	}
+ 	/* Reload all events */
+-	amd_pmu_disable_all();
+-	x86_pmu_enable_all(0);
++	amd_pmu_reload_virt();
+ }
+ EXPORT_SYMBOL_GPL(amd_pmu_enable_virt);
  
--	if (cmpxchg64(ptr, old_val, val) != old_val)
-+	if (!try_cmpxchg64(ptr, &old_val, val))
- 		goto again;
+@@ -1497,7 +1514,6 @@ void amd_pmu_disable_virt(void)
+ 	cpuc->perf_ctr_virt_mask = AMD64_EVENTSEL_HOSTONLY;
  
- 	return val;
+ 	/* Reload all events */
+-	amd_pmu_disable_all();
+-	x86_pmu_enable_all(0);
++	amd_pmu_reload_virt();
+ }
+ EXPORT_SYMBOL_GPL(amd_pmu_disable_virt);
