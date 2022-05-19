@@ -2,55 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D867E52CF2B
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 19 May 2022 11:19:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 361CA52D0FC
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 19 May 2022 12:59:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230370AbiESJT2 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 19 May 2022 05:19:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51750 "EHLO
+        id S236562AbiESK6D (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 19 May 2022 06:58:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41628 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230015AbiESJTX (ORCPT
+        with ESMTP id S237103AbiESK5u (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 19 May 2022 05:19:23 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C1635D655;
-        Thu, 19 May 2022 02:19:22 -0700 (PDT)
-Date:   Thu, 19 May 2022 09:19:18 -0000
+        Thu, 19 May 2022 06:57:50 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E492AF318;
+        Thu, 19 May 2022 03:57:48 -0700 (PDT)
+Date:   Thu, 19 May 2022 10:57:45 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1652951960;
+        s=2020; t=1652957866;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=OogGodAJ/EfN+S1wVJQ/owg91eLh2YYZVD9UPkSJkmE=;
-        b=4PR439hRQc/ZLWDst1YwoTdgyk1s59A5DbOx5l4Vk80R1ozK6Xsz5ZliaulVwJ5JWrx+M1
-        IlnsqZhL9m8TdHs43LXomRsp3pcl8zPYYEHkVx8pJtMlwxvdQQ+JW3aGeyxfWBAHA/eCB6
-        ESknoNWEXPIOFzxEh+GNXXQqpqcwrCq2l5Iq+7boAIxl62BHxoNZY7yPQtz2382Efka/4O
-        ftOycQvNVr90CNo1NrWsg419gO/+as83p6yBbLjuNEiST/M8oUyCQmXT/Si5k2J9G9maH4
-        NlfWn0R61RO1RLQl8uWjJBdCS4hgAFHbbBNWjIs5Xd3452LI5h+ezU27KwJJYg==
+        bh=J5hF/bHk1y8swl6RY8ccIcAYUWyxFzuRI8+1R2iO9g0=;
+        b=4wvYumcfH78Z8NYbMz7VHfcbmVSzcdm5n+Yg56nRYAm+6uuMOP0HYsGxCOWWBta8p6I62m
+        yqO04Mb3azHXwQF4HBzqzzvAKPZKK80uYgJtbE7JvZ6kLt8F8x2R3dHESkf7X6E4qIiRaP
+        98WqOX5GuMoZTXC3VnC/3ygXV02BQJm/ado4Rq0x1apZLx5PD5gxEbQvOi/D5atCICvsmE
+        4cIgaVmxeEcYi/6XHmRsmxwsT3MbKzjenbJvq5ZcqnNDZed4AQz8glfKpuZ97TbnN2pqzs
+        9qHiZgk0llSPGqQwF2zOmArUxANG1TyitAz2CmwGe52Ou+URkXxUZVqPY3FaMw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1652951960;
+        s=2020e; t=1652957866;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=OogGodAJ/EfN+S1wVJQ/owg91eLh2YYZVD9UPkSJkmE=;
-        b=t5qD3YA5Q87to+VxqKTAkP1oZ+dnBzmaxGdzEDUzbIZ6lzpgkPaeWsCH7tefdGrKifWq4I
-        SRlCP0Yd4xkE2wDw==
-From:   "tip-bot2 for Lai Jiangshan" <tip-bot2@linutronix.de>
+        bh=J5hF/bHk1y8swl6RY8ccIcAYUWyxFzuRI8+1R2iO9g0=;
+        b=UiL9NX0j831CVo3cMDeBr1OOaIuCWeW0dCfFMBCDj6USw3T2n6Ar3V+Nt7sfqiBfU82ONk
+        RNOOcLWYHXXVmCAw==
+From:   "tip-bot2 for Kees Cook" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/sev] x86/sev: Mark the code returning to user space as syscall gap
-Cc:     Lai Jiangshan <jiangshan.ljs@antgroup.com>,
-        Borislav Petkov <bp@suse.de>, Joerg Roedel <jroedel@suse.de>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20220412124909.10467-1-jiangshanlai@gmail.com>
-References: <20220412124909.10467-1-jiangshanlai@gmail.com>
+Subject: [tip: x86/build] x86/boot: Wrap literal addresses in absolute_pointer()
+Cc:     Kees Cook <keescook@chromium.org>, Borislav Petkov <bp@suse.de>,
+        Guenter Roeck <linux@roeck-us.net>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20220227195918.705219-1-keescook@chromium.org>
+References: <20220227195918.705219-1-keescook@chromium.org>
 MIME-Version: 1.0
-Message-ID: <165295195868.4207.8139978466736431186.tip-bot2@tip-bot2>
+Message-ID: <165295786522.4207.8444671821505639816.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,108 +65,149 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/sev branch of tip:
+The following commit has been merged into the x86/build branch of tip:
 
-Commit-ID:     47f33de4aafb2f5e43d480d590a939d0f1d566a9
-Gitweb:        https://git.kernel.org/tip/47f33de4aafb2f5e43d480d590a939d0f1d566a9
-Author:        Lai Jiangshan <jiangshan.ljs@antgroup.com>
-AuthorDate:    Tue, 12 Apr 2022 20:49:08 +08:00
+Commit-ID:     aeb84412037b89e06f45e382f044da6f200e12f8
+Gitweb:        https://git.kernel.org/tip/aeb84412037b89e06f45e382f044da6f200e12f8
+Author:        Kees Cook <keescook@chromium.org>
+AuthorDate:    Sun, 27 Feb 2022 11:59:18 -08:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Thu, 19 May 2022 10:56:46 +02:00
+CommitterDate: Thu, 19 May 2022 12:47:30 +02:00
 
-x86/sev: Mark the code returning to user space as syscall gap
+x86/boot: Wrap literal addresses in absolute_pointer()
 
-When returning to user space, %rsp is user-controlled value.
+GCC 11 (incorrectly[1]) assumes that literal values cast to (void *)
+should be treated like a NULL pointer with an offset, and raises
+diagnostics when doing bounds checking under -Warray-bounds. GCC 12
+got "smarter" about finding these:
 
-If it is a SNP-guest and the hypervisor decides to mess with the
-code-page for this path while a CPU is executing it, a potential #VC
-could hit in the syscall return path and mislead the #VC handler.
+  In function 'rdfs8',
+      inlined from 'vga_recalc_vertical' at /srv/code/arch/x86/boot/video-mode.c:124:29,
+      inlined from 'set_mode' at /srv/code/arch/x86/boot/video-mode.c:163:3:
+  /srv/code/arch/x86/boot/boot.h:114:9: warning: array subscript 0 is outside array bounds of 'u8[0]' {aka 'unsigned char[]'} [-Warray-bounds]
+    114 |         asm volatile("movb %%fs:%1,%0" : "=q" (v) : "m" (*(u8 *)addr));
+        |         ^~~
 
-So make ip_within_syscall_gap() return true in this case.
+This has been solved in other places[2] already by using the recently
+added absolute_pointer() macro. Do the same here.
 
-Signed-off-by: Lai Jiangshan <jiangshan.ljs@antgroup.com>
+  [1] https://gcc.gnu.org/bugzilla/show_bug.cgi?id=99578
+  [2] https://lore.kernel.org/all/20210912160149.2227137-1-linux@roeck-us.net/
+
+Signed-off-by: Kees Cook <keescook@chromium.org>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Acked-by: Joerg Roedel <jroedel@suse.de>
-Link: https://lore.kernel.org/r/20220412124909.10467-1-jiangshanlai@gmail.com
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20220227195918.705219-1-keescook@chromium.org
 ---
- arch/x86/entry/entry_64.S        | 2 ++
- arch/x86/entry/entry_64_compat.S | 2 ++
- arch/x86/include/asm/proto.h     | 4 ++++
- arch/x86/include/asm/ptrace.h    | 4 ++++
- 4 files changed, 12 insertions(+)
+ arch/x86/boot/boot.h | 36 ++++++++++++++++++++++++------------
+ arch/x86/boot/main.c |  2 +-
+ 2 files changed, 25 insertions(+), 13 deletions(-)
 
-diff --git a/arch/x86/entry/entry_64.S b/arch/x86/entry/entry_64.S
-index f7bd800..2fd8a5c 100644
---- a/arch/x86/entry/entry_64.S
-+++ b/arch/x86/entry/entry_64.S
-@@ -215,8 +215,10 @@ syscall_return_via_sysret:
+diff --git a/arch/x86/boot/boot.h b/arch/x86/boot/boot.h
+index 34c9dbb..686a9d7 100644
+--- a/arch/x86/boot/boot.h
++++ b/arch/x86/boot/boot.h
+@@ -110,66 +110,78 @@ typedef unsigned int addr_t;
  
- 	popq	%rdi
- 	popq	%rsp
-+SYM_INNER_LABEL(entry_SYSRETQ_unsafe_stack, SYM_L_GLOBAL)
- 	swapgs
- 	sysretq
-+SYM_INNER_LABEL(entry_SYSRETQ_end, SYM_L_GLOBAL)
- SYM_CODE_END(entry_SYSCALL_64)
+ static inline u8 rdfs8(addr_t addr)
+ {
++	u8 *ptr = (u8 *)absolute_pointer(addr);
+ 	u8 v;
+-	asm volatile("movb %%fs:%1,%0" : "=q" (v) : "m" (*(u8 *)addr));
++	asm volatile("movb %%fs:%1,%0" : "=q" (v) : "m" (*ptr));
+ 	return v;
+ }
+ static inline u16 rdfs16(addr_t addr)
+ {
++	u16 *ptr = (u16 *)absolute_pointer(addr);
+ 	u16 v;
+-	asm volatile("movw %%fs:%1,%0" : "=r" (v) : "m" (*(u16 *)addr));
++	asm volatile("movw %%fs:%1,%0" : "=r" (v) : "m" (*ptr));
+ 	return v;
+ }
+ static inline u32 rdfs32(addr_t addr)
+ {
++	u32 *ptr = (u32 *)absolute_pointer(addr);
+ 	u32 v;
+-	asm volatile("movl %%fs:%1,%0" : "=r" (v) : "m" (*(u32 *)addr));
++	asm volatile("movl %%fs:%1,%0" : "=r" (v) : "m" (*ptr));
+ 	return v;
+ }
  
- /*
-diff --git a/arch/x86/entry/entry_64_compat.S b/arch/x86/entry/entry_64_compat.S
-index 4fdb007..3c0e149 100644
---- a/arch/x86/entry/entry_64_compat.S
-+++ b/arch/x86/entry/entry_64_compat.S
-@@ -297,6 +297,7 @@ sysret32_from_system_call:
- 	 * code.  We zero R8-R10 to avoid info leaks.
-          */
- 	movq	RSP-ORIG_RAX(%rsp), %rsp
-+SYM_INNER_LABEL(entry_SYSRETL_compat_unsafe_stack, SYM_L_GLOBAL)
+ static inline void wrfs8(u8 v, addr_t addr)
+ {
+-	asm volatile("movb %1,%%fs:%0" : "+m" (*(u8 *)addr) : "qi" (v));
++	u8 *ptr = (u8 *)absolute_pointer(addr);
++	asm volatile("movb %1,%%fs:%0" : "+m" (*ptr) : "qi" (v));
+ }
+ static inline void wrfs16(u16 v, addr_t addr)
+ {
+-	asm volatile("movw %1,%%fs:%0" : "+m" (*(u16 *)addr) : "ri" (v));
++	u16 *ptr = (u16 *)absolute_pointer(addr);
++	asm volatile("movw %1,%%fs:%0" : "+m" (*ptr) : "ri" (v));
+ }
+ static inline void wrfs32(u32 v, addr_t addr)
+ {
+-	asm volatile("movl %1,%%fs:%0" : "+m" (*(u32 *)addr) : "ri" (v));
++	u32 *ptr = (u32 *)absolute_pointer(addr);
++	asm volatile("movl %1,%%fs:%0" : "+m" (*ptr) : "ri" (v));
+ }
  
- 	/*
- 	 * The original userspace %rsp (RSP-ORIG_RAX(%rsp)) is stored
-@@ -314,6 +315,7 @@ sysret32_from_system_call:
- 	xorl	%r10d, %r10d
- 	swapgs
- 	sysretl
-+SYM_INNER_LABEL(entry_SYSRETL_compat_end, SYM_L_GLOBAL)
- SYM_CODE_END(entry_SYSCALL_compat)
+ static inline u8 rdgs8(addr_t addr)
+ {
++	u8 *ptr = (u8 *)absolute_pointer(addr);
+ 	u8 v;
+-	asm volatile("movb %%gs:%1,%0" : "=q" (v) : "m" (*(u8 *)addr));
++	asm volatile("movb %%gs:%1,%0" : "=q" (v) : "m" (*ptr));
+ 	return v;
+ }
+ static inline u16 rdgs16(addr_t addr)
+ {
++	u16 *ptr = (u16 *)absolute_pointer(addr);
+ 	u16 v;
+-	asm volatile("movw %%gs:%1,%0" : "=r" (v) : "m" (*(u16 *)addr));
++	asm volatile("movw %%gs:%1,%0" : "=r" (v) : "m" (*ptr));
+ 	return v;
+ }
+ static inline u32 rdgs32(addr_t addr)
+ {
++	u32 *ptr = (u32 *)absolute_pointer(addr);
+ 	u32 v;
+-	asm volatile("movl %%gs:%1,%0" : "=r" (v) : "m" (*(u32 *)addr));
++	asm volatile("movl %%gs:%1,%0" : "=r" (v) : "m" (*ptr));
+ 	return v;
+ }
  
- /*
-diff --git a/arch/x86/include/asm/proto.h b/arch/x86/include/asm/proto.h
-index feed36d..f042cfc 100644
---- a/arch/x86/include/asm/proto.h
-+++ b/arch/x86/include/asm/proto.h
-@@ -13,6 +13,8 @@ void syscall_init(void);
- #ifdef CONFIG_X86_64
- void entry_SYSCALL_64(void);
- void entry_SYSCALL_64_safe_stack(void);
-+void entry_SYSRETQ_unsafe_stack(void);
-+void entry_SYSRETQ_end(void);
- long do_arch_prctl_64(struct task_struct *task, int option, unsigned long arg2);
- #endif
+ static inline void wrgs8(u8 v, addr_t addr)
+ {
+-	asm volatile("movb %1,%%gs:%0" : "+m" (*(u8 *)addr) : "qi" (v));
++	u8 *ptr = (u8 *)absolute_pointer(addr);
++	asm volatile("movb %1,%%gs:%0" : "+m" (*ptr) : "qi" (v));
+ }
+ static inline void wrgs16(u16 v, addr_t addr)
+ {
+-	asm volatile("movw %1,%%gs:%0" : "+m" (*(u16 *)addr) : "ri" (v));
++	u16 *ptr = (u16 *)absolute_pointer(addr);
++	asm volatile("movw %1,%%gs:%0" : "+m" (*ptr) : "ri" (v));
+ }
+ static inline void wrgs32(u32 v, addr_t addr)
+ {
+-	asm volatile("movl %1,%%gs:%0" : "+m" (*(u32 *)addr) : "ri" (v));
++	u32 *ptr = (u32 *)absolute_pointer(addr);
++	asm volatile("movl %1,%%gs:%0" : "+m" (*ptr) : "ri" (v));
+ }
  
-@@ -28,6 +30,8 @@ void entry_SYSENTER_compat(void);
- void __end_entry_SYSENTER_compat(void);
- void entry_SYSCALL_compat(void);
- void entry_SYSCALL_compat_safe_stack(void);
-+void entry_SYSRETL_compat_unsafe_stack(void);
-+void entry_SYSRETL_compat_end(void);
- void entry_INT80_compat(void);
- #ifdef CONFIG_XEN_PV
- void xen_entry_INT80_compat(void);
-diff --git a/arch/x86/include/asm/ptrace.h b/arch/x86/include/asm/ptrace.h
-index 4357e0f..f4db78b 100644
---- a/arch/x86/include/asm/ptrace.h
-+++ b/arch/x86/include/asm/ptrace.h
-@@ -186,9 +186,13 @@ static __always_inline bool ip_within_syscall_gap(struct pt_regs *regs)
- 	bool ret = (regs->ip >= (unsigned long)entry_SYSCALL_64 &&
- 		    regs->ip <  (unsigned long)entry_SYSCALL_64_safe_stack);
+ /* Note: these only return true/false, not a signed return value! */
+diff --git a/arch/x86/boot/main.c b/arch/x86/boot/main.c
+index e3add85..c421af5 100644
+--- a/arch/x86/boot/main.c
++++ b/arch/x86/boot/main.c
+@@ -33,7 +33,7 @@ static void copy_boot_params(void)
+ 		u16 cl_offset;
+ 	};
+ 	const struct old_cmdline * const oldcmd =
+-		(const struct old_cmdline *)OLD_CL_ADDRESS;
++		absolute_pointer(OLD_CL_ADDRESS);
  
-+	ret = ret || (regs->ip >= (unsigned long)entry_SYSRETQ_unsafe_stack &&
-+		      regs->ip <  (unsigned long)entry_SYSRETQ_end);
- #ifdef CONFIG_IA32_EMULATION
- 	ret = ret || (regs->ip >= (unsigned long)entry_SYSCALL_compat &&
- 		      regs->ip <  (unsigned long)entry_SYSCALL_compat_safe_stack);
-+	ret = ret || (regs->ip >= (unsigned long)entry_SYSRETL_compat_unsafe_stack &&
-+		      regs->ip <  (unsigned long)entry_SYSRETL_compat_end);
- #endif
- 
- 	return ret;
+ 	BUILD_BUG_ON(sizeof(boot_params) != 4096);
+ 	memcpy(&boot_params.hdr, &hdr, sizeof(hdr));
