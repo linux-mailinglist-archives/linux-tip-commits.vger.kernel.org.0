@@ -2,53 +2,65 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C70A752ECD8
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 20 May 2022 15:06:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B3A752EDAB
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 20 May 2022 15:59:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230453AbiETNGL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 20 May 2022 09:06:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32848 "EHLO
+        id S238352AbiETN74 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 20 May 2022 09:59:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345583AbiETNFz (ORCPT
+        with ESMTP id S236471AbiETN7z (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 20 May 2022 09:05:55 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67A20C45;
-        Fri, 20 May 2022 06:05:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=q7pbVBAHPQM0y9nwLh5CftmxKDJeGL1/oDdQeZU/1YY=; b=ZTy9tmPTu3Gf32iVSNM3rIUxxu
-        J9M58n4t7fxEb6KlEaps9T/lpbjVMdaeMM379dEG9fhvKN0Yck3EDxBHV5FUb4/ad9CWc5Gp12EHh
-        uqe5c1oQjGOcsW8+YMlPuXZKx3FwXxf2p34ZTi/Womn0mITjoiPq5XP7qu/VnZcEL9fNi1Uu9MoyM
-        si2PL/6Ynn0uUqgCn0Nmd2n7sBpe3wJux+8HWihak+3eBpuB5iO5rYsZjhWh79ayHF5wtS0U7Bpry
-        BnyC3kF2znUBTcR1DnAtJzh2cfgznOz30dL/2h0zjTR/xhOPdmoML09C+YSNYHX+JgJZ1E75KuVM5
-        nYhsAUug==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=worktop.programming.kicks-ass.net)
-        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1ns2KC-00Dl0A-JL; Fri, 20 May 2022 13:05:48 +0000
-Received: by worktop.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 256B5981243; Fri, 20 May 2022 15:05:48 +0200 (CEST)
-Date:   Fri, 20 May 2022 15:05:48 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Barry Song <baohua@kernel.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-tip-commits@vger.kernel.org,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        x86 <x86@kernel.org>
-Subject: Re: [tip: sched/core] topology: Remove unused cpu_cluster_mask()
-Message-ID: <20220520130548.GU2578@worktop.programming.kicks-ass.net>
-References: <20220513093433.425163-1-dietmar.eggemann@arm.com>
- <165299742675.4207.9389624037232636288.tip-bot2@tip-bot2>
- <CAGsJ_4wdYrxPrXGnmEGBfzHfY0f8ON4gRwNz2z_EABzva7bmrw@mail.gmail.com>
+        Fri, 20 May 2022 09:59:55 -0400
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0731061631;
+        Fri, 20 May 2022 06:59:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1653055195; x=1684591195;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=UEij5xiezDoVf9uAqUDOLlsI0A2NNtQUjynutPVKIq8=;
+  b=MyU7Ko82oXA2EL/CfTNfIYl1BKpny39NWrOdGoyRGgRIQM+51agVSvbz
+   2fxRHd6j79UCnQn2tfwTY7Yp+CIOu5frCbDhCPLxAUQVNojoHmtwRb/zS
+   h65OIxGsXIiar1jQDjVzkrZkbtZP56gCq9ERTW/LVW7Qp/xZCLraEBYKN
+   o5oJHGnKMyn833LjrTwVztOovviUEvvnLPxWVjJm/iLLMfYhZirKQ8lOl
+   KR77I5cunVclBjvMCc4voPhzEGzQfOmbgOBtc7oLsaVU/TE2GdDrCYWev
+   fV6XXCKNcih7qyM+N/a5HzKwDRjmoqoa8nK0GpC8shABI2P7qQlzYC6lH
+   Q==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10353"; a="252497313"
+X-IronPort-AV: E=Sophos;i="5.91,239,1647327600"; 
+   d="scan'208";a="252497313"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2022 06:59:54 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.91,239,1647327600"; 
+   d="scan'208";a="662269862"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by FMSMGA003.fm.intel.com with ESMTP; 20 May 2022 06:59:52 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+        id 2E69B109; Fri, 20 May 2022 16:59:52 +0300 (EEST)
+Date:   Fri, 20 May 2022 16:59:52 +0300
+From:   "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To:     Peter Zijlstra <peterz@infradead.org>
+Cc:     linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Borislav Petkov <bp@suse.de>, x86@kernel.org
+Subject: Re: [PATCH] x86/tdx: Fix tdx asm
+Message-ID: <20220520135952.umeymprcfrkkc4wt@black.fi.intel.com>
+References: <20220405232939.73860-4-kirill.shutemov@linux.intel.com>
+ <164946766187.4207.15170758896351389068.tip-bot2@tip-bot2>
+ <20220520083839.GR2578@worktop.programming.kicks-ass.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAGsJ_4wdYrxPrXGnmEGBfzHfY0f8ON4gRwNz2z_EABzva7bmrw@mail.gmail.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+In-Reply-To: <20220520083839.GR2578@worktop.programming.kicks-ass.net>
+X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
         SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,38 +69,69 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Fri, May 20, 2022 at 11:34:52PM +1200, Barry Song wrote:
-> On Fri, May 20, 2022 at 9:57 AM tip-bot2 for Dietmar Eggemann
-> <tip-bot2@linutronix.de> wrote:
-> >
-> > The following commit has been merged into the sched/core branch of tip:
-> >
-> > Commit-ID:     991d8d8142cad94f9c5c05db25e67fa83d6f772a
-> > Gitweb:        https://git.kernel.org/tip/991d8d8142cad94f9c5c05db25e67fa83d6f772a
-> > Author:        Dietmar Eggemann <dietmar.eggemann@arm.com>
-> > AuthorDate:    Fri, 13 May 2022 11:34:33 +02:00
-> > Committer:     Peter Zijlstra <peterz@infradead.org>
-> > CommitterDate: Thu, 19 May 2022 23:46:13 +02:00
-> >
-> > topology: Remove unused cpu_cluster_mask()
-> >
-> > default_topology[] uses cpu_clustergroup_mask() for the CLS level
-> > (guarded by CONFIG_SCHED_CLUSTER) which is currently provided by x86
-> > (arch/x86/kernel/smpboot.c) and arm64 (drivers/base/arch_topology.c).
-> >
-> > Fixes: 778c558f49a2c ("sched: Add cluster scheduler level in core and
-> > related Kconfig for ARM64")
-> >
-> > Signed-off-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
-> > Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> > Acked-by: Barry Song <baohua@kernel.org>
-> > Link: https://lore.kernel.org/r/20220513093433.425163-1-dietmar.eggemann@arm.com
-> > ---
+On Fri, May 20, 2022 at 10:38:39AM +0200, Peter Zijlstra wrote:
+> On Sat, Apr 09, 2022 at 01:27:41AM -0000, tip-bot2 for Kuppuswamy Sathyanarayanan wrote:
+> > +SYM_FUNC_START(__tdx_module_call)
+> > +	FRAME_BEGIN
+> > +	TDX_MODULE_CALL host=0
+> > +	FRAME_END
+> > +	ret
+> > +SYM_FUNC_END(__tdx_module_call)
 > 
-> Hi Peter,
-> I also received emails which say Greg has put it into drive-core-testing and
-> driver-core-next.
-> https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/driver-core.git/commit/?h=driver-core-next&id=15f214f9bdb7c1f5
+> > +SYM_FUNC_START(__tdx_hypercall)
+> 
+> > +
+> > +	retq
+> > +.Lpanic:
+> > +	call __tdx_hypercall_failed
+> > +	/* __tdx_hypercall_failed never returns */
+> > +	jmp .Lpanic
+> > +SYM_FUNC_END(__tdx_hypercall)
+> 
+> :-(
+> 
+> ---
+> Subject: x86/tdx: Fix tdx asm
+> 
+> Because build-testing is over-rated, a few trivial objtool complaints:
+> 
+>   vmlinux.o: warning: objtool: __tdx_module_call+0x3e: missing int3 after ret
+>   vmlinux.o: warning: objtool: __tdx_hypercall+0x6e: missing int3 after ret
+> 
+> Fixes: eb94f1b6a70a ("x86/tdx: Add __tdx_module_call() and __tdx_hypercall() helper functions")
+> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 
-Damn, I must've missed that. It think git will DTRT and the trees will
-merge painlessly.
+Oopsie :(
+
+Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+
+> ---
+>  arch/x86/coco/tdx/tdcall.S | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/x86/coco/tdx/tdcall.S b/arch/x86/coco/tdx/tdcall.S
+> index eeb4511dc414..f9eb1134f22d 100644
+> --- a/arch/x86/coco/tdx/tdcall.S
+> +++ b/arch/x86/coco/tdx/tdcall.S
+> @@ -73,7 +73,7 @@ SYM_FUNC_START(__tdx_module_call)
+>  	FRAME_BEGIN
+>  	TDX_MODULE_CALL host=0
+>  	FRAME_END
+> -	ret
+> +	RET
+>  SYM_FUNC_END(__tdx_module_call)
+> 
+>  /*
+> @@ -196,7 +196,7 @@ SYM_FUNC_START(__tdx_hypercall)
+> 
+>  	FRAME_END
+> 
+> -	retq
+> +	RET
+>  .Lpanic:
+>  	call __tdx_hypercall_failed
+>  	/* __tdx_hypercall_failed never returns */
+> 
+
+-- 
+ Kirill A. Shutemov
