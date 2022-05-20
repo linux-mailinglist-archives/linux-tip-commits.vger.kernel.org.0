@@ -2,56 +2,58 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BB75B52E9FA
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 20 May 2022 12:34:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A173052EA52
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 20 May 2022 12:53:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348161AbiETKeE (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 20 May 2022 06:34:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37608 "EHLO
+        id S243538AbiETKxl (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 20 May 2022 06:53:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45934 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348177AbiETKeB (ORCPT
+        with ESMTP id S237515AbiETKxi (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 20 May 2022 06:34:01 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B98B491546;
-        Fri, 20 May 2022 03:33:59 -0700 (PDT)
-Date:   Fri, 20 May 2022 10:33:57 -0000
+        Fri, 20 May 2022 06:53:38 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4349A7220E;
+        Fri, 20 May 2022 03:53:36 -0700 (PDT)
+Date:   Fri, 20 May 2022 10:53:33 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1653042838;
+        s=2020; t=1653044014;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=FE+BOQ6uzu8Gi5c2fn3WY83cdv+67m6yfyPb/3eWIfc=;
-        b=BfRkbNSNL/MGN8ldZzmNq0V9TIoS7Eevfk26KCfZL5L7SvkvAWZ+yQWY3DZqS3bvn1mfER
-        oAGkvHmppc21YMBeo11VJMPmzBpTJ16nlRZ5U1k0GHZc1lA9AcRHvWGf26PXKUGoTpmTfW
-        uAxtE89VuZVKElpoJij6FE+Ho34DrzYoIRRoBsGEJdurOGf4t0fhU+91Jq7OocecQDCSmt
-        Eu7rRs54KrQFO0beK/4fI8W59shsW7X2b+121a3hPB0xddvxvfG0V8RzbRczOxS27g/dev
-        xaCTF5E2UiexQmlQ8ywt5HA7AmtYfq3wXMf1P6cQbyqGPPmx6bzctzokt2tLKQ==
+        bh=OtSIFPB0YVt45I6/uLYDyp1TV30jOPmQoHnLwn/78wk=;
+        b=r3/bKPz8y0DVRXN6jijN+SEFOsWsVvMFlT2Vlh8t7VL9c7AtHmtmeAd9XfIUzrWZOaLTpp
+        plhLvsYLmGrwJKfEMr23tzOqy/3KkaPWym/0Ntps8hQ/Hb5VjemDHRxLH4aUniXFWmp+1m
+        I1ztvsSEPgvWnzunVTvtDv8/U4i7++XsnkWpme5vJpAtkwd9sdAr+yHNH2Dtx6ZOPCRZmz
+        YDsR0oc9ZSksy+ifbfn4YGTN84lbi7Sj5VbpBkgtbYtSsEeCcD4BH3Sp6tbUWmMkJOxVRN
+        nGy39fgrUtuGgdm0F02BqIIFXrcyleLaxkOIh5V0zr/PRbQ4Qh63LKDz3m+nwQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1653042838;
+        s=2020e; t=1653044014;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=FE+BOQ6uzu8Gi5c2fn3WY83cdv+67m6yfyPb/3eWIfc=;
-        b=nvzRew2Wd0+BuwIHch+MrjxeMF0FyIvI+r+PFL2hbPNB2Vh+ACvAUm5rwNt/SIgp6Ha2Kr
-        OiuilLzxALFOxRBQ==
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+        bh=OtSIFPB0YVt45I6/uLYDyp1TV30jOPmQoHnLwn/78wk=;
+        b=DerLFG95QxMrCdOIFueUetI+LQ7w/LPtSdeUiFKkhSiRp3+F7jbjhtVUgYsnRLrGmn4AFh
+        Mpq3qajp/6dw9EAw==
+From:   "tip-bot2 for Mikulas Patocka" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/sev] x86/entry: Fixup objtool/ibt validation
-Cc:     Stephen Rothwell <sfr@canb.auug.org.au>,
+Subject: [tip: objtool/core] objtool: Fix objtool regression on x32 systems
+Cc:     Mikulas Patocka <mpatocka@redhat.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Borislav Petkov <bp@suse.de>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20220520082604.GQ2578@worktop.programming.kicks-ass.net>
-References: <20220520082604.GQ2578@worktop.programming.kicks-ass.net>
+        Borislav Petkov <bp@suse.de>, <stable@vger.kernel.org>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: =?utf-8?q?=3Calpine=2ELRH=2E2=2E02=2E2205161041260=2E1155?=
+ =?utf-8?q?6=40file01=2Eintranet=2Eprod=2Eint=2Erdu2=2Eredhat=2Ecom=3E?=
+References: =?utf-8?q?=3Calpine=2ELRH=2E2=2E02=2E2205161041260=2E11556?=
+ =?utf-8?q?=40file01=2Eintranet=2Eprod=2Eint=2Erdu2=2Eredhat=2Ecom=3E?=
 MIME-Version: 1.0
-Message-ID: <165304283709.4207.13042308475336063166.tip-bot2@tip-bot2>
+Message-ID: <165304401319.4207.18392602354110557584.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,81 +68,111 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/sev branch of tip:
+The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     ce6565282b3b16fd850c6a676f78c6bc76d0c235
-Gitweb:        https://git.kernel.org/tip/ce6565282b3b16fd850c6a676f78c6bc76d0c235
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Fri, 20 May 2022 10:26:04 +02:00
+Commit-ID:     22682a07acc308ef78681572e19502ce8893c4d4
+Gitweb:        https://git.kernel.org/tip/22682a07acc308ef78681572e19502ce8893c4d4
+Author:        Mikulas Patocka <mpatocka@redhat.com>
+AuthorDate:    Mon, 16 May 2022 11:06:36 -04:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Fri, 20 May 2022 12:04:56 +02:00
+CommitterDate: Fri, 20 May 2022 12:45:30 +02:00
 
-x86/entry: Fixup objtool/ibt validation
+objtool: Fix objtool regression on x32 systems
 
-Commit
+Commit c087c6e7b551 ("objtool: Fix type of reloc::addend") failed to
+appreciate cross building from ILP32 hosts, where 'int' == 'long' and
+the issue persists.
 
-  47f33de4aafb ("x86/sev: Mark the code returning to user space as syscall gap")
+As such, use s64/int64_t/Elf64_Sxword for this field and suffer the
+pain that is ISO C99 printf formats for it.
 
-added a bunch of text references without annotating them, resulting in a
-spree of objtool complaints:
-
-  vmlinux.o: warning: objtool: vc_switch_off_ist+0x77: relocation to !ENDBR: entry_SYSCALL_64+0x15c
-  vmlinux.o: warning: objtool: vc_switch_off_ist+0x8f: relocation to !ENDBR: entry_SYSCALL_compat+0xa5
-  vmlinux.o: warning: objtool: vc_switch_off_ist+0x97: relocation to !ENDBR: .entry.text+0x21ea
-  vmlinux.o: warning: objtool: vc_switch_off_ist+0xef: relocation to !ENDBR: .entry.text+0x162
-  vmlinux.o: warning: objtool: __sev_es_ist_enter+0x60: relocation to !ENDBR: entry_SYSCALL_64+0x15c
-  vmlinux.o: warning: objtool: __sev_es_ist_enter+0x6c: relocation to !ENDBR: .entry.text+0x162
-  vmlinux.o: warning: objtool: __sev_es_ist_enter+0x8a: relocation to !ENDBR: entry_SYSCALL_compat+0xa5
-  vmlinux.o: warning: objtool: __sev_es_ist_enter+0xc1: relocation to !ENDBR: .entry.text+0x21ea
-
-Since these text references are used to compare against IP, and are not
-an indirect call target, they don't need ENDBR so annotate them away.
-
-Fixes: 47f33de4aafb ("x86/sev: Mark the code returning to user space as syscall gap")
-Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+Fixes: c087c6e7b551 ("objtool: Fix type of reloc::addend")
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+[peterz: reword changelog, s/long long/s64/]
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lore.kernel.org/r/20220520082604.GQ2578@worktop.programming.kicks-ass.net
+Cc: <stable@vger.kernel.org>
+Link: https://lkml.kernel.org/r/alpine.LRH.2.02.2205161041260.11556@file01.intranet.prod.int.rdu2.redhat.com
 ---
- arch/x86/entry/entry_64.S        | 3 +++
- arch/x86/entry/entry_64_compat.S | 3 +++
- 2 files changed, 6 insertions(+)
+ tools/objtool/check.c               |  9 +++++----
+ tools/objtool/elf.c                 |  2 +-
+ tools/objtool/include/objtool/elf.h |  4 ++--
+ 3 files changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/arch/x86/entry/entry_64.S b/arch/x86/entry/entry_64.S
-index 2fd8a5c..58a2d76 100644
---- a/arch/x86/entry/entry_64.S
-+++ b/arch/x86/entry/entry_64.S
-@@ -216,9 +216,12 @@ syscall_return_via_sysret:
- 	popq	%rdi
- 	popq	%rsp
- SYM_INNER_LABEL(entry_SYSRETQ_unsafe_stack, SYM_L_GLOBAL)
-+	ANNOTATE_NOENDBR
- 	swapgs
- 	sysretq
- SYM_INNER_LABEL(entry_SYSRETQ_end, SYM_L_GLOBAL)
-+	ANNOTATE_NOENDBR
-+	int3
- SYM_CODE_END(entry_SYSCALL_64)
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index 2063f9f..190b2f6 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -5,6 +5,7 @@
  
- /*
-diff --git a/arch/x86/entry/entry_64_compat.S b/arch/x86/entry/entry_64_compat.S
-index 3c0e149..8011021 100644
---- a/arch/x86/entry/entry_64_compat.S
-+++ b/arch/x86/entry/entry_64_compat.S
-@@ -298,6 +298,7 @@ sysret32_from_system_call:
-          */
- 	movq	RSP-ORIG_RAX(%rsp), %rsp
- SYM_INNER_LABEL(entry_SYSRETL_compat_unsafe_stack, SYM_L_GLOBAL)
-+	ANNOTATE_NOENDBR
+ #include <string.h>
+ #include <stdlib.h>
++#include <inttypes.h>
+ #include <sys/mman.h>
  
- 	/*
- 	 * The original userspace %rsp (RSP-ORIG_RAX(%rsp)) is stored
-@@ -316,6 +317,8 @@ SYM_INNER_LABEL(entry_SYSRETL_compat_unsafe_stack, SYM_L_GLOBAL)
- 	swapgs
- 	sysretl
- SYM_INNER_LABEL(entry_SYSRETL_compat_end, SYM_L_GLOBAL)
-+	ANNOTATE_NOENDBR
-+	int3
- SYM_CODE_END(entry_SYSCALL_compat)
+ #include <arch/elf.h>
+@@ -561,12 +562,12 @@ static int add_dead_ends(struct objtool_file *file)
+ 		else if (reloc->addend == reloc->sym->sec->sh.sh_size) {
+ 			insn = find_last_insn(file, reloc->sym->sec);
+ 			if (!insn) {
+-				WARN("can't find unreachable insn at %s+0x%lx",
++				WARN("can't find unreachable insn at %s+0x%" PRIx64,
+ 				     reloc->sym->sec->name, reloc->addend);
+ 				return -1;
+ 			}
+ 		} else {
+-			WARN("can't find unreachable insn at %s+0x%lx",
++			WARN("can't find unreachable insn at %s+0x%" PRIx64,
+ 			     reloc->sym->sec->name, reloc->addend);
+ 			return -1;
+ 		}
+@@ -596,12 +597,12 @@ reachable:
+ 		else if (reloc->addend == reloc->sym->sec->sh.sh_size) {
+ 			insn = find_last_insn(file, reloc->sym->sec);
+ 			if (!insn) {
+-				WARN("can't find reachable insn at %s+0x%lx",
++				WARN("can't find reachable insn at %s+0x%" PRIx64,
+ 				     reloc->sym->sec->name, reloc->addend);
+ 				return -1;
+ 			}
+ 		} else {
+-			WARN("can't find reachable insn at %s+0x%lx",
++			WARN("can't find reachable insn at %s+0x%" PRIx64,
+ 			     reloc->sym->sec->name, reloc->addend);
+ 			return -1;
+ 		}
+diff --git a/tools/objtool/elf.c b/tools/objtool/elf.c
+index 7fb6720..c25e957 100644
+--- a/tools/objtool/elf.c
++++ b/tools/objtool/elf.c
+@@ -550,7 +550,7 @@ static struct section *elf_create_reloc_section(struct elf *elf,
+ 						int reltype);
  
- /*
+ int elf_add_reloc(struct elf *elf, struct section *sec, unsigned long offset,
+-		  unsigned int type, struct symbol *sym, long addend)
++		  unsigned int type, struct symbol *sym, s64 addend)
+ {
+ 	struct reloc *reloc;
+ 
+diff --git a/tools/objtool/include/objtool/elf.h b/tools/objtool/include/objtool/elf.h
+index de0cb2f..adebfbc 100644
+--- a/tools/objtool/include/objtool/elf.h
++++ b/tools/objtool/include/objtool/elf.h
+@@ -73,7 +73,7 @@ struct reloc {
+ 	struct symbol *sym;
+ 	unsigned long offset;
+ 	unsigned int type;
+-	long addend;
++	s64 addend;
+ 	int idx;
+ 	bool jump_table_start;
+ };
+@@ -145,7 +145,7 @@ struct elf *elf_open_read(const char *name, int flags);
+ struct section *elf_create_section(struct elf *elf, const char *name, unsigned int sh_flags, size_t entsize, int nr);
+ 
+ int elf_add_reloc(struct elf *elf, struct section *sec, unsigned long offset,
+-		  unsigned int type, struct symbol *sym, long addend);
++		  unsigned int type, struct symbol *sym, s64 addend);
+ int elf_add_reloc_to_insn(struct elf *elf, struct section *sec,
+ 			  unsigned long offset, unsigned int type,
+ 			  struct section *insn_sec, unsigned long insn_off);
