@@ -2,54 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 33E0352E8E4
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 20 May 2022 11:34:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 86CC952E9F4
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 20 May 2022 12:33:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236050AbiETJej (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 20 May 2022 05:34:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46010 "EHLO
+        id S1347846AbiETKds (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 20 May 2022 06:33:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37358 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229809AbiETJeh (ORCPT
+        with ESMTP id S1346638AbiETKdr (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 20 May 2022 05:34:37 -0400
+        Fri, 20 May 2022 06:33:47 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C344D13F1DB;
-        Fri, 20 May 2022 02:34:34 -0700 (PDT)
-Date:   Fri, 20 May 2022 09:34:31 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C2B48CB20;
+        Fri, 20 May 2022 03:33:46 -0700 (PDT)
+Date:   Fri, 20 May 2022 10:33:43 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1653039272;
+        s=2020; t=1653042825;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=4sCF3Az+AXTvAL2Bg6o9WbPakpP4ifyu/0tfR5iev4s=;
-        b=imDEOGsMAJnWcwBglnf4OR9xf1Y3ohDfn8gZhDKxWdbxjDOZcm8e2uVmvZBc1nnL6vDzoR
-        INmjb6SelZIljD+FenoDSa7D01r1SK1l5ewOkneZJ1SymuTOPBXZaKI0IMSqs6uUG9yh9u
-        mQRJ36qVd6AN4DzdhHUfo5Cf+98dB3fG/NP4sXYgXxXDpiRjOwsIoOLm1AmAn/+lKV2QZn
-        ZNEWMyJ1UcS4bKIhDMkphYS1rN4cRUYBZeW6vOTpDpwYKKGbA7D4qvhJe7FK9QK/HcaUgS
-        bcbDWIZwqQYs4hZgUFN4v1/pDiez8zDQnkeI44Qpa3r4FmXiA/uLtaOCOoi61Q==
+        bh=3EiRAfrIIlf5nSh1BVIrTg9D0v4FjgcwC3dU0MUagIE=;
+        b=TgsC4A8r0Trv4KIp1jE6z0WvGz1lLd3mBesEK3ZL2Qe/rwSO424ZH1OP9Q0tTTj9FDZIZu
+        BXZXHE9uRC21G+pVv3e87GFqzZTX694Jxd/Yj713ZGMvvwxI9t1s6uR5BNfZTuahK+ZjhN
+        hczHj6wdk3eySdOfej2Fa6iWvdxdrenRpafMsAfZvVXQf1rAv56ibozaLT1WxqfxgfHGn3
+        DA4tMgqZ1eY18UDfGjJQgxq/J+5ozjv1kd3P+IQ5aRLVtbuBkJH6k2bOBibhpn8P4bA3ei
+        DTFNXGFsmsfG2Y/h7Z9vHlKnjEDbkKkSjTXmWT9BRnKGuEqMPx8DSwqfjIQwIA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1653039272;
+        s=2020e; t=1653042825;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=4sCF3Az+AXTvAL2Bg6o9WbPakpP4ifyu/0tfR5iev4s=;
-        b=VB8CQVYmnMPrsYQcjeEkoDd/nzxnnv8nC37l8wMoY0J0DG6M7WjpE50W71aFGf9GXEZvaQ
-        8vMwuELtiWRddKCg==
+        bh=3EiRAfrIIlf5nSh1BVIrTg9D0v4FjgcwC3dU0MUagIE=;
+        b=8SFiJBHiKF9WY8ObskHxAlTNVBfHSsUFqvSJ4i5A4NmiFqCr0jCnWoxSRm11NPch+RxsfV
+        sHVimvolCS4V7FDw==
 From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/microcode] x86/microcode: Add explicit CPU vendor dependency
-Cc:     Randy Dunlap <rdunlap@infradead.org>, Borislav Petkov <bp@suse.de>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <8ead0da9-9545-b10d-e3db-7df1a1f219e4@infradead.org>
-References: <8ead0da9-9545-b10d-e3db-7df1a1f219e4@infradead.org>
+Subject: [tip: x86/cleanups] x86: Remove empty files
+Cc:     Borislav Petkov <bp@suse.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20220520101723.12006-1-bp@alien8.de>
+References: <20220520101723.12006-1-bp@alien8.de>
 MIME-Version: 1.0
-Message-ID: <165303927147.4207.7663213190046631826.tip-bot2@tip-bot2>
+Message-ID: <165304282381.4207.12933200150021377765.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -64,47 +64,48 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/microcode branch of tip:
+The following commit has been merged into the x86/cleanups branch of tip:
 
-Commit-ID:     9c55d99e099bd7aa6b91fce8718505c35d5dfc65
-Gitweb:        https://git.kernel.org/tip/9c55d99e099bd7aa6b91fce8718505c35d5dfc65
+Commit-ID:     d936411dc9caeb3edb992e39c33d4d1d81ca8c08
+Gitweb:        https://git.kernel.org/tip/d936411dc9caeb3edb992e39c33d4d1d81ca8c08
 Author:        Borislav Petkov <bp@suse.de>
-AuthorDate:    Thu, 19 May 2022 16:59:13 +02:00
+AuthorDate:    Fri, 20 May 2022 12:12:30 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Fri, 20 May 2022 11:28:32 +02:00
+CommitterDate: Fri, 20 May 2022 12:29:26 +02:00
 
-x86/microcode: Add explicit CPU vendor dependency
+x86: Remove empty files
 
-Add an explicit dependency to the respective CPU vendor so that the
-respective microcode support for it gets built only when that support is
-enabled.
+Remove empty files which were supposed to get removed with the
+respective commits removing the functionality in them:
 
-Reported-by: Randy Dunlap <rdunlap@infradead.org>
+$ find arch/x86/ -empty
+arch/x86/lib/mmx_32.c
+arch/x86/include/asm/fpu/internal.h
+arch/x86/include/asm/mmx.h
+
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lore.kernel.org/r/8ead0da9-9545-b10d-e3db-7df1a1f219e4@infradead.org
+Link: https://lore.kernel.org/r/20220520101723.12006-1-bp@alien8.de
 ---
- arch/x86/Kconfig | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/include/asm/fpu/internal.h | 0
+ arch/x86/include/asm/mmx.h          | 0
+ arch/x86/lib/mmx_32.c               | 0
+ 3 files changed, 0 insertions(+), 0 deletions(-)
+ delete mode 100644 arch/x86/include/asm/fpu/internal.h
+ delete mode 100644 arch/x86/include/asm/mmx.h
+ delete mode 100644 arch/x86/lib/mmx_32.c
 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index b0142e0..7ba627c 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -1313,7 +1313,7 @@ config MICROCODE
- 
- config MICROCODE_INTEL
- 	bool "Intel microcode loading support"
--	depends on MICROCODE
-+	depends on CPU_SUP_INTEL && MICROCODE
- 	default MICROCODE
- 	help
- 	  This options enables microcode patch loading support for Intel
-@@ -1325,7 +1325,7 @@ config MICROCODE_INTEL
- 
- config MICROCODE_AMD
- 	bool "AMD microcode loading support"
--	depends on MICROCODE
-+	depends on CPU_SUP_AMD && MICROCODE
- 	help
- 	  If you select this option, microcode patch loading support for AMD
- 	  processors will be enabled.
+diff --git a/arch/x86/include/asm/fpu/internal.h b/arch/x86/include/asm/fpu/internal.h
+deleted file mode 100644
+index e69de29..0000000
+--- a/arch/x86/include/asm/fpu/internal.h
++++ /dev/null
+diff --git a/arch/x86/include/asm/mmx.h b/arch/x86/include/asm/mmx.h
+deleted file mode 100644
+index e69de29..0000000
+--- a/arch/x86/include/asm/mmx.h
++++ /dev/null
+diff --git a/arch/x86/lib/mmx_32.c b/arch/x86/lib/mmx_32.c
+deleted file mode 100644
+index e69de29..0000000
+--- a/arch/x86/lib/mmx_32.c
++++ /dev/null
