@@ -2,112 +2,116 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6296E52EA69
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 20 May 2022 13:00:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FFC952EAE8
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 20 May 2022 13:35:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245475AbiETLAw (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 20 May 2022 07:00:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55104 "EHLO
+        id S1348579AbiETLfK (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 20 May 2022 07:35:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54124 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235945AbiETLAv (ORCPT
+        with ESMTP id S244015AbiETLfG (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 20 May 2022 07:00:51 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D34DDB7CA;
-        Fri, 20 May 2022 04:00:49 -0700 (PDT)
-Date:   Fri, 20 May 2022 11:00:46 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1653044448;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=OfHvb3fruLU2Rg+3l/c/ckZU21HNHw7WDZW9HPhwKk0=;
-        b=Dg3al9neC57Puv7RlGzOlDLp6OBN9jS/QlsLJSmyYVhYnCDYAwJWAaEzVLvM1tkTFUFXOt
-        ZzzzW0YI9YrG2l+SUtvw+WfiaZhdWZQ1DWzG0fOqUQw673EqTNv0cVVzHLt1vwFWxlFsCr
-        fl1FqYwGxM7KxSxmSm9BPmIZ+K7QLoLeW+uBd5kQb1J+6BOeExD37eSV3GBNlxD0CqeYNf
-        kLTUIA3VHbJ37Me4nUKMJDqLxFh0/n2bXh6apnQsMtmU18+lVinu45y3mnKqEvVzU6IZfI
-        yXrow1YpEFbJwkSVmDOo4BptUfjqelpQJRoLCN21BqGyfPlSl3vHEHhbVxpokQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1653044448;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=OfHvb3fruLU2Rg+3l/c/ckZU21HNHw7WDZW9HPhwKk0=;
-        b=YAxvw4U6dlfDaGOaoYObAEL0yq8lLnf72uhg5gz7rkN5qlTzbsqSvXL1CA6e68UCIrzXXp
-        m06UmvTiQzB5SzCA==
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/tdx] x86/tdx: Fix RETs in TDX asm
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Borislav Petkov <bp@suse.de>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20220520083839.GR2578@worktop.programming.kicks-ass.net>
-References: <20220520083839.GR2578@worktop.programming.kicks-ass.net>
+        Fri, 20 May 2022 07:35:06 -0400
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FA7456C2B;
+        Fri, 20 May 2022 04:35:05 -0700 (PDT)
+Received: by mail-ej1-f47.google.com with SMTP id kq17so15092864ejb.4;
+        Fri, 20 May 2022 04:35:05 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=PKSnfNmh5PAwV0dZWUv7bsiyKNUHk1UCJgkK3J4/ff4=;
+        b=gr/AFrCqCG9skC9OoN5O6DNBTNHMDIYrKb6oGqP1oukdOX1/tarACrvFhiwz+yVNbi
+         CfSFXvg/kP61+j/v9iBSmH3aLvwBzghDyo4nE5RODochGaFILokcxnGwan6E/OjLpvQq
+         7yWmndTcT1zgGjZifDOvfbAtyO6hvepZnXve+xy+tvludjRvHhA6915bJK0MP1sCavOV
+         mBZeP4Qg46CZ3hTbClEteaQX4p9K9FT6fG3yw88ab6CjpIGIA1R1Gk/JcAWGIVuzGF0S
+         8EF6KekUuOdQ8QTzVGkfDkOJxDzS7UsyehMLe1ydlD/mwtnz98Ldj97FynicwUpz1xqx
+         5fOw==
+X-Gm-Message-State: AOAM532vs4BQCXPW8UeWj0iVJw9uM3y/43AMYvxmMnhjUN/07PcN9FbQ
+        SfJzLK9JxSs5kFosj2FxhDdshqMQo2Tw5XX2Tpber+wA7gc=
+X-Google-Smtp-Source: ABdhPJybybsn1df97si3V7APCBEPEWfLEv95ysLynaQaitiMPM6pchF3IyTkYstUN0KjssnWoGeKy/zRZLSIYICRQPw=
+X-Received: by 2002:a17:906:9753:b0:6fe:aafb:31a6 with SMTP id
+ o19-20020a170906975300b006feaafb31a6mr2422367ejy.502.1653046503736; Fri, 20
+ May 2022 04:35:03 -0700 (PDT)
 MIME-Version: 1.0
-Message-ID: <165304444691.4207.14334435844427241995.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <20220513093433.425163-1-dietmar.eggemann@arm.com> <165299742675.4207.9389624037232636288.tip-bot2@tip-bot2>
+In-Reply-To: <165299742675.4207.9389624037232636288.tip-bot2@tip-bot2>
+From:   Barry Song <baohua@kernel.org>
+Date:   Fri, 20 May 2022 23:34:52 +1200
+Message-ID: <CAGsJ_4wdYrxPrXGnmEGBfzHfY0f8ON4gRwNz2z_EABzva7bmrw@mail.gmail.com>
+Subject: Re: [tip: sched/core] topology: Remove unused cpu_cluster_mask()
+To:     LKML <linux-kernel@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     linux-tip-commits@vger.kernel.org,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        x86 <x86@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/tdx branch of tip:
+On Fri, May 20, 2022 at 9:57 AM tip-bot2 for Dietmar Eggemann
+<tip-bot2@linutronix.de> wrote:
+>
+> The following commit has been merged into the sched/core branch of tip:
+>
+> Commit-ID:     991d8d8142cad94f9c5c05db25e67fa83d6f772a
+> Gitweb:        https://git.kernel.org/tip/991d8d8142cad94f9c5c05db25e67fa83d6f772a
+> Author:        Dietmar Eggemann <dietmar.eggemann@arm.com>
+> AuthorDate:    Fri, 13 May 2022 11:34:33 +02:00
+> Committer:     Peter Zijlstra <peterz@infradead.org>
+> CommitterDate: Thu, 19 May 2022 23:46:13 +02:00
+>
+> topology: Remove unused cpu_cluster_mask()
+>
+> default_topology[] uses cpu_clustergroup_mask() for the CLS level
+> (guarded by CONFIG_SCHED_CLUSTER) which is currently provided by x86
+> (arch/x86/kernel/smpboot.c) and arm64 (drivers/base/arch_topology.c).
+>
+> Fixes: 778c558f49a2c ("sched: Add cluster scheduler level in core and
+> related Kconfig for ARM64")
+>
+> Signed-off-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
+> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> Acked-by: Barry Song <baohua@kernel.org>
+> Link: https://lore.kernel.org/r/20220513093433.425163-1-dietmar.eggemann@arm.com
+> ---
 
-Commit-ID:     c796f02162e428b595ff70196dca161ee46b163b
-Gitweb:        https://git.kernel.org/tip/c796f02162e428b595ff70196dca161ee46b163b
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Fri, 20 May 2022 10:38:39 +02:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Fri, 20 May 2022 12:53:22 +02:00
+Hi Peter,
+I also received emails which say Greg has put it into drive-core-testing and
+driver-core-next.
+https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/driver-core.git/commit/?h=driver-core-next&id=15f214f9bdb7c1f5
 
-x86/tdx: Fix RETs in TDX asm
 
-Because build-testing is over-rated, fix a few trivial objtool complaints:
+>  include/linux/topology.h | 7 -------
+>  1 file changed, 7 deletions(-)
+>
+> diff --git a/include/linux/topology.h b/include/linux/topology.h
+> index f19bc36..4564faa 100644
+> --- a/include/linux/topology.h
+> +++ b/include/linux/topology.h
+> @@ -240,13 +240,6 @@ static inline const struct cpumask *cpu_smt_mask(int cpu)
+>  }
+>  #endif
+>
+> -#if defined(CONFIG_SCHED_CLUSTER) && !defined(cpu_cluster_mask)
+> -static inline const struct cpumask *cpu_cluster_mask(int cpu)
+> -{
+> -       return topology_cluster_cpumask(cpu);
+> -}
+> -#endif
+> -
+>  static inline const struct cpumask *cpu_cpu_mask(int cpu)
+>  {
+>         return cpumask_of_node(cpu_to_node(cpu));
 
-  vmlinux.o: warning: objtool: __tdx_module_call+0x3e: missing int3 after ret
-  vmlinux.o: warning: objtool: __tdx_hypercall+0x6e: missing int3 after ret
-
-Fixes: eb94f1b6a70a ("x86/tdx: Add __tdx_module_call() and __tdx_hypercall() helper functions")
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lore.kernel.org/r/20220520083839.GR2578@worktop.programming.kicks-ass.net
----
- arch/x86/coco/tdx/tdcall.S | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/arch/x86/coco/tdx/tdcall.S b/arch/x86/coco/tdx/tdcall.S
-index eeb4511..f9eb113 100644
---- a/arch/x86/coco/tdx/tdcall.S
-+++ b/arch/x86/coco/tdx/tdcall.S
-@@ -73,7 +73,7 @@ SYM_FUNC_START(__tdx_module_call)
- 	FRAME_BEGIN
- 	TDX_MODULE_CALL host=0
- 	FRAME_END
--	ret
-+	RET
- SYM_FUNC_END(__tdx_module_call)
- 
- /*
-@@ -196,7 +196,7 @@ SYM_FUNC_START(__tdx_hypercall)
- 
- 	FRAME_END
- 
--	retq
-+	RET
- .Lpanic:
- 	call __tdx_hypercall_failed
- 	/* __tdx_hypercall_failed never returns */
+Thanks
+Barry
