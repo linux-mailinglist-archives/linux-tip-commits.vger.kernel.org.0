@@ -2,63 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7BB9B533EC1
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 25 May 2022 16:07:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA410534DAB
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 26 May 2022 13:01:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241079AbiEYOHD (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 25 May 2022 10:07:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33330 "EHLO
+        id S1344164AbiEZLBp (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 26 May 2022 07:01:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34742 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245637AbiEYOFy (ORCPT
+        with ESMTP id S231377AbiEZLBp (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 25 May 2022 10:05:54 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC330C6E6B;
-        Wed, 25 May 2022 07:03:35 -0700 (PDT)
-Date:   Wed, 25 May 2022 14:03:33 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1653487414;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=55ocFR5c8Yck9KyS67JdgcKAJX3wIgoSeYZFc0YqsWw=;
-        b=0f7I+wCG03Aaugbh2N8LSn5VKr19kU/XFztj04lan53h3cnuDzrkTc1GOyy0FLPKbmjHsj
-        pLKnZNzRxq3Oxqfmsu2d3hIgZDjRQxgYlW5/tvvV3QVsFaw8GpA2kpsUwJ/o9JRRf3ppnt
-        TdvLVgVZnp1flZDYazzLUhTXqxFosVSZPvVoJWpwPoW9cCOjB0TAn4cVB4UvSOld8pd9Lw
-        nSvg0F5AChaZJ1zUhx1yTAMwxQo6kClSaDvf0hkY0UDJLZW1i3N8wNfJhg4J5C0wRt0AIa
-        1CVSiaD2oTX4aOtITopIqM6TYb8lwFccWCDOt+Wjr8fQtPRtHjI1OvKOSdT0NQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1653487414;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=55ocFR5c8Yck9KyS67JdgcKAJX3wIgoSeYZFc0YqsWw=;
-        b=sIqUpH8IFMVk9RDjQ4zZ0iNlpK8/cEtwtEBeVfwzDNwy9OPAhc9Gw/MmyoMgkyziN1fsim
-        XxdYOM6hE+g9Y4AQ==
-From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf/x86/intel: Fix event constraints for ICL
-Cc:     Kan Liang <kan.liang@linux.intel.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>, stable@vger.kernel.org,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20220525133952.1660658-1-kan.liang@linux.intel.com>
-References: <20220525133952.1660658-1-kan.liang@linux.intel.com>
+        Thu, 26 May 2022 07:01:45 -0400
+Received: from mail-pj1-f65.google.com (mail-pj1-f65.google.com [209.85.216.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 348A11D0F3;
+        Thu, 26 May 2022 04:01:44 -0700 (PDT)
+Received: by mail-pj1-f65.google.com with SMTP id v5-20020a17090a7c0500b001df84fa82f8so1412609pjf.5;
+        Thu, 26 May 2022 04:01:44 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=pLaR1c4A1+kJhjeDUMdwZ1PPmHOVlp2foYVmGTfi61k=;
+        b=k3Q8m/FusXUMFixi3vHlAoMu9+d/DDvw4boo9n5gFLA1eLB6u8ZfKQbZpNb4a92MWl
+         i1zhWbo1IewuO7c4TtVejrXYa3XK/Hi3/+aEvhkcUXoHJFro4Ay1Aeo0Nlf9KBBHcbUI
+         syUJKaTkxvSACAgiOo93D5K3WpAPRmgGS9G1c/gMi87BxEAWICBgLKouBRUmQloLJpqq
+         mKNn+fldo71M1shGmr+Sj71jXRdLRdcgl55zNUu1ihZRJP882CwZrIkCS9gR2tEeucQm
+         RLCzWEPyCBxl9MQ15KGfLUl78TtfCi4p6EXiJZkWYKG6nDFNKVqId13ozpAdgp+CXJCL
+         xc1g==
+X-Gm-Message-State: AOAM531JxEOZw6HzVoq+KXJBySJYFk2G2rHzYbU74grL/5ogo2E/stgv
+        1qvwBUJ3OfW9SwqE67D+Ig==
+X-Google-Smtp-Source: ABdhPJyMj4AgF4QEIpibY6f3wBBkQDlIr/bkTPnTCGjzBlKV5ATVIMD4VF8evXXgl04FuKOjd3EwFg==
+X-Received: by 2002:a17:902:bd93:b0:162:135a:8309 with SMTP id q19-20020a170902bd9300b00162135a8309mr23248475pls.35.1653562903644;
+        Thu, 26 May 2022 04:01:43 -0700 (PDT)
+Received: from localhost.localdomain (ns1003916.ip-51-81-154.us. [51.81.154.37])
+        by smtp.gmail.com with ESMTPSA id z16-20020a17090a015000b001d95c09f877sm1193832pje.35.2022.05.26.04.01.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 May 2022 04:01:43 -0700 (PDT)
+From:   sunliming <sunliming@kylinos.cn>
+To:     mingo@kernel.org, linux-tip-commits@vger.kernel.org,
+        dave.hansen@linux.intel.com, rostedt@goodmis.org
+Cc:     x86@kernel.org, inux-kernel@vger.kernel.org, sunliming@kylinos.cn,
+        kelulanainsley@gmail.com
+Subject: [PATCH V2] x86/idt: traceponit.c: fix comment for irq vector tracepoints
+Date:   Thu, 26 May 2022 19:01:17 +0800
+Message-Id: <20220526110117.174985-1-sunliming@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Message-ID: <165348741321.4207.8002435699917268067.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -66,41 +59,33 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/urgent branch of tip:
+Commit:
 
-Commit-ID:     86dca369075b3e310c3c0adb0f81e513c562b5e4
-Gitweb:        https://git.kernel.org/tip/86dca369075b3e310c3c0adb0f81e513c562b5e4
-Author:        Kan Liang <kan.liang@linux.intel.com>
-AuthorDate:    Wed, 25 May 2022 06:39:52 -07:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 25 May 2022 15:55:52 +02:00
+  4b9a8dca0e58 ("x86/idt: Remove the tracing IDT completely")
 
-perf/x86/intel: Fix event constraints for ICL
+removed the 'tracing IDT' from arch/x86/kernel/tracepoint.c,
+but left related comment. So that the comment become anachronistic.
+Just remove the comment.
 
-According to the latest event list, the event encoding 0x55
-INST_DECODED.DECODERS and 0x56 UOPS_DECODED.DEC0 are only available on
-the first 4 counters. Add them into the event constraints table.
-
-Fixes: 6017608936c1 ("perf/x86/intel: Add Icelake support")
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Peter Zijlstra <peterz@infradead.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20220525133952.1660658-1-kan.liang@linux.intel.com
+Signed-off-by: sunliming <sunliming@kylinos.cn>
 ---
- arch/x86/events/intel/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/tracepoint.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-index 955ae91..45024ab 100644
---- a/arch/x86/events/intel/core.c
-+++ b/arch/x86/events/intel/core.c
-@@ -276,7 +276,7 @@ static struct event_constraint intel_icl_event_constraints[] = {
- 	INTEL_EVENT_CONSTRAINT_RANGE(0x03, 0x0a, 0xf),
- 	INTEL_EVENT_CONSTRAINT_RANGE(0x1f, 0x28, 0xf),
- 	INTEL_EVENT_CONSTRAINT(0x32, 0xf),	/* SW_PREFETCH_ACCESS.* */
--	INTEL_EVENT_CONSTRAINT_RANGE(0x48, 0x54, 0xf),
-+	INTEL_EVENT_CONSTRAINT_RANGE(0x48, 0x56, 0xf),
- 	INTEL_EVENT_CONSTRAINT_RANGE(0x60, 0x8b, 0xf),
- 	INTEL_UEVENT_CONSTRAINT(0x04a3, 0xff),  /* CYCLE_ACTIVITY.STALLS_TOTAL */
- 	INTEL_UEVENT_CONSTRAINT(0x10a3, 0xff),  /* CYCLE_ACTIVITY.CYCLES_MEM_ANY */
+diff --git a/arch/x86/kernel/tracepoint.c b/arch/x86/kernel/tracepoint.c
+index fcfc077afe2d..065191022035 100644
+--- a/arch/x86/kernel/tracepoint.c
++++ b/arch/x86/kernel/tracepoint.c
+@@ -1,9 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0
+ /*
+- * Code for supporting irq vector tracepoints.
+- *
+  * Copyright (C) 2013 Seiji Aguchi <seiji.aguchi@hds.com>
+- *
+  */
+ #include <linux/jump_label.h>
+ #include <linux/atomic.h>
+-- 
+2.25.1
+
