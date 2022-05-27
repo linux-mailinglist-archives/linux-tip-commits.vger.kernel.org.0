@@ -2,83 +2,103 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 62D95535372
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 26 May 2022 20:39:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 53B79535B81
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 27 May 2022 10:35:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348460AbiEZSix (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 26 May 2022 14:38:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57340 "EHLO
+        id S241639AbiE0Ifz (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 27 May 2022 04:35:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47592 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348433AbiEZSiw (ORCPT
+        with ESMTP id S241387AbiE0Ifx (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 26 May 2022 14:38:52 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E98B6A051;
-        Thu, 26 May 2022 11:38:50 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id CB464B821AA;
-        Thu, 26 May 2022 18:38:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1B9AC385A9;
-        Thu, 26 May 2022 18:38:46 +0000 (UTC)
-Date:   Thu, 26 May 2022 14:38:44 -0400
-From:   Steven Rostedt <rostedt@goodmis.org>
-To:     Dave Hansen <dave.hansen@intel.com>
-Cc:     sunliming <sunliming@kylinos.cn>, mingo@kernel.org,
-        linux-tip-commits@vger.kernel.org, dave.hansen@linux.intel.com,
-        x86@kernel.org, linux-kernel@vger.kernel.org,
-        kelulanainsley@gmail.com
-Subject: Re: [PATCH V2] x86/idt: traceponit.c: fix comment for irq vector
- tracepoints
-Message-ID: <20220526143844.2d5c8741@gandalf.local.home>
-In-Reply-To: <8f3be3c2-dcd0-1646-b5bd-0a6597e7ca2e@intel.com>
-References: <20220526110831.175743-1-sunliming@kylinos.cn>
-        <8f3be3c2-dcd0-1646-b5bd-0a6597e7ca2e@intel.com>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        Fri, 27 May 2022 04:35:53 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5032F1356;
+        Fri, 27 May 2022 01:35:52 -0700 (PDT)
+Date:   Fri, 27 May 2022 08:35:47 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1653640549;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=RQk3XeCftUXv6jIxvFP8/sBrU2Gn7eBN/AOYqVB1ujU=;
+        b=eYevdyTLTJHsS+Oif2EqXcKWOePiv+5yzW7xsbhylW8GOGO25Lsg/j6erkIMJ29mJYHZKn
+        TSJcKFH+djYBFEgXJVe2xEiypuHt7pDlu7o12O6NFF4kgRuyeUzBlR1EylAjSajpZYXklt
+        GpBGxpl8mq8NK4JxU2gcKEoGFOx3+T85INpqUPB4qZ/xejF8yynre+ryNB9PI+O0xg8ZR0
+        kjMMXMhuwSXmdC7v4ZhScEedGPEvBMfL5Tem2ikSsBC7R20JDfv59BH6B/Py8zrgKSUtna
+        zCLsjX7jSYixJtTcMrwWn7aoeD5KBBQLakwHWY7l/1Tg3MHBV9LzKywasW5wSw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1653640549;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=RQk3XeCftUXv6jIxvFP8/sBrU2Gn7eBN/AOYqVB1ujU=;
+        b=fbWdx09gsYeeA34K095IDEj046HVMvaSDk+eO4MHMcWuv2b6Jjhb+btk9ZRpq+7L2OMsPR
+        N6MRN9bBuvrOeYBQ==
+From:   "tip-bot2 for Krzysztof Kozlowski" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: timers/core] clocksource/drivers/oxnas-rps: Fix
+ irq_of_parse_and_map() return value
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20220422104101.55754-1-krzysztof.kozlowski@linaro.org>
+References: <20220422104101.55754-1-krzysztof.kozlowski@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Message-ID: <165364054751.4207.12591932253297497747.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-6.7 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Thu, 26 May 2022 09:24:31 -0700
-Dave Hansen <dave.hansen@intel.com> wrote:
+The following commit has been merged into the timers/core branch of tip:
 
-> On 5/26/22 04:08, sunliming wrote:
-> > 
-> > diff --git a/arch/x86/kernel/tracepoint.c b/arch/x86/kernel/tracepoint.c
-> > index fcfc077afe2d..065191022035 100644
-> > --- a/arch/x86/kernel/tracepoint.c
-> > +++ b/arch/x86/kernel/tracepoint.c
-> > @@ -1,9 +1,6 @@
-> >  // SPDX-License-Identifier: GPL-2.0
-> >  /*
-> > - * Code for supporting irq vector tracepoints.
-> > - *
-> >   * Copyright (C) 2013 Seiji Aguchi <seiji.aguchi@hds.com>
-> > - *
-> >   */
-> >  #include <linux/jump_label.h>
-> >  #include <linux/atomic.h>  
-> 
-> While I'm also generally careful about removing others' copyrights, Mr.
-> Aguchi only touched this file once and all of the code from that one
-> touch appears to be gone to me.  Shouldn't we just zap the whole comment?
+Commit-ID:     9c04a8ff03def4df3f81219ffbe1ec9b44ff5348
+Gitweb:        https://git.kernel.org/tip/9c04a8ff03def4df3f81219ffbe1ec9b44ff5348
+Author:        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+AuthorDate:    Fri, 22 Apr 2022 12:41:01 +02:00
+Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
+CommitterDate: Tue, 24 May 2022 09:16:29 +02:00
 
-Perhaps, but that's a different change than this is addressing. This is
-only addressing fixing the comments about the removal of the code.
+clocksource/drivers/oxnas-rps: Fix irq_of_parse_and_map() return value
 
-But looking at the history of this file. Seiji created it, but the only
-code that remains in the file was mostly added by Thomas. The only lines
-that Seiji has now is the whitespace and the brackets.
+The irq_of_parse_and_map() returns 0 on failure, not a negative ERRNO.
 
-I would still have the removal of the copyright as a separate patch.
+Fixes: 89355274e1f7 ("clocksource/drivers/oxnas-rps: Add Oxford Semiconductor RPS Dual Timer")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Neil Armstrong <narmstrong@baylibre.com>
+Link: https://lore.kernel.org/r/20220422104101.55754-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+---
+ drivers/clocksource/timer-oxnas-rps.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
--- Steve
+diff --git a/drivers/clocksource/timer-oxnas-rps.c b/drivers/clocksource/timer-oxnas-rps.c
+index 56c0cc3..d514b44 100644
+--- a/drivers/clocksource/timer-oxnas-rps.c
++++ b/drivers/clocksource/timer-oxnas-rps.c
+@@ -236,7 +236,7 @@ static int __init oxnas_rps_timer_init(struct device_node *np)
+ 	}
+ 
+ 	rps->irq = irq_of_parse_and_map(np, 0);
+-	if (rps->irq < 0) {
++	if (!rps->irq) {
+ 		ret = -EINVAL;
+ 		goto err_iomap;
+ 	}
