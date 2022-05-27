@@ -2,56 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E5E39535B86
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 27 May 2022 10:35:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 83914535B87
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 27 May 2022 10:36:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241387AbiE0If6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 27 May 2022 04:35:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47614 "EHLO
+        id S1349662AbiE0If7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 27 May 2022 04:35:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47628 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349593AbiE0If4 (ORCPT
+        with ESMTP id S1349610AbiE0If4 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
         Fri, 27 May 2022 04:35:56 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7469ED8DB;
-        Fri, 27 May 2022 01:35:54 -0700 (PDT)
-Date:   Fri, 27 May 2022 08:35:52 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE446F1354;
+        Fri, 27 May 2022 01:35:55 -0700 (PDT)
+Date:   Fri, 27 May 2022 08:35:53 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1653640553;
+        s=2020; t=1653640554;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=sPOJriyY/Z+8yMNeiAq0ptIGysLM9YB8co0anF3vW9E=;
-        b=Cy6LEE9+VOOgF9U5+bSZemKknAjIp5owufaO3PGiF4Q2O1OCo07PaUcCw0yl83eng9B0Sx
-        dyzjHVWg3d96DmGvFJOISYfZW2RP4X4tifhzJmD+c1u+Dlm8x/q3cToeDH77hvSooDk4FY
-        Kj/Tm3KMlzWuyG54OraAqpr/+P6RZ6MyCk5nTH5nBVTqTsKMdExDMGUJ8Cb0SIjjqMrRHp
-        fJQ3X82Id8E+nf6hDZ19K/Chob4iQDhkuJypKkBt/if9DXPZQFkbMS7PKtgoOu+xwb74fn
-        xKd89WBqq9DazGYv6EWESviti7phWl4xssbr3WpzRQ0PeX6Xcwer/06GGAYNOw==
+        bh=ITM0+OLM6vfDFjTzibDKC08E/dKu0blQe0amI+jk73c=;
+        b=UelAujN9e3nlpI5fsaN1WQn5Y1sTHS5ZA/xNNPrzJPXZcvPwTkK2ZkRUlw0NbJNgzuqMZ0
+        c9EgqEi7xc2gGF1swQAEDJebeywU6Bf7NwwCWUx5xV1tqEHWjbdnwDbKL/QSJDjDFEWKwS
+        rZNyYlMHCzRZjZmMJvH+0xfT0AOBKYfm0lu9XOYj8VhVp5kDxuu/trLhmM9958mB4hWTGv
+        S9blyHytbBM2zLu6ynz98GP49U+DtIGnXl9El3o4o3UaIV2HaRT5V6/3lnot+/NEdd21R9
+        +zOEExMqPpeDZkHWuqA9JqVqjYjT2nU6lZSyeb8GuLmnFMR5VvK7L1ZvpqW4Cw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1653640553;
+        s=2020e; t=1653640554;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=sPOJriyY/Z+8yMNeiAq0ptIGysLM9YB8co0anF3vW9E=;
-        b=M8EjN9iawfYmk+7U5G/lFkv4vlYPeIProzahF7z8KjHaTeU0XVMfL5ekZqNq9xYqeZmlro
-        VzLmHi0p4mVogZCA==
+        bh=ITM0+OLM6vfDFjTzibDKC08E/dKu0blQe0amI+jk73c=;
+        b=MCOQjnXfOUQI5stEXAFZvMSYbxPw/kWXvBt65UDzw1rlaTdIArR8KLMY70avq7g+Xijd4s
+        y4Pdwy7JJqFz6wCw==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] clocksource/drivers/pistachio: Convert to SPDX identifier
+Subject: [tip: timers/core] clocksource/drivers/orion: Convert to SPDX identifier
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Ezequiel Garcia <ezequiel.garcia@imgtec.com>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
         Daniel Lezcano <daniel.lezcano@linaro.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220510171254.843410802@linutronix.de>
-References: <20220510171254.843410802@linutronix.de>
+In-Reply-To: <20220510171254.780389240@linutronix.de>
+References: <20220510171254.780389240@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <165364055221.4207.13143191531038944116.tip-bot2@tip-bot2>
+Message-ID: <165364055322.4207.16280993616260766075.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -68,41 +68,45 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     6bd8643736cb4e9b5ed744f955318037c7fefee8
-Gitweb:        https://git.kernel.org/tip/6bd8643736cb4e9b5ed744f955318037c7fefee8
+Commit-ID:     029aede7774c7997f14364ac4aa8c5503e5624e9
+Gitweb:        https://git.kernel.org/tip/029aede7774c7997f14364ac4aa8c5503e5624e9
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Tue, 10 May 2022 19:24:48 +02:00
+AuthorDate:    Tue, 10 May 2022 19:24:46 +02:00
 Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
 CommitterDate: Wed, 18 May 2022 11:08:59 +02:00
 
-clocksource/drivers/pistachio: Convert to SPDX identifier
+clocksource/drivers/orion: Convert to SPDX identifier
 
-The licensing text references explicitely the COPYING file in the kernel
-base directory, which is clearly GPL version 2 only.
+The license information clearly states GPL version 2 only. The extra text
+which excludes warranties is an excerpt of the corresponding GPLv2 clause
+11.
+
+So the SPDX identifier covers it completely.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: Ezequiel Garcia <ezequiel.garcia@imgtec.com>
+Cc: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20220510171254.843410802@linutronix.de
+Link: https://lore.kernel.org/r/20220510171254.780389240@linutronix.de
 Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 ---
- drivers/clocksource/timer-pistachio.c | 5 +----
+ drivers/clocksource/timer-orion.c | 5 +----
  1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/clocksource/timer-pistachio.c b/drivers/clocksource/timer-pistachio.c
-index 69c069e..57b2197 100644
---- a/drivers/clocksource/timer-pistachio.c
-+++ b/drivers/clocksource/timer-pistachio.c
-@@ -1,11 +1,8 @@
+diff --git a/drivers/clocksource/timer-orion.c b/drivers/clocksource/timer-orion.c
+index 5101e83..49e86cb 100644
+--- a/drivers/clocksource/timer-orion.c
++++ b/drivers/clocksource/timer-orion.c
+@@ -1,12 +1,9 @@
 +// SPDX-License-Identifier: GPL-2.0
  /*
-  * Pistachio clocksource based on general-purpose timers
+  * Marvell Orion SoC timer handling.
   *
-  * Copyright (C) 2015 Imagination Technologies
+  * Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+  *
+- * This file is licensed under the terms of the GNU General Public
+- * License version 2.  This program is licensed "as is" without any
+- * warranty of any kind, whether express or implied.
 - *
-- * This file is subject to the terms and conditions of the GNU General Public
-- * License. See the file "COPYING" in the main directory of this archive
-- * for more details.
+  * Timer 0 is used as free-running clocksource, while timer 1 is
+  * used as clock_event_device.
   */
- 
- #define pr_fmt(fmt) "%s: " fmt, __func__
