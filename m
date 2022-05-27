@@ -2,57 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A99C6535B96
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 27 May 2022 10:37:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C7F9B535BA0
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 27 May 2022 10:37:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349736AbiE0IgL (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 27 May 2022 04:36:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47942 "EHLO
+        id S1349493AbiE0Igf (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 27 May 2022 04:36:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48008 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349741AbiE0IgH (ORCPT
+        with ESMTP id S1349760AbiE0IgO (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 27 May 2022 04:36:07 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0317FF58C;
-        Fri, 27 May 2022 01:36:03 -0700 (PDT)
-Date:   Fri, 27 May 2022 08:36:01 -0000
+        Fri, 27 May 2022 04:36:14 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3D27FC4E4;
+        Fri, 27 May 2022 01:36:05 -0700 (PDT)
+Date:   Fri, 27 May 2022 08:36:02 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1653640562;
+        s=2020; t=1653640564;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=YV94WFEBhQ3Vi9i7oZUew/ph+yFRL0KG8U7E6tDma8w=;
-        b=wDGYD1dpOwGzCwvzyVw7xLhZssLpY2JXV4/XEFQG5PdJ1KeUi/DzA1Z0gw9GYSRIbkJYKV
-        xsITEjc5dx1YteQcfsf8ypNsM+rlB5exbhxL4TFgbXQDzdgZg2BPZNkUjEkXr97W1Z34qA
-        O6b4R43N0vgjp6cgnRCCkFOclYih4sUb056fu14bi9M+GTrO0/S00hOk6I2GrM1BtU9R8m
-        ZFGElC/XayKkAleWsfEkAinNep8Wj5aADhCrUHNrA1C+rtmvXLORQiNzKDHPpJoQKAkUw0
-        PS6Rw0J2LGzbWcbVw7kWvfY89DpRMU4Ri5OexLFBeTgxW7nQgjq7bvCtNHgaew==
+        bh=VOni+2/IoIaXMZb6nIzmEqO27a9XN4/c9d4nbu/NBrQ=;
+        b=a0uEXmpuCJS7X+++jWTsevIGwpNcH0W/Z7lZBNG9YIPfsJT6xkSAQX03XRz4gVFhUHbANC
+        KJBYn4Rw1xmGZeJUEzqCriKZQKi48QMETyHF1XLjTM6ctE+Yq9kOGKAtB0TxQHXFkkziGZ
+        oYdjfL+oVg1FCebtUCoJ2+wc2NBTWcu5BIXd2+/gSd1GwD0x6I8Bl2mUSAm3UcHfCKOtqs
+        FYtne073XXYzyEfHqu8VG2ziCH6Rhlz0i6EX+FcdghKkGVtIJ3Wukw08TmS/jAqBNgUD5t
+        kg3r8yptZXP3XuJPhDfJza8jYX8G88rpPfGAshLtnakfWEDTAcDAksgM+m69CQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1653640562;
+        s=2020e; t=1653640564;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=YV94WFEBhQ3Vi9i7oZUew/ph+yFRL0KG8U7E6tDma8w=;
-        b=yKK5iJS0jc5QheMItRJgDAX5LAeFA4MiiBWpbuMzZZkrqxLhIixRkToi7lZo4tC45ExvDr
-        +1YQlxLie8PcSDDQ==
-From:   "tip-bot2 for Andre Przywara" <tip-bot2@linutronix.de>
+        bh=VOni+2/IoIaXMZb6nIzmEqO27a9XN4/c9d4nbu/NBrQ=;
+        b=At1cUkZWcoeOfB0fzj9PbIgR0ARIVHGb8/qrj8kLlDCARZwsV9NpqZTf0WSGxByvhlaOCz
+        3gKmvAGwh9UhZVCQ==
+From:   "tip-bot2 for Linus Walleij" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] clocksource/drivers/sp804: Avoid error on multiple
- instances
-Cc:     Andre Przywara <andre.przywara@arm.com>,
-        Robin Murphy <robin.murphy@arm.com>,
+Subject: [tip: timers/core] clocksource/drivers/ixp4xx: Drop boardfile probe path
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
         Daniel Lezcano <daniel.lezcano@linaro.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220506162522.3675399-1-andre.przywara@arm.com>
-References: <20220506162522.3675399-1-andre.przywara@arm.com>
+In-Reply-To: <20220406205505.2332821-1-linus.walleij@linaro.org>
+References: <20220406205505.2332821-1-linus.walleij@linaro.org>
 MIME-Version: 1.0
-Message-ID: <165364056118.4207.17407436599286478766.tip-bot2@tip-bot2>
+Message-ID: <165364056300.4207.6906932063029611142.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -69,64 +67,103 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     a98399cbc1e05f7b977419f03905501d566cf54e
-Gitweb:        https://git.kernel.org/tip/a98399cbc1e05f7b977419f03905501d566cf54e
-Author:        Andre Przywara <andre.przywara@arm.com>
-AuthorDate:    Fri, 06 May 2022 17:25:22 +01:00
+Commit-ID:     41929c9f628b9990d33a200c54bb0c919e089aa8
+Gitweb:        https://git.kernel.org/tip/41929c9f628b9990d33a200c54bb0c919e089aa8
+Author:        Linus Walleij <linus.walleij@linaro.org>
+AuthorDate:    Wed, 06 Apr 2022 22:55:05 +02:00
 Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
 CommitterDate: Wed, 18 May 2022 11:08:52 +02:00
 
-clocksource/drivers/sp804: Avoid error on multiple instances
+clocksource/drivers/ixp4xx: Drop boardfile probe path
 
-When a machine sports more than one SP804 timer instance, we only bring
-up the first one, since multiple timers of the same kind are not useful
-to Linux. As this is intentional behaviour, we should not return an
-error message, as we do today:
-===============
-[    0.000800] Failed to initialize '/bus@8000000/motherboard-bus@8000000/iofpga-bus@300000000/timer@120000': -22
-===============
+The boardfiles for IXP4xx have been deleted. Delete all the
+quirks and code dealing with that boot path and rely solely on
+device tree boot.
 
-Replace the -EINVAL return with a debug message and return 0 instead.
-
-Also we do not reach the init function anymore if the DT node is
-disabled (as this is now handled by OF_DECLARE), so remove the explicit
-check for that case.
-
-This fixes a long standing bogus error when booting ARM's fastmodels.
-
-Signed-off-by: Andre Przywara <andre.przywara@arm.com>
-Reviewed-by: Robin Murphy <robin.murphy@arm.com>
-Link: https://lore.kernel.org/r/20220506162522.3675399-1-andre.przywara@arm.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/20220406205505.2332821-1-linus.walleij@linaro.org
 Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 ---
- drivers/clocksource/timer-sp804.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/clocksource/Kconfig                |  2 +-
+ drivers/clocksource/timer-ixp4xx.c         | 25 +---------------------
+ include/linux/platform_data/timer-ixp4xx.h | 11 +---------
+ 3 files changed, 1 insertion(+), 37 deletions(-)
+ delete mode 100644 include/linux/platform_data/timer-ixp4xx.h
 
-diff --git a/drivers/clocksource/timer-sp804.c b/drivers/clocksource/timer-sp804.c
-index 401d592..e6a87f4 100644
---- a/drivers/clocksource/timer-sp804.c
-+++ b/drivers/clocksource/timer-sp804.c
-@@ -259,6 +259,11 @@ static int __init sp804_of_init(struct device_node *np, struct sp804_timer *time
- 	struct clk *clk1, *clk2;
- 	const char *name = of_get_property(np, "compatible", NULL);
+diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
+index 1589ae7..8182ff2 100644
+--- a/drivers/clocksource/Kconfig
++++ b/drivers/clocksource/Kconfig
+@@ -80,7 +80,7 @@ config IXP4XX_TIMER
+ 	bool "Intel XScale IXP4xx timer driver" if COMPILE_TEST
+ 	depends on HAS_IOMEM
+ 	select CLKSRC_MMIO
+-	select TIMER_OF if OF
++	select TIMER_OF
+ 	help
+ 	  Enables support for the Intel XScale IXP4xx SoC timer.
  
-+	if (initialized) {
-+		pr_debug("%pOF: skipping further SP804 timer device\n", np);
-+		return 0;
-+	}
-+
- 	base = of_iomap(np, 0);
- 	if (!base)
- 		return -ENXIO;
-@@ -270,11 +275,6 @@ static int __init sp804_of_init(struct device_node *np, struct sp804_timer *time
- 	writel(0, timer1_base + timer->ctrl);
- 	writel(0, timer2_base + timer->ctrl);
+diff --git a/drivers/clocksource/timer-ixp4xx.c b/drivers/clocksource/timer-ixp4xx.c
+index cbb1849..720ed70 100644
+--- a/drivers/clocksource/timer-ixp4xx.c
++++ b/drivers/clocksource/timer-ixp4xx.c
+@@ -19,8 +19,6 @@
+ #include <linux/of_address.h>
+ #include <linux/of_irq.h>
+ #include <linux/platform_device.h>
+-/* Goes away with OF conversion */
+-#include <linux/platform_data/timer-ixp4xx.h>
  
--	if (initialized || !of_device_is_available(np)) {
--		ret = -EINVAL;
--		goto err;
--	}
+ /*
+  * Constants to make it easy to access Timer Control/Status registers
+@@ -263,28 +261,6 @@ static struct platform_driver ixp4xx_timer_driver = {
+ };
+ builtin_platform_driver(ixp4xx_timer_driver);
+ 
+-/**
+- * ixp4xx_timer_setup() - Timer setup function to be called from boardfiles
+- * @timerbase: physical base of timer block
+- * @timer_irq: Linux IRQ number for the timer
+- * @timer_freq: Fixed frequency of the timer
+- */
+-void __init ixp4xx_timer_setup(resource_size_t timerbase,
+-			       int timer_irq,
+-			       unsigned int timer_freq)
+-{
+-	void __iomem *base;
 -
- 	clk1 = of_clk_get(np, 0);
- 	if (IS_ERR(clk1))
- 		clk1 = NULL;
+-	base = ioremap(timerbase, 0x100);
+-	if (!base) {
+-		pr_crit("IXP4xx: can't remap timer\n");
+-		return;
+-	}
+-	ixp4xx_timer_register(base, timer_irq, timer_freq);
+-}
+-EXPORT_SYMBOL_GPL(ixp4xx_timer_setup);
+-
+-#ifdef CONFIG_OF
+ static __init int ixp4xx_of_timer_init(struct device_node *np)
+ {
+ 	void __iomem *base;
+@@ -315,4 +291,3 @@ out_unmap:
+ 	return ret;
+ }
+ TIMER_OF_DECLARE(ixp4xx, "intel,ixp4xx-timer", ixp4xx_of_timer_init);
+-#endif
+diff --git a/include/linux/platform_data/timer-ixp4xx.h b/include/linux/platform_data/timer-ixp4xx.h
+deleted file mode 100644
+index ee92ae7..0000000
+--- a/include/linux/platform_data/timer-ixp4xx.h
++++ /dev/null
+@@ -1,11 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-#ifndef __TIMER_IXP4XX_H
+-#define __TIMER_IXP4XX_H
+-
+-#include <linux/ioport.h>
+-
+-void __init ixp4xx_timer_setup(resource_size_t timerbase,
+-			       int timer_irq,
+-			       unsigned int timer_freq);
+-
+-#endif
