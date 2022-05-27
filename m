@@ -2,58 +2,57 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E5406535B9A
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 27 May 2022 10:37:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DCCAB535BA3
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 27 May 2022 10:37:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349677AbiE0If7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 27 May 2022 04:35:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47648 "EHLO
+        id S236827AbiE0IgB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 27 May 2022 04:36:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47670 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349630AbiE0If6 (ORCPT
+        with ESMTP id S1349649AbiE0If7 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 27 May 2022 04:35:58 -0400
+        Fri, 27 May 2022 04:35:59 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40245F1364;
-        Fri, 27 May 2022 01:35:57 -0700 (PDT)
-Date:   Fri, 27 May 2022 08:35:54 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45445F136B;
+        Fri, 27 May 2022 01:35:58 -0700 (PDT)
+Date:   Fri, 27 May 2022 08:35:55 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1653640555;
+        s=2020; t=1653640557;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Cedcf4dAND61Nrxi6DEHAepaUo8Lva6OT37IgFUsZ0Y=;
-        b=N5qwWLpWFLWn1pclGgAE6s89wlguDvhsUSrvgfmRirvvGAQiSbKC2EpTJJjJizbRsXc6qC
-        sOzwZRaWjVLgi/HLkQxQxmGJ6w8U39TlMF1zVOd8DdL1sdB5CTlqEjhTyhEv324VoPiFsi
-        vzekox1uJX0ZOjgVqvgtnSR9EwF0ccJFtJKi3pZxp8Rc3na7q/0UXmC/i88KQ11gcwQCgf
-        GEwB4b6caqf/G2c5YEy4OSBJB3IMeb0xfoS1KF5MSjFjXOw0/AogT94w9A9/vBrON3tez5
-        R1fN/bQJEVIU82M5hukdxEh/pHX7l4iRVjgMm0tykZ4sjac5V0HPJqlCMRDjVw==
+        bh=Z087jBODnpj2qiNGQQ0FWu0oa8ABFwGMRBfuD/HWSNQ=;
+        b=Y7M5pvyLmZQcZnW/c37DuEr8pMD4DdUAlypUhqX3C2OZoIJpNn3lvdFOQtxxKVjymRYL6f
+        FKsxv5XFr32CAaLZgn9JUmIiSQJFg1/nIHeoEZxv8+yVHDfNsHpUgSLBhWTjFmDWijv+5c
+        UaSLx/cii/mXkLFUxTR78bE5LrMvvGv2Y6ZDARTwd48b9TVuWp46EZRIInDEqpIkQAkqH9
+        8FbK1zPF98M2ugkVzPv9Qdo4guz5M3VRiTtkrjEwgyDIiY41rLlvZe0VfVQVCzW301znvT
+        CmS31cWvH3aV5mO8ll5BDrwNRy/9KK7Dg7F32meSqpPlvLxo+qsgin+Yvjg9eg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1653640555;
+        s=2020e; t=1653640557;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Cedcf4dAND61Nrxi6DEHAepaUo8Lva6OT37IgFUsZ0Y=;
-        b=pM1d5Q8KTaaOYUmrqAXYP1zO6GWRk/vx6lhjmF1r8iWnYNBwulwGN8juV/wDlDx0cOPZ69
-        gKojPc6GKCnnGdAw==
+        bh=Z087jBODnpj2qiNGQQ0FWu0oa8ABFwGMRBfuD/HWSNQ=;
+        b=Q5iE3reTf8B4Wq8Cj7jtKBoqmlWaWa49xoqlZ+Jve+L6/pmi6XX/8aoNqsWhUpX7zOJH1Y
+        UvUlRV7V9XkaFtDg==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] clocksource/drivers/lpc32xx: Convert to SPDX identifier
+Subject: [tip: timers/core] clocksource/drivers/digicolor: Convert to SPDX identifier
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Joachim Eastwood <manabian@gmail.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
         Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Baruch Siach <baruch@tkos.co.il>,
         linux-arm-kernel@lists.infradead.org, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220510171254.717233312@linutronix.de>
-References: <20220510171254.717233312@linutronix.de>
+In-Reply-To: <20220510171254.655035023@linutronix.de>
+References: <20220510171254.655035023@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <165364055427.4207.14903378008354479615.tip-bot2@tip-bot2>
+Message-ID: <165364055580.4207.15613073810279817437.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -70,14 +69,14 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     85c5aafd8e6a2476d27715b57dbcf26805eb3ab7
-Gitweb:        https://git.kernel.org/tip/85c5aafd8e6a2476d27715b57dbcf26805eb3ab7
+Commit-ID:     b3a9ce9d24ffc3e8018dc35a5f4e8f3406cf497f
+Gitweb:        https://git.kernel.org/tip/b3a9ce9d24ffc3e8018dc35a5f4e8f3406cf497f
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Tue, 10 May 2022 19:24:45 +02:00
+AuthorDate:    Tue, 10 May 2022 19:24:43 +02:00
 Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
 CommitterDate: Wed, 18 May 2022 11:08:59 +02:00
 
-clocksource/drivers/lpc32xx: Convert to SPDX identifier
+clocksource/drivers/digicolor: Convert to SPDX identifier
 
 The license information clearly states GPL version 2 only. The extra text
 which excludes warranties is an excerpt of the corresponding GPLv2 clause
@@ -86,35 +85,33 @@ which excludes warranties is an excerpt of the corresponding GPLv2 clause
 So the SPDX identifier covers it completely.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: Joachim Eastwood <manabian@gmail.com>
-Cc: Vladimir Zapolskiy <vz@mleia.com>
 Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc: Baruch Siach <baruch@tkos.co.il>
 Cc: linux-arm-kernel@lists.infradead.org
-Acked-by: Vladimir Zapolskiy <vz@mleia.com>
-Link: https://lore.kernel.org/r/20220510171254.717233312@linutronix.de
+Acked-by: Baruch Siach <baruch@tkos.co.il>
+Link: https://lore.kernel.org/r/20220510171254.655035023@linutronix.de
 Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 ---
- drivers/clocksource/timer-lpc32xx.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/clocksource/timer-digicolor.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/clocksource/timer-lpc32xx.c b/drivers/clocksource/timer-lpc32xx.c
-index d51a62a..68eae63 100644
---- a/drivers/clocksource/timer-lpc32xx.c
-+++ b/drivers/clocksource/timer-lpc32xx.c
+diff --git a/drivers/clocksource/timer-digicolor.c b/drivers/clocksource/timer-digicolor.c
+index 1e984a4..559aa96 100644
+--- a/drivers/clocksource/timer-digicolor.c
++++ b/drivers/clocksource/timer-digicolor.c
 @@ -1,3 +1,4 @@
 +// SPDX-License-Identifier: GPL-2.0
  /*
-  * Clocksource driver for NXP LPC32xx/18xx/43xx timer
+  * Conexant Digicolor timer driver
   *
-@@ -6,11 +7,6 @@
-  * Based on:
-  * time-efm32 Copyright (C) 2013 Pengutronix
-  * mach-lpc32xx/timer.c Copyright (C) 2009 - 2010 NXP Semiconductors
+@@ -11,10 +12,6 @@
+  * Copyright (C) 2013 Maxime Ripard
+  *
+  * Maxime Ripard <maxime.ripard@free-electrons.com>
 - *
 - * This file is licensed under the terms of the GNU General Public
-- * License version 2. This program is licensed "as is" without any
+- * License version 2.  This program is licensed "as is" without any
 - * warranty of any kind, whether express or implied.
-- *
   */
  
- #define pr_fmt(fmt) "%s: " fmt, __func__
+ /*
