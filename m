@@ -2,20 +2,20 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DCCAB535BA3
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 27 May 2022 10:37:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 895C3535B9C
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 27 May 2022 10:37:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236827AbiE0IgB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 27 May 2022 04:36:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47670 "EHLO
+        id S1349682AbiE0IgC (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 27 May 2022 04:36:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47698 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349649AbiE0If7 (ORCPT
+        with ESMTP id S1349686AbiE0IgA (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 27 May 2022 04:35:59 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45445F136B;
-        Fri, 27 May 2022 01:35:58 -0700 (PDT)
-Date:   Fri, 27 May 2022 08:35:55 -0000
+        Fri, 27 May 2022 04:36:00 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52C09F1372;
+        Fri, 27 May 2022 01:35:59 -0700 (PDT)
+Date:   Fri, 27 May 2022 08:35:56 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020; t=1653640557;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -23,12 +23,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Z087jBODnpj2qiNGQQ0FWu0oa8ABFwGMRBfuD/HWSNQ=;
-        b=Y7M5pvyLmZQcZnW/c37DuEr8pMD4DdUAlypUhqX3C2OZoIJpNn3lvdFOQtxxKVjymRYL6f
-        FKsxv5XFr32CAaLZgn9JUmIiSQJFg1/nIHeoEZxv8+yVHDfNsHpUgSLBhWTjFmDWijv+5c
-        UaSLx/cii/mXkLFUxTR78bE5LrMvvGv2Y6ZDARTwd48b9TVuWp46EZRIInDEqpIkQAkqH9
-        8FbK1zPF98M2ugkVzPv9Qdo4guz5M3VRiTtkrjEwgyDIiY41rLlvZe0VfVQVCzW301znvT
-        CmS31cWvH3aV5mO8ll5BDrwNRy/9KK7Dg7F32meSqpPlvLxo+qsgin+Yvjg9eg==
+        bh=Z9melx42azvoGZycNwqu3h8r+io0BRg30fcm7F0QmH4=;
+        b=18O1jBsr4FVPL7VWPV7xFE+nOPtUeWT/oWPuCcyBAxl0Rs5RunMXEGvL7+9fbHm1cOiU3z
+        iZnU43qDBBwkK/1rqfAhOIt1kBZ2+Mfn5oRsepUzNac1HO8Xw8BN9nOwifh4RxmUjUpxpP
+        1+HkMCDmWl0DfYpDfsRQ5Nm1Wq+1H4cD90Xn7m6VKdl5xuvrJTrc/u8/7gGK5AJSA0/K9y
+        3BjuU9Wc6YBtZUccoxgH2cwYFAbKe6zdVVJcD8ofot/bIHV1CW7/VCz8ObfYahuEffwrio
+        JY/Jm3akZKUtJDQxc14cnlc+yhT7s4JKULJeKSWjh/eJ5vK61PtOG9t32WEOQw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
         s=2020e; t=1653640557;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -36,23 +36,24 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Z087jBODnpj2qiNGQQ0FWu0oa8ABFwGMRBfuD/HWSNQ=;
-        b=Q5iE3reTf8B4Wq8Cj7jtKBoqmlWaWa49xoqlZ+Jve+L6/pmi6XX/8aoNqsWhUpX7zOJH1Y
-        UvUlRV7V9XkaFtDg==
+        bh=Z9melx42azvoGZycNwqu3h8r+io0BRg30fcm7F0QmH4=;
+        b=SxBvPq7pqhpt8ot94PeOHjMUhXQTqzxrcVzTUVwqxNrVSVQ8KsFP9bLUse0Mvk74JYpEc2
+        +KuecemgwfMab3AA==
 From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] clocksource/drivers/digicolor: Convert to SPDX identifier
+Subject: [tip: timers/core] clocksource/drivers/armada-370-xp: Convert to SPDX
+ identifier
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Gregory Clement <gregory.clement@free-electrons.com>,
         Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Baruch Siach <baruch@tkos.co.il>,
-        linux-arm-kernel@lists.infradead.org, x86@kernel.org,
+        Gregory CLEMENT <gregory.clement@bootlin.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220510171254.655035023@linutronix.de>
-References: <20220510171254.655035023@linutronix.de>
+In-Reply-To: <20220510171254.592781786@linutronix.de>
+References: <20220510171254.592781786@linutronix.de>
 MIME-Version: 1.0
-Message-ID: <165364055580.4207.15613073810279817437.tip-bot2@tip-bot2>
+Message-ID: <165364055680.4207.10821145241353587893.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -69,14 +70,14 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     b3a9ce9d24ffc3e8018dc35a5f4e8f3406cf497f
-Gitweb:        https://git.kernel.org/tip/b3a9ce9d24ffc3e8018dc35a5f4e8f3406cf497f
+Commit-ID:     7160d9c4cce94612d5f42a5db392cd606a38737a
+Gitweb:        https://git.kernel.org/tip/7160d9c4cce94612d5f42a5db392cd606a38737a
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Tue, 10 May 2022 19:24:43 +02:00
+AuthorDate:    Tue, 10 May 2022 19:24:41 +02:00
 Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
 CommitterDate: Wed, 18 May 2022 11:08:59 +02:00
 
-clocksource/drivers/digicolor: Convert to SPDX identifier
+clocksource/drivers/armada-370-xp: Convert to SPDX identifier
 
 The license information clearly states GPL version 2 only. The extra text
 which excludes warranties is an excerpt of the corresponding GPLv2 clause
@@ -85,33 +86,32 @@ which excludes warranties is an excerpt of the corresponding GPLv2 clause
 So the SPDX identifier covers it completely.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: Gregory Clement <gregory.clement@free-electrons.com>
 Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc: Baruch Siach <baruch@tkos.co.il>
-Cc: linux-arm-kernel@lists.infradead.org
-Acked-by: Baruch Siach <baruch@tkos.co.il>
-Link: https://lore.kernel.org/r/20220510171254.655035023@linutronix.de
+Acked-by: Gregory CLEMENT <gregory.clement@bootlin.com>
+Link: https://lore.kernel.org/r/20220510171254.592781786@linutronix.de
 Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 ---
- drivers/clocksource/timer-digicolor.c | 5 +----
+ drivers/clocksource/timer-armada-370-xp.c | 5 +----
  1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/clocksource/timer-digicolor.c b/drivers/clocksource/timer-digicolor.c
-index 1e984a4..559aa96 100644
---- a/drivers/clocksource/timer-digicolor.c
-+++ b/drivers/clocksource/timer-digicolor.c
+diff --git a/drivers/clocksource/timer-armada-370-xp.c b/drivers/clocksource/timer-armada-370-xp.c
+index e3acc3c..6ec565d 100644
+--- a/drivers/clocksource/timer-armada-370-xp.c
++++ b/drivers/clocksource/timer-armada-370-xp.c
 @@ -1,3 +1,4 @@
 +// SPDX-License-Identifier: GPL-2.0
  /*
-  * Conexant Digicolor timer driver
+  * Marvell Armada 370/XP SoC timer handling.
   *
-@@ -11,10 +12,6 @@
-  * Copyright (C) 2013 Maxime Ripard
+@@ -7,10 +8,6 @@
+  * Gregory CLEMENT <gregory.clement@free-electrons.com>
+  * Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
   *
-  * Maxime Ripard <maxime.ripard@free-electrons.com>
-- *
 - * This file is licensed under the terms of the GNU General Public
 - * License version 2.  This program is licensed "as is" without any
 - * warranty of any kind, whether express or implied.
-  */
- 
- /*
+- *
+  * Timer 0 is used as free-running clocksource, while timer 1 is
+  * used as clock_event_device.
+  *
