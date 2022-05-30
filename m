@@ -2,55 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E13B537933
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 30 May 2022 12:39:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 929B253795D
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 30 May 2022 12:46:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234750AbiE3Ki7 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 30 May 2022 06:38:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55972 "EHLO
+        id S235471AbiE3Kqa (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 30 May 2022 06:46:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235234AbiE3Ki4 (ORCPT
+        with ESMTP id S235354AbiE3Kpx (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 30 May 2022 06:38:56 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1533E6B7CE;
-        Mon, 30 May 2022 03:38:55 -0700 (PDT)
-Date:   Mon, 30 May 2022 10:38:52 -0000
+        Mon, 30 May 2022 06:45:53 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF5057CB25;
+        Mon, 30 May 2022 03:45:51 -0700 (PDT)
+Date:   Mon, 30 May 2022 10:45:49 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1653907133;
+        s=2020; t=1653907550;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=GYcZQb6y/XCkh2YYSGLSoheHoc4Pzjv7/7ozpxfJPoM=;
-        b=XnvVP0CfJ8YSCNB5w5XDfbYNB7JJoBy4Pu0hKQBhfYXqRkJTn1kbaGowZ2jvufm2N2MM8c
-        k9MC5SAXcHdiIQwbURIZEMyLvpq4/wqdYpIA0786vIcZgW9yuBKSIafAL4iOPPSgo6bIxF
-        F4C3uDVeUAUzFCQPVGVZWeM924pOTE/3qEUw3ymIxYtNnLUA/kLZ+dkg3c/BFbl8AM4neR
-        msVXH6OcujgAmwv+L9H9ryggLJ4vp0x9n/y43VsX269B8Z0IqefUBXr8p02jP2S7tp4mDr
-        2IOTLorW+Ul9JRWckvh5NOuRTQYsrLU+yGuKKV0u2H92xLxMdLs9Oz2oH3n9FA==
+        bh=oN0BchjI0S/uiKLm500Vkkr8chqe+DNI+Hp7hPtlPf8=;
+        b=Py4QG6U/wsFwBrArb8Lod/82iJCJnpOnVvAxgwZc67w8C2W+bGx1NyWetexdvNMa7nTvLz
+        UVF1KfbR5l8+xVBfY9qSi11QacB6nY2iKwLQqgLHP9V9ZO19fKJpYlx00RqesD/BtAf+LZ
+        iBO/x7NsMFei2kjh26xtu9H1R6kfdQAO3hhXZkYwWM1BJfRVacjh7wyikjC8qS+DNZVEkE
+        OJ48NijzKAwh2geGGcpgEQg4QW0Q/PxqT77W/9AQdmkQCqR0gJCyE2CA319CvD1BVIQwu3
+        OTJlQH8G9iC5vYKY38Zu8/rumXJxMF/HTLpddgZvJMvxA0xwL0J3WayvpM3TOQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1653907133;
+        s=2020e; t=1653907550;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=GYcZQb6y/XCkh2YYSGLSoheHoc4Pzjv7/7ozpxfJPoM=;
-        b=C3LuBmTkUUQIR7wWtzvJ4Yh6tl4FvrCZsc7iHlgabT0PyNW/N7EuXAxq9pGFPWuy6n5qNX
-        BJCg9FjFu3/Gc0AQ==
-From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
+        bh=oN0BchjI0S/uiKLm500Vkkr8chqe+DNI+Hp7hPtlPf8=;
+        b=bhdLHd+hi6E7ioq31ntS7fvfx8GSdxqIpUdHwpzL5sF+Pb1DwCNPJ4sa9sa1aX9YRXgtxU
+        tTQEeg5rz/RmrtCA==
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/urgent] objtool: Add CONFIG_HAVE_UACCESS_VALIDATION
-Cc:     Josh Poimboeuf <jpoimboe@redhat.com>,
+Subject: [tip: sched/urgent] sched/autogroup: Fix sysctl move
+Cc:     Ivan Kozik <ivan@ludios.org>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <d393d5e2fe73aec6e8e41d5c24f4b6fe8583f2d8.1650384225.git.jpoimboe@redhat.com>
-References: <d393d5e2fe73aec6e8e41d5c24f4b6fe8583f2d8.1650384225.git.jpoimboe@redhat.com>
+In-Reply-To: <YpR2IqndgsyMzN00@worktop.programming.kicks-ass.net>
+References: <YpR2IqndgsyMzN00@worktop.programming.kicks-ass.net>
 MIME-Version: 1.0
-Message-ID: <165390713250.4207.16901240644447647410.tip-bot2@tip-bot2>
+Message-ID: <165390754900.4207.11439782656946256684.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,83 +65,49 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the objtool/urgent branch of tip:
+The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     5f3da8c08508df82823566c32f753071c8ad36af
-Gitweb:        https://git.kernel.org/tip/5f3da8c08508df82823566c32f753071c8ad36af
-Author:        Josh Poimboeuf <jpoimboe@redhat.com>
-AuthorDate:    Tue, 19 Apr 2022 09:05:09 -07:00
+Commit-ID:     82f586f923e3ac6062bc7867717a7f8afc09e0ff
+Gitweb:        https://git.kernel.org/tip/82f586f923e3ac6062bc7867717a7f8afc09e0ff
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Mon, 30 May 2022 09:45:38 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Fri, 27 May 2022 12:34:43 +02:00
+CommitterDate: Mon, 30 May 2022 12:36:36 +02:00
 
-objtool: Add CONFIG_HAVE_UACCESS_VALIDATION
+sched/autogroup: Fix sysctl move
 
-Allow an arch specify that it has objtool uaccess validation with
-CONFIG_HAVE_UACCESS_VALIDATION.  For now, doing so unconditionally
-selects CONFIG_OBJTOOL.
+Ivan reported /proc/sys/kernel/sched_autogroup_enabled went walk-about
+and using the noautogroup command line parameter would result in a
+boot error message.
 
-Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
+Turns out the sysctl move placed the init function wrong.
+
+Fixes: c8eaf6ac76f4 ("sched: move autogroup sysctls into its own file")
+Reported-by: Ivan Kozik <ivan@ludios.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/d393d5e2fe73aec6e8e41d5c24f4b6fe8583f2d8.1650384225.git.jpoimboe@redhat.com
+Tested-by: Ivan Kozik <ivan@ludios.org>
+Link: https://lkml.kernel.org/r/YpR2IqndgsyMzN00@worktop.programming.kicks-ass.net
 ---
- arch/Kconfig            | 4 ++++
- arch/x86/Kconfig        | 1 +
- scripts/Makefile.build  | 2 +-
- scripts/link-vmlinux.sh | 4 +++-
- 4 files changed, 9 insertions(+), 2 deletions(-)
+ kernel/sched/autogroup.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/Kconfig b/arch/Kconfig
-index 904ed51..cb29540 100644
---- a/arch/Kconfig
-+++ b/arch/Kconfig
-@@ -1050,6 +1050,10 @@ config HAVE_NOINSTR_HACK
- config HAVE_NOINSTR_VALIDATION
- 	bool
+diff --git a/kernel/sched/autogroup.c b/kernel/sched/autogroup.c
+index 16092b4..4ebaf97 100644
+--- a/kernel/sched/autogroup.c
++++ b/kernel/sched/autogroup.c
+@@ -36,6 +36,7 @@ void __init autogroup_init(struct task_struct *init_task)
+ 	kref_init(&autogroup_default.kref);
+ 	init_rwsem(&autogroup_default.lock);
+ 	init_task->signal->autogroup = &autogroup_default;
++	sched_autogroup_sysctl_init();
+ }
  
-+config HAVE_UACCESS_VALIDATION
-+	bool
-+	select OBJTOOL
-+
- config HAVE_STACK_VALIDATION
- 	bool
- 	help
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index cf531fb..5f41f3c 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -258,6 +258,7 @@ config X86
- 	select HAVE_PREEMPT_DYNAMIC_CALL
- 	select HAVE_RSEQ
- 	select HAVE_SYSCALL_TRACEPOINTS
-+	select HAVE_UACCESS_VALIDATION		if HAVE_OBJTOOL
- 	select HAVE_UNSTABLE_SCHED_CLOCK
- 	select HAVE_USER_RETURN_NOTIFIER
- 	select HAVE_GENERIC_VDSO
-diff --git a/scripts/Makefile.build b/scripts/Makefile.build
-index 0640050..6a663b2 100644
---- a/scripts/Makefile.build
-+++ b/scripts/Makefile.build
-@@ -218,7 +218,7 @@ objtool_args =								\
- 	$(if $(CONFIG_SLS), --sls)					\
- 	$(if $(CONFIG_STACK_VALIDATION), --stackval)			\
- 	$(if $(CONFIG_HAVE_STATIC_CALL_INLINE), --static-call)		\
--	--uaccess							\
-+	$(if $(CONFIG_HAVE_UACCESS_VALIDATION), --uaccess)		\
- 	$(if $(linked-object), --link)					\
- 	$(if $(part-of-module), --module)				\
- 	$(if $(CONFIG_GCOV_KERNEL), --no-unreachable)
-diff --git a/scripts/link-vmlinux.sh b/scripts/link-vmlinux.sh
-index a7f6196..fd578c3 100755
---- a/scripts/link-vmlinux.sh
-+++ b/scripts/link-vmlinux.sh
-@@ -134,7 +134,9 @@ objtool_link()
- 			objtoolopt="${objtoolopt} --static-call"
- 		fi
+ void autogroup_free(struct task_group *tg)
+@@ -219,7 +220,6 @@ void sched_autogroup_exit(struct signal_struct *sig)
+ static int __init setup_autogroup(char *str)
+ {
+ 	sysctl_sched_autogroup_enabled = 0;
+-	sched_autogroup_sysctl_init();
  
--		objtoolopt="${objtoolopt} --uaccess"
-+		if is_enabled CONFIG_HAVE_UACCESS_VALIDATION; then
-+			objtoolopt="${objtoolopt} --uaccess"
-+		fi
- 	fi
- 
- 	if is_enabled CONFIG_NOINSTR_VALIDATION; then
+ 	return 1;
+ }
