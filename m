@@ -2,54 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2121F535E1B
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 27 May 2022 12:23:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0758153792C
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 30 May 2022 12:38:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233172AbiE0KXg (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 27 May 2022 06:23:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55054 "EHLO
+        id S233607AbiE3Kix (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 30 May 2022 06:38:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55662 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350370AbiE0KXg (ORCPT
+        with ESMTP id S229457AbiE3Kiv (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 27 May 2022 06:23:36 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D92F8F6893;
-        Fri, 27 May 2022 03:23:33 -0700 (PDT)
-Date:   Fri, 27 May 2022 10:23:31 -0000
+        Mon, 30 May 2022 06:38:51 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8D7D6B020;
+        Mon, 30 May 2022 03:38:50 -0700 (PDT)
+Date:   Mon, 30 May 2022 10:38:46 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1653647012;
+        s=2020; t=1653907127;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=DvhvamQw95czvXs0uw4uN1J6aqGA3JmU+FjqjMTU1sA=;
-        b=IKAfjUqYRKIZimxNT1cOaFoOtYmyID+lHi1/CkuJ0WcfbV+H4Av0oviyJppuIrdSgz3pfu
-        Lf07fgSHJbAEjASx8KMMHsB8VMa4pKP0+8E91Oe8T/KK1GWxIpWntQ2uagbSO0lqdzNWUB
-        U1I6x67e5ljyQZQ7Jyh0ISheQMOBN+rADn1JWKYVQYlA6lm5oKOOWI9PPJ8XFI2+xB8nSb
-        bSb4Ny1347bHU6fq8ml/CvZxPxhrfx0zwIyh4bjOQAJUwU9nkvHGL+Juu58OBYCQ+lnfGE
-        vHss7X4RWoyehVqHOFG0s2HWAqQVSfDMHvM7FOdi3VJ+fEWbF9b5yojWZ8B/Pw==
+        bh=rnzHGAnhOyq2k09aaH0EESq2qgJyhDeir+FLHc2J8To=;
+        b=r8LDmN4TrWj7KiVPzXDuBSvMtpKxriYtsnG0nCoYQQIYl6y85CFFb9g1fjcrz97+6rwTS8
+        TQ0MLgwQR9PhVLJIp3xtQqqOCpnAZrE5pjx8X6uFSRl7q+0NymbM332qQFIR28wwyERwWT
+        aBe1ZysQGCbWVZDPTT4g09C9yFEuMKUQqeZRbSypxkM/QQMFqLiHw+5vU88l60rcq4RSsT
+        brz+Nbm9UJk8MeU+tdVekrmE64/4y78Y+wOVESUcrf70qK0sSk8O0bI8BCXnXAGMR68Zef
+        1h4E2yiRhOa+0fZjgGvFQ2u4e7S/hJiS6fCehAIRFAhTLtHy9JePdVxNR4gjgw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1653647012;
+        s=2020e; t=1653907127;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=DvhvamQw95czvXs0uw4uN1J6aqGA3JmU+FjqjMTU1sA=;
-        b=FWpuQNDiXIUO7zALmbpqgr8MxTsZQwgX7NljQKPDHmJbgjbycYW2zl/cjns5sa6GnY2x9e
-        bWC4aL7DVgIb00AQ==
-From:   "tip-bot2 for Fanjun Kong" <tip-bot2@linutronix.de>
+        bh=rnzHGAnhOyq2k09aaH0EESq2qgJyhDeir+FLHc2J8To=;
+        b=9Tb8qO3eEK/6INM3DhLY9XuV1dKKynFSBjbuMbM02ZkPhhnjria51iKoXARUK9E/3t4b6N
+        8ZE4Um6J9ZuyhCDA==
+From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/mm] x86/mm: Use PAGE_ALIGNED(x) instead of IS_ALIGNED(x, PAGE_SIZE)
-Cc:     Fanjun Kong <bh1scw@gmail.com>, Ingo Molnar <mingo@kernel.org>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20220526142038.1582839-1-bh1scw@gmail.com>
-References: <20220526142038.1582839-1-bh1scw@gmail.com>
+Subject: [tip: objtool/urgent] x86/extable: Annotate ex_handler_msr_mce() as a
+ dead end
+Cc:     Borislav Petkov <bp@suse.de>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20220520192729.23969-1-bp@alien8.de>
+References: <20220520192729.23969-1-bp@alien8.de>
 MIME-Version: 1.0
-Message-ID: <165364701137.4207.15691426598646044587.tip-bot2@tip-bot2>
+Message-ID: <165390712655.4207.8607067039695969119.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -64,54 +66,58 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/mm branch of tip:
+The following commit has been merged into the objtool/urgent branch of tip:
 
-Commit-ID:     e19d11267f0e6c8aff2d15d2dfed12365b4c9184
-Gitweb:        https://git.kernel.org/tip/e19d11267f0e6c8aff2d15d2dfed12365b4c9184
-Author:        Fanjun Kong <bh1scw@gmail.com>
-AuthorDate:    Thu, 26 May 2022 22:20:39 +08:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 27 May 2022 12:19:56 +02:00
+Commit-ID:     2028a255f4df3af9e759f01f958d3237f825f256
+Gitweb:        https://git.kernel.org/tip/2028a255f4df3af9e759f01f958d3237f825f256
+Author:        Borislav Petkov <bp@suse.de>
+AuthorDate:    Fri, 20 May 2022 21:27:29 +02:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Fri, 27 May 2022 12:34:45 +02:00
 
-x86/mm: Use PAGE_ALIGNED(x) instead of IS_ALIGNED(x, PAGE_SIZE)
+x86/extable: Annotate ex_handler_msr_mce() as a dead end
 
-The <linux/mm.h> already provides the PAGE_ALIGNED() macro. Let's
-use this macro instead of IS_ALIGNED() and passing PAGE_SIZE directly.
+Fix
 
-No change in functionality.
+  vmlinux.o: warning: objtool: fixup_exception+0x2d6: unreachable instruction
 
-[ mingo: Tweak changelog. ]
-
-Signed-off-by: Fanjun Kong <bh1scw@gmail.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20220526142038.1582839-1-bh1scw@gmail.com
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20220520192729.23969-1-bp@alien8.de
 ---
- arch/x86/mm/init_64.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/x86/include/asm/extable.h | 8 ++++++--
+ tools/objtool/check.c          | 1 +
+ 2 files changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
-index 61d0ab1..8779d6b 100644
---- a/arch/x86/mm/init_64.c
-+++ b/arch/x86/mm/init_64.c
-@@ -1240,8 +1240,8 @@ remove_pagetable(unsigned long start, unsigned long end, bool direct,
- void __ref vmemmap_free(unsigned long start, unsigned long end,
- 		struct vmem_altmap *altmap)
- {
--	VM_BUG_ON(!IS_ALIGNED(start, PAGE_SIZE));
--	VM_BUG_ON(!IS_ALIGNED(end, PAGE_SIZE));
-+	VM_BUG_ON(!PAGE_ALIGNED(start));
-+	VM_BUG_ON(!PAGE_ALIGNED(end));
+diff --git a/arch/x86/include/asm/extable.h b/arch/x86/include/asm/extable.h
+index 155c991..eeed395 100644
+--- a/arch/x86/include/asm/extable.h
++++ b/arch/x86/include/asm/extable.h
+@@ -42,9 +42,13 @@ extern int ex_get_fixup_type(unsigned long ip);
+ extern void early_fixup_exception(struct pt_regs *regs, int trapnr);
  
- 	remove_pagetable(start, end, false, altmap);
- }
-@@ -1605,8 +1605,8 @@ int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node,
- {
- 	int err;
+ #ifdef CONFIG_X86_MCE
+-extern void ex_handler_msr_mce(struct pt_regs *regs, bool wrmsr);
++extern void __noreturn ex_handler_msr_mce(struct pt_regs *regs, bool wrmsr);
+ #else
+-static inline void ex_handler_msr_mce(struct pt_regs *regs, bool wrmsr) { }
++static inline void __noreturn ex_handler_msr_mce(struct pt_regs *regs, bool wrmsr)
++{
++	for (;;)
++		cpu_relax();
++}
+ #endif
  
--	VM_BUG_ON(!IS_ALIGNED(start, PAGE_SIZE));
--	VM_BUG_ON(!IS_ALIGNED(end, PAGE_SIZE));
-+	VM_BUG_ON(!PAGE_ALIGNED(start));
-+	VM_BUG_ON(!PAGE_ALIGNED(end));
+ #if defined(CONFIG_BPF_JIT) && defined(CONFIG_X86_64)
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index 7a187da..864bb9d 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -187,6 +187,7 @@ static bool __dead_end_function(struct objtool_file *file, struct symbol *func,
+ 		"__invalid_creds",
+ 		"cpu_startup_entry",
+ 		"__ubsan_handle_builtin_unreachable",
++		"ex_handler_msr_mce",
+ 	};
  
- 	if (end - start < PAGES_PER_SECTION * sizeof(struct page))
- 		err = vmemmap_populate_basepages(start, end, node, NULL);
+ 	if (!func)
