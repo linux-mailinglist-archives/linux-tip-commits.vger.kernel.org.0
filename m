@@ -2,112 +2,110 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 929B253795D
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 30 May 2022 12:46:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 13BC1538491
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 30 May 2022 17:18:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235471AbiE3Kqa (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 30 May 2022 06:46:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45604 "EHLO
+        id S238152AbiE3PQF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 30 May 2022 11:16:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53828 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235354AbiE3Kpx (ORCPT
+        with ESMTP id S238262AbiE3PPy (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 30 May 2022 06:45:53 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF5057CB25;
-        Mon, 30 May 2022 03:45:51 -0700 (PDT)
-Date:   Mon, 30 May 2022 10:45:49 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1653907550;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=oN0BchjI0S/uiKLm500Vkkr8chqe+DNI+Hp7hPtlPf8=;
-        b=Py4QG6U/wsFwBrArb8Lod/82iJCJnpOnVvAxgwZc67w8C2W+bGx1NyWetexdvNMa7nTvLz
-        UVF1KfbR5l8+xVBfY9qSi11QacB6nY2iKwLQqgLHP9V9ZO19fKJpYlx00RqesD/BtAf+LZ
-        iBO/x7NsMFei2kjh26xtu9H1R6kfdQAO3hhXZkYwWM1BJfRVacjh7wyikjC8qS+DNZVEkE
-        OJ48NijzKAwh2geGGcpgEQg4QW0Q/PxqT77W/9AQdmkQCqR0gJCyE2CA319CvD1BVIQwu3
-        OTJlQH8G9iC5vYKY38Zu8/rumXJxMF/HTLpddgZvJMvxA0xwL0J3WayvpM3TOQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1653907550;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=oN0BchjI0S/uiKLm500Vkkr8chqe+DNI+Hp7hPtlPf8=;
-        b=bhdLHd+hi6E7ioq31ntS7fvfx8GSdxqIpUdHwpzL5sF+Pb1DwCNPJ4sa9sa1aX9YRXgtxU
-        tTQEeg5rz/RmrtCA==
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] sched/autogroup: Fix sysctl move
-Cc:     Ivan Kozik <ivan@ludios.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <YpR2IqndgsyMzN00@worktop.programming.kicks-ass.net>
-References: <YpR2IqndgsyMzN00@worktop.programming.kicks-ass.net>
+        Mon, 30 May 2022 11:15:54 -0400
+Received: from mail-io1-xd41.google.com (mail-io1-xd41.google.com [IPv6:2607:f8b0:4864:20::d41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 499391B1F6E
+        for <linux-tip-commits@vger.kernel.org>; Mon, 30 May 2022 07:15:01 -0700 (PDT)
+Received: by mail-io1-xd41.google.com with SMTP id p74so11426208iod.8
+        for <linux-tip-commits@vger.kernel.org>; Mon, 30 May 2022 07:15:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=XJqXgw0Qi4Ge6Q57wB4GlvotoYnhUuSq68y9152a6AE=;
+        b=ijwFqBxYOk6oXgiuXqu7ifnmCnTVPU3kqzhUV4L4E7DPWK5aYL16pZHqr3PbtlU0Hr
+         PTXQkxeSS0U18lg4hhPmpjKSSoQBx9+vfeJSdUi8LJcvv/rVTqbZmrirjcxaLakJTNKC
+         cWFx5iXqrvp9daqrjzMe4BCSQ5qgim9b6dA1ECAxrtsVCIkdw8P6T5MA5KBFbSXnJvmm
+         26Khx/Df+OLFBdGL2WIJsC8P1OZE2oYTjBBcwnm+YJdjWAEypQIz8o4pyOFlGKOKpx40
+         dmWk66kSG44WKnr4Brtjk9I7iyAP8j44Z7I+PmMuJxEhHTAqF3a38+srDyB9u3/ki4Ik
+         xqNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=XJqXgw0Qi4Ge6Q57wB4GlvotoYnhUuSq68y9152a6AE=;
+        b=Ue9ucayeW1RlHjQ6LL/ZZ0UzJzjLf7b7uEXStyxU7FJGFj8tBHA8/PHBVxebYRgCcF
+         HHWmnqib3f4QTJ2GMuQ5Kf46SbSf62g81UKQHVeuph3UsBD7Zbg2fmmLDLtaQ2QZ2Dt+
+         xZ8hX+Op/Wed9mUAkdkdfm+YuYfSgO4wyEYCGd5PjdzuvAqlLl9+O+HLTLL0JQXlZ0vq
+         vm6EsAGJ3UhQrKnjNDz14yAWSGAedxqUzMItm4WEdLX8QhgkLBxp4KpTTjS9b8pf9VRV
+         BUiUf/imydYPOgDSvWNScXB/QIyn3zGGAnVF/XSAvNjjis3/4FnJ+QbvLNNQE3YHUsd2
+         X31w==
+X-Gm-Message-State: AOAM533FyqbJ6n/A6+Aa1ROlG5DoXjsfTFVxfSnEp0olgBzkrd2ghx7g
+        gswarDWe61tBbihpFjWsmMRcFlMjOvS7I08ZifY=
+X-Google-Smtp-Source: ABdhPJxlHySKEaatbQPK4g5wgKY+rvDZDBa0t8mxeqtl3RyqROStu4SeZurOa2fdwvHhZu51mXhicEwFOPYWk0RsV1o=
+X-Received: by 2002:a6b:3f03:0:b0:65a:4236:bb3e with SMTP id
+ m3-20020a6b3f03000000b0065a4236bb3emr25130125ioa.194.1653920098173; Mon, 30
+ May 2022 07:14:58 -0700 (PDT)
 MIME-Version: 1.0
-Message-ID: <165390754900.4207.11439782656946256684.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+Received: by 2002:a05:6622:f06:0:0:0:0 with HTTP; Mon, 30 May 2022 07:14:57
+ -0700 (PDT)
+Reply-To: barristerbenjamin221@gmail.com
+From:   Attorney Amadou <koadaidrissa1@gmail.com>
+Date:   Mon, 30 May 2022 07:14:57 -0700
+Message-ID: <CAOh7+P-4HvQzB8uKZTAN+ECXBqWWYP5nXwvQ4oGCZSeCBU48pw@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
+X-Spam-Status: Yes, score=7.7 required=5.0 tests=BAYES_99,BAYES_999,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no autolearn_force=no
         version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:d41 listed in]
+        [list.dnswl.org]
+        *  0.2 BAYES_999 BODY: Bayes spam probability is 99.9 to 100%
+        *      [score: 1.0000]
+        *  3.5 BAYES_99 BODY: Bayes spam probability is 99 to 100%
+        *      [score: 1.0000]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [koadaidrissa1[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [barristerbenjamin221[at]gmail.com]
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [koadaidrissa1[at]gmail.com]
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  2.7 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/urgent branch of tip:
-
-Commit-ID:     82f586f923e3ac6062bc7867717a7f8afc09e0ff
-Gitweb:        https://git.kernel.org/tip/82f586f923e3ac6062bc7867717a7f8afc09e0ff
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Mon, 30 May 2022 09:45:38 +02:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Mon, 30 May 2022 12:36:36 +02:00
-
-sched/autogroup: Fix sysctl move
-
-Ivan reported /proc/sys/kernel/sched_autogroup_enabled went walk-about
-and using the noautogroup command line parameter would result in a
-boot error message.
-
-Turns out the sysctl move placed the init function wrong.
-
-Fixes: c8eaf6ac76f4 ("sched: move autogroup sysctls into its own file")
-Reported-by: Ivan Kozik <ivan@ludios.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: Ivan Kozik <ivan@ludios.org>
-Link: https://lkml.kernel.org/r/YpR2IqndgsyMzN00@worktop.programming.kicks-ass.net
----
- kernel/sched/autogroup.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/kernel/sched/autogroup.c b/kernel/sched/autogroup.c
-index 16092b4..4ebaf97 100644
---- a/kernel/sched/autogroup.c
-+++ b/kernel/sched/autogroup.c
-@@ -36,6 +36,7 @@ void __init autogroup_init(struct task_struct *init_task)
- 	kref_init(&autogroup_default.kref);
- 	init_rwsem(&autogroup_default.lock);
- 	init_task->signal->autogroup = &autogroup_default;
-+	sched_autogroup_sysctl_init();
- }
- 
- void autogroup_free(struct task_group *tg)
-@@ -219,7 +220,6 @@ void sched_autogroup_exit(struct signal_struct *sig)
- static int __init setup_autogroup(char *str)
- {
- 	sysctl_sched_autogroup_enabled = 0;
--	sched_autogroup_sysctl_init();
- 
- 	return 1;
- }
+SGVsbG8gZGVhciBmcmllbmQuDQoNClBsZWFzZSBJIHdpbGwgbG92ZSB0byBkaXNjdXNzIHNvbWV0
+aGluZyB2ZXJ5IGltcG9ydGFudCB3aXRoIHlvdSwgSQ0Kd2lsbCBhcHByZWNpYXRlIGl0IGlmIHlv
+dSBncmFudCBtZSBhdWRpZW5jZS4NCg0KU2luY2VyZWx5Lg0KQmFycmlzdGVyIEFtYWRvdSBCZW5q
+YW1pbiBFc3EuDQouLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4u
+Li4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4NCuimquaEm+OB
+quOCi+WPi+S6uuOAgeOBk+OCk+OBq+OBoeOBr+OAgg0KDQrnp4Hjga/jgYLjgarjgZ/jgajpnZ7l
+uLjjgavph43opoHjgarjgZPjgajjgavjgaTjgYTjgaboqbHjgZflkIjjgYbjga7jgYzlpKflpb3j
+gY3jgafjgZnjgIHjgYLjgarjgZ/jgYznp4HjgavogbTooYbjgpLkuI7jgYjjgabjgY/jgozjgozj
+gbDnp4Hjga/jgZ3jgozjgpLmhJ/orJ3jgZfjgb7jgZnjgIINCg0K5b+D44GL44KJ44CCDQrjg5Dj
+g6rjgrnjgr/jg7zjgqLjg57jg4njgqXjg5njg7Pjgrjjg6Pjg5/jg7NFc3HjgIINCg==
