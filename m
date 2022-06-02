@@ -2,54 +2,58 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C77AF538C03
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 31 May 2022 09:35:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 99F6253BE0E
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  2 Jun 2022 20:27:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244467AbiEaHfT (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 31 May 2022 03:35:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53968 "EHLO
+        id S236167AbiFBS1Q (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 2 Jun 2022 14:27:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49178 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244516AbiEaHfF (ORCPT
+        with ESMTP id S237993AbiFBS1P (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 31 May 2022 03:35:05 -0400
+        Thu, 2 Jun 2022 14:27:15 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5831185EF2;
-        Tue, 31 May 2022 00:34:53 -0700 (PDT)
-Date:   Tue, 31 May 2022 07:34:50 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA3BF1CA5CC;
+        Thu,  2 Jun 2022 11:27:11 -0700 (PDT)
+Date:   Thu, 02 Jun 2022 18:27:08 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1653982491;
+        s=2020; t=1654194429;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=wSX9PuBMAshW58B3hNBClnnwEmHeNYQRsjR5UbWLhPI=;
-        b=ebJjmXHW5FydZ1Z3ds9OngR/4bdYBAximI6aLVDzk1ezmjJ5e3MEqYLMY1KTJf8nVS5Ecl
-        wDww4bayFCIa/nE3GjzwEWLK88fEGfarjpaIY4fy5vmC3oxWYG5NgEVJ2AIPBqw5Wy5bjt
-        msseCl7+BE8FOYaUyc4vv2vro2sZiCeQpA4Fbt8jt5KOQGLYgw5lb9VjBrjXSUHuIBdirA
-        Iq0kbHp+9Xq9vt1wFxoAwjmhpzQdspsjMszkub471vXUBJ4p3OeRuT+fbJVx8qh1vZ7G+e
-        /HbzoEuxN/wQ9ROWLYGJy/VDl48fKvdudy762tPLToau6yebLUEw06j+ZpXfpg==
+        bh=FN+7csKYicW9pdCFmAWu30p2jRZ9WHNz+SNGKHVzuJQ=;
+        b=0KPO0hgdzBTBhT90A5jH8g0l80I0TSVGEkb+ZKZLF/TuaZ05rHTeZU9H99Ps2KtnckoBUD
+        47oOrCcXwZFJ4wXvX8Kjga/A5AZtu1C1Mhrv+xarfpnOUZC8I8aicNSsBZR/jqrgV68tGd
+        ObCUpyzJNao1OKgRc0UNU/N9UK+rpxzoDWup1RujOxO7m+kPOpwKow19yhg0F4HBC/JgaZ
+        ngxWsvvrAxz2YFl6M3XFY75YxRdZlF3B2Vi94clgG7y+hfZcWNDRe/Vsk14UrTDJaHAZGz
+        eqWO9FTA/Ko+kHu3tNofLvgHxvRx4fzNSFapEFaOD3OP/ZBy6bF0P3aqPURWgg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1653982491;
+        s=2020e; t=1654194429;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=wSX9PuBMAshW58B3hNBClnnwEmHeNYQRsjR5UbWLhPI=;
-        b=HvTlQ9vBewHnc5aizs5LskmS4V67NWx6rNi6GrNlYgBlIJWcLAS0VX91QZOrd9tstabKot
-        OT5f5+TgTjIlKeCg==
-From:   "tip-bot2 for Borislav Petkov" <tip-bot2@linutronix.de>
+        bh=FN+7csKYicW9pdCFmAWu30p2jRZ9WHNz+SNGKHVzuJQ=;
+        b=AAs57Tm7F0DNuFOtXNuR+uGgFkNt1v5Xhn9bTx4nPJ325F4Ylmr6MG4G9Xhu9Ez6jwIHnt
+        s0yZsQA2TAmglKBg==
+From:   "tip-bot2 for Kristen Carlson Accardi" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/microcode] x86/microcode: Rip out the OLD_INTERFACE
-Cc:     Borislav Petkov <bp@suse.de>, Thomas Gleixner <tglx@linutronix.de>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20220525161232.14924-2-bp@alien8.de>
-References: <20220525161232.14924-2-bp@alien8.de>
+Subject: [tip: x86/urgent] x86/sgx: Set active memcg prior to shmem allocation
+Cc:     stable@vger.kernel.org,
+        Kristen Carlson Accardi <kristen@linux.intel.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Shakeel Butt <shakeelb@google.com>,
+        Roman Gushchin <roman.gushchin@linux.dev>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20220520174248.4918-1-kristen@linux.intel.com>
+References: <20220520174248.4918-1-kristen@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <165398249057.4207.3408104855886446576.tip-bot2@tip-bot2>
+Message-ID: <165419442842.4207.2566961916839377924.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -64,173 +68,247 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/microcode branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     181b6f40e9ea80c76756d4d0cdeed396016c487e
-Gitweb:        https://git.kernel.org/tip/181b6f40e9ea80c76756d4d0cdeed396016c487e
-Author:        Borislav Petkov <bp@suse.de>
-AuthorDate:    Wed, 25 May 2022 18:12:29 +02:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 31 May 2022 09:31:19 +02:00
+Commit-ID:     0c9782e204d3cc5625b9e8bf4e8625d38dfe0139
+Gitweb:        https://git.kernel.org/tip/0c9782e204d3cc5625b9e8bf4e8625d38dfe0139
+Author:        Kristen Carlson Accardi <kristen@linux.intel.com>
+AuthorDate:    Fri, 20 May 2022 10:42:47 -07:00
+Committer:     Dave Hansen <dave.hansen@linux.intel.com>
+CommitterDate: Thu, 02 Jun 2022 10:58:47 -07:00
 
-x86/microcode: Rip out the OLD_INTERFACE
+x86/sgx: Set active memcg prior to shmem allocation
 
-Everything should be using the early initrd loading by now.
+When the system runs out of enclave memory, SGX can reclaim EPC pages
+by swapping to normal RAM. These backing pages are allocated via a
+per-enclave shared memory area. Since SGX allows unlimited over
+commit on EPC memory, the reclaimer thread can allocate a large
+number of backing RAM pages in response to EPC memory pressure.
 
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20220525161232.14924-2-bp@alien8.de
+When the shared memory backing RAM allocation occurs during
+the reclaimer thread context, the shared memory is charged to
+the root memory control group, and the shmem usage of the enclave
+is not properly accounted for, making cgroups ineffective at
+limiting the amount of RAM an enclave can consume.
 
+For example, when using a cgroup to launch a set of test
+enclaves, the kernel does not properly account for 50% - 75% of
+shmem page allocations on average. In the worst case, when
+nearly all allocations occur during the reclaimer thread, the
+kernel accounts less than a percent of the amount of shmem used
+by the enclave's cgroup to the correct cgroup.
+
+SGX stores a list of mm_structs that are associated with
+an enclave. Pick one of them during reclaim and charge that
+mm's memcg with the shmem allocation. The one that gets picked
+is arbitrary, but this list almost always only has one mm. The
+cases where there is more than one mm with different memcg's
+are not worth considering.
+
+Create a new function - sgx_encl_alloc_backing(). This function
+is used whenever a new backing storage page needs to be
+allocated. Previously the same function was used for page
+allocation as well as retrieving a previously allocated page.
+Prior to backing page allocation, if there is a mm_struct associated
+with the enclave that is requesting the allocation, it is set
+as the active memory control group.
+
+[ dhansen: - fix merge conflict with ELDU fixes
+           - check against actual ksgxd_tsk, not ->mm ]
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Kristen Carlson Accardi <kristen@linux.intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Shakeel Butt <shakeelb@google.com>
+Acked-by: Roman Gushchin <roman.gushchin@linux.dev>
+Link: https://lkml.kernel.org/r/20220520174248.4918-1-kristen@linux.intel.com
 ---
- arch/x86/Kconfig                     |  12 +---
- arch/x86/kernel/cpu/microcode/core.c | 100 +--------------------------
- 2 files changed, 112 deletions(-)
+ arch/x86/kernel/cpu/sgx/encl.c | 105 +++++++++++++++++++++++++++++++-
+ arch/x86/kernel/cpu/sgx/encl.h |   7 +-
+ arch/x86/kernel/cpu/sgx/main.c |   9 ++-
+ 3 files changed, 115 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 762a0b6..f423a2d 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -1350,18 +1350,6 @@ config MICROCODE_AMD
- 	  If you select this option, microcode patch loading support for AMD
- 	  processors will be enabled.
+diff --git a/arch/x86/kernel/cpu/sgx/encl.c b/arch/x86/kernel/cpu/sgx/encl.c
+index 3c24e61..19876eb 100644
+--- a/arch/x86/kernel/cpu/sgx/encl.c
++++ b/arch/x86/kernel/cpu/sgx/encl.c
+@@ -152,7 +152,7 @@ static int __sgx_encl_eldu(struct sgx_encl_page *encl_page,
  
--config MICROCODE_OLD_INTERFACE
--	bool "Ancient loading interface (DEPRECATED)"
--	default n
--	depends on MICROCODE
--	help
--	  DO NOT USE THIS! This is the ancient /dev/cpu/microcode interface
--	  which was used by userspace tools like iucode_tool and microcode.ctl.
--	  It is inadequate because it runs too late to be able to properly
--	  load microcode on a machine and it needs special tools. Instead, you
--	  should've switched to the early loading method with the initrd or
--	  builtin microcode by now: Documentation/x86/microcode.rst
--
- config X86_MSR
- 	tristate "/dev/cpu/*/msr - Model-specific register support"
- 	help
-diff --git a/arch/x86/kernel/cpu/microcode/core.c b/arch/x86/kernel/cpu/microcode/core.c
-index 239ff5f..b72c413 100644
---- a/arch/x86/kernel/cpu/microcode/core.c
-+++ b/arch/x86/kernel/cpu/microcode/core.c
-@@ -373,98 +373,6 @@ static int apply_microcode_on_target(int cpu)
- 	return ret;
+ 	page_pcmd_off = sgx_encl_get_backing_page_pcmd_offset(encl, page_index);
+ 
+-	ret = sgx_encl_get_backing(encl, page_index, &b);
++	ret = sgx_encl_lookup_backing(encl, page_index, &b);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -718,7 +718,7 @@ static struct page *sgx_encl_get_backing_page(struct sgx_encl *encl,
+  *   0 on success,
+  *   -errno otherwise.
+  */
+-int sgx_encl_get_backing(struct sgx_encl *encl, unsigned long page_index,
++static int sgx_encl_get_backing(struct sgx_encl *encl, unsigned long page_index,
+ 			 struct sgx_backing *backing)
+ {
+ 	pgoff_t page_pcmd_off = sgx_encl_get_backing_page_pcmd_offset(encl, page_index);
+@@ -743,6 +743,107 @@ int sgx_encl_get_backing(struct sgx_encl *encl, unsigned long page_index,
+ 	return 0;
  }
  
--#ifdef CONFIG_MICROCODE_OLD_INTERFACE
--static int do_microcode_update(const void __user *buf, size_t size)
--{
--	int error = 0;
--	int cpu;
--
--	for_each_online_cpu(cpu) {
--		struct ucode_cpu_info *uci = ucode_cpu_info + cpu;
--		enum ucode_state ustate;
--
--		if (!uci->valid)
--			continue;
--
--		ustate = microcode_ops->request_microcode_user(cpu, buf, size);
--		if (ustate == UCODE_ERROR) {
--			error = -1;
--			break;
--		} else if (ustate == UCODE_NEW) {
--			apply_microcode_on_target(cpu);
--		}
--	}
--
--	return error;
--}
--
--static int microcode_open(struct inode *inode, struct file *file)
--{
--	return capable(CAP_SYS_RAWIO) ? stream_open(inode, file) : -EPERM;
--}
--
--static ssize_t microcode_write(struct file *file, const char __user *buf,
--			       size_t len, loff_t *ppos)
--{
--	ssize_t ret = -EINVAL;
--	unsigned long nr_pages = totalram_pages();
--
--	if ((len >> PAGE_SHIFT) > nr_pages) {
--		pr_err("too much data (max %ld pages)\n", nr_pages);
--		return ret;
--	}
--
--	cpus_read_lock();
--	mutex_lock(&microcode_mutex);
--
--	if (do_microcode_update(buf, len) == 0)
--		ret = (ssize_t)len;
--
--	if (ret > 0)
--		perf_check_microcode();
--
--	mutex_unlock(&microcode_mutex);
--	cpus_read_unlock();
--
--	return ret;
--}
--
--static const struct file_operations microcode_fops = {
--	.owner			= THIS_MODULE,
--	.write			= microcode_write,
--	.open			= microcode_open,
--	.llseek		= no_llseek,
--};
--
--static struct miscdevice microcode_dev = {
--	.minor			= MICROCODE_MINOR,
--	.name			= "microcode",
--	.nodename		= "cpu/microcode",
--	.fops			= &microcode_fops,
--};
--
--static int __init microcode_dev_init(void)
--{
--	int error;
--
--	error = misc_register(&microcode_dev);
--	if (error) {
--		pr_err("can't misc_register on minor=%d\n", MICROCODE_MINOR);
--		return error;
--	}
--
--	return 0;
--}
--
--static void __exit microcode_dev_exit(void)
--{
--	misc_deregister(&microcode_dev);
--}
--#else
--#define microcode_dev_init()	0
--#define microcode_dev_exit()	do { } while (0)
--#endif
--
- /* fake device for request_firmware */
- static struct platform_device	*microcode_pdev;
++/*
++ * When called from ksgxd, returns the mem_cgroup of a struct mm stored
++ * in the enclave's mm_list. When not called from ksgxd, just returns
++ * the mem_cgroup of the current task.
++ */
++static struct mem_cgroup *sgx_encl_get_mem_cgroup(struct sgx_encl *encl)
++{
++	struct mem_cgroup *memcg = NULL;
++	struct sgx_encl_mm *encl_mm;
++	int idx;
++
++	/*
++	 * If called from normal task context, return the mem_cgroup
++	 * of the current task's mm. The remainder of the handling is for
++	 * ksgxd.
++	 */
++	if (!current_is_ksgxd())
++		return get_mem_cgroup_from_mm(current->mm);
++
++	/*
++	 * Search the enclave's mm_list to find an mm associated with
++	 * this enclave to charge the allocation to.
++	 */
++	idx = srcu_read_lock(&encl->srcu);
++
++	list_for_each_entry_rcu(encl_mm, &encl->mm_list, list) {
++		if (!mmget_not_zero(encl_mm->mm))
++			continue;
++
++		memcg = get_mem_cgroup_from_mm(encl_mm->mm);
++
++		mmput_async(encl_mm->mm);
++
++		break;
++	}
++
++	srcu_read_unlock(&encl->srcu, idx);
++
++	/*
++	 * In the rare case that there isn't an mm associated with
++	 * the enclave, set memcg to the current active mem_cgroup.
++	 * This will be the root mem_cgroup if there is no active
++	 * mem_cgroup.
++	 */
++	if (!memcg)
++		return get_mem_cgroup_from_mm(NULL);
++
++	return memcg;
++}
++
++/**
++ * sgx_encl_alloc_backing() - allocate a new backing storage page
++ * @encl:	an enclave pointer
++ * @page_index:	enclave page index
++ * @backing:	data for accessing backing storage for the page
++ *
++ * When called from ksgxd, sets the active memcg from one of the
++ * mms in the enclave's mm_list prior to any backing page allocation,
++ * in order to ensure that shmem page allocations are charged to the
++ * enclave.
++ *
++ * Return:
++ *   0 on success,
++ *   -errno otherwise.
++ */
++int sgx_encl_alloc_backing(struct sgx_encl *encl, unsigned long page_index,
++			   struct sgx_backing *backing)
++{
++	struct mem_cgroup *encl_memcg = sgx_encl_get_mem_cgroup(encl);
++	struct mem_cgroup *memcg = set_active_memcg(encl_memcg);
++	int ret;
++
++	ret = sgx_encl_get_backing(encl, page_index, backing);
++
++	set_active_memcg(memcg);
++	mem_cgroup_put(encl_memcg);
++
++	return ret;
++}
++
++/**
++ * sgx_encl_lookup_backing() - retrieve an existing backing storage page
++ * @encl:	an enclave pointer
++ * @page_index:	enclave page index
++ * @backing:	data for accessing backing storage for the page
++ *
++ * Retrieve a backing page for loading data back into an EPC page with ELDU.
++ * It is the caller's responsibility to ensure that it is appropriate to use
++ * sgx_encl_lookup_backing() rather than sgx_encl_alloc_backing(). If lookup is
++ * not used correctly, this will cause an allocation which is not accounted for.
++ *
++ * Return:
++ *   0 on success,
++ *   -errno otherwise.
++ */
++int sgx_encl_lookup_backing(struct sgx_encl *encl, unsigned long page_index,
++			   struct sgx_backing *backing)
++{
++	return sgx_encl_get_backing(encl, page_index, backing);
++}
++
+ /**
+  * sgx_encl_put_backing() - Unpin the backing storage
+  * @backing:	data for accessing backing storage for the page
+diff --git a/arch/x86/kernel/cpu/sgx/encl.h b/arch/x86/kernel/cpu/sgx/encl.h
+index d44e737..332ef35 100644
+--- a/arch/x86/kernel/cpu/sgx/encl.h
++++ b/arch/x86/kernel/cpu/sgx/encl.h
+@@ -103,10 +103,13 @@ static inline int sgx_encl_find(struct mm_struct *mm, unsigned long addr,
+ int sgx_encl_may_map(struct sgx_encl *encl, unsigned long start,
+ 		     unsigned long end, unsigned long vm_flags);
  
-@@ -856,10 +764,6 @@ static int __init microcode_init(void)
- 		goto out_driver;
- 	}
++bool current_is_ksgxd(void);
+ void sgx_encl_release(struct kref *ref);
+ int sgx_encl_mm_add(struct sgx_encl *encl, struct mm_struct *mm);
+-int sgx_encl_get_backing(struct sgx_encl *encl, unsigned long page_index,
+-			 struct sgx_backing *backing);
++int sgx_encl_lookup_backing(struct sgx_encl *encl, unsigned long page_index,
++			    struct sgx_backing *backing);
++int sgx_encl_alloc_backing(struct sgx_encl *encl, unsigned long page_index,
++			   struct sgx_backing *backing);
+ void sgx_encl_put_backing(struct sgx_backing *backing);
+ int sgx_encl_test_and_clear_young(struct mm_struct *mm,
+ 				  struct sgx_encl_page *page);
+diff --git a/arch/x86/kernel/cpu/sgx/main.c b/arch/x86/kernel/cpu/sgx/main.c
+index ab4ec54..a78652d 100644
+--- a/arch/x86/kernel/cpu/sgx/main.c
++++ b/arch/x86/kernel/cpu/sgx/main.c
+@@ -313,7 +313,7 @@ static void sgx_reclaimer_write(struct sgx_epc_page *epc_page,
+ 	sgx_encl_put_backing(backing);
  
--	error = microcode_dev_init();
--	if (error)
--		goto out_ucode_group;
--
- 	register_syscore_ops(&mc_syscore_ops);
- 	cpuhp_setup_state_nocalls(CPUHP_AP_MICROCODE_LOADER, "x86/microcode:starting",
- 				  mc_cpu_starting, NULL);
-@@ -870,10 +774,6 @@ static int __init microcode_init(void)
+ 	if (!encl->secs_child_cnt && test_bit(SGX_ENCL_INITIALIZED, &encl->flags)) {
+-		ret = sgx_encl_get_backing(encl, PFN_DOWN(encl->size),
++		ret = sgx_encl_alloc_backing(encl, PFN_DOWN(encl->size),
+ 					   &secs_backing);
+ 		if (ret)
+ 			goto out;
+@@ -384,7 +384,7 @@ static void sgx_reclaim_pages(void)
+ 		page_index = PFN_DOWN(encl_page->desc - encl_page->encl->base);
  
- 	return 0;
+ 		mutex_lock(&encl_page->encl->lock);
+-		ret = sgx_encl_get_backing(encl_page->encl, page_index, &backing[i]);
++		ret = sgx_encl_alloc_backing(encl_page->encl, page_index, &backing[i]);
+ 		if (ret) {
+ 			mutex_unlock(&encl_page->encl->lock);
+ 			goto skip;
+@@ -475,6 +475,11 @@ static bool __init sgx_page_reclaimer_init(void)
+ 	return true;
+ }
  
-- out_ucode_group:
--	sysfs_remove_group(&cpu_subsys.dev_root->kobj,
--			   &cpu_root_microcode_group);
--
-  out_driver:
- 	cpus_read_lock();
- 	mutex_lock(&microcode_mutex);
++bool current_is_ksgxd(void)
++{
++	return current == ksgxd_tsk;
++}
++
+ static struct sgx_epc_page *__sgx_alloc_epc_page_from_node(int nid)
+ {
+ 	struct sgx_numa_node *node = &sgx_numa_nodes[nid];
