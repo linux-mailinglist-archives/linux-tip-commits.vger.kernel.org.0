@@ -2,57 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FDD95403DF
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  7 Jun 2022 18:38:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA0BB54218C
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  8 Jun 2022 08:44:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243728AbiFGQip (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 7 Jun 2022 12:38:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39442 "EHLO
+        id S1352508AbiFHBSE (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 7 Jun 2022 21:18:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49182 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343997AbiFGQip (ORCPT
+        with ESMTP id S1588470AbiFGXyl (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 7 Jun 2022 12:38:45 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7768F7E1F4;
-        Tue,  7 Jun 2022 09:38:44 -0700 (PDT)
-Date:   Tue, 07 Jun 2022 16:38:40 -0000
+        Tue, 7 Jun 2022 19:54:41 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3D14E96FF;
+        Tue,  7 Jun 2022 16:09:55 -0700 (PDT)
+Date:   Tue, 07 Jun 2022 23:09:52 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1654619922;
+        s=2020; t=1654643394;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=jngsz6dYDWW2zX55YZPRWzvjcIWvdvuKFA7feqYO/0c=;
-        b=GjltvIMB6VY/6I7I+8+lBegNmCrxvZXdNYFlxUsbQzDIag/6f+bUggWreW3T/FMVbNUgeG
-        qMYs3vSV2L1GYvCo3prJwaAeuAsEYziG+AGLOjK+caAFs6U47yvqbtl1LLmKYUnE27h5pW
-        mL2ejSaaFWgVrTs1mORCG9vyeteA9uxKkArftJ3BoOK3v1PDchx/KAjIdzwMTcumxolg38
-        iq8jg0BorP/+H2y63gjctwX1mwhN/DBLbIt+AckkgyvrKeh91HkI5/cd2v6WpUy9URuDq1
-        5nJD6qOdRPndl+lPXh8t6HnuGj7Yt3McPLyvuvYw/NLYIagkauaINQg201DIHg==
+        bh=dPtbavvWbpS7D7tQA2mHOL1BkRlP5Uv7lAoc3YHVg04=;
+        b=nxJI3qMF2EzpyqqTD8K6BZxPqOoAptV7F3Jrbt+1JxEWQYfZQfrrJGBN3M4z5Lwge7Mdam
+        UF0oCKTcFl8nJ9duQNV8D+s0ggs4YH8O5TBqBlTtNoMa0i4Nx9pNhVKgbHM2ikTt5R7SzB
+        pEpL1o2INu7OaCRPBILjvIqOpJZmsMGmhsJYQnIF4Fg537RZabMMwq9OcAuTOXUCDoIIc9
+        MizjeurkocdCLuxQJnphtZJvyow9TNfuhc0hxeZIfPD3nr00asR/4fpEDMnFiJFKviTlkf
+        fkWHkhQJoIspFzzKQNQqbir6vWFd4bEKcqdIZzGMDKjdOGlknRp0xMe5GhcJtg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1654619922;
+        s=2020e; t=1654643394;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=jngsz6dYDWW2zX55YZPRWzvjcIWvdvuKFA7feqYO/0c=;
-        b=UmcgmJDiZQRRmbrYbrK6npKIRs3D31dwmnZTC7LfVFs3N3jpnGqux9wBv/P4gaK7veZUvj
-        hnlRlXGISFYNW/Cw==
-From:   "tip-bot2 for Nadav Amit" <tip-bot2@linutronix.de>
+        bh=dPtbavvWbpS7D7tQA2mHOL1BkRlP5Uv7lAoc3YHVg04=;
+        b=Wo3Sp00UT3ZpFCyVn+uwJxxrggurJSA46NHn9T9gIG2lDUpnh1T+0+4IBmiGzy2+ASyyHZ
+        BpL2qfI4DRSULbAA==
+From:   "tip-bot2 for Ira Weiny" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/mm] x86/mm/tlb: Avoid reading mm_tlb_gen when possible
-Cc:     Nadav Amit <namit@vmware.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Andy Lutomirski <luto@kernel.org>, x86@kernel.org,
+Subject: [tip: x86/mm] x86/pkeys: Clarify PKRU_AD_KEY macro
+Cc:     Dave Hansen <dave.hansen@linux.intel.com>,
+        Ira Weiny <ira.weiny@intel.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220606180123.2485171-1-namit@vmware.com>
-References: <20220606180123.2485171-1-namit@vmware.com>
+In-Reply-To: <20220419170649.1022246-3-ira.weiny@intel.com>
+References: <20220419170649.1022246-3-ira.weiny@intel.com>
 MIME-Version: 1.0
-Message-ID: <165461992091.4207.8723057747625123650.tip-bot2@tip-bot2>
+Message-ID: <165464339203.4207.2085449999144025922.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -69,91 +67,66 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/mm branch of tip:
 
-Commit-ID:     aa44284960d550eb4d8614afdffebc68a432a9b4
-Gitweb:        https://git.kernel.org/tip/aa44284960d550eb4d8614afdffebc68a432a9b4
-Author:        Nadav Amit <namit@vmware.com>
-AuthorDate:    Mon, 06 Jun 2022 11:01:23 -07:00
+Commit-ID:     54ee1844047c1df015ab2679a4f55564a3aa1fa1
+Gitweb:        https://git.kernel.org/tip/54ee1844047c1df015ab2679a4f55564a3aa1fa1
+Author:        Ira Weiny <ira.weiny@intel.com>
+AuthorDate:    Tue, 19 Apr 2022 10:06:07 -07:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Tue, 07 Jun 2022 08:48:03 -07:00
+CommitterDate: Tue, 07 Jun 2022 16:06:33 -07:00
 
-x86/mm/tlb: Avoid reading mm_tlb_gen when possible
+x86/pkeys: Clarify PKRU_AD_KEY macro
 
-On extreme TLB shootdown storms, the mm's tlb_gen cacheline is highly
-contended and reading it should (arguably) be avoided as much as
-possible.
+When changing the PKRU_AD_KEY macro to be used for PKS the name came
+into question.[1]
 
-Currently, flush_tlb_func() reads the mm's tlb_gen unconditionally,
-even when it is not necessary (e.g., the mm was already switched).
-This is wasteful.
+The intent of PKRU_AD_KEY is to set an initial value for the PKRU
+register but that is just a mask value.
 
-Moreover, one of the existing optimizations is to read mm's tlb_gen to
-see if there are additional in-flight TLB invalidations and flush the
-entire TLB in such a case. However, if the request's tlb_gen was already
-flushed, the benefit of checking the mm's tlb_gen is likely to be offset
-by the overhead of the check itself.
+Clarify this by changing the name to PKRU_AD_MASK().
 
-Running will-it-scale with tlb_flush1_threads show a considerable
-benefit on 56-core Skylake (up to +24%):
+NOTE the checkpatch errors are ignored for the init_pkru_value to align
+the values in the code.
 
-threads		Baseline (v5.17+)	+Patch
-1		159960			160202
-5		310808			308378 (-0.7%)
-10		479110			490728
-15		526771			562528
-20		534495			587316
-25		547462			628296
-30		579616			666313
-35		594134			701814
-40		612288			732967
-45		617517			749727
-50		637476			735497
-55		614363			778913 (+24%)
+[1] https://lore.kernel.org/lkml/eff862e2-bfaa-9e12-42b5-a12467d72a22@intel.com/
 
-Signed-off-by: Nadav Amit <namit@vmware.com>
+Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
+Signed-off-by: Ira Weiny <ira.weiny@intel.com>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Andy Lutomirski <luto@kernel.org>
-Link: https://lkml.kernel.org/r/20220606180123.2485171-1-namit@vmware.com
+Link: https://lkml.kernel.org/r/20220419170649.1022246-3-ira.weiny@intel.com
 ---
- arch/x86/mm/tlb.c | 18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ arch/x86/mm/pkeys.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/mm/tlb.c b/arch/x86/mm/tlb.c
-index d400b6d..d9314cc 100644
---- a/arch/x86/mm/tlb.c
-+++ b/arch/x86/mm/tlb.c
-@@ -734,10 +734,10 @@ static void flush_tlb_func(void *info)
- 	const struct flush_tlb_info *f = info;
- 	struct mm_struct *loaded_mm = this_cpu_read(cpu_tlbstate.loaded_mm);
- 	u32 loaded_mm_asid = this_cpu_read(cpu_tlbstate.loaded_mm_asid);
--	u64 mm_tlb_gen = atomic64_read(&loaded_mm->context.tlb_gen);
- 	u64 local_tlb_gen = this_cpu_read(cpu_tlbstate.ctxs[loaded_mm_asid].tlb_gen);
- 	bool local = smp_processor_id() == f->initiating_cpu;
- 	unsigned long nr_invalidate = 0;
-+	u64 mm_tlb_gen;
+diff --git a/arch/x86/mm/pkeys.c b/arch/x86/mm/pkeys.c
+index e44e938..7418c36 100644
+--- a/arch/x86/mm/pkeys.c
++++ b/arch/x86/mm/pkeys.c
+@@ -110,7 +110,7 @@ int __arch_override_mprotect_pkey(struct vm_area_struct *vma, int prot, int pkey
+ 	return vma_pkey(vma);
+ }
  
- 	/* This code cannot presently handle being reentered. */
- 	VM_WARN_ON(!irqs_disabled());
-@@ -771,6 +771,22 @@ static void flush_tlb_func(void *info)
- 		return;
- 	}
+-#define PKRU_AD_KEY(pkey)	(PKRU_AD_BIT << ((pkey) * PKRU_BITS_PER_PKEY))
++#define PKRU_AD_MASK(pkey)	(PKRU_AD_BIT << ((pkey) * PKRU_BITS_PER_PKEY))
  
-+	if (f->new_tlb_gen <= local_tlb_gen) {
-+		/*
-+		 * The TLB is already up to date in respect to f->new_tlb_gen.
-+		 * While the core might be still behind mm_tlb_gen, checking
-+		 * mm_tlb_gen unnecessarily would have negative caching effects
-+		 * so avoid it.
-+		 */
-+		return;
-+	}
-+
-+	/*
-+	 * Defer mm_tlb_gen reading as long as possible to avoid cache
-+	 * contention.
-+	 */
-+	mm_tlb_gen = atomic64_read(&loaded_mm->context.tlb_gen);
-+
- 	if (unlikely(local_tlb_gen == mm_tlb_gen)) {
- 		/*
- 		 * There's nothing to do: we're already up to date.  This can
+ /*
+  * Make the default PKRU value (at execve() time) as restrictive
+@@ -118,11 +118,14 @@ int __arch_override_mprotect_pkey(struct vm_area_struct *vma, int prot, int pkey
+  * in the process's lifetime will not accidentally get access
+  * to data which is pkey-protected later on.
+  */
+-u32 init_pkru_value = PKRU_AD_KEY( 1) | PKRU_AD_KEY( 2) | PKRU_AD_KEY( 3) |
+-		      PKRU_AD_KEY( 4) | PKRU_AD_KEY( 5) | PKRU_AD_KEY( 6) |
+-		      PKRU_AD_KEY( 7) | PKRU_AD_KEY( 8) | PKRU_AD_KEY( 9) |
+-		      PKRU_AD_KEY(10) | PKRU_AD_KEY(11) | PKRU_AD_KEY(12) |
+-		      PKRU_AD_KEY(13) | PKRU_AD_KEY(14) | PKRU_AD_KEY(15);
++u32 init_pkru_value = PKRU_AD_MASK( 1) | PKRU_AD_MASK( 2) |
++		      PKRU_AD_MASK( 3) | PKRU_AD_MASK( 4) |
++		      PKRU_AD_MASK( 5) | PKRU_AD_MASK( 6) |
++		      PKRU_AD_MASK( 7) | PKRU_AD_MASK( 8) |
++		      PKRU_AD_MASK( 9) | PKRU_AD_MASK(10) |
++		      PKRU_AD_MASK(11) | PKRU_AD_MASK(12) |
++		      PKRU_AD_MASK(13) | PKRU_AD_MASK(14) |
++		      PKRU_AD_MASK(15);
+ 
+ static ssize_t init_pkru_read_file(struct file *file, char __user *user_buf,
+ 			     size_t count, loff_t *ppos)
