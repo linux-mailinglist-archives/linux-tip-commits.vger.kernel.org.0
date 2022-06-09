@@ -2,53 +2,62 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 966575448AE
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  9 Jun 2022 12:23:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D7BF545063
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  9 Jun 2022 17:15:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229933AbiFIKXw (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 9 Jun 2022 06:23:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35410 "EHLO
+        id S1344234AbiFIPPn (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 9 Jun 2022 11:15:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35526 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232931AbiFIKXv (ORCPT
+        with ESMTP id S1344243AbiFIPPl (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 9 Jun 2022 06:23:51 -0400
-Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C29834838C;
-        Thu,  9 Jun 2022 03:23:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=vdnmsD6W54WojvbIoqoa8hdXCumYn6AqBOHiv7DMgfw=; b=H+wJ1ZydkyC3RMRDSPXLOfbj8b
-        AJdRQy0TYqTmU6GVmZNgl3jRqGfGwH1A+G468h5SwROwfWSWQ+PpM33X5smM7miiSKD0oCtIA3Ybr
-        0wkzxhTCw7KsmreB/oiF2LFBq6v+3bRxqirMJcrk0r1xovLFuJHDdkNZ87byFERGrnDcuyGvtcDaZ
-        9D+06ivELXdFRce3IGs9G5FvbvXqsyayeRpD9Px1dZpTXad2nDLoi0vLWJdGKlkmQ+waLTcnAZaMV
-        i6fGjkDG7+DirhEHk+EJCKN+ao4CLkT+5+7CrCIRhiKIw8BLwiToUd2QQrK+q9DzVbZ+/7T9c8/VW
-        RSZufhQQ==;
-Received: from dhcp-077-249-017-003.chello.nl ([77.249.17.3] helo=worktop.programming.kicks-ass.net)
-        by desiato.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1nzFKF-006Lcy-6e; Thu, 09 Jun 2022 10:23:39 +0000
-Received: by worktop.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 5D104981287; Thu,  9 Jun 2022 12:23:37 +0200 (CEST)
-Date:   Thu, 9 Jun 2022 12:23:37 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     linux-tip-commits@vger.kernel.org, Zhang Rui <rui.zhang@intel.com>,
-        "Chang S. Bae" <chang.seok.bae@intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, x86@kernel.org
-Subject: Re: [tip: x86/fpu] intel_idle: Add a new flag to initialize the AMX
- state
-Message-ID: <YqHKKa/yamRS06tC@worktop.programming.kicks-ass.net>
-References: <20220608164748.11864-3-chang.seok.bae@intel.com>
- <165471675715.4207.17983340888752028780.tip-bot2@tip-bot2>
+        Thu, 9 Jun 2022 11:15:41 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA40828984;
+        Thu,  9 Jun 2022 08:15:39 -0700 (PDT)
+Date:   Thu, 09 Jun 2022 15:15:36 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1654787738;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=OX0E9o/hk3UAtzh380FcKdPndbEwHY7bPLgyy9FMddQ=;
+        b=Nr1QpCugMCN3mNTGmoVe/fihkM/50Q1+8yP3BjWn5AO0mJh5001POcoWKsROs0aIetZq+r
+        1HXX4HvkaUe68jPG7Ufj6O2gjFjN4glD0RbuOjsuXSJgdxnbhHnJqk2upHsfK7UTQI65/X
+        XQxjLfWY1w696ZDvrrcN/k7pHR6Gr78wc27yXY0z8eDTHvLWEJBG0MnJTtxG1lrlEgWket
+        AQjkMZwreUbixYN1/hvdPDHzgvMiPYmQEKcD5thECAeCUlUhphi+RmajreEB4ngHJIjahF
+        KVlbiKyflzfPwJZ8Ibg6A8kG8TMGQ0HEQKvfhojBVFVEYBiJs0Uv125+5CigkQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1654787738;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=OX0E9o/hk3UAtzh380FcKdPndbEwHY7bPLgyy9FMddQ=;
+        b=BCKaUQDN1sIFRNl6/7NVFnkIYUey2CyheONslLHYBbbnO9utAcwqnuM/O7Ig2XKwI2LaeZ
+        NIryhTL+as6SNnBQ==
+From:   "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: objtool/urgent] x86/ftrace: Remove OBJECT_FILES_NON_STANDARD usage
+Cc:     kernel test robot <lkp@intel.com>,
+        Josh Poimboeuf <jpoimboe@kernel.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <b7a7a42fe306aca37826043dac89e113a1acdbac.1654268610.git.jpoimboe@kernel.org>
+References: <b7a7a42fe306aca37826043dac89e113a1acdbac.1654268610.git.jpoimboe@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <165471675715.4207.17983340888752028780.tip-bot2@tip-bot2>
+Message-ID: <165478773692.4207.2311540394030885047.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,44 +65,142 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-On Wed, Jun 08, 2022 at 07:32:37PM -0000, tip-bot2 for Chang S. Bae wrote:
-> @@ -134,6 +140,9 @@ static __cpuidle int intel_idle(struct cpuidle_device *dev,
->  	if (state->flags & CPUIDLE_FLAG_IRQ_ENABLE)
->  		local_irq_enable();
->  
-> +	if (state->flags & CPUIDLE_FLAG_INIT_XSTATE)
-> +		fpu_idle_fpregs();
-> +
->  	mwait_idle_with_hints(eax, ecx);
->  
->  	return index;
+The following commit has been merged into the objtool/urgent branch of tip:
 
-This will conflict with an intel_idle patch Rafael took from me; the
-resolution would be something along these lines:
+Commit-ID:     7b6c7a877cc616bc7dc9cd39646fe454acbed48b
+Gitweb:        https://git.kernel.org/tip/7b6c7a877cc616bc7dc9cd39646fe454acbed48b
+Author:        Josh Poimboeuf <jpoimboe@kernel.org>
+AuthorDate:    Fri, 03 Jun 2022 08:04:44 -07:00
+Committer:     Josh Poimboeuf <jpoimboe@kernel.org>
+CommitterDate: Mon, 06 Jun 2022 11:50:22 -07:00
 
---- a/drivers/idle/intel_idle.c
-+++ b/drivers/idle/intel_idle.c
-@@ -166,6 +166,13 @@ static __cpuidle int intel_idle_irq(stru
- 	return ret;
- }
+x86/ftrace: Remove OBJECT_FILES_NON_STANDARD usage
+
+The file-wide OBJECT_FILES_NON_STANDARD annotation is used with
+CONFIG_FRAME_POINTER to tell objtool to skip the entire file when frame
+pointers are enabled.  However that annotation is now deprecated because
+it doesn't work with IBT, where objtool runs on vmlinux.o instead of
+individual translation units.
+
+Instead, use more fine-grained function-specific annotations:
+
+- The 'save_mcount_regs' macro does funny things with the frame pointer.
+  Use STACK_FRAME_NON_STANDARD_FP to tell objtool to ignore the
+  functions using it.
+
+- The return_to_handler() "function" isn't actually a callable function.
+  Instead of being called, it's returned to.  The real return address
+  isn't on the stack, so unwinding is already doomed no matter which
+  unwinder is used.  So just remove the STT_FUNC annotation, telling
+  objtool to ignore it.  That also removes the implicit
+  ANNOTATE_NOENDBR, which now needs to be made explicit.
+
+Fixes the following warning:
+
+  vmlinux.o: warning: objtool: __fentry__+0x16: return with modified stack frame
+
+Fixes: ed53a0d97192 ("x86/alternative: Use .ibt_endbr_seal to seal indirect calls")
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Link: https://lore.kernel.org/r/b7a7a42fe306aca37826043dac89e113a1acdbac.1654268610.git.jpoimboe@kernel.org
+---
+ arch/x86/kernel/Makefile      |  4 ----
+ arch/x86/kernel/ftrace_64.S   | 11 ++++++++---
+ include/linux/objtool.h       |  6 ++++++
+ tools/include/linux/objtool.h |  6 ++++++
+ 4 files changed, 20 insertions(+), 7 deletions(-)
+
+diff --git a/arch/x86/kernel/Makefile b/arch/x86/kernel/Makefile
+index 03364dc..4c8b6ae 100644
+--- a/arch/x86/kernel/Makefile
++++ b/arch/x86/kernel/Makefile
+@@ -36,10 +36,6 @@ KCSAN_SANITIZE := n
  
-+static __cpuidle int intel_idle_xstate(struct cpuidle_device *dev,
-+				       struct cpuidle_driver *drv, int index)
-+{
-+	fpu_idle_fpregs();
-+	return __intel_idle(dev, drv, index);
-+}
-+
- /**
-  * intel_idle_s2idle - Ask the processor to enter the given idle state.
-  * @dev: cpuidle device of the target CPU.
-@@ -1831,6 +1838,9 @@ static void __init intel_idle_init_cstat
- 		if (cpuidle_state_table[cstate].flags & CPUIDLE_FLAG_IRQ_ENABLE)
- 			drv->states[drv->state_count].enter = intel_idle_irq;
+ OBJECT_FILES_NON_STANDARD_test_nx.o			:= y
  
-+		if (cpuidle_state_table[cstate].flags & CPUIDLE_FLAG_INIT_XSTATE)
-+			drv->states[drv->state_count].enter = intel_idle_xstate;
+-ifdef CONFIG_FRAME_POINTER
+-OBJECT_FILES_NON_STANDARD_ftrace_$(BITS).o		:= y
+-endif
+-
+ # If instrumentation of this dir is enabled, boot hangs during first second.
+ # Probably could be more selective here, but note that files related to irqs,
+ # boot, dumpstack/stacktrace, etc are either non-interesting or can lead to
+diff --git a/arch/x86/kernel/ftrace_64.S b/arch/x86/kernel/ftrace_64.S
+index 4ec1360..dfeb227 100644
+--- a/arch/x86/kernel/ftrace_64.S
++++ b/arch/x86/kernel/ftrace_64.S
+@@ -175,6 +175,7 @@ SYM_INNER_LABEL(ftrace_caller_end, SYM_L_GLOBAL)
+ 
+ 	jmp ftrace_epilogue
+ SYM_FUNC_END(ftrace_caller);
++STACK_FRAME_NON_STANDARD_FP(ftrace_caller)
+ 
+ SYM_FUNC_START(ftrace_epilogue)
+ /*
+@@ -282,6 +283,7 @@ SYM_INNER_LABEL(ftrace_regs_caller_end, SYM_L_GLOBAL)
+ 	jmp	ftrace_epilogue
+ 
+ SYM_FUNC_END(ftrace_regs_caller)
++STACK_FRAME_NON_STANDARD_FP(ftrace_regs_caller)
+ 
+ 
+ #else /* ! CONFIG_DYNAMIC_FTRACE */
+@@ -311,10 +313,14 @@ trace:
+ 	jmp ftrace_stub
+ SYM_FUNC_END(__fentry__)
+ EXPORT_SYMBOL(__fentry__)
++STACK_FRAME_NON_STANDARD_FP(__fentry__)
 +
- 		if ((disabled_states_mask & BIT(drv->state_count)) ||
- 		    ((icpu->use_acpi || force_use_acpi) &&
- 		     intel_idle_off_by_default(mwait_hint) &&
+ #endif /* CONFIG_DYNAMIC_FTRACE */
+ 
+ #ifdef CONFIG_FUNCTION_GRAPH_TRACER
+-SYM_FUNC_START(return_to_handler)
++SYM_CODE_START(return_to_handler)
++	UNWIND_HINT_EMPTY
++	ANNOTATE_NOENDBR
+ 	subq  $16, %rsp
+ 
+ 	/* Save the return values */
+@@ -339,7 +345,6 @@ SYM_FUNC_START(return_to_handler)
+ 	int3
+ .Ldo_rop:
+ 	mov %rdi, (%rsp)
+-	UNWIND_HINT_FUNC
+ 	RET
+-SYM_FUNC_END(return_to_handler)
++SYM_CODE_END(return_to_handler)
+ #endif
+diff --git a/include/linux/objtool.h b/include/linux/objtool.h
+index 6491fa8..15b940e 100644
+--- a/include/linux/objtool.h
++++ b/include/linux/objtool.h
+@@ -143,6 +143,12 @@ struct unwind_hint {
+ 	.popsection
+ .endm
+ 
++.macro STACK_FRAME_NON_STANDARD_FP func:req
++#ifdef CONFIG_FRAME_POINTER
++	STACK_FRAME_NON_STANDARD \func
++#endif
++.endm
++
+ .macro ANNOTATE_NOENDBR
+ .Lhere_\@:
+ 	.pushsection .discard.noendbr
+diff --git a/tools/include/linux/objtool.h b/tools/include/linux/objtool.h
+index 6491fa8..15b940e 100644
+--- a/tools/include/linux/objtool.h
++++ b/tools/include/linux/objtool.h
+@@ -143,6 +143,12 @@ struct unwind_hint {
+ 	.popsection
+ .endm
+ 
++.macro STACK_FRAME_NON_STANDARD_FP func:req
++#ifdef CONFIG_FRAME_POINTER
++	STACK_FRAME_NON_STANDARD \func
++#endif
++.endm
++
+ .macro ANNOTATE_NOENDBR
+ .Lhere_\@:
+ 	.pushsection .discard.noendbr
