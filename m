@@ -2,110 +2,161 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 308F65492A6
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 13 Jun 2022 18:31:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC6D054B6D6
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 14 Jun 2022 18:54:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347579AbiFMKzs (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 13 Jun 2022 06:55:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40990 "EHLO
+        id S242866AbiFNQvV (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 14 Jun 2022 12:51:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40338 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350353AbiFMKyu (ORCPT
+        with ESMTP id S1344778AbiFNQuw (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 13 Jun 2022 06:54:50 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 208571D0DB;
-        Mon, 13 Jun 2022 03:30:54 -0700 (PDT)
-Date:   Mon, 13 Jun 2022 10:30:50 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1655116251;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=PLG/WtLVkroGPYAWdPXamFTN/HRL0nfnOe8+NibDVJE=;
-        b=u6MjQaeD1yo84eqYt2O0QWrw6Iun8Y88DC0cD0rgJEHFkCEAbWbcWgMlBnD3iEgxXjehVJ
-        7ziHU9O99LrL5Fj/i45fEsm834XYOkmpYLErg/ekFjX0aWkjMEj55PGKNxkjaJqKrGzu7g
-        oj+8SIOeqkGjbnLpa5jw3f2tTBmXV+L4bdm8ygqz5qom5stivznHf57V2slmtWCWRuqN2F
-        wlpP1FdjqUsSVocgry//O01zHSFU/FzAKEW3BMyPfyajshXTDeQeHYJjkpmhYo+4cxnx9e
-        ruDq8k7lF/jJdlTS7Z0XJ1zXqqN8aRLfKkPkjzNNAmBuI2qwxy92wcwy1sl5GA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1655116251;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=PLG/WtLVkroGPYAWdPXamFTN/HRL0nfnOe8+NibDVJE=;
-        b=Hb5QcSdc8Ny225TgrLKMtjCUBL1B/ZWX0ps3gxlrQu50D0+zUbqj7Wnpjr58hunj9dmuio
-        ttcXALGh0WC2zXBA==
-From:   "tip-bot2 for Lukas Wunner" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] genirq/PM: Unexport {suspend,resume}_device_irqs()
-Cc:     Lukas Wunner <lukas@wunner.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <fad9b50609f9d9828ea14772dbd4d195713f1c4b.1654846687.git.lukas@wunner.de>
-References: <fad9b50609f9d9828ea14772dbd4d195713f1c4b.1654846687.git.lukas@wunner.de>
-MIME-Version: 1.0
-Message-ID: <165511625017.4207.9422220273821026208.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        Tue, 14 Jun 2022 12:50:52 -0400
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE6BF44764;
+        Tue, 14 Jun 2022 09:50:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1655225418; x=1686761418;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references;
+  bh=9PMxZIsT0cwZQ/H2eT8C0EMoqkPBO0Qg03oGDWCPYos=;
+  b=Xuk9j4zrBxbbFqauqK1mBqpckaLJ78mhO2FI4hzcHC9xdqe9lYXkfqYo
+   CO4dSzxtFjFEoVm4jPkggSbmw+uFjpkkBEcxWOctccEKmi6g+44Wxg7x7
+   v0JuUNr5QL1tFyueDhOu1Gm3MNCV7Av8aEcOKNMwXCMQnU5tBtbcB1Ma9
+   Lo/mDaxN2RBbLH8ulxIZnlZ3n/oL4m1ueVLuvkFUR2mBuXlhHsVjUhTx8
+   L4xPFlyb/iJAlV51qJnKAQmxzHoL0dU4rxtbUHdthd2dgjYdCSzK46D7P
+   VEDBLlmR47ZeEkDDg75nXHeVW6fVCHvOuUywGY4FxdcwAdX3S3s3qqolf
+   g==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10378"; a="279391617"
+X-IronPort-AV: E=Sophos;i="5.91,300,1647327600"; 
+   d="scan'208";a="279391617"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2022 09:50:18 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.91,300,1647327600"; 
+   d="scan'208";a="830509198"
+Received: from chang-linux-3.sc.intel.com ([172.25.66.173])
+  by fmsmga006.fm.intel.com with ESMTP; 14 Jun 2022 09:50:18 -0700
+From:   "Chang S. Bae" <chang.seok.bae@intel.com>
+To:     peterz@infradead.org, linux-kernel@vger.kernel.org,
+        dave.hansen@linux.intel.com
+Cc:     linux-tip-commits@vger.kernel.org, rui.zhang@intel.com,
+        rafael.j.wysocki@intel.com, x86@kernel.org,
+        "Chang S. Bae" <chang.seok.bae@intel.com>
+Subject: [PATCH][Rebased] intel_idle: Add a new flag to initialize the AMX state
+Date:   Tue, 14 Jun 2022 09:41:16 -0700
+Message-Id: <20220614164116.5196-1-chang.seok.bae@intel.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <YqHKKa/yamRS06tC@worktop.programming.kicks-ass.net>
+References: <YqHKKa/yamRS06tC@worktop.programming.kicks-ass.net>
+X-Spam-Status: No, score=-5.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the irq/core branch of tip:
+The non-initialized AMX state can be the cause of C-state demotion from C6
+to C1E. This low-power idle state may improve power savings and thus result
+in a higher available turbo frequency budget.
 
-Commit-ID:     ac165aab469895de059a4a191a2e04ddb5421d0e
-Gitweb:        https://git.kernel.org/tip/ac165aab469895de059a4a191a2e04ddb5421d0e
-Author:        Lukas Wunner <lukas@wunner.de>
-AuthorDate:    Fri, 10 Jun 2022 09:40:50 +02:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 13 Jun 2022 12:27:37 +02:00
+This behavior is implementation-specific. Initialize the state for the C6
+entrance of Sapphire Rapids as needed.
 
-genirq/PM: Unexport {suspend,resume}_device_irqs()
-
-Ever since {suspend,resume}_device_irqs() were introduced in 2009
-by commit 0a0c5168df27 ("PM: Introduce functions for suspending and
-resuming device interrupts"), they've been exported even though there
-are no module users and never will be:  The functions are solely called
-by the PM core, which is always built-in.  Unexport them.
-
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://lore.kernel.org/r/fad9b50609f9d9828ea14772dbd4d195713f1c4b.1654846687.git.lukas@wunner.de
-
+Tested-by: Zhang Rui <rui.zhang@intel.com>
+Suggested-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://lkml.kernel.org/r/20220608164748.11864-3-chang.seok.bae@intel.com
+[changb: Rebase to the upstream with peterz's help]
+Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
 ---
- kernel/irq/pm.c | 2 --
- 1 file changed, 2 deletions(-)
+The patch merged in the tip's x86/fpu branch [1] has conflict with the
+upstream -- commit 32d4fd5751ea ("cpuidle,intel_idle: Fix
+CPUIDLE_FLAG_IRQ_ENABLE") as of v5.19-rc2.
 
-diff --git a/kernel/irq/pm.c b/kernel/irq/pm.c
-index ca71123..c556bc4 100644
---- a/kernel/irq/pm.c
-+++ b/kernel/irq/pm.c
-@@ -147,7 +147,6 @@ void suspend_device_irqs(void)
- 			synchronize_irq(irq);
- 	}
- }
--EXPORT_SYMBOL_GPL(suspend_device_irqs);
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git/log/?h=x86/fpu
+---
+ drivers/idle/intel_idle.c | 25 +++++++++++++++++++++++--
+ 1 file changed, 23 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/idle/intel_idle.c b/drivers/idle/intel_idle.c
+index 424ef470223d..8a19ba1c2c1b 100644
+--- a/drivers/idle/intel_idle.c
++++ b/drivers/idle/intel_idle.c
+@@ -54,6 +54,7 @@
+ #include <asm/intel-family.h>
+ #include <asm/mwait.h>
+ #include <asm/msr.h>
++#include <asm/fpu/api.h>
  
- static void resume_irq(struct irq_desc *desc)
- {
-@@ -259,4 +258,3 @@ void resume_device_irqs(void)
- {
- 	resume_irqs(false);
+ #define INTEL_IDLE_VERSION "0.5.1"
+ 
+@@ -105,6 +106,11 @@ static unsigned int mwait_substates __initdata;
+  */
+ #define CPUIDLE_FLAG_ALWAYS_ENABLE	BIT(15)
+ 
++/*
++ * Initialize large xstate for the C6-state entrance.
++ */
++#define CPUIDLE_FLAG_INIT_XSTATE	BIT(16)
++
+ /*
+  * MWAIT takes an 8-bit "hint" in EAX "suggesting"
+  * the C-state (top nibble) and sub-state (bottom nibble)
+@@ -159,6 +165,13 @@ static __cpuidle int intel_idle_irq(struct cpuidle_device *dev,
+ 	return ret;
  }
--EXPORT_SYMBOL_GPL(resume_device_irqs);
+ 
++static __cpuidle int intel_idle_xstate(struct cpuidle_device *dev,
++				       struct cpuidle_driver *drv, int index)
++{
++	fpu_idle_fpregs();
++	return __intel_idle(dev, drv, index);
++}
++
+ /**
+  * intel_idle_s2idle - Ask the processor to enter the given idle state.
+  * @dev: cpuidle device of the target CPU.
+@@ -174,8 +187,12 @@ static __cpuidle int intel_idle_irq(struct cpuidle_device *dev,
+ static __cpuidle int intel_idle_s2idle(struct cpuidle_device *dev,
+ 				       struct cpuidle_driver *drv, int index)
+ {
+-	unsigned long eax = flg2MWAIT(drv->states[index].flags);
+ 	unsigned long ecx = 1; /* break on interrupt flag */
++	struct cpuidle_state *state = &drv->states[index];
++	unsigned long eax = flg2MWAIT(state->flags);
++
++	if (state->flags & CPUIDLE_FLAG_INIT_XSTATE)
++		fpu_idle_fpregs();
+ 
+ 	mwait_idle_with_hints(eax, ecx);
+ 
+@@ -910,7 +927,8 @@ static struct cpuidle_state spr_cstates[] __initdata = {
+ 	{
+ 		.name = "C6",
+ 		.desc = "MWAIT 0x20",
+-		.flags = MWAIT2flg(0x20) | CPUIDLE_FLAG_TLB_FLUSHED,
++		.flags = MWAIT2flg(0x20) | CPUIDLE_FLAG_TLB_FLUSHED |
++					   CPUIDLE_FLAG_INIT_XSTATE,
+ 		.exit_latency = 290,
+ 		.target_residency = 800,
+ 		.enter = &intel_idle,
+@@ -1819,6 +1837,9 @@ static void __init intel_idle_init_cstates_icpu(struct cpuidle_driver *drv)
+ 		if (cpuidle_state_table[cstate].flags & CPUIDLE_FLAG_IRQ_ENABLE)
+ 			drv->states[drv->state_count].enter = intel_idle_irq;
+ 
++		if (cpuidle_state_table[cstate].flags & CPUIDLE_FLAG_INIT_XSTATE)
++			drv->states[drv->state_count].enter = intel_idle_xstate;
++
+ 		if ((disabled_states_mask & BIT(drv->state_count)) ||
+ 		    ((icpu->use_acpi || force_use_acpi) &&
+ 		     intel_idle_off_by_default(mwait_hint) &&
+-- 
+2.17.1
+
