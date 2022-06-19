@@ -2,141 +2,121 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0956F55000D
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 18 Jun 2022 00:41:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B6D8550D85
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 20 Jun 2022 01:05:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235060AbiFQWlR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 17 Jun 2022 18:41:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49832 "EHLO
+        id S234119AbiFSXFd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sun, 19 Jun 2022 19:05:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33732 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230101AbiFQWlQ (ORCPT
+        with ESMTP id S233641AbiFSXFc (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 17 Jun 2022 18:41:16 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3A716212E;
-        Fri, 17 Jun 2022 15:41:15 -0700 (PDT)
-Date:   Fri, 17 Jun 2022 22:41:12 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1655505673;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=8OTn9QAj/tDMADzB1dZCYs4jWnfGwNKpMtaCQbiwXcM=;
-        b=D0ZcQhWhXFZpZkoDBFRQ+nG9YeYnoI49XWLEMzySHMCGZ/Gwxl23fdrPUndd/EPreaQjvn
-        1PNkkleDsrlUomXXZhCegvWpRy9ZKxG/D3p+5bkwNfUTRF0tFRzLe40dMZ1z5fzVfe1icF
-        A8YPsV4U01fPxrLDcryOxF6NaSXmJsBpCmf7Iz4zONEMo4KaCEhM+VZjncaigZunuQiYpZ
-        AFlf87A9LXAKqueaeX7BJ8I/KMDXi+usnUDnkk911UM4iYLdpD8jv1Td6JbXI/BDgGVnsr
-        jsTDCJFnTazKvOnerPKrH1fFx1rE/9mg0aU7MudBLQ1yzzVHdagqRuHDfCpqgA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1655505673;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=8OTn9QAj/tDMADzB1dZCYs4jWnfGwNKpMtaCQbiwXcM=;
-        b=102QNJLncAxL6Mmbka8HMhcxDRCHOg0sBfXh6Jld/RtvB7Z7rEUE3KBdPLWyp5wzgoRHpj
-        2XyvHUnZgIOnIPCg==
-From:   "tip-bot2 for Kirill A. Shutemov" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/tdx: Handle load_unaligned_zeropad() page-cross
- to a shared page
-Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20220614120135.14812-4-kirill.shutemov@linux.intel.com>
-References: <20220614120135.14812-4-kirill.shutemov@linux.intel.com>
+        Sun, 19 Jun 2022 19:05:32 -0400
+X-Greylist: delayed 194 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 19 Jun 2022 16:05:30 PDT
+Received: from condef-09.nifty.com (condef-09.nifty.com [202.248.20.74])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 884D355BD
+        for <linux-tip-commits@vger.kernel.org>; Sun, 19 Jun 2022 16:05:30 -0700 (PDT)
+Received: from conssluserg-06.nifty.com ([10.126.8.85])by condef-09.nifty.com with ESMTP id 25JMxhwx028706
+        for <linux-tip-commits@vger.kernel.org>; Mon, 20 Jun 2022 07:59:43 +0900
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51]) (authenticated)
+        by conssluserg-06.nifty.com with ESMTP id 25JMxQEe012632;
+        Mon, 20 Jun 2022 07:59:27 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-06.nifty.com 25JMxQEe012632
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1655679567;
+        bh=0124zpITfI5G6OA5F7EcRpetdGkeILk3yk8sPHGF9Lo=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=J38ZvtvP8SKTq0XerFyGz3kNqQ2MTZju83AjWtBE/muJcPKWDDKUBR0GVSbZM60QV
+         WGmxT+4wwnfsooUhh/oy2XsjeyaDkINOZyh+TJWej7OdZSKp5cdVnSbNOskgxDulhx
+         s6JuKwoExws9JMuQ0TMAVpk0FSOa4xUJ7hNoS4C0vSXIb0w+FeuwZwCOi5yilix4G3
+         zm3mCtlhEBtDfHuHrTtfDUg+j2Xz5mqU0oa0/WRv5BOu4FBrso/zZHGeVwz87HHTBF
+         r5ybCn0roFKCR6uBNc7MQB83kE6jCF12PmubTWRdDLEc5bwRUawHLkjurc2djiwpqa
+         qgQsM/UAU954A==
+X-Nifty-SrcIP: [209.85.221.51]
+Received: by mail-wr1-f51.google.com with SMTP id o8so12331543wro.3;
+        Sun, 19 Jun 2022 15:59:27 -0700 (PDT)
+X-Gm-Message-State: AJIora8WRwSZlE3pyi2gr9J6xwdXsHLXwGKwrKvxA3RDH2W3jwno4Z8+
+        +TpaQjsRQxALYAL7eVD0B+SlhnaI6reG5InjhtU=
+X-Google-Smtp-Source: AGRyM1uH2aT9R6Kjl4mUyPmKjKTrynoT6AUejYpE5i86yNrNFXv5LJCE9cT6ZYzimizFSlKXFqnO628plXelofKIHzM=
+X-Received: by 2002:a05:6000:1f09:b0:21a:5f3:316a with SMTP id
+ bv9-20020a0560001f0900b0021a05f3316amr20323654wrb.682.1655679566035; Sun, 19
+ Jun 2022 15:59:26 -0700 (PDT)
 MIME-Version: 1.0
-Message-ID: <165550567214.4207.3700499203810719676.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <20220416174710.269226-1-masahiroy@kernel.org> <165037936030.4207.3583631675331739342.tip-bot2@tip-bot2>
+In-Reply-To: <165037936030.4207.3583631675331739342.tip-bot2@tip-bot2>
+From:   Masahiro Yamada <masahiroy@kernel.org>
+Date:   Mon, 20 Jun 2022 07:58:47 +0900
+X-Gmail-Original-Message-ID: <CAK7LNATRH4sHYrZk556Sjo4nP=S3qD170OMCZ21n0TEz7gyDUw@mail.gmail.com>
+Message-ID: <CAK7LNATRH4sHYrZk556Sjo4nP=S3qD170OMCZ21n0TEz7gyDUw@mail.gmail.com>
+Subject: Re: [tip: x86/tdx] x86/build: remove unused OBJECT_FILES_NON_STANDARD_test_nx.o
+To:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc:     linux-tip-commits@vger.kernel.org,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        X86 ML <x86@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_SOFTFAIL,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+Hi x86 maintainers.
 
-Commit-ID:     1e7769653b06b56b7ea7d56911d2d5b2957750cd
-Gitweb:        https://git.kernel.org/tip/1e7769653b06b56b7ea7d56911d2d5b2957750cd
-Author:        Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-AuthorDate:    Tue, 14 Jun 2022 15:01:35 +03:00
-Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Fri, 17 Jun 2022 15:37:33 -07:00
+On Tue, Apr 19, 2022 at 11:42 PM tip-bot2 for Masahiro Yamada
+<tip-bot2@linutronix.de> wrote:
+>
+> The following commit has been merged into the x86/tdx branch of tip:
+>
+> Commit-ID:     51e8253cf5444299db09e1027160bf503ef49ec9
+> Gitweb:        https://git.kernel.org/tip/51e8253cf5444299db09e1027160bf503ef49ec9
+> Author:        Masahiro Yamada <masahiroy@kernel.org>
+> AuthorDate:    Sun, 17 Apr 2022 02:47:10 +09:00
+> Committer:     Dave Hansen <dave.hansen@linux.intel.com>
+> CommitterDate: Tue, 19 Apr 2022 07:17:16 -07:00
+>
+> x86/build: remove unused OBJECT_FILES_NON_STANDARD_test_nx.o
+>
+> Commit 3ad38ceb2769 ("x86/mm: Remove CONFIG_DEBUG_NX_TEST")
+> removed arch/x86/kernel/test_nx.c
+>
+> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+> Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+> Link: https://lkml.kernel.org/r/20220416174710.269226-1-masahiroy@kernel.org
 
-x86/tdx: Handle load_unaligned_zeropad() page-cross to a shared page
 
-load_unaligned_zeropad() can lead to unwanted loads across page boundaries.
-The unwanted loads are typically harmless. But, they might be made to
-totally unrelated or even unmapped memory. load_unaligned_zeropad()
-relies on exception fixup (#PF, #GP and now #VE) to recover from these
-unwanted loads.
 
-In TDX guests, the second page can be shared page and a VMM may configure
-it to trigger #VE.
+What happened to this patch?
 
-The kernel assumes that #VE on a shared page is an MMIO access and tries to
-decode instruction to handle it. In case of load_unaligned_zeropad() it
-may result in confusion as it is not MMIO access.
+This has not been merged into the mainline.
+It does not show up in linux-next either.
 
-Fix it by detecting split page MMIO accesses and failing them.
-load_unaligned_zeropad() will recover using exception fixups.
 
-The issue was discovered by analysis and reproduced artificially. It was
-not triggered during testing.
 
-[ dhansen: fix up changelogs and comments for grammar and clarity,
-	   plus incorporate Kirill's off-by-one fix]
 
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lkml.kernel.org/r/20220614120135.14812-4-kirill.shutemov@linux.intel.com
----
- arch/x86/coco/tdx/tdx.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index c8d44f4..928dcf7 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -333,8 +333,8 @@ static bool mmio_write(int size, unsigned long addr, unsigned long val)
- 
- static int handle_mmio(struct pt_regs *regs, struct ve_info *ve)
- {
-+	unsigned long *reg, val, vaddr;
- 	char buffer[MAX_INSN_SIZE];
--	unsigned long *reg, val;
- 	struct insn insn = {};
- 	enum mmio_type mmio;
- 	int size, extend_size;
-@@ -360,6 +360,19 @@ static int handle_mmio(struct pt_regs *regs, struct ve_info *ve)
- 			return -EINVAL;
- 	}
- 
-+	/*
-+	 * Reject EPT violation #VEs that split pages.
-+	 *
-+	 * MMIO accesses are supposed to be naturally aligned and therefore
-+	 * never cross page boundaries. Seeing split page accesses indicates
-+	 * a bug or a load_unaligned_zeropad() that stepped into an MMIO page.
-+	 *
-+	 * load_unaligned_zeropad() will recover using exception fixups.
-+	 */
-+	vaddr = (unsigned long)insn_get_addr_ref(&insn, regs);
-+	if (vaddr / PAGE_SIZE != (vaddr + size - 1) / PAGE_SIZE)
-+		return -EFAULT;
-+
- 	/* Handle writes first */
- 	switch (mmio) {
- 	case MMIO_WRITE:
+> ---
+>  arch/x86/kernel/Makefile | 2 --
+>  1 file changed, 2 deletions(-)
+>
+> diff --git a/arch/x86/kernel/Makefile b/arch/x86/kernel/Makefile
+> index c41ef42..d8b2a81 100644
+> --- a/arch/x86/kernel/Makefile
+> +++ b/arch/x86/kernel/Makefile
+> @@ -34,8 +34,6 @@ KASAN_SANITIZE_sev.o                                  := n
+>  # by several compilation units. To be safe, disable all instrumentation.
+>  KCSAN_SANITIZE := n
+>
+> -OBJECT_FILES_NON_STANDARD_test_nx.o                    := y
+> -
+>  ifdef CONFIG_FRAME_POINTER
+>  OBJECT_FILES_NON_STANDARD_ftrace_$(BITS).o             := y
+>  endif
+
+
+
+-- 
+Best Regards
+Masahiro Yamada
