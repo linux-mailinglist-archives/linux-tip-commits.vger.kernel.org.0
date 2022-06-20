@@ -2,121 +2,104 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B6D8550D85
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 20 Jun 2022 01:05:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C80D45521EE
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 20 Jun 2022 18:11:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234119AbiFSXFd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sun, 19 Jun 2022 19:05:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33732 "EHLO
+        id S242181AbiFTQL5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Mon, 20 Jun 2022 12:11:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37692 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233641AbiFSXFc (ORCPT
+        with ESMTP id S242047AbiFTQL4 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sun, 19 Jun 2022 19:05:32 -0400
-X-Greylist: delayed 194 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 19 Jun 2022 16:05:30 PDT
-Received: from condef-09.nifty.com (condef-09.nifty.com [202.248.20.74])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 884D355BD
-        for <linux-tip-commits@vger.kernel.org>; Sun, 19 Jun 2022 16:05:30 -0700 (PDT)
-Received: from conssluserg-06.nifty.com ([10.126.8.85])by condef-09.nifty.com with ESMTP id 25JMxhwx028706
-        for <linux-tip-commits@vger.kernel.org>; Mon, 20 Jun 2022 07:59:43 +0900
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51]) (authenticated)
-        by conssluserg-06.nifty.com with ESMTP id 25JMxQEe012632;
-        Mon, 20 Jun 2022 07:59:27 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-06.nifty.com 25JMxQEe012632
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1655679567;
-        bh=0124zpITfI5G6OA5F7EcRpetdGkeILk3yk8sPHGF9Lo=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=J38ZvtvP8SKTq0XerFyGz3kNqQ2MTZju83AjWtBE/muJcPKWDDKUBR0GVSbZM60QV
-         WGmxT+4wwnfsooUhh/oy2XsjeyaDkINOZyh+TJWej7OdZSKp5cdVnSbNOskgxDulhx
-         s6JuKwoExws9JMuQ0TMAVpk0FSOa4xUJ7hNoS4C0vSXIb0w+FeuwZwCOi5yilix4G3
-         zm3mCtlhEBtDfHuHrTtfDUg+j2Xz5mqU0oa0/WRv5BOu4FBrso/zZHGeVwz87HHTBF
-         r5ybCn0roFKCR6uBNc7MQB83kE6jCF12PmubTWRdDLEc5bwRUawHLkjurc2djiwpqa
-         qgQsM/UAU954A==
-X-Nifty-SrcIP: [209.85.221.51]
-Received: by mail-wr1-f51.google.com with SMTP id o8so12331543wro.3;
-        Sun, 19 Jun 2022 15:59:27 -0700 (PDT)
-X-Gm-Message-State: AJIora8WRwSZlE3pyi2gr9J6xwdXsHLXwGKwrKvxA3RDH2W3jwno4Z8+
-        +TpaQjsRQxALYAL7eVD0B+SlhnaI6reG5InjhtU=
-X-Google-Smtp-Source: AGRyM1uH2aT9R6Kjl4mUyPmKjKTrynoT6AUejYpE5i86yNrNFXv5LJCE9cT6ZYzimizFSlKXFqnO628plXelofKIHzM=
-X-Received: by 2002:a05:6000:1f09:b0:21a:5f3:316a with SMTP id
- bv9-20020a0560001f0900b0021a05f3316amr20323654wrb.682.1655679566035; Sun, 19
- Jun 2022 15:59:26 -0700 (PDT)
+        Mon, 20 Jun 2022 12:11:56 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FFEE205FA;
+        Mon, 20 Jun 2022 09:11:55 -0700 (PDT)
+Date:   Mon, 20 Jun 2022 16:11:51 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1655741513;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=nrpcf1ppm+YNN5xe/s4XK/CIQPND1kqdvgAI2MfreU8=;
+        b=rMUQPYpvihQLaNiBDYnBnV/Bis/I+zUCNQegqtMgMeu3wwZWjGZ4xVUyGnyKqbaVo5WQUM
+        mZe9qUrGBLN4Dkb7meJhbPCtgthMpMnXdGnOJf+MY0DhCZcGDSDWiQ1r0s4w43bY2vffHL
+        HUoqUVgcUDVkt8kDrbwbotAswyMGHc5l7Llei7Vts+jSUC2CFy0D6EWKSfb5hOZy/o/R9P
+        EHi/zBo6O9/kk2QmckLwtPUAyRrK6oRzFpqJKg/1F70TD7PuYUtWaOTJOfuFEkm6TqBwTh
+        NlCdN6Zsal89AbEpIlQ31YSsKMopvDBQjD5qRdN13ZUAhD5UYXwMUS6NSjJQOg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1655741513;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=nrpcf1ppm+YNN5xe/s4XK/CIQPND1kqdvgAI2MfreU8=;
+        b=pZ0EBiOGBFrUSLUbIG2/HFpL0sCEcZ9PSSVczkDL+ORKVB8a0L057OwlRxWugKd4RBTeux
+        1CKYhXy9oz9qKoBA==
+From:   "tip-bot2 for Johan Hovold" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/misc] x86/pmem: Fix platform-device leak in error path
+Cc:     Johan Hovold <johan@kernel.org>, Borislav Petkov <bp@suse.de>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20220620140723.9810-1-johan@kernel.org>
+References: <20220620140723.9810-1-johan@kernel.org>
 MIME-Version: 1.0
-References: <20220416174710.269226-1-masahiroy@kernel.org> <165037936030.4207.3583631675331739342.tip-bot2@tip-bot2>
-In-Reply-To: <165037936030.4207.3583631675331739342.tip-bot2@tip-bot2>
-From:   Masahiro Yamada <masahiroy@kernel.org>
-Date:   Mon, 20 Jun 2022 07:58:47 +0900
-X-Gmail-Original-Message-ID: <CAK7LNATRH4sHYrZk556Sjo4nP=S3qD170OMCZ21n0TEz7gyDUw@mail.gmail.com>
-Message-ID: <CAK7LNATRH4sHYrZk556Sjo4nP=S3qD170OMCZ21n0TEz7gyDUw@mail.gmail.com>
-Subject: Re: [tip: x86/tdx] x86/build: remove unused OBJECT_FILES_NON_STANDARD_test_nx.o
-To:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Cc:     linux-tip-commits@vger.kernel.org,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        X86 ML <x86@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_SOFTFAIL,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Message-ID: <165574151164.4207.15439194073733618682.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-Hi x86 maintainers.
+The following commit has been merged into the x86/misc branch of tip:
 
-On Tue, Apr 19, 2022 at 11:42 PM tip-bot2 for Masahiro Yamada
-<tip-bot2@linutronix.de> wrote:
->
-> The following commit has been merged into the x86/tdx branch of tip:
->
-> Commit-ID:     51e8253cf5444299db09e1027160bf503ef49ec9
-> Gitweb:        https://git.kernel.org/tip/51e8253cf5444299db09e1027160bf503ef49ec9
-> Author:        Masahiro Yamada <masahiroy@kernel.org>
-> AuthorDate:    Sun, 17 Apr 2022 02:47:10 +09:00
-> Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-> CommitterDate: Tue, 19 Apr 2022 07:17:16 -07:00
->
-> x86/build: remove unused OBJECT_FILES_NON_STANDARD_test_nx.o
->
-> Commit 3ad38ceb2769 ("x86/mm: Remove CONFIG_DEBUG_NX_TEST")
-> removed arch/x86/kernel/test_nx.c
->
-> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-> Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-> Link: https://lkml.kernel.org/r/20220416174710.269226-1-masahiroy@kernel.org
+Commit-ID:     229e73d46994f15314f58b2d39bf952111d89193
+Gitweb:        https://git.kernel.org/tip/229e73d46994f15314f58b2d39bf952111d89193
+Author:        Johan Hovold <johan@kernel.org>
+AuthorDate:    Mon, 20 Jun 2022 16:07:23 +02:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Mon, 20 Jun 2022 18:01:16 +02:00
 
+x86/pmem: Fix platform-device leak in error path
 
+Make sure to free the platform device in the unlikely event that
+registration fails.
 
-What happened to this patch?
+Fixes: 7a67832c7e44 ("libnvdimm, e820: make CONFIG_X86_PMEM_LEGACY a tristate option")
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lore.kernel.org/r/20220620140723.9810-1-johan@kernel.org
+---
+ arch/x86/kernel/pmem.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-This has not been merged into the mainline.
-It does not show up in linux-next either.
-
-
-
-
-
-> ---
->  arch/x86/kernel/Makefile | 2 --
->  1 file changed, 2 deletions(-)
->
-> diff --git a/arch/x86/kernel/Makefile b/arch/x86/kernel/Makefile
-> index c41ef42..d8b2a81 100644
-> --- a/arch/x86/kernel/Makefile
-> +++ b/arch/x86/kernel/Makefile
-> @@ -34,8 +34,6 @@ KASAN_SANITIZE_sev.o                                  := n
->  # by several compilation units. To be safe, disable all instrumentation.
->  KCSAN_SANITIZE := n
->
-> -OBJECT_FILES_NON_STANDARD_test_nx.o                    := y
-> -
->  ifdef CONFIG_FRAME_POINTER
->  OBJECT_FILES_NON_STANDARD_ftrace_$(BITS).o             := y
->  endif
-
-
-
--- 
-Best Regards
-Masahiro Yamada
+diff --git a/arch/x86/kernel/pmem.c b/arch/x86/kernel/pmem.c
+index 6b07faa..23154d2 100644
+--- a/arch/x86/kernel/pmem.c
++++ b/arch/x86/kernel/pmem.c
+@@ -27,6 +27,11 @@ static __init int register_e820_pmem(void)
+ 	 * simply here to trigger the module to load on demand.
+ 	 */
+ 	pdev = platform_device_alloc("e820_pmem", -1);
+-	return platform_device_add(pdev);
++
++	rc = platform_device_add(pdev);
++	if (rc)
++		platform_device_put(pdev);
++
++	return rc;
+ }
+ device_initcall(register_e820_pmem);
