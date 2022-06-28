@@ -2,55 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 62F2C55D2D2
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 28 Jun 2022 15:11:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4AE0055CF15
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 28 Jun 2022 15:06:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239845AbiF1HJW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 28 Jun 2022 03:09:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44600 "EHLO
+        id S240018AbiF1HQh (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 28 Jun 2022 03:16:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48884 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241578AbiF1HJS (ORCPT
+        with ESMTP id S238901AbiF1HQg (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 28 Jun 2022 03:09:18 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FD289FDD;
-        Tue, 28 Jun 2022 00:09:17 -0700 (PDT)
-Date:   Tue, 28 Jun 2022 07:09:14 -0000
+        Tue, 28 Jun 2022 03:16:36 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5253B2C648;
+        Tue, 28 Jun 2022 00:16:35 -0700 (PDT)
+Date:   Tue, 28 Jun 2022 07:16:32 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1656400155;
+        s=2020; t=1656400593;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=qgpa+GS2NOqfAar7IJ31QaA1euzHBhmjkKYbQS/Wltw=;
-        b=cTEkBDdFrYiOpqdGHRKw1gFXpRLQMfHoBKo9Yf9u6uWG/ZshndbhyPRN2zHAnHhKFJZPev
-        EScp08s0pdB/fGWxcfMUlY5tBU8b/oLRaiKkn7arEvsEksnDo6B0AudsTwUXau5YNJq6Vw
-        9VCUwQRzLW85xdgkEKxrb8BbZdTIqoN/Pyq1QpHLcG642VJf7nKNeZ8c9VRmPkqbskUUpo
-        QhE3Iuxl57jvDqSe7JXWXdJV1p+5rXJ2fxf7r0GQNKofJm46baaJfmepAKrYo8H65fNvMe
-        B/cFu68yTj1nakjSgr2X7A3FG/Cdy6ex5F6QqL5qEHBOzJ9ubpcS2IKy24H/2w==
+        bh=UH6GiLvl6EPgMRDFC8w8CCwZJcIkbtjTfEHNzAI9Mmg=;
+        b=ggYxpFGEAW/jHJdWoDJOod6bQQNpEFu5rDrgfXYCEJELT/vo+dcj5UhOAOfOgAj4ge71ox
+        rHCgVHvd4QfXfbYrvh2umZKhFTZ8+AaH35v7y6zZTFvWd4eZBIHCVA++9sqJzdOA63Bv2w
+        9bn0Jw8D+KfqjElEYX5M46O5w7HHT1EgALt/xqZYgC7/zK5wIwt+g9haqUa4nRLP1qOV19
+        cNmgBgH/VGRI2S1aMu7IpTN16FcVwEi7AWPBiIpKYHO7Fu/hcVQ/tD/iNPzYrgm8l4uVDo
+        9tB+6b+9boe5Zg8qmw8FiNAYF6o+oo6SMeKW65yKO1/pN5pmSBaooEbO6HGNBQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1656400155;
+        s=2020e; t=1656400593;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=qgpa+GS2NOqfAar7IJ31QaA1euzHBhmjkKYbQS/Wltw=;
-        b=fFPYbQPHfSZdQUiDl7kwfkMNMZgp3tml4dtwRfw1rkUkmKXSbtdE4d/kvQ4D7pBHktFDGz
-        RQq1NyElQkIfbUBA==
-From:   "tip-bot2 for Ard Biesheuvel" <tip-bot2@linutronix.de>
+        bh=UH6GiLvl6EPgMRDFC8w8CCwZJcIkbtjTfEHNzAI9Mmg=;
+        b=U5hrbqDJwd/Gzb2FDuHXZCeCD544bSgfkTiG18o33iIry/rJHBxuMiQ+thqz7xs/8b+gr9
+        0bRDNH+6+PPYqbAg==
+From:   "tip-bot2 for Namhyung Kim" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] jump_label: s390: avoid pointless initial NOP patching
-Cc:     Ard Biesheuvel <ardb@kernel.org>,
+Subject: [tip: perf/core] perf/core: Add a new read format to get a number of
+ lost samples
+Cc:     Namhyung Kim <namhyung@kernel.org>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220615154142.1574619-2-ardb@kernel.org>
-References: <20220615154142.1574619-2-ardb@kernel.org>
+In-Reply-To: <20220616180623.1358843-1-namhyung@kernel.org>
+References: <20220616180623.1358843-1-namhyung@kernel.org>
 MIME-Version: 1.0
-Message-ID: <165640015422.4207.10034265393643139435.tip-bot2@tip-bot2>
+Message-ID: <165640059260.4207.6165560170010032582.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,111 +66,194 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the locking/core branch of tip:
+The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     0c3b61e00a0d0872c521586494ec23f6016c317a
-Gitweb:        https://git.kernel.org/tip/0c3b61e00a0d0872c521586494ec23f6016c317a
-Author:        Ard Biesheuvel <ardb@kernel.org>
-AuthorDate:    Wed, 15 Jun 2022 17:41:40 +02:00
+Commit-ID:     119a784c81270eb88e573174ed2209225d646656
+Gitweb:        https://git.kernel.org/tip/119a784c81270eb88e573174ed2209225d646656
+Author:        Namhyung Kim <namhyung@kernel.org>
+AuthorDate:    Thu, 16 Jun 2022 11:06:23 -07:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Fri, 24 Jun 2022 09:48:54 +02:00
+CommitterDate: Tue, 28 Jun 2022 09:08:31 +02:00
 
-jump_label: s390: avoid pointless initial NOP patching
+perf/core: Add a new read format to get a number of lost samples
 
-Patching NOPs into other NOPs at boot time serves no purpose, so let's
-use the same NOP encodings at compile time and runtime.
+Sometimes we want to know an accurate number of samples even if it's
+lost.  Currenlty PERF_RECORD_LOST is generated for a ring-buffer which
+might be shared with other events.  So it's hard to know per-event
+lost count.
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Add event->lost_samples field and PERF_FORMAT_LOST to retrieve it from
+userspace.
+
+Original-patch-by: Jiri Olsa <jolsa@redhat.com>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20220615154142.1574619-2-ardb@kernel.org
+Link: https://lkml.kernel.org/r/20220616180623.1358843-1-namhyung@kernel.org
 ---
- arch/s390/include/asm/jump_label.h |  5 ++---
- arch/s390/kernel/jump_label.c      | 23 +++++------------------
- 2 files changed, 7 insertions(+), 21 deletions(-)
+ include/linux/perf_event.h      |  2 ++
+ include/uapi/linux/perf_event.h |  5 ++++-
+ kernel/events/core.c            | 21 ++++++++++++++++++---
+ kernel/events/ring_buffer.c     |  5 ++++-
+ 4 files changed, 28 insertions(+), 5 deletions(-)
 
-diff --git a/arch/s390/include/asm/jump_label.h b/arch/s390/include/asm/jump_label.h
-index 916cfcb..895f774 100644
---- a/arch/s390/include/asm/jump_label.h
-+++ b/arch/s390/include/asm/jump_label.h
-@@ -10,7 +10,6 @@
- #include <linux/stringify.h>
+diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
+index da75956..ee8b9ec 100644
+--- a/include/linux/perf_event.h
++++ b/include/linux/perf_event.h
+@@ -759,6 +759,8 @@ struct perf_event {
+ 	struct pid_namespace		*ns;
+ 	u64				id;
  
- #define JUMP_LABEL_NOP_SIZE 6
--#define JUMP_LABEL_NOP_OFFSET 2
++	atomic64_t			lost_samples;
++
+ 	u64				(*clock)(void);
+ 	perf_overflow_handler_t		overflow_handler;
+ 	void				*overflow_handler_context;
+diff --git a/include/uapi/linux/perf_event.h b/include/uapi/linux/perf_event.h
+index d37629d..0474ee3 100644
+--- a/include/uapi/linux/perf_event.h
++++ b/include/uapi/linux/perf_event.h
+@@ -301,6 +301,7 @@ enum {
+  *	  { u64		time_enabled; } && PERF_FORMAT_TOTAL_TIME_ENABLED
+  *	  { u64		time_running; } && PERF_FORMAT_TOTAL_TIME_RUNNING
+  *	  { u64		id;           } && PERF_FORMAT_ID
++ *	  { u64		lost;         } && PERF_FORMAT_LOST
+  *	} && !PERF_FORMAT_GROUP
+  *
+  *	{ u64		nr;
+@@ -308,6 +309,7 @@ enum {
+  *	  { u64		time_running; } && PERF_FORMAT_TOTAL_TIME_RUNNING
+  *	  { u64		value;
+  *	    { u64	id;           } && PERF_FORMAT_ID
++ *	    { u64	lost;         } && PERF_FORMAT_LOST
+  *	  }		cntr[nr];
+  *	} && PERF_FORMAT_GROUP
+  * };
+@@ -317,8 +319,9 @@ enum perf_event_read_format {
+ 	PERF_FORMAT_TOTAL_TIME_RUNNING		= 1U << 1,
+ 	PERF_FORMAT_ID				= 1U << 2,
+ 	PERF_FORMAT_GROUP			= 1U << 3,
++	PERF_FORMAT_LOST			= 1U << 4,
  
- #ifdef CONFIG_CC_IS_CLANG
- #define JUMP_LABEL_STATIC_KEY_CONSTRAINT "i"
-@@ -21,12 +20,12 @@
- #endif
+-	PERF_FORMAT_MAX = 1U << 4,		/* non-ABI */
++	PERF_FORMAT_MAX = 1U << 5,		/* non-ABI */
+ };
  
- /*
-- * We use a brcl 0,2 instruction for jump labels at compile time so it
-+ * We use a brcl 0,<offset> instruction for jump labels so it
-  * can be easily distinguished from a hotpatch generated instruction.
-  */
- static __always_inline bool arch_static_branch(struct static_key *key, bool branch)
- {
--	asm_volatile_goto("0:	brcl	0,"__stringify(JUMP_LABEL_NOP_OFFSET)"\n"
-+	asm_volatile_goto("0:	brcl 0,%l[label]\n"
- 			  ".pushsection __jump_table,\"aw\"\n"
- 			  ".balign	8\n"
- 			  ".long	0b-.,%l[label]-.\n"
-diff --git a/arch/s390/kernel/jump_label.c b/arch/s390/kernel/jump_label.c
-index 6bec000..d764f0d 100644
---- a/arch/s390/kernel/jump_label.c
-+++ b/arch/s390/kernel/jump_label.c
-@@ -44,14 +44,8 @@ static void jump_label_bug(struct jump_entry *entry, struct insn *expected,
- 	panic("Corrupted kernel text");
- }
+ #define PERF_ATTR_SIZE_VER0	64	/* sizeof first published struct */
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 80782cd..4d8c335 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -1819,6 +1819,9 @@ static void __perf_event_read_size(struct perf_event *event, int nr_siblings)
+ 	if (event->attr.read_format & PERF_FORMAT_ID)
+ 		entry += sizeof(u64);
  
--static struct insn orignop = {
--	.opcode = 0xc004,
--	.offset = JUMP_LABEL_NOP_OFFSET >> 1,
--};
--
- static void jump_label_transform(struct jump_entry *entry,
--				 enum jump_label_type type,
--				 int init)
-+				 enum jump_label_type type)
- {
- 	void *code = (void *)jump_entry_code(entry);
- 	struct insn old, new;
-@@ -63,27 +57,22 @@ static void jump_label_transform(struct jump_entry *entry,
- 		jump_label_make_branch(entry, &old);
- 		jump_label_make_nop(entry, &new);
++	if (event->attr.read_format & PERF_FORMAT_LOST)
++		entry += sizeof(u64);
++
+ 	if (event->attr.read_format & PERF_FORMAT_GROUP) {
+ 		nr += nr_siblings;
+ 		size += sizeof(u64);
+@@ -5260,11 +5263,15 @@ static int __perf_read_group_add(struct perf_event *leader,
+ 	values[n++] += perf_event_count(leader);
+ 	if (read_format & PERF_FORMAT_ID)
+ 		values[n++] = primary_event_id(leader);
++	if (read_format & PERF_FORMAT_LOST)
++		values[n++] = atomic64_read(&leader->lost_samples);
+ 
+ 	for_each_sibling_event(sub, leader) {
+ 		values[n++] += perf_event_count(sub);
+ 		if (read_format & PERF_FORMAT_ID)
+ 			values[n++] = primary_event_id(sub);
++		if (read_format & PERF_FORMAT_LOST)
++			values[n++] = atomic64_read(&sub->lost_samples);
  	}
--	if (init) {
--		if (memcmp(code, &orignop, sizeof(orignop)))
--			jump_label_bug(entry, &orignop, &new);
--	} else {
--		if (memcmp(code, &old, sizeof(old)))
--			jump_label_bug(entry, &old, &new);
--	}
-+	if (memcmp(code, &old, sizeof(old)))
-+		jump_label_bug(entry, &old, &new);
- 	s390_kernel_write(code, &new, sizeof(new));
- }
  
- void arch_jump_label_transform(struct jump_entry *entry,
- 			       enum jump_label_type type)
+ 	raw_spin_unlock_irqrestore(&ctx->lock, flags);
+@@ -5321,7 +5328,7 @@ static int perf_read_one(struct perf_event *event,
+ 				 u64 read_format, char __user *buf)
  {
--	jump_label_transform(entry, type, 0);
-+	jump_label_transform(entry, type);
- 	text_poke_sync();
- }
+ 	u64 enabled, running;
+-	u64 values[4];
++	u64 values[5];
+ 	int n = 0;
  
- bool arch_jump_label_transform_queue(struct jump_entry *entry,
- 				     enum jump_label_type type)
- {
--	jump_label_transform(entry, type, 0);
-+	jump_label_transform(entry, type);
- 	return true;
- }
+ 	values[n++] = __perf_event_read_value(event, &enabled, &running);
+@@ -5331,6 +5338,8 @@ static int perf_read_one(struct perf_event *event,
+ 		values[n++] = running;
+ 	if (read_format & PERF_FORMAT_ID)
+ 		values[n++] = primary_event_id(event);
++	if (read_format & PERF_FORMAT_LOST)
++		values[n++] = atomic64_read(&event->lost_samples);
  
-@@ -95,6 +84,4 @@ void arch_jump_label_transform_apply(void)
- void __init_or_module arch_jump_label_transform_static(struct jump_entry *entry,
- 						       enum jump_label_type type)
+ 	if (copy_to_user(buf, values, n * sizeof(u64)))
+ 		return -EFAULT;
+@@ -6858,7 +6867,7 @@ static void perf_output_read_one(struct perf_output_handle *handle,
+ 				 u64 enabled, u64 running)
  {
--	jump_label_transform(entry, type, 1);
--	text_poke_sync();
+ 	u64 read_format = event->attr.read_format;
+-	u64 values[4];
++	u64 values[5];
+ 	int n = 0;
+ 
+ 	values[n++] = perf_event_count(event);
+@@ -6872,6 +6881,8 @@ static void perf_output_read_one(struct perf_output_handle *handle,
+ 	}
+ 	if (read_format & PERF_FORMAT_ID)
+ 		values[n++] = primary_event_id(event);
++	if (read_format & PERF_FORMAT_LOST)
++		values[n++] = atomic64_read(&event->lost_samples);
+ 
+ 	__output_copy(handle, values, n * sizeof(u64));
  }
+@@ -6882,7 +6893,7 @@ static void perf_output_read_group(struct perf_output_handle *handle,
+ {
+ 	struct perf_event *leader = event->group_leader, *sub;
+ 	u64 read_format = event->attr.read_format;
+-	u64 values[5];
++	u64 values[6];
+ 	int n = 0;
+ 
+ 	values[n++] = 1 + leader->nr_siblings;
+@@ -6900,6 +6911,8 @@ static void perf_output_read_group(struct perf_output_handle *handle,
+ 	values[n++] = perf_event_count(leader);
+ 	if (read_format & PERF_FORMAT_ID)
+ 		values[n++] = primary_event_id(leader);
++	if (read_format & PERF_FORMAT_LOST)
++		values[n++] = atomic64_read(&leader->lost_samples);
+ 
+ 	__output_copy(handle, values, n * sizeof(u64));
+ 
+@@ -6913,6 +6926,8 @@ static void perf_output_read_group(struct perf_output_handle *handle,
+ 		values[n++] = perf_event_count(sub);
+ 		if (read_format & PERF_FORMAT_ID)
+ 			values[n++] = primary_event_id(sub);
++		if (read_format & PERF_FORMAT_LOST)
++			values[n++] = atomic64_read(&sub->lost_samples);
+ 
+ 		__output_copy(handle, values, n * sizeof(u64));
+ 	}
+diff --git a/kernel/events/ring_buffer.c b/kernel/events/ring_buffer.c
+index fb35b92..7261320 100644
+--- a/kernel/events/ring_buffer.c
++++ b/kernel/events/ring_buffer.c
+@@ -172,8 +172,10 @@ __perf_output_begin(struct perf_output_handle *handle,
+ 		goto out;
+ 
+ 	if (unlikely(rb->paused)) {
+-		if (rb->nr_pages)
++		if (rb->nr_pages) {
+ 			local_inc(&rb->lost);
++			atomic64_inc(&event->lost_samples);
++		}
+ 		goto out;
+ 	}
+ 
+@@ -254,6 +256,7 @@ __perf_output_begin(struct perf_output_handle *handle,
+ 
+ fail:
+ 	local_inc(&rb->lost);
++	atomic64_inc(&event->lost_samples);
+ 	perf_output_put_handle(handle);
+ out:
+ 	rcu_read_unlock();
