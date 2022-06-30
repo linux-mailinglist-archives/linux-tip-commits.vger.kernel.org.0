@@ -2,191 +2,218 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BD9155E116
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 28 Jun 2022 15:33:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 395C1562EDD
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  1 Jul 2022 10:51:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344827AbiF1KRx (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 28 Jun 2022 06:17:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48264 "EHLO
+        id S235296AbiGAIt0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 1 Jul 2022 04:49:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57876 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344873AbiF1KRj (ORCPT
+        with ESMTP id S236416AbiGAItN (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 28 Jun 2022 06:17:39 -0400
+        Fri, 1 Jul 2022 04:49:13 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 072B42FFE0;
-        Tue, 28 Jun 2022 03:17:36 -0700 (PDT)
-Date:   Tue, 28 Jun 2022 10:17:33 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E85391262B;
+        Fri,  1 Jul 2022 01:48:59 -0700 (PDT)
+Date:   Thu, 30 Jun 2022 15:10:32 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1656411454;
+        s=2020; t=1656665337;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=KgrkKeUjyDISUVGC+ZEkzm6tVoShgne3hdtLt66d7Fw=;
-        b=zK+TDvxno6Y+H1puM5A5Qqi9Q0cUNNdkkV8knkYiHnWM+EcfPTQYwPsJQR2XVuw1KKEG4z
-        HH6ShsEv1+eZ6bQvIrKE3JcthztIp4uI3ZiQ3VAHRw3jmxF/x7gDo9Uzdky57SiYtBjYml
-        FYY54aopDHxiU3MjsgccKMf5lBGdQ7Cu5cTDDf0PDdRGu2ltvywuJRjj5bc4swbf7KLFl3
-        kd/3d3ROmLFanFmDRXrRqr5ZGdiHqNQWugguEtgBsYmNzUloMhp5ezY1WosU6H1yZ7VFtq
-        5tKp5vZjd4G19hfn3GY1PlYlOJ3vvuzMLYHsoKjx8mnr33fVJ9hLwWfg5eC5ow==
+        bh=ZcFvGeiS6wY4PWTdQBRFYqnlvmdaRSGng4TPww04LoI=;
+        b=3aiv62k1D5hncQtlQVKKm7I8hTST2o8Tqj3+FZBY3zRkvSF4HqD0IaDTWEjssQsL1y5Xtf
+        +VrbfwyoFR9DbdLt5Oig4SimpeTUMKlRADXPxft13PTpdvnWMbZujevogjh0rOYrXhhq4P
+        DPZh3ZX1RmQdiLOyXaZSSPDVk9Pq+beXwqJoCnUejw5uugurS98jgfxwLwbi55snR3MsAv
+        Ud5t6Bgbtwo1Uf9U+rJnKO8iC4/OJIrKUNO73zPahguRUbqwK8A5H93hGo/UG/ixm56/Cb
+        SN4Iwpzc+1zJkB+/Q37DMkLJw4dKMRdX4LvwylS/2n9n5FottzF8p1Ahjc44yQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1656411454;
+        s=2020e; t=1656665337;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=KgrkKeUjyDISUVGC+ZEkzm6tVoShgne3hdtLt66d7Fw=;
-        b=yS9khQ7rkAxaSmcE6PmWZ6eqIiZPVYoTqRtQfJHybNYAj6ZWJqBBJfiEaHTsG9xzPwEueT
-        MoTEkA7oEHc/09CQ==
-From:   "tip-bot2 for Smita Koralahalli" <tip-bot2@linutronix.de>
+        bh=ZcFvGeiS6wY4PWTdQBRFYqnlvmdaRSGng4TPww04LoI=;
+        b=XCRKeifCmBoa2q8RlRXYSEhQSVeKpqIUJ3jp50Yw2j4o7yzmNmp4VXqSumf5AKiWUC0Ryv
+        SQaObV9/u6nEzZBg==
+From:   "tip-bot2 for Vincent Donnefort" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: ras/core] x86/mce: Check whether writes to MCA_STATUS are
- getting ignored
-Cc:     Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>,
-        Borislav Petkov <bp@suse.de>, x86@kernel.org,
+Subject: [tip: sched/core] sched/fair: Remove the energy margin in feec()
+Cc:     Vincent Donnefort <vincent.donnefort@arm.com>,
+        Vincent Donnefort <vdonnefort@google.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Lukasz Luba <lukasz.luba@arm.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220214233640.70510-2-Smita.KoralahalliChannabasappa@amd.com>
-References: <20220214233640.70510-2-Smita.KoralahalliChannabasappa@amd.com>
+In-Reply-To: <20220621090414.433602-8-vdonnefort@google.com>
+References: <20220621090414.433602-8-vdonnefort@google.com>
 MIME-Version: 1.0
-Message-ID: <165641145330.4207.4653680813553128202.tip-bot2@tip-bot2>
+Message-ID: <165660183266.15455.13843699448813066343.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,DATE_IN_PAST_12_24,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the ras/core branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     891e465a1bd8798d5f97c3afb99393f123817fef
-Gitweb:        https://git.kernel.org/tip/891e465a1bd8798d5f97c3afb99393f123817fef
-Author:        Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
-AuthorDate:    Mon, 27 Jun 2022 20:56:46 
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 28 Jun 2022 12:08:10 +02:00
+Commit-ID:     b812fc9768e0048582c8e18d7b66559c1758dde1
+Gitweb:        https://git.kernel.org/tip/b812fc9768e0048582c8e18d7b66559c1758dde1
+Author:        Vincent Donnefort <vincent.donnefort@arm.com>
+AuthorDate:    Tue, 21 Jun 2022 10:04:14 +01:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Tue, 28 Jun 2022 09:17:48 +02:00
 
-x86/mce: Check whether writes to MCA_STATUS are getting ignored
+sched/fair: Remove the energy margin in feec()
 
-The platform can sometimes - depending on its settings - cause writes
-to MCA_STATUS MSRs to get ignored, regardless of HWCR[McStatusWrEn]'s
-value.
+find_energy_efficient_cpu() integrates a margin to protect tasks from
+bouncing back and forth from a CPU to another. This margin is set as being
+6% of the total current energy estimated on the system. This however does
+not work for two reasons:
 
-For further info see
+1. The energy estimation is not a good absolute value:
 
-  PPR for AMD Family 19h, Model 01h, Revision B1 Processors, doc ID 55898
+compute_energy() used in feec() is a good estimation for task placement as
+it allows to compare the energy with and without a task. The computed
+delta will give a good overview of the cost for a certain task placement.
+It, however, doesn't work as an absolute estimation for the total energy
+of the system. First it adds the contribution to idle CPUs into the
+energy, second it mixes util_avg with util_est values. util_avg contains
+the near history for a CPU usage, it doesn't tell at all what the current
+utilization is. A system that has been quite busy in the near past will
+hold a very high energy and then a high margin preventing any task
+migration to a lower capacity CPU, wasting energy. It even creates a
+negative feedback loop: by holding the tasks on a less efficient CPU, the
+margin contributes in keeping the energy high.
 
-at https://bugzilla.kernel.org/show_bug.cgi?id=206537.
+2. The margin handicaps small tasks:
 
-Therefore, probe for ignored writes to MCA_STATUS to determine if hardware
-error injection is at all possible.
+On a system where the workload is composed mostly of small tasks (which is
+often the case on Android), the overall energy will be high enough to
+create a margin none of those tasks can cross. On a Pixel4, a small
+utilization of 5% on all the CPUs creates a global estimated energy of 140
+joules, as per the Energy Model declaration of that same device. This
+means, after applying the 6% margin that any migration must save more than
+8 joules to happen. No task with a utilization lower than 40 would then be
+able to migrate away from the biggest CPU of the system.
 
-  [ bp: Heavily massage commit message and patch. ]
+The 6% of the overall system energy was brought by the following patch:
 
-Signed-off-by: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lore.kernel.org/r/20220214233640.70510-2-Smita.KoralahalliChannabasappa@amd.com
+ (eb92692b2544 sched/fair: Speed-up energy-aware wake-ups)
+
+It was previously 6% of the prev_cpu energy. Also, the following one
+made this margin value conditional on the clusters where the task fits:
+
+ (8d4c97c105ca sched/fair: Only compute base_energy_pd if necessary)
+
+We could simply revert that margin change to what it was, but the original
+version didn't have strong grounds neither and as demonstrated in (1.) the
+estimated energy isn't a good absolute value. Instead, removing it
+completely. It is indeed, made possible by recent changes that improved
+energy estimation comparison fairness (sched/fair: Remove task_util from
+effective utilization in feec()) (PM: EM: Increase energy calculation
+precision) and task utilization stabilization (sched/fair: Decay task
+util_avg during migration)
+
+Without a margin, we could have feared bouncing between CPUs. But running
+LISA's eas_behaviour test coverage on three different platforms (Hikey960,
+RB-5 and DB-845) showed no issue.
+
+Removing the energy margin enables more energy-optimized placements for a
+more energy efficient system.
+
+Signed-off-by: Vincent Donnefort <vincent.donnefort@arm.com>
+Signed-off-by: Vincent Donnefort <vdonnefort@google.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Tested-by: Lukasz Luba <lukasz.luba@arm.com>
+Link: https://lkml.kernel.org/r/20220621090414.433602-8-vdonnefort@google.com
 ---
- arch/x86/kernel/cpu/mce/inject.c   | 47 +++++++++++++++++++++++++++++-
- arch/x86/kernel/cpu/mce/internal.h |  2 +-
- 2 files changed, 48 insertions(+), 1 deletion(-)
+ kernel/sched/fair.c | 23 ++++++++---------------
+ 1 file changed, 8 insertions(+), 15 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/mce/inject.c b/arch/x86/kernel/cpu/mce/inject.c
-index 5fbd7ff..12cf2e7 100644
---- a/arch/x86/kernel/cpu/mce/inject.c
-+++ b/arch/x86/kernel/cpu/mce/inject.c
-@@ -33,6 +33,8 @@
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 0ef7e0a..a78d2e3 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -6868,9 +6868,8 @@ static int find_energy_efficient_cpu(struct task_struct *p, int prev_cpu)
+ {
+ 	struct cpumask *cpus = this_cpu_cpumask_var_ptr(select_rq_mask);
+ 	unsigned long prev_delta = ULONG_MAX, best_delta = ULONG_MAX;
+-	int cpu, best_energy_cpu = prev_cpu, target = -1;
+ 	struct root_domain *rd = this_rq()->rd;
+-	unsigned long base_energy = 0;
++	int cpu, best_energy_cpu, target = -1;
+ 	struct sched_domain *sd;
+ 	struct perf_domain *pd;
+ 	struct energy_env eenv;
+@@ -6902,8 +6901,8 @@ static int find_energy_efficient_cpu(struct task_struct *p, int prev_cpu)
+ 		unsigned long cpu_cap, cpu_thermal_cap, util;
+ 		unsigned long cur_delta, max_spare_cap = 0;
+ 		bool compute_prev_delta = false;
+-		unsigned long base_energy_pd;
+ 		int max_spare_cap_cpu = -1;
++		unsigned long base_energy;
  
- #include "internal.h"
+ 		cpumask_and(cpus, perf_domain_span(pd), cpu_online_mask);
  
-+static bool hw_injection_possible = true;
-+
- /*
-  * Collect all the MCi_XXX settings
-  */
-@@ -339,6 +341,8 @@ static int __set_inj(const char *buf)
+@@ -6961,17 +6960,16 @@ static int find_energy_efficient_cpu(struct task_struct *p, int prev_cpu)
  
- 	for (i = 0; i < N_INJ_TYPES; i++) {
- 		if (!strncmp(flags_options[i], buf, strlen(flags_options[i]))) {
-+			if (i > SW_INJ && !hw_injection_possible)
-+				continue;
- 			inj_type = i;
- 			return 0;
+ 		eenv_pd_busy_time(&eenv, cpus, p);
+ 		/* Compute the 'base' energy of the pd, without @p */
+-		base_energy_pd = compute_energy(&eenv, pd, cpus, p, -1);
+-		base_energy += base_energy_pd;
++		base_energy = compute_energy(&eenv, pd, cpus, p, -1);
+ 
+ 		/* Evaluate the energy impact of using prev_cpu. */
+ 		if (compute_prev_delta) {
+ 			prev_delta = compute_energy(&eenv, pd, cpus, p,
+ 						    prev_cpu);
+ 			/* CPU utilization has changed */
+-			if (prev_delta < base_energy_pd)
++			if (prev_delta < base_energy)
+ 				goto unlock;
+-			prev_delta -= base_energy_pd;
++			prev_delta -= base_energy;
+ 			best_delta = min(best_delta, prev_delta);
  		}
-@@ -717,11 +721,54 @@ static void __init debugfs_init(void)
- 				    &i_mce, dfs_fls[i].fops);
- }
  
-+static void check_hw_inj_possible(void)
-+{
-+	int cpu;
-+	u8 bank;
-+
-+	/*
-+	 * This behavior exists only on SMCA systems though its not directly
-+	 * related to SMCA.
-+	 */
-+	if (!cpu_feature_enabled(X86_FEATURE_SMCA))
-+		return;
-+
-+	cpu = get_cpu();
-+
-+	for (bank = 0; bank < MAX_NR_BANKS; ++bank) {
-+		u64 status = MCI_STATUS_VAL, ipid;
-+
-+		/* Check whether bank is populated */
-+		rdmsrl(MSR_AMD64_SMCA_MCx_IPID(bank), ipid);
-+		if (!ipid)
-+			continue;
-+
-+		toggle_hw_mce_inject(cpu, true);
-+
-+		wrmsrl_safe(mca_msr_reg(bank, MCA_STATUS), status);
-+		rdmsrl_safe(mca_msr_reg(bank, MCA_STATUS), &status);
-+
-+		if (!status) {
-+			hw_injection_possible = false;
-+			pr_warn("Platform does not allow *hardware* error injection."
-+				"Try using APEI EINJ instead.\n");
-+		}
-+
-+		toggle_hw_mce_inject(cpu, false);
-+
-+		break;
-+	}
-+
-+	put_cpu();
-+}
-+
- static int __init inject_init(void)
- {
- 	if (!alloc_cpumask_var(&mce_inject_cpumask, GFP_KERNEL))
- 		return -ENOMEM;
+@@ -6980,9 +6978,9 @@ static int find_energy_efficient_cpu(struct task_struct *p, int prev_cpu)
+ 			cur_delta = compute_energy(&eenv, pd, cpus, p,
+ 						   max_spare_cap_cpu);
+ 			/* CPU utilization has changed */
+-			if (cur_delta < base_energy_pd)
++			if (cur_delta < base_energy)
+ 				goto unlock;
+-			cur_delta -= base_energy_pd;
++			cur_delta -= base_energy;
+ 			if (cur_delta < best_delta) {
+ 				best_delta = cur_delta;
+ 				best_energy_cpu = max_spare_cap_cpu;
+@@ -6991,12 +6989,7 @@ static int find_energy_efficient_cpu(struct task_struct *p, int prev_cpu)
+ 	}
+ 	rcu_read_unlock();
  
-+	check_hw_inj_possible();
-+
- 	debugfs_init();
+-	/*
+-	 * Pick the best CPU if prev_cpu cannot be used, or if it saves at
+-	 * least 6% of the energy used by prev_cpu.
+-	 */
+-	if ((prev_delta == ULONG_MAX) ||
+-	    (prev_delta - best_delta) > ((prev_delta + base_energy) >> 4))
++	if (best_delta < prev_delta)
+ 		target = best_energy_cpu;
  
- 	register_nmi_handler(NMI_LOCAL, mce_raise_notify, 0, "mce_notify");
-diff --git a/arch/x86/kernel/cpu/mce/internal.h b/arch/x86/kernel/cpu/mce/internal.h
-index 4ae0e60..7e03f5b 100644
---- a/arch/x86/kernel/cpu/mce/internal.h
-+++ b/arch/x86/kernel/cpu/mce/internal.h
-@@ -211,7 +211,7 @@ noinstr u64 mce_rdmsrl(u32 msr);
- 
- static __always_inline u32 mca_msr_reg(int bank, enum mca_msr reg)
- {
--	if (mce_flags.smca) {
-+	if (cpu_feature_enabled(X86_FEATURE_SMCA)) {
- 		switch (reg) {
- 		case MCA_CTL:	 return MSR_AMD64_SMCA_MCx_CTL(bank);
- 		case MCA_ADDR:	 return MSR_AMD64_SMCA_MCx_ADDR(bank);
+ 	return target;
