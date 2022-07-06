@@ -2,56 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B82395686C2
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  6 Jul 2022 13:37:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 381B25686FF
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  6 Jul 2022 13:44:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231799AbiGFLhR (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 6 Jul 2022 07:37:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37304 "EHLO
+        id S232921AbiGFLoM (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 6 Jul 2022 07:44:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43496 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229898AbiGFLhQ (ORCPT
+        with ESMTP id S232812AbiGFLoJ (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 6 Jul 2022 07:37:16 -0400
+        Wed, 6 Jul 2022 07:44:09 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12F40237E9;
-        Wed,  6 Jul 2022 04:37:15 -0700 (PDT)
-Date:   Wed, 06 Jul 2022 11:37:12 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DB5827FE1;
+        Wed,  6 Jul 2022 04:44:08 -0700 (PDT)
+Date:   Wed, 06 Jul 2022 11:44:05 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1657107433;
+        s=2020; t=1657107846;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=pnFEP30906b4Edt/fgcggscUXaptYq0c9bLgh4Tdzhc=;
-        b=rpHEDvzPLv92TMiq83i2+Dqpoi7t+Y4lHYO3LBIVSNiuxFMKzmQo/aG29gaDt1DmBrTRUW
-        TW7E781q4PfpkVtA3Q7yxXW5B0969+KoUSl8SRaHYWa5nJbJiiR8hxcSElyN5pQJYr6mta
-        z+6Bgo4ZYQG7bF0B7E9Jmh/jUhoREYmBPFX+QD0ZQx49HqlfdkjQmBRkRqrjUoPT4oGqY1
-        e3AdlTO0LrheOJMGqsLAEjpehom5mmKDkGceY1K3okEQXiXyKXNlTnaHFW9GX5xpGnAEy8
-        bIGooSGS/lvw9RpZfMFSwMzfQ7HlVw8oprz9eCGUWCDytRcz47a0phyJGosbAA==
+        bh=WQNDvJM0xfToLKfSGT1GOOqjkWUDf95Dg7dwTQ4Av/s=;
+        b=0FQNE05YSdfPZsbbjsQWmjpS5Vsl31m58ptTs84yOyiK/zb9roN75dPAWLlp4HrAk1z644
+        1SOSjDq3TQTt/3AwKyhc+xzImefgTmeZfL3cPUH7R2/RuXwutjcUmq642BwxS4AVFRMXaJ
+        itiAvSKvcpOjTyxa2OuXxzQ0qHfWiD6ctIyncUfKPOQiHHyl828DNcwZaAhGcyPMXCsCob
+        jzAosoEcNo8eevKZpjnZ6WezpqeCCfk9GxVTQOi4yqqOHnVXrWF/c9f1+8PwIyxZogwb2q
+        jS8jog6p7CO8psLwv5JTi0wikYphVrQXLNZduB1WXoL57aemCJdXlr5V+jKocA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1657107433;
+        s=2020e; t=1657107846;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=pnFEP30906b4Edt/fgcggscUXaptYq0c9bLgh4Tdzhc=;
-        b=QNGZkdqzbfn1ASjeaL29ytqfctOM3RVvldyO+0OgqQCvnZzadlLEGt4P23K7HGv7S5j1JS
-        ifQJxDQNE/ty1mAQ==
-From:   "tip-bot2 for Josh Don" <tip-bot2@linutronix.de>
+        bh=WQNDvJM0xfToLKfSGT1GOOqjkWUDf95Dg7dwTQ4Av/s=;
+        b=X0NCsTJnsd4ifShsBRjxssvI0j8BjUHHO00U8TWKCUe2NBSx98+lPIENcCfAu9gdFxq3i8
+        ujl7zvcj+h5iDDBw==
+From:   "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/core: add forced idle accounting for cgroups
-Cc:     Josh Don <joshdon@google.com>,
+Subject: [tip: perf/core] perf/x86/intel: Fix PEBS data source encoding for ADL
+Cc:     Kan Liang <kan.liang@linux.intel.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Tejun Heo <tj@kernel.org>, x86@kernel.org,
+        Andi Kleen <ak@linux.intel.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220629211426.3329954-1-joshdon@google.com>
-References: <20220629211426.3329954-1-joshdon@google.com>
+In-Reply-To: <20220629150840.2235741-2-kan.liang@linux.intel.com>
+References: <20220629150840.2235741-2-kan.liang@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <165710743261.15455.2981731024307596274.tip-bot2@tip-bot2>
+Message-ID: <165710784534.15455.9349056485349357540.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,224 +66,187 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     1fcf54deb767d474181ad7cf33c92bb2a33607fb
-Gitweb:        https://git.kernel.org/tip/1fcf54deb767d474181ad7cf33c92bb2a33607fb
-Author:        Josh Don <joshdon@google.com>
-AuthorDate:    Wed, 29 Jun 2022 14:14:26 -07:00
+Commit-ID:     ccf170e9d8fdacfe435bbe3749c897c7d86d32f8
+Gitweb:        https://git.kernel.org/tip/ccf170e9d8fdacfe435bbe3749c897c7d86d32f8
+Author:        Kan Liang <kan.liang@linux.intel.com>
+AuthorDate:    Wed, 29 Jun 2022 08:08:40 -07:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Mon, 04 Jul 2022 09:23:07 +02:00
+CommitterDate: Mon, 04 Jul 2022 09:23:09 +02:00
 
-sched/core: add forced idle accounting for cgroups
+perf/x86/intel: Fix PEBS data source encoding for ADL
 
-4feee7d1260 previously added per-task forced idle accounting. This patch
-extends this to also include cgroups.
+The PEBS data source encoding for the e-core is different from the
+p-core.
 
-rstat is used for cgroup accounting, except for the root, which uses
-kcpustat in order to bypass the need for doing an rstat flush when
-reading root stats.
+Add the pebs_data_source[] in the struct x86_hybrid_pmu to store the
+data source encoding for each type of the core.
 
-Only cgroup v2 is supported. Similar to the task accounting, the cgroup
-accounting requires that schedstats is enabled.
+Add intel_pmu_pebs_data_source_grt() for the e-core.
+There is nothing changed for the data source encoding of the p-core,
+which still reuse the intel_pmu_pebs_data_source_skl().
 
-Signed-off-by: Josh Don <joshdon@google.com>
+Fixes: f83d2f91d259 ("perf/x86/intel: Add Alder Lake Hybrid support")
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Tejun Heo <tj@kernel.org>
-Link: https://lkml.kernel.org/r/20220629211426.3329954-1-joshdon@google.com
+Reviewed-by: Andi Kleen <ak@linux.intel.com>
+Link: https://lkml.kernel.org/r/20220629150840.2235741-2-kan.liang@linux.intel.com
 ---
- include/linux/cgroup-defs.h |  4 +++-
- include/linux/kernel_stat.h |  7 ++++++-
- kernel/cgroup/rstat.c       | 44 +++++++++++++++++++++++++++++++-----
- kernel/sched/core_sched.c   |  6 ++++-
- kernel/sched/cputime.c      | 15 ++++++++++++-
- 5 files changed, 69 insertions(+), 7 deletions(-)
+ arch/x86/events/intel/core.c |  2 +-
+ arch/x86/events/intel/ds.c   | 51 ++++++++++++++++++++++++++---------
+ arch/x86/events/perf_event.h |  6 ++++-
+ 3 files changed, 45 insertions(+), 14 deletions(-)
 
-diff --git a/include/linux/cgroup-defs.h b/include/linux/cgroup-defs.h
-index 1bfcfb1..025fd0e 100644
---- a/include/linux/cgroup-defs.h
-+++ b/include/linux/cgroup-defs.h
-@@ -287,6 +287,10 @@ struct css_set {
- 
- struct cgroup_base_stat {
- 	struct task_cputime cputime;
-+
-+#ifdef CONFIG_SCHED_CORE
-+	u64 forceidle_sum;
-+#endif
- };
- 
- /*
-diff --git a/include/linux/kernel_stat.h b/include/linux/kernel_stat.h
-index 69ae6b2..ddb5a35 100644
---- a/include/linux/kernel_stat.h
-+++ b/include/linux/kernel_stat.h
-@@ -28,6 +28,9 @@ enum cpu_usage_stat {
- 	CPUTIME_STEAL,
- 	CPUTIME_GUEST,
- 	CPUTIME_GUEST_NICE,
-+#ifdef CONFIG_SCHED_CORE
-+	CPUTIME_FORCEIDLE,
-+#endif
- 	NR_STATS,
- };
- 
-@@ -115,4 +118,8 @@ extern void account_process_tick(struct task_struct *, int user);
- 
- extern void account_idle_ticks(unsigned long ticks);
- 
-+#ifdef CONFIG_SCHED_CORE
-+extern void __account_forceidle_time(struct task_struct *tsk, u64 delta);
-+#endif
-+
- #endif /* _LINUX_KERNEL_STAT_H */
-diff --git a/kernel/cgroup/rstat.c b/kernel/cgroup/rstat.c
-index 24b5c2a..feb5938 100644
---- a/kernel/cgroup/rstat.c
-+++ b/kernel/cgroup/rstat.c
-@@ -310,6 +310,9 @@ static void cgroup_base_stat_add(struct cgroup_base_stat *dst_bstat,
- 	dst_bstat->cputime.utime += src_bstat->cputime.utime;
- 	dst_bstat->cputime.stime += src_bstat->cputime.stime;
- 	dst_bstat->cputime.sum_exec_runtime += src_bstat->cputime.sum_exec_runtime;
-+#ifdef CONFIG_SCHED_CORE
-+	dst_bstat->forceidle_sum += src_bstat->forceidle_sum;
-+#endif
+diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
+index 07d4a5f..bd8b988 100644
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -6241,7 +6241,7 @@ __init int intel_pmu_init(void)
+ 		x86_pmu.flags |= PMU_FL_INSTR_LATENCY;
+ 		x86_pmu.flags |= PMU_FL_MEM_LOADS_AUX;
+ 		x86_pmu.lbr_pt_coexist = true;
+-		intel_pmu_pebs_data_source_skl(false);
++		intel_pmu_pebs_data_source_adl();
+ 		x86_pmu.pebs_latency_data = adl_latency_data_small;
+ 		x86_pmu.num_topdown_events = 8;
+ 		x86_pmu.update_topdown_event = adl_update_topdown_event;
+diff --git a/arch/x86/events/intel/ds.c b/arch/x86/events/intel/ds.c
+index de84385..ba60427 100644
+--- a/arch/x86/events/intel/ds.c
++++ b/arch/x86/events/intel/ds.c
+@@ -94,15 +94,40 @@ void __init intel_pmu_pebs_data_source_nhm(void)
+ 	pebs_data_source[0x07] = OP_LH | P(LVL, L3) | LEVEL(L3) | P(SNOOP, HITM);
  }
  
- static void cgroup_base_stat_sub(struct cgroup_base_stat *dst_bstat,
-@@ -318,6 +321,9 @@ static void cgroup_base_stat_sub(struct cgroup_base_stat *dst_bstat,
- 	dst_bstat->cputime.utime -= src_bstat->cputime.utime;
- 	dst_bstat->cputime.stime -= src_bstat->cputime.stime;
- 	dst_bstat->cputime.sum_exec_runtime -= src_bstat->cputime.sum_exec_runtime;
-+#ifdef CONFIG_SCHED_CORE
-+	dst_bstat->forceidle_sum -= src_bstat->forceidle_sum;
-+#endif
- }
- 
- static void cgroup_base_stat_flush(struct cgroup *cgrp, int cpu)
-@@ -398,6 +404,11 @@ void __cgroup_account_cputime_field(struct cgroup *cgrp,
- 	case CPUTIME_SOFTIRQ:
- 		rstatc->bstat.cputime.stime += delta_exec;
- 		break;
-+#ifdef CONFIG_SCHED_CORE
-+	case CPUTIME_FORCEIDLE:
-+		rstatc->bstat.forceidle_sum += delta_exec;
-+		break;
-+#endif
- 	default:
- 		break;
- 	}
-@@ -411,8 +422,9 @@ void __cgroup_account_cputime_field(struct cgroup *cgrp,
-  * with how it is done by __cgroup_account_cputime_field for each bit of
-  * cpu time attributed to a cgroup.
-  */
--static void root_cgroup_cputime(struct task_cputime *cputime)
-+static void root_cgroup_cputime(struct cgroup_base_stat *bstat)
+-void __init intel_pmu_pebs_data_source_skl(bool pmem)
++static void __init __intel_pmu_pebs_data_source_skl(bool pmem, u64 *data_source)
  {
-+	struct task_cputime *cputime = &bstat->cputime;
- 	int i;
+ 	u64 pmem_or_l4 = pmem ? LEVEL(PMEM) : LEVEL(L4);
  
- 	cputime->stime = 0;
-@@ -438,6 +450,10 @@ static void root_cgroup_cputime(struct task_cputime *cputime)
- 		cputime->sum_exec_runtime += user;
- 		cputime->sum_exec_runtime += sys;
- 		cputime->sum_exec_runtime += cpustat[CPUTIME_STEAL];
-+
-+#ifdef CONFIG_SCHED_CORE
-+		bstat->forceidle_sum += cpustat[CPUTIME_FORCEIDLE];
-+#endif
- 	}
- }
- 
-@@ -445,27 +461,43 @@ void cgroup_base_stat_cputime_show(struct seq_file *seq)
- {
- 	struct cgroup *cgrp = seq_css(seq)->cgroup;
- 	u64 usage, utime, stime;
--	struct task_cputime cputime;
-+	struct cgroup_base_stat bstat;
-+#ifdef CONFIG_SCHED_CORE
-+	u64 forceidle_time;
-+#endif
- 
- 	if (cgroup_parent(cgrp)) {
- 		cgroup_rstat_flush_hold(cgrp);
- 		usage = cgrp->bstat.cputime.sum_exec_runtime;
- 		cputime_adjust(&cgrp->bstat.cputime, &cgrp->prev_cputime,
- 			       &utime, &stime);
-+#ifdef CONFIG_SCHED_CORE
-+		forceidle_time = cgrp->bstat.forceidle_sum;
-+#endif
- 		cgroup_rstat_flush_release();
- 	} else {
--		root_cgroup_cputime(&cputime);
--		usage = cputime.sum_exec_runtime;
--		utime = cputime.utime;
--		stime = cputime.stime;
-+		root_cgroup_cputime(&bstat);
-+		usage = bstat.cputime.sum_exec_runtime;
-+		utime = bstat.cputime.utime;
-+		stime = bstat.cputime.stime;
-+#ifdef CONFIG_SCHED_CORE
-+		forceidle_time = bstat.forceidle_sum;
-+#endif
- 	}
- 
- 	do_div(usage, NSEC_PER_USEC);
- 	do_div(utime, NSEC_PER_USEC);
- 	do_div(stime, NSEC_PER_USEC);
-+#ifdef CONFIG_SCHED_CORE
-+	do_div(forceidle_time, NSEC_PER_USEC);
-+#endif
- 
- 	seq_printf(seq, "usage_usec %llu\n"
- 		   "user_usec %llu\n"
- 		   "system_usec %llu\n",
- 		   usage, utime, stime);
-+
-+#ifdef CONFIG_SCHED_CORE
-+	seq_printf(seq, "core_sched.force_idle_usec %llu\n", forceidle_time);
-+#endif
- }
-diff --git a/kernel/sched/core_sched.c b/kernel/sched/core_sched.c
-index 38a2cec..5103502 100644
---- a/kernel/sched/core_sched.c
-+++ b/kernel/sched/core_sched.c
-@@ -277,7 +277,11 @@ void __sched_core_account_forceidle(struct rq *rq)
- 		if (p == rq_i->idle)
- 			continue;
- 
--		__schedstat_add(p->stats.core_forceidle_sum, delta);
-+		/*
-+		 * Note: this will account forceidle to the current cpu, even
-+		 * if it comes from our SMT sibling.
-+		 */
-+		__account_forceidle_time(p, delta);
- 	}
- }
- 
-diff --git a/kernel/sched/cputime.c b/kernel/sched/cputime.c
-index 78a233d..95fc778 100644
---- a/kernel/sched/cputime.c
-+++ b/kernel/sched/cputime.c
-@@ -226,6 +226,21 @@ void account_idle_time(u64 cputime)
- 		cpustat[CPUTIME_IDLE] += cputime;
- }
- 
-+
-+#ifdef CONFIG_SCHED_CORE
-+/*
-+ * Account for forceidle time due to core scheduling.
-+ *
-+ * REQUIRES: schedstat is enabled.
-+ */
-+void __account_forceidle_time(struct task_struct *p, u64 delta)
-+{
-+	__schedstat_add(p->stats.core_forceidle_sum, delta);
-+
-+	task_group_account_field(p, CPUTIME_FORCEIDLE, delta);
+-	pebs_data_source[0x08] = OP_LH | pmem_or_l4 | P(SNOOP, HIT);
+-	pebs_data_source[0x09] = OP_LH | pmem_or_l4 | REM | P(SNOOP, HIT);
+-	pebs_data_source[0x0b] = OP_LH | LEVEL(RAM) | REM | P(SNOOP, NONE);
+-	pebs_data_source[0x0c] = OP_LH | LEVEL(ANY_CACHE) | REM | P(SNOOPX, FWD);
+-	pebs_data_source[0x0d] = OP_LH | LEVEL(ANY_CACHE) | REM | P(SNOOP, HITM);
++	data_source[0x08] = OP_LH | pmem_or_l4 | P(SNOOP, HIT);
++	data_source[0x09] = OP_LH | pmem_or_l4 | REM | P(SNOOP, HIT);
++	data_source[0x0b] = OP_LH | LEVEL(RAM) | REM | P(SNOOP, NONE);
++	data_source[0x0c] = OP_LH | LEVEL(ANY_CACHE) | REM | P(SNOOPX, FWD);
++	data_source[0x0d] = OP_LH | LEVEL(ANY_CACHE) | REM | P(SNOOP, HITM);
 +}
-+#endif
 +
- /*
-  * When a guest is interrupted for a longer amount of time, missed clock
-  * ticks are not redelivered later. Due to that, this function may on
++void __init intel_pmu_pebs_data_source_skl(bool pmem)
++{
++	__intel_pmu_pebs_data_source_skl(pmem, pebs_data_source);
++}
++
++static void __init intel_pmu_pebs_data_source_grt(u64 *data_source)
++{
++	data_source[0x05] = OP_LH | P(LVL, L3) | LEVEL(L3) | P(SNOOP, HIT);
++	data_source[0x06] = OP_LH | P(LVL, L3) | LEVEL(L3) | P(SNOOP, HITM);
++	data_source[0x08] = OP_LH | P(LVL, L3) | LEVEL(L3) | P(SNOOPX, FWD);
++}
++
++void __init intel_pmu_pebs_data_source_adl(void)
++{
++	u64 *data_source;
++
++	data_source = x86_pmu.hybrid_pmu[X86_HYBRID_PMU_CORE_IDX].pebs_data_source;
++	memcpy(data_source, pebs_data_source, sizeof(pebs_data_source));
++	__intel_pmu_pebs_data_source_skl(false, data_source);
++
++	data_source = x86_pmu.hybrid_pmu[X86_HYBRID_PMU_ATOM_IDX].pebs_data_source;
++	memcpy(data_source, pebs_data_source, sizeof(pebs_data_source));
++	intel_pmu_pebs_data_source_grt(data_source);
+ }
+ 
+ static u64 precise_store_data(u64 status)
+@@ -198,7 +223,7 @@ u64 adl_latency_data_small(struct perf_event *event, u64 status)
+ 
+ 	dse.val = status;
+ 
+-	val = pebs_data_source[dse.ld_dse];
++	val = hybrid_var(event->pmu, pebs_data_source)[dse.ld_dse];
+ 
+ 	/*
+ 	 * For the atom core on ADL,
+@@ -214,7 +239,7 @@ u64 adl_latency_data_small(struct perf_event *event, u64 status)
+ 	return val;
+ }
+ 
+-static u64 load_latency_data(u64 status)
++static u64 load_latency_data(struct perf_event *event, u64 status)
+ {
+ 	union intel_x86_pebs_dse dse;
+ 	u64 val;
+@@ -224,7 +249,7 @@ static u64 load_latency_data(u64 status)
+ 	/*
+ 	 * use the mapping table for bit 0-3
+ 	 */
+-	val = pebs_data_source[dse.ld_dse];
++	val = hybrid_var(event->pmu, pebs_data_source)[dse.ld_dse];
+ 
+ 	/*
+ 	 * Nehalem models do not support TLB, Lock infos
+@@ -263,7 +288,7 @@ static u64 load_latency_data(u64 status)
+ 	return val;
+ }
+ 
+-static u64 store_latency_data(u64 status)
++static u64 store_latency_data(struct perf_event *event, u64 status)
+ {
+ 	union intel_x86_pebs_dse dse;
+ 	u64 val;
+@@ -273,7 +298,7 @@ static u64 store_latency_data(u64 status)
+ 	/*
+ 	 * use the mapping table for bit 0-3
+ 	 */
+-	val = pebs_data_source[dse.st_lat_dse];
++	val = hybrid_var(event->pmu, pebs_data_source)[dse.st_lat_dse];
+ 
+ 	pebs_set_tlb_lock(&val, dse.st_lat_stlb_miss, dse.st_lat_locked);
+ 
+@@ -1459,9 +1484,9 @@ static u64 get_data_src(struct perf_event *event, u64 aux)
+ 	bool fst = fl & (PERF_X86_EVENT_PEBS_ST | PERF_X86_EVENT_PEBS_HSW_PREC);
+ 
+ 	if (fl & PERF_X86_EVENT_PEBS_LDLAT)
+-		val = load_latency_data(aux);
++		val = load_latency_data(event, aux);
+ 	else if (fl & PERF_X86_EVENT_PEBS_STLAT)
+-		val = store_latency_data(aux);
++		val = store_latency_data(event, aux);
+ 	else if (fl & PERF_X86_EVENT_PEBS_LAT_HYBRID)
+ 		val = x86_pmu.pebs_latency_data(event, aux);
+ 	else if (fst && (fl & PERF_X86_EVENT_PEBS_HSW_PREC))
+diff --git a/arch/x86/events/perf_event.h b/arch/x86/events/perf_event.h
+index 2d11445..ca2f8bf 100644
+--- a/arch/x86/events/perf_event.h
++++ b/arch/x86/events/perf_event.h
+@@ -644,6 +644,8 @@ enum {
+ 	x86_lbr_exclusive_max,
+ };
+ 
++#define PERF_PEBS_DATA_SOURCE_MAX	0x10
++
+ struct x86_hybrid_pmu {
+ 	struct pmu			pmu;
+ 	const char			*name;
+@@ -671,6 +673,8 @@ struct x86_hybrid_pmu {
+ 	unsigned int			late_ack	:1,
+ 					mid_ack		:1,
+ 					enabled_ack	:1;
++
++	u64				pebs_data_source[PERF_PEBS_DATA_SOURCE_MAX];
+ };
+ 
+ static __always_inline struct x86_hybrid_pmu *hybrid_pmu(struct pmu *pmu)
+@@ -1508,6 +1512,8 @@ void intel_pmu_pebs_data_source_nhm(void);
+ 
+ void intel_pmu_pebs_data_source_skl(bool pmem);
+ 
++void intel_pmu_pebs_data_source_adl(void);
++
+ int intel_pmu_setup_lbr_filter(struct perf_event *event);
+ 
+ void intel_pt_interrupt(void);
