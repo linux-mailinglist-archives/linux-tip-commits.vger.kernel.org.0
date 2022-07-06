@@ -2,56 +2,59 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C04E3563F56
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  2 Jul 2022 11:54:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 21361568594
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  6 Jul 2022 12:30:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232168AbiGBJyd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Sat, 2 Jul 2022 05:54:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57006 "EHLO
+        id S232683AbiGFKaQ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 6 Jul 2022 06:30:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232127AbiGBJyb (ORCPT
+        with ESMTP id S232180AbiGFKaP (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Sat, 2 Jul 2022 05:54:31 -0400
+        Wed, 6 Jul 2022 06:30:15 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05D5717A9A;
-        Sat,  2 Jul 2022 02:54:31 -0700 (PDT)
-Date:   Sat, 02 Jul 2022 09:54:28 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E23F926541;
+        Wed,  6 Jul 2022 03:30:14 -0700 (PDT)
+Date:   Wed, 06 Jul 2022 10:30:11 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1656755669;
+        s=2020; t=1657103412;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=+lyg78/f+vkYSosHqwA/xIwCdURNsKuo0GycCCmwRTg=;
-        b=TK6gD0vahkvhp9iuF3Rv5rsRBLwiIMGIeWYDY8txPoonNVRtz5zcioKvi9SCZl62faNoee
-        mG3hXgd+XB/iqx9iYtwCsWWWpZzMavoL7A4K38o9ZLrUWBPv81iQJIzeUKrwpcVHLfA/iI
-        /S9RE6ogicYvpL4AJj7/lr+gSFAxPc8fyMrX7lqVgtYUqp2Sox+tarTEvTtQMgUB8LI89E
-        pv9s9y8eso1lrCCEzMhgnk6P/f7Wt9FKsH1fliS3cp978L47gLyd8wviYqqISf409aK3N8
-        DyPmop+Y1rTNu6WXWxa4Lr8oP9/ZpBgGWRBoNk3JbukIMrs+inVAAagVASqF9A==
+        bh=rJebcJ+nWiwORwu/EImlYQm0Hspp4x1MdvDNLe/Zgi8=;
+        b=DaoDj26VeFMsER6N2v9at3smOsLSw59a6MvxUZln5JGHqXm1qRL7LlIWS/dlGsLKqwkcNU
+        H2bZtxk2pMwBfjiyRAENU6sR9Cejmrdfx+rIy1vxcypnQtQsQmJCSv+HsR1Pq2iwtco8mY
+        sptIxOcq3M+OfGAD9WReDBQyqb7O9TFfIxSRl++A5nEVbqXOD+jwxB1NpKUkb8MGvPHuPI
+        4jL24nIe4liIBqGW0kecfXLolXt6YUzwFwpeOAMsoThRQs+28EE5DXFVe2lG7P02RJMbK+
+        OsI7ZgTJ+/JTIkhZTuWrJo4KFnlnJMtbcPCPWpR9tcbinE8K/jhVmBDbJp2GNA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1656755669;
+        s=2020e; t=1657103412;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=+lyg78/f+vkYSosHqwA/xIwCdURNsKuo0GycCCmwRTg=;
-        b=dgV2wO58Ib3YzweaESCVjyCoJdkNjRvIqJdvQLtb2vo+u99qYvBPJz4jQyFcejqYz1K9Xp
-        EmfSpKPG/x8K3kBQ==
-From:   "tip-bot2 for Juergen Gross" <tip-bot2@linutronix.de>
+        bh=rJebcJ+nWiwORwu/EImlYQm0Hspp4x1MdvDNLe/Zgi8=;
+        b=USx+KihCSiqeGIPSctBU0iDrEVlG5XQ+hyLF/jxFb6kCw0BgQwpKpF69Y3af/LhFg01+Ux
+        +Ns0gx2NsGZM+GAg==
+From:   "tip-bot2 for Michael Roth" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/xen: Use clear_bss() for Xen PV guests
-Cc:     Juergen Gross <jgross@suse.com>, Borislav Petkov <bp@suse.de>,
-        Jan Beulich <jbeulich@suse.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>, x86@kernel.org,
+Subject: [tip: x86/urgent] x86/compressed/64: Add identity mappings for
+ setup_data entries
+Cc:     "Jun'ichi Nomura" <junichi.nomura@nec.com>,
+        Michael Roth <michael.roth@amd.com>,
+        Borislav Petkov <bp@suse.de>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220630071441.28576-2-jgross@suse.com>
-References: <20220630071441.28576-2-jgross@suse.com>
+In-Reply-To: =?utf-8?q?=3CTYCPR01MB694815CD815E98945F63C99183B49=40TYCPR01MB?=
+ =?utf-8?q?6948=2Ejpnprd01=2Eprod=2Eoutlook=2Ecom=3E?=
+References: =?utf-8?q?=3CTYCPR01MB694815CD815E98945F63C99183B49=40TYCPR01M?=
+ =?utf-8?q?B6948=2Ejpnprd01=2Eprod=2Eoutlook=2Ecom=3E?=
 MIME-Version: 1.0
-Message-ID: <165675566857.15455.1489447634414365811.tip-bot2@tip-bot2>
+Message-ID: <165710341109.15455.1767984177285353783.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -68,112 +71,66 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     96e8fc5818686d4a1591bb6907e7fdb64ef29884
-Gitweb:        https://git.kernel.org/tip/96e8fc5818686d4a1591bb6907e7fdb64ef29884
-Author:        Juergen Gross <jgross@suse.com>
-AuthorDate:    Thu, 30 Jun 2022 09:14:39 +02:00
+Commit-ID:     b57feed2cc2622ae14b2fa62f19e973e5e0a60cf
+Gitweb:        https://git.kernel.org/tip/b57feed2cc2622ae14b2fa62f19e973e5e0a60cf
+Author:        Michael Roth <michael.roth@amd.com>
+AuthorDate:    Tue, 05 Jul 2022 21:53:15 -05:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Fri, 01 Jul 2022 10:57:52 +02:00
+CommitterDate: Wed, 06 Jul 2022 11:23:39 +02:00
 
-x86/xen: Use clear_bss() for Xen PV guests
+x86/compressed/64: Add identity mappings for setup_data entries
 
-Instead of clearing the bss area in assembly code, use the clear_bss()
-function.
+The decompressed kernel initially relies on the identity map set up by
+the boot/compressed kernel for accessing things like boot_params. With
+the recent introduction of SEV-SNP support, the decompressed kernel
+also needs to access the setup_data entries pointed to by
+boot_params->hdr.setup_data.
 
-This requires to pass the start_info address as parameter to
-xen_start_kernel() in order to avoid the xen_start_info being zeroed
-again.
+This can lead to a crash in the kexec kernel during early boot due to
+these entries not currently being included in the initial identity map,
+see thread at Link below.
 
-Signed-off-by: Juergen Gross <jgross@suse.com>
+Include mappings for the setup_data entries in the initial identity map.
+
+  [ bp: Massage commit message and use a helper var for better readability. ]
+
+Fixes: b190a043c49a ("x86/sev: Add SEV-SNP feature detection/setup")
+Reported-by: Jun'ichi Nomura <junichi.nomura@nec.com>
+Signed-off-by: Michael Roth <michael.roth@amd.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Jan Beulich <jbeulich@suse.com>
-Reviewed-by: Boris Ostrovsky <boris.ostrovsky@oracle.com>
-Link: https://lore.kernel.org/r/20220630071441.28576-2-jgross@suse.com
+Link: https://lore.kernel.org/r/TYCPR01MB694815CD815E98945F63C99183B49@TYCPR01MB6948.jpnprd01.prod.outlook.com
 ---
- arch/x86/include/asm/setup.h |  3 +++
- arch/x86/kernel/head64.c     |  2 +-
- arch/x86/xen/enlighten_pv.c  |  8 ++++++--
- arch/x86/xen/xen-head.S      | 10 +---------
- 4 files changed, 11 insertions(+), 12 deletions(-)
+ arch/x86/boot/compressed/ident_map_64.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/arch/x86/include/asm/setup.h b/arch/x86/include/asm/setup.h
-index f8b9ee9..f37cbff 100644
---- a/arch/x86/include/asm/setup.h
-+++ b/arch/x86/include/asm/setup.h
-@@ -120,6 +120,9 @@ void *extend_brk(size_t size, size_t align);
- 	static char __brk_##name[size]
- 
- extern void probe_roms(void);
-+
-+void clear_bss(void);
-+
- #ifdef __i386__
- 
- asmlinkage void __init i386_start_kernel(void);
-diff --git a/arch/x86/kernel/head64.c b/arch/x86/kernel/head64.c
-index bd4a341..e7e2332 100644
---- a/arch/x86/kernel/head64.c
-+++ b/arch/x86/kernel/head64.c
-@@ -426,7 +426,7 @@ void __init do_early_exception(struct pt_regs *regs, int trapnr)
- 
- /* Don't add a printk in there. printk relies on the PDA which is not initialized 
-    yet. */
--static void __init clear_bss(void)
-+void __init clear_bss(void)
+diff --git a/arch/x86/boot/compressed/ident_map_64.c b/arch/x86/boot/compressed/ident_map_64.c
+index 44c350d..d4a314c 100644
+--- a/arch/x86/boot/compressed/ident_map_64.c
++++ b/arch/x86/boot/compressed/ident_map_64.c
+@@ -110,6 +110,7 @@ void kernel_add_identity_map(unsigned long start, unsigned long end)
+ void initialize_identity_maps(void *rmode)
  {
- 	memset(__bss_start, 0,
- 	       (unsigned long) __bss_stop - (unsigned long) __bss_start);
-diff --git a/arch/x86/xen/enlighten_pv.c b/arch/x86/xen/enlighten_pv.c
-index e3297b1..70fb2ea 100644
---- a/arch/x86/xen/enlighten_pv.c
-+++ b/arch/x86/xen/enlighten_pv.c
-@@ -1183,15 +1183,19 @@ static void __init xen_domu_set_legacy_features(void)
- extern void early_xen_iret_patch(void);
+ 	unsigned long cmdline;
++	struct setup_data *sd;
  
- /* First C function to be called on Xen boot */
--asmlinkage __visible void __init xen_start_kernel(void)
-+asmlinkage __visible void __init xen_start_kernel(struct start_info *si)
- {
- 	struct physdev_set_iopl set_iopl;
- 	unsigned long initrd_start = 0;
- 	int rc;
+ 	/* Exclude the encryption mask from __PHYSICAL_MASK */
+ 	physical_mask &= ~sme_me_mask;
+@@ -163,6 +164,18 @@ void initialize_identity_maps(void *rmode)
+ 	cmdline = get_cmd_line_ptr();
+ 	kernel_add_identity_map(cmdline, cmdline + COMMAND_LINE_SIZE);
  
--	if (!xen_start_info)
-+	if (!si)
- 		return;
- 
-+	clear_bss();
++	/*
++	 * Also map the setup_data entries passed via boot_params in case they
++	 * need to be accessed by uncompressed kernel via the identity mapping.
++	 */
++	sd = (struct setup_data *)boot_params->hdr.setup_data;
++	while (sd) {
++		unsigned long sd_addr = (unsigned long)sd;
 +
-+	xen_start_info = si;
++		kernel_add_identity_map(sd_addr, sd_addr + sizeof(*sd) + sd->len);
++		sd = (struct setup_data *)sd->next;
++	}
 +
- 	__text_gen_insn(&early_xen_iret_patch,
- 			JMP32_INSN_OPCODE, &early_xen_iret_patch, &xen_iret,
- 			JMP32_INSN_SIZE);
-diff --git a/arch/x86/xen/xen-head.S b/arch/x86/xen/xen-head.S
-index 3a2cd93..13af6fe 100644
---- a/arch/x86/xen/xen-head.S
-+++ b/arch/x86/xen/xen-head.S
-@@ -48,15 +48,6 @@ SYM_CODE_START(startup_xen)
- 	ANNOTATE_NOENDBR
- 	cld
+ 	sev_prep_identity_maps(top_level_pgt);
  
--	/* Clear .bss */
--	xor %eax,%eax
--	mov $__bss_start, %rdi
--	mov $__bss_stop, %rcx
--	sub %rdi, %rcx
--	shr $3, %rcx
--	rep stosq
--
--	mov %rsi, xen_start_info
- 	mov initial_stack(%rip), %rsp
- 
- 	/* Set up %gs.
-@@ -71,6 +62,7 @@ SYM_CODE_START(startup_xen)
- 	cdq
- 	wrmsr
- 
-+	mov	%rsi, %rdi
- 	call xen_start_kernel
- SYM_CODE_END(startup_xen)
- 	__FINIT
+ 	/* Load the new page-table. */
