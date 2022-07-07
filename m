@@ -2,56 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 812EE569559
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  7 Jul 2022 00:33:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 37EF656A134
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  7 Jul 2022 13:43:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231872AbiGFWdJ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 6 Jul 2022 18:33:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37714 "EHLO
+        id S235430AbiGGLn5 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 7 Jul 2022 07:43:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50788 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231529AbiGFWdJ (ORCPT
+        with ESMTP id S235427AbiGGLn5 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 6 Jul 2022 18:33:09 -0400
+        Thu, 7 Jul 2022 07:43:57 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08D9E14D17;
-        Wed,  6 Jul 2022 15:33:07 -0700 (PDT)
-Date:   Wed, 06 Jul 2022 22:33:03 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41E834F65D;
+        Thu,  7 Jul 2022 04:43:56 -0700 (PDT)
+Date:   Thu, 07 Jul 2022 11:43:52 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1657146785;
+        s=2020; t=1657194234;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=m1d6tssk1qKROgDUlojal0QK0+AWMxs+toYm3o4QLIE=;
-        b=pXqCJ8F856WDnrMSzbfyIBP6n7vAKVRVAhbgv9wDsxDMYlQVSvq5QGDXKaX8H1b5BnVYBK
-        gV2tPJu3/LQKKof4ZMxCdFWMNH1gOIn8bAi2n9D5zjhMFQLEcAdU0OEXO3Zdq9OcZynlab
-        7rm0MELUH5ITOuyqfIDeJQjz0sgn6DAeMAn4QfAtViGoQb/+vO/T/1t1bIMc4La9XRISnK
-        2k6qr+GOGfTzCL4sqGe1aQejUNsif4/xIay98CB4//toaZ4zme/IJ8NOte4Q4u9yG6IKMk
-        78vXlGqyzrot9vygzj54CMpErQyd4+6Eg4dUMsszepaId5YEd6reyCOM0VdAzA==
+        bh=GzccpZTqKPrOwaQ4wOzwzjUA7yHS+ujzGxsstE08CyM=;
+        b=wilJws5SpHCX1PjfyGd3a9suEVFLqUfBoZ5P27wqXNirlLqTTo37KSGPnZMjB9jrC8zzDy
+        c2sD+7Z0GSC90exkAzilzm+H7oBnyPg3f7bC2by5Gx2ornFNhXXr6LXfmi4PmPFPqGBxc2
+        HsLLMiSoHPqGqlGp56Ca3nNuZqHfn2hyfAfKHe28aqCOEnOvbFwpD4JrTKSrkjxRgFGfzo
+        4KskEHuPE/ZYGnRzi877AP5Y5iOjgU9auajnYcRW0iq6PmXHAII5b9xt7P0yPSJpw3S2/J
+        eo1awLLTVDhkMQJKOpnXdN0nWpbRcNPwseUkCtwEsm2DjmI9NCor7MriJe3PaA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1657146785;
+        s=2020e; t=1657194234;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=m1d6tssk1qKROgDUlojal0QK0+AWMxs+toYm3o4QLIE=;
-        b=L6GaqmRhSIkyvG2pXZFW8w3/5QxnlYw6VyPiSz0Wahm4rXXl5NVFdAMvuXZMBZ4lBH/jRp
-        9OhaX1vhw+DFOlBQ==
-From:   "tip-bot2 for Nathan Chancellor" <tip-bot2@linutronix.de>
+        bh=GzccpZTqKPrOwaQ4wOzwzjUA7yHS+ujzGxsstE08CyM=;
+        b=MKyrpWArM5Y5jLoiomBPHdrsR6maRMpTWIN8iHKrIAFtv6RLg5qmaxNRrx7H8GPOExPG/8
+        3HAw5+NpXK4u2cCw==
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/build] x86/Kconfig: Fix CONFIG_CC_HAS_SANE_STACKPROTECTOR
- when cross compiling with clang
-Cc:     Nathan Chancellor <nathan@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+Subject: [tip: x86/urgent] x86/ibt, objtool: Don't discard text references
+ from tracepoint section
+Cc:     Pengfei Xu <pengfei.xu@intel.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220617180845.2788442-1-nathan@kernel.org>
-References: <20220617180845.2788442-1-nathan@kernel.org>
+In-Reply-To: <Yrrepdaow4F5kqG0@hirez.programming.kicks-ass.net>
+References: <Yrrepdaow4F5kqG0@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-Message-ID: <165714678380.15455.941309204578354056.tip-bot2@tip-bot2>
+Message-ID: <165719423266.15455.16444447983189826756.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,71 +66,71 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/build branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     b230402b0dbd6930a616a07641f0bbc30325881e
-Gitweb:        https://git.kernel.org/tip/b230402b0dbd6930a616a07641f0bbc30325881e
-Author:        Nathan Chancellor <nathan@kernel.org>
-AuthorDate:    Fri, 17 Jun 2022 11:08:46 -07:00
-Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Wed, 06 Jul 2022 14:57:10 -07:00
+Commit-ID:     38e0e4d04d4187c63d6b511396faae7db6a3cd9e
+Gitweb:        https://git.kernel.org/tip/38e0e4d04d4187c63d6b511396faae7db6a3cd9e
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Tue, 28 Jun 2022 12:57:42 +02:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Thu, 07 Jul 2022 13:26:54 +02:00
 
-x86/Kconfig: Fix CONFIG_CC_HAS_SANE_STACKPROTECTOR when cross compiling with clang
+x86/ibt, objtool: Don't discard text references from tracepoint section
 
-Chimera Linux notes that CONFIG_CC_HAS_SANE_STACKPROTECTOR cannot be
-enabled when cross compiling an x86_64 kernel with clang, even though it
-does work when natively compiling.
+On Tue, Jun 28, 2022 at 04:28:58PM +0800, Pengfei Xu wrote:
 
-When building on aarch64:
+> # ./ftracetest
+> === Ftrace unit tests ===
+> [1] Basic trace file check      [PASS]
+> [2] Basic test for tracers      [PASS]
+> [3] Basic trace clock test      [PASS]
+> [4] Basic event tracing check   [PASS]
+> [5] Change the ringbuffer size  [PASS]
+> [6] Snapshot and tracing setting        [PASS]
+> [7] trace_pipe and trace_marker [PASS]
+> [8] Test ftrace direct functions against tracers        [UNRESOLVED]
+> [9] Test ftrace direct functions against kprobes        [UNRESOLVED]
+> [10] Generic dynamic event - add/remove eprobe events   [FAIL]
+> [11] Generic dynamic event - add/remove kprobe events
+>
+> It 100% reproduced in step 11 and then missing ENDBR BUG generated:
+> "
+> [ 9332.752836] mmiotrace: enabled CPU7.
+> [ 9332.788612] mmiotrace: disabled.
+> [ 9337.103426] traps: Missing ENDBR: syscall_regfunc+0x0/0xb0
 
-  $ make -sj"$(nproc)" ARCH=x86_64 LLVM=1 defconfig
+It turns out that while syscall_regfunc() does have an ENDBR when
+generated, it gets sealed by objtool's .ibt_endbr_seal list.
 
-  $ grep STACKPROTECTOR .config
+Since the only text references to this function:
 
-When building on x86_64:
+  $ git grep syscall_regfunc
+  include/linux/tracepoint.h:extern int syscall_regfunc(void);
+  include/trace/events/syscalls.h:        syscall_regfunc, syscall_unregfunc
+  include/trace/events/syscalls.h:        syscall_regfunc, syscall_unregfunc
+  kernel/tracepoint.c:int syscall_regfunc(void)
 
-  $ make -sj"$(nproc)" ARCH=x86_64 LLVM=1 defconfig
+appear in the __tracepoint section which is excluded by objtool.
 
-  $ grep STACKPROTECTOR .config
-  CONFIG_CC_HAS_SANE_STACKPROTECTOR=y
-  CONFIG_HAVE_STACKPROTECTOR=y
-  CONFIG_STACKPROTECTOR=y
-  CONFIG_STACKPROTECTOR_STRONG=y
-
-When clang is invoked without a '--target' flag, code is generated for
-the default target, which is usually the host (it is configurable via
-cmake). As a result, the has-stack-protector scripts will generate code
-for the default target but check for x86 specific segment registers,
-which cannot succeed if the default target is not x86.
-
-$(CLANG_FLAGS) contains an explicit '--target' flag so pass that
-variable along to the has-stack-protector scripts so that the stack
-protector can be enabled when cross compiling with clang. The 32-bit
-stack protector cannot currently be enabled with clang, as it does not
-support '-mstack-protector-guard-symbol', so this results in no
-functional change for ARCH=i386 when cross compiling.
-
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://github.com/chimera-linux/cports/commit/0fb7e506d5f83fdf2104feb22cdac34934561226
-Link: https://github.com/llvm/llvm-project/issues/48553
-Link: https://lkml.kernel.org/r/20220617180845.2788442-1-nathan@kernel.org
+Fixes: 3c6f9f77e618 ("objtool: Rework ibt and extricate from stack validation")
+Reported-by: Pengfei Xu <pengfei.xu@intel.com
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/Yrrepdaow4F5kqG0@hirez.programming.kicks-ass.net
 ---
- arch/x86/Kconfig | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/objtool/check.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index b0142e0..b7767ba 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -386,8 +386,8 @@ config PGTABLE_LEVELS
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index 864bb9d..57153e0 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -3826,8 +3826,7 @@ static int validate_ibt(struct objtool_file *file)
+ 		    !strcmp(sec->name, "__bug_table")			||
+ 		    !strcmp(sec->name, "__ex_table")			||
+ 		    !strcmp(sec->name, "__jump_table")			||
+-		    !strcmp(sec->name, "__mcount_loc")			||
+-		    !strcmp(sec->name, "__tracepoints"))
++		    !strcmp(sec->name, "__mcount_loc"))
+ 			continue;
  
- config CC_HAS_SANE_STACKPROTECTOR
- 	bool
--	default $(success,$(srctree)/scripts/gcc-x86_64-has-stack-protector.sh $(CC)) if 64BIT
--	default $(success,$(srctree)/scripts/gcc-x86_32-has-stack-protector.sh $(CC))
-+	default $(success,$(srctree)/scripts/gcc-x86_64-has-stack-protector.sh $(CC) $(CLANG_FLAGS)) if 64BIT
-+	default $(success,$(srctree)/scripts/gcc-x86_32-has-stack-protector.sh $(CC) $(CLANG_FLAGS))
- 	help
- 	   We have to make sure stack protector is unconditionally disabled if
- 	   the compiler produces broken code or if it does not let us control
+ 		list_for_each_entry(reloc, &sec->reloc->reloc_list, list)
