@@ -2,58 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B437456AAC0
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  7 Jul 2022 20:31:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E36956BF08
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  8 Jul 2022 20:35:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236601AbiGGS36 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 7 Jul 2022 14:29:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54948 "EHLO
+        id S238179AbiGHRIY (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Fri, 8 Jul 2022 13:08:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50586 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236602AbiGGS3F (ORCPT
+        with ESMTP id S232885AbiGHRIX (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 7 Jul 2022 14:29:05 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC4865C941;
-        Thu,  7 Jul 2022 11:27:59 -0700 (PDT)
-Date:   Thu, 07 Jul 2022 18:27:57 -0000
+        Fri, 8 Jul 2022 13:08:23 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0994B675A3;
+        Fri,  8 Jul 2022 10:08:18 -0700 (PDT)
+Date:   Fri, 08 Jul 2022 17:08:14 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1657218478;
+        s=2020; t=1657300095;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=4Dlp6ugu6EIX2hP43ShKsfqp4OKuqHqy+MCaV0DyiPc=;
-        b=zKAUj5cdRyymYEU4YZHhF/rFO2pyzHp64DvecohMYbIFYDbvzu8mTWhot8Q+kDMcxYW8K/
-        iMjupEcpsQPUlF+i5KRmlfRiwXGD9wqal0/jHph9sJpK7t0BazQrDYWig3h0RLeo+iG8y4
-        6yYaJcYHbW05y7Ivrus1zWN+F9CCYOLydO2HJaxPB0mxBh/vujzUUxcNM+gwGWMq7H0hwY
-        FlggEaJuQQCoQ8IbDjZr/+5FPYZ1rIGovyyuyrd4ABGTsqg1N1SQ9jnEQ5Xk2/KWnlanSp
-        zHWopzy2MZXNVicOVPgKzw5FlqHT5P8y0Xx5b8/mMOmz++O/3maS7eSYXxkvog==
+        bh=HEeeNKkKfpAyXXGZb5h2rQb6WrXOrmy6AZrVXbSV7yQ=;
+        b=geOmLUSIavp0x+XmP8GexYCAOO/YBi9V8ZtICODohwicZ7MY2EqV7VOwmJsg9aNbus17ME
+        OXNedrhsjkdVUfXCELuJmRLYsTqDkzBdaS1f1R1SMWkYWBdYQqHjb9dMQsbGzstgIrFC/+
+        LTtRrB5KzpJ5DAcntsBsURyazMYmSRQPN3HHPhpEkOSm3vO+hwn6hrYQjC/gyXO5ZqUCfz
+        54SotL5LvE6OWS2ut+9emjdfG1lBwp3EL2zHqY+BFqlwATvXZb0jAr8vyYwW/fvAFJ95KW
+        qBkoygJ7loIfh5HZM+h5aFWxpRqKFx6jqvIRuv6ofIIHmMpyXrJ47mTfDlXmHQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1657218478;
+        s=2020e; t=1657300095;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=4Dlp6ugu6EIX2hP43ShKsfqp4OKuqHqy+MCaV0DyiPc=;
-        b=JteTpFnZrPm9lXxOZrv3LS9MiC/X1emktOYhN+netZmvb7Lx5crioul3XowIfF2ZdbH/eS
-        qzqWDFKYgbEzwgAg==
-From:   "tip-bot2 for Reinette Chatre" <tip-bot2@linutronix.de>
+        bh=HEeeNKkKfpAyXXGZb5h2rQb6WrXOrmy6AZrVXbSV7yQ=;
+        b=VWXcRfm2FoC8IMRm8VWgvlUHzdWbd1/IgEtk5eAvvSJ2eTdVuoMA4AwYRRBvd9fJtmudgh
+        cm1oQepBmiEN6CAg==
+From:   "tip-bot2 for Sean Christopherson" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/sgx] x86/sgx: Add short descriptions to ENCLS wrappers
-Cc:     Dave Hansen <dave.hansen@linux.intel.com>,
-        Reinette Chatre <reinette.chatre@intel.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>, x86@kernel.org,
+Subject: [tip: x86/sgx] x86/sgx: Drop 'page_index' from sgx_backing
+Cc:     Sean Christopherson <sean.j.christopherson@intel.com>,
+        Kristen Carlson Accardi <kristen@linux.intel.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: =?utf-8?q?=3C5e78a1126711cbd692d5b8132e0683873398f69e=2E16521?=
- =?utf-8?q?37848=2Egit=2Ereinette=2Echatre=40intel=2Ecom=3E?=
-References: =?utf-8?q?=3C5e78a1126711cbd692d5b8132e0683873398f69e=2E165213?=
- =?utf-8?q?7848=2Egit=2Ereinette=2Echatre=40intel=2Ecom=3E?=
+In-Reply-To: <20220708162124.8442-1-kristen@linux.intel.com>
+References: <20220708162124.8442-1-kristen@linux.intel.com>
 MIME-Version: 1.0
-Message-ID: <165721847710.15455.8884335128575566784.tip-bot2@tip-bot2>
+Message-ID: <165730009436.15455.4017448965985915771.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -70,115 +68,48 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/sgx branch of tip:
 
-Commit-ID:     4c3f73584c0c0152b75dd6a090558ada39601159
-Gitweb:        https://git.kernel.org/tip/4c3f73584c0c0152b75dd6a090558ada39601159
-Author:        Reinette Chatre <reinette.chatre@intel.com>
-AuthorDate:    Tue, 10 May 2022 11:08:37 -07:00
+Commit-ID:     e0a5915f1cca21da8ffc0563aea9fa1df5d16fb4
+Gitweb:        https://git.kernel.org/tip/e0a5915f1cca21da8ffc0563aea9fa1df5d16fb4
+Author:        Sean Christopherson <sean.j.christopherson@intel.com>
+AuthorDate:    Fri, 08 Jul 2022 09:21:24 -07:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Thu, 07 Jul 2022 10:13:01 -07:00
+CommitterDate: Fri, 08 Jul 2022 09:31:11 -07:00
 
-x86/sgx: Add short descriptions to ENCLS wrappers
+x86/sgx: Drop 'page_index' from sgx_backing
 
-The SGX ENCLS instruction uses EAX to specify an SGX function and
-may require additional registers, depending on the SGX function.
-ENCLS invokes the specified privileged SGX function for managing
-and debugging enclaves. Macros are used to wrap the ENCLS
-functionality and several wrappers are used to wrap the macros to
-make the different SGX functions accessible in the code.
+Storing the 'page_index' value in the sgx_backing struct is
+dead code and no longer needed.
 
-The wrappers of the supported SGX functions are cryptic. Add short
-descriptions of each as a comment.
-
-Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
-Signed-off-by: Reinette Chatre <reinette.chatre@intel.com>
+Signed-off-by: Sean Christopherson <sean.j.christopherson@intel.com>
+Signed-off-by: Kristen Carlson Accardi <kristen@linux.intel.com>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Link: https://lkml.kernel.org/r/5e78a1126711cbd692d5b8132e0683873398f69e.1652137848.git.reinette.chatre@intel.com
+Link: https://lkml.kernel.org/r/20220708162124.8442-1-kristen@linux.intel.com
 ---
- arch/x86/kernel/cpu/sgx/encls.h | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ arch/x86/kernel/cpu/sgx/encl.c | 1 -
+ arch/x86/kernel/cpu/sgx/encl.h | 1 -
+ 2 files changed, 2 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/sgx/encls.h b/arch/x86/kernel/cpu/sgx/encls.h
-index fa04a73..0e22fa8 100644
---- a/arch/x86/kernel/cpu/sgx/encls.h
-+++ b/arch/x86/kernel/cpu/sgx/encls.h
-@@ -136,57 +136,71 @@ static inline bool encls_failed(int ret)
- 	ret;						\
- 	})
+diff --git a/arch/x86/kernel/cpu/sgx/encl.c b/arch/x86/kernel/cpu/sgx/encl.c
+index 295a9c9..73bfc5a 100644
+--- a/arch/x86/kernel/cpu/sgx/encl.c
++++ b/arch/x86/kernel/cpu/sgx/encl.c
+@@ -943,7 +943,6 @@ int sgx_encl_get_backing(struct sgx_encl *encl, unsigned long page_index,
+ 		return PTR_ERR(pcmd);
+ 	}
  
-+/* Initialize an EPC page into an SGX Enclave Control Structure (SECS) page. */
- static inline int __ecreate(struct sgx_pageinfo *pginfo, void *secs)
- {
- 	return __encls_2(ECREATE, pginfo, secs);
- }
+-	backing->page_index = page_index;
+ 	backing->contents = contents;
+ 	backing->pcmd = pcmd;
+ 	backing->pcmd_offset = page_pcmd_off & (PAGE_SIZE - 1);
+diff --git a/arch/x86/kernel/cpu/sgx/encl.h b/arch/x86/kernel/cpu/sgx/encl.h
+index 3d0e0ba..57cc236 100644
+--- a/arch/x86/kernel/cpu/sgx/encl.h
++++ b/arch/x86/kernel/cpu/sgx/encl.h
+@@ -79,7 +79,6 @@ struct sgx_va_page {
+ };
  
-+/* Hash a 256 byte region of an enclave page to SECS:MRENCLAVE. */
- static inline int __eextend(void *secs, void *addr)
- {
- 	return __encls_2(EEXTEND, secs, addr);
- }
- 
-+/*
-+ * Associate an EPC page to an enclave either as a REG or TCS page
-+ * populated with the provided data.
-+ */
- static inline int __eadd(struct sgx_pageinfo *pginfo, void *addr)
- {
- 	return __encls_2(EADD, pginfo, addr);
- }
- 
-+/* Finalize enclave build, initialize enclave for user code execution. */
- static inline int __einit(void *sigstruct, void *token, void *secs)
- {
- 	return __encls_ret_3(EINIT, sigstruct, secs, token);
- }
- 
-+/* Disassociate EPC page from its enclave and mark it as unused. */
- static inline int __eremove(void *addr)
- {
- 	return __encls_ret_1(EREMOVE, addr);
- }
- 
-+/* Copy data to an EPC page belonging to a debug enclave. */
- static inline int __edbgwr(void *addr, unsigned long *data)
- {
- 	return __encls_2(EDGBWR, *data, addr);
- }
- 
-+/* Copy data from an EPC page belonging to a debug enclave. */
- static inline int __edbgrd(void *addr, unsigned long *data)
- {
- 	return __encls_1_1(EDGBRD, *data, addr);
- }
- 
-+/* Track that software has completed the required TLB address clears. */
- static inline int __etrack(void *addr)
- {
- 	return __encls_ret_1(ETRACK, addr);
- }
- 
-+/* Load, verify, and unblock an EPC page. */
- static inline int __eldu(struct sgx_pageinfo *pginfo, void *addr,
- 			 void *va)
- {
- 	return __encls_ret_3(ELDU, pginfo, addr, va);
- }
- 
-+/* Make EPC page inaccessible to enclave, ready to be written to memory. */
- static inline int __eblock(void *addr)
- {
- 	return __encls_ret_1(EBLOCK, addr);
- }
- 
-+/* Initialize an EPC page into a Version Array (VA) page. */
- static inline int __epa(void *addr)
- {
- 	unsigned long rbx = SGX_PAGE_TYPE_VA;
-@@ -194,6 +208,7 @@ static inline int __epa(void *addr)
- 	return __encls_2(EPA, rbx, addr);
- }
- 
-+/* Invalidate an EPC page and write it out to main memory. */
- static inline int __ewb(struct sgx_pageinfo *pginfo, void *addr,
- 			void *va)
- {
+ struct sgx_backing {
+-	pgoff_t page_index;
+ 	struct page *contents;
+ 	struct page *pcmd;
+ 	unsigned long pcmd_offset;
