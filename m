@@ -2,43 +2,43 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A238C56FF08
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 11 Jul 2022 12:36:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD27757347F
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 13 Jul 2022 12:45:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230147AbiGKKgj (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 11 Jul 2022 06:36:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51278 "EHLO
+        id S235274AbiGMKpO (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 13 Jul 2022 06:45:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38872 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229680AbiGKKgR (ORCPT
+        with ESMTP id S235223AbiGMKpM (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 11 Jul 2022 06:36:17 -0400
+        Wed, 13 Jul 2022 06:45:12 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D54ADC1BD;
-        Mon, 11 Jul 2022 02:46:40 -0700 (PDT)
-Date:   Mon, 11 Jul 2022 09:46:37 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C63B9F990A;
+        Wed, 13 Jul 2022 03:45:10 -0700 (PDT)
+Date:   Wed, 13 Jul 2022 10:45:06 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1657532798;
+        s=2020; t=1657709108;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ZLMKvNlLuZyHt1XbXuDEYOvJvwJl6HGEaIuqT7eYV64=;
-        b=4gandr0iHmpgVnfH1palqXTkSxKGcN12aR4K1CyTNtSGaffyCb+dWp7K8wk0vpTt+xJoyx
-        rXKcRn0N2lUF23d/YUqsCiprvXThwDYU1WGY6lhIBD0A1i9UUSz0oMJ8cvpk25nDgu2kRA
-        zkOVt8z3It5ksiJ/P6cL5wVXKPXJd3zA52DVBlZvXHAuXr38ZXslGvMNSMlxnhSGs5Zu2P
-        wYIM+NA2FhU32A+q5gV/mLWcgsDnjvwra1c9tMRXPQ7GlMk5qrwaXpsQN0U2q/JksD/GY5
-        BhezqHTLXDaHhPt2+MZUk5UKaDogpbeSzq132OA8d35Jk76uE75Lfz+IW4ZUzQ==
+        bh=1/THw7b/dbCSKOAhofrOGXHOh63A6XAgjMRnWLsvrJA=;
+        b=SWRHQGrFhvX1JSx0tpSAfdznl8nLJM/Pt/acFI3bc7rikKSU/F+ZuCRKdi80iHrrIBYtb2
+        Xv7x07Ck9C3SDJDOw9pI6n0NixRsuyhj/1Q4OcGNvy2WGRvE9IG/BiL2KR2TNJu5doCFLb
+        sgAL7vj37zTlfO3ouUt7WWNLKVosqWfs4IcDXOrzYftqRZ2wUpkUAHdf6U/88GL6BtrzEO
+        +gXwcgdHB62VCoZbfMjaFCFyS9U5vK7f5EQXMLsxWz+sM7fe67qQipqEcC3AXOQgoM8ajc
+        PcFWA2TeKe2/JhJAoxXN6hDspUNnQgDaOrPY6CrwpGCl44XMt26e5cR07mzHpg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1657532798;
+        s=2020e; t=1657709108;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ZLMKvNlLuZyHt1XbXuDEYOvJvwJl6HGEaIuqT7eYV64=;
-        b=RF99lBPVxYAunLo6oCARmlvWP/D0ksFo3M2Af/xw810Muw767HmtHXRvRFeItLgWBYqID3
-        0iULR2jC/7TQrJDw==
+        bh=1/THw7b/dbCSKOAhofrOGXHOh63A6XAgjMRnWLsvrJA=;
+        b=rT44xZSnfADOpOp06QXPTXhS17NuL63Tm7ajRHypv8VKr+jXQR6qTZnDnW/bRrSY5po16y
+        wuWaIqr+umZBkDDQ==
 From:   "tip-bot2 for Juergen Gross" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
@@ -50,7 +50,7 @@ Cc:     Juergen Gross <jgross@suse.com>, Borislav Petkov <bp@suse.de>,
 In-Reply-To: <20220503132207.17234-1-jgross@suse.com>
 References: <20220503132207.17234-1-jgross@suse.com>
 MIME-Version: 1.0
-Message-ID: <165753279712.15455.2555694789382546026.tip-bot2@tip-bot2>
+Message-ID: <165770910660.15455.10226651626540518739.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,12 +67,12 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     da4600c76da7d787db04ce059b1f176da8a8d375
-Gitweb:        https://git.kernel.org/tip/da4600c76da7d787db04ce059b1f176da8a8d375
+Commit-ID:     f0592491eba2e42cc84d7831750b84cfc0150dde
+Gitweb:        https://git.kernel.org/tip/f0592491eba2e42cc84d7831750b84cfc0150dde
 Author:        Juergen Gross <jgross@suse.com>
 AuthorDate:    Fri, 08 Jul 2022 15:14:56 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Mon, 11 Jul 2022 11:37:03 +02:00
+CommitterDate: Wed, 13 Jul 2022 12:21:03 +02:00
 
 x86/pat: Fix x86_has_pat_wp()
 
