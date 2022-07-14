@@ -2,56 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BD360574B8B
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 14 Jul 2022 13:08:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7861E574C3A
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 14 Jul 2022 13:35:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238627AbiGNLIi (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 14 Jul 2022 07:08:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48554 "EHLO
+        id S238870AbiGNLf2 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 14 Jul 2022 07:35:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47764 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238260AbiGNLIg (ORCPT
+        with ESMTP id S238263AbiGNLf0 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 14 Jul 2022 07:08:36 -0400
+        Thu, 14 Jul 2022 07:35:26 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3A80E89;
-        Thu, 14 Jul 2022 04:08:34 -0700 (PDT)
-Date:   Thu, 14 Jul 2022 11:08:32 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73BDA5927B;
+        Thu, 14 Jul 2022 04:35:25 -0700 (PDT)
+Date:   Thu, 14 Jul 2022 11:35:22 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1657796913;
+        s=2020; t=1657798524;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=pHbjtE2rRok+PDLTLfeXHRG66lZG1VHrYTg2Mc7KRmA=;
-        b=l0o0mGVEo3aG1nm/azETnbcv912beRkDj6Mi28Wba/b0XkSKl6c3JKNyWYzfHBNDLDo7OD
-        ejtrRdDUswOYy+cwkKN1F9bi1vMHnhk8OJ+AwC1OXjv9+P8P0Q/ygTv2TZwYDMXH5kdxS2
-        y0Mn6dvB9vvh/Uf1TBfNZFakLezpNSX9PRbzqIs89M7wY4eBLlD8HjM1EDkTHYkF2CuW5Y
-        d9/qQmOKHZFL1ChgSiPIDD74CzkyfvdHGqURn0pwxAPN5zDXWIQQZwBQgmWVkUQJTEkqx/
-        arv1yr3eext0H0MEnh8tebFhbo7N2Q9aW4IF5iBMDwFKxfnsYzKZkrEiwru/GA==
+        bh=Lyytb82cHSEU/hH2o7kuQh+9vqNnK4SAy+yvsPV+az0=;
+        b=iTGSL+9xwc6aL0eS1hwCak4RHxJhAuVN8Wezxu29a0SlZhka16ZOsRjqoLBaTfRdzFS7Fp
+        Aral1A7AWILCfAINjFwyWtjeQ4+Em6jnT/iPqirpYztKUmoXOL+MUPOLnZPQIY1+c5v3Tf
+        pGRGfrCc+FyVfkLFWziZWL/v1LzHwMOjqAJAHh3DX60ugoMAwzWs8YBTx/0+iXL9ilyIm2
+        jZ9sGZgxnYI7NJg2uVpZMFE/V6nFeajheKI8y+TtshzNYSDyydcy/F4r6LHi5cU9F/9LNq
+        2MXALdD+KARM+m2vxDeE+Xmk4AA/l0huVfo6BNxwyYPVFHvfD6pMPiauoVvafQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1657796913;
+        s=2020e; t=1657798524;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=pHbjtE2rRok+PDLTLfeXHRG66lZG1VHrYTg2Mc7KRmA=;
-        b=K//a577Lepf+k3NWFVCTMIsf0SGNcjTH5FeqbLqF0R3VvETI8ZU5WhaMD+1diBwrUTYWVs
-        GokR69ylrdBetNAw==
-From:   "tip-bot2 for Jiapeng Chong" <tip-bot2@linutronix.de>
+        bh=Lyytb82cHSEU/hH2o7kuQh+9vqNnK4SAy+yvsPV+az0=;
+        b=daldFeg1uz1U5BMf1uMc8qCvR8VzBhVlL6/NiYDVykgtWi2LjZ7dCXnGw2UbNr25lQmwCA
+        FVxOprLuHbpSJrCg==
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/bugs: Mark retbleed_strings static
-Cc:     Abaci Robot <abaci@linux.alibaba.com>,
-        Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
-        Borislav Petkov <bp@suse.de>, x86@kernel.org,
+Subject: [tip: perf/urgent] perf/core: Fix data race between
+ perf_event_set_output() and perf_mmap_close()
+Cc:     Yang Jihong <yangjihong1@huawei.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220714072939.71162-1-jiapeng.chong@linux.alibaba.com>
-References: <20220714072939.71162-1-jiapeng.chong@linux.alibaba.com>
+In-Reply-To: <YsQ3jm2GR38SW7uD@worktop.programming.kicks-ass.net>
+References: <YsQ3jm2GR38SW7uD@worktop.programming.kicks-ass.net>
 MIME-Version: 1.0
-Message-ID: <165779691246.15455.16253032169822799893.tip-bot2@tip-bot2>
+Message-ID: <165779852269.15455.12378628877885813176.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,37 +66,167 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     33a8573bdfeec5b746aedeea880733a4c7993158
-Gitweb:        https://git.kernel.org/tip/33a8573bdfeec5b746aedeea880733a4c7993158
-Author:        Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
-AuthorDate:    Thu, 14 Jul 2022 15:29:39 +08:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Thu, 14 Jul 2022 09:41:30 +02:00
+Commit-ID:     68e3c69803dada336893640110cb87221bb01dcf
+Gitweb:        https://git.kernel.org/tip/68e3c69803dada336893640110cb87221bb01dcf
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Tue, 05 Jul 2022 15:07:26 +02:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Wed, 13 Jul 2022 11:29:12 +02:00
 
-x86/bugs: Mark retbleed_strings static
+perf/core: Fix data race between perf_event_set_output() and perf_mmap_close()
 
-This symbol is not used outside of bugs.c, so mark it static.
+Yang Jihing reported a race between perf_event_set_output() and
+perf_mmap_close():
 
-Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lore.kernel.org/r/20220714072939.71162-1-jiapeng.chong@linux.alibaba.com
+	CPU1					CPU2
+
+	perf_mmap_close(e2)
+	  if (atomic_dec_and_test(&e2->rb->mmap_count)) // 1 - > 0
+	    detach_rest = true
+
+						ioctl(e1, IOC_SET_OUTPUT, e2)
+						  perf_event_set_output(e1, e2)
+
+	  ...
+	  list_for_each_entry_rcu(e, &e2->rb->event_list, rb_entry)
+	    ring_buffer_attach(e, NULL);
+	    // e1 isn't yet added and
+	    // therefore not detached
+
+						    ring_buffer_attach(e1, e2->rb)
+						      list_add_rcu(&e1->rb_entry,
+								   &e2->rb->event_list)
+
+After this; e1 is attached to an unmapped rb and a subsequent
+perf_mmap() will loop forever more:
+
+	again:
+		mutex_lock(&e->mmap_mutex);
+		if (event->rb) {
+			...
+			if (!atomic_inc_not_zero(&e->rb->mmap_count)) {
+				...
+				mutex_unlock(&e->mmap_mutex);
+				goto again;
+			}
+		}
+
+The loop in perf_mmap_close() holds e2->mmap_mutex, while the attach
+in perf_event_set_output() holds e1->mmap_mutex. As such there is no
+serialization to avoid this race.
+
+Change perf_event_set_output() to take both e1->mmap_mutex and
+e2->mmap_mutex to alleviate that problem. Additionally, have the loop
+in perf_mmap() detach the rb directly, this avoids having to wait for
+the concurrent perf_mmap_close() to get around to doing it to make
+progress.
+
+Fixes: 9bb5d40cd93c ("perf: Fix mmap() accounting hole")
+Reported-by: Yang Jihong <yangjihong1@huawei.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Tested-by: Yang Jihong <yangjihong1@huawei.com>
+Link: https://lkml.kernel.org/r/YsQ3jm2GR38SW7uD@worktop.programming.kicks-ass.net
 ---
- arch/x86/kernel/cpu/bugs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/events/core.c | 45 +++++++++++++++++++++++++++++--------------
+ 1 file changed, 31 insertions(+), 14 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index 0dd0471..3a0787a 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -793,7 +793,7 @@ enum retbleed_mitigation_cmd {
- 	RETBLEED_CMD_IBPB,
- };
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 80782cd..d2b3549 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -6253,10 +6253,10 @@ again:
  
--const char * const retbleed_strings[] = {
-+static const char * const retbleed_strings[] = {
- 	[RETBLEED_MITIGATION_NONE]	= "Vulnerable",
- 	[RETBLEED_MITIGATION_UNRET]	= "Mitigation: untrained return thunk",
- 	[RETBLEED_MITIGATION_IBPB]	= "Mitigation: IBPB",
+ 		if (!atomic_inc_not_zero(&event->rb->mmap_count)) {
+ 			/*
+-			 * Raced against perf_mmap_close() through
+-			 * perf_event_set_output(). Try again, hope for better
+-			 * luck.
++			 * Raced against perf_mmap_close(); remove the
++			 * event and try again.
+ 			 */
++			ring_buffer_attach(event, NULL);
+ 			mutex_unlock(&event->mmap_mutex);
+ 			goto again;
+ 		}
+@@ -11825,14 +11825,25 @@ err_size:
+ 	goto out;
+ }
+ 
++static void mutex_lock_double(struct mutex *a, struct mutex *b)
++{
++	if (b < a)
++		swap(a, b);
++
++	mutex_lock(a);
++	mutex_lock_nested(b, SINGLE_DEPTH_NESTING);
++}
++
+ static int
+ perf_event_set_output(struct perf_event *event, struct perf_event *output_event)
+ {
+ 	struct perf_buffer *rb = NULL;
+ 	int ret = -EINVAL;
+ 
+-	if (!output_event)
++	if (!output_event) {
++		mutex_lock(&event->mmap_mutex);
+ 		goto set;
++	}
+ 
+ 	/* don't allow circular references */
+ 	if (event == output_event)
+@@ -11870,8 +11881,15 @@ perf_event_set_output(struct perf_event *event, struct perf_event *output_event)
+ 	    event->pmu != output_event->pmu)
+ 		goto out;
+ 
++	/*
++	 * Hold both mmap_mutex to serialize against perf_mmap_close().  Since
++	 * output_event is already on rb->event_list, and the list iteration
++	 * restarts after every removal, it is guaranteed this new event is
++	 * observed *OR* if output_event is already removed, it's guaranteed we
++	 * observe !rb->mmap_count.
++	 */
++	mutex_lock_double(&event->mmap_mutex, &output_event->mmap_mutex);
+ set:
+-	mutex_lock(&event->mmap_mutex);
+ 	/* Can't redirect output if we've got an active mmap() */
+ 	if (atomic_read(&event->mmap_count))
+ 		goto unlock;
+@@ -11881,6 +11899,12 @@ set:
+ 		rb = ring_buffer_get(output_event);
+ 		if (!rb)
+ 			goto unlock;
++
++		/* did we race against perf_mmap_close() */
++		if (!atomic_read(&rb->mmap_count)) {
++			ring_buffer_put(rb);
++			goto unlock;
++		}
+ 	}
+ 
+ 	ring_buffer_attach(event, rb);
+@@ -11888,20 +11912,13 @@ set:
+ 	ret = 0;
+ unlock:
+ 	mutex_unlock(&event->mmap_mutex);
++	if (output_event)
++		mutex_unlock(&output_event->mmap_mutex);
+ 
+ out:
+ 	return ret;
+ }
+ 
+-static void mutex_lock_double(struct mutex *a, struct mutex *b)
+-{
+-	if (b < a)
+-		swap(a, b);
+-
+-	mutex_lock(a);
+-	mutex_lock_nested(b, SINGLE_DEPTH_NESTING);
+-}
+-
+ static int perf_event_set_clock(struct perf_event *event, clockid_t clk_id)
+ {
+ 	bool nmi_safe = false;
