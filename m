@@ -2,56 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7861E574C3A
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 14 Jul 2022 13:35:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A1106574C3D
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 14 Jul 2022 13:35:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238870AbiGNLf2 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 14 Jul 2022 07:35:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47764 "EHLO
+        id S237973AbiGNLfg (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 14 Jul 2022 07:35:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47936 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238263AbiGNLf0 (ORCPT
+        with ESMTP id S238966AbiGNLfg (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 14 Jul 2022 07:35:26 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73BDA5927B;
-        Thu, 14 Jul 2022 04:35:25 -0700 (PDT)
-Date:   Thu, 14 Jul 2022 11:35:22 -0000
+        Thu, 14 Jul 2022 07:35:36 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F5EA5A2DE;
+        Thu, 14 Jul 2022 04:35:33 -0700 (PDT)
+Date:   Thu, 14 Jul 2022 11:35:31 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1657798524;
+        s=2020; t=1657798532;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Lyytb82cHSEU/hH2o7kuQh+9vqNnK4SAy+yvsPV+az0=;
-        b=iTGSL+9xwc6aL0eS1hwCak4RHxJhAuVN8Wezxu29a0SlZhka16ZOsRjqoLBaTfRdzFS7Fp
-        Aral1A7AWILCfAINjFwyWtjeQ4+Em6jnT/iPqirpYztKUmoXOL+MUPOLnZPQIY1+c5v3Tf
-        pGRGfrCc+FyVfkLFWziZWL/v1LzHwMOjqAJAHh3DX60ugoMAwzWs8YBTx/0+iXL9ilyIm2
-        jZ9sGZgxnYI7NJg2uVpZMFE/V6nFeajheKI8y+TtshzNYSDyydcy/F4r6LHi5cU9F/9LNq
-        2MXALdD+KARM+m2vxDeE+Xmk4AA/l0huVfo6BNxwyYPVFHvfD6pMPiauoVvafQ==
+        bh=dw5dKPMBF5qgiL0iVEeFmaNXlyBwXMe/WNaUeMeWCig=;
+        b=AB1CtqAg02nkJfhKCJlYBhDZsFTOh+ZWV5O9JZouHgEhysqH0c4IdGSIT81QIiIpSMjxCU
+        HBs7s6CkkzXWW+hWGte11Jd2DIueE0okrzXsT8IGcXENprtb8rIW7fZDrMqvgAwZoqfmoW
+        fcIoe3CGEMgXu2CB5+04kpBifVlvaf2C0J0wukjvxDwIJADRJStIMhl2PO7RzOLvftUlYg
+        ZBAaZboFNOQcJyi28no0vm/16eITQzpY108TqtB/vCnye+7YIdzQg5yRgfc+2tUEcbeyzy
+        SQAjITj19Xjf1jGRnZ/xOqzPSGntK/4t0uUCbQlgRryg8msmdiiMAP5K7F8z8g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1657798524;
+        s=2020e; t=1657798532;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Lyytb82cHSEU/hH2o7kuQh+9vqNnK4SAy+yvsPV+az0=;
-        b=daldFeg1uz1U5BMf1uMc8qCvR8VzBhVlL6/NiYDVykgtWi2LjZ7dCXnGw2UbNr25lQmwCA
-        FVxOprLuHbpSJrCg==
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+        bh=dw5dKPMBF5qgiL0iVEeFmaNXlyBwXMe/WNaUeMeWCig=;
+        b=bkBgjlcQWZQ9X3mqQfCJ3NUzoHpsZK8KGuxjvRbjfVVyiZxwJBC7QqDxVNfKm0ZzLXeQ3V
+        BaaxmjQKk0nar3Aw==
+From:   "tip-bot2 for John Keeping" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf/core: Fix data race between
- perf_event_set_output() and perf_mmap_close()
-Cc:     Yang Jihong <yangjihong1@huawei.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: sched/core] sched/core: Always flush pending blk_plug
+Cc:     John Keeping <john@metanate.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <YsQ3jm2GR38SW7uD@worktop.programming.kicks-ass.net>
-References: <YsQ3jm2GR38SW7uD@worktop.programming.kicks-ass.net>
+In-Reply-To: <20220708162702.1758865-1-john@metanate.com>
+References: <20220708162702.1758865-1-john@metanate.com>
 MIME-Version: 1.0
-Message-ID: <165779852269.15455.12378628877885813176.tip-bot2@tip-bot2>
+Message-ID: <165779853104.15455.16915451211318324333.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,167 +66,155 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the perf/urgent branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     68e3c69803dada336893640110cb87221bb01dcf
-Gitweb:        https://git.kernel.org/tip/68e3c69803dada336893640110cb87221bb01dcf
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Tue, 05 Jul 2022 15:07:26 +02:00
+Commit-ID:     401e4963bf45c800e3e9ea0d3a0289d738005fd4
+Gitweb:        https://git.kernel.org/tip/401e4963bf45c800e3e9ea0d3a0289d738005fd4
+Author:        John Keeping <john@metanate.com>
+AuthorDate:    Fri, 08 Jul 2022 17:27:02 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 13 Jul 2022 11:29:12 +02:00
+CommitterDate: Wed, 13 Jul 2022 11:29:17 +02:00
 
-perf/core: Fix data race between perf_event_set_output() and perf_mmap_close()
+sched/core: Always flush pending blk_plug
 
-Yang Jihing reported a race between perf_event_set_output() and
-perf_mmap_close():
+With CONFIG_PREEMPT_RT, it is possible to hit a deadlock between two
+normal priority tasks (SCHED_OTHER, nice level zero):
 
-	CPU1					CPU2
+	INFO: task kworker/u8:0:8 blocked for more than 491 seconds.
+	      Not tainted 5.15.49-rt46 #1
+	"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+	task:kworker/u8:0    state:D stack:    0 pid:    8 ppid:     2 flags:0x00000000
+	Workqueue: writeback wb_workfn (flush-7:0)
+	[<c08a3a10>] (__schedule) from [<c08a3d84>] (schedule+0xdc/0x134)
+	[<c08a3d84>] (schedule) from [<c08a65a0>] (rt_mutex_slowlock_block.constprop.0+0xb8/0x174)
+	[<c08a65a0>] (rt_mutex_slowlock_block.constprop.0) from [<c08a6708>]
+	+(rt_mutex_slowlock.constprop.0+0xac/0x174)
+	[<c08a6708>] (rt_mutex_slowlock.constprop.0) from [<c0374d60>] (fat_write_inode+0x34/0x54)
+	[<c0374d60>] (fat_write_inode) from [<c0297304>] (__writeback_single_inode+0x354/0x3ec)
+	[<c0297304>] (__writeback_single_inode) from [<c0297998>] (writeback_sb_inodes+0x250/0x45c)
+	[<c0297998>] (writeback_sb_inodes) from [<c0297c20>] (__writeback_inodes_wb+0x7c/0xb8)
+	[<c0297c20>] (__writeback_inodes_wb) from [<c0297f24>] (wb_writeback+0x2c8/0x2e4)
+	[<c0297f24>] (wb_writeback) from [<c0298c40>] (wb_workfn+0x1a4/0x3e4)
+	[<c0298c40>] (wb_workfn) from [<c0138ab8>] (process_one_work+0x1fc/0x32c)
+	[<c0138ab8>] (process_one_work) from [<c0139120>] (worker_thread+0x22c/0x2d8)
+	[<c0139120>] (worker_thread) from [<c013e6e0>] (kthread+0x16c/0x178)
+	[<c013e6e0>] (kthread) from [<c01000fc>] (ret_from_fork+0x14/0x38)
+	Exception stack(0xc10e3fb0 to 0xc10e3ff8)
+	3fa0:                                     00000000 00000000 00000000 00000000
+	3fc0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+	3fe0: 00000000 00000000 00000000 00000000 00000013 00000000
 
-	perf_mmap_close(e2)
-	  if (atomic_dec_and_test(&e2->rb->mmap_count)) // 1 - > 0
-	    detach_rest = true
+	INFO: task tar:2083 blocked for more than 491 seconds.
+	      Not tainted 5.15.49-rt46 #1
+	"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+	task:tar             state:D stack:    0 pid: 2083 ppid:  2082 flags:0x00000000
+	[<c08a3a10>] (__schedule) from [<c08a3d84>] (schedule+0xdc/0x134)
+	[<c08a3d84>] (schedule) from [<c08a41b0>] (io_schedule+0x14/0x24)
+	[<c08a41b0>] (io_schedule) from [<c08a455c>] (bit_wait_io+0xc/0x30)
+	[<c08a455c>] (bit_wait_io) from [<c08a441c>] (__wait_on_bit_lock+0x54/0xa8)
+	[<c08a441c>] (__wait_on_bit_lock) from [<c08a44f4>] (out_of_line_wait_on_bit_lock+0x84/0xb0)
+	[<c08a44f4>] (out_of_line_wait_on_bit_lock) from [<c0371fb0>] (fat_mirror_bhs+0xa0/0x144)
+	[<c0371fb0>] (fat_mirror_bhs) from [<c0372a68>] (fat_alloc_clusters+0x138/0x2a4)
+	[<c0372a68>] (fat_alloc_clusters) from [<c0370b14>] (fat_alloc_new_dir+0x34/0x250)
+	[<c0370b14>] (fat_alloc_new_dir) from [<c03787c0>] (vfat_mkdir+0x58/0x148)
+	[<c03787c0>] (vfat_mkdir) from [<c0277b60>] (vfs_mkdir+0x68/0x98)
+	[<c0277b60>] (vfs_mkdir) from [<c027b484>] (do_mkdirat+0xb0/0xec)
+	[<c027b484>] (do_mkdirat) from [<c0100060>] (ret_fast_syscall+0x0/0x1c)
+	Exception stack(0xc2e1bfa8 to 0xc2e1bff0)
+	bfa0:                   01ee42f0 01ee4208 01ee42f0 000041ed 00000000 00004000
+	bfc0: 01ee42f0 01ee4208 00000000 00000027 01ee4302 00000004 000dcb00 01ee4190
+	bfe0: 000dc368 bed11924 0006d4b0 b6ebddfc
 
-						ioctl(e1, IOC_SET_OUTPUT, e2)
-						  perf_event_set_output(e1, e2)
+Here the kworker is waiting on msdos_sb_info::s_lock which is held by
+tar which is in turn waiting for a buffer which is locked waiting to be
+flushed, but this operation is plugged in the kworker.
 
-	  ...
-	  list_for_each_entry_rcu(e, &e2->rb->event_list, rb_entry)
-	    ring_buffer_attach(e, NULL);
-	    // e1 isn't yet added and
-	    // therefore not detached
+The lock is a normal struct mutex, so tsk_is_pi_blocked() will always
+return false on !RT and thus the behaviour changes for RT.
 
-						    ring_buffer_attach(e1, e2->rb)
-						      list_add_rcu(&e1->rb_entry,
-								   &e2->rb->event_list)
+It seems that the intent here is to skip blk_flush_plug() in the case
+where a non-preemptible lock (such as a spinlock) has been converted to
+a rtmutex on RT, which is the case covered by the SM_RTLOCK_WAIT
+schedule flag.  But sched_submit_work() is only called from schedule()
+which is never called in this scenario, so the check can simply be
+deleted.
 
-After this; e1 is attached to an unmapped rb and a subsequent
-perf_mmap() will loop forever more:
+Looking at the history of the -rt patchset, in fact this change was
+present from v5.9.1-rt20 until being dropped in v5.13-rt1 as it was part
+of a larger patch [1] most of which was replaced by commit b4bfa3fcfe3b
+("sched/core: Rework the __schedule() preempt argument").
 
-	again:
-		mutex_lock(&e->mmap_mutex);
-		if (event->rb) {
-			...
-			if (!atomic_inc_not_zero(&e->rb->mmap_count)) {
-				...
-				mutex_unlock(&e->mmap_mutex);
-				goto again;
-			}
-		}
+As described in [1]:
 
-The loop in perf_mmap_close() holds e2->mmap_mutex, while the attach
-in perf_event_set_output() holds e1->mmap_mutex. As such there is no
-serialization to avoid this race.
+   The schedule process must distinguish between blocking on a regular
+   sleeping lock (rwsem and mutex) and a RT-only sleeping lock (spinlock
+   and rwlock):
+   - rwsem and mutex must flush block requests (blk_schedule_flush_plug())
+     even if blocked on a lock. This can not deadlock because this also
+     happens for non-RT.
+     There should be a warning if the scheduling point is within a RCU read
+     section.
 
-Change perf_event_set_output() to take both e1->mmap_mutex and
-e2->mmap_mutex to alleviate that problem. Additionally, have the loop
-in perf_mmap() detach the rb directly, this avoids having to wait for
-the concurrent perf_mmap_close() to get around to doing it to make
-progress.
+   - spinlock and rwlock must not flush block requests. This will deadlock
+     if the callback attempts to acquire a lock which is already acquired.
+     Similarly to being preempted, there should be no warning if the
+     scheduling point is within a RCU read section.
 
-Fixes: 9bb5d40cd93c ("perf: Fix mmap() accounting hole")
-Reported-by: Yang Jihong <yangjihong1@huawei.com>
+and with the tsk_is_pi_blocked() in the scheduler path, we hit the first
+issue.
+
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/rt/linux-rt-devel.git/tree/patches/0022-locking-rtmutex-Use-custom-scheduling-function-for-s.patch?h=linux-5.10.y-rt-patches
+
+Signed-off-by: John Keeping <john@metanate.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: Yang Jihong <yangjihong1@huawei.com>
-Link: https://lkml.kernel.org/r/YsQ3jm2GR38SW7uD@worktop.programming.kicks-ass.net
+Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Link: https://lkml.kernel.org/r/20220708162702.1758865-1-john@metanate.com
 ---
- kernel/events/core.c | 45 +++++++++++++++++++++++++++++--------------
- 1 file changed, 31 insertions(+), 14 deletions(-)
+ include/linux/sched/rt.h | 8 --------
+ kernel/sched/core.c      | 8 ++++++--
+ 2 files changed, 6 insertions(+), 10 deletions(-)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 80782cd..d2b3549 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -6253,10 +6253,10 @@ again:
- 
- 		if (!atomic_inc_not_zero(&event->rb->mmap_count)) {
- 			/*
--			 * Raced against perf_mmap_close() through
--			 * perf_event_set_output(). Try again, hope for better
--			 * luck.
-+			 * Raced against perf_mmap_close(); remove the
-+			 * event and try again.
- 			 */
-+			ring_buffer_attach(event, NULL);
- 			mutex_unlock(&event->mmap_mutex);
- 			goto again;
- 		}
-@@ -11825,14 +11825,25 @@ err_size:
- 	goto out;
+diff --git a/include/linux/sched/rt.h b/include/linux/sched/rt.h
+index e5af028..994c256 100644
+--- a/include/linux/sched/rt.h
++++ b/include/linux/sched/rt.h
+@@ -39,20 +39,12 @@ static inline struct task_struct *rt_mutex_get_top_task(struct task_struct *p)
  }
- 
-+static void mutex_lock_double(struct mutex *a, struct mutex *b)
-+{
-+	if (b < a)
-+		swap(a, b);
-+
-+	mutex_lock(a);
-+	mutex_lock_nested(b, SINGLE_DEPTH_NESTING);
-+}
-+
- static int
- perf_event_set_output(struct perf_event *event, struct perf_event *output_event)
+ extern void rt_mutex_setprio(struct task_struct *p, struct task_struct *pi_task);
+ extern void rt_mutex_adjust_pi(struct task_struct *p);
+-static inline bool tsk_is_pi_blocked(struct task_struct *tsk)
+-{
+-	return tsk->pi_blocked_on != NULL;
+-}
+ #else
+ static inline struct task_struct *rt_mutex_get_top_task(struct task_struct *task)
  {
- 	struct perf_buffer *rb = NULL;
- 	int ret = -EINVAL;
+ 	return NULL;
+ }
+ # define rt_mutex_adjust_pi(p)		do { } while (0)
+-static inline bool tsk_is_pi_blocked(struct task_struct *tsk)
+-{
+-	return false;
+-}
+ #endif
  
--	if (!output_event)
-+	if (!output_event) {
-+		mutex_lock(&event->mmap_mutex);
- 		goto set;
-+	}
- 
- 	/* don't allow circular references */
- 	if (event == output_event)
-@@ -11870,8 +11881,15 @@ perf_event_set_output(struct perf_event *event, struct perf_event *output_event)
- 	    event->pmu != output_event->pmu)
- 		goto out;
- 
-+	/*
-+	 * Hold both mmap_mutex to serialize against perf_mmap_close().  Since
-+	 * output_event is already on rb->event_list, and the list iteration
-+	 * restarts after every removal, it is guaranteed this new event is
-+	 * observed *OR* if output_event is already removed, it's guaranteed we
-+	 * observe !rb->mmap_count.
-+	 */
-+	mutex_lock_double(&event->mmap_mutex, &output_event->mmap_mutex);
- set:
--	mutex_lock(&event->mmap_mutex);
- 	/* Can't redirect output if we've got an active mmap() */
- 	if (atomic_read(&event->mmap_count))
- 		goto unlock;
-@@ -11881,6 +11899,12 @@ set:
- 		rb = ring_buffer_get(output_event);
- 		if (!rb)
- 			goto unlock;
-+
-+		/* did we race against perf_mmap_close() */
-+		if (!atomic_read(&rb->mmap_count)) {
-+			ring_buffer_put(rb);
-+			goto unlock;
-+		}
+ extern void normalize_rt_tasks(void);
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index c703d17..a463dbc 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -6470,8 +6470,12 @@ static inline void sched_submit_work(struct task_struct *tsk)
+ 			io_wq_worker_sleeping(tsk);
  	}
  
- 	ring_buffer_attach(event, rb);
-@@ -11888,20 +11912,13 @@ set:
- 	ret = 0;
- unlock:
- 	mutex_unlock(&event->mmap_mutex);
-+	if (output_event)
-+		mutex_unlock(&output_event->mmap_mutex);
+-	if (tsk_is_pi_blocked(tsk))
+-		return;
++	/*
++	 * spinlock and rwlock must not flush block requests.  This will
++	 * deadlock if the callback attempts to acquire a lock which is
++	 * already acquired.
++	 */
++	SCHED_WARN_ON(current->__state & TASK_RTLOCK_WAIT);
  
- out:
- 	return ret;
- }
- 
--static void mutex_lock_double(struct mutex *a, struct mutex *b)
--{
--	if (b < a)
--		swap(a, b);
--
--	mutex_lock(a);
--	mutex_lock_nested(b, SINGLE_DEPTH_NESTING);
--}
--
- static int perf_event_set_clock(struct perf_event *event, clockid_t clk_id)
- {
- 	bool nmi_safe = false;
+ 	/*
+ 	 * If we are going to sleep and we have plugged IO queued,
