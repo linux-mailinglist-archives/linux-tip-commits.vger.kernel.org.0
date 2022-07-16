@@ -2,65 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 185F3574F48
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 14 Jul 2022 15:36:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE904576D45
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 16 Jul 2022 12:17:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239240AbiGNNgv (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 14 Jul 2022 09:36:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33824 "EHLO
+        id S229625AbiGPKRE (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 16 Jul 2022 06:17:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55008 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235303AbiGNNgu (ORCPT
+        with ESMTP id S229469AbiGPKRD (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 14 Jul 2022 09:36:50 -0400
+        Sat, 16 Jul 2022 06:17:03 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE4BC52882;
-        Thu, 14 Jul 2022 06:36:49 -0700 (PDT)
-Date:   Thu, 14 Jul 2022 13:36:47 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6A291F606;
+        Sat, 16 Jul 2022 03:17:01 -0700 (PDT)
+Date:   Sat, 16 Jul 2022 10:16:57 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1657805808;
+        s=2020; t=1657966619;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=bh6wJ/vQveCsuTOTw1wDNrgRDi3COVOkgR8x2VC+BI4=;
-        b=VSv0M/3SeyVeSggHW1zD/MRok3Cnn79uxaglDRFGpfNtgOdLhPjnxlEH4NNivzwjuDtE23
-        /20g3d2xu7hHrA4fxFdUfhtP7MJLiV+4ArEo2aROEHL3dWawOQjavhWCMsM/h1L1xrKU51
-        E1GZlNuX0iqWpSBaWQHoIuDqBlpTfDPlU23kJNKjAiYmdyhYRJNQhwNH142YkayroZHscU
-        qyudapXi2g/FWpePKry8V3gfZeOTVLGma5bngJ3OVwt1FClc0GIPnHohhdyI4OVRr0nLTb
-        aSCTT+JVM/2JQvAnu5AB4fPtlEJ+15gZCvImtwydEi9J+Pu0rF4Dncoe2dACuA==
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=03rJrkcm4eRexferty6ACY8Inioj54wnKeQjgCXIcls=;
+        b=Vu9MhKB4PCtnzUOXR4ILMp01toVOKH69SJUkCdOGBmykhX81F2k0yGlPuA0wjGW2+5K1VE
+        JG+lETVh0YbGlYk+V5dU/LKdPkDyAO4nhVMVmnZsYVI6ukOaQLrJqqV8BxdYN2tdf0JIYn
+        ogLTwB/7f5nyOhgWnYKKD7OPQkacpISTNJ8TwZvqPxXLQsMs6o2iLnSanl4bd/tz1E9c6c
+        dry2x69n9mf/wOSvQBsSag0qGKZXiNQME3iEZ4OWCrX7nLxFoghM3bptpcYam43IkBOklV
+        k3w9SzXBLLaqg/iwhkk+K/g/9enc3THZQ9BR62XBhS5rE1VN7S2J2Py+LRYvQQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1657805808;
+        s=2020e; t=1657966619;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=bh6wJ/vQveCsuTOTw1wDNrgRDi3COVOkgR8x2VC+BI4=;
-        b=VE+V0NNs/MgGFTL5MKT0ZMPaNn4ZIXHqbaxFBkXZNi+jXx4oqTGGJ2a4UIImxKgf6LlibK
-        saFsjFop2FDStPDQ==
-From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=03rJrkcm4eRexferty6ACY8Inioj54wnKeQjgCXIcls=;
+        b=qdg/3BoBedHbK35QvH4p7AlrF3JWJ+VopY+fwg4mKWoM6Apavm7NGM1YqDJfNwhYcwJclo
+        LfM7rOwpgni/40AQ==
+From:   "tip-bot2 for Kim Phillips" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] um: Add missing apply_returns()
-Cc:     Randy Dunlap <rdunlap@infradead.org>,
-        ")"@tip-bot2.tec.linutronix.de,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Borislav Petkov <bp@suse.de>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <Ys%2Ft45l%2FgarIrD0u@worktop.programming.kicks-ass.net>
-References: <Ys%2Ft45l%2FgarIrD0u@worktop.programming.kicks-ass.net>
+Subject: [tip: x86/urgent] x86/bugs: Remove apostrophe typo
+Cc:     Kim Phillips <kim.phillips@amd.com>, Borislav Petkov <bp@suse.de>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Message-ID: <165780580734.15455.10164218033628596695.tip-bot2@tip-bot2>
+Message-ID: <165796661764.15455.12429701839910697115.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -69,39 +59,34 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     564d998106397394b6aad260f219b882b3347e62
-Gitweb:        https://git.kernel.org/tip/564d998106397394b6aad260f219b882b3347e62
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Thu, 14 Jul 2022 12:20:19 +02:00
+Commit-ID:     bcf163150cd37348a0cb59e95c916a83a9344b0e
+Gitweb:        https://git.kernel.org/tip/bcf163150cd37348a0cb59e95c916a83a9344b0e
+Author:        Kim Phillips <kim.phillips@amd.com>
+AuthorDate:    Fri, 08 Jul 2022 16:21:28 -05:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Thu, 14 Jul 2022 13:40:21 +02:00
+CommitterDate: Sat, 16 Jul 2022 11:39:23 +02:00
 
-um: Add missing apply_returns()
+x86/bugs: Remove apostrophe typo
 
-Implement apply_returns() stub for UM, just like all the other patching
-routines.
+Remove a superfluous ' in the mitigation string.
 
-Fixes: 15e67227c49a ("x86: Undo return-thunk damage")
-Reported-by: Randy Dunlap <rdunlap@infradead.org)
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Fixes: e8ec1b6e08a2 ("x86/bugs: Enable STIBP for JMP2RET")
+Signed-off-by: Kim Phillips <kim.phillips@amd.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lore.kernel.org/r/Ys%2Ft45l%2FgarIrD0u@worktop.programming.kicks-ass.net
 ---
- arch/um/kernel/um_arch.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/x86/kernel/cpu/bugs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/um/kernel/um_arch.c b/arch/um/kernel/um_arch.c
-index 0760e24..9838967 100644
---- a/arch/um/kernel/um_arch.c
-+++ b/arch/um/kernel/um_arch.c
-@@ -432,6 +432,10 @@ void apply_retpolines(s32 *start, s32 *end)
- {
- }
+diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
+index 3a0787a..aa34f90 100644
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -1181,7 +1181,7 @@ spectre_v2_user_select_mitigation(void)
+ 	if (retbleed_mitigation == RETBLEED_MITIGATION_UNRET) {
+ 		if (mode != SPECTRE_V2_USER_STRICT &&
+ 		    mode != SPECTRE_V2_USER_STRICT_PREFERRED)
+-			pr_info("Selecting STIBP always-on mode to complement retbleed mitigation'\n");
++			pr_info("Selecting STIBP always-on mode to complement retbleed mitigation\n");
+ 		mode = SPECTRE_V2_USER_STRICT_PREFERRED;
+ 	}
  
-+void apply_returns(s32 *start, s32 *end)
-+{
-+}
-+
- void apply_alternatives(struct alt_instr *start, struct alt_instr *end)
- {
- }
