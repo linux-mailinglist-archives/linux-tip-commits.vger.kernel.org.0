@@ -2,55 +2,59 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D72357A40D
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 Jul 2022 18:17:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B45357A55D
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 Jul 2022 19:31:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234440AbiGSQRF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 19 Jul 2022 12:17:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51264 "EHLO
+        id S239302AbiGSRbX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 19 Jul 2022 13:31:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58608 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232884AbiGSQRF (ORCPT
+        with ESMTP id S239289AbiGSRbP (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 19 Jul 2022 12:17:05 -0400
+        Tue, 19 Jul 2022 13:31:15 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B8D349B6B;
-        Tue, 19 Jul 2022 09:17:04 -0700 (PDT)
-Date:   Tue, 19 Jul 2022 16:17:01 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B69652FC6;
+        Tue, 19 Jul 2022 10:31:14 -0700 (PDT)
+Date:   Tue, 19 Jul 2022 17:31:10 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1658247422;
+        s=2020; t=1658251871;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=/rnOinfjefyG7040ci+QjKu8n+QSf1S9hG2ztD7d8UA=;
-        b=aAhQSfDwq5/iaVqf0x0NEqRYIUwYk61StVOoJdfA2c6VOlXgujhmtcshelSkeU3C1AjORv
-        WNMxGxynuHUP2GcCA/t24leelqQVk5RpIpv+UodMdACQQQGaIWxa+sOQ482K823xXnfwD7
-        9sM1+1D1tdV6FLur8qOA7WfAtT6nHz9tAufD+h1748MTOlib5OlcS5/2jVXXw6yY2+pI9T
-        Os3rlXKv5pyLX2aTn0znmh7qCySmeA+hIDlUOkTaspH3nrLLivL6t0jwBwGqAno1Gl/A2E
-        mp5FVPPuFvw0jD1Fgjx61/+C4KFVRPI/0hE6MqvuWLNy2xZF2m4GJP1n5iGAKA==
+        bh=IvhpNtnA53mQIJQu4q781RlJrC8ZaJ8MpMbIu4iCaE0=;
+        b=vU4scu5r2DqWyz8GCXCZEgTMnCNp9+DtbPERPwwOzSQDYdSFLYUiXmlLoe1xBHLd9oiEhe
+        1yrlUG1zsYB2jJtcl7bCqtwXxyC6A857w+8s8FsVQBqTggVdAuq3EfP7xLuuTfhWWCeavR
+        jJlJEo1MYWvMLqHcuAXWdbjrO/EPFiBTileHPqRNv0h7gU9wfZyLGaGPgW7eAvVYPuBQN/
+        sKafR3NKqwrKbfG8+4BvmFizeqlYZ1upWVKIo9NlsBJ9iHjYckwEa1fKko6tdQTJO/mldo
+        o/BbVq2aqNRjSDJ+//A7GDjurjFtppySILaGuQfslO+TkugRzwn53/0keItY4w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1658247422;
+        s=2020e; t=1658251871;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=/rnOinfjefyG7040ci+QjKu8n+QSf1S9hG2ztD7d8UA=;
-        b=oiw3HHu+MYSh4C/4nHtvZNZ1Pd+QPpkpuXOE6js9n1gCl2Z0wSX4qyE5w7VyR0cF6qJKSB
-        I0y4/wWRMGDmlLCw==
-From:   "tip-bot2 for Nadav Amit" <tip-bot2@linutronix.de>
+        bh=IvhpNtnA53mQIJQu4q781RlJrC8ZaJ8MpMbIu4iCaE0=;
+        b=Z/FgWHlt17Eb87K0lfR6p1t7gZo9c05jwRSg4XVKSrLSNTLWIYqJCWMHGqqlweq5Qrcmoi
+        27AYcLBIAKoGnBCA==
+From:   "tip-bot2 for Chang S. Bae" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/mm] x86/mm/tlb: Ignore f->new_tlb_gen when zero
-Cc:     Hugh Dickins <hughd@google.com>, Nadav Amit <namit@vmware.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+Subject: [tip: x86/fpu] intel_idle: Add a new flag to initialize the AMX state
+Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "Chang S. Bae" <chang.seok.bae@intel.com>,
+        Borislav Petkov <bp@suse.de>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Zhang Rui <rui.zhang@intel.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220710232837.3618-1-namit@vmware.com>
-References: <20220710232837.3618-1-namit@vmware.com>
+In-Reply-To: <20220614164116.5196-1-chang.seok.bae@intel.com>
+References: <20220614164116.5196-1-chang.seok.bae@intel.com>
 MIME-Version: 1.0
-Message-ID: <165824742138.15455.11110929785444044294.tip-bot2@tip-bot2>
+Message-ID: <165825187026.15455.14720979617017899333.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -64,105 +68,104 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/mm branch of tip:
+The following commit has been merged into the x86/fpu branch of tip:
 
-Commit-ID:     8f1d56f64f8d6b80dea2d1978d10071132a695c5
-Gitweb:        https://git.kernel.org/tip/8f1d56f64f8d6b80dea2d1978d10071132a695c5
-Author:        Nadav Amit <namit@vmware.com>
-AuthorDate:    Sun, 10 Jul 2022 16:28:37 -07:00
-Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Tue, 19 Jul 2022 09:04:52 -07:00
+Commit-ID:     9f01129382774d98ec21526f13da26a0630ee3d8
+Gitweb:        https://git.kernel.org/tip/9f01129382774d98ec21526f13da26a0630ee3d8
+Author:        Chang S. Bae <chang.seok.bae@intel.com>
+AuthorDate:    Mon, 18 Jul 2022 11:56:11 -07:00
+Committer:     Borislav Petkov <bp@suse.de>
+CommitterDate: Tue, 19 Jul 2022 19:17:28 +02:00
 
-x86/mm/tlb: Ignore f->new_tlb_gen when zero
+intel_idle: Add a new flag to initialize the AMX state
 
-Commit aa44284960d5 ("x86/mm/tlb: Avoid reading mm_tlb_gen when
-possible") introduced an optimization to skip superfluous TLB
-flushes based on the generation provided in flush_tlb_info.
+The non-initialized AMX state can be the cause of C-state demotion from C6
+to C1E. This low-power idle state may improve power savings and thus result
+in a higher available turbo frequency budget.
 
-However, arch_tlbbatch_flush() does not provide any generation in
-flush_tlb_info and populates the flush_tlb_info generation with
-0.  This 0 is causes the flush_tlb_info to be interpreted as a
-superfluous, old flush.  As a result, try_to_unmap_one() would
-not perform any TLB flushes.
+This behavior is implementation-specific. Initialize the state for the C6
+entrance of Sapphire Rapids as needed.
 
-Fix it by checking whether f->new_tlb_gen is nonzero. Zero value
-is anyhow is an invalid generation value. To avoid future
-confusion, introduce TLB_GENERATION_INVALID constant and use it
-properly. Add warnings to ensure no partial flushes are done with
-TLB_GENERATION_INVALID or when f->mm is NULL, since this does not
-make any sense.
-
-In addition, add the missing unlikely().
-
-[ dhansen: change VM_BUG_ON() -> VM_WARN_ON(), clarify changelog ]
-
-Fixes: aa44284960d5 ("x86/mm/tlb: Avoid reading mm_tlb_gen when possible")
-Reported-by: Hugh Dickins <hughd@google.com>
-Signed-off-by: Nadav Amit <namit@vmware.com>
+Suggested-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Tested-by: Hugh Dickins <hughd@google.com>
-Link: https://lkml.kernel.org/r/20220710232837.3618-1-namit@vmware.com
+Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Tested-by: Zhang Rui <rui.zhang@intel.com>
+Link: https://lkml.kernel.org/r/20220614164116.5196-1-chang.seok.bae@intel.com
 ---
- arch/x86/include/asm/tlbflush.h |  1 +
- arch/x86/mm/tlb.c               | 15 ++++++++++++---
- 2 files changed, 13 insertions(+), 3 deletions(-)
+ drivers/idle/intel_idle.c | 25 +++++++++++++++++++++++--
+ 1 file changed, 23 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/include/asm/tlbflush.h b/arch/x86/include/asm/tlbflush.h
-index 98fa0a1..21bf105 100644
---- a/arch/x86/include/asm/tlbflush.h
-+++ b/arch/x86/include/asm/tlbflush.h
-@@ -16,6 +16,7 @@
- void __flush_tlb_all(void);
+diff --git a/drivers/idle/intel_idle.c b/drivers/idle/intel_idle.c
+index f5c6802..1ec2210 100644
+--- a/drivers/idle/intel_idle.c
++++ b/drivers/idle/intel_idle.c
+@@ -56,6 +56,7 @@
+ #include <asm/nospec-branch.h>
+ #include <asm/mwait.h>
+ #include <asm/msr.h>
++#include <asm/fpu/api.h>
  
- #define TLB_FLUSH_ALL	-1UL
-+#define TLB_GENERATION_INVALID	0
+ #define INTEL_IDLE_VERSION "0.5.1"
  
- void cr4_update_irqsoff(unsigned long set, unsigned long clear);
- unsigned long cr4_read_shadow(void);
-diff --git a/arch/x86/mm/tlb.c b/arch/x86/mm/tlb.c
-index d9314cc..c1e31e9 100644
---- a/arch/x86/mm/tlb.c
-+++ b/arch/x86/mm/tlb.c
-@@ -771,7 +771,8 @@ static void flush_tlb_func(void *info)
- 		return;
- 	}
+@@ -114,6 +115,11 @@ static unsigned int mwait_substates __initdata;
+ #define CPUIDLE_FLAG_IBRS		BIT(16)
  
--	if (f->new_tlb_gen <= local_tlb_gen) {
-+	if (unlikely(f->new_tlb_gen != TLB_GENERATION_INVALID &&
-+		     f->new_tlb_gen <= local_tlb_gen)) {
- 		/*
- 		 * The TLB is already up to date in respect to f->new_tlb_gen.
- 		 * While the core might be still behind mm_tlb_gen, checking
-@@ -843,6 +844,12 @@ static void flush_tlb_func(void *info)
- 		/* Partial flush */
- 		unsigned long addr = f->start;
- 
-+		/* Partial flush cannot have invalid generations */
-+		VM_WARN_ON(f->new_tlb_gen == TLB_GENERATION_INVALID);
+ /*
++ * Initialize large xstate for the C6-state entrance.
++ */
++#define CPUIDLE_FLAG_INIT_XSTATE	BIT(17)
 +
-+		/* Partial flush must have valid mm */
-+		VM_WARN_ON(f->mm == NULL);
++/*
+  * MWAIT takes an 8-bit "hint" in EAX "suggesting"
+  * the C-state (top nibble) and sub-state (bottom nibble)
+  * 0x00 means "MWAIT(C1)", 0x10 means "MWAIT(C2)" etc.
+@@ -185,6 +191,13 @@ static __cpuidle int intel_idle_ibrs(struct cpuidle_device *dev,
+ 	return ret;
+ }
+ 
++static __cpuidle int intel_idle_xstate(struct cpuidle_device *dev,
++				       struct cpuidle_driver *drv, int index)
++{
++	fpu_idle_fpregs();
++	return __intel_idle(dev, drv, index);
++}
 +
- 		nr_invalidate = (f->end - f->start) >> f->stride_shift;
+ /**
+  * intel_idle_s2idle - Ask the processor to enter the given idle state.
+  * @dev: cpuidle device of the target CPU.
+@@ -200,8 +213,12 @@ static __cpuidle int intel_idle_ibrs(struct cpuidle_device *dev,
+ static __cpuidle int intel_idle_s2idle(struct cpuidle_device *dev,
+ 				       struct cpuidle_driver *drv, int index)
+ {
+-	unsigned long eax = flg2MWAIT(drv->states[index].flags);
+ 	unsigned long ecx = 1; /* break on interrupt flag */
++	struct cpuidle_state *state = &drv->states[index];
++	unsigned long eax = flg2MWAIT(state->flags);
++
++	if (state->flags & CPUIDLE_FLAG_INIT_XSTATE)
++		fpu_idle_fpregs();
  
- 		while (addr < f->end) {
-@@ -1045,7 +1052,8 @@ void flush_tlb_kernel_range(unsigned long start, unsigned long end)
- 		struct flush_tlb_info *info;
+ 	mwait_idle_with_hints(eax, ecx);
  
- 		preempt_disable();
--		info = get_flush_tlb_info(NULL, start, end, 0, false, 0);
-+		info = get_flush_tlb_info(NULL, start, end, 0, false,
-+					  TLB_GENERATION_INVALID);
+@@ -936,7 +953,8 @@ static struct cpuidle_state spr_cstates[] __initdata = {
+ 	{
+ 		.name = "C6",
+ 		.desc = "MWAIT 0x20",
+-		.flags = MWAIT2flg(0x20) | CPUIDLE_FLAG_TLB_FLUSHED,
++		.flags = MWAIT2flg(0x20) | CPUIDLE_FLAG_TLB_FLUSHED |
++					   CPUIDLE_FLAG_INIT_XSTATE,
+ 		.exit_latency = 290,
+ 		.target_residency = 800,
+ 		.enter = &intel_idle,
+@@ -1851,6 +1869,9 @@ static void __init intel_idle_init_cstates_icpu(struct cpuidle_driver *drv)
+ 			drv->states[drv->state_count].enter = intel_idle_ibrs;
+ 		}
  
- 		on_each_cpu(do_kernel_range_flush, info, 1);
- 
-@@ -1214,7 +1222,8 @@ void arch_tlbbatch_flush(struct arch_tlbflush_unmap_batch *batch)
- 
- 	int cpu = get_cpu();
- 
--	info = get_flush_tlb_info(NULL, 0, TLB_FLUSH_ALL, 0, false, 0);
-+	info = get_flush_tlb_info(NULL, 0, TLB_FLUSH_ALL, 0, false,
-+				  TLB_GENERATION_INVALID);
- 	/*
- 	 * flush_tlb_multi() is not optimized for the common case in which only
- 	 * a local TLB flush is needed. Optimize this use-case by calling
++		if (cpuidle_state_table[cstate].flags & CPUIDLE_FLAG_INIT_XSTATE)
++			drv->states[drv->state_count].enter = intel_idle_xstate;
++
+ 		if ((disabled_states_mask & BIT(drv->state_count)) ||
+ 		    ((icpu->use_acpi || force_use_acpi) &&
+ 		     intel_idle_off_by_default(mwait_hint) &&
