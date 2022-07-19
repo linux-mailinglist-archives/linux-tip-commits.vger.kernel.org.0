@@ -2,57 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D543257A55C
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 Jul 2022 19:31:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ECC7F57A6E4
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 Jul 2022 21:05:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239489AbiGSRbW (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Tue, 19 Jul 2022 13:31:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58604 "EHLO
+        id S229496AbiGSTFX (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Tue, 19 Jul 2022 15:05:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57182 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239220AbiGSRbP (ORCPT
+        with ESMTP id S231549AbiGSTFW (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Tue, 19 Jul 2022 13:31:15 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 318DB52FCB;
-        Tue, 19 Jul 2022 10:31:14 -0700 (PDT)
-Date:   Tue, 19 Jul 2022 17:31:11 -0000
+        Tue, 19 Jul 2022 15:05:22 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B0152C105;
+        Tue, 19 Jul 2022 12:05:20 -0700 (PDT)
+Date:   Tue, 19 Jul 2022 19:05:16 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1658251872;
+        s=2020; t=1658257518;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=KEy3GJY59I7CxrglpCX3bhG+3jD+S6czPtWIZFCl7Po=;
-        b=dS7UOqi7NJupKB4toSMtoWlat7AmOvP1/hXrDUtWOGSGLvAgLnhFNaZnkC2KSHEj0xBhnq
-        A1wA4m8WEp+qMwqDBvNxSnBanIUSGLvPc49RiHreDjAErP85kjEM5QipMVrigf6z4eKbc7
-        +G28TMFnZmcO3oR9Zh0abGWHhfjGhT88vGolbGdPwFuA8wzqd3hl2Lu8wri6Xm1dNhGiYe
-        yIgfO6VXQTV+K+plevYsLJ8EVdJpOX+VqzIt0HkMarRz1zc5nTir2dOamopUWslX7L8KN/
-        YC/SMDQKsubMjlQXCxxnOm06CH6ULVGwbf3ursWrkXNRAj6j8uGJDo8NZy50rw==
+        bh=ur+bosjTdvrAmhdhVF8+GUTIU+bcYGG9cbu/MPrynHM=;
+        b=2Z9BS3jGsAJffUxlpwc0qXZZ/acGveFsHjgCpnFezQD0QQ7mGwpmPQ1k4ZU7LP2KY7Z/xw
+        GLwdSVBzSNq0B/gOZe3/FYJT+zHQd8xZcnQHdafmZONEV8GSti9YprUI+wgaa7n9NZcwVf
+        8Ozs2ks7EI4yD/P2MPkJT/N3VQO74tyxurbH26doOB2c7pDQtGvDXuzaIeG1MsJWwNL6Uy
+        n0BRP1K7zZ2eTgV9ZkSTn4T4N+BRn6DkSTpfyWftHK6OklbDH3Fthx0gQVzWtCwMRACRe4
+        Y2WxSpHlVrxxKKq536xKZquXV+9mCS2FIvYAB1xkjyC4Y3m41cHxh20xiElUbw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1658251872;
+        s=2020e; t=1658257518;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=KEy3GJY59I7CxrglpCX3bhG+3jD+S6czPtWIZFCl7Po=;
-        b=lc6GCQMesJGkjsHc0bv0JQf3v9hbPe8SsI6/AiUO1KPhPe2uk2GJAo6qbbo62ZB1NAes7M
-        jWeco2ws+XKH8eBA==
-From:   "tip-bot2 for Chang S. Bae" <tip-bot2@linutronix.de>
+        bh=ur+bosjTdvrAmhdhVF8+GUTIU+bcYGG9cbu/MPrynHM=;
+        b=1/6hfCzq//LpESTB5RzwemFKhADx7+VRmzJkXcjais0rwN8kTiHsY0wslifYHHeW54ET5g
+        WwTmvK16WYkAl8Dw==
+From:   "tip-bot2 for Paolo Bonzini" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/fpu] x86/fpu: Add a helper to prepare AMX state for
- low-power CPU idle
-Cc:     "Chang S. Bae" <chang.seok.bae@intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Borislav Petkov <bp@suse.de>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20220608164748.11864-2-chang.seok.bae@intel.com>
-References: <20220608164748.11864-2-chang.seok.bae@intel.com>
+Subject: [tip: x86/cpu] x86/cpu: Use MSR_IA32_MISC_ENABLE constants
+Cc:     Paolo Bonzini <pbonzini@redhat.com>, Borislav Petkov <bp@suse.de>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20220719174714.2410374-1-pbonzini@redhat.com>
+References: <20220719174714.2410374-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-Message-ID: <165825187133.15455.7594593311230934911.tip-bot2@tip-bot2>
+Message-ID: <165825751659.15455.988965721431093614.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -66,88 +63,43 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/fpu branch of tip:
+The following commit has been merged into the x86/cpu branch of tip:
 
-Commit-ID:     f17b168734c0fe47343a7502d012266a051f9942
-Gitweb:        https://git.kernel.org/tip/f17b168734c0fe47343a7502d012266a051f9942
-Author:        Chang S. Bae <chang.seok.bae@intel.com>
-AuthorDate:    Wed, 08 Jun 2022 09:47:47 -07:00
+Commit-ID:     3f2adf00f52b5f2e9e9f23bb5c77608fc9ee297c
+Gitweb:        https://git.kernel.org/tip/3f2adf00f52b5f2e9e9f23bb5c77608fc9ee297c
+Author:        Paolo Bonzini <pbonzini@redhat.com>
+AuthorDate:    Tue, 19 Jul 2022 13:47:14 -04:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Tue, 19 Jul 2022 18:46:15 +02:00
+CommitterDate: Tue, 19 Jul 2022 20:53:10 +02:00
 
-x86/fpu: Add a helper to prepare AMX state for low-power CPU idle
+x86/cpu: Use MSR_IA32_MISC_ENABLE constants
 
-When a CPU enters an idle state, a non-initialized AMX register state may
-be the cause of preventing a deeper low-power state. Other extended
-register states whether initialized or not do not impact the CPU idle
-state.
+Instead of the magic numbers 1<<11 and 1<<12 use the constants
+from msr-index.h.  This makes it obvious where those bits
+of MSR_IA32_MISC_ENABLE are consumed (and in fact that Linux
+consumes them at all) to simple minds that grep for
+MSR_IA32_MISC_ENABLE_.*_UNAVAIL.
 
-The new helper can ensure the AMX state is initialized before the CPU is
-idle, and it will be used by the intel idle driver.
-
-Check the AMX_TILE feature bit before using XGETBV1 as a chain of
-dependencies was established via cpuid_deps[]: AMX->XFD->XGETBV1.
-
-Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20220608164748.11864-2-chang.seok.bae@intel.com
+Link: https://lore.kernel.org/r/20220719174714.2410374-1-pbonzini@redhat.com
 ---
- arch/x86/include/asm/fpu/api.h       |  2 ++
- arch/x86/include/asm/special_insns.h |  9 +++++++++
- arch/x86/kernel/fpu/core.c           | 14 ++++++++++++++
- 3 files changed, 25 insertions(+)
+ arch/x86/kernel/cpu/intel.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/include/asm/fpu/api.h b/arch/x86/include/asm/fpu/api.h
-index 6b0f31f..503a577 100644
---- a/arch/x86/include/asm/fpu/api.h
-+++ b/arch/x86/include/asm/fpu/api.h
-@@ -164,4 +164,6 @@ static inline bool fpstate_is_confidential(struct fpu_guest *gfpu)
- /* prctl */
- extern long fpu_xstate_prctl(int option, unsigned long arg2);
+diff --git a/arch/x86/kernel/cpu/intel.c b/arch/x86/kernel/cpu/intel.c
+index 8321c43..a00dd3e 100644
+--- a/arch/x86/kernel/cpu/intel.c
++++ b/arch/x86/kernel/cpu/intel.c
+@@ -647,9 +647,9 @@ static void init_intel(struct cpuinfo_x86 *c)
+ 		unsigned int l1, l2;
  
-+extern void fpu_idle_fpregs(void);
-+
- #endif /* _ASM_X86_FPU_API_H */
-diff --git a/arch/x86/include/asm/special_insns.h b/arch/x86/include/asm/special_insns.h
-index 45b18eb..35f709f 100644
---- a/arch/x86/include/asm/special_insns.h
-+++ b/arch/x86/include/asm/special_insns.h
-@@ -295,6 +295,15 @@ static inline int enqcmds(void __iomem *dst, const void *src)
- 	return 0;
- }
+ 		rdmsr(MSR_IA32_MISC_ENABLE, l1, l2);
+-		if (!(l1 & (1<<11)))
++		if (!(l1 & MSR_IA32_MISC_ENABLE_BTS_UNAVAIL))
+ 			set_cpu_cap(c, X86_FEATURE_BTS);
+-		if (!(l1 & (1<<12)))
++		if (!(l1 & MSR_IA32_MISC_ENABLE_PEBS_UNAVAIL))
+ 			set_cpu_cap(c, X86_FEATURE_PEBS);
+ 	}
  
-+static inline void tile_release(void)
-+{
-+	/*
-+	 * Instruction opcode for TILERELEASE; supported in binutils
-+	 * version >= 2.36.
-+	 */
-+	asm volatile(".byte 0xc4, 0xe2, 0x78, 0x49, 0xc0");
-+}
-+
- #endif /* __KERNEL__ */
- 
- #endif /* _ASM_X86_SPECIAL_INSNS_H */
-diff --git a/arch/x86/kernel/fpu/core.c b/arch/x86/kernel/fpu/core.c
-index 0531d6a..3b28c5b 100644
---- a/arch/x86/kernel/fpu/core.c
-+++ b/arch/x86/kernel/fpu/core.c
-@@ -851,3 +851,17 @@ int fpu__exception_code(struct fpu *fpu, int trap_nr)
- 	 */
- 	return 0;
- }
-+
-+/*
-+ * Initialize register state that may prevent from entering low-power idle.
-+ * This function will be invoked from the cpuidle driver only when needed.
-+ */
-+void fpu_idle_fpregs(void)
-+{
-+	/* Note: AMX_TILE being enabled implies XGETBV1 support */
-+	if (cpu_feature_enabled(X86_FEATURE_AMX_TILE) &&
-+	    (xfeatures_in_use() & XFEATURE_MASK_XTILE)) {
-+		tile_release();
-+		fpregs_deactivate(&current->thread.fpu);
-+	}
-+}
