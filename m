@@ -2,56 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 656B657C6B7
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 21 Jul 2022 10:45:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C0F5157C6D4
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 21 Jul 2022 10:52:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232615AbiGUIpJ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 21 Jul 2022 04:45:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46080 "EHLO
+        id S232391AbiGUIwF (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 21 Jul 2022 04:52:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54130 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232576AbiGUIo7 (ORCPT
+        with ESMTP id S231726AbiGUIwE (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 21 Jul 2022 04:44:59 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BADD97FE65;
-        Thu, 21 Jul 2022 01:44:53 -0700 (PDT)
-Date:   Thu, 21 Jul 2022 08:44:51 -0000
+        Thu, 21 Jul 2022 04:52:04 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8578B62A5C;
+        Thu, 21 Jul 2022 01:52:03 -0700 (PDT)
+Date:   Thu, 21 Jul 2022 08:52:00 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1658393092;
+        s=2020; t=1658393522;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=+Tqoe9ErZGuiOGQOEuxZHvru68/1En7mH71iUA7ma28=;
-        b=QRt18Ufw/Qttk5f8bvFnRsELPpe3479JGU1AYFbDVFvjE8PFLgWq319lw4BX+3RToAo7sn
-        n+iV5pcBIUWuEHVF+rLz6iF/d8Ao7Mt4lfuGFQ2woh8n6dMBIqi4oUuLx/0a6pP/g91aBP
-        VlO6eoIOp/jqTXOHPdvitca3oOg5l4tSCE25Y27/F7hhdfzZsi4eAvqEuR6tqm2TccYAe7
-        PBKnoauWRX1i1f4QfwWjOA9V2b16i4cKseRGeeRZ44HrDgZVlrw00LR5cdQctJo5WZ9V6W
-        2+8YRWj3x/H1dAmj+J5wW+opB1Mf5F6eFYPjrygxIC1nRSDTkxXWmkdyMAbzGg==
+        bh=M/5wZ+MtEyeurMIzj9L3QrvkOyWzl+x+6Bpcv+IWBN8=;
+        b=IN2Spu0QIkH/ib3nJPI2l8dm39XuJFGg+FAi1vuMLvVwksK0Bh4cQ0WZ/jgCL6nXDEucP1
+        gqrRqV7YGrjg58Ei4tEDFs34Zgzz9FRxnehPqcH4Ejl34DdPbMsOiR1/IJRk9+ae+OCcBX
+        ZftMdRwdtWJFONF22iV4BPo/tW92TqUNxesA0QZOseD4zYrpfEO55zL4TnxxqUbV5yi4VT
+        D2Uqupg33whioQAApqwoO4NE6Hp/usayAi8YH3pTfVrIqjFLsJQl+TGCiz30qNQNREjyeU
+        73wnG11U5WsXp6boMH6K2qb4kzOz+vdcEEWImOVuqO3vqTnDQkNN7jWDbhP32w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1658393092;
+        s=2020e; t=1658393522;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=+Tqoe9ErZGuiOGQOEuxZHvru68/1En7mH71iUA7ma28=;
-        b=xUMbUfaY4vlLgOxG08vILuuaE9BM8TRoCgsqiFMloRWVAX/JbulvcL9/WcGninuVydI/Cb
-        ptGavNu6G5wRr3AQ==
-From:   "tip-bot2 for Juri Lelli" <tip-bot2@linutronix.de>
+        bh=M/5wZ+MtEyeurMIzj9L3QrvkOyWzl+x+6Bpcv+IWBN8=;
+        b=DOY+7LuNGhPFvroxt3sNbrQ0cSP8Oid56wfoax76YlbQBUrl3o7Pen1DL2tP3ViRp5ZvGm
+        6GBIfTS3DKll0GBA==
+From:   "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] sched/deadline: Fix BUG_ON condition for deboosted tasks
-Cc:     Juri Lelli <juri.lelli@redhat.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        stable@vger.kernel.org, x86@kernel.org,
+Subject: [tip: x86/core] x86/extable: Fix ex_handler_msr() print condition
+Cc:     Stephane Eranian <eranian@google.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220714151908.533052-1-juri.lelli@redhat.com>
-References: <20220714151908.533052-1-juri.lelli@redhat.com>
+In-Reply-To: <YqyVFsbviKjVGGZ9@worktop.programming.kicks-ass.net>
+References: <YqyVFsbviKjVGGZ9@worktop.programming.kicks-ass.net>
 MIME-Version: 1.0
-Message-ID: <165839309101.15455.13532699965942868865.tip-bot2@tip-bot2>
+Message-ID: <165839352078.15455.154258296152260339.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,51 +64,112 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/urgent branch of tip:
+The following commit has been merged into the x86/core branch of tip:
 
-Commit-ID:     ddfc710395cccc61247348df9eb18ea50321cbed
-Gitweb:        https://git.kernel.org/tip/ddfc710395cccc61247348df9eb18ea50321cbed
-Author:        Juri Lelli <juri.lelli@redhat.com>
-AuthorDate:    Thu, 14 Jul 2022 17:19:08 +02:00
+Commit-ID:     a1a5482a2c6e38a3ebed32e571625c56a8cc41a6
+Gitweb:        https://git.kernel.org/tip/a1a5482a2c6e38a3ebed32e571625c56a8cc41a6
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Fri, 17 Jun 2022 16:52:06 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Thu, 21 Jul 2022 10:35:28 +02:00
+CommitterDate: Thu, 21 Jul 2022 10:39:42 +02:00
 
-sched/deadline: Fix BUG_ON condition for deboosted tasks
+x86/extable: Fix ex_handler_msr() print condition
 
-Tasks the are being deboosted from SCHED_DEADLINE might enter
-enqueue_task_dl() one last time and hit an erroneous BUG_ON condition:
-since they are not boosted anymore, the if (is_dl_boosted()) branch is
-not taken, but the else if (!dl_prio) is and inside this one we
-BUG_ON(!is_dl_boosted), which is of course false (BUG_ON triggered)
-otherwise we had entered the if branch above. Long story short, the
-current condition doesn't make sense and always leads to triggering of a
-BUG.
+On Fri, Jun 17, 2022 at 02:08:52PM +0300, Stephane Eranian wrote:
+> Some changes to the way invalid MSR accesses are reported by the
+> kernel is causing some problems with messages printed on the
+> console.
+>
+> We have seen several cases of ex_handler_msr() printing invalid MSR
+> accesses once but the callstack multiple times causing confusion on
+> the console.
 
-Fix this by only checking enqueue flags, properly: ENQUEUE_REPLENISH has
-to be present, but additional flags are not a problem.
+> The problem here is that another earlier commit (5.13):
+>
+> a358f40600b3 ("once: implement DO_ONCE_LITE for non-fast-path "do once" functionality")
+>
+> Modifies all the pr_*_once() calls to always return true claiming
+> that no caller is ever checking the return value of the functions.
+>
+> This is why we are seeing the callstack printed without the
+> associated printk() msg.
 
-Fixes: 64be6f1f5f71 ("sched/deadline: Don't replenish from a !SCHED_DEADLINE entity")
-Signed-off-by: Juri Lelli <juri.lelli@redhat.com>
+Extract the ONCE_IF(cond) part into __ONCE_LTE_IF() and use that to
+implement DO_ONCE_LITE_IF() and fix the extable code.
+
+Fixes: a358f40600b3 ("once: implement DO_ONCE_LITE for non-fast-path "do once" functionality")
+Reported-by: Stephane Eranian <eranian@google.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20220714151908.533052-1-juri.lelli@redhat.com
+Tested-by: Stephane Eranian <eranian@google.com>
+Link: https://lkml.kernel.org/r/YqyVFsbviKjVGGZ9@worktop.programming.kicks-ass.net
 ---
- kernel/sched/deadline.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/x86/mm/extable.c     | 16 +++++++++-------
+ include/linux/once_lite.h | 20 ++++++++++++++++----
+ 2 files changed, 25 insertions(+), 11 deletions(-)
 
-diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
-index b515296..7bf5612 100644
---- a/kernel/sched/deadline.c
-+++ b/kernel/sched/deadline.c
-@@ -1701,7 +1701,10 @@ static void enqueue_task_dl(struct rq *rq, struct task_struct *p, int flags)
- 		 * the throttle.
- 		 */
- 		p->dl.dl_throttled = 0;
--		BUG_ON(!is_dl_boosted(&p->dl) || flags != ENQUEUE_REPLENISH);
-+		if (!(flags & ENQUEUE_REPLENISH))
-+			printk_deferred_once("sched: DL de-boosted task PID %d: REPLENISH flag missing\n",
-+					     task_pid_nr(p));
+diff --git a/arch/x86/mm/extable.c b/arch/x86/mm/extable.c
+index dba2197..331310c 100644
+--- a/arch/x86/mm/extable.c
++++ b/arch/x86/mm/extable.c
+@@ -94,16 +94,18 @@ static bool ex_handler_copy(const struct exception_table_entry *fixup,
+ static bool ex_handler_msr(const struct exception_table_entry *fixup,
+ 			   struct pt_regs *regs, bool wrmsr, bool safe, int reg)
+ {
+-	if (!safe && wrmsr &&
+-	    pr_warn_once("unchecked MSR access error: WRMSR to 0x%x (tried to write 0x%08x%08x) at rIP: 0x%lx (%pS)\n",
+-			 (unsigned int)regs->cx, (unsigned int)regs->dx,
+-			 (unsigned int)regs->ax,  regs->ip, (void *)regs->ip))
++	if (__ONCE_LITE_IF(!safe && wrmsr)) {
++		pr_warn("unchecked MSR access error: WRMSR to 0x%x (tried to write 0x%08x%08x) at rIP: 0x%lx (%pS)\n",
++			(unsigned int)regs->cx, (unsigned int)regs->dx,
++			(unsigned int)regs->ax,  regs->ip, (void *)regs->ip);
+ 		show_stack_regs(regs);
++	}
+ 
+-	if (!safe && !wrmsr &&
+-	    pr_warn_once("unchecked MSR access error: RDMSR from 0x%x at rIP: 0x%lx (%pS)\n",
+-			 (unsigned int)regs->cx, regs->ip, (void *)regs->ip))
++	if (__ONCE_LITE_IF(!safe && !wrmsr)) {
++		pr_warn("unchecked MSR access error: RDMSR from 0x%x at rIP: 0x%lx (%pS)\n",
++			(unsigned int)regs->cx, regs->ip, (void *)regs->ip);
+ 		show_stack_regs(regs);
++	}
+ 
+ 	if (!wrmsr) {
+ 		/* Pretend that the read succeeded and returned 0. */
+diff --git a/include/linux/once_lite.h b/include/linux/once_lite.h
+index 861e606..b7bce49 100644
+--- a/include/linux/once_lite.h
++++ b/include/linux/once_lite.h
+@@ -9,15 +9,27 @@
+  */
+ #define DO_ONCE_LITE(func, ...)						\
+ 	DO_ONCE_LITE_IF(true, func, ##__VA_ARGS__)
+-#define DO_ONCE_LITE_IF(condition, func, ...)				\
 +
- 		return;
- 	}
++#define __ONCE_LITE_IF(condition)					\
+ 	({								\
+ 		static bool __section(".data.once") __already_done;	\
+-		bool __ret_do_once = !!(condition);			\
++		bool __ret_cond = !!(condition);			\
++		bool __ret_once = false;				\
+ 									\
+-		if (unlikely(__ret_do_once && !__already_done)) {	\
++		if (unlikely(__ret_cond && !__already_done)) {		\
+ 			__already_done = true;				\
+-			func(__VA_ARGS__);				\
++			__ret_once = true;				\
+ 		}							\
++		unlikely(__ret_once);					\
++	})
++
++#define DO_ONCE_LITE_IF(condition, func, ...)				\
++	({								\
++		bool __ret_do_once = !!(condition);			\
++									\
++		if (__ONCE_LITE_IF(__ret_do_once))			\
++			func(__VA_ARGS__);				\
++									\
+ 		unlikely(__ret_do_once);				\
+ 	})
  
