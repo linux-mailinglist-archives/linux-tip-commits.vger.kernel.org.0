@@ -2,177 +2,132 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0EC7D57C76C
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 21 Jul 2022 11:19:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 30ADC57F119
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 23 Jul 2022 21:03:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232787AbiGUJT3 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 21 Jul 2022 05:19:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51452 "EHLO
+        id S235519AbiGWTDB (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 23 Jul 2022 15:03:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60234 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232764AbiGUJT3 (ORCPT
+        with ESMTP id S234408AbiGWTDB (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 21 Jul 2022 05:19:29 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13233785AB;
-        Thu, 21 Jul 2022 02:19:28 -0700 (PDT)
-Date:   Thu, 21 Jul 2022 09:19:25 -0000
+        Sat, 23 Jul 2022 15:03:01 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49D8E1836A;
+        Sat, 23 Jul 2022 12:03:00 -0700 (PDT)
+Date:   Sat, 23 Jul 2022 19:02:56 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1658395166;
+        s=2020; t=1658602977;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Yj+iNsRdO7eK1x4tHRnfrDMhGOSBB3eMOx9yOGW+ZOY=;
-        b=sIEVD54pEprogYVMQttPWb2E9yr9LZZooBAY1timIW/K7ADQ0J6GbsR0XKwGY2/50wy7Rx
-        AJoglBpvjwFQ0bXwGAxMj6Jf3fY5Om2fNWW15jKCy818FEemaelL1TQQHX66pv6tNMiGkF
-        tG7Yf7V9rHuu8PmBhpvjuYqnQe0pk/Z801jCcbrPR6d56KvtwqyOvKfTFVTUnIDeji0u3F
-        ZMEfqdD1gSM83ayJrvkNhR52GESgSKehgokcjc35j6mZyaPeR8rYzmB3L0sIifTjDHfRIs
-        +iKzeowpMrNgNJW05srsjsMk2xpgfHEjFaOJk9OZlHYTTjeaI4iKasIj3TM4+g==
+        bh=KVhvayUCuLUwx0cDpVyHzUhQXQXy9a7YeCjQCfFqYT0=;
+        b=SRuxErA1NYjv4s6GKmTUGHlJabtLaz74O3s1TaDcYu7yurBcl0XISOMrO1c48aKc5JbA7l
+        FfD+bnIobLgDXN9nOCrBkRExxCMf2SpDJvcwYuwjUE2ythl2qwDUA4sFlAKyqmPZ8ELjYy
+        g/uB/In9wzYwOTSrcrjMMy9X2yy7uOXXrwMlAY25fzNyKJXvWnuDzoirKMVVC6vAMIdIWA
+        Jqn4Wso0/XRbWAWwrK1EwTiTPwc8g7DAY/u+jBK5vMoNqefr96ETvO5P8JEBZoKn1JniZh
+        xnzkdoolnhOFdF/An2dVQ6WMkv+VRm+gzWvROWLluy65laJ4gGljaXvVrbA1rA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1658395166;
+        s=2020e; t=1658602977;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Yj+iNsRdO7eK1x4tHRnfrDMhGOSBB3eMOx9yOGW+ZOY=;
-        b=Rqov2GB602VLttAs1Xcaq6iHGdb/qh1MoZJ3+sTq5TTaef1ZSzvQdTFN38wyP7LjGvpbaN
-        6mT/RnRE8JS9j2CA==
-From:   "tip-bot2 for Mario Limonciello" <tip-bot2@linutronix.de>
+        bh=KVhvayUCuLUwx0cDpVyHzUhQXQXy9a7YeCjQCfFqYT0=;
+        b=JI9qW77DzmozqRoY4VkO0t1MNyNkCjWnf4sT7uG7zVrQPHdbCuRRH38etVn7/WzkhKsIHJ
+        oTp9qjUYOeNwAUBA==
+From:   "tip-bot2 for Ben Hutchings" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/misc] x86/amd_nb: Add AMD PCI IDs for SMN communication
-Cc:     Mario Limonciello <mario.limonciello@amd.com>,
-        Borislav Petkov <bp@suse.de>,
-        Yazen Ghannam <yazen.ghannam@amd.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Guenter Roeck <linux@roeck-us.net>, x86@kernel.org,
+Subject: [tip: x86/urgent] x86/speculation: Make all RETbleed mitigations 64-bit only
+Cc:     Ben Hutchings <ben@decadent.org.uk>, Borislav Petkov <bp@suse.de>,
+        <stable@vger.kernel.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220719195256.1516-1-mario.limonciello@amd.com>
-References: <20220719195256.1516-1-mario.limonciello@amd.com>
+In-Reply-To: <YtwSR3NNsWp1ohfV@decadent.org.uk>
+References: <YtwSR3NNsWp1ohfV@decadent.org.uk>
 MIME-Version: 1.0
-Message-ID: <165839516549.15455.5543584372152726957.tip-bot2@tip-bot2>
+Message-ID: <165860297629.15455.8257113023400800621.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,UPPERCASE_50_75 autolearn=ham autolearn_force=no version=3.4.6
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/misc branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     f8faf3496633b302a6591fda599540a0b53a35bb
-Gitweb:        https://git.kernel.org/tip/f8faf3496633b302a6591fda599540a0b53a35bb
-Author:        Mario Limonciello <mario.limonciello@amd.com>
-AuthorDate:    Tue, 19 Jul 2022 14:52:51 -05:00
+Commit-ID:     b648ab487f31bc4c38941bc770ea97fe394304bb
+Gitweb:        https://git.kernel.org/tip/b648ab487f31bc4c38941bc770ea97fe394304bb
+Author:        Ben Hutchings <ben@decadent.org.uk>
+AuthorDate:    Sat, 23 Jul 2022 17:22:47 +02:00
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Wed, 20 Jul 2022 17:35:40 +02:00
+CommitterDate: Sat, 23 Jul 2022 18:45:11 +02:00
 
-x86/amd_nb: Add AMD PCI IDs for SMN communication
+x86/speculation: Make all RETbleed mitigations 64-bit only
 
-Add support for SMN communication on family 17h model A0h and family 19h
-models 60h-70h.
+The mitigations for RETBleed are currently ineffective on x86_32 since
+entry_32.S does not use the required macros.  However, for an x86_32
+target, the kconfig symbols for them are still enabled by default and
+/sys/devices/system/cpu/vulnerabilities/retbleed will wrongly report
+that mitigations are in place.
 
-  [ bp: Merge into a single patch. ]
+Make all of these symbols depend on X86_64, and only enable RETHUNK by
+default on X86_64.
 
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Fixes: f43b9876e857 ("x86/retbleed: Add fine grained Kconfig knobs")
+Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Yazen Ghannam <yazen.ghannam@amd.com>
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>	# pci_ids.h
-Acked-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20220719195256.1516-1-mario.limonciello@amd.com
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/YtwSR3NNsWp1ohfV@decadent.org.uk
 ---
- arch/x86/kernel/amd_nb.c | 13 +++++++++++++
- include/linux/pci_ids.h  |  3 +++
- 2 files changed, 16 insertions(+)
+ arch/x86/Kconfig | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/kernel/amd_nb.c b/arch/x86/kernel/amd_nb.c
-index 190e0f7..4266b64 100644
---- a/arch/x86/kernel/amd_nb.c
-+++ b/arch/x86/kernel/amd_nb.c
-@@ -19,17 +19,23 @@
- #define PCI_DEVICE_ID_AMD_17H_M10H_ROOT	0x15d0
- #define PCI_DEVICE_ID_AMD_17H_M30H_ROOT	0x1480
- #define PCI_DEVICE_ID_AMD_17H_M60H_ROOT	0x1630
-+#define PCI_DEVICE_ID_AMD_17H_MA0H_ROOT	0x14b5
- #define PCI_DEVICE_ID_AMD_19H_M10H_ROOT	0x14a4
-+#define PCI_DEVICE_ID_AMD_19H_M60H_ROOT	0x14d8
-+#define PCI_DEVICE_ID_AMD_19H_M70H_ROOT	0x14e8
- #define PCI_DEVICE_ID_AMD_17H_DF_F4	0x1464
- #define PCI_DEVICE_ID_AMD_17H_M10H_DF_F4 0x15ec
- #define PCI_DEVICE_ID_AMD_17H_M30H_DF_F4 0x1494
- #define PCI_DEVICE_ID_AMD_17H_M60H_DF_F4 0x144c
- #define PCI_DEVICE_ID_AMD_17H_M70H_DF_F4 0x1444
-+#define PCI_DEVICE_ID_AMD_17H_MA0H_DF_F4 0x1728
- #define PCI_DEVICE_ID_AMD_19H_DF_F4	0x1654
- #define PCI_DEVICE_ID_AMD_19H_M10H_DF_F4 0x14b1
- #define PCI_DEVICE_ID_AMD_19H_M40H_ROOT	0x14b5
- #define PCI_DEVICE_ID_AMD_19H_M40H_DF_F4 0x167d
- #define PCI_DEVICE_ID_AMD_19H_M50H_DF_F4 0x166e
-+#define PCI_DEVICE_ID_AMD_19H_M60H_DF_F4 0x14e4
-+#define PCI_DEVICE_ID_AMD_19H_M70H_DF_F4 0x14f4
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index e58798f..1670a3f 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -2473,7 +2473,7 @@ config RETHUNK
+ 	bool "Enable return-thunks"
+ 	depends on RETPOLINE && CC_HAS_RETURN_THUNK
+ 	select OBJTOOL if HAVE_OBJTOOL
+-	default y
++	default y if X86_64
+ 	help
+ 	  Compile the kernel with the return-thunks compiler option to guard
+ 	  against kernel-to-user data leaks by avoiding return speculation.
+@@ -2482,21 +2482,21 @@ config RETHUNK
  
- /* Protect the PCI config register pairs used for SMN. */
- static DEFINE_MUTEX(smn_mutex);
-@@ -41,8 +47,11 @@ static const struct pci_device_id amd_root_ids[] = {
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_17H_M10H_ROOT) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_17H_M30H_ROOT) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_17H_M60H_ROOT) },
-+	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_17H_MA0H_ROOT) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_19H_M10H_ROOT) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_19H_M40H_ROOT) },
-+	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_19H_M60H_ROOT) },
-+	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_19H_M70H_ROOT) },
- 	{}
- };
+ config CPU_UNRET_ENTRY
+ 	bool "Enable UNRET on kernel entry"
+-	depends on CPU_SUP_AMD && RETHUNK
++	depends on CPU_SUP_AMD && RETHUNK && X86_64
+ 	default y
+ 	help
+ 	  Compile the kernel with support for the retbleed=unret mitigation.
  
-@@ -61,12 +70,15 @@ static const struct pci_device_id amd_nb_misc_ids[] = {
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_17H_M10H_DF_F3) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_17H_M30H_DF_F3) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_17H_M60H_DF_F3) },
-+	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_17H_MA0H_DF_F3) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_CNB17H_F3) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_17H_M70H_DF_F3) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_19H_DF_F3) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_19H_M10H_DF_F3) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_19H_M40H_DF_F3) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_19H_M50H_DF_F3) },
-+	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_19H_M60H_DF_F3) },
-+	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_19H_M70H_DF_F3) },
- 	{}
- };
+ config CPU_IBPB_ENTRY
+ 	bool "Enable IBPB on kernel entry"
+-	depends on CPU_SUP_AMD
++	depends on CPU_SUP_AMD && X86_64
+ 	default y
+ 	help
+ 	  Compile the kernel with support for the retbleed=ibpb mitigation.
  
-@@ -81,6 +93,7 @@ static const struct pci_device_id amd_nb_link_ids[] = {
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_17H_M30H_DF_F4) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_17H_M60H_DF_F4) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_17H_M70H_DF_F4) },
-+	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_17H_MA0H_DF_F4) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_19H_DF_F4) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_19H_M10H_DF_F4) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_19H_M40H_DF_F4) },
-diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
-index 0178823..7fa460c 100644
---- a/include/linux/pci_ids.h
-+++ b/include/linux/pci_ids.h
-@@ -556,10 +556,13 @@
- #define PCI_DEVICE_ID_AMD_17H_M30H_DF_F3 0x1493
- #define PCI_DEVICE_ID_AMD_17H_M60H_DF_F3 0x144b
- #define PCI_DEVICE_ID_AMD_17H_M70H_DF_F3 0x1443
-+#define PCI_DEVICE_ID_AMD_17H_MA0H_DF_F3 0x1727
- #define PCI_DEVICE_ID_AMD_19H_DF_F3	0x1653
- #define PCI_DEVICE_ID_AMD_19H_M10H_DF_F3 0x14b0
- #define PCI_DEVICE_ID_AMD_19H_M40H_DF_F3 0x167c
- #define PCI_DEVICE_ID_AMD_19H_M50H_DF_F3 0x166d
-+#define PCI_DEVICE_ID_AMD_19H_M60H_DF_F3 0x14e3
-+#define PCI_DEVICE_ID_AMD_19H_M70H_DF_F3 0x14f3
- #define PCI_DEVICE_ID_AMD_CNB17H_F3	0x1703
- #define PCI_DEVICE_ID_AMD_LANCE		0x2000
- #define PCI_DEVICE_ID_AMD_LANCE_HOME	0x2001
+ config CPU_IBRS_ENTRY
+ 	bool "Enable IBRS on kernel entry"
+-	depends on CPU_SUP_INTEL
++	depends on CPU_SUP_INTEL && X86_64
+ 	default y
+ 	help
+ 	  Compile the kernel with support for the spectre_v2=ibrs mitigation.
