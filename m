@@ -2,55 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 028D857FEC1
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 25 Jul 2022 14:08:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 12D4858261F
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 27 Jul 2022 14:09:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234692AbiGYMI3 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Mon, 25 Jul 2022 08:08:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54118 "EHLO
+        id S232685AbiG0MJl (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 27 Jul 2022 08:09:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53632 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232709AbiGYMI2 (ORCPT
+        with ESMTP id S231373AbiG0MJk (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Mon, 25 Jul 2022 08:08:28 -0400
+        Wed, 27 Jul 2022 08:09:40 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AD19DF70;
-        Mon, 25 Jul 2022 05:08:24 -0700 (PDT)
-Date:   Mon, 25 Jul 2022 12:08:21 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 883E94B49D;
+        Wed, 27 Jul 2022 05:09:39 -0700 (PDT)
+Date:   Wed, 27 Jul 2022 12:09:36 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1658750902;
+        s=2020; t=1658923778;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=0Gk8CPxljSGi8h/toKgfaY1Sja4UpRi79bK/PS63Ce4=;
-        b=gPB7SrcnX8SDYZjl0/8Z8U4Jf2jb4kh9vf/rd4wZ5aAUeRUEo0QpE3naqxHAiMng0RSxL8
-        pO+G8ut0FDw9bqUBSxfpNZfho6a69rAY4/9fuZmpVu7J1ViEtefNRU6d/IL5RigtzQNsGd
-        BavH9E11mBa7w456HxeLYQgaZZ28oYs2nsq5fhK4m1pPX6VOwbAZcm4r8hoarA87FxLvfZ
-        ewE4PII2SFOsIO9NjiQ/ulnI5zpwZEia95sABDeHwGDuJHD2GYnf4hPIS2CQBcSuF9PfrC
-        PvvS+V9WgHAaX5rQJBPYDEKPt3GvdswLUrJVkspY+NwwhYX/WmkvZMhXLs7gdA==
+        bh=4fp6pr5Xxzr1gnsIEg3CkXgkarNweuTECiEdDkXj13U=;
+        b=OiX175RLZJQa+2i9+5hh63PUcj4tJh9tTQ4Bwh4SzrNKC54GsE2m+1KKrR16K+uKUupkAQ
+        7L4YjoSqdqArUR472iXW3wbBhWB0C3tQ8sBI8aRQ6sbX4/LoP+kqjaViHc9xNx9mqA8F+l
+        WGtuY66PY/zI2a87n0WgJeJ1q/Brr1f/xHQ41GzNPWiiff4n3RuIr2b6A1wx1mkualrTBF
+        L/h3107lhLQlw7X1SwfFVPLebVCMSVLPhrIDoc4/Wnhm8ewP7aM1rI8JNqq66ZA05CdcLr
+        HbTxWivNMyH+Tg6UK/WM/m/C5RZlVeDY9dVUmuparRMi/H7D2iHI6SsiRBlQFA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1658750902;
+        s=2020e; t=1658923778;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=0Gk8CPxljSGi8h/toKgfaY1Sja4UpRi79bK/PS63Ce4=;
-        b=FR8vef3P9kxoTgbcrsyRsmCfO4m4lAoJ8YUKGRrWyrQOmSQvH6891dh4wryd525OGx7luu
-        a+EqZi31WRvVYIAQ==
-From:   "tip-bot2 for Masahiro Yamada" <tip-bot2@linutronix.de>
+        bh=4fp6pr5Xxzr1gnsIEg3CkXgkarNweuTECiEdDkXj13U=;
+        b=fn13zn6j1oVfJEfdoTsd/pWnL1larSYU6/SlUVvENsw6t8xMjsQ2SinWIDSw73SEkhSmG+
+        qPcgjZ3UOEp00CCg==
+From:   "tip-bot2 for Ravi Bangoria" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/build] x86/purgatory: Hard-code obj-y in Makefile
-Cc:     Masahiro Yamada <masahiroy@kernel.org>,
-        Borislav Petkov <bp@suse.de>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20220725020812.622255-1-masahiroy@kernel.org>
-References: <20220725020812.622255-1-masahiroy@kernel.org>
+Subject: [tip: perf/core] perf/x86/ibs: Add new IBS register bits into header
+Cc:     Ravi Bangoria <ravi.bangoria@amd.com>,
+        Borislav Petkov <bp@suse.de>, Ian Rogers <irogers@google.com>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20220604044519.594-7-ravi.bangoria@amd.com>
+References: <20220604044519.594-7-ravi.bangoria@amd.com>
 MIME-Version: 1.0
-Message-ID: <165875090170.15455.11194369295899993249.tip-bot2@tip-bot2>
+Message-ID: <165892377681.15455.233092789209615984.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -64,36 +64,81 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/build branch of tip:
+The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     61922d3fa686733e08387a8a4e11b02b4af6d43c
-Gitweb:        https://git.kernel.org/tip/61922d3fa686733e08387a8a4e11b02b4af6d43c
-Author:        Masahiro Yamada <masahiroy@kernel.org>
-AuthorDate:    Mon, 25 Jul 2022 11:08:11 +09:00
+Commit-ID:     326ecc15c61c349cd49d1700ff9e3e31c6fd1cd5
+Gitweb:        https://git.kernel.org/tip/326ecc15c61c349cd49d1700ff9e3e31c6fd1cd5
+Author:        Ravi Bangoria <ravi.bangoria@amd.com>
+AuthorDate:    Sat, 04 Jun 2022 10:15:17 +05:30
 Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Mon, 25 Jul 2022 10:26:49 +02:00
+CommitterDate: Wed, 27 Jul 2022 13:54:38 +02:00
 
-x86/purgatory: Hard-code obj-y in Makefile
+perf/x86/ibs: Add new IBS register bits into header
 
-arch/x86/Kbuild guards the entire purgatory/ directory, and
-CONFIG_KEXEC_FILE is bool type.
+IBS support has been enhanced with two new features in upcoming uarch:
 
-$(CONFIG_KEXEC_FILE) is always 'y' when this directory is being built.
+  1. DataSrc extension and
+  2. L3 miss filtering.
 
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Additional set of bits has been introduced in IBS registers to use these
+features. Define these new bits into arch/x86/ header.
+
+  [ bp: Massage commit message. ]
+
+Signed-off-by: Ravi Bangoria <ravi.bangoria@amd.com>
 Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lore.kernel.org/r/20220725020812.622255-1-masahiroy@kernel.org
+Acked-by: Ian Rogers <irogers@google.com>
+Link: https://lore.kernel.org/r/20220604044519.594-7-ravi.bangoria@amd.com
 ---
- arch/x86/purgatory/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/include/asm/amd-ibs.h | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/purgatory/Makefile b/arch/x86/purgatory/Makefile
-index ae53d54..248b009 100644
---- a/arch/x86/purgatory/Makefile
-+++ b/arch/x86/purgatory/Makefile
-@@ -81,4 +81,4 @@ quiet_cmd_bin2c = BIN2C   $@
- $(obj)/kexec-purgatory.c: $(obj)/purgatory.ro $(obj)/purgatory.chk FORCE
- 	$(call if_changed,bin2c)
+diff --git a/arch/x86/include/asm/amd-ibs.h b/arch/x86/include/asm/amd-ibs.h
+index aabdbb5..f3eb098 100644
+--- a/arch/x86/include/asm/amd-ibs.h
++++ b/arch/x86/include/asm/amd-ibs.h
+@@ -29,7 +29,10 @@ union ibs_fetch_ctl {
+ 			rand_en:1,	/* 57: random tagging enable */
+ 			fetch_l2_miss:1,/* 58: L2 miss for sampled fetch
+ 					 *      (needs IbsFetchComp) */
+-			reserved:5;	/* 59-63: reserved */
++			l3_miss_only:1,	/* 59: Collect L3 miss samples only */
++			fetch_oc_miss:1,/* 60: Op cache miss for the sampled fetch */
++			fetch_l3_miss:1,/* 61: L3 cache miss for the sampled fetch */
++			reserved:2;	/* 62-63: reserved */
+ 	};
+ };
  
--obj-$(CONFIG_KEXEC_FILE)	+= kexec-purgatory.o
-+obj-y += kexec-purgatory.o
+@@ -38,14 +41,14 @@ union ibs_op_ctl {
+ 	__u64 val;
+ 	struct {
+ 		__u64	opmaxcnt:16,	/* 0-15: periodic op max. count */
+-			reserved0:1,	/* 16: reserved */
++			l3_miss_only:1,	/* 16: Collect L3 miss samples only */
+ 			op_en:1,	/* 17: op sampling enable */
+ 			op_val:1,	/* 18: op sample valid */
+ 			cnt_ctl:1,	/* 19: periodic op counter control */
+ 			opmaxcnt_ext:7,	/* 20-26: upper 7 bits of periodic op maximum count */
+-			reserved1:5,	/* 27-31: reserved */
++			reserved0:5,	/* 27-31: reserved */
+ 			opcurcnt:27,	/* 32-58: periodic op counter current count */
+-			reserved2:5;	/* 59-63: reserved */
++			reserved1:5;	/* 59-63: reserved */
+ 	};
+ };
+ 
+@@ -71,11 +74,12 @@ union ibs_op_data {
+ union ibs_op_data2 {
+ 	__u64 val;
+ 	struct {
+-		__u64	data_src:3,	/* 0-2: data source */
++		__u64	data_src_lo:3,	/* 0-2: data source low */
+ 			reserved0:1,	/* 3: reserved */
+ 			rmt_node:1,	/* 4: destination node */
+ 			cache_hit_st:1,	/* 5: cache hit state */
+-			reserved1:57;	/* 5-63: reserved */
++			data_src_hi:2,	/* 6-7: data source high */
++			reserved1:56;	/* 8-63: reserved */
+ 	};
+ };
+ 
