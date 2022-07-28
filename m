@@ -2,55 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 42520583C22
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 28 Jul 2022 12:37:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 60515583C34
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 28 Jul 2022 12:43:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235862AbiG1KhD (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 28 Jul 2022 06:37:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33668 "EHLO
+        id S235987AbiG1Kn3 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 28 Jul 2022 06:43:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38258 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234747AbiG1KhC (ORCPT
+        with ESMTP id S234966AbiG1Kn2 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 28 Jul 2022 06:37:02 -0400
+        Thu, 28 Jul 2022 06:43:28 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2609550A2;
-        Thu, 28 Jul 2022 03:36:57 -0700 (PDT)
-Date:   Thu, 28 Jul 2022 10:36:54 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E69E13E8D;
+        Thu, 28 Jul 2022 03:43:26 -0700 (PDT)
+Date:   Thu, 28 Jul 2022 10:43:23 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1659004616;
+        s=2020; t=1659005005;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=JVccKH/+cS/nkRyUbjIqFuCIi86SXRUxMIXY8M6McjY=;
-        b=kKI+sr9bBnHJ4MPpbIOmLqbvbl9JFYuAdP6wN41kDnXFNAuPHEclPqAbtzpYtTdzvVCWW0
-        FZ6+nmnnWDDMd8wPUo5qo1H0NKGLerWg2cwsrH/yDKqb2zmHdIxyVtCdDYjuXL4MZgMj84
-        C8sjS6xrj8AlT3g/4VTG13I5t9bdrmD2YpQJ+xnHQjuJjO4h4AfXTSzBiRSi4itcYLtyDk
-        6Vpk9hQNR/hj3GjQQlUj1oWiz/Vd7JGH7UFOGFAayp21OKVDNHuPh9kv/VaahCe0KDWlIU
-        WOqIwkaYwniFtRtrHzBEIWfbRT1hiOsrSUj6RdxZbPGqdKaNk4uQbTFlfgJdzg==
+        bh=hGvppzKvnn5emKn8FK6lLsUDjVMRn3uVDNjhTYdUSyw=;
+        b=VhpbSU6p3d5SUSYJ6x9R3Pnt/BgokR28x8xadnm3XLH3PH6wPyURqiwOUIOlgVBVLmJlnZ
+        5rAx2YgQ7Cn4tGhiUl1ZWzdtlUaqQHgSsNXzkJyVIp5npzv9QwnZ2ObBbIIfJsDOJtPmMR
+        e2oyHnACe1SBKDAcBRrRnDjq4Nj/4zgB3XZDEc7W3QsqLdhwRX3PZ5YgyzcsPHkvAwk+AP
+        7Xra92dZnd8au6w3XQL+QhlzeXnbc2OAVsRw4uKhUtJ/XV8k3OaPaFyl1TjLReZ+fHnkFV
+        o64lFpoEeml4huCwPnsqTQTwybZLQRD2ZiHxk7VTwMrSkKbrmkcsp3FGjchsHA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1659004616;
+        s=2020e; t=1659005005;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=JVccKH/+cS/nkRyUbjIqFuCIi86SXRUxMIXY8M6McjY=;
-        b=s24o7FXdwQ2xBCF7wDtiq11NEfBG98H3alR3rYCn4NtSmxw2TqX68F737KcfZnpy6YhzvQ
-        etOGwH8vqhJxrCDg==
-From:   "tip-bot2 for Lukas Bulwahn" <tip-bot2@linutronix.de>
+        bh=hGvppzKvnn5emKn8FK6lLsUDjVMRn3uVDNjhTYdUSyw=;
+        b=PphPLRXSYqPCFzSk4O3SBTROFMAyG5LODJF/SbUvdlc921eUb7UpRMk6MV9DnsVKqb8HzC
+        eTBgIDCtqhBNtVCg==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/configs: Update configs in x86_debug.config
-Cc:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        Borislav Petkov <bp@suse.de>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20220722121815.27535-1-lukas.bulwahn@gmail.com>
-References: <20220722121815.27535-1-lukas.bulwahn@gmail.com>
+Subject: [tip: irq/core] Merge tag 'irqchip-5.20' of
+ git://git.kernel.org/pub/scm/linux/kernel/git/maz/arm-platforms into irq/core
+Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, maz@kernel.org
+In-Reply-To: <20220727192356.1860546-1-maz@kernel.org>
+References: <20220727192356.1860546-1-maz@kernel.org>
 MIME-Version: 1.0
-Message-ID: <165900461486.15455.1011348453705809248.tip-bot2@tip-bot2>
+Message-ID: <165900500373.15455.16400919758936217377.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -64,53 +63,63 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     871808fd6981bcc6bb48f71032f983ca77748e96
-Gitweb:        https://git.kernel.org/tip/871808fd6981bcc6bb48f71032f983ca77748e96
-Author:        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-AuthorDate:    Fri, 22 Jul 2022 14:18:15 +02:00
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Wed, 27 Jul 2022 18:09:11 +02:00
+Commit-ID:     779fda86bdeb86bad6daa4f0ecf37788dfc26f6c
+Gitweb:        https://git.kernel.org/tip/779fda86bdeb86bad6daa4f0ecf37788dfc26f6c
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Thu, 28 Jul 2022 12:36:35 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Thu, 28 Jul 2022 12:36:35 +02:00
 
-x86/configs: Update configs in x86_debug.config
+Merge tag 'irqchip-5.20' of git://git.kernel.org/pub/scm/linux/kernel/git/maz/arm-platforms into irq/core
 
-Commit
+Pull irqchip/genirq updates from Marc Zyngier:
 
-  4675ff05de2d ("kmemcheck: rip it out")
+ * Core code update:
 
-removed kmemcheck and its corresponding build config KMEMCHECK.
+  - Non-SMP IRQ affinity fixes, allowing UP kernel to behave similarly
+    to SMP ones for the purpose of interrupt affinity
 
-Commit
+  - Let irq_set_chip_handler_name_locked() take a const struct irq_chip *
 
-  0f620cefd775 ("objtool: Rename "VMLINUX_VALIDATION" -> "NOINSTR_VALIDATION"")
+  - Tidy-up the NOMAP irqdomain API variant
 
-renamed the debug config option.
+  - Teach action_show() to use for_each_action_of_desc()
 
-Adjust x86_debug.config to those changes in debug configs.
+  - Make irq_chip_request_resources_parent() allow the parent callback
+    to be optional
 
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lore.kernel.org/r/20220722121815.27535-1-lukas.bulwahn@gmail.com
+  - Remove dynamic allocations from populate_parent_alloc_arg()
+
+ * New drivers:
+
+  - Merge the long awaited IRQ support for the LoongArch architecture,
+    with the provisional ACPICA update (to be reverted once the official
+    support lands)
+
+  - New Renesas RZ/G2L IRQC driver, equipped with its companion GPIO
+    driver
+
+ * Driver updates
+
+  - Optimise the hot path operations for the SiFive PLIC, trading the
+    locking for per-CPU priority masking masking operations which are
+    apparently faster
+
+  - Work around broken PLIC implementations that deal pretty badly with
+    edge-triggered interrupts. Flag two implementations as affected.
+
+  - Simplify the irq-stm32-exti driver, particularly the table that
+    remaps the interrupts from exti to the GIC, reducing the memory usage
+
+  - Convert the ocelot irq_chip to being immutable
+
+  - Check ioremap() return value in the MIPS GIC driver
+
+  - Move MMP driver init function declarations into the common .h
+
+  - The obligatory typo fixes
+
+Link: https://lore.kernel.org/all/20220727192356.1860546-1-maz@kernel.org
 ---
- kernel/configs/x86_debug.config | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/kernel/configs/x86_debug.config b/kernel/configs/x86_debug.config
-index dcd86f3..6fac5b4 100644
---- a/kernel/configs/x86_debug.config
-+++ b/kernel/configs/x86_debug.config
-@@ -7,12 +7,11 @@ CONFIG_DEBUG_SLAB=y
- CONFIG_DEBUG_KMEMLEAK=y
- CONFIG_DEBUG_PAGEALLOC=y
- CONFIG_SLUB_DEBUG_ON=y
--CONFIG_KMEMCHECK=y
- CONFIG_DEBUG_OBJECTS=y
- CONFIG_DEBUG_OBJECTS_ENABLE_DEFAULT=1
- CONFIG_GCOV_KERNEL=y
- CONFIG_LOCKDEP=y
- CONFIG_PROVE_LOCKING=y
- CONFIG_SCHEDSTATS=y
--CONFIG_VMLINUX_VALIDATION=y
-+CONFIG_NOINSTR_VALIDATION=y
- CONFIG_DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT=y
