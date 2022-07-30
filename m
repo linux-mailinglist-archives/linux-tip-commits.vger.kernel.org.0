@@ -2,56 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C784E585529
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 29 Jul 2022 20:52:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1DB0F585923
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 30 Jul 2022 10:21:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237497AbiG2Sw2 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Fri, 29 Jul 2022 14:52:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44214 "EHLO
+        id S231509AbiG3IVs (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 30 Jul 2022 04:21:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45704 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229549AbiG2Sw2 (ORCPT
+        with ESMTP id S229619AbiG3IVr (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Fri, 29 Jul 2022 14:52:28 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B41D3342F;
-        Fri, 29 Jul 2022 11:52:27 -0700 (PDT)
-Date:   Fri, 29 Jul 2022 18:52:24 -0000
+        Sat, 30 Jul 2022 04:21:47 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11BB3CFA;
+        Sat, 30 Jul 2022 01:21:44 -0700 (PDT)
+Date:   Sat, 30 Jul 2022 08:21:40 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1659120745;
+        s=2020; t=1659169302;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=6AMlIlR/IA7h43fs/jnqbfHPC05a5PqX994y/JiTgek=;
-        b=4SFuhuJv//l63IiuTbDait1NmdVZaxRPOwkXZPDgxsF/6BP8kuJCIvW9T1H7nlIaUU1HFR
-        EIocm8DAPHpfnOxnG3ftP1rodIKJo45GTr8E4NiGSy5mLRvLR60q42AENM807WPOFUxXRF
-        KNY+Zlou90QHSzOqCyOiUgQ2wKPbZlR8IWyeP6G8+hTVXMUju0CWW365gorjzf3uslUiLx
-        BRL+JVxBg4z24W09vd/70nuOxhqVvBCAzDYYwear4neF3NzASAABx0rJG/n8/3DZVIbK9o
-        udBo1ltdyYwoxl73xyjtl+JxbBj6O5DXWKzp9nwsjMwGrSXs3oRmbm3HyfQY3w==
+        bh=Lpq6EhPNWYSKFs15nT7sEiVIoMgk+C378PhAkSDTkSk=;
+        b=ELOPA818HCEmMAgRSIdeiVIxBeC4o9ONRFuIqWlFLTK/ke4/z3U93iMLRx7zZpqtXHAfYW
+        GhpTf/mkbnFVUm9UFEFrdbPeB801OS0+jftLwfVrmtMjc6MM0PPj/+3k1R2Y1vXx2lyxsk
+        zF+3ncvt/kRzZAqzOgmoEzMt42gS6zQV5ZRpvN9qjuGCM5b+JqZLAEdjkKBxOidHyHmgJ9
+        c0FQ3rKLtHqfta/MVOwOehWrrrqaCF6CTuHeWOWVKN0qEAWD1eBxatwG+NVSuQEXeA4f2p
+        0cgr059MAdEyakzcMMLA5AJ22Q0quMaZ6CwqUdBLHONPfy9ibqeY8Mpf7hakIQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1659120745;
+        s=2020e; t=1659169302;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=6AMlIlR/IA7h43fs/jnqbfHPC05a5PqX994y/JiTgek=;
-        b=iYquR8hfoqiu5AHFKYwZlYnj/2NeRodWvdK+eFsshVyV55LGNypdJejZVTUG6sgTs3Ypa0
-        EdQxeLd2LLq3rmAA==
-From:   "tip-bot2 for Eiichi Tsukata" <tip-bot2@linutronix.de>
+        bh=Lpq6EhPNWYSKFs15nT7sEiVIoMgk+C378PhAkSDTkSk=;
+        b=07e4c/L8v+rlxZCNj+R52HymCj85p/xuufOq/DoMvhIYZQiX30RVkMs7OE+eaIoZ+t6Ifd
+        kWWl9R/HpRvDyNDA==
+From:   "tip-bot2 for Mathieu Desnoyers" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] docs/kernel-parameters: Update descriptions for
- "mitigations=" param with retbleed
-Cc:     Eiichi Tsukata <eiichi.tsukata@nutanix.com>,
-        Borislav Petkov <bp@suse.de>, corbet@lwn.net, x86@kernel.org,
+Subject: [tip: sched/core] rseq: Kill process when unknown flags are
+ encountered in ABI structures
+Cc:     Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220728043907.165688-1-eiichi.tsukata@nutanix.com>
-References: <20220728043907.165688-1-eiichi.tsukata@nutanix.com>
+In-Reply-To: <20220622194617.1155957-2-mathieu.desnoyers@efficios.com>
+References: <20220622194617.1155957-2-mathieu.desnoyers@efficios.com>
 MIME-Version: 1.0
-Message-ID: <165912074412.15455.16713302879881825177.tip-bot2@tip-bot2>
+Message-ID: <165916930066.15455.7617990662704399879.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,45 +65,58 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     ea304a8b89fd0d6cf94ee30cb139dc23d9f1a62f
-Gitweb:        https://git.kernel.org/tip/ea304a8b89fd0d6cf94ee30cb139dc23d9f1a62f
-Author:        Eiichi Tsukata <eiichi.tsukata@nutanix.com>
-AuthorDate:    Thu, 28 Jul 2022 04:39:07 
-Committer:     Borislav Petkov <bp@suse.de>
-CommitterDate: Fri, 29 Jul 2022 20:47:07 +02:00
+Commit-ID:     8da3d9b8590bc178752d4b72938745e9a6c4c416
+Gitweb:        https://git.kernel.org/tip/8da3d9b8590bc178752d4b72938745e9a6c4c416
+Author:        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+AuthorDate:    Wed, 22 Jun 2022 15:46:17 -04:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Sat, 30 Jul 2022 10:14:18 +02:00
 
-docs/kernel-parameters: Update descriptions for "mitigations=" param with retbleed
+rseq: Kill process when unknown flags are encountered in ABI structures
 
-Updates descriptions for "mitigations=off" and "mitigations=auto,nosmt"
-with the respective retbleed= settings.
+rseq_abi()->flags and rseq_abi()->rseq_cs->flags 29 upper bits are
+currently unused.
 
-Signed-off-by: Eiichi Tsukata <eiichi.tsukata@nutanix.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Cc: corbet@lwn.net
-Link: https://lore.kernel.org/r/20220728043907.165688-1-eiichi.tsukata@nutanix.com
+The current behavior when those bits are set is to ignore them. This is
+not an ideal behavior, because when future features will start using
+those flags, if user-space fails to correctly validate that the kernel
+indeed supports those flags (e.g. with a new sys_rseq flags bit) before
+using them, it may incorrectly assume that the kernel will handle those
+flags way when in fact those will be silently ignored on older kernels.
+
+Validating that unused flags bits are cleared will allow a smoother
+transition when those flags will start to be used by allowing
+applications to fail early, and obviously, when they attempt to use the
+new flags on an older kernel that does not support them.
+
+Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20220622194617.1155957-2-mathieu.desnoyers@efficios.com
 ---
- Documentation/admin-guide/kernel-parameters.txt | 2 ++
- 1 file changed, 2 insertions(+)
+ kernel/rseq.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index c0fdb04..cc3ea8f 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -3176,6 +3176,7 @@
- 					       no_entry_flush [PPC]
- 					       no_uaccess_flush [PPC]
- 					       mmio_stale_data=off [X86]
-+					       retbleed=off [X86]
+diff --git a/kernel/rseq.c b/kernel/rseq.c
+index 81d7dc8..bda8175 100644
+--- a/kernel/rseq.c
++++ b/kernel/rseq.c
+@@ -176,7 +176,7 @@ static int rseq_need_restart(struct task_struct *t, u32 cs_flags)
+ 	u32 flags, event_mask;
+ 	int ret;
  
- 				Exceptions:
- 					       This does not have any effect on
-@@ -3198,6 +3199,7 @@
- 					       mds=full,nosmt [X86]
- 					       tsx_async_abort=full,nosmt [X86]
- 					       mmio_stale_data=full,nosmt [X86]
-+					       retbleed=auto,nosmt [X86]
+-	if (WARN_ON_ONCE(cs_flags & RSEQ_CS_NO_RESTART_FLAGS))
++	if (WARN_ON_ONCE(cs_flags & RSEQ_CS_NO_RESTART_FLAGS) || cs_flags)
+ 		return -EINVAL;
  
- 	mminit_loglevel=
- 			[KNL] When CONFIG_DEBUG_MEMORY_INIT is set, this
+ 	/* Get thread flags. */
+@@ -184,7 +184,7 @@ static int rseq_need_restart(struct task_struct *t, u32 cs_flags)
+ 	if (ret)
+ 		return ret;
+ 
+-	if (WARN_ON_ONCE(flags & RSEQ_CS_NO_RESTART_FLAGS))
++	if (WARN_ON_ONCE(flags & RSEQ_CS_NO_RESTART_FLAGS) || flags)
+ 		return -EINVAL;
+ 
+ 	/*
