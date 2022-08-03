@@ -2,56 +2,56 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 199D35890EE
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  3 Aug 2022 19:03:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E967958916C
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  3 Aug 2022 19:30:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236055AbiHCRDZ (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 3 Aug 2022 13:03:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46256 "EHLO
+        id S237639AbiHCRay (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 3 Aug 2022 13:30:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39960 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236733AbiHCRDV (ORCPT
+        with ESMTP id S238292AbiHCRaq (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 3 Aug 2022 13:03:21 -0400
+        Wed, 3 Aug 2022 13:30:46 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8B2A4E862;
-        Wed,  3 Aug 2022 10:03:20 -0700 (PDT)
-Date:   Wed, 03 Aug 2022 17:03:17 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21FEC13D32;
+        Wed,  3 Aug 2022 10:30:46 -0700 (PDT)
+Date:   Wed, 03 Aug 2022 17:30:43 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1659546198;
+        s=2020; t=1659547844;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=dXSabjNJjRfwC9JFIBmyear8cE5dLFtL3ysvEWzyh9Q=;
-        b=nob9bSrJp280n42Pa4q1E0LgcMknzroqzp9bmlED1L+iUbDeuRhVy6UQ/B0j3HYDBnxtxK
-        Pm6D1Hkj31rMuvZDxNYKYpL9zQB5Mw3IJOUp471H94LHCBtuz9chJtEO2r0gfC/tGyqsJ6
-        hLq53NBUs4nhLn4Xsf1pvdiyZ4omyOvx91RWlMTHWTnCiI5fh56swa6fluE7mlbsoOkMiX
-        qh1xtBF8iD5vJGpiu0jCotlKuJIqi0UYJudRN5TV/amFFxVvzIZxxej15zwmKwpaLlGmc6
-        jrwzRjFkZqRnN+1WQpU8WFsWert2Q2O79Er/YUDdbBLJUZ5lXxgVhRkil2zulA==
+        bh=hY2455sfa/TGB8TuKmql6RklNNRdnqF09PK6+bfdj9A=;
+        b=WHL5j13zrwhXImRPdkj8yczyq1ZE9Wufcg8mJ6iZLr6se/e+dwtHkQWFAp79VpXNjKvLly
+        n6sQBIEY38fzw+T9yHgP5QFMZG+hviHDaJO9Jh5vn5fKPHRMKu/AqtKblMl+GixTnB0Gsn
+        qrNXc08fTEGJbQB835cXHaullWXTc6NgfxwHMjEvOz9i28Quk5BKf35d8CZrh4eM9M77rK
+        MCb4W+qb1bFVff9rbeIPoF7ABlDWeDe8Zqhgira3uBwe4aXJ/6/716XKngEePt8E+VRX0F
+        6Y5w42qidsr5//nMSbNib038JJEqlai2pAZ+pbBLKuhgDwHUOqNHF6JxMEHAyg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1659546198;
+        s=2020e; t=1659547844;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=dXSabjNJjRfwC9JFIBmyear8cE5dLFtL3ysvEWzyh9Q=;
-        b=N4ZbaufxcQl9SRixIVhsnSYeyD8Tntjjo6gDIEwCxbWwkByzQ8JMj4dyY4iFOqXHpuH0FV
-        SVkmho5ziaBbBIAQ==
-From:   "tip-bot2 for Hao Jia" <tip-bot2@linutronix.de>
+        bh=hY2455sfa/TGB8TuKmql6RklNNRdnqF09PK6+bfdj9A=;
+        b=lBzlfeQFwe9hN/bicVEOx/aXiiChQmyagVTThI2bd91F9n/m1jYjTVcjk8uLRugJFLa1Bs
+        H0CmyG0TeTjStDAA==
+From:   "tip-bot2 for Bing Huang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/fair: Remove unused parameter idle of
- _nohz_idle_balance()
-Cc:     Hao Jia <jiahao.os@bytedance.com>, Ingo Molnar <mingo@kernel.org>,
+Subject: [tip: sched/core] sched/fair: Make per-cpu cpumasks static
+Cc:     Bing Huang <huangbing@kylinos.cn>, Ingo Molnar <mingo@kernel.org>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
         Vincent Guittot <vincent.guittot@linaro.org>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220803130223.70419-1-jiahao.os@bytedance.com>
-References: <20220803130223.70419-1-jiahao.os@bytedance.com>
+In-Reply-To: <20220722213609.3901-1-huangbing775@126.com>
+References: <20220722213609.3901-1-huangbing775@126.com>
 MIME-Version: 1.0
-Message-ID: <165954619718.15455.1084400841351133182.tip-bot2@tip-bot2>
+Message-ID: <165954784337.15455.14071193485990481761.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -67,55 +67,92 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     d985ee9f449aafe45397ae1cf8887e9ac91d2f95
-Gitweb:        https://git.kernel.org/tip/d985ee9f449aafe45397ae1cf8887e9ac91d2f95
-Author:        Hao Jia <jiahao.os@bytedance.com>
-AuthorDate:    Wed, 03 Aug 2022 21:02:23 +08:00
+Commit-ID:     18c31c9711a90b48a77b78afb65012d9feec444c
+Gitweb:        https://git.kernel.org/tip/18c31c9711a90b48a77b78afb65012d9feec444c
+Author:        Bing Huang <huangbing@kylinos.cn>
+AuthorDate:    Sat, 23 Jul 2022 05:36:09 +08:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 03 Aug 2022 18:54:26 +02:00
+CommitterDate: Wed, 03 Aug 2022 19:17:33 +02:00
 
-sched/fair: Remove unused parameter idle of _nohz_idle_balance()
+sched/fair: Make per-cpu cpumasks static
 
-After commit 7a82e5f52a35 ("sched/fair: Merge for each idle cpu loop of ILB"),
-_nohz_idle_balance()'s 'idle' parameter is not used anymore, so we can remove it.
+The load_balance_mask and select_rq_mask percpu variables are only used in
+kernel/sched/fair.c.
 
-Signed-off-by: Hao Jia <jiahao.os@bytedance.com>
+Make them static and move their allocation into init_sched_fair_class().
+
+Replace kzalloc_node() with zalloc_cpumask_var_node() to get rid of the
+CONFIG_CPUMASK_OFFSTACK #ifdef and to align with per-cpu cpumask
+allocation for RT (local_cpu_mask in init_sched_rt_class()) and DL
+class (local_cpu_mask_dl in init_sched_dl_class()).
+
+[ mingo: Tidied up changelog & touched up the code. ]
+
+Signed-off-by: Bing Huang <huangbing@kylinos.cn>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
 Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
-Link: https://lore.kernel.org/r/20220803130223.70419-1-jiahao.os@bytedance.com
+Link: https://lore.kernel.org/r/20220722213609.3901-1-huangbing775@126.com
 ---
- kernel/sched/fair.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ kernel/sched/core.c | 11 -----------
+ kernel/sched/fair.c | 11 +++++++++--
+ 2 files changed, 9 insertions(+), 13 deletions(-)
 
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 6785e3b..64c0899 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -9563,9 +9563,6 @@ LIST_HEAD(task_groups);
+ static struct kmem_cache *task_group_cache __read_mostly;
+ #endif
+ 
+-DECLARE_PER_CPU(cpumask_var_t, load_balance_mask);
+-DECLARE_PER_CPU(cpumask_var_t, select_rq_mask);
+-
+ void __init sched_init(void)
+ {
+ 	unsigned long ptr = 0;
+@@ -9609,14 +9606,6 @@ void __init sched_init(void)
+ 
+ #endif /* CONFIG_RT_GROUP_SCHED */
+ 	}
+-#ifdef CONFIG_CPUMASK_OFFSTACK
+-	for_each_possible_cpu(i) {
+-		per_cpu(load_balance_mask, i) = (cpumask_var_t)kzalloc_node(
+-			cpumask_size(), GFP_KERNEL, cpu_to_node(i));
+-		per_cpu(select_rq_mask, i) = (cpumask_var_t)kzalloc_node(
+-			cpumask_size(), GFP_KERNEL, cpu_to_node(i));
+-	}
+-#endif /* CONFIG_CPUMASK_OFFSTACK */
+ 
+ 	init_rt_bandwidth(&def_rt_bandwidth, global_rt_period(), global_rt_runtime());
+ 
 diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 41486d9..d22c5e8 100644
+index d22c5e8..da38865 100644
 --- a/kernel/sched/fair.c
 +++ b/kernel/sched/fair.c
-@@ -10916,8 +10916,7 @@ static bool update_nohz_stats(struct rq *rq)
-  * can be a simple update of blocked load or a complete load balance with
-  * tasks movement depending of flags.
-  */
--static void _nohz_idle_balance(struct rq *this_rq, unsigned int flags,
--			       enum cpu_idle_type idle)
-+static void _nohz_idle_balance(struct rq *this_rq, unsigned int flags)
+@@ -5893,8 +5893,8 @@ dequeue_throttle:
+ #ifdef CONFIG_SMP
+ 
+ /* Working cpumask for: load_balance, load_balance_newidle. */
+-DEFINE_PER_CPU(cpumask_var_t, load_balance_mask);
+-DEFINE_PER_CPU(cpumask_var_t, select_rq_mask);
++static DEFINE_PER_CPU(cpumask_var_t, load_balance_mask);
++static DEFINE_PER_CPU(cpumask_var_t, select_rq_mask);
+ 
+ #ifdef CONFIG_NO_HZ_COMMON
+ 
+@@ -12074,6 +12074,13 @@ void show_numa_stats(struct task_struct *p, struct seq_file *m)
+ __init void init_sched_fair_class(void)
  {
- 	/* Earliest time when we have to do rebalance again */
- 	unsigned long now = jiffies;
-@@ -11032,7 +11031,7 @@ static bool nohz_idle_balance(struct rq *this_rq, enum cpu_idle_type idle)
- 	if (idle != CPU_IDLE)
- 		return false;
+ #ifdef CONFIG_SMP
++	int i;
++
++	for_each_possible_cpu(i) {
++		zalloc_cpumask_var_node(&per_cpu(load_balance_mask, i), GFP_KERNEL, cpu_to_node(i));
++		zalloc_cpumask_var_node(&per_cpu(select_rq_mask,    i), GFP_KERNEL, cpu_to_node(i));
++	}
++
+ 	open_softirq(SCHED_SOFTIRQ, run_rebalance_domains);
  
--	_nohz_idle_balance(this_rq, flags, idle);
-+	_nohz_idle_balance(this_rq, flags);
- 
- 	return true;
- }
-@@ -11052,7 +11051,7 @@ void nohz_run_idle_balance(int cpu)
- 	 * (ie NOHZ_STATS_KICK set) and will do the same.
- 	 */
- 	if ((flags == NOHZ_NEWILB_KICK) && !need_resched())
--		_nohz_idle_balance(cpu_rq(cpu), NOHZ_STATS_KICK, CPU_IDLE);
-+		_nohz_idle_balance(cpu_rq(cpu), NOHZ_STATS_KICK);
- }
- 
- static void nohz_newidle_balance(struct rq *this_rq)
+ #ifdef CONFIG_NO_HZ_COMMON
