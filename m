@@ -2,48 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D5B85888E8
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  3 Aug 2022 10:54:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 66532588967
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  3 Aug 2022 11:28:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233974AbiHCIy0 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 3 Aug 2022 04:54:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49596 "EHLO
+        id S234150AbiHCJ2j (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 3 Aug 2022 05:28:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46498 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233846AbiHCIyZ (ORCPT
+        with ESMTP id S233946AbiHCJ2i (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 3 Aug 2022 04:54:25 -0400
+        Wed, 3 Aug 2022 05:28:38 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2E711EAD5;
-        Wed,  3 Aug 2022 01:54:24 -0700 (PDT)
-Date:   Wed, 03 Aug 2022 08:54:22 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 974595926C;
+        Wed,  3 Aug 2022 02:28:37 -0700 (PDT)
+Date:   Wed, 03 Aug 2022 09:28:34 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1659516863;
+        s=2020; t=1659518916;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=O/NSsIc6TVFL4PnJzZ2d/RiVsM4iODEMnlsSeYNlHjE=;
-        b=om1l4U8afPskB+vcuFo7UNYcEK4Z+Fm4grjBwMenj9IRJOyB126r6VCLC8wuQihs6bpmJY
-        MaslNejD2qbuh94TmyMwb5otPiOit6AVkeNsdy9mo8T9Vt3RlPbR0bzjq5/Wl9OMDhYXJj
-        4DKFbkIETim4lXd83Ikonrj0R3CoIFio9b1Ae3lHrzrIwF5lFEVbbczCe6r7q09aD/dcoo
-        ngxwDowvAtehBTA+HGLlbLeKA3jICuvn1tfn6RljU+VZUiWbxrZcjJTRnpDbmVrLRDNDGE
-        DoEwLU6+myMWtZs0w2YxrUquAj3R1WtJ4ckv40d9XoryBbZi2IUPoTzAmpCCUQ==
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=FSSoAZX8HzRzKwMf0Giml1gMUyfKkPwjKeLro+vtYhk=;
+        b=Zm6bXtenW5uMHxtFCW6r4LIMbd2Nxwp/sqTYQdYjcC4MifItf2zBdQ1KrwCC+4czGWunrl
+        pAMpmLrksaNa5h8+OtgvmlnbYNhPx3lg8TXCi1K2sPpk09UsLtq8jl06qCF2Np0IW670rp
+        sEefT+FVsft9xt1UYLzRgM/cU6J7XHNHK5MjoexeJK27n6ZOTc/IwyqlW1tb0K5qOzfGl5
+        gCvSBHmzNdQ9rEMeMuYplSW5fhqP8ZTBOOHfD8hSSwRSX+MWhugciGalJKhWXsLF9MImIJ
+        ZjggdBlsxkoDQ0K4a34/eajGQvYN205zbHyIgN/Y/ck493BbLCJEThx1BqqpnQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1659516863;
+        s=2020e; t=1659518916;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=O/NSsIc6TVFL4PnJzZ2d/RiVsM4iODEMnlsSeYNlHjE=;
-        b=rg6XggWgAhzRrrQZJj9B9wmdlyv9gObxLRWxvq0TFM4OFQJVz5XobMlNUB12fpzH2YxcWj
-        L18LGqZu7YEd6ICw==
-From:   "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=FSSoAZX8HzRzKwMf0Giml1gMUyfKkPwjKeLro+vtYhk=;
+        b=d55MXswOMNPouJ0pUSzmCr4Sx+Ro3fQUxN222SbTB0r7GnqrxrbFpMF2dsKFt2WE7bDY+u
+        h/rTKy5NcJ+iEtAw==
+From:   "tip-bot2 for Ben Dooks" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] exit: Fix typo in comment: s/sub-theads/sub-threads
-Cc:     linux-kernel@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
-        x86@kernel.org
+Subject: [tip: sched/urgent] sched/rt: Fix Sparse warnings due to undefined
+ rt.c declarations
+Cc:     Ben Dooks <ben-linux@fluff.org>, Ingo Molnar <mingo@kernel.org>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20220721145155.358366-1-ben-linux@fluff.org>
+References: <20220721145155.358366-1-ben-linux@fluff.org>
 MIME-Version: 1.0
-Message-ID: <165951686214.15455.15985773663272649627.tip-bot2@tip-bot2>
+Message-ID: <165951891492.15455.12248825885512286794.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -59,31 +66,56 @@ X-Mailing-List: linux-tip-commits@vger.kernel.org
 
 The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     dcca34754a3f5290406403b8066e3b15dda9f4bf
-Gitweb:        https://git.kernel.org/tip/dcca34754a3f5290406403b8066e3b15dda9f4bf
-Author:        Ingo Molnar <mingo@kernel.org>
-AuthorDate:    Wed, 03 Aug 2022 10:43:42 +02:00
+Commit-ID:     87514b2c24f294c32e9e743b095541dcf43928f7
+Gitweb:        https://git.kernel.org/tip/87514b2c24f294c32e9e743b095541dcf43928f7
+Author:        Ben Dooks <ben-linux@fluff.org>
+AuthorDate:    Thu, 21 Jul 2022 15:51:55 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 03 Aug 2022 10:44:54 +02:00
+CommitterDate: Wed, 03 Aug 2022 11:22:37 +02:00
 
-exit: Fix typo in comment: s/sub-theads/sub-threads
+sched/rt: Fix Sparse warnings due to undefined rt.c declarations
 
-Cc: linux-kernel@vger.kernel.org
+There are several symbols defined in kernel/sched/sched.h but get wrapped
+in CONFIG_CGROUP_SCHED, even though dummy versions get built in rt.c and
+therefore trigger Sparse warnings:
+
+  kernel/sched/rt.c:309:6: warning: symbol 'unregister_rt_sched_group' was not declared. Should it be static?
+  kernel/sched/rt.c:311:6: warning: symbol 'free_rt_sched_group' was not declared. Should it be static?
+  kernel/sched/rt.c:313:5: warning: symbol 'alloc_rt_sched_group' was not declared. Should it be static?
+
+Fix this by moving them outside the CONFIG_CGROUP_SCHED block.
+
+[ mingo: Refreshed to the latest scheduler tree, tweaked changelog. ]
+
+Signed-off-by: Ben Dooks <ben-linux@fluff.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20220721145155.358366-1-ben-linux@fluff.org
 ---
- kernel/exit.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/sched/sched.h | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/exit.c b/kernel/exit.c
-index 64c938c..84021b2 100644
---- a/kernel/exit.c
-+++ b/kernel/exit.c
-@@ -1051,7 +1051,7 @@ static int wait_task_zombie(struct wait_opts *wo, struct task_struct *p)
- 		 * p->signal fields because the whole thread group is dead
- 		 * and nobody can change them.
- 		 *
--		 * psig->stats_lock also protects us from our sub-theads
-+		 * psig->stats_lock also protects us from our sub-threads
- 		 * which can reap other children at the same time. Until
- 		 * we change k_getrusage()-like users to rely on this lock
- 		 * we have to take ->siglock as well.
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index aad7f5e..1429315 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -480,9 +480,6 @@ extern void __refill_cfs_bandwidth_runtime(struct cfs_bandwidth *cfs_b);
+ extern void start_cfs_bandwidth(struct cfs_bandwidth *cfs_b);
+ extern void unthrottle_cfs_rq(struct cfs_rq *cfs_rq);
+ 
+-extern void unregister_rt_sched_group(struct task_group *tg);
+-extern void free_rt_sched_group(struct task_group *tg);
+-extern int alloc_rt_sched_group(struct task_group *tg, struct task_group *parent);
+ extern void init_tg_rt_entry(struct task_group *tg, struct rt_rq *rt_rq,
+ 		struct sched_rt_entity *rt_se, int cpu,
+ 		struct sched_rt_entity *parent);
+@@ -520,6 +517,10 @@ struct cfs_bandwidth { };
+ 
+ #endif	/* CONFIG_CGROUP_SCHED */
+ 
++extern void unregister_rt_sched_group(struct task_group *tg);
++extern void free_rt_sched_group(struct task_group *tg);
++extern int alloc_rt_sched_group(struct task_group *tg, struct task_group *parent);
++
+ /*
+  * u64_u32_load/u64_u32_store
+  *
