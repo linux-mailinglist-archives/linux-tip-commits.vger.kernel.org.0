@@ -2,59 +2,59 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 66532588967
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  3 Aug 2022 11:28:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 534A5588F8D
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  3 Aug 2022 17:42:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234150AbiHCJ2j (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 3 Aug 2022 05:28:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46498 "EHLO
+        id S236336AbiHCPmE (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Wed, 3 Aug 2022 11:42:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42482 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233946AbiHCJ2i (ORCPT
+        with ESMTP id S236797AbiHCPmD (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 3 Aug 2022 05:28:38 -0400
+        Wed, 3 Aug 2022 11:42:03 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 974595926C;
-        Wed,  3 Aug 2022 02:28:37 -0700 (PDT)
-Date:   Wed, 03 Aug 2022 09:28:34 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7432118B0A;
+        Wed,  3 Aug 2022 08:42:02 -0700 (PDT)
+Date:   Wed, 03 Aug 2022 15:41:58 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1659518916;
+        s=2020; t=1659541320;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=FSSoAZX8HzRzKwMf0Giml1gMUyfKkPwjKeLro+vtYhk=;
-        b=Zm6bXtenW5uMHxtFCW6r4LIMbd2Nxwp/sqTYQdYjcC4MifItf2zBdQ1KrwCC+4czGWunrl
-        pAMpmLrksaNa5h8+OtgvmlnbYNhPx3lg8TXCi1K2sPpk09UsLtq8jl06qCF2Np0IW670rp
-        sEefT+FVsft9xt1UYLzRgM/cU6J7XHNHK5MjoexeJK27n6ZOTc/IwyqlW1tb0K5qOzfGl5
-        gCvSBHmzNdQ9rEMeMuYplSW5fhqP8ZTBOOHfD8hSSwRSX+MWhugciGalJKhWXsLF9MImIJ
-        ZjggdBlsxkoDQ0K4a34/eajGQvYN205zbHyIgN/Y/ck493BbLCJEThx1BqqpnQ==
+        bh=xwsm6IFGQeK6Zq/4c1VwtMBheV506aRwxZVfJrfwMCo=;
+        b=A7wgwKiLeByPywwz2Y2ObapQswfqv6eE/VZi0pxJgh5VdJZWRX8mklbRazNHHsZCSs3kl4
+        qNJLsAZpIKgllFi+VRrcz2W3n6XfCQ9wNg4YgLRJLEi1I2KIb4S6nMEICzcsOI1yoEbz0j
+        bt+9EYfI4w9tVc1tTXdJdVGvEZEARrIUy0PWq0cVbX5rht/bjJpR5+edFJLesD68D18xgF
+        1rogghI9MD00GKRT9qyrlumBlbxCtrrgWBV2jcagN5LTNqVN5Lfj5MixpvVWf5D5QBXOSV
+        spYRE3NbpUsrLMaZAtPvXndOWZAl8sx0TN2aQ3IxSL5eg/Q066cBb+ZuK4x+4w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1659518916;
+        s=2020e; t=1659541320;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=FSSoAZX8HzRzKwMf0Giml1gMUyfKkPwjKeLro+vtYhk=;
-        b=d55MXswOMNPouJ0pUSzmCr4Sx+Ro3fQUxN222SbTB0r7GnqrxrbFpMF2dsKFt2WE7bDY+u
-        h/rTKy5NcJ+iEtAw==
-From:   "tip-bot2 for Ben Dooks" <tip-bot2@linutronix.de>
+        bh=xwsm6IFGQeK6Zq/4c1VwtMBheV506aRwxZVfJrfwMCo=;
+        b=vfv6m6TBE5c6KCa/aasRR6uRNGpTPE9FG0cXJxMIBvrTTKDrrNvvuq+AJtNlFYzrN5PmoT
+        Iv1q68J/69dGFPBA==
+From:   "tip-bot2 for Siddh Raman Pant" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] sched/rt: Fix Sparse warnings due to undefined
- rt.c declarations
-Cc:     Ben Dooks <ben-linux@fluff.org>, Ingo Molnar <mingo@kernel.org>,
+Subject: [tip: x86/urgent] x86/numa: Use cpumask_available instead of
+ hardcoded NULL check
+Cc:     Siddh Raman Pant <code@siddh.me>, Ingo Molnar <mingo@kernel.org>,
         x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20220721145155.358366-1-ben-linux@fluff.org>
-References: <20220721145155.358366-1-ben-linux@fluff.org>
+In-Reply-To: <20220731160913.632092-1-code@siddh.me>
+References: <20220731160913.632092-1-code@siddh.me>
 MIME-Version: 1.0
-Message-ID: <165951891492.15455.12248825885512286794.tip-bot2@tip-bot2>
+Message-ID: <165954131875.15455.15679349125656470840.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -64,58 +64,79 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/urgent branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     87514b2c24f294c32e9e743b095541dcf43928f7
-Gitweb:        https://git.kernel.org/tip/87514b2c24f294c32e9e743b095541dcf43928f7
-Author:        Ben Dooks <ben-linux@fluff.org>
-AuthorDate:    Thu, 21 Jul 2022 15:51:55 +01:00
+Commit-ID:     625395c4a0f4775e0fe00f616888d2e6c1ba49db
+Gitweb:        https://git.kernel.org/tip/625395c4a0f4775e0fe00f616888d2e6c1b=
+a49db
+Author:        Siddh Raman Pant <code@siddh.me>
+AuthorDate:    Sun, 31 Jul 2022 21:39:13 +05:30
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 03 Aug 2022 11:22:37 +02:00
+CommitterDate: Wed, 03 Aug 2022 11:44:57 +02:00
 
-sched/rt: Fix Sparse warnings due to undefined rt.c declarations
+x86/numa: Use cpumask_available instead of hardcoded NULL check
 
-There are several symbols defined in kernel/sched/sched.h but get wrapped
-in CONFIG_CGROUP_SCHED, even though dummy versions get built in rt.c and
-therefore trigger Sparse warnings:
+GCC-12 started triggering a new warning:
 
-  kernel/sched/rt.c:309:6: warning: symbol 'unregister_rt_sched_group' was not declared. Should it be static?
-  kernel/sched/rt.c:311:6: warning: symbol 'free_rt_sched_group' was not declared. Should it be static?
-  kernel/sched/rt.c:313:5: warning: symbol 'alloc_rt_sched_group' was not declared. Should it be static?
+  arch/x86/mm/numa.c: In function =E2=80=98cpumask_of_node=E2=80=99:
+  arch/x86/mm/numa.c:916:39: warning: the comparison will always evaluate as =
+=E2=80=98false=E2=80=99 for the address of =E2=80=98node_to_cpumask_map=E2=80=
+=99 will never be NULL [-Waddress]
+    916 |         if (node_to_cpumask_map[node] =3D=3D NULL) {
+        |                                       ^~
 
-Fix this by moving them outside the CONFIG_CGROUP_SCHED block.
+node_to_cpumask_map is of type cpumask_var_t[].
 
-[ mingo: Refreshed to the latest scheduler tree, tweaked changelog. ]
+When CONFIG_CPUMASK_OFFSTACK is set, cpumask_var_t is typedef'd to a
+pointer for dynamic allocation, else to an array of one element. The
+"wicked game" can be checked on line 700 of include/linux/cpumask.h.
 
-Signed-off-by: Ben Dooks <ben-linux@fluff.org>
+The original code in debug_cpumask_set_cpu() and cpumask_of_node() were
+probably written by the original authors with CONFIG_CPUMASK_OFFSTACK=3Dy
+(i.e. dynamic allocation) in mind, checking if the cpumask was available
+via a direct NULL check.
+
+When CONFIG_CPUMASK_OFFSTACK is not set, GCC gives the above warning
+while compiling the kernel.
+
+Fix that by using cpumask_available(), which does the NULL check when
+CONFIG_CPUMASK_OFFSTACK is set, otherwise returns true. Use it wherever
+such checks are made.
+
+Conditional definitions of cpumask_available() can be found along with
+the definition of cpumask_var_t. Check the cpumask.h reference mentioned
+above.
+
+Fixes: c032ef60d1aa ("cpumask: convert node_to_cpumask_map[] to cpumask_var_t=
+")
+Fixes: de2d9445f162 ("x86: Unify node_to_cpumask_map handling between 32 and =
+64bit")
+Signed-off-by: Siddh Raman Pant <code@siddh.me>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20220721145155.358366-1-ben-linux@fluff.org
+Link: https://lore.kernel.org/r/20220731160913.632092-1-code@siddh.me
 ---
- kernel/sched/sched.h | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ arch/x86/mm/numa.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index aad7f5e..1429315 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -480,9 +480,6 @@ extern void __refill_cfs_bandwidth_runtime(struct cfs_bandwidth *cfs_b);
- extern void start_cfs_bandwidth(struct cfs_bandwidth *cfs_b);
- extern void unthrottle_cfs_rq(struct cfs_rq *cfs_rq);
- 
--extern void unregister_rt_sched_group(struct task_group *tg);
--extern void free_rt_sched_group(struct task_group *tg);
--extern int alloc_rt_sched_group(struct task_group *tg, struct task_group *parent);
- extern void init_tg_rt_entry(struct task_group *tg, struct rt_rq *rt_rq,
- 		struct sched_rt_entity *rt_se, int cpu,
- 		struct sched_rt_entity *parent);
-@@ -520,6 +517,10 @@ struct cfs_bandwidth { };
- 
- #endif	/* CONFIG_CGROUP_SCHED */
- 
-+extern void unregister_rt_sched_group(struct task_group *tg);
-+extern void free_rt_sched_group(struct task_group *tg);
-+extern int alloc_rt_sched_group(struct task_group *tg, struct task_group *parent);
-+
- /*
-  * u64_u32_load/u64_u32_store
-  *
+diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
+index e8b0615..2aadb20 100644
+--- a/arch/x86/mm/numa.c
++++ b/arch/x86/mm/numa.c
+@@ -867,7 +867,7 @@ void debug_cpumask_set_cpu(int cpu, int node, bool enable)
+ 		return;
+ 	}
+ 	mask =3D node_to_cpumask_map[node];
+-	if (!mask) {
++	if (!cpumask_available(mask)) {
+ 		pr_err("node_to_cpumask_map[%i] NULL\n", node);
+ 		dump_stack();
+ 		return;
+@@ -913,7 +913,7 @@ const struct cpumask *cpumask_of_node(int node)
+ 		dump_stack();
+ 		return cpu_none_mask;
+ 	}
+-	if (node_to_cpumask_map[node] =3D=3D NULL) {
++	if (!cpumask_available(node_to_cpumask_map[node])) {
+ 		printk(KERN_WARNING
+ 			"cpumask_of_node(%d): no node_to_cpumask_map!\n",
+ 			node);
