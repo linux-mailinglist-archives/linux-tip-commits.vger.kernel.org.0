@@ -2,54 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 87BF8589A4D
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  4 Aug 2022 12:12:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 149C858A104
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  4 Aug 2022 21:02:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230177AbiHDKMx (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 4 Aug 2022 06:12:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49610 "EHLO
+        id S234994AbiHDTCg (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 4 Aug 2022 15:02:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51432 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229469AbiHDKMx (ORCPT
+        with ESMTP id S229678AbiHDTCf (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 4 Aug 2022 06:12:53 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F191532DAA;
-        Thu,  4 Aug 2022 03:12:51 -0700 (PDT)
-Date:   Thu, 04 Aug 2022 10:12:48 -0000
+        Thu, 4 Aug 2022 15:02:35 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6357139BB3;
+        Thu,  4 Aug 2022 12:02:34 -0700 (PDT)
+Date:   Thu, 04 Aug 2022 19:02:30 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1659607970;
+        s=2020; t=1659639752;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=tLSZPZSjoAeTGrgSN5RmR7EL5cAJ9diYkxxZcNWNL4s=;
-        b=O5+10C1hO6tN8OpUQDe3V/QvDkB32GSgqx/TNSjBWdHtKDAdi7ri6Fz0OgoZyIZZlqwk04
-        EDyWgDpFUawpCZuyAMyQtMDWO3PQYQDXF9/v54Jjw3Sf4IBNf8kfVnuEFuGebXTaA4G5Kc
-        aKBkeqg+vft3LddCQYkEy/f1F1XfAuI0vJroz8q1ll4LtS8IkyUyrUcbAgco7eduL/c/hd
-        BB1kmuk6IAL4/iUQgDlVWianKoszxp5AQTaT0RYZgF1jpQvlQ3oy3VQMVpTPhf8JzBtJAb
-        ug/cgupC2PYoi8bN3TJbhocJgDGmDU+UhzsudhjeG72/h23m5MpMBNPMwDeNzw==
+        bh=WAXs2btTEI1qqN1M213Bb2k1VGPdxbUE9Px/51ZXhzk=;
+        b=Vz2t9JUHqGR9cbT271qDdvepB8fTybAGiunWE+bwwKuUOqyTCXzv2RWlNEwnPayuRGWVWz
+        kN7JvUTYh8F1ApbysYpEuS07Pj2fSnm4Cx8GMIoeuG9cY6ZfWJXWgOtlyfSmqJuen5xx4u
+        Gwl82KxhOArkD27bqiADZf9f3C0QVsAWyWXfQH4IJad2RldIP+ya2wzHxUexgoaVQfedbY
+        SvvsBOTF30yDMfBUnsI+4WN1VM3Rq1i+MFYdA+rnS0PVIh07gIxt6Dr+r961qM8pg9SAbs
+        2WW7jkFbwr6Mmf4EL0axHHQoZVHBHZ0RTApZi4aDUWaUZZQunjBG8sL7YDQlDw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1659607970;
+        s=2020e; t=1659639752;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=tLSZPZSjoAeTGrgSN5RmR7EL5cAJ9diYkxxZcNWNL4s=;
-        b=VQAMonK1IeG501+VvO1wGyesc5mBrAC82ZCHzNPalzpLxmKOx1UNU67CohWLJovwiPyM69
-        iNUmKUOmvpt+L4Ag==
-From:   "tip-bot2 for Jason Wang" <tip-bot2@linutronix.de>
+        bh=WAXs2btTEI1qqN1M213Bb2k1VGPdxbUE9Px/51ZXhzk=;
+        b=DOfjDmzvl8mZedRI+QMHJEZ/kDC7IFTSwo03/DjFQ/5T1lqN2Gn3Vupv5AfaQ0N15nyaUu
+        3VBELcImJMLqwXAQ==
+From:   "tip-bot2 for Andrea Righi" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cleanups] x86: Fix various duplicate-word comment typos
-Cc:     Jason Wang <wangborong@cdjrlc.com>, Ingo Molnar <mingo@kernel.org>,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20220715044809.20572-1-wangborong@cdjrlc.com>
-References: <20220715044809.20572-1-wangborong@cdjrlc.com>
+Subject: [tip: x86/urgent] x86/entry: Build thunk_$(BITS) only if CONFIG_PREEMPTION=y
+Cc:     Andrea Righi <andrea.righi@canonical.com>,
+        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <Ke7EWjcX+ZlXO@arighi-desktop>
+References: <Ke7EWjcX+ZlXO@arighi-desktop>
 MIME-Version: 1.0
-Message-ID: <165960796851.15455.16926739892196439639.tip-bot2@tip-bot2>
+Message-ID: <165963975056.15455.12803766346489134957.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -63,78 +64,112 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/cleanups branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     edf13ecbc8d68cc7462df9cae1f4a137df3b827c
-Gitweb:        https://git.kernel.org/tip/edf13ecbc8d68cc7462df9cae1f4a137df3b827c
-Author:        Jason Wang <wangborong@cdjrlc.com>
-AuthorDate:    Fri, 15 Jul 2022 12:48:09 +08:00
+Commit-ID:     de979c83574abf6e78f3fa65b716515c91b2613d
+Gitweb:        https://git.kernel.org/tip/de979c83574abf6e78f3fa65b716515c91b2613d
+Author:        Andrea Righi <andrea.righi@canonical.com>
+AuthorDate:    Thu, 14 Jul 2022 09:49:15 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 04 Aug 2022 12:08:10 +02:00
+CommitterDate: Thu, 04 Aug 2022 12:23:50 +02:00
 
-x86: Fix various duplicate-word comment typos
+x86/entry: Build thunk_$(BITS) only if CONFIG_PREEMPTION=y
 
-[ mingo: Consolidated 4 very similar patches into one, it's silly to spread this out. ]
+With CONFIG_PREEMPTION disabled, arch/x86/entry/thunk_$(BITS).o becomes
+an empty object file.
 
-Signed-off-by: Jason Wang <wangborong@cdjrlc.com>
+With some old versions of binutils (i.e., 2.35.90.20210113-1ubuntu1) the
+GNU assembler doesn't generate a symbol table for empty object files and
+objtool fails with the following error when a valid symbol table cannot
+be found:
+
+  arch/x86/entry/thunk_64.o: warning: objtool: missing symbol table
+
+To prevent this from happening, build thunk_$(BITS).o only if
+CONFIG_PREEMPTION is enabled.
+
+BugLink: https://bugs.launchpad.net/bugs/1911359
+
+Fixes: 320100a5ffe5 ("x86/entry: Remove the TRACE_IRQS cruft")
+Signed-off-by: Andrea Righi <andrea.righi@canonical.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20220715044809.20572-1-wangborong@cdjrlc.com
+Link: https://lore.kernel.org/r/Ys/Ke7EWjcX+ZlXO@arighi-desktop
 ---
- arch/x86/kernel/amd_gart_64.c | 2 +-
- arch/x86/kernel/aperture_64.c | 2 +-
- arch/x86/kvm/vmx/nested.c     | 2 +-
- arch/x86/platform/efi/efi.c   | 2 +-
- 4 files changed, 4 insertions(+), 4 deletions(-)
+ arch/x86/entry/Makefile   | 3 ++-
+ arch/x86/entry/thunk_32.S | 2 --
+ arch/x86/entry/thunk_64.S | 4 ----
+ arch/x86/um/Makefile      | 3 ++-
+ 4 files changed, 4 insertions(+), 8 deletions(-)
 
-diff --git a/arch/x86/kernel/amd_gart_64.c b/arch/x86/kernel/amd_gart_64.c
-index 194d54e..19a0207 100644
---- a/arch/x86/kernel/amd_gart_64.c
-+++ b/arch/x86/kernel/amd_gart_64.c
-@@ -53,7 +53,7 @@ static u32 *iommu_gatt_base;		/* Remapping table */
-  * of only flushing when an mapping is reused. With it true the GART is
-  * flushed for every mapping. Problem is that doing the lazy flush seems
-  * to trigger bugs with some popular PCI cards, in particular 3ware (but
-- * has been also also seen with Qlogic at least).
-+ * has been also seen with Qlogic at least).
-  */
- static int iommu_fullflush = 1;
+diff --git a/arch/x86/entry/Makefile b/arch/x86/entry/Makefile
+index eeadbd7..ca2fe18 100644
+--- a/arch/x86/entry/Makefile
++++ b/arch/x86/entry/Makefile
+@@ -11,12 +11,13 @@ CFLAGS_REMOVE_common.o		= $(CC_FLAGS_FTRACE)
  
-diff --git a/arch/x86/kernel/aperture_64.c b/arch/x86/kernel/aperture_64.c
-index 7a5630d..4feaa67 100644
---- a/arch/x86/kernel/aperture_64.c
-+++ b/arch/x86/kernel/aperture_64.c
-@@ -36,7 +36,7 @@
- /*
-  * Using 512M as goal, in case kexec will load kernel_big
-  * that will do the on-position decompress, and could overlap with
-- * with the gart aperture that is used.
-+ * the gart aperture that is used.
-  * Sequence:
-  * kernel_small
-  * ==> kexec (with kdump trigger path or gart still enabled)
-diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-index ab135f9..f0ba7da 100644
---- a/arch/x86/kvm/vmx/nested.c
-+++ b/arch/x86/kvm/vmx/nested.c
-@@ -2560,7 +2560,7 @@ static int prepare_vmcs02(struct kvm_vcpu *vcpu, struct vmcs12 *vmcs12,
- 	 * bits which we consider mandatory enabled.
- 	 * The CR0_READ_SHADOW is what L2 should have expected to read given
- 	 * the specifications by L1; It's not enough to take
--	 * vmcs12->cr0_read_shadow because on our cr0_guest_host_mask we we
-+	 * vmcs12->cr0_read_shadow because on our cr0_guest_host_mask we
- 	 * have more bits than L1 expected.
- 	 */
- 	vmx_set_cr0(vcpu, vmcs12->guest_cr0);
-diff --git a/arch/x86/platform/efi/efi.c b/arch/x86/platform/efi/efi.c
-index 1591d67..b6efd2b 100644
---- a/arch/x86/platform/efi/efi.c
-+++ b/arch/x86/platform/efi/efi.c
-@@ -192,7 +192,7 @@ static void __init do_add_efi_memmap(void)
- }
+ CFLAGS_common.o			+= -fno-stack-protector
  
- /*
-- * Given add_efi_memmap defaults to 0 and there there is no alternative
-+ * Given add_efi_memmap defaults to 0 and there is no alternative
-  * e820 mechanism for soft-reserved memory, import the full EFI memory
-  * map if soft reservations are present and enabled. Otherwise, the
-  * mechanism to disable the kernel's consideration of EFI_MEMORY_SP is
+-obj-y				:= entry.o entry_$(BITS).o thunk_$(BITS).o syscall_$(BITS).o
++obj-y				:= entry.o entry_$(BITS).o syscall_$(BITS).o
+ obj-y				+= common.o
+ 
+ obj-y				+= vdso/
+ obj-y				+= vsyscall/
+ 
++obj-$(CONFIG_PREEMPTION)	+= thunk_$(BITS).o
+ obj-$(CONFIG_IA32_EMULATION)	+= entry_64_compat.o syscall_32.o
+ obj-$(CONFIG_X86_X32_ABI)	+= syscall_x32.o
+ 
+diff --git a/arch/x86/entry/thunk_32.S b/arch/x86/entry/thunk_32.S
+index 7591bab..ff6e700 100644
+--- a/arch/x86/entry/thunk_32.S
++++ b/arch/x86/entry/thunk_32.S
+@@ -29,10 +29,8 @@ SYM_CODE_START_NOALIGN(\name)
+ SYM_CODE_END(\name)
+ 	.endm
+ 
+-#ifdef CONFIG_PREEMPTION
+ 	THUNK preempt_schedule_thunk, preempt_schedule
+ 	THUNK preempt_schedule_notrace_thunk, preempt_schedule_notrace
+ 	EXPORT_SYMBOL(preempt_schedule_thunk)
+ 	EXPORT_SYMBOL(preempt_schedule_notrace_thunk)
+-#endif
+ 
+diff --git a/arch/x86/entry/thunk_64.S b/arch/x86/entry/thunk_64.S
+index 505b488..f38b07d 100644
+--- a/arch/x86/entry/thunk_64.S
++++ b/arch/x86/entry/thunk_64.S
+@@ -31,14 +31,11 @@ SYM_FUNC_END(\name)
+ 	_ASM_NOKPROBE(\name)
+ 	.endm
+ 
+-#ifdef CONFIG_PREEMPTION
+ 	THUNK preempt_schedule_thunk, preempt_schedule
+ 	THUNK preempt_schedule_notrace_thunk, preempt_schedule_notrace
+ 	EXPORT_SYMBOL(preempt_schedule_thunk)
+ 	EXPORT_SYMBOL(preempt_schedule_notrace_thunk)
+-#endif
+ 
+-#ifdef CONFIG_PREEMPTION
+ SYM_CODE_START_LOCAL_NOALIGN(__thunk_restore)
+ 	popq %r11
+ 	popq %r10
+@@ -53,4 +50,3 @@ SYM_CODE_START_LOCAL_NOALIGN(__thunk_restore)
+ 	RET
+ 	_ASM_NOKPROBE(__thunk_restore)
+ SYM_CODE_END(__thunk_restore)
+-#endif
+diff --git a/arch/x86/um/Makefile b/arch/x86/um/Makefile
+index ba5789c..a8cde4e 100644
+--- a/arch/x86/um/Makefile
++++ b/arch/x86/um/Makefile
+@@ -28,7 +28,8 @@ else
+ 
+ obj-y += syscalls_64.o vdso/
+ 
+-subarch-y = ../lib/csum-partial_64.o ../lib/memcpy_64.o ../entry/thunk_64.o
++subarch-y = ../lib/csum-partial_64.o ../lib/memcpy_64.o
++subarch-$(CONFIG_PREEMPTION) += ../entry/thunk_64.o
+ 
+ endif
+ 
