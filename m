@@ -2,56 +2,55 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D3C9B589A1C
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  4 Aug 2022 11:51:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 390F0589A1F
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  4 Aug 2022 11:52:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239446AbiHDJv6 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 4 Aug 2022 05:51:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36998 "EHLO
+        id S239410AbiHDJwd (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 4 Aug 2022 05:52:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37894 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239329AbiHDJvs (ORCPT
+        with ESMTP id S239513AbiHDJwP (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 4 Aug 2022 05:51:48 -0400
+        Thu, 4 Aug 2022 05:52:15 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C8F5275F3;
-        Thu,  4 Aug 2022 02:51:47 -0700 (PDT)
-Date:   Thu, 04 Aug 2022 09:51:45 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72A0A6112A;
+        Thu,  4 Aug 2022 02:52:14 -0700 (PDT)
+Date:   Thu, 04 Aug 2022 09:52:11 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1659606706;
+        s=2020; t=1659606733;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=V9KFp3Q8FANAJlxYolRoliLVkamvy/Db09livD6w2ms=;
-        b=B33og1K3qhK2OzBZe5bJcaHsQ1m/GNOrv6WpuB9cV+YutQkBuISUTHNXVefQ8Evwk1m2TR
-        oN4swROXBaX4uf6tHmzquNXPsTL4fjneQm9Q8UQrCc8D4xEmWyyGdGV6b2c6IHpGmlARzy
-        Yrxopxo/jkiWWtjmTvrLu146oQ2YiUjBE/S0VuvFI0QTMgSWlUUL/q4Ok6eKSyAT6Nxxkz
-        x/meVQae1TjUPRJLStJZDLisRENOb1fMc2miybMCnAzlWEATtRHrAyWVYfFG6ZFWHaad+X
-        FtM/WVY+DRzl+6MHL/cvOp8bh1du1o1JaSDdfpLRUZ4eJhmUgAMfKU5WXas5iw==
+        bh=t2qnPvG4/3Vaxg/aiPjUeC6M2IYRgCDPc+iXd58+d7w=;
+        b=zShPJp2/pnSp3GmQacfw9JcytZepVUgLEUWM3Ubro5pNG13qmiPitMq4GQ6mFFXu62IWdc
+        nbDrl8L938T4S0ZaVARjackysZ7tVw5zWmhmjwJMzvOf425lqSIRBUlf8XicThDkWV75kL
+        DhDKP3OH8m4QXo4vGbwjXkJyJ2q7FZ/YvI8zz8RBwAMsv3G1/ZBuxdKsutAcHmy2bLH5ky
+        X4OqpgXdIM4TCVdJLBhRbdplopy3GlHkr8ZsT+kOWr2YegkCVIqVxi5UCdA9JuHJSUKXy8
+        CfxLydgt/oQ2+GnyuTa9bWt/D4+Tl9kA1jpWKutBfO+VJpv+k+tOVhl2sr0fOQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1659606706;
+        s=2020e; t=1659606733;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=V9KFp3Q8FANAJlxYolRoliLVkamvy/Db09livD6w2ms=;
-        b=ePh6+61LxOZqTEn7tDkUdlbgRK/MqCEYBY08Cl9xr68mK/OcOnpjigX6Kt//Hsyi/MpKFc
-        c/D1fdDk/hXUZ0CQ==
-From:   "tip-bot2 for Mel Gorman" <tip-bot2@linutronix.de>
+        bh=t2qnPvG4/3Vaxg/aiPjUeC6M2IYRgCDPc+iXd58+d7w=;
+        b=ZZpqvxeQcmRALpH7+lHKtGl1/cIqxe/wfBSobZzponyaK2OlbB32KEKB50qwXbnYMEzgUt
+        yM2G5wOGaIDNosBw==
+From:   "tip-bot2 for Fei Li" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] sched/core: Do not requeue task on CPU excluded
- from cpus_mask
-Cc:     Mel Gorman <mgorman@techsingularity.net>,
-        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
+Subject: [tip: x86/platform] x86/acrn: Set up timekeeping
+Cc:     Fei Li <fei1.li@intel.com>, Ingo Molnar <mingo@kernel.org>,
+        Conghui <conghui.chen@intel.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20220804092119.20137-1-mgorman@techsingularity.net>
-References: <20220804092119.20137-1-mgorman@techsingularity.net>
+In-Reply-To: <20220804055903.365211-1-fei1.li@intel.com>
+References: <20220804055903.365211-1-fei1.li@intel.com>
 MIME-Version: 1.0
-Message-ID: <165960670500.15455.2504938304719155397.tip-bot2@tip-bot2>
+Message-ID: <165960673199.15455.13027155555937774807.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,86 +64,73 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/urgent branch of tip:
+The following commit has been merged into the x86/platform branch of tip:
 
-Commit-ID:     751d4cbc43879229dbc124afefe240b70fd29a85
-Gitweb:        https://git.kernel.org/tip/751d4cbc43879229dbc124afefe240b70fd29a85
-Author:        Mel Gorman <mgorman@techsingularity.net>
-AuthorDate:    Thu, 04 Aug 2022 10:21:19 +01:00
+Commit-ID:     81a71f51b89e84f39df2a3b1daf4274ae6b7b194
+Gitweb:        https://git.kernel.org/tip/81a71f51b89e84f39df2a3b1daf4274ae6b7b194
+Author:        Fei Li <fei1.li@intel.com>
+AuthorDate:    Thu, 04 Aug 2022 13:59:03 +08:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 04 Aug 2022 11:26:13 +02:00
+CommitterDate: Thu, 04 Aug 2022 11:11:59 +02:00
 
-sched/core: Do not requeue task on CPU excluded from cpus_mask
+x86/acrn: Set up timekeeping
 
-The following warning was triggered on a large machine early in boot on
-a distribution kernel but the same problem should also affect mainline.
+ACRN Hypervisor reports timing information via CPUID leaf 0x40000010.
+Get the TSC and CPU frequency via CPUID leaf 0x40000010 and set the
+kernel values accordingly.
 
-   WARNING: CPU: 439 PID: 10 at ../kernel/workqueue.c:2231 process_one_work+0x4d/0x440
-   Call Trace:
-    <TASK>
-    rescuer_thread+0x1f6/0x360
-    kthread+0x156/0x180
-    ret_from_fork+0x22/0x30
-    </TASK>
-
-Commit c6e7bd7afaeb ("sched/core: Optimize ttwu() spinning on p->on_cpu")
-optimises ttwu by queueing a task that is descheduling on the wakelist,
-but does not check if the task descheduling is still allowed to run on that CPU.
-
-In this warning, the problematic task is a workqueue rescue thread which
-checks if the rescue is for a per-cpu workqueue and running on the wrong CPU.
-While this is early in boot and it should be possible to create workers,
-the rescue thread may still used if the MAYDAY_INITIAL_TIMEOUT is reached
-or MAYDAY_INTERVAL and on a sufficiently large machine, the rescue
-thread is being used frequently.
-
-Tracing confirmed that the task should have migrated properly using the
-stopper thread to handle the migration. However, a parallel wakeup from udev
-running on another CPU that does not share CPU cache observes p->on_cpu and
-uses task_cpu(p), queues the task on the old CPU and triggers the warning.
-
-Check that the wakee task that is descheduling is still allowed to run
-on its current CPU and if not, wait for the descheduling to complete
-and select an allowed CPU.
-
-Fixes: c6e7bd7afaeb ("sched/core: Optimize ttwu() spinning on p->on_cpu")
-Signed-off-by: Mel Gorman <mgorman@techsingularity.net>
+Signed-off-by: Fei Li <fei1.li@intel.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20220804092119.20137-1-mgorman@techsingularity.net
+Reviewed-by: Conghui <conghui.chen@intel.com>
+Link: https://lore.kernel.org/r/20220804055903.365211-1-fei1.li@intel.com
 ---
- kernel/sched/core.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ arch/x86/include/asm/acrn.h | 14 ++++++++++++++
+ arch/x86/kernel/cpu/acrn.c  |  3 +++
+ 2 files changed, 17 insertions(+)
 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index addc3c2..02afa1c 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -3802,7 +3802,7 @@ bool cpus_share_cache(int this_cpu, int that_cpu)
- 	return per_cpu(sd_llc_id, this_cpu) == per_cpu(sd_llc_id, that_cpu);
+diff --git a/arch/x86/include/asm/acrn.h b/arch/x86/include/asm/acrn.h
+index e003a01..1dd1438 100644
+--- a/arch/x86/include/asm/acrn.h
++++ b/arch/x86/include/asm/acrn.h
+@@ -10,6 +10,15 @@
+ /* Bit 0 indicates whether guest VM is privileged */
+ #define	ACRN_FEATURE_PRIVILEGED_VM	BIT(0)
+ 
++/*
++ * Timing Information.
++ * This leaf returns the current TSC frequency in kHz.
++ *
++ * EAX: (Virtual) TSC frequency in kHz.
++ * EBX, ECX, EDX: RESERVED (reserved fields are set to zero).
++ */
++#define ACRN_CPUID_TIMING_INFO		0x40000010
++
+ void acrn_setup_intr_handler(void (*handler)(void));
+ void acrn_remove_intr_handler(void);
+ 
+@@ -21,6 +30,11 @@ static inline u32 acrn_cpuid_base(void)
+ 	return 0;
  }
  
--static inline bool ttwu_queue_cond(int cpu)
-+static inline bool ttwu_queue_cond(struct task_struct *p, int cpu)
- {
- 	/*
- 	 * Do not complicate things with the async wake_list while the CPU is
-@@ -3811,6 +3811,10 @@ static inline bool ttwu_queue_cond(int cpu)
- 	if (!cpu_active(cpu))
- 		return false;
- 
-+	/* Ensure the task will still be allowed to run on the CPU. */
-+	if (!cpumask_test_cpu(cpu, p->cpus_ptr))
-+		return false;
++static inline unsigned long acrn_get_tsc_khz(void)
++{
++	return cpuid_eax(ACRN_CPUID_TIMING_INFO);
++}
 +
- 	/*
- 	 * If the CPU does not share cache, then queue the task on the
- 	 * remote rqs wakelist to avoid accessing remote data.
-@@ -3840,7 +3844,7 @@ static inline bool ttwu_queue_cond(int cpu)
- 
- static bool ttwu_queue_wakelist(struct task_struct *p, int cpu, int wake_flags)
+ /*
+  * Hypercalls for ACRN
+  *
+diff --git a/arch/x86/kernel/cpu/acrn.c b/arch/x86/kernel/cpu/acrn.c
+index 23f5f27..485441b 100644
+--- a/arch/x86/kernel/cpu/acrn.c
++++ b/arch/x86/kernel/cpu/acrn.c
+@@ -28,6 +28,9 @@ static void __init acrn_init_platform(void)
  {
--	if (sched_feat(TTWU_QUEUE) && ttwu_queue_cond(cpu)) {
-+	if (sched_feat(TTWU_QUEUE) && ttwu_queue_cond(p, cpu)) {
- 		sched_clock_cpu(cpu); /* Sync clocks across CPUs */
- 		__ttwu_queue_wakelist(p, cpu, wake_flags);
- 		return true;
+ 	/* Setup the IDT for ACRN hypervisor callback */
+ 	alloc_intr_gate(HYPERVISOR_CALLBACK_VECTOR, asm_sysvec_acrn_hv_callback);
++
++	x86_platform.calibrate_tsc = acrn_get_tsc_khz;
++	x86_platform.calibrate_cpu = acrn_get_tsc_khz;
+ }
+ 
+ static bool acrn_x2apic_available(void)
