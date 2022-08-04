@@ -2,56 +2,54 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E967958916C
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  3 Aug 2022 19:30:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EECF5899B5
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  4 Aug 2022 11:09:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237639AbiHCRay (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Wed, 3 Aug 2022 13:30:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39960 "EHLO
+        id S237567AbiHDJJ4 (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Thu, 4 Aug 2022 05:09:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36770 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238292AbiHCRaq (ORCPT
+        with ESMTP id S231700AbiHDJJ4 (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Wed, 3 Aug 2022 13:30:46 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21FEC13D32;
-        Wed,  3 Aug 2022 10:30:46 -0700 (PDT)
-Date:   Wed, 03 Aug 2022 17:30:43 -0000
+        Thu, 4 Aug 2022 05:09:56 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 265B42BB01;
+        Thu,  4 Aug 2022 02:09:55 -0700 (PDT)
+Date:   Thu, 04 Aug 2022 09:09:51 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1659547844;
+        s=2020; t=1659604192;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=hY2455sfa/TGB8TuKmql6RklNNRdnqF09PK6+bfdj9A=;
-        b=WHL5j13zrwhXImRPdkj8yczyq1ZE9Wufcg8mJ6iZLr6se/e+dwtHkQWFAp79VpXNjKvLly
-        n6sQBIEY38fzw+T9yHgP5QFMZG+hviHDaJO9Jh5vn5fKPHRMKu/AqtKblMl+GixTnB0Gsn
-        qrNXc08fTEGJbQB835cXHaullWXTc6NgfxwHMjEvOz9i28Quk5BKf35d8CZrh4eM9M77rK
-        MCb4W+qb1bFVff9rbeIPoF7ABlDWeDe8Zqhgira3uBwe4aXJ/6/716XKngEePt8E+VRX0F
-        6Y5w42qidsr5//nMSbNib038JJEqlai2pAZ+pbBLKuhgDwHUOqNHF6JxMEHAyg==
+        bh=b5znzIH5NljT5APUouLc8bxPp/gvEn0y7XTQtpyiiqQ=;
+        b=2SJFfENmx5D4ZYYXB3E95KyJmI4wnwHQKg3ywA51+Y+EyJ7gHs9+QzKaQYlWehp+Pdy3O6
+        Es/mOaXjQlRrGWh4JZ1sewlthCGS1D+dNEYHrVkQuK0vTcBYNliCRXWMfz2VyZp5nvnPWp
+        mDha7JIylJS1dd/zSUkcvz2UMyqV0UgsBVmK4eMTMaG6qbH0bLZWfUxHnH8M8wdpxsyucz
+        2DunSI/EXUT6avGgT92M09XCn5SSNrtwNpXQ3fboNM4o+8oT4emV/QF450quSIDKvhDHqh
+        X+h7Jxgo4Ny0nFY/XKoMYQvVqrasjX0+seJCV+kb/vbCDnDV643J3FyA787etg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1659547844;
+        s=2020e; t=1659604192;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=hY2455sfa/TGB8TuKmql6RklNNRdnqF09PK6+bfdj9A=;
-        b=lBzlfeQFwe9hN/bicVEOx/aXiiChQmyagVTThI2bd91F9n/m1jYjTVcjk8uLRugJFLa1Bs
-        H0CmyG0TeTjStDAA==
-From:   "tip-bot2 for Bing Huang" <tip-bot2@linutronix.de>
+        bh=b5znzIH5NljT5APUouLc8bxPp/gvEn0y7XTQtpyiiqQ=;
+        b=ck3OjAL8FdwSfV5LTs4CurCQRUOCbKXjrXpcgDClspWcNx+U45HqwXst50/LfHLKNrZwCi
+        2DCKZPl0ou8TDgBg==
+From:   "tip-bot2 for Slark Xiao" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/fair: Make per-cpu cpumasks static
-Cc:     Bing Huang <huangbing@kylinos.cn>, Ingo Molnar <mingo@kernel.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20220722213609.3901-1-huangbing775@126.com>
-References: <20220722213609.3901-1-huangbing775@126.com>
+Subject: [tip: perf/urgent] perf/core: Fix ';;' typo
+Cc:     Slark Xiao <slark_xiao@163.com>, Ingo Molnar <mingo@kernel.org>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20220720091220.14200-1-slark_xiao@163.com>
+References: <20220720091220.14200-1-slark_xiao@163.com>
 MIME-Version: 1.0
-Message-ID: <165954784337.15455.14071193485990481761.tip-bot2@tip-bot2>
+Message-ID: <165960419118.15455.15553677582415200869.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
@@ -65,94 +63,36 @@ Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     18c31c9711a90b48a77b78afb65012d9feec444c
-Gitweb:        https://git.kernel.org/tip/18c31c9711a90b48a77b78afb65012d9feec444c
-Author:        Bing Huang <huangbing@kylinos.cn>
-AuthorDate:    Sat, 23 Jul 2022 05:36:09 +08:00
+Commit-ID:     99643bab36b642be10bf09cd3285c37c9e5b597f
+Gitweb:        https://git.kernel.org/tip/99643bab36b642be10bf09cd3285c37c9e5b597f
+Author:        Slark Xiao <slark_xiao@163.com>
+AuthorDate:    Wed, 20 Jul 2022 17:12:20 +08:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 03 Aug 2022 19:17:33 +02:00
+CommitterDate: Thu, 04 Aug 2022 11:01:30 +02:00
 
-sched/fair: Make per-cpu cpumasks static
+perf/core: Fix ';;' typo
 
-The load_balance_mask and select_rq_mask percpu variables are only used in
-kernel/sched/fair.c.
+Remove double ';;'.
 
-Make them static and move their allocation into init_sched_fair_class().
-
-Replace kzalloc_node() with zalloc_cpumask_var_node() to get rid of the
-CONFIG_CPUMASK_OFFSTACK #ifdef and to align with per-cpu cpumask
-allocation for RT (local_cpu_mask in init_sched_rt_class()) and DL
-class (local_cpu_mask_dl in init_sched_dl_class()).
-
-[ mingo: Tidied up changelog & touched up the code. ]
-
-Signed-off-by: Bing Huang <huangbing@kylinos.cn>
+Signed-off-by: Slark Xiao <slark_xiao@163.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
-Link: https://lore.kernel.org/r/20220722213609.3901-1-huangbing775@126.com
+Link: https://lore.kernel.org/r/20220720091220.14200-1-slark_xiao@163.com
 ---
- kernel/sched/core.c | 11 -----------
- kernel/sched/fair.c | 11 +++++++++--
- 2 files changed, 9 insertions(+), 13 deletions(-)
+ kernel/events/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 6785e3b..64c0899 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -9563,9 +9563,6 @@ LIST_HEAD(task_groups);
- static struct kmem_cache *task_group_cache __read_mostly;
- #endif
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index c9d32d4..bd23f3e 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -4457,7 +4457,7 @@ int perf_event_read_local(struct perf_event *event, u64 *value,
  
--DECLARE_PER_CPU(cpumask_var_t, load_balance_mask);
--DECLARE_PER_CPU(cpumask_var_t, select_rq_mask);
--
- void __init sched_init(void)
- {
- 	unsigned long ptr = 0;
-@@ -9609,14 +9606,6 @@ void __init sched_init(void)
+ 	*value = local64_read(&event->count);
+ 	if (enabled || running) {
+-		u64 __enabled, __running, __now;;
++		u64 __enabled, __running, __now;
  
- #endif /* CONFIG_RT_GROUP_SCHED */
- 	}
--#ifdef CONFIG_CPUMASK_OFFSTACK
--	for_each_possible_cpu(i) {
--		per_cpu(load_balance_mask, i) = (cpumask_var_t)kzalloc_node(
--			cpumask_size(), GFP_KERNEL, cpu_to_node(i));
--		per_cpu(select_rq_mask, i) = (cpumask_var_t)kzalloc_node(
--			cpumask_size(), GFP_KERNEL, cpu_to_node(i));
--	}
--#endif /* CONFIG_CPUMASK_OFFSTACK */
- 
- 	init_rt_bandwidth(&def_rt_bandwidth, global_rt_period(), global_rt_runtime());
- 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index d22c5e8..da38865 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -5893,8 +5893,8 @@ dequeue_throttle:
- #ifdef CONFIG_SMP
- 
- /* Working cpumask for: load_balance, load_balance_newidle. */
--DEFINE_PER_CPU(cpumask_var_t, load_balance_mask);
--DEFINE_PER_CPU(cpumask_var_t, select_rq_mask);
-+static DEFINE_PER_CPU(cpumask_var_t, load_balance_mask);
-+static DEFINE_PER_CPU(cpumask_var_t, select_rq_mask);
- 
- #ifdef CONFIG_NO_HZ_COMMON
- 
-@@ -12074,6 +12074,13 @@ void show_numa_stats(struct task_struct *p, struct seq_file *m)
- __init void init_sched_fair_class(void)
- {
- #ifdef CONFIG_SMP
-+	int i;
-+
-+	for_each_possible_cpu(i) {
-+		zalloc_cpumask_var_node(&per_cpu(load_balance_mask, i), GFP_KERNEL, cpu_to_node(i));
-+		zalloc_cpumask_var_node(&per_cpu(select_rq_mask,    i), GFP_KERNEL, cpu_to_node(i));
-+	}
-+
- 	open_softirq(SCHED_SOFTIRQ, run_rebalance_domains);
- 
- #ifdef CONFIG_NO_HZ_COMMON
+ 		calc_timer_values(event, &__now, &__enabled, &__running);
+ 		if (enabled)
