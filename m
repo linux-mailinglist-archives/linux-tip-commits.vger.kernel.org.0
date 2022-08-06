@@ -2,174 +2,112 @@ Return-Path: <linux-tip-commits-owner@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 149C858A104
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  4 Aug 2022 21:02:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D850058B498
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  6 Aug 2022 10:39:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234994AbiHDTCg (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
-        Thu, 4 Aug 2022 15:02:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51432 "EHLO
+        id S238941AbiHFIjP (ORCPT <rfc822;lists+linux-tip-commits@lfdr.de>);
+        Sat, 6 Aug 2022 04:39:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44926 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229678AbiHDTCf (ORCPT
+        with ESMTP id S230157AbiHFIjP (ORCPT
         <rfc822;linux-tip-commits@vger.kernel.org>);
-        Thu, 4 Aug 2022 15:02:35 -0400
+        Sat, 6 Aug 2022 04:39:15 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6357139BB3;
-        Thu,  4 Aug 2022 12:02:34 -0700 (PDT)
-Date:   Thu, 04 Aug 2022 19:02:30 -0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6860315A1D;
+        Sat,  6 Aug 2022 01:39:14 -0700 (PDT)
+Date:   Sat, 06 Aug 2022 08:39:10 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1659639752;
+        s=2020; t=1659775152;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=WAXs2btTEI1qqN1M213Bb2k1VGPdxbUE9Px/51ZXhzk=;
-        b=Vz2t9JUHqGR9cbT271qDdvepB8fTybAGiunWE+bwwKuUOqyTCXzv2RWlNEwnPayuRGWVWz
-        kN7JvUTYh8F1ApbysYpEuS07Pj2fSnm4Cx8GMIoeuG9cY6ZfWJXWgOtlyfSmqJuen5xx4u
-        Gwl82KxhOArkD27bqiADZf9f3C0QVsAWyWXfQH4IJad2RldIP+ya2wzHxUexgoaVQfedbY
-        SvvsBOTF30yDMfBUnsI+4WN1VM3Rq1i+MFYdA+rnS0PVIh07gIxt6Dr+r961qM8pg9SAbs
-        2WW7jkFbwr6Mmf4EL0axHHQoZVHBHZ0RTApZi4aDUWaUZZQunjBG8sL7YDQlDw==
+        bh=VqnPLVOiUJspOSEA+5W369mUY9XMls2pNuEzg/CYNIo=;
+        b=Fefs8iFfqKHOpX3D6oJPjiUtsKAczGprsTSjmZf0ISkE9be1+wFhcUiB5vX/fwXqthYJTB
+        vCp0H7UKCYZXjWlW2/9az/SVZddxtoW313a9g0pqwKcNpDi1BBqlNg6G5yM1Ca3Ptht1O9
+        QvyGRSfA2k1lWycXQMxNa39qYiRVyfChWp596mRDYkooEhrOk+C6uNWo3lToZYxmQmHafd
+        k6maZtgzV/98kXTThW9dhhqccZvF62mIgVntvTyyiFXlDDDWzJ7CcauROY9trpak/2aQh7
+        cB8kINjJbLtAWTrBTVy022df8ma89Jdt0umsRRrz86ZO1B7J1ELmQtz97m4CRA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1659639752;
+        s=2020e; t=1659775152;
         h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=WAXs2btTEI1qqN1M213Bb2k1VGPdxbUE9Px/51ZXhzk=;
-        b=DOfjDmzvl8mZedRI+QMHJEZ/kDC7IFTSwo03/DjFQ/5T1lqN2Gn3Vupv5AfaQ0N15nyaUu
-        3VBELcImJMLqwXAQ==
-From:   "tip-bot2 for Andrea Righi" <tip-bot2@linutronix.de>
+        bh=VqnPLVOiUJspOSEA+5W369mUY9XMls2pNuEzg/CYNIo=;
+        b=cxatV6G9/90W0STud3djXFzEDKSUoYmIY+m2yjVype4pZyKzHiVHCskpQs2HNNACQ68Ez8
+        WDcCk+eyndwY40Bg==
+From:   "tip-bot2 for Jiri Slaby" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/entry: Build thunk_$(BITS) only if CONFIG_PREEMPTION=y
-Cc:     Andrea Righi <andrea.righi@canonical.com>,
-        Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <Ke7EWjcX+ZlXO@arighi-desktop>
-References: <Ke7EWjcX+ZlXO@arighi-desktop>
+Subject: [tip: timers/urgent] posix-timers: Make do_clock_gettime() static
+Cc:     Jiri Slaby <jslaby@suse.cz>, Thomas Gleixner <tglx@linutronix.de>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20220719085620.30567-1-jslaby@suse.cz>
+References: <20220719085620.30567-1-jslaby@suse.cz>
 MIME-Version: 1.0
-Message-ID: <165963975056.15455.12803766346489134957.tip-bot2@tip-bot2>
+Message-ID: <165977515065.15455.14618598258481879751.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-tip-commits.vger.kernel.org>
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the timers/urgent branch of tip:
 
-Commit-ID:     de979c83574abf6e78f3fa65b716515c91b2613d
-Gitweb:        https://git.kernel.org/tip/de979c83574abf6e78f3fa65b716515c91b2613d
-Author:        Andrea Righi <andrea.righi@canonical.com>
-AuthorDate:    Thu, 14 Jul 2022 09:49:15 +02:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 04 Aug 2022 12:23:50 +02:00
+Commit-ID:     221f9d9cdf429df8c3843b4291f4f412fde11543
+Gitweb:        https://git.kernel.org/tip/221f9d9cdf429df8c3843b4291f4f412fde=
+11543
+Author:        Jiri Slaby <jslaby@suse.cz>
+AuthorDate:    Tue, 19 Jul 2022 10:56:20 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Sat, 06 Aug 2022 10:33:54 +02:00
 
-x86/entry: Build thunk_$(BITS) only if CONFIG_PREEMPTION=y
+posix-timers: Make do_clock_gettime() static
 
-With CONFIG_PREEMPTION disabled, arch/x86/entry/thunk_$(BITS).o becomes
-an empty object file.
+do_clock_gettime() is used only in posix-stubs.c, so make it static. It avoids
+a compiler warning too:
+time/posix-stubs.c:73:5: warning: no previous prototype for =E2=80=98do_clock=
+_gettime=E2=80=99 [-Wmissing-prototypes]
 
-With some old versions of binutils (i.e., 2.35.90.20210113-1ubuntu1) the
-GNU assembler doesn't generate a symbol table for empty object files and
-objtool fails with the following error when a valid symbol table cannot
-be found:
+Signed-off-by: Jiri Slaby <jslaby@suse.cz>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20220719085620.30567-1-jslaby@suse.cz
 
-  arch/x86/entry/thunk_64.o: warning: objtool: missing symbol table
-
-To prevent this from happening, build thunk_$(BITS).o only if
-CONFIG_PREEMPTION is enabled.
-
-BugLink: https://bugs.launchpad.net/bugs/1911359
-
-Fixes: 320100a5ffe5 ("x86/entry: Remove the TRACE_IRQS cruft")
-Signed-off-by: Andrea Righi <andrea.righi@canonical.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/Ys/Ke7EWjcX+ZlXO@arighi-desktop
 ---
- arch/x86/entry/Makefile   | 3 ++-
- arch/x86/entry/thunk_32.S | 2 --
- arch/x86/entry/thunk_64.S | 4 ----
- arch/x86/um/Makefile      | 3 ++-
- 4 files changed, 4 insertions(+), 8 deletions(-)
+ kernel/time/posix-stubs.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/entry/Makefile b/arch/x86/entry/Makefile
-index eeadbd7..ca2fe18 100644
---- a/arch/x86/entry/Makefile
-+++ b/arch/x86/entry/Makefile
-@@ -11,12 +11,13 @@ CFLAGS_REMOVE_common.o		= $(CC_FLAGS_FTRACE)
- 
- CFLAGS_common.o			+= -fno-stack-protector
- 
--obj-y				:= entry.o entry_$(BITS).o thunk_$(BITS).o syscall_$(BITS).o
-+obj-y				:= entry.o entry_$(BITS).o syscall_$(BITS).o
- obj-y				+= common.o
- 
- obj-y				+= vdso/
- obj-y				+= vsyscall/
- 
-+obj-$(CONFIG_PREEMPTION)	+= thunk_$(BITS).o
- obj-$(CONFIG_IA32_EMULATION)	+= entry_64_compat.o syscall_32.o
- obj-$(CONFIG_X86_X32_ABI)	+= syscall_x32.o
- 
-diff --git a/arch/x86/entry/thunk_32.S b/arch/x86/entry/thunk_32.S
-index 7591bab..ff6e700 100644
---- a/arch/x86/entry/thunk_32.S
-+++ b/arch/x86/entry/thunk_32.S
-@@ -29,10 +29,8 @@ SYM_CODE_START_NOALIGN(\name)
- SYM_CODE_END(\name)
- 	.endm
- 
--#ifdef CONFIG_PREEMPTION
- 	THUNK preempt_schedule_thunk, preempt_schedule
- 	THUNK preempt_schedule_notrace_thunk, preempt_schedule_notrace
- 	EXPORT_SYMBOL(preempt_schedule_thunk)
- 	EXPORT_SYMBOL(preempt_schedule_notrace_thunk)
--#endif
- 
-diff --git a/arch/x86/entry/thunk_64.S b/arch/x86/entry/thunk_64.S
-index 505b488..f38b07d 100644
---- a/arch/x86/entry/thunk_64.S
-+++ b/arch/x86/entry/thunk_64.S
-@@ -31,14 +31,11 @@ SYM_FUNC_END(\name)
- 	_ASM_NOKPROBE(\name)
- 	.endm
- 
--#ifdef CONFIG_PREEMPTION
- 	THUNK preempt_schedule_thunk, preempt_schedule
- 	THUNK preempt_schedule_notrace_thunk, preempt_schedule_notrace
- 	EXPORT_SYMBOL(preempt_schedule_thunk)
- 	EXPORT_SYMBOL(preempt_schedule_notrace_thunk)
--#endif
- 
--#ifdef CONFIG_PREEMPTION
- SYM_CODE_START_LOCAL_NOALIGN(__thunk_restore)
- 	popq %r11
- 	popq %r10
-@@ -53,4 +50,3 @@ SYM_CODE_START_LOCAL_NOALIGN(__thunk_restore)
- 	RET
- 	_ASM_NOKPROBE(__thunk_restore)
- SYM_CODE_END(__thunk_restore)
--#endif
-diff --git a/arch/x86/um/Makefile b/arch/x86/um/Makefile
-index ba5789c..a8cde4e 100644
---- a/arch/x86/um/Makefile
-+++ b/arch/x86/um/Makefile
-@@ -28,7 +28,8 @@ else
- 
- obj-y += syscalls_64.o vdso/
- 
--subarch-y = ../lib/csum-partial_64.o ../lib/memcpy_64.o ../entry/thunk_64.o
-+subarch-y = ../lib/csum-partial_64.o ../lib/memcpy_64.o
-+subarch-$(CONFIG_PREEMPTION) += ../entry/thunk_64.o
- 
- endif
- 
+diff --git a/kernel/time/posix-stubs.c b/kernel/time/posix-stubs.c
+index fcb3b21..90ea5f3 100644
+--- a/kernel/time/posix-stubs.c
++++ b/kernel/time/posix-stubs.c
+@@ -70,7 +70,7 @@ SYSCALL_DEFINE2(clock_settime, const clockid_t, which_clock,
+ 	return do_sys_settimeofday64(&new_tp, NULL);
+ }
+=20
+-int do_clock_gettime(clockid_t which_clock, struct timespec64 *tp)
++static int do_clock_gettime(clockid_t which_clock, struct timespec64 *tp)
+ {
+ 	switch (which_clock) {
+ 	case CLOCK_REALTIME:
+@@ -90,6 +90,7 @@ int do_clock_gettime(clockid_t which_clock, struct timespec=
+64 *tp)
+=20
+ 	return 0;
+ }
++
+ SYSCALL_DEFINE2(clock_gettime, const clockid_t, which_clock,
+ 		struct __kernel_timespec __user *, tp)
+ {
